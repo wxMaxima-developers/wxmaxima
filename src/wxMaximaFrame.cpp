@@ -49,6 +49,10 @@
 #include <wx/artprov.h>
 #include <wx/config.h>
 #include <wx/iconbndl.h>
+#include <wx/intl.h>
+#if wxCHECK_VERSION(3, 1, 6)
+#include <wx/uilocale.h>
+#endif
 #include <wx/display.h>
 #include <wx/fileconf.h>
 #include <wx/filename.h>
@@ -2052,10 +2056,33 @@ wxString wxMaximaFrame::GetDemoFile(wxWindowID id) const
 
 wxString wxMaximaFrame::wxMaximaManualLocation() {
   wxString helpfile;
-  wxString lang_long =
-    wxLocale().GetCanonicalName(); /* two- or five-letter string in xx or xx_YY
-                                      format. Examples: "en", "en_GB", "en_US"
-                                      or "fr_FR" */
+  /* two- or five-letter string in xx or xx_YY format. Examples: "en",
+     "en_GB", "en_US" or "fr_FR".
+
+     Derived from the configured language ID itself, not from a fresh,
+     un-Init()ed wxLocale()/the active wxUILocale: on wxWidgets >= 3.1.6,
+     where the active locale is set via wxUILocale rather than
+     wxLocale::Init(), wxLocale().GetCanonicalName() always returns an empty
+     string (confirmed live -- it reads back this instance's own, never-
+     populated m_strShort), which used to make this function always fall
+     back to the plain, English wxmaxima.html regardless of the language the
+     user actually configured. wxLocale::GetLanguageCanonicalName() is a
+     plain lookup table indexed by language ID -- it needs no locale to be
+     initialized or even supported by the OS, and works identically whether
+     wxLocale or wxUILocale ends up being what actually applies it. */
+  wxString lang_long;
+  const long language = m_configuration.GetLanguage();
+  if (language != wxLANGUAGE_DEFAULT)
+    lang_long = wxLocale::GetLanguageCanonicalName(language);
+  if (lang_long.IsEmpty()) {
+    // wxLANGUAGE_DEFAULT (or an unrecognized language ID): fall back to
+    // whatever the OS/active locale actually resolved to.
+#if wxCHECK_VERSION(3, 1, 6)
+    lang_long = wxUILocale::GetCurrent().GetName();
+#else
+    lang_long = wxLocale().GetCanonicalName();
+#endif
+  }
   wxString lang_short = lang_long.Left(lang_long.Find('_'));
 
   helpfile =

@@ -857,6 +857,202 @@ tried without rebuilding.
   catch the regression by reverting the fix and watching the new assertions
   fail against the old code before restoring it.
 
+- **`wxUILocale` (GH #2233) -- `main.cpp` already had a `#if
+  wxCHECK_VERSION(3, 1, 6)` branch preferring `wxUILocale` over `wxLocale`,
+  but it had two live bugs, both confirmed with a standalone compiled
+  reproduction against the real wxWidgets 3.2.4 in this sandbox (see
+  `wx/uilocale.h`), not guessed from reading the header:**
+  1. `wxUILocale::UseDefault()` was called *unconditionally*, discarding the
+     user's own configured language entirely -- it always applied the
+     system's default locale, even when the user had explicitly picked a
+     different one in wxMaxima's own settings (`wxTranslations::SetLanguage()`
+     right below it still respected the choice for UI *text*, so this bug
+     was invisible for translated strings and only affected locale-driven
+     formatting -- numbers, dates, etc.). Fixed by calling
+     `wxUILocale::UseLocaleName(wxLocale::GetLanguageInfo(lang)->CanonicalName)`
+     when `lang != wxLANGUAGE_DEFAULT`, falling back to `UseDefault()` only
+     if that lookup or the switch itself fails.
+  2. `wxLocale().GetCanonicalName()` -- a **fresh, never-`Init()`-ed**
+     temporary `wxLocale` object -- was still used in two places (`main.cpp`,
+     for building Maxima's own `LANG` environment variable, and
+     `wxMaximaFrame::wxMaximaManualLocation()`, for picking the localized
+     manual) to ask "what's the active locale?". `GetCanonicalName()` reads
+     back `m_strShort`, a plain member that only `wxLocale::Init()` ever
+     populates -- on the `wxUILocale` branch, no `wxLocale::Init()` call
+     happens anywhere in the process, so this **always returned an empty
+     string**, unconditionally falling both call sites back to "C"/the plain
+     English manual regardless of the configured language. Confirmed with a
+     standalone reproduction: `wxUILocale::UseLocaleName("de")` succeeds and
+     `wxUILocale::GetCurrent().GetName()` correctly reports `"de_DE.UTF-8"`
+     immediately afterwards, while a fresh `wxLocale().GetCanonicalName()`
+     called in the same process stays `""`. Fixed two different ways for two
+     different needs: `main.cpp`'s `LANG`-building code now reads
+     `wxUILocale::GetCurrent().GetName()` instead (wants the OS's actual,
+     fully-resolved locale string, which is exactly what that query returns);
+     `wxMaximaManualLocation()` instead derives the language name directly
+     from the already-known configured language ID via the static, lookup-
+     table-only `wxLocale::GetLanguageCanonicalName(lang)` -- deliberately
+     *not* from whatever the OS ended up resolving, since that lookup needs
+     no locale to be installed or supported at all (confirmed live: in this
+     sandbox, which ships only the `C`/`C.utf8`/`POSIX` locales,
+     `wxLocale::Init(wxLANGUAGE_GERMAN)` itself reports failure, yet still
+     leaves a usable `"de_DE"` in `GetCanonicalName()` -- the old `wxLocale`
+     path's `Init()` populates its bookkeeping from the *requested* language
+     on a best-effort basis regardless of whether the underlying OS
+     `setlocale()` call actually succeeded, which is precisely the property
+     `wxUILocale::GetCurrent()` lacks and why it can't be used as a
+     replacement query for this specific "which language did the user pick"
+     question). This lookup needs no version guard -- it's been present and
+     works identically on both pre- and post-3.1.6 wxWidgets.
+  - **Not yet done** (deferred, filed as open follow-ups by the maintainer,
+    not part of this fix): #2229 (minimizable sidebars, wxWidgets >= 3.3.2),
+    #2230 (accessible SVG export, >= 3.3.3), #2231 (PNG description chunks
+    on exported cells, >= 3.3.1), #2232 (`wxNO_UNUSED_VARIABLES`, >= 3.2.7).
+    None of the four could be verified in this sandbox, which only has
+    wxWidgets 3.2.4 installed -- any implementation of them here could only
+    be compile-checked on the pre-version-guard fallback path, not the
+    actual new behavior.
+
+- **Scaled images losing transparency (GH #2227, `Image::GetBitmap()` in
+  `src/Image.cpp`):** the final step of building a scaled display bitmap
+  converted the already-loaded/decoded bitmap back to a `wxImage`, called
+  `Rescale()` on it, then rebuilt the bitmap with `wxBitmap(img, 24)` --
+  an explicit `depth` argument. Passing a depth to this `wxBitmap`
+  constructor forces that bit depth and **discards any alpha channel**,
+  even when `wxImage::HasAlpha()` is true on the source image; omitting the
+  parameter (the default, `-1`) auto-detects depth and preserves alpha
+  instead. Every other bitmap-construction call in the same file --
+  `GetUnscaledBitmap()`'s SVG-rasterize and compressed-image-decode paths,
+  and `GetBitmap()`'s own first construction a few lines earlier -- already
+  omits the depth argument; the scaled-bitmap path was the one outlier.
+  The visible symptom (per the issue) is a previously-transparent region of
+  an image rendering as solid, usually black, once the image needed
+  scaling to fit its on-screen size -- black because that's what most
+  image encoders leave in the RGB channels of a fully-transparent pixel,
+  and once the alpha channel is gone there's nothing left to mask it.
+  Fixed by dropping the explicit depth: `m_scaledBitmap = wxBitmap(img);`.
+  Verified with the existing `imageFormat` ctest (`test/image-test/`,
+  covers PNG/BMP/TIFF/GIF/JPG/WEBP/PNM/XPM sources, PNG and BMP both
+  confirmed to actually carry an alpha channel via `file`) under
+  `xvfb-run` -- it needs a real X display (`Error: Unable to initialize
+  GTK+, is DISPLAY set properly?` without one) -- plus the full `ctest`
+  suite for regressions. This is narrowly a "don't destroy an alpha
+  channel we already have" fix; it does not address the separate,
+  genuinely open design question the same issue also raises (also flagged
+  by the maintainer in the issue itself): whether leaving a transparent
+  pixel fully transparent is actually correct once a dark worksheet
+  background is involved (e.g. black line art becoming invisible against
+  it), which needs a product decision, not a bug fix, and is left for a
+  follow-up.
+
+- **RTF/OMML export (GH #1456, GH #1457) -- previously had zero test
+  coverage; `test/unit_tests/test_RTFExport.cpp` is the first.** RTF export
+  has two independent code paths that both matter: `TextCell::ToRTF()`
+  (plain RTF text, one `\cf<N>{...}` run per cell) and `Cell::ToOMML()` +
+  `Cell::OMML2RTF()` (an embedded Word/LibreOffice math field, used whenever
+  `Cell::ListToRTF()` hits a cell whose `ToRTF()` is empty but whose
+  `ToOMML()` isn't -- see `Cell::ListToRTF()`'s two-branch loop). Getting
+  either path's cell-specific override wrong is invisible to every other
+  export format's tests, since TeX/XML/MathML export don't share this code.
+  - **`TextCell::ToRTF()` didn't check `IsHidden()`/`GetHidableMultSign()`/
+    `HidemultiplicationSign()` at all (GH #1456)**, unlike `ToTeX()` and
+    `ToXML()`, which both already do. Confirmed via a standalone harness
+    (parse the real `<h>*</h>` XML `wxxmlnumformat` in `wxMathML.lisp` emits
+    for scientific notation, e.g. "2*10^7" for `2e7`, through `MathParser`,
+    then call `ListToRTF()` directly) that with `HidemultiplicationSign()`
+    on vs. off the RTF output was byte-for-byte *identical* -- the literal
+    `*` always appeared. Fixed by mirroring `ToTeX()`'s exact logic: when
+    hidden, a lone `*`/`·` becomes a plain space (never removed
+    outright) so cells on either side don't run together, while any other
+    kind of `IsHidden()` cell (e.g. an invisible parenthesis) still clears
+    to empty. The "run together" failure mode is real, not theoretical: the
+    two content types don't mix in `Cell::ListToRTF()`'s output -- plain
+    text and an OMML math field are adjacent, unrelated RTF constructs, so
+    a `2` (plain text) immediately followed by a hidden-then-vanished `*`
+    and then a `10^7` (OMML field, since `ExptCell` only implements
+    `ToOMML()`, not `ToRTF()`) would have rendered as the unreadable "210^7"
+    with no separator between the plain-text run and the math field.
+  - **`MatrCell::ToOMML()` emitted `<m:grow>\"1\"</m:grow>` -- a *child
+    element* whose text content is the two literal characters `"1"`,
+    complete with quote marks -- instead of the `m:grow="1"` *attribute*
+    form `ParenCell`/`ListCell`/`IntervalCell::ToOMML()` all already use
+    correctly (GH #1457).** `Cell::OMML2RTF()` is a generic, mechanical
+    XML-to-RTF-control-word transliterator: an attribute `m:grow="1"` and a
+    same-named child element `<m:grow>1</m:grow>` both produce the
+    identical, well-formed RTF math control word `{\mgrow 1}` -- but the
+    quoted-text-content form MatrCell used produced `{\mgrow "1"}`, with
+    stray literal quote characters inside what must be a bare flag.
+    Confirmed live that this is what a real RTF-math consumer (Word,
+    LibreOffice) needs by comparing against the three sibling cells' already
+    -working attribute-based form, not by guessing at the OOXML schema.
+    Fixed by switching `MatrCell::ToOMML()` to the same attribute form,
+    which also makes all four delimiter-emitting cell types consistent.
+    Word/LibreOffice silently ignoring the malformed flag and falling back
+    to a small, fixed-size (non-growing) bracket regardless of the matrix's
+    actual height is exactly the "big parenthesis...displayed as small
+    parenthesis" the issue reported.
+  - **`AbsCell::ToOMML()` was missing `m:grow="1"` entirely** (not a filed
+    issue, found by auditing every `ToOMML()` for the same bug class while
+    fixing #1457) -- `abs()` of a fraction or matrix would have rendered
+    its `|  |` bars at a fixed, non-growing size in RTF/Word export, unlike
+    every other bracket-drawing cell in this codebase. Fixed the same way.
+  - **Verification methodology**, since none of this was previously
+    testable at all: a standalone harness (same pattern as
+    `test_IntegralToTeX.cpp` -- real `MathParser`, hand-written XML matching
+    exactly what `wxMathML.lisp` emits, no live Maxima needed) was used to
+    reproduce both bugs live *before* writing the fix, then promoted into
+    `test/unit_tests/test_RTFExport.cpp` as a permanent regression test
+    once the fix was confirmed. Confirmed the new test actually catches the
+    regression (not just passing vacuously) by reverting the three
+    `ToOMML()`/`ToRTF()` fixes via `git stash` and re-running it: all three
+    `SCENARIO`s failed with the exact old symptoms, then passed again once
+    the fixes were restored.
+
+- **"Maxima started but never connects" watchdog (GH #1182, open since
+  2019).** Before this, if the Maxima process launched successfully but
+  its socket connection back to wxMaxima's `wxSocketServer` never arrived
+  -- wxMaxima is the TCP *server* here; the spawned `maxima` binary is the
+  *client* that has to connect back, see `MaximaProcessManager::
+  StartServer()`/`OnMaximaConnect()` -- nothing timed this out or told the
+  user: the worksheet just sat at "Maxima started. Waiting for
+  connection..." forever, with no error, no retry, no explanation. This is
+  distinct from the *other* code path that already existed
+  (`OnMaximaConnect()`'s `m_unsuccessfulConnectionAttempts < 12` retry
+  loop): that one only fires once a connection attempt reaches wxMaxima and
+  then fails -- it does nothing if no attempt ever arrives at all, which is
+  exactly what happens when the child process never gets far enough to open
+  the socket. Confirmed live in this sandbox (Linux, can't reproduce the
+  actual macOS Gatekeeper trigger, but the missing-timeout mechanism itself
+  is platform-independent): pointed wxMaxima's `-m` flag at a throwaway
+  shell script that just `sleep`s forever instead of a real `maxima`
+  binary -- unmodified `main` sits at "Waiting for connection..." with zero
+  further log output, indefinitely.
+  Fixed with a new one-shot `wxTimer` (`MAXIMA_CONNECT_WATCHDOG_ID`,
+  `wxMaxima::m_maximaConnectWatchdogTimer`) armed for 5 seconds (matching
+  the issue title's own number) every time `StartMaxima()` successfully
+  spawns a process, and stopped both on a real successful connection
+  (`OnMaximaConnect()`) and on `KillMaxima()` (covers deliberate shutdown
+  and the top of every restart, since `StartMaxima(force=true)` always
+  calls `KillMaxima()` before re-arming). If it fires while the process is
+  still alive (`wxProcess::Exists()`) and still not connected, it shows a
+  `LoggingMessageBox` once per run (`m_maximaConnectWatchdogWarningShown`
+  latches so the automatic restart loop -- which re-arms this same timer on
+  every retry -- doesn't reshow the dialog up to 12 times in a row). The
+  message branches on `__WXOSX__`: on macOS it names the quarantine
+  possibility specifically (a background process wxMaxima spawns can never
+  answer the interactive security prompt Gatekeeper would otherwise show,
+  so it just silently never finishes starting) and suggests both re-running
+  the shown command from a Terminal once and `xattr -d
+  com.apple.quarantine`; elsewhere it's a generic "still waiting, check the
+  debug sidebar or your firewall" message, since quarantine isn't the
+  relevant cause there. Verified end-to-end in a live Xvfb session with the
+  same fake-hung-process technique: the log line appears at exactly +5s and
+  only once, and a screenshot confirms the dialog renders correctly with
+  the non-macOS wording (the `__WXOSX__` branch itself is untestable here
+  for the same reason #2229-#2232 were -- no macOS hardware in this
+  sandbox -- but it's the same string-formatting/branching mechanism,
+  already exercised by the generic path).
+
 ## Layout & Compatibility
 
 - **Mathematical Cell Padding:** Use `MC_TEXT_PADDING` (in `Configuration.h`) for text-based cells. **Exception:** `DigitCell` does not include padding to ensure visual consistency in broken-up numbers.

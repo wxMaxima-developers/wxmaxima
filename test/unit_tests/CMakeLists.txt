@@ -480,6 +480,16 @@ if(TARGET wxmTestApp)
     add_test(NAME IntegralToTeX
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_IntegralToTeX>")
 
+    # RTF/OMML export (GH #1456, GH #1457): previously untested entirely.
+    add_executable(test_RTFExport
+        test_RTFExport.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_RTFExport PUBLIC cxx_std_20)
+    target_link_libraries(test_RTFExport PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME RTFExport
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_RTFExport>")
+
     # Round-trip test for the mechanical scalar settings: guards that
     # ReadConfig() and the settings-write side share one key<->member table
     # (Configuration::ScalarConfigSettings) so a setting can never be written
