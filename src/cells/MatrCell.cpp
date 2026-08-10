@@ -416,26 +416,31 @@ wxString MatrCell::ToOMML() const {
 
   retval = wxS("<m:d>");
   if (!m_specialMatrix) {
+    // Same m:begChr="..." m:endChr="..." m:grow="1" attribute form
+    // ParenCell/ListCell/IntervalCell::ToOMML() already use -- not the
+    // <m:begChr>...</m:begChr><m:grow>"1"</m:grow> child-element form this
+    // used to have, which put literal quote characters into m:grow's value
+    // (OMML2RTF() turns element text content into raw RTF, so
+    // "<m:grow>\"1\"</m:grow>" produced the RTF math control word
+    // "{\mgrow "1"}" instead of the well-formed "{\mgrow 1}" every other
+    // delimiter-emitting cell type here already produces) -- Word/LibreOffice
+    // silently ignored the malformed grow flag and fell back to a small,
+    // non-stretchy delimiter regardless of the matrix's actual height (GH #1457).
     switch (m_parenType) {
     case paren_rounded:
-      retval += wxS("<m:dPr><m:begChr>(</m:begChr><m:endChr>)</m:endChr> "
-                    "<m:grow>\"1\"</m:grow></m:dPr>");
+      retval += wxS("<m:dPr m:begChr=\"(\" m:endChr=\")\" m:grow=\"1\"></m:dPr>");
       break;
     case paren_brackets:
-      retval += wxS("<m:dPr><m:begChr>[</m:begChr><m:endChr>]</m:endChr> "
-                    "<m:grow>\"1\"</m:grow></m:dPr>");
+      retval += wxS("<m:dPr m:begChr=\"[\" m:endChr=\"]\" m:grow=\"1\"></m:dPr>");
       break;
     case paren_angled:
-      retval += wxS("<m:dPr><m:begChr>&lt;</m:begChr><m:endChr>&gt;</m:endChr> "
-                    "<m:grow>\"1\"</m:grow></m:dPr>");
+      retval += wxS("<m:dPr m:begChr=\"&lt;\" m:endChr=\"&gt;\" m:grow=\"1\"></m:dPr>");
       break;
     case paren_straight:
-      retval += wxS("<m:dPr><m:begChr>|</m:begChr><m:endChr>|</m:endChr> "
-                    "<m:grow>\"1\"</m:grow></m:dPr>");
+      retval += wxS("<m:dPr m:begChr=\"|\" m:endChr=\"|\" m:grow=\"1\"></m:dPr>");
       break;
     case paren_none:
-      retval += wxS("<m:dPr><m:begChr> </m:begChr><m:endChr> </m:endChr> "
-                    "<m:grow>\"1\"</m:grow></m:dPr>");
+      retval += wxS("<m:dPr m:begChr=\" \" m:endChr=\" \" m:grow=\"1\"></m:dPr>");
       break;
     }
   }

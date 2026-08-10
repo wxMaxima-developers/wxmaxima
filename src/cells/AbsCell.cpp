@@ -151,7 +151,11 @@ wxString AbsCell::ToMathML() const {
 }
 
 wxString AbsCell::ToOMML() const {
-  return wxS("<m:d><m:dPr m:begChr=\"|\" m:endChr=\"|\"></m:dPr><m:e>") +
+  // m:grow="1" matches ParenCell/ListCell/IntervalCell/MatrCell::ToOMML():
+  // without it Word/LibreOffice draws the "| |" bars at a fixed, small size
+  // instead of growing them to match tall content (e.g. abs() of a fraction
+  // or matrix).
+  return wxS("<m:d><m:dPr m:begChr=\"|\" m:endChr=\"|\" m:grow=\"1\"></m:dPr><m:e>") +
     m_innerCell->ListToOMML() + wxS("</m:e></m:d>");
 }
 
