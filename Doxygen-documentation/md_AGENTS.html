@@ -73,7 +73,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p>This file contains architectural insights, conventions, and operational knowledge to assist AI agents working on the <a class="el" href="classwxMaxima.html">wxMaxima</a> codebase. <b>Agents are explicitly permitted and encouraged to update this file with new findings that improve context and safety.</b></p>
-<h1><a class="anchor" id="autotoc_md40"></a>
+<h1><a class="anchor" id="autotoc_md43"></a>
 Build System</h1>
 <p>Configure once (a Debug build is the default), then build and run without installing:</p>
 <div class="fragment"><div class="line">cmake -S . -B build -G Ninja</div>
@@ -115,7 +115,7 @@ Build System</h1>
 </ol>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md41"></a>
+<h1><a class="anchor" id="autotoc_md44"></a>
 Architecture &amp; GUI</h1>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> is a GUI front-end to the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> CAS; it talks to a <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> process over a local TCP socket.</p>
 <ul>
@@ -255,7 +255,7 @@ Architecture &amp; GUI</h1>
   code, selected the group cell via hCaret + Shift+Up, confirmed the
   rendered text changed consistently and a single Ctrl+Z restored it).
 
-@subsection autotoc_md42 Communication with Maxima
+@subsection autotoc_md45 Communication with Maxima
 
 wxMaxima sends Lisp and Maxima commands over the socket; Maxima answers with XML
 wrapped in known tags. &lt;tt&gt;Maxima&lt;/tt&gt; reads that data on a worker thread and posts
@@ -293,17 +293,22 @@ tried without rebuilding.
 </li>
 <li>**ASCII-art 2<a class="el" href="classD.html">D</a> display (<code>set_display('ascii)</code>) and <code>*alt-display2d*</code>:** when <code>$display2d</code> is on, <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s evaluator checks the special variable <code>*alt-display2d*</code> before printing a result: if it's a function symbol, that function is called <em>instead of</em> <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s own stock printer (this is how <code>mydispla</code> in <code>wxMathML.lisp</code> produces the normal <code>&lt;mth&gt;</code>/XML output); if it's <code>nil</code>, <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> falls through to its own built-in ASCII-art printer, which pads a result's lines with literal spaces so a multi-line fraction/ matrix/etc. lines up correctly under the <code>(oN)</code> label &ndash; but that padding assumes every line, including the label, ends up rendered in one uniform monospace font. <code>wxMathML.lisp</code>'s <code>wx-ascii-displa</code> wraps that stock printer in <code>&lt;wxxml-asciimath&gt;</code>/<code>&lt;/wxxml-asciimath&gt;</code> markers <em>without</em> reimplementing it: it dynamically rebinds <code>*alt-display2d*</code> to <code>nil</code> for just the duration of <code>(displa x)</code>, which re-enters <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s own dispatch and this time takes the stock ASCII path (confirmed live: this is correctly reentrant-safe through <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s own recursive sub-expression <code>displa</code> calls, e.g. matrix rows, since they run inside the same dynamic extent). <code>Maxima::ProcessData()</code> only fires the corresponding <code>XML_ASCIIMATH</code> event once it has seen the <em>complete</em> matching closing tag, so <code><a class="el" href="classMaximaResponseReader.html#a15931a24b9755320cc7262e040217dc4" title="Handles one complete &lt;wxxml-asciimath&gt;...&lt;/wxxml-asciimath&gt; block: Maxima&#39;s stock ASCII-art 2D displa...">MaximaResponseReader::ReadAsciiMath()</a></code> always receives one whole block in one piece and can render all of it in one uniform style &ndash; before this, <code>ReadMiscText()</code> guessed a chunk's style from whether it happened to start with <code>"(%"</code>, and since chunks are split by socket/timer batching (not by where <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s actual output boundaries are), a block's label line could land in a separate batch than its neighbors and get misclassified into a different (proportional) font, breaking the alignment <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s padding assumed &ndash; root-caused with a raw <code>:lisp-quiet (with-input-from-string ...)</code> / socket-level reproduction (see the debugging technique note above) before the fix, not guessed.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md43"></a>
+<h2><a class="anchor" id="autotoc_md46"></a>
 File Formats</h2>
 <ul>
 <li>**<code>.wxmx</code>** &ndash; a ZIP archive holding <code>content.xml</code> (the MathML-like XML) plus the embedded images. The format version lives in <code><a class="el" href="WXMXformat_8h_source.html">src/WXMXformat.h</a></code>.</li>
 <li>**<code>.wxm</code>** &ndash; the plain-text format, read by <code>Format::ParseWXMFile()</code>.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md44"></a>
+<h2><a class="anchor" id="autotoc_md47"></a>
 Translations (&lt;tt&gt;locales/&lt;/tt&gt;)</h2>
 <ul>
 <li><b>One combined <code>.po</code> per language, in <code>locales/wxMaxima/</code>, is the file a translator edits.</b> It covers both <a class="el" href="classwxMaxima.html">wxMaxima</a>'s own UI strings (<code>xgettext</code>-extracted from <code>src/**/*.cpp</code>/<code>*.h</code>) and the manual's prose (<code>po4a</code>-extracted from <code>info/wxmaxima.md</code>). <code>locales/wxMaxima/wxMaxima.pot</code>, the template both <code>msgmerge</code> and Crowdin work against, is regenerated as the union of a fresh source scan and <code>locales/manual/wxmaxima.md.pot</code> (<code>msgcat --use-first</code>, preferring <code>wxMaxima.pot</code>'s own header) by the <code>update-locale</code> CMake target.</li>
 <li><b>The xgettext source list is an explicit glob, not a recursive one, and a file it misses loses its strings silently.</b> <code>POT_SOURCE_FILES</code>/ <code>POT_SOURCE_FILES_REL</code> in <code>locales/wxMaxima/CMakeLists.txt</code> list <code>src/*.cpp;src/*.h;src/*/*.cpp;src/*/*.h</code> &ndash; exactly two levels. It was flat <code>src/*</code> until <code>03b16f2d8</code>, so every string under <code>src/cells</code>, <code>src/wizards</code> and <code>src/graphical_io</code> was missing from the POT from 2020-08-05, and <code>src/sidebars</code>/<code>src/dialogs</code> from 2024-01. Cost: ~7000 translations across 21 languages, restored from git history only in 2026-08. <b>Nothing warns about this</b>: xgettext is happy with a short file list, and the POT-drift check in CI regenerates the POT and diffs it, so a broken glob truncates both sides identically and the check passes. Adding a <code>src/&lt;a&gt;/&lt;b&gt;/</code> nesting level would break it again &ndash; <code>check-pot-coverage</code> (a <code>ctest</code>, needs neither a build nor gettext) now fails the build if any source file sits deeper than the glob reaches, or if a file containing a <code>_("...")</code> marker is unreferenced by the committed POT.</li>
+<li><b><a class="el" href="classA.html">A</a> Crowdin sync can silently wipe existing translations if it's built from a stale base &ndash; confirmed twice now (2026-08-05 and 2026-08-10), both times around the same subdir-glob restoration work above, and both times a plain git merge, not a Crowdin misconfiguration found so far.</b> The second incident: PR #2241 ("Restore 7083 translations the flat `src/*` gettext
+  glob had dropped") merged at 19:59:43; Crowdin's own <code>l10n_main2</code> branch (a long-lived branch it force-pushes to repeatedly, see PRs #2187/#2199/ #2239/#2244) had already branched off main at 19:55:40 &ndash; 4 minutes <em>before</em> #2241 &ndash; and didn't re-sync before its own PR #2244 merged 30 minutes later. Confirmed directly from the commit graph, not inferred: <code>git merge-base &lt;l10n_main2 tip&gt; &lt;main-before-#2241&gt;</code> equals that pre-#2241 commit exactly, i.e. Crowdin's new per-language commits were still parented on the stale base. The result once merged: a plain 3-way git merge doesn't understand PO-file semantics, so wherever Crowdin's diff and the restore's diff touched entries in the same file without a textual line conflict, whichever side's hunk landed could silently win &ndash; in this case, largely Crowdin's older, translation-poorer version. Net effect measured with <code>polib</code> (msgid+msgctxt keyed diff, not <code>msgfmt --statistics</code> counts alone, since those can't tell "a translation
+  reverted to worse text" from "line-wrapping changed"): 464 translations across 16 languages went from non-empty to empty, and <em>zero</em> went the other way &ndash; a real regression, not translator churn. Recovered with a surgical text-level patch (locate each entry's own line range via <code>polib</code>'s <code>.linenum</code> in both the pre-regression and current file independently, splice only the <code>msgstr</code> block, leave everything else byte-identical) &ndash; reusing <code>polib</code>'s own serializer to resave the whole file was tried first and rejected: it reformats every line's wrapping, turning a 464-line fix into a ~200KB diff across 16 files that would have buried the actual change completely. If this happens a third time, the fix is on the Crowdin project side (a webhook trigger that also re-syncs sources immediately before generating its PR, not just before the languages it already had), not on <a class="el" href="classwxMaxima.html">wxMaxima</a>'s own git handling &ndash; ask Crowdin support directly, since this session cannot access Crowdin's own dashboard/API to confirm the exact trigger without credentials.</li>
+<li>**<code>test/check-pot-coverage.cmake</code> needs <code>cmake_policy(SET CMP0057 NEW)</code> explicitly.** It runs in script mode (<code>cmake -P</code>), which does not inherit the top-level <code>CMakeLists.txt</code>'s policy settings &ndash; without this line, <code>if(NOT f IN_LIST covered)</code> hard-errors with "Unknown arguments
+  specified" on every invocation, on any CMake version, confirmed against a clean <code>main</code> checkout (not something introduced by unrelated local changes). <code>IN_LIST</code> needs CMP0057 set to <code>NEW</code> to be recognized as an operator at all in <code>if()</code>; the default/OLD behavior predates that operator's existence.</li>
 <li><b>Don't drop <code>--previous</code> from <code>msgmerge</code>.</b> It is what keeps the <code>#| msgid</code> comment recording what a fuzzy entry used to say, which is how a translator works out <em>why</em> something went fuzzy (<code>00ba34121</code>). <a class="el" href="classA.html">A</a> plain <code>msgmerge</code> discards those comments wholesale and gives no hint it did &ndash; 212 entries' worth in <code>zh_CN.po</code> alone, found only by counting them before and after.</li>
 <li>**<code>po4a</code> must never be pointed at <code>locales/wxMaxima/&lt;lang&gt;.po</code> directly.** It looks like the obvious way to keep the manual's translations inside the combined file (<code>po4a.cfg</code>'s <code>$lang:</code> path <em>was</em> set to <code>locales/wxMaxima/$lang.po</code> at one point), but <code>po4a</code> doesn't treat a <code>.po</code> file as something to add/update entries in - it treats it as <em>its own</em>, and <b>rewrites it wholesale to contain only the entries it itself extracted from <code>info/wxmaxima.md</code>, silently discarding everything else</b>. Confirmed live: a language with 1000 translated UI strings and 69 translated manual strings dropped to 69 (the UI strings gone) after one <code>po4a</code> run against the combined file - and this shipped merged to <code>main</code> before being caught. <code>po4a</code> therefore keeps writing its own <code>locales/manual/&lt;lang&gt;.po</code> (<code>po4a.cfg</code>'s <code>$lang:</code> path), exactly as before the two catalogs were combined; <code>locales/wxMaxima/CMakeLists.txt</code>'s <code>${LANG}_po</code> target runs <code>merge_manual_po.cmake</code> (<code>msgcat --use-first</code>) to fold <code>locales/manual/&lt;lang&gt;.po</code> into <code>locales/wxMaxima/&lt;lang&gt;.po</code> <em>before</em> <code>msgmerge</code>, every time - that script is the only place allowed to write manual content into the combined file. <code>locales/manual/*.po</code> only exists for the languages that actually have a manual translation (not the full <code>locales/wxMaxima/*.po</code> language list) - <code>info/CMakeLists.txt</code> expects a matching <code>info/wxmaxima.&lt;lang&gt;.md</code> to already exist for every language <code>po4a.cfg</code>'s language list names, and doesn't create a fresh empty one, so don't widen that language list to languages that have no manual translation yet without also handling that.</li>
 <li>**<code>po4a.cfg</code>'s manual <code>[type: text]</code> line needs <code>opt:"-o markdown"</code> explicitly** - <code>Locale::Po4a::Text</code>'s own default for that option is <code>1</code>, but that default does not take effect through <code>[type: text]</code>'s normal invocation; confirmed live by extracting the same heading with and without an explicit <code>-o markdown</code>. Without it, every markdown structural element (<code>##</code> headings, list items, ...) is extracted as generic wrapped "Plain
@@ -313,7 +318,7 @@ Translations (&lt;tt&gt;locales/&lt;/tt&gt;)</h2>
 <li><b>Don't run this sandbox's stock <code>po4a</code> (0.69) against real translated content.</b> See <code>CheckPo4aVersion.cmake</code>'s corruption warning above &ndash; verifying a change to the translation <em>pipeline</em> (<code>po4a.cfg.in</code>/<code>merge_manual_po.cmake</code>/the CMake wiring) is fine without running <code>po4a</code> itself, but regenerating actual <code>.po</code>/<code>.md</code> output needs a real <code>po4a</code> &gt;= 0.70. It wasn't reachable via any of apt (only has 0.69), Debian's package archive, or po4a's own GitHub releases (both blocked by this sandbox's proxy) - but a source tarball of a current release, fetched outside the sandbox and handed to the agent as a file, runs perfectly well unpacked with no install step beyond <code>PERL5LIB=&lt;unpacked-dir&gt;/lib</code> pointing at its <code>Locale::Po4a::*</code> modules; the <code>po4a</code>/<code>po4a-updatepo</code>/ <code>po4a-translate</code>/etc. scripts at the tarball's top level need nothing else to work standalone, e.g. <code>PERL5LIB=lib ./po4a --version</code>. Regenerating translated content live and diffing it (<code>msgfmt --statistics</code> before/after per language, matching translated-message counts) is how both bugs above were actually caught, not guessed from reading <code>Locale::Po4a::Text</code>'s source.</li>
 <li>**<code>git clean -fd</code> after <code>git checkout --</code> on a directory wipes untracked files in it too, including ones you meant to keep** (e.g. a new <code>locales/manual/&lt;lang&gt;.po</code> restored from a scratch copy, or a brand new <code>.cmake</code> helper script that was never committed yet) - it doesn't distinguish "test-run droppings" from "uncommitted new work" by intent, only by whether <code>git add</code> has seen the path yet. Prefer reverting only the specific files that are actually wrong (or committing work-in-progress to a scratch commit first) over a blanket <code>git checkout -- &lt;dir&gt; &amp;&amp; git clean -fd &lt;dir&gt;</code> once a directory has a mix of both kinds of changes in it.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md45"></a>
+<h1><a class="anchor" id="autotoc_md48"></a>
 Conventions &amp; Standards</h1>
 <ul>
 <li><b>Git Environment:</b> Note that running <code>git diff</code> might launch the visual diff tool <code>meld</code> instead of outputting to the terminal. Always use <code>git diff --no-ext-diff</code> if you need terminal output.</li>
@@ -437,7 +442,7 @@ Conventions &amp; Standards</h1>
   sandbox &amp;ndash; but it's the same string-formatting/branching mechanism,
   already exercised by the generic path).
 
-@section autotoc_md46 Layout &amp; Compatibility
+@section autotoc_md49 Layout &amp; Compatibility
 
 - &lt;strong&gt;Mathematical Cell Padding:&lt;/strong&gt; Use &lt;tt&gt;MC_TEXT_PADDING&lt;/tt&gt; (in &lt;tt&gt;Configuration.h&lt;/tt&gt;) for text-based cells. &lt;strong&gt;Exception:&lt;/strong&gt; &lt;tt&gt;DigitCell&lt;/tt&gt; does not include padding to ensure visual consistency in broken-up numbers.
 - &lt;strong&gt;Three-Step Layout Process:&lt;/strong&gt;
@@ -453,7 +458,7 @@ Conventions &amp; Standards</h1>
 - **ConfigDialogue Tabs Must Scroll:&lt;/strong&gt; Every tab panel in &lt;tt&gt;src/dialogs/ConfigDialogue.cpp&lt;/tt&gt; is a &lt;tt&gt;wxScrolled\&lt;wxPanel\&gt;&lt;/tt&gt; with &lt;tt&gt;SetScrollRate(5 * GetContentScaleFactor(), 5 * GetContentScaleFactor())&lt;/tt&gt; and &lt;tt&gt;SetMinSize(wxSize(GetContentScaleFactor() * mMinPanelWidth, GetContentScaleFactor() * mMinPanelHeight))&lt;/tt&gt;. Without this, a tab's natural size (which grows with font size/DPI/translation length) can make the whole dialog taller than a hi-DPI screen with no way to reach what's cut off. When adding a new tab, copy this pattern (see &lt;tt&gt;CreateWorksheetPanel()&lt;/tt&gt;) rather than a plain &lt;tt&gt;wxPanel&lt;/tt&gt;.
 - &lt;strong&gt;Constructor Initialization:&lt;/strong&gt; Order initialization lists to match header declaration order to prevent &lt;tt&gt;-Wreorder&lt;/tt&gt; warnings.
 
-@section autotoc_md47 Performance &amp; Documentation Mandates
+@section autotoc_md50 Performance &amp; Documentation Mandates
 
 - &lt;strong&gt;NEWS.md Updates:&lt;/strong&gt; Every non-trivial change MUST be documented in &lt;tt&gt;NEWS.md&lt;/tt&gt; under the "# Current development version" section.
 - &lt;strong&gt;Doxygen Comments:&lt;/strong&gt; Include descriptions for all new classes and public methods. Complex algorithms (e.g., LCS alignment) require detailed architectural comments.
@@ -464,19 +469,19 @@ Conventions &amp; Standards</h1>
   - Prefer &lt;tt&gt;(intern ...)&lt;/tt&gt; over &lt;tt&gt;read-from-string&lt;/tt&gt; for dynamic symbol generation.
 - &lt;strong&gt;Strict XML Mandate:&lt;/strong&gt; To avoid duplicate attributes, add any new manually-handled XML attribute (e.g., &lt;tt&gt;noneParens="true"&lt;/tt&gt;) to the filter list in &lt;tt&gt;MathParser.cpp&lt;/tt&gt;.
 
-@section autotoc_md48 Visual Documentation (&lt;tt&gt;art/Doxygen/&lt;/tt&gt;)
+@section autotoc_md51 Visual Documentation (&lt;tt&gt;art/Doxygen/&lt;/tt&gt;)
 
 - &lt;strong&gt;Geometry Awareness:&lt;/strong&gt; If modifying &lt;tt&gt;Recalculate()&lt;/tt&gt; or &lt;tt&gt;Draw()&lt;/tt&gt; geometry (padding, center alignment), you MUST update the corresponding SVG diagrams in &lt;tt&gt;art/Doxygen/&lt;/tt&gt;.
 - &lt;strong&gt;Consistency:&lt;/strong&gt; New cell types should have &lt;tt&gt;*Geometry.svg&lt;/tt&gt; and &lt;tt&gt;*LinearGeometry.svg&lt;/tt&gt; (if applicable) diagrams.
 
-@section autotoc_md49 Key Subsystems Map
+@section autotoc_md52 Key Subsystems Map
 
 - &lt;strong&gt;Layout Engine:&lt;/strong&gt; &lt;tt&gt;src/cells/&lt;/tt&gt; and &lt;tt&gt;src/worksheet/&lt;/tt&gt; (&lt;tt&gt;Worksheet.cpp&lt;/tt&gt; and its siblings moved into that subdirectory).
 - &lt;strong&gt;MathML Formatting:&lt;/strong&gt; &lt;tt&gt;src/wxMathML.lisp&lt;/tt&gt; and &lt;tt&gt;src/MathParser.cpp&lt;/tt&gt;.
 - &lt;strong&gt;Main Logic:&lt;/strong&gt; &lt;tt&gt;src/wxMaxima.cpp&lt;/tt&gt; and &lt;tt&gt;src/wxMaximaFrame.cpp&lt;/tt&gt; &amp;ndash; but much of what used to sit in &lt;tt&gt;wxMaxima&lt;/tt&gt; has been peeled off into friend classes, so look there first: &lt;tt&gt;MaximaProcessManager&lt;/tt&gt; (spawn/kill/connect and the data pump), &lt;tt&gt;MaximaEvaluator&lt;/tt&gt; (evaluation queue and command protocol), &lt;tt&gt;MaximaResponseReader&lt;/tt&gt; (the incoming-XML handlers), &lt;tt&gt;MaximaFileIO&lt;/tt&gt; (worksheet open/save) and &lt;tt&gt;MaximaCommandMenus&lt;/tt&gt; (the menu handlers).
 - &lt;strong&gt;Configuration:&lt;/strong&gt; &lt;tt&gt;src/Configuration.cpp&lt;/tt&gt;.
 
-@section autotoc_md50 Backlog / Future Work
+@section autotoc_md53 Backlog / Future Work
 
 Items the maintainer has flagged as worth doing but hasn't asked for yet &amp;ndash; don't
 start on these without checking in first, but pick them up if asked for "what's next" style work.
@@ -504,7 +509,7 @@ start on these without checking in first, but pick them up if asked for "what's 
 </li>
 </ul>
 <p><code></code></p>
-<h1><a class="anchor" id="autotoc_md51"></a>
+<h1><a class="anchor" id="autotoc_md54"></a>
 Error resilience</h1>
 <p><code></p><ul>
 <li>To err is human =&gt; If your instructions don't seem to make sense feel free to ask. </li>
