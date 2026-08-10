@@ -1,5 +1,14 @@
 # Current development version
 
+- "Pop out interactively" (the plot image's right-click menu) now tells you
+  when gnuplot had trouble with the plot, instead of silently leaving you
+  with an unexplained window (GH #1973). A second, hidden gnuplot process
+  runs the same script headlessly (`set term unknown`, so it needs no
+  display) purely to catch anything gnuplot prints while preparing the plot;
+  if it printed something, a "Warning" dialog shows it verbatim. The
+  interactive popout itself is untouched -- it still gets its own real
+  console/window exactly as before, so typing further gnuplot commands into
+  it still works.
 - macOS: translation files should now actually make it into the app bundle
   (GH #1711). Two separate bugs meant the `.mo` files never reached
   `Contents/Resources/locale/<lang>/LC_MESSAGES/`, where wxMaxima looks for

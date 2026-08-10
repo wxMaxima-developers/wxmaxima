@@ -134,6 +134,16 @@ public:
   //! wxEVT_END_PROCESS handler for the gnuplot subprocess: notes it has closed.
   void OnGnuplotClose(wxProcessEvent &event);
 
+  /*! wxEVT_END_PROCESS handler for the hidden, headless gnuplot check that
+    runs alongside "Pop out interactively".
+
+    Reads back whatever gnuplot wrote to stdout/stderr while preparing the
+    plot and, if it looks like it contains a warning or an error, shows it
+    to the user - instead of leaving them looking at an unexplained empty
+    plot window (GH #1973).
+  */
+  void OnGnuplotPopoutCheckClose(wxProcessEvent &event);
+
 private:
   //! The wxMaxima frame whose services the lifecycle handlers drive. Not owned;
   //! the frame owns this object.

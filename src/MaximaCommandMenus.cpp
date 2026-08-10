@@ -2749,23 +2749,33 @@ void MaximaCommandMenus::EditMenu(wxCommandEvent &event) {
       return;
     wxTextInputStream textIn(input, wxS('\t'),
                              wxConvAuto(wxFONTENCODING_UTF8));
-    wxString gnuplot_popout_tempfilename = wxFileName::CreateTempFileName("wxmaxima_gnuplot_popout_");
-    wxFileOutputStream output(gnuplot_popout_tempfilename);
-    if (!output.IsOk())
-      return;
-    wxTextOutputStream textOut(output);
-#ifdef __WXMSW__
-    textOut << "set term windows\n";
-#endif
     textIn.ReadLine();
     textIn.ReadLine();
 
-    wxString line;
-    while (!input.Eof()) {
-      line = textIn.ReadLine();
-      textOut << line + wxS("\n");
+    // The body both the interactive popout below and the headless warnings
+    // check further down execute: everything but the original terminal/output
+    // directives skipped above.
+    wxString body;
+    {
+      wxString line;
+      while (!input.Eof()) {
+        line = textIn.ReadLine();
+        body += line + wxS("\n");
+      }
     }
-    textOut.Flush();
+
+    wxString gnuplot_popout_tempfilename = wxFileName::CreateTempFileName("wxmaxima_gnuplot_popout_");
+    {
+      wxFileOutputStream output(gnuplot_popout_tempfilename);
+      if (!output.IsOk())
+        return;
+      wxTextOutputStream textOut(output);
+#ifdef __WXMSW__
+      textOut << "set term windows\n";
+#endif
+      textOut << body;
+      textOut.Flush();
+    }
 
     // Execute gnuplot
     std::vector<char *> argv;
@@ -2783,6 +2793,56 @@ void MaximaCommandMenus::EditMenu(wxCommandEvent &event) {
                   wxEXEC_ASYNC | wxEXEC_SHOW_CONSOLE | wxEXEC_MAKE_GROUP_LEADER,
                   m_wxMaxima.m_gnuplotProcess) < 0)
       wxLogMessage(_("Cannot start gnuplot"));
+
+    /* Also run the same script headlessly, with `set term unknown` instead
+       of a real terminal, purely to catch warnings/errors gnuplot prints
+       while preparing the plot (GH #1973: users were left staring at an
+       unexplained empty plot window when e.g. a "set font" their preamble
+       used wasn't understood by their gnuplot version, with no indication
+       anything had gone wrong).
+
+       This is a second, independent process rather than reading
+       m_gnuplotProcess's own stdout/stderr, because m_gnuplotProcess must
+       stay un-redirected: Redirect()ing it would replace its console's real
+       stdin/stdout with pipes we own, silently breaking the "type further
+       gnuplot commands into the popped-out console" feature the manual
+       documents (a plain `set term unknown` run needs no console at all, so
+       redirecting *this* one is harmless). See OnGnuplotPopoutCheckClose(). */
+    wxString gnuplot_popout_checkfilename =
+      wxFileName::CreateTempFileName("wxmaxima_gnuplot_popoutcheck_");
+    {
+      wxFileOutputStream checkOutput(gnuplot_popout_checkfilename);
+      if (checkOutput.IsOk()) {
+        wxTextOutputStream checkTextOut(checkOutput);
+        checkTextOut << "set term unknown\n";
+        checkTextOut << body;
+        checkTextOut.Flush();
+      }
+    }
+    if (wxFileExists(gnuplot_popout_checkfilename)) {
+      // A previous check that is somehow still running (rapid repeated
+      // clicks) is detached rather than overwritten: its termination event
+      // must not be read against a newer process's streams, and Detach()
+      // makes it delete itself once its own child exits - the same pattern
+      // MaximaResponseReader::VariableActionGnuplotCommand uses for
+      // m_gnuplotTerminalQueryProcess.
+      if (m_wxMaxima.m_gnuplotPopoutCheckProcess)
+        m_wxMaxima.m_gnuplotPopoutCheckProcess->Detach();
+      m_wxMaxima.m_gnuplotPopoutCheckFile = gnuplot_popout_checkfilename;
+      m_wxMaxima.m_gnuplotPopoutCheckProcess =
+        new wxProcess(&m_wxMaxima, EventIDs::gnuplot_popout_check_id);
+      m_wxMaxima.m_gnuplotPopoutCheckProcess->Redirect();
+      std::vector<char *> checkArgv;
+      wxCharBuffer checkCommandnamebuffer = m_wxMaxima.m_gnuplotcommand.mb_str();
+      checkArgv.push_back(checkCommandnamebuffer.data());
+      wxCharBuffer checkUrlbuffer = wxString(gnuplot_popout_checkfilename).mb_str();
+      checkArgv.push_back(checkUrlbuffer.data());
+      checkArgv.push_back(NULL);
+      if (wxExecute(checkArgv.data(),
+                    wxEXEC_ASYNC | wxEXEC_HIDE_CONSOLE | wxEXEC_MAKE_GROUP_LEADER,
+                    m_wxMaxima.m_gnuplotPopoutCheckProcess) < 0)
+        wxLogMessage(_("Cannot start the headless gnuplot warnings check"));
+    }
   }
   else if(event.GetId() == wxID_PREFERENCES) {
     // wxGTK uses wxFileConf. ...and wxFileConf loads the config file only once

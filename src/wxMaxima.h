@@ -292,6 +292,21 @@ protected:
   wxProcess *m_gnuplotProcess = NULL;
   //! Info about the gnuplot process we start for querying the terminals it supports
   wxProcess *m_gnuplotTerminalQueryProcess = NULL;
+  /*! A second, hidden, headless gnuplot invocation of the same "Pop out
+    interactively" script, started alongside m_gnuplotProcess purely to
+    capture warnings/errors gnuplot prints while preparing the plot.
+
+    m_gnuplotProcess itself is never redirected: doing so would replace its
+    console's real stdin/stdout with pipes we own, silently breaking the
+    "type further gnuplot commands into the popped-out console" feature the
+    manual documents. This second process runs with `set term unknown` (no
+    display needed) and Redirect()ed streams instead, so it never shows a
+    window of its own - see OnGnuplotPopoutCheckClose().
+  */
+  wxProcess *m_gnuplotPopoutCheckProcess = NULL;
+  //! The temp file m_gnuplotPopoutCheckProcess reads its script from; removed
+  //! once OnGnuplotPopoutCheckClose() has read back its output.
+  wxString m_gnuplotPopoutCheckFile;
   /*! The gnuplot command whose terminal support we already probed.
 
     Set when a terminal query completes. A Maxima restart re-sends

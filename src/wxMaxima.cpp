@@ -896,6 +896,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_END_PROCESS, &MaximaProcessManager::OnMaximaClose, &m_processManager, m_maxima_process_id);
   Bind(wxEVT_END_PROCESS, &MaximaProcessManager::OnGnuplotQueryTerminals, &m_processManager, EventIDs::gnuplot_query_terminals_id);
   Bind(wxEVT_END_PROCESS, &MaximaProcessManager::OnGnuplotClose, &m_processManager, m_gnuplot_process_id);
+  Bind(wxEVT_END_PROCESS, &MaximaProcessManager::OnGnuplotPopoutCheckClose, &m_processManager, EventIDs::gnuplot_popout_check_id);
   Bind(wxEVT_MENU, &MaximaCommandMenus::EditInputMenu, &m_menuCommands, EventIDs::popid_edit);
   Bind(wxEVT_MENU, &MaximaEvaluator::EvaluateEvent, &m_evaluator, EventIDs::menu_evaluate);
   Bind(wxEVT_MENU, &wxMaxima::VarReadEvent, this, EventIDs::popid_var_newVar);
@@ -1231,6 +1232,7 @@ wxMaxima::~wxMaxima() {
   // are still running (and sever the bond so a late event is not delivered to
   // the destroyed wxMaxima). See KillAndDetachProcess above.
   KillAndDetachProcess(m_gnuplotTerminalQueryProcess);
+  KillAndDetachProcess(m_gnuplotPopoutCheckProcess);
   KillAndDetachProcess(m_gnuplotProcess);
 
   // Kill maxima

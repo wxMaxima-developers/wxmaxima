@@ -652,6 +652,7 @@ public:
   static const wxWindowIDRef socket_client_id;
   static const wxWindowIDRef socket_server_id;
   static const wxWindowIDRef gnuplot_query_terminals_id;
+  static const wxWindowIDRef gnuplot_popout_check_id;
   static const wxWindowIDRef menu_additionalSymbols;
   static const wxWindowIDRef enable_unicodePane;
   static const wxWindowIDRef menu_showLatinGreekLookalikes;
