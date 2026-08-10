@@ -30,6 +30,7 @@
 #include <wx/string.h>
 #include <wx/arrstr.h>
 #include "precomp.h"
+#include "Compat.h"   // wxWARN_UNUSED
 #include "cells/TextStyle.h"
 #include "Configuration.h"
 #include <unordered_map>
@@ -58,7 +59,10 @@ public:
   MaximaTokenizer(const wxString &commands, const Configuration * const configuration);
 
   //! A maxima code snippet from this tokenizer
-  class Token
+  // A token is a value: it holds the text and its style and does nothing
+  // else, so an unused one is dead code. The wxString member makes it
+  // non-trivial, so only this attribute can catch that.
+  class wxWARN_UNUSED Token
   {
   public:
     Token() = default;
