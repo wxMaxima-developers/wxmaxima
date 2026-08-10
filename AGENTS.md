@@ -924,6 +924,69 @@ tried without rebuilding.
   it), which needs a product decision, not a bug fix, and is left for a
   follow-up.
 
+- **RTF/OMML export (GH #1456, GH #1457) -- previously had zero test
+  coverage; `test/unit_tests/test_RTFExport.cpp` is the first.** RTF export
+  has two independent code paths that both matter: `TextCell::ToRTF()`
+  (plain RTF text, one `\cf<N>{...}` run per cell) and `Cell::ToOMML()` +
+  `Cell::OMML2RTF()` (an embedded Word/LibreOffice math field, used whenever
+  `Cell::ListToRTF()` hits a cell whose `ToRTF()` is empty but whose
+  `ToOMML()` isn't -- see `Cell::ListToRTF()`'s two-branch loop). Getting
+  either path's cell-specific override wrong is invisible to every other
+  export format's tests, since TeX/XML/MathML export don't share this code.
+  - **`TextCell::ToRTF()` didn't check `IsHidden()`/`GetHidableMultSign()`/
+    `HidemultiplicationSign()` at all (GH #1456)**, unlike `ToTeX()` and
+    `ToXML()`, which both already do. Confirmed via a standalone harness
+    (parse the real `<h>*</h>` XML `wxxmlnumformat` in `wxMathML.lisp` emits
+    for scientific notation, e.g. "2*10^7" for `2e7`, through `MathParser`,
+    then call `ListToRTF()` directly) that with `HidemultiplicationSign()`
+    on vs. off the RTF output was byte-for-byte *identical* -- the literal
+    `*` always appeared. Fixed by mirroring `ToTeX()`'s exact logic: when
+    hidden, a lone `*`/`·` becomes a plain space (never removed
+    outright) so cells on either side don't run together, while any other
+    kind of `IsHidden()` cell (e.g. an invisible parenthesis) still clears
+    to empty. The "run together" failure mode is real, not theoretical: the
+    two content types don't mix in `Cell::ListToRTF()`'s output -- plain
+    text and an OMML math field are adjacent, unrelated RTF constructs, so
+    a `2` (plain text) immediately followed by a hidden-then-vanished `*`
+    and then a `10^7` (OMML field, since `ExptCell` only implements
+    `ToOMML()`, not `ToRTF()`) would have rendered as the unreadable "210^7"
+    with no separator between the plain-text run and the math field.
+  - **`MatrCell::ToOMML()` emitted `<m:grow>\"1\"</m:grow>` -- a *child
+    element* whose text content is the two literal characters `"1"`,
+    complete with quote marks -- instead of the `m:grow="1"` *attribute*
+    form `ParenCell`/`ListCell`/`IntervalCell::ToOMML()` all already use
+    correctly (GH #1457).** `Cell::OMML2RTF()` is a generic, mechanical
+    XML-to-RTF-control-word transliterator: an attribute `m:grow="1"` and a
+    same-named child element `<m:grow>1</m:grow>` both produce the
+    identical, well-formed RTF math control word `{\mgrow 1}` -- but the
+    quoted-text-content form MatrCell used produced `{\mgrow "1"}`, with
+    stray literal quote characters inside what must be a bare flag.
+    Confirmed live that this is what a real RTF-math consumer (Word,
+    LibreOffice) needs by comparing against the three sibling cells' already
+    -working attribute-based form, not by guessing at the OOXML schema.
+    Fixed by switching `MatrCell::ToOMML()` to the same attribute form,
+    which also makes all four delimiter-emitting cell types consistent.
+    Word/LibreOffice silently ignoring the malformed flag and falling back
+    to a small, fixed-size (non-growing) bracket regardless of the matrix's
+    actual height is exactly the "big parenthesis...displayed as small
+    parenthesis" the issue reported.
+  - **`AbsCell::ToOMML()` was missing `m:grow="1"` entirely** (not a filed
+    issue, found by auditing every `ToOMML()` for the same bug class while
+    fixing #1457) -- `abs()` of a fraction or matrix would have rendered
+    its `|  |` bars at a fixed, non-growing size in RTF/Word export, unlike
+    every other bracket-drawing cell in this codebase. Fixed the same way.
+  - **Verification methodology**, since none of this was previously
+    testable at all: a standalone harness (same pattern as
+    `test_IntegralToTeX.cpp` -- real `MathParser`, hand-written XML matching
+    exactly what `wxMathML.lisp` emits, no live Maxima needed) was used to
+    reproduce both bugs live *before* writing the fix, then promoted into
+    `test/unit_tests/test_RTFExport.cpp` as a permanent regression test
+    once the fix was confirmed. Confirmed the new test actually catches the
+    regression (not just passing vacuously) by reverting the three
+    `ToOMML()`/`ToRTF()` fixes via `git stash` and re-running it: all three
+    `SCENARIO`s failed with the exact old symptoms, then passed again once
+    the fixes were restored.
+
 ## Layout & Compatibility
 
 - **Mathematical Cell Padding:** Use `MC_TEXT_PADDING` (in `Configuration.h`) for text-based cells. **Exception:** `DigitCell` does not include padding to ensure visual consistency in broken-up numbers.

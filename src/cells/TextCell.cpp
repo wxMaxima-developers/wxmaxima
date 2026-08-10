@@ -1213,6 +1213,19 @@ wxString TextCell::ToRTF() const {
   if (m_displayedText == wxEmptyString)
     return (wxS(" "));
 
+  // IsHidden() is set for parenthesis that don't need to be shown; mirrors
+  // the same check ToTeX() already does. Without it RTF export always showed
+  // a multiplication sign the user had configured to be hidden on screen,
+  // and -- worse -- a hidden sign between two numbers left no separator at
+  // all, turning e.g. the scientific-notation "2*10^7" into "210^7" (GH #1456).
+  if (IsHidden() ||
+      ((m_configuration->HidemultiplicationSign()) && GetHidableMultSign())) {
+    if ((text == wxS("*")) || (text == wxS("\u00b7")))
+      text = wxS(" ");
+    else
+      text.Clear();
+  }
+
   text.Replace(wxS("-->"), wxS("\u2192"));
   // Needed for the output of let(a/b,a+1);
   text.Replace(wxS(" --> "), wxS("\u2192"));

@@ -1,5 +1,19 @@
 # Current development version
 
+- Fixed two bugs in RTF/Word export (previously untested code, now with
+  regression coverage):
+  - A hidden multiplication sign (e.g. the implicit "*" in scientific
+    notation like "2*10^7") always showed up in RTF/copy-as-RTF output
+    regardless of the "Hide multiplication sign" setting, and would have
+    left no separator behind at all had it ever been suppressed -- turning
+    "2*10^7" into the unreadable "210^7" (GH #1456).
+  - A matrix's brackets rendered at a small, fixed size in Word/LibreOffice
+    instead of growing to match the matrix's height, because the OMML
+    "grow" flag was emitted with literal stray quote characters in its
+    value instead of the well-formed attribute every other bracket-drawing
+    cell (parentheses, lists, intervals) already used correctly -- fixed
+    the same way for `abs()`'s bars, which were missing the "grow" flag
+    entirely (GH #1457).
 - Fixed a scaled image losing its transparency and showing a solid
   (typically black) background instead (GH #2227). Rescaling an image to
   fit its on-screen size forced the resulting bitmap to a plain 24-bit
