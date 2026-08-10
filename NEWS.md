@@ -1,5 +1,14 @@
 # Current development version
 
+- wxMaxima now warns if Maxima's process has started but hasn't connected
+  back within 5 seconds, instead of leaving the worksheet stuck at "Maxima
+  started. Waiting for connection..." forever with no explanation (GH
+  #1182). On macOS this reproducibly happens when Gatekeeper has
+  quarantined the Maxima binary -- common for a Maxima installed via
+  Homebrew rather than a signed installer -- since a background process
+  wxMaxima spawns can never answer the security prompt macOS would
+  otherwise show; the warning explains this and suggests a fix. wxMaxima
+  keeps waiting and retrying in the background regardless.
 - Fixed two bugs in RTF/Word export (previously untested code, now with
   regression coverage):
   - A hidden multiplication sign (e.g. the implicit "*" in scientific
