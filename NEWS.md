@@ -1,5 +1,17 @@
 # Current development version
 
+- About 7000 translations that had quietly disappeared from 21 languages are
+  back. The list of files the translation system reads was written in a way
+  that only found sources sitting directly in `src/`, so everything in a
+  subdirectory below it became invisible: menus, dialogs and above all the
+  wizards had been silently reverting to English since 2020, and the
+  sidebars and dialogs since 2024, without anything ever reporting a
+  problem. German, Russian, Ukrainian, Hungarian, Italian, Spanish and
+  Turkish each regain 500-660 strings; Catalan, Galician and Polish get
+  their first translated dialogs back at all. Every restored string is
+  exactly what a translator had written before it was lost. A new test now
+  fails the build if a source file can ever become invisible to the
+  translation system again.
 - wxMaxima now warns if Maxima's process has started but hasn't connected
   back within 5 seconds, instead of leaving the worksheet stuck at "Maxima
   started. Waiting for connection..." forever with no explanation (GH

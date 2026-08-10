@@ -265,6 +265,22 @@ add_test(
     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-translations.sh"
 )
 
+# Check that no translatable string can go missing the way ~7000 of them once
+# did: the xgettext glob in locales/wxMaxima/CMakeLists.txt was flat src/*, so
+# everything under src/cells, src/wizards, src/dialogs and src/sidebars was
+# absent from wxMaxima.pot for years without a single warning anywhere.
+# The POT drift check in CI cannot see this -- it regenerates the POT and diffs
+# it, and a broken glob truncates both sides identically. A CMake script rather
+# than a shell helper so it runs on Windows CI too, and it needs neither a build
+# nor gettext.
+add_test(
+    NAME check-pot-coverage
+    COMMAND "${CMAKE_COMMAND}"
+            "-DSOURCE_DIR=${CMAKE_SOURCE_DIR}"
+            -P "${CMAKE_CURRENT_SOURCE_DIR}/check-pot-coverage.cmake"
+)
+set_property(TEST check-pot-coverage APPEND PROPERTY LABELS unittest)
+
 add_test(
     NAME multiple_batch_files
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
