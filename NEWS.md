@@ -1,5 +1,11 @@
 # Current development version
 
+- Equations exported as SVG now carry their text form, so a screen reader can
+  read them out instead of announcing an anonymous picture (GH #2230). Both
+  the HTML export's equation images and the SVG that "Copy as SVG" puts on the
+  clipboard are affected: the file is given a title, and the drawing is marked
+  up as mathematics with the equation's text as its label. Needs wxWidgets
+  3.3.3 or newer; with an older wxWidgets the exported SVG is unchanged.
 - Evaluating a folded section no longer unfolds it just because an error
   happened somewhere inside (GH #1952). Folding a time-consuming or
   no-longer-relevant calculation down to one line, so the worksheet stays
