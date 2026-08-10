@@ -545,6 +545,27 @@ tried without rebuilding.
   the union of a fresh source scan and `locales/manual/wxmaxima.md.pot`
   (`msgcat --use-first`, preferring `wxMaxima.pot`'s own header) by the
   `update-locale` CMake target.
+- **The xgettext source list is an explicit glob, not a recursive one, and a
+  file it misses loses its strings silently.** `POT_SOURCE_FILES`/
+  `POT_SOURCE_FILES_REL` in `locales/wxMaxima/CMakeLists.txt` list
+  `src/*.cpp;src/*.h;src/*/*.cpp;src/*/*.h` -- exactly two levels. It was
+  flat `src/*` until `03b16f2d8`, so every string under `src/cells`,
+  `src/wizards` and `src/graphical_io` was missing from the POT from
+  2020-08-05, and `src/sidebars`/`src/dialogs` from 2024-01. Cost: ~7000
+  translations across 21 languages, restored from git history only in
+  2026-08. **Nothing warns about this**: xgettext is happy with a short file
+  list, and the POT-drift check in CI regenerates the POT and diffs it, so a
+  broken glob truncates both sides identically and the check passes. Adding
+  a `src/<a>/<b>/` nesting level would break it again -- `check-pot-coverage`
+  (a `ctest`, needs neither a build nor gettext) now fails the build if any
+  source file sits deeper than the glob reaches, or if a file containing a
+  `_("...")` marker is unreferenced by the committed POT.
+- **Don't drop `--previous` from `msgmerge`.** It is what keeps the
+  `#| msgid` comment recording what a fuzzy entry used to say, which is how a
+  translator works out *why* something went fuzzy (`00ba34121`). A plain
+  `msgmerge` discards those comments wholesale and gives no hint it did --
+  212 entries' worth in `zh_CN.po` alone, found only by counting them before
+  and after.
 - **`po4a` must never be pointed at `locales/wxMaxima/<lang>.po` directly.**
   It looks like the obvious way to keep the manual's translations inside the
   combined file (`po4a.cfg`'s `$lang:` path *was* set to
