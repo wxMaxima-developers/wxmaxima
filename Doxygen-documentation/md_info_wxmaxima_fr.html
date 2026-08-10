@@ -941,18 +941,18 @@ Especially when testing new locale settings, a message box "locale ’xx_YY’ c
 <p><img src="./locale-warning.png" alt="Avertissement sur la langue locale" class="inline"/></p>
 <p>(The same problem can occur with other applications too). The translations seem okay after you click on ’OK’. WxMaxima does not only use its own translations but the translations of the wxWidgets framework too.</p>
 <p>Ces langues locales peuvent ne pas être présentes dans le système. Sur les systèmes Ubuntu/Debian, elles peuvent être générées avec : <code>dpkg-reconfigure locales</code></p>
-<h2><a class="anchor" id="autotoc_md456"></a>
+<h2><a class="anchor" id="autotoc_md360"></a>
 How can I use symbols for real numbers, natural numbers (ℝ, ℕ), etc.?</h2>
 <p>You can find these symbols in the Unicode sidebar (search for ’double-struck capital’). But the selected font must also support these symbols. If they do not display properly, select another font.</p>
-<h2><a class="anchor" id="autotoc_md457"></a>
+<h2><a class="anchor" id="autotoc_md361"></a>
 How can a Maxima script determine, if it is running under wxMaxima or command line Maxima?</h2>
 <p>Si <a class="el" href="classwxMaxima.html">wxMaxima</a> est utilisé, la variable <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> <code>maxima_frontend</code> est définie sur <code>wxmaxima</code>. Dans ce cas, la variable <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> <code>maxima_frontend_version</code> contient la version de <a class="el" href="classwxMaxima.html">wxMaxima</a>.</p>
 <p>Si aucun programme pour le frontend n'est utilisé (si vous utilisez <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> en ligne de commande), ces variables valent <code>false</code>.</p>
-<h2><a class="anchor" id="autotoc_md458"></a>
+<h2><a class="anchor" id="autotoc_md362"></a>
 Help! I can not save my document!</h2>
 <p>If saving as wxmx file does not work, try saving the document as wxm file (and vice versa). And you can also try to remove all output (Menu Cell-&gt;Remove all output) and save that file, maybe some unexpected output causes issues during the save process.</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md459"></a>
+<h1><a class="anchor" id="autotoc_md363"></a>
 Command-line arguments</h1>
 <p>Généralement, les programmes dotés d'une interface graphique se lancent simplement en cliquant sur une icône ou une entrée de menu. WxMaxima, lorsqu'il est démarré depuis la ligne de commande, accepte néanmoins certains arguments.</p>
 <ul>
@@ -974,7 +974,7 @@ Command-line arguments</h1>
 </ul>
 <p>Certains systèmes d'exploitation peuvent utiliser un tiret long (—) au lieu d'un tiret court (-) devant les options en ligne de commande.</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md460"></a>
+<h1><a class="anchor" id="autotoc_md364"></a>
 About the program, contributing to wxMaxima</h1>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> est principalement développé en C++ avec le framework <a href="https://www.wxwidgets.org">wxWidgets</a>, et utilise <a href="https://www.cmake.org">CMake</a> comme système de build. Une petite partie est écrite en Lisp. Si vous maîtrisez ces langages et souhaitez contribuer à ce projet open source, vous pouvez rejoindre l’équipe sur <a href="https://github.com/wxMaxima-developers/wxmaxima">GitHub</a>.</p>
 <p>Mais les programmeurs ne sont pas les seul·es à pouvoir contribuer ! Vous pouvez aussi aider à améliorer <a class="el" href="classwxMaxima.html">wxMaxima</a> en améliorant la documentation, en signalant (ou corrigeant) des bugs, en proposant de nouvelles fonctionnalités, en traduisant l’interface ou le manuel dans votre langue (consultez le fichier README.md dans le <a href="https://github.com/wxMaxima-developers/wxmaxima/tree/main/locales">dossier locales</a> pour savoir comment procéder).</p>

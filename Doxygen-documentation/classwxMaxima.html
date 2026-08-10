@@ -110,6 +110,7 @@ Public Types</h2></td></tr>
 <tr class="memitem:ab6afd24efcd1d85c6aac02040adf0a68"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#ab6afd24efcd1d85c6aac02040adf0a68">TimerIDs</a> { <a class="el" href="classwxMaxima.html#ab6afd24efcd1d85c6aac02040adf0a68a479837052cb219e9f46244eb65a298b2">KEYBOARD_INACTIVITY_TIMER_ID</a>
 , <a class="el" href="classwxMaxima.html#ab6afd24efcd1d85c6aac02040adf0a68a747aeb5e353da593544ddd8c328a7f06">AUTO_SAVE_TIMER_ID</a>
 , <a class="el" href="classwxMaxima.html#ab6afd24efcd1d85c6aac02040adf0a68af81ee51de171b5f5c7da391081b0c678">MAXIMA_STDOUT_POLL_ID</a>
+, <a class="el" href="classwxMaxima.html#ab6afd24efcd1d85c6aac02040adf0a68a7f7a482fe180458dd5f52ad010704312">MAXIMA_CONNECT_WATCHDOG_ID</a>
  }</td></tr>
 <tr class="memdesc:ab6afd24efcd1d85c6aac02040adf0a68"><td class="mdescLeft">&#160;</td><td class="mdescRight">An enum of individual IDs for all timers this class handles.  <a href="classwxMaxima.html#ab6afd24efcd1d85c6aac02040adf0a68">More...</a><br /></td></tr>
 <tr class="separator:ab6afd24efcd1d85c6aac02040adf0a68"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -319,6 +320,13 @@ Data Fields</h2></td></tr>
 wxTimer&#160;</td><td class="memItemRight" valign="bottom"><b>m_maximaStdoutPollTimer</b></td></tr>
 <tr class="memdesc:a53cec59ccdca65b3f4e629df76db0e01"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classA.html">A</a> timer that polls for output from the maxima process. <br /></td></tr>
 <tr class="separator:a53cec59ccdca65b3f4e629df76db0e01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2f87fb130139f85dc4fef01f7d9707c"><td class="memItemLeft" align="right" valign="top">wxTimer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#af2f87fb130139f85dc4fef01f7d9707c">m_maximaConnectWatchdogTimer</a></td></tr>
+<tr class="memdesc:af2f87fb130139f85dc4fef01f7d9707c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fires once, a few seconds after <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s process is started.  <br /></td></tr>
+<tr class="separator:af2f87fb130139f85dc4fef01f7d9707c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e8561ea3f33398fdb471f159e96252a"><td class="memItemLeft" align="right" valign="top"><a id="a8e8561ea3f33398fdb471f159e96252a" name="a8e8561ea3f33398fdb471f159e96252a"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_maximaConnectWatchdogWarningShown</b> = false</td></tr>
+<tr class="memdesc:a8e8561ea3f33398fdb471f159e96252a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Have we already shown the "Maxima hasn't connected" warning this run? <br /></td></tr>
+<tr class="separator:a8e8561ea3f33398fdb471f159e96252a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -1039,6 +1047,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 </td></tr>
 <tr><td class="fieldname"><a id="ab6afd24efcd1d85c6aac02040adf0a68af81ee51de171b5f5c7da391081b0c678" name="ab6afd24efcd1d85c6aac02040adf0a68af81ee51de171b5f5c7da391081b0c678"></a>MAXIMA_STDOUT_POLL_ID&#160;</td><td class="fielddoc"><p>We look if we got new data from maxima's stdout. </p>
 </td></tr>
+<tr><td class="fieldname"><a id="ab6afd24efcd1d85c6aac02040adf0a68a7f7a482fe180458dd5f52ad010704312" name="ab6afd24efcd1d85c6aac02040adf0a68a7f7a482fe180458dd5f52ad010704312"></a>MAXIMA_CONNECT_WATCHDOG_ID&#160;</td><td class="fielddoc"><p><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s process was started; has it connected back to us by now? </p>
+</td></tr>
 </table>
 
 </div>
@@ -1310,7 +1320,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 
 <p>returns the command to start maxima </p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md1021"></a>
+ <h2><a class="anchor" id="autotoc_md1028"></a>
 Getting configuration</h2>
 
 </div>
@@ -1487,7 +1497,7 @@ Getting configuration</h2>
 
 <p>Inserts command cmd into the worksheet. </p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md1024"></a>
+ <h2><a class="anchor" id="autotoc_md1031"></a>
 Menu and button events</h2>
 
 </div>
@@ -1523,7 +1533,7 @@ Menu and button events</h2>
 <p>Moving the screen update to this function, as well, makes sure that if we get events faster than we can update the screen that doesn't cause lag, but causes screen updates for old events to be dropped if we already have new ones. This normally makes programs feel way more responsive.</p>
 <p>The worksheet is additionally refreshed by a timer task in case that th computer is too busy to ever reach the idle task at all.</p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md1023"></a>
+ <h2><a class="anchor" id="autotoc_md1030"></a>
 Idle event</h2>
 
 </div>
@@ -1658,13 +1668,13 @@ Idle event</h2>
 <p>Set the current working directory file I/O from maxima is relative to. </p>
 <p>ServerEvent is triggered when maxima connects to the socket server.</p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md1018"></a>
+ <h2><a class="anchor" id="autotoc_md1025"></a>
 Socket stuff</h2>
 <hr  />
- <h2><a class="anchor" id="autotoc_md1019"></a>
+ <h2><a class="anchor" id="autotoc_md1026"></a>
 Maxima process stuff</h2>
 <hr  />
- <h2><a class="anchor" id="autotoc_md1020"></a>
+ <h2><a class="anchor" id="autotoc_md1027"></a>
 Dealing with stuff read from the socket</h2>
 
 </div>
@@ -1768,7 +1778,7 @@ Dealing with stuff read from the socket</h2>
       </table>
 </div><div class="memdoc">
 <hr  />
- <h2><a class="anchor" id="autotoc_md1022"></a>
+ <h2><a class="anchor" id="autotoc_md1029"></a>
 Tips and help</h2>
 
 </div>
@@ -1903,7 +1913,7 @@ Tips and help</h2>
 
 <p>Enables and disables the Right menu buttons. </p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md1025"></a>
+ <h2><a class="anchor" id="autotoc_md1032"></a>
 Menu and button events</h2>
 
 </div>
@@ -1961,7 +1971,7 @@ Menu and button events</h2>
 
 <p>Updates the slider to show the right frame. </p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md1026"></a>
+ <h2><a class="anchor" id="autotoc_md1033"></a>
 Plot Slider</h2>
 
 </div>
@@ -2070,6 +2080,24 @@ interactively" script, started alongside m_gnuplotProcess purely to capture warn
 
 <p>The gnuplot command whose terminal support we already probed. </p>
 <p>Set when a terminal query completes. <a class="el" href="classA.html">A</a> <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> restart re-sends gnuplot_command; if it resolves to the same gnuplot as before, its capabilities haven't changed and no new probe process is spawned - the cached UsePngCairo() answer is pushed to the new <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> by <a class="el" href="classwxMaxima.html#af2f5e80d2d27151a20ffc5efd641bc4e" title="Is called on start and whenever the configuration changes.">ConfigChanged()</a> anyway. </p>
+
+</div>
+</div>
+<a id="af2f87fb130139f85dc4fef01f7d9707c" name="af2f87fb130139f85dc4fef01f7d9707c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af2f87fb130139f85dc4fef01f7d9707c">&#9670;&#160;</a></span>m_maximaConnectWatchdogTimer</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxTimer wxMaxima::m_maximaConnectWatchdogTimer</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Fires once, a few seconds after <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s process is started. </p>
+<p>If by then the process is still running but has never connected back to us (GH #1182 &ndash; reproducibly hangs at "Maxima started. Waiting for
+connection..." forever on macOS when the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> binary is quarantined by Gatekeeper, since a spawned, non-interactive child process can never answer a security prompt macOS may be silently blocking it on) this warns the user instead of leaving them looking at an unexplained, permanently stuck status message. </p>
 
 </div>
 </div>

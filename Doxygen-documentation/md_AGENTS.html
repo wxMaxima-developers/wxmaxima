@@ -73,7 +73,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p>This file contains architectural insights, conventions, and operational knowledge to assist AI agents working on the <a class="el" href="classwxMaxima.html">wxMaxima</a> codebase. <b>Agents are explicitly permitted and encouraged to update this file with new findings that improve context and safety.</b></p>
-<h1><a class="anchor" id="autotoc_md27"></a>
+<h1><a class="anchor" id="autotoc_md43"></a>
 Build System</h1>
 <p>Configure once (a Debug build is the default), then build and run without installing:</p>
 <div class="fragment"><div class="line">cmake -S . -B build -G Ninja</div>
@@ -115,7 +115,7 @@ Build System</h1>
 </ol>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md41"></a>
+<h1><a class="anchor" id="autotoc_md44"></a>
 Architecture &amp; GUI</h1>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> is a GUI front-end to the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> CAS; it talks to a <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> process over a local TCP socket.</p>
 <ul>
@@ -255,7 +255,7 @@ Architecture &amp; GUI</h1>
   code, selected the group cell via hCaret + Shift+Up, confirmed the
   rendered text changed consistently and a single Ctrl+Z restored it).
 
-@subsection autotoc_md42 Communication with Maxima
+@subsection autotoc_md45 Communication with Maxima
 
 wxMaxima sends Lisp and Maxima commands over the socket; Maxima answers with XML
 wrapped in known tags. &lt;tt&gt;Maxima&lt;/tt&gt; reads that data on a worker thread and posts
@@ -391,6 +391,49 @@ Conventions &amp; Standards</h1>
     &lt;tt&gt;ToOMML()&lt;/tt&gt;/&lt;tt&gt;ToRTF()&lt;/tt&gt; fixes via &lt;tt&gt;git stash&lt;/tt&gt; and re-running it: all three
     &lt;tt&gt;SCENARIO&lt;/tt&gt;s failed with the exact old symptoms, then passed again once
     the fixes were restored.
+
+- **"<a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> started but never connects" watchdog (GH #1182, open since
+  2019).** Before this, if the Maxima process launched successfully but
+  its socket connection back to wxMaxima's &lt;tt&gt;wxSocketServer&lt;/tt&gt; never arrived
+  &amp;ndash; wxMaxima is the TCP &lt;em&gt;server&lt;/em&gt; here; the spawned &lt;tt&gt;maxima&lt;/tt&gt; binary is the
+  &lt;em&gt;client&lt;/em&gt; that has to connect back, see &lt;tt&gt;MaximaProcessManager::
+  StartServer()&lt;/tt&gt;/&lt;tt&gt;OnMaximaConnect()&lt;/tt&gt; &amp;ndash; nothing timed this out or told the
+  user: the worksheet just sat at "<a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> started. Waiting for connection..." forever, with no error, no retry, no explanation. This is
+  distinct from the &lt;em&gt;other&lt;/em&gt; code path that already existed
+  (&lt;tt&gt;OnMaximaConnect()&lt;/tt&gt;'s &lt;tt&gt;m_unsuccessfulConnectionAttempts \&lt; 12&lt;/tt&gt; retry
+  loop): that one only fires once a connection attempt reaches wxMaxima and
+  then fails &amp;ndash; it does nothing if no attempt ever arrives at all, which is
+  exactly what happens when the child process never gets far enough to open
+  the socket. Confirmed live in this sandbox (Linux, can't reproduce the
+  actual macOS Gatekeeper trigger, but the missing-timeout mechanism itself
+  is platform-independent): pointed wxMaxima's &lt;tt&gt;-m&lt;/tt&gt; flag at a throwaway
+  shell script that just &lt;tt&gt;sleep&lt;/tt&gt;s forever instead of a real &lt;tt&gt;maxima&lt;/tt&gt;
+  binary &amp;ndash; unmodified &lt;tt&gt;main&lt;/tt&gt; sits at "Waiting for connection..." with zero
+  further log output, indefinitely.
+  Fixed with a new one-shot &lt;tt&gt;wxTimer&lt;/tt&gt; (&lt;tt&gt;MAXIMA_CONNECT_WATCHDOG_ID&lt;/tt&gt;,
+  &lt;tt&gt;wxMaxima::m_maximaConnectWatchdogTimer&lt;/tt&gt;) armed for 5 seconds (matching
+  the issue title's own number) every time &lt;tt&gt;StartMaxima()&lt;/tt&gt; successfully
+  spawns a process, and stopped both on a real successful connection
+  (&lt;tt&gt;OnMaximaConnect()&lt;/tt&gt;) and on &lt;tt&gt;KillMaxima()&lt;/tt&gt; (covers deliberate shutdown
+  and the top of every restart, since &lt;tt&gt;StartMaxima(force=true)&lt;/tt&gt; always
+  calls &lt;tt&gt;KillMaxima()&lt;/tt&gt; before re-arming). If it fires while the process is
+  still alive (&lt;tt&gt;wxProcess::Exists()&lt;/tt&gt;) and still not connected, it shows a
+  &lt;tt&gt;LoggingMessageBox&lt;/tt&gt; once per run (&lt;tt&gt;m_maximaConnectWatchdogWarningShown&lt;/tt&gt;
+  latches so the automatic restart loop &amp;ndash; which re-arms this same timer on
+  every retry &amp;ndash; doesn't reshow the dialog up to 12 times in a row). The
+  message branches on &lt;tt&gt;__WXOSX__&lt;/tt&gt;: on macOS it names the quarantine
+  possibility specifically (a background process wxMaxima spawns can never
+  answer the interactive security prompt Gatekeeper would otherwise show,
+  so it just silently never finishes starting) and suggests both re-running
+  the shown command from a Terminal once and &lt;tt&gt;xattr -d
+  com.apple.quarantine&lt;/tt&gt;; elsewhere it's a generic "still waiting, check the debug sidebar or your firewall" message, since quarantine isn't the
+  relevant cause there. Verified end-to-end in a live Xvfb session with the
+  same fake-hung-process technique: the log line appears at exactly +5s and
+  only once, and a screenshot confirms the dialog renders correctly with
+  the non-macOS wording (the &lt;tt&gt;__WXOSX__&lt;/tt&gt; branch itself is untestable here
+  for the same reason #2229-#2232 were &amp;ndash; no macOS hardware in this
+  sandbox &amp;ndash; but it's the same string-formatting/branching mechanism,
+  already exercised by the generic path).
 
 @section autotoc_md49 Layout &amp; Compatibility
 
