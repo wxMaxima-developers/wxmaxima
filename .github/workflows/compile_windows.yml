@@ -1,10 +1,23 @@
 name: compile_windows
 
-on: [push]
+# workflow_dispatch lets us exercise the SignPath code-signing path (see the
+# "Sign the installer" steps below) on demand, without having to tag a release.
+on: [push, workflow_dispatch]
 
 env:
   BUILD_TYPE: Release
   WXVERSION: 3.3.2
+  # SignPath.io code signing. The organization id and the slugs are not secrets
+  # (only the API token is); SignPath's own examples put them in the workflow.
+  # SIGNPATH_SIGNING_POLICY is "test-signing" while we bring the pipeline up:
+  # that policy signs with a deliberately untrusted test certificate, so its
+  # output must NOT be published to users. Once SignPath Foundation has approved
+  # the project, switch it to "release-signing" and make the "Publish release"
+  # step ship wxMaxima/build/signed/*.exe instead of wxMaxima/build/*.exe.
+  SIGNPATH_ORGANIZATION_ID: 4eaae15d-2d3a-4c8d-acf3-6e71e5837a5d
+  SIGNPATH_PROJECT_SLUG: wxmaxima
+  SIGNPATH_SIGNING_POLICY: test-signing
+  SIGNPATH_ARTIFACT_CONFIGURATION: installer
 
 permissions:
   contents: read
@@ -14,7 +27,12 @@ jobs:
     name: Compile using minGW
     permissions:
       contents: write  # for actions/create-release to create a release
+      actions: read    # SignPath's connector reads the job details + artifact
     runs-on: windows-latest
+    outputs:
+      # Consumed by the sign_windows job below: SignPath does not receive the
+      # file from us, it fetches this very artifact from GitHub by id.
+      unsigned-artifact-id: ${{ steps.unsigned-installer.outputs.artifact-id }}
     steps:
       - name: Checkout wxMaxima
         uses: actions/checkout@v7
@@ -249,6 +267,24 @@ jobs:
             ctest -LE "unittest|needs_posix" -E "multithreadtest" --repeat after-timeout:2 -j 2 --output-on-failure
             cd ..
             cd ..
+      - name: Upload the unsigned installer for SignPath
+        # SignPath does NOT accept an uploaded file directly: its GitHub
+        # connector downloads the GitHub Actions artifact itself and checks the
+        # accompanying origin metadata (which repository, workflow, commit and
+        # runner produced it). That origin verification is what the SignPath
+        # Foundation release policy is built on, so the artifact detour is
+        # mandatory, not a convenience -- and it is why we use the official
+        # action rather than the Submit-SigningRequest PowerShell cmdlet.
+        #
+        # Signing runs only for tagged releases and manual runs: every push
+        # would otherwise burn signing quota. It is skipped entirely outside
+        # this repository (a fork has no SignPath project to submit to).
+        id: unsigned-installer
+        if: github.repository == 'wxMaxima-developers/wxmaxima' && (startsWith(github.ref, 'refs/tags/Version') || github.event_name == 'workflow_dispatch')
+        uses: actions/upload-artifact@v7
+        with:
+          name: wxmaxima-installer-unsigned
+          path: wxMaxima/build/*.exe
       - name: Extract release notes from NEWS.md
         # The release body is the "Current development version" section: from
         # the top of the file down to (not including) the next top-level "# "
@@ -281,6 +317,73 @@ jobs:
           files: wxMaxima/build/*.exe
           draft: false
           prerelease: false
+
+  sign_windows:
+    name: Sign the installer (SignPath)
+    needs: compile_windows
+    # Signing lives in its own job because SIGNPATH_API_TOKEN is an ENVIRONMENT
+    # secret whose environment requires a reviewer's approval. GitHub pauses a
+    # job that references such an environment *before its first step runs*, so
+    # keeping the signing steps inside compile_windows would have blocked the
+    # whole build and the test suite behind that approval click. This way the
+    # build and tests run unattended and only this short job waits.
+    #
+    # Two consequences of the environment secret worth remembering:
+    #   - secrets.SIGNPATH_API_TOKEN resolves to an empty string in any job that
+    #     does NOT declare the environment below, so signing steps cannot simply
+    #     be moved back into another job.
+    #   - the environment is currently *named* SIGNPATH_API_TOKEN (same as the
+    #     secret it holds). Renaming it to e.g. "release-signing" only requires
+    #     changing the single line below.
+    environment: SIGNPATH_API_TOKEN
+    permissions:
+      actions: read    # SignPath's connector reads the job details + artifact
+      contents: read
+    runs-on: windows-latest  # needed for Get-AuthenticodeSignature below
+    # Skipped unless compile_windows actually produced an artifact to sign.
+    if: needs.compile_windows.outputs.unsigned-artifact-id != ''
+    steps:
+      - name: Sign the installer with SignPath
+        id: signpath
+        uses: signpath/github-action-submit-signing-request@v2
+        with:
+          api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+          organization-id: ${{ env.SIGNPATH_ORGANIZATION_ID }}
+          project-slug: ${{ env.SIGNPATH_PROJECT_SLUG }}
+          signing-policy-slug: ${{ env.SIGNPATH_SIGNING_POLICY }}
+          artifact-configuration-slug: ${{ env.SIGNPATH_ARTIFACT_CONFIGURATION }}
+          github-artifact-id: ${{ needs.compile_windows.outputs.unsigned-artifact-id }}
+          wait-for-completion: true
+          output-artifact-directory: signed
+      - name: Verify the installer carries a signature
+        # Deliberately checks only that a signer certificate is embedded, not
+        # that the signature validates: under the test-signing policy the
+        # certificate chains to an untrusted test root, so Status is expected to
+        # be "UnknownError". Once release-signing is active, tighten this to
+        # require Status -eq "Valid".
+        run: |
+            $exe = Get-ChildItem -Path signed -Filter *.exe -Recurse | Select-Object -First 1
+            if (-not $exe) { echo "::error::SignPath returned no signed .exe"; exit 1 }
+            $sig = Get-AuthenticodeSignature $exe.FullName
+            echo "Signed file : $($exe.FullName)"
+            echo "Status      : $($sig.Status)"
+            echo "Signer      : $($sig.SignerCertificate.Subject)"
+            if (-not $sig.SignerCertificate) {
+              echo "::error::$($exe.Name) carries no Authenticode signature"
+              exit 1
+            }
+      - name: Upload the signed installer
+        # Kept as a workflow artifact on purpose: while SIGNPATH_SIGNING_POLICY
+        # is "test-signing" this binary must never reach users -- its
+        # certificate is invalid by design. It is here so the signature can be
+        # inspected after a manual run. Once release-signing is active, attach
+        # it to the GitHub release from here (and drop *.exe from the
+        # "Publish release" step in compile_windows, which still ships the
+        # unsigned installer).
+        uses: actions/upload-artifact@v7
+        with:
+          name: wxmaxima-installer-signed
+          path: signed/*.exe
 
   MSVC:
     permissions:
