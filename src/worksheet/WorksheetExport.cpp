@@ -696,25 +696,25 @@ void WriteTeXPreamble(wxTextOutputStream &output, Configuration *configuration) 
       "]{" + configuration->Documentclass() + "}\n\n";
   // cppcheck-suppress unknownMacro
   output << wxS("%% Created with wxMaxima " WXMAXIMA_VERSION "\n\n");
-  output << wxS("\\setlength{\\parskip}{\\medskipamount}\n");
-  output << wxS("\\setlength{\\parindent}{0pt}\n");
-  output << wxS("\\usepackage{iftex}\n");
-  output << wxS("\\ifPDFTeX\n");
-  output << wxS("  % PDFLaTeX or LaTeX \n");
-  output << wxS("  \\usepackage[utf8]{inputenc}\n");
-  output << wxS("  \\usepackage[T1]{fontenc}\n");
-  output << wxS("  \\DeclareUnicodeCharacter{00B5}{\\ensuremath{\\mu}}\n");
-  output << wxS("\\else\n");
-  output << wxS("  %  XeLaTeX or LuaLaTeX\n");
-  output << wxS("  \\usepackage{fontspec}\n");
-  output << wxS("\\fi\n");
-
-  // The following line loads all code needed in order to include graphics.
-  output << wxS("\\usepackage{graphicx}\n");
-  // Lets \animategraphics embed the frames of an animation as a real animation
+  // graphicx loads all the code needed in order to include graphics; animate
+  // lets \animategraphics embed the frames of an animation as a real animation
   // that plays in PDF viewers supporting it (and shows the first frame in the
   // rest).
-  output << wxS("\\usepackage{animate}\n");
+  output << wxS(R"TEX(\setlength{\parskip}{\medskipamount}
+\setlength{\parindent}{0pt}
+\usepackage{iftex}
+\ifPDFTeX
+  % PDFLaTeX or LaTeX
+  \usepackage[utf8]{inputenc}
+  \usepackage[T1]{fontenc}
+  \DeclareUnicodeCharacter{00B5}{\ensuremath{\mu}}
+\else
+  %  XeLaTeX or LuaLaTeX
+  \usepackage{fontspec}
+\fi
+\usepackage{graphicx}
+\usepackage{animate}
+)TEX");
 
   // Carries the worksheet itself inside the PDF as a file attachment, so the
   // document and the session that produced it cannot be separated. attachfile2
@@ -723,62 +723,52 @@ void WriteTeXPreamble(wxTextOutputStream &output, Configuration *configuration) 
   // something to attach, so nobody needs the package otherwise.
   if (configuration->ExportContainsWXMX())
     output << wxS("\\usepackage{attachfile2}\n");
-  // We want to color the labels and text cells. The following line adds the
-  // necessary logic for this to TeX.
-  output << wxS("\\usepackage{color}\n");
-  output << wxS("\\usepackage[leqno]{amsmath}\n");
+  // color: we want to color the labels and text cells.
+  output << wxS(R"TEX(\usepackage{color}
+\usepackage[leqno]{amsmath}
+)TEX");
   // On the modern Unicode engines (XeLaTeX/LuaLaTeX) unicode-math lets the
   // document typeset arbitrary Unicode maths directly -- so a symbol wxMaxima
   // doesn't translate to a LaTeX command still renders instead of vanishing or
   // breaking the build. It must be loaded after amsmath, and only there (pdfTeX
   // has no Unicode-math font machinery; it keeps the inputenc path above).
-  output << wxS("\\ifPDFTeX\\else\n");
-  output << wxS("  \\usepackage{unicode-math}\n");
-  output << wxS("\\fi\n");
+  output << wxS(R"TEX(\ifPDFTeX\else
+  \usepackage{unicode-math}
+\fi
+)TEX");
 
-  // We want to shrink pictures the user has included if they are
-  // higher or wider than the page.
-  output << wxS("\\usepackage{ifthen}\n");
-  output << wxS("\\newsavebox{\\picturebox}\n");
-  output << wxS("\\newlength{\\pictureboxwidth}\n");
-  output << wxS("\\newlength{\\pictureboxheight}\n");
-  output << wxS("\\newcommand{\\includeimage}[1]{\n");
-  output << wxS("    \\savebox{\\picturebox}{\\includegraphics{#1}}\n");
-  output << wxS(
-                "    \\settoheight{\\pictureboxheight}{\\usebox{\\picturebox}}\n");
-  output << wxS(
-                "    \\settowidth{\\pictureboxwidth}{\\usebox{\\picturebox}}\n");
-  output << wxS(
-                "    \\ifthenelse{\\lengthtest{\\pictureboxwidth > .95\\linewidth}}\n");
-  output << wxS("    {\n");
-  output << wxS("        "
-                "\\includegraphics[width=.95\\linewidth,height=.80\\textheight,"
-                "keepaspectratio]{#1}\n");
-  output << wxS("    }\n");
-  output << wxS("    {\n");
-  output << wxS(
-                "        "
-                "\\ifthenelse{\\lengthtest{\\pictureboxheight>.80\\textheight}}\n");
-  output << wxS("        {\n");
-  output << wxS("            "
-                "\\includegraphics[width=.95\\linewidth,height=.80\\textheight,"
-                "keepaspectratio]{#1}\n");
-  output << wxS("            \n");
-  output << wxS("        }\n");
-  output << wxS("        {\n");
-  output << wxS("            \\includegraphics{#1}\n");
-  output << wxS("        }\n");
-  output << wxS("    }\n");
-  output << wxS("}\n");
-  output << wxS("\\newlength{\\thislabelwidth}\n");
+  // \includeimage shrinks a picture the user has included if it is higher or
+  // wider than the page, and \abs is an operator for abs commands that are long
+  // enough to be broken into lines.
+  output << wxS(R"TEX(\usepackage{ifthen}
+\newsavebox{\picturebox}
+\newlength{\pictureboxwidth}
+\newlength{\pictureboxheight}
+\newcommand{\includeimage}[1]{
+    \savebox{\picturebox}{\includegraphics{#1}}
+    \settoheight{\pictureboxheight}{\usebox{\picturebox}}
+    \settowidth{\pictureboxwidth}{\usebox{\picturebox}}
+    \ifthenelse{\lengthtest{\pictureboxwidth > .95\linewidth}}
+    {
+        \includegraphics[width=.95\linewidth,height=.80\textheight,keepaspectratio]{#1}
+    }
+    {
+        \ifthenelse{\lengthtest{\pictureboxheight>.80\textheight}}
+        {
+            \includegraphics[width=.95\linewidth,height=.80\textheight,keepaspectratio]{#1}
 
-  // Define an "abs" operator for abs commands that are long enough to be broken
-  // into lines.
-  output << wxS("\\DeclareMathOperator{\\abs}{abs}\n");
+        }
+        {
+            \includegraphics{#1}
+        }
+    }
+}
+\newlength{\thislabelwidth}
+\DeclareMathOperator{\abs}{abs}
 
-  output << wxS("\n");
-  output << wxS("\\definecolor{labelcolor}{RGB}{100,0,0}\n");
-  output << wxS("\n");
+\definecolor{labelcolor}{RGB}{100,0,0}
+
+)TEX");
 
   // Add an eventual preamble requested by the user.
   wxString texPreamble = configuration->TexPreamble();
