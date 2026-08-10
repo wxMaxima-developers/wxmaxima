@@ -71,7 +71,7 @@ var searchData=
   ['wxmaximaframe_68',['wxMaximaFrame',['../classwxMaximaFrame.html',1,'']]],
   ['wxmaximaframe_2ecpp_69',['wxMaximaFrame.cpp',['../wxMaximaFrame_8cpp.html',1,'']]],
   ['wxmaximaframe_2eh_70',['wxMaximaFrame.h',['../wxMaximaFrame_8h.html',1,'']]],
-  ['wxmaximaicon_71',['wxMaximaIcon',['../wxMaximaIcon_8cpp.html#aab835d20b3d7db04a8c1198dcbef93c9',1,'wxMaximaIcon():&#160;wxMaximaIcon.cpp'],['../wxMaximaIcon_8h.html#aab835d20b3d7db04a8c1198dcbef93c9',1,'wxMaximaIcon():&#160;wxMaximaIcon.cpp']]],
+  ['wxmaximaicon_71',['wxMaximaIcon',['../wxMaximaIcon_8h.html#aab835d20b3d7db04a8c1198dcbef93c9',1,'wxMaximaIcon():&#160;wxMaximaIcon.cpp'],['../wxMaximaIcon_8cpp.html#aab835d20b3d7db04a8c1198dcbef93c9',1,'wxMaximaIcon():&#160;wxMaximaIcon.cpp']]],
   ['wxmaximaicon_2ecpp_72',['wxMaximaIcon.cpp',['../wxMaximaIcon_8cpp.html',1,'']]],
   ['wxmaximaicon_2eh_73',['wxMaximaIcon.h',['../wxMaximaIcon_8h.html',1,'']]],
   ['wxmaximaoperatingsystemdescription_74',['wxMaximaOperatingSystemDescription',['../wxMaximaOSDescription_8cpp.html#a9456b72b11c75f952bb7d4a99d5a9232',1,'wxMaximaOperatingSystemDescription():&#160;wxMaximaOSDescription.cpp'],['../wxMaximaOSDescription_8h.html#a9456b72b11c75f952bb7d4a99d5a9232',1,'wxMaximaOperatingSystemDescription():&#160;wxMaximaOSDescription.cpp']]],
@@ -82,5 +82,6 @@ var searchData=
   ['wxmxstream_79',['WxmxStream',['../classImage_1_1WxmxStream.html',1,'Image']]],
   ['wxscrolled_80',['wxScrolled',['../classwxScrolled.html',1,'']]],
   ['wxscrolled_3c_20wxpanel_20_3e_81',['wxScrolled&lt; wxPanel &gt;',['../classwxScrolled.html',1,'']]],
-  ['wxscrolled_3c_20wxwindow_20_3e_82',['wxScrolled&lt; wxWindow &gt;',['../classwxScrolled.html',1,'']]]
+  ['wxscrolled_3c_20wxwindow_20_3e_82',['wxScrolled&lt; wxWindow &gt;',['../classwxScrolled.html',1,'']]],
+  ['wxwarn_5funused_83',['wxWARN_UNUSED',['../Compat_8h.html#a775a1bc6745b428c6748d09b3ea7d639',1,'Compat.h']]]
 ];

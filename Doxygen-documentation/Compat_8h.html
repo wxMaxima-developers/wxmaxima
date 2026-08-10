@@ -75,21 +75,23 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
+<a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">Compat.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>Small C++ standard-library compatibility shims.  
+<p>Small compatibility shims for older toolchains and older wxWidgets.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;thread&gt;</code><br />
 <code>#include &lt;version&gt;</code><br />
 <code>#include &lt;algorithm&gt;</code><br />
 <code>#include &lt;ranges&gt;</code><br />
+<code>#include &lt;wx/defs.h&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for Compat.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="Compat_8h__incl.svg" width="371" height="110"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="Compat_8h__incl.svg" width="480" height="110"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -110,6 +112,12 @@ Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjthread.html">jthread</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a775a1bc6745b428c6748d09b3ea7d639"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Compat_8h.html#a775a1bc6745b428c6748d09b3ea7d639">wxWARN_UNUSED</a></td></tr>
+<tr class="memdesc:a775a1bc6745b428c6748d09b3ea7d639"><td class="mdescLeft">&#160;</td><td class="mdescRight">Marks a class whose unused instances are a bug.  <br /></td></tr>
+<tr class="separator:a775a1bc6745b428c6748d09b3ea7d639"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a595e2aae9f187e60ca3779e556b0f4eb"><td class="memTemplParams" colspan="2"><a id="a595e2aae9f187e60ca3779e556b0f4eb" name="a595e2aae9f187e60ca3779e556b0f4eb"></a>
@@ -118,9 +126,30 @@ template&lt;typename R , typename T &gt; </td></tr>
 <tr class="separator:a595e2aae9f187e60ca3779e556b0f4eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Small C++ standard-library compatibility shims. </p>
-<p><a class="el" href="classwxMaxima.html">wxMaxima</a> targets C++20 but aims to keep building on toolchains a few years behind. This header provides minimal fall-backs for std features that may be missing there: std::jthread / std::stop_token / std::stop_source, and std::ranges::contains. These were historically carried in Version.h; they live here now because they have nothing to do with the version and are pure, CMake-independent C++ (so this header is a plain committed file, not generated). </p>
-</div></div><!-- contents -->
+<div class="textblock"><p>Small compatibility shims for older toolchains and older wxWidgets. </p>
+<p><a class="el" href="classwxMaxima.html">wxMaxima</a> targets C++20 but aims to keep building on toolchains a few years behind. This header provides minimal fall-backs for std features that may be missing there: std::jthread / std::stop_token / std::stop_source, and std::ranges::contains. These were historically carried in Version.h; they live here now because they have nothing to do with the version and are CMake-independent (so this header is a plain committed file, not generated).</p>
+<p>It also carries the same kind of fall-back for wxWidgets macros that only exist in newer wxWidgets than the 3.0.5 we still support - currently wxWARN_UNUSED, see its documentation at the bottom of this file. </p>
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a775a1bc6745b428c6748d09b3ea7d639" name="a775a1bc6745b428c6748d09b3ea7d639"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a775a1bc6745b428c6748d09b3ea7d639">&#9670;&#160;</a></span>wxWARN_UNUSED</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define wxWARN_UNUSED</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Marks a class whose unused instances are a bug. </p>
+<p>It expands to <b>attribute</b>((warn_unused)), which makes the compiler report a local variable of that type that is never used. Plain -Wunused-variable cannot do that on its own: as soon as a type has a non-trivial constructor or destructor the compiler must assume the object exists for its side effects, so it stops warning - which is exactly why a dead <code><a class="el" href="classStyle.html" title="Text Style Definition.">Style</a> style;</code> or <code><a class="el" href="classMaximaTokenizer_1_1Token.html" title="A maxima code snippet from this tokenizer.">MaximaTokenizer::Token</a> token;</code> can sit unnoticed.</p>
+<p>wxWidgets defines it itself from 3.2.7 on. This no-op fallback keeps <a class="el" href="classwxMaxima.html">wxMaxima</a> building against the older wxWidgets it still supports (3.0.5, see AGENTS.md).</p>
+<p>The &lt;wx/defs.h&gt; include above the guard is load-bearing: without it this header could be reached first, define the macro empty, and then wxWidgets' own "#ifndef wxWARN_UNUSED" would decline to redefine it - silently turning the attribute off on the very compilers that support it. </p>
+
+</div>
+</div>
+</div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.6
