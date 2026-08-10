@@ -581,6 +581,7 @@ const wxWindowIDRef EventIDs::gentran_to_file(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::socket_client_id(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::socket_server_id(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::gnuplot_query_terminals_id(wxWindow::NewControlId());
+const wxWindowIDRef EventIDs::gnuplot_popout_check_id(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_additionalSymbols(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::enable_unicodePane(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_showLatinGreekLookalikes(wxWindow::NewControlId());

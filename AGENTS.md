@@ -274,6 +274,62 @@ a local TCP socket.
   - `Maxima` (`src/Maxima.cpp`): Owns the TCP socket to the Maxima process and emits `EVT_MAXIMA` events carrying incoming data.
   - `Variablespane`: Manages the list of defined variables and their values.
   - `AutoComplete`: Handles the autocomplete logic for commands, variables, and files.
+- **`wxLogMessage`/`wxLogWarning`/`wxLogError` are NOT reliably visible to the
+  user in this app -- don't reach for them when something needs to actually
+  be seen.** `main.cpp` installs a `wxLogWindow` with `passToOld=false`
+  (both branches of its `#if (DEBUG==1)`), which means every `wxLogXXX` call
+  goes *only* to that custom log window and nowhere else -- not to wx's
+  stock `wxLogGui` popups, which is what raises the "but wxLogError usually
+  shows something" intuition. The log window itself is constructed with
+  `show=false` in a normal (non-`DEBUG`) build, i.e. hidden until the user
+  explicitly picks View -> Toggle Log Window or passes `--logtostderr`.
+  Confirmed live while building the gnuplot-popout-warning feature below: a
+  real `wxLogWarning()` call reached the log window's backing store (visible
+  once the window was forced to raise) but the window itself never mapped
+  on screen on its own, even for a Warning-level message -- a user running
+  a normal release build would never see it. When a message genuinely needs
+  to reach the user, use `LoggingMessageBox`/`LoggingMessageDialog`
+  (`src/dialogs/LoggingMessageDialog.h`) instead: it logs the same way
+  `wxLogMessage` does *and* shows a real modal dialog, and it already
+  honors `LoggingMessageDialog::IsNonInteractive()` so batch/test runs
+  don't block on it. This is already the established pattern (~40 call
+  sites across `wxMaxima.cpp`, `MaximaFileIO.cpp`, `MaximaCommandMenus.cpp`,
+  `WXMXformat.cpp`, ...) -- `wxLogXXX` alone is for the debug-messages
+  sidebar, not for anything the user is expected to act on.
+- **Gnuplot "Pop out interactively" now warns about gnuplot errors/warnings
+  (GH #1973):** the popout handler (`MaximaCommandMenus.cpp`,
+  `popid_popup_gnuplot`) launches a *second*, independent gnuplot process
+  alongside the real interactive one, running the identical script with
+  `set term unknown` instead of a real terminal so it needs no display and
+  exits immediately once the script finishes executing.
+  `MaximaProcessManager::OnGnuplotPopoutCheckClose` (`wxEVT_END_PROCESS` for
+  `EventIDs::gnuplot_popout_check_id`) reads back its stdout+stderr and, if
+  anything survives filtering, shows it via `LoggingMessageBox`. The real
+  interactive process (`m_gnuplotProcess`) is deliberately **never**
+  `Redirect()`ed: doing so would replace its console's actual stdin/stdout
+  with pipes wx owns, silently breaking the "type further gnuplot commands
+  into the popped-out console" feature the manual documents (Windows'
+  `wgnuplot.exe` specifically) -- since `set term unknown` needs no console
+  at all, redirecting *that* one is free of this tradeoff. **Filtering
+  gotcha, confirmed against a real gnuplot 6.0, not assumed:** `set term
+  unknown` makes gnuplot print `WARNING: Plotting with 'unknown'
+  terminal.\nNo output will be generated. Please select a terminal with
+  'set terminal'.` to stderr on *every single* `plot`/`replot` statement,
+  even for a script with nothing else wrong with it -- these two lines are
+  a side effect of the diagnostic's own terminal choice, not a finding
+  about the user's script, and must be filtered out (matched by substring,
+  not exact string, since gnuplot's exact wording could vary by version) or
+  every popout would raise a spurious warning. Verified end-to-end in a
+  live Xvfb session with a real Maxima+gnuplot: a `wxdraw2d` with a bad
+  `user_preamble` (`set y2tics out` with no y2 data, reproducing the
+  original bug report) raises a "Warning" dialog quoting gnuplot's actual
+  `"...gnuplot" line NN: warning: y2 axis range undefined or overflow,
+  resetting to [0:0]"` message, while the same plot without the bad
+  preamble raises nothing -- and the real interactive popout window (a
+  separate, still-running, reparented-to-init process once its short-lived
+  wx-tracked launcher process exits -- a pre-existing, unrelated forking
+  detail of how gnuplot/`--persist` behaves under X11) keeps working
+  exactly as before in both cases.
 - **The draw list is computed, not stored (2026-08, closes GH #1445):** `Cell`
   used to carry a `mutable CellPtr<Cell> m_nextToDraw` member -- a second
   always-present `CellPtr` on *every* cell, threaded by hand via a virtual

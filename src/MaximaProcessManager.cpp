@@ -29,7 +29,9 @@
 #include "Maxima.h"
 #include "EventIDs.h"
 #include "dialogs/MaximaNotStartingDialog.h"
+#include "dialogs/LoggingMessageDialog.h"
 #include <wx/sstream.h>
+#include <wx/tokenzr.h>
 
 #ifndef __WXMSW__
 #include <csignal>
@@ -991,6 +993,115 @@ void MaximaProcessManager::OnGnuplotClose(wxProcessEvent &event) {
   m_wxMaxima.m_gnuplotProcess = NULL;
   wxLogMessage(_("Gnuplot has closed."));
   event.Skip();
+}
+
+void MaximaProcessManager::OnGnuplotPopoutCheckClose(wxProcessEvent &event) {
+  // Same lifetime contract as OnGnuplotQueryTerminals above: always Skip(),
+  // never delete the process ourselves - wxProcess::OnTerminate does that
+  // for us as long as the event is left unprocessed.
+  event.Skip();
+  if (!m_wxMaxima.m_gnuplotPopoutCheckProcess)
+    return;
+  // A new "Pop out interactively" click while an older check is still
+  // running detaches the old one (see MaximaCommandMenus.cpp) rather than
+  // overwriting the pointer, so a stale event here never reads the wrong
+  // process's streams.
+  if (event.GetPid() != m_wxMaxima.m_gnuplotPopoutCheckProcess->GetPid())
+    return;
+
+  wxString gnuplotMessage;
+  // Both streams exist because the check process was created with
+  // Redirect(), but guard anyway. The IsOk() term matters: Eof() only
+  // reports wxSTREAM_EOF, so a pipe stuck in a read-ERROR state would
+  // otherwise keep the loop spinning (and the string growing) forever.
+  {
+    wxInputStream *istream = m_wxMaxima.m_gnuplotPopoutCheckProcess->GetInputStream();
+    wxASSERT(istream);
+    if (istream) {
+      wxTextInputStream textin(*istream);
+      while (istream->IsOk() && !istream->Eof())
+        gnuplotMessage += textin.ReadLine() + "\n";
+    }
+  }
+  {
+    wxInputStream *istream = m_wxMaxima.m_gnuplotPopoutCheckProcess->GetErrorStream();
+    wxASSERT(istream);
+    if (istream) {
+      wxTextInputStream textin(*istream);
+      while (istream->IsOk() && !istream->Eof())
+        gnuplotMessage += textin.ReadLine() + "\n";
+    }
+  }
+  // `set term unknown` is what makes this check headless in the first
+  // place, but it also makes gnuplot print this exact two-line notice on
+  // stderr for every single plot/replot statement in the script - that is
+  // a side effect of our own diagnostic setup, not gnuplot finding
+  // anything wrong with the user's script, so it must never count towards
+  // "there is something to tell the user about" (confirmed against a real
+  // gnuplot 6.0: a script with nothing else wrong with it still prints this
+  // on every `plot`).
+  wxString filtered;
+  wxStringTokenizer lines(gnuplotMessage, wxS("\n"), wxTOKEN_RET_EMPTY_ALL);
+  while (lines.HasMoreTokens()) {
+    wxString line = lines.GetNextToken();
+    wxString trimmed = line;
+    trimmed.Trim(true);
+    trimmed.Trim(false);
+    if (trimmed.IsEmpty())
+      continue;
+    if (trimmed.Contains(wxS("Plotting with 'unknown' terminal")) ||
+        trimmed.Contains(wxS("No output will be generated")))
+      continue;
+    filtered += line + wxS("\n");
+  }
+  gnuplotMessage = filtered;
+  gnuplotMessage.Trim(true);
+  gnuplotMessage.Trim(false);
+
+  if (!m_wxMaxima.m_gnuplotPopoutCheckFile.IsEmpty() &&
+      wxFileExists(m_wxMaxima.m_gnuplotPopoutCheckFile))
+    wxRemoveFile(m_wxMaxima.m_gnuplotPopoutCheckFile);
+  m_wxMaxima.m_gnuplotPopoutCheckFile.Clear();
+  m_wxMaxima.m_gnuplotPopoutCheckProcess = NULL;
+
+  // A script that prepares a plot without errors normally produces no
+  // (remaining, after the filtering above) output at all in gnuplot's
+  // non-interactive, `set term unknown` batch mode, so any output at all
+  // here is worth showing (GH #1973: users were otherwise left staring at
+  // an unexplained empty plot window with no clue that e.g. an
+  // "unrecognized option" in their own preamble had aborted the script
+  // partway through).
+  //
+  // A LoggingMessageBox, not wxLogWarning: this app's own wxLogWindow is
+  // constructed with passToOld=false (see main.cpp) and stays hidden by
+  // default outside debug builds, so a plain wxLogWarning here would be
+  // exactly as invisible to a normal user as the empty plot window this is
+  // meant to explain - confirmed live, not assumed (a real run showed the
+  // warning reaching the log window's backing store but the window itself
+  // never mapped on screen). LoggingMessageBox both logs the message *and*
+  // reliably shows it - the same mechanism this codebase already uses for
+  // every other "make sure the user actually sees this" case - and honors
+  // LoggingMessageDialog's non-interactive flag, so batch/test runs are not
+  // blocked by it. Deferred via CallAfter with the same coalescing-flag
+  // pattern MathParser.cpp uses for its own async warning box: this handler
+  // runs off a wxEVT_END_PROCESS, and a burst of popouts (or one popout
+  // whose check happens to race the interactive window's own close) must
+  // not stack multiple modal boxes on top of each other.
+  if (!gnuplotMessage.IsEmpty()) {
+    static bool warningPending = false;
+    if (wxTheApp && !warningPending) {
+      warningPending = true;
+      wxTheApp->CallAfter([gnuplotMessage] {
+        LoggingMessageBox(
+          wxString::Format(
+            _("Gnuplot reported the following while preparing the "
+              "popped-out plot:\n%s"),
+            gnuplotMessage),
+          _("Warning"), wxOK | wxICON_WARNING);
+        warningPending = false;
+      });
+    }
+  }
 }
 
 void MaximaProcessManager::GnuplotCommandName(wxString gnuplot) {
