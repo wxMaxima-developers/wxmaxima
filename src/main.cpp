@@ -453,7 +453,18 @@ bool MyApp::OnInit() {
 
     {
 #if wxCHECK_VERSION(3, 1, 6)
-      wxUILocale::UseDefault();
+      // UseDefault() alone would apply the *system's* default locale
+      // unconditionally, silently ignoring a language the user explicitly
+      // picked in our own configuration (as opposed to "follow the system
+      // default", which is what wxLANGUAGE_DEFAULT means here).
+      bool localeSet = false;
+      if (lang != wxLANGUAGE_DEFAULT) {
+        const wxLanguageInfo *langInfo = wxLocale::GetLanguageInfo(lang);
+        if (langInfo)
+          localeSet = wxUILocale::UseLocaleName(langInfo->CanonicalName);
+      }
+      if (!localeSet)
+        wxUILocale::UseDefault();
 #else
       m_locale = std::unique_ptr<wxLocale>(new wxLocale);
       m_locale->Init(lang);
@@ -485,7 +496,21 @@ bool MyApp::OnInit() {
     */
     if ((wxLocale::IsAvailable(lang)) && (lang != wxLANGUAGE_DEFAULT)) {
       // Set maxima's language, as well.
-      wxString localeName = wxLocale().GetCanonicalName();
+      //
+      // wxLocale().GetCanonicalName() (a fresh, un-Init()ed instance) always
+      // returns an empty string once wxUILocale -- rather than wxLocale::Init()
+      // -- is what actually set the active locale above: GetCanonicalName()
+      // reads back this *instance's own* m_strShort, which only wxLocale::Init()
+      // ever populates. Query wxUILocale's actual current locale instead in
+      // that case (confirmed live: it correctly reports e.g. "de_DE.UTF-8"
+      // after UseLocaleName("de") above, while wxLocale().GetCanonicalName()
+      // stays empty).
+      wxString localeName;
+#if wxCHECK_VERSION(3, 1, 6)
+      localeName = wxUILocale::GetCurrent().GetName();
+#else
+      localeName = wxLocale().GetCanonicalName();
+#endif
       if(localeName.IsEmpty())
         localeName = wxS("C");
       if ((!localeName.Upper().EndsWith(wxS("UTF-8"))) &&

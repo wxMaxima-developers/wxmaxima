@@ -159,6 +159,7 @@ void MaximaProcessManager::OnMaximaConnect() {
 
   m_wxMaxima.m_client = std::make_unique<Maxima>(m_wxMaxima.m_server->Accept(false), &m_wxMaxima.m_configuration);
   if (m_wxMaxima.m_client->IsConnected()) {
+    m_wxMaxima.m_maximaConnectWatchdogTimer.Stop();
     m_wxMaxima.m_client->Bind(EVT_MAXIMA, &MaximaProcessManager::MaximaEvent, this);
     m_wxMaxima.m_evaluator.SetupVariables();
   } else {
@@ -365,6 +366,9 @@ bool MaximaProcessManager::StartMaxima(bool force) {
       m_wxMaxima.m_inLDB = false;
       m_wxMaxima.m_lastPrompt = wxS("(%i1) ");
       m_wxMaxima.StatusMaximaBusy(StatusBar::MaximaStatus::wait_for_start);
+      // Warn the user (GH #1182) if the process we just spawned is still
+      // alive but never connects back to us within a few seconds.
+      m_wxMaxima.m_maximaConnectWatchdogTimer.StartOnce(5000);
     } else {
       m_wxMaxima.m_statusBar->NetworkStatus(StatusBar::offline);
       wxLogMessage(_("Cannot find a maxima binary and no binary chosen in the "
@@ -381,6 +385,7 @@ bool MaximaProcessManager::StartMaxima(bool force) {
 }
 
 void MaximaProcessManager::KillMaxima(bool logMessage) {
+  m_wxMaxima.m_maximaConnectWatchdogTimer.Stop();
   if (logMessage && (m_wxMaxima.m_closing || (m_wxMaxima.m_maximaProcess == NULL) || (m_wxMaxima.m_pid > 0))) {
     if (m_wxMaxima.m_maximaPid > 0)
       wxLogMessage("Killing Maxima. Wrapper PID=%ld, Maxima PID=%ld", m_wxMaxima.m_pid,

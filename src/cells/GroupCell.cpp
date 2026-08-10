@@ -1376,8 +1376,39 @@ wxString GroupCell::ToTeXCodeCell(const wxString &imgDir, const wxString &filena
     if (imgCounter == NULL)
       str += wxS("\\definecolor{labelcolor}{RGB}{100,0,0}\n");
 
+    // The output is a run of cells that each need to be typeset in math mode,
+    // in a verbatim block or in neither, so walking it means opening and
+    // closing those two modes from half a dozen places. These keep that
+    // markup in one place - and idempotent, so a caller can just ask for the
+    // mode it needs.
     bool mathMode = false;
     bool asciiArt = false;
+    auto openMath = [&str, &mathMode]() {
+      if (mathMode)
+        return;
+      str += wxS("\\[\\displaystyle ");
+      mathMode = true;
+    };
+    auto closeMath = [&str, &mathMode]() {
+      if (!mathMode)
+        return;
+      // Some invisible dummy content that keeps TeX happy if the equation
+      // would otherwise end up empty.
+      str += wxS("\\mbox{}\n\\]");
+      mathMode = false;
+    };
+    auto openVerbatim = [&str, &asciiArt]() {
+      if (asciiArt)
+        return;
+      str += wxS("\n\\begin{verbatim}\n");
+      asciiArt = true;
+    };
+    auto closeVerbatim = [&str, &asciiArt]() {
+      if (!asciiArt)
+        return;
+      str += wxS("\\end{verbatim}\n");
+      asciiArt = false;
+    };
 
     auto const outputDrawList = OnDrawList(m_output.get());
     for (auto it = outputDrawList.begin(), listEnd = outputDrawList.end();
@@ -1392,10 +1423,8 @@ wxString GroupCell::ToTeXCodeCell(const wxString &imgDir, const wxString &filena
       const bool isAsciiArt = (tmp.GetTextStyle() == TS_ASCIIMATHS);
 
       // Anything that isn't another art line ends the block.
-      if (asciiArt && !isAsciiArt) {
-        str += wxS("\\end{verbatim}\n");
-        asciiArt = false;
-      }
+      if (!isAsciiArt)
+        closeVerbatim();
 
       if (tmp.GetType() == MC_TYPE_IMAGE) {
         str << ToTeXImage(&tmp, imgDir, filename, imgCounter);
@@ -1407,14 +1436,8 @@ wxString GroupCell::ToTeXCodeCell(const wxString &imgDir, const wxString &filena
         else
           str << anim;
       } else if (isAsciiArt) {
-        if (mathMode) {
-          str += wxS("\\mbox{}\n\\]");
-          mathMode = false;
-        }
-        if (!asciiArt) {
-          str += wxS("\n\\begin{verbatim}\n");
-          asciiArt = true;
-        }
+        closeMath();
+        openVerbatim();
         // ToString() gives the art back as characters (it also undoes the
         // unicode minus the parser substitutes for "-", which is what keeps
         // fraction bars printable under pdfTeX) and appends the line break the
@@ -1434,22 +1457,16 @@ wxString GroupCell::ToTeXCodeCell(const wxString &imgDir, const wxString &filena
           ++peek;
           const Cell *const next = peek;
           if (next && (next->GetTextStyle() == TS_ASCIIMATHS)) {
-            if (mathMode) {
-              str += wxS("\\mbox{}\n\\]");
-              mathMode = false;
-            }
+            closeMath();
             wxString label = tmp.GetValue();
             label.Trim(true).Trim(false);
             str += wxS("\n\\noindent\\textcolor{labelcolor}{\\texttt{") +
               TexEscapePlainText(label) + wxS("}}\n");
             break;
           }
-          if (mathMode)
-            str += wxS("\\mbox{}\\]\n\\[\\displaystyle ");
-          else {
-            str += wxS("\\[\\displaystyle ");
-            mathMode = true;
-          }
+          // A label starts an equation of its own: end the one before it.
+          closeMath();
+          openMath();
           str += tmp.ToTeX() + wxS("\n");
           break;
         }
@@ -1461,31 +1478,22 @@ wxString GroupCell::ToTeXCodeCell(const wxString &imgDir, const wxString &filena
           // Non-math output (a string, a message, a warning or an error) is
           // emitted as LaTeX text, not forced through the math renderer: it is
           // prose, and wrapping a sentence in \[...\] produced garbled output.
-          if (mathMode) {
-            str += wxS("\\mbox{}\n\\]");
-            mathMode = false;
-          }
+          closeMath();
           str += TexEscapeOutputCell(tmp.ToTeX()) + wxS("\n");
           break;
 
         default:
-          if (!mathMode) {
-            str += wxS("\\[\\displaystyle ");
-            mathMode = true;
-          }
+          openMath();
           str += tmp.ToTeX();
           break;
         }
       }
     }
 
-    if (asciiArt)
-      str += wxS("\\end{verbatim}\n");
-
+    closeVerbatim();
     if (mathMode) {
-      // Some invisible dummy content that keeps TeX happy if there really is
-      // no output to display.
-      str += wxS("\\mbox{}\n\\]\n%%%%%%%%%%%%%%%%");
+      closeMath();
+      str += wxS("\n%%%%%%%%%%%%%%%%");
     }
   } else
     str += wxS("\n\n\\noindent%\n");

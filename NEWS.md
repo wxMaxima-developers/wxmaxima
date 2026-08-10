@@ -6,6 +6,54 @@
   clipboard are affected: the file is given a title, and the drawing is marked
   up as mathematics with the equation's text as its label. Needs wxWidgets
   3.3.3 or newer; with an older wxWidgets the exported SVG is unchanged.
+- About 7000 translations that had quietly disappeared from 21 languages are
+  back. The list of files the translation system reads was written in a way
+  that only found sources sitting directly in `src/`, so everything in a
+  subdirectory below it became invisible: menus, dialogs and above all the
+  wizards had been silently reverting to English since 2020, and the
+  sidebars and dialogs since 2024, without anything ever reporting a
+  problem. German, Russian, Ukrainian, Hungarian, Italian, Spanish and
+  Turkish each regain 500-660 strings; Catalan, Galician and Polish get
+  their first translated dialogs back at all. Every restored string is
+  exactly what a translator had written before it was lost. A new test now
+  fails the build if a source file can ever become invisible to the
+  translation system again.
+- wxMaxima now warns if Maxima's process has started but hasn't connected
+  back within 5 seconds, instead of leaving the worksheet stuck at "Maxima
+  started. Waiting for connection..." forever with no explanation (GH
+  #1182). On macOS this reproducibly happens when Gatekeeper has
+  quarantined the Maxima binary -- common for a Maxima installed via
+  Homebrew rather than a signed installer -- since a background process
+  wxMaxima spawns can never answer the security prompt macOS would
+  otherwise show; the warning explains this and suggests a fix. wxMaxima
+  keeps waiting and retrying in the background regardless.
+- Fixed two bugs in RTF/Word export (previously untested code, now with
+  regression coverage):
+  - A hidden multiplication sign (e.g. the implicit "*" in scientific
+    notation like "2*10^7") always showed up in RTF/copy-as-RTF output
+    regardless of the "Hide multiplication sign" setting, and would have
+    left no separator behind at all had it ever been suppressed -- turning
+    "2*10^7" into the unreadable "210^7" (GH #1456).
+  - A matrix's brackets rendered at a small, fixed size in Word/LibreOffice
+    instead of growing to match the matrix's height, because the OMML
+    "grow" flag was emitted with literal stray quote characters in its
+    value instead of the well-formed attribute every other bracket-drawing
+    cell (parentheses, lists, intervals) already used correctly -- fixed
+    the same way for `abs()`'s bars, which were missing the "grow" flag
+    entirely (GH #1457).
+- Fixed a scaled image losing its transparency and showing a solid
+  (typically black) background instead (GH #2227). Rescaling an image to
+  fit its on-screen size forced the resulting bitmap to a plain 24-bit
+  depth, which discards any alpha channel -- every other place in the same
+  code path already builds its bitmap without forcing a depth, so the
+  scaled case now does the same and keeps the source image's transparency.
+- Fixed two regressions from wxMaxima's earlier, partial move to `wxUILocale`
+  (GH #2233, on wxWidgets >= 3.1.6): picking a language other than "System
+  default" was silently ignored for the actual locale (only translations
+  respected it; number/date formatting etc. kept following the OS default),
+  and the manually-selected help manual (e.g. the German or Simplified
+  Chinese one) was never found, always falling back to the plain English
+  manual regardless of the chosen language.
 - Evaluating a folded section no longer unfolds it just because an error
   happened somewhere inside (GH #1952). Folding a time-consuming or
   no-longer-relevant calculation down to one line, so the worksheet stays
