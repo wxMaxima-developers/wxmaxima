@@ -560,6 +560,49 @@ tried without rebuilding.
   (a `ctest`, needs neither a build nor gettext) now fails the build if any
   source file sits deeper than the glob reaches, or if a file containing a
   `_("...")` marker is unreferenced by the committed POT.
+- **A Crowdin sync can silently wipe existing translations if it's built from
+  a stale base -- confirmed twice now (2026-08-05 and 2026-08-10), both times
+  around the same subdir-glob restoration work above, and both times a plain
+  git merge, not a Crowdin misconfiguration found so far.** The second
+  incident: PR #2241 ("Restore 7083 translations the flat `src/*` gettext
+  glob had dropped") merged at 19:59:43; Crowdin's own `l10n_main2` branch
+  (a long-lived branch it force-pushes to repeatedly, see PRs #2187/#2199/
+  #2239/#2244) had already branched off main at 19:55:40 -- 4 minutes
+  *before* #2241 -- and didn't re-sync before its own PR #2244 merged 30
+  minutes later. Confirmed directly from the commit graph, not inferred:
+  `git merge-base <l10n_main2 tip> <main-before-#2241>` equals that
+  pre-#2241 commit exactly, i.e. Crowdin's new per-language commits were
+  still parented on the stale base. The result once merged: a plain 3-way
+  git merge doesn't understand PO-file semantics, so wherever Crowdin's
+  diff and the restore's diff touched entries in the same file without a
+  textual line conflict, whichever side's hunk landed could silently win --
+  in this case, largely Crowdin's older, translation-poorer version. Net
+  effect measured with `polib` (msgid+msgctxt keyed diff, not
+  `msgfmt --statistics` counts alone, since those can't tell "a translation
+  reverted to worse text" from "line-wrapping changed"): 464 translations
+  across 16 languages went from non-empty to empty, and *zero* went the
+  other way -- a real regression, not translator churn. Recovered with a
+  surgical text-level patch (locate each entry's own line range via
+  `polib`'s `.linenum` in both the pre-regression and current file
+  independently, splice only the `msgstr` block, leave everything else
+  byte-identical) -- reusing `polib`'s own serializer to resave the whole
+  file was tried first and rejected: it reformats every line's wrapping,
+  turning a 464-line fix into a ~200KB diff across 16 files that would have
+  buried the actual change completely. If this happens a third time, the
+  fix is on the Crowdin project side (a webhook trigger that also
+  re-syncs sources immediately before generating its PR, not just before
+  the languages it already had), not on wxMaxima's own git handling -- ask
+  Crowdin support directly, since this session cannot access Crowdin's
+  own dashboard/API to confirm the exact trigger without credentials.
+- **`test/check-pot-coverage.cmake` needs `cmake_policy(SET CMP0057 NEW)`
+  explicitly.** It runs in script mode (`cmake -P`), which does not inherit
+  the top-level `CMakeLists.txt`'s policy settings -- without this line,
+  `if(NOT f IN_LIST covered)` hard-errors with "Unknown arguments
+  specified" on every invocation, on any CMake version, confirmed against a
+  clean `main` checkout (not something introduced by unrelated local
+  changes). `IN_LIST` needs CMP0057 set to `NEW` to be recognized as an
+  operator at all in `if()`; the default/OLD behavior predates that
+  operator's existence.
 - **Don't drop `--previous` from `msgmerge`.** It is what keeps the
   `#| msgid` comment recording what a fuzzy entry used to say, which is how a
   translator works out *why* something went fuzzy (`00ba34121`). A plain
