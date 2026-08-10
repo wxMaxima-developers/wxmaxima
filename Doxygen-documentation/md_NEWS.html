@@ -73,6 +73,8 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><ul>
+<li>Evaluating a folded section no longer unfolds it just because an error happened somewhere inside (GH #1952). Folding a time-consuming or no-longer-relevant calculation down to one line, so the worksheet stays readable while everything still gets evaluated, was defeated if a single error deep inside the fold unconditionally sprang it back open &ndash; the worksheet now lands on the fold's own (visible) header instead, leaving the fold itself untouched.</li>
+<li>"Pop out interactively" (the plot image's right-click menu) now tells you when gnuplot had trouble with the plot, instead of silently leaving you with an unexplained window (GH #1973). <a class="el" href="classA.html">A</a> second, hidden gnuplot process runs the same script headlessly (<code>set term unknown</code>, so it needs no display) purely to catch anything gnuplot prints while preparing the plot; if it printed something, a "Warning" dialog shows it verbatim. The interactive popout itself is untouched &ndash; it still gets its own real console/window exactly as before, so typing further gnuplot commands into it still works.</li>
 <li>macOS: translation files should now actually make it into the app bundle (GH #1711). Two separate bugs meant the <code>.mo</code> files never reached <code>Contents/Resources/locale/&lt;lang&gt;/LC_MESSAGES/</code>, where <a class="el" href="classwxMaxima.html">wxMaxima</a> looks for them: the CMake target that copies them into the build tree with the correct per-language layout was unconditionally skipped on Apple (working around what turned out to be an Xcode-generator-specific issue &ndash; the DMG- producing CI job actually uses Ninja, not Xcode, and doesn't need the workaround), and separately, the bundle's own resource list tried to glob for them before they even existed (translations are generated during the build, but that glob is evaluated once at configure time) with a pattern that wouldn't have matched their actual nested location anyway. Fixed by narrowing the Apple exclusion to just the Xcode generator, and copying the already-correctly-laid-out translation directory into the bundle in a build-time install step instead of a configure-time glob. Not verified on a real Mac (none was available to test this on) &ndash; please report back if translations still don't show up in a built .dmg.</li>
 <li><code>sum()</code>/<code>product()</code>/<code>lsum</code> (GH #1536) no longer wrap a plain summand in spurious parentheses: <code>sum(k,k,1,n)</code> now displays the sum sign over a bare <code>k</code>, matching <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s own terminal output, instead of always showing <code>(k)</code>. <a class="el" href="classA.html">A</a> genuinely compound summand, like <code>sum(k+k^2,k,1,n)</code>, still gets the parentheses, since dropping them there really could be misread as extending past the sum sign. The decision is made in <code>wxxml-sum</code> (<code>wxMathML.lisp</code>) from the real <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> expression (<code>mplusp</code>) rather than an invented operator precedence &ndash; <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s own printer has no <code>lbp</code>/<code>rbp</code> registered for <code>sum</code>/<code>product</code> either, so it can't be using generic precedence comparison for this &ndash; and is carried across the wire to <code><a class="el" href="classSumCell.html">SumCell</a></code> (which still needed a small, targeted change of its own: its 2<a class="el" href="classD.html">D</a> on-screen layout is computed in C++, and turned out not to be reachable through <code><a class="el" href="classParenCell.html" title="The class that represents parenthesis that are wrapped around text.">ParenCell</a></code>'s existing "print" flag, which only suppresses parentheses in text/TeX/MathML export, not in the interactive display).</li>
 <li>Folding/unfolding a section (or the whole document, via "Fold All"/ "Unfold All") is now recorded in the undo buffer (GH #266), a 2013 feature request: Ctrl+Z after an accidental fold, or after "Fold All" collapses a document you didn't mean to collapse, restores exactly the fold state that was there before. <a class="el" href="classA.html">A</a> single-cell fold/unfold undoes with one Ctrl+Z; "Fold
@@ -844,15 +846,15 @@ $(function() {
 - Handle power events (#1607)
 - Fix ugly buttons in the sidebars with recent wxWidgets
 
-@section autotoc_md994 21.05.2:
+@section autotoc_md993 21.05.2:
 
 - The integral signs disappeared or were misplaced on some MS Windows computers
 
-@section autotoc_md995 21.05.1:
+@section autotoc_md994 21.05.1:
 
 - Resolved a segfault on printing that could be triggered on some computers
 
-@section autotoc_md996 21.05.0:
+@section autotoc_md995 21.05.0:
 
 - Long numbers now can be broken into lines
 - On Export long numbers sometimes got lost
@@ -866,7 +868,7 @@ $(function() {
   (before cyrillic, chinese and greek characters were missing).
 - Solved a crash when printing.
 
-@section autotoc_md997 21.04.0
+@section autotoc_md996 21.04.0
 
 - Fix visualization after "Evaluate all cells (Ctrl+Shift+R)" (bug #1512).</li>
 <li>Fix context sensitive help with F1 (bug #1508).</li>
@@ -880,7 +882,7 @@ $(function() {
 <li>Many external build scripts are now replaced by C++ and CMake commands.</li>
 <li><a class="el" href="classA.html">A</a> menu entry for when to invoke the debugger.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md998"></a>
+<h1><a class="anchor" id="autotoc_md997"></a>
 21.02.0</h1>
 <ul>
 <li><a class="el" href="classA.html">A</a> Spanish translation update by cyphra</li>
@@ -892,14 +894,14 @@ $(function() {
 <li>Made the time between autosaves configurable.</li>
 <li>Fixed an issue with reproducible builds.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md999"></a>
+<h1><a class="anchor" id="autotoc_md998"></a>
 21.01.0</h1>
 <ul>
 <li>Chinese translation updates by 刘荣.</li>
 <li><a class="el" href="classA.html">A</a> Russian translation update by OlesyaGerasimenko</li>
 <li>Many small bugfixes including a crash on loading files with images.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1000"></a>
+<h1><a class="anchor" id="autotoc_md999"></a>
 Changes in older wxMaxima versions you can find here</h1>
 <p><a href="https://github.com/wxMaxima-developers/wxmaxima/blob/Version-21.02.0/NEWS.md">https://github.com/wxMaxima-developers/wxmaxima/blob/Version-21.02.0/NEWS.md</a> </p>
 </div></div><!-- contents -->

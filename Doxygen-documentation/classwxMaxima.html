@@ -614,6 +614,14 @@ wxProcess *&#160;</td><td class="memItemRight" valign="bottom"><b>m_gnuplotProce
 wxProcess *&#160;</td><td class="memItemRight" valign="bottom"><b>m_gnuplotTerminalQueryProcess</b> = NULL</td></tr>
 <tr class="memdesc:ac57d86df2f36cc8707282576fc84d870"><td class="mdescLeft">&#160;</td><td class="mdescRight">Info about the gnuplot process we start for querying the terminals it supports. <br /></td></tr>
 <tr class="separator:ac57d86df2f36cc8707282576fc84d870"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1d892081ac5bcea5dd45ad5bc15f8ff"><td class="memItemLeft" align="right" valign="top">wxProcess *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#ae1d892081ac5bcea5dd45ad5bc15f8ff">m_gnuplotPopoutCheckProcess</a> = NULL</td></tr>
+<tr class="memdesc:ae1d892081ac5bcea5dd45ad5bc15f8ff"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classA.html">A</a> second, hidden, headless gnuplot invocation of the same "Pop out
+interactively" script, started alongside m_gnuplotProcess purely to capture warnings/errors gnuplot prints while preparing the plot.  <br /></td></tr>
+<tr class="separator:ae1d892081ac5bcea5dd45ad5bc15f8ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af900fcb67f4e33fc45be355e4718df94"><td class="memItemLeft" align="right" valign="top"><a id="af900fcb67f4e33fc45be355e4718df94" name="af900fcb67f4e33fc45be355e4718df94"></a>
+wxString&#160;</td><td class="memItemRight" valign="bottom"><b>m_gnuplotPopoutCheckFile</b></td></tr>
+<tr class="memdesc:af900fcb67f4e33fc45be355e4718df94"><td class="mdescLeft">&#160;</td><td class="mdescRight">The temp file m_gnuplotPopoutCheckProcess reads its script from; removed once OnGnuplotPopoutCheckClose() has read back its output. <br /></td></tr>
+<tr class="separator:af900fcb67f4e33fc45be355e4718df94"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acff0b225bbd01c1f3a2609fecf901a87"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#acff0b225bbd01c1f3a2609fecf901a87">m_gnuplotProbedCommand</a></td></tr>
 <tr class="memdesc:acff0b225bbd01c1f3a2609fecf901a87"><td class="mdescLeft">&#160;</td><td class="mdescRight">The gnuplot command whose terminal support we already probed.  <br /></td></tr>
 <tr class="separator:acff0b225bbd01c1f3a2609fecf901a87"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1302,7 +1310,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 
 <p>returns the command to start maxima </p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md1028"></a>
+ <h2><a class="anchor" id="autotoc_md1021"></a>
 Getting configuration</h2>
 
 </div>
@@ -1479,7 +1487,7 @@ Getting configuration</h2>
 
 <p>Inserts command cmd into the worksheet. </p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md1035"></a>
+ <h2><a class="anchor" id="autotoc_md1024"></a>
 Menu and button events</h2>
 
 </div>
@@ -1515,7 +1523,7 @@ Menu and button events</h2>
 <p>Moving the screen update to this function, as well, makes sure that if we get events faster than we can update the screen that doesn't cause lag, but causes screen updates for old events to be dropped if we already have new ones. This normally makes programs feel way more responsive.</p>
 <p>The worksheet is additionally refreshed by a timer task in case that th computer is too busy to ever reach the idle task at all.</p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md1034"></a>
+ <h2><a class="anchor" id="autotoc_md1023"></a>
 Idle event</h2>
 
 </div>
@@ -1650,13 +1658,13 @@ Idle event</h2>
 <p>Set the current working directory file I/O from maxima is relative to. </p>
 <p>ServerEvent is triggered when maxima connects to the socket server.</p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md1025"></a>
+ <h2><a class="anchor" id="autotoc_md1018"></a>
 Socket stuff</h2>
 <hr  />
- <h2><a class="anchor" id="autotoc_md1026"></a>
+ <h2><a class="anchor" id="autotoc_md1019"></a>
 Maxima process stuff</h2>
 <hr  />
- <h2><a class="anchor" id="autotoc_md1027"></a>
+ <h2><a class="anchor" id="autotoc_md1020"></a>
 Dealing with stuff read from the socket</h2>
 
 </div>
@@ -1760,7 +1768,7 @@ Dealing with stuff read from the socket</h2>
       </table>
 </div><div class="memdoc">
 <hr  />
- <h2><a class="anchor" id="autotoc_md1029"></a>
+ <h2><a class="anchor" id="autotoc_md1022"></a>
 Tips and help</h2>
 
 </div>
@@ -1895,7 +1903,7 @@ Tips and help</h2>
 
 <p>Enables and disables the Right menu buttons. </p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md1041"></a>
+ <h2><a class="anchor" id="autotoc_md1025"></a>
 Menu and button events</h2>
 
 </div>
@@ -1953,7 +1961,7 @@ Menu and button events</h2>
 
 <p>Updates the slider to show the right frame. </p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md1042"></a>
+ <h2><a class="anchor" id="autotoc_md1026"></a>
 Plot Slider</h2>
 
 </div>
@@ -2011,6 +2019,32 @@ Plot Slider</h2>
 
 <p>Did we tell maxima to close? </p>
 <p>If we didn't we respan an unexpectedly-closing maxima. </p>
+
+</div>
+</div>
+<a id="ae1d892081ac5bcea5dd45ad5bc15f8ff" name="ae1d892081ac5bcea5dd45ad5bc15f8ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1d892081ac5bcea5dd45ad5bc15f8ff">&#9670;&#160;</a></span>m_gnuplotPopoutCheckProcess</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxProcess* wxMaxima::m_gnuplotPopoutCheckProcess = NULL</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p><a class="el" href="classA.html">A</a> second, hidden, headless gnuplot invocation of the same "Pop out
+interactively" script, started alongside m_gnuplotProcess purely to capture warnings/errors gnuplot prints while preparing the plot. </p>
+<p>m_gnuplotProcess itself is never redirected: doing so would replace its console's real stdin/stdout with pipes we own, silently breaking the "type further gnuplot commands into the popped-out console" feature the manual documents. This second process runs with <code>set term unknown</code> (no display needed) and Redirect()ed streams instead, so it never shows a window of its own - see OnGnuplotPopoutCheckClose(). </p>
 
 </div>
 </div>

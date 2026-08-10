@@ -136,6 +136,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>OnGnuplotQueryTermina
 void&#160;</td><td class="memItemRight" valign="bottom"><b>OnGnuplotClose</b> (wxProcessEvent &amp;event)</td></tr>
 <tr class="memdesc:a1b6cfc5072e7663e5b0a4a5f1c905d07"><td class="mdescLeft">&#160;</td><td class="mdescRight">wxEVT_END_PROCESS handler for the gnuplot subprocess: notes it has closed. <br /></td></tr>
 <tr class="separator:a1b6cfc5072e7663e5b0a4a5f1c905d07"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a308a9e28bfbb6f654ee4027c9c8e73f4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMaximaProcessManager.html#a308a9e28bfbb6f654ee4027c9c8e73f4">OnGnuplotPopoutCheckClose</a> (wxProcessEvent &amp;event)</td></tr>
+<tr class="memdesc:a308a9e28bfbb6f654ee4027c9c8e73f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">wxEVT_END_PROCESS handler for the hidden, headless gnuplot check that runs alongside "Pop out interactively".  <br /></td></tr>
+<tr class="separator:a308a9e28bfbb6f654ee4027c9c8e73f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -183,6 +186,27 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>UnregisterChil
 
 <p>SIGKILL every child <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> we still have registered. </p>
 <p>Async-signal-safe (only kill() and reads of an array of sig_atomic_t) so it is safe to call from a signal handler or from wxWidgets' fatal-exception handler. No-op on Windows, where <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> runs under maxima.bat and the taskkill-based cleanup applies instead. </p>
+
+</div>
+</div>
+<a id="a308a9e28bfbb6f654ee4027c9c8e73f4" name="a308a9e28bfbb6f654ee4027c9c8e73f4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a308a9e28bfbb6f654ee4027c9c8e73f4">&#9670;&#160;</a></span>OnGnuplotPopoutCheckClose()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MaximaProcessManager::OnGnuplotPopoutCheckClose </td>
+          <td>(</td>
+          <td class="paramtype">wxProcessEvent &amp;&#160;</td>
+          <td class="paramname"><em>event</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>wxEVT_END_PROCESS handler for the hidden, headless gnuplot check that runs alongside "Pop out interactively". </p>
+<p>Reads back whatever gnuplot wrote to stdout/stderr while preparing the plot and, if it looks like it contains a warning or an error, shows it to the user - instead of leaving them looking at an unexplained empty plot window (GH #1973). </p>
 
 </div>
 </div>
