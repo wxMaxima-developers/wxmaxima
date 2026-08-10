@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: wxmaxima-gui\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-08-10 11:07+0000\n"
-"PO-Revision-Date: 2026-08-10 12:34\n"
+"PO-Revision-Date: 2026-08-10 18:27\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Language: de_DE\n"
@@ -53,23 +53,23 @@ msgstr ""
 
 #: ../../src/dialogs/ConfigDialogue.cpp:1569
 msgid "      -X \"--control-stack-size <int>\""
-msgstr "      -X \"--control-stack-size <int>\""
+msgstr ""
 
 #: ../../src/dialogs/ConfigDialogue.cpp:1568
 msgid "      -X \"--dynamic-space-size <int>\""
-msgstr "      -X \"--dynamic-space-size <int>\""
+msgstr ""
 
 #: ../../src/dialogs/ConfigDialogue.cpp:1572
 msgid "      -X '--control-stack-size <int>'"
-msgstr "      -X '--control-stack-size <int>'"
+msgstr ""
 
 #: ../../src/dialogs/ConfigDialogue.cpp:1571
 msgid "      -X '--dynamic-space-size <int>'"
-msgstr "      -X '--dynamic-space-size <int>'"
+msgstr ""
 
 #: ../../src/dialogs/ConfigDialogue.cpp:1551
 msgid "      -l <name>"
-msgstr "      -l <name>"
+msgstr ""
 
 #: ../../src/dialogs/ConfigDialogue.cpp:1557
 msgid "      -u <versionnumber>"
@@ -587,7 +587,7 @@ msgstr "(f(x),x,y) mit Singularitäten und Unstetigkeiten"
 #: ../../src/wizards/DrawWiz.cpp:303 ../../src/wizards/DrawWiz.cpp:320
 #: ../../src/wizards/DrawWiz.cpp:335
 msgid "-"
-msgstr "-"
+msgstr ""
 
 #: ../../src/wizards/IntegrateWiz.cpp:192
 #: ../../src/wizards/IntegrateWiz.cpp:202
@@ -595,7 +595,7 @@ msgstr "-"
 #: ../../src/wizards/IntegrateWiz.cpp:217 ../../src/wizards/LimitWiz.cpp:132
 #: ../../src/wizards/LimitWiz.cpp:142
 msgid "- Infinity"
-msgstr "- Infinity"
+msgstr ""
 
 #: ../../src/MaximaOutputAppender.cpp:116
 msgid "... [suppressed additional lines as the output is longer than allowed in the wxMaxima configuration] "
@@ -611,11 +611,11 @@ msgstr ""
 
 #: ../../src/sidebars/SymbolsSidebar.cpp:77
 msgid "1/2"
-msgstr "1/2"
+msgstr ""
 
 #: ../../src/sidebars/DrawSidebar.cpp:45
 msgid "2D"
-msgstr "2D"
+msgstr ""
 
 #: ../../src/wxMaximaFrame.cpp:1350
 msgid "2D Array to Matrix..."
@@ -639,7 +639,7 @@ msgstr ""
 
 #: ../../src/sidebars/DrawSidebar.cpp:49
 msgid "3D"
-msgstr "3D"
+msgstr ""
 
 #: ../../src/wxMaxima.cpp:1836
 #, c-format
@@ -722,7 +722,8 @@ msgstr "Ein Seitenumbruch"
 
 #: ../../src/dialogs/TipOfTheDay.cpp:168
 msgid "A plot to be embedded into the work sheet by preceding its name with a \"wx\". \"draw\" can be replaced by \"wxdraw\", plot by \"wxplot\" etc."
-msgstr "Diagramme können eingebettet werden, indem an den Beginn des Namens des Zeichenbefehls ein \"wx\" vorangestellt wird.\n\"draw\" wird so zu \"wxdraw\", plot zu \"wxplot\" etc."
+msgstr "Diagramme können eingebettet werden, indem an den Beginn des Namens des Zeichenbefehls ein \"wx\" vorangestellt wird.\n"
+"\"draw\" wird so zu \"wxdraw\", plot zu \"wxplot\" etc."
 
 #: ../../src/worksheet/WorksheetContextMenu.cpp:735
 msgid "A rational variable"
@@ -1343,15 +1344,16 @@ msgstr ""
 
 #: ../../src/dialogs/TipOfTheDay.cpp:141
 msgid "Besides the global undo functionality that is active when the cursor is between cells, wxMaxima has a per-cell undo function that is active if the cursor is inside a cell. Pressing Ctrl+Z inside a cell can therefore been used for a fine-pitch undo that doesn't affect latter changes made in other cells."
-msgstr "wxMaxima bietet zwei Funktionen, die Änderungen rückgängig machen können:\nSteht der Cursor zwischen zwei Zellen, macht die Tastenkombination Ctrl+Z Änderungen am Arbeitsblatt rückgängig. Steht er innerhalb einer Zelle, ist Ctrl+Z mit einer sehr feinkörnigen Rückgängigmach-Funktion verbunden, die sich nur um Änderungen innerhalb der aktuellen Zelle kümmert und den Rest des Arbeitsblattes ignoriert."
+msgstr "wxMaxima bietet zwei Funktionen, die Änderungen rückgängig machen können:\n"
+"Steht der Cursor zwischen zwei Zellen, macht die Tastenkombination Ctrl+Z Änderungen am Arbeitsblatt rückgängig. Steht er innerhalb einer Zelle, ist Ctrl+Z mit einer sehr feinkörnigen Rückgängigmach-Funktion verbunden, die sich nur um Änderungen innerhalb der aktuellen Zelle kümmert und den Rest des Arbeitsblattes ignoriert."
 
 #: ../../src/sidebars/GreekSidebar.cpp:179
 msgid "Beta"
-msgstr "Beta"
+msgstr ""
 
 #: ../../src/dialogs/ConfigDialogue.cpp:1898
 msgid "Bitmap"
-msgstr "Bitmap"
+msgstr ""
 
 #: ../../src/dialogs/ConfigDialogue.cpp:1273
 msgid "Bitmap scale for export:"
@@ -1926,7 +1928,7 @@ msgstr "Prüft, ob Sie eine aktuelle Version von wxMaxima erhältlich ist."
 
 #: ../../src/sidebars/GreekSidebar.cpp:199
 msgid "Chi"
-msgstr "Chi"
+msgstr ""
 
 #: ../../src/dialogs/ConfigDialogue.cpp:189
 msgid "Chinese (Simplified)"
@@ -2887,7 +2889,7 @@ msgstr ""
 
 #: ../../src/worksheet/Worksheet.cpp:6125
 msgid "Cursor"
-msgstr "Cursor"
+msgstr ""
 
 #: ../../src/Styles.cpp:126
 msgid "Cursor color"
@@ -3104,7 +3106,7 @@ msgstr "Trennzeichen:"
 
 #: ../../src/sidebars/GreekSidebar.cpp:181
 msgid "Delta"
-msgstr "Delta"
+msgstr ""
 
 #: ../../src/worksheet/WorksheetContextMenu.cpp:110
 #: ../../src/worksheet/WorksheetContextMenu.cpp:558
@@ -3648,7 +3650,7 @@ msgstr "Umgebungsvariablen für Maxima:"
 
 #: ../../src/sidebars/GreekSidebar.cpp:182
 msgid "Epsilon"
-msgstr "Epsilon"
+msgstr ""
 
 #: ../../src/MaximaCommandMenus.cpp:299
 msgid "Epsilon:"
@@ -3743,7 +3745,7 @@ msgstr ""
 
 #: ../../src/sidebars/GreekSidebar.cpp:184
 msgid "Eta"
-msgstr "Eta"
+msgstr ""
 
 #: ../../src/sidebars/TableOfContents.cpp:513
 msgid "Evaluate"
@@ -4580,7 +4582,7 @@ msgstr "For Schleife..."
 
 #: ../../src/wizards/Plot2dWiz.cpp:69 ../../src/wizards/Plot3dWiz.cpp:60
 msgid "Format:"
-msgstr "Format:"
+msgstr ""
 
 #: ../../src/worksheet/Worksheet.cpp:301 ../../src/wxMaxima.cpp:3584
 msgid "Forwarding the keyboard focus to a text control"
@@ -4732,7 +4734,7 @@ msgstr "Galicisch"
 
 #: ../../src/sidebars/GreekSidebar.cpp:180
 msgid "Gamma"
-msgstr "Gamma"
+msgstr ""
 
 #: ../../src/wxMaximaFrame.cpp:320
 msgid "General Math"
@@ -4902,7 +4904,7 @@ msgstr "Eine exakte Zahl schätzen, die diese Gleitkommazahl sein könnte"
 
 #: ../../src/dialogs/ConfigDialogue.cpp:1215
 msgid "HTML"
-msgstr "HTML"
+msgstr ""
 
 #: ../../src/MaximaCommandMenus.cpp:2279
 msgid "HTML file (*.html)|*.html|maxima batch file (*.mac)|*.mac|LaTeX file (*.tex)|*.tex"
@@ -5210,7 +5212,10 @@ msgstr "Sie haben eine Idee für eine Verbesserung von wxMaxima? Super! Bitte tr
 
 #: ../../src/dialogs/TipOfTheDay.cpp:76
 msgid "If you type an operator (one of +*/^=,) as the first symbol in an input cell, % will be automatically inserted before the operator, as on a graphing calculator. You can disable this feature from the 'Edit->Configure' dialog."
-msgstr "Bei Eingabe eines Operators (+, *, /, ^ oder =) als erstes Symbol einer Zelle\nwird automatisch ein % eingefügt, so dass sich das Programm wie ein\ngraphischer Taschenrechner verhält. Diese Funktion kann über die Konfiguration\n(erreichbar über 'Bearbeiten->Einstellungen') abgeschaltet werden."
+msgstr "Bei Eingabe eines Operators (+, *, /, ^ oder =) als erstes Symbol einer Zelle\n"
+"wird automatisch ein % eingefügt, so dass sich das Programm wie ein\n"
+"graphischer Taschenrechner verhält. Diese Funktion kann über die Konfiguration\n"
+"(erreichbar über 'Bearbeiten->Einstellungen') abgeschaltet werden."
 
 #: ../../src/dialogs/TipOfTheDay.cpp:122
 msgid "If your calculation is taking too long to evaluate, you can try 'Maxima->Interrupt' or 'Maxima->Restart Maxima' menu commands."
@@ -5351,7 +5356,7 @@ msgstr ""
 #: ../../src/wizards/IntegrateWiz.cpp:215 ../../src/wizards/LimitWiz.cpp:132
 #: ../../src/wizards/LimitWiz.cpp:140
 msgid "Infinity"
-msgstr "Infinity"
+msgstr ""
 
 #: ../../src/wxMaximaFrame.cpp:1990
 msgid "Info about Maxima build"
@@ -5685,7 +5690,7 @@ msgstr "Inverse Laplacet&ransformation ..."
 
 #: ../../src/sidebars/GreekSidebar.cpp:186
 msgid "Iota"
-msgstr "Iota"
+msgstr ""
 
 #: ../../src/MaximaCommandMenus.cpp:4210
 msgid "Is Char 1 greater than Char2, if case is ignored?"
@@ -5877,7 +5882,7 @@ msgstr "Kabylisch"
 
 #: ../../src/sidebars/GreekSidebar.cpp:187
 msgid "Kappa"
-msgstr "Kappa"
+msgstr ""
 
 #: ../../src/dialogs/ConfigDialogue.cpp:864
 #, c-format
@@ -5910,7 +5915,7 @@ msgstr ""
 
 #: ../../src/dialogs/ConfigDialogue.cpp:1166
 msgid "LaTeX"
-msgstr "LaTeX"
+msgstr ""
 
 #: ../../src/dialogs/ConfigDialogue.cpp:1199
 msgid "LaTeX: Place exponents after, instead above subscripts"
@@ -6451,7 +6456,7 @@ msgstr ""
 
 #: ../../src/dialogs/ConfigDialogue.cpp:281
 msgid "Maxima"
-msgstr "Maxima"
+msgstr ""
 
 #: ../../src/dialogs/ConfigDialogue.cpp:1433
 msgid "Maxima Location"
@@ -6854,7 +6859,7 @@ msgstr "Mittelwert:"
 
 #: ../../src/sidebars/StatSidebar.cpp:55
 msgid "Median..."
-msgstr "Median..."
+msgstr ""
 
 #: ../../src/wxMaximaFrame.cpp:1965
 msgid "Memoizing"
@@ -6974,7 +6979,7 @@ msgstr "Name von x:"
 
 #: ../../src/wizards/MatWiz.cpp:163
 msgid "Name:"
-msgstr "Name:"
+msgstr ""
 
 #: ../../src/dialogs/ConfigDialogue.cpp:216
 msgid "Nepali"
@@ -7364,7 +7369,7 @@ msgstr "Alte Variable:"
 
 #: ../../src/sidebars/GreekSidebar.cpp:201
 msgid "Omega"
-msgstr "Omega"
+msgstr ""
 
 #: ../../src/sidebars/GreekSidebar.cpp:192
 msgid "Omicron"
@@ -7647,11 +7652,11 @@ msgstr ""
 
 #: ../../src/sidebars/GreekSidebar.cpp:198
 msgid "Phi"
-msgstr "Phi"
+msgstr ""
 
 #: ../../src/sidebars/GreekSidebar.cpp:193
 msgid "Pi"
-msgstr "Pi"
+msgstr ""
 
 #: ../../src/sidebars/StatSidebar.cpp:94
 msgid "Piechart..."
@@ -8003,7 +8008,7 @@ msgstr "Programmblock ohne lokale Variablen..."
 
 #: ../../src/sidebars/GreekSidebar.cpp:200
 msgid "Psi"
-msgstr "Psi"
+msgstr ""
 
 #: ../../src/wxMaximaFrame.cpp:1792
 msgid "Push"
@@ -8226,7 +8231,7 @@ msgstr "Nicht gespeicherte Dateien wiederherstellen"
 
 #: ../../src/sidebars/MathSidebar.cpp:56
 msgid "Rectform"
-msgstr "Rectform"
+msgstr ""
 
 #: ../../src/wxMaximaFrame.cpp:1681
 msgid "Recursive Substitute..."
@@ -8585,7 +8590,7 @@ msgstr "Änderungen rückgängig machen"
 
 #: ../../src/sidebars/GreekSidebar.cpp:194
 msgid "Rho"
-msgstr "Rho"
+msgstr ""
 
 #: ../../src/dialogs/ConfigDialogue.cpp:2015
 msgid "Right"
@@ -9376,7 +9381,7 @@ msgstr "Seitenleisten"
 
 #: ../../src/sidebars/GreekSidebar.cpp:195
 msgid "Sigma"
-msgstr "Sigma"
+msgstr ""
 
 #: ../../src/dialogs/FindReplacePane.cpp:88
 msgid "Simple"
@@ -10057,7 +10062,7 @@ msgstr ""
 
 #: ../../src/sidebars/GreekSidebar.cpp:196
 msgid "Tau"
-msgstr "Tau"
+msgstr ""
 
 #: ../../src/MaximaCommandMenus.cpp:181
 msgid "Taylor series"
@@ -10518,7 +10523,7 @@ msgstr ""
 
 #: ../../src/sidebars/GreekSidebar.cpp:185
 msgid "Theta"
-msgstr "Theta"
+msgstr ""
 
 #: ../../src/dialogs/LicenseDialog.cpp:85
 msgid "Third-party notices"
@@ -11401,7 +11406,7 @@ msgstr "Mimetype Information geschrieben"
 #: ../../src/wizards/DrawWiz.cpp:961 ../../src/wizards/DrawWiz.cpp:974
 #: ../../src/wizards/DrawWiz.cpp:977
 msgid "X"
-msgstr "X"
+msgstr ""
 
 #: ../../src/MathParser.cpp:1279
 msgid "XML nesting limit exceeded"
@@ -11409,7 +11414,7 @@ msgstr ""
 
 #: ../../src/sidebars/GreekSidebar.cpp:191
 msgid "Xi"
-msgstr "Xi"
+msgstr ""
 
 #: ../../src/dialogs/ConfigDialogue.cpp:728
 msgid "Yes"
@@ -11465,7 +11470,7 @@ msgstr "Ihre wxMaxima Version ist aktuell."
 
 #: ../../src/sidebars/GreekSidebar.cpp:183
 msgid "Zeta"
-msgstr "Zeta"
+msgstr ""
 
 #: ../../src/wxMaximaFrame.cpp:846
 msgid "Zoom &In\tCtrl++"
@@ -11493,11 +11498,12 @@ msgstr "[ nicht gespeichert* ]"
 
 #: ../../src/wizards/DrawWiz.cpp:819 ../../src/wizards/DrawWiz.cpp:825
 msgid "[[x_1,x_2,...],[y_1,y_2,...]]"
-msgstr "[[x_1,x_2,...],[y_1,y_2,...]]"
+msgstr ""
 
 #: ../../src/wizards/DrawWiz.cpp:814
 msgid "[x_1, x_2,...] or [x_1, x_2,...],[y_1, y_2,...] or matrix([x_1,y_1],[x_2,y_2],...)"
-msgstr "[x_1, x_2,...] oder [x_1, x_2,...],[y_1, y_2,...] oder matrix([x_1,y_1],[x_2,\"\n\"y_2],...)"
+msgstr "[x_1, x_2,...] oder [x_1, x_2,...],[y_1, y_2,...] oder matrix([x_1,y_1],[x_2,\"\n"
+"\"y_2],...)"
 
 #: ../../src/wizards/ListSortWiz.cpp:46
 msgid "a<b (Maxima default)"
@@ -11505,7 +11511,7 @@ msgstr ""
 
 #: ../../src/sidebars/GreekSidebar.cpp:151
 msgid "alpha"
-msgstr "alpha"
+msgstr ""
 
 #: ../../src/sidebars/SymbolsSidebar.cpp:95
 msgid "and"
@@ -11537,7 +11543,7 @@ msgstr "als Speicher für die konkreten Inhalte von Variablen"
 
 #: ../../src/sidebars/GreekSidebar.cpp:152
 msgid "beta"
-msgstr "beta"
+msgstr ""
 
 #: ../../src/wizards/LimitWiz.cpp:42
 msgid "both sides"
@@ -11549,7 +11555,7 @@ msgstr ""
 
 #: ../../src/sidebars/GreekSidebar.cpp:172
 msgid "chi"
-msgstr "chi"
+msgstr ""
 
 #: ../../src/MaximaFileIO.cpp:318
 #, c-format
@@ -11563,11 +11569,11 @@ msgstr "Standard"
 
 #: ../../src/sidebars/GreekSidebar.cpp:154
 msgid "delta"
-msgstr "delta"
+msgstr ""
 
 #: ../../src/wizards/MatWiz.cpp:159
 msgid "diagonal"
-msgstr "diagonal"
+msgstr ""
 
 #: ../../src/cells/FracCell.cpp:73
 msgid "diff(): Cannot find the multiplication sign I should hide"
@@ -11587,7 +11593,7 @@ msgstr "Leere Menge"
 
 #: ../../src/sidebars/GreekSidebar.cpp:155
 msgid "epsilon"
-msgstr "epsilon"
+msgstr ""
 
 #: ../../src/sidebars/SymbolsSidebar.cpp:100
 msgid "equivalent"
@@ -11595,7 +11601,7 @@ msgstr "Äquivalent"
 
 #: ../../src/sidebars/GreekSidebar.cpp:157
 msgid "eta"
-msgstr "eta"
+msgstr ""
 
 #: ../../src/worksheet/WorksheetContextMenu.cpp:799
 msgid "ev() shall evaluate this automatically"
@@ -11645,7 +11651,7 @@ msgstr "Funktion"
 
 #: ../../src/sidebars/GreekSidebar.cpp:153
 msgid "gamma"
-msgstr "gamma"
+msgstr ""
 
 #: ../../src/wizards/MatWiz.cpp:159
 msgid "general"
@@ -11680,15 +11686,15 @@ msgstr "Schnittmenge"
 
 #: ../../src/sidebars/GreekSidebar.cpp:159
 msgid "iota"
-msgstr "iota"
+msgstr ""
 
 #: ../../src/sidebars/GreekSidebar.cpp:160
 msgid "kappa"
-msgstr "kappa"
+msgstr ""
 
 #: ../../src/sidebars/GreekSidebar.cpp:161
 msgid "lambda"
-msgstr "lambda"
+msgstr ""
 
 #: ../../src/wizards/LimitWiz.cpp:42
 msgid "left"
@@ -11708,7 +11714,7 @@ msgstr "Logarithmische Skala"
 
 #: ../../src/wizards/DrawWiz.cpp:822
 msgid "matrix([x_1,x_2,...],[y_1,y_2,...])"
-msgstr "matrix([x_1,x_2,...],[y_1,y_2,...])"
+msgstr ""
 
 #: ../../src/wxMaximaFrame.cpp:1443
 msgid "max(abs(A(i,j))) (complex)"
@@ -11789,7 +11795,7 @@ msgstr ""
 
 #: ../../src/sidebars/GreekSidebar.cpp:174
 msgid "omega"
-msgstr "omega"
+msgstr ""
 
 #: ../../src/sidebars/GreekSidebar.cpp:165
 msgid "omicron"
@@ -11818,11 +11824,11 @@ msgstr "Symbol für partielle Ableitung"
 
 #: ../../src/sidebars/GreekSidebar.cpp:171
 msgid "phi"
-msgstr "phi"
+msgstr ""
 
 #: ../../src/sidebars/GreekSidebar.cpp:166
 msgid "pi"
-msgstr "pi"
+msgstr ""
 
 #: ../../src/sidebars/SymbolsSidebar.cpp:101
 msgid "plus or minus"
@@ -11855,7 +11861,7 @@ msgstr "Proportional zu"
 
 #: ../../src/sidebars/GreekSidebar.cpp:173
 msgid "psi"
-msgstr "psi"
+msgstr ""
 
 #: ../../src/MaximaCommandMenus.cpp:642
 msgid "radcan() is a powerful tools for simplification trigonometric functions but needs to be taken with care: If a function has more than one branch radcan uses the one that looks like it would fit best, not necessarily the one that makes sense for the problem that resulted in the Expression that is to be simplified."
@@ -11883,7 +11889,7 @@ msgstr ""
 
 #: ../../src/sidebars/GreekSidebar.cpp:167
 msgid "rho"
-msgstr "rho"
+msgstr ""
 
 #: ../../src/wizards/LimitWiz.cpp:42
 msgid "right"
@@ -11907,7 +11913,7 @@ msgstr "Der Bereich für die 2. y-Achse (automatisch, wenn leer)"
 
 #: ../../src/sidebars/GreekSidebar.cpp:168
 msgid "sigma"
-msgstr "sigma"
+msgstr ""
 
 #: ../../src/MaximaCommandMenus.cpp:3507
 msgid "solve() will solve a list of equations only if for n independent equations there are n variables to solve to.\n"
@@ -11949,7 +11955,7 @@ msgstr ""
 
 #: ../../src/sidebars/GreekSidebar.cpp:169
 msgid "tau"
-msgstr "tau"
+msgstr ""
 
 #: ../../src/cells/TextCell.cpp:340
 msgid "the [] operator tried to extract an element of a list, a matrix, an equation or an array. But instead of an integer number something was used whose numerical value is unknown or not an integer.\n"
@@ -11970,7 +11976,7 @@ msgstr "Es existiert kein"
 
 #: ../../src/sidebars/GreekSidebar.cpp:158
 msgid "theta"
-msgstr "theta"
+msgstr ""
 
 #: ../../src/sidebars/SymbolsSidebar.cpp:78
 msgid "to the power of 2"
@@ -12182,7 +12188,7 @@ msgstr ""
 
 #: ../../src/dialogs/ConfigDialogue.cpp:709
 msgid "x"
-msgstr "x"
+msgstr ""
 
 #: ../../src/wizards/DrawWiz.cpp:266
 msgid "x axis label"
@@ -12198,7 +12204,7 @@ msgstr "Der Bereich für die x-Achse (automatisch, wenn leer)"
 
 #: ../../src/sidebars/GreekSidebar.cpp:164
 msgid "xi"
-msgstr "xi"
+msgstr ""
 
 #: ../../src/MaximaFileIO.cpp:408 ../../src/MaximaFileIO.cpp:566
 msgid "xml contained in the file claims not to be a wxMaxima worksheet. "
@@ -12234,7 +12240,7 @@ msgstr "Der Bereich für die z-Achse (automatisch, wenn leer)"
 
 #: ../../src/sidebars/GreekSidebar.cpp:156
 msgid "zeta"
-msgstr "zeta"
+msgstr ""
 
 #. type: Title #
 #: ../../info/wxmaxima.md:1
