@@ -900,9 +900,19 @@ void Worksheet::ScrollToError() {
   if (!errorCell)
     return;
 
-  if (errorCell->RevealHidden()) {
-    FoldOccurred();
-    RequestRecalculation();
+  // If the cell that errored is folded away, don't force it open just to
+  // point at it (GH #1952): folding a time-consuming calculation down to
+  // one line so the worksheet stays readable is defeated if a single error
+  // deep inside unconditionally unfurls the whole thing. Land on the
+  // outermost fold header that is actually part of the visible tree
+  // instead, leaving the fold itself untouched.
+  GroupCell *target = errorCell;
+  while (GroupCell *parent = target->GetHiddenTreeParent())
+    target = parent;
+  if (target != errorCell) {
+    SetHCaret(target);
+    ScrollToCaret();
+    return;
   }
 
   // Try to scroll to a place from which the full error message is visible

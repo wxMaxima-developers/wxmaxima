@@ -1,5 +1,12 @@
 # Current development version
 
+- Evaluating a folded section no longer unfolds it just because an error
+  happened somewhere inside (GH #1952). Folding a time-consuming or
+  no-longer-relevant calculation down to one line, so the worksheet stays
+  readable while everything still gets evaluated, was defeated if a single
+  error deep inside the fold unconditionally sprang it back open -- the
+  worksheet now lands on the fold's own (visible) header instead, leaving
+  the fold itself untouched.
 - "Pop out interactively" (the plot image's right-click menu) now tells you
   when gnuplot had trouble with the plot, instead of silently leaving you
   with an unexplained window (GH #1973). A second, hidden gnuplot process

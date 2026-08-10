@@ -803,6 +803,39 @@ tried without rebuilding.
   the unrelated, already-existing `%sum` `rbp` registration, not extra
   parens around the summand).
 
+- **"Don't unfold cells just because their folded tree is being evaluated"
+  (GH #1952):** `Worksheet::ScrollToError()` -- called automatically by
+  `MaximaEvaluator::CheckForErrors()` whenever `AbortOnError()` is on (the
+  default) and a cell errors -- used to call `errorCell->RevealHidden()`
+  unconditionally. If the errored cell was folded away, that silently
+  unfolded the *entire* enclosing section just to point at it, defeating the
+  whole reason many users fold a calculation down to one line in the first
+  place: to keep the worksheet readable while it evaluates, errors included.
+  Confirmed live in a real Xvfb session (a folded section containing
+  `a:1$ error("...")$ a+1$`, evaluated via "Evaluate All Cells"): the section
+  sprang open the instant the `error()` cell ran, on unmodified `main`.
+  Fixed by walking up `GroupCell::GetHiddenTreeParent()` (returns non-null
+  exactly when a cell sits in someone's torn-out `m_hiddenTree` -- see the
+  `Fold()`/`Unfold()`/`CellList::TearOut` notes elsewhere in this section)
+  to the outermost cell that *is* part of the visible tree, and -- only if
+  that ancestor differs from the error cell itself, i.e. the cell actually
+  is hidden -- targeting that ancestor (`SetHCaret`+`ScrollToCaret`) instead
+  of calling `RevealHidden()`/touching `errorCell`'s own (still-hidden,
+  un-renderable) `EditorCell` at all. The ordinary (not-folded) case falls
+  through to the original code completely unchanged. Deliberately left
+  `Worksheet::OpenQuestionCaret()`'s own `RevealHidden()` call alone: unlike
+  an error, an interactive Maxima question genuinely blocks the evaluation
+  queue until the user answers it, so there is no way to let the user
+  respond without unfolding down to the cell that's asking. Regression-
+  tested in `test/unit_tests/test_TreeUndo.cpp` (`SCENARIO("An error inside
+  a folded section does not unfold it (GH #1952)")`) by folding a section,
+  calling the *public* `ErrorList::Add()` directly to simulate what
+  `MaximaEvaluator` does on a real error (no live Maxima needed), then
+  asserting `ScrollToError()` leaves `GetHiddenTree()`/`GetHiddenTreeParent()`
+  untouched and lands the h-caret on the header -- confirmed to actually
+  catch the regression by reverting the fix and watching the new assertions
+  fail against the old code before restoring it.
+
 ## Layout & Compatibility
 
 - **Mathematical Cell Padding:** Use `MC_TEXT_PADDING` (in `Configuration.h`) for text-based cells. **Exception:** `DigitCell` does not include padding to ensure visual consistency in broken-up numbers.
