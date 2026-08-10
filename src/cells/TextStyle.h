@@ -40,6 +40,7 @@
 #include <wx/settings.h>
 #include <cstdint>
 #include <functional>
+#include "Compat.h"   // wxWARN_UNUSED
 #include "FontAttribs.h"
 #include "FontVariantCache.h"
 #include <unordered_map>
@@ -59,7 +60,10 @@ static constexpr uint32_t MAKE_RGB(uint32_t r, uint32_t g, uint32_t b)
  * for fonts with this font name.
  *
  */
-class Style final
+// A style is a value: constructing one and never asking it anything is dead
+// code. Its user-provided copy constructor makes it non-trivial, which is
+// exactly the case plain -Wunused-variable stops warning about.
+class wxWARN_UNUSED Style final
 {
 public:
   Style();

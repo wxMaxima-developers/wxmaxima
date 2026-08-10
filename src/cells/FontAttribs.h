@@ -53,6 +53,7 @@
 #ifndef WXMAXIMA_FONTATTRIBS_H
 #define WXMAXIMA_FONTATTRIBS_H
 
+#include "Compat.h"   // wxWARN_UNUSED
 #include "EnumWrapper.h"
 #include <wx/font.h>
 #include <wx/version.h>
@@ -93,7 +94,8 @@ using AFontWeight = EnumWrapper<wxFontWeight, int16_t, wxFONTWEIGHT_NORMAL>;
  *
  * To check if a font size is null, use IsNull(), or its inverse IsValid().
  */
-class AFontSize final
+// A font size is a value: an AFontSize nobody reads is dead code.
+class wxWARN_UNUSED AFontSize final
 {
   constexpr static float Size_Unit = 0.05f;
 

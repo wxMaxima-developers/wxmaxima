@@ -20,14 +20,18 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 /*! \file
-  Small C++ standard-library compatibility shims.
+  Small compatibility shims for older toolchains and older wxWidgets.
 
   wxMaxima targets C++20 but aims to keep building on toolchains a few years
   behind. This header provides minimal fall-backs for std features that may be
   missing there: std::jthread / std::stop_token / std::stop_source, and
   std::ranges::contains. These were historically carried in Version.h; they live
-  here now because they have nothing to do with the version and are pure,
-  CMake-independent C++ (so this header is a plain committed file, not generated).
+  here now because they have nothing to do with the version and are
+  CMake-independent (so this header is a plain committed file, not generated).
+
+  It also carries the same kind of fall-back for wxWidgets macros that only
+  exist in newer wxWidgets than the 3.0.5 we still support - currently
+  wxWARN_UNUSED, see its documentation at the bottom of this file.
 */
 
 #ifndef WXM_COMPAT_H
@@ -88,4 +92,28 @@ namespace ranges {
     }
 #endif
 }
+
+/*! \def wxWARN_UNUSED
+  Marks a class whose unused instances are a bug.
+
+  It expands to __attribute__((warn_unused)), which makes the compiler report a
+  local variable of that type that is never used. Plain -Wunused-variable
+  cannot do that on its own: as soon as a type has a non-trivial constructor or
+  destructor the compiler must assume the object exists for its side effects,
+  so it stops warning - which is exactly why a dead `Style style;` or
+  `MaximaTokenizer::Token token;` can sit unnoticed.
+
+  wxWidgets defines it itself from 3.2.7 on. This no-op fallback keeps wxMaxima
+  building against the older wxWidgets it still supports (3.0.5, see AGENTS.md).
+
+  The <wx/defs.h> include above the guard is load-bearing: without it this
+  header could be reached first, define the macro empty, and then wxWidgets'
+  own "#ifndef wxWARN_UNUSED" would decline to redefine it - silently turning
+  the attribute off on the very compilers that support it.
+*/
+#include <wx/defs.h>
+#ifndef wxWARN_UNUSED
+#define wxWARN_UNUSED
+#endif
+
 #endif // WXM_COMPAT_H
