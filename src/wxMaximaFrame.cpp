@@ -50,7 +50,9 @@
 #include <wx/config.h>
 #include <wx/iconbndl.h>
 #include <wx/intl.h>
+#if wxCHECK_VERSION(3, 1, 6)
 #include <wx/uilocale.h>
+#endif
 #include <wx/display.h>
 #include <wx/fileconf.h>
 #include <wx/filename.h>
