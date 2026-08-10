@@ -892,6 +892,38 @@ tried without rebuilding.
     be compile-checked on the pre-version-guard fallback path, not the
     actual new behavior.
 
+- **Scaled images losing transparency (GH #2227, `Image::GetBitmap()` in
+  `src/Image.cpp`):** the final step of building a scaled display bitmap
+  converted the already-loaded/decoded bitmap back to a `wxImage`, called
+  `Rescale()` on it, then rebuilt the bitmap with `wxBitmap(img, 24)` --
+  an explicit `depth` argument. Passing a depth to this `wxBitmap`
+  constructor forces that bit depth and **discards any alpha channel**,
+  even when `wxImage::HasAlpha()` is true on the source image; omitting the
+  parameter (the default, `-1`) auto-detects depth and preserves alpha
+  instead. Every other bitmap-construction call in the same file --
+  `GetUnscaledBitmap()`'s SVG-rasterize and compressed-image-decode paths,
+  and `GetBitmap()`'s own first construction a few lines earlier -- already
+  omits the depth argument; the scaled-bitmap path was the one outlier.
+  The visible symptom (per the issue) is a previously-transparent region of
+  an image rendering as solid, usually black, once the image needed
+  scaling to fit its on-screen size -- black because that's what most
+  image encoders leave in the RGB channels of a fully-transparent pixel,
+  and once the alpha channel is gone there's nothing left to mask it.
+  Fixed by dropping the explicit depth: `m_scaledBitmap = wxBitmap(img);`.
+  Verified with the existing `imageFormat` ctest (`test/image-test/`,
+  covers PNG/BMP/TIFF/GIF/JPG/WEBP/PNM/XPM sources, PNG and BMP both
+  confirmed to actually carry an alpha channel via `file`) under
+  `xvfb-run` -- it needs a real X display (`Error: Unable to initialize
+  GTK+, is DISPLAY set properly?` without one) -- plus the full `ctest`
+  suite for regressions. This is narrowly a "don't destroy an alpha
+  channel we already have" fix; it does not address the separate,
+  genuinely open design question the same issue also raises (also flagged
+  by the maintainer in the issue itself): whether leaving a transparent
+  pixel fully transparent is actually correct once a dark worksheet
+  background is involved (e.g. black line art becoming invisible against
+  it), which needs a product decision, not a bug fix, and is left for a
+  follow-up.
+
 ## Layout & Compatibility
 
 - **Mathematical Cell Padding:** Use `MC_TEXT_PADDING` (in `Configuration.h`) for text-based cells. **Exception:** `DigitCell` does not include padding to ensure visual consistency in broken-up numbers.

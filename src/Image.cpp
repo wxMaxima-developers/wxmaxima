@@ -730,7 +730,16 @@ wxBitmap Image::GetBitmap(double scale) {
   if (m_scaledBitmap.IsOk()) {
     wxImage img = m_scaledBitmap.ConvertToImage();
     img.Rescale(m_width, m_height, wxIMAGE_QUALITY_BICUBIC);
-    m_scaledBitmap = wxBitmap(img, 24);
+    // Forcing depth=24 here (as this used to) discards any alpha channel
+    // Rescale() just carried over from the source image, turning previously
+    // transparent pixels into solid, opaque -- typically black, since that is
+    // what most encoders leave in the RGB channels of a fully transparent
+    // pixel -- ones (GH #2227). Every other wxBitmap(img, ...) call in this
+    // file (GetUnscaledBitmap(), the non-rescaled path a few lines above)
+    // already omits the depth argument for exactly this reason; do the same
+    // here so a scaled bitmap's alpha channel survives identically to an
+    // unscaled one's.
+    m_scaledBitmap = wxBitmap(img);
   } else
     m_scaledBitmap = wxBitmap(1, 1);
   return m_scaledBitmap;

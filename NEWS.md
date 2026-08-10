@@ -1,5 +1,11 @@
 # Current development version
 
+- Fixed a scaled image losing its transparency and showing a solid
+  (typically black) background instead (GH #2227). Rescaling an image to
+  fit its on-screen size forced the resulting bitmap to a plain 24-bit
+  depth, which discards any alpha channel -- every other place in the same
+  code path already builds its bitmap without forcing a depth, so the
+  scaled case now does the same and keeps the source image's transparency.
 - Fixed two regressions from wxMaxima's earlier, partial move to `wxUILocale`
   (GH #2233, on wxWidgets >= 3.1.6): picking a language other than "System
   default" was silently ignored for the actual locale (only translations
