@@ -1,5 +1,12 @@
 # Current development version
 
+- Fixed two regressions from wxMaxima's earlier, partial move to `wxUILocale`
+  (GH #2233, on wxWidgets >= 3.1.6): picking a language other than "System
+  default" was silently ignored for the actual locale (only translations
+  respected it; number/date formatting etc. kept following the OS default),
+  and the manually-selected help manual (e.g. the German or Simplified
+  Chinese one) was never found, always falling back to the plain English
+  manual regardless of the chosen language.
 - Evaluating a folded section no longer unfolds it just because an error
   happened somewhere inside (GH #1952). Folding a time-consuming or
   no-longer-relevant calculation down to one line, so the worksheet stays
