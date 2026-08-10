@@ -455,6 +455,36 @@ SCENARIO("Fold All folds every foldable cell as one atomic undo step (GH #266)")
   }
 }
 
+SCENARIO("An error inside a folded section does not unfold it (GH #1952)") {
+  GIVEN("a worksheet [section, code] with the section folded and the code cell "
+        "flagged as containing an error") {
+    g_ws->ClearDocument();
+    GroupCell *section = AppendCell(GC_TYPE_SECTION, wxS("A section"));
+    GroupCell *child = AppendCell(GC_TYPE_CODE, wxS("bad_command;"));
+    g_ws->TreeUndo_ClearBuffers();
+
+    REQUIRE(g_ws->ToggleFold(section) == section);
+    REQUIRE(section->GetHiddenTree() == child);
+    // Simulates what MaximaEvaluator does when a cell's evaluation produces
+    // an error: register it, then (if AbortOnError, the default) jump to it.
+    g_ws->GetErrorList().Add(child);
+
+    WHEN("ScrollToError() runs, as it does when evaluation aborts on an error") {
+      g_ws->ScrollToError();
+
+      THEN("the section stays folded - only the visible header is targeted") {
+        // Folding a time-consuming calculation down to one line to keep the
+        // worksheet readable (the whole point of folding, see GH #1952) is
+        // defeated if a single error deep inside unconditionally unfurls it.
+        CHECK(section->GetHiddenTree() == child);
+        CHECK(child->GetHiddenTreeParent() == section);
+        CHECK(g_ws->GetHCaret() == section);
+      }
+    }
+  }
+  g_ws->GetErrorList().Clear();
+}
+
 class TestApp : public wxApp {
 public:
   bool OnInit() override { return true; }
