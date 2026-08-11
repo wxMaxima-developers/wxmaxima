@@ -1,5 +1,13 @@
 # Current development version
 
+- Sidebars can now be minimized, not just closed (GH #2229). A minimized
+  sidebar collapses into a small strip at the edge of the window and comes
+  back, in the same place and at the same size, when you click it there - so a
+  sidebar you only need occasionally no longer costs you either its screen
+  space or its position. Closing a sidebar still works exactly as before.
+  Needs wxWidgets 3.3.2 or newer; with an older wxWidgets the sidebars are
+  unchanged.
+
 - Restored 464 UI/manual translations across 16 languages (Catalan, Czech,
   Danish, German, Greek, Spanish, Finnish, French, Galician, Hungarian,
   Italian, Kabyle, Polish, Russian, Turkish, Ukrainian) that a Crowdin sync

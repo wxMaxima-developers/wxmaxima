@@ -430,6 +430,19 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
               .LeftDockable(true)
               .RightDockable(true)
               .PaneBorder(true);
+#if wxCHECK_VERSION(3, 3, 2)
+          // A sidebar can be closed, but closing it forgets where it was.
+          // wxWidgets 3.3.2 and up can minimize a pane instead: it collapses
+          // to a small toolbar-like handle and comes back where it was, which
+          // is what you want for a sidebar you only need now and then. Set
+          // after the chain above rather than inside it, so the whole common
+          // block stays one statement on every wxWidgets version.
+          if(
+             (paneId != EventIDs::menu_pane_console) &&
+             (paneId != EventIDs::menu_pane_toolbar)
+             )
+            m_manager.GetPane(name).MinimizeButton(true);
+#endif
           // Give the pane's window an accessible name: without it a screen
           // reader announces every sidebar as an unnamed "panel". The default
           // wxWindowAccessible reports the window's label as its name.
