@@ -71,7 +71,8 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
-<a href="#pub-methods">Public Member Functions</a>  </div>
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a>  </div>
   <div class="headertitle"><div class="title">OutCommon Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -160,6 +161,12 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>ToClipboard</b> (cons
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Draw</b> (<a class="el" href="classCell.html">Cell</a> *tree)</td></tr>
 <tr class="memdesc:a59e1f732d956f7b3caa6773e3bb11936"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recursively draws the cells. <br /></td></tr>
 <tr class="separator:a59e1f732d956f7b3caa6773e3bb11936"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:abcbb7283d778bafdd551d221ed2ecbbd"><td class="memItemLeft" align="right" valign="top">static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOutCommon.html#abcbb7283d778bafdd551d221ed2ecbbd">AccessibleText</a> (const <a class="el" href="classCell.html">Cell</a> *tree)</td></tr>
+<tr class="memdesc:abcbb7283d778bafdd551d221ed2ecbbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">The plain-text form of a cell list, for use as an accessible label.  <br /></td></tr>
+<tr class="separator:abcbb7283d778bafdd551d221ed2ecbbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classA.html">A</a> collection of common code used in rendering the cells to a non-default output, e.g. a graphics file. </p>
@@ -220,6 +227,45 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>Draw</b> (<a class="e
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="abcbb7283d778bafdd551d221ed2ecbbd" name="abcbb7283d778bafdd551d221ed2ecbbd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abcbb7283d778bafdd551d221ed2ecbbd">&#9670;&#160;</a></span>AccessibleText()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxString OutCommon::AccessibleText </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classCell.html">Cell</a> *&#160;</td>
+          <td class="paramname"><em>tree</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The plain-text form of a cell list, for use as an accessible label. </p>
+<p>Exported maths is a picture: an SVG draws it as anonymous paths, a PNG as pixels, and either way a screen reader has nothing to announce unless we hand it the text. This is the one place that text is derived, so the SVG's &lt;title&gt;/aria-label and the PNG's Description chunk cannot drift apart.</p>
+<p>The text is what ListToString() gives - the same rendering the clipboard and the .wxm exporter use, so what is spoken matches what copying the cell as text would give.</p>
+<p>Every run of whitespace collapses to a single space. 2-<a class="el" href="classD.html">D</a> ASCII-art maths pads its lines with long space runs and tabs to keep fraction bars and matrices aligned; that alignment is meaningless once the text is spoken rather than drawn, and leaving it in makes the label a stuttering mess. Line breaks go for the same reason: the result is a single label, not a document.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">tree</td><td>The cell list that was rendered, or null. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The label, or an empty string if there is nothing to describe. </dd></dl>
 
 </div>
 </div>
