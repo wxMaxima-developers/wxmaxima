@@ -60,9 +60,17 @@ fi
 # .po catalogs hold msgids like "``` cogito => sum.  ```"). Re-formatting it
 # therefore marks some translations fuzzy -- accepted deliberately, so that the
 # manual is held to the same standard as the rest of the docs.
+#
+# .claude/skills/*/SKILL.md are excluded because their file format REQUIRES a
+# YAML frontmatter block (--- name: ... description: ... ---) before any
+# heading: that block is what makes the skill loadable at all. MD041 ("first
+# line in file should be a top level header") therefore fires on every one of
+# them, for something that cannot be changed without breaking the file. The
+# prose below the frontmatter is ordinary Markdown and would pass.
 FILES="$(printf '%s\n' "$ALL_MD" \
          | grep -Ev '(^|/)info/wxmaxima\.[A-Za-z_]+\.md$' \
          | grep -Ev '^cmake-bin2h/' \
+         | grep -Ev '^\.claude/skills/[^/]+/SKILL\.md$' \
          | sort)"
 
 if [ -z "$FILES" ]; then

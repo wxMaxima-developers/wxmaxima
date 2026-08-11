@@ -1100,6 +1100,30 @@ tried without rebuilding.
 
 ## Layout & Compatibility
 
+The rules below are the ones worth carrying around at all times. The reasoning
+behind them, the pipeline they belong to, and the recurring shapes layout bugs
+take are in the **`wxmaxima-layout` skill** (`.claude/skills/wxmaxima-layout/`),
+which loads on demand -- keep the detail there rather than growing this file.
+
+- **`RequestRecalculation()` only SCHEDULES; `RecalculateIfNeeded()` executes.**
+  Never read geometry (positions, sizes) on the line after asking for a
+  recalculation -- at that point nothing has been recalculated yet, and you get
+  the previous layout. `AdjustSize()` deliberately defers while positions are
+  stale. The name is the trap: it was called `Recalculate()` until 2026-07-08,
+  and code written against the old name reads as if it were synchronous.
+- **A composite cell's `Recalculate()` override MUST recurse unconditionally.**
+  Roughly twenty composite cells (`FracCell`, `SqrtCell`, `ParenCell`, ...) used
+  to skip recursing into their children when they judged themselves unchanged.
+  That is wrong: a child can be dirty for a reason the parent cannot see (a font
+  size change on partial breakup), and the parent's guard then strands it at a
+  stale width -- which is how parens ended up too narrow for their contents.
+  Recurse every time and let each child's own changed-flag decide.
+- **List caches must be invalidated when the configuration counter changes.**
+  Cached per-list geometry (`m_listCacheCfgCnt` and friends) survives a
+  configuration change unless it is stamped with the counter and compared on
+  use. Forgetting this produces the "stale spacing" family of bugs, where cells
+  keep a width computed under the previous font/zoom settings.
+
 - **Mathematical Cell Padding:** Use `MC_TEXT_PADDING` (in `Configuration.h`) for text-based cells. **Exception:** `DigitCell` does not include padding to ensure visual consistency in broken-up numbers.
 - **Three-Step Layout Process:**
   1. `UnBreakUpCells()`: Reset to 2D.
@@ -1113,6 +1137,26 @@ tried without rebuilding.
 - **Bidi (`src/Bidi.h`/`.cpp`):** Reorders a line of text per the Unicode Bidirectional Algorithm (UAX #9), using `libfribidi` when it's available at build time (`USE_FRIBIDI` in `BuildConfig.h`, optional, `WXM_USE_FRIBIDI` CMake option, on by default when `pkg-config fribidi` is found) and falling back to a single-run approximation otherwise. No wxWidgets backend exposes this reordering itself -- Pango/CoreText/DirectWrite compute it internally to shape glyphs but never hand it back to the app. `EditorCell::GetLineBidiRuns()` wraps it as absolute `m_text` positions; `MixedDirectionOffset()` (used by `PositionToPoint()`, hence also `MarkSelection()` and `SelectPointText()`'s click search) and `HandleSpecialKey()`'s arrow-key handling are the consumers. wxmTestApp is an OBJECT library (`test/unit_tests/CMakeLists.txt`): it compiles `Bidi.cpp` itself and needs `PkgConfig::FRIBIDI` linked directly to *it* (not just to `wxmaxima`) to get fribidi's include path at that compile step; separately, its own `target_link_libraries()` don't propagate through `$<TARGET_OBJECTS:wxmTestApp>`, so anything it needs must *also* be linked into each consuming test executable directly (`WXM_TESTAPP_EXTRA_LIBS`) for the final link. The imported target has to be declared `GLOBAL` since `test/` is a sibling directory of `src/`, not a descendant. `#include <fribidi.h>`, not `<fribidi/fribidi.h>`: pkg-config's own `-I` already points *at* fribidi's header directory (confirmed on both Debian's and Homebrew's `.pc` files), so the extra `fribidi/` prefix only "worked" on Linux by accident, via `/usr/include` being an implicit compiler search path Homebrew's non-default prefix doesn't share -- caught by a real macOS CI failure, not by this sandbox.
 - **ConfigDialogue Tabs Must Scroll:** Every tab panel in `src/dialogs/ConfigDialogue.cpp` is a `wxScrolled<wxPanel>` with `SetScrollRate(5 * GetContentScaleFactor(), 5 * GetContentScaleFactor())` and `SetMinSize(wxSize(GetContentScaleFactor() * mMinPanelWidth, GetContentScaleFactor() * mMinPanelHeight))`. Without this, a tab's natural size (which grows with font size/DPI/translation length) can make the whole dialog taller than a hi-DPI screen with no way to reach what's cut off. When adding a new tab, copy this pattern (see `CreateWorksheetPanel()`) rather than a plain `wxPanel`.
 - **Constructor Initialization:** Order initialization lists to match header declaration order to prevent `-Wreorder` warnings.
+- **AUI: `RestorePane()` does NOT undo `MinimizePane()`.** Despite the name it is
+  the counterpart to `MaximizePane()`, and its implementation rewrites *every*
+  pane's hidden state from `savedHiddenState` -- using it to un-minimize one
+  sidebar silently reshuffles all the others. There is no separate "minimized"
+  state to undo: `MinimizePane()` just calls `paneInfo.Hide()` and adds an entry
+  to a min-dock strip, and wx's own restore is nothing more than
+  `pane->Show(); m_mgr.Update();` -- exactly what `ShowPane()` and
+  `ShowWizardPane()` already do. So showing a pane the normal way restores it
+  from minimized for free. Note also that centre panes cannot be minimized and
+  `MinimizePane()` asserts on panes without a minimize button -- so wherever
+  `MinimizeButton(true)` is handed out, the worksheet and the toolbar must be
+  excluded.
+- **A wxWidgets-version fallback `#define` must come AFTER the wx header that
+  may define it.** `Compat.h` includes `<wx/defs.h>` *above* its
+  `#ifndef wxWARN_UNUSED` fallback for this reason. Reached in the other order,
+  our header defines the macro empty first, wxWidgets' own
+  `#ifndef wxWARN_UNUSED` then declines to redefine it, and the feature is
+  silently disabled on exactly the compilers that support it -- a change that
+  compiles everywhere and does nothing. The same trap applies to any future
+  `wxSOMETHING` shim added there.
 
 ## Performance & Documentation Mandates
 
@@ -1131,6 +1175,22 @@ tried without rebuilding.
 - **Consistency:** New cell types should have `*Geometry.svg` and `*LinearGeometry.svg` (if applicable) diagrams.
 
 ## Key Subsystems Map
+
+Deeper, per-subsystem background lives in `.claude/skills/`, which load only
+when they are relevant -- so that hard-won detail is available without every
+line of it sitting in context permanently. Read the matching one *before*
+starting work in that area; each is mostly a list of the ways that subsystem
+has already been broken.
+
+| Skill | Covers |
+|---|---|
+| `wxmaxima-layout` | the schedule/recalculate/resize pipeline and the layout invariants |
+| `wxmaxima-architecture` | where code lives, the friend-class decomposition, the extraction recipe |
+| `wxmaxima-translations` | the POT glob, po4a, Crowdin, and how translations get lost |
+| `wxmaxima-export` | HTML/LaTeX/image export, accessible labels, round-trip guarantees |
+| `wxmaxima-maxima-protocol` | the socket, `wxMathML.lisp`, batch mode, process lifetime |
+| `wxmaxima-packaging` | the CI matrix's blind spots, installers, signing, releases |
+| `run-wxmaxima` | building, launching and screenshotting the app |
 
 - **Layout Engine:** `src/cells/` and `src/worksheet/` (`Worksheet.cpp` and its siblings moved into that subdirectory).
 - **MathML Formatting:** `src/wxMathML.lisp` and `src/MathParser.cpp`.
