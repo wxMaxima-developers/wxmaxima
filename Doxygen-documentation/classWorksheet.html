@@ -94,7 +94,7 @@ Inheritance diagram for Worksheet:</div>
 <div class="dynheader">
 Collaboration diagram for Worksheet:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classWorksheet__coll__graph.svg" width="100%" height="586"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classWorksheet__coll__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -386,6 +386,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>OnActivate</b> (wxAct
 <tr class="memitem:aed032abfa84f62277619ca1b9cf18884"><td class="memItemLeft" align="right" valign="top"><a id="aed032abfa84f62277619ca1b9cf18884" name="aed032abfa84f62277619ca1b9cf18884"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>FocusFindDialogue</b> ()</td></tr>
 <tr class="separator:aed032abfa84f62277619ca1b9cf18884"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3feb86eace5c325c0f5d73e615171cc0"><td class="memItemLeft" align="right" valign="top"><a id="a3feb86eace5c325c0f5d73e615171cc0" name="a3feb86eace5c325c0f5d73e615171cc0"></a>
+<a class="el" href="classFindReplacePane.html">FindReplacePane</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>GetActiveFindPane</b> () const</td></tr>
+<tr class="memdesc:a3feb86eace5c325c0f5d73e615171cc0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whichever find/replace UI is actually in use right now: the dockable sidebar (GH #2249) if <a class="el" href="classConfiguration.html#a58d2cf11f559e8da4da557937a9e84cc" title="Show &quot;Find and Replace&quot; as a dockable sidebar instead of a floating dialog?">Configuration::FindDialogDockable()</a> is set and it exists, otherwise the floating dialog's own pane, if one is open. Returns NULL if neither is currently available. <br /></td></tr>
+<tr class="separator:a3feb86eace5c325c0f5d73e615171cc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44e40be6186f325567156871ace4ad6c"><td class="memItemLeft" align="right" valign="top"><a id="a44e40be6186f325567156871ace4ad6c" name="a44e40be6186f325567156871ace4ad6c"></a>
 <a class="el" href="classAutoComplete.html">AutoComplete</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>GetAutocomplete</b> ()</td></tr>
 <tr class="memdesc:a44e40be6186f325567156871ace4ad6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The storage for the autocompletion feature. <br /></td></tr>
@@ -542,6 +546,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_inPopupMenu</b> = f
 <a class="el" href="classFindReplaceDialog.html">FindReplaceDialog</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_findDialog</b> = NULL</td></tr>
 <tr class="memdesc:addddaa53ec91efeaf93ed6ebebae4c7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The find-and-replace-dialog. <br /></td></tr>
 <tr class="separator:addddaa53ec91efeaf93ed6ebebae4c7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e51bf0150688a29c2512dd500b68e15"><td class="memItemLeft" align="right" valign="top"><a id="a1e51bf0150688a29c2512dd500b68e15" name="a1e51bf0150688a29c2512dd500b68e15"></a>
+<a class="el" href="classFindReplacePane.html">FindReplacePane</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_findPane</b> = NULL</td></tr>
+<tr class="memdesc:a1e51bf0150688a29c2512dd500b68e15"><td class="mdescLeft">&#160;</td><td class="mdescRight">The dockable find-and-replace sidebar (GH #2249), set once by <a class="el" href="classwxMaximaFrame.html" title="The frame containing the menu and the sidebars.">wxMaximaFrame</a> at startup and never destroyed &ndash; unlike m_findDialog, which is created/destroyed on demand. <br /></td></tr>
+<tr class="separator:a1e51bf0150688a29c2512dd500b68e15"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e8f804aed06ee62de5e09ad7be3d6b1"><td class="memItemLeft" align="right" valign="top"><a id="a7e8f804aed06ee62de5e09ad7be3d6b1" name="a7e8f804aed06ee62de5e09ad7be3d6b1"></a>
 <a class="el" href="classToolBar.html">ToolBar</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_mainToolBar</b> = NULL</td></tr>
 <tr class="memdesc:a7e8f804aed06ee62de5e09ad7be3d6b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The toolbar of the main window: We need to access it and therefore have it defined here. <br /></td></tr>

@@ -25,13 +25,14 @@ var searchData=
   ['load_22',['Load',['../classRecentDocuments.html#a65944b1d9e1c768137ed2dbe0ab7ed0f',1,'RecentDocuments']]],
   ['loadbuiltinmanualanchors_23',['LoadBuiltInManualAnchors',['../classMaximaManual.html#ad09c01d401285181a342780dba6d3753',1,'MaximaManual']]],
   ['loadbuiltinsymbols_24',['LoadBuiltinSymbols',['../classAutoComplete.html#a9ea854df696c5e1ab20e9834dfef8a37',1,'AutoComplete']]],
-  ['loadhelpfileanchors_25',['LoadHelpFileAnchors',['../classMaximaManual.html#a951e46e3290566074f0c09b2c9652991',1,'MaximaManual::LoadHelpFileAnchors()'],['../classWorksheet.html#a2df6bd0d0d77d61ff730792363efd993',1,'Worksheet::LoadHelpFileAnchors()']]],
-  ['loadimage_26',['LoadImage',['../classImage.html#a07e9f48042ddd9004c24c3ff9e899094',1,'Image::LoadImage()'],['../classwxMaxima.html#a6c78de2506c518c7804f6690f27c5102',1,'wxMaxima::LoadImage()']]],
-  ['loadmanualanchorsfromcache_27',['LoadManualAnchorsFromCache',['../classMaximaManual.html#a8f70e3615c5761666ac92b7902cc96bc',1,'MaximaManual']]],
-  ['loadmanualanchorsfromxml_28',['LoadManualAnchorsFromXML',['../classMaximaManual.html#acddcb69633df12600c39ebea000ef9c2',1,'MaximaManual']]],
-  ['loadsave_29',['LoadSave',['../classConfigDialogue.html#afeac2a9acf99d95414b0f0e823550805',1,'ConfigDialogue']]],
-  ['loadsymbols_30',['LoadSymbols',['../classAutoComplete.html#a6022d262109966147cbda01d6166d2ca',1,'AutoComplete::LoadSymbols()'],['../classWorksheet.html#aaa5b37aee0c005bb6f303c7dd84c64d1',1,'Worksheet::LoadSymbols()']]],
-  ['localedir_31',['LocaleDir',['../classDirstructure.html#a07774426dee2c4edafa95ce9f7465661',1,'Dirstructure']]],
-  ['longnumbercell_32',['LongNumberCell',['../classLongNumberCell.html#ae650abe2ed7d371b47a6ed2aa55e3424',1,'LongNumberCell']]],
-  ['lookslikeldb_33',['LooksLikeLdb',['../LdbSupport_8cpp.html#a4ad83c27ca9d16abc6068282936aae76',1,'LdbSupport']]]
+  ['loadfromconfig_25',['LoadFromConfig',['../classFindReplacePane_1_1FindReplaceData.html#a1ce6384dc353aac616a619dbd5f016bf',1,'FindReplacePane::FindReplaceData']]],
+  ['loadhelpfileanchors_26',['LoadHelpFileAnchors',['../classMaximaManual.html#a951e46e3290566074f0c09b2c9652991',1,'MaximaManual::LoadHelpFileAnchors()'],['../classWorksheet.html#a2df6bd0d0d77d61ff730792363efd993',1,'Worksheet::LoadHelpFileAnchors()']]],
+  ['loadimage_27',['LoadImage',['../classImage.html#a07e9f48042ddd9004c24c3ff9e899094',1,'Image::LoadImage()'],['../classwxMaxima.html#a6c78de2506c518c7804f6690f27c5102',1,'wxMaxima::LoadImage()']]],
+  ['loadmanualanchorsfromcache_28',['LoadManualAnchorsFromCache',['../classMaximaManual.html#a8f70e3615c5761666ac92b7902cc96bc',1,'MaximaManual']]],
+  ['loadmanualanchorsfromxml_29',['LoadManualAnchorsFromXML',['../classMaximaManual.html#acddcb69633df12600c39ebea000ef9c2',1,'MaximaManual']]],
+  ['loadsave_30',['LoadSave',['../classConfigDialogue.html#afeac2a9acf99d95414b0f0e823550805',1,'ConfigDialogue']]],
+  ['loadsymbols_31',['LoadSymbols',['../classAutoComplete.html#a6022d262109966147cbda01d6166d2ca',1,'AutoComplete::LoadSymbols()'],['../classWorksheet.html#aaa5b37aee0c005bb6f303c7dd84c64d1',1,'Worksheet::LoadSymbols()']]],
+  ['localedir_32',['LocaleDir',['../classDirstructure.html#a07774426dee2c4edafa95ce9f7465661',1,'Dirstructure']]],
+  ['longnumbercell_33',['LongNumberCell',['../classLongNumberCell.html#ae650abe2ed7d371b47a6ed2aa55e3424',1,'LongNumberCell']]],
+  ['lookslikeldb_34',['LooksLikeLdb',['../LdbSupport_8cpp.html#a4ad83c27ca9d16abc6068282936aae76',1,'LdbSupport']]]
 ];
