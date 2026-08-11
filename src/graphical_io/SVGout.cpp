@@ -72,37 +72,6 @@ wxSize Svgout::Render(std::unique_ptr<Cell> &&tree) {
   return m_size;
 }
 
-wxString Svgout::AccessibleText() const {
-  if (!m_tree)
-    return {};
-
-  // The same plain-text rendering the clipboard and the .wxm exporter use, so
-  // a screen reader hears exactly what a sighted user would get by copying the
-  // cell as text.
-  //
-  // Every run of whitespace collapses to a single space. 2-D ASCII-art maths
-  // (TS_ASCIIMATHS) pads its lines with long runs of spaces and tabs to keep
-  // fraction bars and matrices aligned; that alignment is meaningless once the
-  // text is spoken rather than drawn, and left in it makes the label a
-  // stuttering mess. The line breaks have to go for the same reason: this ends
-  // up in an SVG <title>/aria-label, which is a single label, not a document.
-  const wxString text = m_tree->ListToString();
-  wxString label;
-  label.reserve(text.length());
-  bool pendingSpace = false;
-  for (const wxUniChar c : text) {
-    if (wxIsspace(c))
-      pendingSpace = true;
-    else {
-      if (pendingSpace && !label.IsEmpty())
-        label += wxS(' ');
-      pendingSpace = false;
-      label += c;
-    }
-  }
-  return label;
-}
-
 bool Svgout::Layout() {
   if (!m_cmn.PrepareLayout(m_tree.get()))
     return false;
@@ -116,7 +85,7 @@ bool Svgout::Layout() {
   // announce. Older wxWidgets simply produces the same SVG as before -- note
   // that the label is computed inside the guard too, so it cannot become an
   // unused variable there.
-  const wxString text = AccessibleText();
+  const wxString text = OutCommon::AccessibleText(m_tree.get());
   wxSVGFileDC dc(m_cmn.GetFilename(), size.x, size.y, 20 * m_cmn.GetScale(),
                  text);
 #else

@@ -10,6 +10,12 @@
   found so far. Also fixed a CMake policy bug in the just-added
   `check-pot-coverage` CI guard (script mode doesn't inherit the top-level
   policy settings, so its `IN_LIST` check unconditionally errored out).
+- Equations saved as PNG now carry their text form inside the image file
+  (GH #2231), so the maths travels with the picture: a screen reader can read
+  out what the image shows, and anyone who finds the file later - or a search
+  index that looks at it - can tell what is in it instead of seeing an
+  anonymous graphic. Needs wxWidgets 3.3.1 or newer; with an older wxWidgets
+  the exported PNG is unchanged.
 - Equations exported as SVG now carry their text form, so a screen reader can
   read them out instead of announcing an anonymous picture (GH #2230). Both
   the HTML export's equation images and the SVG that "Copy as SVG" puts on the

@@ -65,6 +65,27 @@ wxString MakeTempFilename(const wxString &prefix) {
 
 } // namespace
 
+wxString OutCommon::AccessibleText(const Cell *tree) {
+  if (!tree)
+    return {};
+
+  const wxString text = tree->ListToString();
+  wxString label;
+  label.reserve(text.length());
+  bool pendingSpace = false;
+  for (const wxUniChar c : text) {
+    if (wxIsspace(c))
+      pendingSpace = true;
+    else {
+      if (pendingSpace && !label.IsEmpty())
+        label += wxS(' ');
+      pendingSpace = false;
+      label += c;
+    }
+  }
+  return label;
+}
+
 OutCommon::OutCommon(const Configuration * const *configuration, const wxString &filename,
                      int fullWidth, double scale)
     : m_tempFilename(MakeTempFilename(wxS("wxmaxima_size_"))),
