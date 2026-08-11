@@ -58,6 +58,29 @@ public:
   //! file the data was saved in.
   std::unique_ptr<DataObject> GetDataObject(const wxDataFormat &format);
 
+  /*! The plain-text form of a cell list, for use as an accessible label
+
+    Exported maths is a picture: an SVG draws it as anonymous paths, a PNG as
+    pixels, and either way a screen reader has nothing to announce unless we
+    hand it the text. This is the one place that text is derived, so the SVG's
+    <title>/aria-label and the PNG's Description chunk cannot drift apart.
+
+    The text is what ListToString() gives - the same rendering the clipboard
+    and the .wxm exporter use, so what is spoken matches what copying the cell
+    as text would give.
+
+    Every run of whitespace collapses to a single space. 2-D ASCII-art maths
+    pads its lines with long space runs and tabs to keep fraction bars and
+    matrices aligned; that alignment is meaningless once the text is spoken
+    rather than drawn, and leaving it in makes the label a stuttering mess.
+    Line breaks go for the same reason: the result is a single label, not a
+    document.
+
+    \param tree The cell list that was rendered, or null.
+    \return The label, or an empty string if there is nothing to describe.
+  */
+  static wxString AccessibleText(const Cell *tree);
+
   /*! Constructs the instance of the helper, temporarily overriding the
    * configuration.
    *

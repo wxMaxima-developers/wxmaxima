@@ -28,6 +28,8 @@
 #include "BitmapOut.h"
 #include "cells/Cell.h"
 #include <wx/clipbrd.h>
+// wxIMAGE_OPTION_PNG_DESCRIPTION
+#include <wx/imagpng.h>
 
 #define BM_FULL_WIDTH 1000
 
@@ -129,6 +131,18 @@ wxSize BitmapOut::ToFile(const wxString &file) {
   wxImage img = m_bmp.ConvertToImage();
   int resolution = m_cmn.GetScreenConfig().GetRecalcDC()->GetPPI().x;
   img.SetOption(wxIMAGE_OPTION_RESOLUTION, resolution * m_cmn.GetScale());
+
+#if wxCHECK_VERSION(3, 3, 1)
+  // A PNG of an equation is just pixels: nothing in it says what the maths is,
+  // so a screen reader meeting one has nothing to announce and anyone finding
+  // the file later has no idea what it holds. wxWidgets 3.3.1 and up can write
+  // PNG text chunks, so carry the equation's text form along inside the file
+  // itself. Only PNG has somewhere to put this - the .bmp/.xpm/.jpg branches
+  // below simply have no such chunk, and older wxWidgets ignores the option.
+  const wxString description = OutCommon::AccessibleText(m_tree.get());
+  if (!description.IsEmpty())
+    img.SetOption(wxIMAGE_OPTION_PNG_DESCRIPTION, description);
+#endif
 
   bool success = false;
   if (file.EndsWith(wxS(".bmp")))

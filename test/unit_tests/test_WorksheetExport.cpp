@@ -394,6 +394,66 @@ static void RequireSvgIsLabelled(const wxString &htmlDir) {
 #endif
 }
 
+/*! Every exported equation PNG must carry its text form inside the file.
+
+  A PNG of an equation is just pixels: a screen reader meeting one has nothing
+  to announce, and anyone finding the file later cannot tell what it holds.
+  BitmapOut therefore sets wxIMAGE_OPTION_PNG_DESCRIPTION (GH #2231), which
+  wxWidgets 3.3.1 and up writes as a PNG text chunk keyed "Description".
+
+  The chunks are walked rather than the bytes searched, so a stray
+  "Description" inside the compressed image data cannot make this pass by
+  accident. wxWidgets writes iTXt (UTF-8); tEXt is accepted too so this does
+  not break if that ever changes - hence skipping any run of NULs after the
+  keyword, which covers iTXt's compression/language fields and tEXt's absence
+  of them alike.
+
+  Guarded on the wxWidgets version exactly like the code under test.
+*/
+static void RequireBitmapsDescribed(const wxString &htmlDir) {
+#if wxCHECK_VERSION(3, 3, 1)
+  const wxString imgDir = htmlDir + wxS("/doc_htmlimg");
+  wxArrayString pngs;
+  wxDir::GetAllFiles(imgDir, &pngs, wxS("doc_*.png"), wxDIR_FILES);
+  REQUIRE(pngs.GetCount() > 0);
+  static const std::string keyword("Description\0", 12);
+  for (const wxString &png : pngs) {
+    INFO("equation bitmap: " << png.ToStdString());
+    const std::string bytes = ReadBinaryFile(png);
+    REQUIRE(bytes.size() > 8);
+    bool described = false;
+    for (size_t pos = 8; pos + 12 <= bytes.size();) {
+      const unsigned char *const p =
+        reinterpret_cast<const unsigned char *>(bytes.data()) + pos;
+      const size_t len = (static_cast<size_t>(p[0]) << 24) |
+                         (static_cast<size_t>(p[1]) << 16) |
+                         (static_cast<size_t>(p[2]) << 8) |
+                         static_cast<size_t>(p[3]);
+      const std::string type = bytes.substr(pos + 4, 4);
+      if (pos + 12 + len > bytes.size())
+        break;
+      if ((type == "iTXt" || type == "tEXt") && len > keyword.size()) {
+        const std::string body = bytes.substr(pos + 8, len);
+        if (body.compare(0, keyword.size(), keyword) == 0) {
+          size_t textStart = keyword.size();
+          while (textStart < body.size() && body[textStart] == '\0')
+            ++textStart;
+          // The description must actually say something.
+          REQUIRE(textStart < body.size());
+          described = true;
+        }
+      }
+      if (type == "IEND")
+        break;
+      pos += 12 + len;
+    }
+    REQUIRE(described);
+  }
+#else
+  wxUnusedVar(htmlDir);
+#endif
+}
+
 static void RequireBitmapsNotClipped(const wxString &htmlDir) {
   const wxString imgDir = htmlDir + wxS("/doc_htmlimg");
   wxArrayString pngs;
@@ -518,8 +578,11 @@ SCENARIO("HTML export succeeds, is deterministic and contains the document") {
         RequireImgSrcsExist(html, dir1);
       // The bitmap flavor must not clip equations to a corner of the canvas
       // (a BitmapScale double-magnification regression, see helper).
-      if (eq.format == Configuration::bitmap)
+      if (eq.format == Configuration::bitmap) {
         RequireBitmapsNotClipped(dir1);
+        // ...and must say what maths they show (see helper).
+        RequireBitmapsDescribed(dir1);
+      }
       // The svg flavor must label its equations for screen readers (see
       // helper); an unlabelled SVG is an anonymous picture to them.
       if (eq.format == Configuration::svg)
