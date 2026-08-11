@@ -420,14 +420,14 @@ Default plot size for new &lt;em&gt;maxima&lt;/em&gt; sessions</h3>
 <div class="line">       x,-5,5</div>
 <div class="line">   )</div>
 <div class="line">), wxplot_size=[480,480]$</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md295"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md296"></a>
 Match parenthesis in text controls</h3>
 <p>Cette option active deux fonctionnalités :</p>
 <ul>
 <li>Si une parenthèse ouvrante, un crochet ouvrant ou un guillemet double est saisi, <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> insère automatiquement le caractère de fermeture correspondant.</li>
 <li>Si du texte est sélectionné lorsque l’une de ces touches est enfoncée, le texte sélectionné est placé entre les signes correspondants appariés.</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md296"></a>
+<h3><a class="anchor" id="autotoc_md297"></a>
 Don’t save the worksheet automatically</h3>
 <p>Si cette option est activée, le fichier du notebook ne sera écrasé que sur demande de l'utilisateur. En cas de plantage, de coupure de courant ou autre incident, une copie de sauvegarde récente reste cependant disponible dans le dossier temporaire.</p>
 <p>If this option isn’t set <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> behaves more like a modern cellphone app:</p>
@@ -435,15 +435,15 @@ Don’t save the worksheet automatically</h3>
 <li>Les fichiers sont sauvegardés automatiquement lorsque l'on quitte le programme</li>
 <li>Et le fichier sera automatiquement sauvegardé toutes les 3 minutes.</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md297"></a>
+<h3><a class="anchor" id="autotoc_md298"></a>
 Where is the configuration saved?</h3>
 <p>If you are using Unix/Linux, the configuration information will be saved in a file <code>.<a class="el" href="classwxMaxima.html">wxMaxima</a></code> in your home directory (if you are using wxWidgets &lt; 3.1.1), or <code>.config/wxMaxima.conf</code> ((XDG-Standard) if wxWidgets &gt;= 3.1.1 is used). You can retrieve the wxWidgets version from the command <code>wxbuild_info();</code> or by using the menu option Help-&gt;About. <a href="https://www.wxwidgets.org/">wxWidgets</a> is the cross-platform GUI library, which is the base for <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> (therefore the <code>wx</code> in the name). (Since the filename starts with a dot, <code>.<a class="el" href="classwxMaxima.html">wxMaxima</a></code> or <code>.config</code> will be hidden).</p>
 <p>Si vous utilisez Windows, la configuration est stockée dans le registre. Vous trouverez les entrées pour <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> à l'emplacement suivant du registre : <code>HKEY_CURRENT_USER\Software\<a class="el" href="classwxMaxima.html">wxMaxima</a></code></p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md298"></a>
+<h1><a class="anchor" id="autotoc_md299"></a>
 Extensions to &lt;em&gt;Maxima&lt;/em&gt;</h1>
 <p><em>WxMaxima</em> is primarily a graphical user interface for <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>. As such, its main purpose is to pass along commands to <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> and to report the results of executing those commands. In some cases, however, <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> adds functionality to <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>. <em>WxMaxima_’s ability to generate reports by exporting a workbook’s contents to HTML and LaTeX files has been mentioned. This section considers some ways that _wxMaxima</em> enhances the inclusion of graphics in a session.</p>
-<h2><a class="anchor" id="autotoc_md299"></a>
+<h2><a class="anchor" id="autotoc_md300"></a>
 Subscripted variables</h2>
 <p><code>wxsubscripts</code> définit si (et comment) _wxMaxima appliquera automatiquement des indices aux noms de variables :</p>
 <p>Si sa valeur est <code>false</code>, cette fonctionnalité est désactivée : <a class="el" href="classwxMaxima.html">wxMaxima</a> ne transformera pas automatiquement en indices les parties des noms de variables suivant un tiret bas.</p>
@@ -457,7 +457,7 @@ Subscripted variables</h2>
 wxsubscripts" class="inline"/></p>
 <p>If the variable name doesn’t match these requirements, it can still be declared as "to be subscripted" using the command <code>wxdeclare_subscript(variable_name);</code> or <code>wxdeclare_subscript([variable_name1,variable_name2,...]);</code> Declaring a variable as subscripted can be reverted using the following command: <code>wxdeclare_subscript(variable_name,false);</code></p>
 <p>You can use the menu "View-&gt;Autosubscript" to set these values.</p>
-<h2><a class="anchor" id="autotoc_md300"></a>
+<h2><a class="anchor" id="autotoc_md301"></a>
 User feedback in the status bar</h2>
 <p>Long-running commands can provide user feedback in the status bar. This user feedback is replaced by any new feedback that is placed there (allowing to use it as a progress indicator) and is deleted as soon as the current command sent to <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> is finished. It is safe to use <code>wxstatusbar()</code> even in libraries that might be used with plain <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> (as opposed to <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>): If <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> isn’t present the <code>wxstatusbar()</code> command will just be left unevaluated.</p>
 <div class="fragment"><div class="line">for i:1 thru 10 do (</div>
@@ -468,7 +468,7 @@ User feedback in the status bar</h2>
 <div class="line">    /* program execution (here: for 3 seconds) */</div>
 <div class="line">    ?sleep(3)</div>
 <div class="line">)$</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md301"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md302"></a>
 Exporting the worksheet from within Maxima</h2>
 <p>The command <code>wxworksheettohtml()</code> exports the current worksheet to an HTML file from within a running <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> session, which is convenient for scripted or batch export. Like <code>wxstatusbar()</code> it is safe to use in code that might also run in plain (console) <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>: if <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> isn’t present the command is simply left unevaluated.</p>
 <div class="fragment"><div class="line">wxworksheettohtml(&quot;report.html&quot;)$</div>
@@ -495,10 +495,10 @@ Exporting the worksheet from within Maxima</h2>
 <td class="markdownTableBodyNone"><code>documentclassoptions</code>   </td><td class="markdownTableBodyNone">overrides its options (e.g. <code>"12pt,a4paper"</code>)   </td></tr>
 </table>
 <p>Support for <code>wxworksheettopdf()</code> is planned.</p>
-<h2><a class="anchor" id="autotoc_md302"></a>
+<h2><a class="anchor" id="autotoc_md303"></a>
 Plotting</h2>
 <p>La création de courbes (qui repose fondamentalement sur des éléments graphiques) est un domaine où une interface utilisateur graphique devra apporter certaines extensions au programme d'origine.</p>
-<h3><a class="anchor" id="autotoc_md303"></a>
+<h3><a class="anchor" id="autotoc_md304"></a>
 Embedding a plot into the worksheet</h3>
 <p><em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> normally instructs the external program <em>Gnuplot</em> to open a separate window for every diagram it creates. Since many times it is convenient to embed graphs into the worksheet instead <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> provides its own set of plot functions that don’t differ from the corresponding <em>maxima</em> functions save in their name: They are all prefixed by a “wx”.</p>
 <p>Les fonctions graphiques suivantes ont leurs équivalents préfixés par « wx » :</p>
@@ -530,7 +530,7 @@ Embedding a plot into the worksheet</h3>
 </table>
 <p>Si un fichier <code>.wxm</code> est lu par <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> (en mode console), ces fonctions sont ignorées (et affichées à l'identique en sortie, comme toute autre fonction inconnue dans <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>).</p>
 <p>Si vous rencontrez des problèmes avec l'une de ces fonctions, veuillez vérifier si le problème existe également pour la fonction <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> correspondante (par exemple, si vous obtenez une erreur avec <code>wxplot2d()</code>, testez le même graphique avec la commande <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> <code>plot2d()</code> (qui ouvre le graphique dans une fenêtre séparée)). Si le problème persiste, il s'agit probablement d'un problème de <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> qui devrait être signalé dans le <a href="https://sourceforge.net/p/maxima/bugs/">suivi des bogues de Maxima</a>. Ou peut-être un problème de Gnuplot.</p>
-<h3><a class="anchor" id="autotoc_md304"></a>
+<h3><a class="anchor" id="autotoc_md305"></a>
 Making embedded plots bigger or smaller</h3>
 <p>Comme indiqué précédemment, la boîte de dialogue de configuration permet de modifier la taille par défaut des graphiques créés, en définissant la valeur initiale de <code>wxplot_size</code>. Les routines graphiques de <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> tiennent compte de cette variable, qui spécifie la taille d'un graphique en pixels. Il est toujours possible d'interroger ou de définir cette variable pour ajuster la taille des graphiques suivants :</p>
 <div class="fragment"><div class="line">wxplot_size:[1200,800]$</div>
@@ -548,13 +548,13 @@ Making embedded plots bigger or smaller</h3>
 <div class="line">    )</div>
 <div class="line">),wxplot_size=[1600,800]$</div>
 </div><!-- fragment --><p>Le réglage de la taille des graphiques intégrés avec <code>wxplot_size</code> fonctionne pour les graphiques en ligne utilisant par exemple les commandes <code>wxplot</code>, <code>wxdraw</code>, <code>wxcontour_plot</code> et <code>wximplicit_plot</code>, ainsi que pour les animations intégrées avec les commandes <code>with_slider_draw</code> et <code>wxanimate</code>.</p>
-<h3><a class="anchor" id="autotoc_md305"></a>
+<h3><a class="anchor" id="autotoc_md306"></a>
 Better quality plots</h3>
 <p><em>Gnuplot</em> doesn’t seem to provide a portable way of determining whether it supports the high-quality bitmap output that the Cairo library provides. On systems where <em>Gnuplot</em> is compiled to use this library the pngCairo option from the configuration menu (that can be overridden by the variable <code>wxplot_pngcairo</code>) enables support for antialiasing and additional line styles. If <code>wxplot_pngCairo</code> is set without <em>Gnuplot</em> supporting this the result will be error messages instead of graphics.</p>
-<h3><a class="anchor" id="autotoc_md306"></a>
+<h3><a class="anchor" id="autotoc_md307"></a>
 Opening embedded plots in interactive &lt;em&gt;Gnuplot&lt;/em&gt; windows</h3>
 <p>If a plot was generated using the <code>wxdraw</code>-type commands (<code>wxplot2d</code> and <code>wxplot3d</code> isn’t supported by this feature) and the file size of the underlying <em>Gnuplot</em> project isn’t way too high <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> offers a right-click menu that allows to open the plot in an interactive <em>Gnuplot</em> window.</p>
-<h3><a class="anchor" id="autotoc_md307"></a>
+<h3><a class="anchor" id="autotoc_md308"></a>
 Opening Gnuplot’s command console in &lt;tt&gt;plot&lt;/tt&gt; windows</h3>
 <p>Sous MS Windows, il existe deux programmes Gnuplot : <code>gnuplot.exe</code> et <code>wgnuplot.exe</code>. Vous pouvez configurer lequel utiliser via le menu de configuration. <code>wgnuplot.exe</code> permet d'ouvrir une fenêtre de console où les commandes <em>Gnuplot</em> peuvent être saisies, ce que <code>gnuplot.exe</code> ne propose pas. Malheureusement, <code>wgnuplot.exe</code> provoque un bref "décrochage" du focus clavier à chaque génération d'un graphique.</p>
 <h3><a class="anchor" id="autotoc_md309"></a>
