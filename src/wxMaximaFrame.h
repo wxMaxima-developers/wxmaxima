@@ -335,6 +335,11 @@ protected:
 #ifdef USE_WEBVIEW
   HelpBrowser *m_helpPane = NULL;
 #endif
+  //! The data backing the dockable find/replace sidebar (GH #2249) -- kept
+  //! separate from wxMaxima::m_findData (the floating dialog's own data)
+  //! since the two presentations are never both live at once, and each
+  //! only needs to be seeded from wxConfig once, at construction.
+  FindReplacePane::FindReplaceData m_findPaneData;
 
   //! Looks up which demo file belongs to a wxWindowID
   wxString GetDemoFile(wxWindowID id) const;

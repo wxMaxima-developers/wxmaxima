@@ -118,6 +118,7 @@ Configuration::Configuration(const Configuration &o) :
   m_printBrackets(o.m_printBrackets),
   m_changeAsterisk(o.m_changeAsterisk),
   m_notifyIfIdle(o.m_notifyIfIdle),
+  m_findDialogDockable(o.m_findDialogDockable),
   m_displayedDigits(o.m_displayedDigits),
   m_autoWrap(o.m_autoWrap),
   m_autoIndent(o.m_autoIndent),
@@ -307,6 +308,7 @@ void Configuration::ResetAllToDefaults() {
   m_enterEvaluates = false;
   m_printScale = 1.0;
   m_notifyIfIdle = true;
+  m_findDialogDockable = false;
   m_fixReorderedIndices = true;
   m_rightToLeftDocument = false;
   m_showBrackets = true;
@@ -1279,6 +1281,7 @@ Configuration::ScalarConfigSettings() {
     {wxS("maximaUsesHhtmlBrowser"), &Configuration::m_maximaUsesHhtmlBrowser},
     {wxS("MaxLayoutTime"), &Configuration::m_maxLayoutTime},
     {wxS("notifyIfIdle"), &Configuration::m_notifyIfIdle},
+    {wxS("findDialogDockable"), &Configuration::m_findDialogDockable},
     {wxS("numpadEnterEvaluates"), &Configuration::m_numpadEnterEvaluates},
     {wxS("offerKnownAnswers"), &Configuration::m_offerKnownAnswers},
     {wxS("openHCaret"), &Configuration::m_openHCaret},

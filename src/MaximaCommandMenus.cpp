@@ -3097,6 +3097,32 @@ void MaximaCommandMenus::EditMenu(wxCommandEvent &event) {
   }
   else if(event.GetId() == wxID_FIND) {
     wxLogMessage(_("A Ctrl-F event"));
+    if (m_wxMaxima.m_configuration.FindDialogDockable()) {
+      // Dockable sidebar (GH #2249): the pane already exists (created once
+      // at startup, see wxMaximaFrame's ctor) -- ShowPane() un-minimizes/
+      // un-docks-hidden it exactly the same generic way it does for every
+      // other sidebar, which is what answers the issue's own worry about
+      // whether Ctrl+F still works while the sidebar is minimized.
+      bool findPaneActiveWas = m_wxMaxima.IsPaneDisplayed(EventIDs::menu_pane_find);
+      m_wxMaxima.wxMaximaFrame::ShowPane(EventIDs::menu_pane_find, true);
+      if (m_wxMaxima.GetWorksheet()->GetActiveCell() != NULL) {
+        wxString selected = m_wxMaxima.GetWorksheet()->GetActiveCell()->GetSelectionString();
+
+        // Start incremental search and highlighting of search results again.
+        if(findPaneActiveWas)
+          m_wxMaxima.m_oldFindString.Clear();
+        else
+          m_wxMaxima.m_oldFindString = selected;
+
+        if (selected.Length() > 0)
+          m_wxMaxima.GetWorksheet()->m_findPane->SetFindString(selected);
+      }
+      m_wxMaxima.GetWorksheet()->FocusFindDialogue();
+#ifdef __WXMSW__
+      m_wxMaxima.CallAfter([this]{m_wxMaxima.GetWorksheet()->FocusFindDialogue();});
+#endif
+      return;
+    }
     bool findDialogActiveWas = ((m_wxMaxima.GetWorksheet()->m_findDialog != NULL) &&
                                 (m_wxMaxima.GetWorksheet()->m_findDialog->IsShown()));
     if (m_wxMaxima.GetWorksheet()->m_findDialog == NULL)

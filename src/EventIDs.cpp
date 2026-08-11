@@ -45,6 +45,7 @@ const wxWindowIDRef EventIDs::menu_pane_symbols(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_pane_stats(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_pane_performance(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_pane_wizard(wxWindow::NewControlId());
+const wxWindowIDRef EventIDs::menu_pane_find(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_pane_toolbar(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_pane_console(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_pane_dockAll(wxWindow::NewControlId());

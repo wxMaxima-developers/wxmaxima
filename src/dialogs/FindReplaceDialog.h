@@ -60,6 +60,11 @@ public:
   void SetFindString(const wxString &strng)
     { m_contents->SetFindString(strng); }
 
+  //! The pane this dialog wraps -- shared with the dockable sidebar's
+  //! GetActiveFindPane() (GH #2249) so search logic doesn't need to know
+  //! which presentation is currently active.
+  FindReplacePane *GetPane() const { return m_contents; }
+
 protected:
   //! Is called if this element looses or gets the focus
   void OnActivateEvent(wxActivateEvent &WXUNUSED(event));

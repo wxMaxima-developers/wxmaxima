@@ -633,9 +633,14 @@ private:
 public:
   void FocusFindDialogue()
     {
-      if(m_findDialog)
-        m_findDialog->SetFocus();
+      if(FindReplacePane *pane = GetActiveFindPane())
+        pane->SetFocus();
     }
+  //! Whichever find/replace UI is actually in use right now: the dockable
+  //! sidebar (GH #2249) if Configuration::FindDialogDockable() is set and
+  //! it exists, otherwise the floating dialog's own pane, if one is open.
+  //! Returns NULL if neither is currently available.
+  FindReplacePane *GetActiveFindPane() const;
   //! The storage for the autocompletion feature
   AutoComplete &GetAutocomplete() { return m_autocomplete; }
 private:
@@ -778,6 +783,10 @@ public:
 
   //! The find-and-replace-dialog
   FindReplaceDialog *m_findDialog = NULL;
+  //! The dockable find-and-replace sidebar (GH #2249), set once by
+  //! wxMaximaFrame at startup and never destroyed -- unlike m_findDialog,
+  //! which is created/destroyed on demand.
+  FindReplacePane *m_findPane = NULL;
 
   //! Is the vertically-drawn cursor active?
   bool HCaretActive() const { return GetHCaretCursor().IsActive(); }

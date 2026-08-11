@@ -339,6 +339,7 @@ protected:
   wxCheckBox *m_fixReorderedIndices;
   wxCheckBox *m_incrementalSearch;
   wxCheckBox *m_notifyIfIdle;
+  wxCheckBox *m_findDialogDockable;
   wxChoice *m_showUserDefinedLabels;
   wxButton *m_getStyleFont;
   //! Light / Dark / Follow-system selector (also picks which set the editor edits).

@@ -145,6 +145,19 @@ FindReplacePane::FindReplaceData::FindReplaceData() :
 {
 }
 
+void FindReplacePane::FindReplaceData::LoadFromConfig() {
+  int findFlags = wxFR_DOWN | wxFR_MATCHCASE |
+    FindReplacePane::wxFR_SEARCH_IN_INPUT | FindReplacePane::wxFR_SEARCH_IN_OUTPUT;
+  if (wxConfig::Get()->Read(wxS("Find/Flags"), &findFlags)) {
+    if (!(findFlags & (FindReplacePane::wxFR_SEARCH_IN_INPUT | FindReplacePane::wxFR_SEARCH_IN_OUTPUT)))
+      findFlags |= FindReplacePane::wxFR_SEARCH_IN_INPUT | FindReplacePane::wxFR_SEARCH_IN_OUTPUT;
+  }
+  SetFlags(findFlags);
+  bool findRegex = false;
+  wxConfig::Get()->Read(wxS("Find/RegexSearch"), &findRegex);
+  SetRegexSearch(findRegex);
+}
+
 void FindReplacePane::LoadHistory(wxComboBox *combo, const wxString &key) {
   wxConfigBase *config = wxConfig::Get();
   long count = 0;

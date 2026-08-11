@@ -729,6 +729,12 @@ public:
 
   void NotifyIfIdle(bool notify) {m_notifyIfIdle = notify;}
 
+  //! Show "Find and Replace" as a dockable sidebar instead of a floating dialog?
+  bool FindDialogDockable() const
+    { return m_findDialogDockable; }
+
+  void FindDialogDockable(bool dockable) {m_findDialogDockable = dockable;}
+
   /*! Returns the maximum number of displayed digits
 
     m_displayedDigits is always >= 20, so we can guarantee the number we return to be unsigned.
@@ -1403,6 +1409,8 @@ private:
   bool m_changeAsterisk;
   //! Notify the user if maxima is idle
   bool m_notifyIfIdle;
+  //! Show "Find and Replace" as a dockable sidebar instead of a floating dialog?
+  bool m_findDialogDockable;
   //! How many digits of a number we show by default?
   long m_displayedDigits;
   //! Automatically wrap long lines?

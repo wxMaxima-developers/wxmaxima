@@ -102,6 +102,7 @@ public:
   static const wxWindowIDRef menu_pane_help;      //!< Both the "toggle the draw pane" command for the help browser
   static const wxWindowIDRef menu_pane_symbols;   //!< Both the "toggle the symbols pane" command for the "symbols" pane
   static const wxWindowIDRef menu_pane_wizard;    //!< Both the "toggle the wizard pane" command for the "wizard" pane
+  static const wxWindowIDRef menu_pane_find;      //!< Both the "toggle the find pane" command and the dockable find/replace pane (GH #2249)
   static const wxWindowIDRef menu_pane_toolbar;   //!< Both the "toggle the toolbar" command for the "toolbar" pane
   static const wxWindowIDRef menu_pane_console;   //!< The id for the worksheet
   /*! Both used as the "toggle the stats pane" command and as the ID of the stats pane

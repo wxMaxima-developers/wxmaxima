@@ -262,6 +262,44 @@ a local TCP socket.
   - **Linux/GTK Timing:** On Linux (especially KDE Plasma with Global Menus), calling `m_manager.Update()` can disrupt the menu bar if it's already attached. This is a known environmental issue in the interaction between wxWidgets, GTK3, and the KDE Global Menu proxy.
     - **Automated Fix:** On systems with wxWidgets <= 3.2 running on KDE, Unity, or with `appmenu-gtk-module` enabled, wxMaxima automatically sets `UBUNTU_MENUPROXY=0` at startup in `main.cpp` to force menus to remain within the window and prevent disappearance.
     - If the menu still disappears, clearing `GTK_MODULES` (e.g., `GTK_MODULES=""`) can also restore local menus.
+- **Dockable "Find and Replace" (GH #2249, `Configuration::FindDialogDockable()`):**
+  `FindReplaceDialog`/`FindReplacePane` were already split apart (a `wxDialog`
+  wrapper around a `wxPanel` holding the actual controls) specifically
+  anticipating this feature -- `FindReplacePane` climbs to the top-level
+  window and queues its search/replace events there
+  (`while(topLevelWindow->GetParent()) ...`), so it already works correctly
+  regardless of whether it's embedded in the floating dialog or registered
+  directly as an AUI sidebar pane; no changes were needed to
+  `FindReplacePane.cpp`'s event-firing logic. `Worksheet::GetActiveFindPane()`
+  is the single place that decides which presentation is live right now (the
+  dockable pane if `Configuration::FindDialogDockable()` is set, otherwise the
+  floating dialog's own pane if one is open) -- every call site that used to
+  reach into `m_findDialog` directly (the incremental-search idle task,
+  `OnFind`/`OnReplace`/`OnReplaceAll`, the wrapped-search warning dialog's
+  parent) goes through it instead. The dockable pane is registered once,
+  eagerly, in `wxMaximaFrame`'s constructor (like every other sidebar, so its
+  docked position/size persists via the AUI perspective) and is backed by its
+  own `wxMaximaFrame::m_findPaneData` member -- it can't reuse
+  `wxMaxima::m_findData` because `wxMaximaFrame`'s constructor body (where
+  `AddPane()` runs) executes *before* `wxMaxima`'s own members are
+  constructed, a plain base-before-derived C++ ordering issue. The two data
+  objects don't need to be the same instance: `FindReplacePane` already
+  persists its own live flags straight to `wxConfig` on every change, so each
+  just seeds itself independently via the new
+  `FindReplacePane::FindReplaceData::LoadFromConfig()`. Un-hiding the pane
+  from the Ctrl+F handler (`MaximaCommandMenus.cpp`) needs the base class's
+  `wxMaximaFrame::ShowPane(int, bool)` explicitly qualified as
+  `m_wxMaxima.wxMaximaFrame::ShowPane(...)` -- `wxMaxima` declares its own,
+  unrelated `ShowPane(wxCommandEvent&)` (a menu-event handler) which hides
+  the *entire* base-class overload set from lookup on `m_wxMaxima.ShowPane(...)`
+  per ordinary C++ derived-class member-hiding rules; this exact qualification
+  is already the established idiom elsewhere in the same file and in
+  `MaximaResponseReader.cpp` for the same reason. Going through the generic
+  `ShowPane()`/`IsPaneDisplayed()` (shared by every `EventIDs::menu_pane_*`
+  sidebar) is what makes Ctrl+F correctly un-minimize the pane and focus it
+  even when it starts out closed/hidden -- confirmed live in Xvfb, this was
+  the specific risk the issue itself called out ("does that still work if
+  the sidebar is minimized?").
 - **Cursors:** The worksheet has 2 types of Cursor: A standard cursor in an EditorCell or a hCaret between two worksheet cells (`m_hCaretPosition`, the horizontal bar that marks a position *between* group cells, used for inserting and for selecting whole cells). Only one cursor is active at a time.
 - **Key Classes:**
   - `wxMaxima` (`src/wxMaxima.cpp`): The main application class (subclass of `wxMaximaFrame`). Holds most of the program logic -- Maxima process management, parsing incoming XML, menu and toolbar actions, file I/O.
