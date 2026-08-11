@@ -30,12 +30,26 @@ locally before merging changes to cell lifetime, layout or parsing:
 ```sh
 cmake -S . -B build-asan -G Ninja -DWXM_SANITIZE=address,undefined
 ninja -C build-asan
-ASAN_OPTIONS=detect_leaks=0 UBSAN_OPTIONS=print_stacktrace=1 \
+ASAN_OPTIONS=detect_leaks=0:check_initialization_order=1:strict_string_checks=1:suppressions=test/asan_suppressions.txt \
+    UBSAN_OPTIONS=print_stacktrace=1 \
     xvfb-run ctest --test-dir build-asan
 ```
 
 Leak detection stays off (`detect_leaks=0`) because GTK/Pango leak noise drowns
-out real findings.
+out real findings. **The `suppressions=test/asan_suppressions.txt` is not
+optional -- omitting it makes `imageFormat` fail every single time**, with an
+`AddressSanitizer: strncpy-param-overlap` inside `wxXPMDecoder::ReadFile`
+(confirmed via `md5sum` that the test's XPM fixture is byte-identical to what
+CI uses, and confirmed deterministic here across 6 repeated runs -- it is not
+the tutorial_10Minutes-style rare race it might look like at first). This is a
+real, pre-existing bug inside wxWidgets' own XPM decoder (not wxMaxima's code,
+confirmed by the stack trace bottoming out in `libwx_gtk3u_core`), already
+known and already suppressed -- see `test/asan_suppressions.txt`'s own
+comment and `compile_ubuntu.yml`'s `run_tests` step, which sets exactly this
+`ASAN_OPTIONS` string. Running the shorter, suppressions-less command from
+memory (as opposed to copying it from here or from the workflow file) will
+reliably misreport this pre-existing, already-triaged third-party issue as a
+regression in whatever change you're actually testing.
 
 Other useful targets: `ninja -C build Doxygen` builds the source documentation
 (note the capital D, and the target only exists when Doxygen is installed), and
