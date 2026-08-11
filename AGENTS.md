@@ -654,7 +654,8 @@ tried without rebuilding.
   much smaller, semantically-justified cost: only headings, list items and
   fenced code blocks need re-confirming as fuzzy (e.g. 293 clean -> 183
   clean + 156 fuzzy for German - about 89 of those are headings whose old
-  msgstr still has the now-redundant leading `## ` baked in, since `po4a`
+  msgstr still has the now-redundant leading `##` and its space baked in,
+  since `po4a`
   auto-prepends it from the `Title ##` type instead of storing it in the
   translated text; the rest are fenced-code-block delimiters `po4a` now
   reconstructs itself instead of storing literally, plus a handful of
@@ -668,7 +669,7 @@ tried without rebuilding.
   this fix as lossless to a translator without that caveat: a previously
   fully-translated heading really does render in English again in
   `info/wxmaxima.<lang>.md` until someone reviews the (mostly mechanical:
-  strip the leading `#+ `) fuzzy diff. Fixing the wrapping bug and keeping
+  strip the leading `#+` and the space after it) fuzzy diff. Fixing the wrapping bug and keeping
   every translation rendering are in tension - there's no `po4a` option that
   gets both, since the whole point of `-o markdown` is to change what a
   heading's msgid *is*.
@@ -769,7 +770,8 @@ tried without rebuilding.
   early branch always returns first. Fixed by adding an explicit `d` case
   returning `\mathrm{d}` (no `\ensuremath{}` needed: it's only ever emitted
   already inside `IntCell::ToTeX()`'s math-mode string, which also already
-  supplies the separating `\, ` ahead of it, so don't duplicate that here).
+  supplies the separating `\,` and the space ahead of it, so don't duplicate
+  that here).
   Adding a new special case to this list resurfaced a second, easy-to-miss
   coupling: `TextCell::ToTeX()`'s own multiplication-dot logic (for e.g. the
   denominator of `d/dt` or a `dx*dy`-style differential product) identifies

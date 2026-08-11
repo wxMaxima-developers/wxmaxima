@@ -430,7 +430,7 @@
   neither cell was previously annotated for, so `openMacFiles` and
   `testbench_simple.wxmx` complete instead of hitting the new --batch halt
   above. Confirmed along the way: the "Enter space-separated numbers,
-  `all' or `none':" prompt reads a raw line, not a Maxima expression, so an
+  ``all' or `none':`" prompt reads a raw line, not a Maxima expression, so an
   answer ending in `;` is invalid input Maxima will wait on indefinitely --
   the new cell's recorded answer uses plain `none` instead.
 
