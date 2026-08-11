@@ -653,6 +653,17 @@ wxMaximaFrame::~wxMaximaFrame() {
   // destroy the worksheet deterministically while the configuration is
   // whole. (Destroy() on a non-top-level child deletes it immediately and
   // unlinks it from the frame, so the base class won't destroy it twice.)
+  // The dockable find pane (GH #2249) has the same problem: its destructor
+  // writes m_findPaneData's flags back to wxConfig, and m_findPaneData is a
+  // member of this class -- destroyed with the rest of the members, before
+  // the base class destructor would otherwise get around to destroying this
+  // child window. Destroy it here, deterministically, while m_findPaneData
+  // is still alive.
+  if (GetWorksheet()->m_findPane) {
+    m_manager.DetachPane(GetWorksheet()->m_findPane);
+    GetWorksheet()->m_findPane->Destroy();
+    GetWorksheet()->m_findPane = nullptr;
+  }
   m_manager.DetachPane(m_worksheet);
   m_worksheet->Destroy();
 }

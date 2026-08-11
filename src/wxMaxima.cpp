@@ -1307,6 +1307,20 @@ wxMaxima::~wxMaxima() {
   if (m_fileSaved)
     RemoveTempAutosavefile();
 
+  // If the floating Find and Replace dialog is still open, its destructor
+  // (via the FindReplacePane it wraps) writes m_findData's flags back to
+  // wxConfig -- and m_findData is a member of this class, about to be
+  // destroyed along with the rest of wxMaxima's members right after this
+  // destructor body finishes. Left to the wxWindow base class, the dialog
+  // (a child window) wouldn't be destroyed until far later, after m_findData
+  // is already gone (see wxMaximaFrame::~wxMaximaFrame()'s identical
+  // reasoning for the dockable find pane, GH #2249). Destroy it here,
+  // deterministically, while m_findData is still alive.
+  if (GetWorksheet() && GetWorksheet()->m_findDialog) {
+    GetWorksheet()->m_findDialog->Destroy();
+    GetWorksheet()->m_findDialog = NULL;
+  }
+
   // This window is still counted among the top-level windows while its close
   // event is being handled, so CountWindows() == 1 means it is the last
   // wxMaxima window.
