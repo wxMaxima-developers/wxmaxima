@@ -73,7 +73,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p>This file contains architectural insights, conventions, and operational knowledge to assist AI agents working on the <a class="el" href="classwxMaxima.html">wxMaxima</a> codebase. <b>Agents are explicitly permitted and encouraged to update this file with new findings that improve context and safety.</b></p>
-<h1><a class="anchor" id="autotoc_md40"></a>
+<h1><a class="anchor" id="autotoc_md43"></a>
 Build System</h1>
 <p>Configure once (a Debug build is the default), then build and run without installing:</p>
 <div class="fragment"><div class="line">cmake -S . -B build -G Ninja</div>
@@ -115,7 +115,7 @@ Build System</h1>
 </ol>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md41"></a>
+<h1><a class="anchor" id="autotoc_md44"></a>
 Architecture &amp; GUI</h1>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> is a GUI front-end to the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> CAS; it talks to a <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> process over a local TCP socket.</p>
 <ul>
@@ -255,7 +255,7 @@ Architecture &amp; GUI</h1>
   code, selected the group cell via hCaret + Shift+Up, confirmed the
   rendered text changed consistently and a single Ctrl+Z restored it).
 
-@subsection autotoc_md42 Communication with Maxima
+@subsection autotoc_md45 Communication with Maxima
 
 wxMaxima sends Lisp and Maxima commands over the socket; Maxima answers with XML
 wrapped in known tags. &lt;tt&gt;Maxima&lt;/tt&gt; reads that data on a worker thread and posts
@@ -293,13 +293,13 @@ tried without rebuilding.
 </li>
 <li>**ASCII-art 2<a class="el" href="classD.html">D</a> display (<code>set_display('ascii)</code>) and <code>*alt-display2d*</code>:** when <code>$display2d</code> is on, <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s evaluator checks the special variable <code>*alt-display2d*</code> before printing a result: if it's a function symbol, that function is called <em>instead of</em> <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s own stock printer (this is how <code>mydispla</code> in <code>wxMathML.lisp</code> produces the normal <code>&lt;mth&gt;</code>/XML output); if it's <code>nil</code>, <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> falls through to its own built-in ASCII-art printer, which pads a result's lines with literal spaces so a multi-line fraction/ matrix/etc. lines up correctly under the <code>(oN)</code> label &ndash; but that padding assumes every line, including the label, ends up rendered in one uniform monospace font. <code>wxMathML.lisp</code>'s <code>wx-ascii-displa</code> wraps that stock printer in <code>&lt;wxxml-asciimath&gt;</code>/<code>&lt;/wxxml-asciimath&gt;</code> markers <em>without</em> reimplementing it: it dynamically rebinds <code>*alt-display2d*</code> to <code>nil</code> for just the duration of <code>(displa x)</code>, which re-enters <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s own dispatch and this time takes the stock ASCII path (confirmed live: this is correctly reentrant-safe through <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s own recursive sub-expression <code>displa</code> calls, e.g. matrix rows, since they run inside the same dynamic extent). <code>Maxima::ProcessData()</code> only fires the corresponding <code>XML_ASCIIMATH</code> event once it has seen the <em>complete</em> matching closing tag, so <code><a class="el" href="classMaximaResponseReader.html#a15931a24b9755320cc7262e040217dc4" title="Handles one complete &lt;wxxml-asciimath&gt;...&lt;/wxxml-asciimath&gt; block: Maxima&#39;s stock ASCII-art 2D displa...">MaximaResponseReader::ReadAsciiMath()</a></code> always receives one whole block in one piece and can render all of it in one uniform style &ndash; before this, <code>ReadMiscText()</code> guessed a chunk's style from whether it happened to start with <code>"(%"</code>, and since chunks are split by socket/timer batching (not by where <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s actual output boundaries are), a block's label line could land in a separate batch than its neighbors and get misclassified into a different (proportional) font, breaking the alignment <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s padding assumed &ndash; root-caused with a raw <code>:lisp-quiet (with-input-from-string ...)</code> / socket-level reproduction (see the debugging technique note above) before the fix, not guessed.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md43"></a>
+<h2><a class="anchor" id="autotoc_md46"></a>
 File Formats</h2>
 <ul>
 <li>**<code>.wxmx</code>** &ndash; a ZIP archive holding <code>content.xml</code> (the MathML-like XML) plus the embedded images. The format version lives in <code><a class="el" href="WXMXformat_8h_source.html">src/WXMXformat.h</a></code>.</li>
 <li>**<code>.wxm</code>** &ndash; the plain-text format, read by <code>Format::ParseWXMFile()</code>.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md44"></a>
+<h2><a class="anchor" id="autotoc_md47"></a>
 Translations (&lt;tt&gt;locales/&lt;/tt&gt;)</h2>
 <ul>
 <li><b>One combined <code>.po</code> per language, in <code>locales/wxMaxima/</code>, is the file a translator edits.</b> It covers both <a class="el" href="classwxMaxima.html">wxMaxima</a>'s own UI strings (<code>xgettext</code>-extracted from <code>src/**/*.cpp</code>/<code>*.h</code>) and the manual's prose (<code>po4a</code>-extracted from <code>info/wxmaxima.md</code>). <code>locales/wxMaxima/wxMaxima.pot</code>, the template both <code>msgmerge</code> and Crowdin work against, is regenerated as the union of a fresh source scan and <code>locales/manual/wxmaxima.md.pot</code> (<code>msgcat --use-first</code>, preferring <code>wxMaxima.pot</code>'s own header) by the <code>update-locale</code> CMake target.</li>
@@ -318,7 +318,7 @@ Translations (&lt;tt&gt;locales/&lt;/tt&gt;)</h2>
 <li><b>Don't run this sandbox's stock <code>po4a</code> (0.69) against real translated content.</b> See <code>CheckPo4aVersion.cmake</code>'s corruption warning above &ndash; verifying a change to the translation <em>pipeline</em> (<code>po4a.cfg.in</code>/<code>merge_manual_po.cmake</code>/the CMake wiring) is fine without running <code>po4a</code> itself, but regenerating actual <code>.po</code>/<code>.md</code> output needs a real <code>po4a</code> &gt;= 0.70. It wasn't reachable via any of apt (only has 0.69), Debian's package archive, or po4a's own GitHub releases (both blocked by this sandbox's proxy) - but a source tarball of a current release, fetched outside the sandbox and handed to the agent as a file, runs perfectly well unpacked with no install step beyond <code>PERL5LIB=&lt;unpacked-dir&gt;/lib</code> pointing at its <code>Locale::Po4a::*</code> modules; the <code>po4a</code>/<code>po4a-updatepo</code>/ <code>po4a-translate</code>/etc. scripts at the tarball's top level need nothing else to work standalone, e.g. <code>PERL5LIB=lib ./po4a --version</code>. Regenerating translated content live and diffing it (<code>msgfmt --statistics</code> before/after per language, matching translated-message counts) is how both bugs above were actually caught, not guessed from reading <code>Locale::Po4a::Text</code>'s source.</li>
 <li>**<code>git clean -fd</code> after <code>git checkout --</code> on a directory wipes untracked files in it too, including ones you meant to keep** (e.g. a new <code>locales/manual/&lt;lang&gt;.po</code> restored from a scratch copy, or a brand new <code>.cmake</code> helper script that was never committed yet) - it doesn't distinguish "test-run droppings" from "uncommitted new work" by intent, only by whether <code>git add</code> has seen the path yet. Prefer reverting only the specific files that are actually wrong (or committing work-in-progress to a scratch commit first) over a blanket <code>git checkout -- &lt;dir&gt; &amp;&amp; git clean -fd &lt;dir&gt;</code> once a directory has a mix of both kinds of changes in it.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md45"></a>
+<h1><a class="anchor" id="autotoc_md48"></a>
 Conventions &amp; Standards</h1>
 <ul>
 <li><b>Git Environment:</b> Note that running <code>git diff</code> might launch the visual diff tool <code>meld</code> instead of outputting to the terminal. Always use <code>git diff --no-ext-diff</code> if you need terminal output.</li>
@@ -442,7 +442,31 @@ Conventions &amp; Standards</h1>
   sandbox &amp;ndash; but it's the same string-formatting/branching mechanism,
   already exercised by the generic path).
 
-@section autotoc_md46 Layout &amp; Compatibility
+@section autotoc_md49 Layout &amp; Compatibility
+
+The rules below are the ones worth carrying around at all times. The reasoning
+behind them, the pipeline they belong to, and the recurring shapes layout bugs
+take are in the **&lt;tt&gt;wxmaxima-layout&lt;/tt&gt; skill** (&lt;tt&gt;.claude/skills/wxmaxima-layout/&lt;/tt&gt;),
+which loads on demand &amp;ndash; keep the detail there rather than growing this file.
+
+- **&lt;tt&gt;RequestRecalculation()&lt;/tt&gt; only SCHEDULES; &lt;tt&gt;RecalculateIfNeeded()&lt;/tt&gt; executes.**
+  Never read geometry (positions, sizes) on the line after asking for a
+  recalculation &amp;ndash; at that point nothing has been recalculated yet, and you get
+  the previous layout. &lt;tt&gt;AdjustSize()&lt;/tt&gt; deliberately defers while positions are
+  stale. The name is the trap: it was called &lt;tt&gt;Recalculate()&lt;/tt&gt; until 2026-07-08,
+  and code written against the old name reads as if it were synchronous.
+- &lt;strong&gt;A composite cell's &lt;tt&gt;Recalculate()&lt;/tt&gt; override MUST recurse unconditionally.&lt;/strong&gt;
+  Roughly twenty composite cells (&lt;tt&gt;FracCell&lt;/tt&gt;, &lt;tt&gt;SqrtCell&lt;/tt&gt;, &lt;tt&gt;ParenCell&lt;/tt&gt;, ...) used
+  to skip recursing into their children when they judged themselves unchanged.
+  That is wrong: a child can be dirty for a reason the parent cannot see (a font
+  size change on partial breakup), and the parent's guard then strands it at a
+  stale width &amp;ndash; which is how parens ended up too narrow for their contents.
+  Recurse every time and let each child's own changed-flag decide.
+- &lt;strong&gt;List caches must be invalidated when the configuration counter changes.&lt;/strong&gt;
+  Cached per-list geometry (&lt;tt&gt;m_listCacheCfgCnt&lt;/tt&gt; and friends) survives a
+  configuration change unless it is stamped with the counter and compared on
+  use. Forgetting this produces the "stale spacing" family of bugs, where cells
+  keep a width computed under the previous font/zoom settings.
 
 - &lt;strong&gt;Mathematical Cell Padding:&lt;/strong&gt; Use &lt;tt&gt;MC_TEXT_PADDING&lt;/tt&gt; (in &lt;tt&gt;Configuration.h&lt;/tt&gt;) for text-based cells. &lt;strong&gt;Exception:&lt;/strong&gt; &lt;tt&gt;DigitCell&lt;/tt&gt; does not include padding to ensure visual consistency in broken-up numbers.
 - &lt;strong&gt;Three-Step Layout Process:&lt;/strong&gt;
@@ -457,8 +481,28 @@ Conventions &amp; Standards</h1>
 - **Bidi (&lt;tt&gt;src/Bidi.h&lt;/tt&gt;/&lt;tt&gt;.cpp&lt;/tt&gt;):** Reorders a line of text per the Unicode Bidirectional Algorithm (UAX #9), using &lt;tt&gt;libfribidi&lt;/tt&gt; when it's available at build time (&lt;tt&gt;USE_FRIBIDI&lt;/tt&gt; in &lt;tt&gt;BuildConfig.h&lt;/tt&gt;, optional, &lt;tt&gt;WXM_USE_FRIBIDI&lt;/tt&gt; CMake option, on by default when &lt;tt&gt;pkg-config fribidi&lt;/tt&gt; is found) and falling back to a single-run approximation otherwise. No wxWidgets backend exposes this reordering itself &amp;ndash; Pango/CoreText/DirectWrite compute it internally to shape glyphs but never hand it back to the app. &lt;tt&gt;EditorCell::GetLineBidiRuns()&lt;/tt&gt; wraps it as absolute &lt;tt&gt;m_text&lt;/tt&gt; positions; &lt;tt&gt;MixedDirectionOffset()&lt;/tt&gt; (used by &lt;tt&gt;PositionToPoint()&lt;/tt&gt;, hence also &lt;tt&gt;MarkSelection()&lt;/tt&gt; and &lt;tt&gt;SelectPointText()&lt;/tt&gt;'s click search) and &lt;tt&gt;HandleSpecialKey()&lt;/tt&gt;'s arrow-key handling are the consumers. wxmTestApp is an OBJECT library (&lt;tt&gt;test/unit_tests/CMakeLists.txt&lt;/tt&gt;): it compiles &lt;tt&gt;Bidi.cpp&lt;/tt&gt; itself and needs &lt;tt&gt;PkgConfig::FRIBIDI&lt;/tt&gt; linked directly to &lt;em&gt;it&lt;/em&gt; (not just to &lt;tt&gt;wxmaxima&lt;/tt&gt;) to get fribidi's include path at that compile step; separately, its own &lt;tt&gt;target_link_libraries()&lt;/tt&gt; don't propagate through &lt;tt&gt;\$\&lt;TARGET_OBJECTS:wxmTestApp\&gt;&lt;/tt&gt;, so anything it needs must &lt;em&gt;also&lt;/em&gt; be linked into each consuming test executable directly (&lt;tt&gt;WXM_TESTAPP_EXTRA_LIBS&lt;/tt&gt;) for the final link. The imported target has to be declared &lt;tt&gt;GLOBAL&lt;/tt&gt; since &lt;tt&gt;test/&lt;/tt&gt; is a sibling directory of &lt;tt&gt;src/&lt;/tt&gt;, not a descendant. &lt;tt&gt;\#include \&lt;fribidi.h\&gt;&lt;/tt&gt;, not &lt;tt&gt;\&lt;fribidi/fribidi.h\&gt;&lt;/tt&gt;: pkg-config's own &lt;tt&gt;-I&lt;/tt&gt; already points &lt;em&gt;at&lt;/em&gt; fribidi's header directory (confirmed on both Debian's and Homebrew's &lt;tt&gt;.pc&lt;/tt&gt; files), so the extra &lt;tt&gt;fribidi/&lt;/tt&gt; prefix only "worked" on Linux by accident, via &lt;tt&gt;/usr/include&lt;/tt&gt; being an implicit compiler search path Homebrew's non-default prefix doesn't share &amp;ndash; caught by a real macOS CI failure, not by this sandbox.
 - **ConfigDialogue Tabs Must Scroll:&lt;/strong&gt; Every tab panel in &lt;tt&gt;src/dialogs/ConfigDialogue.cpp&lt;/tt&gt; is a &lt;tt&gt;wxScrolled\&lt;wxPanel\&gt;&lt;/tt&gt; with &lt;tt&gt;SetScrollRate(5 * GetContentScaleFactor(), 5 * GetContentScaleFactor())&lt;/tt&gt; and &lt;tt&gt;SetMinSize(wxSize(GetContentScaleFactor() * mMinPanelWidth, GetContentScaleFactor() * mMinPanelHeight))&lt;/tt&gt;. Without this, a tab's natural size (which grows with font size/DPI/translation length) can make the whole dialog taller than a hi-DPI screen with no way to reach what's cut off. When adding a new tab, copy this pattern (see &lt;tt&gt;CreateWorksheetPanel()&lt;/tt&gt;) rather than a plain &lt;tt&gt;wxPanel&lt;/tt&gt;.
 - &lt;strong&gt;Constructor Initialization:&lt;/strong&gt; Order initialization lists to match header declaration order to prevent &lt;tt&gt;-Wreorder&lt;/tt&gt; warnings.
+- &lt;strong&gt;AUI: &lt;tt&gt;RestorePane()&lt;/tt&gt; does NOT undo &lt;tt&gt;MinimizePane()&lt;/tt&gt;.&lt;/strong&gt; Despite the name it is
+  the counterpart to &lt;tt&gt;MaximizePane()&lt;/tt&gt;, and its implementation rewrites &lt;em&gt;every&lt;/em&gt;
+  pane's hidden state from &lt;tt&gt;savedHiddenState&lt;/tt&gt; &amp;ndash; using it to un-minimize one
+  sidebar silently reshuffles all the others. There is no separate "minimized"
+  state to undo: &lt;tt&gt;MinimizePane()&lt;/tt&gt; just calls &lt;tt&gt;paneInfo.Hide()&lt;/tt&gt; and adds an entry
+  to a min-dock strip, and wx's own restore is nothing more than
+  &lt;tt&gt;pane-\&gt;Show(); m_mgr.Update();&lt;/tt&gt; &amp;ndash; exactly what &lt;tt&gt;ShowPane()&lt;/tt&gt; and
+  &lt;tt&gt;ShowWizardPane()&lt;/tt&gt; already do. So showing a pane the normal way restores it
+  from minimized for free. Note also that centre panes cannot be minimized and
+  &lt;tt&gt;MinimizePane()&lt;/tt&gt; asserts on panes without a minimize button &amp;ndash; so wherever
+  &lt;tt&gt;MinimizeButton(true)&lt;/tt&gt; is handed out, the worksheet and the toolbar must be
+  excluded.
+- &lt;strong&gt;A wxWidgets-version fallback &lt;tt&gt;\#define&lt;/tt&gt; must come AFTER the wx header that
+  may define it.&lt;/strong&gt; &lt;tt&gt;Compat.h&lt;/tt&gt; includes &lt;tt&gt;\&lt;wx/defs.h\&gt;&lt;/tt&gt; &lt;em&gt;above&lt;/em&gt; its
+  &lt;tt&gt;\#ifndef wxWARN_UNUSED&lt;/tt&gt; fallback for this reason. Reached in the other order,
+  our header defines the macro empty first, wxWidgets' own
+  &lt;tt&gt;\#ifndef wxWARN_UNUSED&lt;/tt&gt; then declines to redefine it, and the feature is
+  silently disabled on exactly the compilers that support it &amp;ndash; a change that
+  compiles everywhere and does nothing. The same trap applies to any future
+  &lt;tt&gt;wxSOMETHING&lt;/tt&gt; shim added there.
 
-@section autotoc_md47 Performance &amp; Documentation Mandates
+@section autotoc_md50 Performance &amp; Documentation Mandates
 
 - &lt;strong&gt;NEWS.md Updates:&lt;/strong&gt; Every non-trivial change MUST be documented in &lt;tt&gt;NEWS.md&lt;/tt&gt; under the "# Current development version" section.
 - &lt;strong&gt;Doxygen Comments:&lt;/strong&gt; Include descriptions for all new classes and public methods. Complex algorithms (e.g., LCS alignment) require detailed architectural comments.
@@ -469,47 +513,67 @@ Conventions &amp; Standards</h1>
   - Prefer &lt;tt&gt;(intern ...)&lt;/tt&gt; over &lt;tt&gt;read-from-string&lt;/tt&gt; for dynamic symbol generation.
 - &lt;strong&gt;Strict XML Mandate:&lt;/strong&gt; To avoid duplicate attributes, add any new manually-handled XML attribute (e.g., &lt;tt&gt;noneParens="true"&lt;/tt&gt;) to the filter list in &lt;tt&gt;MathParser.cpp&lt;/tt&gt;.
 
-@section autotoc_md48 Visual Documentation (&lt;tt&gt;art/Doxygen/&lt;/tt&gt;)
+@section autotoc_md51 Visual Documentation (&lt;tt&gt;art/Doxygen/&lt;/tt&gt;)
 
 - &lt;strong&gt;Geometry Awareness:&lt;/strong&gt; If modifying &lt;tt&gt;Recalculate()&lt;/tt&gt; or &lt;tt&gt;Draw()&lt;/tt&gt; geometry (padding, center alignment), you MUST update the corresponding SVG diagrams in &lt;tt&gt;art/Doxygen/&lt;/tt&gt;.
 - &lt;strong&gt;Consistency:&lt;/strong&gt; New cell types should have &lt;tt&gt;*Geometry.svg&lt;/tt&gt; and &lt;tt&gt;*LinearGeometry.svg&lt;/tt&gt; (if applicable) diagrams.
 
-@section autotoc_md49 Key Subsystems Map
+@section autotoc_md52 Key Subsystems Map
 
-- &lt;strong&gt;Layout Engine:&lt;/strong&gt; &lt;tt&gt;src/cells/&lt;/tt&gt; and &lt;tt&gt;src/worksheet/&lt;/tt&gt; (&lt;tt&gt;Worksheet.cpp&lt;/tt&gt; and its siblings moved into that subdirectory).
-- &lt;strong&gt;MathML Formatting:&lt;/strong&gt; &lt;tt&gt;src/wxMathML.lisp&lt;/tt&gt; and &lt;tt&gt;src/MathParser.cpp&lt;/tt&gt;.
-- &lt;strong&gt;Main Logic:&lt;/strong&gt; &lt;tt&gt;src/wxMaxima.cpp&lt;/tt&gt; and &lt;tt&gt;src/wxMaximaFrame.cpp&lt;/tt&gt; &amp;ndash; but much of what used to sit in &lt;tt&gt;wxMaxima&lt;/tt&gt; has been peeled off into friend classes, so look there first: &lt;tt&gt;MaximaProcessManager&lt;/tt&gt; (spawn/kill/connect and the data pump), &lt;tt&gt;MaximaEvaluator&lt;/tt&gt; (evaluation queue and command protocol), &lt;tt&gt;MaximaResponseReader&lt;/tt&gt; (the incoming-XML handlers), &lt;tt&gt;MaximaFileIO&lt;/tt&gt; (worksheet open/save) and &lt;tt&gt;MaximaCommandMenus&lt;/tt&gt; (the menu handlers).
-- &lt;strong&gt;Configuration:&lt;/strong&gt; &lt;tt&gt;src/Configuration.cpp&lt;/tt&gt;.
+Deeper, per-subsystem background lives in &lt;tt&gt;.claude/skills/&lt;/tt&gt;, which load only
+when they are relevant &amp;ndash; so that hard-won detail is available without every
+line of it sitting in context permanently. Read the matching one &lt;em&gt;before&lt;/em&gt;
+starting work in that area; each is mostly a list of the ways that subsystem
+has already been broken.
 
-@section autotoc_md50 Backlog / Future Work
-
-Items the maintainer has flagged as worth doing but hasn't asked for yet &amp;ndash; don't
-start on these without checking in first, but pick them up if asked for "what's next" style work.
-
-- &lt;strong&gt;Real tab handling in &lt;tt&gt;EditorCell&lt;/tt&gt;:&lt;/strong&gt; tabs are currently just replaced by
-  spaces on input instead of being handled as their own character/column-stop
-  concept.
-- &lt;strong&gt;GH #1335 &amp;ndash; cell allocations are non-local (still open, unstarted):&lt;/strong&gt;
-  &lt;tt&gt;Cell&lt;/tt&gt;s are still individually heap-allocated and linked via each cell's own
-  &lt;tt&gt;m_previous&lt;/tt&gt;/&lt;tt&gt;m_next&lt;/tt&gt;, not stored contiguously. &lt;tt&gt;CellList.h&lt;/tt&gt;'s own header
-  comment already says "the eventual plan is to have a list of cells be a dedicated lightweight class working together with an arena allocator", but
-  &lt;tt&gt;CellListBuilderBase&lt;/tt&gt; still just holds a &lt;tt&gt;std::unique_ptr\&lt;Cell\&gt; m_head&lt;/tt&gt; &amp;ndash;
-  that plan was never implemented. The issue's three proposed moves are all
-  still open: (1) drop &lt;tt&gt;m_previous&lt;/tt&gt;/&lt;tt&gt;m_next&lt;/tt&gt; from &lt;tt&gt;Cell&lt;/tt&gt; in favor of a
-  &lt;tt&gt;CellList&lt;/tt&gt; that owns contiguous storage, (2) hoist &lt;tt&gt;m_group&lt;/tt&gt; from &lt;tt&gt;Cell&lt;/tt&gt; to
-  &lt;tt&gt;CellList&lt;/tt&gt; (one owner per list), (3) hoist the per-line-geometry caches &amp;ndash;
-  the issue calls them &lt;tt&gt;m_fullWidth&lt;/tt&gt;/&lt;tt&gt;m_maxCenter&lt;/tt&gt;/&lt;tt&gt;m_maxDrop&lt;/tt&gt;, renamed since
-  to &lt;tt&gt;m_cachedSumOfWidths&lt;/tt&gt;/&lt;tt&gt;m_cachedCenterList&lt;/tt&gt;/&lt;tt&gt;m_cachedMaxDrop&lt;/tt&gt;/
-  &lt;tt&gt;m_cachedLineWidth&lt;/tt&gt; &amp;ndash; from &lt;tt&gt;Cell&lt;/tt&gt; to &lt;tt&gt;CellList&lt;/tt&gt; too. Confirmed &lt;tt&gt;sizeof(Cell)&lt;/tt&gt;
-  is 224 bytes on the current tree (checked directly, post-#1445), not the 112
-  the issue was measured against in 2020 &amp;ndash; &lt;tt&gt;Cell&lt;/tt&gt; has grown substantially
-  since (accessibility support, config-change-tracking atomics, UUID string,
-  extra-XML-attributes map, ...), so the issue's "112 -&gt; 76 bytes" estimate is stale, but the underlying proposal is still real. This is a bigger undertaking than #1445: it changes the core list <em>storage model</em> (<code>m_next</code>/<code>m_previous</code> becoming array-relative instead of pointer-based), touching every list-manipulation site in <code>CellList.cpp</code> plus anything walking <code>GetNext()</code>/<code>GetPrevious()</code> directly &ndash; scope it out carefully before starting, don't assume it's a small follow-on to #1445 just because they're adjacent/both filed by KubaO in 2020.</code></li>
+&lt;table class="markdownTable"&gt;
+  &lt;tr class="markdownTableHead"&gt;    &lt;th class="markdownTableHeadNone"&gt; Skill   </code></li>
 </ul>
 </li>
 </ul>
+<p><code> Covers    </code></p>
+<p><code> </code></p>
+<p><code> <code>wxmaxima-layout</code>   </code></p>
+<p><code> the schedule/recalculate/resize pipeline and the layout invariants    </code></p>
+<p><code> </code></p>
+<p><code> <code>wxmaxima-architecture</code>   </code></p>
+<p><code> where code lives, the friend-class decomposition, the extraction recipe    </code></p>
+<p><code> </code></p>
+<p><code> <code>wxmaxima-translations</code>   </code></p>
+<p><code> the POT glob, po4a, Crowdin, and how translations get lost    </code></p>
+<p><code> </code></p>
+<p><code> <code>wxmaxima-export</code>   </code></p>
+<p><code> HTML/LaTeX/image export, accessible labels, round-trip guarantees    </code></p>
+<p><code> </code></p>
+<p><code> <code>wxmaxima-maxima-protocol</code>   </code></p>
+<p><code> the socket, <code>wxMathML.lisp</code>, batch mode, process lifetime    </code></p>
+<p><code> </code></p>
+<p><code> <code>wxmaxima-packaging</code>   </code></p>
+<p><code> the CI matrix's blind spots, installers, signing, releases    </code></p>
+<p><code> </code></p>
+<p><code> <code>run-wxmaxima</code>   </code></p>
+<p><code> building, launching and screenshotting the app   </code></p>
 <p><code></code></p>
-<h1><a class="anchor" id="autotoc_md51"></a>
+<p><code></p><ul>
+<li><b>Layout Engine:</b> <code>src/cells/</code> and <code>src/worksheet/</code> (<code><a class="el" href="Worksheet_8cpp.html" title="This file defines the class Worksheet.">Worksheet.cpp</a></code> and its siblings moved into that subdirectory).</li>
+<li><b>MathML Formatting:</b> <code>src/wxMathML.lisp</code> and <code><a class="el" href="MathParser_8cpp.html" title="This file defines the class MathParser that reads wxmx data and math from Maxima.">src/MathParser.cpp</a></code>.</li>
+<li><b>Main Logic:</b> <code><a class="el" href="wxMaxima_8cpp.html" title="This file defines the contents of the class wxMaxima that contains most of the program&#39;s logic.">src/wxMaxima.cpp</a></code> and <code><a class="el" href="wxMaximaFrame_8cpp.html" title="This file defines the class wxMaximaFrame.">src/wxMaximaFrame.cpp</a></code> &ndash; but much of what used to sit in <code><a class="el" href="classwxMaxima.html">wxMaxima</a></code> has been peeled off into friend classes, so look there first: <code><a class="el" href="classMaximaProcessManager.html" title="The Maxima process/socket lifecycle extracted from the wxMaxima god class.">MaximaProcessManager</a></code> (spawn/kill/connect and the data pump), <code><a class="el" href="classMaximaEvaluator.html" title="The evaluation-queue driver / command protocol extracted from wxMaxima.">MaximaEvaluator</a></code> (evaluation queue and command protocol), <code><a class="el" href="classMaximaResponseReader.html" title="The Maxima-response handlers extracted from the wxMaxima god class.">MaximaResponseReader</a></code> (the incoming-XML handlers), <code><a class="el" href="classMaximaFileIO.html" title="The worksheet file loaders/savers extracted from the wxMaxima god class.">MaximaFileIO</a></code> (worksheet open/save) and <code><a class="el" href="classMaximaCommandMenus.html" title="The menu-command handlers extracted from the wxMaxima god class.">MaximaCommandMenus</a></code> (the menu handlers).</li>
+<li><b><a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a>:</b> <code><a class="el" href="Configuration_8cpp.html" title="This file defines the class Configuration which serves as a fast configuration storage.">src/Configuration.cpp</a></code>.</li>
+</ul>
+<p></code></p>
+<p><code></code></p>
+<h1><a class="anchor" id="autotoc_md53"></a>
+Backlog / Future Work</h1>
+<p><code> Items the maintainer has flagged as worth doing but hasn't asked for yet &ndash; don't start on these without checking in first, but pick them up if asked for "what's
+next" style work.</code></p>
+<p><code></p><ul>
+<li><b>Real tab handling in <code><a class="el" href="classEditorCell.html" title="This class defines what the user sees as input cell.">EditorCell</a></code>:</b> tabs are currently just replaced by spaces on input instead of being handled as their own character/column-stop concept.</li>
+<li><b>GH #1335 &ndash; cell allocations are non-local (still open, unstarted):</b> <code><a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a></code>s are still individually heap-allocated and linked via each cell's own <code>m_previous</code>/<code>m_next</code>, not stored contiguously. <code><a class="el" href="CellList_8h.html" title="Declares the cell list management functionality.">CellList.h</a></code>'s own header comment already says "the eventual plan is to have a list of cells be a
+  dedicated lightweight class working together with an arena allocator", but <code><a class="el" href="classCellListBuilderBase.html">CellListBuilderBase</a></code> still just holds a <code>std::unique_ptr&lt;<a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a>&gt; m_head</code> &ndash; that plan was never implemented. The issue's three proposed moves are all still open: (1) drop <code>m_previous</code>/<code>m_next</code> from <code><a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a></code> in favor of a <code><a class="el" href="classCellList.html">CellList</a></code> that owns contiguous storage, (2) hoist <code>m_group</code> from <code><a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a></code> to <code><a class="el" href="classCellList.html">CellList</a></code> (one owner per list), (3) hoist the per-line-geometry caches &ndash; the issue calls them <code>m_fullWidth</code>/<code>m_maxCenter</code>/<code>m_maxDrop</code>, renamed since to <code>m_cachedSumOfWidths</code>/<code>m_cachedCenterList</code>/<code>m_cachedMaxDrop</code>/ <code>m_cachedLineWidth</code> &ndash; from <code><a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a></code> to <code><a class="el" href="classCellList.html">CellList</a></code> too. Confirmed <code>sizeof(Cell)</code> is 224 bytes on the current tree (checked directly, post-#1445), not the 112 the issue was measured against in 2020 &ndash; <code><a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a></code> has grown substantially since (accessibility support, config-change-tracking atomics, UUID string, extra-XML-attributes map, ...), so the issue's "112 -&gt; 76 bytes" estimate is stale, but the underlying proposal is still real. This is a bigger undertaking than #1445: it changes the core list <em>storage model</em> (<code>m_next</code>/<code>m_previous</code> becoming array-relative instead of pointer-based), touching every list-manipulation site in <code>CellList.cpp</code> plus anything walking <code>GetNext()</code>/<code>GetPrevious()</code> directly &ndash; scope it out carefully before starting, don't assume it's a small follow-on to #1445 just because they're adjacent/both filed by KubaO in 2020.</li>
+</ul>
+<p></code></p>
+<p><code></code></p>
+<h1><a class="anchor" id="autotoc_md54"></a>
 Error resilience</h1>
 <p><code></p><ul>
 <li>To err is human =&gt; If your instructions don't seem to make sense feel free to ask. </li>
