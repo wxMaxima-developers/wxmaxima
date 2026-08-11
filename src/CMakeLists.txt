@@ -339,19 +339,13 @@ endif()
 # single-direction-only heuristic, unchanged from before this existed.
 option(WXM_USE_FRIBIDI "Use libfribidi for correct bidirectional (RTL) text editing, if it is found" ON)
 if(WXM_USE_FRIBIDI)
-  find_package(PkgConfig QUIET)
-  if(PkgConfig_FOUND)
-    # GLOBAL: test/unit_tests is a sibling directory of this one (both are
-    # add_subdirectory()'d straight from the top-level CMakeLists.txt), and a
-    # handful of its test executables link the wxmTestApp object library that
-    # Bidi.cpp lives in - they need to see this target too, which a plain
-    # (non-GLOBAL) imported target from pkg_check_modules would not let them.
-    pkg_check_modules(FRIBIDI IMPORTED_TARGET GLOBAL fribidi)
-  endif()
+  list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+  find_package(Fribidi REQUIRED)
 endif()
 if(FRIBIDI_FOUND)
   set(USE_FRIBIDI "1")
   message(STATUS "Found libfribidi ${FRIBIDI_VERSION}: bidirectional text editing will be accurate.")
+  include_directories(${Fribidi_INCLUDE_DIRS})
 else()
   set(USE_FRIBIDI "0")
   if(WXM_USE_FRIBIDI)
@@ -377,7 +371,9 @@ configure_file("${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima-local.in" ../wxmaxima-local
 target_link_libraries(wxmaxima ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
 
 if(FRIBIDI_FOUND)
-  target_link_libraries(wxmaxima PkgConfig::FRIBIDI)
+    target_link_libraries(wxmaxima ${Fribidi_LIBRARIES} ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+else()
+    target_link_libraries(wxmaxima ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
 endif()
 
 if(COMPILE_SUCCEEDED)
@@ -446,7 +442,7 @@ if(WXM_UNIT_TESTS)
         # path for that compilation - separate from WXM_TESTAPP_EXTRA_LIBS
         # below (test/unit_tests/CMakeLists.txt), which is only about linking
         # the already-compiled object files into each test executable.
-        target_link_libraries(wxmTestApp PUBLIC PkgConfig::FRIBIDI)
+        target_link_libraries(wxmTestApp Fribidi::Fribidi)
     endif()
 endif()
 
