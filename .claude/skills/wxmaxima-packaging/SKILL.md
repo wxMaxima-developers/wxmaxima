@@ -76,9 +76,64 @@ attributed in-tree).
 
 On a `Version*` tag, the Windows/macOS/Ubuntu jobs attach their installer / dmg
 / deb plus a source tarball and the NEWS.md body to the GitHub release. The
-release notes are extracted as the "Current development version" section of
-NEWS.md - which is why that section must be kept current as you go, not written
-at release time.
+release notes are extracted (`compile_windows.yml`, "Extract release notes
+from NEWS.md" step) by skipping every *leading* top-level `# ` heading and
+blank line, then taking everything up to the *next* `# ` heading - so it
+doesn't matter whether the section is still headed "Current development
+version" with nothing else above it, or whether release prep has already
+inserted the release's own "# x.y.z" heading right below that (see the
+runbook below - it deliberately does the latter, immediately, not as a
+separate follow-up commit). Generalized this way (rather than "skip exactly
+the first line") specifically so both structures keep working: an earlier
+version of this script only skipped one leading heading, which would have
+silently extracted an empty release body the first time a version heading
+was inserted before tagging instead of after (caught by simulating the
+PowerShell logic in Python against a real NEWS.md before it shipped).
+
+### Doing an actual release: the runbook
+
+`ReleaseChecklist.md` at the repo root is the authoritative step list -
+read it fresh each time, since CI automates more of it as that file's own
+"What CI now does automatically" section is updated. The parts worth
+knowing going in:
+
+- **Three files carry the version number and must move together**:
+  `CMakeLists.txt`'s `project(... VERSION x.y.z ...)`, `snap/snapcraft.yaml`'s
+  `version: x.y.z-0` (note the `-0` suffix, an unrelated snap revision
+  counter), and a new `<release version="x.y.z" date="...T12:00:00Z">` entry
+  in `data/io.github.wxmaxima_developers.wxMaxima.appdata.xml` (prepended
+  above the previous entry, `<description><p>...short paragraph...</p>
+  </description>`, no other HTML tags - flatpak/AppImage builders reject
+  most of them). `CMakeLists.txt`'s own `WXMAXIMA_VERSION` logic appends
+  `-dev` unless `CMAKE_BUILD_TYPE STREQUAL "Release"`, so a Debug build
+  correctly shows `x.y.z-dev` after the bump - that's the intended check,
+  not a bug.
+- **NEWS.md**: condense the accumulated "Current development version"
+  bullets into release notes (drop deep debugging narrative - "confirmed via
+  gdb/tcpdump/md5sum" belongs in AGENTS.md, not here - keep the user-facing
+  effect and the GH issue number), add a short intro paragraph in the same
+  voice as previous releases (crediting AI assistance where genuinely
+  substantial, matching the existing convention), and insert this release's
+  own "# x.y.z" heading directly below "# Current development version" -
+  leaving that heading in place, empty, for the next dev cycle. Do this in
+  one step now that the extraction script handles it (see above); no need
+  for the two-commit dance visible in older git history (condense-and-tag
+  first, insert the numbered heading as a separate commit the next day).
+- **Order**: get this all merged to `main` via a normal PR first (so CI
+  validates the appdata file, builds, and runs the full test suite against
+  the bump) - *then* create an **annotated** tag (`git tag -a
+  Version-x.y.z`) on `main` and `git push origin --tags`. The tag push is
+  what triggers the actual build-and-publish automation across all
+  platforms; there is no dry-run, so don't tag until the merge's CI is green.
+- **What an agent session cannot do, and should say so rather than skip
+  silently**: GPG-signing the release tarballs needs a private key nobody
+  hands to a session; updating the version/tarball MD5 in
+  `crosscompile-windows/wxmaxima/CMakeLists.txt` and running
+  `update_versions.sh` both live in *other* repositories (Maxima's own
+  source tree and `docker-wxmaxima`) that aren't attached unless the user
+  explicitly adds them. `download.html`/`version.txt` on the `gh-pages`
+  branch, by contrast, *is* reachable - it's a branch of this same repo, just
+  needs `git fetch`/checkout of `gh-pages` specifically.
 
 ## Third-party notices
 
