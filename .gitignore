@@ -1,6 +1,17 @@
 CMakeDoxyfile.in
 GEMINI.md
-.claude
+# Claude Code's per-project directory is local by default: settings, hooks,
+# scheduled tasks and launch config are personal to one developer's machine.
+# The subsystem skills are the deliberate exception -- they are project
+# knowledge (how the layout engine works, how translations get lost, what the
+# CI matrix cannot see), so they have to travel with the repository for an
+# agent on a fresh checkout to start with them rather than rediscover them.
+.claude/*
+!.claude/skills/
+# ...except this one, which documents a single developer's machine -- build
+# times, which processes to kill, local display quirks -- rather than the
+# project, and would be wrong for everybody else.
+.claude/skills/run-wxmaxima/
 .bash_profiles
 .bash_profile
 .bashrc
