@@ -2636,7 +2636,7 @@ void wxMaxima::OnTimerEvent(wxTimerEvent &event) {
       // another event handler is still in flight; no modal dialogs directly
       // inside event handlers (see the similar CallAfter()s in
       // MaximaProcessManager.cpp/StartMaxima()).
-      CallAfter([this, command] {
+      CallAfter([command] {
 #if defined(__WXOSX__)
         LoggingMessageBox(
           wxString::Format(
