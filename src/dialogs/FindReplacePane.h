@@ -52,6 +52,10 @@ public:
     FindReplaceData();
     bool GetRegexSearch() const {return m_regexSearch;}
     void SetRegexSearch(bool regexSearch) {m_regexSearch = regexSearch;}
+    //! Seed the find flags from wxConfig, with the same defaults regardless
+    //! of whether the resulting object backs the floating dialog or the
+    //! dockable sidebar (GH #2249).
+    void LoadFromConfig();
   private:
     bool m_regexSearch;
   };

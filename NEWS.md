@@ -8,6 +8,12 @@
   Needs wxWidgets 3.3.2 or newer; with an older wxWidgets the sidebars are
   unchanged.
 
+- "Find and Replace" (Ctrl+F) can now be shown as a dockable sidebar instead
+  of a floating window, for people who'd rather keep it docked alongside the
+  other sidebars (GH #2249). Off by default -- enable it via Edit ->
+  Configure -> Options -> "Show 'Find and Replace' as a dockable sidebar".
+  Ctrl+F un-hides and focuses the sidebar the same way it does for every
+  other sidebar, including when it starts out minimized/closed.
 - Restored 464 UI/manual translations across 16 languages (Catalan, Czech,
   Danish, German, Greek, Spanish, Finnish, French, Galician, Hungarian,
   Italian, Kabyle, Polish, Russian, Turkish, Ukrainian) that a Crowdin sync

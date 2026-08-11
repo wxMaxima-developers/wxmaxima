@@ -5180,6 +5180,12 @@ WorksheetSearch::SearchStart Worksheet::FindStart(bool down) {
   return start;
 }
 
+FindReplacePane *Worksheet::GetActiveFindPane() const {
+  if (m_configuration->FindDialogDockable())
+    return m_findPane;
+  return m_findDialog ? m_findDialog->GetPane() : nullptr;
+}
+
 bool Worksheet::ApplyFindResult(const WorksheetSearch::SearchTarget &target,
                                 bool warn) {
   if (!target.Found())
@@ -5197,7 +5203,7 @@ bool Worksheet::ApplyFindResult(const WorksheetSearch::SearchTarget &target,
   UpdateTableOfContents();
   RequestRedraw();
   if (target.m_wrapped && warn) {
-    LoggingMessageDialog dialog(m_findDialog, _("Wrapped search"),
+    LoggingMessageDialog dialog(GetActiveFindPane(), _("Wrapped search"),
                                 wxEmptyString, wxCENTER | wxOK);
     dialog.ShowModal();
   }

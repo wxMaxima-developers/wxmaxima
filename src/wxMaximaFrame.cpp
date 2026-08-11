@@ -348,6 +348,25 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
                     .Name(m_sidebarNames[EventIDs::menu_pane_draw])
                     .Left());
 
+  if(GetWorksheet())
+    {
+      // The dockable find/replace sidebar (GH #2249). Registered eagerly,
+      // like every other sidebar, so its docked position/size persists via
+      // the AUI perspective -- not created lazily on first use the way the
+      // floating FindReplaceDialog is, since that would lose the benefit of
+      // LoadPerspective() below ever having a pane to restore. Stays hidden
+      // until Configuration::FindDialogDockable() is set and Ctrl+F/Edit->
+      // Find is used; the floating dialog remains the default.
+      m_sidebarNames[EventIDs::menu_pane_find] = wxS("find");
+      m_sidebarCaption[EventIDs::menu_pane_find] = _("Find and Replace");
+      m_findPaneData.LoadFromConfig();
+      GetWorksheet()->m_findPane = new FindReplacePane(this, &m_findPaneData);
+      m_manager.AddPane(GetWorksheet()->m_findPane,
+                        wxAuiPaneInfo()
+                        .Name(m_sidebarNames[EventIDs::menu_pane_find])
+                        .Right());
+    }
+
 #ifdef USE_WEBVIEW
   if(GetWorksheet())
     {
@@ -634,6 +653,17 @@ wxMaximaFrame::~wxMaximaFrame() {
   // destroy the worksheet deterministically while the configuration is
   // whole. (Destroy() on a non-top-level child deletes it immediately and
   // unlinks it from the frame, so the base class won't destroy it twice.)
+  // The dockable find pane (GH #2249) has the same problem: its destructor
+  // writes m_findPaneData's flags back to wxConfig, and m_findPaneData is a
+  // member of this class -- destroyed with the rest of the members, before
+  // the base class destructor would otherwise get around to destroying this
+  // child window. Destroy it here, deterministically, while m_findPaneData
+  // is still alive.
+  if (GetWorksheet()->m_findPane) {
+    m_manager.DetachPane(GetWorksheet()->m_findPane);
+    GetWorksheet()->m_findPane->Destroy();
+    GetWorksheet()->m_findPane = nullptr;
+  }
   m_manager.DetachPane(m_worksheet);
   m_worksheet->Destroy();
 }
@@ -764,6 +794,8 @@ void wxMaximaFrame::SetupViewMenu() {
   m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_format,
                                       _("Insert Cell\tAlt+Shift+C"));
   m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_draw, _("Plot using Draw"));
+  m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_find,
+                                      _("Find and Replace (if set to dockable)"));
 
 #ifdef USE_WEBVIEW
   m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_help,
@@ -2272,6 +2304,7 @@ void wxMaximaFrame::HideAllSidebars(wxCommandEvent &WXUNUSED(ev)) {
   m_manager.GetPane(m_sidebarNames[EventIDs::menu_pane_help]).Hide();
   m_manager.GetPane(m_sidebarNames[EventIDs::menu_pane_variables]).Hide();;
   m_manager.GetPane(m_sidebarNames[EventIDs::menu_pane_xmlInspector]).Hide();
+  m_manager.GetPane(m_sidebarNames[EventIDs::menu_pane_find]).Hide();
   AuiManagerUpdate();
 }
 void wxMaximaFrame::AuiManagerUpdate() {

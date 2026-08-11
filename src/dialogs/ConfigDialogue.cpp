@@ -603,6 +603,7 @@ void ConfigDialogue::SetCheckboxValues() {
   m_fixReorderedIndices->SetValue(configuration->FixReorderedIndices());
   m_incrementalSearch->SetValue(configuration->IncrementalSearch());
   m_notifyIfIdle->SetValue(configuration->NotifyIfIdle());
+  m_findDialogDockable->SetValue(configuration->FindDialogDockable());
   m_fixedFontInTC->SetValue(configuration->FixedFontInTextControls());
   m_offerKnownAnswers->SetValue(m_configuration->OfferKnownAnswers());
 #if wxUSE_ACCESSIBILITY
@@ -1409,6 +1410,16 @@ wxWindow *ConfigDialogue::CreateOptionsPanel() {
     new wxCheckBox(stdOpts_sizer->GetStaticBox(), wxID_ANY,
                    _("Warn if an inactive window is idle"));
   stdOpts_sizer->Add(m_notifyIfIdle,
+                     wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
+
+  m_findDialogDockable =
+    new wxCheckBox(stdOpts_sizer->GetStaticBox(), wxID_ANY,
+                   _("Show \"Find and Replace\" as a dockable sidebar"));
+  m_findDialogDockable->SetToolTip(
+    _("By default \"Find and Replace\" (Ctrl+F) opens as a floating "
+      "window. Enable this to make it a sidebar you can dock, like the "
+      "other sidebars, instead."));
+  stdOpts_sizer->Add(m_findDialogDockable,
                      wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
 
   vsizer->Add(stdOpts_sizer, wxSizerFlags().Expand().Border(
@@ -2308,6 +2319,7 @@ void ConfigDialogue::WriteSettings() {
   configuration->FixReorderedIndices(m_fixReorderedIndices->GetValue());
   configuration->IncrementalSearch(m_incrementalSearch->GetValue());
   configuration->NotifyIfIdle(m_notifyIfIdle->GetValue());
+  configuration->FindDialogDockable(m_findDialogDockable->GetValue());
   configuration->SetLabelChoice(
                                 (Configuration::showLabels)m_showUserDefinedLabels->GetSelection());
   configuration->DefaultPort(m_defaultPort->GetValue());
