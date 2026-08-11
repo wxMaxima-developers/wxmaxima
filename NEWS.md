@@ -1,664 +1,125 @@
 # Current development version
 
-- Sidebars can now be minimized, not just closed (GH #2229). A minimized
-  sidebar collapses into a small strip at the edge of the window and comes
-  back, in the same place and at the same size, when you click it there - so a
-  sidebar you only need occasionally no longer costs you either its screen
-  space or its position. Closing a sidebar still works exactly as before.
-  Needs wxWidgets 3.3.2 or newer; with an older wxWidgets the sidebars are
-  unchanged.
+# 26.08.0
 
+Another large batch of improvements, many of them developed with substantial
+help from the AI assistant **Claude**: sidebars can now be minimized, "Find
+and Replace" can be docked like the other sidebars, right-to-left interface
+languages and mixed-direction text are now properly supported, translation
+losses across dozens of languages were found and restored, and a long list of
+export, layout and stability fixes.
+
+- Sidebars can now be minimized, not just closed (GH #2229): a minimized
+  sidebar collapses into a small strip at the window's edge and comes back at
+  the same place and size when clicked. Needs wxWidgets 3.3.2 or newer.
 - "Find and Replace" (Ctrl+F) can now be shown as a dockable sidebar instead
-  of a floating window, for people who'd rather keep it docked alongside the
-  other sidebars (GH #2249). Off by default -- enable it via Edit ->
-  Configure -> Options -> "Show 'Find and Replace' as a dockable sidebar".
-  Ctrl+F un-hides and focuses the sidebar the same way it does for every
-  other sidebar, including when it starts out minimized/closed.
-- Restored 464 UI/manual translations across 16 languages (Catalan, Czech,
-  Danish, German, Greek, Spanish, Finnish, French, Galician, Hungarian,
-  Italian, Kabyle, Polish, Russian, Turkish, Ukrainian) that a Crowdin sync
-  had wiped to empty. The Crowdin export that produced this had branched a
-  few minutes before an unrelated PR restored translations for source files
-  under `src/`'s subdirectories, then merged half an hour later without
-  ever picking up that change -- a race, not a Crowdin misconfiguration
-  found so far. Also fixed a CMake policy bug in the just-added
-  `check-pot-coverage` CI guard (script mode doesn't inherit the top-level
-  policy settings, so its `IN_LIST` check unconditionally errored out).
-- Equations saved as PNG now carry their text form inside the image file
-  (GH #2231), so the maths travels with the picture: a screen reader can read
-  out what the image shows, and anyone who finds the file later - or a search
-  index that looks at it - can tell what is in it instead of seeing an
-  anonymous graphic. Needs wxWidgets 3.3.1 or newer; with an older wxWidgets
-  the exported PNG is unchanged.
-- Equations exported as SVG now carry their text form, so a screen reader can
-  read them out instead of announcing an anonymous picture (GH #2230). Both
-  the HTML export's equation images and the SVG that "Copy as SVG" puts on the
-  clipboard are affected: the file is given a title, and the drawing is marked
-  up as mathematics with the equation's text as its label. Needs wxWidgets
-  3.3.3 or newer; with an older wxWidgets the exported SVG is unchanged.
-- About 7000 translations that had quietly disappeared from 21 languages are
-  back. The list of files the translation system reads was written in a way
-  that only found sources sitting directly in `src/`, so everything in a
-  subdirectory below it became invisible: menus, dialogs and above all the
-  wizards had been silently reverting to English since 2020, and the
-  sidebars and dialogs since 2024, without anything ever reporting a
-  problem. German, Russian, Ukrainian, Hungarian, Italian, Spanish and
-  Turkish each regain 500-660 strings; Catalan, Galician and Polish get
-  their first translated dialogs back at all. Every restored string is
-  exactly what a translator had written before it was lost. A new test now
-  fails the build if a source file can ever become invisible to the
-  translation system again.
-- wxMaxima now warns if Maxima's process has started but hasn't connected
-  back within 5 seconds, instead of leaving the worksheet stuck at "Maxima
-  started. Waiting for connection..." forever with no explanation (GH
-  #1182). On macOS this reproducibly happens when Gatekeeper has
-  quarantined the Maxima binary -- common for a Maxima installed via
-  Homebrew rather than a signed installer -- since a background process
-  wxMaxima spawns can never answer the security prompt macOS would
-  otherwise show; the warning explains this and suggests a fix. wxMaxima
-  keeps waiting and retrying in the background regardless.
-- Fixed two bugs in RTF/Word export (previously untested code, now with
-  regression coverage):
-  - A hidden multiplication sign (e.g. the implicit "*" in scientific
-    notation like "2*10^7") always showed up in RTF/copy-as-RTF output
-    regardless of the "Hide multiplication sign" setting, and would have
-    left no separator behind at all had it ever been suppressed -- turning
-    "2*10^7" into the unreadable "210^7" (GH #1456).
-  - A matrix's brackets rendered at a small, fixed size in Word/LibreOffice
-    instead of growing to match the matrix's height, because the OMML
-    "grow" flag was emitted with literal stray quote characters in its
-    value instead of the well-formed attribute every other bracket-drawing
-    cell (parentheses, lists, intervals) already used correctly -- fixed
-    the same way for `abs()`'s bars, which were missing the "grow" flag
-    entirely (GH #1457).
+  of a floating window (GH #2249). Off by default; enable it via Edit ->
+  Configure -> Options.
+- Right-to-left interface languages (Hebrew, Arabic seeded for the first
+  time) are now supported: comment/title/section text, cell labels, brackets
+  and fold buttons follow the reading direction, while equations stay
+  left-to-right. Mixed-direction text on one line (e.g. Farsi next to
+  German) is now correctly ordered and the caret, clicks, arrow keys and
+  selection all follow it -- previously the caret in right-to-left text was
+  placed at the mirror image of where it was clicked.
+- Restored translations that had quietly gone missing: about 7000 strings
+  across 21 languages that a flawed source-file scan never found in the
+  first place, plus another 464 across 16 languages wiped by a Crowdin sync
+  race. A new check now fails the build if this can happen again. Seeded
+  fresh UI translations for 24 more languages and manual-translation
+  infrastructure for 15 that had none, and fixed several bugs in the
+  translation pipeline itself (a `po4a` invocation that could silently
+  discard existing translations, and one that mis-wrapped translated
+  headings/lists in the manual, GH #2047).
+- Equations exported as PNG (GH #2231) or SVG (GH #2230) now carry their
+  text form alongside the image, so screen readers and search indexes can
+  tell what they show instead of seeing an anonymous picture. Needs
+  wxWidgets 3.3.1/3.3.3 respectively.
+- wxMaxima now warns if Maxima's process started but never connected back
+  within 5 seconds, instead of hanging silently (GH #1182) -- most commonly
+  caused by macOS Gatekeeper quarantining the Maxima binary.
+- Fixed two bugs in RTF/Word export: a hidden multiplication sign still
+  showed up in the output (GH #1456), and a matrix's brackets rendered at a
+  fixed size instead of growing with the matrix (GH #1457).
 - Fixed a scaled image losing its transparency and showing a solid
-  (typically black) background instead (GH #2227). Rescaling an image to
-  fit its on-screen size forced the resulting bitmap to a plain 24-bit
-  depth, which discards any alpha channel -- every other place in the same
-  code path already builds its bitmap without forcing a depth, so the
-  scaled case now does the same and keeps the source image's transparency.
-- Fixed two regressions from wxMaxima's earlier, partial move to `wxUILocale`
-  (GH #2233, on wxWidgets >= 3.1.6): picking a language other than "System
-  default" was silently ignored for the actual locale (only translations
-  respected it; number/date formatting etc. kept following the OS default),
-  and the manually-selected help manual (e.g. the German or Simplified
-  Chinese one) was never found, always falling back to the plain English
-  manual regardless of the chosen language.
+  background instead (GH #2227).
+- Fixed two regressions from the move to `wxUILocale`: picking a language
+  other than "System default" no longer affected number/date formatting,
+  and the manually-selected help manual was never found (GH #2233).
 - Evaluating a folded section no longer unfolds it just because an error
-  happened somewhere inside (GH #1952). Folding a time-consuming or
-  no-longer-relevant calculation down to one line, so the worksheet stays
-  readable while everything still gets evaluated, was defeated if a single
-  error deep inside the fold unconditionally sprang it back open -- the
-  worksheet now lands on the fold's own (visible) header instead, leaving
-  the fold itself untouched.
-- "Pop out interactively" (the plot image's right-click menu) now tells you
-  when gnuplot had trouble with the plot, instead of silently leaving you
-  with an unexplained window (GH #1973). A second, hidden gnuplot process
-  runs the same script headlessly (`set term unknown`, so it needs no
-  display) purely to catch anything gnuplot prints while preparing the plot;
-  if it printed something, a "Warning" dialog shows it verbatim. The
-  interactive popout itself is untouched -- it still gets its own real
-  console/window exactly as before, so typing further gnuplot commands into
-  it still works.
-- macOS: translation files should now actually make it into the app bundle
-  (GH #1711). Two separate bugs meant the `.mo` files never reached
-  `Contents/Resources/locale/<lang>/LC_MESSAGES/`, where wxMaxima looks for
-  them: the CMake target that copies them into the build tree with the
-  correct per-language layout was unconditionally skipped on Apple (working
-  around what turned out to be an Xcode-generator-specific issue -- the DMG-
-  producing CI job actually uses Ninja, not Xcode, and doesn't need the
-  workaround), and separately, the bundle's own resource list tried to glob
-  for them before they even existed (translations are generated during the
-  build, but that glob is evaluated once at configure time) with a pattern
-  that wouldn't have matched their actual nested location anyway. Fixed by
-  narrowing the Apple exclusion to just the Xcode generator, and copying the
-  already-correctly-laid-out translation directory into the bundle in a
-  build-time install step instead of a configure-time glob. Not verified on
-  a real Mac (none was available to test this on) -- please report back if
-  translations still don't show up in a built .dmg.
-- `sum()`/`product()`/`lsum` (GH #1536) no longer wrap a plain summand in
-  spurious parentheses: `sum(k,k,1,n)` now displays the sum sign over a bare
-  `k`, matching Maxima's own terminal output, instead of always showing
-  `(k)`. A genuinely compound summand, like `sum(k+k^2,k,1,n)`, still gets
-  the parentheses, since dropping them there really could be misread as
-  extending past the sum sign. The decision is made in `wxxml-sum`
-  (`wxMathML.lisp`) from the real Maxima expression (`mplusp`) rather than
-  an invented operator precedence -- Maxima's own printer has no `lbp`/`rbp`
-  registered for `sum`/`product` either, so it can't be using generic
-  precedence comparison for this -- and is carried across the wire to
-  `SumCell` (which still needed a small, targeted change of its own: its 2D
-  on-screen layout is computed in C++, and turned out not to be reachable
-  through `ParenCell`'s existing "print" flag, which only suppresses
-  parentheses in text/TeX/MathML export, not in the interactive display).
-- Folding/unfolding a section (or the whole document, via "Fold All"/
-  "Unfold All") is now recorded in the undo buffer (GH #266), a 2013 feature
-  request: Ctrl+Z after an accidental fold, or after "Fold All" collapses a
-  document you didn't mean to collapse, restores exactly the fold state that
-  was there before. A single-cell fold/unfold undoes with one Ctrl+Z; "Fold
-  All"/"Unfold All" (which can fold many cells at once, only the ones that
-  weren't already in that state) undoes and redoes all of them together as
-  one atomic step, so it doesn't unfold sections that were already folded
-  before "Fold All" ran. Implemented by giving `TreeUndoAction` a fourth,
-  explicit fold/unfold case alongside its existing text-change/insertion/
-  deletion ones, rather than reusing those for something semantically
-  different (a fold keeps its subtree alive and logically part of the
-  document, unlike a real deletion).
-- "Can set maxima's working directory but cannot change it during the
-  maxima session" (GH #1672): this warning, printed by `wx-cd` whenever it
-  fails to keep Maxima's working directory in sync with the worksheet's,
-  had two separate root causes and a nuisance of its own, all fixed:
-  - A directory name containing `*`, `?`, `[` or `]` (e.g. `Draft [v2]`)
-    always failed: Common Lisp's portable pathname syntax treats those
-    characters as wildcard markers rather than literal ones, so SBCL's
-    `pathname-directory` turned a perfectly real directory into an
-    unmatched wildcard pattern. Fixed by parsing the string with
-    `sb-ext:native-pathname` instead, which has no such reinterpretation.
-  - On Windows specifically, a directory name containing a character
-    outside the system's active codepage (e.g. Cyrillic or CJK on a
-    Western-European Windows install) also always failed:
-    `sb-posix:chdir`/`sb-posix:getcwd` go through the C runtime's
-    ANSI-only `_chdir`/`_getcwd`, which cannot represent such characters
-    at all (a confirmed, still-open upstream SBCL bug, launchpad
-    #2100706). Fixed by calling the Win32 wide-character APIs directly
-    instead, with the previous behavior kept as an automatic fallback.
-  - Once triggered by a persistently broken path, the warning printed
-    again on every single cd attempt for the rest of the session, and
-    since a saved `.wxmx` document keeps every cell's output verbatim,
-    reopening and resaving an affected document over many sessions could
-    accumulate hundreds of copies of the exact same warning. `wx-cd` now
-    remembers the last directory it failed on and only reports a given
-    failure once, until either a different directory fails or the same
-    one starts working again.
-- Display (GH #1948): `box()` draws its own border around its argument, so
-  it never needed the extra pair of parentheses `wxMathML.lisp`'s generic
-  precedence-based paren-insertion logic could still wrap around it, e.g.
-  `a*box(b)*c` showing spurious parens around `box(b)`. Fixed by giving
-  `box()` (and its labelled form, `box(expr, label)`) a precedence higher
-  than any real operator's, so it never needs disambiguating -- except for
-  the one case where it doesn't actually draw a border at all: `box(expr,
-  highlight)` only colors its content, and correctly keeps the
-  disambiguating parentheses it already had, since a bare color change
-  doesn't visually delimit its own extent.
-- Code cell syntax highlighting (GH #898): an identifier split across two
-  physical lines by an escaped newline (`\` immediately followed by a line
-  break -- confirmed against a real Maxima that this contributes nothing to
-  the resolved name at all, e.g. `fo\<newline>obar` is plainly `foobar`,
-  unlike an ordinary escaped character such as `a\,b`, which resolves to the
-  symbol `a,b`) used to be highlighted as two unrelated tokens: the half
-  before the line break wasn't classified at all (falling through the
-  function/variable/operator/keyword lookups entirely), and the half after
-  it started over as if it were a brand new, independent identifier. Both
-  halves are now resolved and styled as the one logical name Maxima
-  actually sees.
-- Table of contents sidebar: dragging a chapter/section entry to reorder it
-  (GH #1524) now actually works -- it was wired up (drag image, scroll-while-
-  dragging, the reordered-preview rendering) but never functional, since
-  three separate bugs each broke it in a different way:
-  - `Worksheet::TOCdnd()`, which performs the actual reorder, required a
-    worksheet selection to already exist before doing anything -- but
-    nothing sets one up before this function itself builds one from the
-    dragged cell a few lines later. In ordinary use (no unrelated selection
-    active when a TOC drag starts) this made every drop a silent no-op.
-  - Dropping at or near the end of the list snapped back to a position near
-    the drag's own start instead of the end, because the "clamp an
-    out-of-range drop position" logic in both `OnMouseMotion()` and
-    `OnMouseUp()` clamped to the wrong value.
-  - Dragging a heading that has its own sub-heading (e.g. a section with a
-    subsection) could silently strip the sub-heading (and its content) back
-    off during the move, landing it elsewhere in the document instead of
-    following its parent: the selection-extension logic compared each next
-    cell's rank against whatever cell the selection currently ended on
-    rather than against the originally-dragged heading's rank, so once the
-    selection had absorbed the dragged heading's own plain-content cell, a
-    sub-heading right after it was compared against that content cell
-    instead and always judged "not part of this chapter".
-  Verified end-to-end in a live session: dragging a section with a nested
-  subsection and its own content cells to a new position now moves the
-  whole chapter together, with correct renumbering and a table of contents
-  that stays in sync with the document afterwards.
-- Fixed two 32-bit-only bugs (GH #2208), found because CI never actually ran
-  the test suite on a 32-bit build -- it only compiled it:
-  - `CellPtr`'s ordering comparison (`cmpObjects()`, backing `operator<`)
-    subtracted two unrelated `Observed*` pointers directly. That is
-    undefined behavior, and in practice, on a 32-bit address space, it
-    could silently overflow and produce the wrong sign (a null pointer no
-    longer compared as less than a real one) -- a 64-bit build's much
-    sparser address space essentially never triggers it. Fixed by comparing
-    the addresses as unsigned integers instead, which is well-defined on
-    any architecture. Verified against the exact addresses from the bug
-    report, and by cross-compiling and running the real `test_CellPtr` unit
-    test as an i386 binary.
-  - `EditorCell::FindNext()` (worksheet search) and its Tab-key indent
-    handler both stored a `wxString::find()`/`rfind()` result -- `size_t`,
-    whose "not found" value is `wxString::npos` -- into a signed 64-bit
-    variable and compared it against `wxNOT_FOUND` (`-1`). On a 64-bit
-    build `size_t` is also 64 bits wide, so `npos`'s bit pattern
-    reinterprets as `-1` and the comparison happens to work; on a 32-bit
-    build `size_t` is 32 bits, so `npos` zero-extends into a large positive
-    number instead, making every failed search look like a match at a huge
-    offset -- corrupting the worksheet's search/selection state. Fixed by
-    keeping both in `size_t`/`wxString::npos` terms throughout. Found by
-    running the real `test_WorksheetFind` unit test as an i386 binary.
-  CI now also actually runs the unit test suite (`ctest -L unittest`) on
-  the 32-bit build, under a virtual X server, which previously only
-  compiled the tests and never ran any of them -- the gap that let both of
-  these bugs go undetected until a Debian rebuild caught them.
-- Release automation (GH #1192): tagged releases now also attach a
-  `.tar.xz` source archive plus a `.sha256` checksum file, built with
-  `git archive` from the tagged commit rather than reusing GitHub's own
-  auto-generated (and not guaranteed byte-stable over time) "Source code"
-  archives. `xz` compresses noticeably tighter than the `.tar.gz`/`.zip`
-  GitHub already provides automatically (~59% smaller for the current
-  tree) -- real bandwidth savings for distro packagers who mirror/rebuild
-  from upstream source tarballs at scale.
-- Snap: opening the local manual (Help > wxMaxima help, F1, ...) with "use
-  external browser" selected in Options no longer silently fails under
-  strict confinement. The portal-routed external browser may itself be a
-  strictly confined snap (Firefox/Chromium are commonly installed that way
-  by default) and cannot see another snap's private files at all, so it
-  could never actually open the `file://` URI it was handed. The local
-  manual now always uses the internal help pane (which reads the file
-  in-process, unaffected by confinement) when running inside a snap,
-  regardless of the external-browser preference; external `http(s)://`
-  links (website, online manual) are unaffected either way, since fetching
-  those never depended on filesystem access across the confinement
-  boundary.
-- Snap packaging: the snap stages gnuplot via the `maxima` snap so plotting
-  works under strict confinement, which means it distributes gnuplot's own
-  binary rather than merely recommending a separately-installed one.
-  gnuplot's license notice now travels with any build configured with
-  `-DWXM_BUNDLES_GNUPLOT=ON` (currently just the snap), appended to
-  `THIRD-PARTY-NOTICES.txt` (see `THIRD-PARTY-NOTICES-Gnuplot.txt`) and
-  therefore reachable from the app's own Help > License dialog. Regular
-  builds, which only recommend a system gnuplot, are unaffected.
-- `EvaluationQueue` now catches (in `--batch` mode) rather than silently
-  proceeding on the failure mode behind GH #2196: a cell's text at the
-  moment it becomes the queue's current cell no longer necessarily matching
-  what was captured when the cell was queued -- the observed signature of a
-  statement (e.g. the `assume(...)` in the original report) never reaching
-  Maxima at all. The exact mechanism is still unknown, so this can't fix the
-  underlying bug, but it makes its effect loud instead of silent: a mismatch
-  now halts the batch run with a clear error naming both texts, the same way
-  an unmatched-parenthesis refusal already does, instead of quietly sending
-  (or skipping) the wrong thing. Not checked in interactive use, where a
-  cell's text can legitimately differ from what was queued if the user
-  edited it before its turn came up.
-- Batch mode (GH #2178): a failed image load is no longer silent. If an
-  image's raw data could never be obtained at all (missing file, empty wxmx
-  entry, ...) `--batch`/`--exit-on-error` now exits with an error, since
-  there was nothing to even attempt rendering. A registered decoder failing
-  to render bytes it did receive additionally fails the batch run under
-  `--debug` (plain `--batch`'s contract is "evaluate correctly", not "render
-  correctly"); a wxWidgets build simply lacking a codec for one format (e.g.
-  no WebP/TIFF support compiled in) is never treated as a failure either way.
-  Also fixed two related silent gaps found while implementing this: a
-  zero-byte image (no data at all) and a failed SVG parse previously left the
-  image looking like a normal 640x480 blank instead of showing the "could not
-  be rendered" placeholder. Regenerated `test/image-test/image-test.wxmx`,
-  whose `Maxima.svg`/`Maxima.svgz`-derived entries had been silently saved
-  as empty (0-byte) images by an old wxMaxima version -- invisible until this
-  change started checking for it.
-- Test fixtures: removed the recorded auto-answer PR #2195 added for
-  `tutorial_10Minutes`'s `assume(a > 0)$ integrate(...); forget(a > 0)$`
-  cell. That auto-answer stopped the test from flaking, but it also silently
-  swallows the actual symptom of the still-open bug GH #2196 (the cell's
-  `assume(a > 0)$` statement occasionally never reaches Maxima at all) --
-  with the recorded answer in place, a drop just gets auto-answered instead
-  of halting the batch run, so this test could no longer detect it. Removing
-  it restores `tutorial_10Minutes` as a working (if occasionally flaky)
-  canary for GH #2196, alongside the deterministic `commandSequenceIntegrity`
-  regression test. The other question/answer pair earlier in the same file
-  (the tutorial's own intentional demonstration of the interactive-question
-  feature) is unrelated and untouched.
-- Translations: added a reverse sync (`locales/wxMaxima/split_manual_po.cmake`,
-  wired into `update-locale-manual-in-source`) that pulls a language's
-  manual-content translations back out of the combined
-  `locales/wxMaxima/<lang>.po` -- the file Crowdin actually writes to -- into
-  `locales/manual/<lang>.po`, so translations contributed through Crowdin for
-  the manual's own strings reach `info/wxmaxima.<lang>.md` instead of sitting
-  unused in the combined file.
-- Translations: seeded manual-translation infrastructure
-  (`locales/manual/<lang>.po`) for the 15 languages that had UI translation
-  but no manual translation at all (ar, ca, cs, da, el, fi, gl, he, hu, ja,
-  kab, nb, pl, pt_BR, zh_TW); `info/CMakeLists.txt` now falls back to the
-  English manual for a language below po4a's translated-content threshold,
-  instead of hard-failing `cmake` configure for anyone with po4a and pandoc
-  installed.
-- Translations: seeded fresh, untranslated `locales/wxMaxima/<lang>.po` for
-  every language wxWidgets itself ships stock UI translations for that
-  wxMaxima didn't have yet (af, an, co, eu, fa, hi, hr, id, ka, ko, lt, lv,
-  ms, ne, nl, pt, ro, sk, sl, sq, sr, sv, ta, vi), and added the
-  corresponding entries to the language-selection dialog
-  (`ConfigDialogue.cpp`) for the ones with a `wxLANGUAGE_*` constant
-  available (all but Aragonese, which wxWidgets 3.2 has no enum value for).
-- New regression test `commandSequenceIntegrity` (GH #2196): a confirmed
-  but not yet root-caused bug lets the first statement of a multi-statement
-  cell be silently dropped and never sent to Maxima at all during `--batch`
-  evaluation, with no error and no visible symptom unless something later
-  happens to depend on it. This test maximizes the number of independent
-  cell-to-cell transitions (the exact boundary where the drop was observed)
-  in a single run -- 150 small cells, each appending a unique sequential tag
-  to a shared list -- and asserts via a real Maxima `error()` that every
-  statement actually ran, turning a currently invisible class of bug into
-  a reproducible CI failure instead of a silently wrong answer.
-- Test fixtures: `test/automatic_test_files/10MinuteTutorial.wxm`'s
-  `assume(a > 0)$ integrate(1/(x^2+a),x); forget(a > 0)$` cell now has a
-  recorded auto-answer for the "Is a positive or negative?" question, fixing
-  an intermittent `tutorial_10Minutes` CI failure: despite the preceding
-  `assume(a > 0)`, `integrate()`'s internal algorithm occasionally still
-  asks the question interactively on some runs (reproduced locally at
-  roughly a 1-in-20 to 1-in-30 rate) -- this cell simply never had a
-  recorded answer for that rare case, since its whole point is to
-  demonstrate that `assume()` normally makes the question unnecessary.
-- Fixed the LaTeX export of an integral's differential ("dx", "d\theta", ...):
-  it now renders upright (`\mathrm{d}`) instead of in math mode's default
-  italic (#972).
-- Fixed a build failure on GCC 11 (Ubuntu 22.04) and Cygwin:
-  `src/cells/CellIterators.h` used `std::vector` without including `<vector>`,
-  which happened to work only where some other header transitively pulled it
-  in first -- not the case for every toolchain/include order (introduced by
-  the `m_nextToDraw` removal below).
+  happened somewhere inside (GH #1952).
+- "Pop out interactively" on a plot now tells you when gnuplot had trouble
+  with it, instead of silently leaving an unexplained window (GH #1973).
+- macOS: fixed translation files not reaching the app bundle (GH #1711).
+- `sum()`/`product()`/`lsum` no longer wrap a plain summand in spurious
+  parentheses, matching Maxima's own terminal output (GH #1536); `box()` no
+  longer gets spurious parentheses around it either (GH #1948).
+- Folding/unfolding a section (or "Fold All"/"Unfold All") is now part of
+  the undo history (GH #266).
+- Fixed wxMaxima losing sync with Maxima's working directory for names
+  containing wildcard-like characters or, on Windows, characters outside the
+  system codepage; a persistently broken path no longer spams the warning
+  on every command (GH #1672).
+- Code cell syntax highlighting no longer splits an identifier that's
+  wrapped across two lines with a line-continuing backslash into two
+  unrelated tokens (GH #898).
+- Table of contents: dragging a chapter/section to reorder it now actually
+  works -- it was wired up but silently broken by three separate bugs
+  (GH #1524).
+- Fixed two 32-bit-only bugs found because CI only compiled, but never ran,
+  the test suite on a 32-bit build: an undefined-behavior pointer
+  subtraction and a 64-bit-only search/selection bug (GH #2208); CI now
+  actually runs the tests there too.
+- Tagged releases now also attach a `.tar.xz` source archive with a
+  checksum, built reproducibly from the tagged commit (GH #1192).
+- Snap: opening the local manual with "use external browser" selected no
+  longer silently fails under strict confinement; gnuplot's license notice
+  now travels with builds that bundle it.
+- `--batch`/`--exit-on-error` now actually halts on an unanswerable
+  interactive question instead of hanging forever, and a cell's input
+  silently failing to reach Maxima at all now halts the run loudly instead
+  of continuing quietly (GH #2196); a failed image load now also fails a
+  batch run instead of rendering a blank placeholder (GH #2178).
+- The worksheet's editor now supports real tab characters instead of
+  silently rewriting them into spaces; Tab/Shift+Tab on a selection
+  indents/dedents with real tabs.
+- wxMaxima now tells Maxima's ASCII-art text printer how wide the worksheet
+  actually is, so wide fractions/matrices wrap correctly instead of needing
+  a horizontal scrollbar (#1608), and fixed misaligned ASCII-art output that
+  could land in the wrong (proportional) font.
+- The temporary file used to render a clipboard SVG/EMF selection now lives
+  in a private, non-shared directory instead of the system temp directory.
+- New Maxima variable `wxdirs` exposes wxMaxima's own configuration/data/
+  help/locale paths to `.mac` scripts.
+- LaTeX export: 2-D ASCII-art maths is now exported as a verbatim block
+  instead of being garbled by the math renderer; animations export again as
+  `\animategraphics`; non-math output (messages, warnings, errors) is
+  written as plain LaTeX text; the exported document can now embed the
+  worksheet itself as a file attachment; Unicode symbols with no explicit
+  LaTeX translation now typeset directly via `unicode-math` on XeLaTeX/
+  LuaLaTeX; fixed an integral's "dx" rendering upright instead of italic
+  (#972). New `wxworksheettotex()` Maxima command for scripted export.
+- HTML export now defaults to native MathML (no JavaScript, no external
+  requests) with MathJaX offered only as an optional fall-back for old
+  browsers; equation labels and line-wrapped equations now show up
+  correctly in MathML-Core browsers (Chrome, Safari); non-math output is
+  now written as plain, searchable HTML text instead of an image. New
+  `wxworksheettohtml()` Maxima command, and new right-click "Export output
+  as SVG/PNG to a folder..." commands.
+- Fixed bitmap-rendered equations (HTML export's bitmap flavor, the
+  optional "Bitmap" clipboard format) being clipped to a corner of the
+  image at any scale other than 1.
+- "Copy as MathML" is no longer offered for a selection that contains no
+  maths.
+- Windows: the installer/ZIP now bundles the MinGW runtime DLLs it needs to
+  start, fixing a missing-DLL launch failure on some machines; the window
+  and taskbar icon show the wxMaxima logo again instead of a generic one.
 - Added "Anonymize Code for Bug Report" to the Help menu (#1339): replaces
-  every non-builtin variable and function name in the selected code cells (or,
-  after confirmation, the whole document) with a random name, consistently
-  across all occurrences and all selected cells, so a worksheet can be shared
-  in a bug report without revealing the original names. Maxima builtins and
-  the tokenizer's own syntax keywords (`for`/`then`/`do`/...) are left alone,
-  and the whole operation is a single undo step.
-- Reduced the memory footprint of every cell on the worksheet by removing
-  `m_nextToDraw`, a per-cell pointer used only by fractions, parentheses and
-  similar 2D-capable cells when line-wrapped; the same information is now
-  computed on demand instead of stored on every cell (closes #1445).
-- Fixed a critical bug in the translation merge above: `po4a` treats the `.po`
-  file it is pointed at as its own and rewrites it wholesale on every run, so
-  pointing it directly at the combined `locales/wxMaxima/<lang>.po` (as the
-  merge originally did) silently deleted every UI translation the first time
-  `make update-locale-manual-in-source` ran with a real `po4a` >= 0.70 (a
-  language with 1000+ translated UI strings dropped to just its ~69 manual
-  translations). `po4a` now keeps writing its own `locales/manual/<lang>.po`
-  as before, and a new `merge_manual_po.cmake` step folds that into
-  `locales/wxMaxima/<lang>.po` before `msgmerge` runs, so translators still
-  only need to look in one file.
-- Fixed translated manual headings, lists and code blocks sometimes wrapping
-  incorrectly or losing their Markdown formatting after `po4a` translation
-  (#2047): `po4a`'s `[type: text]` mode needs `-o markdown` passed explicitly
-  to recognize Markdown structure -- its own default for that option does not
-  take effect through this invocation path. Existing translations of an
-  affected heading/list/code block are marked fuzzy (their translated text is
-  preserved in the `.po` file, but a fuzzy entry isn't used in the generated
-  manual until a translator re-confirms it, since the old translation's exact
-  wording no longer matches how `po4a` now segments that text) rather than
-  lost outright.
-
-- Translations: the manual's per-language translations now live merged into
-  `locales/wxMaxima/*.po`, alongside wxMaxima's own UI strings, instead of a
-  separate `locales/manual/*.po` per language -- so translating both only
-  needs one file per language. `wxMaxima.pot` (the template `msgmerge` and
-  Crowdin work against) is now the union of a fresh scan of the C++ source
-  and the manual's own template (`locales/manual/wxmaxima.md.pot`, kept
-  current by `po4a`), combined via `msgcat --use-first` so future
-  `make update-locale` runs keep staying merged instead of re-diverging. No
-  existing translation was lost: German/Spanish/French/Italian/Russian/
-  Turkish/Ukrainian/Chinese (Simplified), the eight languages that had a
-  separate manual translation, keep every one of those translated strings,
-  now inside their `locales/wxMaxima/*.po` file.
-
-- wxMaxima now tells Maxima's ASCII-art 2D/1D printer (`set_display('ascii)`
-  and `set_display('none)`) how wide the worksheet actually is: `$linel` is
-  set, right before every command, to the number of columns of the
-  worksheet's monospace ASCII-math font that currently fit into the window
-  (`Configuration::GetAsciiArtColumns()`), instead of Maxima's fixed factory
-  default of 79. Wide fractions/matrices/etc. now wrap where they actually
-  need to on the current window size and font, rather than wxMaxima having
-  to widen the cell (and add a horizontal scrollbar) to show output Maxima
-  wrapped for a different width -- or not wrapping it widely enough (#1608).
-
-- Fixed misaligned ASCII-art 2D math (`set_display('ascii)`): the top/bottom
-  lines of a fraction, matrix, etc. are padded by Maxima on the assumption
-  that every line -- including the `(%oN)` label line -- renders in the same
-  monospace font. wxMaxima used to guess which lines belonged to the same
-  block from their *content* alone (whether a chunk of already-batched
-  socket data happened to start with `(%`), and since that batching is
-  timing-dependent rather than tied to Maxima's actual output boundaries,
-  the label line could land in a separate read from its neighbors and get
-  misclassified into a different, proportional font -- breaking the visual
-  alignment even though Maxima's own whitespace padding was correct.
-  `wxMathML.lisp` now wraps each complete ASCII-art block in explicit
-  `<wxxml-asciimath>`/`</wxxml-asciimath>` markers (reusing Maxima's own
-  stock ASCII printer via a `*alt-display2d*` hook, not reimplementing it),
-  so wxMaxima always renders a whole block in one uniform monospace style
-  instead of guessing per chunk.
-
-- `--batch`/`--exit-on-error` now actually halts when Maxima asks an
-  interactive question it cannot auto-answer, instead of hanging forever:
-  the process logs the question and exits with an error status, matching
-  what `--batch --help` already promised ("Halts on questions"). This was
-  the root cause of the intermittent CI timeouts on `openMacFiles`,
-  `tutorial_10Minutes`, `rememberingAnswers` and `testbench_simple.wxmx` -
-  confirmed with a live debugger, the evaluation queue was advancing
-  correctly and simply waiting on an answer nobody could provide.
-
-- Test fixtures: `test/testbench_simple.wxm`'s "Cell height calculations"
-  cell and `test/testbench_simple.wxmx`'s `abs(x(1))` cell now have a
-  recorded auto-answer for interactive questions Maxima 5.46.0 asks that
-  neither cell was previously annotated for, so `openMacFiles` and
-  `testbench_simple.wxmx` complete instead of hitting the new --batch halt
-  above. Confirmed along the way: the "Enter space-separated numbers,
-  ``all' or `none':`" prompt reads a raw line, not a Maxima expression, so an
-  answer ending in `;` is invalid input Maxima will wait on indefinitely --
-  the new cell's recorded answer uses plain `none` instead.
-
-- `--exit-on-error` no longer goes permanently toothless partway through a
-  worksheet that legitimately empties its evaluation queue more than once
-  in a single batch run (e.g. one using auto-answered questions, where each
-  answered question empties the queue before the next cell refills it): the
-  per-worksheet arming flag was previously disarmed on the first such
-  transient emptying rather than at actual batch completion, so a real
-  Maxima error arriving afterwards silently dropped the session out of
-  batch mode instead of exiting, leaving it to idle forever with nobody
-  left to interact with it - confirmed live in gdb as the cause of the
-  `rememberingAnswers` test's intermittent CI timeout.
-
-- Fixed a startup-timing race that could silently discard queued cells
-  during batch evaluation, most visibly as `automatic_test_files/lisp_mode.wxm`
-  intermittently failing or hanging in CI: on connect, wxMaxima sends its
-  `wxdirs@userconfdir`/`datadir`/`helpdir`/... struct-field setup bundled
-  ahead of the worksheet's first real command. Those field assignments are
-  genuine Maxima statements (needed for `defstruct`/`@` struct-field syntax),
-  so Maxima answered each with its own extra `(%iN)` prompt - and the
-  evaluation queue, which has no way to tell a config-command prompt from a
-  real one, advanced (and thereby silently dropped) one queued cell for
-  every such extra prompt. Confirmed live with `tcpdump` on the raw
-  wxMaxima<->Maxima socket: the evaluation queue's cell count could drop
-  from 21 to 0 in one shot, with no further command ever having been sent.
-  Fixed by evaluating the whole `wxdirs` setup from Lisp via
-  `mread`/`meval` inside a `:lisp-quiet` form, like the rest of the startup
-  configuration, so it no longer produces a prompt of its own.
-
-- The worksheet's editor now supports real tab characters: a `'\t'` typed,
-  pasted, or loaded from a file stays a real character instead of being
-  silently and irreversibly rewritten into 1-4 spaces, and is expanded to the
-  next 4-column tab stop only where it is drawn or measured. The Tab key (with
-  no selection) inserts a real tab; selecting one or more lines and pressing
-  Tab/Shift+Tab indents/dedents them with a real tab per level (dedent still
-  falls back to removing up to 4 leading spaces on already space-indented
-  text). One consequence: opening a plain `.mac` file that uses tabs for
-  alignment and saving it again now reproduces those tabs byte-for-byte,
-  instead of turning them into spaces.
-
-- Build system: fixed the ~90 `-Wdeprecated-enum-enum-conversion` warnings
-  the Ubuntu 22.04 CI build produced from `wxDirection`/`wxAlignment`/
-  `wxStretch` sizer flags being OR'd together directly (e.g.
-  `wxALIGN_CENTER_VERTICAL | wxALL`) - harmless, but real, deprecated-in-C++20
-  behavior; also fixed a genuinely unused function that only compiled in for
-  wxWidgets < 3.1.6, and worked around a GCC < 12 bug that misreports
-  `[[maybe_unused]]` on class data members as an ignored attribute.
-
-- Build system: a `po4a` older than 0.70 (e.g. Ubuntu 24.04's own package,
-  version 0.69) is now detected and not used, with a CMake warning explaining
-  why, instead of risking it: `po4a` before 0.70 parsed text encodings
-  loosely, which can silently corrupt non-ASCII translated text -
-  reproduced directly, turning a German manual paragraph into English with
-  mangled UTF-8, with no error or warning of po4a's own. Nothing else about
-  building or running wxMaxima needs `po4a` at all; only regenerating the
-  manual's translations from a source-text change does.
-
-- The temporary file created while rendering the SVG (or EMF) representation
-  of a selection for the clipboard now lives in a private, mode-0700
-  subdirectory of the user's own configuration directory instead of the
-  shared system temp directory, so another unprivileged user on the same
-  machine cannot plant a symlink under the name it happens to get. wxWidgets'
-  SVG/EMF renderers only know how to write to a real path, so the file itself
-  couldn't be avoided; where it lives could be.
-
-- New Maxima variable `wxdirs`, a struct holding the paths wxMaxima itself
-  uses (`wxdirs@userconfdir`, `wxdirs@datadir`, `wxdirs@helpdir`,
-  `wxdirs@localedir`, `wxdirs@maximalocation`). These differ by maintainer,
-  distribution and OS (see `Dirstructure`'s own doc comment), so a `.mac` file
-  that wants e.g. the user's configuration directory now has a way to ask for
-  it instead of guessing or searching the filesystem.
-
-- The caret, mouse clicks, arrow-key movement and selection highlighting
-  (including the "text that coincides with the selection" marker and the diff
-  viewer) are now all correctly placed on a line that mixes left-to-right and
-  right-to-left text - e.g. a Farsi word next to a German one. This uses
-  libfribidi, an optional dependency (`WXM_USE_FRIBIDI`, on by default when
-  found): without it, mixed-direction lines keep the previous
-  single-direction-only approximation.
-
-- Fixed: clicking inside right-to-left text (Hebrew, Arabic, Farsi, Urdu)
-  placed the caret at the mirror image of the character actually clicked on -
-  the first letter's position resolved to the last, and the other way round.
-  This was independent of the mixed-direction work above: it also affected a
-  line that was wholly one direction.
-
-- THIRD-PARTY-NOTICES.txt (shown in the "License" tab) now also credits
-  wxWidgets and the bundled NanoSVG, which had been missing.
-
-- wxMaxima's translations can now also be contributed online via
-  <https://crowdin.com/project/wxmaxima-gui>, in addition to editing the
-  `.po` files in `locales/` directly.
-
-- The "Revert to defaults" tab of the configuration dialogue is scrollable
-  again, like every other tab. It had been left as a plain, non-scrolling
-  panel, so on a screen too short to show it in full there was no way to
-  reach the buttons below the fold.
-
-- The LaTeX export can carry the worksheet inside the PDF. With "Export
-  contains the .wxmx file" set -- the same preference the HTML export already
-  used to offer the session as a download -- the exported document embeds the
-  .wxmx as a file attachment, so the PDF and the session that produced it cannot
-  become separated. `wxworksheettotex("f.tex", wxmx=true)` does the same from
-  within Maxima, matching `wxworksheettohtml`.
-
-- Hebrew and Arabic can now be chosen as the interface language. Both are only
-  seeded, not translated: they cover the thirty menu and dialog words that mean
-  the same in every desktop application and leave the rest in English. What they
-  do give is a way to run wxMaxima right-to-left without changing the system
-  locale, and a starting point for anyone who wants to take one of these
-  languages on -- the entries were not written or reviewed by a speaker, and are
-  meant to be overwritten.
-
-- In a right-to-left user interface language (Hebrew, Arabic, Farsi, Urdu) the
-  text of comment, title and section cells is now set flush right instead of
-  flush left, and the caret and mouse follow it. The furniture of the page
-  follows: labels such as `(%i1)` and `(%o1)`, a section's number, the cell
-  bracket and its fold button all move to the right-hand side, results are set
-  against the right edge of the page, and the text starts at the left edge
-  instead. Input cells keep their left margin and equations are not
-  mirrored: those read left to right in every script, even where a variable's
-  own name does not. Inside right-to-left text the caret is drawn where that
-  text actually is -- it used to be placed at the mirror image of its position,
-  so putting the cursor in front of a Hebrew word showed it at the word's far
-  end -- and the arrow keys move it the way it is drawn rather than the way the
-  text is stored, and selecting inside it highlights the characters that are
-  selected rather than the ones after them. Which way the document reads follows
-  the interface language; there is not yet a right-to-left translation of wxMaxima itself, so
-  setting the language is currently the way to see this.
-
-- LaTeX export: 2-D ASCII-art maths -- what Maxima prints when it isn't asked
-  for XML, for example from the Lisp side -- is exported as a verbatim block
-  instead of being pushed through the math renderer. Its meaning is carried
-  entirely by the column alignment (fraction bars drawn out of hyphens,
-  exponents parked above their base), and math mode collapsed the spaces and
-  dropped the line breaks, so the art arrived as an unreadable single line. The
-  label in front of such a block is now written as coloured text, too, instead
-  of as the number of an otherwise empty equation.
-
-- LaTeX export: animations (slide shows) are exported again. Each frame is
-  written as an image and embedded with the `animate` package's
-  `\animategraphics`, which plays the animation in PDF viewers that support it
-  and shows the first frame in the others. The export previously left only an
-  "[animated graphics - not shown in TeX export]" placeholder.
-
-- New Maxima command `wxworksheettotex("file.tex")` exports the current
-  worksheet to LaTeX from within a Maxima session, the companion of
-  `wxworksheettohtml()`. Keyword options `documentclass=...` and
-  `documentclassoptions=...` override the LaTeX document class for that export.
-- LaTeX export: on the Unicode engines (XeLaTeX/LuaLaTeX) the exported document
-  now loads `unicode-math`, so a Unicode symbol wxMaxima has no explicit LaTeX
-  translation for is typeset directly from the character instead of vanishing or
-  breaking the build. A few common symbols that were missing from the
-  translation table (nabla, approx, equiv) render under pdfTeX too now.
-
-- LaTeX export: non-math output (Maxima messages, warnings and errors) is now
-  written as LaTeX text instead of being forced through the math renderer, and
-  a backslash in such output no longer produces broken LaTeX -- the
-  `\ensuremath{}` that wraps it was itself being brace-escaped into invalid
-  markup. (Strings were already exported as text.)
-- New Maxima command `wxworksheettohtml("file.html")` exports the current
-  worksheet to HTML from within a Maxima session (for scripted/batch export).
-  Keyword options choose the flavour: `flavor="mathml"` (default, self-contained
-  native MathML), `"mathjax"`, `"svg"` or `"bitmap"`, and `wxmx=true` embeds a
-  downloadable copy of the session. (`wxworksheettotex`/`...topdf` are planned
-  and will share the same mechanism.)
-- New right-click items "Export output as SVG to a folder..." and "...as PNG
-  to a folder...": for the selected cell(s) they write one image file per
-  output into a directory you choose, named after the output label (e.g.
-  `o12.svg`). Previously the only way to harvest the rendered equation images
-  was to run a full HTML export and dig the pictures out of its `_htmlimg/`
-  folder.
-- HTML export: non-math output (Maxima messages, warnings, errors and plain
-  strings) is now written as ordinary, HTML-escaped text instead of being
-  rendered to a PNG/SVG image or wrapped in a `<math>` element. Previously a
-  plain sentence could end up as a picture of text or as a run of MathML
-  operators that browsers rendered oddly; it now reads as text in every export
-  flavour and stays selectable and searchable.
-- "Copy as MathML" is no longer offered (in the context menu or the Edit menu)
-  for a selection that contains no maths -- plain text, comments, labels or
-  strings. Copying those produced MathML that only wrapped the text in operator
-  elements, which word processors rendered oddly.
-- Bitmap rendering of equations no longer clips them to a corner of the image.
-  Anything rendered at a "Bitmap scale" other than 1 -- the HTML export's bitmap
-  equation flavor and the optional "Bitmap" clipboard format both use the
-  default scale of 3 -- was magnified once too often, so only the upper-left
-  third of each equation (or nothing at all) fit on the canvas. The explicit
-  "Copy as Bitmap" command was unaffected, as it always renders at scale 1.
-- Windows: the installer/ZIP now bundles the MinGW C++ runtime DLLs
-  (libstdc++-6, libgcc_s_seh-1, libwinpthread-1) that wxmaxima.exe needs to
-  start. They were relied on being pulled in automatically, which was
-  unreliable, so on some machines wxMaxima failed to launch with a missing-DLL
-  error. CI now also checks the package actually contains them.
-- HTML export now defaults to native MathML. Every current browser renders
-  MathML itself, so the exported page needs no JavaScript and, unlike before,
-  makes no requests to any external server -- removing both a privacy/security
-  dependency and the wait for a download. MathJaX is now offered only as an
-  optional fall-back ("MathML + MathJaX fall-back for old browsers"), which
-  downloads MathJaX from its CDN solely on browsers too old to support MathML.
-- HTML export: the separate "TeX, interpreted by MathJaX" option was removed;
-  existing configurations that used it fall back to the new MathML default.
-  (LaTeX export to a .tex file is unaffected.)
-- HTML export: equation labels (like `(%o1)`) and line-wrapped equations now
-  show up in browsers that render MathML natively. They previously relied on
-  `<mlabeledtr>`/`mtable side`, which the MathML Core standard (implemented by
-  Chrome and Safari) dropped; labels are now placed beside the equation as
-  HTML and the equation layout uses plain MathML-Core table rows.
-- HTML export: when the MathJaX fall-back is used it is now MathJaX version 4,
-  configured through the current API so the equation-alignment settings apply.
-- Windows: the wxMaxima window and taskbar button again show the wxMaxima logo
-  instead of the generic wxWidgets "W" icon. The window icon now also falls back
-  to the logo compiled into the binary, so it no longer depends solely on the
-  .ico resource being the one Windows selects.
+  every non-builtin name in the selected code (or, after confirmation, the
+  whole document) with a random name, consistently, so a worksheet can be
+  shared in a bug report without revealing the original names.
+- Reduced the memory footprint of every cell on the worksheet by computing
+  line-wrap draw order on demand instead of storing it per cell (#1445).
 
 # 26.07.1
 
