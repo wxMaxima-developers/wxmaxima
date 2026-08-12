@@ -19,6 +19,17 @@ binaries, create the release, or un-draft it by hand:
     — `compile_windows_arm.yml`
 - The release is created (or updated) and un-drafted automatically, with its
   body taken from the `# Current development version` section of `NEWS.md`.
+- `download.html`/`version.txt` on the `gh-pages` branch are updated
+  automatically (`update_website_version.yml`) with the tag's version number.
+  No manual edit needed.
+- The Windows installer is submitted to SignPath for code signing
+  (`compile_windows.yml`'s `sign_windows` job). This only runs on a
+  `Version-*` tag push or a manual `workflow_dispatch` run of that
+  workflow -- an ordinary push/PR always shows it as skipped, which is
+  expected, not a problem. The job needs approval in the `SIGNPATH_API_TOKEN`
+  GitHub Environment (Settings -> Environments) before it proceeds; that
+  approval prompt only appears once the job actually queues, i.e. only after
+  a real tag push (or manual dispatch) -- not before.
 
 Other checks that now run on every push (so they can't surprise you at release
 time):
@@ -46,10 +57,13 @@ time):
 - Create an **annotated** tag: `git tag -a Version-<x.y.z>` and push it:
   `git push origin --tags`. **This push is what triggers the automated build +
   release above.**
+- Approve the SignPath signing request: once `compile_windows.yml` runs on the
+  tag, its `sign_windows` job pauses for approval in the `SIGNPATH_API_TOKEN`
+  GitHub Environment. Approve it from the workflow run's page (or Settings ->
+  Environments -> SIGNPATH_API_TOKEN) so the Windows installer actually gets
+  signed instead of the job timing out unapproved.
 - After the release is published, verify it as an anonymous user (log out of
   GitHub and check the release page).
-- Update the release info in `download.html` and `version.txt` in the
-  `gh_pages` branch.
 - Download the source tarball (`.tar.gz` and `.zip`) and sign each:
   `gpg --armor --detach-sign <filename>`, then add the two `.asc` files to the
   release page. (Signing needs your private key and is therefore still manual.)
