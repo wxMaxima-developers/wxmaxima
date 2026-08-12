@@ -9,6 +9,28 @@ permissions:
   contents: read
 
 jobs:
+  check_translations_not_wiped:
+    # Guards against a failure mode that has hit this repo's translations
+    # twice now (see AGENTS.md's translations section): a Crowdin export
+    # branch forked before a translation-restoring commit landed, which then
+    # silently blanks those strings back to empty the next time it's merged
+    # -- 464 translations wiped each time, caught by hand both times. A
+    # standalone job (not a step inside the build jobs) so it runs once, in
+    # seconds, without needing any of the build dependencies those jobs
+    # install -- it's pure git + Python.
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout_git
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+      - name: check-translations-not-wiped
+        run: |
+             git fetch --depth=1 origin main
+             pip install --quiet polib
+             python3 locales/wxMaxima/check_translations_not_wiped.py origin/main
+
   compile_latest_and_test:
     runs-on: ubuntu-latest
     timeout-minutes: 120

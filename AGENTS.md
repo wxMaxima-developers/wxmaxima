@@ -646,6 +646,36 @@ tried without rebuilding.
   the languages it already had), not on wxMaxima's own git handling -- ask
   Crowdin support directly, since this session cannot access Crowdin's
   own dashboard/API to confirm the exact trigger without credentials.
+  **It did happen a third time (2026-08-12, PR #2257 from `l10n_main2`):**
+  same shape exactly, `merge-base` landing before the 464-translation
+  restoration commit (`3cf4f9c97`) this time instead of before #2241 --
+  same 464 entries, same 16 languages, zero gained, caught before merging
+  by diffing the PR branch against `origin/main` with the same
+  msgid+msgctxt-keyed `polib` technique, this time *before* merging rather
+  than after. Crowdin claimed to sync hourly regardless. The maintainer
+  switched Crowdin to a fresh `l10n_main2` -> `l10n_main3` branch as a
+  workaround, which "immediately started syncing" -- consistent with
+  Crowdin's export being tied to when *that specific branch* was created/
+  configured, not to actual polling frequency against upstream's current
+  state; still unconfirmed without Crowdin dashboard access, so don't
+  treat that as the root cause, just an observation. Added a permanent
+  safety net for this: `locales/wxMaxima/check_translations_not_wiped.py`
+  (wired into `compile_ubuntu.yml` as its own fast, standalone
+  `check_translations_not_wiped` job, no build dependencies needed) does
+  this exact msgid+msgctxt-keyed comparison against `origin/main` on every
+  push and fails loudly if any translation would go from non-empty to
+  empty -- catching this class of regression in CI before a human has to
+  notice and diff it by hand a fourth time. It only catches "translated
+  text disappeared entirely," not e.g. "translation is now provably
+  worse," and can in principle false-positive if a legitimate, unrelated
+  PR both changes a translatable string's English source text *and*
+  commits a regenerated `.po` under the old convention in the same push
+  (the old msgid's entry vanishing under a genuine rename looks identical
+  to it being wiped) -- rare in practice, since this repo's convention is
+  to not casually commit `update-locale` drift alongside unrelated changes
+  (see the "committing a `make update-locale` run's output" entry below),
+  but worth knowing if this check ever fires on something that turns out
+  to be legitimate.
 - **`test/check-pot-coverage.cmake` needs `cmake_policy(SET CMP0057 NEW)`
   explicitly.** It runs in script mode (`cmake -P`), which does not inherit
   the top-level `CMakeLists.txt`'s policy settings -- without this line,
