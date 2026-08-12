@@ -286,19 +286,33 @@ jobs:
           name: wxmaxima-installer-unsigned
           path: wxMaxima/build/*.exe
       - name: Extract release notes from NEWS.md
-        # The release body is the "Current development version" section: from
-        # the top of the file down to (not including) the next top-level "# "
-        # heading, which marks the previous version. Kept as its own step
-        # (rather than inline in the release-publishing step below) so it can
-        # be inspected in the log independent of whether publishing runs.
+        # The release body is the "Current development version" section's
+        # content: skip the "# Current development version" heading itself,
+        # AND (if release prep already inserted this release's own "# x.y.z"
+        # heading right below it -- the usual order, done before tagging) that
+        # heading too, plus any blank lines in between; then take everything
+        # up to (not including) the next top-level "# " heading, which marks
+        # the previous version. Skipping leading headings generically (rather
+        # than assuming exactly one) keeps this working whether the new
+        # version's own heading has been inserted yet or not. Kept as its own
+        # step (rather than inline in the release-publishing step below) so it
+        # can be inspected in the log independent of whether publishing runs.
         if: startsWith(github.ref, 'refs/tags/Version')
         run: |
             $lines = Get-Content wxMaxima\NEWS.md
+            $startIdx = 0
+            while ($startIdx -lt $lines.Count -and ($lines[$startIdx] -match '^# ' -or $lines[$startIdx].Trim() -eq '')) {
+              $startIdx++
+            }
             $endIdx = $lines.Count - 1
-            for ($i = 1; $i -lt $lines.Count; $i++) {
+            for ($i = $startIdx; $i -lt $lines.Count; $i++) {
               if ($lines[$i] -match '^# ') { $endIdx = $i - 1; break }
             }
-            $lines[1..$endIdx] | Out-File -FilePath wxMaxima\release-notes.md -Encoding utf8
+            if ($startIdx -le $endIdx) {
+              $lines[$startIdx..$endIdx] | Out-File -FilePath wxMaxima\release-notes.md -Encoding utf8
+            } else {
+              "" | Out-File -FilePath wxMaxima\release-notes.md -Encoding utf8
+            }
       - name: Publish release
         # Only after the build AND its integration tests have passed: this
         # runs last in the job, so a build or test failure never publishes a
