@@ -9,47 +9,16 @@ languages and mixed-direction text are now properly supported, translation
 losses across dozens of languages were found and restored, and a long list of
 export, layout and stability fixes.
 
-- Sidebars can now be minimized, not just closed (GH #2229): a minimized
-  sidebar collapses into a small strip at the window's edge and comes back at
-  the same place and size when clicked. Needs wxWidgets 3.3.2 or newer.
-- "Find and Replace" (Ctrl+F) can now be shown as a dockable sidebar instead
-  of a floating window (GH #2249). Off by default; enable it via Edit ->
-  Configure -> Options.
-- Right-to-left interface languages (Hebrew, Arabic seeded for the first
-  time) are now supported: comment/title/section text, cell labels, brackets
-  and fold buttons follow the reading direction, while equations stay
-  left-to-right. Mixed-direction text on one line (e.g. Farsi next to
-  German) is now correctly ordered and the caret, clicks, arrow keys and
-  selection all follow it -- previously the caret in right-to-left text was
-  placed at the mirror image of where it was clicked.
-- Restored translations that had quietly gone missing: about 7000 strings
-  across 21 languages that a flawed source-file scan never found in the
-  first place, plus another 464 across 16 languages wiped by a Crowdin sync
-  race. A new check now fails the build if this can happen again. Seeded
-  fresh UI translations for 24 more languages and manual-translation
-  infrastructure for 15 that had none, and fixed several bugs in the
-  translation pipeline itself (a `po4a` invocation that could silently
-  discard existing translations, and one that mis-wrapped translated
-  headings/lists in the manual, GH #2047).
-- Equations exported as PNG (GH #2231) or SVG (GH #2230) now carry their
-  text form alongside the image, so screen readers and search indexes can
-  tell what they show instead of seeing an anonymous picture. Needs
-  wxWidgets 3.3.1/3.3.3 respectively.
-- wxMaxima now warns if Maxima's process started but never connected back
-  within 5 seconds, instead of hanging silently (GH #1182) -- most commonly
-  caused by macOS Gatekeeper quarantining the Maxima binary.
-- Fixed two bugs in RTF/Word export: a hidden multiplication sign still
-  showed up in the output (GH #1456), and a matrix's brackets rendered at a
-  fixed size instead of growing with the matrix (GH #1457).
-- Fixed a scaled image losing its transparency and showing a solid
-  background instead (GH #2227).
-- Fixed two regressions from the move to `wxUILocale`: picking a language
-  other than "System default" no longer affected number/date formatting,
-  and the manually-selected help manual was never found (GH #2233).
-- Evaluating a folded section no longer unfolds it just because an error
-  happened somewhere inside (GH #1952).
+- Sidebars can now be minimized, not only closed (GH #2229).
+- Right-to-left interface languages support. Full support requires libfribidi
+- Restored translations that had quietly gone missing: (GH #2047).
+- Equations exported as PNG (GH #2231) or SVG (GH #2230) now are accessible
+  in 3.3.1/3.3.3, respectively.
+- Many export improvements.
+- Fixed scaled images losing their transparency (GH #2227).
+- Evaluating a folded section no longer unfolds (GH #1952).
 - "Pop out interactively" on a plot now tells you when gnuplot had trouble
-  with it, instead of silently leaving an unexplained window (GH #1973).
+  with it (GH #1973).
 - macOS: fixed translation files not reaching the app bundle (GH #1711).
 - `sum()`/`product()`/`lsum` no longer wrap a plain summand in spurious
   parentheses, matching Maxima's own terminal output (GH #1536); `box()` no
@@ -60,60 +29,21 @@ export, layout and stability fixes.
   containing wildcard-like characters or, on Windows, characters outside the
   system codepage; a persistently broken path no longer spams the warning
   on every command (GH #1672).
-- Code cell syntax highlighting no longer splits an identifier that's
-  wrapped across two lines with a line-continuing backslash into two
-  unrelated tokens (GH #898).
+- Code cell syntax highlighting improvements (GH #898).
 - Table of contents: dragging a chapter/section to reorder it now actually
-  works -- it was wired up but silently broken by three separate bugs
-  (GH #1524).
-- Fixed two 32-bit-only bugs found because CI only compiled, but never ran,
-  the test suite on a 32-bit build: an undefined-behavior pointer
-  subtraction and a 64-bit-only search/selection bug (GH #2208); CI now
-  actually runs the tests there too.
+  works (GH #1524).
+- Fixed two 32-bit-only bugs(GH #2208); CI now actually runs the tests there too.
 - Tagged releases now also attach a `.tar.xz` source archive with a
   checksum, built reproducibly from the tagged commit (GH #1192).
-- Snap: opening the local manual with "use external browser" selected no
-  longer silently fails under strict confinement; gnuplot's license notice
-  now travels with builds that bundle it.
+- Snap: gnuplot's license notice now travels with builds that bundle it.
 - `--batch`/`--exit-on-error` now actually halts on an unanswerable
-  interactive question instead of hanging forever, and a cell's input
-  silently failing to reach Maxima at all now halts the run loudly instead
-  of continuing quietly (GH #2196); a failed image load now also fails a
-  batch run instead of rendering a blank placeholder (GH #2178).
-- The worksheet's editor now supports real tab characters instead of
-  silently rewriting them into spaces; Tab/Shift+Tab on a selection
-  indents/dedents with real tabs.
-- wxMaxima now tells Maxima's ASCII-art text printer how wide the worksheet
-  actually is, so wide fractions/matrices wrap correctly instead of needing
-  a horizontal scrollbar (#1608), and fixed misaligned ASCII-art output that
-  could land in the wrong (proportional) font.
-- The temporary file used to render a clipboard SVG/EMF selection now lives
-  in a private, non-shared directory instead of the system temp directory.
+  interactive question instead of hanging forever (GH #2178).
+- Real tab handling.
+- Better ASCII Arts support (#1608).
 - New Maxima variable `wxdirs` exposes wxMaxima's own configuration/data/
   help/locale paths to `.mac` scripts.
-- LaTeX export: 2-D ASCII-art maths is now exported as a verbatim block
-  instead of being garbled by the math renderer; animations export again as
-  `\animategraphics`; non-math output (messages, warnings, errors) is
-  written as plain LaTeX text; the exported document can now embed the
-  worksheet itself as a file attachment; Unicode symbols with no explicit
-  LaTeX translation now typeset directly via `unicode-math` on XeLaTeX/
-  LuaLaTeX; fixed an integral's "dx" rendering upright instead of italic
-  (#972). New `wxworksheettotex()` Maxima command for scripted export.
-- HTML export now defaults to native MathML (no JavaScript, no external
-  requests) with MathJaX offered only as an optional fall-back for old
-  browsers; equation labels and line-wrapped equations now show up
-  correctly in MathML-Core browsers (Chrome, Safari); non-math output is
-  now written as plain, searchable HTML text instead of an image. New
-  `wxworksheettohtml()` Maxima command, and new right-click "Export output
-  as SVG/PNG to a folder..." commands.
-- Fixed bitmap-rendered equations (HTML export's bitmap flavor, the
-  optional "Bitmap" clipboard format) being clipped to a corner of the
-  image at any scale other than 1.
-- "Copy as MathML" is no longer offered for a selection that contains no
-  maths.
 - Windows: the installer/ZIP now bundles the MinGW runtime DLLs it needs to
-  start, fixing a missing-DLL launch failure on some machines; the window
-  and taskbar icon show the wxMaxima logo again instead of a generic one.
+  start.
 - Added "Anonymize Code for Bug Report" to the Help menu (#1339): replaces
   every non-builtin name in the selected code (or, after confirmation, the
   whole document) with a random name, consistently, so a worksheet can be
