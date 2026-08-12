@@ -654,11 +654,27 @@ tried without rebuilding.
   msgid+msgctxt-keyed `polib` technique, this time *before* merging rather
   than after. Crowdin claimed to sync hourly regardless. The maintainer
   switched Crowdin to a fresh `l10n_main2` -> `l10n_main3` branch as a
-  workaround, which "immediately started syncing" -- consistent with
-  Crowdin's export being tied to when *that specific branch* was created/
-  configured, not to actual polling frequency against upstream's current
-  state; still unconfirmed without Crowdin dashboard access, so don't
-  treat that as the root cause, just an observation. Added a permanent
+  first attempted workaround, which "immediately started syncing" -- but
+  this did *not* fix anything: `l10n_main3`'s own PR (#2259) forked from
+  `7d0407f8c`, a commit well after the restoration, yet still carried the
+  exact same 464 empty translations (confirmed the same way, spot-checked
+  down to individual entries, e.g. German's translation of the literal
+  command-line flag `"      -X \"--control-stack-size <int>\""` -- present
+  and correct, self-identical to the msgid, on `main`, but back to `""` on
+  `l10n_main3`). That ruled out "stale git branch point" as the actual
+  cause, since a fresh branch reproduced it identically. **Root cause,
+  confirmed by the maintainer directly with Crowdin: the export had
+  exceeded Crowdin's string-count limit for their free-tier account plan,
+  which made Crowdin silently fall back to an old, pre-restoration
+  translation snapshot instead of erroring or refusing to export** --
+  explaining why recreating the branch changed nothing: the stale state
+  lived in Crowdin's own translation memory, not in which commit its
+  export happened to be based on. The account has since been deleted;
+  both #2257 and #2259 were closed unmerged. If Crowdin integration is
+  ever reconnected, check the account's plan/string-limit status first --
+  this failure mode gives no visible error on either the Crowdin or the
+  GitHub side, only a silent, correct-looking PR that happens to carry
+  stale content. Added a permanent
   safety net for this: `locales/wxMaxima/check_translations_not_wiped.py`
   (wired into `compile_ubuntu.yml` as its own fast, standalone
   `check_translations_not_wiped` job, no build dependencies needed) does
