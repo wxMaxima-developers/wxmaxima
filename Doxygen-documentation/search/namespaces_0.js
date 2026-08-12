@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['docstring_0',['docstring',['../namespacedocstring.html',1,'']]]
+  ['check_5ftranslations_5fnot_5fwiped_0',['check_translations_not_wiped',['../namespacecheck__translations__not__wiped.html',1,'']]]
 ];
