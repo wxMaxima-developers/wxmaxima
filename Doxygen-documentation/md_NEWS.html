@@ -72,112 +72,46 @@ $(function() {
   <div class="headertitle"><div class="title">Current development version </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><ul>
-<li>Sidebars can now be minimized, not just closed (GH #2229). <a class="el" href="classA.html">A</a> minimized sidebar collapses into a small strip at the edge of the window and comes back, in the same place and at the same size, when you click it there - so a sidebar you only need occasionally no longer costs you either its screen space or its position. Closing a sidebar still works exactly as before. Needs wxWidgets 3.3.2 or newer; with an older wxWidgets the sidebars are unchanged.</li>
-<li>"Find and Replace" (Ctrl+F) can now be shown as a dockable sidebar instead of a floating window, for people who'd rather keep it docked alongside the other sidebars (GH #2249). Off by default &ndash; enable it via Edit -&gt; Configure -&gt; Options -&gt; "Show 'Find and Replace' as a dockable sidebar". Ctrl+F un-hides and focuses the sidebar the same way it does for every other sidebar, including when it starts out minimized/closed.</li>
-<li>Restored 464 UI/manual translations across 16 languages (Catalan, Czech, Danish, German, Greek, Spanish, Finnish, French, Galician, Hungarian, Italian, Kabyle, Polish, Russian, Turkish, Ukrainian) that a Crowdin sync had wiped to empty. The Crowdin export that produced this had branched a few minutes before an unrelated PR restored translations for source files under <code>src/</code>'s subdirectories, then merged half an hour later without ever picking up that change &ndash; a race, not a Crowdin misconfiguration found so far. Also fixed a CMake policy bug in the just-added <code>check-pot-coverage</code> CI guard (script mode doesn't inherit the top-level policy settings, so its <code>IN_LIST</code> check unconditionally errored out).</li>
-<li>Equations saved as PNG now carry their text form inside the image file (GH #2231), so the maths travels with the picture: a screen reader can read out what the image shows, and anyone who finds the file later - or a search index that looks at it - can tell what is in it instead of seeing an anonymous graphic. Needs wxWidgets 3.3.1 or newer; with an older wxWidgets the exported PNG is unchanged.</li>
-<li>Equations exported as SVG now carry their text form, so a screen reader can read them out instead of announcing an anonymous picture (GH #2230). Both the HTML export's equation images and the SVG that "Copy as SVG" puts on the clipboard are affected: the file is given a title, and the drawing is marked up as mathematics with the equation's text as its label. Needs wxWidgets 3.3.3 or newer; with an older wxWidgets the exported SVG is unchanged.</li>
-<li>About 7000 translations that had quietly disappeared from 21 languages are back. The list of files the translation system reads was written in a way that only found sources sitting directly in <code>src/</code>, so everything in a subdirectory below it became invisible: menus, dialogs and above all the wizards had been silently reverting to English since 2020, and the sidebars and dialogs since 2024, without anything ever reporting a problem. German, Russian, Ukrainian, Hungarian, Italian, Spanish and Turkish each regain 500-660 strings; Catalan, Galician and Polish get their first translated dialogs back at all. Every restored string is exactly what a translator had written before it was lost. <a class="el" href="classA.html">A</a> new test now fails the build if a source file can ever become invisible to the translation system again.</li>
-<li><a class="el" href="classwxMaxima.html">wxMaxima</a> now warns if <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s process has started but hasn't connected back within 5 seconds, instead of leaving the worksheet stuck at "Maxima
-  started. Waiting for connection..." forever with no explanation (GH #1182). On macOS this reproducibly happens when Gatekeeper has quarantined the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> binary &ndash; common for a <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> installed via Homebrew rather than a signed installer &ndash; since a background process <a class="el" href="classwxMaxima.html">wxMaxima</a> spawns can never answer the security prompt macOS would otherwise show; the warning explains this and suggests a fix. <a class="el" href="classwxMaxima.html">wxMaxima</a> keeps waiting and retrying in the background regardless.</li>
-<li>Fixed two bugs in RTF/Word export (previously untested code, now with regression coverage):<ul>
-<li><a class="el" href="classA.html">A</a> hidden multiplication sign (e.g. the implicit "*" in scientific notation like "2*10^7") always showed up in RTF/copy-as-RTF output regardless of the "Hide multiplication sign" setting, and would have left no separator behind at all had it ever been suppressed &ndash; turning "2*10^7" into the unreadable "210^7" (GH #1456).</li>
-<li><a class="el" href="classA.html">A</a> matrix's brackets rendered at a small, fixed size in Word/LibreOffice instead of growing to match the matrix's height, because the OMML "grow" flag was emitted with literal stray quote characters in its value instead of the well-formed attribute every other bracket-drawing cell (parentheses, lists, intervals) already used correctly &ndash; fixed the same way for <code>abs()</code>'s bars, which were missing the "grow" flag entirely (GH #1457).</li>
+<div class="textblock"><h1><a class="anchor" id="autotoc_md879"></a>
+26.08.0</h1>
+<p>Another large batch of improvements, many of them developed with substantial help from the AI assistant <b>Claude</b>: sidebars can now be minimized, "Find
+and Replace" can be docked like the other sidebars, right-to-left interface languages and mixed-direction text are now properly supported, translation losses across dozens of languages were found and restored, and a long list of export, layout and stability fixes.</p>
+<ul>
+<li>Sidebars can now be minimized, not just closed (GH #2229): a minimized sidebar collapses into a small strip at the window's edge and comes back at the same place and size when clicked. Needs wxWidgets 3.3.2 or newer.</li>
+<li>"Find and Replace" (Ctrl+F) can now be shown as a dockable sidebar instead of a floating window (GH #2249). Off by default; enable it via Edit -&gt; Configure -&gt; Options.</li>
+<li>Right-to-left interface languages (Hebrew, Arabic seeded for the first time) are now supported: comment/title/section text, cell labels, brackets and fold buttons follow the reading direction, while equations stay left-to-right. Mixed-direction text on one line (e.g. Farsi next to German) is now correctly ordered and the caret, clicks, arrow keys and selection all follow it &ndash; previously the caret in right-to-left text was placed at the mirror image of where it was clicked.</li>
+<li>Restored translations that had quietly gone missing: about 7000 strings across 21 languages that a flawed source-file scan never found in the first place, plus another 464 across 16 languages wiped by a Crowdin sync race. <a class="el" href="classA.html">A</a> new check now fails the build if this can happen again. Seeded fresh UI translations for 24 more languages and manual-translation infrastructure for 15 that had none, and fixed several bugs in the translation pipeline itself (a <code>po4a</code> invocation that could silently discard existing translations, and one that mis-wrapped translated headings/lists in the manual, GH #2047).</li>
+<li>Equations exported as PNG (GH #2231) or SVG (GH #2230) now carry their text form alongside the image, so screen readers and search indexes can tell what they show instead of seeing an anonymous picture. Needs wxWidgets 3.3.1/3.3.3 respectively.</li>
+<li><a class="el" href="classwxMaxima.html">wxMaxima</a> now warns if <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s process started but never connected back within 5 seconds, instead of hanging silently (GH #1182) &ndash; most commonly caused by macOS Gatekeeper quarantining the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> binary.</li>
+<li>Fixed two bugs in RTF/Word export: a hidden multiplication sign still showed up in the output (GH #1456), and a matrix's brackets rendered at a fixed size instead of growing with the matrix (GH #1457).</li>
+<li>Fixed a scaled image losing its transparency and showing a solid background instead (GH #2227).</li>
+<li>Fixed two regressions from the move to <code>wxUILocale</code>: picking a language other than "System default" no longer affected number/date formatting, and the manually-selected help manual was never found (GH #2233).</li>
+<li>Evaluating a folded section no longer unfolds it just because an error happened somewhere inside (GH #1952).</li>
+<li>"Pop out interactively" on a plot now tells you when gnuplot had trouble with it, instead of silently leaving an unexplained window (GH #1973).</li>
+<li>macOS: fixed translation files not reaching the app bundle (GH #1711).</li>
+<li><code>sum()</code>/<code>product()</code>/<code>lsum</code> no longer wrap a plain summand in spurious parentheses, matching <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s own terminal output (GH #1536); <code>box()</code> no longer gets spurious parentheses around it either (GH #1948).</li>
+<li>Folding/unfolding a section (or "Fold All"/"Unfold All") is now part of the undo history (GH #266).</li>
+<li>Fixed <a class="el" href="classwxMaxima.html">wxMaxima</a> losing sync with <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s working directory for names containing wildcard-like characters or, on Windows, characters outside the system codepage; a persistently broken path no longer spams the warning on every command (GH #1672).</li>
+<li>Code cell syntax highlighting no longer splits an identifier that's wrapped across two lines with a line-continuing backslash into two unrelated tokens (GH #898).</li>
+<li>Table of contents: dragging a chapter/section to reorder it now actually works &ndash; it was wired up but silently broken by three separate bugs (GH #1524).</li>
+<li>Fixed two 32-bit-only bugs found because CI only compiled, but never ran, the test suite on a 32-bit build: an undefined-behavior pointer subtraction and a 64-bit-only search/selection bug (GH #2208); CI now actually runs the tests there too.</li>
+<li>Tagged releases now also attach a <code>.tar.xz</code> source archive with a checksum, built reproducibly from the tagged commit (GH #1192).</li>
+<li>Snap: opening the local manual with "use external browser" selected no longer silently fails under strict confinement; gnuplot's license notice now travels with builds that bundle it.</li>
+<li><code>--batch</code>/<code>--exit-on-error</code> now actually halts on an unanswerable interactive question instead of hanging forever, and a cell's input silently failing to reach <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> at all now halts the run loudly instead of continuing quietly (GH #2196); a failed image load now also fails a batch run instead of rendering a blank placeholder (GH #2178).</li>
+<li>The worksheet's editor now supports real tab characters instead of silently rewriting them into spaces; Tab/Shift+Tab on a selection indents/dedents with real tabs.</li>
+<li><a class="el" href="classwxMaxima.html">wxMaxima</a> now tells <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s ASCII-art text printer how wide the worksheet actually is, so wide fractions/matrices wrap correctly instead of needing a horizontal scrollbar (#1608), and fixed misaligned ASCII-art output that could land in the wrong (proportional) font.</li>
+<li>The temporary file used to render a clipboard SVG/EMF selection now lives in a private, non-shared directory instead of the system temp directory.</li>
+<li>New <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> variable <code>wxdirs</code> exposes <a class="el" href="classwxMaxima.html">wxMaxima</a>'s own configuration/data/ help/locale paths to <code>.mac</code> scripts.</li>
+<li>LaTeX export: 2-<a class="el" href="classD.html">D</a> ASCII-art maths is now exported as a verbatim block instead of being garbled by the math renderer; animations export again as <code>\animategraphics</code>; non-math output (messages, warnings, errors) is written as plain LaTeX text; the exported document can now embed the worksheet itself as a file attachment; Unicode symbols with no explicit LaTeX translation now typeset directly via <code>unicode-math</code> on XeLaTeX/ LuaLaTeX; fixed an integral's "dx" rendering upright instead of italic (#972). New <code>wxworksheettotex()</code> <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> command for scripted export.</li>
+<li>HTML export now defaults to native MathML (no JavaScript, no external requests) with MathJaX offered only as an optional fall-back for old browsers; equation labels and line-wrapped equations now show up correctly in MathML-Core browsers (Chrome, Safari); non-math output is now written as plain, searchable HTML text instead of an image. New <code>wxworksheettohtml()</code> <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> command, and new right-click "Export output
+  as SVG/PNG to a folder..." commands.</li>
+<li>Fixed bitmap-rendered equations (HTML export's bitmap flavor, the optional "Bitmap" clipboard format) being clipped to a corner of the image at any scale other than 1.</li>
+<li>"Copy as MathML" is no longer offered for a selection that contains no maths.</li>
+<li>Windows: the installer/ZIP now bundles the MinGW runtime DLLs it needs to start, fixing a missing-DLL launch failure on some machines; the window and taskbar icon show the <a class="el" href="classwxMaxima.html">wxMaxima</a> logo again instead of a generic one.</li>
+<li>Added "Anonymize Code for Bug Report" to the Help menu (#1339): replaces every non-builtin name in the selected code (or, after confirmation, the whole document) with a random name, consistently, so a worksheet can be shared in a bug report without revealing the original names.</li>
+<li>Reduced the memory footprint of every cell on the worksheet by computing line-wrap draw order on demand instead of storing it per cell (#1445).</li>
 </ul>
-</li>
-<li>Fixed a scaled image losing its transparency and showing a solid (typically black) background instead (GH #2227). Rescaling an image to fit its on-screen size forced the resulting bitmap to a plain 24-bit depth, which discards any alpha channel &ndash; every other place in the same code path already builds its bitmap without forcing a depth, so the scaled case now does the same and keeps the source image's transparency.</li>
-<li>Fixed two regressions from <a class="el" href="classwxMaxima.html">wxMaxima</a>'s earlier, partial move to <code>wxUILocale</code> (GH #2233, on wxWidgets &gt;= 3.1.6): picking a language other than "System
-  default" was silently ignored for the actual locale (only translations respected it; number/date formatting etc. kept following the OS default), and the manually-selected help manual (e.g. the German or Simplified Chinese one) was never found, always falling back to the plain English manual regardless of the chosen language.</li>
-<li>Evaluating a folded section no longer unfolds it just because an error happened somewhere inside (GH #1952). Folding a time-consuming or no-longer-relevant calculation down to one line, so the worksheet stays readable while everything still gets evaluated, was defeated if a single error deep inside the fold unconditionally sprang it back open &ndash; the worksheet now lands on the fold's own (visible) header instead, leaving the fold itself untouched.</li>
-<li>"Pop out interactively" (the plot image's right-click menu) now tells you when gnuplot had trouble with the plot, instead of silently leaving you with an unexplained window (GH #1973). <a class="el" href="classA.html">A</a> second, hidden gnuplot process runs the same script headlessly (<code>set term unknown</code>, so it needs no display) purely to catch anything gnuplot prints while preparing the plot; if it printed something, a "Warning" dialog shows it verbatim. The interactive popout itself is untouched &ndash; it still gets its own real console/window exactly as before, so typing further gnuplot commands into it still works.</li>
-<li>macOS: translation files should now actually make it into the app bundle (GH #1711). Two separate bugs meant the <code>.mo</code> files never reached <code>Contents/Resources/locale/&lt;lang&gt;/LC_MESSAGES/</code>, where <a class="el" href="classwxMaxima.html">wxMaxima</a> looks for them: the CMake target that copies them into the build tree with the correct per-language layout was unconditionally skipped on Apple (working around what turned out to be an Xcode-generator-specific issue &ndash; the DMG- producing CI job actually uses Ninja, not Xcode, and doesn't need the workaround), and separately, the bundle's own resource list tried to glob for them before they even existed (translations are generated during the build, but that glob is evaluated once at configure time) with a pattern that wouldn't have matched their actual nested location anyway. Fixed by narrowing the Apple exclusion to just the Xcode generator, and copying the already-correctly-laid-out translation directory into the bundle in a build-time install step instead of a configure-time glob. Not verified on a real Mac (none was available to test this on) &ndash; please report back if translations still don't show up in a built .dmg.</li>
-<li><code>sum()</code>/<code>product()</code>/<code>lsum</code> (GH #1536) no longer wrap a plain summand in spurious parentheses: <code>sum(k,k,1,n)</code> now displays the sum sign over a bare <code>k</code>, matching <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s own terminal output, instead of always showing <code>(k)</code>. <a class="el" href="classA.html">A</a> genuinely compound summand, like <code>sum(k+k^2,k,1,n)</code>, still gets the parentheses, since dropping them there really could be misread as extending past the sum sign. The decision is made in <code>wxxml-sum</code> (<code>wxMathML.lisp</code>) from the real <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> expression (<code>mplusp</code>) rather than an invented operator precedence &ndash; <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s own printer has no <code>lbp</code>/<code>rbp</code> registered for <code>sum</code>/<code>product</code> either, so it can't be using generic precedence comparison for this &ndash; and is carried across the wire to <code><a class="el" href="classSumCell.html">SumCell</a></code> (which still needed a small, targeted change of its own: its 2<a class="el" href="classD.html">D</a> on-screen layout is computed in C++, and turned out not to be reachable through <code><a class="el" href="classParenCell.html" title="The class that represents parenthesis that are wrapped around text.">ParenCell</a></code>'s existing "print" flag, which only suppresses parentheses in text/TeX/MathML export, not in the interactive display).</li>
-<li>Folding/unfolding a section (or the whole document, via "Fold All"/ "Unfold All") is now recorded in the undo buffer (GH #266), a 2013 feature request: Ctrl+Z after an accidental fold, or after "Fold All" collapses a document you didn't mean to collapse, restores exactly the fold state that was there before. <a class="el" href="classA.html">A</a> single-cell fold/unfold undoes with one Ctrl+Z; "Fold
-  All"/"Unfold All" (which can fold many cells at once, only the ones that weren't already in that state) undoes and redoes all of them together as one atomic step, so it doesn't unfold sections that were already folded before "Fold All" ran. Implemented by giving <code><a class="el" href="classTreeUndoAction.html" title="The description of one action for the undo (or redo) command.">TreeUndoAction</a></code> a fourth, explicit fold/unfold case alongside its existing text-change/insertion/ deletion ones, rather than reusing those for something semantically different (a fold keeps its subtree alive and logically part of the document, unlike a real deletion).</li>
-<li>"Can set maxima's working directory but cannot change it during the
-  maxima session" (GH #1672): this warning, printed by <code>wx-cd</code> whenever it fails to keep <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s working directory in sync with the worksheet's, had two separate root causes and a nuisance of its own, all fixed:<ul>
-<li><a class="el" href="classA.html">A</a> directory name containing <code>*</code>, <code>?</code>, <code>[</code> or <code>]</code> (e.g. <code>Draft [v2]</code>) always failed: Common Lisp's portable pathname syntax treats those characters as wildcard markers rather than literal ones, so SBCL's <code>pathname-directory</code> turned a perfectly real directory into an unmatched wildcard pattern. Fixed by parsing the string with <code>sb-ext:native-pathname</code> instead, which has no such reinterpretation.</li>
-<li>On Windows specifically, a directory name containing a character outside the system's active codepage (e.g. Cyrillic or CJK on a Western-European Windows install) also always failed: <code>sb-posix:chdir</code>/<code>sb-posix:getcwd</code> go through the <a class="el" href="classC.html">C</a> runtime's ANSI-only <code>_chdir</code>/<code>_getcwd</code>, which cannot represent such characters at all (a confirmed, still-open upstream SBCL bug, launchpad #2100706). Fixed by calling the Win32 wide-character APIs directly instead, with the previous behavior kept as an automatic fallback.</li>
-<li>Once triggered by a persistently broken path, the warning printed again on every single cd attempt for the rest of the session, and since a saved <code>.wxmx</code> document keeps every cell's output verbatim, reopening and resaving an affected document over many sessions could accumulate hundreds of copies of the exact same warning. <code>wx-cd</code> now remembers the last directory it failed on and only reports a given failure once, until either a different directory fails or the same one starts working again.</li>
-</ul>
-</li>
-<li>Display (GH #1948): <code>box()</code> draws its own border around its argument, so it never needed the extra pair of parentheses <code>wxMathML.lisp</code>'s generic precedence-based paren-insertion logic could still wrap around it, e.g. <code>a*box(b)*c</code> showing spurious parens around <code>box(b)</code>. Fixed by giving <code>box()</code> (and its labelled form, <code>box(expr, label)</code>) a precedence higher than any real operator's, so it never needs disambiguating &ndash; except for the one case where it doesn't actually draw a border at all: <code>box(expr,
-  highlight)</code> only colors its content, and correctly keeps the disambiguating parentheses it already had, since a bare color change doesn't visually delimit its own extent.</li>
-<li>Code cell syntax highlighting (GH #898): an identifier split across two physical lines by an escaped newline (<code>\</code> immediately followed by a line break &ndash; confirmed against a real <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> that this contributes nothing to the resolved name at all, e.g. <code>fo\&lt;newline&gt;obar</code> is plainly <code>foobar</code>, unlike an ordinary escaped character such as <code>a\,b</code>, which resolves to the symbol <code>a,b</code>) used to be highlighted as two unrelated tokens: the half before the line break wasn't classified at all (falling through the function/variable/operator/keyword lookups entirely), and the half after it started over as if it were a brand new, independent identifier. Both halves are now resolved and styled as the one logical name <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> actually sees.</li>
-<li>Table of contents sidebar: dragging a chapter/section entry to reorder it (GH #1524) now actually works &ndash; it was wired up (drag image, scroll-while- dragging, the reordered-preview rendering) but never functional, since three separate bugs each broke it in a different way:<ul>
-<li><code>Worksheet::TOCdnd()</code>, which performs the actual reorder, required a worksheet selection to already exist before doing anything &ndash; but nothing sets one up before this function itself builds one from the dragged cell a few lines later. In ordinary use (no unrelated selection active when a TOC drag starts) this made every drop a silent no-op.</li>
-<li>Dropping at or near the end of the list snapped back to a position near the drag's own start instead of the end, because the "clamp an
-    out-of-range drop position" logic in both <code>OnMouseMotion()</code> and <code>OnMouseUp()</code> clamped to the wrong value.</li>
-<li>Dragging a heading that has its own sub-heading (e.g. a section with a subsection) could silently strip the sub-heading (and its content) back off during the move, landing it elsewhere in the document instead of following its parent: the selection-extension logic compared each next cell's rank against whatever cell the selection currently ended on rather than against the originally-dragged heading's rank, so once the selection had absorbed the dragged heading's own plain-content cell, a sub-heading right after it was compared against that content cell instead and always judged "not part of this chapter". Verified end-to-end in a live session: dragging a section with a nested subsection and its own content cells to a new position now moves the whole chapter together, with correct renumbering and a table of contents that stays in sync with the document afterwards.</li>
-</ul>
-</li>
-<li>Fixed two 32-bit-only bugs (GH #2208), found because CI never actually ran the test suite on a 32-bit build &ndash; it only compiled it:<ul>
-<li><code><a class="el" href="classCellPtr.html" title="A weak non-owning pointer that becomes null whenever the observed object is destroyed.">CellPtr</a></code>'s ordering comparison (<code>cmpObjects()</code>, backing <code>operator&lt;</code>) subtracted two unrelated <code>Observed*</code> pointers directly. That is undefined behavior, and in practice, on a 32-bit address space, it could silently overflow and produce the wrong sign (a null pointer no longer compared as less than a real one) &ndash; a 64-bit build's much sparser address space essentially never triggers it. Fixed by comparing the addresses as unsigned integers instead, which is well-defined on any architecture. Verified against the exact addresses from the bug report, and by cross-compiling and running the real <code>test_CellPtr</code> unit test as an i386 binary.</li>
-<li><code><a class="el" href="classEditorCell.html#aca3068e7b6ecd6db4cbfb168cf070b09" title="Finds the next occurrences of a string.">EditorCell::FindNext()</a></code> (worksheet search) and its Tab-key indent handler both stored a <code>wxString::find()</code>/<code>rfind()</code> result &ndash; <code>size_t</code>, whose "not found" value is <code>wxString::npos</code> &ndash; into a signed 64-bit variable and compared it against <code>wxNOT_FOUND</code> (<code>-1</code>). On a 64-bit build <code>size_t</code> is also 64 bits wide, so <code>npos</code>'s bit pattern reinterprets as <code>-1</code> and the comparison happens to work; on a 32-bit build <code>size_t</code> is 32 bits, so <code>npos</code> zero-extends into a large positive number instead, making every failed search look like a match at a huge offset &ndash; corrupting the worksheet's search/selection state. Fixed by keeping both in <code>size_t</code>/<code>wxString::npos</code> terms throughout. Found by running the real <code>test_WorksheetFind</code> unit test as an i386 binary. CI now also actually runs the unit test suite (<code>ctest -L unittest</code>) on the 32-bit build, under a virtual X server, which previously only compiled the tests and never ran any of them &ndash; the gap that let both of these bugs go undetected until a Debian rebuild caught them.</li>
-</ul>
-</li>
-<li>Release automation (GH #1192): tagged releases now also attach a <code>.tar.xz</code> source archive plus a <code>.sha256</code> checksum file, built with <code>git archive</code> from the tagged commit rather than reusing GitHub's own auto-generated (and not guaranteed byte-stable over time) "Source code" archives. <code>xz</code> compresses noticeably tighter than the <code>.tar.gz</code>/<code>.zip</code> GitHub already provides automatically (~59% smaller for the current tree) &ndash; real bandwidth savings for distro packagers who mirror/rebuild from upstream source tarballs at scale.</li>
-<li>Snap: opening the local manual (Help &gt; <a class="el" href="classwxMaxima.html">wxMaxima</a> help, F1, ...) with "use
-  external browser" selected in Options no longer silently fails under strict confinement. The portal-routed external browser may itself be a strictly confined snap (Firefox/Chromium are commonly installed that way by default) and cannot see another snap's private files at all, so it could never actually open the <code><a href="file://">file://</a></code> URI it was handed. The local manual now always uses the internal help pane (which reads the file in-process, unaffected by confinement) when running inside a snap, regardless of the external-browser preference; external <code>http(s)://</code> links (website, online manual) are unaffected either way, since fetching those never depended on filesystem access across the confinement boundary.</li>
-<li>Snap packaging: the snap stages gnuplot via the <code>maxima</code> snap so plotting works under strict confinement, which means it distributes gnuplot's own binary rather than merely recommending a separately-installed one. gnuplot's license notice now travels with any build configured with <code>-DWXM_BUNDLES_GNUPLOT=ON</code> (currently just the snap), appended to <code>THIRD-PARTY-NOTICES.txt</code> (see <code>THIRD-PARTY-NOTICES-Gnuplot.txt</code>) and therefore reachable from the app's own Help &gt; License dialog. Regular builds, which only recommend a system gnuplot, are unaffected.</li>
-<li><code><a class="el" href="classEvaluationQueue.html" title="A simple FIFO queue with manual removal of elements.">EvaluationQueue</a></code> now catches (in <code>--batch</code> mode) rather than silently proceeding on the failure mode behind GH #2196: a cell's text at the moment it becomes the queue's current cell no longer necessarily matching what was captured when the cell was queued &ndash; the observed signature of a statement (e.g. the <code>assume(...)</code> in the original report) never reaching <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> at all. The exact mechanism is still unknown, so this can't fix the underlying bug, but it makes its effect loud instead of silent: a mismatch now halts the batch run with a clear error naming both texts, the same way an unmatched-parenthesis refusal already does, instead of quietly sending (or skipping) the wrong thing. Not checked in interactive use, where a cell's text can legitimately differ from what was queued if the user edited it before its turn came up.</li>
-<li>Batch mode (GH #2178): a failed image load is no longer silent. If an image's raw data could never be obtained at all (missing file, empty wxmx entry, ...) <code>--batch</code>/<code>--exit-on-error</code> now exits with an error, since there was nothing to even attempt rendering. <a class="el" href="classA.html">A</a> registered decoder failing to render bytes it did receive additionally fails the batch run under <code>--debug</code> (plain <code>--batch</code>'s contract is "evaluate correctly", not "render
-  correctly"); a wxWidgets build simply lacking a codec for one format (e.g. no WebP/TIFF support compiled in) is never treated as a failure either way. Also fixed two related silent gaps found while implementing this: a zero-byte image (no data at all) and a failed SVG parse previously left the image looking like a normal 640x480 blank instead of showing the "could not
-  be rendered" placeholder. Regenerated <code>test/image-test/image-test.wxmx</code>, whose <code>Maxima.svg</code>/<code>Maxima.svgz</code>-derived entries had been silently saved as empty (0-byte) images by an old <a class="el" href="classwxMaxima.html">wxMaxima</a> version &ndash; invisible until this change started checking for it.</li>
-<li><a class="el" href="classTest.html" title="A template class.">Test</a> fixtures: removed the recorded auto-answer PR #2195 added for <code>tutorial_10Minutes</code>'s <code>assume(a &gt; 0)$ integrate(...); forget(a &gt; 0)$</code> cell. That auto-answer stopped the test from flaking, but it also silently swallows the actual symptom of the still-open bug GH #2196 (the cell's <code>assume(a &gt; 0)$</code> statement occasionally never reaches <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> at all) &ndash; with the recorded answer in place, a drop just gets auto-answered instead of halting the batch run, so this test could no longer detect it. Removing it restores <code>tutorial_10Minutes</code> as a working (if occasionally flaky) canary for GH #2196, alongside the deterministic <code>commandSequenceIntegrity</code> regression test. The other question/answer pair earlier in the same file (the tutorial's own intentional demonstration of the interactive-question feature) is unrelated and untouched.</li>
-<li>Translations: added a reverse sync (<code>locales/wxMaxima/split_manual_po.cmake</code>, wired into <code>update-locale-manual-in-source</code>) that pulls a language's manual-content translations back out of the combined <code>locales/wxMaxima/&lt;lang&gt;.po</code> &ndash; the file Crowdin actually writes to &ndash; into <code>locales/manual/&lt;lang&gt;.po</code>, so translations contributed through Crowdin for the manual's own strings reach <code>info/wxmaxima.&lt;lang&gt;.md</code> instead of sitting unused in the combined file.</li>
-<li>Translations: seeded manual-translation infrastructure (<code>locales/manual/&lt;lang&gt;.po</code>) for the 15 languages that had UI translation but no manual translation at all (ar, ca, cs, da, el, fi, gl, he, hu, ja, kab, nb, pl, pt_BR, zh_TW); <code>info/CMakeLists.txt</code> now falls back to the English manual for a language below po4a's translated-content threshold, instead of hard-failing <code>cmake</code> configure for anyone with po4a and pandoc installed.</li>
-<li>Translations: seeded fresh, untranslated <code>locales/wxMaxima/&lt;lang&gt;.po</code> for every language wxWidgets itself ships stock UI translations for that <a class="el" href="classwxMaxima.html">wxMaxima</a> didn't have yet (af, an, co, eu, fa, hi, hr, id, ka, ko, lt, lv, ms, ne, nl, pt, ro, sk, sl, sq, sr, sv, ta, vi), and added the corresponding entries to the language-selection dialog (<code>ConfigDialogue.cpp</code>) for the ones with a <code>wxLANGUAGE_*</code> constant available (all but Aragonese, which wxWidgets 3.2 has no enum value for).</li>
-<li>New regression test <code>commandSequenceIntegrity</code> (GH #2196): a confirmed but not yet root-caused bug lets the first statement of a multi-statement cell be silently dropped and never sent to <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> at all during <code>--batch</code> evaluation, with no error and no visible symptom unless something later happens to depend on it. This test maximizes the number of independent cell-to-cell transitions (the exact boundary where the drop was observed) in a single run &ndash; 150 small cells, each appending a unique sequential tag to a shared list &ndash; and asserts via a real <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> <code>error()</code> that every statement actually ran, turning a currently invisible class of bug into a reproducible CI failure instead of a silently wrong answer.</li>
-<li><a class="el" href="classTest.html" title="A template class.">Test</a> fixtures: <code>test/automatic_test_files/10MinuteTutorial.wxm</code>'s <code>assume(a &gt; 0)$ integrate(1/(x^2+a),x); forget(a &gt; 0)$</code> cell now has a recorded auto-answer for the "Is a positive or negative?" question, fixing an intermittent <code>tutorial_10Minutes</code> CI failure: despite the preceding <code>assume(a &gt; 0)</code>, <code>integrate()</code>'s internal algorithm occasionally still asks the question interactively on some runs (reproduced locally at roughly a 1-in-20 to 1-in-30 rate) &ndash; this cell simply never had a recorded answer for that rare case, since its whole point is to demonstrate that <code>assume()</code> normally makes the question unnecessary.</li>
-<li>Fixed the LaTeX export of an integral's differential ("dx", "d\theta", ...): it now renders upright (<code>\mathrm{d}</code>) instead of in math mode's default italic (#972).</li>
-<li>Fixed a build failure on GCC 11 (Ubuntu 22.04) and Cygwin: <code><a class="el" href="CellIterators_8h.html" title="Declares the various iterators useful with the Cell class.">src/cells/CellIterators.h</a></code> used <code>std::vector</code> without including <code>&lt;vector&gt;</code>, which happened to work only where some other header transitively pulled it in first &ndash; not the case for every toolchain/include order (introduced by the <code>m_nextToDraw</code> removal below).</li>
-<li>Added "Anonymize Code for Bug Report" to the Help menu (#1339): replaces every non-builtin variable and function name in the selected code cells (or, after confirmation, the whole document) with a random name, consistently across all occurrences and all selected cells, so a worksheet can be shared in a bug report without revealing the original names. <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> builtins and the tokenizer's own syntax keywords (<code>for</code>/<code>then</code>/<code>do</code>/...) are left alone, and the whole operation is a single undo step.</li>
-<li>Reduced the memory footprint of every cell on the worksheet by removing <code>m_nextToDraw</code>, a per-cell pointer used only by fractions, parentheses and similar 2D-capable cells when line-wrapped; the same information is now computed on demand instead of stored on every cell (closes #1445).</li>
-<li>Fixed a critical bug in the translation merge above: <code>po4a</code> treats the <code>.po</code> file it is pointed at as its own and rewrites it wholesale on every run, so pointing it directly at the combined <code>locales/wxMaxima/&lt;lang&gt;.po</code> (as the merge originally did) silently deleted every UI translation the first time <code>make update-locale-manual-in-source</code> ran with a real <code>po4a</code> &gt;= 0.70 (a language with 1000+ translated UI strings dropped to just its ~69 manual translations). <code>po4a</code> now keeps writing its own <code>locales/manual/&lt;lang&gt;.po</code> as before, and a new <code>merge_manual_po.cmake</code> step folds that into <code>locales/wxMaxima/&lt;lang&gt;.po</code> before <code>msgmerge</code> runs, so translators still only need to look in one file.</li>
-<li>Fixed translated manual headings, lists and code blocks sometimes wrapping incorrectly or losing their Markdown formatting after <code>po4a</code> translation (#2047): <code>po4a</code>'s <code>[type: text]</code> mode needs <code>-o markdown</code> passed explicitly to recognize Markdown structure &ndash; its own default for that option does not take effect through this invocation path. Existing translations of an affected heading/list/code block are marked fuzzy (their translated text is preserved in the <code>.po</code> file, but a fuzzy entry isn't used in the generated manual until a translator re-confirms it, since the old translation's exact wording no longer matches how <code>po4a</code> now segments that text) rather than lost outright.</li>
-<li>Translations: the manual's per-language translations now live merged into <code>locales/wxMaxima/*.po</code>, alongside <a class="el" href="classwxMaxima.html">wxMaxima</a>'s own UI strings, instead of a separate <code>locales/manual/*.po</code> per language &ndash; so translating both only needs one file per language. <code>wxMaxima.pot</code> (the template <code>msgmerge</code> and Crowdin work against) is now the union of a fresh scan of the C++ source and the manual's own template (<code>locales/manual/wxmaxima.md.pot</code>, kept current by <code>po4a</code>), combined via <code>msgcat --use-first</code> so future <code>make update-locale</code> runs keep staying merged instead of re-diverging. No existing translation was lost: German/Spanish/French/Italian/Russian/ Turkish/Ukrainian/Chinese (Simplified), the eight languages that had a separate manual translation, keep every one of those translated strings, now inside their <code>locales/wxMaxima/*.po</code> file.</li>
-<li><a class="el" href="classwxMaxima.html">wxMaxima</a> now tells <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s ASCII-art 2D/1D printer (<code>set_display('ascii)</code> and <code>set_display('none)</code>) how wide the worksheet actually is: <code>$linel</code> is set, right before every command, to the number of columns of the worksheet's monospace ASCII-math font that currently fit into the window (<code><a class="el" href="classConfiguration.html#a10787a27dea1d6a386eebdc6d9db23a2" title="How many columns of the ASCII-art monospace font (TS_ASCIIMATHS) fit into GetLineWidth()?...">Configuration::GetAsciiArtColumns()</a></code>), instead of <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s fixed factory default of 79. Wide fractions/matrices/etc. now wrap where they actually need to on the current window size and font, rather than <a class="el" href="classwxMaxima.html">wxMaxima</a> having to widen the cell (and add a horizontal scrollbar) to show output <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> wrapped for a different width &ndash; or not wrapping it widely enough (#1608).</li>
-<li>Fixed misaligned ASCII-art 2<a class="el" href="classD.html">D</a> math (<code>set_display('ascii)</code>): the top/bottom lines of a fraction, matrix, etc. are padded by <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> on the assumption that every line &ndash; including the <code>(oN)</code> label line &ndash; renders in the same monospace font. <a class="el" href="classwxMaxima.html">wxMaxima</a> used to guess which lines belonged to the same block from their <em>content</em> alone (whether a chunk of already-batched socket data happened to start with <code>(%</code>), and since that batching is timing-dependent rather than tied to <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s actual output boundaries, the label line could land in a separate read from its neighbors and get misclassified into a different, proportional font &ndash; breaking the visual alignment even though <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s own whitespace padding was correct. <code>wxMathML.lisp</code> now wraps each complete ASCII-art block in explicit <code>&lt;wxxml-asciimath&gt;</code>/<code>&lt;/wxxml-asciimath&gt;</code> markers (reusing <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s own stock ASCII printer via a <code>*alt-display2d*</code> hook, not reimplementing it), so <a class="el" href="classwxMaxima.html">wxMaxima</a> always renders a whole block in one uniform monospace style instead of guessing per chunk.</li>
-<li><code>--batch</code>/<code>--exit-on-error</code> now actually halts when <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> asks an interactive question it cannot auto-answer, instead of hanging forever: the process logs the question and exits with an error status, matching what <code>--batch --help</code> already promised ("Halts on questions"). This was the root cause of the intermittent CI timeouts on <code>openMacFiles</code>, <code>tutorial_10Minutes</code>, <code>rememberingAnswers</code> and <code>testbench_simple.wxmx</code> - confirmed with a live debugger, the evaluation queue was advancing correctly and simply waiting on an answer nobody could provide.</li>
-<li><a class="el" href="classTest.html" title="A template class.">Test</a> fixtures: <code>test/testbench_simple.wxm</code>'s "Cell height calculations" cell and <code>test/testbench_simple.wxmx</code>'s <code>abs(x(1))</code> cell now have a recorded auto-answer for interactive questions <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> 5.46.0 asks that neither cell was previously annotated for, so <code>openMacFiles</code> and <code>testbench_simple.wxmx</code> complete instead of hitting the new &ndash;batch halt above. Confirmed along the way: the "Enter space-separated numbers,
-  ``all' or `none':`" prompt reads a raw line, not a <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> expression, so an answer ending in <code>;</code> is invalid input <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> will wait on indefinitely &ndash; the new cell's recorded answer uses plain <code>none</code> instead.</li>
-<li><code>--exit-on-error</code> no longer goes permanently toothless partway through a worksheet that legitimately empties its evaluation queue more than once in a single batch run (e.g. one using auto-answered questions, where each answered question empties the queue before the next cell refills it): the per-worksheet arming flag was previously disarmed on the first such transient emptying rather than at actual batch completion, so a real <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> error arriving afterwards silently dropped the session out of batch mode instead of exiting, leaving it to idle forever with nobody left to interact with it - confirmed live in gdb as the cause of the <code>rememberingAnswers</code> test's intermittent CI timeout.</li>
-<li>Fixed a startup-timing race that could silently discard queued cells during batch evaluation, most visibly as <code>automatic_test_files/lisp_mode.wxm</code> intermittently failing or hanging in CI: on connect, <a class="el" href="classwxMaxima.html">wxMaxima</a> sends its <code>wxdirs@userconfdir</code>/<code>datadir</code>/<code>helpdir</code>/... struct-field setup bundled ahead of the worksheet's first real command. Those field assignments are genuine <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> statements (needed for <code>defstruct</code>/<code>@</code> struct-field syntax), so <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> answered each with its own extra <code>(iN)</code> prompt - and the evaluation queue, which has no way to tell a config-command prompt from a real one, advanced (and thereby silently dropped) one queued cell for every such extra prompt. Confirmed live with <code>tcpdump</code> on the raw <a class="el" href="classwxMaxima.html">wxMaxima</a>&lt;-&gt;<a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> socket: the evaluation queue's cell count could drop from 21 to 0 in one shot, with no further command ever having been sent. Fixed by evaluating the whole <code>wxdirs</code> setup from Lisp via <code>mread</code>/<code>meval</code> inside a <code>:lisp-quiet</code> form, like the rest of the startup configuration, so it no longer produces a prompt of its own.</li>
-<li>The worksheet's editor now supports real tab characters: a &lsquo;&rsquo;\t'` typed, pasted, or loaded from a file stays a real character instead of being silently and irreversibly rewritten into 1-4 spaces, and is expanded to the next 4-column tab stop only where it is drawn or measured. The Tab key (with no selection) inserts a real tab; selecting one or more lines and pressing Tab/Shift+Tab indents/dedents them with a real tab per level (dedent still falls back to removing up to 4 leading spaces on already space-indented text). One consequence: opening a plain <code>.mac</code> file that uses tabs for alignment and saving it again now reproduces those tabs byte-for-byte, instead of turning them into spaces.</li>
-<li>Build system: fixed the ~90 <code>-Wdeprecated-enum-enum-conversion</code> warnings the Ubuntu 22.04 CI build produced from <code>wxDirection</code>/<code>wxAlignment</code>/ <code>wxStretch</code> sizer flags being OR'd together directly (e.g. <code>wxALIGN_CENTER_VERTICAL | wxALL</code>) - harmless, but real, deprecated-in-C++20 behavior; also fixed a genuinely unused function that only compiled in for wxWidgets &lt; 3.1.6, and worked around a GCC &lt; 12 bug that misreports <code>[[maybe_unused]]</code> on class data members as an ignored attribute.</li>
-<li>Build system: a <code>po4a</code> older than 0.70 (e.g. Ubuntu 24.04's own package, version 0.69) is now detected and not used, with a CMake warning explaining why, instead of risking it: <code>po4a</code> before 0.70 parsed text encodings loosely, which can silently corrupt non-ASCII translated text - reproduced directly, turning a German manual paragraph into English with mangled UTF-8, with no error or warning of po4a's own. Nothing else about building or running <a class="el" href="classwxMaxima.html">wxMaxima</a> needs <code>po4a</code> at all; only regenerating the manual's translations from a source-text change does.</li>
-<li>The temporary file created while rendering the SVG (or EMF) representation of a selection for the clipboard now lives in a private, mode-0700 subdirectory of the user's own configuration directory instead of the shared system temp directory, so another unprivileged user on the same machine cannot plant a symlink under the name it happens to get. wxWidgets' SVG/EMF renderers only know how to write to a real path, so the file itself couldn't be avoided; where it lives could be.</li>
-<li>New <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> variable <code>wxdirs</code>, a struct holding the paths <a class="el" href="classwxMaxima.html">wxMaxima</a> itself uses (<code>wxdirs@userconfdir</code>, <code>wxdirs@datadir</code>, <code>wxdirs@helpdir</code>, <code>wxdirs@localedir</code>, <code>wxdirs@maximalocation</code>). These differ by maintainer, distribution and OS (see <code><a class="el" href="classDirstructure.html" title="An object that represents the directory structure wxMaxima is installed in.">Dirstructure</a></code>'s own doc comment), so a <code>.mac</code> file that wants e.g. the user's configuration directory now has a way to ask for it instead of guessing or searching the filesystem.</li>
-<li>The caret, mouse clicks, arrow-key movement and selection highlighting (including the "text that coincides with the selection" marker and the diff viewer) are now all correctly placed on a line that mixes left-to-right and right-to-left text - e.g. a Farsi word next to a German one. This uses libfribidi, an optional dependency (<code>WXM_USE_FRIBIDI</code>, on by default when found): without it, mixed-direction lines keep the previous single-direction-only approximation.</li>
-<li>Fixed: clicking inside right-to-left text (Hebrew, Arabic, Farsi, Urdu) placed the caret at the mirror image of the character actually clicked on - the first letter's position resolved to the last, and the other way round. This was independent of the mixed-direction work above: it also affected a line that was wholly one direction.</li>
-<li>THIRD-PARTY-NOTICES.txt (shown in the "License" tab) now also credits wxWidgets and the bundled NanoSVG, which had been missing.</li>
-<li><a class="el" href="classwxMaxima.html">wxMaxima</a>'s translations can now also be contributed online via <a href="https://crowdin.com/project/wxmaxima-gui">https://crowdin.com/project/wxmaxima-gui</a>, in addition to editing the <code>.po</code> files in <code>locales/</code> directly.</li>
-<li>The "Revert to defaults" tab of the configuration dialogue is scrollable again, like every other tab. It had been left as a plain, non-scrolling panel, so on a screen too short to show it in full there was no way to reach the buttons below the fold.</li>
-<li>The LaTeX export can carry the worksheet inside the PDF. With "Export
-  contains the .wxmx file" set &ndash; the same preference the HTML export already used to offer the session as a download &ndash; the exported document embeds the .wxmx as a file attachment, so the PDF and the session that produced it cannot become separated. <code>wxworksheettotex("f.tex", wxmx=true)</code> does the same from within <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>, matching <code>wxworksheettohtml</code>.</li>
-<li>Hebrew and Arabic can now be chosen as the interface language. Both are only seeded, not translated: they cover the thirty menu and dialog words that mean the same in every desktop application and leave the rest in English. What they do give is a way to run <a class="el" href="classwxMaxima.html">wxMaxima</a> right-to-left without changing the system locale, and a starting point for anyone who wants to take one of these languages on &ndash; the entries were not written or reviewed by a speaker, and are meant to be overwritten.</li>
-<li>In a right-to-left user interface language (Hebrew, Arabic, Farsi, Urdu) the text of comment, title and section cells is now set flush right instead of flush left, and the caret and mouse follow it. The furniture of the page follows: labels such as <code>(i1)</code> and <code>(o1)</code>, a section's number, the cell bracket and its fold button all move to the right-hand side, results are set against the right edge of the page, and the text starts at the left edge instead. Input cells keep their left margin and equations are not mirrored: those read left to right in every script, even where a variable's own name does not. Inside right-to-left text the caret is drawn where that text actually is &ndash; it used to be placed at the mirror image of its position, so putting the cursor in front of a Hebrew word showed it at the word's far end &ndash; and the arrow keys move it the way it is drawn rather than the way the text is stored, and selecting inside it highlights the characters that are selected rather than the ones after them. Which way the document reads follows the interface language; there is not yet a right-to-left translation of <a class="el" href="classwxMaxima.html">wxMaxima</a> itself, so setting the language is currently the way to see this.</li>
-<li>LaTeX export: 2-<a class="el" href="classD.html">D</a> ASCII-art maths &ndash; what <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> prints when it isn't asked for XML, for example from the Lisp side &ndash; is exported as a verbatim block instead of being pushed through the math renderer. Its meaning is carried entirely by the column alignment (fraction bars drawn out of hyphens, exponents parked above their base), and math mode collapsed the spaces and dropped the line breaks, so the art arrived as an unreadable single line. The label in front of such a block is now written as coloured text, too, instead of as the number of an otherwise empty equation.</li>
-<li>LaTeX export: animations (slide shows) are exported again. Each frame is written as an image and embedded with the <code>animate</code> package's <code>\animategraphics</code>, which plays the animation in PDF viewers that support it and shows the first frame in the others. The export previously left only an "[animated graphics - not shown in TeX export]" placeholder.</li>
-<li>New <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> command <code>wxworksheettotex("file.tex")</code> exports the current worksheet to LaTeX from within a <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> session, the companion of <code>wxworksheettohtml()</code>. Keyword options <code>documentclass=...</code> and <code>documentclassoptions=...</code> override the LaTeX document class for that export.</li>
-<li>LaTeX export: on the Unicode engines (XeLaTeX/LuaLaTeX) the exported document now loads <code>unicode-math</code>, so a Unicode symbol <a class="el" href="classwxMaxima.html">wxMaxima</a> has no explicit LaTeX translation for is typeset directly from the character instead of vanishing or breaking the build. <a class="el" href="classA.html">A</a> few common symbols that were missing from the translation table (nabla, approx, equiv) render under pdfTeX too now.</li>
-<li>LaTeX export: non-math output (<a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> messages, warnings and errors) is now written as LaTeX text instead of being forced through the math renderer, and a backslash in such output no longer produces broken LaTeX &ndash; the <code>\ensuremath{}</code> that wraps it was itself being brace-escaped into invalid markup. (Strings were already exported as text.)</li>
-<li>New <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> command <code>wxworksheettohtml("file.html")</code> exports the current worksheet to HTML from within a <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> session (for scripted/batch export). Keyword options choose the flavour: <code>flavor="mathml"</code> (default, self-contained native MathML), <code>"mathjax"</code>, <code>"svg"</code> or <code>"bitmap"</code>, and <code>wxmx=true</code> embeds a downloadable copy of the session. (<code>wxworksheettotex</code>/<code>...topdf</code> are planned and will share the same mechanism.)</li>
-<li>New right-click items "Export output as SVG to a folder..." and "...as PNG
-  to a folder...": for the selected cell(s) they write one image file per output into a directory you choose, named after the output label (e.g. <code>o12.svg</code>). Previously the only way to harvest the rendered equation images was to run a full HTML export and dig the pictures out of its <code>_htmlimg/</code> folder.</li>
-<li>HTML export: non-math output (<a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> messages, warnings, errors and plain strings) is now written as ordinary, HTML-escaped text instead of being rendered to a PNG/SVG image or wrapped in a <code>&lt;math&gt;</code> element. Previously a plain sentence could end up as a picture of text or as a run of MathML operators that browsers rendered oddly; it now reads as text in every export flavour and stays selectable and searchable.</li>
-<li>"Copy as MathML" is no longer offered (in the context menu or the Edit menu) for a selection that contains no maths &ndash; plain text, comments, labels or strings. Copying those produced MathML that only wrapped the text in operator elements, which word processors rendered oddly.</li>
-<li>Bitmap rendering of equations no longer clips them to a corner of the image. Anything rendered at a "Bitmap scale" other than 1 &ndash; the HTML export's bitmap equation flavor and the optional "Bitmap" clipboard format both use the default scale of 3 &ndash; was magnified once too often, so only the upper-left third of each equation (or nothing at all) fit on the canvas. The explicit "Copy as Bitmap" command was unaffected, as it always renders at scale 1.</li>
-<li>Windows: the installer/ZIP now bundles the MinGW C++ runtime DLLs (libstdc++-6, libgcc_s_seh-1, libwinpthread-1) that wxmaxima.exe needs to start. They were relied on being pulled in automatically, which was unreliable, so on some machines <a class="el" href="classwxMaxima.html">wxMaxima</a> failed to launch with a missing-DLL error. CI now also checks the package actually contains them.</li>
-<li>HTML export now defaults to native MathML. Every current browser renders MathML itself, so the exported page needs no JavaScript and, unlike before, makes no requests to any external server &ndash; removing both a privacy/security dependency and the wait for a download. MathJaX is now offered only as an optional fall-back ("MathML + MathJaX fall-back for old browsers"), which downloads MathJaX from its CDN solely on browsers too old to support MathML.</li>
-<li>HTML export: the separate "TeX, interpreted by MathJaX" option was removed; existing configurations that used it fall back to the new MathML default. (LaTeX export to a .tex file is unaffected.)</li>
-<li>HTML export: equation labels (like <code>(o1)</code>) and line-wrapped equations now show up in browsers that render MathML natively. They previously relied on <code>&lt;mlabeledtr&gt;</code>/<code>mtable side</code>, which the MathML Core standard (implemented by Chrome and Safari) dropped; labels are now placed beside the equation as HTML and the equation layout uses plain MathML-Core table rows.</li>
-<li>HTML export: when the MathJaX fall-back is used it is now MathJaX version 4, configured through the current API so the equation-alignment settings apply.</li>
-<li>Windows: the <a class="el" href="classwxMaxima.html">wxMaxima</a> window and taskbar button again show the <a class="el" href="classwxMaxima.html">wxMaxima</a> logo instead of the generic wxWidgets "W" icon. The window icon now also falls back to the logo compiled into the binary, so it no longer depends solely on the .ico resource being the one Windows selects.</li>
-</ul>
-<h1><a class="anchor" id="autotoc_md971"></a>
+<h1><a class="anchor" id="autotoc_md880"></a>
 26.07.1</h1>
 <p>This release contains an unusually large batch of improvements &ndash; many of them developed with substantial help from the AI assistants <b>Claude</b> and <b>Fable</b>: dark mode for the whole Windows user interface, native Windows-on-Arm builds, numerous speedups, and a large number of bug and stability fixes.</p>
 <ul>
@@ -249,7 +183,7 @@ $(function() {
 <li>Snap package: opening a link in the system web browser (the manual, "visit website", <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s online documentation) now works. The confined snap reaches the host's default browser through the XDG Desktop Portal instead of trying to launch a browser that is not visible inside the sandbox &ndash; no browser is bundled and confinement stays strict.</li>
 <li>Find: a match found inside a cell's output now scrolls to the matching part of the output, even in a long output cell. Previously the view only scrolled to the top of the output because the matched item &ndash; if it had not been drawn yet &ndash; had no on-screen position, so the scroll fell back to the start of the output.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md972"></a>
+<h1><a class="anchor" id="autotoc_md881"></a>
 26.07.0</h1>
 <ul>
 <li>Fixed a crash on loading a worksheet containing an empty <code>&lt;img/&gt;</code> or <code>&lt;slideshow/&gt;</code> tag (found by the parser fuzzer).</li>
@@ -271,7 +205,7 @@ $(function() {
 <li><a class="el" href="classA.html">A</a> correctness review for all wizards.</li>
 <li>EditorCells again grow and shrink when the user adds and removes lines</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md973"></a>
+<h1><a class="anchor" id="autotoc_md882"></a>
 26.06.2</h1>
 <ul>
 <li><a class="el" href="classA.html">A</a> whole AI-driven safety review</li>
@@ -293,7 +227,7 @@ $(function() {
 <li>Better undo handling.</li>
 <li>Another try to make accessibility work.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md974"></a>
+<h1><a class="anchor" id="autotoc_md883"></a>
 26.06.1</h1>
 <ul>
 <li>Fix the Ctrl+F keyboard focus on MS Windows to correctly focus the find dialogue instead of leaving it on the worksheet.</li>
@@ -306,7 +240,7 @@ $(function() {
 <li>Fix scroll position tracking: call ScrolledAwayFromEvaluation(true) when the user manually scrolls so that the active cell is completely outside the visible portion of the worksheet.</li>
 <li>Fix inserting a new cell (via hCaret) on large worksheets causing the scroll range to shrink to the first screen and the view to jump to the top.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md975"></a>
+<h1><a class="anchor" id="autotoc_md884"></a>
 26.06.0</h1>
 <ul>
 <li>Optimize drawing during mouse moves (bracket autohide): redraw only the actual height of the cell, rather than drawing all the way to the absolute bottom coordinate.</li>
@@ -352,7 +286,7 @@ $(function() {
 <li>Files opened by double-clicking now have a consistent layout</li>
 <li>Added automatic tests and repaired others.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md976"></a>
+<h1><a class="anchor" id="autotoc_md885"></a>
 26.05.0</h1>
 <ul>
 <li>Fix search and replace. Before in a longer string - e.g. "aaaaaaaaa" only every second occurrence was replaced, when (e.g.) one wanted to replace "a" by "b".</li>
@@ -383,7 +317,7 @@ $(function() {
 <li>Fix inconsistent behavior in the list menu (mentioned in the discussion forum)</li>
 <li>Make toolbar icons HDPI (#2074).</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md977"></a>
+<h1><a class="anchor" id="autotoc_md886"></a>
 26.01.0</h1>
 <ul>
 <li>Keep the wxm/mac difference when saving wxm/exporting mac. This omits unneeded comments (/* [<a class="el" href="classwxMaxima.html">wxMaxima</a>: input start ] */ (and input end) in a mac file (structural comments (section, ...) are still saved) and especially omits question/answer comments - they are unreadable by <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> (see #2014, not only wxm files but also mac files were problematic). At least the issue with mac files is solved.</li>
@@ -406,7 +340,7 @@ $(function() {
 <li><a class="el" href="classA.html">A</a> more consistent worksheet zoom feature.</li>
 <li><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s state should now be displayed in the windows task bar.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md978"></a>
+<h1><a class="anchor" id="autotoc_md887"></a>
 25.04.0</h1>
 <ul>
 <li>Use the (standard) wxWidgets log window instead of our own log pane. Less code to maintain, more features (e.g. clear log, save log). In "Release" builds the log window will be hidden (and can be enabled using View-&gt;Toggle log window, otherwise it is shown.</li>
@@ -421,7 +355,7 @@ $(function() {
 - Fix compiling with wxWidgets without webview.
 - HTML export/Mathjax: Don't remove 1st/last label char (#2003)
 
-@section autotoc_md979 25.01.0
+@section autotoc_md888 25.01.0
 
 - Remove the change label width popup menu (#1964).
   It was not working at all and caused crashes. And I think the
@@ -436,7 +370,7 @@ $(function() {
 - Fix the (Windows) crash in the suggestions menu (#1980).
 - HTML export: print the output labels on the left side.
 
-@section autotoc_md980 24.11.0
+@section autotoc_md889 24.11.0
 
 - A Spanish translation update by cyphra.
 - Resolved a crash when inverting the worksheet (#1951)
@@ -451,7 +385,7 @@ $(function() {
 - Allow Maxima strings with newlines. (#76)
 - Support Maxima which uses ABCL.
 
-@section autotoc_md981 24.08.0
+@section autotoc_md890 24.08.0
 
 - An advanced plotting tutorial
 - Try harder to kill maxima on closing it
@@ -478,7 +412,7 @@ $(function() {
 - On MS Windows one can now choose between Gnuplot and wGnuplot (#1934)
 - Fixed the error message about dual manifest files on MSVC
 
-@section autotoc_md982 24.05.0
+@section autotoc_md891 24.05.0
 
 - Faster discarding of maths that is too long to read
 - Resolved a crash on closing the last window (#1898)
@@ -512,13 +446,13 @@ $(function() {
 - On MSW wxWidgets &gt;=3.2 now is mandatory for getting high-DPI support
 - A backward-search fix (#1913)
 
-@section autotoc_md983 24.02.2
+@section autotoc_md892 24.02.2
 
 - Set maxima's LANG variable, not wxMaxima's LANG (#1897)
 - Sped up the communication between maxima and wxMaxima
 - Sometimes newlines in misc text from maxima got lost (#1894)
 
-@section autotoc_md984 24.02.1
+@section autotoc_md893 24.02.1
 
 - wxMaxima now correctly installs its icons (#1892)
 - A race condition on closing Maxima
@@ -531,7 +465,7 @@ $(function() {
 - Ctrl+Alt+M now restarts maxima
 - Added a Maxima/Memory menu
 
-@section autotoc_md985 24.02.0
+@section autotoc_md894 24.02.0
 
 - Faster start-up
 - Better performance directly after startup
@@ -564,7 +498,7 @@ $(function() {
 - Fix crash when exporting a worksheet with animations to TeX
 - Resolved a crash on closing a window (#1889)
 
-@section autotoc_md986 23.12.0
+@section autotoc_md895 23.12.0
 
 - Input text selection was cleared when right-clicking
   on it (#1845)
@@ -583,7 +517,7 @@ $(function() {
 - Hidden cells weren't restored from wxm files (#1855)
 - diff() no longer causes spurious multiplication dots (#1825)
 
-@section autotoc_md987 23.11.0
+@section autotoc_md896 23.11.0
 
 - Correctly draw the bracket of the cell under the cursor (#1811)
 - Maths display was corrupted if the window was temporarily not wide
@@ -603,7 +537,7 @@ $(function() {
 - Resolved many warnings from several static analysis tools
 - Fine-tuning of the "undo" function
 
-@section autotoc_md988 23.10.0
+@section autotoc_md897 23.10.0
 
 - A big rewrite to make the static analysis tools happy
 - Many stability improvements
@@ -621,7 +555,7 @@ $(function() {
 - Better error messages for bitmaps
 - Many additional bug fixes
 
-@section autotoc_md989 23.08.0
+@section autotoc_md898 23.08.0
 
 - Better print scaling
 - More consistent page size handling for printing
@@ -629,7 +563,7 @@ $(function() {
 - Resolved many warnings from cppcheck
 - A RegEx search
 
-@section autotoc_md990 23.07.0
+@section autotoc_md899 23.07.0
 
 - Printing: Made the page margins configurable (#1787)
 - Printing: We no more print page headers (#1791)
@@ -644,7 +578,7 @@ $(function() {
 - The cursor no more disappears (#1788)
 - Updated italian translation
 
-@section autotoc_md991 23.05.1
+@section autotoc_md900 23.05.1
 
 - Updated the Russian and Italian translation.
 - Process the command line option &lt;tt&gt;--maxima=\&lt;str\&gt;&lt;/tt&gt;.
@@ -656,7 +590,7 @@ $(function() {
   window width changes
 - 2D display of integrals had zero size (#1780)
 
-@section autotoc_md992 23.05.0
+@section autotoc_md901 23.05.0
 
 - Got rid of some compiler and cppcheck warnings
 - Big performance improvements
@@ -675,7 +609,7 @@ $(function() {
   of the parent process
 - wxMaxima no more tries to install its own fonts.
 
-@section autotoc_md993 23.04.1
+@section autotoc_md902 23.04.1
 
 - More config dialogue tweaks
 - MacOs: No more create config icons that aren't needed
@@ -686,7 +620,7 @@ $(function() {
 - Be aware that the MSW port recycles unused window IDs.
 - The load() command now again works with symbols as package names.
 
-@section autotoc_md994 23.04.0
+@section autotoc_md903 23.04.0
 
 - Made the GUI more responsive for functions with much output
 - Handle errors in the XML from maxima more gracefully
@@ -700,7 +634,7 @@ $(function() {
 - Resolved several asserts
 - Resolved a few small bugs in the autosave logic
 
-@section autotoc_md995 23.03.0
+@section autotoc_md904 23.03.0
 
 - Make sure all bitmaps are valid on High-DPI MacOs (#1749)
 - More styles consistency (#1753)
@@ -713,7 +647,7 @@ $(function() {
 - Completely rewrote the dockable-sidebars-stuff
 - Many files are now build on demand, not at configure time
 
-@section autotoc_md996 23.02.0
+@section autotoc_md905 23.02.0
 
 - Fix XML generation of wxmx documents (#1556)
 - A faster font cache
@@ -724,7 +658,7 @@ $(function() {
 - A separate style for operators (#1002)
 - A nicer ChangeLog
 
-@section autotoc_md997 22.12.0
+@section autotoc_md906 22.12.0
 
 - A cleaner status bar with double-click actions
 - Better display of labels
@@ -739,11 +673,11 @@ $(function() {
 - Faster saving of .wxmx files
 - Better toolbar bitmap handling
 
-@section autotoc_md998 22.11.1
+@section autotoc_md907 22.11.1
 
 - Repaired zooming the worksheet
 
-@section autotoc_md999 22.11.0
+@section autotoc_md908 22.11.0
 
 - Resolved an ID collision (#1726)
 - Faster restart of maxima (#1715)
@@ -756,7 +690,7 @@ $(function() {
 - Many windows build improvements
 - Resolved a crash on restarting maxima
 
-@section autotoc_md1000 22.09.0
+@section autotoc_md909 22.09.0
 
 - Support for wxWidgets 3.1.7
 - The description field for wizards no more is a MouseOverToolTip
@@ -788,7 +722,7 @@ $(function() {
 - Better unicode handling (#1691)
 - Many additional bugfixes
 
-@section autotoc_md1001 22.05.0:
+@section autotoc_md910 22.05.0:
 
 - Updated the Ukrainian translation
 - Added &lt;tt&gt;guess_exact_value&lt;/tt&gt; to the numeric menu.
@@ -810,14 +744,14 @@ $(function() {
 - The Cygwin build works again
 - Support for wxWidgets 3.1.6
 
-@section autotoc_md1002 22.04.0:
+@section autotoc_md911 22.04.0:
 
 - A Russian translation update from Olesya Gerasimenko
 - Repaired drag-and-drop on MacOs (#1624)
 - Resolved a bug in parenthesis matching (#1649)
 - Faster startup logic
 
-@section autotoc_md1003 22.03.0:
+@section autotoc_md912 22.03.0:
 
 - Add an compile option "WXM_INCLUDE_FONTS", which allows to
   specify, if additional fonts should be included.
@@ -844,7 +778,7 @@ $(function() {
 - Merging cells per keyboard shortcut works again (#1626)
 - Symbols buttons whose symbols the GUI font lacks are now hidden
 
-@section autotoc_md1004 21.11.0:
+@section autotoc_md913 21.11.0:
 
 - Allow seeing all files in the file save dialog. (#1557)
 - Fix an error when using Alt up arrow (show previous command) (#1566)
@@ -862,15 +796,15 @@ $(function() {
 - Handle power events (#1607)
 - Fix ugly buttons in the sidebars with recent wxWidgets
 
-@section autotoc_md1005 21.05.2:
+@section autotoc_md914 21.05.2:
 
 - The integral signs disappeared or were misplaced on some MS Windows computers
 
-@section autotoc_md1006 21.05.1:
+@section autotoc_md915 21.05.1:
 
 - Resolved a segfault on printing that could be triggered on some computers
 
-@section autotoc_md1007 21.05.0:
+@section autotoc_md916 21.05.0:
 
 - Long numbers now can be broken into lines
 - On Export long numbers sometimes got lost
@@ -884,7 +818,7 @@ $(function() {
   (before cyrillic, chinese and greek characters were missing).
 - Solved a crash when printing.
 
-@section autotoc_md1008 21.04.0
+@section autotoc_md917 21.04.0
 
 - Fix visualization after "Evaluate all cells (Ctrl+Shift+R)" (bug #1512).</li>
 <li>Fix context sensitive help with F1 (bug #1508).</li>
@@ -898,7 +832,7 @@ $(function() {
 <li>Many external build scripts are now replaced by C++ and CMake commands.</li>
 <li><a class="el" href="classA.html">A</a> menu entry for when to invoke the debugger.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1009"></a>
+<h1><a class="anchor" id="autotoc_md918"></a>
 21.02.0</h1>
 <ul>
 <li><a class="el" href="classA.html">A</a> Spanish translation update by cyphra</li>
@@ -910,14 +844,14 @@ $(function() {
 <li>Made the time between autosaves configurable.</li>
 <li>Fixed an issue with reproducible builds.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1010"></a>
+<h1><a class="anchor" id="autotoc_md919"></a>
 21.01.0</h1>
 <ul>
 <li>Chinese translation updates by 刘荣.</li>
 <li><a class="el" href="classA.html">A</a> Russian translation update by OlesyaGerasimenko</li>
 <li>Many small bugfixes including a crash on loading files with images.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1011"></a>
+<h1><a class="anchor" id="autotoc_md920"></a>
 Changes in older wxMaxima versions you can find here</h1>
 <p><a href="https://github.com/wxMaxima-developers/wxmaxima/blob/Version-21.02.0/NEWS.md">https://github.com/wxMaxima-developers/wxmaxima/blob/Version-21.02.0/NEWS.md</a> </p>
 </div></div><!-- contents -->
