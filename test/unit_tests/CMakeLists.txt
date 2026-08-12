@@ -162,8 +162,8 @@ if(TARGET wxmTestApp)
     # libfribidi, for Bidi.cpp, see src/CMakeLists.txt - has to be linked into
     # each executable below directly too.
     set(WXM_TESTAPP_EXTRA_LIBS "")
-    if(TARGET PkgConfig::FRIBIDI)
-        list(APPEND WXM_TESTAPP_EXTRA_LIBS PkgConfig::FRIBIDI)
+    if(TARGET Fribidi::Fribidi)
+        list(APPEND WXM_TESTAPP_EXTRA_LIBS Fribidi::Fribidi)
     endif()
 
     add_executable(test_GroupCellLayout
