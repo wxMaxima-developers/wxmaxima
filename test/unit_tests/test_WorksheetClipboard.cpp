@@ -40,6 +40,17 @@
     buffer), and
   - the flavors that the enabled Copy* settings ask for are actually present,
     with a sensible "preferred" flavor.
+
+  GH #2264: "Copy as RTF" pasted into MS Word was silently ignored. RTF was
+  only advertised under the MIME-style names "application/rtf"/"text/rtf" -
+  what GTK/Linux word processors look for - but Windows registers CF_RTF
+  under the literal name "Rich Text Format" (via RegisterClipboardFormat),
+  which is the name Word's clipboard handler actually looks up. Neither MIME
+  name matches it, so on Windows Word found no RTF data on the clipboard at
+  all. Fixed by additionally advertising RTF under a third wxDataFormat with
+  that exact name (RtfDataObject3 / Worksheet::m_rtfFormat3) and making it the
+  preferred flavor everywhere RTF is offered; this test pins its presence and
+  that it is now the winning "preferred" format.
 */
 
 #include <wx/app.h>
@@ -169,6 +180,7 @@ static const wxDataFormat kMathMlFormat{wxS("MathML")};
 static const wxDataFormat kMathMl2Format{wxS("application/mathml-presentation+xml")};
 static const wxDataFormat kRtfFormat{wxS("application/rtf")};
 static const wxDataFormat kRtf2Format{wxS("text/rtf")};
+static const wxDataFormat kRtf3Format{wxS("Rich Text Format")};
 
 SCENARIO("The whole-cell (cut/copy-cells) clipboard object is well-formed") {
   BuildDocumentOnce();
@@ -186,15 +198,17 @@ SCENARIO("The whole-cell (cut/copy-cells) clipboard object is well-formed") {
     THEN("its formats are distinct and every format round-trips") {
       RequireDistinctAndRetrievable(*data);
     }
-    THEN("it offers the wxm, both RTF and the plain-text flavors") {
+    THEN("it offers the wxm, all three RTF flavors and the plain-text flavor") {
       const auto fmts = GetFormats(*data);
       REQUIRE(HasFormat(fmts, kWxmFormat));
       REQUIRE(HasFormat(fmts, kRtfFormat));
       REQUIRE(HasFormat(fmts, kRtf2Format));
+      REQUIRE(HasFormat(fmts, kRtf3Format));
       REQUIRE(HasFormat(fmts, wxDataFormat(wxDF_UNICODETEXT)));
     }
-    THEN("RTF is the preferred flavor") {
-      REQUIRE(data->GetPreferredFormat(wxDataObject::Get) == kRtfFormat);
+    THEN("the \"Rich Text Format\"-named flavor MS Word looks for (GH #2264) "
+         "is the preferred one") {
+      REQUIRE(data->GetPreferredFormat(wxDataObject::Get) == kRtf3Format);
     }
   }
 
@@ -232,26 +246,32 @@ SCENARIO("The selection (copy-as-output) clipboard object is well-formed") {
     THEN("its formats are distinct and every format round-trips") {
       RequireDistinctAndRetrievable(*data);
     }
-    THEN("it offers the wxm, both MathML, both RTF and the plain-text flavors") {
+    THEN("it offers the wxm, both MathML, all three RTF and the plain-text "
+         "flavors") {
       const auto fmts = GetFormats(*data);
       REQUIRE(HasFormat(fmts, kWxmFormat));
       REQUIRE(HasFormat(fmts, kMathMlFormat));
       REQUIRE(HasFormat(fmts, kMathMl2Format));
       REQUIRE(HasFormat(fmts, kRtfFormat));
       REQUIRE(HasFormat(fmts, kRtf2Format));
+      REQUIRE(HasFormat(fmts, kRtf3Format));
       REQUIRE(HasFormat(fmts, wxDataFormat(wxDF_UNICODETEXT)));
     }
-    THEN("the preferred flavor is a rich (non-plain-text) one") {
+    THEN("the preferred flavor is the \"Rich Text Format\"-named one "
+         "(GH #2264)") {
       // wxDataObjectComposite resolves "preferred" as the LAST child added with
       // preferred=true. CreateSelectionDataObject() marks the two MathML
-      // flavors preferred and then RtfDataObject2, so RTF - added last - is the
-      // one that actually wins here (despite the "MathML is preferred" comment
-      // in the builder: an intent/behavior mismatch worth a second look). What
-      // matters for paste quality is that the preferred flavor is a rich one,
-      // never the raw plain-text or .wxm batch flavor.
+      // flavors preferred and then RtfDataObject3 ("Rich Text Format", the
+      // name MS Word's clipboard handler actually looks up) last, so that one -
+      // added last - is what wins here (despite the "MathML is preferred"
+      // comment in the builder: an intent/behavior mismatch worth a second
+      // look). What matters for paste quality is that the preferred flavor is
+      // a rich one Word can actually recognize, never the raw plain-text or
+      // .wxm batch flavor.
       const wxDataFormat pref = data->GetPreferredFormat(wxDataObject::Get);
       const auto fmts = GetFormats(*data);
       REQUIRE(HasFormat(fmts, pref));
+      REQUIRE(pref == kRtf3Format);
       REQUIRE_FALSE(pref == wxDataFormat(wxDF_UNICODETEXT));
       REQUIRE_FALSE(pref == wxDataFormat(wxDF_TEXT));
       REQUIRE_FALSE(pref == kWxmFormat);

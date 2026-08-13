@@ -1,5 +1,10 @@
 # Current development version
 
+- Fixed "Copy as RTF" (and RTF on the general copy/cut clipboard) being
+  silently ignored when pasted into MS Word (GH #2264): the RTF data was only
+  advertised under the MIME-style clipboard format names Linux/GTK word
+  processors expect, never under the literal "Rich Text Format" name Windows
+  registers CF_RTF under and that Word's clipboard handler actually looks up.
 - Fixed a hidden multiplication sign leaving almost no horizontal gap in
   MathML/OMML export (GH #2263), unlike the real gap it reserves on screen:
   the export substituted a genuinely zero-width Unicode marker for it. The

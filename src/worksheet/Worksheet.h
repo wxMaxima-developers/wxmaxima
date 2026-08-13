@@ -183,6 +183,10 @@ private:
   static wxDataFormat m_rtfFormat;
   //! A second way to publish RTF data on the clipboard
   static wxDataFormat m_rtfFormat2;
+  //! The clipboard format name Windows registers CF_RTF under -- the one
+  //! MS Word actually looks for (GH #2264); "application/rtf"/"text/rtf"
+  //! are the MIME-style names Linux/GTK word processors expect instead.
+  static wxDataFormat m_rtfFormat3;
 
   /*! An object that can be filled with MathML data for the clipboard
    */
@@ -239,6 +243,19 @@ private:
     explicit RtfDataObject2(const wxString &data);
 
     RtfDataObject2();
+
+  private:
+    wxCharBuffer m_databuf;
+  };
+
+  //! Publishes RTF data under the literal "Rich Text Format" clipboard
+  //! format name Windows/MS Word expects (GH #2264).
+  class RtfDataObject3 : public wxCustomDataObject
+  {
+  public:
+    explicit RtfDataObject3(const wxString &data);
+
+    RtfDataObject3();
 
   private:
     wxCharBuffer m_databuf;

@@ -152,6 +152,11 @@ Worksheet::Worksheet(wxWindow *parent, int id,
   m_mathmlFormat2 = wxDataFormat(wxS("application/mathml-presentation+xml"));
   m_rtfFormat = wxDataFormat(wxS("application/rtf"));
   m_rtfFormat2 = wxDataFormat(wxS("text/rtf"));
+  // The literal name Windows registers CF_RTF under -- see GH #2264: MS Word
+  // looks up the clipboard format by this exact string, not by the
+  // MIME-style names above (which is what GTK/Linux word processors expect
+  // instead), so without this format Word silently finds no RTF data at all.
+  m_rtfFormat3 = wxDataFormat(wxS("Rich Text Format"));
   m_document.SetDocumentView(this);
   GetTreeUndo().ForgetActiveCell();
   m_clickInGC = NULL;
@@ -1808,7 +1813,8 @@ std::unique_ptr<wxDataObject> Worksheet::CreateSelectionDataObject() const {
     wxString rtf;
     rtf = RTFStart() + cell->ListToRTF() + wxS("\\par\n") + RTFEnd();
     data->Add(new RtfDataObject(rtf));
-    data->Add(new RtfDataObject2(rtf), true);
+    data->Add(new RtfDataObject2(rtf));
+    data->Add(new RtfDataObject3(rtf), true);
   }
 
   // Add a string representation of the selected output to the clipboard
@@ -2061,8 +2067,9 @@ std::unique_ptr<wxDataObject> Worksheet::CreateCellsDataObject() const {
   rtf += wxS("\\par") + RTFEnd();
 
   if (m_configuration->CopyRTF()) {
-    data->Add(new RtfDataObject(rtf), true);
+    data->Add(new RtfDataObject(rtf));
     data->Add(new RtfDataObject2(rtf));
+    data->Add(new RtfDataObject3(rtf), true);
   }
   data->Add(new wxTextDataObject(str));
   data->Add(new wxmDataObject(wxm));
@@ -3526,8 +3533,9 @@ bool Worksheet::CopyRTF() const {
 
   rtf += wxS("\\par") + RTFEnd();
 
-  data->Add(new RtfDataObject(rtf), true);
+  data->Add(new RtfDataObject(rtf));
   data->Add(new RtfDataObject2(rtf));
+  data->Add(new RtfDataObject3(rtf), true);
 
   wxTheClipboard->SetData(data);
   wxTheClipboard->Close();
@@ -6087,6 +6095,16 @@ Worksheet::RtfDataObject2::RtfDataObject2(const wxString &data)
   SetData(m_databuf.length(), m_databuf.data());
 }
 
+Worksheet::RtfDataObject3::RtfDataObject3()
+  : wxCustomDataObject(m_rtfFormat3) {}
+
+Worksheet::RtfDataObject3::RtfDataObject3(const wxString &data)
+  : wxCustomDataObject(m_rtfFormat3),
+    m_databuf(data.utf8_str())
+{
+  SetData(m_databuf.length(), m_databuf.data());
+}
+
 wxString Worksheet::RTFStart() const {
   return WorksheetExport::RTFStart(m_configuration);
 }
@@ -6413,6 +6431,7 @@ wxDataFormat Worksheet::m_mathmlFormat;
 wxDataFormat Worksheet::m_mathmlFormat2;
 wxDataFormat Worksheet::m_rtfFormat;
 wxDataFormat Worksheet::m_rtfFormat2;
+wxDataFormat Worksheet::m_rtfFormat3;
 wxDataFormat Worksheet::m_wxmFormat;
 std::mutex Worksheet::m_drawDCLock;
 
