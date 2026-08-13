@@ -1,5 +1,12 @@
 # Current development version
 
+- Fixed a hidden multiplication sign leaving almost no horizontal gap in
+  MathML/OMML export (GH #2263), unlike the real gap it reserves on screen:
+  the export substituted a genuinely zero-width Unicode marker for it. The
+  marker itself (needed for accessibility, so screen readers still announce
+  the implicit multiplication) is unchanged; it now carries explicit spacing
+  so it takes up the same amount of room as it does in the worksheet.
+
 # 26.08.0
 
 Another large batch of improvements, many of them developed with substantial
