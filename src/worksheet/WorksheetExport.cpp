@@ -30,6 +30,7 @@
 
 #include "WorksheetExport.h"
 #include "Configuration.h"
+#include "Dirstructure.h"
 #include "MarkDown.h"
 #include "Version.h"
 #include "WXMformat.h"
@@ -41,11 +42,14 @@
 #include "cells/ImgCellBase.h"
 #include "graphical_io/BitmapOut.h"
 #include "graphical_io/SVGout.h"
+#include <wx/base64.h>
 #include <wx/config.h>
+#include <wx/file.h>
 #include <wx/filefn.h>
 #include <wx/filename.h>
 #include <wx/log.h>
 #include <wx/mstream.h>
+#include <wx/sstream.h>
 #include <wx/tokenzr.h>
 #include <wx/txtstrm.h>
 #include <wx/uri.h>
@@ -1463,6 +1467,123 @@ void WriteHTMLFooter(wxString &output, GroupCell *tree,
   output << wxS(" </body>\n");
   output << wxS("</html>\n");
 }
+
+//! Base64-encode a whole file's contents, or return empty if it can't be read.
+wxString FileToBase64(const wxString &path) {
+  wxFile file(path, wxFile::read);
+  if (!file.IsOpened())
+    return {};
+  const wxFileOffset len = file.Length();
+  if (len <= 0)
+    return {};
+  std::vector<unsigned char> buf(static_cast<size_t>(len));
+  if (file.Read(buf.data(), buf.size()) != len)
+    return {};
+  return wxBase64Encode(buf.data(), buf.size());
+}
+
+//! The MIME type for one of the image extensions this exporter ever writes.
+const wxChar *ImageMimeType(const wxString &ext) {
+  const wxString e = ext.Lower();
+  if (e == wxS(".svg"))
+    return wxS("image/svg+xml");
+  if (e == wxS(".png"))
+    return wxS("image/png");
+  if (e == wxS(".gif"))
+    return wxS("image/gif");
+  if ((e == wxS(".jpg")) || (e == wxS(".jpeg")))
+    return wxS("image/jpeg");
+  if (e == wxS(".bmp"))
+    return wxS("image/bmp");
+  if (e == wxS(".webp"))
+    return wxS("image/webp");
+  return wxS("application/octet-stream");
+}
+
+/*! Rewrite every HtmlImageTag()-generated `src="..."` reference into a
+  self-contained `data:` URI, by reading the matching file back out of
+  imgDir (see SelectionToSelfContainedHTML()) and base64-encoding it.
+
+  HtmlImageTag() always names a file `<prefix>_htmlimg/<prefix>_<N><ext>` in
+  the HTML text, while ExportCodeCell()/ExportOtherCell() always write the
+  real file (via Svgout, CopyToFile, ImgCellBase::ToImageFile or
+  AnimationCell::ToGif) as `<imgDir>/<prefix>_<N><ext>` -- flat, without the
+  "_htmlimg" component, which only matters for the on-disk exporter's
+  relative HTML path. The two share the same basename, so no knowledge of
+  the exact prefix is needed here: take whatever comes after the last "/" in
+  the src and look it up directly in imgDir.
+ */
+void InlineImagesAsDataURIs(wxString &html, const wxString &imgDir) {
+  const wxString marker = wxS("src=\"");
+  size_t pos = 0;
+  for (;;) {
+    pos = html.find(marker, pos);
+    if (pos == wxString::npos)
+      break;
+    const size_t srcStart = pos + marker.length();
+    const size_t srcEnd = html.find(wxS('"'), srcStart);
+    if (srcEnd == wxString::npos)
+      break;
+    const wxString relPath = html.substr(srcStart, srcEnd - srcStart);
+    if (relPath.StartsWith(wxS("data:"))) {
+      // Already inlined (shouldn't happen, but stay idempotent).
+      pos = srcEnd;
+      continue;
+    }
+    const wxString basename = relPath.AfterLast(wxS('/'));
+    const wxString ext = wxS(".") + basename.AfterLast(wxS('.'));
+    const wxString base64 =
+      FileToBase64(imgDir + wxFileName::GetPathSeparator() + basename);
+    if (base64.IsEmpty()) {
+      // Couldn't read the file back -- leave the (broken, but harmless
+      // outside the temp dir it pointed to) reference alone rather than
+      // emit a truncated data: URI.
+      pos = srcEnd;
+      continue;
+    }
+    const wxString dataUri =
+      wxS("data:") + wxString(ImageMimeType(ext)) + wxS(";base64,") + base64;
+    html.replace(srcStart, srcEnd - srcStart, dataUri);
+    pos = srcStart + dataUri.length();
+  }
+}
+
+/*! A fresh, private (mode 0700), uniquely-named scratch directory for
+  rendering a self-contained HTML clipboard payload's images into before
+  they are read back and inlined. Mirrors OutCommon.cpp's PrivateTempDir()
+  (a separate, small helper rather than a shared one: that one lives in a
+  different translation unit and isn't exposed via a header), including its
+  graceful fallback: if Dirstructure::UserConfDir() isn't available (e.g. no
+  Dirstructure has been constructed -- true of every unit test binary, which
+  never builds a full wxMaxima app object), CreateTempFileName() below falls
+  back to its own default (system) temp location instead of failing outright.
+  The caller removes the returned directory once done.
+ */
+wxString MakeSelfContainedHtmlTempDir() {
+  wxString base = Dirstructure::UserConfDir();
+  if (!base.IsEmpty()) {
+    if (!base.EndsWith(wxFileName::GetPathSeparator()))
+      base += wxFileName::GetPathSeparator();
+    base += wxS("tmp");
+    if (!wxFileName::DirExists(base) &&
+        !wxFileName::Mkdir(base, wxS_IRUSR | wxS_IWUSR | wxS_IXUSR,
+                          wxPATH_MKDIR_FULL))
+      base.Clear();
+    else
+      base += wxFileName::GetPathSeparator();
+  }
+
+  const wxString dirPath =
+    wxFileName::CreateTempFileName(base + wxS("htmlclip"));
+  if (dirPath.IsEmpty())
+    return {};
+  // CreateTempFileName() creates an empty file to reserve the unique name;
+  // turn it into a directory instead of leaving the caller a stray file.
+  wxRemoveFile(dirPath);
+  if (!wxFileName::Mkdir(dirPath, wxS_IRUSR | wxS_IWUSR | wxS_IXUSR))
+    return {};
+  return dirPath + wxFileName::GetPathSeparator();
+}
 } // namespace
 
 bool WorksheetExport::ExportToHTML(GroupCell *tree, Configuration *configuration,
@@ -1580,5 +1701,74 @@ bool WorksheetExport::ExportToHTML(GroupCell *tree, Configuration *configuration
 
   configuration->ClipToDrawRegion(true);
   return outfileOK && cssOK;
+}
+
+wxString WorksheetExport::SelectionToSelfContainedHTML(GroupCell *startGroup,
+                                                        GroupCell *endGroup,
+                                                        Configuration *configuration) {
+  if (!startGroup || !endGroup)
+    return {};
+
+  const wxString tempDir = MakeSelfContainedHtmlTempDir();
+  if (tempDir.IsEmpty())
+    return {};
+  // wxFileName::GetPathSeparator()-terminated; the writers below all build
+  // "imgDir + separator + name", so strip the trailing one here once instead
+  // of at every call site.
+  const wxString imgDir =
+    tempDir.Left(tempDir.Length() - 1);
+
+  configuration->ClipToDrawRegion(false);
+
+  // The stylesheet: generated exactly as for the on-disk exporter, but into
+  // an in-memory stream (no temp file needed -- unlike the images, wx has no
+  // "only writes to a real path" constraint for plain text) so it can be
+  // inlined into a <style> element instead of linked from a separate file.
+  wxString versionString = wxS("Created with wxMaxima version " WXMAXIMA_VERSION);
+  wxString versionPad;
+  for (unsigned int i = 0; i < versionString.Length(); i++)
+    versionPad += "*";
+
+  wxStringOutputStream cssStream;
+  {
+    wxTextOutputStream css(cssStream);
+    WriteHtmlStyleSheet(css, wxConfig::Get(), versionString, versionPad);
+  }
+
+  // The body: the exact same per-cell renderers ExportToHTML() uses, so a
+  // selection copied to the clipboard looks identical to the same cells
+  // exported to a file. filename/filename_encoded is an arbitrary, fixed
+  // prefix -- correct only because InlineImagesAsDataURIs() below looks the
+  // rendered images up by their basename, not by reconstructing this prefix.
+  const wxString filename = wxS("clip");
+  wxString body;
+  int count = 0;
+  MarkDownHTML MarkDown(configuration);
+  for (GroupCell *tmp = startGroup; tmp != NULL; tmp = tmp->GetNext()) {
+    if (tmp->GetGroupType() == GC_TYPE_CODE)
+      ExportCodeCell(body, *tmp, configuration, imgDir, filename, filename,
+                     count);
+    else
+      ExportOtherCell(body, *tmp, MarkDown, imgDir, filename, filename,
+                      count);
+    if (tmp == endGroup)
+      break;
+  }
+
+  InlineImagesAsDataURIs(body, imgDir);
+
+  configuration->ClipToDrawRegion(true);
+
+  wxFileName::Rmdir(tempDir, wxPATH_RMDIR_RECURSIVE);
+
+  wxString html;
+  html << wxS("<!DOCTYPE html>\n<html>\n <head>\n");
+  html << wxS("  <meta http-equiv=\"Content-Type\" content=\"text/html; "
+             "charset=utf-8\">\n");
+  html << wxS("  <style>\n") << cssStream.GetString() << wxS("\n  </style>\n");
+  html << wxS(" </head>\n <body>\n");
+  html << body;
+  html << wxS(" </body>\n</html>\n");
+  return html;
 }
 

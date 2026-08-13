@@ -51,12 +51,24 @@
   that exact name (RtfDataObject3 / Worksheet::m_rtfFormat3) and making it the
   preferred flavor everywhere RTF is offered; this test pins its presence and
   that it is now the winning "preferred" format.
+
+  GH #2265/#2266/#2267: "Copy as HTML" -- WorksheetExport::
+  SelectionToSelfContainedHTML() renders a GroupCell range into one
+  self-contained HTML document (inline <style>, no external file
+  references), for Worksheet::CopyHTML()'s dedicated context-menu command.
+  It can't itself be exercised via the real system clipboard here (same
+  headless-unfriendly reason as the rest of this file), but it is a pure
+  function of the cell tree, so it is tested directly: the returned document
+  must carry its own stylesheet inline and never point at a file outside
+  itself, and it must clean up whatever private scratch directory it used to
+  render into.
 */
 
 #include <wx/app.h>
 #include <wx/bitmap.h>
 #include <wx/dataobj.h>
 #include <wx/dcmemory.h>
+#include <wx/dir.h>
 #include <wx/filename.h>
 #include <wx/frame.h>
 #include <wx/image.h>
@@ -65,8 +77,10 @@
 #include <wx/xml/xml.h>
 
 #include "Configuration.h"
+#include "Dirstructure.h"
 #include "MathParser.h"
 #include "worksheet/Worksheet.h"
+#include "worksheet/WorksheetExport.h"
 #include "cells/GroupCell.h"
 
 #include <cstdlib>
@@ -294,6 +308,90 @@ SCENARIO("The selection (copy-as-output) clipboard object is well-formed") {
   }
 
   g_ws->ClearSelection();
+}
+
+//! Number of "htmlclip*" entries left behind anywhere SelectionTo-
+//! SelfContainedHTML() might have rendered its scratch images into, so a
+//! test can confirm it cleans up after itself. This unit test binary never
+//! constructs a Dirstructure (that only happens as part of building a full
+//! wxMaxima app object), so Dirstructure::UserConfDir() is empty here and
+//! MakeSelfContainedHtmlTempDir() takes its documented fallback: the
+//! system temp directory via wxFileName::CreateTempFileName()'s own
+//! default. Check both locations so this stays correct regardless of which
+//! one a future change ends up exercising.
+static size_t HtmlClipTempEntryCount() {
+  size_t count = 0;
+  auto countIn = [&](const wxString &dir) {
+    if (!wxFileName::DirExists(dir))
+      return;
+    wxDir d(dir);
+    if (!d.IsOpened())
+      return;
+    wxString name;
+    bool cont = d.GetFirst(&name, wxS("htmlclip*"),
+                          wxDIR_FILES | wxDIR_DIRS);
+    while (cont) {
+      ++count;
+      cont = d.GetNext(&name);
+    }
+  };
+  countIn(wxFileName::GetTempDir());
+  if (!Dirstructure::UserConfDir().IsEmpty())
+    countIn(Dirstructure::UserConfDir() + wxFileName::GetPathSeparator() +
+           wxS("tmp"));
+  return count;
+}
+
+SCENARIO("Copy as HTML renders a self-contained document (GH #2265/#2266/#2267)") {
+  BuildDocumentOnce();
+  GroupCell *const start = g_ws->GetTree();
+  GroupCell *const end = g_ws->GetLastCellInWorksheet();
+  REQUIRE(start != nullptr);
+  REQUIRE(end != nullptr);
+
+  const size_t entriesBefore = HtmlClipTempEntryCount();
+
+  const wxString html =
+    WorksheetExport::SelectionToSelfContainedHTML(start, end, g_cfg);
+
+  THEN("it isn't empty and carries its own stylesheet inline") {
+    REQUIRE_FALSE(html.IsEmpty());
+    REQUIRE(html.Contains(wxS("<style>")));
+    REQUIRE(html.Contains(wxS("</style>")));
+  }
+  THEN("it never links to an external stylesheet") {
+    REQUIRE_FALSE(html.Contains(wxS("<link rel=\"stylesheet\"")));
+  }
+  THEN("every image reference (if any) is a data: URI, never a file path") {
+    wxString remaining = html;
+    size_t pos;
+    while ((pos = remaining.find(wxS("src=\""))) != wxString::npos) {
+      remaining = remaining.Mid(pos + 5);
+      const size_t end2 = remaining.find(wxS('"'));
+      REQUIRE(end2 != wxString::npos);
+      const wxString src = remaining.Left(end2);
+      INFO("src attribute value: " << src);
+      REQUIRE(src.StartsWith(wxS("data:")));
+      remaining = remaining.Mid(end2 + 1);
+    }
+  }
+  THEN("the document's actual content made it through") {
+    // BuildDocumentOnce() appends these two synthetic cells after the real
+    // math corpus -- their text/code showing up confirms the whole selected
+    // range was rendered, not just its first cell.
+    REQUIRE(html.Contains(wxS("ClipboardNetTitle")));
+    REQUIRE(html.Contains(wxS("factor")));
+  }
+  THEN("the private scratch directory it rendered images into left no trace") {
+    REQUIRE(HtmlClipTempEntryCount() == entriesBefore);
+  }
+}
+
+SCENARIO("SelectionToSelfContainedHTML rejects a null range (GH #2265)") {
+  THEN("a null start or end yields an empty string, not a crash") {
+    REQUIRE(WorksheetExport::SelectionToSelfContainedHTML(nullptr, nullptr, g_cfg)
+            .IsEmpty());
+  }
 }
 
 class TestApp : public wxApp {

@@ -3542,6 +3542,32 @@ bool Worksheet::CopyRTF() const {
   return true;
 }
 
+bool Worksheet::CopyHTML() const {
+  if (!HasCellsSelected())
+    return false;
+
+  wxASSERT_MSG(!wxTheClipboard->IsOpened(),
+               _("Bug: The clipboard is already opened"));
+  if (!wxTheClipboard->Open())
+    return false;
+
+  GroupCell *start = GetDocumentCellPointers().GetSelectionStart()->GetGroup();
+  GroupCell *end = GetDocumentCellPointers().GetSelectionEnd()->GetGroup();
+  const wxString html =
+    WorksheetExport::SelectionToSelfContainedHTML(start, end, m_configuration);
+
+  wxDataObjectComposite *data = new wxDataObjectComposite;
+  // The \0 tries to work around a strange bug in wxWidgets that sometimes
+  // makes string endings disappear -- see the identical workaround for
+  // wxHTMLDataObject in CopyMathML().
+  data->Add(new wxHTMLDataObject(html + wxS('\0')), true);
+  data->Add(new wxTextDataObject(html));
+
+  wxTheClipboard->SetData(data);
+  wxTheClipboard->Close();
+  return true;
+}
+
 wxSize Worksheet::CopyToFile(const wxString &file) const {
   if (GetDocumentCellPointers().GetSelectionStart() &&
       GetDocumentCellPointers().GetSelectionStart() == GetDocumentCellPointers().GetSelectionEnd() &&

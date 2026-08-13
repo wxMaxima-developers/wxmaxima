@@ -1,5 +1,10 @@
 # Current development version
 
+- Added a "Copy as HTML" right-click menu item (GH #2265, #2266, #2267) that
+  places a self-contained HTML document on the clipboard: the stylesheet is
+  inlined and every image is embedded as a base64 data: URI, so the result
+  pastes correctly into browsers, email clients and word processors without
+  depending on any file from the original worksheet.
 - Fixed "Copy as RTF" (and RTF on the general copy/cut clipboard) being
   silently ignored when pasted into MS Word (GH #2264): the RTF data was only
   advertised under the MIME-style clipboard format names Linux/GTK word

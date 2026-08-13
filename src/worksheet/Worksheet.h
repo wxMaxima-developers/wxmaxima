@@ -1144,6 +1144,11 @@ public:
   //! Copy a rtf version of the current selection to the clipboard
   bool CopyRTF() const;
 
+  /*! Copy a self-contained HTML version (inline CSS, base64-embedded images
+    -- see WorksheetExport::SelectionToSelfContainedHTML()) of the current
+    selection to the clipboard (GH #2265/#2266/#2267). */
+  bool CopyHTML() const;
+
   wxSize CopyToFile(const wxString &file) const;
 
   wxSize CopyToFile(const wxString &file, Cell *start, Cell *end, bool asData = false, double scale = 1) const;
