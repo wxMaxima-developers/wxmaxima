@@ -409,6 +409,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_export_output_png);
   Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_copy_emf);
   Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_copy_rtf);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_copy_html);
   Bind(wxEVT_MENU, &MaximaCommandMenus::OnInsertMenu, &m_menuCommands, EventIDs::popid_insert_text);
   Bind(wxEVT_MENU, &MaximaCommandMenus::OnInsertMenu, &m_menuCommands, EventIDs::popid_insert_title);
   Bind(wxEVT_MENU, &MaximaCommandMenus::OnInsertMenu, &m_menuCommands, EventIDs::popid_insert_section);

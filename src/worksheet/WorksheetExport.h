@@ -105,6 +105,28 @@ wxString RTFStart(Configuration *configuration);
 
 //! The RTF document footer matching RTFStart().
 wxString RTFEnd();
+
+/*! Render a range of GroupCells as one self-contained HTML document (GH
+  #2265/#2266/#2267): the stylesheet is inlined into a <style> element and
+  every image is inlined as a base64 data: URI, so the result has no
+  external file references at all and can be dropped straight onto the
+  clipboard for "Copy as HTML" or otherwise used outside the context of the
+  original document's directory.
+
+  Unlike ExportToHTML() this never touches the user's own files: any
+  temporary files it needs (images have to be rendered to a real path, see
+  OutCommon.cpp's PrivateTempDir() for why) are written to and cleaned up
+  from a private, mode-0700 scratch directory.
+
+  \param startGroup, \param endGroup  The inclusive range of top-level cells
+  to render (both must be non-null and endGroup must be reachable from
+  startGroup via GetNext()).
+  \return the HTML document, or an empty string if the private scratch
+  directory couldn't be created.
+*/
+wxString SelectionToSelfContainedHTML(GroupCell *startGroup,
+                                      GroupCell *endGroup,
+                                      Configuration *configuration);
 } // namespace WorksheetExport
 
 #endif // WORKSHEETEXPORT_H

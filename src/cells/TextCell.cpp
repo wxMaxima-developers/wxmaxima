@@ -1060,13 +1060,23 @@ wxString TextCell::ToMathML() const {
   wxString text = XMLescape(GetDisplayedString());
   text.Replace(wxS("\u2212"), wxS("-")); // unicode minus sign
 
-  // If we didn't display a multiplication dot we want to do the same in MathML.
+  // If we didn't display a multiplication dot we want to do the same in
+  // MathML -- but a bare U+2062 INVISIBLE TIMES has zero width by definition
+  // (that's the point of the character), which leaves far less horizontal
+  // separation than the on-screen rendering does: RecalculateWidths()
+  // reserves a real quarter-em gap for a hidden multiplication sign even
+  // though nothing is drawn there (GH #2263). Give the <mo> explicit
+  // lspace/rspace summing to that same quarter em instead of relying on
+  // U+2062's own (zero) default operator spacing, and return immediately --
+  // the style-specific cases in the switch below (e.g. TS_FUNCTION
+  // re-deriving text from scratch) are written for real operator/variable
+  // text, not for this synthetic invisible-operator marker, and would
+  // otherwise discard it and fall back to a visible "*"/"\u00B7".
   if (IsHidden() ||
       ((m_configuration->HidemultiplicationSign()) && GetHidableMultSign())) {
-    text.Replace(wxS("*"), wxS("&#8290;"));
-    text.Replace(wxS("\u00B7"), wxS("&#8290;"));
-    if (text != wxS("&#8290;"))
-      text.Clear();
+    if ((text == wxS("*")) || (text == wxS("\u00B7")))
+      return wxS("<mo lspace=\"0.125em\" rspace=\"0.125em\">&#8290;</mo>\n");
+    return wxEmptyString;
   }
 
   switch (GetTextStyle()) {
@@ -1151,13 +1161,22 @@ wxString TextCell::ToOMML() const {
 
   wxString text = XMLescape(m_displayedText);
 
-  // If we didn't display a multiplication dot we want to do the same in MathML.
+  // If we didn't display a multiplication dot we want to do the same in
+  // OMML -- but unlike MathML's <mo>, a plain OMML text run has no
+  // lspace/rspace equivalent, so (as with the identical situation in
+  // ToRTF(), GH #1456) fall back to a literal space instead of the
+  // zero-width U+2062 INVISIBLE TIMES: that leaves far less horizontal
+  // separation than the on-screen rendering does, which reserves a real
+  // quarter-em gap for a hidden multiplication sign even though nothing is
+  // drawn there (GH #2263). Return immediately -- the style-specific cases
+  // in the switch below (e.g. TS_FUNCTION re-deriving text from scratch)
+  // are written for real operator/variable text, not for this synthetic
+  // marker, and would otherwise discard it and fall back to a visible "*".
   if (IsHidden() ||
       ((m_configuration->HidemultiplicationSign()) && GetHidableMultSign())) {
-    text.Replace(wxS("*"), wxS("&#8290;"));
-    text.Replace(wxS("\u00B7"), wxS("&#8290;"));
-    if (text != wxS("&#8290;"))
-      text.Clear();
+    if ((text == wxS("*")) || (text == wxS("\u00B7")))
+      return wxS("<m:r> </m:r>\n");
+    return wxEmptyString;
   }
   text.Replace(wxS("*"), wxS("\u00B7"));
 

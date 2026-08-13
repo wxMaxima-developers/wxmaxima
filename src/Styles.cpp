@@ -27,9 +27,64 @@
 #include "StringUtils.h"
 #include <wx/config.h>
 #include <wx/font.h>
+#include <wx/fontenum.h>
+#include <wx/log.h>
 #include <wx/settings.h>
 #include <algorithm>
 #include <unordered_map>
+
+namespace {
+/*! Find the name of a font we can be confident is genuinely fixed-pitch
+  (every glyph the same width).
+
+  This matters for TS_ASCIIMATHS specifically: Maxima's own ASCII-art 2D
+  printer (see wxMathML.lisp's wx-ascii-displa, and the "ASCII-art 2D
+  display" notes in AGENTS.md) pads multi-line output -- fractions,
+  matrices, sums, ... -- with literal spaces on the assumption that every
+  character occupies the same width. Asking wxWidgets for "a" font of
+  wxFONTFAMILY_MODERN or wxFONTFAMILY_TELETYPE is only ever a hint the
+  platform's font substitution is free to resolve to something proportional
+  (there is no portable API that *guarantees* a fixed-pitch match), so a
+  font actually verified to exist under one of these well-known monospace
+  names is used instead wherever one is installed.
+
+  \return an empty string if none of the candidates are installed, so the
+  caller falls back to a loose wxFONTFAMILY_TELETYPE request.
+*/
+wxString FindMonospaceFaceName() {
+  static const wxChar *const candidates[] = {
+    wxS("DejaVu Sans Mono"), wxS("Consolas"),      wxS("Courier New"),
+    wxS("Liberation Mono"),  wxS("Noto Sans Mono"), wxS("Menlo"),
+    wxS("Monaco"),           wxS("Monospace"),      wxS("Courier"),
+  };
+  for (const wxChar *const name : candidates)
+    if (wxFontEnumerator::IsValidFacename(name))
+      return name;
+  return {};
+}
+
+//! A best-effort fixed-pitch font at the given point size -- see
+//! FindMonospaceFaceName() for why this is more than a plain
+//! wxFont(size, wxFONTFAMILY_TELETYPE, ...) call.
+wxFont MakeMonospaceFont(double pointSize) {
+  const wxString faceName = FindMonospaceFaceName();
+  if (!faceName.IsEmpty())
+    return wxFont(wxFontInfo(pointSize).FaceName(faceName));
+
+  // No known-monospace font is installed under any of the candidate names
+  // -- fall back to asking the OS for "a" monospace font. wxFONTFAMILY_TELETYPE
+  // is wx's own family specifically for typewriter-style/monospace fonts, so
+  // it is the better of the two loose hints wx offers, but it is still only
+  // a hint.
+  wxFont font(pointSize, wxFONTFAMILY_TELETYPE, wxFONTSTYLE_NORMAL,
+             wxFONTWEIGHT_NORMAL);
+  if (!font.IsFixedWidth())
+    wxLogMessage(_("Warning: could not find a font known to be monospace for "
+                   "ASCII-art maths; alignment of multi-line output "
+                   "(fractions, matrices, ...) may be off."));
+  return font;
+}
+} // namespace
 
 bool Styles::AffectsCode(TextStyle style) const {
   for (const auto &i : m_codeStyles)
@@ -148,7 +203,11 @@ void Styles::SetDefaults() {
   // TODO It's a fat chance that this font actually will be monospace.
   wxFont monospace(10, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL,
                    wxFONTWEIGHT_NORMAL);
-  m_styles[TS_ASCIIMATHS].SetFontName(monospace.GetFaceName());
+  // ASCII-art maths needs a genuinely fixed-pitch font -- see
+  // MakeMonospaceFont()'s doc comment -- unlike TS_TEXT below, which merely
+  // inherits the same loose "Modern family" font as a readability default
+  // and has no alignment invariant to protect.
+  m_styles[TS_ASCIIMATHS].SetFontName(MakeMonospaceFont(12.0).GetFaceName());
   m_styles[TS_ASCIIMATHS].FontSize(12.0);
   m_styles[TS_TEXT].SetFontName(monospace.GetFaceName());
   m_styles[TS_TEXT].FontSize(12.0);

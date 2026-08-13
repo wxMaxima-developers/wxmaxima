@@ -665,6 +665,7 @@ public:
   static const wxWindowIDRef popid_copy_svg;
   static const wxWindowIDRef popid_copy_emf;
   static const wxWindowIDRef popid_copy_rtf;
+  static const wxWindowIDRef popid_copy_html;
   static const wxWindowIDRef popid_export_output_svg;
   static const wxWindowIDRef popid_export_output_png;
   static const wxWindowIDRef popid_add_watch;

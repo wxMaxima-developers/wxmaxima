@@ -20,9 +20,9 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 /*! \file
-  Regression coverage for RTF/OMML export (Cell::ToRTF()/ToOMML(), Cell::
-  ListToRTF(), Cell::OMML2RTF()) -- until now this path had no test coverage
-  at all.
+  Regression coverage for RTF/OMML/MathML export (Cell::ToRTF()/ToOMML()/
+  ToMathML(), Cell::ListToRTF()/ListToOMML()/ListToMathML(),
+  Cell::OMML2RTF()) -- until now this path had no test coverage at all.
 
   GH #1456: TextCell::ToRTF() didn't check IsHidden()/GetHidableMultSign()/
   HidemultiplicationSign() the way ToTeX()/ToXML() already do. A hidden
@@ -41,6 +41,21 @@
   in what must be a bare flag) instead of the well-formed "{\mgrow 1}" --
   Word/LibreOffice silently ignored it and rendered the delimiter at a
   fixed, small size regardless of the matrix's actual height.
+
+  GH #2263: TextCell::ToMathML()/ToOMML() replaced a hidden multiplication
+  sign with the zero-width U+2062 INVISIBLE TIMES character (MathML) or
+  nothing/a bare space (OMML), which -- being genuinely zero-width by
+  definition -- left far less horizontal separation than the on-screen
+  rendering does: RecalculateWidths() reserves a real quarter-em gap for a
+  hidden multiplication sign even though nothing is drawn there. Fixed by
+  giving the MathML <mo> explicit lspace/rspace attributes summing to that
+  same quarter em (keeping the semantically-correct invisible-times
+  character for accessibility), and by returning immediately once the
+  hidden-multiplication substitution has been made in both ToMathML() and
+  ToOMML() -- the style-specific cases further down in each function (e.g.
+  TS_FUNCTION re-deriving the text from scratch) are written for real
+  operator/variable text and would otherwise discard the substitution,
+  falling back to a visible "*"/"·" regardless of the hidden setting.
 
   All content below is hand-written XML matching exactly what wxMathML.lisp
   emits for the corresponding Maxima expressions (verified against
@@ -127,6 +142,62 @@ SCENARIO("A hidden multiplication sign in RTF export respects the "
 
     THEN("it is still shown -- only cells Maxima marked hidable are hidden") {
       REQUIRE(rtf.Contains(wxS("{*}")));
+    }
+  }
+}
+
+SCENARIO("A hidden multiplication sign leaves visible horizontal space in "
+         "MathML/OMML export, not a zero-width gap (GH #2263)") {
+  GIVEN("HidemultiplicationSign is off") {
+    g_cfg->HidemultiplicationSign(false);
+    // A visible "*" is itself rendered as a centered dot when this is on
+    // (its own default) -- turn it off so the assertion below can check for
+    // a literal "*" without being coupled to that unrelated setting.
+    g_cfg->SetChangeAsterisk(false);
+    MathParser parser(g_cfg);
+    auto output = parser.ParseLine(wxString::FromUTF8(sciNotationXml));
+    REQUIRE(output != nullptr);
+    const wxString mathml = output->ListToMathML();
+
+    THEN("the multiplication sign is shown, same as on screen") {
+      REQUIRE(mathml.Contains(wxS(">*<")));
+    }
+  }
+
+  GIVEN("HidemultiplicationSign is on") {
+    g_cfg->HidemultiplicationSign(true);
+    MathParser parser(g_cfg);
+    auto output = parser.ParseLine(wxString::FromUTF8(sciNotationXml));
+    REQUIRE(output != nullptr);
+    const wxString mathml = output->ListToMathML();
+    const wxString omml = output->ListToOMML();
+
+    THEN("no literal \"*\" reaches the MathML output") {
+      REQUIRE_FALSE(mathml.Contains(wxS(">*<")));
+    }
+    THEN("the invisible-times marker carries explicit lspace/rspace instead "
+         "of relying on its own (zero) default operator spacing") {
+      REQUIRE(mathml.Contains(wxS("<mo lspace=\"0.125em\" rspace=\"0.125em\">"
+                                   "&#8290;</mo>")));
+    }
+    THEN("no literal \"*\" reaches the OMML output either, and a "
+         "separator space is left behind instead of nothing") {
+      REQUIRE_FALSE(omml.Contains(wxS("<m:r>*</m:r>")));
+      REQUIRE(omml.Contains(wxS("<m:r> </m:r>")));
+    }
+  }
+
+  GIVEN("HidemultiplicationSign is on but the multiplication is a plain, "
+        "user-visible one (not marked hidden by Maxima)") {
+    g_cfg->HidemultiplicationSign(true);
+    g_cfg->SetChangeAsterisk(false);
+    MathParser parser(g_cfg);
+    auto output = parser.ParseLine(wxString::FromUTF8(plainMultXml));
+    REQUIRE(output != nullptr);
+    const wxString mathml = output->ListToMathML();
+
+    THEN("it is still shown -- only cells Maxima marked hidable are hidden") {
+      REQUIRE(mathml.Contains(wxS(">*<")));
     }
   }
 }

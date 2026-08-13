@@ -594,6 +594,7 @@ const wxWindowIDRef EventIDs::popid_copy_animation(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::popid_copy_svg(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::popid_copy_emf(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::popid_copy_rtf(wxWindow::NewControlId());
+const wxWindowIDRef EventIDs::popid_copy_html(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::popid_export_output_svg(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::popid_export_output_png(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::popid_add_watch(wxWindow::NewControlId());

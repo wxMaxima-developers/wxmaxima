@@ -3518,6 +3518,10 @@ void MaximaCommandMenus::PopupMenu(wxCommandEvent &event) {
     if (m_wxMaxima.GetWorksheet()->CanCopy())
       m_wxMaxima.GetWorksheet()->CopyRTF();
   }
+  else if(event.GetId() == EventIDs::popid_copy_html){
+    if (m_wxMaxima.GetWorksheet()->CanCopy())
+      m_wxMaxima.GetWorksheet()->CopyHTML();
+  }
   else if(event.GetId() == EventIDs::popid_simplify){
     m_wxMaxima.MenuCommand(wxS("ratsimp(") + selection + wxS(");"));
   }

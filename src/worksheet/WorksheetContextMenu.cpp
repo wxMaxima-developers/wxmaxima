@@ -147,6 +147,8 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
 #endif
           popupMenu.Append(EventIDs::popid_copy_rtf, _("Copy as RTF"), wxEmptyString,
                            wxITEM_NORMAL);
+          popupMenu.Append(EventIDs::popid_copy_html, _("Copy as HTML"), wxEmptyString,
+                           wxITEM_NORMAL);
           popupMenu.Append(EventIDs::popid_export_output_svg,
                            _("Export output as SVG to a folder..."),
                            wxEmptyString, wxITEM_NORMAL);
@@ -293,6 +295,8 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
                            wxITEM_NORMAL);
 #endif
           popupMenu.Append(EventIDs::popid_copy_rtf, _("Copy as RTF"), wxEmptyString,
+                           wxITEM_NORMAL);
+          popupMenu.Append(EventIDs::popid_copy_html, _("Copy as HTML"), wxEmptyString,
                            wxITEM_NORMAL);
           if (worksheet.CanDeleteSelection())
             popupMenu.Append(EventIDs::popid_delete, _("Delete Selection"), wxEmptyString,
