@@ -330,11 +330,21 @@ Style &Style::Read(wxConfigBase *config, const wxString &where) {
     SetFontSize(AFontSize(tmpDouble));
   else if (config->Read(where + k_fontsize_legacy, &tmpLong))
     SetFontSize(AFontSize(tmpLong));
+  // No "else SetFontName(...)" here, unlike this used to have: a missing key
+  // means "nothing persisted for this style," which -- consistent with every
+  // other field in this function -- must leave whatever's already there
+  // (Styles::SetDefaults()'s per-style choice, e.g. TS_ASCIIMATHS's
+  // monospace default) alone rather than clobbering it with one generic
+  // fallback font for every style alike. This used to reset every style's
+  // font to wxNORMAL_FONT on a fresh config with no persisted fontname key
+  // (the common case), which is what actually made "the ASCII maths style
+  // defaults to a font where every letter has the same width" a real bug --
+  // SetDefaults() picked a genuinely monospace font, but this function
+  // immediately overwrote it, for every user who had never explicitly
+  // changed a font in Options.
   if (config->Read(where + k_fontname, &tmpStr) &&
       !tmpStr.empty())
     SetFontName(tmpStr);
-  else
-    SetFontName(wxNORMAL_FONT->GetFaceName());
 
   // Validation is deferred to the point of first use, etc.
   return *this;

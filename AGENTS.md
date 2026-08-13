@@ -512,6 +512,73 @@ a local TCP socket.
     payload, zero non-`data:` `src=` attributes, zero leaked `htmlclip`
     temp-path fragments, and no leftover scratch directory afterward.
 
+- **"ASCII maths" style not actually defaulting to a monospace font -- two
+  independent bugs stacked, and the second one made the first one look
+  unfixable while debugging it.** Maxima's own ASCII-art 2D printer (see
+  "ASCII-art 2D display" further down this file) pads multi-line output
+  with literal spaces assuming every character is the same width, so
+  `TS_ASCIIMATHS` needs a genuinely fixed-pitch font, not just one that
+  happens to look monospace-ish.
+  1. `Styles::SetDefaults()` used to construct
+     `wxFont(10, wxFONTFAMILY_MODERN, ...)` and use whatever face name that
+     resolved to -- already flagged in the code as `// TODO It's a fat
+     chance that this font actually will be monospace.` On this sandbox's
+     GTK/Pango setup it resolved to plain "Sans", confirmed via
+     `wxFont::IsFixedWidth()` returning false. Fixed with a new
+     `MakeMonospaceFont()` helper (`Styles.cpp`, anonymous namespace) that
+     tries a list of well-known monospace font names through
+     `wxFontEnumerator::IsValidFacename()` first (an actual "is this
+     installed" check, not a family hint) and only falls back to the loose
+     `wxFONTFAMILY_TELETYPE` hint if none of them are installed.
+  2. Fixing #1 alone changed nothing observable, and re-verifying it via a
+     fresh `Configuration cfg;` kept showing the OLD "Sans" default no
+     matter how the fix was re-checked -- confirmed with a temporary trace
+     across `Styles::SetDefaults()` (correctly computed "DejaVu Sans Mono")
+     and immediately after `Configuration::ReadConfig()` (back to "Sans").
+     Root cause: `Style::Read()` (`cells/TextStyle.cpp`) had an `else
+     SetFontName(wxNORMAL_FONT->GetFaceName())` branch that fired whenever
+     a style's `fontname` key was missing from the persisted config --
+     which is the *common* case, true for every user who never explicitly
+     changed a font in Options. Since `Configuration::ReadConfig()` always
+     calls `ReadStyles()` (which calls `Styles::Read()` for every style)
+     immediately after `InitStyles()`/`SetDefaults()`, this silently
+     clobbered every style's just-picked default font -- not only
+     `TS_ASCIIMATHS`'s -- with one generic UI font, on every fresh install.
+     Every *other* field in `Style::Read()` already matched its own
+     documented contract ("Only touches the attributes that were
+     successfully read. Remaining attributes are unchanged.") by simply
+     having no `else` branch at all; only `fontname` violated it. Fixed by
+     deleting the `else` branch, matching the pattern already used by
+     every sibling field in the same function.
+  3. **This second bug is also why a stale `wxConfig` file can permanently
+     hide a fixed default during debugging, and cost real time here before
+     being recognized.** `wxConfig::Get()` in an ad hoc unit-test binary or
+     a manually-run app resolves to a real file under `$HOME` (e.g.
+     `~/.test_StyleConfigRoundtrip` for a bare `wxApp`-only test binary
+     with no explicit app name set, or `~/.config/wxMaxima.conf` for the
+     real app) that *persists across separate process invocations* --
+     unlike most other test state, which resets every run. A single
+     earlier run (in this case, an interactive Xvfb session used to verify
+     the unrelated "Copy as HTML" feature, and this test binary's own
+     pre-fix runs) had already written the old, wrong "Sans" value to that
+     file; every subsequent run silently read it back regardless of what
+     the current code's `SetDefaults()` computed, exactly reproducing bug
+     #2 from a completely different (external, filesystem) cause. Confirmed
+     by grepping `$HOME` for stray `fontname=Sans` entries and deleting the
+     files; the fix then verified correctly on the first truly clean run.
+     `test_StyleConfigRoundtrip.cpp`'s new "TS_ASCIIMATHS defaults to..."
+     SCENARIO now calls `wxConfig::Get()->DeleteAll()` before constructing
+     its `Configuration`, specifically so it can't be shadowed by this same
+     class of contamination on a re-run or a persistent CI runner -- don't
+     drop that call when touching this test.
+  Regression coverage: `test_StyleConfigRoundtrip.cpp` gained two SCENARIOs
+  -- one pinning that a fresh `Configuration`'s `TS_ASCIIMATHS` font passes
+  `wxFont::IsFixedWidth()`, and one pinning `Style::Read()`'s contract
+  directly (a sentinel font name survives a `Read()` against a config with
+  no `fontname` key for that style, using a `wxFileConfig` constructed with
+  `style=0` so it never touches disk at all -- the in-memory-only
+  hermeticity this whole investigation shows is worth having).
+
 - **`Worksheet::AnonymizeCodeCells()` (GH #1339, Help menu -> "Anonymize Code
   for Bug Report"):** renames every non-builtin variable/function name in the
   selected code cells (whole document if nothing's selected, after a

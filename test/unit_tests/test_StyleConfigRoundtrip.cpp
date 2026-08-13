@@ -35,12 +35,31 @@
   that each style comes back with the color stored under its own key. A future
   read/write key mismatch makes a style read back the wrong color (or a default)
   and fails the test instead of shipping as a silent settings bug.
+
+  Also guards a second, previously-undiscovered bug in the same area: TS_
+  ASCIIMATHS is supposed to default to a genuinely monospace font (Maxima's
+  own ASCII-art 2D printer pads output with literal spaces on the assumption
+  every character is the same width -- see AGENTS.md's "ASCII-art 2D
+  display" notes), and Styles::SetDefaults() does pick one. But
+  Style::Read() used to have an "else SetFontName(wxNORMAL_FONT->
+  GetFaceName())" branch that fired whenever a style's fontname key was
+  missing from the persisted config -- which is the *common* case, true for
+  every user who never explicitly changed a font in Options. Since
+  ReadConfig() always calls ReadStyles() (reading the live config) right
+  after SetDefaults() runs, this silently clobbered every style's
+  carefully-chosen default font (ASCII maths' monospace font included) with
+  one generic UI font, on every fresh install. Every other field in
+  Style::Read() already followed the documented contract ("Only touches the
+  attributes that were successfully read. Remaining attributes are
+  unchanged.") -- only fontname didn't.
 */
 
 #include <wx/app.h>
 #include <wx/colour.h>
+#include <wx/fileconf.h>
 #include <wx/filefn.h>
 #include <wx/filename.h>
+#include <wx/font.h>
 #include <wx/log.h>
 
 #include "Configuration.h"
@@ -120,6 +139,53 @@ SCENARIO("Both the light and dark style sets round-trip through Write/ReadStyles
       }
     }
     wxRemoveFile(file);
+  }
+}
+
+SCENARIO("TS_ASCIIMATHS defaults to a genuinely fixed-pitch font") {
+  GIVEN("a fresh Configuration with nothing persisted for it") {
+    // Configuration's constructor reads the live wxConfig::Get() -- wipe it
+    // first so this scenario's precondition ("nothing persisted") holds
+    // regardless of what an earlier test run (in this process or a previous
+    // one; wxConfig persists to a real file in $HOME) left behind. This is
+    // exactly the contamination that made this bug hard to pin down while
+    // fixing it: a stale persisted fontname from a run predating the fix
+    // shadows Styles::SetDefaults()'s new default indefinitely otherwise.
+    wxConfig::Get()->DeleteAll();
+    Configuration cfg;
+
+    THEN("its font is one wx itself reports as fixed-width") {
+      const wxString faceName = cfg.GetStyle(TS_ASCIIMATHS)->GetFontName();
+      INFO("resolved face name: " << faceName.ToStdString());
+      wxFont font(12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL,
+                 wxFONTWEIGHT_NORMAL, false, faceName);
+      REQUIRE(font.IsOk());
+      REQUIRE(font.IsFixedWidth());
+    }
+  }
+}
+
+SCENARIO("Style::Read() leaves the font name alone when nothing is persisted "
+        "for it (GH: ASCII maths font default)") {
+  GIVEN("a Style whose font name was already set to something specific, e.g. "
+       "by Styles::SetDefaults()") {
+    Style style;
+    style.SetFontName(wxS("__SentinelFontName__"));
+
+    WHEN("it is Read() from a config source with no fontname key under its "
+        "prefix") {
+      // style=0 disables both the local and global file, so this never
+      // touches disk -- a purely in-memory, always-empty config source.
+      wxFileConfig config(wxS("test"), wxS("test"), wxEmptyString,
+                         wxEmptyString, 0);
+      style.Read(&config, wxS("Style/DoesNotExist/"));
+
+      THEN("the font name is untouched, not reset to some generic fallback -- "
+          "matching every other field in Style::Read(), which is documented "
+          "to only touch attributes that were successfully read") {
+        REQUIRE(style.GetFontName() == wxS("__SentinelFontName__"));
+      }
+    }
   }
 }
 

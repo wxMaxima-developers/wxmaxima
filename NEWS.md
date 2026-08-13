@@ -1,5 +1,13 @@
 # Current development version
 
+- Fixed the "ASCII maths" style defaulting to a non-monospace font, which
+  misaligned Maxima's own ASCII-art 2D output (fractions, matrices, sums,
+  ...) since it pads with literal spaces assuming every character is the
+  same width. Two bugs stacked: the picked font family was only ever a loose
+  hint the platform's font substitution was free to resolve to something
+  proportional, and separately, reading a fresh configuration with no
+  persisted font choice silently overwrote every style's carefully-chosen
+  default font with one generic UI font -- both now fixed.
 - Added a "Copy as HTML" right-click menu item (GH #2265, #2266, #2267) that
   places a self-contained HTML document on the clipboard: the stylesheet is
   inlined and every image is embedded as a base64 data: URI, so the result
