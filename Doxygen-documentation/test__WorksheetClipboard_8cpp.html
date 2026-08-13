@@ -87,6 +87,7 @@ $(function() {
 <code>#include &lt;wx/bitmap.h&gt;</code><br />
 <code>#include &lt;wx/dataobj.h&gt;</code><br />
 <code>#include &lt;wx/dcmemory.h&gt;</code><br />
+<code>#include &lt;wx/dir.h&gt;</code><br />
 <code>#include &lt;wx/filename.h&gt;</code><br />
 <code>#include &lt;wx/frame.h&gt;</code><br />
 <code>#include &lt;wx/image.h&gt;</code><br />
@@ -94,8 +95,10 @@ $(function() {
 <code>#include &lt;wx/mstream.h&gt;</code><br />
 <code>#include &lt;wx/xml/xml.h&gt;</code><br />
 <code>#include &quot;Configuration.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="Dirstructure_8h_source.html">Dirstructure.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="MathParser_8h_source.html">MathParser.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="Worksheet_8h_source.html">worksheet/Worksheet.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="WorksheetExport_8h_source.html">worksheet/WorksheetExport.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="GroupCell_8h_source.html">cells/GroupCell.h</a>&quot;</code><br />
 <code>#include &lt;cstdlib&gt;</code><br />
 <code>#include &lt;string&gt;</code><br />
@@ -105,7 +108,7 @@ $(function() {
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for test_WorksheetClipboard.cpp:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="test__WorksheetClipboard_8cpp__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="test__WorksheetClipboard_8cpp__incl.svg" width="100%" height="558"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 </div><table class="memberdecls">
@@ -131,6 +134,12 @@ Functions</h2></td></tr>
 <tr class="memitem:ad2b090e8079974afb69f7952e0f441ce"><td class="memItemLeft" align="right" valign="top"><a id="ad2b090e8079974afb69f7952e0f441ce" name="ad2b090e8079974afb69f7952e0f441ce"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;The selection (copy-as-output) clipboard object is well-formed&quot;)</td></tr>
 <tr class="separator:ad2b090e8079974afb69f7952e0f441ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4261d3e2a36f0bf4543e9bed8a17366"><td class="memItemLeft" align="right" valign="top"><a id="ab4261d3e2a36f0bf4543e9bed8a17366" name="ab4261d3e2a36f0bf4543e9bed8a17366"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;Copy as HTML renders a self-contained document (GH #2265/#2266/#2267)&quot;)</td></tr>
+<tr class="separator:ab4261d3e2a36f0bf4543e9bed8a17366"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a492015149c26bff81afe37eb6fdc7076"><td class="memItemLeft" align="right" valign="top"><a id="a492015149c26bff81afe37eb6fdc7076" name="a492015149c26bff81afe37eb6fdc7076"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;SelectionToSelfContainedHTML rejects a null range (GH #2265)&quot;)</td></tr>
+<tr class="separator:a492015149c26bff81afe37eb6fdc7076"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06df7029011fe181f338255fa9645905"><td class="memItemLeft" align="right" valign="top"><a id="a06df7029011fe181f338255fa9645905" name="a06df7029011fe181f338255fa9645905"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>wxDECLARE_APP</b> (<a class="el" href="classTestApp.html">TestApp</a>)</td></tr>
 <tr class="separator:a06df7029011fe181f338255fa9645905"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -145,8 +154,10 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>main</b> (int argc, ch
 <ul>
 <li>every advertised format is distinct (no two children share a wxDataFormat),</li>
 <li>every advertised format round-trips (GetDataSize &gt; 0 and GetDataHere fills a buffer), and</li>
-<li>the flavors that the enabled Copy* settings ask for are actually present, with a sensible "preferred" flavor. </li>
+<li>the flavors that the enabled Copy* settings ask for are actually present, with a sensible "preferred" flavor.</li>
 </ul>
+<p>GH #2264: "Copy as RTF" pasted into MS Word was silently ignored. RTF was only advertised under the MIME-style names "application/rtf"/"text/rtf" - what GTK/Linux word processors look for - but Windows registers CF_RTF under the literal name "Rich Text Format" (via RegisterClipboardFormat), which is the name Word's clipboard handler actually looks up. Neither MIME name matches it, so on Windows Word found no RTF data on the clipboard at all. Fixed by additionally advertising RTF under a third wxDataFormat with that exact name (RtfDataObject3 / Worksheet::m_rtfFormat3) and making it the preferred flavor everywhere RTF is offered; this test pins its presence and that it is now the winning "preferred" format.</p>
+<p>GH #2265/#2266/#2267: "Copy as HTML" &ndash; WorksheetExport:: SelectionToSelfContainedHTML() renders a <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a> range into one self-contained HTML document (inline &lt;style&gt;, no external file references), for <a class="el" href="classWorksheet.html#a447b7bced78df7d08a21fd070c7e765a" title="Copy a self-contained HTML version (inline CSS, base64-embedded images – see WorksheetExport::Selecti...">Worksheet::CopyHTML()</a>'s dedicated context-menu command. It can't itself be exercised via the real system clipboard here (same headless-unfriendly reason as the rest of this file), but it is a pure function of the cell tree, so it is tested directly: the returned document must carry its own stylesheet inline and never point at a file outside itself, and it must clean up whatever private scratch directory it used to render into. </p>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

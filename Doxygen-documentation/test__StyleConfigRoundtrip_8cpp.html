@@ -85,8 +85,10 @@ $(function() {
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;wx/app.h&gt;</code><br />
 <code>#include &lt;wx/colour.h&gt;</code><br />
+<code>#include &lt;wx/fileconf.h&gt;</code><br />
 <code>#include &lt;wx/filefn.h&gt;</code><br />
 <code>#include &lt;wx/filename.h&gt;</code><br />
+<code>#include &lt;wx/font.h&gt;</code><br />
 <code>#include &lt;wx/log.h&gt;</code><br />
 <code>#include &quot;Configuration.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="TextStyle_8h_source.html">cells/TextStyle.h</a>&quot;</code><br />
@@ -110,6 +112,12 @@ Functions</h2></td></tr>
 <tr class="memitem:a9906759ca537db02d3c7ae7433e58aab"><td class="memItemLeft" align="right" valign="top"><a id="a9906759ca537db02d3c7ae7433e58aab" name="a9906759ca537db02d3c7ae7433e58aab"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;Both the light and dark style sets round-trip through Write/ReadStyles&quot;)</td></tr>
 <tr class="separator:a9906759ca537db02d3c7ae7433e58aab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9434e8e3744357e57c447ef2d632e2a3"><td class="memItemLeft" align="right" valign="top"><a id="a9434e8e3744357e57c447ef2d632e2a3" name="a9434e8e3744357e57c447ef2d632e2a3"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;TS_ASCIIMATHS defaults to a genuinely fixed-pitch font&quot;)</td></tr>
+<tr class="separator:a9434e8e3744357e57c447ef2d632e2a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1320a4a87e4e87c45fcabb85ed2e21b"><td class="memItemLeft" align="right" valign="top"><a id="af1320a4a87e4e87c45fcabb85ed2e21b" name="af1320a4a87e4e87c45fcabb85ed2e21b"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;Style::Read() leaves the font name alone when nothing is persisted &quot; &quot;for it (GH: ASCII maths font default)&quot;)</td></tr>
+<tr class="separator:af1320a4a87e4e87c45fcabb85ed2e21b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06df7029011fe181f338255fa9645905"><td class="memItemLeft" align="right" valign="top"><a id="a06df7029011fe181f338255fa9645905" name="a06df7029011fe181f338255fa9645905"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>wxDECLARE_APP</b> (<a class="el" href="classTestApp.html">TestApp</a>)</td></tr>
 <tr class="separator:a06df7029011fe181f338255fa9645905"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -120,7 +128,12 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>main</b> (int argc, ch
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Round-trip regression test for the worksheet text styles. </p>
 <p>ReadStyles() and WriteStyles() used to carry two independent, hand-synced lists of TextStyle -&gt; config-key-prefix mappings. If the two lists ever drifted (a typo, or a key renamed on only one side) the affected style silently stopped round-tripping through the configuration storage &ndash; a recurring source of "my style settings don't stick" bugs.</p>
-<p>Both functions now iterate a single source of truth, <a class="el" href="classConfiguration.html#a72e96b60fcbb9d6499ab07a391845717" title="The single source of truth mapping each persisted text style to its config-key prefix.">Configuration::StyleConfigKeys()</a>. This test guards that: it gives every persisted style a distinct, prefix-derived color, writes the styles to a temporary config file, reads them back into a fresh <a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a>, and checks that each style comes back with the color stored under its own key. <a class="el" href="classA.html">A</a> future read/write key mismatch makes a style read back the wrong color (or a default) and fails the test instead of shipping as a silent settings bug. </p>
+<p>Both functions now iterate a single source of truth, <a class="el" href="classConfiguration.html#a72e96b60fcbb9d6499ab07a391845717" title="The single source of truth mapping each persisted text style to its config-key prefix.">Configuration::StyleConfigKeys()</a>. This test guards that: it gives every persisted style a distinct, prefix-derived color, writes the styles to a temporary config file, reads them back into a fresh <a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a>, and checks that each style comes back with the color stored under its own key. <a class="el" href="classA.html">A</a> future read/write key mismatch makes a style read back the wrong color (or a default) and fails the test instead of shipping as a silent settings bug.</p>
+<p>Also guards a second, previously-undiscovered bug in the same area: TS_ ASCIIMATHS is supposed to default to a genuinely monospace font (<a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s own ASCII-art 2<a class="el" href="classD.html">D</a> printer pads output with literal spaces on the assumption every character is the same width &ndash; see AGENTS.md's "ASCII-art 2D
+display" notes), and <a class="el" href="classStyles.html#a6e78a45506b36a6e26cd9ffecfa0d7cd" title="Reset every style to wxMaxima&#39;s built-in (light) defaults.">Styles::SetDefaults()</a> does pick one. But <a class="el" href="classStyle.html#af999d8bd639fdbd1fbb5c65023d8d286" title="Read this style from a config source.">Style::Read()</a> used to have an "else SetFontName(wxNORMAL_FONT-&gt;
+GetFaceName())" branch that fired whenever a style's fontname key was missing from the persisted config &ndash; which is the <em>common</em> case, true for every user who never explicitly changed a font in Options. Since ReadConfig() always calls ReadStyles() (reading the live config) right after SetDefaults() runs, this silently clobbered every style's carefully-chosen default font (ASCII maths' monospace font included) with one generic UI font, on every fresh install. Every other field in <a class="el" href="classStyle.html#af999d8bd639fdbd1fbb5c65023d8d286" title="Read this style from a config source.">Style::Read()</a> already followed the documented contract ("Only touches the
+attributes that were successfully read. Remaining attributes are
+unchanged.") &ndash; only fontname didn't. </p>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

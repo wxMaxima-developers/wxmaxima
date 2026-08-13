@@ -95,7 +95,7 @@ Include dependency graph for WorksheetExport.h:</div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="WorksheetExport_8h__dep__incl.svg" width="504" height="110"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="WorksheetExport_8h__dep__incl.svg" width="100%" height="393"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 </div>
@@ -135,6 +135,9 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><b>WorksheetExport::
 wxString&#160;</td><td class="memItemRight" valign="bottom"><b>WorksheetExport::RTFEnd</b> ()</td></tr>
 <tr class="memdesc:a73ebb9aeb31a0dc5ad6faa76eeb67c64"><td class="mdescLeft">&#160;</td><td class="mdescRight">The RTF document footer matching <a class="el" href="WorksheetExport_8h.html#a1ec393575f9b3d9bd877d76b1b0ae50a" title="The RTF document header: font, color and stylesheet tables.">RTFStart()</a>. <br /></td></tr>
 <tr class="separator:a73ebb9aeb31a0dc5ad6faa76eeb67c64"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c35e91bfe94140ace64fdcb6fbdce3f"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="WorksheetExport_8h.html#a7c35e91bfe94140ace64fdcb6fbdce3f">WorksheetExport::SelectionToSelfContainedHTML</a> (<a class="el" href="classGroupCell.html">GroupCell</a> *startGroup, <a class="el" href="classGroupCell.html">GroupCell</a> *endGroup, <a class="el" href="classConfiguration.html">Configuration</a> *configuration)</td></tr>
+<tr class="memdesc:a7c35e91bfe94140ace64fdcb6fbdce3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Render a range of GroupCells as one self-contained HTML document (GH #2265/#2266/#2267): the stylesheet is inlined into a &lt;style&gt; element and every image is inlined as a base64 data: URI, so the result has no external file references at all and can be dropped straight onto the clipboard for "Copy as HTML" or otherwise used outside the context of the original document's directory.  <br /></td></tr>
+<tr class="separator:a7c35e91bfe94140ace64fdcb6fbdce3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Document serializers extracted from the <a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a> class. </p>
@@ -331,6 +334,50 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><b>WorksheetExport::
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a7c35e91bfe94140ace64fdcb6fbdce3f" name="a7c35e91bfe94140ace64fdcb6fbdce3f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c35e91bfe94140ace64fdcb6fbdce3f">&#9670;&#160;</a></span>SelectionToSelfContainedHTML()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxString WorksheetExport::SelectionToSelfContainedHTML </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td>
+          <td class="paramname"><em>startGroup</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td>
+          <td class="paramname"><em>endGroup</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classConfiguration.html">Configuration</a> *&#160;</td>
+          <td class="paramname"><em>configuration</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Render a range of GroupCells as one self-contained HTML document (GH #2265/#2266/#2267): the stylesheet is inlined into a &lt;style&gt; element and every image is inlined as a base64 data: URI, so the result has no external file references at all and can be dropped straight onto the clipboard for "Copy as HTML" or otherwise used outside the context of the original document's directory. </p>
+<p>Unlike ExportToHTML() this never touches the user's own files: any temporary files it needs (images have to be rendered to a real path, see OutCommon.cpp's PrivateTempDir() for why) are written to and cleaned up from a private, mode-0700 scratch directory.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">startGroup</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<p>param endGroup The inclusive range of top-level cells to render (both must be non-null and endGroup must be reachable from startGroup via GetNext()). </p><dl class="section return"><dt>Returns</dt><dd>the HTML document, or an empty string if the private scratch directory couldn't be created. </dd></dl>
 
 </div>
 </div>

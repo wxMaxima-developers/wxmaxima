@@ -209,167 +209,669 @@ Architecture &amp; GUI</h1>
   draw-list-mirroring bookkeeping, since there's nothing stored to keep in
   sync.
 
-- **&lt;tt&gt;Worksheet::AnonymizeCodeCells()&lt;/tt&gt; (GH #1339, Help menu -&gt; "Anonymize Code for Bug Report"):** renames every non-builtin variable/function name in the
-  selected code cells (whole document if nothing's selected, after a
-  confirmation &lt;tt&gt;wxMessageBox&lt;/tt&gt;) to a random &lt;tt&gt;anon_...&lt;/tt&gt; name, the same
-  replacement for every occurrence of a given original name, as a single
-  undo step. Telling "a user-defined name" apart from "a name <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> already knows" needs &lt;strong&gt;two&lt;/strong&gt; independent checks on each &lt;tt&gt;TS_CODE_VARIABLE&lt;/tt&gt;/
-  &lt;tt&gt;TS_CODE_FUNCTION&lt;/tt&gt; token, not one: &lt;tt&gt;AutoComplete::GetSymbolList()&lt;/tt&gt; (Maxima
-  builtins plus session-loaded package symbols &amp;ndash; deliberately &lt;em&gt;not&lt;/em&gt;
-  polluted by user-typed worksheet words, which live in a separate
-  &lt;tt&gt;m_worksheetWords&lt;/tt&gt; map) catches real Maxima functions/variables, but
-  &lt;tt&gt;MaximaTokenizer&lt;/tt&gt; tokenizes its own hardcoded control-flow keywords
-  (&lt;tt&gt;for&lt;/tt&gt;/&lt;tt&gt;in&lt;/tt&gt;/&lt;tt&gt;then&lt;/tt&gt;/&lt;tt&gt;while&lt;/tt&gt;/&lt;tt&gt;do&lt;/tt&gt;/&lt;tt&gt;thru&lt;/tt&gt;/&lt;tt&gt;next&lt;/tt&gt;/&lt;tt&gt;step&lt;/tt&gt;/&lt;tt&gt;unless&lt;/tt&gt;/&lt;tt&gt;from&lt;/tt&gt;/&lt;tt&gt;if&lt;/tt&gt;/
-  &lt;tt&gt;else&lt;/tt&gt;/&lt;tt&gt;elseif&lt;/tt&gt;/&lt;tt&gt;and&lt;/tt&gt;/&lt;tt&gt;or&lt;/tt&gt;/&lt;tt&gt;not&lt;/tt&gt;/&lt;tt&gt;true&lt;/tt&gt;/&lt;tt&gt;false&lt;/tt&gt;) with that same
-  variable/function style, and only 4 of those 18
-  (&lt;tt&gt;and&lt;/tt&gt;/&lt;tt&gt;false&lt;/tt&gt;/&lt;tt&gt;in&lt;/tt&gt;/&lt;tt&gt;true&lt;/tt&gt;) also happen to appear in
-  &lt;tt&gt;data/builtin_commands.txt&lt;/tt&gt; &amp;ndash; confirmed directly by grepping that file.
-  A filter using only &lt;tt&gt;GetSymbolList()&lt;/tt&gt; would rename &lt;tt&gt;for&lt;/tt&gt;/&lt;tt&gt;then&lt;/tt&gt;/&lt;tt&gt;do&lt;/tt&gt;/...
-  themselves and corrupt the Maxima syntax outright. Fixed by exposing the
-  tokenizer's private keyword set as a new public static
-  &lt;tt&gt;MaximaTokenizer::IsHardcodedKeyword()&lt;/tt&gt; and checking both. That accessor
-  needed its own fix first: the keyword map was populated lazily inside the
-  constructor, so calling it before any &lt;tt&gt;MaximaTokenizer&lt;/tt&gt; instance existed
-  silently returned false for everything &amp;ndash; fixed by extracting
-  &lt;tt&gt;EnsureHardcodedFunctionsInitialized()&lt;/tt&gt; and calling it from both the
-  constructor and the new accessor.
-  &lt;tt&gt;test/unit_tests/test_AnonymizeCodeCells.cpp&lt;/tt&gt; pins this with a real
-  &lt;tt&gt;Worksheet&lt;/tt&gt;/&lt;tt&gt;Configuration&lt;/tt&gt; (no live Maxima), calling the narrow,
-  synchronous &lt;tt&gt;AutoComplete::LoadBuiltinSymbols()&lt;/tt&gt; in its &lt;tt&gt;main()&lt;/tt&gt; rather
-  than the full &lt;tt&gt;Worksheet::LoadSymbols()&lt;/tt&gt; &amp;ndash; the latter also kicks off
-  &lt;tt&gt;LoadableFiles_BackgroundTask&lt;/tt&gt;'s directory scan for Maxima's share/demo
-  folders, which stalled for 70+ seconds in this sandbox and got the test
-  process killed by its ctest timeout. A substring check like
-  &lt;tt&gt;after.Contains(wxS("f("))&lt;/tt&gt; to confirm a renamed function is gone is
-  fragile and intermittently flaky (confirmed live, ~1-in-3 failure rate
-  over repeated runs): the random 13-character &lt;tt&gt;anon_...&lt;/tt&gt; replacement for
-  some &lt;em&gt;other&lt;/em&gt; name can itself end in the letter being searched for, and
-  since a real function call always has &lt;tt&gt;(&lt;/tt&gt; immediately after its name in
-  valid Maxima syntax, the reconstructed text can contain a coincidental
-  &lt;tt&gt;...anon_xyzqwrtf(...&lt;/tt&gt; match. Use exact per-token comparison via
-  &lt;tt&gt;MaximaTokenizer&lt;/tt&gt; instead (see that test file's &lt;tt&gt;HasExactToken()&lt;/tt&gt; helper).
-  The "nothing selected -&gt; confirm whole document" &lt;tt&gt;wxMessageBox&lt;/tt&gt; path can't
-  be driven or screenshotted reliably in this sandbox's Xvfb (no window
-  manager is running, and a GTK modal dialog's window never became visible
-  to &lt;tt&gt;import -window \&lt;id\&gt;&lt;/tt&gt;/&lt;tt&gt;-window root&lt;/tt&gt; in several attempts, though the
-  underlying &lt;tt&gt;wxMessageBox&lt;/tt&gt; call is the same well-established idiom used
-  elsewhere in this codebase) &amp;ndash; verified instead by exercising the
-  already-selected-cells path end-to-end in a live Xvfb session (typed real
-  code, selected the group cell via hCaret + Shift+Up, confirmed the
-  rendered text changed consistently and a single Ctrl+Z restored it).
-
-@subsection autotoc_md45 Communication with Maxima
-
-wxMaxima sends Lisp and Maxima commands over the socket; Maxima answers with XML
-wrapped in known tags. &lt;tt&gt;Maxima&lt;/tt&gt; reads that data on a worker thread and posts
-&lt;tt&gt;EVT_MAXIMA&lt;/tt&gt; events to the main thread, where &lt;tt&gt;wxMaxima&lt;/tt&gt; handles them.
-
-&lt;tt&gt;src/wxMathML.lisp&lt;/tt&gt; is compiled into the binary (through CMake's bin2h) and is
-what tells Maxima to format its output as MathML-like XML. For development,
-&lt;tt&gt;--wxmathml-lisp=\&lt;path\&gt;&lt;/tt&gt; overrides it with an external file, so a change can be
-tried without rebuilding.
-
-- **&lt;tt&gt;m_configCommands&lt;/tt&gt; (&lt;tt&gt;wxMaxima.cpp&lt;/tt&gt;):** the string of startup/config commands
-  sent to Maxima on connect (and again whenever settings change while it's
-  running). &lt;strong&gt;Every entry in it MUST be a &lt;tt&gt;:lisp-quiet (...)&lt;/tt&gt; directive &amp;ndash;
-  never a plain Maxima statement ending in &lt;tt&gt;\$&lt;/tt&gt;/&lt;tt&gt;;&lt;/tt&gt;.&lt;/strong&gt; &lt;tt&gt;m_configCommands&lt;/tt&gt; is
-  sent bundled immediately ahead of the evaluation queue's next real per-cell
-  command (&lt;tt&gt;MaximaEvaluator::TriggerEvaluation()&lt;/tt&gt;), and
-  &lt;tt&gt;EvaluationQueue::RemoveFirst()&lt;/tt&gt; has no way to tell "a prompt answering a config command" from "a prompt answering a real queued cell" &amp;ndash; it advances
-  the queue by one cell for &lt;em&gt;every&lt;/em&gt; main &lt;tt&gt;(%iN)&lt;/tt&gt; prompt it sees. A plain
-  statement here makes Maxima print its own extra prompt, and
-  &lt;tt&gt;RemoveFirst()&lt;/tt&gt; then silently drops one real (never-sent) queued cell for
-  each such prompt &amp;ndash; confirmed live with &lt;tt&gt;tcpdump&lt;/tt&gt; on the raw
-  wxMaxima&lt;-&gt;Maxima socket to drop the whole evaluation queue (21 cells to 0)
-  in one shot, root-causing an intermittent hang/failure in
-  &lt;tt&gt;automatic_test_files/lisp_mode.wxm&lt;/tt&gt;. This bit &lt;tt&gt;wxdirs&lt;/tt&gt;, the Maxima struct
-  exposing wxMaxima's own paths: it has to be built via genuine Maxima syntax
-  (&lt;tt&gt;defstruct&lt;/tt&gt;, &lt;tt&gt;wxdirs\@field: "value"&lt;/tt&gt;, ...) since Maxima's &lt;tt&gt;defstruct&lt;/tt&gt; does
-  not evaluate named-field initializers to the field's value &amp;ndash; it silently
-  stores the unevaluated &lt;tt&gt;field = value&lt;/tt&gt; equation instead (confirmed against
-  a real Maxima 5.46), and &lt;tt&gt;new(wxdirs(field=value, ...))&lt;/tt&gt; therefore doesn't
-  work either. The fix: build the Maxima-syntax statement (still going
-  through &lt;tt&gt;wxMaxima::EscapeForLisp()&lt;/tt&gt; per value &amp;ndash; despite the name it is
-  exactly the escaping Maxima string literals need too, for &lt;tt&gt;"</code>/<code>\</code> in any filesystem path), then wrap the <em>whole</em> statement text as the argument to <code>:lisp-quiet (with-input-from-string (wxst "...") (meval (caddr (mread wxst 0))))</code> &ndash; reads and evaluates it from Lisp with no separate prompt of its own, same as every other <code>m_configCommands</code> entry. The statement text needs <code>EscapeForLisp()</code> applied a <em>second</em> time at that point, since it is now itself the content of a Lisp string literal (each individual field value was already escaped once, for the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> string literal it sits inside).<ul>
-<li><b>Debugging technique note:</b> when in doubt about what actually crossed the <a class="el" href="classwxMaxima.html">wxMaxima</a>&lt;-&gt;<a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> socket (vs. what a log line <em>claims</em> was sent), <code>wxLogMessage()</code>-based tracing inside <a class="el" href="classwxMaxima.html">wxMaxima</a> can itself be misleading &ndash; <code><a class="el" href="classMaxima.html#aeb45e2fda6a941f99aa9181b644c75be" title="Write more data to be sent to maxima.">Maxima::Write()</a></code> only enqueues to <code>m_outputQueue</code>; the worker thread flushes it to the socket separately and asynchronously, so a logged "sent" call is not proof the bytes ever left the process (e.g. if the app exits first). &lsquo;tcpdump -i lo -w file.pcap 'tcp portrange 49000-49999&rsquo;<code>plus a small manual pcap parser (this sandbox's Python has no working</code>scapy<code>-- </code>cryptography`'s Rust backend panics on import here &ndash; so parse the classic pcap format directly: 24-byte global header, then repeated 16-byte-record-header + packet frames; skip the 14-byte Ethernet header, read the IP header's IHL for its length, then the TCP header's data offset for its length) gives ground truth immune to any wxMaxima-internal misattribution. Also: <code>wxLogMessage()</code> is not safe to call from <code>Maxima::WorkerThread()</code> (a non-GUI thread) &ndash; it crashed with a <code>wxArgNormalizer</code> format-specifier assertion the first time it was tried there for debugging (triggered by <code>zu</code> specifically; the crash went away switching to <code>lu</code> + an explicit <code>(unsigned long)</code> cast, but the thread-safety of logging from that thread at all remains unverified &ndash; treat any such tracing as temporary/debug-only, never ship it).</li>
-</ul>
-</li>
-<li>**ASCII-art 2<a class="el" href="classD.html">D</a> display (<code>set_display('ascii)</code>) and <code>*alt-display2d*</code>:** when <code>$display2d</code> is on, <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s evaluator checks the special variable <code>*alt-display2d*</code> before printing a result: if it's a function symbol, that function is called <em>instead of</em> <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s own stock printer (this is how <code>mydispla</code> in <code>wxMathML.lisp</code> produces the normal <code>&lt;mth&gt;</code>/XML output); if it's <code>nil</code>, <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> falls through to its own built-in ASCII-art printer, which pads a result's lines with literal spaces so a multi-line fraction/ matrix/etc. lines up correctly under the <code>(oN)</code> label &ndash; but that padding assumes every line, including the label, ends up rendered in one uniform monospace font. <code>wxMathML.lisp</code>'s <code>wx-ascii-displa</code> wraps that stock printer in <code>&lt;wxxml-asciimath&gt;</code>/<code>&lt;/wxxml-asciimath&gt;</code> markers <em>without</em> reimplementing it: it dynamically rebinds <code>*alt-display2d*</code> to <code>nil</code> for just the duration of <code>(displa x)</code>, which re-enters <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s own dispatch and this time takes the stock ASCII path (confirmed live: this is correctly reentrant-safe through <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s own recursive sub-expression <code>displa</code> calls, e.g. matrix rows, since they run inside the same dynamic extent). <code>Maxima::ProcessData()</code> only fires the corresponding <code>XML_ASCIIMATH</code> event once it has seen the <em>complete</em> matching closing tag, so <code><a class="el" href="classMaximaResponseReader.html#a15931a24b9755320cc7262e040217dc4" title="Handles one complete &lt;wxxml-asciimath&gt;...&lt;/wxxml-asciimath&gt; block: Maxima&#39;s stock ASCII-art 2D displa...">MaximaResponseReader::ReadAsciiMath()</a></code> always receives one whole block in one piece and can render all of it in one uniform style &ndash; before this, <code>ReadMiscText()</code> guessed a chunk's style from whether it happened to start with <code>"(%"</code>, and since chunks are split by socket/timer batching (not by where <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s actual output boundaries are), a block's label line could land in a separate batch than its neighbors and get misclassified into a different (proportional) font, breaking the alignment <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s padding assumed &ndash; root-caused with a raw <code>:lisp-quiet (with-input-from-string ...)</code> / socket-level reproduction (see the debugging technique note above) before the fix, not guessed.</li>
-</ul>
-<h2><a class="anchor" id="autotoc_md46"></a>
-File Formats</h2>
-<ul>
-<li>**<code>.wxmx</code>** &ndash; a ZIP archive holding <code>content.xml</code> (the MathML-like XML) plus the embedded images. The format version lives in <code><a class="el" href="WXMXformat_8h_source.html">src/WXMXformat.h</a></code>.</li>
-<li>**<code>.wxm</code>** &ndash; the plain-text format, read by <code>Format::ParseWXMFile()</code>.</li>
-</ul>
-<h2><a class="anchor" id="autotoc_md47"></a>
-Translations (&lt;tt&gt;locales/&lt;/tt&gt;)</h2>
-<ul>
-<li><b>One combined <code>.po</code> per language, in <code>locales/wxMaxima/</code>, is the file a translator edits.</b> It covers both <a class="el" href="classwxMaxima.html">wxMaxima</a>'s own UI strings (<code>xgettext</code>-extracted from <code>src/**/*.cpp</code>/<code>*.h</code>) and the manual's prose (<code>po4a</code>-extracted from <code>info/wxmaxima.md</code>). <code>locales/wxMaxima/wxMaxima.pot</code>, the template both <code>msgmerge</code> and Crowdin work against, is regenerated as the union of a fresh source scan and <code>locales/manual/wxmaxima.md.pot</code> (<code>msgcat --use-first</code>, preferring <code>wxMaxima.pot</code>'s own header) by the <code>update-locale</code> CMake target.</li>
-<li><b>The xgettext source list is an explicit glob, not a recursive one, and a file it misses loses its strings silently.</b> <code>POT_SOURCE_FILES</code>/ <code>POT_SOURCE_FILES_REL</code> in <code>locales/wxMaxima/CMakeLists.txt</code> list <code>src/*.cpp;src/*.h;src/*/*.cpp;src/*/*.h</code> &ndash; exactly two levels. It was flat <code>src/*</code> until <code>03b16f2d8</code>, so every string under <code>src/cells</code>, <code>src/wizards</code> and <code>src/graphical_io</code> was missing from the POT from 2020-08-05, and <code>src/sidebars</code>/<code>src/dialogs</code> from 2024-01. Cost: ~7000 translations across 21 languages, restored from git history only in 2026-08. <b>Nothing warns about this</b>: xgettext is happy with a short file list, and the POT-drift check in CI regenerates the POT and diffs it, so a broken glob truncates both sides identically and the check passes. Adding a <code>src/&lt;a&gt;/&lt;b&gt;/</code> nesting level would break it again &ndash; <code>check-pot-coverage</code> (a <code>ctest</code>, needs neither a build nor gettext) now fails the build if any source file sits deeper than the glob reaches, or if a file containing a <code>_("...")</code> marker is unreferenced by the committed POT.</li>
-<li><b><a class="el" href="classA.html">A</a> Crowdin sync can silently wipe existing translations if it's built from a stale base &ndash; confirmed twice now (2026-08-05 and 2026-08-10), both times around the same subdir-glob restoration work above, and both times a plain git merge, not a Crowdin misconfiguration found so far.</b> The second incident: PR #2241 ("Restore 7083 translations the flat `src/*` gettext
-  glob had dropped") merged at 19:59:43; Crowdin's own <code>l10n_main2</code> branch (a long-lived branch it force-pushes to repeatedly, see PRs #2187/#2199/ #2239/#2244) had already branched off main at 19:55:40 &ndash; 4 minutes <em>before</em> #2241 &ndash; and didn't re-sync before its own PR #2244 merged 30 minutes later. Confirmed directly from the commit graph, not inferred: <code>git merge-base &lt;l10n_main2 tip&gt; &lt;main-before-#2241&gt;</code> equals that pre-#2241 commit exactly, i.e. Crowdin's new per-language commits were still parented on the stale base. The result once merged: a plain 3-way git merge doesn't understand PO-file semantics, so wherever Crowdin's diff and the restore's diff touched entries in the same file without a textual line conflict, whichever side's hunk landed could silently win &ndash; in this case, largely Crowdin's older, translation-poorer version. Net effect measured with <code>polib</code> (msgid+msgctxt keyed diff, not <code>msgfmt --statistics</code> counts alone, since those can't tell "a translation
-  reverted to worse text" from "line-wrapping changed"): 464 translations across 16 languages went from non-empty to empty, and <em>zero</em> went the other way &ndash; a real regression, not translator churn. Recovered with a surgical text-level patch (locate each entry's own line range via <code>polib</code>'s <code>.linenum</code> in both the pre-regression and current file independently, splice only the <code>msgstr</code> block, leave everything else byte-identical) &ndash; reusing <code>polib</code>'s own serializer to resave the whole file was tried first and rejected: it reformats every line's wrapping, turning a 464-line fix into a ~200KB diff across 16 files that would have buried the actual change completely. If this happens a third time, the fix is on the Crowdin project side (a webhook trigger that also re-syncs sources immediately before generating its PR, not just before the languages it already had), not on <a class="el" href="classwxMaxima.html">wxMaxima</a>'s own git handling &ndash; ask Crowdin support directly, since this session cannot access Crowdin's own dashboard/API to confirm the exact trigger without credentials. <b>It did happen a third time (2026-08-12, PR #2257 from <code>l10n_main2</code>):</b> same shape exactly, <code>merge-base</code> landing before the 464-translation restoration commit (<code>3cf4f9c97</code>) this time instead of before #2241 &ndash; same 464 entries, same 16 languages, zero gained, caught before merging by diffing the PR branch against <code>origin/main</code> with the same msgid+msgctxt-keyed <code>polib</code> technique, this time <em>before</em> merging rather than after. Crowdin claimed to sync hourly regardless. The maintainer switched Crowdin to a fresh <code>l10n_main2</code> -&gt; <code>l10n_main3</code> branch as a first attempted workaround, which "immediately started syncing" &ndash; but this did <em>not</em> fix anything: <code>l10n_main3</code>'s own PR (#2259) forked from <code>7d0407f8c</code>, a commit well after the restoration, yet still carried the exact same 464 empty translations (confirmed the same way, spot-checked down to individual entries, e.g. German's translation of the literal command-line flag <code>"      -X \"--control-stack-size &lt;int&gt;\""</code> &ndash; present and correct, self-identical to the msgid, on <code>main</code>, but back to <code>""</code> on <code>l10n_main3</code>). That ruled out "stale git branch point" as the actual cause, since a fresh branch reproduced it identically. <b>Root cause, confirmed by the maintainer directly with Crowdin: the export had exceeded Crowdin's string-count limit for their free-tier account plan, which made Crowdin silently fall back to an old, pre-restoration translation snapshot instead of erroring or refusing to export</b> &ndash; explaining why recreating the branch changed nothing: the stale state lived in Crowdin's own translation memory, not in which commit its export happened to be based on. The account has since been deleted; both #2257 and #2259 were closed unmerged. If Crowdin integration is ever reconnected, check the account's plan/string-limit status first &ndash; this failure mode gives no visible error on either the Crowdin or the GitHub side, only a silent, correct-looking PR that happens to carry stale content. Added a permanent safety net for this: <code>locales/wxMaxima/check_translations_not_wiped.py</code> (wired into <code>compile_ubuntu.yml</code> as its own fast, standalone <code><a class="el" href="namespacecheck__translations__not__wiped.html">check_translations_not_wiped</a></code> job, no build dependencies needed) does this exact msgid+msgctxt-keyed comparison against <code>origin/main</code> on every push and fails loudly if any translation would go from non-empty to empty &ndash; catching this class of regression in CI before a human has to notice and diff it by hand a fourth time. It only catches "translated
-  text disappeared entirely," not e.g. "translation is now provably
-  worse," and can in principle false-positive if a legitimate, unrelated PR both changes a translatable string's English source text <em>and</em> commits a regenerated <code>.po</code> under the old convention in the same push (the old msgid's entry vanishing under a genuine rename looks identical to it being wiped) &ndash; rare in practice, since this repo's convention is to not casually commit <code>update-locale</code> drift alongside unrelated changes (see the "committing a `make update-locale` run's output" entry below), but worth knowing if this check ever fires on something that turns out to be legitimate.</li>
-<li>**<code>test/check-pot-coverage.cmake</code> needs <code>cmake_policy(SET CMP0057 NEW)</code> explicitly.** It runs in script mode (<code>cmake -P</code>), which does not inherit the top-level <code>CMakeLists.txt</code>'s policy settings &ndash; without this line, <code>if(NOT f IN_LIST covered)</code> hard-errors with "Unknown arguments
-  specified" on every invocation, on any CMake version, confirmed against a clean <code>main</code> checkout (not something introduced by unrelated local changes). <code>IN_LIST</code> needs CMP0057 set to <code>NEW</code> to be recognized as an operator at all in <code>if()</code>; the default/OLD behavior predates that operator's existence.</li>
-<li><b>Don't drop <code>--previous</code> from <code>msgmerge</code>.</b> It is what keeps the <code>#| msgid</code> comment recording what a fuzzy entry used to say, which is how a translator works out <em>why</em> something went fuzzy (<code>00ba34121</code>). <a class="el" href="classA.html">A</a> plain <code>msgmerge</code> discards those comments wholesale and gives no hint it did &ndash; 212 entries' worth in <code>zh_CN.po</code> alone, found only by counting them before and after.</li>
-<li>**<code>po4a</code> must never be pointed at <code>locales/wxMaxima/&lt;lang&gt;.po</code> directly.** It looks like the obvious way to keep the manual's translations inside the combined file (<code>po4a.cfg</code>'s <code>$lang:</code> path <em>was</em> set to <code>locales/wxMaxima/$lang.po</code> at one point), but <code>po4a</code> doesn't treat a <code>.po</code> file as something to add/update entries in - it treats it as <em>its own</em>, and <b>rewrites it wholesale to contain only the entries it itself extracted from <code>info/wxmaxima.md</code>, silently discarding everything else</b>. Confirmed live: a language with 1000 translated UI strings and 69 translated manual strings dropped to 69 (the UI strings gone) after one <code>po4a</code> run against the combined file - and this shipped merged to <code>main</code> before being caught. <code>po4a</code> therefore keeps writing its own <code>locales/manual/&lt;lang&gt;.po</code> (<code>po4a.cfg</code>'s <code>$lang:</code> path), exactly as before the two catalogs were combined; <code>locales/wxMaxima/CMakeLists.txt</code>'s <code>${LANG}_po</code> target runs <code>merge_manual_po.cmake</code> (<code>msgcat --use-first</code>) to fold <code>locales/manual/&lt;lang&gt;.po</code> into <code>locales/wxMaxima/&lt;lang&gt;.po</code> <em>before</em> <code>msgmerge</code>, every time - that script is the only place allowed to write manual content into the combined file. <code>locales/manual/*.po</code> only exists for the languages that actually have a manual translation (not the full <code>locales/wxMaxima/*.po</code> language list) - <code>info/CMakeLists.txt</code> expects a matching <code>info/wxmaxima.&lt;lang&gt;.md</code> to already exist for every language <code>po4a.cfg</code>'s language list names, and doesn't create a fresh empty one, so don't widen that language list to languages that have no manual translation yet without also handling that.</li>
-<li>**<code>po4a.cfg</code>'s manual <code>[type: text]</code> line needs <code>opt:"-o markdown"</code> explicitly** - <code>Locale::Po4a::Text</code>'s own default for that option is <code>1</code>, but that default does not take effect through <code>[type: text]</code>'s normal invocation; confirmed live by extracting the same heading with and without an explicit <code>-o markdown</code>. Without it, every markdown structural element (<code>##</code> headings, list items, ...) is extracted as generic wrapped "Plain
-  text" instead of being recognized as its own no-wrap markdown construct, which is what caused #2047: a translated heading long enough to wrap got a literal newline inserted mid-heading when <code>po4a</code> wrote it back out, turning the second half into a normal paragraph in the rendered manual. The tempting broader fix, <code>opt:"-o neverwrap"</code> (disables wrapping entirely), is a trap: it doesn't just change <em>output</em> wrapping, it changes how <code>po4a</code> <em>segments source paragraphs into msgids</em> (each source line becomes a literal embedded <code>\n</code> in the msgid instead of the paragraph being one reflowed string) - confirmed live it turns 293 cleanly-matched German translations into 2 clean matches + 328 fuzzy, i.e. it invalidates the translation of nearly every multi-line paragraph in the whole manual, for a bug that's specifically about headings. <code>-o markdown</code> alone fixes the reported bug (headings/lists become their own no-wrap entries) with a much smaller, semantically-justified cost: only headings, list items and fenced code blocks need re-confirming as fuzzy (e.g. 293 clean -&gt; 183 clean + 156 fuzzy for German - about 89 of those are headings whose old msgstr still has the now-redundant leading <code>##</code> and its space baked in, since <code>po4a</code> auto-prepends it from the <code>Title ##</code> type instead of storing it in the translated text; the rest are fenced-code-block delimiters <code>po4a</code> now reconstructs itself instead of storing literally, plus a handful of entries that were already fuzzy for unrelated reasons - real source-text edits, not a <code>markdown</code> side effect), not full paragraphs. <b>The old translation text is not deleted</b> (<code>.po</code> keeps the fuzzy msgstr plus the previous msgid in a <code>#|</code> comment) <b>but it stops appearing in the generated manual</b> until a translator re-confirms it - <code>po4a-translate</code> skips fuzzy entries by default the same way <code>msgfmt</code> does for a compiled <code>.mo</code>, falling back to the untranslated English source. Don't describe this fix as lossless to a translator without that caveat: a previously fully-translated heading really does render in English again in <code>info/wxmaxima.&lt;lang&gt;.md</code> until someone reviews the (mostly mechanical: strip the leading <code>#+</code> and the space after it) fuzzy diff. Fixing the wrapping bug and keeping every translation rendering are in tension - there's no <code>po4a</code> option that gets both, since the whole point of <code>-o markdown</code> is to change what a heading's msgid <em>is</em>.</li>
-<li>**<code>locales/wxMaxima/CMakeLists.txt</code>'s <code>${LANG}_po</code> target needs <code>wxMaxima.pot</code> in its own <code>DEPENDS</code>, not just as a plain path string inside a <code>COMMAND</code> argument.** <code>add_custom_command(OUTPUT wxMaxima.pot ...)</code> only creates a file-level build rule; a <em>different</em> custom command (or target) that merely references that output path in a shell argument gets no ordering guarantee from it. Confirmed live: after fixing the manual's extraction to <code>-o markdown</code>, <code>make update-locale</code> kept producing stale results (matching the pre-fix fuzzy/translated counts exactly) because <code>wxMaxima.pot</code> itself hadn't been rebuilt - <code>${LANG}_po</code>'s <code>PRE_BUILD</code> command still consumed yesterday's <code>wxMaxima.pot</code> on disk. Fixed by declaring <code>DEPENDS ${LANG}.po wxMaxima.pot</code> on the <code>add_custom_target(${LANG}_po ...)</code> line.</li>
-<li><b>Committing a <code>make update-locale</code> run's output means committing <em>every</em> language's drift against the current C++ source, not just the fix you're testing.</b> Running it live in this sandbox (to verify the two bugs above) also picked up ~1100 real UI strings that exist in <code>src/**/*.cpp</code>/<code>*.h</code> today but were missing from every committed <code>locales/wxMaxima/*.po</code> and <code>wxMaxima.pot</code> (confirmed genuine, not a sandbox artifact: <code>grep</code>-verified several, e.g. <code><a class="el" href="Configuration_8cpp.html" title="This file defines the class Configuration which serves as a fast configuration storage.">Configuration.cpp</a></code>'s <code>_("  Font cache hits: %ld")</code>, actually exist in the source at <code>HEAD</code> - <code>xgettext</code> just hadn't been re-run against the source in a while before <code>wxMaxima.pot</code> was last committed). That's real, legitimate drift, but it's a separate concern from a <code>po4a</code>-pipeline bug fix - bundling ~1100 new untranslated strings across 24 languages into a bugfix commit buries the actual fix and forces reviewers (translators included) to wade through unrelated noise. After verifying a <code>po4a</code>/CMake fix works end-to-end in the build directory, <code>git checkout -- locales/wxMaxima/*.po locales/wxMaxima/wxMaxima.pot</code> to drop that incidental drift back to the committed state before committing, keeping only the actual pipeline files (<code>po4a.cfg.in</code>, the <code>CMakeLists.txt</code>s, <code>merge_manual_po.cmake</code>) plus whatever's scoped to the manual itself (<code>locales/manual/*.po</code>, <code>locales/manual/wxmaxima.md.pot</code>, <code>info/wxmaxima.&lt;lang&gt;.md</code>). The UI-string staleness is a legitimate follow-up <code>make update-locale</code> run of its own, on its own commit.</li>
-<li><b>Don't run this sandbox's stock <code>po4a</code> (0.69) against real translated content.</b> See <code>CheckPo4aVersion.cmake</code>'s corruption warning above &ndash; verifying a change to the translation <em>pipeline</em> (<code>po4a.cfg.in</code>/<code>merge_manual_po.cmake</code>/the CMake wiring) is fine without running <code>po4a</code> itself, but regenerating actual <code>.po</code>/<code>.md</code> output needs a real <code>po4a</code> &gt;= 0.70. It wasn't reachable via any of apt (only has 0.69), Debian's package archive, or po4a's own GitHub releases (both blocked by this sandbox's proxy) - but a source tarball of a current release, fetched outside the sandbox and handed to the agent as a file, runs perfectly well unpacked with no install step beyond <code>PERL5LIB=&lt;unpacked-dir&gt;/lib</code> pointing at its <code>Locale::Po4a::*</code> modules; the <code>po4a</code>/<code>po4a-updatepo</code>/ <code>po4a-translate</code>/etc. scripts at the tarball's top level need nothing else to work standalone, e.g. <code>PERL5LIB=lib ./po4a --version</code>. Regenerating translated content live and diffing it (<code>msgfmt --statistics</code> before/after per language, matching translated-message counts) is how both bugs above were actually caught, not guessed from reading <code>Locale::Po4a::Text</code>'s source.</li>
-<li>**<code>git clean -fd</code> after <code>git checkout --</code> on a directory wipes untracked files in it too, including ones you meant to keep** (e.g. a new <code>locales/manual/&lt;lang&gt;.po</code> restored from a scratch copy, or a brand new <code>.cmake</code> helper script that was never committed yet) - it doesn't distinguish "test-run droppings" from "uncommitted new work" by intent, only by whether <code>git add</code> has seen the path yet. Prefer reverting only the specific files that are actually wrong (or committing work-in-progress to a scratch commit first) over a blanket <code>git checkout -- &lt;dir&gt; &amp;&amp; git clean -fd &lt;dir&gt;</code> once a directory has a mix of both kinds of changes in it.</li>
-</ul>
-<h1><a class="anchor" id="autotoc_md48"></a>
-Conventions &amp; Standards</h1>
-<ul>
-<li><b>Git Environment:</b> Note that running <code>git diff</code> might launch the visual diff tool <code>meld</code> instead of outputting to the terminal. Always use <code>git diff --no-ext-diff</code> if you need terminal output.</li>
-<li><b><a class="el" href="classString.html" title="A String class.">String</a> Literals &amp; Translations:</b> Use the <code>wxS()</code> macro for all string literals and <code>_()</code> for user-facing translatable strings.</li>
-<li><b>Logging:</b> Use <code>wxLogMessage()</code> for debugging; messages are visible in <b>View -&gt; Toggle Log Window</b> or by using the option <code>--logtostderr</code>.</li>
-<li><b>Asynchronous Sidebars &amp; Safety:</b> Sidebars (TOC, Variables Pane) update asynchronously. Always validate <code><a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a></code> pointers (using <code>m_tree-&gt;Contains()</code>) before use.</li>
-<li><b>Long-Lived <a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a> References:</b> Anything that keeps a reference to a <code><a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a></code> or <code><a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a></code> beyond the current call &ndash; undo/redo actions, the evaluation queue, the selection, the sidebars, a cached "last clicked" cell &ndash; MUST hold it as a <code><a class="el" href="classCellPtr.html" title="A weak non-owning pointer that becomes null whenever the observed object is destroyed.">CellPtr</a>&lt;...&gt;</code>, never as a raw pointer. <code><a class="el" href="classCellPtr.html" title="A weak non-owning pointer that becomes null whenever the observed object is destroyed.">CellPtr</a></code> derives from <code><a class="el" href="classObserved.html" title="Objects deriving from this class can be observed by the CellPtr.">Observed</a></code> and nulls itself when the cell is destroyed, so a stale reference reads as <code>nullptr</code> instead of dangling; null-check it when consuming it, because the cell may have died since it was stored. <a class="el" href="classA.html">A</a> raw <code><a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a> *</code> is fine only for the duration of a single function or event.</li>
-<li><b><a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a> UUIDs &amp; Navigation:</b> Cells have unique <code>m_uuid</code>. Filenames support <code>#UUID</code> fragments.</li>
-<li><b>Forward Compatibility:</b> <code>ToXML()</code> implementations MUST call <code>GetXMLFlags()</code> and include its output in the opening tag to preserve unknown attributes.</li>
-<li><b>Serialization Tags:</b> Some cells use shortened tags (e.g., <code><a class="el" href="classLimitCell.html">LimitCell</a></code> uses <code>&lt;lm&gt;</code>). Verify in <code><a class="el" href="MathParser_8cpp.html" title="This file defines the class MathParser that reads wxmx data and math from Maxima.">MathParser.cpp</a></code> before modifying.</li>
-<li><b>Gnuplot Probe:</b> MUST be done asynchronously (e.g., <code>wxEXEC_ASYNC</code>). Synchronous execution blocks the UI and can disrupt the Linux global menu system.</li>
-<li><b>Variable Escaping:</b> Use <code><a class="el" href="classMaxima.html#ae61a721a9a8f85d80dcdde2fe6228d4e" title="Convert a human-readable maxima variable name to one maxima understands.">Maxima::EscapeVarnameForMaxima</a></code> for characters like <code>,</code>, <code>°</code>, and special symbols. <a class="el" href="classA.html">A</a> digit at the <em>start</em> of a variable name must be escaped (e.g., <code>\1a</code>).</li>
-<li><b><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> Restart (Windows):</b> Restarting requires a manual reset of the network client (<code>m_client.reset()</code>) and streams in <code>KillMaxima</code> (which lives in <code><a class="el" href="classMaximaProcessManager.html" title="The Maxima process/socket lifecycle extracted from the wxMaxima god class.">MaximaProcessManager</a></code>, not in <code><a class="el" href="classwxMaxima.html">wxMaxima</a></code> any more) to avoid socket state errors.</li>
-<li><b><a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a> Search Logic:</b> Traverse in visual order: Prompt → Editor → Output (Forward) or Output → Editor → Prompt (Reverse). Resume from current caret position.</li>
-<li><b>Layout Timeout:</b> Complex output can trigger a timeout (configurable in Options), replacing slow-to-render cells with a warning.</li>
-<li><b>C++ Standard:</b> The project uses <b>C++20</b>. To support users on older operating systems (like Debian-oldstable or RHEL), <a class="el" href="classwxMaxima.html">wxMaxima</a> aims to stay approximately 10 years behind the current C++ standard.</li>
-<li><b>wxWidgets Version:</b> Maintain compatibility with wxWidgets 3.0.5 where possible. Avoid features only available in 3.1+ (e.g., use <code>MakeAbsolute()</code> + <code>GetFullPath()</code> instead of <code>GetAbsolutePath()</code>).</li>
-<li><b>Sizer Flags Are Different Enum Types:</b> <code>wxDirection</code> (<code>wxLEFT</code>/<code>wxRIGHT</code>/<code>wxALL</code>/...), <code>wxAlignment</code> (<code>wxALIGN_*</code>) and <code>wxStretch</code> (<code>wxEXPAND</code>/...) are three distinct unscoped enums; OR'ing two of them directly (e.g. <code>wxALIGN_CENTER_VERTICAL | wxALL</code>) is deprecated in C++20 and GCC warns <code>-Wdeprecated-enum-enum-conversion</code>. Fix by casting the <em>first</em> operand of the OR-chain to <code>int</code> (e.g. <code>static_cast&lt;int&gt;(wxALIGN_CENTER_VERTICAL) | wxALL</code>) &ndash; since <code>|</code> is left-associative, this makes every subsequent operation <code>int | enum</code>, which is unambiguous and unwarned, without needing to touch the rest of the chain. Only the leftmost token needs the cast, however many differently-typed flags follow.</li>
-<li>**<code>[[maybe_unused]]</code> on data members and GCC &lt; 12:** GCC before version 12 doesn't support <code>[[maybe_unused]]</code> on non-static data members at all and warns &lsquo;'maybe_unused&rsquo; attribute ignored [-Wattributes]<code>regardless of whether the member is actually used (reproduced directly against</code>g++-11<code>; fixed by</code>g++-12<code>). Since the attribute is still needed for Clang (</code>-Wunused-private-field<code>), don't just delete it -- wrap the declaration in</code>if defined(<b>GNUC</b>) &amp;&amp; !defined(<b>clang</b>) &amp;&amp; <b>GNUC</b> &lt; 12<code>/</code>#pragma GCC diagnostic push/ignored "-Wattributes"<code>...</code>#pragma GCC diagnostic pop<code>/</code>endif<code>(see</code><a class="el" href="SvgBitmap_8h.html" title="This file declares the class Image.">SvgBitmap.h</a><code>,</code><a class="el" href="wxMathml_8h.html" title="This file declares all the wizards the draw sidepane needs.">wxMathml.h</a><code>,</code><a class="el" href="Printout_8h.html" title="This file declares the class MathPrintOut.">graphical_io/Printout.h</a><code>).</code></li>
-<li><code>**CI Warnings Live On the Non-</code>-Werror<code>Jobs:**</code>compile_latest_and_test<code>and</code>compile_without_webview&lt;tt&gt;(Ubuntu) build with-Werror<code>, so they can't show warnings by construction -- check</code>compile_2204<code>(Ubuntu 22.04, plain</code>-Wall -Wextra<code>, GCC 11) for real warnings that survive to a release build. Don't assume that job's warning list is exhaustive, though: e.g. the</code>[[maybe_unused]]<code>-on-a-data-member GCC&lt;12 warning above showed up for</code><a class="el" href="Printout_8h.html" title="This file declares the class MathPrintOut.">Printout.h</a><code>in one such log but not for the identical pattern in</code><a class="el" href="SvgBitmap_8h.html" title="This file declares the class Image.">SvgBitmap.h</a><code>/</code><a class="el" href="wxMathml_8h.html" title="This file declares all the wizards the draw sidepane needs.">wxMathml.h</a><code>in the same run, for reasons that weren't tracked down (not precompiled headers --</code>WXM_ENABLE_PRECOMPILED_HEADERS<code>defaults</code>OFF<code>) -- a clean local build with</code>g++-11 -Wall -Wextra<code>is the more reliable check for this specific class of warning.</code></li>
-<li><code>**</code><a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a><code>Bitfields Use C++20 Default Member Initializers, Not</code>InitBitFields_ClassName()<code>:** Every per-class flag bit-field (</code><a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a><code>,</code><a class="el" href="classEditorCell.html" title="This class defines what the user sees as input cell.">EditorCell</a><code>,</code><a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a><code>,</code><a class="el" href="classTextCell.html" title="A Text cell.">TextCell</a><code>,</code><a class="el" href="classMatrCell.html" title="A Cell that displays a matrix.">MatrCell</a><code>, and the rest of</code>src/cells/<code>) declares its default inline, e.g.</code>bool m_foo : 1 = false;<code>. The older pattern -- an</code>InitBitFields_ClassName()<code>method called from the constructor body, with each field tagged</code>/* InitBitFields_ClassName */<code>-- predated C++20 support for bit-field default member initializers and has been fully removed (2026-08); don't reintroduce it for new flags. Classes with zero bit-fields of their own no longer carry an empty stub either. Before folding an existing full-size</code>bool m_foo;<code>into a class's bitfield, check (1) nothing takes its address (</code>&amp;m_foo<code>doesn't work on a bit-field member) and (2) it's only touched from the GUI thread (no cross-thread</code>bool<code>atomicity/tearing expectations) -- worksheet cells are not thread-shared, but double-check call sites rather than assuming. **Declaration order matters more than usual here**: C++ initializes members in declaration order, not constructor-init-list order, so a bit-field read by a *later*-declared member's own initializer (e.g.</code><a class="el" href="classIntervalCell.html#ae0cbccc4488de70d3ea4f15f38815878" title="Does the &quot;-inf&quot; left end mean the opening bracket should point left?">IntervalCell::m_leftBracketOpensLeft</a><code>/</code>m_rightBracketOpensRight<code>, read by the</code>m_openBracket<code>/</code>m_closeBracket<code>initializers) must stay declared *before* those members -- relocating it next to an unrelated bitfield group to save a byte is undefined behavior (reading the bit-field before it's initialized), not just a style choice, caught before it shipped by tracing the actual initialization order rather than trusting the mem-initializer-list order. When a field can't move, bit-fielding it in place still works: two adjacent</code>: 1<code>declarations pack into a shared byte regardless of position.</code></li>
-<li><code>**Tab Characters in</code><a class="el" href="classEditorCell.html" title="This class defines what the user sees as input cell.">EditorCell</a><code>:** <a class="el" href="classA.html">A</a></code>'\t'<code>is a real, single character in</code>m_text<code>(see</code><a class="el" href="classEditorCell.html#a67ca5cd76bd14de0691bbb80d7c54b68" title="Normalize line endings.">EditorCell::NormalizeLineEndings()</a><code>, which replaced the old</code>TabExpand()<code>that irreversibly rewrote every tab to 1-4 spaces on input/paste/load). It is expanded to the next 4-column tab stop -- one column being the width of a space glyph in the current font -- only where text becomes pixels, via</code>EditorCell::NextTabStop(startX)<code>/</code>MeasureTextWidth(startX, text)<code>. Tab width is **position-dependent**, the one thing</code>GetTextExtent()<code>/</code>GetTextSize()<code>cannot compute on their own (unlike every other character), so it can never be cached the way</code>StyledText::SetWidth()&lsquo; caches other tokens&rsquo; widths. <code><a class="el" href="classMaximaTokenizer.html" title="Maximatokenizer breaks down maxima input to individual commands.">MaximaTokenizer</a></code> guarantees a tab is always its own isolated, single-character token (never merged into a space run, mirroring how a newline is already its own token) &ndash; this is <em>load-bearing</em>: every <code>m_styledText</code>-based site (<code>Draw()</code>, <code>Recalculate()</code>, <code>GetLineWidth()</code>, <code>SelectPointText()</code>'s code-cell branch, <code>StyleTextCode()</code>) only needs a <code>text == wxS("\t")</code> equality check as a result, never substring splitting. Prose/text cells don't go through <code><a class="el" href="classMaximaTokenizer.html" title="Maximatokenizer breaks down maxima input to individual commands.">MaximaTokenizer</a></code> at all, so <code>EditorCell::StyleTextTexts()</code> uses its own splitter, <code>PushTextLine()</code>, to get the same isolation guarantee for a tab embedded in an otherwise plain line of text. Sites that measure a raw <code>m_text</code> substring instead of a single token (<code>MarkSelection()</code>, <code>MixedDirectionOffset()</code>, <code>StyleTextTexts()</code>'s wrap check) go through <code>MeasureTextWidth()</code> instead, which splits on &lsquo;&rsquo;\t'<code>internally since a substring can still have one embedded anywhere. Left/Right arrow and Delete need **no special-casing** for tabs -- they already move/delete exactly one</code>m_text<code>character, which is now correct automatically. The plain</code>WXK_BACK` case's old "gobble up to 4 trailing spaces" shim was a workaround for the old space-expanded-tab world and is gone; a real tab deletes in one plain single-character backspace like anything else.</li>
-<li>**<code><a class="el" href="classTextCell.html#a22ee78b7d0af748e1557c2893b50cdbb" title="Convert this cell to its LaTeX representation.">TextCell::ToTeX()</a></code>'s <code>TS_SPECIAL_CONSTANT</code> branch is a hardcoded allowlist with a silent fall-through, not a general style handler (GH #972):** <code>&lt;s&gt;</code> in wxMathML.lisp is used for <code>pi</code>/<code>i</code>/<code>e</code>/<code>inf</code>/ <code>minf</code> and, separately, for the "d" of an integral's "dx"/"d\theta"/... (<code>wxxml-int</code>) &ndash; all five constants get an explicit <code>if/else if</code>, but "d" didn't, so it fell through to the branch's final <code>else return text;</code> as a bare, unstyled character instead of ever reaching the later <code>\ensuremath{\mathrm{...}}</code> wrapping code that runs for <code>TS_VARIABLE</code>/ <code>TS_GREEK_CONSTANT</code>/<code>TS_SPECIAL_CONSTANT</code> further down the function &ndash; that later code is dead for every <code>TS_SPECIAL_CONSTANT</code> value, since the early branch always returns first. Fixed by adding an explicit <code>d</code> case returning <code>\mathrm{d}</code> (no <code>\ensuremath{}</code> needed: it's only ever emitted already inside <code><a class="el" href="classIntCell.html#a8d8b553f133bc75b8446de4f54cbb3a5" title="Convert this cell to its LaTeX representation.">IntCell::ToTeX()</a></code>'s math-mode string, which also already supplies the separating <code>\,</code> and the space ahead of it, so don't duplicate that here). Adding a new special case to this list resurfaced a second, easy-to-miss coupling: <code><a class="el" href="classTextCell.html#a22ee78b7d0af748e1557c2893b50cdbb" title="Convert this cell to its LaTeX representation.">TextCell::ToTeX()</a></code>'s own multiplication-dot logic (for e.g. the denominator of <code>d/dt</code> or a <code>dx*dy</code>-style differential product) identifies "the previous cell was that same 'd'" by comparing <code>GetPrevious()-&gt;ToTeX() == wxS("d")</code> &ndash; once "d" stopped returning the literal string <code>"d"</code>, this comparison went permanently false. Any <code>TS_SPECIAL_CONSTANT</code> case whose <code>ToTeX()</code> output no longer equals its raw text needs same-file call sites recompared with <code>ToString()</code> (returns the untransformed <code>m_text</code>) instead of <code>ToTeX()</code>, not just the one place a new case is added.</li>
-<li>**<code><a class="el" href="classTreeUndoAction.html" title="The description of one action for the undo (or redo) command.">TreeUndoAction</a></code>'s discriminant model, and adding a fourth action kind (GH #266, fold/unfold undo):** <code><a class="el" href="classTreeUndoAction.html" title="The description of one action for the undo (or redo) command.">TreeUndoAction</a></code> (<code><a class="el" href="TreeUndoAction_8h.html" title="Declares TreeUndoAction, the immutable record of one cell-tree undo/redo step, and the UndoActions li...">src/TreeUndoAction.h</a></code>) is a single, non-polymorphic struct, not an <code>Action</code>/<code>Undo()</code>/<code>Redo()</code> class hierarchy &ndash; <code><a class="el" href="group__UndoBufferFill.html#ga40ec7f7067b8bbf2f800607e61f658cd" title="Undo a tree operation.">Worksheet::TreeUndo()</a></code> (<code><a class="el" href="Worksheet_8cpp.html" title="This file defines the class Worksheet.">Worksheet.cpp</a></code>) tells apart the three original action kinds (text change, cell insertion, cell deletion) by which of <code>m_newCellsEnd</code>/<code>m_oldCells</code>/neither is set, not by a type tag. Adding fold/unfold as a fourth kind followed the same style rather than introducing polymorphism for a fourth fixed case: a <code>std::optional&lt; FoldDirection&gt;</code> field (<code>FoldDirection::Folded</code>/<code>Unfolded</code>), checked in <code>TreeUndo()</code>'s dispatch <em>before</em> the existing <code>m_oldCells</code>-vs-text-change fallback (a <code>std::nullopt</code> field, like the others, defaults via the member's own default constructor &ndash; no explicit initializer needed in the three original constructors). Undoing a fold/unfold just applies the opposite direction to the same cell (<code>m_start</code>), which is naturally reversible/re-doable through the same generic replay loop the other three kinds already use (<code><a class="el" href="group__UndoBufferFill.html#ga40ec7f7067b8bbf2f800607e61f658cd" title="Undo a tree operation.">Worksheet::TreeUndo()</a></code>'s do-while + swapped-stacks trick already makes redo "undo, but backwards" for free). <b>Two things worth getting right if you touch this again:</b><ol type="1">
-<li><code><a class="el" href="classGroupCell.html#a9a0bfd0bc4dbb4081891d162fcdf3834" title="Fold this cell.">GroupCell::Fold()</a></code>/<code>Unfold()</code> (<code><a class="el" href="GroupCell_8cpp.html" title="This file defines the class GroupCell.">GroupCell.cpp</a></code>) are the low-level primitives (<code><a class="el" href="classCellList.html#abade9123a22d407930d9b6964a8645d8" title="Tears out a cell range and returns the list thus formed.">CellList::TearOut</a></code>/<code>SpliceInAfter</code>, same as <code>DeleteRegion</code>/ <code>InsertGroupCells</code> use) and do <b>not</b> themselves record undo &ndash; only <code><a class="el" href="classWorksheetDocument.html#ae8466e5a5fe816856290a69e9d75021e" title="Fold which; see GroupCell::Fold().">WorksheetDocument::Fold()</a></code>/<code>Unfold()</code>/<code>ToggleFold()</code>/<code>FoldAll()</code>/ <code>UnfoldAll()</code> do, since only <code><a class="el" href="classWorksheetDocument.html" title="The view-independent state and commands of an edited worksheet document.">WorksheetDocument</a></code> owns the <code><a class="el" href="classTreeUndoManager.html" title="Owns the cell-tree undo/redo stacks and the active-cell snapshot.">TreeUndoManager</a></code>. Anywhere that needs a fold/unfold NOT to be independently undoable (the automatic auto-unfold in <code>RevealHidden()</code>, and the "make room" auto-unfold in <code><a class="el" href="Worksheet_8cpp.html" title="This file defines the class Worksheet.">Worksheet.cpp</a></code>'s new-cell-insertion logic when the h-caret sits inside a folded ancestor) must keep calling the raw <code><a class="el" href="classGroupCell.html#a9a0bfd0bc4dbb4081891d162fcdf3834" title="Fold this cell.">GroupCell::Fold()</a></code>/<code>Unfold()</code> directly, not the <code><a class="el" href="classWorksheetDocument.html" title="The view-independent state and commands of an edited worksheet document.">WorksheetDocument</a></code>-level wrappers, or it'll silently start occupying an undo slot it shouldn't.</li>
-<li><code><a class="el" href="classTreeUndoManager.html#ab49d510704fe9320ec7781fc30d8d61b" title="Mark the newest undo action as part of the following atomic action.">TreeUndoManager::AppendAction()</a></code>'s ordering is easy to get backwards: since actions are pushed with <code>emplace_front</code> (newest at the front), marking an entry's <code>m_partOfAtomicAction = true</code> means "when the entry
-     pushed *after* me gets undone, keep going and undo me too" &ndash; so to chain N actions (e.g. every cell "Fold All" actually folded) into one atomic Ctrl+Z, call <code>AppendAction()</code> after each push <em>except the last-pushed one</em> (see <code>WorksheetDocument::RecordFoldUndo()</code>), not after the first. <a class="el" href="classA.html">A</a> pre-existing unit test (<code><a class="el" href="test__TreeUndo_8cpp.html" title="Regression tests for the worksheet&#39;s cell-tree undo/redo (the TreeUndo_* subsystem of Worksheet).">test/unit_tests/test_TreeUndo.cpp</a></code>, "Undoing an insertion whose cell was folded away...") had to switch from <code>g_ws-&gt;ToggleFold()</code> to the raw <code>section-&gt;Fold()</code> once folding became independently undoable: it was relying on folding <em>not</em> pushing its own undo action so that a single <code>TreeUndo()</code> call would reach past it to the insertion underneath &ndash; exactly the kind of test that silently encodes an old architectural assumption and breaks the moment that assumption stops holding, worth checking for before assuming "existing tests pass" means "no behavior changed."</li>
+- **"Copy as HTML" (GH #2265/#2266/#2267) &amp;ndash; &lt;tt&gt;WorksheetExport::
+  SelectionToSelfContainedHTML()&lt;/tt&gt; / &lt;tt&gt;Worksheet::CopyHTML()&lt;/tt&gt;:** a right-click
+  context menu item placing a &lt;em&gt;self-contained&lt;/em&gt; HTML document on the
+  clipboard (inline &lt;tt&gt;\&lt;style\&gt;&lt;/tt&gt;, every image as a base64 &lt;tt&gt;data:&lt;/tt&gt; URI, no
+  external file references at all) &amp;ndash; unlike &lt;tt&gt;ExportToHTML()&lt;/tt&gt;'s on-disk
+  export, which deliberately writes a separate &lt;tt&gt;.css&lt;/tt&gt; file and an
+  &lt;tt&gt;_htmlimg/&lt;/tt&gt; directory next to the &lt;tt&gt;.html&lt;/tt&gt;. Reuses &lt;tt&gt;ExportCodeCell()&lt;/tt&gt;/
+  &lt;tt&gt;ExportOtherCell()&lt;/tt&gt; (the same per-GroupCell renderers &lt;tt&gt;ExportToHTML()&lt;/tt&gt;
+  uses) completely unchanged, rather than duplicating them, by pointing
+  their &lt;tt&gt;imgDir&lt;/tt&gt; at a fresh private scratch directory and post-processing
+  the result:
+  - Images still have to be rendered to a real file (&lt;tt&gt;Svgout&lt;/tt&gt;,
+    &lt;tt&gt;WorksheetExport::CopyToFile&lt;/tt&gt;, &lt;tt&gt;ImgCellBase::ToImageFile&lt;/tt&gt;,
+    &lt;tt&gt;AnimationCell::ToGif&lt;/tt&gt; all only know how to write to a path &amp;ndash; same
+    constraint &lt;tt&gt;OutCommon.cpp&lt;/tt&gt;'s &lt;tt&gt;PrivateTempDir()&lt;/tt&gt; documents for the
+    SVG/EMF clipboard flavors), so &lt;tt&gt;MakeSelfContainedHtmlTempDir()&lt;/tt&gt; (a
+    small helper local to &lt;tt&gt;WorksheetExport.cpp&lt;/tt&gt;, deliberately &lt;em&gt;not&lt;/em&gt; shared
+    with &lt;tt&gt;OutCommon.cpp&lt;/tt&gt;'s own &lt;tt&gt;PrivateTempDir()&lt;/tt&gt;, which lives in a
+    different translation unit and isn't exposed via a header) creates one.
+  - &lt;tt&gt;InlineImagesAsDataURIs()&lt;/tt&gt; then rewrites every &lt;tt&gt;HtmlImageTag()&lt;/tt&gt;-
+    generated &lt;tt&gt;src="..."&lt;/tt&gt; into a &lt;tt&gt;data:&lt;/tt&gt; URI by reading the matching file
+    back out of that directory and base64-encoding it
+    (&lt;tt&gt;wxBase64Encode()&lt;/tt&gt;). It doesn't need to know the exact
+    &lt;tt&gt;\&lt;prefix\&gt;_htmlimg/\&lt;prefix\&gt;_\&lt;N\&gt;\&lt;ext\&gt;&lt;/tt&gt; naming convention
+    &lt;tt&gt;HtmlImageTag()&lt;/tt&gt; bakes into the HTML text: every writer above always
+    saves the real file &lt;em&gt;flat&lt;/em&gt;, as &lt;tt&gt;\&lt;imgDir\&gt;/\&lt;prefix\&gt;_\&lt;N\&gt;\&lt;ext\&gt;&lt;/tt&gt; (no
+    &lt;tt&gt;_htmlimg&lt;/tt&gt; component &amp;ndash; that only matters for the on-disk exporter's
+    &lt;em&gt;relative&lt;/em&gt; HTML path), so the two share the same basename and a plain
+    "look up whatever comes after the last `/`" is sufficient.
+  - The stylesheet is generated by the exact same &lt;tt&gt;WriteHtmlStyleSheet()&lt;/tt&gt;
+    the on-disk exporter uses, but into a &lt;tt&gt;wxStringOutputStream&lt;/tt&gt; instead of
+    a file &amp;ndash; unlike images, wx has no "only writes to a real path"
+    constraint for plain text, so no temp file is needed for the CSS at
+    all.
+  - The scratch directory is removed (&lt;tt&gt;wxFileName::Rmdir(...,
+    wxPATH_RMDIR_RECURSIVE)&lt;/tt&gt;) before the function returns, every time &amp;ndash;
+    the whole point is that nothing the clipboard payload references lives
+    outside the payload itself.
+  - &lt;tt&gt;MakeSelfContainedHtmlTempDir()&lt;/tt&gt; mirrors &lt;tt&gt;PrivateTempDir()&lt;/tt&gt;'s graceful
+    fallback: if &lt;tt&gt;Dirstructure::UserConfDir()&lt;/tt&gt; is empty &amp;ndash;
+    &lt;strong&gt;always the case in every unit test binary&lt;/strong&gt;, since that string is
+    only ever populated by the &lt;tt&gt;Dirstructure&lt;/tt&gt; member &lt;tt&gt;wxMaxima&lt;/tt&gt; itself
+    constructs (&lt;tt&gt;wxMaxima.h&lt;/tt&gt;'s &lt;tt&gt;m_dirstruct&lt;/tt&gt;), and no unit test builds a
+    full &lt;tt&gt;wxMaxima&lt;/tt&gt; app object &amp;ndash; &lt;tt&gt;wxFileName::CreateTempFileName()&lt;/tt&gt; is
+    called with a bare prefix instead of a rooted path, which makes it fall
+    back to its own default (system) temp location. &lt;tt&gt;test_WorksheetClipboard.cpp&lt;/tt&gt;
+    checks both possible locations for this reason (see its
+    &lt;tt&gt;HtmlClipTempEntryCount()&lt;/tt&gt;), not just &lt;tt&gt;Dirstructure::UserConfDir()&lt;/tt&gt;.
+  - Clipboard format: a single &lt;tt&gt;wxHTMLDataObject&lt;/tt&gt; (wx's own portable
+    abstraction for &lt;tt&gt;wxDF_HTML&lt;/tt&gt;/&lt;tt&gt;CF_HTML&lt;/tt&gt;/&lt;tt&gt;text/html&lt;/tt&gt;, already used
+    elsewhere in this file for the MathML-as-HTML clipboard flavor &amp;ndash; see
+    &lt;tt&gt;Worksheet::CopyMathML()&lt;/tt&gt;) plus a plain-text fallback, matching that
+    same function's &amp;lsquo;+ wxS(&amp;rsquo;\0')` workaround for a wx string-truncation
+    quirk. Unlike RTF (GH #2264, immediately above/below this entry
+    depending on merge order), &lt;tt&gt;wxHTMLDataObject&lt;/tt&gt; needed no equivalent
+    three-format workaround: wx already handles the platform-specific
+    &lt;tt&gt;CF_HTML&lt;/tt&gt; wrapper header internally.
+  - Verified two ways: &lt;tt&gt;test_WorksheetClipboard.cpp&lt;/tt&gt;'s new SCENARIOs pin
+    the structural invariants (inline &lt;tt&gt;\&lt;style\&gt;&lt;/tt&gt;, no &lt;tt&gt;\&lt;link
+    rel="stylesheet"\&gt;&lt;/tt&gt;, no &lt;tt&gt;src="</code> other than <code>data:</code>, scratch-dir cleanup, null-range safety) directly against <code>SelectionToSelfContainedHTML()</code> without touching the real clipboard (same reasoning as the rest of that file). Separately, a <b>live</b> end-to-end check in a real Xvfb + fluxbox session (a window manager is required here &ndash; unlike most of this file's other Xvfb checks, right-clicking to open a context menu and navigating it needs real window-manager focus/stacking behavior, which a bare <code>Xvfb</code> without any WM doesn't provide) drove the actual app: typed <code>wxdraw2d(explicit(sin(x),x,0,10))$</code>, evaluated it for a real rendered plot, right-clicked the group cell, clicked "Copy as
+    HTML", and read the X clipboard back with <code>xclip -o -selection clipboard -t text/html</code> &ndash; confirming a real <code>data:image/png;base64,</code> payload, zero non-<code>data:</code> <code>src=</code> attributes, zero leaked <code>htmlclip</code> temp-path fragments, and no leftover scratch directory afterward.</li>
+<li>**"ASCII maths" style not actually defaulting to a monospace font &ndash; two independent bugs stacked, and the second one made the first one look unfixable while debugging it.** <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s own ASCII-art 2<a class="el" href="classD.html">D</a> printer (see "ASCII-art 2D display" further down this file) pads multi-line output with literal spaces assuming every character is the same width, so <code>TS_ASCIIMATHS</code> needs a genuinely fixed-pitch font, not just one that happens to look monospace-ish.<ol type="1">
+<li><code><a class="el" href="classStyles.html#a6e78a45506b36a6e26cd9ffecfa0d7cd" title="Reset every style to wxMaxima&#39;s built-in (light) defaults.">Styles::SetDefaults()</a></code> used to construct <code>wxFont(10, wxFONTFAMILY_MODERN, ...)</code> and use whatever face name that resolved to &ndash; already flagged in the code as <code>// TODO It's a fat chance that this font actually will be monospace.</code> On this sandbox's GTK/Pango setup it resolved to plain "Sans", confirmed via <code>wxFont::IsFixedWidth()</code> returning false. Fixed with a new <code>MakeMonospaceFont()</code> helper (<code><a class="el" href="Styles_8cpp.html" title="This file defines the class Styles.">Styles.cpp</a></code>, anonymous namespace) that tries a list of well-known monospace font names through <code>wxFontEnumerator::IsValidFacename()</code> first (an actual "is this
+     installed" check, not a family hint) and only falls back to the loose <code>wxFONTFAMILY_TELETYPE</code> hint if none of them are installed.</li>
+<li>Fixing #1 alone changed nothing observable, and re-verifying it via a fresh <code><a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a> cfg;</code> kept showing the OLD "Sans" default no matter how the fix was re-checked &ndash; confirmed with a temporary trace across <code><a class="el" href="classStyles.html#a6e78a45506b36a6e26cd9ffecfa0d7cd" title="Reset every style to wxMaxima&#39;s built-in (light) defaults.">Styles::SetDefaults()</a></code> (correctly computed "DejaVu Sans Mono") and immediately after <code><a class="el" href="classConfiguration.html#ac45a218b4f09c6a4c649e0f875dbbe44" title="Read the config from the wxConfig object.">Configuration::ReadConfig()</a></code> (back to "Sans"). Root cause: <code><a class="el" href="classStyle.html#af999d8bd639fdbd1fbb5c65023d8d286" title="Read this style from a config source.">Style::Read()</a></code> (<code><a class="el" href="TextStyle_8cpp.html" title="This file implements the text style system.">cells/TextStyle.cpp</a></code>) had an <code>else SetFontName(wxNORMAL_FONT-&gt;GetFaceName())</code> branch that fired whenever a style's <code>fontname</code> key was missing from the persisted config &ndash; which is the <em>common</em> case, true for every user who never explicitly changed a font in Options. Since <code><a class="el" href="classConfiguration.html#ac45a218b4f09c6a4c649e0f875dbbe44" title="Read the config from the wxConfig object.">Configuration::ReadConfig()</a></code> always calls <code>ReadStyles()</code> (which calls <code><a class="el" href="classStyles.html#a0ac30569a42bbdae9cabd36ed6475b83" title="Read every persisted style from config.">Styles::Read()</a></code> for every style) immediately after <code>InitStyles()</code>/<code>SetDefaults()</code>, this silently clobbered every style's just-picked default font &ndash; not only <code>TS_ASCIIMATHS</code>'s &ndash; with one generic UI font, on every fresh install. Every <em>other</em> field in <code><a class="el" href="classStyle.html#af999d8bd639fdbd1fbb5c65023d8d286" title="Read this style from a config source.">Style::Read()</a></code> already matched its own documented contract ("Only touches the attributes that were
+     successfully read. Remaining attributes are unchanged.") by simply having no <code>else</code> branch at all; only <code>fontname</code> violated it. Fixed by deleting the <code>else</code> branch, matching the pattern already used by every sibling field in the same function.</li>
+<li><b>This second bug is also why a stale <code>wxConfig</code> file can permanently hide a fixed default during debugging, and cost real time here before being recognized.</b> <code>wxConfig::Get()</code> in an ad hoc unit-test binary or a manually-run app resolves to a real file under <code>$HOME</code> (e.g. <code>~/.test_StyleConfigRoundtrip</code> for a bare <code>wxApp</code>-only test binary with no explicit app name set, or <code>~/.config/wxMaxima.conf</code> for the real app) that <em>persists across separate process invocations</em> &ndash; unlike most other test state, which resets every run. <a class="el" href="classA.html">A</a> single earlier run (in this case, an interactive Xvfb session used to verify the unrelated "Copy as HTML" feature, and this test binary's own pre-fix runs) had already written the old, wrong "Sans" value to that file; every subsequent run silently read it back regardless of what the current code's <code>SetDefaults()</code> computed, exactly reproducing bug #2 from a completely different (external, filesystem) cause. Confirmed by grepping <code>$HOME</code> for stray <code>fontname=Sans</code> entries and deleting the files; the fix then verified correctly on the first truly clean run. <code><a class="el" href="test__StyleConfigRoundtrip_8cpp.html" title="Round-trip regression test for the worksheet text styles.">test_StyleConfigRoundtrip.cpp</a></code>'s new "TS_ASCIIMATHS defaults to..." SCENARIO now calls <code>wxConfig::Get()-&gt;DeleteAll()</code> before constructing its <code><a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a></code>, specifically so it can't be shadowed by this same class of contamination on a re-run or a persistent CI runner &ndash; don't drop that call when touching this test. Regression coverage: <code><a class="el" href="test__StyleConfigRoundtrip_8cpp.html" title="Round-trip regression test for the worksheet text styles.">test_StyleConfigRoundtrip.cpp</a></code> gained two SCENARIOs &ndash; one pinning that a fresh <code><a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a></code>'s <code>TS_ASCIIMATHS</code> font passes <code>wxFont::IsFixedWidth()</code>, and one pinning <code><a class="el" href="classStyle.html#af999d8bd639fdbd1fbb5c65023d8d286" title="Read this style from a config source.">Style::Read()</a></code>'s contract directly (a sentinel font name survives a <code>Read()</code> against a config with no <code>fontname</code> key for that style, using a <code>wxFileConfig</code> constructed with <code>style=0</code> so it never touches disk at all &ndash; the in-memory-only hermeticity this whole investigation shows is worth having).</li>
 </ol>
 </li>
-<li>**<code><a class="el" href="classSumCell.html">SumCell</a></code>'s always-on parentheses (GH #1536), and why the fix needed both wxMathML.lisp and C++:** <code>sum(k,k,1,n)</code> used to always display as <code>Σ (k)</code>, even though <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s own terminal printer shows a bare <code>k</code> &ndash; <code><a class="el" href="classSumCell.html">SumCell</a></code>'s constructor (<code><a class="el" href="SumCell_8cpp.html" title="This file defines the class SumCell.">src/cells/SumCell.cpp</a></code>) unconditionally wrapped the summand in its own <code><a class="el" href="classParenCell.html" title="The class that represents parenthesis that are wrapped around text.">ParenCell</a></code> (<code>m_paren</code>), regardless of what the summand actually was. The tempting "just use the existing operator-
-  precedence machinery" fix doesn't quite apply here: <code>sum</code>/<code>product</code> have no <code>lbp</code>/<code>rbp</code> registered at all in real <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> (confirmed live: &lsquo;(get &rsquo;sum 'lbp)<code>is</code>NIL`), so <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s own printer can't be using generic precedence comparison for this either &ndash; it must special-case it, and the same real distinction it makes (parenthesize a compound summand like <code>k+k^2</code>, not a bare one like <code>k</code>) is exactly <code>mplusp</code> on the actual <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> expression, which is what <code>wxxml-sum</code> (<code>wxMathML.lisp</code>) now checks. This deliberately avoids inventing a new binding-power value for <code>sum</code> &ndash; the maintainer has flagged doing that as risky in the past (<a class="el" href="classwxMaxima.html">wxMaxima</a>'s own operator precedences drifting out of sync with <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s, GH #1536's comment thread), so <code>mplusp</code> (an existing <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> predicate on the real parsed expression) is used instead of a numeric precedence comparison. That decision alone isn't sufficient, though: it has to reach <code><a class="el" href="classSumCell.html">SumCell</a></code>'s 2<a class="el" href="classD.html">D</a> on-screen layout, which is computed entirely in C++ (<code>Recalculate()</code>/<code>Draw()</code>), and <code><a class="el" href="classParenCell.html" title="The class that represents parenthesis that are wrapped around text.">ParenCell</a></code>'s own <code>m_print</code> flag &ndash; which looked like the obvious existing mechanism to reuse &ndash; turned out to only suppress parentheses in <code>ToString()</code>/<code>ToTeX()</code>/<code>ToMathML()</code> (text/export formats); <code>Recalculate()</code>/<code>Draw()</code>/<code>SetCurrentPoint()</code> don't check it at all and always reserve/draw the paren glyphs regardless. So the Lisp-side decision is carried across the wire as a <code>needsparen</code> attribute on <code>&lt;sm&gt;</code>, which <code>MathParser::ParseSumTag</code> reads and feeds into <code><a class="el" href="classSumCell.html#a6a7f93c0715d58221298600205be2813" title="Whether the summand genuinely needs the disambiguating parentheses around it (GH #1536),...">SumCell::NeedsParen()</a></code> &ndash; a new setter that drives the <em>already-existing</em> <code>m_displayParen</code>/ <code>DisplayedBase()</code> mechanism (previously only toggled by <code>BreakUp()</code>/ <code>Unbreak()</code> for the broken-into-lines case) via a new persistent <code>m_baseNeedsParen</code> field, rather than inventing a second, competing wrapping mechanism. Confirmed end-to-end with a live Xvfb screenshot (<code>sum(k,k,1,n)</code> bare, <code>sum(k+k^2,k,1,n)</code> parenthesized, and <code>sum(k,k,1,n)+L</code> &ndash; which motivated the original always-parenthesize decision &ndash; correctly getting <em>outer</em> parens around the whole sum from the unrelated, already-existing <code>sum</code> <code>rbp</code> registration, not extra parens around the summand).</li>
-<li>**"Don't unfold cells just because their folded tree is being evaluated" (GH #1952):** <code><a class="el" href="classWorksheet.html#a3347f99ba7a93904b38b952d72342fa2" title="Unfold the cell that produced the error, if necessary and, if requested, scroll to it.">Worksheet::ScrollToError()</a></code> &ndash; called automatically by <code>MaximaEvaluator::CheckForErrors()</code> whenever <code>AbortOnError()</code> is on (the default) and a cell errors &ndash; used to call <code>errorCell-&gt;RevealHidden()</code> unconditionally. If the errored cell was folded away, that silently unfolded the <em>entire</em> enclosing section just to point at it, defeating the whole reason many users fold a calculation down to one line in the first place: to keep the worksheet readable while it evaluates, errors included. Confirmed live in a real Xvfb session (a folded section containing <code>a:1$ error("...")$ a+1$</code>, evaluated via "Evaluate All Cells"): the section sprang open the instant the <code>error()</code> cell ran, on unmodified <code>main</code>. Fixed by walking up <code><a class="el" href="classGroupCell.html#aa612fd739257d2aac6e51f4c8686bbbf" title="The cell this cell is hidden inside, if it is part of a folded subtree.">GroupCell::GetHiddenTreeParent()</a></code> (returns non-null exactly when a cell sits in someone's torn-out <code>m_hiddenTree</code> &ndash; see the <code>Fold()</code>/<code>Unfold()</code>/<code><a class="el" href="classCellList.html#abade9123a22d407930d9b6964a8645d8" title="Tears out a cell range and returns the list thus formed.">CellList::TearOut</a></code> notes elsewhere in this section) to the outermost cell that <em>is</em> part of the visible tree, and &ndash; only if that ancestor differs from the error cell itself, i.e. the cell actually is hidden &ndash; targeting that ancestor (<code>SetHCaret</code>+<code>ScrollToCaret</code>) instead of calling <code>RevealHidden()</code>/touching <code>errorCell</code>'s own (still-hidden, un-renderable) <code><a class="el" href="classEditorCell.html" title="This class defines what the user sees as input cell.">EditorCell</a></code> at all. The ordinary (not-folded) case falls through to the original code completely unchanged. Deliberately left <code><a class="el" href="classWorksheet.html#a8894491a942fff2520b9dd8c8135695c" title="Move the cursor to the question maxima currently asks and if needed add a cell for user input.">Worksheet::OpenQuestionCaret()</a></code>'s own <code>RevealHidden()</code> call alone: unlike an error, an interactive <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> question genuinely blocks the evaluation queue until the user answers it, so there is no way to let the user respond without unfolding down to the cell that's asking. Regression- tested in <code><a class="el" href="test__TreeUndo_8cpp.html" title="Regression tests for the worksheet&#39;s cell-tree undo/redo (the TreeUndo_* subsystem of Worksheet).">test/unit_tests/test_TreeUndo.cpp</a></code> (<code>SCENARIO("An error inside
-  a folded section does not unfold it (GH #1952)")</code>) by folding a section, calling the <em>public</em> <code>ErrorList::Add()</code> directly to simulate what <code><a class="el" href="classMaximaEvaluator.html" title="The evaluation-queue driver / command protocol extracted from wxMaxima.">MaximaEvaluator</a></code> does on a real error (no live <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> needed), then asserting <code>ScrollToError()</code> leaves <code>GetHiddenTree()</code>/<code>GetHiddenTreeParent()</code> untouched and lands the h-caret on the header &ndash; confirmed to actually catch the regression by reverting the fix and watching the new assertions fail against the old code before restoring it.</li>
-<li>**<code>wxUILocale</code> (GH #2233) &ndash; <code><a class="el" href="main_8cpp.html" title="The file that defines the starting point of the program.">main.cpp</a></code> already had a <code>#if wxCHECK_VERSION(3, 1, 6)</code> branch preferring <code>wxUILocale</code> over <code>wxLocale</code>, but it had two live bugs, both confirmed with a standalone compiled reproduction against the real wxWidgets 3.2.4 in this sandbox (see <code>wx/uilocale.h</code>), not guessed from reading the header:**<ol type="1">
-<li><code>wxUILocale::UseDefault()</code> was called <em>unconditionally</em>, discarding the user's own configured language entirely &ndash; it always applied the system's default locale, even when the user had explicitly picked a different one in <a class="el" href="classwxMaxima.html">wxMaxima</a>'s own settings (<code>wxTranslations::SetLanguage()</code> right below it still respected the choice for UI <em>text</em>, so this bug was invisible for translated strings and only affected locale-driven formatting &ndash; numbers, dates, etc.). Fixed by calling <code>wxUILocale::UseLocaleName(wxLocale::GetLanguageInfo(lang)-&gt;CanonicalName)</code> when <code>lang != wxLANGUAGE_DEFAULT</code>, falling back to <code>UseDefault()</code> only if that lookup or the switch itself fails.</li>
-<li><code>wxLocale().GetCanonicalName()</code> &ndash; a <b>fresh, never-<code>Init()</code>-ed</b> temporary <code>wxLocale</code> object &ndash; was still used in two places (<code><a class="el" href="main_8cpp.html" title="The file that defines the starting point of the program.">main.cpp</a></code>, for building <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s own <code>LANG</code> environment variable, and <code>wxMaximaFrame::wxMaximaManualLocation()</code>, for picking the localized manual) to ask "what's the active locale?". <code>GetCanonicalName()</code> reads back <code>m_strShort</code>, a plain member that only <code>wxLocale::Init()</code> ever populates &ndash; on the <code>wxUILocale</code> branch, no <code>wxLocale::Init()</code> call happens anywhere in the process, so this <b>always returned an empty string</b>, unconditionally falling both call sites back to "C"/the plain English manual regardless of the configured language. Confirmed with a standalone reproduction: <code>wxUILocale::UseLocaleName("de")</code> succeeds and <code>wxUILocale::GetCurrent().GetName()</code> correctly reports <code>"de_DE.UTF-8"</code> immediately afterwards, while a fresh <code>wxLocale().GetCanonicalName()</code> called in the same process stays <code>""</code>. Fixed two different ways for two different needs: <code><a class="el" href="main_8cpp.html" title="The file that defines the starting point of the program.">main.cpp</a></code>'s <code>LANG</code>-building code now reads <code>wxUILocale::GetCurrent().GetName()</code> instead (wants the OS's actual, fully-resolved locale string, which is exactly what that query returns); <code>wxMaximaManualLocation()</code> instead derives the language name directly from the already-known configured language ID via the static, lookup- table-only <code>wxLocale::GetLanguageCanonicalName(lang)</code> &ndash; deliberately <em>not</em> from whatever the OS ended up resolving, since that lookup needs no locale to be installed or supported at all (confirmed live: in this sandbox, which ships only the <code><a class="el" href="classC.html">C</a></code>/<code>C.utf8</code>/<code>POSIX</code> locales, <code>wxLocale::Init(wxLANGUAGE_GERMAN)</code> itself reports failure, yet still leaves a usable <code>"de_DE"</code> in <code>GetCanonicalName()</code> &ndash; the old <code>wxLocale</code> path's <code>Init()</code> populates its bookkeeping from the <em>requested</em> language on a best-effort basis regardless of whether the underlying OS <code>setlocale()</code> call actually succeeded, which is precisely the property <code>wxUILocale::GetCurrent()</code> lacks and why it can't be used as a replacement query for this specific "which language did the user pick" question). This lookup needs no version guard &ndash; it's been present and works identically on both pre- and post-3.1.6 wxWidgets.</li>
-</ol>
-<ul>
-<li><b>Not yet done</b> (deferred, filed as open follow-ups by the maintainer, not part of this fix): #2229 (minimizable sidebars, wxWidgets &gt;= 3.3.2), #2230 (accessible SVG export, &gt;= 3.3.3), #2231 (PNG description chunks on exported cells, &gt;= 3.3.1), #2232 (<code>wxNO_UNUSED_VARIABLES</code>, &gt;= 3.2.7). None of the four could be verified in this sandbox, which only has wxWidgets 3.2.4 installed &ndash; any implementation of them here could only be compile-checked on the pre-version-guard fallback path, not the actual new behavior.</li>
+<li>**<code><a class="el" href="classWorksheet.html#affa70f7ae7950c29aeca916a2dc9ac0f" title="Anonymize the code cells in the current selection for a bug report (GH #1339).">Worksheet::AnonymizeCodeCells()</a></code> (GH #1339, Help menu -&gt; "Anonymize Code
+  for Bug Report"):** renames every non-builtin variable/function name in the selected code cells (whole document if nothing's selected, after a confirmation <code>wxMessageBox</code>) to a random <code>anon_...</code> name, the same replacement for every occurrence of a given original name, as a single undo step. Telling "a user-defined name" apart from "a name Maxima already
+  knows" needs <b>two</b> independent checks on each <code>TS_CODE_VARIABLE</code>/ <code>TS_CODE_FUNCTION</code> token, not one: <code><a class="el" href="classAutoComplete.html#a0b5d26fd3444fddee6b48ade7ce5f5e6" title="Returns a list of Symbols we know.">AutoComplete::GetSymbolList()</a></code> (<a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> builtins plus session-loaded package symbols &ndash; deliberately <em>not</em> polluted by user-typed worksheet words, which live in a separate <code>m_worksheetWords</code> map) catches real <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> functions/variables, but <code><a class="el" href="classMaximaTokenizer.html" title="Maximatokenizer breaks down maxima input to individual commands.">MaximaTokenizer</a></code> tokenizes its own hardcoded control-flow keywords (<code>for</code>/<code>in</code>/<code>then</code>/<code>while</code>/<code>do</code>/<code>thru</code>/<code>next</code>/<code>step</code>/<code>unless</code>/<code>from</code>/<code>if</code>/ <code>else</code>/<code>elseif</code>/<code>and</code>/<code>or</code>/<code>not</code>/<code>true</code>/<code>false</code>) with that same variable/function style, and only 4 of those 18 (<code>and</code>/<code>false</code>/<code>in</code>/<code>true</code>) also happen to appear in <code>data/builtin_commands.txt</code> &ndash; confirmed directly by grepping that file. <a class="el" href="classA.html">A</a> filter using only <code>GetSymbolList()</code> would rename <code>for</code>/<code>then</code>/<code>do</code>/... themselves and corrupt the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> syntax outright. Fixed by exposing the tokenizer's private keyword set as a new public static <code><a class="el" href="classMaximaTokenizer.html#ac7083ea9e2abd63847239119d2dda493" title="Is this text one of the fake-function keywords (see m_hardcodedFunctions)?">MaximaTokenizer::IsHardcodedKeyword()</a></code> and checking both. That accessor needed its own fix first: the keyword map was populated lazily inside the constructor, so calling it before any <code><a class="el" href="classMaximaTokenizer.html" title="Maximatokenizer breaks down maxima input to individual commands.">MaximaTokenizer</a></code> instance existed silently returned false for everything &ndash; fixed by extracting <code>EnsureHardcodedFunctionsInitialized()</code> and calling it from both the constructor and the new accessor. <code><a class="el" href="test__AnonymizeCodeCells_8cpp.html" title="Pins Worksheet::AnonymizeCodeCells() (GH #1339): replacing every non-builtin variable/function name i...">test/unit_tests/test_AnonymizeCodeCells.cpp</a></code> pins this with a real <code><a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a></code>/<code><a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a></code> (no live <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>), calling the narrow, synchronous <code><a class="el" href="classAutoComplete.html#a9ea854df696c5e1ab20e9834dfef8a37" title="Makes wxMaxima know all its builtin symbols.">AutoComplete::LoadBuiltinSymbols()</a></code> in its <code>main()</code> rather than the full <code><a class="el" href="classWorksheet.html#aaa5b37aee0c005bb6f303c7dd84c64d1" title="Compile a list of known autocompletion symbols.">Worksheet::LoadSymbols()</a></code> &ndash; the latter also kicks off <code>LoadableFiles_BackgroundTask</code>'s directory scan for <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s share/demo folders, which stalled for 70+ seconds in this sandbox and got the test process killed by its ctest timeout. <a class="el" href="classA.html">A</a> substring check like <code>after.Contains(wxS("f("))</code> to confirm a renamed function is gone is fragile and intermittently flaky (confirmed live, ~1-in-3 failure rate over repeated runs): the random 13-character <code>anon_...</code> replacement for some <em>other</em> name can itself end in the letter being searched for, and since a real function call always has <code>(</code> immediately after its name in valid <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> syntax, the reconstructed text can contain a coincidental <code>...anon_xyzqwrtf(...</code> match. Use exact per-token comparison via <code><a class="el" href="classMaximaTokenizer.html" title="Maximatokenizer breaks down maxima input to individual commands.">MaximaTokenizer</a></code> instead (see that test file's <code>HasExactToken()</code> helper). The "nothing selected -&gt; confirm whole document" <code>wxMessageBox</code> path can't be driven or screenshotted reliably in this sandbox's Xvfb (no window manager is running, and a GTK modal dialog's window never became visible to <code>import -window &lt;id&gt;</code>/<code>-window root</code> in several attempts, though the underlying <code>wxMessageBox</code> call is the same well-established idiom used elsewhere in this codebase) &ndash; verified instead by exercising the already-selected-cells path end-to-end in a live Xvfb session (typed real code, selected the group cell via hCaret + Shift+Up, confirmed the rendered text changed consistently and a single Ctrl+Z restored it).</li>
 </ul>
-</li>
-<li><b>Scaled images losing transparency (GH #2227, <code><a class="el" href="classImage.html#ae0069b9dc77158a097750c2328364ecd" title="Returns the bitmap being displayed with custom scale.">Image::GetBitmap()</a></code> in <code><a class="el" href="Image_8cpp.html" title="This file declares the class Image.">src/Image.cpp</a></code>):</b> the final step of building a scaled display bitmap converted the already-loaded/decoded bitmap back to a <code>wxImage</code>, called <code>Rescale()</code> on it, then rebuilt the bitmap with <code>wxBitmap(img, 24)</code> &ndash; an explicit <code>depth</code> argument. Passing a depth to this <code>wxBitmap</code> constructor forces that bit depth and <b>discards any alpha channel</b>, even when <code>wxImage::HasAlpha()</code> is true on the source image; omitting the parameter (the default, <code>-1</code>) auto-detects depth and preserves alpha instead. Every other bitmap-construction call in the same file &ndash; <code>GetUnscaledBitmap()</code>'s SVG-rasterize and compressed-image-decode paths, and <code>GetBitmap()</code>'s own first construction a few lines earlier &ndash; already omits the depth argument; the scaled-bitmap path was the one outlier. The visible symptom (per the issue) is a previously-transparent region of an image rendering as solid, usually black, once the image needed scaling to fit its on-screen size &ndash; black because that's what most image encoders leave in the RGB channels of a fully-transparent pixel, and once the alpha channel is gone there's nothing left to mask it. Fixed by dropping the explicit depth: <code>m_scaledBitmap = wxBitmap(img);</code>. Verified with the existing <code>imageFormat</code> ctest (<code>test/image-test/</code>, covers PNG/BMP/TIFF/GIF/JPG/WEBP/PNM/XPM sources, PNG and BMP both confirmed to actually carry an alpha channel via <code>file</code>) under <code>xvfb-run</code> &ndash; it needs a real X display (<code>Error: Unable to initialize GTK+, is DISPLAY set properly?</code> without one) &ndash; plus the full <code>ctest</code> suite for regressions. This is narrowly a "don't destroy an alpha
-  channel we already have" fix; it does not address the separate, genuinely open design question the same issue also raises (also flagged by the maintainer in the issue itself): whether leaving a transparent pixel fully transparent is actually correct once a dark worksheet background is involved (e.g. black line art becoming invisible against it), which needs a product decision, not a bug fix, and is left for a follow-up.</li>
-<li><b>RTF/OMML export (GH #1456, GH #1457) &ndash; previously had zero test coverage; <code><a class="el" href="test__RTFExport_8cpp.html" title="Regression coverage for RTF/OMML export (Cell::ToRTF()/ToOMML(), Cell:: ListToRTF(),...">test/unit_tests/test_RTFExport.cpp</a></code> is the first.</b> RTF export has two independent code paths that both matter: <code><a class="el" href="classTextCell.html#adb4b7158186deabcbd80d67c28633a1d" title="Returns the cell&#39;s representation as RTF.">TextCell::ToRTF()</a></code> (plain RTF text, one <code>\cf&lt;N&gt;{...}</code> run per cell) and <code><a class="el" href="classCell.html#a1841a0db474c9fb662e64fc970f1cc88" title="Returns the cell&#39;s representation as OMML.">Cell::ToOMML()</a></code> + <code><a class="el" href="classCell.html#acd71632a3a3deec61e646bca3797a504" title="Converts an OMML tag to the corresponding RTF snippet.">Cell::OMML2RTF()</a></code> (an embedded Word/LibreOffice math field, used whenever <code><a class="el" href="classCell.html#a6c309b887b9af0859267eb491f099fa5" title="Convert this list to an RTF representation.">Cell::ListToRTF()</a></code> hits a cell whose <code>ToRTF()</code> is empty but whose <code>ToOMML()</code> isn't &ndash; see <code><a class="el" href="classCell.html#a6c309b887b9af0859267eb491f099fa5" title="Convert this list to an RTF representation.">Cell::ListToRTF()</a></code>'s two-branch loop). Getting either path's cell-specific override wrong is invisible to every other export format's tests, since TeX/XML/MathML export don't share this code.<ul>
-<li>**<code><a class="el" href="classTextCell.html#adb4b7158186deabcbd80d67c28633a1d" title="Returns the cell&#39;s representation as RTF.">TextCell::ToRTF()</a></code> didn't check <code>IsHidden()</code>/<code>GetHidableMultSign()</code>/ <code>HidemultiplicationSign()</code> at all (GH #1456)**, unlike <code>ToTeX()</code> and <code>ToXML()</code>, which both already do. Confirmed via a standalone harness (parse the real <code>&lt;h&gt;*&lt;/h&gt;</code> XML <code>wxxmlnumformat</code> in <code>wxMathML.lisp</code> emits for scientific notation, e.g. "2*10^7" for <code>2e7</code>, through <code><a class="el" href="classMathParser.html" title="This class handles parsing the xml representation of a cell tree.">MathParser</a></code>, then call <code>ListToRTF()</code> directly) that with <code>HidemultiplicationSign()</code> on vs. off the RTF output was byte-for-byte <em>identical</em> &ndash; the literal <code>*</code> always appeared. Fixed by mirroring <code>ToTeX()</code>'s exact logic: when hidden, a lone <code>*</code>/<code>·</code> becomes a plain space (never removed outright) so cells on either side don't run together, while any other kind of <code>IsHidden()</code> cell (e.g. an invisible parenthesis) still clears to empty. The "run together" failure mode is real, not theoretical: the two content types don't mix in <code><a class="el" href="classCell.html#a6c309b887b9af0859267eb491f099fa5" title="Convert this list to an RTF representation.">Cell::ListToRTF()</a></code>'s output &ndash; plain text and an OMML math field are adjacent, unrelated RTF constructs, so a <code>2</code> (plain text) immediately followed by a hidden-then-vanished <code>*</code> and then a <code>10^7</code> (OMML field, since <code><a class="el" href="classExptCell.html" title="This cell represents a exp() or e^x-construct.">ExptCell</a></code> only implements <code>ToOMML()</code>, not <code>ToRTF()</code>) would have rendered as the unreadable "210^7" with no separator between the plain-text run and the math field.</li>
-<li>**<code><a class="el" href="classMatrCell.html#a5bcde3c481e5f361a61a359a097be6b0" title="Returns the cell&#39;s representation as OMML.">MatrCell::ToOMML()</a></code> emitted <code>&lt;m:grow&gt;\"1\\"\&lt;/m:grow\&gt;&lt;/tt&gt; &amp;ndash; a &lt;em&gt;child
+<h2><a class="anchor" id="autotoc_md45"></a>
+Communication with Maxima</h2>
+<p><a class="el" href="classwxMaxima.html">wxMaxima</a> sends Lisp and <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> commands over the socket; <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> answers with XML wrapped in known tags. <code><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></code> reads that data on a worker thread and posts <code>EVT_MAXIMA</code> events to the main thread, where <code><a class="el" href="classwxMaxima.html">wxMaxima</a></code> handles them.</p>
+<p><code>src/wxMathML.lisp</code> is compiled into the binary (through CMake's bin2h) and is what tells <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> to format its output as MathML-like XML. For development, <code>--wxmathml-lisp=&lt;path&gt;</code> overrides it with an external file, so a change can be tried without rebuilding.</p>
+<ul>
+<li>**<code>m_configCommands</code> (<code><a class="el" href="wxMaxima_8cpp.html" title="This file defines the contents of the class wxMaxima that contains most of the program&#39;s logic.">wxMaxima.cpp</a></code>):** the string of startup/config commands sent to <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> on connect (and again whenever settings change while it's running). <b>Every entry in it MUST be a <code>:lisp-quiet (...)</code> directive &ndash; never a plain <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> statement ending in <code>$</code>/<code>;</code>.</b> <code>m_configCommands</code> is sent bundled immediately ahead of the evaluation queue's next real per-cell command (<code><a class="el" href="classMaximaEvaluator.html#a5611fae48d6f6b13d6baec93e72fe39f" title="If Maxima is idle and the queue is non-empty, sends the next command; otherwise settles the UI into i...">MaximaEvaluator::TriggerEvaluation()</a></code>), and <code><a class="el" href="classEvaluationQueue.html#a9281421bc414407c4d8fa99335ecb24e" title="Removes the first command in the queue.">EvaluationQueue::RemoveFirst()</a></code> has no way to tell "a prompt answering a
+  config command" from "a prompt answering a real queued cell" &ndash; it advances the queue by one cell for <em>every</em> main <code>(iN)</code> prompt it sees. <a class="el" href="classA.html">A</a> plain statement here makes <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> print its own extra prompt, and <code>RemoveFirst()</code> then silently drops one real (never-sent) queued cell for each such prompt &ndash; confirmed live with <code>tcpdump</code> on the raw <a class="el" href="classwxMaxima.html">wxMaxima</a>&lt;-&gt;<a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> socket to drop the whole evaluation queue (21 cells to 0) in one shot, root-causing an intermittent hang/failure in <code>automatic_test_files/lisp_mode.wxm</code>. This bit <code>wxdirs</code>, the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> struct exposing <a class="el" href="classwxMaxima.html">wxMaxima</a>'s own paths: it has to be built via genuine <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> syntax (<code>defstruct</code>, <code>wxdirs@field: "value"</code>, ...) since <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s <code>defstruct</code> does not evaluate named-field initializers to the field's value &ndash; it silently stores the unevaluated <code>field = value</code> equation instead (confirmed against a real <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> 5.46), and <code>new(wxdirs(field=value, ...))</code> therefore doesn't work either. The fix: build the Maxima-syntax statement (still going through <code>wxMaxima::EscapeForLisp()</code> per value &ndash; despite the name it is exactly the escaping <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> string literals need too, for <code>"&lt;/tt&gt;/&lt;tt&gt;\\&lt;/tt&gt; in any
+  filesystem path), then wrap the &lt;em&gt;whole&lt;/em&gt; statement text as the argument to
+  &lt;tt&gt;:lisp-quiet (with-input-from-string (wxst "...") (meval (caddr (mread
+  wxst 0))))&lt;/tt&gt; &amp;ndash; reads and evaluates it from Lisp with no separate prompt of
+  its own, same as every other &lt;tt&gt;m_configCommands&lt;/tt&gt; entry. The statement text
+  needs &lt;tt&gt;EscapeForLisp()&lt;/tt&gt; applied a &lt;em&gt;second&lt;/em&gt; time at that point, since it is
+  now itself the content of a Lisp string literal (each individual field
+  value was already escaped once, for the Maxima string literal it sits
+  inside).
+  - &lt;strong&gt;Debugging technique note:&lt;/strong&gt; when in doubt about what actually crossed
+    the wxMaxima&lt;-&gt;Maxima socket (vs. what a log line &lt;em&gt;claims&lt;/em&gt; was sent),
+    &lt;tt&gt;wxLogMessage()&lt;/tt&gt;-based tracing inside wxMaxima can itself be misleading &amp;ndash;
+    &lt;tt&gt;Maxima::Write()&lt;/tt&gt; only enqueues to &lt;tt&gt;m_outputQueue&lt;/tt&gt;; the worker thread
+    flushes it to the socket separately and asynchronously, so a logged "sent"
+    call is not proof the bytes ever left the process (e.g. if the app exits
+    first). &amp;lsquo;tcpdump -i lo -w file.pcap 'tcp portrange 49000-49999&amp;rsquo;&lt;tt&gt;plus a
+    small manual pcap parser (this sandbox's Python has no working&lt;/tt&gt;scapy&lt;tt&gt;--
+&lt;/tt&gt;cryptography`'s Rust backend panics on import here &amp;ndash; so parse the
+    classic pcap format directly: 24-byte global header, then repeated
+    16-byte-record-header + packet frames; skip the 14-byte Ethernet header,
+    read the IP header's IHL for its length, then the TCP header's data
+    offset for its length) gives ground truth immune to any wxMaxima-internal
+    misattribution. Also: &lt;tt&gt;wxLogMessage()&lt;/tt&gt; is not safe to call from
+    &lt;tt&gt;Maxima::WorkerThread()&lt;/tt&gt; (a non-GUI thread) &amp;ndash; it crashed with a
+    &lt;tt&gt;wxArgNormalizer&lt;/tt&gt; format-specifier assertion the first time it was tried
+    there for debugging (triggered by &lt;tt&gt;%zu&lt;/tt&gt; specifically; the crash went away
+    switching to &lt;tt&gt;%lu&lt;/tt&gt; + an explicit &lt;tt&gt;(unsigned long)&lt;/tt&gt; cast, but the
+    thread-safety of logging from that thread at all remains unverified &amp;ndash;
+    treat any such tracing as temporary/debug-only, never ship it).
+
+- **ASCII-art 2D display (&lt;tt&gt;set_display('ascii)&lt;/tt&gt;) and &lt;tt&gt;*alt-display2d*&lt;/tt&gt;:**
+  when &lt;tt&gt;\$display2d&lt;/tt&gt; is on, Maxima's evaluator checks the special variable
+  &lt;tt&gt;*alt-display2d*&lt;/tt&gt; before printing a result: if it's a function symbol,
+  that function is called &lt;em&gt;instead of&lt;/em&gt; Maxima's own stock printer (this is
+  how &lt;tt&gt;mydispla&lt;/tt&gt; in &lt;tt&gt;wxMathML.lisp&lt;/tt&gt; produces the normal &lt;tt&gt;\&lt;mth\&gt;&lt;/tt&gt;/XML output);
+  if it's &lt;tt&gt;nil&lt;/tt&gt;, Maxima falls through to its own built-in ASCII-art printer,
+  which pads a result's lines with literal spaces so a multi-line fraction/
+  matrix/etc. lines up correctly under the &lt;tt&gt;(%oN)&lt;/tt&gt; label &amp;ndash; but that padding
+  assumes every line, including the label, ends up rendered in one uniform
+  monospace font. &lt;tt&gt;wxMathML.lisp&lt;/tt&gt;'s &lt;tt&gt;wx-ascii-displa&lt;/tt&gt; wraps that stock
+  printer in &lt;tt&gt;\&lt;wxxml-asciimath\&gt;&lt;/tt&gt;/&lt;tt&gt;\&lt;/wxxml-asciimath\&gt;&lt;/tt&gt; markers &lt;em&gt;without&lt;/em&gt;
+  reimplementing it: it dynamically rebinds &lt;tt&gt;*alt-display2d*&lt;/tt&gt; to &lt;tt&gt;nil&lt;/tt&gt; for
+  just the duration of &lt;tt&gt;(displa x)&lt;/tt&gt;, which re-enters Maxima's own dispatch
+  and this time takes the stock ASCII path (confirmed live: this is
+  correctly reentrant-safe through Maxima's own recursive sub-expression
+  &lt;tt&gt;displa&lt;/tt&gt; calls, e.g. matrix rows, since they run inside the same dynamic
+  extent). &lt;tt&gt;Maxima::ProcessData()&lt;/tt&gt; only fires the corresponding
+  &lt;tt&gt;XML_ASCIIMATH&lt;/tt&gt; event once it has seen the &lt;em&gt;complete&lt;/em&gt; matching closing
+  tag, so &lt;tt&gt;MaximaResponseReader::ReadAsciiMath()&lt;/tt&gt; always receives one whole
+  block in one piece and can render all of it in one uniform style &amp;ndash;
+  before this, &lt;tt&gt;ReadMiscText()&lt;/tt&gt; guessed a chunk's style from whether it
+  happened to start with &lt;tt&gt;"(%"&lt;/tt&gt;, and since chunks are split by socket/timer
+  batching (not by where Maxima's actual output boundaries are), a block's
+  label line could land in a separate batch than its neighbors and get
+  misclassified into a different (proportional) font, breaking the
+  alignment Maxima's padding assumed &amp;ndash; root-caused with a raw
+  &lt;tt&gt;:lisp-quiet (with-input-from-string ...)&lt;/tt&gt; / socket-level reproduction
+  (see the debugging technique note above) before the fix, not guessed.
+
+@subsection autotoc_md46 File Formats
+
+- **&lt;tt&gt;.wxmx&lt;/tt&gt;** &amp;ndash; a ZIP archive holding &lt;tt&gt;content.xml&lt;/tt&gt; (the MathML-like XML) plus
+  the embedded images. The format version lives in &lt;tt&gt;src/WXMXformat.h&lt;/tt&gt;.
+- **&lt;tt&gt;.wxm&lt;/tt&gt;** &amp;ndash; the plain-text format, read by &lt;tt&gt;Format::ParseWXMFile()&lt;/tt&gt;.
+
+@subsection autotoc_md47 Translations (&lt;tt&gt;locales/&lt;/tt&gt;)
+
+- &lt;strong&gt;One combined &lt;tt&gt;.po&lt;/tt&gt; per language, in &lt;tt&gt;locales/wxMaxima/&lt;/tt&gt;, is the file a
+  translator edits.&lt;/strong&gt; It covers both wxMaxima's own UI strings
+  (&lt;tt&gt;xgettext&lt;/tt&gt;-extracted from &lt;tt&gt;src/**/*.cpp&lt;/tt&gt;/&lt;tt&gt;*.h&lt;/tt&gt;) and the manual's prose
+  (&lt;tt&gt;po4a&lt;/tt&gt;-extracted from &lt;tt&gt;info/wxmaxima.md&lt;/tt&gt;). &lt;tt&gt;locales/wxMaxima/wxMaxima.pot&lt;/tt&gt;,
+  the template both &lt;tt&gt;msgmerge&lt;/tt&gt; and Crowdin work against, is regenerated as
+  the union of a fresh source scan and &lt;tt&gt;locales/manual/wxmaxima.md.pot&lt;/tt&gt;
+  (&lt;tt&gt;msgcat --use-first&lt;/tt&gt;, preferring &lt;tt&gt;wxMaxima.pot&lt;/tt&gt;'s own header) by the
+  &lt;tt&gt;update-locale&lt;/tt&gt; CMake target.
+- &lt;strong&gt;The xgettext source list is an explicit glob, not a recursive one, and a
+  file it misses loses its strings silently.&lt;/strong&gt; &lt;tt&gt;POT_SOURCE_FILES&lt;/tt&gt;/
+  &lt;tt&gt;POT_SOURCE_FILES_REL&lt;/tt&gt; in &lt;tt&gt;locales/wxMaxima/CMakeLists.txt&lt;/tt&gt; list
+  &lt;tt&gt;src/*.cpp;src/*.h;src/*/*.cpp;src/*/*.h&lt;/tt&gt; &amp;ndash; exactly two levels. It was
+  flat &lt;tt&gt;src/*&lt;/tt&gt; until &lt;tt&gt;03b16f2d8&lt;/tt&gt;, so every string under &lt;tt&gt;src/cells&lt;/tt&gt;,
+  &lt;tt&gt;src/wizards&lt;/tt&gt; and &lt;tt&gt;src/graphical_io&lt;/tt&gt; was missing from the POT from
+  2020-08-05, and &lt;tt&gt;src/sidebars&lt;/tt&gt;/&lt;tt&gt;src/dialogs&lt;/tt&gt; from 2024-01. Cost: ~7000
+  translations across 21 languages, restored from git history only in
+  2026-08. &lt;strong&gt;Nothing warns about this&lt;/strong&gt;: xgettext is happy with a short file
+  list, and the POT-drift check in CI regenerates the POT and diffs it, so a
+  broken glob truncates both sides identically and the check passes. Adding
+  a &lt;tt&gt;src/\&lt;a\&gt;/\&lt;b\&gt;/&lt;/tt&gt; nesting level would break it again &amp;ndash; &lt;tt&gt;check-pot-coverage&lt;/tt&gt;
+  (a &lt;tt&gt;ctest&lt;/tt&gt;, needs neither a build nor gettext) now fails the build if any
+  source file sits deeper than the glob reaches, or if a file containing a
+  &lt;tt&gt;_("...")&lt;/tt&gt; marker is unreferenced by the committed POT.
+- &lt;strong&gt;A Crowdin sync can silently wipe existing translations if it's built from
+  a stale base &amp;ndash; confirmed twice now (2026-08-05 and 2026-08-10), both times
+  around the same subdir-glob restoration work above, and both times a plain
+  git merge, not a Crowdin misconfiguration found so far.&lt;/strong&gt; The second
+  incident: PR #2241 ("Restore 7083 translations the flat `src/*` gettext glob had dropped") merged at 19:59:43; Crowdin's own &lt;tt&gt;l10n_main2&lt;/tt&gt; branch
+  (a long-lived branch it force-pushes to repeatedly, see PRs #2187/#2199/
+  #2239/#2244) had already branched off main at 19:55:40 &amp;ndash; 4 minutes
+  &lt;em&gt;before&lt;/em&gt; #2241 &amp;ndash; and didn't re-sync before its own PR #2244 merged 30
+  minutes later. Confirmed directly from the commit graph, not inferred:
+  &lt;tt&gt;git merge-base \&lt;l10n_main2 tip\&gt; \&lt;main-before-\#2241\&gt;&lt;/tt&gt; equals that
+  pre-#2241 commit exactly, i.e. Crowdin's new per-language commits were
+  still parented on the stale base. The result once merged: a plain 3-way
+  git merge doesn't understand PO-file semantics, so wherever Crowdin's
+  diff and the restore's diff touched entries in the same file without a
+  textual line conflict, whichever side's hunk landed could silently win &amp;ndash;
+  in this case, largely Crowdin's older, translation-poorer version. Net
+  effect measured with &lt;tt&gt;polib&lt;/tt&gt; (msgid+msgctxt keyed diff, not
+  &lt;tt&gt;msgfmt --statistics&lt;/tt&gt; counts alone, since those can't tell "a translation reverted to worse text" from "line-wrapping changed"): 464 translations
+  across 16 languages went from non-empty to empty, and &lt;em&gt;zero&lt;/em&gt; went the
+  other way &amp;ndash; a real regression, not translator churn. Recovered with a
+  surgical text-level patch (locate each entry's own line range via
+  &lt;tt&gt;polib&lt;/tt&gt;'s &lt;tt&gt;.linenum&lt;/tt&gt; in both the pre-regression and current file
+  independently, splice only the &lt;tt&gt;msgstr&lt;/tt&gt; block, leave everything else
+  byte-identical) &amp;ndash; reusing &lt;tt&gt;polib&lt;/tt&gt;'s own serializer to resave the whole
+  file was tried first and rejected: it reformats every line's wrapping,
+  turning a 464-line fix into a ~200KB diff across 16 files that would have
+  buried the actual change completely. If this happens a third time, the
+  fix is on the Crowdin project side (a webhook trigger that also
+  re-syncs sources immediately before generating its PR, not just before
+  the languages it already had), not on wxMaxima's own git handling &amp;ndash; ask
+  Crowdin support directly, since this session cannot access Crowdin's
+  own dashboard/API to confirm the exact trigger without credentials.
+  &lt;strong&gt;It did happen a third time (2026-08-12, PR #2257 from &lt;tt&gt;l10n_main2&lt;/tt&gt;):&lt;/strong&gt;
+  same shape exactly, &lt;tt&gt;merge-base&lt;/tt&gt; landing before the 464-translation
+  restoration commit (&lt;tt&gt;3cf4f9c97&lt;/tt&gt;) this time instead of before #2241 &amp;ndash;
+  same 464 entries, same 16 languages, zero gained, caught before merging
+  by diffing the PR branch against &lt;tt&gt;origin/main&lt;/tt&gt; with the same
+  msgid+msgctxt-keyed &lt;tt&gt;polib&lt;/tt&gt; technique, this time &lt;em&gt;before&lt;/em&gt; merging rather
+  than after. Crowdin claimed to sync hourly regardless. The maintainer
+  switched Crowdin to a fresh &lt;tt&gt;l10n_main2&lt;/tt&gt; -&gt; &lt;tt&gt;l10n_main3&lt;/tt&gt; branch as a
+  first attempted workaround, which "immediately started syncing" &amp;ndash; but
+  this did &lt;em&gt;not&lt;/em&gt; fix anything: &lt;tt&gt;l10n_main3&lt;/tt&gt;'s own PR (#2259) forked from
+  &lt;tt&gt;7d0407f8c&lt;/tt&gt;, a commit well after the restoration, yet still carried the
+  exact same 464 empty translations (confirmed the same way, spot-checked
+  down to individual entries, e.g. German's translation of the literal
+  command-line flag &lt;tt&gt;" -X "--control-stack-size &lt;int&gt;""&lt;/tt&gt; &amp;ndash; present
+  and correct, self-identical to the msgid, on &lt;tt&gt;main&lt;/tt&gt;, but back to &lt;tt&gt;""&lt;/tt&gt; on
+  &lt;tt&gt;l10n_main3&lt;/tt&gt;). That ruled out "stale git branch point" as the actual
+  cause, since a fresh branch reproduced it identically. &lt;strong&gt;Root cause,
+  confirmed by the maintainer directly with Crowdin: the export had
+  exceeded Crowdin's string-count limit for their free-tier account plan,
+  which made Crowdin silently fall back to an old, pre-restoration
+  translation snapshot instead of erroring or refusing to export&lt;/strong&gt; &amp;ndash;
+  explaining why recreating the branch changed nothing: the stale state
+  lived in Crowdin's own translation memory, not in which commit its
+  export happened to be based on. The account has since been deleted;
+  both #2257 and #2259 were closed unmerged. If Crowdin integration is
+  ever reconnected, check the account's plan/string-limit status first &amp;ndash;
+  this failure mode gives no visible error on either the Crowdin or the
+  GitHub side, only a silent, correct-looking PR that happens to carry
+  stale content. Added a permanent
+  safety net for this: &lt;tt&gt;locales/wxMaxima/check_translations_not_wiped.py&lt;/tt&gt;
+  (wired into &lt;tt&gt;compile_ubuntu.yml&lt;/tt&gt; as its own fast, standalone
+  &lt;tt&gt;check_translations_not_wiped&lt;/tt&gt; job, no build dependencies needed) does
+  this exact msgid+msgctxt-keyed comparison against &lt;tt&gt;origin/main&lt;/tt&gt; on every
+  push and fails loudly if any translation would go from non-empty to
+  empty &amp;ndash; catching this class of regression in CI before a human has to
+  notice and diff it by hand a fourth time. It only catches "translated text disappeared entirely," not e.g. "translation is now provably worse," and can in principle false-positive if a legitimate, unrelated
+  PR both changes a translatable string's English source text &lt;em&gt;and&lt;/em&gt;
+  commits a regenerated &lt;tt&gt;.po&lt;/tt&gt; under the old convention in the same push
+  (the old msgid's entry vanishing under a genuine rename looks identical
+  to it being wiped) &amp;ndash; rare in practice, since this repo's convention is
+  to not casually commit &lt;tt&gt;update-locale&lt;/tt&gt; drift alongside unrelated changes
+  (see the "committing a `make update-locale` run's output" entry below),
+  but worth knowing if this check ever fires on something that turns out
+  to be legitimate.
+- **&lt;tt&gt;test/check-pot-coverage.cmake&lt;/tt&gt; needs &lt;tt&gt;cmake_policy(SET CMP0057 NEW)&lt;/tt&gt;
+  explicitly.** It runs in script mode (&lt;tt&gt;cmake -P&lt;/tt&gt;), which does not inherit
+  the top-level &lt;tt&gt;CMakeLists.txt&lt;/tt&gt;'s policy settings &amp;ndash; without this line,
+  &lt;tt&gt;if(NOT f IN_LIST covered)&lt;/tt&gt; hard-errors with "Unknown arguments specified" on every invocation, on any CMake version, confirmed against a
+  clean &lt;tt&gt;main&lt;/tt&gt; checkout (not something introduced by unrelated local
+  changes). &lt;tt&gt;IN_LIST&lt;/tt&gt; needs CMP0057 set to &lt;tt&gt;NEW&lt;/tt&gt; to be recognized as an
+  operator at all in &lt;tt&gt;if()&lt;/tt&gt;; the default/OLD behavior predates that
+  operator's existence.
+- &lt;strong&gt;Don't drop &lt;tt&gt;--previous&lt;/tt&gt; from &lt;tt&gt;msgmerge&lt;/tt&gt;.&lt;/strong&gt; It is what keeps the
+  &lt;tt&gt;\#| msgid&lt;/tt&gt; comment recording what a fuzzy entry used to say, which is how a
+  translator works out &lt;em&gt;why&lt;/em&gt; something went fuzzy (&lt;tt&gt;00ba34121&lt;/tt&gt;). A plain
+  &lt;tt&gt;msgmerge&lt;/tt&gt; discards those comments wholesale and gives no hint it did &amp;ndash;
+  212 entries' worth in &lt;tt&gt;zh_CN.po&lt;/tt&gt; alone, found only by counting them before
+  and after.
+- **&lt;tt&gt;po4a&lt;/tt&gt; must never be pointed at &lt;tt&gt;locales/wxMaxima/\&lt;lang\&gt;.po&lt;/tt&gt; directly.**
+  It looks like the obvious way to keep the manual's translations inside the
+  combined file (&lt;tt&gt;po4a.cfg&lt;/tt&gt;'s &lt;tt&gt;\$lang:&lt;/tt&gt; path &lt;em&gt;was&lt;/em&gt; set to
+  &lt;tt&gt;locales/wxMaxima/\$lang.po&lt;/tt&gt; at one point), but &lt;tt&gt;po4a&lt;/tt&gt; doesn't treat a &lt;tt&gt;.po&lt;/tt&gt;
+  file as something to add/update entries in - it treats it as &lt;em&gt;its own&lt;/em&gt;,
+  and &lt;strong&gt;rewrites it wholesale to contain only the entries it itself
+  extracted from &lt;tt&gt;info/wxmaxima.md&lt;/tt&gt;, silently discarding everything else&lt;/strong&gt;.
+  Confirmed live: a language with 1000 translated UI strings and 69
+  translated manual strings dropped to 69 (the UI strings gone) after one
+  &lt;tt&gt;po4a&lt;/tt&gt; run against the combined file - and this shipped merged to &lt;tt&gt;main&lt;/tt&gt;
+  before being caught. &lt;tt&gt;po4a&lt;/tt&gt; therefore keeps writing its own
+  &lt;tt&gt;locales/manual/\&lt;lang\&gt;.po&lt;/tt&gt; (&lt;tt&gt;po4a.cfg&lt;/tt&gt;'s &lt;tt&gt;\$lang:&lt;/tt&gt; path), exactly as before
+  the two catalogs were combined; &lt;tt&gt;locales/wxMaxima/CMakeLists.txt&lt;/tt&gt;'s
+  &lt;tt&gt;\${LANG}_po&lt;/tt&gt; target runs &lt;tt&gt;merge_manual_po.cmake&lt;/tt&gt; (&lt;tt&gt;msgcat --use-first&lt;/tt&gt;) to
+  fold &lt;tt&gt;locales/manual/\&lt;lang\&gt;.po&lt;/tt&gt; into &lt;tt&gt;locales/wxMaxima/\&lt;lang\&gt;.po&lt;/tt&gt; &lt;em&gt;before&lt;/em&gt;
+  &lt;tt&gt;msgmerge&lt;/tt&gt;, every time - that script is the only place allowed to write
+  manual content into the combined file. &lt;tt&gt;locales/manual/*.po&lt;/tt&gt; only exists
+  for the languages that actually have a manual translation (not the full
+  &lt;tt&gt;locales/wxMaxima/*.po&lt;/tt&gt; language list) - &lt;tt&gt;info/CMakeLists.txt&lt;/tt&gt; expects a
+  matching &lt;tt&gt;info/wxmaxima.\&lt;lang\&gt;.md&lt;/tt&gt; to already exist for every language
+  &lt;tt&gt;po4a.cfg&lt;/tt&gt;'s language list names, and doesn't create a fresh empty one, so
+  don't widen that language list to languages that have no manual
+  translation yet without also handling that.
+- **&lt;tt&gt;po4a.cfg&lt;/tt&gt;'s manual &lt;tt&gt;[type: text]&lt;/tt&gt; line needs &lt;tt&gt;opt:"-o markdown"&lt;/tt&gt;
+  explicitly** - &lt;tt&gt;Locale::Po4a::Text&lt;/tt&gt;'s own default for that option is &lt;tt&gt;1&lt;/tt&gt;,
+  but that default does not take effect through &lt;tt&gt;[type: text]&lt;/tt&gt;'s normal
+  invocation; confirmed live by extracting the same heading with and without
+  an explicit &lt;tt&gt;-o markdown&lt;/tt&gt;. Without it, every markdown structural element
+  (&lt;tt&gt;\#\#&lt;/tt&gt; headings, list items, ...) is extracted as generic wrapped "Plain text" instead of being recognized as its own no-wrap markdown construct,
+  which is what caused #2047: a translated heading long enough to wrap got a
+  literal newline inserted mid-heading when &lt;tt&gt;po4a&lt;/tt&gt; wrote it back out,
+  turning the second half into a normal paragraph in the rendered manual.
+  The tempting broader fix, &lt;tt&gt;opt:"-o neverwrap"&lt;/tt&gt; (disables wrapping
+  entirely), is a trap: it doesn't just change &lt;em&gt;output&lt;/em&gt; wrapping, it changes
+  how &lt;tt&gt;po4a&lt;/tt&gt; &lt;em&gt;segments source paragraphs into msgids&lt;/em&gt; (each source line
+  becomes a literal embedded &lt;tt&gt;\\n&lt;/tt&gt; in the msgid instead of the paragraph
+  being one reflowed string) - confirmed live it turns 293 cleanly-matched
+  German translations into 2 clean matches + 328 fuzzy, i.e. it invalidates
+  the translation of nearly every multi-line paragraph in the whole manual,
+  for a bug that's specifically about headings. &lt;tt&gt;-o markdown&lt;/tt&gt; alone fixes
+  the reported bug (headings/lists become their own no-wrap entries) with a
+  much smaller, semantically-justified cost: only headings, list items and
+  fenced code blocks need re-confirming as fuzzy (e.g. 293 clean -&gt; 183
+  clean + 156 fuzzy for German - about 89 of those are headings whose old
+  msgstr still has the now-redundant leading &lt;tt&gt;\#\#&lt;/tt&gt; and its space baked in,
+  since &lt;tt&gt;po4a&lt;/tt&gt;
+  auto-prepends it from the &lt;tt&gt;Title \#\#&lt;/tt&gt; type instead of storing it in the
+  translated text; the rest are fenced-code-block delimiters &lt;tt&gt;po4a&lt;/tt&gt; now
+  reconstructs itself instead of storing literally, plus a handful of
+  entries that were already fuzzy for unrelated reasons - real source-text
+  edits, not a &lt;tt&gt;markdown&lt;/tt&gt; side effect), not full paragraphs. &lt;strong&gt;The old
+  translation text is not deleted&lt;/strong&gt; (&lt;tt&gt;.po&lt;/tt&gt; keeps the fuzzy msgstr plus the
+  previous msgid in a &lt;tt&gt;\#|&lt;/tt&gt; comment) &lt;strong&gt;but it stops appearing in the
+  generated manual&lt;/strong&gt; until a translator re-confirms it - &lt;tt&gt;po4a-translate&lt;/tt&gt;
+  skips fuzzy entries by default the same way &lt;tt&gt;msgfmt&lt;/tt&gt; does for a compiled
+  &lt;tt&gt;.mo&lt;/tt&gt;, falling back to the untranslated English source. Don't describe
+  this fix as lossless to a translator without that caveat: a previously
+  fully-translated heading really does render in English again in
+  &lt;tt&gt;info/wxmaxima.\&lt;lang\&gt;.md&lt;/tt&gt; until someone reviews the (mostly mechanical:
+  strip the leading &lt;tt&gt;\#+&lt;/tt&gt; and the space after it) fuzzy diff. Fixing the wrapping bug and keeping
+  every translation rendering are in tension - there's no &lt;tt&gt;po4a&lt;/tt&gt; option that
+  gets both, since the whole point of &lt;tt&gt;-o markdown&lt;/tt&gt; is to change what a
+  heading's msgid &lt;em&gt;is&lt;/em&gt;.
+- **&lt;tt&gt;locales/wxMaxima/CMakeLists.txt&lt;/tt&gt;'s &lt;tt&gt;\${LANG}_po&lt;/tt&gt; target needs
+  &lt;tt&gt;wxMaxima.pot&lt;/tt&gt; in its own &lt;tt&gt;DEPENDS&lt;/tt&gt;, not just as a plain path string
+  inside a &lt;tt&gt;COMMAND&lt;/tt&gt; argument.** &lt;tt&gt;add_custom_command(OUTPUT wxMaxima.pot
+  ...)&lt;/tt&gt; only creates a file-level build rule; a &lt;em&gt;different&lt;/em&gt; custom command
+  (or target) that merely references that output path in a shell argument
+  gets no ordering guarantee from it. Confirmed live: after fixing the
+  manual's extraction to &lt;tt&gt;-o markdown&lt;/tt&gt;, &lt;tt&gt;make update-locale&lt;/tt&gt; kept producing
+  stale results (matching the pre-fix fuzzy/translated counts exactly)
+  because &lt;tt&gt;wxMaxima.pot&lt;/tt&gt; itself hadn't been rebuilt - &lt;tt&gt;\${LANG}_po&lt;/tt&gt;'s
+  &lt;tt&gt;PRE_BUILD&lt;/tt&gt; command still consumed yesterday's &lt;tt&gt;wxMaxima.pot&lt;/tt&gt; on disk.
+  Fixed by declaring &lt;tt&gt;DEPENDS \${LANG}.po wxMaxima.pot&lt;/tt&gt; on the
+  &lt;tt&gt;add_custom_target(\${LANG}_po ...)&lt;/tt&gt; line.
+- &lt;strong&gt;Committing a &lt;tt&gt;make update-locale&lt;/tt&gt; run's output means committing
+  &lt;em&gt;every&lt;/em&gt; language's drift against the current C++ source, not just the
+  fix you're testing.&lt;/strong&gt; Running it live in this sandbox (to verify the two
+  bugs above) also picked up ~1100 real UI strings that exist in
+  &lt;tt&gt;src/**/*.cpp&lt;/tt&gt;/&lt;tt&gt;*.h&lt;/tt&gt; today but were missing from every committed
+  &lt;tt&gt;locales/wxMaxima/*.po&lt;/tt&gt; and &lt;tt&gt;wxMaxima.pot&lt;/tt&gt; (confirmed genuine, not a
+  sandbox artifact: &lt;tt&gt;grep&lt;/tt&gt;-verified several, e.g. &lt;tt&gt;Configuration.cpp&lt;/tt&gt;'s
+  &lt;tt&gt;_(" Font cache hits: ld")&lt;/tt&gt;, actually exist in the source at &lt;tt&gt;HEAD&lt;/tt&gt; -
+  &lt;tt&gt;xgettext&lt;/tt&gt; just hadn't been re-run against the source in a while before
+  &lt;tt&gt;wxMaxima.pot&lt;/tt&gt; was last committed). That's real, legitimate drift, but
+  it's a separate concern from a &lt;tt&gt;po4a&lt;/tt&gt;-pipeline bug fix - bundling ~1100
+  new untranslated strings across 24 languages into a bugfix commit buries
+  the actual fix and forces reviewers (translators included) to wade
+  through unrelated noise. After verifying a &lt;tt&gt;po4a&lt;/tt&gt;/CMake fix works
+  end-to-end in the build directory, &lt;tt&gt;git checkout --
+  locales/wxMaxima/*.po locales/wxMaxima/wxMaxima.pot&lt;/tt&gt; to drop that
+  incidental drift back to the committed state before committing, keeping
+  only the actual pipeline files (&lt;tt&gt;po4a.cfg.in&lt;/tt&gt;, the &lt;tt&gt;CMakeLists.txt&lt;/tt&gt;s,
+  &lt;tt&gt;merge_manual_po.cmake&lt;/tt&gt;) plus whatever's scoped to the manual itself
+  (&lt;tt&gt;locales/manual/*.po&lt;/tt&gt;, &lt;tt&gt;locales/manual/wxmaxima.md.pot&lt;/tt&gt;,
+  &lt;tt&gt;info/wxmaxima.\&lt;lang\&gt;.md&lt;/tt&gt;). The UI-string staleness is a legitimate
+  follow-up &lt;tt&gt;make update-locale&lt;/tt&gt; run of its own, on its own commit.
+- &lt;strong&gt;Don't run this sandbox's stock &lt;tt&gt;po4a&lt;/tt&gt; (0.69) against real translated
+  content.&lt;/strong&gt; See &lt;tt&gt;CheckPo4aVersion.cmake&lt;/tt&gt;'s corruption warning above &amp;ndash;
+  verifying a change to the translation &lt;em&gt;pipeline&lt;/em&gt;
+  (&lt;tt&gt;po4a.cfg.in&lt;/tt&gt;/&lt;tt&gt;merge_manual_po.cmake&lt;/tt&gt;/the CMake wiring) is fine without
+  running &lt;tt&gt;po4a&lt;/tt&gt; itself, but regenerating actual &lt;tt&gt;.po&lt;/tt&gt;/&lt;tt&gt;.md&lt;/tt&gt; output needs a
+  real &lt;tt&gt;po4a&lt;/tt&gt; &gt;= 0.70. It wasn't reachable via any of apt (only has 0.69),
+  Debian's package archive, or po4a's own GitHub releases (both blocked by
+  this sandbox's proxy) - but a source tarball of a current release, fetched
+  outside the sandbox and handed to the agent as a file, runs perfectly well
+  unpacked with no install step beyond &lt;tt&gt;PERL5LIB=\&lt;unpacked-dir\&gt;/lib&lt;/tt&gt;
+  pointing at its &lt;tt&gt;Locale::Po4a::*&lt;/tt&gt; modules; the &lt;tt&gt;po4a&lt;/tt&gt;/&lt;tt&gt;po4a-updatepo&lt;/tt&gt;/
+  &lt;tt&gt;po4a-translate&lt;/tt&gt;/etc. scripts at the tarball's top level need nothing else
+  to work standalone, e.g. &lt;tt&gt;PERL5LIB=lib ./po4a --version&lt;/tt&gt;. Regenerating
+  translated content live and diffing it (&lt;tt&gt;msgfmt --statistics&lt;/tt&gt; before/after
+  per language, matching translated-message counts) is how both bugs above
+  were actually caught, not guessed from reading &lt;tt&gt;Locale::Po4a::Text&lt;/tt&gt;'s
+  source.
+- **&lt;tt&gt;git clean -fd&lt;/tt&gt; after &lt;tt&gt;git checkout --&lt;/tt&gt; on a directory wipes untracked
+  files in it too, including ones you meant to keep** (e.g. a new
+  &lt;tt&gt;locales/manual/\&lt;lang\&gt;.po&lt;/tt&gt; restored from a scratch copy, or a brand new
+  &lt;tt&gt;.cmake&lt;/tt&gt; helper script that was never committed yet) - it doesn't
+  distinguish "test-run droppings" from "uncommitted new work" by intent,
+  only by whether &lt;tt&gt;git add&lt;/tt&gt; has seen the path yet. Prefer reverting only the
+  specific files that are actually wrong (or committing work-in-progress to
+  a scratch commit first) over a blanket &lt;tt&gt;git checkout -- \&lt;dir\&gt; \&amp;\&amp; git clean
+  -fd \&lt;dir\&gt;&lt;/tt&gt; once a directory has a mix of both kinds of changes in it.
+
+@section autotoc_md48 Conventions &amp; Standards
+
+- &lt;strong&gt;Git Environment:&lt;/strong&gt; Note that running &lt;tt&gt;git diff&lt;/tt&gt; might launch the visual diff tool &lt;tt&gt;meld&lt;/tt&gt; instead of outputting to the terminal. Always use &lt;tt&gt;git diff --no-ext-diff&lt;/tt&gt; if you need terminal output.
+- &lt;strong&gt;String Literals &amp; Translations:&lt;/strong&gt; Use the &lt;tt&gt;wxS()&lt;/tt&gt; macro for all string literals and &lt;tt&gt;_()&lt;/tt&gt; for user-facing translatable strings.
+- &lt;strong&gt;Logging:&lt;/strong&gt; Use &lt;tt&gt;wxLogMessage()&lt;/tt&gt; for debugging; messages are visible in &lt;strong&gt;View -&gt; Toggle Log Window&lt;/strong&gt; or by using the option &lt;tt&gt;--logtostderr&lt;/tt&gt;.
+- &lt;strong&gt;Asynchronous Sidebars &amp; Safety:&lt;/strong&gt; Sidebars (TOC, Variables Pane) update asynchronously. Always validate &lt;tt&gt;GroupCell&lt;/tt&gt; pointers (using &lt;tt&gt;m_tree-\&gt;Contains()&lt;/tt&gt;) before use.
+- &lt;strong&gt;Long-Lived Cell References:&lt;/strong&gt; Anything that keeps a reference to a &lt;tt&gt;Cell&lt;/tt&gt; or &lt;tt&gt;GroupCell&lt;/tt&gt; beyond the current call &amp;ndash; undo/redo actions, the evaluation queue, the selection, the sidebars, a cached "last clicked" cell &amp;ndash; MUST hold it as a &lt;tt&gt;CellPtr\&lt;...\&gt;&lt;/tt&gt;, never as a raw pointer. &lt;tt&gt;CellPtr&lt;/tt&gt; derives from &lt;tt&gt;Observed&lt;/tt&gt; and nulls itself when the cell is destroyed, so a stale reference reads as &lt;tt&gt;nullptr&lt;/tt&gt; instead of dangling; null-check it when consuming it, because the cell may have died since it was stored. A raw &lt;tt&gt;Cell *&lt;/tt&gt; is fine only for the duration of a single function or event.
+- &lt;strong&gt;Cell UUIDs &amp; Navigation:&lt;/strong&gt; Cells have unique &lt;tt&gt;m_uuid&lt;/tt&gt;. Filenames support &lt;tt&gt;\#UUID&lt;/tt&gt; fragments.
+- &lt;strong&gt;Forward Compatibility:&lt;/strong&gt; &lt;tt&gt;ToXML()&lt;/tt&gt; implementations MUST call &lt;tt&gt;GetXMLFlags()&lt;/tt&gt; and include its output in the opening tag to preserve unknown attributes.
+- &lt;strong&gt;Serialization Tags:&lt;/strong&gt; Some cells use shortened tags (e.g., &lt;tt&gt;LimitCell&lt;/tt&gt; uses &lt;tt&gt;\&lt;lm\&gt;&lt;/tt&gt;). Verify in &lt;tt&gt;MathParser.cpp&lt;/tt&gt; before modifying.
+- &lt;strong&gt;Gnuplot Probe:&lt;/strong&gt; MUST be done asynchronously (e.g., &lt;tt&gt;wxEXEC_ASYNC&lt;/tt&gt;). Synchronous execution blocks the UI and can disrupt the Linux global menu system.
+- &lt;strong&gt;Variable Escaping:&lt;/strong&gt; Use &lt;tt&gt;Maxima::EscapeVarnameForMaxima&lt;/tt&gt; for characters like &lt;tt&gt;,&lt;/tt&gt;, &lt;tt&gt;°&lt;/tt&gt;, and special symbols. A digit at the &lt;em&gt;start&lt;/em&gt; of a variable name must be escaped (e.g., &lt;tt&gt;\\1a&lt;/tt&gt;).
+- &lt;strong&gt;Maxima Restart (Windows):&lt;/strong&gt; Restarting requires a manual reset of the network client (&lt;tt&gt;m_client.reset()&lt;/tt&gt;) and streams in &lt;tt&gt;KillMaxima&lt;/tt&gt; (which lives in &lt;tt&gt;MaximaProcessManager&lt;/tt&gt;, not in &lt;tt&gt;wxMaxima&lt;/tt&gt; any more) to avoid socket state errors.
+- &lt;strong&gt;Worksheet Search Logic:&lt;/strong&gt; Traverse in visual order: Prompt → Editor → Output (Forward) or Output → Editor → Prompt (Reverse). Resume from current caret position.
+- &lt;strong&gt;Layout Timeout:&lt;/strong&gt; Complex output can trigger a timeout (configurable in Options), replacing slow-to-render cells with a warning.
+- &lt;strong&gt;C++ Standard:&lt;/strong&gt; The project uses &lt;strong&gt;C++20&lt;/strong&gt;. To support users on older operating systems (like Debian-oldstable or RHEL), wxMaxima aims to stay approximately 10 years behind the current C++ standard.
+- &lt;strong&gt;wxWidgets Version:&lt;/strong&gt; Maintain compatibility with wxWidgets 3.0.5 where possible. Avoid features only available in 3.1+ (e.g., use &lt;tt&gt;MakeAbsolute()&lt;/tt&gt; + &lt;tt&gt;GetFullPath()&lt;/tt&gt; instead of &lt;tt&gt;GetAbsolutePath()&lt;/tt&gt;).
+- &lt;strong&gt;Sizer Flags Are Different Enum Types:&lt;/strong&gt; &lt;tt&gt;wxDirection&lt;/tt&gt; (&lt;tt&gt;wxLEFT&lt;/tt&gt;/&lt;tt&gt;wxRIGHT&lt;/tt&gt;/&lt;tt&gt;wxALL&lt;/tt&gt;/...), &lt;tt&gt;wxAlignment&lt;/tt&gt; (&lt;tt&gt;wxALIGN_*&lt;/tt&gt;) and &lt;tt&gt;wxStretch&lt;/tt&gt; (&lt;tt&gt;wxEXPAND&lt;/tt&gt;/...) are three distinct unscoped enums; OR'ing two of them directly (e.g. &lt;tt&gt;wxALIGN_CENTER_VERTICAL | wxALL&lt;/tt&gt;) is deprecated in C++20 and GCC warns &lt;tt&gt;-Wdeprecated-enum-enum-conversion&lt;/tt&gt;. Fix by casting the &lt;em&gt;first&lt;/em&gt; operand of the OR-chain to &lt;tt&gt;int&lt;/tt&gt; (e.g. &lt;tt&gt;static_cast\&lt;int\&gt;(wxALIGN_CENTER_VERTICAL) | wxALL&lt;/tt&gt;) &amp;ndash; since &lt;tt&gt;|&lt;/tt&gt; is left-associative, this makes every subsequent operation &lt;tt&gt;int | enum&lt;/tt&gt;, which is unambiguous and unwarned, without needing to touch the rest of the chain. Only the leftmost token needs the cast, however many differently-typed flags follow.
+- **&lt;tt&gt;[[maybe_unused]]&lt;/tt&gt; on data members and GCC &lt; 12:** GCC before version 12 doesn't support &lt;tt&gt;[[maybe_unused]]&lt;/tt&gt; on non-static data members at all and warns &amp;lsquo;'maybe_unused&amp;rsquo; attribute ignored [-Wattributes]&lt;tt&gt;regardless of whether the member is actually used (reproduced directly against&lt;/tt&gt;g++-11&lt;tt&gt;; fixed by&lt;/tt&gt;g++-12&lt;tt&gt;). Since the attribute is still needed for Clang (&lt;/tt&gt;-Wunused-private-field&lt;tt&gt;), don't just delete it -- wrap the declaration in&lt;/tt&gt;#if defined(&lt;strong&gt;GNUC&lt;/strong&gt;) &amp;&amp; !defined(&lt;strong&gt;clang&lt;/strong&gt;) &amp;&amp; &lt;strong&gt;GNUC&lt;/strong&gt; &lt; 12&lt;tt&gt;/&lt;/tt&gt;#pragma GCC diagnostic push/ignored "-Wattributes"&lt;tt&gt;...&lt;/tt&gt;#pragma GCC diagnostic pop&lt;tt&gt;/&lt;/tt&gt;#endif&lt;tt&gt;(see&lt;/tt&gt;SvgBitmap.h&lt;tt&gt;,&lt;/tt&gt;wxMathml.h&lt;tt&gt;,&lt;/tt&gt;graphical_io/Printout.h&lt;tt&gt;).
+- **CI Warnings Live On the Non-&lt;/tt&gt;-Werror&lt;tt&gt;Jobs:**&lt;/tt&gt;compile_latest_and_test&lt;tt&gt;and&lt;/tt&gt;compile_without_webview&lt;tt&gt;(Ubuntu) build with&lt;/tt&gt;-Werror&lt;tt&gt;, so they can't show warnings by construction -- check&lt;/tt&gt;compile_2204&lt;tt&gt;(Ubuntu 22.04, plain&lt;/tt&gt;-Wall -Wextra&lt;tt&gt;, GCC 11) for real warnings that survive to a release build. Don't assume that job's warning list is exhaustive, though: e.g. the&lt;/tt&gt;[[maybe_unused]]&lt;tt&gt;-on-a-data-member GCC\&lt;12 warning above showed up for&lt;/tt&gt;Printout.h&lt;tt&gt;in one such log but not for the identical pattern in&lt;/tt&gt;SvgBitmap.h&lt;tt&gt;/&lt;/tt&gt;wxMathml.h&lt;tt&gt;in the same run, for reasons that weren't tracked down (not precompiled headers --&lt;/tt&gt;WXM_ENABLE_PRECOMPILED_HEADERS&lt;tt&gt;defaults&lt;/tt&gt;OFF&lt;tt&gt;) -- a clean local build with&lt;/tt&gt;g++-11 -Wall -Wextra&lt;tt&gt;is the more reliable check for this specific class of warning.
+- **&lt;/tt&gt;Cell&lt;tt&gt;Bitfields Use C++20 Default Member Initializers, Not&lt;/tt&gt;InitBitFields_ClassName()&lt;tt&gt;:** Every per-class flag bit-field (&lt;/tt&gt;Cell&lt;tt&gt;,&lt;/tt&gt;EditorCell&lt;tt&gt;,&lt;/tt&gt;GroupCell&lt;tt&gt;,&lt;/tt&gt;TextCell&lt;tt&gt;,&lt;/tt&gt;MatrCell&lt;tt&gt;, and the rest of&lt;/tt&gt;src/cells/&lt;tt&gt;) declares its default inline, e.g.&lt;/tt&gt;bool m_foo : 1 = false;&lt;tt&gt;. The older pattern -- an&lt;/tt&gt;InitBitFields_ClassName()&lt;tt&gt;method called from the constructor body, with each field tagged&lt;/tt&gt;/* InitBitFields_ClassName */&lt;tt&gt;-- predated C++20 support for bit-field default member initializers and has been fully removed (2026-08); don't reintroduce it for new flags. Classes with zero bit-fields of their own no longer carry an empty stub either. Before folding an existing full-size&lt;/tt&gt;bool m_foo;&lt;tt&gt;into a class's bitfield, check (1) nothing takes its address (&lt;/tt&gt;&amp;m_foo&lt;tt&gt;doesn't work on a bit-field member) and (2) it's only touched from the GUI thread (no cross-thread&lt;/tt&gt;bool&lt;tt&gt;atomicity/tearing expectations) -- worksheet cells are not thread-shared, but double-check call sites rather than assuming. **Declaration order matters more than usual here**: C++ initializes members in declaration order, not constructor-init-list order, so a bit-field read by a *later*-declared member's own initializer (e.g.&lt;/tt&gt;IntervalCell::m_leftBracketOpensLeft&lt;tt&gt;/&lt;/tt&gt;m_rightBracketOpensRight&lt;tt&gt;, read by the&lt;/tt&gt;m_openBracket&lt;tt&gt;/&lt;/tt&gt;m_closeBracket&lt;tt&gt;initializers) must stay declared *before* those members -- relocating it next to an unrelated bitfield group to save a byte is undefined behavior (reading the bit-field before it's initialized), not just a style choice, caught before it shipped by tracing the actual initialization order rather than trusting the mem-initializer-list order. When a field can't move, bit-fielding it in place still works: two adjacent&lt;/tt&gt;: 1&lt;tt&gt;declarations pack into a shared byte regardless of position.
+- **Tab Characters in&lt;/tt&gt;EditorCell&lt;tt&gt;:** A&lt;/tt&gt;'\t'&lt;tt&gt;is a real, single character in&lt;/tt&gt;m_text&lt;tt&gt;(see&lt;/tt&gt;EditorCell::NormalizeLineEndings()&lt;tt&gt;, which replaced the old&lt;/tt&gt;TabExpand()&lt;tt&gt;that irreversibly rewrote every tab to 1-4 spaces on input/paste/load). It is expanded to the next 4-column tab stop -- one column being the width of a space glyph in the current font -- only where text becomes pixels, via&lt;/tt&gt;EditorCell::NextTabStop(startX)&lt;tt&gt;/&lt;/tt&gt;MeasureTextWidth(startX, text)&lt;tt&gt;. Tab width is **position-dependent**, the one thing&lt;/tt&gt;GetTextExtent()&lt;tt&gt;/&lt;/tt&gt;GetTextSize()&lt;tt&gt;cannot compute on their own (unlike every other character), so it can never be cached the way&lt;/tt&gt;StyledText::SetWidth()&amp;lsquo; caches other tokens&amp;rsquo; widths. &lt;tt&gt;MaximaTokenizer&lt;/tt&gt; guarantees a tab is always its own isolated, single-character token (never merged into a space run, mirroring how a newline is already its own token) &amp;ndash; this is &lt;em&gt;load-bearing&lt;/em&gt;: every &lt;tt&gt;m_styledText&lt;/tt&gt;-based site (&lt;tt&gt;Draw()&lt;/tt&gt;, &lt;tt&gt;Recalculate()&lt;/tt&gt;, &lt;tt&gt;GetLineWidth()&lt;/tt&gt;, &lt;tt&gt;SelectPointText()&lt;/tt&gt;'s code-cell branch, &lt;tt&gt;StyleTextCode()&lt;/tt&gt;) only needs a &lt;tt&gt;text == wxS("\t")&lt;/tt&gt; equality check as a result, never substring splitting. Prose/text cells don't go through &lt;tt&gt;MaximaTokenizer&lt;/tt&gt; at all, so &lt;tt&gt;EditorCell::StyleTextTexts()&lt;/tt&gt; uses its own splitter, &lt;tt&gt;PushTextLine()&lt;/tt&gt;, to get the same isolation guarantee for a tab embedded in an otherwise plain line of text. Sites that measure a raw &lt;tt&gt;m_text&lt;/tt&gt; substring instead of a single token (&lt;tt&gt;MarkSelection()&lt;/tt&gt;, &lt;tt&gt;MixedDirectionOffset()&lt;/tt&gt;, &lt;tt&gt;StyleTextTexts()&lt;/tt&gt;'s wrap check) go through &lt;tt&gt;MeasureTextWidth()&lt;/tt&gt; instead, which splits on &amp;lsquo;&amp;rsquo;\t'&lt;tt&gt;internally since a substring can still have one embedded anywhere. Left/Right arrow and Delete need **no special-casing** for tabs -- they already move/delete exactly one&lt;/tt&gt;m_text&lt;tt&gt;character, which is now correct automatically. The plain&lt;/tt&gt;WXK_BACK` case's old "gobble up to 4 trailing spaces" shim was a workaround for the old space-expanded-tab world and is gone; a real tab deletes in one plain single-character backspace like anything else.
+
+- **&lt;tt&gt;TextCell::ToTeX()&lt;/tt&gt;'s &lt;tt&gt;TS_SPECIAL_CONSTANT&lt;/tt&gt; branch is a hardcoded
+  allowlist with a silent fall-through, not a general style handler
+  (GH #972):** &lt;tt&gt;\&lt;s\&gt;&lt;/tt&gt; in wxMathML.lisp is used for &lt;tt&gt;%pi&lt;/tt&gt;/&lt;tt&gt;%i&lt;/tt&gt;/&lt;tt&gt;%e&lt;/tt&gt;/&lt;tt&gt;inf&lt;/tt&gt;/
+  &lt;tt&gt;minf&lt;/tt&gt; and, separately, for the "d" of an integral's "dx"/"d\theta"/...
+  (&lt;tt&gt;wxxml-int&lt;/tt&gt;) &amp;ndash; all five constants get an explicit &lt;tt&gt;if/else if&lt;/tt&gt;, but
+  "d" didn't, so it fell through to the branch's final &lt;tt&gt;else return text;&lt;/tt&gt;
+  as a bare, unstyled character instead of ever reaching the later
+  &lt;tt&gt;\\ensuremath{\\mathrm{...}}&lt;/tt&gt; wrapping code that runs for &lt;tt&gt;TS_VARIABLE&lt;/tt&gt;/
+  &lt;tt&gt;TS_GREEK_CONSTANT&lt;/tt&gt;/&lt;tt&gt;TS_SPECIAL_CONSTANT&lt;/tt&gt; further down the function &amp;ndash;
+  that later code is dead for every &lt;tt&gt;TS_SPECIAL_CONSTANT&lt;/tt&gt; value, since the
+  early branch always returns first. Fixed by adding an explicit &lt;tt&gt;d&lt;/tt&gt; case
+  returning &lt;tt&gt;\\mathrm{d}&lt;/tt&gt; (no &lt;tt&gt;\\ensuremath{}&lt;/tt&gt; needed: it's only ever emitted
+  already inside &lt;tt&gt;IntCell::ToTeX()&lt;/tt&gt;'s math-mode string, which also already
+  supplies the separating &lt;tt&gt;\\,&lt;/tt&gt; and the space ahead of it, so don't duplicate
+  that here).
+  Adding a new special case to this list resurfaced a second, easy-to-miss
+  coupling: &lt;tt&gt;TextCell::ToTeX()&lt;/tt&gt;'s own multiplication-dot logic (for e.g. the
+  denominator of &lt;tt&gt;d/dt&lt;/tt&gt; or a &lt;tt&gt;dx*dy&lt;/tt&gt;-style differential product) identifies
+  "the previous cell was that same 'd'" by comparing
+  &lt;tt&gt;GetPrevious()-\&gt;ToTeX() == wxS("d")&lt;/tt&gt; &amp;ndash; once "d" stopped returning the
+  literal string &lt;tt&gt;"d"&lt;/tt&gt;, this comparison went permanently false. Any
+  &lt;tt&gt;TS_SPECIAL_CONSTANT&lt;/tt&gt; case whose &lt;tt&gt;ToTeX()&lt;/tt&gt; output no longer equals its raw
+  text needs same-file call sites recompared with &lt;tt&gt;ToString()&lt;/tt&gt; (returns the
+  untransformed &lt;tt&gt;m_text&lt;/tt&gt;) instead of &lt;tt&gt;ToTeX()&lt;/tt&gt;, not just the one place a new
+  case is added.
+
+- **&lt;tt&gt;TreeUndoAction&lt;/tt&gt;'s discriminant model, and adding a fourth action kind
+  (GH #266, fold/unfold undo):** &lt;tt&gt;TreeUndoAction&lt;/tt&gt; (&lt;tt&gt;src/TreeUndoAction.h&lt;/tt&gt;) is
+  a single, non-polymorphic struct, not an &lt;tt&gt;Action&lt;/tt&gt;/&lt;tt&gt;Undo()&lt;/tt&gt;/&lt;tt&gt;Redo()&lt;/tt&gt; class
+  hierarchy &amp;ndash; &lt;tt&gt;Worksheet::TreeUndo()&lt;/tt&gt; (&lt;tt&gt;Worksheet.cpp&lt;/tt&gt;) tells apart the
+  three original action kinds (text change, cell insertion, cell deletion)
+  by which of &lt;tt&gt;m_newCellsEnd&lt;/tt&gt;/&lt;tt&gt;m_oldCells&lt;/tt&gt;/neither is set, not by a type
+  tag. Adding fold/unfold as a fourth kind followed the same style rather
+  than introducing polymorphism for a fourth fixed case: a &lt;tt&gt;std::optional\&lt;
+  FoldDirection\&gt;&lt;/tt&gt; field (&lt;tt&gt;FoldDirection::Folded&lt;/tt&gt;/&lt;tt&gt;Unfolded&lt;/tt&gt;), checked in
+  &lt;tt&gt;TreeUndo()&lt;/tt&gt;'s dispatch &lt;em&gt;before&lt;/em&gt; the existing &lt;tt&gt;m_oldCells&lt;/tt&gt;-vs-text-change
+  fallback (a &lt;tt&gt;std::nullopt&lt;/tt&gt; field, like the others, defaults via the
+  member's own default constructor &amp;ndash; no explicit initializer needed in the
+  three original constructors). Undoing a fold/unfold just applies the
+  opposite direction to the same cell (&lt;tt&gt;m_start&lt;/tt&gt;), which is naturally
+  reversible/re-doable through the same generic replay loop the other three
+  kinds already use (&lt;tt&gt;Worksheet::TreeUndo()&lt;/tt&gt;'s do-while + swapped-stacks
+  trick already makes redo "undo, but backwards" for free).
+  &lt;strong&gt;Two things worth getting right if you touch this again:&lt;/strong&gt;
+  1. &lt;tt&gt;GroupCell::Fold()&lt;/tt&gt;/&lt;tt&gt;Unfold()&lt;/tt&gt; (&lt;tt&gt;GroupCell.cpp&lt;/tt&gt;) are the low-level
+     primitives (&lt;tt&gt;CellList::TearOut&lt;/tt&gt;/&lt;tt&gt;SpliceInAfter&lt;/tt&gt;, same as &lt;tt&gt;DeleteRegion&lt;/tt&gt;/
+     &lt;tt&gt;InsertGroupCells&lt;/tt&gt; use) and do &lt;strong&gt;not&lt;/strong&gt; themselves record undo &amp;ndash; only
+     &lt;tt&gt;WorksheetDocument::Fold()&lt;/tt&gt;/&lt;tt&gt;Unfold()&lt;/tt&gt;/&lt;tt&gt;ToggleFold()&lt;/tt&gt;/&lt;tt&gt;FoldAll()&lt;/tt&gt;/
+     &lt;tt&gt;UnfoldAll()&lt;/tt&gt; do, since only &lt;tt&gt;WorksheetDocument&lt;/tt&gt; owns the
+     &lt;tt&gt;TreeUndoManager&lt;/tt&gt;. Anywhere that needs a fold/unfold NOT to be
+     independently undoable (the automatic auto-unfold in &lt;tt&gt;RevealHidden()&lt;/tt&gt;,
+     and the "make room" auto-unfold in &lt;tt&gt;Worksheet.cpp&lt;/tt&gt;'s new-cell-insertion
+     logic when the h-caret sits inside a folded ancestor) must keep calling
+     the raw &lt;tt&gt;GroupCell::Fold()&lt;/tt&gt;/&lt;tt&gt;Unfold()&lt;/tt&gt; directly, not the
+     &lt;tt&gt;WorksheetDocument&lt;/tt&gt;-level wrappers, or it'll silently start occupying
+     an undo slot it shouldn't.
+  2. &lt;tt&gt;TreeUndoManager::AppendAction()&lt;/tt&gt;'s ordering is easy to get backwards:
+     since actions are pushed with &lt;tt&gt;emplace_front&lt;/tt&gt; (newest at the front),
+     marking an entry's &lt;tt&gt;m_partOfAtomicAction = true&lt;/tt&gt; means "when the entry pushed *after* me gets undone, keep going and undo me too" &amp;ndash; so to
+     chain N actions (e.g. every cell "Fold All" actually folded) into one
+     atomic Ctrl+Z, call &lt;tt&gt;AppendAction()&lt;/tt&gt; after each push &lt;em&gt;except the
+     last-pushed one&lt;/em&gt; (see &lt;tt&gt;WorksheetDocument::RecordFoldUndo()&lt;/tt&gt;), not after
+     the first.
+  A pre-existing unit test (&lt;tt&gt;test/unit_tests/test_TreeUndo.cpp&lt;/tt&gt;,
+  "Undoing an insertion whose cell was folded away...") had to switch from
+  &lt;tt&gt;g_ws-\&gt;ToggleFold()&lt;/tt&gt; to the raw &lt;tt&gt;section-\&gt;Fold()&lt;/tt&gt; once folding became
+  independently undoable: it was relying on folding &lt;em&gt;not&lt;/em&gt; pushing its own
+  undo action so that a single &lt;tt&gt;TreeUndo()&lt;/tt&gt; call would reach past it to the
+  insertion underneath &amp;ndash; exactly the kind of test that silently encodes an
+  old architectural assumption and breaks the moment that assumption stops
+  holding, worth checking for before assuming "existing tests pass" means
+  "no behavior changed."
+
+- **&lt;tt&gt;SumCell&lt;/tt&gt;'s always-on parentheses (GH #1536), and why the fix needed
+  both wxMathML.lisp and C++:** &lt;tt&gt;sum(k,k,1,n)&lt;/tt&gt; used to always display as
+  &lt;tt&gt;Σ (k)&lt;/tt&gt;, even though Maxima's own terminal printer shows a bare &lt;tt&gt;k&lt;/tt&gt; &amp;ndash;
+  &lt;tt&gt;SumCell&lt;/tt&gt;'s constructor (&lt;tt&gt;src/cells/SumCell.cpp&lt;/tt&gt;) unconditionally wrapped
+  the summand in its own &lt;tt&gt;ParenCell&lt;/tt&gt; (&lt;tt&gt;m_paren&lt;/tt&gt;), regardless of what the
+  summand actually was. The tempting "just use the existing operator- precedence machinery" fix doesn't quite apply here: &lt;tt&gt;%sum&lt;/tt&gt;/&lt;tt&gt;%product&lt;/tt&gt; have
+  no &lt;tt&gt;lbp&lt;/tt&gt;/&lt;tt&gt;rbp&lt;/tt&gt; registered at all in real Maxima (confirmed live:
+  &amp;lsquo;(get &amp;rsquo;%sum 'lbp)&lt;tt&gt;is&lt;/tt&gt;NIL`), so Maxima's own printer can't be using
+  generic precedence comparison for this either &amp;ndash; it must special-case it,
+  and the same real distinction it makes (parenthesize a compound summand
+  like &lt;tt&gt;k+k^2&lt;/tt&gt;, not a bare one like &lt;tt&gt;k&lt;/tt&gt;) is exactly &lt;tt&gt;mplusp&lt;/tt&gt; on the actual
+  Maxima expression, which is what &lt;tt&gt;wxxml-sum&lt;/tt&gt; (&lt;tt&gt;wxMathML.lisp&lt;/tt&gt;) now checks.
+  This deliberately avoids inventing a new binding-power value for &lt;tt&gt;sum&lt;/tt&gt; &amp;ndash;
+  the maintainer has flagged doing that as risky in the past (wxMaxima's own
+  operator precedences drifting out of sync with Maxima's, GH #1536's
+  comment thread), so &lt;tt&gt;mplusp&lt;/tt&gt; (an existing Maxima predicate on the real
+  parsed expression) is used instead of a numeric precedence comparison.
+  That decision alone isn't sufficient, though: it has to reach &lt;tt&gt;SumCell&lt;/tt&gt;'s
+  2D on-screen layout, which is computed entirely in C++
+  (&lt;tt&gt;Recalculate()&lt;/tt&gt;/&lt;tt&gt;Draw()&lt;/tt&gt;), and &lt;tt&gt;ParenCell&lt;/tt&gt;'s own &lt;tt&gt;m_print&lt;/tt&gt; flag &amp;ndash; which
+  looked like the obvious existing mechanism to reuse &amp;ndash; turned out to only
+  suppress parentheses in &lt;tt&gt;ToString()&lt;/tt&gt;/&lt;tt&gt;ToTeX()&lt;/tt&gt;/&lt;tt&gt;ToMathML()&lt;/tt&gt; (text/export
+  formats); &lt;tt&gt;Recalculate()&lt;/tt&gt;/&lt;tt&gt;Draw()&lt;/tt&gt;/&lt;tt&gt;SetCurrentPoint()&lt;/tt&gt; don't check it at
+  all and always reserve/draw the paren glyphs regardless. So the Lisp-side
+  decision is carried across the wire as a &lt;tt&gt;needsparen&lt;/tt&gt; attribute on &lt;tt&gt;\&lt;sm\&gt;&lt;/tt&gt;,
+  which &lt;tt&gt;MathParser::ParseSumTag&lt;/tt&gt; reads and feeds into &lt;tt&gt;SumCell::NeedsParen()&lt;/tt&gt;
+  &amp;ndash; a new setter that drives the &lt;em&gt;already-existing&lt;/em&gt; &lt;tt&gt;m_displayParen&lt;/tt&gt;/
+  &lt;tt&gt;DisplayedBase()&lt;/tt&gt; mechanism (previously only toggled by &lt;tt&gt;BreakUp()&lt;/tt&gt;/
+  &lt;tt&gt;Unbreak()&lt;/tt&gt; for the broken-into-lines case) via a new persistent
+  &lt;tt&gt;m_baseNeedsParen&lt;/tt&gt; field, rather than inventing a second, competing
+  wrapping mechanism. Confirmed end-to-end with a live Xvfb screenshot
+  (&lt;tt&gt;sum(k,k,1,n)&lt;/tt&gt; bare, &lt;tt&gt;sum(k+k^2,k,1,n)&lt;/tt&gt; parenthesized, and
+  &lt;tt&gt;sum(k,k,1,n)+L&lt;/tt&gt; &amp;ndash; which motivated the original always-parenthesize
+  decision &amp;ndash; correctly getting &lt;em&gt;outer&lt;/em&gt; parens around the whole sum from
+  the unrelated, already-existing &lt;tt&gt;%sum&lt;/tt&gt; &lt;tt&gt;rbp&lt;/tt&gt; registration, not extra
+  parens around the summand).
+
+- **"Don't unfold cells just because their folded tree is being evaluated"
+  (GH #1952):** &lt;tt&gt;Worksheet::ScrollToError()&lt;/tt&gt; &amp;ndash; called automatically by
+  &lt;tt&gt;MaximaEvaluator::CheckForErrors()&lt;/tt&gt; whenever &lt;tt&gt;AbortOnError()&lt;/tt&gt; is on (the
+  default) and a cell errors &amp;ndash; used to call &lt;tt&gt;errorCell-\&gt;RevealHidden()&lt;/tt&gt;
+  unconditionally. If the errored cell was folded away, that silently
+  unfolded the &lt;em&gt;entire&lt;/em&gt; enclosing section just to point at it, defeating the
+  whole reason many users fold a calculation down to one line in the first
+  place: to keep the worksheet readable while it evaluates, errors included.
+  Confirmed live in a real Xvfb session (a folded section containing
+  &lt;tt&gt;a:1\$ error("...")\$ a+1\$&lt;/tt&gt;, evaluated via "Evaluate All Cells"): the section
+  sprang open the instant the &lt;tt&gt;error()&lt;/tt&gt; cell ran, on unmodified &lt;tt&gt;main&lt;/tt&gt;.
+  Fixed by walking up &lt;tt&gt;GroupCell::GetHiddenTreeParent()&lt;/tt&gt; (returns non-null
+  exactly when a cell sits in someone's torn-out &lt;tt&gt;m_hiddenTree&lt;/tt&gt; &amp;ndash; see the
+  &lt;tt&gt;Fold()&lt;/tt&gt;/&lt;tt&gt;Unfold()&lt;/tt&gt;/&lt;tt&gt;CellList::TearOut&lt;/tt&gt; notes elsewhere in this section)
+  to the outermost cell that &lt;em&gt;is&lt;/em&gt; part of the visible tree, and &amp;ndash; only if
+  that ancestor differs from the error cell itself, i.e. the cell actually
+  is hidden &amp;ndash; targeting that ancestor (&lt;tt&gt;SetHCaret&lt;/tt&gt;+&lt;tt&gt;ScrollToCaret&lt;/tt&gt;) instead
+  of calling &lt;tt&gt;RevealHidden()&lt;/tt&gt;/touching &lt;tt&gt;errorCell&lt;/tt&gt;'s own (still-hidden,
+  un-renderable) &lt;tt&gt;EditorCell&lt;/tt&gt; at all. The ordinary (not-folded) case falls
+  through to the original code completely unchanged. Deliberately left
+  &lt;tt&gt;Worksheet::OpenQuestionCaret()&lt;/tt&gt;'s own &lt;tt&gt;RevealHidden()&lt;/tt&gt; call alone: unlike
+  an error, an interactive Maxima question genuinely blocks the evaluation
+  queue until the user answers it, so there is no way to let the user
+  respond without unfolding down to the cell that's asking. Regression-
+  tested in &lt;tt&gt;test/unit_tests/test_TreeUndo.cpp&lt;/tt&gt; (&lt;tt&gt;SCENARIO("An error inside a folded section does not unfold it (GH #1952)")&lt;/tt&gt;) by folding a section,
+  calling the &lt;em&gt;public&lt;/em&gt; &lt;tt&gt;ErrorList::Add()&lt;/tt&gt; directly to simulate what
+  &lt;tt&gt;MaximaEvaluator&lt;/tt&gt; does on a real error (no live Maxima needed), then
+  asserting &lt;tt&gt;ScrollToError()&lt;/tt&gt; leaves &lt;tt&gt;GetHiddenTree()&lt;/tt&gt;/&lt;tt&gt;GetHiddenTreeParent()&lt;/tt&gt;
+  untouched and lands the h-caret on the header &amp;ndash; confirmed to actually
+  catch the regression by reverting the fix and watching the new assertions
+  fail against the old code before restoring it.
+
+- **&lt;tt&gt;wxUILocale&lt;/tt&gt; (GH #2233) &amp;ndash; &lt;tt&gt;main.cpp&lt;/tt&gt; already had a &lt;tt&gt;\#if
+  wxCHECK_VERSION(3, 1, 6)&lt;/tt&gt; branch preferring &lt;tt&gt;wxUILocale&lt;/tt&gt; over &lt;tt&gt;wxLocale&lt;/tt&gt;,
+  but it had two live bugs, both confirmed with a standalone compiled
+  reproduction against the real wxWidgets 3.2.4 in this sandbox (see
+  &lt;tt&gt;wx/uilocale.h&lt;/tt&gt;), not guessed from reading the header:**
+  1. &lt;tt&gt;wxUILocale::UseDefault()&lt;/tt&gt; was called &lt;em&gt;unconditionally&lt;/em&gt;, discarding the
+     user's own configured language entirely &amp;ndash; it always applied the
+     system's default locale, even when the user had explicitly picked a
+     different one in wxMaxima's own settings (&lt;tt&gt;wxTranslations::SetLanguage()&lt;/tt&gt;
+     right below it still respected the choice for UI &lt;em&gt;text&lt;/em&gt;, so this bug
+     was invisible for translated strings and only affected locale-driven
+     formatting &amp;ndash; numbers, dates, etc.). Fixed by calling
+     &lt;tt&gt;wxUILocale::UseLocaleName(wxLocale::GetLanguageInfo(lang)-\&gt;CanonicalName)&lt;/tt&gt;
+     when &lt;tt&gt;lang != wxLANGUAGE_DEFAULT&lt;/tt&gt;, falling back to &lt;tt&gt;UseDefault()&lt;/tt&gt; only
+     if that lookup or the switch itself fails.
+  2. &lt;tt&gt;wxLocale().GetCanonicalName()&lt;/tt&gt; &amp;ndash; a &lt;strong&gt;fresh, never-&lt;tt&gt;Init()&lt;/tt&gt;-ed&lt;/strong&gt;
+     temporary &lt;tt&gt;wxLocale&lt;/tt&gt; object &amp;ndash; was still used in two places (&lt;tt&gt;main.cpp&lt;/tt&gt;,
+     for building Maxima's own &lt;tt&gt;LANG&lt;/tt&gt; environment variable, and
+     &lt;tt&gt;wxMaximaFrame::wxMaximaManualLocation()&lt;/tt&gt;, for picking the localized
+     manual) to ask "what's the active locale?". &lt;tt&gt;GetCanonicalName()&lt;/tt&gt; reads
+     back &lt;tt&gt;m_strShort&lt;/tt&gt;, a plain member that only &lt;tt&gt;wxLocale::Init()&lt;/tt&gt; ever
+     populates &amp;ndash; on the &lt;tt&gt;wxUILocale&lt;/tt&gt; branch, no &lt;tt&gt;wxLocale::Init()&lt;/tt&gt; call
+     happens anywhere in the process, so this &lt;strong&gt;always returned an empty
+     string&lt;/strong&gt;, unconditionally falling both call sites back to "<a class="el" href="classC.html">C</a>"/the plain
+     English manual regardless of the configured language. Confirmed with a
+     standalone reproduction: &lt;tt&gt;wxUILocale::UseLocaleName("de")&lt;/tt&gt; succeeds and
+     &lt;tt&gt;wxUILocale::GetCurrent().GetName()&lt;/tt&gt; correctly reports &lt;tt&gt;"de_DE.UTF-8"&lt;/tt&gt;
+     immediately afterwards, while a fresh &lt;tt&gt;wxLocale().GetCanonicalName()&lt;/tt&gt;
+     called in the same process stays &lt;tt&gt;""&lt;/tt&gt;. Fixed two different ways for two
+     different needs: &lt;tt&gt;main.cpp&lt;/tt&gt;'s &lt;tt&gt;LANG&lt;/tt&gt;-building code now reads
+     &lt;tt&gt;wxUILocale::GetCurrent().GetName()&lt;/tt&gt; instead (wants the OS's actual,
+     fully-resolved locale string, which is exactly what that query returns);
+     &lt;tt&gt;wxMaximaManualLocation()&lt;/tt&gt; instead derives the language name directly
+     from the already-known configured language ID via the static, lookup-
+     table-only &lt;tt&gt;wxLocale::GetLanguageCanonicalName(lang)&lt;/tt&gt; &amp;ndash; deliberately
+     &lt;em&gt;not&lt;/em&gt; from whatever the OS ended up resolving, since that lookup needs
+     no locale to be installed or supported at all (confirmed live: in this
+     sandbox, which ships only the &lt;tt&gt;C&lt;/tt&gt;/&lt;tt&gt;C.utf8&lt;/tt&gt;/&lt;tt&gt;POSIX&lt;/tt&gt; locales,
+     &lt;tt&gt;wxLocale::Init(wxLANGUAGE_GERMAN)&lt;/tt&gt; itself reports failure, yet still
+     leaves a usable &lt;tt&gt;"de_DE"&lt;/tt&gt; in &lt;tt&gt;GetCanonicalName()&lt;/tt&gt; &amp;ndash; the old &lt;tt&gt;wxLocale&lt;/tt&gt;
+     path's &lt;tt&gt;Init()&lt;/tt&gt; populates its bookkeeping from the &lt;em&gt;requested&lt;/em&gt; language
+     on a best-effort basis regardless of whether the underlying OS
+     &lt;tt&gt;setlocale()&lt;/tt&gt; call actually succeeded, which is precisely the property
+     &lt;tt&gt;wxUILocale::GetCurrent()&lt;/tt&gt; lacks and why it can't be used as a
+     replacement query for this specific "which language did the user pick"
+     question). This lookup needs no version guard &amp;ndash; it's been present and
+     works identically on both pre- and post-3.1.6 wxWidgets.
+  - &lt;strong&gt;Not yet done&lt;/strong&gt; (deferred, filed as open follow-ups by the maintainer,
+    not part of this fix): #2229 (minimizable sidebars, wxWidgets &gt;= 3.3.2),
+    #2230 (accessible SVG export, &gt;= 3.3.3), #2231 (PNG description chunks
+    on exported cells, &gt;= 3.3.1), #2232 (&lt;tt&gt;wxNO_UNUSED_VARIABLES&lt;/tt&gt;, &gt;= 3.2.7).
+    None of the four could be verified in this sandbox, which only has
+    wxWidgets 3.2.4 installed &amp;ndash; any implementation of them here could only
+    be compile-checked on the pre-version-guard fallback path, not the
+    actual new behavior.
+
+- &lt;strong&gt;Scaled images losing transparency (GH #2227, &lt;tt&gt;Image::GetBitmap()&lt;/tt&gt; in
+  &lt;tt&gt;src/Image.cpp&lt;/tt&gt;):&lt;/strong&gt; the final step of building a scaled display bitmap
+  converted the already-loaded/decoded bitmap back to a &lt;tt&gt;wxImage&lt;/tt&gt;, called
+  &lt;tt&gt;Rescale()&lt;/tt&gt; on it, then rebuilt the bitmap with &lt;tt&gt;wxBitmap(img, 24)&lt;/tt&gt; &amp;ndash;
+  an explicit &lt;tt&gt;depth&lt;/tt&gt; argument. Passing a depth to this &lt;tt&gt;wxBitmap&lt;/tt&gt;
+  constructor forces that bit depth and &lt;strong&gt;discards any alpha channel&lt;/strong&gt;,
+  even when &lt;tt&gt;wxImage::HasAlpha()&lt;/tt&gt; is true on the source image; omitting the
+  parameter (the default, &lt;tt&gt;-1&lt;/tt&gt;) auto-detects depth and preserves alpha
+  instead. Every other bitmap-construction call in the same file &amp;ndash;
+  &lt;tt&gt;GetUnscaledBitmap()&lt;/tt&gt;'s SVG-rasterize and compressed-image-decode paths,
+  and &lt;tt&gt;GetBitmap()&lt;/tt&gt;'s own first construction a few lines earlier &amp;ndash; already
+  omits the depth argument; the scaled-bitmap path was the one outlier.
+  The visible symptom (per the issue) is a previously-transparent region of
+  an image rendering as solid, usually black, once the image needed
+  scaling to fit its on-screen size &amp;ndash; black because that's what most
+  image encoders leave in the RGB channels of a fully-transparent pixel,
+  and once the alpha channel is gone there's nothing left to mask it.
+  Fixed by dropping the explicit depth: &lt;tt&gt;m_scaledBitmap = wxBitmap(img);&lt;/tt&gt;.
+  Verified with the existing &lt;tt&gt;imageFormat&lt;/tt&gt; ctest (&lt;tt&gt;test/image-test/&lt;/tt&gt;,
+  covers PNG/BMP/TIFF/GIF/JPG/WEBP/PNM/XPM sources, PNG and BMP both
+  confirmed to actually carry an alpha channel via &lt;tt&gt;file&lt;/tt&gt;) under
+  &lt;tt&gt;xvfb-run&lt;/tt&gt; &amp;ndash; it needs a real X display (&lt;tt&gt;Error: Unable to initialize
+  GTK+, is DISPLAY set properly?&lt;/tt&gt; without one) &amp;ndash; plus the full &lt;tt&gt;ctest&lt;/tt&gt;
+  suite for regressions. This is narrowly a "don't destroy an alpha channel we already have" fix; it does not address the separate,
+  genuinely open design question the same issue also raises (also flagged
+  by the maintainer in the issue itself): whether leaving a transparent
+  pixel fully transparent is actually correct once a dark worksheet
+  background is involved (e.g. black line art becoming invisible against
+  it), which needs a product decision, not a bug fix, and is left for a
+  follow-up.
+
+- &lt;strong&gt;RTF/OMML export (GH #1456, GH #1457) &amp;ndash; previously had zero test
+  coverage; &lt;tt&gt;test/unit_tests/test_RTFExport.cpp&lt;/tt&gt; is the first.&lt;/strong&gt; RTF export
+  has two independent code paths that both matter: &lt;tt&gt;TextCell::ToRTF()&lt;/tt&gt;
+  (plain RTF text, one &lt;tt&gt;\\cf\&lt;N\&gt;{...}&lt;/tt&gt; run per cell) and &lt;tt&gt;Cell::ToOMML()&lt;/tt&gt; +
+  &lt;tt&gt;Cell::OMML2RTF()&lt;/tt&gt; (an embedded Word/LibreOffice math field, used whenever
+  &lt;tt&gt;Cell::ListToRTF()&lt;/tt&gt; hits a cell whose &lt;tt&gt;ToRTF()&lt;/tt&gt; is empty but whose
+  &lt;tt&gt;ToOMML()&lt;/tt&gt; isn't &amp;ndash; see &lt;tt&gt;Cell::ListToRTF()&lt;/tt&gt;'s two-branch loop). Getting
+  either path's cell-specific override wrong is invisible to every other
+  export format's tests, since TeX/XML/MathML export don't share this code.
+  - **&lt;tt&gt;TextCell::ToRTF()&lt;/tt&gt; didn't check &lt;tt&gt;IsHidden()&lt;/tt&gt;/&lt;tt&gt;GetHidableMultSign()&lt;/tt&gt;/
+    &lt;tt&gt;HidemultiplicationSign()&lt;/tt&gt; at all (GH #1456)**, unlike &lt;tt&gt;ToTeX()&lt;/tt&gt; and
+    &lt;tt&gt;ToXML()&lt;/tt&gt;, which both already do. Confirmed via a standalone harness
+    (parse the real &lt;tt&gt;\&lt;h\&gt;*\&lt;/h\&gt;&lt;/tt&gt; XML &lt;tt&gt;wxxmlnumformat&lt;/tt&gt; in &lt;tt&gt;wxMathML.lisp&lt;/tt&gt; emits
+    for scientific notation, e.g. "2*10^7" for &lt;tt&gt;2e7&lt;/tt&gt;, through &lt;tt&gt;MathParser&lt;/tt&gt;,
+    then call &lt;tt&gt;ListToRTF()&lt;/tt&gt; directly) that with &lt;tt&gt;HidemultiplicationSign()&lt;/tt&gt;
+    on vs. off the RTF output was byte-for-byte &lt;em&gt;identical&lt;/em&gt; &amp;ndash; the literal
+    &lt;tt&gt;*&lt;/tt&gt; always appeared. Fixed by mirroring &lt;tt&gt;ToTeX()&lt;/tt&gt;'s exact logic: when
+    hidden, a lone &lt;tt&gt;*&lt;/tt&gt;/&lt;tt&gt;·&lt;/tt&gt; becomes a plain space (never removed
+    outright) so cells on either side don't run together, while any other
+    kind of &lt;tt&gt;IsHidden()&lt;/tt&gt; cell (e.g. an invisible parenthesis) still clears
+    to empty. The "run together" failure mode is real, not theoretical: the
+    two content types don't mix in &lt;tt&gt;Cell::ListToRTF()&lt;/tt&gt;'s output &amp;ndash; plain
+    text and an OMML math field are adjacent, unrelated RTF constructs, so
+    a &lt;tt&gt;2&lt;/tt&gt; (plain text) immediately followed by a hidden-then-vanished &lt;tt&gt;*&lt;/tt&gt;
+    and then a &lt;tt&gt;10^7&lt;/tt&gt; (OMML field, since &lt;tt&gt;ExptCell&lt;/tt&gt; only implements
+    &lt;tt&gt;ToOMML()&lt;/tt&gt;, not &lt;tt&gt;ToRTF()&lt;/tt&gt;) would have rendered as the unreadable "210^7"
+    with no separator between the plain-text run and the math field.
+  - **&lt;tt&gt;MatrCell::ToOMML()&lt;/tt&gt; emitted &lt;tt&gt;\&lt;m:grow\&gt;\\"1\\"\&lt;/m:grow\&gt;&lt;/tt&gt; &amp;ndash; a &lt;em&gt;child
     element&lt;/em&gt; whose text content is the two literal characters &lt;tt&gt;"1"&lt;/tt&gt;,
     complete with quote marks &amp;ndash; instead of the &lt;tt&gt;m:grow="1"&lt;/tt&gt; &lt;em&gt;attribute&lt;/em&gt;
     form &lt;tt&gt;ParenCell&lt;/tt&gt;/&lt;tt&gt;ListCell&lt;/tt&gt;/&lt;tt&gt;IntervalCell::ToOMML()&lt;/tt&gt; all already use
@@ -533,8 +1035,6 @@ has already been broken.
 
 &lt;table class="markdownTable"&gt;
   &lt;tr class="markdownTableHead"&gt;    &lt;th class="markdownTableHeadNone"&gt; Skill   </code></li>
-</ul>
-</li>
 </ul>
 <p><code> Covers    </code></p>
 <p><code> </code></p>
