@@ -33,9 +33,8 @@ if(NOT WIN32)
         set(WXMAXIMA_CONFIGFILE_PATH "~/.wxMaxima")
     endif()
 		set(MANPAGEVERSION ${WXMAXIMA_VERSION})
-    file(TIMESTAMP ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.1.in MANPAGEDATE "%Y-%m-%d" UTC)
+    string(TIMESTAMP MANPAGEDATE "%Y-%m-%d" UTC)
     configure_file(${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.1.in wxmaxima.1)
-    file(TIMESTAMP ${CMAKE_CURRENT_SOURCE_DIR}/de/wxmaxima.1.in MANPAGEDATE "%Y-%m-%d" UTC)
     configure_file(${CMAKE_CURRENT_SOURCE_DIR}/de/wxmaxima.1.in de/wxmaxima.1)
 
     # Install man pages UNCOMPRESSED. Distributions compress manpages with their
