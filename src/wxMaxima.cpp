@@ -161,8 +161,6 @@ wxDECLARE_APP(MyApp);
 // wxMaxima.h so OnInit() can reach it.
 void ApplyAppearanceToApp(Configuration::Appearance appearance) {
 #if wxCHECK_VERSION(3, 3, 0)
-  if (!wxTheApp)
-    return;
   wxApp::Appearance a = wxApp::Appearance::System;
   switch (appearance) {
   case Configuration::Appearance::light:
@@ -175,7 +173,7 @@ void ApplyAppearanceToApp(Configuration::Appearance appearance) {
     a = wxApp::Appearance::System;
     break;
   }
-  wxTheApp->SetAppearance(a);
+  wxApp::SetAppearance(a);
 #else
   (void)appearance;
 #endif
