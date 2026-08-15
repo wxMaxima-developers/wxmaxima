@@ -498,19 +498,22 @@ if(WIN32)
     # sometimes the whole set), so bundle these explicitly, taken from the exact
     # toolchain that built the exe. This is the packaging counterpart of the
     # "Stage runtime DLLs next to wxmaxima.exe" step the test job already does.
+    #
+    # This is most likely NOT necessary here, but a task for the 'packaging team'.
+    # We don't have code to bundle libraries for OSX, Windows with the Microsoft
+    # compiler, Solaris, Irix, ChromeOS or other systems here.
+    #
+    # (And is already done in the Crosscompiled-Windows-installer repository and
+    # the Maxima source code, when wxMaxima is bundled in the combined installer.)
+    # That code only covers 64bit builds, on a 32 bit system the libs have other names.
     if(MINGW)
-        get_filename_component(_mingw_bindir "${CMAKE_CXX_COMPILER}" DIRECTORY)
-        foreach(_runtime_dll
-                libstdc++-6.dll libgcc_s_seh-1.dll libwinpthread-1.dll)
-            if(EXISTS "${_mingw_bindir}/${_runtime_dll}")
-                install(FILES "${_mingw_bindir}/${_runtime_dll}" DESTINATION bin)
-            else()
-                message(WARNING
-                    "MinGW runtime ${_runtime_dll} not found in "
-                    "${_mingw_bindir}; the Windows package may ship without it "
-                    "and fail to start on a clean machine.")
-            endif()
-        endforeach()
+        execute_process(COMMAND "${CMAKE_CXX_COMPILER}" -print-file-name=libgcc_s_seh-1.dll  OUTPUT_VARIABLE MINGW_LIBGCC    OUTPUT_STRIP_TRAILING_WHITESPACE)
+        execute_process(COMMAND "${CMAKE_CXX_COMPILER}" -print-file-name=libstdc++-6.dll     OUTPUT_VARIABLE MINGW_LIBSTDCPP OUTPUT_STRIP_TRAILING_WHITESPACE)
+        execute_process(COMMAND "${CMAKE_CXX_COMPILER}" -print-file-name=libwinpthread-1.dll OUTPUT_VARIABLE MINGW_LIBWINPTHREAD OUTPUT_STRIP_TRAILING_WHITESPACE)
+        message(STATUS "Found libwinpthread at ${MINGW_LIBWINPTHREAD}")
+        message(STATUS "Found libstdc++ at ${MINGW_LIBSTDCPP}")
+        message(STATUS "Found libgcc at ${MINGW_LIBGCC}")
+        install(FILES "${MINGW_LIBWINPTHREAD}" "${MINGW_LIBSTDCPP}" "${MINGW_LIBGCC}" DESTINATION bin)
     endif()
 elseif(APPLE)
     # If we have generated an .apk bundle we can package this in a DMG image
