@@ -100,7 +100,7 @@ cmake --build ../build-wxm --install
 ### Ubuntu or Debian build prerequisites
 
 ```sh
-sudo apt-get install build-essential libwxgtk3.2-gtk3-dev libwxgtk-webview3.2-gtk3-dev wx3.2-i18n ibus-gtk ibus-gtk3 checkinstall gettext cmake pandoc po4a libfribidi-dev
+sudo apt-get install build-essential libwxgtk3.2-dev libwxgtk-webview3.2-dev wx3.2-i18n ibus-gtk ibus-gtk3 checkinstall gettext cmake pandoc po4a libfribidi-dev
 ```
 
 (`libfribidi-dev` is optional -- see "New optional dependency: libfribidi" under
