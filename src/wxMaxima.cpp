@@ -123,7 +123,7 @@
 #include <wx/persist/toplevel.h>
 #include <wx/sckstrm.h>
 #include <wx/txtstrm.h>
-#if wxCHECK_VERSION(3, 1, 5)
+#if wxUSE_WEBREQUEST
 #include <wx/webrequest.h>
 #endif
 #include "main.h"
@@ -3438,7 +3438,7 @@ wxMaxima::VersionNumber::VersionNumber(const wxString &version)
  * e.g. release date, changelog, available downloads, etc.
  */
 void wxMaxima::CheckForUpdates(bool reportUpToDate) {
-#if wxCHECK_VERSION(3, 1, 5)
+#if wxUSE_WEBREQUEST
   // wxWebRequest can handle https, not only http.
   // Create the request object
 
