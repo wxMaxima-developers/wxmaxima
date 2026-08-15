@@ -1233,8 +1233,8 @@ id=img_MatrixTableExample }
 Además, porque una matriz es un listado de listados, las matrices pueden
 convertirse a tablas de una aparición similar.
 
-![Otro ejemplo de tabla_formulario](./EjemploSegundaTabla.png){
-id=img_EjemploSegundaTabla }
+![Otro ejemplo de tabla_formulario](./SecondTableExample.png){
+id=img_SecondTableExample }
 
 The function `wx_matrix()` is a wrapper for Maxima's `matrix()` command that
 allows for more flexible formatting of matrices in wxMaxima:
