@@ -1312,14 +1312,19 @@ else()
     message(STATUS "rpmlint or rpmbuild not found. Skipping rpmlint check of the RPM package.")
 endif()
 
-# Give every test its own MAXIMA_USERDIR so tests running in parallel never share
-# Maxima's compiled-package cache: Maxima's load() of a compiled package (draw,
-# lsquares, ...) writes the compiled result into that cache, and two instances
-# loading the same package concurrently into one shared cache can race (the second
-# reads a half-written file and load() fails). Isolating per test removes the race
-# without serializing the suite. (wxMaxima's config writes now degrade gracefully
-# when the dir isn't writable, so a fresh per-test MAXIMA_USERDIR no longer
-# asserts.)
+# Give every test its own environment so tests running in parallel never share
+# Maxima's user-customize-files folder (MAXIMA_USERDIR), Maxima's compiled-package
+# cache (MAXIMA_OBJDIR), Maxima's scratch space (MAXIMA_TEMPDIR), generic user
+# scratch space (TMPDIR), wxMaxima's user configuration folder (XDG_CONFIG_HOME).
+# For illustration Maxima's load() of a package (draw, lsquares, ...) writes the compiled
+# results into that cache, and two instances loading the same package concurrently into
+# one shared cache can race (the second reads a half-written file and load() fails).
+# Conversely, Maxima plotting machinery, along the invoked gnuplot machinery,
+# generates numerous intermediate data files and scripts into the scratch spaces so having
+# them when issues occur can be handy. Isolating per test removes the race without serializing
+# the suite and allows developers to isolate possible issues per test at the same expense.
+# Notice that wxMaxima's config writes now degrade gracefully when the directory isn't writable,
+# so a fresh per-test environment no longer asserts.
 # Tests that drive the configured check-*.sh helper scripts (wxMathML / XML /
 # wxmx validity, wizard commands). They need a POSIX shell plus xmllint/unzip and
 # are invoked as a .sh directly, so they cannot run on the Windows CI (they show
@@ -1340,7 +1345,7 @@ set(WXM_POSIX_TESTS
   wxxml-array-no-display-properties wxxml-array-display-properties
   wxxmltag wxxmltag2 wxxml-mlable wxxml-mlable2 wxxml-orthopoly
   wxxml-pochhammer wxxml-pderivop mminus mfactorial mprod block mlist
-  true false mfrac load_symbol check-markdown 
+  true false mfrac load_symbol check-markdown
   subscriptp_1 subscriptp_2 subscriptp_3 subscriptp_4 subscriptp_5
   subscriptp_6 subscriptp_7 subscriptp_8 subscriptp_9 subscriptp_10
   subscriptp_11)
@@ -1358,13 +1363,20 @@ set(WXM_SHARED_USERDIR_TESTS absCells atCells)
 get_property(wxm_all_tests DIRECTORY PROPERTY TESTS)
 foreach(wxm_t IN LISTS wxm_all_tests)
   if("${wxm_t}" IN_LIST WXM_SHARED_USERDIR_TESTS)
-    set(wxm_userdir "${CMAKE_CURRENT_BINARY_DIR}/test_userdirs/shared_typical_use")
+    set(wxm_envdir "${CMAKE_CURRENT_BINARY_DIR}/test_envdirs/shared_typical_use")
   else()
-    set(wxm_userdir "${CMAKE_CURRENT_BINARY_DIR}/test_userdirs/${wxm_t}")
+    set(wxm_envdir "${CMAKE_CURRENT_BINARY_DIR}/test_envdirs/${wxm_t}")
   endif()
-  file(MAKE_DIRECTORY "${wxm_userdir}")
+  file(MAKE_DIRECTORY "${wxm_envdir}")
+  file(MAKE_DIRECTORY "${wxm_envdir}/TMPDIR")
   set_property(TEST "${wxm_t}" APPEND PROPERTY ENVIRONMENT
-    "MAXIMA_USERDIR=${wxm_userdir}")
+    "TMPDIR=${wxm_envdir}/TMPDIR"
+    #"TEMPDIR=${wxm_envdir}/TMPDIR"
+    "MAXIMA_USERDIR=${wxm_envdir}/MAXIMA_USERDIR"
+    "MAXIMA_OBJDIR=${wxm_envdir}/MAXIMA_OBJDIR"
+    "MAXIMA_TEMPDIR=${wxm_envdir}/MAXIMA_TEMPDIR"
+    "XDG_CONFIG_HOME=${wxm_envdir}/XDG_CONFIG_HOME"
+    )
   # Watchdog timeout so a single hung test fails fast instead of blocking the
   # whole suite until the CI job hits its two-hour wall (see WXM_TEST_TIMEOUT).
   # Only set it where a test hasn't requested a longer one of its own.
@@ -1376,6 +1388,3 @@ foreach(wxm_t IN LISTS wxm_all_tests)
     set_property(TEST "${wxm_t}" APPEND PROPERTY LABELS needs_posix)
   endif()
 endforeach()
-
-
-
