@@ -111,7 +111,7 @@ $(function() {
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="keyword">typedef</span> <span class="keyword">struct </span>NSVGrasterizer NSVGrasterizer;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code hl_struct" href="structNSVGrasterizer.html">NSVGrasterizer</a> <a class="code hl_struct" href="structNSVGrasterizer.html">NSVGrasterizer</a>;</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="comment">/* Example Usage:</span></div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="comment">    // Load SVG</span></div>
@@ -127,7 +127,7 @@ $(function() {
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="comment">*/</span></div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="comment">// Allocated rasterizer context.</span></div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>NSVGrasterizer* nsvgCreateRasterizer(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><a class="code hl_struct" href="structNSVGrasterizer.html">NSVGrasterizer</a>* nsvgCreateRasterizer(<span class="keywordtype">void</span>);</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="comment">// Rasterizes SVG image, returns RGBA image (non-premultiplied alpha)</span></div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="comment">//   r - pointer to rasterizer context</span></div>
@@ -138,12 +138,12 @@ $(function() {
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="comment">//   w - width of the image to render</span></div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="comment">//   h - height of the image to render</span></div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="comment">//   stride - number of bytes per scaleline in the destination buffer</span></div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="keywordtype">void</span> nsvgRasterize(NSVGrasterizer* r,</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="keywordtype">void</span> nsvgRasterize(<a class="code hl_struct" href="structNSVGrasterizer.html">NSVGrasterizer</a>* r,</div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>                   <a class="code hl_struct" href="structNSVGimage.html">NSVGimage</a>* image, <span class="keywordtype">float</span> tx, <span class="keywordtype">float</span> ty, <span class="keywordtype">float</span> scale,</div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>                   <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>* dst, <span class="keywordtype">int</span> w, <span class="keywordtype">int</span> h, <span class="keywordtype">int</span> stride);</div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="comment">// Deletes rasterizer context.</span></div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="keywordtype">void</span> nsvgDeleteRasterizer(NSVGrasterizer*);</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="keywordtype">void</span> nsvgDeleteRasterizer(<a class="code hl_struct" href="structNSVGrasterizer.html">NSVGrasterizer</a>*);</div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="preprocessor">#ifndef NANOSVGRAST_CPLUSPLUS</span></div>
@@ -164,62 +164,62 @@ $(function() {
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span><span class="preprocessor">#define NSVG__FIXMASK       (NSVG__FIX-1)</span></div>
 <div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span><span class="preprocessor">#define NSVG__MEMPAGE_SIZE  1024</span></div>
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span><span class="keyword">typedef</span> <span class="keyword">struct </span>NSVGedge {</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno"><a class="line" href="structNSVGedge.html">   89</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code hl_struct" href="structNSVGedge.html">NSVGedge</a> {</div>
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    <span class="keywordtype">float</span> x0,y0, x1,y1;</div>
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    <span class="keywordtype">int</span> dir;</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    <span class="keyword">struct </span>NSVGedge* next;</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>} NSVGedge;</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    <span class="keyword">struct </span><a class="code hl_struct" href="structNSVGedge.html">NSVGedge</a>* next;</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>} <a class="code hl_struct" href="structNSVGedge.html">NSVGedge</a>;</div>
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span><span class="keyword">typedef</span> <span class="keyword">struct </span>NSVGpoint {</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno"><a class="line" href="structNSVGpoint.html">   95</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code hl_struct" href="structNSVGpoint.html">NSVGpoint</a> {</div>
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    <span class="keywordtype">float</span> x, y;</div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    <span class="keywordtype">float</span> dx, dy;</div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    <span class="keywordtype">float</span> len;</div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    <span class="keywordtype">float</span> dmx, dmy;</div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> flags;</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>} NSVGpoint;</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>} <a class="code hl_struct" href="structNSVGpoint.html">NSVGpoint</a>;</div>
 <div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span><span class="keyword">typedef</span> <span class="keyword">struct </span>NSVGactiveEdge {</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno"><a class="line" href="structNSVGactiveEdge.html">  103</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code hl_struct" href="structNSVGactiveEdge.html">NSVGactiveEdge</a> {</div>
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    <span class="keywordtype">int</span> x,dx;</div>
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    <span class="keywordtype">float</span> ey;</div>
 <div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    <span class="keywordtype">int</span> dir;</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    <span class="keyword">struct </span>NSVGactiveEdge *next;</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>} NSVGactiveEdge;</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    <span class="keyword">struct </span><a class="code hl_struct" href="structNSVGactiveEdge.html">NSVGactiveEdge</a> *next;</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>} <a class="code hl_struct" href="structNSVGactiveEdge.html">NSVGactiveEdge</a>;</div>
 <div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span><span class="keyword">typedef</span> <span class="keyword">struct </span>NSVGmemPage {</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno"><a class="line" href="structNSVGmemPage.html">  110</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code hl_struct" href="structNSVGmemPage.html">NSVGmemPage</a> {</div>
 <div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> mem[NSVG__MEMPAGE_SIZE];</div>
 <div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    <span class="keywordtype">int</span> size;</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    <span class="keyword">struct </span>NSVGmemPage* next;</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>} NSVGmemPage;</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    <span class="keyword">struct </span><a class="code hl_struct" href="structNSVGmemPage.html">NSVGmemPage</a>* next;</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>} <a class="code hl_struct" href="structNSVGmemPage.html">NSVGmemPage</a>;</div>
 <div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span><span class="keyword">typedef</span> <span class="keyword">struct </span>NSVGcachedPaint {</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno"><a class="line" href="structNSVGcachedPaint.html">  116</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code hl_struct" href="structNSVGcachedPaint.html">NSVGcachedPaint</a> {</div>
 <div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    <span class="keywordtype">signed</span> <span class="keywordtype">char</span> type;</div>
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    <span class="keywordtype">char</span> spread;</div>
 <div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    <span class="keywordtype">float</span> xform[6];</div>
 <div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> colors[256];</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>} NSVGcachedPaint;</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>} <a class="code hl_struct" href="structNSVGcachedPaint.html">NSVGcachedPaint</a>;</div>
 <div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span> </div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span><span class="keyword">struct </span>NSVGrasterizer</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno"><a class="line" href="structNSVGrasterizer.html">  123</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structNSVGrasterizer.html">NSVGrasterizer</a></div>
 <div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>{</div>
 <div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>    <span class="keywordtype">float</span> px, py;</div>
 <div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span> </div>
 <div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>    <span class="keywordtype">float</span> tessTol;</div>
 <div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>    <span class="keywordtype">float</span> distTol;</div>
 <div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span> </div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>    NSVGedge* edges;</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>    <a class="code hl_struct" href="structNSVGedge.html">NSVGedge</a>* edges;</div>
 <div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    <span class="keywordtype">int</span> nedges;</div>
 <div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>    <span class="keywordtype">int</span> cedges;</div>
 <div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span> </div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>    NSVGpoint* points;</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>    <a class="code hl_struct" href="structNSVGpoint.html">NSVGpoint</a>* points;</div>
 <div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>    <span class="keywordtype">int</span> npoints;</div>
 <div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>    <span class="keywordtype">int</span> cpoints;</div>
 <div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span> </div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>    NSVGpoint* points2;</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>    <a class="code hl_struct" href="structNSVGpoint.html">NSVGpoint</a>* points2;</div>
 <div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>    <span class="keywordtype">int</span> npoints2;</div>
 <div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>    <span class="keywordtype">int</span> cpoints2;</div>
 <div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span> </div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>    NSVGactiveEdge* freelist;</div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>    NSVGmemPage* pages;</div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>    NSVGmemPage* curpage;</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>    <a class="code hl_struct" href="structNSVGactiveEdge.html">NSVGactiveEdge</a>* freelist;</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>    <a class="code hl_struct" href="structNSVGmemPage.html">NSVGmemPage</a>* pages;</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>    <a class="code hl_struct" href="structNSVGmemPage.html">NSVGmemPage</a>* curpage;</div>
 <div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span> </div>
 <div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>* scanline;</div>
 <div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>    <span class="keywordtype">int</span> cscanline;</div>
@@ -228,11 +228,11 @@ $(function() {
 <div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>    <span class="keywordtype">int</span> width, height, stride;</div>
 <div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>};</div>
 <div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span> </div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>NSVGrasterizer* nsvgCreateRasterizer(<span class="keywordtype">void</span>)</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span><a class="code hl_struct" href="structNSVGrasterizer.html">NSVGrasterizer</a>* nsvgCreateRasterizer(<span class="keywordtype">void</span>)</div>
 <div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>{</div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>    NSVGrasterizer* r = (NSVGrasterizer*)malloc(<span class="keyword">sizeof</span>(NSVGrasterizer));</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>    <a class="code hl_struct" href="structNSVGrasterizer.html">NSVGrasterizer</a>* r = (<a class="code hl_struct" href="structNSVGrasterizer.html">NSVGrasterizer</a>*)malloc(<span class="keyword">sizeof</span>(<a class="code hl_struct" href="structNSVGrasterizer.html">NSVGrasterizer</a>));</div>
 <div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>    <span class="keywordflow">if</span> (r == NULL) <span class="keywordflow">goto</span> error;</div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>    memset(r, 0, <span class="keyword">sizeof</span>(NSVGrasterizer));</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>    memset(r, 0, <span class="keyword">sizeof</span>(<a class="code hl_struct" href="structNSVGrasterizer.html">NSVGrasterizer</a>));</div>
 <div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span> </div>
 <div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>    r-&gt;tessTol = 0.25f;</div>
 <div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>    r-&gt;distTol = 0.01f;</div>
@@ -244,15 +244,15 @@ $(function() {
 <div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>    <span class="keywordflow">return</span> NULL;</div>
 <div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>}</div>
 <div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span> </div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span><span class="keywordtype">void</span> nsvgDeleteRasterizer(NSVGrasterizer* r)</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span><span class="keywordtype">void</span> nsvgDeleteRasterizer(<a class="code hl_struct" href="structNSVGrasterizer.html">NSVGrasterizer</a>* r)</div>
 <div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>{</div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>    NSVGmemPage* p;</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>    <a class="code hl_struct" href="structNSVGmemPage.html">NSVGmemPage</a>* p;</div>
 <div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span> </div>
 <div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>    <span class="keywordflow">if</span> (r == NULL) <span class="keywordflow">return</span>;</div>
 <div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span> </div>
 <div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>    p = r-&gt;pages;</div>
 <div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>    <span class="keywordflow">while</span> (p != NULL) {</div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>        NSVGmemPage* next = p-&gt;next;</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>        <a class="code hl_struct" href="structNSVGmemPage.html">NSVGmemPage</a>* next = p-&gt;next;</div>
 <div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>        free(p);</div>
 <div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>        p = next;</div>
 <div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>    }</div>
@@ -265,9 +265,9 @@ $(function() {
 <div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>    free(r);</div>
 <div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>}</div>
 <div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span> </div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span><span class="keyword">static</span> NSVGmemPage* nsvg__nextPage(NSVGrasterizer* r, NSVGmemPage* cur)</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span><span class="keyword">static</span> <a class="code hl_struct" href="structNSVGmemPage.html">NSVGmemPage</a>* nsvg__nextPage(<a class="code hl_struct" href="structNSVGrasterizer.html">NSVGrasterizer</a>* r, <a class="code hl_struct" href="structNSVGmemPage.html">NSVGmemPage</a>* cur)</div>
 <div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>{</div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>    NSVGmemPage *newp;</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>    <a class="code hl_struct" href="structNSVGmemPage.html">NSVGmemPage</a> *newp;</div>
 <div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span> </div>
 <div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>    <span class="comment">// If using existing chain, return the next page in chain</span></div>
 <div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>    <span class="keywordflow">if</span> (cur != NULL &amp;&amp; cur-&gt;next != NULL) {</div>
@@ -275,9 +275,9 @@ $(function() {
 <div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>    }</div>
 <div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span> </div>
 <div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>    <span class="comment">// Alloc new page</span></div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>    newp = (NSVGmemPage*)malloc(<span class="keyword">sizeof</span>(NSVGmemPage));</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>    newp = (<a class="code hl_struct" href="structNSVGmemPage.html">NSVGmemPage</a>*)malloc(<span class="keyword">sizeof</span>(<a class="code hl_struct" href="structNSVGmemPage.html">NSVGmemPage</a>));</div>
 <div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>    <span class="keywordflow">if</span> (newp == NULL) <span class="keywordflow">return</span> NULL;</div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>    memset(newp, 0, <span class="keyword">sizeof</span>(NSVGmemPage));</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>    memset(newp, 0, <span class="keyword">sizeof</span>(<a class="code hl_struct" href="structNSVGmemPage.html">NSVGmemPage</a>));</div>
 <div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span> </div>
 <div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>    <span class="comment">// Add to linked list</span></div>
 <div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>    <span class="keywordflow">if</span> (cur != NULL)</div>
@@ -288,9 +288,9 @@ $(function() {
 <div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>    <span class="keywordflow">return</span> newp;</div>
 <div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>}</div>
 <div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span> </div>
-<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span><span class="keyword">static</span> <span class="keywordtype">void</span> nsvg__resetPool(NSVGrasterizer* r)</div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span><span class="keyword">static</span> <span class="keywordtype">void</span> nsvg__resetPool(<a class="code hl_struct" href="structNSVGrasterizer.html">NSVGrasterizer</a>* r)</div>
 <div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>{</div>
-<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>    NSVGmemPage* p = r-&gt;pages;</div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>    <a class="code hl_struct" href="structNSVGmemPage.html">NSVGmemPage</a>* p = r-&gt;pages;</div>
 <div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>    <span class="keywordflow">while</span> (p != NULL) {</div>
 <div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>        p-&gt;size = 0;</div>
 <div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>        p = p-&gt;next;</div>
@@ -298,7 +298,7 @@ $(function() {
 <div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>    r-&gt;curpage = r-&gt;pages;</div>
 <div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>}</div>
 <div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span> </div>
-<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span><span class="keyword">static</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>* nsvg__alloc(NSVGrasterizer* r, <span class="keywordtype">int</span> size)</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span><span class="keyword">static</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>* nsvg__alloc(<a class="code hl_struct" href="structNSVGrasterizer.html">NSVGrasterizer</a>* r, <span class="keywordtype">int</span> size)</div>
 <div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>{</div>
 <div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>* buf;</div>
 <div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>    <span class="keywordflow">if</span> (size &gt; NSVG__MEMPAGE_SIZE) <span class="keywordflow">return</span> NULL;</div>
@@ -317,9 +317,9 @@ $(function() {
 <div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>    <span class="keywordflow">return</span> dx*dx + dy*dy &lt; tol*tol;</div>
 <div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>}</div>
 <div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span> </div>
-<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span><span class="keyword">static</span> <span class="keywordtype">void</span> nsvg__addPathPoint(NSVGrasterizer* r, <span class="keywordtype">float</span> x, <span class="keywordtype">float</span> y, <span class="keywordtype">int</span> flags)</div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span><span class="keyword">static</span> <span class="keywordtype">void</span> nsvg__addPathPoint(<a class="code hl_struct" href="structNSVGrasterizer.html">NSVGrasterizer</a>* r, <span class="keywordtype">float</span> x, <span class="keywordtype">float</span> y, <span class="keywordtype">int</span> flags)</div>
 <div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>{</div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>    NSVGpoint* pt;</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>    <a class="code hl_struct" href="structNSVGpoint.html">NSVGpoint</a>* pt;</div>
 <div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span> </div>
 <div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>    <span class="keywordflow">if</span> (r-&gt;npoints &gt; 0) {</div>
 <div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>        pt = &amp;r-&gt;points[r-&gt;npoints-1];</div>
@@ -331,7 +331,7 @@ $(function() {
 <div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span> </div>
 <div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>    <span class="keywordflow">if</span> (r-&gt;npoints+1 &gt; r-&gt;cpoints) {</div>
 <div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>        r-&gt;cpoints = r-&gt;cpoints &gt; 0 ? r-&gt;cpoints * 2 : 64;</div>
-<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>        r-&gt;points = (NSVGpoint*)realloc(r-&gt;points, <span class="keyword">sizeof</span>(NSVGpoint) * r-&gt;cpoints);</div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>        r-&gt;points = (<a class="code hl_struct" href="structNSVGpoint.html">NSVGpoint</a>*)realloc(r-&gt;points, <span class="keyword">sizeof</span>(<a class="code hl_struct" href="structNSVGpoint.html">NSVGpoint</a>) * r-&gt;cpoints);</div>
 <div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>        <span class="keywordflow">if</span> (r-&gt;points == NULL) <span class="keywordflow">return</span>;</div>
 <div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>    }</div>
 <div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span> </div>
@@ -342,32 +342,32 @@ $(function() {
 <div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>    r-&gt;npoints++;</div>
 <div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>}</div>
 <div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span> </div>
-<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span><span class="keyword">static</span> <span class="keywordtype">void</span> nsvg__appendPathPoint(NSVGrasterizer* r, NSVGpoint pt)</div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span><span class="keyword">static</span> <span class="keywordtype">void</span> nsvg__appendPathPoint(<a class="code hl_struct" href="structNSVGrasterizer.html">NSVGrasterizer</a>* r, <a class="code hl_struct" href="structNSVGpoint.html">NSVGpoint</a> pt)</div>
 <div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>{</div>
 <div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>    <span class="keywordflow">if</span> (r-&gt;npoints+1 &gt; r-&gt;cpoints) {</div>
 <div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>        r-&gt;cpoints = r-&gt;cpoints &gt; 0 ? r-&gt;cpoints * 2 : 64;</div>
-<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>        r-&gt;points = (NSVGpoint*)realloc(r-&gt;points, <span class="keyword">sizeof</span>(NSVGpoint) * r-&gt;cpoints);</div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>        r-&gt;points = (<a class="code hl_struct" href="structNSVGpoint.html">NSVGpoint</a>*)realloc(r-&gt;points, <span class="keyword">sizeof</span>(<a class="code hl_struct" href="structNSVGpoint.html">NSVGpoint</a>) * r-&gt;cpoints);</div>
 <div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>        <span class="keywordflow">if</span> (r-&gt;points == NULL) <span class="keywordflow">return</span>;</div>
 <div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>    }</div>
 <div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>    r-&gt;points[r-&gt;npoints] = pt;</div>
 <div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>    r-&gt;npoints++;</div>
 <div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>}</div>
 <div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span> </div>
-<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span><span class="keyword">static</span> <span class="keywordtype">void</span> nsvg__duplicatePoints(NSVGrasterizer* r)</div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span><span class="keyword">static</span> <span class="keywordtype">void</span> nsvg__duplicatePoints(<a class="code hl_struct" href="structNSVGrasterizer.html">NSVGrasterizer</a>* r)</div>
 <div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>{</div>
 <div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>    <span class="keywordflow">if</span> (r-&gt;npoints &gt; r-&gt;cpoints2) {</div>
 <div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>        r-&gt;cpoints2 = r-&gt;npoints;</div>
-<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>        r-&gt;points2 = (NSVGpoint*)realloc(r-&gt;points2, <span class="keyword">sizeof</span>(NSVGpoint) * r-&gt;cpoints2);</div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>        r-&gt;points2 = (<a class="code hl_struct" href="structNSVGpoint.html">NSVGpoint</a>*)realloc(r-&gt;points2, <span class="keyword">sizeof</span>(<a class="code hl_struct" href="structNSVGpoint.html">NSVGpoint</a>) * r-&gt;cpoints2);</div>
 <div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>        <span class="keywordflow">if</span> (r-&gt;points2 == NULL) <span class="keywordflow">return</span>;</div>
 <div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>    }</div>
 <div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span> </div>
-<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>    memcpy(r-&gt;points2, r-&gt;points, <span class="keyword">sizeof</span>(NSVGpoint) * r-&gt;npoints);</div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>    memcpy(r-&gt;points2, r-&gt;points, <span class="keyword">sizeof</span>(<a class="code hl_struct" href="structNSVGpoint.html">NSVGpoint</a>) * r-&gt;npoints);</div>
 <div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>    r-&gt;npoints2 = r-&gt;npoints;</div>
 <div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>}</div>
 <div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span> </div>
-<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span><span class="keyword">static</span> <span class="keywordtype">void</span> nsvg__addEdge(NSVGrasterizer* r, <span class="keywordtype">float</span> x0, <span class="keywordtype">float</span> y0, <span class="keywordtype">float</span> x1, <span class="keywordtype">float</span> y1)</div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span><span class="keyword">static</span> <span class="keywordtype">void</span> nsvg__addEdge(<a class="code hl_struct" href="structNSVGrasterizer.html">NSVGrasterizer</a>* r, <span class="keywordtype">float</span> x0, <span class="keywordtype">float</span> y0, <span class="keywordtype">float</span> x1, <span class="keywordtype">float</span> y1)</div>
 <div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>{</div>
-<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>    NSVGedge* e;</div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>    <a class="code hl_struct" href="structNSVGedge.html">NSVGedge</a>* e;</div>
 <div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span> </div>
 <div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>    <span class="comment">// Skip horizontal edges</span></div>
 <div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>    <span class="keywordflow">if</span> (y0 == y1)</div>
@@ -375,7 +375,7 @@ $(function() {
 <div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span> </div>
 <div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>    <span class="keywordflow">if</span> (r-&gt;nedges+1 &gt; r-&gt;cedges) {</div>
 <div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>        r-&gt;cedges = r-&gt;cedges &gt; 0 ? r-&gt;cedges * 2 : 64;</div>
-<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>        r-&gt;edges = (NSVGedge*)realloc(r-&gt;edges, <span class="keyword">sizeof</span>(NSVGedge) * r-&gt;cedges);</div>
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>        r-&gt;edges = (<a class="code hl_struct" href="structNSVGedge.html">NSVGedge</a>*)realloc(r-&gt;edges, <span class="keyword">sizeof</span>(<a class="code hl_struct" href="structNSVGedge.html">NSVGedge</a>) * r-&gt;cedges);</div>
 <div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>        <span class="keywordflow">if</span> (r-&gt;edges == NULL) <span class="keywordflow">return</span>;</div>
 <div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>    }</div>
 <div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span> </div>
@@ -411,7 +411,7 @@ $(function() {
 <div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span><span class="keyword">static</span> <span class="keywordtype">float</span> nsvg__absf(<span class="keywordtype">float</span> x) { <span class="keywordflow">return</span> x &lt; 0 ? -x : x; }</div>
 <div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span><span class="keyword">static</span> <span class="keywordtype">float</span> nsvg__roundf(<span class="keywordtype">float</span> x) { <span class="keywordflow">return</span> (x &gt;= 0) ? floorf(x + 0.5) : ceilf(x - 0.5); }</div>
 <div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span> </div>
-<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span><span class="keyword">static</span> <span class="keywordtype">void</span> nsvg__flattenCubicBez(NSVGrasterizer* r,</div>
+<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span><span class="keyword">static</span> <span class="keywordtype">void</span> nsvg__flattenCubicBez(<a class="code hl_struct" href="structNSVGrasterizer.html">NSVGrasterizer</a>* r,</div>
 <div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>                                  <span class="keywordtype">float</span> x1, <span class="keywordtype">float</span> y1, <span class="keywordtype">float</span> x2, <span class="keywordtype">float</span> y2,</div>
 <div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>                                  <span class="keywordtype">float</span> x3, <span class="keywordtype">float</span> y3, <span class="keywordtype">float</span> x4, <span class="keywordtype">float</span> y4,</div>
 <div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>                                  <span class="keywordtype">int</span> level, <span class="keywordtype">int</span> type)</div>
@@ -449,7 +449,7 @@ $(function() {
 <div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>    nsvg__flattenCubicBez(r, x1234,y1234, x234,y234, x34,y34, x4,y4, level+1, type);</div>
 <div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>}</div>
 <div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span> </div>
-<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span><span class="keyword">static</span> <span class="keywordtype">void</span> nsvg__flattenShape(NSVGrasterizer* r, <a class="code hl_struct" href="structNSVGshape.html">NSVGshape</a>* shape, <span class="keywordtype">float</span> scale)</div>
+<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span><span class="keyword">static</span> <span class="keywordtype">void</span> nsvg__flattenShape(<a class="code hl_struct" href="structNSVGrasterizer.html">NSVGrasterizer</a>* r, <a class="code hl_struct" href="structNSVGshape.html">NSVGshape</a>* shape, <span class="keywordtype">float</span> scale)</div>
 <div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>{</div>
 <div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>    <span class="keywordtype">int</span> i, j;</div>
 <div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span>    <a class="code hl_struct" href="structNSVGpath.html">NSVGpath</a>* path;</div>
@@ -477,7 +477,7 @@ $(function() {
 <div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>    NSVG_PT_LEFT = 0x04</div>
 <div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span>};</div>
 <div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span> </div>
-<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span><span class="keyword">static</span> <span class="keywordtype">void</span> nsvg__initClosed(NSVGpoint* left, NSVGpoint* right, NSVGpoint* p0, NSVGpoint* p1, <span class="keywordtype">float</span> lineWidth)</div>
+<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span><span class="keyword">static</span> <span class="keywordtype">void</span> nsvg__initClosed(<a class="code hl_struct" href="structNSVGpoint.html">NSVGpoint</a>* left, <a class="code hl_struct" href="structNSVGpoint.html">NSVGpoint</a>* right, <a class="code hl_struct" href="structNSVGpoint.html">NSVGpoint</a>* p0, <a class="code hl_struct" href="structNSVGpoint.html">NSVGpoint</a>* p1, <span class="keywordtype">float</span> lineWidth)</div>
 <div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span>{</div>
 <div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span>    <span class="keywordtype">float</span> w = lineWidth * 0.5f;</div>
 <div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span>    <span class="keywordtype">float</span> dx = p1-&gt;x - p0-&gt;x;</div>
@@ -491,7 +491,7 @@ $(function() {
 <div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span>    right-&gt;x = rx; right-&gt;y = ry;</div>
 <div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span>}</div>
 <div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span> </div>
-<div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span><span class="keyword">static</span> <span class="keywordtype">void</span> nsvg__buttCap(NSVGrasterizer* r, NSVGpoint* left, NSVGpoint* right, NSVGpoint* p, <span class="keywordtype">float</span> dx, <span class="keywordtype">float</span> dy, <span class="keywordtype">float</span> lineWidth, <span class="keywordtype">int</span> connect)</div>
+<div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span><span class="keyword">static</span> <span class="keywordtype">void</span> nsvg__buttCap(<a class="code hl_struct" href="structNSVGrasterizer.html">NSVGrasterizer</a>* r, <a class="code hl_struct" href="structNSVGpoint.html">NSVGpoint</a>* left, <a class="code hl_struct" href="structNSVGpoint.html">NSVGpoint</a>* right, <a class="code hl_struct" href="structNSVGpoint.html">NSVGpoint</a>* p, <span class="keywordtype">float</span> dx, <span class="keywordtype">float</span> dy, <span class="keywordtype">float</span> lineWidth, <span class="keywordtype">int</span> connect)</div>
 <div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span>{</div>
 <div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span>    <span class="keywordtype">float</span> w = lineWidth * 0.5f;</div>
 <div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span>    <span class="keywordtype">float</span> px = p-&gt;x, py = p-&gt;y;</div>
@@ -509,7 +509,7 @@ $(function() {
 <div class="line"><a id="l00431" name="l00431"></a><span class="lineno">  431</span>    right-&gt;x = rx; right-&gt;y = ry;</div>
 <div class="line"><a id="l00432" name="l00432"></a><span class="lineno">  432</span>}</div>
 <div class="line"><a id="l00433" name="l00433"></a><span class="lineno">  433</span> </div>
-<div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span><span class="keyword">static</span> <span class="keywordtype">void</span> nsvg__squareCap(NSVGrasterizer* r, NSVGpoint* left, NSVGpoint* right, NSVGpoint* p, <span class="keywordtype">float</span> dx, <span class="keywordtype">float</span> dy, <span class="keywordtype">float</span> lineWidth, <span class="keywordtype">int</span> connect)</div>
+<div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span><span class="keyword">static</span> <span class="keywordtype">void</span> nsvg__squareCap(<a class="code hl_struct" href="structNSVGrasterizer.html">NSVGrasterizer</a>* r, <a class="code hl_struct" href="structNSVGpoint.html">NSVGpoint</a>* left, <a class="code hl_struct" href="structNSVGpoint.html">NSVGpoint</a>* right, <a class="code hl_struct" href="structNSVGpoint.html">NSVGpoint</a>* p, <span class="keywordtype">float</span> dx, <span class="keywordtype">float</span> dy, <span class="keywordtype">float</span> lineWidth, <span class="keywordtype">int</span> connect)</div>
 <div class="line"><a id="l00435" name="l00435"></a><span class="lineno">  435</span>{</div>
 <div class="line"><a id="l00436" name="l00436"></a><span class="lineno">  436</span>    <span class="keywordtype">float</span> w = lineWidth * 0.5f;</div>
 <div class="line"><a id="l00437" name="l00437"></a><span class="lineno">  437</span>    <span class="keywordtype">float</span> px = p-&gt;x - dx*w, py = p-&gt;y - dy*w;</div>
@@ -531,7 +531,7 @@ $(function() {
 <div class="line"><a id="l00453" name="l00453"></a><span class="lineno">  453</span><span class="preprocessor">#define NSVG_PI (3.14159265358979323846264338327f)</span></div>
 <div class="line"><a id="l00454" name="l00454"></a><span class="lineno">  454</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00455" name="l00455"></a><span class="lineno">  455</span> </div>
-<div class="line"><a id="l00456" name="l00456"></a><span class="lineno">  456</span><span class="keyword">static</span> <span class="keywordtype">void</span> nsvg__roundCap(NSVGrasterizer* r, NSVGpoint* left, NSVGpoint* right, NSVGpoint* p, <span class="keywordtype">float</span> dx, <span class="keywordtype">float</span> dy, <span class="keywordtype">float</span> lineWidth, <span class="keywordtype">int</span> ncap, <span class="keywordtype">int</span> connect)</div>
+<div class="line"><a id="l00456" name="l00456"></a><span class="lineno">  456</span><span class="keyword">static</span> <span class="keywordtype">void</span> nsvg__roundCap(<a class="code hl_struct" href="structNSVGrasterizer.html">NSVGrasterizer</a>* r, <a class="code hl_struct" href="structNSVGpoint.html">NSVGpoint</a>* left, <a class="code hl_struct" href="structNSVGpoint.html">NSVGpoint</a>* right, <a class="code hl_struct" href="structNSVGpoint.html">NSVGpoint</a>* p, <span class="keywordtype">float</span> dx, <span class="keywordtype">float</span> dy, <span class="keywordtype">float</span> lineWidth, <span class="keywordtype">int</span> ncap, <span class="keywordtype">int</span> connect)</div>
 <div class="line"><a id="l00457" name="l00457"></a><span class="lineno">  457</span>{</div>
 <div class="line"><a id="l00458" name="l00458"></a><span class="lineno">  458</span>    <span class="keywordtype">int</span> i;</div>
 <div class="line"><a id="l00459" name="l00459"></a><span class="lineno">  459</span>    <span class="keywordtype">float</span> w = lineWidth * 0.5f;</div>
@@ -567,7 +567,7 @@ $(function() {
 <div class="line"><a id="l00489" name="l00489"></a><span class="lineno">  489</span>    right-&gt;x = rx; right-&gt;y = ry;</div>
 <div class="line"><a id="l00490" name="l00490"></a><span class="lineno">  490</span>}</div>
 <div class="line"><a id="l00491" name="l00491"></a><span class="lineno">  491</span> </div>
-<div class="line"><a id="l00492" name="l00492"></a><span class="lineno">  492</span><span class="keyword">static</span> <span class="keywordtype">void</span> nsvg__bevelJoin(NSVGrasterizer* r, NSVGpoint* left, NSVGpoint* right, NSVGpoint* p0, NSVGpoint* p1, <span class="keywordtype">float</span> lineWidth)</div>
+<div class="line"><a id="l00492" name="l00492"></a><span class="lineno">  492</span><span class="keyword">static</span> <span class="keywordtype">void</span> nsvg__bevelJoin(<a class="code hl_struct" href="structNSVGrasterizer.html">NSVGrasterizer</a>* r, <a class="code hl_struct" href="structNSVGpoint.html">NSVGpoint</a>* left, <a class="code hl_struct" href="structNSVGpoint.html">NSVGpoint</a>* right, <a class="code hl_struct" href="structNSVGpoint.html">NSVGpoint</a>* p0, <a class="code hl_struct" href="structNSVGpoint.html">NSVGpoint</a>* p1, <span class="keywordtype">float</span> lineWidth)</div>
 <div class="line"><a id="l00493" name="l00493"></a><span class="lineno">  493</span>{</div>
 <div class="line"><a id="l00494" name="l00494"></a><span class="lineno">  494</span>    <span class="keywordtype">float</span> w = lineWidth * 0.5f;</div>
 <div class="line"><a id="l00495" name="l00495"></a><span class="lineno">  495</span>    <span class="keywordtype">float</span> dlx0 = p0-&gt;dy, dly0 = -p0-&gt;dx;</div>
@@ -587,7 +587,7 @@ $(function() {
 <div class="line"><a id="l00509" name="l00509"></a><span class="lineno">  509</span>    right-&gt;x = rx1; right-&gt;y = ry1;</div>
 <div class="line"><a id="l00510" name="l00510"></a><span class="lineno">  510</span>}</div>
 <div class="line"><a id="l00511" name="l00511"></a><span class="lineno">  511</span> </div>
-<div class="line"><a id="l00512" name="l00512"></a><span class="lineno">  512</span><span class="keyword">static</span> <span class="keywordtype">void</span> nsvg__miterJoin(NSVGrasterizer* r, NSVGpoint* left, NSVGpoint* right, NSVGpoint* p0, NSVGpoint* p1, <span class="keywordtype">float</span> lineWidth)</div>
+<div class="line"><a id="l00512" name="l00512"></a><span class="lineno">  512</span><span class="keyword">static</span> <span class="keywordtype">void</span> nsvg__miterJoin(<a class="code hl_struct" href="structNSVGrasterizer.html">NSVGrasterizer</a>* r, <a class="code hl_struct" href="structNSVGpoint.html">NSVGpoint</a>* left, <a class="code hl_struct" href="structNSVGpoint.html">NSVGpoint</a>* right, <a class="code hl_struct" href="structNSVGpoint.html">NSVGpoint</a>* p0, <a class="code hl_struct" href="structNSVGpoint.html">NSVGpoint</a>* p1, <span class="keywordtype">float</span> lineWidth)</div>
 <div class="line"><a id="l00513" name="l00513"></a><span class="lineno">  513</span>{</div>
 <div class="line"><a id="l00514" name="l00514"></a><span class="lineno">  514</span>    <span class="keywordtype">float</span> w = lineWidth * 0.5f;</div>
 <div class="line"><a id="l00515" name="l00515"></a><span class="lineno">  515</span>    <span class="keywordtype">float</span> dlx0 = p0-&gt;dy, dly0 = -p0-&gt;dx;</div>
@@ -623,7 +623,7 @@ $(function() {
 <div class="line"><a id="l00545" name="l00545"></a><span class="lineno">  545</span>    right-&gt;x = rx1; right-&gt;y = ry1;</div>
 <div class="line"><a id="l00546" name="l00546"></a><span class="lineno">  546</span>}</div>
 <div class="line"><a id="l00547" name="l00547"></a><span class="lineno">  547</span> </div>
-<div class="line"><a id="l00548" name="l00548"></a><span class="lineno">  548</span><span class="keyword">static</span> <span class="keywordtype">void</span> nsvg__roundJoin(NSVGrasterizer* r, NSVGpoint* left, NSVGpoint* right, NSVGpoint* p0, NSVGpoint* p1, <span class="keywordtype">float</span> lineWidth, <span class="keywordtype">int</span> ncap)</div>
+<div class="line"><a id="l00548" name="l00548"></a><span class="lineno">  548</span><span class="keyword">static</span> <span class="keywordtype">void</span> nsvg__roundJoin(<a class="code hl_struct" href="structNSVGrasterizer.html">NSVGrasterizer</a>* r, <a class="code hl_struct" href="structNSVGpoint.html">NSVGpoint</a>* left, <a class="code hl_struct" href="structNSVGpoint.html">NSVGpoint</a>* right, <a class="code hl_struct" href="structNSVGpoint.html">NSVGpoint</a>* p0, <a class="code hl_struct" href="structNSVGpoint.html">NSVGpoint</a>* p1, <span class="keywordtype">float</span> lineWidth, <span class="keywordtype">int</span> ncap)</div>
 <div class="line"><a id="l00549" name="l00549"></a><span class="lineno">  549</span>{</div>
 <div class="line"><a id="l00550" name="l00550"></a><span class="lineno">  550</span>    <span class="keywordtype">int</span> i, n;</div>
 <div class="line"><a id="l00551" name="l00551"></a><span class="lineno">  551</span>    <span class="keywordtype">float</span> w = lineWidth * 0.5f;</div>
@@ -664,7 +664,7 @@ $(function() {
 <div class="line"><a id="l00586" name="l00586"></a><span class="lineno">  586</span>    right-&gt;x = rx; right-&gt;y = ry;</div>
 <div class="line"><a id="l00587" name="l00587"></a><span class="lineno">  587</span>}</div>
 <div class="line"><a id="l00588" name="l00588"></a><span class="lineno">  588</span> </div>
-<div class="line"><a id="l00589" name="l00589"></a><span class="lineno">  589</span><span class="keyword">static</span> <span class="keywordtype">void</span> nsvg__straightJoin(NSVGrasterizer* r, NSVGpoint* left, NSVGpoint* right, NSVGpoint* p1, <span class="keywordtype">float</span> lineWidth)</div>
+<div class="line"><a id="l00589" name="l00589"></a><span class="lineno">  589</span><span class="keyword">static</span> <span class="keywordtype">void</span> nsvg__straightJoin(<a class="code hl_struct" href="structNSVGrasterizer.html">NSVGrasterizer</a>* r, <a class="code hl_struct" href="structNSVGpoint.html">NSVGpoint</a>* left, <a class="code hl_struct" href="structNSVGpoint.html">NSVGpoint</a>* right, <a class="code hl_struct" href="structNSVGpoint.html">NSVGpoint</a>* p1, <span class="keywordtype">float</span> lineWidth)</div>
 <div class="line"><a id="l00590" name="l00590"></a><span class="lineno">  590</span>{</div>
 <div class="line"><a id="l00591" name="l00591"></a><span class="lineno">  591</span>    <span class="keywordtype">float</span> w = lineWidth * 0.5f;</div>
 <div class="line"><a id="l00592" name="l00592"></a><span class="lineno">  592</span>    <span class="keywordtype">float</span> lx = p1-&gt;x - (p1-&gt;dmx * w), ly = p1-&gt;y - (p1-&gt;dmy * w);</div>
@@ -685,11 +685,11 @@ $(function() {
 <div class="line"><a id="l00607" name="l00607"></a><span class="lineno">  607</span>    <span class="keywordflow">return</span> divs;</div>
 <div class="line"><a id="l00608" name="l00608"></a><span class="lineno">  608</span>}</div>
 <div class="line"><a id="l00609" name="l00609"></a><span class="lineno">  609</span> </div>
-<div class="line"><a id="l00610" name="l00610"></a><span class="lineno">  610</span><span class="keyword">static</span> <span class="keywordtype">void</span> nsvg__expandStroke(NSVGrasterizer* r, NSVGpoint* points, <span class="keywordtype">int</span> npoints, <span class="keywordtype">int</span> closed, <span class="keywordtype">int</span> lineJoin, <span class="keywordtype">int</span> lineCap, <span class="keywordtype">float</span> lineWidth)</div>
+<div class="line"><a id="l00610" name="l00610"></a><span class="lineno">  610</span><span class="keyword">static</span> <span class="keywordtype">void</span> nsvg__expandStroke(<a class="code hl_struct" href="structNSVGrasterizer.html">NSVGrasterizer</a>* r, <a class="code hl_struct" href="structNSVGpoint.html">NSVGpoint</a>* points, <span class="keywordtype">int</span> npoints, <span class="keywordtype">int</span> closed, <span class="keywordtype">int</span> lineJoin, <span class="keywordtype">int</span> lineCap, <span class="keywordtype">float</span> lineWidth)</div>
 <div class="line"><a id="l00611" name="l00611"></a><span class="lineno">  611</span>{</div>
 <div class="line"><a id="l00612" name="l00612"></a><span class="lineno">  612</span>    <span class="keywordtype">int</span> ncap = nsvg__curveDivs(lineWidth*0.5f, NSVG_PI, r-&gt;tessTol);    <span class="comment">// Calculate divisions per half circle.</span></div>
-<div class="line"><a id="l00613" name="l00613"></a><span class="lineno">  613</span>    NSVGpoint left = {0,0,0,0,0,0,0,0}, right = {0,0,0,0,0,0,0,0}, firstLeft = {0,0,0,0,0,0,0,0}, firstRight = {0,0,0,0,0,0,0,0};</div>
-<div class="line"><a id="l00614" name="l00614"></a><span class="lineno">  614</span>    NSVGpoint* p0, *p1;</div>
+<div class="line"><a id="l00613" name="l00613"></a><span class="lineno">  613</span>    <a class="code hl_struct" href="structNSVGpoint.html">NSVGpoint</a> left = {0,0,0,0,0,0,0,0}, right = {0,0,0,0,0,0,0,0}, firstLeft = {0,0,0,0,0,0,0,0}, firstRight = {0,0,0,0,0,0,0,0};</div>
+<div class="line"><a id="l00614" name="l00614"></a><span class="lineno">  614</span>    <a class="code hl_struct" href="structNSVGpoint.html">NSVGpoint</a>* p0, *p1;</div>
 <div class="line"><a id="l00615" name="l00615"></a><span class="lineno">  615</span>    <span class="keywordtype">int</span> j, s, e;</div>
 <div class="line"><a id="l00616" name="l00616"></a><span class="lineno">  616</span> </div>
 <div class="line"><a id="l00617" name="l00617"></a><span class="lineno">  617</span>    <span class="comment">// Build stroke edges</span></div>
@@ -756,10 +756,10 @@ $(function() {
 <div class="line"><a id="l00678" name="l00678"></a><span class="lineno">  678</span>    }</div>
 <div class="line"><a id="l00679" name="l00679"></a><span class="lineno">  679</span>}</div>
 <div class="line"><a id="l00680" name="l00680"></a><span class="lineno">  680</span> </div>
-<div class="line"><a id="l00681" name="l00681"></a><span class="lineno">  681</span><span class="keyword">static</span> <span class="keywordtype">void</span> nsvg__prepareStroke(NSVGrasterizer* r, <span class="keywordtype">float</span> miterLimit, <span class="keywordtype">int</span> lineJoin)</div>
+<div class="line"><a id="l00681" name="l00681"></a><span class="lineno">  681</span><span class="keyword">static</span> <span class="keywordtype">void</span> nsvg__prepareStroke(<a class="code hl_struct" href="structNSVGrasterizer.html">NSVGrasterizer</a>* r, <span class="keywordtype">float</span> miterLimit, <span class="keywordtype">int</span> lineJoin)</div>
 <div class="line"><a id="l00682" name="l00682"></a><span class="lineno">  682</span>{</div>
 <div class="line"><a id="l00683" name="l00683"></a><span class="lineno">  683</span>    <span class="keywordtype">int</span> i, j;</div>
-<div class="line"><a id="l00684" name="l00684"></a><span class="lineno">  684</span>    NSVGpoint* p0, *p1;</div>
+<div class="line"><a id="l00684" name="l00684"></a><span class="lineno">  684</span>    <a class="code hl_struct" href="structNSVGpoint.html">NSVGpoint</a>* p0, *p1;</div>
 <div class="line"><a id="l00685" name="l00685"></a><span class="lineno">  685</span> </div>
 <div class="line"><a id="l00686" name="l00686"></a><span class="lineno">  686</span>    p0 = &amp;r-&gt;points[r-&gt;npoints-1];</div>
 <div class="line"><a id="l00687" name="l00687"></a><span class="lineno">  687</span>    p1 = &amp;r-&gt;points[0];</div>
@@ -813,11 +813,11 @@ $(function() {
 <div class="line"><a id="l00735" name="l00735"></a><span class="lineno">  735</span>    }</div>
 <div class="line"><a id="l00736" name="l00736"></a><span class="lineno">  736</span>}</div>
 <div class="line"><a id="l00737" name="l00737"></a><span class="lineno">  737</span> </div>
-<div class="line"><a id="l00738" name="l00738"></a><span class="lineno">  738</span><span class="keyword">static</span> <span class="keywordtype">void</span> nsvg__flattenShapeStroke(NSVGrasterizer* r, <a class="code hl_struct" href="structNSVGshape.html">NSVGshape</a>* shape, <span class="keywordtype">float</span> scale)</div>
+<div class="line"><a id="l00738" name="l00738"></a><span class="lineno">  738</span><span class="keyword">static</span> <span class="keywordtype">void</span> nsvg__flattenShapeStroke(<a class="code hl_struct" href="structNSVGrasterizer.html">NSVGrasterizer</a>* r, <a class="code hl_struct" href="structNSVGshape.html">NSVGshape</a>* shape, <span class="keywordtype">float</span> scale)</div>
 <div class="line"><a id="l00739" name="l00739"></a><span class="lineno">  739</span>{</div>
 <div class="line"><a id="l00740" name="l00740"></a><span class="lineno">  740</span>    <span class="keywordtype">int</span> i, j, closed;</div>
 <div class="line"><a id="l00741" name="l00741"></a><span class="lineno">  741</span>    <a class="code hl_struct" href="structNSVGpath.html">NSVGpath</a>* path;</div>
-<div class="line"><a id="l00742" name="l00742"></a><span class="lineno">  742</span>    NSVGpoint* p0, *p1;</div>
+<div class="line"><a id="l00742" name="l00742"></a><span class="lineno">  742</span>    <a class="code hl_struct" href="structNSVGpoint.html">NSVGpoint</a>* p0, *p1;</div>
 <div class="line"><a id="l00743" name="l00743"></a><span class="lineno">  743</span>    <span class="keywordtype">float</span> miterLimit = shape-&gt;miterLimit;</div>
 <div class="line"><a id="l00744" name="l00744"></a><span class="lineno">  744</span>    <span class="keywordtype">int</span> lineJoin = shape-&gt;strokeLineJoin;</div>
 <div class="line"><a id="l00745" name="l00745"></a><span class="lineno">  745</span>    <span class="keywordtype">int</span> lineCap = shape-&gt;strokeLineCap;</div>
@@ -848,7 +848,7 @@ $(function() {
 <div class="line"><a id="l00770" name="l00770"></a><span class="lineno">  770</span>        <span class="keywordflow">if</span> (shape-&gt;strokeDashCount &gt; 0) {</div>
 <div class="line"><a id="l00771" name="l00771"></a><span class="lineno">  771</span>            <span class="keywordtype">int</span> idash = 0, dashState = 1;</div>
 <div class="line"><a id="l00772" name="l00772"></a><span class="lineno">  772</span>            <span class="keywordtype">float</span> totalDist = 0, dashLen, allDashLen, dashOffset;</div>
-<div class="line"><a id="l00773" name="l00773"></a><span class="lineno">  773</span>            NSVGpoint cur;</div>
+<div class="line"><a id="l00773" name="l00773"></a><span class="lineno">  773</span>            <a class="code hl_struct" href="structNSVGpoint.html">NSVGpoint</a> cur;</div>
 <div class="line"><a id="l00774" name="l00774"></a><span class="lineno">  774</span> </div>
 <div class="line"><a id="l00775" name="l00775"></a><span class="lineno">  775</span>            <span class="keywordflow">if</span> (closed)</div>
 <div class="line"><a id="l00776" name="l00776"></a><span class="lineno">  776</span>                nsvg__appendPathPoint(r, r-&gt;points[0]);</div>
@@ -924,8 +924,8 @@ $(function() {
 <div class="line"><a id="l00846" name="l00846"></a><span class="lineno">  846</span> </div>
 <div class="line"><a id="l00847" name="l00847"></a><span class="lineno">  847</span><span class="keyword">static</span> <span class="keywordtype">int</span> nsvg__cmpEdge(<span class="keyword">const</span> <span class="keywordtype">void</span> *p, <span class="keyword">const</span> <span class="keywordtype">void</span> *q)</div>
 <div class="line"><a id="l00848" name="l00848"></a><span class="lineno">  848</span>{</div>
-<div class="line"><a id="l00849" name="l00849"></a><span class="lineno">  849</span>    <span class="keyword">const</span> NSVGedge* a = (<span class="keyword">const</span> NSVGedge*)p;</div>
-<div class="line"><a id="l00850" name="l00850"></a><span class="lineno">  850</span>    <span class="keyword">const</span> NSVGedge* b = (<span class="keyword">const</span> NSVGedge*)q;</div>
+<div class="line"><a id="l00849" name="l00849"></a><span class="lineno">  849</span>    <span class="keyword">const</span> <a class="code hl_struct" href="structNSVGedge.html">NSVGedge</a>* a = (<span class="keyword">const</span> <a class="code hl_struct" href="structNSVGedge.html">NSVGedge</a>*)p;</div>
+<div class="line"><a id="l00850" name="l00850"></a><span class="lineno">  850</span>    <span class="keyword">const</span> <a class="code hl_struct" href="structNSVGedge.html">NSVGedge</a>* b = (<span class="keyword">const</span> <a class="code hl_struct" href="structNSVGedge.html">NSVGedge</a>*)q;</div>
 <div class="line"><a id="l00851" name="l00851"></a><span class="lineno">  851</span> </div>
 <div class="line"><a id="l00852" name="l00852"></a><span class="lineno">  852</span>    <span class="keywordflow">if</span> (a-&gt;y0 &lt; b-&gt;y0) <span class="keywordflow">return</span> -1;</div>
 <div class="line"><a id="l00853" name="l00853"></a><span class="lineno">  853</span>    <span class="keywordflow">if</span> (a-&gt;y0 &gt; b-&gt;y0) <span class="keywordflow">return</span>  1;</div>
@@ -933,9 +933,9 @@ $(function() {
 <div class="line"><a id="l00855" name="l00855"></a><span class="lineno">  855</span>}</div>
 <div class="line"><a id="l00856" name="l00856"></a><span class="lineno">  856</span> </div>
 <div class="line"><a id="l00857" name="l00857"></a><span class="lineno">  857</span> </div>
-<div class="line"><a id="l00858" name="l00858"></a><span class="lineno">  858</span><span class="keyword">static</span> NSVGactiveEdge* nsvg__addActive(NSVGrasterizer* r, NSVGedge* e, <span class="keywordtype">float</span> startPoint)</div>
+<div class="line"><a id="l00858" name="l00858"></a><span class="lineno">  858</span><span class="keyword">static</span> <a class="code hl_struct" href="structNSVGactiveEdge.html">NSVGactiveEdge</a>* nsvg__addActive(<a class="code hl_struct" href="structNSVGrasterizer.html">NSVGrasterizer</a>* r, <a class="code hl_struct" href="structNSVGedge.html">NSVGedge</a>* e, <span class="keywordtype">float</span> startPoint)</div>
 <div class="line"><a id="l00859" name="l00859"></a><span class="lineno">  859</span>{</div>
-<div class="line"><a id="l00860" name="l00860"></a><span class="lineno">  860</span>     NSVGactiveEdge* z;</div>
+<div class="line"><a id="l00860" name="l00860"></a><span class="lineno">  860</span>     <a class="code hl_struct" href="structNSVGactiveEdge.html">NSVGactiveEdge</a>* z;</div>
 <div class="line"><a id="l00861" name="l00861"></a><span class="lineno">  861</span> </div>
 <div class="line"><a id="l00862" name="l00862"></a><span class="lineno">  862</span>    <span class="keywordflow">if</span> (r-&gt;freelist != NULL) {</div>
 <div class="line"><a id="l00863" name="l00863"></a><span class="lineno">  863</span>        <span class="comment">// Restore from freelist.</span></div>
@@ -943,7 +943,7 @@ $(function() {
 <div class="line"><a id="l00865" name="l00865"></a><span class="lineno">  865</span>        r-&gt;freelist = z-&gt;next;</div>
 <div class="line"><a id="l00866" name="l00866"></a><span class="lineno">  866</span>    } <span class="keywordflow">else</span> {</div>
 <div class="line"><a id="l00867" name="l00867"></a><span class="lineno">  867</span>        <span class="comment">// Alloc new edge.</span></div>
-<div class="line"><a id="l00868" name="l00868"></a><span class="lineno">  868</span>        z = (NSVGactiveEdge*)nsvg__alloc(r, <span class="keyword">sizeof</span>(NSVGactiveEdge));</div>
+<div class="line"><a id="l00868" name="l00868"></a><span class="lineno">  868</span>        z = (<a class="code hl_struct" href="structNSVGactiveEdge.html">NSVGactiveEdge</a>*)nsvg__alloc(r, <span class="keyword">sizeof</span>(<a class="code hl_struct" href="structNSVGactiveEdge.html">NSVGactiveEdge</a>));</div>
 <div class="line"><a id="l00869" name="l00869"></a><span class="lineno">  869</span>        <span class="keywordflow">if</span> (z == NULL) <span class="keywordflow">return</span> NULL;</div>
 <div class="line"><a id="l00870" name="l00870"></a><span class="lineno">  870</span>    }</div>
 <div class="line"><a id="l00871" name="l00871"></a><span class="lineno">  871</span> </div>
@@ -963,7 +963,7 @@ $(function() {
 <div class="line"><a id="l00885" name="l00885"></a><span class="lineno">  885</span>    <span class="keywordflow">return</span> z;</div>
 <div class="line"><a id="l00886" name="l00886"></a><span class="lineno">  886</span>}</div>
 <div class="line"><a id="l00887" name="l00887"></a><span class="lineno">  887</span> </div>
-<div class="line"><a id="l00888" name="l00888"></a><span class="lineno">  888</span><span class="keyword">static</span> <span class="keywordtype">void</span> nsvg__freeActive(NSVGrasterizer* r, NSVGactiveEdge* z)</div>
+<div class="line"><a id="l00888" name="l00888"></a><span class="lineno">  888</span><span class="keyword">static</span> <span class="keywordtype">void</span> nsvg__freeActive(<a class="code hl_struct" href="structNSVGrasterizer.html">NSVGrasterizer</a>* r, <a class="code hl_struct" href="structNSVGactiveEdge.html">NSVGactiveEdge</a>* z)</div>
 <div class="line"><a id="l00889" name="l00889"></a><span class="lineno">  889</span>{</div>
 <div class="line"><a id="l00890" name="l00890"></a><span class="lineno">  890</span>    z-&gt;next = r-&gt;freelist;</div>
 <div class="line"><a id="l00891" name="l00891"></a><span class="lineno">  891</span>    r-&gt;freelist = z;</div>
@@ -999,7 +999,7 @@ $(function() {
 <div class="line"><a id="l00921" name="l00921"></a><span class="lineno">  921</span><span class="comment">// note: this routine clips fills that extend off the edges... ideally this</span></div>
 <div class="line"><a id="l00922" name="l00922"></a><span class="lineno">  922</span><span class="comment">// wouldn&#39;t happen, but it could happen if the truetype glyph bounding boxes</span></div>
 <div class="line"><a id="l00923" name="l00923"></a><span class="lineno">  923</span><span class="comment">// are wrong, or if the user supplies a too-small bitmap</span></div>
-<div class="line"><a id="l00924" name="l00924"></a><span class="lineno">  924</span><span class="keyword">static</span> <span class="keywordtype">void</span> nsvg__fillActiveEdges(<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>* scanline, <span class="keywordtype">int</span> len, NSVGactiveEdge* e, <span class="keywordtype">int</span> maxWeight, <span class="keywordtype">int</span>* xmin, <span class="keywordtype">int</span>* xmax, <span class="keywordtype">char</span> fillRule)</div>
+<div class="line"><a id="l00924" name="l00924"></a><span class="lineno">  924</span><span class="keyword">static</span> <span class="keywordtype">void</span> nsvg__fillActiveEdges(<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>* scanline, <span class="keywordtype">int</span> len, <a class="code hl_struct" href="structNSVGactiveEdge.html">NSVGactiveEdge</a>* e, <span class="keywordtype">int</span> maxWeight, <span class="keywordtype">int</span>* xmin, <span class="keywordtype">int</span>* xmax, <span class="keywordtype">char</span> fillRule)</div>
 <div class="line"><a id="l00925" name="l00925"></a><span class="lineno">  925</span>{</div>
 <div class="line"><a id="l00926" name="l00926"></a><span class="lineno">  926</span>    <span class="comment">// non-zero winding fill</span></div>
 <div class="line"><a id="l00927" name="l00927"></a><span class="lineno">  927</span>    <span class="keywordtype">int</span> x0 = 0, w = 0;</div>
@@ -1066,7 +1066,7 @@ $(function() {
 <div class="line"><a id="l00988" name="l00988"></a><span class="lineno">  988</span>}</div>
 <div class="line"><a id="l00989" name="l00989"></a><span class="lineno">  989</span> </div>
 <div class="line"><a id="l00990" name="l00990"></a><span class="lineno">  990</span><span class="keyword">static</span> <span class="keywordtype">void</span> nsvg__scanlineSolid(<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>* dst, <span class="keywordtype">int</span> count, <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>* cover, <span class="keywordtype">int</span> x, <span class="keywordtype">int</span> y,</div>
-<div class="line"><a id="l00991" name="l00991"></a><span class="lineno">  991</span>                                <span class="keywordtype">float</span> tx, <span class="keywordtype">float</span> ty, <span class="keywordtype">float</span> scale, NSVGcachedPaint* cache)</div>
+<div class="line"><a id="l00991" name="l00991"></a><span class="lineno">  991</span>                                <span class="keywordtype">float</span> tx, <span class="keywordtype">float</span> ty, <span class="keywordtype">float</span> scale, <a class="code hl_struct" href="structNSVGcachedPaint.html">NSVGcachedPaint</a>* cache)</div>
 <div class="line"><a id="l00992" name="l00992"></a><span class="lineno">  992</span>{</div>
 <div class="line"><a id="l00993" name="l00993"></a><span class="lineno">  993</span> </div>
 <div class="line"><a id="l00994" name="l00994"></a><span class="lineno">  994</span>    <span class="keywordflow">if</span> (cache-&gt;type == NSVG_PAINT_COLOR) {</div>
@@ -1193,9 +1193,9 @@ $(function() {
 <div class="line"><a id="l01115" name="l01115"></a><span class="lineno"> 1115</span>    }</div>
 <div class="line"><a id="l01116" name="l01116"></a><span class="lineno"> 1116</span>}</div>
 <div class="line"><a id="l01117" name="l01117"></a><span class="lineno"> 1117</span> </div>
-<div class="line"><a id="l01118" name="l01118"></a><span class="lineno"> 1118</span><span class="keyword">static</span> <span class="keywordtype">void</span> nsvg__rasterizeSortedEdges(NSVGrasterizer *r, <span class="keywordtype">float</span> tx, <span class="keywordtype">float</span> ty, <span class="keywordtype">float</span> scale, NSVGcachedPaint* cache, <span class="keywordtype">char</span> fillRule)</div>
+<div class="line"><a id="l01118" name="l01118"></a><span class="lineno"> 1118</span><span class="keyword">static</span> <span class="keywordtype">void</span> nsvg__rasterizeSortedEdges(<a class="code hl_struct" href="structNSVGrasterizer.html">NSVGrasterizer</a> *r, <span class="keywordtype">float</span> tx, <span class="keywordtype">float</span> ty, <span class="keywordtype">float</span> scale, <a class="code hl_struct" href="structNSVGcachedPaint.html">NSVGcachedPaint</a>* cache, <span class="keywordtype">char</span> fillRule)</div>
 <div class="line"><a id="l01119" name="l01119"></a><span class="lineno"> 1119</span>{</div>
-<div class="line"><a id="l01120" name="l01120"></a><span class="lineno"> 1120</span>    NSVGactiveEdge *active = NULL;</div>
+<div class="line"><a id="l01120" name="l01120"></a><span class="lineno"> 1120</span>    <a class="code hl_struct" href="structNSVGactiveEdge.html">NSVGactiveEdge</a> *active = NULL;</div>
 <div class="line"><a id="l01121" name="l01121"></a><span class="lineno"> 1121</span>    <span class="keywordtype">int</span> y, s;</div>
 <div class="line"><a id="l01122" name="l01122"></a><span class="lineno"> 1122</span>    <span class="keywordtype">int</span> e = 0;</div>
 <div class="line"><a id="l01123" name="l01123"></a><span class="lineno"> 1123</span>    <span class="keywordtype">int</span> maxWeight = (255 / NSVG__SUBSAMPLES);  <span class="comment">// weight per vertical scanline</span></div>
@@ -1208,12 +1208,12 @@ $(function() {
 <div class="line"><a id="l01130" name="l01130"></a><span class="lineno"> 1130</span>        <span class="keywordflow">for</span> (s = 0; s &lt; NSVG__SUBSAMPLES; ++s) {</div>
 <div class="line"><a id="l01131" name="l01131"></a><span class="lineno"> 1131</span>            <span class="comment">// find center of pixel for this scanline</span></div>
 <div class="line"><a id="l01132" name="l01132"></a><span class="lineno"> 1132</span>            <span class="keywordtype">float</span> scany = (float)(y*NSVG__SUBSAMPLES + s) + 0.5f;</div>
-<div class="line"><a id="l01133" name="l01133"></a><span class="lineno"> 1133</span>            NSVGactiveEdge **step = &amp;active;</div>
+<div class="line"><a id="l01133" name="l01133"></a><span class="lineno"> 1133</span>            <a class="code hl_struct" href="structNSVGactiveEdge.html">NSVGactiveEdge</a> **step = &amp;active;</div>
 <div class="line"><a id="l01134" name="l01134"></a><span class="lineno"> 1134</span> </div>
 <div class="line"><a id="l01135" name="l01135"></a><span class="lineno"> 1135</span>            <span class="comment">// update all active edges;</span></div>
 <div class="line"><a id="l01136" name="l01136"></a><span class="lineno"> 1136</span>            <span class="comment">// remove all active edges that terminate before the center of this scanline</span></div>
 <div class="line"><a id="l01137" name="l01137"></a><span class="lineno"> 1137</span>            <span class="keywordflow">while</span> (*step) {</div>
-<div class="line"><a id="l01138" name="l01138"></a><span class="lineno"> 1138</span>                NSVGactiveEdge *z = *step;</div>
+<div class="line"><a id="l01138" name="l01138"></a><span class="lineno"> 1138</span>                <a class="code hl_struct" href="structNSVGactiveEdge.html">NSVGactiveEdge</a> *z = *step;</div>
 <div class="line"><a id="l01139" name="l01139"></a><span class="lineno"> 1139</span>                <span class="keywordflow">if</span> (z-&gt;ey &lt;= scany) {</div>
 <div class="line"><a id="l01140" name="l01140"></a><span class="lineno"> 1140</span>                    *step = z-&gt;next; <span class="comment">// delete from list</span></div>
 <div class="line"><a id="l01141" name="l01141"></a><span class="lineno"> 1141</span><span class="comment">//                  NSVG__assert(z-&gt;valid);</span></div>
@@ -1230,8 +1230,8 @@ $(function() {
 <div class="line"><a id="l01152" name="l01152"></a><span class="lineno"> 1152</span>                step = &amp;active;</div>
 <div class="line"><a id="l01153" name="l01153"></a><span class="lineno"> 1153</span>                <span class="keywordflow">while</span> (*step &amp;&amp; (*step)-&gt;next) {</div>
 <div class="line"><a id="l01154" name="l01154"></a><span class="lineno"> 1154</span>                    <span class="keywordflow">if</span> ((*step)-&gt;x &gt; (*step)-&gt;next-&gt;x) {</div>
-<div class="line"><a id="l01155" name="l01155"></a><span class="lineno"> 1155</span>                        NSVGactiveEdge* t = *step;</div>
-<div class="line"><a id="l01156" name="l01156"></a><span class="lineno"> 1156</span>                        NSVGactiveEdge* q = t-&gt;next;</div>
+<div class="line"><a id="l01155" name="l01155"></a><span class="lineno"> 1155</span>                        <a class="code hl_struct" href="structNSVGactiveEdge.html">NSVGactiveEdge</a>* t = *step;</div>
+<div class="line"><a id="l01156" name="l01156"></a><span class="lineno"> 1156</span>                        <a class="code hl_struct" href="structNSVGactiveEdge.html">NSVGactiveEdge</a>* q = t-&gt;next;</div>
 <div class="line"><a id="l01157" name="l01157"></a><span class="lineno"> 1157</span>                        t-&gt;next = q-&gt;next;</div>
 <div class="line"><a id="l01158" name="l01158"></a><span class="lineno"> 1158</span>                        q-&gt;next = t;</div>
 <div class="line"><a id="l01159" name="l01159"></a><span class="lineno"> 1159</span>                        *step = q;</div>
@@ -1245,7 +1245,7 @@ $(function() {
 <div class="line"><a id="l01167" name="l01167"></a><span class="lineno"> 1167</span>            <span class="comment">// insert all edges that start before the center of this scanline -- omit ones that also end on this scanline</span></div>
 <div class="line"><a id="l01168" name="l01168"></a><span class="lineno"> 1168</span>            <span class="keywordflow">while</span> (e &lt; r-&gt;nedges &amp;&amp; r-&gt;edges[e].y0 &lt;= scany) {</div>
 <div class="line"><a id="l01169" name="l01169"></a><span class="lineno"> 1169</span>                <span class="keywordflow">if</span> (r-&gt;edges[e].y1 &gt; scany) {</div>
-<div class="line"><a id="l01170" name="l01170"></a><span class="lineno"> 1170</span>                    NSVGactiveEdge* z = nsvg__addActive(r, &amp;r-&gt;edges[e], scany);</div>
+<div class="line"><a id="l01170" name="l01170"></a><span class="lineno"> 1170</span>                    <a class="code hl_struct" href="structNSVGactiveEdge.html">NSVGactiveEdge</a>* z = nsvg__addActive(r, &amp;r-&gt;edges[e], scany);</div>
 <div class="line"><a id="l01171" name="l01171"></a><span class="lineno"> 1171</span>                    <span class="keywordflow">if</span> (z == NULL) <span class="keywordflow">break</span>;</div>
 <div class="line"><a id="l01172" name="l01172"></a><span class="lineno"> 1172</span>                    <span class="comment">// find insertion point</span></div>
 <div class="line"><a id="l01173" name="l01173"></a><span class="lineno"> 1173</span>                    <span class="keywordflow">if</span> (active == NULL) {</div>
@@ -1256,7 +1256,7 @@ $(function() {
 <div class="line"><a id="l01178" name="l01178"></a><span class="lineno"> 1178</span>                        active = z;</div>
 <div class="line"><a id="l01179" name="l01179"></a><span class="lineno"> 1179</span>                    } <span class="keywordflow">else</span> {</div>
 <div class="line"><a id="l01180" name="l01180"></a><span class="lineno"> 1180</span>                        <span class="comment">// find thing to insert AFTER</span></div>
-<div class="line"><a id="l01181" name="l01181"></a><span class="lineno"> 1181</span>                        NSVGactiveEdge* p = active;</div>
+<div class="line"><a id="l01181" name="l01181"></a><span class="lineno"> 1181</span>                        <a class="code hl_struct" href="structNSVGactiveEdge.html">NSVGactiveEdge</a>* p = active;</div>
 <div class="line"><a id="l01182" name="l01182"></a><span class="lineno"> 1182</span>                        <span class="keywordflow">while</span> (p-&gt;next &amp;&amp; p-&gt;next-&gt;x &lt; z-&gt;x)</div>
 <div class="line"><a id="l01183" name="l01183"></a><span class="lineno"> 1183</span>                            p = p-&gt;next;</div>
 <div class="line"><a id="l01184" name="l01184"></a><span class="lineno"> 1184</span>                        <span class="comment">// at this point, p-&gt;next-&gt;x is NOT &lt; z-&gt;x</span></div>
@@ -1341,7 +1341,7 @@ $(function() {
 <div class="line"><a id="l01263" name="l01263"></a><span class="lineno"> 1263</span>}</div>
 <div class="line"><a id="l01264" name="l01264"></a><span class="lineno"> 1264</span> </div>
 <div class="line"><a id="l01265" name="l01265"></a><span class="lineno"> 1265</span> </div>
-<div class="line"><a id="l01266" name="l01266"></a><span class="lineno"> 1266</span><span class="keyword">static</span> <span class="keywordtype">void</span> nsvg__initPaint(NSVGcachedPaint* cache, <a class="code hl_struct" href="structNSVGpaint.html">NSVGpaint</a>* paint, <span class="keywordtype">float</span> opacity)</div>
+<div class="line"><a id="l01266" name="l01266"></a><span class="lineno"> 1266</span><span class="keyword">static</span> <span class="keywordtype">void</span> nsvg__initPaint(<a class="code hl_struct" href="structNSVGcachedPaint.html">NSVGcachedPaint</a>* cache, <a class="code hl_struct" href="structNSVGpaint.html">NSVGpaint</a>* paint, <span class="keywordtype">float</span> opacity)</div>
 <div class="line"><a id="l01267" name="l01267"></a><span class="lineno"> 1267</span>{</div>
 <div class="line"><a id="l01268" name="l01268"></a><span class="lineno"> 1268</span>    <span class="keywordtype">int</span> i, j;</div>
 <div class="line"><a id="l01269" name="l01269"></a><span class="lineno"> 1269</span>    <a class="code hl_struct" href="structNSVGgradient.html">NSVGgradient</a>* grad;</div>
@@ -1444,13 +1444,13 @@ $(function() {
 <div class="line"><a id="l01366" name="l01366"></a><span class="lineno"> 1366</span><span class="comment">}</span></div>
 <div class="line"><a id="l01367" name="l01367"></a><span class="lineno"> 1367</span><span class="comment">*/</span></div>
 <div class="line"><a id="l01368" name="l01368"></a><span class="lineno"> 1368</span> </div>
-<div class="line"><a id="l01369" name="l01369"></a><span class="lineno"> 1369</span><span class="keywordtype">void</span> nsvgRasterize(NSVGrasterizer* r,</div>
+<div class="line"><a id="l01369" name="l01369"></a><span class="lineno"> 1369</span><span class="keywordtype">void</span> nsvgRasterize(<a class="code hl_struct" href="structNSVGrasterizer.html">NSVGrasterizer</a>* r,</div>
 <div class="line"><a id="l01370" name="l01370"></a><span class="lineno"> 1370</span>                   <a class="code hl_struct" href="structNSVGimage.html">NSVGimage</a>* image, <span class="keywordtype">float</span> tx, <span class="keywordtype">float</span> ty, <span class="keywordtype">float</span> scale,</div>
 <div class="line"><a id="l01371" name="l01371"></a><span class="lineno"> 1371</span>                   <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>* dst, <span class="keywordtype">int</span> w, <span class="keywordtype">int</span> h, <span class="keywordtype">int</span> stride)</div>
 <div class="line"><a id="l01372" name="l01372"></a><span class="lineno"> 1372</span>{</div>
 <div class="line"><a id="l01373" name="l01373"></a><span class="lineno"> 1373</span>    <a class="code hl_struct" href="structNSVGshape.html">NSVGshape</a> *shape = NULL;</div>
-<div class="line"><a id="l01374" name="l01374"></a><span class="lineno"> 1374</span>    NSVGedge *e = NULL;</div>
-<div class="line"><a id="l01375" name="l01375"></a><span class="lineno"> 1375</span>    NSVGcachedPaint cache;</div>
+<div class="line"><a id="l01374" name="l01374"></a><span class="lineno"> 1374</span>    <a class="code hl_struct" href="structNSVGedge.html">NSVGedge</a> *e = NULL;</div>
+<div class="line"><a id="l01375" name="l01375"></a><span class="lineno"> 1375</span>    <a class="code hl_struct" href="structNSVGcachedPaint.html">NSVGcachedPaint</a> cache;</div>
 <div class="line"><a id="l01376" name="l01376"></a><span class="lineno"> 1376</span>    <span class="keywordtype">int</span> i;</div>
 <div class="line"><a id="l01377" name="l01377"></a><span class="lineno"> 1377</span> </div>
 <div class="line"><a id="l01378" name="l01378"></a><span class="lineno"> 1378</span>    r-&gt;bitmap = dst;</div>
@@ -1489,7 +1489,7 @@ $(function() {
 <div class="line"><a id="l01411" name="l01411"></a><span class="lineno"> 1411</span> </div>
 <div class="line"><a id="l01412" name="l01412"></a><span class="lineno"> 1412</span>            <span class="comment">// Rasterize edges</span></div>
 <div class="line"><a id="l01413" name="l01413"></a><span class="lineno"> 1413</span>            <span class="keywordflow">if</span> (r-&gt;nedges != 0)</div>
-<div class="line"><a id="l01414" name="l01414"></a><span class="lineno"> 1414</span>                qsort(r-&gt;edges, r-&gt;nedges, <span class="keyword">sizeof</span>(NSVGedge), nsvg__cmpEdge);</div>
+<div class="line"><a id="l01414" name="l01414"></a><span class="lineno"> 1414</span>                qsort(r-&gt;edges, r-&gt;nedges, <span class="keyword">sizeof</span>(<a class="code hl_struct" href="structNSVGedge.html">NSVGedge</a>), nsvg__cmpEdge);</div>
 <div class="line"><a id="l01415" name="l01415"></a><span class="lineno"> 1415</span> </div>
 <div class="line"><a id="l01416" name="l01416"></a><span class="lineno"> 1416</span>            <span class="comment">// now, traverse the scanlines and find the intersections on each scanline, use non-zero rule</span></div>
 <div class="line"><a id="l01417" name="l01417"></a><span class="lineno"> 1417</span>            nsvg__initPaint(&amp;cache, &amp;shape-&gt;fill, shape-&gt;opacity);</div>
@@ -1516,7 +1516,7 @@ $(function() {
 <div class="line"><a id="l01438" name="l01438"></a><span class="lineno"> 1438</span> </div>
 <div class="line"><a id="l01439" name="l01439"></a><span class="lineno"> 1439</span>            <span class="comment">// Rasterize edges</span></div>
 <div class="line"><a id="l01440" name="l01440"></a><span class="lineno"> 1440</span>            <span class="keywordflow">if</span> (r-&gt;nedges != 0)</div>
-<div class="line"><a id="l01441" name="l01441"></a><span class="lineno"> 1441</span>                qsort(r-&gt;edges, r-&gt;nedges, <span class="keyword">sizeof</span>(NSVGedge), nsvg__cmpEdge);</div>
+<div class="line"><a id="l01441" name="l01441"></a><span class="lineno"> 1441</span>                qsort(r-&gt;edges, r-&gt;nedges, <span class="keyword">sizeof</span>(<a class="code hl_struct" href="structNSVGedge.html">NSVGedge</a>), nsvg__cmpEdge);</div>
 <div class="line"><a id="l01442" name="l01442"></a><span class="lineno"> 1442</span> </div>
 <div class="line"><a id="l01443" name="l01443"></a><span class="lineno"> 1443</span>            <span class="comment">// now, traverse the scanlines and find the intersections on each scanline, use non-zero rule</span></div>
 <div class="line"><a id="l01444" name="l01444"></a><span class="lineno"> 1444</span>            nsvg__initPaint(&amp;cache, &amp;shape-&gt;stroke, shape-&gt;opacity);</div>
@@ -1536,10 +1536,16 @@ $(function() {
 <div class="line"><a id="l01458" name="l01458"></a><span class="lineno"> 1458</span><span class="preprocessor">#endif </span><span class="comment">// NANOSVGRAST_IMPLEMENTATION</span></div>
 <div class="line"><a id="l01459" name="l01459"></a><span class="lineno"> 1459</span> </div>
 <div class="line"><a id="l01460" name="l01460"></a><span class="lineno"> 1460</span><span class="preprocessor">#endif </span><span class="comment">// NANOSVGRAST_H</span></div>
+<div class="ttc" id="astructNSVGactiveEdge_html"><div class="ttname"><a href="structNSVGactiveEdge.html">NSVGactiveEdge</a></div><div class="ttdef"><b>Definition:</b> nanosvgrast.h:103</div></div>
+<div class="ttc" id="astructNSVGcachedPaint_html"><div class="ttname"><a href="structNSVGcachedPaint.html">NSVGcachedPaint</a></div><div class="ttdef"><b>Definition:</b> nanosvgrast.h:116</div></div>
+<div class="ttc" id="astructNSVGedge_html"><div class="ttname"><a href="structNSVGedge.html">NSVGedge</a></div><div class="ttdef"><b>Definition:</b> nanosvgrast.h:89</div></div>
 <div class="ttc" id="astructNSVGgradient_html"><div class="ttname"><a href="structNSVGgradient.html">NSVGgradient</a></div><div class="ttdef"><b>Definition:</b> nanosvg.h:114</div></div>
 <div class="ttc" id="astructNSVGimage_html"><div class="ttname"><a href="structNSVGimage.html">NSVGimage</a></div><div class="ttdef"><b>Definition:</b> nanosvg.h:163</div></div>
+<div class="ttc" id="astructNSVGmemPage_html"><div class="ttname"><a href="structNSVGmemPage.html">NSVGmemPage</a></div><div class="ttdef"><b>Definition:</b> nanosvgrast.h:110</div></div>
 <div class="ttc" id="astructNSVGpaint_html"><div class="ttname"><a href="structNSVGpaint.html">NSVGpaint</a></div><div class="ttdef"><b>Definition:</b> nanosvg.h:122</div></div>
 <div class="ttc" id="astructNSVGpath_html"><div class="ttname"><a href="structNSVGpath.html">NSVGpath</a></div><div class="ttdef"><b>Definition:</b> nanosvg.h:131</div></div>
+<div class="ttc" id="astructNSVGpoint_html"><div class="ttname"><a href="structNSVGpoint.html">NSVGpoint</a></div><div class="ttdef"><b>Definition:</b> nanosvgrast.h:95</div></div>
+<div class="ttc" id="astructNSVGrasterizer_html"><div class="ttname"><a href="structNSVGrasterizer.html">NSVGrasterizer</a></div><div class="ttdef"><b>Definition:</b> nanosvgrast.h:124</div></div>
 <div class="ttc" id="astructNSVGshape_html"><div class="ttname"><a href="structNSVGshape.html">NSVGshape</a></div><div class="ttdef"><b>Definition:</b> nanosvg.h:140</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

@@ -75,27 +75,27 @@ $(function() {
 <div class="textblock"><p>WxMaxima ist ein graphisches Benutzerinterface (GUI) für das Computer-Algebrasystem <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>. <a class="el" href="classwxMaxima.html">wxMaxima</a> erlaubt die Nutzung aller Funktionen dieses Programms und bietet Assistenten für dessen wichtigste Funktionen an. Dieses Handbuch beschreibt die Features, die <a class="el" href="classwxMaxima.html">wxMaxima</a> zu einer der beliebtesten graphischen Benutzerumgebung für <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> gemacht haben.</p>
 <p><img src="./wxMaximaLogo.png" alt="wxMaxima Logo" class="inline"/></p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md75"></a>
+<h1><a class="anchor" id="autotoc_md74"></a>
 Introduction to wxMaxima</h1>
-<h2><a class="anchor" id="autotoc_md76"></a>
+<h2><a class="anchor" id="autotoc_md75"></a>
 &lt;em&gt;Maxima&lt;/em&gt; and wxMaxima</h2>
 <p>Im Open-Source-Bereich ist es üblich, große Systeme in kleine Projekte aufzuteilen, die jeweils klein genug sind, dass eine endliche Menge an Entwicklern ausreicht, um sie weiterzuentwickeln. Beispielsweise ist ein CD-Brennprogramm aus einem Kommandozeilentool zusammengesetzt, das die CDs brennt und eine graphische Benutzerumgebung, die dieses Tool bedient. Ein Vorteil dieses Ansatzes ist es, daß dasselbe Kommandozeilenprogramm von vielen Stellen aus genutzt werden: Das Brennprogramm, ein "Sende an die
 CD"-Knopf und beispielsweise ein Backup-Tool. Ein weiterer Vorteil ist es, dass auf diese Weise für eine Funktionalität mehrere Benutzerinterfaces angeboten werden können.</p>
 <p>Ein Computer-Algebrasystem (CAS) wie <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> ist hervorragend für diesen Ansatz geeignet: Es kann die Logik hinter einem Taschenrechner liefern, der mit beliebig langen Zahlen hantieren kann, Formeln für ein größeres System, z.B. <a href="https://www.sagemath.org/">Sage</a> umstellen. Alternativ kann es direkt verwendet werden. Dies kann von der Kommandozeile aus geschehen, oder von <a class="el" href="classwxMaxima.html">wxMaxima</a> aus, das eine komfortablere Bedienung unterstützt.</p>
-<h3><a class="anchor" id="autotoc_md77"></a>
+<h3><a class="anchor" id="autotoc_md76"></a>
 &lt;em&gt;Maxima&lt;/em&gt;</h3>
 <p><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> ist ein komplettes Computer-Algebrasystem (CAS): Ein Programm, das die Formel, nicht nur die Zahl sucht, die ein mathematisches Problem löst. Auch wenn es darauf spezialisiert ist, mit Buchstaben zu rechnen, bietet es auch eine Menge an Funktionen, die Probleme lösen, für die nur numerische Lösungen existieren.</p>
 <p><img src="./maxima_screenshot.png" alt="Maxima Screenshot, Kommandozeile" class="inline"/></p>
 <p>Extensive documentation for <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> is <a href="https://maxima.sourceforge.io/documentation.html">available in the internet</a>. Part of this documentation is also available in wxMaxima’s help menu. Pressing the Help key (on most systems the <code>F1</code> key) causes _wxMaxima_’s context-sensitive help feature to automatically jump to _Maxima_’s manual page for the command at the cursor.</p>
-<h3><a class="anchor" id="autotoc_md78"></a>
+<h3><a class="anchor" id="autotoc_md77"></a>
 WxMaxima</h3>
 <p><em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> ist ein graphisches Benutzer-Interface, das die komplette Funktionalität und Flexibilität von <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> zu nutzen erlaubt. Zudem bietet es viele Funktionalitäten an, die die Verwendung von <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> einfacher gestalten. Beispielsweise kann es den Inhalt eines Arbeitsblattes, einer Zelle des Arbeitsblatts oder einen Teil einer Formel nach LaTeX, MathML oder in eine RTF-Formel für eine Textverarbeitung konvertieren. Dokumentation für <a class="el" href="classwxMaxima.html">wxMaxima</a> kann <a href="https://wxMaxima-developers.github.io/wxmaxima/help.html">im Internet</a> gefunden werden, oder über das Hilfemenü.</p>
 <p><img src="./wxMaximaWindow.png" alt="wxMaxima Fenster" class="inline"/></p>
 <p><em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> lässt alle Berechnungen im Hintergrund durch das Kommandozeilen-Werkzeug <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> durchführen.</p>
-<h2><a class="anchor" id="autotoc_md79"></a>
+<h2><a class="anchor" id="autotoc_md78"></a>
 Workbook basics</h2>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> ist größtenteils selbsterklärend. <a href="https://wxMaxima-developers.github.io/wxmaxima/help.html">Diese Internetseite</a> bietet einige Beispiele an, wovon das "10-Minuten-Tutorial" besonders zu empfehlen ist. Dieses Handbuch beschreibt einige zusätzliche Aspekte von <a class="el" href="classwxMaxima.html">wxMaxima</a>.</p>
-<h3><a class="anchor" id="autotoc_md80"></a>
+<h3><a class="anchor" id="autotoc_md79"></a>
 The workbook approach</h3>
 <p>Eine der Sachen, die neue Benutzer oft verwirrt, ist, dass das Arbeitsblatt von <a class="el" href="classwxMaxima.html">wxMaxima</a> in Zellen aufgeteilt ist, die nur auf Befehl vom Benutzer an <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> gesendet werden. Wenn eine Zelle ausgewertet wird, werden alle Maxima-Befehle (nur) dieser Zelle als Batch-Befehle ausgewertet. Man kann auch mehrere Zellen auswählen und gleichzeitig auswählen. Oder das gesamte Arbeitsblatt auf einmal auswerten <em>WxMaxima</em>'s Ansatz für die Auswertung von Befehlen mag seltsam erscheinen. Es vereinfacht aber die Arbeit mit großen Dokumenten (wo man nicht jede Änderung eine komplette Neu-Evaluierung des ganzen Dokuments auslösen will. Ausserdem ist dieser Ansatz für die Fehlersuche praktisch.</p>
 <p>Wenn Text in <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> eingegeben wird, erzeugt er automatisch eine neue Zelle des Arbeitsblattes. Wenn dies eine Code-Zelle ist, kann ihr Inhalt an <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> gesendet werden und das Resultat dieser Aktion wird unter der Zelle angezeigt, wie unten abgebildet.</p>
@@ -104,7 +104,7 @@ The workbook approach</h3>
 <p>Außer Code-Zellen kennt <a class="el" href="classwxMaxima.html">wxMaxima</a> auch Textzellen und solche mit Bildern oder Überschriften. Jede Zelle hat ihren eigenen Speicher für das Rückgängigmachen von Aktionen, was sich oft als hilfreich erwiesen hat. Zudem besitzt, wie in fast allen Applikationen, das Arbeitsblatt einen eigenen Speicher für die Rückgängigmachen-Funktion.</p>
 <p>Die nun folgende Abbildung zeigt verschiedene Zelltypen (Titelzellen, Untertitelzellen, Textzellen, Eingabe/Ausgabezellen und eine Bildzelle).</p>
 <p><img src="./cell-example.png" alt="Ein Beispiel verschiedener wxMaxima Zelltypen" class="inline"/></p>
-<h3><a class="anchor" id="autotoc_md81"></a>
+<h3><a class="anchor" id="autotoc_md80"></a>
 Cells</h3>
 <p>Das Arbeitsblatt ist in Zellen aufgeteilt. WxMaxima kennt die folgenden Zelltypen:</p>
 <ul>
@@ -332,7 +332,7 @@ Markdown support</h3>
 </div><!-- fragment --><p>_WxMaxima_’s TeX and HTML output will also recognize <code>=&gt;</code> and replace it by the corresponding Unicode sign:</p>
 <div class="fragment"><div class="line">cogito =&gt; sum.</div>
 </div><!-- fragment --><p>Other symbols the HTML and TeX export will recognize are <code>&lt;=</code> and <code>&gt;=</code> for comparisons, a double-pointed double arrow (<code>&lt;=&gt;</code>), single-headed arrows (<code>&lt;-&gt;</code>, <code>-&gt;</code> and <code>&lt;-</code>) and <code>+/-</code> as the respective sign. For TeX output also <code>&lt;&lt;</code> and <code>&gt;&gt;</code> are recognized.</p>
-<h3><a class="anchor" id="autotoc_md92"></a>
+<h3><a class="anchor" id="autotoc_md91"></a>
 Hotkeys</h3>
 <p>Die meisten Tastenkürzel entstammen den Menüs, was bedeutet, dass sie mit diesen übersetzt werden können, falls die Tastatur der aktuellen Sprache dies erforderlich macht. Nicht dort dokumentiert ist:</p>
 <ul>
@@ -340,13 +340,13 @@ Hotkeys</h3>
 <li><code>CTRL</code>+<code>TAB</code> oder <code>CTRL</code>+<code>SHIFT</code>+<code>TAB</code> aktiviert die Auto-Vervollständigung.</li>
 <li><code>SHIFT</code>+<code>SPACE</code> fügt ein nicht-umbrechbares Leerzeichen ein.</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md94"></a>
+<h3><a class="anchor" id="autotoc_md92"></a>
 Raw TeX in the TeX export</h3>
 <p>Wenn eine Textzelle mit "TeX:" beginnt, wird der Rest ihres Inhalts bei der Konvertierung des Dokuments nach TeX unverändert ausgegeben.</p>
-<h2><a class="anchor" id="autotoc_md95"></a>
+<h2><a class="anchor" id="autotoc_md93"></a>
 File Formats</h2>
 <p>Das Arbeitsblatt kann auf verschiedene Weisen gespeichert werden:</p>
-<h3><a class="anchor" id="autotoc_md96"></a>
+<h3><a class="anchor" id="autotoc_md94"></a>
 .mac</h3>
 <p>.mac-Dateien sind Textdateien mit <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>-Befehlen. Sie können über <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s <code>batch()</code> oder <code>load()</code>-Befehl oder in <a class="el" href="classwxMaxima.html">wxMaxima</a> über "Datei/Batch
 File laden" gelesen werden.</p>
@@ -354,11 +354,11 @@ File laden" gelesen werden.</p>
 <p><img src="./BatchImage.png" alt="Laden einer Datei mit `batch()`" class="inline"/></p>
 <p>Achtung: Obwohl die Datei <code>Quadratic.mac</code> eine übliche Maxima-extension hat (<code>.mac</code>), kann sie nur durch <a class="el" href="classwxMaxima.html">wxMaxima</a> verarbeitet werden, der Befehl <code>wxdraw2d()</code> ist eine wxMaxima-Erweiterung für <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>. (Kommandozeilen)-<a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> wird den unbekannten Befehl ignorieren und ihn als Ausgabe erneut ausgeben.</p>
 <p><code>.mac</code>-Dateien eignen sich dafür, eine Bibliothek von Maxima-Befehlen aufzubauen. Ausreichend Information über die Struktur eines <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>-Arbeitsblatts, dass sie es erlauben, dieses wieder zu rekonstruieren, enthalten sie aber nicht.</p>
-<h3><a class="anchor" id="autotoc_md97"></a>
+<h3><a class="anchor" id="autotoc_md95"></a>
 .wxm</h3>
 <p><code>.wxm</code> files contain the worksheet except for _Maxima_’s output. On <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> versions &gt;5.38 they can be read using _Maxima_’s <code>load()</code> function just as .mac files. Well - mostly. Questions (like <code>asksign(x)</code>) are problematic, as the answer is written in the <code>.wxm</code> file (so that it can be suggested after loading), but that can <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> not evaluate. You can prevent <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> from asking questions by using <code>assume()</code> to declare some properties, <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> wants to know.</p>
 <p>With this plain-text format, it sometimes is unavoidable that worksheets that use new features are not downwards-compatible with older versions of <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>.</p>
-<h4><a class="anchor" id="autotoc_md98"></a>
+<h4><a class="anchor" id="autotoc_md96"></a>
 File format of wxm files</h4>
 <p>This is just a plain text file (you can open it with a text editor), containing the cell contents as some special <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> comments.</p>
 <p>It starts with the following comment:</p>
@@ -384,10 +384,10 @@ File format of wxm files</h4>
 <div class="fragment"><div class="line">/* [wxMaxima: fold    start ] */</div>
 <div class="line">...</div>
 <div class="line">/* [wxMaxima: fold    end   ] */</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md100"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md97"></a>
 .wxmx</h3>
 <p>Dieses XML basiertes Dateiformat enthält das gesamte Arbeitsblatt, inklusive Eigenschaften wie den Zoom-Faktor oder die Watchlist. Es ist das empfohlene Dateiformat für wxMaxima-Arbeitsblätter.</p>
-<h4><a class="anchor" id="autotoc_md101"></a>
+<h4><a class="anchor" id="autotoc_md98"></a>
 File format of wxmx files</h4>
 <p><a class="el" href="classA.html">A</a> <code>wxmx</code>-file seems to be a binary format, but one can handle it with tools, which are included in your OS. It is a zip file, one can decompress it with <code>unzip</code> (maybe rename it before, so that is recognized by the unzip program of your OS). We do not use the compression function, just the possibility to merge several files into one file - images are already compressed and the rest is simple text (probably much smaller, than huge images, which are included).</p>
 <p>It does contain the following files:</p>
@@ -398,7 +398,7 @@ File format of wxmx files</h4>
 <li><code>content.xml</code>: a XML document, which contains the various cells of your document in XML format.</li>
 </ul>
 <p>So, if something goes wrong, you can unzip a <a class="el" href="classwxMaxima.html">wxMaxima</a> document (maybe rename it before to a <code>zip</code>-file), maybe make changes in the <code>content.xml</code> file with a text editor, or replace an broken image, zip the files again, probably rename the <code>zip</code> to a <code>wxmx</code>-file - and you get another modified <code>wxmx</code>-file.</p>
-<h2><a class="anchor" id="autotoc_md103"></a>
+<h2><a class="anchor" id="autotoc_md99"></a>
 Configuration options</h2>
 <p>Einige Variablen, über die <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> konfiguriert wird, können auf zwei Arten eingestellt werden:</p>
 <ul>
@@ -406,10 +406,10 @@ Configuration options</h2>
 <li>Die Werte der meisten Konfigrations-Variablen können nur für die aktuelle Sitzung geändert werden, indem die Werte im Arbeitsblatt geändert werden, wie unten gezeigt.</li>
 </ul>
 <p><img src="./wxMaxima_configuration_001.png" alt="wxMaxima Konfiguration 1" class="inline"/></p>
-<h3><a class="anchor" id="autotoc_md104"></a>
+<h3><a class="anchor" id="autotoc_md100"></a>
 Default animation framerate</h3>
 <p>Die Bildwiederholgeschwindigkeit für Animationen wird in der Variable <code>wxanimate_framerate</code> gespeichert. <a class="el" href="classwxMaxima.html">wxMaxima</a> setzt sie auf den Wert aus dem Konfigurationsdialog, wenn ein neues <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> gestartet wird.</p>
-<h3><a class="anchor" id="autotoc_md106"></a>
+<h3><a class="anchor" id="autotoc_md101"></a>
 Default plot size for new &lt;em&gt;maxima&lt;/em&gt; sessions</h3>
 <p>Beim nächsten Start werden im Arbeitsblatt eingebettete Diagramme mit dieser Größe erstellt, wenn der Wert von <code>wxplot_size</code> nicht geändert wird.</p>
 <p>Diese Variable kann notfalls auch nur für das aktuelle Diagramm gesetzt werden:</p>
@@ -419,14 +419,14 @@ Default plot size for new &lt;em&gt;maxima&lt;/em&gt; sessions</h3>
 <div class="line">       x,-5,5</div>
 <div class="line">   )</div>
 <div class="line">), wxplot_size=[480,480]$</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md107"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md102"></a>
 Match parenthesis in text controls</h3>
 <p>Diese Option schaltet zwei Funktionen ein:</p>
 <ul>
 <li>Wenn eine öffnende Klammer, eckige Klammer oder ein Anführungszeichen eingegeben wird, fügt <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> automatisch das schließende Zeichen danach ein.</li>
 <li>Markierter Text wird, wenn man eine geöffnete Klammer einzugeben versucht, automatisch in Klammern gesetzt.</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md109"></a>
+<h3><a class="anchor" id="autotoc_md103"></a>
 Don’t save the worksheet automatically</h3>
 <p>Wenn diese Option gewählt ist, wird das Arbeitsblatt nur überschrieben, wenn der Benutzer es speichert. Ein aktuelles Backup wird in diesem Fall im temp-Verzeichnis abgelegt.</p>
 <p>Ist diese Option nicht angewählt, arbeitet <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> wie eine moderne Handy-App:</p>
@@ -434,15 +434,15 @@ Don’t save the worksheet automatically</h3>
 <li>Dateien werden beim Schließen automatisch gespeichert</li>
 <li>Und die Datei wird automatisch alle 3 Minuten gespeichert.</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md110"></a>
+<h3><a class="anchor" id="autotoc_md104"></a>
 Where is the configuration saved?</h3>
 <p>If you are using Unix/Linux, the configuration information will be saved in a file <code>.<a class="el" href="classwxMaxima.html">wxMaxima</a></code> in your home directory (if you are using wxWidgets &lt; 3.1.1), or <code>.config/wxMaxima.conf</code> ((XDG-Standard) if wxWidgets &gt;= 3.1.1 is used). You can retrieve the wxWidgets version from the command <code>wxbuild_info();</code> or by using the menu option Help-&gt;About. <a href="https://www.wxwidgets.org/">wxWidgets</a> is the cross-platform GUI library, which is the base for <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> (therefore the <code>wx</code> in the name). (Since the filename starts with a dot, <code>.<a class="el" href="classwxMaxima.html">wxMaxima</a></code> or <code>.config</code> will be hidden).</p>
 <p>Unter Windows wird die Konfiguration in der Registry unter <code>HKEY_CURRENT_USER\Software\<a class="el" href="classwxMaxima.html">wxMaxima</a></code> gespeichert.</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md111"></a>
+<h1><a class="anchor" id="autotoc_md105"></a>
 Extensions to &lt;em&gt;Maxima&lt;/em&gt;</h1>
 <p><em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>'s Hauptaufgabe ist es, die Ein- und Ausgaben von <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> graphisch darzustellen. An einigen Stellen fügt es jedoch Funktionalitäten zu <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> hinzu. WxMaxima's Fähigkeiten, Reports zu generieren, indem Arbeitsblätter nach HTML und LaTeX exportiert werden können, wurde erwähnt. Dieser Abschnitt betrachtet einige Arten, wie <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> die Einbindung von Graphiken in ein Arbeitsblatt verbessert</p>
-<h2><a class="anchor" id="autotoc_md112"></a>
+<h2><a class="anchor" id="autotoc_md106"></a>
 Subscripted variables</h2>
 <p><code>wxsubscripts</code> gibt an, wie (und ob) <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> Variablennamen automatisch tiefstellen wird:</p>
 <p>Falls es <code>false</code> gesetzt wird, wird die Funktion deaktiviert, <a class="el" href="classwxMaxima.html">wxMaxima</a> wird nicht Teile von Variablennamen nach einem Unterstrich tiefstellen.</p>
@@ -456,7 +456,7 @@ Subscripted variables</h2>
 werden" class="inline"/></p>
 <p>Wenn nicht, kann jede Variable als mit tiefgestelltem <code>y</code> ausgestattet deklariert werden mittels <code>wxdeclare_subscript(variablenname);</code> oder <code>wxdeclare_subscript([variablenname1,variablenname2,...]);</code> Rückgängig gemacht werden kann dies mittels <code>wxdeclare_subscript(variablenname,false);</code></p>
 <p>You can use the menu "View-&gt;Autosubscript" to set these values.</p>
-<h2><a class="anchor" id="autotoc_md114"></a>
+<h2><a class="anchor" id="autotoc_md107"></a>
 User feedback in the status bar</h2>
 <p>Kommandos, die lange arbeiten, können Fortschrittsinformationen in die Statuszeile ausgeben. Diese Informationen überschreiben deren Inhalt. <code>wxstatusbar()</code> kann sogar in Bibliotheken verwendet werden, bei denen nicht bekannt ist, ob sie mit <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> oder in einem <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> ohne Frontend verwendet werden: Wenn <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> diese Funktion nicht definiert hat, wird sie von <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> einfach als undefinierte Funktion betrachtet und nicht weiter bearbeitet.</p>
 <div class="fragment"><div class="line">for i:1 thru 10 do (</div>
@@ -467,7 +467,7 @@ User feedback in the status bar</h2>
 <div class="line">    /* program execution (here: for 3 seconds) */</div>
 <div class="line">    ?sleep(3)</div>
 <div class="line">)$</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md115"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md108"></a>
 Exporting the worksheet from within Maxima</h2>
 <p>The command <code>wxworksheettohtml()</code> exports the current worksheet to an HTML file from within a running <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> session, which is convenient for scripted or batch export. Like <code>wxstatusbar()</code> it is safe to use in code that might also run in plain (console) <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>: if <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> isn’t present the command is simply left unevaluated.</p>
 <div class="fragment"><div class="line">wxworksheettohtml(&quot;report.html&quot;)$</div>
@@ -494,10 +494,10 @@ Exporting the worksheet from within Maxima</h2>
 <td class="markdownTableBodyNone"><code>documentclassoptions</code>   </td><td class="markdownTableBodyNone">overrides its options (e.g. <code>"12pt,a4paper"</code>)   </td></tr>
 </table>
 <p>Support for <code>wxworksheettopdf()</code> is planned.</p>
-<h2><a class="anchor" id="autotoc_md117"></a>
+<h2><a class="anchor" id="autotoc_md109"></a>
 Plotting</h2>
 <p>Diagramme haben per definitionem mit einer graphischen Benutzerumgebung zu tun, weswegen an dieser Stelle Erweiterungen von <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> zu erwarten sind.</p>
-<h3><a class="anchor" id="autotoc_md118"></a>
+<h3><a class="anchor" id="autotoc_md110"></a>
 Embedding a plot into the worksheet</h3>
 <p><em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> weist normalerweise Gnuplot an, Diagramme in eigenen Fenstern darzustellen. Wenn dem entsprechenden <code>draw</code> oder <code>plot</code>-Kommando ein "wx" vorangestellt wird, wird das Bild stattdessen in das Arbeitsblatt eingebaut.</p>
 <p>Die folgenden Plot-Funktionen haben wx-Äquivalente:</p>
@@ -529,7 +529,7 @@ Embedding a plot into the worksheet</h3>
 </table>
 <p>If a <code>wxm</code>-file is read by (console) <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>, these functions are ignored (and printed as output, as other unknown functions in <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>).</p>
 <p>If you got problems with one of these functions, please check, if the problem exists in the the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> function too (e.g. you got an error with <code>wxplot2d()</code>, check the same plot in the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> command <code>plot2d()</code> (which opens the plot in a separate Window)). If the problem does not disappear, it is most likely a <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> issue and should be reported in the <a href="https://sourceforge.net/p/maxima/bugs/">Maxima bugtracker</a>. Or maybe a Gnuplot issue.</p>
-<h3><a class="anchor" id="autotoc_md122"></a>
+<h3><a class="anchor" id="autotoc_md111"></a>
 Making embedded plots bigger or smaller</h3>
 <p>Wie bereits beschrieben kann die Größe von Diagrammen mittels der Variable <code>wxplot_size</code> definiert werden. Die plot-Funktionen von <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> beachten den Inhalt dieser Variablen, die die Größe von Plots in Pixeln angibt. Ihr Inhalt kann jederzeit ausgelesen oder geändert werden:</p>
 <div class="fragment"><div class="line">wxplot_size:[1200,800]$</div>
@@ -547,16 +547,16 @@ Making embedded plots bigger or smaller</h3>
 <div class="line">    )</div>
 <div class="line">),wxplot_size=[1600,800]$</div>
 </div><!-- fragment --><p>Setting the size of embedded plot with <code>wxplot_size</code> works for embedded plots using e.g. <code>wxplot</code>, <code>wxdraw</code>, <code>wxcontour_plot</code> and <code>wximplicit_plot</code> commands and for embedded animations with <code>with_slider_draw</code> and <code>wxanimate</code> commands.</p>
-<h3><a class="anchor" id="autotoc_md123"></a>
+<h3><a class="anchor" id="autotoc_md112"></a>
 Better quality plots</h3>
 <p><em>Gnuplot</em> doesn’t seem to provide a portable way of determining whether it supports the high-quality bitmap output that the Cairo library provides. On systems where <em>Gnuplot</em> is compiled to use this library the pngCairo option from the configuration menu (that can be overridden by the variable <code>wxplot_pngcairo</code>) enables support for antialiasing and additional line styles. If <code>wxplot_pngCairo</code> is set without <em>Gnuplot</em> supporting this the result will be error messages instead of graphics.</p>
-<h3><a class="anchor" id="autotoc_md124"></a>
+<h3><a class="anchor" id="autotoc_md113"></a>
 Opening embedded plots in interactive &lt;em&gt;Gnuplot&lt;/em&gt; windows</h3>
 <p>Wenn ein Diagramm mittels einem <code>wxdraw</code>-ähnlichen Befehl erstellt wurde (<code>wxplot2d</code> und <code>wxplot3d</code> werden hier nicht unterstützt) und die Gnuplot-Datei nicht allzu lang ist, bietet <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> einen Rechts-Klick-Menüpunkt an, der das Diagramm in einem interaktiven Gnuplot-Fenster öffnet.</p>
-<h3><a class="anchor" id="autotoc_md125"></a>
+<h3><a class="anchor" id="autotoc_md114"></a>
 Opening Gnuplot’s command console in &lt;tt&gt;plot&lt;/tt&gt; windows</h3>
 <p>On MS Windows, there are two Gnuplot programs, <code>gnuplot.exe</code> and <code>wgnuplot.exe</code>. You can configure, which command should be used using the configuration menu. <code>wgnuplot.exe</code> offers the possibility to open a console window, where <em>gnuplot</em> commands can be entered into, <code>gnuplot.exe</code> does not offer this possibility. Unfortunately, <code>wgnuplot.exe</code> causes <em>Gnuplot</em> to "steal" the keyboard focus for a short time every time a plot is prepared.</p>
-<h3><a class="anchor" id="autotoc_md126"></a>
+<h3><a class="anchor" id="autotoc_md115"></a>
 Embedding animations into the spreadsheet</h3>
 <p>Es ist meist schwer, aus 3D-Diagrammen quantitative Aussagen zu entnehmen. Eine Alternative ist es, den 3. Parameter auf das Mausrad zu legen. Das Kommando <code>with_slider_draw</code> ist eine Version von <code>wxdraw2d</code>, die mehrere Plots erstellt und es erlaubt, mittels eines Schiebers zwischen diesen hin- und herzuschalten. <em>WxMaxima</em> kann die Animation auch als animierte <code>.gif</code>-Datei exportieren.</p>
 <p>Die ersten beiden Argumente von <code>with_slider_draw</code> sind der Name der Variable des zu variierenden Parameters und die Liste der Werte, die dieser annehmen soll. Darauf folgen die ganz normalen Argumente, die <code>wxdraw2d</code> akzeptiert:</p>
@@ -625,7 +625,7 @@ Embedding animations into the spreadsheet</h3>
 <div class="line">        x,0,10</div>
 <div class="line">    )</div>
 <div class="line">)$</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md128"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md116"></a>
 Opening multiple plots in contemporaneous windows</h3>
 <p>Strenggenommen kein Feature von <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>. Aber <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> erlaubt auf vielen Systemen das folgende Beispiel von Mario Rodriguez auszuführen:</p>
 <div class="fragment"><div class="line">load(draw);</div>
@@ -647,53 +647,53 @@ Opening multiple plots in contemporaneous windows</h3>
 <div class="line">    key=&quot;cos (x)&quot;,grid=[2,2],</div>
 <div class="line">    explicit(cos(x),x,0,2*%pi))</div>
 <div class="line">);</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md129"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md117"></a>
 The "Plot using draw" side pane</h3>
 <p>Die "Plotte mittels Draw"-Seitenleiste enthält einen Codegenerator, der es erlaubt, einen Teil der Flexibilität des <em>draw</em>-Pakets von <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> zu nutzen.</p>
-<h4><a class="anchor" id="autotoc_md130"></a>
+<h4><a class="anchor" id="autotoc_md118"></a>
 2D</h4>
 <p>Generates the skeleton of a <code>draw()</code> command that draws a 2<a class="el" href="classD.html">D</a> scene. This scene later has to be filled with commands that generate the scene’s contents, for example by using the buttons in the rows below the "2D" button.</p>
 <p>One helpful feature of the 2<a class="el" href="classD.html">D</a> button is that it allows to set up the scene as an animation in which a variable (by default it is <em>t</em>) has a different value in each frame: Often a moving 2<a class="el" href="classD.html">D</a> plot allows easier interpretation than the same data in a non-moving 3<a class="el" href="classD.html">D</a> one.</p>
-<h4><a class="anchor" id="autotoc_md131"></a>
+<h4><a class="anchor" id="autotoc_md119"></a>
 3D</h4>
 <p>Generates the skeleton of a <code>draw()</code> command that draws a 3<a class="el" href="classD.html">D</a> scene. If neither a 2<a class="el" href="classD.html">D</a> nor a 3<a class="el" href="classD.html">D</a> scene is set up, all of the other buttons set up a 2<a class="el" href="classD.html">D</a> scene that contains the command the button generates.</p>
-<h4><a class="anchor" id="autotoc_md132"></a>
+<h4><a class="anchor" id="autotoc_md120"></a>
 Ausdruck</h4>
 <p>Fügt den aktuellen <code>draw()</code>-Befehl den Plot einer Kurve wie <code>sin(x)</code>, <code>x*sin(x)</code> oder <code>x^2+2*x-4</code> hinzu. Besteht noch kein <code>draw()</code>-Befehl, wird automatisch eine 2D-Szene erzeugt. Jede Szene kann beliebig viele Plots beinhalten.</p>
-<h4><a class="anchor" id="autotoc_md133"></a>
+<h4><a class="anchor" id="autotoc_md121"></a>
 Implicit plot</h4>
 <p>Markiert alle Punkte, an denen eine Bedingung wie <code>y=sin(x)</code>, <code>y*sin(x)=3</code> oder <code>x^2+y^2=4</code> erfüllt ist und zeichnet diese Kurve in das aktuelle Diagramm ein. Gibt es kein aktuelles Diagramm, wird ein 2D-Diagramm erzeugt.</p>
-<h4><a class="anchor" id="autotoc_md134"></a>
+<h4><a class="anchor" id="autotoc_md122"></a>
 Parametric plot</h4>
 <p>Bewegt eine Variable von einem Start- zu einem Endwert und verwendet getrennte Ausdrücke wie <code>t*sin(t)</code> und <code>t*cos(t)</code>, um die x-, die y- (und in 3D-Diagrammen auch die z-) Koordinaten zu generieren.</p>
-<h4><a class="anchor" id="autotoc_md135"></a>
+<h4><a class="anchor" id="autotoc_md123"></a>
 Points</h4>
 <p>Zeichnet eine Reihe von Punkten, die optional miteinander verbunden werden. Die Koordinaten der Punkte können aus einer Liste von Listen, einem 2-dimensionalen Array oder einer Liste oder einem Array pro Achse entnommen werden.</p>
-<h4><a class="anchor" id="autotoc_md136"></a>
+<h4><a class="anchor" id="autotoc_md124"></a>
 Diagram title</h4>
 <p>Bestimmt den Titel des Diagramms.</p>
-<h4><a class="anchor" id="autotoc_md137"></a>
+<h4><a class="anchor" id="autotoc_md125"></a>
 Axis</h4>
 <p>Die Einstellungen für die Achsen.</p>
-<h4><a class="anchor" id="autotoc_md138"></a>
+<h4><a class="anchor" id="autotoc_md126"></a>
 Contour</h4>
 <p>(Only for 3<a class="el" href="classD.html">D</a> plots): Adds contour lines similar to the ones one can find in a map of a mountain to the plot commands that follow in the current <code>draw()</code> command and/or to the ground plane of the diagram. Alternatively, this wizard allows skipping drawing the curves entirely only showing the contour plot.</p>
-<h4><a class="anchor" id="autotoc_md139"></a>
+<h4><a class="anchor" id="autotoc_md127"></a>
 Plot name</h4>
 <p>Fügt einen Eintrag zur Legende hinzu, der für die nächsten Objekte gilt. Ein leerer Name bedeutet, dass die nun folgenden Objekte keinen eigenen Eintrag erhalten.</p>
-<h4><a class="anchor" id="autotoc_md140"></a>
+<h4><a class="anchor" id="autotoc_md128"></a>
 Line colour</h4>
 <p>Setzt die Linienfarbe für die nun folgenden Plots des aktuellen draw-Befehls.</p>
-<h4><a class="anchor" id="autotoc_md141"></a>
+<h4><a class="anchor" id="autotoc_md129"></a>
 Fill colour</h4>
 <p>Setzt die Füllfarbe für die nun folgenden Objekte des aktuellen <code>draw</code>-Kommandos.</p>
-<h4><a class="anchor" id="autotoc_md142"></a>
+<h4><a class="anchor" id="autotoc_md130"></a>
 Grid</h4>
 <p>Ein Assistent, der die Gitterlinien einzustellen hilft.</p>
-<h4><a class="anchor" id="autotoc_md143"></a>
+<h4><a class="anchor" id="autotoc_md131"></a>
 Accuracy</h4>
 <p>Erlaubt das Wählen zwischen Geschwindigkeit und Genauigkeit bei der Erstellung der folgenden Kurven.</p>
-<h3><a class="anchor" id="autotoc_md144"></a>
+<h3><a class="anchor" id="autotoc_md132"></a>
 Modify font and font size for plots</h3>
 <p>Especially when you use a high resolution display, the default font size might be very small. For the <code>draw</code>-based commands, you can set the font / font size using options like <code>font=...</code>, <code>font_size=...</code>, e.g.:</p>
 <div class="fragment"><div class="line">wxdraw2d(</div>
@@ -705,11 +705,11 @@ Modify font and font size for plots</h3>
 <div class="line">         [gnuplot_preamble, &quot;set tics font \&quot;Arial, 30\&quot;; set xlabel font \&quot;,20\&quot;; set ylabel font \&quot;,20\&quot;;&quot;]);</div>
 </div><!-- fragment --><p>This sets the font for the numbers to Arial with size 30, the size for the xlabel and ylabel font to 20 (with the default font).</p>
 <p>Read the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> and Gnuplot documentation for further information. Note: Gnuplot seems to have issues with larger font sizes, see <a href="https://github.com/wxMaxima-developers/wxmaxima/issues/1966">wxMaxima issue 1966</a>.</p>
-<h2><a class="anchor" id="autotoc_md145"></a>
+<h2><a class="anchor" id="autotoc_md133"></a>
 Embedding graphics</h2>
 <p>Das <code>.wxmx</code>-Dateiformat erlaubt es, Bilder per Drag-And-Drop einzubetten. Manchmal (z.B. wenn die Bildinhalte sich später während einer Sitzung ändern könnten) ist es besser, die Bilddatei während der Auswertung zu laden:</p>
 <div class="fragment"><div class="line">show_image(&quot;man.png&quot;);</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md146"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md134"></a>
 Startup files</h2>
 <p>Der Konfigurationsdialog von <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> bietet an, zwei Dateien mit <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>-Befehlen zu bearbeiten:</p>
 <ul>
@@ -718,7 +718,7 @@ Startup files</h2>
 </ul>
 <p>For example, if Gnuplot is installed in <code>/opt</code> (maybe on MacOS), you can add <code>gnuplot_command:"/opt/local/bin/gnuplot"$</code> (or <code>/opt/gnuplot/bin/gnuplot</code> or any other path) to these files.</p>
 <p>These files are in the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> user directory (usually <code>USERPROFILE%/maxima</code> in Windows, <code>$HOME/.maxima</code> otherwise). The location can be found out with the command: <code>maxima_userdir;</code></p>
-<h2><a class="anchor" id="autotoc_md147"></a>
+<h2><a class="anchor" id="autotoc_md135"></a>
 Special variables wx...</h2>
 <ul>
 <li><code>wxsubscripts</code> informiert <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>, welche Variablen mit Unterstrich (z.B. <code>R_150</code>) in Variablen mit Subscript konvertieren soll. Details werden unter <code>wxdeclare_subscript</code> beschrieben.</li>
@@ -740,7 +740,7 @@ Special variables wx...</h2>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md149"></a>
+<h2><a class="anchor" id="autotoc_md136"></a>
 Pretty-printing 2D output</h2>
 <p>Die Funktion <code>table_form()</code> konvertiert 2D-Listen in eine lesbarere Tabellenform als <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> selbst. Die Eingabe ist eine Liste von einer oder mehreren Listen. Wie der "print" Befehl wird die Ausgabe auch gemacht, wenn der Befehl durch ein Dollarzeichen abgeschlossen wurde. Das abschließende <code>done</code> kann durch Verwendung eines <code>$</code> anstelle eines <code>;</code> unterdrückt werden.</p>
 <div class="fragment"><div class="line">table_form(</div>
@@ -764,24 +764,24 @@ Pretty-printing 2D output</h2>
 <p>Example:</p>
 <div class="fragment"><div class="line">wx_matrix(matrix([&quot;Name&quot;, &quot;Value&quot;], [&quot;X&quot;, 10], [&quot;Y&quot;, 20]),</div>
 <div class="line">          lines=true, rownames=true, colnames=true, parenstyle=square);</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md151"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md137"></a>
 Bug reporting</h2>
 <p><em>WxMaxima</em> bietet einige Funktionen für das Melden von Fehlern an:</p>
 <ul>
 <li><code>wxbuild_info()</code> sammelt Informationen über die derzeit ausgeführte Version von <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em></li>
 <li><code>wxbug_report()</code> sagt, wo und wie Fehler gemeldet werden können</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md152"></a>
+<h2><a class="anchor" id="autotoc_md138"></a>
 Marking output being drawn in red</h2>
 <p><em>Maxima_’s <code>box()</code> command causes _wxMaxima</em> to print its argument with a red foreground, if the second argument to the command is the text <code>highlight</code>.</p>
-<h2><a class="anchor" id="autotoc_md153"></a>
+<h2><a class="anchor" id="autotoc_md139"></a>
 Output rendering.</h2>
 <p>Mittels <code>set_display()</code> kann man angeben, wie <a class="el" href="classwxMaxima.html">wxMaxima</a> die Ausgabe anzeigt.</p>
 <p><code>set_display('xml)</code> is the default value. Here <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> speaks to <a class="el" href="classwxMaxima.html">wxMaxima</a> using an (machine readable) XML-dialect (can be seen in the "Raw XML
 sidebar") and outputs the resulting formulas nicely rendered, e.g. pretty Matrices, Square root signs, fractions, etc.</p>
 <p><code>set_display('ascii)</code> causes <a class="el" href="classwxMaxima.html">wxMaxima</a> to output formulas as in command line <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> - as ASCII-Art.</p>
 <p><code>set_display('none)</code> bewirkt 'einzeilige' ASCII Ausgaben - dasselbe was (Kommandozeilen-)<a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> mit <code>display2d:false;</code> macht.</p>
-<h1><a class="anchor" id="autotoc_md155"></a>
+<h1><a class="anchor" id="autotoc_md140"></a>
 Help menu</h1>
 <p>WxMaxima’s help menu provides access to the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> and <a class="el" href="classwxMaxima.html">wxMaxima</a> manual, tips, some example worksheets and in command line <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> included demos (the <code>demo()</code> command).</p>
 <p>Please notice, that the demos write:</p>
@@ -789,19 +789,19 @@ Help menu</h1>
 </div><!-- fragment --><p>That is valid for command-line <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>, however in <a class="el" href="classwxMaxima.html">wxMaxima</a> by default it is necessary to continue the demonstration with: <code>CTRL</code>+<code>ENTER</code></p>
 <p>(That can be configured in the Configure-&gt;Worksheet-&gt;"Hotkeys for sending commands to Maxima" menu.)</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md156"></a>
+<h1><a class="anchor" id="autotoc_md141"></a>
 Troubleshooting</h1>
-<h2><a class="anchor" id="autotoc_md158"></a>
+<h2><a class="anchor" id="autotoc_md142"></a>
 Cannot connect to &lt;em&gt;Maxima&lt;/em&gt;</h2>
 <p>Since <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> (the program that does the actual mathematics) and <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> (providing the easy-to-use user interface) are separate programs that communicate by the means of a local network connection. Therefore the most probable cause is that this connection is somehow not working. For example, a firewall could be set up in a way that it doesn’t just prevent unauthorized connections from the internet (and perhaps intercept some connections to the internet, too), but also blocks inter-process-communication inside the same computer. Note that since <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> is being run by a Lisp processor the process communication that is blocked does not necessarily have to be named "maxima". Common names of the program that opens the network connection would be sbcl, gcl, ccl, lisp.exe, or similar names.</p>
 <p>Auf Unix/Linux-Rechnern kann ein weiterer Grund sein, dass das "loopback"-Netzwerkgerät (erlaubt Netzwerkverbindungen zwischen 2 Prorammen am selben Rechner) nicht korrekt eingestellt ist.</p>
-<h2><a class="anchor" id="autotoc_md159"></a>
+<h2><a class="anchor" id="autotoc_md143"></a>
 How to save data from a broken .wxmx file</h2>
 <p>Die meisten modernen XML-basierten Formate sind von ihrem Inhalt her einfache .zip-Dateien. <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> schaltet bei ihnen die Kompression nicht ein, weswegen ihr Inhalt in einem normalen Texteditor lesbar ist.</p>
 <p>If the zip signature at the end of the file is still intact after renaming a broken <code>.wxmx</code> file to <code>.zip</code> most operating systems will provide a way to extract any portion of the information that is stored inside it. This can be done when there is a need of recovering the original image files from a text processor document. If the zip signature isn’t intact that does not need to be the end of the world: If <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> during saving detected that something went wrong there will be a <code>.wxmx~</code> file whose contents might help.</p>
 <p>And even if there isn’t such a file: The <code>.wxmx</code> file is a container format and the XML portion is stored uncompressed. It it is possible to rename the <code>.wxmx</code> file to a <code>.txt</code> file and to use a text editor to recover the XML portion of the file’s contents (it starts with <code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;</code> and ends with <code>&lt;/wxMaximaDocument&gt;</code>. Before and after that text you will see some unreadable binary contents in the text editor).</p>
 <p>Wird eine Textdatei mit diesem Text (z.B. indem er mit Copy+Paste in eine neue Datei eingefügt wird) als <code>.xml</code>-Datei gespeichert, weiß <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>, wie man den Text-Teil des Dokuments rekonstruiert.</p>
-<h2><a class="anchor" id="autotoc_md161"></a>
+<h2><a class="anchor" id="autotoc_md144"></a>
 I want some debug info to be displayed on the screen before my command has finished</h2>
 <p>Normalerweise gibt <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> erst etwas aus, wenn die komplette Ausgabe steht. Das <code>disp</code>-Kommando wird hingegen sofort ausgeführt:</p>
 <div class="fragment"><div class="line">for i:1 thru 10 do (</div>
@@ -812,7 +812,7 @@ I want some debug info to be displayed on the screen before my command has finis
 <div class="line">   ?sleep(3)</div>
 <div class="line">)$</div>
 </div><!-- fragment --><p>Alternativ kann man sich das <code>wxstatusbar()</code>-Kommando oben ansehen.</p>
-<h2><a class="anchor" id="autotoc_md162"></a>
+<h2><a class="anchor" id="autotoc_md145"></a>
 Plotting only shows a closed empty envelope with an error message</h2>
 <p><em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> konnte die Datei, die <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> <em>Gnuplot</em> instruiert hat, zu generieren, nicht lesen.</p>
 <p>Mögliche Gründe für diesen Fehler sind:</p>
@@ -823,10 +823,10 @@ Plotting only shows a closed empty envelope with an error message</h2>
   for the plot" checkbox in the configuration dialog and don’t set <code>wxplot_pngcairo</code> to true from <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>.</li>
 <li>Gnuplot hat keine gültige <code>.png</code>-Datei ausgegeben.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md164"></a>
+<h2><a class="anchor" id="autotoc_md146"></a>
 Plotting an animation results in “error: undefined variable”</h2>
 <p>The value of the slider variable by default is only substituted into the expression that is to be plotted if it is visible there. Using a <code>subst</code> command that substitutes the slider variable into the equation to plot resolves this problem. At the end of section Embedding animations into the spreadsheet, you can see an example.</p>
-<h2><a class="anchor" id="autotoc_md166"></a>
+<h2><a class="anchor" id="autotoc_md147"></a>
 I lost cell content and undo doesn’t remember</h2>
 <p>Es gibt zwei Rückgängigmach- Funktionen, die beide die wichtige Information enthalten können:</p>
 <ul>
@@ -836,45 +836,45 @@ I lost cell content and undo doesn’t remember</h2>
 <li>Wenn nichts anderes funktioniert, bietet <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> die Möglichkeit an, alle bisherigen Befehle nochmals auszuführen:</li>
 </ul>
 <div class="fragment"><div class="line">playback();</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md168"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md148"></a>
 &lt;em&gt;WxMaxima&lt;/em&gt; starts up with the message “Maxima process terminated.”</h2>
 <p>Ein möglicher Grund ist, dass <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> nicht dort gefunden worden kann, wo dies in <a class="el" href="classwxMaxima.html">wxMaxima</a>'s Konfigurationsdialog angegeben ist. Korrektur des dort angegebenen Pfades zum Programm löst dieses Problem.</p>
-<h2><a class="anchor" id="autotoc_md169"></a>
+<h2><a class="anchor" id="autotoc_md149"></a>
 Maxima is forever calculating and not responding to input</h2>
 <p>Theoretisch kann es passieren, daß <a class="el" href="classwxMaxima.html">wxMaxima</a> nicht erkennt, dass <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> mit der Berechnung fertig ist und daher nie neue Befehle an <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> sendet. In diesem Fall kann der Befehl 'Trigger Evaluation' die Synchronisation wieder herstellen.</p>
-<h2><a class="anchor" id="autotoc_md170"></a>
+<h2><a class="anchor" id="autotoc_md150"></a>
 My SBCL-based &lt;em&gt;Maxima&lt;/em&gt; runs out of memory</h2>
 <p>The Lisp compiler SBCL by default comes with a memory limit that allows it to run even on low-end computers. When compiling a big software package like Lapack or dealing with extremely big lists of equations this limit might be too low. In order to extend the limits, SBCL can be provided with the command line parameter <code>--dynamic-space-size</code> that tells SBCL how many megabytes it should reserve. <a class="el" href="classA.html">A</a> 32bit Windows-SBCL can reserve up to 999 Megabytes. <a class="el" href="classA.html">A</a> 64-bit SBCL version running on Windows can be instructed to use more than the about 1280 Megabytes compiling Lapack needs.</p>
 <p>Kommandozeilenparameter für <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> (und daher für SBCL) können in <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>'s Konfigurationsdialog eingegeben werden.</p>
 <p><img src="./sbclMemory.png" alt="SBCL Speicherkonfiguration" class="inline"/></p>
-<h2><a class="anchor" id="autotoc_md172"></a>
+<h2><a class="anchor" id="autotoc_md151"></a>
 Input sometimes is sluggish/ignoring keys on Ubuntu</h2>
 <p>Das Installieren von <code>ibus-gtk</code> behebt dieses Problem meist. Auf (<a href="https://bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558">https://bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558</a>) findet man genauere Angaben dazu.</p>
-<h2><a class="anchor" id="autotoc_md173"></a>
+<h2><a class="anchor" id="autotoc_md152"></a>
 &lt;em&gt;WxMaxima&lt;/em&gt; halts when &lt;em&gt;Maxima&lt;/em&gt; processes Greek characters or Umlauts</h2>
 <p>Wenn <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> mittels SBCL compiliert wurde, können die folgenden Befehle zur <code>.sbclrc</code> hinzugefügt werden:</p>
 <div class="fragment"><div class="line">(setf sb-impl::*default-external-format* :utf-8)</div>
 </div><!-- fragment --><p>Wo diese Datei abgelegt werden muss, ist systemabhängig. Aber ein mit SBCL compiliertes <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> kann durch den folgenden Befehl angewiesen werden, den Ort zu nennen:</p>
 <div class="fragment"><div class="line">:lisp (sb-impl::userinit-pathname)</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md174"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md153"></a>
 Note concerning Wayland (recent Linux/BSD distributions)</h2>
 <p>There seem to be issues with the Wayland Display Server and wxWidgets. WxMaxima may be affected, e.g. that sidebars are not moveable.</p>
 <p>You can either disable Wayland and use X11 instead (globally) or just tell, that <a class="el" href="classwxMaxima.html">wxMaxima</a> should use the X Window System by setting: <code>GDK_BACKEND=x11</code></p>
 <p>z.B. Wxmaxima wie folgt starten:</p>
 <p><code>GDK_BACKEND=x11 wxmaxima</code></p>
-<h2><a class="anchor" id="autotoc_md176"></a>
+<h2><a class="anchor" id="autotoc_md154"></a>
 The menu bar disappears on KDE Plasma</h2>
 <p>On some KDE Plasma installations the global menu bar disappears when clicked. As this is a bug in the global menu proxy, the only way to avoid it is to tell that <a class="el" href="classwxMaxima.html">wxMaxima</a> should use its own menu bar instead of the global one. This is done by setting: <code>UBUNTU_MENUPROXY=0</code></p>
 <p>Starting with version 26.05.0, <a class="el" href="classwxMaxima.html">wxMaxima</a> attempts to set this variable automatically if it detects an affected system (KDE, Unity, or Ubuntu with older wxWidgets versions).</p>
 <p>If the automatic fix fails, you can manually start <a class="el" href="classwxMaxima.html">wxMaxima</a> with:</p>
 <p><code>UBUNTU_MENUPROXY=0 wxmaxima</code></p>
-<h2><a class="anchor" id="autotoc_md177"></a>
+<h2><a class="anchor" id="autotoc_md155"></a>
 Why is the integrated manual browser not offered on my Windows PC?</h2>
 <p>Either wxWidgets wasn’t compiled with support for Microsoft’s webview2 or Microsoft’s webview2 isn’t installed.</p>
-<h2><a class="anchor" id="autotoc_md178"></a>
+<h2><a class="anchor" id="autotoc_md156"></a>
 Why is the external manual browser not working on my Linux box?</h2>
 <p>The HTML browser might be a snap, flatpack or appimage version. All of these typically cannot access files that are installed on your local system. Another reason might be that maxima or <a class="el" href="classwxMaxima.html">wxMaxima</a> is installed as a snap, flatpack or something else that doesn’t give the host system access to its contents. <a class="el" href="classA.html">A</a> third reason might be that the maxima HTML manual isn’t installed and the online one cannot be accessed.</p>
-<h2><a class="anchor" id="autotoc_md179"></a>
+<h2><a class="anchor" id="autotoc_md157"></a>
 Can I make &lt;em&gt;wxMaxima&lt;/em&gt; output both image files and embedded plots at once?</h2>
 <p>Das Arbeitsblatt enthält png-Dateien. <em>WxMaxima</em> erlaubt dem User anzugeben, wo sie generiert werden sollen:</p>
 <div class="fragment"><div class="line">wxdraw2d(</div>
@@ -903,56 +903,56 @@ Can I make &lt;em&gt;wxMaxima&lt;/em&gt; output both image files and embedded pl
 <div class="line">pngdraw2d(&quot;Test&quot;,</div>
 <div class="line">        explicit(sin(x),x,1,10)</div>
 <div class="line">);</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md180"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md158"></a>
 Can I set the aspect ratio of an embedded plot?</h2>
 <p>Verwenden Sie die Variable <code>wxplot_size</code>:</p>
 <div class="fragment"><div class="line">wxdraw2d(</div>
 <div class="line">    explicit(sin(x),x,1,10)</div>
 <div class="line">),wxplot_size=[1000,1000];</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md182"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md159"></a>
 After upgrading to MacOS 13.1 plot and/or draw commands output error messages like</h2>
 <div class="fragment"><div class="line">1 HIToolbox 0x00007ff80cd91726 _ZN15MenuBarInstance22EnsureAutoShowObserverEv + 102</div>
 <div class="line">2 HIToolbox 0x00007ff80cd912b8 _ZN15MenuBarInstance14EnableAutoShowEv + 52</div>
 <div class="line">3 HIToolbox 0x00007ff80cd35908 SetMenuBarObscured + 408</div>
 <div class="line">...</div>
 </div><!-- fragment --><p>This might be an issue with the operating system. Disable the hiding of the menu bar (SystemSettings =&gt; Desktop &amp; Dock =&gt; Menu Bar) might solve the issue. See <a href="https://github.com/wxMaxima-developers/wxmaxima/issues/1746">wxMaxima issue #1746</a> for more information.</p>
-<h2><a class="anchor" id="autotoc_md184"></a>
+<h2><a class="anchor" id="autotoc_md160"></a>
 Logging</h2>
 <p>Log messages might be helpful to debug problems. WxMaxima can log many events. Most log entries will be helpful for developers, especially in case of problems or bugs. If you run a "Release"-Build, the log windows is not shown by default, if you run a development version, it is shown by default as a second window. You can enable and disable this window using the "View-&gt;Toggle log window" menu entry.</p>
 <p>Messages are not 'lost', if the log window is not shown, if you select to show the log window later, you will see past log messages (if you did not clear the messages).</p>
 <p>Such messages may be helpful, when you create bug reports (or trying to find a bug by yourself).</p>
 <p>Log messages can (additionally) be printed to STDERR, when using the command line option "--logtostderr". On Windows a separate text console will be opened, as a Windows GUI application does not have the standard IO connected.</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md185"></a>
+<h1><a class="anchor" id="autotoc_md161"></a>
 FAQ</h1>
-<h2><a class="anchor" id="autotoc_md186"></a>
+<h2><a class="anchor" id="autotoc_md162"></a>
 Is there a way to make more text fit on a LaTeX page?</h2>
 <p>Ja. Verwenden Sie das <a href="https://ctan.org/pkg/geometry">LaTeX Paket "geometry"</a> um die Größe der Ränder anzugeben.</p>
 <p>You can add the following line to the LaTeX preamble (for example by using the respective field in the config dialogue ("Export"-&gt;"Additional lines for the TeX preamble"), to set borders of 1cm):</p>
 <div class="fragment"><div class="line">\usepackage[left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md187"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md163"></a>
 Is there a dark mode?</h2>
 <p>If wxWidgets is new enough, <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> will automatically be in dark mode if the rest of the operating system is. The worksheet itself is by default equipped with a bright background. But it can be configured otherwise. Alternatively, there is a <code>View/Invert worksheet brightness</code> menu entry that allows to quickly convert the worksheet from dark to bright and vice versa.</p>
-<h2><a class="anchor" id="autotoc_md188"></a>
+<h2><a class="anchor" id="autotoc_md164"></a>
 &lt;em&gt;WxMaxima&lt;/em&gt; sometimes hangs for several seconds once in the first minute</h2>
 <p><em>WxMaxima</em> delegates some big tasks like parsing <em>Maxima_’s &gt;1000-page-manual to background tasks, which normally goes totally unnoticed. At the moment the result of such a task is needed, though, it is possible that _wxMaxima</em> needs to wait a couple of seconds before it can continue its work.</p>
-<h2><a class="anchor" id="autotoc_md190"></a>
+<h2><a class="anchor" id="autotoc_md165"></a>
 Especially when testing new locale settings, a message box "locale ’xx_YY’ can not be set" occurs</h2>
 <p><img src="./locale-warning.png" alt="Locale Warnung" class="inline"/></p>
 <p>(Dieses Problem kann bei anderen Anwendungen auch auftreten). Die Übersetzungen scheinen okay zu sein, nachdem auf 'OK' geklickt wurde. WxMaxima verwendet nicht nur die eigenen Übersetzungen sondern auch Übersetzungen des wxWidgets Frameworks.</p>
 <p>Diese Übersetzungen sind möglicherweise im System nicht vorhanden. Auf Ubuntu/Debian Linux-Systemen können sie mit <code>dpkg-reconfigure locales</code> erzeugt werden.</p>
-<h2><a class="anchor" id="autotoc_md191"></a>
+<h2><a class="anchor" id="autotoc_md166"></a>
 How can I use symbols for real numbers, natural numbers (ℝ, ℕ), etc.?</h2>
 <p>You can find these symbols in the Unicode sidebar (search for ’double-struck capital’). But the selected font must also support these symbols. If they do not display properly, select another font.</p>
-<h2><a class="anchor" id="autotoc_md192"></a>
+<h2><a class="anchor" id="autotoc_md167"></a>
 How can a Maxima script determine, if it is running under wxMaxima or command line Maxima?</h2>
 <p>Wenn <a class="el" href="classwxMaxima.html">wxMaxima</a> verwendet wird, hat die Maxima-Variable <code>maxima_frontend</code> den Wert wxmaxima<code>. Die Maxima-Variable</code>maxima_frontend_version` enthält dann die wxMaxima-Version.</p>
 <p>Wenn kein Frontend verwendet wird (Kommandozeilen-Maxima wird verwendet), dann haben diese Variablen den Wert <code>false</code>).</p>
-<h2><a class="anchor" id="autotoc_md194"></a>
+<h2><a class="anchor" id="autotoc_md168"></a>
 Help! I can not save my document!</h2>
 <p>If saving as wxmx file does not work, try saving the document as wxm file (and vice versa). And you can also try to remove all output (Menu Cell-&gt;Remove all output) and save that file, maybe some unexpected output causes issues during the save process.</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md195"></a>
+<h1><a class="anchor" id="autotoc_md169"></a>
 Command-line arguments</h1>
 <p>Üblicherweise werden Programme mit einer graphischen Oberfläche einfach mit einem Mausklick auf ein Desktop-Icon oder einen Desktop-Menüeintrag gestartet. WxMaxima - falls es von der Kommandozeile aus gestartet wird - bietet doch einige Kommandozeilen-Optionen.</p>
 <ul>
@@ -974,7 +974,7 @@ Command-line arguments</h1>
 </ul>
 <p>Manche Betriebssysteme verwenden bei Kommandozeilenparametern einen Schrägstrich statt eines Minuszeichens.</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md198"></a>
+<h1><a class="anchor" id="autotoc_md170"></a>
 About the program, contributing to wxMaxima</h1>
 <p>WxMaxima wird hauptsächlich in der Programmiersprache C++ entwickelt, verwendet das <a href="https://www.wxwidgets.org">wxWidgets framework</a>, als Build-System verwenden wir CMake, ein kleiner Teil ist in Lisp geschrieben. Sie können zu <a class="el" href="classwxMaxima.html">wxMaxima</a> beitragen, werden Sie Teil des wxMaxima-Projekts auf <a href="https://github.com/wxMaxima-developers/wxmaxima">https://github.com/wxMaxima-developers/wxmaxima</a>, wenn Sie Kenntnisse dieser Programmiersprachen haben und zum Open-Source-Projekt <a class="el" href="classwxMaxima.html">wxMaxima</a> etwas beitragen können.</p>
 <p>Aber nicht nur Programmierer sind notwendig! Sie können auch zu <a class="el" href="classwxMaxima.html">wxMaxima</a> beitragen, indem Sie die Dokumentation verbessern, Fehler finden und melden (und vielleicht auch Fehlerlösungen) oder <a class="el" href="classwxMaxima.html">wxMaxima</a> oder die Anleitung übersetzen helfen (Siehe die Readme-Datei im <a href="https://github.com/wxMaxima-developers/wxmaxima/tree/main/locales">locale subdirectory</a>, wie das übersetzen funktioniert.</p>
