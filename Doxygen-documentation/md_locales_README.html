@@ -80,7 +80,7 @@ $(function() {
 </ul>
 <p><code>wxMaxima.pot</code> (the untranslated template <code>msgmerge</code>/Crowdin work against) is the union of both sources: <code>make update-locale</code> regenerates it by combining a fresh <code>xgettext</code> scan of the source with <code>manual/wxmaxima.md.pot</code> (itself kept current by <code>make update-locale-manual-in-source</code>, which needs <code>po4a</code> &gt;= 0.70 - see <code>CheckPo4aVersion.cmake</code>) via <code>msgcat</code>. <a class="el" href="classA.html">A</a> translator therefore only has one file per language to work in for both the UI and the manual.</p>
 <p><code>manual/*.po</code> still exists, one file per language that has a manual translation: po4a owns that file exclusively and rewrites it wholesale on every run (it does not just add/update entries - pointing it at a file that also held UI strings silently dropped all of them, confirmed live). Each <code>make update-locale</code> run folds <code>manual/&lt;lang&gt;.po</code>'s translations into <code>wxMaxima/&lt;lang&gt;.po</code> (<code>merge_manual_po.cmake</code>, via <code>msgcat</code>) <em>before</em> <code>msgmerge</code>, so a translator only has to look in <code>wxMaxima/&lt;lang&gt;.po</code> to find or edit the manual's translations, even though po4a's own working copy lives elsewhere.</p>
-<h1><a class="anchor" id="autotoc_md855"></a>
+<h1><a class="anchor" id="autotoc_md868"></a>
 Translating wxMaxima to a new language</h1>
 <p>In order to translate <a class="el" href="classwxMaxima.html">wxMaxima</a> to a entirely new language two things have to be done:</p>
 <ul>
@@ -88,7 +88,7 @@ Translating wxMaxima to a new language</h1>
 <li>For Linux desktop integration additionally data/io.github.wxmaxima_developers.wxMaxima.desktop needs to be equipped with a translation.</li>
 </ul>
 <p>WxMaxima also uses translations of the wxWidgets framework (e.g. for standard dialogs).</p>
-<h1><a class="anchor" id="autotoc_md856"></a>
+<h1><a class="anchor" id="autotoc_md869"></a>
 Improving an existing translation</h1>
 <p>In order to improve an existing translation just edit the according .po file. Any help is always welcome. </p>
 </div></div><!-- contents -->
