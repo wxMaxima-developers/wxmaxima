@@ -798,7 +798,7 @@ How to save data from a broken .wxmx file</h2>
 <p>Если zip-сигнатура в конце файла осталась нетронутой после переименования повреждённого файла <code>.wxmx</code> в <code>.zip</code>, то большинство операционных систем смогут обеспечить извлечение любой части находящихся в нём данных. Это может быть сделано при необходимости восстановления исходных файлов изображений из текстового документа. И даже повреждение zip-сигнатуры не означает, что всё потеряно: если во время сохранения <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> удалось определить, что что-то пошло не так, появится файл <code>.wxmx~</code>, содержимое которого может оказаться полезным.</p>
 <p>And even if there isn’t such a file: The <code>.wxmx</code> file is a container format and the XML portion is stored uncompressed. It it is possible to rename the <code>.wxmx</code> file to a <code>.txt</code> file and to use a text editor to recover the XML portion of the file’s contents (it starts with <code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;</code> and ends with <code>&lt;/wxMaximaDocument&gt;</code>. Before and after that text you will see some unreadable binary contents in the text editor).</p>
 <p>Если извлечь это содержимое (например, скопировать и вставить этот текст в новый файл) и сохранить полученный текстовый файл с расширением <code>.xml</code>, то <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> сможет восстановить текст из этого документа.</p>
-<h2><a class="anchor" id="autotoc_md628"></a>
+<h2><a class="anchor" id="autotoc_md629"></a>
 I want some debug info to be displayed on the screen before my command has finished</h2>
 <p>Обычно <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> начинает вёрстку только после полной передачи двухмерной формулы. Это сделано, чтобы не тратить время на выполнение нескольких попыток вёрстки частично завершённого уравнения. Тем не менее, существует команда <code>disp</code>, которая обеспечивает незамедлительный вывод отладочной информации без ожидания завершения выполнения текущей команды <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>:</p>
 <div class="fragment"><div class="line">for i:1 thru 10 do (</div>
@@ -809,7 +809,7 @@ I want some debug info to be displayed on the screen before my command has finis
 <div class="line">   ?sleep(3)</div>
 <div class="line">)$</div>
 </div><!-- fragment --><p>Альтернативный вариант — воспользоваться командой <code>wxstatusbar()</code> (её описание приводилось выше).</p>
-<h2><a class="anchor" id="autotoc_md629"></a>
+<h2><a class="anchor" id="autotoc_md630"></a>
 Plotting only shows a closed empty envelope with an error message</h2>
 <p>Это означает, что <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> не удалось прочитать файл, который должен был быть создан <em>Gnuplot</em> по инструкции от <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>.</p>
 <p>Возможные причины ошибки:</p>
@@ -819,10 +819,10 @@ Plotting only shows a closed empty envelope with an error message</h2>
 <li>Для Gnuplot было задано использование библиотеки pngCairo, которая предоставляет сглаживание и дополнительные стили линий, но компиляция была выполнена без поддержки такой возможности. Решение: снимите флажок «Использовать Cairo для улучшения качества графиков» в диалоговом окне параметров конфигурации и не устанавливайте <code>wxplot_pngcairo</code> в значение «true» в <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>.</li>
 <li>Вывод Gnuplot — некорректный файл <code>.png</code>.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md630"></a>
+<h2><a class="anchor" id="autotoc_md631"></a>
 Plotting an animation results in “error: undefined variable”</h2>
 <p>По умолчанию значение переменной ползунка подставляется в выражение только тогда, когда эта переменная непосредственно видима в выражении. Проблему решает использование команды <code>subst</code>, которая подставляет переменную ползунка в уравнение для формирования графика. В конце раздела Встраивание анимаций в электронную таблицу есть соответствующий пример.</p>
-<h2><a class="anchor" id="autotoc_md631"></a>
+<h2><a class="anchor" id="autotoc_md632"></a>
 I lost cell content and undo doesn’t remember</h2>
 <p>Операции с полями и действия по изменению их содержимого имеют свои отдельные функции отмены. Поэтому возникновение такой ситуации крайне маловероятно. Если же это случилось, то имеется несколько способов восстановления данных:</p>
 <ul>
@@ -832,45 +832,45 @@ I lost cell content and undo doesn’t remember</h2>
 <li>Если больше ничего не помогло, в <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> есть функция повторного воспроизведения:</li>
 </ul>
 <div class="fragment"><div class="line">playback();</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md632"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md633"></a>
 &lt;em&gt;WxMaxima&lt;/em&gt; starts up with the message “Maxima process terminated.”</h2>
 <p>Одна из возможных причин — <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> не удалось найти в расположении, которое задано на вкладке «Maxima» диалогового окна параметров конфигурации <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>, и поэтому программа не может запуститься в принципе. Проблема решается указанием пути к рабочему исполняемому файлу <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>.</p>
-<h2><a class="anchor" id="autotoc_md633"></a>
+<h2><a class="anchor" id="autotoc_md634"></a>
 Maxima is forever calculating and not responding to input</h2>
 <p>Теоретически возможно, что <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> не распознаёт, что <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> уже завершила вычисление, и поэтому не получает уведомление о том, что пора отправлять новые данные для <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>. Если дело в этом, то “Trigger evaluation” может помочь повторно синхронизировать эти две программы.</p>
-<h2><a class="anchor" id="autotoc_md634"></a>
+<h2><a class="anchor" id="autotoc_md635"></a>
 My SBCL-based &lt;em&gt;Maxima&lt;/em&gt; runs out of memory</h2>
 <p>Компилятор Lisp SBCL по умолчанию поставляется с ограничением памяти, которое позволяет ему работать даже на очень слабых компьютерах. В процессе компиляции такого большого программного пакета, как Lapack, или при работе с огромными списками уравнений этот лимит может оказаться слишком низким. Для увеличения лимита SBCL можно запустить с параметром командной строки <code>--dynamic-space-size</code>, который указывает SBCL сколько мегабайт нужно зарезервировать. SBCL для 32-разрядной версии Windows может зарезервировать до 999 мегабайт. 64-разрядная версия SBCL для Windows позволяет зарезервировать более 1280 мегабайт, необходимых для компилирования Lapack.</p>
 <p>Один из способов указать параметры командной строки для <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> (а значит, и для SBCL) — использовать поле «Дополнительные параметры команды Maxima» в диалоговом окне настройки параметров конфигурации <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>.</p>
 <p><img src="./sbclMemory.png" alt="Память sbcl" class="inline"/></p>
-<h2><a class="anchor" id="autotoc_md635"></a>
+<h2><a class="anchor" id="autotoc_md636"></a>
 Input sometimes is sluggish/ignoring keys on Ubuntu</h2>
 <p>Установка пакета <code>ibus-gtk</code> должна решить этот вопрос. Более подробную информацию смотрите по адресу (<a href="https://bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558">https://bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558</a>).</p>
-<h2><a class="anchor" id="autotoc_md636"></a>
+<h2><a class="anchor" id="autotoc_md637"></a>
 &lt;em&gt;WxMaxima&lt;/em&gt; halts when &lt;em&gt;Maxima&lt;/em&gt; processes Greek characters or Umlauts</h2>
 <p>Если используемая версия <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> основана на SBCL, то в <code>.sbclrc</code> необходимо добавить следующие строки:</p>
 <div class="fragment"><div class="line">(setf sb-impl::*default-external-format* :utf-8)</div>
 </div><!-- fragment --><p>Папка, в которой размещается этот файл, зависит от конкретной системы и установки. Но любая версия <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> на основе SBCL, в которой в текущем сеансе уже производилось вычисление поля, всегда укажет его местонахождение после получения следующей команды:</p>
 <div class="fragment"><div class="line">:lisp (sb-impl::userinit-pathname)</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md637"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md638"></a>
 Note concerning Wayland (recent Linux/BSD distributions)</h2>
 <p>Возможны проблемы с работой протокола графического сервера Wayland и wxWidgets. Это может затронуть <a class="el" href="classwxMaxima.html">wxMaxima</a> (например, будет невозможно перемещать боковые панели).</p>
 <p>Можно либо отключить Wayland и использовать вместо этой подсистемы X11 (глобально), либо просто указать, что <a class="el" href="classwxMaxima.html">wxMaxima</a> должна использовать X Window System, установкой параметра: <code>GDK_BACKEND=x11</code></p>
 <p>Например, запустить <a class="el" href="classwxMaxima.html">wxMaxima</a> с параметром:</p>
 <p><code>GDK_BACKEND=x11 wxmaxima</code></p>
-<h2><a class="anchor" id="autotoc_md638"></a>
+<h2><a class="anchor" id="autotoc_md639"></a>
 The menu bar disappears on KDE Plasma</h2>
 <p>On some KDE Plasma installations the global menu bar disappears when clicked. As this is a bug in the global menu proxy, the only way to avoid it is to tell that <a class="el" href="classwxMaxima.html">wxMaxima</a> should use its own menu bar instead of the global one. This is done by setting: <code>UBUNTU_MENUPROXY=0</code></p>
 <p>Starting with version 26.05.0, <a class="el" href="classwxMaxima.html">wxMaxima</a> attempts to set this variable automatically if it detects an affected system (KDE, Unity, or Ubuntu with older wxWidgets versions).</p>
 <p>If the automatic fix fails, you can manually start <a class="el" href="classwxMaxima.html">wxMaxima</a> with:</p>
 <p><code>UBUNTU_MENUPROXY=0 wxmaxima</code></p>
-<h2><a class="anchor" id="autotoc_md639"></a>
+<h2><a class="anchor" id="autotoc_md640"></a>
 Why is the integrated manual browser not offered on my Windows PC?</h2>
 <p>Либо компиляция wxWidgets была выполнена без поддержки webview2 от Microsoft, либо компонент webview2 от Microsoft не был установлен.</p>
-<h2><a class="anchor" id="autotoc_md640"></a>
+<h2><a class="anchor" id="autotoc_md641"></a>
 Why is the external manual browser not working on my Linux box?</h2>
 <p>Браузер HTML может быть реализован в виде версии пакета snap, flatpack или appimage. Все они обычно не имеют доступа к файлам, установленным локально в системе. Другая причина может заключаться в том, что <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> или <a class="el" href="classwxMaxima.html">wxMaxima</a> установлена в виде версии пакета snap, flatpack или ещё чего-то, что не предоставляет доступа к содержимому операционной системы. Третьей причиной может быть то, что HTML-руководство maxima не установлено локально, а получить доступ к онлайн-руководству не получается.</p>
-<h2><a class="anchor" id="autotoc_md641"></a>
+<h2><a class="anchor" id="autotoc_md642"></a>
 Can I make &lt;em&gt;wxMaxima&lt;/em&gt; output both image files and embedded plots at once?</h2>
 <p>В рабочий лист встраиваются .png-файлы. <em>WxMaxima</em> позволяет пользователю указать, где они должны генерироваться:</p>
 <div class="fragment"><div class="line">wxdraw2d(</div>
@@ -899,56 +899,56 @@ Can I make &lt;em&gt;wxMaxima&lt;/em&gt; output both image files and embedded pl
 <div class="line">pngdraw2d(&quot;Test&quot;,</div>
 <div class="line">        explicit(sin(x),x,1,10)</div>
 <div class="line">);</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md642"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md643"></a>
 Can I set the aspect ratio of an embedded plot?</h2>
 <p>С помощью переменной <code>wxplot_size</code>:</p>
 <div class="fragment"><div class="line">wxdraw2d(</div>
 <div class="line">    explicit(sin(x),x,1,10)</div>
 <div class="line">),wxplot_size=[1000,1000];</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md643"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md644"></a>
 After upgrading to MacOS 13.1 plot and/or draw commands output error messages like</h2>
 <div class="fragment"><div class="line">1 HIToolbox 0x00007ff80cd91726 _ZN15MenuBarInstance22EnsureAutoShowObserverEv + 102</div>
 <div class="line">2 HIToolbox 0x00007ff80cd912b8 _ZN15MenuBarInstance14EnableAutoShowEv + 52</div>
 <div class="line">3 HIToolbox 0x00007ff80cd35908 SetMenuBarObscured + 408</div>
 <div class="line">...</div>
 </div><!-- fragment --><p>This might be an issue with the operating system. Disable the hiding of the menu bar (SystemSettings =&gt; Desktop &amp; Dock =&gt; Menu Bar) might solve the issue. See <a href="https://github.com/wxMaxima-developers/wxmaxima/issues/1746">wxMaxima issue #1746</a> for more information.</p>
-<h2><a class="anchor" id="autotoc_md644"></a>
+<h2><a class="anchor" id="autotoc_md645"></a>
 Logging</h2>
 <p>Log messages might be helpful to debug problems. WxMaxima can log many events. Most log entries will be helpful for developers, especially in case of problems or bugs. If you run a "Release"-Build, the log windows is not shown by default, if you run a development version, it is shown by default as a second window. You can enable and disable this window using the "View-&gt;Toggle log window" menu entry.</p>
 <p>Сообщения не «теряются»; если окно журнала не показано, то при последующем включении его отображения будут доступны для просмотра также и прошлые сообщения журнала (если они не были очищены пользователем).</p>
 <p>Такие сообщения могут быть полезны при создании отчётов об ошибках (или при самостоятельном поиске ошибок).</p>
 <p>Сообщения журнала можно (дополнительно) выводить в STDERR с помощью параметра командной строки «&ndash;logtostderr». В Windows будет открыта отдельная текстовая консоль, так как у приложения Windows с графическим интерфейсом пользователя не подключён стандартный ввод/вывод.</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md645"></a>
+<h1><a class="anchor" id="autotoc_md646"></a>
 FAQ</h1>
-<h2><a class="anchor" id="autotoc_md646"></a>
+<h2><a class="anchor" id="autotoc_md647"></a>
 Is there a way to make more text fit on a LaTeX page?</h2>
 <p>Да. Можно использовать <a href="https://ctan.org/pkg/geometry">пакет LaTeX «geometry»</a>, который позволяет указать размеры границ.</p>
 <p>You can add the following line to the LaTeX preamble (for example by using the respective field in the config dialogue ("Export"-&gt;"Additional lines for the TeX preamble"), to set borders of 1cm):</p>
 <div class="fragment"><div class="line">\usepackage[left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md647"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md648"></a>
 Is there a dark mode?</h2>
 <p>Если версия wxWidgets достаточно свежая, то <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> автоматически использует тёмную тему, когда вся остальная операционная система настроена на работу в ней. Сам по себе рабочий лист по умолчанию оснащён светлым фоном, но можно установить тёмный. Кроме того, имеется пункт меню «Вид/Инвертировать яркость рабочего листа», позволяющий быстро преобразовывать рабочий лист из тёмного в светлый и обратно.</p>
-<h2><a class="anchor" id="autotoc_md648"></a>
+<h2><a class="anchor" id="autotoc_md649"></a>
 &lt;em&gt;WxMaxima&lt;/em&gt; sometimes hangs for several seconds once in the first minute</h2>
 <p><em>WxMaxima</em> delegates some big tasks like parsing <em>Maxima_’s &gt;1000-page-manual to background tasks, which normally goes totally unnoticed. At the moment the result of such a task is needed, though, it is possible that _wxMaxima</em> needs to wait a couple of seconds before it can continue its work.</p>
-<h2><a class="anchor" id="autotoc_md649"></a>
+<h2><a class="anchor" id="autotoc_md650"></a>
 Especially when testing new locale settings, a message box "locale ’xx_YY’ can not be set" occurs</h2>
 <p><img src="./locale-warning.png" alt="Предупреждение локали" class="inline"/></p>
 <p>(Та же ошибка может возникать и с другими приложениями). После нажатия кнопки «ОК» никаких проблем с переводом не обнаруживается. WxMaxima использует не только свои собственные переводы, но и переводы платформы wxWidgets.</p>
 <p>Указанные локали могут отсутствовать в системе. В системах Ubuntu/Debian их можно сгенерировать с помощью команды <code>dpkg-reconfigure locales</code></p>
-<h2><a class="anchor" id="autotoc_md650"></a>
+<h2><a class="anchor" id="autotoc_md651"></a>
 How can I use symbols for real numbers, natural numbers (ℝ, ℕ), etc.?</h2>
 <p>Эти символы доступны на боковой панели «Юникод» (выполните поиск по ’double-struck capital’). Но такие символы должен поддерживать и выбранный шрифт. Выберите другой шрифт, если символы отображаются неправильно.</p>
-<h2><a class="anchor" id="autotoc_md651"></a>
+<h2><a class="anchor" id="autotoc_md652"></a>
 How can a Maxima script determine, if it is running under wxMaxima or command line Maxima?</h2>
 <p>Если используется <a class="el" href="classwxMaxima.html">wxMaxima</a>, то переменная <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> <code>maxima_frontend</code> установлена в значение <code>wxmaxima</code>. Переменная <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> <code>maxima_frontend_version</code> в этом случае содержит версию <a class="el" href="classwxMaxima.html">wxMaxima</a>.</p>
 <p>Если графический интерфейс не используется (работа выполняется в командной строке <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>), то эти переменные имеют значение <code>false</code>.</p>
-<h2><a class="anchor" id="autotoc_md652"></a>
+<h2><a class="anchor" id="autotoc_md653"></a>
 Help! I can not save my document!</h2>
 <p>If saving as wxmx file does not work, try saving the document as wxm file (and vice versa). And you can also try to remove all output (Menu Cell-&gt;Remove all output) and save that file, maybe some unexpected output causes issues during the save process.</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md653"></a>
+<h1><a class="anchor" id="autotoc_md654"></a>
 Command-line arguments</h1>
 <p>Обычно программы с графическим интерфейсом пользователя можно запускать простым щелчком по значку на рабочем столе или пункту меню рабочего стола. Тем не менее, <a class="el" href="classwxMaxima.html">wxMaxima</a> — при запуске из командной строки — позволяет использовать некоторые аргументы командной строки.</p>
 <ul>
@@ -970,7 +970,7 @@ Command-line arguments</h1>
 </ul>
 <p>Вместо минуса в некоторых операционных системах перед ключами командной строки может использоваться тире.</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md654"></a>
+<h1><a class="anchor" id="autotoc_md655"></a>
 About the program, contributing to wxMaxima</h1>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> написана большей частью на языке программирования C++ с использованием <a href="https://www.wxwidgets.org">платформы wxWidgets</a>, в качестве системы сборки используется <a href="https://www.cmake.org">CMake</a>, небольшая часть написана на Lisp. Можно принять участие в разработке <a class="el" href="classwxMaxima.html">wxMaxima</a>. Для этого необходимо присоединиться к проекту <a class="el" href="classwxMaxima.html">wxMaxima</a> на <a href="https://github.com/wxMaxima-developers/wxmaxima">https://github.com/wxMaxima-developers/wxmaxima</a> при наличии навыков программирования на этих языках и желании внести вклад в разработку проекта <a class="el" href="classwxMaxima.html">wxMaxima</a> с открытым исходным кодом.</p>
 <p>Но требуются не только программисты! Внести вклад в разработку <a class="el" href="classwxMaxima.html">wxMaxima</a> можно также путём улучшения документации, поиска ошибок и отправки соответствующих отчётов (а также, возможно, исправлений), предложения новых функциональных возможностей, помощи с переводом интерфейса или документации <a class="el" href="classwxMaxima.html">wxMaxima</a> на другие языки (для получения информации о порядке перевода интерфейса и документации <a class="el" href="classwxMaxima.html">wxMaxima</a> изучите файл README.md в <a href="https://github.com/wxMaxima-developers/wxmaxima/tree/main/locales">подкаталоге локализации</a>).</p>
