@@ -175,7 +175,14 @@ void ApplyAppearanceToApp(Configuration::Appearance appearance) {
     a = wxApp::Appearance::System;
     break;
   }
-  wxTheApp->SetAppearance(a);
+  wxApp::AppearanceResult app_res = wxTheApp->SetAppearance(a);
+  if (app_res == wxApp::AppearanceResult::Failure) {
+    wxLogMessage("Changing the appearance failed.");
+  } else if (app_res == wxApp::AppearanceResult::Ok) {
+    wxLogMessage("Appearance was successfully changed.");
+  } else if (app_res == wxApp::AppearanceResult::CannotChange) {
+    wxLogMessage("Appearance can't be changed any more (currently not used).");
+  }
 #else
   (void)appearance;
 #endif
