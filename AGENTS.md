@@ -1108,6 +1108,48 @@ tried without rebuilding.
   the unrelated, already-existing `%sum` `rbp` registration, not extra
   parens around the summand).
 
+- **A Maxima `{...}`/`setify(...)` set rendering as completely blank output
+  (GH #2270), despite the value being computed correctly:** `SetCell`
+  (`src/cells/SetCell.cpp`) extends `ListCell` and overrides
+  `SetCurrentPoint()` -- but the override was
+  `void SetCell::SetCurrentPoint(wxPoint point) const { Cell::SetCurrentPoint(point); }`,
+  which positions only the `SetCell` object itself and completely skips the
+  inherited `ListCell::SetCurrentPoint()`'s logic that positions
+  `m_open`/`m_innerCell`/`m_close` (the "{" glyph, the actual list content,
+  the "}" glyph). `GroupCell::UpdateOutputPositions()` calls
+  `tmp.SetCurrentPoint(in)` on each top-level entry of the output's draw
+  list (`OnDrawList()`) -- for an unbroken (fits-on-one-line) `SetCell` that
+  entry *is* the whole `SetCell`, so this override, not `ListCell`'s, is
+  what fires. Since it never touches the children, they keep whatever stale
+  or default position they last had and get drawn there instead of inside
+  the set's own bounding box -- invisible within the visible viewport, while
+  the underlying value is completely correct (confirmed live: copying the
+  blank output cell's clipboard content, or `listify(%)`, reveals the right
+  answer). The override did strictly *less* than the version it shadowed and
+  had no reason to exist at all -- deleting it outright (from both
+  `SetCell.h` and `SetCell.cpp`) is the fix, letting `SetCell` inherit
+  `ListCell::SetCurrentPoint()` normally, which already handles `m_open`/
+  `m_close` correctly regardless of what glyphs they hold. Confirmed live in
+  Xvfb: `{1,2,3};` rendered as a totally blank `(%o1)` line on an unmodified
+  build, both at default window width and narrower (forcing the set to wrap
+  across lines) -- `[1,2,3];` (a plain `ListCell`, no divergent override)
+  rendered correctly in every case tested, which is what pointed at
+  `SetCell`'s own code rather than the shared `ListCell`/layout-pipeline
+  machinery. Root-caused with gdb (`gdb -p <pid> -batch -x script.py`,
+  breaking on `SetCell::Draw`/`ListCell::Recalculate`/`Cell::BreakUpAndMark`
+  from a live, real Xvfb session -- the sandbox's earlier-documented
+  hardware-breakpoint/`rr` limitations don't affect plain software
+  breakpoints, which is all this needed) -- an initial hypothesis blaming
+  `Cell::BreakUpCells()`'s line-wrap width heuristic (a `CachedInteger`
+  reading back its `INT_MAX` "invalid" sentinel as a width) turned out to be
+  a red herring from noisy manual multi-window testing, not reproducible in
+  a clean single-cell session; always reproduce a rendering bug in a fresh,
+  isolated worksheet before trusting a gdb trace's numbers. Also fixed a
+  smaller, related inconsistency found while auditing this: `SetCell`'s
+  constructor replaces `m_open`/`m_close` with fresh "{"/"}" `TextCell`s but
+  never called `SetStyle(TS_FUNCTION)` on them the way `ListCell`'s own
+  constructor does for "["/"]", leaving the braces in the wrong style.
+
 - **"Don't unfold cells just because their folded tree is being evaluated"
   (GH #1952):** `Worksheet::ScrollToError()` -- called automatically by
   `MaximaEvaluator::CheckForErrors()` whenever `AbortOnError()` is on (the

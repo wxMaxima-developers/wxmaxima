@@ -49,6 +49,7 @@
 #include "cells/Cell.h"
 #include "cells/GroupCell.h"
 #include "cells/MatrCell.h"
+#include "cells/SetCell.h"
 
 #include <cstdlib>
 #include <vector>
@@ -394,6 +395,71 @@ SCENARIO("Editing operations on one cell do not visit the cells above it") {
     }
 
     g_ws->DestroyTree();
+  }
+}
+
+// Maxima output (via wxMathML.lisp's wxxml-matchfix handler for $set) for
+//   {1,2,3};
+// -- a SetCell wrapping three plain numbers, small enough to never need to be
+// broken into lines.
+static const char *const setMathXml =
+  R"(<mth><lbl altCopy="%o1">(%o1) </lbl><mrow set="true"><t listdelim="true">{</t><mrow><n>1</n></mrow><mo>,</mo><mrow><n>2</n></mrow><mo>,</mo><mrow><n>3</n></mrow><t listdelim="true">}</t></mrow></mth>)";
+
+SCENARIO("A SetCell positions its brace and content cells (GH #2270)") {
+  // SetCell::SetCurrentPoint() used to shadow the inherited
+  // ListCell::SetCurrentPoint() with an override that positioned only the
+  // SetCell itself, never m_open/m_innerCell/m_close -- leaving those
+  // children at their default, never-positioned {-1,-1} sentinel and
+  // drawing them nowhere near the set's own bounding box (GH #2270: a set
+  // rendering as completely blank output, despite computing the right
+  // value). GetCurrentPoint() defaults to {-1,-1} (see Cell::m_currentPoint),
+  // so a child cell left at that sentinel after layout is the direct,
+  // reproducible symptom of the bug.
+  g_cfg->SetCanvasSize(wxSize(900, 600));
+  g_cfg->SetZoomFactor(1.0);
+
+  GIVEN("a group whose output is a small set") {
+    auto group = std::make_unique<GroupCell>(g_cfg, GC_TYPE_CODE, wxS("{1,2,3};"));
+    MathParser parser(g_cfg);
+    auto output = parser.ParseLine(wxString::FromUTF8(setMathXml));
+    REQUIRE(output != nullptr);
+    group->AppendOutput(std::move(output));
+    group->Recalculate();
+    group->SetCurrentPoint(wxPoint(50, 50));
+
+    Cell *setCell = group->GetOutput();
+    REQUIRE(setCell != nullptr);
+    REQUIRE(dynamic_cast<SetCell *>(setCell) != nullptr);
+
+    THEN("the set is not broken into lines and has a real, positive size") {
+      CHECK_FALSE(setCell->IsBrokenIntoLines());
+      CHECK(setCell->GetWidth() > 0);
+      CHECK(setCell->GetHeight() > 0);
+    }
+
+    THEN("its opening brace, content and closing brace are all positioned") {
+      std::vector<Cell *> pieces;
+      for (Cell &piece : OnInner(setCell))
+        pieces.push_back(&piece);
+      REQUIRE(pieces.size() == 3);
+      Cell *open = pieces[0];
+      Cell *inner = pieces[1];
+      Cell *close = pieces[2];
+
+      // None of the three may be left at the "never positioned" sentinel.
+      CHECK(open->GetCurrentPoint() != wxPoint(-1, -1));
+      CHECK(inner->GetCurrentPoint() != wxPoint(-1, -1));
+      CHECK(close->GetCurrentPoint() != wxPoint(-1, -1));
+
+      // The three pieces must be laid out left to right, inside the set's
+      // own bounding box, in that order -- not off in some stale location.
+      const int left = setCell->GetCurrentPoint().x;
+      const int right = left + setCell->GetWidth();
+      CHECK(open->GetCurrentPoint().x >= left);
+      CHECK(open->GetCurrentPoint().x < inner->GetCurrentPoint().x);
+      CHECK(inner->GetCurrentPoint().x < close->GetCurrentPoint().x);
+      CHECK(close->GetCurrentPoint().x < right);
+    }
   }
 }
 

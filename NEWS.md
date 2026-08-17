@@ -1,5 +1,18 @@
 # Current development version
 
+- Fixed a Maxima "set" (`{...}`, `setify(...)`, ...) rendering as completely
+  blank output (GH #2270), even though the value was computed correctly (a
+  right-click "Copy" of the invisible cell, or `listify(%)`, revealed the
+  right content). `SetCell::SetCurrentPoint()` shadowed the inherited
+  `ListCell::SetCurrentPoint()` with an override that positioned only the
+  cell itself, never its opening/closing brace or its contents -- so those
+  child cells kept whatever stale position they last had (or none at all)
+  and were drawn off in the wrong place instead of inside the set's visible
+  bounding box. The override did strictly less than the version it shadowed
+  and served no purpose, so it was removed outright, letting `SetCell`
+  inherit `ListCell`'s (correct) positioning logic. Also fixed the "{"/"}"
+  brace cells not getting the `TS_FUNCTION` style `ListCell`'s "["/"]"
+  cells get, a related inconsistency found while fixing this.
 - Fixed the "ASCII maths" style defaulting to a non-monospace font, which
   misaligned Maxima's own ASCII-art 2D output (fractions, matrices, sums,
   ...) since it pads with literal spaces assuming every character is the
