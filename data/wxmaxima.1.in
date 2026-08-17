@@ -93,6 +93,36 @@ Allows to specify the location of the Maxima binary.
 .I \-\-enableipc
 Lets Maxima control wxMaxima via interprocess communications. Use this option with care.
 
+.SH "EXIT STATUS"
+.PP
+A successful run, batch or interactive, exits with status 0. A
+.B \-\-batch
+run that halted before finishing (see
+.B \-\-exit-on-error
+above) exits with one of the following statuses instead, so a caller's script
+can tell why the run stopped without having to parse its log:
+.TP
+.B 90
+Maxima reported an error and
+.B \-\-exit-on-error
+was given.
+.TP
+.B 91
+Maxima asked an interactive question with no scripted answer available.
+.TP
+.B 92
+The input file named on the command line could not be opened.
+.TP
+.B 93
+Saving the worksheet failed.
+.TP
+.B 94
+An embedded image's data could not be loaded at all.
+.TP
+.B 95
+An embedded image failed to decode or render (only checked with
+.BR \-\-debug ).
+
 .SH FILES
 .TP
 .I @WXMAXIMA_CONFIGFILE_PATH@

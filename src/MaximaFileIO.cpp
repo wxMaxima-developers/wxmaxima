@@ -824,7 +824,7 @@ bool MaximaFileIO::SaveFile(bool forceSave) {
         ReportSaveFailed();
         m_wxMaxima.StartAutoSaveTimer();
         if (m_wxMaxima.ExitOnErrorArmed()) {
-          wxMaxima::m_exitCode = 1;
+          wxMaxima::m_exitCode = wxMaxima::EXIT_FILE_SAVE_FAILED;
           m_wxMaxima.Close();
         }
         return false;
@@ -841,7 +841,7 @@ bool MaximaFileIO::SaveFile(bool forceSave) {
         ReportSaveFailed();
         m_wxMaxima.StartAutoSaveTimer();
         if (m_wxMaxima.ExitOnErrorArmed()) {
-          wxMaxima::m_exitCode = 1;
+          wxMaxima::m_exitCode = wxMaxima::EXIT_FILE_SAVE_FAILED;
           m_wxMaxima.Close();
         }
         return false;

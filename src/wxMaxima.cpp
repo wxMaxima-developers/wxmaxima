@@ -1863,7 +1863,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
         // report failure. (m_openInitialFileError is cleared again a few idle
         // cycles later, so the exit code has to be latched here.)
         if (m_openInitialFileError && m_exitAfterEval)
-          m_exitCode = 1;
+          m_exitCode = EXIT_FILE_OPEN_FAILED;
         event.RequestMore();
         return;
       }
@@ -2089,14 +2089,16 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
       // missing a codec for one format is never counted here at all (see
       // Image::RecordDecodeFailure()), regardless of --debug.
       if (imagesDataUnavailable > 0) {
-        wxLogMessage(_("Batch mode: %d image(s) could not be loaded at all."),
-                     imagesDataUnavailable);
-        m_exitCode = 1;
+        wxLogMessage(_("Batch mode: %d image(s) could not be loaded at all "
+                       "(exit code %d)."),
+                     imagesDataUnavailable, static_cast<int>(EXIT_IMAGE_LOAD_FAILED));
+        m_exitCode = EXIT_IMAGE_LOAD_FAILED;
       }
       if (m_configuration.GetDebugmode() && (imagesDecodeFailed > 0)) {
-        wxLogMessage(_("Batch mode: %d image(s) failed to decode/render (--debug)."),
-                     imagesDecodeFailed);
-        m_exitCode = 1;
+        wxLogMessage(_("Batch mode: %d image(s) failed to decode/render "
+                       "(--debug, exit code %d)."),
+                     imagesDecodeFailed, static_cast<int>(EXIT_IMAGE_DECODE_FAILED));
+        m_exitCode = EXIT_IMAGE_DECODE_FAILED;
       }
 
       // SaveFile is now a no-op when the session has no file name and we are

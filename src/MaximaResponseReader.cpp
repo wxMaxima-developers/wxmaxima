@@ -522,9 +522,9 @@ void MaximaResponseReader::ReadPrompt(const wxString &data) {
     if (m_wxMaxima.m_exitAfterEval && !autoAnswer) {
       wxLogMessage(_("Batch mode: Maxima asked a question with no scripted "
                      "answer available (\"%s\"). Halting, as documented for "
-                     "--batch."),
-                   label);
-      wxMaxima::m_exitCode = 1;
+                     "--batch (exit code %d)."),
+                   label, static_cast<int>(wxMaxima::EXIT_UNANSWERED_QUESTION));
+      wxMaxima::m_exitCode = wxMaxima::EXIT_UNANSWERED_QUESTION;
       // Maxima repeats an unanswered question's prompt on its own timer (see
       // #2183) -- kill it now, rather than waiting for Close()'s eventual
       // Destroy(), so those repeats can't re-enter this branch and spam the

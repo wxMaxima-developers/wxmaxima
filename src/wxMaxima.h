@@ -212,6 +212,33 @@ public:
   //! The maxima command, if we use the --maxima=<str> command. If empty we use the configured path, not a command line option --maxima=<str>.
   static const wxString Get_Maxima_Commandline_Filename() {return maxima_command_line_filename;}
 
+  /*! Dedicated exit codes for a --batch/--exit-on-error run that aborted
+    (GH #2276): every reason used to share the same generic 1, which left an
+    end user with no way to tell *why* a batch run failed without re-reading
+    its log. Picked from the 90-99 range the issue itself suggested, clear of
+    both the shell's own reserved 126-165 range and Maxima's own process exit
+    codes (which this process's exit code is otherwise independent of, since
+    wxMaxima -- not Maxima -- is what a caller's shell actually waits on).
+    A successful run, batch or interactive, always exits 0 -- these values
+    are only ever assigned on a failure path.
+  */
+  enum ExitCode : int {
+    //! A cell reported a Maxima error and --exit-on-error is active.
+    EXIT_MAXIMA_ERROR = 90,
+    //! Maxima asked an interactive question with no scripted answer available
+    //! ("Halts on questions", as --batch's own --help text documents).
+    EXIT_UNANSWERED_QUESTION = 91,
+    //! The file named on the command line could not be opened.
+    EXIT_FILE_OPEN_FAILED = 92,
+    //! Saving the worksheet (on exit, or a --batch run's own final save)
+    //! failed.
+    EXIT_FILE_SAVE_FAILED = 93,
+    //! An embedded image's data could not be loaded at all (GH #2178).
+    EXIT_IMAGE_LOAD_FAILED = 94,
+    //! An embedded image failed to decode/render (GH #2178, --debug only).
+    EXIT_IMAGE_DECODE_FAILED = 95,
+  };
+
   static int GetExitCode(){return m_exitCode;}
 
 private:

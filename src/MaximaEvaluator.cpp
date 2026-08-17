@@ -211,9 +211,9 @@ bool MaximaEvaluator::AbortOnError() {
       if (errorGroup->GetLabel())
         errorText += wxS(" -> ") + errorGroup->GetLabel()->ToString();
     }
-    wxLogMessage(_("Aborting due to --exit-on-error (exit code 1). Cell: %s"),
-                errorText);
-    wxMaxima::m_exitCode = 1;
+    wxLogMessage(_("Aborting due to --exit-on-error (exit code %d). Cell: %s"),
+                static_cast<int>(wxMaxima::EXIT_MAXIMA_ERROR), errorText);
+    wxMaxima::m_exitCode = wxMaxima::EXIT_MAXIMA_ERROR;
     m_wxMaxima.Close();
   }
   if (m_wxMaxima.m_configuration.GetAbortOnError()) {

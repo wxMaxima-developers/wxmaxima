@@ -628,6 +628,22 @@ add_test(
             -P ${CMAKE_CURRENT_SOURCE_DIR}/check_no_stray_procs.cmake)
 set_tests_properties(wxmaxima_no_stray_children PROPERTIES RUN_SERIAL TRUE)
 
+# GH #2276: a --batch run whose input file doesn't exist has nothing to do and
+# must report failure with the dedicated EXIT_FILE_OPEN_FAILED code (92), not
+# the generic 1 every --exit-on-error reason used to share. Chosen as the one
+# exit-code regression test worth having: unlike the other dedicated codes
+# (a Maxima error, an unanswered question, a failed save, an image load/decode
+# failure) this one needs no live Maxima evaluation to reach deterministically
+# -- the file-open check runs before any cell is ever sent to Maxima.
+add_test(
+    NAME wxmaxima_exit_code_file_not_found
+    COMMAND ${CMAKE_COMMAND}
+            -DWXMAXIMA=$<TARGET_FILE:wxmaxima>
+            "-DARGS=--batch;--exit-on-error;this-file-does-not-exist-2276.wxm"
+            -DWORKDIR=${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+            -DEXPECTED_EXIT_CODE=92
+            -P ${CMAKE_CURRENT_SOURCE_DIR}/check_exit_code.cmake)
+
 add_test(
     NAME wxmaxima_makelist
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files

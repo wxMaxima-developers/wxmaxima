@@ -1,5 +1,18 @@
 # Current development version
 
+- Fixed composing the manual PDF for a non-CJK language failing outright if
+  `texlive`'s CJK support wasn't installed (GH #2271, e.g. `wxmaxima.hu.pdf`
+  on a Debian/Sid box without it) -- the build passed `-V CJKmainfont:...` to
+  pandoc unconditionally for every language, not just Chinese, making every
+  manual's PDF hard-depend on a large, easy-to-not-have package it never
+  actually needed. Only the CJK languages' PDFs request a CJK font now.
+- `--batch`/`--exit-on-error` runs that halt before finishing now exit with a
+  dedicated status code (90-95) instead of a generic `1` for every reason
+  (GH #2276) -- a caller's script can now tell a Maxima error, an unanswered
+  interactive question ("Halting, as documented for --batch"), a file that
+  failed to open or save, or an image that failed to load/decode apart
+  without parsing the log. See the new "EXIT STATUS" section of the
+  `wxmaxima(1)` man page for the full list.
 - Fixed a Maxima "set" (`{...}`, `setify(...)`, ...) rendering as completely
   blank output (GH #2270), even though the value was computed correctly (a
   right-click "Copy" of the invisible cell, or `listify(%)`, revealed the

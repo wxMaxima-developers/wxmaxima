@@ -630,6 +630,68 @@ a local TCP socket.
   code, selected the group cell via hCaret + Shift+Up, confirmed the
   rendered text changed consistently and a single Ctrl+Z restored it).
 
+- **GH #2278 -- selection-rectangle width can slightly differ from the
+  rendered text's actual width, investigated but NOT YET FIXED (2026-08).**
+  Root cause confirmed by reading the measurement/draw code side by side, not
+  guessed: `EditorCell` computes horizontal position two structurally
+  different ways that both amount to "measure pieces separately and sum
+  them," and the pieces don't line up the same way in both places.
+  `EditorCell::Draw()` (`EditorCell.cpp` ~line 1042) paints text **per
+  `StyledText` token** -- each token gets its own `dc->GetTextExtent()` /
+  `dc->DrawText()` call, and `TextCurrentPoint.x += width` accumulates the
+  *pen* position as the sum of those independently-shaped token widths, so
+  any kerning or (for a contextual script) glyph-shape change that would
+  normally happen *across* a token boundary is never applied -- the two
+  neighboring glyphs are shaped in total isolation from each other.
+  `EditorCell::GetLineWidth()` (used by `PositionToPoint()` for an
+  ordinary, single-direction line) reimplements that same per-token
+  accumulation independently (`lineWidth += GetTextSize(snippet).GetWidth()`,
+  with the final partial token measured via `snippet.Left(pos)`) -- so for a
+  single-direction line the two at least agree with each other, both being
+  equally kerning-blind at token boundaries. The bidi work
+  (`MixedDirectionOffset()`, added for mixed-direction line support) does
+  something different: it measures each `BidiRun` **as one whole
+  substring** via `MeasureTextWidth()` (`m_text.SubString(...)`), which
+  *does* let the font shape it correctly -- kerning pairs and (critically,
+  for Arabic-like scripts) contextual join forms all resolve the way they
+  would if the run were drawn as a single unit. That's a strictly *more*
+  accurate measurement of what the font would produce for that span, but
+  it's answering a different question than what `Draw()` actually paints
+  (per-token, unshaped-across-boundaries) -- so on a mixed-direction line,
+  `MarkSelection()`'s selection rectangle (built from two
+  `MixedDirectionOffset()`-derived `PositionToPoint()` calls, `EditorCell.cpp`
+  ~line 852-877) can come out a few pixels narrower or wider than the glyphs
+  `Draw()` actually painted for that same span, especially where a token
+  boundary falls in the middle of a script that reshapes heavily by context.
+  **This is not a simple "measures per character instead of per whole
+  string" bug** (that specific hypothesis, which is how the issue itself is
+  worded, doesn't survive reading `MeasureTextWidth()` -- it already
+  measures its input as one `GetTextExtent()` call, not character by
+  character); it is a *disagreement between two independently-correct-looking
+  but differently-grained measurement strategies*, one of which (`Draw()`'s
+  per-token painting) is the one that actually determines what's on screen
+  and should be the one every other measurement is judged against.
+  A real fix needs one of: (a) make `MixedDirectionOffset()` sum cached
+  per-`StyledText`-token widths the same way `GetLineWidth()`/`Draw()` do
+  (loses the bidi work's kerning-accuracy improvement, but makes the
+  selection rectangle match pixel-for-pixel what's actually drawn -- the
+  correct alignment target), or (b) make `Draw()` paint each maximal
+  same-direction run as a single `DrawText()` call instead of per token
+  (recovers the accuracy `MixedDirectionOffset()` already computes, but
+  touches the same per-token color-styling/tab/indent-char logic that
+  `EditorCell::Draw()`'s text loop handles all at once, and duplicated across
+  `MarkSelection()`'s own line-splitting loop). Deliberately **not**
+  attempted in this pass: both routes touch code that the 2026-08 bidi work
+  (cursor placement, click-to-position, arrow-key navigation -- see
+  "Extend bidi fix to caret placement..." in git log) already spent real
+  effort getting right, and a "few pixels off" selection-rectangle glitch
+  does not obviously justify the regression risk of changing it blind. Route
+  (a) is probably the lower-risk one to attempt first: `StyledText` doesn't
+  currently track its own `m_text` character offset, so the main work is
+  adding/deriving that mapping (tokens are already emitted in `m_text`
+  order, so it is a running-counter walk, not a search) rather than touching
+  any of the already-stabilized cursor/click bidi logic itself.
+
 ### Communication with Maxima
 
 wxMaxima sends Lisp and Maxima commands over the socket; Maxima answers with XML

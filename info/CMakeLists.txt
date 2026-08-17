@@ -49,9 +49,24 @@ if(PANDOC)
 			set(PDFLANG "zh_Hans")
 		endif()
 
+		# GH #2271: -V CJKmainfont used to be passed unconditionally, for every
+		# language's PDF, not just the CJK ones. That makes pandoc emit
+		# \usepackage{xeCJK} into every manual's LaTeX regardless of whether it
+		# is actually CJK content, so composing ANY language's PDF -- Hungarian
+		# included, despite it having no CJK text at all -- hard-depends on
+		# texlive's (large, easy to not have installed) CJK support, and fails
+		# outright with "File `xeCJK.sty' not found" if that one specific
+		# package is missing, even though the rest of the LaTeX toolchain is
+		# perfectly capable of composing the document. Only the languages that
+		# actually need a CJK font should pay for requiring one.
+		set(CJK_ARGS "")
+		if(PDFLANG MATCHES "^zh")
+			set(CJK_ARGS -V 'CJKmainfont:NotoSerifCJK-Regular.ttc')
+		endif()
+
 		add_custom_command(
 			OUTPUT ${FILEBASENAME}.pdf
-			COMMAND ${PANDOC} ${FILEBASENAME}.md -t latex -o ${FILEBASENAME}.pdf -M lang=${PDFLANG} -V 'mainfont:NotoSerif-Regular.ttf' -V 'sansfont:NotoSans-Regular.ttf' -V 'monofont:NotoSansMono-Regular.ttf' -V 'mathfont:NotoSansMath-Regular.ttf' -V 'CJKmainfont:NotoSerifCJK-Regular.ttc' --number-sections --table-of-contents --standalone --metadata title="wxMaxima" --pdf-engine=${WXMAXIMA_LATEX_COMMAND}
+			COMMAND ${PANDOC} ${FILEBASENAME}.md -t latex -o ${FILEBASENAME}.pdf -M lang=${PDFLANG} -V 'mainfont:NotoSerif-Regular.ttf' -V 'sansfont:NotoSans-Regular.ttf' -V 'monofont:NotoSansMono-Regular.ttf' -V 'mathfont:NotoSansMath-Regular.ttf' ${CJK_ARGS} --number-sections --table-of-contents --standalone --metadata title="wxMaxima" --pdf-engine=${WXMAXIMA_LATEX_COMMAND}
 			COMMENT "Generating ${FILEBASENAME}.pdf")
 		add_custom_target(build_${FILEBASENAME}.pdf DEPENDS ${FILEBASENAME}.pdf)
 		add_dependencies(pdf build_${FILEBASENAME}.pdf)
