@@ -35,6 +35,8 @@ SetCell::SetCell(GroupCell *group, Configuration *config,
   : ListCell(group, config, std::move(inner)) {
   m_open = std::make_unique<TextCell>(group, config, wxS("{"));
   m_close = std::make_unique<TextCell>(group, config, wxS("}"));
+  m_open->SetStyle(TS_FUNCTION);
+  m_close->SetStyle(TS_FUNCTION);
 }
 
 SetCell::SetCell(GroupCell *group, const SetCell &cell)
@@ -44,10 +46,6 @@ SetCell::SetCell(GroupCell *group, const SetCell &cell)
 }
 
 DEFINE_CELL(SetCell)
-
-void SetCell::SetCurrentPoint(wxPoint point) const {
-  Cell::SetCurrentPoint(point);
-}
 
 void SetCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
   Cell::Draw(dc, antialiassingDC);

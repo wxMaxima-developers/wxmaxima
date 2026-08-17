@@ -1,5 +1,42 @@
 # Current development version
 
+- Fixed Windows Dark Mode only affecting the worksheet, not the rest of the
+  interface (GH #2274). `wxLogWindow`'s constructor always creates a real
+  `wxFrame` under the hood regardless of its "show" argument, and wxMaxima
+  built its (normally hidden) log window near the very start of `OnInit()` --
+  before `wxApp::SetAppearance()` got a chance to run. On Windows,
+  `SetAppearance()` silently gives up (`AppearanceResult::CannotChange`) the
+  moment *any* top-level window already exists, shown or not, so the
+  app-wide appearance was never actually being applied to the native chrome
+  (menus, toolbars, dialogs) -- only the worksheet, which wxMaxima colors
+  itself independently of `SetAppearance()`, ever reflected the setting.
+  Moved the log window's construction to after the appearance is applied.
+- Fixed composing the manual PDF for a non-CJK language failing outright if
+  `texlive`'s CJK support wasn't installed (GH #2271, e.g. `wxmaxima.hu.pdf`
+  on a Debian/Sid box without it) -- the build passed `-V CJKmainfont:...` to
+  pandoc unconditionally for every language, not just Chinese, making every
+  manual's PDF hard-depend on a large, easy-to-not-have package it never
+  actually needed. Only the CJK languages' PDFs request a CJK font now.
+- `--batch`/`--exit-on-error` runs that halt before finishing now exit with a
+  dedicated status code (90-95) instead of a generic `1` for every reason
+  (GH #2276) -- a caller's script can now tell a Maxima error, an unanswered
+  interactive question ("Halting, as documented for --batch"), a file that
+  failed to open or save, or an image that failed to load/decode apart
+  without parsing the log. See the new "EXIT STATUS" section of the
+  `wxmaxima(1)` man page for the full list.
+- Fixed a Maxima "set" (`{...}`, `setify(...)`, ...) rendering as completely
+  blank output (GH #2270), even though the value was computed correctly (a
+  right-click "Copy" of the invisible cell, or `listify(%)`, revealed the
+  right content). `SetCell::SetCurrentPoint()` shadowed the inherited
+  `ListCell::SetCurrentPoint()` with an override that positioned only the
+  cell itself, never its opening/closing brace or its contents -- so those
+  child cells kept whatever stale position they last had (or none at all)
+  and were drawn off in the wrong place instead of inside the set's visible
+  bounding box. The override did strictly less than the version it shadowed
+  and served no purpose, so it was removed outright, letting `SetCell`
+  inherit `ListCell`'s (correct) positioning logic. Also fixed the "{"/"}"
+  brace cells not getting the `TS_FUNCTION` style `ListCell`'s "["/"]"
+  cells get, a related inconsistency found while fixing this.
 - Fixed the "ASCII maths" style defaulting to a non-monospace font, which
   misaligned Maxima's own ASCII-art 2D output (fractions, matrices, sums,
   ...) since it pads with literal spaces assuming every character is the

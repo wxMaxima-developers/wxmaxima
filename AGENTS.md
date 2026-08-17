@@ -630,6 +630,123 @@ a local TCP socket.
   code, selected the group cell via hCaret + Shift+Up, confirmed the
   rendered text changed consistently and a single Ctrl+Z restored it).
 
+- **GH #2278 -- selection-rectangle width can slightly differ from the
+  rendered text's actual width, investigated but NOT YET FIXED (2026-08).**
+  Root cause confirmed by reading the measurement/draw code side by side, not
+  guessed: `EditorCell` computes horizontal position two structurally
+  different ways that both amount to "measure pieces separately and sum
+  them," and the pieces don't line up the same way in both places.
+  `EditorCell::Draw()` (`EditorCell.cpp` ~line 1042) paints text **per
+  `StyledText` token** -- each token gets its own `dc->GetTextExtent()` /
+  `dc->DrawText()` call, and `TextCurrentPoint.x += width` accumulates the
+  *pen* position as the sum of those independently-shaped token widths, so
+  any kerning or (for a contextual script) glyph-shape change that would
+  normally happen *across* a token boundary is never applied -- the two
+  neighboring glyphs are shaped in total isolation from each other.
+  `EditorCell::GetLineWidth()` (used by `PositionToPoint()` for an
+  ordinary, single-direction line) reimplements that same per-token
+  accumulation independently (`lineWidth += GetTextSize(snippet).GetWidth()`,
+  with the final partial token measured via `snippet.Left(pos)`) -- so for a
+  single-direction line the two at least agree with each other, both being
+  equally kerning-blind at token boundaries. The bidi work
+  (`MixedDirectionOffset()`, added for mixed-direction line support) does
+  something different: it measures each `BidiRun` **as one whole
+  substring** via `MeasureTextWidth()` (`m_text.SubString(...)`), which
+  *does* let the font shape it correctly -- kerning pairs and (critically,
+  for Arabic-like scripts) contextual join forms all resolve the way they
+  would if the run were drawn as a single unit. That's a strictly *more*
+  accurate measurement of what the font would produce for that span, but
+  it's answering a different question than what `Draw()` actually paints
+  (per-token, unshaped-across-boundaries) -- so on a mixed-direction line,
+  `MarkSelection()`'s selection rectangle (built from two
+  `MixedDirectionOffset()`-derived `PositionToPoint()` calls, `EditorCell.cpp`
+  ~line 852-877) can come out a few pixels narrower or wider than the glyphs
+  `Draw()` actually painted for that same span, especially where a token
+  boundary falls in the middle of a script that reshapes heavily by context.
+  **This is not a simple "measures per character instead of per whole
+  string" bug** (that specific hypothesis, which is how the issue itself is
+  worded, doesn't survive reading `MeasureTextWidth()` -- it already
+  measures its input as one `GetTextExtent()` call, not character by
+  character); it is a *disagreement between two independently-correct-looking
+  but differently-grained measurement strategies*, one of which (`Draw()`'s
+  per-token painting) is the one that actually determines what's on screen
+  and should be the one every other measurement is judged against.
+  A real fix needs one of: (a) make `MixedDirectionOffset()` sum cached
+  per-`StyledText`-token widths the same way `GetLineWidth()`/`Draw()` do
+  (loses the bidi work's kerning-accuracy improvement, but makes the
+  selection rectangle match pixel-for-pixel what's actually drawn -- the
+  correct alignment target), or (b) make `Draw()` paint each maximal
+  same-direction run as a single `DrawText()` call instead of per token
+  (recovers the accuracy `MixedDirectionOffset()` already computes, but
+  touches the same per-token color-styling/tab/indent-char logic that
+  `EditorCell::Draw()`'s text loop handles all at once, and duplicated across
+  `MarkSelection()`'s own line-splitting loop). Deliberately **not**
+  attempted in this pass: both routes touch code that the 2026-08 bidi work
+  (cursor placement, click-to-position, arrow-key navigation -- see
+  "Extend bidi fix to caret placement..." in git log) already spent real
+  effort getting right, and a "few pixels off" selection-rectangle glitch
+  does not obviously justify the regression risk of changing it blind. Route
+  (a) is probably the lower-risk one to attempt first: `StyledText` doesn't
+  currently track its own `m_text` character offset, so the main work is
+  adding/deriving that mapping (tokens are already emitted in `m_text`
+  order, so it is a running-counter walk, not a search) rather than touching
+  any of the already-stabilized cursor/click bidi logic itself.
+
+- **GH #2274 -- Windows Dark Mode only affecting the worksheet, not the rest
+  of the interface. Root cause found by reading wxWidgets 3.3's own MSW
+  source (`src/msw/darkmode.cpp` -- fetched directly, this sandbox only has
+  wxWidgets 3.2 installed and cannot compile or run the `wxCHECK_VERSION(3,
+  3, 0)` code path at all, so this could not be tested live and needs a
+  Windows report to confirm) -- fixed on a "the mechanism is exact, but
+  unverified on the actual platform" basis, the same caution a blind fix
+  deserves.** `main.cpp`'s `MyApp::OnInit()` already had a comment
+  explaining that `ApplyAppearanceToApp()` (which calls
+  `wxTheApp->SetAppearance()`) has to run "before the first top-level window
+  is created further down" for Windows to pick it up -- but the very first
+  thing `OnInit()` actually did, several hundred lines *earlier*, was
+  `m_logWindow = new wxLogWindow(...)`. `wxLogWindow`'s constructor
+  unconditionally does `m_pLogFrame = new wxLogFrame(...)` -- a real
+  `wxFrame` -- regardless of its `show` argument; only `Show()` afterwards is
+  conditional (confirmed by reading `src/generic/logg.cpp` directly, not
+  assumed from the class name). A `wxFrame` registers itself in the global
+  `wxTopLevelWindows` list at construction, not at `Show()` time. wx 3.3's
+  MSW `wxApp::SetAppearance()` opens with `if (!wxTopLevelWindows.empty() ||
+  gs_appMode != AppMode_Default) return AppearanceResult::CannotChange;` --
+  so by the time `ApplyAppearanceToApp()` ran, `wxTopLevelWindows` already
+  held the (still-hidden) log window's frame, and `SetAppearance()` silently
+  gave up every single time, on every startup, regardless of what the
+  in-code comment intended. This is MSW-specific: GTK's implementation has no
+  such "only before any window exists" restriction, which is exactly why the
+  maintainer's own diagnostic logging (added just before this fix, still
+  worth keeping) showed `AppearanceResult::Ok` on their Linux dev machine --
+  the bug was never visible there, only on the platform it was actually
+  reported on. Since the worksheet's own colors come from `Configuration`,
+  entirely independent of `wxApp::SetAppearance()`, it always reflected the
+  chosen appearance correctly regardless of this bug -- exactly matching the
+  reported symptom ("only the worksheet is in dark mode"). Fixed by moving
+  `m_logWindow`'s construction to *after* the `ApplyAppearanceToApp()` block,
+  the smallest change that gets a genuinely empty `wxTopLevelWindows` at the
+  point `SetAppearance()` runs, rather than trying to move the (config-file-
+  dependent, command-line-parsing-dependent) appearance-reading code earlier
+  instead. Checked for anything else constructing a top-level window before
+  that point (nothing does; `RepairFileAssociations()`, the only other
+  Windows-specific startup step ahead of it, only touches the registry) and
+  for any code between the old and new construction points that dereferences
+  `m_logWindow` before it exists (one `wxLogMessage()` call, which safely
+  falls through to whatever the default wx log target is when no custom one
+  is installed yet, no different from any `wxLogMessage()` that already ran
+  even earlier in `OnInit()`). Verified on Linux: builds clean, a live Xvfb
+  session starts up normally end to end (Maxima connects, worksheet is
+  usable), and View -> Toggle log window still successfully creates and
+  toggles the (real, `xdotool`-visible) log window frame after being moved --
+  confirming the reordering itself doesn't break anything, though the actual
+  dark-mode effect this targets can only be confirmed by someone running a
+  build on real Windows. A prior "speculative go" at this same issue
+  (changing `wxTheApp->SetAppearance()` to a hypothetical
+  `wxApp::SetAppearance()` static call) was reverted for a compile error --
+  don't repeat that: `SetAppearance()` is an ordinary (non-static) `wxApp`
+  member function.
+
 ### Communication with Maxima
 
 wxMaxima sends Lisp and Maxima commands over the socket; Maxima answers with XML
@@ -1107,6 +1224,48 @@ tried without rebuilding.
   decision -- correctly getting *outer* parens around the whole sum from
   the unrelated, already-existing `%sum` `rbp` registration, not extra
   parens around the summand).
+
+- **A Maxima `{...}`/`setify(...)` set rendering as completely blank output
+  (GH #2270), despite the value being computed correctly:** `SetCell`
+  (`src/cells/SetCell.cpp`) extends `ListCell` and overrides
+  `SetCurrentPoint()` -- but the override was
+  `void SetCell::SetCurrentPoint(wxPoint point) const { Cell::SetCurrentPoint(point); }`,
+  which positions only the `SetCell` object itself and completely skips the
+  inherited `ListCell::SetCurrentPoint()`'s logic that positions
+  `m_open`/`m_innerCell`/`m_close` (the "{" glyph, the actual list content,
+  the "}" glyph). `GroupCell::UpdateOutputPositions()` calls
+  `tmp.SetCurrentPoint(in)` on each top-level entry of the output's draw
+  list (`OnDrawList()`) -- for an unbroken (fits-on-one-line) `SetCell` that
+  entry *is* the whole `SetCell`, so this override, not `ListCell`'s, is
+  what fires. Since it never touches the children, they keep whatever stale
+  or default position they last had and get drawn there instead of inside
+  the set's own bounding box -- invisible within the visible viewport, while
+  the underlying value is completely correct (confirmed live: copying the
+  blank output cell's clipboard content, or `listify(%)`, reveals the right
+  answer). The override did strictly *less* than the version it shadowed and
+  had no reason to exist at all -- deleting it outright (from both
+  `SetCell.h` and `SetCell.cpp`) is the fix, letting `SetCell` inherit
+  `ListCell::SetCurrentPoint()` normally, which already handles `m_open`/
+  `m_close` correctly regardless of what glyphs they hold. Confirmed live in
+  Xvfb: `{1,2,3};` rendered as a totally blank `(%o1)` line on an unmodified
+  build, both at default window width and narrower (forcing the set to wrap
+  across lines) -- `[1,2,3];` (a plain `ListCell`, no divergent override)
+  rendered correctly in every case tested, which is what pointed at
+  `SetCell`'s own code rather than the shared `ListCell`/layout-pipeline
+  machinery. Root-caused with gdb (`gdb -p <pid> -batch -x script.py`,
+  breaking on `SetCell::Draw`/`ListCell::Recalculate`/`Cell::BreakUpAndMark`
+  from a live, real Xvfb session -- the sandbox's earlier-documented
+  hardware-breakpoint/`rr` limitations don't affect plain software
+  breakpoints, which is all this needed) -- an initial hypothesis blaming
+  `Cell::BreakUpCells()`'s line-wrap width heuristic (a `CachedInteger`
+  reading back its `INT_MAX` "invalid" sentinel as a width) turned out to be
+  a red herring from noisy manual multi-window testing, not reproducible in
+  a clean single-cell session; always reproduce a rendering bug in a fresh,
+  isolated worksheet before trusting a gdb trace's numbers. Also fixed a
+  smaller, related inconsistency found while auditing this: `SetCell`'s
+  constructor replaces `m_open`/`m_close` with fresh "{"/"}" `TextCell`s but
+  never called `SetStyle(TS_FUNCTION)` on them the way `ListCell`'s own
+  constructor does for "["/"]", leaving the braces in the wrong style.
 
 - **"Don't unfold cells just because their folded tree is being evaluated"
   (GH #1952):** `Worksheet::ScrollToError()` -- called automatically by

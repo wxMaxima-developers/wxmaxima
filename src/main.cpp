@@ -375,13 +375,6 @@ bool MyApp::OnInit() {
   // is sensitive around menu setup is left exactly as it was.
   wxMessageOutput::Set(new wxMessageOutputStderr(stdout));
 #endif
-  // if DEBUG=1 show the logwindow at start, else hide it.
-  // in wxMaxima.cpp we later read a configuration variable (LogWindow) and show/hide it, according to the previous state (issue #2033).
-#if (DEBUG==1)
-  m_logWindow = new wxLogWindow(NULL, wxS("wxMaxima log window"), true, false);
-#else
-  m_logWindow = new wxLogWindow(NULL, wxS("wxMaxima log window"), false, false);
-#endif
   // Needed for making wxSocket work for multiple threads. We currently don't
   // use this feature. But it doesn't harm to be prepared
   wxSocketBase::Initialize();
@@ -597,11 +590,19 @@ bool MyApp::OnInit() {
 
   // Pull the light/dark appearance lever now -- before the first top-level
   // window is created further down -- so the native chrome (menus, toolbars,
-  // sidebars, dialogs) follows it on Windows, where wxApp::SetAppearance() only
-  // affects the chrome when called during startup. The runtime call in
-  // wxMaxima::ConfigChanged() stays for macOS/GTK, which can switch live. Read
-  // the saved setting straight from the just-installed config (mirrors
-  // Configuration's own read: default followSystem, clamp to the valid range).
+  // sidebars, dialogs) follows it on Windows, where wxApp::SetAppearance()
+  // only affects the chrome when called during startup: on MSW it bails out
+  // with AppearanceResult::CannotChange (see src/msw/darkmode.cpp) the moment
+  // wxTopLevelWindows is non-empty, i.e. as soon as ANY top-level window --
+  // shown or not -- has been constructed (GH #2274). This block has to run
+  // before that happens, which is why m_logWindow -- itself a real wxFrame
+  // under the hood via wxLogFrame, constructed unconditionally by
+  // wxLogWindow's own constructor regardless of its "show" argument -- is
+  // created further down, AFTER this block, rather than right at the top of
+  // OnInit() as it used to be. The runtime call in wxMaxima::ConfigChanged()
+  // stays for macOS/GTK, which can switch live. Read the saved setting
+  // straight from the just-installed config (mirrors Configuration's own
+  // read: default followSystem, clamp to the valid range).
   {
     long appearance = static_cast<long>(Configuration::Appearance::followSystem);
     wxConfig::Get()->Read(wxS("appearance"), &appearance);
@@ -610,6 +611,14 @@ bool MyApp::OnInit() {
       appearance = static_cast<long>(Configuration::Appearance::followSystem);
     ApplyAppearanceToApp(static_cast<Configuration::Appearance>(appearance));
   }
+
+  // if DEBUG=1 show the logwindow at start, else hide it.
+  // in wxMaxima.cpp we later read a configuration variable (LogWindow) and show/hide it, according to the previous state (issue #2033).
+#if (DEBUG==1)
+  m_logWindow = new wxLogWindow(NULL, wxS("wxMaxima log window"), true, false);
+#else
+  m_logWindow = new wxLogWindow(NULL, wxS("wxMaxima log window"), false, false);
+#endif
 
   if (cmdLineParser.Found(wxS("logtostderr"))) {
 #ifdef __WXMSW__

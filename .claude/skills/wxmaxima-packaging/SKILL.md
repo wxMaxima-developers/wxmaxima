@@ -50,7 +50,42 @@ that are not obvious:
   workflow, commit, runner). Hence the official action rather than the
   PowerShell cmdlet, and hence the upload-artifact step.
 - `upload-artifact` always wraps files in a ZIP, so the artifact configuration's
-  root element must be `zip-file`.
+  root element must be `zip-file`, wrapping the actual payload's element inside
+  it -- a bare `<pe-file>`/`<msi-file>` at the XML root, with no `zip-file`
+  wrapper, fails every submission with "The file does not correspond to the
+  specified file type," confirmed live against a real SignPath project
+  (2026-08).
+- The Windows installer is an **NSIS-built `.exe`** (`CPACK_GENERATOR
+  "ZIP;NSIS"`), not an MSI -- SignPath's element for a generic signable
+  Windows executable is `<pe-file>` (not `<msi-file>`, and not
+  `<executable-file>`, a plausible-sounding name that SignPath does not
+  actually use).
+- `<pe-file>` (like any element nested inside `<zip-file>`) needs an explicit
+  `path` glob attribute -- a zip *can* hold more than one entry, so SignPath
+  needs to be told which one to sign even when, as here, there's only ever
+  one. Omitting it fails with "The required attribute 'path' is missing."
+  The working configuration, named `exeinzip` on the wxmaxima SignPath
+  project and set as its default:
+  ```xml
+  <?xml version="1.0" encoding="utf-8" ?>
+  <artifact-configuration xmlns="http://signpath.io/artifact-configuration/v1">
+    <zip-file>
+      <pe-file path="*.exe">
+        <authenticode-sign />
+      </pe-file>
+    </zip-file>
+  </artifact-configuration>
+  ```
+  `path="*.exe"` matches because `actions/upload-artifact@v7` is given a
+  single glob (`wxMaxima/build/*.exe`) with one match, so the file lands at
+  the zip's root with no subdirectory -- confirmed by three failed
+  submissions before this shape (see NEWS/commit history around 2026-08),
+  each error naming the next missing piece.  **`SIGNPATH_ARTIFACT_CONFIGURATION`
+  in `compile_windows.yml` must name the slug exactly** (`exeinzip`, not
+  `exe`/`installer`, the two earlier now-abandoned configurations) --
+  SignPath's own "default configuration" marking on its dashboard does not
+  matter here, since the workflow always passes an explicit
+  `artifact-configuration-slug`.
 - The API token lives in an **environment** secret with a required reviewer.
   GitHub pauses such a job *before its first step*, so signing must be its own
   job - inside the build job it would block the entire test suite behind an
