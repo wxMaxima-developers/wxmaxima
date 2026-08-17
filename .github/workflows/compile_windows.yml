@@ -17,13 +17,17 @@ env:
   SIGNPATH_ORGANIZATION_ID: 4eaae15d-2d3a-4c8d-acf3-6e71e5837a5d
   SIGNPATH_PROJECT_SLUG: wxmaxima
   SIGNPATH_SIGNING_POLICY: test-signing
-  # "exe" wraps the artifact-configuration correctly for what we actually
-  # ship: upload-artifact always zips whatever it's given, and the Windows
-  # installer itself is an NSIS-built .exe (CPACK_GENERATOR "ZIP;NSIS"), not
-  # an .msi -- the earlier "installer" configuration used <msi-file/> at the
-  # XML root with no <zip-file/> wrapper, which SignPath rejected outright
-  # ("The file does not correspond to the specified file type").
-  SIGNPATH_ARTIFACT_CONFIGURATION: exe
+  # "exeinzip" wraps the artifact-configuration correctly for what we
+  # actually ship: upload-artifact always zips whatever it's given, and the
+  # Windows installer itself is an NSIS-built .exe (CPACK_GENERATOR
+  # "ZIP;NSIS"), not an .msi. Two earlier configurations were rejected before
+  # this one: "installer" used <msi-file/> at the XML root with no
+  # <zip-file/> wrapper ("The file does not correspond to the specified file
+  # type"), and an intermediate <zip-file><pe-file/></zip-file> attempt was
+  # rejected for missing the required path="*.exe" glob on <pe-file/> (a
+  # zip-file container can hold more than one entry, so SignPath needs to be
+  # told which one to sign even when, as here, there's only ever one).
+  SIGNPATH_ARTIFACT_CONFIGURATION: exeinzip
 
 permissions:
   contents: read
