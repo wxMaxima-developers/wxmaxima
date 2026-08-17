@@ -41,6 +41,7 @@ if(PO4A)
         foreach(LANG ${LANGUAGES})
             add_custom_command(
                 TARGET pull-manual-translations-from-combined
+                POST_BUILD
                 COMMAND "${CMAKE_COMMAND}"
                     "-DLANG_PO=${CMAKE_SOURCE_DIR}/locales/wxMaxima/${LANG}.po"
                     "-DMANUAL_POT=${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md.pot"
