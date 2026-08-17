@@ -114,6 +114,18 @@ Public Types</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:ab6afd24efcd1d85c6aac02040adf0a68"><td class="mdescLeft">&#160;</td><td class="mdescRight">An enum of individual IDs for all timers this class handles.  <a href="classwxMaxima.html#ab6afd24efcd1d85c6aac02040adf0a68">More...</a><br /></td></tr>
 <tr class="separator:ab6afd24efcd1d85c6aac02040adf0a68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95a985202220a6392975ffe21c92cafa"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a95a985202220a6392975ffe21c92cafa">ExitCode</a> : int { <br />
+&#160;&#160;<a class="el" href="classwxMaxima.html#a95a985202220a6392975ffe21c92cafaa4d7daa8c47689231a4e7d651c7558e37">EXIT_MAXIMA_ERROR</a> = 90
+, <a class="el" href="classwxMaxima.html#a95a985202220a6392975ffe21c92cafaa79ef44494781ef42edac4a6309bf3071">EXIT_UNANSWERED_QUESTION</a> = 91
+, <a class="el" href="classwxMaxima.html#a95a985202220a6392975ffe21c92cafaa1ff5f74ae87f27b2f3239dd4a88d2300">EXIT_FILE_OPEN_FAILED</a> = 92
+, <a class="el" href="classwxMaxima.html#a95a985202220a6392975ffe21c92cafaa815e9ea7ef14a1fa1fe87fd57e29551c">EXIT_FILE_SAVE_FAILED</a> = 93
+, <br />
+&#160;&#160;<a class="el" href="classwxMaxima.html#a95a985202220a6392975ffe21c92cafaaef18e7887e0f97881fe8b718ff2dd429">EXIT_IMAGE_LOAD_FAILED</a> = 94
+, <a class="el" href="classwxMaxima.html#a95a985202220a6392975ffe21c92cafaafb378826b0d3e1dbbd6955adea320117">EXIT_IMAGE_DECODE_FAILED</a> = 95
+<br />
+ }</td></tr>
+<tr class="memdesc:a95a985202220a6392975ffe21c92cafa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dedicated exit codes for a &ndash;batch/&ndash;exit-on-error run that aborted (GH #2276): every reason used to share the same generic 1, which left an end user with no way to tell <em>why</em> a batch run failed without re-reading its log.  <a href="classwxMaxima.html#a95a985202220a6392975ffe21c92cafa">More...</a><br /></td></tr>
+<tr class="separator:a95a985202220a6392975ffe21c92cafa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -1031,6 +1043,37 @@ class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 <tr class="separator:a87edbe07df092fb415d4bbf4639667d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="a95a985202220a6392975ffe21c92cafa" name="a95a985202220a6392975ffe21c92cafa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a95a985202220a6392975ffe21c92cafa">&#9670;&#160;</a></span>ExitCode</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="classwxMaxima.html#a95a985202220a6392975ffe21c92cafa">wxMaxima::ExitCode</a> : int</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Dedicated exit codes for a &ndash;batch/&ndash;exit-on-error run that aborted (GH #2276): every reason used to share the same generic 1, which left an end user with no way to tell <em>why</em> a batch run failed without re-reading its log. </p>
+<p>Picked from the 90-99 range the issue itself suggested, clear of both the shell's own reserved 126-165 range and <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s own process exit codes (which this process's exit code is otherwise independent of, since <a class="el" href="classwxMaxima.html">wxMaxima</a> &ndash; not <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> &ndash; is what a caller's shell actually waits on). <a class="el" href="classA.html">A</a> successful run, batch or interactive, always exits 0 &ndash; these values are only ever assigned on a failure path. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a95a985202220a6392975ffe21c92cafaa4d7daa8c47689231a4e7d651c7558e37" name="a95a985202220a6392975ffe21c92cafaa4d7daa8c47689231a4e7d651c7558e37"></a>EXIT_MAXIMA_ERROR&#160;</td><td class="fielddoc"><p><a class="el" href="classA.html">A</a> cell reported a <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> error and &ndash;exit-on-error is active. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a95a985202220a6392975ffe21c92cafaa79ef44494781ef42edac4a6309bf3071" name="a95a985202220a6392975ffe21c92cafaa79ef44494781ef42edac4a6309bf3071"></a>EXIT_UNANSWERED_QUESTION&#160;</td><td class="fielddoc"><p><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> asked an interactive question with no scripted answer available ("Halts on questions", as &ndash;batch's own &ndash;help text documents). </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a95a985202220a6392975ffe21c92cafaa1ff5f74ae87f27b2f3239dd4a88d2300" name="a95a985202220a6392975ffe21c92cafaa1ff5f74ae87f27b2f3239dd4a88d2300"></a>EXIT_FILE_OPEN_FAILED&#160;</td><td class="fielddoc"><p>The file named on the command line could not be opened. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a95a985202220a6392975ffe21c92cafaa815e9ea7ef14a1fa1fe87fd57e29551c" name="a95a985202220a6392975ffe21c92cafaa815e9ea7ef14a1fa1fe87fd57e29551c"></a>EXIT_FILE_SAVE_FAILED&#160;</td><td class="fielddoc"><p>Saving the worksheet (on exit, or a &ndash;batch run's own final save) failed. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a95a985202220a6392975ffe21c92cafaaef18e7887e0f97881fe8b718ff2dd429" name="a95a985202220a6392975ffe21c92cafaaef18e7887e0f97881fe8b718ff2dd429"></a>EXIT_IMAGE_LOAD_FAILED&#160;</td><td class="fielddoc"><p>An embedded image's data could not be loaded at all (GH #2178). </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a95a985202220a6392975ffe21c92cafaafb378826b0d3e1dbbd6955adea320117" name="a95a985202220a6392975ffe21c92cafaafb378826b0d3e1dbbd6955adea320117"></a>EXIT_IMAGE_DECODE_FAILED&#160;</td><td class="fielddoc"><p>An embedded image failed to decode/render (GH #2178, &ndash;debug only). </p>
+</td></tr>
+</table>
+
+</div>
+</div>
 <a id="ab6afd24efcd1d85c6aac02040adf0a68" name="ab6afd24efcd1d85c6aac02040adf0a68"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab6afd24efcd1d85c6aac02040adf0a68">&#9670;&#160;</a></span>TimerIDs</h2>
 
@@ -1324,7 +1367,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 
 <p>returns the command to start maxima </p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md1038"></a>
+ <h2><a class="anchor" id="autotoc_md1029"></a>
 Getting configuration</h2>
 
 </div>
@@ -1501,7 +1544,7 @@ Getting configuration</h2>
 
 <p>Inserts command cmd into the worksheet. </p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md1041"></a>
+ <h2><a class="anchor" id="autotoc_md1032"></a>
 Menu and button events</h2>
 
 </div>
@@ -1537,7 +1580,7 @@ Menu and button events</h2>
 <p>Moving the screen update to this function, as well, makes sure that if we get events faster than we can update the screen that doesn't cause lag, but causes screen updates for old events to be dropped if we already have new ones. This normally makes programs feel way more responsive.</p>
 <p>The worksheet is additionally refreshed by a timer task in case that th computer is too busy to ever reach the idle task at all.</p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md1040"></a>
+ <h2><a class="anchor" id="autotoc_md1031"></a>
 Idle event</h2>
 
 </div>
@@ -1672,13 +1715,13 @@ Idle event</h2>
 <p>Set the current working directory file I/O from maxima is relative to. </p>
 <p>ServerEvent is triggered when maxima connects to the socket server.</p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md1035"></a>
+ <h2><a class="anchor" id="autotoc_md1026"></a>
 Socket stuff</h2>
 <hr  />
- <h2><a class="anchor" id="autotoc_md1036"></a>
+ <h2><a class="anchor" id="autotoc_md1027"></a>
 Maxima process stuff</h2>
 <hr  />
- <h2><a class="anchor" id="autotoc_md1037"></a>
+ <h2><a class="anchor" id="autotoc_md1028"></a>
 Dealing with stuff read from the socket</h2>
 
 </div>
@@ -1782,7 +1825,7 @@ Dealing with stuff read from the socket</h2>
       </table>
 </div><div class="memdoc">
 <hr  />
- <h2><a class="anchor" id="autotoc_md1039"></a>
+ <h2><a class="anchor" id="autotoc_md1030"></a>
 Tips and help</h2>
 
 </div>
@@ -1917,7 +1960,7 @@ Tips and help</h2>
 
 <p>Enables and disables the Right menu buttons. </p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md1042"></a>
+ <h2><a class="anchor" id="autotoc_md1033"></a>
 Menu and button events</h2>
 
 </div>
@@ -1975,7 +2018,7 @@ Menu and button events</h2>
 
 <p>Updates the slider to show the right frame. </p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md1043"></a>
+ <h2><a class="anchor" id="autotoc_md1035"></a>
 Plot Slider</h2>
 
 </div>
