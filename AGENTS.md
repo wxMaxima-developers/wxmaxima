@@ -692,6 +692,61 @@ a local TCP socket.
   order, so it is a running-counter walk, not a search) rather than touching
   any of the already-stabilized cursor/click bidi logic itself.
 
+- **GH #2274 -- Windows Dark Mode only affecting the worksheet, not the rest
+  of the interface. Root cause found by reading wxWidgets 3.3's own MSW
+  source (`src/msw/darkmode.cpp` -- fetched directly, this sandbox only has
+  wxWidgets 3.2 installed and cannot compile or run the `wxCHECK_VERSION(3,
+  3, 0)` code path at all, so this could not be tested live and needs a
+  Windows report to confirm) -- fixed on a "the mechanism is exact, but
+  unverified on the actual platform" basis, the same caution a blind fix
+  deserves.** `main.cpp`'s `MyApp::OnInit()` already had a comment
+  explaining that `ApplyAppearanceToApp()` (which calls
+  `wxTheApp->SetAppearance()`) has to run "before the first top-level window
+  is created further down" for Windows to pick it up -- but the very first
+  thing `OnInit()` actually did, several hundred lines *earlier*, was
+  `m_logWindow = new wxLogWindow(...)`. `wxLogWindow`'s constructor
+  unconditionally does `m_pLogFrame = new wxLogFrame(...)` -- a real
+  `wxFrame` -- regardless of its `show` argument; only `Show()` afterwards is
+  conditional (confirmed by reading `src/generic/logg.cpp` directly, not
+  assumed from the class name). A `wxFrame` registers itself in the global
+  `wxTopLevelWindows` list at construction, not at `Show()` time. wx 3.3's
+  MSW `wxApp::SetAppearance()` opens with `if (!wxTopLevelWindows.empty() ||
+  gs_appMode != AppMode_Default) return AppearanceResult::CannotChange;` --
+  so by the time `ApplyAppearanceToApp()` ran, `wxTopLevelWindows` already
+  held the (still-hidden) log window's frame, and `SetAppearance()` silently
+  gave up every single time, on every startup, regardless of what the
+  in-code comment intended. This is MSW-specific: GTK's implementation has no
+  such "only before any window exists" restriction, which is exactly why the
+  maintainer's own diagnostic logging (added just before this fix, still
+  worth keeping) showed `AppearanceResult::Ok` on their Linux dev machine --
+  the bug was never visible there, only on the platform it was actually
+  reported on. Since the worksheet's own colors come from `Configuration`,
+  entirely independent of `wxApp::SetAppearance()`, it always reflected the
+  chosen appearance correctly regardless of this bug -- exactly matching the
+  reported symptom ("only the worksheet is in dark mode"). Fixed by moving
+  `m_logWindow`'s construction to *after* the `ApplyAppearanceToApp()` block,
+  the smallest change that gets a genuinely empty `wxTopLevelWindows` at the
+  point `SetAppearance()` runs, rather than trying to move the (config-file-
+  dependent, command-line-parsing-dependent) appearance-reading code earlier
+  instead. Checked for anything else constructing a top-level window before
+  that point (nothing does; `RepairFileAssociations()`, the only other
+  Windows-specific startup step ahead of it, only touches the registry) and
+  for any code between the old and new construction points that dereferences
+  `m_logWindow` before it exists (one `wxLogMessage()` call, which safely
+  falls through to whatever the default wx log target is when no custom one
+  is installed yet, no different from any `wxLogMessage()` that already ran
+  even earlier in `OnInit()`). Verified on Linux: builds clean, a live Xvfb
+  session starts up normally end to end (Maxima connects, worksheet is
+  usable), and View -> Toggle log window still successfully creates and
+  toggles the (real, `xdotool`-visible) log window frame after being moved --
+  confirming the reordering itself doesn't break anything, though the actual
+  dark-mode effect this targets can only be confirmed by someone running a
+  build on real Windows. A prior "speculative go" at this same issue
+  (changing `wxTheApp->SetAppearance()` to a hypothetical
+  `wxApp::SetAppearance()` static call) was reverted for a compile error --
+  don't repeat that: `SetAppearance()` is an ordinary (non-static) `wxApp`
+  member function.
+
 ### Communication with Maxima
 
 wxMaxima sends Lisp and Maxima commands over the socket; Maxima answers with XML

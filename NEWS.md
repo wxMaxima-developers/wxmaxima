@@ -1,5 +1,16 @@
 # Current development version
 
+- Fixed Windows Dark Mode only affecting the worksheet, not the rest of the
+  interface (GH #2274). `wxLogWindow`'s constructor always creates a real
+  `wxFrame` under the hood regardless of its "show" argument, and wxMaxima
+  built its (normally hidden) log window near the very start of `OnInit()` --
+  before `wxApp::SetAppearance()` got a chance to run. On Windows,
+  `SetAppearance()` silently gives up (`AppearanceResult::CannotChange`) the
+  moment *any* top-level window already exists, shown or not, so the
+  app-wide appearance was never actually being applied to the native chrome
+  (menus, toolbars, dialogs) -- only the worksheet, which wxMaxima colors
+  itself independently of `SetAppearance()`, ever reflected the setting.
+  Moved the log window's construction to after the appearance is applied.
 - Fixed composing the manual PDF for a non-CJK language failing outright if
   `texlive`'s CJK support wasn't installed (GH #2271, e.g. `wxmaxima.hu.pdf`
   on a Debian/Sid box without it) -- the build passed `-V CJKmainfont:...` to
