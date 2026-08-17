@@ -17,7 +17,13 @@ env:
   SIGNPATH_ORGANIZATION_ID: 4eaae15d-2d3a-4c8d-acf3-6e71e5837a5d
   SIGNPATH_PROJECT_SLUG: wxmaxima
   SIGNPATH_SIGNING_POLICY: test-signing
-  SIGNPATH_ARTIFACT_CONFIGURATION: installer
+  # "exe" wraps the artifact-configuration correctly for what we actually
+  # ship: upload-artifact always zips whatever it's given, and the Windows
+  # installer itself is an NSIS-built .exe (CPACK_GENERATOR "ZIP;NSIS"), not
+  # an .msi -- the earlier "installer" configuration used <msi-file/> at the
+  # XML root with no <zip-file/> wrapper, which SignPath rejected outright
+  # ("The file does not correspond to the specified file type").
+  SIGNPATH_ARTIFACT_CONFIGURATION: exe
 
 permissions:
   contents: read
