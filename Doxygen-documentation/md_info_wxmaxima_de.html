@@ -75,27 +75,27 @@ $(function() {
 <div class="textblock"><p>WxMaxima ist ein graphisches Benutzerinterface (GUI) für das Computer-Algebrasystem <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>. <a class="el" href="classwxMaxima.html">wxMaxima</a> erlaubt die Nutzung aller Funktionen dieses Programms und bietet Assistenten für dessen wichtigste Funktionen an. Dieses Handbuch beschreibt die Features, die <a class="el" href="classwxMaxima.html">wxMaxima</a> zu einer der beliebtesten graphischen Benutzerumgebung für <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> gemacht haben.</p>
 <p><img src="./wxMaximaLogo.png" alt="wxMaxima Logo" class="inline"/></p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md74"></a>
+<h1><a class="anchor" id="autotoc_md75"></a>
 Introduction to wxMaxima</h1>
-<h2><a class="anchor" id="autotoc_md75"></a>
+<h2><a class="anchor" id="autotoc_md76"></a>
 &lt;em&gt;Maxima&lt;/em&gt; and wxMaxima</h2>
 <p>Im Open-Source-Bereich ist es üblich, große Systeme in kleine Projekte aufzuteilen, die jeweils klein genug sind, dass eine endliche Menge an Entwicklern ausreicht, um sie weiterzuentwickeln. Beispielsweise ist ein CD-Brennprogramm aus einem Kommandozeilentool zusammengesetzt, das die CDs brennt und eine graphische Benutzerumgebung, die dieses Tool bedient. Ein Vorteil dieses Ansatzes ist es, daß dasselbe Kommandozeilenprogramm von vielen Stellen aus genutzt werden: Das Brennprogramm, ein "Sende an die
 CD"-Knopf und beispielsweise ein Backup-Tool. Ein weiterer Vorteil ist es, dass auf diese Weise für eine Funktionalität mehrere Benutzerinterfaces angeboten werden können.</p>
 <p>Ein Computer-Algebrasystem (CAS) wie <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> ist hervorragend für diesen Ansatz geeignet: Es kann die Logik hinter einem Taschenrechner liefern, der mit beliebig langen Zahlen hantieren kann, Formeln für ein größeres System, z.B. <a href="https://www.sagemath.org/">Sage</a> umstellen. Alternativ kann es direkt verwendet werden. Dies kann von der Kommandozeile aus geschehen, oder von <a class="el" href="classwxMaxima.html">wxMaxima</a> aus, das eine komfortablere Bedienung unterstützt.</p>
-<h3><a class="anchor" id="autotoc_md76"></a>
+<h3><a class="anchor" id="autotoc_md77"></a>
 &lt;em&gt;Maxima&lt;/em&gt;</h3>
 <p><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> ist ein komplettes Computer-Algebrasystem (CAS): Ein Programm, das die Formel, nicht nur die Zahl sucht, die ein mathematisches Problem löst. Auch wenn es darauf spezialisiert ist, mit Buchstaben zu rechnen, bietet es auch eine Menge an Funktionen, die Probleme lösen, für die nur numerische Lösungen existieren.</p>
 <p><img src="./maxima_screenshot.png" alt="Maxima Screenshot, Kommandozeile" class="inline"/></p>
 <p>Extensive documentation for <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> is <a href="https://maxima.sourceforge.io/documentation.html">available in the internet</a>. Part of this documentation is also available in wxMaxima’s help menu. Pressing the Help key (on most systems the <code>F1</code> key) causes _wxMaxima_’s context-sensitive help feature to automatically jump to _Maxima_’s manual page for the command at the cursor.</p>
-<h3><a class="anchor" id="autotoc_md77"></a>
+<h3><a class="anchor" id="autotoc_md78"></a>
 WxMaxima</h3>
 <p><em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> ist ein graphisches Benutzer-Interface, das die komplette Funktionalität und Flexibilität von <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> zu nutzen erlaubt. Zudem bietet es viele Funktionalitäten an, die die Verwendung von <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> einfacher gestalten. Beispielsweise kann es den Inhalt eines Arbeitsblattes, einer Zelle des Arbeitsblatts oder einen Teil einer Formel nach LaTeX, MathML oder in eine RTF-Formel für eine Textverarbeitung konvertieren. Dokumentation für <a class="el" href="classwxMaxima.html">wxMaxima</a> kann <a href="https://wxMaxima-developers.github.io/wxmaxima/help.html">im Internet</a> gefunden werden, oder über das Hilfemenü.</p>
 <p><img src="./wxMaximaWindow.png" alt="wxMaxima Fenster" class="inline"/></p>
 <p><em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> lässt alle Berechnungen im Hintergrund durch das Kommandozeilen-Werkzeug <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> durchführen.</p>
-<h2><a class="anchor" id="autotoc_md78"></a>
+<h2><a class="anchor" id="autotoc_md79"></a>
 Workbook basics</h2>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> ist größtenteils selbsterklärend. <a href="https://wxMaxima-developers.github.io/wxmaxima/help.html">Diese Internetseite</a> bietet einige Beispiele an, wovon das "10-Minuten-Tutorial" besonders zu empfehlen ist. Dieses Handbuch beschreibt einige zusätzliche Aspekte von <a class="el" href="classwxMaxima.html">wxMaxima</a>.</p>
-<h3><a class="anchor" id="autotoc_md79"></a>
+<h3><a class="anchor" id="autotoc_md80"></a>
 The workbook approach</h3>
 <p>Eine der Sachen, die neue Benutzer oft verwirrt, ist, dass das Arbeitsblatt von <a class="el" href="classwxMaxima.html">wxMaxima</a> in Zellen aufgeteilt ist, die nur auf Befehl vom Benutzer an <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> gesendet werden. Wenn eine Zelle ausgewertet wird, werden alle Maxima-Befehle (nur) dieser Zelle als Batch-Befehle ausgewertet. Man kann auch mehrere Zellen auswählen und gleichzeitig auswählen. Oder das gesamte Arbeitsblatt auf einmal auswerten <em>WxMaxima</em>'s Ansatz für die Auswertung von Befehlen mag seltsam erscheinen. Es vereinfacht aber die Arbeit mit großen Dokumenten (wo man nicht jede Änderung eine komplette Neu-Evaluierung des ganzen Dokuments auslösen will. Ausserdem ist dieser Ansatz für die Fehlersuche praktisch.</p>
 <p>Wenn Text in <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> eingegeben wird, erzeugt er automatisch eine neue Zelle des Arbeitsblattes. Wenn dies eine Code-Zelle ist, kann ihr Inhalt an <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> gesendet werden und das Resultat dieser Aktion wird unter der Zelle angezeigt, wie unten abgebildet.</p>
@@ -104,7 +104,7 @@ The workbook approach</h3>
 <p>Außer Code-Zellen kennt <a class="el" href="classwxMaxima.html">wxMaxima</a> auch Textzellen und solche mit Bildern oder Überschriften. Jede Zelle hat ihren eigenen Speicher für das Rückgängigmachen von Aktionen, was sich oft als hilfreich erwiesen hat. Zudem besitzt, wie in fast allen Applikationen, das Arbeitsblatt einen eigenen Speicher für die Rückgängigmachen-Funktion.</p>
 <p>Die nun folgende Abbildung zeigt verschiedene Zelltypen (Titelzellen, Untertitelzellen, Textzellen, Eingabe/Ausgabezellen und eine Bildzelle).</p>
 <p><img src="./cell-example.png" alt="Ein Beispiel verschiedener wxMaxima Zelltypen" class="inline"/></p>
-<h3><a class="anchor" id="autotoc_md80"></a>
+<h3><a class="anchor" id="autotoc_md81"></a>
 Cells</h3>
 <p>Das Arbeitsblatt ist in Zellen aufgeteilt. WxMaxima kennt die folgenden Zelltypen:</p>
 <ul>
