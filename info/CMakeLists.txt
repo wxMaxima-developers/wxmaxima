@@ -34,6 +34,7 @@ if(PANDOC)
 		add_custom_target(build_${FILEBASENAME}.html DEPENDS ${FILEBASENAME}.html)
 		add_dependencies(html build_${FILEBASENAME}.html)
 		install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${FILEBASENAME}.html" DESTINATION share/doc/wxmaxima OPTIONAL)
+		install(FILES "${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.html" DESTINATION share/doc/wxmaxima/ RENAME wxmaxima-en.html OPTIONAL)
 	endfunction()
 
 	function(generate_wxmaxima_documentation_pdf FILEBASENAME)
@@ -71,6 +72,7 @@ if(PANDOC)
 		add_custom_target(build_${FILEBASENAME}.pdf DEPENDS ${FILEBASENAME}.pdf)
 		add_dependencies(pdf build_${FILEBASENAME}.pdf)
 		install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${FILEBASENAME}.pdf" DESTINATION share/doc/wxmaxima OPTIONAL)
+		install(FILES "${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.pdf" DESTINATION share/doc/wxmaxima/ RENAME wxmaxima-en.pdf OPTIONAL)
 	endfunction()
 
 	function(generate_wxmaxima_documentation_epub FILEBASENAME)
@@ -81,6 +83,7 @@ if(PANDOC)
 		add_custom_target(build_${FILEBASENAME}.epub DEPENDS ${FILEBASENAME}.epub)
 		add_dependencies(epub build_${FILEBASENAME}.epub)
 		install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${FILEBASENAME}.epub" DESTINATION share/doc/wxmaxima OPTIONAL)
+		install(FILES "${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.epub" DESTINATION share/doc/wxmaxima/ RENAME wxmaxima-en.epub OPTIONAL)
 	endfunction()
 
 	# Create a list of the common part of the name of all the translated manuals.
