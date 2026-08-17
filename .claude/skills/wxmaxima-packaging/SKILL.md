@@ -50,7 +50,16 @@ that are not obvious:
   workflow, commit, runner). Hence the official action rather than the
   PowerShell cmdlet, and hence the upload-artifact step.
 - `upload-artifact` always wraps files in a ZIP, so the artifact configuration's
-  root element must be `zip-file`.
+  root element must be `zip-file`, wrapping the actual payload's element inside
+  it (e.g. `<zip-file><pe-file><authenticode-sign/></pe-file></zip-file>`) --
+  a bare `<pe-file>`/`<msi-file>` at the XML root, with no `zip-file` wrapper,
+  fails every submission with "The file does not correspond to the specified
+  file type," confirmed live against a real SignPath project (2026-08).
+- The Windows installer is an **NSIS-built `.exe`** (`CPACK_GENERATOR
+  "ZIP;NSIS"`), not an MSI -- SignPath's element for a generic signable
+  Windows executable is `<pe-file>` (not `<msi-file>`, and not
+  `<executable-file>`, a plausible-sounding name that SignPath does not
+  actually use).
 - The API token lives in an **environment** secret with a required reviewer.
   GitHub pauses such a job *before its first step*, so signing must be its own
   job - inside the build job it would block the entire test suite behind an
