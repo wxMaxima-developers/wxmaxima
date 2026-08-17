@@ -189,7 +189,7 @@ Greek characters</h4>
 <td class="markdownTableBodyCenter">T   </td><td class="markdownTableBodyCenter">Theta   </td><td class="markdownTableBodyCenter">P   </td><td class="markdownTableBodyCenter">Pi   </td><td class="markdownTableBodyCenter">O   </td><td class="markdownTableBodyCenter">Omega   </td></tr>
 </table>
 <p>Vous pouvez également utiliser la barre latérale « Lettres grecques » pour insérer les lettres grecques.</p>
-<p><a class="anchor" id="autotoc_md279"></a> </p><h5>Attention: Lookalike characters</h5>
+<p><a class="anchor" id="autotoc_md280"></a> </p><h5>Attention: Lookalike characters</h5>
 <p>Plusieurs lettres latines ressemblent aux lettres grecques, par exemple la lettre latine "A" et la lettre grecque "Alpha". Bien qu'elles aient la même apparence, ce sont deux caractères Unicode distincts, représentés par des codages Unicode (nombres) différents.</p>
 <p>Cela peut poser problème si vous attribuez une valeur à la variable <a class="el" href="classA.html">A</a> et que vous utilisez ensuite la lettre grecque Alpha pour faire quelque chose avec cette variable, notamment sur les impressions. Pour la lettre grecque mu (utilisée aussi comme préfixe pour micro), il existe également deux codages Unicode différents.</p>
 <p>La barre latérale « Lettres grecques » offre donc l’option de désactiver les caractères similaires (ce paramètre peut être modifié via un menu accessible par un clic droit).</p>
@@ -299,23 +299,23 @@ Greek characters</h4>
 <p><code>ESC</code><code>6</code><code>1</code><code>ESC</code> therefore results in an <code>a</code>.</p>
 <p>Please note that most of these symbols (notable exceptions are the logic symbols) do not have a special meaning in <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> and therefore will be interpreted as ordinary characters. If <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> is compiled using a Lisp that doesn’t support Unicode characters they might cause an error message.</p>
 <p>It may be the case that e.g. Greek characters or mathematical symbols are not included in the selected font, then they can not be displayed. To solve that problem, select other fonts (using: Edit -&gt; Configure -&gt; <a class="el" href="classStyle.html" title="Text Style Definition.">Style</a>).</p>
-<h3><a class="anchor" id="autotoc_md280"></a>
+<h3><a class="anchor" id="autotoc_md281"></a>
 Unicode replacement</h3>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> will replace several Unicode characters with their respective <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> expressions, e.g. <code>²</code> with <code>^2</code>, <code>³</code> with <code>^3</code>, the square root sign with the function <code>sqrt()</code>, the (mathematical) Sigma sign (which is not the same Unicode character as the corresponding Greek letter) with <code>sum()</code>, etc.</p>
 <p>Unicode has several "common" fractions encoded as one Unicode code point: <code>¼, ½, ¾, ⅐, ⅑, ⅒, ⅓, ⅔, ⅕, ⅖, ⅗, ⅘, ⅙, ⅚, ⅛, ⅜, ⅝, ⅞</code></p>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> will replace them with their <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> representations, e.g <code>(1/4)</code> before the input is sent do <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>. There are also <code>⅟</code>, which will be replaced by <code>1/</code> and <code>↉</code> (used in baseball), which will be replaced by <code>(0/3)</code>.</p>
 <p>Il est recommandé d’utiliser le <b>code <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></b> (et non ces points de code Unicode) dans les cellules de saisie. Raisons : (a) il se peut que la police utilisée pour la saisie mathématique ne les contienne pas ; (b) si vous enregistrez le document au format <code>wxm</code>, celui-ci est généralement lisible par <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> en ligne de commande, mais ces substitutions ne fonctionneront évidemment pas dans <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> en ligne de commande. Toutefois, ces caractères peuvent apparaître si vous copiez-collez une formule depuis un autre document.</p>
-<h3><a class="anchor" id="autotoc_md281"></a>
+<h3><a class="anchor" id="autotoc_md282"></a>
 Side Panes</h3>
 <p>Les raccourcis vers les commandes les plus importantes de <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>, comme une table des matières, des fenêtres avec des messages de débogage ou un historique des dernières commandes exécutées, peuvent être accessibles via les panneaux latéraux. Ceux-ci peuvent être activés depuis le menu « Affichage ». Ils peuvent tous être déplacés vers d’autres emplacements, à l’intérieur ou à l’extérieur de la fenêtre de <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>. Un autre volet utile est celui qui permet de saisir des lettres grecques avec la souris.</p>
 <p><img src="./SidePanes.png" alt="Illustration de différents volets latéraux" class="inline"/></p>
 <p>Dans le volet latéral « table des matières », vous pouvez augmenter ou diminuer le niveau d’un titre en cliquant simplement dessus avec le bouton droit de la souris et en sélectionnant le niveau de titre supérieur ou inférieur.</p>
 <p><img src="./Sidepane-TOC-convert-headings.png" alt="Augmenter ou diminuer le niveau de titres dans le panneau latéral Table
 des Matières" class="inline"/></p>
-<h3><a class="anchor" id="autotoc_md282"></a>
+<h3><a class="anchor" id="autotoc_md283"></a>
 MathML output</h3>
 <p>Several word processors and similar programs either recognize <a href="https://www.w3.org/Math/">MathML</a> input and automatically insert it as an editable 2<a class="el" href="classD.html">D</a> equation - or (like LibreOffice) have an equation editor that offers an “import MathML from clipboard” feature. Others support RTF maths. <em>WxMaxima</em>, therefore, offers several entries in the right-click menu.</p>
-<h3><a class="anchor" id="autotoc_md283"></a>
+<h3><a class="anchor" id="autotoc_md284"></a>
 Markdown support</h3>
 <p><em>WxMaxima</em> offers a set of standard <a href="https://en.wikipedia.org/wiki/Markdown">Markdown</a> conventions that don’t collide with mathematical notation. One of these elements is bullet lists.</p>
 <div class="fragment"><div class="line">Ordinary text</div>
@@ -334,7 +334,7 @@ Markdown support</h3>
 </div><!-- fragment --><p>_WxMaxima_’s TeX and HTML output will also recognize <code>=&gt;</code> and replace it by the corresponding Unicode sign:</p>
 <div class="fragment"><div class="line">cogito =&gt; sum.</div>
 </div><!-- fragment --><p>Other symbols the HTML and TeX export will recognize are <code>&lt;=</code> and <code>&gt;=</code> for comparisons, a double-pointed double arrow (<code>&lt;=&gt;</code>), single-headed arrows (<code>&lt;-&gt;</code>, <code>-&gt;</code> and <code>&lt;-</code>) and <code>+/-</code> as the respective sign. For TeX output also <code>&lt;&lt;</code> and <code>&gt;&gt;</code> are recognized.</p>
-<h3><a class="anchor" id="autotoc_md284"></a>
+<h3><a class="anchor" id="autotoc_md285"></a>
 Hotkeys</h3>
 <p>La plupart des raccourcis clavier peuvent être trouvés dans le texte des menus associés. Comme ils sont effectivement tirés du texte des menus, ils peuvent ainsi être personnalisés par les traductions de <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> pour correspondre aux besoins des utilisateurs des claviers locaux, nous ne les documentons pas ici. Cependant, quelques raccourcis clavier ou alias de raccourcis ne sont pas documentés dans les menus :</p>
 <ul>
@@ -342,24 +342,24 @@ Hotkeys</h3>
 <li><code>CTRL</code>+<code>TAB</code> or <code>CTRL</code>+<code>SHIFT</code>+<code>TAB</code> déclenche le mécanisme de saisie automatique.</li>
 <li><code>SHIFT</code>+<code>SPACE</code> insère un espace insécable.</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md285"></a>
+<h3><a class="anchor" id="autotoc_md286"></a>
 Raw TeX in the TeX export</h3>
 <p>Si une cellule de texte commence par <code>TeX:</code>, l'export TeX inclut le texte littéral qui suit le marqueur <code>TeX:</code>. Cette fonctionnalité permet d'insérer du code TeX directement dans le classeur <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>.</p>
-<h2><a class="anchor" id="autotoc_md286"></a>
+<h2><a class="anchor" id="autotoc_md287"></a>
 File Formats</h2>
 <p>Le contenu développé lors d'une session <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> peut être enregistré pour une utilisation ultérieure de trois manières différentes :</p>
-<h3><a class="anchor" id="autotoc_md287"></a>
+<h3><a class="anchor" id="autotoc_md288"></a>
 .mac</h3>
 <p><code>.mac</code> files are ordinary text files that contain <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> commands. They can be read using _Maxima_’s <code>batch()</code> or <code>load()</code> command or _wxMaxima_’s File/Batch File menu entry.</p>
 <p>Un exemple est présenté ci-dessous. <code>Quadratic.mac</code> définit une fonction, puis génère un tracé avec <code>wxdraw2d()</code>. Ensuite, le contenu du fichier <code>Quadratic.mac</code> est affiché et la fonction nouvellement définie <code>f()</code> est évaluée.</p>
 <p><img src="./BatchImage.png" alt="Chargement d'un fichier avec `batch()`" class="inline"/></p>
 <p>Attention : Bien que le fichier <code>Quadratic.mac</code> ait l'extension habituelle de <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> (<code>.mac</code>), il ne peut être lu que par <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>, car la commande <code>wxdraw2d()</code> est une extension de <a class="el" href="classwxMaxima.html">wxMaxima</a> à <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>. <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> en ligne de commande ignorera la commande inconnue <code>wxdraw2d()</code> et l'affichera à l'identique en sortie.</p>
 <p>You can be use <code>.mac</code> files for writing your own library of macros. But since they don’t contain enough structural information they cannot be read back as a <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> session.</p>
-<h3><a class="anchor" id="autotoc_md288"></a>
+<h3><a class="anchor" id="autotoc_md289"></a>
 .wxm</h3>
 <p><code>.wxm</code> files contain the worksheet except for _Maxima_’s output. On <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> versions &gt;5.38 they can be read using _Maxima_’s <code>load()</code> function just as .mac files. Well - mostly. Questions (like <code>asksign(x)</code>) are problematic, as the answer is written in the <code>.wxm</code> file (so that it can be suggested after loading), but that can <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> not evaluate. You can prevent <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> from asking questions by using <code>assume()</code> to declare some properties, <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> wants to know.</p>
 <p>Avec ce format en texte brut, il est parfois inévitable que les feuilles de calcul utilisant de nouvelles fonctionnalités ne soient pas rétrocompatibles avec les anciennes versions de <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>.</p>
-<h4><a class="anchor" id="autotoc_md289"></a>
+<h4><a class="anchor" id="autotoc_md290"></a>
 File format of wxm files</h4>
 <p>Il s'agit simplement d'un fichier texte brut (vous pouvez l'ouvrir avec un éditeur de texte), contenant le contenu des cellules sous forme de commentaires spéciaux <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>.</p>
 <p>Cela commence par le commentaire suivant :</p>
@@ -944,15 +944,15 @@ Especially when testing new locale settings, a message box "locale ’xx_YY’ c
 <h2><a class="anchor" id="autotoc_md360"></a>
 How can I use symbols for real numbers, natural numbers (ℝ, ℕ), etc.?</h2>
 <p>You can find these symbols in the Unicode sidebar (search for ’double-struck capital’). But the selected font must also support these symbols. If they do not display properly, select another font.</p>
-<h2><a class="anchor" id="autotoc_md361"></a>
+<h2><a class="anchor" id="autotoc_md362"></a>
 How can a Maxima script determine, if it is running under wxMaxima or command line Maxima?</h2>
 <p>Si <a class="el" href="classwxMaxima.html">wxMaxima</a> est utilisé, la variable <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> <code>maxima_frontend</code> est définie sur <code>wxmaxima</code>. Dans ce cas, la variable <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> <code>maxima_frontend_version</code> contient la version de <a class="el" href="classwxMaxima.html">wxMaxima</a>.</p>
 <p>Si aucun programme pour le frontend n'est utilisé (si vous utilisez <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> en ligne de commande), ces variables valent <code>false</code>.</p>
-<h2><a class="anchor" id="autotoc_md362"></a>
+<h2><a class="anchor" id="autotoc_md363"></a>
 Help! I can not save my document!</h2>
 <p>If saving as wxmx file does not work, try saving the document as wxm file (and vice versa). And you can also try to remove all output (Menu Cell-&gt;Remove all output) and save that file, maybe some unexpected output causes issues during the save process.</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md363"></a>
+<h1><a class="anchor" id="autotoc_md364"></a>
 Command-line arguments</h1>
 <p>Généralement, les programmes dotés d'une interface graphique se lancent simplement en cliquant sur une icône ou une entrée de menu. WxMaxima, lorsqu'il est démarré depuis la ligne de commande, accepte néanmoins certains arguments.</p>
 <ul>
@@ -974,7 +974,7 @@ Command-line arguments</h1>
 </ul>
 <p>Certains systèmes d'exploitation peuvent utiliser un tiret long (—) au lieu d'un tiret court (-) devant les options en ligne de commande.</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md364"></a>
+<h1><a class="anchor" id="autotoc_md365"></a>
 About the program, contributing to wxMaxima</h1>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> est principalement développé en C++ avec le framework <a href="https://www.wxwidgets.org">wxWidgets</a>, et utilise <a href="https://www.cmake.org">CMake</a> comme système de build. Une petite partie est écrite en Lisp. Si vous maîtrisez ces langages et souhaitez contribuer à ce projet open source, vous pouvez rejoindre l’équipe sur <a href="https://github.com/wxMaxima-developers/wxmaxima">GitHub</a>.</p>
 <p>Mais les programmeurs ne sont pas les seul·es à pouvoir contribuer ! Vous pouvez aussi aider à améliorer <a class="el" href="classwxMaxima.html">wxMaxima</a> en améliorant la documentation, en signalant (ou corrigeant) des bugs, en proposant de nouvelles fonctionnalités, en traduisant l’interface ou le manuel dans votre langue (consultez le fichier README.md dans le <a href="https://github.com/wxMaxima-developers/wxmaxima/tree/main/locales">dossier locales</a> pour savoir comment procéder).</p>
