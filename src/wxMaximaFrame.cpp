@@ -223,8 +223,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
                         .RightDockable(true)
                         .MinSize(wxSize(100 * GetContentScaleFactor(),
                                         100 * GetContentScaleFactor()))
-                        .PaneBorder(false)
-                        .Row(2));
+                        .PaneBorder(false));
 
 
       GetWorksheet()->m_mainToolBar = new ToolBar(this);
@@ -480,6 +479,11 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
 
   // It somehow is possible to hide the Maxima worksheet - which renders
   // wxMaxima basically useless => force it to be enabled.
+  // A center pane's dock layer, row and position must all be 0 (see
+  // wxAuiPaneInfo::IsValid()) -- LoadPerspective() above may have loaded a
+  // stale, non-zero value for any of the three from an old saved
+  // perspective, so force all three back to 0 explicitly rather than
+  // relying on whatever was there before.
   m_manager.GetPane(m_sidebarNames[EventIDs::menu_pane_console]).Show(true)
     .Center()
     .Show(true)
@@ -491,7 +495,9 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
     .RightDockable(true)
     .MinSize(wxSize(100, 100))
     .PaneBorder(false)
-    .Row(2);
+    .Layer(0)
+    .Row(0)
+    .Position(0);
 
   AuiManagerUpdate();
 
