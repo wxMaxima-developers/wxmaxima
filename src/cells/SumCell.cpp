@@ -70,7 +70,12 @@ void SumCell::MakeBreakUpCells() {
   m_comma2 = std::make_unique<TextCell>(m_group, m_configuration, wxS(","));
   m_comma3 = std::make_unique<TextCell>(m_group, m_configuration, wxS(","));
   m_open = std::make_unique<TextCell>(m_group, m_configuration, GetMaximaCommandName());
+  static_cast<TextCell &>(*m_open).DontEscapeOpeningParenthesis();
   m_close = std::make_unique<TextCell>(m_group, m_configuration, wxS(")"));
+}
+
+void SumCell::RefreshBreakUpCommandName() const {
+  m_open->SetValue(GetMaximaCommandName());
 }
 
 ParenCell *SumCell::Paren() const {
