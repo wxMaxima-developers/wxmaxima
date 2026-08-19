@@ -1,5 +1,15 @@
 # Current development version
 
+- Fixed `product()`/`prod()` cells showing the wrong operator text ("sum(")
+  once broken into lines, and rendering as nothing at all when they weren't
+  broken -- both caused by `ProductCell` failing to reach the code it
+  inherits from `SumCell`: a virtual call made during `SumCell`'s own
+  constructor can never dispatch to `ProductCell`'s override, and two
+  do-nothing `SetCurrentPoint()`/`Draw()` overrides skipped `SumCell`'s
+  actual positioning/drawing logic entirely.
+- Fixed an assert on newer wxWidgets ("Center pane must have dock layer, row
+  and pos set to 0") from the worksheet's AUI pane being declared with both
+  `.Center()` and a (meaningless, for a center pane) `.Row(2)`.
 - Fixed Windows Dark Mode only affecting the worksheet, not the rest of the
   interface (GH #2274). `wxLogWindow`'s constructor always creates a real
   `wxFrame` under the hood regardless of its "show" argument, and wxMaxima

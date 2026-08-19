@@ -276,6 +276,37 @@ a local TCP socket.
   - **Linux/GTK Timing:** On Linux (especially KDE Plasma with Global Menus), calling `m_manager.Update()` can disrupt the menu bar if it's already attached. This is a known environmental issue in the interaction between wxWidgets, GTK3, and the KDE Global Menu proxy.
     - **Automated Fix:** On systems with wxWidgets <= 3.2 running on KDE, Unity, or with `appmenu-gtk-module` enabled, wxMaxima automatically sets `UBUNTU_MENUPROXY=0` at startup in `main.cpp` to force menus to remain within the window and prevent disappearance.
     - If the menu still disappears, clearing `GTK_MODULES` (e.g., `GTK_MODULES=""`) can also restore local menus.
+  - **Center pane must have dock layer/row/position all 0 (found via a
+    third-party GTK4 wxWidgets port hitting the assert in
+    `framemanager.cpp`'s `wxAuiPaneInfo::IsValid()`; the underlying bug is
+    wxMaxima's own, not that port's, and not GTK4-specific).**
+    `wxMaximaFrame.cpp` declared the worksheet/console pane with both
+    `.Center()` *and* `.Row(2)` -- twice: once in the initial `AddPane()`
+    call, and again in the post-`LoadPerspective()` "the loaded perspective
+    might be broken, force sane values back" defensive block (both added in
+    2019's "Try harder to make broken perspectives work again", apparently
+    meant to distinguish the console pane's row from the other sidebars'
+    `.Row(1)`). Per `wxAuiPaneInfo::IsValid()`'s own contract, a center
+    pane's `dock_layer`/`dock_row`/`dock_pos` must all be exactly 0 --
+    `Row(2)` violates that unconditionally. This most likely went unnoticed
+    on the officially-supported wxWidgets 3.0.5-3.2.x/GTK3 combination
+    either because that older `IsValid()` didn't check this for center
+    panes, or because assertions are compiled out (`NDEBUG`) in the release
+    builds most users and CI actually run -- `IsValid()`'s own fallback
+    return value (`dock_layer==0 && dock_row==0 && dock_pos==0`, i.e.
+    `false` here even without the assert firing) suggests this was already
+    silently making the pane report itself invalid, just never loudly
+    enough to notice. Since only one pane is ever `.Center()`, row ordering
+    is meaningless for it regardless (the center pane always fills
+    whatever space the docked side panes don't use, irrespective of a row
+    number that has no other center pane to be ordered against) -- so
+    `.Row(2)` never had any real layout effect to lose. Fixed by dropping
+    `.Row(2)` from the initial `AddPane()` call, and by making the
+    post-`LoadPerspective()` defensive block explicitly force `.Layer(0)
+    .Row(0).Position(0)` (matching its own "overwrite whatever the loaded
+    perspective got wrong" stated purpose, rather than only partially
+    addressing the same invariant `LoadPerspective()` could equally well
+    have clobbered).
 - **Dockable "Find and Replace" (GH #2249, `Configuration::FindDialogDockable()`):**
   `FindReplaceDialog`/`FindReplacePane` were already split apart (a `wxDialog`
   wrapper around a `wxPanel` holding the actual controls) specifically
@@ -1266,6 +1297,68 @@ tried without rebuilding.
   constructor replaces `m_open`/`m_close` with fresh "{"/"}" `TextCell`s but
   never called `SetStyle(TS_FUNCTION)` on them the way `ListCell`'s own
   constructor does for "["/"]", leaving the braces in the wrong style.
+
+- **`ProductCell` showing "sum(" instead of "product(" when broken into
+  lines, and rendering as nothing at all when it isn't (found live, no GH
+  issue filed yet) -- two independent bugs, both variations of mistakes
+  already documented elsewhere in this file.**
+  1. `SumCell::MakeBreakUpCells()` (called from `SumCell`'s own
+     constructor, `SumCell.cpp`) builds `m_open`'s text from the virtual
+     `GetMaximaCommandName()`. A virtual call made during a base class's
+     constructor can never dispatch to a derived class's override --
+     `ProductCell`'s part of the object doesn't exist yet at that point --
+     so `m_open` was unconditionally built from `SumCell::
+     GetMaximaCommandName()` ("sum("/"lsum(") even for a genuine
+     `ProductCell`, regardless of how the cell was later broken into
+     lines. Fixed with a new protected `SumCell::RefreshBreakUpCommandName()`
+     that re-applies `GetMaximaCommandName()` to the already-built `m_open`
+     via `TextCell::SetValue()`; `ProductCell`'s constructor calls it once,
+     from its own constructor body (where virtual dispatch has already
+     started resolving to `ProductCell`'s overrides), immediately after
+     delegating to `SumCell`'s constructor. Any future `SumCell` subclass
+     that overrides `GetMaximaCommandName()` must do the same.
+  2. `ProductCell::SetCurrentPoint()`/`Draw()` (`ProductCell.cpp`) only
+     ever called `Cell::SetCurrentPoint()`/`Cell::Draw()` -- skipping
+     `SumCell::SetCurrentPoint()`/`SumCell::Draw()` entirely, which are the
+     implementations that actually position/paint the operator glyph, the
+     limits and the base. Exactly the same "override does strictly less
+     than what it shadows and had no reason to exist" shape as the
+     `SetCell` bug immediately above this entry: an unbroken `ProductCell`
+     drew nothing, while the underlying value was computed correctly (same
+     "invisible, not wrong" symptom, same root cause pattern, different
+     cell). Fixed by deleting both overrides outright (header and source),
+     letting `ProductCell` inherit `SumCell`'s implementations -- which is
+     safe here specifically because `Draw()`/`SetCurrentPoint()` never run
+     during construction, so by the time they're actually called,
+     `GetSvgSymbolData()`/`GetSymbolSize()`/... already dispatch correctly
+     to `ProductCell`'s own overrides.
+  Confirmed live in Xvfb: `product(k,k,1,n);` rendered the correct Π glyph
+  with `n`/`k=1` once unbroken-form positioning was fixed (previously blank
+  on unmodified `main`); the broken-form text bug was pinned deterministically
+  via a new regression test (`test/unit_tests/test_LayoutInvariants.cpp`,
+  `SCENARIO("A ProductCell positions its symbol/limits/base and breaks up
+  with the right command name")`) that parses real `wxxml-sum`-shaped XML
+  through `MathParser` (no live Maxima needed, mirroring the `SetCell`
+  scenario's own pattern) and checks `GetBrokenCell(0)`'s text is
+  `"product("`, not `"sum("` -- reverting the fix reproduces both original
+  symptoms (confirmed by re-running the test against the unfixed code).
+  Auditing `SumCell::MakeBreakUpCells()` while fixing this also turned up a
+  third, smaller, unrelated bug: unlike every sibling cell with an analogous
+  `"name("` opening glyph (`BoxCell`, `AbsCell`, `SqrtCell`, `ExptCell`,
+  `ConjugateCell`, `NamedBoxCell` -- all call `DontEscapeOpeningParenthesis()`
+  on their `m_open` right after constructing it), `SumCell`'s `m_open` never
+  did, so `TextCell::ToString()`'s `TS_FUNCTION`-style quoting (the default
+  `TextCell` style, since `MakeBreakUpCells()` never calls `SetStyle()`
+  either) escaped the trailing "(" into a literal backslash-paren whenever
+  that cell's own `ToString()` was read directly (e.g. the new regression
+  test's own `GetBrokenCell(0)->ToString()` check, before this was noticed
+  and fixed) -- invisible on screen (`Draw()` paints `m_displayedText`,
+  which this escaping logic never touches) and invisible in `SumCell::
+  ToString()`'s own clipboard/copy-as-text output (it builds directly from
+  `GetMaximaCommandName()`, never through `m_open`), so this specific
+  escaping bug had no live user-visible symptom found so far -- fixed
+  anyway since it's a one-line, well-precedented, no-risk addition in the
+  exact function already being edited.
 
 - **"Don't unfold cells just because their folded tree is being evaluated"
   (GH #1952):** `Worksheet::ScrollToError()` -- called automatically by
