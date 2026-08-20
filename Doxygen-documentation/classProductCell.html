@@ -103,19 +103,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af41b1c6a4154d50f5c544ee25675669b"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classCellTypeInfo.html">CellTypeInfo</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProductCell.html#af41b1c6a4154d50f5c544ee25675669b">GetInfo</a> () override</td></tr>
 <tr class="memdesc:af41b1c6a4154d50f5c544ee25675669b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the information about this cell's type.  <br /></td></tr>
 <tr class="separator:af41b1c6a4154d50f5c544ee25675669b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a62a2e2bdce3c16ccf3a707b6a8857aa7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProductCell.html#a62a2e2bdce3c16ccf3a707b6a8857aa7">SetCurrentPoint</a> (wxPoint point) const override</td></tr>
-<tr class="memdesc:a62a2e2bdce3c16ccf3a707b6a8857aa7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pass 2: Arrangement.  <br /></td></tr>
-<tr class="separator:a62a2e2bdce3c16ccf3a707b6a8857aa7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afef7c01dddc0c4b80de2aadf5b355056"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProductCell.html#afef7c01dddc0c4b80de2aadf5b355056">Draw</a> (wxDC *dc, wxDC *antialiassingDC) override</td></tr>
-<tr class="memdesc:afef7c01dddc0c4b80de2aadf5b355056"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pass 3 (Paint): Renders the cell using pre-calculated coordinates.  <br /></td></tr>
-<tr class="separator:afef7c01dddc0c4b80de2aadf5b355056"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac3a292ab7d72829835b49ceb185e2a46"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProductCell.html#ac3a292ab7d72829835b49ceb185e2a46">SetCurrentPoint</a> (wxPoint point) const</td></tr>
-<tr class="memdesc:ac3a292ab7d72829835b49ceb185e2a46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pass 2: Arrangement.  <br /></td></tr>
-<tr class="separator:ac3a292ab7d72829835b49ceb185e2a46"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7fe7fb3d919065acb6827a1f971703b2"><td class="memItemLeft" align="right" valign="top"><a id="a7fe7fb3d919065acb6827a1f971703b2" name="a7fe7fb3d919065acb6827a1f971703b2"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetCurrentPoint</b> (int x, int y) const</td></tr>
-<tr class="memdesc:a7fe7fb3d919065acb6827a1f971703b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the position for the cell and convenience overload. <br /></td></tr>
-<tr class="separator:a7fe7fb3d919065acb6827a1f971703b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0a05b4b7cb83e313e37e7d9a86ba1747"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSumCell.html#a0a05b4b7cb83e313e37e7d9a86ba1747">GetInnerCellCount</a> () const override</td></tr>
 <tr class="memdesc:a0a05b4b7cb83e313e37e7d9a86ba1747"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of inner cells - for use by the iterators.  <br /></td></tr>
 <tr class="separator:a0a05b4b7cb83e313e37e7d9a86ba1747"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -125,6 +112,19 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetCurrentPoint</b> (
 <tr class="memitem:a7cbe7959fe940113e9a3684271d43897"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSumCell.html#a7cbe7959fe940113e9a3684271d43897">Recalculate</a> (const <a class="el" href="classAFontSize.html">AFontSize</a> fontsize) const override</td></tr>
 <tr class="memdesc:a7cbe7959fe940113e9a3684271d43897"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recalculate the size of the cell and the difference between top and center.  <br /></td></tr>
 <tr class="separator:a7cbe7959fe940113e9a3684271d43897"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa03412a740a3783ed7f367aab04824a8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSumCell.html#aa03412a740a3783ed7f367aab04824a8">SetCurrentPoint</a> (wxPoint point) const override</td></tr>
+<tr class="memdesc:aa03412a740a3783ed7f367aab04824a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pass 2: Arrangement.  <br /></td></tr>
+<tr class="separator:aa03412a740a3783ed7f367aab04824a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3a292ab7d72829835b49ceb185e2a46"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSumCell.html#ac3a292ab7d72829835b49ceb185e2a46">SetCurrentPoint</a> (wxPoint point) const</td></tr>
+<tr class="memdesc:ac3a292ab7d72829835b49ceb185e2a46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pass 2: Arrangement.  <br /></td></tr>
+<tr class="separator:ac3a292ab7d72829835b49ceb185e2a46"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7fe7fb3d919065acb6827a1f971703b2"><td class="memItemLeft" align="right" valign="top"><a id="a7fe7fb3d919065acb6827a1f971703b2" name="a7fe7fb3d919065acb6827a1f971703b2"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetCurrentPoint</b> (int x, int y) const</td></tr>
+<tr class="memdesc:a7fe7fb3d919065acb6827a1f971703b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the position for the cell and convenience overload. <br /></td></tr>
+<tr class="separator:a7fe7fb3d919065acb6827a1f971703b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab0cedbd880f9da4620e70c16c9c26b3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSumCell.html#aab0cedbd880f9da4620e70c16c9c26b3">Draw</a> (wxDC *dc, wxDC *antialiassingDC) override</td></tr>
+<tr class="memdesc:aab0cedbd880f9da4620e70c16c9c26b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pass 3 (Paint): Renders the cell using pre-calculated coordinates.  <br /></td></tr>
+<tr class="separator:aab0cedbd880f9da4620e70c16c9c26b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a14934a6057a30c6ae5b193f619579a8b"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSumCell.html#a14934a6057a30c6ae5b193f619579a8b">ToMathML</a> () const override</td></tr>
 <tr class="memdesc:a14934a6057a30c6ae5b193f619579a8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert this cell to a representation fit for saving in a .wxmx file.  <br /></td></tr>
 <tr class="separator:a14934a6057a30c6ae5b193f619579a8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -718,6 +718,9 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:aeac8f5461eb2e3ff387463a75f062fa3"><td class="memItemLeft" align="right" valign="top">virtual const wxSize&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProductCell.html#aeac8f5461eb2e3ff387463a75f062fa3">GetSymbolSize</a> () const override</td></tr>
 <tr class="memdesc:aeac8f5461eb2e3ff387463a75f062fa3"><td class="mdescLeft">&#160;</td><td class="mdescRight">How big do we want our svg symbol to be?  <br /></td></tr>
 <tr class="separator:aeac8f5461eb2e3ff387463a75f062fa3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e0940929cab398f3316fa257320859f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSumCell.html#a7e0940929cab398f3316fa257320859f">RefreshBreakUpCommandName</a> () const</td></tr>
+<tr class="memdesc:a7e0940929cab398f3316fa257320859f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Re-applies <a class="el" href="classSumCell.html#a1aad1f4519717eb5aff1312ca8ab5975" title="What maxima command name corresponds to this cell?">GetMaximaCommandName()</a> to the already-created m_open cell.  <br /></td></tr>
+<tr class="separator:a7e0940929cab398f3316fa257320859f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adb00dc81c1e3163c58985cfc6b46a36a"><td class="memItemLeft" align="right" valign="top"><a id="adb00dc81c1e3163c58985cfc6b46a36a" name="adb00dc81c1e3163c58985cfc6b46a36a"></a>
 <a class="el" href="classCell.html">Cell</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>Base</b> () const</td></tr>
 <tr class="memdesc:adb00dc81c1e3163c58985cfc6b46a36a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The base cell owned by the paren (it's without the paren) <br /></td></tr>
@@ -1403,8 +1406,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 
 </div>
 </div>
-<a id="afef7c01dddc0c4b80de2aadf5b355056" name="afef7c01dddc0c4b80de2aadf5b355056"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afef7c01dddc0c4b80de2aadf5b355056">&#9670;&#160;</a></span>Draw()</h2>
+<a id="aab0cedbd880f9da4620e70c16c9c26b3" name="aab0cedbd880f9da4620e70c16c9c26b3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aab0cedbd880f9da4620e70c16c9c26b3">&#9670;&#160;</a></span>Draw()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1413,7 +1416,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void ProductCell::Draw </td>
+          <td class="memname">void SumCell::Draw </td>
           <td>(</td>
           <td class="paramtype">wxDC *&#160;</td>
           <td class="paramname"><em>dc</em>, </td>
@@ -1432,7 +1435,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -1532,7 +1535,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 </div><div class="memdoc">
 
 <p>Helper to draw a list of cells. </p>
-<p>Iterates through the draw list and calls <a class="el" href="classProductCell.html#afef7c01dddc0c4b80de2aadf5b355056" title="Pass 3 (Paint): Renders the cell using pre-calculated coordinates.">Draw()</a> on each cell. </p>
+<p>Iterates through the draw list and calls <a class="el" href="classSumCell.html#aab0cedbd880f9da4620e70c16c9c26b3" title="Pass 3 (Paint): Renders the cell using pre-calculated coordinates.">Draw()</a> on each cell. </p>
 
 </div>
 </div>
@@ -3105,6 +3108,34 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 
 </div>
 </div>
+<a id="a7e0940929cab398f3316fa257320859f" name="a7e0940929cab398f3316fa257320859f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e0940929cab398f3316fa257320859f">&#9670;&#160;</a></span>RefreshBreakUpCommandName()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SumCell::RefreshBreakUpCommandName </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Re-applies <a class="el" href="classProductCell.html#aa22672c4abfc395c72df5f29ceedc637" title="What maxima command name corresponds to this cell?">GetMaximaCommandName()</a> to the already-created m_open cell. </p>
+<p>MakeBreakUpCells() (called from <a class="el" href="classSumCell.html">SumCell</a>'s own constructor) can only ever see <a class="el" href="classSumCell.html#a1aad1f4519717eb5aff1312ca8ab5975" title="What maxima command name corresponds to this cell?">SumCell::GetMaximaCommandName()</a>: a virtual call made during a base class's constructor never reaches a derived class's override, since the derived part of the object doesn't exist yet. Every subclass that overrides <a class="el" href="classProductCell.html#aa22672c4abfc395c72df5f29ceedc637" title="What maxima command name corresponds to this cell?">GetMaximaCommandName()</a> (currently only <a class="el" href="classProductCell.html">ProductCell</a>) MUST call this once from its own constructor body, after <a class="el" href="classSumCell.html">SumCell</a>'s constructor has finished running. </p>
+
+</div>
+</div>
 <a id="ad5d258cb7f8d84456de9c7ddd8a1fa7d" name="ad5d258cb7f8d84456de9c7ddd8a1fa7d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad5d258cb7f8d84456de9c7ddd8a1fa7d">&#9670;&#160;</a></span>ResetSize_Recursively()</h2>
 
@@ -3371,7 +3402,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -3386,12 +3417,12 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
   </dd>
 </dl>
 
-<p>Reimplemented from <a class="el" href="classSumCell.html#aa03412a740a3783ed7f367aab04824a8">SumCell</a>.</p>
+<p>Reimplemented from <a class="el" href="classCell.html#ac3a292ab7d72829835b49ceb185e2a46">Cell</a>.</p>
 
 </div>
 </div>
-<a id="a62a2e2bdce3c16ccf3a707b6a8857aa7" name="a62a2e2bdce3c16ccf3a707b6a8857aa7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a62a2e2bdce3c16ccf3a707b6a8857aa7">&#9670;&#160;</a></span>SetCurrentPoint() <span class="overload">[2/2]</span></h2>
+<a id="aa03412a740a3783ed7f367aab04824a8" name="aa03412a740a3783ed7f367aab04824a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa03412a740a3783ed7f367aab04824a8">&#9670;&#160;</a></span>SetCurrentPoint() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3400,7 +3431,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void ProductCell::SetCurrentPoint </td>
+          <td class="memname">void SumCell::SetCurrentPoint </td>
           <td>(</td>
           <td class="paramtype">wxPoint&#160;</td>
           <td class="paramname"><em>point</em></td><td>)</td>
@@ -3409,7 +3440,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

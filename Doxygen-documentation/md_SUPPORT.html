@@ -73,25 +73,25 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p><a class="el" href="classwxMaxima.html">wxMaxima</a> is the graphical <b>front-end</b> that displays math and handles user input in a worksheet. <b><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></b> is the computer algebra system — the "math engine" that does the actual calculations. They are two separate projects, so where to go depends on what your question or problem is about.</p>
-<h1><a class="anchor" id="autotoc_md1038"></a>
+<h1><a class="anchor" id="autotoc_md1026"></a>
 A quick test: wxMaxima or Maxima?</h1>
 <p>Run the same command in a plain terminal with <code>maxima</code> (no <a class="el" href="classwxMaxima.html">wxMaxima</a>). If you get the same wrong or missing <b>result</b> there, it is a <b><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></b> issue. If the problem only happens <b>inside the <a class="el" href="classwxMaxima.html">wxMaxima</a> window</b> (a crash, a display glitch, a menu, file loading/saving, …), it is a <b><a class="el" href="classwxMaxima.html">wxMaxima</a></b> issue.</p>
 <p>If unsure just report the problem to the <a class="el" href="classwxMaxima.html">wxMaxima</a> project so its members will find out where the problem lies.</p>
 <p><b>Note:</b> this quick test can be misleading for the macOS quarantine issue below &ndash; a plain terminal session doesn't need the local socket <a class="el" href="classwxMaxima.html">wxMaxima</a> uses to talk to <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>, so <code>maxima</code> can look completely fine there even when <a class="el" href="classwxMaxima.html">wxMaxima</a> cannot reach it at all.</p>
-<h1><a class="anchor" id="autotoc_md1039"></a>
+<h1><a class="anchor" id="autotoc_md1027"></a>
 Known issues</h1>
-<h2><a class="anchor" id="autotoc_md1040"></a>
+<h2><a class="anchor" id="autotoc_md1028"></a>
 macOS: wxMaxima never evaluates anything (stuck on "Reading Maxima output")</h2>
 <p>The GUI opens and is responsive, but every cell just sits in the evaluation queue forever, with the status bar stuck on "Reading Maxima output" (see <a href="https://github.com/wxMaxima-developers/wxmaxima/issues/1761">#1761</a>). This is usually <b>macOS Gatekeeper quarantining the <code>maxima</code> binary</b> &ndash; a binary installed via Homebrew, MacPorts, or downloaded directly can be flagged <code>com.apple.quarantine</code>, which then silently blocks the local socket connection <a class="el" href="classwxMaxima.html">wxMaxima</a> uses to talk to it. Fix it from a Terminal:</p>
 <div class="fragment"><div class="line">xattr -dr com.apple.quarantine /path/to/maxima</div>
 </div><!-- fragment --><p>If the exact binary path is unclear, running it against the whole install prefix also works, e.g. <code>$(brew --prefix)</code> for Homebrew or <code>/opt/local</code> for MacPorts.</p>
-<h1><a class="anchor" id="autotoc_md1041"></a>
+<h1><a class="anchor" id="autotoc_md1029"></a>
 The wxMaxima GUI (this project)</h1>
 <ul>
 <li><b>Questions, ideas, general discussion</b> → <a href="https://github.com/wxMaxima-developers/wxmaxima/discussions">GitHub Discussions</a></li>
 <li><b>Bugs in the user interface</b> (crashes, rendering, menus, file handling, …) → <a href="https://github.com/wxMaxima-developers/wxmaxima/issues">GitHub Issues</a></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1042"></a>
+<h1><a class="anchor" id="autotoc_md1030"></a>
 Maxima, the computer algebra system</h1>
 <p>If the problem is about the <b>mathematics</b> — a wrong or missing result, an integral <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> cannot solve, a function that misbehaves — it comes from <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> itself, not from the GUI:</p>
 <ul>
@@ -99,7 +99,7 @@ Maxima, the computer algebra system</h1>
 <li><b>Questions about using <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></b> → the <a href="https://maxima.sourceforge.io/maximalist.html">Maxima mailing list</a></li>
 </ul>
 <p>More about <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> itself: <a href="https://maxima.sourceforge.io/">https://maxima.sourceforge.io/</a>.</p>
-<h1><a class="anchor" id="autotoc_md1043"></a>
+<h1><a class="anchor" id="autotoc_md1031"></a>
 Crash reports contents</h1>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> contains a crash report generator that bundles all the information about what lead to the crash.</p>
 <p>The only information from the crash report that is really helpful is</p>

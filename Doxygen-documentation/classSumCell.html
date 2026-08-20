@@ -697,6 +697,9 @@ static size_t&#160;</td><td class="memItemRight" valign="bottom"><b>GetLiveContr
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
+<tr class="memitem:a7e0940929cab398f3316fa257320859f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSumCell.html#a7e0940929cab398f3316fa257320859f">RefreshBreakUpCommandName</a> () const</td></tr>
+<tr class="memdesc:a7e0940929cab398f3316fa257320859f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Re-applies <a class="el" href="classSumCell.html#a1aad1f4519717eb5aff1312ca8ab5975" title="What maxima command name corresponds to this cell?">GetMaximaCommandName()</a> to the already-created m_open cell.  <br /></td></tr>
+<tr class="separator:a7e0940929cab398f3316fa257320859f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1aad1f4519717eb5aff1312ca8ab5975"><td class="memItemLeft" align="right" valign="top">virtual const wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSumCell.html#a1aad1f4519717eb5aff1312ca8ab5975">GetMaximaCommandName</a> () const</td></tr>
 <tr class="memdesc:a1aad1f4519717eb5aff1312ca8ab5975"><td class="mdescLeft">&#160;</td><td class="mdescRight">What maxima command name corresponds to this cell?  <br /></td></tr>
 <tr class="separator:a1aad1f4519717eb5aff1312ca8ab5975"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3108,6 +3111,34 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 
 </div>
 </div>
+<a id="a7e0940929cab398f3316fa257320859f" name="a7e0940929cab398f3316fa257320859f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e0940929cab398f3316fa257320859f">&#9670;&#160;</a></span>RefreshBreakUpCommandName()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SumCell::RefreshBreakUpCommandName </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Re-applies <a class="el" href="classSumCell.html#a1aad1f4519717eb5aff1312ca8ab5975" title="What maxima command name corresponds to this cell?">GetMaximaCommandName()</a> to the already-created m_open cell. </p>
+<p>MakeBreakUpCells() (called from <a class="el" href="classSumCell.html">SumCell</a>'s own constructor) can only ever see <a class="el" href="classSumCell.html#a1aad1f4519717eb5aff1312ca8ab5975" title="What maxima command name corresponds to this cell?">SumCell::GetMaximaCommandName()</a>: a virtual call made during a base class's constructor never reaches a derived class's override, since the derived part of the object doesn't exist yet. Every subclass that overrides <a class="el" href="classSumCell.html#a1aad1f4519717eb5aff1312ca8ab5975" title="What maxima command name corresponds to this cell?">GetMaximaCommandName()</a> (currently only <a class="el" href="classProductCell.html">ProductCell</a>) MUST call this once from its own constructor body, after <a class="el" href="classSumCell.html">SumCell</a>'s constructor has finished running. </p>
+
+</div>
+</div>
 <a id="ad5d258cb7f8d84456de9c7ddd8a1fa7d" name="ad5d258cb7f8d84456de9c7ddd8a1fa7d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad5d258cb7f8d84456de9c7ddd8a1fa7d">&#9670;&#160;</a></span>ResetSize_Recursively()</h2>
 
@@ -3428,8 +3459,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 </dl>
 
 <p>Reimplemented from <a class="el" href="classCell.html#ac3a292ab7d72829835b49ceb185e2a46">Cell</a>.</p>
-
-<p>Reimplemented in <a class="el" href="classProductCell.html#ac3a292ab7d72829835b49ceb185e2a46">ProductCell</a>.</p>
 
 </div>
 </div>
