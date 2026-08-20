@@ -777,6 +777,45 @@ a local TCP socket.
   `wxApp::SetAppearance()` static call) was reverted for a compile error --
   don't repeat that: `SetAppearance()` is an ordinary (non-static) `wxApp`
   member function.
+  - **Follow-up (found live, 2026-08): that "one `wxLogMessage()` call...
+    safely falls through to whatever the default wx log target is" note
+    above undersold the actual consequence -- "the default wx log target"
+    when no custom one is installed is `wxLogGui`, and `wxLogGui` pops up a
+    real modal dialog for every message, not just errors.** Since
+    `ApplyAppearanceToApp()`'s own diagnostic logging (`"Appearance was
+    successfully changed."` etc., the maintainer's pre-existing debug
+    logging this whole fix was built around keeping) runs from `OnInit()`
+    at the exact point this fix moved `m_logWindow`'s construction *after*,
+    every normal startup now hit that fallback and popped up a modal
+    dialog reporting a mere debug-level message -- worse than the original
+    bug this section fixes, and directly caused by it (the log call was
+    already there before this fix; it only started using the no-custom-
+    target fallback once `m_logWindow` moved later). Fixed by NOT deferring
+    `SetAppearance()` itself (still has to run before the log window's
+    frame exists, unchanged) but only deferring when its result gets
+    logged: `ApplyAppearanceToApp()` gained a `logImmediately` parameter
+    (default `true`, preserving `wxMaxima::ConfigChanged()`'s existing
+    runtime call site unchanged, since a log target already exists by
+    then) and now returns the message as a plain `wxString` instead of
+    logging it directly. `main.cpp`'s startup call passes
+    `logImmediately=false` and holds onto the returned string in a local,
+    then logs it itself with a plain `wxLogMessage()` right after
+    `m_logWindow` is constructed -- by which point a real target exists and
+    the message goes to the (hidden-by-default) log window exactly like
+    every other `wxLogMessage()` call in this app, instead of popping up
+    a dialog. Kept the return type as a version-independent `wxString`
+    (empty when there's nothing to report) rather than the version-gated
+    `wxApp::AppearanceResult` enum itself, so the function's declared
+    signature in `wxMaxima.h` stays valid pre-3.3 too, matching how the
+    rest of this function is already guarded. Live-verified on Linux (this
+    sandbox's wxWidgets 3.2.4 means the whole `#if wxCHECK_VERSION(3, 3,
+    0)` body -- and therefore this exact bug -- is unreachable here,
+    `ApplyAppearanceToApp()` always takes the no-op `#else` branch; the fix
+    is a mechanical, easily-verified-by-reading change, not something this
+    sandbox's build could exercise): builds clean, and a live Xvfb startup
+    shows no unexpected modal dialog (only the normal, unrelated "Did you
+    know?" startup tip, `Show tips at startup` -- present with or without
+    this change).
 
 ### Communication with Maxima
 
@@ -1588,6 +1627,50 @@ tried without rebuilding.
   for the same reason #2229-#2232 were -- no macOS hardware in this
   sandbox -- but it's the same string-formatting/branching mechanism,
   already exercised by the generic path).
+  - **Follow-up (found live, 2026-08): the watchdog fired a false
+    "Maxima isn't connecting" warning on Linux for a large worksheet, with
+    no macOS/Gatekeeper connection at all -- root cause was the watchdog's
+    5-second budget being spent on wxMaxima's own busy-ness, not on
+    Maxima.** `MaximaProcessManager::StartMaxima()` armed the watchdog
+    (`StartOnce(5000)`) immediately after spawning the process -- but one
+    of its callers, `MaximaFileIO::OpenWXMXFile()`, calls `StartMaxima()`
+    *in the middle* of a synchronous sequence: parse the whole worksheet
+    XML into a cell tree (`CreateTreeFromXMLNode()`, before `StartMaxima()`
+    even runs) and, right after `StartMaxima()` returns,
+    `InsertGroupCells()` the tree ("this also requests a recalculate" per
+    its own comment) -- laying out however many cells the worksheet
+    contains, all on the same GUI thread, all before that thread ever
+    returns to the event loop. For a large enough document this alone can
+    exceed 5 seconds. Since the watchdog's `wxTimerEvent` can only be
+    *processed* once the thread is back pumping events, and Maxima's own
+    incoming-connection event is stuck behind the exact same jam, the two
+    end up racing to be processed once the thread frees up -- and when the
+    watchdog's already-queued event happens to be serviced first, it finds
+    `!connected` and fires, even though Maxima tried (or even succeeded)
+    to connect well within its own 5 seconds; the delay was entirely
+    wxMaxima's own busy-work eating into the window it was supposed to
+    spend genuinely listening. Reproduced by tracing the call chain (not
+    by hitting the race live in this sandbox, where the sample worksheets
+    on hand parse fast enough on today's hardware not to trigger it) --
+    `OpenWXMXFile()`'s `CreateTreeFromXMLNode()` / `StartMaxima()` /
+    `InsertGroupCells()` ordering is unambiguous in the source regardless.
+    Fixed by deferring the `StartOnce(5000)` call itself via `CallAfter()`
+    -- the same idiom `StartMaxima()`'s own "Cannot start the maxima
+    binary" dialog a few lines above already uses, and for the identical
+    reason (don't act synchronously inside a call chain that isn't back at
+    the event loop yet). This makes the 5-second countdown start only once
+    wxMaxima is actually idle and able to process an incoming connection,
+    so however long the worksheet's own parse-and-layout took no longer
+    counts against Maxima. `KillMaxima()`'s existing `.Stop()` plus the
+    watchdog handler's own `processAlive` re-check already made this safe
+    against the (rare) case of the deferred callback running after the
+    spawn it was arming for is no longer relevant -- no separate guard
+    needed. Also reworded the non-macOS warning text (still gated on
+    `!__WXOSX__`, unchanged from a working baseline otherwise) to spell
+    out that wxMaxima and Maxima talk over a *local, loopback* socket --
+    users don't necessarily think of "this machine talking to itself" as
+    something a firewall/antivirus's network protection would touch, and
+    some of it blocks loopback inter-process communication too.
 
 ## Layout & Compatibility
 
