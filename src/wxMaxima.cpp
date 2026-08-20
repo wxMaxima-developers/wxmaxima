@@ -159,10 +159,11 @@ wxDECLARE_APP(MyApp);
 // only the worksheet used to switch). It is therefore also called early from
 // MyApp::OnInit(), not just from ConfigChanged() at runtime. Declared in
 // wxMaxima.h so OnInit() can reach it.
-void ApplyAppearanceToApp(Configuration::Appearance appearance) {
+wxString ApplyAppearanceToApp(Configuration::Appearance appearance,
+                              bool logImmediately) {
 #if wxCHECK_VERSION(3, 3, 0)
   if (!wxTheApp)
-    return;
+    return wxEmptyString;
   wxApp::Appearance a = wxApp::Appearance::System;
   switch (appearance) {
   case Configuration::Appearance::light:
