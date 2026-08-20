@@ -368,7 +368,20 @@ bool MaximaProcessManager::StartMaxima(bool force) {
       m_wxMaxima.StatusMaximaBusy(StatusBar::MaximaStatus::wait_for_start);
       // Warn the user (GH #1182) if the process we just spawned is still
       // alive but never connects back to us within a few seconds.
-      m_wxMaxima.m_maximaConnectWatchdogTimer.StartOnce(5000);
+      //
+      // Deferred via CallAfter(): a caller of StartMaxima() (e.g.
+      // MaximaFileIO::OpenWXMXFile(), right after this call returns) often
+      // does substantial synchronous work next -- inserting and laying out
+      // a freshly parsed worksheet, which for a large document can itself
+      // take several seconds on the very same (main, GUI) thread that also
+      // needs to be free to notice Maxima's incoming connection. Arming
+      // the timer here, before that work runs, would spend the watchdog's
+      // whole 5-second budget on our own busy-ness -- and then misreport
+      // it as Maxima having failed to connect. Arming it only once we're
+      // actually back at the event loop (hence genuinely idle and able to
+      // process an incoming connection) measures the 5 seconds fairly.
+      wxMaxima *wxm = &m_wxMaxima;
+      wxm->CallAfter([wxm] { wxm->m_maximaConnectWatchdogTimer.StartOnce(5000); });
     } else {
       m_wxMaxima.m_statusBar->NetworkStatus(StatusBar::offline);
       wxLogMessage(_("Cannot find a maxima binary and no binary chosen in the "

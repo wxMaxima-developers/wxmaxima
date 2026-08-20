@@ -49,6 +49,7 @@
 #include "cells/Cell.h"
 #include "cells/GroupCell.h"
 #include "cells/MatrCell.h"
+#include "cells/ProductCell.h"
 #include "cells/SetCell.h"
 
 #include <cstdlib>
@@ -459,6 +460,78 @@ SCENARIO("A SetCell positions its brace and content cells (GH #2270)") {
       CHECK(open->GetCurrentPoint().x < inner->GetCurrentPoint().x);
       CHECK(inner->GetCurrentPoint().x < close->GetCurrentPoint().x);
       CHECK(close->GetCurrentPoint().x < right);
+    }
+  }
+}
+
+// Maxima output (via wxMathML.lisp's wxxml-sum handler for %product) for
+//   product(k,k,1,n);
+// -- a ProductCell with a non-empty upper limit ("n"), so
+// GetMaximaCommandName() must return "product(", never SumCell's own
+// "sum(".
+// needsparen="true" so DisplayedBase() is m_paren itself (index 1 below) --
+// with needsparen="false" DisplayedBase() would be m_paren's bare inner
+// cell instead, which GetInnerCell(1) does not return.
+static const char *const productMathXml =
+  R"(<mth><lbl altCopy="%o1">(%o1) </lbl><sm type="prod" needsparen="true"><mrow><mi>k</mi><mo>=</mo><mn>1</mn></mrow><mrow><mi>n</mi></mrow><mrow><mi>k</mi></mrow></sm></mth>)";
+
+SCENARIO("A ProductCell positions its symbol/limits/base and breaks up with the right command name") {
+  // Two independent bugs, both from calling a virtual function where it
+  // can't reach ProductCell's override:
+  //
+  // 1. SumCell::MakeBreakUpCells() (run from SumCell's own constructor)
+  //    built m_open's text from GetMaximaCommandName() -- a virtual call
+  //    made during a base class constructor, which can never dispatch to
+  //    ProductCell::GetMaximaCommandName() since the derived part of the
+  //    object doesn't exist yet. m_open ended up permanently reading
+  //    "sum("/"lsum(", even for a product, no matter how the cell was
+  //    later broken into lines.
+  // 2. ProductCell::SetCurrentPoint()/Draw() only called
+  //    Cell::SetCurrentPoint()/Cell::Draw(), skipping SumCell's own
+  //    implementations entirely -- the ones that actually position/paint
+  //    the operator glyph, the limits and the base. The exact same
+  //    "override does strictly less than what it shadows" shape as the
+  //    SetCell bug (GH #2270) right above this scenario: an unbroken
+  //    ProductCell rendered as nothing at all.
+  g_cfg->SetCanvasSize(wxSize(900, 600));
+  g_cfg->SetZoomFactor(1.0);
+
+  GIVEN("a group whose output is product(k,k,1,n)") {
+    auto group = std::make_unique<GroupCell>(g_cfg, GC_TYPE_CODE,
+                                             wxS("product(k,k,1,n);"));
+    MathParser parser(g_cfg);
+    auto output = parser.ParseLine(wxString::FromUTF8(productMathXml));
+    REQUIRE(output != nullptr);
+    group->AppendOutput(std::move(output));
+    group->Recalculate();
+    group->SetCurrentPoint(wxPoint(50, 50));
+
+    ProductCell *prod = dynamic_cast<ProductCell *>(group->GetOutput());
+    REQUIRE(prod != nullptr);
+
+    THEN("unbroken, its symbol/limits/base are all positioned, not left at the sentinel") {
+      CHECK_FALSE(prod->IsBrokenIntoLines());
+      CHECK(prod->GetWidth() > 0);
+      CHECK(prod->GetHeight() > 0);
+
+      // Index 1 = m_paren (the base), 8 = m_over (upper limit),
+      // 9 = m_under (lower limit) -- see SumCell::GetInnerCell().
+      Cell *base = prod->GetInnerCell(1);
+      Cell *over = prod->GetInnerCell(8);
+      Cell *under = prod->GetInnerCell(9);
+      REQUIRE(base != nullptr);
+      REQUIRE(over != nullptr);
+      REQUIRE(under != nullptr);
+      CHECK(base->GetCurrentPoint() != wxPoint(-1, -1));
+      CHECK(over->GetCurrentPoint() != wxPoint(-1, -1));
+      CHECK(under->GetCurrentPoint() != wxPoint(-1, -1));
+    }
+
+    THEN("broken into lines, its command name is product(, never sum(") {
+      REQUIRE(prod->BreakUp());
+      Cell *open = prod->GetBrokenCell(0);
+      REQUIRE(open != nullptr);
+      CHECK(open->ToString() == wxS("product("));
     }
   }
 }

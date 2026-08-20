@@ -772,13 +772,27 @@ private:
 };
 
 //! Apply the chosen light/dark appearance to the native application chrome
-//! (menus, toolbars, sidebars, dialogs) via wxApp::SetAppearance().
+//! (menus, toolbars, sidebars, dialogs) via wxApp::SetAppearance(). This
+//! call itself is never deferred -- only whether it logs its result
+//! immediately is (see logImmediately below); the appearance change has to
+//! happen synchronously, before the first top-level window is created.
 //!
 //! No-op before wxWidgets 3.3. On Windows the native chrome only picks up the
 //! appearance when this is called during startup, before the first top-level
 //! window is created -- so it must run early in MyApp::OnInit() and not only
 //! from wxMaxima::ConfigChanged() at runtime.
-void ApplyAppearanceToApp(Configuration::Appearance appearance);
+//!
+//! Returns a plain description of the result, suitable for wxLogMessage(),
+//! or an empty string if there's nothing to report. If logImmediately is
+//! true (the default), also logs it via wxLogMessage() before returning --
+//! pass false when called before any custom log target has been installed
+//! yet (as MyApp::OnInit() must, since it runs before m_logWindow exists),
+//! since wxLogMessage() with no custom target falls back to wx's own
+//! wxLogGui, which pops up a modal dialog for every message. The caller is
+//! then responsible for logging the returned message itself, once a real
+//! log target exists.
+wxString ApplyAppearanceToApp(Configuration::Appearance appearance,
+                              bool logImmediately = true);
 
 #if wxUSE_DRAG_AND_DROP
 

@@ -1,5 +1,29 @@
 # Current development version
 
+- Fixed a modal dialog popping up at every startup on wxWidgets >= 3.3
+  reporting the (successful) dark/light appearance change as a debug
+  message -- the diagnostic log call ran before wxMaxima's own log window
+  was created (GH #2274 moved it later), so it fell through to wx's
+  default log target, which shows a dialog for every message. The
+  appearance change itself still happens at the same point as before; only
+  logging its result is now deferred until the log window exists.
+- Fixed the "Maxima isn't connecting" warning (GH #1182) sometimes firing
+  spuriously on Linux/Windows for a large worksheet: it was counting the
+  time wxMaxima itself spent parsing and laying out the worksheet against
+  Maxima's 5-second connection budget, instead of only the time wxMaxima
+  was actually free to notice the connection. Also reworded the warning to
+  mention that wxMaxima/Maxima talk over a local loopback socket, which
+  some security software blocks even though no traffic leaves the machine.
+- Fixed `product()`/`prod()` cells showing the wrong operator text ("sum(")
+  once broken into lines, and rendering as nothing at all when they weren't
+  broken -- both caused by `ProductCell` failing to reach the code it
+  inherits from `SumCell`: a virtual call made during `SumCell`'s own
+  constructor can never dispatch to `ProductCell`'s override, and two
+  do-nothing `SetCurrentPoint()`/`Draw()` overrides skipped `SumCell`'s
+  actual positioning/drawing logic entirely.
+- Fixed an assert on newer wxWidgets ("Center pane must have dock layer, row
+  and pos set to 0") from the worksheet's AUI pane being declared with both
+  `.Center()` and a (meaningless, for a center pane) `.Row(2)`.
 - Fixed Windows Dark Mode only affecting the worksheet, not the rest of the
   interface (GH #2274). `wxLogWindow`'s constructor always creates a real
   `wxFrame` under the hood regardless of its "show" argument, and wxMaxima

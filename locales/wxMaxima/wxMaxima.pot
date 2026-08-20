@@ -5440,7 +5440,6 @@ msgid "Insert"
 msgstr ""
 
 #: ../../src/dialogs/ConfigDialogue.cpp:890
-#, c-format
 msgid "Insert % before an operator at the beginning of a cell"
 msgstr ""
 
@@ -6573,7 +6572,7 @@ msgstr ""
 msgid ""
 "Maxima has started, but hasn't connected to wxMaxima within 5 seconds.\n"
 "\n"
-"wxMaxima will keep waiting and periodically retry. If this doesn't resolve itself, check the debug messages sidebar (View > Show Debug Messages) for more detail, or check if a firewall or security software is blocking local network connections to wxMaxima.\n"
+"wxMaxima will keep waiting and periodically retry. If this doesn't resolve itself, check the debug messages sidebar (View > Show Debug Messages) for more detail, or check whether an antivirus or firewall program is blocking the connection -- wxMaxima and Maxima talk to each other over a local (loopback) network socket on this same machine, but some overeager security software blocks that kind of inter-process communication too, not just traffic that actually leaves the computer.\n"
 "\n"
 "Command: %s"
 msgstr ""
@@ -10678,7 +10677,6 @@ msgid "Title"
 msgstr ""
 
 #: ../../src/MaximaCommandMenus.cpp:1961 ../../src/MaximaCommandMenus.cpp:1974
-#, c++-format
 msgid "Title (Sub- and superscripts as x_{10} or x^{10})"
 msgstr ""
 

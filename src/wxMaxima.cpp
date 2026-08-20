@@ -159,10 +159,11 @@ wxDECLARE_APP(MyApp);
 // only the worksheet used to switch). It is therefore also called early from
 // MyApp::OnInit(), not just from ConfigChanged() at runtime. Declared in
 // wxMaxima.h so OnInit() can reach it.
-void ApplyAppearanceToApp(Configuration::Appearance appearance) {
+wxString ApplyAppearanceToApp(Configuration::Appearance appearance,
+                              bool logImmediately) {
 #if wxCHECK_VERSION(3, 3, 0)
   if (!wxTheApp)
-    return;
+    return wxEmptyString;
   wxApp::Appearance a = wxApp::Appearance::System;
   switch (appearance) {
   case Configuration::Appearance::light:
@@ -176,15 +177,29 @@ void ApplyAppearanceToApp(Configuration::Appearance appearance) {
     break;
   }
   wxApp::AppearanceResult app_res = wxTheApp->SetAppearance(a);
+  wxString msg;
   if (app_res == wxApp::AppearanceResult::Failure) {
-    wxLogMessage("Changing the appearance failed.");
+    msg = "Changing the appearance failed.";
   } else if (app_res == wxApp::AppearanceResult::Ok) {
-    wxLogMessage("Appearance was successfully changed.");
+    msg = "Appearance was successfully changed.";
   } else if (app_res == wxApp::AppearanceResult::CannotChange) {
-    wxLogMessage("Appearance can't be changed any more (currently not used).");
+    msg = "Appearance can't be changed any more (currently not used).";
   }
+  // logImmediately=false lets a caller that runs before any custom log
+  // target exists yet (MyApp::OnInit(), before m_logWindow is constructed
+  // -- see the GH #2274 note on why that construction had to move later)
+  // defer the actual wxLogMessage() call until one does: without a custom
+  // wxLogWindow installed, wxLogMessage() falls back to wx's own default
+  // wxLogGui target, which pops up a modal dialog for every message, not
+  // just errors -- exactly the "modal dialogue with that debug message"
+  // this parameter exists to avoid.
+  if (logImmediately && !msg.empty())
+    wxLogMessage("%s", msg);
+  return msg;
 #else
   (void)appearance;
+  (void)logImmediately;
+  return wxEmptyString;
 #endif
 }
 
@@ -2685,9 +2700,13 @@ void wxMaxima::OnTimerEvent(wxTimerEvent &event) {
               "\n"
               "wxMaxima will keep waiting and periodically retry. If this "
               "doesn't resolve itself, check the debug messages sidebar "
-              "(View > Show Debug Messages) for more detail, or check if "
-              "a firewall or security software is blocking local network "
-              "connections to wxMaxima.\n"
+              "(View > Show Debug Messages) for more detail, or check "
+              "whether an antivirus or firewall program is blocking the "
+              "connection -- wxMaxima and Maxima talk to each other over a "
+              "local (loopback) network socket on this same machine, but "
+              "some overeager security software blocks that kind of "
+              "inter-process communication too, not just traffic that "
+              "actually leaves the computer.\n"
               "\n"
               "Command: %s"),
             command),

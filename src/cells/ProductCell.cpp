@@ -37,6 +37,7 @@ ProductCell::ProductCell(GroupCell *group, Configuration *config,
                  std::unique_ptr<Cell> &&base)
   : SumCell(group, config, std::move(under), std::move(over), std::move(base))
 {
+  RefreshBreakUpCommandName();
 }
 
 ProductCell::ProductCell(GroupCell *group, const ProductCell &cell)
@@ -95,14 +96,6 @@ const wxSize ProductCell::GetSymbolSize() const
   // The width of the product sign is defined by its height and aspect ratio
   signSize.x = signSize.y;
   return signSize;
-}
-
-void ProductCell::SetCurrentPoint(wxPoint point) const {
-  Cell::SetCurrentPoint(point);
-}
-
-void ProductCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
-  Cell::Draw(dc, antialiassingDC);
 }
 
 const wxString ProductCell::m_svgProdSign(reinterpret_cast<const char*>(PRODSIGN));

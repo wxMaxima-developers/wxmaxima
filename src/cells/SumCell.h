@@ -150,6 +150,17 @@ public:
   void Unbreak() const override final;
 
 protected:
+  /*! Re-applies GetMaximaCommandName() to the already-created m_open cell.
+
+    MakeBreakUpCells() (called from SumCell's own constructor) can only
+    ever see SumCell::GetMaximaCommandName(): a virtual call made during a
+    base class's constructor never reaches a derived class's override,
+    since the derived part of the object doesn't exist yet. Every
+    subclass that overrides GetMaximaCommandName() (currently only
+    ProductCell) MUST call this once from its own constructor body, after
+    SumCell's constructor has finished running.
+  */
+  void RefreshBreakUpCommandName() const;
   //! What maxima command name corresponds to this cell?
   virtual const wxString GetMaximaCommandName() const;
   //! What matlab command name corresponds to this cell?

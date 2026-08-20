@@ -276,6 +276,37 @@ a local TCP socket.
   - **Linux/GTK Timing:** On Linux (especially KDE Plasma with Global Menus), calling `m_manager.Update()` can disrupt the menu bar if it's already attached. This is a known environmental issue in the interaction between wxWidgets, GTK3, and the KDE Global Menu proxy.
     - **Automated Fix:** On systems with wxWidgets <= 3.2 running on KDE, Unity, or with `appmenu-gtk-module` enabled, wxMaxima automatically sets `UBUNTU_MENUPROXY=0` at startup in `main.cpp` to force menus to remain within the window and prevent disappearance.
     - If the menu still disappears, clearing `GTK_MODULES` (e.g., `GTK_MODULES=""`) can also restore local menus.
+  - **Center pane must have dock layer/row/position all 0 (found via a
+    third-party GTK4 wxWidgets port hitting the assert in
+    `framemanager.cpp`'s `wxAuiPaneInfo::IsValid()`; the underlying bug is
+    wxMaxima's own, not that port's, and not GTK4-specific).**
+    `wxMaximaFrame.cpp` declared the worksheet/console pane with both
+    `.Center()` *and* `.Row(2)` -- twice: once in the initial `AddPane()`
+    call, and again in the post-`LoadPerspective()` "the loaded perspective
+    might be broken, force sane values back" defensive block (both added in
+    2019's "Try harder to make broken perspectives work again", apparently
+    meant to distinguish the console pane's row from the other sidebars'
+    `.Row(1)`). Per `wxAuiPaneInfo::IsValid()`'s own contract, a center
+    pane's `dock_layer`/`dock_row`/`dock_pos` must all be exactly 0 --
+    `Row(2)` violates that unconditionally. This most likely went unnoticed
+    on the officially-supported wxWidgets 3.0.5-3.2.x/GTK3 combination
+    either because that older `IsValid()` didn't check this for center
+    panes, or because assertions are compiled out (`NDEBUG`) in the release
+    builds most users and CI actually run -- `IsValid()`'s own fallback
+    return value (`dock_layer==0 && dock_row==0 && dock_pos==0`, i.e.
+    `false` here even without the assert firing) suggests this was already
+    silently making the pane report itself invalid, just never loudly
+    enough to notice. Since only one pane is ever `.Center()`, row ordering
+    is meaningless for it regardless (the center pane always fills
+    whatever space the docked side panes don't use, irrespective of a row
+    number that has no other center pane to be ordered against) -- so
+    `.Row(2)` never had any real layout effect to lose. Fixed by dropping
+    `.Row(2)` from the initial `AddPane()` call, and by making the
+    post-`LoadPerspective()` defensive block explicitly force `.Layer(0)
+    .Row(0).Position(0)` (matching its own "overwrite whatever the loaded
+    perspective got wrong" stated purpose, rather than only partially
+    addressing the same invariant `LoadPerspective()` could equally well
+    have clobbered).
 - **Dockable "Find and Replace" (GH #2249, `Configuration::FindDialogDockable()`):**
   `FindReplaceDialog`/`FindReplacePane` were already split apart (a `wxDialog`
   wrapper around a `wxPanel` holding the actual controls) specifically
@@ -746,6 +777,45 @@ a local TCP socket.
   `wxApp::SetAppearance()` static call) was reverted for a compile error --
   don't repeat that: `SetAppearance()` is an ordinary (non-static) `wxApp`
   member function.
+  - **Follow-up (found live, 2026-08): that "one `wxLogMessage()` call...
+    safely falls through to whatever the default wx log target is" note
+    above undersold the actual consequence -- "the default wx log target"
+    when no custom one is installed is `wxLogGui`, and `wxLogGui` pops up a
+    real modal dialog for every message, not just errors.** Since
+    `ApplyAppearanceToApp()`'s own diagnostic logging (`"Appearance was
+    successfully changed."` etc., the maintainer's pre-existing debug
+    logging this whole fix was built around keeping) runs from `OnInit()`
+    at the exact point this fix moved `m_logWindow`'s construction *after*,
+    every normal startup now hit that fallback and popped up a modal
+    dialog reporting a mere debug-level message -- worse than the original
+    bug this section fixes, and directly caused by it (the log call was
+    already there before this fix; it only started using the no-custom-
+    target fallback once `m_logWindow` moved later). Fixed by NOT deferring
+    `SetAppearance()` itself (still has to run before the log window's
+    frame exists, unchanged) but only deferring when its result gets
+    logged: `ApplyAppearanceToApp()` gained a `logImmediately` parameter
+    (default `true`, preserving `wxMaxima::ConfigChanged()`'s existing
+    runtime call site unchanged, since a log target already exists by
+    then) and now returns the message as a plain `wxString` instead of
+    logging it directly. `main.cpp`'s startup call passes
+    `logImmediately=false` and holds onto the returned string in a local,
+    then logs it itself with a plain `wxLogMessage()` right after
+    `m_logWindow` is constructed -- by which point a real target exists and
+    the message goes to the (hidden-by-default) log window exactly like
+    every other `wxLogMessage()` call in this app, instead of popping up
+    a dialog. Kept the return type as a version-independent `wxString`
+    (empty when there's nothing to report) rather than the version-gated
+    `wxApp::AppearanceResult` enum itself, so the function's declared
+    signature in `wxMaxima.h` stays valid pre-3.3 too, matching how the
+    rest of this function is already guarded. Live-verified on Linux (this
+    sandbox's wxWidgets 3.2.4 means the whole `#if wxCHECK_VERSION(3, 3,
+    0)` body -- and therefore this exact bug -- is unreachable here,
+    `ApplyAppearanceToApp()` always takes the no-op `#else` branch; the fix
+    is a mechanical, easily-verified-by-reading change, not something this
+    sandbox's build could exercise): builds clean, and a live Xvfb startup
+    shows no unexpected modal dialog (only the normal, unrelated "Did you
+    know?" startup tip, `Show tips at startup` -- present with or without
+    this change).
 
 ### Communication with Maxima
 
@@ -1267,6 +1337,68 @@ tried without rebuilding.
   never called `SetStyle(TS_FUNCTION)` on them the way `ListCell`'s own
   constructor does for "["/"]", leaving the braces in the wrong style.
 
+- **`ProductCell` showing "sum(" instead of "product(" when broken into
+  lines, and rendering as nothing at all when it isn't (found live, no GH
+  issue filed yet) -- two independent bugs, both variations of mistakes
+  already documented elsewhere in this file.**
+  1. `SumCell::MakeBreakUpCells()` (called from `SumCell`'s own
+     constructor, `SumCell.cpp`) builds `m_open`'s text from the virtual
+     `GetMaximaCommandName()`. A virtual call made during a base class's
+     constructor can never dispatch to a derived class's override --
+     `ProductCell`'s part of the object doesn't exist yet at that point --
+     so `m_open` was unconditionally built from `SumCell::
+     GetMaximaCommandName()` ("sum("/"lsum(") even for a genuine
+     `ProductCell`, regardless of how the cell was later broken into
+     lines. Fixed with a new protected `SumCell::RefreshBreakUpCommandName()`
+     that re-applies `GetMaximaCommandName()` to the already-built `m_open`
+     via `TextCell::SetValue()`; `ProductCell`'s constructor calls it once,
+     from its own constructor body (where virtual dispatch has already
+     started resolving to `ProductCell`'s overrides), immediately after
+     delegating to `SumCell`'s constructor. Any future `SumCell` subclass
+     that overrides `GetMaximaCommandName()` must do the same.
+  2. `ProductCell::SetCurrentPoint()`/`Draw()` (`ProductCell.cpp`) only
+     ever called `Cell::SetCurrentPoint()`/`Cell::Draw()` -- skipping
+     `SumCell::SetCurrentPoint()`/`SumCell::Draw()` entirely, which are the
+     implementations that actually position/paint the operator glyph, the
+     limits and the base. Exactly the same "override does strictly less
+     than what it shadows and had no reason to exist" shape as the
+     `SetCell` bug immediately above this entry: an unbroken `ProductCell`
+     drew nothing, while the underlying value was computed correctly (same
+     "invisible, not wrong" symptom, same root cause pattern, different
+     cell). Fixed by deleting both overrides outright (header and source),
+     letting `ProductCell` inherit `SumCell`'s implementations -- which is
+     safe here specifically because `Draw()`/`SetCurrentPoint()` never run
+     during construction, so by the time they're actually called,
+     `GetSvgSymbolData()`/`GetSymbolSize()`/... already dispatch correctly
+     to `ProductCell`'s own overrides.
+  Confirmed live in Xvfb: `product(k,k,1,n);` rendered the correct Π glyph
+  with `n`/`k=1` once unbroken-form positioning was fixed (previously blank
+  on unmodified `main`); the broken-form text bug was pinned deterministically
+  via a new regression test (`test/unit_tests/test_LayoutInvariants.cpp`,
+  `SCENARIO("A ProductCell positions its symbol/limits/base and breaks up
+  with the right command name")`) that parses real `wxxml-sum`-shaped XML
+  through `MathParser` (no live Maxima needed, mirroring the `SetCell`
+  scenario's own pattern) and checks `GetBrokenCell(0)`'s text is
+  `"product("`, not `"sum("` -- reverting the fix reproduces both original
+  symptoms (confirmed by re-running the test against the unfixed code).
+  Auditing `SumCell::MakeBreakUpCells()` while fixing this also turned up a
+  third, smaller, unrelated bug: unlike every sibling cell with an analogous
+  `"name("` opening glyph (`BoxCell`, `AbsCell`, `SqrtCell`, `ExptCell`,
+  `ConjugateCell`, `NamedBoxCell` -- all call `DontEscapeOpeningParenthesis()`
+  on their `m_open` right after constructing it), `SumCell`'s `m_open` never
+  did, so `TextCell::ToString()`'s `TS_FUNCTION`-style quoting (the default
+  `TextCell` style, since `MakeBreakUpCells()` never calls `SetStyle()`
+  either) escaped the trailing "(" into a literal backslash-paren whenever
+  that cell's own `ToString()` was read directly (e.g. the new regression
+  test's own `GetBrokenCell(0)->ToString()` check, before this was noticed
+  and fixed) -- invisible on screen (`Draw()` paints `m_displayedText`,
+  which this escaping logic never touches) and invisible in `SumCell::
+  ToString()`'s own clipboard/copy-as-text output (it builds directly from
+  `GetMaximaCommandName()`, never through `m_open`), so this specific
+  escaping bug had no live user-visible symptom found so far -- fixed
+  anyway since it's a one-line, well-precedented, no-risk addition in the
+  exact function already being edited.
+
 - **"Don't unfold cells just because their folded tree is being evaluated"
   (GH #1952):** `Worksheet::ScrollToError()` -- called automatically by
   `MaximaEvaluator::CheckForErrors()` whenever `AbortOnError()` is on (the
@@ -1495,6 +1627,50 @@ tried without rebuilding.
   for the same reason #2229-#2232 were -- no macOS hardware in this
   sandbox -- but it's the same string-formatting/branching mechanism,
   already exercised by the generic path).
+  - **Follow-up (found live, 2026-08): the watchdog fired a false
+    "Maxima isn't connecting" warning on Linux for a large worksheet, with
+    no macOS/Gatekeeper connection at all -- root cause was the watchdog's
+    5-second budget being spent on wxMaxima's own busy-ness, not on
+    Maxima.** `MaximaProcessManager::StartMaxima()` armed the watchdog
+    (`StartOnce(5000)`) immediately after spawning the process -- but one
+    of its callers, `MaximaFileIO::OpenWXMXFile()`, calls `StartMaxima()`
+    *in the middle* of a synchronous sequence: parse the whole worksheet
+    XML into a cell tree (`CreateTreeFromXMLNode()`, before `StartMaxima()`
+    even runs) and, right after `StartMaxima()` returns,
+    `InsertGroupCells()` the tree ("this also requests a recalculate" per
+    its own comment) -- laying out however many cells the worksheet
+    contains, all on the same GUI thread, all before that thread ever
+    returns to the event loop. For a large enough document this alone can
+    exceed 5 seconds. Since the watchdog's `wxTimerEvent` can only be
+    *processed* once the thread is back pumping events, and Maxima's own
+    incoming-connection event is stuck behind the exact same jam, the two
+    end up racing to be processed once the thread frees up -- and when the
+    watchdog's already-queued event happens to be serviced first, it finds
+    `!connected` and fires, even though Maxima tried (or even succeeded)
+    to connect well within its own 5 seconds; the delay was entirely
+    wxMaxima's own busy-work eating into the window it was supposed to
+    spend genuinely listening. Reproduced by tracing the call chain (not
+    by hitting the race live in this sandbox, where the sample worksheets
+    on hand parse fast enough on today's hardware not to trigger it) --
+    `OpenWXMXFile()`'s `CreateTreeFromXMLNode()` / `StartMaxima()` /
+    `InsertGroupCells()` ordering is unambiguous in the source regardless.
+    Fixed by deferring the `StartOnce(5000)` call itself via `CallAfter()`
+    -- the same idiom `StartMaxima()`'s own "Cannot start the maxima
+    binary" dialog a few lines above already uses, and for the identical
+    reason (don't act synchronously inside a call chain that isn't back at
+    the event loop yet). This makes the 5-second countdown start only once
+    wxMaxima is actually idle and able to process an incoming connection,
+    so however long the worksheet's own parse-and-layout took no longer
+    counts against Maxima. `KillMaxima()`'s existing `.Stop()` plus the
+    watchdog handler's own `processAlive` re-check already made this safe
+    against the (rare) case of the deferred callback running after the
+    spawn it was arming for is no longer relevant -- no separate guard
+    needed. Also reworded the non-macOS warning text (still gated on
+    `!__WXOSX__`, unchanged from a working baseline otherwise) to spell
+    out that wxMaxima and Maxima talk over a *local, loopback* socket --
+    users don't necessarily think of "this machine talking to itself" as
+    something a firewall/antivirus's network protection would touch, and
+    some of it blocks loopback inter-process communication too.
 
 ## Layout & Compatibility
 

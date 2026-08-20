@@ -603,13 +603,24 @@ bool MyApp::OnInit() {
   // stays for macOS/GTK, which can switch live. Read the saved setting
   // straight from the just-installed config (mirrors Configuration's own
   // read: default followSystem, clamp to the valid range).
+  // Only the actual SetAppearance() call needs to happen this early (before
+  // the log window below creates the first top-level window); logging its
+  // result does not, and doing so here would hit wx's default wxLogGui
+  // fallback (no custom log target exists yet) -- which pops up a modal
+  // dialog for the message instead of writing it to the log window like
+  // every other wxLogMessage() call in this app. logImmediately=false
+  // defers that logging; the message itself is logged below, once
+  // m_logWindow exists.
+  wxString appearanceLogMsg;
   {
     long appearance = static_cast<long>(Configuration::Appearance::followSystem);
     wxConfig::Get()->Read(wxS("appearance"), &appearance);
     if (appearance < 0 ||
         appearance > static_cast<long>(Configuration::Appearance::followSystem))
       appearance = static_cast<long>(Configuration::Appearance::followSystem);
-    ApplyAppearanceToApp(static_cast<Configuration::Appearance>(appearance));
+    appearanceLogMsg = ApplyAppearanceToApp(
+        static_cast<Configuration::Appearance>(appearance),
+        /*logImmediately=*/false);
   }
 
   // if DEBUG=1 show the logwindow at start, else hide it.
@@ -619,6 +630,8 @@ bool MyApp::OnInit() {
 #else
   m_logWindow = new wxLogWindow(NULL, wxS("wxMaxima log window"), false, false);
 #endif
+  if (!appearanceLogMsg.empty())
+    wxLogMessage("%s", appearanceLogMsg);
 
   if (cmdLineParser.Found(wxS("logtostderr"))) {
 #ifdef __WXMSW__
