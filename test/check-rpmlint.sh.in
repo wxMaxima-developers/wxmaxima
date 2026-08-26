@@ -46,8 +46,7 @@ echo "$RPMLINT_OUT"
 # - no-signature (local test packages are not signed)
 # - no-packager-tag (no packager info for test package)
 # - incorrect-fsf-address (refers to COPYING which we don't modify)
-# - invalid-license (GPLv2+ syntax variance)
-ERRORS=$(echo "$RPMLINT_OUT" | grep -E ": E:" | grep -v -E "unstripped-binary-or-object|no-signature|no-packager-tag|incorrect-fsf-address|invalid-license")
+ERRORS=$(echo "$RPMLINT_OUT" | grep -E ": E:" | grep -v -E "unstripped-binary-or-object|no-signature|no-packager-tag|incorrect-fsf-address")
 
 if [ -n "$ERRORS" ]; then
     echo "Failure: rpmlint detected errors in the RPM package:"
