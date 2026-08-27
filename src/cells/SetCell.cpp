@@ -130,7 +130,7 @@ wxString SetCell::ToTeX() const {
       }
 
     if (needsLeftRight)
-      s = wxS("\\left{ ") + m_innerCell->ListToTeX() + wxS("\\right} ");
+      s = wxS("\\left\\{ ") + m_innerCell->ListToTeX() + wxS("\\right\\} ");
     else
       s = wxS("{") + m_innerCell->ListToTeX() + wxS("}");
   }
