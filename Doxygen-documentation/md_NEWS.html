@@ -87,7 +87,7 @@ $(function() {
 <li>Fixed "Copy as RTF" (and RTF on the general copy/cut clipboard) being silently ignored when pasted into MS Word (GH #2264): the RTF data was only advertised under the MIME-style clipboard format names Linux/GTK word processors expect, never under the literal "Rich Text Format" name Windows registers CF_RTF under and that Word's clipboard handler actually looks up.</li>
 <li>Fixed a hidden multiplication sign leaving almost no horizontal gap in MathML/OMML export (GH #2263), unlike the real gap it reserves on screen: the export substituted a genuinely zero-width Unicode marker for it. The marker itself (needed for accessibility, so screen readers still announce the implicit multiplication) is unchanged; it now carries explicit spacing so it takes up the same amount of room as it does in the worksheet.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md971"></a>
+<h1><a class="anchor" id="autotoc_md963"></a>
 26.08.0</h1>
 <p>Another large batch of improvements, many of them developed with substantial help from the AI assistant <b>Claude</b>: sidebars can now be minimized, "Find
 and Replace" can be docked like the other sidebars, right-to-left interface languages and mixed-direction text are now properly supported, translation losses across dozens of languages were found and restored, and a long list of export, layout and stability fixes.</p>
@@ -117,7 +117,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 <li>Added "Anonymize Code for Bug Report" to the Help menu (#1339): replaces every non-builtin name in the selected code (or, after confirmation, the whole document) with a random name, consistently, so a worksheet can be shared in a bug report without revealing the original names.</li>
 <li>Reduced the memory footprint of every cell on the worksheet by computing line-wrap draw order on demand instead of storing it per cell (#1445).</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md972"></a>
+<h1><a class="anchor" id="autotoc_md964"></a>
 26.07.1</h1>
 <p>This release contains an unusually large batch of improvements &ndash; many of them developed with substantial help from the AI assistants <b>Claude</b> and <b>Fable</b>: dark mode for the whole Windows user interface, native Windows-on-Arm builds, numerous speedups, and a large number of bug and stability fixes.</p>
 <ul>
@@ -189,7 +189,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 <li>Snap package: opening a link in the system web browser (the manual, "visit website", <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s online documentation) now works. The confined snap reaches the host's default browser through the XDG Desktop Portal instead of trying to launch a browser that is not visible inside the sandbox &ndash; no browser is bundled and confinement stays strict.</li>
 <li>Find: a match found inside a cell's output now scrolls to the matching part of the output, even in a long output cell. Previously the view only scrolled to the top of the output because the matched item &ndash; if it had not been drawn yet &ndash; had no on-screen position, so the scroll fell back to the start of the output.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md973"></a>
+<h1><a class="anchor" id="autotoc_md966"></a>
 26.07.0</h1>
 <ul>
 <li>Fixed a crash on loading a worksheet containing an empty <code>&lt;img/&gt;</code> or <code>&lt;slideshow/&gt;</code> tag (found by the parser fuzzer).</li>
@@ -211,7 +211,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 <li><a class="el" href="classA.html">A</a> correctness review for all wizards.</li>
 <li>EditorCells again grow and shrink when the user adds and removes lines</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md974"></a>
+<h1><a class="anchor" id="autotoc_md970"></a>
 26.06.2</h1>
 <ul>
 <li><a class="el" href="classA.html">A</a> whole AI-driven safety review</li>
@@ -233,7 +233,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 <li>Better undo handling.</li>
 <li>Another try to make accessibility work.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md975"></a>
+<h1><a class="anchor" id="autotoc_md973"></a>
 26.06.1</h1>
 <ul>
 <li>Fix the Ctrl+F keyboard focus on MS Windows to correctly focus the find dialogue instead of leaving it on the worksheet.</li>
@@ -246,7 +246,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 <li>Fix scroll position tracking: call ScrolledAwayFromEvaluation(true) when the user manually scrolls so that the active cell is completely outside the visible portion of the worksheet.</li>
 <li>Fix inserting a new cell (via hCaret) on large worksheets causing the scroll range to shrink to the first screen and the view to jump to the top.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md976"></a>
+<h1><a class="anchor" id="autotoc_md975"></a>
 26.06.0</h1>
 <ul>
 <li>Optimize drawing during mouse moves (bracket autohide): redraw only the actual height of the cell, rather than drawing all the way to the absolute bottom coordinate.</li>
