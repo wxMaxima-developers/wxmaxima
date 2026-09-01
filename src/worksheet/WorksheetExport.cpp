@@ -1016,8 +1016,10 @@ void WriteMathJaxSetup(wxString &output, Configuration *configuration) {
   output << wxS("</script>\n");
 }
 
-/*! Write the HTML `<head>` (through the opening `<body>` and version banner).
+/*! Write the HTML `<head>` section.
 
+  Do NOT write the closing "</head>" tag, so that e.g. an inline style sheet
+  can be added. The "</head>" tag is written after that function.
   Everything that goes into the output stream ahead of the exported cells: the
   doctype, title/meta, the optional MathJaX fill-in script, the stylesheet link
   and the version-comment banner. The stylesheet itself is written separately
@@ -1040,8 +1042,6 @@ void WriteHTMLHead(wxString &output, Configuration *configuration,
   output << wxS("  <link rel=\"stylesheet\" type=\"text/css\" href=\"") +
     encoded_css_url + wxS("\">\n");
 
-  output << wxS(" </head>\n");
-  output << wxS(" <body>\n");
 
   output << wxS("\n");
   output << wxS("<!-- *********") + versionPad + wxS("******** -->\n");
@@ -1641,7 +1641,7 @@ bool WorksheetExport::ExportToHTML(GroupCell *tree, Configuration *configuration
   WriteHTMLHead(output, configuration, filename, encoded_css_url,
                 versionString, versionPad);
   WriteHtmlStyleSheet(css, config, versionString, versionPad);
-
+  output = output + "</head>\n<body>";
   //////////////////////////////////////////////
   // Write the actual contents
   //////////////////////////////////////////////
