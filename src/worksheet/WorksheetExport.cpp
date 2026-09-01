@@ -240,11 +240,6 @@ void WriteHtmlStyleSheet(wxTextOutputStream &css, wxConfigBase *config,
   config->Read(wxS("Style/Heading6/italic"), &italicHeading6);
   config->Read(wxS("Style/Heading6/underlined"), &underHeading6);
 
-  css << wxS("\n");
-  css << wxS("/* *********") + versionPad + wxS("******** \n");
-  css << wxS("   *        ") + versionString + wxS("       * \n");
-  css << wxS("   *********") + versionPad + wxS("******** */\n");
-
   // BODY STYLE
   css << wxS("body {\n");
   if (font.Length()) {
@@ -1026,7 +1021,7 @@ void WriteMathJaxSetup(wxString &output, Configuration *configuration) {
   into the .css file by WriteHtmlStyleSheet().
  */
 void WriteHTMLHead(wxString &output, Configuration *configuration,
-                   const wxString &filename, const wxString &encoded_css_url,
+                   const wxString &filename,
                    const wxString &versionString, const wxString &versionPad) {
   output << wxS("<!DOCTYPE html>\n");
   output << wxS("<html>\n"); // We do not know the language of the
@@ -1038,9 +1033,6 @@ void WriteHTMLHead(wxString &output, Configuration *configuration,
                 "charset=utf-8\">\n");
 
   WriteMathJaxSetup(output, configuration);
-
-  output << wxS("  <link rel=\"stylesheet\" type=\"text/css\" href=\"") +
-    encoded_css_url + wxS("\">\n");
 
 
   output << wxS("\n");
@@ -1609,25 +1601,13 @@ bool WorksheetExport::ExportToHTML(GroupCell *tree, Configuration *configuration
       return false;
   }
 
-  wxString cssfileName_rel = imgDir_rel + wxS("/") + filename + wxS(".css");
-  wxString cssfileName = path + wxS("/") + cssfileName_rel;
-  wxFileOutputStream cssfile(cssfileName);
-  if (!cssfile.IsOk())
-    return false;
-
   wxURI filename_uri(filename);
-  wxString filename_encoded =
-    filename_uri.BuildURI(); /* handle HTML entities like " " => "%20" */
-
-  wxTextOutputStream css(cssfile);
+  wxString filename_encoded = filename_uri.BuildURI(); /* handle HTML entities like " " => "%20" */
 
   wxString output;
 
   configuration->ClipToDrawRegion(false);
 
-  wxURI css_url(cssfileName_rel);
-  wxString encoded_css_url =
-    css_url.BuildURI(); /* handle HTML entities like " " => "%20" */
 
   wxString versionString = wxS("Created with wxMaxima version " WXMAXIMA_VERSION);
   wxString versionPad;
@@ -1638,9 +1618,12 @@ bool WorksheetExport::ExportToHTML(GroupCell *tree, Configuration *configuration
   // Head + styles
   //////////////////////////////////////////////
 
-  WriteHTMLHead(output, configuration, filename, encoded_css_url,
-                versionString, versionPad);
+  WriteHTMLHead(output, configuration, filename, versionString, versionPad);
+
+  wxStringOutputStream cssStream;
+  wxTextOutputStream css(cssStream);
   WriteHtmlStyleSheet(css, config, versionString, versionPad);
+  output = output + wxS("  <style>\n") << cssStream.GetString() << wxS("\n  </style>\n");
   output = output + "</head>\n<body>";
   //////////////////////////////////////////////
   // Write the actual contents
@@ -1695,12 +1678,10 @@ bool WorksheetExport::ExportToHTML(GroupCell *tree, Configuration *configuration
   outstream << output;
 
   bool outfileOK = !outfile.GetFile()->Error();
-  bool cssOK = !cssfile.GetFile()->Error();
   outfile.Close();
-  cssfile.Close();
 
   configuration->ClipToDrawRegion(true);
-  return outfileOK && cssOK;
+  return outfileOK;
 }
 
 wxString WorksheetExport::SelectionToSelfContainedHTML(GroupCell *startGroup,
@@ -1730,10 +1711,8 @@ wxString WorksheetExport::SelectionToSelfContainedHTML(GroupCell *startGroup,
     versionPad += "*";
 
   wxStringOutputStream cssStream;
-  {
-    wxTextOutputStream css(cssStream);
-    WriteHtmlStyleSheet(css, wxConfig::Get(), versionString, versionPad);
-  }
+  wxTextOutputStream css(cssStream);
+  WriteHtmlStyleSheet(css, wxConfig::Get(), versionString, versionPad);
 
   // The body: the exact same per-cell renderers ExportToHTML() uses, so a
   // selection copied to the clipboard looks identical to the same cells
