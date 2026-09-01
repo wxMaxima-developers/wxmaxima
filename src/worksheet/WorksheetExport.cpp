@@ -125,9 +125,7 @@ public:
   exporter. versionString/versionPad are passed in because ExportToHTML also
   stamps them into the document body.
  */
-void WriteHtmlStyleSheet(wxTextOutputStream &css, wxConfigBase *config,
-                         const wxString &versionString,
-                         const wxString &versionPad) {
+void WriteHtmlStyleSheet(wxTextOutputStream &css, wxConfigBase *config) {
   wxString font, fontTitle, fontSection, fontSubsection, fontSubsubsection,
     fontHeading5, fontHeading6, fontText;
   wxString colorInput(wxS("blue"));
@@ -1622,7 +1620,7 @@ bool WorksheetExport::ExportToHTML(GroupCell *tree, Configuration *configuration
 
   wxStringOutputStream cssStream;
   wxTextOutputStream css(cssStream);
-  WriteHtmlStyleSheet(css, config, versionString, versionPad);
+  WriteHtmlStyleSheet(css, config);
   output = output + wxS("  <style>\n") << cssStream.GetString() << wxS("\n  </style>\n");
   output = output + "</head>\n<body>";
   //////////////////////////////////////////////
@@ -1712,7 +1710,7 @@ wxString WorksheetExport::SelectionToSelfContainedHTML(GroupCell *startGroup,
 
   wxStringOutputStream cssStream;
   wxTextOutputStream css(cssStream);
-  WriteHtmlStyleSheet(css, wxConfig::Get(), versionString, versionPad);
+  WriteHtmlStyleSheet(css, wxConfig::Get());
 
   // The body: the exact same per-cell renderers ExportToHTML() uses, so a
   // selection copied to the clipboard looks identical to the same cells
