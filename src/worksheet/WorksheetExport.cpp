@@ -117,12 +117,12 @@ public:
 };
 
 /*! Reads the document's style settings from the config and writes the
-  external HTML stylesheet (fonts, colours, per-style bold/italic, and the
+  HTML stylesheet (fonts, colours, per-style bold/italic, and the
   layout rules for equations, code cells, headings, ...).
 
   Split out of ExportToHTML: it only reads the configuration and writes to
   the css stream, and is by far the largest self-contained chunk of the
-  exporter. versionString/versionPad are passed in because ExportToHTML also
+  exporter. versionString is passed in because ExportToHTML also
   stamps them into the document body.
  */
 void WriteHtmlStyleSheet(wxTextOutputStream &css, wxConfigBase *config) {
@@ -1020,7 +1020,7 @@ void WriteMathJaxSetup(wxString &output, Configuration *configuration) {
  */
 void WriteHTMLHead(wxString &output, Configuration *configuration,
                    const wxString &filename,
-                   const wxString &versionString, const wxString &versionPad) {
+                   const wxString &versionString) {
   output << wxS("<!DOCTYPE html>\n");
   output << wxS("<html>\n"); // We do not know the language of the
   // exported document.
@@ -1034,9 +1034,13 @@ void WriteHTMLHead(wxString &output, Configuration *configuration,
 
 
   output << wxS("\n");
-  output << wxS("<!-- *********") + versionPad + wxS("******** -->\n");
+  output << wxS("<!-- *********") ;
+  for (unsigned int i = 0; i < versionString.Length(); i++) output << "*";
+  output << wxS("******** -->\n");
   output << wxS("<!-- *        ") + versionString + wxS("       * -->\n");
-  output << wxS("<!-- *********") + versionPad + wxS("******** -->\n");
+  output << wxS("<!-- *********") ;
+  for (unsigned int i = 0; i < versionString.Length(); i++) output << "*";
+  output << wxS("******** -->\n");
 }
 
 //! Is this cell a piece of plain (non-math) Maxima output?
@@ -1608,15 +1612,12 @@ bool WorksheetExport::ExportToHTML(GroupCell *tree, Configuration *configuration
 
 
   wxString versionString = wxS("Created with wxMaxima version " WXMAXIMA_VERSION);
-  wxString versionPad;
-  for (unsigned int i = 0; i < versionString.Length(); i++)
-    versionPad += "*";
 
   //////////////////////////////////////////////
   // Head + styles
   //////////////////////////////////////////////
 
-  WriteHTMLHead(output, configuration, filename, versionString, versionPad);
+  WriteHTMLHead(output, configuration, filename, versionString);
 
   wxStringOutputStream cssStream;
   wxTextOutputStream css(cssStream);
@@ -1704,9 +1705,6 @@ wxString WorksheetExport::SelectionToSelfContainedHTML(GroupCell *startGroup,
   // "only writes to a real path" constraint for plain text) so it can be
   // inlined into a <style> element instead of linked from a separate file.
   wxString versionString = wxS("Created with wxMaxima version " WXMAXIMA_VERSION);
-  wxString versionPad;
-  for (unsigned int i = 0; i < versionString.Length(); i++)
-    versionPad += "*";
 
   wxStringOutputStream cssStream;
   wxTextOutputStream css(cssStream);
