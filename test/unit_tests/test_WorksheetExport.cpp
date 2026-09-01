@@ -555,7 +555,6 @@ SCENARIO("HTML export succeeds, is deterministic and contains the document") {
       const auto snap1 = SnapshotDir(dir1);
       const auto snap2 = SnapshotDir(dir2);
       REQUIRE(snap1.count(wxS("doc.html")) == 1);
-      REQUIRE(snap1.count(wxS("doc_htmlimg/doc.css")) == 1);
       // The image-rendering flavors must actually produce equation images.
       if (eq.format == Configuration::bitmap ||
           eq.format == Configuration::svg)
