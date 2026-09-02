@@ -464,6 +464,43 @@ SCENARIO("A SetCell positions its brace and content cells (GH #2270)") {
   }
 }
 
+// Maxima output (via wxMathML.lisp's wxxml-matchfix handler for $set) for
+//   {x, sqrt(x^2+1)};
+// -- the odelin()-style set from GH #2282: at least one element (the sqrt)
+// isn't a bare alphanumeric token, so SetCell::ToTeX() takes its
+// \left/\right branch.
+static const char *const setWithSqrtMathXml =
+  R"(<mth><lbl altCopy="%o1">(%o1) </lbl><mrow set="true"><t listdelim="true">{</t><mrow><mi>x</mi></mrow><mo>,</mo><mrow><q><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>1</mn></mrow></q></mrow><t listdelim="true">}</t></mrow></mth>)";
+
+SCENARIO("A SetCell's LaTeX export escapes its braces (GH #2282)") {
+  // SetCell::ToTeX() used to emit "\left{ ... \right} " for a set whose
+  // content needs \left/\right sizing -- but LaTeX's \left/\right require
+  // an escaped "\{"/"\}" to mean a literal brace; a bare "{" after \left is
+  // TeX's own group-opening character instead, so the exported code failed
+  // to compile. ListCell's analogous "\left[ ... \right] " is correct
+  // as-is: "["/"]" are already literal delimiters in TeX, unlike "{"/"}",
+  // so this bug is specific to SetCell.
+  GIVEN("a group whose output is a set containing a sqrt") {
+    auto group = std::make_unique<GroupCell>(g_cfg, GC_TYPE_CODE,
+                                             wxS("{x, sqrt(x^2+1)};"));
+    MathParser parser(g_cfg);
+    auto output = parser.ParseLine(wxString::FromUTF8(setWithSqrtMathXml));
+    REQUIRE(output != nullptr);
+    group->AppendOutput(std::move(output));
+
+    Cell *setCell = group->GetOutput();
+    REQUIRE(dynamic_cast<SetCell *>(setCell) != nullptr);
+
+    THEN("the exported LaTeX escapes both braces") {
+      const wxString tex = setCell->ToTeX();
+      CHECK(tex.Contains(wxS("\\left\\{")));
+      CHECK(tex.Contains(wxS("\\right\\}")));
+      CHECK_FALSE(tex.Contains(wxS("\\left{")));
+      CHECK_FALSE(tex.Contains(wxS("\\right}")));
+    }
+  }
+}
+
 // Maxima output (via wxMathML.lisp's wxxml-sum handler for %product) for
 //   product(k,k,1,n);
 // -- a ProductCell with a non-empty upper limit ("n"), so

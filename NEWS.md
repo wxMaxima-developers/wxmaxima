@@ -1,5 +1,18 @@
 # Current development version
 
+- Fixed a security issue (GH #1907): a crafted `.wxm` file could execute
+  arbitrary Maxima code as soon as it was opened or `load()`/`batch()`ed by
+  plain Maxima, without the user ever running anything themselves. A
+  title/section/subsection/heading/text-cell's `.wxm` marker opens a
+  `/* ... */` comment that stays open across the *entire* cell content, only
+  closing at the end marker's own trailing `*/` -- so a literal `*/`
+  anywhere inside such a cell's own text closed that comment early, turning
+  whatever followed (up to the next `*/` in the file) into live, executable
+  Maxima input. Fixed by escaping any `/` that sits next to a `*` in these
+  cells' text (as the HTML entity `&#47;`) on write, and reversing it on
+  read; code/input cells are deliberately left untouched, since their own
+  markers are already fully self-closed on one line and they must stay
+  byte-identical for a plain Maxima to `batch()` them correctly.
 - Fixed a modal dialog popping up at every startup on wxWidgets >= 3.3
   reporting the (successful) dark/light appearance change as a debug
   message -- the diagnostic log call ran before wxMaxima's own log window

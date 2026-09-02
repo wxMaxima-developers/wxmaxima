@@ -914,6 +914,68 @@ tried without rebuilding.
 - **`.wxmx`** -- a ZIP archive holding `content.xml` (the MathML-like XML) plus
   the embedded images. The format version lives in `src/WXMXformat.h`.
 - **`.wxm`** -- the plain-text format, read by `Format::ParseWXMFile()`.
+- **`.wxm`'s marker comments are NOT uniformly self-closed -- exactly one
+  bug class (GH #1907) comes from that asymmetry.** `WXMHeaders[]`
+  (`src/WXMformat.h`/`.cpp`) has two different shapes:
+  1. **Input/code markers are each a single, already-closed one-line
+     comment** -- `"/* [wxMaxima: input   start ] */"` opens *and* closes
+     `/* */` on the same line, so the code text between the start and end
+     markers sits completely outside any comment. This is deliberate and
+     load-bearing: it's what lets a plain, wxMaxima-unaware `batch()`/
+     `load()` parse the code between them with zero special handling, and
+     it's why a literal `/*`/`*/` inside actual Maxima code (a real Maxima
+     comment) must stay byte-for-byte unescaped -- `WXM_INPUT`/
+     `WXM_HIDDEN_INPUT` are excluded from the escaping below for exactly
+     this reason.
+  2. **Every other marker (title/section/subsection/subsubsection/
+     heading5/heading6/comment/caption) opens a comment on its start line
+     that is left open across the cell's entire content**, only closing at
+     the *end* marker's own trailing `*/` (e.g. start = `"/* [wxMaxima:
+     title   start ]"`, no closing `*/`; end = `"   [wxMaxima: title
+     end   ] */"`, no opening `/*`). A literal `*/` inside such a cell's
+     own prose closes that comment early -- everything from there up to
+     whatever `*/` a plain Maxima scanner finds *next* in the file is read
+     as live, executable input instead of inert text. A title cell
+     containing `"abc */ x:2$ /* def"` silently ran `x:2$` when the file
+     was `batch()`ed or opened, with no error and no visible sign anything
+     had executed. (`WXM_CAPTION` shares its ordinal with `GC_TYPE_IMAGE`
+     and covers only an image cell's own descriptive label text -- the
+     separate `WXM_IMAGE` marker pair, wrapping just the raw base64 bitmap
+     bytes, was never at risk here: base64's alphabet has no `*` character
+     at all.)
+  Fixed in `src/WXMformat.cpp` with a reversible, HTML-entity-style
+  transform (`EscapeWXMSlashes()`/`UnescapeWXMSlashes()`), applied only to
+  the type-2 markers above: escape every literal `&` to `&amp;` first (so
+  the scheme stays unambiguous if the original text already has one), then
+  -- in a single linear scan, not two separate global replaces, so a
+  pathological run like `"*/*"` or `"/*/"` is handled correctly rather than
+  double-encoded -- replace every `/` that sits immediately next to a `*`
+  with `&#47;`, leaving that `*` and any unrelated `/` (an ordinary `1/2`)
+  untouched. This closely follows a fix the maintainers had already
+  discussed but never implemented (GH #1907's own comment thread:
+  "how about if all text cells have `/*` and `*/` replaced by HTML
+  entities?"), narrowed to only the `/` adjacent to a `*` rather than every
+  slash, to avoid visual noise in the raw `.wxm` file for cells that just
+  happen to contain an ordinary fraction. Also applied to the equivalent
+  `GC_TYPE_TEXT` write path in the non-`.wxm` (`.mac`/xmaxima interop)
+  export, for the same reason (defense in depth -- `.mac` is always
+  directly Maxima-loadable) -- but `Format::ParseMACContents` (the `.mac`
+  reader) has no corresponding unescape, since round-tripping a
+  wxMaxima-exported `.mac`'s text cells back into wxMaxima is out of scope
+  for this fix and only costs a cosmetic `&#47;` showing up literally.
+  **Known, accepted limitation** (also already flagged in the same GH
+  #1907 thread): this can't retroactively fix a `.wxm` file already on
+  disk from before this existed, and a file whose prose coincidentally
+  contains the literal text `&amp;` (e.g. discussing the HTML entity
+  itself) will be mis-decoded after this fix -- an intentional tradeoff,
+  not an oversight. Regression coverage in
+  `test/unit_tests/test_WXMRoundtrip.cpp` pins both the injection fix
+  (title/section/text cells containing `*/`/`/*` round-trip losslessly and
+  the raw `.wxm` line has neither substring left unescaped) and the
+  "code cells are never touched" invariant, confirmed to actually catch the
+  bug by reverting just the source fix (`git stash push -- src/WXMformat.cpp`)
+  and re-running: the injection scenarios failed with exactly the reported
+  symptom before the fix was restored.
 
 ### Translations (`locales/`)
 
