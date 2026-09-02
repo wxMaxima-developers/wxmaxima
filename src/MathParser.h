@@ -68,7 +68,7 @@ public:
   /*! Tells the parser what user label to assign to the next label cell
 
     Maxima doesn't tell us what label the user tries to assign to the current command's
-    output, but the code that sends the current command to maxima can try to detemine
+    output, but the code that sends the current command to maxima can try to determine
     that and tell us so wxMaxima can display a speaking label to this cell.
    */
   void SetUserLabel(const wxString &label){ m_userDefinedLabel = label; }
