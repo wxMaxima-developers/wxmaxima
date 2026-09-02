@@ -424,6 +424,83 @@ SCENARIO("An image folded into a section survives the .wxm round-trip byte-for-b
   }
 }
 
+SCENARIO("A title/section/comment cell's \"*/\"/\"/*\" survives the .wxm round-trip without breaking the file structure (GH #1907)") {
+  // Unlike an input/code cell (whose start/end markers are each a complete,
+  // already-closed "/* ... */" comment on their own line), a title/section/
+  // .../comment/caption cell's start marker opens a comment that stays open
+  // across its *entire* content, closing only at the end marker's own
+  // trailing "*/". Before the fix, a literal "*/" in such a cell's text
+  // closed that comment early -- everything from there to the next "*/" a
+  // plain Maxima parser happened to find was read as live, executable
+  // input instead of inert prose. The reported PoC: a title cell containing
+  // "abc */ x:2$ /* def " silently ran "x:2$" when the file was loaded.
+  struct Spec { GroupType type; const wxChar *text; };
+  const Spec specs[] = {
+    {GC_TYPE_TITLE, wxS("abc */ x:2$ /* def")},
+    {GC_TYPE_SECTION, wxS("starts with /* a comment opener")},
+    {GC_TYPE_TEXT, wxS("*/*/*/ several in a row /*/*/*")},
+    {GC_TYPE_SUBSECTION, wxS("an ordinary 1/2 fraction, no asterisk nearby")},
+  };
+
+  for (const auto &s : specs) {
+    auto cell = std::make_unique<GroupCell>(g_cfg, s.type, wxString(s.text));
+
+    THEN(wxString::Format(wxS("group type %d's content round-trips exactly"),
+                          static_cast<int>(s.type)).ToStdString()) {
+      const wxString wxm = Format::TreeToWXM(cell.get());
+
+      // The raw .wxm text itself must never let a "*/" or "/*" appear where
+      // it would be read as part of the still-open outer comment -- i.e.
+      // the escaped content line, sitting between the cell's own start
+      // marker (line 0, which legitimately opens the comment) and its end
+      // marker (which legitimately closes it), may contain neither
+      // sequence unescaped. This is the actual property a plain Maxima
+      // batch()/load() relies on, independent of whether wxMaxima itself
+      // can read its own output back correctly. None of this SCENARIO's
+      // sample texts contain an embedded newline, so the content is
+      // exactly one line: start marker, content, end marker -- three lines.
+      wxStringTokenizer tok(wxm, wxS("\n"), wxTOKEN_RET_EMPTY);
+      std::vector<wxString> wxmLines;
+      while (tok.HasMoreTokens())
+        wxmLines.push_back(tok.GetNextToken());
+      REQUIRE(wxmLines.size() == 3);
+      INFO("escaped content line: " << wxmLines[1].utf8_str());
+      CHECK_FALSE(wxmLines[1].Contains(wxS("*/")));
+      CHECK_FALSE(wxmLines[1].Contains(wxS("/*")));
+
+      auto reloaded = SerializeAndReload({cell.get()});
+      REQUIRE(reloaded != nullptr);
+      REQUIRE(reloaded->GetNext() == nullptr); // not torn into extra cells
+      REQUIRE(reloaded->GetGroupType() == s.type);
+      REQUIRE(reloaded->GetEditable() != nullptr);
+      CHECK(reloaded->GetEditable()->GetValue() == s.text);
+    }
+  }
+}
+
+SCENARIO("A code cell's own \"/* comment */\" is never escaped (GH #1907)") {
+  // A code cell's start/end markers are each already a complete,
+  // self-closed comment on their own line, so its content was never at
+  // risk and must stay byte-identical -- a plain Maxima has to be able to
+  // load() it with zero wxMaxima-specific decoding.
+  auto cell = std::make_unique<GroupCell>(g_cfg, GC_TYPE_CODE,
+                                          wxS("x: 1 /* a real Maxima comment */ + 2;"));
+  const wxString wxm = Format::TreeToWXM(cell.get());
+
+  THEN("the raw .wxm text contains the comment completely unescaped") {
+    CHECK(wxm.Contains(wxS("/* a real Maxima comment */")));
+    CHECK_FALSE(wxm.Contains(wxS("&#47;")));
+  }
+
+  THEN("it still round-trips back into wxMaxima correctly") {
+    auto reloaded = SerializeAndReload({cell.get()});
+    REQUIRE(reloaded != nullptr);
+    REQUIRE(reloaded->GetEditable() != nullptr);
+    CHECK(reloaded->GetEditable()->GetValue() ==
+          wxS("x: 1 /* a real Maxima comment */ + 2;"));
+  }
+}
+
 class TestApp : public wxApp {
 public:
   bool OnInit() override { return true; }
