@@ -1439,7 +1439,11 @@ wxWindow *ConfigDialogue::CreateOptionsPanel() {
   wxBoxSizer *mcpPortSizer = new wxBoxSizer(wxHORIZONTAL);
   mcpPortSizer->Add(
     new wxStaticText(stdOpts_sizer->GetStaticBox(), wxID_ANY, _("MCP server port:")),
-    wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()).CenterVertical());
+    // Align(), not the newer CenterVertical() convenience wrapper -- this
+    // codebase still needs to build against wxWidgets 3.0.5 (e.g. Ubuntu
+    // 22.04's compile_2204 CI job), which predates CenterVertical().
+    wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor())
+      .Align(wxALIGN_CENTER_VERTICAL));
   m_mcpServerPort = new wxSpinCtrl(
     stdOpts_sizer->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition,
     wxSize(150 * GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 1024, 65535, 8765);
