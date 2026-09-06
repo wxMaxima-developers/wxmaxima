@@ -2013,6 +2013,21 @@ wxWindow *ConfigDialogue::CreateAiChatPanel() {
         keyUrl);
       box->Add(link, wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
     }
+    // The default Model: value above is that provider's own "rolling"
+    // alias where one exists (AiProviderDefaultModel()'s own comment), but
+    // model lines still get superseded over time -- a link to the
+    // provider's current list is the durable fix for that, not a fancier
+    // auto-detection mechanism that would itself need to keep chasing each
+    // provider's API just to answer the same question this link answers
+    // directly.
+    wxString modelListUrl = AiProviderModelListUrl(kind);
+    if (!modelListUrl.IsEmpty()) {
+      wxHyperlinkCtrl *modelLink = new wxHyperlinkCtrl(
+        box->GetStaticBox(), wxID_ANY,
+        wxString::Format(_("See current models for %s..."), AiProviderKindName(kind)),
+        modelListUrl);
+      box->Add(modelLink, wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
+    }
     vbox->Add(box, wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
   };
   addProviderBox(AiProviderKind::Anthropic, m_aiKeyAnthropic, m_aiModelAnthropicCtrl);

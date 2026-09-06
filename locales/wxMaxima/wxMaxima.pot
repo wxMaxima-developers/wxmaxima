@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-06 18:21+0000\n"
+"POT-Creation-Date: 2026-09-06 18:32+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -81,87 +81,87 @@ msgstr ""
 msgid "      -u <versionnumber>"
 msgstr ""
 
-#: ../../src/Configuration.cpp:1429
+#: ../../src/Configuration.cpp:1435
 #, c-format
 msgid "  Cells converted to 2D: %ld"
 msgstr ""
 
-#: ../../src/Configuration.cpp:1428
+#: ../../src/Configuration.cpp:1434
 #, c-format
 msgid "  Cells converted to linear: %ld"
 msgstr ""
 
-#: ../../src/Configuration.cpp:1430
+#: ../../src/Configuration.cpp:1436
 #, c-format
 msgid "  Cells drawn at the wrong font size: %ld"
 msgstr ""
 
-#: ../../src/Configuration.cpp:1420
+#: ../../src/Configuration.cpp:1426
 #, c-format
 msgid "  Font cache hits: %ld"
 msgstr ""
 
-#: ../../src/Configuration.cpp:1421
+#: ../../src/Configuration.cpp:1427
 #, c-format
 msgid "  Font cache misses: %ld"
 msgstr ""
 
-#: ../../src/Configuration.cpp:1432
+#: ../../src/Configuration.cpp:1438
 #, c-format
 msgid "  Full-window worksheet repaints: %ld"
 msgstr ""
 
-#: ../../src/Configuration.cpp:1416
+#: ../../src/Configuration.cpp:1422
 #, c-format
 msgid "  Manual anchors from built-in: %ld"
 msgstr ""
 
-#: ../../src/Configuration.cpp:1417
+#: ../../src/Configuration.cpp:1423
 #, c-format
 msgid "  Manual anchors from cache: %ld"
 msgstr ""
 
-#: ../../src/Configuration.cpp:1418
+#: ../../src/Configuration.cpp:1424
 #, c-format
 msgid "  Manual anchors self-compiled: %ld"
 msgstr ""
 
-#: ../../src/Configuration.cpp:1419
+#: ../../src/Configuration.cpp:1425
 #, c-format
 msgid "  Maxima processes spawned: %ld"
 msgstr ""
 
-#: ../../src/Configuration.cpp:1426
+#: ../../src/Configuration.cpp:1432
 #, c-format
 msgid "  Recalculation needed - Cells appended: %ld"
 msgstr ""
 
-#: ../../src/Configuration.cpp:1425
+#: ../../src/Configuration.cpp:1431
 #, c-format
 msgid "  Recalculation needed - Config changed: %ld"
 msgstr ""
 
-#: ../../src/Configuration.cpp:1427
+#: ../../src/Configuration.cpp:1433
 #, c-format
 msgid "  Recalculation needed - Editor dirty: %ld"
 msgstr ""
 
-#: ../../src/Configuration.cpp:1422
+#: ../../src/Configuration.cpp:1428
 #, c-format
 msgid "  Recalculation needed - Font invalid: %ld"
 msgstr ""
 
-#: ../../src/Configuration.cpp:1424
+#: ../../src/Configuration.cpp:1430
 #, c-format
 msgid "  Recalculation needed - Font mismatch: %ld"
 msgstr ""
 
-#: ../../src/Configuration.cpp:1423
+#: ../../src/Configuration.cpp:1429
 #, c-format
 msgid "  Recalculation needed - Size invalid: %ld"
 msgstr ""
 
-#: ../../src/Configuration.cpp:1431
+#: ../../src/Configuration.cpp:1437
 #, c-format
 msgid "  Worksheet repaints: %ld"
 msgstr ""
@@ -259,12 +259,12 @@ msgstr ""
 msgid "%s image, %li×%li, %li ppi"
 msgstr ""
 
-#: ../../src/ai/AiProvider.cpp:325
+#: ../../src/ai/AiProvider.cpp:347
 #, c-format
 msgid "%s rejected the API key (HTTP 401): %s"
 msgstr ""
 
-#: ../../src/ai/AiProvider.cpp:296
+#: ../../src/ai/AiProvider.cpp:318
 #, c-format
 msgid "%s returned HTTP %d: %s"
 msgstr ""
@@ -942,7 +942,7 @@ msgstr ""
 msgid "Added much text (%li chars) to the XML inspector."
 msgstr ""
 
-#: ../../src/dialogs/ConfigDialogue.cpp:2038
+#: ../../src/dialogs/ConfigDialogue.cpp:2053
 msgid "Additional clipboard formats to put on the clipboard on ordinary copy"
 msgstr ""
 
@@ -1119,7 +1119,7 @@ msgstr ""
 msgid "Antisymmetric function: f(x)=-f(-x)"
 msgstr ""
 
-#: ../../src/dialogs/ConfigDialogue.cpp:2206
+#: ../../src/dialogs/ConfigDialogue.cpp:2221
 msgid "Appearance:"
 msgstr ""
 
@@ -1386,7 +1386,7 @@ msgstr ""
 msgid "Beta"
 msgstr ""
 
-#: ../../src/dialogs/ConfigDialogue.cpp:2040
+#: ../../src/dialogs/ConfigDialogue.cpp:2055
 msgid "Bitmap"
 msgstr ""
 
@@ -1398,7 +1398,7 @@ msgstr ""
 msgid "Bitmaps"
 msgstr ""
 
-#: ../../src/dialogs/ConfigDialogue.cpp:2251
+#: ../../src/dialogs/ConfigDialogue.cpp:2266
 msgid "Bold"
 msgstr ""
 
@@ -1406,7 +1406,7 @@ msgstr ""
 msgid "Both horizontal and vertical cursor active at the same time"
 msgstr ""
 
-#: ../../src/dialogs/ConfigDialogue.cpp:2141
+#: ../../src/dialogs/ConfigDialogue.cpp:2156
 msgid "Bottom"
 msgstr ""
 
@@ -1996,7 +1996,7 @@ msgstr ""
 msgid "Choose between the following help topics:"
 msgstr ""
 
-#: ../../src/dialogs/ConfigDialogue.cpp:2242
+#: ../../src/dialogs/ConfigDialogue.cpp:2257
 msgid "Choose font"
 msgstr ""
 
@@ -2012,7 +2012,7 @@ msgstr ""
 msgid "Choose new plot format:"
 msgstr ""
 
-#: ../../src/dialogs/ConfigDialogue.cpp:2586
+#: ../../src/dialogs/ConfigDialogue.cpp:2601
 #, c-format
 msgid "Choose the %s Font"
 msgstr ""
@@ -2094,7 +2094,7 @@ msgstr ""
 msgid "Cleared font cache for font %s"
 msgstr ""
 
-#: ../../src/dialogs/ConfigDialogue.cpp:2068
+#: ../../src/dialogs/ConfigDialogue.cpp:2083
 msgid "Clipboard format parameters"
 msgstr ""
 
@@ -2429,19 +2429,19 @@ msgstr ""
 msgid "Condition:"
 msgstr ""
 
-#: ../../src/dialogs/ConfigDialogue.cpp:2633
-#: ../../src/dialogs/ConfigDialogue.cpp:2643
-#: ../../src/dialogs/ConfigDialogue.cpp:2795
-#: ../../src/dialogs/ConfigDialogue.cpp:2801
+#: ../../src/dialogs/ConfigDialogue.cpp:2648
+#: ../../src/dialogs/ConfigDialogue.cpp:2658
+#: ../../src/dialogs/ConfigDialogue.cpp:2810
+#: ../../src/dialogs/ConfigDialogue.cpp:2816
 msgid "Config file (*.ini)|*.ini"
 msgstr ""
 
-#: ../../src/dialogs/ConfigDialogue.cpp:2693
+#: ../../src/dialogs/ConfigDialogue.cpp:2708
 #, c-format
 msgid "Config item \"%s\" was of an unknown type"
 msgstr ""
 
-#: ../../src/dialogs/ConfigDialogue.cpp:2761
+#: ../../src/dialogs/ConfigDialogue.cpp:2776
 msgid "Configuration warning"
 msgstr ""
 
@@ -2810,22 +2810,22 @@ msgstr ""
 msgid "Copy, Cut and Paste button"
 msgstr ""
 
-#: ../../src/dialogs/ConfigDialogue.cpp:2677
+#: ../../src/dialogs/ConfigDialogue.cpp:2692
 #, c-format
 msgid "Copying config bool \"%s\""
 msgstr ""
 
-#: ../../src/dialogs/ConfigDialogue.cpp:2687
+#: ../../src/dialogs/ConfigDialogue.cpp:2702
 #, c-format
 msgid "Copying config float \"%s\""
 msgstr ""
 
-#: ../../src/dialogs/ConfigDialogue.cpp:2682
+#: ../../src/dialogs/ConfigDialogue.cpp:2697
 #, c-format
 msgid "Copying config int \"%s\""
 msgstr ""
 
-#: ../../src/dialogs/ConfigDialogue.cpp:2672
+#: ../../src/dialogs/ConfigDialogue.cpp:2687
 #, c-format
 msgid "Copying config string \"%s\""
 msgstr ""
@@ -2834,7 +2834,7 @@ msgstr ""
 msgid "Corsican"
 msgstr ""
 
-#: ../../src/ai/AiProvider.cpp:253
+#: ../../src/ai/AiProvider.cpp:275
 msgid "Could not create the HTTP request."
 msgstr ""
 
@@ -2854,7 +2854,7 @@ msgstr ""
 msgid "Could not parse the SVG image data."
 msgstr ""
 
-#: ../../src/ai/AiProvider.cpp:337
+#: ../../src/ai/AiProvider.cpp:359
 #, c-format
 msgid "Could not reach %s (network error)."
 msgstr ""
@@ -2982,7 +2982,7 @@ msgstr ""
 msgid "Danish"
 msgstr ""
 
-#: ../../src/dialogs/ConfigDialogue.cpp:2211
+#: ../../src/dialogs/ConfigDialogue.cpp:2226
 msgid "Dark"
 msgstr ""
 
@@ -3656,7 +3656,7 @@ msgstr ""
 msgid "Enhanced 3D settings:"
 msgstr ""
 
-#: ../../src/dialogs/ConfigDialogue.cpp:2061
+#: ../../src/dialogs/ConfigDialogue.cpp:2076
 msgid "Enhanced meta file (emf)"
 msgstr ""
 
@@ -3953,7 +3953,7 @@ msgstr ""
 msgid "Even number"
 msgstr ""
 
-#: ../../src/dialogs/ConfigDialogue.cpp:2813
+#: ../../src/dialogs/ConfigDialogue.cpp:2828
 msgid "Example text"
 msgstr ""
 
@@ -4600,7 +4600,7 @@ msgstr ""
 msgid "Follow"
 msgstr ""
 
-#: ../../src/dialogs/ConfigDialogue.cpp:2212
+#: ../../src/dialogs/ConfigDialogue.cpp:2227
 msgid "Follow system"
 msgstr ""
 
@@ -4620,7 +4620,7 @@ msgstr ""
 msgid "Font cache misses:"
 msgstr ""
 
-#: ../../src/dialogs/ConfigDialogue.cpp:2189
+#: ../../src/dialogs/ConfigDialogue.cpp:2204
 msgid "Fonts"
 msgstr ""
 
@@ -5918,7 +5918,7 @@ msgstr ""
 msgid "Italian"
 msgstr ""
 
-#: ../../src/dialogs/ConfigDialogue.cpp:2253
+#: ../../src/dialogs/ConfigDialogue.cpp:2268
 msgid "Italic"
 msgstr ""
 
@@ -6094,7 +6094,7 @@ msgstr ""
 msgid "Least Squares Fit..."
 msgstr ""
 
-#: ../../src/dialogs/ConfigDialogue.cpp:2149
+#: ../../src/dialogs/ConfigDialogue.cpp:2164
 msgid "Left"
 msgstr ""
 
@@ -6140,7 +6140,7 @@ msgstr ""
 msgid "License"
 msgstr ""
 
-#: ../../src/dialogs/ConfigDialogue.cpp:2210
+#: ../../src/dialogs/ConfigDialogue.cpp:2225
 msgid "Light"
 msgstr ""
 
@@ -6293,7 +6293,7 @@ msgstr ""
 msgid "Lithuanian"
 msgstr ""
 
-#: ../../src/dialogs/ConfigDialogue.cpp:2304
+#: ../../src/dialogs/ConfigDialogue.cpp:2319
 msgid "Load"
 msgstr ""
 
@@ -6333,7 +6333,7 @@ msgstr ""
 msgid "Load lisp..."
 msgstr ""
 
-#: ../../src/dialogs/ConfigDialogue.cpp:2799
+#: ../../src/dialogs/ConfigDialogue.cpp:2814
 msgid "Load style from file"
 msgstr ""
 
@@ -6471,11 +6471,11 @@ msgstr ""
 msgid "MathML + MathJaX fall-back for old browsers"
 msgstr ""
 
-#: ../../src/dialogs/ConfigDialogue.cpp:2048
+#: ../../src/dialogs/ConfigDialogue.cpp:2063
 msgid "MathML as HTML"
 msgstr ""
 
-#: ../../src/dialogs/ConfigDialogue.cpp:2044
+#: ../../src/dialogs/ConfigDialogue.cpp:2059
 msgid "MathML description"
 msgstr ""
 
@@ -6946,7 +6946,7 @@ msgstr ""
 msgid "Maximum absolute value printed without exponent"
 msgstr ""
 
-#: ../../src/dialogs/ConfigDialogue.cpp:2073
+#: ../../src/dialogs/ConfigDialogue.cpp:2088
 msgid "Maximum bitmap size on clipboard [Mb]:"
 msgstr ""
 
@@ -7031,7 +7031,7 @@ msgstr ""
 msgid "Misc"
 msgstr ""
 
-#: ../../src/dialogs/ConfigDialogue.cpp:2105
+#: ../../src/dialogs/ConfigDialogue.cpp:2120
 msgid "Misc settings"
 msgstr ""
 
@@ -7784,7 +7784,7 @@ msgstr ""
 msgid "Performance Monitor"
 msgstr ""
 
-#: ../../src/Configuration.cpp:1415
+#: ../../src/Configuration.cpp:1421
 msgid "Performance Statistics:"
 msgstr ""
 
@@ -7812,7 +7812,7 @@ msgstr ""
 msgid "Please configure wxMaxima with 'Edit->Configure'."
 msgstr ""
 
-#: ../../src/dialogs/ConfigDialogue.cpp:2760
+#: ../../src/dialogs/ConfigDialogue.cpp:2775
 msgid "Please restart wxMaxima for changes to take effect!"
 msgstr ""
 
@@ -8040,7 +8040,7 @@ msgstr ""
 msgid "Print"
 msgstr ""
 
-#: ../../src/dialogs/ConfigDialogue.cpp:2130
+#: ../../src/dialogs/ConfigDialogue.cpp:2145
 msgid "Print Margins"
 msgstr ""
 
@@ -8061,11 +8061,11 @@ msgstr ""
 msgid "Print floating-point numbers with exponents dividable by 3"
 msgstr ""
 
-#: ../../src/dialogs/ConfigDialogue.cpp:2110
+#: ../../src/dialogs/ConfigDialogue.cpp:2125
 msgid "Print scale:"
 msgstr ""
 
-#: ../../src/dialogs/ConfigDialogue.cpp:2123
+#: ../../src/dialogs/ConfigDialogue.cpp:2138
 msgid "Print the cell brackets [drawn to their left]"
 msgstr ""
 
@@ -8177,7 +8177,7 @@ msgstr ""
 msgid "Quit wxMaxima"
 msgstr ""
 
-#: ../../src/dialogs/ConfigDialogue.cpp:2052
+#: ../../src/dialogs/ConfigDialogue.cpp:2067
 msgid "RTF with OMML maths"
 msgstr ""
 
@@ -8255,7 +8255,7 @@ msgstr ""
 msgid "Read char"
 msgstr ""
 
-#: ../../src/dialogs/ConfigDialogue.cpp:2642
+#: ../../src/dialogs/ConfigDialogue.cpp:2657
 msgid "Read config to file"
 msgstr ""
 
@@ -8464,11 +8464,11 @@ msgstr ""
 msgid "Reloading image file %s."
 msgstr ""
 
-#: ../../src/dialogs/ConfigDialogue.cpp:2727
+#: ../../src/dialogs/ConfigDialogue.cpp:2742
 msgid "Reloading the configuration from disc"
 msgstr ""
 
-#: ../../src/dialogs/ConfigDialogue.cpp:2735
+#: ../../src/dialogs/ConfigDialogue.cpp:2750
 msgid "Reloading the styles from disc"
 msgstr ""
 
@@ -8609,7 +8609,7 @@ msgstr ""
 msgid "Report bug"
 msgstr ""
 
-#: ../../src/ai/AiProvider.cpp:342
+#: ../../src/ai/AiProvider.cpp:364
 msgid "Request cancelled."
 msgstr ""
 
@@ -8625,8 +8625,8 @@ msgstr ""
 msgid "Reset the Style settings"
 msgstr ""
 
-#: ../../src/dialogs/ConfigDialogue.cpp:2711
-#: ../../src/dialogs/ConfigDialogue.cpp:2719
+#: ../../src/dialogs/ConfigDialogue.cpp:2726
+#: ../../src/dialogs/ConfigDialogue.cpp:2734
 msgid "Resetting all configuration settings"
 msgstr ""
 
@@ -8744,7 +8744,7 @@ msgstr ""
 msgid "Rho"
 msgstr ""
 
-#: ../../src/dialogs/ConfigDialogue.cpp:2157
+#: ../../src/dialogs/ConfigDialogue.cpp:2172
 msgid "Right"
 msgstr ""
 
@@ -8916,7 +8916,7 @@ msgid "Samples on a line:"
 msgstr ""
 
 #: ../../src/ToolBar.cpp:331 ../../src/ToolBar.cpp:334
-#: ../../src/dialogs/ConfigDialogue.cpp:2305 ../../src/wxMaxima.cpp:3605
+#: ../../src/dialogs/ConfigDialogue.cpp:2320 ../../src/wxMaxima.cpp:3605
 msgid "Save"
 msgstr ""
 
@@ -8956,7 +8956,7 @@ msgstr ""
 msgid "Save as lisp..."
 msgstr ""
 
-#: ../../src/dialogs/ConfigDialogue.cpp:2632
+#: ../../src/dialogs/ConfigDialogue.cpp:2647
 msgid "Save config to file"
 msgstr ""
 
@@ -8981,7 +8981,7 @@ msgstr ""
 msgid "Save selection to file"
 msgstr ""
 
-#: ../../src/dialogs/ConfigDialogue.cpp:2794
+#: ../../src/dialogs/ConfigDialogue.cpp:2809
 msgid "Save style to file"
 msgstr ""
 
@@ -9001,7 +9001,7 @@ msgstr ""
 msgid "Saving succeeded, but the resulting files has disappeared ?!?."
 msgstr ""
 
-#: ../../src/dialogs/ConfigDialogue.cpp:2056
+#: ../../src/dialogs/ConfigDialogue.cpp:2071
 msgid "Scalable Vector Graphics (svg)"
 msgstr ""
 
@@ -9063,6 +9063,11 @@ msgstr ""
 
 #: ../../src/wizards/DrawWiz.cpp:158
 msgid "See also the speed <-> accuracy button."
+msgstr ""
+
+#: ../../src/dialogs/ConfigDialogue.cpp:2027
+#, c-format
+msgid "See current models for %s..."
 msgstr ""
 
 #: ../../src/MaximaCommandMenus.cpp:4120
@@ -9645,7 +9650,7 @@ msgstr ""
 msgid "Size of internal work array. limit/2 is the maximum number of subintervals to use."
 msgstr ""
 
-#: ../../src/dialogs/ConfigDialogue.cpp:2255
+#: ../../src/dialogs/ConfigDialogue.cpp:2270
 msgid "Slanted"
 msgstr ""
 
@@ -9986,7 +9991,7 @@ msgstr ""
 msgid "Stream:"
 msgstr ""
 
-#: ../../src/dialogs/ConfigDialogue.cpp:2259
+#: ../../src/dialogs/ConfigDialogue.cpp:2274
 msgid "Strike Through"
 msgstr ""
 
@@ -10058,7 +10063,7 @@ msgstr ""
 msgid "Style"
 msgstr ""
 
-#: ../../src/dialogs/ConfigDialogue.cpp:2224
+#: ../../src/dialogs/ConfigDialogue.cpp:2239
 msgid "Styles"
 msgstr ""
 
@@ -10376,7 +10381,7 @@ msgstr ""
 msgid "The diagram title"
 msgstr ""
 
-#: ../../src/dialogs/ConfigDialogue.cpp:2555
+#: ../../src/dialogs/ConfigDialogue.cpp:2570
 #, c-format
 msgid "The directory %s with maxima's startup file doesn't exist. Trying to create it..."
 msgstr ""
@@ -10716,7 +10721,7 @@ msgstr ""
 msgid "This build of wxMaxima cannot make network requests."
 msgstr ""
 
-#: ../../src/ai/AiProvider.cpp:351
+#: ../../src/ai/AiProvider.cpp:373
 msgid "This build of wxMaxima was compiled without wxWebRequest support, so it cannot talk to any AI provider."
 msgstr ""
 
@@ -10885,7 +10890,7 @@ msgstr ""
 msgid "Toolbar"
 msgstr ""
 
-#: ../../src/dialogs/ConfigDialogue.cpp:2133
+#: ../../src/dialogs/ConfigDialogue.cpp:2148
 msgid "Top"
 msgstr ""
 
@@ -11096,7 +11101,7 @@ msgstr ""
 msgid "Undefined"
 msgstr ""
 
-#: ../../src/dialogs/ConfigDialogue.cpp:2257
+#: ../../src/dialogs/ConfigDialogue.cpp:2272
 msgid "Underlined"
 msgstr ""
 
@@ -11300,7 +11305,7 @@ msgstr ""
 msgid "Use the \"partial derivative\" symbol to represent the fraction that represents a diff() when exporting LaTeX"
 msgstr ""
 
-#: ../../src/dialogs/ConfigDialogue.cpp:2194
+#: ../../src/dialogs/ConfigDialogue.cpp:2209
 msgid "Use unicode Math Symbols, if available"
 msgstr ""
 

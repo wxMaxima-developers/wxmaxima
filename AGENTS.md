@@ -703,6 +703,42 @@ a local TCP socket.
     (Gemini) API key..." Fixed by rewording to "Get an API key for %s...",
     which sidesteps the a/an agreement entirely rather than trying to track
     which of the four provider names needs which article.
+  - **Follow-up (2026-09-06): "do we need to hardcode the model names? they
+    tend to change over time"** -- a fair challenge, and the user's own
+    follow-up ("model auto detection feels like hunting a mechanism that
+    catches outdated strings with a mechanism that can get outdated") is
+    exactly why this wasn't turned into a live "fetch the model list from
+    each provider's API" feature: that mechanism would itself need
+    maintaining against four APIs just to answer a question a plain link
+    to each provider's own docs already answers, permanently, for free.
+    Two changes instead: (1) `AiProviderDefaultModel()`'s Anthropic entry
+    now uses `claude-3-5-sonnet-latest`, that provider's own "rolling"
+    alias, instead of the dated snapshot `claude-3-5-sonnet-20241022` it
+    used to be -- OpenAI/Google/Qwen's defaults (`gpt-4o-mini`/
+    `gemini-1.5-flash`/`qwen-plus`) were already un-dated in this same
+    sense, so only Anthropic's needed changing; this only pushes the
+    staleness problem up one level (from "this exact snapshot got retired"
+    to "this whole model line got superseded"), which a plain string
+    constant genuinely cannot solve by itself. (2) A new
+    `AiProviderModelListUrl()`, shown as a "See current models for %s..."
+    link next to each provider's Model field in Options, mirroring
+    `AiProviderApiKeyUrl()`'s own link added just above.
+    **A real, independent bug found live while verifying this, not by
+    reading the code**: after changing Anthropic's default in
+    `AiProvider.cpp`, Options kept showing the *old* `-20241022` value
+    regardless -- `AiProviderDefaultModel()` turned out to not be called
+    from anywhere at all; `Configuration::ResetAllToDefaults()` had its
+    *own*, completely separate hardcoded copy of all four model strings
+    (`m_aiModelAnthropic = wxS("claude-3-5-sonnet-20241022")` et al.),
+    silently disconnected from the function whose entire purpose is to be
+    the one place these live. Exactly the class of bug the user's original
+    question was worried about, already present in the code before this
+    session touched it, just latent until an actual edit exposed it (a
+    duplicated constant can drift silently for a long time if nothing
+    ever changes the value in only one of its two copies). Fixed by
+    having `ResetAllToDefaults()` call `AiProviderDefaultModel()` for all
+    four, removing the second copy entirely; re-verified live in Xvfb
+    that Options now genuinely shows `claude-3-5-sonnet-latest`.
 - **wxAuiManager:** The application uses `wxAuiManager` for its complex layout (sidebars, toolbars, worksheet).
   - **Linux/GTK Timing:** On Linux (especially KDE Plasma with Global Menus), calling `m_manager.Update()` can disrupt the menu bar if it's already attached. This is a known environmental issue in the interaction between wxWidgets, GTK3, and the KDE Global Menu proxy.
     - **Automated Fix:** On systems with wxWidgets <= 3.2 running on KDE, Unity, or with `appmenu-gtk-module` enabled, wxMaxima automatically sets `UBUNTU_MENUPROXY=0` at startup in `main.cpp` to force menus to remain within the window and prevent disappearance.

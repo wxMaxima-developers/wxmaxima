@@ -70,6 +70,17 @@ wxString AiProviderDefaultModel(AiProviderKind kind);
 //! caveat as AiProviderDefaultModel()'s model ids going stale over time.
 wxString AiProviderApiKeyUrl(AiProviderKind kind);
 
+//! Where to see this provider's current list of available model ids --
+//! shown as a link next to Options' model field. AiProviderDefaultModel()
+//! uses each provider's own "rolling" alias where one exists, but a model
+//! *line* still eventually gets superseded by a new one, something a
+//! plain string constant in this codebase cannot track by itself; a link
+//! to the provider's own list is the durable fix, not a fancier
+//! auto-detection mechanism that would itself need to keep up with each
+//! provider's API just to answer the same question this link answers
+//! directly. Same best-effort/link-rot caveat as AiProviderApiKeyUrl().
+wxString AiProviderModelListUrl(AiProviderKind kind);
+
 /*! Talks to one external AI provider's chat completion HTTP API.
 
   Deliberately split into a stateless, directly-testable half (BuildRequestBody()/
