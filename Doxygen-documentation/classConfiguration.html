@@ -628,6 +628,62 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>McpServerPort</b> () c
 <tr class="memitem:a1a05075ad59ee463011f5a9fb6ade035"><td class="memItemLeft" align="right" valign="top"><a id="a1a05075ad59ee463011f5a9fb6ade035" name="a1a05075ad59ee463011f5a9fb6ade035"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>McpServerPort</b> (int port)</td></tr>
 <tr class="separator:a1a05075ad59ee463011f5a9fb6ade035"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adcf5ccf815501a086738b0888693ddf7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#adcf5ccf815501a086738b0888693ddf7">AiChatProvider</a> () const</td></tr>
+<tr class="memdesc:adcf5ccf815501a086738b0888693ddf7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Which AI provider the AI chat sidebar talks to, as an AiProviderKind cast to int (0 = AiProviderKind::None, i.e.  <br /></td></tr>
+<tr class="separator:adcf5ccf815501a086738b0888693ddf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a127d22a42ae430e480217d85e1ab0c9f"><td class="memItemLeft" align="right" valign="top"><a id="a127d22a42ae430e480217d85e1ab0c9f" name="a127d22a42ae430e480217d85e1ab0c9f"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>AiChatProvider</b> (int provider)</td></tr>
+<tr class="separator:a127d22a42ae430e480217d85e1ab0c9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0536a35baa199414549091c19c2f009"><td class="memItemLeft" align="right" valign="top"><a id="af0536a35baa199414549091c19c2f009" name="af0536a35baa199414549091c19c2f009"></a>
+wxString&#160;</td><td class="memItemRight" valign="bottom"><b>AiApiKeyAnthropic</b> () const</td></tr>
+<tr class="memdesc:af0536a35baa199414549091c19c2f009"><td class="mdescLeft">&#160;</td><td class="mdescRight">The user's API key for each provider, kept separate so switching providers in Options doesn't lose the others. Plain-text in wxConfig's backing store (the registry on Windows, a dotfile elsewhere) &ndash; the same tradeoff any desktop app that stores a local API key makes; there is no portable, dependency-free OS-keychain wrapper this project already pulls in to do better. <br /></td></tr>
+<tr class="separator:af0536a35baa199414549091c19c2f009"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab798da11330aefb228f060556244d018"><td class="memItemLeft" align="right" valign="top"><a id="ab798da11330aefb228f060556244d018" name="ab798da11330aefb228f060556244d018"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>AiApiKeyAnthropic</b> (const wxString &amp;key)</td></tr>
+<tr class="separator:ab798da11330aefb228f060556244d018"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb5c8ceab85af427088abad3aab64e33"><td class="memItemLeft" align="right" valign="top"><a id="afb5c8ceab85af427088abad3aab64e33" name="afb5c8ceab85af427088abad3aab64e33"></a>
+wxString&#160;</td><td class="memItemRight" valign="bottom"><b>AiApiKeyOpenAI</b> () const</td></tr>
+<tr class="separator:afb5c8ceab85af427088abad3aab64e33"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad12edba0fc01160d1bbd68117a486f40"><td class="memItemLeft" align="right" valign="top"><a id="ad12edba0fc01160d1bbd68117a486f40" name="ad12edba0fc01160d1bbd68117a486f40"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>AiApiKeyOpenAI</b> (const wxString &amp;key)</td></tr>
+<tr class="separator:ad12edba0fc01160d1bbd68117a486f40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf4d5f8cd4e35cc32c7a88624053d753"><td class="memItemLeft" align="right" valign="top"><a id="abf4d5f8cd4e35cc32c7a88624053d753" name="abf4d5f8cd4e35cc32c7a88624053d753"></a>
+wxString&#160;</td><td class="memItemRight" valign="bottom"><b>AiApiKeyGoogle</b> () const</td></tr>
+<tr class="separator:abf4d5f8cd4e35cc32c7a88624053d753"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a820dfb03fb7e0788fe2d18485edf7e5c"><td class="memItemLeft" align="right" valign="top"><a id="a820dfb03fb7e0788fe2d18485edf7e5c" name="a820dfb03fb7e0788fe2d18485edf7e5c"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>AiApiKeyGoogle</b> (const wxString &amp;key)</td></tr>
+<tr class="separator:a820dfb03fb7e0788fe2d18485edf7e5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7fd709457ca4b67fe3a881f7d2fe2b26"><td class="memItemLeft" align="right" valign="top"><a id="a7fd709457ca4b67fe3a881f7d2fe2b26" name="a7fd709457ca4b67fe3a881f7d2fe2b26"></a>
+wxString&#160;</td><td class="memItemRight" valign="bottom"><b>AiApiKeyQwen</b> () const</td></tr>
+<tr class="separator:a7fd709457ca4b67fe3a881f7d2fe2b26"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a39ca5f84ce8726146c44987bec81a7be"><td class="memItemLeft" align="right" valign="top"><a id="a39ca5f84ce8726146c44987bec81a7be" name="a39ca5f84ce8726146c44987bec81a7be"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>AiApiKeyQwen</b> (const wxString &amp;key)</td></tr>
+<tr class="separator:a39ca5f84ce8726146c44987bec81a7be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ab3a52c59a511ce06026ae05e4dd5af"><td class="memItemLeft" align="right" valign="top"><a id="a2ab3a52c59a511ce06026ae05e4dd5af" name="a2ab3a52c59a511ce06026ae05e4dd5af"></a>
+wxString&#160;</td><td class="memItemRight" valign="bottom"><b>AiModelAnthropic</b> () const</td></tr>
+<tr class="memdesc:a2ab3a52c59a511ce06026ae05e4dd5af"><td class="mdescLeft">&#160;</td><td class="mdescRight">The model id to request from each provider; defaults to AiProviderDefaultModel() but the user can override it in Options, since model catalogs change far more often than this code does. <br /></td></tr>
+<tr class="separator:a2ab3a52c59a511ce06026ae05e4dd5af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9e7380483f777896977eb8242ebed89"><td class="memItemLeft" align="right" valign="top"><a id="af9e7380483f777896977eb8242ebed89" name="af9e7380483f777896977eb8242ebed89"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>AiModelAnthropic</b> (const wxString &amp;model)</td></tr>
+<tr class="separator:af9e7380483f777896977eb8242ebed89"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88ba88911115a6f9a5ec59ec11d6e4ac"><td class="memItemLeft" align="right" valign="top"><a id="a88ba88911115a6f9a5ec59ec11d6e4ac" name="a88ba88911115a6f9a5ec59ec11d6e4ac"></a>
+wxString&#160;</td><td class="memItemRight" valign="bottom"><b>AiModelOpenAI</b> () const</td></tr>
+<tr class="separator:a88ba88911115a6f9a5ec59ec11d6e4ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8d08a1f32d4ed72a36e3655a6dcab1e"><td class="memItemLeft" align="right" valign="top"><a id="ad8d08a1f32d4ed72a36e3655a6dcab1e" name="ad8d08a1f32d4ed72a36e3655a6dcab1e"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>AiModelOpenAI</b> (const wxString &amp;model)</td></tr>
+<tr class="separator:ad8d08a1f32d4ed72a36e3655a6dcab1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a350d7150a2192852b26f6c431fa9942d"><td class="memItemLeft" align="right" valign="top"><a id="a350d7150a2192852b26f6c431fa9942d" name="a350d7150a2192852b26f6c431fa9942d"></a>
+wxString&#160;</td><td class="memItemRight" valign="bottom"><b>AiModelGoogle</b> () const</td></tr>
+<tr class="separator:a350d7150a2192852b26f6c431fa9942d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c1cb0c0fa2d165fa4ff42473b3f3458"><td class="memItemLeft" align="right" valign="top"><a id="a4c1cb0c0fa2d165fa4ff42473b3f3458" name="a4c1cb0c0fa2d165fa4ff42473b3f3458"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>AiModelGoogle</b> (const wxString &amp;model)</td></tr>
+<tr class="separator:a4c1cb0c0fa2d165fa4ff42473b3f3458"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ede6f40c295d02ad2413298d1b5c3fd"><td class="memItemLeft" align="right" valign="top"><a id="a9ede6f40c295d02ad2413298d1b5c3fd" name="a9ede6f40c295d02ad2413298d1b5c3fd"></a>
+wxString&#160;</td><td class="memItemRight" valign="bottom"><b>AiModelQwen</b> () const</td></tr>
+<tr class="separator:a9ede6f40c295d02ad2413298d1b5c3fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04064c24d638354fefb7342e0e545d61"><td class="memItemLeft" align="right" valign="top"><a id="a04064c24d638354fefb7342e0e545d61" name="a04064c24d638354fefb7342e0e545d61"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>AiModelQwen</b> (const wxString &amp;model)</td></tr>
+<tr class="separator:a04064c24d638354fefb7342e0e545d61"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aed909c1cc93e4ed6d7fa074c558d295f"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#aed909c1cc93e4ed6d7fa074c558d295f">GetDisplayedDigits</a> () const</td></tr>
 <tr class="memdesc:aed909c1cc93e4ed6d7fa074c558d295f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the maximum number of displayed digits.  <br /></td></tr>
 <tr class="separator:aed909c1cc93e4ed6d7fa074c558d295f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1470,6 +1526,34 @@ static <a class="el" href="structConfiguration_1_1PerformanceStats.html">Perform
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="adcf5ccf815501a086738b0888693ddf7" name="adcf5ccf815501a086738b0888693ddf7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adcf5ccf815501a086738b0888693ddf7">&#9670;&#160;</a></span>AiChatProvider()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Configuration::AiChatProvider </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Which AI provider the AI chat sidebar talks to, as an AiProviderKind cast to int (0 = AiProviderKind::None, i.e. </p>
+<p>not configured/disabled). Stored as a plain int, not the enum itself, so <a class="el" href="Configuration_8h_source.html">Configuration.h</a> doesn't need to include <a class="el" href="AiProvider_8h.html" title="Talks to one of a handful of external AI chat APIs for the AI chat sidebar (AiChatSidebar).">AiProvider.h</a> just for this one field. </p>
+
+</div>
+</div>
 <a id="a56f215c6fb33a7d594a2212377204370" name="a56f215c6fb33a7d594a2212377204370"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a56f215c6fb33a7d594a2212377204370">&#9670;&#160;</a></span>CellCfgCnt()</h2>
 
