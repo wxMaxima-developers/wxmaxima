@@ -173,6 +173,9 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
   m_statusBar = new StatusBar(this, -1);
   //  wxWindowUpdateLocker statusbarBlocker(m_statusBar);
   SetStatusBar(m_statusBar);
+#if wxUSE_TASKBARICON
+  m_trayIcon = std::make_unique<TrayIcon>(this, m_statusBar);
+#endif
   m_StatusSaving = false;
   // If we need to set the status manually for the first time using
   // StatusMaximaBusy we first have to manually set the last state to something
@@ -550,6 +553,10 @@ void wxMaximaFrame::UpdateStatusMaximaBusy() {
        (m_StatusMaximaBusy_next == StatusBar::MaximaStatus::transferring))) {
     m_StatusMaximaBusy = m_StatusMaximaBusy_next;
     m_statusBar->UpdateStatusMaximaBusy(m_StatusMaximaBusy, m_bytesFromMaxima);
+#if wxUSE_TASKBARICON
+    if (m_trayIcon)
+      m_trayIcon->UpdateStatus(m_StatusMaximaBusy);
+#endif
     if (!m_StatusSaving) {
       switch (m_StatusMaximaBusy) {
       case StatusBar::MaximaStatus::process_wont_start:

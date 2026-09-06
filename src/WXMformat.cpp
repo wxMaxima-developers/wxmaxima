@@ -165,8 +165,56 @@ namespace Format {
     return result;
   }
 
+  // GH #1907: unlike an input/code cell -- whose start and end markers are
+  // each a single, already-closed "/* ... */" comment on their own line, so
+  // the code between them sits outside any comment at all -- a
+  // title/section/subsection/heading/comment/caption cell's start marker
+  // ("/* [wxMaxima: title   start ]", no closing "*/") opens a C-style
+  // comment that stays open across that cell's *entire* content, only
+  // closing at the end marker's own trailing "*/". A literal "*/" inside
+  // such a cell's own text therefore closes that comment early: everything
+  // from there up to whatever "*/" a plain `load()`/`batch()` scan happens
+  // to find next is read as live, executable Maxima input instead of inert
+  // prose -- e.g. a title cell containing "abc */ x:2$ /* def " silently
+  // runs "x:2$" when the file is loaded. This escapes every '/' that sits
+  // immediately next to a '*' (i.e. would form a literal "/*" or "*/") with
+  // the HTML numeric entity "&#47;", leaving the adjacent '*' and every
+  // other '/' (e.g. an ordinary "1/2") untouched; UnescapeWXMSlashes()
+  // below is its exact inverse. Escaping '&' first keeps the transform
+  // unambiguous even if the original content already contains a literal
+  // '&' -- without that, content already containing the literal text
+  // "&#47;" would be corrupted on the way back. This can't fix a .wxm file
+  // already on disk from before this existed, and can't be applied to code
+  // cells at all (they must stay byte-identical so a plain Maxima can still
+  // batch() them with zero wxMaxima-specific decoding) -- see the callers.
+  static wxString EscapeWXMSlashes(const wxString &content) {
+    wxString ampEscaped = content;
+    ampEscaped.Replace(wxS("&"), wxS("&amp;"));
+
+    wxString result;
+    result.reserve(ampEscaped.Length());
+    for (size_t i = 0; i < ampEscaped.Length(); i++) {
+      wxUniChar c = ampEscaped[i];
+      if (c == wxS('/') &&
+          ((i > 0 && ampEscaped[i - 1] == wxS('*')) ||
+           (i + 1 < ampEscaped.Length() && ampEscaped[i + 1] == wxS('*'))))
+        result << wxS("&#47;");
+      else
+        result << c;
+    }
+    return result;
+  }
+
+  //! The exact inverse of EscapeWXMSlashes() -- see its comment.
+  static wxString UnescapeWXMSlashes(const wxString &content) {
+    wxString result = content;
+    result.Replace(wxS("&#47;"), wxS("/"));
+    result.Replace(wxS("&amp;"), wxS("&"));
+    return result;
+  }
+
   static wxString EscapeWXMTextContent(const wxString &content) {
-    wxString result = EscapeWXMContent(content);
+    wxString result = EscapeWXMContent(EscapeWXMSlashes(content));
     return result;
   }
 
@@ -209,7 +257,13 @@ namespace Format {
                << EscapeWXMTextContent(cell->GetEditable()->ToString(true)) << '\n'
                << Headers.GetEnd(groupType) << '\n';
       else {
-        retval << wxS("/* ") << cell->GetEditable()->ToString(true) << wxS(" */\n");
+        // Same open-comment injection risk as the wxm branch above (GH
+        // #1907) -- this .mac export has no wxMaxima-specific unescaping on
+        // read (.mac is a foreign/interop format, read as plain Maxima
+        // comments), so a round trip through this exact file will show the
+        // escaped entities literally rather than "/"; that's a purely
+        // cosmetic cost, worth paying to keep the exported .mac inert.
+        retval << wxS("/* ") << EscapeWXMSlashes(cell->GetEditable()->ToString(true)) << wxS(" */\n");
       }
       break;
     case GC_TYPE_SECTION:
@@ -327,7 +381,8 @@ namespace Format {
         break;
 
         // Read title, section, subsection, subsubsection, heading5, heading6,
-        //      comment, input
+        // comment -- these need UnescapeWXMSlashes() to reverse
+        // EscapeWXMTextContent()'s write-side escaping (GH #1907).
       case WXM_TITLE:
       case WXM_SECTION:
       case WXM_SUBSECTION:
@@ -335,11 +390,25 @@ namespace Format {
       case WXM_HEADING5:
       case WXM_HEADING6:
       case WXM_COMMENT:
+        line = UnescapeWXMSlashes(getLinesUntil(Headers.GetEnd(headerId)));
+        cell = std::make_unique<GroupCell>(config, GroupType(headerId), line);
+        hideCell(cell.get());
+        break;
+
+        // Read input -- must stay byte-identical to what was written (no
+        // unescaping): a code cell's start/end markers are each a complete,
+        // already-closed comment on their own line, so its content was
+        // never inside an open comment and was never escaped on write
+        // either (see EscapeWXMTextContent()'s callers) -- a plain Maxima
+        // must be able to load() this file with zero wxMaxima-specific
+        // decoding.
       case WXM_INPUT:
         line = getLinesUntil(Headers.GetEnd(headerId));
         cell = std::make_unique<GroupCell>(config, GroupType(headerId), line);
         hideCell(cell.get());
         break;
+        // Same UnescapeWXMSlashes()/byte-identical split as above, for the
+        // hidden variants.
       case WXM_HIDDEN_TITLE:
       case WXM_HIDDEN_SECTION:
       case WXM_HIDDEN_SUBSECTION:
@@ -347,8 +416,13 @@ namespace Format {
       case WXM_HIDDEN_HEADING5:
       case WXM_HIDDEN_HEADING6:
       case WXM_HIDDEN_COMMENT:
-      case WXM_HIDDEN_INPUT:
       case WXM_HIDDEN_CAPTION:
+        hide = true;
+        line = UnescapeWXMSlashes(getLinesUntil(Headers.GetEnd(headerId)));
+        cell = std::make_unique<GroupCell>(config, GroupType(headerId - 128), line);
+        hideCell(cell.get());
+        break;
+      case WXM_HIDDEN_INPUT:
         hide = true;
         line = getLinesUntil(Headers.GetEnd(headerId));
         cell = std::make_unique<GroupCell>(config, GroupType(headerId - 128), line);
@@ -357,7 +431,7 @@ namespace Format {
 
         // Read an image caption
       case WXM_CAPTION:
-        line = getLinesUntil(Headers.GetEnd(headerId));
+        line = UnescapeWXMSlashes(getLinesUntil(Headers.GetEnd(headerId)));
         cell = std::make_unique<GroupCell>(config, GroupType(headerId));
         cell->GetEditable()->SetValue(line);
         hideCell(cell.get());
@@ -374,18 +448,21 @@ namespace Format {
         }
         break;
 
-        // Read an answer
+        // Read an answer. WXM_ANSWER's own start/end markers are both
+        // self-closed single-line comments (like WXM_INPUT's), so this
+        // content was never at injection risk -- unescaped anyway, purely
+        // for symmetry with EscapeWXMTextContent() writing it that way.
       case WXM_ANSWER:
-        line = getLinesUntil(Headers.GetEnd(headerId));
+        line = UnescapeWXMSlashes(getLinesUntil(Headers.GetEnd(headerId)));
         if (last && !question.empty()) {
           last->SetAnswer(question, line);
           question.Clear();
         }
         break;
 
-        // Read a question
+        // Read a question -- see the WXM_ANSWER comment just above.
       case WXM_QUESTION:
-        line = getLinesUntil(Headers.GetEnd(headerId));
+        line = UnescapeWXMSlashes(getLinesUntil(Headers.GetEnd(headerId)));
         question = line;
         break;
 
