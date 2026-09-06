@@ -389,6 +389,112 @@ SCENARIO("McpTools' variable watchlist tools only ever touch the sidebar, "
   }
 }
 
+SCENARIO("McpTools::SearchCells() finds cells by plain substring or regex, "
+        "in input and/or output, so an AI can jump straight to a match "
+        "instead of reading every cell") {
+  g_ws->ClearDocument();
+  g_vars->Clear();
+
+  GIVEN("Three code cells, only one of which mentions \"integrate\"") {
+    GroupCell *first = AppendCodeGroup(wxS("x: 1+1;"), nullptr, wxS("2"));
+    GroupCell *second =
+      AppendCodeGroup(wxS("integrate(sin(x), x);"), first, wxS("-cos(x)"));
+    AppendCodeGroup(wxS("y: 3;"), second, wxS("3"));
+
+    McpTools tools(g_ws, g_vars);
+
+    WHEN("SearchCells() is called with a plain substring in the input") {
+      nlohmann::json result = tools.SearchCells(Args("pattern", "integrate"));
+      THEN("it finds only that cell, and reports where it matched") {
+        REQUIRE(result["matches"].size() == 1);
+        CHECK(result["matches"][0]["matched_in"] == "input");
+        CHECK(result["matches"][0]["group_type"] == "code");
+        CHECK(result["truncated"] == false);
+        std::string snippet = result["matches"][0]["match_snippet"].get<std::string>();
+        CHECK(snippet.find("integrate") != std::string::npos);
+      }
+    }
+
+    WHEN("SearchCells() is called with a substring only present in output") {
+      nlohmann::json result = tools.SearchCells(Args("pattern", "-cos"));
+      THEN("it still finds the cell, flagged as matched in output") {
+        REQUIRE(result["matches"].size() == 1);
+        CHECK(result["matches"][0]["matched_in"] == "output");
+      }
+    }
+
+    WHEN("SearchCells() is called with different case than the text") {
+      nlohmann::json result = tools.SearchCells(Args("pattern", "INTEGRATE"));
+      THEN("it still matches, since case_sensitive defaults to false") {
+        REQUIRE(result["matches"].size() == 1);
+      }
+    }
+
+    WHEN("SearchCells() is called with case_sensitive true and wrong case") {
+      nlohmann::json args = {{"pattern", "INTEGRATE"}, {"case_sensitive", true}};
+      nlohmann::json result = tools.SearchCells(args);
+      THEN("it finds nothing") {
+        CHECK(result["matches"].empty());
+      }
+    }
+
+    WHEN("SearchCells() is called with scope=\"output\" for a pattern only "
+        "in that cell's input") {
+      nlohmann::json args = {{"pattern", "integrate"}, {"scope", "output"}};
+      nlohmann::json result = tools.SearchCells(args);
+      THEN("it finds nothing, since the match was excluded by scope") {
+        CHECK(result["matches"].empty());
+      }
+    }
+
+    WHEN("SearchCells() is called with a regular expression") {
+      nlohmann::json args = {{"pattern", "y: [0-9]+"}, {"regex", true}};
+      nlohmann::json result = tools.SearchCells(args);
+      THEN("it matches using regex semantics, not literal substring") {
+        REQUIRE(result["matches"].size() == 1);
+        CHECK(result["matches"][0]["matched_in"] == "input");
+      }
+    }
+
+    WHEN("SearchCells() is given an invalid regular expression") {
+      nlohmann::json args = {{"pattern", "("}, {"regex", true}};
+      THEN("it throws McpToolError instead of crashing") {
+        CHECK_THROWS_AS(tools.SearchCells(args), McpToolError);
+      }
+    }
+
+    WHEN("SearchCells() finds no matches at all") {
+      nlohmann::json result = tools.SearchCells(Args("pattern", "nonexistent_xyz"));
+      THEN("it returns an empty, non-truncated match list") {
+        CHECK(result["matches"].empty());
+        CHECK(result["truncated"] == false);
+      }
+    }
+
+    WHEN("SearchCells() is called with a missing pattern argument") {
+      THEN("it throws McpToolError") {
+        CHECK_THROWS_AS(tools.SearchCells(nlohmann::json::object()), McpToolError);
+      }
+    }
+  }
+
+  GIVEN("More cells than MAX_SEARCH_MATCHES that all match") {
+    GroupCell *last = nullptr;
+    for (std::size_t i = 0; i < McpTools::MAX_SEARCH_MATCHES + 5; ++i)
+      last = AppendCodeGroup(wxS("needle: 1;"), last);
+
+    McpTools tools(g_ws, g_vars);
+
+    WHEN("SearchCells() is called") {
+      nlohmann::json result = tools.SearchCells(Args("pattern", "needle"));
+      THEN("it caps the result and reports truncation") {
+        CHECK(result["matches"].size() == McpTools::MAX_SEARCH_MATCHES);
+        CHECK(result["truncated"] == true);
+      }
+    }
+  }
+}
+
 class TestApp : public wxApp {
 public:
   bool OnInit() override { return true; }

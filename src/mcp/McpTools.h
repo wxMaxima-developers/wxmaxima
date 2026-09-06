@@ -86,10 +86,20 @@ public:
   nlohmann::json ReadVariables() const;
   nlohmann::json WatchVariable(const nlohmann::json &arguments) const;
   nlohmann::json UnwatchVariable(const nlohmann::json &arguments) const;
+  //! Finds every cell whose input and/or output contains `pattern` (a plain
+  //! substring by default, or a regular expression with "regex":true), so an
+  //! AI can jump straight to the relevant cell(s) of a large worksheet
+  //! instead of reading everything via read_worksheet/list_cells. Read-only,
+  //! same as every other tool here -- it never touches worksheet content.
+  nlohmann::json SearchCells(const nlohmann::json &arguments) const;
 
   //! A cap on how much text a single response ever carries (read_worksheet/
   //! read_section), so a huge worksheet can't produce an unbounded reply.
   static constexpr std::size_t MAX_TEXT_LENGTH = 200000;
+  //! search_cells stops collecting further matches once it hits this many,
+  //! reporting "truncated" instead -- a pathological pattern matching most
+  //! of a huge worksheet must not turn into an unbounded response either.
+  static constexpr std::size_t MAX_SEARCH_MATCHES = 50;
   //! The cap applied to each individual cell's own output when it's one of
   //! many being concatenated (ReadWorksheet/ReadSection) -- keeps one cell
   //! with a huge output (a large matrix, a long list, ...) from crowding
