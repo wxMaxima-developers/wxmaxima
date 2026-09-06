@@ -18,6 +18,9 @@
   ask for just a preview or specifically the end of a long output, and
   made read_variables report when Maxima is still busy so an empty value
   isn't mistaken for "undefined" when it's really just "not answered yet."
+- Options -> AI Chat now links directly to each provider's own page for
+  getting an API key, and the AI Chat sidebar itself shows an "Open
+  Options..." button whenever none is configured yet.
 - Added an "AI Chat" sidebar (View -> Sidebars -> AI Chat) that lets you
   chat about the current worksheet with Anthropic, OpenAI, Google Gemini or
   Qwen, using your own API key (configured in Options -> AI Chat). It sends

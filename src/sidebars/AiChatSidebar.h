@@ -74,6 +74,15 @@ public:
 private:
   void OnSend(wxCommandEvent &event);
   void OnInputKeyDown(wxKeyEvent &event);
+  //! Opens the Options dialog's AI Chat tab -- shown only while no provider
+  //! is configured, since there is no "log in" button that could get an API
+  //! key automatically (see AiProviderApiKeyUrl()'s own comment). Re-posts
+  //! wxID_PREFERENCES to the top-level window rather than constructing
+  //! ConfigDialogue itself, so this reuses the exact same handling
+  //! (MaximaCommandMenus.cpp) the Edit -> Configure menu item already does
+  //! (re-reading the config file first, applying settings afterwards, ...)
+  //! instead of duplicating any of it.
+  void OnOpenOptions(wxCommandEvent &event);
   void AppendToHistory(const wxString &speaker, const wxString &text);
   void SetBusy(bool busy);
   //! A compact, size-capped plain-text snapshot of the worksheet (table of
@@ -93,6 +102,7 @@ private:
   wxButton *m_sendButton;
   wxButton *m_clearButton;
   wxStaticText *m_statusText;
+  wxButton *m_openOptionsButton;
 
   //! A cap on the worksheet snapshot's size distinct from (and much
   //! smaller than) McpTools::MAX_TEXT_LENGTH: that limit exists to bound a

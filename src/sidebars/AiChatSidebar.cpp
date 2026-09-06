@@ -35,6 +35,15 @@ AiChatSidebar::AiChatSidebar(wxWindow *parent, Configuration *configuration,
   vbox->Add(m_statusText,
            wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
 
+  // Only shown while no provider is configured (see ReloadProviderFromConfig())
+  // -- there is no "log in" button that could get an API key automatically
+  // (AiProviderApiKeyUrl()'s own comment explains why), so this is the
+  // closest equivalent: one click to the exact place that both explains the
+  // options and links to where to actually get a key.
+  m_openOptionsButton = new wxButton(this, wxID_ANY, _("Open Options..."));
+  vbox->Add(m_openOptionsButton,
+           wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
+
   m_historyCtrl =
     new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition,
                    wxDefaultSize,
@@ -75,6 +84,7 @@ AiChatSidebar::AiChatSidebar(wxWindow *parent, Configuration *configuration,
   m_sendButton->Bind(wxEVT_BUTTON, &AiChatSidebar::OnSend, this);
   m_clearButton->Bind(wxEVT_BUTTON,
                       [this](wxCommandEvent &) { ClearConversation(); });
+  m_openOptionsButton->Bind(wxEVT_BUTTON, &AiChatSidebar::OnOpenOptions, this);
   m_inputCtrl->Bind(wxEVT_KEY_DOWN, &AiChatSidebar::OnInputKeyDown, this);
 
   ReloadProviderFromConfig();
@@ -106,6 +116,13 @@ void AiChatSidebar::ReloadProviderFromConfig() {
   m_provider = (apiKey.IsEmpty()) ? nullptr : MakeAiProvider(kind, apiKey, model);
   UpdateStatusText();
   m_sendButton->Enable(!m_requestInFlight && (m_provider != nullptr));
+  m_openOptionsButton->Show(m_provider == nullptr);
+  Layout();
+}
+
+void AiChatSidebar::OnOpenOptions(wxCommandEvent &WXUNUSED(event)) {
+  wxCommandEvent openPreferences(wxEVT_MENU, wxID_PREFERENCES);
+  GetParent()->GetEventHandler()->AddPendingEvent(openPreferences);
 }
 
 void AiChatSidebar::ClearConversation() {

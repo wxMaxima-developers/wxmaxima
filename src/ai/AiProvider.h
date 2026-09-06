@@ -61,6 +61,15 @@ wxString AiProviderKindName(AiProviderKind kind);
 //! model catalogs change far more often than this code does.
 wxString AiProviderDefaultModel(AiProviderKind kind);
 
+//! Where to go to create/find an API key for this provider -- shown as a
+//! link next to that provider's key field in Options, since there is no
+//! "log in" button that could get one automatically: none of these four
+//! providers offer a legitimate third-party OAuth flow a desktop app could
+//! use, so pasting a key from the provider's own site is the only option.
+//! Best-effort: a provider's console is free to move its own pages, same
+//! caveat as AiProviderDefaultModel()'s model ids going stale over time.
+wxString AiProviderApiKeyUrl(AiProviderKind kind);
+
 /*! Talks to one external AI provider's chat completion HTTP API.
 
   Deliberately split into a stateless, directly-testable half (BuildRequestBody()/

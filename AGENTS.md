@@ -674,6 +674,35 @@ a local TCP socket.
     and would have silently failed the check. Used `is_number_integer()`
     instead, which covers both representations, and simply ignores a
     negative value rather than rejecting the whole call.
+  - **Follow-up (2026-09-06): "would it be possible to provide it with a
+    'login' button or, if not, an info on how to obtain such an API key?"**
+    A real "log in" button isn't possible -- same reasoning as the sidebar's
+    original design (see the AI chat sidebar entry above): none of these
+    four providers offer a legitimate third-party OAuth flow a desktop app
+    could use, so there is no automated way to obtain a key. Added the next
+    best thing instead: `AiProviderApiKeyUrl(AiProviderKind)` (alongside
+    the existing `AiProviderKindName()`/`AiProviderDefaultModel()`) returns
+    each provider's own API-key page, shown as a `wxHyperlinkCtrl` under
+    that provider's key field in Options -> AI Chat. Also added an "Open
+    Options..." button to the sidebar itself, shown only while no provider
+    is configured (`ReloadProviderFromConfig()` toggles it), so a user who
+    opens the sidebar cold has one click to the exact place that both
+    explains the settings and links to where to get a key -- re-posting
+    `wxEVT_MENU`/`wxID_PREFERENCES` to `GetParent()`'s event handler rather
+    than constructing `ConfigDialogue` itself, reusing
+    `MaximaCommandMenus.cpp`'s existing handling (re-reading the config
+    file first, applying settings on OK, ...) instead of duplicating any of
+    it -- the same "re-post the menu event, don't reimplement the handler"
+    idiom `TrayIcon::OnInterrupt()`/`OnExit()` already use elsewhere.
+    **A real bug caught by looking at the live screenshot, not by reading
+    the code:** the four links were built from one shared format string,
+    `wxString::Format(_("Get an %s API key..."), AiProviderKindName(kind))`
+    -- grammatically fine for "Anthropic (Claude)"/"OpenAI" (both take
+    "an"), but wrong for "Google (Gemini)"/"Qwen (Alibaba)" (both need
+    "a"), rendering as the actually-shipped-then-caught "Get an Google
+    (Gemini) API key..." Fixed by rewording to "Get an API key for %s...",
+    which sidesteps the a/an agreement entirely rather than trying to track
+    which of the four provider names needs which article.
 - **wxAuiManager:** The application uses `wxAuiManager` for its complex layout (sidebars, toolbars, worksheet).
   - **Linux/GTK Timing:** On Linux (especially KDE Plasma with Global Menus), calling `m_manager.Update()` can disrupt the menu bar if it's already attached. This is a known environmental issue in the interaction between wxWidgets, GTK3, and the KDE Global Menu proxy.
     - **Automated Fix:** On systems with wxWidgets <= 3.2 running on KDE, Unity, or with `appmenu-gtk-module` enabled, wxMaxima automatically sets `UBUNTU_MENUPROXY=0` at startup in `main.cpp` to force menus to remain within the window and prevent disappearance.

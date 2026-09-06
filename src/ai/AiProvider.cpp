@@ -188,6 +188,16 @@ wxString AiProviderDefaultModel(AiProviderKind kind) {
   }
 }
 
+wxString AiProviderApiKeyUrl(AiProviderKind kind) {
+  switch (kind) {
+  case AiProviderKind::Anthropic: return wxS("https://console.anthropic.com/settings/keys");
+  case AiProviderKind::OpenAI: return wxS("https://platform.openai.com/api-keys");
+  case AiProviderKind::Google: return wxS("https://aistudio.google.com/apikey");
+  case AiProviderKind::Qwen: return wxS("https://dashscope.console.aliyun.com/apiKey");
+  default: return wxEmptyString;
+  }
+}
+
 std::shared_ptr<AiProvider> MakeAiProvider(AiProviderKind kind, const wxString &apiKey,
                                            const wxString &model) {
   switch (kind) {
