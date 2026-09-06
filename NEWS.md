@@ -1,14 +1,16 @@
 # Current development version
 
-- Possible fix for `wxmaxima --version`/`--help` sometimes not printing
-  anything on Windows (seen consistently as the `wxmaxima_version_string`
-  CI failure, unverified on real hardware -- no Windows available to test
-  on directly, see AGENTS.md for the reasoning). The code that redirects
-  the GUI-subsystem binary's stdout/stderr to an inherited pipe/console
-  opened a second, throwaway `FILE` via `_fdopen()` and shallow-copied its
-  struct onto `stdout`/`stderr`, which can leave CRT-internal-only state
-  inconsistent; switched to `_dup2()`, the documented way to repoint an
-  existing stream's underlying descriptor.
+- Made the GUI-subsystem binary's stdout/stderr redirection
+  (`RedirectStdioToParent()`) use `_dup2()` to repoint the existing stream's
+  descriptor instead of a shallow struct-copy over a second, throwaway
+  `FILE*` -- the standard, documented way to do this, regardless of the item
+  below. This does *not* fix the `wxmaxima_version_string` CI failure on the
+  Windows runner: that was the working theory, but the next CI run
+  reproduced the exact same failure on this change, and a follow-up
+  Wine-based test confirmed both the old and new code deliver a
+  GUI-subsystem process's piped stdout correctly in isolation. That failure
+  remains open; see AGENTS.md for what's been ruled out and the most
+  promising remaining lead.
 - Added a system tray/notification-area icon (GH #2286) that mirrors
   wxMaxima's busy status -- the same information the status bar's own icon
   and, on Windows, the taskbar button's progress overlay already show -- and

@@ -818,48 +818,105 @@ a local TCP socket.
     this change).
 
 - **`wxmaxima_version_string` CI test failing on the minGW Windows runner on
-  essentially every push since 2026-08-15 -- likely root cause found and a
-  fix attempted, but genuinely UNVERIFIED (no Windows machine available in
-  this sandbox; the only real test is the next CI run itself).** The test
-  runs `wxmaxima --debug --logtostderr --pipe --version` and expects stdout
-  to match `wxMaxima <VERSION>.*`; it consistently fails with "Required
-  regular expression not found" while the process still exits 0 -- i.e. no
-  crash, just no (or wrong) captured output, on a job that otherwise builds
-  and passes every other test cleanly. `main.cpp` already has a large
+  essentially every push since 2026-08-15 -- STILL UNSOLVED (2026-09-06).
+  The `_dup2()` fix below was tried, pushed, and the very next CI run
+  reproduced the exact same failure -- the struct-copy theory is DISCONFIRMED,
+  not just unverified. Read this whole entry before touching
+  `BindStdStreamToParent()` again; don't re-derive or re-attempt the
+  struct-copy theory from scratch.** The test runs `wxmaxima --debug
+  --logtostderr --pipe --version` and expects stdout to match `wxMaxima
+  <VERSION>.*`; it consistently fails with "Required regular expression not
+  found" while the process still exits 0 -- no crash, just no (or wrong)
+  captured output -- on a job that otherwise builds and passes every other
+  test cleanly (including `wxmaxima_version_returncode`, the same command
+  with only the exit code checked, which passes every time -- so the process
+  really does run to completion normally). `main.cpp` already has a large
   Windows-only block explaining why this needs special handling at all:
   wxMaxima is a `WIN32`-subsystem binary (`add_executable(wxmaxima WIN32
   ...)`), so it has no stdio wired up by default, and `RedirectStdioToParent()`
   (`BindStdStreamToParent()`) exists specifically to bind `stdout`/`stderr`/
   `stdin` onto whatever the parent process gave it (an inherited pipe, as
-  ctest sets up, or an attached console). That existing code did:
-  ```cpp
-  int fd = _open_osfhandle((intptr_t)handle, _O_TEXT);
-  FILE *opened = _fdopen(fd, mode);
-  *stream = *opened;  // stream is the global stdout/stderr/stdin pointer
-  ```
-  `*stream = *opened` is a shallow struct copy of the `FILE` object `_fdopen()`
-  just allocated (at its own, different address) onto the CRT's real,
-  globally-visible `stdout`/`stderr` object. That only reproduces whatever
-  *public* fields `_fdopen()` happened to initialize; it does not (and
-  cannot, from application code) fix up any CRT-internal-only bookkeeping
-  that's keyed to an object's own address -- e.g. UCRT's per-stream lock,
-  or internal buffering-state pointers -- which is exactly the kind of bug
-  that produces "looks bound, exit code is fine, but writes silently don't
-  land" rather than an outright crash. Replaced with `_dup2(fd,
-  _fileno(stream))`, the documented, standard way to repoint an *existing*
-  CRT stream's underlying file descriptor without fabricating a second
-  `FILE` object at all -- `stdout`/`stderr`/`stdin` remain the exact same
-  objects the rest of the CRT (and any code that cached a `FILE*` to them
-  earlier) already knows about, just now pointing at a different OS handle.
-  Confirmed only that this compiles cleanly (`x86_64-w64-mingw32-g++`,
-  `-Wall -Wextra`, matching `compile_windows.yml`'s own flags for this job)
-  in a standalone reproduction of just this function -- **the actual runtime
-  behavior on Windows is unverified**, since this sandbox has no Windows
-  environment to run the built binary on. If `wxmaxima_version_string`
-  keeps failing after this lands, the struct-copy theory is wrong and the
-  real cause is still open; if it goes green, this was it. Either way, this
-  needs a human with Windows access (or just watching the next CI run) to
-  actually confirm -- don't treat "it compiled" as "it works" for this one.
+  ctest sets up, or an attached console).
+  - **Attempt 1 (2026-09-06, commit `3f8fd15`): the struct-copy theory --
+    DISCONFIRMED.** The original code did:
+    ```cpp
+    int fd = _open_osfhandle((intptr_t)handle, _O_TEXT);
+    FILE *opened = _fdopen(fd, mode);
+    *stream = *opened;  // stream is the global stdout/stderr/stdin pointer
+    ```
+    The theory: `*stream = *opened` is a shallow struct copy of a `FILE`
+    object allocated at a *different* address onto the CRT's real,
+    globally-visible `stdout`/`stderr` object, and might leave CRT-internal
+    bookkeeping (a per-stream lock, internal buffering-state pointers) keyed
+    to the wrong address. Replaced with `_dup2(fd, _fileno(stream))`, the
+    documented way to repoint an *existing* stream's descriptor without
+    fabricating a second `FILE` object. **The next real CI run on this exact
+    commit reproduced the identical failure** (133/134 passed, the same
+    single `wxmaxima_version_string` failure, same shape) -- so this was not
+    the bug, or at least not the whole of it.
+  - **Follow-up verification (2026-09-06, same day, no code change): built a
+    genuine Wine-based test harness and confirmed the disconfirmation
+    directly, not just via CI's word for it.** This sandbox has no Windows,
+    but `apt-get install wine64` (plus, once that turned out to need it,
+    `dpkg --add-architecture i386 && apt-get install libgd3:i386 wine32:i386`
+    to unblock a dependency chain, and `g++-mingw-w64-i686-win32` since this
+    Wine build turned out to only support 32-bit prefixes -- `WINEARCH=win64`
+    silently downgrades itself with a warning rather than erroring, and a
+    genuine 64-bit `x86_64-w64-mingw32`-built exe fails with a misleading
+    "Bad EXE format" / ShellExecuteEx error under it, which looks like a
+    corrupt binary but is actually just "wrong bitness for this prefix") gets
+    a working Windows environment good enough to actually *run* a
+    GUI-subsystem (`-mwindows`) cross-compiled exe with its stdout genuinely
+    piped, the same shape ctest uses. A minimal standalone repro
+    (`WinMain()` calling the exact old-vs-new `BindStdStreamToParent()` body
+    verbatim, then one `fprintf(stdout, ...)` + `exit(0)`) was built in both
+    variants (`-DUSE_STRUCT_COPY` old, plain new) with `i686-w64-mingw32-g++
+    -mwindows -static` (static linking needed too -- a dynamically-linked
+    exe fails differently again, `libgcc_s_dw2-1.dll not found`, status
+    `c0000135`, since nothing copies MinGW's runtime DLLs next to a
+    standalone cross-compiled exe) and run under `wine` with `DISPLAY`
+    pointed at a real `Xvfb`, both as `wine exe.exe > file` (matches a shell
+    redirect) and `wine exe.exe | cat` (matches ctest's actual anonymous-pipe
+    shape more closely). **Every one of the four combinations (old/new x
+    file/pipe) printed the expected line correctly and exited 0** -- the
+    struct-copy version is just as capable of getting output through a piped
+    GUI-subsystem stdout as the `_dup2()` version, in this controlled,
+    Wine-level test. This means the bug was very likely never in
+    `BindStdStreamToParent()`'s specific mechanism at all (on real Windows it
+    could still theoretically differ from Wine's behavior here, but combined
+    with the CI re-failure on the actual fix, treat that as the weaker
+    possibility) -- something else in wxMaxima's *actual* Windows startup
+    path is interfering with stdout between `RedirectStdioToParent()`
+    succeeding and the `--version` branch's `Printf()` call, in a way this
+    isolated repro (no wxWidgets, no threads, no sockets) doesn't reproduce.
+    The `_dup2()` change itself is still kept -- it is still the more
+    correct, standard way to repoint a stream, and does no harm -- but it
+    should no longer be described as a fix for this issue anywhere in this
+    repo; it isn't one.
+  - **Most promising remaining lead, NOT YET INVESTIGATED further: the
+    timeline correlation with GH #2274's fix (commit `3f5e895`, landed
+    2026-08-17, two days after this test's "since 2026-08-15" onset).** That
+    change moved `m_logWindow`'s construction (a real, unconditionally-
+    constructed `wxFrame` under the hood, see the GH #2274 entry above) from
+    immediately after `RedirectStdioToParent()`/`wxMessageOutput::Set(...)`
+    to several hundred lines later, after `wxSocketBase::Initialize()`,
+    `wxArtProvider::Push`, `MaximaProcessManager::SetupTerminationHandlers()`,
+    the full `cmdLineParser.Parse()` call, `wxConfig::Set(...)`, and
+    `ApplyAppearanceToApp()` -- all of that now runs *before* any top-level
+    window (even a hidden one) exists, where before it ran after. None of
+    those individually look like an obvious stdout-breaker on paper, but one
+    of them is the actual differentiator between this investigation's
+    minimal repro (which never reproduced the bug) and the real app (which
+    does) -- worth bisecting properly (a real Windows machine, or a full
+    wxWidgets-for-MinGW build run under Wine the same way as this session's
+    minimal repro, reproducing the exact `OnInit()` sequence up to and
+    including the `-v` branch) rather than guessing which specific call is
+    responsible. A full wx+wxMaxima MinGW build was judged too large an
+    undertaking for this pass (wxWidgets alone takes CI real build minutes
+    from source) but is the logical next step if this is picked up again.
+    **Do not re-attempt the struct-copy-vs-dup2 theory a third time** -- it
+    has now been disconfirmed twice, once by real CI and once by a
+    controlled, reproducible Wine-based test built specifically to check it.
 
 - **System tray icon (`src/TrayIcon.{h,cpp}`, GH #2286) -- mirrors the busy
   status, gated entirely by `wxUSE_TASKBARICON`.** The maintainer's own
