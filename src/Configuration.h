@@ -748,6 +748,40 @@ public:
   int McpServerPort() const { return m_mcpServerPort; }
   void McpServerPort(int port) { m_mcpServerPort = port; }
 
+  /*! Which AI provider the AI chat sidebar talks to, as an AiProviderKind
+    cast to int (0 = AiProviderKind::None, i.e. not configured/disabled).
+    Stored as a plain int, not the enum itself, so Configuration.h doesn't
+    need to include AiProvider.h just for this one field. */
+  int AiChatProvider() const { return m_aiChatProvider; }
+  void AiChatProvider(int provider) { m_aiChatProvider = provider; }
+
+  //! The user's API key for each provider, kept separate so switching
+  //! providers in Options doesn't lose the others. Plain-text in wxConfig's
+  //! backing store (the registry on Windows, a dotfile elsewhere) -- the
+  //! same tradeoff any desktop app that stores a local API key makes; there
+  //! is no portable, dependency-free OS-keychain wrapper this project
+  //! already pulls in to do better.
+  wxString AiApiKeyAnthropic() const { return m_aiApiKeyAnthropic; }
+  void AiApiKeyAnthropic(const wxString &key) { m_aiApiKeyAnthropic = key; }
+  wxString AiApiKeyOpenAI() const { return m_aiApiKeyOpenAI; }
+  void AiApiKeyOpenAI(const wxString &key) { m_aiApiKeyOpenAI = key; }
+  wxString AiApiKeyGoogle() const { return m_aiApiKeyGoogle; }
+  void AiApiKeyGoogle(const wxString &key) { m_aiApiKeyGoogle = key; }
+  wxString AiApiKeyQwen() const { return m_aiApiKeyQwen; }
+  void AiApiKeyQwen(const wxString &key) { m_aiApiKeyQwen = key; }
+
+  //! The model id to request from each provider; defaults to
+  //! AiProviderDefaultModel() but the user can override it in Options,
+  //! since model catalogs change far more often than this code does.
+  wxString AiModelAnthropic() const { return m_aiModelAnthropic; }
+  void AiModelAnthropic(const wxString &model) { m_aiModelAnthropic = model; }
+  wxString AiModelOpenAI() const { return m_aiModelOpenAI; }
+  void AiModelOpenAI(const wxString &model) { m_aiModelOpenAI = model; }
+  wxString AiModelGoogle() const { return m_aiModelGoogle; }
+  void AiModelGoogle(const wxString &model) { m_aiModelGoogle = model; }
+  wxString AiModelQwen() const { return m_aiModelQwen; }
+  void AiModelQwen(const wxString &model) { m_aiModelQwen = model; }
+
   /*! Returns the maximum number of displayed digits
 
     m_displayedDigits is always >= 20, so we can guarantee the number we return to be unsigned.
@@ -1428,6 +1462,16 @@ private:
   bool m_mcpServerEnabled;
   //! The localhost TCP port McpServer listens on, if enabled.
   int m_mcpServerPort;
+  //! Which AI provider the AI chat sidebar talks to. See AiChatProvider().
+  int m_aiChatProvider;
+  wxString m_aiApiKeyAnthropic;
+  wxString m_aiApiKeyOpenAI;
+  wxString m_aiApiKeyGoogle;
+  wxString m_aiApiKeyQwen;
+  wxString m_aiModelAnthropic;
+  wxString m_aiModelOpenAI;
+  wxString m_aiModelGoogle;
+  wxString m_aiModelQwen;
   //! How many digits of a number we show by default?
   long m_displayedDigits;
   //! Automatically wrap long lines?

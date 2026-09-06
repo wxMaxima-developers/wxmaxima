@@ -9,6 +9,11 @@
   in the worksheet -- every tool only reads, except adding/removing a
   variable from the watchlist, which only changes what that sidebar
   displays, the same as typing a name into it by hand.
+- Added an "AI Chat" sidebar (View -> Sidebars -> AI Chat) that lets you
+  chat about the current worksheet with Anthropic, OpenAI, Google Gemini or
+  Qwen, using your own API key (configured in Options -> AI Chat). It sends
+  a read-only snapshot of the worksheet as context; it cannot edit,
+  evaluate or otherwise change the worksheet itself.
 - Fixed a modal dialog popping up at every startup on wxWidgets >= 3.3
   reporting the (successful) dark/light appearance change as a debug
   message -- the diagnostic log call ran before wxMaxima's own log window

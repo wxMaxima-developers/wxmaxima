@@ -58,6 +58,7 @@
 #include "StatusBar.h"
 #include "sidebars/ButtonWrapSizer.h"
 #include "mcp/McpServer.h"
+#include "sidebars/AiChatSidebar.h"
 #include <list>
 #include <memory>
 
@@ -199,9 +200,18 @@ public:
     if (m_mcpServer)
       m_mcpServer->ReconcileWithConfig(m_configuration);
   }
+
+  //! Re-reads the configured AI provider/API key/model for the AI chat
+  //! sidebar. Call after the Options dialog closes, in case they changed.
+  void ReloadAiChatProvider() {
+    if (m_aiChatSidebar)
+      m_aiChatSidebar->ReloadProviderFromConfig();
+  }
 protected:
   //! The panel the user can display variable contents in
   Variablespane *m_variablesPane = NULL;
+  //! The AI chat sidebar -- see src/sidebars/AiChatSidebar.h.
+  AiChatSidebar *m_aiChatSidebar = NULL;
   //! The table of contents pane
   TableOfContents *m_tableOfContents = NULL;
   Configuration m_configuration;

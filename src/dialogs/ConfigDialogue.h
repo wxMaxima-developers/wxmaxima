@@ -182,6 +182,7 @@ private:
 
   //! The panel that allows to choose which formats to put on the clipboard
   wxWindow *CreateClipboardPanel();
+  wxWindow *CreateAiChatPanel();
 
   //! The panel that allows to change the print settings
   wxWindow *CreatePrintPanel();
@@ -342,6 +343,15 @@ protected:
   wxCheckBox *m_findDialogDockable;
   wxCheckBox *m_mcpServerEnabled;
   wxSpinCtrl *m_mcpServerPort;
+  wxChoice *m_aiChatProviderChoice;
+  wxTextCtrl *m_aiKeyAnthropic;
+  wxTextCtrl *m_aiKeyOpenAI;
+  wxTextCtrl *m_aiKeyGoogle;
+  wxTextCtrl *m_aiKeyQwen;
+  wxTextCtrl *m_aiModelAnthropicCtrl;
+  wxTextCtrl *m_aiModelOpenAICtrl;
+  wxTextCtrl *m_aiModelGoogleCtrl;
+  wxTextCtrl *m_aiModelQwenCtrl;
   wxChoice *m_showUserDefinedLabels;
   wxButton *m_getStyleFont;
   //! Light / Dark / Follow-system selector (also picks which set the editor edits).

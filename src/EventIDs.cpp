@@ -39,6 +39,7 @@ const wxWindowIDRef EventIDs::menu_pane_format(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_pane_greek(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_pane_unicode(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_pane_variables(wxWindow::NewControlId());
+const wxWindowIDRef EventIDs::menu_pane_aichat(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_pane_draw(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_pane_help(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_pane_symbols(wxWindow::NewControlId());

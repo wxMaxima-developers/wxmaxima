@@ -98,6 +98,7 @@ public:
   static const wxWindowIDRef menu_pane_greek;     //!< Both the "toggle the greek pane" command and the "greek" pane
   static const wxWindowIDRef menu_pane_unicode;   //!< Both the "toggle the unicode pane" command and the "unicode" pane
   static const wxWindowIDRef menu_pane_variables; //!< Both the "toggle the variables pane" command and the "variables" pane
+  static const wxWindowIDRef menu_pane_aichat;    //!< Both the "toggle the AI chat pane" command and the AI chat pane
   static const wxWindowIDRef menu_pane_draw;      //!< Both the "toggle the draw pane" command for the "draw" pane
   static const wxWindowIDRef menu_pane_help;      //!< Both the "toggle the draw pane" command for the help browser
   static const wxWindowIDRef menu_pane_symbols;   //!< Both the "toggle the symbols pane" command for the "symbols" pane

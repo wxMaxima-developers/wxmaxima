@@ -29,6 +29,7 @@
 */
 
 #include "ConfigDialogue.h"
+#include "ai/AiProvider.h"
 #include "WXMformat.h"
 #include "BTextCtrl.h"
 #include "cells/Cell.h"
@@ -285,6 +286,8 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent)
   m_notebook->AddPage(CreateClipboardPanel(), _("Copy"), false, 5);
   m_notebook->AddPage(CreateStartupPanel(), _("Startup commands"), false, 6);
   m_notebook->AddPage(CreatePrintPanel(), _("Printout settings"), false, 7);
+  // Re-uses the "options" tab icon -- no dedicated one exists for this tab.
+  m_notebook->AddPage(CreateAiChatPanel(), _("AI Chat"), false, 4);
 #if wxUSE_ACCESSIBILITY
   // Only offered when wxWidgets was compiled with accessibility support -
   // without it there is no screen-reader integration these settings could
@@ -606,6 +609,17 @@ void ConfigDialogue::SetCheckboxValues() {
   m_findDialogDockable->SetValue(configuration->FindDialogDockable());
   m_mcpServerEnabled->SetValue(configuration->McpServerEnabled());
   m_mcpServerPort->SetValue(configuration->McpServerPort());
+  // The enum's own values (AiProviderKind::None=0, Anthropic=1, ...) match
+  // the wxChoice's item order 1:1, so the raw stored int is a valid index.
+  m_aiChatProviderChoice->SetSelection(configuration->AiChatProvider());
+  m_aiKeyAnthropic->SetValue(configuration->AiApiKeyAnthropic());
+  m_aiKeyOpenAI->SetValue(configuration->AiApiKeyOpenAI());
+  m_aiKeyGoogle->SetValue(configuration->AiApiKeyGoogle());
+  m_aiKeyQwen->SetValue(configuration->AiApiKeyQwen());
+  m_aiModelAnthropicCtrl->SetValue(configuration->AiModelAnthropic());
+  m_aiModelOpenAICtrl->SetValue(configuration->AiModelOpenAI());
+  m_aiModelGoogleCtrl->SetValue(configuration->AiModelGoogle());
+  m_aiModelQwenCtrl->SetValue(configuration->AiModelQwen());
   m_fixedFontInTC->SetValue(configuration->FixedFontInTextControls());
   m_offerKnownAnswers->SetValue(m_configuration->OfferKnownAnswers());
 #if wxUSE_ACCESSIBILITY
@@ -1923,6 +1937,79 @@ wxWindow *ConfigDialogue::CreateAccessibilityPanel() {
 }
 #endif
 
+wxWindow *ConfigDialogue::CreateAiChatPanel() {
+  wxScrolled<wxPanel> *panel = new wxScrolled<wxPanel>(m_notebook, wxID_ANY);
+  panel->SetScrollRate(5 * GetContentScaleFactor(),
+                       5 * GetContentScaleFactor());
+  panel->SetMinSize(wxSize(GetContentScaleFactor() * mMinPanelWidth,
+                           GetContentScaleFactor() * mMinPanelHeight));
+
+  wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
+
+  WrappingStaticText *intro = new WrappingStaticText(
+    panel, wxID_ANY,
+    _("The AI Chat sidebar sends the current worksheet's content "
+      "(read-only -- the AI cannot insert, edit or evaluate anything) and "
+      "your messages to whichever provider you pick below. This needs an "
+      "internet connection and an API key from that provider, and nothing "
+      "is sent unless you actually use the sidebar."));
+  vbox->Add(intro, wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
+
+  wxBoxSizer *providerBox = new wxBoxSizer(wxHORIZONTAL);
+  providerBox->Add(
+    new wxStaticText(panel, wxID_ANY, _("Active provider:")),
+    wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor())
+      .Align(wxALIGN_CENTER_VERTICAL));
+  wxArrayString providerChoices;
+  providerChoices.Add(_("None (disabled)"));
+  providerChoices.Add(AiProviderKindName(AiProviderKind::Anthropic));
+  providerChoices.Add(AiProviderKindName(AiProviderKind::OpenAI));
+  providerChoices.Add(AiProviderKindName(AiProviderKind::Google));
+  providerChoices.Add(AiProviderKindName(AiProviderKind::Qwen));
+  m_aiChatProviderChoice =
+    new wxChoice(panel, wxID_ANY, wxDefaultPosition, wxDefaultSize, providerChoices);
+  providerBox->Add(m_aiChatProviderChoice,
+                   wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
+  vbox->Add(providerBox);
+
+  // One box per provider, always shown (not just the active one): this way
+  // switching providers never loses a key/model you already entered for
+  // another one.
+  auto addProviderBox = [&](const wxString &title, wxTextCtrl *&keyCtrl,
+                            wxTextCtrl *&modelCtrl) {
+    wxStaticBoxSizer *box = new wxStaticBoxSizer(wxVERTICAL, panel, title);
+    wxFlexGridSizer *grid = new wxFlexGridSizer(2, 2, 5, 5);
+    grid->AddGrowableCol(1);
+    grid->Add(new wxStaticText(box->GetStaticBox(), wxID_ANY, _("API key:")),
+             wxSizerFlags().Align(wxALIGN_CENTER_VERTICAL));
+    keyCtrl = new wxTextCtrl(box->GetStaticBox(), wxID_ANY, wxEmptyString,
+                             wxDefaultPosition,
+                             wxSize(300 * GetContentScaleFactor(), -1),
+                             wxTE_PASSWORD);
+    grid->Add(keyCtrl, wxSizerFlags().Expand());
+    grid->Add(new wxStaticText(box->GetStaticBox(), wxID_ANY, _("Model:")),
+             wxSizerFlags().Align(wxALIGN_CENTER_VERTICAL));
+    modelCtrl = new wxTextCtrl(box->GetStaticBox(), wxID_ANY, wxEmptyString,
+                               wxDefaultPosition,
+                               wxSize(300 * GetContentScaleFactor(), -1));
+    grid->Add(modelCtrl, wxSizerFlags().Expand());
+    box->Add(grid, wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
+    vbox->Add(box, wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
+  };
+  addProviderBox(AiProviderKindName(AiProviderKind::Anthropic), m_aiKeyAnthropic,
+                m_aiModelAnthropicCtrl);
+  addProviderBox(AiProviderKindName(AiProviderKind::OpenAI), m_aiKeyOpenAI,
+                m_aiModelOpenAICtrl);
+  addProviderBox(AiProviderKindName(AiProviderKind::Google), m_aiKeyGoogle,
+                m_aiModelGoogleCtrl);
+  addProviderBox(AiProviderKindName(AiProviderKind::Qwen), m_aiKeyQwen,
+                m_aiModelQwenCtrl);
+
+  panel->SetSizer(vbox);
+  panel->FitInside();
+  return panel;
+}
+
 wxWindow *ConfigDialogue::CreateClipboardPanel() {
   wxScrolled<wxPanel> *panel = new wxScrolled<wxPanel>(m_notebook, wxID_ANY);
   panel->SetScrollRate(5 * GetContentScaleFactor(),
@@ -2351,6 +2438,15 @@ void ConfigDialogue::WriteSettings() {
   configuration->FindDialogDockable(m_findDialogDockable->GetValue());
   configuration->McpServerEnabled(m_mcpServerEnabled->GetValue());
   configuration->McpServerPort(m_mcpServerPort->GetValue());
+  configuration->AiChatProvider(m_aiChatProviderChoice->GetSelection());
+  configuration->AiApiKeyAnthropic(m_aiKeyAnthropic->GetValue());
+  configuration->AiApiKeyOpenAI(m_aiKeyOpenAI->GetValue());
+  configuration->AiApiKeyGoogle(m_aiKeyGoogle->GetValue());
+  configuration->AiApiKeyQwen(m_aiKeyQwen->GetValue());
+  configuration->AiModelAnthropic(m_aiModelAnthropicCtrl->GetValue());
+  configuration->AiModelOpenAI(m_aiModelOpenAICtrl->GetValue());
+  configuration->AiModelGoogle(m_aiModelGoogleCtrl->GetValue());
+  configuration->AiModelQwen(m_aiModelQwenCtrl->GetValue());
   configuration->SetLabelChoice(
                                 (Configuration::showLabels)m_showUserDefinedLabels->GetSelection());
   configuration->DefaultPort(m_defaultPort->GetValue());
