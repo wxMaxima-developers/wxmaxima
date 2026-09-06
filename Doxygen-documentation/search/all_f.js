@@ -120,13 +120,14 @@ var searchData=
   ['output_5fadapter_117',['output_adapter',['../classdetail_1_1output__adapter.html',1,'detail']]],
   ['output_5fadapter_5fprotocol_118',['output_adapter_protocol',['../structdetail_1_1output__adapter__protocol.html',1,'detail']]],
   ['output_5fadapter_5ft_119',['output_adapter_t',['../namespacedetail.html#a160eb5d333fe01b259af32d3d4798a7b',1,'detail']]],
-  ['output_5fstream_5fadapter_120',['output_stream_adapter',['../classdetail_1_1output__stream__adapter.html',1,'detail']]],
-  ['output_5fstring_5fadapter_121',['output_string_adapter',['../classdetail_1_1output__string__adapter.html',1,'detail']]],
-  ['output_5fvector_5fadapter_122',['output_vector_adapter',['../classdetail_1_1output__vector__adapter.html',1,'detail']]],
-  ['outputchanged_123',['OutputChanged',['../classWorksheetDocument.html#ae4e03a1c27d7836edd31b5055c4581d3',1,'WorksheetDocument']]],
-  ['outputheightchanged_124',['OutputHeightChanged',['../classGroupCell.html#a261107dd67c2c3bbd0a3bd561e00ad62',1,'GroupCell']]],
-  ['outputlinewidths_125',['OutputLineWidths',['../structGroupCell_1_1OutputLineWidths.html',1,'GroupCell']]],
-  ['overlayscrollbars_126',['OverlayScrollbars',['../classConfiguration.html#ab47f0eff43b0d7e3f812f2f2413723ac',1,'Configuration::OverlayScrollbars() const'],['../classConfiguration.html#accf3101066b9662eb6e2de4c1b44f9d1',1,'Configuration::OverlayScrollbars(bool overlay)']]],
-  ['overload_5ftest_127',['Overload_Test',['../classOverload__Test.html',1,'']]],
-  ['unique_5fptr_3c_20t_20_3e_128',['unique_ptr&lt; T &gt;',['../classCellListBuilder.html#af7962cb0f42dd905c9db70d5eb6e54b3',1,'CellListBuilder']]]
+  ['output_5fpreview_5flength_120',['OUTPUT_PREVIEW_LENGTH',['../classMcpTools.html#a56d37bf8f53bc6ccf552fec1a0dfcff1',1,'McpTools']]],
+  ['output_5fstream_5fadapter_121',['output_stream_adapter',['../classdetail_1_1output__stream__adapter.html',1,'detail']]],
+  ['output_5fstring_5fadapter_122',['output_string_adapter',['../classdetail_1_1output__string__adapter.html',1,'detail']]],
+  ['output_5fvector_5fadapter_123',['output_vector_adapter',['../classdetail_1_1output__vector__adapter.html',1,'detail']]],
+  ['outputchanged_124',['OutputChanged',['../classWorksheetDocument.html#ae4e03a1c27d7836edd31b5055c4581d3',1,'WorksheetDocument']]],
+  ['outputheightchanged_125',['OutputHeightChanged',['../classGroupCell.html#a261107dd67c2c3bbd0a3bd561e00ad62',1,'GroupCell']]],
+  ['outputlinewidths_126',['OutputLineWidths',['../structGroupCell_1_1OutputLineWidths.html',1,'GroupCell']]],
+  ['overlayscrollbars_127',['OverlayScrollbars',['../classConfiguration.html#ab47f0eff43b0d7e3f812f2f2413723ac',1,'Configuration::OverlayScrollbars() const'],['../classConfiguration.html#accf3101066b9662eb6e2de4c1b44f9d1',1,'Configuration::OverlayScrollbars(bool overlay)']]],
+  ['overload_5ftest_128',['Overload_Test',['../classOverload__Test.html',1,'']]],
+  ['unique_5fptr_3c_20t_20_3e_129',['unique_ptr&lt; T &gt;',['../classCellListBuilder.html#af7962cb0f42dd905c9db70d5eb6e54b3',1,'CellListBuilder']]]
 ];
