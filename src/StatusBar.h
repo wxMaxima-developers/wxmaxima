@@ -106,8 +106,8 @@ public:
     assigns via m_maximaStatus->SetBitmap(...), just returned instead of
     applied to that particular wxStaticBitmap. Lets TrayIcon (GH #2286)
     reuse these bitmaps instead of re-embedding the same art a second time
-    -- the generated art/statusbar/*.h headers define their byte arrays
-    without `static`/`extern`, so #include-ing one from a second .cpp file
+    -- the generated headers under art/statusbar (one per icon) define their
+    byte arrays without `static`/`extern`, so #include-ing one from a second .cpp file
     is a duplicate-symbol link error, confirmed by trying exactly that
     first. NOT the m_network_* bitmaps: those belong to the separate
     m_networkStatus icon (raw socket send/receive activity, driven by

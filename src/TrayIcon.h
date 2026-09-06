@@ -52,10 +52,10 @@ class wxMaximaFrame;
   wherever AppIndicator support isn't compiled in.
 
   Reuses StatusBar's own already-loaded icons (StatusBar::GetTrayIconBitmap())
-  rather than embedding the same art a second time -- the generated
-  art/statusbar/*.h headers define their byte arrays without static/extern,
-  so #include-ing one from a second .cpp file is a duplicate-symbol link
-  error (confirmed by trying exactly that first).
+  rather than embedding the same art a second time -- the generated headers
+  under art/statusbar (one per icon) define their byte arrays without
+  static/extern, so #include-ing one from a second .cpp file is a
+  duplicate-symbol link error (confirmed by trying exactly that first).
 */
 class TrayIcon : public wxTaskBarIcon {
 public:
