@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['tailowner_0',['tailOwner',['../structCellList_1_1TornOut.html#a68edf68e8bd2135c90a02e1d7d309e31',1,'CellList::TornOut']]]
+  ['righttoleft_0',['rightToLeft',['../structBidiRun.html#a3a06760adcb00e1780dd161a09a8371b',1,'BidiRun']]]
 ];

@@ -615,6 +615,19 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>FindDialogDockable</b
 <tr class="memitem:a056c6819c541c813637e92407a55ec21"><td class="memItemLeft" align="right" valign="top"><a id="a056c6819c541c813637e92407a55ec21" name="a056c6819c541c813637e92407a55ec21"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>FindDialogDockable</b> (bool dockable)</td></tr>
 <tr class="separator:a056c6819c541c813637e92407a55ec21"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a480cc8fedf36e05a56b6321d2576e001"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#a480cc8fedf36e05a56b6321d2576e001">McpServerEnabled</a> () const</td></tr>
+<tr class="memdesc:a480cc8fedf36e05a56b6321d2576e001"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run the MCP (Model Context Protocol) server, exposing the current worksheet's contents (cells, table of contents, watched variables) as read-only context an external AI tool can query over a local HTTP connection? Off by default &ndash; this is an opt-in feature, and the server only ever answers requests, it can never make <a class="el" href="classwxMaxima.html">wxMaxima</a> insert, edit or evaluate anything itself.  <br /></td></tr>
+<tr class="separator:a480cc8fedf36e05a56b6321d2576e001"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:addc558abf6ca8266463e1dd4a10f30b9"><td class="memItemLeft" align="right" valign="top"><a id="addc558abf6ca8266463e1dd4a10f30b9" name="addc558abf6ca8266463e1dd4a10f30b9"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>McpServerEnabled</b> (bool enabled)</td></tr>
+<tr class="separator:addc558abf6ca8266463e1dd4a10f30b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4cecee0db3a0b3459ba4b462a3bbcddc"><td class="memItemLeft" align="right" valign="top"><a id="a4cecee0db3a0b3459ba4b462a3bbcddc" name="a4cecee0db3a0b3459ba4b462a3bbcddc"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>McpServerPort</b> () const</td></tr>
+<tr class="memdesc:a4cecee0db3a0b3459ba4b462a3bbcddc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Which localhost TCP port the MCP server listens on, if enabled. <br /></td></tr>
+<tr class="separator:a4cecee0db3a0b3459ba4b462a3bbcddc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a05075ad59ee463011f5a9fb6ade035"><td class="memItemLeft" align="right" valign="top"><a id="a1a05075ad59ee463011f5a9fb6ade035" name="a1a05075ad59ee463011f5a9fb6ade035"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>McpServerPort</b> (int port)</td></tr>
+<tr class="separator:a1a05075ad59ee463011f5a9fb6ade035"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aed909c1cc93e4ed6d7fa074c558d295f"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#aed909c1cc93e4ed6d7fa074c558d295f">GetDisplayedDigits</a> () const</td></tr>
 <tr class="memdesc:aed909c1cc93e4ed6d7fa074c558d295f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the maximum number of displayed digits.  <br /></td></tr>
 <tr class="separator:aed909c1cc93e4ed6d7fa074c558d295f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1772,6 +1785,34 @@ static <a class="el" href="structConfiguration_1_1PerformanceStats.html">Perform
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a480cc8fedf36e05a56b6321d2576e001" name="a480cc8fedf36e05a56b6321d2576e001"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a480cc8fedf36e05a56b6321d2576e001">&#9670;&#160;</a></span>McpServerEnabled()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Configuration::McpServerEnabled </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Run the MCP (Model Context Protocol) server, exposing the current worksheet's contents (cells, table of contents, watched variables) as read-only context an external AI tool can query over a local HTTP connection? Off by default &ndash; this is an opt-in feature, and the server only ever answers requests, it can never make <a class="el" href="classwxMaxima.html">wxMaxima</a> insert, edit or evaluate anything itself. </p>
+<p>See <a class="el" href="McpServer_8h_source.html">src/mcp/McpServer.h</a>. </p>
 
 </div>
 </div>

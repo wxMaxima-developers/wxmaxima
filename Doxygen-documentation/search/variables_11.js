@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['width_0',['width',['../structWorksheetVirtualSize.html#a74a6ea5ae4fed2161f6e57190b322058',1,'WorksheetVirtualSize']]],
-  ['wizard_5fparametric_5fplot_1',['wizard_parametric_plot',['../classEventIDs.html#a95017fc059b222493b76c640a4aab03e',1,'EventIDs']]],
-  ['worksheetfullrepaints_2',['worksheetFullRepaints',['../structConfiguration_1_1PerformanceStats.html#a9cee5c0a285d881267cda7d06282e9fa',1,'Configuration::PerformanceStats']]],
-  ['worksheetrepaints_3',['worksheetRepaints',['../structConfiguration_1_1PerformanceStats.html#a039d882a1c7ba1add9e95617cb9e122b',1,'Configuration::PerformanceStats']]]
+  ['tailowner_0',['tailOwner',['../structCellList_1_1TornOut.html#a68edf68e8bd2135c90a02e1d7d309e31',1,'CellList::TornOut']]],
+  ['thousands_5fsep_1',['thousands_sep',['../classdetail_1_1serializer.html#a5b75b99511362e4e5d011c8a961e96bb',1,'detail::serializer']]]
 ];

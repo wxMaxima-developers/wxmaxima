@@ -30,7 +30,9 @@ var menudata={children:[
 {text:"Namespace List",url:"namespaces.html"},
 {text:"Namespace Members",url:"namespacemembers.html",children:[
 {text:"All",url:"namespacemembers.html"},
-{text:"Functions",url:"namespacemembers_func.html"}]}]},
+{text:"Functions",url:"namespacemembers_func.html"},
+{text:"Typedefs",url:"namespacemembers_type.html"},
+{text:"Enumerations",url:"namespacemembers_enum.html"}]}]},
 {text:"Data Structures",url:"annotated.html",children:[
 {text:"Data Structures",url:"annotated.html"},
 {text:"Data Structure Index",url:"classes.html"},
@@ -93,6 +95,7 @@ var menudata={children:[
 {text:"~",url:"functions_func_~.html#index__7E"}]},
 {text:"Variables",url:"functions_vars.html",children:[
 {text:"_",url:"functions_vars.html#index__5F"},
+{text:"a",url:"functions_vars_a.html#index_a"},
 {text:"b",url:"functions_vars_b.html#index_b"},
 {text:"c",url:"functions_vars_c.html#index_c"},
 {text:"d",url:"functions_vars_d.html#index_d"},
@@ -103,6 +106,7 @@ var menudata={children:[
 {text:"l",url:"functions_vars_l.html#index_l"},
 {text:"m",url:"functions_vars_m.html#index_m"},
 {text:"n",url:"functions_vars_n.html#index_n"},
+{text:"o",url:"functions_vars_o.html#index_o"},
 {text:"p",url:"functions_vars_p.html#index_p"},
 {text:"r",url:"functions_vars_r.html#index_r"},
 {text:"s",url:"functions_vars_s.html#index_s"},
@@ -111,6 +115,20 @@ var menudata={children:[
 {text:"w",url:"functions_vars_w.html#index_w"},
 {text:"x",url:"functions_vars_x.html#index_x"},
 {text:"y",url:"functions_vars_y.html#index_y"}]},
+{text:"Typedefs",url:"functions_type.html",children:[
+{text:"a",url:"functions_type.html#index_a"},
+{text:"b",url:"functions_type.html#index_b"},
+{text:"c",url:"functions_type.html#index_c"},
+{text:"d",url:"functions_type.html#index_d"},
+{text:"e",url:"functions_type.html#index_e"},
+{text:"i",url:"functions_type.html#index_i"},
+{text:"j",url:"functions_type.html#index_j"},
+{text:"n",url:"functions_type.html#index_n"},
+{text:"o",url:"functions_type.html#index_o"},
+{text:"p",url:"functions_type.html#index_p"},
+{text:"r",url:"functions_type.html#index_r"},
+{text:"s",url:"functions_type.html#index_s"},
+{text:"v",url:"functions_type.html#index_v"}]},
 {text:"Enumerations",url:"functions_enum.html"},
 {text:"Enumerator",url:"functions_eval.html",children:[
 {text:"a",url:"functions_eval.html#index_a"},

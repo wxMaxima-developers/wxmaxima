@@ -278,6 +278,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>StatusExportFailed</b
 <tr class="memitem:aa13096c88f937333abf8f72a46bade5d"><td class="memItemLeft" align="right" valign="top"><a id="aa13096c88f937333abf8f72a46bade5d" name="aa13096c88f937333abf8f72a46bade5d"></a>
 <a class="el" href="classConfiguration.html">Configuration</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>GetConfiguration</b> ()</td></tr>
 <tr class="separator:aa13096c88f937333abf8f72a46bade5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31a9b6291ce84e2ba5f6827cbfdab4b7"><td class="memItemLeft" align="right" valign="top"><a id="a31a9b6291ce84e2ba5f6827cbfdab4b7" name="a31a9b6291ce84e2ba5f6827cbfdab4b7"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>ReconcileMcpServer</b> ()</td></tr>
+<tr class="memdesc:a31a9b6291ce84e2ba5f6827cbfdab4b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts/stops the MCP server (<a class="el" href="McpServer_8h_source.html">src/mcp/McpServer.h</a>) to match the current configuration. Call after the Options dialog closes, in case McpServerEnabled()/McpServerPort() changed. <br /></td></tr>
+<tr class="separator:a31a9b6291ce84e2ba5f6827cbfdab4b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a155b484ddffd624048c3fe09bf78ff5a"><td class="memItemLeft" align="right" valign="top"><a id="a155b484ddffd624048c3fe09bf78ff5a" name="a155b484ddffd624048c3fe09bf78ff5a"></a>
 const std::unordered_map&lt; int, wxString &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>GetSidebarNames</b> () const</td></tr>
 <tr class="memdesc:a155b484ddffd624048c3fe09bf78ff5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the list of human-readable sidebarnames and IDs. <br /></td></tr>
@@ -764,6 +768,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_maximaError</b> = f
 <tr class="memitem:a4e520d8380e27029f4a2af509d90a488"><td class="memItemLeft" align="right" valign="top"><a id="a4e520d8380e27029f4a2af509d90a488" name="a4e520d8380e27029f4a2af509d90a488"></a>
 <a class="el" href="classConfiguration.html">Configuration</a>&#160;</td><td class="memItemRight" valign="bottom"><b>m_configuration</b></td></tr>
 <tr class="separator:a4e520d8380e27029f4a2af509d90a488"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a36ef68fbc0fefef522f78dbdf489e1"><td class="memItemLeft" align="right" valign="top"><a id="a3a36ef68fbc0fefef522f78dbdf489e1" name="a3a36ef68fbc0fefef522f78dbdf489e1"></a>
+std::unique_ptr&lt; <a class="el" href="classMcpServer.html">McpServer</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_mcpServer</b></td></tr>
+<tr class="memdesc:a3a36ef68fbc0fefef522f78dbdf489e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The (opt-in, off by default) MCP server &ndash; see <a class="el" href="classwxMaximaFrame.html#a31a9b6291ce84e2ba5f6827cbfdab4b7" title="Starts/stops the MCP server (src/mcp/McpServer.h) to match the current configuration....">ReconcileMcpServer()</a>. <br /></td></tr>
+<tr class="separator:a3a36ef68fbc0fefef522f78dbdf489e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab34ca0282896021d6e9f9e18d45b6458"><td class="memItemLeft" align="right" valign="top"><a id="ab34ca0282896021d6e9f9e18d45b6458" name="ab34ca0282896021d6e9f9e18d45b6458"></a>
 std::size_t&#160;</td><td class="memItemRight" valign="bottom"><b>m_bytesFromMaxima</b> = 0</td></tr>
 <tr class="memdesc:ab34ca0282896021d6e9f9e18d45b6458"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many bytes did maxima send us until now? <br /></td></tr>
@@ -1367,7 +1375,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 
 <p>returns the command to start maxima </p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md1038"></a>
+ <h2><a class="anchor" id="autotoc_md1022"></a>
 Getting configuration</h2>
 
 </div>
@@ -1544,7 +1552,7 @@ Getting configuration</h2>
 
 <p>Inserts command cmd into the worksheet. </p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md1041"></a>
+ <h2><a class="anchor" id="autotoc_md1025"></a>
 Menu and button events</h2>
 
 </div>
@@ -1580,7 +1588,7 @@ Menu and button events</h2>
 <p>Moving the screen update to this function, as well, makes sure that if we get events faster than we can update the screen that doesn't cause lag, but causes screen updates for old events to be dropped if we already have new ones. This normally makes programs feel way more responsive.</p>
 <p>The worksheet is additionally refreshed by a timer task in case that th computer is too busy to ever reach the idle task at all.</p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md1040"></a>
+ <h2><a class="anchor" id="autotoc_md1024"></a>
 Idle event</h2>
 
 </div>
@@ -1715,13 +1723,13 @@ Idle event</h2>
 <p>Set the current working directory file I/O from maxima is relative to. </p>
 <p>ServerEvent is triggered when maxima connects to the socket server.</p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md1035"></a>
+ <h2><a class="anchor" id="autotoc_md1019"></a>
 Socket stuff</h2>
 <hr  />
- <h2><a class="anchor" id="autotoc_md1036"></a>
+ <h2><a class="anchor" id="autotoc_md1020"></a>
 Maxima process stuff</h2>
 <hr  />
- <h2><a class="anchor" id="autotoc_md1037"></a>
+ <h2><a class="anchor" id="autotoc_md1021"></a>
 Dealing with stuff read from the socket</h2>
 
 </div>
@@ -1825,7 +1833,7 @@ Dealing with stuff read from the socket</h2>
       </table>
 </div><div class="memdoc">
 <hr  />
- <h2><a class="anchor" id="autotoc_md1039"></a>
+ <h2><a class="anchor" id="autotoc_md1023"></a>
 Tips and help</h2>
 
 </div>
@@ -1960,7 +1968,7 @@ Tips and help</h2>
 
 <p>Enables and disables the Right menu buttons. </p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md1042"></a>
+ <h2><a class="anchor" id="autotoc_md1026"></a>
 Menu and button events</h2>
 
 </div>
@@ -2018,7 +2026,7 @@ Menu and button events</h2>
 
 <p>Updates the slider to show the right frame. </p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md1043"></a>
+ <h2><a class="anchor" id="autotoc_md1027"></a>
 Plot Slider</h2>
 
 </div>

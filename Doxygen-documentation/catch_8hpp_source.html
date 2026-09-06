@@ -2044,7 +2044,7 @@ $(function() {
 <div class="line"><a id="l01988" name="l01988"></a><span class="lineno"> 1988</span>    <span class="keyword">using </span>std::begin;</div>
 <div class="line"><a id="l01989" name="l01989"></a><span class="lineno"> 1989</span>    <span class="keyword">using </span>std::end;</div>
 <div class="line"><a id="l01990" name="l01990"></a><span class="lineno"> 1990</span> </div>
-<div class="line"><a id="l01991" name="l01991"></a><span class="lineno"> 1991</span>    <span class="keyword">namespace </span>detail {</div>
+<div class="line"><a id="l01991" name="l01991"></a><span class="lineno"> 1991</span>    <span class="keyword">namespace </span><a class="code hl_namespace" href="namespacedetail.html">detail</a> {</div>
 <div class="line"><a id="l01992" name="l01992"></a><span class="lineno"> 1992</span>        <span class="keyword">template</span> &lt;<span class="keyword">typename</span>...&gt;</div>
 <div class="line"><a id="l01993" name="l01993"></a><span class="lineno"><a class="line" href="structCatch_1_1detail_1_1void__type.html"> 1993</a></span>        <span class="keyword">struct </span><a class="code hl_struct" href="structCatch_1_1detail_1_1void__type.html">void_type</a> {</div>
 <div class="line"><a id="l01994" name="l01994"></a><span class="lineno"> 1994</span>            <span class="keyword">using </span>type = void;</div>
@@ -5261,7 +5261,7 @@ $(function() {
 <div class="line"><a id="l05226" name="l05226"></a><span class="lineno"> 5226</span>        <span class="keywordtype">void</span> processNameChar( <span class="keywordtype">char</span> c );</div>
 <div class="line"><a id="l05227" name="l05227"></a><span class="lineno"> 5227</span>        <span class="keywordtype">bool</span> processOtherChar( <span class="keywordtype">char</span> c );</div>
 <div class="line"><a id="l05228" name="l05228"></a><span class="lineno"> 5228</span>        <span class="keywordtype">void</span> endMode();</div>
-<div class="line"><a id="l05229" name="l05229"></a><span class="lineno"> 5229</span>        <span class="keywordtype">void</span> escape();</div>
+<div class="line"><a id="l05229" name="l05229"></a><span class="lineno"> 5229</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="namespacedetail.html#af2a9ce4740e0b45d33129e2c8e53a0a8">escape</a>();</div>
 <div class="line"><a id="l05230" name="l05230"></a><span class="lineno"> 5230</span>        <span class="keywordtype">bool</span> isControlChar( <span class="keywordtype">char</span> c ) <span class="keyword">const</span>;</div>
 <div class="line"><a id="l05231" name="l05231"></a><span class="lineno"> 5231</span>        <span class="keywordtype">void</span> saveLastMode();</div>
 <div class="line"><a id="l05232" name="l05232"></a><span class="lineno"> 5232</span>        <span class="keywordtype">void</span> revertBackToLastMode();</div>
@@ -8823,7 +8823,7 @@ $(function() {
 <div class="line"><a id="l08800" name="l08800"></a><span class="lineno"> 8800</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l08801" name="l08801"></a><span class="lineno"> 8801</span> </div>
 <div class="line"><a id="l08802" name="l08802"></a><span class="lineno"> 8802</span><span class="keyword">namespace </span>Catch { <span class="keyword">namespace </span>clara {</div>
-<div class="line"><a id="l08803" name="l08803"></a><span class="lineno"> 8803</span><span class="keyword">namespace </span>detail {</div>
+<div class="line"><a id="l08803" name="l08803"></a><span class="lineno"> 8803</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacedetail.html">detail</a> {</div>
 <div class="line"><a id="l08804" name="l08804"></a><span class="lineno"> 8804</span> </div>
 <div class="line"><a id="l08805" name="l08805"></a><span class="lineno"> 8805</span>    <span class="comment">// Traits for extracting arg and return type of lambdas (for single argument lambdas)</span></div>
 <div class="line"><a id="l08806" name="l08806"></a><span class="lineno"> 8806</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> L&gt;</div>
@@ -9328,7 +9328,7 @@ $(function() {
 <div class="line"><a id="l09305" name="l09305"></a><span class="lineno"> 9305</span>        }</div>
 <div class="line"><a id="l09306" name="l09306"></a><span class="lineno"> 9306</span> </div>
 <div class="line"><a id="l09307" name="l09307"></a><span class="lineno"> 9307</span>    <span class="keyword">public</span>:</div>
-<div class="line"><a id="l09308" name="l09308"></a><span class="lineno"> 9308</span>        ExeName() : m_name( std::make_shared&lt;std::string&gt;( <span class="stringliteral">&quot;&lt;executable&gt;&quot;</span> ) ) {}</div>
+<div class="line"><a id="l09308" name="l09308"></a><span class="lineno"> 9308</span>        ExeName() : m_name( std::make_shared&lt;std::<a class="code hl_enumvalue" href="namespacedetail.html#a917c3efabea8a20dc72d9ae2c673d632ab45cffe084dd3d20d928bee85e7b0f21">string</a>&gt;( <span class="stringliteral">&quot;&lt;executable&gt;&quot;</span> ) ) {}</div>
 <div class="line"><a id="l09309" name="l09309"></a><span class="lineno"> 9309</span> </div>
 <div class="line"><a id="l09310" name="l09310"></a><span class="lineno"> 9310</span>        <span class="keyword">explicit</span> ExeName( std::string &amp;ref ) : ExeName() {</div>
 <div class="line"><a id="l09311" name="l09311"></a><span class="lineno"> 9311</span>            m_ref = std::make_shared&lt;BoundValueRef&lt;std::string&gt;&gt;( ref );</div>
@@ -14212,15 +14212,15 @@ $(function() {
 <div class="line"><a id="l14203" name="l14203"></a><span class="lineno">14203</span>            uint32_t operator()( TestCase <span class="keyword">const</span>&amp; t )<span class="keyword"> const </span>{</div>
 <div class="line"><a id="l14204" name="l14204"></a><span class="lineno">14204</span>                <span class="comment">// FNV-1a hash with multiplication fold.</span></div>
 <div class="line"><a id="l14205" name="l14205"></a><span class="lineno">14205</span>                <span class="keyword">const</span> hash_t prime = 1099511628211u;</div>
-<div class="line"><a id="l14206" name="l14206"></a><span class="lineno">14206</span>                hash_t hash = 14695981039346656037u;</div>
+<div class="line"><a id="l14206" name="l14206"></a><span class="lineno">14206</span>                hash_t <a class="code hl_function" href="namespacedetail.html#a9dd43d16a6a490b032ceaca358755a29">hash</a> = 14695981039346656037u;</div>
 <div class="line"><a id="l14207" name="l14207"></a><span class="lineno">14207</span>                <span class="keywordflow">for</span> ( <span class="keyword">const</span> <span class="keywordtype">char</span> c : t.name ) {</div>
-<div class="line"><a id="l14208" name="l14208"></a><span class="lineno">14208</span>                    hash ^= c;</div>
-<div class="line"><a id="l14209" name="l14209"></a><span class="lineno">14209</span>                    hash *= prime;</div>
+<div class="line"><a id="l14208" name="l14208"></a><span class="lineno">14208</span>                    <a class="code hl_function" href="namespacedetail.html#a9dd43d16a6a490b032ceaca358755a29">hash</a> ^= c;</div>
+<div class="line"><a id="l14209" name="l14209"></a><span class="lineno">14209</span>                    <a class="code hl_function" href="namespacedetail.html#a9dd43d16a6a490b032ceaca358755a29">hash</a> *= prime;</div>
 <div class="line"><a id="l14210" name="l14210"></a><span class="lineno">14210</span>                }</div>
-<div class="line"><a id="l14211" name="l14211"></a><span class="lineno">14211</span>                hash ^= m_hashSuffix;</div>
-<div class="line"><a id="l14212" name="l14212"></a><span class="lineno">14212</span>                hash *= prime;</div>
-<div class="line"><a id="l14213" name="l14213"></a><span class="lineno">14213</span>                <span class="keyword">const</span> uint32_t low{ <span class="keyword">static_cast&lt;</span>uint32_t<span class="keyword">&gt;</span>( hash ) };</div>
-<div class="line"><a id="l14214" name="l14214"></a><span class="lineno">14214</span>                <span class="keyword">const</span> uint32_t high{ <span class="keyword">static_cast&lt;</span>uint32_t<span class="keyword">&gt;</span>( hash &gt;&gt; 32 ) };</div>
+<div class="line"><a id="l14211" name="l14211"></a><span class="lineno">14211</span>                <a class="code hl_function" href="namespacedetail.html#a9dd43d16a6a490b032ceaca358755a29">hash</a> ^= m_hashSuffix;</div>
+<div class="line"><a id="l14212" name="l14212"></a><span class="lineno">14212</span>                <a class="code hl_function" href="namespacedetail.html#a9dd43d16a6a490b032ceaca358755a29">hash</a> *= prime;</div>
+<div class="line"><a id="l14213" name="l14213"></a><span class="lineno">14213</span>                <span class="keyword">const</span> uint32_t low{ <span class="keyword">static_cast&lt;</span>uint32_t<span class="keyword">&gt;</span>( <a class="code hl_function" href="namespacedetail.html#a9dd43d16a6a490b032ceaca358755a29">hash</a> ) };</div>
+<div class="line"><a id="l14214" name="l14214"></a><span class="lineno">14214</span>                <span class="keyword">const</span> uint32_t high{ <span class="keyword">static_cast&lt;</span>uint32_t<span class="keyword">&gt;</span>( <a class="code hl_function" href="namespacedetail.html#a9dd43d16a6a490b032ceaca358755a29">hash</a> &gt;&gt; 32 ) };</div>
 <div class="line"><a id="l14215" name="l14215"></a><span class="lineno">14215</span>                <span class="keywordflow">return</span> low * high;</div>
 <div class="line"><a id="l14216" name="l14216"></a><span class="lineno">14216</span>            }</div>
 <div class="line"><a id="l14217" name="l14217"></a><span class="lineno">14217</span> </div>
@@ -14738,7 +14738,7 @@ $(function() {
 <div class="line"><a id="l14730" name="l14730"></a><span class="lineno">14730</span>    }</div>
 <div class="line"><a id="l14731" name="l14731"></a><span class="lineno">14731</span>    <span class="keywordtype">bool</span> TestSpecParser::visitChar( <span class="keywordtype">char</span> c ) {</div>
 <div class="line"><a id="l14732" name="l14732"></a><span class="lineno">14732</span>        <span class="keywordflow">if</span>( (m_mode != EscapedName) &amp;&amp; (c == <span class="charliteral">&#39;\\&#39;</span>) ) {</div>
-<div class="line"><a id="l14733" name="l14733"></a><span class="lineno">14733</span>            escape();</div>
+<div class="line"><a id="l14733" name="l14733"></a><span class="lineno">14733</span>            <a class="code hl_function" href="namespacedetail.html#af2a9ce4740e0b45d33129e2c8e53a0a8">escape</a>();</div>
 <div class="line"><a id="l14734" name="l14734"></a><span class="lineno">14734</span>            addCharToPattern(c);</div>
 <div class="line"><a id="l14735" name="l14735"></a><span class="lineno">14735</span>            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><a id="l14736" name="l14736"></a><span class="lineno">14736</span>        }<span class="keywordflow">else</span> <span class="keywordflow">if</span>((m_mode != EscapedName) &amp;&amp; (c == <span class="charliteral">&#39;,&#39;</span>) )  {</div>
@@ -15053,7 +15053,7 @@ $(function() {
 <div class="line"><a id="l15045" name="l15045"></a><span class="lineno">15045</span>            end = inc = -1;</div>
 <div class="line"><a id="l15046" name="l15046"></a><span class="lineno">15046</span>        }</div>
 <div class="line"><a id="l15047" name="l15047"></a><span class="lineno">15047</span> </div>
-<div class="line"><a id="l15048" name="l15048"></a><span class="lineno">15048</span>        <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> <span class="keyword">const</span> *bytes = <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> <span class="keyword">const </span>*<span class="keyword">&gt;</span>(object);</div>
+<div class="line"><a id="l15048" name="l15048"></a><span class="lineno">15048</span>        <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> <span class="keyword">const</span> *bytes = <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> <span class="keyword">const </span>*<span class="keyword">&gt;</span>(<a class="code hl_enumvalue" href="namespacedetail.html#a917c3efabea8a20dc72d9ae2c673d632aa8cfde6331bd59eb2ac96f8911c4b666">object</a>);</div>
 <div class="line"><a id="l15049" name="l15049"></a><span class="lineno">15049</span>        ReusableStringStream rss;</div>
 <div class="line"><a id="l15050" name="l15050"></a><span class="lineno">15050</span>        rss &lt;&lt; <span class="stringliteral">&quot;0x&quot;</span> &lt;&lt; std::setfill(<span class="charliteral">&#39;0&#39;</span>) &lt;&lt; std::hex;</div>
 <div class="line"><a id="l15051" name="l15051"></a><span class="lineno">15051</span>        <span class="keywordflow">for</span>( ; i != end; i += inc )</div>
@@ -15875,7 +15875,7 @@ $(function() {
 <div class="line"><a id="l15869" name="l15869"></a><span class="lineno">15869</span>        Colour colour(Colour::ResultError);</div>
 <div class="line"><a id="l15870" name="l15870"></a><span class="lineno">15870</span>        <span class="keyword">const</span> std::string qualify_assertions_failed =</div>
 <div class="line"><a id="l15871" name="l15871"></a><span class="lineno">15871</span>            totals.assertions.failed == totals.assertions.total() ?</div>
-<div class="line"><a id="l15872" name="l15872"></a><span class="lineno">15872</span>            bothOrAll(totals.assertions.failed) : std::string();</div>
+<div class="line"><a id="l15872" name="l15872"></a><span class="lineno">15872</span>            bothOrAll(totals.assertions.failed) : std::<a class="code hl_enumvalue" href="namespacedetail.html#a917c3efabea8a20dc72d9ae2c673d632ab45cffe084dd3d20d928bee85e7b0f21">string</a>();</div>
 <div class="line"><a id="l15873" name="l15873"></a><span class="lineno">15873</span>        out &lt;&lt;</div>
 <div class="line"><a id="l15874" name="l15874"></a><span class="lineno">15874</span>            <span class="stringliteral">&quot;Failed &quot;</span> &lt;&lt; bothOrAll(totals.testCases.failed)</div>
 <div class="line"><a id="l15875" name="l15875"></a><span class="lineno">15875</span>            &lt;&lt; pluralise(totals.testCases.failed, <span class="stringliteral">&quot;test case&quot;</span>) &lt;&lt; <span class="stringliteral">&quot;, &quot;</span></div>
@@ -18021,6 +18021,11 @@ $(function() {
 <div class="ttc" id="aclassE_html"><div class="ttname"><a href="classE.html">E</a></div><div class="ttdef"><b>Definition:</b> diagrams_e.h:4</div></div>
 <div class="ttc" id="aclassTag_html"><div class="ttname"><a href="classTag.html">Tag</a></div><div class="ttdoc">A class that is inherited from the external class Test.</div><div class="ttdef"><b>Definition:</b> tag.cpp:5</div></div>
 <div class="ttc" id="agroup__group1_html_ga24f647174760cac13d2624b5ad74b00c"><div class="ttname"><a href="group__group1.html#ga24f647174760cac13d2624b5ad74b00c">func</a></div><div class="ttdeci">void func()</div><div class="ttdoc">function in group 1</div><div class="ttdef"><b>Definition:</b> group.cpp:13</div></div>
+<div class="ttc" id="anamespacedetail_html"><div class="ttname"><a href="namespacedetail.html">detail</a></div><div class="ttdoc">detail namespace with internal helper functions</div><div class="ttdef"><b>Definition:</b> json.hpp:249</div></div>
+<div class="ttc" id="anamespacedetail_html_a917c3efabea8a20dc72d9ae2c673d632aa8cfde6331bd59eb2ac96f8911c4b666"><div class="ttname"><a href="namespacedetail.html#a917c3efabea8a20dc72d9ae2c673d632aa8cfde6331bd59eb2ac96f8911c4b666">detail::value_t::object</a></div><div class="ttdeci">@ object</div><div class="ttdoc">object (unordered set of name/value pairs)</div></div>
+<div class="ttc" id="anamespacedetail_html_a917c3efabea8a20dc72d9ae2c673d632ab45cffe084dd3d20d928bee85e7b0f21"><div class="ttname"><a href="namespacedetail.html#a917c3efabea8a20dc72d9ae2c673d632ab45cffe084dd3d20d928bee85e7b0f21">detail::value_t::string</a></div><div class="ttdeci">@ string</div><div class="ttdoc">string value</div></div>
+<div class="ttc" id="anamespacedetail_html_a9dd43d16a6a490b032ceaca358755a29"><div class="ttname"><a href="namespacedetail.html#a9dd43d16a6a490b032ceaca358755a29">detail::hash</a></div><div class="ttdeci">std::size_t hash(const BasicJsonType &amp;j)</div><div class="ttdoc">hash a JSON value</div><div class="ttdef"><b>Definition:</b> json.hpp:6022</div></div>
+<div class="ttc" id="anamespacedetail_html_af2a9ce4740e0b45d33129e2c8e53a0a8"><div class="ttname"><a href="namespacedetail.html#af2a9ce4740e0b45d33129e2c8e53a0a8">detail::escape</a></div><div class="ttdeci">StringType escape(StringType s)</div><div class="ttdoc">string escaping as described in RFC 6901 (Sect.</div><div class="ttdef"><b>Definition:</b> json.hpp:2990</div></div>
 <div class="ttc" id="arestypedef_8cpp_html_a102acaaa258e937adf910898c6133545"><div class="ttname"><a href="restypedef_8cpp.html#a102acaaa258e937adf910898c6133545">add</a></div><div class="ttdeci">Coord add(Coord c1, Coord c2)</div><div class="ttdoc">This function returns the addition of c1 and c2, i.e: (c1.x+c2.x,c1.y+c2.y)</div><div class="ttdef"><b>Definition:</b> restypedef.cpp:23</div></div>
 <div class="ttc" id="astructCatch_1_1AssertionInfo_html"><div class="ttname"><a href="structCatch_1_1AssertionInfo.html">Catch::AssertionInfo</a></div><div class="ttdef"><b>Definition:</b> catch.hpp:1397</div></div>
 <div class="ttc" id="astructCatch_1_1AssertionReaction_html"><div class="ttname"><a href="structCatch_1_1AssertionReaction.html">Catch::AssertionReaction</a></div><div class="ttdef"><b>Definition:</b> catch.hpp:2543</div></div>

@@ -1,12 +1,13 @@
 var searchData=
 [
-  ['varaddallevent_0',['VarAddAllEvent',['../classwxMaxima.html#a8e85cffaff14de4595889f050473c5e9',1,'wxMaxima']]],
-  ['variablesandfunctionslist_1',['VariablesAndFunctionsList',['../classCell.html#a9d61622f3855c073c4ce74c3b755a639',1,'Cell']]],
-  ['variablespane_2',['Variablespane',['../classVariablespane.html#a8cd8d3779077c5bbc0913150af324783',1,'Variablespane']]],
-  ['variableundefined_3',['VariableUndefined',['../classVariablespane.html#a642323115297af817fd9a5bd55b0b23a',1,'Variablespane']]],
-  ['variablevalue_4',['VariableValue',['../classVariablespane.html#a24941fa173dddd09fe2e2068ab87c656',1,'Variablespane']]],
-  ['varreadevent_5',['VarReadEvent',['../classwxMaxima.html#a4dfc9339e684b4d9a6fe4b5a9e810871',1,'wxMaxima']]],
-  ['vehiclestart_6',['vehicleStart',['../structVehicle.html#a6891d3d28853bc3fdd075596dc6de9f8',1,'Vehicle']]],
-  ['vehiclestop_7',['vehicleStop',['../structVehicle.html#a4dcbcba43792dcd673a552b14479ab77',1,'Vehicle']]],
-  ['visiblyinvalidcell_8',['VisiblyInvalidCell',['../classVisiblyInvalidCell.html#ac5a17667589fa2a237647f3d0b2ae941',1,'VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group, Configuration *config)'],['../classVisiblyInvalidCell.html#ab87f908b177ea4b2b4a148445c750cf1',1,'VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group, Configuration *config, wxString &amp;&amp;toolTip)']]]
+  ['value_0',['value',['../classdetail_1_1iter__impl.html#a96557c87bc9b3adf6aa0b1a6b6209525',1,'detail::iter_impl::value()'],['../classdetail_1_1json__reverse__iterator.html#a90132b4589e7b8c6cfdf4e25e1c311fe',1,'detail::json_reverse_iterator::value()'],['../classbasic__json.html#a80c2436388fd16a1529ce9afce8229ef',1,'basic_json::value(const typename object_t::key_type &amp;key, const ValueType &amp;default_value) const'],['../classbasic__json.html#a56244e0ed0943ad62faf61b06e7ba139',1,'basic_json::value(const typename object_t::key_type &amp;key, ValueType &amp;&amp;default_value) const'],['../classbasic__json.html#acbe572bbfbd4687a7a9167465e4d41f2',1,'basic_json::value(KeyType &amp;&amp;key, const ValueType &amp;default_value) const'],['../classbasic__json.html#a694398741710ce1c22797ad47109898b',1,'basic_json::value(KeyType &amp;&amp;key, ValueType &amp;&amp;default_value) const'],['../classbasic__json.html#ac63045992eb552c11f77fefddd801591',1,'basic_json::value(const json_pointer &amp;ptr, const ValueType &amp;default_value) const'],['../classbasic__json.html#a1ab7b5edf8e5831195940f8d377a6ee3',1,'basic_json::value(const json_pointer &amp;ptr, ValueType &amp;&amp;default_value) const'],['../classdetail_1_1iteration__proxy__value.html#aac08993af9f4f0bf3d058b4beae36a45',1,'detail::iteration_proxy_value::value()']]],
+  ['varaddallevent_1',['VarAddAllEvent',['../classwxMaxima.html#a8e85cffaff14de4595889f050473c5e9',1,'wxMaxima']]],
+  ['variablesandfunctionslist_2',['VariablesAndFunctionsList',['../classCell.html#a9d61622f3855c073c4ce74c3b755a639',1,'Cell']]],
+  ['variablespane_3',['Variablespane',['../classVariablespane.html#a8cd8d3779077c5bbc0913150af324783',1,'Variablespane']]],
+  ['variableundefined_4',['VariableUndefined',['../classVariablespane.html#a642323115297af817fd9a5bd55b0b23a',1,'Variablespane']]],
+  ['variablevalue_5',['VariableValue',['../classVariablespane.html#a24941fa173dddd09fe2e2068ab87c656',1,'Variablespane']]],
+  ['varreadevent_6',['VarReadEvent',['../classwxMaxima.html#a4dfc9339e684b4d9a6fe4b5a9e810871',1,'wxMaxima']]],
+  ['vehiclestart_7',['vehicleStart',['../structVehicle.html#a6891d3d28853bc3fdd075596dc6de9f8',1,'Vehicle']]],
+  ['vehiclestop_8',['vehicleStop',['../structVehicle.html#a4dcbcba43792dcd673a552b14479ab77',1,'Vehicle']]],
+  ['visiblyinvalidcell_9',['VisiblyInvalidCell',['../classVisiblyInvalidCell.html#ac5a17667589fa2a237647f3d0b2ae941',1,'VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group, Configuration *config)'],['../classVisiblyInvalidCell.html#ab87f908b177ea4b2b4a148445c750cf1',1,'VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group, Configuration *config, wxString &amp;&amp;toolTip)']]]
 ];
