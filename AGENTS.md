@@ -89,7 +89,36 @@ working without extra checks.
   worktree, so it's pre-existing and unrelated to any particular change) --
   not yet root-caused. Don't burn time re-diagnosing either symptom from
   scratch; both are sandbox/pre-existing, not something a code change here
-  broke.
+  broke. **Neither this workaround nor `gnuplot`'s installation (below)
+  persists across sandbox instances** -- confirmed directly: a session that
+  applied both earlier came back to a broad `ctest -E
+  "tutorial|openMacFiles|_cmdline_wxmathml|wxmaxima_version"` run showing 66
+  of 194 tests failing (`boxes`, `lisp`, `threadtest`, `autosave`,
+  `printf_*`, `multiplication`, `config_dialogue_sample`, ... -- a broad,
+  cross-cutting spread with no relation to whatever code change was
+  actually being tested that session), which briefly looked like a real
+  regression until re-running a handful of the failing tests in isolation
+  showed the exact `maxima-index.lisp`/`--exit-on-error` symptom above.
+  **A second, independent gap found the same way, same session: `gnuplot`
+  itself was not installed at all** (`threadtest` failed with `/bin/sh: 1:
+  gnuplot: not found`, no relation to the maxima-index.lisp issue). Plain
+  `apt-get install gnuplot`/`gnuplot-nox` failed here with an unmet
+  `libgd3` dependency -- this sandbox's apt sources include a `ppa:ondrej/
+  php` entry offering a newer `libgd3` build than Ubuntu's own archive, and
+  that PPA's package host was blocked by this sandbox's proxy (`403` on
+  `ppa.launchpadcontent.net`), while the plain Ubuntu-archive `libgd3`
+  (also present as a candidate, just lower-priority) was fetchable fine.
+  Fixed with `apt-get install libgd3=2.3.3-9ubuntu5 gnuplot-nox` (the exact
+  archive version may drift; `apt-cache policy libgd3` shows both
+  candidates and which one is blocked) -- pinning the plain-archive version
+  explicitly sidesteps the blocked PPA instead of needing the PPA fixed.
+  **Moral for future sessions:** if a broad ctest run shows a large,
+  topically-scattered batch of failures all at once (rather than one
+  focused area related to the change being tested), suspect a fresh
+  sandbox instance missing one of these two pre-existing workarounds
+  before suspecting a real regression -- re-run 2-3 of the failing tests
+  in isolation and check their actual output for these exact symptoms
+  first, per the "don't burn time re-diagnosing from scratch" note above.
 
 - **`tutorial_10Minutes` intermittent CI failure -- the workaround below is
   verified, but the real underlying bug is CONFIRMED and still UNFIXED
