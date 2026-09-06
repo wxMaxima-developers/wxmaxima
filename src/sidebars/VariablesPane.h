@@ -29,6 +29,7 @@
 #include <wx/panel.h>
 #include <wx/arrstr.h>
 #include <unordered_map>
+#include <utility>
 #include <vector>
 
 /*! \file
@@ -82,6 +83,10 @@ public:
   std::vector<wxString> GetEscapedVarnames();
   //! Returns the variable list in a human-readable format
   std::vector<wxString> GetVarnames();
+  //! Returns the currently watched (name, currently displayed value) pairs.
+  std::vector<std::pair<wxString, wxString>> GetWatchedValues();
+  //! Removes one variable from the watchlist by its human-readable name, if present.
+  void RemoveWatch(const wxString &var);
   //! Set all variable's contents to "unknown".
   void ResetValues();
   //! Remove all entries from the variables list

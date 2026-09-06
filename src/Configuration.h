@@ -735,6 +735,19 @@ public:
 
   void FindDialogDockable(bool dockable) {m_findDialogDockable = dockable;}
 
+  /*! Run the MCP (Model Context Protocol) server, exposing the current
+    worksheet's contents (cells, table of contents, watched variables) as
+    read-only context an external AI tool can query over a local HTTP
+    connection? Off by default -- this is an opt-in feature, and the server
+    only ever answers requests, it can never make wxMaxima insert, edit or
+    evaluate anything itself. See src/mcp/McpServer.h. */
+  bool McpServerEnabled() const { return m_mcpServerEnabled; }
+  void McpServerEnabled(bool enabled) { m_mcpServerEnabled = enabled; }
+
+  //! Which localhost TCP port the MCP server listens on, if enabled.
+  int McpServerPort() const { return m_mcpServerPort; }
+  void McpServerPort(int port) { m_mcpServerPort = port; }
+
   /*! Returns the maximum number of displayed digits
 
     m_displayedDigits is always >= 20, so we can guarantee the number we return to be unsigned.
@@ -1411,6 +1424,10 @@ private:
   bool m_notifyIfIdle;
   //! Show "Find and Replace" as a dockable sidebar instead of a floating dialog?
   bool m_findDialogDockable;
+  //! Run the read-only MCP server? See McpServerEnabled().
+  bool m_mcpServerEnabled;
+  //! The localhost TCP port McpServer listens on, if enabled.
+  int m_mcpServerPort;
   //! How many digits of a number we show by default?
   long m_displayedDigits;
   //! Automatically wrap long lines?

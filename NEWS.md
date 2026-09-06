@@ -1,5 +1,14 @@
 # Current development version
 
+- Added an optional MCP (Model Context Protocol) server that lets an external
+  AI tool read the current worksheet as context: list/read cells, read the
+  table of contents, read a whole section by heading, read the whole
+  worksheet, and read/add/remove entries in the Variables sidebar's
+  watchlist. Off by default; enable it in Options and it only ever listens
+  on this machine (127.0.0.1). It cannot insert, edit or evaluate anything
+  in the worksheet -- every tool only reads, except adding/removing a
+  variable from the watchlist, which only changes what that sidebar
+  displays, the same as typing a name into it by hand.
 - Made the GUI-subsystem binary's stdout/stderr redirection
   (`RedirectStdioToParent()`) use `_dup2()` to repoint the existing stream's
   descriptor instead of a shallow struct-copy over a second, throwaway

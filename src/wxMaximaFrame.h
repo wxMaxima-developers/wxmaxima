@@ -59,7 +59,9 @@
 #include "StatusBar.h"
 #include "TrayIcon.h"
 #include "sidebars/ButtonWrapSizer.h"
+#include "mcp/McpServer.h"
 #include <list>
+#include <memory>
 
 
 /*! The frame containing the menu and the sidebars
@@ -191,12 +193,22 @@ public:
   void StatusExportFailed();
 
   Configuration &GetConfiguration() {return m_configuration;}
+
+  //! Starts/stops the MCP server (src/mcp/McpServer.h) to match the current
+  //! configuration. Call after the Options dialog closes, in case
+  //! McpServerEnabled()/McpServerPort() changed.
+  void ReconcileMcpServer() {
+    if (m_mcpServer)
+      m_mcpServer->ReconcileWithConfig(m_configuration);
+  }
 protected:
   //! The panel the user can display variable contents in
   Variablespane *m_variablesPane = NULL;
   //! The table of contents pane
   TableOfContents *m_tableOfContents = NULL;
   Configuration m_configuration;
+  //! The (opt-in, off by default) MCP server -- see ReconcileMcpServer().
+  std::unique_ptr<McpServer> m_mcpServer;
   //! How many bytes did maxima send us until now?
   std::size_t m_bytesFromMaxima = 0;
   //! The process id of maxima. Is determined by ReadFirstPrompt.

@@ -308,6 +308,10 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
                         wxAuiPaneInfo()
                         .Name(m_sidebarNames[EventIDs::menu_pane_variables])
                         .Bottom());
+      // Needs both GetWorksheet() and m_variablesPane, so this has to wait
+      // until here rather than running any earlier in the constructor.
+      m_mcpServer = std::make_unique<McpServer>(GetWorksheet(), m_variablesPane);
+      ReconcileMcpServer();
 
       m_sidebarNames[EventIDs::menu_pane_symbols] = wxS("symbols");
       m_sidebarCaption[EventIDs::menu_pane_symbols] = _("Mathematical Symbols");
