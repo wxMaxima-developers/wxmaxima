@@ -1,5 +1,14 @@
 # Current development version
 
+- Added a system tray/notification-area icon (GH #2286) that mirrors
+  wxMaxima's busy status -- the same information the status bar's own icon
+  and, on Windows, the taskbar button's progress overlay already show -- and
+  offers a small quick-access menu (Interrupt, Show wxMaxima, Exit). Uses
+  the portable `wxTaskBarIcon`, so it works on any platform wxWidgets
+  supports it on; on GTK/Linux specifically it only renders as a genuinely
+  visible icon when the linked wxWidgets was itself built with
+  AppIndicator/Ayatana support, a property of the wxWidgets package
+  wxMaxima links against, not something wxMaxima's own build controls.
 - Fixed a security issue (GH #1907): a crafted `.wxm` file could execute
   arbitrary Maxima code as soon as it was opened or `load()`/`batch()`ed by
   plain Maxima, without the user ever running anything themselves. A

@@ -164,6 +164,7 @@ set(SOURCE_FILES
     SvgBitmap.cpp
     SvgPanel.cpp
     ToolBar.cpp
+    TrayIcon.cpp
     worksheet/Worksheet.cpp
     worksheet/WorksheetContextMenu.cpp
     worksheet/WorksheetDocument.cpp

@@ -32,6 +32,7 @@
 
 #include "precomp.h"
 #include <array>
+#include <memory>
 #include <wx/wx.h>
 #include "EventIDs.h"
 #include <wx/dirctrl.h>
@@ -56,6 +57,7 @@
 #include "sidebars/XmlInspector.h"
 #include "sidebars/PerformanceSidebar.h"
 #include "StatusBar.h"
+#include "TrayIcon.h"
 #include "sidebars/ButtonWrapSizer.h"
 #include <list>
 
@@ -207,6 +209,14 @@ protected:
   void OnNotificationClose(wxCommandEvent WXUNUSED(&event));
   //! The status bar
   StatusBar *m_statusBar = NULL;
+#if wxUSE_TASKBARICON
+  //! The system tray/notification-area icon (GH #2286): mirrors the status
+  //! bar's busy indicator and offers a small quick-access menu. A
+  //! std::unique_ptr, not a raw pointer: unlike m_statusBar (a child window
+  //! the wxWindow destructor tree already owns once SetStatusBar() hands it
+  //! off), a wxTaskBarIcon isn't a window and needs its own owner.
+  std::unique_ptr<TrayIcon> m_trayIcon;
+#endif
   //! The menu bar
   MainMenuBar *m_MenuBar = NULL;
   //! The "demo" sub-menu

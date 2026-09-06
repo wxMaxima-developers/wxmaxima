@@ -101,6 +101,54 @@ public:
   };
 
   void UpdateStatusMaximaBusy(MaximaStatus status, std::size_t bytesFromMaxima);
+  /*! The exact bitmap m_maximaStatus itself would show for this status --
+    i.e. the same per-status icon UpdateStatusMaximaBusy()'s switch already
+    assigns via m_maximaStatus->SetBitmap(...), just returned instead of
+    applied to that particular wxStaticBitmap. Lets TrayIcon (GH #2286)
+    reuse these bitmaps instead of re-embedding the same art a second time
+    -- the generated art/statusbar/*.h headers define their byte arrays
+    without `static`/`extern`, so #include-ing one from a second .cpp file
+    is a duplicate-symbol link error, confirmed by trying exactly that
+    first. NOT the m_network_* bitmaps: those belong to the separate
+    m_networkStatus icon (raw socket send/receive activity, driven by
+    HandleTimerEvent()), a different concern from "what is Maxima doing" --
+    using them here first, before this comment, showed as a barely-visible
+    speck in the tray because the "idle" one in that family is a very
+    subtle, mostly-transparent glyph.
+  */
+  wxBitmap GetTrayIconBitmap(MaximaStatus status) const {
+    switch (status) {
+    case wait_for_start:
+      return m_bitmap_waitForStart;
+    case process_wont_start:
+    case maximaerror:
+      return m_bitmap_process_wont_start;
+    case sending:
+      return m_bitmap_sending;
+    case waiting:
+      return m_bitmap_waiting;
+    case waitingForPrompt:
+      return m_bitmap_waitingForPrompt;
+    case waitingForAuth:
+      return m_bitmap_waitingForAuth;
+    case calculating:
+      return m_bitmap_calculating;
+    case parsing:
+      return m_bitmap_parsing;
+    case transferring:
+      return m_bitmap_transferring;
+    case userinput:
+      return m_bitmap_userinput;
+    case debugging:
+      return m_bitmap_debugging;
+    case lispmode:
+      return m_bitmap_lispmode;
+    case disconnected:
+      return m_bitmap_disconnected;
+    default:
+      return m_bitmap_waiting;
+    }
+  }
   /*! Set the left status text
 
     Skips unchanged text: wxStaticText::SetLabel() re-sizes the label even
