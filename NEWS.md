@@ -9,6 +9,39 @@
   in the worksheet -- every tool only reads, except adding/removing a
   variable from the watchlist, which only changes what that sidebar
   displays, the same as typing a name into it by hand.
+- Made the GUI-subsystem binary's stdout/stderr redirection
+  (`RedirectStdioToParent()`) use `_dup2()` to repoint the existing stream's
+  descriptor instead of a shallow struct-copy over a second, throwaway
+  `FILE*` -- the standard, documented way to do this, regardless of the item
+  below. This does *not* fix the `wxmaxima_version_string` CI failure on the
+  Windows runner: that was the working theory, but the next CI run
+  reproduced the exact same failure on this change, and a follow-up
+  Wine-based test confirmed both the old and new code deliver a
+  GUI-subsystem process's piped stdout correctly in isolation. That failure
+  remains open; see AGENTS.md for what's been ruled out and the most
+  promising remaining lead.
+- Added a system tray/notification-area icon (GH #2286) that mirrors
+  wxMaxima's busy status -- the same information the status bar's own icon
+  and, on Windows, the taskbar button's progress overlay already show -- and
+  offers a small quick-access menu (Interrupt, Show wxMaxima, Exit). Uses
+  the portable `wxTaskBarIcon`, so it works on any platform wxWidgets
+  supports it on; on GTK/Linux specifically it only renders as a genuinely
+  visible icon when the linked wxWidgets was itself built with
+  AppIndicator/Ayatana support, a property of the wxWidgets package
+  wxMaxima links against, not something wxMaxima's own build controls.
+- Fixed a security issue (GH #1907): a crafted `.wxm` file could execute
+  arbitrary Maxima code as soon as it was opened or `load()`/`batch()`ed by
+  plain Maxima, without the user ever running anything themselves. A
+  title/section/subsection/heading/text-cell's `.wxm` marker opens a
+  `/* ... */` comment that stays open across the *entire* cell content, only
+  closing at the end marker's own trailing `*/` -- so a literal `*/`
+  anywhere inside such a cell's own text closed that comment early, turning
+  whatever followed (up to the next `*/` in the file) into live, executable
+  Maxima input. Fixed by escaping any `/` that sits next to a `*` in these
+  cells' text (as the HTML entity `&#47;`) on write, and reversing it on
+  read; code/input cells are deliberately left untouched, since their own
+  markers are already fully self-closed on one line and they must stay
+  byte-identical for a plain Maxima to `batch()` them correctly.
 - Fixed a modal dialog popping up at every startup on wxWidgets >= 3.3
   reporting the (successful) dark/light appearance change as a debug
   message -- the diagnostic log call ran before wxMaxima's own log window
