@@ -28,6 +28,7 @@
 
 #include "BuildConfig.h"
 #include "Configuration.h"
+#include "ai/AiProvider.h"
 
 #include "cells/Cell.h"
 #include "cells/TextStyle.h"
@@ -323,10 +324,15 @@ void Configuration::ResetAllToDefaults() {
   m_mcpServerEnabled = false;
   m_mcpServerPort = 8765;
   m_aiChatProvider = 0; // AiProviderKind::None
-  m_aiModelAnthropic = wxS("claude-3-5-sonnet-20241022");
-  m_aiModelOpenAI = wxS("gpt-4o-mini");
-  m_aiModelGoogle = wxS("gemini-1.5-flash");
-  m_aiModelQwen = wxS("qwen-plus");
+  // A single source of truth for these, via AiProviderDefaultModel(), not a
+  // second hardcoded copy here: found live while updating Anthropic's own
+  // default to its rolling "-latest" alias -- this file's own copy was the
+  // one Options actually displayed, and it was untouched by that edit,
+  // exactly the kind of silent drift a duplicated constant invites.
+  m_aiModelAnthropic = AiProviderDefaultModel(AiProviderKind::Anthropic);
+  m_aiModelOpenAI = AiProviderDefaultModel(AiProviderKind::OpenAI);
+  m_aiModelGoogle = AiProviderDefaultModel(AiProviderKind::Google);
+  m_aiModelQwen = AiProviderDefaultModel(AiProviderKind::Qwen);
   m_fixReorderedIndices = true;
   m_rightToLeftDocument = false;
   m_showBrackets = true;

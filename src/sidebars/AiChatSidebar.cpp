@@ -35,6 +35,15 @@ AiChatSidebar::AiChatSidebar(wxWindow *parent, Configuration *configuration,
   vbox->Add(m_statusText,
            wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
 
+  // Only shown while no provider is configured (see ReloadProviderFromConfig())
+  // -- there is no "log in" button that could get an API key automatically
+  // (AiProviderApiKeyUrl()'s own comment explains why), so this is the
+  // closest equivalent: one click to the exact place that both explains the
+  // options and links to where to actually get a key.
+  m_openOptionsButton = new wxButton(this, wxID_ANY, _("Open Options..."));
+  vbox->Add(m_openOptionsButton,
+           wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
+
   m_historyCtrl =
     new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition,
                    wxDefaultSize,
@@ -75,6 +84,7 @@ AiChatSidebar::AiChatSidebar(wxWindow *parent, Configuration *configuration,
   m_sendButton->Bind(wxEVT_BUTTON, &AiChatSidebar::OnSend, this);
   m_clearButton->Bind(wxEVT_BUTTON,
                       [this](wxCommandEvent &) { ClearConversation(); });
+  m_openOptionsButton->Bind(wxEVT_BUTTON, &AiChatSidebar::OnOpenOptions, this);
   m_inputCtrl->Bind(wxEVT_KEY_DOWN, &AiChatSidebar::OnInputKeyDown, this);
 
   ReloadProviderFromConfig();
@@ -106,6 +116,13 @@ void AiChatSidebar::ReloadProviderFromConfig() {
   m_provider = (apiKey.IsEmpty()) ? nullptr : MakeAiProvider(kind, apiKey, model);
   UpdateStatusText();
   m_sendButton->Enable(!m_requestInFlight && (m_provider != nullptr));
+  m_openOptionsButton->Show(m_provider == nullptr);
+  Layout();
+}
+
+void AiChatSidebar::OnOpenOptions(wxCommandEvent &WXUNUSED(event)) {
+  wxCommandEvent openPreferences(wxEVT_MENU, wxID_PREFERENCES);
+  GetParent()->GetEventHandler()->AddPendingEvent(openPreferences);
 }
 
 void AiChatSidebar::ClearConversation() {
@@ -155,14 +172,35 @@ wxString AiChatSidebar::BuildContextSnapshot() const {
   json worksheet = m_tools.ReadWorksheet();
   wxString text = wxString::FromUTF8(worksheet.value("text", std::string()).c_str());
   if (text.Length() > MAX_CONTEXT_LENGTH) {
-    text = text.Left(MAX_CONTEXT_LENGTH);
+    // A plain Left() truncation would silently cut off the "(CURRENT
+    // CELL ...)" marker below for any worksheet long enough to need
+    // truncating in the first place -- exactly the case where a user is
+    // most likely to ask about "the current cell" or "the cell above the
+    // cursor," since a short worksheet never needs truncating at all.
+    // Center the kept window on that marker instead, when there is one.
+    int markerPos = text.Find(wxS("(CURRENT CELL"));
+    size_t start = 0;
+    if (markerPos != wxNOT_FOUND) {
+      size_t pos = static_cast<size_t>(markerPos);
+      start = (pos > MAX_CONTEXT_LENGTH / 2) ? pos - MAX_CONTEXT_LENGTH / 2 : 0;
+      if (start + MAX_CONTEXT_LENGTH > text.Length())
+        start = text.Length() - MAX_CONTEXT_LENGTH;
+    }
+    text = text.Mid(start, MAX_CONTEXT_LENGTH);
+    if (start > 0)
+      text = wxS("[... earlier worksheet content omitted ...]\n") + text;
     text += wxS("\n... [truncated for the chat context]");
   }
   return _("You are an assistant embedded in wxMaxima, a GUI front-end for "
           "the Maxima computer algebra system. Below is a read-only "
           "snapshot of the user's current worksheet -- you cannot edit, "
           "evaluate or otherwise change it; only the user can do that "
-          "through the wxMaxima UI. Use it only as context.\n\n"
+          "through the wxMaxima UI. A cell marked \"(CURRENT CELL -- the "
+          "user's cursor is here)\" is where the user's cursor currently "
+          "is -- that is what they mean by \"this cell,\" \"the current "
+          "cell,\" or \"the cell above/here.\" A cell marked \"(THIS CELL "
+          "HAS AN ERROR)\" is one Maxima reported an error in. Use the "
+          "snapshot only as context.\n\n"
           "--- Worksheet snapshot ---\n") +
     text;
 }

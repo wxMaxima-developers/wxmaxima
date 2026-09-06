@@ -179,11 +179,43 @@ wxString AiProviderKindName(AiProviderKind kind) {
 }
 
 wxString AiProviderDefaultModel(AiProviderKind kind) {
+  // Each of these is that provider's own "rolling" alias -- it always
+  // resolves to the current snapshot of that model line, rather than a
+  // pinned dated snapshot (e.g. Anthropic's own "claude-3-5-sonnet-
+  // 20241022", which this used to be) that provider eventually retires on
+  // its own schedule regardless of what this code does. This only pushes
+  // the staleness problem up one level, from "this specific snapshot got
+  // retired" to "this whole model line got superseded" -- a real, slower-
+  // moving case a plain string constant genuinely cannot track by itself
+  // (see AiProviderModelListUrl() -- the actual fix for that is a link to
+  // the provider's own current list, not a fancier detection mechanism
+  // trying to chase a moving target with another moving target).
   switch (kind) {
-  case AiProviderKind::Anthropic: return wxS("claude-3-5-sonnet-20241022");
+  case AiProviderKind::Anthropic: return wxS("claude-3-5-sonnet-latest");
   case AiProviderKind::OpenAI: return wxS("gpt-4o-mini");
   case AiProviderKind::Google: return wxS("gemini-1.5-flash");
   case AiProviderKind::Qwen: return wxS("qwen-plus");
+  default: return wxEmptyString;
+  }
+}
+
+wxString AiProviderApiKeyUrl(AiProviderKind kind) {
+  switch (kind) {
+  case AiProviderKind::Anthropic: return wxS("https://console.anthropic.com/settings/keys");
+  case AiProviderKind::OpenAI: return wxS("https://platform.openai.com/api-keys");
+  case AiProviderKind::Google: return wxS("https://aistudio.google.com/apikey");
+  case AiProviderKind::Qwen: return wxS("https://dashscope.console.aliyun.com/apiKey");
+  default: return wxEmptyString;
+  }
+}
+
+wxString AiProviderModelListUrl(AiProviderKind kind) {
+  switch (kind) {
+  case AiProviderKind::Anthropic:
+    return wxS("https://docs.anthropic.com/en/docs/about-claude/models");
+  case AiProviderKind::OpenAI: return wxS("https://platform.openai.com/docs/models");
+  case AiProviderKind::Google: return wxS("https://ai.google.dev/gemini-api/docs/models");
+  case AiProviderKind::Qwen: return wxS("https://www.alibabacloud.com/help/en/model-studio/models");
   default: return wxEmptyString;
   }
 }

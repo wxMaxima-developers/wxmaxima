@@ -144,6 +144,138 @@ SCENARIO("McpTools::ListCells() and ReadCell() reflect the real worksheet") {
   }
 }
 
+SCENARIO("McpTools caps a cell's output so one huge cell can't crowd out "
+        "everything else, while still letting an AI read it in full or "
+        "just its tail via read_cell") {
+  g_ws->ClearDocument();
+  g_vars->Clear();
+
+  GIVEN("A cell whose output is longer than the per-cell preview cap") {
+    wxString hugeOutput;
+    for (int i = 0; i < 500; ++i)
+      hugeOutput += wxString::Format(wxS("line %d "), i); // well over 2000 chars
+    REQUIRE(hugeOutput.Length() > McpTools::OUTPUT_PREVIEW_LENGTH);
+    GroupCell *small = AppendCodeGroup(wxS("1+1;"), nullptr, wxS("2"));
+    GroupCell *huge = AppendCodeGroup(wxS("big();"), small, hugeOutput);
+
+    McpTools tools(g_ws, g_vars);
+
+    WHEN("ReadCell() is called on it with no output_length") {
+      huge->GenerateUUID();
+      nlohmann::json result = tools.ReadCell(Args("uuid", huge->GetUUID().ToStdString()));
+      THEN("it returns the full output, uncapped, since the caller named "
+          "this one cell specifically") {
+        CHECK(result["output"] == hugeOutput.ToStdString());
+        CHECK(result["output_truncated"] == false);
+      }
+    }
+
+    WHEN("ReadCell() is called with a small output_length") {
+      huge->GenerateUUID();
+      nlohmann::json args = {{"uuid", huge->GetUUID().ToStdString()},
+                             {"output_length", 50}};
+      nlohmann::json result = tools.ReadCell(args);
+      THEN("it returns only the first 50 characters and reports truncation") {
+        std::string output = result["output"].get<std::string>();
+        CHECK(output.size() == 50);
+        CHECK(output == hugeOutput.Left(50).ToStdString());
+        CHECK(result["output_truncated"] == true);
+      }
+    }
+
+    WHEN("ReadCell() is called with a small output_length and output_from_end") {
+      huge->GenerateUUID();
+      nlohmann::json args = {{"uuid", huge->GetUUID().ToStdString()},
+                             {"output_length", 50},
+                             {"output_from_end", true}};
+      nlohmann::json result = tools.ReadCell(args);
+      THEN("it returns the LAST 50 characters instead of the first") {
+        std::string output = result["output"].get<std::string>();
+        CHECK(output.size() == 50);
+        CHECK(output == hugeOutput.Right(50).ToStdString());
+        CHECK(result["output_truncated"] == true);
+      }
+    }
+
+    WHEN("ReadWorksheet() is called") {
+      wxString text = wxString::FromUTF8(
+        tools.ReadWorksheet()["text"].get<std::string>().c_str());
+      THEN("the huge cell's own output is capped to the preview length, but "
+          "the small cell right after it is still fully present -- proving "
+          "the huge cell didn't crowd it out") {
+        CHECK(text.Contains(wxS("[truncated -- use read_cell")));
+        CHECK(text.Contains(wxS("1+1;")));
+        CHECK(text.Contains(wxS("Output: 2")));
+      }
+    }
+  }
+}
+
+SCENARIO("McpTools flags the current cell and any cell with an error, so an "
+        "AI reading the worksheet can answer \"what's wrong with the "
+        "current cell\" / \"the cell above the cursor\"") {
+  g_ws->ClearDocument();
+  g_vars->Clear();
+
+  GIVEN("Three code cells, the cursor at the second, and an error flagged "
+       "on the third") {
+    GroupCell *first = AppendCodeGroup(wxS("1+1;"), nullptr, wxS("2"));
+    GroupCell *second = AppendCodeGroup(wxS("2+2;"), first, wxS("4"));
+    GroupCell *third = AppendCodeGroup(wxS("1/0;"), second, wxS("Error"));
+    g_ws->SetHCaret(second);
+    g_ws->GetErrorList().Add(third);
+
+    McpTools tools(g_ws, g_vars);
+
+    WHEN("ListCells() is called") {
+      nlohmann::json result = tools.ListCells();
+      THEN("only the cursor's cell is_current, and only the erroring cell "
+          "has_error") {
+        REQUIRE(result["cells"].size() == 3);
+        CHECK(result["cells"][0]["is_current"] == false);
+        CHECK(result["cells"][0]["has_error"] == false);
+        CHECK(result["cells"][1]["is_current"] == true);
+        CHECK(result["cells"][1]["has_error"] == false);
+        CHECK(result["cells"][2]["is_current"] == false);
+        CHECK(result["cells"][2]["has_error"] == true);
+      }
+    }
+
+    WHEN("ReadCell() is called on the current cell and on the erroring cell") {
+      // GetUUID() is lazy -- empty until something first asks for it (see
+      // McpTools::FindGroupByUUID()'s own on-demand generation) -- so
+      // generate it explicitly here rather than capturing an empty string.
+      second->GenerateUUID();
+      third->GenerateUUID();
+      nlohmann::json current = tools.ReadCell(Args("uuid", second->GetUUID().ToStdString()));
+      nlohmann::json errored = tools.ReadCell(Args("uuid", third->GetUUID().ToStdString()));
+      THEN("each reports its own flags correctly") {
+        CHECK(current["is_current"] == true);
+        CHECK(current["has_error"] == false);
+        CHECK(errored["is_current"] == false);
+        CHECK(errored["has_error"] == true);
+      }
+    }
+
+    WHEN("ReadWorksheet() is called") {
+      wxString text = wxString::FromUTF8(
+        tools.ReadWorksheet()["text"].get<std::string>().c_str());
+      THEN("the plain-text dump marks both inline, since that is the only "
+          "context the AI chat sidebar actually sends") {
+        CHECK(text.Contains(wxS("(CURRENT CELL -- the user's cursor is here)")));
+        CHECK(text.Contains(wxS("(THIS CELL HAS AN ERROR)")));
+        // The marked-current cell's own input is "2+2;" -- confirm the
+        // marker landed on the right cell's line, not just anywhere.
+        int currentMarkerPos = text.Find(wxS("(CURRENT CELL"));
+        int secondInputPos = text.Find(wxS("2+2;"));
+        REQUIRE(currentMarkerPos != wxNOT_FOUND);
+        REQUIRE(secondInputPos != wxNOT_FOUND);
+        CHECK(currentMarkerPos < secondInputPos);
+      }
+    }
+  }
+}
+
 SCENARIO("McpTools::ReadToc() and ReadSection() follow the same section "
         "boundaries GroupCell::Fold() does") {
   g_ws->ClearDocument();
@@ -210,9 +342,22 @@ SCENARIO("McpTools' variable watchlist tools only ever touch the sidebar, "
 
   GIVEN("An empty watchlist") {
     WHEN("ReadVariables() is called") {
-      THEN("it reports no variables") {
-        CHECK(tools.ReadVariables()["variables"].empty());
+      THEN("it reports no variables, and maxima_busy is false (nothing is "
+          "queued or being evaluated)") {
+        nlohmann::json result = tools.ReadVariables();
+        CHECK(result["variables"].empty());
+        CHECK(result["maxima_busy"] == false);
       }
+    }
+
+    WHEN("Maxima is set as currently working on a cell") {
+      GroupCell *working = AppendCodeGroup(wxS("1+1;"), nullptr);
+      g_ws->SetWorkingGroup(working);
+      THEN("ReadVariables() reports maxima_busy true, so a tool-calling AI "
+          "knows an empty/stale value might just not have arrived yet") {
+        CHECK(tools.ReadVariables()["maxima_busy"] == true);
+      }
+      g_ws->SetWorkingGroup(nullptr); // don't leak state into later SCENARIOs
     }
 
     WHEN("WatchVariable() adds a valid variable name") {

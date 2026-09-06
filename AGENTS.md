@@ -570,6 +570,175 @@ a local TCP socket.
     at all (only Anthropic was reachable from this sandbox; the other
     three were checked only against their documented request/response
     shapes in `test_AiProvider.cpp`, not against a live server).
+  - **Follow-up (2026-09-06): the worksheet context carried no notion of
+    "where the user is" or "which cell errored" at all** -- raised by the
+    user directly ("if a user asks the AI about the 'current' cell or the
+    cell above the cursor that output an error message... we provide
+    little to no info that allows the AI to navigate/find out where in
+    the worksheet the user currently is"), and confirmed exactly right by
+    reading `McpTools::ReadWorksheet()`/`CellSummary()`: neither carried
+    any cursor or error information, only cell type/input/output text.
+    Fixed by adding `McpTools::CurrentCell()` (thin wrapper over
+    `Worksheet::GetHCaret()`, which already resolves "where the user
+    is" -- active editor, h-caret, selection, or a last-resort fallback --
+    for the worksheet's own insertion-point logic, so this reuses an
+    existing, already-correct notion rather than inventing a second one)
+    and `McpTools::HasError()` (a thin wrapper over the existing
+    `DocumentCellPointers::ErrorList::Contains()`, the same mechanism
+    `Worksheet::ScrollToError()` already relies on -- see the GH #1952
+    entry above). Both are surfaced two ways: as `is_current`/`has_error`
+    booleans on `list_cells`/`read_cell`'s JSON, and -- since the AI chat
+    sidebar sends only `read_worksheet`'s plain-text dump, with no
+    tool-calling to fall back on -- as inline markers
+    (`"(CURRENT CELL -- the user's cursor is here)"`/`"(THIS CELL HAS AN
+    ERROR)"`) directly in that text, extracted into a new shared
+    `McpTools::CellText()` helper so `ReadWorksheet()` and `ReadSection()`
+    can't drift apart on this (an actual near-miss: the first pass only
+    patched `ReadWorksheet()`, and `ReadSection()`'s own near-identical
+    per-cell loop would have silently kept lacking both markers).
+    **A second, related bug found while fixing the first**:
+    `AiChatSidebar::BuildContextSnapshot()`'s truncation for
+    `MAX_CONTEXT_LENGTH` (8000 chars) took `text.Left(...)` -- for any
+    worksheet long enough to actually need truncating, this silently cuts
+    off content from the *end*, which is exactly where the new
+    "(CURRENT CELL...)" marker is most likely to sit in the first place
+    (a worksheet only needs truncating once it's already long, and a user
+    is far more likely to be asking about their current cell in a long
+    worksheet than a short one that never gets truncated at all) --
+    quietly defeating the very feature just added, for precisely the
+    worksheets where it matters most. Fixed by locating the marker first
+    and centering the kept window on it (falling back to the original
+    from-the-start behavior when there is no marker to center on, e.g. no
+    real cursor position could be determined). Verified live, not just by
+    reasoning about the arithmetic: loaded a real ~15KB synthetic
+    worksheet (60 filler cells plus one distinctively-named final cell) in
+    a live Xvfb session, moved the cursor to the very last cell
+    (Ctrl+End), and confirmed via temporary logging (removed before
+    committing, same discipline as the `State_Unauthorized` investigation
+    above) that the ~8KB snapshot actually sent still contained both the
+    `(CURRENT CELL` marker and the final cell's distinctive text -- on
+    unfixed code this exact scenario reproduces the bug (the marker sits
+    at the very end of a >8000-character document, so a plain `Left()`
+    truncation cuts it every time, deterministically, not intermittently).
+  - **Follow-up (2026-09-06): a variable's value can be empty just because
+    Maxima hasn't answered yet, not because it's undefined -- and nothing
+    told a tool-calling AI that.** `Variablespane::GetWatchedValues()`
+    returns whatever the grid's value column currently holds, which starts
+    empty the instant a variable is watched and only updates once Maxima's
+    asynchronous response for that query actually arrives -- there is no
+    "pending" state distinct from "empty," so `read_variables` right after
+    `watch_variable` (a completely natural sequence for a tool-calling AI)
+    can read back an empty value and have no way to tell "not answered
+    yet" apart from "genuinely undefined." Fixed by adding
+    `McpTools::MaximaIsBusy()` (`Worksheet::GetWorkingGroup(false) !=
+    nullptr` -- something is actively being evaluated right now -- or a
+    non-empty `Worksheet::GetEvaluationQueue()` -- more work is queued
+    behind it) and surfacing it as `read_variables`' own `maxima_busy`
+    field, with both tools' descriptions in `ListTools()` updated to spell
+    out the implication (an empty/unchanged value while `maxima_busy` is
+    true may just mean "not answered yet").
+  - **Follow-up (2026-09-06): `read_cell` had no cap on a single cell's
+    output at all, and `read_worksheet`/`read_section` only capped the
+    *aggregate* text, not each cell's own contribution to it** -- raised
+    by the user directly ("if a cell produced way too much output... do
+    we provide the AI with methods to only read the input/only read the
+    beginning or only read the end of the output?"), and confirmed exactly
+    right by reading `OutputText()`/`CapLength()`: a single pathological
+    cell (a huge matrix, a long list, ...) could return an unbounded
+    response via `read_cell`, or silently crowd out every other cell's
+    info in a `read_worksheet`/`read_section` response (worse: since that
+    aggregate cap truncates from the *start*, one huge cell early in the
+    document could crowd out not just later cells' content but the
+    `(CURRENT CELL...)`/`(THIS CELL HAS AN ERROR)` markers just added
+    above too, the same "truncate from the wrong end" bug shape as the AI
+    chat sidebar's own truncation, independently). Fixed with a new shared
+    `McpTools::TruncateText(text, maxLen, fromEnd, wasTruncated)` used two
+    ways: (1) `read_cell` gained optional `output_length`/`output_from_end`
+    arguments (defaulting to the full `MAX_TEXT_LENGTH` hard cap, i.e. no
+    real-world limit for any normal cell, but never unbounded) plus an
+    `output_truncated` result field, so an AI can ask for just a preview or
+    specifically the tail (e.g. "did this converge") instead of the whole
+    thing; (2) `ReadWorksheet()`/`ReadSection()` now cap *each* cell's own
+    output to a smaller `OUTPUT_PREVIEW_LENGTH` (2000 chars) before
+    concatenating, with an inline note pointing at `read_cell` when a
+    cell's own output was individually truncated -- extracted into the
+    same `CellText()` helper the current-cell/error markers already use,
+    so the two follow-ups share one place to get right rather than two.
+    **A real nlohmann::json gotcha hit while writing this, worth keeping in
+    mind for any future tool argument parsing here**: `is_number_unsigned()`
+    only returns true for a value that was *already* typed unsigned (e.g.
+    text-parsed JSON with no leading minus sign) -- the identical positive
+    value built from a plain C++ `int` literal, as any hand-constructed
+    `json` object (including every test in `test_McpTools.cpp`) does, is
+    classified `number_integer` (signed) instead despite being positive,
+    and would have silently failed the check. Used `is_number_integer()`
+    instead, which covers both representations, and simply ignores a
+    negative value rather than rejecting the whole call.
+  - **Follow-up (2026-09-06): "would it be possible to provide it with a
+    'login' button or, if not, an info on how to obtain such an API key?"**
+    A real "log in" button isn't possible -- same reasoning as the sidebar's
+    original design (see the AI chat sidebar entry above): none of these
+    four providers offer a legitimate third-party OAuth flow a desktop app
+    could use, so there is no automated way to obtain a key. Added the next
+    best thing instead: `AiProviderApiKeyUrl(AiProviderKind)` (alongside
+    the existing `AiProviderKindName()`/`AiProviderDefaultModel()`) returns
+    each provider's own API-key page, shown as a `wxHyperlinkCtrl` under
+    that provider's key field in Options -> AI Chat. Also added an "Open
+    Options..." button to the sidebar itself, shown only while no provider
+    is configured (`ReloadProviderFromConfig()` toggles it), so a user who
+    opens the sidebar cold has one click to the exact place that both
+    explains the settings and links to where to get a key -- re-posting
+    `wxEVT_MENU`/`wxID_PREFERENCES` to `GetParent()`'s event handler rather
+    than constructing `ConfigDialogue` itself, reusing
+    `MaximaCommandMenus.cpp`'s existing handling (re-reading the config
+    file first, applying settings on OK, ...) instead of duplicating any of
+    it -- the same "re-post the menu event, don't reimplement the handler"
+    idiom `TrayIcon::OnInterrupt()`/`OnExit()` already use elsewhere.
+    **A real bug caught by looking at the live screenshot, not by reading
+    the code:** the four links were built from one shared format string,
+    `wxString::Format(_("Get an %s API key..."), AiProviderKindName(kind))`
+    -- grammatically fine for "Anthropic (Claude)"/"OpenAI" (both take
+    "an"), but wrong for "Google (Gemini)"/"Qwen (Alibaba)" (both need
+    "a"), rendering as the actually-shipped-then-caught "Get an Google
+    (Gemini) API key..." Fixed by rewording to "Get an API key for %s...",
+    which sidesteps the a/an agreement entirely rather than trying to track
+    which of the four provider names needs which article.
+  - **Follow-up (2026-09-06): "do we need to hardcode the model names? they
+    tend to change over time"** -- a fair challenge, and the user's own
+    follow-up ("model auto detection feels like hunting a mechanism that
+    catches outdated strings with a mechanism that can get outdated") is
+    exactly why this wasn't turned into a live "fetch the model list from
+    each provider's API" feature: that mechanism would itself need
+    maintaining against four APIs just to answer a question a plain link
+    to each provider's own docs already answers, permanently, for free.
+    Two changes instead: (1) `AiProviderDefaultModel()`'s Anthropic entry
+    now uses `claude-3-5-sonnet-latest`, that provider's own "rolling"
+    alias, instead of the dated snapshot `claude-3-5-sonnet-20241022` it
+    used to be -- OpenAI/Google/Qwen's defaults (`gpt-4o-mini`/
+    `gemini-1.5-flash`/`qwen-plus`) were already un-dated in this same
+    sense, so only Anthropic's needed changing; this only pushes the
+    staleness problem up one level (from "this exact snapshot got retired"
+    to "this whole model line got superseded"), which a plain string
+    constant genuinely cannot solve by itself. (2) A new
+    `AiProviderModelListUrl()`, shown as a "See current models for %s..."
+    link next to each provider's Model field in Options, mirroring
+    `AiProviderApiKeyUrl()`'s own link added just above.
+    **A real, independent bug found live while verifying this, not by
+    reading the code**: after changing Anthropic's default in
+    `AiProvider.cpp`, Options kept showing the *old* `-20241022` value
+    regardless -- `AiProviderDefaultModel()` turned out to not be called
+    from anywhere at all; `Configuration::ResetAllToDefaults()` had its
+    *own*, completely separate hardcoded copy of all four model strings
+    (`m_aiModelAnthropic = wxS("claude-3-5-sonnet-20241022")` et al.),
+    silently disconnected from the function whose entire purpose is to be
+    the one place these live. Exactly the class of bug the user's original
+    question was worried about, already present in the code before this
+    session touched it, just latent until an actual edit exposed it (a
+    duplicated constant can drift silently for a long time if nothing
+    ever changes the value in only one of its two copies). Fixed by
+    having `ResetAllToDefaults()` call `AiProviderDefaultModel()` for all
+    four, removing the second copy entirely; re-verified live in Xvfb
+    that Options now genuinely shows `claude-3-5-sonnet-latest`.
 - **wxAuiManager:** The application uses `wxAuiManager` for its complex layout (sidebars, toolbars, worksheet).
   - **Linux/GTK Timing:** On Linux (especially KDE Plasma with Global Menus), calling `m_manager.Update()` can disrupt the menu bar if it's already attached. This is a known environmental issue in the interaction between wxWidgets, GTK3, and the KDE Global Menu proxy.
     - **Automated Fix:** On systems with wxWidgets <= 3.2 running on KDE, Unity, or with `appmenu-gtk-module` enabled, wxMaxima automatically sets `UBUNTU_MENUPROXY=0` at startup in `main.cpp` to force menus to remain within the window and prevent disappearance.

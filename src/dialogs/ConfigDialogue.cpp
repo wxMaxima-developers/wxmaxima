@@ -30,6 +30,7 @@
 
 #include "ConfigDialogue.h"
 #include "ai/AiProvider.h"
+#include <wx/hyperlink.h>
 #include "WXMformat.h"
 #include "BTextCtrl.h"
 #include "cells/Cell.h"
@@ -1975,9 +1976,10 @@ wxWindow *ConfigDialogue::CreateAiChatPanel() {
   // One box per provider, always shown (not just the active one): this way
   // switching providers never loses a key/model you already entered for
   // another one.
-  auto addProviderBox = [&](const wxString &title, wxTextCtrl *&keyCtrl,
+  auto addProviderBox = [&](AiProviderKind kind, wxTextCtrl *&keyCtrl,
                             wxTextCtrl *&modelCtrl) {
-    wxStaticBoxSizer *box = new wxStaticBoxSizer(wxVERTICAL, panel, title);
+    wxStaticBoxSizer *box =
+      new wxStaticBoxSizer(wxVERTICAL, panel, AiProviderKindName(kind));
     wxFlexGridSizer *grid = new wxFlexGridSizer(2, 2, 5, 5);
     grid->AddGrowableCol(1);
     grid->Add(new wxStaticText(box->GetStaticBox(), wxID_ANY, _("API key:")),
@@ -1994,16 +1996,44 @@ wxWindow *ConfigDialogue::CreateAiChatPanel() {
                                wxSize(300 * GetContentScaleFactor(), -1));
     grid->Add(modelCtrl, wxSizerFlags().Expand());
     box->Add(grid, wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
+    // No "log in" button is possible here (see AiProviderApiKeyUrl()'s own
+    // comment: none of these providers offer a legitimate third-party OAuth
+    // flow a desktop app could use) -- a direct link to where to actually
+    // get a key is the closest equivalent.
+    wxString keyUrl = AiProviderApiKeyUrl(kind);
+    if (!keyUrl.IsEmpty()) {
+      wxHyperlinkCtrl *link = new wxHyperlinkCtrl(
+        box->GetStaticBox(), wxID_ANY,
+        // "Get an API key for %s..." rather than "Get a/an %s API key...":
+        // sidesteps the a/an article agreement entirely, which the four
+        // provider names don't share (an Anthropic/OpenAI key, but a
+        // Google/Qwen key) -- confirmed live this was wrong before ("Get
+        // an Google...") with the naive uniform format string.
+        wxString::Format(_("Get an API key for %s..."), AiProviderKindName(kind)),
+        keyUrl);
+      box->Add(link, wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
+    }
+    // The default Model: value above is that provider's own "rolling"
+    // alias where one exists (AiProviderDefaultModel()'s own comment), but
+    // model lines still get superseded over time -- a link to the
+    // provider's current list is the durable fix for that, not a fancier
+    // auto-detection mechanism that would itself need to keep chasing each
+    // provider's API just to answer the same question this link answers
+    // directly.
+    wxString modelListUrl = AiProviderModelListUrl(kind);
+    if (!modelListUrl.IsEmpty()) {
+      wxHyperlinkCtrl *modelLink = new wxHyperlinkCtrl(
+        box->GetStaticBox(), wxID_ANY,
+        wxString::Format(_("See current models for %s..."), AiProviderKindName(kind)),
+        modelListUrl);
+      box->Add(modelLink, wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
+    }
     vbox->Add(box, wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
   };
-  addProviderBox(AiProviderKindName(AiProviderKind::Anthropic), m_aiKeyAnthropic,
-                m_aiModelAnthropicCtrl);
-  addProviderBox(AiProviderKindName(AiProviderKind::OpenAI), m_aiKeyOpenAI,
-                m_aiModelOpenAICtrl);
-  addProviderBox(AiProviderKindName(AiProviderKind::Google), m_aiKeyGoogle,
-                m_aiModelGoogleCtrl);
-  addProviderBox(AiProviderKindName(AiProviderKind::Qwen), m_aiKeyQwen,
-                m_aiModelQwenCtrl);
+  addProviderBox(AiProviderKind::Anthropic, m_aiKeyAnthropic, m_aiModelAnthropicCtrl);
+  addProviderBox(AiProviderKind::OpenAI, m_aiKeyOpenAI, m_aiModelOpenAICtrl);
+  addProviderBox(AiProviderKind::Google, m_aiKeyGoogle, m_aiModelGoogleCtrl);
+  addProviderBox(AiProviderKind::Qwen, m_aiKeyQwen, m_aiModelQwenCtrl);
 
   panel->SetSizer(vbox);
   panel->FitInside();
