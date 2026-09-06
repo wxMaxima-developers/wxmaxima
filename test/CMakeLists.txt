@@ -683,7 +683,25 @@ add_test(
     NAME wxmaxima_version_string
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --debug --logtostderr --pipe --version)
-set_tests_properties(wxmaxima_version_string PROPERTIES  PASS_REGULAR_EXPRESSION "wxMaxima ${VERSION}.*")
+# RUN_SERIAL: an ongoing investigation (see AGENTS.md's "wxmaxima_version_string
+# CI test failing on the minGW Windows runner" entry) has disconfirmed several
+# concrete mechanisms for this test's intermittent Windows CI failure (a wrong
+# struct-copy in stdio redirection, a shared-handle-after-close bug in
+# _dup2(), and the exact GH #2274 startup-reordering sequence), all via
+# targeted Wine repros -- but never under the real ctest -j 2 parallelism this
+# test actually runs under in CI (compile_windows.yml's "Run integration
+# tests" step), which this sandbox's Wine environment cannot faithfully
+# reproduce (no real multi-core Windows scheduler, no antivirus real-time
+# scanning, none of the other background load a shared GitHub Actions Windows
+# runner carries). RUN_SERIAL is a cheap, easily-revertible way to test that
+# specific remaining lead directly against the real CI runner: if forcing
+# this one test to never run concurrently with anything else eliminates the
+# failure across several real CI runs, that is real evidence for the
+# contention theory; if it still fails, that theory is ruled out just as
+# cheaply. Revert this single line if it doesn't help -- it does not by
+# itself explain or fix the underlying bug either way.
+set_tests_properties(wxmaxima_version_string PROPERTIES
+    PASS_REGULAR_EXPRESSION "wxMaxima ${VERSION}.*" RUN_SERIAL TRUE)
 
 add_test(
     NAME wxmaxima_version_returncode

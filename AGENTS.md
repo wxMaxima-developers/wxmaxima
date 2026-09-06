@@ -1478,6 +1478,40 @@ a local TCP socket.
     (not Wine) under *real contention* (not a quiet, idle sandbox) to
     reproduce at all -- which matches this bug's own history of being
     essentially unreproducible everywhere except the actual CI runner.
+  - **Follow-up (2026-09-06): a full wxWidgets-for-MinGW build under Wine
+    was judged, again, too large an undertaking to attempt blind for
+    another round of a theory that keeps failing to reproduce here --
+    deployed a cheap, real-CI experiment instead of another Wine repro.**
+    This sandbox has no prebuilt wxWidgets-for-MinGW package available via
+    apt, and building it from source cross-compiled would be a genuinely
+    large, open-ended undertaking (the same reasoning that already shelved
+    this exact idea in the previous entry) for a lead -- concurrent `ctest
+    -j 2` scheduling -- that a synthetic two-process Wine repro *already*
+    failed to reproduce (60 pairs, 0 failures, see above), meaning even a
+    full real build under Wine might well repeat that same non-result
+    without actually settling anything, since Wine's scheduler is not a
+    stand-in for a real, loaded Windows CI runner's contention either way.
+    Rather than spend that build effort on another likely-inconclusive Wine
+    experiment, added `RUN_SERIAL TRUE` to `wxmaxima_version_string`
+    itself (`test/CMakeLists.txt`) -- CTest never schedules a `RUN_SERIAL`
+    test concurrently with anything else, regardless of `-j`. This tests
+    the contention theory directly against the one environment that has
+    ever actually reproduced the bug (the real Windows CI runner) instead
+    of against another simulation of it. It is a real, if indirect,
+    experiment, not a guess dressed up as one: if several real CI runs
+    with this in place stop failing, that is genuine evidence contention
+    is a necessary ingredient (worth then hunting for what state two
+    concurrent `wxmaxima --version` processes could actually contend
+    over -- a shared named object, a registry key, a temp file, ... --
+    none of which this investigation has looked at yet); if it still
+    fails under `RUN_SERIAL`, that rules out simple ctest-level contention
+    cleanly and cheaply, no build required either way. Deliberately left
+    `wxmaxima_version_returncode` (the sibling test checking only the exit
+    code, which has never once been observed to fail) untouched -- this
+    experiment targets only the test that actually exhibits the bug.
+    **Revert this single `RUN_SERIAL TRUE` if a future session confirms it
+    made no difference** -- it is an experiment to gather evidence, not a
+    fix, and should not linger indefinitely presented as one.
 
 - **System tray icon (`src/TrayIcon.{h,cpp}`, GH #2286) -- mirrors the busy
   status, gated entirely by `wxUSE_TASKBARICON`.** The maintainer's own
