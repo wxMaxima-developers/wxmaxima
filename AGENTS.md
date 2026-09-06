@@ -1512,6 +1512,29 @@ a local TCP socket.
     **Revert this single `RUN_SERIAL TRUE` if a future session confirms it
     made no difference** -- it is an experiment to gather evidence, not a
     fix, and should not linger indefinitely presented as one.
+    **First two real data points (2026-09-06, PR #2294, commit `54598a7`):
+    both of the first two real CI runs with `RUN_SERIAL TRUE` in place
+    still failed with the exact same symptom** ("Required regular
+    expression not found", 133/134 tests passed, same single test). This
+    is meaningful, if not yet conclusive: simple ctest-level self-
+    concurrency (this test racing some *other* ctest job for CPU/scheduler
+    time within the same `-j 2` invocation) does not look sufficient on
+    its own to explain the failure, since removing exactly that kind of
+    contention for this one test didn't stop it from failing twice in a
+    row. Two important caveats before concluding contention is irrelevant
+    entirely: (1) `RUN_SERIAL` only keeps *this* test from running
+    concurrently with anything else -- it does nothing about contention
+    for the *machine's* resources in general (another GitHub Actions
+    Windows runner's own background load, antivirus scanning, etc. are
+    unaffected), so this doesn't rule out contention as a class, only
+    ctest's own internal `-j 2` scheduling specifically; (2) two data
+    points is still a small sample against a failure this reports as
+    "essentially every push" -- worth accumulating more real CI runs
+    before drawing a firm conclusion. Do not spend further Wine-repro
+    effort chasing plain ctest-level contention specifically based on this
+    -- that narrow mechanism now has two real, direct data points against
+    it, which outweighs the earlier from-first-principles Wine simulation
+    that failed to reproduce it either way.
 
 - **System tray icon (`src/TrayIcon.{h,cpp}`, GH #2286) -- mirrors the busy
   status, gated entirely by `wxUSE_TASKBARICON`.** The maintainer's own
