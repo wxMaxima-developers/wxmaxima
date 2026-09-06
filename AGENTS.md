@@ -1115,6 +1115,180 @@ a local TCP socket.
     know?" startup tip, `Show tips at startup` -- present with or without
     this change).
 
+- **`wxmaxima_version_string` CI test failing on the minGW Windows runner on
+  essentially every push since 2026-08-15 -- STILL UNSOLVED (2026-09-06).
+  The `_dup2()` fix below was tried, pushed, and the very next CI run
+  reproduced the exact same failure -- the struct-copy theory is DISCONFIRMED,
+  not just unverified. Read this whole entry before touching
+  `BindStdStreamToParent()` again; don't re-derive or re-attempt the
+  struct-copy theory from scratch.** The test runs `wxmaxima --debug
+  --logtostderr --pipe --version` and expects stdout to match `wxMaxima
+  <VERSION>.*`; it consistently fails with "Required regular expression not
+  found" while the process still exits 0 -- no crash, just no (or wrong)
+  captured output -- on a job that otherwise builds and passes every other
+  test cleanly (including `wxmaxima_version_returncode`, the same command
+  with only the exit code checked, which passes every time -- so the process
+  really does run to completion normally). `main.cpp` already has a large
+  Windows-only block explaining why this needs special handling at all:
+  wxMaxima is a `WIN32`-subsystem binary (`add_executable(wxmaxima WIN32
+  ...)`), so it has no stdio wired up by default, and `RedirectStdioToParent()`
+  (`BindStdStreamToParent()`) exists specifically to bind `stdout`/`stderr`/
+  `stdin` onto whatever the parent process gave it (an inherited pipe, as
+  ctest sets up, or an attached console).
+  - **Attempt 1 (2026-09-06, commit `3f8fd15`): the struct-copy theory --
+    DISCONFIRMED.** The original code did:
+    ```cpp
+    int fd = _open_osfhandle((intptr_t)handle, _O_TEXT);
+    FILE *opened = _fdopen(fd, mode);
+    *stream = *opened;  // stream is the global stdout/stderr/stdin pointer
+    ```
+    The theory: `*stream = *opened` is a shallow struct copy of a `FILE`
+    object allocated at a *different* address onto the CRT's real,
+    globally-visible `stdout`/`stderr` object, and might leave CRT-internal
+    bookkeeping (a per-stream lock, internal buffering-state pointers) keyed
+    to the wrong address. Replaced with `_dup2(fd, _fileno(stream))`, the
+    documented way to repoint an *existing* stream's descriptor without
+    fabricating a second `FILE` object. **The next real CI run on this exact
+    commit reproduced the identical failure** (133/134 passed, the same
+    single `wxmaxima_version_string` failure, same shape) -- so this was not
+    the bug, or at least not the whole of it.
+  - **Follow-up verification (2026-09-06, same day, no code change): built a
+    genuine Wine-based test harness and confirmed the disconfirmation
+    directly, not just via CI's word for it.** This sandbox has no Windows,
+    but `apt-get install wine64` (plus, once that turned out to need it,
+    `dpkg --add-architecture i386 && apt-get install libgd3:i386 wine32:i386`
+    to unblock a dependency chain, and `g++-mingw-w64-i686-win32` since this
+    Wine build turned out to only support 32-bit prefixes -- `WINEARCH=win64`
+    silently downgrades itself with a warning rather than erroring, and a
+    genuine 64-bit `x86_64-w64-mingw32`-built exe fails with a misleading
+    "Bad EXE format" / ShellExecuteEx error under it, which looks like a
+    corrupt binary but is actually just "wrong bitness for this prefix") gets
+    a working Windows environment good enough to actually *run* a
+    GUI-subsystem (`-mwindows`) cross-compiled exe with its stdout genuinely
+    piped, the same shape ctest uses. A minimal standalone repro
+    (`WinMain()` calling the exact old-vs-new `BindStdStreamToParent()` body
+    verbatim, then one `fprintf(stdout, ...)` + `exit(0)`) was built in both
+    variants (`-DUSE_STRUCT_COPY` old, plain new) with `i686-w64-mingw32-g++
+    -mwindows -static` (static linking needed too -- a dynamically-linked
+    exe fails differently again, `libgcc_s_dw2-1.dll not found`, status
+    `c0000135`, since nothing copies MinGW's runtime DLLs next to a
+    standalone cross-compiled exe) and run under `wine` with `DISPLAY`
+    pointed at a real `Xvfb`, both as `wine exe.exe > file` (matches a shell
+    redirect) and `wine exe.exe | cat` (matches ctest's actual anonymous-pipe
+    shape more closely). **Every one of the four combinations (old/new x
+    file/pipe) printed the expected line correctly and exited 0** -- the
+    struct-copy version is just as capable of getting output through a piped
+    GUI-subsystem stdout as the `_dup2()` version, in this controlled,
+    Wine-level test. This means the bug was very likely never in
+    `BindStdStreamToParent()`'s specific mechanism at all (on real Windows it
+    could still theoretically differ from Wine's behavior here, but combined
+    with the CI re-failure on the actual fix, treat that as the weaker
+    possibility) -- something else in wxMaxima's *actual* Windows startup
+    path is interfering with stdout between `RedirectStdioToParent()`
+    succeeding and the `--version` branch's `Printf()` call, in a way this
+    isolated repro (no wxWidgets, no threads, no sockets) doesn't reproduce.
+    The `_dup2()` change itself is still kept -- it is still the more
+    correct, standard way to repoint a stream, and does no harm -- but it
+    should no longer be described as a fix for this issue anywhere in this
+    repo; it isn't one.
+  - **Most promising remaining lead, NOT YET INVESTIGATED further: the
+    timeline correlation with GH #2274's fix (commit `3f5e895`, landed
+    2026-08-17, two days after this test's "since 2026-08-15" onset).** That
+    change moved `m_logWindow`'s construction (a real, unconditionally-
+    constructed `wxFrame` under the hood, see the GH #2274 entry above) from
+    immediately after `RedirectStdioToParent()`/`wxMessageOutput::Set(...)`
+    to several hundred lines later, after `wxSocketBase::Initialize()`,
+    `wxArtProvider::Push`, `MaximaProcessManager::SetupTerminationHandlers()`,
+    the full `cmdLineParser.Parse()` call, `wxConfig::Set(...)`, and
+    `ApplyAppearanceToApp()` -- all of that now runs *before* any top-level
+    window (even a hidden one) exists, where before it ran after. None of
+    those individually look like an obvious stdout-breaker on paper, but one
+    of them is the actual differentiator between this investigation's
+    minimal repro (which never reproduced the bug) and the real app (which
+    does) -- worth bisecting properly (a real Windows machine, or a full
+    wxWidgets-for-MinGW build run under Wine the same way as this session's
+    minimal repro, reproducing the exact `OnInit()` sequence up to and
+    including the `-v` branch) rather than guessing which specific call is
+    responsible. A full wx+wxMaxima MinGW build was judged too large an
+    undertaking for this pass (wxWidgets alone takes CI real build minutes
+    from source) but is the logical next step if this is picked up again.
+    **Do not re-attempt the struct-copy-vs-dup2 theory a third time** -- it
+    has now been disconfirmed twice, once by real CI and once by a
+    controlled, reproducible Wine-based test built specifically to check it.
+
+- **System tray icon (`src/TrayIcon.{h,cpp}`, GH #2286) -- mirrors the busy
+  status, gated entirely by `wxUSE_TASKBARICON`.** The maintainer's own
+  issue text was just "wxAppIndicator -- we don't seem to use that on gtk,
+  currently"; root-caused by finding that `StatusBar::UpdateStatusMaximaBusy()`
+  already has a Windows-only `#ifdef __WXMSW__` block driving the taskbar
+  button's progress/overlay state via `MSWGetTaskBarButton()` -- `TrayIcon`
+  is the portable, GTK-reaching equivalent of exactly that, using the
+  cross-platform `wxTaskBarIcon`. On GTK specifically, whether the icon is
+  actually *visible* depends on whether the linked wxWidgets was itself
+  built with AppIndicator/Ayatana support (`wxUSE_APPINDICATOR`, checked in
+  `wx/gtk/taskbar.cpp`, a wxWidgets-internal macro this app's own code never
+  needs to check) -- Ubuntu 24.04's stock `libwxgtk3.2-dev` package does
+  *not* have it defined at all, so on that specific distro the icon falls
+  back to the older GtkStatusIcon/XEmbed mechanism, which still worked and
+  was confirmed genuinely visible end-to-end after configuring a real
+  systray host (`fluxbox`'s toolbar needs an explicit
+  `session.screen0.toolbar.tools: ..., systemtray, ...` in `~/.fluxbox/init`
+  -- it isn't there by default).
+  - **Two real bugs found only by comparing a live screenshot against the
+    app's own status bar icon side by side, not by reading the code:**
+    1. First attempt built 4 collapsed "category" icons (Idle/Busy/
+       Attention/Error) from the *wrong* bitmap family --
+       `StatusBar`'s `m_network_idle`/`m_network_transmit_receive` members,
+       which track the **separate** `m_networkStatus` icon (raw socket
+       send/receive activity, driven by `HandleTimerEvent()`'s send/receive
+       timers) -- not `m_maximaStatus`'s own per-status bitmaps
+       (`m_bitmap_waiting`, `m_bitmap_calculating`, ...), which is what
+       actually answers "what is Maxima doing." The two icon families exist
+       side by side in the real status bar (look for `m_networkStatus` vs
+       `m_maximaStatus` in `StatusBar.cpp`) and are easy to conflate by name
+       alone. Symptom: the tray showed a barely-visible speck for "idle"
+       instead of a normal icon, since that family's idle glyph is a subtle,
+       mostly-transparent icon designed to sit unobtrusively next to actual
+       traffic icons, not to stand alone. Fixed by exposing
+       `StatusBar::GetTrayIconBitmap(MaximaStatus)`, a straight mirror of
+       `UpdateStatusMaximaBusy()`'s own per-status `m_maximaStatus->SetBitmap(...)`
+       choices, and confirmed by cropping both icons from the same
+       screenshot and eyeballing them side by side -- they now match
+       exactly, pixel for pixel.
+    2. `art/statusbar/*.h` (the bin2h-generated byte-array headers) declare
+       their arrays without `static`/`extern` -- fine when `#include`d from
+       exactly one `.cpp` (which is all `StatusBar.cpp` ever did), but
+       `#include`-ing the same header a second time from `TrayIcon.cpp` to
+       build its own icon set independently is a duplicate-symbol *link*
+       error (`multiple definition of NETWORK_IDLE_SVG_GZ`, ...), not a
+       compile error -- caught immediately on the first real link attempt.
+       Fixed by never re-embedding the art at all: `TrayIcon` only ever
+       calls the new `StatusBar::GetTrayIconBitmap()` getter and reuses the
+       bitmaps `StatusBar` already decoded once in its own constructor.
+  - The popup menu's "Interrupt"/"Exit" items deliberately reuse the *exact*
+    label text (`"&Interrupt\tCtrl+G"`, `"E&xit\tCtrl+Q"`) the Maxima/File
+    menus already use, and the two longer status tooltips
+    (debugging/lispmode) reuse `StatusBar`'s own full multi-line wording
+    verbatim, rather than shorter tray-only paraphrases -- purely to avoid
+    growing the translatable-string count for a near-duplicate of an
+    existing string; `test/check-pot-coverage.cmake` only asserts that
+    every file containing a `_("...")` marker is referenced *somewhere* in
+    `wxMaxima.pot` (by filename, not per-string), so adding this new file
+    needed exactly one hand-added `msgid "&Show wxMaxima"` entry (its own
+    genuinely new string) -- not a full `update-locale` regen, which would
+    have swept in ~1000 lines of unrelated pre-existing POT drift (see the
+    translations skill for why that regen-then-revert dance is the right
+    move here, not a shortcut).
+  - Menu actions never duplicate existing logic: `OnInterrupt()`/`OnExit()`
+    re-post a plain `wxCommandEvent(wxEVT_MENU, <id>)` to the main frame's
+    event handler instead of reimplementing what `MaximaProcessManager::
+    Interrupt`/`MaximaCommandMenus::FileMenu` already do for those same IDs
+    on the real menu -- necessary because `wxTaskBarIcon`'s own popup menu
+    delivers `wxEVT_MENU` to itself, not to the frame that created it.
+    Verified live: clicking "Interrupt" from the tray logs the same
+    "Sending Maxima a SIGINT signal," and clicking "Exit" raises the same
+    save-changes `Save As` prompt a normal File > Exit does.
+
 ### Communication with Maxima
 
 wxMaxima sends Lisp and Maxima commands over the socket; Maxima answers with XML
@@ -1212,6 +1386,68 @@ tried without rebuilding.
 - **`.wxmx`** -- a ZIP archive holding `content.xml` (the MathML-like XML) plus
   the embedded images. The format version lives in `src/WXMXformat.h`.
 - **`.wxm`** -- the plain-text format, read by `Format::ParseWXMFile()`.
+- **`.wxm`'s marker comments are NOT uniformly self-closed -- exactly one
+  bug class (GH #1907) comes from that asymmetry.** `WXMHeaders[]`
+  (`src/WXMformat.h`/`.cpp`) has two different shapes:
+  1. **Input/code markers are each a single, already-closed one-line
+     comment** -- `"/* [wxMaxima: input   start ] */"` opens *and* closes
+     `/* */` on the same line, so the code text between the start and end
+     markers sits completely outside any comment. This is deliberate and
+     load-bearing: it's what lets a plain, wxMaxima-unaware `batch()`/
+     `load()` parse the code between them with zero special handling, and
+     it's why a literal `/*`/`*/` inside actual Maxima code (a real Maxima
+     comment) must stay byte-for-byte unescaped -- `WXM_INPUT`/
+     `WXM_HIDDEN_INPUT` are excluded from the escaping below for exactly
+     this reason.
+  2. **Every other marker (title/section/subsection/subsubsection/
+     heading5/heading6/comment/caption) opens a comment on its start line
+     that is left open across the cell's entire content**, only closing at
+     the *end* marker's own trailing `*/` (e.g. start = `"/* [wxMaxima:
+     title   start ]"`, no closing `*/`; end = `"   [wxMaxima: title
+     end   ] */"`, no opening `/*`). A literal `*/` inside such a cell's
+     own prose closes that comment early -- everything from there up to
+     whatever `*/` a plain Maxima scanner finds *next* in the file is read
+     as live, executable input instead of inert text. A title cell
+     containing `"abc */ x:2$ /* def"` silently ran `x:2$` when the file
+     was `batch()`ed or opened, with no error and no visible sign anything
+     had executed. (`WXM_CAPTION` shares its ordinal with `GC_TYPE_IMAGE`
+     and covers only an image cell's own descriptive label text -- the
+     separate `WXM_IMAGE` marker pair, wrapping just the raw base64 bitmap
+     bytes, was never at risk here: base64's alphabet has no `*` character
+     at all.)
+  Fixed in `src/WXMformat.cpp` with a reversible, HTML-entity-style
+  transform (`EscapeWXMSlashes()`/`UnescapeWXMSlashes()`), applied only to
+  the type-2 markers above: escape every literal `&` to `&amp;` first (so
+  the scheme stays unambiguous if the original text already has one), then
+  -- in a single linear scan, not two separate global replaces, so a
+  pathological run like `"*/*"` or `"/*/"` is handled correctly rather than
+  double-encoded -- replace every `/` that sits immediately next to a `*`
+  with `&#47;`, leaving that `*` and any unrelated `/` (an ordinary `1/2`)
+  untouched. This closely follows a fix the maintainers had already
+  discussed but never implemented (GH #1907's own comment thread:
+  "how about if all text cells have `/*` and `*/` replaced by HTML
+  entities?"), narrowed to only the `/` adjacent to a `*` rather than every
+  slash, to avoid visual noise in the raw `.wxm` file for cells that just
+  happen to contain an ordinary fraction. Also applied to the equivalent
+  `GC_TYPE_TEXT` write path in the non-`.wxm` (`.mac`/xmaxima interop)
+  export, for the same reason (defense in depth -- `.mac` is always
+  directly Maxima-loadable) -- but `Format::ParseMACContents` (the `.mac`
+  reader) has no corresponding unescape, since round-tripping a
+  wxMaxima-exported `.mac`'s text cells back into wxMaxima is out of scope
+  for this fix and only costs a cosmetic `&#47;` showing up literally.
+  **Known, accepted limitation** (also already flagged in the same GH
+  #1907 thread): this can't retroactively fix a `.wxm` file already on
+  disk from before this existed, and a file whose prose coincidentally
+  contains the literal text `&amp;` (e.g. discussing the HTML entity
+  itself) will be mis-decoded after this fix -- an intentional tradeoff,
+  not an oversight. Regression coverage in
+  `test/unit_tests/test_WXMRoundtrip.cpp` pins both the injection fix
+  (title/section/text cells containing `*/`/`/*` round-trip losslessly and
+  the raw `.wxm` line has neither substring left unescaped) and the
+  "code cells are never touched" invariant, confirmed to actually catch the
+  bug by reverting just the source fix (`git stash push -- src/WXMformat.cpp`)
+  and re-running: the injection scenarios failed with exactly the reported
+  symptom before the fix was restored.
 
 ### Translations (`locales/`)
 
