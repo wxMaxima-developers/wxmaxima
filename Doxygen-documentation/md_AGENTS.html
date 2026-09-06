@@ -298,13 +298,35 @@ Architecture &amp; GUI</h1>
     know?" startup tip, <code>Show tips at startup</code> &ndash; present with or without this change).</li>
 </ul>
 </b></li>
+<li><b>**<code>wxmaxima_version_string</code> CI test failing on the minGW Windows runner on essentially every push since 2026-08-15 &ndash; STILL UNSOLVED (2026-09-06). The <code>_dup2()</code> fix below was tried, pushed, and the very next CI run reproduced the exact same failure &ndash; the struct-copy theory is DISCONFIRMED, not just unverified. Read this whole entry before touching <code>BindStdStreamToParent()</code> again; don't re-derive or re-attempt the struct-copy theory from scratch.** The test runs <code>wxmaxima --debug --logtostderr --pipe --version</code> and expects stdout to match <code><a class="el" href="classwxMaxima.html">wxMaxima</a> &lt;VERSION&gt;.*</code>; it consistently fails with "Required regular expression not
+  found" while the process still exits 0 &ndash; no crash, just no (or wrong) captured output &ndash; on a job that otherwise builds and passes every other test cleanly (including <code>wxmaxima_version_returncode</code>, the same command with only the exit code checked, which passes every time &ndash; so the process really does run to completion normally). <code><a class="el" href="main_8cpp.html" title="The file that defines the starting point of the program.">main.cpp</a></code> already has a large Windows-only block explaining why this needs special handling at all: <a class="el" href="classwxMaxima.html">wxMaxima</a> is a <code>WIN32</code>-subsystem binary (<code>add_executable(wxmaxima WIN32
+  ...)</code>), so it has no stdio wired up by default, and <code>RedirectStdioToParent()</code> (<code>BindStdStreamToParent()</code>) exists specifically to bind <code>stdout</code>/<code>stderr</code>/ <code>stdin</code> onto whatever the parent process gave it (an inherited pipe, as ctest sets up, or an attached console).<ul>
+<li><b>Attempt 1 (2026-09-06, commit <code>3f8fd15</code>): the struct-copy theory &ndash; DISCONFIRMED.</b> The original code did: <div class="fragment"><div class="line"><span class="keywordtype">int</span> fd = _open_osfhandle((intptr_t)handle, _O_TEXT);</div>
+<div class="line">FILE *opened = _fdopen(fd, mode);</div>
+<div class="line">*stream = *opened;  <span class="comment">// stream is the global stdout/stderr/stdin pointer</span></div>
+</div><!-- fragment --> The theory: <code>*stream = *opened</code> is a shallow struct copy of a <code>FILE</code> object allocated at a <em>different</em> address onto the CRT's real, globally-visible <code>stdout</code>/<code>stderr</code> object, and might leave CRT-internal bookkeeping (a per-stream lock, internal buffering-state pointers) keyed to the wrong address. Replaced with <code>_dup2(fd, _fileno(stream))</code>, the documented way to repoint an <em>existing</em> stream's descriptor without fabricating a second <code>FILE</code> object. <b>The next real CI run on this exact commit reproduced the identical failure</b> (133/134 passed, the same single <code>wxmaxima_version_string</code> failure, same shape) &ndash; so this was not the bug, or at least not the whole of it.</li>
+<li><b>Follow-up verification (2026-09-06, same day, no code change): built a genuine Wine-based test harness and confirmed the disconfirmation directly, not just via CI's word for it.</b> This sandbox has no Windows, but <code>apt-get install wine64</code> (plus, once that turned out to need it, <code>dpkg --add-architecture i386 &amp;&amp; apt-get install libgd3:i386 wine32:i386</code> to unblock a dependency chain, and <code>g++-mingw-w64-i686-win32</code> since this Wine build turned out to only support 32-bit prefixes &ndash; <code>WINEARCH=win64</code> silently downgrades itself with a warning rather than erroring, and a genuine 64-bit <code>x86_64-w64-mingw32</code>-built exe fails with a misleading "Bad EXE format" / ShellExecuteEx error under it, which looks like a corrupt binary but is actually just "wrong bitness for this prefix") gets a working Windows environment good enough to actually <em>run</em> a GUI-subsystem (<code>-mwindows</code>) cross-compiled exe with its stdout genuinely piped, the same shape ctest uses. <a class="el" href="classA.html">A</a> minimal standalone repro (<code>WinMain()</code> calling the exact old-vs-new <code>BindStdStreamToParent()</code> body verbatim, then one <code>fprintf(stdout, ...)</code> + <code>exit(0)</code>) was built in both variants (<code>-DUSE_STRUCT_COPY</code> old, plain new) with <code>i686-w64-mingw32-g++ -mwindows -static</code> (static linking needed too &ndash; a dynamically-linked exe fails differently again, <code>libgcc_s_dw2-1.dll not found</code>, status <code>c0000135</code>, since nothing copies MinGW's runtime DLLs next to a standalone cross-compiled exe) and run under <code>wine</code> with <code>DISPLAY</code> pointed at a real <code>Xvfb</code>, both as <code>wine exe.exe &gt; file</code> (matches a shell redirect) and <code>wine exe.exe | cat</code> (matches ctest's actual anonymous-pipe shape more closely). <b>Every one of the four combinations (old/new x file/pipe) printed the expected line correctly and exited 0</b> &ndash; the struct-copy version is just as capable of getting output through a piped GUI-subsystem stdout as the <code>_dup2()</code> version, in this controlled, Wine-level test. This means the bug was very likely never in <code>BindStdStreamToParent()</code>'s specific mechanism at all (on real Windows it could still theoretically differ from Wine's behavior here, but combined with the CI re-failure on the actual fix, treat that as the weaker possibility) &ndash; something else in <a class="el" href="classwxMaxima.html">wxMaxima</a>'s <em>actual</em> Windows startup path is interfering with stdout between <code>RedirectStdioToParent()</code> succeeding and the <code>--version</code> branch's <code>Printf()</code> call, in a way this isolated repro (no wxWidgets, no threads, no sockets) doesn't reproduce. The <code>_dup2()</code> change itself is still kept &ndash; it is still the more correct, standard way to repoint a stream, and does no harm &ndash; but it should no longer be described as a fix for this issue anywhere in this repo; it isn't one.</li>
+<li><b>Most promising remaining lead, NOT YET INVESTIGATED further: the timeline correlation with GH #2274's fix (commit <code>3f5e895</code>, landed 2026-08-17, two days after this test's "since 2026-08-15" onset).</b> That change moved <code>m_logWindow</code>'s construction (a real, unconditionally- constructed <code>wxFrame</code> under the hood, see the GH #2274 entry above) from immediately after <code>RedirectStdioToParent()</code>/<code>wxMessageOutput::Set(...)</code> to several hundred lines later, after <code>wxSocketBase::Initialize()</code>, <code>wxArtProvider::Push</code>, <code><a class="el" href="classMaximaProcessManager.html#a910cefe2fc0ab6b2ce0c9e630fbce36f" title="Install the SIGTERM/SIGINT/SIGHUP handlers that run KillAllChildMaximas() so a child Maxima is not or...">MaximaProcessManager::SetupTerminationHandlers()</a></code>, the full <code>cmdLineParser.Parse()</code> call, <code>wxConfig::Set(...)</code>, and <code><a class="el" href="wxMaxima_8cpp.html#a5a6b85d84c1ff97226eacd289f4494a5" title="Apply the chosen light/dark appearance to the native application chrome (menus, toolbars,...">ApplyAppearanceToApp()</a></code> &ndash; all of that now runs <em>before</em> any top-level window (even a hidden one) exists, where before it ran after. None of those individually look like an obvious stdout-breaker on paper, but one of them is the actual differentiator between this investigation's minimal repro (which never reproduced the bug) and the real app (which does) &ndash; worth bisecting properly (a real Windows machine, or a full wxWidgets-for-MinGW build run under Wine the same way as this session's minimal repro, reproducing the exact <code>OnInit()</code> sequence up to and including the <code>-v</code> branch) rather than guessing which specific call is responsible. <a class="el" href="classA.html">A</a> full wx+wxMaxima MinGW build was judged too large an undertaking for this pass (wxWidgets alone takes CI real build minutes from source) but is the logical next step if this is picked up again. <b>Do not re-attempt the struct-copy-vs-dup2 theory a third time</b> &ndash; it has now been disconfirmed twice, once by real CI and once by a controlled, reproducible Wine-based test built specifically to check it.</li>
 </ul>
-<p><b></b></p>
+</b></li>
+<li><b><b>System tray icon (<code>src/TrayIcon.{h,cpp}</code>, GH #2286) &ndash; mirrors the busy status, gated entirely by <code>wxUSE_TASKBARICON</code>.** The maintainer's own issue text was just "wxAppIndicator -- we don't seem to use that on gtk,
+  currently"; root-caused by finding that <code>StatusBar::UpdateStatusMaximaBusy()</code> already has a Windows-only <code>#ifdef __WXMSW__</code> block driving the taskbar button's progress/overlay state via <code>MSWGetTaskBarButton()</code> &ndash; <code>TrayIcon</code> is the portable, GTK-reaching equivalent of exactly that, using the cross-platform <code>wxTaskBarIcon</code>. On GTK specifically, whether the icon is actually <em>visible</em> depends on whether the linked wxWidgets was itself built with AppIndicator/Ayatana support (<code>wxUSE_APPINDICATOR</code>, checked in <code>wx/gtk/taskbar.cpp</code>, a wxWidgets-internal macro this app's own code never needs to check) &ndash; Ubuntu 24.04's stock <code>libwxgtk3.2-dev</code> package does <em>not</em> have it defined at all, so on that specific distro the icon falls back to the older GtkStatusIcon/XEmbed mechanism, which still worked and was confirmed genuinely visible end-to-end after configuring a real systray host (<code>fluxbox</code>'s toolbar needs an explicit <code>session.screen0.toolbar.tools: ..., systemtray, ...</code> in <code>~/.fluxbox/init</code> &ndash; it isn't there by default).<ul>
+<li>**Two real bugs found only by comparing a live screenshot against the app's own status bar icon side by side, not by reading the code:<ol type="1">
+<li>First attempt built 4 collapsed "category" icons (Idle/Busy/ Attention/Error) from the <em>wrong</em> bitmap family &ndash; <code><a class="el" href="classStatusBar.html" title="The class that draws the status bar.">StatusBar</a></code>'s <code>m_network_idle</code>/<code>m_network_transmit_receive</code> members, which track the <b>separate</b> <code>m_networkStatus</code> icon (raw socket send/receive activity, driven by <code>HandleTimerEvent()</code>'s send/receive timers) &ndash; not <code>m_maximaStatus</code>'s own per-status bitmaps (<code>m_bitmap_waiting</code>, <code>m_bitmap_calculating</code>, ...), which is what actually answers "what is Maxima doing." The two icon families exist side by side in the real status bar (look for <code>m_networkStatus</code> vs <code>m_maximaStatus</code> in <code><a class="el" href="StatusBar_8cpp.html" title="This file defines the contents of the class StatusBar that represents wxMaxima&#39;s status bar.">StatusBar.cpp</a></code>) and are easy to conflate by name alone. Symptom: the tray showed a barely-visible speck for "idle" instead of a normal icon, since that family's idle glyph is a subtle, mostly-transparent icon designed to sit unobtrusively next to actual traffic icons, not to stand alone. Fixed by exposing <code>StatusBar::GetTrayIconBitmap(MaximaStatus)</code>, a straight mirror of <code>UpdateStatusMaximaBusy()</code>'s own per-status <code>m_maximaStatus-&gt;SetBitmap(...)</code> choices, and confirmed by cropping both icons from the same screenshot and eyeballing them side by side &ndash; they now match exactly, pixel for pixel.</li>
+<li><code>art/statusbar/*.h</code> (the bin2h-generated byte-array headers) declare their arrays without <code>static</code>/<code>extern</code> &ndash; fine when <code>#include</code>d from exactly one <code>.cpp</code> (which is all <code><a class="el" href="StatusBar_8cpp.html" title="This file defines the contents of the class StatusBar that represents wxMaxima&#39;s status bar.">StatusBar.cpp</a></code> ever did), but <code>#include</code>-ing the same header a second time from <code><a class="el" href="TrayIcon_8cpp.html" title="This file defines the class TrayIcon.">TrayIcon.cpp</a></code> to build its own icon set independently is a duplicate-symbol <em>link</em> error (<code>multiple definition of NETWORK_IDLE_SVG_GZ</code>, ...), not a compile error &ndash; caught immediately on the first real link attempt. Fixed by never re-embedding the art at all: <code>TrayIcon</code> only ever calls the new <code><a class="el" href="classStatusBar.html#a9e37c25dea90f8000df590c291d14a40" title="The exact bitmap m_maximaStatus itself would show for this status – i.e.">StatusBar::GetTrayIconBitmap()</a></code> getter and reuses the bitmaps <code><a class="el" href="classStatusBar.html" title="The class that draws the status bar.">StatusBar</a></code> already decoded once in its own constructor.</li>
+</ol>
+</li>
+<li>The popup menu's "Interrupt"/"Exit" items deliberately reuse the <em>exact</em> label text (<code>"&amp;Interrupt\tCtrl+G"</code>, <code>"E&amp;xit\tCtrl+Q"</code>) the Maxima/File menus already use, and the two longer status tooltips (debugging/lispmode) reuse <code><a class="el" href="classStatusBar.html" title="The class that draws the status bar.">StatusBar</a></code>'s own full multi-line wording verbatim, rather than shorter tray-only paraphrases &ndash; purely to avoid growing the translatable-string count for a near-duplicate of an existing string; <code>test/check-pot-coverage.cmake</code> only asserts that every file containing a <code>_("...")</code> marker is referenced <em>somewhere</em> in <code>wxMaxima.pot</code> (by filename, not per-string), so adding this new file needed exactly one hand-added <code>msgid "&amp;Show wxMaxima"</code> entry (its own genuinely new string) &ndash; not a full <code>update-locale</code> regen, which would have swept in ~1000 lines of unrelated pre-existing POT drift (see the translations skill for why that regen-then-revert dance is the right move here, not a shortcut).</li>
+<li>Menu actions never duplicate existing logic: <code>OnInterrupt()</code>/<code>OnExit()</code> re-post a plain <code>wxCommandEvent(wxEVT_MENU, &lt;id&gt;)</code> to the main frame's event handler instead of reimplementing what <code><a class="el" href="classMaximaProcessManager.html" title="The Maxima process/socket lifecycle extracted from the wxMaxima god class.">MaximaProcessManager</a>:: Interrupt</code>/<code><a class="el" href="classMaximaCommandMenus.html#a6824cc78424d13f548fe4439f4725874" title="Handles the &quot;File&quot; menu (open/save/save-as, export, load/batch package, compare-files diff frame,...">MaximaCommandMenus::FileMenu</a></code> already do for those same IDs on the real menu &ndash; necessary because <code>wxTaskBarIcon</code>'s own popup menu delivers <code>wxEVT_MENU</code> to itself, not to the frame that created it. Verified live: clicking "Interrupt" from the tray logs the same "Sending Maxima a SIGINT signal," and clicking "Exit" raises the same save-changes <code>Save As</code> prompt a normal File &gt; Exit does.</li>
+</ul>
+</b></b></li>
+</ul>
+<p><b><b></b></b></p>
 <h2><a class="anchor" id="autotoc_md45"></a>
 Communication with Maxima</h2>
-<p><b> <a class="el" href="classwxMaxima.html">wxMaxima</a> sends Lisp and <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> commands over the socket; <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> answers with XML wrapped in known tags. <code><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></code> reads that data on a worker thread and posts <code>EVT_MAXIMA</code> events to the main thread, where <code><a class="el" href="classwxMaxima.html">wxMaxima</a></code> handles them.</b></p>
-<p><b><code>src/wxMathML.lisp</code> is compiled into the binary (through CMake's bin2h) and is what tells <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> to format its output as MathML-like XML. For development, <code>--wxmathml-lisp=&lt;path&gt;</code> overrides it with an external file, so a change can be tried without rebuilding.</b></p>
-<p><b></p><ul>
+<p><b><b> <a class="el" href="classwxMaxima.html">wxMaxima</a> sends Lisp and <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> commands over the socket; <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> answers with XML wrapped in known tags. <code><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></code> reads that data on a worker thread and posts <code>EVT_MAXIMA</code> events to the main thread, where <code><a class="el" href="classwxMaxima.html">wxMaxima</a></code> handles them.</b></b></p>
+<p><b><b><code>src/wxMathML.lisp</code> is compiled into the binary (through CMake's bin2h) and is what tells <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> to format its output as MathML-like XML. For development, <code>--wxmathml-lisp=&lt;path&gt;</code> overrides it with an external file, so a change can be tried without rebuilding.</b></b></p>
+<p><b><b></p><ul>
 <li>**<code>m_configCommands</code> (<code><a class="el" href="wxMaxima_8cpp.html" title="This file defines the contents of the class wxMaxima that contains most of the program&#39;s logic.">wxMaxima.cpp</a></code>):** the string of startup/config commands sent to <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> on connect (and again whenever settings change while it's running). <b>Every entry in it MUST be a <code>:lisp-quiet (...)</code> directive &ndash; never a plain <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> statement ending in <code>$</code>/<code>;</code>.</b> <code>m_configCommands</code> is sent bundled immediately ahead of the evaluation queue's next real per-cell command (<code><a class="el" href="classMaximaEvaluator.html#a5611fae48d6f6b13d6baec93e72fe39f" title="If Maxima is idle and the queue is non-empty, sends the next command; otherwise settles the UI into i...">MaximaEvaluator::TriggerEvaluation()</a></code>), and <code><a class="el" href="classEvaluationQueue.html#a9281421bc414407c4d8fa99335ecb24e" title="Removes the first command in the queue.">EvaluationQueue::RemoveFirst()</a></code> has no way to tell "a prompt answering a
   config command" from "a prompt answering a real queued cell" &ndash; it advances the queue by one cell for <em>every</em> main <code>(iN)</code> prompt it sees. <a class="el" href="classA.html">A</a> plain statement here makes <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> print its own extra prompt, and <code>RemoveFirst()</code> then silently drops one real (never-sent) queued cell for each such prompt &ndash; confirmed live with <code>tcpdump</code> on the raw <a class="el" href="classwxMaxima.html">wxMaxima</a>&lt;-&gt;<a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> socket to drop the whole evaluation queue (21 cells to 0) in one shot, root-causing an intermittent hang/failure in <code>automatic_test_files/lisp_mode.wxm</code>. This bit <code>wxdirs</code>, the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> struct exposing <a class="el" href="classwxMaxima.html">wxMaxima</a>'s own paths: it has to be built via genuine <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> syntax (<code>defstruct</code>, <code>wxdirs@field: "value"</code>, ...) since <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s <code>defstruct</code> does not evaluate named-field initializers to the field's value &ndash; it silently stores the unevaluated <code>field = value</code> equation instead (confirmed against a real <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> 5.46), and <code>new(wxdirs(field=value, ...))</code> therefore doesn't work either. The fix: build the Maxima-syntax statement (still going through <code>wxMaxima::EscapeForLisp()</code> per value &ndash; despite the name it is exactly the escaping <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> string literals need too, for <code>"&lt;/tt&gt;/&lt;tt&gt;\\&lt;/tt&gt; in any
   filesystem path), then wrap the &lt;em&gt;whole&lt;/em&gt; statement text as the argument to
@@ -370,6 +392,65 @@ Communication with Maxima</h2>
 - **&lt;tt&gt;.wxmx&lt;/tt&gt;** &amp;ndash; a ZIP archive holding &lt;tt&gt;content.xml&lt;/tt&gt; (the MathML-like XML) plus
   the embedded images. The format version lives in &lt;tt&gt;src/WXMXformat.h&lt;/tt&gt;.
 - **&lt;tt&gt;.wxm&lt;/tt&gt;** &amp;ndash; the plain-text format, read by &lt;tt&gt;Format::ParseWXMFile()&lt;/tt&gt;.
+- **&lt;tt&gt;.wxm&lt;/tt&gt;'s marker comments are NOT uniformly self-closed &amp;ndash; exactly one
+  bug class (GH #1907) comes from that asymmetry.** &lt;tt&gt;WXMHeaders[]&lt;/tt&gt;
+  (&lt;tt&gt;src/WXMformat.h&lt;/tt&gt;/&lt;tt&gt;.cpp&lt;/tt&gt;) has two different shapes:
+  1. &lt;strong&gt;Input/code markers are each a single, already-closed one-line
+     comment&lt;/strong&gt; &amp;ndash; &lt;tt&gt;"/* [<a class="el" href="classwxMaxima.html">wxMaxima</a>: input start ] */"&lt;/tt&gt; opens &lt;em&gt;and&lt;/em&gt; closes
+     &lt;tt&gt;/* */&lt;/tt&gt; on the same line, so the code text between the start and end
+     markers sits completely outside any comment. This is deliberate and
+     load-bearing: it's what lets a plain, wxMaxima-unaware &lt;tt&gt;batch()&lt;/tt&gt;/
+     &lt;tt&gt;load()&lt;/tt&gt; parse the code between them with zero special handling, and
+     it's why a literal &lt;tt&gt;/*&lt;/tt&gt;/&lt;tt&gt;*/&lt;/tt&gt; inside actual Maxima code (a real Maxima
+     comment) must stay byte-for-byte unescaped &amp;ndash; &lt;tt&gt;WXM_INPUT&lt;/tt&gt;/
+     &lt;tt&gt;WXM_HIDDEN_INPUT&lt;/tt&gt; are excluded from the escaping below for exactly
+     this reason.
+  2. &lt;strong&gt;Every other marker (title/section/subsection/subsubsection/
+     heading5/heading6/comment/caption) opens a comment on its start line
+     that is left open across the cell's entire content&lt;/strong&gt;, only closing at
+     the &lt;em&gt;end&lt;/em&gt; marker's own trailing &lt;tt&gt;*/&lt;/tt&gt; (e.g. start = &lt;tt&gt;"/* [<a class="el" href="classwxMaxima.html">wxMaxima</a>: title start ]"&lt;/tt&gt;, no closing &lt;tt&gt;*/&lt;/tt&gt;; end = &lt;tt&gt;" [<a class="el" href="classwxMaxima.html">wxMaxima</a>: title end ] */"&lt;/tt&gt;, no opening &lt;tt&gt;/*&lt;/tt&gt;). A literal &lt;tt&gt;*/&lt;/tt&gt; inside such a cell's
+     own prose closes that comment early &amp;ndash; everything from there up to
+     whatever &lt;tt&gt;*/&lt;/tt&gt; a plain Maxima scanner finds &lt;em&gt;next&lt;/em&gt; in the file is read
+     as live, executable input instead of inert text. A title cell
+     containing &lt;tt&gt;"abc */ x:2$ /* def"&lt;/tt&gt; silently ran &lt;tt&gt;x:2\$&lt;/tt&gt; when the file
+     was &lt;tt&gt;batch()&lt;/tt&gt;ed or opened, with no error and no visible sign anything
+     had executed. (&lt;tt&gt;WXM_CAPTION&lt;/tt&gt; shares its ordinal with &lt;tt&gt;GC_TYPE_IMAGE&lt;/tt&gt;
+     and covers only an image cell's own descriptive label text &amp;ndash; the
+     separate &lt;tt&gt;WXM_IMAGE&lt;/tt&gt; marker pair, wrapping just the raw base64 bitmap
+     bytes, was never at risk here: base64's alphabet has no &lt;tt&gt;*&lt;/tt&gt; character
+     at all.)
+  Fixed in &lt;tt&gt;src/WXMformat.cpp&lt;/tt&gt; with a reversible, HTML-entity-style
+  transform (&lt;tt&gt;EscapeWXMSlashes()&lt;/tt&gt;/&lt;tt&gt;UnescapeWXMSlashes()&lt;/tt&gt;), applied only to
+  the type-2 markers above: escape every literal &lt;tt&gt;\&amp;&lt;/tt&gt; to &lt;tt&gt;\&amp;amp;&lt;/tt&gt; first (so
+  the scheme stays unambiguous if the original text already has one), then
+  &amp;ndash; in a single linear scan, not two separate global replaces, so a
+  pathological run like &lt;tt&gt;"*/*"&lt;/tt&gt; or &lt;tt&gt;"/*/"&lt;/tt&gt; is handled correctly rather than
+  double-encoded &amp;ndash; replace every &lt;tt&gt;/&lt;/tt&gt; that sits immediately next to a &lt;tt&gt;*&lt;/tt&gt;
+  with &lt;tt&gt;\&amp;\#47;&lt;/tt&gt;, leaving that &lt;tt&gt;*&lt;/tt&gt; and any unrelated &lt;tt&gt;/&lt;/tt&gt; (an ordinary &lt;tt&gt;1/2&lt;/tt&gt;)
+  untouched. This closely follows a fix the maintainers had already
+  discussed but never implemented (GH #1907's own comment thread:
+  "how about if all text cells have `/*` and `*/` replaced by HTML entities?"), narrowed to only the &lt;tt&gt;/&lt;/tt&gt; adjacent to a &lt;tt&gt;*&lt;/tt&gt; rather than every
+  slash, to avoid visual noise in the raw &lt;tt&gt;.wxm&lt;/tt&gt; file for cells that just
+  happen to contain an ordinary fraction. Also applied to the equivalent
+  &lt;tt&gt;GC_TYPE_TEXT&lt;/tt&gt; write path in the non-&lt;tt&gt;.wxm&lt;/tt&gt; (&lt;tt&gt;.mac&lt;/tt&gt;/xmaxima interop)
+  export, for the same reason (defense in depth &amp;ndash; &lt;tt&gt;.mac&lt;/tt&gt; is always
+  directly Maxima-loadable) &amp;ndash; but &lt;tt&gt;Format::ParseMACContents&lt;/tt&gt; (the &lt;tt&gt;.mac&lt;/tt&gt;
+  reader) has no corresponding unescape, since round-tripping a
+  wxMaxima-exported &lt;tt&gt;.mac&lt;/tt&gt;'s text cells back into wxMaxima is out of scope
+  for this fix and only costs a cosmetic &lt;tt&gt;\&amp;\#47;&lt;/tt&gt; showing up literally.
+  &lt;strong&gt;Known, accepted limitation&lt;/strong&gt; (also already flagged in the same GH
+  #1907 thread): this can't retroactively fix a &lt;tt&gt;.wxm&lt;/tt&gt; file already on
+  disk from before this existed, and a file whose prose coincidentally
+  contains the literal text &lt;tt&gt;\&amp;amp;&lt;/tt&gt; (e.g. discussing the HTML entity
+  itself) will be mis-decoded after this fix &amp;ndash; an intentional tradeoff,
+  not an oversight. Regression coverage in
+  &lt;tt&gt;test/unit_tests/test_WXMRoundtrip.cpp&lt;/tt&gt; pins both the injection fix
+  (title/section/text cells containing &lt;tt&gt;*/&lt;/tt&gt;/&lt;tt&gt;/*&lt;/tt&gt; round-trip losslessly and
+  the raw &lt;tt&gt;.wxm&lt;/tt&gt; line has neither substring left unescaped) and the
+  "code cells are never touched" invariant, confirmed to actually catch the
+  bug by reverting just the source fix (&lt;tt&gt;git stash push -- src/WXMformat.cpp&lt;/tt&gt;)
+  and re-running: the injection scenarios failed with exactly the reported
+  symptom before the fix was restored.
 
 @subsection autotoc_md47 Translations (&lt;tt&gt;locales/&lt;/tt&gt;)
 
@@ -1199,55 +1280,55 @@ has already been broken.
 &lt;table class="markdownTable"&gt;
   &lt;tr class="markdownTableHead"&gt;    &lt;th class="markdownTableHeadNone"&gt; Skill   </code></li>
 </ul>
-<p></b></p>
-<p><b><code> Covers    </code></b></p>
-<p><b><code> </code></b></p>
-<p><b><code> <code>wxmaxima-layout</code>   </code></b></p>
-<p><b><code> the schedule/recalculate/resize pipeline and the layout invariants    </code></b></p>
-<p><b><code> </code></b></p>
-<p><b><code> <code>wxmaxima-architecture</code>   </code></b></p>
-<p><b><code> where code lives, the friend-class decomposition, the extraction recipe    </code></b></p>
-<p><b><code> </code></b></p>
-<p><b><code> <code>wxmaxima-translations</code>   </code></b></p>
-<p><b><code> the POT glob, po4a, Crowdin, and how translations get lost    </code></b></p>
-<p><b><code> </code></b></p>
-<p><b><code> <code>wxmaxima-export</code>   </code></b></p>
-<p><b><code> HTML/LaTeX/image export, accessible labels, round-trip guarantees    </code></b></p>
-<p><b><code> </code></b></p>
-<p><b><code> <code>wxmaxima-maxima-protocol</code>   </code></b></p>
-<p><b><code> the socket, <code>wxMathML.lisp</code>, batch mode, process lifetime    </code></b></p>
-<p><b><code> </code></b></p>
-<p><b><code> <code>wxmaxima-packaging</code>   </code></b></p>
-<p><b><code> the CI matrix's blind spots, installers, signing, releases    </code></b></p>
-<p><b><code> </code></b></p>
-<p><b><code> <code>run-wxmaxima</code>   </code></b></p>
-<p><b><code> building, launching and screenshotting the app   </code></b></p>
-<p><b><code></code></b></p>
-<p><b><code></p><ul>
+<p></b></b></p>
+<p><b><b><code> Covers    </code></b></b></p>
+<p><b><b><code> </code></b></b></p>
+<p><b><b><code> <code>wxmaxima-layout</code>   </code></b></b></p>
+<p><b><b><code> the schedule/recalculate/resize pipeline and the layout invariants    </code></b></b></p>
+<p><b><b><code> </code></b></b></p>
+<p><b><b><code> <code>wxmaxima-architecture</code>   </code></b></b></p>
+<p><b><b><code> where code lives, the friend-class decomposition, the extraction recipe    </code></b></b></p>
+<p><b><b><code> </code></b></b></p>
+<p><b><b><code> <code>wxmaxima-translations</code>   </code></b></b></p>
+<p><b><b><code> the POT glob, po4a, Crowdin, and how translations get lost    </code></b></b></p>
+<p><b><b><code> </code></b></b></p>
+<p><b><b><code> <code>wxmaxima-export</code>   </code></b></b></p>
+<p><b><b><code> HTML/LaTeX/image export, accessible labels, round-trip guarantees    </code></b></b></p>
+<p><b><b><code> </code></b></b></p>
+<p><b><b><code> <code>wxmaxima-maxima-protocol</code>   </code></b></b></p>
+<p><b><b><code> the socket, <code>wxMathML.lisp</code>, batch mode, process lifetime    </code></b></b></p>
+<p><b><b><code> </code></b></b></p>
+<p><b><b><code> <code>wxmaxima-packaging</code>   </code></b></b></p>
+<p><b><b><code> the CI matrix's blind spots, installers, signing, releases    </code></b></b></p>
+<p><b><b><code> </code></b></b></p>
+<p><b><b><code> <code>run-wxmaxima</code>   </code></b></b></p>
+<p><b><b><code> building, launching and screenshotting the app   </code></b></b></p>
+<p><b><b><code></code></b></b></p>
+<p><b><b><code></p><ul>
 <li><b>Layout Engine:</b> <code>src/cells/</code> and <code>src/worksheet/</code> (<code><a class="el" href="Worksheet_8cpp.html" title="This file defines the class Worksheet.">Worksheet.cpp</a></code> and its siblings moved into that subdirectory).</li>
 <li><b>MathML Formatting:</b> <code>src/wxMathML.lisp</code> and <code><a class="el" href="MathParser_8cpp.html" title="This file defines the class MathParser that reads wxmx data and math from Maxima.">src/MathParser.cpp</a></code>.</li>
 <li><b>Main Logic:</b> <code><a class="el" href="wxMaxima_8cpp.html" title="This file defines the contents of the class wxMaxima that contains most of the program&#39;s logic.">src/wxMaxima.cpp</a></code> and <code><a class="el" href="wxMaximaFrame_8cpp.html" title="This file defines the class wxMaximaFrame.">src/wxMaximaFrame.cpp</a></code> &ndash; but much of what used to sit in <code><a class="el" href="classwxMaxima.html">wxMaxima</a></code> has been peeled off into friend classes, so look there first: <code><a class="el" href="classMaximaProcessManager.html" title="The Maxima process/socket lifecycle extracted from the wxMaxima god class.">MaximaProcessManager</a></code> (spawn/kill/connect and the data pump), <code><a class="el" href="classMaximaEvaluator.html" title="The evaluation-queue driver / command protocol extracted from wxMaxima.">MaximaEvaluator</a></code> (evaluation queue and command protocol), <code><a class="el" href="classMaximaResponseReader.html" title="The Maxima-response handlers extracted from the wxMaxima god class.">MaximaResponseReader</a></code> (the incoming-XML handlers), <code><a class="el" href="classMaximaFileIO.html" title="The worksheet file loaders/savers extracted from the wxMaxima god class.">MaximaFileIO</a></code> (worksheet open/save) and <code><a class="el" href="classMaximaCommandMenus.html" title="The menu-command handlers extracted from the wxMaxima god class.">MaximaCommandMenus</a></code> (the menu handlers).</li>
 <li><b><a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a>:</b> <code><a class="el" href="Configuration_8cpp.html" title="This file defines the class Configuration which serves as a fast configuration storage.">src/Configuration.cpp</a></code>.</li>
 </ul>
-<p></code></b></p>
-<p><b><code></code></b></p>
+<p></code></b></b></p>
+<p><b><b><code></code></b></b></p>
 <h1><a class="anchor" id="autotoc_md53"></a>
 Backlog / Future Work</h1>
-<p><b><code> Items the maintainer has flagged as worth doing but hasn't asked for yet &ndash; don't start on these without checking in first, but pick them up if asked for "what's
-next" style work.</code></b></p>
-<p><b><code></p><ul>
+<p><b><b><code> Items the maintainer has flagged as worth doing but hasn't asked for yet &ndash; don't start on these without checking in first, but pick them up if asked for "what's
+next" style work.</code></b></b></p>
+<p><b><b><code></p><ul>
 <li><b>Real tab handling in <code><a class="el" href="classEditorCell.html" title="This class defines what the user sees as input cell.">EditorCell</a></code>:</b> tabs are currently just replaced by spaces on input instead of being handled as their own character/column-stop concept.</li>
 <li><b>GH #1335 &ndash; cell allocations are non-local (still open, unstarted):</b> <code><a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a></code>s are still individually heap-allocated and linked via each cell's own <code>m_previous</code>/<code>m_next</code>, not stored contiguously. <code><a class="el" href="CellList_8h.html" title="Declares the cell list management functionality.">CellList.h</a></code>'s own header comment already says "the eventual plan is to have a list of cells be a
   dedicated lightweight class working together with an arena allocator", but <code><a class="el" href="classCellListBuilderBase.html">CellListBuilderBase</a></code> still just holds a <code>std::unique_ptr&lt;<a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a>&gt; m_head</code> &ndash; that plan was never implemented. The issue's three proposed moves are all still open: (1) drop <code>m_previous</code>/<code>m_next</code> from <code><a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a></code> in favor of a <code><a class="el" href="classCellList.html">CellList</a></code> that owns contiguous storage, (2) hoist <code>m_group</code> from <code><a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a></code> to <code><a class="el" href="classCellList.html">CellList</a></code> (one owner per list), (3) hoist the per-line-geometry caches &ndash; the issue calls them <code>m_fullWidth</code>/<code>m_maxCenter</code>/<code>m_maxDrop</code>, renamed since to <code>m_cachedSumOfWidths</code>/<code>m_cachedCenterList</code>/<code>m_cachedMaxDrop</code>/ <code>m_cachedLineWidth</code> &ndash; from <code><a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a></code> to <code><a class="el" href="classCellList.html">CellList</a></code> too. Confirmed <code>sizeof(Cell)</code> is 224 bytes on the current tree (checked directly, post-#1445), not the 112 the issue was measured against in 2020 &ndash; <code><a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a></code> has grown substantially since (accessibility support, config-change-tracking atomics, UUID string, extra-XML-attributes map, ...), so the issue's "112 -&gt; 76 bytes" estimate is stale, but the underlying proposal is still real. This is a bigger undertaking than #1445: it changes the core list <em>storage model</em> (<code>m_next</code>/<code>m_previous</code> becoming array-relative instead of pointer-based), touching every list-manipulation site in <code>CellList.cpp</code> plus anything walking <code>GetNext()</code>/<code>GetPrevious()</code> directly &ndash; scope it out carefully before starting, don't assume it's a small follow-on to #1445 just because they're adjacent/both filed by KubaO in 2020.</li>
 </ul>
-<p></code></b></p>
-<p><b><code></code></b></p>
+<p></code></b></b></p>
+<p><b><b><code></code></b></b></p>
 <h1><a class="anchor" id="autotoc_md54"></a>
 Error resilience</h1>
-<p><b><code></p><ul>
+<p><b><b><code></p><ul>
 <li>To err is human =&gt; If your instructions don't seem to make sense feel free to ask. </li>
 </ul>
-<p></code></b></p>
+<p></code></b></b></p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- start footer part -->

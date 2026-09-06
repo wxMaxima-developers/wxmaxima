@@ -46,6 +46,8 @@ var searchData=
   ['textstyle_2eh_43',['TextStyle.h',['../TextStyle_8h.html',1,'']]],
   ['toolbar_2ecpp_44',['ToolBar.cpp',['../ToolBar_8cpp.html',1,'']]],
   ['toolbar_2eh_45',['ToolBar.h',['../ToolBar_8h.html',1,'']]],
-  ['treeundoaction_2eh_46',['TreeUndoAction.h',['../TreeUndoAction_8h.html',1,'']]],
-  ['treeundomanager_2eh_47',['TreeUndoManager.h',['../TreeUndoManager_8h.html',1,'']]]
+  ['trayicon_2ecpp_46',['TrayIcon.cpp',['../TrayIcon_8cpp.html',1,'']]],
+  ['trayicon_2eh_47',['TrayIcon.h',['../TrayIcon_8h.html',1,'']]],
+  ['treeundoaction_2eh_48',['TreeUndoAction.h',['../TreeUndoAction_8h.html',1,'']]],
+  ['treeundomanager_2eh_49',['TreeUndoManager.h',['../TreeUndoManager_8h.html',1,'']]]
 ];

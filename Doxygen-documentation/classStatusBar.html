@@ -158,6 +158,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetMaximaCPUPercentag
 <tr class="memitem:ac86400a6f7fafecd1ccba3021c49d60a"><td class="memItemLeft" align="right" valign="top"><a id="ac86400a6f7fafecd1ccba3021c49d60a" name="ac86400a6f7fafecd1ccba3021c49d60a"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateStatusMaximaBusy</b> (<a class="el" href="classStatusBar.html#af1235c09bed081ebb46dbd8b264f5c96">MaximaStatus</a> status, std::size_t bytesFromMaxima)</td></tr>
 <tr class="separator:ac86400a6f7fafecd1ccba3021c49d60a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e37c25dea90f8000df590c291d14a40"><td class="memItemLeft" align="right" valign="top">wxBitmap&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStatusBar.html#a9e37c25dea90f8000df590c291d14a40">GetTrayIconBitmap</a> (<a class="el" href="classStatusBar.html#af1235c09bed081ebb46dbd8b264f5c96">MaximaStatus</a> status) const</td></tr>
+<tr class="memdesc:a9e37c25dea90f8000df590c291d14a40"><td class="mdescLeft">&#160;</td><td class="mdescRight">The exact bitmap m_maximaStatus itself would show for this status &ndash; i.e.  <br /></td></tr>
+<tr class="separator:a9e37c25dea90f8000df590c291d14a40"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99984d665335fb0e11317b92213b4a48"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStatusBar.html#a99984d665335fb0e11317b92213b4a48">SetStatusText</a> (wxString statusText)</td></tr>
 <tr class="memdesc:a99984d665335fb0e11317b92213b4a48"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the left status text.  <br /></td></tr>
 <tr class="separator:a99984d665335fb0e11317b92213b4a48"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -201,6 +204,35 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>HandleTimerEvent</b> 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a9e37c25dea90f8000df590c291d14a40" name="a9e37c25dea90f8000df590c291d14a40"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9e37c25dea90f8000df590c291d14a40">&#9670;&#160;</a></span>GetTrayIconBitmap()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxBitmap StatusBar::GetTrayIconBitmap </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classStatusBar.html#af1235c09bed081ebb46dbd8b264f5c96">MaximaStatus</a>&#160;</td>
+          <td class="paramname"><em>status</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The exact bitmap m_maximaStatus itself would show for this status &ndash; i.e. </p>
+<p>the same per-status icon UpdateStatusMaximaBusy()'s switch already assigns via m_maximaStatus-&gt;SetBitmap(...), just returned instead of applied to that particular wxStaticBitmap. Lets TrayIcon (GH #2286) reuse these bitmaps instead of re-embedding the same art a second time &ndash; the generated headers under art/statusbar (one per icon) define their byte arrays without <code>static</code>/<code>extern</code>, so include-ing one from a second .cpp file is a duplicate-symbol link error, confirmed by trying exactly that first. NOT the m_network_* bitmaps: those belong to the separate m_networkStatus icon (raw socket send/receive activity, driven by HandleTimerEvent()), a different concern from "what is Maxima doing" &ndash; using them here first, before this comment, showed as a barely-visible speck in the tray because the "idle" one in that family is a very subtle, mostly-transparent glyph. </p>
+
+</div>
+</div>
 <a id="a99984d665335fb0e11317b92213b4a48" name="a99984d665335fb0e11317b92213b4a48"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a99984d665335fb0e11317b92213b4a48">&#9670;&#160;</a></span>SetStatusText()</h2>
 
