@@ -254,7 +254,7 @@ int WINAPI WinMain(_In_ HINSTANCE hI, _In_opt_ HINSTANCE hPrevI, _In_ LPSTR lpCm
 //
 // This is Windows-only by construction; macOS and Linux never compile it.
 static void BindStdStreamToParent(DWORD stdHandleId, FILE *stream,
-                                  const char *mode, bool &consoleAttached) {
+                                  bool &consoleAttached) {
   HANDLE handle = GetStdHandle(stdHandleId);
   if ((handle == nullptr) || (handle == INVALID_HANDLE_VALUE)) {
     // No inherited handle -- hook up to the launching console, at most once.
@@ -267,18 +267,34 @@ static void BindStdStreamToParent(DWORD stdHandleId, FILE *stream,
   int fd = _open_osfhandle(reinterpret_cast<intptr_t>(handle), _O_TEXT);
   if (fd == -1)
     return;
-  FILE *opened = _fdopen(fd, mode);
-  if (opened == nullptr)
+  // Redirect the CRT's own stdout/stderr/stdin (still fully valid FILE
+  // objects in a WIN32-subsystem process, just not attached to anything) to
+  // this handle via _dup2(), the documented way to repoint an existing
+  // stream's underlying descriptor. The previous approach opened a second,
+  // throwaway FILE via _fdopen() and did *stream = *opened -- a shallow
+  // struct copy that only reproduces whatever public fields _fdopen()
+  // happened to populate for an object at a *different* address, and can
+  // leave CRT-internal-only bookkeeping (buffering state, the per-stream
+  // lock) inconsistent. This is suspected (not confirmed on real hardware,
+  // no Windows available to test on) to be why `wxmaxima --version`'s
+  // output isn't reliably reaching ctest's pipe on the minGW CI runner --
+  // wxmaxima_version_string has failed there on essentially every push
+  // since 2026-08-15, exit code 0 but no matching stdout content, exactly
+  // the shape of a stream that looks bound but doesn't actually deliver
+  // writes to the right place.
+  if (_dup2(fd, _fileno(stream)) != 0) {
+    _close(fd);
     return;
-  *stream = *opened;  // rebind the standard stream onto the parent's handle
+  }
+  _close(fd); // _dup2 duplicated the descriptor; the original is no longer needed.
   setvbuf(stream, nullptr, _IONBF, 0);
 }
 
 static void RedirectStdioToParent() {
   bool consoleAttached = false;
-  BindStdStreamToParent(STD_OUTPUT_HANDLE, stdout, "w", consoleAttached);
-  BindStdStreamToParent(STD_ERROR_HANDLE, stderr, "w", consoleAttached);
-  BindStdStreamToParent(STD_INPUT_HANDLE, stdin, "r", consoleAttached);
+  BindStdStreamToParent(STD_OUTPUT_HANDLE, stdout, consoleAttached);
+  BindStdStreamToParent(STD_ERROR_HANDLE, stderr, consoleAttached);
+  BindStdStreamToParent(STD_INPUT_HANDLE, stdin, consoleAttached);
 }
 
 // True once we have a usable stderr handle (inherited pipe/file or an attached

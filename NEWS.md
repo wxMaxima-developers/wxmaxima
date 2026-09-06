@@ -1,5 +1,14 @@
 # Current development version
 
+- Possible fix for `wxmaxima --version`/`--help` sometimes not printing
+  anything on Windows (seen consistently as the `wxmaxima_version_string`
+  CI failure, unverified on real hardware -- no Windows available to test
+  on directly, see AGENTS.md for the reasoning). The code that redirects
+  the GUI-subsystem binary's stdout/stderr to an inherited pipe/console
+  opened a second, throwaway `FILE` via `_fdopen()` and shallow-copied its
+  struct onto `stdout`/`stderr`, which can leave CRT-internal-only state
+  inconsistent; switched to `_dup2()`, the documented way to repoint an
+  existing stream's underlying descriptor.
 - Added a system tray/notification-area icon (GH #2286) that mirrors
   wxMaxima's busy status -- the same information the status bar's own icon
   and, on Windows, the taskbar button's progress overlay already show -- and

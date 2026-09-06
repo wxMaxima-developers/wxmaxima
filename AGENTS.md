@@ -817,6 +817,50 @@ a local TCP socket.
     know?" startup tip, `Show tips at startup` -- present with or without
     this change).
 
+- **`wxmaxima_version_string` CI test failing on the minGW Windows runner on
+  essentially every push since 2026-08-15 -- likely root cause found and a
+  fix attempted, but genuinely UNVERIFIED (no Windows machine available in
+  this sandbox; the only real test is the next CI run itself).** The test
+  runs `wxmaxima --debug --logtostderr --pipe --version` and expects stdout
+  to match `wxMaxima <VERSION>.*`; it consistently fails with "Required
+  regular expression not found" while the process still exits 0 -- i.e. no
+  crash, just no (or wrong) captured output, on a job that otherwise builds
+  and passes every other test cleanly. `main.cpp` already has a large
+  Windows-only block explaining why this needs special handling at all:
+  wxMaxima is a `WIN32`-subsystem binary (`add_executable(wxmaxima WIN32
+  ...)`), so it has no stdio wired up by default, and `RedirectStdioToParent()`
+  (`BindStdStreamToParent()`) exists specifically to bind `stdout`/`stderr`/
+  `stdin` onto whatever the parent process gave it (an inherited pipe, as
+  ctest sets up, or an attached console). That existing code did:
+  ```cpp
+  int fd = _open_osfhandle((intptr_t)handle, _O_TEXT);
+  FILE *opened = _fdopen(fd, mode);
+  *stream = *opened;  // stream is the global stdout/stderr/stdin pointer
+  ```
+  `*stream = *opened` is a shallow struct copy of the `FILE` object `_fdopen()`
+  just allocated (at its own, different address) onto the CRT's real,
+  globally-visible `stdout`/`stderr` object. That only reproduces whatever
+  *public* fields `_fdopen()` happened to initialize; it does not (and
+  cannot, from application code) fix up any CRT-internal-only bookkeeping
+  that's keyed to an object's own address -- e.g. UCRT's per-stream lock,
+  or internal buffering-state pointers -- which is exactly the kind of bug
+  that produces "looks bound, exit code is fine, but writes silently don't
+  land" rather than an outright crash. Replaced with `_dup2(fd,
+  _fileno(stream))`, the documented, standard way to repoint an *existing*
+  CRT stream's underlying file descriptor without fabricating a second
+  `FILE` object at all -- `stdout`/`stderr`/`stdin` remain the exact same
+  objects the rest of the CRT (and any code that cached a `FILE*` to them
+  earlier) already knows about, just now pointing at a different OS handle.
+  Confirmed only that this compiles cleanly (`x86_64-w64-mingw32-g++`,
+  `-Wall -Wextra`, matching `compile_windows.yml`'s own flags for this job)
+  in a standalone reproduction of just this function -- **the actual runtime
+  behavior on Windows is unverified**, since this sandbox has no Windows
+  environment to run the built binary on. If `wxmaxima_version_string`
+  keeps failing after this lands, the struct-copy theory is wrong and the
+  real cause is still open; if it goes green, this was it. Either way, this
+  needs a human with Windows access (or just watching the next CI run) to
+  actually confirm -- don't treat "it compiled" as "it works" for this one.
+
 - **System tray icon (`src/TrayIcon.{h,cpp}`, GH #2286) -- mirrors the busy
   status, gated entirely by `wxUSE_TASKBARICON`.** The maintainer's own
   issue text was just "wxAppIndicator -- we don't seem to use that on gtk,
