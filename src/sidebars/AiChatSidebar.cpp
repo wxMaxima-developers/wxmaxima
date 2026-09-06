@@ -155,14 +155,35 @@ wxString AiChatSidebar::BuildContextSnapshot() const {
   json worksheet = m_tools.ReadWorksheet();
   wxString text = wxString::FromUTF8(worksheet.value("text", std::string()).c_str());
   if (text.Length() > MAX_CONTEXT_LENGTH) {
-    text = text.Left(MAX_CONTEXT_LENGTH);
+    // A plain Left() truncation would silently cut off the "(CURRENT
+    // CELL ...)" marker below for any worksheet long enough to need
+    // truncating in the first place -- exactly the case where a user is
+    // most likely to ask about "the current cell" or "the cell above the
+    // cursor," since a short worksheet never needs truncating at all.
+    // Center the kept window on that marker instead, when there is one.
+    int markerPos = text.Find(wxS("(CURRENT CELL"));
+    size_t start = 0;
+    if (markerPos != wxNOT_FOUND) {
+      size_t pos = static_cast<size_t>(markerPos);
+      start = (pos > MAX_CONTEXT_LENGTH / 2) ? pos - MAX_CONTEXT_LENGTH / 2 : 0;
+      if (start + MAX_CONTEXT_LENGTH > text.Length())
+        start = text.Length() - MAX_CONTEXT_LENGTH;
+    }
+    text = text.Mid(start, MAX_CONTEXT_LENGTH);
+    if (start > 0)
+      text = wxS("[... earlier worksheet content omitted ...]\n") + text;
     text += wxS("\n... [truncated for the chat context]");
   }
   return _("You are an assistant embedded in wxMaxima, a GUI front-end for "
           "the Maxima computer algebra system. Below is a read-only "
           "snapshot of the user's current worksheet -- you cannot edit, "
           "evaluate or otherwise change it; only the user can do that "
-          "through the wxMaxima UI. Use it only as context.\n\n"
+          "through the wxMaxima UI. A cell marked \"(CURRENT CELL -- the "
+          "user's cursor is here)\" is where the user's cursor currently "
+          "is -- that is what they mean by \"this cell,\" \"the current "
+          "cell,\" or \"the cell above/here.\" A cell marked \"(THIS CELL "
+          "HAS AN ERROR)\" is one Maxima reported an error in. Use the "
+          "snapshot only as context.\n\n"
           "--- Worksheet snapshot ---\n") +
     text;
 }

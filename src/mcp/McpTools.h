@@ -90,6 +90,13 @@ public:
   //! A cap on how much text a single response ever carries (read_worksheet/
   //! read_section), so a huge worksheet can't produce an unbounded reply.
   static constexpr std::size_t MAX_TEXT_LENGTH = 200000;
+  //! The cap applied to each individual cell's own output when it's one of
+  //! many being concatenated (ReadWorksheet/ReadSection) -- keeps one cell
+  //! with a huge output (a large matrix, a long list, ...) from crowding
+  //! out every other cell's info in the same response. read_cell, which
+  //! targets exactly one cell the caller already chose, is not limited to
+  //! this -- see its output_length/output_from_end arguments.
+  static constexpr std::size_t OUTPUT_PREVIEW_LENGTH = 2000;
 
 private:
   Worksheet *m_worksheet;
@@ -104,9 +111,37 @@ private:
   //! This cell's output, as plain text (empty if it has none/isn't evaluated).
   static wxString OutputText(GroupCell &cell);
   //! {uuid, group_type, index} plus a short input preview -- used by ListCells().
-  static nlohmann::json CellSummary(GroupCell &cell, int index);
+  nlohmann::json CellSummary(GroupCell &cell, int index) const;
+  //! One cell's "--- type (markers) ---\ninput\nOutput: ...\n\n" block, with
+  //! the is_current/has_error markers and OUTPUT_PREVIEW_LENGTH capping on
+  //! its own output -- shared by ReadWorksheet() and ReadSection() so a
+  //! marker or the capping can't accidentally end up in only one of them.
+  wxString CellText(GroupCell &cell) const;
+  //! The cell the user's cursor/h-caret is currently at or after (the same
+  //! cell Worksheet itself treats as the insertion point) -- or nullptr if
+  //! there is no worksheet at all. Falls back to the last cell in the
+  //! worksheet if nothing more specific is active, same as
+  //! Worksheet::GetHCaret() itself does for its own callers.
+  GroupCell *CurrentCell() const;
+  //! Is this cell the one Maxima has reported an error in? (DocumentCellPointers::
+  //! ErrorList, populated live by MaximaEvaluator/MaximaResponseReader --
+  //! the same mechanism Worksheet::ScrollToError() already relies on.)
+  bool HasError(GroupCell &cell) const;
+  //! Is Maxima currently evaluating something, or does it still have queued
+  //! work? A newly-watched (or already-watched) variable's value in
+  //! ReadVariables() only updates once Maxima actually answers the query
+  //! read_variables/watch_variable causes -- while this is true, an empty
+  //! or unchanged value there may just mean "not answered yet," not "this
+  //! variable is undefined."
+  bool MaximaIsBusy() const;
   //! Truncates to MAX_TEXT_LENGTH, appending a note if it had to.
   static wxString CapLength(wxString text);
+  //! Truncates text to at most maxLen characters -- the end if fromEnd,
+  //! otherwise the start -- and reports via wasTruncated whether it had to.
+  //! Shared by read_cell's output_length/output_from_end arguments and the
+  //! per-cell OUTPUT_PREVIEW_LENGTH capping in ReadWorksheet()/ReadSection().
+  static wxString TruncateText(const wxString &text, std::size_t maxLen,
+                               bool fromEnd, bool &wasTruncated);
   //! Extracts a required string argument, or throws McpToolError.
   static wxString RequireString(const nlohmann::json &arguments,
                                 const char *name);

@@ -9,6 +9,15 @@
   in the worksheet -- every tool only reads, except adding/removing a
   variable from the watchlist, which only changes what that sidebar
   displays, the same as typing a name into it by hand.
+- The MCP server and AI Chat sidebar's worksheet context now tell an AI
+  where the user's cursor is and which cell (if any) has an error, so it
+  can actually answer "what's wrong with my current cell" or "the cell
+  above the cursor" -- both were previously invisible to it. Also capped
+  how much of a single cell's output can dominate a response (a huge
+  matrix or list no longer crowds out every other cell), with a way to
+  ask for just a preview or specifically the end of a long output, and
+  made read_variables report when Maxima is still busy so an empty value
+  isn't mistaken for "undefined" when it's really just "not answered yet."
 - Added an "AI Chat" sidebar (View -> Sidebars -> AI Chat) that lets you
   chat about the current worksheet with Anthropic, OpenAI, Google Gemini or
   Qwen, using your own API key (configured in Options -> AI Chat). It sends

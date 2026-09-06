@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-06 16:16+0000\n"
+"POT-Creation-Date: 2026-09-06 17:14+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3771,7 +3771,7 @@ msgstr ""
 #: ../../src/WXMXformat.cpp:290 ../../src/WXMXformat.cpp:298
 #: ../../src/WXMXformat.cpp:313 ../../src/WXMXformat.cpp:334
 #: ../../src/WXMXformat.cpp:364 ../../src/dialogs/BinaryNameCtrl.cpp:78
-#: ../../src/main.cpp:788 ../../src/sidebars/AiChatSidebar.cpp:205
+#: ../../src/main.cpp:788 ../../src/sidebars/AiChatSidebar.cpp:226
 #: ../../src/wxMaxima.cpp:3480 ../../src/wxMaxima.cpp:3516
 #: ../../src/wxMaxima.cpp:3534 ../../src/wxMaxima.cpp:3568
 msgid "Error"
@@ -7206,7 +7206,7 @@ msgstr ""
 msgid "No AI provider configured -- add an API key in Options."
 msgstr ""
 
-#: ../../src/sidebars/AiChatSidebar.cpp:180
+#: ../../src/sidebars/AiChatSidebar.cpp:201
 msgid "No AI provider is configured. Open Options to add an API key for one."
 msgstr ""
 
@@ -10703,7 +10703,7 @@ msgid "Third-party notices"
 msgstr ""
 
 #: ../../src/sidebars/AiChatSidebar.cpp:145
-#: ../../src/sidebars/AiChatSidebar.cpp:186
+#: ../../src/sidebars/AiChatSidebar.cpp:207
 msgid "This build of wxMaxima cannot make network requests."
 msgstr ""
 
@@ -11622,13 +11622,13 @@ msgstr ""
 msgid "Yes"
 msgstr ""
 
-#: ../../src/sidebars/AiChatSidebar.cpp:191
+#: ../../src/sidebars/AiChatSidebar.cpp:212
 msgid "You"
 msgstr ""
 
-#: ../../src/sidebars/AiChatSidebar.cpp:161
+#: ../../src/sidebars/AiChatSidebar.cpp:177
 msgid ""
-"You are an assistant embedded in wxMaxima, a GUI front-end for the Maxima computer algebra system. Below is a read-only snapshot of the user's current worksheet -- you cannot edit, evaluate or otherwise change it; only the user can do that through the wxMaxima UI. Use it only as context.\n"
+"You are an assistant embedded in wxMaxima, a GUI front-end for the Maxima computer algebra system. Below is a read-only snapshot of the user's current worksheet -- you cannot edit, evaluate or otherwise change it; only the user can do that through the wxMaxima UI. A cell marked \"(CURRENT CELL -- the user's cursor is here)\" is where the user's cursor currently is -- that is what they mean by \"this cell,\" \"the current cell,\" or \"the cell above/here.\" A cell marked \"(THIS CELL HAS AN ERROR)\" is one Maxima reported an error in. Use the snapshot only as context.\n"
 "\n"
 "--- Worksheet snapshot ---\n"
 msgstr ""
@@ -12242,8 +12242,8 @@ msgid "writebyte..."
 msgstr ""
 
 #: ../../src/TrayIcon.cpp:93 ../../src/dialogs/AboutDialog.cpp:64
-#: ../../src/main.cpp:859 ../../src/sidebars/AiChatSidebar.cpp:179
-#: ../../src/sidebars/AiChatSidebar.cpp:185
+#: ../../src/main.cpp:859 ../../src/sidebars/AiChatSidebar.cpp:200
+#: ../../src/sidebars/AiChatSidebar.cpp:206
 msgid "wxMaxima"
 msgstr ""
 
