@@ -340,6 +340,8 @@ protected:
   wxCheckBox *m_incrementalSearch;
   wxCheckBox *m_notifyIfIdle;
   wxCheckBox *m_findDialogDockable;
+  wxCheckBox *m_mcpServerEnabled;
+  wxSpinCtrl *m_mcpServerPort;
   wxChoice *m_showUserDefinedLabels;
   wxButton *m_getStyleFont;
   //! Light / Dark / Follow-system selector (also picks which set the editor edits).

@@ -272,6 +272,149 @@ working without extra checks.
 wxMaxima is a GUI front-end to the Maxima CAS; it talks to a Maxima process over
 a local TCP socket.
 
+- **MCP server (`src/mcp/McpServer.{h,cpp}`, `src/mcp/McpTools.{h,cpp}`,
+  2026-09) -- lets an external AI tool read the current worksheet as
+  context.** User request: "they say that there is a de facto standard on
+  how to create an AI sidebar that allows to talk to an AI and gives it
+  access to a worksheet" -- identified as MCP (Model Context Protocol).
+  Scoped down with the maintainer to a first, self-contained PR before any
+  in-app chat sidebar: an MCP server only, read-only except for two
+  explicitly-approved exceptions (see below), no write/insert/edit/evaluate
+  capability of any kind.
+  - **Split for testability**: `McpTools` is the actual worksheet-reading
+    logic (`ListCells`/`ReadCell`/`ReadWorksheet`/`ReadToc`/`ReadSection`/
+    `ReadVariables`/`WatchVariable`/`UnwatchVariable`), with zero networking
+    or JSON-RPC framing -- takes a `Worksheet*`/`Variablespane*`, returns
+    `nlohmann::json`, throws `McpToolError` for a bad tool name/arguments.
+    `McpServer` is purely the HTTP+JSON-RPC transport around it. This mirrors
+    why `TableOfContents`'s own structure-walking isn't reused as-is: its
+    public surface (`GetCell(displayedIndex)`, filtered by the TOC's own
+    search box/depth setting) is display-oriented, not a clean data API, so
+    `McpTools::ReadToc()` just re-walks `OnList(tree)` filtering
+    `GroupCell::IsHeading()` directly instead -- the same primitive
+    `TableOfContents::UpdateStruct()` itself uses.
+  - **Why "read-only except two things" and not stricter**: the maintainer
+    explicitly approved `watch_variable`/`unwatch_variable` (adding/removing
+    a name from the Variables sidebar's watchlist) as safe despite being
+    nominal writes -- they only change what that sidebar happens to be
+    displaying, the same as a user typing a name into it by hand; they touch
+    no worksheet content and cannot insert, edit or evaluate anything. Every
+    other tool cannot mutate anything even in principle, since all they do
+    is turn existing worksheet/cell state into text.
+  - **`read_section`, added after the maintainer's own suggestion** ("AIs
+    often [read] the table of contents [of] big documents ... perhaps
+    another useful command would be read_section"): reads one whole
+    section's text by its heading cell's UUID (from `read_toc`), so an AI
+    can navigate a large worksheet via TOC -> one section at a time instead
+    of pulling `read_worksheet`'s entire (size-capped) text or walking
+    `list_cells` one UUID at a time. Its "how far does this section extend"
+    walk is the exact same loop `GroupCell::Fold()` already uses (stop at
+    the first following cell whose type equals, or is a higher heading
+    level than, the section's own -- `GroupCell::IsLesserGCType()`, already
+    public) -- reimplemented read-only rather than calling `Fold()` itself,
+    since folding actually tears the range out of the tree
+    (`CellList::TearOut`) and this must never touch the tree at all.
+  - **Cell identity**: `Cell::GetUUID()`/`GenerateUUID()` (lazy -- empty
+    until first needed, see `Cell.h`) is the only existing stable identifier
+    a cell has; every tool that returns cells generates one on the fly for
+    any cell that doesn't have one yet. This is a real, if minor, side
+    effect worth knowing about: once an MCP tool has looked at a cell, that
+    cell's UUID is no longer empty and will be written out on the next
+    save -- same as opening the XML inspector or diff view already does
+    elsewhere in this codebase, not something unique to this feature.
+  - **`GroupCell::GetOutput()` deliberately skips the first cell in
+    `m_output` -- that's the answer label ("(%o1)"), not part of the actual
+    output text**, per its own doc comment (`GetLabel()` returns that first
+    cell instead). `McpTools::OutputText()` relies on this to return clean
+    output text with no label prefix -- confirmed both live (a real
+    `--eval`-loaded worksheet's `read_cell` showed plain output text, no
+    "(%o1)" noise) and by a test-fixture bug this exact behavior caused
+    while writing `test_McpTools.cpp`: building a cell's test output as a
+    single `TextCell` via `SetOutput()` alone left `GetOutput()` returning
+    `nullptr` (nothing follows a lone cell), because a *real* Maxima
+    response's output always starts with that label cell first -- the test
+    fixture had to chain a label cell then the real content via
+    `SetOutput()` followed by `AppendOutput()`, mirroring that real shape,
+    before `GetOutput()` returned anything.
+  - **Transport (`McpServer`)**: MCP's "Streamable HTTP", the read-only
+    subset of it that needs no server-initiated push -- one HTTP endpoint
+    (`POST /mcp`) answering one JSON-RPC 2.0 request per connection, closing
+    afterwards (`Connection: close`, no keep-alive, no chunked encoding); a
+    `GET /mcp` gets a plain 405, which the spec allows for a server with no
+    SSE stream to offer. No `Mcp-Session-Id` bookkeeping either -- optional
+    for the server to assign per spec, and every tool call here is
+    independently answerable from live worksheet state with no session to
+    track. Implemented directly on `wxSocketServer`/`wxSocketBase`
+    (event-driven, `Notify()`-based, the same primitive `Maxima.cpp` already
+    uses for the Maxima<->wxMaxima protocol -- just event-driven here
+    instead of on `Maxima.cpp`'s dedicated worker thread) rather than
+    pulling in an HTTP library: the request shape needed is tiny (one
+    method, one path, a couple of headers, a Content-Length-delimited
+    body), so a general-purpose HTTP server buys nothing. Runs entirely on
+    the GUI thread's own event loop for exactly this reason -- it can call
+    directly into `Worksheet`/`GroupCell`/`Variablespane` with zero
+    marshaling, since none of them are thread-safe. Never make this
+    transport threaded without adding the `CallAfter()`-based marshaling
+    every cross-thread worksheet touch elsewhere in this codebase needs.
+  - **JSON**: vendored `nlohmann/json.hpp` (single header, MIT, v3.11.3,
+    `src/vendor/nlohmann/`) rather than a hand-rolled parser -- correctness
+    matters here since real MCP clients need to interoperate with this, and
+    a hand-rolled JSON parser is exactly the kind of "looks fine until an
+    edge case" component not worth re-deriving for this. Wired in via
+    `include_directories(SYSTEM ".../src/vendor")` in `src/CMakeLists.txt`
+    (so its own warnings don't hit `-Werror` builds, the same reasoning
+    `privateNanoSVG.cmake`'s pragma-based warning guard exists for, just via
+    CMake's own mechanism since there's no symbol collision to rename around
+    the way nanoSVG's vendoring needs) -- **this include path is
+    directory-scoped and does not reach `test/unit_tests/`** (a sibling
+    directory of `src/`, not a descendant -- the exact same trap
+    `WXM_USE_FRIBIDI`'s include wiring already documents elsewhere in this
+    file), so `test/unit_tests/CMakeLists.txt` needed the identical
+    `include_directories(SYSTEM ...)` line added independently, or
+    `test_McpTools`'s very first build failed with a plain "no such file"
+    on `<nlohmann/json.hpp>` despite `wxmaxima` itself building cleanly.
+  - **Safety**: binds only to `127.0.0.1` (`wxIPV4address::LocalHost()`),
+    double-checks each accepted connection's peer address is loopback too
+    (defense in depth beyond the bind itself), and validates the `Origin`
+    header against localhost/127.0.0.1 when a client sends one (most
+    non-browser MCP clients don't; browsers always do) -- this is
+    specifically the MCP spec's own called-out DNS-rebinding mitigation: a
+    malicious web page resolving an attacker-controlled hostname to
+    127.0.0.1 so a victim's browser fetch reaches this server looking
+    same-origin. Off by default (`Configuration::McpServerEnabled()`,
+    opt-in via Options).
+  - **wxSocketBase::Destroy(), not `delete`/a default-deleter
+    `unique_ptr`, for every client connection** -- connections are always
+    torn down (both the normal "request handled, close it" path and the
+    `wxSOCKET_LOST` path) from inside that same socket's own `wxEVT_SOCKET`
+    event handler call stack, which is exactly the situation wx's own docs
+    say `Destroy()` (defers actual destruction rather than deleting
+    mid-callback) exists for. `Connection` therefore holds a raw
+    `wxSocketBase*`, not an owning smart pointer, and every removal site
+    calls `->Destroy()` explicitly before erasing the connection from
+    `McpServer::m_connections`. The listening `wxSocketServer` itself is a
+    plain `std::unique_ptr` since it's only ever destroyed from
+    `ReconcileWithConfig()`/`~McpServer()`, neither of which nests inside
+    the server socket's own accept-event handler.
+  - **Verification**: `test/unit_tests/test_McpTools.cpp` pins `McpTools`
+    against a real, headless `Worksheet`/`Variablespane` (no live Maxima, no
+    sockets -- the same `InsertGroupCells`/`SetOutput` pattern
+    `test_WorksheetFind.cpp`/`test_AnonymizeCodeCells.cpp` already use) --
+    cell listing/reading, TOC extraction, section boundaries (including a
+    nested-subsection case), and the full watch/read/unwatch variable round
+    trip, plus the "unknown tool name/UUID/missing argument throws
+    `McpToolError`" error paths. The transport itself (`McpServer`) was
+    verified live instead, since sockets/HTTP framing don't fit that
+    fixture style: a real `-e`-loaded worksheet in a live Xvfb session,
+    `curl`-ing every tool (`initialize`, `tools/list`, `tools/call` for all
+    eight tools, including the full watch/read/unwatch flow against a real
+    connected Maxima) plus the transport-level edge cases (`GET` -> 405, a
+    non-localhost `Origin` -> 403, a localhost `Origin` -> 200, an unknown
+    path -> 404, a JSON-RPC notification -> empty 202) -- then confirmed a
+    clean shutdown (`SIGTERM`) leaves no lingering `wxmaxima`/`maxima`
+    process and the port genuinely closes. Also confirmed the whole
+    `ctest` suite's non-batch/non-live-Maxima tests still pass and the
+    full tree rebuilds with zero new warnings.
 - **wxAuiManager:** The application uses `wxAuiManager` for its complex layout (sidebars, toolbars, worksheet).
   - **Linux/GTK Timing:** On Linux (especially KDE Plasma with Global Menus), calling `m_manager.Update()` can disrupt the menu bar if it's already attached. This is a known environmental issue in the interaction between wxWidgets, GTK3, and the KDE Global Menu proxy.
     - **Automated Fix:** On systems with wxWidgets <= 3.2 running on KDE, Unity, or with `appmenu-gtk-module` enabled, wxMaxima automatically sets `UBUNTU_MENUPROXY=0` at startup in `main.cpp` to force menus to remain within the window and prevent disappearance.

@@ -103,6 +103,12 @@ set(GRAPHICAL_IO_SOURCE_FILES
 )
 list(TRANSFORM GRAPHICAL_IO_SOURCE_FILES PREPEND graphical_io/)
 
+set(MCP_SOURCE_FILES
+    McpServer.cpp
+    McpTools.cpp
+)
+list(TRANSFORM MCP_SOURCE_FILES PREPEND mcp/)
+
 set(DIALOG_SOURCE_FILES
     AboutDialog.cpp
     ChangeLogDialog.cpp
@@ -195,6 +201,7 @@ list(APPEND SOURCE_FILES
   ${WIZARD_SOURCE_FILES}
   ${SIDEBAR_SOURCE_FILES}
   ${DIALOG_SOURCE_FILES}
+  ${MCP_SOURCE_FILES}
 )
 
 # The git hash lives in its own tiny generated TU (see GitHash.h): keeping the
@@ -207,6 +214,15 @@ include_directories(
   "${CMAKE_SOURCE_DIR}/src"
   "${CMAKE_BINARY_DIR}"
 )
+
+# Vendored third-party headers (currently just nlohmann/json.hpp for the MCP
+# server's JSON-RPC handling, src/mcp/). SYSTEM so their own warnings -- a
+# 24000-line single header from a project with different style conventions --
+# don't show up under wxMaxima's -Wall -Wextra -Werror builds, the same
+# reasoning privateNanoSVG.cmake's warning-guard pragmas exist for, just via
+# CMake's own mechanism instead of a text-rewrite since there's no symbol
+# collision to rename around here.
+include_directories(SYSTEM "${CMAKE_SOURCE_DIR}/src/vendor")
 
 
 

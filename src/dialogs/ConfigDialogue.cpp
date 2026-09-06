@@ -604,6 +604,8 @@ void ConfigDialogue::SetCheckboxValues() {
   m_incrementalSearch->SetValue(configuration->IncrementalSearch());
   m_notifyIfIdle->SetValue(configuration->NotifyIfIdle());
   m_findDialogDockable->SetValue(configuration->FindDialogDockable());
+  m_mcpServerEnabled->SetValue(configuration->McpServerEnabled());
+  m_mcpServerPort->SetValue(configuration->McpServerPort());
   m_fixedFontInTC->SetValue(configuration->FixedFontInTextControls());
   m_offerKnownAnswers->SetValue(m_configuration->OfferKnownAnswers());
 #if wxUSE_ACCESSIBILITY
@@ -1421,6 +1423,29 @@ wxWindow *ConfigDialogue::CreateOptionsPanel() {
       "other sidebars, instead."));
   stdOpts_sizer->Add(m_findDialogDockable,
                      wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
+
+  m_mcpServerEnabled =
+    new wxCheckBox(stdOpts_sizer->GetStaticBox(), wxID_ANY,
+                   _("Let an AI tool read this worksheet (MCP server)"));
+  m_mcpServerEnabled->SetToolTip(
+    _("Runs a local, read-only MCP (Model Context Protocol) server an AI "
+      "tool can connect to for context on this worksheet's cells, table of "
+      "contents and watched variables. It only answers questions -- it can "
+      "never insert, edit or evaluate anything itself. Only accepts "
+      "connections from this same machine (localhost)."));
+  stdOpts_sizer->Add(m_mcpServerEnabled,
+                     wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
+
+  wxBoxSizer *mcpPortSizer = new wxBoxSizer(wxHORIZONTAL);
+  mcpPortSizer->Add(
+    new wxStaticText(stdOpts_sizer->GetStaticBox(), wxID_ANY, _("MCP server port:")),
+    wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()).CenterVertical());
+  m_mcpServerPort = new wxSpinCtrl(
+    stdOpts_sizer->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition,
+    wxSize(150 * GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 1024, 65535, 8765);
+  mcpPortSizer->Add(m_mcpServerPort,
+                    wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
+  stdOpts_sizer->Add(mcpPortSizer);
 
   vsizer->Add(stdOpts_sizer, wxSizerFlags().Expand().Border(
                                                             wxALL, 5 * GetContentScaleFactor()));
@@ -2320,6 +2345,8 @@ void ConfigDialogue::WriteSettings() {
   configuration->IncrementalSearch(m_incrementalSearch->GetValue());
   configuration->NotifyIfIdle(m_notifyIfIdle->GetValue());
   configuration->FindDialogDockable(m_findDialogDockable->GetValue());
+  configuration->McpServerEnabled(m_mcpServerEnabled->GetValue());
+  configuration->McpServerPort(m_mcpServerPort->GetValue());
   configuration->SetLabelChoice(
                                 (Configuration::showLabels)m_showUserDefinedLabels->GetSelection());
   configuration->DefaultPort(m_defaultPort->GetValue());

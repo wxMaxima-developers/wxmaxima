@@ -206,6 +206,7 @@ wxString ApplyAppearanceToApp(Configuration::Appearance appearance,
 void wxMaxima::ConfigChanged() {
 
   ApplyAppearanceToApp(GetConfiguration().GetAppearance());
+  ReconcileMcpServer();
 
   if (GetWorksheet())
     GetWorksheet()->ApplyOverlayScrollbarsSetting();

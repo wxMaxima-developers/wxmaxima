@@ -14880,3 +14880,15 @@ msgstr ""
 #, no-wrap
 msgid "If you are a developer, you might want to try out a modified `wxmathML.lisp`-file without recompiling everything, one can use the command line option `--wxmathml-lisp=<str>` to use another Lisp file, not the included one.\n"
 msgstr ""
+
+#: ../../src/mcp/McpServer.cpp:89
+#, c-format
+msgid "MCP server: listening on 127.0.0.1:%d"
+msgstr ""
+
+#: ../../src/mcp/McpServer.cpp:79
+#, c-format
+msgid ""
+"MCP server: could not listen on 127.0.0.1:%d (port already in use?) -- an "
+"AI tool will not be able to connect."
+msgstr ""

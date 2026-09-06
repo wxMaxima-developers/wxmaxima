@@ -12,6 +12,12 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/test/unit_tests
     ${CMAKE_BINARY_DIR})
 
+# src/CMakeLists.txt's own `include_directories(SYSTEM ...)` for the vendored
+# nlohmann/json.hpp (McpTools.h/McpServer.h) is directory-scoped and doesn't
+# reach here -- test/ is a sibling of src/, not a descendant (same reason
+# fribidi's include path needs its own separate wiring below).
+include_directories(SYSTEM ${CMAKE_SOURCE_DIR}/src/vendor)
+
 # Linked into every test executable: a static initializer that, on Windows,
 # disables the modal crash/assert dialogs which would otherwise hang a failing
 # test until ctest's watchdog kills it. Compiles to nothing off Windows.
@@ -407,6 +413,20 @@ if(TARGET wxmTestApp)
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
     add_test(NAME AnonymizeCodeCells
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_AnonymizeCodeCells>")
+
+    # Pins McpTools (src/mcp/McpTools.h), the MCP server's read-only
+    # "worksheet context" tools: listing/reading cells, the table of
+    # contents, whole sections, and the Variables sidebar's watchlist,
+    # against a real headless Worksheet/Variablespane. The HTTP/JSON-RPC
+    # transport itself (McpServer) was verified live instead (see AGENTS.md).
+    add_executable(test_McpTools
+        test_McpTools.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_McpTools PUBLIC cxx_std_20)
+    target_link_libraries(test_McpTools PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME McpTools
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_McpTools>")
 
     # Pins the "add cells to the evaluation queue" behavior (which visible code
     # cells each Add*ToEvaluationQueue enqueues, and where the h-caret lands)

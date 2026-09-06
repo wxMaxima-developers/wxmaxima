@@ -325,6 +325,32 @@ std::vector<wxString> Variablespane::GetVarnames() {
 }
 
 
+std::vector<std::pair<wxString, wxString>> Variablespane::GetWatchedValues() {
+  std::vector<std::pair<wxString, wxString>> retVal;
+  for (int i = 0; i < m_grid->GetNumberRows(); i++) {
+    wxString var = m_grid->GetCellValue(i, 0);
+    if (var != wxEmptyString)
+      retVal.emplace_back(var, m_grid->GetCellValue(i, 1));
+  }
+  return retVal;
+}
+
+void Variablespane::RemoveWatch(const wxString &var) {
+  for (int i = 0; i < m_grid->GetNumberRows(); i++) {
+    if (m_grid->GetCellValue(i, 0) == var) {
+      // Mirrors OnRightClick()/InsertMenu()'s m_varID_delete_row handling:
+      // delete the row, then replay it as a text-change so the trailing
+      // always-one-empty-row invariant AddWatch()/OnTextChange() rely on
+      // stays intact.
+      m_grid->DeleteRows(i);
+      wxGridEvent evt(wxID_ANY, wxEVT_GRID_CELL_CHANGED, this,
+                      m_grid->GetNumberRows() - 1, 0);
+      OnTextChange(evt);
+      return;
+    }
+  }
+}
+
 void Variablespane::AddWatchCode(wxString code) {
   m_updateSizeNeeded = true;
   wxString unescapedCode;
