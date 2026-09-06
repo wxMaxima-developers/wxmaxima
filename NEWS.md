@@ -9,6 +9,11 @@
   in the worksheet -- every tool only reads, except adding/removing a
   variable from the watchlist, which only changes what that sidebar
   displays, the same as typing a name into it by hand.
+- Added an "AI Chat" sidebar (View -> Sidebars -> AI Chat) that lets you
+  chat about the current worksheet with Anthropic, OpenAI, Google Gemini or
+  Qwen, using your own API key (configured in Options -> AI Chat). It sends
+  a read-only snapshot of the worksheet as context; it cannot edit,
+  evaluate or otherwise change the worksheet itself.
 - Made the GUI-subsystem binary's stdout/stderr redirection
   (`RedirectStdioToParent()`) use `_dup2()` to repoint the existing stream's
   descriptor instead of a shallow struct-copy over a second, throwaway

@@ -75,6 +75,7 @@ set(WIZARD_SOURCE_FILES
 list(TRANSFORM WIZARD_SOURCE_FILES PREPEND wizards/)
 
 set(SIDEBAR_SOURCE_FILES
+    AiChatSidebar.cpp
     GreekSidebar.cpp
     CharButton.cpp
     UnicodeSidebar.cpp
@@ -108,6 +109,11 @@ set(MCP_SOURCE_FILES
     McpTools.cpp
 )
 list(TRANSFORM MCP_SOURCE_FILES PREPEND mcp/)
+
+set(AI_SOURCE_FILES
+    AiProvider.cpp
+)
+list(TRANSFORM AI_SOURCE_FILES PREPEND ai/)
 
 set(DIALOG_SOURCE_FILES
     AboutDialog.cpp
@@ -203,6 +209,7 @@ list(APPEND SOURCE_FILES
   ${SIDEBAR_SOURCE_FILES}
   ${DIALOG_SOURCE_FILES}
   ${MCP_SOURCE_FILES}
+  ${AI_SOURCE_FILES}
 )
 
 # The git hash lives in its own tiny generated TU (see GitHash.h): keeping the

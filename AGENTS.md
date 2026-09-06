@@ -89,7 +89,36 @@ working without extra checks.
   worktree, so it's pre-existing and unrelated to any particular change) --
   not yet root-caused. Don't burn time re-diagnosing either symptom from
   scratch; both are sandbox/pre-existing, not something a code change here
-  broke.
+  broke. **Neither this workaround nor `gnuplot`'s installation (below)
+  persists across sandbox instances** -- confirmed directly: a session that
+  applied both earlier came back to a broad `ctest -E
+  "tutorial|openMacFiles|_cmdline_wxmathml|wxmaxima_version"` run showing 66
+  of 194 tests failing (`boxes`, `lisp`, `threadtest`, `autosave`,
+  `printf_*`, `multiplication`, `config_dialogue_sample`, ... -- a broad,
+  cross-cutting spread with no relation to whatever code change was
+  actually being tested that session), which briefly looked like a real
+  regression until re-running a handful of the failing tests in isolation
+  showed the exact `maxima-index.lisp`/`--exit-on-error` symptom above.
+  **A second, independent gap found the same way, same session: `gnuplot`
+  itself was not installed at all** (`threadtest` failed with `/bin/sh: 1:
+  gnuplot: not found`, no relation to the maxima-index.lisp issue). Plain
+  `apt-get install gnuplot`/`gnuplot-nox` failed here with an unmet
+  `libgd3` dependency -- this sandbox's apt sources include a `ppa:ondrej/
+  php` entry offering a newer `libgd3` build than Ubuntu's own archive, and
+  that PPA's package host was blocked by this sandbox's proxy (`403` on
+  `ppa.launchpadcontent.net`), while the plain Ubuntu-archive `libgd3`
+  (also present as a candidate, just lower-priority) was fetchable fine.
+  Fixed with `apt-get install libgd3=2.3.3-9ubuntu5 gnuplot-nox` (the exact
+  archive version may drift; `apt-cache policy libgd3` shows both
+  candidates and which one is blocked) -- pinning the plain-archive version
+  explicitly sidesteps the blocked PPA instead of needing the PPA fixed.
+  **Moral for future sessions:** if a broad ctest run shows a large,
+  topically-scattered batch of failures all at once (rather than one
+  focused area related to the change being tested), suspect a fresh
+  sandbox instance missing one of these two pre-existing workarounds
+  before suspecting a real regression -- re-run 2-3 of the failing tests
+  in isolation and check their actual output for these exact symptoms
+  first, per the "don't burn time re-diagnosing from scratch" note above.
 
 - **`tutorial_10Minutes` intermittent CI failure -- the workaround below is
   verified, but the real underlying bug is CONFIRMED and still UNFIXED
@@ -415,6 +444,132 @@ a local TCP socket.
     process and the port genuinely closes. Also confirmed the whole
     `ctest` suite's non-batch/non-live-Maxima tests still pass and the
     full tree rebuilds with zero new warnings.
+- **AI chat sidebar (`src/ai/AiProvider.{h,cpp}`, `src/sidebars/AiChatSidebar.{h,cpp}`)
+  -- a follow-up to the MCP server above, for the case where the "AI tool"
+  is wxMaxima's own UI rather than an external one.** A docked sidebar
+  (View -> Sidebars -> AI Chat) that chats with Anthropic, OpenAI, Google
+  Gemini or Qwen (via DashScope's OpenAI-compatible endpoint) using a
+  pasted API key -- no OAuth, since none of these four offer a legitimate
+  third-party OAuth flow for a desktop app to use. v1 is deliberately
+  read-only and has no tool-calling: `AiChatSidebar::BuildContextSnapshot()`
+  sends one plain-text snapshot of the worksheet (via the *same* `McpTools`
+  the MCP server already uses, `McpTools::ReadWorksheet()`) as a system-
+  style context message, truncated to `MAX_CONTEXT_LENGTH` (8000 chars);
+  the model can discuss it but has no way to act on the worksheet, since
+  wiring up real tool-calling (there are 8 tools now, MCP's `tools/call`
+  can already run them) is real design work of its own -- a natural
+  follow-up, not attempted here.
+  - **Provider abstraction (`AiProvider.h`):** one small `AiProvider` base
+    class per provider family, each implementing four things that differ
+    per API -- `RequestUrl()`, `AuthHeaders()`, `BuildRequestBody()`,
+    `ParseReply()` -- all pure string/JSON logic with no networking of its
+    own, which is what makes `test/unit_tests/test_AiProvider.cpp` able to
+    pin all four providers' request/response shapes with zero live network
+    access (`#include "ai/AiProvider.cpp"` directly, same lightweight
+    pattern as `test_MaximaProtocol.cpp`). OpenAI and Qwen share one
+    `OpenAiCompatibleProvider` implementation (DashScope's compatible-mode
+    endpoint is byte-for-byte the same `chat/completions` shape, only the
+    URL differs) -- confirmed via `test_AiProvider.cpp`'s "Qwen, via
+    DashScope's OpenAI-compatible endpoint" scenario, not assumed from the
+    provider's marketing docs.
+  - **Lifetime safety across the async boundary:** `MakeAiProvider()`
+    returns a `std::shared_ptr<AiProvider>`, not `unique_ptr`, and the
+    static `AiProvider::SendChat(std::shared_ptr<const AiProvider> self,
+    ...)` takes that shared ownership explicitly and captures it by value
+    into the completion lambda. This is load-bearing, not defensive
+    overkill: `AiChatSidebar::m_provider` can be replaced mid-flight (the
+    user opens Options and changes provider/model while a request is still
+    in the air), and without the shared_ptr the callback's `self->Name()`/
+    `self->ParseReply()` calls would use a dangling pointer to whatever the
+    sidebar used to point at. `wxWebRequest` itself follows the exact same
+    "local value, never stored anywhere else, goes out of scope right
+    after `.Start()`" shape as the codebase's one prior use
+    (`wxMaxima::CheckForUpdates()`) -- confirmed this is fine because
+    `wxWebRequest` is a ref-counted handle wxWebSession itself keeps alive
+    while the request is in flight, not something this code has to keep
+    alive itself. The completion lambda is deliberately never `Unbind()`'d
+    for the same reason `CheckForUpdates()`'s never is: wx's functor-based
+    `Bind()` has no reliable identity to `Unbind()` a lambda by, and one
+    small permanently-bound no-op-after-firing lambda per chat turn is not
+    a real leak at realistic chat volumes. The request's id must be a real,
+    unique one from `wxWindow::NewControlId()` (stored in a
+    `wxWindowIDRef`, which releases it back to wx's finite id pool once
+    nothing references it, unlike a plain `int`) -- with the default
+    `wxID_ANY` every request would share one id and every past request's
+    stale lambda would refire on every new request's completion.
+  - **`wxWebRequest::State_Unauthorized` is not optional to handle -- an
+    invalid API key hangs the chat forever, silently, if you only handle
+    `State_Completed`/`State_Failed`/`State_Cancelled` (confirmed live,
+    not guessed).** The natural-looking implementation handles exactly
+    those three states and falls through to `default: break;` for
+    anything else. Live-testing against the real Anthropic API with a
+    deliberately wrong key (`sk-ant-fake-test-key-1234` -- this sandbox's
+    `no_proxy` list happens to include `api.anthropic.com`, so direct
+    outbound HTTPS to it works here without a real key or a full model
+    call) reproduced a genuine hang: the sidebar sat on "Waiting for
+    Anthropic..." with Send disabled for 7+ minutes and never recovered.
+    Root-caused with `/proc/<pid>/fd` + `/proc/<pid>/net/tcp` (this
+    sandbox has no `tcpdump`): a real ESTABLISHED TCP connection to
+    `api.anthropic.com`'s actual IP was sitting open and idle (0 bytes in
+    either queue), and a raw `curl` to the same endpoint with the same fake
+    key returned instantly with a normal HTTP 401 -- so the network path
+    itself was never the problem. Confirmed with temporary `wxLogMessage`
+    tracing in the event handler (removed before committing) that
+    `wxWebRequestEvent::GetState()` reports `State_Unauthorized` (value
+    `1`) for this response, not `State_Completed` with `status==401` --
+    wx's web-request backend intercepts any 401 (confirmed via a raw
+    `curl -i` that Anthropic's actual 401 response carries no
+    `WWW-Authenticate` header at all, so this isn't about a real HTTP-auth
+    challenge, just the status code alone) and diverts it to this separate
+    state, meant for the case where the app might retry with different
+    credentials via `wxWebAuthChallenge::SetCredentials()`. None of these
+    four providers use real HTTP Basic/Digest auth -- they authenticate via
+    a plain header (`x-api-key`/`Authorization: Bearer`/`x-goog-api-key`)
+    -- so there is no challenge this app could ever answer, and left
+    unhandled the request simply never produces another event on its own.
+    Fixed by adding an explicit `case wxWebRequest::State_Unauthorized`
+    that reads `evt.GetResponse()` (still valid here -- the server's full
+    401 response already arrived before wx reinterpreted it), reports it
+    through the same `callback(false, ...)` path as a non-2xx
+    `State_Completed`, and calls `.Cancel()` on a copy of
+    `evt.GetRequest()` (a ref-counted handle, so the copy cancels the same
+    underlying request) so the connection doesn't dangle. `Cancel()` itself
+    raises a *second* event (`State_Cancelled`) for the same request id,
+    so a `std::shared_ptr<bool> done` guard (captured by the lambda,
+    checked at the top and set before every `callback()` call) stops that
+    second event from invoking `callback` twice for one chat turn -- caught
+    by reasoning through the control flow before it could ship as a
+    double-`AppendToHistory()` bug, not found live. Re-verified live after
+    the fix with the identical fake-key setup: the sidebar's history now
+    shows the real `{"type":"error","error":{"type":"authentication_error",
+    "message":"API key is invalid."},...}` body from Anthropic, the status
+    line returns to "Chatting with Anthropic", and Send/Clear both
+    re-enable -- confirming the fix, not just the absence of a hang.
+  - **Layout: this sidebar docks into a narrow shared column (e.g. next to
+    Table of Contents), and any horizontal-sibling layout inside it risks
+    the same "one control crowds another down to an invisible sliver"
+    failure.** First cut put the input box beside a button column, and
+    separately tried two buttons side by side below a full-width input --
+    both silently rendered one of the two controls at a few pixels wide,
+    invisible in normal use. Confirmed live (not guessed) by temporarily
+    setting each competing control's background to a distinct debug colour
+    and screenshotting in Xvfb: the "input" area was entirely one colour
+    with zero of the other visible anywhere. Fixed by abandoning every
+    horizontal pairing and stacking status/history/input/Send/Clear as
+    five independent children of one vertical `wxBoxSizer`, each full
+    width -- no two controls ever compete for the same row's width.
+  - **Verification recap:** `test_AiProvider` (54 assertions across all
+    four providers' request/response/error shapes, no live network) plus
+    the live Xvfb round trip above through the real Anthropic API endpoint
+    (this sandbox's `no_proxy` list permits it) covering the layout fix,
+    the full send/receive/error cycle, and the `State_Unauthorized` hang
+    and its fix. Not verified here: a real, valid API key's successful
+    reply for any of the four providers (this sandbox has no real
+    credentials for any of them, and the user's own account is Anthropic's
+    -- theirs to try first), and OpenAI/Google/Qwen's actual live endpoints
+    at all (only Anthropic was reachable from this sandbox; the other
+    three were checked only against their documented request/response
+    shapes in `test_AiProvider.cpp`, not against a live server).
 - **wxAuiManager:** The application uses `wxAuiManager` for its complex layout (sidebars, toolbars, worksheet).
   - **Linux/GTK Timing:** On Linux (especially KDE Plasma with Global Menus), calling `m_manager.Update()` can disrupt the menu bar if it's already attached. This is a known environmental issue in the interaction between wxWidgets, GTK3, and the KDE Global Menu proxy.
     - **Automated Fix:** On systems with wxWidgets <= 3.2 running on KDE, Unity, or with `appmenu-gtk-module` enabled, wxMaxima automatically sets `UBUNTU_MENUPROXY=0` at startup in `main.cpp` to force menus to remain within the window and prevent disappearance.
@@ -1060,6 +1215,100 @@ a local TCP socket.
     **Do not re-attempt the struct-copy-vs-dup2 theory a third time** -- it
     has now been disconfirmed twice, once by real CI and once by a
     controlled, reproducible Wine-based test built specifically to check it.
+  - **Follow-up session (2026-09-06): three more concrete theories tested
+    and disconfirmed with targeted Wine repros, and one genuinely new,
+    unexamined fact surfaced -- still unsolved, but the search space is
+    narrower.** Prompted by the user directly asking why a "theoretically
+    deterministic" system could be flaky at all -- a fair challenge, and
+    the answer turned out to be "several plausible mechanisms exist and
+    were checked one at a time," not "there's an obvious smoking gun."
+    1. *Richer repro, closer to the real `OnInit()` sequence.* The
+       previous session's Wine repro was a bare `fprintf` -- this pass
+       built a second repro (no wxWidgets, still cross-compiled
+       `-mwindows -static` MinGW, run under the same 32-bit Wine prefix)
+       that adds back three things the minimal repro omitted: a real
+       native `HWND` via `CreateWindowExA`/`RegisterClassA` (mimicking
+       `wxLogWindow`'s always-real `wxFrame`), a real Windows registry
+       touch via `RegCreateKeyExA`/`RegCloseKey` (mimicking
+       `wxConfig::Set(new wxConfig(...))`), a `LoadLibraryA("uxtheme.dll")`
+       call (mimicking `ApplyAppearanceToApp()`'s likely internal use of
+       that DLL on wx >= 3.3, per GH #2274's own investigation), and
+       several `fprintf(stderr, ...)` calls interleaved with the above
+       (mimicking `--logtostderr`'s `wxLogChain(new wxLogStderr)` plus the
+       several real startup log lines the actual app emits before reaching
+       `-v`) -- then the real `--version`-equivalent `fprintf(stdout,
+       ...)` and `exit(0)`. Piped through `| cat` (this sandbox has no
+       Windows/real ctest to test against directly) for 150 runs: **0
+       failures.** This doesn't clear any of those four mechanisms
+       individually, but it does rule out this *specific combination* of
+       them as sufficient on its own to reproduce the bug under Wine.
+    2. *A new, specific hypothesis about `_dup2()` itself, tested and
+       disconfirmed decisively (not just "didn't reproduce in N runs" --
+       a targeted mechanism check).* Reasoned through
+       `BindStdStreamToParent()`'s exact sequence
+       (`_open_osfhandle()` -> `_dup2(fd, target)` -> `_close(fd)`) and
+       asked: does `_dup2()` actually duplicate the underlying Win32
+       `HANDLE` (POSIX-correct: the source and target fds become
+       independently closeable), or does it just copy the raw handle
+       *value* into the target fd's slot -- in which case `_close(fd)`
+       right after would close the ONE shared handle out from under the
+       target too, a genuine use-after-close bug whose symptom (silently
+       broken or misdirected writes) would exactly fit the observed
+       failure? Wrote a standalone micro-test (`dup2test.cpp`, this
+       session's scratchpad) around a real `CreatePipe()`: opens the
+       write end via `_open_osfhandle()`, `_dup2()`s it onto `stdout`,
+       closes the source fd exactly like the real code does, then probes
+       with `_get_osfhandle()` before/after and an actual
+       `fprintf(stdout, ...)` read back via `PeekNamedPipe`/`ReadFile` on
+       the pipe's read end. Result: `_dup2()` produced a genuinely
+       *independent* duplicated handle (different raw value from the
+       source), closing the source left the target's handle valid, and
+       the probe write landed correctly in the pipe. **This specific
+       failure mode is ruled out** -- at least as Wine's `msvcrt`
+       reimplementation behaves; real Windows' actual `ucrtbase.dll`/
+       `msvcrt.dll` could in principle differ from Wine's compatibility
+       shim here, which is the one caveat this test can't close without
+       real hardware.
+    3. *A newly-surfaced, previously-undocumented fact: the failing test
+       runs under real `ctest -j 2` parallelism on the actual CI job,*
+       not serially. `.github/workflows/compile_windows.yml`'s "Run
+       integration tests" step (where `wxmaxima_version_string` actually
+       runs -- it isn't part of the earlier `-L unittest` step, which is
+       serial) is `ctest -LE "unittest|needs_posix" -E "multithreadtest"
+       --repeat after-timeout:2 -j 2 --output-on-failure`. Nothing in the
+       investigation up to this point had considered concurrent test
+       execution as a factor at all. `--repeat after-timeout:2` only
+       retries a *timed-out* test, not this failure mode (exit 0, wrong/
+       missing content) -- consistent with every observed failure being a
+       first-try, non-retried one. Tested by running pairs of the richer
+       repro (#1 above) concurrently under Wine, 60 pairs (120 runs): **0
+       failures.** Real contention for CPU/scheduler time between two
+       genuinely concurrent Windows processes is very plausibly still a
+       necessary ingredient this sandbox's Wine environment (limited
+       parallelism, no real multi-core Windows scheduler, no antivirus/
+       Defender real-time scanning, none of the other background load a
+       shared GitHub Actions Windows runner carries) simply can't
+       reproduce regardless of how faithfully the *code path* is copied --
+       which would also explain why every purely-mechanism-level Wine
+       repro across two sessions has failed to reproduce this, while the
+       bug remains completely reliable-in-its-unreliability on the actual
+       CI runner. **This `-j 2` fact belongs in any future bisection
+       attempt** (e.g. a real Windows machine specifically running the
+       full integration suite with `-j 2` many times, not just the single
+       `wxmaxima_version_string` test in isolation, to preserve whatever
+       contention the parallel scheduling introduces) and should not be
+       re-discovered from scratch.
+    **Net effect of this session's pass**: three more plausible, concrete
+    mechanisms individually checked and ruled out (or at least not
+    reproduced) with real, targeted tests rather than guesses -- the
+    struct-copy/dup2 theory, the richer-repro combination, the
+    shared-handle-after-close theory, and the bare concurrent-execution
+    theory are all now either disconfirmed or failed to reproduce under
+    Wine. The bug is still open. The most defensible remaining position:
+    whatever the actual trigger is, it very likely needs *real Windows*
+    (not Wine) under *real contention* (not a quiet, idle sandbox) to
+    reproduce at all -- which matches this bug's own history of being
+    essentially unreproducible everywhere except the actual CI runner.
 
 - **System tray icon (`src/TrayIcon.{h,cpp}`, GH #2286) -- mirrors the busy
   status, gated entirely by `wxUSE_TASKBARICON`.** The maintainer's own

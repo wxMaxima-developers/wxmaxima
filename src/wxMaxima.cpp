@@ -207,6 +207,7 @@ void wxMaxima::ConfigChanged() {
 
   ApplyAppearanceToApp(GetConfiguration().GetAppearance());
   ReconcileMcpServer();
+  ReloadAiChatProvider();
 
   if (GetWorksheet())
     GetWorksheet()->ApplyOverlayScrollbarsSetting();

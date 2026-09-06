@@ -313,6 +313,16 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
       m_mcpServer = std::make_unique<McpServer>(GetWorksheet(), m_variablesPane);
       ReconcileMcpServer();
 
+      m_sidebarNames[EventIDs::menu_pane_aichat] = wxS("aichat");
+      m_sidebarCaption[EventIDs::menu_pane_aichat] = _("AI Chat");
+      m_aiChatSidebar = new AiChatSidebar(this, &GetConfiguration(), GetWorksheet(),
+                                         m_variablesPane);
+      m_manager.AddPane(
+                        m_aiChatSidebar,
+                        wxAuiPaneInfo()
+                        .Name(m_sidebarNames[EventIDs::menu_pane_aichat])
+                        .Right());
+
       m_sidebarNames[EventIDs::menu_pane_symbols] = wxS("symbols");
       m_sidebarCaption[EventIDs::menu_pane_symbols] = _("Mathematical Symbols");
       m_symbolsSidebar = new SymbolsSidebar(this, &GetConfiguration(), GetWorksheet());
@@ -819,6 +829,7 @@ void wxMaximaFrame::SetupViewMenu() {
                                       _("The integrated help browser"));
 #endif
   m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_variables, _("Variables"));
+  m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_aichat, _("AI Chat"));
   m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_xmlInspector,
                                       _("Raw XML monitor"));
   m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_performance,
@@ -2320,6 +2331,7 @@ void wxMaximaFrame::HideAllSidebars(wxCommandEvent &WXUNUSED(ev)) {
   m_manager.GetPane(m_sidebarNames[EventIDs::menu_pane_draw]).Hide();
   m_manager.GetPane(m_sidebarNames[EventIDs::menu_pane_help]).Hide();
   m_manager.GetPane(m_sidebarNames[EventIDs::menu_pane_variables]).Hide();;
+  m_manager.GetPane(m_sidebarNames[EventIDs::menu_pane_aichat]).Hide();
   m_manager.GetPane(m_sidebarNames[EventIDs::menu_pane_xmlInspector]).Hide();
   m_manager.GetPane(m_sidebarNames[EventIDs::menu_pane_find]).Hide();
   AuiManagerUpdate();

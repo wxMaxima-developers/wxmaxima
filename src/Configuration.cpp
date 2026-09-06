@@ -121,6 +121,15 @@ Configuration::Configuration(const Configuration &o) :
   m_findDialogDockable(o.m_findDialogDockable),
   m_mcpServerEnabled(o.m_mcpServerEnabled),
   m_mcpServerPort(o.m_mcpServerPort),
+  m_aiChatProvider(o.m_aiChatProvider),
+  m_aiApiKeyAnthropic(o.m_aiApiKeyAnthropic),
+  m_aiApiKeyOpenAI(o.m_aiApiKeyOpenAI),
+  m_aiApiKeyGoogle(o.m_aiApiKeyGoogle),
+  m_aiApiKeyQwen(o.m_aiApiKeyQwen),
+  m_aiModelAnthropic(o.m_aiModelAnthropic),
+  m_aiModelOpenAI(o.m_aiModelOpenAI),
+  m_aiModelGoogle(o.m_aiModelGoogle),
+  m_aiModelQwen(o.m_aiModelQwen),
   m_displayedDigits(o.m_displayedDigits),
   m_autoWrap(o.m_autoWrap),
   m_autoIndent(o.m_autoIndent),
@@ -313,6 +322,11 @@ void Configuration::ResetAllToDefaults() {
   m_findDialogDockable = false;
   m_mcpServerEnabled = false;
   m_mcpServerPort = 8765;
+  m_aiChatProvider = 0; // AiProviderKind::None
+  m_aiModelAnthropic = wxS("claude-3-5-sonnet-20241022");
+  m_aiModelOpenAI = wxS("gpt-4o-mini");
+  m_aiModelGoogle = wxS("gemini-1.5-flash");
+  m_aiModelQwen = wxS("qwen-plus");
   m_fixReorderedIndices = true;
   m_rightToLeftDocument = false;
   m_showBrackets = true;
@@ -1288,6 +1302,15 @@ Configuration::ScalarConfigSettings() {
     {wxS("findDialogDockable"), &Configuration::m_findDialogDockable},
     {wxS("mcpServerEnabled"), &Configuration::m_mcpServerEnabled},
     {wxS("mcpServerPort"), &Configuration::m_mcpServerPort},
+    {wxS("aiChatProvider"), &Configuration::m_aiChatProvider},
+    {wxS("aiApiKeyAnthropic"), &Configuration::m_aiApiKeyAnthropic},
+    {wxS("aiApiKeyOpenAI"), &Configuration::m_aiApiKeyOpenAI},
+    {wxS("aiApiKeyGoogle"), &Configuration::m_aiApiKeyGoogle},
+    {wxS("aiApiKeyQwen"), &Configuration::m_aiApiKeyQwen},
+    {wxS("aiModelAnthropic"), &Configuration::m_aiModelAnthropic},
+    {wxS("aiModelOpenAI"), &Configuration::m_aiModelOpenAI},
+    {wxS("aiModelGoogle"), &Configuration::m_aiModelGoogle},
+    {wxS("aiModelQwen"), &Configuration::m_aiModelQwen},
     {wxS("numpadEnterEvaluates"), &Configuration::m_numpadEnterEvaluates},
     {wxS("offerKnownAnswers"), &Configuration::m_offerKnownAnswers},
     {wxS("openHCaret"), &Configuration::m_openHCaret},
