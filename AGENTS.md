@@ -1604,13 +1604,27 @@ a local TCP socket.
     harmless either way -- this test is fast and gains nothing from
     parallelism -- and the finding itself is worth keeping visible on the
     test), but stop describing it as an open experiment still gathering
-    data; it has its answer. The next real lead, if this is picked up
-    again, is real Windows hardware with `rr` (this sandbox's Wine
-    environment cannot simulate whatever the actual trigger is, per the
-    "essentially unreproducible everywhere except the actual CI runner"
-    conclusion above) or bisecting the GH #2274 startup-reordering commit
-    (`3f5e895`) directly on real Windows -- not another synthetic Wine
-    repro of ctest-level contention specifically.
+    data; it has its answer. **Correction to this entry's own earlier
+    wording**: "real Windows hardware with `rr`" was never a coherent next
+    step and should not have been written here -- `rr` (Mozilla's
+    record-replay debugger) is Linux-only and has no Windows port at all;
+    that line was carried over by mistake from this file's unrelated
+    `tutorial_10Minutes` entry, which is a genuinely different, Linux-side
+    Maxima flake where `rr` really is the right tool. Separately, "real
+    Windows hardware" was also the wrong framing of the actual blocker:
+    GitHub Actions' `windows-latest` runner already *is* real Windows --
+    the actual limitation this investigation has run into is that runner's
+    non-interactivity (no way to attach a live debugger to the exact
+    process instance that reproduces the bug), not a lack of a genuine
+    Windows target to test against. The next real lead, if this is picked
+    up again, is either (a) a live interactive session on the actual runner
+    via `mxschmitt/action-tmate` (or equivalent), or (b) targeted
+    diagnostic tracing shipped in the binary itself and captured
+    automatically as a CI artifact -- see the follow-up entry immediately
+    below, which does (b) -- or bisecting the GH #2274 startup-reordering
+    commit (`3f5e895`) directly on the real runner. Not another synthetic
+    Wine repro of ctest-level contention specifically -- that lead is now
+    closed.
   - **Follow-up (2026-09-07): "does this only fail on PRs?" -- checked
     directly, and no.** A fair question to ask given how much of this
     investigation happened on PR branches -- but `compile_windows.yml`
@@ -1634,6 +1648,253 @@ a local TCP socket.
     easier to not notice -- a visibility/sampling effect, not a real
     behavioral difference between the two trigger paths. Don't re-open
     "PR-specific" as a lead without new evidence.
+  - **Follow-up (2026-09-07): shipped real diagnostic tracing in the binary
+    itself, gated behind an env var, to capture actual runner-side evidence
+    on the next CI run instead of another Wine simulation.** Prompted by
+    the user's own correct pushback on "go get real Windows hardware" (see
+    the correction two entries above) -- the runner is already real
+    Windows, and every debugging tool that needs live interactivity (a
+    real debugger, `rr`, hardware watchpoints) is unavailable here anyway,
+    so the only way to learn something new without an interactive session
+    is to have the actual failing process record its own evidence and hand
+    it back as a CI artifact. Two previously-unexamined facts motivated
+    what got instrumented, specifically: (1) every prior Wine repro across
+    multiple sessions tested a bare `fprintf(stdout, ...)` -- never the
+    *actual* code path `--version` uses, which is
+    `wxMessageOutput::Get()->Printf(...)` through a `wxMessageOutputStderr`
+    object (`wxMessageOutput::Set(new wxMessageOutputStderr(stdout))`,
+    `main.cpp`, called once early in `OnInit()`); (2) `cmdLineParser.Parse()`
+    (`wxCmdLineParser`, a real library call) runs between that `Set()` call
+    and the `-v` branch, and has never been traced through either. Added a
+    small, self-contained diagnostic block to `main.cpp` (Windows-only,
+    anonymous namespace, immediately before `BindStdStreamToParent()`):
+    `StdioDebugLog(msg)` appends a timestamp-free but PID-prefixed line to
+    whatever file `WXM_STDIO_DEBUG_LOG` names (read once, cached, via
+    `wxGetEnv()`) -- entirely inert (single cheap env-var check, cached
+    after the first call) unless that variable is set, which only the CI
+    workflow does, scoped to just the one ctest step that reproduces this;
+    a normal build or a normal user's run never sets it and pays only that
+    one cached check. Deliberately written via raw `CreateFileW`/`WriteFile`,
+    never CRT stdio -- tracing a stdio bug through the very subsystem
+    suspected of being broken would be self-defeating. Opened with
+    `FILE_APPEND_DATA` alone (no `GENERIC_WRITE`), which per MSDN makes
+    Windows itself position each `WriteFile` atomically at end-of-file --
+    load-bearing, since this ctest step runs `-j 2` and many independent
+    `wxmaxima` processes share this one log path; a separate
+    `SetFilePointer(..., FILE_END)` call would reintroduce exactly the
+    seek-then-write race this flag exists to avoid, so don't add one back.
+    Each line is prefixed with `GetCurrentProcessId()` so interleaved
+    processes' lines can be told apart afterward.
+    `DescribeStdHandle(stdHandleId)` (raw `GetStdHandle`/`GetFileType` --
+    "none"/"handle=%p type=pipe|disk|char|unknown") and
+    `DescribeStream(FILE*)` (`_fileno()` + `_get_osfhandle()` -- "fd=%d
+    osHandle=%p") are the two probes; checkpoints call one or the other at:
+    the very start and end of `BindStdStreamToParent()` (per stream, so
+    stdout/stderr/stdin each get their own before/after pair), the end of
+    `RedirectStdioToParent()`, right after the `SetHandleInformation(...,
+    HANDLE_FLAG_INHERIT, 0)` block, immediately before and after
+    `wxMessageOutput::Set(...)`, immediately before and after
+    `cmdLineParser.Parse()`, and right as the `-v` branch is entered plus
+    right after its `Printf()` call (before `exit(0)`). The specific
+    question this is built to answer: does `_fileno(stdout)`'s resolved
+    `osHandle` (or the raw `GetStdHandle(STD_OUTPUT_HANDLE)` value) ever
+    silently change, or does `GetFileType` ever stop reporting `pipe`,
+    somewhere across that chain -- something no prior Wine repro could
+    observe since none of them ever ran the real chain end to end.
+    **A `const wxChar*` gotcha caught during review, not live**:
+    `DescribeStdHandle()`'s type-name strings are built from `wxS(...)`
+    literals, not plain `"pipe"`/`"disk"`/... `char*` ones -- passing a
+    narrow `char*` for a `%s` conversion in `wxString::Format` on a
+    Unicode build is exactly the class of mismatch this file's own
+    `wxLogMessage`/`%zu`-from-a-worker-thread note (under "Communication
+    with Maxima") already flags as capable of asserting rather than just
+    printing; fixed before ever running by matching every `%s` argument's
+    width to the build's native `wxChar`, not found by tripping it live.
+    **Deliberately did NOT add an `fflush(stdout)` before `exit(0)`**: an
+    earlier draft of this instrumentation added one gated only by
+    `#ifdef __WXMSW__` (i.e. unconditionally on every Windows build, not
+    behind the env var) on the theory "can't hurt, might even help
+    flush a stuck buffer" -- caught in self-review before committing: that
+    would have been a real, non-diagnostic behavior change riding along
+    with what's supposed to be a strictly inert change, and worse, if it
+    happened to paper over the actual bug, the next CI run would report
+    "fixed" while teaching nothing about the real mechanism. Removed
+    outright rather than gating it behind the env var too, since gating a
+    behavior change behind a flag that's only set on the one CI run
+    collecting evidence would make that evidence describe a different code
+    path than every other build ships.
+    Wired into `.github/workflows/compile_windows.yml`: `WXM_STDIO_DEBUG_LOG`
+    is set (to `${{ github.workspace }}\wxm_stdio_debug.log`) only as an
+    `env:` on the existing "Run integration tests" step, and a new "Upload
+    stdio debug log" step immediately follows it,
+    `actions/upload-artifact@v7` with `if-no-files-found: ignore` and
+    `if: always()` (not `if: failure()`) -- `upload-artifact` already
+    no-ops cleanly when the path doesn't exist, and `always()` means a
+    green run's log (which should show nothing anomalous, itself a useful
+    negative data point) gets uploaded too, not just a red run's.
+    **Not yet verified against a real CI run as of this writing** -- this
+    entry documents the instrumentation's design and the reasoning behind
+    each choice; the actual captured evidence (or absence of anything
+    anomalous, which would itself be informative) belongs in a follow-up
+    entry once the next push's `compile_windows` run completes and the
+    artifact can be pulled and read. This diagnostic block should be
+    removed (or at least re-gated more strictly) once this investigation
+    either finds its answer or is shelved again -- it's instrumentation for
+    an open question, not a permanent feature.
+  - **Follow-up (2026-09-07, same day): the very first real CI run reproduced
+    the failure exactly as expected, but the uploaded artifact ZIP itself
+    turned out to be unreachable from this sandbox.** PR #2295's
+    `compile_windows` run failed `wxmaxima_version_string` right on cue
+    ("Required regular expression not found", 133/134 -- identical signature
+    to every prior occurrence) and `actions/upload-artifact@v7` uploaded a
+    real 5525-byte `wxm-stdio-debug-log` artifact. But both `curl` (via this
+    sandbox's egress proxy) and the `WebFetch` tool failed identically on the
+    artifact's actual storage backend
+    (`productionresultssa12.blob.core.windows.net`, an Azure Blob Storage
+    host, not `github.com` itself) with `EGRESS_BLOCKED` -- this sandbox's
+    network policy allowlists GitHub's own API/web domains but not the
+    separate blob-storage domain artifact downloads are redirected to.
+    `mcp__github__actions_get`'s `download_workflow_run_artifact` method
+    happily returns a valid, correctly-signed short-lived SAS URL for the
+    artifact -- the GitHub API call itself works fine -- but actually
+    fetching that URL's bytes is what fails, and no available MCP tool
+    proxies that fetch through an allowlisted path. **Fixed by not depending
+    on artifact download at all**: added a new "Print stdio debug log" step
+    (`.github/workflows/compile_windows.yml`, right before "Upload stdio
+    debug log", also `if: always()`) that `Get-Content`s the log file
+    straight into the job's own console output when it exists. Job step logs
+    are fetched through `mcp__github__get_job_logs`, a plain GitHub API call
+    against `github.com` itself -- confirmed working earlier in this exact
+    investigation (that's how the `wxmaxima_version_string` failure text
+    above was read) -- so this sidesteps the blob-storage egress gap
+    entirely instead of trying to work around it. The artifact upload step
+    is left in place too (harmless, and useful for anyone reading this from
+    an environment that *can* reach Azure Blob Storage), but the console
+    print is now the primary, verified-reachable way to retrieve this
+    trace. **Not yet re-verified**: this fix hasn't had a CI run of its own
+    yet -- the analysis above is from the run that used only the
+    artifact-upload step, so the actual `StdioDebugLog()` trace content
+    (the real payoff of this whole diagnostic effort) is still unread as of
+    this entry. That comes in the next follow-up once the console-print
+    step lands and a fresh run reproduces the failure again.
+  - **Follow-up (2026-09-07, same day): the console-print fallback worked,
+    the trace was read end to end for the failing `wxmaxima_version_string`
+    invocation itself, and it shows a completely clean, anomaly-free
+    sequence all the way through -- which redirects the investigation
+    rather than closing it.** Commit `0dfb7ba`'s `compile_windows` run
+    (job `101648978179`, run `34092563005`) failed the same way again
+    ("Compile using minGW" red; the earlier commit's run on this same PR
+    had the identical `wxmaxima_version_string` signature and nothing else
+    in this diff touches non-Windows code, so this is the same failure,
+    not a new one). `mcp__github__get_job_logs` returned the trace directly
+    in the job's own console output exactly as designed -- the
+    Azure-Blob-Storage egress gap from the previous entry is now fully
+    worked around for good.
+    The trace for the one process that reached the `-v` branch (pid 3420,
+    identified unambiguously: `wxmaxima_version_string` is the only test in
+    the whole suite that both passes `--version` and checks the captured
+    text, so it's the only process that could ever log an "entering -v
+    branch" line) is, verbatim:
+    ```
+    [pid 3420] BindStdStreamToParent(4294967285) start: handle=0000000000000450 type=char
+    [pid 3420] BindStdStreamToParent(4294967285) done: fd=1 osHandle=0000000000000240
+    [pid 3420] BindStdStreamToParent(4294967284) start: handle=0000000000000454 type=char
+    [pid 3420] BindStdStreamToParent(4294967284) done: fd=2 osHandle=000000000000042c
+    [pid 3420] BindStdStreamToParent(4294967286) start: handle=00000000000000b4 type=char
+    [pid 3420] BindStdStreamToParent(4294967286) done: fd=0 osHandle=0000000000000454
+    [pid 3420] RedirectStdioToParent() done: stdout fd=1 osHandle=0000000000000240, stderr fd=2 osHandle=000000000000042c
+    [pid 3420] after SetHandleInformation: stdout fd=1 osHandle=0000000000000240, stderr fd=2 osHandle=000000000000042c
+    [pid 3420] after wxMessageOutput::Set: stdout fd=1 osHandle=0000000000000240
+    [pid 3420] before cmdLineParser.Parse(): stdout fd=1 osHandle=0000000000000240
+    [pid 3420] after cmdLineParser.Parse() (result=0): stdout fd=1 osHandle=0000000000000240
+    [pid 3420] entering -v branch: stdout fd=1 osHandle=0000000000000240, wxMessageOutput::Get()=00000217191f0790
+    [pid 3420] after Printf, before exit(0)
+    ```
+    **Every single checkpoint is exactly what a correctly-working process
+    should show**: the initial handle is valid (never null/invalid, so the
+    `AttachConsole` fallback branch never fires), `_dup2()` succeeds and
+    produces a stable `osHandle` (`0x240`) that *never changes* across
+    `SetHandleInformation`, `wxMessageOutput::Set()`, or
+    `cmdLineParser.Parse()`, `wxMessageOutput::Get()` returns a valid
+    non-null pointer right before the real `Printf()` call, and the trace
+    reaches "after Printf, before exit(0)" -- meaning the `Printf()` call
+    itself returned normally, no exception, no crash, nothing to indicate
+    the write failed at the C++ level. **This rules out every mechanism
+    this instrumentation was built to catch**: the fd/handle chain does not
+    silently change, drop, or point somewhere unexpected anywhere between
+    `RedirectStdioToParent()` and the actual write call. Whatever is wrong
+    is downstream of a call that, from inside the process, looks completely
+    successful.
+    **A genuinely new, unexpected, load-bearing fact surfaced as a side
+    effect of tracing this**: `GetFileType()` on the very first
+    `GetStdHandle(STD_OUTPUT_HANDLE)` -- before any of this code's own
+    logic runs -- reports `FILE_TYPE_CHAR`, not `FILE_TYPE_PIPE`, and this
+    is true for *every* wxmaxima subprocess this ctest step spawns, not
+    just the failing one (confirmed by grepping the same trace for every
+    other pid's `BindStdStreamToParent(...) start` line -- all say
+    `type=char`). ctest's `--output-on-failure`/regex-matching machinery
+    has to capture each test's stdout+stderr somehow to check
+    `PASS_REGULAR_EXPRESSION`-style assertions against it, and the
+    textbook assumption (an anonymous pipe, which would show up as
+    `FILE_TYPE_PIPE` to the child) does not match what's actually
+    happening here -- every child inherits a real console-type handle
+    instead. This was previously completely unknown and changes the shape
+    of the problem: it is not "something about wxMaxima's own code breaks
+    a working pipe redirection" (the redirection, whatever it targets, is
+    demonstrably rock-solid across this entire trace) -- it is "does a
+    write through a `FILE_TYPE_CHAR` handle via this specific
+    `wxMessageOutputStderr::Printf()` code path actually reach wherever
+    ctest is reading captured test output from, on this toolchain, for a
+    WIN32-subsystem (GUI) child process specifically."
+    **Why there is no working comparison case to rule this in or out**:
+    `wxMessageOutput`/`wxMessageOutputStderr` is used for exactly two
+    things in this codebase -- the `--version` text and `wxCmdLineParser`'s
+    own `--help` usage text -- and `wxmaxima_help_returncode` (the sibling
+    test for `--help`) only checks the exit code, never the captured text.
+    So `wxmaxima_version_string` is the *only* test in the entire suite
+    that both (a) goes through this specific WIN32-subsystem console-output
+    code path and (b) actually asserts on the captured content -- every
+    other content-checked batch test's expected text comes from Maxima's
+    own separate output-writing mechanism over the TCP socket, which never
+    touches `BindStdStreamToParent()`/`wxMessageOutput` at all. There is no
+    other "this exact mechanism, but it happens to pass" test to compare
+    against; the FILE_TYPE_CHAR fact, while true for every process, cannot
+    be dismissed as "clearly fine, everything else uses it too" the way it
+    might look at first glance, because nothing else's *pass/fail result*
+    actually depends on it.
+    **Not yet investigated, and the concrete next steps if this is picked
+    up again**: (1) instrument (still diagnostic-only, still gated behind
+    `WXM_STDIO_DEBUG_LOG`) whether the underlying write call inside
+    `wxMessageOutputStderr::Printf()` -- which per wxWidgets' own source is
+    a plain `fputs(psz, m_fp)` against the `FILE*` passed to its
+    constructor (`stdout`) -- actually succeeds, e.g. by checking `errno`/
+    `ferror(stdout)` right after the call, since the trace above cannot
+    currently distinguish "the write genuinely succeeded but the bytes
+    went somewhere ctest doesn't read" from "some later, still-unlogged
+    step silently swallows or discards them"; (2) as a genuinely separate,
+    clearly-labeled *experiment* (not a fix riding along with a diagnostic
+    change) -- add an explicit `fflush(stdout)` right after the `Printf()`
+    call in the `-v` branch, gated behind the same env var so it only runs
+    on the one CI invocation collecting evidence, and see whether that
+    changes the outcome; if it does, that's real evidence toward a
+    buffering-related mechanism despite `setvbuf(..., _IONBF, 0)` already
+    having been set on this stream earlier -- worth double-checking that
+    the unbuffered mode actually survived being set on a `FILE_TYPE_CHAR`-
+    backed stream specifically, since Windows' CRT console-handle plumbing
+    is not guaranteed to behave identically to its pipe/file plumbing here;
+    (3) look directly at how CMake/CTest's own child-process execution
+    (`cmsysProcess`/kwsys on Windows) sets up stdio redirection for a
+    `WIN32`-subsystem child specifically -- the `FILE_TYPE_CHAR` finding
+    suggests it may not be using `STARTF_USESTDHANDLES` + anonymous pipes
+    the way it would for an ordinary console-subsystem test executable,
+    and if so, understanding *that* mechanism (not wxMaxima's own code) is
+    probably the real key to this bug. This is the first concrete lead in
+    this entire investigation that isn't "one more mechanism ruled out" --
+    it's a real, previously-unknown fact about how this specific CI
+    environment captures a WIN32-subsystem child's output, and the next
+    session picking this up should start here rather than re-tracing the
+    fd/handle chain again, which is now about as thoroughly instrumented
+    as it usefully can be.
 
 - **System tray icon (`src/TrayIcon.{h,cpp}`, GH #2286) -- mirrors the busy
   status, gated entirely by `wxUSE_TASKBARICON`.** The maintainer's own
