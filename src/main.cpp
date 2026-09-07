@@ -57,10 +57,11 @@
 #include <vector>
 #ifdef __WXMSW__
 #include <windows.h>
-#include <io.h>      // _open_osfhandle()
+#include <io.h>      // _open_osfhandle(), _get_osfhandle()
 #include <fcntl.h>   // _O_TEXT
 #include <cstdio>    // freopen(), _fdopen(), stdout/stderr/stdin
 #include <cstdint>   // intptr_t
+#include <string>    // std::string, used by the diagnostic StdioDebugLog() only
 #endif
 
 #include "dialogs/ConfigDialogue.h"
@@ -238,6 +239,101 @@ int WINAPI WinMain(_In_ HINSTANCE hI, _In_opt_ HINSTANCE hPrevI, _In_ LPSTR lpCm
 
 
 #ifdef __WXMSW__
+namespace {
+// Diagnostic tracing for the still-unexplained wxmaxima_version_string CI
+// flake (see AGENTS.md's long investigation -- struct-copy-vs-_dup2(),
+// several Wine-simulated mechanisms, and ctest-level self-concurrency via
+// RUN_SERIAL have all been individually ruled out, but the real trigger was
+// never actually observed on the one environment that reproduces it). Every
+// Wine repro built so far wrote via a bare fprintf(stdout, ...); the real
+// --version path instead goes through wxMessageOutputStderr (see its
+// wxMessageOutput::Set() call below), a code path none of those repros ever
+// exercised -- this traces the real path itself instead of a stand-in for it.
+//
+// Entirely inert unless WXM_STDIO_DEBUG_LOG names a real, writable file path
+// (set by the CI workflow only around the one ctest step that reproduces
+// this; never set in a normal build or a normal user's run). Deliberately
+// written via the raw Win32 API (CreateFileW/WriteFile), never the CRT
+// stdio, so tracing the exact stdio-redirection bug this investigates can
+// never itself be perturbed by that same bug -- if the CRT's own stdout is
+// somehow broken, this logging path must not depend on it being intact.
+wxString StdioDebugLogPath() {
+  static wxString path;
+  static bool checked = false;
+  if (!checked) {
+    checked = true;
+    wxGetEnv(wxS("WXM_STDIO_DEBUG_LOG"), &path);
+  }
+  return path;
+}
+
+void StdioDebugLog(const wxString &msg) {
+  wxString path = StdioDebugLogPath();
+  if (path.IsEmpty())
+    return;
+  // Opened with FILE_APPEND_DATA and nothing else (no GENERIC_WRITE) -- per
+  // MSDN this makes Windows position each WriteFile atomically at the
+  // then-current end of file itself, which is what actually keeps concurrent
+  // writers (this ctest step runs with -j 2, and every spawned wxmaxima
+  // process opens/writes/closes this same path independently) from
+  // clobbering each other's lines. Do NOT add an explicit SetFilePointer(...,
+  // FILE_END) call here -- that would reintroduce exactly the race (seek,
+  // then write, as two separate non-atomic steps) this flag exists to avoid.
+  HANDLE file = CreateFileW(path.wc_str(), FILE_APPEND_DATA,
+                            FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr,
+                            OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
+  if (file == INVALID_HANDLE_VALUE)
+    return;
+  // Every wxmaxima process this ctest step spawns (there are many, run with
+  // -j 2) shares this one log file -- prefix the PID so lines from different,
+  // interleaved processes can be told apart after the fact; without it the
+  // log would be an unattributable shuffle once more than one process is
+  // alive at a time.
+  wxString prefixed = wxString::Format(wxS("[pid %lu] %s"),
+                                       GetCurrentProcessId(), msg);
+  std::string line = std::string(prefixed.ToUTF8().data()) + "\r\n";
+  DWORD written;
+  WriteFile(file, line.data(), static_cast<DWORD>(line.size()), &written, nullptr);
+  CloseHandle(file);
+}
+
+// Describes a std handle's current identity: whether it exists at all, its
+// raw value (to check whether it ever silently changes across the checkpoints
+// below), and what kind of object it actually is (pipe/disk/char/unknown) --
+// ctest's own redirection should always show "pipe" here.
+wxString DescribeStdHandle(DWORD stdHandleId) {
+  HANDLE h = GetStdHandle(stdHandleId);
+  if ((h == nullptr) || (h == INVALID_HANDLE_VALUE))
+    return wxS("none");
+  // Built from wxS() literals rather than plain char* ones deliberately --
+  // wxString::Format's %s is type-checked against the build's native wxChar
+  // width (see AGENTS.md's note on wxLogMessage/%zu asserting from a mismatched
+  // narrow argument), so a raw "pipe"/"disk"/... here could assert instead of
+  // just printing on a Unicode build.
+  const wxChar *typeName = wxS("unknown");
+  switch (GetFileType(h)) {
+  case FILE_TYPE_PIPE: typeName = wxS("pipe"); break;
+  case FILE_TYPE_DISK: typeName = wxS("disk"); break;
+  case FILE_TYPE_CHAR: typeName = wxS("char"); break;
+  default: break;
+  }
+  return wxString::Format(wxS("handle=%p type=%s"), h, typeName);
+}
+
+// Describes a CRT stream's current fd and the raw OS handle that fd actually
+// resolves to right now -- the key question this whole investigation still
+// has no direct answer for: does this handle value ever change, unexpectedly,
+// between RedirectStdioToParent() succeeding and the --version Printf() call?
+wxString DescribeStream(FILE *stream) {
+  int fd = _fileno(stream);
+  if (fd < 0)
+    return wxS("fd=<invalid>");
+  intptr_t osHandle = _get_osfhandle(fd);
+  return wxString::Format(wxS("fd=%d osHandle=%p"), fd,
+                          reinterpret_cast<void *>(osHandle));
+}
+} // namespace
+
 // wxMaxima is built as a GUI-subsystem binary (add_executable(wxmaxima WIN32 ...)),
 // so Windows does not wire up stdin/stdout/stderr for it. Anything that would
 // normally go to a console -- the --version / --help text, and the
@@ -255,6 +351,8 @@ int WINAPI WinMain(_In_ HINSTANCE hI, _In_opt_ HINSTANCE hPrevI, _In_ LPSTR lpCm
 // This is Windows-only by construction; macOS and Linux never compile it.
 static void BindStdStreamToParent(DWORD stdHandleId, FILE *stream,
                                   bool &consoleAttached) {
+  StdioDebugLog(wxString::Format(wxS("BindStdStreamToParent(%lu) start: %s"),
+                                 stdHandleId, DescribeStdHandle(stdHandleId)));
   HANDLE handle = GetStdHandle(stdHandleId);
   if ((handle == nullptr) || (handle == INVALID_HANDLE_VALUE)) {
     // No inherited handle -- hook up to the launching console, at most once.
@@ -288,6 +386,8 @@ static void BindStdStreamToParent(DWORD stdHandleId, FILE *stream,
   }
   _close(fd); // _dup2 duplicated the descriptor; the original is no longer needed.
   setvbuf(stream, nullptr, _IONBF, 0);
+  StdioDebugLog(wxString::Format(wxS("BindStdStreamToParent(%lu) done: %s"),
+                                 stdHandleId, DescribeStream(stream)));
 }
 
 static void RedirectStdioToParent() {
@@ -295,6 +395,9 @@ static void RedirectStdioToParent() {
   BindStdStreamToParent(STD_OUTPUT_HANDLE, stdout, consoleAttached);
   BindStdStreamToParent(STD_ERROR_HANDLE, stderr, consoleAttached);
   BindStdStreamToParent(STD_INPUT_HANDLE, stdin, consoleAttached);
+  StdioDebugLog(wxString::Format(
+      wxS("RedirectStdioToParent() done: stdout %s, stderr %s"),
+      DescribeStream(stdout), DescribeStream(stderr)));
 }
 
 // True once we have a usable stderr handle (inherited pipe/file or an attached
@@ -382,6 +485,9 @@ bool MyApp::OnInit() {
     if ((errHandle != nullptr) && (errHandle != INVALID_HANDLE_VALUE))
       SetHandleInformation(errHandle, HANDLE_FLAG_INHERIT, 0);
   }
+  StdioDebugLog(wxString::Format(
+      wxS("after SetHandleInformation: stdout %s, stderr %s"),
+      DescribeStream(stdout), DescribeStream(stderr)));
   // For a GUI-subsystem binary the default wxMessageOutput is a *modal* message
   // box. That is what hangs every head-less wxmaxima launch (--version, --help /
   // wxCmdLineParser::Usage(), and early diagnostics all go through it). Now that
@@ -390,6 +496,8 @@ bool MyApp::OnInit() {
   // macOS/Linux never compile this, so the macOS message-output behaviour that
   // is sensitive around menu setup is left exactly as it was.
   wxMessageOutput::Set(new wxMessageOutputStderr(stdout));
+  StdioDebugLog(wxString::Format(
+      wxS("after wxMessageOutput::Set: stdout %s"), DescribeStream(stdout)));
 #endif
   // Needed for making wxSocket work for multiple threads. We currently don't
   // use this feature. But it doesn't harm to be prepared
@@ -580,7 +688,16 @@ bool MyApp::OnInit() {
   }
 
 
+#ifdef __WXMSW__
+  StdioDebugLog(wxString::Format(wxS("before cmdLineParser.Parse(): stdout %s"),
+                                 DescribeStream(stdout)));
+#endif
   int cmdLineError = cmdLineParser.Parse();
+#ifdef __WXMSW__
+  StdioDebugLog(wxString::Format(
+      wxS("after cmdLineParser.Parse() (result=%d): stdout %s"), cmdLineError,
+      DescribeStream(stdout)));
+#endif
 
   if (cmdLineParser.Found(wxS("single_process")))
     m_allWindowsInOneProcess = true;
@@ -748,10 +865,18 @@ bool MyApp::OnInit() {
 #endif
 
   if (cmdLineParser.Found(wxS("v"))) {
+#ifdef __WXMSW__
+    StdioDebugLog(wxString::Format(
+        wxS("entering -v branch: stdout %s, wxMessageOutput::Get()=%p"),
+        DescribeStream(stdout), static_cast<void *>(wxMessageOutput::Get())));
+#endif
     if (WxMaximaGitShortHash())
       wxMessageOutput::Get()->Printf("wxMaxima %s (Git version: %s)\n", WXMAXIMA_VERSION, WxMaximaGitShortHash());
     else
       wxMessageOutput::Get()->Printf("wxMaxima %s\n", WXMAXIMA_VERSION);
+#ifdef __WXMSW__
+    StdioDebugLog(wxS("after Printf, before exit(0)"));
+#endif
     exit(0);
   }
 

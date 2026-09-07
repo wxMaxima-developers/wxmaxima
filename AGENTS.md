@@ -1604,13 +1604,27 @@ a local TCP socket.
     harmless either way -- this test is fast and gains nothing from
     parallelism -- and the finding itself is worth keeping visible on the
     test), but stop describing it as an open experiment still gathering
-    data; it has its answer. The next real lead, if this is picked up
-    again, is real Windows hardware with `rr` (this sandbox's Wine
-    environment cannot simulate whatever the actual trigger is, per the
-    "essentially unreproducible everywhere except the actual CI runner"
-    conclusion above) or bisecting the GH #2274 startup-reordering commit
-    (`3f5e895`) directly on real Windows -- not another synthetic Wine
-    repro of ctest-level contention specifically.
+    data; it has its answer. **Correction to this entry's own earlier
+    wording**: "real Windows hardware with `rr`" was never a coherent next
+    step and should not have been written here -- `rr` (Mozilla's
+    record-replay debugger) is Linux-only and has no Windows port at all;
+    that line was carried over by mistake from this file's unrelated
+    `tutorial_10Minutes` entry, which is a genuinely different, Linux-side
+    Maxima flake where `rr` really is the right tool. Separately, "real
+    Windows hardware" was also the wrong framing of the actual blocker:
+    GitHub Actions' `windows-latest` runner already *is* real Windows --
+    the actual limitation this investigation has run into is that runner's
+    non-interactivity (no way to attach a live debugger to the exact
+    process instance that reproduces the bug), not a lack of a genuine
+    Windows target to test against. The next real lead, if this is picked
+    up again, is either (a) a live interactive session on the actual runner
+    via `mxschmitt/action-tmate` (or equivalent), or (b) targeted
+    diagnostic tracing shipped in the binary itself and captured
+    automatically as a CI artifact -- see the follow-up entry immediately
+    below, which does (b) -- or bisecting the GH #2274 startup-reordering
+    commit (`3f5e895`) directly on the real runner. Not another synthetic
+    Wine repro of ctest-level contention specifically -- that lead is now
+    closed.
   - **Follow-up (2026-09-07): "does this only fail on PRs?" -- checked
     directly, and no.** A fair question to ask given how much of this
     investigation happened on PR branches -- but `compile_windows.yml`
@@ -1634,6 +1648,99 @@ a local TCP socket.
     easier to not notice -- a visibility/sampling effect, not a real
     behavioral difference between the two trigger paths. Don't re-open
     "PR-specific" as a lead without new evidence.
+  - **Follow-up (2026-09-07): shipped real diagnostic tracing in the binary
+    itself, gated behind an env var, to capture actual runner-side evidence
+    on the next CI run instead of another Wine simulation.** Prompted by
+    the user's own correct pushback on "go get real Windows hardware" (see
+    the correction two entries above) -- the runner is already real
+    Windows, and every debugging tool that needs live interactivity (a
+    real debugger, `rr`, hardware watchpoints) is unavailable here anyway,
+    so the only way to learn something new without an interactive session
+    is to have the actual failing process record its own evidence and hand
+    it back as a CI artifact. Two previously-unexamined facts motivated
+    what got instrumented, specifically: (1) every prior Wine repro across
+    multiple sessions tested a bare `fprintf(stdout, ...)` -- never the
+    *actual* code path `--version` uses, which is
+    `wxMessageOutput::Get()->Printf(...)` through a `wxMessageOutputStderr`
+    object (`wxMessageOutput::Set(new wxMessageOutputStderr(stdout))`,
+    `main.cpp`, called once early in `OnInit()`); (2) `cmdLineParser.Parse()`
+    (`wxCmdLineParser`, a real library call) runs between that `Set()` call
+    and the `-v` branch, and has never been traced through either. Added a
+    small, self-contained diagnostic block to `main.cpp` (Windows-only,
+    anonymous namespace, immediately before `BindStdStreamToParent()`):
+    `StdioDebugLog(msg)` appends a timestamp-free but PID-prefixed line to
+    whatever file `WXM_STDIO_DEBUG_LOG` names (read once, cached, via
+    `wxGetEnv()`) -- entirely inert (single cheap env-var check, cached
+    after the first call) unless that variable is set, which only the CI
+    workflow does, scoped to just the one ctest step that reproduces this;
+    a normal build or a normal user's run never sets it and pays only that
+    one cached check. Deliberately written via raw `CreateFileW`/`WriteFile`,
+    never CRT stdio -- tracing a stdio bug through the very subsystem
+    suspected of being broken would be self-defeating. Opened with
+    `FILE_APPEND_DATA` alone (no `GENERIC_WRITE`), which per MSDN makes
+    Windows itself position each `WriteFile` atomically at end-of-file --
+    load-bearing, since this ctest step runs `-j 2` and many independent
+    `wxmaxima` processes share this one log path; a separate
+    `SetFilePointer(..., FILE_END)` call would reintroduce exactly the
+    seek-then-write race this flag exists to avoid, so don't add one back.
+    Each line is prefixed with `GetCurrentProcessId()` so interleaved
+    processes' lines can be told apart afterward.
+    `DescribeStdHandle(stdHandleId)` (raw `GetStdHandle`/`GetFileType` --
+    "none"/"handle=%p type=pipe|disk|char|unknown") and
+    `DescribeStream(FILE*)` (`_fileno()` + `_get_osfhandle()` -- "fd=%d
+    osHandle=%p") are the two probes; checkpoints call one or the other at:
+    the very start and end of `BindStdStreamToParent()` (per stream, so
+    stdout/stderr/stdin each get their own before/after pair), the end of
+    `RedirectStdioToParent()`, right after the `SetHandleInformation(...,
+    HANDLE_FLAG_INHERIT, 0)` block, immediately before and after
+    `wxMessageOutput::Set(...)`, immediately before and after
+    `cmdLineParser.Parse()`, and right as the `-v` branch is entered plus
+    right after its `Printf()` call (before `exit(0)`). The specific
+    question this is built to answer: does `_fileno(stdout)`'s resolved
+    `osHandle` (or the raw `GetStdHandle(STD_OUTPUT_HANDLE)` value) ever
+    silently change, or does `GetFileType` ever stop reporting `pipe`,
+    somewhere across that chain -- something no prior Wine repro could
+    observe since none of them ever ran the real chain end to end.
+    **A `const wxChar*` gotcha caught during review, not live**:
+    `DescribeStdHandle()`'s type-name strings are built from `wxS(...)`
+    literals, not plain `"pipe"`/`"disk"`/... `char*` ones -- passing a
+    narrow `char*` for a `%s` conversion in `wxString::Format` on a
+    Unicode build is exactly the class of mismatch this file's own
+    `wxLogMessage`/`%zu`-from-a-worker-thread note (under "Communication
+    with Maxima") already flags as capable of asserting rather than just
+    printing; fixed before ever running by matching every `%s` argument's
+    width to the build's native `wxChar`, not found by tripping it live.
+    **Deliberately did NOT add an `fflush(stdout)` before `exit(0)`**: an
+    earlier draft of this instrumentation added one gated only by
+    `#ifdef __WXMSW__` (i.e. unconditionally on every Windows build, not
+    behind the env var) on the theory "can't hurt, might even help
+    flush a stuck buffer" -- caught in self-review before committing: that
+    would have been a real, non-diagnostic behavior change riding along
+    with what's supposed to be a strictly inert change, and worse, if it
+    happened to paper over the actual bug, the next CI run would report
+    "fixed" while teaching nothing about the real mechanism. Removed
+    outright rather than gating it behind the env var too, since gating a
+    behavior change behind a flag that's only set on the one CI run
+    collecting evidence would make that evidence describe a different code
+    path than every other build ships.
+    Wired into `.github/workflows/compile_windows.yml`: `WXM_STDIO_DEBUG_LOG`
+    is set (to `${{ github.workspace }}\wxm_stdio_debug.log`) only as an
+    `env:` on the existing "Run integration tests" step, and a new "Upload
+    stdio debug log" step immediately follows it,
+    `actions/upload-artifact@v7` with `if-no-files-found: ignore` and
+    `if: always()` (not `if: failure()`) -- `upload-artifact` already
+    no-ops cleanly when the path doesn't exist, and `always()` means a
+    green run's log (which should show nothing anomalous, itself a useful
+    negative data point) gets uploaded too, not just a red run's.
+    **Not yet verified against a real CI run as of this writing** -- this
+    entry documents the instrumentation's design and the reasoning behind
+    each choice; the actual captured evidence (or absence of anything
+    anomalous, which would itself be informative) belongs in a follow-up
+    entry once the next push's `compile_windows` run completes and the
+    artifact can be pulled and read. This diagnostic block should be
+    removed (or at least re-gated more strictly) once this investigation
+    either finds its answer or is shelved again -- it's instrumentation for
+    an open question, not a permanent feature.
 
 - **System tray icon (`src/TrayIcon.{h,cpp}`, GH #2286) -- mirrors the busy
   status, gated entirely by `wxUSE_TASKBARICON`.** The maintainer's own

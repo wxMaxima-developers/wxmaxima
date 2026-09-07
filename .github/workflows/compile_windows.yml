@@ -271,12 +271,33 @@ jobs:
         # unzip tests, which cannot run on Windows) are excluded; timeout-minutes
         # is a hard ceiling.
         timeout-minutes: 20
+        # WXM_STDIO_DEBUG_LOG: diagnostic tracing for the still-unexplained
+        # wxmaxima_version_string flake (see AGENTS.md's long investigation --
+        # this env var is the only thing that turns it on; main.cpp's tracing is
+        # a no-op without it, in every other build and every other CI job).
+        # Scoped to just this step, not job-wide, so the log stays small and
+        # only covers the one ctest invocation that actually reproduces the bug.
+        env:
+          WXM_STDIO_DEBUG_LOG: ${{ github.workspace }}\wxm_stdio_debug.log
         run: |
             cd wxMaxima
             cd build
             ctest -LE "unittest|needs_posix" -E "multithreadtest" --repeat after-timeout:2 -j 2 --output-on-failure
             cd ..
             cd ..
+      - name: Upload stdio debug log
+        # Only produced/useful when the step above actually failed -- see the
+        # WXM_STDIO_DEBUG_LOG env var on that step. if: always() (not
+        # if: failure()) because upload-artifact itself already no-ops cleanly
+        # when the file doesn't exist, and this keeps the step's own log
+        # readable ("no files were found" is more informative on a green run
+        # than never seeing this step at all).
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: wxm-stdio-debug-log
+          path: wxm_stdio_debug.log
+          if-no-files-found: ignore
       - name: Upload the unsigned installer for SignPath
         # SignPath does NOT accept an uploaded file directly: its GitHub
         # connector downloads the GitHub Actions artifact itself and checks the
