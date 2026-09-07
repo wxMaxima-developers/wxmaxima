@@ -24,6 +24,10 @@
 #include "cells/EditorCell.h"
 #include "sidebars/VariablesPane.h"
 #include "worksheet/Worksheet.h"
+#include <wx/log.h>
+#include <wx/regex.h>
+#include <algorithm>
+#include <memory>
 
 using json = nlohmann::json;
 
@@ -32,6 +36,24 @@ namespace {
 std::string U8(const wxString &s) { return s.ToUTF8().data(); }
 wxString FromU8(const std::string &s) {
   return wxString::FromUTF8(s.c_str());
+}
+
+//! A short excerpt of `text` around [matchStart, matchStart+matchLen), with
+//! "..." markers where the excerpt was cut -- lets search_cells's result show
+//! *where* a match sits without dumping the cell's entire (possibly huge)
+//! input/output for every hit.
+wxString SearchSnippet(const wxString &text, std::size_t matchStart,
+                       std::size_t matchLen) {
+  const std::size_t context = 40;
+  std::size_t start = (matchStart > context) ? matchStart - context : 0;
+  std::size_t afterMatch = matchStart + matchLen;
+  std::size_t end = std::min(text.Length(), afterMatch + context);
+  wxString snippet = text.Mid(start, end - start);
+  if (start > 0)
+    snippet = wxS("...") + snippet;
+  if (end < text.Length())
+    snippet += wxS("...");
+  return snippet;
 }
 } // namespace
 
@@ -262,6 +284,36 @@ json McpTools::ListTools() const {
       "watchlist, the same as removing it from that sidebar by hand."},
      {"inputSchema", nameArg("The Maxima variable name to stop watching")}});
 
+  json searchSchema;
+  searchSchema["type"] = "object";
+  searchSchema["properties"]["pattern"] = {
+    {"type", "string"},
+    {"description", "The text to search for (a plain substring by default; "
+     "an extended-regular-expression pattern if regex is true)."}};
+  searchSchema["properties"]["regex"] = {
+    {"type", "boolean"},
+    {"description", "Treat pattern as a POSIX extended regular expression "
+     "instead of a plain substring. Default: false."}};
+  searchSchema["properties"]["case_sensitive"] = {
+    {"type", "boolean"},
+    {"description", "Default: false (case-insensitive)."}};
+  searchSchema["properties"]["scope"] = {
+    {"type", "string"},
+    {"description", "\"input\", \"output\", or \"both\" (default) -- which "
+     "part of each cell to search."}};
+  searchSchema["required"] = json::array({"pattern"});
+  tools.push_back(
+    {{"name", "search_cells"},
+     {"description",
+      "Find every cell whose input and/or output contains a given text or "
+      "regular expression, so you can jump straight to the relevant cell(s) "
+      "of a large worksheet instead of reading it all via read_worksheet/ "
+      "list_cells. Returns each matching cell's UUID (use with read_cell/"
+      "read_section), is_current/has_error (see list_cells), which part it "
+      "matched in, and a short snippet of context around the match. Capped "
+      "to 50 matches; \"truncated\" reports if there would have been more."},
+     {"inputSchema", searchSchema}});
+
   json result;
   result["tools"] = tools;
   return result;
@@ -293,6 +345,8 @@ json McpTools::CallTool(const wxString &name, const json &arguments) const {
     return TextResult(WatchVariable(arguments));
   if (name == wxS("unwatch_variable"))
     return TextResult(UnwatchVariable(arguments));
+  if (name == wxS("search_cells"))
+    return TextResult(SearchCells(arguments));
   throw McpToolError("Unknown tool: " + std::string(name.ToUTF8()));
 }
 
@@ -484,5 +538,85 @@ json McpTools::UnwatchVariable(const json &arguments) const {
   json result;
   result["ok"] = true;
   result["name"] = U8(name);
+  return result;
+}
+
+json McpTools::SearchCells(const json &arguments) const {
+  wxString pattern = RequireString(arguments, "pattern");
+  bool useRegex = arguments.contains("regex") && arguments["regex"].is_boolean() &&
+    arguments["regex"].get<bool>();
+  bool caseSensitive = arguments.contains("case_sensitive") &&
+    arguments["case_sensitive"].is_boolean() && arguments["case_sensitive"].get<bool>();
+  wxString scope = wxS("both");
+  if (arguments.contains("scope") && arguments["scope"].is_string())
+    scope = FromU8(arguments["scope"].get<std::string>());
+  bool searchInput = scope != wxS("output");
+  bool searchOutput = scope != wxS("input");
+
+  // Suppresses any wxLogXXX a bad pattern or a match attempt might trigger --
+  // an unhandled one could otherwise surface as a modal wxLogGui popup (see
+  // AGENTS.md's "wxLogMessage/wxLogWarning/wxLogError are NOT reliably
+  // visible" entry) from what is, from the caller's perspective, an ordinary
+  // JSON-RPC error response, not something that should ever touch the GUI.
+  wxLogNull suppressLogging;
+  std::unique_ptr<wxRegEx> regex;
+  if (useRegex) {
+    regex = std::make_unique<wxRegEx>(pattern, caseSensitive ? wxRE_DEFAULT : wxRE_ICASE);
+    if (!regex->IsValid())
+      throw McpToolError("Invalid regular expression");
+  }
+  wxString patternLower = pattern.Lower();
+
+  // Returns true and fills `snippet` if `text` contains a match; false
+  // (leaving `snippet` untouched) otherwise.
+  auto matchesText = [&](const wxString &text, wxString &snippet) -> bool {
+    if (text.IsEmpty())
+      return false;
+    if (useRegex) {
+      if (!regex->Matches(text))
+        return false;
+      std::size_t start = 0;
+      std::size_t len = 0;
+      regex->GetMatch(&start, &len, 0);
+      snippet = SearchSnippet(text, start, len);
+      return true;
+    }
+    const wxString &haystack = caseSensitive ? text : text.Lower();
+    const wxString &needle = caseSensitive ? pattern : patternLower;
+    int pos = haystack.Find(needle);
+    if (pos == wxNOT_FOUND)
+      return false;
+    snippet = SearchSnippet(text, static_cast<std::size_t>(pos), needle.Length());
+    return true;
+  };
+
+  json matches = json::array();
+  bool truncated = false;
+  if (m_worksheet && m_worksheet->GetTree()) {
+    int index = 0;
+    for (GroupCell &cell : OnList(m_worksheet->GetTree())) {
+      int idx = index++;
+      wxString snippet;
+      wxString matchedIn;
+      if (searchInput && matchesText(InputText(cell), snippet))
+        matchedIn = wxS("input");
+      else if (searchOutput && matchesText(OutputText(cell), snippet))
+        matchedIn = wxS("output");
+      else
+        continue;
+      if (matches.size() >= MAX_SEARCH_MATCHES) {
+        truncated = true;
+        break;
+      }
+      json entry = CellSummary(cell, idx);
+      entry["matched_in"] = U8(matchedIn);
+      entry["match_snippet"] = U8(snippet);
+      matches.push_back(entry);
+    }
+  }
+
+  json result;
+  result["matches"] = matches;
+  result["truncated"] = truncated;
   return result;
 }

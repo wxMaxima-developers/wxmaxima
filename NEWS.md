@@ -9,6 +9,10 @@
   in the worksheet -- every tool only reads, except adding/removing a
   variable from the watchlist, which only changes what that sidebar
   displays, the same as typing a name into it by hand.
+- Added an MCP search_cells tool that finds every cell whose input and/or
+  output contains a given plain-text or regular-expression pattern, so an
+  AI can jump straight to the relevant cell(s) of a large worksheet instead
+  of reading it all.
 - The MCP server and AI Chat sidebar's worksheet context now tell an AI
   where the user's cursor is and which cell (if any) has an error, so it
   can actually answer "what's wrong with my current cell" or "the cell

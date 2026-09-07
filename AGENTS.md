@@ -739,6 +739,66 @@ a local TCP socket.
     having `ResetAllToDefaults()` call `AiProviderDefaultModel()` for all
     four, removing the second copy entirely; re-verified live in Xvfb
     that Options now genuinely shows `claude-3-5-sonnet-latest`.
+  - **Follow-up (2026-09-06): a new `search_cells` MCP tool, so an AI can
+    find a cell instead of reading the whole worksheet.** Raised by the
+    user directly ("would the AI profit from some regex search for input/
+    output?") -- a fair gap, since `list_cells`/`read_worksheet` were the
+    only way to find "which cell mentions X" and both mean reading every
+    cell yourself, exactly the friction the current-cell/error markers
+    above already exist to reduce. Added `McpTools::SearchCells()`: a
+    `pattern` argument, a plain case-insensitive substring by default, or
+    a POSIX extended regular expression with `"regex": true` (`wxRegEx`,
+    the same engine `RegexSearch`/`FindReplacePane` already use elsewhere
+    in this codebase -- reused directly rather than adding a second regex
+    dependency); optional `case_sensitive` and `scope` ("input"/"output"/
+    "both", default "both") to narrow a search. Returns each matching
+    cell's usual summary (uuid/is_current/has_error, via the existing
+    `CellSummary()`) plus `matched_in` and a short `match_snippet` (40
+    characters of context on each side of the match, with "..." markers
+    where it was cut) -- enough to judge relevance without dumping a
+    potentially huge cell's entire text for every hit. Capped to
+    `MAX_SEARCH_MATCHES` (50) with a `truncated` flag, the same shape as
+    every other capped response in this file, so a pathological pattern
+    matching most of a huge worksheet can't turn into an unbounded reply.
+    An invalid regex (checked via `wxRegEx::IsValid()` right after
+    construction) throws `McpToolError` rather than matching nothing
+    silently or crashing. The whole search runs under a `wxLogNull` guard
+    -- a bad pattern or a match attempt could otherwise trigger a
+    `wxLogXXX` call that, per this file's own "not reliably visible"
+    entry, could in the worst case surface as an unwanted modal `wxLogGui`
+    popup from what is, from the caller's perspective, an ordinary
+    JSON-RPC error response. Verified both ways: `test_McpTools.cpp` gained
+    a new SCENARIO (substring/regex/case-sensitivity/scope/invalid-pattern/
+    the 50-match cap, 18 new assertions, 86 total in the file) against a
+    real headless `Worksheet`, and the transport itself was re-checked live
+    in Xvfb via `curl` against a real running MCP server (`tools/list`
+    includes it; a plain-substring call, a case-insensitive call, and an
+    invalid-regex call all matched expectations) -- catching, in the
+    process, an unrelated test-harness mistake of my own (a `.wxm` file
+    written for the live check without the required `/* [wxMaxima batch
+    file version 1] ... */` header line fails to load with a completely
+    silent-to-the-MCP-caller empty worksheet, `Format::ParseWXMFile()`'s
+    own recognized-header check rejecting it before a single cell is
+    parsed -- not a McpTools bug, just a reminder that a `.wxm` fixture
+    needs that exact header, see the existing fixtures under
+    `test/automatic_test_files/` for the correct shape).
+  - **Not implemented, and shouldn't be without a separate decision: a
+    write/evaluate-capable MCP tool.** Raised and discussed directly with
+    the user (2026-09-06): unlike `watch_variable`/`unwatch_variable` (see
+    this section's own "why 'read-only except two things' and not
+    stricter" note above), an `evaluate_cell`-style tool is not a bounded
+    side effect -- Maxima has no sandbox at all around it (it can `system()`
+    out to the shell, read/write arbitrary files the user can access, ...),
+    so letting an AI evaluate a cell is, in effect, letting it run arbitrary
+    code on the user's machine. Per-call user consent does not bound that
+    blast radius the way it does for a sidebar-display change. If this is
+    picked up later: a consent-gated `insert_cell` that only inserts text
+    *without* auto-evaluating it (the user still has to press Enter/
+    Shift-Enter themselves) is a meaningfully safer middle ground than a
+    tool that evaluates anything -- treat a real `evaluate_cell` as a
+    separate, much bigger decision that needs either genuine sandboxing
+    around the Maxima process or explicit human-in-the-loop confirmation
+    on every single call, not a one-time "make this permanent" toggle.
 - **wxAuiManager:** The application uses `wxAuiManager` for its complex layout (sidebars, toolbars, worksheet).
   - **Linux/GTK Timing:** On Linux (especially KDE Plasma with Global Menus), calling `m_manager.Update()` can disrupt the menu bar if it's already attached. This is a known environmental issue in the interaction between wxWidgets, GTK3, and the KDE Global Menu proxy.
     - **Automated Fix:** On systems with wxWidgets <= 3.2 running on KDE, Unity, or with `appmenu-gtk-module` enabled, wxMaxima automatically sets `UBUNTU_MENUPROXY=0` at startup in `main.cpp` to force menus to remain within the window and prevent disappearance.
