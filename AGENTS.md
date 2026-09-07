@@ -1538,6 +1538,102 @@ a local TCP socket.
     (not Wine) under *real contention* (not a quiet, idle sandbox) to
     reproduce at all -- which matches this bug's own history of being
     essentially unreproducible everywhere except the actual CI runner.
+  - **Follow-up (2026-09-06): a full wxWidgets-for-MinGW build under Wine
+    was judged, again, too large an undertaking to attempt blind for
+    another round of a theory that keeps failing to reproduce here --
+    deployed a cheap, real-CI experiment instead of another Wine repro.**
+    This sandbox has no prebuilt wxWidgets-for-MinGW package available via
+    apt, and building it from source cross-compiled would be a genuinely
+    large, open-ended undertaking (the same reasoning that already shelved
+    this exact idea in the previous entry) for a lead -- concurrent `ctest
+    -j 2` scheduling -- that a synthetic two-process Wine repro *already*
+    failed to reproduce (60 pairs, 0 failures, see above), meaning even a
+    full real build under Wine might well repeat that same non-result
+    without actually settling anything, since Wine's scheduler is not a
+    stand-in for a real, loaded Windows CI runner's contention either way.
+    Rather than spend that build effort on another likely-inconclusive Wine
+    experiment, added `RUN_SERIAL TRUE` to `wxmaxima_version_string`
+    itself (`test/CMakeLists.txt`) -- CTest never schedules a `RUN_SERIAL`
+    test concurrently with anything else, regardless of `-j`. This tests
+    the contention theory directly against the one environment that has
+    ever actually reproduced the bug (the real Windows CI runner) instead
+    of against another simulation of it. It is a real, if indirect,
+    experiment, not a guess dressed up as one: if several real CI runs
+    with this in place stop failing, that is genuine evidence contention
+    is a necessary ingredient (worth then hunting for what state two
+    concurrent `wxmaxima --version` processes could actually contend
+    over -- a shared named object, a registry key, a temp file, ... --
+    none of which this investigation has looked at yet); if it still
+    fails under `RUN_SERIAL`, that rules out simple ctest-level contention
+    cleanly and cheaply, no build required either way. Deliberately left
+    `wxmaxima_version_returncode` (the sibling test checking only the exit
+    code, which has never once been observed to fail) untouched -- this
+    experiment targets only the test that actually exhibits the bug.
+    **Revert this single `RUN_SERIAL TRUE` if a future session confirms it
+    made no difference** -- it is an experiment to gather evidence, not a
+    fix, and should not linger indefinitely presented as one.
+    **First two real data points (2026-09-06, PR #2294, commit `54598a7`):
+    both of the first two real CI runs with `RUN_SERIAL TRUE` in place
+    still failed with the exact same symptom** ("Required regular
+    expression not found", 133/134 tests passed, same single test). This
+    is meaningful, if not yet conclusive: simple ctest-level self-
+    concurrency (this test racing some *other* ctest job for CPU/scheduler
+    time within the same `-j 2` invocation) does not look sufficient on
+    its own to explain the failure, since removing exactly that kind of
+    contention for this one test didn't stop it from failing twice in a
+    row. Two important caveats before concluding contention is irrelevant
+    entirely: (1) `RUN_SERIAL` only keeps *this* test from running
+    concurrently with anything else -- it does nothing about contention
+    for the *machine's* resources in general (another GitHub Actions
+    Windows runner's own background load, antivirus scanning, etc. are
+    unaffected), so this doesn't rule out contention as a class, only
+    ctest's own internal `-j 2` scheduling specifically; (2) two data
+    points is still a small sample against a failure this reports as
+    "essentially every push" -- worth accumulating more real CI runs
+    before drawing a firm conclusion. Do not spend further Wine-repro
+    effort chasing plain ctest-level contention specifically based on this
+    -- that narrow mechanism now has two real, direct data points against
+    it, which outweighs the earlier from-first-principles Wine simulation
+    that failed to reproduce it either way.
+    **Third data point (2026-09-07, commit `45dc8ff`, a genuinely separate
+    push -- not a re-run of the same commit): failed again, identically.**
+    Three for three real CI runs with `RUN_SERIAL TRUE` in place, all
+    failing the same way. Treat plain `ctest -j 2` self-concurrency as
+    reasonably disconfirmed as *the* cause at this point -- not worth a
+    fourth confirmatory run. `RUN_SERIAL TRUE` is left in place (it is
+    harmless either way -- this test is fast and gains nothing from
+    parallelism -- and the finding itself is worth keeping visible on the
+    test), but stop describing it as an open experiment still gathering
+    data; it has its answer. The next real lead, if this is picked up
+    again, is real Windows hardware with `rr` (this sandbox's Wine
+    environment cannot simulate whatever the actual trigger is, per the
+    "essentially unreproducible everywhere except the actual CI runner"
+    conclusion above) or bisecting the GH #2274 startup-reordering commit
+    (`3f5e895`) directly on real Windows -- not another synthetic Wine
+    repro of ctest-level contention specifically.
+  - **Follow-up (2026-09-07): "does this only fail on PRs?" -- checked
+    directly, and no.** A fair question to ask given how much of this
+    investigation happened on PR branches -- but `compile_windows.yml`
+    has no `pull_request` trigger at all (`on: [push, workflow_dispatch]`
+    only), so every run, PR-associated or not, is a plain `push` event
+    checking out the exact pushed commit -- never a synthetic PR-merge-ref
+    checkout, so there is no mechanism by which "PR" vs. "not PR" could
+    change what gets built or tested. Confirmed empirically too: pulled
+    the last 20 `compile_windows` runs on `main` itself (real merges/
+    direct pushes, back to 2026-08-17 -- the flake's own documented onset)
+    via `list_workflow_runs` (`branch: "main", event: "push"`) and *every
+    single one* shows `conclusion: failure`; spot-checked one directly
+    (the #2292 merge, run `34058521313`, job `101554735776`) and it's the
+    identical signature -- `99% tests passed, 1 tests failed`,
+    `71 - wxmaxima_version_string (Failed)`. So this fails at the same
+    rate on `main` as on every PR branch; there is no PR-specific
+    mechanism to chase. The likely reason it *feels* PR-specific: CI
+    status is mostly surfaced and acted on via a PR's own checks tab,
+    while `main` pushes happen less often and nothing blocks on their
+    failure once the merge has already landed, so those failures are
+    easier to not notice -- a visibility/sampling effect, not a real
+    behavioral difference between the two trigger paths. Don't re-open
+    "PR-specific" as a lead without new evidence.
 
 - **System tray icon (`src/TrayIcon.{h,cpp}`, GH #2286) -- mirrors the busy
   status, gated entirely by `wxUSE_TASKBARICON`.** The maintainer's own
