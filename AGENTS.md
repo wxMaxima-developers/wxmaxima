@@ -1741,6 +1741,42 @@ a local TCP socket.
     removed (or at least re-gated more strictly) once this investigation
     either finds its answer or is shelved again -- it's instrumentation for
     an open question, not a permanent feature.
+  - **Follow-up (2026-09-07, same day): the very first real CI run reproduced
+    the failure exactly as expected, but the uploaded artifact ZIP itself
+    turned out to be unreachable from this sandbox.** PR #2295's
+    `compile_windows` run failed `wxmaxima_version_string` right on cue
+    ("Required regular expression not found", 133/134 -- identical signature
+    to every prior occurrence) and `actions/upload-artifact@v7` uploaded a
+    real 5525-byte `wxm-stdio-debug-log` artifact. But both `curl` (via this
+    sandbox's egress proxy) and the `WebFetch` tool failed identically on the
+    artifact's actual storage backend
+    (`productionresultssa12.blob.core.windows.net`, an Azure Blob Storage
+    host, not `github.com` itself) with `EGRESS_BLOCKED` -- this sandbox's
+    network policy allowlists GitHub's own API/web domains but not the
+    separate blob-storage domain artifact downloads are redirected to.
+    `mcp__github__actions_get`'s `download_workflow_run_artifact` method
+    happily returns a valid, correctly-signed short-lived SAS URL for the
+    artifact -- the GitHub API call itself works fine -- but actually
+    fetching that URL's bytes is what fails, and no available MCP tool
+    proxies that fetch through an allowlisted path. **Fixed by not depending
+    on artifact download at all**: added a new "Print stdio debug log" step
+    (`.github/workflows/compile_windows.yml`, right before "Upload stdio
+    debug log", also `if: always()`) that `Get-Content`s the log file
+    straight into the job's own console output when it exists. Job step logs
+    are fetched through `mcp__github__get_job_logs`, a plain GitHub API call
+    against `github.com` itself -- confirmed working earlier in this exact
+    investigation (that's how the `wxmaxima_version_string` failure text
+    above was read) -- so this sidesteps the blob-storage egress gap
+    entirely instead of trying to work around it. The artifact upload step
+    is left in place too (harmless, and useful for anyone reading this from
+    an environment that *can* reach Azure Blob Storage), but the console
+    print is now the primary, verified-reachable way to retrieve this
+    trace. **Not yet re-verified**: this fix hasn't had a CI run of its own
+    yet -- the analysis above is from the run that used only the
+    artifact-upload step, so the actual `StdioDebugLog()` trace content
+    (the real payoff of this whole diagnostic effort) is still unread as of
+    this entry. That comes in the next follow-up once the console-print
+    step lands and a fresh run reproduces the failure again.
 
 - **System tray icon (`src/TrayIcon.{h,cpp}`, GH #2286) -- mirrors the busy
   status, gated entirely by `wxUSE_TASKBARICON`.** The maintainer's own

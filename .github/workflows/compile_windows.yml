@@ -285,6 +285,22 @@ jobs:
             ctest -LE "unittest|needs_posix" -E "multithreadtest" --repeat after-timeout:2 -j 2 --output-on-failure
             cd ..
             cd ..
+      - name: Print stdio debug log
+        # Echoes the trace straight into this job's own console output, in
+        # addition to the artifact upload below -- a downloading agent (e.g.
+        # an AI coding assistant investigating this from a sandboxed session)
+        # may have no route to actions-results.blob.core.windows.net (the
+        # artifact's actual storage backend) even though it can read job logs
+        # via the GitHub API; this step makes the trace reachable either way.
+        if: always()
+        run: |
+            if (Test-Path wxm_stdio_debug.log) {
+              Write-Output "----- wxm_stdio_debug.log -----"
+              Get-Content wxm_stdio_debug.log
+              Write-Output "----- end wxm_stdio_debug.log -----"
+            } else {
+              Write-Output "wxm_stdio_debug.log was not produced."
+            }
       - name: Upload stdio debug log
         # Only produced/useful when the step above actually failed -- see the
         # WXM_STDIO_DEBUG_LOG env var on that step. if: always() (not
