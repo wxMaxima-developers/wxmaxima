@@ -1777,6 +1777,124 @@ a local TCP socket.
     (the real payoff of this whole diagnostic effort) is still unread as of
     this entry. That comes in the next follow-up once the console-print
     step lands and a fresh run reproduces the failure again.
+  - **Follow-up (2026-09-07, same day): the console-print fallback worked,
+    the trace was read end to end for the failing `wxmaxima_version_string`
+    invocation itself, and it shows a completely clean, anomaly-free
+    sequence all the way through -- which redirects the investigation
+    rather than closing it.** Commit `0dfb7ba`'s `compile_windows` run
+    (job `101648978179`, run `34092563005`) failed the same way again
+    ("Compile using minGW" red; the earlier commit's run on this same PR
+    had the identical `wxmaxima_version_string` signature and nothing else
+    in this diff touches non-Windows code, so this is the same failure,
+    not a new one). `mcp__github__get_job_logs` returned the trace directly
+    in the job's own console output exactly as designed -- the
+    Azure-Blob-Storage egress gap from the previous entry is now fully
+    worked around for good.
+    The trace for the one process that reached the `-v` branch (pid 3420,
+    identified unambiguously: `wxmaxima_version_string` is the only test in
+    the whole suite that both passes `--version` and checks the captured
+    text, so it's the only process that could ever log an "entering -v
+    branch" line) is, verbatim:
+    ```
+    [pid 3420] BindStdStreamToParent(4294967285) start: handle=0000000000000450 type=char
+    [pid 3420] BindStdStreamToParent(4294967285) done: fd=1 osHandle=0000000000000240
+    [pid 3420] BindStdStreamToParent(4294967284) start: handle=0000000000000454 type=char
+    [pid 3420] BindStdStreamToParent(4294967284) done: fd=2 osHandle=000000000000042c
+    [pid 3420] BindStdStreamToParent(4294967286) start: handle=00000000000000b4 type=char
+    [pid 3420] BindStdStreamToParent(4294967286) done: fd=0 osHandle=0000000000000454
+    [pid 3420] RedirectStdioToParent() done: stdout fd=1 osHandle=0000000000000240, stderr fd=2 osHandle=000000000000042c
+    [pid 3420] after SetHandleInformation: stdout fd=1 osHandle=0000000000000240, stderr fd=2 osHandle=000000000000042c
+    [pid 3420] after wxMessageOutput::Set: stdout fd=1 osHandle=0000000000000240
+    [pid 3420] before cmdLineParser.Parse(): stdout fd=1 osHandle=0000000000000240
+    [pid 3420] after cmdLineParser.Parse() (result=0): stdout fd=1 osHandle=0000000000000240
+    [pid 3420] entering -v branch: stdout fd=1 osHandle=0000000000000240, wxMessageOutput::Get()=00000217191f0790
+    [pid 3420] after Printf, before exit(0)
+    ```
+    **Every single checkpoint is exactly what a correctly-working process
+    should show**: the initial handle is valid (never null/invalid, so the
+    `AttachConsole` fallback branch never fires), `_dup2()` succeeds and
+    produces a stable `osHandle` (`0x240`) that *never changes* across
+    `SetHandleInformation`, `wxMessageOutput::Set()`, or
+    `cmdLineParser.Parse()`, `wxMessageOutput::Get()` returns a valid
+    non-null pointer right before the real `Printf()` call, and the trace
+    reaches "after Printf, before exit(0)" -- meaning the `Printf()` call
+    itself returned normally, no exception, no crash, nothing to indicate
+    the write failed at the C++ level. **This rules out every mechanism
+    this instrumentation was built to catch**: the fd/handle chain does not
+    silently change, drop, or point somewhere unexpected anywhere between
+    `RedirectStdioToParent()` and the actual write call. Whatever is wrong
+    is downstream of a call that, from inside the process, looks completely
+    successful.
+    **A genuinely new, unexpected, load-bearing fact surfaced as a side
+    effect of tracing this**: `GetFileType()` on the very first
+    `GetStdHandle(STD_OUTPUT_HANDLE)` -- before any of this code's own
+    logic runs -- reports `FILE_TYPE_CHAR`, not `FILE_TYPE_PIPE`, and this
+    is true for *every* wxmaxima subprocess this ctest step spawns, not
+    just the failing one (confirmed by grepping the same trace for every
+    other pid's `BindStdStreamToParent(...) start` line -- all say
+    `type=char`). ctest's `--output-on-failure`/regex-matching machinery
+    has to capture each test's stdout+stderr somehow to check
+    `PASS_REGULAR_EXPRESSION`-style assertions against it, and the
+    textbook assumption (an anonymous pipe, which would show up as
+    `FILE_TYPE_PIPE` to the child) does not match what's actually
+    happening here -- every child inherits a real console-type handle
+    instead. This was previously completely unknown and changes the shape
+    of the problem: it is not "something about wxMaxima's own code breaks
+    a working pipe redirection" (the redirection, whatever it targets, is
+    demonstrably rock-solid across this entire trace) -- it is "does a
+    write through a `FILE_TYPE_CHAR` handle via this specific
+    `wxMessageOutputStderr::Printf()` code path actually reach wherever
+    ctest is reading captured test output from, on this toolchain, for a
+    WIN32-subsystem (GUI) child process specifically."
+    **Why there is no working comparison case to rule this in or out**:
+    `wxMessageOutput`/`wxMessageOutputStderr` is used for exactly two
+    things in this codebase -- the `--version` text and `wxCmdLineParser`'s
+    own `--help` usage text -- and `wxmaxima_help_returncode` (the sibling
+    test for `--help`) only checks the exit code, never the captured text.
+    So `wxmaxima_version_string` is the *only* test in the entire suite
+    that both (a) goes through this specific WIN32-subsystem console-output
+    code path and (b) actually asserts on the captured content -- every
+    other content-checked batch test's expected text comes from Maxima's
+    own separate output-writing mechanism over the TCP socket, which never
+    touches `BindStdStreamToParent()`/`wxMessageOutput` at all. There is no
+    other "this exact mechanism, but it happens to pass" test to compare
+    against; the FILE_TYPE_CHAR fact, while true for every process, cannot
+    be dismissed as "clearly fine, everything else uses it too" the way it
+    might look at first glance, because nothing else's *pass/fail result*
+    actually depends on it.
+    **Not yet investigated, and the concrete next steps if this is picked
+    up again**: (1) instrument (still diagnostic-only, still gated behind
+    `WXM_STDIO_DEBUG_LOG`) whether the underlying write call inside
+    `wxMessageOutputStderr::Printf()` -- which per wxWidgets' own source is
+    a plain `fputs(psz, m_fp)` against the `FILE*` passed to its
+    constructor (`stdout`) -- actually succeeds, e.g. by checking `errno`/
+    `ferror(stdout)` right after the call, since the trace above cannot
+    currently distinguish "the write genuinely succeeded but the bytes
+    went somewhere ctest doesn't read" from "some later, still-unlogged
+    step silently swallows or discards them"; (2) as a genuinely separate,
+    clearly-labeled *experiment* (not a fix riding along with a diagnostic
+    change) -- add an explicit `fflush(stdout)` right after the `Printf()`
+    call in the `-v` branch, gated behind the same env var so it only runs
+    on the one CI invocation collecting evidence, and see whether that
+    changes the outcome; if it does, that's real evidence toward a
+    buffering-related mechanism despite `setvbuf(..., _IONBF, 0)` already
+    having been set on this stream earlier -- worth double-checking that
+    the unbuffered mode actually survived being set on a `FILE_TYPE_CHAR`-
+    backed stream specifically, since Windows' CRT console-handle plumbing
+    is not guaranteed to behave identically to its pipe/file plumbing here;
+    (3) look directly at how CMake/CTest's own child-process execution
+    (`cmsysProcess`/kwsys on Windows) sets up stdio redirection for a
+    `WIN32`-subsystem child specifically -- the `FILE_TYPE_CHAR` finding
+    suggests it may not be using `STARTF_USESTDHANDLES` + anonymous pipes
+    the way it would for an ordinary console-subsystem test executable,
+    and if so, understanding *that* mechanism (not wxMaxima's own code) is
+    probably the real key to this bug. This is the first concrete lead in
+    this entire investigation that isn't "one more mechanism ruled out" --
+    it's a real, previously-unknown fact about how this specific CI
+    environment captures a WIN32-subsystem child's output, and the next
+    session picking this up should start here rather than re-tracing the
+    fd/handle chain again, which is now about as thoroughly instrumented
+    as it usefully can be.
 
 - **System tray icon (`src/TrayIcon.{h,cpp}`, GH #2286) -- mirrors the busy
   status, gated entirely by `wxUSE_TASKBARICON`.** The maintainer's own
