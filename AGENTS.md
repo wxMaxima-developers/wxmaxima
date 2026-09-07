@@ -1535,6 +1535,22 @@ a local TCP socket.
     -- that narrow mechanism now has two real, direct data points against
     it, which outweighs the earlier from-first-principles Wine simulation
     that failed to reproduce it either way.
+    **Third data point (2026-09-07, commit `45dc8ff`, a genuinely separate
+    push -- not a re-run of the same commit): failed again, identically.**
+    Three for three real CI runs with `RUN_SERIAL TRUE` in place, all
+    failing the same way. Treat plain `ctest -j 2` self-concurrency as
+    reasonably disconfirmed as *the* cause at this point -- not worth a
+    fourth confirmatory run. `RUN_SERIAL TRUE` is left in place (it is
+    harmless either way -- this test is fast and gains nothing from
+    parallelism -- and the finding itself is worth keeping visible on the
+    test), but stop describing it as an open experiment still gathering
+    data; it has its answer. The next real lead, if this is picked up
+    again, is real Windows hardware with `rr` (this sandbox's Wine
+    environment cannot simulate whatever the actual trigger is, per the
+    "essentially unreproducible everywhere except the actual CI runner"
+    conclusion above) or bisecting the GH #2274 startup-reordering commit
+    (`3f5e895`) directly on real Windows -- not another synthetic Wine
+    repro of ctest-level contention specifically.
 
 - **System tray icon (`src/TrayIcon.{h,cpp}`, GH #2286) -- mirrors the busy
   status, gated entirely by `wxUSE_TASKBARICON`.** The maintainer's own
