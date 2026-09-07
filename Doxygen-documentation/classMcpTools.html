@@ -119,6 +119,10 @@ nlohmann::json&#160;</td><td class="memItemRight" valign="bottom"><b>WatchVariab
 <tr class="memitem:a9d628d082a1baeadc67e68e98e745c64"><td class="memItemLeft" align="right" valign="top"><a id="a9d628d082a1baeadc67e68e98e745c64" name="a9d628d082a1baeadc67e68e98e745c64"></a>
 nlohmann::json&#160;</td><td class="memItemRight" valign="bottom"><b>UnwatchVariable</b> (const nlohmann::json &amp;arguments) const</td></tr>
 <tr class="separator:a9d628d082a1baeadc67e68e98e745c64"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a699bdc1c2e2aba692de93aa92741f5"><td class="memItemLeft" align="right" valign="top"><a id="a0a699bdc1c2e2aba692de93aa92741f5" name="a0a699bdc1c2e2aba692de93aa92741f5"></a>
+nlohmann::json&#160;</td><td class="memItemRight" valign="bottom"><b>SearchCells</b> (const nlohmann::json &amp;arguments) const</td></tr>
+<tr class="memdesc:a0a699bdc1c2e2aba692de93aa92741f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds every cell whose input and/or output contains <code>pattern</code> (a plain substring by default, or a regular expression with "regex":true), so an AI can jump straight to the relevant cell(s) of a large worksheet instead of reading everything via read_worksheet/list_cells. Read-only, same as every other tool here &ndash; it never touches worksheet content. <br /></td></tr>
+<tr class="separator:a0a699bdc1c2e2aba692de93aa92741f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -126,6 +130,10 @@ Static Public Attributes</h2></td></tr>
 static constexpr std::size_t&#160;</td><td class="memItemRight" valign="bottom"><b>MAX_TEXT_LENGTH</b> = 200000</td></tr>
 <tr class="memdesc:a23a493f208b4c99337ed33da0c14c044"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classA.html">A</a> cap on how much text a single response ever carries (read_worksheet/ read_section), so a huge worksheet can't produce an unbounded reply. <br /></td></tr>
 <tr class="separator:a23a493f208b4c99337ed33da0c14c044"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b24c5fa07b4057633fb3a57edf8241c"><td class="memItemLeft" align="right" valign="top"><a id="a9b24c5fa07b4057633fb3a57edf8241c" name="a9b24c5fa07b4057633fb3a57edf8241c"></a>
+static constexpr std::size_t&#160;</td><td class="memItemRight" valign="bottom"><b>MAX_SEARCH_MATCHES</b> = 50</td></tr>
+<tr class="memdesc:a9b24c5fa07b4057633fb3a57edf8241c"><td class="mdescLeft">&#160;</td><td class="mdescRight">search_cells stops collecting further matches once it hits this many, reporting "truncated" instead &ndash; a pathological pattern matching most of a huge worksheet must not turn into an unbounded response either. <br /></td></tr>
+<tr class="separator:a9b24c5fa07b4057633fb3a57edf8241c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a56d37bf8f53bc6ccf552fec1a0dfcff1"><td class="memItemLeft" align="right" valign="top"><a id="a56d37bf8f53bc6ccf552fec1a0dfcff1" name="a56d37bf8f53bc6ccf552fec1a0dfcff1"></a>
 static constexpr std::size_t&#160;</td><td class="memItemRight" valign="bottom"><b>OUTPUT_PREVIEW_LENGTH</b> = 2000</td></tr>
 <tr class="memdesc:a56d37bf8f53bc6ccf552fec1a0dfcff1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The cap applied to each individual cell's own output when it's one of many being concatenated (ReadWorksheet/ReadSection) &ndash; keeps one cell with a huge output (a large matrix, a long list, ...) from crowding out every other cell's info in the same response. read_cell, which targets exactly one cell the caller already chose, is not limited to this &ndash; see its output_length/output_from_end arguments. <br /></td></tr>
