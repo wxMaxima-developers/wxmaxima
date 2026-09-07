@@ -1551,6 +1551,29 @@ a local TCP socket.
     conclusion above) or bisecting the GH #2274 startup-reordering commit
     (`3f5e895`) directly on real Windows -- not another synthetic Wine
     repro of ctest-level contention specifically.
+  - **Follow-up (2026-09-07): "does this only fail on PRs?" -- checked
+    directly, and no.** A fair question to ask given how much of this
+    investigation happened on PR branches -- but `compile_windows.yml`
+    has no `pull_request` trigger at all (`on: [push, workflow_dispatch]`
+    only), so every run, PR-associated or not, is a plain `push` event
+    checking out the exact pushed commit -- never a synthetic PR-merge-ref
+    checkout, so there is no mechanism by which "PR" vs. "not PR" could
+    change what gets built or tested. Confirmed empirically too: pulled
+    the last 20 `compile_windows` runs on `main` itself (real merges/
+    direct pushes, back to 2026-08-17 -- the flake's own documented onset)
+    via `list_workflow_runs` (`branch: "main", event: "push"`) and *every
+    single one* shows `conclusion: failure`; spot-checked one directly
+    (the #2292 merge, run `34058521313`, job `101554735776`) and it's the
+    identical signature -- `99% tests passed, 1 tests failed`,
+    `71 - wxmaxima_version_string (Failed)`. So this fails at the same
+    rate on `main` as on every PR branch; there is no PR-specific
+    mechanism to chase. The likely reason it *feels* PR-specific: CI
+    status is mostly surfaced and acted on via a PR's own checks tab,
+    while `main` pushes happen less often and nothing blocks on their
+    failure once the merge has already landed, so those failures are
+    easier to not notice -- a visibility/sampling effect, not a real
+    behavioral difference between the two trigger paths. Don't re-open
+    "PR-specific" as a lead without new evidence.
 
 - **System tray icon (`src/TrayIcon.{h,cpp}`, GH #2286) -- mirrors the busy
   status, gated entirely by `wxUSE_TASKBARICON`.** The maintainer's own
