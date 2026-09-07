@@ -1895,6 +1895,69 @@ a local TCP socket.
     session picking this up should start here rather than re-tracing the
     fd/handle chain again, which is now about as thoroughly instrumented
     as it usefully can be.
+  - **Follow-up (2026-09-07): likely root cause identified via external
+    research on the `FILE_TYPE_CHAR` finding above, and a fix applied to
+    the test itself (not to wxMaxima's code) -- STILL UNVERIFIED against
+    real CI as of this writing.** Two externally-confirmed facts, found via
+    web search rather than assumed: (1) `GetFileType()` reports
+    `FILE_TYPE_CHAR` for BOTH a real console handle AND a Windows ConPTY
+    (pseudo-console) conout handle -- they are indistinguishable to the
+    child via this API; (2) ConPTY has multiple real, currently-open
+    upstream issues in `microsoft/terminal` describing races around
+    draining/forwarding a child process's output relative to that child's
+    own exit -- e.g. `ClosePseudoConsole()` not reliably waiting for the
+    output pipe to drain before tearing down, worse the faster the child
+    exits after writing. `wxmaxima --version` writes exactly one line via
+    `Printf()` and calls `exit(0)` immediately afterwards with nothing else
+    happening in between -- exactly the write-then-exit-fast shape that
+    triggers this class of bug -- and (per the entry above) this is the
+    only test in the whole suite whose pass/fail depends on that specific
+    console-output path's content for a WIN32-subsystem process; every
+    other content-checked test asserts on Maxima's answer over the TCP
+    socket instead, which never touches this path at all. Put together:
+    this is very likely a Windows console/ConPTY output-draining race
+    around a short-lived GUI-subsystem process's exit, not a bug in
+    wxMaxima's own code -- consistent with the diagnostic trace above
+    already proving the app-side write itself completes normally, and with
+    `RUN_SERIAL` (a ctest-level, not an OS-console-level, mitigation)
+    having no effect. This does not itself prove GitHub Actions'
+    `windows-latest` runner's `pwsh`/CTest process tree actually goes
+    through ConPTY specifically (that could not be confirmed from outside
+    the runner) -- but a real console handle has the exact same
+    `FILE_TYPE_CHAR` signature and the exact same class of
+    "output near process exit is not fully synchronous" risk, so the fix
+    below does not depend on picking between the two.
+    **Fix applied (`test/CMakeLists.txt`)**: since the race lives in
+    whatever console/pty layer sits between `wxmaxima.exe` and CTest, not
+    in wxMaxima's own code, route the captured text through a real file
+    instead of a live console handle on Windows -- disk I/O has no
+    equivalent async-drain step. The test's `COMMAND` is now
+    platform-conditional (`if(WIN32)`): Windows runs
+    `cmd /c "$<TARGET_FILE:wxmaxima> ... > wxmaxima_version_string.out 2>&1 && type wxmaxima_version_string.out"`,
+    every other platform keeps the original direct invocation unchanged.
+    `type`'s own write-then-exit is spawned by CTest the exact same way as
+    every other (reliably passing) test in this suite -- it's a plain
+    console-subsystem process, which removes the one factor (a
+    WIN32-subsystem process as CTest's *direct* child) unique to this test,
+    rather than guessing at the race's exact timing. `RUN_SERIAL` is left
+    in place (harmless, and the earlier three-real-CI-failures finding
+    against ctest-level contention stays valid regardless of this fix).
+    Verified only that this doesn't regress non-Windows: a clean local
+    Linux configure+build+`ctest -R wxmaxima_version_string` still passes,
+    and the generated Linux command line is byte-for-byte unchanged from
+    before this change (confirmed by inspecting the generated
+    `CTestTestfile.cmake`) -- the actual Windows behavior, same as
+    everything else in this investigation, can only be confirmed by a real
+    `compile_windows.yml` CI run. **If this run still fails**: that rules
+    out a console/ConPTY drain race specifically (since a real file write
+    has no equivalent race) and reopens the question of what else could be
+    dropping this one test's captured output -- worth re-reading this
+    whole entry's history before re-guessing, and worth checking whether
+    the `.out` file itself ended up empty/short (checked into the
+    artifact/console-print mechanism already built for this investigation)
+    to tell "file write also failed" apart from "`type`'s own output was
+    lost the same way," which would point back at the outer console layer
+    being the common factor after all.
 
 - **System tray icon (`src/TrayIcon.{h,cpp}`, GH #2286) -- mirrors the busy
   status, gated entirely by `wxUSE_TASKBARICON`.** The maintainer's own
