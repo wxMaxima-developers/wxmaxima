@@ -79,6 +79,10 @@ $(function() {
   above the cursor" &ndash; both were previously invisible to it. Also capped how much of a single cell's output can dominate a response (a huge matrix or list no longer crowds out every other cell), with a way to ask for just a preview or specifically the end of a long output, and made read_variables report when <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> is still busy so an empty value isn't mistaken for "undefined" when it's really just "not answered yet."</li>
 <li>Options -&gt; AI Chat now links directly to each provider's own page for getting an API key, and the AI Chat sidebar itself shows an "Open
   Options..." button whenever none is configured yet.</li>
+<li>The AI Chat and Accessibility tabs in Options no longer share a generic icon with an unrelated tab &ndash; both now have their own. Options -&gt; AI Chat also gained a note explaining that an API key is billed separately from a consumer chat subscription (a Claude Pro/Max, ChatGPT Plus or Gemini Advanced plan does not include API usage), since a provider's site asking for prepaid credit before it hands out a key can otherwise look like a mistake.</li>
+<li>Options -&gt; AI Chat redesigned: instead of all four providers' key/model fields shown stacked at once, a single "Active provider" dropdown now shows only the selected one's own fields. You can also add any number of your own custom providers (a name, an API style &ndash; OpenAI-compatible, Anthropic, or Google Gemini &ndash; a request URL and a model), which covers most third-party and self-hosted endpoints (OpenRouter, Groq, a local Ollama server, a proxy in front of one of the big three, ...) without needing built-in support for each one by name.</li>
+<li>Adding a custom AI provider now offers a "Quick fill" shortcut for a few well-known local AI servers (Ollama, LM Studio, llama.cpp server) that pre-fills the URL/model fields with that server's usual defaults &ndash; still a plain custom provider afterward, and every field stays editable.</li>
+<li>AI provider API keys are now stored in the operating system's own secret store (the same keyring Windows/macOS/most Linux desktops already use for other apps' passwords) instead of in <a class="el" href="classwxMaxima.html">wxMaxima</a>'s own plain-text settings file; a key saved by an older version is moved into the secret store automatically the first time you start this version. On a system with no such secret store available at all, the AI Chat tab, sidebar and menu entry are hidden entirely rather than falling back to storing a key in plain text.</li>
 <li>Added an "AI Chat" sidebar (View -&gt; Sidebars -&gt; AI Chat) that lets you chat about the current worksheet with Anthropic, OpenAI, Google Gemini or Qwen, using your own API key (configured in Options -&gt; AI Chat). It sends a read-only snapshot of the worksheet as context; it cannot edit, evaluate or otherwise change the worksheet itself.</li>
 <li>Made the GUI-subsystem binary's stdout/stderr redirection (<code>RedirectStdioToParent()</code>) use <code>_dup2()</code> to repoint the existing stream's descriptor instead of a shallow struct-copy over a second, throwaway <code>FILE*</code> &ndash; the standard, documented way to do this, regardless of the item below. This does <em>not</em> fix the <code>wxmaxima_version_string</code> CI failure on the Windows runner: that was the working theory, but the next CI run reproduced the exact same failure on this change, and a follow-up Wine-based test confirmed both the old and new code deliver a GUI-subsystem process's piped stdout correctly in isolation. That failure remains open; see AGENTS.md for what's been ruled out and the most promising remaining lead.</li>
 <li>Added a system tray/notification-area icon (GH #2286) that mirrors <a class="el" href="classwxMaxima.html">wxMaxima</a>'s busy status &ndash; the same information the status bar's own icon and, on Windows, the taskbar button's progress overlay already show &ndash; and offers a small quick-access menu (Interrupt, Show <a class="el" href="classwxMaxima.html">wxMaxima</a>, Exit). Uses the portable <code>wxTaskBarIcon</code>, so it works on any platform wxWidgets supports it on; on GTK/Linux specifically it only renders as a genuinely visible icon when the linked wxWidgets was itself built with AppIndicator/Ayatana support, a property of the wxWidgets package <a class="el" href="classwxMaxima.html">wxMaxima</a> links against, not something <a class="el" href="classwxMaxima.html">wxMaxima</a>'s own build controls.</li>
@@ -199,7 +203,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 <li>Snap package: opening a link in the system web browser (the manual, "visit website", <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s online documentation) now works. The confined snap reaches the host's default browser through the XDG Desktop Portal instead of trying to launch a browser that is not visible inside the sandbox &ndash; no browser is bundled and confinement stays strict.</li>
 <li>Find: a match found inside a cell's output now scrolls to the matching part of the output, even in a long output cell. Previously the view only scrolled to the top of the output because the matched item &ndash; if it had not been drawn yet &ndash; had no on-screen position, so the scroll fell back to the start of the output.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md973"></a>
+<h1><a class="anchor" id="autotoc_md970"></a>
 26.07.0</h1>
 <ul>
 <li>Fixed a crash on loading a worksheet containing an empty <code>&lt;img/&gt;</code> or <code>&lt;slideshow/&gt;</code> tag (found by the parser fuzzer).</li>
@@ -221,7 +225,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 <li><a class="el" href="classA.html">A</a> correctness review for all wizards.</li>
 <li>EditorCells again grow and shrink when the user adds and removes lines</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md974"></a>
+<h1><a class="anchor" id="autotoc_md971"></a>
 26.06.2</h1>
 <ul>
 <li><a class="el" href="classA.html">A</a> whole AI-driven safety review</li>
@@ -243,7 +247,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 <li>Better undo handling.</li>
 <li>Another try to make accessibility work.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md975"></a>
+<h1><a class="anchor" id="autotoc_md973"></a>
 26.06.1</h1>
 <ul>
 <li>Fix the Ctrl+F keyboard focus on MS Windows to correctly focus the find dialogue instead of leaving it on the worksheet.</li>

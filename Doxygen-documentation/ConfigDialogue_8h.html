@@ -99,9 +99,12 @@ $(function() {
 <code>#include &lt;wx/bookctrl.h&gt;</code><br />
 <code>#include &lt;wx/artprov.h&gt;</code><br />
 <code>#include &lt;unordered_map&gt;</code><br />
+<code>#include &lt;vector&gt;</code><br />
+<code>#include &lt;wx/hyperlink.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="TextStyle_8h_source.html">cells/TextStyle.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="Worksheet_8h_source.html">worksheet/Worksheet.h</a>&quot;</code><br />
 <code>#include &quot;../Configuration.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="AiProvider_8h_source.html">ai/AiProvider.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for ConfigDialogue.h:</div>
 <div class="dyncontent">
@@ -121,6 +124,9 @@ This graph shows which files directly or indirectly include this file:</div>
 Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfigDialogue.html">ConfigDialogue</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The configuration dialog.  <a href="classConfigDialogue.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structConfigDialogue_1_1AiProviderUiRecord.html">ConfigDialogue::AiProviderUiRecord</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One entry per configurable provider &ndash; the four built-ins (in fixed order) plus any custom ones &ndash; kept in memory only for the dialog's lifetime. "None (disabled)" is not one of these; it's a separate, always-first item in m_aiChatProviderChoice with no detail box.  <a href="structConfigDialogue_1_1AiProviderUiRecord.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>

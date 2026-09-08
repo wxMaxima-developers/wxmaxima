@@ -176,6 +176,7 @@ var menudata={children:[
 {text:"d",url:"globals_func.html#index_d"},
 {text:"f",url:"globals_func.html#index_f"},
 {text:"m",url:"globals_func.html#index_m"},
+{text:"n",url:"globals_func.html#index_n"},
 {text:"o",url:"globals_func.html#index_o"},
 {text:"p",url:"globals_func.html#index_p"},
 {text:"r",url:"globals_func.html#index_r"},

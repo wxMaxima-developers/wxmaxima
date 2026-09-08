@@ -92,7 +92,11 @@ virtual <a class="el" href="AiProvider_8h.html#afa76ab3b3e4c4cf3e53d5fb066042f04
 <tr class="separator:a0b781fa4b175c0b349ba4db7cc0edb06"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a851738a1b9c781f613a9859b3f4b8adc"><td class="memItemLeft" align="right" valign="top"><a id="a851738a1b9c781f613a9859b3f4b8adc" name="a851738a1b9c781f613a9859b3f4b8adc"></a>
 wxString&#160;</td><td class="memItemRight" valign="bottom"><b>Name</b> () const</td></tr>
+<tr class="memdesc:a851738a1b9c781f613a9859b3f4b8adc"><td class="mdescLeft">&#160;</td><td class="mdescRight">AiProviderKindName(Kind()) for a built-in provider, or the user's own chosen name for a custom one (Kind() == Custom doesn't carry a name by itself) &ndash; SetDisplayName() is called by MakeAiProviderForShape() for exactly this reason. <br /></td></tr>
 <tr class="separator:a851738a1b9c781f613a9859b3f4b8adc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37d897fc889d1df77bf4908a4ea7b23c"><td class="memItemLeft" align="right" valign="top"><a id="a37d897fc889d1df77bf4908a4ea7b23c" name="a37d897fc889d1df77bf4908a4ea7b23c"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetDisplayName</b> (const wxString &amp;name)</td></tr>
+<tr class="separator:a37d897fc889d1df77bf4908a4ea7b23c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac6be3f2661854a26af4777de3548b2cd"><td class="memItemLeft" align="right" valign="top"><a id="ac6be3f2661854a26af4777de3548b2cd" name="ac6be3f2661854a26af4777de3548b2cd"></a>
 virtual wxString&#160;</td><td class="memItemRight" valign="bottom"><b>RequestUrl</b> () const</td></tr>
 <tr class="memdesc:ac6be3f2661854a26af4777de3548b2cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">The full URL <a class="el" href="classAiProvider.html#ad084eb9432e8f8d890cba010666b84b0" title="Sends one chat turn asynchronously via wxWebRequest and calls callback(ok, replyOrError) exactly once...">SendChat()</a> will POST to. Virtual so Google's provider can append the model id (its endpoint is per-model, unlike the others). <br /></td></tr>
@@ -110,6 +114,29 @@ virtual std::vector&lt; std::pair&lt; wxString, wxString &gt; &gt;&#160;</td><td
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
+<tr class="memitem:af1e55c3b86011c3b0f8f1e84f437286e"><td class="memItemLeft" align="right" valign="top"><a id="af1e55c3b86011c3b0f8f1e84f437286e" name="af1e55c3b86011c3b0f8f1e84f437286e"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>SecretStoreAvailable</b> ()</td></tr>
+<tr class="memdesc:af1e55c3b86011c3b0f8f1e84f437286e"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if this build of wxWidgets has a working wxSecretStore backend (&gt;= 3.1.1, compiled with wxUSE_SECRETSTORE, AND an actual OS keyring service reachable at runtime &ndash; e.g. gnome-keyring/kwallet on Linux, always true on Windows/macOS). API keys are only ever stored here, never in plain Configuration/wxConfig, so the whole AI Chat feature (Options tab, sidebar, menu entry) stays hidden whenever this is false rather than falling back to storing a key in plain text. <br /></td></tr>
+<tr class="separator:af1e55c3b86011c3b0f8f1e84f437286e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b1e24c3ee7a6d408fdb13442f84ab06"><td class="memItemLeft" align="right" valign="top"><a id="a5b1e24c3ee7a6d408fdb13442f84ab06" name="a5b1e24c3ee7a6d408fdb13442f84ab06"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>SaveApiKey</b> (const wxString &amp;service, const wxString &amp;apiKey)</td></tr>
+<tr class="memdesc:a5b1e24c3ee7a6d408fdb13442f84ab06"><td class="mdescLeft">&#160;</td><td class="mdescRight">Saves (or, for an empty key, deletes) an API key for <code>service</code> &ndash; a stable identifier: AiProviderKindName(kind) for a built-in provider, or CustomProviderSecretService(id) for a custom one. No-op (and never called by any code path that matters) if !SecretStoreAvailable(). <br /></td></tr>
+<tr class="separator:a5b1e24c3ee7a6d408fdb13442f84ab06"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afcb4a92b18adbf813571edb45a95ed55"><td class="memItemLeft" align="right" valign="top"><a id="afcb4a92b18adbf813571edb45a95ed55" name="afcb4a92b18adbf813571edb45a95ed55"></a>
+static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>LoadApiKey</b> (const wxString &amp;service)</td></tr>
+<tr class="memdesc:afcb4a92b18adbf813571edb45a95ed55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the stored key for <code>service</code>, or an empty string if none is stored (also the result if !SecretStoreAvailable() &ndash; there is nowhere a key could have been saved to). <br /></td></tr>
+<tr class="separator:afcb4a92b18adbf813571edb45a95ed55"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a244f5eaaf0a2b29aedde2dc145dfc977"><td class="memItemLeft" align="right" valign="top"><a id="a244f5eaaf0a2b29aedde2dc145dfc977" name="a244f5eaaf0a2b29aedde2dc145dfc977"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>DeleteApiKey</b> (const wxString &amp;service)</td></tr>
+<tr class="separator:a244f5eaaf0a2b29aedde2dc145dfc977"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a977859a7fce4a975c2617adca2055559"><td class="memItemLeft" align="right" valign="top"><a id="a977859a7fce4a975c2617adca2055559" name="a977859a7fce4a975c2617adca2055559"></a>
+static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>CustomProviderSecretService</b> (const wxString &amp;id)</td></tr>
+<tr class="memdesc:a977859a7fce4a975c2617adca2055559"><td class="mdescLeft">&#160;</td><td class="mdescRight">The secret-store service name for a custom provider's own id &ndash; kept distinct from a bare built-in kind name so a custom provider a user happens to name e.g. "OpenAI" can never collide with the real built-in OpenAI entry's stored key. <br /></td></tr>
+<tr class="separator:a977859a7fce4a975c2617adca2055559"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e937f8b565fc1b2dc73c6fe317d5119"><td class="memItemLeft" align="right" valign="top"><a id="a6e937f8b565fc1b2dc73c6fe317d5119" name="a6e937f8b565fc1b2dc73c6fe317d5119"></a>
+static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>BuiltinProviderSecretService</b> (<a class="el" href="AiProvider_8h.html#afa76ab3b3e4c4cf3e53d5fb066042f04">AiProviderKind</a> kind)</td></tr>
+<tr class="memdesc:a6e937f8b565fc1b2dc73c6fe317d5119"><td class="mdescLeft">&#160;</td><td class="mdescRight">The secret-store service name for one of the four built-in kinds &ndash; just AiProviderKindName(kind), given its own name so every call site that needs it (<a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a>'s four AiApiKeyX() accessors, the plain-text-key migration in <a class="el" href="classConfiguration.html#ac45a218b4f09c6a4c649e0f875dbbe44" title="Read the config from the wxConfig object.">Configuration::ReadConfig()</a>) shares one definition instead of separately hardcoding the same string. <br /></td></tr>
+<tr class="separator:a6e937f8b565fc1b2dc73c6fe317d5119"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad084eb9432e8f8d890cba010666b84b0"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAiProvider.html#ad084eb9432e8f8d890cba010666b84b0">SendChat</a> (std::shared_ptr&lt; const <a class="el" href="classAiProvider.html">AiProvider</a> &gt; self, wxEvtHandler *owner, const wxString &amp;context, const std::vector&lt; <a class="el" href="structAiChatMessage.html">AiChatMessage</a> &gt; &amp;history, std::function&lt; void(bool ok, const wxString &amp;replyOrError)&gt; callback)</td></tr>
 <tr class="memdesc:ad084eb9432e8f8d890cba010666b84b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends one chat turn asynchronously via wxWebRequest and calls <code>callback(ok, replyOrError)</code> exactly once, on the GUI thread, once the HTTP request completes, fails, or errors out.  <br /></td></tr>
 <tr class="separator:ad084eb9432e8f8d890cba010666b84b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -129,6 +156,9 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><b>m_apiKey</b></td>
 <tr class="memitem:a42f585ad9092468e2006152df2b28cae"><td class="memItemLeft" align="right" valign="top"><a id="a42f585ad9092468e2006152df2b28cae" name="a42f585ad9092468e2006152df2b28cae"></a>
 wxString&#160;</td><td class="memItemRight" valign="bottom"><b>m_model</b></td></tr>
 <tr class="separator:a42f585ad9092468e2006152df2b28cae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a189b53fa2fafefa31006bc26054370e5"><td class="memItemLeft" align="right" valign="top"><a id="a189b53fa2fafefa31006bc26054370e5" name="a189b53fa2fafefa31006bc26054370e5"></a>
+wxString&#160;</td><td class="memItemRight" valign="bottom"><b>m_displayName</b></td></tr>
+<tr class="separator:a189b53fa2fafefa31006bc26054370e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Talks to one external AI provider's chat completion HTTP API. </p>
