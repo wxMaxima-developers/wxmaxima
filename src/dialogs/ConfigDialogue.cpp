@@ -49,6 +49,8 @@
 #include "art/config/edit-copy_backup.h"
 #include "art/config/maxima.h"
 #include "art/config/view-refresh.h"
+#include "art/config/accessibility.h"
+#include "art/config/ai-chat.h"
 #endif
 
 #include "MathParser.h"
@@ -255,6 +257,8 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent)
   imageList.push_back(wxArtProvider::GetBitmapBundle(wxmaximaART_MEDIA_PLAYBACK_START, wxART_OTHER, wxSize(imgSize, imgSize)));
   imageList.push_back(wxArtProvider::GetBitmapBundle(wxART_PRINT, wxART_OTHER, wxSize(imgSize, imgSize)));
   imageList.push_back(wxArtProvider::GetBitmapBundle(wxmaximaART_CONFIG_VIEW_REFRESH, wxART_OTHER, wxSize(imgSize, imgSize)));
+  imageList.push_back(wxArtProvider::GetBitmapBundle(wxmaximaART_CONFIG_AI_CHAT, wxART_OTHER, wxSize(imgSize, imgSize)));
+  imageList.push_back(wxArtProvider::GetBitmapBundle(wxmaximaART_CONFIG_ACCESSIBILITY, wxART_OTHER, wxSize(imgSize, imgSize)));
   m_notebook->SetImages(imageList);
 #else
   m_imageList = std::unique_ptr<wxImageList>(new wxImageList(imgSize, imgSize, false, 0));
@@ -276,6 +280,10 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent)
   m_imageList->Add(wxArtProvider::GetBitmap(wxART_PRINT, wxART_OTHER, wxSize(imgSize, imgSize)));
   m_imageList->Add(ArtProvider::GetImage(this, wxS("edit-undo"), imgSize, VIEW_REFRESH_SVG_GZ,
                                          VIEW_REFRESH_SVG_GZ_SIZE));
+  m_imageList->Add(ArtProvider::GetImage(this, wxS("ai-chat"), imgSize, AI_CHAT_SVG_GZ,
+                                         AI_CHAT_SVG_GZ_SIZE));
+  m_imageList->Add(ArtProvider::GetImage(this, wxS("accessibility"), imgSize, ACCESSIBILITY_SVG_GZ,
+                                         ACCESSIBILITY_SVG_GZ_SIZE));
   m_notebook->SetImageList(m_imageList.get());
 #endif
 #endif
@@ -287,13 +295,12 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent)
   m_notebook->AddPage(CreateClipboardPanel(), _("Copy"), false, 5);
   m_notebook->AddPage(CreateStartupPanel(), _("Startup commands"), false, 6);
   m_notebook->AddPage(CreatePrintPanel(), _("Printout settings"), false, 7);
-  // Re-uses the "options" tab icon -- no dedicated one exists for this tab.
-  m_notebook->AddPage(CreateAiChatPanel(), _("AI Chat"), false, 4);
+  m_notebook->AddPage(CreateAiChatPanel(), _("AI Chat"), false, 9);
 #if wxUSE_ACCESSIBILITY
   // Only offered when wxWidgets was compiled with accessibility support -
   // without it there is no screen-reader integration these settings could
-  // configure. Re-uses the "options" tab icon.
-  m_notebook->AddPage(CreateAccessibilityPanel(), _("Accessibility"), false, 4);
+  // configure.
+  m_notebook->AddPage(CreateAccessibilityPanel(), _("Accessibility"), false, 10);
 #endif
   m_notebook->AddPage(CreateRevertToDefaultsPanel(),
                       _("Revert all to defaults"), false, 8);
@@ -1955,6 +1962,27 @@ wxWindow *ConfigDialogue::CreateAiChatPanel() {
       "internet connection and an API key from that provider, and nothing "
       "is sent unless you actually use the sidebar."));
   vbox->Add(intro, wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
+
+  // A real, common point of confusion (a user of this dialogue hit it
+  // directly): the "Get an API key..." link below sends an Anthropic
+  // account straight to a "buy credits" page even for someone who already
+  // pays for a Claude subscription. That is Anthropic's actual, current
+  // policy, not a wrong link -- a claude.ai Pro/Max login is technically
+  // rejected by the Messages API this sidebar talks to, and Anthropic
+  // explicitly disallows using it outside Claude Code/claude.ai (see the
+  // "No log in button is possible here" comment below for why there's no
+  // OAuth alternative). The same separation holds for every provider here:
+  // a ChatGPT Plus or Gemini Advanced subscription doesn't include API
+  // credits either. Said once, up front, so the "buy credits" page isn't a
+  // surprise or mistaken for a wrong/outdated link.
+  WrappingStaticText *billingNote = new WrappingStaticText(
+    panel, wxID_ANY,
+    _("Note: an API key is billed separately from a consumer chat "
+      "subscription -- a Claude Pro/Max, ChatGPT Plus or Gemini Advanced "
+      "plan does not include API usage, and a provider's site may ask you "
+      "to add a small amount of prepaid credit before it lets you create "
+      "a key."));
+  vbox->Add(billingNote, wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
 
   wxBoxSizer *providerBox = new wxBoxSizer(wxHORIZONTAL);
   providerBox->Add(

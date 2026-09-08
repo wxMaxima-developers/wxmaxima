@@ -25,6 +25,13 @@
 - Options -> AI Chat now links directly to each provider's own page for
   getting an API key, and the AI Chat sidebar itself shows an "Open
   Options..." button whenever none is configured yet.
+- The AI Chat and Accessibility tabs in Options no longer share a generic
+  icon with an unrelated tab -- both now have their own. Options -> AI Chat
+  also gained a note explaining that an API key is billed separately from
+  a consumer chat subscription (a Claude Pro/Max, ChatGPT Plus or Gemini
+  Advanced plan does not include API usage), since a provider's site asking
+  for prepaid credit before it hands out a key can otherwise look like a
+  mistake.
 - Added an "AI Chat" sidebar (View -> Sidebars -> AI Chat) that lets you
   chat about the current worksheet with Anthropic, OpenAI, Google Gemini or
   Qwen, using your own API key (configured in Options -> AI Chat). It sends

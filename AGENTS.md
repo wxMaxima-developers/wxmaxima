@@ -782,6 +782,59 @@ a local TCP socket.
     parsed -- not a McpTools bug, just a reminder that a `.wxm` fixture
     needs that exact header, see the existing fixtures under
     `test/automatic_test_files/` for the correct shape).
+  - **Follow-up (2026-09-08): AI Chat and Accessibility tabs had no icon of
+    their own, and the Anthropic "Get an API key" link sends a subscriber
+    to a "buy credits" page -- raised directly by the user.** Both
+    `ConfigDialogue.cpp`'s `AddPage()` calls for these two tabs had reused
+    tab index 4 (`wxmaximaART_CONFIG_OPTIONS`, a generic gear/wrench glyph)
+    with an explicit "no dedicated one exists for this tab" comment -- fixed
+    by adding two new hand-drawn SVG icons (`art/config/accessibility.svg`,
+    a white stick figure with arms/legs spread inside a blue circle, the
+    same motif as GNOME's `preferences-desktop-accessibility`; `art/config/
+    ai-chat.svg`, a blue chat bubble with an orange four-point sparkle) and
+    wiring them the same way every other `art/config/*.svg.gz` icon already
+    is: gzip the plain SVG, add the base name to `art/config/
+    CMakeLists.txt`'s `IMAGE_FILES` (bin2h's `string(MAKE_C_IDENTIFIER
+    ...)` step sanitizes the hyphen in `ai-chat` to `AI_CHAT_SVG_GZ`
+    automatically -- no special-casing needed, same as the pre-existing
+    hyphenated `edit-copy-confdialogue`), a new `wxmaximaART_CONFIG_*` art
+    ID in `wxMaximaArtProvider.h`/`.cpp`, and two new entries appended to
+    *both* of `ConfigDialogue.cpp`'s parallel image-list branches (the
+    `wxCHECK_VERSION(3, 1, 6)` `wxBitmapBundle` one and the older
+    `wxImageList` fallback) -- missing either branch would silently break
+    only pre-3.1.6 wx or only 3.1.6+, so both need touching together.
+    Verified live in Xvfb: the AI Chat tab shows the new sparkle-bubble
+    icon correctly (screenshotted, matches the standalone-rendered PNG
+    pixel-for-pixel in shape); the Accessibility tab's icon could only be
+    confirmed via the same standalone SVG render, not live, since this
+    sandbox's wxWidgets build has `wxUSE_ACCESSIBILITY` off (the tab is
+    `#if wxUSE_ACCESSIBILITY`-gated and never appears in this environment
+    at all -- consistent with the sandbox limitation this file's Key
+    Subsystems section doesn't otherwise document per-tab, just worth
+    knowing if a future session can't find this tab locally either).
+    **The second half of the request -- "does a subscription need a
+    separate link" -- turned out to have a firm, current (2026) answer,
+    not a wrong-link bug**: researched directly (this postdates training
+    data, so worth citing rather than assuming) that Anthropic's OAuth
+    token for a Claude Pro/Max subscription (`claude setup-token`,
+    `sk-ant-oat01-...`) is *rejected* by the Messages API this sidebar
+    calls -- it only authenticates against Claude Code/claude.ai -- and
+    Anthropic has explicitly banned third-party use of subscription auth
+    outside those two surfaces since January 2026. So there is no
+    "subscription" link this sidebar could offer instead; a console.
+    anthropic.com API key, billed per-token and separately from any chat
+    subscription, is the only way this feature (or any raw-Messages-API
+    integration) can authenticate, for every account regardless of
+    subscription status. This matches the same "no legitimate third-party
+    OAuth flow" reasoning the AI chat sidebar's own top-level entry already
+    gives for all four providers -- confirmed still true, not just assumed
+    unchanged. Fixed by adding a short, upfront note to the AI Chat
+    Options panel (right under the existing intro paragraph, not per-
+    provider) stating plainly that an API key is billed separately from a
+    Claude Pro/Max, ChatGPT Plus or Gemini Advanced plan, so hitting a
+    "buy credits" page isn't mistaken for a broken/outdated link. Verified
+    live in Xvfb that the note renders under the intro text on the AI Chat
+    tab.
   - **Not implemented, and shouldn't be without a separate decision: a
     write/evaluate-capable MCP tool.** Raised and discussed directly with
     the user (2026-09-06): unlike `watch_variable`/`unwatch_variable` (see
