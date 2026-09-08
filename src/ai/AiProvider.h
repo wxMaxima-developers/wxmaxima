@@ -94,6 +94,26 @@ struct AiCustomProviderConfig {
   wxString model;
 };
 
+//! One well-known local AI server's connection defaults, offered as a
+//! quick-fill preset in the "Add custom provider" dialog (Options -> AI
+//! Chat) -- picking one just pre-fills that dialog's own editable fields,
+//! it's a shortcut for not typing e.g. Ollama's default port from memory,
+//! not a fifth built-in AiProviderKind. All of these speak the
+//! OpenAI-compatible shape and normally don't check the API key at all
+//! (it can be left blank), since a local server has no third party to
+//! authenticate to.
+struct AiLocalServerPreset {
+  wxString name;
+  wxString baseUrl;
+  wxString model;
+};
+
+//! A short, hand-picked list of common local LLM servers -- not
+//! exhaustive, just the ones popular enough to be worth a one-click
+//! shortcut; anything else is still just as reachable via a plain custom
+//! entry with a hand-typed URL.
+std::vector<AiLocalServerPreset> AiKnownLocalServerPresets();
+
 //! A fresh id for a new custom provider (see AiCustomProviderConfig::id) --
 //! never shown to the user, just needs to not collide with any existing one
 //! for the lifetime of this installation.

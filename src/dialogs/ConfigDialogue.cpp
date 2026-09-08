@@ -2243,6 +2243,27 @@ bool ConfigDialogue::AddCustomAiProviderDialog() {
   wxFlexGridSizer *grid = new wxFlexGridSizer(2, 2, 5, 5);
   grid->AddGrowableCol(1);
 
+  // A quick-fill shortcut for a handful of well-known *local* AI servers
+  // (Ollama, LM Studio, llama.cpp server, ...) -- these are common enough,
+  // and their defaults obscure/fiddly enough to type from memory (the
+  // right port, the "/v1/chat/completions" suffix, ...), that a one-click
+  // preset is worth it. It only pre-fills the fields below, once, on
+  // selection -- every field stays a plain, independently editable text
+  // box afterward, so this is a convenience, not a fifth "kind" of
+  // provider. Picking "(Custom)" back leaves whatever is already typed
+  // untouched.
+  wxArrayString presetChoices;
+  presetChoices.Add(_("(Custom)"));
+  std::vector<AiLocalServerPreset> presets = AiKnownLocalServerPresets();
+  for (const auto &preset : presets)
+    presetChoices.Add(preset.name);
+  wxChoice *presetCtrl = new wxChoice(&dlg, wxID_ANY, wxDefaultPosition,
+                                      wxDefaultSize, presetChoices);
+  presetCtrl->SetSelection(0);
+  grid->Add(new wxStaticText(&dlg, wxID_ANY, _("Quick fill:")),
+           wxSizerFlags().Align(wxALIGN_CENTER_VERTICAL));
+  grid->Add(presetCtrl, wxSizerFlags().Expand());
+
   grid->Add(new wxStaticText(&dlg, wxID_ANY, _("Name:")),
            wxSizerFlags().Align(wxALIGN_CENTER_VERTICAL));
   wxTextCtrl *nameCtrl = new wxTextCtrl(&dlg, wxID_ANY, wxEmptyString,
@@ -2284,6 +2305,20 @@ bool ConfigDialogue::AddCustomAiProviderDialog() {
       "provider's specific request/response format (e.g. a proxy in front "
       "of one of them)."));
   dlgVbox->Add(hint, wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
+
+  presetCtrl->Bind(wxEVT_CHOICE, [presetCtrl, presets, nameCtrl, shapeCtrl,
+                                  urlCtrl, modelCtrl](wxCommandEvent &) {
+    int sel = presetCtrl->GetSelection();
+    if (sel <= 0 || sel > static_cast<int>(presets.size()))
+      return; // "(Custom)" -- leave whatever is already typed alone.
+    const AiLocalServerPreset &preset = presets[sel - 1];
+    nameCtrl->ChangeValue(preset.name);
+    // Every preset speaks the OpenAI-compatible shape (see
+    // AiKnownLocalServerPresets()'s own doc comment).
+    shapeCtrl->SetSelection(0);
+    urlCtrl->ChangeValue(preset.baseUrl);
+    modelCtrl->ChangeValue(preset.model);
+  });
 
   dlgVbox->Add(dlg.CreateButtonSizer(wxOK | wxCANCEL),
               wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));

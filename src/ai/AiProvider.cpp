@@ -306,6 +306,19 @@ std::shared_ptr<AiProvider> MakeAiProviderForShape(AiProviderShape shape,
   return provider;
 }
 
+std::vector<AiLocalServerPreset> AiKnownLocalServerPresets() {
+  return {
+    // Ollama's OpenAI-compatible endpoint: http://localhost:11434/v1/chat/completions
+    // (its native /api/chat endpoint uses a different, non-OpenAI-shaped
+    // wire format, so the /v1/ prefix specifically is what OpenAiCompatibleProvider needs).
+    {wxS("Ollama"), wxS("http://localhost:11434/v1/chat/completions"), wxS("llama3.2")},
+    // LM Studio's built-in local server, OpenAI-compatible by design.
+    {wxS("LM Studio"), wxS("http://localhost:1234/v1/chat/completions"), wxS("local-model")},
+    // llama.cpp's own `llama-server` also speaks the OpenAI-compatible shape.
+    {wxS("llama.cpp server"), wxS("http://localhost:8080/v1/chat/completions"), wxS("local-model")},
+  };
+}
+
 wxString NewAiCustomProviderId() {
   // Never shown to the user and never needs to survive comparison with
   // anything outside this installation -- a short random hex string is

@@ -979,6 +979,60 @@ a local TCP socket.
        tests above, not by a live screenshot -- worth a real interactive
        check in an environment with a working secret store if this is
        revisited.
+  - **Follow-up (2026-09-08): quick-fill presets for well-known local AI
+    servers (Ollama, LM Studio, llama.cpp server), plus the security
+    question that came with the idea.** The user asked directly whether a
+    local server should even be a *built-in* `AiProviderKind` (a fifth
+    choice alongside Anthropic/OpenAI/Google/Qwen), and, separately,
+    whether a malicious website could set up its own fake local server and
+    remote-control a running wxMaxima. The second question has a clean
+    answer that shaped the first: **a web page cannot open a listening
+    socket at all** -- browsers expose no raw-socket/server API to page
+    JavaScript, so "a website sets up its own fake local server" isn't a
+    mechanism that exists; the real (much narrower) risk is a *different
+    already-running local process* squatting on the same port a real local
+    LLM server would use (e.g. something else bound to `:11434`) before the
+    user starts Ollama -- and even then, the blast radius is already bounded
+    by this sidebar's own documented design: v1 is read-only with no
+    tool-calling (see the "AI chat sidebar" entry's own opening paragraph),
+    so a hostile response can only inject text into the chat transcript, not
+    touch the worksheet or execute anything -- the same reasoning that
+    already bounds a hostile *real* provider's response. This is also why a
+    genuine built-in `AiProviderKind` for "local server" doesn't pull its
+    weight: unlike the four real, name-brand providers, there's no single
+    fixed URL/auth-header pair to hardcode -- Ollama/LM Studio/llama.cpp
+    server each pick their own port and path, and a user can point any of
+    them at a nonstandard address anyway -- so the entry actually needed
+    something orthogonal to `AiProviderKind`, not another value in it.
+    Added `AiLocalServerPreset` (`name`/`baseUrl`/`model`) and
+    `AiKnownLocalServerPresets()` (`src/ai/AiProvider.h`/`.cpp`) -- a short,
+    hand-picked, non-exhaustive list (Ollama's OpenAI-compatible endpoint at
+    `http://localhost:11434/v1/chat/completions`, note the `/v1/` prefix:
+    Ollama's *native* `/api/chat` endpoint uses a different, non-OpenAI
+    wire shape that `OpenAiCompatibleProvider` doesn't speak; LM Studio's
+    built-in server at `:1234`; `llama.cpp`'s `llama-server` at `:8080` --
+    all three are OpenAI-compatible by construction) -- and a "Quick fill:"
+    `wxChoice` at the top of `ConfigDialogue::AddCustomAiProviderDialog()`'s
+    grid (`src/dialogs/ConfigDialogue.cpp`). Picking a preset just
+    `ChangeValue()`s the dialog's existing Name/URL/Model fields (and forces
+    the API-style choice to "OpenAI-compatible") -- a one-time convenience,
+    not a new persisted concept: every field stays independently editable
+    afterward, nothing distinguishes a preset-filled custom provider from a
+    hand-typed one once saved, and picking "(Custom)" back leaves whatever
+    is already typed untouched. `ChangeValue()`, not `SetValue()`, is used
+    deliberately -- a prefill shouldn't fire a spurious `wxEVT_TEXT` the
+    way `SetValue()` would, even though nothing in this particular dialog
+    currently listens for one; picked for correctness against future
+    changes, not because it fixed an observed bug here.
+    `test_AiProvider.cpp` gained a new SCENARIO asserting every
+    preset is fully filled in (no empty name/URL/model) and that each one's
+    URL survives unchanged through `MakeAiProviderForShape(OpenAiCompatible,
+    ...)` -- 116 assertions in 8 test cases total now, all passing.
+    Same sandbox limitation as the rest of this feature applies here too:
+    the actual "Quick fill" dropdown cannot be screenshotted in this sandbox
+    (`wxUSE_SECRETSTORE` is off here, so the whole AI Chat tab stays hidden
+    per its own gating) -- verified by code reading plus the unit test
+    above, not a live screenshot.
   - **Not implemented, and shouldn't be without a separate decision: a
     write/evaluate-capable MCP tool.** Raised and discussed directly with
     the user (2026-09-06): unlike `watch_variable`/`unwatch_variable` (see

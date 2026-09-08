@@ -40,6 +40,10 @@
   most third-party and self-hosted endpoints (OpenRouter, Groq, a local
   Ollama server, a proxy in front of one of the big three, ...) without
   needing built-in support for each one by name.
+- Adding a custom AI provider now offers a "Quick fill" shortcut for a few
+  well-known local AI servers (Ollama, LM Studio, llama.cpp server) that
+  pre-fills the URL/model fields with that server's usual defaults -- still
+  a plain custom provider afterward, and every field stays editable.
 - AI provider API keys are now stored in the operating system's own secret
   store (the same keyring Windows/macOS/most Linux desktops already use for
   other apps' passwords) instead of in wxMaxima's own plain-text settings

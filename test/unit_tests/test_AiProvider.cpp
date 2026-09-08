@@ -335,4 +335,26 @@ SCENARIO("NewAiCustomProviderId() produces distinct, non-empty ids") {
   }
 }
 
+SCENARIO("AiKnownLocalServerPresets() lists usable OpenAI-compatible presets") {
+  auto presets = AiKnownLocalServerPresets();
+  THEN("the list is non-empty and every entry is fully filled in") {
+    CHECK(!presets.empty());
+    for (const auto &preset : presets) {
+      CHECK(!preset.name.IsEmpty());
+      CHECK(!preset.baseUrl.IsEmpty());
+      CHECK(!preset.model.IsEmpty());
+    }
+  }
+  THEN("each preset's URL round-trips through the OpenAI-compatible shape") {
+    for (const auto &preset : presets) {
+      auto provider = MakeAiProviderForShape(AiProviderShape::OpenAiCompatible,
+                                             preset.name, preset.baseUrl,
+                                             wxS(""), preset.model);
+      REQUIRE(provider != nullptr);
+      CHECK(provider->RequestUrl() == preset.baseUrl);
+      CHECK(provider->Name() == preset.name);
+    }
+  }
+}
+
 int main(int argc, char *argv[]) { return Catch::Session().run(argc, argv); }
