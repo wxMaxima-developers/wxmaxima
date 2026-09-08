@@ -63,6 +63,8 @@
 #define wxmaximaART_CONFIG_STYLES                 wxART_MAKE_ART_ID(wxmaximaART_CONFIG_STYLES)
 #define wxmaximaART_CONFIG_VIEW_REFRESH           wxART_MAKE_ART_ID(wxmaximaART_CONFIG_VIEW_REFRESH)
 #define wxmaximaART_CONFIG_EDITING                wxART_MAKE_ART_ID(wxmaximaART_CONFIG_EDITING)
+#define wxmaximaART_CONFIG_ACCESSIBILITY          wxART_MAKE_ART_ID(wxmaximaART_CONFIG_ACCESSIBILITY)
+#define wxmaximaART_CONFIG_AI_CHAT                wxART_MAKE_ART_ID(wxmaximaART_CONFIG_AI_CHAT)
 
 
 class wxMaximaArtProvider : public wxArtProvider

@@ -313,15 +313,25 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
       m_mcpServer = std::make_unique<McpServer>(GetWorksheet(), m_variablesPane);
       ReconcileMcpServer();
 
-      m_sidebarNames[EventIDs::menu_pane_aichat] = wxS("aichat");
-      m_sidebarCaption[EventIDs::menu_pane_aichat] = _("AI Chat");
-      m_aiChatSidebar = new AiChatSidebar(this, &GetConfiguration(), GetWorksheet(),
-                                         m_variablesPane);
-      m_manager.AddPane(
-                        m_aiChatSidebar,
-                        wxAuiPaneInfo()
-                        .Name(m_sidebarNames[EventIDs::menu_pane_aichat])
-                        .Right());
+      // Hidden outright (no menu entry, no pane, sidebar pointer stays
+      // NULL) rather than just disabled when there's nowhere safe to keep
+      // an API key -- see AiProvider::SecretStoreAvailable()'s own doc
+      // comment for why this doesn't fall back to plain-text storage
+      // instead. ShowPane()/IsPaneDisplayed() et al. already null-check
+      // m_aiChatSidebar-style members elsewhere in this codebase, but
+      // m_Maxima_Panes_Sub's own AppendCheckItem() call below is skipped
+      // too, so there is no menu entry to reach this pane through at all.
+      if (AiProvider::SecretStoreAvailable()) {
+        m_sidebarNames[EventIDs::menu_pane_aichat] = wxS("aichat");
+        m_sidebarCaption[EventIDs::menu_pane_aichat] = _("AI Chat");
+        m_aiChatSidebar = new AiChatSidebar(this, &GetConfiguration(), GetWorksheet(),
+                                           m_variablesPane);
+        m_manager.AddPane(
+                          m_aiChatSidebar,
+                          wxAuiPaneInfo()
+                          .Name(m_sidebarNames[EventIDs::menu_pane_aichat])
+                          .Right());
+      }
 
       m_sidebarNames[EventIDs::menu_pane_symbols] = wxS("symbols");
       m_sidebarCaption[EventIDs::menu_pane_symbols] = _("Mathematical Symbols");
@@ -829,7 +839,11 @@ void wxMaximaFrame::SetupViewMenu() {
                                       _("The integrated help browser"));
 #endif
   m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_variables, _("Variables"));
-  m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_aichat, _("AI Chat"));
+  // No menu entry at all when the sidebar itself was never created --
+  // see the AiProvider::SecretStoreAvailable() guard around its
+  // construction, above.
+  if (m_aiChatSidebar != NULL)
+    m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_aichat, _("AI Chat"));
   m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_xmlInspector,
                                       _("Raw XML monitor"));
   m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_performance,

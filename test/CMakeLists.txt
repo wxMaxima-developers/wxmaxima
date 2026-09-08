@@ -679,27 +679,48 @@ add_test(
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error load_string.wxm)
 
-add_test(
-    NAME wxmaxima_version_string
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe --version)
-# RUN_SERIAL: an ongoing investigation (see AGENTS.md's "wxmaxima_version_string
-# CI test failing on the minGW Windows runner" entry) has disconfirmed several
-# concrete mechanisms for this test's intermittent Windows CI failure (a wrong
-# struct-copy in stdio redirection, a shared-handle-after-close bug in
-# _dup2(), and the exact GH #2274 startup-reordering sequence), all via
-# targeted Wine repros -- but never under the real ctest -j 2 parallelism this
-# test actually runs under in CI (compile_windows.yml's "Run integration
-# tests" step), which this sandbox's Wine environment cannot faithfully
-# reproduce (no real multi-core Windows scheduler, no antivirus real-time
-# scanning, none of the other background load a shared GitHub Actions Windows
-# runner carries). RUN_SERIAL is a cheap, easily-revertible way to test that
-# specific remaining lead directly against the real CI runner: if forcing
-# this one test to never run concurrently with anything else eliminates the
-# failure across several real CI runs, that is real evidence for the
-# contention theory; if it still fails, that theory is ruled out just as
-# cheaply. Revert this single line if it doesn't help -- it does not by
-# itself explain or fix the underlying bug either way.
+# wxmaxima_version_string: see AGENTS.md's long "wxmaxima_version_string CI
+# test failing on the minGW Windows runner" entry for the full investigation.
+# The short version: a diagnostic trace captured on a real failing CI run
+# proved wxMaxima's own code path (BindStdStreamToParent(), wxMessageOutput,
+# the actual Printf() call) completes normally every time -- but it also
+# revealed that GetFileType() on this process's own stdout reports
+# FILE_TYPE_CHAR (a console-type handle) rather than FILE_TYPE_PIPE, for
+# every wxmaxima.exe CTest spawns in this job, not just the failing one.
+# FILE_TYPE_CHAR is what BOTH a real console AND a Windows ConPTY
+# (pseudo-console) conout handle report -- and ConPTY has well-documented
+# races around draining a child's final output before/around that child's
+# own exit (see e.g. microsoft/terminal's ClosePseudoConsole()/output-drain
+# issues). wxmaxima --version writes exactly one line and calls exit(0)
+# immediately afterwards, with nothing else happening in between -- exactly
+# the shape that triggers this class of bug -- and this is the only test in
+# the whole suite whose result depends on that specific console-output
+# path's content for a WIN32-subsystem (GUI) process (every other
+# content-checked test asserts on Maxima's answer over the socket instead).
+# This points at a Windows console/output-capture race around a short-lived
+# GUI-subsystem process, not a bug in wxMaxima's own code.
+# Fix: since the race lives in the console/pty layer, not in wxMaxima,
+# route the captured text through a real file instead of a live console
+# handle -- disk I/O has no equivalent async-drain step. `type` is a plain
+# console-subsystem process spawned by CTest the same well-proven way as
+# every other test in this suite (none of which show this symptom), so this
+# removes the GUI-subsystem-direct-child factor entirely rather than
+# guessing at the exact race timing.
+if(WIN32)
+    add_test(
+        NAME wxmaxima_version_string
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+        COMMAND cmd /c "\"$<TARGET_FILE:wxmaxima>\" --debug --logtostderr --pipe --version > wxmaxima_version_string.out 2>&1 && type wxmaxima_version_string.out")
+else()
+    add_test(
+        NAME wxmaxima_version_string
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+        COMMAND wxmaxima --debug --logtostderr --pipe --version)
+endif()
+# RUN_SERIAL is kept from an earlier, now-closed experiment (three
+# consecutive real CI failures under RUN_SERIAL disconfirmed plain ctest
+# -j 2 self-contention as the cause -- see AGENTS.md) -- harmless to leave
+# in place, but no longer expected to matter on its own.
 set_tests_properties(wxmaxima_version_string PROPERTIES
     PASS_REGULAR_EXPRESSION "wxMaxima ${VERSION}.*" RUN_SERIAL TRUE)
 

@@ -24,6 +24,10 @@
 #if wxUSE_WEBREQUEST
 #include <wx/webrequest.h>
 #endif
+#if wxUSE_SECRETSTORE
+#include <wx/secretstore.h>
+#endif
+#include <random>
 
 using json = nlohmann::json;
 
@@ -34,10 +38,12 @@ wxString FromU8(const std::string &s) { return wxString::FromUTF8(s.c_str()); }
 //! Anthropic Messages API (https://api.anthropic.com/v1/messages).
 class AnthropicProvider : public AiProvider {
 public:
-  AnthropicProvider(const wxString &apiKey, const wxString &model)
-    : AiProvider("https://api.anthropic.com/v1/messages", apiKey, model) {}
+  AnthropicProvider(const wxString &apiKey, const wxString &model,
+                    wxString baseUrl = wxS("https://api.anthropic.com/v1/messages"),
+                    AiProviderKind kind = AiProviderKind::Anthropic)
+    : AiProvider(std::move(baseUrl), apiKey, model), m_kind(kind) {}
 
-  AiProviderKind Kind() const override { return AiProviderKind::Anthropic; }
+  AiProviderKind Kind() const override { return m_kind; }
 
   std::vector<std::pair<wxString, wxString>> AuthHeaders() const override {
     return {{wxS("x-api-key"), m_apiKey}, {wxS("anthropic-version"), wxS("2023-06-01")}};
@@ -71,6 +77,9 @@ public:
       throw AiProviderError(std::string("Could not parse Anthropic's response: ") + e.what());
     }
   }
+
+private:
+  AiProviderKind m_kind;
 };
 
 //! The OpenAI Chat Completions request/response shape -- shared verbatim by
@@ -122,11 +131,12 @@ private:
 //! Google Gemini's generateContent REST API.
 class GoogleProvider : public AiProvider {
 public:
-  GoogleProvider(const wxString &apiKey, const wxString &model)
-    : AiProvider("https://generativelanguage.googleapis.com/v1beta/models/",
-                apiKey, model) {}
+  GoogleProvider(const wxString &apiKey, const wxString &model,
+                wxString baseUrl = wxS("https://generativelanguage.googleapis.com/v1beta/models/"),
+                AiProviderKind kind = AiProviderKind::Google)
+    : AiProvider(std::move(baseUrl), apiKey, model), m_kind(kind) {}
 
-  AiProviderKind Kind() const override { return AiProviderKind::Google; }
+  AiProviderKind Kind() const override { return m_kind; }
 
   wxString RequestUrl() const override {
     return m_baseUrl + m_model + wxS(":generateContent");
@@ -165,6 +175,9 @@ public:
       throw AiProviderError(std::string("Could not parse Gemini's response: ") + e.what());
     }
   }
+
+private:
+  AiProviderKind m_kind;
 };
 } // namespace
 
@@ -174,7 +187,22 @@ wxString AiProviderKindName(AiProviderKind kind) {
   case AiProviderKind::OpenAI: return wxS("OpenAI");
   case AiProviderKind::Google: return wxS("Google (Gemini)");
   case AiProviderKind::Qwen: return wxS("Qwen (Alibaba)");
+  // A Custom provider's own display name is carried on the AiProvider
+  // instance itself (AiProvider::SetDisplayName()/Name()), not derivable
+  // from the kind alone -- this generic fallback is only ever seen if
+  // something asks for a bare kind name without going through an actual
+  // instance (e.g. a log message), so it says what it is.
+  case AiProviderKind::Custom: return wxS("Custom provider");
   default: return wxS("None");
+  }
+}
+
+wxString AiProviderShapeName(AiProviderShape shape) {
+  switch (shape) {
+  case AiProviderShape::Anthropic: return _("Anthropic (Messages API)");
+  case AiProviderShape::Google: return _("Google Gemini (generateContent)");
+  case AiProviderShape::OpenAiCompatible:
+  default: return _("OpenAI-compatible (most third-party/self-hosted APIs)");
   }
 }
 
@@ -220,6 +248,18 @@ wxString AiProviderModelListUrl(AiProviderKind kind) {
   }
 }
 
+wxString AiProviderBaseUrl(AiProviderKind kind) {
+  switch (kind) {
+  case AiProviderKind::Anthropic: return wxS("https://api.anthropic.com/v1/messages");
+  case AiProviderKind::OpenAI: return wxS("https://api.openai.com/v1/chat/completions");
+  case AiProviderKind::Qwen:
+    return wxS("https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions");
+  case AiProviderKind::Google:
+    return wxS("https://generativelanguage.googleapis.com/v1beta/models/");
+  default: return wxEmptyString;
+  }
+}
+
 std::shared_ptr<AiProvider> MakeAiProvider(AiProviderKind kind, const wxString &apiKey,
                                            const wxString &model) {
   switch (kind) {
@@ -239,6 +279,177 @@ std::shared_ptr<AiProvider> MakeAiProvider(AiProviderKind kind, const wxString &
   default:
     return nullptr;
   }
+}
+
+std::shared_ptr<AiProvider> MakeAiProviderForShape(AiProviderShape shape,
+                                                   const wxString &displayName,
+                                                   const wxString &baseUrl,
+                                                   const wxString &apiKey,
+                                                   const wxString &model) {
+  std::shared_ptr<AiProvider> provider;
+  switch (shape) {
+  case AiProviderShape::Anthropic:
+    provider = std::make_shared<AnthropicProvider>(apiKey, model, baseUrl,
+                                                    AiProviderKind::Custom);
+    break;
+  case AiProviderShape::Google:
+    provider = std::make_shared<GoogleProvider>(apiKey, model, baseUrl,
+                                                 AiProviderKind::Custom);
+    break;
+  case AiProviderShape::OpenAiCompatible:
+  default:
+    provider = std::make_shared<OpenAiCompatibleProvider>(AiProviderKind::Custom, baseUrl,
+                                                           apiKey, model);
+    break;
+  }
+  provider->SetDisplayName(displayName);
+  return provider;
+}
+
+std::vector<AiLocalServerPreset> AiKnownLocalServerPresets() {
+  return {
+    // Ollama's OpenAI-compatible endpoint: http://localhost:11434/v1/chat/completions
+    // (its native /api/chat endpoint uses a different, non-OpenAI-shaped
+    // wire format, so the /v1/ prefix specifically is what OpenAiCompatibleProvider needs).
+    {wxS("Ollama"), wxS("http://localhost:11434/v1/chat/completions"), wxS("llama3.2")},
+    // LM Studio's built-in local server, OpenAI-compatible by design.
+    {wxS("LM Studio"), wxS("http://localhost:1234/v1/chat/completions"), wxS("local-model")},
+    // llama.cpp's own `llama-server` also speaks the OpenAI-compatible shape.
+    {wxS("llama.cpp server"), wxS("http://localhost:8080/v1/chat/completions"), wxS("local-model")},
+  };
+}
+
+wxString NewAiCustomProviderId() {
+  // Never shown to the user and never needs to survive comparison with
+  // anything outside this installation -- a short random hex string is
+  // enough to make collisions between two providers added on the same
+  // machine practically impossible, without pulling in a real UUID
+  // library for something this low-stakes (a collision just means two
+  // custom providers would share one stored API key, not a crash or data
+  // loss, and even that has never been observed across normal use).
+  std::random_device rd;
+  std::mt19937_64 gen(rd());
+  std::uniform_int_distribution<uint64_t> dist;
+  return wxString::Format(wxS("%016" wxLongLongFmtSpec "x"),
+                          static_cast<wxLongLong_t>(dist(gen)));
+}
+
+std::vector<AiCustomProviderConfig> ParseAiCustomProviders(const wxString &jsonText) {
+  std::vector<AiCustomProviderConfig> result;
+  if (jsonText.IsEmpty())
+    return result;
+  try {
+    json j = json::parse(U8(jsonText));
+    if (!j.is_array())
+      return result;
+    for (const auto &entry : j) {
+      AiCustomProviderConfig cfg;
+      cfg.id = FromU8(entry.value("id", std::string()));
+      cfg.name = FromU8(entry.value("name", std::string()));
+      cfg.baseUrl = FromU8(entry.value("baseUrl", std::string()));
+      cfg.model = FromU8(entry.value("model", std::string()));
+      std::string shape = entry.value("shape", std::string("openai"));
+      if (shape == "anthropic")
+        cfg.shape = AiProviderShape::Anthropic;
+      else if (shape == "google")
+        cfg.shape = AiProviderShape::Google;
+      else
+        cfg.shape = AiProviderShape::OpenAiCompatible;
+      // An entry with no id is unusable (it could never be matched back to
+      // a saved API key or to Configuration::AiActiveCustomProviderId()) --
+      // silently drop it rather than fabricating one, since it can only
+      // come from a corrupted/hand-edited config file, not normal use.
+      if (!cfg.id.IsEmpty())
+        result.push_back(cfg);
+    }
+  } catch (const json::exception &) {
+    // Malformed JSON (e.g. a hand-edited or truncated config file) -- fall
+    // back to "no custom providers configured" rather than crashing Options
+    // on open, same reasoning as the empty-string early return above.
+    return {};
+  }
+  return result;
+}
+
+wxString SerializeAiCustomProviders(const std::vector<AiCustomProviderConfig> &providers) {
+  json arr = json::array();
+  for (const auto &cfg : providers) {
+    std::string shape;
+    switch (cfg.shape) {
+    case AiProviderShape::Anthropic: shape = "anthropic"; break;
+    case AiProviderShape::Google: shape = "google"; break;
+    case AiProviderShape::OpenAiCompatible:
+    default: shape = "openai"; break;
+    }
+    arr.push_back({{"id", U8(cfg.id)},
+                   {"name", U8(cfg.name)},
+                   {"shape", shape},
+                   {"baseUrl", U8(cfg.baseUrl)},
+                   {"model", U8(cfg.model)}});
+  }
+  return FromU8(arr.dump());
+}
+
+wxString AiProvider::CustomProviderSecretService(const wxString &id) {
+  return wxS("custom:") + id;
+}
+
+wxString AiProvider::BuiltinProviderSecretService(AiProviderKind kind) {
+  return AiProviderKindName(kind);
+}
+
+bool AiProvider::SecretStoreAvailable() {
+#if wxUSE_SECRETSTORE
+  return wxSecretStore::GetDefault().IsOk();
+#else
+  return false;
+#endif
+}
+
+void AiProvider::SaveApiKey(const wxString &service, const wxString &apiKey) {
+#if wxUSE_SECRETSTORE
+  wxSecretStore store = wxSecretStore::GetDefault();
+  if (!store.IsOk())
+    return;
+  // An empty key means "cleared in Options" -- delete rather than saving an
+  // empty secret, so LoadApiKey() and "is a key configured at all" checks
+  // elsewhere don't need to special-case an empty-but-present entry.
+  if (apiKey.IsEmpty()) {
+    store.Delete(wxS("wxMaxima/AI/") + service);
+    return;
+  }
+  store.Save(wxS("wxMaxima/AI/") + service, wxS("apikey"),
+            wxSecretValue(apiKey));
+#else
+  wxUnusedVar(service);
+  wxUnusedVar(apiKey);
+#endif
+}
+
+wxString AiProvider::LoadApiKey(const wxString &service) {
+#if wxUSE_SECRETSTORE
+  wxSecretStore store = wxSecretStore::GetDefault();
+  if (!store.IsOk())
+    return wxEmptyString;
+  wxString user;
+  wxSecretValue secret;
+  if (!store.Load(wxS("wxMaxima/AI/") + service, user, secret))
+    return wxEmptyString;
+  return secret.GetAsString();
+#else
+  wxUnusedVar(service);
+  return wxEmptyString;
+#endif
+}
+
+void AiProvider::DeleteApiKey(const wxString &service) {
+#if wxUSE_SECRETSTORE
+  wxSecretStore store = wxSecretStore::GetDefault();
+  if (store.IsOk())
+    store.Delete(wxS("wxMaxima/AI/") + service);
+#else
+  wxUnusedVar(service);
+#endif
 }
 
 bool AiProvider::NetworkingAvailable() {

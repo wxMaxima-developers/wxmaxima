@@ -9,6 +9,8 @@ set(IMAGE_FILES
         edit-copy_backup
         maxima
         view-refresh
+        accessibility
+        ai-chat
 )
 
 foreach(file ${IMAGE_FILES})

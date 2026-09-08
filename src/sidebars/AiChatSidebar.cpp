@@ -93,27 +93,46 @@ AiChatSidebar::AiChatSidebar(wxWindow *parent, Configuration *configuration,
 void AiChatSidebar::ReloadProviderFromConfig() {
   auto kind = static_cast<AiProviderKind>(m_configuration->AiChatProvider());
   wxString apiKey, model;
-  switch (kind) {
-  case AiProviderKind::Anthropic:
-    apiKey = m_configuration->AiApiKeyAnthropic();
-    model = m_configuration->AiModelAnthropic();
-    break;
-  case AiProviderKind::OpenAI:
-    apiKey = m_configuration->AiApiKeyOpenAI();
-    model = m_configuration->AiModelOpenAI();
-    break;
-  case AiProviderKind::Google:
-    apiKey = m_configuration->AiApiKeyGoogle();
-    model = m_configuration->AiModelGoogle();
-    break;
-  case AiProviderKind::Qwen:
-    apiKey = m_configuration->AiApiKeyQwen();
-    model = m_configuration->AiModelQwen();
-    break;
-  default:
-    break;
+  m_provider = nullptr;
+  if (kind == AiProviderKind::Custom) {
+    // A Custom provider's URL/shape/model aren't implied by its kind alone
+    // (unlike the four built-ins) -- look its own record up by id from the
+    // list Options persists, same as ConfigDialogue does when populating
+    // that tab. No matching record (e.g. it was since removed in Options)
+    // just leaves m_provider null, same as an empty API key would.
+    wxString activeId = m_configuration->AiActiveCustomProviderId();
+    for (const auto &custom : ParseAiCustomProviders(m_configuration->AiCustomProvidersJson()))
+      if (custom.id == activeId) {
+        apiKey = AiProvider::LoadApiKey(AiProvider::CustomProviderSecretService(custom.id));
+        if (!apiKey.IsEmpty())
+          m_provider =
+            MakeAiProviderForShape(custom.shape, custom.name, custom.baseUrl, apiKey, custom.model);
+        break;
+      }
+  } else {
+    switch (kind) {
+    case AiProviderKind::Anthropic:
+      apiKey = m_configuration->AiApiKeyAnthropic();
+      model = m_configuration->AiModelAnthropic();
+      break;
+    case AiProviderKind::OpenAI:
+      apiKey = m_configuration->AiApiKeyOpenAI();
+      model = m_configuration->AiModelOpenAI();
+      break;
+    case AiProviderKind::Google:
+      apiKey = m_configuration->AiApiKeyGoogle();
+      model = m_configuration->AiModelGoogle();
+      break;
+    case AiProviderKind::Qwen:
+      apiKey = m_configuration->AiApiKeyQwen();
+      model = m_configuration->AiModelQwen();
+      break;
+    default:
+      break;
+    }
+    if (!apiKey.IsEmpty())
+      m_provider = MakeAiProvider(kind, apiKey, model);
   }
-  m_provider = (apiKey.IsEmpty()) ? nullptr : MakeAiProvider(kind, apiKey, model);
   UpdateStatusText();
   m_sendButton->Enable(!m_requestInFlight && (m_provider != nullptr));
   m_openOptionsButton->Show(m_provider == nullptr);

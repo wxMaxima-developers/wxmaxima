@@ -219,4 +219,142 @@ SCENARIO("MakeAiProvider(AiProviderKind::None, ...) returns nullptr") {
   }
 }
 
+SCENARIO("MakeAiProviderForShape() reuses each shape's real implementation "
+        "against an arbitrary URL") {
+  GIVEN("an OpenAI-compatible custom provider (e.g. a self-hosted Ollama/OpenRouter endpoint)") {
+    auto provider = MakeAiProviderForShape(
+      AiProviderShape::OpenAiCompatible, wxS("My Local Ollama"),
+      wxS("http://localhost:11434/v1/chat/completions"), wxS("unused"), wxS("llama3"));
+    REQUIRE(provider);
+    THEN("Kind() is Custom, but Name() is the user's own display name") {
+      CHECK(provider->Kind() == AiProviderKind::Custom);
+      CHECK(provider->Name() == wxS("My Local Ollama"));
+    }
+    THEN("RequestUrl() is exactly the URL given, and auth is Bearer") {
+      CHECK(provider->RequestUrl() == wxS("http://localhost:11434/v1/chat/completions"));
+      auto headers = provider->AuthHeaders();
+      REQUIRE(headers.size() == 1);
+      CHECK(headers[0].first == wxS("Authorization"));
+    }
+    THEN("the request body is the same OpenAI chat-completions shape") {
+      wxString body = provider->BuildRequestBody(wxEmptyString, OneUserTurn(wxS("hi")));
+      json parsed = json::parse(std::string(body.ToUTF8()));
+      CHECK(parsed.at("model") == "llama3");
+      CHECK(parsed.at("messages")[0].at("role") == "user");
+    }
+  }
+
+  GIVEN("an Anthropic-shaped custom provider") {
+    auto provider = MakeAiProviderForShape(AiProviderShape::Anthropic, wxS("My Anthropic Proxy"),
+                                           wxS("https://proxy.example.com/v1/messages"),
+                                           wxS("sk-ant-test"), wxS("claude-3-5-sonnet-latest"));
+    REQUIRE(provider);
+    THEN("it uses the real Anthropic request shape and auth header, at the custom URL") {
+      CHECK(provider->RequestUrl() == wxS("https://proxy.example.com/v1/messages"));
+      auto headers = provider->AuthHeaders();
+      bool hasApiKeyHeader = false;
+      for (const auto &h : headers)
+        if (h.first == wxS("x-api-key"))
+          hasApiKeyHeader = true;
+      CHECK(hasApiKeyHeader);
+      wxString body = provider->BuildRequestBody(wxEmptyString, OneUserTurn(wxS("hi")));
+      json parsed = json::parse(std::string(body.ToUTF8()));
+      CHECK(parsed.at("model") == "claude-3-5-sonnet-latest");
+      CHECK(parsed.contains("max_tokens"));
+    }
+  }
+
+  GIVEN("a Google-shaped custom provider") {
+    auto provider = MakeAiProviderForShape(AiProviderShape::Google, wxS("My Gemini Proxy"),
+                                           wxS("https://proxy.example.com/models/"),
+                                           wxS("goog-key"), wxS("gemini-1.5-flash"));
+    REQUIRE(provider);
+    THEN("RequestUrl() still appends <model>:generateContent, at the custom base") {
+      CHECK(provider->RequestUrl() ==
+           wxS("https://proxy.example.com/models/gemini-1.5-flash:generateContent"));
+      auto headers = provider->AuthHeaders();
+      REQUIRE(headers.size() == 1);
+      CHECK(headers[0].first == wxS("x-goog-api-key"));
+    }
+  }
+}
+
+SCENARIO("AiCustomProviderConfig JSON round-trips through Serialize/Parse") {
+  GIVEN("a list of two custom providers, one of each non-default shape") {
+    std::vector<AiCustomProviderConfig> providers = {
+      {wxS("id1"), wxS("Groq"), AiProviderShape::OpenAiCompatible,
+       wxS("https://api.groq.com/openai/v1/chat/completions"), wxS("llama-3.3-70b")},
+      {wxS("id2"), wxS("My Anthropic Proxy"), AiProviderShape::Anthropic,
+       wxS("https://proxy.example.com/v1/messages"), wxS("claude-3-5-sonnet-latest")},
+      {wxS("id3"), wxS("My Gemini Proxy"), AiProviderShape::Google,
+       wxS("https://proxy.example.com/models/"), wxS("gemini-1.5-flash")},
+    };
+    wxString json_ = SerializeAiCustomProviders(providers);
+    auto roundTripped = ParseAiCustomProviders(json_);
+    THEN("every field survives, in order, including which shape each one is") {
+      REQUIRE(roundTripped.size() == 3);
+      for (size_t i = 0; i < providers.size(); ++i) {
+        CHECK(roundTripped[i].id == providers[i].id);
+        CHECK(roundTripped[i].name == providers[i].name);
+        CHECK(roundTripped[i].shape == providers[i].shape);
+        CHECK(roundTripped[i].baseUrl == providers[i].baseUrl);
+        CHECK(roundTripped[i].model == providers[i].model);
+      }
+    }
+  }
+
+  GIVEN("an empty list") {
+    THEN("it serializes to something ParseAiCustomProviders() reads back as empty") {
+      CHECK(ParseAiCustomProviders(SerializeAiCustomProviders({})).empty());
+    }
+  }
+
+  GIVEN("an empty string (never configured) or malformed JSON (a hand-edited config file)") {
+    THEN("both degrade to an empty list rather than throwing") {
+      CHECK(ParseAiCustomProviders(wxEmptyString).empty());
+      CHECK(ParseAiCustomProviders(wxS("{not valid json")).empty());
+      CHECK(ParseAiCustomProviders(wxS(R"({"not": "an array"})")).empty());
+    }
+  }
+
+  GIVEN("an entry with no id (can never be matched back to a stored key)") {
+    THEN("ParseAiCustomProviders() drops it rather than fabricating an id") {
+      wxString json_ = wxS(R"([{"name":"no id","shape":"openai","baseUrl":"x","model":"y"}])");
+      CHECK(ParseAiCustomProviders(json_).empty());
+    }
+  }
+}
+
+SCENARIO("NewAiCustomProviderId() produces distinct, non-empty ids") {
+  THEN("two calls in a row don't collide") {
+    wxString id1 = NewAiCustomProviderId();
+    wxString id2 = NewAiCustomProviderId();
+    CHECK(!id1.IsEmpty());
+    CHECK(!id2.IsEmpty());
+    CHECK(id1 != id2);
+  }
+}
+
+SCENARIO("AiKnownLocalServerPresets() lists usable OpenAI-compatible presets") {
+  auto presets = AiKnownLocalServerPresets();
+  THEN("the list is non-empty and every entry is fully filled in") {
+    CHECK(!presets.empty());
+    for (const auto &preset : presets) {
+      CHECK(!preset.name.IsEmpty());
+      CHECK(!preset.baseUrl.IsEmpty());
+      CHECK(!preset.model.IsEmpty());
+    }
+  }
+  THEN("each preset's URL round-trips through the OpenAI-compatible shape") {
+    for (const auto &preset : presets) {
+      auto provider = MakeAiProviderForShape(AiProviderShape::OpenAiCompatible,
+                                             preset.name, preset.baseUrl,
+                                             wxS(""), preset.model);
+      REQUIRE(provider != nullptr);
+      CHECK(provider->RequestUrl() == preset.baseUrl);
+      CHECK(provider->Name() == preset.name);
+    }
+  }
+}
+
 int main(int argc, char *argv[]) { return Catch::Session().run(argc, argv); }

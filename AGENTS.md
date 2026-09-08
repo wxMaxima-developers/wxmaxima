@@ -782,6 +782,257 @@ a local TCP socket.
     parsed -- not a McpTools bug, just a reminder that a `.wxm` fixture
     needs that exact header, see the existing fixtures under
     `test/automatic_test_files/` for the correct shape).
+  - **Follow-up (2026-09-08): AI Chat and Accessibility tabs had no icon of
+    their own, and the Anthropic "Get an API key" link sends a subscriber
+    to a "buy credits" page -- raised directly by the user.** Both
+    `ConfigDialogue.cpp`'s `AddPage()` calls for these two tabs had reused
+    tab index 4 (`wxmaximaART_CONFIG_OPTIONS`, a generic gear/wrench glyph)
+    with an explicit "no dedicated one exists for this tab" comment -- fixed
+    by adding two new hand-drawn SVG icons (`art/config/accessibility.svg`,
+    a white stick figure with arms/legs spread inside a blue circle, the
+    same motif as GNOME's `preferences-desktop-accessibility`; `art/config/
+    ai-chat.svg`, a blue chat bubble with an orange four-point sparkle) and
+    wiring them the same way every other `art/config/*.svg.gz` icon already
+    is: gzip the plain SVG, add the base name to `art/config/
+    CMakeLists.txt`'s `IMAGE_FILES` (bin2h's `string(MAKE_C_IDENTIFIER
+    ...)` step sanitizes the hyphen in `ai-chat` to `AI_CHAT_SVG_GZ`
+    automatically -- no special-casing needed, same as the pre-existing
+    hyphenated `edit-copy-confdialogue`), a new `wxmaximaART_CONFIG_*` art
+    ID in `wxMaximaArtProvider.h`/`.cpp`, and two new entries appended to
+    *both* of `ConfigDialogue.cpp`'s parallel image-list branches (the
+    `wxCHECK_VERSION(3, 1, 6)` `wxBitmapBundle` one and the older
+    `wxImageList` fallback) -- missing either branch would silently break
+    only pre-3.1.6 wx or only 3.1.6+, so both need touching together.
+    Verified live in Xvfb: the AI Chat tab shows the new sparkle-bubble
+    icon correctly (screenshotted, matches the standalone-rendered PNG
+    pixel-for-pixel in shape); the Accessibility tab's icon could only be
+    confirmed via the same standalone SVG render, not live, since this
+    sandbox's wxWidgets build has `wxUSE_ACCESSIBILITY` off (the tab is
+    `#if wxUSE_ACCESSIBILITY`-gated and never appears in this environment
+    at all -- consistent with the sandbox limitation this file's Key
+    Subsystems section doesn't otherwise document per-tab, just worth
+    knowing if a future session can't find this tab locally either).
+    **The second half of the request -- "does a subscription need a
+    separate link" -- turned out to have a firm, current (2026) answer,
+    not a wrong-link bug**: researched directly (this postdates training
+    data, so worth citing rather than assuming) that Anthropic's OAuth
+    token for a Claude Pro/Max subscription (`claude setup-token`,
+    `sk-ant-oat01-...`) is *rejected* by the Messages API this sidebar
+    calls -- it only authenticates against Claude Code/claude.ai -- and
+    Anthropic has explicitly banned third-party use of subscription auth
+    outside those two surfaces since January 2026. So there is no
+    "subscription" link this sidebar could offer instead; a console.
+    anthropic.com API key, billed per-token and separately from any chat
+    subscription, is the only way this feature (or any raw-Messages-API
+    integration) can authenticate, for every account regardless of
+    subscription status. This matches the same "no legitimate third-party
+    OAuth flow" reasoning the AI chat sidebar's own top-level entry already
+    gives for all four providers -- confirmed still true, not just assumed
+    unchanged. Fixed by adding a short, upfront note to the AI Chat
+    Options panel (right under the existing intro paragraph, not per-
+    provider) stating plainly that an API key is billed separately from a
+    Claude Pro/Max, ChatGPT Plus or Gemini Advanced plan, so hitting a
+    "buy credits" page isn't mistaken for a broken/outdated link. Verified
+    live in Xvfb that the note renders under the intro text on the AI Chat
+    tab.
+  - **Follow-up (2026-09-08): API keys moved from plain-text wxConfig into
+    the OS secret store, custom (non-built-in) providers, and a
+    dropdown-based Options redesign -- raised directly by the user
+    ("are the API keys stored in wxWidgets secret storage thingy?" plus a
+    request to stop showing all four providers' fields stacked at once and
+    to let a "not completely exotic" auth method be picked for a
+    user-added provider).**
+    1. *Secret storage.* The four keys were, until this point, plain
+       `wxString` fields going through `Configuration`'s generic scalar-
+       settings table -- clear text in the same file as `texPreamble`/
+       `mathJaxURL`/everything else, confirmed by grepping that table
+       directly, not assumed. Replaced with `AiProvider::SaveApiKey()`/
+       `LoadApiKey()`/`DeleteApiKey()` (`wxSecretStore`, service name
+       `"wxMaxima/AI/" + <built-in kind name or "custom:"+id>`), and
+       `Configuration::AiApiKeyAnthropic()`/etc. kept their exact names and
+       signatures but now just forward to these -- every existing call
+       site (`ConfigDialogue.cpp`, `AiChatSidebar.cpp`) needed zero changes
+       for the four built-ins. The user explicitly chose (over a
+       plaintext-fallback option offered first) to **hide the whole AI
+       Chat feature outright** -- tab, sidebar, and its View -> Sidebars
+       menu entry -- rather than ever fall back to plain-text storage on a
+       system with no working secret store; see
+       `AiProvider::SecretStoreAvailable()` (`wxUSE_SECRETSTORE` at compile
+       time AND `wxSecretStore::GetDefault().IsOk()` at runtime -- a
+       compiled-in build can still have no real keyring service reachable,
+       e.g. no gnome-keyring/kwallet D-Bus session) and every call site
+       that guards on it (`ConfigDialogue::CreateAiChatPanel()`'s
+       `AddPage()` call and its `SetCheckboxValues()`/save-on-OK
+       counterparts, `wxMaximaFrame`'s sidebar construction and its
+       `AppendCheckItem()` call). **This sandbox's own prebuilt
+       `libwxgtk3.2-dev` has `wxUSE_SECRETSTORE 0`** (confirmed by grepping
+       its installed `setup.h` directly -- `libsecret-1-0` the runtime lib
+       is present, but not `libsecret-1-dev`, the headers wx's own build
+       needed), so the real `wxSecretStore`-calling branch could not be
+       exercised here at all -- same category as this file's other
+       version/backend-gated code (wx 3.3 dark mode, `wxUSE_ACCESSIBILITY`)
+       verified by careful reading against the real `wx/secretstore.h`
+       header (present regardless of the flag, read directly to confirm
+       `Save(service, username, wxSecretValue)`/`Load(service, username&,
+       password&)`/`Delete(service)`'s exact signatures) rather than
+       compiled. The *hidden* path, conversely, is exactly what this
+       sandbox exercises by construction, and was verified live in Xvfb:
+       a fresh profile shows no "AI Chat" entry anywhere in View ->
+       Sidebars, and Options has no "AI Chat" tab/icon at all (confirmed
+       against the same screenshot used to verify the new Accessibility/
+       AI Chat tab icons in the entry above -- "Startup commands" ->
+       "Printout settings" -> "Revert all to defaults" run consecutively,
+       nothing between them).
+       **Migration**: `Configuration::ReadConfig()` gained a one-time
+       step, gated on `SecretStoreAvailable()`, that reads any of the four
+       old plain-text keys still present, moves each non-empty one into
+       the secret store, and calls `config->DeleteEntry()` immediately
+       (not just clearing the in-memory field) so the plain-text copy
+       doesn't linger on disk until some unrelated setting change happens
+       to trigger a save. Deliberately does *nothing* (leaves the old
+       plain-text value exactly where it is) when no secret store is
+       available -- the feature is hidden either way in that case, and
+       there is nowhere safer to move the value to yet; better to leave it
+       dormant-but-recoverable than destroy it. This exact migration path
+       could not be exercised live either, for the same `wxUSE_SECRETSTORE
+       0` reason -- verified by reading the code path against the real
+       `wxSecretStore` API and by confirming (live, this sandbox) that
+       with no legacy key ever present, `ReadConfig()` still runs cleanly
+       start to finish with no crash.
+    2. *Custom providers.* `AiProviderKind` gained a fifth value, `Custom`
+       (existing values are untouched, so no migration needed for the
+       existing `aiChatProvider` int); a new `AiProviderShape` enum
+       (`Anthropic`/`OpenAiCompatible`/`Google`) captures the one thing
+       that actually varies across a hand-added endpoint's wire format --
+       the request/response JSON shape, which also implies its auth
+       header (`x-api-key`/`Authorization: Bearer`/`x-goog-api-key`
+       respectively; none of the three needed a separate, freeform "custom
+       auth" option, since none of the three headers are exotic enough to
+       need one, per the user's own framing). `MakeAiProviderForShape()`
+       reuses the exact same `AnthropicProvider`/`OpenAiCompatibleProvider`/
+       `GoogleProvider` classes a built-in provider already uses, just
+       pointed at an arbitrary URL/model/display-name instead of one of
+       the four hardcoded built-ins -- `Kind()` on the result is always
+       `Custom` (each of the three provider classes gained a `kind`
+       constructor parameter it stores and returns, defaulting to that
+       class's own natural built-in kind, rather than hardcoding the
+       return value the way they used to), and `Name()` returns the display
+       name override (`AiProvider::SetDisplayName()`) instead of falling
+       through to `AiProviderKindName(Kind())`, since `Custom` alone
+       carries no name of its own. Everything a custom provider needs
+       beyond its API key (name/shape/baseUrl/model) is persisted as one
+       JSON array in `Configuration::AiCustomProvidersJson()`
+       (`AiCustomProviderConfig`/`ParseAiCustomProviders()`/
+       `SerializeAiCustomProviders()`, using the already-vendored
+       `nlohmann::json` the same way `McpTools`/`AiProvider.cpp`'s own
+       request bodies already do) -- deliberately *not* a second ad hoc
+       string-blob format, and deliberately tolerant of a missing/
+       malformed value (empty list, not a thrown exception or a crash),
+       since this is exactly the kind of field a hand-edited or corrupted
+       config file could plausibly break. Which custom entry (if any) is
+       currently active is `Configuration::AiActiveCustomProviderId()`,
+       a separate string field checked only when `AiChatProvider() ==
+       (int)AiProviderKind::Custom`.
+    3. *Options redesign.* `CreateAiChatPanel()` used to build and always
+       show all four providers' `wxStaticBoxSizer`s stacked vertically
+       (the user's own "somewhat repetitive" framing). Replaced with one
+       reusable detail box (key/model always shown; a request-URL field
+       and an API-style dropdown shown *only* for a Custom entry, since a
+       built-in's URL/shape are implied by its kind and never editable)
+       that `LoadAiProviderRecordIntoUi()` repopulates every time the
+       "Active provider" `wxChoice` selection changes, via
+       `OnAiProviderChoice()`. The choice's own item list is the four
+       built-ins (fixed order, matching their `AiProviderKind` values) plus
+       every custom entry, plus a trailing "Add custom provider..." item
+       that is never itself a persistent selection -- picking it pops
+       `AddCustomAiProviderDialog()` (a small ad hoc `wxDialog`: name/
+       shape/URL/model fields, an `wxEVT_UPDATE_UI`-driven OK button that's
+       disabled until name and URL are both non-empty) and either commits
+       a new entry and selects it, or reverts the choice to whatever was
+       selected before if cancelled. **Switching the active selection
+       needed an explicit "flush the outgoing selection's on-screen edits
+       first" step** (`StashAiProviderUiIntoRecord()`, called both before
+       loading a different record into the shared controls and before the
+       final save-on-OK) -- without it, typing a key/model for provider A,
+       switching to provider B, then clicking OK would silently discard
+       whatever was typed for A, since only one physical set of controls
+       ever exists now and switching would otherwise just overwrite it
+       with B's values with no intermediate write-back. This mirrors the
+       exact same class of bug this file's other stateful-editor entries
+       warn about (a single shared UI surface standing in for N pieces of
+       backing state needs an explicit save-before-switch step; the
+       previous four-boxes-always-visible design never had this problem
+       *because* nothing was ever hidden/swapped). All 45 existing unit
+       tests plus two new `test_AiProvider.cpp` scenarios (
+       `MakeAiProviderForShape()` against all three shapes, confirming
+       each one's real request/response behavior is preserved verbatim at
+       an arbitrary URL; `ParseAiCustomProviders()`/
+       `SerializeAiCustomProviders()` round-tripping, including the empty-
+       and malformed-JSON degrade-gracefully cases) pass; the dropdown/
+       detail-box UI itself was verified live in Xvfb for the *pre-hidden*
+       state in the prior follow-up's own screenshots -- the redesigned
+       version could not be re-screenshotted in this same sandbox session
+       for the obvious reason (the tab doesn't exist here at all once
+       `wxUSE_SECRETSTORE` is confirmed off), so this specific UI's actual
+       on-screen behavior (choice switching, the Add-custom dialog, the
+       Remove-custom button) is verified by code reading and the unit
+       tests above, not by a live screenshot -- worth a real interactive
+       check in an environment with a working secret store if this is
+       revisited.
+  - **Follow-up (2026-09-08): quick-fill presets for well-known local AI
+    servers (Ollama, LM Studio, llama.cpp server), plus the security
+    question that came with the idea.** The user asked directly whether a
+    local server should even be a *built-in* `AiProviderKind` (a fifth
+    choice alongside Anthropic/OpenAI/Google/Qwen), and, separately,
+    whether a malicious website could set up its own fake local server and
+    remote-control a running wxMaxima. The second question has a clean
+    answer that shaped the first: **a web page cannot open a listening
+    socket at all** -- browsers expose no raw-socket/server API to page
+    JavaScript, so "a website sets up its own fake local server" isn't a
+    mechanism that exists; the real (much narrower) risk is a *different
+    already-running local process* squatting on the same port a real local
+    LLM server would use (e.g. something else bound to `:11434`) before the
+    user starts Ollama -- and even then, the blast radius is already bounded
+    by this sidebar's own documented design: v1 is read-only with no
+    tool-calling (see the "AI chat sidebar" entry's own opening paragraph),
+    so a hostile response can only inject text into the chat transcript, not
+    touch the worksheet or execute anything -- the same reasoning that
+    already bounds a hostile *real* provider's response. This is also why a
+    genuine built-in `AiProviderKind` for "local server" doesn't pull its
+    weight: unlike the four real, name-brand providers, there's no single
+    fixed URL/auth-header pair to hardcode -- Ollama/LM Studio/llama.cpp
+    server each pick their own port and path, and a user can point any of
+    them at a nonstandard address anyway -- so the entry actually needed
+    something orthogonal to `AiProviderKind`, not another value in it.
+    Added `AiLocalServerPreset` (`name`/`baseUrl`/`model`) and
+    `AiKnownLocalServerPresets()` (`src/ai/AiProvider.h`/`.cpp`) -- a short,
+    hand-picked, non-exhaustive list (Ollama's OpenAI-compatible endpoint at
+    `http://localhost:11434/v1/chat/completions`, note the `/v1/` prefix:
+    Ollama's *native* `/api/chat` endpoint uses a different, non-OpenAI
+    wire shape that `OpenAiCompatibleProvider` doesn't speak; LM Studio's
+    built-in server at `:1234`; `llama.cpp`'s `llama-server` at `:8080` --
+    all three are OpenAI-compatible by construction) -- and a "Quick fill:"
+    `wxChoice` at the top of `ConfigDialogue::AddCustomAiProviderDialog()`'s
+    grid (`src/dialogs/ConfigDialogue.cpp`). Picking a preset just
+    `ChangeValue()`s the dialog's existing Name/URL/Model fields (and forces
+    the API-style choice to "OpenAI-compatible") -- a one-time convenience,
+    not a new persisted concept: every field stays independently editable
+    afterward, nothing distinguishes a preset-filled custom provider from a
+    hand-typed one once saved, and picking "(Custom)" back leaves whatever
+    is already typed untouched. `ChangeValue()`, not `SetValue()`, is used
+    deliberately -- a prefill shouldn't fire a spurious `wxEVT_TEXT` the
+    way `SetValue()` would, even though nothing in this particular dialog
+    currently listens for one; picked for correctness against future
+    changes, not because it fixed an observed bug here.
+    `test_AiProvider.cpp` gained a new SCENARIO asserting every
+    preset is fully filled in (no empty name/URL/model) and that each one's
+    URL survives unchanged through `MakeAiProviderForShape(OpenAiCompatible,
+    ...)` -- 116 assertions in 8 test cases total now, all passing.
+    Same sandbox limitation as the rest of this feature applies here too:
+    the actual "Quick fill" dropdown cannot be screenshotted in this sandbox
+    (`wxUSE_SECRETSTORE` is off here, so the whole AI Chat tab stays hidden
+    per its own gating) -- verified by code reading plus the unit test
+    above, not a live screenshot.
   - **Not implemented, and shouldn't be without a separate decision: a
     write/evaluate-capable MCP tool.** Raised and discussed directly with
     the user (2026-09-06): unlike `watch_variable`/`unwatch_variable` (see
@@ -1895,6 +2146,69 @@ a local TCP socket.
     session picking this up should start here rather than re-tracing the
     fd/handle chain again, which is now about as thoroughly instrumented
     as it usefully can be.
+  - **Follow-up (2026-09-07): likely root cause identified via external
+    research on the `FILE_TYPE_CHAR` finding above, and a fix applied to
+    the test itself (not to wxMaxima's code) -- STILL UNVERIFIED against
+    real CI as of this writing.** Two externally-confirmed facts, found via
+    web search rather than assumed: (1) `GetFileType()` reports
+    `FILE_TYPE_CHAR` for BOTH a real console handle AND a Windows ConPTY
+    (pseudo-console) conout handle -- they are indistinguishable to the
+    child via this API; (2) ConPTY has multiple real, currently-open
+    upstream issues in `microsoft/terminal` describing races around
+    draining/forwarding a child process's output relative to that child's
+    own exit -- e.g. `ClosePseudoConsole()` not reliably waiting for the
+    output pipe to drain before tearing down, worse the faster the child
+    exits after writing. `wxmaxima --version` writes exactly one line via
+    `Printf()` and calls `exit(0)` immediately afterwards with nothing else
+    happening in between -- exactly the write-then-exit-fast shape that
+    triggers this class of bug -- and (per the entry above) this is the
+    only test in the whole suite whose pass/fail depends on that specific
+    console-output path's content for a WIN32-subsystem process; every
+    other content-checked test asserts on Maxima's answer over the TCP
+    socket instead, which never touches this path at all. Put together:
+    this is very likely a Windows console/ConPTY output-draining race
+    around a short-lived GUI-subsystem process's exit, not a bug in
+    wxMaxima's own code -- consistent with the diagnostic trace above
+    already proving the app-side write itself completes normally, and with
+    `RUN_SERIAL` (a ctest-level, not an OS-console-level, mitigation)
+    having no effect. This does not itself prove GitHub Actions'
+    `windows-latest` runner's `pwsh`/CTest process tree actually goes
+    through ConPTY specifically (that could not be confirmed from outside
+    the runner) -- but a real console handle has the exact same
+    `FILE_TYPE_CHAR` signature and the exact same class of
+    "output near process exit is not fully synchronous" risk, so the fix
+    below does not depend on picking between the two.
+    **Fix applied (`test/CMakeLists.txt`)**: since the race lives in
+    whatever console/pty layer sits between `wxmaxima.exe` and CTest, not
+    in wxMaxima's own code, route the captured text through a real file
+    instead of a live console handle on Windows -- disk I/O has no
+    equivalent async-drain step. The test's `COMMAND` is now
+    platform-conditional (`if(WIN32)`): Windows runs
+    `cmd /c "$<TARGET_FILE:wxmaxima> ... > wxmaxima_version_string.out 2>&1 && type wxmaxima_version_string.out"`,
+    every other platform keeps the original direct invocation unchanged.
+    `type`'s own write-then-exit is spawned by CTest the exact same way as
+    every other (reliably passing) test in this suite -- it's a plain
+    console-subsystem process, which removes the one factor (a
+    WIN32-subsystem process as CTest's *direct* child) unique to this test,
+    rather than guessing at the race's exact timing. `RUN_SERIAL` is left
+    in place (harmless, and the earlier three-real-CI-failures finding
+    against ctest-level contention stays valid regardless of this fix).
+    Verified only that this doesn't regress non-Windows: a clean local
+    Linux configure+build+`ctest -R wxmaxima_version_string` still passes,
+    and the generated Linux command line is byte-for-byte unchanged from
+    before this change (confirmed by inspecting the generated
+    `CTestTestfile.cmake`) -- the actual Windows behavior, same as
+    everything else in this investigation, can only be confirmed by a real
+    `compile_windows.yml` CI run. **If this run still fails**: that rules
+    out a console/ConPTY drain race specifically (since a real file write
+    has no equivalent race) and reopens the question of what else could be
+    dropping this one test's captured output -- worth re-reading this
+    whole entry's history before re-guessing, and worth checking whether
+    the `.out` file itself ended up empty/short (checked into the
+    artifact/console-print mechanism already built for this investigation)
+    to tell "file write also failed" apart from "`type`'s own output was
+    lost the same way," which would point back at the outer console layer
+    being the common factor after all.
 
 - **System tray icon (`src/TrayIcon.{h,cpp}`, GH #2286) -- mirrors the busy
   status, gated entirely by `wxUSE_TASKBARICON`.** The maintainer's own
