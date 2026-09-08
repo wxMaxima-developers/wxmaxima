@@ -756,19 +756,22 @@ public:
   void AiChatProvider(int provider) { m_aiChatProvider = provider; }
 
   //! The user's API key for each provider, kept separate so switching
-  //! providers in Options doesn't lose the others. Plain-text in wxConfig's
-  //! backing store (the registry on Windows, a dotfile elsewhere) -- the
-  //! same tradeoff any desktop app that stores a local API key makes; there
-  //! is no portable, dependency-free OS-keychain wrapper this project
-  //! already pulls in to do better.
-  wxString AiApiKeyAnthropic() const { return m_aiApiKeyAnthropic; }
-  void AiApiKeyAnthropic(const wxString &key) { m_aiApiKeyAnthropic = key; }
-  wxString AiApiKeyOpenAI() const { return m_aiApiKeyOpenAI; }
-  void AiApiKeyOpenAI(const wxString &key) { m_aiApiKeyOpenAI = key; }
-  wxString AiApiKeyGoogle() const { return m_aiApiKeyGoogle; }
-  void AiApiKeyGoogle(const wxString &key) { m_aiApiKeyGoogle = key; }
-  wxString AiApiKeyQwen() const { return m_aiApiKeyQwen; }
-  void AiApiKeyQwen(const wxString &key) { m_aiApiKeyQwen = key; }
+  //! providers in Options doesn't lose the others. Stored in the OS secret
+  //! store (AiProvider::SaveApiKey()/LoadApiKey()), never in plain
+  //! Configuration/wxConfig -- defined out-of-line in Configuration.cpp
+  //! specifically so this header doesn't need to include ai/AiProvider.h
+  //! just for these four accessors. The whole AI Chat feature is hidden
+  //! (see AiProvider::SecretStoreAvailable()) on a build/system where no
+  //! secret store is actually available, so these are never called in a
+  //! way that would need a plain-text fallback.
+  wxString AiApiKeyAnthropic() const;
+  void AiApiKeyAnthropic(const wxString &key);
+  wxString AiApiKeyOpenAI() const;
+  void AiApiKeyOpenAI(const wxString &key);
+  wxString AiApiKeyGoogle() const;
+  void AiApiKeyGoogle(const wxString &key);
+  wxString AiApiKeyQwen() const;
+  void AiApiKeyQwen(const wxString &key);
 
   //! The model id to request from each provider; defaults to
   //! AiProviderDefaultModel() but the user can override it in Options,
@@ -781,6 +784,20 @@ public:
   void AiModelGoogle(const wxString &model) { m_aiModelGoogle = model; }
   wxString AiModelQwen() const { return m_aiModelQwen; }
   void AiModelQwen(const wxString &model) { m_aiModelQwen = model; }
+
+  //! User-added custom providers (beyond the four built-in ones), as a
+  //! JSON array -- see AiCustomProviderConfig/ParseAiCustomProviders() in
+  //! ai/AiProvider.h. Each entry's API key lives in the secret store,
+  //! keyed by AiProvider::CustomProviderSecretService(id), not in this
+  //! string.
+  wxString AiCustomProvidersJson() const { return m_aiCustomProvidersJson; }
+  void AiCustomProvidersJson(const wxString &json) { m_aiCustomProvidersJson = json; }
+
+  //! Which custom provider is active, by AiCustomProviderConfig::id --
+  //! meaningful only when AiChatProvider() == (int)AiProviderKind::Custom.
+  //! Empty if none/not applicable.
+  wxString AiActiveCustomProviderId() const { return m_aiActiveCustomProviderId; }
+  void AiActiveCustomProviderId(const wxString &id) { m_aiActiveCustomProviderId = id; }
 
   /*! Returns the maximum number of displayed digits
 
@@ -1464,14 +1481,14 @@ private:
   int m_mcpServerPort;
   //! Which AI provider the AI chat sidebar talks to. See AiChatProvider().
   int m_aiChatProvider;
-  wxString m_aiApiKeyAnthropic;
-  wxString m_aiApiKeyOpenAI;
-  wxString m_aiApiKeyGoogle;
-  wxString m_aiApiKeyQwen;
   wxString m_aiModelAnthropic;
   wxString m_aiModelOpenAI;
   wxString m_aiModelGoogle;
   wxString m_aiModelQwen;
+  //! User-added custom providers. See AiCustomProvidersJson().
+  wxString m_aiCustomProvidersJson;
+  //! See AiActiveCustomProviderId().
+  wxString m_aiActiveCustomProviderId;
   //! How many digits of a number we show by default?
   long m_displayedDigits;
   //! Automatically wrap long lines?

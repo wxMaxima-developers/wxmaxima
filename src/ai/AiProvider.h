@@ -51,7 +51,63 @@ struct AiChatMessage {
 
 //! Which AI service to talk to. Persisted as a plain int in Configuration;
 //! keep existing values stable across releases (append only).
-enum class AiProviderKind { None = 0, Anthropic = 1, OpenAI = 2, Google = 3, Qwen = 4 };
+//! Custom is what every user-added provider (see AiCustomProviderConfig)
+//! reports from AiProvider::Kind() -- Configuration::AiActiveCustomProviderId()
+//! says which one, since a plain kind alone can't distinguish two custom
+//! entries from each other.
+enum class AiProviderKind { None = 0, Anthropic = 1, OpenAI = 2, Google = 3, Qwen = 4, Custom = 5 };
+
+//! Which request/response wire format a provider uses. The four built-in
+//! AiProviderKinds each hardcode one of these; a user-added custom provider
+//! (AiCustomProviderConfig) picks one explicitly, since these three cover
+//! every shape actually implemented -- Anthropic's and Google's own APIs,
+//! plus the "OpenAI-compatible" shape a large number of real third-party
+//! and self-hosted endpoints (OpenRouter, Groq, Ollama, ...) already speak
+//! verbatim, precisely because it's become a de facto standard. None of the
+//! three auth conventions that go with these shapes (a plain x-api-key
+//! header, "Authorization: Bearer <key>", or x-goog-api-key) are exotic
+//! enough to need a fourth, freeform "custom auth" option -- picking a
+//! shape already picks its auth convention too.
+enum class AiProviderShape { Anthropic, OpenAiCompatible, Google };
+
+//! Human-readable name for the shape picker in the "Add custom provider"
+//! dialog.
+wxString AiProviderShapeName(AiProviderShape shape);
+
+//! One user-added custom provider, as persisted in Configuration's
+//! AiCustomProvidersJson() (everything except the API key, which lives in
+//! the OS secret store, keyed by CustomProviderSecretService(id) -- see
+//! AiProvider::SaveApiKey()/LoadApiKey()).
+struct AiCustomProviderConfig {
+  //! Stable, internally-generated identifier -- never shown in the UI and
+  //! never reused, so renaming a provider or two providers sharing a
+  //! display name can't collide in the secret store or in
+  //! Configuration::AiActiveCustomProviderId(). See NewAiCustomProviderId().
+  wxString id;
+  //! User-chosen display name, shown in the provider dropdown.
+  wxString name;
+  AiProviderShape shape = AiProviderShape::OpenAiCompatible;
+  //! Full request URL for OpenAI-compatible/Anthropic shapes; for Google's
+  //! shape, the part before "<model>:generateContent" (mirrors
+  //! GoogleProvider::RequestUrl()).
+  wxString baseUrl;
+  wxString model;
+};
+
+//! A fresh id for a new custom provider (see AiCustomProviderConfig::id) --
+//! never shown to the user, just needs to not collide with any existing one
+//! for the lifetime of this installation.
+wxString NewAiCustomProviderId();
+
+//! Parses Configuration::AiCustomProvidersJson() back into a list; returns
+//! an empty list for an empty or malformed string rather than throwing --
+//! a corrupted/hand-edited config file should degrade to "no custom
+//! providers configured", not crash Options on open.
+std::vector<AiCustomProviderConfig> ParseAiCustomProviders(const wxString &json);
+
+//! The inverse of ParseAiCustomProviders(), for Configuration::
+//! AiCustomProvidersJson()'s setter.
+wxString SerializeAiCustomProviders(const std::vector<AiCustomProviderConfig> &providers);
 
 //! Human-readable name for Options/the sidebar's status line.
 wxString AiProviderKindName(AiProviderKind kind);
@@ -69,6 +125,17 @@ wxString AiProviderDefaultModel(AiProviderKind kind);
 //! Best-effort: a provider's console is free to move its own pages, same
 //! caveat as AiProviderDefaultModel()'s model ids going stale over time.
 wxString AiProviderApiKeyUrl(AiProviderKind kind);
+
+//! A built-in provider's fixed request URL (Google's own, without the
+//! "<model>:generateContent" suffix its real RequestUrl() appends -- see
+//! GoogleProvider), shown read-only in Options next to a Custom entry's
+//! editable one, so both look like the same kind of field even though only
+//! one of them can actually be changed. Must be kept in sync with
+//! MakeAiProvider()'s own hardcoded URLs; there is deliberately no single
+//! shared source for both, since MakeAiProvider() builds a real (kind,
+//! shape)-bound provider object while this is a pure display string with
+//! no such object to read it back from.
+wxString AiProviderBaseUrl(AiProviderKind kind);
 
 //! Where to see this provider's current list of available model ids --
 //! shown as a link next to Options' model field. AiProviderDefaultModel()
@@ -97,7 +164,45 @@ public:
   virtual ~AiProvider() = default;
 
   virtual AiProviderKind Kind() const = 0;
-  wxString Name() const { return AiProviderKindName(Kind()); }
+  //! AiProviderKindName(Kind()) for a built-in provider, or the user's own
+  //! chosen name for a custom one (Kind() == Custom doesn't carry a name by
+  //! itself) -- SetDisplayName() is called by MakeAiProviderForShape() for
+  //! exactly this reason.
+  wxString Name() const {
+    return m_displayName.IsEmpty() ? AiProviderKindName(Kind()) : m_displayName;
+  }
+  void SetDisplayName(const wxString &name) { m_displayName = name; }
+
+  //! True if this build of wxWidgets has a working wxSecretStore backend
+  //! (>= 3.1.1, compiled with wxUSE_SECRETSTORE, AND an actual OS keyring
+  //! service reachable at runtime -- e.g. gnome-keyring/kwallet on Linux,
+  //! always true on Windows/macOS). API keys are only ever stored here,
+  //! never in plain Configuration/wxConfig, so the whole AI Chat feature
+  //! (Options tab, sidebar, menu entry) stays hidden whenever this is
+  //! false rather than falling back to storing a key in plain text.
+  static bool SecretStoreAvailable();
+
+  //! Saves (or, for an empty key, deletes) an API key for `service` -- a
+  //! stable identifier: AiProviderKindName(kind) for a built-in provider,
+  //! or CustomProviderSecretService(id) for a custom one. No-op (and never
+  //! called by any code path that matters) if !SecretStoreAvailable().
+  static void SaveApiKey(const wxString &service, const wxString &apiKey);
+  //! Returns the stored key for `service`, or an empty string if none is
+  //! stored (also the result if !SecretStoreAvailable() -- there is nowhere
+  //! a key could have been saved to).
+  static wxString LoadApiKey(const wxString &service);
+  static void DeleteApiKey(const wxString &service);
+  //! The secret-store service name for a custom provider's own id -- kept
+  //! distinct from a bare built-in kind name so a custom provider a user
+  //! happens to name e.g. "OpenAI" can never collide with the real
+  //! built-in OpenAI entry's stored key.
+  static wxString CustomProviderSecretService(const wxString &id);
+  //! The secret-store service name for one of the four built-in kinds --
+  //! just AiProviderKindName(kind), given its own name so every call site
+  //! that needs it (Configuration's four AiApiKeyX() accessors, the
+  //! plain-text-key migration in Configuration::ReadConfig()) shares one
+  //! definition instead of separately hardcoding the same string.
+  static wxString BuiltinProviderSecretService(AiProviderKind kind);
 
   //! The full URL SendChat() will POST to. Virtual so Google's provider can
   //! append the model id (its endpoint is per-model, unlike the others).
@@ -151,6 +256,7 @@ protected:
   wxString m_baseUrl;
   wxString m_apiKey;
   wxString m_model;
+  wxString m_displayName;
 };
 
 //! Thrown by ParseReply() for a response that doesn't parse or doesn't have
@@ -162,7 +268,22 @@ public:
 };
 
 //! Builds the provider for this kind, or nullptr for AiProviderKind::None.
+//! Never called with AiProviderKind::Custom -- see MakeAiProviderForShape()
+//! for that case, since a custom provider's URL/shape isn't implied by the
+//! kind alone.
 std::shared_ptr<AiProvider> MakeAiProvider(AiProviderKind kind, const wxString &apiKey,
                                            const wxString &model);
+
+//! Builds a provider for a user-added custom entry: reuses the exact same
+//! request/response-shape implementation a built-in provider of that shape
+//! uses (AnthropicProvider/OpenAiCompatibleProvider/GoogleProvider), just
+//! pointed at an arbitrary URL with the user's own display name and model
+//! instead of one of the four hardcoded built-ins. Kind() on the result is
+//! always AiProviderKind::Custom.
+std::shared_ptr<AiProvider> MakeAiProviderForShape(AiProviderShape shape,
+                                                   const wxString &displayName,
+                                                   const wxString &baseUrl,
+                                                   const wxString &apiKey,
+                                                   const wxString &model);
 
 #endif // AIPROVIDER_H

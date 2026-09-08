@@ -123,14 +123,12 @@ Configuration::Configuration(const Configuration &o) :
   m_mcpServerEnabled(o.m_mcpServerEnabled),
   m_mcpServerPort(o.m_mcpServerPort),
   m_aiChatProvider(o.m_aiChatProvider),
-  m_aiApiKeyAnthropic(o.m_aiApiKeyAnthropic),
-  m_aiApiKeyOpenAI(o.m_aiApiKeyOpenAI),
-  m_aiApiKeyGoogle(o.m_aiApiKeyGoogle),
-  m_aiApiKeyQwen(o.m_aiApiKeyQwen),
   m_aiModelAnthropic(o.m_aiModelAnthropic),
   m_aiModelOpenAI(o.m_aiModelOpenAI),
   m_aiModelGoogle(o.m_aiModelGoogle),
   m_aiModelQwen(o.m_aiModelQwen),
+  m_aiCustomProvidersJson(o.m_aiCustomProvidersJson),
+  m_aiActiveCustomProviderId(o.m_aiActiveCustomProviderId),
   m_displayedDigits(o.m_displayedDigits),
   m_autoWrap(o.m_autoWrap),
   m_autoIndent(o.m_autoIndent),
@@ -630,6 +628,37 @@ void Configuration::ReadConfig() {
   // opt-in for existing users.
   SetAutoWrap(m_autoWrap);
 
+  // AI API key migration: these four used to be plain strings in this same
+  // scalar-settings table (aiApiKeyAnthropic/OpenAI/Google/Qwen), stored in
+  // clear text in wxConfig's own backing file same as everything else here.
+  // They now live only in the OS secret store (AiProvider::SaveApiKey()) --
+  // move any value a pre-upgrade install already wrote here into the
+  // secret store, then delete it from this file immediately (not just from
+  // the in-memory Configuration object) so the plain-text copy doesn't
+  // linger on disk until some unrelated setting change happens to trigger a
+  // save. If no secret store is available on this system, deliberately
+  // leave the old value exactly where it is rather than either migrating
+  // it somewhere unsafe or silently discarding a key the user may still
+  // want once a keyring becomes available -- AiProvider::SecretStoreAvailable()
+  // being false already hides the whole AI Chat feature from the UI, so
+  // this dormant value is simply unreachable until then, not lost.
+  if (AiProvider::SecretStoreAvailable()) {
+    static const struct { const wxChar *configKey; AiProviderKind kind; }
+    legacyAiKeys[] = {
+      {wxS("aiApiKeyAnthropic"), AiProviderKind::Anthropic},
+      {wxS("aiApiKeyOpenAI"), AiProviderKind::OpenAI},
+      {wxS("aiApiKeyGoogle"), AiProviderKind::Google},
+      {wxS("aiApiKeyQwen"), AiProviderKind::Qwen},
+    };
+    for (const auto &legacy : legacyAiKeys) {
+      wxString oldValue;
+      if (config->Read(legacy.configKey, &oldValue) && !oldValue.IsEmpty()) {
+        AiProvider::SaveApiKey(AiProvider::BuiltinProviderSecretService(legacy.kind), oldValue);
+        config->DeleteEntry(legacy.configKey);
+      }
+    }
+  }
+
   config->Read(wxS("configID"), &m_configId);
 
   m_fontRenderability.ReadFrom(config);
@@ -860,6 +889,31 @@ bool Configuration::HideMarkerForThisMessage(wxString message) {
     return false;
   else
     return it->second;
+}
+
+wxString Configuration::AiApiKeyAnthropic() const {
+  return AiProvider::LoadApiKey(AiProvider::BuiltinProviderSecretService(AiProviderKind::Anthropic));
+}
+void Configuration::AiApiKeyAnthropic(const wxString &key) {
+  AiProvider::SaveApiKey(AiProvider::BuiltinProviderSecretService(AiProviderKind::Anthropic), key);
+}
+wxString Configuration::AiApiKeyOpenAI() const {
+  return AiProvider::LoadApiKey(AiProvider::BuiltinProviderSecretService(AiProviderKind::OpenAI));
+}
+void Configuration::AiApiKeyOpenAI(const wxString &key) {
+  AiProvider::SaveApiKey(AiProvider::BuiltinProviderSecretService(AiProviderKind::OpenAI), key);
+}
+wxString Configuration::AiApiKeyGoogle() const {
+  return AiProvider::LoadApiKey(AiProvider::BuiltinProviderSecretService(AiProviderKind::Google));
+}
+void Configuration::AiApiKeyGoogle(const wxString &key) {
+  AiProvider::SaveApiKey(AiProvider::BuiltinProviderSecretService(AiProviderKind::Google), key);
+}
+wxString Configuration::AiApiKeyQwen() const {
+  return AiProvider::LoadApiKey(AiProvider::BuiltinProviderSecretService(AiProviderKind::Qwen));
+}
+void Configuration::AiApiKeyQwen(const wxString &key) {
+  AiProvider::SaveApiKey(AiProvider::BuiltinProviderSecretService(AiProviderKind::Qwen), key);
 }
 
 //TODO: Don't underline the section number of titles
@@ -1309,14 +1363,12 @@ Configuration::ScalarConfigSettings() {
     {wxS("mcpServerEnabled"), &Configuration::m_mcpServerEnabled},
     {wxS("mcpServerPort"), &Configuration::m_mcpServerPort},
     {wxS("aiChatProvider"), &Configuration::m_aiChatProvider},
-    {wxS("aiApiKeyAnthropic"), &Configuration::m_aiApiKeyAnthropic},
-    {wxS("aiApiKeyOpenAI"), &Configuration::m_aiApiKeyOpenAI},
-    {wxS("aiApiKeyGoogle"), &Configuration::m_aiApiKeyGoogle},
-    {wxS("aiApiKeyQwen"), &Configuration::m_aiApiKeyQwen},
     {wxS("aiModelAnthropic"), &Configuration::m_aiModelAnthropic},
     {wxS("aiModelOpenAI"), &Configuration::m_aiModelOpenAI},
     {wxS("aiModelGoogle"), &Configuration::m_aiModelGoogle},
     {wxS("aiModelQwen"), &Configuration::m_aiModelQwen},
+    {wxS("aiCustomProviders"), &Configuration::m_aiCustomProvidersJson},
+    {wxS("aiActiveCustomProvider"), &Configuration::m_aiActiveCustomProviderId},
     {wxS("numpadEnterEvaluates"), &Configuration::m_numpadEnterEvaluates},
     {wxS("offerKnownAnswers"), &Configuration::m_offerKnownAnswers},
     {wxS("openHCaret"), &Configuration::m_openHCaret},

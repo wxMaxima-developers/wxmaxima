@@ -49,6 +49,8 @@ extern unsigned char view_refresh_svg_gz[];
 #include <wx/bookctrl.h>
 #include <wx/artprov.h>
 #include <unordered_map>
+#include <vector>
+#include <wx/hyperlink.h>
 
 #ifndef CONFIGDIALOGUE_H
 #define CONFIGDIALOGUE_H
@@ -56,6 +58,7 @@ extern unsigned char view_refresh_svg_gz[];
 #include "cells/TextStyle.h"
 #include "worksheet/Worksheet.h"
 #include "../Configuration.h"
+#include "ai/AiProvider.h"
 
 enum
 {
@@ -343,15 +346,68 @@ protected:
   wxCheckBox *m_findDialogDockable;
   wxCheckBox *m_mcpServerEnabled;
   wxSpinCtrl *m_mcpServerPort;
+  //! One entry per configurable provider -- the four built-ins (in fixed
+  //! order) plus any custom ones -- kept in memory only for the dialog's
+  //! lifetime. "None (disabled)" is not one of these; it's a separate,
+  //! always-first item in m_aiChatProviderChoice with no detail box.
+  struct AiProviderUiRecord {
+    AiProviderKind kind;
+    //! Only set when kind == AiProviderKind::Custom; matches
+    //! AiCustomProviderConfig::id.
+    wxString customId;
+    //! Shown in m_aiChatProviderChoice; AiProviderKindName(kind) for a
+    //! built-in, user-chosen for a custom one.
+    wxString displayName;
+    //! Meaningful only when kind == Custom -- a built-in's shape/URL are
+    //! implied by its kind and never shown as editable.
+    AiProviderShape shape = AiProviderShape::OpenAiCompatible;
+    wxString baseUrl;
+    wxString apiKey;
+    wxString model;
+  };
+  std::vector<AiProviderUiRecord> m_aiProviderRecords;
+  //! Index into m_aiProviderRecords of whichever one m_aiKeyCtrl/
+  //! m_aiModelCtrl/... currently display, or -1 while "None (disabled)" is
+  //! selected. Needed because switching the choice has to flush the
+  //! outgoing record's edits before loading the incoming one.
+  int m_aiActiveProviderRecordIndex = -1;
   wxChoice *m_aiChatProviderChoice;
-  wxTextCtrl *m_aiKeyAnthropic;
-  wxTextCtrl *m_aiKeyOpenAI;
-  wxTextCtrl *m_aiKeyGoogle;
-  wxTextCtrl *m_aiKeyQwen;
-  wxTextCtrl *m_aiModelAnthropicCtrl;
-  wxTextCtrl *m_aiModelOpenAICtrl;
-  wxTextCtrl *m_aiModelGoogleCtrl;
-  wxTextCtrl *m_aiModelQwenCtrl;
+  //! One reusable box showing whichever provider is currently selected,
+  //! rather than all of them stacked at once -- repopulated by
+  //! OnAiProviderChoice() every time the selection changes.
+  wxStaticBoxSizer *m_aiProviderDetailBox;
+  wxStaticText *m_aiBaseUrlLabel;
+  //! Editable only for a Custom record; shows (read-only, via Disable())
+  //! the fixed URL for a built-in one, so its value is still visible.
+  wxTextCtrl *m_aiBaseUrlCtrl;
+  wxStaticText *m_aiShapeLabel;
+  wxChoice *m_aiShapeChoice;
+  wxTextCtrl *m_aiKeyCtrl;
+  wxTextCtrl *m_aiModelCtrl;
+  wxHyperlinkCtrl *m_aiApiKeyLink;
+  wxHyperlinkCtrl *m_aiModelListLink;
+  //! Shown only for a Custom record; deletes it (and its stored API key)
+  //! outright rather than just clearing its fields.
+  wxButton *m_aiRemoveCustomProviderButton;
+  void OnAiProviderChoice(wxCommandEvent &event);
+  void OnAiRemoveCustomProvider(wxCommandEvent &event);
+  //! Copies the on-screen key/model/(baseUrl/shape for Custom) fields back
+  //! into m_aiProviderRecords[m_aiActiveProviderRecordIndex], if any --
+  //! called before switching the displayed record and before saving.
+  void StashAiProviderUiIntoRecord();
+  //! The inverse: populates the shared detail box from
+  //! m_aiProviderRecords[index], showing/hiding the Custom-only controls
+  //! as needed. index == -1 hides the whole detail box ("None (disabled)").
+  void LoadAiProviderRecordIntoUi(int index);
+  //! Opens a small modal to create a new custom provider (name/shape/
+  //! baseUrl/model); on success appends it to m_aiProviderRecords,
+  //! rebuilds m_aiChatProviderChoice and selects it. Returns false (and
+  //! changes nothing) if the user cancels.
+  bool AddCustomAiProviderDialog();
+  //! Rebuilds m_aiChatProviderChoice's items from m_aiProviderRecords (plus
+  //! the fixed "None (disabled)" and "Add custom provider..." entries) and
+  //! selects `selectIndex` (-1 for "None").
+  void RebuildAiProviderChoice(int selectIndex);
   wxChoice *m_showUserDefinedLabels;
   wxButton *m_getStyleFont;
   //! Light / Dark / Follow-system selector (also picks which set the editor edits).

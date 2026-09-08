@@ -32,6 +32,22 @@
   Advanced plan does not include API usage), since a provider's site asking
   for prepaid credit before it hands out a key can otherwise look like a
   mistake.
+- Options -> AI Chat redesigned: instead of all four providers' key/model
+  fields shown stacked at once, a single "Active provider" dropdown now
+  shows only the selected one's own fields. You can also add any number of
+  your own custom providers (a name, an API style -- OpenAI-compatible,
+  Anthropic, or Google Gemini -- a request URL and a model), which covers
+  most third-party and self-hosted endpoints (OpenRouter, Groq, a local
+  Ollama server, a proxy in front of one of the big three, ...) without
+  needing built-in support for each one by name.
+- AI provider API keys are now stored in the operating system's own secret
+  store (the same keyring Windows/macOS/most Linux desktops already use for
+  other apps' passwords) instead of in wxMaxima's own plain-text settings
+  file; a key saved by an older version is moved into the secret store
+  automatically the first time you start this version. On a system with no
+  such secret store available at all, the AI Chat tab, sidebar and menu
+  entry are hidden entirely rather than falling back to storing a key in
+  plain text.
 - Added an "AI Chat" sidebar (View -> Sidebars -> AI Chat) that lets you
   chat about the current worksheet with Anthropic, OpenAI, Google Gemini or
   Qwen, using your own API key (configured in Options -> AI Chat). It sends

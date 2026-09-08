@@ -295,7 +295,11 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent)
   m_notebook->AddPage(CreateClipboardPanel(), _("Copy"), false, 5);
   m_notebook->AddPage(CreateStartupPanel(), _("Startup commands"), false, 6);
   m_notebook->AddPage(CreatePrintPanel(), _("Printout settings"), false, 7);
-  m_notebook->AddPage(CreateAiChatPanel(), _("AI Chat"), false, 9);
+  // Hidden outright, not just disabled, when there's nowhere safe to keep
+  // an API key -- see AiProvider::SecretStoreAvailable()'s own doc comment
+  // for why this doesn't fall back to plain-text storage instead.
+  if (AiProvider::SecretStoreAvailable())
+    m_notebook->AddPage(CreateAiChatPanel(), _("AI Chat"), false, 9);
 #if wxUSE_ACCESSIBILITY
   // Only offered when wxWidgets was compiled with accessibility support -
   // without it there is no screen-reader integration these settings could
@@ -617,17 +621,66 @@ void ConfigDialogue::SetCheckboxValues() {
   m_findDialogDockable->SetValue(configuration->FindDialogDockable());
   m_mcpServerEnabled->SetValue(configuration->McpServerEnabled());
   m_mcpServerPort->SetValue(configuration->McpServerPort());
-  // The enum's own values (AiProviderKind::None=0, Anthropic=1, ...) match
-  // the wxChoice's item order 1:1, so the raw stored int is a valid index.
-  m_aiChatProviderChoice->SetSelection(configuration->AiChatProvider());
-  m_aiKeyAnthropic->SetValue(configuration->AiApiKeyAnthropic());
-  m_aiKeyOpenAI->SetValue(configuration->AiApiKeyOpenAI());
-  m_aiKeyGoogle->SetValue(configuration->AiApiKeyGoogle());
-  m_aiKeyQwen->SetValue(configuration->AiApiKeyQwen());
-  m_aiModelAnthropicCtrl->SetValue(configuration->AiModelAnthropic());
-  m_aiModelOpenAICtrl->SetValue(configuration->AiModelOpenAI());
-  m_aiModelGoogleCtrl->SetValue(configuration->AiModelGoogle());
-  m_aiModelQwenCtrl->SetValue(configuration->AiModelQwen());
+  // The whole AI Chat tab doesn't exist when there's nowhere safe to keep
+  // an API key (see AiProvider::SecretStoreAvailable(), and where
+  // CreateAiChatPanel() is (not) called) -- nothing here to populate.
+  if (AiProvider::SecretStoreAvailable()) {
+    m_aiProviderRecords.clear();
+    AiProviderKind fixedKinds[] = {AiProviderKind::Anthropic, AiProviderKind::OpenAI,
+                                   AiProviderKind::Google, AiProviderKind::Qwen};
+    for (AiProviderKind kind : fixedKinds) {
+      AiProviderUiRecord rec;
+      rec.kind = kind;
+      rec.displayName = AiProviderKindName(kind);
+      switch (kind) {
+      case AiProviderKind::Anthropic:
+        rec.apiKey = configuration->AiApiKeyAnthropic();
+        rec.model = configuration->AiModelAnthropic();
+        break;
+      case AiProviderKind::OpenAI:
+        rec.apiKey = configuration->AiApiKeyOpenAI();
+        rec.model = configuration->AiModelOpenAI();
+        break;
+      case AiProviderKind::Google:
+        rec.apiKey = configuration->AiApiKeyGoogle();
+        rec.model = configuration->AiModelGoogle();
+        break;
+      case AiProviderKind::Qwen:
+        rec.apiKey = configuration->AiApiKeyQwen();
+        rec.model = configuration->AiModelQwen();
+        break;
+      default:
+        break;
+      }
+      m_aiProviderRecords.push_back(rec);
+    }
+    for (const auto &custom : ParseAiCustomProviders(configuration->AiCustomProvidersJson())) {
+      AiProviderUiRecord rec;
+      rec.kind = AiProviderKind::Custom;
+      rec.customId = custom.id;
+      rec.displayName = custom.name;
+      rec.shape = custom.shape;
+      rec.baseUrl = custom.baseUrl;
+      rec.model = custom.model;
+      rec.apiKey = AiProvider::LoadApiKey(AiProvider::CustomProviderSecretService(custom.id));
+      m_aiProviderRecords.push_back(rec);
+    }
+
+    int selectIndex = -1;
+    if (static_cast<AiProviderKind>(configuration->AiChatProvider()) == AiProviderKind::Custom) {
+      wxString activeId = configuration->AiActiveCustomProviderId();
+      for (size_t i = 0; i < m_aiProviderRecords.size(); ++i)
+        if ((m_aiProviderRecords[i].kind == AiProviderKind::Custom) &&
+            (m_aiProviderRecords[i].customId == activeId))
+          selectIndex = static_cast<int>(i);
+    } else if (configuration->AiChatProvider() != 0) {
+      AiProviderKind activeKind = static_cast<AiProviderKind>(configuration->AiChatProvider());
+      for (size_t i = 0; i < m_aiProviderRecords.size(); ++i)
+        if (m_aiProviderRecords[i].kind == activeKind)
+          selectIndex = static_cast<int>(i);
+    }
+    RebuildAiProviderChoice(selectIndex);
+  }
   m_fixedFontInTC->SetValue(configuration->FixedFontInTextControls());
   m_offerKnownAnswers->SetValue(m_configuration->OfferKnownAnswers());
 #if wxUSE_ACCESSIBILITY
@@ -1989,83 +2042,278 @@ wxWindow *ConfigDialogue::CreateAiChatPanel() {
     new wxStaticText(panel, wxID_ANY, _("Active provider:")),
     wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor())
       .Align(wxALIGN_CENTER_VERTICAL));
-  wxArrayString providerChoices;
-  providerChoices.Add(_("None (disabled)"));
-  providerChoices.Add(AiProviderKindName(AiProviderKind::Anthropic));
-  providerChoices.Add(AiProviderKindName(AiProviderKind::OpenAI));
-  providerChoices.Add(AiProviderKindName(AiProviderKind::Google));
-  providerChoices.Add(AiProviderKindName(AiProviderKind::Qwen));
+  // Items are rebuilt/reordered by RebuildAiProviderChoice() (called once
+  // just below and again whenever a custom provider is added/removed) --
+  // this constructor call only needs to create the control itself.
   m_aiChatProviderChoice =
-    new wxChoice(panel, wxID_ANY, wxDefaultPosition, wxDefaultSize, providerChoices);
+    new wxChoice(panel, wxID_ANY, wxDefaultPosition, wxDefaultSize);
   providerBox->Add(m_aiChatProviderChoice,
                    wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
   vbox->Add(providerBox);
 
-  // One box per provider, always shown (not just the active one): this way
-  // switching providers never loses a key/model you already entered for
-  // another one.
-  auto addProviderBox = [&](AiProviderKind kind, wxTextCtrl *&keyCtrl,
-                            wxTextCtrl *&modelCtrl) {
-    wxStaticBoxSizer *box =
-      new wxStaticBoxSizer(wxVERTICAL, panel, AiProviderKindName(kind));
-    wxFlexGridSizer *grid = new wxFlexGridSizer(2, 2, 5, 5);
-    grid->AddGrowableCol(1);
-    grid->Add(new wxStaticText(box->GetStaticBox(), wxID_ANY, _("API key:")),
-             wxSizerFlags().Align(wxALIGN_CENTER_VERTICAL));
-    keyCtrl = new wxTextCtrl(box->GetStaticBox(), wxID_ANY, wxEmptyString,
-                             wxDefaultPosition,
-                             wxSize(300 * GetContentScaleFactor(), -1),
-                             wxTE_PASSWORD);
-    grid->Add(keyCtrl, wxSizerFlags().Expand());
-    grid->Add(new wxStaticText(box->GetStaticBox(), wxID_ANY, _("Model:")),
-             wxSizerFlags().Align(wxALIGN_CENTER_VERTICAL));
-    modelCtrl = new wxTextCtrl(box->GetStaticBox(), wxID_ANY, wxEmptyString,
+  // A single reusable box for whichever provider is currently selected,
+  // instead of all of them stacked at once -- LoadAiProviderRecordIntoUi()
+  // repopulates it (and shows/hides the Custom-only rows) every time the
+  // choice above changes. Switching providers no longer loses whatever was
+  // typed for another one: OnAiProviderChoice() flushes the outgoing
+  // selection's fields into m_aiProviderRecords first (see
+  // StashAiProviderUiIntoRecord()).
+  m_aiProviderDetailBox = new wxStaticBoxSizer(wxVERTICAL, panel, wxEmptyString);
+  wxWindow *detailBoxWin = m_aiProviderDetailBox->GetStaticBox();
+  wxFlexGridSizer *grid = new wxFlexGridSizer(2, 2, 5, 5);
+  grid->AddGrowableCol(1);
+
+  m_aiShapeLabel = new wxStaticText(detailBoxWin, wxID_ANY, _("API style:"));
+  grid->Add(m_aiShapeLabel, wxSizerFlags().Align(wxALIGN_CENTER_VERTICAL));
+  wxArrayString shapeChoices;
+  shapeChoices.Add(AiProviderShapeName(AiProviderShape::OpenAiCompatible));
+  shapeChoices.Add(AiProviderShapeName(AiProviderShape::Anthropic));
+  shapeChoices.Add(AiProviderShapeName(AiProviderShape::Google));
+  m_aiShapeChoice = new wxChoice(detailBoxWin, wxID_ANY, wxDefaultPosition,
+                                 wxDefaultSize, shapeChoices);
+  grid->Add(m_aiShapeChoice, wxSizerFlags().Expand());
+
+  m_aiBaseUrlLabel = new wxStaticText(detailBoxWin, wxID_ANY, _("Request URL:"));
+  grid->Add(m_aiBaseUrlLabel, wxSizerFlags().Align(wxALIGN_CENTER_VERTICAL));
+  m_aiBaseUrlCtrl = new wxTextCtrl(detailBoxWin, wxID_ANY, wxEmptyString,
+                                   wxDefaultPosition,
+                                   wxSize(300 * GetContentScaleFactor(), -1));
+  grid->Add(m_aiBaseUrlCtrl, wxSizerFlags().Expand());
+
+  grid->Add(new wxStaticText(detailBoxWin, wxID_ANY, _("API key:")),
+           wxSizerFlags().Align(wxALIGN_CENTER_VERTICAL));
+  m_aiKeyCtrl = new wxTextCtrl(detailBoxWin, wxID_ANY, wxEmptyString,
                                wxDefaultPosition,
-                               wxSize(300 * GetContentScaleFactor(), -1));
-    grid->Add(modelCtrl, wxSizerFlags().Expand());
-    box->Add(grid, wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
-    // No "log in" button is possible here (see AiProviderApiKeyUrl()'s own
-    // comment: none of these providers offer a legitimate third-party OAuth
-    // flow a desktop app could use) -- a direct link to where to actually
-    // get a key is the closest equivalent.
-    wxString keyUrl = AiProviderApiKeyUrl(kind);
-    if (!keyUrl.IsEmpty()) {
-      wxHyperlinkCtrl *link = new wxHyperlinkCtrl(
-        box->GetStaticBox(), wxID_ANY,
-        // "Get an API key for %s..." rather than "Get a/an %s API key...":
-        // sidesteps the a/an article agreement entirely, which the four
-        // provider names don't share (an Anthropic/OpenAI key, but a
-        // Google/Qwen key) -- confirmed live this was wrong before ("Get
-        // an Google...") with the naive uniform format string.
-        wxString::Format(_("Get an API key for %s..."), AiProviderKindName(kind)),
-        keyUrl);
-      box->Add(link, wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
-    }
-    // The default Model: value above is that provider's own "rolling"
-    // alias where one exists (AiProviderDefaultModel()'s own comment), but
-    // model lines still get superseded over time -- a link to the
-    // provider's current list is the durable fix for that, not a fancier
-    // auto-detection mechanism that would itself need to keep chasing each
-    // provider's API just to answer the same question this link answers
-    // directly.
-    wxString modelListUrl = AiProviderModelListUrl(kind);
-    if (!modelListUrl.IsEmpty()) {
-      wxHyperlinkCtrl *modelLink = new wxHyperlinkCtrl(
-        box->GetStaticBox(), wxID_ANY,
-        wxString::Format(_("See current models for %s..."), AiProviderKindName(kind)),
-        modelListUrl);
-      box->Add(modelLink, wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
-    }
-    vbox->Add(box, wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
-  };
-  addProviderBox(AiProviderKind::Anthropic, m_aiKeyAnthropic, m_aiModelAnthropicCtrl);
-  addProviderBox(AiProviderKind::OpenAI, m_aiKeyOpenAI, m_aiModelOpenAICtrl);
-  addProviderBox(AiProviderKind::Google, m_aiKeyGoogle, m_aiModelGoogleCtrl);
-  addProviderBox(AiProviderKind::Qwen, m_aiKeyQwen, m_aiModelQwenCtrl);
+                               wxSize(300 * GetContentScaleFactor(), -1),
+                               wxTE_PASSWORD);
+  grid->Add(m_aiKeyCtrl, wxSizerFlags().Expand());
+  grid->Add(new wxStaticText(detailBoxWin, wxID_ANY, _("Model:")),
+           wxSizerFlags().Align(wxALIGN_CENTER_VERTICAL));
+  m_aiModelCtrl = new wxTextCtrl(detailBoxWin, wxID_ANY, wxEmptyString,
+                                 wxDefaultPosition,
+                                 wxSize(300 * GetContentScaleFactor(), -1));
+  grid->Add(m_aiModelCtrl, wxSizerFlags().Expand());
+  m_aiProviderDetailBox->Add(grid, wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
+
+  // No "log in" button is possible here (none of these providers offer a
+  // legitimate third-party OAuth flow a desktop app could use) -- a direct
+  // link to where to actually get a key is the closest equivalent. Hidden
+  // for a Custom entry, since there's no generic "get a key" URL for an
+  // arbitrary user-supplied endpoint.
+  m_aiApiKeyLink = new wxHyperlinkCtrl(detailBoxWin, wxID_ANY, wxEmptyString, wxEmptyString);
+  m_aiProviderDetailBox->Add(m_aiApiKeyLink, wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
+  m_aiModelListLink = new wxHyperlinkCtrl(detailBoxWin, wxID_ANY, wxEmptyString, wxEmptyString);
+  m_aiProviderDetailBox->Add(m_aiModelListLink, wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
+
+  m_aiRemoveCustomProviderButton =
+    new wxButton(detailBoxWin, wxID_ANY, _("Remove this custom provider"));
+  m_aiRemoveCustomProviderButton->Bind(wxEVT_BUTTON, &ConfigDialogue::OnAiRemoveCustomProvider, this);
+  m_aiProviderDetailBox->Add(m_aiRemoveCustomProviderButton,
+                             wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
+
+  vbox->Add(m_aiProviderDetailBox, wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
+
+  m_aiChatProviderChoice->Bind(wxEVT_CHOICE, &ConfigDialogue::OnAiProviderChoice, this);
 
   panel->SetSizer(vbox);
   panel->FitInside();
   return panel;
+}
+
+void ConfigDialogue::RebuildAiProviderChoice(int selectIndex) {
+  wxArrayString items;
+  items.Add(_("None (disabled)"));
+  for (const auto &rec : m_aiProviderRecords)
+    items.Add(rec.displayName);
+  items.Add(_("Add custom provider..."));
+  m_aiChatProviderChoice->Set(items);
+  // Item 0 is "None", so a record index maps to item index +1; -1 (no
+  // record selected) maps to item 0 ("None").
+  m_aiChatProviderChoice->SetSelection(selectIndex + 1);
+  LoadAiProviderRecordIntoUi(selectIndex);
+}
+
+void ConfigDialogue::StashAiProviderUiIntoRecord() {
+  if ((m_aiActiveProviderRecordIndex < 0) ||
+      (static_cast<size_t>(m_aiActiveProviderRecordIndex) >= m_aiProviderRecords.size()))
+    return;
+  AiProviderUiRecord &rec = m_aiProviderRecords[m_aiActiveProviderRecordIndex];
+  rec.apiKey = m_aiKeyCtrl->GetValue();
+  rec.model = m_aiModelCtrl->GetValue();
+  if (rec.kind == AiProviderKind::Custom) {
+    rec.baseUrl = m_aiBaseUrlCtrl->GetValue();
+    switch (m_aiShapeChoice->GetSelection()) {
+    case 1: rec.shape = AiProviderShape::Anthropic; break;
+    case 2: rec.shape = AiProviderShape::Google; break;
+    case 0:
+    default: rec.shape = AiProviderShape::OpenAiCompatible; break;
+    }
+  }
+}
+
+void ConfigDialogue::LoadAiProviderRecordIntoUi(int index) {
+  m_aiActiveProviderRecordIndex = index;
+  bool haveRecord = (index >= 0) &&
+    (static_cast<size_t>(index) < m_aiProviderRecords.size());
+  m_aiProviderDetailBox->Show(haveRecord);
+  if (!haveRecord) {
+    Layout();
+    return;
+  }
+  const AiProviderUiRecord &rec = m_aiProviderRecords[index];
+  bool isCustom = (rec.kind == AiProviderKind::Custom);
+
+  m_aiProviderDetailBox->GetStaticBox()->SetLabel(rec.displayName);
+  m_aiKeyCtrl->SetValue(rec.apiKey);
+  m_aiModelCtrl->SetValue(rec.model);
+
+  // The shape/URL are fixed (implied by the kind) for a built-in provider,
+  // and only ever editable for a Custom one.
+  m_aiShapeLabel->Show(isCustom);
+  m_aiShapeChoice->Show(isCustom);
+  if (isCustom)
+    m_aiShapeChoice->SetSelection(static_cast<int>(rec.shape));
+  m_aiBaseUrlCtrl->SetValue(isCustom ? rec.baseUrl : AiProviderBaseUrl(rec.kind));
+  m_aiBaseUrlCtrl->SetEditable(isCustom);
+  m_aiRemoveCustomProviderButton->Show(isCustom);
+
+  // A built-in kind has a real "get a key"/"see current models" page;
+  // a Custom entry's endpoint is arbitrary, so there's nothing generic to
+  // link to.
+  wxString keyUrl = isCustom ? wxString() : AiProviderApiKeyUrl(rec.kind);
+  m_aiApiKeyLink->Show(!keyUrl.IsEmpty());
+  if (!keyUrl.IsEmpty()) {
+    // "Get an API key for %s..." rather than "Get a/an %s API key...":
+    // sidesteps the a/an article agreement entirely, which the four
+    // provider names don't share (an Anthropic/OpenAI key, but a
+    // Google/Qwen key) -- confirmed live this was wrong before ("Get an
+    // Google...") with the naive uniform format string.
+    m_aiApiKeyLink->SetLabel(wxString::Format(_("Get an API key for %s..."), rec.displayName));
+    m_aiApiKeyLink->SetURL(keyUrl);
+  }
+  wxString modelListUrl = isCustom ? wxString() : AiProviderModelListUrl(rec.kind);
+  m_aiModelListLink->Show(!modelListUrl.IsEmpty());
+  if (!modelListUrl.IsEmpty()) {
+    m_aiModelListLink->SetLabel(wxString::Format(_("See current models for %s..."), rec.displayName));
+    m_aiModelListLink->SetURL(modelListUrl);
+  }
+  Layout();
+}
+
+void ConfigDialogue::OnAiProviderChoice(wxCommandEvent &WXUNUSED(event)) {
+  int selection = m_aiChatProviderChoice->GetSelection();
+  int lastRealIndex = static_cast<int>(m_aiProviderRecords.size()); // "Add custom..." item
+  StashAiProviderUiIntoRecord();
+  if (selection == lastRealIndex + 1) {
+    // "Add custom provider..." itself is never a real, persistent
+    // selection -- either it succeeds and the new entry becomes selected,
+    // or it's cancelled and the choice reverts to whatever was showing
+    // before, so m_aiActiveProviderRecordIndex is the right thing to fall
+    // back to either way.
+    if (!AddCustomAiProviderDialog())
+      RebuildAiProviderChoice(m_aiActiveProviderRecordIndex);
+    return;
+  }
+  // Item 0 is "None"; items 1..N are m_aiProviderRecords[0..N-1].
+  LoadAiProviderRecordIntoUi(selection - 1);
+}
+
+void ConfigDialogue::OnAiRemoveCustomProvider(wxCommandEvent &WXUNUSED(event)) {
+  if ((m_aiActiveProviderRecordIndex < 0) ||
+      (static_cast<size_t>(m_aiActiveProviderRecordIndex) >= m_aiProviderRecords.size()))
+    return;
+  const AiProviderUiRecord &rec = m_aiProviderRecords[m_aiActiveProviderRecordIndex];
+  if (rec.kind != AiProviderKind::Custom)
+    return;
+  // Deletes the stored key immediately rather than waiting for OK -- if the
+  // user cancels the whole dialog afterwards the provider's entry in
+  // Configuration's own JSON list is untouched either way (that's only
+  // written on OK), but leaving an orphaned secret-store entry with no
+  // corresponding config entry serves no purpose once the user has asked
+  // for it to be gone.
+  AiProvider::DeleteApiKey(AiProvider::CustomProviderSecretService(rec.customId));
+  m_aiProviderRecords.erase(m_aiProviderRecords.begin() + m_aiActiveProviderRecordIndex);
+  RebuildAiProviderChoice(-1);
+}
+
+bool ConfigDialogue::AddCustomAiProviderDialog() {
+  wxDialog dlg(this, wxID_ANY, _("Add Custom AI Provider"), wxDefaultPosition,
+              wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER);
+  wxBoxSizer *dlgVbox = new wxBoxSizer(wxVERTICAL);
+  wxFlexGridSizer *grid = new wxFlexGridSizer(2, 2, 5, 5);
+  grid->AddGrowableCol(1);
+
+  grid->Add(new wxStaticText(&dlg, wxID_ANY, _("Name:")),
+           wxSizerFlags().Align(wxALIGN_CENTER_VERTICAL));
+  wxTextCtrl *nameCtrl = new wxTextCtrl(&dlg, wxID_ANY, wxEmptyString,
+                                        wxDefaultPosition,
+                                        wxSize(300 * GetContentScaleFactor(), -1));
+  grid->Add(nameCtrl, wxSizerFlags().Expand());
+
+  grid->Add(new wxStaticText(&dlg, wxID_ANY, _("API style:")),
+           wxSizerFlags().Align(wxALIGN_CENTER_VERTICAL));
+  wxArrayString shapeChoices;
+  shapeChoices.Add(AiProviderShapeName(AiProviderShape::OpenAiCompatible));
+  shapeChoices.Add(AiProviderShapeName(AiProviderShape::Anthropic));
+  shapeChoices.Add(AiProviderShapeName(AiProviderShape::Google));
+  wxChoice *shapeCtrl = new wxChoice(&dlg, wxID_ANY, wxDefaultPosition,
+                                     wxDefaultSize, shapeChoices);
+  shapeCtrl->SetSelection(0);
+  grid->Add(shapeCtrl, wxSizerFlags().Expand());
+
+  grid->Add(new wxStaticText(&dlg, wxID_ANY, _("Request URL:")),
+           wxSizerFlags().Align(wxALIGN_CENTER_VERTICAL));
+  wxTextCtrl *urlCtrl = new wxTextCtrl(&dlg, wxID_ANY, wxEmptyString,
+                                       wxDefaultPosition,
+                                       wxSize(300 * GetContentScaleFactor(), -1));
+  grid->Add(urlCtrl, wxSizerFlags().Expand());
+
+  grid->Add(new wxStaticText(&dlg, wxID_ANY, _("Model:")),
+           wxSizerFlags().Align(wxALIGN_CENTER_VERTICAL));
+  wxTextCtrl *modelCtrl = new wxTextCtrl(&dlg, wxID_ANY, wxEmptyString,
+                                         wxDefaultPosition,
+                                         wxSize(300 * GetContentScaleFactor(), -1));
+  grid->Add(modelCtrl, wxSizerFlags().Expand());
+  dlgVbox->Add(grid, wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
+
+  WrappingStaticText *hint = new WrappingStaticText(
+    &dlg, wxID_ANY,
+    _("\"OpenAI-compatible\" covers most third-party and self-hosted APIs "
+      "(OpenRouter, Groq, a local Ollama server, ...) -- pick Anthropic's or "
+      "Google's own style only for an endpoint that actually speaks that "
+      "provider's specific request/response format (e.g. a proxy in front "
+      "of one of them)."));
+  dlgVbox->Add(hint, wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
+
+  dlgVbox->Add(dlg.CreateButtonSizer(wxOK | wxCANCEL),
+              wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
+  dlg.SetSizerAndFit(dlgVbox);
+
+  wxButton *okButton = static_cast<wxButton *>(dlg.FindWindow(wxID_OK));
+  if (okButton != NULL)
+    okButton->Bind(wxEVT_UPDATE_UI, [nameCtrl, urlCtrl](wxUpdateUIEvent &evt) {
+      evt.Enable(!nameCtrl->GetValue().Trim().IsEmpty() &&
+                !urlCtrl->GetValue().Trim().IsEmpty());
+    });
+
+  if (dlg.ShowModal() != wxID_OK)
+    return false;
+
+  AiProviderUiRecord rec;
+  rec.kind = AiProviderKind::Custom;
+  rec.customId = NewAiCustomProviderId();
+  rec.displayName = nameCtrl->GetValue().Trim();
+  switch (shapeCtrl->GetSelection()) {
+  case 1: rec.shape = AiProviderShape::Anthropic; break;
+  case 2: rec.shape = AiProviderShape::Google; break;
+  case 0:
+  default: rec.shape = AiProviderShape::OpenAiCompatible; break;
+  }
+  rec.baseUrl = urlCtrl->GetValue().Trim();
+  rec.model = modelCtrl->GetValue();
+  m_aiProviderRecords.push_back(rec);
+  RebuildAiProviderChoice(static_cast<int>(m_aiProviderRecords.size()) - 1);
+  return true;
 }
 
 wxWindow *ConfigDialogue::CreateClipboardPanel() {
@@ -2496,15 +2744,51 @@ void ConfigDialogue::WriteSettings() {
   configuration->FindDialogDockable(m_findDialogDockable->GetValue());
   configuration->McpServerEnabled(m_mcpServerEnabled->GetValue());
   configuration->McpServerPort(m_mcpServerPort->GetValue());
-  configuration->AiChatProvider(m_aiChatProviderChoice->GetSelection());
-  configuration->AiApiKeyAnthropic(m_aiKeyAnthropic->GetValue());
-  configuration->AiApiKeyOpenAI(m_aiKeyOpenAI->GetValue());
-  configuration->AiApiKeyGoogle(m_aiKeyGoogle->GetValue());
-  configuration->AiApiKeyQwen(m_aiKeyQwen->GetValue());
-  configuration->AiModelAnthropic(m_aiModelAnthropicCtrl->GetValue());
-  configuration->AiModelOpenAI(m_aiModelOpenAICtrl->GetValue());
-  configuration->AiModelGoogle(m_aiModelGoogleCtrl->GetValue());
-  configuration->AiModelQwen(m_aiModelQwenCtrl->GetValue());
+  // The whole AI Chat tab (and these members) don't exist without a
+  // secret store to keep a key in -- see CreateAiChatPanel()/
+  // SetCheckboxValues()'s own matching guard.
+  if (AiProvider::SecretStoreAvailable()) {
+    StashAiProviderUiIntoRecord();
+    std::vector<AiCustomProviderConfig> customProviders;
+    AiProviderKind activeKind = AiProviderKind::None;
+    wxString activeCustomId;
+    if ((m_aiActiveProviderRecordIndex >= 0) &&
+        (static_cast<size_t>(m_aiActiveProviderRecordIndex) < m_aiProviderRecords.size())) {
+      const AiProviderUiRecord &active = m_aiProviderRecords[m_aiActiveProviderRecordIndex];
+      activeKind = active.kind;
+      activeCustomId = active.customId;
+    }
+    for (const auto &rec : m_aiProviderRecords) {
+      if (rec.kind == AiProviderKind::Custom) {
+        AiProvider::SaveApiKey(AiProvider::CustomProviderSecretService(rec.customId), rec.apiKey);
+        customProviders.push_back({rec.customId, rec.displayName, rec.shape, rec.baseUrl, rec.model});
+        continue;
+      }
+      switch (rec.kind) {
+      case AiProviderKind::Anthropic:
+        configuration->AiApiKeyAnthropic(rec.apiKey);
+        configuration->AiModelAnthropic(rec.model);
+        break;
+      case AiProviderKind::OpenAI:
+        configuration->AiApiKeyOpenAI(rec.apiKey);
+        configuration->AiModelOpenAI(rec.model);
+        break;
+      case AiProviderKind::Google:
+        configuration->AiApiKeyGoogle(rec.apiKey);
+        configuration->AiModelGoogle(rec.model);
+        break;
+      case AiProviderKind::Qwen:
+        configuration->AiApiKeyQwen(rec.apiKey);
+        configuration->AiModelQwen(rec.model);
+        break;
+      default:
+        break;
+      }
+    }
+    configuration->AiCustomProvidersJson(SerializeAiCustomProviders(customProviders));
+    configuration->AiChatProvider(static_cast<int>(activeKind));
+    configuration->AiActiveCustomProviderId(activeCustomId);
+  }
   configuration->SetLabelChoice(
                                 (Configuration::showLabels)m_showUserDefinedLabels->GetSelection());
   configuration->DefaultPort(m_defaultPort->GetValue());
