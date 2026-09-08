@@ -2047,9 +2047,16 @@ wxWindow *ConfigDialogue::CreateAiChatPanel() {
   // this constructor call only needs to create the control itself.
   m_aiChatProviderChoice =
     new wxChoice(panel, wxID_ANY, wxDefaultPosition, wxDefaultSize);
+  // Proportion(1).Expand() on the choice, plus Expand() on the row itself
+  // just below -- without both, a wxChoice's natural width is based on
+  // whatever it's populated with, and since RebuildAiProviderChoice() only
+  // fills it in a moment later, it started out sized for an empty list
+  // (rendering as a barely-there sliver, confirmed live) instead of
+  // stretching to the tab's actual width the way every other wide control
+  // on this tab does.
   providerBox->Add(m_aiChatProviderChoice,
-                   wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
-  vbox->Add(providerBox);
+                   wxSizerFlags(1).Expand().Border(wxALL, 5 * GetContentScaleFactor()));
+  vbox->Add(providerBox, wxSizerFlags().Expand());
 
   // A single reusable box for whichever provider is currently selected,
   // instead of all of them stacked at once -- LoadAiProviderRecordIntoUi()
@@ -2060,7 +2067,7 @@ wxWindow *ConfigDialogue::CreateAiChatPanel() {
   // StashAiProviderUiIntoRecord()).
   m_aiProviderDetailBox = new wxStaticBoxSizer(wxVERTICAL, panel, wxEmptyString);
   wxWindow *detailBoxWin = m_aiProviderDetailBox->GetStaticBox();
-  wxFlexGridSizer *grid = new wxFlexGridSizer(2, 2, 5, 5);
+  wxFlexGridSizer *grid = new wxFlexGridSizer(4, 2, 5, 5);
   grid->AddGrowableCol(1);
 
   m_aiShapeLabel = new wxStaticText(detailBoxWin, wxID_ANY, _("API style:"));
@@ -2100,9 +2107,17 @@ wxWindow *ConfigDialogue::CreateAiChatPanel() {
   // link to where to actually get a key is the closest equivalent. Hidden
   // for a Custom entry, since there's no generic "get a key" URL for an
   // arbitrary user-supplied endpoint.
-  m_aiApiKeyLink = new wxHyperlinkCtrl(detailBoxWin, wxID_ANY, wxEmptyString, wxEmptyString);
+  // Both start with a placeholder label and no URL -- wxHyperlinkCtrl
+  // asserts if label and URL are *both* empty at construction time (a
+  // newer/stricter wxWidgets build catches this; an older one may not),
+  // and the real label/URL aren't known until LoadAiProviderRecordIntoUi()
+  // runs just below, so a throwaway non-empty label stands in until then.
+  // Hidden immediately for the same reason: nothing meaningful to show yet.
+  m_aiApiKeyLink = new wxHyperlinkCtrl(detailBoxWin, wxID_ANY, wxS(" "), wxEmptyString);
+  m_aiApiKeyLink->Show(false);
   m_aiProviderDetailBox->Add(m_aiApiKeyLink, wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
-  m_aiModelListLink = new wxHyperlinkCtrl(detailBoxWin, wxID_ANY, wxEmptyString, wxEmptyString);
+  m_aiModelListLink = new wxHyperlinkCtrl(detailBoxWin, wxID_ANY, wxS(" "), wxEmptyString);
+  m_aiModelListLink->Show(false);
   m_aiProviderDetailBox->Add(m_aiModelListLink, wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
 
   m_aiRemoveCustomProviderButton =
@@ -2240,7 +2255,7 @@ bool ConfigDialogue::AddCustomAiProviderDialog() {
   wxDialog dlg(this, wxID_ANY, _("Add Custom AI Provider"), wxDefaultPosition,
               wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER);
   wxBoxSizer *dlgVbox = new wxBoxSizer(wxVERTICAL);
-  wxFlexGridSizer *grid = new wxFlexGridSizer(2, 2, 5, 5);
+  wxFlexGridSizer *grid = new wxFlexGridSizer(5, 2, 5, 5);
   grid->AddGrowableCol(1);
 
   // A quick-fill shortcut for a handful of well-known *local* AI servers
