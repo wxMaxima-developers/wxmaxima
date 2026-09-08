@@ -1033,6 +1033,84 @@ a local TCP socket.
     (`wxUSE_SECRETSTORE` is off here, so the whole AI Chat tab stays hidden
     per its own gating) -- verified by code reading plus the unit test
     above, not a live screenshot.
+  - **Follow-up (2026-09-08): three real layout/API-misuse bugs in the
+    redesigned Options -> AI Chat tab, all invisible in this sandbox and
+    only caught because the maintainer ran a real build with a stricter
+    wxWidgets (their own experimental GTK4 port) that actually asserts on
+    them.** The maintainer asked directly "is that us or my experimental
+    wxWidgets version?" -- worth restating the answer here since it's the
+    reusable lesson: **all three were wxMaxima's own bugs**, not anything
+    specific to that fork. wxWidgets' assertions exist precisely to catch
+    API misuse that an unasserted (or `NDEBUG`) build silently tolerates --
+    this sandbox's prebuilt `libwxgtk3.2-dev` apparently doesn't hit either
+    assert at all (or has assertions compiled out), which is exactly why
+    the earlier follow-ups in this section could only claim "verified by
+    code reading," never a live screenshot of this tab. A stricter build
+    surfacing a real bug the moment the tab is actually opened is the
+    system working as intended, not a fork-specific false positive.
+    1. `wxFlexGridSizer(2, 2, 5, 5)` -- interpreted as the (rows, cols,
+       vgap, hgap) overload, so *rows* was hardcoded to 2 -- appeared twice
+       (the shared provider-detail box in `CreateAiChatPanel()`, and
+       `AddCustomAiProviderDialog()`), each adding 4-5 rows x 2 columns of
+       items. Every other `wxFlexGridSizer(N, 2, 5, 5)` call already in
+       this file (search it -- `10, 2, 5, 5`, `9, 2, 5, 5`, `20, 2, 5, 5`,
+       ...) correctly passes the real row count as the first argument;
+       these two didn't, presumably copy-pasted before the actual row
+       count was known and never updated as rows were added. Since a
+       `wxFlexGridSizer` with *both* rows and cols fixed caps its total
+       item count at `rows*cols` (`wxGridSizer::DoInsert()`'s own
+       contract), the 5th item added (the second row's label) tripped
+       `assert "Assert failure" failed in DoInsert(): too many items
+       (5 > 2*2) in grid sizer` -- deterministically, on every single open
+       of that tab, not a race or a GTK4-specific quirk. Fixed by setting
+       each grid's row count to its actual number of rows (4 and 5
+       respectively), matching the established convention.
+    2. `m_aiApiKeyLink`/`m_aiModelListLink` were each constructed as
+       `new wxHyperlinkCtrl(parent, id, wxEmptyString, wxEmptyString)` --
+       both label and URL empty, since the real values aren't known until
+       `LoadAiProviderRecordIntoUi()` runs moments later and the control
+       has to exist before that to be added to the sizer. wxWidgets'
+       `wxHyperlinkCtrlBase::CheckParams()` asserts `!url.empty() ||
+       !label.empty()` -- constructing with both empty is invalid
+       regardless of platform; this sandbox's wx build simply doesn't
+       enforce it. Fixed by giving each a throwaway single-space
+       placeholder label (satisfies the assert; never actually seen) and
+       calling `Show(false)` immediately at construction, matching what
+       `LoadAiProviderRecordIntoUi()` already does once a real URL is
+       known (`m_aiApiKeyLink->Show(!keyUrl.IsEmpty())` etc.) -- the
+       control was already meant to start hidden, it just wasn't
+       constructed in a way that survived a strict build long enough to
+       reach that point.
+    3. The "Active provider" `wxChoice` (`m_aiChatProviderChoice`) rendered
+       as a near-invisible sliver instead of spanning the tab's width --
+       reported directly by the maintainer from the same live run. Root
+       cause: the choice is constructed empty (`RebuildAiProviderChoice()`
+       populates it a moment later, once the four built-ins plus any
+       custom entries are known), and neither its own sizer item nor the
+       horizontal `providerBox` row it sits in carried an `Expand()`/
+       stretch factor -- so both defaulted to their natural size, which for
+       a not-yet-populated `wxChoice` is essentially zero. This is the
+       same "one control crowds/shrinks to an invisible sliver" shape the
+       AI chat *sidebar*'s own layout entry earlier in this section
+       already warns about, just in a different dialog. Fixed by adding
+       `wxSizerFlags(1).Expand()` to the choice's own `Add()` call and
+       `wxSizerFlags().Expand()` to `providerBox`'s -- both are required
+       together (a proportion-1 item in an unexpanded row still only gets
+       that row's own natural width; an expanded row with no stretch
+       factor on its child still leaves the child at its natural size
+       inside the extra space).
+    None of these three could be verified live in this sandbox for the
+    same `wxUSE_SECRETSTORE=0` reason the rest of this feature couldn't
+    (the tab never appears at all here) -- fixed by reading the exact
+    wxWidgets contracts each violated (`wxGridSizer::DoInsert()`'s
+    `rows*cols` cap, `wxHyperlinkCtrlBase::CheckParams()`'s assert, plain
+    sizer-proportion semantics) rather than by reproducing them, and
+    rebuilt clean with the existing unit tests (`test_AiProvider`,
+    `test_ConfigRoundtrip`, `test_StyleConfigRoundtrip`) still passing
+    unchanged -- none of them touch this tab's actual widget construction.
+    Confirming the fix's actual on-screen effect (grid opens without
+    asserting, both links stay hidden until populated, the dropdown spans
+    the tab) needs the maintainer's own build to re-check.
   - **Not implemented, and shouldn't be without a separate decision: a
     write/evaluate-capable MCP tool.** Raised and discussed directly with
     the user (2026-09-06): unlike `watch_variable`/`unwatch_variable` (see
