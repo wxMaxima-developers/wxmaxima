@@ -1128,6 +1128,36 @@ a local TCP socket.
       convincing, which wasn't attempted this pass); the full existing
       ctest suite's non-batch/non-live-Maxima tests were re-run and a
       clean full rebuild was confirmed to produce zero new warnings.
+  - **Follow-up (2026-09-09): `watch_variable` gave no hint that Maxima was
+    busy, forcing an extra round trip just to learn that -- raised
+    directly by the maintainer: "if the AI tries to query a variable and
+    Maxima is busy which prevents it from receiving a result, is the AI
+    informed about the reason?"** Answer at the time: only partially, and
+    not from the tool an AI would call first. `WatchVariable()`'s own
+    response was just `{"ok": true, "name": "..."}` -- the busy state only
+    surfaced if the AI *separately* called `read_variables` afterward
+    (which already reports `maxima_busy`), a round trip the tool's own
+    description already told it to make ("If maxima_busy is true right
+    after watch_variable, wait and call read_variables again") but that a
+    tool-calling AI could easily skip, reading back an empty value and
+    concluding the variable is undefined instead of "not answered yet."
+    Fixed by adding `maxima_busy` (via the existing `MaximaIsBusy()`)
+    directly to `WatchVariable()`'s own result -- the same information,
+    just available one call earlier, no new mechanism needed since
+    nothing about *whether* Maxima is busy depends on the watch request
+    itself. Also cross-referenced the brand-new `evaluation_status` tool
+    (added earlier this same session) from both `read_variables`' and
+    `watch_variable`'s `ListTools()` descriptions, since `maxima_busy`
+    alone only ever answered "is something blocking this," never the
+    *reason* the maintainer's question was actually asking about (which
+    cell, which command, how long) -- `evaluation_status` is precisely
+    the tool built to answer that, but until this fix nothing pointed an
+    AI at it from here. `test_McpTools.cpp` gained a new WHEN case pinning
+    the true branch (`SetWorkingGroup()` set before calling
+    `WatchVariable()`, checking its response reports `maxima_busy: true`
+    directly) alongside the existing idle-case WHEN, which was extended to
+    also check `maxima_busy == false` -- 104 assertions in 7 test cases
+    now, all passing; full 47-test ctest suite re-run clean.
   - **Not implemented, and shouldn't be without a separate decision: a
     write/evaluate-capable MCP tool.** Raised and discussed directly with
     the user (2026-09-06): unlike `watch_variable`/`unwatch_variable` (see
