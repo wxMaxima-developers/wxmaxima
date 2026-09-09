@@ -21,6 +21,10 @@
 - MCP's watch_variable now reports maxima_busy in its own response, so an
   AI adding a watch no longer needs a separate read_variables call just to
   learn that Maxima is still busy and the value isn't available yet.
+- MCP's read_variables, watch_variable and evaluation_status now report
+  maxima_connected, so an AI can tell "Maxima isn't running at all" apart
+  from "Maxima is running and genuinely idle" -- previously both cases
+  looked identical (maxima_busy/evaluating both false).
 - The MCP server and AI Chat sidebar's worksheet context now tell an AI
   where the user's cursor is and which cell (if any) has an error, so it
   can actually answer "what's wrong with my current cell" or "the cell

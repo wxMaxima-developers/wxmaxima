@@ -412,9 +412,12 @@ SCENARIO("McpTools::EvaluationStatus() reports whether Maxima is actually "
   McpTools tools(g_ws, g_vars);
 
   GIVEN("Nothing is queued or being evaluated") {
-    THEN("it reports evaluating=false and none of the per-command fields") {
+    THEN("it reports evaluating=false, maxima_connected=true (the default "
+        "with no SetConnectionCheck() wired up), and none of the "
+        "per-command fields") {
       nlohmann::json status = tools.EvaluationStatus();
       CHECK(status["evaluating"] == false);
+      CHECK(status["maxima_connected"] == true);
       CHECK(status["queue_length"] == 0);
       CHECK_FALSE(status.contains("cell_uuid"));
       CHECK_FALSE(status.contains("command"));
@@ -459,6 +462,41 @@ SCENARIO("McpTools::EvaluationStatus() reports whether Maxima is actually "
     }
 
     g_ws->GetEvaluationQueue().Clear();
+  }
+}
+
+SCENARIO("McpTools reports maxima_connected=false when Maxima isn't running "
+        "at all, not just maxima_busy/evaluating=false -- raised directly "
+        "by the maintainer: \"if Maxima isn't running at all and that "
+        "causes a variable query to fail, is the AI informed about that?\"") {
+  g_ws->ClearDocument();
+  g_vars->Clear();
+  McpTools tools(g_ws, g_vars);
+  tools.SetConnectionCheck([] { return false; });
+
+  GIVEN("Maxima is reported as not connected, and genuinely idle (nothing "
+        "queued or evaluating)") {
+    THEN("EvaluationStatus() reports evaluating=false AND "
+        "maxima_connected=false -- the two are independent, so an AI can "
+        "tell \"nothing to report\" apart from \"nothing ever will "
+        "answer\"") {
+      nlohmann::json status = tools.EvaluationStatus();
+      CHECK(status["evaluating"] == false);
+      CHECK(status["maxima_connected"] == false);
+    }
+    AND_THEN("ReadVariables() reports maxima_busy=false and "
+            "maxima_connected=false at the same time") {
+      nlohmann::json vars = tools.ReadVariables();
+      CHECK(vars["maxima_busy"] == false);
+      CHECK(vars["maxima_connected"] == false);
+    }
+    AND_THEN("WatchVariable() reports maxima_connected=false in its own "
+            "response too, not only via a separate ReadVariables() call") {
+      nlohmann::json result = tools.WatchVariable(Args("name", "myvar"));
+      CHECK(result["ok"] == true);
+      CHECK(result["maxima_busy"] == false);
+      CHECK(result["maxima_connected"] == false);
+    }
   }
 }
 

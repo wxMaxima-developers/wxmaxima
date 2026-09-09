@@ -396,6 +396,19 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
 
   StatusMaximaBusy(StatusBar::MaximaStatus::disconnected);
 
+  // Lets the MCP server's evaluation_status/read_variables/watch_variable
+  // tools tell "Maxima isn't running at all" apart from "genuinely idle" --
+  // see McpTools::SetConnectionCheck()'s own comment for why McpTools can't
+  // answer this on its own (m_client lives here, on wxMaxima, not on
+  // Worksheet/Variablespane, which are all McpTools/McpServer ever hold).
+  // Safe to wire up now even though m_client is still null at this point in
+  // the constructor: the lambda captures `this` and reads m_client fresh on
+  // every call, not at bind time -- it will report whatever m_client
+  // actually is whenever an MCP request later asks.
+  if (m_mcpServer)
+    m_mcpServer->SetConnectionCheck(
+      [this] { return m_client && m_client->IsConnected(); });
+
   m_statusBar->GetNetworkStatusElement()->Bind(wxEVT_LEFT_DCLICK, &wxMaxima::NetworkDClick, this);
   m_statusBar->GetMaximaStatusElement()->Bind(wxEVT_LEFT_DCLICK, &wxMaxima::MaximaDClick, this);
 
