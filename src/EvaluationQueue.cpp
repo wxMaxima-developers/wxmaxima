@@ -51,6 +51,7 @@ void EvaluationQueue::Clear() {
   m_integrityFailure = false;
   m_integrityFailureEnqueuedText.Clear();
   m_integrityFailureCurrentText.Clear();
+  m_commandTimerRunning = false;
 }
 
 bool EvaluationQueue::IsInQueue(GroupCell *gr) const {
@@ -113,6 +114,10 @@ void EvaluationQueue::AddHiddenTreeToQueue(const GroupCell *gr) {
 void EvaluationQueue::RemoveFirst() {
   if (!m_commands.empty()) {
     m_workingGroupChanged = false;
+    // The command whose elapsed time was being timed just finished (its
+    // result/prompt arrived) -- MarkCommandSent() will start a fresh timer
+    // once (if) the next command is actually sent.
+    m_commandTimerRunning = false;
     m_commands.erase(m_commands.begin());
     // The prompt for the command we just finished may have switched lisp mode on
     // or off, so tokenize the next command of THIS cell in the mode current now.

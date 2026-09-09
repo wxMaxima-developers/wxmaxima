@@ -84,6 +84,13 @@ public:
   nlohmann::json ReadToc() const;
   nlohmann::json ReadSection(const nlohmann::json &arguments) const;
   nlohmann::json ReadVariables() const;
+  //! Is Maxima actively evaluating a command right now, and if so: which
+  //! cell, which exact statement within that (possibly multi-statement)
+  //! cell, and how long has that specific statement been running? Raised by
+  //! the maintainer directly: "A way to query if Maxima is evaluating, what
+  //! cell it works on, what command within that cell and for how long this
+  //! command already is being evaluated."
+  nlohmann::json EvaluationStatus() const;
   nlohmann::json WatchVariable(const nlohmann::json &arguments) const;
   nlohmann::json UnwatchVariable(const nlohmann::json &arguments) const;
   //! Finds every cell whose input and/or output contains `pattern` (a plain

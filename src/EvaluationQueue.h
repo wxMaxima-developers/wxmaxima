@@ -35,6 +35,7 @@
 #include "precomp.h"
 #include "cells/GroupCell.h"
 #include <wx/arrstr.h>
+#include <wx/stopwatch.h>
 #include <vector>
 #include <utility>
 
@@ -95,6 +96,20 @@ private:
   std::size_t m_size;
   //! The label the user has assigned to the current command.
   wxString m_userLabel;
+
+  //! Runs from the moment the current command's text is actually handed to
+  //! Maxima::Write() (MarkCommandSent(), called from
+  //! MaximaEvaluator::TriggerEvaluation() right where it sends it) until
+  //! RemoveFirst() erases that command once its result/prompt arrives.
+  //! Deliberately NOT started any earlier (e.g. when the command is first
+  //! tokenized by ProduceNextCommand()): a command can sit tokenized-but-
+  //! unsent for a moment (e.g. while its parenthesis balance is validated),
+  //! and "how long has Maxima actually been working on this" should only
+  //! count time Maxima itself could plausibly have been evaluating it.
+  wxStopWatch m_commandStopwatch;
+  //! Whether m_commandStopwatch is currently timing a real, sent command --
+  //! wxStopWatch itself has no "not running" state to query once started.
+  bool m_commandTimerRunning = false;
 
   //! A cell in the queue, together with the text it had when it was queued
   //! (see m_integrityFailure below).
@@ -215,6 +230,23 @@ public:
   //! mode, only known once each prior command's prompt arrives) this is a
   //! best-effort progress hint, not an exact count.
   int CommandsLeftInCell() const;
+
+  //! Call exactly once, right after the current command's text is actually
+  //! written to Maxima's socket -- starts (or restarts) the "how long has
+  //! this command been running" clock GetCommandElapsedMilliseconds() reads.
+  void MarkCommandSent()
+    {
+      m_commandStopwatch.Start();
+      m_commandTimerRunning = true;
+    }
+
+  //! Milliseconds since MarkCommandSent() was last called for the command
+  //! currently in flight, or -1 if no command has been sent since the last
+  //! RemoveFirst()/Clear() (nothing to report an elapsed time for).
+  long GetCommandElapsedMilliseconds() const
+    {
+      return m_commandTimerRunning ? m_commandStopwatch.Time() : -1;
+    }
 };
 
 

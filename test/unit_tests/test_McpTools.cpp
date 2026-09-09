@@ -389,6 +389,63 @@ SCENARIO("McpTools' variable watchlist tools only ever touch the sidebar, "
   }
 }
 
+SCENARIO("McpTools::EvaluationStatus() reports whether Maxima is actually "
+        "evaluating, and which cell/command/elapsed-time if so") {
+  g_ws->ClearDocument();
+  g_vars->Clear();
+  McpTools tools(g_ws, g_vars);
+
+  GIVEN("Nothing is queued or being evaluated") {
+    THEN("it reports evaluating=false and none of the per-command fields") {
+      nlohmann::json status = tools.EvaluationStatus();
+      CHECK(status["evaluating"] == false);
+      CHECK(status["queue_length"] == 0);
+      CHECK_FALSE(status.contains("cell_uuid"));
+      CHECK_FALSE(status.contains("command"));
+      CHECK_FALSE(status.contains("elapsed_ms"));
+    }
+  }
+
+  GIVEN("A code cell whose command has actually been sent to Maxima") {
+    GroupCell *working = AppendCodeGroup(wxS("1+1;"), nullptr);
+    g_ws->GetEvaluationQueue().AddToQueue(working);
+    g_ws->GetEvaluationQueue().MarkCommandSent();
+    g_ws->SetWorkingGroup(working);
+
+    THEN("EvaluationStatus() reports evaluating=true with that cell's uuid, "
+        "the exact command text, and a non-negative elapsed time") {
+      nlohmann::json status = tools.EvaluationStatus();
+      CHECK(status["evaluating"] == true);
+      CHECK(status["cell_uuid"] == working->GetUUID().ToStdString());
+      CHECK(status["is_current"] == false);
+      CHECK(status["has_error"] == false);
+      CHECK(status["command"] == "1+1;");
+      REQUIRE(status.contains("elapsed_ms"));
+      CHECK(status["elapsed_ms"].get<long>() >= 0);
+      CHECK(status["queue_length"] == 1);
+    }
+
+    g_ws->GetEvaluationQueue().Clear(); // don't leak state into later SCENARIOs
+    g_ws->SetWorkingGroup(nullptr);
+  }
+
+  GIVEN("A cell is queued but Maxima hasn't actually sent its command yet") {
+    GroupCell *queued = AppendCodeGroup(wxS("2+2;"), nullptr);
+    g_ws->GetEvaluationQueue().AddToQueue(queued);
+    // Deliberately no MarkCommandSent()/SetWorkingGroup() call: this is the
+    // "tokenized but not yet dispatched" state EvaluationQueue.h's own
+    // m_commandStopwatch comment distinguishes from "actually sent."
+
+    THEN("evaluating is still false -- queuing alone isn't evaluating") {
+      nlohmann::json status = tools.EvaluationStatus();
+      CHECK(status["evaluating"] == false);
+      CHECK(status["queue_length"] == 1);
+    }
+
+    g_ws->GetEvaluationQueue().Clear();
+  }
+}
+
 SCENARIO("McpTools::SearchCells() finds cells by plain substring or regex, "
         "in input and/or output, so an AI can jump straight to a match "
         "instead of reading every cell") {

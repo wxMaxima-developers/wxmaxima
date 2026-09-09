@@ -1111,6 +1111,101 @@ a local TCP socket.
     Confirming the fix's actual on-screen effect (grid opens without
     asserting, both links stay hidden until populated, the dropdown spans
     the tab) needs the maintainer's own build to re-check.
+  - **Follow-up (2026-09-09): a new `evaluation_status` MCP tool -- "if
+    Maxima is evaluating, what cell it works on, what command within that
+    cell and for how long this command already is being evaluated,"
+    raised directly by the maintainer.** Two of the three pieces already
+    existed and just needed exposing; the third (elapsed time) needed new
+    state, since nothing in this codebase timed a single in-flight command
+    before this. Researched via a dedicated Explore agent across
+    `Worksheet`, `EvaluationQueue`, `MaximaEvaluator`, `StatusBar` and
+    `GroupCell` before writing anything, specifically to avoid re-deriving
+    "does timing already exist somewhere" from scratch:
+    - **"Is Maxima evaluating" / "which cell"**: `Worksheet::
+      GetWorkingGroup(false)` (no fallback) already returns exactly the
+      cell being worked on right now, `nullptr` the instant nothing is in
+      flight -- the same distinction `McpTools::MaximaIsBusy()` already
+      relies on. No new state needed.
+    - **"Which command within that cell"**: `EvaluationQueue` already
+      tracks this at the single-statement level, not just per-cell --
+      commands are tokenized lazily, one at a time (`m_commands` holds 0
+      or 1 entries, see its own doc comment: this is deliberate, since a
+      cell's lisp/maxima mode split can only be known once the previous
+      command's prompt arrives). `EvaluationQueue::GetCommand()` returns
+      the exact statement text currently in flight;
+      `EvaluationQueue::GetIndex()` its character offset within the
+      cell's input. Both already existed, unused by anything outside
+      `MaximaEvaluator::TriggerEvaluation()` itself.
+    - **"For how long"**: genuinely new. Added `wxStopWatch
+      m_commandStopwatch` + `bool m_commandTimerRunning` to
+      `EvaluationQueue` (`src/EvaluationQueue.h`), with
+      `MarkCommandSent()` (starts/restarts it) and
+      `GetCommandElapsedMilliseconds()` (returns -1 when nothing is
+      currently timed). **Deliberately started at the moment the command
+      is actually written to the socket, not when it's tokenized**:
+      `EvaluationQueue::AddTokens()`/`ProduceNextCommand()` can produce a
+      command that then sits briefly unsent (`MaximaEvaluator::
+      TriggerEvaluation()` still has to validate its parenthesis balance
+      in the *current* lisp/maxima mode before deciding to send it at
+      all -- see that function's own comment on why this check has to
+      happen per-command, not per-cell) -- timing from tokenization would
+      report time Maxima was never actually working. `MarkCommandSent()`
+      is called from `TriggerEvaluation()` immediately after the real
+      `SendMaxima(text, true)` call that dispatches it
+      (`MaximaEvaluator.cpp`, right where `m_wxMaxima.m_maximaBusy = true`
+      is also set a line later). The timer is stopped again (`
+      m_commandTimerRunning = false`) at the top of `RemoveFirst()`,
+      before that command is erased -- and in `Clear()`, for the abort/
+      restart paths. Confirmed by tracing every call site that can end a
+      command's lifetime (`RemoveFirst()`'s own erase, `Clear()`) that
+      none can leave a stale "still timing" flag set once the command it
+      was timing is gone.
+    - **New tool**: `McpTools::EvaluationStatus()` (`src/mcp/McpTools.{h,
+      cpp}`) returns `{"evaluating": bool}` alone when idle, or adds
+      `cell_uuid`/`is_current`/`has_error` (same fields `CellSummary()`
+      already surfaces elsewhere, built inline here rather than through
+      `CellSummary()` itself since that needs a document-order `index`
+      this tool has no reason to compute), `command` (the exact in-flight
+      statement text), `command_index_in_cell`, `elapsed_ms` (omitted
+      rather than reported as a bogus value in the -- believed impossible
+      -- case `GetCommandElapsedMilliseconds()` returns -1 while
+      `evaluating` is true), `commands_left_in_cell` (existing
+      `EvaluationQueue::CommandsLeftInCell()`, already a "best-effort
+      hint" per its own doc comment, since lazy tokenization means the
+      exact count isn't knowable ahead of time) and `queue_length`
+      (`EvaluationQueue::Size()`, counting the currently-evaluating cell
+      too -- "how much work is left," not "how much is waiting behind the
+      current one"). **Queued-but-not-yet-sent is deliberately reported as
+      `evaluating: false`**: a cell freshly handed to `AddToQueue()` gets
+      tokenized (`m_commands` non-empty) before `TriggerEvaluation()` ever
+      calls `MarkCommandSent()` on it, and calling `GetWorkingGroup(false)`
+      at that point still correctly returns `nullptr` -- so "a command
+      exists in the queue" and "a command has actually been dispatched"
+      stay distinguishable, matching the tool's own framing (deliberately
+      *not* reusing `MaximaIsBusy()`'s broader "busy OR queued" definition
+      here, since the maintainer's own wording asked specifically about
+      *evaluating*).
+    - **Verification**: `test_McpTools.cpp` gained a new SCENARIO with
+      three GIVENs -- nothing queued (evaluating=false, no per-command
+      fields present at all, checked with `CHECK_FALSE(status.contains(...))`
+      rather than assuming a default), a cell actually
+      dispatched via the real `AddToQueue()` + `MarkCommandSent()` +
+      `SetWorkingGroup()` sequence (evaluating=true, correct uuid/command
+      text/non-negative elapsed_ms), and a cell merely queued via
+      `AddToQueue()` with neither `MarkCommandSent()` nor
+      `SetWorkingGroup()` called (evaluating stays false despite
+      `queue_length` being 1) -- this last case is exactly the "tokenized
+      but not dispatched" distinction above, pinned as its own scenario so
+      a future change can't collapse it back into "queued counts as
+      evaluating" without a test failing. 101 assertions in 7 test cases
+      now, all passing. Not verified live (no live Maxima connection in
+      this sandbox for this specific tool -- unlike `search_cells`'s own
+      live-`curl` verification, actually timing a real multi-second Maxima
+      computation and reading `elapsed_ms` back through a live MCP
+      `tools/call` would need a genuinely slow real computation to be
+      convincing, which wasn't attempted this pass); the full existing
+      ctest suite's non-batch/non-live-Maxima tests were re-run and a
+      clean full rebuild was confirmed to produce zero new warnings.
   - **Not implemented, and shouldn't be without a separate decision: a
     write/evaluate-capable MCP tool.** Raised and discussed directly with
     the user (2026-09-06): unlike `watch_variable`/`unwatch_variable` (see
