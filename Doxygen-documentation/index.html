@@ -136,7 +136,7 @@ Synchronization and Safety:</h2>
 <li><b>Abort Mechanism</b>: All long-running tasks check an abort flag (like <code>m_workerThreadAbort</code> or <code>m_abortBackgroundTask</code>) regularly to ensure they can be stopped quickly.</li>
 <li><b>Safe Exit</b>: Destructors for objects managing threads (like <code><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></code> or <code><a class="el" href="classImage.html" title="Manages an auto-scaling image.">Image</a></code>) set the abort flag and <code>join()</code> the worker threads. This ensures that the application does not terminate while background jobs are still active, preventing race conditions and potential deadlocks on exit.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md63"></a>
+<h1><a class="anchor" id="autotoc_md64"></a>
 Things you have to know</h1>
 <ul>
 <li>C++ provides the magic that allows to attach objects of all imaginable cell types to a list of the type MathCell *</li>
@@ -152,11 +152,11 @@ Things you have to know</h1>
 <div class="line"><span class="keywordflow">while</span>(ListStart-&gt;m_previous) ListStart = ListStart-&gt;m_previous;</div>
 </div><!-- fragment --></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md64"></a>
+<h1><a class="anchor" id="autotoc_md65"></a>
 Breaking long 2D objects into lines</h1>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> can break some 2<a class="el" href="classD.html">D</a> objects into lines if they otherwise would be longer wider than the screen. This is done in <a class="el" href="classGroupCell.html#a0f8ecc21122d84d2ed62b801c19f85b5" title="Break this cell into lines.">GroupCell::BreakLines</a>.</p>
 <p>Objects that are broken apart this way technically aren't displayed any more. Instead the lists of objects they contain are. If an object isn't broken apart it is displayed directly and automatically handles displaying all of its contents.</p>
-<h1><a class="anchor" id="autotoc_md65"></a>
+<h1><a class="anchor" id="autotoc_md66"></a>
 Naming rules</h1>
 <p>Keeping the code more or less homogenous increases the readability. In order to achieve that <a class="el" href="classwxMaxima.html">wxMaxima</a> uses a few naming rules:</p>
 <ul>
