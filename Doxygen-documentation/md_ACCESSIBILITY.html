@@ -135,10 +135,10 @@ Legend</h1>
 <ul>
 <li>The config dialog, find/replace, and the code-generating wizards are built from standard wx controls (<code>wxTextCtrl</code>, <code>wxButton</code>, <code>wxChoice</code>, <code>wxSpinCtrl</code>), which carry native accessibility. Main risks: (a) controls whose <em>label</em> is a separate <code>wxStaticText</code> not associated with the field (screen reader may not tie label to input), (b) any custom-drawn preview panels (<code><a class="el" href="classSvgPanel.html" title="A panel that shows an example image.">SvgPanel</a></code> shows an image with no accessible name). Lower priority than the worksheet/sidebars. <b>[ASK TESTER]</b> as they come up.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md10"></a>
+<h1><a class="anchor" id="autotoc_md11"></a>
 7. Status bar — ⚠️ (believed OK, standard control)</h1>
 <hr  />
-<h1><a class="anchor" id="autotoc_md12"></a>
+<h1><a class="anchor" id="autotoc_md13"></a>
 Priority order</h1>
 <ol type="1">
 <li><b>[ASK TESTER] batch</b> — validate the fixes already shipped (worksheet as a document + cell navigation, toolbar tools, sidebar names) and answer the output-announcement and math-representation questions. These shape everything else and need the most lead time.</li>
@@ -147,7 +147,7 @@ Priority order</h1>
 <li><b><a class="el" href="classUnicodeSidebar.html" title="This class generates a pane containing the last commands that were issued.">UnicodeSidebar</a></b> custom-draw accessibility.</li>
 <li>Dialog/wizard label-to-field association + <code><a class="el" href="classSvgPanel.html" title="A panel that shows an example image.">SvgPanel</a></code> names, as reported.</li>
 </ol>
-<h1><a class="anchor" id="autotoc_md13"></a>
+<h1><a class="anchor" id="autotoc_md14"></a>
 Things for the tester to try (fastest way to move this forward)</h1>
 <p>Once a nightly with these changes reaches you, in NVDA/JAWS:</p>
 <ol type="1">
