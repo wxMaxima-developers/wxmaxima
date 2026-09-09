@@ -362,8 +362,11 @@ SCENARIO("McpTools' variable watchlist tools only ever touch the sidebar, "
 
     WHEN("WatchVariable() adds a valid variable name") {
       nlohmann::json result = tools.WatchVariable(Args("name", "myvar"));
-      THEN("it reports success and the sidebar now tracks it") {
+      THEN("it reports success, the sidebar now tracks it, and it reports "
+          "maxima_busy itself (no separate read_variables round trip "
+          "needed just to learn that)") {
         CHECK(result["ok"] == true);
+        CHECK(result["maxima_busy"] == false);
         std::vector<wxString> names = g_vars->GetVarnames();
         CHECK(std::find(names.begin(), names.end(), wxS("myvar")) !=
              names.end());
@@ -385,6 +388,19 @@ SCENARIO("McpTools' variable watchlist tools only ever touch the sidebar, "
         CHECK_THROWS_AS(tools.WatchVariable(Args("name", "1bad:name")),
                         McpToolError);
       }
+    }
+
+    WHEN("WatchVariable() is called while Maxima is busy") {
+      GroupCell *working = AppendCodeGroup(wxS("1+1;"), nullptr);
+      g_ws->SetWorkingGroup(working);
+      nlohmann::json result = tools.WatchVariable(Args("name", "myvar"));
+      THEN("its own response already reports maxima_busy -- an AI doesn't "
+          "have to call read_variables separately just to learn its new "
+          "watch won't have a value yet") {
+        CHECK(result["ok"] == true);
+        CHECK(result["maxima_busy"] == true);
+      }
+      g_ws->SetWorkingGroup(nullptr); // don't leak state into later SCENARIOs
     }
   }
 }

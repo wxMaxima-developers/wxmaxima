@@ -265,7 +265,8 @@ json McpTools::ListTools() const {
       "empty value in that case likely means \"not answered yet,\" not "
       "\"undefined.\" If maxima_busy is true right after watch_variable, "
       "wait and call read_variables again rather than concluding the "
-      "variable has no value."},
+      "variable has no value; call evaluation_status for the specific "
+      "reason (which cell/command, and for how long)."},
      {"inputSchema", noArgs}});
   tools.push_back(
     {{"name", "watch_variable"},
@@ -274,7 +275,10 @@ json McpTools::ListTools() const {
       "same as typing it into that sidebar by hand. Its value becomes "
       "available via read_variables only once Maxima actually answers the "
       "query this triggers -- not immediately, and not at all while Maxima "
-      "is busy (see read_variables' maxima_busy). Does not touch worksheet "
+      "is busy. This call's own maxima_busy field already reports whether "
+      "that's the case right now, without a separate read_variables round "
+      "trip; call evaluation_status for the specific reason (which cell/ "
+      "command, and for how long) if it is. Does not touch worksheet "
       "content or evaluate anything."},
      {"inputSchema", nameArg("The Maxima variable name, e.g. \"x\" or \"%o3\"")}});
   tools.push_back(
@@ -580,6 +584,11 @@ json McpTools::WatchVariable(const json &arguments) const {
   json result;
   result["ok"] = true;
   result["name"] = U8(name);
+  // Reported here too, not just from read_variables: without it, an AI
+  // that calls watch_variable then immediately reads back an empty value
+  // has no way to tell "not answered yet" apart from "genuinely
+  // undefined" without a second round trip it might not think to make.
+  result["maxima_busy"] = MaximaIsBusy();
   return result;
 }
 
