@@ -97,12 +97,6 @@ Collaboration diagram for ConfigDialogue:</div>
 </div>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
-Data Structures</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structConfigDialogue_1_1AiProviderUiRecord.html">AiProviderUiRecord</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One entry per configurable provider &ndash; the four built-ins (in fixed order) plus any custom ones &ndash; kept in memory only for the dialog's lifetime. "None (disabled)" is not one of these; it's a separate, always-first item in m_aiChatProviderChoice with no detail box.  <a href="structConfigDialogue_1_1AiProviderUiRecord.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
 <tr class="memitem:ad25b60509b8711db5f1fb118b88b2d95"><td class="memItemLeft" align="right" valign="top"><a id="ad25b60509b8711db5f1fb118b88b2d95" name="ad25b60509b8711db5f1fb118b88b2d95"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfigDialogue.html#ad25b60509b8711db5f1fb118b88b2d95">htmlExportFormats</a> { <b>mathJaX_TeX</b> = 0
@@ -181,28 +175,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>OnStyleToEditChanged<
 void&#160;</td><td class="memItemRight" valign="bottom"><b>OnAppearanceChanged</b> (wxCommandEvent &amp;event)</td></tr>
 <tr class="memdesc:aef870b86b28e98a7b901e3ab2292bbc2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Light / Dark / Follow-system appearance changed: re-point the style editor. <br /></td></tr>
 <tr class="separator:aef870b86b28e98a7b901e3ab2292bbc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a64c82f194da5e5ae06e5d5f7b632dcda"><td class="memItemLeft" align="right" valign="top"><a id="a64c82f194da5e5ae06e5d5f7b632dcda" name="a64c82f194da5e5ae06e5d5f7b632dcda"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>OnAiProviderChoice</b> (wxCommandEvent &amp;event)</td></tr>
-<tr class="separator:a64c82f194da5e5ae06e5d5f7b632dcda"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae45cdcc2569ab2d43610ba8cc9a79a43"><td class="memItemLeft" align="right" valign="top"><a id="ae45cdcc2569ab2d43610ba8cc9a79a43" name="ae45cdcc2569ab2d43610ba8cc9a79a43"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>OnAiRemoveCustomProvider</b> (wxCommandEvent &amp;event)</td></tr>
-<tr class="separator:ae45cdcc2569ab2d43610ba8cc9a79a43"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0115e3614982815224882886cae094a0"><td class="memItemLeft" align="right" valign="top"><a id="a0115e3614982815224882886cae094a0" name="a0115e3614982815224882886cae094a0"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>StashAiProviderUiIntoRecord</b> ()</td></tr>
-<tr class="memdesc:a0115e3614982815224882886cae094a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies the on-screen key/model/(baseUrl/shape for Custom) fields back into m_aiProviderRecords[m_aiActiveProviderRecordIndex], if any &ndash; called before switching the displayed record and before saving. <br /></td></tr>
-<tr class="separator:a0115e3614982815224882886cae094a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a248cffc94d23ca9835464b496384d0c1"><td class="memItemLeft" align="right" valign="top"><a id="a248cffc94d23ca9835464b496384d0c1" name="a248cffc94d23ca9835464b496384d0c1"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>LoadAiProviderRecordIntoUi</b> (int index)</td></tr>
-<tr class="memdesc:a248cffc94d23ca9835464b496384d0c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The inverse: populates the shared detail box from m_aiProviderRecords[index], showing/hiding the Custom-only controls as needed. index == -1 hides the whole detail box ("None (disabled)"). <br /></td></tr>
-<tr class="separator:a248cffc94d23ca9835464b496384d0c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0ee8585f284cedbc8822a40a78e668b4"><td class="memItemLeft" align="right" valign="top"><a id="a0ee8585f284cedbc8822a40a78e668b4" name="a0ee8585f284cedbc8822a40a78e668b4"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>AddCustomAiProviderDialog</b> ()</td></tr>
-<tr class="memdesc:a0ee8585f284cedbc8822a40a78e668b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens a small modal to create a new custom provider (name/shape/ baseUrl/model); on success appends it to m_aiProviderRecords, rebuilds m_aiChatProviderChoice and selects it. Returns false (and changes nothing) if the user cancels. <br /></td></tr>
-<tr class="separator:a0ee8585f284cedbc8822a40a78e668b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad94642eb13b3d7c4e721c9eecd034049"><td class="memItemLeft" align="right" valign="top"><a id="ad94642eb13b3d7c4e721c9eecd034049" name="ad94642eb13b3d7c4e721c9eecd034049"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>RebuildAiProviderChoice</b> (int selectIndex)</td></tr>
-<tr class="memdesc:ad94642eb13b3d7c4e721c9eecd034049"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rebuilds m_aiChatProviderChoice's items from m_aiProviderRecords (plus the fixed "None (disabled)" and "Add custom provider..." entries) and selects <code>selectIndex</code> (-1 for "None"). <br /></td></tr>
-<tr class="separator:ad94642eb13b3d7c4e721c9eecd034049"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac87a1da42c1b7996d250f5959bbef56f"><td class="memItemLeft" align="right" valign="top"><a id="ac87a1da42c1b7996d250f5959bbef56f" name="ac87a1da42c1b7996d250f5959bbef56f"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>UsesvgChanged</b> (wxCommandEvent &amp;event)</td></tr>
 <tr class="memdesc:ac87a1da42c1b7996d250f5959bbef56f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is called when the path to the maxima binary was changed. <br /></td></tr>
@@ -509,49 +481,6 @@ wxCheckBox *&#160;</td><td class="memItemRight" valign="bottom"><b>m_mcpServerEn
 <tr class="memitem:a0a839f4112667d484c4f187931b6ed0b"><td class="memItemLeft" align="right" valign="top"><a id="a0a839f4112667d484c4f187931b6ed0b" name="a0a839f4112667d484c4f187931b6ed0b"></a>
 wxSpinCtrl *&#160;</td><td class="memItemRight" valign="bottom"><b>m_mcpServerPort</b></td></tr>
 <tr class="separator:a0a839f4112667d484c4f187931b6ed0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a620a60681c084c093e3796025408da70"><td class="memItemLeft" align="right" valign="top"><a id="a620a60681c084c093e3796025408da70" name="a620a60681c084c093e3796025408da70"></a>
-std::vector&lt; <a class="el" href="structConfigDialogue_1_1AiProviderUiRecord.html">AiProviderUiRecord</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_aiProviderRecords</b></td></tr>
-<tr class="separator:a620a60681c084c093e3796025408da70"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a46a7e88a3f555b0e01c9459c4c3bfd36"><td class="memItemLeft" align="right" valign="top"><a id="a46a7e88a3f555b0e01c9459c4c3bfd36" name="a46a7e88a3f555b0e01c9459c4c3bfd36"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>m_aiActiveProviderRecordIndex</b> = -1</td></tr>
-<tr class="memdesc:a46a7e88a3f555b0e01c9459c4c3bfd36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Index into m_aiProviderRecords of whichever one m_aiKeyCtrl/ m_aiModelCtrl/... currently display, or -1 while "None (disabled)" is selected. Needed because switching the choice has to flush the outgoing record's edits before loading the incoming one. <br /></td></tr>
-<tr class="separator:a46a7e88a3f555b0e01c9459c4c3bfd36"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab148fc99344810271d5371c711fbff15"><td class="memItemLeft" align="right" valign="top"><a id="ab148fc99344810271d5371c711fbff15" name="ab148fc99344810271d5371c711fbff15"></a>
-wxChoice *&#160;</td><td class="memItemRight" valign="bottom"><b>m_aiChatProviderChoice</b></td></tr>
-<tr class="separator:ab148fc99344810271d5371c711fbff15"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a541c7b9f6366ef1f966f0c329fff25d2"><td class="memItemLeft" align="right" valign="top"><a id="a541c7b9f6366ef1f966f0c329fff25d2" name="a541c7b9f6366ef1f966f0c329fff25d2"></a>
-wxStaticBoxSizer *&#160;</td><td class="memItemRight" valign="bottom"><b>m_aiProviderDetailBox</b></td></tr>
-<tr class="memdesc:a541c7b9f6366ef1f966f0c329fff25d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">One reusable box showing whichever provider is currently selected, rather than all of them stacked at once &ndash; repopulated by OnAiProviderChoice() every time the selection changes. <br /></td></tr>
-<tr class="separator:a541c7b9f6366ef1f966f0c329fff25d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab444f4c6d8ba51171f5b430e9f25d5b7"><td class="memItemLeft" align="right" valign="top"><a id="ab444f4c6d8ba51171f5b430e9f25d5b7" name="ab444f4c6d8ba51171f5b430e9f25d5b7"></a>
-wxStaticText *&#160;</td><td class="memItemRight" valign="bottom"><b>m_aiBaseUrlLabel</b></td></tr>
-<tr class="separator:ab444f4c6d8ba51171f5b430e9f25d5b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abffdbe7eae127b418995c78925a9775d"><td class="memItemLeft" align="right" valign="top"><a id="abffdbe7eae127b418995c78925a9775d" name="abffdbe7eae127b418995c78925a9775d"></a>
-wxTextCtrl *&#160;</td><td class="memItemRight" valign="bottom"><b>m_aiBaseUrlCtrl</b></td></tr>
-<tr class="memdesc:abffdbe7eae127b418995c78925a9775d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Editable only for a Custom record; shows (read-only, via Disable()) the fixed URL for a built-in one, so its value is still visible. <br /></td></tr>
-<tr class="separator:abffdbe7eae127b418995c78925a9775d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a296c23e5481b3c932e2bb68305b26e76"><td class="memItemLeft" align="right" valign="top"><a id="a296c23e5481b3c932e2bb68305b26e76" name="a296c23e5481b3c932e2bb68305b26e76"></a>
-wxStaticText *&#160;</td><td class="memItemRight" valign="bottom"><b>m_aiShapeLabel</b></td></tr>
-<tr class="separator:a296c23e5481b3c932e2bb68305b26e76"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acc1e6e891982df6d8753c58e3790bfad"><td class="memItemLeft" align="right" valign="top"><a id="acc1e6e891982df6d8753c58e3790bfad" name="acc1e6e891982df6d8753c58e3790bfad"></a>
-wxChoice *&#160;</td><td class="memItemRight" valign="bottom"><b>m_aiShapeChoice</b></td></tr>
-<tr class="separator:acc1e6e891982df6d8753c58e3790bfad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad35dceeb0c17c56fca54e081e4906c87"><td class="memItemLeft" align="right" valign="top"><a id="ad35dceeb0c17c56fca54e081e4906c87" name="ad35dceeb0c17c56fca54e081e4906c87"></a>
-wxTextCtrl *&#160;</td><td class="memItemRight" valign="bottom"><b>m_aiKeyCtrl</b></td></tr>
-<tr class="separator:ad35dceeb0c17c56fca54e081e4906c87"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7febfc3125616c8ea77eccdbf31582a4"><td class="memItemLeft" align="right" valign="top"><a id="a7febfc3125616c8ea77eccdbf31582a4" name="a7febfc3125616c8ea77eccdbf31582a4"></a>
-wxTextCtrl *&#160;</td><td class="memItemRight" valign="bottom"><b>m_aiModelCtrl</b></td></tr>
-<tr class="separator:a7febfc3125616c8ea77eccdbf31582a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7663bb887641623f7b3001ed63227083"><td class="memItemLeft" align="right" valign="top"><a id="a7663bb887641623f7b3001ed63227083" name="a7663bb887641623f7b3001ed63227083"></a>
-wxHyperlinkCtrl *&#160;</td><td class="memItemRight" valign="bottom"><b>m_aiApiKeyLink</b></td></tr>
-<tr class="separator:a7663bb887641623f7b3001ed63227083"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7cef9cee9a63663632a43d9120bc2339"><td class="memItemLeft" align="right" valign="top"><a id="a7cef9cee9a63663632a43d9120bc2339" name="a7cef9cee9a63663632a43d9120bc2339"></a>
-wxHyperlinkCtrl *&#160;</td><td class="memItemRight" valign="bottom"><b>m_aiModelListLink</b></td></tr>
-<tr class="separator:a7cef9cee9a63663632a43d9120bc2339"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad623525c2a1900547a580fc3bb5029ba"><td class="memItemLeft" align="right" valign="top"><a id="ad623525c2a1900547a580fc3bb5029ba" name="ad623525c2a1900547a580fc3bb5029ba"></a>
-wxButton *&#160;</td><td class="memItemRight" valign="bottom"><b>m_aiRemoveCustomProviderButton</b></td></tr>
-<tr class="memdesc:ad623525c2a1900547a580fc3bb5029ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shown only for a Custom record; deletes it (and its stored API key) outright rather than just clearing its fields. <br /></td></tr>
-<tr class="separator:ad623525c2a1900547a580fc3bb5029ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a39fcd63fe868ea4d6663391d051386d3"><td class="memItemLeft" align="right" valign="top"><a id="a39fcd63fe868ea4d6663391d051386d3" name="a39fcd63fe868ea4d6663391d051386d3"></a>
 wxChoice *&#160;</td><td class="memItemRight" valign="bottom"><b>m_showUserDefinedLabels</b></td></tr>
 <tr class="separator:a39fcd63fe868ea4d6663391d051386d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
