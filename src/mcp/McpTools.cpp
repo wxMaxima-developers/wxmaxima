@@ -265,7 +265,12 @@ json McpTools::ListTools() const {
       "empty value in that case likely means \"not answered yet,\" not "
       "\"undefined.\" If maxima_busy is true right after watch_variable, "
       "wait and call read_variables again rather than concluding the "
-      "variable has no value."},
+      "variable has no value; call evaluation_status for the specific "
+      "reason (which cell/command, and for how long). Also reports "
+      "maxima_connected: if false, Maxima isn't running at all (crashed, "
+      "was killed, or was never started) -- maxima_busy will show false "
+      "too in that case, but no amount of waiting or re-querying will ever "
+      "produce a value, since nothing is running to answer the query."},
      {"inputSchema", noArgs}});
   tools.push_back(
     {{"name", "watch_variable"},
@@ -273,9 +278,13 @@ json McpTools::ListTools() const {
       "Add a Maxima variable name to the Variables sidebar's watchlist, the "
       "same as typing it into that sidebar by hand. Its value becomes "
       "available via read_variables only once Maxima actually answers the "
-      "query this triggers -- not immediately, and not at all while Maxima "
-      "is busy (see read_variables' maxima_busy). Does not touch worksheet "
-      "content or evaluate anything."},
+      "query this triggers -- not immediately, not while Maxima is busy, "
+      "and not at all if Maxima isn't running. This call's own maxima_busy "
+      "and maxima_connected fields already report both of those right now, "
+      "without a separate read_variables round trip -- see read_variables' "
+      "own description for what each one means; call evaluation_status for "
+      "the specific reason (which cell/command, and for how long) if busy. "
+      "Does not touch worksheet content or evaluate anything."},
      {"inputSchema", nameArg("The Maxima variable name, e.g. \"x\" or \"%o3\"")}});
   tools.push_back(
     {{"name", "unwatch_variable"},
@@ -283,6 +292,25 @@ json McpTools::ListTools() const {
       "Remove a Maxima variable name from the Variables sidebar's "
       "watchlist, the same as removing it from that sidebar by hand."},
      {"inputSchema", nameArg("The Maxima variable name to stop watching")}});
+
+  tools.push_back(
+    {{"name", "evaluation_status"},
+     {"description",
+      "Report whether Maxima is actively evaluating a command right now: "
+      "\"evaluating\" (false if it's idle -- everything else below is only "
+      "present when true), the cell's uuid/is_current/has_error (see "
+      "list_cells), the exact text of the specific statement currently in "
+      "flight (a code cell can hold several $/;-separated statements; only "
+      "one is ever sent to Maxima at a time) plus its character offset "
+      "within the cell's input, how many milliseconds that one statement "
+      "has been running (elapsed_ms), roughly how many more statements are "
+      "left in this same cell (commands_left_in_cell), and how many cells "
+      "in total still have work queued up (queue_length, which counts the "
+      "cell currently evaluating too). Also reports maxima_connected "
+      "(always present, even when evaluating is false): if false, Maxima "
+      "isn't running at all -- \"evaluating: false\" alone can't tell a "
+      "genuinely idle Maxima apart from no Maxima process to begin with."},
+     {"inputSchema", noArgs}});
 
   json searchSchema;
   searchSchema["type"] = "object";
@@ -341,6 +369,8 @@ json McpTools::CallTool(const wxString &name, const json &arguments) const {
     return TextResult(ReadSection(arguments));
   if (name == wxS("read_variables"))
     return TextResult(ReadVariables());
+  if (name == wxS("evaluation_status"))
+    return TextResult(EvaluationStatus());
   if (name == wxS("watch_variable"))
     return TextResult(WatchVariable(arguments));
   if (name == wxS("unwatch_variable"))
@@ -514,6 +544,51 @@ json McpTools::ReadVariables() const {
   // value here can just mean "no answer yet," not "undefined." Surfaced
   // explicitly so a tool-calling AI doesn't misread the difference.
   result["maxima_busy"] = MaximaIsBusy();
+  // maxima_busy alone can't tell "genuinely idle, fully answered" apart
+  // from "there is no Maxima process to answer at all" -- both report
+  // false. This does: false here means a variable's value (or lack of one)
+  // isn't going to change no matter how long you wait, since nothing is
+  // running to ever answer the query watching it triggered.
+  result["maxima_connected"] = IsMaximaConnected();
+  return result;
+}
+
+json McpTools::EvaluationStatus() const {
+  json result;
+  if (!m_worksheet) {
+    result["evaluating"] = false;
+    result["queue_length"] = 0;
+    return result;
+  }
+  EvaluationQueue &queue = m_worksheet->GetEvaluationQueue();
+  // GetWorkingGroup(false) (no fallback) is the cell Maxima is actually
+  // waiting on an answer for right now -- null the instant nothing is
+  // in flight, even if the queue still has more cells waiting behind it
+  // (same distinction MaximaIsBusy() already relies on).
+  GroupCell *working = m_worksheet->GetWorkingGroup(false);
+  result["evaluating"] = (working != nullptr);
+  result["queue_length"] = queue.Size();
+  // Same reasoning as ReadVariables()'s own maxima_connected: "evaluating:
+  // false" alone doesn't distinguish a genuinely idle Maxima from no
+  // Maxima process at all.
+  result["maxima_connected"] = IsMaximaConnected();
+  if (working) {
+    if (working->GetUUID().IsEmpty())
+      working->GenerateUUID();
+    result["cell_uuid"] = U8(working->GetUUID());
+    result["is_current"] = (working == CurrentCell());
+    result["has_error"] = HasError(*working);
+    result["command"] = U8(queue.GetCommand());
+    result["command_index_in_cell"] = queue.GetIndex();
+    // -1 means "no command has actually been sent since the queue last
+    // advanced" -- shouldn't normally happen while working != nullptr, but
+    // omitting the field entirely rather than reporting a bogus 0 keeps
+    // that (hopefully impossible) case honest.
+    long elapsedMs = queue.GetCommandElapsedMilliseconds();
+    if (elapsedMs >= 0)
+      result["elapsed_ms"] = elapsedMs;
+    result["commands_left_in_cell"] = queue.CommandsLeftInCell();
+  }
   return result;
 }
 
@@ -527,6 +602,16 @@ json McpTools::WatchVariable(const json &arguments) const {
   json result;
   result["ok"] = true;
   result["name"] = U8(name);
+  // Reported here too, not just from read_variables: without it, an AI
+  // that calls watch_variable then immediately reads back an empty value
+  // has no way to tell "not answered yet" apart from "genuinely
+  // undefined" without a second round trip it might not think to make.
+  result["maxima_busy"] = MaximaIsBusy();
+  // Same reasoning again: maxima_busy alone reports false whether Maxima is
+  // genuinely idle or isn't running at all -- this tells the two apart, so
+  // an AI doesn't wait forever for a value from a query nothing will ever
+  // answer.
+  result["maxima_connected"] = IsMaximaConnected();
   return result;
 }
 

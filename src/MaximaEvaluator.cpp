@@ -481,6 +481,13 @@ void MaximaEvaluator::TriggerEvaluation() {
       if (!MaximaProtocol::CommandIsBlank(m_wxMaxima.m_configCommands))
         SendMaxima(m_wxMaxima.m_configCommands);
       SendMaxima(text, true);
+      // Starts the "how long has Maxima been working on this specific
+      // command" clock the MCP evaluation_status tool reports -- right here,
+      // not any earlier, since this is the moment the command actually
+      // leaves for Maxima (see EvaluationQueue::MarkCommandSent()'s own
+      // comment for why it isn't started when the command is merely
+      // tokenized).
+      m_wxMaxima.GetWorksheet()->GetEvaluationQueue().MarkCommandSent();
       m_wxMaxima.m_maximaBusy = true;
       // Now that we have sent a command we need to query all variable values
       // anew

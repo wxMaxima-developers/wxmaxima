@@ -362,8 +362,11 @@ SCENARIO("McpTools' variable watchlist tools only ever touch the sidebar, "
 
     WHEN("WatchVariable() adds a valid variable name") {
       nlohmann::json result = tools.WatchVariable(Args("name", "myvar"));
-      THEN("it reports success and the sidebar now tracks it") {
+      THEN("it reports success, the sidebar now tracks it, and it reports "
+          "maxima_busy itself (no separate read_variables round trip "
+          "needed just to learn that)") {
         CHECK(result["ok"] == true);
+        CHECK(result["maxima_busy"] == false);
         std::vector<wxString> names = g_vars->GetVarnames();
         CHECK(std::find(names.begin(), names.end(), wxS("myvar")) !=
              names.end());
@@ -385,6 +388,114 @@ SCENARIO("McpTools' variable watchlist tools only ever touch the sidebar, "
         CHECK_THROWS_AS(tools.WatchVariable(Args("name", "1bad:name")),
                         McpToolError);
       }
+    }
+
+    WHEN("WatchVariable() is called while Maxima is busy") {
+      GroupCell *working = AppendCodeGroup(wxS("1+1;"), nullptr);
+      g_ws->SetWorkingGroup(working);
+      nlohmann::json result = tools.WatchVariable(Args("name", "myvar"));
+      THEN("its own response already reports maxima_busy -- an AI doesn't "
+          "have to call read_variables separately just to learn its new "
+          "watch won't have a value yet") {
+        CHECK(result["ok"] == true);
+        CHECK(result["maxima_busy"] == true);
+      }
+      g_ws->SetWorkingGroup(nullptr); // don't leak state into later SCENARIOs
+    }
+  }
+}
+
+SCENARIO("McpTools::EvaluationStatus() reports whether Maxima is actually "
+        "evaluating, and which cell/command/elapsed-time if so") {
+  g_ws->ClearDocument();
+  g_vars->Clear();
+  McpTools tools(g_ws, g_vars);
+
+  GIVEN("Nothing is queued or being evaluated") {
+    THEN("it reports evaluating=false, maxima_connected=true (the default "
+        "with no SetConnectionCheck() wired up), and none of the "
+        "per-command fields") {
+      nlohmann::json status = tools.EvaluationStatus();
+      CHECK(status["evaluating"] == false);
+      CHECK(status["maxima_connected"] == true);
+      CHECK(status["queue_length"] == 0);
+      CHECK_FALSE(status.contains("cell_uuid"));
+      CHECK_FALSE(status.contains("command"));
+      CHECK_FALSE(status.contains("elapsed_ms"));
+    }
+  }
+
+  GIVEN("A code cell whose command has actually been sent to Maxima") {
+    GroupCell *working = AppendCodeGroup(wxS("1+1;"), nullptr);
+    g_ws->GetEvaluationQueue().AddToQueue(working);
+    g_ws->GetEvaluationQueue().MarkCommandSent();
+    g_ws->SetWorkingGroup(working);
+
+    THEN("EvaluationStatus() reports evaluating=true with that cell's uuid, "
+        "the exact command text, and a non-negative elapsed time") {
+      nlohmann::json status = tools.EvaluationStatus();
+      CHECK(status["evaluating"] == true);
+      CHECK(status["cell_uuid"] == working->GetUUID().ToStdString());
+      CHECK(status["is_current"] == false);
+      CHECK(status["has_error"] == false);
+      CHECK(status["command"] == "1+1;");
+      REQUIRE(status.contains("elapsed_ms"));
+      CHECK(status["elapsed_ms"].get<long>() >= 0);
+      CHECK(status["queue_length"] == 1);
+    }
+
+    g_ws->GetEvaluationQueue().Clear(); // don't leak state into later SCENARIOs
+    g_ws->SetWorkingGroup(nullptr);
+  }
+
+  GIVEN("A cell is queued but Maxima hasn't actually sent its command yet") {
+    GroupCell *queued = AppendCodeGroup(wxS("2+2;"), nullptr);
+    g_ws->GetEvaluationQueue().AddToQueue(queued);
+    // Deliberately no MarkCommandSent()/SetWorkingGroup() call: this is the
+    // "tokenized but not yet dispatched" state EvaluationQueue.h's own
+    // m_commandStopwatch comment distinguishes from "actually sent."
+
+    THEN("evaluating is still false -- queuing alone isn't evaluating") {
+      nlohmann::json status = tools.EvaluationStatus();
+      CHECK(status["evaluating"] == false);
+      CHECK(status["queue_length"] == 1);
+    }
+
+    g_ws->GetEvaluationQueue().Clear();
+  }
+}
+
+SCENARIO("McpTools reports maxima_connected=false when Maxima isn't running "
+        "at all, not just maxima_busy/evaluating=false -- raised directly "
+        "by the maintainer: \"if Maxima isn't running at all and that "
+        "causes a variable query to fail, is the AI informed about that?\"") {
+  g_ws->ClearDocument();
+  g_vars->Clear();
+  McpTools tools(g_ws, g_vars);
+  tools.SetConnectionCheck([] { return false; });
+
+  GIVEN("Maxima is reported as not connected, and genuinely idle (nothing "
+        "queued or evaluating)") {
+    THEN("EvaluationStatus() reports evaluating=false AND "
+        "maxima_connected=false -- the two are independent, so an AI can "
+        "tell \"nothing to report\" apart from \"nothing ever will "
+        "answer\"") {
+      nlohmann::json status = tools.EvaluationStatus();
+      CHECK(status["evaluating"] == false);
+      CHECK(status["maxima_connected"] == false);
+    }
+    AND_THEN("ReadVariables() reports maxima_busy=false and "
+            "maxima_connected=false at the same time") {
+      nlohmann::json vars = tools.ReadVariables();
+      CHECK(vars["maxima_busy"] == false);
+      CHECK(vars["maxima_connected"] == false);
+    }
+    AND_THEN("WatchVariable() reports maxima_connected=false in its own "
+            "response too, not only via a separate ReadVariables() call") {
+      nlohmann::json result = tools.WatchVariable(Args("name", "myvar"));
+      CHECK(result["ok"] == true);
+      CHECK(result["maxima_busy"] == false);
+      CHECK(result["maxima_connected"] == false);
     }
   }
 }
