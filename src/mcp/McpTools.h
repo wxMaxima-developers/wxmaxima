@@ -24,6 +24,7 @@
 
 #include <nlohmann/json.hpp>
 #include <wx/string.h>
+#include <functional>
 #include <stdexcept>
 #include <string>
 
@@ -70,6 +71,21 @@ public:
 class McpTools {
 public:
   McpTools(Worksheet *worksheet, Variablespane *variablesPane);
+
+  /*! Lets the owner (McpServer, wired up from wxMaxima -- see
+    McpServer::SetConnectionCheck()) plug in a live "is the Maxima process
+    actually connected right now" query. McpTools has no way to know this on
+    its own: that state lives on Maxima/MaximaProcessManager, owned by
+    wxMaxima, which a Worksheet/Variablespane pointer alone can't reach --
+    see IsMaximaConnected()'s own comment for why this matters. Left unset
+    (as every existing test in test_McpTools.cpp does, with no live Maxima
+    to ask about) means "assume connected"; only production wiring should
+    ever pass a real check.
+  */
+  void SetConnectionCheck(std::function<bool()> isConnected)
+    {
+      m_isMaximaConnected = std::move(isConnected);
+    }
 
   //! The tools/list result: name/description/inputSchema for every tool below.
   nlohmann::json ListTools() const;
@@ -118,6 +134,8 @@ public:
 private:
   Worksheet *m_worksheet;
   Variablespane *m_variablesPane;
+  //! See SetConnectionCheck(). Empty (never set) means "assume connected."
+  std::function<bool()> m_isMaximaConnected;
 
   //! Finds the (still tree-attached) GroupCell with this UUID, or nullptr.
   GroupCell *FindGroupByUUID(const wxString &uuid) const;
@@ -151,6 +169,19 @@ private:
   //! or unchanged value there may just mean "not answered yet," not "this
   //! variable is undefined."
   bool MaximaIsBusy() const;
+  //! Is the Maxima process actually running and connected right now? A user
+  //! asked directly: "if Maxima isn't running at all and that causes a
+  //! variable query to fail, is the AI informed about that?" -- it wasn't:
+  //! MaximaIsBusy() (and, before this, EvaluationStatus()'s "evaluating")
+  //! reads Worksheet::GetWorkingGroup()/GetEvaluationQueue(), which are both
+  //! about evaluation-QUEUE content, not process/socket state -- when
+  //! Maxima was never started, crashed, or was killed, they report exactly
+  //! the same "false"/"nothing queued" as a genuinely idle, fully-answered
+  //! Maxima, with no way to tell the two apart. See SetConnectionCheck().
+  bool IsMaximaConnected() const
+    {
+      return !m_isMaximaConnected || m_isMaximaConnected();
+    }
   //! Truncates to MAX_TEXT_LENGTH, appending a note if it had to.
   static wxString CapLength(wxString text);
   //! Truncates text to at most maxLen characters -- the end if fromEnd,

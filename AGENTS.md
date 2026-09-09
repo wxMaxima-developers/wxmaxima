@@ -1158,6 +1158,87 @@ a local TCP socket.
     directly) alongside the existing idle-case WHEN, which was extended to
     also check `maxima_busy == false` -- 104 assertions in 7 test cases
     now, all passing; full 47-test ctest suite re-run clean.
+  - **Follow-up (2026-09-09): a new `maxima_connected` field on
+    `read_variables`/`watch_variable`/`evaluation_status` -- raised
+    directly by the maintainer as a follow-up to the `maxima_busy` fix
+    above: "if Maxima isn't running at all and that causes the variable
+    query to fail, is the AI informed about that?"** Researched via a
+    dedicated Explore agent before answering (across `Worksheet`,
+    `Variablespane`, `MaximaProcessManager`, `Maxima` and `StatusBar`)
+    rather than guessing: the answer was **no**. `MaximaIsBusy()` (and
+    `EvaluationStatus()`'s `evaluating`) only ever read `Worksheet::
+    GetWorkingGroup()`/`GetEvaluationQueue()` -- both describe *evaluation-
+    queue content*, not process/socket state -- so when Maxima was never
+    started, crashed, or was killed, they report exactly the same "false"/
+    "nothing queued" as a genuinely idle, fully-answered Maxima. The real
+    connection state (`Maxima::IsConnected()`, `m_socket->IsConnected()`)
+    lives on `wxMaxima::m_client`, completely unreachable from a bare
+    `Worksheet*`/`Variablespane*` -- the only two things `McpTools` ever
+    holds (confirmed: no connection concept exists anywhere on `Worksheet`/
+    `Variablespane` themselves).
+    **Plumbing chosen**: a `std::function<bool()>` callback, not a new
+    constructor parameter or a raw `MaximaProcessManager*`/`wxMaxima*`
+    pointer threaded down -- a raw pointer would force every existing
+    `test_McpTools.cpp` fixture (none of which build a live Maxima
+    connection, or even a full `wxMaxima` app object) to either construct
+    one or special-case a null check, where a callback left unset simply
+    defaults to "assume connected" (the correct default: nothing indicates
+    trouble, so don't report false alarm). `McpTools::SetConnectionCheck()`
+    stores it; `IsMaximaConnected()` is `!m_isMaximaConnected ||
+    m_isMaximaConnected()`. `McpServer::SetConnectionCheck()` forwards to
+    it. Wired up once, in `wxMaxima`'s own constructor (`wxMaxima.cpp`,
+    right after `StatusMaximaBusy(StatusBar::MaximaStatus::disconnected)`):
+    `m_mcpServer->SetConnectionCheck([this] { return m_client &&
+    m_client->IsConnected(); });` -- safe to register this early even
+    though `m_client` is still null at that exact point in the constructor,
+    since the lambda captures `this` and re-reads `m_client` fresh on every
+    future call, not at bind time; `m_mcpServer` itself (constructed inside
+    `wxMaximaFrame`'s constructor, a base-class step that runs *before*
+    `wxMaxima`'s own body) is reachable here because it's declared
+    `protected`, not `private`, on `wxMaximaFrame` -- no virtual-dispatch
+    trick or deferred-`this`-cast needed, unlike what would have been
+    required had it been private.
+    **A real, self-inflicted compile break caught immediately, not shipped**:
+    the first draft's new Doxygen comment on `McpTools::SetConnectionCheck()`
+    literally wrote out "a Worksheet*/Variablespane* pointer" -- the `*/`
+    inside that phrase closed the `/*! ... */` block comment early, so
+    every subsequent line (the setter itself, `IsMaximaConnected()`, the
+    private member) silently fell *outside* the comment and became raw,
+    malformed declarations, breaking every translation unit that includes
+    `McpTools.h` (i.e. nearly the whole `wxMaximaFrame.h` include chain)
+    with a wall of "missing terminating '" / "does not name a type" errors
+    that look nothing like their real cause at first glance. Fixed by
+    rewording to avoid embedding a literal `*/` inside a block comment at
+    all ("a Worksheet/Variablespane pointer") -- worth remembering
+    generally: any doc comment mentioning two pointer types back to back
+    with a slash between them (`Foo*/Bar*`) is one keystroke away from
+    silently truncating the comment it's written inside.
+    **Deliberately reported from all three tools, not just
+    `read_variables`**: `watch_variable` gets it for the same reason it
+    already got `maxima_busy` in the follow-up just above (save the AI a
+    round trip it might not think to make); `evaluation_status` gets it
+    too since `evaluating: false` has exactly the same "idle vs. not
+    running" ambiguity `maxima_busy` does, and the whole point of that
+    tool is to answer detailed "why" questions this ambiguity would
+    otherwise leave unanswered. All three `ListTools()` descriptions were
+    updated to explain the distinction explicitly, not just add the field
+    silently.
+    **Verification**: a new dedicated SCENARIO in `test_McpTools.cpp`
+    calls `tools.SetConnectionCheck([] { return false; })` once and checks
+    all three tools (`EvaluationStatus()`, `ReadVariables()`,
+    `WatchVariable()`) report `maxima_connected: false` alongside their
+    existing busy/evaluating fields staying `false` too -- pinning that
+    the two are independent signals, not one implying the other. The
+    pre-existing "nothing queued" `EvaluationStatus()` scenario also now
+    checks `maxima_connected == true` (the un-configured default) so a
+    future regression that silently flips that default would be caught.
+    112 assertions in 8 test cases now, all passing; full 47-test ctest
+    suite and a full clean rebuild (zero new warnings) re-confirmed
+    afterward. Not verified live end-to-end (no real Maxima
+    connect/disconnect cycle driven through a live MCP `tools/call` in
+    this pass) -- the callback wiring itself was checked by reading the
+    exact construction-order/`protected`-visibility facts above, not by
+    running the real app with Maxima killed mid-session.
   - **Not implemented, and shouldn't be without a separate decision: a
     write/evaluate-capable MCP tool.** Raised and discussed directly with
     the user (2026-09-06): unlike `watch_variable`/`unwatch_variable` (see
@@ -3429,6 +3510,28 @@ has already been broken.
 Items the maintainer has flagged as worth doing but hasn't asked for yet -- don't
 start on these without checking in first, but pick them up if asked for "what's
 next" style work.
+
+- **New MCP tools: let an AI query which sidebars are currently visible, and
+  show/hide them.** Explicitly requested by the maintainer (2026-09-09) as
+  "for the next branch and PR" -- i.e. scoped as a deliberately separate PR
+  from the `evaluation_status`/`maxima_connected` work above, not something
+  to fold into it. Not yet started. Likely shape, based on this session's
+  own conventions: a `list_sidebars` (or fold into an existing tool) read
+  query over `wxMaximaFrame`'s existing `m_sidebarNames`/pane-visibility
+  bookkeeping (`ShowPane()`/`IsPaneDisplayed()`, the same generic mechanism
+  the "Dockable Find and Replace" entry above already documents using for
+  every `EventIDs::menu_pane_*` sidebar), plus a `show_sidebar`/`hide_sidebar`
+  pair calling `ShowPane()` directly. Two things worth checking before
+  writing any code: (1) `McpTools` currently only holds a `Worksheet*`/
+  `Variablespane*` -- reaching `wxMaximaFrame`'s pane-visibility API needs
+  the same kind of new plumbing the `maxima_connected` follow-up just added
+  (a callback/pointer threaded in from wherever `McpServer` is actually
+  constructed), not something already reachable; (2) whether toggling a
+  sidebar's visibility is safe to classify alongside `watch_variable`/
+  `unwatch_variable` as a "changes only what's displayed, never worksheet
+  content" write (this section's own "why 'read-only except two things' and
+  not stricter" reasoning) needs confirming with the maintainer the same way
+  those two were, rather than assumed by analogy.
 
 - **Real tab handling in `EditorCell`:** tabs are currently just replaced by
   spaces on input instead of being handled as their own character/column-stop

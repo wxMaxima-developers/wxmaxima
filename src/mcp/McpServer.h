@@ -25,6 +25,7 @@
 #include "precomp.h"
 #include "McpTools.h"
 #include <wx/socket.h>
+#include <functional>
 #include <memory>
 #include <string>
 #include <unordered_map>
@@ -86,6 +87,17 @@ public:
   //! once after construction and again whenever the option or port could
   //! have changed (the Options dialog closing).
   void ReconcileWithConfig(const Configuration &config);
+
+  //! Plugs in a live "is Maxima actually connected right now" query --
+  //! see McpTools::SetConnectionCheck() for why this can't be answered
+  //! from a Worksheet/Variablespane alone and has to be threaded in from
+  //! outside. Call once, from wherever this McpServer is constructed
+  //! (wxMaximaFrame doesn't itself know this; wxMaxima, which owns the
+  //! actual Maxima process/socket, does).
+  void SetConnectionCheck(std::function<bool()> isConnected)
+    {
+      m_tools.SetConnectionCheck(std::move(isConnected));
+    }
 
 private:
   //! One accepted-but-not-yet-fully-handled HTTP connection.
