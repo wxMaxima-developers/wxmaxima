@@ -284,6 +284,22 @@ json McpTools::ListTools() const {
       "watchlist, the same as removing it from that sidebar by hand."},
      {"inputSchema", nameArg("The Maxima variable name to stop watching")}});
 
+  tools.push_back(
+    {{"name", "evaluation_status"},
+     {"description",
+      "Report whether Maxima is actively evaluating a command right now: "
+      "\"evaluating\" (false if it's idle -- everything else below is only "
+      "present when true), the cell's uuid/is_current/has_error (see "
+      "list_cells), the exact text of the specific statement currently in "
+      "flight (a code cell can hold several $/;-separated statements; only "
+      "one is ever sent to Maxima at a time) plus its character offset "
+      "within the cell's input, how many milliseconds that one statement "
+      "has been running (elapsed_ms), roughly how many more statements are "
+      "left in this same cell (commands_left_in_cell), and how many cells "
+      "in total still have work queued up (queue_length, which counts the "
+      "cell currently evaluating too)."},
+     {"inputSchema", noArgs}});
+
   json searchSchema;
   searchSchema["type"] = "object";
   searchSchema["properties"]["pattern"] = {
@@ -341,6 +357,8 @@ json McpTools::CallTool(const wxString &name, const json &arguments) const {
     return TextResult(ReadSection(arguments));
   if (name == wxS("read_variables"))
     return TextResult(ReadVariables());
+  if (name == wxS("evaluation_status"))
+    return TextResult(EvaluationStatus());
   if (name == wxS("watch_variable"))
     return TextResult(WatchVariable(arguments));
   if (name == wxS("unwatch_variable"))
@@ -514,6 +532,41 @@ json McpTools::ReadVariables() const {
   // value here can just mean "no answer yet," not "undefined." Surfaced
   // explicitly so a tool-calling AI doesn't misread the difference.
   result["maxima_busy"] = MaximaIsBusy();
+  return result;
+}
+
+json McpTools::EvaluationStatus() const {
+  json result;
+  if (!m_worksheet) {
+    result["evaluating"] = false;
+    result["queue_length"] = 0;
+    return result;
+  }
+  EvaluationQueue &queue = m_worksheet->GetEvaluationQueue();
+  // GetWorkingGroup(false) (no fallback) is the cell Maxima is actually
+  // waiting on an answer for right now -- null the instant nothing is
+  // in flight, even if the queue still has more cells waiting behind it
+  // (same distinction MaximaIsBusy() already relies on).
+  GroupCell *working = m_worksheet->GetWorkingGroup(false);
+  result["evaluating"] = (working != nullptr);
+  result["queue_length"] = queue.Size();
+  if (working) {
+    if (working->GetUUID().IsEmpty())
+      working->GenerateUUID();
+    result["cell_uuid"] = U8(working->GetUUID());
+    result["is_current"] = (working == CurrentCell());
+    result["has_error"] = HasError(*working);
+    result["command"] = U8(queue.GetCommand());
+    result["command_index_in_cell"] = queue.GetIndex();
+    // -1 means "no command has actually been sent since the queue last
+    // advanced" -- shouldn't normally happen while working != nullptr, but
+    // omitting the field entirely rather than reporting a bogus 0 keeps
+    // that (hopefully impossible) case honest.
+    long elapsedMs = queue.GetCommandElapsedMilliseconds();
+    if (elapsedMs >= 0)
+      result["elapsed_ms"] = elapsedMs;
+    result["commands_left_in_cell"] = queue.CommandsLeftInCell();
+  }
   return result;
 }
 
