@@ -87,6 +87,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a2aee22ab126507d13b6eb4afd62fa301"><td class="memItemLeft" align="right" valign="top"><a id="a2aee22ab126507d13b6eb4afd62fa301" name="a2aee22ab126507d13b6eb4afd62fa301"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>McpTools</b> (<a class="el" href="classWorksheet.html">Worksheet</a> *worksheet, <a class="el" href="classVariablespane.html">Variablespane</a> *variablesPane)</td></tr>
 <tr class="separator:a2aee22ab126507d13b6eb4afd62fa301"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1112fa21e44b3befbe3557e68bd6cf8e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMcpTools.html#a1112fa21e44b3befbe3557e68bd6cf8e">SetConnectionCheck</a> (std::function&lt; bool()&gt; isConnected)</td></tr>
+<tr class="memdesc:a1112fa21e44b3befbe3557e68bd6cf8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lets the owner (<a class="el" href="classMcpServer.html" title="A minimal, opt-in MCP (Model Context Protocol) server exposing the current worksheet as read-only con...">McpServer</a>, wired up from <a class="el" href="classwxMaxima.html">wxMaxima</a> &ndash; see <a class="el" href="classMcpServer.html#a9f18b62214f8c395f54fb686094f8d21" title="Plugs in a live &quot;is Maxima actually connected right now&quot; query – see McpTools::SetConnectionCheck() f...">McpServer::SetConnectionCheck()</a>) plug in a live "is the Maxima process
+actually connected right now" query.  <br /></td></tr>
+<tr class="separator:a1112fa21e44b3befbe3557e68bd6cf8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae5c225db0ce0c94c3e29b4060b2b7285"><td class="memItemLeft" align="right" valign="top"><a id="ae5c225db0ce0c94c3e29b4060b2b7285" name="ae5c225db0ce0c94c3e29b4060b2b7285"></a>
 nlohmann::json&#160;</td><td class="memItemRight" valign="bottom"><b>ListTools</b> () const</td></tr>
 <tr class="memdesc:ae5c225db0ce0c94c3e29b4060b2b7285"><td class="mdescLeft">&#160;</td><td class="mdescRight">The tools/list result: name/description/inputSchema for every tool below. <br /></td></tr>
@@ -113,6 +117,12 @@ nlohmann::json&#160;</td><td class="memItemRight" valign="bottom"><b>ReadSection
 <tr class="memitem:ae6a53f875a6e3f1f0d3e5c0834901909"><td class="memItemLeft" align="right" valign="top"><a id="ae6a53f875a6e3f1f0d3e5c0834901909" name="ae6a53f875a6e3f1f0d3e5c0834901909"></a>
 nlohmann::json&#160;</td><td class="memItemRight" valign="bottom"><b>ReadVariables</b> () const</td></tr>
 <tr class="separator:ae6a53f875a6e3f1f0d3e5c0834901909"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d0ace05d715b4402e3d544f6ee631fa"><td class="memItemLeft" align="right" valign="top"><a id="a3d0ace05d715b4402e3d544f6ee631fa" name="a3d0ace05d715b4402e3d544f6ee631fa"></a>
+nlohmann::json&#160;</td><td class="memItemRight" valign="bottom"><b>EvaluationStatus</b> () const</td></tr>
+<tr class="memdesc:a3d0ace05d715b4402e3d544f6ee631fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> actively evaluating a command right now, and if so: which cell, which exact statement within that (possibly multi-statement) cell, and how long has that specific statement been running? Raised by the maintainer directly: "A way to query if Maxima is evaluating, what
+cell it works on, what command within that cell and for how long this
+command already is being evaluated.". <br /></td></tr>
+<tr class="separator:a3d0ace05d715b4402e3d544f6ee631fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa105b1a2def9c62fb423d6f559e161a1"><td class="memItemLeft" align="right" valign="top"><a id="aa105b1a2def9c62fb423d6f559e161a1" name="aa105b1a2def9c62fb423d6f559e161a1"></a>
 nlohmann::json&#160;</td><td class="memItemRight" valign="bottom"><b>WatchVariable</b> (const nlohmann::json &amp;arguments) const</td></tr>
 <tr class="separator:aa105b1a2def9c62fb423d6f559e161a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -146,7 +156,38 @@ that ... gives it access to a worksheet"). </p>
 variable's value" flow the sidebar already triggers on its own schedule. Every other tool cannot mutate anything even in principle: turning a worksheet or a cell into text is all they do. This split is deliberate product scope (confirmed with the maintainer), not an oversight &ndash; a write-capable "insert/edit/evaluate" tool surface is a different, far higher-stakes feature this first pass does not implement.</p>
 <p>Deliberately free of any networking/JSON-RPC framing (that's <a class="el" href="classMcpServer.html" title="A minimal, opt-in MCP (Model Context Protocol) server exposing the current worksheet as read-only con...">McpServer</a>'s job) so this can be unit-tested directly against a real, headless Worksheet/Variablespane &ndash; see <a class="el" href="test__McpTools_8cpp.html" title="Pins McpTools (the MCP server&#39;s read-only &quot;worksheet context&quot; tools, src/mcp/McpTools....">test/unit_tests/test_McpTools.cpp</a>.</p>
 <p>Thread safety: none of this is thread-safe, same as every other class that touches a Worksheet/GroupCell/Variablespane. <a class="el" href="classMcpServer.html" title="A minimal, opt-in MCP (Model Context Protocol) server exposing the current worksheet as read-only con...">McpServer</a> only ever calls into this from the GUI thread's own event loop (its wxSocketServer runs event-driven on that thread, not on a worker thread), so no locking is needed here &ndash; keep it that way if <a class="el" href="classMcpServer.html" title="A minimal, opt-in MCP (Model Context Protocol) server exposing the current worksheet as read-only con...">McpServer</a>'s transport ever changes. </p>
-</div><hr/>The documentation for this class was generated from the following files:<ul>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a1112fa21e44b3befbe3557e68bd6cf8e" name="a1112fa21e44b3befbe3557e68bd6cf8e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1112fa21e44b3befbe3557e68bd6cf8e">&#9670;&#160;</a></span>SetConnectionCheck()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void McpTools::SetConnectionCheck </td>
+          <td>(</td>
+          <td class="paramtype">std::function&lt; bool()&gt;&#160;</td>
+          <td class="paramname"><em>isConnected</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Lets the owner (<a class="el" href="classMcpServer.html" title="A minimal, opt-in MCP (Model Context Protocol) server exposing the current worksheet as read-only con...">McpServer</a>, wired up from <a class="el" href="classwxMaxima.html">wxMaxima</a> &ndash; see <a class="el" href="classMcpServer.html#a9f18b62214f8c395f54fb686094f8d21" title="Plugs in a live &quot;is Maxima actually connected right now&quot; query – see McpTools::SetConnectionCheck() f...">McpServer::SetConnectionCheck()</a>) plug in a live "is the Maxima process
+actually connected right now" query. </p>
+<p><a class="el" href="classMcpTools.html" title="Implements the read-only &quot;worksheet context&quot; tools the MCP server exposes to an external AI tool (GH ...">McpTools</a> has no way to know this on its own: that state lives on Maxima/MaximaProcessManager, owned by <a class="el" href="classwxMaxima.html">wxMaxima</a>, which a Worksheet/Variablespane pointer alone can't reach &ndash; see IsMaximaConnected()'s own comment for why this matters. Left unset (as every existing test in <a class="el" href="test__McpTools_8cpp.html" title="Pins McpTools (the MCP server&#39;s read-only &quot;worksheet context&quot; tools, src/mcp/McpTools....">test_McpTools.cpp</a> does, with no live <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> to ask about) means "assume connected"; only production wiring should ever pass a real check. </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/mcp/<a class="el" href="McpTools_8h_source.html">McpTools.h</a></li>
 <li>src/mcp/McpTools.cpp</li>
 </ul>

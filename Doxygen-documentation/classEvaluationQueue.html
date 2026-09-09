@@ -151,6 +151,15 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>Size</b> () const</td>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>CommandsLeftInCell</b> () const</td></tr>
 <tr class="memdesc:aa2d62d074c9b0112eddb9f97e1256105"><td class="mdescLeft">&#160;</td><td class="mdescRight">Roughly how many commands are still to be run in the current cell. Because commands are tokenized lazily (their exact split depends on the lisp/maxima mode, only known once each prior command's prompt arrives) this is a best-effort progress hint, not an exact count. <br /></td></tr>
 <tr class="separator:aa2d62d074c9b0112eddb9f97e1256105"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae6698d19dc9809f5a5b30bc84f86b334"><td class="memItemLeft" align="right" valign="top"><a id="ae6698d19dc9809f5a5b30bc84f86b334" name="ae6698d19dc9809f5a5b30bc84f86b334"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>MarkCommandSent</b> ()</td></tr>
+<tr class="memdesc:ae6698d19dc9809f5a5b30bc84f86b334"><td class="mdescLeft">&#160;</td><td class="mdescRight">Call exactly once, right after the current command's text is actually written to <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s socket &ndash; starts (or restarts) the "how long has
+this command been running" clock <a class="el" href="classEvaluationQueue.html#a39591ac17e4617271e2c0f61049d69e3" title="Milliseconds since MarkCommandSent() was last called for the command currently in flight,...">GetCommandElapsedMilliseconds()</a> reads. <br /></td></tr>
+<tr class="separator:ae6698d19dc9809f5a5b30bc84f86b334"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a39591ac17e4617271e2c0f61049d69e3"><td class="memItemLeft" align="right" valign="top"><a id="a39591ac17e4617271e2c0f61049d69e3" name="a39591ac17e4617271e2c0f61049d69e3"></a>
+long&#160;</td><td class="memItemRight" valign="bottom"><b>GetCommandElapsedMilliseconds</b> () const</td></tr>
+<tr class="memdesc:a39591ac17e4617271e2c0f61049d69e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Milliseconds since <a class="el" href="classEvaluationQueue.html#ae6698d19dc9809f5a5b30bc84f86b334" title="Call exactly once, right after the current command&#39;s text is actually written to Maxima&#39;s socket – st...">MarkCommandSent()</a> was last called for the command currently in flight, or -1 if no command has been sent since the last <a class="el" href="classEvaluationQueue.html#a9281421bc414407c4d8fa99335ecb24e" title="Removes the first command in the queue.">RemoveFirst()</a>/Clear() (nothing to report an elapsed time for). <br /></td></tr>
+<tr class="separator:a39591ac17e4617271e2c0f61049d69e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
