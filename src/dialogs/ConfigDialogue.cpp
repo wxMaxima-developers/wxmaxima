@@ -29,7 +29,9 @@
 */
 
 #include "ConfigDialogue.h"
+#if(WXM_USE_AI_TOOLS)
 #include "ai/AiProvider.h"
+#endif
 #include <wx/hyperlink.h>
 #include "WXMformat.h"
 #include "BTextCtrl.h"
@@ -295,11 +297,14 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent)
   m_notebook->AddPage(CreateClipboardPanel(), _("Copy"), false, 5);
   m_notebook->AddPage(CreateStartupPanel(), _("Startup commands"), false, 6);
   m_notebook->AddPage(CreatePrintPanel(), _("Printout settings"), false, 7);
+#if(WXM_USE_AI_TOOLS)
   // Hidden outright, not just disabled, when there's nowhere safe to keep
   // an API key -- see AiProvider::SecretStoreAvailable()'s own doc comment
   // for why this doesn't fall back to plain-text storage instead.
   if (AiProvider::SecretStoreAvailable())
     m_notebook->AddPage(CreateAiChatPanel(), _("AI Chat"), false, 9);
+#endif
+
 #if wxUSE_ACCESSIBILITY
   // Only offered when wxWidgets was compiled with accessibility support -
   // without it there is no screen-reader integration these settings could
@@ -621,6 +626,7 @@ void ConfigDialogue::SetCheckboxValues() {
   m_findDialogDockable->SetValue(configuration->FindDialogDockable());
   m_mcpServerEnabled->SetValue(configuration->McpServerEnabled());
   m_mcpServerPort->SetValue(configuration->McpServerPort());
+#if(WXM_USE_AI_TOOLS)
   // The whole AI Chat tab doesn't exist when there's nowhere safe to keep
   // an API key (see AiProvider::SecretStoreAvailable(), and where
   // CreateAiChatPanel() is (not) called) -- nothing here to populate.
@@ -681,6 +687,7 @@ void ConfigDialogue::SetCheckboxValues() {
     }
     RebuildAiProviderChoice(selectIndex);
   }
+#endif
   m_fixedFontInTC->SetValue(configuration->FixedFontInTextControls());
   m_offerKnownAnswers->SetValue(m_configuration->OfferKnownAnswers());
 #if wxUSE_ACCESSIBILITY
@@ -1998,6 +2005,7 @@ wxWindow *ConfigDialogue::CreateAccessibilityPanel() {
 }
 #endif
 
+#if(WXM_USE_AI_TOOLS)
 wxWindow *ConfigDialogue::CreateAiChatPanel() {
   wxScrolled<wxPanel> *panel = new wxScrolled<wxPanel>(m_notebook, wxID_ANY);
   panel->SetScrollRate(5 * GetContentScaleFactor(),
@@ -2365,6 +2373,7 @@ bool ConfigDialogue::AddCustomAiProviderDialog() {
   RebuildAiProviderChoice(static_cast<int>(m_aiProviderRecords.size()) - 1);
   return true;
 }
+#endif
 
 wxWindow *ConfigDialogue::CreateClipboardPanel() {
   wxScrolled<wxPanel> *panel = new wxScrolled<wxPanel>(m_notebook, wxID_ANY);
@@ -2794,6 +2803,7 @@ void ConfigDialogue::WriteSettings() {
   configuration->FindDialogDockable(m_findDialogDockable->GetValue());
   configuration->McpServerEnabled(m_mcpServerEnabled->GetValue());
   configuration->McpServerPort(m_mcpServerPort->GetValue());
+#if(WXM_USE_AI_TOOLS)
   // The whole AI Chat tab (and these members) don't exist without a
   // secret store to keep a key in -- see CreateAiChatPanel()/
   // SetCheckboxValues()'s own matching guard.
@@ -2839,6 +2849,7 @@ void ConfigDialogue::WriteSettings() {
     configuration->AiChatProvider(static_cast<int>(activeKind));
     configuration->AiActiveCustomProviderId(activeCustomId);
   }
+#endif
   configuration->SetLabelChoice(
                                 (Configuration::showLabels)m_showUserDefinedLabels->GetSelection());
   configuration->DefaultPort(m_defaultPort->GetValue());

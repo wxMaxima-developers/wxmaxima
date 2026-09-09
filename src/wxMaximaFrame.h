@@ -60,7 +60,9 @@
 #include "TrayIcon.h"
 #include "sidebars/ButtonWrapSizer.h"
 #include "mcp/McpServer.h"
+#if(WXM_USE_AI_TOOLS)
 #include "sidebars/AiChatSidebar.h"
+#endif
 #include <list>
 #include <memory>
 
@@ -203,17 +205,22 @@ public:
       m_mcpServer->ReconcileWithConfig(m_configuration);
   }
 
+#if(WXM_USE_AI_TOOLS)
   //! Re-reads the configured AI provider/API key/model for the AI chat
   //! sidebar. Call after the Options dialog closes, in case they changed.
   void ReloadAiChatProvider() {
     if (m_aiChatSidebar)
       m_aiChatSidebar->ReloadProviderFromConfig();
   }
+#endif
+
 protected:
   //! The panel the user can display variable contents in
   Variablespane *m_variablesPane = NULL;
+#if(WXM_USE_AI_TOOLS)
   //! The AI chat sidebar -- see src/sidebars/AiChatSidebar.h.
   AiChatSidebar *m_aiChatSidebar = NULL;
+#endif
   //! The table of contents pane
   TableOfContents *m_tableOfContents = NULL;
   Configuration m_configuration;

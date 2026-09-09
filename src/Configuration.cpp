@@ -28,7 +28,9 @@
 
 #include "BuildConfig.h"
 #include "Configuration.h"
+#if(WXM_USE_AI_TOOLS)
 #include "ai/AiProvider.h"
+#endif
 
 #include "cells/Cell.h"
 #include "cells/TextStyle.h"
@@ -321,6 +323,7 @@ void Configuration::ResetAllToDefaults() {
   m_findDialogDockable = false;
   m_mcpServerEnabled = false;
   m_mcpServerPort = 8765;
+#if(WXM_USE_AI_TOOLS)
   m_aiChatProvider = 0; // AiProviderKind::None
   // A single source of truth for these, via AiProviderDefaultModel(), not a
   // second hardcoded copy here: found live while updating Anthropic's own
@@ -331,6 +334,7 @@ void Configuration::ResetAllToDefaults() {
   m_aiModelOpenAI = AiProviderDefaultModel(AiProviderKind::OpenAI);
   m_aiModelGoogle = AiProviderDefaultModel(AiProviderKind::Google);
   m_aiModelQwen = AiProviderDefaultModel(AiProviderKind::Qwen);
+#endif
   m_fixReorderedIndices = true;
   m_rightToLeftDocument = false;
   m_showBrackets = true;
@@ -628,6 +632,7 @@ void Configuration::ReadConfig() {
   // opt-in for existing users.
   SetAutoWrap(m_autoWrap);
 
+#if(WXM_USE_AI_TOOLS)
   // AI API key migration: these four used to be plain strings in this same
   // scalar-settings table (aiApiKeyAnthropic/OpenAI/Google/Qwen), stored in
   // clear text in wxConfig's own backing file same as everything else here.
@@ -658,6 +663,7 @@ void Configuration::ReadConfig() {
       }
     }
   }
+#endif
 
   config->Read(wxS("configID"), &m_configId);
 
@@ -891,6 +897,7 @@ bool Configuration::HideMarkerForThisMessage(wxString message) {
     return it->second;
 }
 
+#if(WXM_USE_AI_TOOLS)
 wxString Configuration::AiApiKeyAnthropic() const {
   return AiProvider::LoadApiKey(AiProvider::BuiltinProviderSecretService(AiProviderKind::Anthropic));
 }
@@ -915,6 +922,7 @@ wxString Configuration::AiApiKeyQwen() const {
 void Configuration::AiApiKeyQwen(const wxString &key) {
   AiProvider::SaveApiKey(AiProvider::BuiltinProviderSecretService(AiProviderKind::Qwen), key);
 }
+#endif
 
 //TODO: Don't underline the section number of titles
 void Configuration::MakeStylesConsistent() { m_styleStore.MakeConsistent(); }

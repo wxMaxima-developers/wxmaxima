@@ -313,6 +313,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
       m_mcpServer = std::make_unique<McpServer>(GetWorksheet(), m_variablesPane);
       ReconcileMcpServer();
 
+#if(WXM_USE_AI_TOOLS)
       // Hidden outright (no menu entry, no pane, sidebar pointer stays
       // NULL) rather than just disabled when there's nowhere safe to keep
       // an API key -- see AiProvider::SecretStoreAvailable()'s own doc
@@ -332,6 +333,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
                           .Name(m_sidebarNames[EventIDs::menu_pane_aichat])
                           .Right());
       }
+#endif
 
       m_sidebarNames[EventIDs::menu_pane_symbols] = wxS("symbols");
       m_sidebarCaption[EventIDs::menu_pane_symbols] = _("Mathematical Symbols");
@@ -839,11 +841,13 @@ void wxMaximaFrame::SetupViewMenu() {
                                       _("The integrated help browser"));
 #endif
   m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_variables, _("Variables"));
+#if(WXM_USE_AI_TOOLS)
   // No menu entry at all when the sidebar itself was never created --
   // see the AiProvider::SecretStoreAvailable() guard around its
   // construction, above.
   if (m_aiChatSidebar != NULL)
     m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_aichat, _("AI Chat"));
+#endif
   m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_xmlInspector,
                                       _("Raw XML monitor"));
   m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_performance,

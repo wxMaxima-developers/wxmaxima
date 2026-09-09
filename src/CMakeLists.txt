@@ -75,7 +75,6 @@ set(WIZARD_SOURCE_FILES
 list(TRANSFORM WIZARD_SOURCE_FILES PREPEND wizards/)
 
 set(SIDEBAR_SOURCE_FILES
-    AiChatSidebar.cpp
     GreekSidebar.cpp
     CharButton.cpp
     UnicodeSidebar.cpp
@@ -93,6 +92,9 @@ set(SIDEBAR_SOURCE_FILES
     HelpBrowser.cpp
     PerformanceSidebar.cpp
 )
+if(WXM_USE_AI_TOOLS)
+    list(APPEND SOURCE_FILES AiChatSidebar.cpp)
+endif()
 list(TRANSFORM SIDEBAR_SOURCE_FILES PREPEND sidebars/)
 
 set(GRAPHICAL_IO_SOURCE_FILES
@@ -110,10 +112,12 @@ set(MCP_SOURCE_FILES
 )
 list(TRANSFORM MCP_SOURCE_FILES PREPEND mcp/)
 
+#if(WXM_USE_AI_TOOLS)
 set(AI_SOURCE_FILES
     AiProvider.cpp
 )
 list(TRANSFORM AI_SOURCE_FILES PREPEND ai/)
+#endif
 
 set(DIALOG_SOURCE_FILES
     AboutDialog.cpp
@@ -209,8 +213,10 @@ list(APPEND SOURCE_FILES
   ${SIDEBAR_SOURCE_FILES}
   ${DIALOG_SOURCE_FILES}
   ${MCP_SOURCE_FILES}
-  ${AI_SOURCE_FILES}
 )
+if(WXM_USE_AI_TOOLS)
+    list(APPEND SOURCE_FILES ${AI_SOURCE_FILES})
+endif()
 
 # The git hash lives in its own tiny generated TU (see GitHash.h): keeping the
 # per-commit-volatile value out of Version.h (which is in the precompiled header)

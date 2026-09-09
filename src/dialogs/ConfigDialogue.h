@@ -58,7 +58,9 @@ extern unsigned char view_refresh_svg_gz[];
 #include "cells/TextStyle.h"
 #include "worksheet/Worksheet.h"
 #include "../Configuration.h"
+#if(WXM_USE_AI_TOOLS)
 #include "ai/AiProvider.h"
+#endif
 
 enum
 {
@@ -185,7 +187,9 @@ private:
 
   //! The panel that allows to choose which formats to put on the clipboard
   wxWindow *CreateClipboardPanel();
+#if(WXM_USE_AI_TOOLS)
   wxWindow *CreateAiChatPanel();
+#endif
 
   //! The panel that allows to change the print settings
   wxWindow *CreatePrintPanel();
@@ -346,6 +350,7 @@ protected:
   wxCheckBox *m_findDialogDockable;
   wxCheckBox *m_mcpServerEnabled;
   wxSpinCtrl *m_mcpServerPort;
+#if(WXM_USE_AI_TOOLS)
   //! One entry per configurable provider -- the four built-ins (in fixed
   //! order) plus any custom ones -- kept in memory only for the dialog's
   //! lifetime. "None (disabled)" is not one of these; it's a separate,
@@ -408,6 +413,7 @@ protected:
   //! the fixed "None (disabled)" and "Add custom provider..." entries) and
   //! selects `selectIndex` (-1 for "None").
   void RebuildAiProviderChoice(int selectIndex);
+#endif
   wxChoice *m_showUserDefinedLabels;
   wxButton *m_getStyleFont;
   //! Light / Dark / Follow-system selector (also picks which set the editor edits).
