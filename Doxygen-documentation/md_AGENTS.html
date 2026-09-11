@@ -116,7 +116,7 @@ Build System</h1>
 </ol>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md44"></a>
+<h1><a class="anchor" id="autotoc_md56"></a>
 Architecture &amp; GUI</h1>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> is a GUI front-end to the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> CAS; it talks to a <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> process over a local TCP socket.</p>
 <ul>
@@ -183,6 +183,12 @@ Architecture &amp; GUI</h1>
 </li>
 <li><b>Follow-up (2026-09-08): quick-fill presets for well-known local AI servers (Ollama, LM Studio, llama.cpp server), plus the security question that came with the idea.</b> The user asked directly whether a local server should even be a <em>built-in</em> <code>AiProviderKind</code> (a fifth choice alongside Anthropic/OpenAI/Google/Qwen), and, separately, whether a malicious website could set up its own fake local server and remote-control a running <a class="el" href="classwxMaxima.html">wxMaxima</a>. The second question has a clean answer that shaped the first: <b>a web page cannot open a listening socket at all</b> &ndash; browsers expose no raw-socket/server API to page JavaScript, so "a website sets up its own fake local server" isn't a mechanism that exists; the real (much narrower) risk is a <em>different already-running local process</em> squatting on the same port a real local LLM server would use (e.g. something else bound to <code>:11434</code>) before the user starts Ollama &ndash; and even then, the blast radius is already bounded by this sidebar's own documented design: v1 is read-only with no tool-calling (see the "AI chat sidebar" entry's own opening paragraph), so a hostile response can only inject text into the chat transcript, not touch the worksheet or execute anything &ndash; the same reasoning that already bounds a hostile <em>real</em> provider's response. This is also why a genuine built-in <code>AiProviderKind</code> for "local server" doesn't pull its weight: unlike the four real, name-brand providers, there's no single fixed URL/auth-header pair to hardcode &ndash; Ollama/LM Studio/llama.cpp server each pick their own port and path, and a user can point any of them at a nonstandard address anyway &ndash; so the entry actually needed something orthogonal to <code>AiProviderKind</code>, not another value in it. Added <code><a class="el" href="structAiLocalServerPreset.html" title="One well-known local AI server&#39;s connection defaults, offered as a quick-fill preset in the &quot;Add cust...">AiLocalServerPreset</a></code> (<code>name</code>/<code>baseUrl</code>/<code>model</code>) and <code>AiKnownLocalServerPresets()</code> (<code><a class="el" href="AiProvider_8h.html" title="Talks to one of a handful of external AI chat APIs for the AI chat sidebar (AiChatSidebar).">src/ai/AiProvider.h</a></code>/<code>.cpp</code>) &ndash; a short, hand-picked, non-exhaustive list (Ollama's OpenAI-compatible endpoint at <code><a href="http://localhost:11434/v1/chat/completions">http://localhost:11434/v1/chat/completions</a></code>, note the <code>/v1/</code> prefix: Ollama's <em>native</em> <code>/api/chat</code> endpoint uses a different, non-OpenAI wire shape that <code>OpenAiCompatibleProvider</code> doesn't speak; LM Studio's built-in server at <code>:1234</code>; <code>llama.cpp</code>'s <code>llama-server</code> at <code>:8080</code> &ndash; all three are OpenAI-compatible by construction) &ndash; and a "Quick fill:" <code>wxChoice</code> at the top of <code>ConfigDialogue::AddCustomAiProviderDialog()</code>'s grid (<code>src/dialogs/ConfigDialogue.cpp</code>). Picking a preset just <code>ChangeValue()</code>s the dialog's existing Name/URL/Model fields (and forces the API-style choice to "OpenAI-compatible") &ndash; a one-time convenience, not a new persisted concept: every field stays independently editable afterward, nothing distinguishes a preset-filled custom provider from a hand-typed one once saved, and picking "(Custom)" back leaves whatever is already typed untouched. <code>ChangeValue()</code>, not <code>SetValue()</code>, is used deliberately &ndash; a prefill shouldn't fire a spurious <code>wxEVT_TEXT</code> the way <code>SetValue()</code> would, even though nothing in this particular dialog currently listens for one; picked for correctness against future changes, not because it fixed an observed bug here. <code><a class="el" href="test__AiProvider_8cpp.html" title="Pins each AiProvider&#39;s request/response shape – the stateless half of AiProvider (BuildRequestBody()/...">test_AiProvider.cpp</a></code> gained a new SCENARIO asserting every preset is fully filled in (no empty name/URL/model) and that each one's URL survives unchanged through <code>MakeAiProviderForShape(OpenAiCompatible,
     ...)</code> &ndash; 116 assertions in 8 test cases total now, all passing. Same sandbox limitation as the rest of this feature applies here too: the actual "Quick fill" dropdown cannot be screenshotted in this sandbox (<code>wxUSE_SECRETSTORE</code> is off here, so the whole AI Chat tab stays hidden per its own gating) &ndash; verified by code reading plus the unit test above, not a live screenshot.</li>
+<li><b>Follow-up (2026-09-11): "can you implement a GitHub Copilot
+    connector?" &ndash; researched directly with the user rather than just coding it, since "GitHub Copilot" turned out to mean two genuinely different things with very different risk profiles.</b> GitHub Copilot Chat (the assistant bundled with a Copilot subscription) has <b>no official third-party API at all</b>. The way every community tool that reaches it (copilot.vim-style plugins, "copilot-api" proxies) actually works: perform the GitHub OAuth device flow using <em>another product's</em> client id (typically an approved editor's, e.g. VS Code's &ndash; GitHub only allowlists Copilot-token exchange for client ids it has specifically approved, so a freshly-registered <a class="el" href="classwxMaxima.html">wxMaxima</a> OAuth app would authenticate fine via the device flow but be rejected at the next step), then exchange the resulting token at an undocumented internal endpoint (<code>api.github.com/copilot_internal/v2/token</code>) for a short-lived Copilot token, then call another undocumented endpoint (<code>api.githubcopilot.com/chat/completions</code>) while sending headers that make the request look like it came from that editor. That is not "no
+    legitimate OAuth flow for a desktop app" (the situation already documented for Anthropic/OpenAI/Google/Qwen/GitHub Models, all of which still have a real pasted-API-key path) &ndash; it is impersonating an authorized client's identity to reach an API GitHub has not opened to third parties, which risks the account being flagged or suspended under GitHub's Copilot terms. Presented to the user as an explicit choice with this risk spelled out; the user's first answer was "both," but on seeing the mechanism restated even more concretely (a borrowed client id, not <a class="el" href="classwxMaxima.html">wxMaxima</a>'s own) they reconsidered mid-implementation ("If that feature risks getting our users banned perhaps we should
+    only support the personal chat...") and the Copilot Chat half was dropped entirely &ndash; no OAuth device-flow code, no borrowed client id, no new Custom-provider auth scheme for it exists anywhere in this codebase. Don't re-add it without a new, explicit request; if one comes in, this reasoning (and the specific "GitHub gates the token-exchange
+    endpoint to an allowlist, not just any authenticated OAuth app" fact) is the thing to re-derive from, not guess at again. <b>What <em>was</em> added: GitHub Models</b>, a genuinely different, official GitHub product &ndash; an OpenAI-compatible chat-completions endpoint (<code><a href="https://models.github.ai/inference/chat/completions">https://models.github.ai/inference/chat/completions</a></code>) authenticated with a plain GitHub personal access token via a standard <code>Authorization: Bearer</code> header, publicly documented at <a href="https://docs.github.com/en/github-models">https://docs.github.com/en/github-models</a>, not a workaround of anything. This is the sixth <code>AiProviderKind</code> (<code>GitHubModels = 6</code>, <code><a class="el" href="AiProvider_8h.html" title="Talks to one of a handful of external AI chat APIs for the AI chat sidebar (AiChatSidebar).">src/ai/AiProvider.h</a></code>) and needed <b>zero new provider logic</b>: its request/response shape and auth header are byte-for-byte what <code>OpenAiCompatibleProvider</code> already implements for OpenAI/Qwen, so <code>MakeAiProvider(AiProviderKind::GitHubModels, ...)</code> just constructs one pointed at GitHub's own URL (<code>AiProvider.cpp</code>) &ndash; the same "OpenAI-
+    compatible shape, different base URL/auth secret" pattern Qwen already established. Wired through the same places every built-in kind needs: <code><a class="el" href="classConfiguration.html#a69b47e1cae145c13c667d099e304e9ce" title="A GitHub personal access token (fine-grained, &quot;Models: read&quot; permission) – see AiProviderKind::GitHub...">Configuration::AiApiKeyGitHubModels()</a></code>/<code>AiModelGitHubModels()</code> (new accessors, same secret-store-backed pattern as the other four), <code>ConfigDialogue.cpp</code>'s <code>fixedKinds[]</code> array and both of its per-kind switch statements (populate-on-open, apply-on-OK), and <code><a class="el" href="classAiChatSidebar.html#ad030053595e2e04f29012fa04abf1a12" title="Re-reads Configuration for the selected provider/API key/model and rebuilds this sidebar&#39;s provider a...">AiChatSidebar::ReloadProviderFromConfig()</a></code>'s switch &ndash; all three of these switches are the actual places that need a new <code>case</code> per built-in kind; <code>RebuildAiProviderChoice()</code>/<code>LoadAiProviderRecordIntoUi()</code> and the rest of the Options UI are already fully generic over <code>m_aiProviderRecords</code>, so nothing there needed touching, and it's worth checking that dynamism holds before assuming a new provider needs UI changes beyond the three switches. <code>AiProviderDefaultModel()</code> uses <code>"openai/gpt-4o-mini"</code> &ndash; GitHub Models' catalog names entries <code>&lt;publisher&gt;/&lt;model&gt;</code>, and that specific one is on the free tier, unlike some of the catalog's larger models which need a paid Models plan. Verified with a new <code><a class="el" href="test__AiProvider_8cpp.html" title="Pins each AiProvider&#39;s request/response shape – the stateless half of AiProvider (BuildRequestBody()/...">test_AiProvider.cpp</a></code> SCENARIO mirroring the existing OpenAI/Qwen one (request URL, Bearer header, OpenAI-compatible body/reply shape) &ndash; not verified live (no real GitHub PAT in this sandbox), same caveat this file's other AI-provider entries already carry for OpenAI/Google/Qwen.</li>
 <li><b>Follow-up (2026-09-09): a new <code>evaluation_status</code> MCP tool &ndash; "if
     Maxima is evaluating, what cell it works on, what command within that
     cell and for how long this command already is being evaluated," raised directly by the maintainer.</b> Two of the three pieces already existed and just needed exposing; the third (elapsed time) needed new state, since nothing in this codebase timed a single in-flight command before this. Researched via a dedicated Explore agent across <code><a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a></code>, <code><a class="el" href="classEvaluationQueue.html" title="A simple FIFO queue with manual removal of elements.">EvaluationQueue</a></code>, <code><a class="el" href="classMaximaEvaluator.html" title="The evaluation-queue driver / command protocol extracted from wxMaxima.">MaximaEvaluator</a></code>, <code><a class="el" href="classStatusBar.html" title="The class that draws the status bar.">StatusBar</a></code> and <code><a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a></code> before writing anything, specifically to avoid re-deriving "does timing already exist somewhere" from scratch:<ul>
@@ -465,7 +471,7 @@ Architecture &amp; GUI</h1>
 </b></b></b></li>
 </ul>
 <p><b><b><b></b></b></b></p>
-<h2><a class="anchor" id="autotoc_md45"></a>
+<h2><a class="anchor" id="autotoc_md160"></a>
 Communication with Maxima</h2>
 <p><b><b><b> <a class="el" href="classwxMaxima.html">wxMaxima</a> sends Lisp and <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> commands over the socket; <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> answers with XML wrapped in known tags. <code><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></code> reads that data on a worker thread and posts <code>EVT_MAXIMA</code> events to the main thread, where <code><a class="el" href="classwxMaxima.html">wxMaxima</a></code> handles them.</b></b></b></p>
 <p><b><b><b><code>src/wxMathML.lisp</code> is compiled into the binary (through CMake's bin2h) and is what tells <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> to format its output as MathML-like XML. For development, <code>--wxmathml-lisp=&lt;path&gt;</code> overrides it with an external file, so a change can be tried without rebuilding.</b></b></b></p>
@@ -530,7 +536,7 @@ Communication with Maxima</h2>
   &lt;tt&gt;:lisp-quiet (with-input-from-string ...)&lt;/tt&gt; / socket-level reproduction
   (see the debugging technique note above) before the fix, not guessed.
 
-@subsection autotoc_md46 File Formats
+@subsection autotoc_md162 File Formats
 
 - **&lt;tt&gt;.wxmx&lt;/tt&gt;** &amp;ndash; a ZIP archive holding &lt;tt&gt;content.xml&lt;/tt&gt; (the MathML-like XML) plus
   the embedded images. The format version lives in &lt;tt&gt;src/WXMXformat.h&lt;/tt&gt;.
@@ -595,7 +601,7 @@ Communication with Maxima</h2>
   and re-running: the injection scenarios failed with exactly the reported
   symptom before the fix was restored.
 
-@subsection autotoc_md47 Translations (&lt;tt&gt;locales/&lt;/tt&gt;)
+@subsection autotoc_md163 Translations (&lt;tt&gt;locales/&lt;/tt&gt;)
 
 - &lt;strong&gt;One combined &lt;tt&gt;.po&lt;/tt&gt; per language, in &lt;tt&gt;locales/wxMaxima/&lt;/tt&gt;, is the file a
   translator edits.&lt;/strong&gt; It covers both wxMaxima's own UI strings
@@ -834,7 +840,7 @@ Communication with Maxima</h2>
   a scratch commit first) over a blanket &lt;tt&gt;git checkout -- \&lt;dir\&gt; \&amp;\&amp; git clean
   -fd \&lt;dir\&gt;&lt;/tt&gt; once a directory has a mix of both kinds of changes in it.
 
-@section autotoc_md48 Conventions &amp; Standards
+@section autotoc_md164 Conventions &amp; Standards
 
 - &lt;strong&gt;Git Environment:&lt;/strong&gt; Note that running &lt;tt&gt;git diff&lt;/tt&gt; might launch the visual diff tool &lt;tt&gt;meld&lt;/tt&gt; instead of outputting to the terminal. Always use &lt;tt&gt;git diff --no-ext-diff&lt;/tt&gt; if you need terminal output.
 - &lt;strong&gt;String Literals &amp; Translations:&lt;/strong&gt; Use the &lt;tt&gt;wxS()&lt;/tt&gt; macro for all string literals and &lt;tt&gt;_()&lt;/tt&gt; for user-facing translatable strings.
@@ -1336,7 +1342,7 @@ Communication with Maxima</h2>
     something a firewall/antivirus's network protection would touch, and
     some of it blocks loopback inter-process communication too.
 
-@section autotoc_md49 Layout &amp; Compatibility
+@section autotoc_md165 Layout &amp; Compatibility
 
 The rules below are the ones worth carrying around at all times. The reasoning
 behind them, the pipeline they belong to, and the recurring shapes layout bugs
@@ -1396,7 +1402,7 @@ which loads on demand &amp;ndash; keep the detail there rather than growing this
   compiles everywhere and does nothing. The same trap applies to any future
   &lt;tt&gt;wxSOMETHING&lt;/tt&gt; shim added there.
 
-@section autotoc_md50 Performance &amp; Documentation Mandates
+@section autotoc_md166 Performance &amp; Documentation Mandates
 
 - &lt;strong&gt;NEWS.md Updates:&lt;/strong&gt; Every non-trivial change MUST be documented in &lt;tt&gt;NEWS.md&lt;/tt&gt; under the "# Current development version" section.
 - &lt;strong&gt;Doxygen Comments:&lt;/strong&gt; Include descriptions for all new classes and public methods. Complex algorithms (e.g., LCS alignment) require detailed architectural comments.
@@ -1407,12 +1413,12 @@ which loads on demand &amp;ndash; keep the detail there rather than growing this
   - Prefer &lt;tt&gt;(intern ...)&lt;/tt&gt; over &lt;tt&gt;read-from-string&lt;/tt&gt; for dynamic symbol generation.
 - &lt;strong&gt;Strict XML Mandate:&lt;/strong&gt; To avoid duplicate attributes, add any new manually-handled XML attribute (e.g., &lt;tt&gt;noneParens="true"&lt;/tt&gt;) to the filter list in &lt;tt&gt;MathParser.cpp&lt;/tt&gt;.
 
-@section autotoc_md51 Visual Documentation (&lt;tt&gt;art/Doxygen/&lt;/tt&gt;)
+@section autotoc_md167 Visual Documentation (&lt;tt&gt;art/Doxygen/&lt;/tt&gt;)
 
 - &lt;strong&gt;Geometry Awareness:&lt;/strong&gt; If modifying &lt;tt&gt;Recalculate()&lt;/tt&gt; or &lt;tt&gt;Draw()&lt;/tt&gt; geometry (padding, center alignment), you MUST update the corresponding SVG diagrams in &lt;tt&gt;art/Doxygen/&lt;/tt&gt;.
 - &lt;strong&gt;Consistency:&lt;/strong&gt; New cell types should have &lt;tt&gt;*Geometry.svg&lt;/tt&gt; and &lt;tt&gt;*LinearGeometry.svg&lt;/tt&gt; (if applicable) diagrams.
 
-@section autotoc_md52 Key Subsystems Map
+@section autotoc_md168 Key Subsystems Map
 
 Deeper, per-subsystem background lives in &lt;tt&gt;.claude/skills/&lt;/tt&gt;, which load only
 when they are relevant &amp;ndash; so that hard-won detail is available without every
@@ -1455,7 +1461,7 @@ has already been broken.
 </ul>
 <p></code></b></b></b></p>
 <p><b><b><b><code></code></b></b></b></p>
-<h1><a class="anchor" id="autotoc_md53"></a>
+<h1><a class="anchor" id="autotoc_md169"></a>
 Backlog / Future Work</h1>
 <p><b><b><b><code> Items the maintainer has flagged as worth doing but hasn't asked for yet &ndash; don't start on these without checking in first, but pick them up if asked for "what's
 next" style work.</code></b></b></b></p>
@@ -1469,7 +1475,7 @@ next" style work.</code></b></b></b></p>
 </ul>
 <p></code></b></b></b></p>
 <p><b><b><b><code></code></b></b></b></p>
-<h1><a class="anchor" id="autotoc_md54"></a>
+<h1><a class="anchor" id="autotoc_md170"></a>
 Error resilience</h1>
 <p><b><b><b><code></p><ul>
 <li>To err is human =&gt; If your instructions don't seem to make sense feel free to ask. </li>

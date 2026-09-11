@@ -659,6 +659,13 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><b>AiApiKeyQwen</b> 
 <tr class="memitem:a39ca5f84ce8726146c44987bec81a7be"><td class="memItemLeft" align="right" valign="top"><a id="a39ca5f84ce8726146c44987bec81a7be" name="a39ca5f84ce8726146c44987bec81a7be"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>AiApiKeyQwen</b> (const wxString &amp;key)</td></tr>
 <tr class="separator:a39ca5f84ce8726146c44987bec81a7be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69b47e1cae145c13c667d099e304e9ce"><td class="memItemLeft" align="right" valign="top"><a id="a69b47e1cae145c13c667d099e304e9ce" name="a69b47e1cae145c13c667d099e304e9ce"></a>
+wxString&#160;</td><td class="memItemRight" valign="bottom"><b>AiApiKeyGitHubModels</b> () const</td></tr>
+<tr class="memdesc:a69b47e1cae145c13c667d099e304e9ce"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classA.html">A</a> GitHub personal access token (fine-grained, "Models: read" permission) &ndash; see AiProviderKind::GitHubModels's own doc comment for why this is GitHub's official Models API, not Copilot Chat. <br /></td></tr>
+<tr class="separator:a69b47e1cae145c13c667d099e304e9ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac05b96a988363df7f1ea45bf3ee3e050"><td class="memItemLeft" align="right" valign="top"><a id="ac05b96a988363df7f1ea45bf3ee3e050" name="ac05b96a988363df7f1ea45bf3ee3e050"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>AiApiKeyGitHubModels</b> (const wxString &amp;key)</td></tr>
+<tr class="separator:ac05b96a988363df7f1ea45bf3ee3e050"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2ab3a52c59a511ce06026ae05e4dd5af"><td class="memItemLeft" align="right" valign="top"><a id="a2ab3a52c59a511ce06026ae05e4dd5af" name="a2ab3a52c59a511ce06026ae05e4dd5af"></a>
 wxString&#160;</td><td class="memItemRight" valign="bottom"><b>AiModelAnthropic</b> () const</td></tr>
 <tr class="memdesc:a2ab3a52c59a511ce06026ae05e4dd5af"><td class="mdescLeft">&#160;</td><td class="mdescRight">The model id to request from each provider; defaults to AiProviderDefaultModel() but the user can override it in Options, since model catalogs change far more often than this code does. <br /></td></tr>
@@ -684,6 +691,12 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><b>AiModelQwen</b> (
 <tr class="memitem:a04064c24d638354fefb7342e0e545d61"><td class="memItemLeft" align="right" valign="top"><a id="a04064c24d638354fefb7342e0e545d61" name="a04064c24d638354fefb7342e0e545d61"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>AiModelQwen</b> (const wxString &amp;model)</td></tr>
 <tr class="separator:a04064c24d638354fefb7342e0e545d61"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d3a0e6053b1c5b92f6d19243bc827f5"><td class="memItemLeft" align="right" valign="top"><a id="a7d3a0e6053b1c5b92f6d19243bc827f5" name="a7d3a0e6053b1c5b92f6d19243bc827f5"></a>
+wxString&#160;</td><td class="memItemRight" valign="bottom"><b>AiModelGitHubModels</b> () const</td></tr>
+<tr class="separator:a7d3a0e6053b1c5b92f6d19243bc827f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a605ba24acb71341307c9c4f4f8b2d70f"><td class="memItemLeft" align="right" valign="top"><a id="a605ba24acb71341307c9c4f4f8b2d70f" name="a605ba24acb71341307c9c4f4f8b2d70f"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>AiModelGitHubModels</b> (const wxString &amp;model)</td></tr>
+<tr class="separator:a605ba24acb71341307c9c4f4f8b2d70f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ade2c9d05332ac3d51539022893cafe31"><td class="memItemLeft" align="right" valign="top"><a id="ade2c9d05332ac3d51539022893cafe31" name="ade2c9d05332ac3d51539022893cafe31"></a>
 wxString&#160;</td><td class="memItemRight" valign="bottom"><b>AiCustomProvidersJson</b> () const</td></tr>
 <tr class="memdesc:ade2c9d05332ac3d51539022893cafe31"><td class="mdescLeft">&#160;</td><td class="mdescRight">User-added custom providers (beyond the four built-in ones), as a JSON array &ndash; see AiCustomProviderConfig/ParseAiCustomProviders() in <a class="el" href="AiProvider_8h.html" title="Talks to one of a handful of external AI chat APIs for the AI chat sidebar (AiChatSidebar).">ai/AiProvider.h</a>. Each entry's API key lives in the secret store, keyed by AiProvider::CustomProviderSecretService(id), not in this string. <br /></td></tr>

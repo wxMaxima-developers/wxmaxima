@@ -133,13 +133,14 @@ var searchData=
   ['copytree_130',['CopyTree',['../classWorksheet.html#ae33b1957cd76747ae96d17f11efc3557',1,'Worksheet']]],
   ['count_131',['count',['../classbasic__json.html#ad1e1eff03a320299e6a8639a7579ca46',1,'basic_json::count(const typename object_t::key_type &amp;key) const'],['../classbasic__json.html#a1ba1cd73d36a2cd58a9da7021b0f7317',1,'basic_json::count(KeyType &amp;&amp;key) const']]],
   ['crbegin_132',['crbegin',['../classbasic__json.html#acdde2a6628e43b3e3f7f27c6af6998f8',1,'basic_json']]],
-  ['create_133',['Create',['../classEditorCell.html#aee5f444c769f6a549d733f3d13ab4999',1,'EditorCell::Create()'],['../classAutocompletePopup.html#a74a44083feada4539b0de850c1a10983',1,'AutocompletePopup::Create()']]],
+  ['create_133',['Create',['../classAutocompletePopup.html#a74a44083feada4539b0de850c1a10983',1,'AutocompletePopup']]],
   ['create_134',['create',['../classdetail_1_1parse__error.html#a07046ea9f33d28f120af188ed674d6df',1,'detail::parse_error']]],
-  ['createcellsdataobject_135',['CreateCellsDataObject',['../classWorksheet.html#a1ec0dd14c4a28ecfe628fbe727a12979',1,'Worksheet']]],
-  ['createselectiondataobject_136',['CreateSelectionDataObject',['../classWorksheet.html#af57bd4aac5fd36a36c73d24a7528747d',1,'Worksheet']]],
-  ['createtreefromxmlnode_137',['CreateTreeFromXMLNode',['../classwxMaxima.html#ad1a9bf5732a3c6810d8fa041b06b469c',1,'wxMaxima']]],
-  ['crend_138',['crend',['../classbasic__json.html#aa52cc6cc0de1e81d9cc21f9c48feb588',1,'basic_json']]],
-  ['croptoupdateregion_139',['CropToUpdateRegion',['../classCell.html#a223188bc00b9e85bf9ea7a80ae7b4944',1,'Cell']]],
-  ['customprovidersecretservice_140',['CustomProviderSecretService',['../classAiProvider.html#a977859a7fce4a975c2617adca2055559',1,'AiProvider']]],
-  ['cuttoclipboard_141',['CutToClipboard',['../classWorksheet.html#a19df468bef53424aa02222a21ee3bb5a',1,'Worksheet::CutToClipboard()'],['../classEditorCell.html#abe5e2eb147aca9cf6ae58f60ead0ad7b',1,'EditorCell::CutToClipboard()'],['../classCell.html#ad96add356d2a246e0053262fce4d8010',1,'Cell::CutToClipboard()']]]
+  ['create_135',['Create',['../classEditorCell.html#aee5f444c769f6a549d733f3d13ab4999',1,'EditorCell']]],
+  ['createcellsdataobject_136',['CreateCellsDataObject',['../classWorksheet.html#a1ec0dd14c4a28ecfe628fbe727a12979',1,'Worksheet']]],
+  ['createselectiondataobject_137',['CreateSelectionDataObject',['../classWorksheet.html#af57bd4aac5fd36a36c73d24a7528747d',1,'Worksheet']]],
+  ['createtreefromxmlnode_138',['CreateTreeFromXMLNode',['../classwxMaxima.html#ad1a9bf5732a3c6810d8fa041b06b469c',1,'wxMaxima']]],
+  ['crend_139',['crend',['../classbasic__json.html#aa52cc6cc0de1e81d9cc21f9c48feb588',1,'basic_json']]],
+  ['croptoupdateregion_140',['CropToUpdateRegion',['../classCell.html#a223188bc00b9e85bf9ea7a80ae7b4944',1,'Cell']]],
+  ['customprovidersecretservice_141',['CustomProviderSecretService',['../classAiProvider.html#a977859a7fce4a975c2617adca2055559',1,'AiProvider']]],
+  ['cuttoclipboard_142',['CutToClipboard',['../classWorksheet.html#a19df468bef53424aa02222a21ee3bb5a',1,'Worksheet::CutToClipboard()'],['../classEditorCell.html#abe5e2eb147aca9cf6ae58f60ead0ad7b',1,'EditorCell::CutToClipboard()'],['../classCell.html#ad96add356d2a246e0053262fce4d8010',1,'Cell::CutToClipboard()']]]
 ];

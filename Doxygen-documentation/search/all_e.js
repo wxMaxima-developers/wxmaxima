@@ -1,8 +1,8 @@
 var searchData=
 [
   ['n1_0',['N1',['../namespaceN1.html',1,'']]],
-  ['name_1',['name',['../structAiCustomProviderConfig.html#afc64f2b1027d0fc34cf5caf4071d5b9a',1,'AiCustomProviderConfig']]],
-  ['name_2',['Name',['../classStyles.html#a21bf4943137ee7b3ce6971d9eecc51ea',1,'Styles::Name()'],['../classAiProvider.html#a851738a1b9c781f613a9859b3f4b8adc',1,'AiProvider::Name()']]],
+  ['name_1',['Name',['../classStyles.html#a21bf4943137ee7b3ce6971d9eecc51ea',1,'Styles::Name()'],['../classAiProvider.html#a851738a1b9c781f613a9859b3f4b8adc',1,'AiProvider::Name()']]],
+  ['name_2',['name',['../structAiCustomProviderConfig.html#afc64f2b1027d0fc34cf5caf4071d5b9a',1,'AiCustomProviderConfig']]],
   ['name_5fseparator_3',['name_separator',['../classdetail_1_1lexer__base.html#add65fa7a85aa15052963809fbcc04540acc3c64f8ae08c00de1b33f19a4d2913a',1,'detail::lexer_base']]],
   ['nameandtags_4',['NameAndTags',['../structCatch_1_1NameAndTags.html',1,'Catch']]],
   ['namedboxcell_5',['NamedBoxCell',['../classNamedBoxCell.html',1,'NamedBoxCell'],['../classNamedBoxCell.html#a8a21868ef0a9301271bdaad09eef6705',1,'NamedBoxCell::NamedBoxCell()']]],
