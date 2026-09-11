@@ -3484,6 +3484,136 @@ tried without rebuilding.
     something a firewall/antivirus's network protection would touch, and
     some of it blocks loopback inter-process communication too.
 
+- **GH #2301 -- wxWidgets 3.0.5 freeze (100% CPU busy-loop, both status bar
+  icons stuck showing "disconnected") right after Maxima actually connects.
+  CONFIRMED, REPRODUCED, root cause NARROWED but not yet found down to one
+  line (2026-09-11).** Reported directly by a user building from source on a
+  "fairly modern Linux system" with `wxGTK3` 3.0.5: the app starts, shows its
+  window, but the Maxima-status and network-status icons both render as a
+  "broken link between two computers," the worksheet never gets keyboard
+  focus (clicking it produces no cursor), and the window stops redrawing on
+  focus switches -- even though `netstat`/`ss` on their machine showed a
+  real, live, `ESTABLISHED` TCP connection between wxMaxima and Maxima the
+  whole time. Their own follow-up comment: switching to wxWidgets 3.2
+  fixed it outright.
+  **Reproduced end-to-end in this sandbox** by building wxWidgets 3.0.5 from
+  source (`libgtk-3-dev` had to be installed first; Ubuntu 24.04 ships no
+  `libwxgtk3.0-*` package at all, source is the only option) with
+  `--with-gtk=3 --disable-shared --enable-unicode --without-opengl
+  --disable-mediactrl`, then configuring wxMaxima against it with
+  `-DwxWidgets_CONFIG_EXECUTABLE=<path>/wx-config -DWXM_DISABLE_WEBVIEW=ON`
+  (this local wx305 build has no WebKit, so `find_package(wxWidgets 3 QUIET
+  COMPONENTS webview)`'s auto-probe misfired and had to be overridden
+  explicitly -- it reported success even though `libwx_gtk3u_webview-3.0.a`
+  was never actually built, a link-time-only failure, not a configure-time
+  one). Running the result under a real `Xvfb`+`fluxbox` session and
+  screenshotting the status bar showed exactly the reported "computer with a
+  red X" icon on both fields, pixel-for-pixel matching the issue's own
+  screenshots, while a build of the identical source against the system's
+  wxWidgets 3.2.4 stays fully responsive in the same session.
+  **Root cause, narrowed by elimination, not yet found down to one line:**
+  1. `ps`/`top` on the reproducing process shows a permanent ~98-100% CPU,
+     state `R` (running, not blocked) -- this is a genuine busy-loop, not a
+     deadlock. `gdb -p <pid> -batch -ex "thread apply all bt"` (repeated
+     ~15 times in quick succession) shows the *only* thread actually
+     spinning is the main/GUI thread, and every single sample lands inside
+     `g_main_loop_run()` -> (a mix of) `poll(fds, 5, timeout=0)` /
+     `write(fd=5, ..., 8)` / `read(fd=5, ..., 8)` (GLib's internal
+     self-pipe/eventfd wakeup mechanism) / `XPending`/`_XEventsQueued` via
+     GDK's X11 event source -- **zero wxMaxima or even wx-level frames
+     appear on any sample**, all the way from `gtk_main()` down to raw
+     libc/glib/gdk/X11 calls. A `timeout=0` poll called in a tight loop is
+     GLib's classic signature of "some `GSource`'s `prepare()`/`check()` is
+     reporting itself as permanently ready" -- something is calling the
+     equivalent of `g_main_context_wakeup()` on every single iteration.
+  2. **This is not a generic "wx 3.0.5 + GTK3 is broken in this sandbox"
+     problem** -- a minimal hand-written `wxFrame`+`wxStaticText` "hello
+     world" compiled against the exact same local wx305 build and run in
+     the exact same Xvfb+fluxbox session stays idle (~1-2% CPU, state `S`)
+     indefinitely. Whatever triggers this needs wxMaxima's own code, not
+     just "any wx 3.0.5 GTK3 app."
+   3. **The spin does not start at bare UI startup, and does not happen at
+     all if Maxima never successfully connects.** Launching with `-m
+     /nonexistent/maxima` (so `execvp()` fails and Maxima is never
+     spawned) keeps CPU low and *decreasing* (~20%, tapering to <1% as
+     startup work finishes) indefinitely, logging the expected "Can not
+     start Maxima" messages -- confirmed by sampling `ps -o pcpu=` every
+     0.5s across several seconds. Only once Maxima actually spawns,
+     completes the handshake, and wxMaxima logs "Maxima is ready for
+     input" does CPU immediately jump to and stay at ~99-100%; sampling
+     from the very first 500ms after a real launch already shows ~99% CPU,
+     so the transition is essentially immediate on a successful connect,
+     not something that develops gradually.
+  4. **Both status icons are very likely showing their unmodified startup
+     *default* bitmap (`m_network_offline`, set in `StatusBar`'s own
+     constructor), not a bitmap actively set to "error"/"disconnected" in
+     response to anything** -- the visible "broken link" symptom is a
+     side effect of `wxMaxima::OnIdle()` (which is what would call
+     `UpdateStatusMaximaBusy()`/`NetworkStatus()` to move them off that
+     default) essentially never getting CPU time once the busy-loop starts
+     starving the event loop, not evidence that connecting itself
+     triggers an error path. A `gdb` breakpoint on `wxMaxima::OnIdle`
+     logging silently and continuing (`commands` / `printf` / `continue`,
+     no per-hit stop -- same zero-perturbation technique this file's other
+     gdb entries already use) caught only ~2 hits in a 5-second window
+     while the process was spinning at ~98% CPU -- i.e. the handler that
+     *would* fix the icons is itself being starved, not misbehaving.
+  5. **The two most likely remaining candidates, neither yet confirmed
+     down to a single call site:** (a) `MaximaProcessManager::
+     OnMaximaConnect()` (`MaximaProcessManager.cpp`) calls
+     `m_wxMaxima.m_statusBar->NetworkStatus(StatusBar::idle)` synchronously,
+     inside the GTK-integrated `wxSOCKET_CONNECTION` event handler for the
+     *listening* `wxSocketServer` (`m_server->SetEventHandler()`/
+     `Notify(true)`/`SetNotify(wxSOCKET_CONNECTION_FLAG)` -- genuinely
+     wx-event-driven, unlike (b) below) -- worth checking whether
+     `StatusBar::UpdateBitmaps()`/`NetworkStatus()` themselves do anything
+     that could re-trigger layout/paint requests in a way wx 3.0's older
+     AUI/sizer code handles differently than 3.2's. (b) The *accepted*
+     Maxima data socket, once handed to `Maxima`'s constructor
+     (`Maxima.cpp`), is explicitly taken OUT of wx's event system --
+     `m_socket->SetNotify(0); m_socket->Notify(false);` -- specifically so
+     the dedicated `Maxima::WorkerThread()` can do its own blocking
+     `WaitForRead()`-with-timeout reads instead (confirmed via `gdb`: that
+     thread is genuinely asleep in `wxMilliSleep()`/`nanosleep()`, not
+     spinning). **If wx 3.0.5's `wxSocketBase::Notify(false)`/`SetNotify(0)`
+     doesn't fully detach the underlying GTK/glib IO watch on that fd**
+     (a real, plausible version-specific gap between wx 3.0's GSocket-era
+     socket backend and wx 3.1+'s later rework), a watch left registered
+     but never satisfied by anything once real Maxima traffic starts
+     flowing on that fd would produce exactly this signature: a
+     permanently-ready GSource with no wxMaxima/wx-level frame ever on the
+     stack, triggered exactly at "Maxima starts actually sending data,"
+     matching every observation above. This exact theory has NOT yet been
+     confirmed (no debug symbols were available for the system's own
+     glib/gtk/X11 shared libraries in this sandbox to trace it any deeper
+     without building glib/gtk from source too, which was judged too large
+     an additional undertaking for this pass) -- it is the most
+     plausible explanation these observations converge on, not a proven
+     one.
+  **Practical note for reproducing this again**: the busy-looping process
+  is disruptive enough to the sandbox itself (100% CPU on one core, real
+  contention) that several follow-up shell commands in this same session
+  timed out or failed outright while an instance was left running --
+  always `pkill -9` every `wxmaxima`/`maxima` process between attempts
+  (confirmed via `ps aux`, not assumed) before trying anything else, and
+  prefer `setsid <binary> ... < /dev/null > log 2>&1 &` (not `bash -c
+  '... &'` wrapped in extra quoting, which failed outright here for
+  unclear reasons) to launch a detached instance that survives past the
+  single tool call that started it.
+  **Not yet done**: pin down which of the two candidates in point 5 (or a
+  third mechanism not yet considered) is the actual trigger, ideally via a
+  `gdb` breakpoint on `MaximaProcessManager::OnMaximaConnect`/
+  `StatusBar::NetworkStatus`/`Maxima::Maxima`'s constructor with `commands`/
+  `continue` (the same zero-perturbation technique already used for
+  `wxMaxima::OnIdle` above) to see whether the spin starts strictly before,
+  during, or after each of those specific calls, and whether temporarily
+  skipping the `SetNotify(0)`/`Notify(false)` calls (or replacing them with
+  an explicit `Notify(true)` + a real, if unused, `EVT_SOCKET` handler) as
+  a *diagnostic-only* experiment changes the outcome. If confirmed, the
+  fix likely belongs in `Maxima.cpp`'s socket setup (working around wx
+  3.0.5's specific gap) rather than in `StatusBar`/`MaximaProcessManager`,
+  but this is not yet certain enough to implement blind.
+
 ## Layout & Compatibility
 
 The rules below are the ones worth carrying around at all times. The reasoning
