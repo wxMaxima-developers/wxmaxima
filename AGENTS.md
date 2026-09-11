@@ -2988,7 +2988,7 @@ tried without rebuilding.
 - **Worksheet Search Logic:** Traverse in visual order: Prompt → Editor → Output (Forward) or Output → Editor → Prompt (Reverse). Resume from current caret position.
 - **Layout Timeout:** Complex output can trigger a timeout (configurable in Options), replacing slow-to-render cells with a warning.
 - **C++ Standard:** The project uses **C++20**. To support users on older operating systems (like Debian-oldstable or RHEL), wxMaxima aims to stay approximately 10 years behind the current C++ standard.
-- **wxWidgets Version:** Maintain compatibility with wxWidgets 3.0.5 where possible. Avoid features only available in 3.1+ (e.g., use `MakeAbsolute()` + `GetFullPath()` instead of `GetAbsolutePath()`).
+- **wxWidgets Version:** Maintain compatibility with wxWidgets 3.0.5 where possible. Avoid features only available in 3.1+ (e.g., use `MakeAbsolute()` + `GetFullPath()` instead of `GetAbsolutePath()`). **Known limitation, confirmed 2026-09-11 (GH #2301):** wx 3.0.5's own socket backend has a genuine defect -- `wxSocketBase::Notify(false)`/`SetNotify(0)` only silence high-level event dispatch, never the low-level GTK/GLib IO-watch, so a socket a worker thread also reads from (exactly what `Maxima::WorkerThread()` does) busy-loops the GUI thread at ~100% CPU the moment real traffic arrives. This makes wxMaxima's core Maxima-connection feature unusable on wx 3.0.5, full stop -- there is no way to satisfy "maintain compatibility... where possible" for this one specific interaction on this one specific wx version without a real, cross-platform rewrite of the socket read path (see the full GH #2301 entry further down this file for the confirmed root cause and the rejected fix). Users hitting this should upgrade to wxWidgets >= 3.1, where the socket backend was substantially reworked. Whether to formally drop 3.0.5 from this line is a maintainer decision, not yet made.
 - **Sizer Flags Are Different Enum Types:** `wxDirection` (`wxLEFT`/`wxRIGHT`/`wxALL`/...), `wxAlignment` (`wxALIGN_*`) and `wxStretch` (`wxEXPAND`/...) are three distinct unscoped enums; OR'ing two of them directly (e.g. `wxALIGN_CENTER_VERTICAL | wxALL`) is deprecated in C++20 and GCC warns `-Wdeprecated-enum-enum-conversion`. Fix by casting the *first* operand of the OR-chain to `int` (e.g. `static_cast<int>(wxALIGN_CENTER_VERTICAL) | wxALL`) -- since `|` is left-associative, this makes every subsequent operation `int | enum`, which is unambiguous and unwarned, without needing to touch the rest of the chain. Only the leftmost token needs the cast, however many differently-typed flags follow.
 - **`[[maybe_unused]]` on data members and GCC < 12:** GCC before version 12 doesn't support `[[maybe_unused]]` on non-static data members at all and warns `'maybe_unused' attribute ignored [-Wattributes]` regardless of whether the member is actually used (reproduced directly against `g++-11`; fixed by `g++-12`). Since the attribute is still needed for Clang (`-Wunused-private-field`), don't just delete it -- wrap the declaration in `#if defined(__GNUC__) && !defined(__clang__) && __GNUC__ < 12` / `#pragma GCC diagnostic push/ignored "-Wattributes"` ... `#pragma GCC diagnostic pop` / `#endif` (see `SvgBitmap.h`, `wxMathml.h`, `graphical_io/Printout.h`).
 - **CI Warnings Live On the Non-`-Werror` Jobs:** `compile_latest_and_test` and `compile_without_webview` (Ubuntu) build with `-Werror`, so they can't show warnings by construction -- check `compile_2204` (Ubuntu 22.04, plain `-Wall -Wextra`, GCC 11) for real warnings that survive to a release build. Don't assume that job's warning list is exhaustive, though: e.g. the `[[maybe_unused]]`-on-a-data-member GCC<12 warning above showed up for `Printout.h` in one such log but not for the identical pattern in `SvgBitmap.h`/`wxMathml.h` in the same run, for reasons that weren't tracked down (not precompiled headers -- `WXM_ENABLE_PRECOMPILED_HEADERS` defaults `OFF`) -- a clean local build with `g++-11 -Wall -Wextra` is the more reliable check for this specific class of warning.
@@ -3486,8 +3486,11 @@ tried without rebuilding.
 
 - **GH #2301 -- wxWidgets 3.0.5 freeze (100% CPU busy-loop, both status bar
   icons stuck showing "disconnected") right after Maxima actually connects.
-  CONFIRMED, REPRODUCED, root cause NARROWED but not yet found down to one
-  line (2026-09-11).** Reported directly by a user building from source on a
+  CONFIRMED, REPRODUCED, ROOT CAUSE CONFIRMED (2026-09-11) -- decided NOT to
+  work around it in wxMaxima's own code; documented instead as a genuine
+  wx-3.0.5-only defect. Do not re-open this looking for a wxMaxima-side fix
+  without a new reason to believe the analysis below is wrong.** Reported
+  directly by a user building from source on a
   "fairly modern Linux system" with `wxGTK3` 3.0.5: the app starts, shows its
   window, but the Maxima-status and network-status icons both render as a
   "broken link between two computers," the worksheet never gets keyboard
@@ -3661,31 +3664,43 @@ tried without rebuilding.
   re-running the identical command a second time was a reliable workaround
   both times it happened; don't burn time re-diagnosing gdb-attach flakiness
   itself if it recurs, just retry once.
-  **What a real fix would need**: `Maxima.cpp` cannot fix this by calling
-  more of `wxSocketBase`'s own public API -- `Notify()`/`SetNotify()` are
-  the *only* API surface wx 3.0.5 exposes for this, and both are confirmed
-  no-ops for the actual problem. The two directions that would plausibly
-  work, neither attempted yet (both are real, behavior-affecting changes
-  to the most sensitive code in this codebase -- see this file's own
-  extensive `tutorial_10Minutes`/`m_configCommands` scars above for why
-  that warrants real caution, not a blind attempt): (a) stop handing the
-  `Accept()`-returned `wxSocketBase*` to `Maxima` at all -- extract the raw
-  OS socket handle via the long-standing public `wxSocketBase::GetSocket()`
-  (returns `wxSOCKET_T`, present in 3.0.5 and current wx alike) immediately
-  after accepting, destroy the `wxSocketBase` wrapper before it ever gets
-  registered with anything, and have `Maxima::WorkerThread()` do its own
-  platform-specific (`#ifdef __WXMSW__` for Winsock, POSIX otherwise)
-  blocking read-with-timeout directly on that raw handle instead of going
-  through `wxSocketBase::WaitForRead()`/`Read()` -- removes wx's socket
-  subsystem from this connection's lifecycle entirely, at the cost of a
-  real, cross-platform-sensitive rewrite of the read loop; (b) document
-  this as a known, confirmed wx-3.0.5-only limitation (the reporter's own
-  workaround already works -- upgrade to wx >= 3.1) and consider whether
-  this project's own stated "maintain compatibility with wxWidgets 3.0.5"
-  goal should be narrowed now that a real, understood, non-cosmetic defect
-  in 3.0.5's own socket backend is the actual reason, not just aspirational
-  caution. Left for a maintainer decision rather than picked unilaterally
-  in this pass.
+  **What a real fix would need, and why none was applied here**:
+  `Maxima.cpp` cannot fix this by calling more of `wxSocketBase`'s own
+  public API -- `Notify()`/`SetNotify()` are the *only* API surface wx
+  3.0.5 exposes for this, and both are confirmed no-ops for the actual
+  problem. The one code-level workaround that would plausibly work: stop
+  handing the `Accept()`-returned `wxSocketBase*` to `Maxima` at all --
+  extract the raw OS socket handle via the long-standing public
+  `wxSocketBase::GetSocket()` (returns `wxSOCKET_T`, present in 3.0.5 and
+  current wx alike) immediately after accepting, destroy the
+  `wxSocketBase` wrapper before it ever gets registered with anything, and
+  have `Maxima::WorkerThread()` do its own platform-specific (`#ifdef
+  __WXMSW__` for Winsock, POSIX otherwise) blocking read-with-timeout
+  directly on that raw handle instead of going through `wxSocketBase::
+  WaitForRead()`/`Read()` -- removing wx's socket subsystem from this
+  connection's lifecycle entirely, at the cost of a real,
+  cross-platform-sensitive rewrite of the read loop, touching the most
+  sensitive code in this codebase (see this file's own extensive
+  `tutorial_10Minutes`/`m_configCommands` scars above for why that
+  warrants real caution).
+  **Deliberately not done.** Presented to the maintainer as a choice
+  between that rewrite and documenting this as a known wx-3.0.5-only
+  limitation; the maintainer chose the latter. Rationale: this is a
+  genuine, confirmed defect in wx 3.0.5's own socket backend (its
+  low-level GTK/GLib IO-watch has no code path that a caller can ask it to
+  detach), not a bug in wxMaxima's code, and the reporter's own
+  already-known workaround (upgrade to wx >= 3.1, where the socket backend
+  was substantially reworked) already resolves it with no downside. A
+  raw-socket bypass would be a real, permanent maintenance burden and
+  cross-platform risk on wxMaxima's most fragile subsystem, applied
+  exclusively to keep working on a wxWidgets release with a real bug in
+  the exact mechanism at stake -- not obviously a trade worth making for a
+  version this project only ever aimed to support "where possible" in the
+  first place. See the "wxWidgets Version" entry under Conventions &
+  Standards for the current state of that compatibility target -- whether
+  to formally narrow it to >= 3.1 given this finding is a maintainer
+  decision, not something changed unilaterally as part of this
+  investigation.
 
 ## Layout & Compatibility
 
