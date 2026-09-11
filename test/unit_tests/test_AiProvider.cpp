@@ -158,6 +158,41 @@ SCENARIO("OpenAI's (and Qwen's identical) chat/completions shape") {
   }
 }
 
+SCENARIO("GitHub Models -- GitHub's own official, OpenAI-compatible model API") {
+  auto provider = MakeAiProvider(AiProviderKind::GitHubModels, wxS("github_pat_test"),
+                                 wxS("openai/gpt-4o-mini"));
+  REQUIRE(provider);
+
+  GIVEN("its request URL") {
+    THEN("it points at GitHub's own Models inference endpoint, not Copilot's") {
+      CHECK(provider->RequestUrl() ==
+           wxS("https://models.github.ai/inference/chat/completions"));
+    }
+  }
+
+  GIVEN("the Bearer auth header") {
+    THEN("it carries the personal access token, the same way OpenAI's does") {
+      auto headers = provider->AuthHeaders();
+      REQUIRE(headers.size() == 1);
+      CHECK(headers[0].first == wxS("Authorization"));
+      CHECK(headers[0].second == wxS("Bearer github_pat_test"));
+    }
+  }
+
+  GIVEN("a system context and one user message") {
+    wxString body = provider->BuildRequestBody(wxS("worksheet context"),
+                                               OneUserTurn(wxS("Hello")));
+    json parsed = json::parse(std::string(body.ToUTF8()));
+    THEN("its request/response shape is identical to OpenAI's own") {
+      CHECK(parsed.at("model") == "openai/gpt-4o-mini");
+      REQUIRE(parsed.at("messages").size() == 2);
+      CHECK(parsed.at("messages")[0].at("role") == "system");
+      CHECK(provider->ParseReply(
+              wxS(R"({"choices":[{"message":{"content":"ok"}}]})")) == wxS("ok"));
+    }
+  }
+}
+
 SCENARIO("Google Gemini's generateContent shape") {
   auto provider = MakeAiProvider(AiProviderKind::Google, wxS("goog-key"),
                                  wxS("gemini-1.5-flash"));

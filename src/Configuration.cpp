@@ -129,6 +129,7 @@ Configuration::Configuration(const Configuration &o) :
   m_aiModelOpenAI(o.m_aiModelOpenAI),
   m_aiModelGoogle(o.m_aiModelGoogle),
   m_aiModelQwen(o.m_aiModelQwen),
+  m_aiModelGitHubModels(o.m_aiModelGitHubModels),
   m_aiCustomProvidersJson(o.m_aiCustomProvidersJson),
   m_aiActiveCustomProviderId(o.m_aiActiveCustomProviderId),
   m_displayedDigits(o.m_displayedDigits),
@@ -334,6 +335,7 @@ void Configuration::ResetAllToDefaults() {
   m_aiModelOpenAI = AiProviderDefaultModel(AiProviderKind::OpenAI);
   m_aiModelGoogle = AiProviderDefaultModel(AiProviderKind::Google);
   m_aiModelQwen = AiProviderDefaultModel(AiProviderKind::Qwen);
+  m_aiModelGitHubModels = AiProviderDefaultModel(AiProviderKind::GitHubModels);
 #endif
   m_fixReorderedIndices = true;
   m_rightToLeftDocument = false;
@@ -922,6 +924,14 @@ wxString Configuration::AiApiKeyQwen() const {
 void Configuration::AiApiKeyQwen(const wxString &key) {
   AiProvider::SaveApiKey(AiProvider::BuiltinProviderSecretService(AiProviderKind::Qwen), key);
 }
+wxString Configuration::AiApiKeyGitHubModels() const {
+  return AiProvider::LoadApiKey(
+    AiProvider::BuiltinProviderSecretService(AiProviderKind::GitHubModels));
+}
+void Configuration::AiApiKeyGitHubModels(const wxString &key) {
+  AiProvider::SaveApiKey(
+    AiProvider::BuiltinProviderSecretService(AiProviderKind::GitHubModels), key);
+}
 #endif
 
 //TODO: Don't underline the section number of titles
@@ -1375,6 +1385,7 @@ Configuration::ScalarConfigSettings() {
     {wxS("aiModelOpenAI"), &Configuration::m_aiModelOpenAI},
     {wxS("aiModelGoogle"), &Configuration::m_aiModelGoogle},
     {wxS("aiModelQwen"), &Configuration::m_aiModelQwen},
+    {wxS("aiModelGitHubModels"), &Configuration::m_aiModelGitHubModels},
     {wxS("aiCustomProviders"), &Configuration::m_aiCustomProvidersJson},
     {wxS("aiActiveCustomProvider"), &Configuration::m_aiActiveCustomProviderId},
     {wxS("numpadEnterEvaluates"), &Configuration::m_numpadEnterEvaluates},

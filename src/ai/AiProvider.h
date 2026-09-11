@@ -55,7 +55,18 @@ struct AiChatMessage {
 //! reports from AiProvider::Kind() -- Configuration::AiActiveCustomProviderId()
 //! says which one, since a plain kind alone can't distinguish two custom
 //! entries from each other.
-enum class AiProviderKind { None = 0, Anthropic = 1, OpenAI = 2, Google = 3, Qwen = 4, Custom = 5 };
+//! GitHubModels is GitHub's own official, OpenAI-compatible model-hosting
+//! API (https://github.com/marketplace/models), authenticated with a plain
+//! GitHub personal access token -- deliberately NOT "GitHub Copilot Chat":
+//! that assistant has no sanctioned third-party API at all (the community
+//! tools that reach it do so by reusing an approved editor's OAuth client
+//! id and calling an undocumented internal endpoint, which risks the
+//! account being flagged under GitHub's Copilot terms), so it was not
+//! implemented here -- see the "GitHub Models" follow-up in AGENTS.md's AI
+//! chat sidebar entry for the full reasoning.
+enum class AiProviderKind {
+  None = 0, Anthropic = 1, OpenAI = 2, Google = 3, Qwen = 4, Custom = 5, GitHubModels = 6
+};
 
 //! Which request/response wire format a provider uses. The four built-in
 //! AiProviderKinds each hardcode one of these; a user-added custom provider
@@ -139,7 +150,7 @@ wxString AiProviderDefaultModel(AiProviderKind kind);
 
 //! Where to go to create/find an API key for this provider -- shown as a
 //! link next to that provider's key field in Options, since there is no
-//! "log in" button that could get one automatically: none of these four
+//! "log in" button that could get one automatically: none of these five
 //! providers offer a legitimate third-party OAuth flow a desktop app could
 //! use, so pasting a key from the provider's own site is the only option.
 //! Best-effort: a provider's console is free to move its own pages, same

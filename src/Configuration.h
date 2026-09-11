@@ -772,6 +772,11 @@ public:
   void AiApiKeyGoogle(const wxString &key);
   wxString AiApiKeyQwen() const;
   void AiApiKeyQwen(const wxString &key);
+  //! A GitHub personal access token (fine-grained, "Models: read"
+  //! permission) -- see AiProviderKind::GitHubModels's own doc comment for
+  //! why this is GitHub's official Models API, not Copilot Chat.
+  wxString AiApiKeyGitHubModels() const;
+  void AiApiKeyGitHubModels(const wxString &key);
 
   //! The model id to request from each provider; defaults to
   //! AiProviderDefaultModel() but the user can override it in Options,
@@ -784,6 +789,8 @@ public:
   void AiModelGoogle(const wxString &model) { m_aiModelGoogle = model; }
   wxString AiModelQwen() const { return m_aiModelQwen; }
   void AiModelQwen(const wxString &model) { m_aiModelQwen = model; }
+  wxString AiModelGitHubModels() const { return m_aiModelGitHubModels; }
+  void AiModelGitHubModels(const wxString &model) { m_aiModelGitHubModels = model; }
 
   //! User-added custom providers (beyond the four built-in ones), as a
   //! JSON array -- see AiCustomProviderConfig/ParseAiCustomProviders() in
@@ -1485,6 +1492,7 @@ private:
   wxString m_aiModelOpenAI;
   wxString m_aiModelGoogle;
   wxString m_aiModelQwen;
+  wxString m_aiModelGitHubModels;
   //! User-added custom providers. See AiCustomProvidersJson().
   wxString m_aiCustomProvidersJson;
   //! See AiActiveCustomProviderId().

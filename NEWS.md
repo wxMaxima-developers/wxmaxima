@@ -25,6 +25,11 @@
   maxima_connected, so an AI can tell "Maxima isn't running at all" apart
   from "Maxima is running and genuinely idle" -- previously both cases
   looked identical (maxima_busy/evaluating both false).
+- Added GitHub Models as a fifth built-in AI Chat provider -- GitHub's own
+  official, OpenAI-compatible model-hosting API, authenticated with a plain
+  GitHub personal access token. (This is a deliberately different thing
+  from "GitHub Copilot Chat", which has no sanctioned third-party API and
+  was not added.)
 - The MCP server and AI Chat sidebar's worksheet context now tell an AI
   where the user's cursor is and which cell (if any) has an error, so it
   can actually answer "what's wrong with my current cell" or "the cell
