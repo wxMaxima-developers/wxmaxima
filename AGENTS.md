@@ -3558,38 +3558,92 @@ tried without rebuilding.
      gdb entries already use) caught only ~2 hits in a 5-second window
      while the process was spinning at ~98% CPU -- i.e. the handler that
      *would* fix the icons is itself being starved, not misbehaving.
-  5. **The two most likely remaining candidates, neither yet confirmed
-     down to a single call site:** (a) `MaximaProcessManager::
-     OnMaximaConnect()` (`MaximaProcessManager.cpp`) calls
-     `m_wxMaxima.m_statusBar->NetworkStatus(StatusBar::idle)` synchronously,
-     inside the GTK-integrated `wxSOCKET_CONNECTION` event handler for the
-     *listening* `wxSocketServer` (`m_server->SetEventHandler()`/
-     `Notify(true)`/`SetNotify(wxSOCKET_CONNECTION_FLAG)` -- genuinely
-     wx-event-driven, unlike (b) below) -- worth checking whether
-     `StatusBar::UpdateBitmaps()`/`NetworkStatus()` themselves do anything
-     that could re-trigger layout/paint requests in a way wx 3.0's older
-     AUI/sizer code handles differently than 3.2's. (b) The *accepted*
-     Maxima data socket, once handed to `Maxima`'s constructor
-     (`Maxima.cpp`), is explicitly taken OUT of wx's event system --
-     `m_socket->SetNotify(0); m_socket->Notify(false);` -- specifically so
-     the dedicated `Maxima::WorkerThread()` can do its own blocking
-     `WaitForRead()`-with-timeout reads instead (confirmed via `gdb`: that
-     thread is genuinely asleep in `wxMilliSleep()`/`nanosleep()`, not
-     spinning). **If wx 3.0.5's `wxSocketBase::Notify(false)`/`SetNotify(0)`
-     doesn't fully detach the underlying GTK/glib IO watch on that fd**
-     (a real, plausible version-specific gap between wx 3.0's GSocket-era
-     socket backend and wx 3.1+'s later rework), a watch left registered
-     but never satisfied by anything once real Maxima traffic starts
-     flowing on that fd would produce exactly this signature: a
-     permanently-ready GSource with no wxMaxima/wx-level frame ever on the
-     stack, triggered exactly at "Maxima starts actually sending data,"
-     matching every observation above. This exact theory has NOT yet been
-     confirmed (no debug symbols were available for the system's own
-     glib/gtk/X11 shared libraries in this sandbox to trace it any deeper
-     without building glib/gtk from source too, which was judged too large
-     an additional undertaking for this pass) -- it is the most
-     plausible explanation these observations converge on, not a proven
-     one.
+  5. **ROOT CAUSE CONFIRMED (2026-09-11, same session as points 1-4
+     above).** First ruled out `MaximaProcessManager::OnMaximaConnect()`/
+     `StatusBar::NetworkStatus()` as the spin source directly: a `gdb`
+     breakpoint on both (plus `Maxima::Maxima`'s constructor), logging
+     silently and continuing, shows all three fire a small, bounded,
+     normal-looking number of times during the handshake (`NetworkStatus`
+     exactly 9 times: idle -> transmit x5 -> receive -> idle x2, matching
+     "sending config, receiving prompt, ready") and then **nothing more**,
+     even though the process goes on spinning at ~98% CPU for the rest of
+     the run -- ruling out candidate (a) from the previous version of this
+     entry outright.
+     That left candidate (b), the accepted Maxima data socket. Confirmed
+     directly, in two steps:
+     - `gdb -p <pid>` breaking on `poll` and dumping the `fds` argument
+       (`((struct pollfd*)$rdi)[i].fd` for `i` up to `$rsi`) during the
+       live spin shows the exact same 5 fds every single call:
+       X11 (fd 3), a GLib wakeup eventfd (fd 4), the *listening*
+       `wxSocketServer` (fd 6, confirmed via `/proc/net/tcp`: `LISTEN` on
+       127.0.0.1:49163), a pipe (fd 7), and **fd 12 -- confirmed via
+       `/proc/net/tcp` to be the accepted, `ESTABLISHED` Maxima connection
+       itself**. So the very socket `Maxima`'s constructor explicitly
+       tries to remove from event-loop consideration is still sitting in
+       GLib's own `poll()` set.
+     - Read wx 3.0.5's actual installed source
+       (`src/common/socket.cpp`, fetched and built locally for this
+       investigation -- see the reproduction recipe below) for
+       `wxSocketBase::Notify()`/`SetNotify()`:
+       ```cpp
+       void wxSocketBase::Notify(bool notify) { m_notify = notify; }
+       void wxSocketBase::SetNotify(wxSocketEventFlags flags) { m_eventmask = flags; }
+       ```
+       **Both are bare flag setters.** The gating check that actually
+       matters (`if (m_notify && (m_eventmask & flag) && m_handler)`, a
+       few lines above in the same file) only decides whether a
+       *high-level* `wxSocketEvent` gets posted to a handler -- it does
+       **not** touch, detach, or pause whatever low-level GTK/GLib
+       IO-watch registration the socket's own implementation object set up
+       when the connection was accepted. That low-level watch keeps
+       running, keeps checking the fd's readability on every single main
+       loop iteration, and keeps invoking wx's internal per-event dispatch
+       function regardless of `m_notify`/`m_eventmask` -- `Notify(false)`
+       only silences what happens *after* that dispatch decides "would I
+       have told the app about this," not the low-level polling/dispatch
+       itself.
+     - This exactly explains every observation: nothing happens before
+       Maxima connects (no traffic, so no low-level readable events to
+       dispatch); the instant real Maxima output starts flowing on that
+       fd, the low-level watch has something to report on essentially
+       every iteration; nothing at the wx-internal-implementation level
+       ever gets told "this data was already consumed," because the
+       actual byte-level consumption happens through `Maxima::
+       WorkerThread()`'s own direct blocking reads on the same raw fd
+       (via `wxSocketBase::WaitForRead()`/`Read()`, but on a plain, timed,
+       polling basis from a completely different thread) -- a path
+       wx 3.0.5's low-level GTK/GIOChannel watch has no visibility into at
+       all. Two independent readers of the same fd, one of which (the
+       low-level watch) never learns the data is gone, is exactly the
+       shape of bug that produces a permanently-ready GSource with **zero**
+       wxMaxima or even wx-level C++ frames anywhere in the spin (matching
+       point 1 above precisely) -- the low-level watch's own dispatch
+       function is presumably too small/optimized to leave a usable frame,
+       or is a bare C callback registered straight with GLib.
+     - **The existing comment right above these two calls in `Maxima.cpp`
+       ("COMPLETELY isolate the socket from the main thread event loop.
+       This is crucial to avoid GLib assertion failures related to FD
+       monitoring.") shows the original author already knew this general
+       area was fragile** -- `Notify(false)`/`SetNotify(0)` was already a
+       deliberate fix for a *related* cross-thread FD-monitoring problem
+       (GLib assertions), just not a *complete* one on wx 3.0.5
+       specifically. (Git blame for the exact original commit wasn't
+       reachable -- this sandbox's checkout is shallow, `git log --all -S
+       "COMPLETELY isolate"` only reaches back to the most recent merge
+       commit that happens to touch the file.)
+     - **Why wx 3.2 doesn't show this**: not independently verified from
+       wx 3.2's own source in this pass (would need building it from
+       source too, or at least fetching just `socket.cpp` for a 3.1.x/3.2.x
+       tag) -- but wx's own changelog is public knowledge that the socket
+       backend was substantially reworked between the 3.0.x and 3.1.x
+       series; the simplest explanation consistent with everything
+       observed here is that the newer implementation's `Notify()`/
+       `SetNotify()` (or whatever replaced the underlying GSocket
+       integration) actually does gate the low-level watch, not just the
+       high-level event -- worth confirming directly (fetch just that one
+       file from a 3.1.x/3.2.x tag and diff it against the 3.0.5 version
+       above) before writing that up as fact anywhere more permanent than
+       this note.
   **Practical note for reproducing this again**: the busy-looping process
   is disruptive enough to the sandbox itself (100% CPU on one core, real
   contention) that several follow-up shell commands in this same session
@@ -3599,20 +3653,39 @@ tried without rebuilding.
   prefer `setsid <binary> ... < /dev/null > log 2>&1 &` (not `bash -c
   '... &'` wrapped in extra quoting, which failed outright here for
   unclear reasons) to launch a detached instance that survives past the
-  single tool call that started it.
-  **Not yet done**: pin down which of the two candidates in point 5 (or a
-  third mechanism not yet considered) is the actual trigger, ideally via a
-  `gdb` breakpoint on `MaximaProcessManager::OnMaximaConnect`/
-  `StatusBar::NetworkStatus`/`Maxima::Maxima`'s constructor with `commands`/
-  `continue` (the same zero-perturbation technique already used for
-  `wxMaxima::OnIdle` above) to see whether the spin starts strictly before,
-  during, or after each of those specific calls, and whether temporarily
-  skipping the `SetNotify(0)`/`Notify(false)` calls (or replacing them with
-  an explicit `Notify(true)` + a real, if unused, `EVT_SOCKET` handler) as
-  a *diagnostic-only* experiment changes the outcome. If confirmed, the
-  fix likely belongs in `Maxima.cpp`'s socket setup (working around wx
-  3.0.5's specific gap) rather than in `StatusBar`/`MaximaProcessManager`,
-  but this is not yet certain enough to implement blind.
+  single tool call that started it. A `gdb -p <pid> -batch -x <script>`
+  attached to an already-running instance intermittently printed "No
+  symbol table is loaded"/misattributed a breakpoint's `commands` block
+  the first time it ran against a given pid in this session (then worked
+  correctly on retry with the same pid) -- cause not tracked down, but
+  re-running the identical command a second time was a reliable workaround
+  both times it happened; don't burn time re-diagnosing gdb-attach flakiness
+  itself if it recurs, just retry once.
+  **What a real fix would need**: `Maxima.cpp` cannot fix this by calling
+  more of `wxSocketBase`'s own public API -- `Notify()`/`SetNotify()` are
+  the *only* API surface wx 3.0.5 exposes for this, and both are confirmed
+  no-ops for the actual problem. The two directions that would plausibly
+  work, neither attempted yet (both are real, behavior-affecting changes
+  to the most sensitive code in this codebase -- see this file's own
+  extensive `tutorial_10Minutes`/`m_configCommands` scars above for why
+  that warrants real caution, not a blind attempt): (a) stop handing the
+  `Accept()`-returned `wxSocketBase*` to `Maxima` at all -- extract the raw
+  OS socket handle via the long-standing public `wxSocketBase::GetSocket()`
+  (returns `wxSOCKET_T`, present in 3.0.5 and current wx alike) immediately
+  after accepting, destroy the `wxSocketBase` wrapper before it ever gets
+  registered with anything, and have `Maxima::WorkerThread()` do its own
+  platform-specific (`#ifdef __WXMSW__` for Winsock, POSIX otherwise)
+  blocking read-with-timeout directly on that raw handle instead of going
+  through `wxSocketBase::WaitForRead()`/`Read()` -- removes wx's socket
+  subsystem from this connection's lifecycle entirely, at the cost of a
+  real, cross-platform-sensitive rewrite of the read loop; (b) document
+  this as a known, confirmed wx-3.0.5-only limitation (the reporter's own
+  workaround already works -- upgrade to wx >= 3.1) and consider whether
+  this project's own stated "maintain compatibility with wxWidgets 3.0.5"
+  goal should be narrowed now that a real, understood, non-cosmetic defect
+  in 3.0.5's own socket backend is the actual reason, not just aspirational
+  caution. Left for a maintainer decision rather than picked unilaterally
+  in this pass.
 
 ## Layout & Compatibility
 
