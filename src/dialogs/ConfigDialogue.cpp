@@ -633,7 +633,8 @@ void ConfigDialogue::SetCheckboxValues() {
   if (AiProvider::SecretStoreAvailable()) {
     m_aiProviderRecords.clear();
     AiProviderKind fixedKinds[] = {AiProviderKind::Anthropic, AiProviderKind::OpenAI,
-                                   AiProviderKind::Google, AiProviderKind::Qwen};
+                                   AiProviderKind::Google, AiProviderKind::Qwen,
+                                   AiProviderKind::GitHubModels};
     for (AiProviderKind kind : fixedKinds) {
       AiProviderUiRecord rec;
       rec.kind = kind;
@@ -654,6 +655,10 @@ void ConfigDialogue::SetCheckboxValues() {
       case AiProviderKind::Qwen:
         rec.apiKey = configuration->AiApiKeyQwen();
         rec.model = configuration->AiModelQwen();
+        break;
+      case AiProviderKind::GitHubModels:
+        rec.apiKey = configuration->AiApiKeyGitHubModels();
+        rec.model = configuration->AiModelGitHubModels();
         break;
       default:
         break;
@@ -2840,6 +2845,10 @@ void ConfigDialogue::WriteSettings() {
       case AiProviderKind::Qwen:
         configuration->AiApiKeyQwen(rec.apiKey);
         configuration->AiModelQwen(rec.model);
+        break;
+      case AiProviderKind::GitHubModels:
+        configuration->AiApiKeyGitHubModels(rec.apiKey);
+        configuration->AiModelGitHubModels(rec.model);
         break;
       default:
         break;

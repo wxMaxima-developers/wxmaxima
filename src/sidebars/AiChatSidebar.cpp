@@ -127,6 +127,10 @@ void AiChatSidebar::ReloadProviderFromConfig() {
       apiKey = m_configuration->AiApiKeyQwen();
       model = m_configuration->AiModelQwen();
       break;
+    case AiProviderKind::GitHubModels:
+      apiKey = m_configuration->AiApiKeyGitHubModels();
+      model = m_configuration->AiModelGitHubModels();
+      break;
     default:
       break;
     }

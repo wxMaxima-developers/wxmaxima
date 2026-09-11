@@ -1033,6 +1033,73 @@ a local TCP socket.
     (`wxUSE_SECRETSTORE` is off here, so the whole AI Chat tab stays hidden
     per its own gating) -- verified by code reading plus the unit test
     above, not a live screenshot.
+  - **Follow-up (2026-09-11): "can you implement a GitHub Copilot
+    connector?" -- researched directly with the user rather than just
+    coding it, since "GitHub Copilot" turned out to mean two genuinely
+    different things with very different risk profiles.** GitHub Copilot
+    Chat (the assistant bundled with a Copilot subscription) has **no
+    official third-party API at all**. The way every community tool that
+    reaches it (copilot.vim-style plugins, "copilot-api" proxies) actually
+    works: perform the GitHub OAuth device flow using *another product's*
+    client id (typically an approved editor's, e.g. VS Code's -- GitHub
+    only allowlists Copilot-token exchange for client ids it has
+    specifically approved, so a freshly-registered wxMaxima OAuth app would
+    authenticate fine via the device flow but be rejected at the next
+    step), then exchange the resulting token at an undocumented internal
+    endpoint (`api.github.com/copilot_internal/v2/token`) for a short-lived
+    Copilot token, then call another undocumented endpoint
+    (`api.githubcopilot.com/chat/completions`) while sending headers that
+    make the request look like it came from that editor. That is not "no
+    legitimate OAuth flow for a desktop app" (the situation already
+    documented for Anthropic/OpenAI/Google/Qwen/GitHub Models, all of
+    which still have a real pasted-API-key path) -- it is impersonating an
+    authorized client's identity to reach an API GitHub has not opened to
+    third parties, which risks the account being flagged or suspended
+    under GitHub's Copilot terms. Presented to the user as an explicit
+    choice with this risk spelled out; the user's first answer was "both,"
+    but on seeing the mechanism restated even more concretely (a borrowed
+    client id, not wxMaxima's own) they reconsidered mid-implementation
+    ("If that feature risks getting our users banned perhaps we should
+    only support the personal chat...") and the Copilot Chat half was
+    dropped entirely -- no OAuth device-flow code, no borrowed client id,
+    no new Custom-provider auth scheme for it exists anywhere in this
+    codebase. Don't re-add it without a new, explicit request; if one comes
+    in, this reasoning (and the specific "GitHub gates the token-exchange
+    endpoint to an allowlist, not just any authenticated OAuth app" fact)
+    is the thing to re-derive from, not guess at again.
+    **What *was* added: GitHub Models**, a genuinely different, official
+    GitHub product -- an OpenAI-compatible chat-completions endpoint
+    (`https://models.github.ai/inference/chat/completions`) authenticated
+    with a plain GitHub personal access token via a standard
+    `Authorization: Bearer` header, publicly documented at
+    <https://docs.github.com/en/github-models>, not a workaround of
+    anything. This is the sixth `AiProviderKind` (`GitHubModels = 6`,
+    `src/ai/AiProvider.h`) and needed **zero new provider logic**: its
+    request/response shape and auth header are byte-for-byte what
+    `OpenAiCompatibleProvider` already implements for OpenAI/Qwen, so
+    `MakeAiProvider(AiProviderKind::GitHubModels, ...)` just constructs one
+    pointed at GitHub's own URL (`AiProvider.cpp`) -- the same "OpenAI-
+    compatible shape, different base URL/auth secret" pattern Qwen already
+    established. Wired through the same places every built-in kind needs:
+    `Configuration::AiApiKeyGitHubModels()`/`AiModelGitHubModels()` (new
+    accessors, same secret-store-backed pattern as the other four),
+    `ConfigDialogue.cpp`'s `fixedKinds[]` array and both of its per-kind
+    switch statements (populate-on-open, apply-on-OK), and
+    `AiChatSidebar::ReloadProviderFromConfig()`'s switch -- all three of
+    these switches are the actual places that need a new `case` per
+    built-in kind; `RebuildAiProviderChoice()`/`LoadAiProviderRecordIntoUi()`
+    and the rest of the Options UI are already fully generic over
+    `m_aiProviderRecords`, so nothing there needed touching, and it's worth
+    checking that dynamism holds before assuming a new provider needs UI
+    changes beyond the three switches. `AiProviderDefaultModel()` uses
+    `"openai/gpt-4o-mini"` -- GitHub Models' catalog names entries
+    `<publisher>/<model>`, and that specific one is on the free tier, unlike
+    some of the catalog's larger models which need a paid Models plan.
+    Verified with a new `test_AiProvider.cpp` SCENARIO mirroring the
+    existing OpenAI/Qwen one (request URL, Bearer header, OpenAI-compatible
+    body/reply shape) -- not verified live (no real GitHub PAT in this
+    sandbox), same caveat this file's other AI-provider entries already
+    carry for OpenAI/Google/Qwen.
   - **Follow-up (2026-09-09): a new `evaluation_status` MCP tool -- "if
     Maxima is evaluating, what cell it works on, what command within that
     cell and for how long this command already is being evaluated,"

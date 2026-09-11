@@ -187,6 +187,7 @@ wxString AiProviderKindName(AiProviderKind kind) {
   case AiProviderKind::OpenAI: return wxS("OpenAI");
   case AiProviderKind::Google: return wxS("Google (Gemini)");
   case AiProviderKind::Qwen: return wxS("Qwen (Alibaba)");
+  case AiProviderKind::GitHubModels: return wxS("GitHub Models");
   // A Custom provider's own display name is carried on the AiProvider
   // instance itself (AiProvider::SetDisplayName()/Name()), not derivable
   // from the kind alone -- this generic fallback is only ever seen if
@@ -223,6 +224,10 @@ wxString AiProviderDefaultModel(AiProviderKind kind) {
   case AiProviderKind::OpenAI: return wxS("gpt-4o-mini");
   case AiProviderKind::Google: return wxS("gemini-1.5-flash");
   case AiProviderKind::Qwen: return wxS("qwen-plus");
+  // GitHub Models' catalog names models "<publisher>/<model>"; this one is
+  // consistently free-tier-available, unlike some of the larger catalog
+  // entries which need a paid Models plan.
+  case AiProviderKind::GitHubModels: return wxS("openai/gpt-4o-mini");
   default: return wxEmptyString;
   }
 }
@@ -233,6 +238,13 @@ wxString AiProviderApiKeyUrl(AiProviderKind kind) {
   case AiProviderKind::OpenAI: return wxS("https://platform.openai.com/api-keys");
   case AiProviderKind::Google: return wxS("https://aistudio.google.com/apikey");
   case AiProviderKind::Qwen: return wxS("https://dashscope.console.aliyun.com/apiKey");
+  // A fine-grained personal access token with "Models" (read-only)
+  // permission -- GitHub Models is the one built-in provider here whose
+  // "API key" is a real GitHub credential, not a service-specific one; see
+  // AiProviderKind's own doc comment for why this is GitHub Models, not
+  // GitHub Copilot Chat.
+  case AiProviderKind::GitHubModels:
+    return wxS("https://github.com/settings/personal-access-tokens/new");
   default: return wxEmptyString;
   }
 }
@@ -244,6 +256,7 @@ wxString AiProviderModelListUrl(AiProviderKind kind) {
   case AiProviderKind::OpenAI: return wxS("https://platform.openai.com/docs/models");
   case AiProviderKind::Google: return wxS("https://ai.google.dev/gemini-api/docs/models");
   case AiProviderKind::Qwen: return wxS("https://www.alibabacloud.com/help/en/model-studio/models");
+  case AiProviderKind::GitHubModels: return wxS("https://github.com/marketplace/models");
   default: return wxEmptyString;
   }
 }
@@ -256,6 +269,8 @@ wxString AiProviderBaseUrl(AiProviderKind kind) {
     return wxS("https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions");
   case AiProviderKind::Google:
     return wxS("https://generativelanguage.googleapis.com/v1beta/models/");
+  case AiProviderKind::GitHubModels:
+    return wxS("https://models.github.ai/inference/chat/completions");
   default: return wxEmptyString;
   }
 }
@@ -276,6 +291,15 @@ std::shared_ptr<AiProvider> MakeAiProvider(AiProviderKind kind, const wxString &
       apiKey, model);
   case AiProviderKind::Google:
     return std::make_shared<GoogleProvider>(apiKey, model);
+  case AiProviderKind::GitHubModels:
+    // Officially documented, OpenAI-compatible-shaped endpoint
+    // (https://docs.github.com/en/github-models), authenticated with a
+    // plain GitHub personal access token via "Authorization: Bearer" --
+    // exactly what OpenAiCompatibleProvider already sends, so no new
+    // provider class is needed.
+    return std::make_shared<OpenAiCompatibleProvider>(
+      AiProviderKind::GitHubModels,
+      wxS("https://models.github.ai/inference/chat/completions"), apiKey, model);
   default:
     return nullptr;
   }
