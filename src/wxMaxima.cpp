@@ -207,7 +207,7 @@ void wxMaxima::ConfigChanged() {
 
   ApplyAppearanceToApp(GetConfiguration().GetAppearance());
   ReconcileMcpServer();
-#if(WXM_USE_AI_TOOLS)
+#ifdef WXM_USE_AI_TOOLS
   ReloadAiChatProvider();
 #endif
 

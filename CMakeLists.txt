@@ -80,7 +80,7 @@ option(WXM_FUZZ
 option(WXM_BUNDLES_GNUPLOT
     "This build bundles its own gnuplot binary instead of relying on a separately installed one (e.g. the snap, which stages gnuplot via the maxima snap so it works under strict confinement). Appends gnuplot's own license notice to THIRD-PARTY-NOTICES.txt, since it is then being distributed, not merely recommended." OFF)
 option(WXM_USE_AI_TOOLS
-    "This (may) enable an AI sidebar and AI related tools." ON)
+    "Allows to disable the AI integration sidebar." ON)
 
 if(DEFINED MACOSX_VERSION_MIN)
     set(CMAKE_OSX_DEPLOYMENT_TARGET ${MACOSX_VERSION_MIN} CACHE STRING FORCE)

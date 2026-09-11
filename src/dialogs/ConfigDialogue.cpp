@@ -29,7 +29,7 @@
 */
 
 #include "ConfigDialogue.h"
-#if(WXM_USE_AI_TOOLS)
+#ifdef WXM_USE_AI_TOOLS
 #include "ai/AiProvider.h"
 #endif
 #include <wx/hyperlink.h>
@@ -297,7 +297,7 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent)
   m_notebook->AddPage(CreateClipboardPanel(), _("Copy"), false, 5);
   m_notebook->AddPage(CreateStartupPanel(), _("Startup commands"), false, 6);
   m_notebook->AddPage(CreatePrintPanel(), _("Printout settings"), false, 7);
-#if(WXM_USE_AI_TOOLS)
+#ifdef WXM_USE_AI_TOOLS
   // Hidden outright, not just disabled, when there's nowhere safe to keep
   // an API key -- see AiProvider::SecretStoreAvailable()'s own doc comment
   // for why this doesn't fall back to plain-text storage instead.
@@ -626,7 +626,7 @@ void ConfigDialogue::SetCheckboxValues() {
   m_findDialogDockable->SetValue(configuration->FindDialogDockable());
   m_mcpServerEnabled->SetValue(configuration->McpServerEnabled());
   m_mcpServerPort->SetValue(configuration->McpServerPort());
-#if(WXM_USE_AI_TOOLS)
+#ifdef WXM_USE_AI_TOOLS
   // The whole AI Chat tab doesn't exist when there's nowhere safe to keep
   // an API key (see AiProvider::SecretStoreAvailable(), and where
   // CreateAiChatPanel() is (not) called) -- nothing here to populate.
@@ -2010,7 +2010,7 @@ wxWindow *ConfigDialogue::CreateAccessibilityPanel() {
 }
 #endif
 
-#if(WXM_USE_AI_TOOLS)
+#ifdef WXM_USE_AI_TOOLS
 wxWindow *ConfigDialogue::CreateAiChatPanel() {
   wxScrolled<wxPanel> *panel = new wxScrolled<wxPanel>(m_notebook, wxID_ANY);
   panel->SetScrollRate(5 * GetContentScaleFactor(),
@@ -2808,7 +2808,7 @@ void ConfigDialogue::WriteSettings() {
   configuration->FindDialogDockable(m_findDialogDockable->GetValue());
   configuration->McpServerEnabled(m_mcpServerEnabled->GetValue());
   configuration->McpServerPort(m_mcpServerPort->GetValue());
-#if(WXM_USE_AI_TOOLS)
+#ifdef WXM_USE_AI_TOOLS
   // The whole AI Chat tab (and these members) don't exist without a
   // secret store to keep a key in -- see CreateAiChatPanel()/
   // SetCheckboxValues()'s own matching guard.

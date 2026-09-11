@@ -91,10 +91,8 @@ set(SIDEBAR_SOURCE_FILES
     RegexCtrl.cpp
     HelpBrowser.cpp
     PerformanceSidebar.cpp
+    AiChatSidebar.cpp
 )
-if(WXM_USE_AI_TOOLS)
-    list(APPEND SOURCE_FILES AiChatSidebar.cpp)
-endif()
 list(TRANSFORM SIDEBAR_SOURCE_FILES PREPEND sidebars/)
 
 set(GRAPHICAL_IO_SOURCE_FILES
