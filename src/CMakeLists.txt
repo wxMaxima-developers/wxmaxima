@@ -93,7 +93,7 @@ set(SIDEBAR_SOURCE_FILES
     PerformanceSidebar.cpp
 )
 if(WXM_USE_AI_TOOLS)
-    list(APPEND SIDEBAR_SOURCE_FILES AiChatSidebar.cpp)
+    list(APPEND SIDEBAR_SOURCE_FILES AiChatSidebar.cpp AiConnectionMonitor.cpp)
 endif()
 list(TRANSFORM SIDEBAR_SOURCE_FILES PREPEND sidebars/)
 

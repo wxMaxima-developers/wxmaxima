@@ -1385,6 +1385,127 @@ a local TCP socket.
     Xvfb (the Options "AI Chat" tab actually opening, the sidebar actually
     appearing in View -> Sidebars) -- that's the natural next check before
     building anything new on top of this.
+  - **Follow-up (2026-09-11): a third status bar icon for the AI Chat
+    sidebar, mirroring the existing Maxima/network status icons.** Raised
+    directly by the maintainer: "on the bottom right there are two spaces
+    for symbols... could we add a third one so if the AI connection is
+    active the leftmost of the 3 spaces could show an AI symbol... if the
+    connection isn't active I would leave that space empty... single click
+    might put the ai panel into the foreground... double-click might lead
+    to an AI connection monitor sidebar like the XML monitor does." Neither
+    the AI Chat sidebar nor the MCP server has a real persistent "session"
+    to reflect (each Send is one stateless HTTP request/response, and
+    `McpServer` deliberately never implements MCP's own `Mcp-Session-Id`
+    concept -- see that section's own "Transport" note above), so "is the
+    AI connection active" was redefined, with the maintainer's explicit
+    sign-off ("Perhaps showing all those states in the icon makes sense =>
+    let's implement that"), as a small state machine: `StatusBar::AiStatus`
+    is `None` (no provider configured -- icon hidden entirely), `Active`
+    (configured, last request -- if any -- succeeded), `Busy` (a request is
+    currently in flight), or `Error` (the last request failed, detail in
+    the tooltip).
+    - **`StatusBar` itself stays free of any `AiProvider`/`WXM_USE_AI_TOOLS`
+      dependency.** The constructor takes a plain `bool aiChatAvailable`
+      (whether to reserve a 4th status bar field at all) rather than
+      including `ai/AiProvider.h` or checking the macro itself --
+      `wxMaximaFrame` computes that bool via
+      `AiProvider::SecretStoreAvailable()` inside its own already-`#ifdef
+      WXM_USE_AI_TOOLS`-guarded code and passes it in as a plain bool. This
+      mirrors `GetTrayIconBitmap()`'s own reasoning (added for `TrayIcon`,
+      GH #2286) for why `StatusBar` shouldn't grow feature-specific
+      dependencies: it's constructed early, from `wxMaximaFrame`'s own
+      constructor, and every other status/tray-icon consumer already goes
+      through plain bitmaps/enums, not the features that produce them.
+    - **Reusing `art/config/ai-chat.svg`'s exact motif for the icon hit an
+      immediate CMake target-name collision**: `art/config/CMakeLists.txt`'s
+      own bin2h loop already creates a target literally named
+      `build_ai-chat.h` for the Options-tab icon of the same name -- CMake
+      target names are global across the whole project, not per-directory,
+      so `art/statusbar/ai-chat.svg.gz` reusing that exact basename failed
+      configure with "another target with the same name already exists."
+      Fixed by naming the three status-bar variants `ai-active`/`ai-busy`/
+      `ai-error` instead (distinct from `art/config`'s `ai-chat`/
+      `ai-chat-error`, which serve a different UI surface and were kept
+      as-is) -- worth remembering for any future icon added under
+      `art/statusbar/` that's inspired by an existing `art/config/` (or any
+      other art directory's) file: check for a basename collision first,
+      since nothing catches it until CMake's configure step actually runs.
+    - **Tracking "what to show after a bitmap reload" needed its own
+      logical-state member, not a bitmap-object comparison.**
+      `StatusBar::UpdateBitmaps()` only runs on a genuine PPI change and
+      reloads every bitmap from scratch (including the three new AI ones);
+      the first draft tried to detect "was the icon currently showing the
+      error bitmap" by comparing `m_aiStatus->GetBitmap() ==
+      m_bitmap_ai_error` -- which is always false right after reloading,
+      since `m_bitmap_ai_error` was simultaneously reassigned to a freshly
+      rasterized (differently-backed) `wxBitmap` object a few lines above
+      the comparison. Fixed the same way `m_oldNetworkState` already tracks
+      `NetworkStatus()`'s own logical state independent of whatever bitmap
+      object happens to be currently displayed: added `m_aiStatusState`/
+      `m_aiStatusDetail`, updated on every `UpdateAiStatus()` call, and
+      `UpdateBitmaps()` re-applies them (calling `UpdateAiStatus()` again
+      with the freshly loaded bitmaps) after a PPI change instead of trying
+      to infer the previous state from a bitmap comparison.
+    - **The "Busy" state was a deliberate addition beyond the maintainer's
+      original 3-space request**, made after the maintainer's own follow-up
+      mid-session: "if the AI thought for a long time we should act like
+      when Maxima thought for a long time and inform the user." Maxima's
+      own `StatusBar::UpdateStatusMaximaBusy()` shows an immediate
+      "calculating" icon+tooltip the instant it starts working, with no
+      fixed threshold -- `AiChatSidebar::SetBusy(bool)` now mirrors exactly
+      that (calls `UpdateAiStatusIcon()`, which reports `AiStatus::Busy`
+      whenever `m_requestInFlight` is true) rather than only signaling busy
+      after some delay. A *second*, smaller escalation was added on top for
+      the "long time" half of the request specifically: a one-shot
+      `wxTimer` (`LONG_WAIT_MS`, 10 seconds -- no existing precedent value
+      to reuse, since Maxima's own status text/tooltip never escalates by
+      elapsed time either, unlike `transferring`'s dynamic byte count) that,
+      if the request is still in flight when it fires, updates both the
+      sidebar's own status text and the icon's tooltip to say the request
+      is "taking longer than usual" -- purely a wording change, not a new
+      status; `AiStatus::Busy` covers both the just-started and the
+      long-elapsed case, distinguished only by tooltip text (via
+      `UpdateAiStatus()`'s existing `detail` parameter, the same mechanism
+      `AiStatus::Error` already uses for its own detail text). The timer is
+      started in `SetBusy(true)` and explicitly `.Stop()`'d in
+      `SetBusy(false)`, so a request that finishes before 10 seconds never
+      fires it at all.
+    - **`AiConnectionMonitor` (`src/sidebars/AiConnectionMonitor.{h,cpp}`)
+      mirrors `XmlInspector`'s shape** (a read-only `wxRichTextCtrl`-derived
+      sidebar with colored section headers) but deliberately skips
+      `XmlInspector`'s idle-driven `UpdateContents()`/batching entirely: one
+      AI chat turn is a single user-paced Send click, not a flood of small
+      socket reads, so `Add_Request()`/`Add_Response()` write directly and
+      immediately rather than deferring. **No redaction of the displayed
+      traffic is needed** -- confirmed (this session and the original
+      `AiChatSidebar` follow-up both independently grepped for
+      `m_apiKey`) that every provider's API key is used only inside its own
+      `AuthHeaders()` return value, a request *header*, never inside
+      `BuildRequestBody()`'s JSON body -- so the plain request/response text
+      shown here never contains it.
+    - **`AiProvider::SendChat()` gained two new optional trailing
+      parameters**, `onRequest`/`onResponse` (both default `nullptr`,
+      so the existing `test_AiProvider.cpp` call sites and the function's
+      own contract are unaffected), invoked once each right before the
+      request is sent and at every one of `SendChat()`'s existing terminal
+      states (`State_Completed` both 2xx and non-2xx, `State_Unauthorized`,
+      `State_Failed`, `State_Cancelled`, the `!request.IsOk()` early return,
+      and the `!wxUSE_WEBREQUEST` compile-time fallback) -- deliberately
+      exhaustive, mirroring every existing `callback(...)` call site 1:1,
+      so the connection monitor can never silently miss a terminal state
+      `callback` itself already handles.
+    - **Verification**: `test_AiProvider` (116 assertions, unchanged --
+      the new parameters default to `nullptr` and aren't exercised, same as
+      `SendChat()` itself already wasn't per that file's own note) plus a
+      full rebuild in both `-DWXM_USE_AI_TOOLS=ON` (confirmed via `nm`:
+      `AiConnectionMonitor`/`AiStatusClick`/`UpdateAiStatus` all present,
+      full link succeeds) and `=OFF` (confirmed via `nm`: zero occurrences
+      of `AiConnectionMonitor`/`AiChatSidebar`/`AiStatusClick`, full link
+      still succeeds) directions -- the same both-directions discipline the
+      `WXM_USE_AI_TOOLS` plumbing fix above established. Not yet verified
+      live in Xvfb (the icon's actual on-screen appearance/click behavior,
+      the monitor sidebar's real traffic display) -- worth doing before
+      extending this further.
   - **Not implemented, and shouldn't be without a separate decision: a
     write/evaluate-capable MCP tool.** Raised and discussed directly with
     the user (2026-09-06): unlike `watch_variable`/`unwatch_variable` (see

@@ -20,15 +20,20 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 #include "AiChatSidebar.h"
+#include "AiConnectionMonitor.h"
 #include "Configuration.h"
+#include "StatusBar.h"
 
 using json = nlohmann::json;
 
 AiChatSidebar::AiChatSidebar(wxWindow *parent, Configuration *configuration,
                              Worksheet *worksheet, Variablespane *variablesPane,
+                             StatusBar *statusBar, AiConnectionMonitor *monitor,
                              wxWindowID id)
   : wxPanel(parent, id), m_configuration(configuration),
-    m_tools(worksheet, variablesPane) {
+    m_tools(worksheet, variablesPane), m_statusBar(statusBar), m_monitor(monitor) {
+  m_longWaitTimer.SetOwner(this, wxID_ANY);
+  Bind(wxEVT_TIMER, &AiChatSidebar::OnLongWaitTimer, this);
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
 
   m_statusText = new wxStaticText(this, wxID_ANY, wxEmptyString);
@@ -133,10 +138,44 @@ void AiChatSidebar::ReloadProviderFromConfig() {
     if (!apiKey.IsEmpty())
       m_provider = MakeAiProvider(kind, apiKey, model);
   }
+  // A freshly (re-)loaded provider's status is unknown, not "failed" --
+  // don't carry a stale error over from whatever the previous provider (or
+  // an earlier config) last did.
+  m_lastRequestFailed = false;
+  m_lastErrorDetail.Clear();
   UpdateStatusText();
   m_sendButton->Enable(!m_requestInFlight && (m_provider != nullptr));
   m_openOptionsButton->Show(m_provider == nullptr);
+  UpdateAiStatusIcon();
   Layout();
+}
+
+void AiChatSidebar::UpdateAiStatusIcon() {
+  if (!m_statusBar)
+    return;
+  if (m_requestInFlight)
+    m_statusBar->UpdateAiStatus(StatusBar::AiStatus::Busy);
+  else if (!m_provider)
+    m_statusBar->UpdateAiStatus(StatusBar::AiStatus::None);
+  else if (m_lastRequestFailed)
+    m_statusBar->UpdateAiStatus(StatusBar::AiStatus::Error, m_lastErrorDetail);
+  else
+    m_statusBar->UpdateAiStatus(StatusBar::AiStatus::Active);
+}
+
+void AiChatSidebar::OnLongWaitTimer(wxTimerEvent &WXUNUSED(event)) {
+  if (!m_requestInFlight)
+    return;
+  // Mirrors how a long-running Maxima calculation still shows the same
+  // "calculating" icon, but this at least tells the user the wait is
+  // longer than usual rather than leaving an unchanging tooltip forever.
+  m_statusText->SetLabel(wxString::Format(
+    _("Still waiting for %s -- this is taking longer than usual..."),
+    m_provider ? m_provider->Name() : wxString()));
+  if (m_statusBar)
+    m_statusBar->UpdateAiStatus(
+      StatusBar::AiStatus::Busy,
+      _("This request is taking longer than usual."));
 }
 
 void AiChatSidebar::OnOpenOptions(wxCommandEvent &WXUNUSED(event)) {
@@ -169,6 +208,11 @@ void AiChatSidebar::SetBusy(bool busy) {
   m_inputCtrl->Enable(!busy);
   m_sendButton->Enable(!busy && (m_provider != nullptr));
   UpdateStatusText();
+  UpdateAiStatusIcon();
+  if (busy)
+    m_longWaitTimer.StartOnce(LONG_WAIT_MS);
+  else
+    m_longWaitTimer.Stop();
 }
 
 void AiChatSidebar::UpdateStatusText() {
@@ -251,9 +295,12 @@ void AiChatSidebar::OnSend(wxCommandEvent &) {
 
   wxString context = BuildContextSnapshot();
   std::shared_ptr<AiProvider> provider = m_provider;
+  AiConnectionMonitor *monitor = m_monitor;
   AiProvider::SendChat(
     provider, this, context, m_history,
     [this, provider](bool ok, const wxString &replyOrError) {
+      m_lastRequestFailed = !ok;
+      m_lastErrorDetail = ok ? wxString() : replyOrError;
       SetBusy(false);
       if (ok) {
         AppendToHistory(provider->Name(), replyOrError);
@@ -261,5 +308,13 @@ void AiChatSidebar::OnSend(wxCommandEvent &) {
       } else {
         AppendToHistory(_("Error"), replyOrError);
       }
+    },
+    [monitor, provider](const wxString &requestBody) {
+      if (monitor)
+        monitor->Add_Request(provider->Name(), requestBody);
+    },
+    [monitor](bool ok, const wxString &responseBodyOrDetail) {
+      if (monitor)
+        monitor->Add_Response(ok, responseBodyOrDetail);
     });
 }

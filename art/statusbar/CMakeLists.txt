@@ -15,7 +15,10 @@ set(IMAGE_FILES
   network-error
   debugging
   lispmode
-  Waiting)
+  Waiting
+  ai-active
+  ai-busy
+  ai-error)
 
 foreach(file ${IMAGE_FILES})
         add_custom_command(

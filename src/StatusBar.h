@@ -46,7 +46,15 @@ extern size_t GO_NEXT_SVG_GZ_SIZE;
 class StatusBar : public wxStatusBar
 {
 public:
-  StatusBar(wxWindow *parent, int id);
+  /*! \param aiChatAvailable Whether the AI Chat feature is compiled in and
+    usable on this system (see AiProvider::SecretStoreAvailable()) -- this
+    is a fixed, startup-time property of the running binary, not whether a
+    provider happens to be configured right now (that is what UpdateAiStatus()
+    is for). Only if this is true does the status bar reserve a 4th field
+    for the AI status icon at all; otherwise the status bar looks and
+    behaves exactly as it did before this icon existed.
+  */
+  StatusBar(wxWindow *parent, int id, bool aiChatAvailable = false);
   virtual ~StatusBar();
   //! The network states that can be passed to NetworkStatus()
   enum networkState
@@ -56,6 +64,20 @@ public:
     offline,
     receive,
     transmit
+  };
+
+  //! The states the AI status icon (4th status bar field) can be in
+  enum class AiStatus
+  {
+    //! No AI provider is configured -- the icon is hidden entirely.
+    None,
+    //! A provider is configured and the last request (if any) succeeded.
+    Active,
+    //! A request to the provider is currently in flight -- mirrors how
+    //! m_maximaStatus shows a "calculating" icon while Maxima is busy.
+    Busy,
+    //! A provider is configured, but the last request to it failed.
+    Error
   };
 
   //! Update the bitmaps to the Right size for the Resolution
@@ -72,6 +94,23 @@ public:
 
   wxWindow *GetMaximaStatusElement()
     { return m_maximaStatus; }
+
+  /*! The AI status icon, or NULL if aiChatAvailable was false at
+    construction time (the AI Chat feature isn't compiled in / usable here).
+    Callers must null-check before binding events to it or querying its
+    screen position.
+  */
+  wxWindow *GetAiStatusElement()
+    { return m_aiStatus; }
+
+  /*! Update the AI status icon.
+
+    \param status None hides the icon entirely (no provider configured).
+    Active/Error show it with the corresponding bitmap/tooltip.
+    \param detail Extra text (e.g. the last error message) appended to the
+    tooltip for AiStatus::Error; ignored otherwise.
+  */
+  void UpdateAiStatus(AiStatus status, const wxString &detail = wxString());
 
   //! Inform the status bar how many percents of the available CPU power maxima uses
   void SetMaximaCPUPercentage(float percentage)
@@ -199,6 +238,21 @@ private:
   wxStaticBitmap *m_networkStatus = NULL;
   //! The currently shown network status bitmap
   wxStaticBitmap *m_maximaStatus = NULL;
+  //! Whether the AI Chat feature is available at all, see the constructor.
+  bool m_aiChatAvailable = false;
+  //! The AI status icon (4th status bar field), or NULL if !m_aiChatAvailable
+  wxStaticBitmap *m_aiStatus = NULL;
+  //! The logical state UpdateAiStatus() was last called with, so UpdateBitmaps()
+  //! can re-apply it with freshly-rescaled bitmaps after a PPI change.
+  AiStatus m_aiStatusState = AiStatus::None;
+  //! The detail text UpdateAiStatus() was last called with, see m_aiStatusState.
+  wxString m_aiStatusDetail;
+  //! The bitmap shown for AiStatus::Active
+  wxBitmap m_bitmap_ai_active;
+  //! The bitmap shown for AiStatus::Busy
+  wxBitmap m_bitmap_ai_busy;
+  //! The bitmap shown for AiStatus::Error
+  wxBitmap m_bitmap_ai_error;
   //! The bitmap shown on network errors
   wxBitmap m_network_error;
   //! The bitmap shown while not connected to the network

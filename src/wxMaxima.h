@@ -510,6 +510,18 @@ protected:
   //! Issued on double click on the status message in the status bar
   void StatusMsgDClick(wxMouseEvent &ev);
 
+#ifdef WXM_USE_AI_TOOLS
+  //! Issued on a single click on the AI status icon: brings the AI Chat
+  //! sidebar to the foreground and focuses its input box.
+  void AiStatusClick(wxMouseEvent &ev);
+  //! Issued on double click on the AI status icon: toggles the AI
+  //! connection monitor sidebar, mirroring NetworkDClick()'s XML inspector.
+  void AiStatusDClick(wxMouseEvent &ev);
+  //! Issued on right click on the AI status icon: shows a small context
+  //! menu (open the AI chat, open Options, clear the conversation).
+  void AiStatusRightClick(wxMouseEvent &ev);
+#endif
+
   //! Issued on double click on a history item
   void HistoryDClick(wxCommandEvent &event);
 

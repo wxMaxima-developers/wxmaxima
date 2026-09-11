@@ -45,6 +45,9 @@
 #include "art/statusbar/debugging.h"
 #include "art/statusbar/lispmode.h"
 #include "art/statusbar/Waiting.h"
+#include "art/statusbar/ai-active.h"
+#include "art/statusbar/ai-busy.h"
+#include "art/statusbar/ai-error.h"
 #include <wx/artprov.h>
 #include <wx/display.h>
 #include <wx/mstream.h>
@@ -57,13 +60,15 @@
 #endif
 #endif
 
-StatusBar::StatusBar(wxWindow *parent, int id)
-  : wxStatusBar(parent, id), m_ppi(wxDefaultSize), m_overlayIconIsSet(false) {
+StatusBar::StatusBar(wxWindow *parent, int id, bool aiChatAvailable)
+  : wxStatusBar(parent, id), m_ppi(wxDefaultSize), m_overlayIconIsSet(false),
+    m_aiChatAvailable(aiChatAvailable) {
   m_svgRast.reset(wxm_nsvgCreateRasterizer());
-  int widths[] = {-1, GetSize().GetHeight(), GetSize().GetHeight()};
-  SetFieldsCount(3, widths);
-  int styles[] = {wxSB_NORMAL, wxSB_NORMAL, wxSB_FLAT};
-  SetStatusStyles(3, styles);
+  int fieldCount = m_aiChatAvailable ? 4 : 3;
+  int widths[] = {-1, GetSize().GetHeight(), GetSize().GetHeight(), GetSize().GetHeight()};
+  SetFieldsCount(fieldCount, widths);
+  int styles[] = {wxSB_NORMAL, wxSB_NORMAL, wxSB_FLAT, wxSB_FLAT};
+  SetStatusStyles(fieldCount, styles);
   m_stdToolTip =
     _("Maxima, the program that does the actual mathematics is started as a "
       "separate process. This has the advantage that an eventual crash of "
@@ -98,6 +103,10 @@ StatusBar::StatusBar(wxWindow *parent, int id)
   m_maximaStatus = new wxStaticBitmap(this, wxID_ANY, m_network_offline);
   m_networkStatus = new wxStaticBitmap(this, wxID_ANY, m_network_offline);
   m_networkStatus->SetToolTip(m_stdToolTip);
+  if (m_aiChatAvailable) {
+    m_aiStatus = new wxStaticBitmap(this, wxID_ANY, m_bitmap_ai_active);
+    m_aiStatus->Hide();
+  }
   ReceiveTimer.SetOwner(this, wxID_ANY);
   SendTimer.SetOwner(this, wxID_ANY);
   // Mark the network state as "to be changed"
@@ -213,6 +222,24 @@ void StatusBar::UpdateBitmaps() {
       ArtProvider::GetImage(this, "network-offline", GetClientSize().GetHeight(),
                             NETWORK_OFFLINE_SVG_GZ,
                             NETWORK_OFFLINE_SVG_GZ_SIZE);
+    if (m_aiChatAvailable) {
+      m_bitmap_ai_active =
+        ArtProvider::GetImage(this, "ai-active", GetClientSize().GetHeight(),
+                              AI_ACTIVE_SVG_GZ,
+                              AI_ACTIVE_SVG_GZ_SIZE);
+      m_bitmap_ai_busy =
+        ArtProvider::GetImage(this, "ai-busy", GetClientSize().GetHeight(),
+                              AI_BUSY_SVG_GZ,
+                              AI_BUSY_SVG_GZ_SIZE);
+      m_bitmap_ai_error =
+        ArtProvider::GetImage(this, "ai-error", GetClientSize().GetHeight(),
+                              AI_ERROR_SVG_GZ,
+                              AI_ERROR_SVG_GZ_SIZE);
+      // Re-apply whatever logical state we are already in with the
+      // freshly-rescaled bitmaps -- a plain bitmap comparison wouldn't work
+      // here since GetBitmap() would still be pointing to the stale one.
+      UpdateAiStatus(m_aiStatusState, m_aiStatusDetail);
+    }
   }
 }
 
@@ -379,6 +406,47 @@ void StatusBar::UpdateStatusMaximaBusy(MaximaStatus status, std::size_t bytesFro
     }
 }
 
+void StatusBar::UpdateAiStatus(AiStatus status, const wxString &detail) {
+  m_aiStatusState = status;
+  m_aiStatusDetail = detail;
+  if (!m_aiStatus)
+    return;
+  switch (status) {
+  case AiStatus::None:
+    m_aiStatus->Hide();
+    break;
+  case AiStatus::Active:
+    m_aiStatus->SetBitmap(m_bitmap_ai_active);
+    m_aiStatus->SetToolTip(
+      _("The AI Chat sidebar is configured and ready.\n"
+        "Click to open it; double-click for the AI connection monitor; "
+        "right-click for more options."));
+    m_aiStatus->Show();
+    break;
+  case AiStatus::Busy: {
+    m_aiStatus->SetBitmap(m_bitmap_ai_busy);
+    wxString toolTip = _("Waiting for the AI provider to reply...");
+    if (!detail.IsEmpty())
+      toolTip += wxS("\n\n") + detail;
+    m_aiStatus->SetToolTip(toolTip);
+    m_aiStatus->Show();
+    break;
+  }
+  case AiStatus::Error: {
+    m_aiStatus->SetBitmap(m_bitmap_ai_error);
+    wxString toolTip =
+      _("The last message to the AI provider failed.\n"
+        "Click to open the AI Chat sidebar; double-click for the AI "
+        "connection monitor; right-click for more options.");
+    if (!detail.IsEmpty())
+      toolTip += wxS("\n\n") + detail;
+    m_aiStatus->SetToolTip(toolTip);
+    m_aiStatus->Show();
+    break;
+  }
+  }
+}
+
 void StatusBar::HandleTimerEvent() {
   // don't do anything if the network status didn't change.
   if ((m_icon_shows_receive == (ReceiveTimer.IsRunning())) &&
@@ -481,6 +549,13 @@ void StatusBar::NetworkStatus(networkState status) {
 
 void StatusBar::OnSize(wxSizeEvent &event) {
   wxRect rect;
+
+  if (m_aiStatus) {
+    GetFieldRect(3, rect);
+    wxSize aiSize = m_aiStatus->GetSize();
+    m_aiStatus->Move(rect.x + (rect.width - aiSize.x) / 2,
+                     rect.y + (rect.height - aiSize.y) / 2);
+  }
 
   GetFieldRect(2, rect);
   wxSize size = m_networkStatus->GetSize();
