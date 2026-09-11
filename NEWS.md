@@ -1,5 +1,12 @@
 # Current development version
 
+- Fixed the AI Chat sidebar being silently compiled out of every build
+  regardless of the WXM_USE_AI_TOOLS option's value: the option was never
+  actually passed to the C++ preprocessor, so every #if(WXM_USE_AI_TOOLS)
+  guard evaluated false unconditionally, and a separate CMake source-list
+  bug meant AiChatSidebar.cpp was never compiled in even when the option
+  was fixed. Now wired through BuildConfig.h like the project's other
+  optional features (e.g. USE_FRIBIDI).
 - Added an optional MCP (Model Context Protocol) server that lets an external
   AI tool read the current worksheet as context: list/read cells, read the
   table of contents, read a whole section by heading, read the whole

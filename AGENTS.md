@@ -1317,6 +1317,74 @@ a local TCP socket.
     Confirming the fix's actual on-screen effect (grid opens without
     asserting, both links stay hidden until populated, the dropdown spans
     the tab) needs the maintainer's own build to re-check.
+  - **Follow-up (2026-09-11): a `WXM_USE_AI_TOOLS` CMake option landed
+    (two commits by Wolfgang Dautermann/the maintainer) meaning to make the
+    whole AI Chat feature optional at compile time -- but the plumbing had
+    two independent bugs that together silently compiled the sidebar out
+    of *every* build, regardless of the option's value, confirmed live
+    with `nm` on a fresh build (`grep -c AiChatSidebar` -> 0) before this
+    fix and non-zero after.**
+    1. **`WXM_USE_AI_TOOLS` was never passed to the C++ preprocessor at
+       all** -- no `add_compile_definitions`/`target_compile_definitions`
+       anywhere. Every `#if(WXM_USE_AI_TOOLS)` guard added to
+       `Configuration.cpp`, `ConfigDialogue.cpp`/`.h`, `wxMaxima.cpp` and
+       `wxMaximaFrame.h`/`.cpp` was therefore testing an *undefined*
+       macro, which the preprocessor always reads as `0` -- permanently
+       compiling out `Configuration`'s AI API key accessors,
+       `wxMaximaFrame::m_aiChatSidebar`, and the whole Options "AI Chat"
+       tab, no matter what the CMake option was set to. Fixed the same way
+       `USE_FRIBIDI`/`USE_WEBVIEW`/`USE_QA` already are: added
+       `#cmakedefine WXM_USE_AI_TOOLS` to `src/BuildConfig.h.cin` (picks up
+       the CMake option of the same name automatically, no extra
+       `set()` needed) and changed every `#if(WXM_USE_AI_TOOLS)` to
+       `#ifdef WXM_USE_AI_TOOLS` to match `#cmakedefine`'s "defined or
+       not," no-value semantics (the same reason `Bidi.cpp` uses `#ifdef
+       USE_FRIBIDI`, never `#if USE_FRIBIDI`) -- every affected file
+       already transitively includes `BuildConfig.h` via `precomp.h`
+       (included as an ordinary header everywhere, not just as an actual
+       PCH -- `WXM_ENABLE_PRECOMPILED_HEADERS` defaults off), so no new
+       `#include` was needed anywhere.
+    2. **`src/CMakeLists.txt` never actually compiled `AiChatSidebar.cpp`
+       into `wxmaxima`, regardless of the option.** It had been removed
+       from `SIDEBAR_SOURCE_FILES` and instead added via `if(WXM_USE_AI_TOOLS)
+       list(APPEND SOURCE_FILES AiChatSidebar.cpp) endif()` -- but at that
+       point in the file `SOURCE_FILES` doesn't exist yet (it's `set()`
+       ~45 lines later, which wholesale overwrites whatever this line
+       produced), and even the filename itself was wrong (missing the
+       `sidebars/` prefix `list(TRANSFORM SIDEBAR_SOURCE_FILES PREPEND
+       sidebars/)` applies to everything else in that list, two lines
+       below the broken `append`). Fixed by moving the `if(WXM_USE_AI_TOOLS)`
+       block to append to `SIDEBAR_SOURCE_FILES` (the correct list)
+       *before* that `PREPEND sidebars/` transform runs, so the new entry
+       gets the same path-prefixing treatment as its siblings.
+    3. **The exact same mistake a third time, harmlessly, in two more
+       places** -- `#if(WXM_USE_AI_TOOLS)` / `#endif` used as if it were a
+       preprocessor guard inside `src/CMakeLists.txt` (around
+       `AI_SOURCE_FILES`) and `test/unit_tests/CMakeLists.txt` (around
+       `test_AiProvider`'s `add_executable`) -- but `#` is CMake's comment
+       character, so both were just comments, and the code between them
+       ran completely unconditionally either way. Harmless in the first
+       spot (`AI_SOURCE_FILES`'s actual inclusion into `SOURCE_FILES` is
+       separately, correctly gated by a real CMake `if()` a few dozen
+       lines later) but meant `test_AiProvider` was never actually
+       disabled by `WXM_USE_AI_TOOLS=OFF`, contrary to that commit's own
+       message ("Disable AI test when AI is disabled..."). Fixed by
+       deleting the two misleading fake-comment guards around
+       `AI_SOURCE_FILES` (redundant with the real gating downstream) and
+       turning `test_AiProvider`'s into a genuine CMake `if(WXM_USE_AI_TOOLS)
+       ... endif()`.
+    **Verified both directions, not just one**: a fresh configure+build
+    with the option at its new default (`ON`, per the maintainer's own
+    "Enable the AI sidebar by default" commit) now genuinely produces a
+    binary containing `AiChatSidebar`/`Configuration::AiApiKeyAnthropic()`
+    symbols (confirmed via `nm`, both present, both absent before this
+    fix); a second fresh configure+build with `-DWXM_USE_AI_TOOLS=OFF`
+    still compiles and links cleanly end to end with neither symbol
+    present -- confirming the option now genuinely controls the feature
+    in both directions, not just re-enabling it. Not yet verified live in
+    Xvfb (the Options "AI Chat" tab actually opening, the sidebar actually
+    appearing in View -> Sidebars) -- that's the natural next check before
+    building anything new on top of this.
   - **Not implemented, and shouldn't be without a separate decision: a
     write/evaluate-capable MCP tool.** Raised and discussed directly with
     the user (2026-09-06): unlike `watch_variable`/`unwatch_variable` (see
