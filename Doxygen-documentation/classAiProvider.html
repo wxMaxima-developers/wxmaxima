@@ -99,11 +99,11 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetDisplayName</b> (c
 <tr class="separator:a37d897fc889d1df77bf4908a4ea7b23c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac6be3f2661854a26af4777de3548b2cd"><td class="memItemLeft" align="right" valign="top"><a id="ac6be3f2661854a26af4777de3548b2cd" name="ac6be3f2661854a26af4777de3548b2cd"></a>
 virtual wxString&#160;</td><td class="memItemRight" valign="bottom"><b>RequestUrl</b> () const</td></tr>
-<tr class="memdesc:ac6be3f2661854a26af4777de3548b2cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">The full URL <a class="el" href="classAiProvider.html#ad084eb9432e8f8d890cba010666b84b0" title="Sends one chat turn asynchronously via wxWebRequest and calls callback(ok, replyOrError) exactly once...">SendChat()</a> will POST to. Virtual so Google's provider can append the model id (its endpoint is per-model, unlike the others). <br /></td></tr>
+<tr class="memdesc:ac6be3f2661854a26af4777de3548b2cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">The full URL <a class="el" href="classAiProvider.html#a076a205621a9d4ac967ea741e89281d8" title="Sends one chat turn asynchronously via wxWebRequest and calls callback(ok, replyOrError) exactly once...">SendChat()</a> will POST to. Virtual so Google's provider can append the model id (its endpoint is per-model, unlike the others). <br /></td></tr>
 <tr class="separator:ac6be3f2661854a26af4777de3548b2cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5296acff7352ac86a843ac3d7393b83a"><td class="memItemLeft" align="right" valign="top"><a id="a5296acff7352ac86a843ac3d7393b83a" name="a5296acff7352ac86a843ac3d7393b83a"></a>
 virtual std::vector&lt; std::pair&lt; wxString, wxString &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>AuthHeaders</b> () const =0</td></tr>
-<tr class="memdesc:a5296acff7352ac86a843ac3d7393b83a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Any additional headers this provider's auth scheme needs, name/value pairs, beyond the "POST JSON" content-type <a class="el" href="classAiProvider.html#ad084eb9432e8f8d890cba010666b84b0" title="Sends one chat turn asynchronously via wxWebRequest and calls callback(ok, replyOrError) exactly once...">SendChat()</a> always sets. <br /></td></tr>
+<tr class="memdesc:a5296acff7352ac86a843ac3d7393b83a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Any additional headers this provider's auth scheme needs, name/value pairs, beyond the "POST JSON" content-type <a class="el" href="classAiProvider.html#a076a205621a9d4ac967ea741e89281d8" title="Sends one chat turn asynchronously via wxWebRequest and calls callback(ok, replyOrError) exactly once...">SendChat()</a> always sets. <br /></td></tr>
 <tr class="separator:a5296acff7352ac86a843ac3d7393b83a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9790570049fde1b2e8c5276bebe6623d"><td class="memItemLeft" align="right" valign="top">virtual wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAiProvider.html#a9790570049fde1b2e8c5276bebe6623d">BuildRequestBody</a> (const wxString &amp;context, const std::vector&lt; <a class="el" href="structAiChatMessage.html">AiChatMessage</a> &gt; &amp;history) const =0</td></tr>
 <tr class="memdesc:a9790570049fde1b2e8c5276bebe6623d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Builds the JSON request body for one chat turn.  <br /></td></tr>
@@ -137,9 +137,9 @@ static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>CustomProv
 static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>BuiltinProviderSecretService</b> (<a class="el" href="AiProvider_8h.html#afa76ab3b3e4c4cf3e53d5fb066042f04">AiProviderKind</a> kind)</td></tr>
 <tr class="memdesc:a6e937f8b565fc1b2dc73c6fe317d5119"><td class="mdescLeft">&#160;</td><td class="mdescRight">The secret-store service name for one of the four built-in kinds &ndash; just AiProviderKindName(kind), given its own name so every call site that needs it (<a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a>'s four AiApiKeyX() accessors, the plain-text-key migration in <a class="el" href="classConfiguration.html#ac45a218b4f09c6a4c649e0f875dbbe44" title="Read the config from the wxConfig object.">Configuration::ReadConfig()</a>) shares one definition instead of separately hardcoding the same string. <br /></td></tr>
 <tr class="separator:a6e937f8b565fc1b2dc73c6fe317d5119"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad084eb9432e8f8d890cba010666b84b0"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAiProvider.html#ad084eb9432e8f8d890cba010666b84b0">SendChat</a> (std::shared_ptr&lt; const <a class="el" href="classAiProvider.html">AiProvider</a> &gt; self, wxEvtHandler *owner, const wxString &amp;context, const std::vector&lt; <a class="el" href="structAiChatMessage.html">AiChatMessage</a> &gt; &amp;history, std::function&lt; void(bool ok, const wxString &amp;replyOrError)&gt; callback)</td></tr>
-<tr class="memdesc:ad084eb9432e8f8d890cba010666b84b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends one chat turn asynchronously via wxWebRequest and calls <code>callback(ok, replyOrError)</code> exactly once, on the GUI thread, once the HTTP request completes, fails, or errors out.  <br /></td></tr>
-<tr class="separator:ad084eb9432e8f8d890cba010666b84b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a076a205621a9d4ac967ea741e89281d8"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAiProvider.html#a076a205621a9d4ac967ea741e89281d8">SendChat</a> (std::shared_ptr&lt; const <a class="el" href="classAiProvider.html">AiProvider</a> &gt; self, wxEvtHandler *owner, const wxString &amp;context, const std::vector&lt; <a class="el" href="structAiChatMessage.html">AiChatMessage</a> &gt; &amp;history, std::function&lt; void(bool ok, const wxString &amp;replyOrError)&gt; callback, std::function&lt; void(const wxString &amp;requestBody)&gt; onRequest=nullptr, std::function&lt; void(bool ok, const wxString &amp;responseBodyOrDetail)&gt; onResponse=nullptr)</td></tr>
+<tr class="memdesc:a076a205621a9d4ac967ea741e89281d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends one chat turn asynchronously via wxWebRequest and calls <code>callback(ok, replyOrError)</code> exactly once, on the GUI thread, once the HTTP request completes, fails, or errors out.  <br /></td></tr>
+<tr class="separator:a076a205621a9d4ac967ea741e89281d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0b25be23ce1075f467026335804ab956"><td class="memItemLeft" align="right" valign="top"><a id="a0b25be23ce1075f467026335804ab956" name="a0b25be23ce1075f467026335804ab956"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>NetworkingAvailable</b> ()</td></tr>
 <tr class="memdesc:a0b25be23ce1075f467026335804ab956"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if this build of wxWidgets has wxWebRequest at all (&gt;= 3.1.5, built with a working backend) &ndash; if false, the whole chat sidebar feature has nothing to talk to and should say so rather than silently failing every request. <br /></td></tr>
@@ -162,7 +162,7 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><b>m_displayName</b>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Talks to one external AI provider's chat completion HTTP API. </p>
-<p>Deliberately split into a stateless, directly-testable half (<a class="el" href="classAiProvider.html#a9790570049fde1b2e8c5276bebe6623d" title="Builds the JSON request body for one chat turn.">BuildRequestBody()</a>/ <a class="el" href="classAiProvider.html#af0e2217cdf9b8982453f48b26e3bf160" title="Extracts the assistant&#39;s reply text from a successful (2xx) response body.">ParseReply()</a>, pure string/JSON in and out, no networking &ndash; see <a class="el" href="test__AiProvider_8cpp.html" title="Pins each AiProvider&#39;s request/response shape – the stateless half of AiProvider (BuildRequestBody()/...">test/unit_tests/test_AiProvider.cpp</a>) and the actual network call (<a class="el" href="classAiProvider.html#ad084eb9432e8f8d890cba010666b84b0" title="Sends one chat turn asynchronously via wxWebRequest and calls callback(ok, replyOrError) exactly once...">SendChat()</a>), which needs a live wxWebRequest and can only really be verified against a real or fake HTTP server (done live, see AGENTS.md). </p>
+<p>Deliberately split into a stateless, directly-testable half (<a class="el" href="classAiProvider.html#a9790570049fde1b2e8c5276bebe6623d" title="Builds the JSON request body for one chat turn.">BuildRequestBody()</a>/ <a class="el" href="classAiProvider.html#af0e2217cdf9b8982453f48b26e3bf160" title="Extracts the assistant&#39;s reply text from a successful (2xx) response body.">ParseReply()</a>, pure string/JSON in and out, no networking &ndash; see <a class="el" href="test__AiProvider_8cpp.html" title="Pins each AiProvider&#39;s request/response shape – the stateless half of AiProvider (BuildRequestBody()/...">test/unit_tests/test_AiProvider.cpp</a>) and the actual network call (<a class="el" href="classAiProvider.html#a076a205621a9d4ac967ea741e89281d8" title="Sends one chat turn asynchronously via wxWebRequest and calls callback(ok, replyOrError) exactly once...">SendChat()</a>), which needs a live wxWebRequest and can only really be verified against a real or fake HTTP server (done live, see AGENTS.md). </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a9790570049fde1b2e8c5276bebe6623d" name="a9790570049fde1b2e8c5276bebe6623d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9790570049fde1b2e8c5276bebe6623d">&#9670;&#160;</a></span>BuildRequestBody()</h2>
@@ -232,8 +232,8 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><b>m_displayName</b>
 
 </div>
 </div>
-<a id="ad084eb9432e8f8d890cba010666b84b0" name="ad084eb9432e8f8d890cba010666b84b0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad084eb9432e8f8d890cba010666b84b0">&#9670;&#160;</a></span>SendChat()</h2>
+<a id="a076a205621a9d4ac967ea741e89281d8" name="a076a205621a9d4ac967ea741e89281d8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a076a205621a9d4ac967ea741e89281d8">&#9670;&#160;</a></span>SendChat()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -269,7 +269,19 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><b>m_displayName</b>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">std::function&lt; void(bool ok, const wxString &amp;replyOrError)&gt;&#160;</td>
-          <td class="paramname"><em>callback</em>&#160;</td>
+          <td class="paramname"><em>callback</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::function&lt; void(const wxString &amp;requestBody)&gt;&#160;</td>
+          <td class="paramname"><em>onRequest</em> = <code>nullptr</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::function&lt; void(bool ok, const wxString &amp;responseBodyOrDetail)&gt;&#160;</td>
+          <td class="paramname"><em>onResponse</em> = <code>nullptr</code>&#160;</td>
         </tr>
         <tr>
           <td></td>

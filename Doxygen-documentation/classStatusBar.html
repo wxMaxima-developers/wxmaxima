@@ -107,6 +107,13 @@ Public Types</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:a3de8a6b955f99bb7a534c6ddfb47f9d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">The network states that can be passed to <a class="el" href="classStatusBar.html#addf51766d62198da4dd162f7f2a05c6f" title="Informs the status bar about networking events.">NetworkStatus()</a> <br /></td></tr>
 <tr class="separator:a3de8a6b955f99bb7a534c6ddfb47f9d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d2d4bad9c6f6a4eec714a4e884e6c34"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStatusBar.html#a7d2d4bad9c6f6a4eec714a4e884e6c34">AiStatus</a> { <a class="el" href="classStatusBar.html#a7d2d4bad9c6f6a4eec714a4e884e6c34a6adf97f83acf6453d4a6a4b1070f3754">None</a>
+, <a class="el" href="classStatusBar.html#a7d2d4bad9c6f6a4eec714a4e884e6c34a4d3d769b812b6faa6b76e1a8abaece2d">Active</a>
+, <a class="el" href="classStatusBar.html#a7d2d4bad9c6f6a4eec714a4e884e6c34ad8a942ef2b04672adfafef0ad817a407">Busy</a>
+, <a class="el" href="classStatusBar.html#a7d2d4bad9c6f6a4eec714a4e884e6c34a902b0d55fddef6f8d651fe1035b7d4bd">Error</a>
+ }</td></tr>
+<tr class="memdesc:a7d2d4bad9c6f6a4eec714a4e884e6c34"><td class="mdescLeft">&#160;</td><td class="mdescRight">The states the AI status icon (4th status bar field) can be in.  <a href="classStatusBar.html#a7d2d4bad9c6f6a4eec714a4e884e6c34">More...</a><br /></td></tr>
+<tr class="separator:a7d2d4bad9c6f6a4eec714a4e884e6c34"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af1235c09bed081ebb46dbd8b264f5c96"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStatusBar.html#af1235c09bed081ebb46dbd8b264f5c96">MaximaStatus</a> { <br />
 &#160;&#160;<b>wait_for_start</b>
 , <b>process_wont_start</b>
@@ -131,9 +138,8 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a05b4a90607aa75d1f354e36d638dcd42"><td class="memItemLeft" align="right" valign="top"><a id="a05b4a90607aa75d1f354e36d638dcd42" name="a05b4a90607aa75d1f354e36d638dcd42"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>StatusBar</b> (wxWindow *parent, int id)</td></tr>
-<tr class="separator:a05b4a90607aa75d1f354e36d638dcd42"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7374d842631ce1ab4d40910fcb7d31fb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStatusBar.html#a7374d842631ce1ab4d40910fcb7d31fb">StatusBar</a> (wxWindow *parent, int id, bool aiChatAvailable=false)</td></tr>
+<tr class="separator:a7374d842631ce1ab4d40910fcb7d31fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2c9183506f9702f92ac60c2b673ec64e"><td class="memItemLeft" align="right" valign="top"><a id="a2c9183506f9702f92ac60c2b673ec64e" name="a2c9183506f9702f92ac60c2b673ec64e"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateBitmaps</b> ()</td></tr>
 <tr class="memdesc:a2c9183506f9702f92ac60c2b673ec64e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the bitmaps to the Right size for the Resolution. <br /></td></tr>
@@ -151,6 +157,12 @@ wxWindow *&#160;</td><td class="memItemRight" valign="bottom"><b>GetStatusTextEl
 <tr class="memitem:a450b6101f0fce376e848ca9a75cf6bf3"><td class="memItemLeft" align="right" valign="top"><a id="a450b6101f0fce376e848ca9a75cf6bf3" name="a450b6101f0fce376e848ca9a75cf6bf3"></a>
 wxWindow *&#160;</td><td class="memItemRight" valign="bottom"><b>GetMaximaStatusElement</b> ()</td></tr>
 <tr class="separator:a450b6101f0fce376e848ca9a75cf6bf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17d9e138b67d55157fe8b89b50f257f0"><td class="memItemLeft" align="right" valign="top">wxWindow *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStatusBar.html#a17d9e138b67d55157fe8b89b50f257f0">GetAiStatusElement</a> ()</td></tr>
+<tr class="memdesc:a17d9e138b67d55157fe8b89b50f257f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The AI status icon, or NULL if aiChatAvailable was false at construction time (the AI Chat feature isn't compiled in / usable here).  <br /></td></tr>
+<tr class="separator:a17d9e138b67d55157fe8b89b50f257f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ea8def04e08dd2e6be4a5553f567911"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStatusBar.html#a2ea8def04e08dd2e6be4a5553f567911">UpdateAiStatus</a> (<a class="el" href="classStatusBar.html#a7d2d4bad9c6f6a4eec714a4e884e6c34">AiStatus</a> status, const wxString &amp;detail=wxString())</td></tr>
+<tr class="memdesc:a2ea8def04e08dd2e6be4a5553f567911"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the AI status icon.  <br /></td></tr>
+<tr class="separator:a2ea8def04e08dd2e6be4a5553f567911"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a47625898d570191fc10f684df87c8b46"><td class="memItemLeft" align="right" valign="top"><a id="a47625898d570191fc10f684df87c8b46" name="a47625898d570191fc10f684df87c8b46"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetMaximaCPUPercentage</b> (float percentage)</td></tr>
 <tr class="memdesc:a47625898d570191fc10f684df87c8b46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inform the status bar how many percents of the available CPU power maxima uses. <br /></td></tr>
@@ -183,6 +195,40 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>HandleTimerEvent</b> 
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The class that draws the status bar. </p>
 </div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="a7d2d4bad9c6f6a4eec714a4e884e6c34" name="a7d2d4bad9c6f6a4eec714a4e884e6c34"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d2d4bad9c6f6a4eec714a4e884e6c34">&#9670;&#160;</a></span>AiStatus</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="classStatusBar.html#a7d2d4bad9c6f6a4eec714a4e884e6c34">StatusBar::AiStatus</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The states the AI status icon (4th status bar field) can be in. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a7d2d4bad9c6f6a4eec714a4e884e6c34a6adf97f83acf6453d4a6a4b1070f3754" name="a7d2d4bad9c6f6a4eec714a4e884e6c34a6adf97f83acf6453d4a6a4b1070f3754"></a>None&#160;</td><td class="fielddoc"><p>No AI provider is configured &ndash; the icon is hidden entirely. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a7d2d4bad9c6f6a4eec714a4e884e6c34a4d3d769b812b6faa6b76e1a8abaece2d" name="a7d2d4bad9c6f6a4eec714a4e884e6c34a4d3d769b812b6faa6b76e1a8abaece2d"></a>Active&#160;</td><td class="fielddoc"><p><a class="el" href="classA.html">A</a> provider is configured and the last request (if any) succeeded. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a7d2d4bad9c6f6a4eec714a4e884e6c34ad8a942ef2b04672adfafef0ad817a407" name="a7d2d4bad9c6f6a4eec714a4e884e6c34ad8a942ef2b04672adfafef0ad817a407"></a>Busy&#160;</td><td class="fielddoc"><p><a class="el" href="classA.html">A</a> request to the provider is currently in flight &ndash; mirrors how m_maximaStatus shows a "calculating" icon while <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> is busy. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a7d2d4bad9c6f6a4eec714a4e884e6c34a902b0d55fddef6f8d651fe1035b7d4bd" name="a7d2d4bad9c6f6a4eec714a4e884e6c34a902b0d55fddef6f8d651fe1035b7d4bd"></a>Error&#160;</td><td class="fielddoc"><p><a class="el" href="classA.html">A</a> provider is configured, but the last request to it failed. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
 <a id="af1235c09bed081ebb46dbd8b264f5c96" name="af1235c09bed081ebb46dbd8b264f5c96"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af1235c09bed081ebb46dbd8b264f5c96">&#9670;&#160;</a></span>MaximaStatus</h2>
 
@@ -203,7 +249,76 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>HandleTimerEvent</b> 
 
 </div>
 </div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a7374d842631ce1ab4d40910fcb7d31fb" name="a7374d842631ce1ab4d40910fcb7d31fb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7374d842631ce1ab4d40910fcb7d31fb">&#9670;&#160;</a></span>StatusBar()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">StatusBar::StatusBar </td>
+          <td>(</td>
+          <td class="paramtype">wxWindow *&#160;</td>
+          <td class="paramname"><em>parent</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>aiChatAvailable</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">aiChatAvailable</td><td>Whether the AI Chat feature is compiled in and usable on this system (see <a class="el" href="classAiProvider.html#af1e55c3b86011c3b0f8f1e84f437286e" title="True if this build of wxWidgets has a working wxSecretStore backend (&gt;= 3.1.1, compiled with wxUSE_SE...">AiProvider::SecretStoreAvailable()</a>) &ndash; this is a fixed, startup-time property of the running binary, not whether a provider happens to be configured right now (that is what <a class="el" href="classStatusBar.html#a2ea8def04e08dd2e6be4a5553f567911" title="Update the AI status icon.">UpdateAiStatus()</a> is for). Only if this is true does the status bar reserve a 4th field for the AI status icon at all; otherwise the status bar looks and behaves exactly as it did before this icon existed. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a17d9e138b67d55157fe8b89b50f257f0" name="a17d9e138b67d55157fe8b89b50f257f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a17d9e138b67d55157fe8b89b50f257f0">&#9670;&#160;</a></span>GetAiStatusElement()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxWindow * StatusBar::GetAiStatusElement </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The AI status icon, or NULL if aiChatAvailable was false at construction time (the AI Chat feature isn't compiled in / usable here). </p>
+<p>Callers must null-check before binding events to it or querying its screen position. </p>
+
+</div>
+</div>
 <a id="a9e37c25dea90f8000df590c291d14a40" name="a9e37c25dea90f8000df590c291d14a40"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9e37c25dea90f8000df590c291d14a40">&#9670;&#160;</a></span>GetTrayIconBitmap()</h2>
 
@@ -259,6 +374,43 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>HandleTimerEvent</b> 
 
 <p>Set the left status text. </p>
 <p>Skips unchanged text: wxStaticText::SetLabel() re-sizes the label even for identical text, which on wxGTK re-layouts (and repaints) the whole frame - too expensive for a setter that is called from the idle loop. </p>
+
+</div>
+</div>
+<a id="a2ea8def04e08dd2e6be4a5553f567911" name="a2ea8def04e08dd2e6be4a5553f567911"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2ea8def04e08dd2e6be4a5553f567911">&#9670;&#160;</a></span>UpdateAiStatus()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void StatusBar::UpdateAiStatus </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classStatusBar.html#a7d2d4bad9c6f6a4eec714a4e884e6c34">AiStatus</a>&#160;</td>
+          <td class="paramname"><em>status</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
+          <td class="paramname"><em>detail</em> = <code>wxString()</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Update the AI status icon. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">status</td><td>None hides the icon entirely (no provider configured). Active/Error show it with the corresponding bitmap/tooltip. </td></tr>
+    <tr><td class="paramname">detail</td><td>Extra text (e.g. the last error message) appended to the tooltip for <a class="el" href="classStatusBar.html#a7d2d4bad9c6f6a4eec714a4e884e6c34a902b0d55fddef6f8d651fe1035b7d4bd" title="A provider is configured, but the last request to it failed.">AiStatus::Error</a>; ignored otherwise. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

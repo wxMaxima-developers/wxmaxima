@@ -6,8 +6,8 @@ var searchData=
   ['backgroundqueue_2ecpp_3',['BackgroundQueue.cpp',['../BackgroundQueue_8cpp.html',1,'']]],
   ['backgroundqueue_2eh_4',['BackgroundQueue.h',['../BackgroundQueue_8h.html',1,'']]],
   ['backgroundtask_5',['BackgroundTask',['../classBackgroundTask.html',1,'']]],
-  ['base_6',['base',['../structTruck.html#ad0ac321609dda1a6c552488b05ec7ac8',1,'Truck::base()'],['../structCar.html#ab8ff28306286da5a8b14fa9bdccaafaa',1,'Car::base()'],['../structVehicle.html#ad7970f528d429f6fc1725173e93a77c2',1,'Vehicle::base()']]],
-  ['base_7',['Base',['../classSumCell.html#adb00dc81c1e3163c58985cfc6b46a36a',1,'SumCell']]],
+  ['base_6',['Base',['../classSumCell.html#adb00dc81c1e3163c58985cfc6b46a36a',1,'SumCell']]],
+  ['base_7',['base',['../structTruck.html#ad0ac321609dda1a6c552488b05ec7ac8',1,'Truck::base()'],['../structCar.html#ab8ff28306286da5a8b14fa9bdccaafaa',1,'Car::base()'],['../structVehicle.html#ad7970f528d429f6fc1725173e93a77c2',1,'Vehicle::base()']]],
   ['base_5fappend_8',['base_Append',['../classCellListBuilderBase.html#ac23b76a013edafdfede50943b554bc1e',1,'CellListBuilderBase']]],
   ['base_5fdynamicappend_9',['base_DynamicAppend',['../classCellListBuilderBase.html#a912afbac8cd712b3bc7fd3b1de3ebd6d',1,'CellListBuilderBase']]],
   ['base_5fiterator_10',['base_iterator',['../classdetail_1_1json__reverse__iterator.html#ab306723c375c396a5ccd90e2d31ad651',1,'detail::json_reverse_iterator']]],
@@ -51,9 +51,10 @@ var searchData=
   ['building_20wxmaxima_20from_20source_48',['Building wxMaxima from source',['../md_Compiling.html',1,'']]],
   ['buildrequestbody_49',['BuildRequestBody',['../classAiProvider.html#a9790570049fde1b2e8c5276bebe6623d',1,'AiProvider']]],
   ['builtinprovidersecretservice_50',['BuiltinProviderSecretService',['../classAiProvider.html#a6e937f8b565fc1b2dc73c6fe317d5119',1,'AiProvider']]],
-  ['buttonwrapsizer_51',['Buttonwrapsizer',['../classButtonwrapsizer.html',1,'']]],
-  ['buttonwrapsizer_2ecpp_52',['ButtonWrapSizer.cpp',['../ButtonWrapSizer_8cpp.html',1,'']]],
-  ['buttonwrapsizer_2eh_53',['ButtonWrapSizer.h',['../ButtonWrapSizer_8h.html',1,'']]],
-  ['byte_54',['byte',['../classdetail_1_1parse__error.html#a5bce7d135aa3a38d1d3f4ed7bf8615e1',1,'detail::parse_error']]],
-  ['byte_5fcontainer_5fwith_5fsubtype_55',['byte_container_with_subtype',['../classbyte__container__with__subtype.html#a17bc4a2dabb6c7a5ec2cba3f3aaf0431',1,'byte_container_with_subtype::byte_container_with_subtype() noexcept(noexcept(container_type()))'],['../classbyte__container__with__subtype.html#a7f9fb60d4a835e97fbf1c2de7fa382e2',1,'byte_container_with_subtype::byte_container_with_subtype(const container_type &amp;b) noexcept(noexcept(container_type(b)))'],['../classbyte__container__with__subtype.html#a42b8b66b00eb5c0057d4420e196dadf0',1,'byte_container_with_subtype::byte_container_with_subtype(container_type &amp;&amp;b) noexcept(noexcept(container_type(std::move(b))))'],['../classbyte__container__with__subtype.html#a759c6a582dd0684adf7fb9641ef586a4',1,'byte_container_with_subtype::byte_container_with_subtype(const container_type &amp;b, subtype_type subtype_) noexcept(noexcept(container_type(b)))'],['../classbyte__container__with__subtype.html#a3b43bde08a4bff8917bcfad01d9e6089',1,'byte_container_with_subtype::byte_container_with_subtype(container_type &amp;&amp;b, subtype_type subtype_) noexcept(noexcept(container_type(std::move(b))))'],['../classbyte__container__with__subtype.html',1,'byte_container_with_subtype&lt; BinaryType &gt;']]]
+  ['busy_51',['Busy',['../classStatusBar.html#a7d2d4bad9c6f6a4eec714a4e884e6c34ad8a942ef2b04672adfafef0ad817a407',1,'StatusBar']]],
+  ['buttonwrapsizer_52',['Buttonwrapsizer',['../classButtonwrapsizer.html',1,'']]],
+  ['buttonwrapsizer_2ecpp_53',['ButtonWrapSizer.cpp',['../ButtonWrapSizer_8cpp.html',1,'']]],
+  ['buttonwrapsizer_2eh_54',['ButtonWrapSizer.h',['../ButtonWrapSizer_8h.html',1,'']]],
+  ['byte_55',['byte',['../classdetail_1_1parse__error.html#a5bce7d135aa3a38d1d3f4ed7bf8615e1',1,'detail::parse_error']]],
+  ['byte_5fcontainer_5fwith_5fsubtype_56',['byte_container_with_subtype',['../classbyte__container__with__subtype.html#a17bc4a2dabb6c7a5ec2cba3f3aaf0431',1,'byte_container_with_subtype::byte_container_with_subtype() noexcept(noexcept(container_type()))'],['../classbyte__container__with__subtype.html#a7f9fb60d4a835e97fbf1c2de7fa382e2',1,'byte_container_with_subtype::byte_container_with_subtype(const container_type &amp;b) noexcept(noexcept(container_type(b)))'],['../classbyte__container__with__subtype.html#a42b8b66b00eb5c0057d4420e196dadf0',1,'byte_container_with_subtype::byte_container_with_subtype(container_type &amp;&amp;b) noexcept(noexcept(container_type(std::move(b))))'],['../classbyte__container__with__subtype.html#a759c6a582dd0684adf7fb9641ef586a4',1,'byte_container_with_subtype::byte_container_with_subtype(const container_type &amp;b, subtype_type subtype_) noexcept(noexcept(container_type(b)))'],['../classbyte__container__with__subtype.html#a3b43bde08a4bff8917bcfad01d9e6089',1,'byte_container_with_subtype::byte_container_with_subtype(container_type &amp;&amp;b, subtype_type subtype_) noexcept(noexcept(container_type(std::move(b))))'],['../classbyte__container__with__subtype.html',1,'byte_container_with_subtype&lt; BinaryType &gt;']]]
 ];
