@@ -843,10 +843,9 @@ void wxMaximaFrame::SetupViewMenu() {
 #endif
   m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_variables, _("Variables"));
 #ifdef WXM_USE_AI_TOOLS
-  // No menu entry at all when the sidebar itself was never created --
-  // see the AiProvider::SecretStoreAvailable() guard around its
-  // construction, above.
-  if (m_aiChatSidebar != NULL)
+
+
+  if (AiProvider::SecretStoreAvailable())
     m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_aichat, _("AI Chat"));
 #endif
   m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_xmlInspector,

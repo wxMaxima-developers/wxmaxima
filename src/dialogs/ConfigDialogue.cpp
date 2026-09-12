@@ -2126,10 +2126,10 @@ wxWindow *ConfigDialogue::CreateAiChatPanel() {
   // and the real label/URL aren't known until LoadAiProviderRecordIntoUi()
   // runs just below, so a throwaway non-empty label stands in until then.
   // Hidden immediately for the same reason: nothing meaningful to show yet.
-  m_aiApiKeyLink = new wxHyperlinkCtrl(detailBoxWin, wxID_ANY, wxS(" "), wxEmptyString);
+  m_aiApiKeyLink = new wxHyperlinkCtrl(detailBoxWin, wxID_ANY, wxS("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"), wxEmptyString);
   m_aiApiKeyLink->Show(false);
   m_aiProviderDetailBox->Add(m_aiApiKeyLink, wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
-  m_aiModelListLink = new wxHyperlinkCtrl(detailBoxWin, wxID_ANY, wxS(" "), wxEmptyString);
+  m_aiModelListLink = new wxHyperlinkCtrl(detailBoxWin, wxID_ANY, wxS("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"), wxEmptyString);
   m_aiModelListLink->Show(false);
   m_aiProviderDetailBox->Add(m_aiModelListLink, wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
 
