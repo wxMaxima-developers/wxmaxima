@@ -63,6 +63,7 @@
 #include "BuildConfig.h"
 #ifdef WXM_USE_AI_TOOLS
 #include "sidebars/AiChatSidebar.h"
+#include "sidebars/AiConnectionMonitor.h"
 #endif
 #include <list>
 #include <memory>
@@ -221,6 +222,9 @@ protected:
 #ifdef WXM_USE_AI_TOOLS
   //! The AI chat sidebar -- see src/sidebars/AiChatSidebar.h.
   AiChatSidebar *m_aiChatSidebar = NULL;
+  //! The AI connection monitor sidebar (double-click on the AI status icon)
+  //! -- see src/sidebars/AiConnectionMonitor.h.
+  AiConnectionMonitor *m_aiConnectionMonitor = NULL;
 #endif
   //! The table of contents pane
   TableOfContents *m_tableOfContents = NULL;

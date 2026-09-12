@@ -92,6 +92,7 @@ set(SIDEBAR_SOURCE_FILES
     HelpBrowser.cpp
     PerformanceSidebar.cpp
     AiChatSidebar.cpp
+    AiConnectionMonitor.cpp
 )
 list(TRANSFORM SIDEBAR_SOURCE_FILES PREPEND sidebars/)
 

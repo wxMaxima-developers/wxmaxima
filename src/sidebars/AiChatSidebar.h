@@ -32,6 +32,8 @@
 class Configuration;
 class Worksheet;
 class Variablespane;
+class StatusBar;
+class AiConnectionMonitor;
 
 /*! A sidebar to chat with an external AI about the current worksheet
   (follow-up to the MCP server, GH request: "a de facto standard AI sidebar
@@ -57,8 +59,13 @@ class Variablespane;
 */
 class AiChatSidebar : public wxPanel {
 public:
+  //! \param statusBar The status bar to keep the AI status icon (4th field)
+  //! in sync with, or NULL to skip that entirely -- see UpdateAiStatusIcon().
+  //! \param monitor The AI connection monitor sidebar to mirror raw
+  //! request/response traffic into, or NULL to skip that.
   AiChatSidebar(wxWindow *parent, Configuration *configuration,
                Worksheet *worksheet, Variablespane *variablesPane,
+               StatusBar *statusBar = NULL, AiConnectionMonitor *monitor = NULL,
                wxWindowID id = wxID_ANY);
 
   //! Re-reads Configuration for the selected provider/API key/model and
@@ -70,6 +77,10 @@ public:
 
   //! Clears the conversation history (but not the provider/API key setup).
   void ClearConversation();
+
+  //! Gives keyboard focus to the input box -- called when the AI status
+  //! icon is single-clicked to bring this sidebar to the user's attention.
+  void FocusInput() { m_inputCtrl->SetFocus(); }
 
 private:
   void OnSend(wxCommandEvent &event);
@@ -90,12 +101,35 @@ private:
   //! the class comment for why this is a snapshot, not live tool-calling.
   wxString BuildContextSnapshot() const;
   void UpdateStatusText();
+  //! Keeps m_statusBar's AI status icon (if any) in sync with our own
+  //! None/Active/Busy/Error state -- called from SetBusy() and
+  //! ReloadProviderFromConfig().
+  void UpdateAiStatusIcon();
+  //! Fires once a request has been in flight for a while, so the user gets
+  //! the same "this is taking a while" signal a long Maxima calculation
+  //! already gives via the status bar, rather than a plain unchanging
+  //! "Waiting for X..." forever.
+  void OnLongWaitTimer(wxTimerEvent &event);
 
   Configuration *m_configuration;
   McpTools m_tools;
   std::shared_ptr<AiProvider> m_provider;
   std::vector<AiChatMessage> m_history;
   bool m_requestInFlight = false;
+  //! Whether the most recently completed request failed -- feeds
+  //! UpdateAiStatusIcon()'s AiStatus::Error/Active choice once a request
+  //! isn't in flight any more. Never true before the first request.
+  bool m_lastRequestFailed = false;
+  //! The error detail from the most recent failed request, shown in the
+  //! status bar icon's tooltip -- see m_lastRequestFailed.
+  wxString m_lastErrorDetail;
+  StatusBar *m_statusBar = NULL;
+  AiConnectionMonitor *m_monitor = NULL;
+  //! One-shot; started on SetBusy(true), stopped on SetBusy(false). See
+  //! OnLongWaitTimer().
+  wxTimer m_longWaitTimer;
+  //! How long a request has to be in flight before OnLongWaitTimer() fires.
+  static constexpr int LONG_WAIT_MS = 10000;
 
   wxTextCtrl *m_historyCtrl;
   wxTextCtrl *m_inputCtrl;

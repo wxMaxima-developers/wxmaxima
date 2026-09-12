@@ -416,6 +416,14 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
 
   m_statusBar->GetStatusTextElement()->Bind(wxEVT_LEFT_DCLICK, &wxMaxima::StatusMsgDClick, this);
 
+#ifdef WXM_USE_AI_TOOLS
+  if (m_statusBar->GetAiStatusElement()) {
+    m_statusBar->GetAiStatusElement()->Bind(wxEVT_LEFT_UP, &wxMaxima::AiStatusClick, this);
+    m_statusBar->GetAiStatusElement()->Bind(wxEVT_LEFT_DCLICK, &wxMaxima::AiStatusDClick, this);
+    m_statusBar->GetAiStatusElement()->Bind(wxEVT_RIGHT_UP, &wxMaxima::AiStatusRightClick, this);
+  }
+#endif
+
   m_fileToOpen = filename;
   if (!initialWorksheetContents.IsEmpty()) {
     //  Convert the comment block to an array of lines
@@ -3418,6 +3426,60 @@ void wxMaxima::MaximaDClick(wxMouseEvent &WXUNUSED(event)) {
 void wxMaxima::StatusMsgDClick(wxMouseEvent &WXUNUSED(event)) {
   ToggleLogPane();
 }
+
+#ifdef WXM_USE_AI_TOOLS
+void wxMaxima::AiStatusClick(wxMouseEvent &WXUNUSED(event)) {
+  if (AiProvider::SecretStoreAvailable())
+    return;
+  wxMaximaFrame::ShowPane(EventIDs::menu_pane_aichat, true);
+  m_aiChatSidebar->FocusInput();
+}
+
+void wxMaxima::AiStatusDClick(wxMouseEvent &WXUNUSED(event)) {
+  if (!m_aiConnectionMonitor)
+    return;
+  TogglePaneVisibility(EventIDs::menu_pane_aiMonitor);
+}
+
+void wxMaxima::AiStatusRightClick(wxMouseEvent &WXUNUSED(event)) {
+  if (AiProvider::SecretStoreAvailable())
+    return;
+  // Only ever appended to and read from this one popup menu -- a plain
+  // wxWindow::NewControlId() is enough, same reasoning as TrayIcon's own
+  // popup menu (TrayIcon.cpp), since nothing outside this function needs to
+  // recognize these ids.
+  const wxWindowIDRef openChatId(wxWindow::NewControlId());
+  const wxWindowIDRef clearId(wxWindow::NewControlId());
+  wxMenu menu;
+  menu.Append(openChatId, _("Open AI Chat"));
+  menu.Append(wxID_PREFERENCES, _("Open Options..."));
+  menu.AppendSeparator();
+  menu.Append(clearId, _("Clear conversation"));
+  menu.Bind(
+    wxEVT_MENU,
+    [this](wxCommandEvent &) {
+      wxMaximaFrame::ShowPane(EventIDs::menu_pane_aichat, true);
+      m_aiChatSidebar->FocusInput();
+    },
+    openChatId);
+  menu.Bind(
+    wxEVT_MENU,
+    [this](wxCommandEvent &) {
+      // Re-posts wxID_PREFERENCES to our own event handler rather than
+      // constructing ConfigDialogue directly, reusing the exact same
+      // handling (MaximaCommandMenus.cpp) the Edit -> Configure menu item
+      // already does -- same reasoning as AiChatSidebar::OnOpenOptions().
+      wxCommandEvent openPreferences(wxEVT_MENU, wxID_PREFERENCES);
+      GetEventHandler()->AddPendingEvent(openPreferences);
+    },
+    wxID_PREFERENCES);
+  menu.Bind(
+    wxEVT_MENU,
+    [this](wxCommandEvent &) { m_aiChatSidebar->ClearConversation(); },
+    clearId);
+  PopupMenu(&menu);
+}
+#endif
 
 void wxMaxima::HistoryDClick(wxCommandEvent &event) {
   GetWorksheet()->CloseAutoCompletePopup();

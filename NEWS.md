@@ -1,5 +1,22 @@
 # Current development version
 
+- Added a third status bar icon for the AI Chat sidebar (next to the
+  existing Maxima/network status icons): hidden when no AI provider is
+  configured, shown with a distinct icon while a request is in flight, on
+  success, and on failure (with the error in the tooltip). Single-click
+  brings the AI Chat sidebar to the front; double-click opens a new AI
+  Connection Monitor sidebar showing the raw request/response traffic
+  (View -> Sidebars); right-click offers a small menu (open the chat, open
+  Options, clear the conversation). If a request takes longer than usual,
+  the status text and icon tooltip say so, mirroring how a long Maxima
+  calculation is already shown.
+- Fixed the AI Chat sidebar being silently compiled out of every build
+  regardless of the WXM_USE_AI_TOOLS option's value: the option was never
+  actually passed to the C++ preprocessor, so every #if(WXM_USE_AI_TOOLS)
+  guard evaluated false unconditionally, and a separate CMake source-list
+  bug meant AiChatSidebar.cpp was never compiled in even when the option
+  was fixed. Now wired through BuildConfig.h like the project's other
+  optional features (e.g. USE_FRIBIDI).
 - Added an optional MCP (Model Context Protocol) server that lets an external
   AI tool read the current worksheet as context: list/read cells, read the
   table of contents, read a whole section by heading, read the whole

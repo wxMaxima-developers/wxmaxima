@@ -487,9 +487,13 @@ bool AiProvider::NetworkingAvailable() {
 void AiProvider::SendChat(
   std::shared_ptr<const AiProvider> self, wxEvtHandler *owner, const wxString &context,
   const std::vector<AiChatMessage> &history,
-  std::function<void(bool ok, const wxString &replyOrError)> callback) {
+  std::function<void(bool ok, const wxString &replyOrError)> callback,
+  std::function<void(const wxString &requestBody)> onRequest,
+  std::function<void(bool ok, const wxString &responseBodyOrDetail)> onResponse) {
 #if wxUSE_WEBREQUEST
   wxString body = self->BuildRequestBody(context, history);
+  if (onRequest)
+    onRequest(body);
   // A real, unique id is essential here, not just the default wxID_ANY:
   // every wxWebRequestEvent this handler ever receives -- from any past or
   // future request -- carries whatever id its own request was given, and
@@ -507,7 +511,10 @@ void AiProvider::SendChat(
   wxWebRequest request =
     wxWebSession::GetDefault().CreateRequest(owner, self->RequestUrl(), requestId);
   if (!request.IsOk()) {
-    callback(false, _("Could not create the HTTP request."));
+    wxString msg = _("Could not create the HTTP request.");
+    if (onResponse)
+      onResponse(false, msg);
+    callback(false, msg);
     return;
   }
   for (const auto &header : self->AuthHeaders())
@@ -537,7 +544,7 @@ void AiProvider::SendChat(
   auto done = std::make_shared<bool>(false);
   owner->Bind(
     wxEVT_WEBREQUEST_STATE,
-    [requestId, self, callback, done](wxWebRequestEvent &evt) {
+    [requestId, self, callback, onResponse, done](wxWebRequestEvent &evt) {
       if (evt.GetId() != requestId)
         return;
       if (*done)
@@ -549,6 +556,8 @@ void AiProvider::SendChat(
         wxString responseBody = response.AsString();
         if ((status < 200) || (status >= 300)) {
           *done = true;
+          if (onResponse)
+            onResponse(false, responseBody);
           callback(false, wxString::Format(
                             _("%s returned HTTP %d: %s"), self->Name(), status,
                             responseBody.Left(500)));
@@ -556,8 +565,13 @@ void AiProvider::SendChat(
         }
         *done = true;
         try {
-          callback(true, self->ParseReply(responseBody));
+          wxString reply = self->ParseReply(responseBody);
+          if (onResponse)
+            onResponse(true, responseBody);
+          callback(true, reply);
         } catch (const AiProviderError &e) {
+          if (onResponse)
+            onResponse(false, responseBody);
           callback(false, FromU8(e.what()));
         }
         break;
@@ -578,6 +592,8 @@ void AiProvider::SendChat(
         wxWebResponse response = evt.GetResponse();
         wxString detail = response.IsOk() ? response.AsString().Left(500) : wxString();
         *done = true;
+        if (onResponse)
+          onResponse(false, detail);
         callback(false, wxString::Format(
                           _("%s rejected the API key (HTTP 401): %s"),
                           self->Name(), detail));
@@ -591,11 +607,15 @@ void AiProvider::SendChat(
       }
       case wxWebRequest::State_Failed:
         *done = true;
+        if (onResponse)
+          onResponse(false, _("Network error -- could not reach the provider."));
         callback(false, wxString::Format(_("Could not reach %s (network error)."),
                                          self->Name()));
         break;
       case wxWebRequest::State_Cancelled:
         *done = true;
+        if (onResponse)
+          onResponse(false, _("Request cancelled."));
         callback(false, _("Request cancelled."));
         break;
       default:
@@ -605,7 +625,10 @@ void AiProvider::SendChat(
     requestId);
   request.Start();
 #else
-  callback(false, _("This build of wxMaxima was compiled without wxWebRequest "
-                    "support, so it cannot talk to any AI provider."));
+  wxString msg = _("This build of wxMaxima was compiled without wxWebRequest "
+                   "support, so it cannot talk to any AI provider.");
+  if (onResponse)
+    onResponse(false, msg);
+  callback(false, msg);
 #endif
 }

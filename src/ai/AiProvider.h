@@ -275,7 +275,9 @@ public:
   static void SendChat(std::shared_ptr<const AiProvider> self, wxEvtHandler *owner,
                        const wxString &context,
                        const std::vector<AiChatMessage> &history,
-                       std::function<void(bool ok, const wxString &replyOrError)> callback);
+                       std::function<void(bool ok, const wxString &replyOrError)> callback,
+                       std::function<void(const wxString &requestBody)> onRequest = nullptr,
+                       std::function<void(bool ok, const wxString &responseBodyOrDetail)> onResponse = nullptr);
 
   //! True if this build of wxWidgets has wxWebRequest at all (>= 3.1.5,
   //! built with a working backend) -- if false, the whole chat sidebar
