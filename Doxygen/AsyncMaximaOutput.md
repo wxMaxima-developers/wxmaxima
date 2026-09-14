@@ -1,216 +1,188 @@
 # Telling Maxima which cell an output belongs to     {#asyncmaximaoutput}
 
-## The question
+## What this is
 
-If Maxima gained multi-threading, a command could start a background job
-that produces its output at some later time -- long after the cell that
-started it has finished and the user has moved on. **Can we tell Maxima
-which cell a given output belongs to, in a way a background thread will
-still know when it eventually produces that output?**
+Maxima is single-threaded today. If it gains the ability to run a command
+in the background, a job will produce its output long after the cell that
+started it has finished and the user has moved on -- and wxMaxima has no
+identifier for a cell anywhere in its protocol. It decides which cell an
+output belongs to purely by *when* the output arrives: whatever cell is
+being evaluated at that moment. For a background job that is not merely
+imprecise, it is reliably wrong.
 
-Short answer: **yes**, and nothing about it is exotic. The identifier can be
-a plain Lisp special variable that wxMaxima sets ahead of each cell, which
-a thread captures at spawn time and echoes back inside its output. The
-mechanism was tried against a real Maxima over a real socket and works.
+wxMaxima's half of a protocol that fixes this is implemented and working.
+Nothing exercises it in a normal session yet; it is here so that a Maxima
+that can run things in the background has something correct to talk to.
 
-The interesting part is not the mechanism, it is the four sharp edges
-around it. Three of them are demonstrated below with output from actual
-runs; all four will silently produce wrong behaviour rather than an error
-if they are got wrong.
+The mechanism is one variable and one tag:
 
-Everything here was measured against Maxima on SBCL 2.6.0 (`:SB-THREAD`
-present in `*features*`, `sb-thread:make-thread` genuinely available),
-driven through a socket set up exactly the way wxMaxima sets one up
-(`maxima -s <port> --very-quiet`).
+- wxMaxima sets `*wx-cell-id*` ahead of each cell, as a `:lisp-quiet` form
+  bundled with the config commands it already sends.
+- A background job captures that value **at spawn time** and wraps its
+  eventual output in `<wxasync><id>...</id>...</wxasync>`.
+- wxMaxima routes that block to the cell the id names, not to whatever cell
+  is current.
 
-## How output finds its cell today
+Everything below was measured against Maxima on SBCL 2.6.0, and then
+verified end to end in the real application driving real background threads.
 
-There is no identifier of any kind in the wxMaxima <-> Maxima protocol.
-Association is purely positional:
-
-- `MaximaOutputAppender::ConsoleAppend()` asks
-  `Worksheet::GetWorkingGroup(true)` -- "the cell being evaluated right now,
-  or failing that the last one" -- and appends there.
-- `DocumentCellPointers::m_workingGroup` is set by `MaximaEvaluator` as the
-  evaluation queue advances.
-- The queue advances in `EvaluationQueue::RemoveFirst()`, called from
-  `MaximaResponseReader` for **every** main `(%iN)` prompt Maxima emits.
-
-So "which cell is this output for" is answered entirely by *when* the
-output arrives. That assumption is exactly what background jobs break, and
-it is why an identifier has to be added rather than derived.
-
-## The mechanism, demonstrated
-
-wxMaxima sets a Lisp variable before each cell's own commands. A command
-that spawns a thread captures the *current* value lexically; the thread
-wraps its eventual output in a tag carrying it.
+## Using it from Maxima
 
 ```lisp
-:lisp-quiet (defparameter *wx-cell-id* nil)
-:lisp-quiet (setq *wx-cell-id* "cell-AAA")
-:lisp (let ((id *wx-cell-id*))          ; <-- captured HERE, at spawn time
-        (sb-thread:make-thread
-          (lambda ()
-            (sleep 3)
-            (format t "~%<wxasync id=\"~a\">...</wxasync>~%" id)
-            (finish-output))))
-:lisp-quiet (setq *wx-cell-id* "cell-BBB")
-2+2;
+:lisp (wx-spawn-async
+        (sleep 30)
+        (wx-async-display (meval ...)))
 ```
 
-Real transcript from the socket, trimmed:
+`wx-spawn-async` (`src/wxMathML.lisp`) runs its body in a background thread
+on behalf of the cell being evaluated now. Inside it:
 
-```
->>>SEND: :lisp-quiet (setq *wx-cell-id* "cell-BBB")
-job started
-<wxasync id="cell-AAA">RESULT FROM BACKGROUND JOB OF cell-AAA</wxasync>
+| | |
+|---|---|
+| `wx-async-text` | plain text onto the originating cell |
+| `wx-async-display` | a Maxima expression, rendered as that cell's output would be |
+| `wx-async-error` | a failure message onto the originating cell |
 
->>>SEND: 2+2;
-                                       4
-```
+All three default their target to `*wx-cell-id*`, which the macro rebinds
+inside the thread -- so the obvious call is also the correct one.
 
-The background output arrives while the *current* cell is already
-`cell-BBB`, and correctly carries `cell-AAA`. That is the whole idea.
+## The four things that are easy to get wrong
 
-Two incidental facts that make this easier than expected:
+Each of these was found by testing rather than by reading, and each fails
+silently rather than loudly.
 
-- Maxima's socket is the **global** value of `*standard-output*`
-  (`#<FD-STREAM for "socket ...">`), not a per-thread dynamic binding, so a
-  spawned thread can write to the real socket with no plumbing at all --
-  plain `(format t ...)` from the thread reaches wxMaxima.
-- `:lisp-quiet` forms produce no prompt and no output of their own, so
-  setting the variable per cell costs nothing visible. This is the same
-  property `m_configCommands` already depends on (see AGENTS.md).
+### 1. The id must be captured at spawn time
 
-## The four sharp edges
+Reading `*wx-cell-id*` when the thread *runs* yields whatever cell is
+current by then, which is by construction a different one. Measured: a job
+started under cell A delivered its output to cell B, with no error.
 
-### 1. The id must be captured at spawn time, not read when the thread runs
+This is why `wx-spawn-async` **rebinds** `*wx-cell-id*` inside the thread
+rather than only capturing it into a variable the body cannot see. The
+first implementation did the latter, and the natural thing to write in the
+body -- `(wx-async-text "...")`, which consults `*wx-cell-id*` -- was
+therefore wrong. An API whose obvious use is the broken one is a bad API;
+the rebinding removes the trap instead of documenting it.
 
-This is the one that will bite. Reading `*wx-cell-id*` *inside* the thread
-body reads whatever the global value happens to be when the thread finally
-runs -- which is, by construction, a different cell. Confirmed:
+### 2. Concurrent writes corrupt the output stream
 
-```lisp
-:lisp-quiet (setq *wx-cell-id* "cell-AAA")
-:lisp (sb-thread:make-thread
-        (lambda () (sleep 3)
-          (format t "<wxasync id=\"~a\">...</wxasync>" *wx-cell-id*)))
-:lisp-quiet (setq *wx-cell-id* "cell-BBB")
-```
-
-produced
-
-```
-<wxasync id="cell-BBB">WRONG-read-at-run-time</wxasync>
-```
-
--- the wrong cell, silently, with no error. Whatever API is offered to
-users for starting a background job must capture the id itself, rather than
-leaving it to whoever writes the thread body to remember.
-
-### 2. Concurrent writes to Maxima's output stream corrupt it
-
-Not merely interleave -- **corrupt**. Three threads each writing 40 small
-chunks to `*standard-output*` without a lock produced output in which the
-command's own result echo appeared **three times** and one thread's entire
-40-chunk block appeared **twice**: SBCL's FD-stream buffer is shared, and
-concurrent flushes replay buffered content.
-
-A single mutex around each thread's write fixes it completely. Measured, on
-the identical test with `sb-thread:with-mutex` added:
+Not merely interleave. Three threads each writing 40 short chunks to
+`*standard-output*` with no lock produced output in which the command's own
+result echo appeared **three times** and one thread's entire block appeared
+**twice** -- SBCL's FD-stream buffer is shared, and concurrent flushes
+replay buffered content.
 
 | | without lock | with lock |
 |---|---|---|
-| command echo | 3x (duplicated) | 1x |
+| command echo | 3x | 1x |
 | chunks per thread | duplicated blocks | exactly 40, 40, 40 |
-| ordering | one block emitted twice | each thread's block contiguous |
+| ordering | one block emitted twice | each block contiguous |
 
-So any threading support needs one output lock that *every* writer --
-background threads and the main evaluation thread alike -- goes through,
-or an output queue drained by a single writer.
+`wx-emit-async` therefore takes `*wx-output-lock*` for the whole block.
+Any future writer has to take the same lock.
 
-### 3. A background job must never emit a prompt
+### 3. A background job must not ask questions
 
-`EvaluationQueue::RemoveFirst()` advances the queue by exactly one cell for
-every main `(%iN)` prompt, and has no way to tell whose prompt it is.
-AGENTS.md already documents this costing a whole 21-cell evaluation queue
-in one shot when a plain statement crept into `m_configCommands`.
+The sharpest one, and the one where the obvious defence is insufficient.
 
-Background output is safe only as long as it is pure output with no prompt
-attached -- which it is in the transcript above, and which `:lisp-quiet`
-guarantees for the id-setting side. Any design where a finishing thread
-causes Maxima to print a prompt will silently drop queued cells.
+Maxima's `retrieve` (`src/macsys.lisp`) **prints the question first and
+reads afterwards**:
+
+```lisp
+(format-prompt t "~M" msg) (mterpri)
+(mread-noprompt *standard-input* nil)
+```
+
+Maxima's input and output are the *same socket*, so an unguarded read in a
+background thread would eat bytes out of the command stream wxMaxima is
+writing into. But closing the thread's `*standard-input*` only stops the
+read -- by then the question is already on the wire, and wxMaxima, which
+cannot know which thread wrote it, reads it as a question from whatever
+cell is currently being evaluated. Observed exactly that: a background
+`asksign()` put its question on an unrelated cell and left that cell
+waiting for an answer that would have gone somewhere else. Binding
+`*standard-input*` to an *empty* stream is no better -- the read returns
+EOF, the ask machinery loops, and the session stops answering commands at
+all.
+
+So the ask is refused before it prints anything, by wrapping `retrieve`
+itself, gated on `*wx-in-async-job*` so ordinary synchronous questions are
+completely unaffected. The job gets a clear message on its own cell:
+
+> This background computation tried to ask a question, which a background
+> computation cannot do -- give it everything it needs up front (for
+> example with assume()).
+
+The closed `*standard-input*` is kept behind that, for anything that reads
+without going through `retrieve`.
 
 ### 4. `ProcessData()` matches tags without attributes
 
-`Maxima::ProcessData()` recognises a top-level tag by an exact string
-compare:
+`Maxima::ProcessData()` recognises a top-level tag by an exact compare
+against `"<" + name + ">"`, so `<wxasync id="...">` would never be
+recognised at all. The id travels in the body instead, as `<id>...</id>`,
+which needs no change to the framing rule.
 
-```cpp
-wxString tagstartname = wxS("<") + tag->first + wxS(">");
-if (m_processingBuffer.StartsWith(tagstartname))
-```
+## The wxMaxima side
 
-So `<wxasync id="cell-AAA">` -- the form used in the experiments above,
-chosen because it is the natural one -- would **not** be recognised by the
-current dispatcher. Either
+- `Maxima::XML_ASYNC_OUTPUT` plus a `m_knownTags` entry for `wxasync` --
+  the established extension point, `XML_ASCIIMATH` being the previous one.
+- `MaximaEvaluator::CellIdConfigCommand()` emits the per-cell
+  `:lisp-quiet (setq *wx-cell-id* "...")`, appended to `m_configCommands`
+  next to the existing `LinelConfigCommand()`. `:lisp-quiet` is not
+  stylistic: `EvaluationQueue::RemoveFirst()` advances the queue by one
+  cell for every main prompt and cannot tell whose prompt it is, so a plain
+  statement here would silently drop a queued cell per command sent. The id
+  is only resent when it changes, not once per statement.
+- `MaximaResponseReader::ReadAsyncOutput()` parses the block, looks the
+  cell up, and appends through the ordinary path with only the destination
+  changed.
+- `Worksheet::GetInsertGroup()` honours `m_asyncOutputTarget` when set;
+  `Worksheet::AsyncOutputTarget` is the scoped setter, so an early return
+  cannot leave later ordinary output misrouted.
 
-- put the id inside the body (`<wxasync><id>cell-AAA</id>...</wxasync>`),
-  which needs no change to `Maxima.cpp` at all, only a new entry in
-  `m_knownTags` and a new `EventCause`; or
-- extend the matcher to also accept `<tag` followed by a space.
+Three things that had to be handled explicitly, none of them obvious until
+the feature was actually run:
 
-The first is the smaller change and keeps the framing rule ("a known tag is
-a bare `<tag>` at the start of the buffer") intact.
+- **The cell may be gone.** `m_asyncOutputTarget` is a `CellPtr`, and a
+  UUID matching nothing is discarded with a log message rather than filed
+  somewhere arbitrary -- Maxima has no way of knowing a cell was deleted.
+- **A cell's first output cell is its label slot.** `AppendOutput()`
+  assigns the first cell it is ever given to `m_output`, which `GetLabel()`
+  returns and `GetOutput()` skips. Every ordinary Maxima response starts
+  with a `(%oN)` label, so that slot is always already filled; a background
+  job's output has none, so on a cell that has produced no output yet --
+  one ending in `$`, or one whose output was cleared -- it silently
+  *became* the label and never rendered. An empty label is inserted first
+  when the slot is free.
+- **Nothing else schedules the recalculation.** `InsertLine()` only asks
+  for a redraw; the layout of a cell that gained output normally comes from
+  that cell being the one under evaluation, which is exactly what a
+  background job's cell is not. `ReadAsyncOutput()` requests it explicitly.
 
-## What the cell identifier should be
-
-Two candidates, both already present:
-
-- **`Cell::GetUUID()`** -- stable across a Maxima restart, already used by
-  the MCP tools, and already what `#UUID` filename fragments navigate by.
-  Caveat: it is generated lazily (empty until something asks for it), so
-  wxMaxima would have to force one for every cell it sends, and a generated
-  UUID is written out on the next save. The MCP server already has exactly
-  this side effect and it is documented as acceptable.
-- **Maxima's own `%i<N>` counter** -- costs no new state and both sides
-  already see it, but wxMaxima keeps no label-to-cell map today (there is
-  no `GetCellByLabel()` anywhere), and the numbering restarts when Maxima
-  does, so a background job outliving a restart would point at the wrong
-  cell.
-
-UUID looks like the better answer, with the laziness handled explicitly
-rather than accidentally.
-
-## Delivering the output to the cell
-
-On arrival, the routing change is small and local:
-
-- A new `Maxima::EventCause` plus an `m_knownTags` entry for the new tag --
-  the established extension point; `XML_ASCIIMATH` is the most recent
-  precedent.
-- A handler that looks the cell up by UUID and, instead of
-  `Worksheet::GetWorkingGroup(true)`, points `m_parser` at that cell
-  (`MathParser::SetGroup()`) before appending.
-
-One thing that genuinely has to be handled rather than assumed: **the cell
-may be gone** by the time its background job finishes -- deleted, or the
-worksheet closed. Per this project's own rule, anything holding a cell
-across time must use `CellPtr` (it nulls itself on destruction) and
-null-check on use; and the lookup must tolerate a UUID matching nothing at
-all, since Maxima has no way of knowing the cell was deleted.
+Async output deliberately does **not** scroll the worksheet, even with
+"follow evaluation" on, and deliberately does not un-collapse a cell whose
+output the user has hidden -- same reasoning as GH #1952: a result arriving
+is not a reason to yank the view away from what the user is doing.
 
 ## Availability
 
-Threads are a property of the Lisp underneath Maxima, not of Maxima itself.
-SBCL here has them. GCL -- still a common Maxima build on some platforms --
-does not. So this would be a conditionally-available feature, and wxMaxima
-would need to cope with a Maxima that never sends an async tag at all,
-which the design above does for free: no tag, no new behaviour.
+Threads are a property of the Lisp under Maxima, not of Maxima.
+SBCL has them; GCL does not. `wx-async-available-p` reflects that,
+`*wx-output-lock*` is `nil` where there is nothing to serialize, and a
+Maxima that never sends the tag simply never triggers any of this.
 
-## Status
+## Verified
 
-This is an investigation, not an implementation. Nothing in wxMaxima has
-been changed. The experiments above are reproducible against a stock
-Maxima/SBCL with nothing but a socket and the snippets quoted.
+In the real application, driving real `sb-thread` background jobs:
+
+- A job started by cell 1 delivers to cell 1, six seconds after cell 1
+  stopped being current and two cells later.
+- Two concurrent jobs each reach their own cell.
+- A job that tries to `asksign()` reports the refusal on its own cell; no
+  question reaches the wire and no other cell is left waiting.
+- A job that signals an error reports it on its own cell.
+- Output naming a cell that does not exist is discarded with a log message,
+  leaving the session healthy.
+- Ordinary synchronous evaluation in the same session is unaffected
+  throughout.

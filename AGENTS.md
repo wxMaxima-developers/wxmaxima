@@ -2823,6 +2823,67 @@ a local TCP socket.
     "Sending Maxima a SIGINT signal," and clicking "Exit" raises the same
     save-changes `Save As` prompt a normal File > Exit does.
 
+### Asynchronous ("background job") output from Maxima
+
+**Implemented and verified, but dormant: nothing in today's single-threaded
+Maxima sends it.** Full design, measurements and rationale live in
+`Doxygen/AsyncMaximaOutput.md` -- read that before touching any of it.
+Only the traps worth knowing from elsewhere are repeated here.
+
+- **Nothing else in this protocol identifies a cell.** Output is
+  associated with a cell purely by *when* it arrives
+  (`Worksheet::GetWorkingGroup(true)`). `<wxasync><id>UUID</id>...
+  </wxasync>` is the single exception, and it exists because a background
+  job's output arrives long after its own cell stopped being current.
+  `Worksheet::GetInsertGroup()` honours `m_asyncOutputTarget` (set only via
+  the scoped `Worksheet::AsyncOutputTarget`) ahead of the working group.
+- **`Maxima::ProcessData()` matches a known tag as a bare `<tag>`**, by an
+  exact compare against `"<" + name + ">"`. A tag carrying an attribute is
+  not recognised at all -- which is why the cell id travels in the body as
+  `<id>...</id>` rather than as `id="..."`. Applies to any future tag, not
+  just this one.
+- **The per-cell id MUST be sent as `:lisp-quiet`** (see
+  `MaximaEvaluator::CellIdConfigCommand()`, appended to `m_configCommands`).
+  This is the same hard rule `m_configCommands` already documents above: a
+  plain statement emits a prompt, and `EvaluationQueue::RemoveFirst()`
+  advances the queue by one cell for every main prompt with no way to tell
+  whose it is, silently dropping a queued cell per command sent.
+- **A background job must never ask a question, and closing its
+  `*standard-input*` does not achieve that.** Maxima's `retrieve`
+  (`src/macsys.lisp`) prints the question *before* reading, so the question
+  is already on the shared socket by the time the read fails -- and
+  wxMaxima can only read it as a question from whatever cell is currently
+  being evaluated. Confirmed live: a background `asksign()` put its
+  question on an unrelated cell and left that cell waiting. An *empty*
+  stdin is worse still (EOF, the ask machinery loops, the session stops
+  answering commands entirely). `wxMathML.lisp` therefore wraps `retrieve`
+  itself, gated on `*wx-in-async-job*`; the closed stdin stays as defence
+  in depth. Maxima's input and output are the same socket, so an unguarded
+  read really would consume the next command.
+- **Concurrent writes to Maxima's output stream corrupt it, not merely
+  interleave it** -- SBCL's FD-stream buffer is shared and concurrent
+  flushes replay buffered content (measured: one thread's whole block
+  emitted twice, the command echo three times). Every writer takes
+  `*wx-output-lock*`.
+- **Two wxMaxima-side gotchas that only show up when this is actually
+  run**, both already handled in `ReadAsyncOutput()` but easy to
+  reintroduce elsewhere: (1) a `GroupCell`'s *first* output cell is its
+  **label** slot (`AppendOutput()` assigns it to `m_output`, which
+  `GetLabel()` returns and `GetOutput()` skips), so output appended to a
+  cell that has produced none yet silently becomes the label and never
+  renders -- an empty `LabelCell` is inserted first; (2) nothing schedules
+  a recalculation for a cell that is not the working group, so
+  `RequestRecalculation(target)` has to be explicit or the output is
+  correctly appended and never laid out.
+- **The `wx-spawn-async` macro rebinds `*wx-cell-id*` inside the thread**
+  rather than only capturing it. The first version captured into a gensym
+  the body could not see, so the natural body call `(wx-async-text "...")`
+  read the *global* value and delivered to the wrong cell -- caught live,
+  a job started under cell A landed on cell C. Don't "simplify" that
+  rebinding away.
+- **Deliberately does not scroll or un-collapse**, even with "follow
+  evaluation" on -- same reasoning as GH #1952 above.
+
 ### Communication with Maxima
 
 wxMaxima sends Lisp and Maxima commands over the socket; Maxima answers with XML

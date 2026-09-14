@@ -796,6 +796,10 @@ void MaximaProcessManager::MaximaEvent(wxThreadEvent &event) {
     m_wxMaxima.m_statusBar->NetworkStatus(StatusBar::receive);
     m_wxMaxima.m_responseReader.ReadAsciiMath(event.GetString());
     break;
+  case Maxima::XML_ASYNC_OUTPUT:
+    m_wxMaxima.m_statusBar->NetworkStatus(StatusBar::receive);
+    m_wxMaxima.m_responseReader.ReadAsyncOutput(event.GetString());
+    break;
   case Maxima::READ_PENDING:
     m_wxMaxima.m_responseReader.ReadStdErr();
     m_wxMaxima.m_statusBar->NetworkStatus(StatusBar::receive);

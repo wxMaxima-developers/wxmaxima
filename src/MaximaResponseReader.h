@@ -100,6 +100,16 @@ public:
   //! monospace block instead of ReadMiscText()'s per-chunk font guess.
   void ReadAsciiMath(const wxString &data);
 
+  /*! Handles one complete <wxasync><id>...</id>...</wxasync> block: output
+    from a background job, naming the cell it belongs to.
+
+    Every other handler here appends to whatever cell is being evaluated
+    right now, which is the correct answer for everything Maxima sends
+    synchronously. It is the wrong answer -- reliably, not occasionally --
+    for a background job, whose output arrives long after its own cell
+    stopped being current. See Doxygen/AsyncMaximaOutput.md. */
+  void ReadAsyncOutput(const wxString &data);
+
   //! Handles a new input/question prompt: advances the evaluation queue or
   //! surfaces the question, and tracks Maxima's lisp/maxima mode.
   void ReadPrompt(const wxString &data);
