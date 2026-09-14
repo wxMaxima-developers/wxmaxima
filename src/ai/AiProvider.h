@@ -85,6 +85,40 @@ enum class AiProviderShape { Anthropic, OpenAiCompatible, Google };
 //! dialog.
 wxString AiProviderShapeName(AiProviderShape shape);
 
+/*! The two halves of the shape picker's index <-> enum mapping.
+
+  The dropdown deliberately lists OpenAiCompatible *first* (by far the most
+  common choice for a hand-added endpoint, and the one every local-server
+  preset uses), which is not the order AiProviderShape itself declares --
+  so a plain static_cast<int>(shape) is NOT a valid selection index, and a
+  plain static_cast<AiProviderShape>(selection) is NOT a valid shape. Every
+  conversion must go through these two, or a custom provider silently
+  changes its own wire format behind the user's back: populating the picker
+  with a raw cast showed a freshly-added OpenAI-compatible entry as
+  "Anthropic (Messages API)", and Options' own save-before-switch
+  write-back then really did turn it into one. */
+int AiProviderShapeToChoiceIndex(AiProviderShape shape);
+AiProviderShape AiProviderShapeFromChoiceIndex(int index);
+
+/*! Empty if `url` is usable as a custom provider's request URL; otherwise
+  a short, user-facing explanation of what is wrong with it.
+
+  Exists because the one thing that actually goes wrong here is easy to
+  type and impossible to diagnose from the resulting failure: a bare
+  "127.0.0.1:11434" (host and port, no scheme and no path) is a perfectly
+  natural thing to write for a local server, but it is not a URL --
+  everything before the first colon is the scheme, so the backend is asked
+  for a "127.0.0.1" protocol it has never heard of and the whole thing
+  surfaces much later as an unexplained network failure. Catching it at
+  the point it is typed turns that into one sentence saying what to fix.
+
+  Deliberately does NOT guess a missing scheme: prepending "http://" to a
+  remote host would send the user's API key over the wire in clear text,
+  and prepending "https://" to a local server that only speaks plain HTTP
+  just trades one confusing failure for another. Asking is cheap; guessing
+  wrong here is not. */
+wxString AiProviderRequestUrlProblem(const wxString &url);
+
 //! One user-added custom provider, as persisted in Configuration's
 //! AiCustomProvidersJson() (everything except the API key, which lives in
 //! the OS secret store, keyed by CustomProviderSecretService(id) -- see

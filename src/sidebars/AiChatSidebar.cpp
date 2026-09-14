@@ -99,17 +99,38 @@ void AiChatSidebar::ReloadProviderFromConfig() {
   auto kind = static_cast<AiProviderKind>(m_configuration->AiChatProvider());
   wxString apiKey, model;
   m_provider = nullptr;
+  wxString previousProblem = m_providerConfigProblem;
+  m_providerConfigProblem.Clear();
   if (kind == AiProviderKind::Custom) {
     // A Custom provider's URL/shape/model aren't implied by its kind alone
     // (unlike the four built-ins) -- look its own record up by id from the
     // list Options persists, same as ConfigDialogue does when populating
     // that tab. No matching record (e.g. it was since removed in Options)
-    // just leaves m_provider null, same as an empty API key would.
+    // just leaves m_provider null.
     wxString activeId = m_configuration->AiActiveCustomProviderId();
     for (const auto &custom : ParseAiCustomProviders(m_configuration->AiCustomProvidersJson()))
       if (custom.id == activeId) {
         apiKey = AiProvider::LoadApiKey(AiProvider::CustomProviderSecretService(custom.id));
-        if (!apiKey.IsEmpty())
+        // Deliberately NOT gated on a non-empty API key, unlike the
+        // built-in providers below: a custom entry is how a *local* AI
+        // server is reached (Ollama, LM Studio, llama.cpp server -- see
+        // AiKnownLocalServerPresets()), and those have no third party to
+        // authenticate to and normally no key at all. Requiring one here
+        // made a perfectly-configured local server report "No AI provider
+        // configured" with no hint as to what was missing. What a custom
+        // entry genuinely cannot work without is its URL -- Options' own
+        // "Add custom provider" dialog already refuses to create an entry
+        // without a name and a URL, so this should never be empty in
+        // practice, but a hand-edited config file can still get here.
+        // A URL that cannot work is reported as such, here, instead of
+        // being handed to the HTTP backend to fail later as a bare
+        // "network error" that says nothing about the real cause -- a
+        // scheme-less "127.0.0.1:11434" is the one mistake that actually
+        // happens here, and it is unrecognisable from the failure it
+        // produces. An entry saved before this check existed still carries
+        // one, so this has to be checked on load, not only in Options.
+        m_providerConfigProblem = AiProviderRequestUrlProblem(custom.baseUrl);
+        if (m_providerConfigProblem.IsEmpty())
           m_provider =
             MakeAiProviderForShape(custom.shape, custom.name, custom.baseUrl, apiKey, custom.model);
         break;
@@ -151,6 +172,15 @@ void AiChatSidebar::ReloadProviderFromConfig() {
   m_sendButton->Enable(!m_requestInFlight && (m_provider != nullptr));
   m_openOptionsButton->Show(m_provider == nullptr);
   UpdateAiStatusIcon();
+  // Say what is wrong where the user is actually looking. The status label
+  // only has room for "this needs fixing" in a sidebar this narrow, and a
+  // tooltip is easy never to hover over -- but Send is disabled in this
+  // state, so without this the full explanation has no way to reach the
+  // user at all. Only on a *change* of problem, so re-reading the config
+  // (which happens on every Options OK) can't pile up duplicates on top of
+  // an ongoing conversation.
+  if (!m_providerConfigProblem.IsEmpty() && (m_providerConfigProblem != previousProblem))
+    AppendToHistory(_("wxMaxima"), m_providerConfigProblem);
   Layout();
 }
 
@@ -220,6 +250,11 @@ void AiChatSidebar::SetBusy(bool busy) {
 }
 
 void AiChatSidebar::UpdateStatusText() {
+  // The label has to stay short -- this sidebar docks into a narrow column
+  // -- so a long explanation goes in the tooltip instead. Reset every time
+  // rather than only when there is something to say, or a tooltip outlives
+  // the condition that set it (e.g. after the URL is fixed in Options).
+  m_statusText->UnsetToolTip();
   if (m_requestInFlight)
     m_statusText->SetLabel(
       wxString::Format(_("Waiting for %s..."),
@@ -227,6 +262,10 @@ void AiChatSidebar::UpdateStatusText() {
   else if (!AiProvider::NetworkingAvailable())
     m_statusText->SetLabel(
       _("This build of wxMaxima cannot make network requests."));
+  else if (!m_providerConfigProblem.IsEmpty()) {
+    m_statusText->SetLabel(_("This provider's settings need fixing."));
+    m_statusText->SetToolTip(m_providerConfigProblem);
+  }
   else if (!m_provider)
     m_statusText->SetLabel(
       _("No AI provider configured -- add an API key in Options."));
@@ -282,8 +321,10 @@ void AiChatSidebar::OnSend(wxCommandEvent &) {
     return;
   if (!m_provider) {
     AppendToHistory(_("wxMaxima"),
-                    _("No AI provider is configured. Open Options to add an "
-                      "API key for one."));
+                    m_providerConfigProblem.IsEmpty()
+                    ? _("No AI provider is configured. Open Options to add an "
+                        "API key for one.")
+                    : m_providerConfigProblem);
     return;
   }
   if (!AiProvider::NetworkingAvailable()) {

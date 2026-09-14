@@ -46,7 +46,15 @@ public:
   AiProviderKind Kind() const override { return m_kind; }
 
   std::vector<std::pair<wxString, wxString>> AuthHeaders() const override {
-    return {{wxS("x-api-key"), m_apiKey}, {wxS("anthropic-version"), wxS("2023-06-01")}};
+    std::vector<std::pair<wxString, wxString>> headers = {
+      {wxS("anthropic-version"), wxS("2023-06-01")}};
+    // Omitted entirely rather than sent empty: a custom provider using
+    // this shape may be a local proxy that authenticates nothing at all,
+    // and an empty credential header is likelier to be rejected outright
+    // than simply ignored.
+    if (!m_apiKey.IsEmpty())
+      headers.push_back({wxS("x-api-key"), m_apiKey});
+    return headers;
   }
 
   wxString BuildRequestBody(const wxString &context,
@@ -95,6 +103,12 @@ public:
   AiProviderKind Kind() const override { return m_kind; }
 
   std::vector<std::pair<wxString, wxString>> AuthHeaders() const override {
+    // A local OpenAI-compatible server (Ollama, LM Studio, llama.cpp
+    // server, ...) has no third party to authenticate to and normally has
+    // no API key at all -- send no Authorization header rather than a bare,
+    // malformed "Bearer " with nothing after it.
+    if (m_apiKey.IsEmpty())
+      return {};
     return {{wxS("Authorization"), wxS("Bearer ") + m_apiKey}};
   }
 
@@ -143,6 +157,8 @@ public:
   }
 
   std::vector<std::pair<wxString, wxString>> AuthHeaders() const override {
+    if (m_apiKey.IsEmpty())
+      return {};
     return {{wxS("x-goog-api-key"), m_apiKey}};
   }
 
@@ -205,6 +221,49 @@ wxString AiProviderShapeName(AiProviderShape shape) {
   case AiProviderShape::OpenAiCompatible:
   default: return _("OpenAI-compatible (most third-party/self-hosted APIs)");
   }
+}
+
+// Keep these two in sync with each other AND with the order the shape
+// picker's items are actually added in ConfigDialogue (both places:
+// CreateAiChatPanel()'s detail box and AddCustomAiProviderDialog()).
+int AiProviderShapeToChoiceIndex(AiProviderShape shape) {
+  switch (shape) {
+  case AiProviderShape::Anthropic: return 1;
+  case AiProviderShape::Google: return 2;
+  case AiProviderShape::OpenAiCompatible:
+  default: return 0;
+  }
+}
+
+AiProviderShape AiProviderShapeFromChoiceIndex(int index) {
+  switch (index) {
+  case 1: return AiProviderShape::Anthropic;
+  case 2: return AiProviderShape::Google;
+  case 0:
+  default: return AiProviderShape::OpenAiCompatible;
+  }
+}
+
+wxString AiProviderRequestUrlProblem(const wxString &url) {
+  wxString trimmed = url;
+  trimmed.Trim(true).Trim(false);
+  if (trimmed.IsEmpty())
+    return _("Please enter the full request URL this provider expects.");
+  // Compared case-insensitively: a scheme is case-insensitive per RFC 3986,
+  // and "HTTP://..." pasted from somewhere would otherwise be rejected for
+  // no reason.
+  wxString lower = trimmed.Lower();
+  if (!lower.StartsWith(wxS("http://")) && !lower.StartsWith(wxS("https://")))
+    return _("The request URL has to start with \"http://\" or \"https://\" "
+            "-- a bare host and port such as \"127.0.0.1:11434\" is not a "
+            "complete URL. For a local Ollama server the full URL is "
+            "\"http://localhost:11434/v1/chat/completions\"; the \"Quick "
+            "fill\" list above fills this in for the most common local "
+            "servers.");
+  // Anything after the scheme is a host: "http://" alone is not.
+  if (lower == wxS("http://") || lower == wxS("https://"))
+    return _("The request URL is missing everything after the \"://\".");
+  return wxEmptyString;
 }
 
 wxString AiProviderDefaultModel(AiProviderKind kind) {
@@ -605,13 +664,27 @@ void AiProvider::SendChat(
         req.Cancel();
         break;
       }
-      case wxWebRequest::State_Failed:
+      // The bare "network error" this used to report was useless in
+      // practice: "could not resolve the host name", "connection refused"
+      // (a local LLM server that isn't running, or listening on a
+      // different port), "the TLS certificate could not be verified" and
+      // "the connection died mid-transfer" are four completely different
+      // problems with four completely different fixes, and the backend
+      // already distinguishes them for us. GetErrorDescription() is what
+      // carries that text (for the curl backend, libcurl's own error
+      // string) -- pass it on verbatim rather than throwing it away.
+      case wxWebRequest::State_Failed: {
         *done = true;
+        wxString detail = evt.GetErrorDescription();
+        wxString msg =
+          detail.IsEmpty()
+          ? wxString::Format(_("Could not reach %s (network error)."), self->Name())
+          : wxString::Format(_("Could not reach %s: %s"), self->Name(), detail);
         if (onResponse)
-          onResponse(false, _("Network error -- could not reach the provider."));
-        callback(false, wxString::Format(_("Could not reach %s (network error)."),
-                                         self->Name()));
+          onResponse(false, msg);
+        callback(false, msg);
         break;
+      }
       case wxWebRequest::State_Cancelled:
         *done = true;
         if (onResponse)

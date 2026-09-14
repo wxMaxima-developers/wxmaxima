@@ -1452,6 +1452,105 @@ a local TCP socket.
     Xvfb (the Options "AI Chat" tab actually opening, the sidebar actually
     appearing in View -> Sidebars) -- that's the natural next check before
     building anything new on top of this.
+  - **Follow-up (2026-09-14): "network error" from both a local Ollama
+    server and Anthropic -- the maintainer's own live report, and the one
+    time this feature's root cause was found by reading the user's actual
+    `~/.config/wxMaxima.conf` rather than by reasoning about the code.**
+    The saved entry was
+    `{"baseUrl":"127.0.0.1:11434","model":"llama3.2","name":"Ollama","shape":"anthropic"}`
+    -- three separate bugs visible in one line, two of them wxMaxima's own:
+    1. **`shape` was `anthropic` for what the user had set up as an
+       OpenAI-compatible local server.** `ConfigDialogue::
+       LoadAiProviderRecordIntoUi()` populated the "API style" `wxChoice`
+       with `SetSelection(static_cast<int>(rec.shape))`, but that dropdown
+       deliberately lists `OpenAiCompatible` *first* (it is the
+       overwhelmingly common choice, and what every local-server preset
+       uses) while `AiProviderShape` declares `Anthropic` first --
+       so `OpenAiCompatible` (enum value 1) selected item 1,
+       "Anthropic (Messages API)". `StashAiProviderUiIntoRecord()`'s own
+       index->enum `switch` was correct, so the mismatch was silent *and*
+       self-propagating: the picker showed the wrong style, and the next
+       save-before-switch write-back stored what the picker showed.
+       Deterministic on every single add, since
+       `AddCustomAiProviderDialog()` ends with `RebuildAiProviderChoice()`
+       -> `LoadAiProviderRecordIntoUi()`. Fixed with
+       `AiProviderShapeToChoiceIndex()`/`AiProviderShapeFromChoiceIndex()`
+       (`AiProvider.h`/`.cpp`) as the single source of truth, used by all
+       three sites; both `shapeChoices.Add(...)` blocks carry a comment
+       saying their order is what those two encode. **Never cast between
+       this enum and a selection index directly.**
+    2. **`baseUrl` was a bare `127.0.0.1:11434` -- no scheme, no path**,
+       which is exactly what someone sets up a local server by typing, and
+       is not a URL at all: libcurl reads everything before the first colon
+       as the scheme, so this surfaced to the user as an unexplained
+       network failure with nothing pointing at the URL. This is also what
+       the maintainer's own hypothesis ("the custom AI provider lacks a
+       setting that allows to change https to http") was really about --
+       there is no such setting needed, the field has always been free text
+       and every preset already fills in a full `http://` URL; the missing
+       piece was that nothing said a scheme was required. Added
+       `AiProviderRequestUrlProblem()`: empty if the URL is usable,
+       otherwise a sentence naming the problem. Wired into
+       `AddCustomAiProviderDialog()` (an inline `WrappingStaticText` plus
+       the OK button's existing `wxEVT_UPDATE_UI` enable check -- silent
+       while the field is still empty, so it nags only once something
+       unusable has actually been typed) and into
+       `AiChatSidebar::ReloadProviderFromConfig()`, which must check it too
+       since an entry saved before this existed still carries a bad URL.
+       **Deliberately does not guess a missing scheme**: prepending
+       `http://` to a remote host would put the user's API key on the wire
+       in clear text, and prepending `https://` to a plain-HTTP local
+       server just swaps one confusing failure for another.
+    3. **The stored API key for that entry was one character long** -- the
+       user working around `ReloadProviderFromConfig()`'s
+       `if (!apiKey.IsEmpty())` gate, which refused to build a custom
+       provider without a key and reported the perfectly-configured local
+       server as "No AI provider configured." A local server has no third
+       party to authenticate to; the gate now checks the *URL* instead
+       (the thing a custom entry genuinely cannot work without), and all
+       three provider shapes omit their credential header entirely when
+       the key is empty rather than sending a bare `Authorization: Bearer `.
+    **Separately, and the most broadly useful fix here:
+    `SendChat()`'s `State_Failed` branch threw away
+    `wxWebRequestEvent::GetErrorDescription()`**, reporting every single
+    transport failure as "Could not reach %s (network error)." That string
+    is why neither of the maintainer's two failures could be diagnosed
+    from the app at all. The backend already distinguishes them
+    perfectly -- confirmed live with a standalone wxWebRequest harness
+    against this same wxWidgets 3.3.4/libcurl-gnutls build, which returned
+    `"Could not resolve hostname"`, `"Could not connect to server"` and
+    `"Failure when receiving data from the peer"` for three different
+    causes, all of which the app was collapsing into one useless sentence.
+    Now passed through verbatim, to both the chat history and the AI
+    Connection Monitor. **The maintainer's Anthropic failure is still
+    undiagnosed as of this entry** -- their key is present and well-formed
+    (108 chars, `sk-ant-` prefix, so the provider really is built and the
+    request really is sent), the machine has no system proxy and has valid
+    CA certificates, and this sandbox's own egress proxy makes any direct
+    HTTPS test from here worthless (plain `curl` reaches
+    api.anthropic.com fine, the wx curl backend does not -- a proxy-auth
+    artifact of the sandbox, reproduced and confirmed as such by removing
+    the proxy env vars and watching the error change). The new message is
+    what will identify it; don't guess at it further without that text.
+    **Verified live** in a real Xvfb session driving the actual app with a
+    throwaway `HOME` (the maintainer's own config left byte-identical,
+    checked before and after): a keyless OpenAI-compatible entry pointed at
+    a local test server now reports "Chatting with Ollama", enables Send,
+    sends a correct OpenAI-shaped body with *no* auth header, and shows the
+    reply -- and the maintainer's exact broken `127.0.0.1:11434` entry now
+    shows "This provider's settings need fixing." with the full
+    explanation in the chat history, without any network attempt at all.
+    **GTK4 note for any future live check here**: wxWidgets 3.3.4/GTK4 on
+    plain Xvfb never maps its window (it sits in a dmabuf/DRM path,
+    `/proc/<pid>/fd` full of `syncobj_file` entries, screenshot solid
+    black, zero children on the root window). `GSK_RENDERER=cairo
+    GDK_BACKEND=x11 LIBGL_ALWAYS_SOFTWARE=1` fixes it completely -- worth
+    reaching for before concluding the app failed to start. Also: this
+    machine's wx build has `wxUSE_SECRETSTORE=1` and a working keyring, so
+    unlike the older sessions this file documents, the AI Chat tab and
+    sidebar *are* reachable here. And `pkill -f "src/wxmaxima"` kills the
+    agent's own shell (its command line contains the pattern) -- match on
+    `ps -eo pid,comm` instead.
   - **Follow-up (2026-09-11): a third status bar icon for the AI Chat
     sidebar, mirroring the existing Maxima/network status icons.** Raised
     directly by the maintainer: "on the bottom right there are two spaces
