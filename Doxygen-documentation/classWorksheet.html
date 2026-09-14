@@ -98,6 +98,12 @@ Collaboration diagram for Worksheet:</div>
 </div>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Data Structures</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet_1_1AsyncOutputTarget.html">AsyncOutputTarget</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scoped <a class="el" href="classWorksheet.html#a2a7e2e1dc4df405525818d58e43a27a3" title="Routes output to one specific cell instead of the one being evaluated.">SetAsyncOutputTarget()</a>, so an early return or a throw while appending can't leave every subsequent ordinary output misrouted to a cell that stopped being relevant long ago.  <a href="classWorksheet_1_1AsyncOutputTarget.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
 <tr class="memitem:a79d7b31dbd32dd7e8fc4395fe7810fd5"><td class="memItemLeft" align="right" valign="top"><a id="a79d7b31dbd32dd7e8fc4395fe7810fd5" name="a79d7b31dbd32dd7e8fc4395fe7810fd5"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a79d7b31dbd32dd7e8fc4395fe7810fd5">ClickType</a> { <br />
@@ -654,6 +660,16 @@ std::unique_ptr&lt; <a class="el" href="classGroupCell.html">GroupCell</a> &gt;&
 <a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>GetInsertGroup</b> () const</td></tr>
 <tr class="memdesc:a1f88d0ae3d7219b394d964c79a894a3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The group that the line's cells will belong to - used by InsertLine. <br /></td></tr>
 <tr class="separator:a1f88d0ae3d7219b394d964c79a894a3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa13ca57a0d78ade0b5b6eefbd14bba79"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#aa13ca57a0d78ade0b5b6eefbd14bba79">FindGroupCellByUUID</a> (const wxString &amp;uuid) const</td></tr>
+<tr class="memdesc:aa13ca57a0d78ade0b5b6eefbd14bba79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds a <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a> by its UUID, or nullptr if no cell has that UUID.  <br /></td></tr>
+<tr class="separator:aa13ca57a0d78ade0b5b6eefbd14bba79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a7e2e1dc4df405525818d58e43a27a3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a2a7e2e1dc4df405525818d58e43a27a3">SetAsyncOutputTarget</a> (<a class="el" href="classGroupCell.html">GroupCell</a> *cell)</td></tr>
+<tr class="memdesc:a2a7e2e1dc4df405525818d58e43a27a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Routes output to one specific cell instead of the one being evaluated.  <br /></td></tr>
+<tr class="separator:a2a7e2e1dc4df405525818d58e43a27a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a665b60444fa33638c0a162a603bafb8f"><td class="memItemLeft" align="right" valign="top"><a id="a665b60444fa33638c0a162a603bafb8f" name="a665b60444fa33638c0a162a603bafb8f"></a>
+<a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>GetAsyncOutputTarget</b> () const</td></tr>
+<tr class="memdesc:a665b60444fa33638c0a162a603bafb8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The cell async output is currently being routed to, if any. <br /></td></tr>
+<tr class="separator:a665b60444fa33638c0a162a603bafb8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6cff5a13f672902c30e77e413ea8407a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a6cff5a13f672902c30e77e413ea8407a">RecalculateIfNeeded</a> (bool timeout=false, long timeSliceMs=50)</td></tr>
 <tr class="memdesc:a6cff5a13f672902c30e77e413ea8407a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Actually recalculate the worksheet.  <br /></td></tr>
 <tr class="separator:a6cff5a13f672902c30e77e413ea8407a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1871,6 +1887,27 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 
 </div>
 </div>
+<a id="aa13ca57a0d78ade0b5b6eefbd14bba79" name="aa13ca57a0d78ade0b5b6eefbd14bba79"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa13ca57a0d78ade0b5b6eefbd14bba79">&#9670;&#160;</a></span>FindGroupCellByUUID()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classGroupCell.html">GroupCell</a> * Worksheet::FindGroupCellByUUID </td>
+          <td>(</td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
+          <td class="paramname"><em>uuid</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Finds a <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a> by its UUID, or nullptr if no cell has that UUID. </p>
+<p>Generates a UUID for any cell that doesn't have one yet, since <a class="el" href="classCell.html#a3f640233f8cf572107672866e7017a1a" title="Returns the UUID of this cell.">Cell::GetUUID()</a> is lazy &ndash; the same (documented, and shared with the MCP tools) side effect of a cell's UUID being written out on the next save once anything has asked for it. </p>
+
+</div>
+</div>
 <a id="a88fcff5261e945f1297bce4c7b0de6f0" name="a88fcff5261e945f1297bce4c7b0de6f0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a88fcff5261e945f1297bce4c7b0de6f0">&#9670;&#160;</a></span>FindIncremental()</h2>
 
@@ -3043,6 +3080,35 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 
 <p>Handling questions from and answers for maxima. </p>
 <p>Remember the answer to the LastQuestion(). </p>
+
+</div>
+</div>
+<a id="a2a7e2e1dc4df405525818d58e43a27a3" name="a2a7e2e1dc4df405525818d58e43a27a3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2a7e2e1dc4df405525818d58e43a27a3">&#9670;&#160;</a></span>SetAsyncOutputTarget()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Worksheet::SetAsyncOutputTarget </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td>
+          <td class="paramname"><em>cell</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Routes output to one specific cell instead of the one being evaluated. </p>
+<p>Set for exactly as long as it takes to append one background job's output (see <a class="el" href="classWorksheet_1_1AsyncOutputTarget.html" title="Scoped SetAsyncOutputTarget(), so an early return or a throw while appending can&#39;t leave every subseq...">AsyncOutputTarget</a> below and Doxygen/AsyncMaximaOutput.md). Everything else in this worksheet decides which cell an output belongs to by <em>when</em> it arrives; this is the one case where the output says so itself, because it arrives long after its own cell stopped being current. Use <a class="el" href="classWorksheet_1_1AsyncOutputTarget.html" title="Scoped SetAsyncOutputTarget(), so an early return or a throw while appending can&#39;t leave every subseq...">AsyncOutputTarget</a> rather than calling this directly. </p>
 
 </div>
 </div>

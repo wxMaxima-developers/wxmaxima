@@ -504,7 +504,23 @@ Architecture &amp; GUI</h1>
 </b></b></b></b></li>
 </ul>
 <p><b><b><b><b></b></b></b></b></p>
-<h2><a class="anchor" id="autotoc_md45"></a>
+<h2><a class="anchor" id="autotoc_md67"></a>
+Asynchronous ("background job") output from Maxima</h2>
+<p><b><b><b><b> <b>Implemented and verified, but dormant: nothing in today's single-threaded <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> sends it.</b> Full design, measurements and rationale live in <code>Doxygen/AsyncMaximaOutput.md</code> &ndash; read that before touching any of it. Only the traps worth knowing from elsewhere are repeated here.</b></b></b></b></p>
+<p><b><b><b><b></p><ul>
+<li><b>Nothing else in this protocol identifies a cell.</b> Output is associated with a cell purely by <em>when</em> it arrives (<code>Worksheet::GetWorkingGroup(true)</code>). <code>&lt;wxasync&gt;&lt;id&gt;UUID&lt;/id&gt;... &lt;/wxasync&gt;</code> is the single exception, and it exists because a background job's output arrives long after its own cell stopped being current. <code><a class="el" href="classWorksheet.html#a1f88d0ae3d7219b394d964c79a894a3a" title="The group that the line&#39;s cells will belong to - used by InsertLine.">Worksheet::GetInsertGroup()</a></code> honours <code>m_asyncOutputTarget</code> (set only via the scoped <code><a class="el" href="classWorksheet_1_1AsyncOutputTarget.html" title="Scoped SetAsyncOutputTarget(), so an early return or a throw while appending can&#39;t leave every subseq...">Worksheet::AsyncOutputTarget</a></code>) ahead of the working group.</li>
+<li>**<code>Maxima::ProcessData()</code> matches a known tag as a bare <code>&lt;tag&gt;</code>**, by an exact compare against <code>"&lt;" + name + "&gt;"</code>. <a class="el" href="classA.html">A</a> tag carrying an attribute is not recognised at all &ndash; which is why the cell id travels in the body as <code>&lt;id&gt;...&lt;/id&gt;</code> rather than as <code>id="..."</code>. Applies to any future tag, not just this one.</li>
+<li><b>The per-cell id MUST be sent as <code>:lisp-quiet</code></b> (see <code>MaximaEvaluator::CellIdConfigCommand()</code>, appended to <code>m_configCommands</code>). This is the same hard rule <code>m_configCommands</code> already documents above: a plain statement emits a prompt, and <code><a class="el" href="classEvaluationQueue.html#a9281421bc414407c4d8fa99335ecb24e" title="Removes the first command in the queue.">EvaluationQueue::RemoveFirst()</a></code> advances the queue by one cell for every main prompt with no way to tell whose it is, silently dropping a queued cell per command sent.</li>
+<li><b><a class="el" href="classA.html">A</a> background job must never ask a question, and closing its <code>*standard-input*</code> does not achieve that.</b> <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s <code>retrieve</code> (<code>src/macsys.lisp</code>) prints the question <em>before</em> reading, so the question is already on the shared socket by the time the read fails &ndash; and <a class="el" href="classwxMaxima.html">wxMaxima</a> can only read it as a question from whatever cell is currently being evaluated. Confirmed live: a background <code>asksign()</code> put its question on an unrelated cell and left that cell waiting. An <em>empty</em> stdin is worse still (EOF, the ask machinery loops, the session stops answering commands entirely). <code>wxMathML.lisp</code> therefore wraps <code>retrieve</code> itself, gated on <code>*wx-in-async-job*</code>; the closed stdin stays as defence in depth. <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s input and output are the same socket, so an unguarded read really would consume the next command.</li>
+<li><b>Concurrent writes to <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s output stream corrupt it, not merely interleave it</b> &ndash; SBCL's FD-stream buffer is shared and concurrent flushes replay buffered content (measured: one thread's whole block emitted twice, the command echo three times). Every writer takes <code>*wx-output-lock*</code>.</li>
+<li><b>Two wxMaxima-side gotchas that only show up when this is actually run</b>, both already handled in <code>ReadAsyncOutput()</code> but easy to reintroduce elsewhere: (1) a <code><a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a></code>'s <em>first</em> output cell is its <b>label</b> slot (<code>AppendOutput()</code> assigns it to <code>m_output</code>, which <code>GetLabel()</code> returns and <code>GetOutput()</code> skips), so output appended to a cell that has produced none yet silently becomes the label and never renders &ndash; an empty <code><a class="el" href="classLabelCell.html" title="A label cell.">LabelCell</a></code> is inserted first; (2) nothing schedules a recalculation for a cell that is not the working group, so <code>RequestRecalculation(target)</code> has to be explicit or the output is correctly appended and never laid out.</li>
+<li><b>The <code>wx-spawn-async</code> macro rebinds <code>*wx-cell-id*</code> inside the thread</b> rather than only capturing it. The first version captured into a gensym the body could not see, so the natural body call <code>(wx-async-text "...")</code> read the <em>global</em> value and delivered to the wrong cell &ndash; caught live, a job started under cell <a class="el" href="classA.html">A</a> landed on cell <a class="el" href="classC.html">C</a>. Don't "simplify" that rebinding away.</li>
+<li><b>Deliberately does not scroll or un-collapse</b>, even with "follow
+  evaluation" on &ndash; same reasoning as GH #1952 above.</li>
+</ul>
+<p></b></b></b></b></p>
+<p><b><b><b><b></b></b></b></b></p>
+<h2><a class="anchor" id="autotoc_md68"></a>
 Communication with Maxima</h2>
 <p><b><b><b><b> <a class="el" href="classwxMaxima.html">wxMaxima</a> sends Lisp and <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> commands over the socket; <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> answers with XML wrapped in known tags. <code><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></code> reads that data on a worker thread and posts <code>EVT_MAXIMA</code> events to the main thread, where <code><a class="el" href="classwxMaxima.html">wxMaxima</a></code> handles them.</b></b></b></b></p>
 <p><b><b><b><b><code>src/wxMathML.lisp</code> is compiled into the binary (through CMake's bin2h) and is what tells <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> to format its output as MathML-like XML. For development, <code>--wxmathml-lisp=&lt;path&gt;</code> overrides it with an external file, so a change can be tried without rebuilding.</b></b></b></b></p>
@@ -569,7 +585,7 @@ Communication with Maxima</h2>
   &lt;tt&gt;:lisp-quiet (with-input-from-string ...)&lt;/tt&gt; / socket-level reproduction
   (see the debugging technique note above) before the fix, not guessed.
 
-@subsection autotoc_md51 File Formats
+@subsection autotoc_md69 File Formats
 
 - **&lt;tt&gt;.wxmx&lt;/tt&gt;** &amp;ndash; a ZIP archive holding &lt;tt&gt;content.xml&lt;/tt&gt; (the MathML-like XML) plus
   the embedded images. The format version lives in &lt;tt&gt;src/WXMXformat.h&lt;/tt&gt;.
@@ -634,7 +650,7 @@ Communication with Maxima</h2>
   and re-running: the injection scenarios failed with exactly the reported
   symptom before the fix was restored.
 
-@subsection autotoc_md58 Translations (&lt;tt&gt;locales/&lt;/tt&gt;)
+@subsection autotoc_md70 Translations (&lt;tt&gt;locales/&lt;/tt&gt;)
 
 - &lt;strong&gt;One combined &lt;tt&gt;.po&lt;/tt&gt; per language, in &lt;tt&gt;locales/wxMaxima/&lt;/tt&gt;, is the file a
   translator edits.&lt;/strong&gt; It covers both wxMaxima's own UI strings
@@ -873,7 +889,7 @@ Communication with Maxima</h2>
   a scratch commit first) over a blanket &lt;tt&gt;git checkout -- \&lt;dir\&gt; \&amp;\&amp; git clean
   -fd \&lt;dir\&gt;&lt;/tt&gt; once a directory has a mix of both kinds of changes in it.
 
-@section autotoc_md59 Conventions &amp; Standards
+@section autotoc_md71 Conventions &amp; Standards
 
 - &lt;strong&gt;Git Environment:&lt;/strong&gt; Note that running &lt;tt&gt;git diff&lt;/tt&gt; might launch the visual diff tool &lt;tt&gt;meld&lt;/tt&gt; instead of outputting to the terminal. Always use &lt;tt&gt;git diff --no-ext-diff&lt;/tt&gt; if you need terminal output.
 - &lt;strong&gt;String Literals &amp; Translations:&lt;/strong&gt; Use the &lt;tt&gt;wxS()&lt;/tt&gt; macro for all string literals and &lt;tt&gt;_()&lt;/tt&gt; for user-facing translatable strings.
@@ -1375,7 +1391,7 @@ Communication with Maxima</h2>
     something a firewall/antivirus's network protection would touch, and
     some of it blocks loopback inter-process communication too.
 
-@section autotoc_md61 Layout &amp; Compatibility
+@section autotoc_md72 Layout &amp; Compatibility
 
 The rules below are the ones worth carrying around at all times. The reasoning
 behind them, the pipeline they belong to, and the recurring shapes layout bugs
@@ -1435,7 +1451,7 @@ which loads on demand &amp;ndash; keep the detail there rather than growing this
   compiles everywhere and does nothing. The same trap applies to any future
   &lt;tt&gt;wxSOMETHING&lt;/tt&gt; shim added there.
 
-@section autotoc_md62 Performance &amp; Documentation Mandates
+@section autotoc_md73 Performance &amp; Documentation Mandates
 
 - &lt;strong&gt;NEWS.md Updates:&lt;/strong&gt; Every non-trivial change MUST be documented in &lt;tt&gt;NEWS.md&lt;/tt&gt; under the "# Current development version" section.
 - &lt;strong&gt;Doxygen Comments:&lt;/strong&gt; Include descriptions for all new classes and public methods. Complex algorithms (e.g., LCS alignment) require detailed architectural comments.
@@ -1446,12 +1462,12 @@ which loads on demand &amp;ndash; keep the detail there rather than growing this
   - Prefer &lt;tt&gt;(intern ...)&lt;/tt&gt; over &lt;tt&gt;read-from-string&lt;/tt&gt; for dynamic symbol generation.
 - &lt;strong&gt;Strict XML Mandate:&lt;/strong&gt; To avoid duplicate attributes, add any new manually-handled XML attribute (e.g., &lt;tt&gt;noneParens="true"&lt;/tt&gt;) to the filter list in &lt;tt&gt;MathParser.cpp&lt;/tt&gt;.
 
-@section autotoc_md63 Visual Documentation (&lt;tt&gt;art/Doxygen/&lt;/tt&gt;)
+@section autotoc_md74 Visual Documentation (&lt;tt&gt;art/Doxygen/&lt;/tt&gt;)
 
 - &lt;strong&gt;Geometry Awareness:&lt;/strong&gt; If modifying &lt;tt&gt;Recalculate()&lt;/tt&gt; or &lt;tt&gt;Draw()&lt;/tt&gt; geometry (padding, center alignment), you MUST update the corresponding SVG diagrams in &lt;tt&gt;art/Doxygen/&lt;/tt&gt;.
 - &lt;strong&gt;Consistency:&lt;/strong&gt; New cell types should have &lt;tt&gt;*Geometry.svg&lt;/tt&gt; and &lt;tt&gt;*LinearGeometry.svg&lt;/tt&gt; (if applicable) diagrams.
 
-@section autotoc_md64 Key Subsystems Map
+@section autotoc_md76 Key Subsystems Map
 
 Deeper, per-subsystem background lives in &lt;tt&gt;.claude/skills/&lt;/tt&gt;, which load only
 when they are relevant &amp;ndash; so that hard-won detail is available without every
@@ -1494,7 +1510,7 @@ has already been broken.
 </ul>
 <p></code></b></b></b></b></p>
 <p><b><b><b><b><code></code></b></b></b></b></p>
-<h1><a class="anchor" id="autotoc_md65"></a>
+<h1><a class="anchor" id="autotoc_md77"></a>
 Backlog / Future Work</h1>
 <p><b><b><b><b><code> Items the maintainer has flagged as worth doing but hasn't asked for yet &ndash; don't start on these without checking in first, but pick them up if asked for "what's
 next" style work.</code></b></b></b></b></p>
@@ -1508,7 +1524,7 @@ next" style work.</code></b></b></b></b></p>
 </ul>
 <p></code></b></b></b></b></p>
 <p><b><b><b><b><code></code></b></b></b></b></p>
-<h1><a class="anchor" id="autotoc_md66"></a>
+<h1><a class="anchor" id="autotoc_md83"></a>
 Error resilience</h1>
 <p><b><b><b><b><code></p><ul>
 <li>To err is human =&gt; If your instructions don't seem to make sense feel free to ask. </li>
