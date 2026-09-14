@@ -392,4 +392,136 @@ SCENARIO("AiKnownLocalServerPresets() lists usable OpenAI-compatible presets") {
   }
 }
 
+SCENARIO("The API-style picker's index <-> shape mapping round-trips") {
+  // Options lists OpenAiCompatible *first* (the overwhelmingly common
+  // choice for a hand-added endpoint), which is not the order
+  // AiProviderShape declares -- so the two conversions cannot be plain
+  // casts. Getting this wrong silently rewrote a custom provider's wire
+  // format: a freshly added OpenAI-compatible entry was shown as
+  // "Anthropic (Messages API)", and Options' own save-before-switch
+  // write-back then really did turn it into one, so a local Ollama server
+  // was sent Anthropic-shaped requests it never asked for.
+  THEN("OpenAI-compatible is the picker's first item") {
+    CHECK(AiProviderShapeToChoiceIndex(AiProviderShape::OpenAiCompatible) == 0);
+    CHECK(AiProviderShapeFromChoiceIndex(0) == AiProviderShape::OpenAiCompatible);
+  }
+  THEN("every shape survives a shape -> index -> shape round trip") {
+    for (auto shape : {AiProviderShape::Anthropic, AiProviderShape::OpenAiCompatible,
+                       AiProviderShape::Google})
+      CHECK(AiProviderShapeFromChoiceIndex(AiProviderShapeToChoiceIndex(shape)) == shape);
+  }
+  THEN("every picker index survives an index -> shape -> index round trip") {
+    for (int index = 0; index < 3; index++)
+      CHECK(AiProviderShapeToChoiceIndex(AiProviderShapeFromChoiceIndex(index)) == index);
+  }
+  THEN("an out-of-range index degrades to the default shape rather than "
+      "producing an invalid enum value") {
+    CHECK(AiProviderShapeFromChoiceIndex(-1) == AiProviderShape::OpenAiCompatible);
+    CHECK(AiProviderShapeFromChoiceIndex(99) == AiProviderShape::OpenAiCompatible);
+  }
+}
+
+SCENARIO("A provider with no API key sends no credential header at all") {
+  // A local AI server (Ollama, LM Studio, llama.cpp server -- see
+  // AiKnownLocalServerPresets()) has no third party to authenticate to and
+  // normally has no key. Sending a bare "Authorization: Bearer " with
+  // nothing after it is likelier to be rejected outright than ignored, so
+  // the header is omitted entirely instead.
+  GIVEN("a keyless OpenAI-compatible provider") {
+    auto provider = MakeAiProviderForShape(
+      AiProviderShape::OpenAiCompatible, wxS("Local Ollama"),
+      wxS("http://localhost:11434/v1/chat/completions"), wxEmptyString, wxS("llama3.2"));
+    REQUIRE(provider);
+    THEN("no Authorization header is sent") {
+      CHECK(provider->AuthHeaders().empty());
+    }
+  }
+  GIVEN("a keyless Anthropic-shaped provider") {
+    auto provider = MakeAiProviderForShape(
+      AiProviderShape::Anthropic, wxS("Local Anthropic proxy"),
+      wxS("http://localhost:8080/v1/messages"), wxEmptyString, wxS("some-model"));
+    REQUIRE(provider);
+    THEN("no x-api-key header is sent, but the version header still is") {
+      bool hasApiKeyHeader = false, hasVersionHeader = false;
+      for (const auto &h : provider->AuthHeaders()) {
+        if (h.first == wxS("x-api-key"))
+          hasApiKeyHeader = true;
+        if (h.first == wxS("anthropic-version"))
+          hasVersionHeader = true;
+      }
+      CHECK_FALSE(hasApiKeyHeader);
+      CHECK(hasVersionHeader);
+    }
+  }
+  GIVEN("a keyless Google-shaped provider") {
+    auto provider = MakeAiProviderForShape(
+      AiProviderShape::Google, wxS("Local Gemini proxy"),
+      wxS("http://localhost:8080/v1beta/models/"), wxEmptyString, wxS("some-model"));
+    REQUIRE(provider);
+    THEN("no x-goog-api-key header is sent") {
+      CHECK(provider->AuthHeaders().empty());
+    }
+  }
+  GIVEN("the same providers with a key") {
+    THEN("the credential header is sent as before") {
+      auto openai = MakeAiProviderForShape(
+        AiProviderShape::OpenAiCompatible, wxS("x"), wxS("http://x/"), wxS("k"), wxS("m"));
+      REQUIRE(openai->AuthHeaders().size() == 1);
+      CHECK(openai->AuthHeaders()[0].second == wxS("Bearer k"));
+      auto anthropic = MakeAiProviderForShape(
+        AiProviderShape::Anthropic, wxS("x"), wxS("http://x/"), wxS("k"), wxS("m"));
+      bool hasApiKeyHeader = false;
+      for (const auto &h : anthropic->AuthHeaders())
+        if ((h.first == wxS("x-api-key")) && (h.second == wxS("k")))
+          hasApiKeyHeader = true;
+      CHECK(hasApiKeyHeader);
+      auto google = MakeAiProviderForShape(
+        AiProviderShape::Google, wxS("x"), wxS("http://x/"), wxS("k"), wxS("m"));
+      REQUIRE(google->AuthHeaders().size() == 1);
+      CHECK(google->AuthHeaders()[0].first == wxS("x-goog-api-key"));
+    }
+  }
+}
+
+SCENARIO("AiProviderRequestUrlProblem() rejects what actually gets typed") {
+  THEN("a complete URL is accepted, http and https alike, any case") {
+    CHECK(AiProviderRequestUrlProblem(
+            wxS("http://localhost:11434/v1/chat/completions")).IsEmpty());
+    CHECK(AiProviderRequestUrlProblem(
+            wxS("https://api.example.com/v1/chat/completions")).IsEmpty());
+    CHECK(AiProviderRequestUrlProblem(wxS("HTTP://localhost:11434/v1/")).IsEmpty());
+    CHECK(AiProviderRequestUrlProblem(wxS("  http://localhost:8080/  ")).IsEmpty());
+  }
+  THEN("a bare host:port is rejected -- the mistake this exists to catch") {
+    // Exactly what a real config file contained after a user set up a
+    // local Ollama server by hand: no scheme, no path. libcurl reads
+    // everything before the first colon as the scheme, so this reached the
+    // user as an unexplained network failure.
+    CHECK_FALSE(AiProviderRequestUrlProblem(wxS("127.0.0.1:11434")).IsEmpty());
+    CHECK_FALSE(AiProviderRequestUrlProblem(wxS("localhost:11434")).IsEmpty());
+    CHECK_FALSE(
+      AiProviderRequestUrlProblem(wxS("localhost:11434/v1/chat/completions")).IsEmpty());
+  }
+  THEN("an empty or scheme-only URL is rejected too") {
+    CHECK_FALSE(AiProviderRequestUrlProblem(wxEmptyString).IsEmpty());
+    CHECK_FALSE(AiProviderRequestUrlProblem(wxS("   ")).IsEmpty());
+    CHECK_FALSE(AiProviderRequestUrlProblem(wxS("http://")).IsEmpty());
+    CHECK_FALSE(AiProviderRequestUrlProblem(wxS("https://")).IsEmpty());
+  }
+  THEN("a non-HTTP scheme is rejected") {
+    CHECK_FALSE(AiProviderRequestUrlProblem(wxS("ftp://example.com/")).IsEmpty());
+    CHECK_FALSE(AiProviderRequestUrlProblem(wxS("file:///tmp/x")).IsEmpty());
+  }
+  THEN("every built-in local-server preset passes its own check") {
+    for (const auto &preset : AiKnownLocalServerPresets())
+      CHECK(AiProviderRequestUrlProblem(preset.baseUrl).IsEmpty());
+  }
+  THEN("every built-in provider's own base URL passes it too") {
+    for (auto kind : {AiProviderKind::Anthropic, AiProviderKind::OpenAI,
+                      AiProviderKind::Google, AiProviderKind::Qwen,
+                      AiProviderKind::GitHubModels})
+      CHECK(AiProviderRequestUrlProblem(AiProviderBaseUrl(kind)).IsEmpty());
+  }
+}
+
 int main(int argc, char *argv[]) { return Catch::Session().run(argc, argv); }

@@ -1384,6 +1384,294 @@ a local TCP socket.
     Confirming the fix's actual on-screen effect (grid opens without
     asserting, both links stay hidden until populated, the dropdown spans
     the tab) needs the maintainer's own build to re-check.
+  - **Follow-up (2026-09-11): a `WXM_USE_AI_TOOLS` CMake option landed
+    (two commits by Wolfgang Dautermann/the maintainer) meaning to make the
+    whole AI Chat feature optional at compile time -- but the plumbing had
+    two independent bugs that together silently compiled the sidebar out
+    of *every* build, regardless of the option's value, confirmed live
+    with `nm` on a fresh build (`grep -c AiChatSidebar` -> 0) before this
+    fix and non-zero after.**
+    1. **`WXM_USE_AI_TOOLS` was never passed to the C++ preprocessor at
+       all** -- no `add_compile_definitions`/`target_compile_definitions`
+       anywhere. Every `#ifdef WXM_USE_AI_TOOLS` guard added to
+       `Configuration.cpp`, `ConfigDialogue.cpp`/`.h`, `wxMaxima.cpp` and
+       `wxMaximaFrame.h`/`.cpp` was therefore testing an *undefined*
+       macro, which the preprocessor always reads as `0` -- permanently
+       compiling out `Configuration`'s AI API key accessors,
+       `wxMaximaFrame::m_aiChatSidebar`, and the whole Options "AI Chat"
+       tab, no matter what the CMake option was set to. Fixed the same way
+       `USE_FRIBIDI`/`USE_WEBVIEW`/`USE_QA` already are: added
+       `#cmakedefine WXM_USE_AI_TOOLS` to `src/BuildConfig.h.cin` (picks up
+       the CMake option of the same name automatically, no extra
+       `set()` needed) and changed every `#if(WXM_USE_AI_TOOLS)` to
+       `#ifdef WXM_USE_AI_TOOLS` to match `#cmakedefine`'s "defined or
+       not," no-value semantics (the same reason `Bidi.cpp` uses `#ifdef
+       USE_FRIBIDI`, never `#if USE_FRIBIDI`) -- every affected file
+       already transitively includes `BuildConfig.h` via `precomp.h`
+       (included as an ordinary header everywhere, not just as an actual
+       PCH -- `WXM_ENABLE_PRECOMPILED_HEADERS` defaults off), so no new
+       `#include` was needed anywhere.
+    2. **`src/CMakeLists.txt` never actually compiled `AiChatSidebar.cpp`
+       into `wxmaxima`, regardless of the option.** It had been removed
+       from `SIDEBAR_SOURCE_FILES` and instead added via `if(WXM_USE_AI_TOOLS)
+       list(APPEND SOURCE_FILES AiChatSidebar.cpp) endif()` -- but at that
+       point in the file `SOURCE_FILES` doesn't exist yet (it's `set()`
+       ~45 lines later, which wholesale overwrites whatever this line
+       produced), and even the filename itself was wrong (missing the
+       `sidebars/` prefix `list(TRANSFORM SIDEBAR_SOURCE_FILES PREPEND
+       sidebars/)` applies to everything else in that list, two lines
+       below the broken `append`). Fixed by moving the `if(WXM_USE_AI_TOOLS)`
+       block to append to `SIDEBAR_SOURCE_FILES` (the correct list)
+       *before* that `PREPEND sidebars/` transform runs, so the new entry
+       gets the same path-prefixing treatment as its siblings.
+    3. **The exact same mistake a third time, harmlessly, in two more
+       places** -- `#if(WXM_USE_AI_TOOLS)` / `#endif` used as if it were a
+       preprocessor guard inside `src/CMakeLists.txt` (around
+       `AI_SOURCE_FILES`) and `test/unit_tests/CMakeLists.txt` (around
+       `test_AiProvider`'s `add_executable`) -- but `#` is CMake's comment
+       character, so both were just comments, and the code between them
+       ran completely unconditionally either way. Harmless in the first
+       spot (`AI_SOURCE_FILES`'s actual inclusion into `SOURCE_FILES` is
+       separately, correctly gated by a real CMake `if()` a few dozen
+       lines later) but meant `test_AiProvider` was never actually
+       disabled by `WXM_USE_AI_TOOLS=OFF`, contrary to that commit's own
+       message ("Disable AI test when AI is disabled..."). Fixed by
+       deleting the two misleading fake-comment guards around
+       `AI_SOURCE_FILES` (redundant with the real gating downstream) and
+       turning `test_AiProvider`'s into a genuine CMake `if(WXM_USE_AI_TOOLS)
+       ... endif()`.
+    **Verified both directions, not just one**: a fresh configure+build
+    with the option at its new default (`ON`, per the maintainer's own
+    "Enable the AI sidebar by default" commit) now genuinely produces a
+    binary containing `AiChatSidebar`/`Configuration::AiApiKeyAnthropic()`
+    symbols (confirmed via `nm`, both present, both absent before this
+    fix); a second fresh configure+build with `-DWXM_USE_AI_TOOLS=OFF`
+    still compiles and links cleanly end to end with neither symbol
+    present -- confirming the option now genuinely controls the feature
+    in both directions, not just re-enabling it. Not yet verified live in
+    Xvfb (the Options "AI Chat" tab actually opening, the sidebar actually
+    appearing in View -> Sidebars) -- that's the natural next check before
+    building anything new on top of this.
+  - **Follow-up (2026-09-14): "network error" from both a local Ollama
+    server and Anthropic -- the maintainer's own live report, and the one
+    time this feature's root cause was found by reading the user's actual
+    `~/.config/wxMaxima.conf` rather than by reasoning about the code.**
+    The saved entry was
+    `{"baseUrl":"127.0.0.1:11434","model":"llama3.2","name":"Ollama","shape":"anthropic"}`
+    -- three separate bugs visible in one line, two of them wxMaxima's own:
+    1. **`shape` was `anthropic` for what the user had set up as an
+       OpenAI-compatible local server.** `ConfigDialogue::
+       LoadAiProviderRecordIntoUi()` populated the "API style" `wxChoice`
+       with `SetSelection(static_cast<int>(rec.shape))`, but that dropdown
+       deliberately lists `OpenAiCompatible` *first* (it is the
+       overwhelmingly common choice, and what every local-server preset
+       uses) while `AiProviderShape` declares `Anthropic` first --
+       so `OpenAiCompatible` (enum value 1) selected item 1,
+       "Anthropic (Messages API)". `StashAiProviderUiIntoRecord()`'s own
+       index->enum `switch` was correct, so the mismatch was silent *and*
+       self-propagating: the picker showed the wrong style, and the next
+       save-before-switch write-back stored what the picker showed.
+       Deterministic on every single add, since
+       `AddCustomAiProviderDialog()` ends with `RebuildAiProviderChoice()`
+       -> `LoadAiProviderRecordIntoUi()`. Fixed with
+       `AiProviderShapeToChoiceIndex()`/`AiProviderShapeFromChoiceIndex()`
+       (`AiProvider.h`/`.cpp`) as the single source of truth, used by all
+       three sites; both `shapeChoices.Add(...)` blocks carry a comment
+       saying their order is what those two encode. **Never cast between
+       this enum and a selection index directly.**
+    2. **`baseUrl` was a bare `127.0.0.1:11434` -- no scheme, no path**,
+       which is exactly what someone sets up a local server by typing, and
+       is not a URL at all: libcurl reads everything before the first colon
+       as the scheme, so this surfaced to the user as an unexplained
+       network failure with nothing pointing at the URL. This is also what
+       the maintainer's own hypothesis ("the custom AI provider lacks a
+       setting that allows to change https to http") was really about --
+       there is no such setting needed, the field has always been free text
+       and every preset already fills in a full `http://` URL; the missing
+       piece was that nothing said a scheme was required. Added
+       `AiProviderRequestUrlProblem()`: empty if the URL is usable,
+       otherwise a sentence naming the problem. Wired into
+       `AddCustomAiProviderDialog()` (an inline `WrappingStaticText` plus
+       the OK button's existing `wxEVT_UPDATE_UI` enable check -- silent
+       while the field is still empty, so it nags only once something
+       unusable has actually been typed) and into
+       `AiChatSidebar::ReloadProviderFromConfig()`, which must check it too
+       since an entry saved before this existed still carries a bad URL.
+       **Deliberately does not guess a missing scheme**: prepending
+       `http://` to a remote host would put the user's API key on the wire
+       in clear text, and prepending `https://` to a plain-HTTP local
+       server just swaps one confusing failure for another.
+    3. **The stored API key for that entry was one character long** -- the
+       user working around `ReloadProviderFromConfig()`'s
+       `if (!apiKey.IsEmpty())` gate, which refused to build a custom
+       provider without a key and reported the perfectly-configured local
+       server as "No AI provider configured." A local server has no third
+       party to authenticate to; the gate now checks the *URL* instead
+       (the thing a custom entry genuinely cannot work without), and all
+       three provider shapes omit their credential header entirely when
+       the key is empty rather than sending a bare `Authorization: Bearer `.
+    **Separately, and the most broadly useful fix here:
+    `SendChat()`'s `State_Failed` branch threw away
+    `wxWebRequestEvent::GetErrorDescription()`**, reporting every single
+    transport failure as "Could not reach %s (network error)." That string
+    is why neither of the maintainer's two failures could be diagnosed
+    from the app at all. The backend already distinguishes them
+    perfectly -- confirmed live with a standalone wxWebRequest harness
+    against this same wxWidgets 3.3.4/libcurl-gnutls build, which returned
+    `"Could not resolve hostname"`, `"Could not connect to server"` and
+    `"Failure when receiving data from the peer"` for three different
+    causes, all of which the app was collapsing into one useless sentence.
+    Now passed through verbatim, to both the chat history and the AI
+    Connection Monitor. **The maintainer's Anthropic failure is still
+    undiagnosed as of this entry** -- their key is present and well-formed
+    (108 chars, `sk-ant-` prefix, so the provider really is built and the
+    request really is sent), the machine has no system proxy and has valid
+    CA certificates, and this sandbox's own egress proxy makes any direct
+    HTTPS test from here worthless (plain `curl` reaches
+    api.anthropic.com fine, the wx curl backend does not -- a proxy-auth
+    artifact of the sandbox, reproduced and confirmed as such by removing
+    the proxy env vars and watching the error change). The new message is
+    what will identify it; don't guess at it further without that text.
+    **Verified live** in a real Xvfb session driving the actual app with a
+    throwaway `HOME` (the maintainer's own config left byte-identical,
+    checked before and after): a keyless OpenAI-compatible entry pointed at
+    a local test server now reports "Chatting with Ollama", enables Send,
+    sends a correct OpenAI-shaped body with *no* auth header, and shows the
+    reply -- and the maintainer's exact broken `127.0.0.1:11434` entry now
+    shows "This provider's settings need fixing." with the full
+    explanation in the chat history, without any network attempt at all.
+    **GTK4 note for any future live check here**: wxWidgets 3.3.4/GTK4 on
+    plain Xvfb never maps its window (it sits in a dmabuf/DRM path,
+    `/proc/<pid>/fd` full of `syncobj_file` entries, screenshot solid
+    black, zero children on the root window). `GSK_RENDERER=cairo
+    GDK_BACKEND=x11 LIBGL_ALWAYS_SOFTWARE=1` fixes it completely -- worth
+    reaching for before concluding the app failed to start. Also: this
+    machine's wx build has `wxUSE_SECRETSTORE=1` and a working keyring, so
+    unlike the older sessions this file documents, the AI Chat tab and
+    sidebar *are* reachable here. And `pkill -f "src/wxmaxima"` kills the
+    agent's own shell (its command line contains the pattern) -- match on
+    `ps -eo pid,comm` instead.
+  - **Follow-up (2026-09-11): a third status bar icon for the AI Chat
+    sidebar, mirroring the existing Maxima/network status icons.** Raised
+    directly by the maintainer: "on the bottom right there are two spaces
+    for symbols... could we add a third one so if the AI connection is
+    active the leftmost of the 3 spaces could show an AI symbol... if the
+    connection isn't active I would leave that space empty... single click
+    might put the ai panel into the foreground... double-click might lead
+    to an AI connection monitor sidebar like the XML monitor does." Neither
+    the AI Chat sidebar nor the MCP server has a real persistent "session"
+    to reflect (each Send is one stateless HTTP request/response, and
+    `McpServer` deliberately never implements MCP's own `Mcp-Session-Id`
+    concept -- see that section's own "Transport" note above), so "is the
+    AI connection active" was redefined, with the maintainer's explicit
+    sign-off ("Perhaps showing all those states in the icon makes sense =>
+    let's implement that"), as a small state machine: `StatusBar::AiStatus`
+    is `None` (no provider configured -- icon hidden entirely), `Active`
+    (configured, last request -- if any -- succeeded), `Busy` (a request is
+    currently in flight), or `Error` (the last request failed, detail in
+    the tooltip).
+    - **`StatusBar` itself stays free of any `AiProvider`/`WXM_USE_AI_TOOLS`
+      dependency.** The constructor takes a plain `bool aiChatAvailable`
+      (whether to reserve a 4th status bar field at all) rather than
+      including `ai/AiProvider.h` or checking the macro itself --
+      `wxMaximaFrame` computes that bool via
+      `AiProvider::SecretStoreAvailable()` inside its own already-`#ifdef
+      WXM_USE_AI_TOOLS`-guarded code and passes it in as a plain bool. This
+      mirrors `GetTrayIconBitmap()`'s own reasoning (added for `TrayIcon`,
+      GH #2286) for why `StatusBar` shouldn't grow feature-specific
+      dependencies: it's constructed early, from `wxMaximaFrame`'s own
+      constructor, and every other status/tray-icon consumer already goes
+      through plain bitmaps/enums, not the features that produce them.
+    - **Reusing `art/config/ai-chat.svg`'s exact motif for the icon hit an
+      immediate CMake target-name collision**: `art/config/CMakeLists.txt`'s
+      own bin2h loop already creates a target literally named
+      `build_ai-chat.h` for the Options-tab icon of the same name -- CMake
+      target names are global across the whole project, not per-directory,
+      so `art/statusbar/ai-chat.svg.gz` reusing that exact basename failed
+      configure with "another target with the same name already exists."
+      Fixed by naming the three status-bar variants `ai-active`/`ai-busy`/
+      `ai-error` instead (distinct from `art/config`'s `ai-chat`/
+      `ai-chat-error`, which serve a different UI surface and were kept
+      as-is) -- worth remembering for any future icon added under
+      `art/statusbar/` that's inspired by an existing `art/config/` (or any
+      other art directory's) file: check for a basename collision first,
+      since nothing catches it until CMake's configure step actually runs.
+    - **Tracking "what to show after a bitmap reload" needed its own
+      logical-state member, not a bitmap-object comparison.**
+      `StatusBar::UpdateBitmaps()` only runs on a genuine PPI change and
+      reloads every bitmap from scratch (including the three new AI ones);
+      the first draft tried to detect "was the icon currently showing the
+      error bitmap" by comparing `m_aiStatus->GetBitmap() ==
+      m_bitmap_ai_error` -- which is always false right after reloading,
+      since `m_bitmap_ai_error` was simultaneously reassigned to a freshly
+      rasterized (differently-backed) `wxBitmap` object a few lines above
+      the comparison. Fixed the same way `m_oldNetworkState` already tracks
+      `NetworkStatus()`'s own logical state independent of whatever bitmap
+      object happens to be currently displayed: added `m_aiStatusState`/
+      `m_aiStatusDetail`, updated on every `UpdateAiStatus()` call, and
+      `UpdateBitmaps()` re-applies them (calling `UpdateAiStatus()` again
+      with the freshly loaded bitmaps) after a PPI change instead of trying
+      to infer the previous state from a bitmap comparison.
+    - **The "Busy" state was a deliberate addition beyond the maintainer's
+      original 3-space request**, made after the maintainer's own follow-up
+      mid-session: "if the AI thought for a long time we should act like
+      when Maxima thought for a long time and inform the user." Maxima's
+      own `StatusBar::UpdateStatusMaximaBusy()` shows an immediate
+      "calculating" icon+tooltip the instant it starts working, with no
+      fixed threshold -- `AiChatSidebar::SetBusy(bool)` now mirrors exactly
+      that (calls `UpdateAiStatusIcon()`, which reports `AiStatus::Busy`
+      whenever `m_requestInFlight` is true) rather than only signaling busy
+      after some delay. A *second*, smaller escalation was added on top for
+      the "long time" half of the request specifically: a one-shot
+      `wxTimer` (`LONG_WAIT_MS`, 10 seconds -- no existing precedent value
+      to reuse, since Maxima's own status text/tooltip never escalates by
+      elapsed time either, unlike `transferring`'s dynamic byte count) that,
+      if the request is still in flight when it fires, updates both the
+      sidebar's own status text and the icon's tooltip to say the request
+      is "taking longer than usual" -- purely a wording change, not a new
+      status; `AiStatus::Busy` covers both the just-started and the
+      long-elapsed case, distinguished only by tooltip text (via
+      `UpdateAiStatus()`'s existing `detail` parameter, the same mechanism
+      `AiStatus::Error` already uses for its own detail text). The timer is
+      started in `SetBusy(true)` and explicitly `.Stop()`'d in
+      `SetBusy(false)`, so a request that finishes before 10 seconds never
+      fires it at all.
+    - **`AiConnectionMonitor` (`src/sidebars/AiConnectionMonitor.{h,cpp}`)
+      mirrors `XmlInspector`'s shape** (a read-only `wxRichTextCtrl`-derived
+      sidebar with colored section headers) but deliberately skips
+      `XmlInspector`'s idle-driven `UpdateContents()`/batching entirely: one
+      AI chat turn is a single user-paced Send click, not a flood of small
+      socket reads, so `Add_Request()`/`Add_Response()` write directly and
+      immediately rather than deferring. **No redaction of the displayed
+      traffic is needed** -- confirmed (this session and the original
+      `AiChatSidebar` follow-up both independently grepped for
+      `m_apiKey`) that every provider's API key is used only inside its own
+      `AuthHeaders()` return value, a request *header*, never inside
+      `BuildRequestBody()`'s JSON body -- so the plain request/response text
+      shown here never contains it.
+    - **`AiProvider::SendChat()` gained two new optional trailing
+      parameters**, `onRequest`/`onResponse` (both default `nullptr`,
+      so the existing `test_AiProvider.cpp` call sites and the function's
+      own contract are unaffected), invoked once each right before the
+      request is sent and at every one of `SendChat()`'s existing terminal
+      states (`State_Completed` both 2xx and non-2xx, `State_Unauthorized`,
+      `State_Failed`, `State_Cancelled`, the `!request.IsOk()` early return,
+      and the `!wxUSE_WEBREQUEST` compile-time fallback) -- deliberately
+      exhaustive, mirroring every existing `callback(...)` call site 1:1,
+      so the connection monitor can never silently miss a terminal state
+      `callback` itself already handles.
+    - **Verification**: `test_AiProvider` (116 assertions, unchanged --
+      the new parameters default to `nullptr` and aren't exercised, same as
+      `SendChat()` itself already wasn't per that file's own note) plus a
+      full rebuild in both `-DWXM_USE_AI_TOOLS=ON` (confirmed via `nm`:
+      `AiConnectionMonitor`/`AiStatusClick`/`UpdateAiStatus` all present,
+      full link succeeds) and `=OFF` (confirmed via `nm`: zero occurrences
+      of `AiConnectionMonitor`/`AiChatSidebar`/`AiStatusClick`, full link
+      still succeeds) directions -- the same both-directions discipline the
+      `WXM_USE_AI_TOOLS` plumbing fix above established. Not yet verified
+      live in Xvfb (the icon's actual on-screen appearance/click behavior,
+      the monitor sidebar's real traffic display) -- worth doing before
+      extending this further.
   - **Not implemented, and shouldn't be without a separate decision: a
     write/evaluate-capable MCP tool.** Raised and discussed directly with
     the user (2026-09-06): unlike `watch_variable`/`unwatch_variable` (see
@@ -2705,6 +2993,67 @@ a local TCP socket.
     Verified live: clicking "Interrupt" from the tray logs the same
     "Sending Maxima a SIGINT signal," and clicking "Exit" raises the same
     save-changes `Save As` prompt a normal File > Exit does.
+
+### Asynchronous ("background job") output from Maxima
+
+**Implemented and verified, but dormant: nothing in today's single-threaded
+Maxima sends it.** Full design, measurements and rationale live in
+`Doxygen/AsyncMaximaOutput.md` -- read that before touching any of it.
+Only the traps worth knowing from elsewhere are repeated here.
+
+- **Nothing else in this protocol identifies a cell.** Output is
+  associated with a cell purely by *when* it arrives
+  (`Worksheet::GetWorkingGroup(true)`). `<wxasync><id>UUID</id>...
+  </wxasync>` is the single exception, and it exists because a background
+  job's output arrives long after its own cell stopped being current.
+  `Worksheet::GetInsertGroup()` honours `m_asyncOutputTarget` (set only via
+  the scoped `Worksheet::AsyncOutputTarget`) ahead of the working group.
+- **`Maxima::ProcessData()` matches a known tag as a bare `<tag>`**, by an
+  exact compare against `"<" + name + ">"`. A tag carrying an attribute is
+  not recognised at all -- which is why the cell id travels in the body as
+  `<id>...</id>` rather than as `id="..."`. Applies to any future tag, not
+  just this one.
+- **The per-cell id MUST be sent as `:lisp-quiet`** (see
+  `MaximaEvaluator::CellIdConfigCommand()`, appended to `m_configCommands`).
+  This is the same hard rule `m_configCommands` already documents above: a
+  plain statement emits a prompt, and `EvaluationQueue::RemoveFirst()`
+  advances the queue by one cell for every main prompt with no way to tell
+  whose it is, silently dropping a queued cell per command sent.
+- **A background job must never ask a question, and closing its
+  `*standard-input*` does not achieve that.** Maxima's `retrieve`
+  (`src/macsys.lisp`) prints the question *before* reading, so the question
+  is already on the shared socket by the time the read fails -- and
+  wxMaxima can only read it as a question from whatever cell is currently
+  being evaluated. Confirmed live: a background `asksign()` put its
+  question on an unrelated cell and left that cell waiting. An *empty*
+  stdin is worse still (EOF, the ask machinery loops, the session stops
+  answering commands entirely). `wxMathML.lisp` therefore wraps `retrieve`
+  itself, gated on `*wx-in-async-job*`; the closed stdin stays as defence
+  in depth. Maxima's input and output are the same socket, so an unguarded
+  read really would consume the next command.
+- **Concurrent writes to Maxima's output stream corrupt it, not merely
+  interleave it** -- SBCL's FD-stream buffer is shared and concurrent
+  flushes replay buffered content (measured: one thread's whole block
+  emitted twice, the command echo three times). Every writer takes
+  `*wx-output-lock*`.
+- **Two wxMaxima-side gotchas that only show up when this is actually
+  run**, both already handled in `ReadAsyncOutput()` but easy to
+  reintroduce elsewhere: (1) a `GroupCell`'s *first* output cell is its
+  **label** slot (`AppendOutput()` assigns it to `m_output`, which
+  `GetLabel()` returns and `GetOutput()` skips), so output appended to a
+  cell that has produced none yet silently becomes the label and never
+  renders -- an empty `LabelCell` is inserted first; (2) nothing schedules
+  a recalculation for a cell that is not the working group, so
+  `RequestRecalculation(target)` has to be explicit or the output is
+  correctly appended and never laid out.
+- **The `wx-spawn-async` macro rebinds `*wx-cell-id*` inside the thread**
+  rather than only capturing it. The first version captured into a gensym
+  the body could not see, so the natural body call `(wx-async-text "...")`
+  read the *global* value and delivered to the wrong cell -- caught live,
+  a job started under cell A landed on cell C. Don't "simplify" that
+  rebinding away.
+- **Deliberately does not scroll or un-collapse**, even with "follow
+  evaluation" on -- same reasoning as GH #1952 above.
 
 ### Communication with Maxima
 

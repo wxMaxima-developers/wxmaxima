@@ -29,7 +29,7 @@
 */
 
 #include "ConfigDialogue.h"
-#if(WXM_USE_AI_TOOLS)
+#ifdef WXM_USE_AI_TOOLS
 #include "ai/AiProvider.h"
 #endif
 #include <wx/hyperlink.h>
@@ -297,7 +297,7 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent)
   m_notebook->AddPage(CreateClipboardPanel(), _("Copy"), false, 5);
   m_notebook->AddPage(CreateStartupPanel(), _("Startup commands"), false, 6);
   m_notebook->AddPage(CreatePrintPanel(), _("Printout settings"), false, 7);
-#if(WXM_USE_AI_TOOLS)
+#ifdef WXM_USE_AI_TOOLS
   // Hidden outright, not just disabled, when there's nowhere safe to keep
   // an API key -- see AiProvider::SecretStoreAvailable()'s own doc comment
   // for why this doesn't fall back to plain-text storage instead.
@@ -626,7 +626,7 @@ void ConfigDialogue::SetCheckboxValues() {
   m_findDialogDockable->SetValue(configuration->FindDialogDockable());
   m_mcpServerEnabled->SetValue(configuration->McpServerEnabled());
   m_mcpServerPort->SetValue(configuration->McpServerPort());
-#if(WXM_USE_AI_TOOLS)
+#ifdef WXM_USE_AI_TOOLS
   // The whole AI Chat tab doesn't exist when there's nowhere safe to keep
   // an API key (see AiProvider::SecretStoreAvailable(), and where
   // CreateAiChatPanel() is (not) called) -- nothing here to populate.
@@ -2010,7 +2010,7 @@ wxWindow *ConfigDialogue::CreateAccessibilityPanel() {
 }
 #endif
 
-#if(WXM_USE_AI_TOOLS)
+#ifdef WXM_USE_AI_TOOLS
 wxWindow *ConfigDialogue::CreateAiChatPanel() {
   wxScrolled<wxPanel> *panel = new wxScrolled<wxPanel>(m_notebook, wxID_ANY);
   panel->SetScrollRate(5 * GetContentScaleFactor(),
@@ -2085,6 +2085,11 @@ wxWindow *ConfigDialogue::CreateAiChatPanel() {
 
   m_aiShapeLabel = new wxStaticText(detailBoxWin, wxID_ANY, _("API style:"));
   grid->Add(m_aiShapeLabel, wxSizerFlags().Align(wxALIGN_CENTER_VERTICAL));
+  // This order is load-bearing: it is what AiProviderShapeToChoiceIndex()/
+  // AiProviderShapeFromChoiceIndex() encode, and every read/write of this
+  // control's selection goes through them. Reordering these three lines
+  // without updating those two silently rewrites a custom provider's wire
+  // format.
   wxArrayString shapeChoices;
   shapeChoices.Add(AiProviderShapeName(AiProviderShape::OpenAiCompatible));
   shapeChoices.Add(AiProviderShapeName(AiProviderShape::Anthropic));
@@ -2126,10 +2131,10 @@ wxWindow *ConfigDialogue::CreateAiChatPanel() {
   // and the real label/URL aren't known until LoadAiProviderRecordIntoUi()
   // runs just below, so a throwaway non-empty label stands in until then.
   // Hidden immediately for the same reason: nothing meaningful to show yet.
-  m_aiApiKeyLink = new wxHyperlinkCtrl(detailBoxWin, wxID_ANY, wxS(" "), wxEmptyString);
+  m_aiApiKeyLink = new wxHyperlinkCtrl(detailBoxWin, wxID_ANY, wxS("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"), wxEmptyString);
   m_aiApiKeyLink->Show(false);
   m_aiProviderDetailBox->Add(m_aiApiKeyLink, wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
-  m_aiModelListLink = new wxHyperlinkCtrl(detailBoxWin, wxID_ANY, wxS(" "), wxEmptyString);
+  m_aiModelListLink = new wxHyperlinkCtrl(detailBoxWin, wxID_ANY, wxS("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"), wxEmptyString);
   m_aiModelListLink->Show(false);
   m_aiProviderDetailBox->Add(m_aiModelListLink, wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
 
@@ -2170,12 +2175,7 @@ void ConfigDialogue::StashAiProviderUiIntoRecord() {
   rec.model = m_aiModelCtrl->GetValue();
   if (rec.kind == AiProviderKind::Custom) {
     rec.baseUrl = m_aiBaseUrlCtrl->GetValue();
-    switch (m_aiShapeChoice->GetSelection()) {
-    case 1: rec.shape = AiProviderShape::Anthropic; break;
-    case 2: rec.shape = AiProviderShape::Google; break;
-    case 0:
-    default: rec.shape = AiProviderShape::OpenAiCompatible; break;
-    }
+    rec.shape = AiProviderShapeFromChoiceIndex(m_aiShapeChoice->GetSelection());
   }
 }
 
@@ -2200,7 +2200,7 @@ void ConfigDialogue::LoadAiProviderRecordIntoUi(int index) {
   m_aiShapeLabel->Show(isCustom);
   m_aiShapeChoice->Show(isCustom);
   if (isCustom)
-    m_aiShapeChoice->SetSelection(static_cast<int>(rec.shape));
+    m_aiShapeChoice->SetSelection(AiProviderShapeToChoiceIndex(rec.shape));
   m_aiBaseUrlCtrl->SetValue(isCustom ? rec.baseUrl : AiProviderBaseUrl(rec.kind));
   m_aiBaseUrlCtrl->SetEditable(isCustom);
   m_aiRemoveCustomProviderButton->Show(isCustom);
@@ -2301,6 +2301,11 @@ bool ConfigDialogue::AddCustomAiProviderDialog() {
 
   grid->Add(new wxStaticText(&dlg, wxID_ANY, _("API style:")),
            wxSizerFlags().Align(wxALIGN_CENTER_VERTICAL));
+  // This order is load-bearing: it is what AiProviderShapeToChoiceIndex()/
+  // AiProviderShapeFromChoiceIndex() encode, and every read/write of this
+  // control's selection goes through them. Reordering these three lines
+  // without updating those two silently rewrites a custom provider's wire
+  // format.
   wxArrayString shapeChoices;
   shapeChoices.Add(AiProviderShapeName(AiProviderShape::OpenAiCompatible));
   shapeChoices.Add(AiProviderShapeName(AiProviderShape::Anthropic));
@@ -2334,6 +2339,15 @@ bool ConfigDialogue::AddCustomAiProviderDialog() {
       "of one of them)."));
   dlgVbox->Add(hint, wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
 
+  // Says what is wrong with the URL as it is typed, rather than letting a
+  // scheme-less "host:port" through to fail much later as an unexplained
+  // network error -- see AiProviderRequestUrlProblem(). Starts with a
+  // placeholder the first wxEVT_UPDATE_UI replaces immediately, since
+  // WrappingStaticText needs a width to wrap against before the dialog is
+  // laid out.
+  WrappingStaticText *urlProblem = new WrappingStaticText(&dlg, wxID_ANY, wxEmptyString);
+  dlgVbox->Add(urlProblem, wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
+
   presetCtrl->Bind(wxEVT_CHOICE, [presetCtrl, presets, nameCtrl, shapeCtrl,
                                   urlCtrl, modelCtrl](wxCommandEvent &) {
     int sel = presetCtrl->GetSelection();
@@ -2354,9 +2368,18 @@ bool ConfigDialogue::AddCustomAiProviderDialog() {
 
   wxButton *okButton = static_cast<wxButton *>(dlg.FindWindow(wxID_OK));
   if (okButton != NULL)
-    okButton->Bind(wxEVT_UPDATE_UI, [nameCtrl, urlCtrl](wxUpdateUIEvent &evt) {
+    okButton->Bind(wxEVT_UPDATE_UI, [nameCtrl, urlCtrl, urlProblem, &dlg](wxUpdateUIEvent &evt) {
+      wxString url = urlCtrl->GetValue();
+      // An empty field is "not filled in yet", not "wrong" -- only nag once
+      // the user has actually typed something that cannot work.
+      wxString problem =
+        url.Trim().Trim(false).IsEmpty() ? wxString() : AiProviderRequestUrlProblem(url);
+      if (problem != urlProblem->GetLabel()) {
+        urlProblem->SetLabel(problem);
+        dlg.Layout();
+      }
       evt.Enable(!nameCtrl->GetValue().Trim().IsEmpty() &&
-                !urlCtrl->GetValue().Trim().IsEmpty());
+                AiProviderRequestUrlProblem(url).IsEmpty());
     });
 
   if (dlg.ShowModal() != wxID_OK)
@@ -2366,12 +2389,7 @@ bool ConfigDialogue::AddCustomAiProviderDialog() {
   rec.kind = AiProviderKind::Custom;
   rec.customId = NewAiCustomProviderId();
   rec.displayName = nameCtrl->GetValue().Trim();
-  switch (shapeCtrl->GetSelection()) {
-  case 1: rec.shape = AiProviderShape::Anthropic; break;
-  case 2: rec.shape = AiProviderShape::Google; break;
-  case 0:
-  default: rec.shape = AiProviderShape::OpenAiCompatible; break;
-  }
+  rec.shape = AiProviderShapeFromChoiceIndex(shapeCtrl->GetSelection());
   rec.baseUrl = urlCtrl->GetValue().Trim();
   rec.model = modelCtrl->GetValue();
   m_aiProviderRecords.push_back(rec);
@@ -2808,7 +2826,7 @@ void ConfigDialogue::WriteSettings() {
   configuration->FindDialogDockable(m_findDialogDockable->GetValue());
   configuration->McpServerEnabled(m_mcpServerEnabled->GetValue());
   configuration->McpServerPort(m_mcpServerPort->GetValue());
-#if(WXM_USE_AI_TOOLS)
+#ifdef WXM_USE_AI_TOOLS
   // The whole AI Chat tab (and these members) don't exist without a
   // secret store to keep a key in -- see CreateAiChatPanel()/
   // SetCheckboxValues()'s own matching guard.

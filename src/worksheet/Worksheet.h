@@ -567,6 +567,13 @@ public:
 private:
   int m_clickType = CLICK_TYPE_NONE;
   CellPtr<GroupCell> m_clickInGC;
+  /*! Non-null only while one background job's output is being appended.
+
+    A CellPtr, not a raw pointer, for the ordinary reason everything in
+    this codebase that outlives a single call is: the cell a background
+    job named can have been deleted in the meantime, and a CellPtr reads
+    back as nullptr instead of dangling. */
+  CellPtr<GroupCell> m_asyncOutputTarget;
   //! true = blink the cursor
   bool m_blinkDisplayCaret = true;
   //! Is the blinking vertically-drawn cursor currently visible?
@@ -887,6 +894,46 @@ public:
 
   //! The group that the line's cells will belong to - used by InsertLine
   GroupCell *GetInsertGroup() const;
+
+  /*! Finds a GroupCell by its UUID, or nullptr if no cell has that UUID.
+
+    Generates a UUID for any cell that doesn't have one yet, since
+    Cell::GetUUID() is lazy -- the same (documented, and shared with the
+    MCP tools) side effect of a cell's UUID being written out on the next
+    save once anything has asked for it. */
+  GroupCell *FindGroupCellByUUID(const wxString &uuid) const;
+
+  /*! Routes output to one specific cell instead of the one being evaluated.
+
+    Set for exactly as long as it takes to append one background job's
+    output (see AsyncOutputTarget below and Doxygen/AsyncMaximaOutput.md).
+    Everything else in this worksheet decides which cell an output belongs
+    to by *when* it arrives; this is the one case where the output says so
+    itself, because it arrives long after its own cell stopped being
+    current. Use AsyncOutputTarget rather than calling this directly. */
+  void SetAsyncOutputTarget(GroupCell *cell) { m_asyncOutputTarget = cell; }
+  //! The cell async output is currently being routed to, if any.
+  GroupCell *GetAsyncOutputTarget() const { return m_asyncOutputTarget; }
+
+  /*! Scoped SetAsyncOutputTarget(), so an early return or a throw while
+    appending can't leave every subsequent ordinary output misrouted to a
+    cell that stopped being relevant long ago. */
+  class AsyncOutputTarget {
+  public:
+    AsyncOutputTarget(Worksheet *worksheet, GroupCell *cell)
+      : m_worksheet(worksheet) {
+      if (m_worksheet)
+        m_worksheet->SetAsyncOutputTarget(cell);
+    }
+    ~AsyncOutputTarget() {
+      if (m_worksheet)
+        m_worksheet->SetAsyncOutputTarget(nullptr);
+    }
+    AsyncOutputTarget(const AsyncOutputTarget &) = delete;
+    AsyncOutputTarget &operator=(const AsyncOutputTarget &) = delete;
+  private:
+    Worksheet *m_worksheet;
+  };
 
   /*! Actually recalculate the worksheet.
 

@@ -125,6 +125,14 @@ public:
     XML_WXXML_KEY,
     //! Maxima has sent one complete block of ASCII-art 2D display output.
     XML_ASCIIMATH,
+    /*! Output from a background job, naming the cell it belongs to.
+
+      Everything else in this protocol is associated with a cell purely by
+      *when* it arrives -- whichever cell is being evaluated at that
+      moment. A background job's output arrives long after that, so it
+      carries its own cell id instead; see
+      Doxygen/AsyncMaximaOutput.md. */
+    XML_ASYNC_OUTPUT,
     //! Maxima has disconnected (possibly because the process had died).
     DISCONNECTED,
     //! A write to Maxima is still ongoing. We use this event to keep the traffic indicator alive.

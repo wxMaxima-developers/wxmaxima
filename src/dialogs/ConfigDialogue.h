@@ -55,10 +55,12 @@ extern unsigned char view_refresh_svg_gz[];
 #ifndef CONFIGDIALOGUE_H
 #define CONFIGDIALOGUE_H
 
+#include "BuildConfig.h"
+
 #include "cells/TextStyle.h"
 #include "worksheet/Worksheet.h"
 #include "../Configuration.h"
-#if(WXM_USE_AI_TOOLS)
+#ifdef WXM_USE_AI_TOOLS
 #include "ai/AiProvider.h"
 #endif
 
@@ -187,7 +189,7 @@ private:
 
   //! The panel that allows to choose which formats to put on the clipboard
   wxWindow *CreateClipboardPanel();
-#if(WXM_USE_AI_TOOLS)
+#ifdef WXM_USE_AI_TOOLS
   wxWindow *CreateAiChatPanel();
 #endif
 
@@ -350,7 +352,7 @@ protected:
   wxCheckBox *m_findDialogDockable;
   wxCheckBox *m_mcpServerEnabled;
   wxSpinCtrl *m_mcpServerPort;
-#if(WXM_USE_AI_TOOLS)
+#ifdef WXM_USE_AI_TOOLS
   //! One entry per configurable provider -- the four built-ins (in fixed
   //! order) plus any custom ones -- kept in memory only for the dialog's
   //! lifetime. "None (disabled)" is not one of these; it's a separate,

@@ -135,7 +135,7 @@ target_include_directories(test_MaximaProtocol PRIVATE ${CMAKE_SOURCE_DIR}/src)
 target_link_libraries(test_MaximaProtocol PRIVATE ${wxWidgets_LIBRARIES})
 add_test(MaximaProtocol test_MaximaProtocol)
 
-#if(WXM_USE_AI_TOOLS)
+if(WXM_USE_AI_TOOLS)
 # AiProvider's request-building/response-parsing (the AI chat sidebar's
 # per-provider HTTP shapes) is pure JSON in and out, so it is tested
 # directly, the same way as MaximaProtocol above -- the actual network call
@@ -144,7 +144,7 @@ add_executable(test_AiProvider test_AiProvider.cpp ${WXM_TEST_SETUP} ${WXM_TEST_
 target_include_directories(test_AiProvider PRIVATE ${CMAKE_SOURCE_DIR}/src)
 target_link_libraries(test_AiProvider PRIVATE ${wxWidgets_LIBRARIES})
 add_test(AiProvider test_AiProvider)
-#endif
+endif()
 
 # Guards the wxWidgets 3.3 "item" assert that wxMenu::GetHelpString() trips when
 # a highlighted menu id is not an item of that menu (seen mainly via the Windows

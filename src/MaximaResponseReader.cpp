@@ -31,6 +31,8 @@
 #include "LdbSupport.h"
 #include "MaximaProtocol.h"
 #include "EventIDs.h"
+#include "cells/GroupCell.h"
+#include "cells/LabelCell.h"
 #include <wx/sstream.h>
 #include <functional>
 
@@ -380,6 +382,88 @@ void MaximaResponseReader::ReadAsciiMath(const wxString &data) {
 
   m_wxMaxima.GetWorksheet()->SetCurrentTextCell(nullptr);
   m_wxMaxima.m_outputAppender.DoRawConsoleAppend(content, MC_TYPE_ASCIIMATHS);
+}
+
+void MaximaResponseReader::ReadAsyncOutput(const wxString &data) {
+  if(!m_wxMaxima.GetWorksheet())
+    return;
+
+  // Maxima::ProcessData() only fires this event once it holds a complete
+  // <wxasync>...</wxasync> block, so the id and the payload always arrive
+  // together however many socket reads that took.
+  static const wxString startTag = wxS("<wxasync>");
+  static const wxString endTag = wxS("</wxasync>");
+  wxASSERT(data.StartsWith(startTag) && data.EndsWith(endTag));
+  wxString content = data.SubString(startTag.Length(),
+                                    data.Length() - endTag.Length() - 1);
+
+  static const wxString idStart = wxS("<id>");
+  static const wxString idEnd = wxS("</id>");
+  int idEndPos = content.Find(idEnd);
+  if (!content.StartsWith(idStart) || (idEndPos == wxNOT_FOUND)) {
+    // Without an id there is no cell this could belong to, and guessing
+    // "the current one" is exactly the wrong answer this whole mechanism
+    // exists to avoid -- report it rather than misfiling it silently.
+    wxLogMessage(_("Ignoring asynchronous output from Maxima that names no cell."));
+    return;
+  }
+  wxString uuid = content.SubString(idStart.Length(), idEndPos - 1);
+  wxString payload = content.Mid(idEndPos + idEnd.Length());
+
+  GroupCell *target = m_wxMaxima.GetWorksheet()->FindGroupCellByUUID(uuid);
+  if (!target) {
+    // Entirely expected, not an error: the cell may have been deleted, or
+    // the worksheet replaced, while the background job was still running.
+    // Maxima has no way of knowing that, so it is this side's job to drop
+    // the output rather than to file it somewhere arbitrary.
+    wxLogMessage(_("Discarding asynchronous output for a worksheet cell that "
+                   "no longer exists."));
+    return;
+  }
+
+  m_wxMaxima.GetWorksheet()->SetCurrentTextCell(nullptr);
+
+  // A GroupCell's first output cell is its *label* slot, not output --
+  // GroupCell::AppendOutput() assigns the first cell it is ever given to
+  // m_output, which GetLabel() returns and GetOutput() deliberately skips.
+  // Every ordinary Maxima response begins with a "(%oN)" label, so that
+  // slot is always already filled by the time real output arrives; a
+  // background job's output has no label of its own, so on a cell that has
+  // produced no output yet -- one ending in "$", or one whose output the
+  // user cleared -- it would silently become the label and never render as
+  // output at all (observed exactly that: a correct append to the correct
+  // cell, and nothing on screen). Give it an empty label to occupy that
+  // slot first.
+  if (!target->GetLabel())
+    target->AppendOutput(std::make_unique<LabelCell>(
+                           target, &m_wxMaxima.m_configuration, wxEmptyString));
+
+  // Everything below this point is the ordinary append path -- the parser,
+  // InsertLine(), the recalculation -- with only the destination changed.
+  // Scoped, so an early return or a parse failure inside cannot leave every
+  // subsequent ordinary output routed to this cell.
+  Worksheet::AsyncOutputTarget targetGuard(m_wxMaxima.GetWorksheet(), target);
+
+  wxXmlDocument xmldoc;
+  wxStringInputStream xmlStream(wxS("<span>") + payload + wxS("</span>"));
+  if (!xmldoc.Load(xmlStream)) {
+    m_wxMaxima.m_outputAppender.DoRawConsoleAppend(
+      _("Asynchronous output from Maxima that could not be parsed."),
+      MC_TYPE_ERROR);
+    return;
+  }
+  m_wxMaxima.m_outputAppender.ConsoleAppend(xmldoc, MC_TYPE_DEFAULT);
+
+  // Explicitly, because nothing else will. InsertLine() only asks for a
+  // redraw and an AdjustSize(); the *recalculation* of a cell that gained
+  // output normally comes from that cell being the one under evaluation.
+  // The whole point of a background job's output is that its cell is not
+  // that cell -- so without this the output really is appended to the
+  // right cell and then never laid out, which looks exactly like the
+  // output having been lost (observed: the trace showed a correct append
+  // to the correct cell, and the cell rendered unchanged).
+  m_wxMaxima.GetWorksheet()->RequestRecalculation(target);
+  m_wxMaxima.GetWorksheet()->RequestRedraw(target);
 }
 
 void MaximaResponseReader::ReadPrompt(const wxString &data) {
