@@ -2744,6 +2744,208 @@ Submit bug reports by following the 'New issue' link on that page."))
 	 (if (< *wxmaxima-nested-loads* 1)
 	     (unless *wx-defer-queries*
 	       (wxPrint_autocompletesymbols))))))))
+;;; ------------------------------------------------------------------
+;;; Asynchronous ("background job") output.
+;;;
+;;; Maxima is single-threaded today, so nothing below is exercised in a
+;;; normal session -- it is the Maxima half of a protocol wxMaxima already
+;;; speaks, so that a future Maxima that *can* run a command in the
+;;; background has a correct way of saying which cell its eventual output
+;;; belongs to.
+;;;
+;;; The problem it solves: wxMaxima has no identifier for a cell anywhere
+;;; in this protocol. It decides which cell an output belongs to purely by
+;;; *when* the output arrives -- whatever cell is being evaluated at that
+;;; moment. A background job's output arrives long after its cell stopped
+;;; being the current one, so it would land on a completely unrelated cell.
+;;;
+;;; The fix is one variable and one tag. wxMaxima sets *wx-cell-id* ahead
+;;; of each cell (a :lisp-quiet form, so it costs no prompt and no output).
+;;; A background job captures that value AT SPAWN TIME and wraps its
+;;; eventual output in <wxasync><id>...</id>...</wxasync>, which wxMaxima
+;;; routes back to the cell that id names.
+;;;
+;;; See Doxygen/AsyncMaximaOutput.md for the measurements behind each of
+;;; the decisions below.
+
+;; The cell wxMaxima is currently feeding us commands from. Set per cell by
+;; wxMaxima itself; nothing in Maxima should assign it.
+(defvar *wx-cell-id* nil
+  "UUID of the worksheet cell whose commands are currently being evaluated.")
+
+;; Every writer to Maxima's output stream has to take this, because the
+;; stream is genuinely not safe to share. Three threads writing without it
+;; do not merely interleave: the shared FD-stream buffer gets flushed
+;; concurrently and *replays* content -- measured, one thread's whole
+;; output block appeared twice and the command's own result echo three
+;; times. NIL on a Lisp without threads, where there is nothing to serialize.
+(defvar *wx-output-lock*
+  #+sb-thread (sb-thread:make-mutex :name "wxMaxima output")
+  #-sb-thread nil
+  "Serializes writes to the stream wxMaxima reads, or NIL if this Lisp has no threads.")
+
+(defmacro wx-with-output-lock (&body body)
+  "Runs BODY with exclusive access to Maxima's output stream."
+  #+sb-thread `(sb-thread:with-mutex (*wx-output-lock*) ,@body)
+  #-sb-thread `(progn ,@body))
+
+(defun wx-async-available-p ()
+  "True if this Lisp can actually run a Maxima command in the background."
+  #+sb-thread t
+  #-sb-thread nil)
+
+(defun wx-emit-async (id thunk)
+  "Emits whatever THUNK prints as output belonging to the cell named by ID.
+
+Takes the output lock for the whole block, so a concurrently-running job
+cannot interleave its own output into the middle of this one and produce
+XML neither side can parse."
+  (when id
+    (wx-with-output-lock
+      (format t "~%<wxasync><id>~a</id>" (wxxml-fix-string (format nil "~a" id)))
+      (funcall thunk)
+      (format t "</wxasync>~%")
+      (finish-output))))
+
+(defun wx-async-text (text &optional (id *wx-cell-id*))
+  "Sends TEXT to the cell named by ID as plain text output.
+
+ID defaults to *wx-cell-id*, which inside wx-spawn-async is rebound to the
+cell that started the job -- so the obvious call, (wx-async-text \"...\"),
+is also the correct one."
+  (wx-emit-async id (lambda ()
+                      (format t "<mth><t>~a</t></mth>"
+                              (wxxml-fix-string (format nil "~a" text))))))
+
+(defun wx-async-display (expr &optional (id *wx-cell-id*))
+  "Sends EXPR to the cell named by ID, rendered the same way a normal
+result of that cell would have been. ID defaults as wx-async-text's does."
+  (wx-emit-async id (lambda () (mydispla expr))))
+
+(defun wx-async-error (text &optional (id *wx-cell-id*))
+  "Reports a background job's failure on the cell that started it."
+  (wx-emit-async id (lambda ()
+                      (format t "<mth><t breakline=\"true\">~a</t></mth>"
+                              (wxxml-fix-string (format nil "~a" text))))))
+
+;; A background job must never be able to ask the user a question, and
+;; simply leaving it to ask is not a survivable option -- this was measured,
+;; not assumed. A thread running (asksign '$zzz) with *standard-input* left
+;; alone prints "Is zzz positive, negative or zero?" straight into the
+;; shared stream, which wxMaxima can only read as a question from the cell
+;; it is currently evaluating; it then loops, re-asking forever, and the
+;; session stops answering ordinary commands altogether. Binding
+;; *standard-input* to an empty stream is NOT enough: the read returns EOF,
+;; the ask machinery loops, and the session wedges exactly the same way.
+;;
+;; A *closed* stream is what actually works. The ask fails immediately with
+;; a stream error, before the question is printed at all, and the session
+;; carries on normally -- verified live in all three variants.
+(defun wx-closed-input-stream ()
+  "An input stream that signals rather than being read from."
+  (let ((stream (make-string-input-stream "")))
+    (close stream)
+    stream))
+
+;; True only inside a wx-spawn-async body. A thread-local dynamic binding,
+;; so the main thread keeps asking questions normally even while a
+;; background job is running.
+(defvar *wx-in-async-job* nil
+  "True while the current thread is running a background job for a cell.")
+
+(define-condition wx-async-input-error (error) ()
+  (:report (lambda (condition stream)
+             (declare (ignore condition))
+             (format stream "A background computation cannot ask questions."))))
+
+;; Closing the thread's *standard-input* is NOT sufficient on its own, and
+;; this was established the hard way -- it looked sufficient in isolation
+;; and then leaked in a real session. Maxima's retrieve (src/macsys.lisp)
+;; PRINTS the question first and reads afterwards:
+;;
+;;     (format-prompt t "~M" msg) (mterpri)
+;;     (mread-noprompt *standard-input* nil)
+;;
+;; so by the time the read fails, "Is zzz positive, negative or zero?" is
+;; already on the wire -- and wxMaxima, which has no way of knowing which
+;; thread wrote it, can only read it as a question from whatever cell is
+;; being evaluated at that moment. Observed exactly that: a background job
+;; asking asksign() put its question on an unrelated cell and left that
+;; cell waiting for an answer that would have gone to the wrong place.
+;;
+;; So the ask has to be refused before it prints anything, which means
+;; intercepting retrieve itself. Wrapped rather than replaced, and gated on
+;; *wx-in-async-job*, so ordinary synchronous questions are completely
+;; unaffected -- this is the same wrap-and-delegate shape $load already
+;; uses further down this file.
+(unless (fboundp 'wx-retrieve-original)
+  (setf (symbol-function 'wx-retrieve-original) (symbol-function 'retrieve)))
+
+(no-warning
+ (defun retrieve (msg flag)
+   (if *wx-in-async-job*
+       (error 'wx-async-input-error)
+       (wx-retrieve-original msg flag))))
+
+(defmacro wx-spawn-async (&body body)
+  "Runs BODY in a background thread on behalf of the cell being evaluated now.
+
+Handles by construction the two things that are otherwise silently wrong:
+
+  * The cell id is captured HERE, not read inside the thread. Reading
+    *wx-cell-id* from inside the thread body yields whatever cell is
+    current when the thread finally runs -- i.e. reliably the wrong one,
+    with no error (measured: a job started under cell A reported cell B).
+
+  * Input is made impossible rather than left to chance, see
+    wx-closed-input-stream above. A job that tries to ask fails with a
+    message on its own cell instead of hijacking another cell's prompt.
+
+Any error escaping BODY is reported on the originating cell too, rather
+than disappearing with the thread."
+  (let ((id (gensym "CELLID")) (err (gensym "ERR")))
+    `(let ((,id *wx-cell-id*))
+       (if (wx-async-available-p)
+           (progn
+             #+sb-thread
+             (sb-thread:make-thread
+              (lambda ()
+                ;; *wx-cell-id* is REBOUND here, not merely captured into
+                ;; a variable the body cannot see. That distinction is the
+                ;; whole usability of this macro: the obvious thing to
+                ;; write inside a job is (wx-async-text "..."), which
+                ;; consults *wx-cell-id* -- and without this rebinding that
+                ;; would read the global value, i.e. whatever cell happens
+                ;; to be current when the job finally finishes. Caught by
+                ;; testing rather than by reading: a job started under one
+                ;; cell delivered its output to a completely different one,
+                ;; silently and with no error.
+                (let ((*wx-cell-id* ,id)
+                      (*wx-in-async-job* t)
+                      ;; Defence in depth behind the retrieve wrapper above:
+                      ;; anything that reads input without going through
+                      ;; retrieve fails here instead of quietly eating bytes
+                      ;; out of the command stream wxMaxima is writing to --
+                      ;; Maxima's input and output are the same socket, so an
+                      ;; unguarded read really would consume the next command.
+                      (*standard-input* (wx-closed-input-stream)))
+                  (handler-case (progn ,@body)
+                    (wx-async-input-error ()
+                      (wx-async-error
+                       "This background computation tried to ask a question, which a background computation cannot do -- give it everything it needs up front (for example with assume())."))
+                    (stream-error ()
+                      (wx-async-error
+                       "This background computation tried to read input. A background computation cannot ask questions -- give it everything it needs up front (for example with assume())."))
+                    (error (,err)
+                      (wx-async-error
+                       (format nil "Background computation failed: ~a" ,err)))))))
+             t)
+           (progn
+             (wx-async-error
+              "This Maxima was built on a Lisp without thread support, so it cannot run anything in the background."
+              ,id)
+             nil)))))
+
 (format t "</suppressOutput>~%")
 ;; Publish all new global variables maxima might contain to wxMaxima's
 ;; autocompletion feature.

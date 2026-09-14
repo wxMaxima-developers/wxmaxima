@@ -1,5 +1,16 @@
 # Current development version
 
+- Added the wxMaxima half of a protocol for asynchronous ("background
+  job") output, ready for a future Maxima that can run a command in the
+  background. wxMaxima now tells Maxima which cell it is currently
+  evaluating, and understands output that names the cell it belongs to --
+  so a job's result lands on the cell that started it rather than on
+  whichever cell happens to be current minutes later. A background job
+  cannot ask questions (it is refused with a message on its own cell
+  instead of hijacking another cell's prompt), its output cannot be
+  interleaved with another job's, and output naming a cell that no longer
+  exists is discarded. Nothing changes in a normal session: today's Maxima
+  never sends such output. See Doxygen/AsyncMaximaOutput.md.
 - Fixed a custom AI provider silently changing its own wire format: the
   "API style" dropdown lists "OpenAI-compatible" first, but the code that
   filled it in used the raw enum value as the selection index, so a
