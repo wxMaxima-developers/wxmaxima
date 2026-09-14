@@ -149,6 +149,15 @@ Functions</h2></td></tr>
 wxString&#160;</td><td class="memItemRight" valign="bottom"><b>AiProviderShapeName</b> (<a class="el" href="AiProvider_8h.html#a563ba7f052d02461b015b25a0e2147eb">AiProviderShape</a> shape)</td></tr>
 <tr class="memdesc:a901bbcc8228be78514f930fcc147beed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Human-readable name for the shape picker in the "Add custom provider" dialog. <br /></td></tr>
 <tr class="separator:a901bbcc8228be78514f930fcc147beed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b795b041922faf8f078015692bc7e7b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="AiProvider_8h.html#a4b795b041922faf8f078015692bc7e7b">AiProviderShapeToChoiceIndex</a> (<a class="el" href="AiProvider_8h.html#a563ba7f052d02461b015b25a0e2147eb">AiProviderShape</a> shape)</td></tr>
+<tr class="memdesc:a4b795b041922faf8f078015692bc7e7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The two halves of the shape picker's index &lt;-&gt; enum mapping.  <br /></td></tr>
+<tr class="separator:a4b795b041922faf8f078015692bc7e7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79707d5df2476da01081b11893089c5c"><td class="memItemLeft" align="right" valign="top"><a id="a79707d5df2476da01081b11893089c5c" name="a79707d5df2476da01081b11893089c5c"></a>
+<a class="el" href="AiProvider_8h.html#a563ba7f052d02461b015b25a0e2147eb">AiProviderShape</a>&#160;</td><td class="memItemRight" valign="bottom"><b>AiProviderShapeFromChoiceIndex</b> (int index)</td></tr>
+<tr class="separator:a79707d5df2476da01081b11893089c5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace13aad5a1f4b5b271f340ab17fa7cad"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="AiProvider_8h.html#ace13aad5a1f4b5b271f340ab17fa7cad">AiProviderRequestUrlProblem</a> (const wxString &amp;url)</td></tr>
+<tr class="memdesc:ace13aad5a1f4b5b271f340ab17fa7cad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Empty if <code>url</code> is usable as a custom provider's request URL; otherwise a short, user-facing explanation of what is wrong with it.  <br /></td></tr>
+<tr class="separator:ace13aad5a1f4b5b271f340ab17fa7cad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a679c8337298a296fe7f2f4c709ead565"><td class="memItemLeft" align="right" valign="top"><a id="a679c8337298a296fe7f2f4c709ead565" name="a679c8337298a296fe7f2f4c709ead565"></a>
 std::vector&lt; <a class="el" href="structAiLocalServerPreset.html">AiLocalServerPreset</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>AiKnownLocalServerPresets</b> ()</td></tr>
 <tr class="memdesc:a679c8337298a296fe7f2f4c709ead565"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classA.html">A</a> short, hand-picked list of common local LLM servers &ndash; not exhaustive, just the ones popular enough to be worth a one-click shortcut; anything else is still just as reachable via a plain custom entry with a hand-typed URL. <br /></td></tr>
@@ -199,7 +208,51 @@ std::shared_ptr&lt; <a class="el" href="classAiProvider.html">AiProvider</a> &gt
 <div class="textblock"><p>Talks to one of a handful of external AI chat APIs for the AI chat sidebar (<a class="el" href="classAiChatSidebar.html" title="A sidebar to chat with an external AI about the current worksheet (follow-up to the MCP server,...">AiChatSidebar</a>). </p>
 <p>See that class for the safety scope (read-only worksheet context, no tool-calling in this first pass).</p>
 <p>Every provider here needs an internet connection to a third-party service and an API key the user pastes into Options &ndash; unlike the MCP server (src/mcp/), which is entirely local and needs neither. The two features are otherwise unrelated beyond both ultimately drawing on <a class="el" href="classMcpTools.html" title="Implements the read-only &quot;worksheet context&quot; tools the MCP server exposes to an external AI tool (GH ...">McpTools</a> for worksheet context. </p>
-</div></div><!-- contents -->
+</div><h2 class="groupheader">Function Documentation</h2>
+<a id="ace13aad5a1f4b5b271f340ab17fa7cad" name="ace13aad5a1f4b5b271f340ab17fa7cad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ace13aad5a1f4b5b271f340ab17fa7cad">&#9670;&#160;</a></span>AiProviderRequestUrlProblem()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxString AiProviderRequestUrlProblem </td>
+          <td>(</td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
+          <td class="paramname"><em>url</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Empty if <code>url</code> is usable as a custom provider's request URL; otherwise a short, user-facing explanation of what is wrong with it. </p>
+<p>Exists because the one thing that actually goes wrong here is easy to type and impossible to diagnose from the resulting failure: a bare "127.0.0.1:11434" (host and port, no scheme and no path) is a perfectly natural thing to write for a local server, but it is not a URL &ndash; everything before the first colon is the scheme, so the backend is asked for a "127.0.0.1" protocol it has never heard of and the whole thing surfaces much later as an unexplained network failure. Catching it at the point it is typed turns that into one sentence saying what to fix.</p>
+<p>Deliberately does NOT guess a missing scheme: prepending "http://" to a remote host would send the user's API key over the wire in clear text, and prepending "https://" to a local server that only speaks plain HTTP just trades one confusing failure for another. Asking is cheap; guessing wrong here is not. </p>
+
+</div>
+</div>
+<a id="a4b795b041922faf8f078015692bc7e7b" name="a4b795b041922faf8f078015692bc7e7b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4b795b041922faf8f078015692bc7e7b">&#9670;&#160;</a></span>AiProviderShapeToChoiceIndex()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int AiProviderShapeToChoiceIndex </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="AiProvider_8h.html#a563ba7f052d02461b015b25a0e2147eb">AiProviderShape</a>&#160;</td>
+          <td class="paramname"><em>shape</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The two halves of the shape picker's index &lt;-&gt; enum mapping. </p>
+<p>The dropdown deliberately lists OpenAiCompatible <em>first</em> (by far the most common choice for a hand-added endpoint, and the one every local-server preset uses), which is not the order AiProviderShape itself declares &ndash; so a plain static_cast&lt;int&gt;(shape) is NOT a valid selection index, and a plain static_cast&lt;AiProviderShape&gt;(selection) is NOT a valid shape. Every conversion must go through these two, or a custom provider silently changes its own wire format behind the user's back: populating the picker with a raw cast showed a freshly-added OpenAI-compatible entry as "Anthropic (Messages API)", and Options' own save-before-switch write-back then really did turn it into one. </p>
+
+</div>
+</div>
+</div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.6
