@@ -1,5 +1,12 @@
 # Current development version
 
+- Fixed the two links on the Options dialog's AI Chat tab ("Get an API
+  key for ..." and "See current models for ...") being drawn on top of
+  each other, above the fields they belong under, instead of stacked
+  below them. They are created hidden -- their real text isn't known
+  until a provider is picked -- and a hidden sizer item is never given a
+  position, so nothing ever positioned them once shown: the code laid out
+  the dialog rather than the tab they live on.
 - Added a third status bar icon for the AI Chat sidebar (next to the
   existing Maxima/network status icons): hidden when no AI provider is
   configured, shown with a distinct icon while a request is in flight, on
