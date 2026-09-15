@@ -267,6 +267,10 @@ wxString AiProviderRequestUrlProblem(const wxString &url) {
 }
 
 wxString AiProviderDefaultModel(AiProviderKind kind) {
+  // A model id going stale is not a cosmetic problem: Anthropic's API
+  // answers an id it does not recognise with a bare HTTP 404, which is
+  // what an out-of-date default here looked like to a user -- a "could
+  // not reach Anthropic" that had in fact reached it perfectly well.
   // Each of these is that provider's own "rolling" alias -- it always
   // resolves to the current snapshot of that model line, rather than a
   // pinned dated snapshot (e.g. Anthropic's own "claude-3-5-sonnet-
@@ -279,7 +283,7 @@ wxString AiProviderDefaultModel(AiProviderKind kind) {
   // the provider's own current list, not a fancier detection mechanism
   // trying to chase a moving target with another moving target).
   switch (kind) {
-  case AiProviderKind::Anthropic: return wxS("claude-3-5-sonnet-latest");
+  case AiProviderKind::Anthropic: return wxS("claude-sonnet-5");
   case AiProviderKind::OpenAI: return wxS("gpt-4o-mini");
   case AiProviderKind::Google: return wxS("gemini-1.5-flash");
   case AiProviderKind::Qwen: return wxS("qwen-plus");
@@ -676,6 +680,26 @@ void AiProvider::SendChat(
       case wxWebRequest::State_Failed: {
         *done = true;
         wxString detail = evt.GetErrorDescription();
+        // A failed request can still have received a perfectly real HTTP
+        // response: not every backend routes an error status through
+        // State_Completed, and the ones that don't leave GetErrorDescription()
+        // saying little more than the status number. The response body is
+        // where the provider actually explains itself -- an unknown model id,
+        // for instance, is an otherwise-unexplained HTTP 404 whose body names
+        // the model. Reporting the description alone threw that away.
+        wxWebResponse response = evt.GetResponse();
+        if (response.IsOk()) {
+          // Only when the backend told us nothing: its description normally
+          // names the status already, and repeating it reads as two separate
+          // failures rather than one.
+          const int status = response.GetStatus();
+          if (detail.IsEmpty() && (status > 0))
+            detail = wxString::Format(wxS("HTTP %d"), status);
+          const wxString body = response.AsString().Left(500);
+          if (!body.IsEmpty())
+            detail += wxS(": ") + body;
+        }
+        detail.Trim().Trim(false);
         wxString msg =
           detail.IsEmpty()
           ? wxString::Format(_("Could not reach %s (network error)."), self->Name())

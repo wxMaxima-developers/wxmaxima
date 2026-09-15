@@ -99,7 +99,6 @@ void AiChatSidebar::ReloadProviderFromConfig() {
   auto kind = static_cast<AiProviderKind>(m_configuration->AiChatProvider());
   wxString apiKey, model;
   m_provider = nullptr;
-  wxString previousProblem = m_providerConfigProblem;
   m_providerConfigProblem.Clear();
   if (kind == AiProviderKind::Custom) {
     // A Custom provider's URL/shape/model aren't implied by its kind alone
@@ -179,8 +178,11 @@ void AiChatSidebar::ReloadProviderFromConfig() {
   // user at all. Only on a *change* of problem, so re-reading the config
   // (which happens on every Options OK) can't pile up duplicates on top of
   // an ongoing conversation.
-  if (!m_providerConfigProblem.IsEmpty() && (m_providerConfigProblem != previousProblem))
+  if (!m_providerConfigProblem.IsEmpty() &&
+      (m_providerConfigProblem != m_reportedConfigProblem)) {
     AppendToHistory(_("wxMaxima"), m_providerConfigProblem);
+    m_reportedConfigProblem = m_providerConfigProblem;
+  }
   Layout();
 }
 
@@ -220,6 +222,12 @@ void AiChatSidebar::OnOpenOptions(wxCommandEvent &WXUNUSED(event)) {
 void AiChatSidebar::ClearConversation() {
   m_history.clear();
   m_historyCtrl->Clear();
+  // The transcript is what carries the "this provider's settings need
+  // fixing" explanation, so clearing it has to allow that to be said again
+  // -- otherwise clearing loses the only readable copy of it for good.
+  m_reportedConfigProblem.Clear();
+  if (!m_providerConfigProblem.IsEmpty())
+    AppendToHistory(_("wxMaxima"), m_reportedConfigProblem = m_providerConfigProblem);
 }
 
 void AiChatSidebar::OnInputKeyDown(wxKeyEvent &event) {
