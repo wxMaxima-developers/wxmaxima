@@ -2013,6 +2013,9 @@ wxWindow *ConfigDialogue::CreateAccessibilityPanel() {
 #ifdef WXM_USE_AI_TOOLS
 wxWindow *ConfigDialogue::CreateAiChatPanel() {
   wxScrolled<wxPanel> *panel = new wxScrolled<wxPanel>(m_notebook, wxID_ANY);
+  // Remembered for LoadAiProviderRecordIntoUi(), which shows and hides
+  // controls on this panel and has to re-lay-out *this* panel afterwards.
+  m_aiChatPanel = panel;
   panel->SetScrollRate(5 * GetContentScaleFactor(),
                        5 * GetContentScaleFactor());
   panel->SetMinSize(wxSize(GetContentScaleFactor() * mMinPanelWidth,
@@ -2185,7 +2188,7 @@ void ConfigDialogue::LoadAiProviderRecordIntoUi(int index) {
     (static_cast<size_t>(index) < m_aiProviderRecords.size());
   m_aiProviderDetailBox->Show(haveRecord);
   if (!haveRecord) {
-    Layout();
+    RelayoutAiChatPanel();
     return;
   }
   const AiProviderUiRecord &rec = m_aiProviderRecords[index];
@@ -2225,7 +2228,31 @@ void ConfigDialogue::LoadAiProviderRecordIntoUi(int index) {
     m_aiModelListLink->SetLabel(wxString::Format(_("See current models for %s..."), rec.displayName));
     m_aiModelListLink->SetURL(modelListUrl);
   }
-  Layout();
+  RelayoutAiChatPanel();
+}
+
+/*! Re-lays-out the AI Chat tab after controls on it were shown or hidden.
+
+  A bare Layout() -- i.e. ConfigDialogue::Layout(), which is what this used
+  to call -- lays out the *dialog's* own sizer. That is not guaranteed to
+  reach a sizer nested inside a notebook page whose own size has not
+  changed, and here it did not: the two wxHyperlinkCtrls are constructed
+  hidden (their real label and URL aren't known until a provider is
+  selected), a hidden sizer item is never positioned, and nothing
+  afterwards positioned them -- so both kept the position they had while
+  hidden and were drawn on top of each other, above the grid they are
+  added after. Laying out the panel they actually live on is what the rest
+  of this file already does after changing a panel's contents (see the
+  m_maximaEnvVariables call sites).
+
+  FitInside() as well, not just Layout(): this is a wxScrolled panel, and
+  showing or hiding the provider detail box changes how tall its contents
+  are, which is what the scrollbar range is computed from. */
+void ConfigDialogue::RelayoutAiChatPanel() {
+  if (!m_aiChatPanel)
+    return;
+  m_aiChatPanel->Layout();
+  m_aiChatPanel->FitInside();
 }
 
 void ConfigDialogue::OnAiProviderChoice(wxCommandEvent &WXUNUSED(event)) {

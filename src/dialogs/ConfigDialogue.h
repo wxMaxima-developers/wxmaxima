@@ -51,6 +51,7 @@ extern unsigned char view_refresh_svg_gz[];
 #include <unordered_map>
 #include <vector>
 #include <wx/hyperlink.h>
+#include <wx/scrolwin.h>
 
 #ifndef CONFIGDIALOGUE_H
 #define CONFIGDIALOGUE_H
@@ -378,6 +379,16 @@ protected:
   //! selected. Needed because switching the choice has to flush the
   //! outgoing record's edits before loading the incoming one.
   int m_aiActiveProviderRecordIndex = -1;
+  /*! The AI Chat tab's own scrolled panel.
+
+    Kept because LoadAiProviderRecordIntoUi() shows and hides controls on
+    it, and what has to be re-laid-out afterwards is *this* panel -- not
+    the dialog. A bare Layout() lays out the dialog's own sizer, which is
+    not guaranteed to reach a sizer nested inside a notebook page whose
+    own size did not change, so the shown controls keep whatever position
+    they had while hidden: none. See the comment at the end of
+    LoadAiProviderRecordIntoUi(). */
+  wxScrolled<wxPanel> *m_aiChatPanel = NULL;
   wxChoice *m_aiChatProviderChoice;
   //! One reusable box showing whichever provider is currently selected,
   //! rather than all of them stacked at once -- repopulated by
@@ -396,6 +407,10 @@ protected:
   //! Shown only for a Custom record; deletes it (and its stored API key)
   //! outright rather than just clearing its fields.
   wxButton *m_aiRemoveCustomProviderButton;
+  //! Re-lays-out the AI Chat tab after controls on it were shown or
+  //! hidden -- see the implementation's comment for why a bare Layout()
+  //! is not enough.
+  void RelayoutAiChatPanel();
   void OnAiProviderChoice(wxCommandEvent &event);
   void OnAiRemoveCustomProvider(wxCommandEvent &event);
   //! Copies the on-screen key/model/(baseUrl/shape for Custom) fields back
