@@ -31,6 +31,7 @@
 */
 #include "Version.h"
 #include "wxMaximaFrame.h"
+#include "AuiPerspectiveRepair.h"
 #include "ArtProvider.h"
 #include "Dirstructure.h"
 #include "MenuHelpString.h"
@@ -425,6 +426,14 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
   wxConfigBase *config = wxConfig::Get();
   wxString perspective;
   if(config->Read(wxS("AUI/perspective"), &perspective)) {
+    // Repair the stored layout before wxAUI ever sees it. A perspective saved
+    // by an older wxMaxima records the worksheet (centre) pane at dock row 2,
+    // which wxAUI considers invalid -- and LoadPerspective() does not merely
+    // warn about that, it drops the offending pane's stored geometry on the
+    // floor (wxAuiPaneInfo::SafeSet() only applies a pane that IsValid()).
+    // The defensive block further down cannot help: by the time it runs the
+    // geometry is already gone. See RepairAuiPerspective().
+    perspective = RepairAuiPerspective(perspective);
     // Loads the window states. We tell wxaui not to recalculate and display the
     // results of this step now as we will do so manually after
     // eventually adding the toolbar.

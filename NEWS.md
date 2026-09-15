@@ -1,5 +1,12 @@
 # Current development version
 
+- Fixed wxMaxima discarding the worksheet's stored window layout when
+  reading a configuration written by an older version. Those versions
+  recorded the worksheet pane at a dock row wxAUI considers invalid for a
+  centre pane, and wxAUI does not merely complain: LoadPerspective() drops
+  such a pane's stored geometry entirely. On a wxWidgets built with
+  assertions enabled it aborted wxMaxima on startup instead. The stored
+  layout is now repaired before wxAUI ever sees it.
 - Fixed the two links on the Options dialog's AI Chat tab ("Get an API
   key for ..." and "See current models for ...") being drawn on top of
   each other, above the fields they belong under, instead of stacked
@@ -33,7 +40,7 @@
   connect to server", "could not resolve host", a TLS error, ...) instead
   of a bare "network error" that gave the user nothing to act on.
 - The "Add custom AI provider" dialog now rejects a request URL with no
-  "http://" or "https://" in front of it, and the AI Chat sidebar explains
+  `http://` or `https://` scheme in front of it, and the AI Chat sidebar explains
   the problem instead of attempting the request, rather than letting a
   natural-looking but unusable "127.0.0.1:11434" through to fail later as
   an unexplained network error.

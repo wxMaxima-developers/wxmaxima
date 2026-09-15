@@ -1509,7 +1509,8 @@ a local TCP socket.
        party to authenticate to; the gate now checks the *URL* instead
        (the thing a custom entry genuinely cannot work without), and all
        three provider shapes omit their credential header entirely when
-       the key is empty rather than sending a bare `Authorization: Bearer `.
+       the key is empty rather than sending an `Authorization` header whose
+       value is a bare "Bearer" with nothing after it.
     **Separately, and the most broadly useful fix here:
     `SendChat()`'s `State_Failed` branch threw away
     `wxWebRequestEvent::GetErrorDescription()`**, reporting every single
@@ -1724,6 +1725,42 @@ a local TCP socket.
     perspective got wrong" stated purpose, rather than only partially
     addressing the same invariant `LoadPerspective()` could equally well
     have clobbered).
+- **An old config's stored AUI perspective silently loses the worksheet's
+  layout, and aborts an assertions-enabled build outright
+  (`RepairAuiPerspective()`, `src/AuiPerspectiveRepair.{h,cpp}`).** The
+  centre-pane entry above fixed the *code* that wrote `.Center().Row(2)` --
+  but every perspective saved before that fix still says `row=2`, and those
+  sit in users' config files indefinitely. `wxAuiManager::LoadPerspective()`
+  hands each stored pane to `wxAuiPaneInfo::SafeSet()`, which is
+  `if (source.IsValid()) *this = source;` -- so an invalid pane is not
+  corrected, it is **dropped**: the worksheet's stored geometry is silently
+  thrown away in a release build, and `IsValid()`'s `wxFAIL_MSG` aborts
+  startup in a debug one. **The existing post-`LoadPerspective()` defensive
+  block cannot help**, and this is the part worth remembering: by the time
+  it runs, `LoadPerspective()` has already rejected the pane. The repair has
+  to happen on the *string*, before wxAUI ever sees it.
+  Found via the maintainer's assertions-enabled GTK4 build, where it aborted
+  seven ctests (`autosave`, `noautosave`, `config_from_19.11`, `longnum_*`,
+  `testbench_simple.wxmx`); the backtrace is
+  `wxMaximaFrame` -> `LoadPerspective` -> `SafeSet` -> `IsValid`. Those test
+  fixtures' `.cfg` files still contain the bad `row=2` **on purpose** -- they
+  are now the regression coverage for exactly this, so don't "fix" them.
+  `RepairAuiPerspective()` is deliberately a pure string transform over
+  wxAUI's own saved format (`|`-separated entries of `;`-separated
+  `key=value` fields; the centre pane is the one with `dir=5`), needing no
+  AUI and no GUI, so `test/unit_tests/test_AuiPerspectiveRepair.cpp` can pin
+  it directly -- including that it leaves a *sidebar's* legitimate non-zero
+  row alone, and that a caption containing text like `row=2` is not mistaken
+  for a geometry field.
+  **Still failing afterwards, and unrelated:** `testbench_simple.wxmx`
+  aborts inside GTK4's own widget allocation (`gtk_widget_allocate` /
+  `gtk_scrolled_window_set_vadjustment`, reached through
+  `wxPizza::size_allocate_child`). The assert used to abort that test before
+  it ever got that far, so fixing the assert exposed it rather than causing
+  it -- confirmed by reproducing it with a completely fresh `HOME` and no
+  stored perspective at all, and with both `GSK_RENDERER=cairo` and the
+  default renderer.
+
 - **Dockable "Find and Replace" (GH #2249, `Configuration::FindDialogDockable()`):**
   `FindReplaceDialog`/`FindReplacePane` were already split apart (a `wxDialog`
   wrapper around a `wxPanel` holding the actual controls) specifically
@@ -2260,11 +2297,13 @@ a local TCP socket.
   ctest sets up, or an attached console).
   - **Attempt 1 (2026-09-06, commit `3f8fd15`): the struct-copy theory --
     DISCONFIRMED.** The original code did:
+
     ```cpp
     int fd = _open_osfhandle((intptr_t)handle, _O_TEXT);
     FILE *opened = _fdopen(fd, mode);
     *stream = *opened;  // stream is the global stdout/stderr/stdin pointer
     ```
+
     The theory: `*stream = *opened` is a shallow struct copy of a `FILE`
     object allocated at a *different* address onto the CRT's real,
     globally-visible `stdout`/`stderr` object, and might leave CRT-internal
@@ -2689,6 +2728,7 @@ a local TCP socket.
     the whole suite that both passes `--version` and checks the captured
     text, so it's the only process that could ever log an "entering -v
     branch" line) is, verbatim:
+
     ```
     [pid 3420] BindStdStreamToParent(4294967285) start: handle=0000000000000450 type=char
     [pid 3420] BindStdStreamToParent(4294967285) done: fd=1 osHandle=0000000000000240
@@ -2704,6 +2744,7 @@ a local TCP socket.
     [pid 3420] entering -v branch: stdout fd=1 osHandle=0000000000000240, wxMessageOutput::Get()=00000217191f0790
     [pid 3420] after Printf, before exit(0)
     ```
+
     **Every single checkpoint is exactly what a correctly-working process
     should show**: the initial handle is valid (never null/invalid, so the
     `AttachConsole` fallback branch never fires), `_dup2()` succeeds and
