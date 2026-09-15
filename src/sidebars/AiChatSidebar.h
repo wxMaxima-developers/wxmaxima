@@ -130,6 +130,13 @@ private:
   //! reporting a misconfiguration as a network failure at send time is
   //! exactly the dead end this field exists to avoid.
   wxString m_providerConfigProblem;
+  //! The last such problem actually written into the chat transcript.
+  //!
+  //! Kept separately from m_providerConfigProblem, which is cleared and
+  //! recomputed on every reload: comparing against that one re-reports the
+  //! same problem every time the user passes through a working provider and
+  //! back, which in practice means once per visit to Options.
+  wxString m_reportedConfigProblem;
   StatusBar *m_statusBar = NULL;
   AiConnectionMonitor *m_monitor = NULL;
   //! One-shot; started on SetBusy(true), stopped on SetBusy(false). See

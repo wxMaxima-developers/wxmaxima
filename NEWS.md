@@ -1,5 +1,16 @@
 # Current development version
 
+- AI Chat failures now show what the provider actually said. A failed
+  request can still carry a real HTTP response, and its body is where the
+  provider explains itself -- so an unrecognised model id, which Anthropic
+  answers with a bare HTTP 404, used to reach the user as an unexplained
+  "could not reach Anthropic", for a request that had in fact reached it
+  perfectly well.
+- Updated the default Anthropic model, which had gone stale. An existing
+  configuration keeps whatever model it already has: change it under
+  Options -> AI Chat, or use "Revert all to defaults".
+- The AI Chat sidebar no longer repeats the same "this provider's settings
+  need fixing" message into the conversation each time Options is closed.
 - Fixed wxMaxima discarding the worksheet's stored window layout when
   reading a configuration written by an older version. Those versions
   recorded the worksheet pane at a dock row wxAUI considers invalid for a
