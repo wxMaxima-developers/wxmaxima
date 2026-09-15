@@ -1,5 +1,17 @@
 # Current development version
 
+- Fixed every wrapping paragraph in the Options dialog rendering as
+  nothing: the AI Chat tab's introduction, its note about an API key being
+  billed separately from a chat subscription, and the "OpenAI-compatible
+  covers most third-party APIs" hint in the Add-custom-provider dialog were
+  all invisible. WrappingStaticText re-wrapped its text on every size
+  event, which changed the size it asked for, which produced another size
+  event -- a loop that settled on the text not being wrapped at all, as a
+  single long line in a much narrower panel. It now wraps only when the
+  width it is given actually changes, and measures the wrapped text itself
+  rather than asking wxStaticText, which on GTK deliberately reports the
+  size the text would have if it were *not* wrapped.
+
 - Fixed the two links on the Options dialog's AI Chat tab ("Get an API
   key for ..." and "See current models for ...") being drawn on top of
   each other, above the fields they belong under, instead of stacked

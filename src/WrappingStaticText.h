@@ -42,8 +42,18 @@ public:
 protected:
   void OnSize(wxSizeEvent &event);
 private:
+  /*! Wraps the text to \p width and lets our best size follow it.
+
+    Does nothing if we are already wrapped to that width, which is what
+    keeps this from looping: re-wrapping changes our best size, which makes
+    the enclosing sizer give us a different size, which brings us straight
+    back here. */
+  void RewrapTo(int width);
+
   wxStaticText *m_textCtrl = NULL;
   wxString m_label;
+  //! The width m_textCtrl is currently wrapped to. See RewrapTo().
+  int m_wrappedAt = -1;
 };
 
 #endif // WRAPPINGSTATICTEXT_H
