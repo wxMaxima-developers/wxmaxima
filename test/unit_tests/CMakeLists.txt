@@ -152,6 +152,19 @@ endif()
 # tested directly -- and, crucially, the Windows CI's `ctest -L unittest` step
 # runs this even though it drives no GUI, giving Gunter (who has no Windows box)
 # a check for a Windows-surfacing bug.
+# A perspective saved by an older wxMaxima records the worksheet (centre) pane
+# at a dock row wxAUI rejects, which makes LoadPerspective() silently discard
+# that pane's stored geometry -- and abort outright in a debug build. The
+# repair is a pure string transform over wxAUI's own saved format, so it is
+# tested directly, with no AUI and no GUI involved.
+add_executable(test_AuiPerspectiveRepair
+    test_AuiPerspectiveRepair.cpp ${CMAKE_SOURCE_DIR}/src/AuiPerspectiveRepair.cpp
+    ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
+target_include_directories(test_AuiPerspectiveRepair PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_link_libraries(test_AuiPerspectiveRepair PRIVATE ${wxWidgets_LIBRARIES})
+add_test(NAME AuiPerspectiveRepair
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_AuiPerspectiveRepair>")
+
 add_executable(test_MenuHelpString
     test_MenuHelpString.cpp ${CMAKE_SOURCE_DIR}/src/MenuHelpString.cpp ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
 target_link_libraries(test_MenuHelpString PRIVATE ${wxWidgets_LIBRARIES})

@@ -192,6 +192,7 @@ set(SOURCE_FILES
     WXMXformat.cpp
     levenshtein/levenshtein.cpp
     main.cpp
+    AuiPerspectiveRepair.cpp
     MenuHelpString.cpp
     wxMathml.cpp
     wxMaxima.cpp
