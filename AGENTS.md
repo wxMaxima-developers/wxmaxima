@@ -2235,12 +2235,16 @@ a local TCP socket.
     this change).
 
 - **`wxmaxima_version_string` CI test failing on the minGW Windows runner on
-  essentially every push since 2026-08-15 -- STILL UNSOLVED (2026-09-06).
-  The `_dup2()` fix below was tried, pushed, and the very next CI run
-  reproduced the exact same failure -- the struct-copy theory is DISCONFIRMED,
-  not just unverified. Read this whole entry before touching
-  `BindStdStreamToParent()` again; don't re-derive or re-attempt the
-  struct-copy theory from scratch.** The test runs `wxmaxima --debug
+  essentially every push since 2026-08-15 -- RESOLVED (2026-09-11, see the
+  final follow-up at the end of this entry for the actual root cause and
+  fix). Everything below this point, up to that final follow-up, is the
+  investigation history that led there -- kept in full since most of it
+  (the `_dup2()` theory, the ConPTY-drain-race theory) was directly
+  disproven or superseded, and the next session touching this code should
+  know what's already been ruled out rather than re-deriving it. Read this
+  whole entry before touching `BindStdStreamToParent()` or
+  `test/CMakeLists.txt`'s `wxmaxima_version_string` block again.**
+  The test runs `wxmaxima --debug
   --logtostderr --pipe --version` and expects stdout to match `wxMaxima
   <VERSION>.*`; it consistently fails with "Required regular expression not
   found" while the process still exits 0 -- no crash, just no (or wrong)
@@ -2848,6 +2852,74 @@ a local TCP socket.
     to tell "file write also failed" apart from "`type`'s own output was
     lost the same way," which would point back at the outer console layer
     being the common factor after all.
+  - **Follow-up (2026-09-11): ACTUAL ROOT CAUSE FOUND -- the "route through
+    a file" fix immediately above was directionally right but had never
+    actually been exercised, because its own COMMAND string had an
+    unrelated, self-inflicted `cmd.exe` quoting bug that made the test fail
+    a completely different way, instantly, every time.** The very first
+    real CI run after that fix landed (and every run since, across two
+    separate PRs on two separate days) failed with the exact same new
+    signature: `Required regular expression not found` immediately
+    followed by a literal `The syntax of the command is incorrect.`, at
+    0.01 sec -- i.e. `cmd.exe` itself rejected the command line outright
+    before anything resembling a race could even begin. That "0.01 sec,
+    identical every time" shape is the tell that this was never the
+    ConPTY/console-drain race the rest of this entry spent so much effort
+    investigating: a race varies in outcome and takes some real time to
+    lose; a rejected command line fails identically, instantly, always.
+    **The actual bug**: the COMMAND was written as
+    `cmd /c "\"$<TARGET_FILE:wxmaxima>\" --debug ... && type ..."` --
+    once CMake unescapes the `\"..\"`, the literal string handed to `cmd
+    /c` starts with a `"` character, and cmsys/CTest's own Windows argument
+    quoting then wraps that *whole* string (since it contains spaces) in a
+    second, outer pair of quotes to pass it to `cmd.exe` as one argument --
+    landing two adjacent quote characters right at the very start of what
+    `cmd /c` receives. That specific shape (a quoted path immediately
+    inside, with no character between, the outer quotes wrapping the whole
+    `/c` argument) is a well-known `cmd.exe` parsing trap, and real Windows
+    `cmd.exe`'s reported error for it is precisely "The syntax of the
+    command is incorrect." **Confirmed directly, not from lore or
+    reasoning alone**: this sandbox has no real Windows, but does have
+    Wine's `cmd.exe` reimplementation (already used elsewhere in this same
+    investigation, see the earlier struct-copy/dup2 Wine repros) --
+    reproducing both the old command string and the fixed one (below)
+    against `wine cmd /c "..."` pointed at an arbitrary real Windows `.exe`
+    (`hostname.exe`) showed the old form failing to even recognize the
+    target as a command (Wine's own wording for the same underlying
+    parse failure -- its exact error text differs from real `cmd.exe`'s,
+    but the failure is the same class: `cmd.exe` never got far enough to
+    even attempt launching the target), while the fixed form ran the
+    target program correctly.
+    **Fix (`test/CMakeLists.txt`)**: drop the redundant inner
+    `\"..\"` around `$<TARGET_FILE:wxmaxima>` entirely --
+    `COMMAND cmd /c "$<TARGET_FILE:wxmaxima> --debug --logtostderr --pipe
+    --version > wxmaxima_version_string.out 2>&1 && type
+    wxmaxima_version_string.out"`. This needs no quoting of its own: this
+    branch only ever runs on this project's own CI, whose checkout/build
+    path is always space-free (`D:\a\wxmaxima\wxmaxima\...`), so the one
+    outer pair of quotes cmsys itself adds around the whole string (since
+    it contains spaces) is already sufficient and unambiguous once nothing
+    inside it starts with a stray quote character of its own. If this
+    project's Windows CI ever moves to a workspace path that can contain
+    spaces, don't just re-add the same inner quotes -- that reintroduces
+    this exact bug. A small checked-in `.bat`/`.cmd` script taking the exe
+    path as its own ordinary argument would sidestep this whole class of
+    nested-`cmd.exe`-quoting fragility properly, if it's ever needed.
+    **Not yet independently re-confirmed against a real Windows CI run as
+    of this writing** (pushed, awaiting the next `compile_windows` run on
+    the fix's own PR) -- but unlike every previous attempt in this
+    investigation, this one reproduces the *exact* failure signature in a
+    controlled test (not just "doesn't reproduce the bug elsewhere," the
+    usual shape of this investigation's prior negative results) and shows
+    the fix resolving that same reproduction, which is a meaningfully
+    stronger basis for confidence than anything earlier in this entry had.
+    If it still fails on real Windows CI: check first whether cmsys's
+    actual Windows quoting algorithm does something subtly different from
+    Wine's `cmd.exe` here (the two are not guaranteed identical), by
+    reading `Source/kwsys/Process_win32.c` (or wherever the CMake version
+    in use vendors it) directly rather than re-guessing from the symptom
+    alone -- this entry's own history is full of examples of a plausible-
+    looking mechanism not surviving contact with the real platform.
 
 - **System tray icon (`src/TrayIcon.{h,cpp}`, GH #2286) -- mirrors the busy
   status, gated entirely by `wxUSE_TASKBARICON`.** The maintainer's own

@@ -680,37 +680,44 @@ add_test(
     COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error load_string.wxm)
 
 # wxmaxima_version_string: see AGENTS.md's long "wxmaxima_version_string CI
-# test failing on the minGW Windows runner" entry for the full investigation.
-# The short version: a diagnostic trace captured on a real failing CI run
-# proved wxMaxima's own code path (BindStdStreamToParent(), wxMessageOutput,
-# the actual Printf() call) completes normally every time -- but it also
-# revealed that GetFileType() on this process's own stdout reports
-# FILE_TYPE_CHAR (a console-type handle) rather than FILE_TYPE_PIPE, for
-# every wxmaxima.exe CTest spawns in this job, not just the failing one.
-# FILE_TYPE_CHAR is what BOTH a real console AND a Windows ConPTY
-# (pseudo-console) conout handle report -- and ConPTY has well-documented
-# races around draining a child's final output before/around that child's
-# own exit (see e.g. microsoft/terminal's ClosePseudoConsole()/output-drain
-# issues). wxmaxima --version writes exactly one line and calls exit(0)
-# immediately afterwards, with nothing else happening in between -- exactly
-# the shape that triggers this class of bug -- and this is the only test in
-# the whole suite whose result depends on that specific console-output
-# path's content for a WIN32-subsystem (GUI) process (every other
-# content-checked test asserts on Maxima's answer over the socket instead).
-# This points at a Windows console/output-capture race around a short-lived
-# GUI-subsystem process, not a bug in wxMaxima's own code.
-# Fix: since the race lives in the console/pty layer, not in wxMaxima,
-# route the captured text through a real file instead of a live console
-# handle -- disk I/O has no equivalent async-drain step. `type` is a plain
-# console-subsystem process spawned by CTest the same well-proven way as
-# every other test in this suite (none of which show this symptom), so this
-# removes the GUI-subsystem-direct-child factor entirely rather than
-# guessing at the exact race timing.
+# test failing on the minGW Windows runner" entry for the full investigation
+# history. The ConPTY-drain-race theory documented at length there turned
+# out to be a red herring: the "route through a file instead of a live
+# console handle" fix below is directionally right (disk I/O sidesteps any
+# console-layer drain race), but its first version had its own, unrelated
+# bug that meant it was never actually exercising that fix at all.
+#
+# ROOT CAUSE (confirmed 2026-09, not just theorized): the first version of
+# this COMMAND wrapped $<TARGET_FILE:wxmaxima> in its own explicit escaped
+# quotes -- COMMAND cmd /c "\"$<TARGET_FILE:wxmaxima>\" --debug ...". Once
+# CMake unescapes that, the single string CTest hands to `cmd /c` on
+# Windows *starts with a literal `"` immediately after the required outer
+# quoting cmsys itself adds for an argument containing spaces* -- i.e. two
+# adjacent quote characters right at the start. That specific shape is a
+# well-known cmd.exe `/c` parsing trap (a leading quoted path immediately
+# inside the outer quoted command string): real Windows CI logs from this
+# exact command showed "Required regular expression not found" followed by
+# "The syntax of the command is incorrect." at 0.01 sec -- i.e. cmd.exe
+# rejected the command outright, instantly, every single time, not a race.
+# Confirmed directly (not just from Windows cmd.exe lore) by reproducing
+# both the old and new command strings against a real `cmd.exe`
+# (Wine's reimplementation, this sandbox has no real Windows) pointed at an
+# arbitrary real .exe: the old escaped-quote form failed to even recognize
+# the target as a command; the new form below ran it correctly.
+# Fix: $<TARGET_FILE:wxmaxima> needs no quoting of its own here -- this
+# COMMAND only ever runs from this project's own CI, whose checkout/build
+# path never contains a space, and removing the redundant inner quotes
+# leaves exactly one, unambiguous pair of outer quotes for cmd.exe to
+# strip. If this project's Windows CI ever moves to a workspace path that
+# can contain spaces, this will need revisiting properly (e.g. a small
+# checked-in .bat/.cmd script taking the exe path as its own argument,
+# which sidesteps this whole class of nested-quoting fragility) rather
+# than re-adding the same inner quotes that caused this.
 if(WIN32)
     add_test(
         NAME wxmaxima_version_string
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-        COMMAND cmd /c "\"$<TARGET_FILE:wxmaxima>\" --debug --logtostderr --pipe --version > wxmaxima_version_string.out 2>&1 && type wxmaxima_version_string.out")
+        COMMAND cmd /c "$<TARGET_FILE:wxmaxima> --debug --logtostderr --pipe --version > wxmaxima_version_string.out 2>&1 && type wxmaxima_version_string.out")
 else()
     add_test(
         NAME wxmaxima_version_string
