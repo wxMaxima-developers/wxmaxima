@@ -112,11 +112,14 @@ $(function() {
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="keyword">protected</span>:</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <span class="keywordtype">void</span> OnSize(wxSizeEvent &amp;event);</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  wxStaticText *m_textCtrl = NULL;</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  wxString m_label;</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>};</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="preprocessor">#endif </span><span class="comment">// WRAPPINGSTATICTEXT_H</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <span class="keywordtype">void</span> RewrapTo(<span class="keywordtype">int</span> width);</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  wxStaticText *m_textCtrl = NULL;</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  wxString m_label;</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  <span class="keywordtype">int</span> m_wrappedAt = -1;</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>};</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="preprocessor">#endif </span><span class="comment">// WRAPPINGSTATICTEXT_H</span></div>
 <div class="ttc" id="aclassWrappingStaticText_html"><div class="ttname"><a href="classWrappingStaticText.html">WrappingStaticText</a></div><div class="ttdoc">A wxStaticText variant that auto-wraps, if necessary.</div><div class="ttdef"><b>Definition:</b> WrappingStaticText.h:38</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
