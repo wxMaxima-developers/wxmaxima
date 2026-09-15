@@ -473,6 +473,11 @@ void MaximaEvaluator::TriggerEvaluation() {
       // ConfigChanged(): the worksheet may have been resized, or its font
       // size changed, since the last cell was evaluated.
       m_wxMaxima.m_configCommands += LinelConfigCommand();
+      // Tell Maxima which cell these commands come from, so that a
+      // background job started by them can name this cell when its output
+      // eventually arrives -- by which time this cell will no longer be the
+      // current one. No-op (an empty string) whenever Maxima already knows.
+      m_wxMaxima.m_configCommands += CellIdConfigCommand(tmp);
       // Only send the config commands if they are not blank: an all-whitespace
       // (or empty) send results in a bare newline being transmitted, which a
       // normal maxima prompt ignores - but the maxima debugger prompt (dbm:N)
@@ -545,6 +550,48 @@ void MaximaEvaluator::TriggerEvaluation() {
     m_wxMaxima.GetWorksheet()->GetEvaluationQueue().RemoveFirst();
     TriggerEvaluation();
   }
+}
+
+wxString MaximaEvaluator::CellIdConfigCommand(GroupCell *cell) {
+  if (!cell)
+    return wxEmptyString;
+
+  // Same reason LinelConfigCommand() right above skips it: ":lisp-quiet"
+  // is a Maxima top-level reader escape, not a Lisp reader macro, and
+  // to_lisp()'s raw Lisp REPL chokes on the leading ":" -- corrupting the
+  // rest of the exchange. Confirmed the hard way: adding this command
+  // without the guard reproduced lisp_mode.wxm's failure exactly
+  // ("incorrect syntax: Illegal use of delimiter then", the next Lisp form
+  // having been mangled).
+  //
+  // Deliberately checked BEFORE m_lastSentCellId is touched below, so that
+  // skipping here doesn't record the id as sent: it has to go out again
+  // once evaluation returns to plain Maxima commands, and a background job
+  // started from a Lisp-mode cell simply inherits the id of the last cell
+  // that could announce itself -- which is the closest thing to correct
+  // that is available while Maxima cannot be told anything at all.
+  if (m_wxMaxima.m_configuration.InLispMode())
+    return wxEmptyString;
+
+  // Cell::GetUUID() is lazy: a cell that has never been asked for one has
+  // none. Forcing it here means every cell wxMaxima evaluates ends up with
+  // a UUID that gets written out on the next save -- the same, already
+  // accepted, side effect the MCP tools have (see McpTools' own note), and
+  // unavoidable if an output is ever to name its cell.
+  if (cell->GetUUID().IsEmpty())
+    cell->GenerateUUID();
+
+  // Only when it changes: a cell containing several statements sends each
+  // of them separately, and they all belong to the same cell.
+  if (cell->GetUUID() == m_lastSentCellId)
+    return wxEmptyString;
+  m_lastSentCellId = cell->GetUUID();
+
+  // A UUID contains nothing that needs escaping, but it is put through the
+  // same escaping every other value bound for a Lisp string literal goes
+  // through rather than relying on that staying true.
+  return wxS(":lisp-quiet (setq *wx-cell-id* \"") +
+    m_wxMaxima.EscapeForLisp(m_lastSentCellId) + wxS("\")\n");
 }
 
 wxString MaximaEvaluator::LinelConfigCommand() const {

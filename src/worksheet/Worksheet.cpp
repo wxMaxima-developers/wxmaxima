@@ -956,7 +956,33 @@ GroupCell *Worksheet::GetWorkingGroup(bool resortToLast) const {
   return cell;
 }
 
+GroupCell *Worksheet::FindGroupCellByUUID(const wxString &uuid) const {
+  if (uuid.IsEmpty() || !GetTree())
+    return nullptr;
+  // Deliberately does NOT generate a UUID for cells that lack one, unlike
+  // the MCP tools' otherwise-identical lookup. Cell::GetUUID() is lazy, and
+  // only a cell wxMaxima has actually sent to Maxima can be named here --
+  // those already had one forced on them by
+  // MaximaEvaluator::CellIdConfigCommand(). Generating one for every other
+  // cell in the document would mean a single background result silently
+  // adding a UUID to every cell of the worksheet, all of which then get
+  // written out on the next save. An empty UUID cannot match the non-empty
+  // string rejected above, so there is nothing to gain by it either.
+  for (GroupCell &cell : OnList(GetTree()))
+    if (cell.GetUUID() == uuid)
+      return &cell;
+  return nullptr;
+}
+
 GroupCell *Worksheet::GetInsertGroup() const {
+  // A background job's output names the cell it belongs to, so it wins over
+  // "whichever cell happens to be current" -- that is the entire point: by
+  // the time it arrives, the cell that started it stopped being current
+  // long ago. Only ever set for the duration of one append, via
+  // Worksheet::AsyncOutputTarget.
+  if (m_asyncOutputTarget)
+    return m_asyncOutputTarget;
+
   GroupCell *cell = GetWorkingGroup(true);
 
   if (!cell && GetActiveCell())
@@ -983,7 +1009,13 @@ void Worksheet::InsertLine(std::unique_ptr<Cell> &&newCell, bool forceNewLine) {
   RequestRedraw(cell);
   RedrawIfRequested();
 
-  if (FollowEvaluation()) {
+  // Deliberately not for async output: "follow evaluation" means following
+  // what the user asked Maxima to do now, and a background job's result
+  // arriving is not that. Yanking the view back to a cell the user
+  // deliberately scrolled away from -- possibly minutes ago, possibly while
+  // they are typing somewhere else -- would make background jobs hostile to
+  // use rather than useful.
+  if (FollowEvaluation() && !m_asyncOutputTarget) {
     ClearSelection();
     if (GCContainsCurrentQuestion(cell))
       OpenQuestionCaret();

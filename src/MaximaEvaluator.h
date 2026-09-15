@@ -39,6 +39,7 @@
 
 class wxMaxima;
 class wxCommandEvent;
+class GroupCell;
 
 /*! The evaluation-queue driver / command protocol extracted from wxMaxima.
 
@@ -92,6 +93,28 @@ private:
   //! (unlike the rest of m_configCommands, which is only refreshed on
   //! ConfigChanged()). See Configuration::GetAsciiArtColumns().
   wxString LinelConfigCommand() const;
+
+  /*! A ":lisp-quiet (setq *wx-cell-id* ...)" naming the cell whose commands
+    are about to be sent, or an empty string if Maxima already knows.
+
+    This is the only thing in this protocol that ties an output to a cell by
+    name rather than by timing, and it exists for exactly one reason: a
+    future Maxima that can run a command in the background needs to be able
+    to say which cell that background job's eventual output belongs to, long
+    after the cell stopped being the current one. See
+    Doxygen/AsyncMaximaOutput.md.
+
+    ":lisp-quiet" is not a stylistic choice: it produces no prompt of its
+    own, and EvaluationQueue::RemoveFirst() advances the queue by one cell
+    for every main prompt it sees, with no way to tell whose prompt it is.
+    A plain Maxima statement here would silently drop a queued cell per
+    command sent. */
+  wxString CellIdConfigCommand(GroupCell *cell);
+
+  //! What CellIdConfigCommand() last told Maxima, so the id is only resent
+  //! when it actually changes rather than ahead of every single command of
+  //! a multi-statement cell.
+  wxString m_lastSentCellId;
 
   //! The wxMaxima frame whose services the driver uses. Not owned; the frame
   //! owns this object.

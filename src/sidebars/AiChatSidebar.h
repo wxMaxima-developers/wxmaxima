@@ -123,6 +123,13 @@ private:
   //! The error detail from the most recent failed request, shown in the
   //! status bar icon's tooltip -- see m_lastRequestFailed.
   wxString m_lastErrorDetail;
+  //! Non-empty when the configured provider exists but cannot be used as
+  //! configured -- currently only a malformed request URL (see
+  //! AiProviderRequestUrlProblem()). Kept separate from m_provider being
+  //! null ("nothing configured at all"): the two need different advice, and
+  //! reporting a misconfiguration as a network failure at send time is
+  //! exactly the dead end this field exists to avoid.
+  wxString m_providerConfigProblem;
   StatusBar *m_statusBar = NULL;
   AiConnectionMonitor *m_monitor = NULL;
   //! One-shot; started on SetBusy(true), stopped on SetBusy(false). See

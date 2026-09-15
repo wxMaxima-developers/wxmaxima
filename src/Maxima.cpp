@@ -63,6 +63,11 @@ Maxima::Maxima(wxSocketBase *socket, Configuration *config) :
           m_knownTags[wxS("math")] = XML_MATHS;
           m_knownTags[wxS("wxxml-key")] = XML_WXXML_KEY;
           m_knownTags[wxS("wxxml-asciimath")] = XML_ASCIIMATH;
+          // Deliberately attribute-free: the scan below matches a bare
+          // "<tag>" at the start of the buffer, so a tag carrying the cell
+          // id as an attribute would never be recognised at all. The id
+          // travels in the body instead, as <id>...</id>.
+          m_knownTags[wxS("wxasync")] = XML_ASYNC_OUTPUT;
         }
   }
   wxASSERT(socket);

@@ -7,6 +7,36 @@
   until a provider is picked -- and a hidden sizer item is never given a
   position, so nothing ever positioned them once shown: the code laid out
   the dialog rather than the tab they live on.
+- Added the wxMaxima half of a protocol for asynchronous ("background
+  job") output, ready for a future Maxima that can run a command in the
+  background. wxMaxima now tells Maxima which cell it is currently
+  evaluating, and understands output that names the cell it belongs to --
+  so a job's result lands on the cell that started it rather than on
+  whichever cell happens to be current minutes later. A background job
+  cannot ask questions (it is refused with a message on its own cell
+  instead of hijacking another cell's prompt), its output cannot be
+  interleaved with another job's, and output naming a cell that no longer
+  exists is discarded. Nothing changes in a normal session: today's Maxima
+  never sends such output. See Doxygen/AsyncMaximaOutput.md.
+- Fixed a custom AI provider silently changing its own wire format: the
+  "API style" dropdown lists "OpenAI-compatible" first, but the code that
+  filled it in used the raw enum value as the selection index, so a
+  freshly added OpenAI-compatible provider (e.g. a local Ollama server)
+  was shown -- and then, on the next save, genuinely stored -- as an
+  Anthropic-style one.
+- A custom AI provider no longer requires an API key. A local AI server
+  (Ollama, LM Studio, llama.cpp server) has nothing to authenticate to and
+  normally has no key at all, but the sidebar refused to use such an entry
+  and reported "No AI provider configured" instead. With no key, no
+  credential header is sent at all rather than an empty one.
+- AI Chat network failures now say what actually went wrong ("could not
+  connect to server", "could not resolve host", a TLS error, ...) instead
+  of a bare "network error" that gave the user nothing to act on.
+- The "Add custom AI provider" dialog now rejects a request URL with no
+  "http://" or "https://" in front of it, and the AI Chat sidebar explains
+  the problem instead of attempting the request, rather than letting a
+  natural-looking but unusable "127.0.0.1:11434" through to fail later as
+  an unexplained network error.
 - Added a third status bar icon for the AI Chat sidebar (next to the
   existing Maxima/network status icons): hidden when no AI provider is
   configured, shown with a distinct icon while a request is in flight, on
