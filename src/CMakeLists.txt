@@ -91,8 +91,6 @@ set(SIDEBAR_SOURCE_FILES
     RegexCtrl.cpp
     HelpBrowser.cpp
     PerformanceSidebar.cpp
-    AiChatSidebar.cpp
-    AiConnectionMonitor.cpp
 )
 list(TRANSFORM SIDEBAR_SOURCE_FILES PREPEND sidebars/)
 
@@ -111,12 +109,11 @@ set(MCP_SOURCE_FILES
 )
 list(TRANSFORM MCP_SOURCE_FILES PREPEND mcp/)
 
-#if(WXM_USE_AI_TOOLS)
 set(AI_SOURCE_FILES
-    AiProvider.cpp
+    sidebars/AiChatSidebar.cpp
+    sidebars/AiConnectionMonitor.cpp
+    ai/AiProvider.cpp
 )
-list(TRANSFORM AI_SOURCE_FILES PREPEND ai/)
-#endif
 
 set(DIALOG_SOURCE_FILES
     AboutDialog.cpp
