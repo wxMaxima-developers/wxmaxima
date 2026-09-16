@@ -232,7 +232,7 @@ jobs:
                echo "No UndefinedBehaviorSanitizer findings."
              fi
 
-  compile_without_webview:
+  compile_with_non_default_options:
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
@@ -254,7 +254,7 @@ jobs:
              mkdir build
              touch build build/build.ninja
              cd build
-             cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Debug -DWXM_UNIT_TESTS=YES -DWXM_DISABLE_WEBVIEW=ON ..
+             cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Debug -DWXM_UNIT_TESTS=YES -DWXM_DISABLE_WEBVIEW=ON -DWXM_DISABLE_QA=YES -D_WXM_ENABLE_PRECOMPILED_HEADERS=YES -DWXM_USE_CPPCHECK=YES -DUNIT_TESTS=YES -DWXM_INTERPROCEDURAL_OPTIMIZATION=YES -DWXM_PO4A_UPDATE_MANUAL_PO_POT_FILES=YES -DWXM_USE_AI_TOOLS=NO ..
              cd ..
       - name: compile
         run: |
