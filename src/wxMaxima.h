@@ -815,8 +815,10 @@ public:
   virtual bool OnInit() override;
   virtual int OnRun() override;
   virtual int OnExit() override;
+#ifdef WXM_USE_QA
 #if wxUSE_ON_FATAL_EXCEPTION && wxUSE_DEBUGREPORT
   void	OnFatalException () override;
+#endif
 #endif
   /*! Handle a failed wxASSERT.
 
