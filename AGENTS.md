@@ -2340,10 +2340,15 @@ a local TCP socket.
     this change).
 
 - **`wxmaxima_version_string` CI test failing on the minGW Windows runner on
-  essentially every push since 2026-08-15 -- STILL OPEN. This entry was
+  essentially every push since 2026-08-15 -- ROOT CAUSE STILL UNKNOWN, but
+  the job is green again because the assertion has been narrowed to the
+  platforms where it is meaningful. Read the "SHELVED" follow-up at the very
+  end of this entry first: it says what is tested where now, lists two real
+  bugs this investigation did find and fix, and corrects two factual errors
+  this entry itself carried for weeks.** This entry was
   headed "RESOLVED (2026-09-11)" until 2026-09-18; that was wrong, and the
   correction is worth reading before trusting any other status line in this
-  file.** The 2026-09-11 `cmd.exe` quoting fix (final follow-up at the end
+  file. The 2026-09-11 `cmd.exe` quoting fix (final follow-up at the end
   of this entry) was real and did fix the bug it described -- the entry
   itself said so honestly ("Not yet independently re-confirmed against a
   real Windows CI run as of this writing") -- but it was written up under a
@@ -3050,6 +3055,107 @@ a local TCP socket.
     in use vendors it) directly rather than re-guessing from the symptom
     alone -- this entry's own history is full of examples of a plausible-
     looking mechanism not surviving contact with the real platform.
+  - **SHELVED (2026-09-18), deliberately and with the reasoning written
+    down. The Windows job is green again; the root cause is still unknown;
+    two real, separate bugs found on the way there are fixed. Start here.**
+    The maintainer's own framing was "`--version` and `--help` on MSW
+    misbehave in non-console applications, which means we can just drop
+    that test as it is caused by stupid operating system concepts." That is
+    half right, and the half that is right is the half that matters:
+    asserting on text captured from a *GUI-subsystem* process is asserting
+    on a property of Windows, not of wxMaxima. Every Windows-specific thing
+    in this entry follows from one bit in the PE header, and
+    `src/wxmaxima-cli.exe` exists precisely because no code inside
+    `wxmaxima.exe` can finish that job. Weighed against this file's own
+    "never make a test pass by getting rid of it" rule, the deciding
+    argument is the one that rule is written in service of: a job that has
+    been red for a month is not a warning anyone still reads, and this one
+    has been hiding whatever else the minGW runner had to say since
+    2026-08-15. So: the content check still runs, unchanged, on every
+    non-Windows platform; Windows keeps `wxmaxima_version_returncode`,
+    `wxmaxima_help_returncode` and a new `wxmaxima_cli_version_returncode`
+    (the launcher finds `wxmaxima.exe`, spawns it, waits, propagates its
+    exit code). What is covered *nowhere* on Windows now is the last step,
+    "and the bytes arrive at whoever is capturing them"; `test/CMakeLists.txt`
+    says so at the point where the assertion would go back.
+    **Two factual errors this entry carried, corrected -- check these
+    before building on anything else written above.**
+    1. *`--version` does not go through `wxMessageOutput` at all.* This
+       entry twice names `wxMessageOutputStderr::Printf()` as the write
+       under investigation, and one of its "concrete next steps" was to
+       instrument the `fputs()` inside it. The `-v` branch in `main.cpp` is
+       a plain `printf("wxMaxima %s\n", ...)` followed by `exit(0)`;
+       `wxMessageOutput` is only used for `wxCmdLineParser`'s `--help`
+       usage text. The `wxMessageOutput::Set()` call the trace reports is
+       real, it just is not on this path.
+    2. *The test never checked the version.* Its
+       `PASS_REGULAR_EXPRESSION "wxMaxima ${VERSION}.*"` referenced
+       `${VERSION}`, which this project does not set anywhere -- the
+       version lives in `${WXMAXIMA_VERSION}` (and `${PROJECT_VERSION}`).
+       The regex expanded to `wxMaxima .*`, which is visible in the CI logs
+       themselves (`Regex=[wxMaxima .*]`) once you know to look. It now
+       uses `${WXMAXIMA_VERSION}`, so it checks what it is named after --
+       confirmed non-vacuous locally, where it matches the real
+       `wxMaxima 26.08.0-dev`.
+    **Bug found and fixed #1 (real, user-visible, verified live):
+    `BindStdStreamToParent()` closed the standard handle it had just bound,
+    which silently threw away all of stderr whenever a parent hands the
+    same handle in for stdout and stderr** -- i.e. under any `2>&1`, which
+    includes `wxmaxima --logtostderr --batch ... 2>&1 | more` and the
+    `cmd /c ... > file 2>&1` form this very test used to use.
+    `_open_osfhandle()` makes the descriptor the *owner* of the handle, so
+    the `_close(fd)` that follows `_dup2()` closed the handle
+    `GetStdHandle()` still hands out. Everything that afterwards asked
+    Windows rather than the CRT for a standard handle was reading a closed
+    or *recycled* value -- `HaveStdErrHandle()`, the
+    `SetHandleInformation()` calls in `MyApp::OnInit()`, and every child
+    process inheriting our standard handles. **This is what the
+    `type=unknown` lines in the shipped CI traces are**, and reading them
+    as "ctest handed the child an already-invalid handle" (as this entry
+    did) was wrong: the previous stream's binding had closed it. Likewise
+    the traces' "stderr's descriptor ends up on the numeric value stdout's
+    inherited handle had a moment ago" is plain handle recycling, not
+    anything exotic. Fixed by binding a `DuplicateHandle()` copy, so
+    `_close()` disposes of our own duplicate and the parent's handle stays
+    valid. **Reproduced and fixed under Wine, functionally, not by reading
+    code**: a console harness that creates a pipe the way kwsys does and
+    passes the same write end as both stdout and stderr to a
+    GUI-subsystem child reproducing this function verbatim captures 22
+    bytes (stdout only, stderr's binding having failed with exactly the
+    `type=unknown` signature) before the fix and 49 bytes (both streams)
+    after, deterministically.
+    **Bug found and fixed #2 (correctness, unverified as a cure):
+    `wxmaxima-cli.cpp` handed its child the standard handles it was given
+    rather than explicitly inheritable duplicates.** A handle named in
+    `STARTUPINFO` only reaches the child's handle table if it carries
+    `HANDLE_FLAG_INHERIT`, and nothing guarantees the handles a parent
+    gives *us* do -- a parent capturing our output has every reason to have
+    cleared the flag on its own copy, which is exactly what `wxmaxima.exe`
+    itself does to its standard handles. Get it wrong and the failure is
+    quiet in a very specific, very familiar way: `CreateProcess()` still
+    succeeds, the child still finds the handle *values* in its PEB, so
+    `GetStdHandle()` returns plausible numbers that name nothing it owns --
+    **which is a mechanism that would produce this entry's headline
+    `FILE_TYPE_PIPE`-in-the-parent / `FILE_TYPE_CHAR`-in-the-child
+    mystery**, since a value naming nothing in the child can collide with
+    any unrelated object its own startup opened. Fixed per MSDN's own
+    redirected-child example. Wine does *not* reproduce the failure (it
+    preserves the inherit flag through inheritance, so the pre-fix launcher
+    works there too, 0 failures) -- so this is a documented-contract fix,
+    not a demonstrated cure. It is the most promising remaining lead, and
+    the launcher now logs `inherit=yes/no/unqueryable` for each handle, so
+    the next Windows run's trace answers the question outright.
+    **If someone picks this up again**, the cheap next step is to read that
+    `inherit=` line and check whether all three streams now bind with no
+    `type=unknown`; if they do and the content assertion is worth having
+    back, restore it on `wxmaxima-cli` (never on `wxmaxima.exe` itself) and
+    watch one real run. Do not re-run any theory this entry already
+    disproves. Also still open, and now the obvious cleanup: the
+    `WXM_STDIO_DEBUG_LOG` instrumentation and the workflow step that prints
+    its ~88-process trace into every Windows CI log are still in place,
+    which this entry itself said should not outlive the investigation --
+    left alone here only because deleting the one source of evidence in the
+    same change that shelves the hunt seemed like the wrong order.
 
 - **`wxmaxima-cli.exe` (`src/wxmaxima-cli.cpp`) -- the console-subsystem
   companion, and why it is a launcher rather than a second copy of the app.**
@@ -3116,7 +3222,9 @@ a local TCP socket.
     the "installed as wxmaxima.exe myself" guard refuses rather than
     fork-bombing. Not verified: behaviour against the *real* wxmaxima.exe on
     real Windows -- that needs a CI run, and `wxmaxima_cli_version_string`
-    (`test/CMakeLists.txt`) is the test that will say so.
+    (`test/CMakeLists.txt`) is the test that will say so. (It said so: it
+    failed. See the two follow-ups at the end of this entry -- that test no
+    longer exists.)
   - **That CI run happened, and the test FAILED -- still unexplained as of
     this entry. Read this before re-deriving any of it.** On the minGW job
     the launcher itself *built* fine and the test failed in 0.06 s with
@@ -3214,6 +3322,21 @@ a local TCP socket.
     test through a file the way its sibling does: that would hide the one
     signal that will show when the underlying capture bug is actually
     solved.
+  - **Follow-up (2026-09-18): `wxmaxima_cli_version_string` is gone,
+    replaced by `wxmaxima_cli_version_returncode` -- see the "SHELVED"
+    follow-up at the end of the `wxmaxima_version_string` entry above for
+    the whole argument, and read it before restoring any content assertion
+    here.** In short: the capture half stayed unexplained, a month of red
+    was costing more than the assertion was worth, and the launcher keeps
+    the coverage that does not depend on capture (it locates
+    `wxmaxima.exe`, starts it, waits, propagates the exit code). One real
+    launcher bug did come out of it: the standard handles were passed to
+    `CreateProcessW()` as-is rather than as explicitly inheritable
+    duplicates, which is a documented way to get a child that sees handle
+    *values* naming nothing it owns -- and therefore a candidate
+    explanation for this entry's own `type=pipe`-here/`type=char`-there
+    finding. Fixed; `DescribeStdHandle()` now also reports `inherit=`, so
+    the next run's trace settles whether that was it.
 
 - **System tray icon (`src/TrayIcon.{h,cpp}`, GH #2286) -- mirrors the busy
   status, gated entirely by `wxUSE_TASKBARICON`.** The maintainer's own
