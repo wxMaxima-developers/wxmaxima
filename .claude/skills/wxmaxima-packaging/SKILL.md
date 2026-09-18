@@ -109,6 +109,21 @@ attributed in-tree).
 
 ## Release automation
 
+Windows attaches **two** packages, not one: the NSIS installer *and* the
+portable `.zip` (both come from the same `CPACK_GENERATOR "ZIP;NSIS"` run, and
+the ZIP was built and DLL-verified on every run long before anything published
+it -- GH #2298 was largely "the artifact already exists, nobody attached it").
+The ZIP is the no-administrator-rights option: wxMaxima resolves its resources
+relative to the executable (`Dirstructure::ResourcesDir()` walks up out of
+`bin/` and into `share/`), so an unpacked tree runs as-is. Note neither
+Windows package bundles Maxima itself -- the *combined* installer is built in
+the separate `Crosscompiled-Windows-installer` repository (see
+`src/CMakeLists.txt`'s own comment), which is the actual difference behind
+"this used to work differently" reports about the Windows download.
+The `files:` glob is non-recursive on purpose: CPack writes finished packages
+to the build root, and `_CPack_Packages/` underneath holds staging copies that
+a `**` glob would also match.
+
 On a `Version*` tag, the Windows/macOS/Ubuntu jobs attach their installer / dmg
 / deb plus a source tarball and the NEWS.md body to the GitHub release. The
 release notes are extracted (`compile_windows.yml`, "Extract release notes
