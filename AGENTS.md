@@ -2,6 +2,33 @@
 
 This file contains architectural insights, conventions, and operational knowledge to assist AI agents working on the wxMaxima codebase. **Agents are explicitly permitted and encouraged to update this file with new findings that improve context and safety.**
 
+## Branches and pull requests
+
+**One branch per feature or bugfix, cut fresh from `main`, and a pull request
+once that feature is finished.** Give the branch a name that says what it is
+(`claude/publish-portable-zip`, `claude/fix-qa-disabled-link`), not a name
+that just identifies the agent or the session.
+
+**Do not reuse one long-lived branch for a series of unrelated changes.** This
+is worth stating because it has already gone wrong: a single branch was reused
+for roughly twenty successive PRs, and because each PR's content reached `main`
+under different commit ids (so the branch itself was never fast-forwarded), it
+silently drifted about sixty commits behind. What it still carried then *looked*
+like unmerged work but was entirely duplicated in `main` already -- costing real
+time to establish before anything could safely be pushed to it. A branch taken
+fresh from `main` per change cannot get into that state.
+
+Two consequences worth keeping in mind:
+
+- If an agent's own configuration names a fixed branch to develop on (some
+  session templates do), that instruction conflicts with this one. Prefer this
+  file's workflow, and say so, rather than silently reusing the fixed branch --
+  but note that a fresh session will start from that template again, so the
+  template itself is what needs changing.
+- Keep an unrelated fix out of an existing PR's branch. If something needs
+  fixing while a PR is open, that is a new branch and a new PR, even when the
+  fix is one line.
+
 ## Build System
 
 Configure once (a Debug build is the default), then build and run without
@@ -3667,6 +3694,7 @@ tried without rebuilding.
 
 ## Conventions & Standards
 
+- **Branches and pull requests:** one branch per feature or bugfix, cut fresh from `main`, PR when it is finished -- see "Branches and pull requests" at the top of this file for why reusing one long-lived branch has already caused trouble.
 - **Git Environment:** Note that running `git diff` might launch the visual diff tool `meld` instead of outputting to the terminal. Always use `git diff --no-ext-diff` if you need terminal output.
 - **String Literals & Translations:** Use the `wxS()` macro for all string literals and `_()` for user-facing translatable strings.
 - **Logging:** Use `wxLogMessage()` for debugging; messages are visible in **View -> Toggle Log Window** or by using the option `--logtostderr`.
