@@ -1908,6 +1908,26 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
         return;
       }
       else {
+        if (m_evalOnStartup && m_first) {
+          // The Maxima we would hand the document to hasn't sent its first
+          // prompt yet: it is either still starting up, or it is the
+          // replacement for the one OpenFile() just killed. Sending the
+          // document's first command into a connection that is still being
+          // set up loses it, which shows up as a desynchronised REPL later
+          // on (see the lisp_mode entry in AGENTS.md).
+          //
+          // Wait for that prompt -- but do *not* simply decline here and
+          // leave it at that: this whole block only runs while
+          // m_updateEvaluationQueueLengthDisplay is set, and nothing
+          // re-arms that flag if the evaluation queue length doesn't
+          // change. Declining without arranging to be called again
+          // therefore misses the one chance to start the document at all,
+          // and the batch run hangs until it times out.
+          // ReadFirstPrompt() re-arms the flag for us instead.
+          event.RequestMore();
+          m_updateEvaluationQueueLengthDisplay = false;
+          return;
+        }
         if (m_evalOnStartup) {
           wxLogMessage(_("Starting evaluation of the document"));
           m_evalOnStartup = false;

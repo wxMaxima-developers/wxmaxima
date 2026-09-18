@@ -245,6 +245,15 @@ void MaximaResponseReader::ReadFirstPrompt(const wxString &data) {
 
   m_wxMaxima.m_firstPromptBuffer.Clear();
 
+  if (m_wxMaxima.m_evalOnStartup)
+    // A batch run is waiting for exactly this prompt before it hands Maxima
+    // the document: wxMaxima::OnIdle() declined to do so while m_first was
+    // still set. That code only runs while the queue-length display flag is
+    // set, and the flag is not re-armed by anything else as long as the
+    // queue length stays unchanged -- so re-arm it here, or the document
+    // never gets started at all.
+    m_wxMaxima.m_updateEvaluationQueueLengthDisplay = true;
+
   if (m_wxMaxima.GetWorksheet() && (m_wxMaxima.GetWorksheet()->GetEvaluationQueue().Empty())) {
     // Inform the user that the evaluation queue is empty.
     m_wxMaxima.EvaluationQueueLength(0);

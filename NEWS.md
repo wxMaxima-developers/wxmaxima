@@ -1,5 +1,13 @@
 # Current development version
 
+- Batch runs (`--batch`) no longer occasionally hand the worksheet's first
+  command to a Maxima that isn't listening yet. Opening the file restarts
+  Maxima, and on a loaded machine the replacement could still be starting up
+  when wxMaxima began sending it the document -- the first command was then
+  lost, and everything after it was read as the answer to the wrong
+  question, so the run aborted somewhere in the middle for no visible
+  reason. wxMaxima now waits for the new Maxima to announce itself before
+  sending it anything.
 - Opening a file no longer starts Maxima twice. wxMaxima starts a Maxima as
   soon as it comes up, so that it is ready by the time you send off your
   first cell; when a file was named on the command line or double-clicked,
