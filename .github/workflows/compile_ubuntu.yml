@@ -248,13 +248,19 @@ jobs:
              sudo apt-get update
              sudo apt-get install appstream cmake desktop-file-utils doxygen gettext gnuplot gnuplot-x11 graphviz libwxgtk3.2-dev libfribidi-dev maxima maxima-share maxima-doc netcat-openbsd ninja-build pandoc at-spi2-core po4a
       - name: configure
+        # WXM_ENABLE_PRECOMPILED_HEADERS is NO here, and that is the point of
+        # naming it at all: it defaults to YES, and a precompiled header hands
+        # every source file the whole of wx whether that file included it or
+        # not. A missing #include therefore builds fine everywhere except in a
+        # build without the precompiled header -- so one job has to be that
+        # build, or nothing ever notices.
         run: |
              export CXXFLAGS="-Wall -Wextra -ansi -Werror"
              export LANG=en_US.UTF-8
              mkdir build
              touch build build/build.ninja
              cd build
-             cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Debug -DWXM_UNIT_TESTS=YES -DWXM_DISABLE_WEBVIEW=ON -DWXM_DISABLE_QA=YES -DWXM_ENABLE_PRECOMPILED_HEADERS=YES -DWXM_USE_CPPCHECK=YES -DWXM_USE_FRIBIDI=NO -DWXM_INTERPROCEDURAL_OPTIMIZATION=YES -DWXM_PO4A_UPDATE_MANUAL_PO_POT_FILES=YES -DWXM_USE_AI_TOOLS=NO ..
+             cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Debug -DWXM_UNIT_TESTS=YES -DWXM_DISABLE_WEBVIEW=ON -DWXM_DISABLE_QA=YES -DWXM_ENABLE_PRECOMPILED_HEADERS=NO -DWXM_USE_CPPCHECK=YES -DWXM_USE_FRIBIDI=NO -DWXM_INTERPROCEDURAL_OPTIMIZATION=YES -DWXM_PO4A_UPDATE_MANUAL_PO_POT_FILES=YES -DWXM_USE_AI_TOOLS=NO ..
              cd ..
       - name: compile
         run: |

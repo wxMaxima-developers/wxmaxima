@@ -385,6 +385,11 @@ endif()
 
 if(WXM_ENABLE_PRECOMPILED_HEADERS)
   target_precompile_headers(wxmaxima PUBLIC "precomp.h")
+  # precomp.h's entire body sits behind "#ifdef USE_PRECOMP_HEADER", and
+  # BuildConfig.h defines that through a #cmakedefine further down this file.
+  # Without this set() the option precompiled a header that included nothing
+  # and saved nothing: turning it on changed a full build's time by 0%.
+  set(USE_PRECOMP_HEADER "1")
 else()
   set(USE_PRECOMP_HEADER "0")
 endif()

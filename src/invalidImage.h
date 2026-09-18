@@ -1,3 +1,6 @@
+#ifndef INVALIDIMAGE_H
+#define INVALIDIMAGE_H
+
 /* XPM */
 static const char * invalidImage_xpm[] = {
   "256 256 525 2",
@@ -782,3 +785,5 @@ static const char * invalidImage_xpm[] = {
   "                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                ",
   "                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                ",
   "                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                "};
+
+#endif // INVALIDIMAGE_H

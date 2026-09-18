@@ -29,11 +29,11 @@
 #endif
 #include <random>
 
+#include "StringUtils.h"
+
 using json = nlohmann::json;
 
 namespace {
-std::string U8(const wxString &s) { return s.ToUTF8().data(); }
-wxString FromU8(const std::string &s) { return wxString::FromUTF8(s.c_str()); }
 
 //! Anthropic Messages API (https://api.anthropic.com/v1/messages).
 class AnthropicProvider : public AiProvider {
@@ -60,24 +60,25 @@ public:
   wxString BuildRequestBody(const wxString &context,
                             const std::vector<AiChatMessage> &history) const override {
     json body;
-    body["model"] = U8(m_model);
+    body["model"] = wxm::ToUtf8(m_model);
     body["max_tokens"] = 2048;
     if (!context.IsEmpty())
-      body["system"] = U8(context);
+      body["system"] = wxm::ToUtf8(context);
     json messages = json::array();
     for (const auto &m : history)
-      messages.push_back({{"role", U8(m.role)}, {"content", U8(m.content)}});
+      messages.push_back({{"role", wxm::ToUtf8(m.role)},
+                          {"content", wxm::ToUtf8(m.content)}});
     body["messages"] = messages;
-    return FromU8(body.dump());
+    return wxm::FromUtf8(body.dump());
   }
 
   wxString ParseReply(const wxString &responseBody) const override {
     try {
-      json j = json::parse(U8(responseBody));
+      json j = json::parse(wxm::ToUtf8(responseBody));
       wxString reply;
       for (const auto &block : j.at("content"))
         if (block.value("type", std::string()) == "text")
-          reply += FromU8(block.value("text", std::string()));
+          reply += wxm::FromUtf8(block.value("text", std::string()));
       if (reply.IsEmpty())
         throw AiProviderError("Anthropic response had no text content block");
       return reply;
@@ -116,19 +117,20 @@ public:
                             const std::vector<AiChatMessage> &history) const override {
     json messages = json::array();
     if (!context.IsEmpty())
-      messages.push_back({{"role", "system"}, {"content", U8(context)}});
+      messages.push_back({{"role", "system"}, {"content", wxm::ToUtf8(context)}});
     for (const auto &m : history)
-      messages.push_back({{"role", U8(m.role)}, {"content", U8(m.content)}});
+      messages.push_back({{"role", wxm::ToUtf8(m.role)},
+                          {"content", wxm::ToUtf8(m.content)}});
     json body;
-    body["model"] = U8(m_model);
+    body["model"] = wxm::ToUtf8(m_model);
     body["messages"] = messages;
-    return FromU8(body.dump());
+    return wxm::FromUtf8(body.dump());
   }
 
   wxString ParseReply(const wxString &responseBody) const override {
     try {
-      json j = json::parse(U8(responseBody));
-      wxString reply = FromU8(
+      json j = json::parse(wxm::ToUtf8(responseBody));
+      wxString reply = wxm::FromUtf8(
         j.at("choices").at(0).at("message").value("content", std::string()));
       if (reply.IsEmpty())
         throw AiProviderError("Response had an empty message content");
@@ -166,24 +168,26 @@ public:
                             const std::vector<AiChatMessage> &history) const override {
     json body;
     if (!context.IsEmpty())
-      body["systemInstruction"] = {{"parts", json::array({{{"text", U8(context)}}})}};
+      body["systemInstruction"] =
+        {{"parts", json::array({{{"text", wxm::ToUtf8(context)}}})}};
     json contents = json::array();
     for (const auto &m : history) {
       // Gemini calls the AI's own turn "model", not "assistant".
       wxString role = (m.role == wxS("assistant")) ? wxString(wxS("model")) : m.role;
-      contents.push_back(
-        {{"role", U8(role)}, {"parts", json::array({{{"text", U8(m.content)}}})}});
+      contents.push_back({{"role", wxm::ToUtf8(role)},
+                          {"parts", json::array(
+                              {{{"text", wxm::ToUtf8(m.content)}}})}});
     }
     body["contents"] = contents;
-    return FromU8(body.dump());
+    return wxm::FromUtf8(body.dump());
   }
 
   wxString ParseReply(const wxString &responseBody) const override {
     try {
-      json j = json::parse(U8(responseBody));
+      json j = json::parse(wxm::ToUtf8(responseBody));
       wxString reply;
       for (const auto &part : j.at("candidates").at(0).at("content").at("parts"))
-        reply += FromU8(part.value("text", std::string()));
+        reply += wxm::FromUtf8(part.value("text", std::string()));
       if (reply.IsEmpty())
         throw AiProviderError("Gemini response had no text part");
       return reply;
@@ -426,15 +430,15 @@ std::vector<AiCustomProviderConfig> ParseAiCustomProviders(const wxString &jsonT
   if (jsonText.IsEmpty())
     return result;
   try {
-    json j = json::parse(U8(jsonText));
+    json j = json::parse(wxm::ToUtf8(jsonText));
     if (!j.is_array())
       return result;
     for (const auto &entry : j) {
       AiCustomProviderConfig cfg;
-      cfg.id = FromU8(entry.value("id", std::string()));
-      cfg.name = FromU8(entry.value("name", std::string()));
-      cfg.baseUrl = FromU8(entry.value("baseUrl", std::string()));
-      cfg.model = FromU8(entry.value("model", std::string()));
+      cfg.id = wxm::FromUtf8(entry.value("id", std::string()));
+      cfg.name = wxm::FromUtf8(entry.value("name", std::string()));
+      cfg.baseUrl = wxm::FromUtf8(entry.value("baseUrl", std::string()));
+      cfg.model = wxm::FromUtf8(entry.value("model", std::string()));
       std::string shape = entry.value("shape", std::string("openai"));
       if (shape == "anthropic")
         cfg.shape = AiProviderShape::Anthropic;
@@ -468,13 +472,13 @@ wxString SerializeAiCustomProviders(const std::vector<AiCustomProviderConfig> &p
     case AiProviderShape::OpenAiCompatible:
     default: shape = "openai"; break;
     }
-    arr.push_back({{"id", U8(cfg.id)},
-                   {"name", U8(cfg.name)},
+    arr.push_back({{"id", wxm::ToUtf8(cfg.id)},
+                   {"name", wxm::ToUtf8(cfg.name)},
                    {"shape", shape},
-                   {"baseUrl", U8(cfg.baseUrl)},
-                   {"model", U8(cfg.model)}});
+                   {"baseUrl", wxm::ToUtf8(cfg.baseUrl)},
+                   {"model", wxm::ToUtf8(cfg.model)}});
   }
-  return FromU8(arr.dump());
+  return wxm::FromUtf8(arr.dump());
 }
 
 wxString AiProvider::CustomProviderSecretService(const wxString &id) {
@@ -635,7 +639,7 @@ void AiProvider::SendChat(
         } catch (const AiProviderError &e) {
           if (onResponse)
             onResponse(false, responseBody);
-          callback(false, FromU8(e.what()));
+          callback(false, wxm::FromUtf8(e.what()));
         }
         break;
       }

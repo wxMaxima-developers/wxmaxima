@@ -1,5 +1,10 @@
 # Current development version
 
+- Compiling wxMaxima is about a third faster. Precompiled headers are now
+  switched on by default -- and, more to the point, they now actually do
+  something: the option to enable them has existed for years, but the header
+  it precompiled was empty, so turning it on changed nothing at all.
+
 - Windows: `wxmaxima --logtostderr ... 2>&1` no longer loses everything that
   wxMaxima writes to stderr. Whenever the shell pointed stdout and stderr at
   the same place -- which is what `2>&1` does, and what a pipe to `more` or
