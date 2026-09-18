@@ -3074,6 +3074,57 @@ a local TCP socket.
     Wine: with the variable unset no log file is created at all and stdout
     is byte-for-byte just the child's output; with it set stdout is
     unchanged and the full trace lands in the file.
+  - **ANSWER (2026-09-18, from that instrumentation's first real CI run):
+    the launcher is doing its job perfectly, and the output is lost anyway.
+    Correcting this entry's own guess above: the "never entered the `-v`
+    branch / did not see `--version`" reading was WRONG** -- it rested on
+    identifying the child by handle type, and the pid now proves otherwise.
+    The real trace, verbatim:
+
+    ```
+    [wxmaxima-cli pid 6256] start: raw GetCommandLineW()=[D:/a/.../wxmaxima-cli.exe --debug --logtostderr --pipe --version]
+    [wxmaxima-cli pid 6256] start: stdin handle=...358 type=pipe, stdout handle=...3a0 type=pipe, stderr handle=...314 type=pipe
+    [wxmaxima-cli pid 6256] argument tail=[--debug --logtostderr --pipe --version]
+    [wxmaxima-cli pid 6256] CreateProcessW: exe=[D:\...\wxmaxima.exe] cmd=["D:\...\wxmaxima.exe" --debug --logtostderr --pipe --version]
+    [wxmaxima-cli pid 6256] CreateProcessW ok, child pid 9168
+    [wxmaxima-cli pid 6256] child exited with code 0
+    ```
+
+    and child 9168's own trace ends `entering -v branch` / `after Printf,
+    before exit(0)`. So every link holds: the argument tail is extracted
+    correctly, the child's command line is correct and correctly quoted,
+    the child parses it, reaches the version branch, completes `Printf()`
+    and exits 0 -- **and ctest still captured zero bytes.** `ArgumentTail()`
+    is exonerated by evidence now, not just by a Wine repro.
+    **What this contributes to the `wxmaxima_version_string` investigation
+    above, which is the same failure**: that entry's central unexplained
+    fact is that every wxmaxima child sees `FILE_TYPE_CHAR` where a pipe
+    was expected, and it speculated this might be something about how
+    CTest sets up stdio for a WIN32-subsystem child. This run settles part
+    of that. The launcher is an ordinary *console*-subsystem process; it
+    sees its own three std handles as **`type=pipe`** (so CTest really does
+    hand its direct children pipes, as the textbook assumption said) and
+    passes those exact handles on via `STARTF_USESTDHANDLES` -- the child's
+    reported handle *values* are identical (`0x3a0`/`0x314`/`0x358`),
+    confirming inheritance worked. Yet the GUI-subsystem child reports the
+    very same handles as **`type=char`**. So the pipe-to-char
+    transformation is tied to the *child being GUI-subsystem*, not to
+    anything CTest does, and it is not stable run to run either: in the
+    previous run's trace exactly one child reported `type=pipe`, in this
+    one that child reports `type=char`. **Start here, not at the fd/handle
+    chain, if this is picked up again.**
+    **Consequence for this feature, stated plainly**: a console-subsystem
+    launcher genuinely fixes the "cmd.exe does not wait for a
+    GUI-subsystem process" half of the problem (proven here: it waits and
+    propagates the exit code), but it does **not** make `--version` output
+    reach a capturing parent on this runner. Those were always two
+    different problems; this entry, and the PR that added the launcher,
+    conflated them. `wxmaxima_cli_version_string` therefore fails for the
+    same unresolved reason `wxmaxima_version_string` does, and fixing it
+    means fixing that, not the launcher. Do not "fix" it by routing this
+    test through a file the way its sibling does: that would hide the one
+    signal that will show when the underlying capture bug is actually
+    solved.
 
 - **System tray icon (`src/TrayIcon.{h,cpp}`, GH #2286) -- mirrors the busy
   status, gated entirely by `wxUSE_TASKBARICON`.** The maintainer's own
