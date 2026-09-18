@@ -1,5 +1,12 @@
 # Current development version
 
+- Windows: `wxmaxima --logtostderr ... 2>&1` no longer loses everything that
+  wxMaxima writes to stderr. Whenever the shell pointed stdout and stderr at
+  the same place -- which is what `2>&1` does, and what a pipe to `more` or
+  `findstr` usually involves -- wxMaxima closed that destination while
+  setting up the first of the two streams, so the second one silently went
+  nowhere. The log output was never written rather than merely misplaced,
+  which is what made it look as though `--logtostderr` had had no effect.
 - Builds no longer redo work that is already done: the step that copies each
   translation into the build tree, so that ./wxmaxima-local finds it without
   installing, ran once per language on every single build -- 50 file copies

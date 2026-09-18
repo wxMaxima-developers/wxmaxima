@@ -362,9 +362,26 @@ static void BindStdStreamToParent(DWORD stdHandleId, FILE *stream,
   }
   if ((handle == nullptr) || (handle == INVALID_HANDLE_VALUE))
     return;
-  int fd = _open_osfhandle(reinterpret_cast<intptr_t>(handle), _O_TEXT);
-  if (fd == -1)
+  // Work on a duplicate, because _open_osfhandle() makes the descriptor the
+  // *owner* of the handle it is given: the _close() below would then close the
+  // very handle GetStdHandle() still hands out, leaving this process with a
+  // dangling STD_*_HANDLE whose numeric value Windows is free to hand to the
+  // next object anybody opens. That is not hypothetical -- it is visible in the
+  // CI traces this function's WXM_STDIO_DEBUG_LOG output produces, where
+  // stderr's descriptor ends up on exactly the value that stdout's inherited
+  // handle had a moment earlier. Everything downstream that asks Windows
+  // rather than the CRT for a standard handle (the SetHandleInformation() calls
+  // in MyApp::OnInit(), HaveStdErrHandle(), and every child process that
+  // inherits our standard handles) was reading a recycled or closed handle.
+  HANDLE ownedCopy = INVALID_HANDLE_VALUE;
+  if (!DuplicateHandle(GetCurrentProcess(), handle, GetCurrentProcess(),
+                       &ownedCopy, 0, FALSE, DUPLICATE_SAME_ACCESS))
     return;
+  int fd = _open_osfhandle(reinterpret_cast<intptr_t>(ownedCopy), _O_TEXT);
+  if (fd == -1) {
+    CloseHandle(ownedCopy);
+    return;
+  }
   // Redirect the CRT's own stdout/stderr/stdin (still fully valid FILE
   // objects in a WIN32-subsystem process, just not attached to anything) to
   // this handle via _dup2(), the documented way to repoint an existing
@@ -373,13 +390,14 @@ static void BindStdStreamToParent(DWORD stdHandleId, FILE *stream,
   // struct copy that only reproduces whatever public fields _fdopen()
   // happened to populate for an object at a *different* address, and can
   // leave CRT-internal-only bookkeeping (buffering state, the per-stream
-  // lock) inconsistent. This is suspected (not confirmed on real hardware,
-  // no Windows available to test on) to be why `wxmaxima --version`'s
-  // output isn't reliably reaching ctest's pipe on the minGW CI runner --
-  // wxmaxima_version_string has failed there on essentially every push
-  // since 2026-08-15, exit code 0 but no matching stdout content, exactly
-  // the shape of a stream that looks bound but doesn't actually deliver
-  // writes to the right place.
+  // lock) inconsistent. _dup2() is still the right call, but note for anyone
+  // arriving here from the wxmaxima_version_string failure: that struct copy
+  // was NOT what kept `wxmaxima --version`'s output from reaching ctest's
+  // pipe on the minGW runner. This change was made for that reason and the
+  // failure survived it, twice -- once on the real runner and once under a
+  // controlled Wine reproduction built specifically to check it. Do not
+  // spend a third round on it; AGENTS.md records what else has been ruled
+  // out.
   if (_dup2(fd, _fileno(stream)) != 0) {
     _close(fd);
     return;

@@ -116,7 +116,12 @@ void CliDebugLog(const std::wstring &msg) {
   CloseHandle(h);
 }
 
-//! "handle=... type=pipe|char|disk|unknown|none" for one of the std handles.
+/*! "handle=... type=... inherit=..." for one of the std handles.
+
+  inherit= is the interesting one: a handle listed in STARTUPINFO reaches the
+  child only if it carries HANDLE_FLAG_INHERIT, and nothing guarantees that
+  the handles our own parent gave us do (see InheritableDuplicate() below).
+*/
 std::wstring DescribeStdHandle(DWORD stdHandleId) {
   HANDLE h = GetStdHandle(stdHandleId);
   if ((h == nullptr) || (h == INVALID_HANDLE_VALUE))
@@ -135,9 +140,47 @@ std::wstring DescribeStdHandle(DWORD stdHandleId) {
   default:
     break;
   }
-  wchar_t buf[64];
-  swprintf(buf, 64, L"handle=%p type=%ls", h, type);
+  DWORD flags = 0;
+  const wchar_t *inherit = GetHandleInformation(h, &flags)
+    ? ((flags & HANDLE_FLAG_INHERIT) ? L"yes" : L"no")
+    : L"unqueryable";
+  wchar_t buf[96];
+  swprintf(buf, 96, L"handle=%p type=%ls inherit=%ls", h, type, inherit);
   return buf;
+}
+
+/*! An explicitly inheritable duplicate of a handle, or the handle itself.
+
+  A handle named in STARTUPINFO is only actually placed in the child's handle
+  table if it carries HANDLE_FLAG_INHERIT (and CreateProcess() is called with
+  bInheritHandles = TRUE, which it is below). Get that wrong and the failure is
+  quiet rather than loud: CreateProcess() still succeeds, and the child still
+  finds the handle *values* in its PEB, so GetStdHandle() hands back
+  plausible-looking numbers -- but they name nothing the child owns. Writes
+  through them are then lost, or land on whatever unrelated object happens to
+  occupy that slot in the child's own table, which is how a pipe the parent
+  sees can look like a character device to the child.
+
+  Nothing guarantees the handles we ourselves were given are inheritable.
+  A parent that captures our output has every reason to clear the flag on its
+  own copy so that no grandchild can hold its pipe open past our exit --
+  wxmaxima.exe does exactly that to its own standard handles, for exactly that
+  reason (see the SetHandleInformation() call in main.cpp's MyApp::OnInit()).
+  So hand the child duplicates we know are inheritable rather than betting on
+  the originals, the way MSDN's own redirected-child example does.
+
+  The duplicates are not inherited further than the child (only its own copy
+  matters, and it is free to clear the flag again), and the caller closes them
+  as soon as CreateProcess() has returned.
+*/
+HANDLE InheritableDuplicate(HANDLE h) {
+  if ((h == nullptr) || (h == INVALID_HANDLE_VALUE))
+    return h;
+  HANDLE duplicate = INVALID_HANDLE_VALUE;
+  if (!DuplicateHandle(GetCurrentProcess(), h, GetCurrentProcess(), &duplicate,
+                       0, TRUE, DUPLICATE_SAME_ACCESS))
+    return h; // Nothing better to offer: pass the original along unchanged.
+  return duplicate;
 }
 
 //! The directory this executable lives in, with a trailing separator.
@@ -260,18 +303,27 @@ int main() {
     cmd += tail;
   }
 
-  STARTUPINFOW si = {};
-  si.cb = sizeof(si);
   // A GUI-subsystem child inherits no usable standard handles unless they are
   // handed to it explicitly. With these set, main.cpp's BindStdStreamToParent()
   // finds a valid handle on its very first GetStdHandle() call and never needs
   // its AttachConsole(ATTACH_PARENT_PROCESS) fallback -- and this works
   // unchanged whether our own stdout is a console, a pipe or a redirect to a
-  // file, because whatever we were given is simply passed along.
+  // file, because whatever we were given is passed along. They have to be
+  // inheritable duplicates rather than the originals, though; see
+  // InheritableDuplicate().
+  HANDLE stdIn = GetStdHandle(STD_INPUT_HANDLE);
+  HANDLE stdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+  HANDLE stdErr = GetStdHandle(STD_ERROR_HANDLE);
+  HANDLE childIn = InheritableDuplicate(stdIn);
+  HANDLE childOut = InheritableDuplicate(stdOut);
+  HANDLE childErr = InheritableDuplicate(stdErr);
+
+  STARTUPINFOW si = {};
+  si.cb = sizeof(si);
   si.dwFlags = STARTF_USESTDHANDLES;
-  si.hStdInput = GetStdHandle(STD_INPUT_HANDLE);
-  si.hStdOutput = GetStdHandle(STD_OUTPUT_HANDLE);
-  si.hStdError = GetStdHandle(STD_ERROR_HANDLE);
+  si.hStdInput = childIn;
+  si.hStdOutput = childOut;
+  si.hStdError = childErr;
 
   SetConsoleCtrlHandler(CtrlHandler, TRUE);
 
@@ -281,12 +333,26 @@ int main() {
   PROCESS_INFORMATION pi = {};
   // CreateProcessW() may write to the command-line buffer, so it gets a
   // writable one -- hence std::wstring::data() rather than a literal.
-  if (!CreateProcessW(exe.c_str(), cmd.data(), nullptr, nullptr, TRUE, 0,
-                      nullptr, nullptr, &si, &pi)) {
-    DWORD err = GetLastError();
-    CliDebugLog(L"CreateProcessW failed, error " + std::to_wstring(err));
+  BOOL started = CreateProcessW(exe.c_str(), cmd.data(), nullptr, nullptr, TRUE,
+                                0, nullptr, nullptr, &si, &pi);
+  DWORD startError = started ? 0 : GetLastError();
+
+  // The child has its own copies now, so drop ours -- and drop them whether or
+  // not the child started, since nothing else uses them. Leaving a duplicate
+  // of a pipe open here would leave this process holding a second write end,
+  // which is precisely what stops whoever is capturing our output from ever
+  // seeing end-of-file.
+  if (childIn != stdIn)
+    CloseHandle(childIn);
+  if (childOut != stdOut)
+    CloseHandle(childOut);
+  if (childErr != stdErr)
+    CloseHandle(childErr);
+
+  if (!started) {
+    CliDebugLog(L"CreateProcessW failed, error " + std::to_wstring(startError));
     std::fprintf(stderr, "wxmaxima-cli: cannot start %ls (error %lu).\n",
-                 exe.c_str(), static_cast<unsigned long>(err));
+                 exe.c_str(), static_cast<unsigned long>(startError));
     return 1;
   }
   CliDebugLog(L"CreateProcessW ok, child pid " + std::to_wstring(pi.dwProcessId));
