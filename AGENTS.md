@@ -3616,6 +3616,31 @@ tried without rebuilding.
   `PRE_BUILD` command still consumed yesterday's `wxMaxima.pot` on disk.
   Fixed by declaring `DEPENDS ${LANG}.po wxMaxima.pot` on the
   `add_custom_target(${LANG}_po ...)` line.
+- **A COMMAND attached to an `add_custom_target` runs on EVERY build, and
+  its `DEPENDS` does not change that** -- a custom *target* is by definition
+  always out of date; `DEPENDS` only *orders* it after those inputs. Only
+  `add_custom_command(OUTPUT ...)` gets a real up-to-date check. This bit
+  `copy_mo_file_${LANG}_for_wxmaxima_local`, which copies each `.gmo` into
+  `${CMAKE_BINARY_DIR}/share/locale/<lang>/LC_MESSAGES/wxMaxima.mo` so
+  `./wxmaxima-local` finds translations without installing (see the GH #1711
+  entry above for why that target must keep existing). Written as
+  `add_custom_target(... ALL DEPENDS <gmo> COMMAND copy ...)` it re-ran for
+  all **50** languages on every build, including a completely no-op one --
+  which is also why `ninja` could never say "no work to do". Measured, not
+  inferred: three consecutive no-op passes over the real targets ran 50
+  copies *each time* before the fix, and `50 / 0 / 0` after, with `ninja: no
+  work to do.` on the second. Fixed by naming the destination `.mo` as an
+  `add_custom_command(OUTPUT ...)` and leaving the `ALL` target as a thin
+  `DEPENDS` on it. Verified the fix is behaviour-preserving in both
+  directions that matter: `diff -r` of the two build trees' `share/locale`
+  is identical (same 50 files, byte for byte), and `touch`ing a `.gmo` still
+  re-runs that language's copy and then settles. **Don't "simplify" this
+  back into a single target with a COMMAND**, and treat the same shape
+  anywhere else as a build-time waste bug. (`info/CMakeLists.txt`'s
+  `add_custom_target(html ALL)` is *not* an instance of this: it carries no
+  COMMAND at all and is a pure aggregator over `build_*.html` targets whose
+  own `add_custom_command(OUTPUT ...)` rules are correctly output-driven, so
+  pandoc does not re-run when the HTML is current.)
 - **Committing a `make update-locale` run's output means committing
   *every* language's drift against the current C++ source, not just the
   fix you're testing.** Running it live in this sandbox (to verify the two
