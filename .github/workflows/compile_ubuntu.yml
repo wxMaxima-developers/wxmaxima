@@ -61,7 +61,7 @@ jobs:
              mkdir build
              touch build build/build.ninja
              cd build
-             cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Debug -DWXM_UNIT_TESTS=YES ..
+             cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_UNITY_BUILD=ON -DWXM_UNIT_TESTS=YES ..
              cd ..
       - name: compile
         run: |
@@ -202,7 +202,7 @@ jobs:
              export LANG=en_US.UTF-8
              mkdir build
              cd build
-             cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Debug -DWXM_UNIT_TESTS=YES -DWXM_SANITIZE=address,undefined ..
+             cmake -G "Ninja" -DCMAKE_UNITY_BUILD=ON -DCMAKE_BUILD_TYPE=Debug -DWXM_UNIT_TESTS=YES -DWXM_SANITIZE=address,undefined ..
       - name: compile
         run: cmake --build build
       - name: run_tests

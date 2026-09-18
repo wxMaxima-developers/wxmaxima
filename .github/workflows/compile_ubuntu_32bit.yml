@@ -32,7 +32,7 @@ jobs:
              export LANG=en_US.UTF-8
              mkdir build
              cd build
-             cmake -DWXM_UNIT_TESTS=YES ..
+             cmake -DWXM_UNIT_TESTS=YES -DCMAKE_UNITY_BUILD=ON ..
              cd ..
       - name: compile
         run: |
