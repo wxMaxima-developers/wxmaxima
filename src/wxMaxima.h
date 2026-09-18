@@ -815,8 +815,23 @@ public:
   virtual bool OnInit() override;
   virtual int OnRun() override;
   virtual int OnExit() override;
+  // Both guards are needed, and in this order: the definition in main.cpp
+  // carries exactly the same pair, and GenerateDebugReport() -- the QA-only
+  // method this one calls -- is already declared under both further down.
+  // Declaring an override that no translation unit defines does not merely
+  // waste a line: it is emitted into MyApp's vtable, so the link fails with
+  // "undefined reference to MyApp::OnFatalException()" pointing at
+  // _ZTV5MyApp rather than at any call site. That is what a
+  // -DWXM_DISABLE_QA=YES build hit.
+  // The macro is USE_QA, not WXM_USE_QA: WXM_USE_QA is the *CMake option*,
+  // and src/BuildConfig.h.cin turns it into #cmakedefine USE_QA. Guarding on
+  // the option name instead compiles to "never", which removes the
+  // declaration from the default build too, where main.cpp still defines the
+  // member.
+#ifdef USE_QA
 #if wxUSE_ON_FATAL_EXCEPTION && wxUSE_DEBUGREPORT
   void	OnFatalException () override;
+#endif
 #endif
   /*! Handle a failed wxASSERT.
 
