@@ -409,6 +409,26 @@ endif()
 
 if(WIN32)
     target_link_libraries(wxmaxima ws2_32)
+
+    # A console-subsystem companion to the GUI-subsystem wxmaxima.exe. An
+    # executable's subsystem is a PE header bit fixed at link time, so one
+    # binary cannot be both -- and cmd.exe does not wait for a GUI-subsystem
+    # process, which is why --version/--help/--batch could never behave like
+    # a normal command-line tool no matter what wxmaxima.exe itself does.
+    # See src/wxmaxima-cli.cpp's own comment for the full reasoning, including
+    # why this deliberately links none of wxMaxima's own code (and what to do
+    # instead should it ever grow into a real headless CLI).
+    add_executable(wxmaxima-cli wxmaxima-cli.cpp)
+    target_compile_features(wxmaxima-cli PUBLIC cxx_std_20)
+    if(NOT MSVC)
+        # Dependency-free on purpose: it has to run from an unpacked ZIP with
+        # nothing but wxmaxima.exe beside it, so it must not need the MinGW
+        # runtime DLLs (libstdc++-6 / libgcc_s_seh-1 / libwinpthread-1) that
+        # the main executable still has bundled alongside it. It links no
+        # wxWidgets at all, so this costs a few tens of kilobytes, not a
+        # second copy of a statically linked wx.
+        target_link_options(wxmaxima-cli PRIVATE -static)
+    endif()
 endif()
 
 # ---------------------------------------------------------------------------
@@ -484,6 +504,12 @@ if(APPLE)
 	     RESOURCE DESTINATION resource)
 else()
     install(TARGETS wxmaxima RUNTIME DESTINATION bin)
+endif()
+
+if(WIN32)
+    # Next to wxmaxima.exe, never anywhere else: the launcher finds the GUI
+    # executable purely by looking in its own directory.
+    install(TARGETS wxmaxima-cli RUNTIME DESTINATION bin)
 endif()
 
 if(NOT WIN32)

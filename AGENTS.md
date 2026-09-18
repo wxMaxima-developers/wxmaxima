@@ -2962,6 +2962,170 @@ a local TCP socket.
     alone -- this entry's own history is full of examples of a plausible-
     looking mechanism not surviving contact with the real platform.
 
+- **`wxmaxima-cli.exe` (`src/wxmaxima-cli.cpp`) -- the console-subsystem
+  companion, and why it is a launcher rather than a second copy of the app.**
+  Direct follow-on to the `wxmaxima_version_string` entry above: that entry
+  is about a *test* capturing output, this is about the underlying reason a
+  user cannot get output either. An executable's subsystem is a bit in its
+  PE header, fixed at link time -- one binary is GUI-subsystem or
+  console-subsystem, never both -- and `wxmaxima.exe` must be the former or
+  a console window pops up beside every worksheet. Two consequences: it
+  starts with no stdio at all (what `RedirectStdioToParent()` papers over),
+  and **cmd.exe does not wait for a GUI-subsystem process**, so it returns
+  to the prompt before any output arrives. No code inside `wxmaxima.exe` can
+  fix the second one; only a console-subsystem process can.
+  - **The subsystem bit is the *only* thing forcing a second binary** -- not
+    code sharing. Worth stating because "share the core with the diff
+    utility" sounds like it needs a shared library, and it does not: there
+    *is* no separate diff binary. `wxmxdiff` is a symlink to `wxmaxima`
+    (`src/CMakeLists.txt`) with `--diff` dispatch, i.e. this codebase
+    already does one-binary/multiple-modes.
+  - **Deliberately not a DLL**, which was the first idea considered and
+    rejected: Windows links wxWidgets statically
+    (`-DwxWidgets_USE_STATIC=true` in `compile_windows.yml`), so a core DLL
+    would duplicate wx's global state -- the `wxModule` registry, the
+    `wxApp` instance, the art-provider table -- on both sides of the
+    boundary, a notoriously ugly failure mode. It would also need
+    `__declspec(dllexport)` plumbing across ~200 wx-heavy classes plus
+    templates like `CellPtr<>`, add a second PE file to sign, and work
+    directly against the portable/no-installer build (GH #2298), whose whole
+    point is fewer files and no dependencies. **If this ever grows into a
+    genuinely headless CLI that evaluates worksheets, share the core via a
+    CMake OBJECT library** -- `wxmTestApp`/`wxmFuzzApp` are already exactly
+    that pattern -- never a DLL.
+  - **`STARTF_USESTDHANDLES` is load-bearing, not boilerplate.** A
+    GUI-subsystem child inherits no usable standard handles unless they are
+    passed explicitly, even with `bInheritHandles=TRUE`. With them set,
+    `BindStdStreamToParent()`'s very first `GetStdHandle()` succeeds and its
+    `AttachConsole(ATTACH_PARENT_PROCESS)` fallback never fires -- and the
+    same code works unchanged whether the launcher's own stdout is a
+    console, a pipe or a file redirect, since whatever it was handed is
+    simply passed along. Dropping this flag would silently push every case
+    back onto the `AttachConsole` path.
+  - **The child's command line is the raw `GetCommandLineW()` tail, not a
+    re-quoted argv[].** Re-quoting is precisely the bug class that cost this
+    project the multi-session investigation documented above (whose real
+    root cause was one redundant pair of quotes); passing the original
+    characters through cannot introduce a quoting error that was not already
+    in what the user typed. Note Windows parses the *program name* part of a
+    command line more simply than the arguments -- no backslash escapes, a
+    quoted name ends at the next quote -- which is what the skip loop
+    implements.
+  - Plain `main()`, not `wmain()`: the command line is read through
+    `GetCommandLineW()` rather than `argv`, which avoids requiring
+    `-municode` from every toolchain (confirmed: adding `-municode` to a
+    `-mwindows` target that defines `main()` fails to link with `undefined
+    reference to wWinMain`).
+  - **Verified end-to-end under Wine, not just compiled** (this sandbox has
+    `i686-w64-mingw32-g++` + `wine`, 32-bit prefix only -- see the
+    `wxmaxima_version_string` entry for that setup's quirks). A stand-in
+    GUI-subsystem child reproducing `BindStdStreamToParent()` verbatim
+    confirmed: PE subsystem bits genuinely differ (2 = GUI vs 3 = CONSOLE,
+    read straight out of the headers), stdout reaches a pipe and a file
+    redirect, stderr stays separate, an argument containing spaces survives
+    as one argument, embedded quotes survive, the exit code propagates, and
+    the "installed as wxmaxima.exe myself" guard refuses rather than
+    fork-bombing. Not verified: behaviour against the *real* wxmaxima.exe on
+    real Windows -- that needs a CI run, and `wxmaxima_cli_version_string`
+    (`test/CMakeLists.txt`) is the test that will say so.
+  - **That CI run happened, and the test FAILED -- still unexplained as of
+    this entry. Read this before re-deriving any of it.** On the minGW job
+    the launcher itself *built* fine and the test failed in 0.06 s with
+    **literally zero captured output** (`--output-on-failure` is on for
+    that step, so the blank is real, not a reporting artifact). What that
+    rules out, from the job log rather than by reasoning: none of the
+    launcher's own three error messages appear anywhere in it, so
+    `ExeDirectory()` was non-empty, the self-spawn guard did not fire, and
+    `CreateProcessW()` **succeeded** -- the child really did start. Nor is
+    it a target-resolution problem: there is no ctest "Unable to find
+    executable", and `src\wxmaxima-cli.exe` links right next to
+    `src\wxmaxima.exe` (neither target sets `RUNTIME_OUTPUT_DIRECTORY`, so
+    the "look in my own directory" lookup is sound in the build tree too).
+    The suggestive find: of the 88 wxmaxima processes `WXM_STDIO_DEBUG_LOG`
+    traced in that run, **exactly one had `type=pipe` standard handles**
+    (every other one had `type=char`) -- consistent with it being the child
+    this launcher started, since this is the only thing in the suite that
+    forwards ctest's own handles via `STARTF_USESTDHANDLES`. That process
+    bound all three streams successfully and came out of
+    `cmdLineParser.Parse()` with `result=0`, yet **never entered the `-v`
+    branch** -- i.e. it did not see `--version`. That identification is
+    circumstantial, though, which is exactly the gap the instrumentation
+    below closes.
+    **Do not re-test the argument handling under Wine: it passes there.**
+    Confirmed this pass (32-bit prefix, stand-in GUI child echoing its own
+    `GetCommandLineW()`, run from a foreign working directory to match
+    ctest's `WORKING_DIRECTORY`): the child receives
+    `"...\wxmaxima.exe" --debug --logtostderr --pipe --version`, complete
+    and correctly quoted, through both a pipe and a file redirect. So
+    `ArgumentTail()` is not obviously the culprit, and another Wine repro
+    of the same thing will just reproduce that same pass.
+    **Instrumentation added instead** (`CliDebugLog()`/`DescribeStdHandle()`
+    in `wxmaxima-cli.cpp`), deliberately mirroring `main.cpp`'s own
+    `StdioDebugLog()` in every respect -- same `WXM_STDIO_DEBUG_LOG` opt-in
+    (already set by exactly one CI step), same raw
+    `CreateFileW`/`WriteFile` with `FILE_APPEND_DATA` alone so several
+    processes can append atomically (**do not add a `SetFilePointer()`**),
+    and emphatically never a byte to stdout, which belongs to the child.
+    It records the raw command line, the std handle types, the extracted
+    argument tail, the exact command line handed to `CreateProcessW()`, and
+    -- the point of the exercise -- **the child's pid**, which is what will
+    finally tie a specific traced wxmaxima process to this launcher instead
+    of inferring it from handle types. Verified in both directions under
+    Wine: with the variable unset no log file is created at all and stdout
+    is byte-for-byte just the child's output; with it set stdout is
+    unchanged and the full trace lands in the file.
+  - **ANSWER (2026-09-18, from that instrumentation's first real CI run):
+    the launcher is doing its job perfectly, and the output is lost anyway.
+    Correcting this entry's own guess above: the "never entered the `-v`
+    branch / did not see `--version`" reading was WRONG** -- it rested on
+    identifying the child by handle type, and the pid now proves otherwise.
+    The real trace, verbatim:
+
+    ```
+    [wxmaxima-cli pid 6256] start: raw GetCommandLineW()=[D:/a/.../wxmaxima-cli.exe --debug --logtostderr --pipe --version]
+    [wxmaxima-cli pid 6256] start: stdin handle=...358 type=pipe, stdout handle=...3a0 type=pipe, stderr handle=...314 type=pipe
+    [wxmaxima-cli pid 6256] argument tail=[--debug --logtostderr --pipe --version]
+    [wxmaxima-cli pid 6256] CreateProcessW: exe=[D:\...\wxmaxima.exe] cmd=["D:\...\wxmaxima.exe" --debug --logtostderr --pipe --version]
+    [wxmaxima-cli pid 6256] CreateProcessW ok, child pid 9168
+    [wxmaxima-cli pid 6256] child exited with code 0
+    ```
+
+    and child 9168's own trace ends `entering -v branch` / `after Printf,
+    before exit(0)`. So every link holds: the argument tail is extracted
+    correctly, the child's command line is correct and correctly quoted,
+    the child parses it, reaches the version branch, completes `Printf()`
+    and exits 0 -- **and ctest still captured zero bytes.** `ArgumentTail()`
+    is exonerated by evidence now, not just by a Wine repro.
+    **What this contributes to the `wxmaxima_version_string` investigation
+    above, which is the same failure**: that entry's central unexplained
+    fact is that every wxmaxima child sees `FILE_TYPE_CHAR` where a pipe
+    was expected, and it speculated this might be something about how
+    CTest sets up stdio for a WIN32-subsystem child. This run settles part
+    of that. The launcher is an ordinary *console*-subsystem process; it
+    sees its own three std handles as **`type=pipe`** (so CTest really does
+    hand its direct children pipes, as the textbook assumption said) and
+    passes those exact handles on via `STARTF_USESTDHANDLES` -- the child's
+    reported handle *values* are identical (`0x3a0`/`0x314`/`0x358`),
+    confirming inheritance worked. Yet the GUI-subsystem child reports the
+    very same handles as **`type=char`**. So the pipe-to-char
+    transformation is tied to the *child being GUI-subsystem*, not to
+    anything CTest does, and it is not stable run to run either: in the
+    previous run's trace exactly one child reported `type=pipe`, in this
+    one that child reports `type=char`. **Start here, not at the fd/handle
+    chain, if this is picked up again.**
+    **Consequence for this feature, stated plainly**: a console-subsystem
+    launcher genuinely fixes the "cmd.exe does not wait for a
+    GUI-subsystem process" half of the problem (proven here: it waits and
+    propagates the exit code), but it does **not** make `--version` output
+    reach a capturing parent on this runner. Those were always two
+    different problems; this entry, and the PR that added the launcher,
+    conflated them. `wxmaxima_cli_version_string` therefore fails for the
+    same unresolved reason `wxmaxima_version_string` does, and fixing it
+    means fixing that, not the launcher. Do not "fix" it by routing this
+    test through a file the way its sibling does: that would hide the one
+    signal that will show when the underlying capture bug is actually
+    solved.
+
 - **System tray icon (`src/TrayIcon.{h,cpp}`, GH #2286) -- mirrors the busy
   status, gated entirely by `wxUSE_TASKBARICON`.** The maintainer's own
   issue text was just "wxAppIndicator -- we don't seem to use that on gtk,
