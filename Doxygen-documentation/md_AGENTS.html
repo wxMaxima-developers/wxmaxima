@@ -74,6 +74,15 @@ $(function() {
 <div class="contents">
 <div class="textblock"><p>This file contains architectural insights, conventions, and operational knowledge to assist AI agents working on the <a class="el" href="classwxMaxima.html">wxMaxima</a> codebase. <b>Agents are explicitly permitted and encouraged to update this file with new findings that improve context and safety.</b></p>
 <h1><a class="anchor" id="autotoc_md43"></a>
+Branches and pull requests</h1>
+<p><b>One branch per feature or bugfix, cut fresh from <code>main</code>, and a pull request once that feature is finished.</b> Give the branch a name that says what it is (<code>claude/publish-portable-zip</code>, <code>claude/fix-qa-disabled-link</code>), not a name that just identifies the agent or the session.</p>
+<p><b>Do not reuse one long-lived branch for a series of unrelated changes.</b> This is worth stating because it has already gone wrong: a single branch was reused for roughly twenty successive PRs, and because each PR's content reached <code>main</code> under different commit ids (so the branch itself was never fast-forwarded), it silently drifted about sixty commits behind. What it still carried then <em>looked</em> like unmerged work but was entirely duplicated in <code>main</code> already &ndash; costing real time to establish before anything could safely be pushed to it. <a class="el" href="classA.html">A</a> branch taken fresh from <code>main</code> per change cannot get into that state.</p>
+<p>Two consequences worth keeping in mind:</p>
+<ul>
+<li>If an agent's own configuration names a fixed branch to develop on (some session templates do), that instruction conflicts with this one. Prefer this file's workflow, and say so, rather than silently reusing the fixed branch &ndash; but note that a fresh session will start from that template again, so the template itself is what needs changing.</li>
+<li>Keep an unrelated fix out of an existing PR's branch. If something needs fixing while a PR is open, that is a new branch and a new PR, even when the fix is one line.</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md44"></a>
 Build System</h1>
 <p>Configure once (a Debug build is the default), then build and run without installing:</p>
 <div class="fragment"><div class="line">cmake -S . -B build -G Ninja</div>
@@ -116,7 +125,7 @@ Build System</h1>
 </ol>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md44"></a>
+<h1><a class="anchor" id="autotoc_md45"></a>
 Architecture &amp; GUI</h1>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> is a GUI front-end to the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> CAS; it talks to a <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> process over a local TCP socket.</p>
 <ul>
@@ -758,7 +767,7 @@ Architecture &amp; GUI</h1>
     "Sending <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> a SIGINT signal," and clicking "Exit" raises the same
     save-changes &lt;tt&gt;Save As&lt;/tt&gt; prompt a normal File &gt; Exit does.
 
-@subsection autotoc_md73 Asynchronous ("background job") output from Maxima
+@subsection autotoc_md68 Asynchronous ("background job") output from Maxima
 
 &lt;strong&gt;Implemented and verified, but dormant: nothing in today's single-threaded
 Maxima sends it.&lt;/strong&gt; Full design, measurements and rationale live in
@@ -818,7 +827,7 @@ Only the traps worth knowing from elsewhere are repeated here.
   rebinding away.
 - &lt;strong&gt;Deliberately does not scroll or un-collapse&lt;/strong&gt;, even with "follow evaluation" on &amp;ndash; same reasoning as GH #1952 above.
 
-@subsection autotoc_md74 Communication with Maxima
+@subsection autotoc_md69 Communication with Maxima
 
 wxMaxima sends Lisp and Maxima commands over the socket; Maxima answers with XML
 wrapped in known tags. &lt;tt&gt;Maxima&lt;/tt&gt; reads that data on a worker thread and posts
@@ -857,7 +866,7 @@ tried without rebuilding.
 <li><b><b><b>**ASCII-art 2<a class="el" href="classD.html">D</a> display (<code>set_display('ascii)</code>) and <code>*alt-display2d*</code>:** when <code>$display2d</code> is on, <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s evaluator checks the special variable <code>*alt-display2d*</code> before printing a result: if it's a function symbol, that function is called <em>instead of</em> <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s own stock printer (this is how <code>mydispla</code> in <code>wxMathML.lisp</code> produces the normal <code>&lt;mth&gt;</code>/XML output); if it's <code>nil</code>, <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> falls through to its own built-in ASCII-art printer, which pads a result's lines with literal spaces so a multi-line fraction/ matrix/etc. lines up correctly under the <code>(oN)</code> label &ndash; but that padding assumes every line, including the label, ends up rendered in one uniform monospace font. <code>wxMathML.lisp</code>'s <code>wx-ascii-displa</code> wraps that stock printer in <code>&lt;wxxml-asciimath&gt;</code>/<code>&lt;/wxxml-asciimath&gt;</code> markers <em>without</em> reimplementing it: it dynamically rebinds <code>*alt-display2d*</code> to <code>nil</code> for just the duration of <code>(displa x)</code>, which re-enters <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s own dispatch and this time takes the stock ASCII path (confirmed live: this is correctly reentrant-safe through <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s own recursive sub-expression <code>displa</code> calls, e.g. matrix rows, since they run inside the same dynamic extent). <code>Maxima::ProcessData()</code> only fires the corresponding <code>XML_ASCIIMATH</code> event once it has seen the <em>complete</em> matching closing tag, so <code><a class="el" href="classMaximaResponseReader.html#a15931a24b9755320cc7262e040217dc4" title="Handles one complete &lt;wxxml-asciimath&gt;...&lt;/wxxml-asciimath&gt; block: Maxima&#39;s stock ASCII-art 2D displa...">MaximaResponseReader::ReadAsciiMath()</a></code> always receives one whole block in one piece and can render all of it in one uniform style &ndash; before this, <code>ReadMiscText()</code> guessed a chunk's style from whether it happened to start with <code>"(%"</code>, and since chunks are split by socket/timer batching (not by where <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s actual output boundaries are), a block's label line could land in a separate batch than its neighbors and get misclassified into a different (proportional) font, breaking the alignment <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s padding assumed &ndash; root-caused with a raw <code>:lisp-quiet (with-input-from-string ...)</code> / socket-level reproduction (see the debugging technique note above) before the fix, not guessed.</b></b></b></li>
 </ul>
 <p><b><b><b></b></b></b></p>
-<h2><a class="anchor" id="autotoc_md75"></a>
+<h2><a class="anchor" id="autotoc_md70"></a>
 File Formats</h2>
 <p><b><b><b></p><ul>
 <li>**<code>.wxmx</code>** &ndash; a ZIP archive holding <code>content.xml</code> (the MathML-like XML) plus the embedded images. The format version lives in <code><a class="el" href="WXMXformat_8h_source.html">src/WXMXformat.h</a></code>.</li>
@@ -873,7 +882,7 @@ File Formats</h2>
 </ul>
 <p></b></b></b></p>
 <p><b><b><b></b></b></b></p>
-<h2><a class="anchor" id="autotoc_md76"></a>
+<h2><a class="anchor" id="autotoc_md71"></a>
 Translations (&lt;tt&gt;locales/&lt;/tt&gt;)</h2>
 <p><b><b><b></p><ul>
 <li><b>One combined <code>.po</code> per language, in <code>locales/wxMaxima/</code>, is the file a translator edits.</b> It covers both <a class="el" href="classwxMaxima.html">wxMaxima</a>'s own UI strings (<code>xgettext</code>-extracted from <code>src/**/*.cpp</code>/<code>*.h</code>) and the manual's prose (<code>po4a</code>-extracted from <code>info/wxmaxima.md</code>). <code>locales/wxMaxima/wxMaxima.pot</code>, the template both <code>msgmerge</code> and Crowdin work against, is regenerated as the union of a fresh source scan and <code>locales/manual/wxmaxima.md.pot</code> (<code>msgcat --use-first</code>, preferring <code>wxMaxima.pot</code>'s own header) by the <code>update-locale</code> CMake target.</li>
@@ -897,9 +906,10 @@ Translations (&lt;tt&gt;locales/&lt;/tt&gt;)</h2>
 </ul>
 <p></b></b></b></p>
 <p><b><b><b></b></b></b></p>
-<h1><a class="anchor" id="autotoc_md77"></a>
+<h1><a class="anchor" id="autotoc_md72"></a>
 Conventions &amp; Standards</h1>
 <p><b><b><b></p><ul>
+<li><b>Branches and pull requests:</b> one branch per feature or bugfix, cut fresh from <code>main</code>, PR when it is finished &ndash; see "Branches and pull requests" at the top of this file for why reusing one long-lived branch has already caused trouble.</li>
 <li><b>Git Environment:</b> Note that running <code>git diff</code> might launch the visual diff tool <code>meld</code> instead of outputting to the terminal. Always use <code>git diff --no-ext-diff</code> if you need terminal output.</li>
 <li><b><a class="el" href="classString.html" title="A String class.">String</a> Literals &amp; Translations:</b> Use the <code>wxS()</code> macro for all string literals and <code>_()</code> for user-facing translatable strings.</li>
 <li><b>Logging:</b> Use <code>wxLogMessage()</code> for debugging; messages are visible in <b>View -&gt; Toggle Log Window</b> or by using the option <code>--logtostderr</code>.</li>
@@ -1072,7 +1082,7 @@ Conventions &amp; Standards</h1>
     something a firewall/antivirus's network protection would touch, and
     some of it blocks loopback inter-process communication too.
 
-@section autotoc_md80 Layout &amp; Compatibility
+@section autotoc_md73 Layout &amp; Compatibility
 
 The rules below are the ones worth carrying around at all times. The reasoning
 behind them, the pipeline they belong to, and the recurring shapes layout bugs
@@ -1132,7 +1142,7 @@ which loads on demand &amp;ndash; keep the detail there rather than growing this
   compiles everywhere and does nothing. The same trap applies to any future
   &lt;tt&gt;wxSOMETHING&lt;/tt&gt; shim added there.
 
-@section autotoc_md81 Performance &amp; Documentation Mandates
+@section autotoc_md74 Performance &amp; Documentation Mandates
 
 - &lt;strong&gt;NEWS.md Updates:&lt;/strong&gt; Every non-trivial change MUST be documented in &lt;tt&gt;NEWS.md&lt;/tt&gt; under the "# Current development version" section.
 - &lt;strong&gt;Doxygen Comments:&lt;/strong&gt; Include descriptions for all new classes and public methods. Complex algorithms (e.g., LCS alignment) require detailed architectural comments.
@@ -1143,12 +1153,12 @@ which loads on demand &amp;ndash; keep the detail there rather than growing this
   - Prefer &lt;tt&gt;(intern ...)&lt;/tt&gt; over &lt;tt&gt;read-from-string&lt;/tt&gt; for dynamic symbol generation.
 - &lt;strong&gt;Strict XML Mandate:&lt;/strong&gt; To avoid duplicate attributes, add any new manually-handled XML attribute (e.g., &lt;tt&gt;noneParens="true"&lt;/tt&gt;) to the filter list in &lt;tt&gt;MathParser.cpp&lt;/tt&gt;.
 
-@section autotoc_md82 Visual Documentation (&lt;tt&gt;art/Doxygen/&lt;/tt&gt;)
+@section autotoc_md75 Visual Documentation (&lt;tt&gt;art/Doxygen/&lt;/tt&gt;)
 
 - &lt;strong&gt;Geometry Awareness:&lt;/strong&gt; If modifying &lt;tt&gt;Recalculate()&lt;/tt&gt; or &lt;tt&gt;Draw()&lt;/tt&gt; geometry (padding, center alignment), you MUST update the corresponding SVG diagrams in &lt;tt&gt;art/Doxygen/&lt;/tt&gt;.
 - &lt;strong&gt;Consistency:&lt;/strong&gt; New cell types should have &lt;tt&gt;*Geometry.svg&lt;/tt&gt; and &lt;tt&gt;*LinearGeometry.svg&lt;/tt&gt; (if applicable) diagrams.
 
-@section autotoc_md83 Key Subsystems Map
+@section autotoc_md76 Key Subsystems Map
 
 Deeper, per-subsystem background lives in &lt;tt&gt;.claude/skills/&lt;/tt&gt;, which load only
 when they are relevant &amp;ndash; so that hard-won detail is available without every
@@ -1193,7 +1203,7 @@ has already been broken.
 </ul>
 <p></code></b></b></b></p>
 <p><b><b><b><code></code></b></b></b></p>
-<h1><a class="anchor" id="autotoc_md84"></a>
+<h1><a class="anchor" id="autotoc_md77"></a>
 Backlog / Future Work</h1>
 <p><b><b><b><code> Items the maintainer has flagged as worth doing but hasn't asked for yet &ndash; don't start on these without checking in first, but pick them up if asked for "what's
 next" style work.</code></b></b></b></p>
@@ -1207,7 +1217,7 @@ next" style work.</code></b></b></b></p>
 </ul>
 <p></code></b></b></b></p>
 <p><b><b><b><code></code></b></b></b></p>
-<h1><a class="anchor" id="autotoc_md85"></a>
+<h1><a class="anchor" id="autotoc_md78"></a>
 Error resilience</h1>
 <p><b><b><b><code></p><ul>
 <li>To err is human =&gt; If your instructions don't seem to make sense feel free to ask. </li>
