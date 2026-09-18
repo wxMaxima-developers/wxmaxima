@@ -123,6 +123,45 @@ Other useful targets: `ninja -C build Doxygen` builds the source documentation
 (note the capital D, and the target only exists when Doxygen is installed), and
 `ninja -C build update-locale` refreshes the translation files.
 
+**Build speed: what actually helps, measured rather than assumed.** Numbers
+below are `ninja wxmaxima` from scratch, Debug, Ninja, 4 cores; repeat them
+before trusting them on different hardware, but the ratios are the point.
+
+| configuration | clean | touch one .cpp | touch `cells/Cell.h` |
+|---|---|---|---|
+| neither | 208s | 20s | 129s |
+| `WXM_ENABLE_PRECOMPILED_HEADERS=YES` (the default) | 135s | 12s | 82s |
+| `CMAKE_UNITY_BUILD=ON` (batch 16) | 51s | 14s | 40s |
+| both | 53s | -- | -- |
+
+- **Precompiled headers are on by default and are the safe win.** They were an
+  option long before that, and until 2026-09 that option did *nothing*:
+  `precomp.h`'s entire body sits behind `#ifdef USE_PRECOMP_HEADER`, which
+  `BuildConfig.h` defines through a `#cmakedefine` -- and the enabling branch
+  in `src/CMakeLists.txt` never `set()` that variable, so the header that got
+  precompiled included nothing at all. A build with the option on took
+  *exactly* as long as one with it off (202s vs 202s), which is the symptom to
+  recognise: same class of bug as the `WXM_USE_AI_TOOLS` plumbing documented
+  further down, and the same way to check it -- look for `#define
+  USE_PRECOMP_HEADER` in the generated `BuildConfig.h` rather than trusting the
+  CMake option.
+- **One CI job must build without them**, and `compile_with_non_default_options`
+  is it. A precompiled header hands every source file the whole of wx whether
+  it included it or not, so a missing `#include` compiles everywhere else and
+  fails only there. Don't "tidy" that `=NO` away.
+- **Unity builds are not the default, but the tree is kept able to do one.**
+  `cmake -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=16` works and is
+  by far the fastest clean build. Two things break it, and both were real here:
+  a header with no include guard (`wxMaximaArtProvider.h` had none, which is a
+  latent bug regardless), and two files defining the same name in their own
+  anonymous namespaces -- `U8`/`FromU8` existed identically in `AiProvider.cpp`
+  and `McpTools.cpp` and now live once, as `wxm::ToUtf8`/`wxm::FromUtf8` in
+  `StringUtils.h`. Nothing in CI guards this, so expect to fix a collision of
+  that shape if you turn it on after a while.
+- **Combining the two buys nothing** (51s vs 53s): they remove the same cost,
+  which is parsing the same headers once per translation unit. Don't stack them
+  and expect to add up the savings.
+
 `CheckPo4aVersion.cmake` (included from `info/CMakeLists.txt` and
 `locales/manual/CMakeLists.txt`, the only two places that invoke `po4a`)
 refuses `po4a` older than 0.70 -- pre-0.70 parses text encodings loosely and

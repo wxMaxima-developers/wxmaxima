@@ -29,14 +29,11 @@
 #include <algorithm>
 #include <memory>
 
+#include "StringUtils.h"
+
 using json = nlohmann::json;
 
 namespace {
-//! wxString -> UTF-8 std::string, the only encoding nlohmann::json accepts.
-std::string U8(const wxString &s) { return s.ToUTF8().data(); }
-wxString FromU8(const std::string &s) {
-  return wxString::FromUTF8(s.c_str());
-}
 
 //! A short excerpt of `text` around [matchStart, matchStart+matchLen), with
 //! "..." markers where the excerpt was cut -- lets search_cells's result show
@@ -112,7 +109,7 @@ wxString McpTools::RequireString(const json &arguments, const char *name) {
   auto it = arguments.find(name);
   if (it == arguments.end() || !it->is_string())
     throw McpToolError(std::string("Missing or non-string argument: ") + name);
-  wxString value = FromU8(it->get<std::string>());
+  wxString value = wxm::FromUtf8(it->get<std::string>());
   if (value.IsEmpty())
     throw McpToolError(std::string("Argument must not be empty: ") + name);
   return value;
@@ -139,10 +136,10 @@ json McpTools::CellSummary(GroupCell &cell, int index) const {
   if (input.Length() > previewLen)
     preview += wxS("...");
   json entry;
-  entry["uuid"] = U8(cell.GetUUID());
+  entry["uuid"] = wxm::ToUtf8(cell.GetUUID());
   entry["index"] = index;
-  entry["group_type"] = U8(GroupTypeName(cell.GetGroupType()));
-  entry["input_preview"] = U8(preview);
+  entry["group_type"] = wxm::ToUtf8(GroupTypeName(cell.GetGroupType()));
+  entry["input_preview"] = wxm::ToUtf8(preview);
   entry["has_output"] = cell.GetOutput() != nullptr;
   entry["is_current"] = (&cell == CurrentCell());
   entry["has_error"] = HasError(cell);
@@ -427,10 +424,10 @@ json McpTools::ReadCell(const json &arguments) const {
   wxString output = TruncateText(OutputText(*cell), maxLen, fromEnd, truncated);
 
   json result;
-  result["uuid"] = U8(cell->GetUUID());
-  result["group_type"] = U8(GroupTypeName(cell->GetGroupType()));
-  result["input"] = U8(InputText(*cell));
-  result["output"] = U8(output);
+  result["uuid"] = wxm::ToUtf8(cell->GetUUID());
+  result["group_type"] = wxm::ToUtf8(GroupTypeName(cell->GetGroupType()));
+  result["input"] = wxm::ToUtf8(InputText(*cell));
+  result["output"] = wxm::ToUtf8(output);
   result["output_truncated"] = truncated;
   result["is_current"] = (cell == CurrentCell());
   result["has_error"] = HasError(*cell);
@@ -478,7 +475,7 @@ json McpTools::ReadWorksheet() const {
       text += CellText(cell);
   }
   json result;
-  result["text"] = U8(CapLength(text));
+  result["text"] = wxm::ToUtf8(CapLength(text));
   return result;
 }
 
@@ -491,9 +488,9 @@ json McpTools::ReadToc() const {
       if (cell.GetUUID().IsEmpty())
         cell.GenerateUUID();
       json entry;
-      entry["uuid"] = U8(cell.GetUUID());
+      entry["uuid"] = wxm::ToUtf8(cell.GetUUID());
       entry["level"] = static_cast<int>(cell.GetGroupType());
-      entry["text"] = U8(InputText(cell));
+      entry["text"] = wxm::ToUtf8(InputText(cell));
       entries.push_back(entry);
     }
   }
@@ -522,8 +519,8 @@ json McpTools::ReadSection(const json &arguments) const {
   }
 
   json result;
-  result["uuid"] = U8(heading->GetUUID());
-  result["text"] = U8(CapLength(text));
+  result["uuid"] = wxm::ToUtf8(heading->GetUUID());
+  result["text"] = wxm::ToUtf8(CapLength(text));
   return result;
 }
 
@@ -532,8 +529,8 @@ json McpTools::ReadVariables() const {
   if (m_variablesPane) {
     for (const auto &nameValue : m_variablesPane->GetWatchedValues()) {
       json entry;
-      entry["name"] = U8(nameValue.first);
-      entry["value"] = U8(nameValue.second);
+      entry["name"] = wxm::ToUtf8(nameValue.first);
+      entry["value"] = wxm::ToUtf8(nameValue.second);
       variables.push_back(entry);
     }
   }
@@ -575,10 +572,10 @@ json McpTools::EvaluationStatus() const {
   if (working) {
     if (working->GetUUID().IsEmpty())
       working->GenerateUUID();
-    result["cell_uuid"] = U8(working->GetUUID());
+    result["cell_uuid"] = wxm::ToUtf8(working->GetUUID());
     result["is_current"] = (working == CurrentCell());
     result["has_error"] = HasError(*working);
-    result["command"] = U8(queue.GetCommand());
+    result["command"] = wxm::ToUtf8(queue.GetCommand());
     result["command_index_in_cell"] = queue.GetIndex();
     // -1 means "no command has actually been sent since the queue last
     // advanced" -- shouldn't normally happen while working != nullptr, but
@@ -601,7 +598,7 @@ json McpTools::WatchVariable(const json &arguments) const {
   m_variablesPane->AddWatch(name);
   json result;
   result["ok"] = true;
-  result["name"] = U8(name);
+  result["name"] = wxm::ToUtf8(name);
   // Reported here too, not just from read_variables: without it, an AI
   // that calls watch_variable then immediately reads back an empty value
   // has no way to tell "not answered yet" apart from "genuinely
@@ -622,7 +619,7 @@ json McpTools::UnwatchVariable(const json &arguments) const {
   m_variablesPane->RemoveWatch(name);
   json result;
   result["ok"] = true;
-  result["name"] = U8(name);
+  result["name"] = wxm::ToUtf8(name);
   return result;
 }
 
@@ -634,7 +631,7 @@ json McpTools::SearchCells(const json &arguments) const {
     arguments["case_sensitive"].is_boolean() && arguments["case_sensitive"].get<bool>();
   wxString scope = wxS("both");
   if (arguments.contains("scope") && arguments["scope"].is_string())
-    scope = FromU8(arguments["scope"].get<std::string>());
+    scope = wxm::FromUtf8(arguments["scope"].get<std::string>());
   bool searchInput = scope != wxS("output");
   bool searchOutput = scope != wxS("input");
 
@@ -694,8 +691,8 @@ json McpTools::SearchCells(const json &arguments) const {
         break;
       }
       json entry = CellSummary(cell, idx);
-      entry["matched_in"] = U8(matchedIn);
-      entry["match_snippet"] = U8(snippet);
+      entry["matched_in"] = wxm::ToUtf8(matchedIn);
+      entry["match_snippet"] = wxm::ToUtf8(snippet);
       matches.push_back(entry);
     }
   }

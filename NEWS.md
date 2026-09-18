@@ -1,5 +1,9 @@
 # Current development version
 
+- Compiling wxMaxima is about a third faster. Precompiled headers are now
+  switched on by default -- and, more to the point, they now actually do
+  something: the option to enable them has existed for years, but the header
+  it precompiled was empty, so turning it on changed nothing at all.
 - Batch runs (`--batch`) no longer occasionally hand the worksheet's first
   command to a Maxima that isn't listening yet. Opening the file restarts
   Maxima, and on a loaded machine the replacement could still be starting up

@@ -55,6 +55,7 @@
 
 #include <wx/string.h>
 #include <wx/translation.h>
+#include <string>
 
 namespace wxm {
 
@@ -74,6 +75,23 @@ namespace wxm {
  */
 #define S_(string) ([]()->const wxString &{ static const wxString str(wxS(string)); return str; }())
 
+
+// UTF-8 conversion
+
+/*! wxString -> UTF-8 std::string.
+ *
+ * Lives here rather than in the files that need it because both of them --
+ * the MCP tools and the AI providers -- talk to nlohmann::json, which accepts
+ * no other encoding. They used to carry a private copy each, which a unity
+ * build (several .cpp files compiled as one translation unit) rejects: two
+ * identical definitions in what has become one anonymous namespace.
+ */
+inline std::string ToUtf8(const wxString &s) { return s.ToUTF8().data(); }
+
+//! UTF-8 std::string -> wxString. The inverse of ToUtf8().
+inline wxString FromUtf8(const std::string &s) {
+  return wxString::FromUTF8(s.c_str());
+}
 
 // String normalization
 

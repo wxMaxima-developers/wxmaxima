@@ -24,6 +24,9 @@
   This file declares the class wxMaximaArtprovider - our own wxArtProvider with additional images.
 */
 
+#ifndef WXMAXIMAARTPROVIDER_H
+#define WXMAXIMAARTPROVIDER_H
+
 
 // only use that for recent wxWidgets versions
 #include <wx/version.h>
@@ -81,3 +84,5 @@ private:
   wxString gunzip(unsigned char * svg_gz, size_t svg_gz_size);
 };
 #endif
+
+#endif // WXMAXIMAARTPROVIDER_H

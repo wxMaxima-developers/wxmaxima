@@ -62,7 +62,7 @@ option(WXM_DISABLE_WEBVIEW
 option(WXM_DISABLE_QA
     "Disable wxWidgets qa for https://github.com/wxMaxima-developers/wxmaxima/issues/2064" OFF)
 option(WXM_ENABLE_PRECOMPILED_HEADERS
-    "Enable precompiled headers to potentially speed up compilation." OFF)
+    "Enable precompiled headers, which speeds compilation up by about a third." ON)
 option(WXM_USE_CPPCHECK
     "Perform CPPCHECK during compilation." OFF)
 option(WXM_UNIT_TESTS
