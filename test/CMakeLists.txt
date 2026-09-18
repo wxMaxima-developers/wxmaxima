@@ -731,6 +731,24 @@ endif()
 set_tests_properties(wxmaxima_version_string PROPERTIES
     PASS_REGULAR_EXPRESSION "wxMaxima ${VERSION}.*" RUN_SERIAL TRUE)
 
+# The console-subsystem launcher (src/wxmaxima-cli.cpp) exists so that a
+# command prompt gets wxmaxima's output the way it would from any other
+# command-line tool. Note what this test does NOT need: the
+# wxmaxima_version_string test right above has to route its output through a
+# file, because cmd.exe does not wait for a GUI-subsystem process and returns
+# to the prompt before the output arrives. Running the launcher directly and
+# reading its stdout is exactly the property it was added to provide -- so if
+# this test ever starts needing that same workaround, the launcher has
+# stopped doing its job and that, not the test, is what to fix.
+if(WIN32)
+    add_test(
+        NAME wxmaxima_cli_version_string
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+        COMMAND wxmaxima-cli --debug --logtostderr --pipe --version)
+    set_tests_properties(wxmaxima_cli_version_string PROPERTIES
+        PASS_REGULAR_EXPRESSION "wxMaxima ${VERSION}.*")
+endif()
+
 add_test(
     NAME wxmaxima_version_returncode
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files

@@ -1,5 +1,15 @@
 # Current development version
 
+- Added wxmaxima-cli.exe on Windows: a small console program that starts
+  wxMaxima, hands it the console's own input and output, waits for it and
+  returns its exit code. `--version`, `--help` and `--batch` only behave
+  like a normal command-line tool when invoked through it. Windows fixes an
+  executable's "subsystem" in the program file at link time, and cmd.exe
+  does not wait for a graphical program: run `wxmaxima.exe --version`
+  directly and the prompt comes back before the version has been printed.
+  Nothing about the graphical wxMaxima changes; on Linux and macOS, where
+  no such distinction exists, nothing changes either.
+
 - AI Chat failures now show what the provider actually said. A failed
   request can still carry a real HTTP response, and its body is where the
   provider explains itself -- so an unrecognised model id, which Anthropic

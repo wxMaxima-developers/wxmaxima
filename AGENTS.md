@@ -2962,6 +2962,73 @@ a local TCP socket.
     alone -- this entry's own history is full of examples of a plausible-
     looking mechanism not surviving contact with the real platform.
 
+- **`wxmaxima-cli.exe` (`src/wxmaxima-cli.cpp`) -- the console-subsystem
+  companion, and why it is a launcher rather than a second copy of the app.**
+  Direct follow-on to the `wxmaxima_version_string` entry above: that entry
+  is about a *test* capturing output, this is about the underlying reason a
+  user cannot get output either. An executable's subsystem is a bit in its
+  PE header, fixed at link time -- one binary is GUI-subsystem or
+  console-subsystem, never both -- and `wxmaxima.exe` must be the former or
+  a console window pops up beside every worksheet. Two consequences: it
+  starts with no stdio at all (what `RedirectStdioToParent()` papers over),
+  and **cmd.exe does not wait for a GUI-subsystem process**, so it returns
+  to the prompt before any output arrives. No code inside `wxmaxima.exe` can
+  fix the second one; only a console-subsystem process can.
+  - **The subsystem bit is the *only* thing forcing a second binary** -- not
+    code sharing. Worth stating because "share the core with the diff
+    utility" sounds like it needs a shared library, and it does not: there
+    *is* no separate diff binary. `wxmxdiff` is a symlink to `wxmaxima`
+    (`src/CMakeLists.txt`) with `--diff` dispatch, i.e. this codebase
+    already does one-binary/multiple-modes.
+  - **Deliberately not a DLL**, which was the first idea considered and
+    rejected: Windows links wxWidgets statically
+    (`-DwxWidgets_USE_STATIC=true` in `compile_windows.yml`), so a core DLL
+    would duplicate wx's global state -- the `wxModule` registry, the
+    `wxApp` instance, the art-provider table -- on both sides of the
+    boundary, a notoriously ugly failure mode. It would also need
+    `__declspec(dllexport)` plumbing across ~200 wx-heavy classes plus
+    templates like `CellPtr<>`, add a second PE file to sign, and work
+    directly against the portable/no-installer build (GH #2298), whose whole
+    point is fewer files and no dependencies. **If this ever grows into a
+    genuinely headless CLI that evaluates worksheets, share the core via a
+    CMake OBJECT library** -- `wxmTestApp`/`wxmFuzzApp` are already exactly
+    that pattern -- never a DLL.
+  - **`STARTF_USESTDHANDLES` is load-bearing, not boilerplate.** A
+    GUI-subsystem child inherits no usable standard handles unless they are
+    passed explicitly, even with `bInheritHandles=TRUE`. With them set,
+    `BindStdStreamToParent()`'s very first `GetStdHandle()` succeeds and its
+    `AttachConsole(ATTACH_PARENT_PROCESS)` fallback never fires -- and the
+    same code works unchanged whether the launcher's own stdout is a
+    console, a pipe or a file redirect, since whatever it was handed is
+    simply passed along. Dropping this flag would silently push every case
+    back onto the `AttachConsole` path.
+  - **The child's command line is the raw `GetCommandLineW()` tail, not a
+    re-quoted argv[].** Re-quoting is precisely the bug class that cost this
+    project the multi-session investigation documented above (whose real
+    root cause was one redundant pair of quotes); passing the original
+    characters through cannot introduce a quoting error that was not already
+    in what the user typed. Note Windows parses the *program name* part of a
+    command line more simply than the arguments -- no backslash escapes, a
+    quoted name ends at the next quote -- which is what the skip loop
+    implements.
+  - Plain `main()`, not `wmain()`: the command line is read through
+    `GetCommandLineW()` rather than `argv`, which avoids requiring
+    `-municode` from every toolchain (confirmed: adding `-municode` to a
+    `-mwindows` target that defines `main()` fails to link with `undefined
+    reference to wWinMain`).
+  - **Verified end-to-end under Wine, not just compiled** (this sandbox has
+    `i686-w64-mingw32-g++` + `wine`, 32-bit prefix only -- see the
+    `wxmaxima_version_string` entry for that setup's quirks). A stand-in
+    GUI-subsystem child reproducing `BindStdStreamToParent()` verbatim
+    confirmed: PE subsystem bits genuinely differ (2 = GUI vs 3 = CONSOLE,
+    read straight out of the headers), stdout reaches a pipe and a file
+    redirect, stderr stays separate, an argument containing spaces survives
+    as one argument, embedded quotes survive, the exit code propagates, and
+    the "installed as wxmaxima.exe myself" guard refuses rather than
+    fork-bombing. Not verified: behaviour against the *real* wxmaxima.exe on
+    real Windows -- that needs a CI run, and `wxmaxima_cli_version_string`
+    (`test/CMakeLists.txt`) is the test that will say so.
+
 - **System tray icon (`src/TrayIcon.{h,cpp}`, GH #2286) -- mirrors the busy
   status, gated entirely by `wxUSE_TASKBARICON`.** The maintainer's own
   issue text was just "wxAppIndicator -- we don't seem to use that on gtk,
