@@ -3534,6 +3534,49 @@ what tells Maxima to format its output as MathML-like XML. For development,
 `--wxmathml-lisp=<path>` overrides it with an external file, so a change can be
 tried without rebuilding.
 
+- **`MaximaProcessManager::StartMaxima()` reuses the running process or kills
+  and replaces it, and the thing that decides which is the *directory*, not
+  anything about the worksheet.** Its condition is
+  `(m_maximaProcess == NULL) || m_hasEvaluatedCells || force ||
+  (dirname != dirname_Old)`, where `dirname` comes from the worksheet's
+  current file and `dirname_Old` is whatever `MAXIMA_INITIAL_FOLDER` is
+  currently set to. Maxima reads that variable once, at startup, so a process
+  already running in the wrong directory genuinely cannot be moved to the
+  right one -- replacing it is the only option, and that is why opening a
+  file restarts Maxima at all.
+  - **This is what used to make opening one file start two Maxima
+    processes.** wxMaxima starts a Maxima from its own constructor so the
+    process is warm by the time the user sends off their first cell. With a
+    file named on the command line that head start was pure waste: the
+    constructor's Maxima had no file yet, so it started in the wrong
+    directory, and the file open a moment later killed it and spawned a
+    replacement. Measured on a batch run: the first process lived about
+    three seconds and did nothing but start up and answer its own first
+    prompt. Fixed by letting `StartMaxima()` fall back to `m_fileToOpen`
+    when the worksheet has no file yet, so the first process starts in the
+    right directory and the file open reuses it. `ctest -R lisp_mode` went
+    from 9.0s to 6.6s, consistently, which is one Maxima startup.
+  - **`m_fileToOpen` is only set between wxMaxima's constructor and the idle
+    event that opens the file** (`OnIdle()` clears it *before* calling
+    `OpenFile()`, deliberately -- see its own comment about re-entrancy), so
+    that fallback can only ever apply to the startup spawn. Opening a second
+    file later in the same session still goes by `GetCurrentFile()` and still
+    restarts Maxima, which is correct: by then the running Maxima is in the
+    old file's directory.
+  - **Don't "fix" this by not starting Maxima at all when a file is
+    pending** -- that was the first attempt and it is wrong.
+    `MaximaFileIO::OpenFile()` only loads a worksheet for the formats it
+    recognises (`.wxm`/`.mac`/`.out`/`.wxmx`/`.zip`/`.xml`); for a `.dem`, a
+    package, or anything else it falls through to `MenuCommand("load(...)")`,
+    which needs a Maxima to send that command to and never starts one
+    itself.
+  - Regression coverage: `wxmaxima_one_maxima_per_file`
+    (`test/check_maxima_spawn_count.cmake`) counts the "Running maxima as:"
+    lines in one batch run's log. That marker is a translatable string, so
+    the test pins `LC_ALL`/`LANG`/`LANGUAGE` in its `ENVIRONMENT`; a reworded
+    or translated marker counts zero and fails loudly rather than passing
+    while checking nothing.
+
 - **`m_configCommands` (`wxMaxima.cpp`):** the string of startup/config commands
   sent to Maxima on connect (and again whenever settings change while it's
   running). **Every entry in it MUST be a `:lisp-quiet (...)` directive --
