@@ -78,9 +78,22 @@ if(GETTEXT_FOUND AND GETTEXT_MSGFMT_EXECUTABLE AND GETTEXT_MSGMERGE_EXECUTABLE)
     # ./wxmaxima-local will probably work, but maybe only with English locale.
     # if someone knows, how to solve the issue, we are happy to hear from you.
     file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/share/locale/${LANG}/LC_MESSAGES")
-    add_custom_target(copy_mo_file_${LANG}_for_wxmaxima_local ALL DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/${LANG}.gmo"
+    # The copy is an add_custom_command(OUTPUT ...), not a command attached
+    # directly to the add_custom_target below, because a custom *target* is by
+    # definition always out of date: its COMMAND runs on every single build,
+    # and its DEPENDS only orders it after the .gmo rather than making the copy
+    # conditional. With one of these per language that was ~50 redundant
+    # "cmake -E copy" processes on every build, including a no-op one -- which
+    # is also why ninja could never report "no work to do". Naming the
+    # destination .mo as a real OUTPUT gives it an ordinary up-to-date check,
+    # so the copy runs only when the .gmo is actually newer.
+    add_custom_command(
+              OUTPUT "${CMAKE_BINARY_DIR}/share/locale/${LANG}/LC_MESSAGES/wxMaxima.mo"
               COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${LANG}.gmo" "${CMAKE_BINARY_DIR}/share/locale/${LANG}/LC_MESSAGES/wxMaxima.mo"
+              DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/${LANG}.gmo"
               COMMENT "Copying ${LANG}.gmo to ${CMAKE_BINARY_DIR}/share/locale/${LANG}/LC_MESSAGES/wxMaxima.mo for ./wxmaxima_local")
+    add_custom_target(copy_mo_file_${LANG}_for_wxmaxima_local ALL
+              DEPENDS "${CMAKE_BINARY_DIR}/share/locale/${LANG}/LC_MESSAGES/wxMaxima.mo")
   endif()
 
 	add_custom_target(

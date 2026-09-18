@@ -1,5 +1,12 @@
 # Current development version
 
+- Builds no longer redo work that is already done: the step that copies each
+  translation into the build tree, so that ./wxmaxima-local finds it without
+  installing, ran once per language on every single build -- 50 file copies
+  even when nothing at all had changed, which is why a rebuild never reported
+  having nothing to do. It now runs only for the translations that actually
+  changed. Nothing about the result differs: the same files are produced in
+  the same places.
 - Added wxmaxima-cli.exe on Windows: a small console program that starts
   wxMaxima, hands it the console's own input and output, waits for it and
   returns its exit code. `--version`, `--help` and `--batch` only behave
