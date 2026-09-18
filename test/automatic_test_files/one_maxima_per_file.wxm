@@ -1,0 +1,21 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 26.08.0 ] */
+/* [wxMaxima: comment start ]
+Input for the maxima_spawn_count test, which counts how many Maxima
+processes one batch run starts. The answer has to be one: opening a file
+used to throw away the Maxima that had just been started for the empty
+worksheet and spawn a replacement, because Maxima learns which directory
+to run in from MAXIMA_INITIAL_FOLDER and reads that only at startup.
+
+What the cell computes does not matter. It only has to make the run do
+some real work, so that a wxMaxima which never managed to talk to Maxima
+at all fails the test rather than passing it by spawning nothing.
+   [wxMaxima: comment end   ] */
+/* [wxMaxima: input   start ] */
+if 6*7 # 42 then error("The one_maxima_per_file test got a wrong answer.")$
+/* [wxMaxima: input   end   ] */
+
+
+
+/* Old versions of Maxima abort on loading files that end in a comment. */
+"Created with wxMaxima"$

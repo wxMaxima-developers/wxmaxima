@@ -8,6 +8,13 @@
   question, so the run aborted somewhere in the middle for no visible
   reason. wxMaxima now waits for the new Maxima to announce itself before
   sending it anything.
+- Opening a file no longer starts Maxima twice. wxMaxima starts a Maxima as
+  soon as it comes up, so that it is ready by the time you send off your
+  first cell; when a file was named on the command line or double-clicked,
+  that process was started in the wrong directory, thrown away again a
+  moment later and replaced. Starting a worksheet this way is now about two
+  seconds faster, and only one Maxima is ever launched.
+
 - Windows: `wxmaxima --logtostderr ... 2>&1` no longer loses everything that
   wxMaxima writes to stderr. Whenever the shell pointed stdout and stderr at
   the same place -- which is what `2>&1` does, and what a pipe to `more` or

@@ -628,6 +628,25 @@ add_test(
             -P ${CMAKE_CURRENT_SOURCE_DIR}/check_no_stray_procs.cmake)
 set_tests_properties(wxmaxima_no_stray_children PROPERTIES RUN_SERIAL TRUE)
 
+# Opening one file must start one Maxima, not two. wxMaxima starts a Maxima as
+# soon as it comes up so that the process is warm by the time the user sends
+# their first cell off; that head start is only worth having if opening a file
+# can then reuse the process instead of killing it and spawning a replacement.
+# See check_maxima_spawn_count.cmake for why it used to be unable to.
+add_test(
+    NAME wxmaxima_one_maxima_per_file
+    COMMAND ${CMAKE_COMMAND}
+            -DWXMAXIMA=$<TARGET_FILE:wxmaxima>
+            -DTESTFILE=one_maxima_per_file.wxm
+            -DWORKDIR=${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+            -DEXPECTED=1
+            -P ${CMAKE_CURRENT_SOURCE_DIR}/check_maxima_spawn_count.cmake)
+# The marker this counts is a translatable log message, so pin the language:
+# an unexpectedly translated log would otherwise be indistinguishable from a
+# run that started no Maxima at all.
+set_property(TEST wxmaxima_one_maxima_per_file APPEND PROPERTY ENVIRONMENT
+    "LC_ALL=C" "LANG=C" "LANGUAGE=en")
+
 # GH #2276: a --batch run whose input file doesn't exist has nothing to do and
 # must report failure with the dedicated EXIT_FILE_OPEN_FAILED code (92), not
 # the generic 1 every --exit-on-error reason used to share. Chosen as the one
