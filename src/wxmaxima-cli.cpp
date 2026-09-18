@@ -54,9 +54,91 @@
 #include <windows.h>
 
 #include <cstdio>
+#include <cwchar>
 #include <string>
 
 namespace {
+
+/*! Append one line to whatever file WXM_STDIO_DEBUG_LOG names, if anything.
+
+  The same opt-in switch, the same log file and the same reasoning as
+  main.cpp's StdioDebugLog(): entirely inert unless that variable is set,
+  which only the one CI step that reproduces these failures does. A normal
+  build and a normal user's run pay a single cached environment lookup.
+
+  Deliberately raw CreateFileW()/WriteFile() rather than the CRT: this traces
+  how standard handles are handed from one process to the next, so routing it
+  through the very stdio layer under investigation would be self-defeating --
+  and it must not write a byte to our own stdout, which belongs entirely to
+  the child we launch.
+
+  FILE_APPEND_DATA alone (no GENERIC_WRITE) makes Windows position every
+  WriteFile() at end-of-file atomically, which is what lets the launcher, the
+  child it starts and the other wxmaxima processes ctest runs in parallel
+  share one log file without a seek-then-write race. Do not add an explicit
+  SetFilePointer().
+*/
+void CliDebugLog(const std::wstring &msg) {
+  static bool checked = false;
+  static std::wstring path;
+  if (!checked) {
+    checked = true;
+    wchar_t buf[MAX_PATH];
+    DWORD len = GetEnvironmentVariableW(L"WXM_STDIO_DEBUG_LOG", buf, MAX_PATH);
+    if ((len > 0) && (len < MAX_PATH))
+      path.assign(buf, len);
+  }
+  if (path.empty())
+    return;
+
+  HANDLE h = CreateFileW(path.c_str(), FILE_APPEND_DATA,
+                         FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr,
+                         OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
+  if (h == INVALID_HANDLE_VALUE)
+    return;
+
+  std::wstring line = L"[wxmaxima-cli pid " +
+    std::to_wstring(GetCurrentProcessId()) + L"] " + msg + L"\r\n";
+  // The log is plain text shared with main.cpp's own UTF-8/ANSI lines, so
+  // narrow it rather than writing UTF-16 into the middle of the file.
+  int need = WideCharToMultiByte(CP_UTF8, 0, line.c_str(),
+                                 static_cast<int>(line.size()), nullptr, 0,
+                                 nullptr, nullptr);
+  if (need > 0) {
+    std::string narrow(static_cast<size_t>(need), '\0');
+    WideCharToMultiByte(CP_UTF8, 0, line.c_str(),
+                        static_cast<int>(line.size()), narrow.data(), need,
+                        nullptr, nullptr);
+    DWORD written = 0;
+    WriteFile(h, narrow.data(), static_cast<DWORD>(narrow.size()), &written,
+              nullptr);
+  }
+  CloseHandle(h);
+}
+
+//! "handle=... type=pipe|char|disk|unknown|none" for one of the std handles.
+std::wstring DescribeStdHandle(DWORD stdHandleId) {
+  HANDLE h = GetStdHandle(stdHandleId);
+  if ((h == nullptr) || (h == INVALID_HANDLE_VALUE))
+    return L"none";
+  const wchar_t *type = L"unknown";
+  switch (GetFileType(h)) {
+  case FILE_TYPE_PIPE:
+    type = L"pipe";
+    break;
+  case FILE_TYPE_CHAR:
+    type = L"char";
+    break;
+  case FILE_TYPE_DISK:
+    type = L"disk";
+    break;
+  default:
+    break;
+  }
+  wchar_t buf[64];
+  swprintf(buf, 64, L"handle=%p type=%ls", h, type);
+  return buf;
+}
 
 //! The directory this executable lives in, with a trailing separator.
 std::wstring ExeDirectory() {
@@ -138,8 +220,15 @@ BOOL WINAPI CtrlHandler(DWORD ctrlType) {
 // GetCommandLineW() rather than argv, so there is no reason to require
 // -municode from every toolchain that builds this.
 int main() {
+  CliDebugLog(L"start: raw GetCommandLineW()=[" +
+              std::wstring(GetCommandLineW()) + L"]");
+  CliDebugLog(L"start: stdin " + DescribeStdHandle(STD_INPUT_HANDLE) +
+              L", stdout " + DescribeStdHandle(STD_OUTPUT_HANDLE) +
+              L", stderr " + DescribeStdHandle(STD_ERROR_HANDLE));
+
   std::wstring dir = ExeDirectory();
   if (dir.empty()) {
+    CliDebugLog(L"ExeDirectory() came back empty");
     std::fprintf(stderr, "wxmaxima-cli: cannot determine my own location.\n");
     return 1;
   }
@@ -156,6 +245,7 @@ int main() {
     // already included, so this does not depend on which CRT header happens
     // to declare the case-insensitive wide compare on a given toolchain.
     if (lstrcmpiW(self.c_str(), exe.c_str()) == 0) {
+      CliDebugLog(L"refusing to launch myself: self=[" + self + L"]");
       std::fprintf(stderr,
                    "wxmaxima-cli: I am installed as wxmaxima.exe myself -- "
                    "refusing to launch a copy of myself.\n");
@@ -185,21 +275,27 @@ int main() {
 
   SetConsoleCtrlHandler(CtrlHandler, TRUE);
 
+  CliDebugLog(L"argument tail=[" + std::wstring(tail) + L"]");
+  CliDebugLog(L"CreateProcessW: exe=[" + exe + L"] cmd=[" + cmd + L"]");
+
   PROCESS_INFORMATION pi = {};
   // CreateProcessW() may write to the command-line buffer, so it gets a
   // writable one -- hence std::wstring::data() rather than a literal.
   if (!CreateProcessW(exe.c_str(), cmd.data(), nullptr, nullptr, TRUE, 0,
                       nullptr, nullptr, &si, &pi)) {
     DWORD err = GetLastError();
+    CliDebugLog(L"CreateProcessW failed, error " + std::to_wstring(err));
     std::fprintf(stderr, "wxmaxima-cli: cannot start %ls (error %lu).\n",
                  exe.c_str(), static_cast<unsigned long>(err));
     return 1;
   }
+  CliDebugLog(L"CreateProcessW ok, child pid " + std::to_wstring(pi.dwProcessId));
   CloseHandle(pi.hThread);
 
   WaitForSingleObject(pi.hProcess, INFINITE);
   DWORD exitCode = 1;
   GetExitCodeProcess(pi.hProcess, &exitCode);
   CloseHandle(pi.hProcess);
+  CliDebugLog(L"child exited with code " + std::to_wstring(exitCode));
   return static_cast<int>(exitCode);
 }

@@ -3028,6 +3028,52 @@ a local TCP socket.
     fork-bombing. Not verified: behaviour against the *real* wxmaxima.exe on
     real Windows -- that needs a CI run, and `wxmaxima_cli_version_string`
     (`test/CMakeLists.txt`) is the test that will say so.
+  - **That CI run happened, and the test FAILED -- still unexplained as of
+    this entry. Read this before re-deriving any of it.** On the minGW job
+    the launcher itself *built* fine and the test failed in 0.06 s with
+    **literally zero captured output** (`--output-on-failure` is on for
+    that step, so the blank is real, not a reporting artifact). What that
+    rules out, from the job log rather than by reasoning: none of the
+    launcher's own three error messages appear anywhere in it, so
+    `ExeDirectory()` was non-empty, the self-spawn guard did not fire, and
+    `CreateProcessW()` **succeeded** -- the child really did start. Nor is
+    it a target-resolution problem: there is no ctest "Unable to find
+    executable", and `src\wxmaxima-cli.exe` links right next to
+    `src\wxmaxima.exe` (neither target sets `RUNTIME_OUTPUT_DIRECTORY`, so
+    the "look in my own directory" lookup is sound in the build tree too).
+    The suggestive find: of the 88 wxmaxima processes `WXM_STDIO_DEBUG_LOG`
+    traced in that run, **exactly one had `type=pipe` standard handles**
+    (every other one had `type=char`) -- consistent with it being the child
+    this launcher started, since this is the only thing in the suite that
+    forwards ctest's own handles via `STARTF_USESTDHANDLES`. That process
+    bound all three streams successfully and came out of
+    `cmdLineParser.Parse()` with `result=0`, yet **never entered the `-v`
+    branch** -- i.e. it did not see `--version`. That identification is
+    circumstantial, though, which is exactly the gap the instrumentation
+    below closes.
+    **Do not re-test the argument handling under Wine: it passes there.**
+    Confirmed this pass (32-bit prefix, stand-in GUI child echoing its own
+    `GetCommandLineW()`, run from a foreign working directory to match
+    ctest's `WORKING_DIRECTORY`): the child receives
+    `"...\wxmaxima.exe" --debug --logtostderr --pipe --version`, complete
+    and correctly quoted, through both a pipe and a file redirect. So
+    `ArgumentTail()` is not obviously the culprit, and another Wine repro
+    of the same thing will just reproduce that same pass.
+    **Instrumentation added instead** (`CliDebugLog()`/`DescribeStdHandle()`
+    in `wxmaxima-cli.cpp`), deliberately mirroring `main.cpp`'s own
+    `StdioDebugLog()` in every respect -- same `WXM_STDIO_DEBUG_LOG` opt-in
+    (already set by exactly one CI step), same raw
+    `CreateFileW`/`WriteFile` with `FILE_APPEND_DATA` alone so several
+    processes can append atomically (**do not add a `SetFilePointer()`**),
+    and emphatically never a byte to stdout, which belongs to the child.
+    It records the raw command line, the std handle types, the extracted
+    argument tail, the exact command line handed to `CreateProcessW()`, and
+    -- the point of the exercise -- **the child's pid**, which is what will
+    finally tie a specific traced wxmaxima process to this launcher instead
+    of inferring it from handle types. Verified in both directions under
+    Wine: with the variable unset no log file is created at all and stdout
+    is byte-for-byte just the child's output; with it set stdout is
+    unchanged and the full trace lands in the file.
 
 - **System tray icon (`src/TrayIcon.{h,cpp}`, GH #2286) -- mirrors the busy
   status, gated entirely by `wxUSE_TASKBARICON`.** The maintainer's own
