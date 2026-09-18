@@ -455,7 +455,7 @@ Architecture &amp; GUI</h1>
     know?" startup tip, <code>Show tips at startup</code> &ndash; present with or without this change).</li>
 </ul>
 </b></b></b></li>
-<li><b><b><b>**<code>wxmaxima_version_string</code> CI test failing on the minGW Windows runner on essentially every push since 2026-08-15 &ndash; STILL OPEN. This entry was headed "RESOLVED (2026-09-11)" until 2026-09-18; that was wrong, and the correction is worth reading before trusting any other status line in this file.** The 2026-09-11 <code>cmd.exe</code> quoting fix (final follow-up at the end of this entry) was real and did fix the bug it described &ndash; the entry itself said so honestly ("Not yet independently re-confirmed against a
+<li><b><b><b>**<code>wxmaxima_version_string</code> CI test failing on the minGW Windows runner on essentially every push since 2026-08-15 &ndash; ROOT CAUSE STILL UNKNOWN, but the job is green again because the assertion has been narrowed to the platforms where it is meaningful. Read the "SHELVED" follow-up at the very end of this entry first: it says what is tested where now, lists two real bugs this investigation did find and fix, and corrects two factual errors this entry itself carried for weeks.** This entry was headed "RESOLVED (2026-09-11)" until 2026-09-18; that was wrong, and the correction is worth reading before trusting any other status line in this file. The 2026-09-11 <code>cmd.exe</code> quoting fix (final follow-up at the end of this entry) was real and did fix the bug it described &ndash; the entry itself said so honestly ("Not yet independently re-confirmed against a
   real Windows CI run as of this writing") &ndash; but it was written up under a RESOLVED heading before that confirmation existed, and the confirmation, when it finally happened, came back negative. Verified directly on 2026-09-18: the most recent completed <code>compile_windows</code> run on <code>main</code> (<code>6ecc9c8</code>, the #2313 merge) reports <code>1 tests failed out of 134</code> &ndash; <code>71 - wxmaxima_version_string (Failed)</code> &ndash; and the twenty <code>main</code> pushes before it are red too. So the quoting bug was one real defect on top of another, not the whole story. <b>The current lead is the <code>FILE_TYPE_CHAR</code> finding recorded in the <code>wxmaxima-cli.exe</code> entry below</b>: a GUI-subsystem child sees its inherited standard handles as <code>FILE_TYPE_CHAR</code> while the console-subsystem launcher that passed it those very same handle <em>values</em> sees them as <code>FILE_TYPE_PIPE</code>, so the transformation tracks the child's subsystem rather than anything CTest does. Start there. The moral for this file, beyond this one test: <b>do not mark an entry RESOLVED on the strength of a fix you have not seen pass.</b> "Fix pushed, awaiting confirmation" is a different and honest status, and it would have saved the week this heading bought. Everything below this point, up to that final follow-up, is the investigation history &ndash; kept in full since most of it (the <code>_dup2()</code> theory, the ConPTY-drain-race theory) was directly disproven or superseded, and the next session touching this code should know what's already been ruled out rather than re-deriving it. <b>Read this whole entry before touching <code>BindStdStreamToParent()</code> or <code>test/CMakeLists.txt</code>'s <code>wxmaxima_version_string</code> block again.</b> The test runs <code>wxmaxima --debug --logtostderr --pipe --version</code> and expects stdout to match <code><a class="el" href="classwxMaxima.html">wxMaxima</a> &lt;VERSION&gt;.*</code>; it consistently fails with "Required regular expression not
   found" while the process still exits 0 &ndash; no crash, just no (or wrong) captured output &ndash; on a job that otherwise builds and passes every other test cleanly (including <code>wxmaxima_version_returncode</code>, the same command with only the exit code checked, which passes every time &ndash; so the process really does run to completion normally). <code><a class="el" href="main_8cpp.html" title="The file that defines the starting point of the program.">main.cpp</a></code> already has a large Windows-only block explaining why this needs special handling at all: <a class="el" href="classwxMaxima.html">wxMaxima</a> is a <code>WIN32</code>-subsystem binary (<code>add_executable(wxmaxima WIN32
   ...)</code>), so it has no stdio wired up by default, and <code>RedirectStdioToParent()</code> (<code>BindStdStreamToParent()</code>) exists specifically to bind <code>stdout</code>/<code>stderr</code>/ <code>stdin</code> onto whatever the parent process gave it (an inherited pipe, as ctest sets up, or an attached console).<ul>
@@ -546,6 +546,150 @@ Architecture &amp; GUI</h1>
     in use vendors it) directly rather than re-guessing from the symptom
     alone &amp;ndash; this entry's own history is full of examples of a plausible-
     looking mechanism not surviving contact with the real platform.
+  - &lt;strong&gt;SHELVED (2026-09-18), deliberately and with the reasoning written
+    down. The Windows job is green again; the root cause is still unknown;
+    two real, separate bugs found on the way there are fixed. Start here.&lt;/strong&gt;
+    The maintainer's own framing was "<code>--version</code> and <code>--help</code> on MSW misbehave in non-console applications, which means we can just drop that test as it is caused by stupid operating system concepts." That is
+    half right, and the half that is right is the half that matters:
+    asserting on text captured from a &lt;em&gt;GUI-subsystem&lt;/em&gt; process is asserting
+    on a property of Windows, not of wxMaxima. Every Windows-specific thing
+    in this entry follows from one bit in the PE header, and
+    &lt;tt&gt;src/wxmaxima-cli.exe&lt;/tt&gt; exists precisely because no code inside
+    &lt;tt&gt;wxmaxima.exe&lt;/tt&gt; can finish that job. Weighed against this file's own
+    "never make a test pass by getting rid of it" rule, the deciding
+    argument is the one that rule is written in service of: a job that has
+    been red for a month is not a warning anyone still reads, and this one
+    has been hiding whatever else the minGW runner had to say since
+    2026-08-15. So: the content check still runs, unchanged, on every
+    non-Windows platform; Windows keeps &lt;tt&gt;wxmaxima_version_returncode&lt;/tt&gt;,
+    &lt;tt&gt;wxmaxima_help_returncode&lt;/tt&gt; and a new &lt;tt&gt;wxmaxima_cli_version_returncode&lt;/tt&gt;
+    (the launcher finds &lt;tt&gt;wxmaxima.exe&lt;/tt&gt;, spawns it, waits, propagates its
+    exit code). What is covered &lt;em&gt;nowhere&lt;/em&gt; on Windows now is the last step,
+    "and the bytes arrive at whoever is capturing them"; &lt;tt&gt;test/CMakeLists.txt&lt;/tt&gt;
+    says so at the point where the assertion would go back.
+    &lt;strong&gt;Two factual errors this entry carried, corrected &amp;ndash; check these
+    before building on anything else written above.&lt;/strong&gt;
+    1. *&lt;tt&gt;--version&lt;/tt&gt; does not go through &lt;tt&gt;wxMessageOutput&lt;/tt&gt; at all.* This
+       entry twice names &lt;tt&gt;wxMessageOutputStderr::Printf()&lt;/tt&gt; as the write
+       under investigation, and one of its "concrete next steps" was to
+       instrument the &lt;tt&gt;fputs()&lt;/tt&gt; inside it. The &lt;tt&gt;-v&lt;/tt&gt; branch in &lt;tt&gt;main.cpp&lt;/tt&gt; is
+       a plain &lt;tt&gt;printf("<a class="el" href="classwxMaxima.html">wxMaxima</a> s<br  />
+", ...)&lt;/tt&gt; followed by &lt;tt&gt;exit(0)&lt;/tt&gt;;
+       &lt;tt&gt;wxMessageOutput&lt;/tt&gt; is only used for &lt;tt&gt;wxCmdLineParser&lt;/tt&gt;'s &lt;tt&gt;--help&lt;/tt&gt;
+       usage text. The &lt;tt&gt;wxMessageOutput::Set()&lt;/tt&gt; call the trace reports is
+       real, it just is not on this path.
+    2. &lt;em&gt;The test never checked the version.&lt;/em&gt; Its
+       &lt;tt&gt;PASS_REGULAR_EXPRESSION "<a class="el" href="classwxMaxima.html">wxMaxima</a> ${VERSION}.*"&lt;/tt&gt; referenced
+       &lt;tt&gt;\${VERSION}&lt;/tt&gt;, which this project does not set anywhere &amp;ndash; the
+       version lives in &lt;tt&gt;\${WXMAXIMA_VERSION}&lt;/tt&gt; (and &lt;tt&gt;\${PROJECT_VERSION}&lt;/tt&gt;).
+       The regex expanded to &lt;tt&gt;wxMaxima .*&lt;/tt&gt;, which is visible in the CI logs
+       themselves (&lt;tt&gt;Regex=[wxMaxima .*]&lt;/tt&gt;) once you know to look. It now
+       uses &lt;tt&gt;\${WXMAXIMA_VERSION}&lt;/tt&gt;, so it checks what it is named after &amp;ndash;
+       confirmed non-vacuous locally, where it matches the real
+       &lt;tt&gt;wxMaxima 26.08.0-dev&lt;/tt&gt;.
+    &lt;strong&gt;Bug found and fixed #1 (real, user-visible, verified live):
+    &lt;tt&gt;BindStdStreamToParent()&lt;/tt&gt; closed the standard handle it had just bound,
+    which silently threw away all of stderr whenever a parent hands the
+    same handle in for stdout and stderr&lt;/strong&gt; &amp;ndash; i.e. under any &lt;tt&gt;2\&gt;\&amp;1&lt;/tt&gt;, which
+    includes &lt;tt&gt;wxmaxima --logtostderr --batch ... 2\&gt;\&amp;1 | more&lt;/tt&gt; and the
+    &lt;tt&gt;cmd /c ... \&gt; file 2\&gt;\&amp;1&lt;/tt&gt; form this very test used to use.
+    &lt;tt&gt;_open_osfhandle()&lt;/tt&gt; makes the descriptor the &lt;em&gt;owner&lt;/em&gt; of the handle, so
+    the &lt;tt&gt;_close(fd)&lt;/tt&gt; that follows &lt;tt&gt;_dup2()&lt;/tt&gt; closed the handle
+    &lt;tt&gt;GetStdHandle()&lt;/tt&gt; still hands out. Everything that afterwards asked
+    Windows rather than the CRT for a standard handle was reading a closed
+    or &lt;em&gt;recycled&lt;/em&gt; value &amp;ndash; &lt;tt&gt;HaveStdErrHandle()&lt;/tt&gt;, the
+    &lt;tt&gt;SetHandleInformation()&lt;/tt&gt; calls in &lt;tt&gt;MyApp::OnInit()&lt;/tt&gt;, and every child
+    process inheriting our standard handles. &lt;strike&gt;&lt;strong&gt;This is what the
+    &lt;tt&gt;type=unknown&lt;/tt&gt; lines in the shipped CI traces are&lt;/strong&gt;&lt;/strike&gt; &amp;ndash; &lt;strong&gt;that claim
+    was wrong, and the first CI run carrying this very fix disproved it;
+    see "What the first green run actually showed" at the end of this
+    entry.&lt;/strong&gt; The bug itself is real and the fix stands; only its claimed
+    connection to those trace lines does not. Fixed by binding a
+    &lt;tt&gt;DuplicateHandle()&lt;/tt&gt; copy, so
+    &lt;tt&gt;_close()&lt;/tt&gt; disposes of our own duplicate and the parent's handle stays
+    valid. &lt;strong&gt;Reproduced and fixed under Wine, functionally, not by reading
+    code&lt;/strong&gt;: a console harness that creates a pipe the way kwsys does and
+    passes the same write end as both stdout and stderr to a
+    GUI-subsystem child reproducing this function verbatim captures 22
+    bytes (stdout only, stderr's binding having failed with exactly the
+    &lt;tt&gt;type=unknown&lt;/tt&gt; signature) before the fix and 49 bytes (both streams)
+    after, deterministically.
+    &lt;strong&gt;Bug found and fixed #2 (correctness, unverified as a cure):
+    &lt;tt&gt;wxmaxima-cli.cpp&lt;/tt&gt; handed its child the standard handles it was given
+    rather than explicitly inheritable duplicates.&lt;/strong&gt; A handle named in
+    &lt;tt&gt;STARTUPINFO&lt;/tt&gt; only reaches the child's handle table if it carries
+    &lt;tt&gt;HANDLE_FLAG_INHERIT&lt;/tt&gt;, and nothing guarantees the handles a parent
+    gives &lt;em&gt;us&lt;/em&gt; do &amp;ndash; a parent capturing our output has every reason to have
+    cleared the flag on its own copy, which is exactly what &lt;tt&gt;wxmaxima.exe&lt;/tt&gt;
+    itself does to its standard handles. Get it wrong and the failure is
+    quiet in a very specific, very familiar way: &lt;tt&gt;CreateProcess()&lt;/tt&gt; still
+    succeeds, the child still finds the handle &lt;em&gt;values&lt;/em&gt; in its PEB, so
+    &lt;tt&gt;GetStdHandle()&lt;/tt&gt; returns plausible numbers that name nothing it owns &amp;ndash;
+    &lt;strong&gt;which is a mechanism that would produce this entry's headline
+    &lt;tt&gt;FILE_TYPE_PIPE&lt;/tt&gt;-in-the-parent / &lt;tt&gt;FILE_TYPE_CHAR&lt;/tt&gt;-in-the-child
+    mystery&lt;/strong&gt;, since a value naming nothing in the child can collide with
+    any unrelated object its own startup opened. Fixed per MSDN's own
+    redirected-child example. Wine does &lt;em&gt;not&lt;/em&gt; reproduce the failure (it
+    preserves the inherit flag through inheritance, so the pre-fix launcher
+    works there too, 0 failures) &amp;ndash; so this is a documented-contract fix,
+    not a demonstrated cure. It is the most promising remaining lead, and
+    the launcher now logs &lt;tt&gt;inherit=yes/no/unqueryable&lt;/tt&gt; for each handle, so
+    the next Windows run's trace answers the question outright.
+    &lt;strong&gt;That run has now happened, and the answer is below &amp;ndash; it is not the
+    lead it looked like.&lt;/strong&gt;
+    &lt;strong&gt;What the first green run actually showed (2026-09-18, the minGW job
+    of this change's own PR &amp;ndash; &lt;tt&gt;100% tests passed out of 134&lt;/tt&gt;, the first
+    green minGW since 2026-08-15).&lt;/strong&gt; The trace settles both questions this
+    entry left open, and disproves this entry's own answer to each. Read
+    this before building on either fix's claimed explanation:
+    1. &lt;em&gt;The launcher's handles were already inheritable, so bug #2 is not
+       the pipe-to-char mechanism.&lt;/em&gt; Its own line reads `stdin
+       handle=...318 type=pipe inherit=yes, stdout handle=...3a8 type=pipe
+       inherit=yes, stderr handle=...30c type=pipe inherit=yes&lt;tt&gt;-- CTest
+       hands them over with&lt;/tt&gt;HANDLE_FLAG_INHERIT` already set, so there
+       was never a cleared flag to lose. And the child it started
+       (identified by pid, &lt;tt&gt;CreateProcessW ok, child pid 3992&lt;/tt&gt;) &lt;em&gt;still&lt;/em&gt;
+       reports all three as &lt;tt&gt;type=char&lt;/tt&gt;. &lt;strong&gt;Passing explicitly inheritable
+       duplicates changed the child's reported handle types not at all.&lt;/strong&gt;
+       The fix stays &amp;ndash; it is what MSDN's redirected-child example
+       documents, and relying on a flag nobody guarantees is a latent bug
+       regardless &amp;ndash; but it is not a cure, and the &lt;tt&gt;FILE_TYPE_PIPE&lt;/tt&gt;-in-the
+       -parent / &lt;tt&gt;FILE_TYPE_CHAR&lt;/tt&gt;-in-the-child transformation remains
+       completely unexplained. Do not spend another pass on inheritance
+       flags.
+    2. &lt;em&gt;The &lt;tt&gt;type=unknown&lt;/tt&gt; lines are unchanged by bug #1's fix, so that
+       fix does not explain them either.&lt;/em&gt; Counted over the whole trace,
+       same 264 &lt;tt&gt;BindStdStreamToParent(...) start:&lt;/tt&gt; lines in both runs:
+       &lt;strong&gt;37 &lt;tt&gt;type=unknown&lt;/tt&gt; before the fix, 36 after.&lt;/strong&gt; If the previous
+       stream's binding had been closing the handle, this fix would have
+       driven that to zero. It did not move. So the original reading this
+       entry talked itself out of &amp;ndash; that the child is handed an
+       already-unusable handle &amp;ndash; was very likely right all along, and
+       "the previous binding closed it" was wrong. Worth noting for
+       whoever picks this up: post-fix the unknowns are overwhelmingly
+       &lt;tt&gt;STD_ERROR_HANDLE&lt;/tt&gt; (32 of 36) with a few &lt;tt&gt;STD_INPUT_HANDLE&lt;/tt&gt; (3) and
+       a single &lt;tt&gt;STD_OUTPUT_HANDLE&lt;/tt&gt;, i.e. concentrated on the stream a
+       batch test is least likely to have had redirected anywhere real.
+    &lt;strong&gt;The moral, again, and this time about a fix rather than a status
+    line&lt;/strong&gt;: bug #1 was demonstrated under Wine by byte count (22 -&gt; 49) and
+    is certainly a real bug; that evidence says the code was wrong, not
+    that it was the cause of any particular symptom seen elsewhere. Those
+    are two different claims and this entry ran them together. Verify a
+    proposed &lt;em&gt;explanation&lt;/em&gt; against the symptom it claims to explain, which
+    here cost one grep of a log that already existed.
+    &lt;strong&gt;If someone picks this up again&lt;/strong&gt;: both of this entry's leads are now
+    closed, so start from the unexplained fact itself &amp;ndash; a GUI-subsystem
+    child reports &lt;tt&gt;FILE_TYPE_CHAR&lt;/tt&gt; for the very same handle values its
+    console-subsystem parent sees as &lt;tt&gt;FILE_TYPE_PIPE&lt;/tt&gt;, with inheritance
+    confirmed working. If the content assertion is ever worth restoring,
+    restore it on &lt;tt&gt;wxmaxima-cli&lt;/tt&gt; (never on &lt;tt&gt;wxmaxima.exe&lt;/tt&gt; itself) and watch
+    one real run. Do not re-run any theory this entry already disproves.
+    Also still open, and now the obvious cleanup: the
+    &lt;tt&gt;WXM_STDIO_DEBUG_LOG&lt;/tt&gt; instrumentation and the workflow step that prints
+    its ~88-process trace into every Windows CI log are still in place,
+    which this entry itself said should not outlive the investigation &amp;ndash;
+    left alone here only because deleting the one source of evidence in the
+    same change that shelves the hunt seemed like the wrong order.
 
 - **&lt;tt&gt;wxmaxima-cli.exe&lt;/tt&gt; (&lt;tt&gt;src/wxmaxima-cli.cpp&lt;/tt&gt;) &amp;ndash; the console-subsystem
   companion, and why it is a launcher rather than a second copy of the app.**
@@ -611,7 +755,9 @@ Architecture &amp; GUI</h1>
     the "installed as wxmaxima.exe myself" guard refuses rather than
     fork-bombing. Not verified: behaviour against the &lt;em&gt;real&lt;/em&gt; wxmaxima.exe on
     real Windows &amp;ndash; that needs a CI run, and &lt;tt&gt;wxmaxima_cli_version_string&lt;/tt&gt;
-    (&lt;tt&gt;test/CMakeLists.txt&lt;/tt&gt;) is the test that will say so.
+    (&lt;tt&gt;test/CMakeLists.txt&lt;/tt&gt;) is the test that will say so. (It said so: it
+    failed. See the two follow-ups at the end of this entry &amp;ndash; that test no
+    longer exists.)
   - &lt;strong&gt;That CI run happened, and the test FAILED &amp;ndash; still unexplained as of
     this entry. Read this before re-deriving any of it.&lt;/strong&gt; On the minGW job
     the launcher itself &lt;em&gt;built&lt;/em&gt; fine and the test failed in 0.06 s with
@@ -706,6 +852,27 @@ Architecture &amp; GUI</h1>
     test through a file the way its sibling does: that would hide the one
     signal that will show when the underlying capture bug is actually
     solved.
+  - &lt;strong&gt;Follow-up (2026-09-18): &lt;tt&gt;wxmaxima_cli_version_string&lt;/tt&gt; is gone,
+    replaced by &lt;tt&gt;wxmaxima_cli_version_returncode&lt;/tt&gt; &amp;ndash; see the "SHELVED"
+    follow-up at the end of the &lt;tt&gt;wxmaxima_version_string&lt;/tt&gt; entry above for
+    the whole argument, and read it before restoring any content assertion
+    here.&lt;/strong&gt; In short: the capture half stayed unexplained, a month of red
+    was costing more than the assertion was worth, and the launcher keeps
+    the coverage that does not depend on capture (it locates
+    &lt;tt&gt;wxmaxima.exe&lt;/tt&gt;, starts it, waits, propagates the exit code). One real
+    launcher bug did come out of it: the standard handles were passed to
+    &lt;tt&gt;CreateProcessW()&lt;/tt&gt; as-is rather than as explicitly inheritable
+    duplicates, which is a documented way to get a child that sees handle
+    &lt;em&gt;values&lt;/em&gt; naming nothing it owns &amp;ndash; and therefore a candidate
+    explanation for this entry's own &lt;tt&gt;type=pipe&lt;/tt&gt;-here/&lt;tt&gt;type=char&lt;/tt&gt;-there
+    finding. Fixed; &lt;tt&gt;DescribeStdHandle()&lt;/tt&gt; now also reports &lt;tt&gt;inherit=&lt;/tt&gt;, so
+    the next run's trace settles whether that was it.
+    &lt;strong&gt;It has, and it was not.&lt;/strong&gt; That run's launcher line reads &lt;tt&gt;type=pipe
+    inherit=yes&lt;/tt&gt; for all three streams &amp;ndash; CTest already sets the flag, so
+    there was never one to lose &amp;ndash; and the child it spawned still reported
+    all three as &lt;tt&gt;type=char&lt;/tt&gt;. The fix is correct by MSDN's contract and
+    stays, but this entry's &lt;tt&gt;type=pipe&lt;/tt&gt;-here/&lt;tt&gt;type=char&lt;/tt&gt;-there finding is
+    &lt;em&gt;not&lt;/em&gt; explained by it and remains open. See "What the first green run actually showed" in the &lt;tt&gt;wxmaxima_version_string&lt;/tt&gt; entry above.
 
 - &lt;strong&gt;System tray icon (&lt;tt&gt;src/TrayIcon.{h,cpp}&lt;/tt&gt;, GH #2286) &amp;ndash; mirrors the busy
   status, gated entirely by &lt;tt&gt;wxUSE_TASKBARICON&lt;/tt&gt;.** The maintainer's own
@@ -779,7 +946,7 @@ Architecture &amp; GUI</h1>
     "Sending <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> a SIGINT signal," and clicking "Exit" raises the same
     save-changes &lt;tt&gt;Save As&lt;/tt&gt; prompt a normal File &gt; Exit does.
 
-@subsection autotoc_md75 Asynchronous ("background job") output from Maxima
+@subsection autotoc_md47 Asynchronous ("background job") output from Maxima
 
 &lt;strong&gt;Implemented and verified, but dormant: nothing in today's single-threaded
 Maxima sends it.&lt;/strong&gt; Full design, measurements and rationale live in
@@ -839,7 +1006,7 @@ Only the traps worth knowing from elsewhere are repeated here.
   rebinding away.
 - &lt;strong&gt;Deliberately does not scroll or un-collapse&lt;/strong&gt;, even with "follow evaluation" on &amp;ndash; same reasoning as GH #1952 above.
 
-@subsection autotoc_md76 Communication with Maxima
+@subsection autotoc_md48 Communication with Maxima
 
 wxMaxima sends Lisp and Maxima commands over the socket; Maxima answers with XML
 wrapped in known tags. &lt;tt&gt;Maxima&lt;/tt&gt; reads that data on a worker thread and posts
@@ -878,7 +1045,7 @@ tried without rebuilding.
 <li><b><b><b>**ASCII-art 2<a class="el" href="classD.html">D</a> display (<code>set_display('ascii)</code>) and <code>*alt-display2d*</code>:** when <code>$display2d</code> is on, <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s evaluator checks the special variable <code>*alt-display2d*</code> before printing a result: if it's a function symbol, that function is called <em>instead of</em> <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s own stock printer (this is how <code>mydispla</code> in <code>wxMathML.lisp</code> produces the normal <code>&lt;mth&gt;</code>/XML output); if it's <code>nil</code>, <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> falls through to its own built-in ASCII-art printer, which pads a result's lines with literal spaces so a multi-line fraction/ matrix/etc. lines up correctly under the <code>(oN)</code> label &ndash; but that padding assumes every line, including the label, ends up rendered in one uniform monospace font. <code>wxMathML.lisp</code>'s <code>wx-ascii-displa</code> wraps that stock printer in <code>&lt;wxxml-asciimath&gt;</code>/<code>&lt;/wxxml-asciimath&gt;</code> markers <em>without</em> reimplementing it: it dynamically rebinds <code>*alt-display2d*</code> to <code>nil</code> for just the duration of <code>(displa x)</code>, which re-enters <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s own dispatch and this time takes the stock ASCII path (confirmed live: this is correctly reentrant-safe through <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s own recursive sub-expression <code>displa</code> calls, e.g. matrix rows, since they run inside the same dynamic extent). <code>Maxima::ProcessData()</code> only fires the corresponding <code>XML_ASCIIMATH</code> event once it has seen the <em>complete</em> matching closing tag, so <code><a class="el" href="classMaximaResponseReader.html#a15931a24b9755320cc7262e040217dc4" title="Handles one complete &lt;wxxml-asciimath&gt;...&lt;/wxxml-asciimath&gt; block: Maxima&#39;s stock ASCII-art 2D displa...">MaximaResponseReader::ReadAsciiMath()</a></code> always receives one whole block in one piece and can render all of it in one uniform style &ndash; before this, <code>ReadMiscText()</code> guessed a chunk's style from whether it happened to start with <code>"(%"</code>, and since chunks are split by socket/timer batching (not by where <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s actual output boundaries are), a block's label line could land in a separate batch than its neighbors and get misclassified into a different (proportional) font, breaking the alignment <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s padding assumed &ndash; root-caused with a raw <code>:lisp-quiet (with-input-from-string ...)</code> / socket-level reproduction (see the debugging technique note above) before the fix, not guessed.</b></b></b></li>
 </ul>
 <p><b><b><b></b></b></b></p>
-<h2><a class="anchor" id="autotoc_md77"></a>
+<h2><a class="anchor" id="autotoc_md49"></a>
 File Formats</h2>
 <p><b><b><b></p><ul>
 <li>**<code>.wxmx</code>** &ndash; a ZIP archive holding <code>content.xml</code> (the MathML-like XML) plus the embedded images. The format version lives in <code><a class="el" href="WXMXformat_8h_source.html">src/WXMXformat.h</a></code>.</li>
@@ -894,7 +1061,7 @@ File Formats</h2>
 </ul>
 <p></b></b></b></p>
 <p><b><b><b></b></b></b></p>
-<h2><a class="anchor" id="autotoc_md78"></a>
+<h2><a class="anchor" id="autotoc_md50"></a>
 Translations (&lt;tt&gt;locales/&lt;/tt&gt;)</h2>
 <p><b><b><b></p><ul>
 <li><b>One combined <code>.po</code> per language, in <code>locales/wxMaxima/</code>, is the file a translator edits.</b> It covers both <a class="el" href="classwxMaxima.html">wxMaxima</a>'s own UI strings (<code>xgettext</code>-extracted from <code>src/**/*.cpp</code>/<code>*.h</code>) and the manual's prose (<code>po4a</code>-extracted from <code>info/wxmaxima.md</code>). <code>locales/wxMaxima/wxMaxima.pot</code>, the template both <code>msgmerge</code> and Crowdin work against, is regenerated as the union of a fresh source scan and <code>locales/manual/wxmaxima.md.pot</code> (<code>msgcat --use-first</code>, preferring <code>wxMaxima.pot</code>'s own header) by the <code>update-locale</code> CMake target.</li>
@@ -918,7 +1085,7 @@ Translations (&lt;tt&gt;locales/&lt;/tt&gt;)</h2>
 </ul>
 <p></b></b></b></p>
 <p><b><b><b></b></b></b></p>
-<h1><a class="anchor" id="autotoc_md79"></a>
+<h1><a class="anchor" id="autotoc_md51"></a>
 Conventions &amp; Standards</h1>
 <p><b><b><b></p><ul>
 <li><b>Branches and pull requests:</b> one branch per feature or bugfix, cut fresh from <code>main</code>, PR when it is finished &ndash; see "Branches and pull requests" at the top of this file for why reusing one long-lived branch has already caused trouble.</li>
@@ -1095,7 +1262,7 @@ Conventions &amp; Standards</h1>
     something a firewall/antivirus's network protection would touch, and
     some of it blocks loopback inter-process communication too.
 
-@section autotoc_md81 Layout &amp; Compatibility
+@section autotoc_md52 Layout &amp; Compatibility
 
 The rules below are the ones worth carrying around at all times. The reasoning
 behind them, the pipeline they belong to, and the recurring shapes layout bugs
@@ -1155,7 +1322,7 @@ which loads on demand &amp;ndash; keep the detail there rather than growing this
   compiles everywhere and does nothing. The same trap applies to any future
   &lt;tt&gt;wxSOMETHING&lt;/tt&gt; shim added there.
 
-@section autotoc_md82 Performance &amp; Documentation Mandates
+@section autotoc_md53 Performance &amp; Documentation Mandates
 
 - &lt;strong&gt;NEWS.md Updates:&lt;/strong&gt; Every non-trivial change MUST be documented in &lt;tt&gt;NEWS.md&lt;/tt&gt; under the "# Current development version" section.
 - &lt;strong&gt;Doxygen Comments:&lt;/strong&gt; Include descriptions for all new classes and public methods. Complex algorithms (e.g., LCS alignment) require detailed architectural comments.
@@ -1166,12 +1333,12 @@ which loads on demand &amp;ndash; keep the detail there rather than growing this
   - Prefer &lt;tt&gt;(intern ...)&lt;/tt&gt; over &lt;tt&gt;read-from-string&lt;/tt&gt; for dynamic symbol generation.
 - &lt;strong&gt;Strict XML Mandate:&lt;/strong&gt; To avoid duplicate attributes, add any new manually-handled XML attribute (e.g., &lt;tt&gt;noneParens="true"&lt;/tt&gt;) to the filter list in &lt;tt&gt;MathParser.cpp&lt;/tt&gt;.
 
-@section autotoc_md83 Visual Documentation (&lt;tt&gt;art/Doxygen/&lt;/tt&gt;)
+@section autotoc_md54 Visual Documentation (&lt;tt&gt;art/Doxygen/&lt;/tt&gt;)
 
 - &lt;strong&gt;Geometry Awareness:&lt;/strong&gt; If modifying &lt;tt&gt;Recalculate()&lt;/tt&gt; or &lt;tt&gt;Draw()&lt;/tt&gt; geometry (padding, center alignment), you MUST update the corresponding SVG diagrams in &lt;tt&gt;art/Doxygen/&lt;/tt&gt;.
 - &lt;strong&gt;Consistency:&lt;/strong&gt; New cell types should have &lt;tt&gt;*Geometry.svg&lt;/tt&gt; and &lt;tt&gt;*LinearGeometry.svg&lt;/tt&gt; (if applicable) diagrams.
 
-@section autotoc_md84 Key Subsystems Map
+@section autotoc_md55 Key Subsystems Map
 
 Deeper, per-subsystem background lives in &lt;tt&gt;.claude/skills/&lt;/tt&gt;, which load only
 when they are relevant &amp;ndash; so that hard-won detail is available without every
@@ -1216,7 +1383,7 @@ has already been broken.
 </ul>
 <p></code></b></b></b></p>
 <p><b><b><b><code></code></b></b></b></p>
-<h1><a class="anchor" id="autotoc_md85"></a>
+<h1><a class="anchor" id="autotoc_md56"></a>
 Backlog / Future Work</h1>
 <p><b><b><b><code> Items the maintainer has flagged as worth doing but hasn't asked for yet &ndash; don't start on these without checking in first, but pick them up if asked for "what's
 next" style work.</code></b></b></b></p>
@@ -1230,7 +1397,7 @@ next" style work.</code></b></b></b></p>
 </ul>
 <p></code></b></b></b></p>
 <p><b><b><b><code></code></b></b></b></p>
-<h1><a class="anchor" id="autotoc_md86"></a>
+<h1><a class="anchor" id="autotoc_md57"></a>
 Error resilience</h1>
 <p><b><b><b><code></p><ul>
 <li>To err is human =&gt; If your instructions don't seem to make sense feel free to ask. </li>
