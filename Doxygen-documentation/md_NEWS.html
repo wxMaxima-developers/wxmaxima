@@ -73,6 +73,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><ul>
+<li>Windows releases now also offer a .zip alongside the installer (GH #2298). Unpack it wherever you like &ndash; including a USB stick or a directory in your home folder &ndash; and run bin/wxmaxima.exe from there: no installation and no administrator rights. The installer still needs them, because it writes to Program Files and registers file associations for all users, and it remains the recommended choice where that is possible. The .zip contains exactly the same program and data files; what it does not do is register file associations or create Start Menu entries.</li>
 <li>AI Chat failures now show what the provider actually said. <a class="el" href="classA.html">A</a> failed request can still carry a real HTTP response, and its body is where the provider explains itself &ndash; so an unrecognised model id, which Anthropic answers with a bare HTTP 404, used to reach the user as an unexplained "could not reach Anthropic", for a request that had in fact reached it perfectly well.</li>
 <li>Updated the default Anthropic model, which had gone stale. An existing configuration keeps whatever model it already has: change it under Options -&gt; AI Chat, or use "Revert all to defaults".</li>
 <li>The AI Chat sidebar no longer repeats the same "this provider's settings
