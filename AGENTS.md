@@ -315,10 +315,11 @@ working without extra checks.
     1,3,5,...,299 sequence. See the follow-up note below (or GH #2196
     directly) for whether it caught anything.
 
-- **`lisp_mode` intermittent CI failure -- REPRODUCED here and traced to a
-  real startup race, but NOT FIXED: the obvious guard turns the flake into a
-  deterministic hang, which is worse. Read this before trying that guard
-  again.** Distinct from the `m_configCommands`/`RemoveFirst()` prompt-count
+- **`lisp_mode` intermittent CI failure -- reproduced, root-caused and
+  FIXED (2026-09-18). The fix is two lines in two files and neither of them
+  works without the other; the one-line version of it hangs every batch run.
+  Read the "fix that does NOT work" bullet before touching either.**
+  Distinct from the `m_configCommands`/`RemoveFirst()` prompt-count
   bug documented under "Communication with Maxima"; that one was fixed, and
   this is a different mechanism with the same victim.
   - **Reproduction, which is the genuinely reusable part.** It needs CPU
@@ -369,13 +370,34 @@ working without extra checks.
     missed and the run sits until the ctest timeout. `m_ready` is no better:
     `ReadPrompt()` sets it *and* clears `m_evalOnStartup`, so gating on it
     would stop the branch ever running for a different reason.
-  - **So a real fix has to defer the start without dropping it** -- keep the
-    idle block being re-entered while it waits (or start the document from
-    `ReadFirstPrompt()` once the replacement Maxima is actually up) rather
-    than simply declining once. Not attempted here. Whatever is tried, verify
-    it against *both* failure modes: the ~3%-under-load abort **and** a plain
-    single `ctest -R lisp_mode`, since the natural guard trades one for the
-    other and an unloaded run passes either way.
+  - **The fix that does work: defer the start instead of dropping it, in two
+    places that only work together.** (1) `wxMaxima::OnIdle()` gains an
+    `m_evalOnStartup && m_first` case *ahead of* the existing
+    `if (m_evalOnStartup)` branch that returns without clearing
+    `m_evalOnStartup` -- so the document is still owed a start -- and
+    *without* leaving `m_updateEvaluationQueueLengthDisplay` set, so this
+    does not turn into an idle spin burning a core for the whole of Maxima's
+    startup (`RequestMore()` makes wx deliver idle events back to back with
+    no blocking). (2) `MaximaResponseReader::ReadFirstPrompt()` sets
+    `m_updateEvaluationQueueLengthDisplay = true` again when
+    `m_evalOnStartup` is still set, which is what brings that idle block back
+    to life once the replacement Maxima really has prompted. Without (2), (1)
+    is exactly the hang above. Deliberately **not** done by starting the
+    document from `ReadFirstPrompt()` itself, the other route this entry used
+    to suggest: that runs on a socket event, which can be delivered from a
+    re-entrant event pump *inside* `OpenFile()` -- i.e. before the document
+    tree has been inserted -- so it could queue a half-loaded worksheet.
+    Bouncing back through the idle handler is what guarantees `OpenFile()`
+    has returned.
+  - **Verification, both failure modes, because the natural guard trades one
+    for the other and an unloaded run passes either way**: 180 runs under the
+    identical 12-worker/4-core load that produced 6 failures before the fix,
+    **0 failures**; a plain single `xvfb-run ctest -R '^lisp_mode$'` passes in
+    9s with no hang (the bad guard timed out here); and every one of those 180
+    logs has its last `Received maxima's first prompt` *before* `Starting
+    evaluation of the document`, i.e. the new wait is actually being taken and
+    not just getting lucky. Full suite (`ctest -E
+    "tutorial|openMacFiles|wxmaxima_version"`) 170/170.
 
 - **macOS translation files never reaching the app bundle (GH #1711) --
   two independent bugs, neither of which this sandbox (Linux, no

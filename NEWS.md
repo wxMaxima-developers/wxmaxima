@@ -1,5 +1,13 @@
 # Current development version
 
+- Batch runs (`--batch`) no longer occasionally hand the worksheet's first
+  command to a Maxima that isn't listening yet. Opening the file restarts
+  Maxima, and on a loaded machine the replacement could still be starting up
+  when wxMaxima began sending it the document -- the first command was then
+  lost, and everything after it was read as the answer to the wrong
+  question, so the run aborted somewhere in the middle for no visible
+  reason. wxMaxima now waits for the new Maxima to announce itself before
+  sending it anything.
 - Windows: `wxmaxima --logtostderr ... 2>&1` no longer loses everything that
   wxMaxima writes to stderr. Whenever the shell pointed stdout and stderr at
   the same place -- which is what `2>&1` does, and what a pipe to `more` or
