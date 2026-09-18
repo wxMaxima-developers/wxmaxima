@@ -112,6 +112,25 @@ Build System</h1>
 <div class="line">    xvfb-run ctest --test-dir build-asan</div>
 </div><!-- fragment --><p>Leak detection stays off (<code>detect_leaks=0</code>) because GTK/Pango leak noise drowns out real findings. <b>The <code>suppressions=test/asan_suppressions.txt</code> is not optional &ndash; omitting it makes <code>imageFormat</code> fail every single time</b>, with an <code>AddressSanitizer: strncpy-param-overlap</code> inside <code>wxXPMDecoder::ReadFile</code> (confirmed via <code>md5sum</code> that the test's XPM fixture is byte-identical to what CI uses, and confirmed deterministic here across 6 repeated runs &ndash; it is not the tutorial_10Minutes-style rare race it might look like at first). This is a real, pre-existing bug inside wxWidgets' own XPM decoder (not <a class="el" href="classwxMaxima.html">wxMaxima</a>'s code, confirmed by the stack trace bottoming out in <code>libwx_gtk3u_core</code>), already known and already suppressed &ndash; see <code>test/asan_suppressions.txt</code>'s own comment and <code>compile_ubuntu.yml</code>'s <code>run_tests</code> step, which sets exactly this <code>ASAN_OPTIONS</code> string. Running the shorter, suppressions-less command from memory (as opposed to copying it from here or from the workflow file) will reliably misreport this pre-existing, already-triaged third-party issue as a regression in whatever change you're actually testing.</p>
 <p>Other useful targets: <code>ninja -<a class="el" href="classC.html">C</a> build Doxygen</code> builds the source documentation (note the capital <a class="el" href="classD.html">D</a>, and the target only exists when Doxygen is installed), and <code>ninja -<a class="el" href="classC.html">C</a> build update-locale</code> refreshes the translation files.</p>
+<p><b>Build speed: what actually helps, measured rather than assumed.</b> Numbers below are <code>ninja wxmaxima</code> from scratch, Debug, Ninja, 4 cores; repeat them before trusting them on different hardware, but the ratios are the point.</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">configuration   </th><th class="markdownTableHeadNone">clean   </th><th class="markdownTableHeadNone">touch one .cpp   </th><th class="markdownTableHeadNone">touch <code><a class="el" href="Cell_8h.html" title="The definition of the base class of all cells the worksheet consists of.">cells/Cell.h</a></code>    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">neither   </td><td class="markdownTableBodyNone">208s   </td><td class="markdownTableBodyNone">20s   </td><td class="markdownTableBodyNone">129s    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>WXM_ENABLE_PRECOMPILED_HEADERS=YES</code> (the default)   </td><td class="markdownTableBodyNone">135s   </td><td class="markdownTableBodyNone">12s   </td><td class="markdownTableBodyNone">82s    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>CMAKE_UNITY_BUILD=ON</code> (batch 16)   </td><td class="markdownTableBodyNone">51s   </td><td class="markdownTableBodyNone">14s   </td><td class="markdownTableBodyNone">40s    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">both   </td><td class="markdownTableBodyNone">53s   </td><td class="markdownTableBodyNone">&ndash;   </td><td class="markdownTableBodyNone">&ndash;   </td></tr>
+</table>
+<ul>
+<li><b>Precompiled headers are on by default and are the safe win.</b> They were an option long before that, and until 2026-09 that option did <em>nothing</em>: <code><a class="el" href="precomp_8h_source.html">precomp.h</a></code>'s entire body sits behind <code>#ifdef USE_PRECOMP_HEADER</code>, which <code>BuildConfig.h</code> defines through a <code>#cmakedefine</code> &ndash; and the enabling branch in <code>src/CMakeLists.txt</code> never <code>set()</code> that variable, so the header that got precompiled included nothing at all. <a class="el" href="classA.html">A</a> build with the option on took <em>exactly</em> as long as one with it off (202s vs 202s), which is the symptom to recognise: same class of bug as the <code>WXM_USE_AI_TOOLS</code> plumbing documented further down, and the same way to check it &ndash; look for <code>#define USE_PRECOMP_HEADER</code> in the generated <code>BuildConfig.h</code> rather than trusting the CMake option.</li>
+<li><b>One CI job must build without them</b>, and <code>compile_with_non_default_options</code> is it. <a class="el" href="classA.html">A</a> precompiled header hands every source file the whole of wx whether it included it or not, so a missing <code>#include</code> compiles everywhere else and fails only there. Don't "tidy" that <code>=NO</code> away.</li>
+<li><b>Unity builds are not the default, but the tree is kept able to do one.</b> <code>cmake -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=16</code> works and is by far the fastest clean build. Two things break it, and both were real here: a header with no include guard (<code><a class="el" href="wxMaximaArtProvider_8h.html" title="This file declares the class wxMaximaArtprovider - our own wxArtProvider with additional images.">wxMaximaArtProvider.h</a></code> had none, which is a latent bug regardless), and two files defining the same name in their own anonymous namespaces &ndash; <code>U8</code>/<code>FromU8</code> existed identically in <code>AiProvider.cpp</code> and <code>McpTools.cpp</code> and now live once, as <code>wxm::ToUtf8</code>/<code>wxm::FromUtf8</code> in <code><a class="el" href="StringUtils_8h_source.html">StringUtils.h</a></code>. Nothing in CI guards this, so expect to fix a collision of that shape if you turn it on after a while.</li>
+<li><b>Combining the two buys nothing</b> (51s vs 53s): they remove the same cost, which is parsing the same headers once per translation unit. Don't stack them and expect to add up the savings.</li>
+</ul>
 <p><code>CheckPo4aVersion.cmake</code> (included from <code>info/CMakeLists.txt</code> and <code>locales/manual/CMakeLists.txt</code>, the only two places that invoke <code>po4a</code>) refuses <code>po4a</code> older than 0.70 &ndash; pre-0.70 parses text encodings loosely and can silently corrupt non-ASCII translated text with no warning of its own, confirmed directly with Ubuntu 24.04's own <code>po4a</code> 0.69 package turning a German manual paragraph into mangled English on nothing more than a plain reconfigure. <code>PO4A</code> ends up <code>PO4A-NOTFOUND</code> (falsy) in that case, same contract <code>find_program()</code> itself has, so existing <code>if(PO4A)</code> guards keep working without extra checks.</p>
 <ul>
 <li><b>Sandbox: missing <code>maxima-index.lisp</code> and its knock-on ctest failures.</b> In this sandbox's container image, <code>/etc/dpkg/dpkg.cfg.d/*</code> has <code>path-exclude=/usr/share/doc/*</code> (a common image-slimming policy), so every package's <code>/usr/share/doc/*</code> content is silently dropped on install &ndash; <code>apt-get install --reinstall maxima maxima-doc</code> does not bring it back. <code>maxima</code>'s own package ships <code>/usr/share/doc/maxima/info/maxima-index.lisp.gz</code> (confirmed by extracting the real <code>.deb</code> with <code>dpkg-deb -x</code>), so its absence here is this sandbox's doc-stripping, not a missing dependency &ndash; the actual <a class="el" href="classwxMaxima.html">wxMaxima</a> <code>.deb</code> (<code>CPACK_DEBIAN_PACKAGE_DEPENDS "maxima, maxima-doc"</code> in <code>src/CMakeLists.txt</code>) already hard-<code>Depends:</code> on both, and a normal install on a normal system is unaffected. Workaround for this sandbox only (not a repo change): `apt-get download maxima &amp;&amp; dpkg-deb -x maxima_*.deb /tmp/x &amp;&amp; gunzip -c /tmp/x/usr/share/doc/maxima/info/maxima-index.lisp.gz &gt; /usr/share/doc/maxima/info/maxima-index.lisp<code>. Without it, <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> logs </code>Warning: SIMPLE-WARNING: <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> is unable to set up the help system<code>on every startup, and</code>ctest<code>targets that use</code>&ndash;exit-on-error<code> (</code>openMacFiles<code>,</code>openMacFiles2<code>, and most of the</code>*_cmdline_wxmathml<code>/ </code>tutorial_*<code>/similar batch tests in</code>test/CMakeLists.txt`) fail near-instantly on that warning alone &ndash; with the workaround applied, those specific two tests (<code>openMacFiles</code>/<code>openMacFiles2</code>) instead <em>time out</em> (confirmed to reproduce identically on an unmodified <code>main</code> checkout in an isolated worktree, so it's pre-existing and unrelated to any particular change) &ndash; not yet root-caused. Don't burn time re-diagnosing either symptom from scratch; both are sandbox/pre-existing, not something a code change here broke. <b>Neither this workaround nor <code>gnuplot</code>'s installation (below) persists across sandbox instances</b> &ndash; confirmed directly: a session that applied both earlier came back to a broad <code>ctest -<a class="el" href="classE.html">E</a> "tutorial|openMacFiles|_cmdline_wxmathml|wxmaxima_version"</code> run showing 66 of 194 tests failing (<code>boxes</code>, <code>lisp</code>, <code>threadtest</code>, <code>autosave</code>, <code>printf_*</code>, <code>multiplication</code>, <code>config_dialogue_sample</code>, ... &ndash; a broad, cross-cutting spread with no relation to whatever code change was actually being tested that session), which briefly looked like a real regression until re-running a handful of the failing tests in isolation showed the exact <code>maxima-index.lisp</code>/<code>--exit-on-error</code> symptom above. <b><a class="el" href="classA.html">A</a> second, independent gap found the same way, same session: <code>gnuplot</code> itself was not installed at all</b> (<code>threadtest</code> failed with <code>/bin/sh: 1: gnuplot: not found</code>, no relation to the maxima-index.lisp issue). Plain <code>apt-get install gnuplot</code>/<code>gnuplot-nox</code> failed here with an unmet <code>libgd3</code> dependency &ndash; this sandbox's apt sources include a <code>ppa:ondrej/ php</code> entry offering a newer <code>libgd3</code> build than Ubuntu's own archive, and that PPA's package host was blocked by this sandbox's proxy (<code>403</code> on <code>ppa.launchpadcontent.net</code>), while the plain Ubuntu-archive <code>libgd3</code> (also present as a candidate, just lower-priority) was fetchable fine. Fixed with <code>apt-get install libgd3=2.3.3-9ubuntu5 gnuplot-nox</code> (the exact archive version may drift; <code>apt-cache policy libgd3</code> shows both candidates and which one is blocked) &ndash; pinning the plain-archive version explicitly sidesteps the blocked PPA instead of needing the PPA fixed. <b>Moral for future sessions:</b> if a broad ctest run shows a large, topically-scattered batch of failures all at once (rather than one focused area related to the change being tested), suspect a fresh sandbox instance missing one of these two pre-existing workarounds before suspecting a real regression &ndash; re-run 2-3 of the failing tests in isolation and check their actual output for these exact symptoms first, per the "don't burn time re-diagnosing from scratch" note above.</li>
@@ -958,7 +977,7 @@ Architecture &amp; GUI</h1>
     "Sending <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> a SIGINT signal," and clicking "Exit" raises the same
     save-changes &lt;tt&gt;Save As&lt;/tt&gt; prompt a normal File &gt; Exit does.
 
-@subsection autotoc_md172 Asynchronous ("background job") output from Maxima
+@subsection autotoc_md76 Asynchronous ("background job") output from Maxima
 
 &lt;strong&gt;Implemented and verified, but dormant: nothing in today's single-threaded
 Maxima sends it.&lt;/strong&gt; Full design, measurements and rationale live in
@@ -1018,7 +1037,7 @@ Only the traps worth knowing from elsewhere are repeated here.
   rebinding away.
 - &lt;strong&gt;Deliberately does not scroll or un-collapse&lt;/strong&gt;, even with "follow evaluation" on &amp;ndash; same reasoning as GH #1952 above.
 
-@subsection autotoc_md173 Communication with Maxima
+@subsection autotoc_md77 Communication with Maxima
 
 wxMaxima sends Lisp and Maxima commands over the socket; Maxima answers with XML
 wrapped in known tags. &lt;tt&gt;Maxima&lt;/tt&gt; reads that data on a worker thread and posts
@@ -1100,7 +1119,7 @@ tried without rebuilding.
 <li><b><b><b>**ASCII-art 2<a class="el" href="classD.html">D</a> display (<code>set_display('ascii)</code>) and <code>*alt-display2d*</code>:** when <code>$display2d</code> is on, <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s evaluator checks the special variable <code>*alt-display2d*</code> before printing a result: if it's a function symbol, that function is called <em>instead of</em> <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s own stock printer (this is how <code>mydispla</code> in <code>wxMathML.lisp</code> produces the normal <code>&lt;mth&gt;</code>/XML output); if it's <code>nil</code>, <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> falls through to its own built-in ASCII-art printer, which pads a result's lines with literal spaces so a multi-line fraction/ matrix/etc. lines up correctly under the <code>(oN)</code> label &ndash; but that padding assumes every line, including the label, ends up rendered in one uniform monospace font. <code>wxMathML.lisp</code>'s <code>wx-ascii-displa</code> wraps that stock printer in <code>&lt;wxxml-asciimath&gt;</code>/<code>&lt;/wxxml-asciimath&gt;</code> markers <em>without</em> reimplementing it: it dynamically rebinds <code>*alt-display2d*</code> to <code>nil</code> for just the duration of <code>(displa x)</code>, which re-enters <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s own dispatch and this time takes the stock ASCII path (confirmed live: this is correctly reentrant-safe through <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s own recursive sub-expression <code>displa</code> calls, e.g. matrix rows, since they run inside the same dynamic extent). <code>Maxima::ProcessData()</code> only fires the corresponding <code>XML_ASCIIMATH</code> event once it has seen the <em>complete</em> matching closing tag, so <code><a class="el" href="classMaximaResponseReader.html#a15931a24b9755320cc7262e040217dc4" title="Handles one complete &lt;wxxml-asciimath&gt;...&lt;/wxxml-asciimath&gt; block: Maxima&#39;s stock ASCII-art 2D displa...">MaximaResponseReader::ReadAsciiMath()</a></code> always receives one whole block in one piece and can render all of it in one uniform style &ndash; before this, <code>ReadMiscText()</code> guessed a chunk's style from whether it happened to start with <code>"(%"</code>, and since chunks are split by socket/timer batching (not by where <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s actual output boundaries are), a block's label line could land in a separate batch than its neighbors and get misclassified into a different (proportional) font, breaking the alignment <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s padding assumed &ndash; root-caused with a raw <code>:lisp-quiet (with-input-from-string ...)</code> / socket-level reproduction (see the debugging technique note above) before the fix, not guessed.</b></b></b></li>
 </ul>
 <p><b><b><b></b></b></b></p>
-<h2><a class="anchor" id="autotoc_md174"></a>
+<h2><a class="anchor" id="autotoc_md78"></a>
 File Formats</h2>
 <p><b><b><b></p><ul>
 <li>**<code>.wxmx</code>** &ndash; a ZIP archive holding <code>content.xml</code> (the MathML-like XML) plus the embedded images. The format version lives in <code><a class="el" href="WXMXformat_8h_source.html">src/WXMXformat.h</a></code>.</li>
@@ -1116,7 +1135,7 @@ File Formats</h2>
 </ul>
 <p></b></b></b></p>
 <p><b><b><b></b></b></b></p>
-<h2><a class="anchor" id="autotoc_md175"></a>
+<h2><a class="anchor" id="autotoc_md79"></a>
 Translations (&lt;tt&gt;locales/&lt;/tt&gt;)</h2>
 <p><b><b><b></p><ul>
 <li><b>One combined <code>.po</code> per language, in <code>locales/wxMaxima/</code>, is the file a translator edits.</b> It covers both <a class="el" href="classwxMaxima.html">wxMaxima</a>'s own UI strings (<code>xgettext</code>-extracted from <code>src/**/*.cpp</code>/<code>*.h</code>) and the manual's prose (<code>po4a</code>-extracted from <code>info/wxmaxima.md</code>). <code>locales/wxMaxima/wxMaxima.pot</code>, the template both <code>msgmerge</code> and Crowdin work against, is regenerated as the union of a fresh source scan and <code>locales/manual/wxmaxima.md.pot</code> (<code>msgcat --use-first</code>, preferring <code>wxMaxima.pot</code>'s own header) by the <code>update-locale</code> CMake target.</li>
@@ -1140,7 +1159,7 @@ Translations (&lt;tt&gt;locales/&lt;/tt&gt;)</h2>
 </ul>
 <p></b></b></b></p>
 <p><b><b><b></b></b></b></p>
-<h1><a class="anchor" id="autotoc_md176"></a>
+<h1><a class="anchor" id="autotoc_md80"></a>
 Conventions &amp; Standards</h1>
 <p><b><b><b></p><ul>
 <li><b>Branches and pull requests:</b> one branch per feature or bugfix, cut fresh from <code>main</code>, PR when it is finished &ndash; see "Branches and pull requests" at the top of this file for why reusing one long-lived branch has already caused trouble.</li>
@@ -1317,7 +1336,7 @@ Conventions &amp; Standards</h1>
     something a firewall/antivirus's network protection would touch, and
     some of it blocks loopback inter-process communication too.
 
-@section autotoc_md177 Layout &amp; Compatibility
+@section autotoc_md97 Layout &amp; Compatibility
 
 The rules below are the ones worth carrying around at all times. The reasoning
 behind them, the pipeline they belong to, and the recurring shapes layout bugs
@@ -1377,7 +1396,7 @@ which loads on demand &amp;ndash; keep the detail there rather than growing this
   compiles everywhere and does nothing. The same trap applies to any future
   &lt;tt&gt;wxSOMETHING&lt;/tt&gt; shim added there.
 
-@section autotoc_md178 Performance &amp; Documentation Mandates
+@section autotoc_md103 Performance &amp; Documentation Mandates
 
 - &lt;strong&gt;NEWS.md Updates:&lt;/strong&gt; Every non-trivial change MUST be documented in &lt;tt&gt;NEWS.md&lt;/tt&gt; under the "# Current development version" section.
 - &lt;strong&gt;Doxygen Comments:&lt;/strong&gt; Include descriptions for all new classes and public methods. Complex algorithms (e.g., LCS alignment) require detailed architectural comments.
@@ -1388,12 +1407,12 @@ which loads on demand &amp;ndash; keep the detail there rather than growing this
   - Prefer &lt;tt&gt;(intern ...)&lt;/tt&gt; over &lt;tt&gt;read-from-string&lt;/tt&gt; for dynamic symbol generation.
 - &lt;strong&gt;Strict XML Mandate:&lt;/strong&gt; To avoid duplicate attributes, add any new manually-handled XML attribute (e.g., &lt;tt&gt;noneParens="true"&lt;/tt&gt;) to the filter list in &lt;tt&gt;MathParser.cpp&lt;/tt&gt;.
 
-@section autotoc_md179 Visual Documentation (&lt;tt&gt;art/Doxygen/&lt;/tt&gt;)
+@section autotoc_md105 Visual Documentation (&lt;tt&gt;art/Doxygen/&lt;/tt&gt;)
 
 - &lt;strong&gt;Geometry Awareness:&lt;/strong&gt; If modifying &lt;tt&gt;Recalculate()&lt;/tt&gt; or &lt;tt&gt;Draw()&lt;/tt&gt; geometry (padding, center alignment), you MUST update the corresponding SVG diagrams in &lt;tt&gt;art/Doxygen/&lt;/tt&gt;.
 - &lt;strong&gt;Consistency:&lt;/strong&gt; New cell types should have &lt;tt&gt;*Geometry.svg&lt;/tt&gt; and &lt;tt&gt;*LinearGeometry.svg&lt;/tt&gt; (if applicable) diagrams.
 
-@section autotoc_md180 Key Subsystems Map
+@section autotoc_md106 Key Subsystems Map
 
 Deeper, per-subsystem background lives in &lt;tt&gt;.claude/skills/&lt;/tt&gt;, which load only
 when they are relevant &amp;ndash; so that hard-won detail is available without every
@@ -1438,7 +1457,7 @@ has already been broken.
 </ul>
 <p></code></b></b></b></p>
 <p><b><b><b><code></code></b></b></b></p>
-<h1><a class="anchor" id="autotoc_md181"></a>
+<h1><a class="anchor" id="autotoc_md109"></a>
 Backlog / Future Work</h1>
 <p><b><b><b><code> Items the maintainer has flagged as worth doing but hasn't asked for yet &ndash; don't start on these without checking in first, but pick them up if asked for "what's
 next" style work.</code></b></b></b></p>
@@ -1452,7 +1471,7 @@ next" style work.</code></b></b></b></p>
 </ul>
 <p></code></b></b></b></p>
 <p><b><b><b><code></code></b></b></b></p>
-<h1><a class="anchor" id="autotoc_md182"></a>
+<h1><a class="anchor" id="autotoc_md112"></a>
 Error resilience</h1>
 <p><b><b><b><code></p><ul>
 <li>To err is human =&gt; If your instructions don't seem to make sense feel free to ask. </li>
