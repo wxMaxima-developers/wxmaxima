@@ -29,6 +29,47 @@ Two consequences worth keeping in mind:
   fixing while a PR is open, that is a new branch and a new PR, even when the
   fix is one line.
 
+## A red CI is everyone's to fix
+
+**Who turned CI red does not matter, and a test going red is not a lapse --
+it is the test doing the job it was written for.** Any test fails
+eventually; that is the point of having one. So there is nothing to
+apologise for in causing a red build, nobody is disappointed by it, and
+there is no reason to spend effort establishing whose change it was except
+where that genuinely helps fix it.
+
+**What matters is that a red CI gets fixed, by whoever is in a position to
+fix it, whether or not they caused it.** Picking up someone else's failure
+is welcome, not an intrusion or a criticism of them. The alternative is
+what otherwise happens by default: everyone correctly recognises the
+failure as not-theirs, nobody owns it, and it stays red for weeks.
+
+That last part is not hypothetical here. `wxmaxima_version_string` has
+been red on `main` on essentially every push since 2026-08-15 (it has its
+own long entry further down this file). For as long as that is true, the
+minGW job's red cross says nothing about whatever change it just ran
+against, and a genuinely new Windows regression would land behind it
+unnoticed. **A permanently red job is not a warning anyone still reads**,
+which is the real cost of leaving one standing.
+
+Three things this does not license:
+
+- **Never make a test pass by getting rid of it.** Skipping, disabling,
+  quarantining, or loosening its assertion until it can't fail converts a
+  red signal into no signal, which is strictly worse than red: red is at
+  least visible. If a test is genuinely wrong, that is a case to argue in
+  its own PR, on the merits, not something to do quietly while fixing
+  something else.
+- **Check whose failure it actually is before fixing it.** Some red here
+  is neither the tree's nor the change's -- see the sandbox notes under
+  Build System for the missing `maxima-index.lisp` and absent `gnuplot`,
+  either of which produces a broad, topically-scattered batch of failures
+  that looks like a serious regression and is not. Establishing that a
+  failure reproduces on an unmodified `main` costs one worktree and
+  settles it.
+- **It is still its own branch and its own PR**, per the section above,
+  even when it is a one-line fix found while something else was open.
+
 ## Build System
 
 Configure once (a Debug build is the default), then build and run without
@@ -2299,14 +2340,35 @@ a local TCP socket.
     this change).
 
 - **`wxmaxima_version_string` CI test failing on the minGW Windows runner on
-  essentially every push since 2026-08-15 -- RESOLVED (2026-09-11, see the
-  final follow-up at the end of this entry for the actual root cause and
-  fix). Everything below this point, up to that final follow-up, is the
-  investigation history that led there -- kept in full since most of it
+  essentially every push since 2026-08-15 -- STILL OPEN. This entry was
+  headed "RESOLVED (2026-09-11)" until 2026-09-18; that was wrong, and the
+  correction is worth reading before trusting any other status line in this
+  file.** The 2026-09-11 `cmd.exe` quoting fix (final follow-up at the end
+  of this entry) was real and did fix the bug it described -- the entry
+  itself said so honestly ("Not yet independently re-confirmed against a
+  real Windows CI run as of this writing") -- but it was written up under a
+  RESOLVED heading before that confirmation existed, and the confirmation,
+  when it finally happened, came back negative. Verified directly on
+  2026-09-18: the most recent completed `compile_windows` run on `main`
+  (`6ecc9c8`, the #2313 merge) reports `1 tests failed out of 134` --
+  `71 - wxmaxima_version_string (Failed)` -- and the twenty `main` pushes
+  before it are red too. So the quoting bug was one real defect on top of
+  another, not the whole story. **The current lead is the `FILE_TYPE_CHAR`
+  finding recorded in the `wxmaxima-cli.exe` entry below**: a
+  GUI-subsystem child sees its inherited standard handles as
+  `FILE_TYPE_CHAR` while the console-subsystem launcher that passed it
+  those very same handle *values* sees them as `FILE_TYPE_PIPE`, so the
+  transformation tracks the child's subsystem rather than anything CTest
+  does. Start there. The moral for this file, beyond this one test: **do
+  not mark an entry RESOLVED on the strength of a fix you have not seen
+  pass.** "Fix pushed, awaiting confirmation" is a different and honest
+  status, and it would have saved the week this heading bought.
+  Everything below this point, up to that final follow-up, is the
+  investigation history -- kept in full since most of it
   (the `_dup2()` theory, the ConPTY-drain-race theory) was directly
   disproven or superseded, and the next session touching this code should
-  know what's already been ruled out rather than re-deriving it. Read this
-  whole entry before touching `BindStdStreamToParent()` or
+  know what's already been ruled out rather than re-deriving it. **Read
+  this whole entry before touching `BindStdStreamToParent()` or
   `test/CMakeLists.txt`'s `wxmaxima_version_string` block again.**
   The test runs `wxmaxima --debug
   --logtostderr --pipe --version` and expects stdout to match `wxMaxima
@@ -3720,6 +3782,7 @@ tried without rebuilding.
 ## Conventions & Standards
 
 - **Branches and pull requests:** one branch per feature or bugfix, cut fresh from `main`, PR when it is finished -- see "Branches and pull requests" at the top of this file for why reusing one long-lived branch has already caused trouble.
+- **Red CI:** fixing a failure is welcome whoever caused it, and causing one is nobody's fault -- but never make a test pass by removing or weakening it. See "A red CI is everyone's to fix" at the top of this file.
 - **Git Environment:** Note that running `git diff` might launch the visual diff tool `meld` instead of outputting to the terminal. Always use `git diff --no-ext-diff` if you need terminal output.
 - **String Literals & Translations:** Use the `wxS()` macro for all string literals and `_()` for user-facing translatable strings.
 - **Logging:** Use `wxLogMessage()` for debugging; messages are visible in **View -> Toggle Log Window** or by using the option `--logtostderr`.
