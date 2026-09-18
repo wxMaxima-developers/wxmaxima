@@ -1,5 +1,14 @@
 # Current development version
 
+- Windows releases now also offer a .zip alongside the installer (GH #2298).
+  Unpack it wherever you like -- including a USB stick or a directory in
+  your home folder -- and run bin/wxmaxima.exe from there: no installation
+  and no administrator rights. The installer still needs them, because it
+  writes to Program Files and registers file associations for all users,
+  and it remains the recommended choice where that is possible. The .zip
+  contains exactly the same program and data files; what it does not do is
+  register file associations or create Start Menu entries.
+
 - AI Chat failures now show what the provider actually said. A failed
   request can still carry a real HTTP response, and its body is where the
   provider explains itself -- so an unrecognised model id, which Anthropic

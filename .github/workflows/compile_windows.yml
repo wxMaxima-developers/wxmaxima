@@ -375,7 +375,26 @@ jobs:
           tag_name: ${{ github.ref }}
           name: Release ${{ github.ref_name }}
           body_path: wxMaxima/release-notes.md
-          files: wxMaxima/build/*.exe
+          # Both packages CPack already produces (CPACK_GENERATOR "ZIP;NSIS"),
+          # not just the installer:
+          #   *.exe - the NSIS installer, which asks for administrator rights
+          #           because it writes to Program Files and registers file
+          #           associations for every user.
+          #   *.zip - the very same tree, unpacked wherever the user likes and
+          #           run from there (GH #2298). It needs no administrator
+          #           rights and no installation at all; it just does not
+          #           register file associations or Start Menu entries.
+          # The ZIP was already being built and verified on every run (see the
+          # "Verify the package bundles the MinGW runtime DLLs" step, which
+          # asserts the MinGW runtime is inside *this* archive) -- it simply
+          # was never attached to the release. wxMaxima finds its own resources
+          # relative to the executable (Dirstructure::ResourcesDir() walks up
+          # out of bin/ and into share/), so the unpacked tree works as-is.
+          # Non-recursive on purpose: CPack writes the finished packages to the
+          # build root, while _CPack_Packages/ below it holds staging copies.
+          files: |
+            wxMaxima/build/*.exe
+            wxMaxima/build/*.zip
           draft: false
           prerelease: false
 
