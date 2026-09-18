@@ -83,6 +83,17 @@ Branches and pull requests</h1>
 <li>Keep an unrelated fix out of an existing PR's branch. If something needs fixing while a PR is open, that is a new branch and a new PR, even when the fix is one line.</li>
 </ul>
 <h1><a class="anchor" id="autotoc_md44"></a>
+A red CI is everyone's to fix</h1>
+<p><b>Who turned CI red does not matter, and a test going red is not a lapse &ndash; it is the test doing the job it was written for.</b> Any test fails eventually; that is the point of having one. So there is nothing to apologise for in causing a red build, nobody is disappointed by it, and there is no reason to spend effort establishing whose change it was except where that genuinely helps fix it.</p>
+<p><b>What matters is that a red CI gets fixed, by whoever is in a position to fix it, whether or not they caused it.</b> Picking up someone else's failure is welcome, not an intrusion or a criticism of them. The alternative is what otherwise happens by default: everyone correctly recognises the failure as not-theirs, nobody owns it, and it stays red for weeks.</p>
+<p>That last part is not hypothetical here. <code>wxmaxima_version_string</code> has been red on <code>main</code> on essentially every push since 2026-08-15 (it has its own long entry further down this file). For as long as that is true, the minGW job's red cross says nothing about whatever change it just ran against, and a genuinely new Windows regression would land behind it unnoticed. <b><a class="el" href="classA.html">A</a> permanently red job is not a warning anyone still reads</b>, which is the real cost of leaving one standing.</p>
+<p>Three things this does not license:</p>
+<ul>
+<li><b>Never make a test pass by getting rid of it.</b> Skipping, disabling, quarantining, or loosening its assertion until it can't fail converts a red signal into no signal, which is strictly worse than red: red is at least visible. If a test is genuinely wrong, that is a case to argue in its own PR, on the merits, not something to do quietly while fixing something else.</li>
+<li><b>Check whose failure it actually is before fixing it.</b> Some red here is neither the tree's nor the change's &ndash; see the sandbox notes under Build System for the missing <code>maxima-index.lisp</code> and absent <code>gnuplot</code>, either of which produces a broad, topically-scattered batch of failures that looks like a serious regression and is not. Establishing that a failure reproduces on an unmodified <code>main</code> costs one worktree and settles it.</li>
+<li><b>It is still its own branch and its own PR</b>, per the section above, even when it is a one-line fix found while something else was open.</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md45"></a>
 Build System</h1>
 <p>Configure once (a Debug build is the default), then build and run without installing:</p>
 <div class="fragment"><div class="line">cmake -S . -B build -G Ninja</div>
@@ -125,7 +136,7 @@ Build System</h1>
 </ol>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md45"></a>
+<h1><a class="anchor" id="autotoc_md46"></a>
 Architecture &amp; GUI</h1>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> is a GUI front-end to the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> CAS; it talks to a <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> process over a local TCP socket.</p>
 <ul>
@@ -444,7 +455,8 @@ Architecture &amp; GUI</h1>
     know?" startup tip, <code>Show tips at startup</code> &ndash; present with or without this change).</li>
 </ul>
 </b></b></b></li>
-<li><b><b><b>**<code>wxmaxima_version_string</code> CI test failing on the minGW Windows runner on essentially every push since 2026-08-15 &ndash; RESOLVED (2026-09-11, see the final follow-up at the end of this entry for the actual root cause and fix). Everything below this point, up to that final follow-up, is the investigation history that led there &ndash; kept in full since most of it (the <code>_dup2()</code> theory, the ConPTY-drain-race theory) was directly disproven or superseded, and the next session touching this code should know what's already been ruled out rather than re-deriving it. Read this whole entry before touching <code>BindStdStreamToParent()</code> or <code>test/CMakeLists.txt</code>'s <code>wxmaxima_version_string</code> block again.** The test runs <code>wxmaxima --debug --logtostderr --pipe --version</code> and expects stdout to match <code><a class="el" href="classwxMaxima.html">wxMaxima</a> &lt;VERSION&gt;.*</code>; it consistently fails with "Required regular expression not
+<li><b><b><b>**<code>wxmaxima_version_string</code> CI test failing on the minGW Windows runner on essentially every push since 2026-08-15 &ndash; STILL OPEN. This entry was headed "RESOLVED (2026-09-11)" until 2026-09-18; that was wrong, and the correction is worth reading before trusting any other status line in this file.** The 2026-09-11 <code>cmd.exe</code> quoting fix (final follow-up at the end of this entry) was real and did fix the bug it described &ndash; the entry itself said so honestly ("Not yet independently re-confirmed against a
+  real Windows CI run as of this writing") &ndash; but it was written up under a RESOLVED heading before that confirmation existed, and the confirmation, when it finally happened, came back negative. Verified directly on 2026-09-18: the most recent completed <code>compile_windows</code> run on <code>main</code> (<code>6ecc9c8</code>, the #2313 merge) reports <code>1 tests failed out of 134</code> &ndash; <code>71 - wxmaxima_version_string (Failed)</code> &ndash; and the twenty <code>main</code> pushes before it are red too. So the quoting bug was one real defect on top of another, not the whole story. <b>The current lead is the <code>FILE_TYPE_CHAR</code> finding recorded in the <code>wxmaxima-cli.exe</code> entry below</b>: a GUI-subsystem child sees its inherited standard handles as <code>FILE_TYPE_CHAR</code> while the console-subsystem launcher that passed it those very same handle <em>values</em> sees them as <code>FILE_TYPE_PIPE</code>, so the transformation tracks the child's subsystem rather than anything CTest does. Start there. The moral for this file, beyond this one test: <b>do not mark an entry RESOLVED on the strength of a fix you have not seen pass.</b> "Fix pushed, awaiting confirmation" is a different and honest status, and it would have saved the week this heading bought. Everything below this point, up to that final follow-up, is the investigation history &ndash; kept in full since most of it (the <code>_dup2()</code> theory, the ConPTY-drain-race theory) was directly disproven or superseded, and the next session touching this code should know what's already been ruled out rather than re-deriving it. <b>Read this whole entry before touching <code>BindStdStreamToParent()</code> or <code>test/CMakeLists.txt</code>'s <code>wxmaxima_version_string</code> block again.</b> The test runs <code>wxmaxima --debug --logtostderr --pipe --version</code> and expects stdout to match <code><a class="el" href="classwxMaxima.html">wxMaxima</a> &lt;VERSION&gt;.*</code>; it consistently fails with "Required regular expression not
   found" while the process still exits 0 &ndash; no crash, just no (or wrong) captured output &ndash; on a job that otherwise builds and passes every other test cleanly (including <code>wxmaxima_version_returncode</code>, the same command with only the exit code checked, which passes every time &ndash; so the process really does run to completion normally). <code><a class="el" href="main_8cpp.html" title="The file that defines the starting point of the program.">main.cpp</a></code> already has a large Windows-only block explaining why this needs special handling at all: <a class="el" href="classwxMaxima.html">wxMaxima</a> is a <code>WIN32</code>-subsystem binary (<code>add_executable(wxmaxima WIN32
   ...)</code>), so it has no stdio wired up by default, and <code>RedirectStdioToParent()</code> (<code>BindStdStreamToParent()</code>) exists specifically to bind <code>stdout</code>/<code>stderr</code>/ <code>stdin</code> onto whatever the parent process gave it (an inherited pipe, as ctest sets up, or an attached console).<ul>
 <li><p class="startli"><b>Attempt 1 (2026-09-06, commit <code>3f8fd15</code>): the struct-copy theory &ndash; DISCONFIRMED.</b> The original code did:</p>
@@ -767,7 +779,7 @@ Architecture &amp; GUI</h1>
     "Sending <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> a SIGINT signal," and clicking "Exit" raises the same
     save-changes &lt;tt&gt;Save As&lt;/tt&gt; prompt a normal File &gt; Exit does.
 
-@subsection autotoc_md68 Asynchronous ("background job") output from Maxima
+@subsection autotoc_md75 Asynchronous ("background job") output from Maxima
 
 &lt;strong&gt;Implemented and verified, but dormant: nothing in today's single-threaded
 Maxima sends it.&lt;/strong&gt; Full design, measurements and rationale live in
@@ -827,7 +839,7 @@ Only the traps worth knowing from elsewhere are repeated here.
   rebinding away.
 - &lt;strong&gt;Deliberately does not scroll or un-collapse&lt;/strong&gt;, even with "follow evaluation" on &amp;ndash; same reasoning as GH #1952 above.
 
-@subsection autotoc_md69 Communication with Maxima
+@subsection autotoc_md76 Communication with Maxima
 
 wxMaxima sends Lisp and Maxima commands over the socket; Maxima answers with XML
 wrapped in known tags. &lt;tt&gt;Maxima&lt;/tt&gt; reads that data on a worker thread and posts
@@ -866,7 +878,7 @@ tried without rebuilding.
 <li><b><b><b>**ASCII-art 2<a class="el" href="classD.html">D</a> display (<code>set_display('ascii)</code>) and <code>*alt-display2d*</code>:** when <code>$display2d</code> is on, <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s evaluator checks the special variable <code>*alt-display2d*</code> before printing a result: if it's a function symbol, that function is called <em>instead of</em> <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s own stock printer (this is how <code>mydispla</code> in <code>wxMathML.lisp</code> produces the normal <code>&lt;mth&gt;</code>/XML output); if it's <code>nil</code>, <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> falls through to its own built-in ASCII-art printer, which pads a result's lines with literal spaces so a multi-line fraction/ matrix/etc. lines up correctly under the <code>(oN)</code> label &ndash; but that padding assumes every line, including the label, ends up rendered in one uniform monospace font. <code>wxMathML.lisp</code>'s <code>wx-ascii-displa</code> wraps that stock printer in <code>&lt;wxxml-asciimath&gt;</code>/<code>&lt;/wxxml-asciimath&gt;</code> markers <em>without</em> reimplementing it: it dynamically rebinds <code>*alt-display2d*</code> to <code>nil</code> for just the duration of <code>(displa x)</code>, which re-enters <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s own dispatch and this time takes the stock ASCII path (confirmed live: this is correctly reentrant-safe through <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s own recursive sub-expression <code>displa</code> calls, e.g. matrix rows, since they run inside the same dynamic extent). <code>Maxima::ProcessData()</code> only fires the corresponding <code>XML_ASCIIMATH</code> event once it has seen the <em>complete</em> matching closing tag, so <code><a class="el" href="classMaximaResponseReader.html#a15931a24b9755320cc7262e040217dc4" title="Handles one complete &lt;wxxml-asciimath&gt;...&lt;/wxxml-asciimath&gt; block: Maxima&#39;s stock ASCII-art 2D displa...">MaximaResponseReader::ReadAsciiMath()</a></code> always receives one whole block in one piece and can render all of it in one uniform style &ndash; before this, <code>ReadMiscText()</code> guessed a chunk's style from whether it happened to start with <code>"(%"</code>, and since chunks are split by socket/timer batching (not by where <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s actual output boundaries are), a block's label line could land in a separate batch than its neighbors and get misclassified into a different (proportional) font, breaking the alignment <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s padding assumed &ndash; root-caused with a raw <code>:lisp-quiet (with-input-from-string ...)</code> / socket-level reproduction (see the debugging technique note above) before the fix, not guessed.</b></b></b></li>
 </ul>
 <p><b><b><b></b></b></b></p>
-<h2><a class="anchor" id="autotoc_md70"></a>
+<h2><a class="anchor" id="autotoc_md77"></a>
 File Formats</h2>
 <p><b><b><b></p><ul>
 <li>**<code>.wxmx</code>** &ndash; a ZIP archive holding <code>content.xml</code> (the MathML-like XML) plus the embedded images. The format version lives in <code><a class="el" href="WXMXformat_8h_source.html">src/WXMXformat.h</a></code>.</li>
@@ -882,7 +894,7 @@ File Formats</h2>
 </ul>
 <p></b></b></b></p>
 <p><b><b><b></b></b></b></p>
-<h2><a class="anchor" id="autotoc_md71"></a>
+<h2><a class="anchor" id="autotoc_md78"></a>
 Translations (&lt;tt&gt;locales/&lt;/tt&gt;)</h2>
 <p><b><b><b></p><ul>
 <li><b>One combined <code>.po</code> per language, in <code>locales/wxMaxima/</code>, is the file a translator edits.</b> It covers both <a class="el" href="classwxMaxima.html">wxMaxima</a>'s own UI strings (<code>xgettext</code>-extracted from <code>src/**/*.cpp</code>/<code>*.h</code>) and the manual's prose (<code>po4a</code>-extracted from <code>info/wxmaxima.md</code>). <code>locales/wxMaxima/wxMaxima.pot</code>, the template both <code>msgmerge</code> and Crowdin work against, is regenerated as the union of a fresh source scan and <code>locales/manual/wxmaxima.md.pot</code> (<code>msgcat --use-first</code>, preferring <code>wxMaxima.pot</code>'s own header) by the <code>update-locale</code> CMake target.</li>
@@ -906,10 +918,11 @@ Translations (&lt;tt&gt;locales/&lt;/tt&gt;)</h2>
 </ul>
 <p></b></b></b></p>
 <p><b><b><b></b></b></b></p>
-<h1><a class="anchor" id="autotoc_md72"></a>
+<h1><a class="anchor" id="autotoc_md79"></a>
 Conventions &amp; Standards</h1>
 <p><b><b><b></p><ul>
 <li><b>Branches and pull requests:</b> one branch per feature or bugfix, cut fresh from <code>main</code>, PR when it is finished &ndash; see "Branches and pull requests" at the top of this file for why reusing one long-lived branch has already caused trouble.</li>
+<li><b>Red CI:</b> fixing a failure is welcome whoever caused it, and causing one is nobody's fault &ndash; but never make a test pass by removing or weakening it. See "A red CI is everyone's to fix" at the top of this file.</li>
 <li><b>Git Environment:</b> Note that running <code>git diff</code> might launch the visual diff tool <code>meld</code> instead of outputting to the terminal. Always use <code>git diff --no-ext-diff</code> if you need terminal output.</li>
 <li><b><a class="el" href="classString.html" title="A String class.">String</a> Literals &amp; Translations:</b> Use the <code>wxS()</code> macro for all string literals and <code>_()</code> for user-facing translatable strings.</li>
 <li><b>Logging:</b> Use <code>wxLogMessage()</code> for debugging; messages are visible in <b>View -&gt; Toggle Log Window</b> or by using the option <code>--logtostderr</code>.</li>
@@ -1082,7 +1095,7 @@ Conventions &amp; Standards</h1>
     something a firewall/antivirus's network protection would touch, and
     some of it blocks loopback inter-process communication too.
 
-@section autotoc_md73 Layout &amp; Compatibility
+@section autotoc_md81 Layout &amp; Compatibility
 
 The rules below are the ones worth carrying around at all times. The reasoning
 behind them, the pipeline they belong to, and the recurring shapes layout bugs
@@ -1142,7 +1155,7 @@ which loads on demand &amp;ndash; keep the detail there rather than growing this
   compiles everywhere and does nothing. The same trap applies to any future
   &lt;tt&gt;wxSOMETHING&lt;/tt&gt; shim added there.
 
-@section autotoc_md74 Performance &amp; Documentation Mandates
+@section autotoc_md82 Performance &amp; Documentation Mandates
 
 - &lt;strong&gt;NEWS.md Updates:&lt;/strong&gt; Every non-trivial change MUST be documented in &lt;tt&gt;NEWS.md&lt;/tt&gt; under the "# Current development version" section.
 - &lt;strong&gt;Doxygen Comments:&lt;/strong&gt; Include descriptions for all new classes and public methods. Complex algorithms (e.g., LCS alignment) require detailed architectural comments.
@@ -1153,12 +1166,12 @@ which loads on demand &amp;ndash; keep the detail there rather than growing this
   - Prefer &lt;tt&gt;(intern ...)&lt;/tt&gt; over &lt;tt&gt;read-from-string&lt;/tt&gt; for dynamic symbol generation.
 - &lt;strong&gt;Strict XML Mandate:&lt;/strong&gt; To avoid duplicate attributes, add any new manually-handled XML attribute (e.g., &lt;tt&gt;noneParens="true"&lt;/tt&gt;) to the filter list in &lt;tt&gt;MathParser.cpp&lt;/tt&gt;.
 
-@section autotoc_md75 Visual Documentation (&lt;tt&gt;art/Doxygen/&lt;/tt&gt;)
+@section autotoc_md83 Visual Documentation (&lt;tt&gt;art/Doxygen/&lt;/tt&gt;)
 
 - &lt;strong&gt;Geometry Awareness:&lt;/strong&gt; If modifying &lt;tt&gt;Recalculate()&lt;/tt&gt; or &lt;tt&gt;Draw()&lt;/tt&gt; geometry (padding, center alignment), you MUST update the corresponding SVG diagrams in &lt;tt&gt;art/Doxygen/&lt;/tt&gt;.
 - &lt;strong&gt;Consistency:&lt;/strong&gt; New cell types should have &lt;tt&gt;*Geometry.svg&lt;/tt&gt; and &lt;tt&gt;*LinearGeometry.svg&lt;/tt&gt; (if applicable) diagrams.
 
-@section autotoc_md76 Key Subsystems Map
+@section autotoc_md84 Key Subsystems Map
 
 Deeper, per-subsystem background lives in &lt;tt&gt;.claude/skills/&lt;/tt&gt;, which load only
 when they are relevant &amp;ndash; so that hard-won detail is available without every
@@ -1203,7 +1216,7 @@ has already been broken.
 </ul>
 <p></code></b></b></b></p>
 <p><b><b><b><code></code></b></b></b></p>
-<h1><a class="anchor" id="autotoc_md77"></a>
+<h1><a class="anchor" id="autotoc_md85"></a>
 Backlog / Future Work</h1>
 <p><b><b><b><code> Items the maintainer has flagged as worth doing but hasn't asked for yet &ndash; don't start on these without checking in first, but pick them up if asked for "what's
 next" style work.</code></b></b></b></p>
@@ -1217,7 +1230,7 @@ next" style work.</code></b></b></b></p>
 </ul>
 <p></code></b></b></b></p>
 <p><b><b><b><code></code></b></b></b></p>
-<h1><a class="anchor" id="autotoc_md78"></a>
+<h1><a class="anchor" id="autotoc_md86"></a>
 Error resilience</h1>
 <p><b><b><b><code></p><ul>
 <li>To err is human =&gt; If your instructions don't seem to make sense feel free to ask. </li>
