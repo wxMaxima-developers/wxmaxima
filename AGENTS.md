@@ -3109,13 +3109,13 @@ a local TCP socket.
     Windows rather than the CRT for a standard handle was reading a closed
     or *recycled* value -- `HaveStdErrHandle()`, the
     `SetHandleInformation()` calls in `MyApp::OnInit()`, and every child
-    process inheriting our standard handles. **This is what the
-    `type=unknown` lines in the shipped CI traces are**, and reading them
-    as "ctest handed the child an already-invalid handle" (as this entry
-    did) was wrong: the previous stream's binding had closed it. Likewise
-    the traces' "stderr's descriptor ends up on the numeric value stdout's
-    inherited handle had a moment ago" is plain handle recycling, not
-    anything exotic. Fixed by binding a `DuplicateHandle()` copy, so
+    process inheriting our standard handles. ~~**This is what the
+    `type=unknown` lines in the shipped CI traces are**~~ -- **that claim
+    was wrong, and the first CI run carrying this very fix disproved it;
+    see "What the first green run actually showed" at the end of this
+    entry.** The bug itself is real and the fix stands; only its claimed
+    connection to those trace lines does not. Fixed by binding a
+    `DuplicateHandle()` copy, so
     `_close()` disposes of our own duplicate and the parent's handle stays
     valid. **Reproduced and fixed under Wine, functionally, not by reading
     code**: a console harness that creates a pipe the way kwsys does and
@@ -3145,12 +3145,56 @@ a local TCP socket.
     not a demonstrated cure. It is the most promising remaining lead, and
     the launcher now logs `inherit=yes/no/unqueryable` for each handle, so
     the next Windows run's trace answers the question outright.
-    **If someone picks this up again**, the cheap next step is to read that
-    `inherit=` line and check whether all three streams now bind with no
-    `type=unknown`; if they do and the content assertion is worth having
-    back, restore it on `wxmaxima-cli` (never on `wxmaxima.exe` itself) and
-    watch one real run. Do not re-run any theory this entry already
-    disproves. Also still open, and now the obvious cleanup: the
+    **That run has now happened, and the answer is below -- it is not the
+    lead it looked like.**
+    **What the first green run actually showed (2026-09-18, the minGW job
+    of this change's own PR -- `100% tests passed out of 134`, the first
+    green minGW since 2026-08-15).** The trace settles both questions this
+    entry left open, and disproves this entry's own answer to each. Read
+    this before building on either fix's claimed explanation:
+    1. *The launcher's handles were already inheritable, so bug #2 is not
+       the pipe-to-char mechanism.* Its own line reads `stdin
+       handle=...318 type=pipe inherit=yes, stdout handle=...3a8 type=pipe
+       inherit=yes, stderr handle=...30c type=pipe inherit=yes` -- CTest
+       hands them over with `HANDLE_FLAG_INHERIT` already set, so there
+       was never a cleared flag to lose. And the child it started
+       (identified by pid, `CreateProcessW ok, child pid 3992`) *still*
+       reports all three as `type=char`. **Passing explicitly inheritable
+       duplicates changed the child's reported handle types not at all.**
+       The fix stays -- it is what MSDN's redirected-child example
+       documents, and relying on a flag nobody guarantees is a latent bug
+       regardless -- but it is not a cure, and the `FILE_TYPE_PIPE`-in-the
+       -parent / `FILE_TYPE_CHAR`-in-the-child transformation remains
+       completely unexplained. Do not spend another pass on inheritance
+       flags.
+    2. *The `type=unknown` lines are unchanged by bug #1's fix, so that
+       fix does not explain them either.* Counted over the whole trace,
+       same 264 `BindStdStreamToParent(...) start:` lines in both runs:
+       **37 `type=unknown` before the fix, 36 after.** If the previous
+       stream's binding had been closing the handle, this fix would have
+       driven that to zero. It did not move. So the original reading this
+       entry talked itself out of -- that the child is handed an
+       already-unusable handle -- was very likely right all along, and
+       "the previous binding closed it" was wrong. Worth noting for
+       whoever picks this up: post-fix the unknowns are overwhelmingly
+       `STD_ERROR_HANDLE` (32 of 36) with a few `STD_INPUT_HANDLE` (3) and
+       a single `STD_OUTPUT_HANDLE`, i.e. concentrated on the stream a
+       batch test is least likely to have had redirected anywhere real.
+    **The moral, again, and this time about a fix rather than a status
+    line**: bug #1 was demonstrated under Wine by byte count (22 -> 49) and
+    is certainly a real bug; that evidence says the code was wrong, not
+    that it was the cause of any particular symptom seen elsewhere. Those
+    are two different claims and this entry ran them together. Verify a
+    proposed *explanation* against the symptom it claims to explain, which
+    here cost one grep of a log that already existed.
+    **If someone picks this up again**: both of this entry's leads are now
+    closed, so start from the unexplained fact itself -- a GUI-subsystem
+    child reports `FILE_TYPE_CHAR` for the very same handle values its
+    console-subsystem parent sees as `FILE_TYPE_PIPE`, with inheritance
+    confirmed working. If the content assertion is ever worth restoring,
+    restore it on `wxmaxima-cli` (never on `wxmaxima.exe` itself) and watch
+    one real run. Do not re-run any theory this entry already disproves.
+    Also still open, and now the obvious cleanup: the
     `WXM_STDIO_DEBUG_LOG` instrumentation and the workflow step that prints
     its ~88-process trace into every Windows CI log are still in place,
     which this entry itself said should not outlive the investigation --
@@ -3337,6 +3381,13 @@ a local TCP socket.
     explanation for this entry's own `type=pipe`-here/`type=char`-there
     finding. Fixed; `DescribeStdHandle()` now also reports `inherit=`, so
     the next run's trace settles whether that was it.
+    **It has, and it was not.** That run's launcher line reads `type=pipe
+    inherit=yes` for all three streams -- CTest already sets the flag, so
+    there was never one to lose -- and the child it spawned still reported
+    all three as `type=char`. The fix is correct by MSDN's contract and
+    stays, but this entry's `type=pipe`-here/`type=char`-there finding is
+    *not* explained by it and remains open. See "What the first green run
+    actually showed" in the `wxmaxima_version_string` entry above.
 
 - **System tray icon (`src/TrayIcon.{h,cpp}`, GH #2286) -- mirrors the busy
   status, gated entirely by `wxUSE_TASKBARICON`.** The maintainer's own
