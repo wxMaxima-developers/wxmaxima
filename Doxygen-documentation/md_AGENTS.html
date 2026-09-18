@@ -129,6 +129,18 @@ Build System</h1>
 <li><a class="el" href="classA.html">A</a> gdb software-breakpoint hunt (<code><a class="el" href="EvaluationQueue_8cpp.html" title="This file defines the class EvaluationQueue.">EvaluationQueue.cpp</a>:124</code>, right after <code>AddTokens(GetCell())</code> on every cell-to-cell advance, logging <code>m_commands[0]</code> and continuing automatically) was run against <code>commandSequenceIntegrity.wxm</code> as the most targeted live attempt so far, checking every run's advance log for a gap in the expected 1,3,5,...,299 sequence. See the follow-up note below (or GH #2196 directly) for whether it caught anything.</li>
 </ul>
 </li>
+<li>**<code>lisp_mode</code> intermittent CI failure &ndash; reproduced, root-caused and FIXED (2026-09-18). The fix is two lines in two files and neither of them works without the other; the one-line version of it hangs every batch run. Read the "fix that does NOT work" bullet before touching either.** Distinct from the <code>m_configCommands</code>/<code>RemoveFirst()</code> prompt-count bug documented under "Communication with Maxima"; that one was fixed, and this is a different mechanism with the same victim.<ul>
+<li><b>Reproduction, which is the genuinely reusable part.</b> It needs CPU contention, not repetition: <b>0 failures in 60 runs</b> on an idle box, <b>6 in 180</b> with 12 concurrent workers on 4 cores (3x oversubscribed). Run the real ctest command per worker with its own <code>DISPLAY</code> and its own <code>TMPDIR</code>/<code>MAXIMA_USERDIR</code>/<code>MAXIMA_OBJDIR</code>/<code>MAXIMA_TEMPDIR</code>/ <code>XDG_CONFIG_HOME</code> (copy them out of the generated <code>test/CTestTestfile.cmake</code>), under <code>timeout</code>, keeping the log of any run whose exit code is non-zero. Don't conclude "can't reproduce" from an unloaded machine &ndash; that is the one condition guaranteed to hide it.</li>
+<li><b>Signature</b>: exit code 90, always aborting on the <code>to_lisp();</code> cell, and the <code>--logtostderr</code> log shows <b>two "Sending a new command to
+    Maxima." lines back to back with no "Got a new input prompt!" between them</b>, where a passing run strictly alternates the two. <code>lisp_mode</code> catches it because it exists to detect REPL desync; a worksheet without that property would just return a wrong-but-plausible answer.</li>
+<li><b>The race.</b> Opening the worksheet restarts <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> &ndash; <code>OpenFile()</code> -&gt; <code>StartMaxima()</code>, which kills the running process and spawns a replacement (a <em>passing</em> run does this too, so "Maxima processes
+    spawned: 2" is normal and not the anomaly). The next idle then reaches <code><a class="el" href="wxMaxima_8cpp.html" title="This file defines the contents of the class wxMaxima that contains most of the program&#39;s logic.">wxMaxima.cpp</a></code>'s <code>if (m_evalOnStartup)</code> branch, which queues the document and calls <code>TriggerEvaluation()</code> <b>with no readiness guard at all</b> &ndash; unlike its sibling site ~26 lines below (the no-file-to-open path), which guards on <code>m_ready</code>. When the killed <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> had already got as far as its own first prompt, enough state survives that the first command is dispatched into a connection that is being replaced. Measured discriminator: "the killed Maxima logged `Received maxima's
+    first prompt` *before* `File opened`" held in <b>8 of 8</b> failures and in <b>0</b> passes that failed &ndash; but also in 74 runs that passed, so it is the precondition that opens the window, not a guarantee. Under load the process being replaced has more wall-clock time to reach its prompt, which is why contention raises the rate.</li>
+<li><b>The fix that does NOT work, and why &ndash; don't repeat it.</b> Adding <code>&amp;&amp; !m_first</code> to that branch (<code>m_first</code> being re-armed by <code>StartMaxima()</code> on every spawn and cleared by <code>ReadFirstPrompt()</code>, so it really does mean "the Maxima running *now* has prompted") looks exactly right and <b>hangs every single batch run</b>: 12 of 12 workers timed out (exit 124) on their first attempt. The branch sits inside <code>if (m_updateEvaluationQueueLengthDisplay)</code>, and that flag is cleared at the bottom of the same block and only ever set true again by <code>EvaluationQueueLength()</code> <em>when the queue length changes</em>. Declining to queue the document therefore ensures the queue length never changes, so the flag is never re-armed, so the idle block never runs again &ndash; and <code>ReadFirstPrompt()</code> doesn't rescue it either, because with nothing queued it takes its own "evaluation queue is empty" path instead of calling <code>TriggerEvaluation()</code>. The one chance to start the document is missed and the run sits until the ctest timeout. <code>m_ready</code> is no better: <code>ReadPrompt()</code> sets it <em>and</em> clears <code>m_evalOnStartup</code>, so gating on it would stop the branch ever running for a different reason.</li>
+<li><b>The fix that does work: defer the start instead of dropping it, in two places that only work together.</b> (1) <code><a class="el" href="classwxMaxima.html#a0526c00a10c9ee202d52857da8dd31b4" title="The idle task that refreshes the gui (worksheet, menus, title line,...)">wxMaxima::OnIdle()</a></code> gains an <code>m_evalOnStartup &amp;&amp; m_first</code> case <em>ahead of</em> the existing <code>if (m_evalOnStartup)</code> branch that returns without clearing <code>m_evalOnStartup</code> &ndash; so the document is still owed a start &ndash; and <em>without</em> leaving <code>m_updateEvaluationQueueLengthDisplay</code> set, so this does not turn into an idle spin burning a core for the whole of <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s startup (<code>RequestMore()</code> makes wx deliver idle events back to back with no blocking). (2) <code><a class="el" href="classMaximaResponseReader.html#a594ab11132246d8bc60f372d31c6f18d" title="Handles Maxima&#39;s very first prompt after startup (banner, PID, readiness).">MaximaResponseReader::ReadFirstPrompt()</a></code> sets <code>m_updateEvaluationQueueLengthDisplay = true</code> again when <code>m_evalOnStartup</code> is still set, which is what brings that idle block back to life once the replacement <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> really has prompted. Without (2), (1) is exactly the hang above. Deliberately <b>not</b> done by starting the document from <code>ReadFirstPrompt()</code> itself, the other route this entry used to suggest: that runs on a socket event, which can be delivered from a re-entrant event pump <em>inside</em> <code>OpenFile()</code> &ndash; i.e. before the document tree has been inserted &ndash; so it could queue a half-loaded worksheet. Bouncing back through the idle handler is what guarantees <code>OpenFile()</code> has returned.</li>
+<li><b>Verification, both failure modes, because the natural guard trades one for the other and an unloaded run passes either way</b>: 180 runs under the identical 12-worker/4-core load that produced 6 failures before the fix, <b>0 failures</b>; a plain single &lsquo;xvfb-run ctest -R &rsquo;^lisp_mode$'` passes in 9s with no hang (the bad guard timed out here); and every one of those 180 logs has its last <code>Received maxima's first prompt</code> <em>before</em> <code>Starting evaluation of the document</code>, i.e. the new wait is actually being taken and not just getting lucky. Full suite (<code>ctest -<a class="el" href="classE.html">E</a> "tutorial|openMacFiles|wxmaxima_version"</code>) 170/170.</li>
+</ul>
+</li>
 <li><b>macOS translation files never reaching the app bundle (GH #1711) &ndash; two independent bugs, neither of which this sandbox (Linux, no <code>.app</code>/<code>MACOSX_BUNDLE</code>/DragNDrop support at all) can actually build or verify.</b> <code><a class="el" href="classDirstructure.html#a07774426dee2c4edafa95ce9f7465661" title="The directory the locale data is to be found in.">Dirstructure::LocaleDir()</a></code>/<code>wxFileTranslationsLoader</code> (see <code><a class="el" href="main_8cpp.html" title="The file that defines the starting point of the program.">main.cpp</a></code>) look specifically under <code>Contents/Resources/locale/&lt;lang&gt;/LC_MESSAGES/wxMaxima.mo</code> at runtime.<ol type="1">
 <li><code>locales/wxMaxima/CMakeLists.txt</code>'s <code>copy_mo_file_${LANG}_for_wxmaxima_local</code> target &ndash; the only thing that populates <code>${CMAKE_BINARY_DIR}/share/locale/&lt;lang&gt;/LC_MESSAGES/wxMaxima.mo</code> with that exact nesting, <code>ALL</code>-tagged so it runs on every normal build &ndash; was unconditionally skipped <code>if(NOT APPLE)</code>, per a comment saying it "does not work with Apple XCode." Confirmed live (Linux, but the CMake logic itself doesn't depend on the platform): a plain <code>ninja</code> in this sandbox, having never explicitly invoked <code>update-locale</code>, still produces a fully populated <code>build/share/locale/*/LC_MESSAGES/*.mo</code> from this target alone &ndash; so on macOS it was producing nothing, full stop. The macOS CI job that actually ships the DMG passes <code>-G Ninja</code>, not Xcode (only a separate, non-packaging smoke-test job uses Xcode) &ndash; narrowed the guard to <code>if(NOT (APPLE AND CMAKE_GENERATOR STREQUAL "Xcode"))</code> instead of excluding all of Apple.</li>
 <li>Separately, <code>src/CMakeLists.txt</code>'s macOS bundle resource list tried to <code>file(GLOB ${CMAKE_BINARY_DIR}/locale/*.mo)</code> into the <code>RESOURCE</code> target property. Two bugs stacked here too: <code>file(GLOB)</code> freezes its result at <em>configure</em> time, before a single build step has run and generated any <code>.mo</code> file at all (confirmed empirically the same way as above &ndash; this glob's directory doesn't exist yet on a fresh configure); and even if the files existed, this pattern is non-recursive and wouldn't match their actual <code>locale/&lt;lang&gt;/LC_MESSAGES/wxMaxima.mo</code> nesting, and CMake's <code>RESOURCE</code> property flattens whatever it <em>does</em> match directly into <code>Contents/Resources</code> with no way to reproduce a subdirectory structure. Fixed by dropping the glob and instead copying the (now-populated, already-correctly-nested) <code>share/locale</code> directory into <code>Contents/Resources/locale</code> via a plain <code>file(COPY ...)</code> inside the existing <code>install(CODE ...)</code> block that already runs <code>fixup_bundle</code> &ndash; the same "has to be a separate step, everything the build produces is
@@ -946,7 +958,7 @@ Architecture &amp; GUI</h1>
     "Sending <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> a SIGINT signal," and clicking "Exit" raises the same
     save-changes &lt;tt&gt;Save As&lt;/tt&gt; prompt a normal File &gt; Exit does.
 
-@subsection autotoc_md84 Asynchronous ("background job") output from Maxima
+@subsection autotoc_md172 Asynchronous ("background job") output from Maxima
 
 &lt;strong&gt;Implemented and verified, but dormant: nothing in today's single-threaded
 Maxima sends it.&lt;/strong&gt; Full design, measurements and rationale live in
@@ -1006,7 +1018,7 @@ Only the traps worth knowing from elsewhere are repeated here.
   rebinding away.
 - &lt;strong&gt;Deliberately does not scroll or un-collapse&lt;/strong&gt;, even with "follow evaluation" on &amp;ndash; same reasoning as GH #1952 above.
 
-@subsection autotoc_md89 Communication with Maxima
+@subsection autotoc_md173 Communication with Maxima
 
 wxMaxima sends Lisp and Maxima commands over the socket; Maxima answers with XML
 wrapped in known tags. &lt;tt&gt;Maxima&lt;/tt&gt; reads that data on a worker thread and posts
@@ -1088,7 +1100,7 @@ tried without rebuilding.
 <li><b><b><b>**ASCII-art 2<a class="el" href="classD.html">D</a> display (<code>set_display('ascii)</code>) and <code>*alt-display2d*</code>:** when <code>$display2d</code> is on, <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s evaluator checks the special variable <code>*alt-display2d*</code> before printing a result: if it's a function symbol, that function is called <em>instead of</em> <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s own stock printer (this is how <code>mydispla</code> in <code>wxMathML.lisp</code> produces the normal <code>&lt;mth&gt;</code>/XML output); if it's <code>nil</code>, <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> falls through to its own built-in ASCII-art printer, which pads a result's lines with literal spaces so a multi-line fraction/ matrix/etc. lines up correctly under the <code>(oN)</code> label &ndash; but that padding assumes every line, including the label, ends up rendered in one uniform monospace font. <code>wxMathML.lisp</code>'s <code>wx-ascii-displa</code> wraps that stock printer in <code>&lt;wxxml-asciimath&gt;</code>/<code>&lt;/wxxml-asciimath&gt;</code> markers <em>without</em> reimplementing it: it dynamically rebinds <code>*alt-display2d*</code> to <code>nil</code> for just the duration of <code>(displa x)</code>, which re-enters <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s own dispatch and this time takes the stock ASCII path (confirmed live: this is correctly reentrant-safe through <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s own recursive sub-expression <code>displa</code> calls, e.g. matrix rows, since they run inside the same dynamic extent). <code>Maxima::ProcessData()</code> only fires the corresponding <code>XML_ASCIIMATH</code> event once it has seen the <em>complete</em> matching closing tag, so <code><a class="el" href="classMaximaResponseReader.html#a15931a24b9755320cc7262e040217dc4" title="Handles one complete &lt;wxxml-asciimath&gt;...&lt;/wxxml-asciimath&gt; block: Maxima&#39;s stock ASCII-art 2D displa...">MaximaResponseReader::ReadAsciiMath()</a></code> always receives one whole block in one piece and can render all of it in one uniform style &ndash; before this, <code>ReadMiscText()</code> guessed a chunk's style from whether it happened to start with <code>"(%"</code>, and since chunks are split by socket/timer batching (not by where <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s actual output boundaries are), a block's label line could land in a separate batch than its neighbors and get misclassified into a different (proportional) font, breaking the alignment <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s padding assumed &ndash; root-caused with a raw <code>:lisp-quiet (with-input-from-string ...)</code> / socket-level reproduction (see the debugging technique note above) before the fix, not guessed.</b></b></b></li>
 </ul>
 <p><b><b><b></b></b></b></p>
-<h2><a class="anchor" id="autotoc_md97"></a>
+<h2><a class="anchor" id="autotoc_md174"></a>
 File Formats</h2>
 <p><b><b><b></p><ul>
 <li>**<code>.wxmx</code>** &ndash; a ZIP archive holding <code>content.xml</code> (the MathML-like XML) plus the embedded images. The format version lives in <code><a class="el" href="WXMXformat_8h_source.html">src/WXMXformat.h</a></code>.</li>
@@ -1104,7 +1116,7 @@ File Formats</h2>
 </ul>
 <p></b></b></b></p>
 <p><b><b><b></b></b></b></p>
-<h2><a class="anchor" id="autotoc_md108"></a>
+<h2><a class="anchor" id="autotoc_md175"></a>
 Translations (&lt;tt&gt;locales/&lt;/tt&gt;)</h2>
 <p><b><b><b></p><ul>
 <li><b>One combined <code>.po</code> per language, in <code>locales/wxMaxima/</code>, is the file a translator edits.</b> It covers both <a class="el" href="classwxMaxima.html">wxMaxima</a>'s own UI strings (<code>xgettext</code>-extracted from <code>src/**/*.cpp</code>/<code>*.h</code>) and the manual's prose (<code>po4a</code>-extracted from <code>info/wxmaxima.md</code>). <code>locales/wxMaxima/wxMaxima.pot</code>, the template both <code>msgmerge</code> and Crowdin work against, is regenerated as the union of a fresh source scan and <code>locales/manual/wxmaxima.md.pot</code> (<code>msgcat --use-first</code>, preferring <code>wxMaxima.pot</code>'s own header) by the <code>update-locale</code> CMake target.</li>
@@ -1128,7 +1140,7 @@ Translations (&lt;tt&gt;locales/&lt;/tt&gt;)</h2>
 </ul>
 <p></b></b></b></p>
 <p><b><b><b></b></b></b></p>
-<h1><a class="anchor" id="autotoc_md144"></a>
+<h1><a class="anchor" id="autotoc_md176"></a>
 Conventions &amp; Standards</h1>
 <p><b><b><b></p><ul>
 <li><b>Branches and pull requests:</b> one branch per feature or bugfix, cut fresh from <code>main</code>, PR when it is finished &ndash; see "Branches and pull requests" at the top of this file for why reusing one long-lived branch has already caused trouble.</li>
@@ -1305,7 +1317,7 @@ Conventions &amp; Standards</h1>
     something a firewall/antivirus's network protection would touch, and
     some of it blocks loopback inter-process communication too.
 
-@section autotoc_md194 Layout &amp; Compatibility
+@section autotoc_md177 Layout &amp; Compatibility
 
 The rules below are the ones worth carrying around at all times. The reasoning
 behind them, the pipeline they belong to, and the recurring shapes layout bugs
@@ -1365,7 +1377,7 @@ which loads on demand &amp;ndash; keep the detail there rather than growing this
   compiles everywhere and does nothing. The same trap applies to any future
   &lt;tt&gt;wxSOMETHING&lt;/tt&gt; shim added there.
 
-@section autotoc_md200 Performance &amp; Documentation Mandates
+@section autotoc_md178 Performance &amp; Documentation Mandates
 
 - &lt;strong&gt;NEWS.md Updates:&lt;/strong&gt; Every non-trivial change MUST be documented in &lt;tt&gt;NEWS.md&lt;/tt&gt; under the "# Current development version" section.
 - &lt;strong&gt;Doxygen Comments:&lt;/strong&gt; Include descriptions for all new classes and public methods. Complex algorithms (e.g., LCS alignment) require detailed architectural comments.
@@ -1376,12 +1388,12 @@ which loads on demand &amp;ndash; keep the detail there rather than growing this
   - Prefer &lt;tt&gt;(intern ...)&lt;/tt&gt; over &lt;tt&gt;read-from-string&lt;/tt&gt; for dynamic symbol generation.
 - &lt;strong&gt;Strict XML Mandate:&lt;/strong&gt; To avoid duplicate attributes, add any new manually-handled XML attribute (e.g., &lt;tt&gt;noneParens="true"&lt;/tt&gt;) to the filter list in &lt;tt&gt;MathParser.cpp&lt;/tt&gt;.
 
-@section autotoc_md201 Visual Documentation (&lt;tt&gt;art/Doxygen/&lt;/tt&gt;)
+@section autotoc_md179 Visual Documentation (&lt;tt&gt;art/Doxygen/&lt;/tt&gt;)
 
 - &lt;strong&gt;Geometry Awareness:&lt;/strong&gt; If modifying &lt;tt&gt;Recalculate()&lt;/tt&gt; or &lt;tt&gt;Draw()&lt;/tt&gt; geometry (padding, center alignment), you MUST update the corresponding SVG diagrams in &lt;tt&gt;art/Doxygen/&lt;/tt&gt;.
 - &lt;strong&gt;Consistency:&lt;/strong&gt; New cell types should have &lt;tt&gt;*Geometry.svg&lt;/tt&gt; and &lt;tt&gt;*LinearGeometry.svg&lt;/tt&gt; (if applicable) diagrams.
 
-@section autotoc_md203 Key Subsystems Map
+@section autotoc_md180 Key Subsystems Map
 
 Deeper, per-subsystem background lives in &lt;tt&gt;.claude/skills/&lt;/tt&gt;, which load only
 when they are relevant &amp;ndash; so that hard-won detail is available without every
@@ -1426,7 +1438,7 @@ has already been broken.
 </ul>
 <p></code></b></b></b></p>
 <p><b><b><b><code></code></b></b></b></p>
-<h1><a class="anchor" id="autotoc_md205"></a>
+<h1><a class="anchor" id="autotoc_md181"></a>
 Backlog / Future Work</h1>
 <p><b><b><b><code> Items the maintainer has flagged as worth doing but hasn't asked for yet &ndash; don't start on these without checking in first, but pick them up if asked for "what's
 next" style work.</code></b></b></b></p>
@@ -1440,7 +1452,7 @@ next" style work.</code></b></b></b></p>
 </ul>
 <p></code></b></b></b></p>
 <p><b><b><b><code></code></b></b></b></p>
-<h1><a class="anchor" id="autotoc_md208"></a>
+<h1><a class="anchor" id="autotoc_md182"></a>
 Error resilience</h1>
 <p><b><b><b><code></p><ul>
 <li>To err is human =&gt; If your instructions don't seem to make sense feel free to ask. </li>
