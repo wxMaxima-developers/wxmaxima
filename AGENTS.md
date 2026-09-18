@@ -354,6 +354,90 @@ working without extra checks.
     1,3,5,...,299 sequence. See the follow-up note below (or GH #2196
     directly) for whether it caught anything.
 
+- **`lisp_mode` intermittent CI failure -- reproduced, root-caused and
+  FIXED (2026-09-18). The fix is two lines in two files and neither of them
+  works without the other; the one-line version of it hangs every batch run.
+  Read the "fix that does NOT work" bullet before touching either.**
+  Distinct from the `m_configCommands`/`RemoveFirst()` prompt-count
+  bug documented under "Communication with Maxima"; that one was fixed, and
+  this is a different mechanism with the same victim.
+  - **Reproduction, which is the genuinely reusable part.** It needs CPU
+    contention, not repetition: **0 failures in 60 runs** on an idle box,
+    **6 in 180** with 12 concurrent workers on 4 cores (3x oversubscribed).
+    Run the real ctest command per worker with its own `DISPLAY` and its own
+    `TMPDIR`/`MAXIMA_USERDIR`/`MAXIMA_OBJDIR`/`MAXIMA_TEMPDIR`/
+    `XDG_CONFIG_HOME` (copy them out of the generated
+    `test/CTestTestfile.cmake`), under `timeout`, keeping the log of any run
+    whose exit code is non-zero. Don't conclude "can't reproduce" from an
+    unloaded machine -- that is the one condition guaranteed to hide it.
+  - **Signature**: exit code 90, always aborting on the `to_lisp();` cell,
+    and the `--logtostderr` log shows **two "Sending a new command to
+    Maxima." lines back to back with no "Got a new input prompt!" between
+    them**, where a passing run strictly alternates the two. `lisp_mode`
+    catches it because it exists to detect REPL desync; a worksheet without
+    that property would just return a wrong-but-plausible answer.
+  - **The race.** Opening the worksheet restarts Maxima -- `OpenFile()` ->
+    `StartMaxima()`, which kills the running process and spawns a
+    replacement (a *passing* run does this too, so "Maxima processes
+    spawned: 2" is normal and not the anomaly). The next idle then reaches
+    `wxMaxima.cpp`'s `if (m_evalOnStartup)` branch, which queues the document
+    and calls `TriggerEvaluation()` **with no readiness guard at all** --
+    unlike its sibling site ~26 lines below (the no-file-to-open path), which
+    guards on `m_ready`. When the killed Maxima had already got as far as its
+    own first prompt, enough state survives that the first command is
+    dispatched into a connection that is being replaced.
+    Measured discriminator: "the killed Maxima logged `Received maxima's
+    first prompt` *before* `File opened`" held in **8 of 8** failures and in
+    **0** passes that failed -- but also in 74 runs that passed, so it is the
+    precondition that opens the window, not a guarantee. Under load the
+    process being replaced has more wall-clock time to reach its prompt,
+    which is why contention raises the rate.
+  - **The fix that does NOT work, and why -- don't repeat it.** Adding
+    `&& !m_first` to that branch (`m_first` being re-armed by `StartMaxima()`
+    on every spawn and cleared by `ReadFirstPrompt()`, so it really does mean
+    "the Maxima running *now* has prompted") looks exactly right and
+    **hangs every single batch run**: 12 of 12 workers timed out (exit 124)
+    on their first attempt. The branch sits inside
+    `if (m_updateEvaluationQueueLengthDisplay)`, and that flag is cleared at
+    the bottom of the same block and only ever set true again by
+    `EvaluationQueueLength()` *when the queue length changes*. Declining to
+    queue the document therefore ensures the queue length never changes, so
+    the flag is never re-armed, so the idle block never runs again --
+    and `ReadFirstPrompt()` doesn't rescue it either, because with nothing
+    queued it takes its own "evaluation queue is empty" path instead of
+    calling `TriggerEvaluation()`. The one chance to start the document is
+    missed and the run sits until the ctest timeout. `m_ready` is no better:
+    `ReadPrompt()` sets it *and* clears `m_evalOnStartup`, so gating on it
+    would stop the branch ever running for a different reason.
+  - **The fix that does work: defer the start instead of dropping it, in two
+    places that only work together.** (1) `wxMaxima::OnIdle()` gains an
+    `m_evalOnStartup && m_first` case *ahead of* the existing
+    `if (m_evalOnStartup)` branch that returns without clearing
+    `m_evalOnStartup` -- so the document is still owed a start -- and
+    *without* leaving `m_updateEvaluationQueueLengthDisplay` set, so this
+    does not turn into an idle spin burning a core for the whole of Maxima's
+    startup (`RequestMore()` makes wx deliver idle events back to back with
+    no blocking). (2) `MaximaResponseReader::ReadFirstPrompt()` sets
+    `m_updateEvaluationQueueLengthDisplay = true` again when
+    `m_evalOnStartup` is still set, which is what brings that idle block back
+    to life once the replacement Maxima really has prompted. Without (2), (1)
+    is exactly the hang above. Deliberately **not** done by starting the
+    document from `ReadFirstPrompt()` itself, the other route this entry used
+    to suggest: that runs on a socket event, which can be delivered from a
+    re-entrant event pump *inside* `OpenFile()` -- i.e. before the document
+    tree has been inserted -- so it could queue a half-loaded worksheet.
+    Bouncing back through the idle handler is what guarantees `OpenFile()`
+    has returned.
+  - **Verification, both failure modes, because the natural guard trades one
+    for the other and an unloaded run passes either way**: 180 runs under the
+    identical 12-worker/4-core load that produced 6 failures before the fix,
+    **0 failures**; a plain single `xvfb-run ctest -R '^lisp_mode$'` passes in
+    9s with no hang (the bad guard timed out here); and every one of those 180
+    logs has its last `Received maxima's first prompt` *before* `Starting
+    evaluation of the document`, i.e. the new wait is actually being taken and
+    not just getting lucky. Full suite (`ctest -E
+    "tutorial|openMacFiles|wxmaxima_version"`) 170/170.
+
 - **macOS translation files never reaching the app bundle (GH #1711) --
   two independent bugs, neither of which this sandbox (Linux, no
   `.app`/`MACOSX_BUNDLE`/DragNDrop support at all) can actually build or
@@ -3572,6 +3656,49 @@ wrapped in known tags. `Maxima` reads that data on a worker thread and posts
 what tells Maxima to format its output as MathML-like XML. For development,
 `--wxmathml-lisp=<path>` overrides it with an external file, so a change can be
 tried without rebuilding.
+
+- **`MaximaProcessManager::StartMaxima()` reuses the running process or kills
+  and replaces it, and the thing that decides which is the *directory*, not
+  anything about the worksheet.** Its condition is
+  `(m_maximaProcess == NULL) || m_hasEvaluatedCells || force ||
+  (dirname != dirname_Old)`, where `dirname` comes from the worksheet's
+  current file and `dirname_Old` is whatever `MAXIMA_INITIAL_FOLDER` is
+  currently set to. Maxima reads that variable once, at startup, so a process
+  already running in the wrong directory genuinely cannot be moved to the
+  right one -- replacing it is the only option, and that is why opening a
+  file restarts Maxima at all.
+  - **This is what used to make opening one file start two Maxima
+    processes.** wxMaxima starts a Maxima from its own constructor so the
+    process is warm by the time the user sends off their first cell. With a
+    file named on the command line that head start was pure waste: the
+    constructor's Maxima had no file yet, so it started in the wrong
+    directory, and the file open a moment later killed it and spawned a
+    replacement. Measured on a batch run: the first process lived about
+    three seconds and did nothing but start up and answer its own first
+    prompt. Fixed by letting `StartMaxima()` fall back to `m_fileToOpen`
+    when the worksheet has no file yet, so the first process starts in the
+    right directory and the file open reuses it. `ctest -R lisp_mode` went
+    from 9.0s to 6.6s, consistently, which is one Maxima startup.
+  - **`m_fileToOpen` is only set between wxMaxima's constructor and the idle
+    event that opens the file** (`OnIdle()` clears it *before* calling
+    `OpenFile()`, deliberately -- see its own comment about re-entrancy), so
+    that fallback can only ever apply to the startup spawn. Opening a second
+    file later in the same session still goes by `GetCurrentFile()` and still
+    restarts Maxima, which is correct: by then the running Maxima is in the
+    old file's directory.
+  - **Don't "fix" this by not starting Maxima at all when a file is
+    pending** -- that was the first attempt and it is wrong.
+    `MaximaFileIO::OpenFile()` only loads a worksheet for the formats it
+    recognises (`.wxm`/`.mac`/`.out`/`.wxmx`/`.zip`/`.xml`); for a `.dem`, a
+    package, or anything else it falls through to `MenuCommand("load(...)")`,
+    which needs a Maxima to send that command to and never starts one
+    itself.
+  - Regression coverage: `wxmaxima_one_maxima_per_file`
+    (`test/check_maxima_spawn_count.cmake`) counts the "Running maxima as:"
+    lines in one batch run's log. That marker is a translatable string, so
+    the test pins `LC_ALL`/`LANG`/`LANGUAGE` in its `ENVIRONMENT`; a reworded
+    or translated marker counts zero and fails loudly rather than passing
+    while checking nothing.
 
 - **`m_configCommands` (`wxMaxima.cpp`):** the string of startup/config commands
   sent to Maxima on connect (and again whenever settings change while it's

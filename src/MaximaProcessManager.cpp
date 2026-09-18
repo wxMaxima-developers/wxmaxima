@@ -236,6 +236,16 @@ bool MaximaProcessManager::StartMaxima(bool force) {
     wxString filename;
     if(m_wxMaxima.GetWorksheet())
       filename = m_wxMaxima.GetWorksheet()->GetCurrentFile();
+    // At startup the worksheet doesn't have a file yet -- but if wxMaxima was
+    // asked to open one we already know which directory Maxima will have to
+    // run in, and starting it there right away is what makes opening that
+    // file reuse this process instead of killing it and spawning a second
+    // one. Maxima reads MAXIMA_INITIAL_FOLDER once, at startup, so a process
+    // started in the wrong directory cannot be moved to the right one later:
+    // guessing the directory here is the only way to get one process per
+    // file opened rather than two.
+    if (filename.IsEmpty())
+      filename = m_wxMaxima.m_fileToOpen;
     if (!filename.IsEmpty()) {
       wxFileName dir(filename);
       dir.MakeAbsolute();

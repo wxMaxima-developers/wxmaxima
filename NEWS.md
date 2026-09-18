@@ -4,6 +4,20 @@
   switched on by default -- and, more to the point, they now actually do
   something: the option to enable them has existed for years, but the header
   it precompiled was empty, so turning it on changed nothing at all.
+- Batch runs (`--batch`) no longer occasionally hand the worksheet's first
+  command to a Maxima that isn't listening yet. Opening the file restarts
+  Maxima, and on a loaded machine the replacement could still be starting up
+  when wxMaxima began sending it the document -- the first command was then
+  lost, and everything after it was read as the answer to the wrong
+  question, so the run aborted somewhere in the middle for no visible
+  reason. wxMaxima now waits for the new Maxima to announce itself before
+  sending it anything.
+- Opening a file no longer starts Maxima twice. wxMaxima starts a Maxima as
+  soon as it comes up, so that it is ready by the time you send off your
+  first cell; when a file was named on the command line or double-clicked,
+  that process was started in the wrong directory, thrown away again a
+  moment later and replaced. Starting a worksheet this way is now about two
+  seconds faster, and only one Maxima is ever launched.
 
 - Windows: `wxmaxima --logtostderr ... 2>&1` no longer loses everything that
   wxMaxima writes to stderr. Whenever the shell pointed stdout and stderr at
