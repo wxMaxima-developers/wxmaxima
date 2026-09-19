@@ -24,6 +24,11 @@
 # LANGUAGE in its ENVIRONMENT. A marker that has been reworded or translated
 # away yields a count of zero, which fails this test loudly rather than
 # letting it pass while checking nothing.
+#
+# It also means this only works where wxMaxima's stderr actually reaches the
+# file we point it at, which on Windows it does not -- see the comment on the
+# test in test/CMakeLists.txt, which is where that is decided. A count of zero
+# there meant an empty log, not a Maxima that never started.
 
 cmake_minimum_required(VERSION 3.16)
 
