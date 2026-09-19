@@ -1,5 +1,21 @@
 # Current development version
 
+- The AI chat sidebar's status bar icon and its connection monitor now
+  actually exist. Neither was reachable: the status bar was never told to
+  reserve the field the AI icon lives in, so the icon was never created and
+  every attempt to update it was silently discarded; the connection monitor
+  was never constructed at all, had no sidebar entry in View -> Sidebars and
+  no pane for the AI icon's double-click to toggle; and the chat sidebar was
+  never handed either of them, so it had nowhere to report to even once they
+  existed. The AI icon now shows whether a provider is configured, busy or
+  in error, a click on it opens the chat, a double-click opens the
+  connection monitor, and that monitor shows the requests wxMaxima sends and
+  the replies it gets back.
+- Clicking the AI status icon no longer does nothing: the single-click and
+  right-click handlers tested whether a system secret store was available
+  and then gave up if it *was*, which is precisely the case in which there
+  is an AI chat sidebar to open.
+
 - Compiling wxMaxima is about a third faster. Precompiled headers are now
   switched on by default -- and, more to the point, they now actually do
   something: the option to enable them has existed for years, but the header

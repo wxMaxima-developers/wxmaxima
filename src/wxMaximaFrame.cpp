@@ -172,7 +172,19 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
 
   m_xmlInspector = new XmlInspector(this, -1);
   //  wxWindowUpdateLocker xmlInspectorBlocker(m_xmlInspector);
-  m_statusBar = new StatusBar(this, -1);
+  // The AI status icon is a 4th status bar field, so whether to reserve it
+  // has to be decided here, at construction: StatusBar cannot grow one
+  // later. It exists exactly when the AI chat sidebar does -- a build with
+  // the feature compiled in can still have nowhere safe to keep an API key
+  // and therefore no AI Chat at all (AiProvider::SecretStoreAvailable()).
+  // Passing a plain bool, rather than letting StatusBar ask AiProvider
+  // itself, keeps StatusBar free of any AI-feature dependency -- the same
+  // reasoning GetTrayIconBitmap() already follows for TrayIcon.
+  bool aiChatAvailable = false;
+#ifdef WXM_USE_AI_TOOLS
+  aiChatAvailable = AiProvider::SecretStoreAvailable();
+#endif
+  m_statusBar = new StatusBar(this, -1, aiChatAvailable);
   //  wxWindowUpdateLocker statusbarBlocker(m_statusBar);
   SetStatusBar(m_statusBar);
 #if wxUSE_TASKBARICON
@@ -325,10 +337,30 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
       // m_Maxima_Panes_Sub's own AppendCheckItem() call below is skipped
       // too, so there is no menu entry to reach this pane through at all.
       if (AiProvider::SecretStoreAvailable()) {
+        // Registered before the chat sidebar because the sidebar is handed
+        // a pointer to it: without one, every request/response is simply
+        // dropped and the monitor stays permanently empty, which is what
+        // used to happen -- it was never constructed at all, so the AI
+        // status icon's double-click had nothing to show and there was no
+        // menu entry to reach it through either.
+        m_sidebarNames[EventIDs::menu_pane_aiMonitor] = wxS("aiMonitor");
+        m_sidebarCaption[EventIDs::menu_pane_aiMonitor] = _("AI Connection Monitor");
+        m_aiConnectionMonitor = new AiConnectionMonitor(this, wxID_ANY);
+        m_manager.AddPane(
+                          m_aiConnectionMonitor,
+                          wxAuiPaneInfo()
+                          .Name(m_sidebarNames[EventIDs::menu_pane_aiMonitor])
+                          .Right());
+
         m_sidebarNames[EventIDs::menu_pane_aichat] = wxS("aichat");
         m_sidebarCaption[EventIDs::menu_pane_aichat] = _("AI Chat");
+        // Both trailing arguments are what make the AI status icon and the
+        // connection monitor work at all -- the sidebar null-checks each of
+        // them and silently does nothing when they are absent, so omitting
+        // them looks harmless and disables both features outright.
         m_aiChatSidebar = new AiChatSidebar(this, &GetConfiguration(), GetWorksheet(),
-                                           m_variablesPane);
+                                           m_variablesPane, m_statusBar,
+                                           m_aiConnectionMonitor);
         m_manager.AddPane(
                           m_aiChatSidebar,
                           wxAuiPaneInfo()
@@ -512,6 +544,14 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
   m_manager.GetPane(m_sidebarNames[EventIDs::menu_pane_wizard]).Show(false);
   // The xml inspector slows down everything => close it at startup
   m_manager.GetPane(m_sidebarNames[EventIDs::menu_pane_xmlInspector]).Show(false);
+  // Like the xml inspector, this is a diagnostic view => not in the way
+  // until it is actually asked for. A pane AddPane()d with no explicit
+  // Show(false) starts out visible, and one that is not in the user's
+  // stored perspective yet (every existing config, since this pane is new)
+  // does not get hidden by LoadPerspective() either.
+#ifdef WXM_USE_AI_TOOLS
+  m_manager.GetPane(m_sidebarNames[EventIDs::menu_pane_aiMonitor]).Show(false);
+#endif
   // The unicode selector needs loads of time for starting up
   // => close it at startup
   m_manager.GetPane(m_sidebarNames[EventIDs::menu_pane_unicode]).Show(false);
@@ -854,8 +894,11 @@ void wxMaximaFrame::SetupViewMenu() {
 #ifdef WXM_USE_AI_TOOLS
 
 
-  if (AiProvider::SecretStoreAvailable())
+  if (AiProvider::SecretStoreAvailable()) {
     m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_aichat, _("AI Chat"));
+    m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_aiMonitor,
+                                        _("AI Connection Monitor"));
+  }
 #endif
   m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_xmlInspector,
                                       _("Raw XML monitor"));
@@ -2359,6 +2402,9 @@ void wxMaximaFrame::HideAllSidebars(wxCommandEvent &WXUNUSED(ev)) {
   m_manager.GetPane(m_sidebarNames[EventIDs::menu_pane_help]).Hide();
   m_manager.GetPane(m_sidebarNames[EventIDs::menu_pane_variables]).Hide();;
   m_manager.GetPane(m_sidebarNames[EventIDs::menu_pane_aichat]).Hide();
+#ifdef WXM_USE_AI_TOOLS
+  m_manager.GetPane(m_sidebarNames[EventIDs::menu_pane_aiMonitor]).Hide();
+#endif
   m_manager.GetPane(m_sidebarNames[EventIDs::menu_pane_xmlInspector]).Hide();
   m_manager.GetPane(m_sidebarNames[EventIDs::menu_pane_find]).Hide();
   AuiManagerUpdate();
