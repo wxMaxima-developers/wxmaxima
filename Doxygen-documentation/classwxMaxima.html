@@ -286,6 +286,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ReconcileMcpServer</b
 const std::unordered_map&lt; int, wxString &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>GetSidebarNames</b> () const</td></tr>
 <tr class="memdesc:a155b484ddffd624048c3fe09bf78ff5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the list of human-readable sidebarnames and IDs. <br /></td></tr>
 <tr class="separator:a155b484ddffd624048c3fe09bf78ff5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea81908427b0342af96c7bf5eb60fcba"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structMcpSidebarInfo.html">McpSidebarInfo</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaximaFrame.html#aea81908427b0342af96c7bf5eb60fcba">McpSidebarList</a> () const</td></tr>
+<tr class="memdesc:aea81908427b0342af96c7bf5eb60fcba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Every dockable sidebar, with its current visibility &ndash; what the MCP server's list_sidebars tool reports.  <br /></td></tr>
+<tr class="separator:aea81908427b0342af96c7bf5eb60fcba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37b61eeeedd72e016910a5d71fa40134"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaximaFrame.html#a37b61eeeedd72e016910a5d71fa40134">McpSetSidebarVisible</a> (const wxString &amp;name, bool show)</td></tr>
+<tr class="memdesc:a37b61eeeedd72e016910a5d71fa40134"><td class="mdescLeft">&#160;</td><td class="mdescRight">Show or hide one sidebar by the untranslated name <a class="el" href="classwxMaximaFrame.html#aea81908427b0342af96c7bf5eb60fcba" title="Every dockable sidebar, with its current visibility – what the MCP server&#39;s list_sidebars tool report...">McpSidebarList()</a> reports, for the MCP server's show_sidebar/hide_sidebar tools.  <br /></td></tr>
+<tr class="separator:a37b61eeeedd72e016910a5d71fa40134"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abb5ce9dd965459ed31ed55b87e0ab6b7"><td class="memItemLeft" align="right" valign="top"><a id="abb5ce9dd965459ed31ed55b87e0ab6b7" name="abb5ce9dd965459ed31ed55b87e0ab6b7"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>StatusText</b> (const wxString &amp;text, bool saveInLog=true)</td></tr>
 <tr class="separator:abb5ce9dd965459ed31ed55b87e0ab6b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1523,6 +1529,73 @@ Getting configuration</h2>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a37b61eeeedd72e016910a5d71fa40134" name="a37b61eeeedd72e016910a5d71fa40134"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a37b61eeeedd72e016910a5d71fa40134">&#9670;&#160;</a></span>McpSetSidebarVisible()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool wxMaximaFrame::McpSetSidebarVisible </td>
+          <td>(</td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>show</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Show or hide one sidebar by the untranslated name <a class="el" href="classwxMaximaFrame.html#aea81908427b0342af96c7bf5eb60fcba" title="Every dockable sidebar, with its current visibility – what the MCP server&#39;s list_sidebars tool report...">McpSidebarList()</a> reports, for the MCP server's show_sidebar/hide_sidebar tools. </p>
+<p>Returns false for a name no pane is registered under. </p>
+
+</div>
+</div>
+<a id="aea81908427b0342af96c7bf5eb60fcba" name="aea81908427b0342af96c7bf5eb60fcba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea81908427b0342af96c7bf5eb60fcba">&#9670;&#160;</a></span>McpSidebarList()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="structMcpSidebarInfo.html">McpSidebarInfo</a> &gt; wxMaximaFrame::McpSidebarList </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Every dockable sidebar, with its current visibility &ndash; what the MCP server's list_sidebars tool reports. </p>
+<p>Lives here rather than in <a class="el" href="classMcpTools.html" title="Implements the read-only &quot;worksheet context&quot; tools the MCP server exposes to an external AI tool (GH ...">McpTools</a> because m_sidebarNames/m_sidebarCaption (and the wxAuiManager that knows what is currently shown) are ours, and <a class="el" href="classMcpTools.html" title="Implements the read-only &quot;worksheet context&quot; tools the MCP server exposes to an external AI tool (GH ...">McpTools</a> only ever holds a <a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a> and a <a class="el" href="classVariablespane.html" title="A &quot;variables&quot; sidepane.">Variablespane</a>. See <a class="el" href="classMcpTools.html#ad38bfaf1ed9da306ed99f3824f3a6ce7" title="Lets the owner plug in access to wxMaximaFrame&#39;s dockable sidebars, for the same reason SetConnection...">McpTools::SetSidebarAccess()</a>. </p>
 
 </div>
 </div>

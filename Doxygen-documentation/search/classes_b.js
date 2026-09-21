@@ -50,12 +50,13 @@ var searchData=
   ['maximavariableupdate_47',['MaximaVariableUpdate',['../structMaximaVariableUpdate.html',1,'']]],
   ['maxsizechooser_48',['MaxSizeChooser',['../classMaxSizeChooser.html',1,'']]],
   ['mcpserver_49',['McpServer',['../classMcpServer.html',1,'']]],
-  ['mcptoolerror_50',['McpToolError',['../classMcpToolError.html',1,'']]],
-  ['mcptools_51',['McpTools',['../classMcpTools.html',1,'']]],
-  ['memgrp_5ftest_52',['Memgrp_Test',['../classMemgrp__Test.html',1,'']]],
-  ['messagebuilder_53',['MessageBuilder',['../structCatch_1_1MessageBuilder.html',1,'Catch']]],
-  ['messageinfo_54',['MessageInfo',['../structCatch_1_1MessageInfo.html',1,'Catch']]],
-  ['messagestream_55',['MessageStream',['../structCatch_1_1MessageStream.html',1,'Catch']]],
-  ['mux_5fusing_5fwith_56',['mux_using_with',['../classmux__using__with.html',1,'']]],
-  ['myapp_57',['MyApp',['../classMyApp.html',1,'']]]
+  ['mcpsidebarinfo_50',['McpSidebarInfo',['../structMcpSidebarInfo.html',1,'']]],
+  ['mcptoolerror_51',['McpToolError',['../classMcpToolError.html',1,'']]],
+  ['mcptools_52',['McpTools',['../classMcpTools.html',1,'']]],
+  ['memgrp_5ftest_53',['Memgrp_Test',['../classMemgrp__Test.html',1,'']]],
+  ['messagebuilder_54',['MessageBuilder',['../structCatch_1_1MessageBuilder.html',1,'Catch']]],
+  ['messageinfo_55',['MessageInfo',['../structCatch_1_1MessageInfo.html',1,'Catch']]],
+  ['messagestream_56',['MessageStream',['../structCatch_1_1MessageStream.html',1,'Catch']]],
+  ['mux_5fusing_5fwith_57',['mux_using_with',['../classmux__using__with.html',1,'']]],
+  ['myapp_58',['MyApp',['../classMyApp.html',1,'']]]
 ];

@@ -91,6 +91,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a1112fa21e44b3befbe3557e68bd6cf8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lets the owner (<a class="el" href="classMcpServer.html" title="A minimal, opt-in MCP (Model Context Protocol) server exposing the current worksheet as read-only con...">McpServer</a>, wired up from <a class="el" href="classwxMaxima.html">wxMaxima</a> &ndash; see <a class="el" href="classMcpServer.html#a9f18b62214f8c395f54fb686094f8d21" title="Plugs in a live &quot;is Maxima actually connected right now&quot; query – see McpTools::SetConnectionCheck() f...">McpServer::SetConnectionCheck()</a>) plug in a live "is the Maxima process
 actually connected right now" query.  <br /></td></tr>
 <tr class="separator:a1112fa21e44b3befbe3557e68bd6cf8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad38bfaf1ed9da306ed99f3824f3a6ce7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMcpTools.html#ad38bfaf1ed9da306ed99f3824f3a6ce7">SetSidebarAccess</a> (std::function&lt; std::vector&lt; <a class="el" href="structMcpSidebarInfo.html">McpSidebarInfo</a> &gt;()&gt; list, std::function&lt; bool(const wxString &amp;, bool)&gt; setVisible)</td></tr>
+<tr class="memdesc:ad38bfaf1ed9da306ed99f3824f3a6ce7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lets the owner plug in access to <a class="el" href="classwxMaximaFrame.html" title="The frame containing the menu and the sidebars.">wxMaximaFrame</a>'s dockable sidebars, for the same reason <a class="el" href="classMcpTools.html#a1112fa21e44b3befbe3557e68bd6cf8e" title="Lets the owner (McpServer, wired up from wxMaxima – see McpServer::SetConnectionCheck()) plug in a li...">SetConnectionCheck()</a> exists: which panes there are and whether each is shown lives on <a class="el" href="classwxMaximaFrame.html" title="The frame containing the menu and the sidebars.">wxMaximaFrame</a>, which a <a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a> or <a class="el" href="classVariablespane.html" title="A &quot;variables&quot; sidepane.">Variablespane</a> pointer cannot reach.  <br /></td></tr>
+<tr class="separator:ad38bfaf1ed9da306ed99f3824f3a6ce7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae5c225db0ce0c94c3e29b4060b2b7285"><td class="memItemLeft" align="right" valign="top"><a id="ae5c225db0ce0c94c3e29b4060b2b7285" name="ae5c225db0ce0c94c3e29b4060b2b7285"></a>
 nlohmann::json&#160;</td><td class="memItemRight" valign="bottom"><b>ListTools</b> () const</td></tr>
 <tr class="memdesc:ae5c225db0ce0c94c3e29b4060b2b7285"><td class="mdescLeft">&#160;</td><td class="mdescRight">The tools/list result: name/description/inputSchema for every tool below. <br /></td></tr>
@@ -133,6 +136,16 @@ nlohmann::json&#160;</td><td class="memItemRight" valign="bottom"><b>UnwatchVari
 nlohmann::json&#160;</td><td class="memItemRight" valign="bottom"><b>SearchCells</b> (const nlohmann::json &amp;arguments) const</td></tr>
 <tr class="memdesc:a0a699bdc1c2e2aba692de93aa92741f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds every cell whose input and/or output contains <code>pattern</code> (a plain substring by default, or a regular expression with "regex":true), so an AI can jump straight to the relevant cell(s) of a large worksheet instead of reading everything via read_worksheet/list_cells. Read-only, same as every other tool here &ndash; it never touches worksheet content. <br /></td></tr>
 <tr class="separator:a0a699bdc1c2e2aba692de93aa92741f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf1f98e2b6919990784aa80bbeca08c1"><td class="memItemLeft" align="right" valign="top">nlohmann::json&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMcpTools.html#aaf1f98e2b6919990784aa80bbeca08c1">ListSidebars</a> () const</td></tr>
+<tr class="memdesc:aaf1f98e2b6919990784aa80bbeca08c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Which dockable sidebars exist and which are visible right now.  <br /></td></tr>
+<tr class="separator:aaf1f98e2b6919990784aa80bbeca08c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b487a6472014e143fa641b319b2de88"><td class="memItemLeft" align="right" valign="top">nlohmann::json&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMcpTools.html#a7b487a6472014e143fa641b319b2de88">ShowSidebar</a> (const nlohmann::json &amp;arguments) const</td></tr>
+<tr class="memdesc:a7b487a6472014e143fa641b319b2de88"><td class="mdescLeft">&#160;</td><td class="mdescRight">Show a sidebar, the same as ticking its View -&gt; Sidebars menu entry.  <br /></td></tr>
+<tr class="separator:a7b487a6472014e143fa641b319b2de88"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d4f36b88efb763e6c06d5fca207d03e"><td class="memItemLeft" align="right" valign="top"><a id="a6d4f36b88efb763e6c06d5fca207d03e" name="a6d4f36b88efb763e6c06d5fca207d03e"></a>
+nlohmann::json&#160;</td><td class="memItemRight" valign="bottom"><b>HideSidebar</b> (const nlohmann::json &amp;arguments) const</td></tr>
+<tr class="memdesc:a6d4f36b88efb763e6c06d5fca207d03e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hide a sidebar. See <a class="el" href="classMcpTools.html#a7b487a6472014e143fa641b319b2de88" title="Show a sidebar, the same as ticking its View -&gt; Sidebars menu entry.">ShowSidebar()</a> for why this counts as a safe write. Refuses to hide the worksheet itself &ndash; see <a class="el" href="structMcpSidebarInfo.html#ae38c4507879d02f72cb72429bb6ea67e" title="Can this pane be hidden at all? False for the worksheet itself, which is wxAUI&#39;s centre pane: wxMaxim...">McpSidebarInfo::canHide</a>. <br /></td></tr>
+<tr class="separator:a6d4f36b88efb763e6c06d5fca207d03e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -157,6 +170,26 @@ variable's value" flow the sidebar already triggers on its own schedule. Every o
 <p>Deliberately free of any networking/JSON-RPC framing (that's <a class="el" href="classMcpServer.html" title="A minimal, opt-in MCP (Model Context Protocol) server exposing the current worksheet as read-only con...">McpServer</a>'s job) so this can be unit-tested directly against a real, headless Worksheet/Variablespane &ndash; see <a class="el" href="test__McpTools_8cpp.html" title="Pins McpTools (the MCP server&#39;s read-only &quot;worksheet context&quot; tools, src/mcp/McpTools....">test/unit_tests/test_McpTools.cpp</a>.</p>
 <p>Thread safety: none of this is thread-safe, same as every other class that touches a Worksheet/GroupCell/Variablespane. <a class="el" href="classMcpServer.html" title="A minimal, opt-in MCP (Model Context Protocol) server exposing the current worksheet as read-only con...">McpServer</a> only ever calls into this from the GUI thread's own event loop (its wxSocketServer runs event-driven on that thread, not on a worker thread), so no locking is needed here &ndash; keep it that way if <a class="el" href="classMcpServer.html" title="A minimal, opt-in MCP (Model Context Protocol) server exposing the current worksheet as read-only con...">McpServer</a>'s transport ever changes. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="aaf1f98e2b6919990784aa80bbeca08c1" name="aaf1f98e2b6919990784aa80bbeca08c1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaf1f98e2b6919990784aa80bbeca08c1">&#9670;&#160;</a></span>ListSidebars()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">json McpTools::ListSidebars </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Which dockable sidebars exist and which are visible right now. </p>
+<p>Requested by the maintainer alongside show_sidebar/hide_sidebar. Purely a read, like every tool above it: it reports what the window currently looks like and changes nothing. </p>
+
+</div>
+</div>
 <a id="a1112fa21e44b3befbe3557e68bd6cf8e" name="a1112fa21e44b3befbe3557e68bd6cf8e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1112fa21e44b3befbe3557e68bd6cf8e">&#9670;&#160;</a></span>SetConnectionCheck()</h2>
 
@@ -184,6 +217,66 @@ variable's value" flow the sidebar already triggers on its own schedule. Every o
 <p>Lets the owner (<a class="el" href="classMcpServer.html" title="A minimal, opt-in MCP (Model Context Protocol) server exposing the current worksheet as read-only con...">McpServer</a>, wired up from <a class="el" href="classwxMaxima.html">wxMaxima</a> &ndash; see <a class="el" href="classMcpServer.html#a9f18b62214f8c395f54fb686094f8d21" title="Plugs in a live &quot;is Maxima actually connected right now&quot; query – see McpTools::SetConnectionCheck() f...">McpServer::SetConnectionCheck()</a>) plug in a live "is the Maxima process
 actually connected right now" query. </p>
 <p><a class="el" href="classMcpTools.html" title="Implements the read-only &quot;worksheet context&quot; tools the MCP server exposes to an external AI tool (GH ...">McpTools</a> has no way to know this on its own: that state lives on Maxima/MaximaProcessManager, owned by <a class="el" href="classwxMaxima.html">wxMaxima</a>, which a Worksheet/Variablespane pointer alone can't reach &ndash; see IsMaximaConnected()'s own comment for why this matters. Left unset (as every existing test in <a class="el" href="test__McpTools_8cpp.html" title="Pins McpTools (the MCP server&#39;s read-only &quot;worksheet context&quot; tools, src/mcp/McpTools....">test_McpTools.cpp</a> does, with no live <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> to ask about) means "assume connected"; only production wiring should ever pass a real check. </p>
+
+</div>
+</div>
+<a id="ad38bfaf1ed9da306ed99f3824f3a6ce7" name="ad38bfaf1ed9da306ed99f3824f3a6ce7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad38bfaf1ed9da306ed99f3824f3a6ce7">&#9670;&#160;</a></span>SetSidebarAccess()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void McpTools::SetSidebarAccess </td>
+          <td>(</td>
+          <td class="paramtype">std::function&lt; std::vector&lt; <a class="el" href="structMcpSidebarInfo.html">McpSidebarInfo</a> &gt;()&gt;&#160;</td>
+          <td class="paramname"><em>list</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::function&lt; bool(const wxString &amp;, bool)&gt;&#160;</td>
+          <td class="paramname"><em>setVisible</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Lets the owner plug in access to <a class="el" href="classwxMaximaFrame.html" title="The frame containing the menu and the sidebars.">wxMaximaFrame</a>'s dockable sidebars, for the same reason <a class="el" href="classMcpTools.html#a1112fa21e44b3befbe3557e68bd6cf8e" title="Lets the owner (McpServer, wired up from wxMaxima – see McpServer::SetConnectionCheck()) plug in a li...">SetConnectionCheck()</a> exists: which panes there are and whether each is shown lives on <a class="el" href="classwxMaximaFrame.html" title="The frame containing the menu and the sidebars.">wxMaximaFrame</a>, which a <a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a> or <a class="el" href="classVariablespane.html" title="A &quot;variables&quot; sidepane.">Variablespane</a> pointer cannot reach. </p>
+<p>Both halves are set together on purpose. <a class="el" href="classA.html">A</a> build that could enumerate sidebars but not toggle them (or the reverse) would advertise tools that are only half-functional, and nothing at the tool layer could tell that apart from a genuine failure. Left unset &ndash; which is the default, and what every test that doesn't care about sidebars does &ndash; all three sidebar tools throw <a class="el" href="classMcpToolError.html" title="Thrown by McpTools::CallTool() for an unknown tool name or invalid/missing arguments.">McpToolError</a> saying so, rather than silently reporting an empty list that reads like "this wxMaxima has no sidebars." </p>
+
+</div>
+</div>
+<a id="a7b487a6472014e143fa641b319b2de88" name="a7b487a6472014e143fa641b319b2de88"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7b487a6472014e143fa641b319b2de88">&#9670;&#160;</a></span>ShowSidebar()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">json McpTools::ShowSidebar </td>
+          <td>(</td>
+          <td class="paramtype">const nlohmann::json &amp;&#160;</td>
+          <td class="paramname"><em>arguments</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Show a sidebar, the same as ticking its View -&gt; Sidebars menu entry. </p>
+<p>This is a write, and only the third one here (after watch_variable/ unwatch_variable). It is in the same category as those two rather than in the category the "no write/evaluate tools" rule exists to keep out: it changes which of <a class="el" href="classwxMaxima.html">wxMaxima</a>'s own panes are on screen and nothing else. It cannot touch worksheet content, cannot insert or edit a cell, and cannot cause <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> to evaluate anything &ndash; the blast radius is exactly "the window looks different," which the user can undo with one click and can see has happened. </p>
 
 </div>
 </div>

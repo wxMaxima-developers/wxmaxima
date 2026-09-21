@@ -33,7 +33,8 @@ var searchData=
   ['vehiclestop_30',['vehicleStop',['../structVehicle.html#a4dcbcba43792dcd673a552b14479ab77',1,'Vehicle']]],
   ['versionnumber_31',['VersionNumber',['../classwxMaxima_1_1VersionNumber.html',1,'wxMaxima']]],
   ['viewcellpointers_32',['ViewCellPointers',['../classViewCellPointers.html',1,'']]],
-  ['visiblyinvalidcell_33',['VisiblyInvalidCell',['../classVisiblyInvalidCell.html#ac5a17667589fa2a237647f3d0b2ae941',1,'VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group, Configuration *config)'],['../classVisiblyInvalidCell.html#ab87f908b177ea4b2b4a148445c750cf1',1,'VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group, Configuration *config, wxString &amp;&amp;toolTip)'],['../classVisiblyInvalidCell.html',1,'VisiblyInvalidCell']]],
-  ['visiblyinvalidcell_2ecpp_34',['VisiblyInvalidCell.cpp',['../VisiblyInvalidCell_8cpp.html',1,'']]],
-  ['void_5ftype_35',['void_type',['../structCatch_1_1detail_1_1void__type.html',1,'Catch::detail']]]
+  ['visible_33',['visible',['../structMcpSidebarInfo.html#aff3b46795e217e1f1dce36e11c699d74',1,'McpSidebarInfo']]],
+  ['visiblyinvalidcell_34',['VisiblyInvalidCell',['../classVisiblyInvalidCell.html#ac5a17667589fa2a237647f3d0b2ae941',1,'VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group, Configuration *config)'],['../classVisiblyInvalidCell.html#ab87f908b177ea4b2b4a148445c750cf1',1,'VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group, Configuration *config, wxString &amp;&amp;toolTip)'],['../classVisiblyInvalidCell.html',1,'VisiblyInvalidCell']]],
+  ['visiblyinvalidcell_2ecpp_35',['VisiblyInvalidCell.cpp',['../VisiblyInvalidCell_8cpp.html',1,'']]],
+  ['void_5ftype_36',['void_type',['../structCatch_1_1detail_1_1void__type.html',1,'Catch::detail']]]
 ];

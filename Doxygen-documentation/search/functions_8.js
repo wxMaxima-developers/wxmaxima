@@ -20,6 +20,7 @@ var searchData=
   ['helpmenu_17',['HelpMenu',['../classMaximaCommandMenus.html#a3eade0ddf1a3f6ec04f6ecabd55dc1c3',1,'MaximaCommandMenus']]],
   ['hide_18',['Hide',['../classCell.html#a87f7f4583027ae2e5e5baf664d488dc2',1,'Cell::Hide()'],['../classGroupCell.html#a02dab13af6158beb628cd2bb0be34a20',1,'GroupCell::Hide()']]],
   ['hidebrackets_19',['HideBrackets',['../classConfiguration.html#a352252421e1d5163ce20aff4cefc5a9e',1,'Configuration::HideBrackets() const'],['../classConfiguration.html#ac05473e9ab3c972d4587415e9d5611a9',1,'Configuration::HideBrackets(bool hide)']]],
-  ['hidetree_20',['HideTree',['../classGroupCell.html#aa79c40d6d88603e83be78a30e5ba190d',1,'GroupCell']]],
-  ['historydclick_21',['HistoryDClick',['../classwxMaxima.html#a779cec517fcd3071172c32d05e7b17af',1,'wxMaxima']]]
+  ['hidesidebar_20',['HideSidebar',['../classMcpTools.html#a6d4f36b88efb763e6c06d5fca207d03e',1,'McpTools']]],
+  ['hidetree_21',['HideTree',['../classGroupCell.html#aa79c40d6d88603e83be78a30e5ba190d',1,'GroupCell']]],
+  ['historydclick_22',['HistoryDClick',['../classwxMaxima.html#a779cec517fcd3071172c32d05e7b17af',1,'wxMaxima']]]
 ];
