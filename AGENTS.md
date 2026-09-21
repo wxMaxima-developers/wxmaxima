@@ -1743,6 +1743,78 @@ a local TCP socket.
     sidebar *are* reachable here. And `pkill -f "src/wxmaxima"` kills the
     agent's own shell (its command line contains the pattern) -- match on
     `ps -eo pid,comm` instead.
+  - **Follow-up (2026-09-21): HTTP Basic authentication for custom
+    providers, and the one-credential-slot decision that shapes it.**
+    Raised directly by the maintainer: "Ollama's documentation recommends
+    to put ollama behind an authentication - and it looks like that being
+    a password-and-username based one. Do we support that case?" The
+    answer was **no** -- every provider shape authenticated through its
+    own single header (`x-api-key`/`Authorization: Bearer`/
+    `x-goog-api-key`) built from one stored secret, and nothing anywhere
+    in this codebase had a notion of a *username*. A local server put
+    behind an authenticating reverse proxy (nginx/caddy `basic_auth`,
+    which is what Ollama's own docs steer people to) therefore could not
+    be reached at all: wxMaxima would send its Bearer header, the proxy
+    would answer 401, and -- per the `State_Unauthorized` entry further up
+    this section -- that 401 does not even arrive as a normal completion.
+    - **The design decision worth knowing before extending this: there is
+      exactly ONE credential slot per provider, and a non-empty username
+      reinterprets it.** `AiCustomProviderConfig` gained a plain
+      `username` field (persisted in the same JSON array as
+      `name`/`shape`/`baseUrl`/`model`, parsed with
+      `entry.value("username", std::string())` so an entry written before
+      this existed still loads), but the *password* is the already-
+      existing secret-store entry -- the same `wxSecretStore` slot the API
+      key uses, not a second one. `AiProvider::UsesBasicAuth()` is simply
+      `!m_basicAuthUser.IsEmpty()`, and when it is true all three
+      `AuthHeaders()` overrides emit `Authorization: Basic
+      base64(user:secret)` *instead of* their own provider header
+      (Anthropic keeps `anthropic-version`, which is a protocol version
+      marker, not a credential). **What this covers is the real reported
+      case** -- a local model server with no upstream API key of its own,
+      sitting behind a proxy that wants a password. **What it deliberately
+      does not cover** is a keyed cloud provider behind a Basic-auth
+      proxy, which needs *two* independent secrets at once (the proxy's
+      password and the provider's own key) and therefore a second secret-
+      store slot plus a second UI field. Do not "fix" that by squeezing
+      both into one field; it is a real feature with real UI cost, and
+      nobody has asked for it.
+    - **The Options UI renames its own field rather than growing a mode
+      switch.** `ConfigDialogue::UpdateAiCredentialLabel()` flips the key
+      row's label between "API key:" and "Password:" from a plain
+      `wxEVT_TEXT` handler on the username box, so what the one secret
+      slot currently *means* is visible without a checkbox or a radio
+      group that would then also need persisting. The username row is
+      shown only for a Custom provider, next to the request-URL and
+      API-style controls that are already Custom-only -- a built-in
+      provider's auth shape is implied by its kind and is not editable.
+    - **The grid's row count had to be bumped from 4 to 5**
+      (`wxFlexGridSizer(5, 2, 5, 5)`) in the same edit that added the row.
+      This is not cosmetic: a `wxFlexGridSizer` with both rows and cols
+      fixed hard-caps its item count at `rows*cols`, so adding a row
+      without bumping the count asserts on the first item past the cap --
+      exactly the bug this section's own 2026-09-08 entry already
+      documents hitting twice. Any future row added here needs the same
+      bump, and this sandbox will not catch it (`wxUSE_SECRETSTORE` is 0
+      here, so the tab never opens).
+    - **Verification**: `test_AiProvider.cpp` gained two SCENARIOs -- Basic
+      auth across all three provider shapes (asserting the exact base64
+      literals, cross-checked independently rather than read back out of
+      the implementation; that an empty username leaves every existing
+      header byte-for-byte unchanged; and that a colon inside the password
+      is transmitted correctly, since RFC 7617 splits on the *first* colon
+      only) and a username config round trip including an entry with no
+      `username` key at all. 198 assertions in 14 test cases, all passing,
+      plus the full 48-test unit suite and a clean `-Wall -Wextra
+      -Wpedantic` build with `WXM_USE_AI_TOOLS` both ON and OFF. Not
+      verified live, for this section's usual `wxUSE_SECRETSTORE=0`
+      reason. **A trap worth repeating from the GitHub Models entry**:
+      adding a field to `AiCustomProviderConfig` breaks every existing
+      aggregate initializer under `-Wmissing-field-initializers`, which
+      the `-Werror` CI jobs turn into a hard failure while a plain local
+      build stays silent -- three initializers in `test_AiProvider.cpp`
+      needed a trailing `wxS("")` and were caught locally only because
+      that warning was enabled deliberately.
   - **Follow-up (2026-09-11): a third status bar icon for the AI Chat
     sidebar, mirroring the existing Maxima/network status icons.** Raised
     directly by the maintainer: "on the bottom right there are two spaces

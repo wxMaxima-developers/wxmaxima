@@ -131,7 +131,8 @@ void AiChatSidebar::ReloadProviderFromConfig() {
         m_providerConfigProblem = AiProviderRequestUrlProblem(custom.baseUrl);
         if (m_providerConfigProblem.IsEmpty())
           m_provider =
-            MakeAiProviderForShape(custom.shape, custom.name, custom.baseUrl, apiKey, custom.model);
+            MakeAiProviderForShape(custom.shape, custom.name, custom.baseUrl, apiKey,
+                                   custom.model, custom.username);
         break;
       }
   } else {

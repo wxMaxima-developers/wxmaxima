@@ -22,6 +22,7 @@
 #include "AiProvider.h"
 #include <nlohmann/json.hpp>
 #if wxUSE_WEBREQUEST
+#include <wx/base64.h>
 #include <wx/webrequest.h>
 #endif
 #if wxUSE_SECRETSTORE
@@ -48,6 +49,14 @@ public:
   std::vector<std::pair<wxString, wxString>> AuthHeaders() const override {
     std::vector<std::pair<wxString, wxString>> headers = {
       {wxS("anthropic-version"), wxS("2023-06-01")}};
+    // A Basic-auth proxy in front of this endpoint takes the one stored
+    // secret as its password, so there is none left to send as an API key
+    // -- see AiCustomProviderConfig::username for why that tradeoff is
+    // deliberate rather than an oversight.
+    if (UsesBasicAuth()) {
+      headers.push_back(BasicAuthHeader());
+      return headers;
+    }
     // Omitted entirely rather than sent empty: a custom provider using
     // this shape may be a local proxy that authenticates nothing at all,
     // and an empty credential header is likelier to be rejected outright
@@ -104,6 +113,12 @@ public:
   AiProviderKind Kind() const override { return m_kind; }
 
   std::vector<std::pair<wxString, wxString>> AuthHeaders() const override {
+    // A Basic-auth reverse proxy (what Ollama's own docs recommend for an
+    // instance reachable beyond localhost) owns the Authorization header,
+    // so Bearer cannot also be sent -- there is exactly one of that header
+    // and one stored secret, which becomes the Basic password.
+    if (UsesBasicAuth())
+      return {BasicAuthHeader()};
     // A local OpenAI-compatible server (Ollama, LM Studio, llama.cpp
     // server, ...) has no third party to authenticate to and normally has
     // no API key at all -- send no Authorization header rather than a bare,
@@ -159,6 +174,10 @@ public:
   }
 
   std::vector<std::pair<wxString, wxString>> AuthHeaders() const override {
+    // See AnthropicProvider::AuthHeaders(): the proxy's password is the one
+    // secret this provider has, so its own key header goes unsent.
+    if (UsesBasicAuth())
+      return {BasicAuthHeader()};
     if (m_apiKey.IsEmpty())
       return {};
     return {{wxS("x-goog-api-key"), m_apiKey}};
@@ -376,7 +395,8 @@ std::shared_ptr<AiProvider> MakeAiProviderForShape(AiProviderShape shape,
                                                    const wxString &displayName,
                                                    const wxString &baseUrl,
                                                    const wxString &apiKey,
-                                                   const wxString &model) {
+                                                   const wxString &model,
+                                                   const wxString &basicAuthUser) {
   std::shared_ptr<AiProvider> provider;
   switch (shape) {
   case AiProviderShape::Anthropic:
@@ -394,6 +414,7 @@ std::shared_ptr<AiProvider> MakeAiProviderForShape(AiProviderShape shape,
     break;
   }
   provider->SetDisplayName(displayName);
+  provider->SetBasicAuthUser(basicAuthUser);
   return provider;
 }
 
@@ -439,6 +460,10 @@ std::vector<AiCustomProviderConfig> ParseAiCustomProviders(const wxString &jsonT
       cfg.name = wxm::FromUtf8(entry.value("name", std::string()));
       cfg.baseUrl = wxm::FromUtf8(entry.value("baseUrl", std::string()));
       cfg.model = wxm::FromUtf8(entry.value("model", std::string()));
+      // Absent in every entry written before Basic auth existed, which
+      // value()'s default handles: no username means no Basic auth, i.e.
+      // exactly the behaviour those entries already had.
+      cfg.username = wxm::FromUtf8(entry.value("username", std::string()));
       std::string shape = entry.value("shape", std::string("openai"));
       if (shape == "anthropic")
         cfg.shape = AiProviderShape::Anthropic;
@@ -476,9 +501,21 @@ wxString SerializeAiCustomProviders(const std::vector<AiCustomProviderConfig> &p
                    {"name", wxm::ToUtf8(cfg.name)},
                    {"shape", shape},
                    {"baseUrl", wxm::ToUtf8(cfg.baseUrl)},
-                   {"model", wxm::ToUtf8(cfg.model)}});
+                   {"model", wxm::ToUtf8(cfg.model)},
+                   {"username", wxm::ToUtf8(cfg.username)}});
   }
   return wxm::FromUtf8(arr.dump());
+}
+
+std::pair<wxString, wxString> AiProvider::BasicAuthHeader() const {
+  // RFC 7617: base64 of "user:password", over the UTF-8 bytes. The colon
+  // separates at the *first* occurrence, so a password containing one is
+  // fine while a username containing one is not encodable at all -- that
+  // is the spec's own limitation, not something to work around here.
+  const std::string credentials =
+    wxm::ToUtf8(m_basicAuthUser) + ":" + wxm::ToUtf8(m_apiKey);
+  return {wxS("Authorization"),
+          wxS("Basic ") + wxBase64Encode(credentials.data(), credentials.length())};
 }
 
 wxString AiProvider::CustomProviderSecretService(const wxString &id) {

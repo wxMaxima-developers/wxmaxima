@@ -318,11 +318,14 @@ SCENARIO("AiCustomProviderConfig JSON round-trips through Serialize/Parse") {
   GIVEN("a list of two custom providers, one of each non-default shape") {
     std::vector<AiCustomProviderConfig> providers = {
       {wxS("id1"), wxS("Groq"), AiProviderShape::OpenAiCompatible,
-       wxS("https://api.groq.com/openai/v1/chat/completions"), wxS("llama-3.3-70b")},
+       wxS("https://api.groq.com/openai/v1/chat/completions"), wxS("llama-3.3-70b"),
+       wxS("")},
       {wxS("id2"), wxS("My Anthropic Proxy"), AiProviderShape::Anthropic,
-       wxS("https://proxy.example.com/v1/messages"), wxS("claude-3-5-sonnet-latest")},
+       wxS("https://proxy.example.com/v1/messages"), wxS("claude-3-5-sonnet-latest"),
+       wxS("")},
       {wxS("id3"), wxS("My Gemini Proxy"), AiProviderShape::Google,
-       wxS("https://proxy.example.com/models/"), wxS("gemini-1.5-flash")},
+       wxS("https://proxy.example.com/models/"), wxS("gemini-1.5-flash"),
+       wxS("")},
     };
     wxString json_ = SerializeAiCustomProviders(providers);
     auto roundTripped = ParseAiCustomProviders(json_);
@@ -521,6 +524,137 @@ SCENARIO("AiProviderRequestUrlProblem() rejects what actually gets typed") {
                       AiProviderKind::Google, AiProviderKind::Qwen,
                       AiProviderKind::GitHubModels})
       CHECK(AiProviderRequestUrlProblem(AiProviderBaseUrl(kind)).IsEmpty());
+  }
+}
+
+SCENARIO("A custom provider with a username authenticates with HTTP Basic") {
+  // The case this exists for: Ollama's own docs recommend putting an
+  // instance reachable beyond localhost behind an authenticating reverse
+  // proxy, and those speak HTTP Basic, not Bearer tokens.
+  GIVEN("an OpenAI-compatible endpoint behind a Basic-auth proxy") {
+    auto provider = MakeAiProviderForShape(
+      AiProviderShape::OpenAiCompatible, wxS("Ollama behind nginx"),
+      wxS("http://ollama.example.org/v1/chat/completions"), wxS("s3cret"),
+      wxS("llama3.2"), wxS("alice"));
+    REQUIRE(provider);
+    auto headers = provider->AuthHeaders();
+    THEN("exactly one Authorization header is sent, and it is Basic") {
+      REQUIRE(headers.size() == 1);
+      CHECK(headers[0].first == wxS("Authorization"));
+      // base64("alice:s3cret"), checked against the literal encoding
+      // rather than recomputed the same way the code does it.
+      CHECK(headers[0].second == wxS("Basic YWxpY2U6czNjcmV0"));
+    }
+    AND_THEN("no Bearer token is sent alongside it") {
+      for (const auto &header : headers)
+        CHECK(header.second.Find(wxS("Bearer")) == wxNOT_FOUND);
+    }
+  }
+
+  GIVEN("the Anthropic shape behind a Basic-auth proxy") {
+    auto provider = MakeAiProviderForShape(
+      AiProviderShape::Anthropic, wxS("Proxied Anthropic"),
+      wxS("http://proxy.example.org/v1/messages"), wxS("pw"), wxS("some-model"),
+      wxS("bob"));
+    REQUIRE(provider);
+    auto headers = provider->AuthHeaders();
+    THEN("Basic replaces x-api-key, and anthropic-version still goes") {
+      bool haveBasic = false, haveVersion = false;
+      for (const auto &header : headers) {
+        CHECK(header.first != wxS("x-api-key"));
+        if ((header.first == wxS("Authorization")) &&
+            header.second.StartsWith(wxS("Basic ")))
+          haveBasic = true;
+        if (header.first == wxS("anthropic-version"))
+          haveVersion = true;
+      }
+      CHECK(haveBasic);
+      CHECK(haveVersion);
+    }
+  }
+
+  GIVEN("the Google shape behind a Basic-auth proxy") {
+    auto provider = MakeAiProviderForShape(
+      AiProviderShape::Google, wxS("Proxied Gemini"),
+      wxS("http://proxy.example.org/v1beta/models/"), wxS("pw"), wxS("gemini-2.0-flash"),
+      wxS("bob"));
+    REQUIRE(provider);
+    auto headers = provider->AuthHeaders();
+    THEN("Basic replaces x-goog-api-key") {
+      REQUIRE(headers.size() == 1);
+      CHECK(headers[0].first == wxS("Authorization"));
+      CHECK(headers[0].second.StartsWith(wxS("Basic ")));
+    }
+  }
+
+  GIVEN("no username, which is what every pre-existing entry has") {
+    auto provider = MakeAiProviderForShape(
+      AiProviderShape::OpenAiCompatible, wxS("Plain"),
+      wxS("http://localhost:11434/v1/chat/completions"), wxS("k"), wxS("m"));
+    REQUIRE(provider);
+    auto headers = provider->AuthHeaders();
+    THEN("the Bearer behaviour is exactly as before") {
+      REQUIRE(headers.size() == 1);
+      CHECK(headers[0].first == wxS("Authorization"));
+      CHECK(headers[0].second == wxS("Bearer k"));
+    }
+  }
+
+  GIVEN("a password containing a colon") {
+    // RFC 7617 splits on the FIRST colon, so this is legal and must not be
+    // mangled -- a proxy password is exactly the kind of string that has
+    // one.
+    auto provider = MakeAiProviderForShape(
+      AiProviderShape::OpenAiCompatible, wxS("Colon"),
+      wxS("http://localhost:11434/v1/chat/completions"), wxS("a:b"), wxS("m"),
+      wxS("u"));
+    REQUIRE(provider);
+    auto headers = provider->AuthHeaders();
+    THEN("it is encoded verbatim") {
+      REQUIRE(headers.size() == 1);
+      CHECK(headers[0].second == wxS("Basic dTphOmI="));  // base64("u:a:b")
+    }
+  }
+}
+
+SCENARIO("A custom provider's username survives the config round trip") {
+  GIVEN("an entry with a username and one without") {
+    std::vector<AiCustomProviderConfig> providers;
+    AiCustomProviderConfig withAuth;
+    withAuth.id = wxS("id-1");
+    withAuth.name = wxS("Proxied Ollama");
+    withAuth.shape = AiProviderShape::OpenAiCompatible;
+    withAuth.baseUrl = wxS("http://ollama.example.org/v1/chat/completions");
+    withAuth.model = wxS("llama3.2");
+    withAuth.username = wxS("alice");
+    providers.push_back(withAuth);
+    AiCustomProviderConfig without;
+    without.id = wxS("id-2");
+    without.name = wxS("Local Ollama");
+    without.baseUrl = wxS("http://localhost:11434/v1/chat/completions");
+    without.model = wxS("llama3.2");
+    providers.push_back(without);
+
+    WHEN("they are serialized and parsed back") {
+      auto parsed = ParseAiCustomProviders(SerializeAiCustomProviders(providers));
+      THEN("both usernames come back unchanged") {
+        REQUIRE(parsed.size() == 2);
+        CHECK(parsed[0].username == wxS("alice"));
+        CHECK(parsed[1].username.IsEmpty());
+      }
+    }
+  }
+
+  GIVEN("an entry saved before Basic auth existed, i.e. with no username key") {
+    auto parsed = ParseAiCustomProviders(
+      wxS("[{\"id\":\"old\",\"name\":\"Old\",\"shape\":\"openai\","
+          "\"baseUrl\":\"http://localhost:11434/v1/chat/completions\","
+          "\"model\":\"llama3.2\"}]"));
+    THEN("it parses with an empty username, i.e. unchanged behaviour") {
+      REQUIRE(parsed.size() == 1);
+      CHECK(parsed[0].username.IsEmpty());
+      CHECK(parsed[0].model == wxS("llama3.2"));
+    }
   }
 }
 

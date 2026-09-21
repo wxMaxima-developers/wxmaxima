@@ -372,6 +372,9 @@ protected:
     wxString baseUrl;
     wxString apiKey;
     wxString model;
+    //! Basic-auth username; empty means this entry authenticates by API
+    //! key (or not at all). Meaningful only when kind == Custom.
+    wxString username;
   };
   std::vector<AiProviderUiRecord> m_aiProviderRecords;
   //! Index into m_aiProviderRecords of whichever one m_aiKeyCtrl/
@@ -400,6 +403,13 @@ protected:
   wxTextCtrl *m_aiBaseUrlCtrl;
   wxStaticText *m_aiShapeLabel;
   wxChoice *m_aiShapeChoice;
+  //! Basic-auth username, shown only for a Custom entry. Non-empty here
+  //! turns m_aiKeyCtrl from an API key into a Basic password, which is
+  //! what m_aiKeyLabel says out loud -- see UpdateAiCredentialLabel().
+  wxStaticText *m_aiUsernameLabel;
+  wxTextCtrl *m_aiUsernameCtrl;
+  //! "API key:" or "Password:", per UpdateAiCredentialLabel().
+  wxStaticText *m_aiKeyLabel;
   wxTextCtrl *m_aiKeyCtrl;
   wxTextCtrl *m_aiModelCtrl;
   wxHyperlinkCtrl *m_aiApiKeyLink;
@@ -412,6 +422,11 @@ protected:
   //! is not enough.
   void RelayoutAiChatPanel();
   void OnAiProviderChoice(wxCommandEvent &event);
+  //! Relabels the credential field as the username is typed or cleared.
+  void OnAiUsernameChanged(wxCommandEvent &event);
+  //! Makes m_aiKeyLabel say whether the field below it is currently an API
+  //! key or a Basic-auth password.
+  void UpdateAiCredentialLabel();
   void OnAiRemoveCustomProvider(wxCommandEvent &event);
   //! Copies the on-screen key/model/(baseUrl/shape for Custom) fields back
   //! into m_aiProviderRecords[m_aiActiveProviderRecordIndex], if any --

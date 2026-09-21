@@ -137,6 +137,23 @@ struct AiCustomProviderConfig {
   //! GoogleProvider::RequestUrl()).
   wxString baseUrl;
   wxString model;
+  /*! Username for HTTP Basic authentication, empty when none is needed.
+
+    This is for a server put behind a Basic-auth reverse proxy -- which is
+    what Ollama's own documentation recommends for an instance reachable
+    beyond localhost. It is deliberately kept here rather than in the
+    secret store: a username is not a secret, and keeping it in the
+    ordinary config is what lets the UI show which entries use Basic auth
+    without unlocking a keyring.
+
+    When this is set, the entry's stored secret is used as the Basic
+    *password* rather than as a provider API key -- there is one credential
+    slot per provider, so the two are mutually exclusive. That covers the
+    case this exists for (a local server with no API key of its own,
+    fronted by a proxy that wants a password) and deliberately not the case
+    of a keyed cloud provider behind a Basic proxy, which needs two
+    separate secrets and so a second field to hold them. */
+  wxString username;
 };
 
 //! One well-known local AI server's connection defaults, offered as a
@@ -238,6 +255,14 @@ public:
   }
   void SetDisplayName(const wxString &name) { m_displayName = name; }
 
+  /*! Makes this provider authenticate with HTTP Basic instead of its own
+    credential header, using `user` and the API key as the password.
+
+    Set for a custom provider whose endpoint sits behind a Basic-auth
+    reverse proxy. Leaving it empty (the default) keeps every provider's
+    native header exactly as it was, so this cannot affect a built-in. */
+  void SetBasicAuthUser(const wxString &user) { m_basicAuthUser = user; }
+
   //! True if this build of wxWidgets has a working wxSecretStore backend
   //! (>= 3.1.1, compiled with wxUSE_SECRETSTORE, AND an actual OS keyring
   //! service reachable at runtime -- e.g. gnome-keyring/kwallet on Linux,
@@ -320,10 +345,20 @@ public:
   static bool NetworkingAvailable();
 
 protected:
+  //! True when SetBasicAuthUser() was given a non-empty name, i.e. every
+  //! AuthHeaders() override should send BasicAuthHeader() and omit its own
+  //! credential header -- there is only one Authorization slot, and only
+  //! one stored secret to put in it.
+  bool UsesBasicAuth() const { return !m_basicAuthUser.IsEmpty(); }
+  //! "Authorization: Basic base64(user:password)", with the API key as the
+  //! password. Only meaningful while UsesBasicAuth() is true.
+  std::pair<wxString, wxString> BasicAuthHeader() const;
+
   wxString m_baseUrl;
   wxString m_apiKey;
   wxString m_model;
   wxString m_displayName;
+  wxString m_basicAuthUser;
 };
 
 //! Thrown by ParseReply() for a response that doesn't parse or doesn't have
@@ -351,6 +386,7 @@ std::shared_ptr<AiProvider> MakeAiProviderForShape(AiProviderShape shape,
                                                    const wxString &displayName,
                                                    const wxString &baseUrl,
                                                    const wxString &apiKey,
-                                                   const wxString &model);
+                                                   const wxString &model,
+                                                   const wxString &basicAuthUser = wxEmptyString);
 
 #endif // AIPROVIDER_H

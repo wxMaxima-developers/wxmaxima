@@ -1,5 +1,12 @@
 # Current development version
 
+- A custom AI provider can now sit behind HTTP Basic authentication, which
+  is what Ollama's own documentation recommends for an instance reachable
+  from beyond localhost. Fill in the new Username field in Options -> AI
+  Chat and the credential below it is sent as the Basic password rather
+  than as an API key -- the field relabels itself to say so. Leaving the
+  username empty keeps every provider behaving exactly as before.
+
 - Compiling wxMaxima is about a third faster. Precompiled headers are now
   switched on by default -- and, more to the point, they now actually do
   something: the option to enable them has existed for years, but the header
