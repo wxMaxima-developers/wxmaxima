@@ -902,6 +902,12 @@ a local TCP socket.
     each provider's API" feature: that mechanism would itself need
     maintaining against four APIs just to answer a question a plain link
     to each provider's own docs already answers, permanently, for free.
+    **This decision was revisited and reversed on 2026-09-21 -- see the
+    "model list" follow-up further down. The objection above was answered,
+    not overruled: the fetch is one endpoint shared by nearly every
+    provider, not four APIs to keep up with.** Everything in the rest of
+    this entry (the rolling-alias default, the docs link) still stands and
+    is still what a provider with no list endpoint falls back on.
     Two changes instead: (1) `AiProviderDefaultModel()`'s Anthropic entry
     now uses `claude-3-5-sonnet-latest`, that provider's own "rolling"
     alias, instead of the dated snapshot `claude-3-5-sonnet-20241022` it
@@ -1864,6 +1870,86 @@ a local TCP socket.
       live in Xvfb (the icon's actual on-screen appearance/click behavior,
       the monitor sidebar's real traffic display) -- worth doing before
       extending this further.
+  - **Follow-up (2026-09-21): the model field fetches a real list now, and
+    is a combobox -- reversing the 2026-09-06 decision above, on evidence
+    rather than on a change of mind.** The original objection was that
+    auto-detection means "a mechanism that catches outdated strings with a
+    mechanism that can get outdated," i.e. four provider APIs to track. The
+    thing that answers it: `GET <base>/v1/models` is one endpoint, and the
+    same de facto standard that already makes `OpenAiCompatibleProvider`
+    work verbatim against OpenAI, Qwen, OpenRouter, Groq, Together, vLLM,
+    LM Studio, llama.cpp server and Ollama's compatibility layer. So the
+    new code is *not* per-provider: `AiProvider::ModelsRequestUrl()`/
+    `ParseModelList()` default to the OpenAI shape and only two overrides
+    exist.
+    - **The URL is derived from the chat endpoint, never stored
+      separately** -- one field that can drift out of step is enough.
+      Anthropic swaps a trailing `/messages` for `/models`; Google's list
+      URL is its own base minus the trailing slash (its base already ends
+      in `models/`, which `RequestUrl()` appends the model id to -- forget
+      the strip and you get `models/models/`, which is why
+      `test_AiProvider.cpp` asserts on exactly that); everything else drops
+      a trailing `/chat/completions` and appends `/models`.
+    - **Two response shapes, not six.** Anthropic's own model list is
+      `{"data":[{"id":...}]}`, byte-identical in shape to OpenAI's, so they
+      share one parser and only Google (`{"models":[{"name":"models/..."}]}`)
+      needs its own. Google's is also the only one that lists models this
+      provider cannot use, so entries not advertising `generateContent` are
+      dropped -- but an entry that says nothing either way is kept, since
+      an unexpected omission should not silently hide a usable model.
+    - **What was verified how.** Anthropic's and Google's list endpoints
+      were confirmed against the *real* services from this sandbox: an
+      unauthenticated GET is answered by that provider's own "needs a key"
+      error (401 `x-api-key header is required` / 403 `Please use API
+      Key`), not a 404 -- the route exists. OpenAI's, Groq's and a local
+      Ollama's are egress-blocked here and rest on the documented standard
+      plus the unit tests, not on a live probe. The parsing and URL
+      derivation are pinned by `test_AiProvider.cpp` (194 assertions in 14
+      cases now) and confirmed non-vacuous by mutation: dropping the
+      `models/` strip fails two assertions.
+    - **`FetchModels()` mirrors `SendChat()` deliberately, down to the
+      `done` guard** -- and the first draft of it here declared that guard
+      and then never captured it, which is precisely the double-callback
+      bug `State_Unauthorized` -> `Cancel()` -> `State_Cancelled` produces.
+      An "it's only a GET, it can be simpler" version of this function will
+      reintroduce every trap that one's comments describe.
+    - **The event sink is `wxTheApp`, not the dialog.** `wxWebRequest`
+      holds a raw `wxEvtHandler*` and cannot be told the dialog it was
+      given has closed -- and Options is a dialog the user can close long
+      before a slow request finishes. `ConfigDialogue::m_aiUiAlive` is a
+      `shared_ptr<bool>` cleared in the destructor and checked by the
+      completion lambda before it touches a single control.
+    - **`wxComboBox`, never `wxChoice`.** The list is an offer, not a
+      constraint: a fine-tune, a preview id or whatever a local server was
+      launched with may not appear in it, and the fetch can fail outright.
+      A fetch only ever replaces the *dropdown's* contents and restores
+      whatever is typed. Note `wxComboBox::Clear()` wipes the text as well
+      as the items, so the value has to be restored after clearing, not
+      before -- getting that backwards blanks the configured model on every
+      provider switch.
+    - **The Refresh button sits below the detail grid on purpose**, not as
+      a fifth row in it: that `wxFlexGridSizer` is constructed with both
+      row and column counts fixed, so it hard-caps at `rows*cols` items and
+      asserts on the overflow -- the exact assert this dialog already shipped
+      once (see the three-layout-bugs follow-up above).
+    - **Not verified live, and this sandbox cannot**: `wxUSE_SECRETSTORE` is
+      0 in this machine's wx build, so the AI Chat tab does not exist here
+      at all and no screenshot of the combobox, the button or the status
+      line was possible. The widget construction was checked by reading it
+      against the same wxWidgets contracts the earlier three bugs violated,
+      and both `-DWXM_USE_AI_TOOLS=ON` and `=OFF` were built clean (the
+      `OFF` direction caught a real mistake: the new ctor/dtor lines were
+      outside the `#ifdef`, which only that build reveals).
+  - **Found while doing the above, NOT fixed, and its own branch and PR:
+    `AiProviderKind::GitHubModels` points at a service that no longer
+    exists.** GitHub Models closed to new customers on 2026-06-16 and was
+    *fully retired on 2026-07-30* -- playground, catalog, inference API and
+    BYOK all gone, per GitHub's own changelog ("GitHub Models is now
+    retired", 2026-07-30). The provider was added here on 2026-09-11, six
+    weeks *after* that. So selecting it cannot do anything but fail, and
+    its model list is equally dead; this work deliberately did not
+    special-case it, since a dead provider wants removing (or replacing
+    with whatever the migration target is), not a bespoke models URL.
   - **Not implemented, and shouldn't be without a separate decision: a
     write/evaluate-capable MCP tool.** Raised and discussed directly with
     the user (2026-09-06): unlike `watch_variable`/`unwatch_variable` (see

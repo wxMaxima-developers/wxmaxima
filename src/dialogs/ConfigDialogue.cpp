@@ -33,6 +33,8 @@
 #include "ai/AiProvider.h"
 #endif
 #include <wx/hyperlink.h>
+#include <wx/combobox.h>
+#include <wx/app.h>
 #include "WXMformat.h"
 #include "BTextCtrl.h"
 #include "cells/Cell.h"
@@ -140,6 +142,12 @@ int ConfigDialogue::GetImageSize() {
 
 ConfigDialogue::ConfigDialogue(wxWindow *parent)
   : wxPropertySheetDialog() {
+#ifdef WXM_USE_AI_TOOLS
+  // Set true for as long as this dialog's controls exist; an in-flight
+  // model fetch reads it before touching any of them (see
+  // StartAiModelFetch()).
+  m_aiUiAlive = std::make_shared<bool>(true);
+#endif
 #if defined __WXOSX__
   SetSheetStyle(wxPROPSHEET_CHOICEBOOK);
 #else
@@ -347,6 +355,12 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent)
 }
 
 ConfigDialogue::~ConfigDialogue() {
+#ifdef WXM_USE_AI_TOOLS
+  // Anything still waiting on an HTTP response must not touch this
+  // dialog's controls from here on -- they are about to stop existing.
+  if (m_aiUiAlive)
+    *m_aiUiAlive = false;
+#endif
   // Child windows are normally destroyed by the wxWindow base class
   // destructor - i.e. AFTER this class's members, and that includes
   // m_configuration, which the sample worksheet's destructor (and the
@@ -2117,11 +2131,34 @@ wxWindow *ConfigDialogue::CreateAiChatPanel() {
   grid->Add(m_aiKeyCtrl, wxSizerFlags().Expand());
   grid->Add(new wxStaticText(detailBoxWin, wxID_ANY, _("Model:")),
            wxSizerFlags().Align(wxALIGN_CENTER_VERTICAL));
-  m_aiModelCtrl = new wxTextCtrl(detailBoxWin, wxID_ANY, wxEmptyString,
+  // Starts with no items: the list is filled in asynchronously by
+  // StartAiModelFetch(), and for a provider with no list endpoint (or an
+  // unreachable one) it simply stays empty and this behaves as the plain
+  // text field it replaced.
+  m_aiModelCtrl = new wxComboBox(detailBoxWin, wxID_ANY, wxEmptyString,
                                  wxDefaultPosition,
-                                 wxSize(300 * GetContentScaleFactor(), -1));
+                                 wxSize(300 * GetContentScaleFactor(), -1),
+                                 wxArrayString());
   grid->Add(m_aiModelCtrl, wxSizerFlags().Expand());
   m_aiProviderDetailBox->Add(grid, wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
+
+  // Deliberately below the grid rather than as a fifth row in it: this
+  // wxFlexGridSizer is constructed with both its row and column counts
+  // fixed, so it hard-caps at rows*cols items and asserts on the one that
+  // overflows (AGENTS.md records that exact assert firing on this very
+  // dialog). Adding here instead of bumping 4 to 5 keeps the two
+  // independent.
+  m_aiRefreshModelsButton = new wxButton(detailBoxWin, wxID_ANY, _("Refresh model list"));
+  m_aiRefreshModelsButton->Bind(wxEVT_BUTTON, &ConfigDialogue::OnAiRefreshModels, this);
+  m_aiProviderDetailBox->Add(m_aiRefreshModelsButton,
+                             wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
+  // A wxStaticText may be constructed empty (unlike wxHyperlinkCtrl, which
+  // asserts unless at least one of label/URL is set -- see the two links
+  // below), so this one starts genuinely blank and hidden.
+  m_aiModelFetchStatus = new wxStaticText(detailBoxWin, wxID_ANY, wxEmptyString);
+  m_aiModelFetchStatus->Show(false);
+  m_aiProviderDetailBox->Add(m_aiModelFetchStatus,
+                             wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
 
   // No "log in" button is possible here (none of these providers offer a
   // legitimate third-party OAuth flow a desktop app could use) -- a direct
@@ -2196,7 +2233,12 @@ void ConfigDialogue::LoadAiProviderRecordIntoUi(int index) {
 
   m_aiProviderDetailBox->GetStaticBox()->SetLabel(rec.displayName);
   m_aiKeyCtrl->SetValue(rec.apiKey);
-  m_aiModelCtrl->SetValue(rec.model);
+  // Clear() on a wxComboBox wipes the *text* as well as the item list, so
+  // the value has to be restored afterwards, not before -- doing it the
+  // other way round silently blanks the configured model every time the
+  // provider selection changes.
+  m_aiModelCtrl->Clear();
+  m_aiModelCtrl->ChangeValue(rec.model);
 
   // The shape/URL are fixed (implied by the kind) for a built-in provider,
   // and only ever editable for a Custom one.
@@ -2228,7 +2270,110 @@ void ConfigDialogue::LoadAiProviderRecordIntoUi(int index) {
     m_aiModelListLink->SetLabel(wxString::Format(_("See current models for %s..."), rec.displayName));
     m_aiModelListLink->SetURL(modelListUrl);
   }
+  m_aiModelFetchStatus->SetLabel(wxEmptyString);
+  m_aiModelFetchStatus->Show(false);
   RelayoutAiChatPanel();
+  // Quietly: selecting a provider should not nag about one that has no
+  // list endpoint, or that has no key typed yet.
+  StartAiModelFetch(false);
+}
+
+void ConfigDialogue::OnAiRefreshModels(wxCommandEvent &WXUNUSED(event)) {
+  StartAiModelFetch(true);
+}
+
+void ConfigDialogue::StartAiModelFetch(bool userAsked) {
+  if (m_aiActiveProviderRecordIndex < 0)
+    return;
+  // Read the model straight off the controls rather than from the stored
+  // record: the user may have just typed or pasted a key, which is
+  // precisely when asking for the list is most useful, and the record is
+  // only written back on a provider switch or on OK.
+  StashAiProviderUiIntoRecord();
+  const AiProviderUiRecord &rec = m_aiProviderRecords[m_aiActiveProviderRecordIndex];
+
+  auto showStatus = [this](const wxString &text) {
+    m_aiModelFetchStatus->SetLabel(text);
+    m_aiModelFetchStatus->Show(!text.IsEmpty());
+    RelayoutAiChatPanel();
+  };
+
+  if (!AiProvider::NetworkingAvailable()) {
+    if (userAsked)
+      showStatus(_("This build of wxMaxima has no network support compiled in."));
+    return;
+  }
+  const wxString baseUrl =
+    (rec.kind == AiProviderKind::Custom) ? rec.baseUrl : AiProviderBaseUrl(rec.kind);
+  if (!AiProviderRequestUrlProblem(baseUrl).IsEmpty()) {
+    if (userAsked)
+      showStatus(AiProviderRequestUrlProblem(baseUrl));
+    return;
+  }
+  std::shared_ptr<AiProvider> provider =
+    (rec.kind == AiProviderKind::Custom)
+      ? MakeAiProviderForShape(rec.shape, rec.displayName, baseUrl, rec.apiKey, rec.model)
+      : MakeAiProvider(rec.kind, rec.apiKey, rec.model);
+  if (!provider) {
+    if (userAsked)
+      showStatus(_("No provider to ask."));
+    return;
+  }
+  if (provider->ModelsRequestUrl().IsEmpty()) {
+    if (userAsked)
+      showStatus(wxString::Format(_("%s does not offer a list of models."), rec.displayName));
+    return;
+  }
+
+  showStatus(_("Fetching the list of models..."));
+  m_aiRefreshModelsButton->Disable();
+
+  // wxTheApp, not `this`, is the event sink: wxWebRequest keeps a raw
+  // wxEvtHandler pointer and has no way to learn that the dialog it was
+  // given has been closed in the meantime, so handing it a dialog would
+  // leave it delivering completion events into freed memory. `alive` is
+  // what tells the callback the UI it wants to touch is still there.
+  auto alive = m_aiUiAlive;
+  AiProvider::FetchModels(
+    provider, wxTheApp,
+    [this, alive, userAsked](bool ok, const std::vector<wxString> &models,
+                             const wxString &errorIfAny) {
+      if (!alive || !*alive)
+        return;
+      m_aiRefreshModelsButton->Enable();
+      if (!ok) {
+        // Quiet on an automatic fetch: a provider the user has not
+        // finished configuring yet fails here by construction, and
+        // reporting that on every selection change would be noise.
+        if (userAsked) {
+          m_aiModelFetchStatus->SetLabel(
+            wxString::Format(_("Could not fetch the model list: %s"), errorIfAny));
+          m_aiModelFetchStatus->Show(true);
+          RelayoutAiChatPanel();
+        } else {
+          m_aiModelFetchStatus->SetLabel(wxEmptyString);
+          m_aiModelFetchStatus->Show(false);
+          RelayoutAiChatPanel();
+        }
+        return;
+      }
+      // Only the dropdown's contents are replaced. Whatever is typed in
+      // the text part stays exactly as it is, including a model that is
+      // not in the list at all -- the list is an offer, not a constraint.
+      const wxString typed = m_aiModelCtrl->GetValue();
+      m_aiModelCtrl->Clear();
+      for (const auto &model : models)
+        m_aiModelCtrl->Append(model);
+      m_aiModelCtrl->ChangeValue(typed);
+      m_aiModelFetchStatus->SetLabel(
+        models.empty()
+          ? _("The provider reported no models.")
+          : wxString::Format(wxPLURAL("%lu model offered.", "%lu models offered.",
+                                      models.size()),
+                             static_cast<unsigned long>(models.size())));
+      m_aiModelFetchStatus->Show(true);
+      RelayoutAiChatPanel();
+    });
 }
 
 /*! Re-lays-out the AI Chat tab after controls on it were shown or hidden.

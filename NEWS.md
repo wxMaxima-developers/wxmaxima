@@ -1,5 +1,13 @@
 # Current development version
 
+- The AI Chat settings now offer a model to pick instead of only a name to
+  type: selecting a provider asks it which models it currently has, and the
+  Model field became a dropdown listing them. It stays a text field as well,
+  so a model the provider doesn't advertise -- a fine-tune, a preview, or
+  whatever a local server was started with -- can still simply be typed, and
+  a provider that offers no such list, or can't be reached, works exactly as
+  before.
+
 - Compiling wxMaxima is about a third faster. Precompiled headers are now
   switched on by default -- and, more to the point, they now actually do
   something: the option to enable them has existed for years, but the header

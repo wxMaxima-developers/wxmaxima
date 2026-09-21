@@ -35,6 +35,44 @@ using json = nlohmann::json;
 
 namespace {
 
+//! Drops `suffix` from the end of `url` if it is there, then any trailing
+//! slashes. Shared by the ModelsRequestUrl() implementations, which all
+//! amount to "take the chat endpoint and swap its last segment".
+wxString UrlWithoutSuffix(const wxString &url, const wxString &suffix) {
+  wxString result = url;
+  result.Trim(true).Trim(false);
+  if (!suffix.IsEmpty() && result.EndsWith(suffix))
+    result = result.Left(result.Length() - suffix.Length());
+  while (result.EndsWith(wxS("/")))
+    result = result.Left(result.Length() - 1);
+  return result;
+}
+
+/*! The model ids in an OpenAI-shaped {"data":[{"id":...}]} response.
+
+  Anthropic's own model list happens to use this exact shape too, so both
+  of those providers share this and only Google needs its own. */
+std::vector<wxString> ParseOpenAiShapedModelList(const wxString &responseBody) {
+  try {
+    json j = json::parse(wxm::ToUtf8(responseBody));
+    if (!j.contains("data") || !j["data"].is_array())
+      throw AiProviderError("The model list had no \"data\" array in it.");
+    std::vector<wxString> ids;
+    for (const auto &entry : j.at("data")) {
+      if (!entry.is_object())
+        continue;
+      const std::string id = entry.value("id", std::string());
+      if (!id.empty())
+        ids.push_back(wxm::FromUtf8(id));
+    }
+    return ids;
+  } catch (const AiProviderError &) {
+    throw;
+  } catch (const std::exception &e) {
+    throw AiProviderError(std::string("Could not read the model list: ") + e.what());
+  }
+}
+
 //! Anthropic Messages API (https://api.anthropic.com/v1/messages).
 class AnthropicProvider : public AiProvider {
 public:
@@ -55,6 +93,17 @@ public:
     if (!m_apiKey.IsEmpty())
       headers.push_back({wxS("x-api-key"), m_apiKey});
     return headers;
+  }
+
+  //! ".../v1/messages" -> ".../v1/models". Confirmed against the real
+  //! endpoint: an unauthenticated GET to https://api.anthropic.com/v1/models
+  //! answers with Anthropic's own 401 ("x-api-key header is required"),
+  //! i.e. the route exists and only wants a key.
+  wxString ModelsRequestUrl() const override {
+    const wxString stripped = UrlWithoutSuffix(m_baseUrl, wxS("/messages"));
+    if (stripped.IsEmpty())
+      return wxEmptyString;
+    return stripped + wxS("/models");
   }
 
   wxString BuildRequestBody(const wxString &context,
@@ -156,6 +205,62 @@ public:
 
   wxString RequestUrl() const override {
     return m_baseUrl + m_model + wxS(":generateContent");
+  }
+
+  //! Google's list lives at the same ".../v1beta/models" this provider's
+  //! base URL already is, minus the trailing slash RequestUrl() needs in
+  //! order to append the model id. Confirmed against the real endpoint:
+  //! an unauthenticated GET answers 403 "Please use API Key", i.e. the
+  //! route exists and only wants a key.
+  wxString ModelsRequestUrl() const override {
+    return UrlWithoutSuffix(m_baseUrl, wxEmptyString);
+  }
+
+  /*! Google answers {"models":[{"name":"models/gemini-...",
+    "supportedGenerationMethods":[...]}]} -- a different shape from
+    everyone else's, and one that lists models this provider cannot
+    actually use (embedding-only ones, for instance), so entries that
+    don't advertise generateContent are dropped. An entry that doesn't say
+    either way is kept: an unexpected omission should not silently hide a
+    model the user may well be able to select. */
+  std::vector<wxString> ParseModelList(const wxString &responseBody) const override {
+    try {
+      json j = json::parse(wxm::ToUtf8(responseBody));
+      if (!j.contains("models") || !j["models"].is_array())
+        throw AiProviderError("The model list had no \"models\" array in it.");
+      std::vector<wxString> ids;
+      for (const auto &entry : j.at("models")) {
+        if (!entry.is_object())
+          continue;
+        std::string name = entry.value("name", std::string());
+        if (name.empty())
+          continue;
+        if (entry.contains("supportedGenerationMethods") &&
+            entry["supportedGenerationMethods"].is_array()) {
+          bool canGenerate = false;
+          for (const auto &method : entry.at("supportedGenerationMethods"))
+            if (method.is_string() && (method.get<std::string>() == "generateContent"))
+              canGenerate = true;
+          if (!canGenerate)
+            continue;
+        }
+        // The chat endpoint is built as <base>/<id>:generateContent, and
+        // <base> already ends in "models/" -- so the id this UI needs is
+        // the bare "gemini-2.0-flash", not the "models/gemini-2.0-flash"
+        // Google reports. Leaving the prefix on would build a URL with
+        // "models/models/" in it.
+        const std::string prefix = "models/";
+        if (name.compare(0, prefix.size(), prefix) == 0)
+          name = name.substr(prefix.size());
+        if (!name.empty())
+          ids.push_back(wxm::FromUtf8(name));
+      }
+      return ids;
+    } catch (const AiProviderError &) {
+      throw;
+    } catch (const std::exception &e) {
+      throw AiProviderError(std::string("Could not read the model list: ") + e.what());
+    }
   }
 
   std::vector<std::pair<wxString, wxString>> AuthHeaders() const override {
@@ -548,6 +653,117 @@ bool AiProvider::NetworkingAvailable() {
   return true;
 #else
   return false;
+#endif
+}
+
+wxString AiProvider::ModelsRequestUrl() const {
+  const wxString stripped = UrlWithoutSuffix(m_baseUrl, wxS("/chat/completions"));
+  if (stripped.IsEmpty())
+    return wxEmptyString;
+  return stripped + wxS("/models");
+}
+
+std::vector<wxString> AiProvider::ParseModelList(const wxString &responseBody) const {
+  return ParseOpenAiShapedModelList(responseBody);
+}
+
+void AiProvider::FetchModels(
+  std::shared_ptr<const AiProvider> self, wxEvtHandler *owner,
+  std::function<void(bool ok, const std::vector<wxString> &models,
+                     const wxString &errorIfAny)> callback) {
+  const std::vector<wxString> none;
+  if (!self || !owner) {
+    callback(false, none, _("No provider to ask."));
+    return;
+  }
+  const wxString url = self->ModelsRequestUrl();
+  if (url.IsEmpty()) {
+    callback(false, none,
+             wxString::Format(_("%s does not offer a list of models."), self->Name()));
+    return;
+  }
+#if wxUSE_WEBREQUEST
+  // Everything below mirrors SendChat() deliberately -- the unique
+  // wxWindowIDRef, the shared_ptr capture, the `done` guard and the
+  // State_Unauthorized case are all load-bearing for the same reasons
+  // documented there at length, and an "it's only a GET, it can be
+  // simpler" version of this would reintroduce every one of those bugs.
+  wxWindowIDRef requestId = wxWindow::NewControlId();
+  wxWebRequest request = wxWebSession::GetDefault().CreateRequest(owner, url, requestId);
+  if (!request.IsOk()) {
+    callback(false, none, _("Could not create the HTTP request."));
+    return;
+  }
+  for (const auto &header : self->AuthHeaders())
+    request.SetHeader(header.first, header.second);
+  request.SetMethod(wxS("GET"));
+
+  // `done` is not optional, for the same reason SendChat() needs one: the
+  // State_Unauthorized case answers by cancelling the request, and that
+  // cancellation raises a *second* terminal event (State_Cancelled) for
+  // this same id. Without the guard the caller's callback would fire
+  // twice for one fetch -- once with the 401 and once with "cancelled",
+  // the second overwriting the first and hiding the real reason.
+  auto done = std::make_shared<bool>(false);
+  owner->Bind(
+    wxEVT_WEBREQUEST_STATE,
+    [requestId, self, callback, done](wxWebRequestEvent &evt) {
+      static const std::vector<wxString> empty;
+      if (evt.GetId() != requestId)
+        return;
+      if (*done)
+        return;
+      switch (evt.GetState()) {
+      case wxWebRequest::State_Completed: {
+        wxWebResponse response = evt.GetResponse();
+        const int status = response.GetStatus();
+        const wxString responseBody = response.AsString();
+        *done = true;
+        if ((status < 200) || (status >= 300)) {
+          callback(false, empty,
+                   wxString::Format(_("%s returned HTTP %d: %s"), self->Name(), status,
+                                    responseBody.Left(300)));
+          return;
+        }
+        try {
+          callback(true, self->ParseModelList(responseBody), wxEmptyString);
+        } catch (const AiProviderError &e) {
+          callback(false, empty, wxm::FromUtf8(e.what()));
+        }
+        break;
+      }
+      // See SendChat()'s own State_Unauthorized case: a 401 is diverted
+      // here rather than reported as a non-2xx completion, and a request
+      // left sitting in this state never produces another event on its
+      // own, so it has to be treated as terminal and cancelled explicitly.
+      case wxWebRequest::State_Unauthorized: {
+        wxWebResponse response = evt.GetResponse();
+        const wxString detail = response.IsOk() ? response.AsString().Left(300) : wxString();
+        *done = true;
+        callback(false, empty,
+                 wxString::Format(_("%s rejected the API key (HTTP 401): %s"),
+                                  self->Name(), detail));
+        wxWebRequest req = evt.GetRequest();
+        req.Cancel();
+        break;
+      }
+      case wxWebRequest::State_Failed:
+        *done = true;
+        callback(false, empty, evt.GetErrorDescription());
+        break;
+      case wxWebRequest::State_Cancelled:
+        *done = true;
+        callback(false, empty, _("The request for the model list was cancelled."));
+        break;
+      default:
+        // Active/Idle: not terminal, nothing to report yet.
+        return;
+      }
+    });
+  request.Start();
+#else
+  callback(false, none,
+           _("This build of wxMaxima has no network support compiled in."));
 #endif
 }
 
