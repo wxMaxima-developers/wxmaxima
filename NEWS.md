@@ -1,5 +1,9 @@
 # Current development version
 
+- Building the unit tests with `-DCMAKE_UNITY_BUILD=ON` works again. One of
+  the test harness's stub files has to be compiled on its own, and merging it
+  with a test that defines the same function differently made the compiler
+  refuse the whole translation unit.
 - The AI Chat settings now offer a model to pick instead of only a name to
   type: a "Fetch models" button beside the Model field asks the provider
   which models it currently has and fills the field's dropdown with them.
