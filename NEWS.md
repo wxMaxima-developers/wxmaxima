@@ -1,5 +1,11 @@
 # Current development version
 
+- A custom AI provider can now sit behind HTTP Basic authentication, which
+  is what Ollama's own documentation recommends for an instance reachable
+  from beyond localhost. Fill in the new Username field in Options -> AI
+  Chat and the credential below it is sent as the Basic password rather
+  than as an API key -- the field relabels itself to say so. Leaving the
+  username empty keeps every provider behaving exactly as before.
 - An AI tool connected to wxMaxima's MCP server can now ask which sidebars
   are on screen and show or hide them, so it can open the Variables pane
   before talking about variables, or clear a sidebar out of the way, instead

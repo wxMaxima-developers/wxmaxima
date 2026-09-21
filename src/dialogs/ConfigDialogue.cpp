@@ -687,6 +687,7 @@ void ConfigDialogue::SetCheckboxValues() {
       rec.shape = custom.shape;
       rec.baseUrl = custom.baseUrl;
       rec.model = custom.model;
+      rec.username = custom.username;
       rec.apiKey = AiProvider::LoadApiKey(AiProvider::CustomProviderSecretService(custom.id));
       m_aiProviderRecords.push_back(rec);
     }
@@ -2097,7 +2098,11 @@ wxWindow *ConfigDialogue::CreateAiChatPanel() {
   // StashAiProviderUiIntoRecord()).
   m_aiProviderDetailBox = new wxStaticBoxSizer(wxVERTICAL, panel, wxEmptyString);
   wxWindow *detailBoxWin = m_aiProviderDetailBox->GetStaticBox();
-  wxFlexGridSizer *grid = new wxFlexGridSizer(4, 2, 5, 5);
+  // Five rows: API style, Request URL, Username, API key/Password, Model.
+  // Both counts are fixed here, so this sizer hard-caps at rows*cols items
+  // and asserts on the overflow -- adding a row means bumping this 5 in the
+  // same edit.
+  wxFlexGridSizer *grid = new wxFlexGridSizer(5, 2, 5, 5);
   grid->AddGrowableCol(1);
 
   m_aiShapeLabel = new wxStaticText(detailBoxWin, wxID_ANY, _("API style:"));
@@ -2122,8 +2127,27 @@ wxWindow *ConfigDialogue::CreateAiChatPanel() {
                                    wxSize(300 * GetContentScaleFactor(), -1));
   grid->Add(m_aiBaseUrlCtrl, wxSizerFlags().Expand());
 
-  grid->Add(new wxStaticText(detailBoxWin, wxID_ANY, _("API key:")),
-           wxSizerFlags().Align(wxALIGN_CENTER_VERTICAL));
+  // Only shown for a Custom entry: a built-in provider talks to a known
+  // endpoint that authenticates by API key, never by HTTP Basic. Filling
+  // this in switches the credential below from an API key to a Basic
+  // password -- see AiCustomProviderConfig::username.
+  m_aiUsernameLabel = new wxStaticText(detailBoxWin, wxID_ANY, _("Username:"));
+  grid->Add(m_aiUsernameLabel, wxSizerFlags().Align(wxALIGN_CENTER_VERTICAL));
+  m_aiUsernameCtrl = new wxTextCtrl(detailBoxWin, wxID_ANY, wxEmptyString,
+                                    wxDefaultPosition,
+                                    wxSize(300 * GetContentScaleFactor(), -1));
+  m_aiUsernameCtrl->SetToolTip(
+    _("Leave empty unless this endpoint sits behind an HTTP Basic "
+      "authentication proxy. Filling it in sends the credential below as "
+      "the Basic password instead of as an API key."));
+  m_aiUsernameCtrl->Bind(wxEVT_TEXT, &ConfigDialogue::OnAiUsernameChanged, this);
+  grid->Add(m_aiUsernameCtrl, wxSizerFlags().Expand());
+
+  // The label is a member because it has to say which of the two this
+  // field currently is -- a password box that silently changes meaning
+  // depending on another field would be a trap.
+  m_aiKeyLabel = new wxStaticText(detailBoxWin, wxID_ANY, _("API key:"));
+  grid->Add(m_aiKeyLabel, wxSizerFlags().Align(wxALIGN_CENTER_VERTICAL));
   m_aiKeyCtrl = new wxTextCtrl(detailBoxWin, wxID_ANY, wxEmptyString,
                                wxDefaultPosition,
                                wxSize(300 * GetContentScaleFactor(), -1),
@@ -2226,7 +2250,22 @@ void ConfigDialogue::StashAiProviderUiIntoRecord() {
   if (rec.kind == AiProviderKind::Custom) {
     rec.baseUrl = m_aiBaseUrlCtrl->GetValue();
     rec.shape = AiProviderShapeFromChoiceIndex(m_aiShapeChoice->GetSelection());
+    rec.username = m_aiUsernameCtrl->GetValue();
   }
+}
+
+void ConfigDialogue::OnAiUsernameChanged(wxCommandEvent &WXUNUSED(event)) {
+  UpdateAiCredentialLabel();
+}
+
+void ConfigDialogue::UpdateAiCredentialLabel() {
+  // The field below the username holds one secret whose meaning depends on
+  // whether a username was given: a Basic-auth password when it was, an
+  // API key when it wasn't. Say which, rather than leaving the user to
+  // infer it from an unrelated field two rows up.
+  m_aiKeyLabel->SetLabel(m_aiUsernameCtrl->GetValue().IsEmpty()
+                           ? _("API key:")
+                           : _("Password:"));
 }
 
 void ConfigDialogue::LoadAiProviderRecordIntoUi(int index) {
@@ -2256,6 +2295,16 @@ void ConfigDialogue::LoadAiProviderRecordIntoUi(int index) {
   m_aiShapeChoice->Show(isCustom);
   if (isCustom)
     m_aiShapeChoice->SetSelection(AiProviderShapeToChoiceIndex(rec.shape));
+
+  // Basic auth is a Custom-entry concept: a built-in talks to a known
+  // endpoint that authenticates by API key. ChangeValue(), not SetValue(),
+  // so repopulating the shared controls on a provider switch doesn't fire
+  // wxEVT_TEXT and relabel the credential field from under the record
+  // being loaded.
+  m_aiUsernameLabel->Show(isCustom);
+  m_aiUsernameCtrl->Show(isCustom);
+  m_aiUsernameCtrl->ChangeValue(isCustom ? rec.username : wxString());
+  UpdateAiCredentialLabel();
   m_aiBaseUrlCtrl->SetValue(isCustom ? rec.baseUrl : AiProviderBaseUrl(rec.kind));
   m_aiBaseUrlCtrl->SetEditable(isCustom);
   m_aiRemoveCustomProviderButton->Show(isCustom);
@@ -3020,7 +3069,8 @@ void ConfigDialogue::WriteSettings() {
     for (const auto &rec : m_aiProviderRecords) {
       if (rec.kind == AiProviderKind::Custom) {
         AiProvider::SaveApiKey(AiProvider::CustomProviderSecretService(rec.customId), rec.apiKey);
-        customProviders.push_back({rec.customId, rec.displayName, rec.shape, rec.baseUrl, rec.model});
+        customProviders.push_back({rec.customId, rec.displayName, rec.shape,
+                                   rec.baseUrl, rec.model, rec.username});
         continue;
       }
       switch (rec.kind) {
