@@ -1,5 +1,9 @@
 # Current development version
 
+- Building the unit tests with `-DCMAKE_UNITY_BUILD=ON` works again. One of
+  the test harness's stub files has to be compiled on its own, and merging it
+  with a test that defines the same function differently made the compiler
+  refuse the whole translation unit.
 - Compiling wxMaxima is about a third faster. Precompiled headers are now
   switched on by default -- and, more to the point, they now actually do
   something: the option to enable them has existed for years, but the header

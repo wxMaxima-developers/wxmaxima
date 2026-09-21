@@ -149,18 +149,43 @@ before trusting them on different hardware, but the ratios are the point.
   is it. A precompiled header hands every source file the whole of wx whether
   it included it or not, so a missing `#include` compiles everywhere else and
   fails only there. Don't "tidy" that `=NO` away.
-- **Unity builds are not the default, but the tree is kept able to do one.**
-  `cmake -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=16` works and is
-  by far the fastest clean build. Two things break it, and both were real here:
+- **Unity builds are not the default for a local build, but CI does them and
+  the tree has to stay able to.** `cmake -DCMAKE_UNITY_BUILD=ON
+  -DCMAKE_UNITY_BUILD_BATCH_SIZE=16` works and is by far the fastest clean
+  build. Three things have broken it so far, all of them real here:
   a header with no include guard (`wxMaximaArtProvider.h` had none, which is a
-  latent bug regardless), and two files defining the same name in their own
+  latent bug regardless); two files defining the same name in their own
   anonymous namespaces -- `U8`/`FromU8` existed identically in `AiProvider.cpp`
   and `McpTools.cpp` and now live once, as `wxm::ToUtf8`/`wxm::FromUtf8` in
-  `StringUtils.h`. Nothing in CI guards this, so expect to fix a collision of
-  that shape if you turn it on after a while.
+  `StringUtils.h`; and a file that has to be its own translation unit getting
+  batched with one that contradicts it, which is
+  `test/unit_tests/groupcell_test_stubs.cpp` and its
+  `SKIP_UNITY_BUILD_INCLUSION` property -- see the entry on it below.
+  **Correcting this entry's own earlier claim that "nothing in CI guards
+  this": since the build-speed work landed, `compile_latest_and_test` and the
+  sanitizer job both pass `-DCMAKE_UNITY_BUILD=ON`, so a collision of this
+  shape now turns CI red rather than lying latent.** That is the point of
+  running it there, but it also means such a break is no longer something to
+  discover at leisure: check a unity build locally before adding a source file
+  whose symbols deliberately stand in for another file's.
 - **Combining the two buys nothing** (51s vs 53s): they remove the same cost,
   which is parsing the same headers once per translation unit. Don't stack them
   and expect to add up the savings.
+- **`test/unit_tests/groupcell_test_stubs.cpp` carries
+  `SKIP_UNITY_BUILD_INCLUSION`, and removing it turns CI red immediately.**
+  That file supplies the `main.cpp` symbols the app references but the test
+  harness excludes, among them `wxGetApp()`, which it defines as returning
+  `MyApp&`. Nearly every file in that directory declares its own via
+  `wxDECLARE_APP(TestApp)` -- the same function returning `TestApp&` -- and
+  the two are only compatible because they are compiled apart. Batch them
+  into one translation unit and the compiler rejects it outright:
+  `error: ambiguating new declaration of 'MyApp& wxGetApp()'`. This is a
+  genuine conflict, not a warning to paper over, so the fix is to keep the
+  stub in a translation unit of its own rather than to rename anything. It
+  surfaced the moment CI started building with unity on, failing
+  `test_WorksheetLayout` and `test_EditorCellWrapping` on `main`, and it is
+  the shape to expect from any future file whose whole job is to stand in for
+  symbols another file would otherwise define.
 
 `CheckPo4aVersion.cmake` (included from `info/CMakeLists.txt` and
 `locales/manual/CMakeLists.txt`, the only two places that invoke `po4a`)
