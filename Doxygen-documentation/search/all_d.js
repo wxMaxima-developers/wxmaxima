@@ -286,7 +286,7 @@ var searchData=
   ['maximasessioninfo_2eh_283',['MaximaSessionInfo.h',['../MaximaSessionInfo_8h.html',1,'']]],
   ['maximasessionstart_284',['MaximaSessionStart',['../classHistory.html#a4a50b4c22d87784dee4b52719d06c655',1,'History']]],
   ['maximastatus_285',['MaximaStatus',['../classStatusBar.html#af1235c09bed081ebb46dbd8b264f5c96',1,'StatusBar']]],
-  ['maximatokenizer_286',['MaximaTokenizer',['../classMaximaTokenizer.html#aece7dce3250f6c4b86dd977577f74bb5',1,'MaximaTokenizer::MaximaTokenizer(const wxString &amp;commands, const Configuration *const configuration, const TokenList &amp;initialTokens)'],['../classMaximaTokenizer.html#a86f0055757187f8b7533adde1d4a32d0',1,'MaximaTokenizer::MaximaTokenizer(const wxString &amp;commands, const Configuration *const configuration)'],['../classMaximaTokenizer.html',1,'MaximaTokenizer']]],
+  ['maximatokenizer_286',['MaximaTokenizer',['../classMaximaTokenizer.html#a86f0055757187f8b7533adde1d4a32d0',1,'MaximaTokenizer::MaximaTokenizer(const wxString &amp;commands, const Configuration *const configuration)'],['../classMaximaTokenizer.html#aece7dce3250f6c4b86dd977577f74bb5',1,'MaximaTokenizer::MaximaTokenizer(const wxString &amp;commands, const Configuration *const configuration, const TokenList &amp;initialTokens)'],['../classMaximaTokenizer.html',1,'MaximaTokenizer']]],
   ['maximatokenizer_2ecpp_287',['MaximaTokenizer.cpp',['../MaximaTokenizer_8cpp.html',1,'']]],
   ['maximatokenizer_2eh_288',['MaximaTokenizer.h',['../MaximaTokenizer_8h.html',1,'']]],
   ['maximauserlocation_289',['MaximaUserLocation',['../classConfiguration.html#a52c3103a8a856b7ef2263c50e4ce6711',1,'Configuration::MaximaUserLocation() const'],['../classConfiguration.html#ab243f8140f4f378ddd57caa0dbb2b9b0',1,'Configuration::MaximaUserLocation(wxString maxima)']]],
@@ -365,9 +365,10 @@ var searchData=
   ['modelsrequesturl_362',['ModelsRequestUrl',['../classAiProvider.html#adf3e096147c40a1ced3c94cd267c0ae9',1,'AiProvider']]],
   ['mouseselectionstart_363',['MouseSelectionStart',['../classViewCellPointers.html#a69ca67350af0390921aa19fc930a18a8',1,'ViewCellPointers']]],
   ['mouseselectionstartedhere_364',['MouseSelectionStartedHere',['../classEditorCell.html#aeb91a26e7fbfb314b31bfd8625139abe',1,'EditorCell']]],
-  ['mul_365',['mul',['../structdetail_1_1dtoa__impl_1_1diyfp.html#a046c61f2c13411677eedfb5b9b7a8226',1,'detail::dtoa_impl::diyfp']]],
-  ['mux_2evhdl_366',['mux.vhdl',['../mux_8vhdl.html',1,'']]],
-  ['mux_5fout_367',['mux_out',['../classmux__using__with.html#a6258515f40573285292fdb0b9663c422',1,'mux_using_with']]],
-  ['mux_5fusing_5fwith_368',['mux_using_with',['../classmux__using__with.html',1,'']]],
-  ['myapp_369',['MyApp',['../classMyApp.html',1,'']]]
+  ['msgids_365',['msgids',['../namespacecheck__pot__not__truncated.html#a7ca37e679f2775017697ba88812964af',1,'check_pot_not_truncated']]],
+  ['mul_366',['mul',['../structdetail_1_1dtoa__impl_1_1diyfp.html#a046c61f2c13411677eedfb5b9b7a8226',1,'detail::dtoa_impl::diyfp']]],
+  ['mux_2evhdl_367',['mux.vhdl',['../mux_8vhdl.html',1,'']]],
+  ['mux_5fout_368',['mux_out',['../classmux__using__with.html#a6258515f40573285292fdb0b9663c422',1,'mux_using_with']]],
+  ['mux_5fusing_5fwith_369',['mux_using_with',['../classmux__using__with.html',1,'']]],
+  ['myapp_370',['MyApp',['../classMyApp.html',1,'']]]
 ];

@@ -73,6 +73,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><ul>
+<li>Translatable strings now reach translators without waiting for whoever added them to remember to regenerate the catalogue: a weekly job refreshes it, and refuses to commit anything if the regeneration would silently drop strings.</li>
 <li><a class="el" href="classA.html">A</a> custom AI provider can now sit behind HTTP Basic authentication, which is what Ollama's own documentation recommends for an instance reachable from beyond localhost. Fill in the new Username field in Options -&gt; AI Chat and the credential below it is sent as the Basic password rather than as an API key &ndash; the field relabels itself to say so. Leaving the username empty keeps every provider behaving exactly as before.</li>
 <li>An AI tool connected to <a class="el" href="classwxMaxima.html">wxMaxima</a>'s MCP server can now ask which sidebars are on screen and show or hide them, so it can open the Variables pane before talking about variables, or clear a sidebar out of the way, instead of asking you to do it. Like every other MCP tool it cannot touch the worksheet itself: it changes which panes are visible and nothing else, and it refuses to hide the worksheet.</li>
 <li>Building the unit tests with <code>-DCMAKE_UNITY_BUILD=ON</code> works again. One of the test harness's stub files has to be compiled on its own, and merging it with a test that defines the same function differently made the compiler refuse the whole translation unit.</li>

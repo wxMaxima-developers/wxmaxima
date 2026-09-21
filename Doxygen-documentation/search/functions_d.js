@@ -33,7 +33,7 @@ var searchData=
   ['mcpsidebarlist_30',['McpSidebarList',['../classwxMaximaFrame.html#aea81908427b0342af96c7bf5eb60fcba',1,'wxMaximaFrame']]],
   ['measureoutputlines_31',['MeasureOutputLines',['../classGroupCell.html#a6d4320ed6389e2ea7c1c653b70e16dfa',1,'GroupCell']]],
   ['measuretextwidth_32',['MeasureTextWidth',['../classEditorCell.html#a50995740f8f9bcededce3020a036ab54',1,'EditorCell']]],
-  ['member_33',['member',['../classAfterdoc__Test.html#a57ba94e9039ee90a1b191ae0009a05dd',1,'Afterdoc_Test::member()'],['../classAutolink__Test.html#a393ea281f235a2f603d98daf72b0d411',1,'Autolink_Test::member(int)'],['../classAutolink__Test.html#acf783a43c2b4b6cc9dd2361784eca2e1',1,'Autolink_Test::member(int, int)'],['../classFn__Test.html#a823b5c9726bb8f6ece50e57ac8e3092c',1,'Fn_Test::member()']]],
+  ['member_33',['member',['../classFn__Test.html#a823b5c9726bb8f6ece50e57ac8e3092c',1,'Fn_Test::member()'],['../classAutolink__Test.html#acf783a43c2b4b6cc9dd2361784eca2e1',1,'Autolink_Test::member(int, int)'],['../classAutolink__Test.html#a393ea281f235a2f603d98daf72b0d411',1,'Autolink_Test::member(int)'],['../classAfterdoc__Test.html#a57ba94e9039ee90a1b191ae0009a05dd',1,'Afterdoc_Test::member()']]],
   ['menucommand_34',['MenuCommand',['../classwxMaxima.html#ac92da2d00f70ebb78bf96233eda45f82',1,'wxMaxima']]],
   ['menuhelpstring_35',['MenuHelpString',['../MenuHelpString_8h.html#ac67bf830ab57783420c34a9b71898137',1,'MenuHelpString(wxMenu *menu, int id):&#160;MenuHelpString.cpp'],['../MenuHelpString_8cpp.html#ac67bf830ab57783420c34a9b71898137',1,'MenuHelpString(wxMenu *menu, int id):&#160;MenuHelpString.cpp']]],
   ['merge_5fpatch_36',['merge_patch',['../classbasic__json.html#a8676ac2433fe299b8d420f00a0741395',1,'basic_json']]],
@@ -42,5 +42,6 @@ var searchData=
   ['modelsrequesturl_39',['ModelsRequestUrl',['../classAiProvider.html#adf3e096147c40a1ced3c94cd267c0ae9',1,'AiProvider']]],
   ['mouseselectionstart_40',['MouseSelectionStart',['../classViewCellPointers.html#a69ca67350af0390921aa19fc930a18a8',1,'ViewCellPointers']]],
   ['mouseselectionstartedhere_41',['MouseSelectionStartedHere',['../classEditorCell.html#aeb91a26e7fbfb314b31bfd8625139abe',1,'EditorCell']]],
-  ['mul_42',['mul',['../structdetail_1_1dtoa__impl_1_1diyfp.html#a046c61f2c13411677eedfb5b9b7a8226',1,'detail::dtoa_impl::diyfp']]]
+  ['msgids_42',['msgids',['../namespacecheck__pot__not__truncated.html#a7ca37e679f2775017697ba88812964af',1,'check_pot_not_truncated']]],
+  ['mul_43',['mul',['../structdetail_1_1dtoa__impl_1_1diyfp.html#a046c61f2c13411677eedfb5b9b7a8226',1,'detail::dtoa_impl::diyfp']]]
 ];
