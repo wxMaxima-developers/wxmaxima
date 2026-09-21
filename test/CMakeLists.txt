@@ -638,8 +638,9 @@ set_tests_properties(wxmaxima_no_stray_children PROPERTIES RUN_SERIAL TRUE)
 # test counts a line wxMaxima writes to its own stderr, and a GUI-subsystem
 # process's stderr does not reliably reach whoever is capturing it there. That
 # is not this test's bug and not a thing it can work around -- it is the same
-# unexplained failure the wxmaxima_version_string entry in AGENTS.md spent a
-# month on and then shelved, which is why that test's content assertion is
+# unexplained failure the wxmaxima_version_string entry (in the
+# wxmaxima-packaging skill) spent a month on and then shelved, which is why
+# that test's content assertion is
 # non-Windows-only too. Here it cost a real red minGW build: the run itself
 # succeeded, and the captured log was simply empty, so the test read it as
 # "started 0 Maxima processes". What is therefore NOT covered on Windows is
@@ -718,9 +719,9 @@ add_test(
 
 # --version's *output* is asserted on every platform except Windows, where
 # only its exit code is. That is a deliberate, argued-for narrowing, not a
-# test quietly switched off, so here is the whole argument -- and AGENTS.md's
-# long "wxmaxima_version_string CI test failing on the minGW Windows runner"
-# entry has the investigation history it rests on.
+# test quietly switched off, so here is the whole argument -- and the
+# wxmaxima-packaging skill's long "wxmaxima_version_string CI test failing on
+# the minGW Windows runner" entry has the investigation history it rests on.
 #
 # wxmaxima.exe is a GUI-subsystem binary (add_executable(wxmaxima WIN32 ...)),
 # because a console-subsystem GUI app pops up a console window beside every
