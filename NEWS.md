@@ -1,5 +1,11 @@
 # Current development version
 
+- An AI tool connected to wxMaxima's MCP server can now ask which sidebars
+  are on screen and show or hide them, so it can open the Variables pane
+  before talking about variables, or clear a sidebar out of the way, instead
+  of asking you to do it. Like every other MCP tool it cannot touch the
+  worksheet itself: it changes which panes are visible and nothing else, and
+  it refuses to hide the worksheet.
 - Building the unit tests with `-DCMAKE_UNITY_BUILD=ON` works again. One of
   the test harness's stub files has to be compiled on its own, and merging it
   with a test that defines the same function differently made the compiler

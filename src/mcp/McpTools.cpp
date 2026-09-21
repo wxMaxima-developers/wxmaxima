@@ -339,6 +339,40 @@ json McpTools::ListTools() const {
       "to 50 matches; \"truncated\" reports if there would have been more."},
      {"inputSchema", searchSchema}});
 
+  tools.push_back(
+    {{"name", "list_sidebars"},
+     {"description",
+      "List wxMaxima's dockable sidebars and whether each is visible right "
+      "now. Each entry has a \"name\" (the stable identifier show_sidebar/"
+      "hide_sidebar take -- pass this one back, never the caption), a "
+      "human-readable \"caption\" as the user sees it (translated, so it "
+      "changes with the UI language and must not be used as a key), "
+      "\"visible\", and \"can_hide\" (false for the worksheet itself, which "
+      "is the window's centre pane and cannot be hidden)."},
+     {"inputSchema", noArgs}});
+  tools.push_back(
+    {{"name", "show_sidebar"},
+     {"description",
+      "Make a sidebar visible, the same as ticking its entry in the View -> "
+      "Sidebars menu. Takes a \"name\" from list_sidebars. Showing a "
+      "sidebar that is already visible succeeds and changes nothing. This "
+      "only changes which of wxMaxima's own panes are on screen: it cannot "
+      "touch worksheet content, insert or edit a cell, or make Maxima "
+      "evaluate anything."},
+     {"inputSchema", nameArg("The sidebar's name, as reported by "
+                             "list_sidebars -- e.g. \"variables\"")}});
+  tools.push_back(
+    {{"name", "hide_sidebar"},
+     {"description",
+      "Hide a sidebar, the same as unticking its entry in the View -> "
+      "Sidebars menu. Takes a \"name\" from list_sidebars. Hiding a sidebar "
+      "that is already hidden succeeds and changes nothing; asking to hide "
+      "a sidebar whose can_hide is false fails, since the worksheet itself "
+      "cannot be hidden. Like show_sidebar, this changes nothing but which "
+      "panes are on screen."},
+     {"inputSchema", nameArg("The sidebar's name, as reported by "
+                             "list_sidebars -- e.g. \"variables\"")}});
+
   json result;
   result["tools"] = tools;
   return result;
@@ -374,6 +408,12 @@ json McpTools::CallTool(const wxString &name, const json &arguments) const {
     return TextResult(UnwatchVariable(arguments));
   if (name == wxS("search_cells"))
     return TextResult(SearchCells(arguments));
+  if (name == wxS("list_sidebars"))
+    return TextResult(ListSidebars());
+  if (name == wxS("show_sidebar"))
+    return TextResult(ShowSidebar(arguments));
+  if (name == wxS("hide_sidebar"))
+    return TextResult(HideSidebar(arguments));
   throw McpToolError("Unknown tool: " + std::string(name.ToUTF8()));
 }
 
@@ -700,5 +740,90 @@ json McpTools::SearchCells(const json &arguments) const {
   json result;
   result["matches"] = matches;
   result["truncated"] = truncated;
+  return result;
+}
+
+void McpTools::RequireSidebarAccess() const {
+  if (!m_listSidebars || !m_setSidebarVisible)
+    throw McpToolError("This wxMaxima's MCP server has no access to the "
+                       "sidebars, so they can neither be listed nor shown "
+                       "or hidden.");
+}
+
+json McpTools::ListSidebars() const {
+  RequireSidebarAccess();
+
+  json sidebars = json::array();
+  for (const auto &sidebar : m_listSidebars()) {
+    json entry;
+    entry["name"] = wxm::ToUtf8(sidebar.name);
+    entry["caption"] = wxm::ToUtf8(sidebar.caption);
+    entry["visible"] = sidebar.visible;
+    entry["can_hide"] = sidebar.canHide;
+    sidebars.push_back(entry);
+  }
+
+  json result;
+  result["sidebars"] = sidebars;
+  return result;
+}
+
+json McpTools::ShowSidebar(const json &arguments) const {
+  return SetSidebarVisible(arguments, true);
+}
+
+json McpTools::HideSidebar(const json &arguments) const {
+  return SetSidebarVisible(arguments, false);
+}
+
+json McpTools::SetSidebarVisible(const json &arguments, bool show) const {
+  RequireSidebarAccess();
+  const wxString name = RequireString(arguments, "name");
+
+  // Look the sidebar up first rather than handing an unknown name straight
+  // to the frame: wxMaximaFrame::ShowPane() silently does nothing for a name
+  // it doesn't know, which would leave us reporting success for a typo (or
+  // for a pane this build was compiled without).
+  const std::vector<McpSidebarInfo> sidebars = m_listSidebars();
+  const McpSidebarInfo *found = nullptr;
+  for (const auto &sidebar : sidebars) {
+    if (sidebar.name == name) {
+      found = &sidebar;
+      break;
+    }
+  }
+  if (!found) {
+    wxString known;
+    for (const auto &sidebar : sidebars) {
+      if (!known.IsEmpty())
+        known += wxS(", ");
+      known += sidebar.name;
+    }
+    throw McpToolError("No sidebar named \"" + std::string(name.ToUTF8()) +
+                       "\". Known sidebars: " + std::string(known.ToUTF8()) +
+                       ". Note that these are the untranslated names "
+                       "list_sidebars reports as \"name\", not the "
+                       "human-readable captions.");
+  }
+  if (!show && !found->canHide)
+    throw McpToolError("The sidebar \"" + std::string(name.ToUTF8()) +
+                       "\" cannot be hidden: it is the worksheet itself, "
+                       "which is the window's centre pane.");
+
+  m_setSidebarVisible(name, show);
+
+  json result;
+  result["ok"] = true;
+  result["name"] = wxm::ToUtf8(name);
+  // Read the state back rather than echoing what was asked for, so a pane
+  // that declined to change (a build compiled without it, a perspective that
+  // overrode it) is visible as such instead of being reported as done.
+  result["visible"] = show;
+  for (const auto &sidebar : m_listSidebars()) {
+    if (sidebar.name == name) {
+      result["visible"] = sidebar.visible;
+      break;
+    }
+  }
   return result;
 }

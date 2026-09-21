@@ -325,6 +325,16 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
       // Needs both GetWorksheet() and m_variablesPane, so this has to wait
       // until here rather than running any earlier in the constructor.
       m_mcpServer = std::make_unique<McpServer>(GetWorksheet(), m_variablesPane);
+      // Safe to wire up here even though several panes (the symbol sidebars,
+      // the wizard, find, help, and the AI ones) are only registered further
+      // down this same constructor: both lambdas read m_sidebarNames fresh on
+      // every call, so they report whatever is registered by the time an MCP
+      // request actually arrives -- long after the constructor has finished.
+      m_mcpServer->SetSidebarAccess(
+                                    [this] { return McpSidebarList(); },
+                                    [this](const wxString &name, bool show) {
+                                      return McpSetSidebarVisible(name, show);
+                                    });
       ReconcileMcpServer();
 
 #ifdef WXM_USE_AI_TOOLS
@@ -2461,6 +2471,57 @@ void wxMaximaFrame::ShowPane(int id, bool show) {
       }
     }
   AuiManagerUpdate();
+}
+
+std::vector<McpSidebarInfo> wxMaximaFrame::McpSidebarList() const {
+  std::vector<McpSidebarInfo> sidebars;
+  for (const auto &[paneId, name] : m_sidebarNames) {
+    // GetPane() hands back a shared "not a pane" object for a name it
+    // doesn't know. Every name in m_sidebarNames is registered with
+    // AddPane() right where it is assigned, so this should never trigger --
+    // but reporting a pane we can't actually read the state of would be
+    // worse than leaving it out.
+    const wxAuiPaneInfo &pane =
+      const_cast<wxAuiManager &>(m_manager).GetPane(name);
+    if (!pane.IsOk())
+      continue;
+    McpSidebarInfo info;
+    info.name = name;
+    auto caption = m_sidebarCaption.find(paneId);
+    info.caption =
+      (caption != m_sidebarCaption.end()) ? caption->second : name;
+    info.visible = pane.IsShown();
+    // ShowPane() refuses to hide the worksheet and asserts if asked to, so
+    // say up front that this one is not hideable rather than letting a tool
+    // call walk into that assert.
+    info.canHide = (paneId != EventIDs::menu_pane_console);
+    sidebars.push_back(info);
+  }
+  // m_sidebarNames is an unordered_map, so without this the same wxMaxima
+  // would list its sidebars in a different order from one run to the next.
+  std::sort(sidebars.begin(), sidebars.end(),
+            [](const McpSidebarInfo &a, const McpSidebarInfo &b) {
+              return a.name < b.name;
+            });
+  return sidebars;
+}
+
+bool wxMaximaFrame::McpSetSidebarVisible(const wxString &name, bool show) {
+  for (const auto &[paneId, paneName] : m_sidebarNames) {
+    if (paneName != name)
+      continue;
+    if (!show && (paneId == EventIDs::menu_pane_console))
+      return false;
+    // Deliberately routed through ShowPane() rather than poking
+    // m_manager.GetPane(...).Show() directly: that is the same path the
+    // View -> Sidebars menu entries take, so it picks up the
+    // AuiManagerUpdate() (and anything else that grows here later) for free,
+    // and un-minimizes a minimized pane as a side effect -- see the AUI
+    // RestorePane() note in AGENTS.md.
+    ShowPane(paneId, show);
+    return true;
+  }
+  return false;
 }
 
 void wxMaximaFrame::ShowToolBar(bool show) {

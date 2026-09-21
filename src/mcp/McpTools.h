@@ -27,10 +27,36 @@
 #include <functional>
 #include <stdexcept>
 #include <string>
+#include <vector>
 
 class Worksheet;
 class Variablespane;
 class GroupCell;
+
+/*! One dockable sidebar, as list_sidebars reports it.
+
+  \attention `name` is the stable, untranslated key wxMaximaFrame stores a
+  pane under (m_sidebarNames -- "structure", "variables", ...), and is the
+  only thing show_sidebar/hide_sidebar accept. `caption` is what the user
+  actually sees, and is passed through _(), so it changes with the UI
+  language -- an AI that keyed off it would stop working the moment wxMaxima
+  runs in anything but English.
+*/
+struct McpSidebarInfo {
+  //! The stable, untranslated identifier show_sidebar/hide_sidebar take.
+  wxString name;
+  //! The translated, human-readable caption the user sees on the pane.
+  wxString caption;
+  //! Is this sidebar visible right now?
+  bool visible = false;
+  /*! Can this pane be hidden at all? False for the worksheet itself, which
+    is wxAUI's centre pane: wxMaximaFrame::ShowPane() refuses to hide it and
+    asserts if asked to, so hide_sidebar has to reject it before that point
+    rather than tripping an assert inside what is, from the caller's point
+    of view, an ordinary tool call.
+  */
+  bool canHide = true;
+};
 
 /*! Thrown by McpTools::CallTool() for an unknown tool name or invalid/missing
   arguments. The transport layer (McpServer) catches this and turns it into a
@@ -87,6 +113,26 @@ public:
       m_isMaximaConnected = std::move(isConnected);
     }
 
+  /*! Lets the owner plug in access to wxMaximaFrame's dockable sidebars, for
+    the same reason SetConnectionCheck() exists: which panes there are and
+    whether each is shown lives on wxMaximaFrame, which a Worksheet or
+    Variablespane pointer cannot reach.
+
+    Both halves are set together on purpose. A build that could enumerate
+    sidebars but not toggle them (or the reverse) would advertise tools that
+    are only half-functional, and nothing at the tool layer could tell that
+    apart from a genuine failure. Left unset -- which is the default, and
+    what every test that doesn't care about sidebars does -- all three
+    sidebar tools throw McpToolError saying so, rather than silently
+    reporting an empty list that reads like "this wxMaxima has no sidebars."
+  */
+  void SetSidebarAccess(std::function<std::vector<McpSidebarInfo>()> list,
+                        std::function<bool(const wxString &, bool)> setVisible)
+    {
+      m_listSidebars = std::move(list);
+      m_setSidebarVisible = std::move(setVisible);
+    }
+
   //! The tools/list result: name/description/inputSchema for every tool below.
   nlohmann::json ListTools() const;
 
@@ -115,6 +161,28 @@ public:
   //! instead of reading everything via read_worksheet/list_cells. Read-only,
   //! same as every other tool here -- it never touches worksheet content.
   nlohmann::json SearchCells(const nlohmann::json &arguments) const;
+  /*! Which dockable sidebars exist and which are visible right now.
+
+    Requested by the maintainer alongside show_sidebar/hide_sidebar. Purely
+    a read, like every tool above it: it reports what the window currently
+    looks like and changes nothing.
+  */
+  nlohmann::json ListSidebars() const;
+  /*! Show a sidebar, the same as ticking its View -> Sidebars menu entry.
+
+    This is a write, and only the third one here (after watch_variable/
+    unwatch_variable). It is in the same category as those two rather than
+    in the category the "no write/evaluate tools" rule exists to keep out:
+    it changes which of wxMaxima's own panes are on screen and nothing
+    else. It cannot touch worksheet content, cannot insert or edit a cell,
+    and cannot cause Maxima to evaluate anything -- the blast radius is
+    exactly "the window looks different," which the user can undo with one
+    click and can see has happened.
+  */
+  nlohmann::json ShowSidebar(const nlohmann::json &arguments) const;
+  //! Hide a sidebar. See ShowSidebar() for why this counts as a safe write.
+  //! Refuses to hide the worksheet itself -- see McpSidebarInfo::canHide.
+  nlohmann::json HideSidebar(const nlohmann::json &arguments) const;
 
   //! A cap on how much text a single response ever carries (read_worksheet/
   //! read_section), so a huge worksheet can't produce an unbounded reply.
@@ -136,6 +204,21 @@ private:
   Variablespane *m_variablesPane;
   //! See SetConnectionCheck(). Empty (never set) means "assume connected."
   std::function<bool()> m_isMaximaConnected;
+  //! See SetSidebarAccess(). Both empty unless production wiring set them.
+  std::function<std::vector<McpSidebarInfo>()> m_listSidebars;
+  std::function<bool(const wxString &, bool)> m_setSidebarVisible;
+
+  /*! The shared body of ShowSidebar()/HideSidebar().
+
+    One function rather than two so the "does this sidebar exist", "may it
+    be hidden" and "did the toggle actually take" checks cannot drift apart
+    between showing and hiding -- the same reasoning CellText() already
+    exists for on the read side.
+  */
+  nlohmann::json SetSidebarVisible(const nlohmann::json &arguments,
+                                   bool show) const;
+  //! Throws McpToolError unless SetSidebarAccess() has been called.
+  void RequireSidebarAccess() const;
 
   //! Finds the (still tree-attached) GroupCell with this UUID, or nullptr.
   GroupCell *FindGroupByUUID(const wxString &uuid) const;

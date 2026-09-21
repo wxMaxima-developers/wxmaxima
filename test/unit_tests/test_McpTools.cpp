@@ -33,6 +33,7 @@
 #include <wx/frame.h>
 #include <wx/log.h>
 #include <algorithm>
+#include <memory>
 #include <vector>
 
 #include "Configuration.h"
@@ -602,6 +603,189 @@ SCENARIO("McpTools::SearchCells() finds cells by plain substring or regex, "
         CHECK(result["matches"].size() == McpTools::MAX_SEARCH_MATCHES);
         CHECK(result["truncated"] == true);
       }
+    }
+  }
+}
+
+SCENARIO("McpTools' sidebar tools report and change which sidebars are "
+        "visible, and nothing else -- requested by the maintainer: let an "
+        "AI query which sidebars are currently visible, and show/hide "
+        "them") {
+  g_ws->ClearDocument();
+  McpTools tools(g_ws, g_vars);
+
+  GIVEN("no sidebar access wired up (the default -- McpTools holds only a "
+        "Worksheet and a Variablespane, neither of which knows about "
+        "panes)") {
+    THEN("all three sidebar tools throw rather than reporting an empty "
+        "list, which would read like \"this wxMaxima has no sidebars\"") {
+      CHECK_THROWS_AS(tools.ListSidebars(), McpToolError);
+      CHECK_THROWS_AS(tools.ShowSidebar(Args("name", "variables")),
+                      McpToolError);
+      CHECK_THROWS_AS(tools.HideSidebar(Args("name", "variables")),
+                      McpToolError);
+    }
+  }
+
+  GIVEN("a stand-in for wxMaximaFrame's panes: the worksheet (which cannot "
+        "be hidden), one visible sidebar and one hidden one") {
+    // A real wxMaximaFrame is far too heavy to build here, and the whole
+    // point of SetSidebarAccess() taking callbacks is that it doesn't need
+    // one -- this pins McpTools' own half of the contract (name lookup, the
+    // can_hide refusal, reading the state back) against a model of the
+    // frame that behaves the way wxMaximaFrame::McpSidebarList()/
+    // McpSetSidebarVisible() do.
+    auto panes = std::make_shared<std::vector<McpSidebarInfo>>();
+    panes->push_back({wxS("console"), wxS("The worksheet"), true, false});
+    panes->push_back({wxS("structure"), wxS("Table of Contents"), true, true});
+    panes->push_back({wxS("variables"), wxS("Variables"), false, true});
+
+    tools.SetSidebarAccess(
+      [panes] { return *panes; },
+      [panes](const wxString &name, bool show) {
+        for (auto &pane : *panes) {
+          if (pane.name != name)
+            continue;
+          if (!show && !pane.canHide)
+            return false;
+          pane.visible = show;
+          return true;
+        }
+        return false;
+      });
+
+    WHEN("ListSidebars() is called") {
+      nlohmann::json result = tools.ListSidebars();
+      THEN("it reports every pane's stable name, its human-readable "
+          "caption, whether it is visible, and whether it may be hidden") {
+        REQUIRE(result["sidebars"].size() == 3);
+        CHECK(result["sidebars"][0]["name"] == "console");
+        CHECK(result["sidebars"][0]["caption"] == "The worksheet");
+        CHECK(result["sidebars"][0]["visible"] == true);
+        // The one pane that is not hideable, flagged as such up front so an
+        // AI never has to discover it by having a call fail.
+        CHECK(result["sidebars"][0]["can_hide"] == false);
+        CHECK(result["sidebars"][2]["name"] == "variables");
+        CHECK(result["sidebars"][2]["visible"] == false);
+        CHECK(result["sidebars"][2]["can_hide"] == true);
+      }
+    }
+
+    WHEN("ShowSidebar() is called for a hidden sidebar") {
+      nlohmann::json result = tools.ShowSidebar(Args("name", "variables"));
+      THEN("it succeeds and reports the sidebar as visible") {
+        CHECK(result["ok"] == true);
+        CHECK(result["name"] == "variables");
+        CHECK(result["visible"] == true);
+      }
+      AND_THEN("ListSidebars() agrees, and no other sidebar moved") {
+        nlohmann::json listed = tools.ListSidebars();
+        CHECK(listed["sidebars"][2]["visible"] == true);
+        CHECK(listed["sidebars"][0]["visible"] == true);
+        CHECK(listed["sidebars"][1]["visible"] == true);
+      }
+    }
+
+    WHEN("ShowSidebar() is called for a sidebar that is already visible") {
+      nlohmann::json result = tools.ShowSidebar(Args("name", "structure"));
+      THEN("it succeeds and changes nothing, rather than toggling it off") {
+        CHECK(result["ok"] == true);
+        CHECK(result["visible"] == true);
+      }
+    }
+
+    WHEN("HideSidebar() is called for a visible sidebar") {
+      nlohmann::json result = tools.HideSidebar(Args("name", "structure"));
+      THEN("it succeeds and reports the sidebar as no longer visible") {
+        CHECK(result["ok"] == true);
+        CHECK(result["visible"] == false);
+      }
+    }
+
+    WHEN("HideSidebar() is asked to hide the worksheet itself") {
+      THEN("it throws instead of trying -- wxMaximaFrame::ShowPane() "
+          "refuses to hide the centre pane and asserts if asked to, so this "
+          "has to be caught here, before that point") {
+        CHECK_THROWS_AS(tools.HideSidebar(Args("name", "console")),
+                        McpToolError);
+      }
+      AND_THEN("the worksheet is still visible") {
+        CHECK(tools.ListSidebars()["sidebars"][0]["visible"] == true);
+      }
+    }
+
+    WHEN("a sidebar name that does not exist is used") {
+      THEN("both tools throw rather than silently doing nothing -- "
+          "wxMaximaFrame::ShowPane() ignores an unknown name, which would "
+          "otherwise have us report success for a typo") {
+        CHECK_THROWS_AS(tools.ShowSidebar(Args("name", "no_such_sidebar")),
+                        McpToolError);
+        CHECK_THROWS_AS(tools.HideSidebar(Args("name", "no_such_sidebar")),
+                        McpToolError);
+      }
+      AND_THEN("the human-readable caption is not accepted as a name "
+              "either: it is translated, so an AI keying off it would stop "
+              "working the moment wxMaxima runs in another language") {
+        CHECK_THROWS_AS(tools.ShowSidebar(Args("name", "Variables")),
+                        McpToolError);
+      }
+    }
+
+    WHEN("the name argument is missing entirely") {
+      THEN("both tools throw McpToolError") {
+        CHECK_THROWS_AS(tools.ShowSidebar(nlohmann::json::object()),
+                        McpToolError);
+        CHECK_THROWS_AS(tools.HideSidebar(nlohmann::json::object()),
+                        McpToolError);
+      }
+    }
+  }
+}
+
+SCENARIO("McpTools::ListTools() advertises the sidebar tools, and CallTool() "
+        "dispatches them by name") {
+  McpTools tools(g_ws, g_vars);
+  auto panes = std::make_shared<std::vector<McpSidebarInfo>>();
+  panes->push_back({wxS("variables"), wxS("Variables"), false, true});
+  tools.SetSidebarAccess([panes] { return *panes; },
+                         [panes](const wxString &, bool show) {
+                           (*panes)[0].visible = show;
+                           return true;
+                         });
+
+  GIVEN("the advertised tool list") {
+    // The temporary ListTools() returns must be held in a named local: a
+    // range-for over `tools.ListTools()["tools"]` iterates a json that has
+    // already been destroyed, because operator[] yields a reference *into*
+    // the temporary rather than the temporary itself, and only the latter
+    // would have its lifetime extended before C++23.
+    const nlohmann::json toolList = tools.ListTools();
+    std::vector<std::string> names;
+    for (const auto &tool : toolList["tools"])
+      names.push_back(tool["name"].get<std::string>());
+
+    THEN("it contains all three sidebar tools") {
+      CHECK(std::find(names.begin(), names.end(), "list_sidebars") !=
+            names.end());
+      CHECK(std::find(names.begin(), names.end(), "show_sidebar") !=
+            names.end());
+      CHECK(std::find(names.begin(), names.end(), "hide_sidebar") !=
+            names.end());
+    }
+  }
+
+  GIVEN("a tools/call by name, the way a real MCP client reaches these") {
+    THEN("show_sidebar dispatches and actually takes effect") {
+      nlohmann::json result =
+        tools.CallTool(wxS("show_sidebar"), Args("name", "variables"));
+      // CallTool() wraps its payload as an MCP text content block; what
+      // matters here is that it reached ShowSidebar() at all.
+      REQUIRE(result.contains("content"));
+      CHECK((*panes)[0].visible == true);
+    }
+    AND_THEN("list_sidebars dispatches too") {
+      CHECK_NOTHROW(
+        tools.CallTool(wxS("list_sidebars"), nlohmann::json::object()));
     }
   }
 }

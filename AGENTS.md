@@ -2188,28 +2188,6 @@ Items the maintainer has flagged as worth doing but hasn't asked for yet -- don'
 start on these without checking in first, but pick them up if asked for "what's
 next" style work.
 
-- **New MCP tools: let an AI query which sidebars are currently visible, and
-  show/hide them.** Explicitly requested by the maintainer (2026-09-09) as
-  "for the next branch and PR" -- i.e. scoped as a deliberately separate PR
-  from the `evaluation_status`/`maxima_connected` work above, not something
-  to fold into it. Not yet started. Likely shape, based on this session's
-  own conventions: a `list_sidebars` (or fold into an existing tool) read
-  query over `wxMaximaFrame`'s existing `m_sidebarNames`/pane-visibility
-  bookkeeping (`ShowPane()`/`IsPaneDisplayed()`, the same generic mechanism
-  the "Dockable Find and Replace" entry above already documents using for
-  every `EventIDs::menu_pane_*` sidebar), plus a `show_sidebar`/`hide_sidebar`
-  pair calling `ShowPane()` directly. Two things worth checking before
-  writing any code: (1) `McpTools` currently only holds a `Worksheet*`/
-  `Variablespane*` -- reaching `wxMaximaFrame`'s pane-visibility API needs
-  the same kind of new plumbing the `maxima_connected` follow-up just added
-  (a callback/pointer threaded in from wherever `McpServer` is actually
-  constructed), not something already reachable; (2) whether toggling a
-  sidebar's visibility is safe to classify alongside `watch_variable`/
-  `unwatch_variable` as a "changes only what's displayed, never worksheet
-  content" write (this section's own "why 'read-only except two things' and
-  not stricter" reasoning) needs confirming with the maintainer the same way
-  those two were, rather than assumed by analogy.
-
 - **GH #1335 -- cell allocations are non-local (still open, unstarted):**
   `Cell`s are still individually heap-allocated and linked via each cell's own
   `m_previous`/`m_next`, not stored contiguously. `CellList.h`'s own header

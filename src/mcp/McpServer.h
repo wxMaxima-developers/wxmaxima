@@ -99,6 +99,16 @@ public:
       m_tools.SetConnectionCheck(std::move(isConnected));
     }
 
+  //! Plugs in access to the dockable sidebars, for list_sidebars/
+  //! show_sidebar/hide_sidebar -- see McpTools::SetSidebarAccess() for why
+  //! this has to come from outside, and why both halves are set together.
+  //! Call once, from wherever this McpServer is constructed.
+  void SetSidebarAccess(std::function<std::vector<McpSidebarInfo>()> list,
+                        std::function<bool(const wxString &, bool)> setVisible)
+    {
+      m_tools.SetSidebarAccess(std::move(list), std::move(setVisible));
+    }
+
 private:
   //! One accepted-but-not-yet-fully-handled HTTP connection.
   struct Connection {
