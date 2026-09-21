@@ -411,7 +411,26 @@ protected:
   //! "API key:" or "Password:", per UpdateAiCredentialLabel().
   wxStaticText *m_aiKeyLabel;
   wxTextCtrl *m_aiKeyCtrl;
-  wxTextCtrl *m_aiModelCtrl;
+  /*! Deliberately a wxComboBox, not a wxChoice: the fetched list is a
+    convenience, never an authority on what the user may type. A provider
+    can offer a model its list endpoint doesn't mention (a fine-tune, a
+    preview id, anything a local server was started with), the fetch can
+    fail, and some providers have no list endpoint at all -- in every one
+    of those cases this still has to behave exactly like the plain text
+    field it replaced. */
+  wxComboBox *m_aiModelCtrl;
+  wxButton *m_aiRefreshModelsButton;
+  //! One line of feedback for the model fetch ("Fetching...", how many
+  //! arrived, or why none did). Starts empty and hidden.
+  wxStaticText *m_aiModelFetchStatus;
+  /*! Cleared in ~ConfigDialogue(). An in-flight model fetch's completion
+    lambda captures a copy and gives up if it reads false, because Options
+    is a dialog the user can close long before a slow or hung HTTP request
+    finishes -- at which point every control the callback would otherwise
+    touch is gone. (The request itself is owned by wxTheApp for the same
+    reason: wxWebRequest delivers its events to a raw wxEvtHandler pointer
+    and cannot be told that the dialog it was given has since died.) */
+  std::shared_ptr<bool> m_aiUiAlive;
   wxHyperlinkCtrl *m_aiApiKeyLink;
   wxHyperlinkCtrl *m_aiModelListLink;
   //! Shown only for a Custom record; deletes it (and its stored API key)
@@ -428,6 +447,18 @@ protected:
   //! key or a Basic-auth password.
   void UpdateAiCredentialLabel();
   void OnAiRemoveCustomProvider(wxCommandEvent &event);
+  void OnAiRefreshModels(wxCommandEvent &event);
+  /*! Asks the currently-shown provider for its model ids and fills the
+    model combobox's dropdown with whatever comes back.
+
+    Only ever reached from the button beside that combobox, never from
+    selecting a provider: most of these list endpoints want an API key,
+    and a settings dialog should not hand one to a third party as a side
+    effect of a dropdown selection. Because every call is therefore a
+    deliberate press, every outcome is reported -- including "this
+    provider has no list to offer". Never disturbs the typed value, only
+    the dropdown's contents. */
+  void StartAiModelFetch();
   //! Copies the on-screen key/model/(baseUrl/shape for Custom) fields back
   //! into m_aiProviderRecords[m_aiActiveProviderRecordIndex], if any --
   //! called before switching the displayed record and before saving.

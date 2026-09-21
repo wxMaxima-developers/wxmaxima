@@ -23,6 +23,19 @@ include_directories(SYSTEM ${CMAKE_SOURCE_DIR}/src/vendor)
 # test until ctest's watchdog kills it. Compiles to nothing off Windows.
 set(WXM_TEST_SETUP "${CMAKE_CURRENT_SOURCE_DIR}/wxm_test_setup.cpp")
 
+# groupcell_test_stubs.cpp must stay a translation unit of its own, so keep a
+# unity build from merging it into one with the test that links it. It exists
+# to supply the main.cpp symbols the app references but the tests exclude --
+# among them wxGetApp(), which it defines as returning MyApp&. Nearly every
+# test file here declares its own via wxDECLARE_APP(TestApp), i.e. the same
+# function returning TestApp&, and two return types for one symbol in a single
+# translation unit is an outright error ("ambiguating new declaration"). The
+# two only coexist because they are compiled apart and never linked into the
+# same definition, which is precisely what this property preserves.
+set_source_files_properties(
+  "${CMAKE_CURRENT_SOURCE_DIR}/groupcell_test_stubs.cpp"
+  PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)
+
 # On Windows a test executable needs an application manifest, or the loader
 # binds COMCTL32 to the legacy 5.82 assembly, which lacks the window-subclassing
 # entry points wx's GUI code imports, and refuses to start it at all. See
@@ -139,7 +152,8 @@ if(WXM_USE_AI_TOOLS)
 # AiProvider's request-building/response-parsing (the AI chat sidebar's
 # per-provider HTTP shapes) is pure JSON in and out, so it is tested
 # directly, the same way as MaximaProtocol above -- the actual network call
-# (wxWebRequest-based) needs a live Xvfb session instead, see AGENTS.md.
+# (wxWebRequest-based) needs a live Xvfb session instead -- see the
+# wxmaxima-ai-tools skill.
 add_executable(test_AiProvider test_AiProvider.cpp ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
 target_include_directories(test_AiProvider PRIVATE ${CMAKE_SOURCE_DIR}/src)
 target_link_libraries(test_AiProvider PRIVATE ${wxWidgets_LIBRARIES})
@@ -442,7 +456,8 @@ if(TARGET wxmTestApp)
     # "worksheet context" tools: listing/reading cells, the table of
     # contents, whole sections, and the Variables sidebar's watchlist,
     # against a real headless Worksheet/Variablespane. The HTTP/JSON-RPC
-    # transport itself (McpServer) was verified live instead (see AGENTS.md).
+    # transport itself (McpServer) was verified live instead (see the
+    # wxmaxima-ai-tools skill).
     add_executable(test_McpTools
         test_McpTools.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
         $<TARGET_OBJECTS:wxmTestApp>)
