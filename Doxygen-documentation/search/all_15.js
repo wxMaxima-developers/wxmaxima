@@ -60,6 +60,8 @@ var searchData=
   ['usedarkmode_57',['UseDarkMode',['../classConfiguration.html#a5159a693ed3f4400443a33ffc482f59d',1,'Configuration']]],
   ['userautocompletefile_58',['UserAutocompleteFile',['../classDirstructure.html#a9983e2d05056f5e55105a9d5c6cb63b9',1,'Dirstructure']]],
   ['userconfdir_59',['UserConfDir',['../classDirstructure.html#a41e6178b2f12bd89cf47cb1f83e44791',1,'Dirstructure::UserConfDir()'],['../classDirstructure.html#a098445ee58c9399ff512e3ed20137f5e',1,'Dirstructure::UserConfDir(const wxString &amp;userConfDir)']]],
-  ['usesvgchanged_60',['UsesvgChanged',['../classConfigDialogue.html#ac87a1da42c1b7996d250f5959bbef56f',1,'ConfigDialogue']]],
-  ['useuserlabels_61',['UseUserLabels',['../classConfiguration.html#ae7cc009bfac177678abcc37e3ccc566e',1,'Configuration']]]
+  ['username_60',['username',['../structAiCustomProviderConfig.html#aed1ce2315283c1f599a23b7fc60e5a37',1,'AiCustomProviderConfig']]],
+  ['usesbasicauth_61',['UsesBasicAuth',['../classAiProvider.html#a11cd01901d7392b2ef5a814f79ab3323',1,'AiProvider']]],
+  ['usesvgchanged_62',['UsesvgChanged',['../classConfigDialogue.html#ac87a1da42c1b7996d250f5959bbef56f',1,'ConfigDialogue']]],
+  ['useuserlabels_63',['UseUserLabels',['../classConfiguration.html#ae7cc009bfac177678abcc37e3ccc566e',1,'Configuration']]]
 ];

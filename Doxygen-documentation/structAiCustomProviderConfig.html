@@ -100,10 +100,32 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><b>baseUrl</b></td><
 <tr class="memitem:abb685ce56a7eff535adf59204c19db70"><td class="memItemLeft" align="right" valign="top"><a id="abb685ce56a7eff535adf59204c19db70" name="abb685ce56a7eff535adf59204c19db70"></a>
 wxString&#160;</td><td class="memItemRight" valign="bottom"><b>model</b></td></tr>
 <tr class="separator:abb685ce56a7eff535adf59204c19db70"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed1ce2315283c1f599a23b7fc60e5a37"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structAiCustomProviderConfig.html#aed1ce2315283c1f599a23b7fc60e5a37">username</a></td></tr>
+<tr class="memdesc:aed1ce2315283c1f599a23b7fc60e5a37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Username for HTTP Basic authentication, empty when none is needed.  <br /></td></tr>
+<tr class="separator:aed1ce2315283c1f599a23b7fc60e5a37"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>One user-added custom provider, as persisted in <a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a>'s AiCustomProvidersJson() (everything except the API key, which lives in the OS secret store, keyed by CustomProviderSecretService(id) &ndash; see <a class="el" href="classAiProvider.html#a5b1e24c3ee7a6d408fdb13442f84ab06" title="Saves (or, for an empty key, deletes) an API key for service – a stable identifier: AiProviderKindNam...">AiProvider::SaveApiKey()</a>/LoadApiKey()). </p>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
+</div><h2 class="groupheader">Field Documentation</h2>
+<a id="aed1ce2315283c1f599a23b7fc60e5a37" name="aed1ce2315283c1f599a23b7fc60e5a37"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aed1ce2315283c1f599a23b7fc60e5a37">&#9670;&#160;</a></span>username</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxString AiCustomProviderConfig::username</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Username for HTTP Basic authentication, empty when none is needed. </p>
+<p>This is for a server put behind a Basic-auth reverse proxy &ndash; which is what Ollama's own documentation recommends for an instance reachable beyond localhost. It is deliberately kept here rather than in the secret store: a username is not a secret, and keeping it in the ordinary config is what lets the UI show which entries use Basic auth without unlocking a keyring.</p>
+<p>When this is set, the entry's stored secret is used as the Basic password* rather than as a provider API key &ndash; there is one credential slot per provider, so the two are mutually exclusive. That covers the case this exists for (a local server with no API key of its own, fronted by a proxy that wants a password) and deliberately not the case of a keyed cloud provider behind a Basic proxy, which needs two separate secrets and so a second field to hold them. </p>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
 <li>src/ai/<a class="el" href="AiProvider_8h_source.html">AiProvider.h</a></li>
 </ul>
 </div><!-- contents -->

@@ -72,6 +72,7 @@ $(function() {
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a>  </div>
   <div class="headertitle"><div class="title">AiProvider Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div></div>
 </div><!--header-->
@@ -97,6 +98,9 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><b>Name</b> () const
 <tr class="memitem:a37d897fc889d1df77bf4908a4ea7b23c"><td class="memItemLeft" align="right" valign="top"><a id="a37d897fc889d1df77bf4908a4ea7b23c" name="a37d897fc889d1df77bf4908a4ea7b23c"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetDisplayName</b> (const wxString &amp;name)</td></tr>
 <tr class="separator:a37d897fc889d1df77bf4908a4ea7b23c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aace370d6be9b7f0bc2549b8b94f3cf02"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAiProvider.html#aace370d6be9b7f0bc2549b8b94f3cf02">SetBasicAuthUser</a> (const wxString &amp;user)</td></tr>
+<tr class="memdesc:aace370d6be9b7f0bc2549b8b94f3cf02"><td class="mdescLeft">&#160;</td><td class="mdescRight">Makes this provider authenticate with HTTP Basic instead of its own credential header, using <code>user</code> and the API key as the password.  <br /></td></tr>
+<tr class="separator:aace370d6be9b7f0bc2549b8b94f3cf02"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac6be3f2661854a26af4777de3548b2cd"><td class="memItemLeft" align="right" valign="top"><a id="ac6be3f2661854a26af4777de3548b2cd" name="ac6be3f2661854a26af4777de3548b2cd"></a>
 virtual wxString&#160;</td><td class="memItemRight" valign="bottom"><b>RequestUrl</b> () const</td></tr>
 <tr class="memdesc:ac6be3f2661854a26af4777de3548b2cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">The full URL <a class="el" href="classAiProvider.html#a076a205621a9d4ac967ea741e89281d8" title="Sends one chat turn asynchronously via wxWebRequest and calls callback(ok, replyOrError) exactly once...">SendChat()</a> will POST to. Virtual so Google's provider can append the model id (its endpoint is per-model, unlike the others). <br /></td></tr>
@@ -154,6 +158,17 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>NetworkingAvai
 <tr class="memdesc:a0b25be23ce1075f467026335804ab956"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if this build of wxWidgets has wxWebRequest at all (&gt;= 3.1.5, built with a working backend) &ndash; if false, the whole chat sidebar feature has nothing to talk to and should say so rather than silently failing every request. <br /></td></tr>
 <tr class="separator:a0b25be23ce1075f467026335804ab956"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a11cd01901d7392b2ef5a814f79ab3323"><td class="memItemLeft" align="right" valign="top"><a id="a11cd01901d7392b2ef5a814f79ab3323" name="a11cd01901d7392b2ef5a814f79ab3323"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>UsesBasicAuth</b> () const</td></tr>
+<tr class="memdesc:a11cd01901d7392b2ef5a814f79ab3323"><td class="mdescLeft">&#160;</td><td class="mdescRight">True when <a class="el" href="classAiProvider.html#aace370d6be9b7f0bc2549b8b94f3cf02" title="Makes this provider authenticate with HTTP Basic instead of its own credential header,...">SetBasicAuthUser()</a> was given a non-empty name, i.e. every <a class="el" href="classAiProvider.html#a5296acff7352ac86a843ac3d7393b83a" title="Any additional headers this provider&#39;s auth scheme needs, name/value pairs, beyond the &quot;POST JSON&quot; co...">AuthHeaders()</a> override should send <a class="el" href="classAiProvider.html#a4e01d7451b6b4f3fab0be23d5a2199aa" title="&quot;Authorization: Basic base64(user:password)&quot;, with the API key as the password. Only meaningful while...">BasicAuthHeader()</a> and omit its own credential header &ndash; there is only one Authorization slot, and only one stored secret to put in it. <br /></td></tr>
+<tr class="separator:a11cd01901d7392b2ef5a814f79ab3323"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e01d7451b6b4f3fab0be23d5a2199aa"><td class="memItemLeft" align="right" valign="top"><a id="a4e01d7451b6b4f3fab0be23d5a2199aa" name="a4e01d7451b6b4f3fab0be23d5a2199aa"></a>
+std::pair&lt; wxString, wxString &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>BasicAuthHeader</b> () const</td></tr>
+<tr class="memdesc:a4e01d7451b6b4f3fab0be23d5a2199aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">"Authorization: Basic base64(user:password)", with the API key as the password. Only meaningful while <a class="el" href="classAiProvider.html#a11cd01901d7392b2ef5a814f79ab3323" title="True when SetBasicAuthUser() was given a non-empty name, i.e. every AuthHeaders() override should sen...">UsesBasicAuth()</a> is true. <br /></td></tr>
+<tr class="separator:a4e01d7451b6b4f3fab0be23d5a2199aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
 <tr class="memitem:a9cef9b257940c058fe3914f2a5161128"><td class="memItemLeft" align="right" valign="top"><a id="a9cef9b257940c058fe3914f2a5161128" name="a9cef9b257940c058fe3914f2a5161128"></a>
@@ -168,6 +183,9 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><b>m_model</b></td><
 <tr class="memitem:a189b53fa2fafefa31006bc26054370e5"><td class="memItemLeft" align="right" valign="top"><a id="a189b53fa2fafefa31006bc26054370e5" name="a189b53fa2fafefa31006bc26054370e5"></a>
 wxString&#160;</td><td class="memItemRight" valign="bottom"><b>m_displayName</b></td></tr>
 <tr class="separator:a189b53fa2fafefa31006bc26054370e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13d1a6930c6269104d347cd1b9c6ca4a"><td class="memItemLeft" align="right" valign="top"><a id="a13d1a6930c6269104d347cd1b9c6ca4a" name="a13d1a6930c6269104d347cd1b9c6ca4a"></a>
+wxString&#160;</td><td class="memItemRight" valign="bottom"><b>m_basicAuthUser</b></td></tr>
+<tr class="separator:a13d1a6930c6269104d347cd1b9c6ca4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Talks to one external AI provider's chat completion HTTP API. </p>
@@ -410,6 +428,35 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><b>m_displayName</b>
 <p>Sends one chat turn asynchronously via wxWebRequest and calls <code>callback(ok, replyOrError)</code> exactly once, on the GUI thread, once the HTTP request completes, fails, or errors out. </p>
 <p><code>owner</code> is the wxEvtHandler the completion event is delivered to &ndash; must outlive the request; the sidebar itself is the intended owner. No-op (calls back with ok=false immediately) if wxUSE_WEBREQUEST is off in this build.</p>
 <p>Static, taking <code>self</code> as an explicit shared_ptr rather than being a plain instance method: the completion lambda needs the provider object (for <a class="el" href="classAiProvider.html#af0e2217cdf9b8982453f48b26e3bf160" title="Extracts the assistant&#39;s reply text from a successful (2xx) response body.">ParseReply()</a>/Name(), both virtual) to still exist whenever the response actually arrives, which can outlast the caller doing something else entirely &ndash; e.g. the user changing the configured provider/model in Options while a request is still in flight. Capturing a shared_ptr keeps the exact instance that sent the request alive for the callback regardless of what <a class="el" href="classAiChatSidebar.html" title="A sidebar to chat with an external AI about the current worksheet (follow-up to the MCP server,...">AiChatSidebar</a> does to its own current-provider pointer in the meantime; capturing a raw <code>this</code> would not. </p>
+
+</div>
+</div>
+<a id="aace370d6be9b7f0bc2549b8b94f3cf02" name="aace370d6be9b7f0bc2549b8b94f3cf02"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aace370d6be9b7f0bc2549b8b94f3cf02">&#9670;&#160;</a></span>SetBasicAuthUser()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void AiProvider::SetBasicAuthUser </td>
+          <td>(</td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
+          <td class="paramname"><em>user</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Makes this provider authenticate with HTTP Basic instead of its own credential header, using <code>user</code> and the API key as the password. </p>
+<p>Set for a custom provider whose endpoint sits behind a Basic-auth reverse proxy. Leaving it empty (the default) keeps every provider's native header exactly as it was, so this cannot affect a built-in. </p>
 
 </div>
 </div>
