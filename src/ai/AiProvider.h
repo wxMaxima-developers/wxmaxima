@@ -313,6 +313,43 @@ public:
                        std::function<void(const wxString &requestBody)> onRequest = nullptr,
                        std::function<void(bool ok, const wxString &responseBodyOrDetail)> onResponse = nullptr);
 
+  /*! The URL FetchModels() asks for this provider's current model ids, or
+    an empty string if there is nothing sensible to ask.
+
+    Derived from the chat endpoint the user already configured rather than
+    stored separately, because the two are the same API and a second field
+    would be one more thing to get out of step. The default implementation
+    is the OpenAI-compatible rule -- drop a trailing "/chat/completions",
+    append "/models" -- which is what makes this work for providers this
+    codebase has never heard of: "GET <base>/v1/models" is the de facto
+    standard that the same providers implementing OpenAI's chat shape
+    (OpenRouter, Groq, Together, vLLM, LM Studio, llama.cpp server,
+    Ollama's compatibility layer, ...) implement alongside it. Anthropic
+    and Google override it for their own spellings. */
+  virtual wxString ModelsRequestUrl() const;
+
+  /*! The model ids in a successful (2xx) model-list response, most
+    recently created first where the provider says so.
+
+    Pure function, no I/O, unit-tested directly -- same split as
+    BuildRequestBody()/ParseReply(). Throws AiProviderError if the body
+    doesn't parse or has no model list in it at all; silently skips an
+    individual entry it cannot read, since one odd entry is no reason to
+    discard an otherwise usable list. */
+  virtual std::vector<wxString> ParseModelList(const wxString &responseBody) const;
+
+  /*! Asks the provider which models it offers, asynchronously, calling
+    `callback` exactly once on the GUI thread.
+
+    Same lifetime rules as SendChat(), and for the same reasons: `self` is
+    an explicit shared_ptr so the instance that built the request survives
+    until the response arrives, and `owner` must outlive the request. A
+    provider whose ModelsRequestUrl() is empty calls back immediately with
+    ok=false rather than pretending to ask. */
+  static void FetchModels(std::shared_ptr<const AiProvider> self, wxEvtHandler *owner,
+                          std::function<void(bool ok, const std::vector<wxString> &models,
+                                             const wxString &errorIfAny)> callback);
+
   //! True if this build of wxWidgets has wxWebRequest at all (>= 3.1.5,
   //! built with a working backend) -- if false, the whole chat sidebar
   //! feature has nothing to talk to and should say so rather than silently

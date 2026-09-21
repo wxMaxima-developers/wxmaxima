@@ -3449,7 +3449,13 @@ void wxMaxima::StatusMsgDClick(wxMouseEvent &WXUNUSED(event)) {
 
 #ifdef WXM_USE_AI_TOOLS
 void wxMaxima::AiStatusClick(wxMouseEvent &WXUNUSED(event)) {
-  if (AiProvider::SecretStoreAvailable())
+  // Guarded on the pointer this dereferences, not on
+  // AiProvider::SecretStoreAvailable(): the two say the same thing today
+  // (the sidebar is only constructed when a secret store exists), but only
+  // one of them is what a null dereference here depends on. Getting this
+  // backwards -- returning when the store *is* available -- is what made a
+  // click on the AI status icon do nothing at all.
+  if (!m_aiChatSidebar)
     return;
   wxMaximaFrame::ShowPane(EventIDs::menu_pane_aichat, true);
   m_aiChatSidebar->FocusInput();
@@ -3462,7 +3468,9 @@ void wxMaxima::AiStatusDClick(wxMouseEvent &WXUNUSED(event)) {
 }
 
 void wxMaxima::AiStatusRightClick(wxMouseEvent &WXUNUSED(event)) {
-  if (AiProvider::SecretStoreAvailable())
+  // See AiStatusClick() on why this guards on the pointer, not on
+  // AiProvider::SecretStoreAvailable().
+  if (!m_aiChatSidebar)
     return;
   // Only ever appended to and read from this one popup menu -- a plain
   // wxWindow::NewControlId() is enough, same reasoning as TrayIcon's own
