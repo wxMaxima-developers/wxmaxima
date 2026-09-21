@@ -91,14 +91,18 @@ def&#160;</td><td class="memItemRight" valign="bottom"><b>main</b> ()</td></tr>
 <div class="textblock"><pre class="fragment">Fail if any .po file in the current tree has fewer translated strings than
 the same file on a base ref (default: origin/main).
 
-Guards against a failure mode that has hit this repo's translations twice
-now (see AGENTS.md's translations section): a Crowdin export branch that
-forked before a translation-restoring commit landed silently blanks those
-strings back to empty the next time its export gets merged, since Crowdin
-has no concept of "this string used to be translated, don't overwrite it
-with nothing." Re-syncing the Crowdin-side branch from main before it
-generates its next export is the actual fix; this script is the safety net
-that catches a bad merge before it happens, not a substitute for that fix.
+Guards against a failure mode that has hit this repo's translations three
+times (see AGENTS.md's translations section): a bulk .po edit built from a
+stale base silently blanks already-translated strings back to empty, and
+looks perfectly ordinary in review -- a plain 3-way git merge does not
+understand PO-file semantics, and translated-string counts cannot tell
+"reverted to worse text" from "line wrapping changed." Each time it was
+464 translations across 16 languages, caught only by diffing them by hand.
+
+The external sync that produced those has since been dropped, but nothing
+about the mechanism was specific to it: any bulk catalogue edit can do the
+same. Hence the comparison here is keyed on msgid+msgctxt rather than on a
+line diff.
 
 Usage: check_translations_not_wiped.py [base-ref]
 </pre> </div></div><!-- contents -->
