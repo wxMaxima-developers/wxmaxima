@@ -1403,6 +1403,99 @@ and not a natural next step.
       the monitor sidebar's real traffic display) -- worth doing before
       extending this further.
 
+## Sidebar visibility tools (the third, fourth and fifth writes)
+
+- **`list_sidebars`/`show_sidebar`/`hide_sidebar` (2026-09-21)** -- requested
+  by the maintainer (2026-09-09) as "for the next branch and PR": let an AI
+  query which sidebars are currently visible, and show/hide them.
+  - **Why these count as safe writes.** The backlog entry that carried this
+    request flagged one thing to settle before writing code: whether toggling
+    a sidebar belongs in the same category as `watch_variable`/
+    `unwatch_variable` or in the category the "no write/evaluate tools" rule
+    exists to keep out. It is the former, and the test is the one that
+    section already states -- what is the blast radius if the model gets it
+    wrong? Here it is "a pane appeared or disappeared": visible to the user
+    the instant it happens, undone with one click, and unable to reach
+    worksheet content, insert or edit a cell, or make Maxima evaluate
+    anything. That is strictly *less* reach than `watch_variable`, which at
+    least causes Maxima to be sent a query. Note this is a judgement about
+    *this* kind of write, not a general loosening: an `insert_cell` or
+    `evaluate_cell` is still the separate, much bigger decision the next
+    section describes.
+  - **Plumbing: a callback pair, for the same reason `maxima_connected`
+    needed one.** `McpTools` holds only a `Worksheet` and a `Variablespane`;
+    which panes exist and which are shown lives on `wxMaximaFrame`
+    (`m_sidebarNames`/`m_sidebarCaption` plus its `wxAuiManager`), which
+    neither of those can reach. `McpTools::SetSidebarAccess()` takes both
+    halves -- enumerate, and set-visible -- in **one** call on purpose: a
+    build wired for one but not the other would advertise half-working tools,
+    and nothing at the tool layer could tell that apart from a genuine
+    failure. Unset (the default, and what every test that doesn't care about
+    sidebars does) makes all three tools throw `McpToolError` saying so,
+    rather than returning an empty list that reads like "this wxMaxima has no
+    sidebars." Wired once, in `wxMaximaFrame`'s own constructor right after
+    `m_mcpServer` is created -- **not** in `wxMaxima`'s constructor where
+    `SetConnectionCheck()` goes, because `m_sidebarNames`/`m_sidebarCaption`
+    are *private* to `wxMaximaFrame` and a derived class cannot read them.
+    Safe to wire there even though a good half of the panes (the symbol
+    sidebars, wizard, find, help, the AI ones) are only registered further
+    down that same constructor: both lambdas re-read the map on every call,
+    so they report whatever exists when a request actually arrives.
+  - **The identifier must be the untranslated name, and the caption must not
+    be usable as one.** `m_sidebarNames` holds the stable config key
+    (`"structure"`, `"variables"`, ...); `m_sidebarCaption` holds the
+    `_()`-wrapped text the user sees (`"Table of Contents"`). `list_sidebars`
+    reports both, but only the name is accepted back -- an AI that keyed off
+    the caption would break the moment wxMaxima runs in any language but
+    English. The error message for an unknown name lists the known names and
+    says explicitly that captions are not names, since "I passed what
+    list_sidebars showed me" is the obvious way to get this wrong.
+  - **Two failure modes that had to be caught at the tool layer, because the
+    frame's own API swallows both.** (1) `wxMaximaFrame::ShowPane()` silently
+    does nothing for a name it doesn't know -- so handing it an unchecked
+    name would have us report success for a typo, or for a pane this build
+    was compiled without. The tools look the name up first and throw if it
+    isn't there. (2) `ShowPane()` *asserts* if asked to hide the worksheet
+    (it is wxAUI's centre pane; see the centre-pane entry in `AGENTS.md`), so
+    `hide_sidebar` refuses `console` before reaching it -- an assert firing
+    inside what is, to the caller, an ordinary tool call is not an acceptable
+    way to report "you can't do that". `list_sidebars` reports this up front
+    as `can_hide: false` so it never has to be discovered by failing.
+  - **`McpSidebarList()` sorts by name.** `m_sidebarNames` is an
+    `unordered_map`, so without the sort the same wxMaxima lists its sidebars
+    in a different order from one run to the next.
+  - **The result reads visibility back rather than echoing the request**, so
+    a pane that declined to change shows up as unchanged instead of being
+    reported as done.
+  - **Verification.** `test_McpTools.cpp` gained two SCENARIOs (146
+    assertions in 10 test cases, all passing): the tool layer against a
+    stand-in for the frame -- a real `wxMaximaFrame` is far too heavy to
+    build in a unit test, and the callback design is exactly what makes one
+    unnecessary -- covering listing, show, hide, show-when-already-shown,
+    the `console` refusal, an unknown name, a caption used as a name, a
+    missing argument, the unset-access case, and `CallTool()` dispatch.
+    Since that stand-in is by definition not the real frame, the frame half
+    was verified **live** instead, which is what actually proves
+    `McpSidebarList()`/`McpSetSidebarVisible()` work against a real
+    `wxAuiManager`: a real Xvfb session with `mcpServerEnabled=1`, `curl`-ing
+    all three tools -- `list_sidebars` returned all 17 real panes sorted,
+    with `console` correctly `can_hide: false`; `show_sidebar variables` and
+    `hide_sidebar structure` both took effect and were confirmed by a
+    screenshot (Variables docked at the bottom, Table of Contents gone, every
+    other pane untouched) as well as by reading `list_sidebars` back; and
+    hiding `console`, an unknown name and a caption-as-name each returned a
+    JSON-RPC error with the intended message.
+  - **A test bug worth remembering, caught only because the assertion
+    failed:** `for (const auto &t : tools.ListTools()["tools"])` iterates a
+    json that has *already been destroyed*. The temporary `ListTools()`
+    returns is not lifetime-extended, because `operator[]` yields a reference
+    *into* it rather than the temporary itself, and only the latter would be
+    extended before C++23. The symptom was three assertions failing as though
+    the tools were never registered, with the source plainly showing that
+    they were -- which sends you looking at the build, not the test. Bind the
+    call's result to a named local first. A sweep found no other instance of
+    this shape in the tree.
+
 ## Deliberately not implemented: a write/evaluate-capable MCP tool
 
 - **Not implemented, and shouldn't be without a separate decision: a

@@ -322,6 +322,21 @@ protected:
 public:
   //! Get the list of human-readable sidebarnames and IDs
   const std::unordered_map<int, wxString>  &GetSidebarNames() const {return m_sidebarNames;}
+
+  /*! Every dockable sidebar, with its current visibility -- what the MCP
+    server's list_sidebars tool reports.
+
+    Lives here rather than in McpTools because m_sidebarNames/m_sidebarCaption
+    (and the wxAuiManager that knows what is currently shown) are ours, and
+    McpTools only ever holds a Worksheet and a Variablespane. See
+    McpTools::SetSidebarAccess().
+  */
+  std::vector<McpSidebarInfo> McpSidebarList() const;
+  /*! Show or hide one sidebar by the untranslated name McpSidebarList()
+    reports, for the MCP server's show_sidebar/hide_sidebar tools. Returns
+    false for a name no pane is registered under.
+  */
+  bool McpSetSidebarVisible(const wxString &name, bool show);
 protected:
   Worksheet *GetWorksheet() const {return m_worksheet;}
 private:
