@@ -525,3 +525,115 @@ SCENARIO("AiProviderRequestUrlProblem() rejects what actually gets typed") {
 }
 
 int main(int argc, char *argv[]) { return Catch::Session().run(argc, argv); }
+
+SCENARIO("Each provider derives its model-list URL from its chat endpoint") {
+  GIVEN("the four built-in providers that have a list endpoint") {
+    // Anthropic and Google were confirmed against the real services: an
+    // unauthenticated GET to either URL is answered by that provider's own
+    // "needs a key" error (401/403), not a 404, so the route exists.
+    THEN("each one's URL is that provider's documented models endpoint") {
+      CHECK(MakeAiProvider(AiProviderKind::Anthropic, wxS("k"), wxS("m"))
+              ->ModelsRequestUrl() == wxS("https://api.anthropic.com/v1/models"));
+      CHECK(MakeAiProvider(AiProviderKind::OpenAI, wxS("k"), wxS("m"))
+              ->ModelsRequestUrl() == wxS("https://api.openai.com/v1/models"));
+      CHECK(MakeAiProvider(AiProviderKind::Qwen, wxS("k"), wxS("m"))
+              ->ModelsRequestUrl() ==
+            wxS("https://dashscope.aliyuncs.com/compatible-mode/v1/models"));
+      CHECK(MakeAiProvider(AiProviderKind::Google, wxS("k"), wxS("m"))
+              ->ModelsRequestUrl() ==
+            wxS("https://generativelanguage.googleapis.com/v1beta/models"));
+    }
+    AND_THEN("Google's list URL is its chat URL minus the trailing slash, "
+             "so it never doubles the \"models/\" segment") {
+      auto google = MakeAiProvider(AiProviderKind::Google, wxS("k"), wxS("gemini-2.0-flash"));
+      CHECK(google->RequestUrl() ==
+            wxS("https://generativelanguage.googleapis.com/v1beta/models/"
+                "gemini-2.0-flash:generateContent"));
+      CHECK_FALSE(google->ModelsRequestUrl().Contains(wxS("models/models")));
+    }
+  }
+
+  GIVEN("an arbitrary OpenAI-compatible endpoint, as a local server has") {
+    THEN("the de facto standard <base>/v1/models is derived from it") {
+      auto ollama = MakeAiProviderForShape(
+        AiProviderShape::OpenAiCompatible, wxS("Ollama"),
+        wxS("http://localhost:11434/v1/chat/completions"), wxString(), wxS("llama3.2"));
+      CHECK(ollama->ModelsRequestUrl() == wxS("http://localhost:11434/v1/models"));
+    }
+    AND_THEN("a URL that does not end in /chat/completions still yields "
+             "something rather than nonsense") {
+      auto odd = MakeAiProviderForShape(
+        AiProviderShape::OpenAiCompatible, wxS("Odd"),
+        wxS("https://example.invalid/openai/"), wxString(), wxS("m"));
+      CHECK(odd->ModelsRequestUrl() == wxS("https://example.invalid/openai/models"));
+    }
+  }
+}
+
+SCENARIO("Parsing a provider's model list") {
+  GIVEN("an OpenAI-shaped {\"object\":\"list\",\"data\":[...]} response") {
+    auto provider = MakeAiProvider(AiProviderKind::OpenAI, wxS("k"), wxS("m"));
+    const wxString body = wxS(R"({"object":"list","data":[
+        {"id":"gpt-4o","object":"model","owned_by":"system"},
+        {"id":"gpt-4o-mini","object":"model","owned_by":"system"}]})");
+    THEN("every model id comes back, in the order the provider listed them") {
+      auto models = provider->ParseModelList(body);
+      REQUIRE(models.size() == 2);
+      CHECK(models[0] == wxS("gpt-4o"));
+      CHECK(models[1] == wxS("gpt-4o-mini"));
+    }
+  }
+
+  GIVEN("Anthropic's own model list, which uses that same shape") {
+    auto provider = MakeAiProvider(AiProviderKind::Anthropic, wxS("k"), wxS("m"));
+    const wxString body = wxS(R"({"data":[
+        {"type":"model","id":"claude-sonnet-4-5","display_name":"Claude Sonnet 4.5"}],
+        "has_more":false})");
+    THEN("it is read by the same code, with no Anthropic-specific parser") {
+      auto models = provider->ParseModelList(body);
+      REQUIRE(models.size() == 1);
+      CHECK(models[0] == wxS("claude-sonnet-4-5"));
+    }
+  }
+
+  GIVEN("Google's differently-shaped {\"models\":[{\"name\":...}]} response") {
+    auto provider = MakeAiProvider(AiProviderKind::Google, wxS("k"), wxS("m"));
+    const wxString body = wxS(R"({"models":[
+        {"name":"models/gemini-2.0-flash",
+         "supportedGenerationMethods":["generateContent","countTokens"]},
+        {"name":"models/text-embedding-004",
+         "supportedGenerationMethods":["embedContent"]},
+        {"name":"models/gemini-no-methods-listed"}]})");
+    auto models = provider->ParseModelList(body);
+    THEN("the \"models/\" prefix is stripped, since RequestUrl() re-adds it") {
+      REQUIRE(models.size() == 2);
+      CHECK(models[0] == wxS("gemini-2.0-flash"));
+    }
+    AND_THEN("a model that cannot generateContent is left out, but one that "
+             "says nothing either way is kept") {
+      for (const auto &m : models)
+        CHECK(m != wxS("text-embedding-004"));
+      CHECK(models[1] == wxS("gemini-no-methods-listed"));
+    }
+  }
+
+  GIVEN("responses that are broken in the ways a real endpoint breaks") {
+    auto openai = MakeAiProvider(AiProviderKind::OpenAI, wxS("k"), wxS("m"));
+    auto google = MakeAiProvider(AiProviderKind::Google, wxS("k"), wxS("m"));
+    THEN("unparseable or list-less bodies throw rather than return nothing "
+         "silently, so the UI can say why") {
+      CHECK_THROWS_AS(openai->ParseModelList(wxS("<html>404</html>")), AiProviderError);
+      CHECK_THROWS_AS(openai->ParseModelList(wxS("{}")), AiProviderError);
+      CHECK_THROWS_AS(google->ParseModelList(wxS("{\"data\":[]}")), AiProviderError);
+    }
+    AND_THEN("one unreadable entry does not discard the whole list") {
+      auto models = openai->ParseModelList(
+        wxS(R"({"data":[{"id":"good-one"},{"no-id-here":true},"not-an-object"]})"));
+      REQUIRE(models.size() == 1);
+      CHECK(models[0] == wxS("good-one"));
+    }
+    AND_THEN("an empty but well-formed list is not an error") {
+      CHECK(openai->ParseModelList(wxS("{\"data\":[]}")).empty());
+    }
+  }
+}

@@ -1,5 +1,14 @@
 # Current development version
 
+- The AI Chat settings now offer a model to pick instead of only a name to
+  type: a "Fetch models" button beside the Model field asks the provider
+  which models it currently has and fills the field's dropdown with them.
+  Nothing is fetched unless that button is pressed -- most of these
+  providers want an API key for the request, and merely selecting a provider
+  shouldn't send them one. The field stays a text field as well, so a model
+  the provider doesn't advertise -- a fine-tune, a preview, or whatever a
+  local server was started with -- can still simply be typed, and a provider
+  that offers no such list, or can't be reached, works exactly as before.
 - The AI chat sidebar's status bar icon and its connection monitor now
   actually exist. Neither was reachable: the status bar was never told to
   reserve the field the AI icon lives in, so the icon was never created and
