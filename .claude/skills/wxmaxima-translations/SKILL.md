@@ -1,6 +1,6 @@
 ---
 name: wxmaxima-translations
-description: How wxMaxima's translations work and the many ways they have silently been lost - the xgettext source glob, msgmerge flags, the combined UI+manual .po files, po4a's data-destruction habits, and the Crowdin sync races. Use before touching anything under locales/, info/*.md, po4a.cfg, or any CI job that regenerates the POT or the translated manuals.
+description: How wxMaxima's translations work and the many ways they have silently been lost - the xgettext source glob, msgmerge flags, the combined UI+manual .po files, and po4a's data-destruction habits. Use before touching anything under locales/, info/*.md, po4a.cfg, or any CI job that regenerates the POT or the translated manuals.
 ---
 
 # Translations: what breaks, and how it breaks silently
@@ -16,8 +16,7 @@ thing to look at, never as noise.
   translator actually edits. It holds **both** wxMaxima's UI strings
   (xgettext-extracted from the sources) **and** the manual's prose
   (po4a-extracted from `info/wxmaxima.md`).
-- `locales/wxMaxima/wxMaxima.pot` is the template both `msgmerge` and Crowdin
-  work against. It is regenerated as the union of a fresh source scan and
+- `locales/wxMaxima/wxMaxima.pot` is the template `msgmerge` works against. It is regenerated as the union of a fresh source scan and
   `locales/manual/wxmaxima.md.pot`, by the `update-locale` target - and by
   nothing else.
 - `locales/manual/<lang>.po` is po4a's own file, merged into the combined one by
@@ -54,12 +53,23 @@ regenerates translations must commit an explicit path list and fail loudly if
 anything else changed. Also: po4a < 0.70 can silently corrupt translated text
 and the build is supposed to reject it.
 
-**4. Crowdin syncs can wipe translations.** Not theoretical - a sync race wiped
-464 translations across 16 catalogues one day after a restore, and an earlier
-"initial project sync" wiped UI translations wholesale. When you restore or bulk-
-edit catalogues, the change has to reach Crowdin too, or the next sync undoes
-it. Actively-synced catalogues also have their obsolete (`#~`) entries pruned,
-which is what turned failure 1 from recoverable into archaeology.
+**4. A bulk edit of the catalogues can wipe translations, and looks ordinary in
+review.** Not theoretical: an external translation platform used to sync this
+project, silently stopped syncing the POT once the string count outgrew its free
+plan, and kept opening correct-looking PRs built from an old snapshot. Three
+times those would have reverted the same 464 translations across 16 catalogues
+to empty. That integration has been dropped -- **do not reintroduce a sync this
+repo cannot verify.**
+
+The mechanism outlives it. A plain 3-way git merge does not understand PO-file
+semantics, so a stale catalogue's hunks can win silently; and `msgfmt
+--statistics` counts cannot tell "reverted to worse text" from "line wrapping
+changed". Always compare msgid+msgctxt-keyed.
+`locales/wxMaxima/check_translations_not_wiped.py` does this against
+`origin/main` on every push and fails if any translation goes non-empty ->
+empty. Note also that a platform which prunes obsolete (`#~`) entries is what
+turned failure 1 from recoverable into archaeology -- those entries are the
+recovery path.
 
 **5. Don't drop `msgmerge --previous`.** It is what preserves the `#| msgid`
 comment recording what a fuzzy entry used to say - the only way a translator can

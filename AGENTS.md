@@ -1304,7 +1304,7 @@ tried without rebuilding.
   translator edits.** It covers both wxMaxima's own UI strings
   (`xgettext`-extracted from `src/**/*.cpp`/`*.h`) and the manual's prose
   (`po4a`-extracted from `info/wxmaxima.md`). `locales/wxMaxima/wxMaxima.pot`,
-  the template both `msgmerge` and Crowdin work against, is regenerated as
+  the template `msgmerge` works against, is regenerated as
   the union of a fresh source scan and `locales/manual/wxmaxima.md.pot`
   (`msgcat --use-first`, preferring `wxMaxima.pot`'s own header) by the
   `update-locale` CMake target.
@@ -2211,7 +2211,7 @@ has already been broken.
 |---|---|
 | `wxmaxima-layout` | the schedule/recalculate/resize pipeline and the layout invariants |
 | `wxmaxima-architecture` | where code lives, the friend-class decomposition, the extraction recipe |
-| `wxmaxima-translations` | the POT glob, po4a, Crowdin, and how translations get lost |
+| `wxmaxima-translations` | the POT glob, po4a, and how translations get lost |
 | `wxmaxima-export` | HTML/LaTeX/image export, accessible labels, round-trip guarantees |
 | `wxmaxima-maxima-protocol` | the socket, `wxMathML.lisp`, batch mode, process lifetime, the two intermittent CI failures |
 | `wxmaxima-packaging` | the CI matrix's blind spots, installers, signing, releases, Windows stdio and the subsystem bit |

@@ -15,8 +15,9 @@
 # content into the combined locales/wxMaxima/<lang>.po - never let po4a
 # write directly into the shared file.
 #
-# --use-first prefers locales/wxMaxima/<lang>.po's own header (Crowdin
-# metadata, more current) over the manual po's; there is no msgid overlap
+# --use-first prefers locales/wxMaxima/<lang>.po's own header (it is the
+# file translators edit, so its metadata is the more current) over the
+# manual po's; there is no msgid overlap
 # between the two catalogs (confirmed empirically) for this to have to
 # arbitrate beyond that.
 #
