@@ -1927,11 +1927,34 @@ a local TCP socket.
       as the items, so the value has to be restored after clearing, not
       before -- getting that backwards blanks the configured model on every
       provider switch.
-    - **The Refresh button sits below the detail grid on purpose**, not as
-      a fifth row in it: that `wxFlexGridSizer` is constructed with both
-      row and column counts fixed, so it hard-caps at `rows*cols` items and
-      asserts on the overflow -- the exact assert this dialog already shipped
-      once (see the three-layout-bugs follow-up above).
+    - **Nothing fetches on its own: the button is the only trigger, and
+      that is a privacy decision, not a UI preference.** The first version
+      also fetched whenever a provider was selected (quietly, so a
+      half-configured provider didn't nag). The maintainer's objection
+      settled it: most of these list endpoints want an API key, so an
+      automatic fetch sends a third party the user's key -- possibly one
+      they just pasted and have not yet decided to keep -- as a side
+      effect of picking an entry from a dropdown, which nobody means as
+      "contact them now". Every fetch is therefore a deliberate press, and
+      because of that every outcome is reported: the `userAsked` parameter
+      that used to silence the automatic path is gone, and a press that
+      showed nothing would itself be a bug. Don't reintroduce an automatic
+      fetch "for convenience" -- and if a future provider needs no key at
+      all, that still isn't a reason, since the button costs one click and
+      the automatic version costs a request nobody asked for.
+    - **The button lives *inside* the detail grid's second column**, paired
+      with the combobox in a `wxBoxSizer`, not in a row of its own: that
+      `wxFlexGridSizer` is constructed with both row and column counts
+      fixed, so it hard-caps at `rows*cols` items and asserts on the
+      overflow -- the exact assert this dialog already shipped once (see
+      the three-layout-bugs follow-up above). One sizer holding both
+      controls is a single grid item, so the 4x2 shape is untouched;
+      adding a row instead means remembering to bump the 4 in the same
+      edit. Column 1 is the growable one, so the combobox gets
+      proportion 1 and the button its natural width, and the combobox's
+      own explicit minimum width stops either squeezing the other to a
+      sliver (the failure mode the AI *sidebar*'s layout entry above
+      describes).
     - **Not verified live, and this sandbox cannot**: `wxUSE_SECRETSTORE` is
       0 in this machine's wx build, so the AI Chat tab does not exist here
       at all and no screenshot of the combobox, the button or the status

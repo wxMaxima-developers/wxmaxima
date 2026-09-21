@@ -436,13 +436,14 @@ protected:
   /*! Asks the currently-shown provider for its model ids and fills the
     model combobox's dropdown with whatever comes back.
 
-    `userAsked` distinguishes the two ways this is reached, because they
-    want different amounts of noise: pressing the Refresh button should
-    always say something, even "this provider has no list to offer",
-    whereas merely selecting a provider should stay quiet unless it has
-    something useful to report. Never disturbs the typed value either
-    way -- only the dropdown's contents. */
-  void StartAiModelFetch(bool userAsked);
+    Only ever reached from the button beside that combobox, never from
+    selecting a provider: most of these list endpoints want an API key,
+    and a settings dialog should not hand one to a third party as a side
+    effect of a dropdown selection. Because every call is therefore a
+    deliberate press, every outcome is reported -- including "this
+    provider has no list to offer". Never disturbs the typed value, only
+    the dropdown's contents. */
+  void StartAiModelFetch();
   //! Copies the on-screen key/model/(baseUrl/shape for Custom) fields back
   //! into m_aiProviderRecords[m_aiActiveProviderRecordIndex], if any --
   //! called before switching the displayed record and before saving.

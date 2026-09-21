@@ -1,12 +1,14 @@
 # Current development version
 
 - The AI Chat settings now offer a model to pick instead of only a name to
-  type: selecting a provider asks it which models it currently has, and the
-  Model field became a dropdown listing them. It stays a text field as well,
-  so a model the provider doesn't advertise -- a fine-tune, a preview, or
-  whatever a local server was started with -- can still simply be typed, and
-  a provider that offers no such list, or can't be reached, works exactly as
-  before.
+  type: a "Fetch models" button beside the Model field asks the provider
+  which models it currently has and fills the field's dropdown with them.
+  Nothing is fetched unless that button is pressed -- most of these
+  providers want an API key for the request, and merely selecting a provider
+  shouldn't send them one. The field stays a text field as well, so a model
+  the provider doesn't advertise -- a fine-tune, a preview, or whatever a
+  local server was started with -- can still simply be typed, and a provider
+  that offers no such list, or can't be reached, works exactly as before.
 
 - Compiling wxMaxima is about a third faster. Precompiled headers are now
   switched on by default -- and, more to the point, they now actually do
