@@ -139,7 +139,8 @@ if(WXM_USE_AI_TOOLS)
 # AiProvider's request-building/response-parsing (the AI chat sidebar's
 # per-provider HTTP shapes) is pure JSON in and out, so it is tested
 # directly, the same way as MaximaProtocol above -- the actual network call
-# (wxWebRequest-based) needs a live Xvfb session instead, see AGENTS.md.
+# (wxWebRequest-based) needs a live Xvfb session instead -- see the
+# wxmaxima-ai-tools skill.
 add_executable(test_AiProvider test_AiProvider.cpp ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
 target_include_directories(test_AiProvider PRIVATE ${CMAKE_SOURCE_DIR}/src)
 target_link_libraries(test_AiProvider PRIVATE ${wxWidgets_LIBRARIES})
@@ -442,7 +443,8 @@ if(TARGET wxmTestApp)
     # "worksheet context" tools: listing/reading cells, the table of
     # contents, whole sections, and the Variables sidebar's watchlist,
     # against a real headless Worksheet/Variablespane. The HTTP/JSON-RPC
-    # transport itself (McpServer) was verified live instead (see AGENTS.md).
+    # transport itself (McpServer) was verified live instead (see the
+    # wxmaxima-ai-tools skill).
     add_executable(test_McpTools
         test_McpTools.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
         $<TARGET_OBJECTS:wxmTestApp>)
