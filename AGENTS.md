@@ -1304,7 +1304,7 @@ tried without rebuilding.
   translator edits.** It covers both wxMaxima's own UI strings
   (`xgettext`-extracted from `src/**/*.cpp`/`*.h`) and the manual's prose
   (`po4a`-extracted from `info/wxmaxima.md`). `locales/wxMaxima/wxMaxima.pot`,
-  the template both `msgmerge` and Crowdin work against, is regenerated as
+  the template `msgmerge` works against, is regenerated as
   the union of a fresh source scan and `locales/manual/wxmaxima.md.pot`
   (`msgcat --use-first`, preferring `wxMaxima.pot`'s own header) by the
   `update-locale` CMake target.
@@ -1323,86 +1323,41 @@ tried without rebuilding.
   (a `ctest`, needs neither a build nor gettext) now fails the build if any
   source file sits deeper than the glob reaches, or if a file containing a
   `_("...")` marker is unreferenced by the committed POT.
-- **A Crowdin sync can silently wipe existing translations if it's built from
-  a stale base -- confirmed twice now (2026-08-05 and 2026-08-10), both times
-  around the same subdir-glob restoration work above, and both times a plain
-  git merge, not a Crowdin misconfiguration found so far.** The second
-  incident: PR #2241 ("Restore 7083 translations the flat `src/*` gettext
-  glob had dropped") merged at 19:59:43; Crowdin's own `l10n_main2` branch
-  (a long-lived branch it force-pushes to repeatedly, see PRs #2187/#2199/
-  #2239/#2244) had already branched off main at 19:55:40 -- 4 minutes
-  *before* #2241 -- and didn't re-sync before its own PR #2244 merged 30
-  minutes later. Confirmed directly from the commit graph, not inferred:
-  `git merge-base <l10n_main2 tip> <main-before-#2241>` equals that
-  pre-#2241 commit exactly, i.e. Crowdin's new per-language commits were
-  still parented on the stale base. The result once merged: a plain 3-way
-  git merge doesn't understand PO-file semantics, so wherever Crowdin's
-  diff and the restore's diff touched entries in the same file without a
-  textual line conflict, whichever side's hunk landed could silently win --
-  in this case, largely Crowdin's older, translation-poorer version. Net
-  effect measured with `polib` (msgid+msgctxt keyed diff, not
-  `msgfmt --statistics` counts alone, since those can't tell "a translation
-  reverted to worse text" from "line-wrapping changed"): 464 translations
-  across 16 languages went from non-empty to empty, and *zero* went the
-  other way -- a real regression, not translator churn. Recovered with a
-  surgical text-level patch (locate each entry's own line range via
-  `polib`'s `.linenum` in both the pre-regression and current file
-  independently, splice only the `msgstr` block, leave everything else
-  byte-identical) -- reusing `polib`'s own serializer to resave the whole
-  file was tried first and rejected: it reformats every line's wrapping,
-  turning a 464-line fix into a ~200KB diff across 16 files that would have
-  buried the actual change completely. If this happens a third time, the
-  fix is on the Crowdin project side (a webhook trigger that also
-  re-syncs sources immediately before generating its PR, not just before
-  the languages it already had), not on wxMaxima's own git handling -- ask
-  Crowdin support directly, since this session cannot access Crowdin's
-  own dashboard/API to confirm the exact trigger without credentials.
-  **It did happen a third time (2026-08-12, PR #2257 from `l10n_main2`):**
-  same shape exactly, `merge-base` landing before the 464-translation
-  restoration commit (`3cf4f9c97`) this time instead of before #2241 --
-  same 464 entries, same 16 languages, zero gained, caught before merging
-  by diffing the PR branch against `origin/main` with the same
-  msgid+msgctxt-keyed `polib` technique, this time *before* merging rather
-  than after. Crowdin claimed to sync hourly regardless. The maintainer
-  switched Crowdin to a fresh `l10n_main2` -> `l10n_main3` branch as a
-  first attempted workaround, which "immediately started syncing" -- but
-  this did *not* fix anything: `l10n_main3`'s own PR (#2259) forked from
-  `7d0407f8c`, a commit well after the restoration, yet still carried the
-  exact same 464 empty translations (confirmed the same way, spot-checked
-  down to individual entries, e.g. German's translation of the literal
-  command-line flag `"      -X \"--control-stack-size <int>\""` -- present
-  and correct, self-identical to the msgid, on `main`, but back to `""` on
-  `l10n_main3`). That ruled out "stale git branch point" as the actual
-  cause, since a fresh branch reproduced it identically. **Root cause,
-  confirmed by the maintainer directly with Crowdin: the export had
-  exceeded Crowdin's string-count limit for their free-tier account plan,
-  which made Crowdin silently fall back to an old, pre-restoration
-  translation snapshot instead of erroring or refusing to export** --
-  explaining why recreating the branch changed nothing: the stale state
-  lived in Crowdin's own translation memory, not in which commit its
-  export happened to be based on. The account has since been deleted;
-  both #2257 and #2259 were closed unmerged. If Crowdin integration is
-  ever reconnected, check the account's plan/string-limit status first --
-  this failure mode gives no visible error on either the Crowdin or the
-  GitHub side, only a silent, correct-looking PR that happens to carry
-  stale content. Added a permanent
-  safety net for this: `locales/wxMaxima/check_translations_not_wiped.py`
-  (wired into `compile_ubuntu.yml` as its own fast, standalone
-  `check_translations_not_wiped` job, no build dependencies needed) does
-  this exact msgid+msgctxt-keyed comparison against `origin/main` on every
-  push and fails loudly if any translation would go from non-empty to
-  empty -- catching this class of regression in CI before a human has to
-  notice and diff it by hand a fourth time. It only catches "translated
-  text disappeared entirely," not e.g. "translation is now provably
-  worse," and can in principle false-positive if a legitimate, unrelated
-  PR both changes a translatable string's English source text *and*
-  commits a regenerated `.po` under the old convention in the same push
-  (the old msgid's entry vanishing under a genuine rename looks identical
-  to it being wiped) -- rare in practice, since this repo's convention is
-  to not casually commit `update-locale` drift alongside unrelated changes
-  (see the "committing a `make update-locale` run's output" entry below),
-  but worth knowing if this check ever fires on something that turns out
-  to be legitimate.
+- **Translations can vanish silently, and
+  `locales/wxMaxima/check_translations_not_wiped.py` is the guard against
+  it.** wxMaxima used to have its translations synced by an external
+  translation platform. That platform silently stopped syncing the POT --
+  the project's string count had outgrown the free plan, and rather than
+  erroring or refusing, it fell back to an old snapshot and kept opening
+  correct-looking pull requests built from it. Three times those PRs would
+  have reverted hundreds of translations to empty (464 entries across 16
+  languages, the same set each time); the third was caught before merging
+  only because someone diffed it by hand. The integration has since been
+  dropped entirely -- **do not reintroduce a sync that this repo cannot
+  verify.**
+  The lesson outlives the platform: a bulk edit of `.po` files can replace
+  good translations with empty ones and look perfectly ordinary in review,
+  because a plain 3-way git merge does not understand PO-file semantics and
+  `msgfmt --statistics` counts cannot tell "reverted to worse text" from
+  "line wrapping changed." Compare msgid+msgctxt-keyed, not by line diff.
+  `check_translations_not_wiped.py` does exactly that against `origin/main`
+  on every push (wired into `compile_ubuntu.yml` as its own fast,
+  standalone job, no build dependencies) and fails loudly if any
+  translation would go from non-empty to empty. It catches only "translated
+  text disappeared entirely," not "translation is now provably worse," and
+  can in principle false-positive if one push both reworded a translatable
+  string and committed a regenerated `.po` (the old msgid's entry
+  vanishing under a genuine rename looks identical to it being wiped) --
+  rare, since the convention here is not to commit `update-locale` drift
+  alongside unrelated changes, but worth knowing if it ever fires on
+  something legitimate.
+  **If a mass wipe ever does need undoing**, patch at the text level: find
+  each entry's line range in both the good and the bad file independently
+  (`polib`'s `.linenum`) and splice only the `msgstr` block. Re-saving
+  through `polib`'s own serializer was tried and rejected -- it reflows
+  every line, turning a 464-line fix into a ~200KB diff that buries the
+  actual change.
+
 - **`test/check-pot-coverage.cmake` needs `cmake_policy(SET CMP0057 NEW)`
   explicitly.** It runs in script mode (`cmake -P`), which does not inherit
   the top-level `CMakeLists.txt`'s policy settings -- without this line,
@@ -2170,7 +2125,7 @@ has already been broken.
 |---|---|
 | `wxmaxima-layout` | the schedule/recalculate/resize pipeline and the layout invariants |
 | `wxmaxima-architecture` | where code lives, the friend-class decomposition, the extraction recipe |
-| `wxmaxima-translations` | the POT glob, po4a, Crowdin, and how translations get lost |
+| `wxmaxima-translations` | the POT glob, po4a, and how translations get lost |
 | `wxmaxima-export` | HTML/LaTeX/image export, accessible labels, round-trip guarantees |
 | `wxmaxima-maxima-protocol` | the socket, `wxMathML.lisp`, batch mode, process lifetime, the two intermittent CI failures |
 | `wxmaxima-packaging` | the CI matrix's blind spots, installers, signing, releases, Windows stdio and the subsystem bit |

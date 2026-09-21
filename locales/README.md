@@ -8,7 +8,7 @@ is always appreciated.
 - wxMaxima's own UI strings (extracted from the C++ source via `xgettext`), and
 - wxMaxima's manual (extracted from `info/wxmaxima.md` via `po4a`)
 
-`wxMaxima.pot` (the untranslated template `msgmerge`/Crowdin work against) is
+`wxMaxima.pot` (the untranslated template `msgmerge` works against) is
 the union of both sources: `make update-locale` regenerates it by combining a
 fresh `xgettext` scan of the source with `manual/wxmaxima.md.pot` (itself kept
 current by `make update-locale-manual-in-source`, which needs `po4a` >= 0.70 -
