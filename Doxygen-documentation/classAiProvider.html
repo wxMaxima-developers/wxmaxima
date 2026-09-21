@@ -111,6 +111,12 @@ virtual std::vector&lt; std::pair&lt; wxString, wxString &gt; &gt;&#160;</td><td
 <tr class="memitem:af0e2217cdf9b8982453f48b26e3bf160"><td class="memItemLeft" align="right" valign="top">virtual wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAiProvider.html#af0e2217cdf9b8982453f48b26e3bf160">ParseReply</a> (const wxString &amp;responseBody) const =0</td></tr>
 <tr class="memdesc:af0e2217cdf9b8982453f48b26e3bf160"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extracts the assistant's reply text from a successful (2xx) response body.  <br /></td></tr>
 <tr class="separator:af0e2217cdf9b8982453f48b26e3bf160"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf3e096147c40a1ced3c94cd267c0ae9"><td class="memItemLeft" align="right" valign="top">virtual wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAiProvider.html#adf3e096147c40a1ced3c94cd267c0ae9">ModelsRequestUrl</a> () const</td></tr>
+<tr class="memdesc:adf3e096147c40a1ced3c94cd267c0ae9"><td class="mdescLeft">&#160;</td><td class="mdescRight">The URL <a class="el" href="classAiProvider.html#a1d152a65e62c1f9efdce62442312fa3f" title="Asks the provider which models it offers, asynchronously, calling callback exactly once on the GUI th...">FetchModels()</a> asks for this provider's current model ids, or an empty string if there is nothing sensible to ask.  <br /></td></tr>
+<tr class="separator:adf3e096147c40a1ced3c94cd267c0ae9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4cb7e691e2c4bb5e05ad8354a966571a"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; wxString &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAiProvider.html#a4cb7e691e2c4bb5e05ad8354a966571a">ParseModelList</a> (const wxString &amp;responseBody) const</td></tr>
+<tr class="memdesc:a4cb7e691e2c4bb5e05ad8354a966571a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The model ids in a successful (2xx) model-list response, most recently created first where the provider says so.  <br /></td></tr>
+<tr class="separator:a4cb7e691e2c4bb5e05ad8354a966571a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -140,6 +146,9 @@ static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>BuiltinPro
 <tr class="memitem:a076a205621a9d4ac967ea741e89281d8"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAiProvider.html#a076a205621a9d4ac967ea741e89281d8">SendChat</a> (std::shared_ptr&lt; const <a class="el" href="classAiProvider.html">AiProvider</a> &gt; self, wxEvtHandler *owner, const wxString &amp;context, const std::vector&lt; <a class="el" href="structAiChatMessage.html">AiChatMessage</a> &gt; &amp;history, std::function&lt; void(bool ok, const wxString &amp;replyOrError)&gt; callback, std::function&lt; void(const wxString &amp;requestBody)&gt; onRequest=nullptr, std::function&lt; void(bool ok, const wxString &amp;responseBodyOrDetail)&gt; onResponse=nullptr)</td></tr>
 <tr class="memdesc:a076a205621a9d4ac967ea741e89281d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends one chat turn asynchronously via wxWebRequest and calls <code>callback(ok, replyOrError)</code> exactly once, on the GUI thread, once the HTTP request completes, fails, or errors out.  <br /></td></tr>
 <tr class="separator:a076a205621a9d4ac967ea741e89281d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d152a65e62c1f9efdce62442312fa3f"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAiProvider.html#a1d152a65e62c1f9efdce62442312fa3f">FetchModels</a> (std::shared_ptr&lt; const <a class="el" href="classAiProvider.html">AiProvider</a> &gt; self, wxEvtHandler *owner, std::function&lt; void(bool ok, const std::vector&lt; wxString &gt; &amp;models, const wxString &amp;errorIfAny)&gt; callback)</td></tr>
+<tr class="memdesc:a1d152a65e62c1f9efdce62442312fa3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Asks the provider which models it offers, asynchronously, calling <code>callback</code> exactly once on the GUI thread.  <br /></td></tr>
+<tr class="separator:a1d152a65e62c1f9efdce62442312fa3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0b25be23ce1075f467026335804ab956"><td class="memItemLeft" align="right" valign="top"><a id="a0b25be23ce1075f467026335804ab956" name="a0b25be23ce1075f467026335804ab956"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>NetworkingAvailable</b> ()</td></tr>
 <tr class="memdesc:a0b25be23ce1075f467026335804ab956"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if this build of wxWidgets has wxWebRequest at all (&gt;= 3.1.5, built with a working backend) &ndash; if false, the whole chat sidebar feature has nothing to talk to and should say so rather than silently failing every request. <br /></td></tr>
@@ -200,6 +209,108 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><b>m_displayName</b>
 
 <p>Builds the JSON request body for one chat turn. </p>
 <p><code>context</code> is a read-only worksheet snapshot (from <a class="el" href="classMcpTools.html" title="Implements the read-only &quot;worksheet context&quot; tools the MCP server exposes to an external AI tool (GH ...">McpTools</a>), sent as a system/context message ahead of the actual conversation; <code>history</code> is every prior turn plus the new user message as its last entry. Pure function, no I/O &ndash; unit-tested directly. </p>
+
+</div>
+</div>
+<a id="a1d152a65e62c1f9efdce62442312fa3f" name="a1d152a65e62c1f9efdce62442312fa3f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1d152a65e62c1f9efdce62442312fa3f">&#9670;&#160;</a></span>FetchModels()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void AiProvider::FetchModels </td>
+          <td>(</td>
+          <td class="paramtype">std::shared_ptr&lt; const <a class="el" href="classAiProvider.html">AiProvider</a> &gt;&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">wxEvtHandler *&#160;</td>
+          <td class="paramname"><em>owner</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::function&lt; void(bool ok, const std::vector&lt; wxString &gt; &amp;models, const wxString &amp;errorIfAny)&gt;&#160;</td>
+          <td class="paramname"><em>callback</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Asks the provider which models it offers, asynchronously, calling <code>callback</code> exactly once on the GUI thread. </p>
+<p>Same lifetime rules as <a class="el" href="classAiProvider.html#a076a205621a9d4ac967ea741e89281d8" title="Sends one chat turn asynchronously via wxWebRequest and calls callback(ok, replyOrError) exactly once...">SendChat()</a>, and for the same reasons: <code>self</code> is an explicit shared_ptr so the instance that built the request survives until the response arrives, and <code>owner</code> must outlive the request. <a class="el" href="classA.html">A</a> provider whose <a class="el" href="classAiProvider.html#adf3e096147c40a1ced3c94cd267c0ae9" title="The URL FetchModels() asks for this provider&#39;s current model ids, or an empty string if there is noth...">ModelsRequestUrl()</a> is empty calls back immediately with ok=false rather than pretending to ask. </p>
+
+</div>
+</div>
+<a id="adf3e096147c40a1ced3c94cd267c0ae9" name="adf3e096147c40a1ced3c94cd267c0ae9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf3e096147c40a1ced3c94cd267c0ae9">&#9670;&#160;</a></span>ModelsRequestUrl()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxString AiProvider::ModelsRequestUrl </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The URL <a class="el" href="classAiProvider.html#a1d152a65e62c1f9efdce62442312fa3f" title="Asks the provider which models it offers, asynchronously, calling callback exactly once on the GUI th...">FetchModels()</a> asks for this provider's current model ids, or an empty string if there is nothing sensible to ask. </p>
+<p>Derived from the chat endpoint the user already configured rather than stored separately, because the two are the same API and a second field would be one more thing to get out of step. The default implementation is the OpenAI-compatible rule &ndash; drop a trailing "/chat/completions", append "/models" &ndash; which is what makes this work for providers this codebase has never heard of: "GET &lt;base&gt;/v1/models" is the de facto standard that the same providers implementing OpenAI's chat shape (OpenRouter, Groq, Together, vLLM, LM Studio, llama.cpp server, Ollama's compatibility layer, ...) implement alongside it. Anthropic and Google override it for their own spellings. </p>
+
+</div>
+</div>
+<a id="a4cb7e691e2c4bb5e05ad8354a966571a" name="a4cb7e691e2c4bb5e05ad8354a966571a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4cb7e691e2c4bb5e05ad8354a966571a">&#9670;&#160;</a></span>ParseModelList()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; wxString &gt; AiProvider::ParseModelList </td>
+          <td>(</td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
+          <td class="paramname"><em>responseBody</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The model ids in a successful (2xx) model-list response, most recently created first where the provider says so. </p>
+<p>Pure function, no I/O, unit-tested directly &ndash; same split as <a class="el" href="classAiProvider.html#a9790570049fde1b2e8c5276bebe6623d" title="Builds the JSON request body for one chat turn.">BuildRequestBody()</a>/ParseReply(). Throws <a class="el" href="classAiProviderError.html" title="Thrown by ParseReply() for a response that doesn&#39;t parse or doesn&#39;t have the expected shape – distinc...">AiProviderError</a> if the body doesn't parse or has no model list in it at all; silently skips an individual entry it cannot read, since one odd entry is no reason to discard an otherwise usable list. </p>
 
 </div>
 </div>

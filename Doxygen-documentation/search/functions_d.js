@@ -24,7 +24,7 @@ var searchData=
   ['maximaparameters_21',['MaximaParameters',['../classConfiguration.html#a5b565e55d9e06075da06dab3863e313b',1,'Configuration::MaximaParameters() const'],['../classConfiguration.html#ad239d557be93853639c3425b21ade190',1,'Configuration::MaximaParameters(wxString parameters)']]],
   ['maximasessioninfo_22',['MaximaSessionInfo',['../classMaximaSessionInfo.html#aee3201bb277b6e2ee0a0af7496dad509',1,'MaximaSessionInfo']]],
   ['maximasessionstart_23',['MaximaSessionStart',['../classHistory.html#a4a50b4c22d87784dee4b52719d06c655',1,'History']]],
-  ['maximatokenizer_24',['MaximaTokenizer',['../classMaximaTokenizer.html#a86f0055757187f8b7533adde1d4a32d0',1,'MaximaTokenizer::MaximaTokenizer(const wxString &amp;commands, const Configuration *const configuration)'],['../classMaximaTokenizer.html#aece7dce3250f6c4b86dd977577f74bb5',1,'MaximaTokenizer::MaximaTokenizer(const wxString &amp;commands, const Configuration *const configuration, const TokenList &amp;initialTokens)']]],
+  ['maximatokenizer_24',['MaximaTokenizer',['../classMaximaTokenizer.html#aece7dce3250f6c4b86dd977577f74bb5',1,'MaximaTokenizer::MaximaTokenizer(const wxString &amp;commands, const Configuration *const configuration, const TokenList &amp;initialTokens)'],['../classMaximaTokenizer.html#a86f0055757187f8b7533adde1d4a32d0',1,'MaximaTokenizer::MaximaTokenizer(const wxString &amp;commands, const Configuration *const configuration)']]],
   ['maximauserlocation_25',['MaximaUserLocation',['../classConfiguration.html#a52c3103a8a856b7ef2263c50e4ce6711',1,'Configuration::MaximaUserLocation() const'],['../classConfiguration.html#ab243f8140f4f378ddd57caa0dbb2b9b0',1,'Configuration::MaximaUserLocation(wxString maxima)']]],
   ['maximavarnametolisp_26',['MaximaVarnameToLisp',['../classMaxima.html#aa463e9595a0b289f322d56d68db9f636',1,'Maxima']]],
   ['mcpserverenabled_27',['McpServerEnabled',['../classConfiguration.html#a480cc8fedf36e05a56b6321d2576e001',1,'Configuration']]],
@@ -37,7 +37,8 @@ var searchData=
   ['merge_5fpatch_34',['merge_patch',['../classbasic__json.html#a8676ac2433fe299b8d420f00a0741395',1,'basic_json']]],
   ['meta_35',['meta',['../classbasic__json.html#a7b435c2ed2db99cb1daa78ae3c6c4580',1,'basic_json']]],
   ['mixeddirectionoffset_36',['MixedDirectionOffset',['../classEditorCell.html#a88eabaa9e35ddd303e35f6d84672eb19',1,'EditorCell']]],
-  ['mouseselectionstart_37',['MouseSelectionStart',['../classViewCellPointers.html#a69ca67350af0390921aa19fc930a18a8',1,'ViewCellPointers']]],
-  ['mouseselectionstartedhere_38',['MouseSelectionStartedHere',['../classEditorCell.html#aeb91a26e7fbfb314b31bfd8625139abe',1,'EditorCell']]],
-  ['mul_39',['mul',['../structdetail_1_1dtoa__impl_1_1diyfp.html#a046c61f2c13411677eedfb5b9b7a8226',1,'detail::dtoa_impl::diyfp']]]
+  ['modelsrequesturl_37',['ModelsRequestUrl',['../classAiProvider.html#adf3e096147c40a1ced3c94cd267c0ae9',1,'AiProvider']]],
+  ['mouseselectionstart_38',['MouseSelectionStart',['../classViewCellPointers.html#a69ca67350af0390921aa19fc930a18a8',1,'ViewCellPointers']]],
+  ['mouseselectionstartedhere_39',['MouseSelectionStartedHere',['../classEditorCell.html#aeb91a26e7fbfb314b31bfd8625139abe',1,'EditorCell']]],
+  ['mul_40',['mul',['../structdetail_1_1dtoa__impl_1_1diyfp.html#a046c61f2c13411677eedfb5b9b7a8226',1,'detail::dtoa_impl::diyfp']]]
 ];
