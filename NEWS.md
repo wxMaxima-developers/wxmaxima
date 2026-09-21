@@ -1,5 +1,10 @@
 # Current development version
 
+- Translatable strings now reach translators without waiting for whoever
+  added them to remember to regenerate the catalogue: a weekly job refreshes
+  it, and refuses to commit anything if the regeneration would silently drop
+  strings.
+
 - A custom AI provider can now sit behind HTTP Basic authentication, which
   is what Ollama's own documentation recommends for an instance reachable
   from beyond localhost. Fill in the new Username field in Options -> AI

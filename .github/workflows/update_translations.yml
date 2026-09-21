@@ -1,0 +1,97 @@
+name: update_translations
+
+# Refreshes the translation catalogues on a schedule instead of demanding that
+# every pull request keep them current.
+#
+# The alternative -- a per-commit "is wxMaxima.pot up to date" check -- made
+# every PR that touched a user-visible string regenerate the POT, and
+# xgettext rewrites the `#:` source reference of *every* entry whenever any
+# file's line count shifts. So two unrelated PRs adding a string in different
+# files still collided in the POT, and a three-string change arrived as a
+# ~2700-line diff. Conflicts in a generated file, on work that had nothing to
+# do with translations.
+#
+# Doing it here instead means feature branches never touch the POT at all, so
+# they cannot conflict in it. The cost is that the catalogue can be up to a
+# week stale, which costs nothing: nobody is translating a string during the
+# days after it is written.
+#
+# The reason a scheduled job is safe to let push on its own is the guard in
+# the "Check nothing was silently dropped" step. An unattended refresh that
+# committed whatever xgettext produced would be strictly worse than the drift
+# it replaces -- it could commit a POT with whole directories missing and
+# nobody would look. See locales/wxMaxima/check_pot_not_truncated.py for why
+# that is not hypothetical here.
+
+on:
+  schedule:
+    # Mondays, 04:17 UTC. An odd minute rather than :00 because GitHub delays
+    # jobs scheduled on the hour, when everyone else's cron fires too.
+    - cron: '17 4 * * 1'
+  # So it can be run by hand after a big batch of new strings, rather than
+  # waiting for the next Monday.
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update_translations:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout_git
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Install dependencies
+        run: |
+             sudo apt-get update
+             sudo apt-get install -y cmake ninja-build gettext po4a libwxgtk3.2-dev
+
+      - name: Configure
+        run: cmake -S . -B build -G Ninja
+
+      - name: Keep the current catalogues for comparison
+        run: cp locales/wxMaxima/wxMaxima.pot /tmp/wxMaxima.pot.committed
+
+      - name: Regenerate
+        run: cmake --build build --target update-locale
+
+      # The gate. Deliberately before anything is committed: if extraction
+      # broke, the right outcome is a failed job and an untouched catalogue,
+      # not a commit that quietly shrinks it.
+      - name: Check nothing was silently dropped
+        run: |
+             python3 locales/wxMaxima/check_pot_not_truncated.py \
+                 /tmp/wxMaxima.pot.committed \
+                 locales/wxMaxima/wxMaxima.pot
+
+      # The .po files have their own long-standing guard against the same
+      # class of failure: a regeneration that blanks already-translated
+      # strings. Reused here rather than reimplemented.
+      - name: Check no translation was wiped
+        run: |
+             pip install --quiet polib
+             python3 locales/wxMaxima/check_translations_not_wiped.py origin/main
+
+      - name: Commit and push
+        run: |
+             if git diff --quiet -- locales/; then
+               echo "Catalogues are already current -- nothing to push."
+               exit 0
+             fi
+             git config user.name "github-actions[bot]"
+             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+             git add locales/
+             git commit -m "Refresh the translation catalogues
+
+             Automated weekly run of the update-locale target. Checked before
+             committing: no strings disappeared from wxMaxima.pot beyond the
+             threshold in check_pot_not_truncated.py, and no existing
+             translation went from translated to empty."
+             # Rebase rather than force: this must never overwrite whatever
+             # landed on main while the job was running.
+             git pull --rebase origin main
+             git push origin HEAD:main
