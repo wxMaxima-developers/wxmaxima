@@ -1403,6 +1403,47 @@ tried without rebuilding.
   (see the "committing a `make update-locale` run's output" entry below),
   but worth knowing if this check ever fires on something that turns out
   to be legitimate.
+- **The POT is refreshed weekly by a job, NOT checked per commit -- and that
+  is a deliberate replacement, not a dropped check.**
+  `.github/workflows/update_translations.yml` runs `update-locale` on a
+  schedule and pushes the result straight to `main`. There used to be a
+  `check-pot-up-to-date` step on every push instead; it was removed when this
+  landed.
+  **Do not reinstate a per-commit POT check.** It forced every PR touching a
+  user-visible string to regenerate `wxMaxima.pot`, and `xgettext` rewrites
+  the `#:` reference of *every* entry whenever any file's line count shifts.
+  So two unrelated PRs adding a string in different files still collided in
+  the POT, and a three-string change arrived as a ~2700-line diff. Measured
+  on one real commit: 2719 of 2751 changed lines were location churn, 32 were
+  content. Feature branches now never touch the POT, so they cannot conflict
+  in it.
+  **What makes an unattended push safe is the gate, and it is the point of
+  the whole design**: `locales/wxMaxima/check_pot_not_truncated.py` compares
+  the regenerated POT against the committed one *msgid-keyed* and refuses to
+  commit if more strings disappear than a threshold (50, or 5% of the
+  catalogue, whichever is stricter). The `.po` files go through the existing
+  `check_translations_not_wiped.py` in the same run. If either fires the job
+  fails and the catalogues are left untouched -- a failed job and a stale
+  POT, never a quietly shrunken one.
+  **This gate is strictly stronger than the check it replaced**, which is the
+  part worth understanding before touching any of it. The old check compared
+  the committed POT against a fresh regeneration, so once a *truncated* POT
+  had been committed both sides were truncated identically and it passed --
+  which is exactly how the flat `src/*` glob above went unnoticed. Comparing
+  against what was there before is what catches that. Verified by reproducing
+  it: reintroducing the flat glob and regenerating makes the guard report
+  1087 strings disappearing and exit non-zero.
+  Two consequences to keep in mind:
+  - **Line numbers stay in the committed POT.** Stripping them would shrink
+    the bot's weekly diff enormously, and was deliberately rejected: a
+    translator uses that reference to find the string in its context, which
+    is worth more than a readable machine-generated commit.
+  - **A brand-new source file containing `_("...")` still needs a minimal POT
+    touch**, because `check-pot-coverage` (a ctest, still per-commit, and
+    unaffected by any of this) asserts every such file is referenced by the
+    committed POT. Hand-add the one `msgid`, as the TrayIcon work did -- do
+    not run a full `update-locale` for it.
+
 - **`test/check-pot-coverage.cmake` needs `cmake_policy(SET CMP0057 NEW)`
   explicitly.** It runs in script mode (`cmake -P`), which does not inherit
   the top-level `CMakeLists.txt`'s policy settings -- without this line,
