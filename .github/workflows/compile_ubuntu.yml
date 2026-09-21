@@ -11,10 +11,13 @@ permissions:
 jobs:
   check_translations_not_wiped:
     # Guards against a failure mode that has hit this repo's translations
-    # twice now (see AGENTS.md's translations section): a Crowdin export
-    # branch forked before a translation-restoring commit landed, which then
-    # silently blanks those strings back to empty the next time it's merged
-    # -- 464 translations wiped each time, caught by hand both times. A
+    # three times (see AGENTS.md's translations section): a bulk .po edit
+    # built from a stale base, which silently blanks translated strings back
+    # to empty and looks perfectly ordinary in review -- 464 translations
+    # across 16 languages each time, caught by hand every time. The external
+    # sync that caused those has since been dropped, but any bulk catalogue
+    # edit can do the same, so the guard stays and is keyed on msgid+msgctxt
+    # rather than on a line diff. A
     # standalone job (not a step inside the build jobs) so it runs once, in
     # seconds, without needing any of the build dependencies those jobs
     # install -- it's pure git + Python.

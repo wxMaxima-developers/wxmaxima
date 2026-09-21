@@ -2,14 +2,18 @@
 """Fail if any .po file in the current tree has fewer translated strings than
 the same file on a base ref (default: origin/main).
 
-Guards against a failure mode that has hit this repo's translations twice
-now (see AGENTS.md's translations section): a Crowdin export branch that
-forked before a translation-restoring commit landed silently blanks those
-strings back to empty the next time its export gets merged, since Crowdin
-has no concept of "this string used to be translated, don't overwrite it
-with nothing." Re-syncing the Crowdin-side branch from main before it
-generates its next export is the actual fix; this script is the safety net
-that catches a bad merge before it happens, not a substitute for that fix.
+Guards against a failure mode that has hit this repo's translations three
+times (see AGENTS.md's translations section): a bulk .po edit built from a
+stale base silently blanks already-translated strings back to empty, and
+looks perfectly ordinary in review -- a plain 3-way git merge does not
+understand PO-file semantics, and translated-string counts cannot tell
+"reverted to worse text" from "line wrapping changed." Each time it was
+464 translations across 16 languages, caught only by diffing them by hand.
+
+The external sync that produced those has since been dropped, but nothing
+about the mechanism was specific to it: any bulk catalogue edit can do the
+same. Hence the comparison here is keyed on msgid+msgctxt rather than on a
+line diff.
 
 Usage: check_translations_not_wiped.py [base-ref]
 """
@@ -70,10 +74,10 @@ def main():
     if any_wiped:
         print(
             f"::error::Total: {total_wiped} translation(s) would be wiped "
-            f"compared to {base_ref}. This is the Crowdin-stale-branch "
-            f"regression documented in AGENTS.md's translations section -- "
-            f"do not merge as-is. Re-sync the source branch from {base_ref} "
-            f"before generating its export again."
+            f"compared to {base_ref}. This is the stale-catalogue regression "
+            f"documented in AGENTS.md's translations section -- do not merge "
+            f"as-is. Rebuild the .po changes on top of {base_ref} rather than "
+            f"on whatever older snapshot they were generated from."
         )
         return 1
 

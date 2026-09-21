@@ -25,10 +25,10 @@ if(PO4A)
     if(MSGMERGE AND MSGCAT)
         # Pull each already-manual-translated language's manual-content
         # translations back out of the combined locales/wxMaxima/<lang>.po
-        # (the file Crowdin actually writes to) before po4a regenerates
-        # info/wxmaxima.<lang>.md, so translations contributed through
-        # Crowdin for the manual's own strings reach the manual instead of
-        # sitting unused in the combined file. See
+        # (the one file a translator actually edits) before po4a
+        # regenerates info/wxmaxima.<lang>.md, so manual strings translated
+        # there reach the manual instead of sitting unused in the combined
+        # file. See
         # ../wxMaxima/split_manual_po.cmake. Scoped to LANGUAGES (languages
         # that already have a locales/manual/<lang>.po), same as the rest of
         # this file -- silently creating a fresh locales/manual/<lang>.po
@@ -51,7 +51,7 @@ if(PO4A)
                     -P "${CMAKE_SOURCE_DIR}/locales/wxMaxima/split_manual_po.cmake")
         endforeach()
     else()
-        message(STATUS "msgmerge/msgcat not found. Manual translations contributed through Crowdin's combined .po files cannot be pulled back into locales/manual/.")
+        message(STATUS "msgmerge/msgcat not found. Manual translations made in the combined .po files cannot be pulled back into locales/manual/.")
     endif()
 
     # update all po files for the manual *in the source tree*.

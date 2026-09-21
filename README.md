@@ -29,12 +29,13 @@ The wxMaxima Team
 
 WxMaxima is translated by volunteers, and help with translations is always
 welcome, whether that means improving an existing translation or adding a
-new language. Translations can be contributed in either of two ways:
+new language.
 
-- Directly, by editing the `.po` files in the `locales/` subdirectory
-  (see `locales/README.md` for details), or
-- Online, without needing any of the source code, via our project on
-  Crowdin: <https://crowdin.com/project/wxmaxima-gui>
+Translations are contributed by editing the `.po` files in the `locales/`
+subdirectory and opening a pull request — see `locales/README.md` for how
+the files fit together. A `.po` file is plain text, so this needs no more
+than a text editor, though a dedicated editor such as Poedit or Lokalize
+makes it more comfortable.
 
 ## Note concerning Wayland (recent Linux/BSD distributions)
 
