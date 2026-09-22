@@ -75,6 +75,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">AiProvider.h File Reference</div></div>
@@ -120,6 +121,12 @@ Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAiProviderError.html">AiProviderError</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Thrown by ParseReply() for a response that doesn't parse or doesn't have the expected shape &ndash; distinct from a non-2xx HTTP status, which SendChat() reports directly from the response body/status line instead.  <a href="classAiProviderError.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:a7aa38f867829688e538ab031e87bd85a"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="AiProvider_8h.html#a7aa38f867829688e538ab031e87bd85a">AiRequestCanceller</a> = std::function&lt; void()&gt;</td></tr>
+<tr class="memdesc:a7aa38f867829688e538ab031e87bd85a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cancels the one chat request it was handed out for, and does nothing at all once that request has finished.  <br /></td></tr>
+<tr class="separator:a7aa38f867829688e538ab031e87bd85a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
@@ -208,7 +215,27 @@ std::shared_ptr&lt; <a class="el" href="classAiProvider.html">AiProvider</a> &gt
 <div class="textblock"><p>Talks to one of a handful of external AI chat APIs for the AI chat sidebar (<a class="el" href="classAiChatSidebar.html" title="A sidebar to chat with an external AI about the current worksheet (follow-up to the MCP server,...">AiChatSidebar</a>). </p>
 <p>See that class for the safety scope (read-only worksheet context, no tool-calling in this first pass).</p>
 <p>Every provider here needs an internet connection to a third-party service and an API key the user pastes into Options &ndash; unlike the MCP server (src/mcp/), which is entirely local and needs neither. The two features are otherwise unrelated beyond both ultimately drawing on <a class="el" href="classMcpTools.html" title="Implements the read-only &quot;worksheet context&quot; tools the MCP server exposes to an external AI tool (GH ...">McpTools</a> for worksheet context. </p>
-</div><h2 class="groupheader">Function Documentation</h2>
+</div><h2 class="groupheader">Typedef Documentation</h2>
+<a id="a7aa38f867829688e538ab031e87bd85a" name="a7aa38f867829688e538ab031e87bd85a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7aa38f867829688e538ab031e87bd85a">&#9670;&#160;</a></span>AiRequestCanceller</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="AiProvider_8h.html#a7aa38f867829688e538ab031e87bd85a">AiRequestCanceller</a> =  std::function&lt;void()&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Cancels the one chat request it was handed out for, and does nothing at all once that request has finished. </p>
+<p><a class="el" href="classAiProvider.html#a9b90929f3bbce0b4f6e347907ca2c48a" title="Sends one chat turn asynchronously via wxWebRequest and calls callback(ok, replyOrError) exactly once...">AiProvider::SendChat()</a> returns one of these so the chat sidebar's "Interrupt" button has something to interrupt: only the wxWebRequest can cancel a request, it is created inside SendChat(), and &ndash; being a ref-counted handle nothing else keeps &ndash; is unreachable from outside otherwise. Empty (i.e. compares false) when there is nothing that could be cancelled: a build without wxUSE_WEBREQUEST, or a request that could not even be created.</p>
+<p>Calling it ends the request in wxWebRequest::State_Cancelled, which reaches the caller as one ordinary callback(false, ...) &ndash; a cancelled request reports through exactly the same "callback fires once, whatever
+the outcome" contract as every other ending, never as a second callback and never as silence. Calling it after the request already finished is safe and does nothing, so a caller that holds one a little too long cannot cancel somebody else's request by accident. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
 <a id="ace13aad5a1f4b5b271f340ab17fa7cad" name="ace13aad5a1f4b5b271f340ab17fa7cad"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ace13aad5a1f4b5b271f340ab17fa7cad">&#9670;&#160;</a></span>AiProviderRequestUrlProblem()</h2>
 

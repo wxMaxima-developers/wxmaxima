@@ -42,7 +42,7 @@ var searchData=
   ['selectrecttext_39',['SelectRectText',['../classCell.html#a954a09093dbf2a1ee076f92cb0c0f62c',1,'Cell::SelectRectText()'],['../classEditorCell.html#aa2766d7df796869feda0879eb85192b3',1,'EditorCell::SelectRectText()']]],
   ['selectwithchar_40',['SelectWithChar',['../classWorksheet.html#a5cf3825d7d3e6d07ad10e23c0ff2d575',1,'Worksheet']]],
   ['selectwordundercaret_41',['SelectWordUnderCaret',['../classEditorCell.html#a6d39bbbff8b47de635ca8710e2b6f2de',1,'EditorCell']]],
-  ['sendchat_42',['SendChat',['../classAiProvider.html#a076a205621a9d4ac967ea741e89281d8',1,'AiProvider']]],
+  ['sendchat_42',['SendChat',['../classAiProvider.html#a9b90929f3bbce0b4f6e347907ca2c48a',1,'AiProvider']]],
   ['sendmaxima_43',['SendMaxima',['../classMaximaEvaluator.html#a0ace18d150f29cef46550a68b372f6d3',1,'MaximaEvaluator']]],
   ['serializeaicustomproviders_44',['SerializeAiCustomProviders',['../AiProvider_8h.html#aca5cc030d738cb9b9e9617cec8105a45',1,'AiProvider.cpp']]],
   ['serializer_45',['serializer',['../classdetail_1_1serializer.html#a3d025f3aa1e8661554858b8aaab08c3b',1,'detail::serializer']]],
