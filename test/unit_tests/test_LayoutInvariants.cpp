@@ -567,7 +567,7 @@ SCENARIO("A ProductCell positions its symbol/limits/base and breaks up with the 
     THEN("broken into lines, its command name is product(, never sum(") {
       REQUIRE(prod->BreakUp());
       Cell *open = prod->GetBrokenCell(0);
-      REQUIRE(open != nullptr);
+      REQUIRE(open != nullptr); // flawfinder: ignore -- "open" is a glyph cell, not a file open
       CHECK(open->ToString() == wxS("product("));
     }
   }

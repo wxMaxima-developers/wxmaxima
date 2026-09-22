@@ -707,9 +707,12 @@ SCENARIO("Each provider derives its model-list URL from its chat endpoint") {
 SCENARIO("Parsing a provider's model list") {
   GIVEN("an OpenAI-shaped {\"object\":\"list\",\"data\":[...]} response") {
     auto provider = MakeAiProvider(AiProviderKind::OpenAI, wxS("k"), wxS("m"));
-    const wxString body = wxS(R"({"object":"list","data":[
-        {"id":"gpt-4o","object":"model","owned_by":"system"},
-        {"id":"gpt-4o-mini","object":"model","owned_by":"system"}]})");
+    // Both models on one line because flawfinder matches the literal text
+    // "system" in this sample JSON, and the comment that tells it not to has
+    // to sit outside the raw string -- on the line immediately before it,
+    // from where it covers every hit on that one line but no further.
+    // flawfinder: ignore -- sample JSON payload, not a shell call
+    const wxString body = wxS(R"({"object":"list","data":[{"id":"gpt-4o","object":"model","owned_by":"system"},{"id":"gpt-4o-mini","object":"model","owned_by":"system"}]})");
     THEN("every model id comes back, in the order the provider listed them") {
       auto models = provider->ParseModelList(body);
       REQUIRE(models.size() == 2);

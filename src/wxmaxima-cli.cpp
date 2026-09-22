@@ -83,7 +83,7 @@ void CliDebugLog(const std::wstring &msg) {
   static std::wstring path;
   if (!checked) {
     checked = true;
-    wchar_t buf[MAX_PATH];
+    wchar_t buf[MAX_PATH]; // flawfinder: ignore -- the call below is bounded by MAX_PATH
     DWORD len = GetEnvironmentVariableW(L"WXM_STDIO_DEBUG_LOG", buf, MAX_PATH);
     if ((len > 0) && (len < MAX_PATH))
       path.assign(buf, len);
@@ -144,7 +144,8 @@ std::wstring DescribeStdHandle(DWORD stdHandleId) {
   const wchar_t *inherit = GetHandleInformation(h, &flags)
     ? ((flags & HANDLE_FLAG_INHERIT) ? L"yes" : L"no")
     : L"unqueryable";
-  wchar_t buf[96];
+  wchar_t buf[96]; // flawfinder: ignore -- the swprintf() below is bounded by sizeof(buf)
+  // flawfinder: ignore -- constant format string, no user input, bounded length
   swprintf(buf, 96, L"handle=%p type=%ls inherit=%ls", h, type, inherit);
   return buf;
 }

@@ -148,7 +148,7 @@ void McpServer::CloseConnection(wxSocketBase *socket) {
 }
 
 void McpServer::PumpConnection(wxSocketBase *socket, Connection &conn) {
-  char buf[4096];
+  char buf[4096]; // flawfinder: ignore -- Read() below is bounded by sizeof(buf)
   // wxSOCKET_NOWAIT means Read() never blocks; drain whatever the OS
   // currently has buffered in a bounded number of chunks per event.
   for (int i = 0; i < 256; ++i) {

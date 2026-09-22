@@ -35,21 +35,30 @@ jobs:
         # Scanning './' (as this step used to) buries wxMaxima's own findings
         # under ~85% noise from vendored third-party code this project doesn't
         # maintain and can't fix here: the bundled nanoSVG single-header
-        # library and the bundled Catch2 test framework header alone account
-        # for the large majority of hits. flawfinder has no path-exclude flag
-        # of its own (it only takes a list of files/directories to scan, which
-        # it recurses into fully), so build the file list explicitly instead,
-        # pruning just those two vendored subtrees plus test_ImgCell.h (a
-        # bin2c-generated binary-blob fixture flagged only for declaring a
-        # large const byte array -- "do not edit manually" per its own header,
-        # so it can't carry a flawfinder: ignore comment either). Confirmed
-        # this drops the hit count from 226 to 18, all of them in wxMaxima's
-        # own source or its own tests; the remaining ones were all confirmed
-        # false positives and got flawfinder: ignore comments with the reason
-        # right in the source, so a clean run of this step should now report 0.
+        # library, the bundled nlohmann/json single-header library and the
+        # bundled Catch2 test framework header alone account for the large
+        # majority of hits. flawfinder has no path-exclude flag of its own (it
+        # only takes a list of files/directories to scan, which it recurses
+        # into fully), so build the file list explicitly instead, pruning
+        # those vendored subtrees plus test_ImgCell.h (a bin2c-generated
+        # binary-blob fixture flagged only for declaring a large const byte
+        # array -- "do not edit manually" per its own header, so it can't
+        # carry a flawfinder: ignore comment either).
+        #
+        # Every hit left in wxMaxima's own source or tests has been reviewed
+        # and carries a flawfinder: ignore comment with the reason right next
+        # to the code, so a clean run of this step reports 0 and every SARIF
+        # alert that does appear in the Security tab is a genuinely new one.
+        #
+        # Keeping it at 0 needs the prune list to keep up: src/vendor was
+        # added here only after nlohmann/json landed for the MCP/AI work and
+        # quietly put 16 alerts back into the Security tab. If a new vendored
+        # library arrives outside src/vendor, prune it here too -- an alert
+        # list nobody reads because it is mostly third-party noise is the
+        # failure mode this whole file list exists to avoid.
         run: |
-          find . \( -path ./src/nanoSVG -o -path ./test/catch2 -o -path ./.git \
-                     -o -path ./test/unit_tests/test_ImgCell.h \) -prune \
+          find . \( -path ./src/nanoSVG -o -path ./src/vendor -o -path ./test/catch2 \
+                     -o -path ./.git -o -path ./test/unit_tests/test_ImgCell.h \) -prune \
                -o -type f \( -name '*.c' -o -name '*.cc' -o -name '*.cpp' -o -name '*.h' -o -name '*.hpp' \) -print \
                > flawfinder_files.txt
           flawfinder --sarif --quiet $(cat flawfinder_files.txt) > flawfinder_results.sarif
