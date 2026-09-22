@@ -77,8 +77,14 @@ AiChatSidebar::AiChatSidebar(wxWindow *parent, Configuration *configuration,
   // (confirmed live: side by side, "Clear" was pushed down to an invisible
   // sliver at the panel's edge).
   m_sendButton = new wxButton(this, wxID_ANY, _("Send"));
+  m_interruptButton = new wxButton(this, wxID_ANY, _("Interrupt"));
+  m_interruptButton->SetToolTip(
+    _("Stop waiting for the current answer."));
+  m_interruptButton->Enable(false);
   m_clearButton = new wxButton(this, wxID_ANY, _("Clear"));
   vbox->Add(m_sendButton,
+           wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
+  vbox->Add(m_interruptButton,
            wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
   vbox->Add(m_clearButton,
            wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
@@ -87,6 +93,8 @@ AiChatSidebar::AiChatSidebar(wxWindow *parent, Configuration *configuration,
   Layout();
 
   m_sendButton->Bind(wxEVT_BUTTON, &AiChatSidebar::OnSend, this);
+  m_interruptButton->Bind(wxEVT_BUTTON,
+                          [this](wxCommandEvent &) { InterruptRequest(); });
   m_clearButton->Bind(wxEVT_BUTTON,
                       [this](wxCommandEvent &) { ClearConversation(); });
   m_openOptionsButton->Bind(wxEVT_BUTTON, &AiChatSidebar::OnOpenOptions, this);
@@ -231,6 +239,37 @@ void AiChatSidebar::ClearConversation() {
     AppendToHistory(_("wxMaxima"), m_reportedConfigProblem = m_providerConfigProblem);
 }
 
+void AiChatSidebar::InterruptRequest() {
+  if (!m_requestInFlight || !m_cancelRequest)
+    return;
+  // Remembered rather than acted on here, because cancelling is not
+  // instantaneous: the request ends when wxWebRequest says it has, which
+  // reaches us as an ordinary failed-request callback. This flag is what
+  // lets that callback tell "the user asked me to stop" apart from "this
+  // went wrong."
+  m_interruptRequested = true;
+  // The button has done its job; saying so beats leaving it inviting a
+  // second click that would do nothing.
+  m_interruptButton->Enable(false);
+  m_statusText->SetLabel(_("Interrupting..."));
+  // Nothing left to nag about: a request we have asked to stop is not one
+  // that is "taking longer than usual", and letting the timer fire would
+  // overwrite the label just set with exactly that.
+  m_longWaitTimer.Stop();
+  // Moved out, not called in place: nothing promises that cancelling
+  // reports back later rather than right now, and our own completion
+  // callback clears m_cancelRequest -- which, called in place, would
+  // destroy this very std::function while it is still executing. The local
+  // keeps it alive until the call returns.
+  AiRequestCanceller cancel = std::move(m_cancelRequest);
+  m_cancelRequest = nullptr;
+  cancel();
+}
+
+void AiChatSidebar::ScrollHistoryToEnd() {
+  m_historyCtrl->ShowPosition(m_historyCtrl->GetLastPosition());
+}
+
 void AiChatSidebar::OnInputKeyDown(wxKeyEvent &event) {
   if (((event.GetKeyCode() == WXK_RETURN) ||
       (event.GetKeyCode() == WXK_NUMPAD_ENTER)) &&
@@ -244,12 +283,17 @@ void AiChatSidebar::OnInputKeyDown(wxKeyEvent &event) {
 
 void AiChatSidebar::AppendToHistory(const wxString &speaker, const wxString &text) {
   m_historyCtrl->AppendText(speaker + wxS(":\n") + text + wxS("\n\n"));
+  ScrollHistoryToEnd();
 }
 
 void AiChatSidebar::SetBusy(bool busy) {
   m_requestInFlight = busy;
   m_inputCtrl->Enable(!busy);
   m_sendButton->Enable(!busy && (m_provider != nullptr));
+  // Only offer to interrupt what can actually be interrupted: a build
+  // without wxWebRequest, or a request that never started, hands out no
+  // canceller at all (see AiProvider::SendChat()).
+  m_interruptButton->Enable(busy && (bool)m_cancelRequest);
   UpdateStatusText();
   UpdateAiStatusIcon();
   if (busy)
@@ -345,20 +389,39 @@ void AiChatSidebar::OnSend(wxCommandEvent &) {
   m_inputCtrl->Clear();
   AppendToHistory(_("You"), text);
   m_history.push_back({wxS("user"), text});
+  m_interruptRequested = false;
   SetBusy(true);
 
   wxString context = BuildContextSnapshot();
   std::shared_ptr<AiProvider> provider = m_provider;
   AiConnectionMonitor *monitor = m_monitor;
-  AiProvider::SendChat(
+  m_cancelRequest = AiProvider::SendChat(
     provider, this, context, m_history,
     [this, provider](bool ok, const wxString &replyOrError) {
-      m_lastRequestFailed = !ok;
-      m_lastErrorDetail = ok ? wxString() : replyOrError;
+      // Whatever happened, this request is over: the canceller it handed
+      // out has nothing left to cancel, and the Interrupt button has
+      // nothing left to offer.
+      m_cancelRequest = nullptr;
+      // A request the user stopped on purpose is not a failure, and must
+      // not be recorded as one: m_lastRequestFailed is what turns the
+      // status bar's AI icon red and keeps an error in its tooltip until
+      // the next successful turn.
+      const bool interrupted = m_interruptRequested && !ok;
+      m_interruptRequested = false;
+      m_lastRequestFailed = !ok && !interrupted;
+      m_lastErrorDetail = m_lastRequestFailed ? replyOrError : wxString();
       SetBusy(false);
       if (ok) {
         AppendToHistory(provider->Name(), replyOrError);
         m_history.push_back({wxS("assistant"), replyOrError});
+      } else if (interrupted) {
+        // Said in wxMaxima's own voice, not the provider's, and not as an
+        // "Error:" -- nothing went wrong. It is worth saying at all
+        // because the conversation otherwise just stops, with the question
+        // in the transcript and no sign of what became of it.
+        AppendToHistory(_("wxMaxima"),
+                        _("The request was interrupted -- no answer was "
+                          "received."));
       } else {
         AppendToHistory(_("Error"), replyOrError);
       }
@@ -371,4 +434,10 @@ void AiChatSidebar::OnSend(wxCommandEvent &) {
       if (monitor)
         monitor->Add_Response(ok, responseBodyOrDetail);
     });
+  // SetBusy() above ran before there was a canceller to enable the button
+  // for -- and it had to, since SendChat() can report a failure before it
+  // ever returns (no wxWebRequest in this build, or a request that could
+  // not be created), in which case we are not busy any more and this
+  // correctly leaves the button disabled.
+  m_interruptButton->Enable(m_requestInFlight && (bool)m_cancelRequest);
 }
