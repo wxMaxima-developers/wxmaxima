@@ -1704,8 +1704,6 @@ wxString WorksheetExport::SelectionToSelfContainedHTML(GroupCell *startGroup,
   // an in-memory stream (no temp file needed -- unlike the images, wx has no
   // "only writes to a real path" constraint for plain text) so it can be
   // inlined into a <style> element instead of linked from a separate file.
-  wxString versionString = wxS("Created with wxMaxima version " WXMAXIMA_VERSION);
-
   wxStringOutputStream cssStream;
   wxTextOutputStream css(cssStream);
   WriteHtmlStyleSheet(css, wxConfig::Get());
