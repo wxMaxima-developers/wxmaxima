@@ -230,6 +230,27 @@ wxString AiProviderBaseUrl(AiProviderKind kind);
 //! directly. Same best-effort/link-rot caveat as AiProviderApiKeyUrl().
 wxString AiProviderModelListUrl(AiProviderKind kind);
 
+/*! Cancels the one chat request it was handed out for, and does nothing
+  at all once that request has finished.
+
+  AiProvider::SendChat() returns one of these so the chat sidebar's
+  "Interrupt" button has something to interrupt: only the wxWebRequest can
+  cancel a request, it is created inside SendChat(), and -- being a
+  ref-counted handle nothing else keeps -- is unreachable from outside
+  otherwise. Empty (i.e. compares false) when there is nothing that could
+  be cancelled: a build without wxUSE_WEBREQUEST, or a request that could
+  not even be created.
+
+  Calling it ends the request in wxWebRequest::State_Cancelled, which
+  reaches the caller as one ordinary callback(false, ...) -- a cancelled
+  request reports through exactly the same "callback fires once, whatever
+  the outcome" contract as every other ending, never as a second callback
+  and never as silence. Calling it after the request already finished is
+  safe and does nothing, so a caller that holds one a little too long
+  cannot cancel somebody else's request by accident.
+*/
+using AiRequestCanceller = std::function<void()>;
+
 /*! Talks to one external AI provider's chat completion HTTP API.
 
   Deliberately split into a stateless, directly-testable half (BuildRequestBody()/
@@ -330,13 +351,19 @@ public:
     Options while a request is still in flight. Capturing a shared_ptr
     keeps the exact instance that sent the request alive for the callback
     regardless of what AiChatSidebar does to its own current-provider
-    pointer in the meantime; capturing a raw `this` would not. */
-  static void SendChat(std::shared_ptr<const AiProvider> self, wxEvtHandler *owner,
-                       const wxString &context,
-                       const std::vector<AiChatMessage> &history,
-                       std::function<void(bool ok, const wxString &replyOrError)> callback,
-                       std::function<void(const wxString &requestBody)> onRequest = nullptr,
-                       std::function<void(bool ok, const wxString &responseBodyOrDetail)> onResponse = nullptr);
+    pointer in the meantime; capturing a raw `this` would not.
+
+    Returns an AiRequestCanceller for this one request (see there), so the
+    caller can interrupt a reply that is taking too long, or one it no
+    longer wants. Cancelling still goes through `callback` exactly once,
+    like every other way a request can end. */
+  static AiRequestCanceller
+  SendChat(std::shared_ptr<const AiProvider> self, wxEvtHandler *owner,
+           const wxString &context,
+           const std::vector<AiChatMessage> &history,
+           std::function<void(bool ok, const wxString &replyOrError)> callback,
+           std::function<void(const wxString &requestBody)> onRequest = nullptr,
+           std::function<void(bool ok, const wxString &responseBodyOrDetail)> onResponse = nullptr);
 
   /*! The URL FetchModels() asks for this provider's current model ids, or
     an empty string if there is nothing sensible to ask.

@@ -78,6 +78,10 @@ public:
   //! Clears the conversation history (but not the provider/API key setup).
   void ClearConversation();
 
+  //! Cancels the reply we are currently waiting for, if any. Does nothing
+  //! when no request is in flight, so this is safe to call unconditionally.
+  void InterruptRequest();
+
   //! Gives keyboard focus to the input box -- called when the AI status
   //! icon is single-clicked to bring this sidebar to the user's attention.
   void FocusInput() { m_inputCtrl->SetFocus(); }
@@ -85,6 +89,23 @@ public:
 private:
   void OnSend(wxCommandEvent &event);
   void OnInputKeyDown(wxKeyEvent &event);
+  /*! Scrolls the transcript down to what was just appended.
+
+    wxTextCtrl::AppendText() follows the new text by itself only while the
+    view happens to be pinned to the bottom already: wxGTK, for one, checks
+    that the scrollbar thumb sits exactly at the end and otherwise leaves
+    the view alone (see wxTextCtrl::WriteText() in src/gtk/textctrl.cpp).
+    That is a reasonable default for a log, but not for a chat -- an answer
+    arriving while the user has scrolled up to re-read something then lands
+    entirely below the visible area, looking as though nothing came back.
+    Asking for the scroll explicitly is what makes an arriving answer
+    visible whatever the view was doing beforehand.
+
+    Needs no deferral of its own for GTK's incremental layout, even though
+    a long answer is appended long before its lines have been measured:
+    wxTextCtrl::ShowPosition() already re-applies itself once that layout
+    pass has run. */
+  void ScrollHistoryToEnd();
   //! Opens the Options dialog's AI Chat tab -- shown only while no provider
   //! is configured, since there is no "log in" button that could get an API
   //! key automatically (see AiProviderApiKeyUrl()'s own comment). Re-posts
@@ -116,6 +137,24 @@ private:
   std::shared_ptr<AiProvider> m_provider;
   std::vector<AiChatMessage> m_history;
   bool m_requestInFlight = false;
+  /*! Cancels the request currently in flight -- empty whenever there is
+    none (see AiProvider::SendChat()'s return value).
+
+    Cleared in the completion callback rather than only in SetBusy(), so a
+    canceller never outlives the request it belongs to: holding a stale one
+    would be harmless in itself (it checks that request's own done-flag),
+    but clearing it is also what tells the Interrupt button whether there
+    is anything left to interrupt. */
+  AiRequestCanceller m_cancelRequest;
+  /*! Set by InterruptRequest() for exactly as long as it takes the
+    cancelled request to report back.
+
+    Without it, a request the user interrupted on purpose would be
+    indistinguishable from one that failed on its own: it arrives as a
+    perfectly ordinary callback(false, "Request cancelled.") and would be
+    written into the transcript as an error and light up the status bar's
+    AI icon red, for something the user asked for. */
+  bool m_interruptRequested = false;
   //! Whether the most recently completed request failed -- feeds
   //! UpdateAiStatusIcon()'s AiStatus::Error/Active choice once a request
   //! isn't in flight any more. Never true before the first request.
@@ -148,6 +187,16 @@ private:
   wxTextCtrl *m_historyCtrl;
   wxTextCtrl *m_inputCtrl;
   wxButton *m_sendButton;
+  /*! Always present, enabled only while a request is in flight.
+
+    Deliberately not shown-and-hidden with the request, and deliberately
+    not the Send button relabelled: a button that appears and disappears
+    resizes the transcript above it every single turn, and one that changes
+    what it does under the pointer is a way to cancel a reply by
+    mistake. This is also how wxMaxima's own Maxima interrupt already
+    behaves -- a permanent menu item/toolbar button that is simply greyed
+    out while there is nothing to interrupt. */
+  wxButton *m_interruptButton;
   wxButton *m_clearButton;
   wxStaticText *m_statusText;
   wxButton *m_openOptionsButton;

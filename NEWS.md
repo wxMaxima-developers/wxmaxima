@@ -1,5 +1,13 @@
 # Current development version
 
+- The AI chat now scrolls to an answer when it arrives, instead of leaving
+  it below the bottom edge of the transcript for anything longer than a line
+  or two.
+- The AI chat has an Interrupt button. It is greyed out until there is
+  something to interrupt, and stopping a request that way is recorded as
+  what it is -- the transcript says the request was interrupted, and the
+  status bar's AI icon doesn't go red over it.
+
 - Translatable strings now reach translators without waiting for whoever
   added them to remember to regenerate the catalogue: a weekly job refreshes
   it, and refuses to commit anything if the regeneration would silently drop

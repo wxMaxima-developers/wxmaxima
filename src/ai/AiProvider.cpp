@@ -804,7 +804,7 @@ void AiProvider::FetchModels(
 #endif
 }
 
-void AiProvider::SendChat(
+AiRequestCanceller AiProvider::SendChat(
   std::shared_ptr<const AiProvider> self, wxEvtHandler *owner, const wxString &context,
   const std::vector<AiChatMessage> &history,
   std::function<void(bool ok, const wxString &replyOrError)> callback,
@@ -835,7 +835,9 @@ void AiProvider::SendChat(
     if (onResponse)
       onResponse(false, msg);
     callback(false, msg);
-    return;
+    // Nothing was started, so there is nothing to cancel -- an empty
+    // canceller is how the caller is told that.
+    return nullptr;
   }
   for (const auto &header : self->AuthHeaders())
     request.SetHeader(header.first, header.second);
@@ -978,11 +980,22 @@ void AiProvider::SendChat(
     },
     requestId);
   request.Start();
+  // `request` is a ref-counted handle, so this copy refers to the same
+  // request and keeps it alive for as long as the caller holds on to the
+  // canceller. The same `done` flag the handler above uses guards it:
+  // once any terminal state has been reported, cancelling is a no-op
+  // rather than a call into a request that has already finished.
+  return [request, done]() mutable {
+    if (*done)
+      return;
+    request.Cancel();
+  };
 #else
   wxString msg = _("This build of wxMaxima was compiled without wxWebRequest "
                    "support, so it cannot talk to any AI provider.");
   if (onResponse)
     onResponse(false, msg);
   callback(false, msg);
+  return nullptr;
 #endif
 }
