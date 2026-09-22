@@ -1464,7 +1464,7 @@ void WriteHTMLFooter(wxString &output, GroupCell *tree,
 
 //! Base64-encode a whole file's contents, or return empty if it can't be read.
 wxString FileToBase64(const wxString &path) {
-  wxFile file(path, wxFile::read);
+  wxFile file(path, wxFile::read); // flawfinder: ignore -- wxFile::read is an open-mode enum, not the read() syscall
   if (!file.IsOpened())
     return {};
   const wxFileOffset len = file.Length();
