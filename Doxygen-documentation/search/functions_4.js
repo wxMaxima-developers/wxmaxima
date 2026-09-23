@@ -32,7 +32,7 @@ var searchData=
   ['drawlist_29',['DrawList',['../classCell.html#a8c35dea62297500d1f9a339220fb57f9',1,'Cell']]],
   ['drawmenu_30',['DrawMenu',['../classMaximaCommandMenus.html#a0c52ba2b4d454483ea359481c95772fb',1,'MaximaCommandMenus']]],
   ['drawrect_31',['drawRect',['../classOverload__Test.html#a840305784a1944b4de9826a1f4204365',1,'Overload_Test::drawRect(int, int, int, int)'],['../classOverload__Test.html#a7a613f50092cbc0ef830a818d9f3409c',1,'Overload_Test::drawRect(const Rect &amp;r)']]],
-  ['drawthiscell_32',['DrawThisCell',['../classCell.html#a843593aae2abe1a871907b895f697123',1,'Cell']]],
+  ['drawthiscell_32',['DrawThisCell',['../classCell.html#a843593aae2abe1a871907b895f697123',1,'Cell::DrawThisCell()'],['../classGroupCell.html#a7ff377260545903db8b720cc0de22a60',1,'GroupCell::DrawThisCell()']]],
   ['dump_33',['dump',['../classdetail_1_1serializer.html#ae73c1bac64bcc810923b9f1261af8b09',1,'detail::serializer::dump()'],['../classbasic__json.html#a85df48caed9e341bb14d98ab88891d1e',1,'basic_json::dump()']]],
   ['dynamic_5funique_5fptr_5fcast_34',['dynamic_unique_ptr_cast',['../CellPtr_8h.html#a1ffe8176d4a398d39ce60e2c2e036f21',1,'CellPtr.h']]],
   ['dynamicappend_35',['DynamicAppend',['../classCellListBuilder.html#a74f512fe3ebf8fdc153b63d044e6722c',1,'CellListBuilder::DynamicAppend(Cell *cells)'],['../classCellListBuilder.html#a1aec3bfc435500cb8d57d885c01b3968',1,'CellListBuilder::DynamicAppend(std::unique_ptr&lt; Cell &gt; &amp;&amp;cells)']]]
