@@ -56,6 +56,8 @@
 
 #include <wx/region.h>
 #include <wx/scrolwin.h>
+#include <wx/dcgraph.h>
+#include <wx/graphics.h>
 
 #include <cstdlib>
 #include <vector>
@@ -1074,6 +1076,82 @@ SCENARIO("The worksheet's matrix scrollbars follow the matrices they belong to")
     }
   }
   frame->Destroy();
+}
+
+// Draws the matrix onto a white bitmap through a real graphics context, the
+// way the worksheet does, and returns the colour just above the given entry:
+// inside that entry's row band, but in the gap between two rows of text, so
+// no glyph gets in the way.
+static wxColour ColourAboveEntry(MatrCell *matr, int row, int col) {
+  wxBitmap bitmap(2000, 1200);
+  wxMemoryDC dc(bitmap);
+  dc.SetBackground(*wxWHITE_BRUSH);
+  dc.Clear();
+  wxGCDC antialiassingDC(dc);
+  NoClipToDrawRegion noClip(g_cfg);
+  matr->Draw(&dc, &antialiassingDC);
+  // wxGCDC may buffer; make sure everything has reached the bitmap.
+  antialiassingDC.GetGraphicsContext()->Flush();
+  const wxRect entry = matr->GetInnerCell(row, col)->GetRect();
+  wxColour colour;
+  dc.GetPixel(entry.x + entry.width / 2, entry.y - 2, &colour);
+  return colour;
+}
+
+SCENARIO("Only a matrix too large for the window gets alternating bands") {
+  g_cfg->SetZoomFactor(1.0);
+  g_cfg->SetCanvasSize(wxSize(600, 300));
+  OversizedMatricesMode mode(Configuration::OversizedMatrices::elide);
+
+  GIVEN("an elided matrix") {
+    std::unique_ptr<GroupCell> group;
+    MatrCell *matr = LayOutMatrix(group, 60, 40);
+    REQUIRE(matr->ElidedColumns() > 0);
+    THEN("it is banded: odd rows are tinted, the first row isn't") {
+      CHECK(matr->IsBanded());
+      CHECK(ColourAboveEntry(matr, 0, 0) == *wxWHITE);
+      CHECK(ColourAboveEntry(matr, 1, 0) != *wxWHITE);
+    }
+    THEN("where an odd row crosses an odd column the tint doubles") {
+      const wxColour single = ColourAboveEntry(matr, 1, 0);
+      const wxColour crossing = ColourAboveEntry(matr, 1, 1);
+      CHECK(crossing.Red() < single.Red());
+    }
+    THEN("the tint stays faint, so it reads as shading, not as colour") {
+      CHECK(ColourAboveEntry(matr, 1, 0).Red() > 220);
+    }
+  }
+
+  GIVEN("a matrix that fits") {
+    std::unique_ptr<GroupCell> group;
+    MatrCell *matr = LayOutMatrix(group, 3, 3);
+    THEN("it stays plain") {
+      CHECK_FALSE(matr->IsBanded());
+      CHECK(ColourAboveEntry(matr, 1, 0) == *wxWHITE);
+      CHECK(ColourAboveEntry(matr, 1, 1) == *wxWHITE);
+    }
+  }
+
+  GIVEN("a scrolling matrix") {
+    FakeScrollHost host;
+    ScrollModeWithHost scrollMode(&host);
+    std::unique_ptr<GroupCell> group;
+    MatrCell *matr = LayOutMatrix(group, 60, 40);
+    THEN("it is banded too, and the bands move with the entries") {
+      CHECK(matr->IsBanded());
+      CHECK(ColourAboveEntry(matr, 1, 0) != *wxWHITE);
+      matr->ScrollTo(wxPoint(0, 60));
+      // Whatever row now sits at the top of the viewport, its band follows
+      // its own index, not its position on screen.
+      for (int row = 0; row < 12; row++) {
+        const wxRect entry = matr->GetInnerCell(row, 0)->GetRect();
+        if (!matr->ViewportRect().Contains(wxPoint(entry.x + 1, entry.y - 2)))
+          continue;
+        INFO("row " << row);
+        CHECK((ColourAboveEntry(matr, row, 0) == *wxWHITE) == (row % 2 == 0));
+      }
+    }
+  }
 }
 
 class TestApp : public wxApp {

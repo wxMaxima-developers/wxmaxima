@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="820" height="490" viewBox="0 0 820 490">
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="510" viewBox="0 0 820 510">
   <style>
     .title { font-family: sans-serif; font-size: 16px; font-weight: bold; fill: #2c3e50; }
     .label { font-family: sans-serif; font-size: 12px; fill: #7f8c8d; }
@@ -11,6 +11,8 @@
     .gap { fill: #fdebd0; stroke: #e67e22; stroke-width: 1; stroke-dasharray: 3,2; }
     .dim { stroke: #e74c3c; stroke-width: 1; fill: none; }
     .dimtext { font-family: sans-serif; font-size: 11px; fill: #e74c3c; }
+    .band { fill: #f0f1f2; }
+    .bandcross { fill: #e1e3e5; }
   </style>
 
   <rect width="100%" height="100%" fill="#ffffff" />
@@ -18,6 +20,18 @@
   <text x="20" y="28" class="title">MatrCell with elided rows and columns (Configuration::OversizedMatrices::elide)</text>
 
   <g transform="translate(60, 60)">
+    <!-- DrawBands(): every odd (0-based) row and column gets a faint tint,
+         doubling where two cross; here m and n are taken to be even. Only an
+         elided or scrolling matrix is banded. Drawn first: beneath everything. -->
+    <rect x="20" y="65" width="400" height="50" class="band" />
+    <rect x="20" y="215" width="400" height="50" class="band" />
+    <rect x="110" y="5" width="85" height="270" class="band" />
+    <rect x="345" y="5" width="75" height="270" class="band" />
+    <rect x="110" y="65" width="85" height="50" class="bandcross" />
+    <rect x="345" y="65" width="75" height="50" class="bandcross" />
+    <rect x="110" y="215" width="85" height="50" class="bandcross" />
+    <rect x="345" y="215" width="75" height="50" class="bandcross" />
+
     <!-- The gap column and the gap row, each DotsExtent() plus the usual 10 px spacing -->
     <rect x="205" y="0" width="40" height="280" class="gap" />
     <rect x="0" y="118" width="440" height="40" class="gap" />
@@ -89,4 +103,5 @@
   <text x="20" y="420" class="note">m_colElision / m_rowElision each hide one contiguous run {first, count}. ChooseElision() always keeps the first and last</text>
   <text x="20" y="438" class="note">row/column, then keeps more from both ends alternately while they fit. Hidden entries are not positioned, not drawn,</text>
   <text x="20" y="456" class="note">and are skipped by GetToolTip() and GetInnerCellsInRect(). Every To...() export still writes the whole matrix.</text>
+  <text x="20" y="474" class="note">The faint bands (DrawBands()) tint every other row and column so the eye can follow one across; a matrix that fits stays plain.</text>
 </svg>

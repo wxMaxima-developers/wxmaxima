@@ -371,6 +371,60 @@ void MatrCell::DrawElisionMarks(wxDC *dc) const {
     DrawDots(dc, {gapX + radius, gapY + radius}, {pitch, pitch});
 }
 
+void MatrCell::DrawBands(wxDC *dc) const {
+  // Faint enough to read as shading, not as a colour: roughly 5% of the text
+  // colour over whatever lies beneath, 10% where a row and a column cross.
+  const wxColour text = GetForegroundColor();
+  const wxColour tint(text.Red(), text.Green(), text.Blue(), 14);
+  const wxBrush oldBrush = dc->GetBrush();
+  const wxPen oldPen = dc->GetPen();
+  dc->SetPen(*wxTRANSPARENT_PEN);
+  dc->SetBrush(wxBrush(tint));
+
+  // The bands fill the box between the brackets, not the brackets' margins.
+  const wxRect inside = ViewportRect();
+  const wxCoord dotsGap = DotsExtent() + Scale_Px(10);
+
+  // Each row's band runs from halfway through the gap above it to halfway
+  // through the gap below, so neighbouring bands meet without a seam. Same
+  // walk as SetCurrentPoint(), including the scroll offset and the gap left
+  // for the dots of an elided matrix.
+  wxCoord y = m_currentPoint.y - m_center - m_scroll.y;
+  for (size_t j = 0; j < m_matHeight; j++) {
+    if (m_rowElision.Active() && (j == m_rowElision.first))
+      y += dotsGap;
+    if (m_rowElision.Hides(j))
+      continue;
+    const wxCoord size = m_dropCenters.at(j).Sum() + Scale_Px(10);
+    if (j % 2 == 1) {
+      const wxRect band =
+        wxRect(inside.x, y, inside.width, size).Intersect(inside);
+      if (!band.IsEmpty())
+        dc->DrawRectangle(band);
+    }
+    y += size;
+  }
+
+  wxCoord x = m_currentPoint.x - m_scroll.x;
+  for (size_t i = 0; i < m_matWidth; i++) {
+    if (m_colElision.Active() && (i == m_colElision.first))
+      x += dotsGap;
+    if (m_colElision.Hides(i))
+      continue;
+    const wxCoord size = m_widths.at(i) + Scale_Px(10);
+    if (i % 2 == 1) {
+      const wxRect band =
+        wxRect(x, inside.y, size, inside.height).Intersect(inside);
+      if (!band.IsEmpty())
+        dc->DrawRectangle(band);
+    }
+    x += size;
+  }
+
+  dc->SetBrush(oldBrush);
+  dc->SetPen(oldPen);
+}
+
 void MatrCell::SetCurrentPoint(wxPoint point) const {
   Cell::SetCurrentPoint(point);
   // The entries that are left out are not positioned at all. They keep
@@ -485,6 +539,10 @@ void MatrCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
         if (antialiassingDC != dc)
           antialiassedClip.emplace(*antialiassingDC, ViewportRect());
       }
+      // Beneath the entries. Translucent, so it needs a separate graphics
+      // context to blend on; drawing it opaque would hide the selection.
+      if (IsBanded() && (antialiassingDC != dc))
+        DrawBands(antialiassingDC);
       for (size_t i = 0; i < m_matWidth; i++) {
         for (size_t j = 0; j < m_matHeight; j++) {
           if (IsEntryShown(j, i))
