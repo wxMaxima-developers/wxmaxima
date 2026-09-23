@@ -77,6 +77,7 @@ class Cell;
 class DocumentCellPointers;
 class ViewCellPointers;
 class GroupCell;
+class MatrixScrollHost;
 template<class T> class wxScrolled;
 typedef wxScrolled<wxWindow> wxScrolledCanvas;
 
@@ -466,6 +467,48 @@ public:
   };
   LayoutStrategy GetLayoutStrategy() const { return m_layoutStrategy; }
   void SetLayoutStrategy(LayoutStrategy s) { m_layoutStrategy = s; }
+
+  /*! How to show a matrix too large for the window
+
+    A matrix has no sensible linear form to fall back on the way a fraction
+    or a square root does, so the layout strategy above cannot help once one
+    is wider or taller than the window.
+  */
+  enum class OversizedMatrices {
+    //! Draw it whole; the worksheet grows, and scrolls, to fit it
+    showInFull = 0,
+    //! Leave out the middle rows/columns, marking the gap with ⋯ ⋮ ⋱ (the default)
+    elide = 1,
+    /*! Show a window-sized part of it, with native scrollbars
+
+      Only where there is a window to put scrollbars in, i.e. only if
+      GetMatrixScrollHost() is set. Anywhere else -- printing, a context
+      without a worksheet -- a matrix is elided instead.
+    */
+    scroll = 2
+  };
+  OversizedMatrices GetOversizedMatrices() const { return m_oversizedMatrices; }
+  void SetOversizedMatrices(OversizedMatrices mode) {
+    if (mode != m_oversizedMatrices)
+      RecalculateForce();
+    m_oversizedMatrices = mode;
+  }
+
+  /*! What gives a scrolling matrix its scrollbars, if anything
+
+    Set only on the worksheet's own configuration, by the worksheet. It is
+    deliberately not copied by the copy constructor: a copy is made for
+    printing or exporting, and neither has a window to put scrollbars in.
+  */
+  MatrixScrollHost *GetMatrixScrollHost() const { return m_matrixScrollHost; }
+  /*! Sets the scrollbar host
+
+    Only the worksheet calls this, as it is constructed and as it is
+    destroyed. It deliberately doesn't force a recalculation, as the other
+    layout-affecting setters do: that would call back into a worksheet that
+    is either not constructed yet or already being torn down.
+  */
+  void SetMatrixScrollHost(MatrixScrollHost *host) { m_matrixScrollHost = host; }
 
   void SetLayoutDeadline(int seconds) {
     m_renderContext.SetLayoutDeadline(seconds);
@@ -1587,6 +1630,9 @@ private:
   int m_autoSaveMinutes;
   int m_maxLayoutTime;
   LayoutStrategy m_layoutStrategy = LayoutStrategy::layout2DIfFits;
+  OversizedMatrices m_oversizedMatrices = OversizedMatrices::elide;
+  //! Not copied by the copy constructor; see GetMatrixScrollHost()
+  MatrixScrollHost *m_matrixScrollHost = nullptr;
   wxString m_wxMathML_Filename;
   maximaHelpFormat m_maximaHelpFormat;
   std::atomic<std::int_fast32_t> m_cellCfgCnt{0};

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="510" viewBox="0 0 820 510">
+  <style>
+    .title { font-family: sans-serif; font-size: 16px; font-weight: bold; fill: #2c3e50; }
+    .label { font-family: sans-serif; font-size: 12px; fill: #7f8c8d; }
+    .note { font-family: sans-serif; font-size: 12px; fill: #2c3e50; }
+    .entry { font-family: serif; font-size: 18px; fill: #2c3e50; }
+    .sub { font-size: 11px; }
+    .bracket { stroke: #2c3e50; stroke-width: 1.5; fill: none; }
+    .dot { fill: #2c3e50; }
+    .gap { fill: #fdebd0; stroke: #e67e22; stroke-width: 1; stroke-dasharray: 3,2; }
+    .dim { stroke: #e74c3c; stroke-width: 1; fill: none; }
+    .dimtext { font-family: sans-serif; font-size: 11px; fill: #e74c3c; }
+    .band { fill: #f0f1f2; }
+    .bandcross { fill: #e1e3e5; }
+  </style>
+
+  <rect width="100%" height="100%" fill="#ffffff" />
+
+  <text x="20" y="28" class="title">MatrCell with elided rows and columns (Configuration::OversizedMatrices::elide)</text>
+
+  <g transform="translate(60, 60)">
+    <!-- DrawBands(): every odd (0-based) row and column gets a faint tint,
+         doubling where two cross; here m and n are taken to be even. Only an
+         elided or scrolling matrix is banded. Drawn first: beneath everything. -->
+    <rect x="20" y="65" width="400" height="50" class="band" />
+    <rect x="20" y="215" width="400" height="50" class="band" />
+    <rect x="110" y="5" width="85" height="270" class="band" />
+    <rect x="345" y="5" width="75" height="270" class="band" />
+    <rect x="110" y="65" width="85" height="50" class="bandcross" />
+    <rect x="345" y="65" width="75" height="50" class="bandcross" />
+    <rect x="110" y="215" width="85" height="50" class="bandcross" />
+    <rect x="345" y="215" width="75" height="50" class="bandcross" />
+
+    <!-- The gap column and the gap row, each DotsExtent() plus the usual 10 px spacing -->
+    <rect x="205" y="0" width="40" height="280" class="gap" />
+    <rect x="0" y="118" width="440" height="40" class="gap" />
+
+    <!-- Brackets: drawn at the edges of the (elided) m_width x m_height -->
+    <path d="M 16 0 Q 2 140 16 280" class="bracket" />
+    <path d="M 424 0 Q 438 140 424 280" class="bracket" />
+
+    <!-- Row 1 -->
+    <text x="56" y="46" class="entry">a</text><text x="66" y="50" class="entry sub">1,1</text>
+    <text x="136" y="46" class="entry">a</text><text x="146" y="50" class="entry sub">1,2</text>
+    <text x="296" y="46" class="entry">a</text><text x="306" y="50" class="entry sub">1,n-1</text>
+    <text x="371" y="46" class="entry">a</text><text x="381" y="50" class="entry sub">1,n</text>
+    <!-- Row 2 -->
+    <text x="56" y="96" class="entry">a</text><text x="66" y="100" class="entry sub">2,1</text>
+    <text x="136" y="96" class="entry">a</text><text x="146" y="100" class="entry sub">2,2</text>
+    <text x="296" y="96" class="entry">a</text><text x="306" y="100" class="entry sub">2,n-1</text>
+    <text x="371" y="96" class="entry">a</text><text x="381" y="100" class="entry sub">2,n</text>
+    <!-- Row m-1 -->
+    <text x="56" y="196" class="entry">a</text><text x="66" y="200" class="entry sub">m-1,1</text>
+    <text x="136" y="196" class="entry">a</text><text x="146" y="200" class="entry sub">m-1,2</text>
+    <text x="296" y="196" class="entry">a</text><text x="306" y="200" class="entry sub">m-1,n-1</text>
+    <text x="371" y="196" class="entry">a</text><text x="381" y="200" class="entry sub">m-1,n</text>
+    <!-- Row m -->
+    <text x="56" y="246" class="entry">a</text><text x="66" y="250" class="entry sub">m,1</text>
+    <text x="136" y="246" class="entry">a</text><text x="146" y="250" class="entry sub">m,2</text>
+    <text x="296" y="246" class="entry">a</text><text x="306" y="250" class="entry sub">m,n-1</text>
+    <text x="371" y="246" class="entry">a</text><text x="381" y="250" class="entry sub">m,n</text>
+
+    <!-- ⋯ in every shown row, centred on the row's centre line -->
+    <g class="dot">
+      <circle cx="215" cy="40" r="2.5"/><circle cx="225" cy="40" r="2.5"/><circle cx="235" cy="40" r="2.5"/>
+      <circle cx="215" cy="90" r="2.5"/><circle cx="225" cy="90" r="2.5"/><circle cx="235" cy="90" r="2.5"/>
+      <circle cx="215" cy="190" r="2.5"/><circle cx="225" cy="190" r="2.5"/><circle cx="235" cy="190" r="2.5"/>
+      <circle cx="215" cy="240" r="2.5"/><circle cx="225" cy="240" r="2.5"/><circle cx="235" cy="240" r="2.5"/>
+    </g>
+    <!-- ⋮ in every shown column, centred on the column -->
+    <g class="dot">
+      <circle cx="75"  cy="128" r="2.5"/><circle cx="75"  cy="138" r="2.5"/><circle cx="75"  cy="148" r="2.5"/>
+      <circle cx="155" cy="128" r="2.5"/><circle cx="155" cy="138" r="2.5"/><circle cx="155" cy="148" r="2.5"/>
+      <circle cx="315" cy="128" r="2.5"/><circle cx="315" cy="138" r="2.5"/><circle cx="315" cy="148" r="2.5"/>
+      <circle cx="390" cy="128" r="2.5"/><circle cx="390" cy="138" r="2.5"/><circle cx="390" cy="148" r="2.5"/>
+    </g>
+    <!-- ⋱ where the two gaps cross -->
+    <g class="dot">
+      <circle cx="215" cy="128" r="2.5"/><circle cx="225" cy="138" r="2.5"/><circle cx="235" cy="148" r="2.5"/>
+    </g>
+
+    <!-- Dimension: the gap column's width -->
+    <path d="M 205 -14 L 245 -14 M 205 -19 L 205 -9 M 245 -19 L 245 -9" class="dim" />
+    <text x="225" y="-22" class="dimtext" text-anchor="middle">DotsExtent() + Scale_Px(10)</text>
+
+    <!-- Dimension: the dot pitch -->
+    <path d="M 215 292 L 225 292 M 215 288 L 215 296 M 225 288 L 225 296" class="dim" />
+    <text x="232" y="296" class="dimtext">DotPitch()</text>
+
+    <!-- Dimension: the gap row's height -->
+    <path d="M 454 118 L 454 158 M 449 118 L 459 118 M 449 158 L 459 158" class="dim" />
+    <text x="462" y="142" class="dimtext">DotsExtent() + Scale_Px(10)</text>
+
+    <!-- Budgets -->
+    <path d="M 0 320 L 440 320 M 0 315 L 0 325 M 440 315 L 440 325" class="dim" />
+    <text x="220" y="338" class="dimtext" text-anchor="middle">m_width &#8804; canvas width &#8722; GetIndent() &#8722; label width &#8722; 5 px</text>
+    <path d="M 610 0 L 610 280 M 605 0 L 615 0 M 605 280 L 615 280" class="dim" />
+    <text x="618" y="136" class="dimtext">m_height &#8804;</text>
+    <text x="618" y="150" class="dimtext">80% of canvas height</text>
+  </g>
+
+  <text x="20" y="420" class="note">m_colElision / m_rowElision each hide one contiguous run {first, count}. ChooseElision() always keeps the first and last</text>
+  <text x="20" y="438" class="note">row/column, then keeps more from both ends alternately while they fit. Hidden entries are not positioned, not drawn,</text>
+  <text x="20" y="456" class="note">and are skipped by GetToolTip() and GetInnerCellsInRect(). Every To...() export still writes the whole matrix.</text>
+  <text x="20" y="474" class="note">The faint bands (DrawBands()) tint every other row and column so the eye can follow one across; a matrix that fits stays plain.</text>
+</svg>

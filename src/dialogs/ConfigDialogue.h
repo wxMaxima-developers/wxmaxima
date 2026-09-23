@@ -326,6 +326,8 @@ protected:
   wxChoice *m_showLength;
   wxChoice *m_autosubscript;
   wxRadioBox *m_layoutStrategy;
+  //! How to show a matrix too large for the window
+  wxRadioBox *m_oversizedMatrices;
   wxRadioButton *m_enterEvaluates;
   wxRadioButton *m_ctrlEnterEvaluates;
   wxCheckBox *m_numpadEnterEvaluates;

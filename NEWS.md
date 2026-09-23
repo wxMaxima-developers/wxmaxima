@@ -8,6 +8,27 @@
   starts with its general "deepseek-chat" model, and its "deepseek-reasoner"
   can be picked instead, in which case the chat shows its answer, not its
   reasoning.
+- A matrix too large for the window no longer widens the whole worksheet.
+  Instead its middle rows and columns are left out and the gap is marked
+  with ⋯ ⋮ ⋱, the way a large matrix is written by hand: the first and last
+  rows and columns always stay in view, and hovering over the matrix tells
+  which ones are not shown. The matrix is elided to fit the window,
+  re-elided whenever the window is resized, and elided to fit the page when
+  printed. Nothing is lost by it: copying, saving and exporting the matrix
+  always include every entry. This is a change of the default: the old
+  behaviour is still available as "Show them in full" under Options ->
+  Worksheet -> "Matrices too large for the window".
+- The same setting can instead show such a matrix in a window-sized box
+  with its own, native scrollbars, the way a spreadsheet does. Only the
+  matrix scrolls: the mouse wheel still scrolls the worksheet, so a matrix
+  never traps it, and the scrollbars never take the keyboard focus away
+  from the worksheet. A matrix shown this way is printed with its middle
+  rows and columns left out, since paper cannot scroll. A matrix inside
+  another one never gets scrollbars of its own: the outer one scrolls over
+  both.
+- A matrix too large for the window, whether elided or scrolling, has every
+  other row and column very faintly shaded, so the eye can follow a row or
+  a column across it. A matrix that fits the window stays plain.
 
 - The AI chat now scrolls to an answer when it arrives, instead of leaving
   it below the bottom edge of the transcript for anything longer than a line

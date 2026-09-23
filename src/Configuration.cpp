@@ -205,6 +205,7 @@ Configuration::Configuration(const Configuration &o) :
   m_autoSaveMinutes(o.m_autoSaveMinutes),
   m_maxLayoutTime(o.m_maxLayoutTime),
   m_layoutStrategy(o.m_layoutStrategy),
+  m_oversizedMatrices(o.m_oversizedMatrices),
   m_wxMathML_Filename(o.m_wxMathML_Filename),
   m_maximaHelpFormat(o.m_maximaHelpFormat),
   m_cellCfgCnt(o.m_cellCfgCnt.load())
@@ -371,6 +372,7 @@ void Configuration::ResetAllToDefaults() {
   m_copyEMF = false;
   m_showLength = 2;
   m_layoutStrategy = LayoutStrategy::layout2DIfFits;
+  m_oversizedMatrices = OversizedMatrices::elide;
   m_useUnicodeMaths = true;
   m_offerKnownAnswers = true;
   m_screenReaderAnnouncesMathML = false;
@@ -835,6 +837,15 @@ void Configuration::ReadConfig() {
     config->Read(wxS("layoutStrategy"), &ls);
     if (ls < 0 || ls > 2) ls = 1;
     m_layoutStrategy = static_cast<LayoutStrategy>(ls);
+  }
+  {
+    int om = static_cast<int>(m_oversizedMatrices);
+    config->Read(wxS("oversizedMatrices"), &om);
+    // An out-of-range value (a newer wxMaxima's mode, or a hand-edited file)
+    // falls back to the default.
+    if (om < 0 || om > static_cast<int>(OversizedMatrices::scroll))
+      om = static_cast<int>(OversizedMatrices::elide);
+    m_oversizedMatrices = static_cast<OversizedMatrices>(om);
   }
   if(m_showLength < 0)
     m_showLength = 0;
@@ -1329,6 +1340,7 @@ void Configuration::WriteStyles(wxConfigBase *config) {
   if (OfferInternalHelpBrowser())
   config->Write(wxS("helpBrowser"), m_helpBrowserUserLocation);
   config->Write(wxS("layoutStrategy"), static_cast<int>(m_layoutStrategy));
+  config->Write(wxS("oversizedMatrices"), static_cast<int>(m_oversizedMatrices));
   config->Write("HTMLequationFormat", static_cast<int>(m_htmlEquationFormat));
   config->Write("autosubscript", m_autoSubscript);
   config->Write("language", m_language);

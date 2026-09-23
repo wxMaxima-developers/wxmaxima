@@ -51,6 +51,13 @@
 #include "cells/MatrCell.h"
 #include "cells/ProductCell.h"
 #include "cells/SetCell.h"
+#include "cells/MatrixScrollHost.h"
+#include "worksheet/MatrixScrollbars.h"
+
+#include <wx/region.h>
+#include <wx/scrolwin.h>
+#include <wx/dcgraph.h>
+#include <wx/graphics.h>
 
 #include <cstdlib>
 #include <vector>
@@ -569,6 +576,580 @@ SCENARIO("A ProductCell positions its symbol/limits/base and breaks up with the 
       Cell *open = prod->GetBrokenCell(0);
       REQUIRE(open != nullptr); // flawfinder: ignore -- "open" is a glyph cell, not a file open
       CHECK(open->ToString() == wxS("product("));
+    }
+  }
+}
+
+// Maxima-style output for a rows x cols matrix whose entries are all
+// different, so a test can tell from ToString() whether every one survived.
+static wxString MatrixTableXml(size_t rows, size_t cols) {
+  wxString xml = wxS("<tb roundedParens=\"true\">");
+  for (size_t r = 0; r < rows; r++) {
+    xml += wxS("<mtr>");
+    for (size_t c = 0; c < cols; c++)
+      xml += wxString::Format(wxS("<mtd><mn>%lu</mn></mtd>"),
+                              static_cast<unsigned long>(100000 + r * 1000 + c));
+    xml += wxS("</mtr>");
+  }
+  return xml + wxS("</tb>");
+}
+
+static wxString MatrixXml(size_t rows, size_t cols) {
+  return wxS("<mth><lbl altCopy=\"%o1\">(%o1) </lbl>") +
+    MatrixTableXml(rows, cols) + wxS("</mth>");
+}
+
+// matrix([<rows x cols matrix>, x], [y, z]): an oversized matrix nested in
+// the first column of a small one.
+static wxString NestedMatrixXml(size_t rows, size_t cols) {
+  return wxS("<mth><lbl altCopy=\"%o1\">(%o1) </lbl><tb roundedParens=\"true\">"
+             "<mtr><mtd>") + MatrixTableXml(rows, cols) +
+    wxS("</mtd><mtd><mi>x</mi></mtd></mtr>"
+        "<mtr><mtd><mi>y</mi></mtd><mtd><mi>z</mi></mtd></mtr></tb></mth>");
+}
+
+// Lays out a group whose output is this XML, and returns the (outer) matrix.
+static MatrCell *LayOutMatrixXml(std::unique_ptr<GroupCell> &group,
+                                 const wxString &xml) {
+  group = std::make_unique<GroupCell>(g_cfg, GC_TYPE_CODE, wxS("m;"));
+  MathParser parser(g_cfg);
+  auto output = parser.ParseLine(xml);
+  REQUIRE(output != nullptr);
+  group->AppendOutput(std::move(output));
+  group->Recalculate();
+  group->SetCurrentPoint(wxPoint(50, 50));
+  auto *matr = dynamic_cast<MatrCell *>(group->GetOutput());
+  REQUIRE(matr != nullptr);
+  return matr;
+}
+
+// Lays out a group whose output is a rows x cols matrix, and returns it.
+static MatrCell *LayOutMatrix(std::unique_ptr<GroupCell> &group, size_t rows,
+                              size_t cols) {
+  return LayOutMatrixXml(group, MatrixXml(rows, cols));
+}
+
+// Sets how oversized matrices are shown for the scope of one test, so the
+// shared configuration is back to the default for every other scenario.
+class OversizedMatricesMode {
+public:
+  explicit OversizedMatricesMode(Configuration::OversizedMatrices mode)
+    : m_old(g_cfg->GetOversizedMatrices()) { g_cfg->SetOversizedMatrices(mode); }
+  ~OversizedMatricesMode() { g_cfg->SetOversizedMatrices(m_old); }
+private:
+  Configuration::OversizedMatrices m_old;
+};
+
+SCENARIO("A matrix too wide for the window is elided unless shown in full") {
+  g_cfg->SetZoomFactor(1.0);
+  g_cfg->SetCanvasSize(wxSize(600, 600));
+  const size_t rows = 3, cols = 40;
+
+  GIVEN("show-in-full mode") {
+    OversizedMatricesMode mode(Configuration::OversizedMatrices::showInFull);
+    std::unique_ptr<GroupCell> group;
+    MatrCell *matr = LayOutMatrix(group, rows, cols);
+    THEN("nothing is left out, and the matrix is wider than the window") {
+      CHECK(matr->ElidedColumns() == 0);
+      CHECK(matr->ElidedRows() == 0);
+      CHECK(matr->GetWidth() > 600);
+    }
+  }
+
+  GIVEN("elide mode") {
+    OversizedMatricesMode mode(Configuration::OversizedMatrices::elide);
+    std::unique_ptr<GroupCell> group;
+    MatrCell *matr = LayOutMatrix(group, rows, cols);
+
+    THEN("middle columns are left out and what is left fits the window") {
+      CHECK(matr->ElidedColumns() > 0);
+      CHECK(matr->ElidedColumns() < cols - 1);
+      CHECK(matr->ElidedRows() == 0);
+      CHECK(matr->GetWidth() < 600);
+    }
+
+    THEN("the first and the last column are kept") {
+      for (size_t row = 0; row < rows; row++) {
+        CHECK_FALSE(matr->IsElided(row, 0));
+        CHECK_FALSE(matr->IsElided(row, cols - 1));
+      }
+    }
+
+    THEN("what is left out is one contiguous run in the middle") {
+      size_t firstHidden = cols, lastHidden = 0;
+      for (size_t col = 0; col < cols; col++)
+        if (matr->IsElided(0, col)) {
+          firstHidden = std::min(firstHidden, col);
+          lastHidden = std::max(lastHidden, col);
+        }
+      REQUIRE(firstHidden < cols);
+      CHECK(lastHidden - firstHidden + 1 == matr->ElidedColumns());
+    }
+
+    THEN("the shown entries are laid out left to right inside the matrix") {
+      const int left = matr->GetCurrentPoint().x;
+      const int right = left + matr->GetWidth();
+      int previousX = left;
+      for (size_t col = 0; col < cols; col++) {
+        if (matr->IsElided(0, col))
+          continue;
+        Cell *entry = matr->GetInnerCell(0, static_cast<int>(col));
+        CHECK(entry->GetCurrentPoint().x > previousX);
+        CHECK(entry->GetCurrentPoint().x + entry->GetWidth() < right);
+        previousX = entry->GetCurrentPoint().x;
+      }
+    }
+
+    THEN("copying it as text still yields every entry") {
+      const wxString text = matr->ToString();
+      for (size_t row = 0; row < rows; row++)
+        for (size_t col = 0; col < cols; col++)
+          CHECK(text.Contains(wxString::Format(
+            wxS("%lu"), static_cast<unsigned long>(100000 + row * 1000 + col))));
+      CHECK(static_cast<size_t>(matr->ToTeX().Freq('&')) == rows * (cols - 1));
+    }
+
+    THEN("hovering over it says which columns are not shown") {
+      const wxRect rect = matr->GetRect();
+      const wxString toolTip =
+        matr->GetToolTip(wxPoint(rect.x + rect.width / 2, rect.y + rect.height / 2));
+      CHECK(toolTip.Contains(wxS("Columns")));
+    }
+
+    THEN("drawing it does not throw") {
+      NoClipToDrawRegion noClip(g_cfg);
+      REQUIRE_NOTHROW(matr->Draw(g_dc, g_dc));
+    }
+
+    WHEN("the window is made wide enough for all of it") {
+      g_cfg->SetCanvasSize(wxSize(20000, 600));
+      group->Recalculate();
+      group->SetCurrentPoint(wxPoint(50, 50));
+      THEN("nothing is left out any more, and it matches a fresh layout") {
+        CHECK(matr->ElidedColumns() == 0);
+        std::unique_ptr<GroupCell> freshGroup;
+        LayOutMatrix(freshGroup, rows, cols);
+        RequireSameGeometry(GroupGeometry(group.get()),
+                            GroupGeometry(freshGroup.get()));
+      }
+      g_cfg->SetCanvasSize(wxSize(600, 600));
+    }
+
+    WHEN("the mode is switched back to showing matrices in full") {
+      g_cfg->SetOversizedMatrices(Configuration::OversizedMatrices::showInFull);
+      group->Recalculate();
+      THEN("nothing is left out any more") {
+        CHECK(matr->ElidedColumns() == 0);
+        CHECK(matr->GetWidth() > 600);
+      }
+    }
+  }
+}
+
+SCENARIO("A matrix too tall for the window leaves out middle rows") {
+  g_cfg->SetZoomFactor(1.0);
+  g_cfg->SetCanvasSize(wxSize(900, 300));
+  OversizedMatricesMode mode(Configuration::OversizedMatrices::elide);
+
+  GIVEN("a matrix with many short rows") {
+    const size_t rows = 60, cols = 3;
+    std::unique_ptr<GroupCell> group;
+    MatrCell *matr = LayOutMatrix(group, rows, cols);
+
+    THEN("middle rows are left out and it fits in 80% of the window's height") {
+      CHECK(matr->ElidedRows() > 0);
+      CHECK(matr->ElidedColumns() == 0);
+      CHECK(matr->GetHeight() <= 300 * 8 / 10);
+      for (size_t col = 0; col < cols; col++) {
+        CHECK_FALSE(matr->IsElided(0, col));
+        CHECK_FALSE(matr->IsElided(rows - 1, col));
+      }
+    }
+
+    THEN("the shown rows are laid out top to bottom inside the matrix") {
+      const int top = matr->GetCurrentPoint().y - matr->GetCenter();
+      const int bottom = top + matr->GetHeight();
+      int previousY = top;
+      for (size_t row = 0; row < rows; row++) {
+        if (matr->IsElided(row, 0))
+          continue;
+        Cell *entry = matr->GetInnerCell(static_cast<int>(row), 0);
+        CHECK(entry->GetCurrentPoint().y > previousY);
+        CHECK(entry->GetCurrentPoint().y < bottom);
+        previousY = entry->GetCurrentPoint().y;
+      }
+    }
+  }
+
+  GIVEN("a matrix too wide and too tall") {
+    g_cfg->SetCanvasSize(wxSize(600, 300));
+    std::unique_ptr<GroupCell> group;
+    MatrCell *matr = LayOutMatrix(group, 60, 40);
+    THEN("both rows and columns are left out, and it still draws") {
+      CHECK(matr->ElidedRows() > 0);
+      CHECK(matr->ElidedColumns() > 0);
+      CHECK(matr->GetToolTip(matr->GetRect().GetPosition() + wxPoint(1, 1))
+              .Contains(wxS("Rows")));
+      NoClipToDrawRegion noClip(g_cfg);
+      REQUIRE_NOTHROW(matr->Draw(g_dc, g_dc));
+    }
+  }
+
+}
+
+// Stands in for the worksheet's MatrixScrollbars: a fixed scrollbar thickness,
+// and a record of which matrices reported in as drawn.
+class FakeScrollHost final : public MatrixScrollHost {
+public:
+  wxCoord ScrollbarThickness() const override { return 15; }
+  void MatrixDrawn(MatrCell *matrix) override { drawn.push_back(matrix); }
+  std::vector<MatrCell *> drawn;
+};
+
+// Scroll mode with a scrollbar host installed, for the scope of one test.
+class ScrollModeWithHost {
+public:
+  explicit ScrollModeWithHost(MatrixScrollHost *host)
+    : m_mode(Configuration::OversizedMatrices::scroll),
+      m_oldHost(g_cfg->GetMatrixScrollHost()) { g_cfg->SetMatrixScrollHost(host); }
+  ~ScrollModeWithHost() { g_cfg->SetMatrixScrollHost(m_oldHost); }
+private:
+  OversizedMatricesMode m_mode;
+  MatrixScrollHost *m_oldHost;
+};
+
+SCENARIO("A matrix too large for the window can scroll in a viewport") {
+  g_cfg->SetZoomFactor(1.0);
+  g_cfg->SetCanvasSize(wxSize(600, 300));
+  FakeScrollHost host;
+  ScrollModeWithHost scrollMode(&host);
+  const size_t rows = 60, cols = 40;
+
+  GIVEN("a matrix too wide and too tall") {
+    std::unique_ptr<GroupCell> group;
+    MatrCell *matr = LayOutMatrix(group, rows, cols);
+
+    THEN("it gets both scrollbars, nothing is left out, and it fits") {
+      CHECK(matr->HasHorizontalScrollbar());
+      CHECK(matr->HasVerticalScrollbar());
+      CHECK(matr->ElidedRows() == 0);
+      CHECK(matr->ElidedColumns() == 0);
+      CHECK(matr->GetWidth() < 600);
+      CHECK(matr->ViewportSize().y == 300 * 8 / 10);
+      CHECK(matr->ScrollableSize().x > matr->ViewportSize().x);
+      CHECK(matr->ScrollableSize().y > matr->ViewportSize().y);
+    }
+
+    THEN("the scrollbars sit right of and below the viewport, outside it") {
+      const wxRect viewport = matr->ViewportRect();
+      const wxRect horizontal = matr->HorizontalScrollbarRect();
+      const wxRect vertical = matr->VerticalScrollbarRect();
+      CHECK(horizontal.GetHeight() == 15);
+      CHECK(vertical.GetWidth() == 15);
+      CHECK(horizontal.GetTop() > viewport.GetBottom());
+      CHECK(vertical.GetLeft() > viewport.GetRight());
+      CHECK_FALSE(horizontal.Intersects(vertical));
+      // ...and inside the cell, so the layout makes room for them.
+      CHECK(matr->GetRect().Contains(horizontal));
+      CHECK(matr->GetRect().Contains(vertical));
+    }
+
+    THEN("it starts scrolled to the top left, where the first entry shows") {
+      CHECK(matr->ScrollPosition() == wxPoint(0, 0));
+      CHECK(matr->GetInnerCell(0, 0)->GetRect().Intersects(matr->ViewportRect()));
+    }
+
+    WHEN("it is scrolled") {
+      const wxPoint before = matr->GetInnerCell(0, 0)->GetCurrentPoint();
+      REQUIRE(matr->ScrollTo(wxPoint(50, 40)));
+      THEN("its entries move by exactly that, without a relayout") {
+        CHECK(matr->ScrollPosition() == wxPoint(50, 40));
+        CHECK(matr->GetInnerCell(0, 0)->GetCurrentPoint() == before - wxPoint(50, 40));
+      }
+      THEN("scrolling to the same place again changes nothing") {
+        CHECK_FALSE(matr->ScrollTo(wxPoint(50, 40)));
+      }
+      THEN("the scroll position survives a relayout") {
+        g_cfg->SetCanvasSize(wxSize(700, 300));
+        group->Recalculate();
+        CHECK(matr->ScrollPosition() == wxPoint(50, 40));
+        g_cfg->SetCanvasSize(wxSize(600, 300));
+      }
+    }
+
+    WHEN("it is scrolled past its end") {
+      matr->ScrollTo(wxPoint(1000000, 1000000));
+      THEN("it stops where the last entries meet the viewport's far edges") {
+        const wxSize range = matr->ScrollableSize() - matr->ViewportSize();
+        CHECK(matr->ScrollPosition() == wxPoint(range.x, range.y));
+        Cell *last = matr->GetInnerCell(static_cast<int>(rows - 1),
+                                        static_cast<int>(cols - 1));
+        CHECK(last->GetRect().Intersects(matr->ViewportRect()));
+      }
+      THEN("entries scrolled out of view can't be hit with the mouse") {
+        Cell *first = matr->GetInnerCell(0, 0);
+        REQUIRE_FALSE(first->GetRect().Intersects(matr->ViewportRect()));
+        const Cell::Range hit = matr->GetInnerCellsInRect(first->GetRect());
+        CHECK(hit.first != first);
+      }
+      THEN("a relayout that shrinks the scroll range pulls it back in range") {
+        g_cfg->SetCanvasSize(wxSize(700, 300));
+        group->Recalculate();
+        const wxSize range = matr->ScrollableSize() - matr->ViewportSize();
+        CHECK(matr->ScrollPosition() == wxPoint(range.x, range.y));
+        g_cfg->SetCanvasSize(wxSize(600, 300));
+      }
+    }
+
+    WHEN("it is drawn") {
+      NoClipToDrawRegion noClip(g_cfg);
+      REQUIRE_NOTHROW(matr->Draw(g_dc, g_dc));
+      THEN("it asks the host for its scrollbars") {
+        REQUIRE(host.drawn.size() == 1);
+        CHECK(host.drawn.front() == matr);
+      }
+    }
+
+    THEN("copying it as text still yields every entry") {
+      CHECK(static_cast<size_t>(matr->ToTeX().Freq('&')) == rows * (cols - 1));
+    }
+  }
+
+  GIVEN("a matrix that fits") {
+    std::unique_ptr<GroupCell> group;
+    MatrCell *matr = LayOutMatrix(group, 3, 3);
+    THEN("it has no scrollbars, and drawing it doesn't ask for any") {
+      CHECK_FALSE(matr->HasHorizontalScrollbar());
+      CHECK_FALSE(matr->HasVerticalScrollbar());
+      NoClipToDrawRegion noClip(g_cfg);
+      matr->Draw(g_dc, g_dc);
+      CHECK(host.drawn.empty());
+    }
+  }
+
+  GIVEN("a matrix that is only too tall") {
+    std::unique_ptr<GroupCell> group;
+    MatrCell *matr = LayOutMatrix(group, rows, 3);
+    THEN("it only gets a vertical scrollbar") {
+      CHECK(matr->HasVerticalScrollbar());
+      CHECK_FALSE(matr->HasHorizontalScrollbar());
+      CHECK(matr->HorizontalScrollbarRect().IsEmpty());
+    }
+  }
+}
+
+SCENARIO("An oversized matrix nested in another one") {
+  g_cfg->SetZoomFactor(1.0);
+  g_cfg->SetCanvasSize(wxSize(600, 300));
+
+  GIVEN("scroll mode") {
+    FakeScrollHost host;
+    ScrollModeWithHost scrollMode(&host);
+    std::unique_ptr<GroupCell> group;
+    MatrCell *outer = LayOutMatrixXml(group, NestedMatrixXml(60, 40));
+    auto *inner = dynamic_cast<MatrCell *>(outer->GetInnerCell(0, 0));
+    REQUIRE(inner != nullptr);
+
+    THEN("only the outer one knows it is nested") {
+      CHECK(inner->IsNestedInMatrix());
+      CHECK_FALSE(outer->IsNestedInMatrix());
+    }
+    THEN("only the outer one scrolls: one viewport, one set of scrollbars") {
+      CHECK_FALSE(inner->HasHorizontalScrollbar());
+      CHECK_FALSE(inner->HasVerticalScrollbar());
+      CHECK(inner->ElidedColumns() == 0);
+      CHECK(outer->HasHorizontalScrollbar());
+      CHECK(outer->HasVerticalScrollbar());
+      CHECK(outer->GetWidth() < 600);
+    }
+    THEN("drawing asks the host for the outer matrix's scrollbars only") {
+      NoClipToDrawRegion noClip(g_cfg);
+      REQUIRE_NOTHROW(outer->Draw(g_dc, g_dc));
+      REQUIRE(host.drawn.size() == 1);
+      CHECK(host.drawn.front() == outer);
+    }
+    THEN("a copy of the outer matrix still knows its inner one is nested") {
+      auto copy = outer->Copy(group.get());
+      auto *copiedOuter = dynamic_cast<MatrCell *>(copy.get());
+      REQUIRE(copiedOuter != nullptr);
+      auto *copiedInner = dynamic_cast<MatrCell *>(copiedOuter->GetInnerCell(0, 0));
+      REQUIRE(copiedInner != nullptr);
+      CHECK(copiedInner->IsNestedInMatrix());
+      CHECK_FALSE(copiedOuter->IsNestedInMatrix());
+    }
+  }
+
+  GIVEN("elide mode") {
+    OversizedMatricesMode mode(Configuration::OversizedMatrices::elide);
+    std::unique_ptr<GroupCell> group;
+    MatrCell *outer = LayOutMatrixXml(group, NestedMatrixXml(60, 40));
+    auto *inner = dynamic_cast<MatrCell *>(outer->GetInnerCell(0, 0));
+    REQUIRE(inner != nullptr);
+    THEN("the inner one elides itself to the window and everything draws") {
+      CHECK(inner->ElidedColumns() > 0);
+      CHECK(inner->ElidedRows() > 0);
+      // The outer one has only two columns and rows, both always kept.
+      CHECK(outer->ElidedColumns() == 0);
+      CHECK(outer->ElidedRows() == 0);
+      NoClipToDrawRegion noClip(g_cfg);
+      REQUIRE_NOTHROW(outer->Draw(g_dc, g_dc));
+    }
+  }
+}
+
+SCENARIO("Without a scrollbar host, scroll mode elides instead") {
+  // Printing has no window to put scrollbars in, and paper can't scroll.
+  g_cfg->SetZoomFactor(1.0);
+  g_cfg->SetCanvasSize(wxSize(600, 300));
+  REQUIRE(g_cfg->GetMatrixScrollHost() == nullptr);
+  OversizedMatricesMode mode(Configuration::OversizedMatrices::scroll);
+  std::unique_ptr<GroupCell> group;
+  MatrCell *matr = LayOutMatrix(group, 60, 40);
+  CHECK_FALSE(matr->HasHorizontalScrollbar());
+  CHECK_FALSE(matr->HasVerticalScrollbar());
+  CHECK(matr->ElidedRows() > 0);
+  CHECK(matr->ElidedColumns() > 0);
+}
+
+SCENARIO("The worksheet's matrix scrollbars follow the matrices they belong to") {
+  // MatrixScrollbars is driven exactly as Worksheet::OnPaint() drives it --
+  // BeginPaint(), the drawn matrices reporting in, EndPaint() with what was
+  // repainted -- and Sync() is then called directly rather than waiting for
+  // the CallAfter() a real paint would leave behind.
+  g_cfg->SetZoomFactor(1.0);
+  g_cfg->SetCanvasSize(wxSize(600, 300));
+  auto *frame = new wxFrame(nullptr, wxID_ANY, wxS("scrollbars"));
+  auto *canvas = new wxScrolled<wxWindow>(frame, wxID_ANY);
+  canvas->SetScrollRate(10, 10);
+  canvas->SetVirtualSize(4000, 4000);
+  MatrixScrollbars scrollbars(canvas);
+  ScrollModeWithHost scrollMode(&scrollbars);
+
+  GIVEN("a scrolling matrix that has been drawn") {
+    std::unique_ptr<GroupCell> group;
+    MatrCell *matr = LayOutMatrix(group, 60, 40);
+    const wxRegion everything(0, 0, 4000, 4000);
+    scrollbars.BeginPaint();
+    scrollbars.MatrixDrawn(matr);
+    scrollbars.EndPaint(everything);
+    scrollbars.Sync();
+
+    THEN("both its scrollbars are shown") {
+      CHECK(scrollbars.VisibleScrollbars() == 2);
+    }
+
+    WHEN("a paint covering it no longer draws it (folded, output hidden)") {
+      scrollbars.BeginPaint();
+      scrollbars.EndPaint(everything);
+      scrollbars.Sync();
+      THEN("its scrollbars are hidden") {
+        CHECK(scrollbars.VisibleScrollbars() == 0);
+      }
+      AND_WHEN("it is drawn again") {
+        scrollbars.BeginPaint();
+        scrollbars.MatrixDrawn(matr);
+        scrollbars.EndPaint(everything);
+        scrollbars.Sync();
+        THEN("they are back") {
+          CHECK(scrollbars.VisibleScrollbars() == 2);
+        }
+      }
+    }
+
+    WHEN("a paint elsewhere doesn't draw it") {
+      scrollbars.BeginPaint();
+      scrollbars.EndPaint(wxRegion(3000, 3000, 10, 10));
+      scrollbars.Sync();
+      THEN("its scrollbars stay, since it was never asked to draw") {
+        CHECK(scrollbars.VisibleScrollbars() == 2);
+      }
+    }
+
+    WHEN("the matrix is deleted") {
+      group.reset();
+      scrollbars.BeginPaint();
+      scrollbars.EndPaint(wxRegion(3000, 3000, 10, 10));
+      scrollbars.Sync();
+      THEN("its scrollbars are gone, wherever the paint was") {
+        CHECK(scrollbars.VisibleScrollbars() == 0);
+      }
+    }
+  }
+  frame->Destroy();
+}
+
+// Draws the matrix onto a white bitmap through a real graphics context, the
+// way the worksheet does, and returns the colour just above the given entry:
+// inside that entry's row band, but in the gap between two rows of text, so
+// no glyph gets in the way.
+static wxColour ColourAboveEntry(MatrCell *matr, int row, int col) {
+  wxBitmap bitmap(2000, 1200);
+  wxMemoryDC dc(bitmap);
+  dc.SetBackground(*wxWHITE_BRUSH);
+  dc.Clear();
+  wxGCDC antialiassingDC(dc);
+  NoClipToDrawRegion noClip(g_cfg);
+  matr->Draw(&dc, &antialiassingDC);
+  // wxGCDC may buffer; make sure everything has reached the bitmap.
+  antialiassingDC.GetGraphicsContext()->Flush();
+  const wxRect entry = matr->GetInnerCell(row, col)->GetRect();
+  wxColour colour;
+  dc.GetPixel(entry.x + entry.width / 2, entry.y - 2, &colour);
+  return colour;
+}
+
+SCENARIO("Only a matrix too large for the window gets alternating bands") {
+  g_cfg->SetZoomFactor(1.0);
+  g_cfg->SetCanvasSize(wxSize(600, 300));
+  OversizedMatricesMode mode(Configuration::OversizedMatrices::elide);
+
+  GIVEN("an elided matrix") {
+    std::unique_ptr<GroupCell> group;
+    MatrCell *matr = LayOutMatrix(group, 60, 40);
+    REQUIRE(matr->ElidedColumns() > 0);
+    THEN("it is banded: odd rows are tinted, the first row isn't") {
+      CHECK(matr->IsBanded());
+      CHECK(ColourAboveEntry(matr, 0, 0) == *wxWHITE);
+      CHECK(ColourAboveEntry(matr, 1, 0) != *wxWHITE);
+    }
+    THEN("where an odd row crosses an odd column the tint doubles") {
+      const wxColour single = ColourAboveEntry(matr, 1, 0);
+      const wxColour crossing = ColourAboveEntry(matr, 1, 1);
+      CHECK(crossing.Red() < single.Red());
+    }
+    THEN("the tint stays faint, so it reads as shading, not as colour") {
+      CHECK(ColourAboveEntry(matr, 1, 0).Red() > 220);
+    }
+  }
+
+  GIVEN("a matrix that fits") {
+    std::unique_ptr<GroupCell> group;
+    MatrCell *matr = LayOutMatrix(group, 3, 3);
+    THEN("it stays plain") {
+      CHECK_FALSE(matr->IsBanded());
+      CHECK(ColourAboveEntry(matr, 1, 0) == *wxWHITE);
+      CHECK(ColourAboveEntry(matr, 1, 1) == *wxWHITE);
+    }
+  }
+
+  GIVEN("a scrolling matrix") {
+    FakeScrollHost host;
+    ScrollModeWithHost scrollMode(&host);
+    std::unique_ptr<GroupCell> group;
+    MatrCell *matr = LayOutMatrix(group, 60, 40);
+    THEN("it is banded too, and the bands move with the entries") {
+      CHECK(matr->IsBanded());
+      CHECK(ColourAboveEntry(matr, 1, 0) != *wxWHITE);
+      matr->ScrollTo(wxPoint(0, 60));
+      // Whatever row now sits at the top of the viewport, its band follows
+      // its own index, not its position on screen.
+      for (int row = 0; row < 12; row++) {
+        const wxRect entry = matr->GetInnerCell(row, 0)->GetRect();
+        if (!matr->ViewportRect().Contains(wxPoint(entry.x + 1, entry.y - 2)))
+          continue;
+        INFO("row " << row);
+        CHECK((ColourAboveEntry(matr, row, 0) == *wxWHITE) == (row % 2 == 0));
+      }
     }
   }
 }

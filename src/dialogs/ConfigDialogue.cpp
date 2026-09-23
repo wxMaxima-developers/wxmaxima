@@ -604,6 +604,7 @@ void ConfigDialogue::SetCheckboxValues() {
   m_showMatchingParens->SetValue(configuration->ShowMatchingParens());
   m_showLength->SetSelection(configuration->ShowLength());
   m_layoutStrategy->SetSelection(static_cast<int>(configuration->GetLayoutStrategy()));
+  m_oversizedMatrices->SetSelection(static_cast<int>(configuration->GetOversizedMatrices()));
   m_autosubscript->SetSelection(configuration->GetAutosubscript_Num());
   m_changeAsterisk->SetValue(configuration->GetChangeAsterisk());
   m_hidemultiplicationSign->SetValue(configuration->HidemultiplicationSign());
@@ -912,6 +913,36 @@ wxWindow *ConfigDialogue::CreateWorksheetPanel() {
       "linear notation.\n"
       "\"Prefer 1D\" always uses linear notation."));
   displaySizer->Add(m_layoutStrategy,
+                    wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
+
+  // Order must match Configuration::OversizedMatrices.
+  wxArrayString oversizedMatrices;
+  oversizedMatrices.Add(_("Show them in full (the worksheet scrolls sideways)"));
+  // The dots stay out of the translatable string: xgettext and the compiler
+  // need not agree on how to read a \u escape, and the msgid has to match
+  // the compiled string exactly for the translation to be found.
+  oversizedMatrices.Add(_("Leave out middle rows and columns") +
+                        wxS(" (⋯ ⋮ ⋱)"));
+  oversizedMatrices.Add(_("Show them in a window-sized box with scrollbars"));
+  m_oversizedMatrices = new wxRadioBox(displaySizer->GetStaticBox(), wxID_ANY,
+                                       _("Matrices too large for the window"),
+                                       wxDefaultPosition, wxDefaultSize,
+                                       oversizedMatrices, 0, wxRA_SPECIFY_ROWS);
+  m_oversizedMatrices->SetToolTip(
+    _("A matrix cannot be broken into lines the way a long sum can.\n"
+      "\"Show them in full\" draws every entry, so a wide matrix makes the "
+      "whole worksheet scroll sideways.\n"
+      "\"Leave out middle rows and columns\" (default) keeps the first and "
+      "last rows and columns and marks the gap with dots, the way a matrix is written "
+      "by hand. Hovering over such a matrix tells which rows and columns are "
+      "not shown.\n"
+      "\"Show them in a window-sized box with scrollbars\" shows as much of "
+      "the matrix as fits and gives it its own scrollbars. The mouse wheel "
+      "still scrolls the worksheet. Since paper cannot scroll, such a matrix "
+      "is printed with its middle rows and columns left out.\n"
+      "This affects only what is shown on screen and printed: copying, "
+      "saving and exporting the matrix always include all of it."));
+  displaySizer->Add(m_oversizedMatrices,
                     wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
 
   wxStaticBoxSizer *numDigitsSizer = new wxStaticBoxSizer(
@@ -3027,6 +3058,8 @@ void ConfigDialogue::WriteSettings() {
   configuration->ShowLength(m_showLength->GetSelection());
   configuration->SetLayoutStrategy(
     static_cast<Configuration::LayoutStrategy>(m_layoutStrategy->GetSelection()));
+  configuration->SetOversizedMatrices(
+    static_cast<Configuration::OversizedMatrices>(m_oversizedMatrices->GetSelection()));
   configuration->SetAutosubscript_Num(m_autosubscript->GetSelection());
   configuration->FixedFontInTextControls(m_fixedFontInTC->GetValue());
   configuration->OfferKnownAnswers(m_offerKnownAnswers->GetValue());
