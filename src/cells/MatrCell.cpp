@@ -79,7 +79,8 @@ void MatrCell::Recalculate(AFontSize const fontsize) const {
   if (changed || NeedsRecalculation(fontsize)) {
     Cell::Recalculate(fontsize);
 
-    m_width = 0;
+    // The extent of each column and row, the gaps between them included
+    std::vector<wxCoord> colSizes;
     m_widths.clear();
     for (size_t i = 0; i < m_matWidth; i++) {
       wxCoord width = 0;
@@ -88,12 +89,10 @@ void MatrCell::Recalculate(AFontSize const fontsize) const {
           width = std::max(width, GetInnerCell(j, i)->SumOfWidths());
       }
       m_widths.emplace_back(width);
-      m_width += (width + Scale_Px(10));
+      colSizes.emplace_back(width + Scale_Px(10));
     }
-    if (m_width < Scale_Px(14))
-      m_width = Scale_Px(14);
 
-    m_height = 0;
+    std::vector<wxCoord> rowSizes;
     m_dropCenters.clear();
     for (size_t i = 0; i < m_matHeight; i++) {
       wxCoord center = 0, drop = 0;
@@ -103,21 +102,184 @@ void MatrCell::Recalculate(AFontSize const fontsize) const {
           drop = std::max(drop, GetInnerCell(i, j)->GetMaxDrop());
         }
       m_dropCenters.emplace_back(drop, center);
-      m_height += (center + drop + Scale_Px(10));
+      rowSizes.emplace_back(center + drop + Scale_Px(10));
     }
+
+    // Decide what, if anything, to leave out. The canvas size is part of the
+    // configuration, and changing it forces a recalculation (see
+    // Configuration::SetCanvasSize()), so this is redone whenever the window
+    // or the printed page changes size. (The graphical exporters switch
+    // elision off altogether; see OutCommon.) A context that
+    // never set a canvas size gets no elision at all rather than an elision
+    // down to the first and last row and column.
+    const wxCoord dotsGap = DotsExtent() + Scale_Px(10);
+    m_colElision = {};
+    m_rowElision = {};
+    if (m_configuration->GetOversizedMatrices() ==
+        Configuration::OversizedMatrices::elide) {
+      const wxSize canvas = m_configuration->GetCanvasSize();
+      if (canvas.x > 0) {
+        // What Cell::BreakLines_List() lets a line of maths use, less the
+        // label column that usually sits to the left of the matrix.
+        const wxCoord budget = std::max(
+          static_cast<wxCoord>(canvas.x - m_configuration->GetIndent() -
+                               Scale_Px(m_configuration->GetLabelWidth()) -
+                               Scale_Px(5)),
+          Scale_Px(150));
+        m_colElision = ChooseElision(colSizes, dotsGap, budget);
+      }
+      if (canvas.y > 0) {
+        // A matrix taller than most of the window can never be seen whole
+        // without scrolling past it, which is where the 80% comes from.
+        const wxCoord budget = std::max(static_cast<wxCoord>(canvas.y * 8 / 10),
+                                        Scale_Px(100));
+        m_rowElision = ChooseElision(rowSizes, dotsGap, budget);
+      }
+    }
+
+    m_width = m_colElision.Active() ? dotsGap : 0;
+    for (size_t i = 0; i < colSizes.size(); i++)
+      if (!m_colElision.Hides(i))
+        m_width += colSizes.at(i);
+    if (m_width < Scale_Px(14))
+      m_width = Scale_Px(14);
+
+    m_height = m_rowElision.Active() ? dotsGap : 0;
+    for (size_t i = 0; i < rowSizes.size(); i++)
+      if (!m_rowElision.Hides(i))
+        m_height += rowSizes.at(i);
     if (m_height == 0)
       m_height = fontsize + Scale_Px(10);
     m_center = m_height / 2;
   }
 }
 
+MatrCell::Elision MatrCell::ChooseElision(const std::vector<wxCoord> &sizes,
+                                          wxCoord gapSize, wxCoord budget) {
+  const size_t n = sizes.size();
+  // With fewer than three there is nothing between the first and the last to
+  // leave out.
+  if (n < 3)
+    return {};
+  wxCoord total = 0;
+  for (wxCoord size : sizes)
+    total += size;
+  if (total <= budget)
+    return {};
+
+  // The first and the last are kept even if they alone don't fit: they are
+  // what tells the reader where the matrix begins and ends, and in a
+  // table_form they are the headings.
+  size_t left = 1, right = 1;
+  wxCoord used = sizes.front() + sizes.back() + gapSize;
+  // Then alternate between the two ends, so what is left out is the middle
+  // and both edges of the matrix stay in view, stopping at the first one that
+  // doesn't fit so neither end gets far ahead of the other.
+  bool fromLeft = true;
+  while (left + right < n) {
+    const size_t next = fromLeft ? left : n - 1 - right;
+    if (used + sizes.at(next) > budget)
+      break;
+    used += sizes.at(next);
+    if (fromLeft)
+      left++;
+    else
+      right++;
+    fromLeft = !fromLeft;
+  }
+  if (left + right >= n)
+    return {};
+  Elision elision;
+  elision.first = left;
+  elision.count = n - left - right;
+  return elision;
+}
+
+wxCoord MatrCell::DotPitch() const {
+  // Roughly the spacing of TeX's \cdots, measured in the entries' font size.
+  const double em = Scale_Px(AFontSize{MC_MIN_SIZE, m_fontSize - 2}).Get();
+  return std::max(Scale_Px(3), static_cast<wxCoord>(0.4 * em + 0.5));
+}
+
+wxCoord MatrCell::DotRadius() const {
+  const double em = Scale_Px(AFontSize{MC_MIN_SIZE, m_fontSize - 2}).Get();
+  return std::max(static_cast<wxCoord>(1), static_cast<wxCoord>(0.07 * em + 0.5));
+}
+
+void MatrCell::DrawDots(wxDC *dc, wxPoint start, wxPoint step) const {
+  const wxCoord radius = DotRadius();
+  for (int dot = 0; dot < 3; dot++)
+    dc->DrawCircle(start + wxPoint(dot * step.x, dot * step.y), radius);
+}
+
+void MatrCell::DrawElisionMarks(wxDC *dc) const {
+  SetPen(dc, 1);
+  SetBrush(dc);
+  const wxCoord dotsGap = DotsExtent() + Scale_Px(10);
+  const wxCoord pitch = DotPitch();
+  const wxCoord radius = DotRadius();
+
+  // Walk the columns and rows the way SetCurrentPoint() does, noting where
+  // the gap for the dots begins and the middle of every column and row that
+  // is shown.
+  wxCoord gapX = 0;
+  std::vector<wxCoord> colMiddles;
+  wxCoord x = m_currentPoint.x + Scale_Px(5);
+  for (size_t i = 0; i < m_matWidth; i++) {
+    if (m_colElision.Active() && (i == m_colElision.first)) {
+      gapX = x;
+      x += dotsGap;
+    }
+    if (m_colElision.Hides(i))
+      continue;
+    colMiddles.emplace_back(x + m_widths.at(i) / 2);
+    x += m_widths.at(i) + Scale_Px(10);
+  }
+  wxCoord gapY = 0;
+  std::vector<wxCoord> rowMiddles;
+  wxCoord y = m_currentPoint.y - m_center + Scale_Px(5);
+  for (size_t j = 0; j < m_matHeight; j++) {
+    if (m_rowElision.Active() && (j == m_rowElision.first)) {
+      gapY = y;
+      y += dotsGap;
+    }
+    if (m_rowElision.Hides(j))
+      continue;
+    rowMiddles.emplace_back(y + m_dropCenters.at(j).center);
+    y += m_dropCenters.at(j).Sum() + Scale_Px(10);
+  }
+
+  // ⋯ in every row that is shown, at the height the row's entries are
+  // centred on; ⋮ in every column that is shown; ⋱ where the two gaps cross.
+  if (m_colElision.Active())
+    for (wxCoord middle : rowMiddles)
+      DrawDots(dc, {gapX + radius, middle}, {pitch, 0});
+  if (m_rowElision.Active())
+    for (wxCoord middle : colMiddles)
+      DrawDots(dc, {middle, gapY + radius}, {0, pitch});
+  if (m_colElision.Active() && m_rowElision.Active())
+    DrawDots(dc, {gapX + radius, gapY + radius}, {pitch, pitch});
+}
+
 void MatrCell::SetCurrentPoint(wxPoint point) const {
   Cell::SetCurrentPoint(point);
+  // The entries that are left out are not positioned at all. They keep
+  // whatever position they had before, which is why GetToolTip() and
+  // GetInnerCellsInRect() skip them rather than trust it.
+  const wxCoord dotsGap = DotsExtent() + Scale_Px(10);
   wxPoint mp;
   mp.x = point.x + Scale_Px(5);
   for (size_t i = 0; i < m_matWidth; i++) {
+    if (m_colElision.Active() && (i == m_colElision.first))
+      mp.x += dotsGap;
+    if (m_colElision.Hides(i))
+      continue;
     mp.y = point.y - m_center + Scale_Px(5);
     for (size_t j = 0; j < m_matHeight; j++) {
+      if (m_rowElision.Active() && (j == m_rowElision.first))
+        mp.y += dotsGap;
+      if (m_rowElision.Hides(j))
+        continue;
       if ((j * m_matWidth + i) < m_cells.size()) {
         mp.y += m_dropCenters.at(j).center;
         wxPoint mp1(mp);
@@ -130,6 +292,66 @@ void MatrCell::SetCurrentPoint(wxPoint point) const {
   }
 }
 
+const wxString MatrCell::GetToolTip(const wxPoint point) const {
+  if (!ContainsPoint(point))
+    return wxm::emptyString;
+
+  // Same as Cell::GetToolTip(), but asking only the entries that are shown:
+  // the others still carry the position they had before they were left out.
+  for (size_t j = 0; j < m_matHeight; j++)
+    for (size_t i = 0; i < m_matWidth; i++) {
+      if (IsElided(j, i) || ((j * m_matWidth + i) >= m_cells.size()))
+        continue;
+      for (const Cell &tmp : OnList(GetInnerCell(j, i))) {
+        auto &toolTip = tmp.GetToolTip(point);
+        if (!toolTip.empty())
+          return toolTip;
+      }
+    }
+
+  // Anywhere else on an elided matrix -- including its entries, which have no
+  // tooltip of their own, just as Cell::GetToolTip() lets a parent's tooltip
+  // cover its children -- say what is missing, and that nothing is lost by it.
+  const unsigned long firstRow = m_rowElision.first + 1;
+  const unsigned long lastRow = m_rowElision.first + m_rowElision.count;
+  const unsigned long firstCol = m_colElision.first + 1;
+  const unsigned long lastCol = m_colElision.first + m_colElision.count;
+  if (m_rowElision.Active() && m_colElision.Active())
+    return wxString::Format(
+      _("Rows %lu to %lu and columns %lu to %lu of this matrix are not shown, "
+        "so that it fits the window. Copying the matrix copies all of it."),
+      firstRow, lastRow, firstCol, lastCol);
+  if (m_rowElision.Active())
+    return wxString::Format(
+      _("Rows %lu to %lu of this matrix are not shown, so that it fits the "
+        "window. Copying the matrix copies all of it."),
+      firstRow, lastRow);
+  if (m_colElision.Active())
+    return wxString::Format(
+      _("Columns %lu to %lu of this matrix are not shown, so that it fits the "
+        "window. Copying the matrix copies all of it."),
+      firstCol, lastCol);
+
+  return GetLocalToolTip();
+}
+
+Cell::Range MatrCell::GetInnerCellsInRect(const wxRect &rect) const {
+  // Cell::GetInnerCellsInRect(), minus the entries that are left out.
+  Range retval = {const_cast<MatrCell *>(this), const_cast<MatrCell *>(this)};
+  for (size_t j = 0; j < m_matHeight; j++)
+    for (size_t i = 0; i < m_matWidth; i++) {
+      if (IsElided(j, i) || ((j * m_matWidth + i) >= m_cells.size()))
+        continue;
+      for (Cell const &tmp : OnList(GetInnerCell(j, i)))
+        if (tmp.ContainsRect(rect)) {
+          auto r = tmp.GetCellsInRect(rect);
+          if (r.first)
+            retval = r;
+        }
+    }
+  return retval;
+}
+
 void MatrCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
   Cell::Draw(dc, antialiassingDC);
   SetBrush(dc);
@@ -137,11 +359,15 @@ void MatrCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
     wxPoint point = m_currentPoint;
     for (size_t i = 0; i < m_matWidth; i++) {
       for (size_t j = 0; j < m_matHeight; j++) {
+        if (IsElided(j, i))
+          continue;
         if ((j * m_matWidth + i) < m_cells.size()) {
           GetInnerCell(j, i)->DrawList(dc, antialiassingDC);
         }
       }
     }
+    if (m_colElision.Active() || m_rowElision.Active())
+      DrawElisionMarks(antialiassingDC);
     SetPen(antialiassingDC, 1.5);
     if (m_specialMatrix) {
       if (m_inferenceMatrix)

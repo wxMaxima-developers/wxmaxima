@@ -573,6 +573,204 @@ SCENARIO("A ProductCell positions its symbol/limits/base and breaks up with the 
   }
 }
 
+// Maxima-style output for a rows x cols matrix whose entries are all
+// different, so a test can tell from ToString() whether every one survived.
+static wxString MatrixXml(size_t rows, size_t cols) {
+  wxString xml = wxS("<mth><lbl altCopy=\"%o1\">(%o1) </lbl>"
+                     "<tb roundedParens=\"true\">");
+  for (size_t r = 0; r < rows; r++) {
+    xml += wxS("<mtr>");
+    for (size_t c = 0; c < cols; c++)
+      xml += wxString::Format(wxS("<mtd><mn>%lu</mn></mtd>"),
+                              static_cast<unsigned long>(100000 + r * 1000 + c));
+    xml += wxS("</mtr>");
+  }
+  return xml + wxS("</tb></mth>");
+}
+
+// Lays out a group whose output is that matrix, and returns the matrix.
+static MatrCell *LayOutMatrix(std::unique_ptr<GroupCell> &group, size_t rows,
+                              size_t cols) {
+  group = std::make_unique<GroupCell>(g_cfg, GC_TYPE_CODE, wxS("m;"));
+  MathParser parser(g_cfg);
+  auto output = parser.ParseLine(MatrixXml(rows, cols));
+  REQUIRE(output != nullptr);
+  group->AppendOutput(std::move(output));
+  group->Recalculate();
+  group->SetCurrentPoint(wxPoint(50, 50));
+  auto *matr = dynamic_cast<MatrCell *>(group->GetOutput());
+  REQUIRE(matr != nullptr);
+  return matr;
+}
+
+// Sets how oversized matrices are shown for the scope of one test, so the
+// shared configuration is back to the default for every other scenario.
+class OversizedMatricesMode {
+public:
+  explicit OversizedMatricesMode(Configuration::OversizedMatrices mode)
+    : m_old(g_cfg->GetOversizedMatrices()) { g_cfg->SetOversizedMatrices(mode); }
+  ~OversizedMatricesMode() { g_cfg->SetOversizedMatrices(m_old); }
+private:
+  Configuration::OversizedMatrices m_old;
+};
+
+SCENARIO("A matrix too wide for the window is elided unless shown in full") {
+  g_cfg->SetZoomFactor(1.0);
+  g_cfg->SetCanvasSize(wxSize(600, 600));
+  const size_t rows = 3, cols = 40;
+
+  GIVEN("show-in-full mode") {
+    OversizedMatricesMode mode(Configuration::OversizedMatrices::showInFull);
+    std::unique_ptr<GroupCell> group;
+    MatrCell *matr = LayOutMatrix(group, rows, cols);
+    THEN("nothing is left out, and the matrix is wider than the window") {
+      CHECK(matr->ElidedColumns() == 0);
+      CHECK(matr->ElidedRows() == 0);
+      CHECK(matr->GetWidth() > 600);
+    }
+  }
+
+  GIVEN("elide mode") {
+    OversizedMatricesMode mode(Configuration::OversizedMatrices::elide);
+    std::unique_ptr<GroupCell> group;
+    MatrCell *matr = LayOutMatrix(group, rows, cols);
+
+    THEN("middle columns are left out and what is left fits the window") {
+      CHECK(matr->ElidedColumns() > 0);
+      CHECK(matr->ElidedColumns() < cols - 1);
+      CHECK(matr->ElidedRows() == 0);
+      CHECK(matr->GetWidth() < 600);
+    }
+
+    THEN("the first and the last column are kept") {
+      for (size_t row = 0; row < rows; row++) {
+        CHECK_FALSE(matr->IsElided(row, 0));
+        CHECK_FALSE(matr->IsElided(row, cols - 1));
+      }
+    }
+
+    THEN("what is left out is one contiguous run in the middle") {
+      size_t firstHidden = cols, lastHidden = 0;
+      for (size_t col = 0; col < cols; col++)
+        if (matr->IsElided(0, col)) {
+          firstHidden = std::min(firstHidden, col);
+          lastHidden = std::max(lastHidden, col);
+        }
+      REQUIRE(firstHidden < cols);
+      CHECK(lastHidden - firstHidden + 1 == matr->ElidedColumns());
+    }
+
+    THEN("the shown entries are laid out left to right inside the matrix") {
+      const int left = matr->GetCurrentPoint().x;
+      const int right = left + matr->GetWidth();
+      int previousX = left;
+      for (size_t col = 0; col < cols; col++) {
+        if (matr->IsElided(0, col))
+          continue;
+        Cell *entry = matr->GetInnerCell(0, static_cast<int>(col));
+        CHECK(entry->GetCurrentPoint().x > previousX);
+        CHECK(entry->GetCurrentPoint().x + entry->GetWidth() < right);
+        previousX = entry->GetCurrentPoint().x;
+      }
+    }
+
+    THEN("copying it as text still yields every entry") {
+      const wxString text = matr->ToString();
+      for (size_t row = 0; row < rows; row++)
+        for (size_t col = 0; col < cols; col++)
+          CHECK(text.Contains(wxString::Format(
+            wxS("%lu"), static_cast<unsigned long>(100000 + row * 1000 + col))));
+      CHECK(static_cast<size_t>(matr->ToTeX().Freq('&')) == rows * (cols - 1));
+    }
+
+    THEN("hovering over it says which columns are not shown") {
+      const wxRect rect = matr->GetRect();
+      const wxString toolTip =
+        matr->GetToolTip(wxPoint(rect.x + rect.width / 2, rect.y + rect.height / 2));
+      CHECK(toolTip.Contains(wxS("Columns")));
+    }
+
+    THEN("drawing it does not throw") {
+      NoClipToDrawRegion noClip(g_cfg);
+      REQUIRE_NOTHROW(matr->Draw(g_dc, g_dc));
+    }
+
+    WHEN("the window is made wide enough for all of it") {
+      g_cfg->SetCanvasSize(wxSize(20000, 600));
+      group->Recalculate();
+      group->SetCurrentPoint(wxPoint(50, 50));
+      THEN("nothing is left out any more, and it matches a fresh layout") {
+        CHECK(matr->ElidedColumns() == 0);
+        std::unique_ptr<GroupCell> freshGroup;
+        LayOutMatrix(freshGroup, rows, cols);
+        RequireSameGeometry(GroupGeometry(group.get()),
+                            GroupGeometry(freshGroup.get()));
+      }
+      g_cfg->SetCanvasSize(wxSize(600, 600));
+    }
+
+    WHEN("the mode is switched back to showing matrices in full") {
+      g_cfg->SetOversizedMatrices(Configuration::OversizedMatrices::showInFull);
+      group->Recalculate();
+      THEN("nothing is left out any more") {
+        CHECK(matr->ElidedColumns() == 0);
+        CHECK(matr->GetWidth() > 600);
+      }
+    }
+  }
+}
+
+SCENARIO("A matrix too tall for the window leaves out middle rows") {
+  g_cfg->SetZoomFactor(1.0);
+  g_cfg->SetCanvasSize(wxSize(900, 300));
+  OversizedMatricesMode mode(Configuration::OversizedMatrices::elide);
+
+  GIVEN("a matrix with many short rows") {
+    const size_t rows = 60, cols = 3;
+    std::unique_ptr<GroupCell> group;
+    MatrCell *matr = LayOutMatrix(group, rows, cols);
+
+    THEN("middle rows are left out and it fits in 80% of the window's height") {
+      CHECK(matr->ElidedRows() > 0);
+      CHECK(matr->ElidedColumns() == 0);
+      CHECK(matr->GetHeight() <= 300 * 8 / 10);
+      for (size_t col = 0; col < cols; col++) {
+        CHECK_FALSE(matr->IsElided(0, col));
+        CHECK_FALSE(matr->IsElided(rows - 1, col));
+      }
+    }
+
+    THEN("the shown rows are laid out top to bottom inside the matrix") {
+      const int top = matr->GetCurrentPoint().y - matr->GetCenter();
+      const int bottom = top + matr->GetHeight();
+      int previousY = top;
+      for (size_t row = 0; row < rows; row++) {
+        if (matr->IsElided(row, 0))
+          continue;
+        Cell *entry = matr->GetInnerCell(static_cast<int>(row), 0);
+        CHECK(entry->GetCurrentPoint().y > previousY);
+        CHECK(entry->GetCurrentPoint().y < bottom);
+        previousY = entry->GetCurrentPoint().y;
+      }
+    }
+  }
+
+  GIVEN("a matrix too wide and too tall") {
+    g_cfg->SetCanvasSize(wxSize(600, 300));
+    std::unique_ptr<GroupCell> group;
+    MatrCell *matr = LayOutMatrix(group, 60, 40);
+    THEN("both rows and columns are left out, and it still draws") {
+      CHECK(matr->ElidedRows() > 0);
+      CHECK(matr->ElidedColumns() > 0);
+      CHECK(matr->GetToolTip(matr->GetRect().GetPosition() + wxPoint(1, 1))
+              .Contains(wxS("Rows")));
+      NoClipToDrawRegion noClip(g_cfg);
+      REQUIRE_NOTHROW(matr->Draw(g_dc, g_dc));
+    }
+  }
+
+}
+
 class TestApp : public wxApp {
 public:
   bool OnInit() override { return true; }

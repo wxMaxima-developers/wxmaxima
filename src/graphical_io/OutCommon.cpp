@@ -107,6 +107,16 @@ OutCommon::OutCommon(const Configuration * const *configuration, const wxString 
     // usable. Also the probability was high that the right font wasn't
     // available in inkscape.
     m_thisconfig.SetParenthesisDrawMode(Configuration::handdrawn);
+
+    // Every exporter built on this sets a canvas size, but it is a nominal
+    // one (700 px wide for SVG, 1000x1000 for a bitmap) the output then
+    // grows past as needed -- nothing is clipped to it. Leaving a matrix's
+    // middle out to fit it would drop data from an export for no reason, so
+    // exports always get the whole matrix, whatever the worksheet shows.
+    // Printing is different, and deliberately not built on this: a page is a
+    // real limit, so a printed matrix is elided to fit it just as the
+    // worksheet elides one to fit the window.
+    m_thisconfig.SetOversizedMatrices(Configuration::OversizedMatrices::showInFull);
 }
 
 OutCommon::OutCommon(const Configuration * const *configuration, int fullWidth, double scale)

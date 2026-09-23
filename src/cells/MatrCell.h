@@ -43,8 +43,25 @@
 
   Example: `wx_matrix(matrix([1,2],[3,4]), lines=true, rownames=true, parenstyle=square);`
 
+  **Matrices too large for the window.** A matrix has no linear form to fall
+  back on the way a fraction does, so BreakUp() cannot help it. If
+  Configuration::GetOversizedMatrices() asks for it, Recalculate() instead
+  leaves out a contiguous run of middle columns (and/or rows) and draws the
+  gap the way a mathematician would write it: ⋯ in each shown row, ⋮ in each
+  shown column and ⋱ where the two gaps cross. The first and the last column
+  and row are always kept, which also keeps the headings of a `table_form`
+  or `wx_matrix(..., rownames=true, colnames=true)` in view.
+
+  Elision is a matter of display only: it applies to the worksheet and to
+  printing, whose pages are a real limit. Every To...() export and the
+  clipboard still write the whole matrix, and the graphical exporters (see
+  OutCommon) switch elision off, since their canvas size is only nominal.
+  The left-out entries are simply not positioned or drawn, and are skipped
+  when looking up what is under the mouse.
+
   \image html MatrCellGeometry.svg
-  \image html MatrCellVariations.svg 
+  \image html MatrCellVariations.svg
+  \image html MatrCellElisionGeometry.svg
 */
 class MatrCell final : public Cell
 {
@@ -64,6 +81,17 @@ public:
   using Cell::SetCurrentPoint;
   void SetCurrentPoint(wxPoint point) const override;
   void Draw(wxDC *dc, wxDC *antialiassingDC) override;
+
+  const wxString GetToolTip(wxPoint point) const override;
+  Range GetInnerCellsInRect(const wxRect &rect) const override;
+
+  //! Is the entry in this row and column left out of the display?
+  bool IsElided(size_t row, size_t col) const
+    { return m_rowElision.Hides(row) || m_colElision.Hides(col); }
+  //! How many columns are left out of the display (0 = none)
+  size_t ElidedColumns() const { return m_colElision.count; }
+  //! How many rows are left out of the display (0 = none)
+  size_t ElidedRows() const { return m_rowElision.count; }
 
   void AddNewCell(std::unique_ptr<Cell> &&cell);
 
@@ -102,11 +130,53 @@ private:
     constexpr DropCenter(int drop, int center) : drop(drop), center(center) {}
   };
 
+  //! A contiguous run of rows or columns left out of the display
+  struct Elision
+  {
+    //! The index of the first left-out row/column
+    size_t first = 0;
+    //! How many rows/columns are left out; 0 means none are
+    size_t count = 0;
+    constexpr bool Active() const { return count > 0; }
+    constexpr bool Hides(size_t index) const
+      { return (index >= first) && (index < first + count); }
+  };
+
+  /*! Chooses which of these rows/columns to leave out so the rest fit
+
+    \param sizes   the extent of each row/column, gaps included
+    \param gapSize the extent of the ⋯ or ⋮ that marks the left-out run,
+                   gaps included
+    \param budget  the space available
+
+    Keeps rows/columns from both ends alternately, as long as they fit, and
+    always keeps the first and the last one. Returns an inactive Elision if
+    everything fits.
+  */
+  static Elision ChooseElision(const std::vector<wxCoord> &sizes,
+                               wxCoord gapSize, wxCoord budget);
+
+  //! The distance between the centres of two neighbouring dots of ⋯ ⋮ ⋱
+  wxCoord DotPitch() const;
+  //! The radius of one dot of ⋯ ⋮ ⋱
+  wxCoord DotRadius() const;
+  //! The extent of a ⋯, ⋮ or ⋱ along the direction of its dots
+  wxCoord DotsExtent() const { return 2 * DotPitch() + 2 * DotRadius(); }
+  //! Draws three dots, starting at start and each step further along
+  void DrawDots(wxDC *dc, wxPoint start, wxPoint step) const;
+  //! Draws the ⋯ ⋮ ⋱ that mark where rows or columns are left out
+  void DrawElisionMarks(wxDC *dc) const;
+
   //! Collection of pointers to inner cells.
   std::vector<std::unique_ptr<Cell>> m_cells;
 
   mutable std::vector<wxCoord> m_widths;
   mutable std::vector<DropCenter> m_dropCenters;
+
+  //! The columns left out of the display, if any
+  mutable Elision m_colElision;
+  //! The rows left out of the display, if any
+  mutable Elision m_rowElision;
 
   size_t m_matWidth = 0;
   size_t m_matHeight = 0;

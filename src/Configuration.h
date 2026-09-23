@@ -467,6 +467,25 @@ public:
   LayoutStrategy GetLayoutStrategy() const { return m_layoutStrategy; }
   void SetLayoutStrategy(LayoutStrategy s) { m_layoutStrategy = s; }
 
+  /*! How to show a matrix too large for the window
+
+    A matrix has no sensible linear form to fall back on the way a fraction
+    or a square root does, so the layout strategy above cannot help once one
+    is wider or taller than the window.
+  */
+  enum class OversizedMatrices {
+    //! Draw it whole; the worksheet grows, and scrolls, to fit it
+    showInFull = 0,
+    //! Leave out the middle rows/columns, marking the gap with ⋯ ⋮ ⋱ (the default)
+    elide = 1
+  };
+  OversizedMatrices GetOversizedMatrices() const { return m_oversizedMatrices; }
+  void SetOversizedMatrices(OversizedMatrices mode) {
+    if (mode != m_oversizedMatrices)
+      RecalculateForce();
+    m_oversizedMatrices = mode;
+  }
+
   void SetLayoutDeadline(int seconds) {
     m_renderContext.SetLayoutDeadline(seconds);
   }
@@ -1577,6 +1596,7 @@ private:
   int m_autoSaveMinutes;
   int m_maxLayoutTime;
   LayoutStrategy m_layoutStrategy = LayoutStrategy::layout2DIfFits;
+  OversizedMatrices m_oversizedMatrices = OversizedMatrices::elide;
   wxString m_wxMathML_Filename;
   maximaHelpFormat m_maximaHelpFormat;
   std::atomic<std::int_fast32_t> m_cellCfgCnt{0};
