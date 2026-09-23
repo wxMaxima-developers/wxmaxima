@@ -651,37 +651,32 @@ void ConfigDialogue::SetCheckboxValues() {
                                    AiProviderKind::Google, AiProviderKind::Qwen,
                                    AiProviderKind::GitHubModels, AiProviderKind::DeepSeek,
                                    AiProviderKind::OpenRouter};
+    // No key is read here, or anywhere in this dialog: see
+    // AiProviderUiRecord::apiKey.
     for (AiProviderKind kind : fixedKinds) {
       AiProviderUiRecord rec;
       rec.kind = kind;
       rec.displayName = AiProviderKindName(kind);
       switch (kind) {
       case AiProviderKind::Anthropic:
-        rec.apiKey = configuration->AiApiKeyAnthropic();
         rec.model = configuration->AiModelAnthropic();
         break;
       case AiProviderKind::OpenAI:
-        rec.apiKey = configuration->AiApiKeyOpenAI();
         rec.model = configuration->AiModelOpenAI();
         break;
       case AiProviderKind::Google:
-        rec.apiKey = configuration->AiApiKeyGoogle();
         rec.model = configuration->AiModelGoogle();
         break;
       case AiProviderKind::Qwen:
-        rec.apiKey = configuration->AiApiKeyQwen();
         rec.model = configuration->AiModelQwen();
         break;
       case AiProviderKind::GitHubModels:
-        rec.apiKey = configuration->AiApiKeyGitHubModels();
         rec.model = configuration->AiModelGitHubModels();
         break;
       case AiProviderKind::DeepSeek:
-        rec.apiKey = configuration->AiApiKeyDeepSeek();
         rec.model = configuration->AiModelDeepSeek();
         break;
       case AiProviderKind::OpenRouter:
-        rec.apiKey = configuration->AiApiKeyOpenRouter();
         rec.model = configuration->AiModelOpenRouter();
         break;
       default:
@@ -698,7 +693,6 @@ void ConfigDialogue::SetCheckboxValues() {
       rec.baseUrl = custom.baseUrl;
       rec.model = custom.model;
       rec.username = custom.username;
-      rec.apiKey = AiProvider::LoadApiKey(AiProvider::CustomProviderSecretService(custom.id));
       m_aiProviderRecords.push_back(rec);
     }
 
@@ -2193,6 +2187,10 @@ wxWindow *ConfigDialogue::CreateAiChatPanel() {
                                wxSize(300 * GetContentScaleFactor(), -1),
                                wxTE_PASSWORD);
   grid->Add(m_aiKeyCtrl, wxSizerFlags().Expand());
+  grid->AddSpacer(0);
+  m_aiForgetKeyButton = new wxButton(detailBoxWin, wxID_ANY, _("Forget the stored key"));
+  m_aiForgetKeyButton->Bind(wxEVT_BUTTON, &ConfigDialogue::OnAiForgetKey, this);
+  grid->Add(m_aiForgetKeyButton);
   grid->Add(new wxStaticText(detailBoxWin, wxID_ANY, _("Model:")),
            wxSizerFlags().Align(wxALIGN_CENTER_VERTICAL));
   // Starts with no items, and nothing fills it in on its own: the list is
@@ -2280,12 +2278,44 @@ void ConfigDialogue::RebuildAiProviderChoice(int selectIndex) {
   LoadAiProviderRecordIntoUi(selectIndex);
 }
 
+wxString ConfigDialogue::AiApiKeyToUse(const AiProviderUiRecord &rec) {
+  if (!rec.apiKey.IsEmpty())
+    return rec.apiKey;
+  if (rec.forgetApiKey)
+    return wxEmptyString;
+  // Only ever reached from a button the user pressed, so a keyring asking
+  // for its password here is asking in answer to something they did.
+  return AiProvider::LoadApiKey(rec.kind == AiProviderKind::Custom
+                                  ? AiProvider::CustomProviderSecretService(rec.customId)
+                                  : AiProvider::BuiltinProviderSecretService(rec.kind));
+}
+
+void ConfigDialogue::UpdateAiKeyHint(const AiProviderUiRecord &rec) {
+  m_aiKeyCtrl->SetHint(rec.forgetApiKey
+                         ? _("The stored key will be deleted on OK")
+                         : _("Leave empty to keep the stored key"));
+}
+
+void ConfigDialogue::OnAiForgetKey(wxCommandEvent &WXUNUSED(event)) {
+  if ((m_aiActiveProviderRecordIndex < 0) ||
+      (static_cast<size_t>(m_aiActiveProviderRecordIndex) >= m_aiProviderRecords.size()))
+    return;
+  AiProviderUiRecord &rec = m_aiProviderRecords[m_aiActiveProviderRecordIndex];
+  rec.apiKey.Clear();
+  rec.forgetApiKey = true;
+  m_aiKeyCtrl->ChangeValue(wxEmptyString);
+  UpdateAiKeyHint(rec);
+}
+
 void ConfigDialogue::StashAiProviderUiIntoRecord() {
   if ((m_aiActiveProviderRecordIndex < 0) ||
       (static_cast<size_t>(m_aiActiveProviderRecordIndex) >= m_aiProviderRecords.size()))
     return;
   AiProviderUiRecord &rec = m_aiProviderRecords[m_aiActiveProviderRecordIndex];
   rec.apiKey = m_aiKeyCtrl->GetValue();
+  // A new key replaces the stored one rather than being forgotten with it.
+  if (!rec.apiKey.IsEmpty())
+    rec.forgetApiKey = false;
   rec.model = m_aiModelCtrl->GetValue();
   if (rec.kind == AiProviderKind::Custom) {
     rec.baseUrl = m_aiBaseUrlCtrl->GetValue();
@@ -2322,6 +2352,7 @@ void ConfigDialogue::LoadAiProviderRecordIntoUi(int index) {
 
   m_aiProviderDetailBox->GetStaticBox()->SetLabel(rec.displayName);
   m_aiKeyCtrl->SetValue(rec.apiKey);
+  UpdateAiKeyHint(rec);
   // Clear() on a wxComboBox wipes the *text* as well as the item list, so
   // the value has to be restored afterwards, not before -- doing it the
   // other way round silently blanks the configured model every time the
@@ -2416,8 +2447,9 @@ void ConfigDialogue::StartAiModelFetch() {
   }
   std::shared_ptr<AiProvider> provider =
     (rec.kind == AiProviderKind::Custom)
-      ? MakeAiProviderForShape(rec.shape, rec.displayName, baseUrl, rec.apiKey, rec.model)
-      : MakeAiProvider(rec.kind, rec.apiKey, rec.model);
+      ? MakeAiProviderForShape(rec.shape, rec.displayName, baseUrl, AiApiKeyToUse(rec),
+                               rec.model)
+      : MakeAiProvider(rec.kind, AiApiKeyToUse(rec), rec.model);
   if (!provider) {
     showStatus(_("No provider to ask."));
     return;
@@ -3109,39 +3141,40 @@ void ConfigDialogue::WriteSettings() {
       activeCustomId = active.customId;
     }
     for (const auto &rec : m_aiProviderRecords) {
+      // The secret store is only touched for a key that was typed or
+      // forgotten: see AiProviderUiRecord::apiKey.
+      const wxString service = (rec.kind == AiProviderKind::Custom)
+        ? AiProvider::CustomProviderSecretService(rec.customId)
+        : AiProvider::BuiltinProviderSecretService(rec.kind);
+      if (!rec.apiKey.IsEmpty())
+        AiProvider::SaveApiKey(service, rec.apiKey);
+      else if (rec.forgetApiKey)
+        AiProvider::DeleteApiKey(service);
       if (rec.kind == AiProviderKind::Custom) {
-        AiProvider::SaveApiKey(AiProvider::CustomProviderSecretService(rec.customId), rec.apiKey);
         customProviders.push_back({rec.customId, rec.displayName, rec.shape,
                                    rec.baseUrl, rec.model, rec.username});
         continue;
       }
       switch (rec.kind) {
       case AiProviderKind::Anthropic:
-        configuration->AiApiKeyAnthropic(rec.apiKey);
         configuration->AiModelAnthropic(rec.model);
         break;
       case AiProviderKind::OpenAI:
-        configuration->AiApiKeyOpenAI(rec.apiKey);
         configuration->AiModelOpenAI(rec.model);
         break;
       case AiProviderKind::Google:
-        configuration->AiApiKeyGoogle(rec.apiKey);
         configuration->AiModelGoogle(rec.model);
         break;
       case AiProviderKind::Qwen:
-        configuration->AiApiKeyQwen(rec.apiKey);
         configuration->AiModelQwen(rec.model);
         break;
       case AiProviderKind::GitHubModels:
-        configuration->AiApiKeyGitHubModels(rec.apiKey);
         configuration->AiModelGitHubModels(rec.model);
         break;
       case AiProviderKind::DeepSeek:
-        configuration->AiApiKeyDeepSeek(rec.apiKey);
         configuration->AiModelDeepSeek(rec.model);
         break;
       case AiProviderKind::OpenRouter:
-        configuration->AiApiKeyOpenRouter(rec.apiKey);
         configuration->AiModelOpenRouter(rec.model);
         break;
       default:

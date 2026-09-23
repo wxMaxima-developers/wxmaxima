@@ -372,7 +372,16 @@ protected:
     //! implied by its kind and never shown as editable.
     AiProviderShape shape = AiProviderShape::OpenAiCompatible;
     wxString baseUrl;
+    /*! A key typed in this session; empty means "keep what is stored".
+
+      The dialog never reads a stored key: the field is masked anyway, and
+      reading one from a locked keyring makes the desktop ask for its
+      password -- which nobody opening Options to change a font should be
+      asked for. So this field is write-only, and OK stores what was typed.
+    */
     wxString apiKey;
+    //! Delete the stored key on OK (set by m_aiForgetKeyButton).
+    bool forgetApiKey = false;
     wxString model;
     //! Basic-auth username; empty means this entry authenticates by API
     //! key (or not at all). Meaningful only when kind == Custom.
@@ -438,6 +447,13 @@ protected:
   //! Shown only for a Custom record; deletes it (and its stored API key)
   //! outright rather than just clearing its fields.
   wxButton *m_aiRemoveCustomProviderButton;
+  //! Marks the stored key of the provider on display for deletion on OK.
+  wxButton *m_aiForgetKeyButton;
+  void OnAiForgetKey(wxCommandEvent &event);
+  //! Says in the key field's hint what OK will do with the stored key.
+  void UpdateAiKeyHint(const AiProviderUiRecord &rec);
+  //! The key to use for rec right now: the one typed, or else the stored one.
+  static wxString AiApiKeyToUse(const AiProviderUiRecord &rec);
   //! Re-lays-out the AI Chat tab after controls on it were shown or
   //! hidden -- see the implementation's comment for why a bare Layout()
   //! is not enough.
