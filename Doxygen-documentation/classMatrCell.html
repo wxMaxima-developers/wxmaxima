@@ -128,6 +128,24 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad3dd27547f30a90fe132e03446b736f5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrCell.html#ad3dd27547f30a90fe132e03446b736f5">Draw</a> (wxDC *dc, wxDC *antialiassingDC) override</td></tr>
 <tr class="memdesc:ad3dd27547f30a90fe132e03446b736f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pass 3 (Paint): Renders the cell using pre-calculated coordinates.  <br /></td></tr>
 <tr class="separator:ad3dd27547f30a90fe132e03446b736f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba9d4324258ad407affa925e606e4f90"><td class="memItemLeft" align="right" valign="top">const wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrCell.html#aba9d4324258ad407affa925e606e4f90">GetToolTip</a> (wxPoint point) const override</td></tr>
+<tr class="memdesc:aba9d4324258ad407affa925e606e4f90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the ToolTip this cell provides at a given point.  <br /></td></tr>
+<tr class="separator:aba9d4324258ad407affa925e606e4f90"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa221c5700f6e29abd0abc6248386ef8c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structCell_1_1Range.html">Range</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrCell.html#aa221c5700f6e29abd0abc6248386ef8c">GetInnerCellsInRect</a> (const wxRect &amp;rect) const override</td></tr>
+<tr class="memdesc:aa221c5700f6e29abd0abc6248386ef8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Select the cells inside this cell described by the rectangle rect.  <br /></td></tr>
+<tr class="separator:aa221c5700f6e29abd0abc6248386ef8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa64deef616f10e3b73c23a20e61dcfd"><td class="memItemLeft" align="right" valign="top"><a id="aaa64deef616f10e3b73c23a20e61dcfd" name="aaa64deef616f10e3b73c23a20e61dcfd"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsElided</b> (size_t row, size_t col) const</td></tr>
+<tr class="memdesc:aaa64deef616f10e3b73c23a20e61dcfd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is the entry in this row and column left out of the display? <br /></td></tr>
+<tr class="separator:aaa64deef616f10e3b73c23a20e61dcfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0923ef260e9349a556f4486aad251462"><td class="memItemLeft" align="right" valign="top"><a id="a0923ef260e9349a556f4486aad251462" name="a0923ef260e9349a556f4486aad251462"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><b>ElidedColumns</b> () const</td></tr>
+<tr class="memdesc:a0923ef260e9349a556f4486aad251462"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many columns are left out of the display (0 = none) <br /></td></tr>
+<tr class="separator:a0923ef260e9349a556f4486aad251462"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a940f3bf0f92f1c0655a4f7a46171294a"><td class="memItemLeft" align="right" valign="top"><a id="a940f3bf0f92f1c0655a4f7a46171294a" name="a940f3bf0f92f1c0655a4f7a46171294a"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><b>ElidedRows</b> () const</td></tr>
+<tr class="memdesc:a940f3bf0f92f1c0655a4f7a46171294a"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many rows are left out of the display (0 = none) <br /></td></tr>
+<tr class="separator:a940f3bf0f92f1c0655a4f7a46171294a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abd49b70cc5cbc720f0439506f74044de"><td class="memItemLeft" align="right" valign="top"><a id="abd49b70cc5cbc720f0439506f74044de" name="abd49b70cc5cbc720f0439506f74044de"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>AddNewCell</b> (std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt; &amp;&amp;cell)</td></tr>
 <tr class="separator:abd49b70cc5cbc720f0439506f74044de"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -198,9 +216,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetCurrentPoint</b> (
 <tr class="memitem:aa09f3c5c9fd8d30d32557cb66b8ac55e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classAFontSize.html">AFontSize</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#aa09f3c5c9fd8d30d32557cb66b8ac55e">Scale_Px</a> (<a class="el" href="classAFontSize.html">AFontSize</a> size) const</td></tr>
 <tr class="memdesc:aa09f3c5c9fd8d30d32557cb66b8ac55e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scale font sizes and line widths according to the zoom factor.  <br /></td></tr>
 <tr class="separator:aa09f3c5c9fd8d30d32557cb66b8ac55e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a06ac058dd29257ca5125f8afb0c27e88"><td class="memItemLeft" align="right" valign="top">virtual const wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a06ac058dd29257ca5125f8afb0c27e88">GetToolTip</a> (wxPoint point) const</td></tr>
-<tr class="memdesc:a06ac058dd29257ca5125f8afb0c27e88"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the ToolTip this cell provides at a given point.  <br /></td></tr>
-<tr class="separator:a06ac058dd29257ca5125f8afb0c27e88"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5cf56227ab908a76e812c0bd29df39ad"><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a5cf56227ab908a76e812c0bd29df39ad">CellsInListRecursive</a> () const</td></tr>
 <tr class="memdesc:a5cf56227ab908a76e812c0bd29df39ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many cells does this cell contain?  <br /></td></tr>
 <tr class="separator:a5cf56227ab908a76e812c0bd29df39ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -473,9 +488,6 @@ virtual const wxString&#160;</td><td class="memItemRight" valign="bottom"><b>Get
 <a class="el" href="structCell_1_1Range.html">Range</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetListCellsInRect</b> (const wxRect &amp;rect) const</td></tr>
 <tr class="memdesc:a7a2d7a0dba12e8e53516f7c41e393b33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the first and last cells within the given rectangle, without recursing into the inner cells. <br /></td></tr>
 <tr class="separator:a7a2d7a0dba12e8e53516f7c41e393b33"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad0dfb521cb6148ce592c5f52df1d4ce2"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="structCell_1_1Range.html">Range</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#ad0dfb521cb6148ce592c5f52df1d4ce2">GetInnerCellsInRect</a> (const wxRect &amp;rect) const</td></tr>
-<tr class="memdesc:ad0dfb521cb6148ce592c5f52df1d4ce2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Select the cells inside this cell described by the rectangle rect.  <br /></td></tr>
-<tr class="separator:ad0dfb521cb6148ce592c5f52df1d4ce2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad9ead4b4296d8f1f1fe50f8e8c83868c"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#ad9ead4b4296d8f1f1fe50f8e8c83868c">IsOperator</a> () const</td></tr>
 <tr class="memdesc:ad9ead4b4296d8f1f1fe50f8e8c83868c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is this cell an operator?  <br /></td></tr>
 <tr class="separator:ad9ead4b4296d8f1f1fe50f8e8c83868c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -852,11 +864,16 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 <li>**<code>parenstyle=style</code>**: Sets the bracket type. Supported styles: <code>round</code> (), <code>square</code> [], <code>angled</code> &lt;&gt;, <code>straight</code> ||, or <code>none</code>.</li>
 </ul>
 <p>Example: <code>wx_matrix(matrix([1,2],[3,4]), lines=true, rownames=true, parenstyle=square);</code></p>
+<p>Matrices too large for the window.** <a class="el" href="classA.html">A</a> matrix has no linear form to fall back on the way a fraction does, so <a class="el" href="classCell.html#ad3bba95038366ea5bccefa8f76e1571e" title="Try to split this command into lines to make it fit on the screen.">BreakUp()</a> cannot help it. If Configuration::GetOversizedMatrices() asks for it, <a class="el" href="classMatrCell.html#a90dac27e04491b35d2585170d79193e4" title="Recalculate the size of the cell and the difference between top and center.">Recalculate()</a> instead leaves out a contiguous run of middle columns (and/or rows) and draws the gap the way a mathematician would write it: ⋯ in each shown row, ⋮ in each shown column and ⋱ where the two gaps cross. The first and the last column and row are always kept, which also keeps the headings of a <code>table_form</code> or <code>wx_matrix(..., rownames=true, colnames=true)</code> in view.</p>
+<p>Elision is a matter of display only: it applies to the worksheet and to printing, whose pages are a real limit. Every To...() export and the clipboard still write the whole matrix, and the graphical exporters (see <a class="el" href="classOutCommon.html" title="A collection of common code used in rendering the cells to a non-default output, e....">OutCommon</a>) switch elision off, since their canvas size is only nominal. The left-out entries are simply not positioned or drawn, and are skipped when looking up what is under the mouse.</p>
 <div class="image">
 <object type="image/svg+xml" data="MatrCellGeometry.svg" style="pointer-events: none;"></object>
 </div>
  <div class="image">
 <object type="image/svg+xml" data="MatrCellVariations.svg" style="pointer-events: none;"></object>
+</div>
+ <div class="image">
+<object type="image/svg+xml" data="MatrCellElisionGeometry.svg" style="pointer-events: none;"></object>
 </div>
  </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="af0f18ef99c280e60940d94cd55143cd1" name="af0f18ef99c280e60940d94cd55143cd1"></a>
@@ -2087,8 +2104,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 
 </div>
 </div>
-<a id="ad0dfb521cb6148ce592c5f52df1d4ce2" name="ad0dfb521cb6148ce592c5f52df1d4ce2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad0dfb521cb6148ce592c5f52df1d4ce2">&#9670;&#160;</a></span>GetInnerCellsInRect()</h2>
+<a id="aa221c5700f6e29abd0abc6248386ef8c" name="aa221c5700f6e29abd0abc6248386ef8c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa221c5700f6e29abd0abc6248386ef8c">&#9670;&#160;</a></span>GetInnerCellsInRect()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2097,7 +2114,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structCell_1_1Range.html">Cell::Range</a> Cell::GetInnerCellsInRect </td>
+          <td class="memname"><a class="el" href="structCell_1_1Range.html">Cell::Range</a> MatrCell::GetInnerCellsInRect </td>
           <td>(</td>
           <td class="paramtype">const wxRect &amp;&#160;</td>
           <td class="paramname"><em>rect</em></td><td>)</td>
@@ -2106,14 +2123,14 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 <p>Select the cells inside this cell described by the rectangle rect. </p>
 
-<p>Reimplemented in <a class="el" href="classGroupCell.html#a575aa61b2b63e493f032759f15f09101">GroupCell</a>.</p>
+<p>Reimplemented from <a class="el" href="classCell.html#ad0dfb521cb6148ce592c5f52df1d4ce2">Cell</a>.</p>
 
 </div>
 </div>
@@ -2243,8 +2260,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 
 </div>
 </div>
-<a id="a06ac058dd29257ca5125f8afb0c27e88" name="a06ac058dd29257ca5125f8afb0c27e88"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a06ac058dd29257ca5125f8afb0c27e88">&#9670;&#160;</a></span>GetToolTip()</h2>
+<a id="aba9d4324258ad407affa925e606e4f90" name="aba9d4324258ad407affa925e606e4f90"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aba9d4324258ad407affa925e606e4f90">&#9670;&#160;</a></span>GetToolTip()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2253,7 +2270,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const wxString Cell::GetToolTip </td>
+          <td class="memname">const wxString MatrCell::GetToolTip </td>
           <td>(</td>
           <td class="paramtype">wxPoint&#160;</td>
           <td class="paramname"><em>point</em></td><td>)</td>
@@ -2262,7 +2279,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -2276,7 +2293,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the tooltip text, or empty string if none. </dd></dl>
 
-<p>Reimplemented in <a class="el" href="classAnimationCell.html#ae200ce21029cac8692952ceab7530a69">AnimationCell</a>, <a class="el" href="classGroupCell.html#a5613954d9c50b168f960797309aab01f">GroupCell</a>, <a class="el" href="classImgCell.html#af8e8606947c54caa4a2a17aab1487bda">ImgCell</a>, and <a class="el" href="classImgCellBase.html#a31a1a1d09fcf7305a31434b31bb18629">ImgCellBase</a>.</p>
+<p>Reimplemented from <a class="el" href="classCell.html#a06ac058dd29257ca5125f8afb0c27e88">Cell</a>.</p>
 
 </div>
 </div>

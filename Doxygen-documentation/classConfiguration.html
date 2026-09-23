@@ -152,6 +152,11 @@ Public Types</h2></td></tr>
 , <b>layoutPrefer1D</b> = 2
  }</td></tr>
 <tr class="separator:a2bb69c733d19083e4fbc552bfa26f297"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb5fa4e3eacde294a5f23ceca1b9283d"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#adb5fa4e3eacde294a5f23ceca1b9283d">OversizedMatrices</a> { <a class="el" href="classConfiguration.html#adb5fa4e3eacde294a5f23ceca1b9283dac4b292ca33b0a323d3c5096457c19c5a">showInFull</a> = 0
+, <a class="el" href="classConfiguration.html#adb5fa4e3eacde294a5f23ceca1b9283da7414f5aebe77ba706aef391616a0fb18">elide</a> = 1
+ }</td></tr>
+<tr class="memdesc:adb5fa4e3eacde294a5f23ceca1b9283d"><td class="mdescLeft">&#160;</td><td class="mdescRight">How to show a matrix too large for the window.  <a href="classConfiguration.html#adb5fa4e3eacde294a5f23ceca1b9283d">More...</a><br /></td></tr>
+<tr class="separator:adb5fa4e3eacde294a5f23ceca1b9283d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0c3c003a32828fe343fb6e3b616a4657"><td class="memItemLeft" align="right" valign="top"><a id="a0c3c003a32828fe343fb6e3b616a4657" name="a0c3c003a32828fe343fb6e3b616a4657"></a>enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#a0c3c003a32828fe343fb6e3b616a4657">Appearance</a> { <b>light</b>
 , <b>dark</b>
 , <b>followSystem</b>
@@ -396,6 +401,12 @@ LayoutStrategy&#160;</td><td class="memItemRight" valign="bottom"><b>GetLayoutSt
 <tr class="memitem:a883ae3bac0e86756c1b7001b9888ba76"><td class="memItemLeft" align="right" valign="top"><a id="a883ae3bac0e86756c1b7001b9888ba76" name="a883ae3bac0e86756c1b7001b9888ba76"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetLayoutStrategy</b> (LayoutStrategy s)</td></tr>
 <tr class="separator:a883ae3bac0e86756c1b7001b9888ba76"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5bb69b95f1025040fb5c0826786a6df5"><td class="memItemLeft" align="right" valign="top"><a id="a5bb69b95f1025040fb5c0826786a6df5" name="a5bb69b95f1025040fb5c0826786a6df5"></a>
+<a class="el" href="classConfiguration.html#adb5fa4e3eacde294a5f23ceca1b9283d">OversizedMatrices</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetOversizedMatrices</b> () const</td></tr>
+<tr class="separator:a5bb69b95f1025040fb5c0826786a6df5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a395af32cea95de23bf36f39f4de0b7bf"><td class="memItemLeft" align="right" valign="top"><a id="a395af32cea95de23bf36f39f4de0b7bf" name="a395af32cea95de23bf36f39f4de0b7bf"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetOversizedMatrices</b> (<a class="el" href="classConfiguration.html#adb5fa4e3eacde294a5f23ceca1b9283d">OversizedMatrices</a> mode)</td></tr>
+<tr class="separator:a395af32cea95de23bf36f39f4de0b7bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6f59bf8e65be3aca486eae707b0a3b64"><td class="memItemLeft" align="right" valign="top"><a id="a6f59bf8e65be3aca486eae707b0a3b64" name="a6f59bf8e65be3aca486eae707b0a3b64"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetLayoutDeadline</b> (int seconds)</td></tr>
 <tr class="separator:a6f59bf8e65be3aca486eae707b0a3b64"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1502,6 +1513,37 @@ static <a class="el" href="structConfiguration_1_1PerformanceStats.html">Perform
 </div><div class="memdoc">
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ac7d8b1beccdf8f887368251c3e6d0d71ad2c1b48b8bb593a8ee707eff455cff9d" name="ac7d8b1beccdf8f887368251c3e6d0d71ad2c1b48b8bb593a8ee707eff455cff9d"></a>temporary&#160;</td><td class="fielddoc"><p>This configuration is temporary and shouldn't redetect <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> etc. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="adb5fa4e3eacde294a5f23ceca1b9283d" name="adb5fa4e3eacde294a5f23ceca1b9283d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adb5fa4e3eacde294a5f23ceca1b9283d">&#9670;&#160;</a></span>OversizedMatrices</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="classConfiguration.html#adb5fa4e3eacde294a5f23ceca1b9283d">Configuration::OversizedMatrices</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>How to show a matrix too large for the window. </p>
+<p><a class="el" href="classA.html">A</a> matrix has no sensible linear form to fall back on the way a fraction or a square root does, so the layout strategy above cannot help once one is wider or taller than the window. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="adb5fa4e3eacde294a5f23ceca1b9283dac4b292ca33b0a323d3c5096457c19c5a" name="adb5fa4e3eacde294a5f23ceca1b9283dac4b292ca33b0a323d3c5096457c19c5a"></a>showInFull&#160;</td><td class="fielddoc"><p>Draw it whole; the worksheet grows, and scrolls, to fit it. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="adb5fa4e3eacde294a5f23ceca1b9283da7414f5aebe77ba706aef391616a0fb18" name="adb5fa4e3eacde294a5f23ceca1b9283da7414f5aebe77ba706aef391616a0fb18"></a>elide&#160;</td><td class="fielddoc"><p>Leave out the middle rows/columns, marking the gap with ⋯ ⋮ ⋱ (the default) </p>
 </td></tr>
 </table>
 
