@@ -220,6 +220,25 @@ private:
   void DrawDots(wxDC *dc, wxPoint start, wxPoint step) const;
   //! Draws the ⋯ ⋮ ⋱ that mark where rows or columns are left out
   void DrawElisionMarks(wxDC *dc) const;
+  /*! Tints every other row and every other column of an oversized matrix
+
+    Only a matrix that is elided or scrolls gets bands: that is where losing
+    track of a row or column is a real risk. One that fits is left plain, as
+    shading it would distract more than it helps.
+
+    The bands are a translucent tint of the text colour, so they need a
+    graphics context to blend on (the antialiassing DC): the worksheet has
+    already painted any selection highlight underneath, and an opaque band
+    would hide it. Where a row band crosses a column band the tint doubles.
+    Rows and columns are counted from 0 and the odd ones are tinted, so the
+    first row and column -- the headings of a table_form -- stay plain.
+  */
+  void DrawBands(wxDC *dc) const;
+public:
+  //! Does this matrix get alternating row/column bands? See DrawBands().
+  bool IsBanded() const
+    { return m_colElision.Active() || m_rowElision.Active() || IsScrolling(); }
+private:
   //! Is this matrix shown in a scrolling viewport right now?
   bool IsScrolling() const
     { return m_hasHorizontalScrollbar || m_hasVerticalScrollbar; }

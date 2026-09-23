@@ -18,6 +18,9 @@
   rows and columns left out, since paper cannot scroll. A matrix inside
   another one never gets scrollbars of its own: the outer one scrolls over
   both.
+- A matrix too large for the window, whether elided or scrolling, has every
+  other row and column very faintly shaded, so the eye can follow a row or
+  a column across it. A matrix that fits the window stays plain.
 
 - The AI chat now scrolls to an answer when it arrives, instead of leaving
   it below the bottom edge of the transcript for anything longer than a line
