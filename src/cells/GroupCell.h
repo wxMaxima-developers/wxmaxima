@@ -461,6 +461,15 @@ public:
 
   */
   void Draw(wxDC *dc, wxDC *antialiassingDC) override;
+  /*! Does a repaint need this cell drawn?
+
+    Cell::DrawThisCell() plus the part of the output that lies beyond
+    GetRect(): an output line can start to the right of the cell. Hides the
+    base class's version rather than overriding it, which only needs to hold
+    for the callers that know they have a GroupCell: GroupCell::Draw() and
+    Worksheet::DrawGroupCell().
+  */
+  bool DrawThisCell();
 
   bool AddEnding() override;
 
