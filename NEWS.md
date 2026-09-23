@@ -1,5 +1,11 @@
 # Current development version
 
+- Opening Options no longer asks for the keyring's password. The AI Chat
+  tab used to read every stored API key just to fill its masked key fields,
+  and to write them all back on OK; it now never reads them. A key field
+  starts empty and means "keep the stored key", typing a new key replaces
+  it, and "Forget the stored key" deletes it. Only "Fetch models" still
+  reads the key, since the provider wants it for that request.
 - DeepSeek and OpenRouter are now built-in AI Chat providers. Both need
   only an API key, pasted into Options -> AI Chat, and each has a link there
   to where that key is made. OpenRouter passes a request on to one of many

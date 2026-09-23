@@ -1504,6 +1504,26 @@ and not a natural next step.
     rewritten as plain `CHECK`s (250 -> 257 assertions). A section name
     built from the loop variable avoids it; a constant name never does.
 
+- **Options never reads a stored API key (2026-09-23).** Opening Options
+  used to `LoadApiKey()` every provider's key to fill the (masked) key field,
+  and OK wrote every key back. On a desktop whose keyring is locked
+  (KWallet, GNOME Keyring) each of those makes the desktop ask for the
+  keyring password -- reported as "opening the preferences asks for my
+  password". The key field is now write-only: it starts empty with a hint,
+  `AiProviderUiRecord::apiKey` holds only what was typed this session, OK
+  stores only a typed key, and "Forget the stored key" is the explicit way
+  to delete one (an empty field means *keep*, never *delete*). The one
+  remaining read is `ConfigDialogue::AiApiKeyToUse()`, reached only from
+  the "Fetch models" button: the provider's model list is behind the same
+  authentication as the chat, so that request genuinely needs the key.
+  Side benefit: dismissing the keyring prompt used to leave every field
+  empty, and pressing OK then **deleted every stored key**. Not changed:
+  `AiChatSidebar::ReloadProviderFromConfig()` still reads the active
+  provider's key when the sidebar is built at startup (and after each
+  Options OK) -- but only when a provider is configured, where asking once
+  is expected. Untested live here: this sandbox's wxWidgets has no secret
+  store, so the AI Chat tab is never shown.
+
 ## Sidebar visibility tools (the third, fourth and fifth writes)
 
 - **`list_sidebars`/`show_sidebar`/`hide_sidebar` (2026-09-21)** -- requested
