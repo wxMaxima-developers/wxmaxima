@@ -648,7 +648,8 @@ void ConfigDialogue::SetCheckboxValues() {
     m_aiProviderRecords.clear();
     AiProviderKind fixedKinds[] = {AiProviderKind::Anthropic, AiProviderKind::OpenAI,
                                    AiProviderKind::Google, AiProviderKind::Qwen,
-                                   AiProviderKind::GitHubModels};
+                                   AiProviderKind::GitHubModels, AiProviderKind::DeepSeek,
+                                   AiProviderKind::OpenRouter};
     for (AiProviderKind kind : fixedKinds) {
       AiProviderUiRecord rec;
       rec.kind = kind;
@@ -673,6 +674,14 @@ void ConfigDialogue::SetCheckboxValues() {
       case AiProviderKind::GitHubModels:
         rec.apiKey = configuration->AiApiKeyGitHubModels();
         rec.model = configuration->AiModelGitHubModels();
+        break;
+      case AiProviderKind::DeepSeek:
+        rec.apiKey = configuration->AiApiKeyDeepSeek();
+        rec.model = configuration->AiModelDeepSeek();
+        break;
+      case AiProviderKind::OpenRouter:
+        rec.apiKey = configuration->AiApiKeyOpenRouter();
+        rec.model = configuration->AiModelOpenRouter();
         break;
       default:
         break;
@@ -3093,6 +3102,14 @@ void ConfigDialogue::WriteSettings() {
       case AiProviderKind::GitHubModels:
         configuration->AiApiKeyGitHubModels(rec.apiKey);
         configuration->AiModelGitHubModels(rec.model);
+        break;
+      case AiProviderKind::DeepSeek:
+        configuration->AiApiKeyDeepSeek(rec.apiKey);
+        configuration->AiModelDeepSeek(rec.model);
+        break;
+      case AiProviderKind::OpenRouter:
+        configuration->AiApiKeyOpenRouter(rec.apiKey);
+        configuration->AiModelOpenRouter(rec.model);
         break;
       default:
         break;

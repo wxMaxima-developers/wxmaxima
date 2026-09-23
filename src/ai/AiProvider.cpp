@@ -332,6 +332,8 @@ wxString AiProviderKindName(AiProviderKind kind) {
   case AiProviderKind::Google: return wxS("Google (Gemini)");
   case AiProviderKind::Qwen: return wxS("Qwen (Alibaba)");
   case AiProviderKind::GitHubModels: return wxS("GitHub Models");
+  case AiProviderKind::DeepSeek: return wxS("DeepSeek");
+  case AiProviderKind::OpenRouter: return wxS("OpenRouter");
   // A Custom provider's own display name is carried on the AiProvider
   // instance itself (AiProvider::SetDisplayName()/Name()), not derivable
   // from the kind alone -- this generic fallback is only ever seen if
@@ -419,6 +421,13 @@ wxString AiProviderDefaultModel(AiProviderKind kind) {
   // consistently free-tier-available, unlike some of the larger catalog
   // entries which need a paid Models plan.
   case AiProviderKind::GitHubModels: return wxS("openai/gpt-4o-mini");
+  // DeepSeek's own alias for its current general chat model (the other one,
+  // "deepseek-reasoner", thinks before answering: slower, and billed for
+  // the thinking).
+  case AiProviderKind::DeepSeek: return wxS("deepseek-chat");
+  // OpenRouter's own router, which picks a model per request. The one
+  // default here that cannot go stale, since it names no model at all.
+  case AiProviderKind::OpenRouter: return wxS("openrouter/auto");
   default: return wxEmptyString;
   }
 }
@@ -436,6 +445,8 @@ wxString AiProviderApiKeyUrl(AiProviderKind kind) {
   // GitHub Copilot Chat.
   case AiProviderKind::GitHubModels:
     return wxS("https://github.com/settings/personal-access-tokens/new");
+  case AiProviderKind::DeepSeek: return wxS("https://platform.deepseek.com/api_keys");
+  case AiProviderKind::OpenRouter: return wxS("https://openrouter.ai/settings/keys");
   default: return wxEmptyString;
   }
 }
@@ -448,6 +459,9 @@ wxString AiProviderModelListUrl(AiProviderKind kind) {
   case AiProviderKind::Google: return wxS("https://ai.google.dev/gemini-api/docs/models");
   case AiProviderKind::Qwen: return wxS("https://www.alibabacloud.com/help/en/model-studio/models");
   case AiProviderKind::GitHubModels: return wxS("https://github.com/marketplace/models");
+  case AiProviderKind::DeepSeek:
+    return wxS("https://api-docs.deepseek.com/quick_start/pricing");
+  case AiProviderKind::OpenRouter: return wxS("https://openrouter.ai/models");
   default: return wxEmptyString;
   }
 }
@@ -462,6 +476,9 @@ wxString AiProviderBaseUrl(AiProviderKind kind) {
     return wxS("https://generativelanguage.googleapis.com/v1beta/models/");
   case AiProviderKind::GitHubModels:
     return wxS("https://models.github.ai/inference/chat/completions");
+  case AiProviderKind::DeepSeek: return wxS("https://api.deepseek.com/chat/completions");
+  case AiProviderKind::OpenRouter:
+    return wxS("https://openrouter.ai/api/v1/chat/completions");
   default: return wxEmptyString;
   }
 }
@@ -491,6 +508,15 @@ std::shared_ptr<AiProvider> MakeAiProvider(AiProviderKind kind, const wxString &
     return std::make_shared<OpenAiCompatibleProvider>(
       AiProviderKind::GitHubModels,
       wxS("https://models.github.ai/inference/chat/completions"), apiKey, model);
+  case AiProviderKind::DeepSeek:
+  case AiProviderKind::OpenRouter:
+    // Both speak OpenAI's chat/completions shape with a Bearer key, so like
+    // GitHub Models they need nothing but their own URL. Taken from
+    // AiProviderBaseUrl() rather than written out a second time: a second
+    // copy of a constant is how Configuration's model defaults once drifted
+    // away from AiProviderDefaultModel() without anyone noticing.
+    return std::make_shared<OpenAiCompatibleProvider>(kind, AiProviderBaseUrl(kind),
+                                                      apiKey, model);
   default:
     return nullptr;
   }

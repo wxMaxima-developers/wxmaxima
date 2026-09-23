@@ -777,6 +777,10 @@ public:
   //! why this is GitHub's official Models API, not Copilot Chat.
   wxString AiApiKeyGitHubModels() const;
   void AiApiKeyGitHubModels(const wxString &key);
+  wxString AiApiKeyDeepSeek() const;
+  void AiApiKeyDeepSeek(const wxString &key);
+  wxString AiApiKeyOpenRouter() const;
+  void AiApiKeyOpenRouter(const wxString &key);
 
   //! The model id to request from each provider; defaults to
   //! AiProviderDefaultModel() but the user can override it in Options,
@@ -791,6 +795,10 @@ public:
   void AiModelQwen(const wxString &model) { m_aiModelQwen = model; }
   wxString AiModelGitHubModels() const { return m_aiModelGitHubModels; }
   void AiModelGitHubModels(const wxString &model) { m_aiModelGitHubModels = model; }
+  wxString AiModelDeepSeek() const { return m_aiModelDeepSeek; }
+  void AiModelDeepSeek(const wxString &model) { m_aiModelDeepSeek = model; }
+  wxString AiModelOpenRouter() const { return m_aiModelOpenRouter; }
+  void AiModelOpenRouter(const wxString &model) { m_aiModelOpenRouter = model; }
 
   //! User-added custom providers (beyond the four built-in ones), as a
   //! JSON array -- see AiCustomProviderConfig/ParseAiCustomProviders() in
@@ -1493,6 +1501,8 @@ private:
   wxString m_aiModelGoogle;
   wxString m_aiModelQwen;
   wxString m_aiModelGitHubModels;
+  wxString m_aiModelDeepSeek;
+  wxString m_aiModelOpenRouter;
   //! User-added custom providers. See AiCustomProvidersJson().
   wxString m_aiCustomProvidersJson;
   //! See AiActiveCustomProviderId().

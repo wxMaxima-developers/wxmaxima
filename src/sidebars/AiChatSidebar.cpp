@@ -165,6 +165,14 @@ void AiChatSidebar::ReloadProviderFromConfig() {
       apiKey = m_configuration->AiApiKeyGitHubModels();
       model = m_configuration->AiModelGitHubModels();
       break;
+    case AiProviderKind::DeepSeek:
+      apiKey = m_configuration->AiApiKeyDeepSeek();
+      model = m_configuration->AiModelDeepSeek();
+      break;
+    case AiProviderKind::OpenRouter:
+      apiKey = m_configuration->AiApiKeyOpenRouter();
+      model = m_configuration->AiModelOpenRouter();
+      break;
     default:
       break;
     }
