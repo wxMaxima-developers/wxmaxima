@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="860" height="540" viewBox="0 0 860 540">
+  <style>
+    .title { font-family: sans-serif; font-size: 16px; font-weight: bold; fill: #2c3e50; }
+    .note { font-family: sans-serif; font-size: 12px; fill: #2c3e50; }
+    .entry { font-family: serif; font-size: 18px; fill: #2c3e50; }
+    .ghost { font-family: serif; font-size: 18px; fill: #bdc3c7; }
+    .bracket { stroke: #2c3e50; stroke-width: 1.5; fill: none; }
+    .full { fill: none; stroke: #bdc3c7; stroke-width: 1; stroke-dasharray: 4,3; }
+    .viewport { fill: #eaf2f8; stroke: #2980b9; stroke-width: 1; stroke-dasharray: 3,2; }
+    .bar { fill: #d5d8dc; stroke: #95a5a6; stroke-width: 1; }
+    .thumb { fill: #7f8c8d; }
+    .dim { stroke: #e74c3c; stroke-width: 1; fill: none; }
+    .dimtext { font-family: sans-serif; font-size: 11px; fill: #e74c3c; }
+    .cellbox { fill: none; stroke: #27ae60; stroke-width: 1; }
+    .celltext { font-family: sans-serif; font-size: 11px; fill: #27ae60; }
+  </style>
+
+  <rect width="100%" height="100%" fill="#ffffff" />
+  <text x="20" y="28" class="title">MatrCell in a scrolling viewport (Configuration::OversizedMatrices::scroll)</text>
+
+  <g transform="translate(150, 110)">
+    <!-- The whole matrix (m_scrollableSize), drawn at its scroll offset -->
+    <rect x="-60" y="-30" width="560" height="330" class="full" />
+    <text x="-56" y="-36" class="dimtext">m_scrollableSize: the whole matrix, offset by -m_scroll</text>
+
+    <!-- Entries that are scrolled out of view (positioned, but clipped and not hit-testable) -->
+    <text x="-50" y="0" class="ghost">a11</text><text x="10" y="0" class="ghost">a12</text>
+    <text x="70" y="0" class="ghost">a13</text><text x="130" y="0" class="ghost">a14</text>
+    <text x="-50" y="50" class="ghost">a21</text><text x="-50" y="100" class="ghost">a31</text>
+    <text x="-50" y="150" class="ghost">a41</text><text x="-50" y="200" class="ghost">a51</text>
+    <text x="440" y="200" class="ghost">a58</text><text x="440" y="150" class="ghost">a48</text>
+
+    <!-- m_contentSize: the box between the brackets -->
+    <rect x="0" y="20" width="360" height="200" class="viewport" />
+    <!-- ViewportRect(): inside the brackets' margins; Draw() clips to it -->
+    <path d="M 16 20 Q 2 120 16 220" class="bracket" />
+    <path d="M 344 20 Q 358 120 344 220" class="bracket" />
+
+    <text x="10" y="50" class="entry">a22</text><text x="70" y="50" class="entry">a23</text>
+    <text x="130" y="50" class="entry">a24</text><text x="190" y="50" class="entry">a25</text>
+    <text x="250" y="50" class="entry">a26</text><text x="310" y="50" class="entry">a27</text>
+    <text x="10" y="100" class="entry">a32</text><text x="70" y="100" class="entry">a33</text>
+    <text x="130" y="100" class="entry">a34</text><text x="190" y="100" class="entry">a35</text>
+    <text x="250" y="100" class="entry">a36</text><text x="310" y="100" class="entry">a37</text>
+    <text x="10" y="150" class="entry">a42</text><text x="70" y="150" class="entry">a43</text>
+    <text x="130" y="150" class="entry">a44</text><text x="190" y="150" class="entry">a45</text>
+    <text x="250" y="150" class="entry">a46</text><text x="310" y="150" class="entry">a47</text>
+    <text x="10" y="200" class="entry">a52</text><text x="70" y="200" class="entry">a53</text>
+    <text x="130" y="200" class="entry">a54</text><text x="190" y="200" class="entry">a55</text>
+    <text x="250" y="200" class="entry">a56</text><text x="310" y="200" class="entry">a57</text>
+
+    <!-- The scrollbars: outside the brackets, owned by the MatrixScrollHost -->
+    <rect x="0" y="220" width="360" height="15" class="bar" />
+    <rect x="60" y="222" width="220" height="11" rx="5" class="thumb" />
+    <rect x="360" y="20" width="15" height="200" class="bar" />
+    <rect x="362" y="60" width="11" height="120" rx="5" class="thumb" />
+
+    <!-- The cell's own rect (m_width x m_height) -->
+    <rect x="-2" y="18" width="379" height="219" class="cellbox" />
+    <text x="-2" y="253" class="celltext">GetRect(): m_width = m_contentSize.x + scrollbar, m_height = m_contentSize.y + scrollbar</text>
+
+    <!-- Dimensions -->
+    <path d="M 0 275 L 360 275 M 0 270 L 0 280 M 360 270 L 360 280" class="dim" />
+    <text x="180" y="291" class="dimtext" text-anchor="middle">m_contentSize.x &#8804; width budget &#8722; vertical scrollbar</text>
+    <path d="M 520 20 L 520 220 M 515 20 L 525 20 M 515 220 L 525 220" class="dim" />
+    <text x="528" y="116" class="dimtext">m_contentSize.y =</text>
+    <text x="528" y="130" class="dimtext">80% of canvas height</text>
+    <path d="M 378 227 L 395 227 M 378 222 L 378 232 M 395 222 L 395 232" class="dim" />
+    <text x="400" y="231" class="dimtext">ScrollbarThickness()</text>
+    <path d="M -80 120 L 0 120" class="dim" />
+    <text x="-84" y="116" class="dimtext" text-anchor="end">centre line</text>
+  </g>
+
+  <text x="20" y="440" class="note">Every entry is positioned, offset by -m_scroll; Draw() clips them to ViewportRect() and IsEntryShown() keeps the ones</text>
+  <text x="20" y="458" class="note">outside it out of GetToolTip() and GetInnerCellsInRect(). ScrollTo() only repositions the entries -- no relayout. The cell owns</text>
+  <text x="20" y="476" class="note">no window: it reports each draw to its MatrixScrollHost (the worksheet's MatrixScrollbars), which creates, moves, shows and</text>
+  <text x="20" y="494" class="note">hides the native wxScrollBars after the paint. Without a host (printing) the same matrix is elided instead.</text>
+</svg>

@@ -914,6 +914,7 @@ wxWindow *ConfigDialogue::CreateWorksheetPanel() {
   // the compiled string exactly for the translation to be found.
   oversizedMatrices.Add(_("Leave out middle rows and columns") +
                         wxS(" (⋯ ⋮ ⋱)"));
+  oversizedMatrices.Add(_("Show them in a window-sized box with scrollbars"));
   m_oversizedMatrices = new wxRadioBox(displaySizer->GetStaticBox(), wxID_ANY,
                                        _("Matrices too large for the window"),
                                        wxDefaultPosition, wxDefaultSize,
@@ -925,8 +926,13 @@ wxWindow *ConfigDialogue::CreateWorksheetPanel() {
       "\"Leave out middle rows and columns\" (default) keeps the first and "
       "last rows and columns and marks the gap with dots, the way a matrix is written "
       "by hand. Hovering over such a matrix tells which rows and columns are "
-      "not shown. This affects only what is shown on screen and printed: "
-      "copying, saving and exporting the matrix always include all of it."));
+      "not shown.\n"
+      "\"Show them in a window-sized box with scrollbars\" shows as much of "
+      "the matrix as fits and gives it its own scrollbars. The mouse wheel "
+      "still scrolls the worksheet. Since paper cannot scroll, such a matrix "
+      "is printed with its middle rows and columns left out.\n"
+      "This affects only what is shown on screen and printed: copying, "
+      "saving and exporting the matrix always include all of it."));
   displaySizer->Add(m_oversizedMatrices,
                     wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
 

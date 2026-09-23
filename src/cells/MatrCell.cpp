@@ -30,6 +30,10 @@
 
 #include "MatrCell.h"
 #include "CellImpl.h"
+#include "MatrixScrollHost.h"
+
+#include <algorithm>
+#include <optional>
 
 MatrCell::MatrCell(GroupCell *group, Configuration *config)
   : Cell(group, config) {
@@ -43,6 +47,7 @@ MatrCell::MatrCell(GroupCell *group, const MatrCell &cell)
   m_parenType = cell.m_parenType;
   m_rowNames = cell.m_rowNames;
   m_colNames = cell.m_colNames;
+  m_nestedInMatrix = cell.m_nestedInMatrix;
   m_matWidth = cell.m_matWidth;
   m_matHeight = cell.m_matHeight;
   for (size_t i = 0; i < cell.m_matWidth * cell.m_matHeight; i++)
@@ -105,53 +110,158 @@ void MatrCell::Recalculate(AFontSize const fontsize) const {
       rowSizes.emplace_back(center + drop + Scale_Px(10));
     }
 
-    // Decide what, if anything, to leave out. The canvas size is part of the
-    // configuration, and changing it forces a recalculation (see
+    wxCoord fullWidth = 0;
+    for (wxCoord size : colSizes)
+      fullWidth += size;
+    wxCoord fullHeight = 0;
+    for (wxCoord size : rowSizes)
+      fullHeight += size;
+    m_scrollableSize = wxSize(fullWidth, fullHeight);
+
+    // Which way to deal with a matrix too large for the window. Scrolling
+    // needs a window to put scrollbars in; where there is none (printing, a
+    // context without a worksheet) the matrix is elided instead, since paper
+    // can't scroll. (The graphical exporters switch all this off; see
+    // OutCommon.)
+    Configuration::OversizedMatrices mode = m_configuration->GetOversizedMatrices();
+    MatrixScrollHost *const host = m_configuration->GetMatrixScrollHost();
+    if ((mode == Configuration::OversizedMatrices::scroll) && (host == nullptr))
+      mode = Configuration::OversizedMatrices::elide;
+    // Only the outermost matrix scrolls. A viewport inside a viewport would
+    // mean two sets of scrollbars for one thing -- and the inner ones, being
+    // real windows, couldn't even be clipped to the outer viewport. Shown in
+    // full instead, a nested matrix simply makes the outer one wider, and
+    // that one scrolls over all of it.
+    if ((mode == Configuration::OversizedMatrices::scroll) && m_nestedInMatrix)
+      mode = Configuration::OversizedMatrices::showInFull;
+
+    // How much room there is. The canvas size is part of the configuration,
+    // and changing it forces a recalculation (see
     // Configuration::SetCanvasSize()), so this is redone whenever the window
-    // or the printed page changes size. (The graphical exporters switch
-    // elision off altogether; see OutCommon.) A context that
-    // never set a canvas size gets no elision at all rather than an elision
-    // down to the first and last row and column.
+    // or the printed page changes size. A context that never set a canvas
+    // size gets the whole matrix, rather than one cut down to nothing.
+    const wxSize canvas = m_configuration->GetCanvasSize();
+    // What Cell::BreakLines_List() lets a line of maths use, less the label
+    // column that usually sits to the left of the matrix.
+    const wxCoord widthBudget = std::max(
+      static_cast<wxCoord>(canvas.x - m_configuration->GetIndent() -
+                           Scale_Px(m_configuration->GetLabelWidth()) -
+                           Scale_Px(5)),
+      Scale_Px(150));
+    // A matrix taller than most of the window can never be seen whole
+    // without scrolling past it, which is where the 80% comes from.
+    const wxCoord heightBudget =
+      std::max(static_cast<wxCoord>(canvas.y * 8 / 10), Scale_Px(100));
+
     const wxCoord dotsGap = DotsExtent() + Scale_Px(10);
     m_colElision = {};
     m_rowElision = {};
-    if (m_configuration->GetOversizedMatrices() ==
-        Configuration::OversizedMatrices::elide) {
-      const wxSize canvas = m_configuration->GetCanvasSize();
-      if (canvas.x > 0) {
-        // What Cell::BreakLines_List() lets a line of maths use, less the
-        // label column that usually sits to the left of the matrix.
-        const wxCoord budget = std::max(
-          static_cast<wxCoord>(canvas.x - m_configuration->GetIndent() -
-                               Scale_Px(m_configuration->GetLabelWidth()) -
-                               Scale_Px(5)),
-          Scale_Px(150));
-        m_colElision = ChooseElision(colSizes, dotsGap, budget);
-      }
-      if (canvas.y > 0) {
-        // A matrix taller than most of the window can never be seen whole
-        // without scrolling past it, which is where the 80% comes from.
-        const wxCoord budget = std::max(static_cast<wxCoord>(canvas.y * 8 / 10),
-                                        Scale_Px(100));
-        m_rowElision = ChooseElision(rowSizes, dotsGap, budget);
-      }
+    m_hasHorizontalScrollbar = false;
+    m_hasVerticalScrollbar = false;
+    m_scrollbarThickness = 0;
+    if (mode == Configuration::OversizedMatrices::elide) {
+      if (canvas.x > 0)
+        m_colElision = ChooseElision(colSizes, dotsGap, widthBudget);
+      if (canvas.y > 0)
+        m_rowElision = ChooseElision(rowSizes, dotsGap, heightBudget);
+    } else if (mode == Configuration::OversizedMatrices::scroll) {
+      const wxCoord thickness = host->ScrollbarThickness();
+      // A vertical scrollbar takes room from the columns, so it can make a
+      // horizontal one necessary. Not the other way round: the height budget
+      // is for the viewport alone.
+      m_hasVerticalScrollbar = (canvas.y > 0) && (fullHeight > heightBudget);
+      m_hasHorizontalScrollbar =
+        (canvas.x > 0) &&
+        (fullWidth > widthBudget - (m_hasVerticalScrollbar ? thickness : 0));
+      if (IsScrolling())
+        m_scrollbarThickness = thickness;
     }
 
-    m_width = m_colElision.Active() ? dotsGap : 0;
+    // The box between the brackets
+    wxCoord contentWidth = m_colElision.Active() ? dotsGap : 0;
     for (size_t i = 0; i < colSizes.size(); i++)
       if (!m_colElision.Hides(i))
-        m_width += colSizes.at(i);
-    if (m_width < Scale_Px(14))
-      m_width = Scale_Px(14);
+        contentWidth += colSizes.at(i);
+    if (m_hasHorizontalScrollbar)
+      contentWidth = widthBudget - (m_hasVerticalScrollbar ? m_scrollbarThickness : 0);
+    if (contentWidth < Scale_Px(14))
+      contentWidth = Scale_Px(14);
 
-    m_height = m_rowElision.Active() ? dotsGap : 0;
+    wxCoord contentHeight = m_rowElision.Active() ? dotsGap : 0;
     for (size_t i = 0; i < rowSizes.size(); i++)
       if (!m_rowElision.Hides(i))
-        m_height += rowSizes.at(i);
-    if (m_height == 0)
-      m_height = fontsize + Scale_Px(10);
-    m_center = m_height / 2;
+        contentHeight += rowSizes.at(i);
+    if (m_hasVerticalScrollbar)
+      contentHeight = heightBudget;
+    if (contentHeight == 0)
+      contentHeight = fontsize + Scale_Px(10);
+
+    m_contentSize = wxSize(contentWidth, contentHeight);
+    // Keep the scroll position the reader chose across a relayout, as far as
+    // the new size allows it.
+    ClampScrollPosition();
+
+    // The scrollbars sit to the right of and below the box, outside the
+    // brackets. The centre line stays that of the box, so the matrix still
+    // lines up with its label; a horizontal scrollbar just adds to the drop.
+    m_width = contentWidth + (m_hasVerticalScrollbar ? m_scrollbarThickness : 0);
+    m_height = contentHeight + (m_hasHorizontalScrollbar ? m_scrollbarThickness : 0);
+    m_center = contentHeight / 2;
   }
+}
+
+void MatrCell::ClampScrollPosition() const {
+  const wxCoord maxX = std::max(0, m_scrollableSize.x - m_contentSize.x);
+  const wxCoord maxY = std::max(0, m_scrollableSize.y - m_contentSize.y);
+  m_scroll.x = m_hasHorizontalScrollbar ? std::clamp(m_scroll.x, 0, maxX) : 0;
+  m_scroll.y = m_hasVerticalScrollbar ? std::clamp(m_scroll.y, 0, maxY) : 0;
+}
+
+bool MatrCell::ScrollTo(wxPoint position) {
+  const wxPoint old = m_scroll;
+  m_scroll = position;
+  ClampScrollPosition();
+  if (m_scroll == old)
+    return false;
+  // Nothing about the layout changes but where the entries sit, so reposition
+  // just them rather than asking for a recalculation.
+  if (m_currentPoint != wxPoint(-1, -1))
+    SetCurrentPoint(m_currentPoint);
+  return true;
+}
+
+wxRect MatrCell::ViewportRect() const {
+  // Inside the brackets' margins, which is where the entries of a matrix
+  // that isn't scrolled begin and end, too.
+  return wxRect(m_currentPoint.x + Scale_Px(5),
+                m_currentPoint.y - m_center + Scale_Px(5),
+                m_contentSize.x - 2 * Scale_Px(5),
+                m_contentSize.y - 2 * Scale_Px(5));
+}
+
+wxRect MatrCell::HorizontalScrollbarRect() const {
+  if (!m_hasHorizontalScrollbar)
+    return {};
+  return wxRect(m_currentPoint.x, m_currentPoint.y - m_center + m_contentSize.y,
+                m_contentSize.x, m_scrollbarThickness);
+}
+
+wxRect MatrCell::VerticalScrollbarRect() const {
+  if (!m_hasVerticalScrollbar)
+    return {};
+  return wxRect(m_currentPoint.x + m_contentSize.x, m_currentPoint.y - m_center,
+                m_scrollbarThickness, m_contentSize.y);
+}
+
+bool MatrCell::IsEntryShown(size_t row, size_t col) const {
+  if (IsElided(row, col))
+    return false;
+  if ((row * m_matWidth + col) >= m_cells.size())
+    return false;
+  if (!IsScrolling())
+    return true;
+  return GetInnerCell(static_cast<int>(row), static_cast<int>(col))
+    ->GetRect(true).Intersects(ViewportRect());
 }
 
 MatrCell::Elision MatrCell::ChooseElision(const std::vector<wxCoord> &sizes,
@@ -266,15 +376,18 @@ void MatrCell::SetCurrentPoint(wxPoint point) const {
   // The entries that are left out are not positioned at all. They keep
   // whatever position they had before, which is why GetToolTip() and
   // GetInnerCellsInRect() skip them rather than trust it.
+  // A scrolling matrix positions every entry, including those scrolled out
+  // of the viewport: Draw() clips them, and IsEntryShown() keeps them out of
+  // hit-testing.
   const wxCoord dotsGap = DotsExtent() + Scale_Px(10);
   wxPoint mp;
-  mp.x = point.x + Scale_Px(5);
+  mp.x = point.x + Scale_Px(5) - m_scroll.x;
   for (size_t i = 0; i < m_matWidth; i++) {
     if (m_colElision.Active() && (i == m_colElision.first))
       mp.x += dotsGap;
     if (m_colElision.Hides(i))
       continue;
-    mp.y = point.y - m_center + Scale_Px(5);
+    mp.y = point.y - m_center + Scale_Px(5) - m_scroll.y;
     for (size_t j = 0; j < m_matHeight; j++) {
       if (m_rowElision.Active() && (j == m_rowElision.first))
         mp.y += dotsGap;
@@ -297,10 +410,11 @@ const wxString MatrCell::GetToolTip(const wxPoint point) const {
     return wxm::emptyString;
 
   // Same as Cell::GetToolTip(), but asking only the entries that are shown:
-  // the others still carry the position they had before they were left out.
+  // an elided one still carries the position it had before it was left out,
+  // and one scrolled out of the viewport sits somewhere outside the matrix.
   for (size_t j = 0; j < m_matHeight; j++)
     for (size_t i = 0; i < m_matWidth; i++) {
-      if (IsElided(j, i) || ((j * m_matWidth + i) >= m_cells.size()))
+      if (!IsEntryShown(j, i))
         continue;
       for (const Cell &tmp : OnList(GetInnerCell(j, i))) {
         auto &toolTip = tmp.GetToolTip(point);
@@ -336,11 +450,12 @@ const wxString MatrCell::GetToolTip(const wxPoint point) const {
 }
 
 Cell::Range MatrCell::GetInnerCellsInRect(const wxRect &rect) const {
-  // Cell::GetInnerCellsInRect(), minus the entries that are left out.
+  // Cell::GetInnerCellsInRect(), minus the entries that are left out or
+  // scrolled out of view.
   Range retval = {const_cast<MatrCell *>(this), const_cast<MatrCell *>(this)};
   for (size_t j = 0; j < m_matHeight; j++)
     for (size_t i = 0; i < m_matWidth; i++) {
-      if (IsElided(j, i) || ((j * m_matWidth + i) >= m_cells.size()))
+      if (!IsEntryShown(j, i))
         continue;
       for (Cell const &tmp : OnList(GetInnerCell(j, i)))
         if (tmp.ContainsRect(rect)) {
@@ -357,48 +472,61 @@ void MatrCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
   SetBrush(dc);
   if (DrawThisCell()) {
     wxPoint point = m_currentPoint;
-    for (size_t i = 0; i < m_matWidth; i++) {
-      for (size_t j = 0; j < m_matHeight; j++) {
-        if (IsElided(j, i))
-          continue;
-        if ((j * m_matWidth + i) < m_cells.size()) {
-          GetInnerCell(j, i)->DrawList(dc, antialiassingDC);
+    // The box between the brackets. For a scrolling matrix m_width and
+    // m_height also hold the scrollbars, which the brackets must stay clear of.
+    const wxCoord width = m_contentSize.x;
+    const wxCoord height = m_contentSize.y;
+    {
+      // A scrolling matrix's entries, and the heading lines that scroll with
+      // them, are cut off where they leave the viewport.
+      std::optional<wxDCClipper> clip, antialiassedClip;
+      if (IsScrolling()) {
+        clip.emplace(*dc, ViewportRect());
+        if (antialiassingDC != dc)
+          antialiassedClip.emplace(*antialiassingDC, ViewportRect());
+      }
+      for (size_t i = 0; i < m_matWidth; i++) {
+        for (size_t j = 0; j < m_matHeight; j++) {
+          if (IsEntryShown(j, i))
+            GetInnerCell(j, i)->DrawList(dc, antialiassingDC);
         }
       }
+      if (m_colElision.Active() || m_rowElision.Active())
+        DrawElisionMarks(antialiassingDC);
+      SetPen(antialiassingDC, 1.5);
+      // m_rowNames/m_colNames come straight from the .wxmx XML attributes and
+      // are set independently of whether the matrix actually has any
+      // columns/rows (MathParser sets them unconditionally). A special matrix
+      // with rownames/colnames but zero columns/rows leaves m_widths /
+      // m_dropCenters empty, so guard the at(0) accesses - .at() would throw
+      // and, uncaught, terminate wxMaxima on such a (corrupt) document.
+      if (m_specialMatrix && !m_inferenceMatrix) {
+        if (m_rowNames && !m_widths.empty())
+          antialiassingDC->DrawLine(
+            point.x + m_widths.at(0) + 2 * Scale_Px(5) - m_scroll.x,
+            point.y - m_center + Scale_Px(2),
+            point.x + m_widths.at(0) + 2 * Scale_Px(5) - m_scroll.x,
+            point.y + m_center - Scale_Px(2));
+        if (m_colNames && !m_dropCenters.empty())
+          antialiassingDC->DrawLine(
+            point.x + Scale_Px(1),
+            point.y - m_center + m_dropCenters.at(0).Sum() + 2 * Scale_Px(5) - m_scroll.y,
+            point.x + Scale_Px(1) + width,
+            point.y - m_center + m_dropCenters.at(0).Sum() + 2 * Scale_Px(5) - m_scroll.y);
+      }
     }
-    if (m_colElision.Active() || m_rowElision.Active())
-      DrawElisionMarks(antialiassingDC);
     SetPen(antialiassingDC, 1.5);
     if (m_specialMatrix) {
       if (m_inferenceMatrix)
         antialiassingDC->DrawLine(point.x + Scale_Px(1), point.y - m_center + Scale_Px(2),
                                   point.x + Scale_Px(1), point.y + m_center - Scale_Px(2));
-      else {
-        // m_rowNames/m_colNames come straight from the .wxmx XML attributes and
-        // are set independently of whether the matrix actually has any
-        // columns/rows (MathParser sets them unconditionally). A special matrix
-        // with rownames/colnames but zero columns/rows leaves m_widths /
-        // m_dropCenters empty, so guard the at(0) accesses - .at() would throw
-        // and, uncaught, terminate wxMaxima on such a (corrupt) document.
-        if (m_rowNames && !m_widths.empty())
-          antialiassingDC->DrawLine(point.x + m_widths.at(0) + 2 * Scale_Px(5),
-                                    point.y - m_center + Scale_Px(2),
-                                    point.x + m_widths.at(0) + 2 * Scale_Px(5),
-                                    point.y + m_center - Scale_Px(2));
-        if (m_colNames && !m_dropCenters.empty())
-          antialiassingDC->DrawLine(
-                                    point.x + Scale_Px(1),
-                                    point.y - m_center + m_dropCenters.at(0).Sum() + 2 * Scale_Px(5),
-                                    point.x + Scale_Px(1) + m_width,
-                                    point.y - m_center + m_dropCenters.at(0).Sum() + 2 * Scale_Px(5));
-      }
     } else {
       switch (m_parenType) {
       case paren_rounded: {
         SetPen(dc, 1);
         wxCoord signWidth = Scale_Px(4);
-        if (m_height <= signWidth / 3)
-          signWidth = m_height / 3;
+        if (height <= signWidth / 3)
+          signWidth = height / 3;
 
         // Left bracket
         wxPoint pointsL[5] = {
@@ -415,23 +543,23 @@ void MatrCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
 
         // Right bracket
         wxPoint pointsR[5] = {
-          {point.x + m_width - Scale_Px(1) - signWidth, point.y - m_center},
-          {point.x + m_width - Scale_Px(1) - signWidth / 2,
+          {point.x + width - Scale_Px(1) - signWidth, point.y - m_center},
+          {point.x + width - Scale_Px(1) - signWidth / 2,
            point.y - m_center + signWidth / 2},
-          {point.x + m_width - Scale_Px(1.5), point.y},
-          {point.x + m_width - Scale_Px(1) - signWidth / 2,
+          {point.x + width - Scale_Px(1.5), point.y},
+          {point.x + width - Scale_Px(1) - signWidth / 2,
            point.y + m_center - signWidth / 2},
-          {point.x + m_width - Scale_Px(1) - signWidth, point.y + m_center}};
+          {point.x + width - Scale_Px(1) - signWidth, point.y + m_center}};
         antialiassingDC->DrawSpline(5, pointsR);
-        pointsR[2] = {point.x + m_width - Scale_Px(1), point.y};
+        pointsR[2] = {point.x + width - Scale_Px(1), point.y};
         antialiassingDC->DrawSpline(5, pointsR);
         break;
       }
       case paren_angled: {
         SetPen(dc, 1);
         wxCoord signWidth = Scale_Px(4);
-        if (m_height <= signWidth / 3)
-          signWidth = m_height / 3;
+        if (height <= signWidth / 3)
+          signWidth = height / 3;
 
         // Left bracket
         wxPoint pointsL[3] = {
@@ -442,17 +570,17 @@ void MatrCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
 
         // Right bracket
         wxPoint pointsR[3] = {
-          {point.x + m_width - Scale_Px(1) - signWidth, point.y - m_center},
-          {point.x + m_width - Scale_Px(1.5), point.y},
-          {point.x + m_width - Scale_Px(1) - signWidth, point.y + m_center}};
+          {point.x + width - Scale_Px(1) - signWidth, point.y - m_center},
+          {point.x + width - Scale_Px(1.5), point.y},
+          {point.x + width - Scale_Px(1) - signWidth, point.y + m_center}};
         antialiassingDC->DrawLines(3, pointsR);
         break;
       }
       case paren_straight: {
         SetPen(dc, 1);
         wxCoord signWidth = Scale_Px(4);
-        if (m_height <= signWidth / 3)
-          signWidth = m_height / 3;
+        if (height <= signWidth / 3)
+          signWidth = height / 3;
 
         // Left bracket
         wxPoint pointsL[2] = {
@@ -461,9 +589,9 @@ void MatrCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
         antialiassingDC->DrawLines(2, pointsL);
 
         // Right bracket
-        wxPoint pointsR[2] = {{point.x + m_width - Scale_Px(1) - signWidth / 2,
+        wxPoint pointsR[2] = {{point.x + width - Scale_Px(1) - signWidth / 2,
                                  point.y - m_center},
-                              {point.x + m_width - Scale_Px(1) - signWidth / 2,
+                              {point.x + width - Scale_Px(1) - signWidth / 2,
                                point.y + m_center}};
         antialiassingDC->DrawLines(2, pointsR);
         break;
@@ -482,18 +610,39 @@ void MatrCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
                                     {-Scale_Px(1), -m_center + Scale_Px(2)},
                                     {-Scale_Px(1), m_center - Scale_Px(2)},
                                     {-Scale_Px(5), m_center - Scale_Px(2)}};
-        antialiassingDC->DrawLines(4, pointsR, point.x + m_width - 1, point.y);
+        antialiassingDC->DrawLines(4, pointsR, point.x + width - 1, point.y);
         break;
       }
       case paren_none:
         break;
       }
     }
+
+    // The scrollbars aren't ours to draw: they are real windows the host
+    // owns. Tell it this matrix needs them, and where.
+    if (IsScrolling())
+      if (MatrixScrollHost *host = m_configuration->GetMatrixScrollHost())
+        host->MatrixDrawn(this);
   }
 }
 
 void MatrCell::AddNewCell(std::unique_ptr<Cell> &&cell) {
+  MarkNestedMatrices(cell.get());
   m_cells.emplace_back(std::move(cell));
+}
+
+void MatrCell::MarkNestedMatrices(Cell *list) {
+  // Every way a matrix ends up inside another goes through AddNewCell()
+  // (MathParser builds matrices bottom-up) or through copying one that
+  // already did (the copy constructor carries the flag over), so marking
+  // here, once, is enough -- and needs no parent pointers, which cells don't
+  // have.
+  for (Cell &cell : OnList(list)) {
+    if (auto *matrix = dynamic_cast<MatrCell *>(&cell))
+      matrix->m_nestedInMatrix = true;
+    for (Cell &inner : OnInner(&cell))
+      MarkNestedMatrices(&inner);
+  }
 }
 
 wxString MatrCell::ToString() const {
