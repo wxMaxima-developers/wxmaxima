@@ -368,7 +368,7 @@ void Configuration::ResetAllToDefaults() {
   m_copyEMF = false;
   m_showLength = 2;
   m_layoutStrategy = LayoutStrategy::layout2DIfFits;
-  m_oversizedMatrices = OversizedMatrices::showInFull;
+  m_oversizedMatrices = OversizedMatrices::elide;
   m_useUnicodeMaths = true;
   m_offerKnownAnswers = true;
   m_screenReaderAnnouncesMathML = false;
@@ -838,9 +838,9 @@ void Configuration::ReadConfig() {
     int om = static_cast<int>(m_oversizedMatrices);
     config->Read(wxS("oversizedMatrices"), &om);
     // An out-of-range value (a newer wxMaxima's mode, or a hand-edited file)
-    // falls back to drawing the matrix whole, which never hides anything.
+    // falls back to the default.
     if (om < 0 || om > static_cast<int>(OversizedMatrices::elide))
-      om = static_cast<int>(OversizedMatrices::showInFull);
+      om = static_cast<int>(OversizedMatrices::elide);
     m_oversizedMatrices = static_cast<OversizedMatrices>(om);
   }
   if(m_showLength < 0)

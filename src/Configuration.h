@@ -476,7 +476,7 @@ public:
   enum class OversizedMatrices {
     //! Draw it whole; the worksheet grows, and scrolls, to fit it
     showInFull = 0,
-    //! Leave out the middle rows/columns, marking the gap with ⋯ ⋮ ⋱
+    //! Leave out the middle rows/columns, marking the gap with ⋯ ⋮ ⋱ (the default)
     elide = 1
   };
   OversizedMatrices GetOversizedMatrices() const { return m_oversizedMatrices; }
@@ -1596,7 +1596,7 @@ private:
   int m_autoSaveMinutes;
   int m_maxLayoutTime;
   LayoutStrategy m_layoutStrategy = LayoutStrategy::layout2DIfFits;
-  OversizedMatrices m_oversizedMatrices = OversizedMatrices::showInFull;
+  OversizedMatrices m_oversizedMatrices = OversizedMatrices::elide;
   wxString m_wxMathML_Filename;
   maximaHelpFormat m_maximaHelpFormat;
   std::atomic<std::int_fast32_t> m_cellCfgCnt{0};

@@ -614,12 +614,13 @@ private:
   Configuration::OversizedMatrices m_old;
 };
 
-SCENARIO("A matrix too wide for the window is only elided when asked to") {
+SCENARIO("A matrix too wide for the window is elided unless shown in full") {
   g_cfg->SetZoomFactor(1.0);
   g_cfg->SetCanvasSize(wxSize(600, 600));
   const size_t rows = 3, cols = 40;
 
-  GIVEN("the default, show-in-full mode") {
+  GIVEN("show-in-full mode") {
+    OversizedMatricesMode mode(Configuration::OversizedMatrices::showInFull);
     std::unique_ptr<GroupCell> group;
     MatrCell *matr = LayOutMatrix(group, rows, cols);
     THEN("nothing is left out, and the matrix is wider than the window") {

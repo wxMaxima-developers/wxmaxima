@@ -181,19 +181,22 @@ SCENARIO("How oversized matrices are shown survives a round-trip") {
   // An enum, so it can't live in ScalarConfigSettings() and its read and
   // write are a hand-synced pair -- exactly what that table's own test
   // exists to catch drifting, so it needs a test of its own.
-  GIVEN("a configuration set to elide oversized matrices") {
+  GIVEN("a configuration set to show oversized matrices in full") {
+    // Deliberately not the default (eliding): a setting that fails to
+    // round-trip reads back as the default, so testing with the default
+    // would pass whether the round trip works or not.
     const wxString file = wxFileName::CreateTempFileName(wxS("wxm_configtest"));
     REQUIRE(!file.IsEmpty());
     Configuration cfgWrite(nullptr, Configuration::temporary);
     REQUIRE(cfgWrite.GetOversizedMatrices() ==
-            Configuration::OversizedMatrices::showInFull);
-    cfgWrite.SetOversizedMatrices(Configuration::OversizedMatrices::elide);
+            Configuration::OversizedMatrices::elide);
+    cfgWrite.SetOversizedMatrices(Configuration::OversizedMatrices::showInFull);
 
     WHEN("it is written and read into a fresh configuration") {
       cfgWrite.WriteSettings(file);
-      THEN("the fresh configuration elides them too") {
+      THEN("the fresh configuration shows them in full too") {
         CHECK(ReadOversizedMatrices(file) ==
-              Configuration::OversizedMatrices::elide);
+              Configuration::OversizedMatrices::showInFull);
       }
     }
     wxRemoveFile(file);
@@ -207,9 +210,9 @@ SCENARIO("How oversized matrices are shown survives a round-trip") {
       fileConfig.Write(wxS("oversizedMatrices"), 7);
       fileConfig.Flush();
     }
-    THEN("reading it falls back to showing matrices in full") {
+    THEN("reading it falls back to the default, eliding") {
       CHECK(ReadOversizedMatrices(file) ==
-            Configuration::OversizedMatrices::showInFull);
+            Configuration::OversizedMatrices::elide);
     }
     wxRemoveFile(file);
   }

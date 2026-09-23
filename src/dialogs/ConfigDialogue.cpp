@@ -922,8 +922,8 @@ wxWindow *ConfigDialogue::CreateWorksheetPanel() {
     _("A matrix cannot be broken into lines the way a long sum can.\n"
       "\"Show them in full\" draws every entry, so a wide matrix makes the "
       "whole worksheet scroll sideways.\n"
-      "\"Leave out middle rows and columns\" keeps the first and last rows "
-      "and columns and marks the gap with dots, the way a matrix is written "
+      "\"Leave out middle rows and columns\" (default) keeps the first and "
+      "last rows and columns and marks the gap with dots, the way a matrix is written "
       "by hand. Hovering over such a matrix tells which rows and columns are "
       "not shown. This affects only what is shown on screen and printed: "
       "copying, saving and exporting the matrix always include all of it."));

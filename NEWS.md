@@ -1,15 +1,15 @@
 # Current development version
 
-- A matrix too large for the window no longer has to widen the whole
-  worksheet. A new choice in Options -> Worksheet, "Matrices too large for
-  the window", can leave out the middle rows and columns instead and mark
-  the gap with ⋯ ⋮ ⋱, the way a large matrix is written by hand: the first
-  and last rows and columns always stay in view, and hovering over the
-  matrix tells which ones are not shown. The matrix is elided to fit the
-  window, re-elided whenever the window is resized, and elided to fit the
-  page when printed. Nothing is lost by it: copying, saving and exporting
-  the matrix always include every entry. The default is still to show
-  matrices in full.
+- A matrix too large for the window no longer widens the whole worksheet.
+  Instead its middle rows and columns are left out and the gap is marked
+  with ⋯ ⋮ ⋱, the way a large matrix is written by hand: the first and last
+  rows and columns always stay in view, and hovering over the matrix tells
+  which ones are not shown. The matrix is elided to fit the window,
+  re-elided whenever the window is resized, and elided to fit the page when
+  printed. Nothing is lost by it: copying, saving and exporting the matrix
+  always include every entry. This is a change of the default: the old
+  behaviour is still available as "Show them in full" under Options ->
+  Worksheet -> "Matrices too large for the window".
 
 - The AI chat now scrolls to an answer when it arrives, instead of leaving
   it below the bottom edge of the transcript for anything longer than a line
