@@ -854,6 +854,11 @@ void GroupCell::UpdateOutputPositions() const {
 
       // Advance horizontally
       in.x += tmp.GetWidth();
+      // Recalculate() sized the output from the lines' widths alone, but a
+      // line can start further right than the rect does -- behind the width
+      // of a label that sits on a line of its own, for example.
+      if (in.x > m_outputRect.GetRight() + 1)
+        m_outputRect.SetRight(in.x - 1);
       isFirst = false;
     }
   }
@@ -876,6 +881,18 @@ void GroupCell::SetCurrentPoint(wxPoint point) const {
 
   // 3. Position Output (the results area)
   UpdateOutputPositions();
+}
+
+bool GroupCell::DrawThisCell() {
+  if (Cell::DrawThisCell())
+    return true;
+  // The output can reach further right than GetRect() does (see
+  // UpdateOutputPositions()), and a repaint of just that part -- a matrix's
+  // vertical scrollbar, say -- must still draw it: a scrolling matrix that
+  // isn't drawn where it was repainted counts as gone and loses its
+  // scrollbars.
+  return HasValidPosition() && DisplayedOutput() && !IsHidden() &&
+    m_configuration->InUpdateRegion(m_outputRect);
 }
 
 void GroupCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
