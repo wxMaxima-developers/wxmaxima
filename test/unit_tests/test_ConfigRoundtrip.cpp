@@ -164,6 +164,57 @@ SCENARIO("Settings written only by WriteSettings() survive an OK-path round-trip
   }
 }
 
+// Reads a fresh configuration from a config file, the way the dialog's OK
+// path does after writing it.
+static Configuration::OversizedMatrices ReadOversizedMatrices(const wxString &file) {
+  wxConfigBase *oldConfig = wxConfig::Get(false);
+  wxConfigBase *fileConfig = new wxFileConfig(wxS("wxMaxima"), wxEmptyString, file);
+  wxConfig::Set(fileConfig);
+  Configuration cfgRead(nullptr, Configuration::temporary);
+  cfgRead.ReadConfig();
+  wxConfig::Set(oldConfig);
+  delete fileConfig;
+  return cfgRead.GetOversizedMatrices();
+}
+
+SCENARIO("How oversized matrices are shown survives a round-trip") {
+  // An enum, so it can't live in ScalarConfigSettings() and its read and
+  // write are a hand-synced pair -- exactly what that table's own test
+  // exists to catch drifting, so it needs a test of its own.
+  GIVEN("a configuration set to elide oversized matrices") {
+    const wxString file = wxFileName::CreateTempFileName(wxS("wxm_configtest"));
+    REQUIRE(!file.IsEmpty());
+    Configuration cfgWrite(nullptr, Configuration::temporary);
+    REQUIRE(cfgWrite.GetOversizedMatrices() ==
+            Configuration::OversizedMatrices::showInFull);
+    cfgWrite.SetOversizedMatrices(Configuration::OversizedMatrices::elide);
+
+    WHEN("it is written and read into a fresh configuration") {
+      cfgWrite.WriteSettings(file);
+      THEN("the fresh configuration elides them too") {
+        CHECK(ReadOversizedMatrices(file) ==
+              Configuration::OversizedMatrices::elide);
+      }
+    }
+    wxRemoveFile(file);
+  }
+
+  GIVEN("a config file holding a value this version doesn't know") {
+    const wxString file = wxFileName::CreateTempFileName(wxS("wxm_configtest"));
+    REQUIRE(!file.IsEmpty());
+    {
+      wxFileConfig fileConfig(wxS("wxMaxima"), wxEmptyString, file);
+      fileConfig.Write(wxS("oversizedMatrices"), 7);
+      fileConfig.Flush();
+    }
+    THEN("reading it falls back to showing matrices in full") {
+      CHECK(ReadOversizedMatrices(file) ==
+            Configuration::OversizedMatrices::showInFull);
+    }
+    wxRemoveFile(file);
+  }
+}
+
 class TestApp : public wxApp {
 public:
   bool OnInit() override { return true; }

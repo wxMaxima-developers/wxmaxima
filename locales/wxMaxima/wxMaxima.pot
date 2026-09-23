@@ -15208,3 +15208,24 @@ msgstr ""
 #, no-wrap
 msgid "If you are a developer, you might want to try out a modified `wxmathML.lisp`-file without recompiling everything, one can use the command line option `--wxmathml-lisp=<str>` to use another Lisp file, not the included one.\n"
 msgstr ""
+
+#: ../../src/cells/MatrCell.cpp:321
+#, c-format
+msgid ""
+"Rows %lu to %lu and columns %lu to %lu of this matrix are not shown, so that "
+"it fits the window. Copying the matrix copies all of it."
+msgstr ""
+
+#: ../../src/cells/MatrCell.cpp:326
+#, c-format
+msgid ""
+"Rows %lu to %lu of this matrix are not shown, so that it fits the window. "
+"Copying the matrix copies all of it."
+msgstr ""
+
+#: ../../src/cells/MatrCell.cpp:331
+#, c-format
+msgid ""
+"Columns %lu to %lu of this matrix are not shown, so that it fits the window. "
+"Copying the matrix copies all of it."
+msgstr ""

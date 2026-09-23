@@ -846,6 +846,8 @@ wx_matrix(matrix(["Name", "Value"], ["X", 10], ["Y", 20]),
           lines=true, rownames=true, colnames=true, parenstyle=square);
 ```
 
+A matrix cannot be broken into lines the way a long sum can. By default a matrix that is wider than the window is drawn in full, which makes the whole worksheet scroll sideways. The option _Matrices too large for the window_ in the _Worksheet_ tab of the configuration dialog can instead leave out the middle rows and columns of such a matrix and mark the gap with `⋯`, `⋮` and `⋱`, the way a large matrix is written by hand. The first and last rows and columns always stay visible, and hovering the mouse over the matrix tells which rows and columns are not shown. This affects only what is shown on screen and printed: copying, saving and exporting the matrix always include every entry.
+
 ## Bug reporting
 
 _WxMaxima_ provides a few functions that gather bug reporting information about the current system:
