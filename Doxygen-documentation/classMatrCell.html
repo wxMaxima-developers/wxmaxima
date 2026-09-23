@@ -699,6 +699,49 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasControlBlock</b> (
 <tr class="memitem:a51973edd395e7418e299006b534bee70"><td class="memItemLeft" align="right" valign="top"><a id="a51973edd395e7418e299006b534bee70" name="a51973edd395e7418e299006b534bee70"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasOneCellPtr</b> () const</td></tr>
 <tr class="separator:a51973edd395e7418e299006b534bee70"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Scrolling (Configuration::OversizedMatrices::scroll)</div></td></tr>
+<tr><td colspan="2"><div class="groupText"><p><a class="el" href="classA.html">A</a> scrolling matrix shows a window-sized viewport onto the whole matrix, with a native scrollbar below it and/or to its right.</p>
+<p>Everything here is in worksheet (unscrolled) coordinates; the scrollbars themselves belong to the <a class="el" href="classMatrixScrollHost.html" title="Whatever can give a matrix real scrollbars.">MatrixScrollHost</a>. </p>
+</div></td></tr>
+<tr class="memitem:abe243fe87bc57f7c8a3465a620d7060f"><td class="memItemLeft" align="right" valign="top"><a id="abe243fe87bc57f7c8a3465a620d7060f" name="abe243fe87bc57f7c8a3465a620d7060f"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasHorizontalScrollbar</b> () const</td></tr>
+<tr class="memdesc:abe243fe87bc57f7c8a3465a620d7060f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does this matrix show a horizontal scrollbar? <br /></td></tr>
+<tr class="separator:abe243fe87bc57f7c8a3465a620d7060f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af834fee0c2924f96a86cd2af1da655f6"><td class="memItemLeft" align="right" valign="top"><a id="af834fee0c2924f96a86cd2af1da655f6" name="af834fee0c2924f96a86cd2af1da655f6"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasVerticalScrollbar</b> () const</td></tr>
+<tr class="memdesc:af834fee0c2924f96a86cd2af1da655f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does this matrix show a vertical scrollbar? <br /></td></tr>
+<tr class="separator:af834fee0c2924f96a86cd2af1da655f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef348a203ec2890b5fbd1798e0b2944d"><td class="memItemLeft" align="right" valign="top"><a id="aef348a203ec2890b5fbd1798e0b2944d" name="aef348a203ec2890b5fbd1798e0b2944d"></a>
+wxRect&#160;</td><td class="memItemRight" valign="bottom"><b>HorizontalScrollbarRect</b> () const</td></tr>
+<tr class="memdesc:aef348a203ec2890b5fbd1798e0b2944d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Where the horizontal scrollbar belongs; empty if there is none. <br /></td></tr>
+<tr class="separator:aef348a203ec2890b5fbd1798e0b2944d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae214290d12b374e648d03124a3c2ec26"><td class="memItemLeft" align="right" valign="top"><a id="ae214290d12b374e648d03124a3c2ec26" name="ae214290d12b374e648d03124a3c2ec26"></a>
+wxRect&#160;</td><td class="memItemRight" valign="bottom"><b>VerticalScrollbarRect</b> () const</td></tr>
+<tr class="memdesc:ae214290d12b374e648d03124a3c2ec26"><td class="mdescLeft">&#160;</td><td class="mdescRight">Where the vertical scrollbar belongs; empty if there is none. <br /></td></tr>
+<tr class="separator:ae214290d12b374e648d03124a3c2ec26"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7115ee82a7182a8ffbfa1d31624114d"><td class="memItemLeft" align="right" valign="top"><a id="ac7115ee82a7182a8ffbfa1d31624114d" name="ac7115ee82a7182a8ffbfa1d31624114d"></a>
+wxRect&#160;</td><td class="memItemRight" valign="bottom"><b>ViewportRect</b> () const</td></tr>
+<tr class="memdesc:ac7115ee82a7182a8ffbfa1d31624114d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The part of the worksheet the matrix's entries are shown in. <br /></td></tr>
+<tr class="separator:ac7115ee82a7182a8ffbfa1d31624114d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a65eec20e9bf3efa830f07001ea7622e3"><td class="memItemLeft" align="right" valign="top"><a id="a65eec20e9bf3efa830f07001ea7622e3" name="a65eec20e9bf3efa830f07001ea7622e3"></a>
+wxSize&#160;</td><td class="memItemRight" valign="bottom"><b>ScrollableSize</b> () const</td></tr>
+<tr class="memdesc:a65eec20e9bf3efa830f07001ea7622e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">The size of the whole matrix, as it would be drawn without scrolling. <br /></td></tr>
+<tr class="separator:a65eec20e9bf3efa830f07001ea7622e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad988787ce44564daecef2c2fa84ba612"><td class="memItemLeft" align="right" valign="top"><a id="ad988787ce44564daecef2c2fa84ba612" name="ad988787ce44564daecef2c2fa84ba612"></a>
+wxSize&#160;</td><td class="memItemRight" valign="bottom"><b>ViewportSize</b> () const</td></tr>
+<tr class="memdesc:ad988787ce44564daecef2c2fa84ba612"><td class="mdescLeft">&#160;</td><td class="mdescRight">The size of the viewport onto it, brackets' margins included. <br /></td></tr>
+<tr class="separator:ad988787ce44564daecef2c2fa84ba612"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41aab8e1ee01f9ce6a95421389a5bac9"><td class="memItemLeft" align="right" valign="top"><a id="a41aab8e1ee01f9ce6a95421389a5bac9" name="a41aab8e1ee01f9ce6a95421389a5bac9"></a>
+wxPoint&#160;</td><td class="memItemRight" valign="bottom"><b>ScrollPosition</b> () const</td></tr>
+<tr class="memdesc:a41aab8e1ee01f9ce6a95421389a5bac9"><td class="mdescLeft">&#160;</td><td class="mdescRight">How far the matrix is scrolled. <br /></td></tr>
+<tr class="separator:a41aab8e1ee01f9ce6a95421389a5bac9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7ee0047dfce24e56c615a7a159f7bb1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrCell.html#ac7ee0047dfce24e56c615a7a159f7bb1">ScrollTo</a> (wxPoint position)</td></tr>
+<tr class="memdesc:ac7ee0047dfce24e56c615a7a159f7bb1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scrolls the matrix, clamped to its scrollable range.  <br /></td></tr>
+<tr class="separator:ac7ee0047dfce24e56c615a7a159f7bb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa421f495d3b475901ba4d50dbdbc343"><td class="memItemLeft" align="right" valign="top"><a id="aaa421f495d3b475901ba4d50dbdbc343" name="aaa421f495d3b475901ba4d50dbdbc343"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsNestedInMatrix</b> () const</td></tr>
+<tr class="memdesc:aaa421f495d3b475901ba4d50dbdbc343"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does this matrix sit inside another matrix? Only the outermost one scrolls. <br /></td></tr>
+<tr class="separator:aaa421f495d3b475901ba4d50dbdbc343"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Layout Engine (3-Pass Pipeline)</div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p>The layout engine follows a strict 3-pass process to ensure a single source of truth for cell geometry and positioning:</p>
 <ol type="1">
@@ -866,6 +909,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 <p>Example: <code>wx_matrix(matrix([1,2],[3,4]), lines=true, rownames=true, parenstyle=square);</code></p>
 <p>Matrices too large for the window.** <a class="el" href="classA.html">A</a> matrix has no linear form to fall back on the way a fraction does, so <a class="el" href="classCell.html#ad3bba95038366ea5bccefa8f76e1571e" title="Try to split this command into lines to make it fit on the screen.">BreakUp()</a> cannot help it. If Configuration::GetOversizedMatrices() asks for it, <a class="el" href="classMatrCell.html#a90dac27e04491b35d2585170d79193e4" title="Recalculate the size of the cell and the difference between top and center.">Recalculate()</a> instead leaves out a contiguous run of middle columns (and/or rows) and draws the gap the way a mathematician would write it: ⋯ in each shown row, ⋮ in each shown column and ⋱ where the two gaps cross. The first and the last column and row are always kept, which also keeps the headings of a <code>table_form</code> or <code>wx_matrix(..., rownames=true, colnames=true)</code> in view.</p>
 <p>Elision is a matter of display only: it applies to the worksheet and to printing, whose pages are a real limit. Every To...() export and the clipboard still write the whole matrix, and the graphical exporters (see <a class="el" href="classOutCommon.html" title="A collection of common code used in rendering the cells to a non-default output, e....">OutCommon</a>) switch elision off, since their canvas size is only nominal. The left-out entries are simply not positioned or drawn, and are skipped when looking up what is under the mouse.</p>
+<p>Or scrolling.** <a class="el" href="classConfiguration.html#adb5fa4e3eacde294a5f23ceca1b9283da089b0cdd8835d09cb1cabf38b3ce9c09" title="Show a window-sized part of it, with native scrollbars.">Configuration::OversizedMatrices::scroll</a> instead shows a window-sized viewport onto the whole matrix, with a native scrollbar to its right and/or below it. The brackets frame the viewport (m_contentSize) and the scrollbars sit outside them, adding to m_width/m_height; the centre line stays the viewport's, so the matrix still lines up with its label. Every entry is positioned, offset by the scroll position; <a class="el" href="classMatrCell.html#ad3dd27547f30a90fe132e03446b736f5" title="Pass 3 (Paint): Renders the cell using pre-calculated coordinates.">Draw()</a> clips them to <a class="el" href="classMatrCell.html#ac7115ee82a7182a8ffbfa1d31624114d" title="The part of the worksheet the matrix&#39;s entries are shown in.">ViewportRect()</a>, and IsEntryShown() keeps the ones outside it out of hit-testing. The cell owns no window: the scrollbars belong to a <a class="el" href="classMatrixScrollHost.html" title="Whatever can give a matrix real scrollbars.">MatrixScrollHost</a>, which only the worksheet provides, so a matrix laid out anywhere else &ndash; for printing, say &ndash; is elided instead.</p>
+<p>Nesting.** Only the outermost matrix scrolls: one nested in another (MarkNestedMatrices() flags it as it is added) is shown in full, and the outer one scrolls over all of it. <a class="el" href="classA.html">A</a> viewport inside a viewport would mean two sets of scrollbars for one thing, and the inner ones &ndash; real windows &ndash; couldn't even be clipped to the outer viewport. Elision does nest: each matrix elides itself to the window, so an outer one can still overshoot by the width of the columns it always keeps.</p>
 <div class="image">
 <object type="image/svg+xml" data="MatrCellGeometry.svg" style="pointer-events: none;"></object>
 </div>
@@ -874,6 +919,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 </div>
  <div class="image">
 <object type="image/svg+xml" data="MatrCellElisionGeometry.svg" style="pointer-events: none;"></object>
+</div>
+ <div class="image">
+<object type="image/svg+xml" data="MatrCellScrollGeometry.svg" style="pointer-events: none;"></object>
 </div>
  </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="af0f18ef99c280e60940d94cd55143cd1" name="af0f18ef99c280e60940d94cd55143cd1"></a>
@@ -2955,6 +3003,27 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 
 <p>Scale font sizes and line widths according to the zoom factor. </p>
 <p>Is used for displaying/printing/exporting of text/maths </p>
+
+</div>
+</div>
+<a id="ac7ee0047dfce24e56c615a7a159f7bb1" name="ac7ee0047dfce24e56c615a7a159f7bb1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac7ee0047dfce24e56c615a7a159f7bb1">&#9670;&#160;</a></span>ScrollTo()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool MatrCell::ScrollTo </td>
+          <td>(</td>
+          <td class="paramtype">wxPoint&#160;</td>
+          <td class="paramname"><em>position</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Scrolls the matrix, clamped to its scrollable range. </p>
+<p>Repositions the entries at once, so the matrix can be redrawn without a new layout. Returns true if the position actually changed. </p>
 
 </div>
 </div>

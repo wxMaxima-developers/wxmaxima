@@ -9,5 +9,9 @@ var searchData=
   ['varreadevent_6',['VarReadEvent',['../classwxMaxima.html#a4dfc9339e684b4d9a6fe4b5a9e810871',1,'wxMaxima']]],
   ['vehiclestart_7',['vehicleStart',['../structVehicle.html#a6891d3d28853bc3fdd075596dc6de9f8',1,'Vehicle']]],
   ['vehiclestop_8',['vehicleStop',['../structVehicle.html#a4dcbcba43792dcd673a552b14479ab77',1,'Vehicle']]],
-  ['visiblyinvalidcell_9',['VisiblyInvalidCell',['../classVisiblyInvalidCell.html#ac5a17667589fa2a237647f3d0b2ae941',1,'VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group, Configuration *config)'],['../classVisiblyInvalidCell.html#ab87f908b177ea4b2b4a148445c750cf1',1,'VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group, Configuration *config, wxString &amp;&amp;toolTip)']]]
+  ['verticalscrollbarrect_9',['VerticalScrollbarRect',['../classMatrCell.html#ae214290d12b374e648d03124a3c2ec26',1,'MatrCell']]],
+  ['viewportrect_10',['ViewportRect',['../classMatrCell.html#ac7115ee82a7182a8ffbfa1d31624114d',1,'MatrCell']]],
+  ['viewportsize_11',['ViewportSize',['../classMatrCell.html#ad988787ce44564daecef2c2fa84ba612',1,'MatrCell']]],
+  ['visiblescrollbars_12',['VisibleScrollbars',['../classMatrixScrollbars.html#a2390729c3ee186489129a073fe607ec7',1,'MatrixScrollbars']]],
+  ['visiblyinvalidcell_13',['VisiblyInvalidCell',['../classVisiblyInvalidCell.html#ac5a17667589fa2a237647f3d0b2ae941',1,'VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group, Configuration *config)'],['../classVisiblyInvalidCell.html#ab87f908b177ea4b2b4a148445c750cf1',1,'VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group, Configuration *config, wxString &amp;&amp;toolTip)']]]
 ];

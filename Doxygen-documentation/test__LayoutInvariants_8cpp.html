@@ -96,6 +96,10 @@ $(function() {
 <code>#include &quot;cells/MatrCell.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="ProductCell_8h_source.html">cells/ProductCell.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="SetCell_8h_source.html">cells/SetCell.h</a>&quot;</code><br />
+<code>#include &quot;cells/MatrixScrollHost.h&quot;</code><br />
+<code>#include &quot;worksheet/MatrixScrollbars.h&quot;</code><br />
+<code>#include &lt;wx/region.h&gt;</code><br />
+<code>#include &lt;wx/scrolwin.h&gt;</code><br />
 <code>#include &lt;cstdlib&gt;</code><br />
 <code>#include &lt;vector&gt;</code><br />
 <code>#include &lt;catch2/catch.hpp&gt;</code><br />
@@ -111,6 +115,10 @@ Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCellGeometry.html">CellGeometry</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOversizedMatricesMode.html">OversizedMatricesMode</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFakeScrollHost.html">FakeScrollHost</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classScrollModeWithHost.html">ScrollModeWithHost</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTestApp.html">TestApp</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -150,6 +158,18 @@ Functions</h2></td></tr>
 <tr class="memitem:a615f77d6935ccac879dd26d5f7ddd4ff"><td class="memItemLeft" align="right" valign="top"><a id="a615f77d6935ccac879dd26d5f7ddd4ff" name="a615f77d6935ccac879dd26d5f7ddd4ff"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;A matrix too tall for the window leaves out middle rows&quot;)</td></tr>
 <tr class="separator:a615f77d6935ccac879dd26d5f7ddd4ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2309d0127c5e71769fc50a4f4900e5e"><td class="memItemLeft" align="right" valign="top"><a id="ab2309d0127c5e71769fc50a4f4900e5e" name="ab2309d0127c5e71769fc50a4f4900e5e"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;A matrix too large for the window can scroll in a viewport&quot;)</td></tr>
+<tr class="separator:ab2309d0127c5e71769fc50a4f4900e5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8f7e1eb84cdf88bef4e2301ed48190b"><td class="memItemLeft" align="right" valign="top"><a id="ad8f7e1eb84cdf88bef4e2301ed48190b" name="ad8f7e1eb84cdf88bef4e2301ed48190b"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;An oversized matrix nested in another one&quot;)</td></tr>
+<tr class="separator:ad8f7e1eb84cdf88bef4e2301ed48190b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e764b3bf47f327f01fe309e90601153"><td class="memItemLeft" align="right" valign="top"><a id="a8e764b3bf47f327f01fe309e90601153" name="a8e764b3bf47f327f01fe309e90601153"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;Without a scrollbar host, scroll mode elides instead&quot;)</td></tr>
+<tr class="separator:a8e764b3bf47f327f01fe309e90601153"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa05e517d69917b03b31a027ef44511a9"><td class="memItemLeft" align="right" valign="top"><a id="aa05e517d69917b03b31a027ef44511a9" name="aa05e517d69917b03b31a027ef44511a9"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;The worksheet's matrix scrollbars follow the matrices they belong to&quot;)</td></tr>
+<tr class="separator:aa05e517d69917b03b31a027ef44511a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06df7029011fe181f338255fa9645905"><td class="memItemLeft" align="right" valign="top"><a id="a06df7029011fe181f338255fa9645905" name="a06df7029011fe181f338255fa9645905"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>wxDECLARE_APP</b> (<a class="el" href="classTestApp.html">TestApp</a>)</td></tr>
 <tr class="separator:a06df7029011fe181f338255fa9645905"><td class="memSeparator" colspan="2">&#160;</td></tr>

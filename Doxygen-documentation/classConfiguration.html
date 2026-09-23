@@ -154,6 +154,7 @@ Public Types</h2></td></tr>
 <tr class="separator:a2bb69c733d19083e4fbc552bfa26f297"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adb5fa4e3eacde294a5f23ceca1b9283d"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#adb5fa4e3eacde294a5f23ceca1b9283d">OversizedMatrices</a> { <a class="el" href="classConfiguration.html#adb5fa4e3eacde294a5f23ceca1b9283dac4b292ca33b0a323d3c5096457c19c5a">showInFull</a> = 0
 , <a class="el" href="classConfiguration.html#adb5fa4e3eacde294a5f23ceca1b9283da7414f5aebe77ba706aef391616a0fb18">elide</a> = 1
+, <a class="el" href="classConfiguration.html#adb5fa4e3eacde294a5f23ceca1b9283da089b0cdd8835d09cb1cabf38b3ce9c09">scroll</a> = 2
  }</td></tr>
 <tr class="memdesc:adb5fa4e3eacde294a5f23ceca1b9283d"><td class="mdescLeft">&#160;</td><td class="mdescRight">How to show a matrix too large for the window.  <a href="classConfiguration.html#adb5fa4e3eacde294a5f23ceca1b9283d">More...</a><br /></td></tr>
 <tr class="separator:adb5fa4e3eacde294a5f23ceca1b9283d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -407,6 +408,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetLayoutStrategy</b>
 <tr class="memitem:a395af32cea95de23bf36f39f4de0b7bf"><td class="memItemLeft" align="right" valign="top"><a id="a395af32cea95de23bf36f39f4de0b7bf" name="a395af32cea95de23bf36f39f4de0b7bf"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetOversizedMatrices</b> (<a class="el" href="classConfiguration.html#adb5fa4e3eacde294a5f23ceca1b9283d">OversizedMatrices</a> mode)</td></tr>
 <tr class="separator:a395af32cea95de23bf36f39f4de0b7bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74421be4dc53ee0606c3852c8e81d403"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMatrixScrollHost.html">MatrixScrollHost</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#a74421be4dc53ee0606c3852c8e81d403">GetMatrixScrollHost</a> () const</td></tr>
+<tr class="memdesc:a74421be4dc53ee0606c3852c8e81d403"><td class="mdescLeft">&#160;</td><td class="mdescRight">What gives a scrolling matrix its scrollbars, if anything.  <br /></td></tr>
+<tr class="separator:a74421be4dc53ee0606c3852c8e81d403"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae256b00ca5287c4843a49063e2021226"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#ae256b00ca5287c4843a49063e2021226">SetMatrixScrollHost</a> (<a class="el" href="classMatrixScrollHost.html">MatrixScrollHost</a> *host)</td></tr>
+<tr class="memdesc:ae256b00ca5287c4843a49063e2021226"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the scrollbar host.  <br /></td></tr>
+<tr class="separator:ae256b00ca5287c4843a49063e2021226"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6f59bf8e65be3aca486eae707b0a3b64"><td class="memItemLeft" align="right" valign="top"><a id="a6f59bf8e65be3aca486eae707b0a3b64" name="a6f59bf8e65be3aca486eae707b0a3b64"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetLayoutDeadline</b> (int seconds)</td></tr>
 <tr class="separator:a6f59bf8e65be3aca486eae707b0a3b64"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1545,6 +1552,9 @@ static <a class="el" href="structConfiguration_1_1PerformanceStats.html">Perform
 </td></tr>
 <tr><td class="fieldname"><a id="adb5fa4e3eacde294a5f23ceca1b9283da7414f5aebe77ba706aef391616a0fb18" name="adb5fa4e3eacde294a5f23ceca1b9283da7414f5aebe77ba706aef391616a0fb18"></a>elide&#160;</td><td class="fielddoc"><p>Leave out the middle rows/columns, marking the gap with ⋯ ⋮ ⋱ (the default) </p>
 </td></tr>
+<tr><td class="fieldname"><a id="adb5fa4e3eacde294a5f23ceca1b9283da089b0cdd8835d09cb1cabf38b3ce9c09" name="adb5fa4e3eacde294a5f23ceca1b9283da089b0cdd8835d09cb1cabf38b3ce9c09"></a>scroll&#160;</td><td class="fielddoc"><p>Show a window-sized part of it, with native scrollbars. </p>
+<p>Only where there is a window to put scrollbars in, i.e. only if <a class="el" href="classConfiguration.html#a74421be4dc53ee0606c3852c8e81d403" title="What gives a scrolling matrix its scrollbars, if anything.">GetMatrixScrollHost()</a> is set. Anywhere else &ndash; printing, a context without a worksheet &ndash; a matrix is elided instead. </p>
+</td></tr>
 </table>
 
 </div>
@@ -1794,6 +1804,34 @@ static <a class="el" href="structConfiguration_1_1PerformanceStats.html">Perform
 
 <p>Get the width of worksheet labels [in unscaled pixels]. </p>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000009">Todo:</a></b></dt><dd>Should the font size be regarded here? </dd></dl>
+
+</div>
+</div>
+<a id="a74421be4dc53ee0606c3852c8e81d403" name="a74421be4dc53ee0606c3852c8e81d403"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a74421be4dc53ee0606c3852c8e81d403">&#9670;&#160;</a></span>GetMatrixScrollHost()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classMatrixScrollHost.html">MatrixScrollHost</a> * Configuration::GetMatrixScrollHost </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>What gives a scrolling matrix its scrollbars, if anything. </p>
+<p>Set only on the worksheet's own configuration, by the worksheet. It is deliberately not copied by the copy constructor: a copy is made for printing or exporting, and neither has a window to put scrollbars in. </p>
 
 </div>
 </div>
@@ -2323,6 +2361,35 @@ static <a class="el" href="structConfiguration_1_1PerformanceStats.html">Perform
 
 <p>Set the indentation of GroupCells. </p>
 <p>Normally this parameter is automatically calculated </p>
+
+</div>
+</div>
+<a id="ae256b00ca5287c4843a49063e2021226" name="ae256b00ca5287c4843a49063e2021226"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae256b00ca5287c4843a49063e2021226">&#9670;&#160;</a></span>SetMatrixScrollHost()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Configuration::SetMatrixScrollHost </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classMatrixScrollHost.html">MatrixScrollHost</a> *&#160;</td>
+          <td class="paramname"><em>host</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets the scrollbar host. </p>
+<p>Only the worksheet calls this, as it is constructed and as it is destroyed. It deliberately doesn't force a recalculation, as the other layout-affecting setters do: that would call back into a worksheet that is either not constructed yet or already being torn down. </p>
 
 </div>
 </div>
