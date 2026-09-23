@@ -839,7 +839,7 @@ void Configuration::ReadConfig() {
     config->Read(wxS("oversizedMatrices"), &om);
     // An out-of-range value (a newer wxMaxima's mode, or a hand-edited file)
     // falls back to the default.
-    if (om < 0 || om > static_cast<int>(OversizedMatrices::elide))
+    if (om < 0 || om > static_cast<int>(OversizedMatrices::scroll))
       om = static_cast<int>(OversizedMatrices::elide);
     m_oversizedMatrices = static_cast<OversizedMatrices>(om);
   }

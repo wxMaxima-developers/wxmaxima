@@ -451,6 +451,36 @@ a local TCP socket.
   even when it starts out closed/hidden -- confirmed live in Xvfb, this was
   the specific risk the issue itself called out ("does that still work if
   the sidebar is minimized?").
+- **The worksheet can have child windows now: native scrollbars for matrices
+  too large for the window** (`Configuration::OversizedMatrices::scroll`,
+  `src/worksheet/MatrixScrollbars.{h,cpp}`, `src/cells/MatrixScrollHost.h`).
+  Until this, everything inside the worksheet was drawn by the cells, and
+  code may quietly assume so. The rules that keep it sane:
+  - **Cells never own widgets.** A `MatrCell` only knows its viewport,
+    scroll offset and where its scrollbars belong; it reports each draw to
+    `Configuration::GetMatrixScrollHost()`, which only the worksheet's own
+    configuration has set (the copy constructor deliberately doesn't copy
+    it). Printing and export configurations therefore have no host, and a
+    matrix laid out under one is elided instead -- which is also the right
+    thing for paper.
+  - **No window is created, moved or shown inside the paint handler.**
+    `MatrixDrawn()` only takes note; `EndPaint()` schedules `Sync()` via
+    `CallAfter()`, and every call in `Sync()` is made only if it changes
+    something, because each can trigger a repaint that comes straight back.
+  - **A scrollbar disappears when the place its matrix was drawn at is
+    repainted without the matrix** -- that single rule covers deletion,
+    re-evaluation, folding and hidden output alike, where tracking each
+    explicitly would miss one. Dead cells are caught by `CellPtr`.
+  - **Only the outermost matrix scrolls.** A nested one (flagged once, in
+    `MatrCell::AddNewCell()`, since cells have no parent pointer) is shown in
+    full. Letting both scroll was tried first and looked broken: two stacked
+    pairs of bars for one output, and the inner bars -- windows -- can't be
+    clipped to the outer viewport.
+  - Verified live on GTK only (drag, hide/unhide, re-evaluate, wheel over
+    the matrix, nesting). **The focus behaviour is the untested part on MSW/macOS**:
+    the scrollbars override `AcceptsFocus()` so a click can't leave the arrow
+    keys scrolling the matrix, but whether a native Windows scrollbar honours
+    that on a click wasn't checkable here.
 - **Cursors:** The worksheet has 2 types of Cursor: A standard cursor in an EditorCell or a hCaret between two worksheet cells (`m_hCaretPosition`, the horizontal bar that marks a position *between* group cells, used for inserting and for selecting whole cells). Only one cursor is active at a time.
 - **Key Classes:**
   - `wxMaxima` (`src/wxMaxima.cpp`): The main application class (subclass of `wxMaximaFrame`). Holds most of the program logic -- Maxima process management, parsing incoming XML, menu and toolbar actions, file I/O.

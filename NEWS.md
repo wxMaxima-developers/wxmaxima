@@ -10,6 +10,14 @@
   always include every entry. This is a change of the default: the old
   behaviour is still available as "Show them in full" under Options ->
   Worksheet -> "Matrices too large for the window".
+- The same setting can instead show such a matrix in a window-sized box
+  with its own, native scrollbars, the way a spreadsheet does. Only the
+  matrix scrolls: the mouse wheel still scrolls the worksheet, so a matrix
+  never traps it, and the scrollbars never take the keyboard focus away
+  from the worksheet. A matrix shown this way is printed with its middle
+  rows and columns left out, since paper cannot scroll. A matrix inside
+  another one never gets scrollbars of its own: the outer one scrolls over
+  both.
 
 - The AI chat now scrolls to an answer when it arrives, instead of leaving
   it below the bottom edge of the transcript for anything longer than a line

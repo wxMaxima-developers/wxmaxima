@@ -59,9 +59,29 @@
   The left-out entries are simply not positioned or drawn, and are skipped
   when looking up what is under the mouse.
 
+  **Or scrolling.** Configuration::OversizedMatrices::scroll instead shows a
+  window-sized viewport onto the whole matrix, with a native scrollbar to
+  its right and/or below it. The brackets frame the viewport (m_contentSize)
+  and the scrollbars sit outside them, adding to m_width/m_height; the
+  centre line stays the viewport's, so the matrix still lines up with its
+  label. Every entry is positioned, offset by the scroll position; Draw()
+  clips them to ViewportRect(), and IsEntryShown() keeps the ones outside it
+  out of hit-testing. The cell owns no window: the scrollbars belong to a
+  MatrixScrollHost, which only the worksheet provides, so a matrix laid out
+  anywhere else -- for printing, say -- is elided instead.
+
+  **Nesting.** Only the outermost matrix scrolls: one nested in another
+  (MarkNestedMatrices() flags it as it is added) is shown in full, and the
+  outer one scrolls over all of it. A viewport inside a viewport would mean
+  two sets of scrollbars for one thing, and the inner ones -- real windows --
+  couldn't even be clipped to the outer viewport. Elision does nest: each
+  matrix elides itself to the window, so an outer one can still overshoot by
+  the width of the columns it always keeps.
+
   \image html MatrCellGeometry.svg
   \image html MatrCellVariations.svg
   \image html MatrCellElisionGeometry.svg
+  \image html MatrCellScrollGeometry.svg
 */
 class MatrCell final : public Cell
 {
@@ -92,6 +112,40 @@ public:
   size_t ElidedColumns() const { return m_colElision.count; }
   //! How many rows are left out of the display (0 = none)
   size_t ElidedRows() const { return m_rowElision.count; }
+
+  /*! \name Scrolling (Configuration::OversizedMatrices::scroll)
+
+    A scrolling matrix shows a window-sized viewport onto the whole matrix,
+    with a native scrollbar below it and/or to its right. Everything here is
+    in worksheet (unscrolled) coordinates; the scrollbars themselves belong
+    to the MatrixScrollHost.
+    @{
+  */
+  //! Does this matrix show a horizontal scrollbar?
+  bool HasHorizontalScrollbar() const { return m_hasHorizontalScrollbar; }
+  //! Does this matrix show a vertical scrollbar?
+  bool HasVerticalScrollbar() const { return m_hasVerticalScrollbar; }
+  //! Where the horizontal scrollbar belongs; empty if there is none
+  wxRect HorizontalScrollbarRect() const;
+  //! Where the vertical scrollbar belongs; empty if there is none
+  wxRect VerticalScrollbarRect() const;
+  //! The part of the worksheet the matrix's entries are shown in
+  wxRect ViewportRect() const;
+  //! The size of the whole matrix, as it would be drawn without scrolling
+  wxSize ScrollableSize() const { return m_scrollableSize; }
+  //! The size of the viewport onto it, brackets' margins included
+  wxSize ViewportSize() const { return m_contentSize; }
+  //! How far the matrix is scrolled
+  wxPoint ScrollPosition() const { return m_scroll; }
+  /*! Scrolls the matrix, clamped to its scrollable range
+
+    Repositions the entries at once, so the matrix can be redrawn without a
+    new layout. Returns true if the position actually changed.
+  */
+  bool ScrollTo(wxPoint position);
+  //! Does this matrix sit inside another matrix? Only the outermost one scrolls.
+  bool IsNestedInMatrix() const { return m_nestedInMatrix; }
+  /*! @} */
 
   void AddNewCell(std::unique_ptr<Cell> &&cell);
 
@@ -166,12 +220,35 @@ private:
   void DrawDots(wxDC *dc, wxPoint start, wxPoint step) const;
   //! Draws the ⋯ ⋮ ⋱ that mark where rows or columns are left out
   void DrawElisionMarks(wxDC *dc) const;
+  //! Is this matrix shown in a scrolling viewport right now?
+  bool IsScrolling() const
+    { return m_hasHorizontalScrollbar || m_hasVerticalScrollbar; }
+  //! Is (any part of) this entry visible, i.e. neither elided nor scrolled out?
+  bool IsEntryShown(size_t row, size_t col) const;
+  //! Clamps m_scroll to what m_scrollableSize and m_contentSize allow
+  void ClampScrollPosition() const;
+  //! Flags every matrix in this list, and anywhere inside it, as nested
+  static void MarkNestedMatrices(Cell *list);
 
   //! Collection of pointers to inner cells.
   std::vector<std::unique_ptr<Cell>> m_cells;
 
   mutable std::vector<wxCoord> m_widths;
   mutable std::vector<DropCenter> m_dropCenters;
+
+  /*! The size of the box between the brackets, margins included
+
+    The whole matrix when it is shown in full, what is left of it when it is
+    elided, and the viewport when it scrolls. m_width and m_height add the
+    scrollbars, if there are any, to the right of and below this.
+  */
+  mutable wxSize m_contentSize;
+  //! The size of the whole matrix, as it would be drawn without scrolling
+  mutable wxSize m_scrollableSize;
+  //! How far the viewport is scrolled into the matrix; kept across layouts
+  mutable wxPoint m_scroll;
+  //! How thick the scrollbars are, as the MatrixScrollHost said at layout
+  mutable wxCoord m_scrollbarThickness = 0;
 
   //! The columns left out of the display, if any
   mutable Elision m_colElision;
@@ -196,6 +273,10 @@ private:
   bool m_inferenceMatrix : 1 = false;
   bool m_rowNames : 1 = false;
   bool m_colNames : 1 = false;
+  //! Does this matrix sit inside another one? See MarkNestedMatrices().
+  bool m_nestedInMatrix : 1 = false;
+  mutable bool m_hasHorizontalScrollbar : 1 = false;
+  mutable bool m_hasVerticalScrollbar : 1 = false;
 };
 
 #endif // MATRCELL_H

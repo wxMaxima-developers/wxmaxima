@@ -60,6 +60,7 @@
 #include "WorksheetDocumentView.h"
 #include "WorksheetSearch.h"
 #include "WorksheetLayout.h"
+#include "MatrixScrollbars.h"
 #include "cells/TextCell.h"
 #include "EvaluationQueue.h"
 #include "dialogs/FindReplaceDialog.h"
@@ -654,7 +655,15 @@ private:
     this window only through the WorksheetView interface. See WorksheetLayout.
   */
   WorksheetLayout m_layout;
+  /*! The native scrollbars of matrices shown in a scrolling viewport
+
+    Installed as this worksheet's configuration's MatrixScrollHost; see
+    MatrixScrollbars.
+  */
+  MatrixScrollbars m_matrixScrollbars{this};
 public:
+  //! The native scrollbars of matrices shown in a scrolling viewport
+  MatrixScrollbars &GetMatrixScrollbars() { return m_matrixScrollbars; }
   void FocusFindDialogue()
     {
       if(FindReplacePane *pane = GetActiveFindPane())

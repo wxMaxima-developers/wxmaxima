@@ -253,6 +253,9 @@ Worksheet::Worksheet(wxWindow *parent, int id,
   Bind(wxEVT_MOUSE_CAPTURE_LOST, &Worksheet::OnMouseCaptureLost, this);
   if(reactToEvents)
     {
+      // Only a worksheet that is really interacted with gets scrolling
+      // matrices; a sample worksheet (the style preview) shows them elided.
+      m_configuration->SetMatrixScrollHost(&m_matrixScrollbars);
       Bind(wxEVT_LEFT_UP, &Worksheet::OnMouseLeftUp, this);
       Bind(wxEVT_LEFT_DOWN, &Worksheet::OnMouseLeftDown, this);
       Bind(wxEVT_RIGHT_DOWN, &Worksheet::OnMouseRightDown, this);
@@ -537,6 +540,9 @@ Worksheet::~Worksheet() {
   m_configuration->SetRecalculateRequestCallback({});
   m_configuration->SetRecalculateAllRequestCallback({});
   m_configuration->SetAdjustWorksheetSizeRequestCallback({});
+  // Nor may they ask it for scrollbars.
+  if (m_configuration->GetMatrixScrollHost() == &m_matrixScrollbars)
+    m_configuration->SetMatrixScrollHost(nullptr);
   TreeUndo_ClearRedoActionList();
   TreeUndo_ClearUndoActionList();
 
@@ -644,6 +650,8 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
     m_configuration->SetVisibleRegion(visibleRegion);
     m_configuration->SetWorksheetPosition(GetPosition());
 
+    // Matrices that scroll report in as they are drawn; see MatrixScrollbars.
+    m_matrixScrollbars.BeginPaint();
     for (wxRegionIterator regionPart(GetUpdateRegion()); regionPart; ++regionPart) {
       const wxRect partRect = regionPart.GetRect();
       if ((partRect.GetWidth() < 1) || (partRect.GetHeight() < 1))
@@ -743,6 +751,7 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
         }
       }
     } // end of the update-region-part loop
+    m_matrixScrollbars.EndPaint(GetUpdateRegion());
 
     // Track the viewport for the image-cache eviction check above.
     m_lastTop = upperLeftScreenCorner.y;
