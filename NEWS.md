@@ -1,5 +1,13 @@
 # Current development version
 
+- DeepSeek and OpenRouter are now built-in AI Chat providers. Both need
+  only an API key, pasted into Options -> AI Chat, and each has a link there
+  to where that key is made. OpenRouter passes a request on to one of many
+  other providers' models, chosen by name ("anthropic/claude-sonnet-5",
+  ...), or picks one itself with the preset "openrouter/auto"; DeepSeek
+  starts with its general "deepseek-chat" model, and its "deepseek-reasoner"
+  can be picked instead, in which case the chat shows its answer, not its
+  reasoning.
 - A matrix too large for the window no longer widens the whole worksheet.
   Instead its middle rows and columns are left out and the gap is marked
   with ⋯ ⋮ ⋱, the way a large matrix is written by hand: the first and last

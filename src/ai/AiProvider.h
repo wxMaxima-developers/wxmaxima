@@ -64,8 +64,12 @@ struct AiChatMessage {
 //! account being flagged under GitHub's Copilot terms), so it was not
 //! implemented here -- see the "GitHub Models" follow-up in AGENTS.md's AI
 //! chat sidebar entry for the full reasoning.
+//! DeepSeek and OpenRouter are both plain OpenAI-compatible APIs with a
+//! pasted key; OpenRouter is itself a router in front of many other
+//! providers' models, picked by a "<publisher>/<model>" name.
 enum class AiProviderKind {
-  None = 0, Anthropic = 1, OpenAI = 2, Google = 3, Qwen = 4, Custom = 5, GitHubModels = 6
+  None = 0, Anthropic = 1, OpenAI = 2, Google = 3, Qwen = 4, Custom = 5, GitHubModels = 6,
+  DeepSeek = 7, OpenRouter = 8
 };
 
 //! Which request/response wire format a provider uses. The four built-in

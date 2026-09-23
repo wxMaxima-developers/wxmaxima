@@ -130,6 +130,8 @@ Configuration::Configuration(const Configuration &o) :
   m_aiModelGoogle(o.m_aiModelGoogle),
   m_aiModelQwen(o.m_aiModelQwen),
   m_aiModelGitHubModels(o.m_aiModelGitHubModels),
+  m_aiModelDeepSeek(o.m_aiModelDeepSeek),
+  m_aiModelOpenRouter(o.m_aiModelOpenRouter),
   m_aiCustomProvidersJson(o.m_aiCustomProvidersJson),
   m_aiActiveCustomProviderId(o.m_aiActiveCustomProviderId),
   m_displayedDigits(o.m_displayedDigits),
@@ -337,6 +339,8 @@ void Configuration::ResetAllToDefaults() {
   m_aiModelGoogle = AiProviderDefaultModel(AiProviderKind::Google);
   m_aiModelQwen = AiProviderDefaultModel(AiProviderKind::Qwen);
   m_aiModelGitHubModels = AiProviderDefaultModel(AiProviderKind::GitHubModels);
+  m_aiModelDeepSeek = AiProviderDefaultModel(AiProviderKind::DeepSeek);
+  m_aiModelOpenRouter = AiProviderDefaultModel(AiProviderKind::OpenRouter);
 #endif
   m_fixReorderedIndices = true;
   m_rightToLeftDocument = false;
@@ -943,6 +947,22 @@ void Configuration::AiApiKeyGitHubModels(const wxString &key) {
   AiProvider::SaveApiKey(
     AiProvider::BuiltinProviderSecretService(AiProviderKind::GitHubModels), key);
 }
+wxString Configuration::AiApiKeyDeepSeek() const {
+  return AiProvider::LoadApiKey(
+    AiProvider::BuiltinProviderSecretService(AiProviderKind::DeepSeek));
+}
+void Configuration::AiApiKeyDeepSeek(const wxString &key) {
+  AiProvider::SaveApiKey(
+    AiProvider::BuiltinProviderSecretService(AiProviderKind::DeepSeek), key);
+}
+wxString Configuration::AiApiKeyOpenRouter() const {
+  return AiProvider::LoadApiKey(
+    AiProvider::BuiltinProviderSecretService(AiProviderKind::OpenRouter));
+}
+void Configuration::AiApiKeyOpenRouter(const wxString &key) {
+  AiProvider::SaveApiKey(
+    AiProvider::BuiltinProviderSecretService(AiProviderKind::OpenRouter), key);
+}
 #endif
 
 //TODO: Don't underline the section number of titles
@@ -1398,6 +1418,8 @@ Configuration::ScalarConfigSettings() {
     {wxS("aiModelGoogle"), &Configuration::m_aiModelGoogle},
     {wxS("aiModelQwen"), &Configuration::m_aiModelQwen},
     {wxS("aiModelGitHubModels"), &Configuration::m_aiModelGitHubModels},
+    {wxS("aiModelDeepSeek"), &Configuration::m_aiModelDeepSeek},
+    {wxS("aiModelOpenRouter"), &Configuration::m_aiModelOpenRouter},
     {wxS("aiCustomProviders"), &Configuration::m_aiCustomProvidersJson},
     {wxS("aiActiveCustomProvider"), &Configuration::m_aiActiveCustomProviderId},
     {wxS("numpadEnterEvaluates"), &Configuration::m_numpadEnterEvaluates},

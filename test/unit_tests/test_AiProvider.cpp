@@ -193,6 +193,71 @@ SCENARIO("GitHub Models -- GitHub's own official, OpenAI-compatible model API") 
   }
 }
 
+SCENARIO("DeepSeek and OpenRouter -- OpenAI-compatible, each at its own URL") {
+  struct Expected {
+    AiProviderKind kind;
+    const wxChar *url;
+    const wxChar *modelsUrl;
+    const wxChar *defaultModel;
+  };
+  const Expected providers[] = {
+    {AiProviderKind::DeepSeek, wxS("https://api.deepseek.com/chat/completions"),
+     wxS("https://api.deepseek.com/models"), wxS("deepseek-chat")},
+    {AiProviderKind::OpenRouter, wxS("https://openrouter.ai/api/v1/chat/completions"),
+     wxS("https://openrouter.ai/api/v1/models"), wxS("openrouter/auto")}};
+
+  // Plain CHECKs rather than THEN sections: Catch2 identifies a section by
+  // its source location, so sections inside a loop would run for only the
+  // first provider and silently skip the rest.
+  for (const auto &expected : providers) {
+    auto provider = MakeAiProvider(expected.kind, wxS("sk-test"),
+                                   AiProviderDefaultModel(expected.kind));
+    REQUIRE(provider);
+    INFO("provider " << AiProviderKindName(expected.kind).ToStdString());
+
+    // A built-in with a name, a key page and a model page
+    CHECK(provider->Kind() == expected.kind);
+    CHECK(provider->Name() == AiProviderKindName(expected.kind));
+    CHECK(AiProviderApiKeyUrl(expected.kind).StartsWith(wxS("https://")));
+    CHECK(AiProviderModelListUrl(expected.kind).StartsWith(wxS("https://")));
+    CHECK(AiProviderDefaultModel(expected.kind) == expected.defaultModel);
+
+    // Sends to that provider's documented chat endpoint, with a Bearer key
+    CHECK(provider->RequestUrl() == expected.url);
+    CHECK(AiProviderBaseUrl(expected.kind) == expected.url);
+    auto headers = provider->AuthHeaders();
+    REQUIRE(headers.size() == 1);
+    CHECK(headers[0].first == wxS("Authorization"));
+    CHECK(headers[0].second == wxS("Bearer sk-test"));
+
+    // Lists models from that provider's documented models endpoint
+    CHECK(provider->ModelsRequestUrl() == expected.modelsUrl);
+
+    // Its request and reply are OpenAI-shaped
+    wxString body = provider->BuildRequestBody(wxS("worksheet context"),
+                                               OneUserTurn(wxS("Hello")));
+    json parsed = json::parse(std::string(body.ToUTF8()));
+    CHECK(parsed.at("model") == std::string(wxString(expected.defaultModel).ToUTF8()));
+    REQUIRE(parsed.at("messages").size() == 2);
+    CHECK(parsed.at("messages")[0].at("role") == "system");
+    CHECK(provider->ParseReply(
+            wxS(R"({"choices":[{"message":{"content":"ok"}}]})")) == wxS("ok"));
+  }
+
+  GIVEN("a reply from DeepSeek's reasoning model") {
+    // deepseek-reasoner returns its chain of thought in a separate
+    // reasoning_content field next to the answer. The chat shows the answer.
+    auto provider = MakeAiProvider(AiProviderKind::DeepSeek, wxS("sk-test"),
+                                   wxS("deepseek-reasoner"));
+    THEN("only the answer is shown, not the reasoning") {
+      CHECK(provider->ParseReply(wxS(
+              R"({"choices":[{"message":{"role":"assistant",)"
+              R"("reasoning_content":"Let me think...","content":"42"}}]})")) ==
+            wxS("42"));
+    }
+  }
+}
+
 SCENARIO("Google Gemini's generateContent shape") {
   auto provider = MakeAiProvider(AiProviderKind::Google, wxS("goog-key"),
                                  wxS("gemini-1.5-flash"));
@@ -522,7 +587,8 @@ SCENARIO("AiProviderRequestUrlProblem() rejects what actually gets typed") {
   THEN("every built-in provider's own base URL passes it too") {
     for (auto kind : {AiProviderKind::Anthropic, AiProviderKind::OpenAI,
                       AiProviderKind::Google, AiProviderKind::Qwen,
-                      AiProviderKind::GitHubModels})
+                      AiProviderKind::GitHubModels, AiProviderKind::DeepSeek,
+                      AiProviderKind::OpenRouter})
       CHECK(AiProviderRequestUrlProblem(AiProviderBaseUrl(kind)).IsEmpty());
   }
 }

@@ -1475,6 +1475,35 @@ and not a natural next step.
       the monitor sidebar's real traffic display) -- worth doing before
       extending this further.
 
+  - **Follow-up (2026-09-23): DeepSeek (`= 7`) and OpenRouter (`= 8`) as
+    built-in kinds**, requested by the maintainer. Both are plain
+    OpenAI-compatible APIs with a Bearer key, so like GitHub Models they
+    needed no provider class -- only the per-kind tables in
+    `AiProvider.cpp`, the `Configuration` key/model accessors plus their two
+    scalar-table entries, and the three switches the GitHub Models entry
+    names (`ConfigDialogue.cpp` twice, `AiChatSidebar.cpp` once). Their
+    `MakeAiProvider()` case takes its URL from `AiProviderBaseUrl()` instead
+    of writing the constant a second time, which is how the model defaults
+    once drifted. Defaults: `deepseek-chat` (DeepSeek's rolling alias) and
+    `openrouter/auto` (OpenRouter's router; names no model, so cannot go
+    stale). `ModelsRequestUrl()`'s `chat/completions` -> `models` derivation
+    lands on both services' documented list endpoints unchanged.
+    `deepseek-reasoner` replies carry a `reasoning_content` field next to
+    `content`; `ParseReply()` already reads only `content`, and a test pins
+    that the chat shows the answer, not the reasoning. OpenRouter's optional
+    attribution headers (`HTTP-Referer`, `X-Title`) are deliberately not
+    sent: they only feed OpenRouter's public app rankings. Not verified live
+    (no keys, and `wxUSE_SECRETSTORE` is 0 here).
+    **A test trap hit while writing this, worth knowing for any loop over
+    providers:** a Catch2 `THEN`/`SECTION` with a *constant* name inside a
+    `for` loop runs for the **first element only** -- Catch identifies a
+    section by name and source line, so every later iteration meets an
+    already-completed section and skips it. Confirmed with a standalone
+    Catch2 program (one assertion ran out of three), and here the loop over
+    DeepSeek and OpenRouter silently checked DeepSeek alone until it was
+    rewritten as plain `CHECK`s (250 -> 257 assertions). A section name
+    built from the loop variable avoids it; a constant name never does.
+
 ## Sidebar visibility tools (the third, fourth and fifth writes)
 
 - **`list_sidebars`/`show_sidebar`/`hide_sidebar` (2026-09-21)** -- requested
