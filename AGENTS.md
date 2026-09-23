@@ -476,6 +476,22 @@ a local TCP socket.
     full. Letting both scroll was tried first and looked broken: two stacked
     pairs of bars for one output, and the inner bars -- windows -- can't be
     clipped to the outer viewport.
+  - **That rule makes every paint-time cull load-bearing.** A repaint that
+    covers a matrix but skips drawing it reads as "the matrix is gone", so
+    its scrollbars hide, the hide repaints it, they show again -- a blink
+    loop that also breaks dragging. The first case found: an output line
+    starts `GetLineIndent()` right of its `GroupCell`, but the group's width
+    and `m_outputRect` were computed without that indent, so a repaint of
+    just the vertical scrollbar's strip (Wayland repaints the parent under a
+    hovered child) fell outside the group and never reached the matrix.
+    Fixed by `GroupCell::DrawThisCell()` also accepting `m_outputRect`, which
+    `UpdateOutputPositions()` now widens to where the lines really end.
+    **Not** by adding the indent to the group's `m_width`: that feeds the
+    worksheet's scroll extent and gave every oversized matrix a stray
+    horizontal worksheet scrollbar. Reproducible here with a nested weston
+    (`weston --backend=x11` inside Xvfb, `GDK_BACKEND=wayland`, xdotool
+    driving the pointer) and a matrix needing both scrollbars; plain X11
+    never repaints the parent on hover and hides it.
   - Verified live on GTK only (drag, hide/unhide, re-evaluate, wheel over
     the matrix, nesting). **The focus behaviour is the untested part on MSW/macOS**:
     the scrollbars override `AcceptsFocus()` so a click can't leave the arrow

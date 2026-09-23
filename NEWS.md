@@ -1,5 +1,12 @@
 # Current development version
 
+- The vertical scrollbar of a matrix too large for the window no longer
+  blinks when the pointer is over it, and can be dragged again. The matrix
+  starts to the right of its group cell, behind the width of the label
+  column, so the cell did not reach as far right as the scrollbar; a repaint
+  of just the scrollbar (which moving the pointer onto it causes, on
+  Wayland at least) then skipped the matrix, and a matrix that isn't drawn
+  where it was is taken to be gone, scrollbars and all.
 - DeepSeek and OpenRouter are now built-in AI Chat providers. Both need
   only an API key, pasted into Options -> AI Chat, and each has a link there
   to where that key is made. OpenRouter passes a request on to one of many

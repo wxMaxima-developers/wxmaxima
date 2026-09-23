@@ -1078,6 +1078,43 @@ SCENARIO("The worksheet's matrix scrollbars follow the matrices they belong to")
   frame->Destroy();
 }
 
+SCENARIO("A repaint of just a scrolling matrix's vertical scrollbar still draws it") {
+  // The matrix's line starts GetLineIndent() to the right of its group cell,
+  // so its right end -- where the vertical scrollbar sits -- lies beyond the
+  // group's own GetRect(). Hovering over the scrollbar repaints just its
+  // strip (seen on Wayland), and if that repaint skips the group, the matrix
+  // counts as gone: its scrollbars were hidden, which repainted it, which
+  // showed them again -- they blinked, and could not be dragged.
+  g_cfg->SetZoomFactor(1.0);
+  g_cfg->SetCanvasSize(wxSize(600, 300));
+  FakeScrollHost host;
+  ScrollModeWithHost scrollMode(&host);
+  std::unique_ptr<GroupCell> group;
+  MatrCell *matr = LayOutMatrix(group, 60, 40);
+  REQUIRE(matr->HasVerticalScrollbar());
+  const wxRect scrollbar = matr->VerticalScrollbarRect();
+  REQUIRE(matr->GetLineIndent() > 0);
+
+  THEN("the group's output area reaches the matrix's right end") {
+    CHECK(group->GetOutputRect().GetRight() >= matr->GetRect().GetRight());
+  }
+  WHEN("only the scrollbar's strip is repainted") {
+    const wxRect oldRegion = g_cfg->GetUpdateRegion();
+    const bool oldClip = g_cfg->ClipToDrawRegion();
+    g_cfg->ClipToDrawRegion(true);
+    g_cfg->SetUpdateRegion(scrollbar);
+    THEN("it lies outside the group's own rect") {
+      CHECK_FALSE(group->Cell::DrawThisCell());
+    }
+    THEN("the group is drawn all the same, and with it the matrix") {
+      CHECK(group->DrawThisCell());
+      CHECK(matr->DrawThisCell());
+    }
+    g_cfg->SetUpdateRegion(oldRegion);
+    g_cfg->ClipToDrawRegion(oldClip);
+  }
+}
+
 // Draws the matrix onto a white bitmap through a real graphics context, the
 // way the worksheet does, and returns the colour just above the given entry:
 // inside that entry's row band, but in the gap between two rows of text, so
