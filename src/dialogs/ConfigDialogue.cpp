@@ -2138,7 +2138,7 @@ wxWindow *ConfigDialogue::CreateAiChatPanel() {
   // Both counts are fixed here, so this sizer hard-caps at rows*cols items
   // and asserts on the overflow -- adding a row means bumping this 5 in the
   // same edit.
-  wxFlexGridSizer *grid = new wxFlexGridSizer(5, 2, 5, 5);
+  wxFlexGridSizer *grid = new wxFlexGridSizer(15, 2, 5, 5);
   grid->AddGrowableCol(1);
 
   m_aiShapeLabel = new wxStaticText(detailBoxWin, wxID_ANY, _("API style:"));
