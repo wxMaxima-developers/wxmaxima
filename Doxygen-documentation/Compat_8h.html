@@ -128,7 +128,7 @@ template&lt;typename R , typename T &gt; </td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Small compatibility shims for older toolchains and older wxWidgets. </p>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> targets C++20 but aims to keep building on toolchains a few years behind. This header provides minimal fall-backs for std features that may be missing there: std::jthread / std::stop_token / std::stop_source, and std::ranges::contains. These were historically carried in Version.h; they live here now because they have nothing to do with the version and are CMake-independent (so this header is a plain committed file, not generated).</p>
-<p>It also carries the same kind of fall-back for wxWidgets macros that only exist in newer wxWidgets than the 3.0.5 we still support - currently wxWARN_UNUSED, see its documentation at the bottom of this file. </p>
+<p>It also carries the same kind of fall-back for wxWidgets macros that only exist in newer wxWidgets than the oldest one we support - currently wxWARN_UNUSED, see its documentation at the bottom of this file. </p>
 </div><h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a775a1bc6745b428c6748d09b3ea7d639" name="a775a1bc6745b428c6748d09b3ea7d639"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a775a1bc6745b428c6748d09b3ea7d639">&#9670;&#160;</a></span>wxWARN_UNUSED</h2>
