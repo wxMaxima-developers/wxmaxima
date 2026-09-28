@@ -44,6 +44,7 @@
 #include "dialogs/ResolutionChooser.h"
 #include "dialogs/MatrixViewer.h"
 #include "cells/MatrCell.h"
+#include <wx/numformatter.h>
 #include "graphical_io/SVGout.h"
 #include "Version.h"
 #include "Compat.h"
@@ -1997,6 +1998,44 @@ wxString Worksheet::ConvertSelectionToMathML() const {
     }
   }
   return s;
+}
+
+bool Worksheet::CanCopyCSV() const {
+  if (GetActiveCell())
+    return false;
+  const auto &start = GetDocumentCellPointers().GetSelectionStart();
+  return start && (start == GetDocumentCellPointers().GetSelectionEnd()) &&
+    start.CastAs<MatrCell *>();
+}
+
+wxString Worksheet::CSVDelimiter() {
+  if (wxNumberFormatter::GetDecimalSeparator() == wxS(','))
+    return wxS("\t");
+  return wxS(",");
+}
+
+wxString Worksheet::SelectionToCSV() const {
+  if (!CanCopyCSV())
+    return {};
+  if (auto block = CopySelectedMatrixBlock())
+    return block->ToCSV(CSVDelimiter());
+  return GetDocumentCellPointers().GetSelectionStart().CastAs<MatrCell *>()
+    ->ToCSV(CSVDelimiter());
+}
+
+bool Worksheet::CopyCSV() const {
+  const wxString csv = SelectionToCSV();
+  if (csv.IsEmpty())
+    return false;
+
+  wxASSERT_MSG(!wxTheClipboard->IsOpened(),
+               _("Bug: The clipboard is already opened"));
+  if (wxTheClipboard->Open()) {
+    wxTheClipboard->SetData(new wxTextDataObject(csv));
+    wxTheClipboard->Close();
+    return true;
+  }
+  return false;
 }
 
 bool Worksheet::CanCopyAsMathML() const {

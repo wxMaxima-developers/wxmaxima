@@ -4,6 +4,10 @@
   that block of entries instead of the whole matrix, and highlights it. Every
   "Copy ..." command -- Copy, plain text, LaTeX, Octave/Matlab, MathML, RTF,
   image and SVG -- then copies only that sub-matrix (#2345).
+- A matrix, or a block of one, can be copied as CSV from the right-click
+  menu, to paste it into a spreadsheet: one line per row, the values
+  separated by commas, or by tabs where numbers are written with a decimal
+  comma (#2364).
 - `wx_matrix()` now only returns the formatted matrix instead of also
   displaying it, so `wx_matrix(M);` shows the matrix once, not twice, and
   `wx_matrix(M)$` doesn't show it at all. The formatting stays with that

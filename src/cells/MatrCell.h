@@ -200,6 +200,15 @@ public:
 
   wxString ToMathML() const override;
   wxString ToMatlab() const override;
+  /*! The matrix as comma- (or tab-, ...) separated values (GH #2364)
+
+    One line per row, entries separated by delimiter, each entry being what
+    ToString() would give for it. An entry that contains the delimiter, a
+    double quote or a line break is quoted as RFC 4180 says: wrapped in
+    double quotes, with every double quote inside it doubled. Heading rows
+    and columns are ordinary rows and columns here.
+  */
+  wxString ToCSV(const wxString &delimiter) const;
   wxString ToOMML() const override;
   wxString ToString() const override;
   wxString ToTeX() const override;

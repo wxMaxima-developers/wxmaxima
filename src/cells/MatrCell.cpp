@@ -848,6 +848,28 @@ wxString MatrCell::ToMatlab() const {
   return s;
 }
 
+wxString MatrCell::ToCSV(const wxString &delimiter) const {
+  wxString s;
+  for (size_t row = 0; row < m_matHeight; row++) {
+    for (size_t col = 0; col < m_matWidth; col++) {
+      if (col > 0)
+        s += delimiter;
+      if ((row * m_matWidth + col) >= m_cells.size())
+        continue;
+      wxString entry =
+        GetInnerCell(static_cast<int>(row), static_cast<int>(col))->ListToString();
+      if (entry.Contains(delimiter) || entry.Contains(wxS("\"")) ||
+          entry.Contains(wxS("\n")) || entry.Contains(wxS("\r"))) {
+        entry.Replace(wxS("\""), wxS("\"\""));
+        entry = wxS("\"") + entry + wxS("\"");
+      }
+      s += entry;
+    }
+    s += wxS("\n");
+  }
+  return s;
+}
+
 wxString MatrCell::ToTeX() const {
   // ToDo: We ignore colNames and rowNames here. Are they currently in use?
   wxString s;
