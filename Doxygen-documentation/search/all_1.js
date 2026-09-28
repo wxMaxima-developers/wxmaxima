@@ -61,7 +61,7 @@ var searchData=
   ['aiapikeygithubmodels_58',['AiApiKeyGitHubModels',['../classConfiguration.html#a69b47e1cae145c13c667d099e304e9ce',1,'Configuration']]],
   ['aichatmessage_59',['AiChatMessage',['../structAiChatMessage.html',1,'']]],
   ['aichatprovider_60',['AiChatProvider',['../classConfiguration.html#adcf5ccf815501a086738b0888693ddf7',1,'Configuration']]],
-  ['aichatsidebar_61',['AiChatSidebar',['../classAiChatSidebar.html#a3bc3fdba25123b0687d5b69e68fd1599',1,'AiChatSidebar::AiChatSidebar()'],['../classAiChatSidebar.html',1,'AiChatSidebar']]],
+  ['aichatsidebar_61',['AiChatSidebar',['../classAiChatSidebar.html#a3c7e05841052a48dfe48d83c9998d54d',1,'AiChatSidebar::AiChatSidebar()'],['../classAiChatSidebar.html',1,'AiChatSidebar']]],
   ['aiconnectionmonitor_62',['AiConnectionMonitor',['../classAiConnectionMonitor.html',1,'']]],
   ['aiconnectionmonitor_2ecpp_63',['AiConnectionMonitor.cpp',['../AiConnectionMonitor_8cpp.html',1,'']]],
   ['aicustomproviderconfig_64',['AiCustomProviderConfig',['../structAiCustomProviderConfig.html',1,'']]],

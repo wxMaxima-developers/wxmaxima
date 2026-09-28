@@ -12,7 +12,7 @@ var searchData=
   ['insertcells_9',['InsertCells',['../classWorksheetDocument.html#a5a7df2e2a0c3062f8b87a200df0ed3ae',1,'WorksheetDocument']]],
   ['insertcharfromrow_10',['InsertCharFromRow',['../classUnicodeSidebar.html#aaf37fd54ee55463ee79f738743fbbebe',1,'UnicodeSidebar']]],
   ['insertesccommand_11',['InsertEscCommand',['../classEditorCell.html#ac9984be73e5333aa331a2d556a63dfc5',1,'EditorCell']]],
-  ['insertgroupcells_12',['InsertGroupCells',['../classWorksheet.html#a6ad45fa9b11048ff373bca4d85a0efc9',1,'Worksheet::InsertGroupCells(std::unique_ptr&lt; GroupCell &gt; &amp;&amp;cells, GroupCell *where, UndoActions *undoBuffer)'],['../classWorksheet.html#abc17f15d6bc5321d54764ea7e288446a',1,'Worksheet::InsertGroupCells(std::unique_ptr&lt; GroupCell &gt; &amp;&amp;cells, GroupCell *where=NULL)']]],
+  ['insertgroupcells_12',['InsertGroupCells',['../classWorksheet.html#a6ad45fa9b11048ff373bca4d85a0efc9',1,'Worksheet::InsertGroupCells(std::unique_ptr&lt; GroupCell &gt; &amp;&amp;cells, GroupCell *where, UndoActions *undoBuffer)'],['../classWorksheet.html#a645b031cb5b5997cf4bca884912939fa',1,'Worksheet::InsertGroupCells(std::unique_ptr&lt; GroupCell &gt; &amp;&amp;cells, GroupCell *where=nullptr)']]],
   ['insertline_13',['InsertLine',['../classWorksheet.html#a723960d4c1221d561d35dbcb88f90383',1,'Worksheet']]],
   ['insertmenu_14',['InsertMenu',['../classVariablespane.html#a866fd3c0764feb178ade7369ae486e74',1,'Variablespane']]],
   ['intcell_15',['IntCell',['../classIntCell.html#a31f3b0ffece4415ddd084e21890b25a8',1,'IntCell']]],

@@ -46,7 +46,7 @@ var searchData=
   ['aiapikeyanthropic_43',['AiApiKeyAnthropic',['../classConfiguration.html#af0536a35baa199414549091c19c2f009',1,'Configuration']]],
   ['aiapikeygithubmodels_44',['AiApiKeyGitHubModels',['../classConfiguration.html#a69b47e1cae145c13c667d099e304e9ce',1,'Configuration']]],
   ['aichatprovider_45',['AiChatProvider',['../classConfiguration.html#adcf5ccf815501a086738b0888693ddf7',1,'Configuration']]],
-  ['aichatsidebar_46',['AiChatSidebar',['../classAiChatSidebar.html#a3bc3fdba25123b0687d5b69e68fd1599',1,'AiChatSidebar']]],
+  ['aichatsidebar_46',['AiChatSidebar',['../classAiChatSidebar.html#a3c7e05841052a48dfe48d83c9998d54d',1,'AiChatSidebar']]],
   ['aicustomprovidersjson_47',['AiCustomProvidersJson',['../classConfiguration.html#ade2c9d05332ac3d51539022893cafe31',1,'Configuration']]],
   ['aiknownlocalserverpresets_48',['AiKnownLocalServerPresets',['../AiProvider_8h.html#a679c8337298a296fe7f2f4c709ead565',1,'AiProvider.cpp']]],
   ['aimodelanthropic_49',['AiModelAnthropic',['../classConfiguration.html#a2ab3a52c59a511ce06026ae05e4dd5af',1,'Configuration']]],

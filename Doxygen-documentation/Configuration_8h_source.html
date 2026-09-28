@@ -256,7 +256,7 @@ $(function() {
 <div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>    {</div>
 <div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>      m_renderContext.<a class="code hl_function" href="classRenderContext.html#a06962d6edd5a0a481a90f33ec1a9d118">SetRecalcDC</a>(&amp;dc);</div>
 <div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>    }</div>
-<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>  <span class="keywordtype">void</span> UnsetContext() {m_renderContext.<a class="code hl_function" href="classRenderContext.html#a06962d6edd5a0a481a90f33ec1a9d118">SetRecalcDC</a>(NULL);}</div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>  <span class="keywordtype">void</span> UnsetContext() {m_renderContext.<a class="code hl_function" href="classRenderContext.html#a06962d6edd5a0a481a90f33ec1a9d118">SetRecalcDC</a>(<span class="keyword">nullptr</span>);}</div>
 <div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span> </div>
 <div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classConfiguration.html#a6e61de4ed9798c7533151bcfdc84860f">SetBackgroundBrush</a>(<span class="keyword">const</span> wxBrush &amp;brush);</div>
 <div class="line"><a id="l00250" name="l00250"></a><span class="lineno"><a class="line" href="classConfiguration.html#a74266b77ad48f7043b4cf3d56ccdf598">  250</a></span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="classConfiguration.html#a74266b77ad48f7043b4cf3d56ccdf598">FixedFontInTextControls</a>()<span class="keyword"> const </span>{<span class="keywordflow">return</span> m_fixedFontTC;}</div>
@@ -1140,9 +1140,9 @@ $(function() {
 <div class="line"><a id="l01537" name="l01537"></a><span class="lineno"> 1537</span>  <span class="keywordtype">bool</span> m_singlePageManual;</div>
 <div class="line"><a id="l01539" name="l01539"></a><span class="lineno"> 1539</span>  <span class="keywordtype">bool</span> m_incrementalSearch;</div>
 <div class="line"><a id="l01541" name="l01541"></a><span class="lineno"> 1541</span>  <span class="keywordtype">long</span> m_autoSubscript;</div>
-<div class="line"><a id="l01543" name="l01543"></a><span class="lineno"> 1543</span>  <a class="code hl_class" href="classwxScrolled.html">wxScrolledCanvas</a> *m_workSheet = NULL;</div>
-<div class="line"><a id="l01545" name="l01545"></a><span class="lineno"> 1545</span>  <a class="code hl_class" href="classDocumentCellPointers.html">DocumentCellPointers</a> *m_documentCellPointers = NULL;</div>
-<div class="line"><a id="l01547" name="l01547"></a><span class="lineno"> 1547</span>  <a class="code hl_class" href="classViewCellPointers.html">ViewCellPointers</a> *m_viewCellPointers = NULL;</div>
+<div class="line"><a id="l01543" name="l01543"></a><span class="lineno"> 1543</span>  <a class="code hl_class" href="classwxScrolled.html">wxScrolledCanvas</a> *m_workSheet = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l01545" name="l01545"></a><span class="lineno"> 1545</span>  <a class="code hl_class" href="classDocumentCellPointers.html">DocumentCellPointers</a> *m_documentCellPointers = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l01547" name="l01547"></a><span class="lineno"> 1547</span>  <a class="code hl_class" href="classViewCellPointers.html">ViewCellPointers</a> *m_viewCellPointers = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a id="l01549" name="l01549"></a><span class="lineno"> 1549</span>  std::function&lt;void(<a class="code hl_class" href="classGroupCell.html">GroupCell</a> *)&gt; m_recalculateRequest;</div>
 <div class="line"><a id="l01551" name="l01551"></a><span class="lineno"> 1551</span>  std::function&lt;void()&gt; m_recalculateAllRequest;</div>
 <div class="line"><a id="l01553" name="l01553"></a><span class="lineno"> 1553</span>  std::function&lt;void()&gt; m_adjustWorksheetSizeRequest;</div>

@@ -204,7 +204,7 @@ const long long&#160;</td><td class="memItemRight" valign="bottom"><b>m_oldSelEn
 
 <p>This action inserted all cells from start to newCellsEnd. </p>
 <p>To undo it these cells have to be deleted again.</p>
-<p>If this field's value is NULL no cells have to be deleted to undo this action.</p>
+<p>If this field's value is nullptr no cells have to be deleted to undo this action.</p>
 <p><a class="el" href="classA.html">A</a> <a class="el" href="classCellPtr.html" title="A weak non-owning pointer that becomes null whenever the observed object is destroyed.">CellPtr</a> for the same reason as m_start: it auto-nulls if the referenced <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a> is destroyed before this action is undone. </p>
 
 </div>
@@ -223,7 +223,7 @@ const long long&#160;</td><td class="memItemRight" valign="bottom"><b>m_oldSelEn
 
 <p>Cells that were deleted in this action. </p>
 <p>This field will have to contain the cells themselves, not a copy of them because the latter might break consecutive undos.</p>
-<p>If this field's value is NULL no cells have to be added to undo this action. </p>
+<p>If this field's value is nullptr no cells have to be added to undo this action. </p>
 
 </div>
 </div>
@@ -291,7 +291,7 @@ const long long&#160;</td><td class="memItemRight" valign="bottom"><b>m_oldSelEn
 </div><div class="memdoc">
 
 <p>The position this action started at. </p>
-<p>NULL = At the begin of the document.</p>
+<p>nullptr = At the begin of the document.</p>
 <p><a class="el" href="classA.html">A</a> <a class="el" href="classCellPtr.html" title="A weak non-owning pointer that becomes null whenever the observed object is destroyed.">CellPtr</a> (not a raw pointer) so that it auto-nulls if the <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a> it refers to is destroyed while this action still sits in the undo/redo list - otherwise invoking the action would dereference freed memory. The consumer code already null-checks this field, so auto-nulling makes those checks correct instead of relying on the freed pointer's stale value. </p>
 
 </div>

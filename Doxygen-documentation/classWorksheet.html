@@ -409,7 +409,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>FocusFindDialogue</b>
 <tr class="separator:aed032abfa84f62277619ca1b9cf18884"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3feb86eace5c325c0f5d73e615171cc0"><td class="memItemLeft" align="right" valign="top"><a id="a3feb86eace5c325c0f5d73e615171cc0" name="a3feb86eace5c325c0f5d73e615171cc0"></a>
 <a class="el" href="classFindReplacePane.html">FindReplacePane</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>GetActiveFindPane</b> () const</td></tr>
-<tr class="memdesc:a3feb86eace5c325c0f5d73e615171cc0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whichever find/replace UI is actually in use right now: the dockable sidebar (GH #2249) if <a class="el" href="classConfiguration.html#a58d2cf11f559e8da4da557937a9e84cc" title="Show &quot;Find and Replace&quot; as a dockable sidebar instead of a floating dialog?">Configuration::FindDialogDockable()</a> is set and it exists, otherwise the floating dialog's own pane, if one is open. Returns NULL if neither is currently available. <br /></td></tr>
+<tr class="memdesc:a3feb86eace5c325c0f5d73e615171cc0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whichever find/replace UI is actually in use right now: the dockable sidebar (GH #2249) if <a class="el" href="classConfiguration.html#a58d2cf11f559e8da4da557937a9e84cc" title="Show &quot;Find and Replace&quot; as a dockable sidebar instead of a floating dialog?">Configuration::FindDialogDockable()</a> is set and it exists, otherwise the floating dialog's own pane, if one is open. Returns nullptr if neither is currently available. <br /></td></tr>
 <tr class="separator:a3feb86eace5c325c0f5d73e615171cc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44e40be6186f325567156871ace4ad6c"><td class="memItemLeft" align="right" valign="top"><a id="a44e40be6186f325567156871ace4ad6c" name="a44e40be6186f325567156871ace4ad6c"></a>
 <a class="el" href="classAutoComplete.html">AutoComplete</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>GetAutocomplete</b> ()</td></tr>
@@ -564,26 +564,26 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_inPopupMenu</b> = f
 <tr class="memdesc:a484337330b21f0736d93fa935f9e0369"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is there an active popup menu? <br /></td></tr>
 <tr class="separator:a484337330b21f0736d93fa935f9e0369"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:addddaa53ec91efeaf93ed6ebebae4c7b"><td class="memItemLeft" align="right" valign="top"><a id="addddaa53ec91efeaf93ed6ebebae4c7b" name="addddaa53ec91efeaf93ed6ebebae4c7b"></a>
-<a class="el" href="classFindReplaceDialog.html">FindReplaceDialog</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_findDialog</b> = NULL</td></tr>
+<a class="el" href="classFindReplaceDialog.html">FindReplaceDialog</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_findDialog</b> = nullptr</td></tr>
 <tr class="memdesc:addddaa53ec91efeaf93ed6ebebae4c7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The find-and-replace-dialog. <br /></td></tr>
 <tr class="separator:addddaa53ec91efeaf93ed6ebebae4c7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1e51bf0150688a29c2512dd500b68e15"><td class="memItemLeft" align="right" valign="top"><a id="a1e51bf0150688a29c2512dd500b68e15" name="a1e51bf0150688a29c2512dd500b68e15"></a>
-<a class="el" href="classFindReplacePane.html">FindReplacePane</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_findPane</b> = NULL</td></tr>
+<a class="el" href="classFindReplacePane.html">FindReplacePane</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_findPane</b> = nullptr</td></tr>
 <tr class="memdesc:a1e51bf0150688a29c2512dd500b68e15"><td class="mdescLeft">&#160;</td><td class="mdescRight">The dockable find-and-replace sidebar (GH #2249), set once by <a class="el" href="classwxMaximaFrame.html" title="The frame containing the menu and the sidebars.">wxMaximaFrame</a> at startup and never destroyed &ndash; unlike m_findDialog, which is created/destroyed on demand. <br /></td></tr>
 <tr class="separator:a1e51bf0150688a29c2512dd500b68e15"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e8f804aed06ee62de5e09ad7be3d6b1"><td class="memItemLeft" align="right" valign="top"><a id="a7e8f804aed06ee62de5e09ad7be3d6b1" name="a7e8f804aed06ee62de5e09ad7be3d6b1"></a>
-<a class="el" href="classToolBar.html">ToolBar</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_mainToolBar</b> = NULL</td></tr>
+<a class="el" href="classToolBar.html">ToolBar</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_mainToolBar</b> = nullptr</td></tr>
 <tr class="memdesc:a7e8f804aed06ee62de5e09ad7be3d6b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The toolbar of the main window: We need to access it and therefore have it defined here. <br /></td></tr>
 <tr class="separator:a7e8f804aed06ee62de5e09ad7be3d6b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abba5bae26979028e72ebd8e81a16e113"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#abba5bae26979028e72ebd8e81a16e113">MarkRefreshAsDone</a> ()</td></tr>
 <tr class="memdesc:abba5bae26979028e72ebd8e81a16e113"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle redrawing the worksheet or of parts of it.  <br /></td></tr>
 <tr class="separator:abba5bae26979028e72ebd8e81a16e113"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad2b226dda3a0d2182adcef198dcabc33"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#ad2b226dda3a0d2182adcef198dcabc33">RedrawIfRequested</a> ()</td></tr>
-<tr class="memdesc:ad2b226dda3a0d2182adcef198dcabc33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Redraw the worksheet if <a class="el" href="classWorksheet.html#ad1d57afe66434741be1ee0e5861d3738" title="Request the worksheet to be redrawn.">RequestRedraw()</a> has been called.  <br /></td></tr>
+<tr class="memdesc:ad2b226dda3a0d2182adcef198dcabc33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Redraw the worksheet if <a class="el" href="classWorksheet.html#a08be1ec0224db3b5672d5ca264620b15" title="Request the worksheet to be redrawn.">RequestRedraw()</a> has been called.  <br /></td></tr>
 <tr class="separator:ad2b226dda3a0d2182adcef198dcabc33"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad1d57afe66434741be1ee0e5861d3738"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#ad1d57afe66434741be1ee0e5861d3738">RequestRedraw</a> (<a class="el" href="classGroupCell.html">GroupCell</a> *start=NULL)</td></tr>
-<tr class="memdesc:ad1d57afe66434741be1ee0e5861d3738"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request the worksheet to be redrawn.  <br /></td></tr>
-<tr class="separator:ad1d57afe66434741be1ee0e5861d3738"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a08be1ec0224db3b5672d5ca264620b15"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a08be1ec0224db3b5672d5ca264620b15">RequestRedraw</a> (<a class="el" href="classGroupCell.html">GroupCell</a> *start=nullptr)</td></tr>
+<tr class="memdesc:a08be1ec0224db3b5672d5ca264620b15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request the worksheet to be redrawn.  <br /></td></tr>
+<tr class="separator:a08be1ec0224db3b5672d5ca264620b15"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af9dad24c6f633dd774c5ca28824e5d64"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#af9dad24c6f633dd774c5ca28824e5d64">RequestRedraw</a> (wxRect rect)</td></tr>
 <tr class="memdesc:af9dad24c6f633dd774c5ca28824e5d64"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request a part of the worksheet to be redrawn.  <br /></td></tr>
 <tr class="separator:af9dad24c6f633dd774c5ca28824e5d64"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -669,9 +669,9 @@ std::unique_ptr&lt; <a class="el" href="classGroupCell.html">GroupCell</a> &gt;&
 <tr class="memitem:a6ad45fa9b11048ff373bca4d85a0efc9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a6ad45fa9b11048ff373bca4d85a0efc9">InsertGroupCells</a> (std::unique_ptr&lt; <a class="el" href="classGroupCell.html">GroupCell</a> &gt; &amp;&amp;cells, <a class="el" href="classGroupCell.html">GroupCell</a> *where, <a class="el" href="TreeUndoAction_8h.html#a0b9224ea18b8cab4c41a6a3dd8e37ccf">UndoActions</a> *undoBuffer)</td></tr>
 <tr class="memdesc:a6ad45fa9b11048ff373bca4d85a0efc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Insert group cells into the worksheet.  <br /></td></tr>
 <tr class="separator:a6ad45fa9b11048ff373bca4d85a0efc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abc17f15d6bc5321d54764ea7e288446a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#abc17f15d6bc5321d54764ea7e288446a">InsertGroupCells</a> (std::unique_ptr&lt; <a class="el" href="classGroupCell.html">GroupCell</a> &gt; &amp;&amp;cells, <a class="el" href="classGroupCell.html">GroupCell</a> *where=NULL)</td></tr>
-<tr class="memdesc:abc17f15d6bc5321d54764ea7e288446a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Insert group cells into the worksheet.  <br /></td></tr>
-<tr class="separator:abc17f15d6bc5321d54764ea7e288446a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a645b031cb5b5997cf4bca884912939fa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a645b031cb5b5997cf4bca884912939fa">InsertGroupCells</a> (std::unique_ptr&lt; <a class="el" href="classGroupCell.html">GroupCell</a> &gt; &amp;&amp;cells, <a class="el" href="classGroupCell.html">GroupCell</a> *where=nullptr)</td></tr>
+<tr class="memdesc:a645b031cb5b5997cf4bca884912939fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Insert group cells into the worksheet.  <br /></td></tr>
+<tr class="separator:a645b031cb5b5997cf4bca884912939fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a723960d4c1221d561d35dbcb88f90383"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a723960d4c1221d561d35dbcb88f90383">InsertLine</a> (std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt; &amp;&amp;newCell, bool forceNewLine=false)</td></tr>
 <tr class="memdesc:a723960d4c1221d561d35dbcb88f90383"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a new line to the output cell of the working group.  <br /></td></tr>
 <tr class="separator:a723960d4c1221d561d35dbcb88f90383"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -769,19 +769,19 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanDeleteSelection</b
 <tr class="separator:a44a5e3323192e062b545679849522fa3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a45cdb4e3bf2dc4283ce4fc5c5eb07fa5"><td class="memItemLeft" align="right" valign="top"><a id="a45cdb4e3bf2dc4283ce4fc5c5eb07fa5" name="a45cdb4e3bf2dc4283ce4fc5c5eb07fa5"></a>
 <a class="el" href="classAnimationCell.html">AnimationCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>GetSelectedAnimation</b> () const</td></tr>
-<tr class="memdesc:a45cdb4e3bf2dc4283ce4fc5c5eb07fa5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the selected cell - or NULL, if the selection isn't an animation. <br /></td></tr>
+<tr class="memdesc:a45cdb4e3bf2dc4283ce4fc5c5eb07fa5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the selected cell - or nullptr, if the selection isn't an animation. <br /></td></tr>
 <tr class="separator:a45cdb4e3bf2dc4283ce4fc5c5eb07fa5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7a6848e8ed55dd37f906bef17f31b800"><td class="memItemLeft" align="right" valign="top"><a id="a7a6848e8ed55dd37f906bef17f31b800" name="a7a6848e8ed55dd37f906bef17f31b800"></a>
 <a class="el" href="classImgCell.html">ImgCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>GetSelectedImgCell</b> () const</td></tr>
-<tr class="memdesc:a7a6848e8ed55dd37f906bef17f31b800"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the selected cell - or NULL, if the selection isn't an image. <br /></td></tr>
+<tr class="memdesc:a7a6848e8ed55dd37f906bef17f31b800"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the selected cell - or nullptr, if the selection isn't an image. <br /></td></tr>
 <tr class="separator:a7a6848e8ed55dd37f906bef17f31b800"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a125006f1216e09e81f0dbb0afc0d9b3a"><td class="memItemLeft" align="right" valign="top"><a id="a125006f1216e09e81f0dbb0afc0d9b3a" name="a125006f1216e09e81f0dbb0afc0d9b3a"></a>
 <a class="el" href="classImgCellBase.html">ImgCellBase</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>GetSelectedImgCellBase</b> () const</td></tr>
-<tr class="memdesc:a125006f1216e09e81f0dbb0afc0d9b3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the selected cell - or NULL, if the selection isn't image nor animation. <br /></td></tr>
+<tr class="memdesc:a125006f1216e09e81f0dbb0afc0d9b3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the selected cell - or nullptr, if the selection isn't image nor animation. <br /></td></tr>
 <tr class="separator:a125006f1216e09e81f0dbb0afc0d9b3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3211dd601467c20c719936991c863819"><td class="memItemLeft" align="right" valign="top"><a id="a3211dd601467c20c719936991c863819" name="a3211dd601467c20c719936991c863819"></a>
 <a class="el" href="classTextCell.html">TextCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>GetSelectedTextCell</b> () const</td></tr>
-<tr class="memdesc:a3211dd601467c20c719936991c863819"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the selected cell - or NULL, if the selection isn't a text cell. <br /></td></tr>
+<tr class="memdesc:a3211dd601467c20c719936991c863819"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the selected cell - or nullptr, if the selection isn't a text cell. <br /></td></tr>
 <tr class="separator:a3211dd601467c20c719936991c863819"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6cf2965a1983631e048b9a51e548991f"><td class="memItemLeft" align="right" valign="top"><a id="a6cf2965a1983631e048b9a51e548991f" name="a6cf2965a1983631e048b9a51e548991f"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanAnimate</b> () const</td></tr>
@@ -1021,7 +1021,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetDefaultHCaret</b> 
 <tr class="separator:a91468c7a3ff61a3834a3f07105cd721f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8bd4576ddfb8cf12b36d6fead3a4cc00"><td class="memItemLeft" align="right" valign="top"><a id="a8bd4576ddfb8cf12b36d6fead3a4cc00" name="a8bd4576ddfb8cf12b36d6fead3a4cc00"></a>
 <a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>GetHCaret</b> ()</td></tr>
-<tr class="memdesc:a8bd4576ddfb8cf12b36d6fead3a4cc00"><td class="mdescLeft">&#160;</td><td class="mdescRight">The cell the horizontal cursor is above. NULL means at the start of the document. <br /></td></tr>
+<tr class="memdesc:a8bd4576ddfb8cf12b36d6fead3a4cc00"><td class="mdescLeft">&#160;</td><td class="mdescRight">The cell the horizontal cursor is above. nullptr means at the start of the document. <br /></td></tr>
 <tr class="separator:a8bd4576ddfb8cf12b36d6fead3a4cc00"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a31518b588d76a655a3bcef0b80834f80"><td class="memItemLeft" align="right" valign="top"><a id="a31518b588d76a655a3bcef0b80834f80" name="a31518b588d76a655a3bcef0b80834f80"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>OpenHCaret</b> (const wxString &amp;txt={})</td></tr>
@@ -2185,7 +2185,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 </div><div class="memdoc">
 
 <p>Return the last of the currently selected cells. </p>
-<p>NULL means: No cell is selected. </p>
+<p>nullptr means: No cell is selected. </p>
 
 </div>
 </div>
@@ -2213,7 +2213,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 </div><div class="memdoc">
 
 <p>Return the first of the currently selected cells. </p>
-<p>NULL means: No cell is selected. </p>
+<p>nullptr means: No cell is selected. </p>
 
 </div>
 </div>
@@ -2373,10 +2373,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 </div><div class="memdoc">
 
 <p>Returns the cell maxima currently works on. </p>
-<p>NULL if there isn't such a cell.</p>
+<p>nullptr if there isn't such a cell.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">resortToLast</td><td>true = if we already have set the cell maxima works on to NULL use the last cell maxima was known to work on. </td></tr>
+    <tr><td class="paramname">resortToLast</td><td>true = if we already have set the cell maxima works on to nullptr use the last cell maxima was known to work on. </td></tr>
   </table>
   </dd>
 </dl>
@@ -2419,11 +2419,11 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">cells</td><td>The list of cells that has to be inserted </td></tr>
-    <tr><td class="paramname">where</td><td>The cell the cells have to be inserted after. NULL means: Insert the cells at the beginning of the worksheet. </td></tr>
+    <tr><td class="paramname">where</td><td>The cell the cells have to be inserted after. nullptr means: Insert the cells at the beginning of the worksheet. </td></tr>
     <tr><td class="paramname">undoBuffer</td><td>The buffer the undo information for this action has to be kept in. Might be<ul>
 <li>GetTreeUndo().UndoStack() for normal deletes,</li>
 <li>GetTreeUndo().RedoStack() for deletions while executing an undo or</li>
-<li>NULL for: Don't keep any copy of the cells. </li>
+<li>nullptr for: Don't keep any copy of the cells. </li>
 </ul>
 </td></tr>
   </table>
@@ -2432,8 +2432,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 
 </div>
 </div>
-<a id="abc17f15d6bc5321d54764ea7e288446a" name="abc17f15d6bc5321d54764ea7e288446a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abc17f15d6bc5321d54764ea7e288446a">&#9670;&#160;</a></span>InsertGroupCells() <span class="overload">[2/2]</span></h2>
+<a id="a645b031cb5b5997cf4bca884912939fa" name="a645b031cb5b5997cf4bca884912939fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a645b031cb5b5997cf4bca884912939fa">&#9670;&#160;</a></span>InsertGroupCells() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2448,7 +2448,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td>
-          <td class="paramname"><em>where</em> = <code>NULL</code>&#160;</td>
+          <td class="paramname"><em>where</em> = <code>nullptr</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -2750,7 +2750,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 </div><div class="memdoc">
 
 <p>Is called by wxWidgets when it wants to redraw the worksheet or a part of it. </p>
-<p>The canonical way to schedule triggering this function is calling the Refresh() or <a class="el" href="classWorksheet.html#ad1d57afe66434741be1ee0e5861d3738" title="Request the worksheet to be redrawn.">RequestRedraw()</a> function of this class.</p>
+<p>The canonical way to schedule triggering this function is calling the Refresh() or <a class="el" href="classWorksheet.html#a08be1ec0224db3b5672d5ca264620b15" title="Request the worksheet to be redrawn.">RequestRedraw()</a> function of this class.</p>
 <p>Using multiple threads in order to speed up this process is kind of hard: Using more than one wxPaintDC at the same time isn't supported by most (if not all) operating systems. Drawing in a wxMemoryDC and then blitting the result in the central wxPaintDC works, but each wxMemoryDC needs to draw into a separate bitmap for that to work. </p>
 
 </div>
@@ -2925,7 +2925,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
       </table>
 </div><div class="memdoc">
 
-<p>Redraw the worksheet if <a class="el" href="classWorksheet.html#ad1d57afe66434741be1ee0e5861d3738" title="Request the worksheet to be redrawn.">RequestRedraw()</a> has been called. </p>
+<p>Redraw the worksheet if <a class="el" href="classWorksheet.html#a08be1ec0224db3b5672d5ca264620b15" title="Request the worksheet to be redrawn.">RequestRedraw()</a> has been called. </p>
 <p>Also handles setting tooltips and redrawing the brackets on mouse movements. </p>
 
 </div>
@@ -3095,8 +3095,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 
 </div>
 </div>
-<a id="ad1d57afe66434741be1ee0e5861d3738" name="ad1d57afe66434741be1ee0e5861d3738"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad1d57afe66434741be1ee0e5861d3738">&#9670;&#160;</a></span>RequestRedraw() <span class="overload">[1/2]</span></h2>
+<a id="a08be1ec0224db3b5672d5ca264620b15" name="a08be1ec0224db3b5672d5ca264620b15"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a08be1ec0224db3b5672d5ca264620b15">&#9670;&#160;</a></span>RequestRedraw() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3105,7 +3105,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
           <td class="memname">void Worksheet::RequestRedraw </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td>
-          <td class="paramname"><em>start</em> = <code>NULL</code></td><td>)</td>
+          <td class="paramname"><em>start</em> = <code>nullptr</code></td><td>)</td>
           <td></td>
         </tr>
       </table>

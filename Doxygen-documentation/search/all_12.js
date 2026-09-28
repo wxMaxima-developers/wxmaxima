@@ -90,7 +90,7 @@ var searchData=
   ['requestrecalculate_87',['RequestRecalculate',['../classConfiguration.html#af4b0a3094f44b6d504d24aa0e26ac2fd',1,'Configuration']]],
   ['requestrecalculateall_88',['RequestRecalculateAll',['../classConfiguration.html#a381d3cc5d3720043c2be67719901caaf',1,'Configuration']]],
   ['requestrecalculation_89',['RequestRecalculation',['../classWorksheetLayout.html#a422101a8e1e9930368192d5f585b379a',1,'WorksheetLayout::RequestRecalculation()'],['../classWorksheet.html#afe461aa6d0926a930da39ab21e075ebe',1,'Worksheet::RequestRecalculation(Cell *start)'],['../classWorksheet.html#aed8cb6f6c8f39ba930dac38a3e9e35e9',1,'Worksheet::RequestRecalculation()']]],
-  ['requestredraw_90',['RequestRedraw',['../classWorksheet.html#af9dad24c6f633dd774c5ca28824e5d64',1,'Worksheet::RequestRedraw(wxRect rect)'],['../classWorksheet.html#ad1d57afe66434741be1ee0e5861d3738',1,'Worksheet::RequestRedraw(GroupCell *start=NULL)']]],
+  ['requestredraw_90',['RequestRedraw',['../classWorksheet.html#af9dad24c6f633dd774c5ca28824e5d64',1,'Worksheet::RequestRedraw(wxRect rect)'],['../classWorksheet.html#a08be1ec0224db3b5672d5ca264620b15',1,'Worksheet::RequestRedraw(GroupCell *start=nullptr)']]],
   ['requeststop_91',['RequestStop',['../classBackgroundTask.html#a6006291785cf0fba160a5b2781ccc5b9',1,'BackgroundTask']]],
   ['requesturl_92',['RequestUrl',['../classAiProvider.html#ac6be3f2661854a26af4777de3548b2cd',1,'AiProvider']]],
   ['rereadconfig_93',['ReReadConfig',['../classwxMaximaFrame.html#a35e463f4ea5872f9e9a052c02447bbd6',1,'wxMaximaFrame']]],

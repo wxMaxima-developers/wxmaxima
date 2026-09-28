@@ -28,7 +28,7 @@ var searchData=
   ['normalize_25',['normalize',['../structdetail_1_1dtoa__impl_1_1diyfp.html#a5bad735c2cb50b194938a8a89b82f6ed',1,'detail::dtoa_impl::diyfp']]],
   ['normalize_5fto_26',['normalize_to',['../structdetail_1_1dtoa__impl_1_1diyfp.html#a5a9ce83c6c1663c9aaac7ffd9009b971',1,'detail::dtoa_impl::diyfp']]],
   ['normalizelineendings_27',['NormalizeLineEndings',['../classEditorCell.html#a67ca5cd76bd14de0691bbb80d7c54b68',1,'EditorCell']]],
-  ['notification_28',['Notification',['../classNotification.html#a318b399339a243424905d071abc553c8',1,'Notification::Notification()'],['../classNotification.html',1,'Notification'],['../classNotification.html#a1d2014b23265060cebccfb542a60e75a',1,'Notification::Notification()']]],
+  ['notification_28',['Notification',['../classNotification.html#a6aa1a5ecd34ed8b65b8fd0be7cec5c2d',1,'Notification::Notification()'],['../classNotification.html',1,'Notification'],['../classNotification.html#a1d2014b23265060cebccfb542a60e75a',1,'Notification::Notification()']]],
   ['notification_2ecpp_29',['Notification.cpp',['../Notification_8cpp.html',1,'']]],
   ['notification_2eh_30',['Notification.h',['../Notification_8h.html',1,'']]],
   ['notifyadjustsizeneeded_31',['NotifyAdjustSizeNeeded',['../classWorksheet.html#a31d2db36741caafe33a2070c30c8a698',1,'Worksheet::NotifyAdjustSizeNeeded()'],['../classWorksheetDocumentView.html#a1566f7a77ef0da1d38e8d679b4142183',1,'WorksheetDocumentView::NotifyAdjustSizeNeeded()']]],

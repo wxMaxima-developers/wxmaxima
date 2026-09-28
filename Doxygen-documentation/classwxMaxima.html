@@ -637,14 +637,14 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>ToolbarIsShown</b> ()
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
 <tr class="memitem:ab2ada78cc8f90525096b7ece964078d1"><td class="memItemLeft" align="right" valign="top"><a id="ab2ada78cc8f90525096b7ece964078d1" name="ab2ada78cc8f90525096b7ece964078d1"></a>
-wxProcess *&#160;</td><td class="memItemRight" valign="bottom"><b>m_gnuplotProcess</b> = NULL</td></tr>
+wxProcess *&#160;</td><td class="memItemRight" valign="bottom"><b>m_gnuplotProcess</b> = nullptr</td></tr>
 <tr class="memdesc:ab2ada78cc8f90525096b7ece964078d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The gnuplot process info. <br /></td></tr>
 <tr class="separator:ab2ada78cc8f90525096b7ece964078d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac57d86df2f36cc8707282576fc84d870"><td class="memItemLeft" align="right" valign="top"><a id="ac57d86df2f36cc8707282576fc84d870" name="ac57d86df2f36cc8707282576fc84d870"></a>
-wxProcess *&#160;</td><td class="memItemRight" valign="bottom"><b>m_gnuplotTerminalQueryProcess</b> = NULL</td></tr>
+wxProcess *&#160;</td><td class="memItemRight" valign="bottom"><b>m_gnuplotTerminalQueryProcess</b> = nullptr</td></tr>
 <tr class="memdesc:ac57d86df2f36cc8707282576fc84d870"><td class="mdescLeft">&#160;</td><td class="mdescRight">Info about the gnuplot process we start for querying the terminals it supports. <br /></td></tr>
 <tr class="separator:ac57d86df2f36cc8707282576fc84d870"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae1d892081ac5bcea5dd45ad5bc15f8ff"><td class="memItemLeft" align="right" valign="top">wxProcess *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#ae1d892081ac5bcea5dd45ad5bc15f8ff">m_gnuplotPopoutCheckProcess</a> = NULL</td></tr>
+<tr class="memitem:ae1d892081ac5bcea5dd45ad5bc15f8ff"><td class="memItemLeft" align="right" valign="top">wxProcess *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#ae1d892081ac5bcea5dd45ad5bc15f8ff">m_gnuplotPopoutCheckProcess</a> = nullptr</td></tr>
 <tr class="memdesc:ae1d892081ac5bcea5dd45ad5bc15f8ff"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classA.html">A</a> second, hidden, headless gnuplot invocation of the same "Pop out
 interactively" script, started alongside m_gnuplotProcess purely to capture warnings/errors gnuplot prints while preparing the plot.  <br /></td></tr>
 <tr class="separator:ae1d892081ac5bcea5dd45ad5bc15f8ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -684,18 +684,18 @@ std::unique_ptr&lt; <a class="el" href="classMaxima.html">Maxima</a> &gt;&#160;<
 <tr class="memdesc:a520d1fc61b8ce43169f51904c068056a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The server maxima connects to as client.  <br /></td></tr>
 <tr class="separator:a520d1fc61b8ce43169f51904c068056a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4d7bfc768a5bff21ac312378a99f646f"><td class="memItemLeft" align="right" valign="top"><a id="a4d7bfc768a5bff21ac312378a99f646f" name="a4d7bfc768a5bff21ac312378a99f646f"></a>
-wxProcess *&#160;</td><td class="memItemRight" valign="bottom"><b>m_maximaProcess</b> = NULL</td></tr>
+wxProcess *&#160;</td><td class="memItemRight" valign="bottom"><b>m_maximaProcess</b> = nullptr</td></tr>
 <tr class="separator:a4d7bfc768a5bff21ac312378a99f646f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4ac7385ecd5b838d00b25a8ed62ce37a"><td class="memItemLeft" align="right" valign="top"><a id="a4ac7385ecd5b838d00b25a8ed62ce37a" name="a4ac7385ecd5b838d00b25a8ed62ce37a"></a>
-wxInputStream *&#160;</td><td class="memItemRight" valign="bottom"><b>m_maximaStdout</b> = NULL</td></tr>
+wxInputStream *&#160;</td><td class="memItemRight" valign="bottom"><b>m_maximaStdout</b> = nullptr</td></tr>
 <tr class="memdesc:a4ac7385ecd5b838d00b25a8ed62ce37a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The stdout of the maxima process. <br /></td></tr>
 <tr class="separator:a4ac7385ecd5b838d00b25a8ed62ce37a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a82c85e2499ede35b5d9333c6282cef3d"><td class="memItemLeft" align="right" valign="top"><a id="a82c85e2499ede35b5d9333c6282cef3d" name="a82c85e2499ede35b5d9333c6282cef3d"></a>
-wxInputStream *&#160;</td><td class="memItemRight" valign="bottom"><b>m_maximaStderr</b> = NULL</td></tr>
+wxInputStream *&#160;</td><td class="memItemRight" valign="bottom"><b>m_maximaStderr</b> = nullptr</td></tr>
 <tr class="memdesc:a82c85e2499ede35b5d9333c6282cef3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The stderr of the maxima process. <br /></td></tr>
 <tr class="separator:a82c85e2499ede35b5d9333c6282cef3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0c3e362f613bf04b50045abedc4c321c"><td class="memItemLeft" align="right" valign="top"><a id="a0c3e362f613bf04b50045abedc4c321c" name="a0c3e362f613bf04b50045abedc4c321c"></a>
-wxOutputStream *&#160;</td><td class="memItemRight" valign="bottom"><b>m_maximaStdin</b> = NULL</td></tr>
+wxOutputStream *&#160;</td><td class="memItemRight" valign="bottom"><b>m_maximaStdin</b> = nullptr</td></tr>
 <tr class="memdesc:a0c3e362f613bf04b50045abedc4c321c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The stdin of the maxima process. Normally unused (commands go over the socket), but sbcl's low-level debugger (LDB) reads from here, so we keep the stream to talk to LDB. See <a class="el" href="classMaximaProcessManager.html#aca13067a67f4d859b46459aa96bbb3b4" title="Writes one line of input to the Maxima process&#39;s stdin.">MaximaProcessManager::WriteToMaximaStdin</a>. <br /></td></tr>
 <tr class="separator:a0c3e362f613bf04b50045abedc4c321c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acbee674f9f360c58b1157bd6daca7b31"><td class="memItemLeft" align="right" valign="top"><a id="acbee674f9f360c58b1157bd6daca7b31" name="acbee674f9f360c58b1157bd6daca7b31"></a>
@@ -764,11 +764,11 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_maximaBusy</b> = tr
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_maximaError</b> = false</td></tr>
 <tr class="separator:a147d6472a8e85a444b523ff51489d0e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae4bf94a0227d710b60cc474e2ae52e72"><td class="memItemLeft" align="right" valign="top"><a id="ae4bf94a0227d710b60cc474e2ae52e72" name="ae4bf94a0227d710b60cc474e2ae52e72"></a>
-<a class="el" href="classVariablespane.html">Variablespane</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_variablesPane</b> = NULL</td></tr>
+<a class="el" href="classVariablespane.html">Variablespane</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_variablesPane</b> = nullptr</td></tr>
 <tr class="memdesc:ae4bf94a0227d710b60cc474e2ae52e72"><td class="mdescLeft">&#160;</td><td class="mdescRight">The panel the user can display variable contents in. <br /></td></tr>
 <tr class="separator:ae4bf94a0227d710b60cc474e2ae52e72"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a22067c8ee54dca1103ed43cb5265e4a8"><td class="memItemLeft" align="right" valign="top"><a id="a22067c8ee54dca1103ed43cb5265e4a8" name="a22067c8ee54dca1103ed43cb5265e4a8"></a>
-<a class="el" href="classTableOfContents.html">TableOfContents</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_tableOfContents</b> = NULL</td></tr>
+<a class="el" href="classTableOfContents.html">TableOfContents</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_tableOfContents</b> = nullptr</td></tr>
 <tr class="memdesc:a22067c8ee54dca1103ed43cb5265e4a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">The table of contents pane. <br /></td></tr>
 <tr class="separator:a22067c8ee54dca1103ed43cb5265e4a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4e520d8380e27029f4a2af509d90a488"><td class="memItemLeft" align="right" valign="top"><a id="a4e520d8380e27029f4a2af509d90a488" name="a4e520d8380e27029f4a2af509d90a488"></a>
@@ -795,15 +795,15 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><b>m_tempfileName</b
 <tr class="memdesc:a58afeb9d6fff57e4ca72b6e4c8afdbb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">The last name GetTempAutosavefileName() has returned. <br /></td></tr>
 <tr class="separator:a58afeb9d6fff57e4ca72b6e4c8afdbb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6537309ece32e438f715d2b73de8086f"><td class="memItemLeft" align="right" valign="top"><a id="a6537309ece32e438f715d2b73de8086f" name="a6537309ece32e438f715d2b73de8086f"></a>
-<a class="el" href="classStatusBar.html">StatusBar</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_statusBar</b> = NULL</td></tr>
+<a class="el" href="classStatusBar.html">StatusBar</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_statusBar</b> = nullptr</td></tr>
 <tr class="memdesc:a6537309ece32e438f715d2b73de8086f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The status bar. <br /></td></tr>
 <tr class="separator:a6537309ece32e438f715d2b73de8086f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a855479d27ce8ed82fd3a6907dfafe0e4"><td class="memItemLeft" align="right" valign="top"><a id="a855479d27ce8ed82fd3a6907dfafe0e4" name="a855479d27ce8ed82fd3a6907dfafe0e4"></a>
-<a class="el" href="classMainMenuBar.html">MainMenuBar</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_MenuBar</b> = NULL</td></tr>
+<a class="el" href="classMainMenuBar.html">MainMenuBar</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_MenuBar</b> = nullptr</td></tr>
 <tr class="memdesc:a855479d27ce8ed82fd3a6907dfafe0e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">The menu bar. <br /></td></tr>
 <tr class="separator:a855479d27ce8ed82fd3a6907dfafe0e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a716c0bc47939208104c9ee36cff94786"><td class="memItemLeft" align="right" valign="top"><a id="a716c0bc47939208104c9ee36cff94786" name="a716c0bc47939208104c9ee36cff94786"></a>
-wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_demo_sub</b> = NULL</td></tr>
+wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_demo_sub</b> = nullptr</td></tr>
 <tr class="memdesc:a716c0bc47939208104c9ee36cff94786"><td class="mdescLeft">&#160;</td><td class="mdescRight">The "demo" sub-menu. <br /></td></tr>
 <tr class="separator:a716c0bc47939208104c9ee36cff94786"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aed4b5f567386e19e17ce4c5bf9e35966"><td class="memItemLeft" align="right" valign="top"><a id="aed4b5f567386e19e17ce4c5bf9e35966" name="aed4b5f567386e19e17ce4c5bf9e35966"></a>
@@ -811,102 +811,102 @@ std::vector&lt; wxMenu * &gt;&#160;</td><td class="memItemRight" valign="bottom"
 <tr class="memdesc:aed4b5f567386e19e17ce4c5bf9e35966"><td class="mdescLeft">&#160;</td><td class="mdescRight">The submenus for the various "demo" sub-submenus. <br /></td></tr>
 <tr class="separator:aed4b5f567386e19e17ce4c5bf9e35966"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa0323a56d1d20fb3cea20d50e9fea9ff"><td class="memItemLeft" align="right" valign="top"><a id="aa0323a56d1d20fb3cea20d50e9fea9ff" name="aa0323a56d1d20fb3cea20d50e9fea9ff"></a>
-wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_viewMenu</b> = NULL</td></tr>
+wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_viewMenu</b> = nullptr</td></tr>
 <tr class="memdesc:aa0323a56d1d20fb3cea20d50e9fea9ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">The "view" menu. <br /></td></tr>
 <tr class="separator:aa0323a56d1d20fb3cea20d50e9fea9ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a56e60d9bf736a742efca0630c5b081d3"><td class="memItemLeft" align="right" valign="top"><a id="a56e60d9bf736a742efca0630c5b081d3" name="a56e60d9bf736a742efca0630c5b081d3"></a>
-wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_gentranMenu</b> = NULL</td></tr>
+wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_gentranMenu</b> = nullptr</td></tr>
 <tr class="memdesc:a56e60d9bf736a742efca0630c5b081d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">The gentran menu. <br /></td></tr>
 <tr class="separator:a56e60d9bf736a742efca0630c5b081d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abd17919d32c59075ca7b6fd762782e41"><td class="memItemLeft" align="right" valign="top"><a id="abd17919d32c59075ca7b6fd762782e41" name="abd17919d32c59075ca7b6fd762782e41"></a>
-wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_subst_Sub</b> = NULL</td></tr>
+wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_subst_Sub</b> = nullptr</td></tr>
 <tr class="memdesc:abd17919d32c59075ca7b6fd762782e41"><td class="mdescLeft">&#160;</td><td class="mdescRight">The subst submenu. <br /></td></tr>
 <tr class="separator:abd17919d32c59075ca7b6fd762782e41"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af86cc1931b71344222ceee07164db4b7"><td class="memItemLeft" align="right" valign="top"><a id="af86cc1931b71344222ceee07164db4b7" name="af86cc1931b71344222ceee07164db4b7"></a>
-wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_logexpand_Sub</b> = NULL</td></tr>
+wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_logexpand_Sub</b> = nullptr</td></tr>
 <tr class="memdesc:af86cc1931b71344222ceee07164db4b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">The logexpand submenu. <br /></td></tr>
 <tr class="separator:af86cc1931b71344222ceee07164db4b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0690fa34e3be93c52e612499ba660b94"><td class="memItemLeft" align="right" valign="top"><a id="a0690fa34e3be93c52e612499ba660b94" name="a0690fa34e3be93c52e612499ba660b94"></a>
-wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_FileMenu</b> = NULL</td></tr>
+wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_FileMenu</b> = nullptr</td></tr>
 <tr class="memdesc:a0690fa34e3be93c52e612499ba660b94"><td class="mdescLeft">&#160;</td><td class="mdescRight">The file menu. <br /></td></tr>
 <tr class="separator:a0690fa34e3be93c52e612499ba660b94"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1d34daa73319ed2b4bb1cd17180ec2c2"><td class="memItemLeft" align="right" valign="top"><a id="a1d34daa73319ed2b4bb1cd17180ec2c2" name="a1d34daa73319ed2b4bb1cd17180ec2c2"></a>
-wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_EditMenu</b> = NULL</td></tr>
+wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_EditMenu</b> = nullptr</td></tr>
 <tr class="memdesc:a1d34daa73319ed2b4bb1cd17180ec2c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">The edit menu. <br /></td></tr>
 <tr class="separator:a1d34daa73319ed2b4bb1cd17180ec2c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae114cad80009f1ae8e63e1cfc115fd06"><td class="memItemLeft" align="right" valign="top"><a id="ae114cad80009f1ae8e63e1cfc115fd06" name="ae114cad80009f1ae8e63e1cfc115fd06"></a>
-wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_CellMenu</b> = NULL</td></tr>
+wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_CellMenu</b> = nullptr</td></tr>
 <tr class="memdesc:ae114cad80009f1ae8e63e1cfc115fd06"><td class="mdescLeft">&#160;</td><td class="mdescRight">The cell menu. <br /></td></tr>
 <tr class="separator:ae114cad80009f1ae8e63e1cfc115fd06"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad7faa1a9aceffa53ba59ce09651f90fe"><td class="memItemLeft" align="right" valign="top"><a id="ad7faa1a9aceffa53ba59ce09651f90fe" name="ad7faa1a9aceffa53ba59ce09651f90fe"></a>
-wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_Edit_Zoom_Sub</b> = NULL</td></tr>
+wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_Edit_Zoom_Sub</b> = nullptr</td></tr>
 <tr class="memdesc:ad7faa1a9aceffa53ba59ce09651f90fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">The zoom submenu. <br /></td></tr>
 <tr class="separator:ad7faa1a9aceffa53ba59ce09651f90fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a534a9e52a5aa54f8ff88898cc40b2bc8"><td class="memItemLeft" align="right" valign="top"><a id="a534a9e52a5aa54f8ff88898cc40b2bc8" name="a534a9e52a5aa54f8ff88898cc40b2bc8"></a>
-wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_Maxima_Panes_Sub</b> = NULL</td></tr>
+wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_Maxima_Panes_Sub</b> = nullptr</td></tr>
 <tr class="memdesc:a534a9e52a5aa54f8ff88898cc40b2bc8"><td class="mdescLeft">&#160;</td><td class="mdescRight">The panes submenu. <br /></td></tr>
 <tr class="separator:a534a9e52a5aa54f8ff88898cc40b2bc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5478fa5d8b8480eac717a33390fdb708"><td class="memItemLeft" align="right" valign="top"><a id="a5478fa5d8b8480eac717a33390fdb708" name="a5478fa5d8b8480eac717a33390fdb708"></a>
-wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_EquationsMenu</b> = NULL</td></tr>
+wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_EquationsMenu</b> = nullptr</td></tr>
 <tr class="memdesc:a5478fa5d8b8480eac717a33390fdb708"><td class="mdescLeft">&#160;</td><td class="mdescRight">The equations menu. <br /></td></tr>
 <tr class="separator:a5478fa5d8b8480eac717a33390fdb708"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc4883e20e64784be652125286213758"><td class="memItemLeft" align="right" valign="top"><a id="abc4883e20e64784be652125286213758" name="abc4883e20e64784be652125286213758"></a>
-wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_MaximaMenu</b> = NULL</td></tr>
+wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_MaximaMenu</b> = nullptr</td></tr>
 <tr class="memdesc:abc4883e20e64784be652125286213758"><td class="mdescLeft">&#160;</td><td class="mdescRight">The maxima menu. <br /></td></tr>
 <tr class="separator:abc4883e20e64784be652125286213758"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab8b74c3e6ae4a481c2b12f8fbd462dd9"><td class="memItemLeft" align="right" valign="top"><a id="ab8b74c3e6ae4a481c2b12f8fbd462dd9" name="ab8b74c3e6ae4a481c2b12f8fbd462dd9"></a>
-wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_matrix_menu</b> = NULL</td></tr>
+wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_matrix_menu</b> = nullptr</td></tr>
 <tr class="memdesc:ab8b74c3e6ae4a481c2b12f8fbd462dd9"><td class="mdescLeft">&#160;</td><td class="mdescRight">The matrix menu. <br /></td></tr>
 <tr class="separator:ab8b74c3e6ae4a481c2b12f8fbd462dd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa33e11d9c6849dbcd0e531f3e6193a5f"><td class="memItemLeft" align="right" valign="top"><a id="aa33e11d9c6849dbcd0e531f3e6193a5f" name="aa33e11d9c6849dbcd0e531f3e6193a5f"></a>
-wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_SimplifyMenu</b> = NULL</td></tr>
+wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_SimplifyMenu</b> = nullptr</td></tr>
 <tr class="memdesc:aa33e11d9c6849dbcd0e531f3e6193a5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The simplify menu. <br /></td></tr>
 <tr class="separator:aa33e11d9c6849dbcd0e531f3e6193a5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8cd7b2a065fb672d80f614faf084f84a"><td class="memItemLeft" align="right" valign="top"><a id="a8cd7b2a065fb672d80f614faf084f84a" name="a8cd7b2a065fb672d80f614faf084f84a"></a>
-wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_Simplify_Gamma_Sub</b> = NULL</td></tr>
+wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_Simplify_Gamma_Sub</b> = nullptr</td></tr>
 <tr class="memdesc:a8cd7b2a065fb672d80f614faf084f84a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The factorials and gamma submenu. <br /></td></tr>
 <tr class="separator:a8cd7b2a065fb672d80f614faf084f84a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7ad3fc3a5ee595b7f4381e86e42a1356"><td class="memItemLeft" align="right" valign="top"><a id="a7ad3fc3a5ee595b7f4381e86e42a1356" name="a7ad3fc3a5ee595b7f4381e86e42a1356"></a>
-wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_debugTypeMenu</b> = NULL</td></tr>
+wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_debugTypeMenu</b> = nullptr</td></tr>
 <tr class="memdesc:a7ad3fc3a5ee595b7f4381e86e42a1356"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contains the menu for the debugger trigger settingxc. <br /></td></tr>
 <tr class="separator:a7ad3fc3a5ee595b7f4381e86e42a1356"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5e61d48d6bb55fb0bef5e95e1501f00f"><td class="memItemLeft" align="right" valign="top"><a id="a5e61d48d6bb55fb0bef5e95e1501f00f" name="a5e61d48d6bb55fb0bef5e95e1501f00f"></a>
-wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_Simplify_Trig_Sub</b> = NULL</td></tr>
+wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_Simplify_Trig_Sub</b> = nullptr</td></tr>
 <tr class="memdesc:a5e61d48d6bb55fb0bef5e95e1501f00f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The trigonometric submenu. <br /></td></tr>
 <tr class="separator:a5e61d48d6bb55fb0bef5e95e1501f00f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3a229b0176739e90c5447fede8927cb3"><td class="memItemLeft" align="right" valign="top"><a id="a3a229b0176739e90c5447fede8927cb3" name="a3a229b0176739e90c5447fede8927cb3"></a>
-wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_Simplify_Complex_Sub</b> = NULL</td></tr>
+wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_Simplify_Complex_Sub</b> = nullptr</td></tr>
 <tr class="memdesc:a3a229b0176739e90c5447fede8927cb3"><td class="mdescLeft">&#160;</td><td class="mdescRight">The complex submenu. <br /></td></tr>
 <tr class="separator:a3a229b0176739e90c5447fede8927cb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a977f7622335e2cc6227d02f97c75981e"><td class="memItemLeft" align="right" valign="top"><a id="a977f7622335e2cc6227d02f97c75981e" name="a977f7622335e2cc6227d02f97c75981e"></a>
-wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_CalculusMenu</b> = NULL</td></tr>
+wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_CalculusMenu</b> = nullptr</td></tr>
 <tr class="memdesc:a977f7622335e2cc6227d02f97c75981e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The calculus menu. <br /></td></tr>
 <tr class="separator:a977f7622335e2cc6227d02f97c75981e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4c6d43ffcc3b65312aa7bb885d3654af"><td class="memItemLeft" align="right" valign="top"><a id="a4c6d43ffcc3b65312aa7bb885d3654af" name="a4c6d43ffcc3b65312aa7bb885d3654af"></a>
-wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_PlotMenu</b> = NULL</td></tr>
+wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_PlotMenu</b> = nullptr</td></tr>
 <tr class="memdesc:a4c6d43ffcc3b65312aa7bb885d3654af"><td class="mdescLeft">&#160;</td><td class="mdescRight">The plot menu. <br /></td></tr>
 <tr class="separator:a4c6d43ffcc3b65312aa7bb885d3654af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a79d51aa4a4679a529cfc41f125835fce"><td class="memItemLeft" align="right" valign="top"><a id="a79d51aa4a4679a529cfc41f125835fce" name="a79d51aa4a4679a529cfc41f125835fce"></a>
-wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_listMenu</b> = NULL</td></tr>
+wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_listMenu</b> = nullptr</td></tr>
 <tr class="memdesc:a79d51aa4a4679a529cfc41f125835fce"><td class="mdescLeft">&#160;</td><td class="mdescRight">The list menu. <br /></td></tr>
 <tr class="separator:a79d51aa4a4679a529cfc41f125835fce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adcdd9c7ef56f00850c2616ffe9e6c24d"><td class="memItemLeft" align="right" valign="top"><a id="adcdd9c7ef56f00850c2616ffe9e6c24d" name="adcdd9c7ef56f00850c2616ffe9e6c24d"></a>
-wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_NumericMenu</b> = NULL</td></tr>
+wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_NumericMenu</b> = nullptr</td></tr>
 <tr class="memdesc:adcdd9c7ef56f00850c2616ffe9e6c24d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The numeric menu. <br /></td></tr>
 <tr class="separator:adcdd9c7ef56f00850c2616ffe9e6c24d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acf2bd7c7a31143d9c0f02ce3494b577e"><td class="memItemLeft" align="right" valign="top"><a id="acf2bd7c7a31143d9c0f02ce3494b577e" name="acf2bd7c7a31143d9c0f02ce3494b577e"></a>
-wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_HelpMenu</b> = NULL</td></tr>
+wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_HelpMenu</b> = nullptr</td></tr>
 <tr class="memdesc:acf2bd7c7a31143d9c0f02ce3494b577e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The help menu. <br /></td></tr>
 <tr class="separator:acf2bd7c7a31143d9c0f02ce3494b577e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae8b723ca0c3941018b32ffb7286b4d41"><td class="memItemLeft" align="right" valign="top"><a id="ae8b723ca0c3941018b32ffb7286b4d41" name="ae8b723ca0c3941018b32ffb7286b4d41"></a>
-<a class="el" href="classScrollingGenWizPanel.html">ScrollingGenWizPanel</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_wizard</b> = NULL</td></tr>
+<a class="el" href="classScrollingGenWizPanel.html">ScrollingGenWizPanel</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_wizard</b> = nullptr</td></tr>
 <tr class="separator:ae8b723ca0c3941018b32ffb7286b4d41"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a580b275b4d56bb2c1c851404deeea1e0"><td class="memItemLeft" align="right" valign="top"><a id="a580b275b4d56bb2c1c851404deeea1e0" name="a580b275b4d56bb2c1c851404deeea1e0"></a>
 long&#160;</td><td class="memItemRight" valign="bottom"><b>m_drawDimensions_last</b> = -1</td></tr>
 <tr class="memdesc:a580b275b4d56bb2c1c851404deeea1e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Are we inside a 2d or 3d draw command? <br /></td></tr>
 <tr class="separator:a580b275b4d56bb2c1c851404deeea1e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad41749ea6ea9116d33925a14b7696ed5"><td class="memItemLeft" align="right" valign="top"><a id="ad41749ea6ea9116d33925a14b7696ed5" name="ad41749ea6ea9116d33925a14b7696ed5"></a>
-<a class="el" href="classDrawSidebar.html">DrawSidebar</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_drawPane</b> = NULL</td></tr>
+<a class="el" href="classDrawSidebar.html">DrawSidebar</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_drawPane</b> = nullptr</td></tr>
 <tr class="memdesc:ad41749ea6ea9116d33925a14b7696ed5"><td class="mdescLeft">&#160;</td><td class="mdescRight">The sidebar with the draw commands. <br /></td></tr>
 <tr class="separator:ad41749ea6ea9116d33925a14b7696ed5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2c43bf971cbbb572b34f2ddd1a40a4a1"><td class="memItemLeft" align="right" valign="top"><a id="a2c43bf971cbbb572b34f2ddd1a40a4a1" name="a2c43bf971cbbb572b34f2ddd1a40a4a1"></a>
@@ -920,7 +920,7 @@ std::array&lt; wxString, 10 &gt;&#160;</td><td class="memItemRight" valign="bott
 std::unordered_map&lt; wxWindowID, wxString &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_demoFilesIDs</b></td></tr>
 <tr class="separator:a6c877a6e5056ba6624e19103e17456fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aab0d89ee3e72c89c85a814037899980c"><td class="memItemLeft" align="right" valign="top"><a id="aab0d89ee3e72c89c85a814037899980c" name="aab0d89ee3e72c89c85a814037899980c"></a>
-<a class="el" href="classSymbolsSidebar.html">SymbolsSidebar</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_symbolsSidebar</b> = NULL</td></tr>
+<a class="el" href="classSymbolsSidebar.html">SymbolsSidebar</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_symbolsSidebar</b> = nullptr</td></tr>
 <tr class="separator:aab0d89ee3e72c89c85a814037899980c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8edb4efa89d0627a9eb61fffbf2222b8"><td class="memItemLeft" align="right" valign="top"><a id="a8edb4efa89d0627a9eb61fffbf2222b8" name="a8edb4efa89d0627a9eb61fffbf2222b8"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>m_EvaluationQueueLength</b> = 0</td></tr>
@@ -943,19 +943,19 @@ wxAuiManager&#160;</td><td class="memItemRight" valign="bottom"><b>m_manager</b>
 <tr class="memdesc:ad1f3fbb9bc7e6dce8f83486f492254f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The manager for dynamic screen layouts. <br /></td></tr>
 <tr class="separator:ad1f3fbb9bc7e6dce8f83486f492254f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af2869d450f22a0b5fd340dbbc7b67964"><td class="memItemLeft" align="right" valign="top"><a id="af2869d450f22a0b5fd340dbbc7b67964" name="af2869d450f22a0b5fd340dbbc7b67964"></a>
-<a class="el" href="classWorksheet.html">Worksheet</a> *const&#160;</td><td class="memItemRight" valign="bottom"><b>m_worksheet</b> = NULL</td></tr>
+<a class="el" href="classWorksheet.html">Worksheet</a> *const&#160;</td><td class="memItemRight" valign="bottom"><b>m_worksheet</b> = nullptr</td></tr>
 <tr class="memdesc:af2869d450f22a0b5fd340dbbc7b67964"><td class="mdescLeft">&#160;</td><td class="mdescRight">The worksheet itself. <br /></td></tr>
 <tr class="separator:af2869d450f22a0b5fd340dbbc7b67964"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8bd088851c2448772b4c4f955db6af05"><td class="memItemLeft" align="right" valign="top"><a id="a8bd088851c2448772b4c4f955db6af05" name="a8bd088851c2448772b4c4f955db6af05"></a>
-<a class="el" href="classHistory.html">History</a> *const&#160;</td><td class="memItemRight" valign="bottom"><b>m_history</b> = NULL</td></tr>
+<a class="el" href="classHistory.html">History</a> *const&#160;</td><td class="memItemRight" valign="bottom"><b>m_history</b> = nullptr</td></tr>
 <tr class="memdesc:a8bd088851c2448772b4c4f955db6af05"><td class="mdescLeft">&#160;</td><td class="mdescRight">The history pane. <br /></td></tr>
 <tr class="separator:a8bd088851c2448772b4c4f955db6af05"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a662bf1bd2689a78873096d294efb93f9"><td class="memItemLeft" align="right" valign="top"><a id="a662bf1bd2689a78873096d294efb93f9" name="a662bf1bd2689a78873096d294efb93f9"></a>
-<a class="el" href="classXmlInspector.html">XmlInspector</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_xmlInspector</b> = NULL</td></tr>
+<a class="el" href="classXmlInspector.html">XmlInspector</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_xmlInspector</b> = nullptr</td></tr>
 <tr class="memdesc:a662bf1bd2689a78873096d294efb93f9"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classA.html">A</a> XmlInspector-like xml monitor. <br /></td></tr>
 <tr class="separator:a662bf1bd2689a78873096d294efb93f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4fd1f431d59d8a3c7ec06815cc6248da"><td class="memItemLeft" align="right" valign="top"><a id="a4fd1f431d59d8a3c7ec06815cc6248da" name="a4fd1f431d59d8a3c7ec06815cc6248da"></a>
-<a class="el" href="classPerformanceSidebar.html">PerformanceSidebar</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_performanceSidebar</b> = NULL</td></tr>
+<a class="el" href="classPerformanceSidebar.html">PerformanceSidebar</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_performanceSidebar</b> = nullptr</td></tr>
 <tr class="memdesc:a4fd1f431d59d8a3c7ec06815cc6248da"><td class="mdescLeft">&#160;</td><td class="mdescRight">The panel showing performance statistics. <br /></td></tr>
 <tr class="separator:a4fd1f431d59d8a3c7ec06815cc6248da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af5ddd6afb747c28c56bebfb84b7dffbb"><td class="memItemLeft" align="right" valign="top"><a id="af5ddd6afb747c28c56bebfb84b7dffbb" name="af5ddd6afb747c28c56bebfb84b7dffbb"></a>
@@ -966,22 +966,22 @@ wxAuiManager&#160;</td><td class="memItemRight" valign="bottom"><b>m_manager</b>
 <a class="el" href="classRecentDocuments.html">RecentDocuments</a>&#160;</td><td class="memItemRight" valign="bottom"><b>m_recentPackages</b></td></tr>
 <tr class="separator:ad12ef420a6599fb28f06de4dcf4ecd9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a61d70f0846fd879f995ce56ee16f7f24"><td class="memItemLeft" align="right" valign="top"><a id="a61d70f0846fd879f995ce56ee16f7f24" name="a61d70f0846fd879f995ce56ee16f7f24"></a>
-wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_recentDocumentsMenu</b> = NULL</td></tr>
+wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_recentDocumentsMenu</b> = nullptr</td></tr>
 <tr class="separator:a61d70f0846fd879f995ce56ee16f7f24"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4fb270a197073a795c685f6865ba1bc3"><td class="memItemLeft" align="right" valign="top"><a id="a4fb270a197073a795c685f6865ba1bc3" name="a4fb270a197073a795c685f6865ba1bc3"></a>
-wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_unsavedDocumentsMenu</b> = NULL</td></tr>
+wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_unsavedDocumentsMenu</b> = nullptr</td></tr>
 <tr class="separator:a4fb270a197073a795c685f6865ba1bc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac79e71ef4bcccfd057fbd26b9fd30992"><td class="memItemLeft" align="right" valign="top"><a id="ac79e71ef4bcccfd057fbd26b9fd30992" name="ac79e71ef4bcccfd057fbd26b9fd30992"></a>
-wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_recentPackagesMenu</b> = NULL</td></tr>
+wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_recentPackagesMenu</b> = nullptr</td></tr>
 <tr class="separator:ac79e71ef4bcccfd057fbd26b9fd30992"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad30234b7a8f4667d151f0344d0f072c1"><td class="memItemLeft" align="right" valign="top"><a id="ad30234b7a8f4667d151f0344d0f072c1" name="ad30234b7a8f4667d151f0344d0f072c1"></a>
-wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_autoSubscriptMenu</b> = NULL</td></tr>
+wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_autoSubscriptMenu</b> = nullptr</td></tr>
 <tr class="separator:ad30234b7a8f4667d151f0344d0f072c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af94ced0d6438a55f0f24a9cdc223edeb"><td class="memItemLeft" align="right" valign="top"><a id="af94ced0d6438a55f0f24a9cdc223edeb" name="af94ced0d6438a55f0f24a9cdc223edeb"></a>
-wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_equationTypeMenuMenu</b> = NULL</td></tr>
+wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_equationTypeMenuMenu</b> = nullptr</td></tr>
 <tr class="separator:af94ced0d6438a55f0f24a9cdc223edeb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a94a50a041f977d03c70301a35d828ce0"><td class="memItemLeft" align="right" valign="top"><a id="a94a50a041f977d03c70301a35d828ce0" name="a94a50a041f977d03c70301a35d828ce0"></a>
-wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_roundedMatrixParensMenu</b> = NULL</td></tr>
+wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_roundedMatrixParensMenu</b> = nullptr</td></tr>
 <tr class="separator:a94a50a041f977d03c70301a35d828ce0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-static-attribs" name="pro-static-attribs"></a>
@@ -1381,7 +1381,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 
 <p>returns the command to start maxima </p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md1043"></a>
+ <h2><a class="anchor" id="autotoc_md1036"></a>
 Getting configuration</h2>
 
 </div>
@@ -1625,7 +1625,7 @@ Getting configuration</h2>
 
 <p>Inserts command cmd into the worksheet. </p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md1046"></a>
+ <h2><a class="anchor" id="autotoc_md1039"></a>
 Menu and button events</h2>
 
 </div>
@@ -1661,7 +1661,7 @@ Menu and button events</h2>
 <p>Moving the screen update to this function, as well, makes sure that if we get events faster than we can update the screen that doesn't cause lag, but causes screen updates for old events to be dropped if we already have new ones. This normally makes programs feel way more responsive.</p>
 <p>The worksheet is additionally refreshed by a timer task in case that th computer is too busy to ever reach the idle task at all.</p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md1045"></a>
+ <h2><a class="anchor" id="autotoc_md1038"></a>
 Idle event</h2>
 
 </div>
@@ -1796,13 +1796,13 @@ Idle event</h2>
 <p>Set the current working directory file I/O from maxima is relative to. </p>
 <p>ServerEvent is triggered when maxima connects to the socket server.</p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md1040"></a>
+ <h2><a class="anchor" id="autotoc_md1033"></a>
 Socket stuff</h2>
 <hr  />
- <h2><a class="anchor" id="autotoc_md1041"></a>
+ <h2><a class="anchor" id="autotoc_md1034"></a>
 Maxima process stuff</h2>
 <hr  />
- <h2><a class="anchor" id="autotoc_md1042"></a>
+ <h2><a class="anchor" id="autotoc_md1035"></a>
 Dealing with stuff read from the socket</h2>
 
 </div>
@@ -1906,7 +1906,7 @@ Dealing with stuff read from the socket</h2>
       </table>
 </div><div class="memdoc">
 <hr  />
- <h2><a class="anchor" id="autotoc_md1044"></a>
+ <h2><a class="anchor" id="autotoc_md1037"></a>
 Tips and help</h2>
 
 </div>
@@ -2041,7 +2041,7 @@ Tips and help</h2>
 
 <p>Enables and disables the Right menu buttons. </p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md1047"></a>
+ <h2><a class="anchor" id="autotoc_md1040"></a>
 Menu and button events</h2>
 
 </div>
@@ -2099,7 +2099,7 @@ Menu and button events</h2>
 
 <p>Updates the slider to show the right frame. </p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md1048"></a>
+ <h2><a class="anchor" id="autotoc_md1041"></a>
 Plot Slider</h2>
 
 </div>
@@ -2170,7 +2170,7 @@ Plot Slider</h2>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">wxProcess* wxMaxima::m_gnuplotPopoutCheckProcess = NULL</td>
+          <td class="memname">wxProcess* wxMaxima::m_gnuplotPopoutCheckProcess = nullptr</td>
         </tr>
       </table>
   </td>

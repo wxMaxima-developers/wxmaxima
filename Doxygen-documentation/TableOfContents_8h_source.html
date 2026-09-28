@@ -164,7 +164,7 @@ $(function() {
 <div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  <a class="code hl_class" href="classCellPtr.html">CellPtr&lt;GroupCell&gt;</a> m_dndEndCell;</div>
 <div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>  wxTimer m_scrollUpTimer;</div>
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>  wxTimer m_scrollDownTimer;</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>  wxDragImage *m_dragImage = NULL;</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>  wxDragImage *m_dragImage = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>  <span class="comment">// CellPtrs, not raw pointers: these caches can lag the worksheet tree, so an</span></div>
 <div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>  <span class="comment">// entry may refer to a cell that has since been deleted. Auto-nulling turns a</span></div>
 <div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>  <span class="comment">// stale entry into nullptr rather than a dangling pointer (see &quot;Long-lived</span></div>
