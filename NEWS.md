@@ -1,5 +1,10 @@
 # Current development version
 
+- New function `wx_version_min("26.09.0")`, which returns `true` if the
+  running wxMaxima is at least that version, so a worksheet can check
+  whether it can use a feature. In wxMaxima 26.08.0 and older the function
+  doesn't exist and the call returns itself unevaluated; comparing the
+  result with `true` handles that, too.
 - Hovering the mouse over a matrix now shows which entry it is over, as
   "Row 2, column 3", numbered like `M[2,3]`. This makes it easier to find
   your way around a large matrix, including one whose middle rows or columns

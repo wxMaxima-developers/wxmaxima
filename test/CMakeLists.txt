@@ -351,6 +351,23 @@ add_test(
     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxstatusbar(\"a<1>b\");" "<statusbar>a&lt;1&gt;b</statusbar>"
 )
 
+# wx_version_min(): $wxmaximaversion is set the way wxMaxima sets it (a
+# "-dev" suffix plus a toolkit suffix), then compared against versions that
+# are equal, shorter, older and newer, including "26.10" vs "26.9", which a
+# string comparison would get wrong.
+add_test(
+    NAME wx_version_min
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh"
+    ":lisp (setq $wxmaximaversion \"26.09.0-dev_GTK3\")\n[wx_version_min(\"26.09.0\"), wx_version_min(\"26.9\"), wx_version_min(\"26.08.3\"), wx_version_min(\"25.12.9\"), wx_version_min(\"26.09.1\"), wx_version_min(\"26.10.0\"), wx_version_min(\"27\")];"
+    "(%o1) </lbl><mrow list=\"true\"><t[^>]*>\\[</t><mrow><t lisp=\"true\">true</t></mrow><mo>,</mo><mrow><t lisp=\"true\">true</t></mrow><mo>,</mo><mrow><t lisp=\"true\">true</t></mrow><mo>,</mo><mrow><t lisp=\"true\">true</t></mrow><mo>,</mo><mrow><t lisp=\"false\">false</t></mrow><mo>,</mo><mrow><t lisp=\"false\">false</t></mrow><mo>,</mo><mrow><t lisp=\"false\">false</t></mrow><t[^>]*>]</t></mrow>"
+)
+
+# ...and outside wxMaxima, where $wxmaximaversion is never set, it is false.
+add_test(
+    NAME wx_version_min_outside_wxmaxima
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wx_version_min(\"1.0\");" "<t lisp=\"false\">false</t>"
+)
+
 add_test(
     NAME wxbuildinfo
     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxbuild_info();" "WxMaxima"

@@ -1141,6 +1141,19 @@ If wxMaxima is used, the Maxima variable `maxima_frontend` is set to `wxmaxima`.
 
 If no frontend is used (you are using command line Maxima), these variables are `false`.
 
+### Is wxMaxima new enough for this worksheet?
+
+`wx_version_min("26.09.0")` returns `true` if the running _wxMaxima_ is at least version 26.09.0, and `false` if it is older, or if the command runs in command line _Maxima_. The parts of the version number are compared as numbers, so 26.10.0 counts as newer than 26.9.0, and a part that is left out counts as 0: `wx_version_min("26.9")` is the same as `wx_version_min("26.09.0")`. A development version counts as the version it will be released as.
+
+_wxMaxima_ 26.08.0 and older don't know `wx_version_min()` yet. There, as with any function _Maxima_ doesn't know, the call isn't an error: it just returns itself, unevaluated, as `wx_version_min("26.09.0")`, which is neither `true` nor `false`. So a plain `if wx_version_min("26.09.0") then ...` stays unevaluated on these versions, too. A worksheet that has to work with them as well can compare the result with `true`, which gives `false` there:
+
+```maxima
+if wx_version_min("26.09.0") = true then
+    wx_matrix(M, oversized=scroll)
+else
+    M;
+```
+
 ## Help! I can not save my document!
 
 If saving as wxmx file does not work, try saving the document as wxm file (and vice versa). And you can also try to remove all output (Menu Cell->Remove all output) and save that file, maybe some unexpected output causes issues during the save process.
