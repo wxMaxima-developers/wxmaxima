@@ -112,7 +112,7 @@ void UnicodeSidebar::OnRightClick(wxGridEvent &event) {
 void UnicodeSidebar::OnMenu(wxCommandEvent &event) {
   if (event.GetId() == EventIDs::popid_addToSymbols) {
     const wxWindow *toplevel = this;
-    while (toplevel->GetParent() != NULL)
+    while (toplevel->GetParent() != nullptr)
       toplevel = toplevel->GetParent();
     wxCommandEvent *ev =
       new wxCommandEvent(SYMBOLADDEVENT, m_charRightClickedOn);

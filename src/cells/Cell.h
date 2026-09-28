@@ -104,9 +104,9 @@ public:
   The base class all cell types the worksheet can consist of are derived from
 
   Every Cell is part of a double-linked list: a Cell has a member m_previous
-  that points to the previous item (or contains a NULL for the head node of
+  that points to the previous item (or contains a nullptr for the head node of
   the list) and a member named m_next that points to the next cell (or
-  contains a NULL if this is the end node of a list).
+  contains a nullptr if this is the end node of a list).
 
   On top of that, the "draw list" (see OnDrawList() and GetBrokenCellCount()/
   GetBrokenCell()) is a flattened view of that same tree along which cells
@@ -133,7 +133,7 @@ public:
   - Images with their title (or the input cells that generated them)
   .
 
-  \attention Derived classes must test if m_next equals NULL and if it doesn't
+  \attention Derived classes must test if m_next equals nullptr and if it doesn't
   they have to delete() it.
 
   On systems where wxWidget supports (and is compiled with)

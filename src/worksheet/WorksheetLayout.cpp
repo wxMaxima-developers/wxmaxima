@@ -141,7 +141,7 @@ bool WorksheetLayout::RecalculateIfNeeded(bool timeout, long timeSliceMs) {
         break;
       }
 
-      const bool atEnd = (cell.GetNext() == NULL);
+      const bool atEnd = (cell.GetNext() == nullptr);
       if (timeout) {
         if (!atEnd)
           m_recalculateStart = cell.GetNext();
@@ -378,7 +378,7 @@ void WorksheetLayout::AdjustSize() {
   // ApplyWorksheetVirtualSize() read the window through the WorksheetView
   // interface, run the arithmetic (ComputeWorksheetVirtualSize) and push the
   // result back to the scrollbars - see WorksheetSizeMath.h, unit-tested there.
-  const bool hasTree = (m_getTree() != NULL);
+  const bool hasTree = (m_getTree() != nullptr);
   int maxWidth = m_configuration->GetBaseIndent();
   int maxHeight = maxWidth;
   if (hasTree)

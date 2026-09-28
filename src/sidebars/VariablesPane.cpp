@@ -64,7 +64,7 @@ Variablespane::Variablespane(wxWindow *parent, wxWindowID id)
   m_grid->Bind(wxEVT_KEY_DOWN, &Variablespane::OnKey, this);
   //  Connect(wxEVT_CHAR,
   //          wxKeyEventHandler(Variablespane::OnChar),
-  //          NULL, this);
+  //          nullptr, this);
   m_grid->HideRowLabels();
   m_grid->EnableDragCell();
   m_grid->EndBatch();

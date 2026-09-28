@@ -92,7 +92,7 @@ public:
   void DetachWorksheetDC()
     {
       if (m_recalcDC == m_worksheetDC.get())
-        m_recalcDC = NULL;
+        m_recalcDC = nullptr;
       m_worksheetDC.reset();
     }
 

@@ -75,13 +75,13 @@ public:
     std::vector<CellPtr<GroupCell>> m_errors;
   };
 
-  //! Returns the cell maxima currently works on. NULL if there isn't such a cell.
+  //! Returns the cell maxima currently works on. nullptr if there isn't such a cell.
   /*!
-    \param resortToLast true = if we already have set the cell maxima works on to NULL
+    \param resortToLast true = if we already have set the cell maxima works on to nullptr
     use the last cell maxima was known to work on.
   */
   GroupCell *GetWorkingGroup(bool resortToLast = false) const;
-  //! Sets the cell maxima currently works on. NULL if there isn't such a cell.
+  //! Sets the cell maxima currently works on. nullptr if there isn't such a cell.
   void SetWorkingGroup(GroupCell *group);
   //! The last group cell maxima was working on (regardless of the current one).
   GroupCell *GetLastWorkingGroup() const { return m_lastWorkingGroup; }
@@ -168,7 +168,7 @@ public:
 private:
   /*! The group cell maxima is currently working on.
 
-    NULL means that maxima isn't currently evaluating a cell.
+    nullptr means that maxima isn't currently evaluating a cell.
   */
   CellPtr<GroupCell> m_workingGroup;
   //! The last group cell maxima was working on.
@@ -181,14 +181,14 @@ private:
   CellPtr<EditorCell> m_activeCell;
   /*! The first cell of the currently selected range of Cells.
 
-    NULL, when no Cells are selected and NULL, if only stuff inside a EditorCell
+    nullptr, when no Cells are selected and nullptr, if only stuff inside a EditorCell
     is selected and therefore the selection is handled by EditorCell; This cell is
     always above m_selectionEnd.
   */
   CellPtr<Cell> m_selectionStart;
   /*! The last cell of the currently selected range of Cells.
 
-    NULL, when no Cells are selected and NULL, if only stuff inside a EditorCell
+    nullptr, when no Cells are selected and nullptr, if only stuff inside a EditorCell
     is selected and therefore the selection is handled by EditorCell; This cell is
     always below m_selectionStart.
   */

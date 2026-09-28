@@ -69,7 +69,7 @@ Configuration::Configuration(wxDC *dc, InitOpt options) :
   m_maximaHelpFormat = frontend;
   m_outdated = false;
   m_lineWidth_em = 88;
-  m_workSheet = NULL;
+  m_workSheet = nullptr;
   SetBackgroundBrush(*wxWHITE_BRUSH);
   ResetAllToDefaults();
   ReadConfig();
@@ -1112,7 +1112,7 @@ Configuration::~Configuration() {
   // for that layout. Such a config never owns the worksheet and is destroyed
   // (harmlessly) while the worksheet is still alive - e.g. on every Ctrl+X /
   // copy-as-bitmap - so it is not subject to the ownership-order invariant.
-  wxASSERT_MSG(m_workSheet == NULL || m_initOpts == temporary,
+  wxASSERT_MSG(m_workSheet == nullptr || m_initOpts == temporary,
                wxS("Bug: a Configuration was destroyed before the Worksheet "
                    "that still uses it"));
   if(m_initOpts != temporary)
@@ -1141,7 +1141,7 @@ wxString Configuration::MaximaDefaultLocation() {
 
 void Configuration::ReadStyles(const wxString &file) {
   RecalculateForce();
-  wxConfigBase *config = NULL;
+  wxConfigBase *config = nullptr;
   if (file == wxEmptyString)
     config = wxConfig::Get();
   else {
@@ -1168,7 +1168,7 @@ void Configuration::ReadStyles(const wxString &file) {
 
 //! Saves the settings to a file.
 void Configuration::WriteSettings(const wxString &file) {
-  wxConfigBase *config = NULL;
+  wxConfigBase *config = nullptr;
   if (file == wxEmptyString)
     config = wxConfig::Get();
   else
@@ -1176,7 +1176,7 @@ void Configuration::WriteSettings(const wxString &file) {
 
   {
     wxXmlNode *topNode =
-      new wxXmlNode(NULL, wxXML_DOCUMENT_NODE, wxEmptyString, wxEmptyString);
+      new wxXmlNode(nullptr, wxXML_DOCUMENT_NODE, wxEmptyString, wxEmptyString);
     wxXmlNode *entriesNode =
       new wxXmlNode(topNode, wxXML_ELEMENT_NODE, "entries");
     wxEnvVariableHashMap::const_iterator it;
@@ -1208,7 +1208,7 @@ void Configuration::WriteSettings(const wxString &file) {
   }
   {
     wxXmlNode *topNode =
-      new wxXmlNode(NULL, wxXML_DOCUMENT_NODE, wxEmptyString, wxEmptyString);
+      new wxXmlNode(nullptr, wxXML_DOCUMENT_NODE, wxEmptyString, wxEmptyString);
     wxXmlNode *headNode = new wxXmlNode(topNode, wxXML_ELEMENT_NODE,
                                         wxS("markers"), wxEmptyString);
     StringBoolHash::const_iterator it;
@@ -1471,7 +1471,7 @@ Configuration::StyleConfigKeys() {
 //! Saves the style settings to a file.
 void Configuration::WriteStyles(const wxString &file) {
   MakeStylesConsistent();
-  wxConfigBase *config = NULL;
+  wxConfigBase *config = nullptr;
   if (file == wxEmptyString)
     config = wxConfig::Get();
   else

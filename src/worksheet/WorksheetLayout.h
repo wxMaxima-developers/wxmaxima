@@ -215,11 +215,11 @@ private:
   std::function<GroupCell *()> m_getTree;
   //! Returns the last GroupCell of the worksheet's cell tree.
   std::function<GroupCell *()> m_getLastCell;
-  //! Where to start recalculation. NULL = No recalculation needed.
+  //! Where to start recalculation. nullptr = No recalculation needed.
   CellPtr<GroupCell> m_recalculateStart;
   /*! The last cell known to be dirty, i.e. the end of the pending dirty range.
 
-    NULL while m_recalculateStart is set means "up to the end of the
+    nullptr while m_recalculateStart is set means "up to the end of the
     document" - the conservative fallback used for whole-document requests
     (and automatically restored if the end cell is destroyed, since a CellPtr
     nulls itself then). The layout pass may stop once it is past this cell

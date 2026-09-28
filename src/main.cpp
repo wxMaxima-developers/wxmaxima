@@ -187,7 +187,7 @@ static const wxCmdLineEntryDesc cmdLineDesc[] = {
   {wxCMD_LINE_OPTION, "", "wxmathml-lisp",
    "Location of wxMathML.lisp (if not the built-in should be used, mainly for developers).",
    wxCMD_LINE_VAL_STRING, 0},
-  {wxCMD_LINE_PARAM, NULL, NULL, "input file", wxCMD_LINE_VAL_STRING,
+  {wxCMD_LINE_PARAM, nullptr, nullptr, "input file", wxCMD_LINE_VAL_STRING,
    wxCMD_LINE_PARAM_OPTIONAL | wxCMD_LINE_PARAM_MULTIPLE},
   wxCMD_LINE_DESC_END};
 
@@ -783,9 +783,9 @@ bool MyApp::OnInit() {
   // if DEBUG=1 show the logwindow at start, else hide it.
   // in wxMaxima.cpp we later read a configuration variable (LogWindow) and show/hide it, according to the previous state (issue #2033).
 #if (DEBUG==1)
-  m_logWindow = new wxLogWindow(NULL, wxS("wxMaxima log window"), true, false);
+  m_logWindow = new wxLogWindow(nullptr, wxS("wxMaxima log window"), true, false);
 #else
-  m_logWindow = new wxLogWindow(NULL, wxS("wxMaxima log window"), false, false);
+  m_logWindow = new wxLogWindow(nullptr, wxS("wxMaxima log window"), false, false);
 #endif
   if (!appearanceLogMsg.empty())
     wxLogMessage("%s", appearanceLogMsg);
@@ -854,7 +854,7 @@ bool MyApp::OnInit() {
 
 #ifdef __WXMSW__
   wxString oldWorkingDir = wxGetCwd();
-  if (!wxGetEnv(wxS("BUILD_DIR"), NULL)) {
+  if (!wxGetEnv(wxS("BUILD_DIR"), nullptr)) {
     wxString dir = wxPathOnly(wxStandardPaths::Get().GetExecutablePath());
     if (dir != wxEmptyString)
       wxSetWorkingDirectory(
@@ -1034,7 +1034,7 @@ void MyApp::NewWindow(const wxString &file, bool evalOnStartup,
     }
     initialContents += block;
   }
-  wxMaxima *frame = new wxMaxima(NULL, wxID_ANY, title, file, initialContents);
+  wxMaxima *frame = new wxMaxima(nullptr, wxID_ANY, title, file, initialContents);
   frame->EvalOnStartup(evalOnStartup);
   frame->ExitAfterEval(exitAfterEval);
   frame->Show(true);
@@ -1155,7 +1155,7 @@ void MyApp::OnFileMenu(wxCommandEvent &ev) {
       for(auto &i : args_c_strings)
         argslist.push_back(static_cast<char *>(i.data()));
       // Add an "end of arguments list" marker to the list of arguments
-      argslist.push_back(NULL);
+      argslist.push_back(nullptr);
       wxProcess *prcss = new wxProcess;
       // Let's generate an unique pointer to that one so C++ automatically destroys it
       // once it is no more needed.
@@ -1170,7 +1170,7 @@ void MyApp::OnFileMenu(wxCommandEvent &ev) {
   }
   else if(ev.GetId() == wxID_PREFERENCES) {
     Configuration config;
-    ConfigDialogue *configW = new ConfigDialogue(NULL);
+    ConfigDialogue *configW = new ConfigDialogue(nullptr);
     configW->Centre(wxBOTH);
     if (configW->ShowModal() == wxID_OK)
       configW->WriteSettings();
@@ -1183,7 +1183,7 @@ void MyApp::OnFileMenu(wxCommandEvent &ev) {
 #ifdef __WXMAC__
 void MyApp::MacNewFile() {
   const wxWindow *frame = GetTopWindow();
-  if (frame == NULL)
+  if (frame == nullptr)
     NewWindow();
 }
 

@@ -47,7 +47,7 @@ FindReplacePane::FindReplacePane(wxWindow *parent, FindReplaceData *data)
                   wxSizerFlags().Right().Center().Border(wxALL, 5));
 
   m_searchText = new wxComboBox(this, -1, data->GetFindString(), wxDefaultPosition,
-                                wxDefaultSize, 0, NULL, wxTE_PROCESS_ENTER);
+                                wxDefaultSize, 0, nullptr, wxTE_PROCESS_ENTER);
   LoadHistory(m_searchText, wxS("SearchHistory"));
   m_searchText->SetValue(data->GetFindString());
   m_searchText->Bind(wxEVT_TEXT, &FindReplacePane::OnFindStringChange, this);
@@ -63,7 +63,7 @@ FindReplacePane::FindReplacePane(wxWindow *parent, FindReplaceData *data)
                   wxSizerFlags().Right().Center().Border(wxALL, 5));
 
   m_replaceText = new wxComboBox(this, -1, data->GetReplaceString(), wxDefaultPosition,
-                                 wxDefaultSize, 0, NULL, wxTE_PROCESS_ENTER);
+                                 wxDefaultSize, 0, nullptr, wxTE_PROCESS_ENTER);
   LoadHistory(m_replaceText, wxS("ReplaceHistory"));
   m_replaceText->SetValue(data->GetReplaceString());
   m_replaceText->Bind(wxEVT_TEXT, &FindReplacePane::OnReplaceStringChange, this);

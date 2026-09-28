@@ -130,7 +130,7 @@ private:
   std::atomic<bool> m_anchorsCompileInFlight{false};
     std::mutex m_helpFileAnchorsLock;
   //! The configuration storage
-  Configuration *m_configuration = NULL;
+  Configuration *m_configuration = nullptr;
   //! All anchors for keywords maxima's helpfile contains (singlepage version)
 
   HelpFileAnchors m_helpFileURLs_singlePage;

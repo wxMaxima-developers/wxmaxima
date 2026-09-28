@@ -332,9 +332,9 @@ protected:
   //! Looks if this opening tag is actually complete.
   static wxRegEx m_xmlOpeningTag;
   //! The gnuplot process info
-  wxProcess *m_gnuplotProcess = NULL;
+  wxProcess *m_gnuplotProcess = nullptr;
   //! Info about the gnuplot process we start for querying the terminals it supports
-  wxProcess *m_gnuplotTerminalQueryProcess = NULL;
+  wxProcess *m_gnuplotTerminalQueryProcess = nullptr;
   /*! A second, hidden, headless gnuplot invocation of the same "Pop out
     interactively" script, started alongside m_gnuplotProcess purely to
     capture warnings/errors gnuplot prints while preparing the plot.
@@ -346,7 +346,7 @@ protected:
     display needed) and Redirect()ed streams instead, so it never shows a
     window of its own - see OnGnuplotPopoutCheckClose().
   */
-  wxProcess *m_gnuplotPopoutCheckProcess = NULL;
+  wxProcess *m_gnuplotPopoutCheckProcess = nullptr;
   //! The temp file m_gnuplotPopoutCheckProcess reads its script from; removed
   //! once OnGnuplotPopoutCheckClose() has read back its output.
   wxString m_gnuplotPopoutCheckFile;
@@ -627,15 +627,15 @@ protected:
   */
   std::unique_ptr<wxSocketServer,  ServerDeleter> m_server;
 
-  wxProcess *m_maximaProcess = NULL;
+  wxProcess *m_maximaProcess = nullptr;
   //! The stdout of the maxima process
-  wxInputStream *m_maximaStdout = NULL;
+  wxInputStream *m_maximaStdout = nullptr;
   //! The stderr of the maxima process
-  wxInputStream *m_maximaStderr = NULL;
+  wxInputStream *m_maximaStderr = nullptr;
   //! The stdin of the maxima process. Normally unused (commands go over the
   //! socket), but sbcl's low-level debugger (LDB) reads from here, so we keep
   //! the stream to talk to LDB. See MaximaProcessManager::WriteToMaximaStdin.
-  wxOutputStream *m_maximaStdin = NULL;
+  wxOutputStream *m_maximaStdin = nullptr;
   //! True while sbcl is stopped in its low-level debugger (LDB). Set from the
   //! LDB banner on the process's stdout, cleared when the process ends. While
   //! set, user input is sent to Maxima's stdin (LDB) instead of the socket.
@@ -858,7 +858,7 @@ public:
     \param wxmData A .wxm file containing the initial worksheet contents
     \param wxmLen  The length of wxmData
   */
-  static void NewWindow(const wxString &file = {}, bool evalOnStartup = false, bool exitAfterEval = false, unsigned char *wxmData = NULL, std::size_t wxmLen = 0);
+  static void NewWindow(const wxString &file = {}, bool evalOnStartup = false, bool exitAfterEval = false, unsigned char *wxmData = nullptr, std::size_t wxmLen = 0);
 
   void OnFileMenu(wxCommandEvent &ev);
 
@@ -926,7 +926,7 @@ public:
   bool OnDropFiles(wxCoord x, wxCoord y, const wxArrayString &files);
 
 private:
-  wxMaxima *m_wxmax = NULL;
+  wxMaxima *m_wxmax = nullptr;
 };
 
 #endif

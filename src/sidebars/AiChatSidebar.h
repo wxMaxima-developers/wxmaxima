@@ -60,12 +60,12 @@ class AiConnectionMonitor;
 class AiChatSidebar : public wxPanel {
 public:
   //! \param statusBar The status bar to keep the AI status icon (4th field)
-  //! in sync with, or NULL to skip that entirely -- see UpdateAiStatusIcon().
+  //! in sync with, or nullptr to skip that entirely -- see UpdateAiStatusIcon().
   //! \param monitor The AI connection monitor sidebar to mirror raw
-  //! request/response traffic into, or NULL to skip that.
+  //! request/response traffic into, or nullptr to skip that.
   AiChatSidebar(wxWindow *parent, Configuration *configuration,
                Worksheet *worksheet, Variablespane *variablesPane,
-               StatusBar *statusBar = NULL, AiConnectionMonitor *monitor = NULL,
+               StatusBar *statusBar = nullptr, AiConnectionMonitor *monitor = nullptr,
                wxWindowID id = wxID_ANY);
 
   //! Re-reads Configuration for the selected provider/API key/model and
@@ -176,8 +176,8 @@ private:
   //! same problem every time the user passes through a working provider and
   //! back, which in practice means once per visit to Options.
   wxString m_reportedConfigProblem;
-  StatusBar *m_statusBar = NULL;
-  AiConnectionMonitor *m_monitor = NULL;
+  StatusBar *m_statusBar = nullptr;
+  AiConnectionMonitor *m_monitor = nullptr;
   //! One-shot; started on SetBusy(true), stopped on SetBusy(false). See
   //! OnLongWaitTimer().
   wxTimer m_longWaitTimer;

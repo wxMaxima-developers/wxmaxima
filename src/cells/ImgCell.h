@@ -81,7 +81,7 @@ public:
   void ReloadImage(const wxString &image, const wxString &wxmFile);
 
   //! Can this image be exported in SVG format?
-  bool CanExportSVG() const override {return (m_image != NULL) && m_image->CanExportSVG();}
+  bool CanExportSVG() const override {return (m_image != nullptr) && m_image->CanExportSVG();}
 
   friend class AnimationCell;
 

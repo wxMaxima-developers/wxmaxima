@@ -1028,14 +1028,14 @@ wxString Cell::ListToMathML(bool startofline) const {
 wxString Cell::OMML2RTF(wxXmlNode *node) {
   wxString result;
 
-  while (node != NULL) {
+  while (node != nullptr) {
     if (node->GetType() == wxXML_ELEMENT_NODE) {
       wxString ommlname = node->GetName();
       result += wxS("{\\m") + ommlname.Right(ommlname.Length() - 2);
 
       // Convert the attributes
       wxXmlAttribute *attributes = node->GetAttributes();
-      while (attributes != NULL) {
+      while (attributes != nullptr) {
         wxString ommlatt = attributes->GetName();
         result += wxS("{\\m") + ommlatt.Right(ommlatt.Length() - 2) + wxS(" ") +
           attributes->GetValue() + wxS("}");
@@ -1043,7 +1043,7 @@ wxString Cell::OMML2RTF(wxXmlNode *node) {
       }
 
       // Convert all child nodes
-      if (node->GetChildren() != NULL) {
+      if (node->GetChildren() != nullptr) {
         result += OMML2RTF(node->GetChildren());
       }
       result += wxS("}");
@@ -1144,7 +1144,7 @@ wxString Cell::RTFescape(wxString input, bool MarkDown) {
 wxString Cell::ToOMML() const { return {}; }
 
 wxString Cell::ListToOMML(bool WXUNUSED(startofline)) const {
-  bool multiCell = (m_next != NULL);
+  bool multiCell = (m_next != nullptr);
 
   wxString retval;
 
@@ -1175,7 +1175,7 @@ wxString Cell::ListToOMML(bool WXUNUSED(startofline)) const {
 wxString Cell::ListToRTF(bool startofline) const {
   wxString retval;
 
-  for (const Cell *tmp = this; tmp != NULL;) {
+  for (const Cell *tmp = this; tmp != nullptr;) {
     wxString rtf = tmp->ToRTF();
     if (!rtf.empty()) {
       if ((GetTextStyle() == TS_LABEL) || ((GetTextStyle() == TS_USERLABEL))) {
@@ -1203,7 +1203,7 @@ wxString Cell::ListToRTF(bool startofline) const {
         startofline = true;
 
         // Skip the rest of this equation
-        while (tmp != NULL) {
+        while (tmp != nullptr) {
           // A non-equation item starts a new rtf item
           if (tmp->ToOMML().empty())
             break;
@@ -1517,7 +1517,7 @@ wxAccStatus CellAccessible::GetParent(wxAccessible **parent) {
       }
     else
       {
-        *parent = NULL;
+        *parent = nullptr;
         return wxACC_OK;
       }
   }
@@ -1645,7 +1645,7 @@ wxAccStatus Cell::HitTest(const wxPoint &pt, int *childId, Cell **child) {
       if(childId)
         *childId = 0;
       if(child)
-        *child = NULL;
+        *child = nullptr;
       return wxACC_FAIL;
     }
 

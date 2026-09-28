@@ -61,7 +61,7 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
                          wxEmptyString, wxITEM_NORMAL);
       } else {
         const ImgCell * const img = worksheet.GetSelectedImgCell();
-        if (img != NULL) {
+        if (img != nullptr) {
           popupMenu.AppendSeparator();
           popupMenu.Append(EventIDs::popid_maxsizechooser, _("Restrict Maximum size"),
                            wxEmptyString, wxITEM_NORMAL);
@@ -134,7 +134,7 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
                              wxEmptyString, wxITEM_NORMAL);
           popupMenu.Append(EventIDs::popid_copy_image, _("Copy as Image"), wxEmptyString,
                            wxITEM_NORMAL);
-          if ((worksheet.GetSelectionStart() != NULL) &&
+          if ((worksheet.GetSelectionStart() != nullptr) &&
               (worksheet.GetSelectionStart() == worksheet.GetSelectionEnd()) &&
               (worksheet.GetSelectionStart()->GetType() == MC_TYPE_SLIDE))
             popupMenu.Append(EventIDs::popid_copy_animation, _("Copy Animation"),
@@ -287,7 +287,7 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
 
           popupMenu.Append(EventIDs::popid_copy_image, _("Copy as Image"), wxEmptyString,
                            wxITEM_NORMAL);
-          if ((worksheet.GetSelectionStart() != NULL) &&
+          if ((worksheet.GetSelectionStart() != nullptr) &&
               (worksheet.GetSelectionStart() == worksheet.GetSelectionEnd()) &&
               (worksheet.GetSelectionStart()->GetType() == MC_TYPE_SLIDE))
             popupMenu.Append(EventIDs::popid_copy_animation, _("Copy Animation"),
@@ -315,7 +315,7 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
 
         {
           const TextCell * const textCell = worksheet.GetSelectedTextCell();
-          if (textCell != NULL)
+          if (textCell != nullptr)
             {
               if(textCell->GetTextStyle() == TS_SPECIAL_CONSTANT) {
                 if (popupMenu.GetMenuItemCount() > 0)
@@ -499,7 +499,7 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
 #endif
         popupMenu.Append(item);
       }
-    GroupCell *group = NULL;
+    GroupCell *group = nullptr;
     if (worksheet.GetActiveCell()) {
       wxASSERT(worksheet.GetActiveCell()->GetGroup());
       group = worksheet.GetActiveCell()->GetGroup();
@@ -547,7 +547,7 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
       }
       switch (group->GetGroupType()) {
       case GC_TYPE_CODE:
-        if ((group->GetEditable() != NULL) &&
+        if ((group->GetEditable() != nullptr) &&
             (group->GetEditable()->ContainsPoint(wxPoint(downx, downy)))) {
           wxString wordUnderCursor = group->GetEditable()->GetWordUnderCaret();
           std::array<std::vector<wxString>, 4> dst;
@@ -628,7 +628,7 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
         }
         break;
       case GC_TYPE_TITLE:
-        if (group->GetHiddenTree() != NULL)
+        if (group->GetHiddenTree() != nullptr)
           popupMenu.Append(EventIDs::popid_unfold, _("Unhide Part"), wxEmptyString,
                            wxITEM_NORMAL);
         else
@@ -636,7 +636,7 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
                            wxITEM_NORMAL);
         break;
       case GC_TYPE_SECTION:
-        if (group->GetHiddenTree() != NULL)
+        if (group->GetHiddenTree() != nullptr)
           popupMenu.Append(EventIDs::popid_unfold, _("Unhide Section"), wxEmptyString,
                            wxITEM_NORMAL);
         else
@@ -647,7 +647,7 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
         popupMenu.Append(EventIDs::popid_evaluate_section,
                          _("Evaluate Subsection\tShift+Ctrl+Enter"),
                          wxEmptyString, wxITEM_NORMAL);
-        if (group->GetHiddenTree() != NULL)
+        if (group->GetHiddenTree() != nullptr)
           popupMenu.Append(EventIDs::popid_unfold, _("Unhide Subsection"), wxEmptyString,
                            wxITEM_NORMAL);
         else
@@ -658,7 +658,7 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
         popupMenu.Append(EventIDs::popid_evaluate_section,
                          _("Evaluate Sub-Subsection\tShift+Ctrl+Enter"),
                          wxEmptyString, wxITEM_NORMAL);
-        if (group->GetHiddenTree() != NULL)
+        if (group->GetHiddenTree() != nullptr)
           popupMenu.Append(EventIDs::popid_unfold, _("Unhide Subsubsection"),
                            wxEmptyString, wxITEM_NORMAL);
         else
@@ -669,7 +669,7 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
         popupMenu.Append(EventIDs::popid_evaluate_section,
                          _("Evaluate Heading 5\tShift+Ctrl+Enter"),
                          wxEmptyString, wxITEM_NORMAL);
-        if (group->GetHiddenTree() != NULL)
+        if (group->GetHiddenTree() != nullptr)
           popupMenu.Append(EventIDs::popid_unfold, _("Unhide Heading 5"), wxEmptyString,
                            wxITEM_NORMAL);
         else
@@ -680,7 +680,7 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
         popupMenu.Append(EventIDs::popid_evaluate_section,
                          _("Evaluate Heading 6\tShift+Ctrl+Enter"),
                          wxEmptyString, wxITEM_NORMAL);
-        if (group->GetHiddenTree() != NULL)
+        if (group->GetHiddenTree() != nullptr)
           popupMenu.Append(EventIDs::popid_unfold, _("Unhide Heading 6"), wxEmptyString,
                            wxITEM_NORMAL);
         else
@@ -688,7 +688,7 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
                            wxITEM_NORMAL);
         break;
       default:
-        if (group->GetHiddenTree() != NULL)
+        if (group->GetHiddenTree() != nullptr)
           popupMenu.Append(EventIDs::popid_unfold, _("Unhide contents"), wxEmptyString,
                            wxITEM_NORMAL);
         else

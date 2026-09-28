@@ -316,7 +316,7 @@ void wxMaxima::ConfigChanged() {
 
     SetCWD(filename);
   }
-  CallAfter([this]{if(m_symbolsSidebar != NULL) m_symbolsSidebar->UpdateUserSymbols();});
+  CallAfter([this]{if(m_symbolsSidebar != nullptr) m_symbolsSidebar->UpdateUserSymbols();});
 }
 
 wxMaxima::wxMaxima(wxWindow *parent, int id,
@@ -1252,7 +1252,7 @@ static void KillAndDetachProcess(wxProcess *&process) {
   // teardown). After Detach() we must not touch `process` again, so drop our
   // reference before issuing the kill.
   process->Detach();
-  process = NULL;
+  process = nullptr;
   if ((pid > 0) && wxProcess::Exists(pid)) {
 #ifdef __WINDOWS__
     // As in KillMaxima: taskkill /T for the whole tree, and wxEXEC_NOEVENTS so
@@ -1367,7 +1367,7 @@ wxMaxima::~wxMaxima() {
   // deterministically, while m_findData is still alive.
   if (GetWorksheet() && GetWorksheet()->m_findDialog) {
     GetWorksheet()->m_findDialog->Destroy();
-    GetWorksheet()->m_findDialog = NULL;
+    GetWorksheet()->m_findDialog = nullptr;
   }
 
   // This window is still counted among the top-level windows while its close
@@ -1748,7 +1748,7 @@ void wxMaxima::LaunchHelpBrowser(wxString uri) {
         wxCharBuffer urlbuffer = uri.mb_str();
         argv.push_back(commandnamebuffer.data());
         argv.push_back(urlbuffer.data());
-        argv.push_back(NULL);
+        argv.push_back(nullptr);
         wxExecute(argv.data(),
                   wxEXEC_ASYNC | wxEXEC_HIDE_CONSOLE | wxEXEC_MAKE_GROUP_LEADER);
       }
@@ -1971,7 +1971,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
     return;
   }
 
-  if (GetWorksheet() == NULL)
+  if (GetWorksheet() == nullptr)
     return;
 
   GetWorksheet()->UpdateScrollPos();
@@ -2078,7 +2078,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
     return;
   }
 
-  if ((m_xmlInspector != NULL) && (m_xmlInspector->UpdateNeeded())) {
+  if ((m_xmlInspector != nullptr) && (m_xmlInspector->UpdateNeeded())) {
     m_xmlInspector->UpdateContents();
     event.RequestMore();
     return;
@@ -2333,7 +2333,7 @@ void wxMaxima::UpdateMenus() {
   if (!GetWorksheet())
     return;
   wxASSERT_MSG(
-               (!GetWorksheet()->HCaretActive()) || (GetWorksheet()->GetActiveCell() == NULL),
+               (!GetWorksheet()->HCaretActive()) || (GetWorksheet()->GetActiveCell() == nullptr),
                _("Both horizontal and vertical cursor active at the same time"));
   m_MenuBar->EnableItem(wxID_COPY, GetWorksheet()->CanCopy());
   m_MenuBar->EnableItem(wxID_CUT, GetWorksheet()->CanCut());
@@ -2351,7 +2351,7 @@ void wxMaxima::UpdateMenus() {
   m_MenuBar->EnableItem(EventIDs::menu_copy_to_file, GetWorksheet()->CanCopy());
   m_MenuBar->EnableItem(EventIDs::menu_copy_text_from_worksheet,
                         GetWorksheet()->CanCopy());
-  m_MenuBar->EnableItem(wxID_SELECTALL, GetWorksheet()->GetTree() != NULL);
+  m_MenuBar->EnableItem(wxID_SELECTALL, GetWorksheet()->GetTree() != nullptr);
   m_MenuBar->EnableItem(wxID_UNDO, GetWorksheet()->CanUndo());
   m_MenuBar->EnableItem(wxID_REDO, GetWorksheet()->CanRedo());
   m_MenuBar->EnableItem(EventIDs::menu_interrupt_id, m_pid > 0);
@@ -2370,7 +2370,7 @@ void wxMaxima::UpdateMenus() {
   m_MenuBar->EnableItem(wxID_SAVE, (!m_fileSaved));
 
   for(const auto &pane: GetSidebarNames())
-    if(m_MenuBar->FindItem(pane.first) != NULL)
+    if(m_MenuBar->FindItem(pane.first) != nullptr)
       m_MenuBar->CheckItem(pane.first, IsPaneDisplayed(pane.first));
 
   bool hidecode = !(m_configuration.ShowCodeCells());
@@ -2407,10 +2407,10 @@ void wxMaxima::UpdateToolBar() {
   GetWorksheet()->m_mainToolBar->CanCopy(GetWorksheet()->CanCopy());
   GetWorksheet()->m_mainToolBar->CanCut(GetWorksheet()->CanCut());
   GetWorksheet()->m_mainToolBar->CanSave((!m_fileSaved));
-  GetWorksheet()->m_mainToolBar->CanPrint(GetWorksheet()->GetTree() != NULL);
+  GetWorksheet()->m_mainToolBar->CanPrint(GetWorksheet()->GetTree() != nullptr);
   GetWorksheet()->m_mainToolBar->CanEvalTillHere(
-                                              (GetWorksheet()->GetTree() != NULL) && (GetWorksheet()->CanPaste()) &&
-                                              (GetWorksheet()->GetHCaret() != NULL) &&
+                                              (GetWorksheet()->GetTree() != nullptr) && (GetWorksheet()->CanPaste()) &&
+                                              (GetWorksheet()->GetHCaret() != nullptr) &&
                                               ((m_client && m_client->IsConnected())));
 
   // On MSW it seems we cannot change an icon without side-effects that somehow
@@ -2440,7 +2440,7 @@ void wxMaxima::UpdateToolBar() {
   case StatusBar::MaximaStatus::maximaerror:
   case StatusBar::MaximaStatus::sending:
     GetWorksheet()->m_mainToolBar->ShowFollowBitmap();
-    if (GetWorksheet()->GetWorkingGroup() == NULL) {
+    if (GetWorksheet()->GetWorkingGroup() == nullptr) {
       GetWorksheet()->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, false);
       GetWorksheet()->m_mainToolBar->EnableTool(ToolBar::tb_follow, false);
     }
@@ -2464,31 +2464,31 @@ void wxMaxima::UpdateToolBar() {
   }
   const EditorCell *editor = GetWorksheet()->GetActiveCell();
 
-  if (editor == NULL) {
-    const GroupCell *group = NULL;
+  if (editor == nullptr) {
+    const GroupCell *group = nullptr;
     if (GetWorksheet()->GetSelectionStart())
       group = GetWorksheet()->GetSelectionStart()->GetGroup();
 
-    if (group != NULL)
+    if (group != nullptr)
       editor = group->GetEditable();
   }
 
-  bool canEvaluateNext = ((editor != NULL) && (editor->GetTextStyle() == TS_CODE_DEFAULT));
+  bool canEvaluateNext = ((editor != nullptr) && (editor->GetTextStyle() == TS_CODE_DEFAULT));
 
   if (!canEvaluateNext) {
     if (GetWorksheet()->HCaretActive()) {
       const GroupCell *group = GetWorksheet()->GetHCaret();
-      if (group == NULL)
+      if (group == nullptr)
         group = GetWorksheet()->GetTree();
       else
         group = group->GetNext();
-      while ((group != NULL) &&
-             (!((group->GetEditable() != NULL) &&
+      while ((group != nullptr) &&
+             (!((group->GetEditable() != nullptr) &&
                 (group->GetEditable()->GetType() == MC_TYPE_INPUT)) &&
               (!GetWorksheet()->GetEvaluationQueue().IsLastInQueue(group))))
         group = group->GetNext();
 
-      if (group != NULL)
+      if (group != nullptr)
         canEvaluateNext = true;
     }
   }
@@ -2496,7 +2496,7 @@ void wxMaxima::UpdateToolBar() {
     GetWorksheet()->m_mainToolBar->CanEvalThisCell(true);
   else
     GetWorksheet()->m_mainToolBar->CanEvalThisCell(false);
-  GetWorksheet()->m_mainToolBar->WorksheetEmpty(GetWorksheet()->GetTree() == NULL);
+  GetWorksheet()->m_mainToolBar->WorksheetEmpty(GetWorksheet()->GetTree() == nullptr);
 
   GetWorksheet()->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, false);
 }
@@ -2526,7 +2526,7 @@ wxString wxMaxima::GetDefaultEntry() {
   if (GetWorksheet()->CanCopy())
     return (GetWorksheet()->GetString()).Trim().Trim(false);
   wxString retval;
-  if (GetWorksheet()->GetActiveCell() != NULL)
+  if (GetWorksheet()->GetActiveCell() != nullptr)
     return retval = GetWorksheet()->GetActiveCell()->GetWordUnderCaret();
   if (GetWorksheet()->IsSelected(MC_TYPE_DEFAULT))
     return GetWorksheet()->GetSelectionStart()->ToString();
@@ -2584,7 +2584,7 @@ long long wxMaxima::GetMaximaCpuTime() {
 #ifdef __WXMSW__
   HANDLE maximaHandle =
     OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, false, m_pid);
-  if (maximaHandle != NULL) {
+  if (maximaHandle != nullptr) {
     FILETIME creationTime, exitTime, kernelTime, userTime;
     if (GetProcessTimes(maximaHandle, &creationTime, &exitTime, &kernelTime,
                         &userTime)) {
@@ -2678,7 +2678,7 @@ void wxMaxima::OnTimerEvent(wxTimerEvent &event) {
   case MAXIMA_STDOUT_POLL_ID:
     m_responseReader.ReadStdErr();
 
-    if (m_maximaProcess != NULL) {
+    if (m_maximaProcess != nullptr) {
       // The atexit() of maxima informs us if the process dies. But it sometimes
       // doesn't do so if it dies due to an out of memory => Periodically check
       // if it really lives.
@@ -2692,7 +2692,7 @@ void wxMaxima::OnTimerEvent(wxTimerEvent &event) {
       // Keep polling while sbcl is stopped in LDB: it uses ~0 CPU waiting on
       // stdin, so without m_inLDB the poll would stop and we would miss LDB's
       // prompt and command output.
-      if ((m_maximaProcess != NULL) && (m_pid > 0) &&
+      if ((m_maximaProcess != nullptr) && (m_pid > 0) &&
           ((cpuPercentage > 0) || (m_maximaBusy) || (m_inLDB)))
         m_maximaStdoutPollTimer.StartOnce(MAXIMAPOLLMSECS);
     }
@@ -2701,7 +2701,7 @@ void wxMaxima::OnTimerEvent(wxTimerEvent &event) {
   case MAXIMA_CONNECT_WATCHDOG_ID: {
     bool connected = m_client && m_client->IsConnected();
     bool processAlive =
-      (m_maximaProcess != NULL) && (m_pid > 0) && wxProcess::Exists(m_pid);
+      (m_maximaProcess != nullptr) && (m_pid > 0) && wxProcess::Exists(m_pid);
     if ((!connected) && processAlive && (!m_maximaConnectWatchdogWarningShown)) {
       m_maximaConnectWatchdogWarningShown = true;
       wxLogMessage(_("Maxima's process is running, but hasn't connected "
@@ -2863,7 +2863,7 @@ void wxMaxima::OnReplaceAll(wxFindDialogEvent &event) {
 }
 
 void wxMaxima::OnSymbolAdd(wxCommandEvent &event) {
-  if(m_symbolsSidebar == NULL)
+  if(m_symbolsSidebar == nullptr)
     return;
   event.Skip();
   m_configuration.SymbolPaneAdditionalChars(
@@ -3180,7 +3180,7 @@ void wxMaxima::OnUnsavedDocument(wxCommandEvent &event) {
 
 bool wxMaxima::SaveNecessary() {
   // No need to save an empty document
-  if ((!GetWorksheet()) || (GetWorksheet()->GetTree() == NULL))
+  if ((!GetWorksheet()) || (GetWorksheet()->GetTree() == nullptr))
     return false;
 
   // No need to save a document only consisting of a prompt
@@ -3319,7 +3319,7 @@ void wxMaxima::ReplaceSuggestion(wxCommandEvent &event) {
   int index = event.GetId() - EventIDs::popid_suggestion1;
 
   EditorCell *editor = GetWorksheet()->GetActiveCell();
-  if (editor == NULL)
+  if (editor == nullptr)
     return;
   editor->SelectWordUnderCaret(false);
   editor->ReplaceSelection(editor->GetWordUnderCaret(),
@@ -3347,7 +3347,7 @@ void wxMaxima::ResetTitle(bool saved, bool force) {
 #endif
     } else {
       wxString name, ext;
-      wxFileName::SplitPath(GetWorksheet()->GetCurrentFile(), NULL, NULL, &name,
+      wxFileName::SplitPath(GetWorksheet()->GetCurrentFile(), nullptr, nullptr, &name,
                             &ext);
 #ifndef __WXOSX__
       if (m_fileSaved)
@@ -3399,7 +3399,7 @@ void wxMaxima::SliderEvent(wxScrollEvent &event) {
   AnimationCell *animation =
     dynamic_cast<AnimationCell *>(GetWorksheet()->GetSelectionStart());
 
-  if (animation != NULL) {
+  if (animation != nullptr) {
     animation->AnimationRunning(false);
     animation->SetDisplayedIndex(event.GetPosition());
 
@@ -3697,7 +3697,7 @@ int wxMaxima::SaveDocumentP() {
 #else
   file = _("unsaved");
 #endif
-  wxFileName::SplitPath(GetWorksheet()->GetCurrentFile(), NULL, NULL, &file, &ext);
+  wxFileName::SplitPath(GetWorksheet()->GetCurrentFile(), nullptr, nullptr, &file, &ext);
   file += wxS(".") + ext;
   LoggingMessageDialog dialog(
                               this,
@@ -3739,7 +3739,7 @@ void wxMaxima::OnMinimize(wxIconizeEvent &event) {
 }
 
 void wxMaxima::ChangeCellStyle(wxCommandEvent &WXUNUSED(event)) {
-  if ((GetWorksheet() == NULL) || (GetWorksheet()->m_mainToolBar == NULL))
+  if ((GetWorksheet() == nullptr) || (GetWorksheet()->m_mainToolBar == nullptr))
     return;
   GetWorksheet()->CloseAutoCompletePopup();
 

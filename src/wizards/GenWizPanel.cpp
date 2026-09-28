@@ -92,7 +92,7 @@ GenWizPanel::GenWizPanel(
   vbox->Add(grid_sizer, wxSizerFlags(0).Expand().Border(
                                                         wxALL, 5 * GetContentScaleFactor()));
 
-  //  if(m_warning != NULL)
+  //  if(m_warning != nullptr)
   //    grid_sizer->Add(m_warning, 0, wxALL, 5);
   m_notebook = new wxNotebook(this, wxID_ANY);
   vbox->Add(
@@ -206,7 +206,7 @@ void GenWizPanel::NewWizard(
   if ((!commandRule.IsEmpty()) || (!description.IsEmpty()) ||
       (!m_manualKeywords.empty())) {
     m_notebook->DeleteAllPages();
-    m_output = NULL;
+    m_output = nullptr;
     m_notebook->Show();
   } else {
     m_notebook->Hide();

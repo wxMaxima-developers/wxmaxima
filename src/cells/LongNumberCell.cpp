@@ -65,7 +65,7 @@ void LongNumberCell::UpdateDisplayedText() const {
 Cell *LongNumberCell::GetInnerCell(size_t index) const
 {
   if(index != 0)
-    return NULL;
+    return nullptr;
   else
     return m_innerCell.get();
 }
@@ -251,7 +251,7 @@ bool LongNumberCell::BreakUp() const {
       finalGroups.push_back(prefix + suffix);
     }
 
-    Cell *last = NULL;
+    Cell *last = nullptr;
     for (const auto &groupStr : finalGroups) {
       if (!last) {
         m_innerCell = std::make_unique<DigitCell>(GetGroup(), m_configuration,

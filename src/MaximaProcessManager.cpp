@@ -144,11 +144,11 @@ void MaximaProcessManager::OnMaximaConnect() {
     wxLogMessage(_("New connection attempt whilst already connected."));
     return;
   }
-  if (m_wxMaxima.m_maximaProcess == NULL) {
+  if (m_wxMaxima.m_maximaProcess == nullptr) {
     wxLogMessage(_("New connection attempt, but no currently running maxima process."));
     return;
   }
-  if (m_wxMaxima.m_server == NULL) {
+  if (m_wxMaxima.m_server == nullptr) {
     wxLogMessage(_("New connection attempt, but no currently no socket maxima could connect to."));
     return;
   }
@@ -258,12 +258,12 @@ bool MaximaProcessManager::StartMaxima(bool force) {
   wxString dirname_Old;
   wxGetEnv("MAXIMA_INITIAL_FOLDER", &dirname_Old);
 
-  if ((m_wxMaxima.m_maximaProcess == NULL) || (m_wxMaxima.m_hasEvaluatedCells) || force ||
+  if ((m_wxMaxima.m_maximaProcess == nullptr) || (m_wxMaxima.m_hasEvaluatedCells) || force ||
       (dirname != dirname_Old)) {
     if (!StartServer())
       return false;
 
-    if ((m_wxMaxima.m_maximaProcess != NULL) || (m_wxMaxima.m_pid >= 0) || (m_wxMaxima.m_client))
+    if ((m_wxMaxima.m_maximaProcess != nullptr) || (m_wxMaxima.m_pid >= 0) || (m_wxMaxima.m_client))
       {
         m_wxMaxima.m_unsuccessfulConnectionAttempts = 0;
         KillMaxima();
@@ -350,9 +350,9 @@ bool MaximaProcessManager::StartMaxima(bool force) {
       if (m_wxMaxima.m_pid <= 0) {
         m_wxMaxima.StatusMaximaBusy(StatusBar::MaximaStatus::process_wont_start);
         m_wxMaxima.StatusText(_("Cannot start the maxima binary"));
-        m_wxMaxima.m_maximaProcess = NULL;
-        m_wxMaxima.m_maximaStdout = NULL;
-        m_wxMaxima.m_maximaStderr = NULL;
+        m_wxMaxima.m_maximaProcess = nullptr;
+        m_wxMaxima.m_maximaStdout = nullptr;
+        m_wxMaxima.m_maximaStderr = nullptr;
         m_wxMaxima.m_statusBar->NetworkStatus(StatusBar::offline);
         // Deferred: StartMaxima can run under a wxProcess-termination event
         // (restart after a crash), and a modal dialog inside an event handler
@@ -409,7 +409,7 @@ bool MaximaProcessManager::StartMaxima(bool force) {
 
 void MaximaProcessManager::KillMaxima(bool logMessage) {
   m_wxMaxima.m_maximaConnectWatchdogTimer.Stop();
-  if (logMessage && (m_wxMaxima.m_closing || (m_wxMaxima.m_maximaProcess == NULL) || (m_wxMaxima.m_pid > 0))) {
+  if (logMessage && (m_wxMaxima.m_closing || (m_wxMaxima.m_maximaProcess == nullptr) || (m_wxMaxima.m_pid > 0))) {
     if (m_wxMaxima.m_maximaPid > 0)
       wxLogMessage("Killing Maxima. Wrapper PID=%ld, Maxima PID=%ld", m_wxMaxima.m_pid,
                    m_wxMaxima.m_maximaPid);
@@ -447,9 +447,9 @@ void MaximaProcessManager::KillMaxima(bool logMessage) {
     // If Maxima no more has a stdout it should automatically close
     m_wxMaxima.m_maximaProcess->CloseOutput();
   }
-  m_wxMaxima.m_maximaStdout = NULL;
-  m_wxMaxima.m_maximaStderr = NULL;
-  m_wxMaxima.m_maximaStdin = NULL;
+  m_wxMaxima.m_maximaStdout = nullptr;
+  m_wxMaxima.m_maximaStderr = nullptr;
+  m_wxMaxima.m_maximaStdin = nullptr;
   m_wxMaxima.m_inLDB = false;
   // This closes Maxima's network connection.
   m_wxMaxima.m_client.reset();
@@ -549,13 +549,13 @@ void MaximaProcessManager::KillMaxima(bool logMessage) {
   // kill actually exits.
   if(m_wxMaxima.m_maximaProcess) {
     m_wxMaxima.m_maximaProcess->Detach();
-    m_wxMaxima.m_maximaProcess = NULL;
+    m_wxMaxima.m_maximaProcess = nullptr;
   }
 }
 
 void MaximaProcessManager::OnMaximaClose(){
   if (wxProcess::Exists(m_wxMaxima.m_pid)) KillMaxima();
-  m_wxMaxima.m_maximaProcess = NULL;
+  m_wxMaxima.m_maximaProcess = nullptr;
   MaximaProcessManager::UnregisterChildMaxima(m_wxMaxima.m_pid);
   m_wxMaxima.m_pid = -1;
   if (m_wxMaxima.m_maximaStdout) {
@@ -584,9 +584,9 @@ void MaximaProcessManager::OnMaximaClose(){
     if (!o.IsEmpty())
       wxLogMessage(_("Last message from maxima's stderr: %s"), o);
   }
-  m_wxMaxima.m_maximaStdout = NULL;
-  m_wxMaxima.m_maximaStderr = NULL;
-  m_wxMaxima.m_maximaStdin = NULL;
+  m_wxMaxima.m_maximaStdout = nullptr;
+  m_wxMaxima.m_maximaStderr = nullptr;
+  m_wxMaxima.m_maximaStdin = nullptr;
   // An LDB session ends with its process: retire the pending prompt's answer
   // cell (and the question-pending state that made it clickable).
   if (m_wxMaxima.m_inLDB)
@@ -850,10 +850,10 @@ void MaximaProcessManager::Interrupt(wxCommandEvent &WXUNUSED(event)) {
     // interfaces/xmaxima/win32/win_signals.lisp
     // and interfaces/xmaxima/win32/winkill_lib.c in maxima's tree.
     HANDLE sharedMemoryHandle = 0;
-    LPVOID sharedMemoryAddress = NULL;
+    LPVOID sharedMemoryAddress = nullptr;
 
     // wxMaxima doesn't want to get interrupt signals.
-    // SetConsoleCtrlHandler(NULL, true);
+    // SetConsoleCtrlHandler(nullptr, true);
 
     /* First try to send the signal to gcl. */
     long signalPid = (m_wxMaxima.m_maximaPid > 0) ? m_wxMaxima.m_maximaPid : m_wxMaxima.m_pid;
@@ -865,14 +865,14 @@ void MaximaProcessManager::Interrupt(wxCommandEvent &WXUNUSED(event)) {
 
     /* If gcl is not running, send to maxima. */
     wxWCharBuffer sharedMemoryName2(wxString::Format("maxima-%d", signalPid).wc_str());
-    if (sharedMemoryHandle == NULL) {
+    if (sharedMemoryHandle == nullptr) {
       sharedMemoryHandle =
         OpenFileMapping(FILE_MAP_WRITE,    /*  Read/write permission.   */
                         FALSE,             /*  Do not inherit the name  */
                         sharedMemoryName2.data()); /*  of the mapping object.   */
     }
 
-    if (sharedMemoryHandle == NULL) {
+    if (sharedMemoryHandle == nullptr) {
       wxLogMessage(_("The Maxima process doesn't offer a shared memory segment "
                      "we can send an interrupt signal to."));
 
@@ -880,7 +880,7 @@ void MaximaProcessManager::Interrupt(wxCommandEvent &WXUNUSED(event)) {
       // console interrupt.
       // Before we do that we stop our program from closing on receiving a
       // Ctrl+C from the console.
-      SetConsoleCtrlHandler(NULL, TRUE);
+      SetConsoleCtrlHandler(nullptr, TRUE);
 
       // We could send a CTRL_BREAK_EVENT instead of a CTRL_C_EVENT that
       // isn't handled in the 2010 clisp release (see:
@@ -892,13 +892,13 @@ void MaximaProcessManager::Interrupt(wxCommandEvent &WXUNUSED(event)) {
       // has the group ID 0, see
       // https://docs.microsoft.com/en-us/windows/console/generateconsolectrlevent
       if (GenerateConsoleCtrlEvent(CTRL_C_EVENT, 0) == 0) {
-        LPTSTR errorText = NULL;
+        LPTSTR errorText = nullptr;
 
         FormatMessage(
                       FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_ALLOCATE_BUFFER |
                       FORMAT_MESSAGE_IGNORE_INSERTS,
-                      NULL, GetLastError(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-                      errorText, 0, NULL);
+                      nullptr, GetLastError(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+                      errorText, 0, nullptr);
 
         wxString errorMessage;
         if (!errorText)
@@ -921,7 +921,7 @@ void MaximaProcessManager::Interrupt(wxCommandEvent &WXUNUSED(event)) {
                       0,                  /* Size of hFile.  */
                       0);                 /* Map entire file.  */
 
-      if (sharedMemoryAddress == NULL) {
+      if (sharedMemoryAddress == nullptr) {
         wxLogMessage(_("Could not map view of the file needed in order to "
                        "send an interrupt signal to maxima."));
         return;
@@ -934,8 +934,8 @@ void MaximaProcessManager::Interrupt(wxCommandEvent &WXUNUSED(event)) {
       wxLogMessage(_("Sending an interrupt signal to Maxima."));
       UnmapViewOfFile(sharedMemoryAddress);
       CloseHandle(sharedMemoryHandle);
-      sharedMemoryAddress = NULL;
-      sharedMemoryHandle = NULL;
+      sharedMemoryAddress = nullptr;
+      sharedMemoryHandle = nullptr;
       return;
     }
   }
@@ -1014,7 +1014,7 @@ void MaximaProcessManager::OnGnuplotQueryTerminals(wxProcessEvent &event) {
   m_wxMaxima.m_gnuplotTerminalQueryProcess->CloseOutput();
   // Drop our reference only - the Skip() above leaves the event unprocessed,
   // which makes wxProcess::OnTerminate delete the object itself.
-  m_wxMaxima.m_gnuplotTerminalQueryProcess = NULL;
+  m_wxMaxima.m_gnuplotTerminalQueryProcess = nullptr;
   // Remember which gnuplot we just probed so a Maxima restart with an
   // unchanged gnuplot doesn't probe again. The PID guard above ensures this
   // event belongs to the latest query, i.e. to the current m_gnuplotcommand.
@@ -1022,7 +1022,7 @@ void MaximaProcessManager::OnGnuplotQueryTerminals(wxProcessEvent &event) {
 }
 
 void MaximaProcessManager::OnGnuplotClose(wxProcessEvent &event) {
-  m_wxMaxima.m_gnuplotProcess = NULL;
+  m_wxMaxima.m_gnuplotProcess = nullptr;
   wxLogMessage(_("Gnuplot has closed."));
   event.Skip();
 }
@@ -1094,7 +1094,7 @@ void MaximaProcessManager::OnGnuplotPopoutCheckClose(wxProcessEvent &event) {
       wxFileExists(m_wxMaxima.m_gnuplotPopoutCheckFile))
     wxRemoveFile(m_wxMaxima.m_gnuplotPopoutCheckFile);
   m_wxMaxima.m_gnuplotPopoutCheckFile.Clear();
-  m_wxMaxima.m_gnuplotPopoutCheckProcess = NULL;
+  m_wxMaxima.m_gnuplotPopoutCheckProcess = nullptr;
 
   // A script that prepares a plot without errors normally produces no
   // (remaining, after the filtering above) output at all in gnuplot's

@@ -113,10 +113,10 @@ wxSize ToolBar::GetOptimalBitmapSize()
   return siz;
 }
 
-ToolBar::~ToolBar() { m_plotSlider = NULL; }
+ToolBar::~ToolBar() { m_plotSlider = nullptr; }
 
 void ToolBar::UpdateSlider(AnimationCell *cell) {
-  if (cell == NULL)
+  if (cell == nullptr)
     return;
   std::size_t animationDisplayedIndex = cell->GetDisplayedIndex();
   std::size_t animationMaxIndex = cell->Length();
@@ -125,7 +125,7 @@ void ToolBar::UpdateSlider(AnimationCell *cell) {
       (m_animationMaxIndex != animationMaxIndex)) {
     m_animationMaxIndex = animationMaxIndex;
     m_animationDisplayedIndex = animationDisplayedIndex;
-    if (m_plotSlider != NULL) {
+    if (m_plotSlider != nullptr) {
       m_plotSlider->SetRange(0, cell->Length() - 1);
       m_plotSlider->SetValue(cell->GetDisplayedIndex());
       m_plotSlider->SetToolTip(wxString::Format(
@@ -158,7 +158,7 @@ public:
   wxAccStatus GetChild(int childId, wxAccessible **child) override {
     if (!child)
       return wxACC_FAIL;
-    *child = nullptr; // NULL + wxACC_OK => a "simple element" answered by us
+    *child = nullptr; // nullptr + wxACC_OK => a "simple element" answered by us
     if (childId == 0)
       return wxACC_OK;
     wxAuiToolBarItem *item = ItemFor(childId);

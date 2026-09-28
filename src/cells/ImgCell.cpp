@@ -158,7 +158,7 @@ void ImgCell::SetCurrentPoint(wxPoint point) const {
 
 void ImgCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
   Cell::Draw(dc, antialiassingDC);
-  if (DrawThisCell() && (m_image != NULL)) {
+  if (DrawThisCell() && (m_image != nullptr)) {
     wxPoint point = GetCurrentPoint();
     if (!InUpdateRegion())
       return;

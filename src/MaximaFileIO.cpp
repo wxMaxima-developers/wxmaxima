@@ -99,7 +99,7 @@ bool MaximaFileIO::OpenMACFile(const wxString &file, Worksheet *document,
 
   if(m_wxMaxima.GetWorksheet())
     {
-      m_wxMaxima.GetWorksheet()->SetHCaret(NULL);
+      m_wxMaxima.GetWorksheet()->SetHCaret(nullptr);
       m_wxMaxima.GetWorksheet()->ScrollToCaret();
     }
   return true;
@@ -165,7 +165,7 @@ bool MaximaFileIO::OpenWXMFile(const wxString &file, Worksheet *document,
   m_wxMaxima.StatusMaximaBusy(StatusBar::MaximaStatus::waiting);
   if(m_wxMaxima.GetWorksheet())
     {
-      m_wxMaxima.GetWorksheet()->SetHCaret(NULL);
+      m_wxMaxima.GetWorksheet()->SetHCaret(nullptr);
       m_wxMaxima.GetWorksheet()->ScrollToCaret();
     }
   return true;
@@ -495,7 +495,7 @@ bool MaximaFileIO::OpenWXMXFile(const wxString &file, Worksheet *document,
 
   // We can set the cursor to the last known position.
   if (m_wxMaxima.GetWorksheet() && (ActiveCellNumber == 0))
-    m_wxMaxima.GetWorksheet()->SetHCaret(NULL);
+    m_wxMaxima.GetWorksheet()->SetHCaret(nullptr);
   if (m_wxMaxima.GetWorksheet() && (ActiveCellNumber > 0)) {
     GroupCell *pos = m_wxMaxima.GetWorksheet()->GetTree();
 
@@ -715,7 +715,7 @@ bool MaximaFileIO::OpenFile(const wxString &file, const wxString &command) {
     wxString filename(m_wxMaxima.GetWorksheet()->GetCurrentFile());
     m_wxMaxima.SetCWD(std::move(filename));
   }
-  if (m_wxMaxima.m_tableOfContents != NULL) {
+  if (m_wxMaxima.m_tableOfContents != nullptr) {
     m_wxMaxima.m_scheduleUpdateToc = false;
     m_wxMaxima.m_tableOfContents->UpdateTableOfContents(
                                              m_wxMaxima.GetWorksheet()->GetHCaret());
@@ -773,7 +773,7 @@ bool MaximaFileIO::SaveFile(bool forceSave) {
       config->Read(wxS("defaultExt"), &fileExt);
       file = _("untitled") + wxS(".") + fileExt;
     } else
-      wxFileName::SplitPath(file, NULL, NULL, &file, &fileExt);
+      wxFileName::SplitPath(file, nullptr, nullptr, &file, &fileExt);
 
     wxFileDialog fileDialog(
                             &m_wxMaxima, _("Save As"), m_wxMaxima.m_lastPath, file,

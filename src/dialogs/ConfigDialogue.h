@@ -143,7 +143,7 @@ private:
   std::unique_ptr<struct wxm_NSVGrasterizer, decltype(std::free)*> m_svgRast{nullptr, std::free};
   //! The configuration storage
   std::unique_ptr<Configuration> m_configuration;
-  Worksheet *m_sampleWorksheet = NULL;
+  Worksheet *m_sampleWorksheet = nullptr;
 
   typedef std::unordered_map <wxString, wxString, wxStringHash> StringHash;
   typedef std::unordered_map <wxString, long, wxStringHash> Languages;
@@ -402,7 +402,7 @@ protected:
     own size did not change, so the shown controls keep whatever position
     they had while hidden: none. See the comment at the end of
     LoadAiProviderRecordIntoUi(). */
-  wxScrolled<wxPanel> *m_aiChatPanel = NULL;
+  wxScrolled<wxPanel> *m_aiChatPanel = nullptr;
   wxChoice *m_aiChatProviderChoice;
   //! One reusable box showing whichever provider is currently selected,
   //! rather than all of them stacked at once -- repopulated by

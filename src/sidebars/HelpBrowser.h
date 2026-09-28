@@ -72,9 +72,9 @@ private:
 
   wxWindowIDRef m_topicButtonID0;
   std::vector<wxWindowIDRef> m_topicButtonIDs;
-  MaximaManual *m_maximaManual = NULL;
-  wxWebView *m_webView = NULL;
-  wxTextCtrl *m_searchText = NULL;
+  MaximaManual *m_maximaManual = nullptr;
+  wxWebView *m_webView = nullptr;
+  wxTextCtrl *m_searchText = nullptr;
   Configuration *m_configuration;
   wxString m_startUrl;
   bool m_findDown = true;

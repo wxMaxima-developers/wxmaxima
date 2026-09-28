@@ -78,11 +78,11 @@ void EvaluationQueue::Remove(GroupCell *gr) {
 }
 
 void EvaluationQueue::AddToQueue(GroupCell *gr) {
-  if (gr == NULL)
+  if (gr == nullptr)
     return;
 
   if (gr->GetGroupType() != GC_TYPE_CODE ||
-      gr->GetEditable() == NULL) // don't add cells which can't be evaluated
+      gr->GetEditable() == nullptr) // don't add cells which can't be evaluated
     return;
 
   const bool wasEmpty = m_queue.empty();
@@ -346,7 +346,7 @@ int EvaluationQueue::CommandsLeftInCell() const {
 
 GroupCell *EvaluationQueue::GetCell() {
   if (m_queue.empty())
-    return NULL;
+    return nullptr;
   else
     return m_queue.front().cell;
 }

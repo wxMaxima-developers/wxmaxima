@@ -177,10 +177,10 @@ wxString ExptCell::ToTeX() const {
 
 wxString ExptCell::GetDiffPart() const {
   wxString s(wxS(","));
-  if (m_baseCell != NULL)
+  if (m_baseCell != nullptr)
     s += m_baseCell->ListToString();
   s += wxS(",");
-  if (m_exptCell != NULL)
+  if (m_exptCell != nullptr)
     s += m_exptCell->ListToString();
   return s;
 }

@@ -116,7 +116,7 @@ private:
   //! Parses attributes that apply to nearly all types of cells
   static void ParseCommonGroupCellAttrs(wxXmlNode *node, const std::unique_ptr<GroupCell> &group);
 
-  //! Returns cell or, if cell==NULL, an empty text cell as a fallback.
+  //! Returns cell or, if cell==nullptr, an empty text cell as a fallback.
   std::unique_ptr<Cell> HandleNullPointer(std::unique_ptr<Cell> &&cell);
 
   /*! Get the next xml tag
@@ -271,7 +271,7 @@ private:
   CellType m_ParserStyle = MC_TYPE_DEFAULT;
   FracCell::FracType m_FracStyle;
   CellPtr<GroupCell> m_group;
-  Configuration *m_configuration = NULL;
+  Configuration *m_configuration = nullptr;
   bool m_highlight = false;
   wxString m_wxmxFile; // if not wxEmptyString: The wxmx file to load images from
   static wxString m_unknownXMLTagToolTip;

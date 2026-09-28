@@ -102,10 +102,10 @@ long TableOfContents::ClampDropIndex(long hitIndex, int itemCount,
 }
 
 void TableOfContents::OnMouseMotion(wxMouseEvent &event) {
-  if (m_dragImage != NULL) {
+  if (m_dragImage != nullptr) {
     int flags;
     m_dragCurrentPos =
-      m_displayedItems->HitTest(event.GetPosition(), flags, NULL);
+      m_displayedItems->HitTest(event.GetPosition(), flags, nullptr);
     m_dragCurrentPos = ClampDropIndex(m_dragCurrentPos,
                                       m_displayedItems->GetItemCount(),
                                       m_numberOfCaptionsDragged);
@@ -175,7 +175,7 @@ void TableOfContents::OnDragStart(wxListEvent &evt) {
       // ever visits live cells.
       const GroupCell *tmp = dragged->GetNext();
       auto index = evt.GetIndex() + 1;
-      while ((tmp != NULL) && (index <= m_displayedItems->GetItemCount())) {
+      while ((tmp != nullptr) && (index <= m_displayedItems->GetItemCount())) {
         if (!tmp->IsLesserGCType(dragged->GetGroupType()))
           break;
         if ((static_cast<std::size_t>(index) < m_displayedGroupCells.size()) &&
@@ -192,19 +192,19 @@ void TableOfContents::OnDragStart(wxListEvent &evt) {
 void TableOfContents::OnMouseUp(wxMouseEvent &evt) {
   m_scrollUpTimer.Stop();
   m_scrollDownTimer.Stop();
-  if (m_dragImage != NULL) {
+  if (m_dragImage != nullptr) {
     m_dragImage->Hide();
     m_dragImage->EndDrag();
     delete m_dragImage;
-    m_dragImage = NULL;
+    m_dragImage = nullptr;
   }
   int flags;
-  m_dragStop = m_displayedItems->HitTest(evt.GetPosition(), flags, NULL);
+  m_dragStop = m_displayedItems->HitTest(evt.GetPosition(), flags, nullptr);
   m_dragStop = ClampDropIndex(m_dragStop, m_displayedItems->GetItemCount(),
                               m_numberOfCaptionsDragged);
   if ((m_dragStart >= 0) && (m_dragStop >= 0) && (m_dragStart != m_dragStop)) {
     const wxWindow *mainWin = this;
-    while (mainWin->GetParent() != NULL)
+    while (mainWin->GetParent() != nullptr)
       mainWin = mainWin->GetParent();
     wxCommandEvent *tocEv = new wxCommandEvent;
     tocEv->SetEventType(wxEVT_MENU);
@@ -230,9 +230,9 @@ void TableOfContents::OnSize(wxSizeEvent &event) {
 }
 
 TableOfContents::~TableOfContents() {
-  if (m_dragImage != NULL) {
+  if (m_dragImage != nullptr) {
     m_dragImage->EndDrag();
-    m_dragImage = NULL;
+    m_dragImage = nullptr;
   }
 }
 
@@ -361,20 +361,20 @@ void TableOfContents::UpdateDisplay() {
         m_otherCells.push_back(m_displayedGroupCells.at(i));
     }
 
-    m_dndEndCell = NULL;
+    m_dndEndCell = nullptr;
 
     for (size_t index = 0; index < m_structure.size(); index++) {
       if (index >= static_cast<std::size_t>(m_dragCurrentPos)) {
         m_dndEndCell = m_tree->get();
         if (m_otherCells.empty()) {
-          while (m_dndEndCell->GetNext() != NULL)
+          while (m_dndEndCell->GetNext() != nullptr)
             m_dndEndCell = m_dndEndCell->GetNext();
         } else {
-          while ((m_dndEndCell->GetNext() != NULL) &&
+          while ((m_dndEndCell->GetNext() != nullptr) &&
                  (m_dndEndCell->GetNext() != m_otherCells.front()))
             m_dndEndCell = m_dndEndCell->GetNext();
           if (m_dndEndCell->GetNext() != m_otherCells.front())
-            m_dndEndCell = NULL;
+            m_dndEndCell = nullptr;
         }
 
         while (!m_draggedCells.empty()) {
@@ -439,7 +439,7 @@ void TableOfContents::UpdateDisplay() {
 
 GroupCell *TableOfContents::GetCell(std::size_t index) {
   if (index >= m_displayedGroupCells.size())
-    return NULL;
+    return nullptr;
 
   return m_displayedGroupCells.at(index);
 }
@@ -454,7 +454,7 @@ wxString TableOfContents::TocEntryString(GroupCell *cell) {
     curr = cell->GetEditable()->ToString(true);
 
   if (m_configuration->TocShowsSectionNumbers()) {
-    if (cell->GetPrompt() != NULL)
+    if (cell->GetPrompt() != nullptr)
       curr = cell->GetPrompt()->ToString() + wxS(" ") + curr;
     curr.Trim(false);
   } else
@@ -502,7 +502,7 @@ void TableOfContents::OnMouseRightDown(wxListEvent &event) {
   GroupCell *const tocRoot = m_tree ? m_tree->get() : nullptr;
   m_cellRightClickedOn = (tocRoot && tocRoot->Contains(clicked)) ? clicked : nullptr;
 
-  if (m_cellRightClickedOn != NULL) {
+  if (m_cellRightClickedOn != nullptr) {
     if (m_cellRightClickedOn->GetHiddenTree())
       popupMenu->Append(EventIDs::popid_Unfold, _("Unhide"), wxEmptyString,
                         wxITEM_NORMAL);
