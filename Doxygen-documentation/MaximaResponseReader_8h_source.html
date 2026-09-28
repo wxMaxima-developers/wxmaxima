@@ -176,11 +176,11 @@ $(function() {
 <div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span> </div>
 <div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>  <span class="keywordtype">void</span> RegisterVariableActions();</div>
 <div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span> </div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>  <span class="keyword">typedef</span> void (<a class="code hl_class" href="classMaximaResponseReader.html">MaximaResponseReader</a>::*VarReadFunction)(<span class="keyword">const</span> wxString &amp;value);</div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>  <span class="keyword">typedef</span> void (<a class="code hl_class" href="classMaximaResponseReader.html">MaximaResponseReader</a>::*VarUndefinedFunction)();</div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>  <span class="keyword">typedef</span> std::unordered_map &lt;wxString, VarReadFunction, wxStringHash&gt; VarReadFunctionHash;</div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>  <span class="keyword">typedef</span> std::unordered_map &lt;wxString, VarUndefinedFunction,</div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>                              wxStringHash&gt; VarUndefinedFunctionHash;</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>  <span class="keyword">using </span>VarReadFunction = void (<a class="code hl_class" href="classMaximaResponseReader.html">MaximaResponseReader</a>::*)(<span class="keyword">const</span> wxString &amp;value);</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>  <span class="keyword">using </span>VarUndefinedFunction = void (<a class="code hl_class" href="classMaximaResponseReader.html">MaximaResponseReader</a>::*)();</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>  <span class="keyword">using </span>VarReadFunctionHash = std::unordered_map&lt;wxString, VarReadFunction, wxStringHash&gt;;</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>  <span class="keyword">using </span>VarUndefinedFunctionHash =</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>    std::unordered_map&lt;wxString, VarUndefinedFunction, wxStringHash&gt;;</div>
 <div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>  <span class="keyword">static</span> VarReadFunctionHash m_variableReadActions;</div>
 <div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>  <span class="keyword">static</span> VarUndefinedFunctionHash m_variableUndefinedActions;</div>
 <div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>};</div>
