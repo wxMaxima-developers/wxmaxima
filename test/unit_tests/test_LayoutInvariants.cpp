@@ -997,6 +997,106 @@ SCENARIO("An oversized matrix nested in another one") {
   }
 }
 
+// The centre of the entry in this row and column, where a mouse over it sits.
+static wxPoint EntryCentre(const MatrCell *matr, size_t row, size_t col) {
+  const wxRect rect =
+    matr->GetInnerCell(static_cast<int>(row), static_cast<int>(col))->GetRect();
+  return wxPoint(rect.x + rect.width / 2, rect.y + rect.height / 2);
+}
+
+SCENARIO("Hovering over a matrix says which row and column the mouse is over") {
+  g_cfg->SetZoomFactor(1.0);
+  g_cfg->SetCanvasSize(wxSize(600, 300));
+
+  GIVEN("a small matrix, shown in full") {
+    std::unique_ptr<GroupCell> group;
+    MatrCell *matr = LayOutMatrix(group, 3, 4);
+    THEN("each entry is found, counted from 1 like M[row, column]") {
+      for (size_t row = 0; row < 3; row++)
+        for (size_t col = 0; col < 4; col++) {
+          size_t foundRow = 99, foundCol = 99;
+          REQUIRE(matr->EntryAt(EntryCentre(matr, row, col), foundRow, foundCol));
+          CHECK(foundRow == row);
+          CHECK(foundCol == col);
+          CHECK(matr->GetToolTip(EntryCentre(matr, row, col)) ==
+                wxString::Format(wxS("Row %lu, column %lu"),
+                                 static_cast<unsigned long>(row + 1),
+                                 static_cast<unsigned long>(col + 1)));
+        }
+    }
+    THEN("the gap between two entries belongs to one of them") {
+      // Halfway between the first two columns: no flicker to "nothing".
+      const wxPoint left = EntryCentre(matr, 1, 0);
+      const wxRect first = matr->GetInnerCell(1, 0)->GetRect();
+      const wxRect second = matr->GetInnerCell(1, 1)->GetRect();
+      size_t row = 99, col = 99;
+      CHECK(matr->EntryAt(wxPoint((first.GetRight() + second.GetLeft()) / 2,
+                                  left.y), row, col));
+      CHECK(row == 1);
+    }
+    THEN("the brackets are no entry, and have no tooltip") {
+      const wxPoint onBracket = matr->GetCurrentPoint() + wxPoint(1, 0);
+      REQUIRE(matr->ContainsPoint(onBracket));
+      size_t row = 99, col = 99;
+      CHECK_FALSE(matr->EntryAt(onBracket, row, col));
+      CHECK(matr->GetToolTip(onBracket).empty());
+    }
+  }
+
+  GIVEN("a matrix whose middle rows are elided") {
+    OversizedMatricesMode mode(Configuration::OversizedMatrices::elide);
+    std::unique_ptr<GroupCell> group;
+    MatrCell *matr = LayOutMatrix(group, 60, 3);
+    REQUIRE(matr->ElidedRows() > 0);
+    THEN("a row after the elided ones gets its real number, and the elision "
+         "is still explained") {
+      const wxString toolTip = matr->GetToolTip(EntryCentre(matr, 59, 2));
+      CHECK(toolTip.StartsWith(wxS("Row 60, column 3\n")));
+      CHECK(toolTip.Contains(wxS("Rows")));
+    }
+    THEN("the dots in place of the elided rows are no entry") {
+      size_t firstHidden = 0;
+      while (!matr->IsElided(firstHidden, 0))
+        firstHidden++;
+      const size_t firstAfter = firstHidden + matr->ElidedRows();
+      const wxPoint onDots(EntryCentre(matr, 0, 0).x,
+                           (matr->GetInnerCell(static_cast<int>(firstHidden - 1), 0)->GetRect().GetBottom() +
+                            matr->GetInnerCell(static_cast<int>(firstAfter), 0)->GetRect().GetTop()) / 2);
+      size_t row = 99, col = 99;
+      CHECK_FALSE(matr->EntryAt(onDots, row, col));
+      CHECK(matr->GetToolTip(onDots).StartsWith(wxS("Rows")));
+    }
+  }
+
+  GIVEN("a scrolled matrix") {
+    FakeScrollHost host;
+    ScrollModeWithHost scrollMode(&host);
+    std::unique_ptr<GroupCell> group;
+    MatrCell *matr = LayOutMatrix(group, 60, 40);
+    REQUIRE(matr->HasVerticalScrollbar());
+    matr->ScrollTo(wxPoint(0, matr->ScrollableSize().y));
+    THEN("the entry now under the mouse is the one reported") {
+      const wxPoint lastRow = EntryCentre(matr, 59, 0);
+      REQUIRE(matr->ViewportRect().Contains(lastRow));
+      size_t row = 99, col = 99;
+      REQUIRE(matr->EntryAt(lastRow, row, col));
+      CHECK(row == 59);
+      CHECK(col == 0);
+    }
+  }
+
+  GIVEN("a matrix nested in another one") {
+    std::unique_ptr<GroupCell> group;
+    MatrCell *outer = LayOutMatrixXml(group, NestedMatrixXml(3, 3));
+    THEN("only the outer matrix's position is given, once") {
+      const wxString toolTip = outer->GetToolTip(EntryCentre(
+        dynamic_cast<MatrCell *>(outer->GetInnerCell(0, 0)), 2, 2));
+      CHECK(toolTip == wxS("Row 1, column 1"));
+      CHECK(outer->GetToolTip(EntryCentre(outer, 1, 1)) == wxS("Row 2, column 2"));
+    }
+  }
+}
+
 SCENARIO("Without a scrollbar host, scroll mode elides instead") {
   // Printing has no window to put scrollbars in, and paper can't scroll.
   g_cfg->SetZoomFactor(1.0);
