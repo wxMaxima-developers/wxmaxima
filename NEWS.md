@@ -1,5 +1,9 @@
 # Current development version
 
+- Dragging a rectangle across several entries of a matrix now selects just
+  that block of entries instead of the whole matrix, and highlights it. Every
+  "Copy ..." command -- Copy, plain text, LaTeX, Octave/Matlab, MathML, RTF,
+  image and SVG -- then copies only that sub-matrix (#2345).
 - `wx_matrix()` now only returns the formatted matrix instead of also
   displaying it, so `wx_matrix(M);` shows the matrix once, not twice, and
   `wx_matrix(M)$` doesn't show it at all. The formatting stays with that

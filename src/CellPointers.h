@@ -25,6 +25,8 @@
 #define WXMAXIMA_CELLPOINTERS_H
 
 #include "cells/Cell.h"
+#include "cells/MatrixBlock.h"
+#include <optional>
 #include <wx/string.h>
 #include <vector>
 
@@ -94,9 +96,37 @@ public:
   //! The last cell of the currently selected range of cells, or null.
   const CellPtr<Cell> &GetSelectionEnd() const { return m_selectionEnd; }
   //! Set the first cell of the selected range (may be null).
-  void SetSelectionStart(Cell *cell) { m_selectionStart = cell; }
+  //! Forgets any selected matrix block, see SetSelectedMatrixBlock().
+  void SetSelectionStart(Cell *cell) { m_selectionStart = cell; m_blockMatrix = {}; }
   //! Set the last cell of the selected range (may be null).
-  void SetSelectionEnd(Cell *cell) { m_selectionEnd = cell; }
+  //! Forgets any selected matrix block, see SetSelectedMatrixBlock().
+  void SetSelectionEnd(Cell *cell) { m_selectionEnd = cell; m_blockMatrix = {}; }
+
+  /*! Narrow the selection to a block of one matrix's entries (GH #2345)
+
+    Selects matrix -- which must be a MatrCell -- and remembers that only
+    this block of its entries is meant. Every copy of the selection then
+    copies just that sub-matrix.
+  */
+  void SetSelectedMatrixBlock(Cell *matrix, const MatrixBlock &block) {
+    m_selectionStart = matrix;
+    m_selectionEnd = matrix;
+    m_blockMatrix = matrix;
+    m_matrixBlock = block;
+  }
+  /*! The selected block of a matrix's entries, if only a block is selected
+
+    Valid only while the selection is exactly the matrix the block was chosen
+    in. Changing the selection in any way forgets the block, so a matrix
+    selected later -- or the same one, selected as a whole -- never picks up a
+    stale one.
+  */
+  std::optional<MatrixBlock> GetSelectedMatrixBlock() const {
+    if (m_blockMatrix && (m_selectionStart == m_blockMatrix) &&
+        (m_selectionEnd == m_blockMatrix))
+      return m_matrixBlock;
+    return std::nullopt;
+  }
 
   // The out-of-line definitions convert a CellPtr to (or a raw pointer from)
   // EditorCell*/TextCell*, which needs the complete type this header only
@@ -163,6 +193,10 @@ private:
     always below m_selectionStart.
   */
   CellPtr<Cell> m_selectionEnd;
+  //! The matrix m_matrixBlock was selected in, see GetSelectedMatrixBlock().
+  CellPtr<Cell> m_blockMatrix;
+  //! The selected block of m_blockMatrix's entries.
+  MatrixBlock m_matrixBlock;
   /*! The currently selected string.
 
     Since this string is reachable from every editor cell (via the accessors
