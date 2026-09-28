@@ -377,8 +377,8 @@ void MaximaEvaluator::TriggerEvaluation() {
 
   // GH #2196: the cell that just became current has different text now than
   // when it was queued -- the signature of a statement being silently
-  // dropped (a live tcpdump capture confirmed this happens; the exact
-  // mechanism is still unknown, see AGENTS.md). Only treated as a hard
+  // dropped (seen once, from a batch startup race that has since been
+  // fixed; kept as a guard, see EvaluationQueue::AddTokens()). Only treated as a hard
   // error in --batch mode: there, nothing legitimate could have changed a
   // not-yet-reached queued cell's text (no interactive user to edit it), so
   // a mismatch there can only be this bug. In interactive use the same

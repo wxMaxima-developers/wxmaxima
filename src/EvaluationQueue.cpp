@@ -154,15 +154,14 @@ void EvaluationQueue::AddTokens() {
     return;
   m_pendingConfig = cell->GetEditable()->GetConfiguration();
   m_pendingText = cell->GetEditable()->ToString(true);
-  // GH #2196: the first statement of a multi-statement cell has been
-  // observed to silently vanish somewhere between a cell being queued and
-  // becoming current, with no error and nothing sent to Maxima. The root
-  // cause is still unknown (a live tcpdump capture confirmed the drop, but
-  // repeated live instrumentation to catch the mechanism itself failed --
-  // see AGENTS.md). This comparison can't fix the unknown cause, but it can
-  // catch its one observable effect: if the cell's text now differs from
-  // what was captured when it was queued, that mismatch itself is the bug
-  // signature. Recorded here regardless of caller; MaximaEvaluator decides
+  // GH #2196: the first statement of a multi-statement cell was once
+  // observed to silently vanish, with nothing sent to Maxima. That turned
+  // out to be the queue running one prompt ahead of Maxima after a batch
+  // startup race (fixed in MaximaResponseReader::ReadFirstPrompt() and
+  // wxMaxima::OnIdle(); see the wxmaxima-maxima-protocol skill). This
+  // comparison stays as a cheap guard against a drop with any other cause:
+  // if the cell's text now differs from what was captured when it was
+  // queued, that mismatch itself is the bug signature. Recorded here regardless of caller; MaximaEvaluator decides
   // whether it matters (batch mode has no interactive user who could have
   // legitimately edited a not-yet-reached queued cell in the meantime, so
   // there a mismatch can only be this bug).
