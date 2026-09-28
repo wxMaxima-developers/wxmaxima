@@ -59,7 +59,7 @@ class MaximaManual
 {
 public:
   explicit MaximaManual(Configuration *configuration);
-  typedef std::unordered_map <wxString, wxString, wxStringHash> HelpFileAnchors;
+  using HelpFileAnchors = std::unordered_map<wxString, wxString, wxStringHash>;
   HelpFileAnchors GetHelpfileAnchors();
   void FindMaximaHtmlDir(const wxString &docDir);
   wxString GetHelpfileAnchorName(wxString keyword);

@@ -500,7 +500,7 @@ public:
   //! Reset the data when the output size changes
   void OutputHeightChanged();
 
-  typedef std::unordered_map <wxString, int, wxStringHash> CmdsAndVariables;
+  using CmdsAndVariables = std::unordered_map<wxString, int, wxStringHash>;
 
   //! A list of answers provided by the user
   std::vector<std::pair<wxString, wxString>> m_knownAnswers;

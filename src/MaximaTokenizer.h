@@ -134,7 +134,7 @@ protected:
 
   const Configuration * const m_configuration = NULL;
 
-  typedef std::unordered_map <wxString, int, wxStringHash> StringHash;
+  using StringHash = std::unordered_map<wxString, int, wxStringHash>;
   /*! Names of functions that don't require parenthesis
 
     The maxima parser automatically parses everything that is followed by

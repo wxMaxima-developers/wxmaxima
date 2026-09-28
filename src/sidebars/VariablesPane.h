@@ -104,7 +104,7 @@ private:
   // The spreadsheet with the variable names
   wxGrid *m_grid;
   bool m_updateSizeNeeded = false;
-  typedef std::unordered_map <wxString, int, wxStringHash> IntHash;
+  using IntHash = std::unordered_map<wxString, int, wxStringHash>;
 
   //! A list of all symbols that can be entered using Esc-Codes
   IntHash m_vars;

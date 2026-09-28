@@ -867,7 +867,7 @@ private:
 
 //** Large fields
 //**
-  typedef std::unordered_map <wxString, wxSize, wxStringHash> StringHash;
+  using StringHash = std::unordered_map<wxString, wxSize, wxStringHash>;
   //! Cached widths of text snippets, one width per style
   mutable StringHash m_widths;
 

@@ -195,11 +195,11 @@ private:
   //! Populates the dispatch tables below (once; they are static).
   void RegisterVariableActions();
 
-  typedef void (MaximaResponseReader::*VarReadFunction)(const wxString &value);
-  typedef void (MaximaResponseReader::*VarUndefinedFunction)();
-  typedef std::unordered_map <wxString, VarReadFunction, wxStringHash> VarReadFunctionHash;
-  typedef std::unordered_map <wxString, VarUndefinedFunction,
-                              wxStringHash> VarUndefinedFunctionHash;
+  using VarReadFunction = void (MaximaResponseReader::*)(const wxString &value);
+  using VarUndefinedFunction = void (MaximaResponseReader::*)();
+  using VarReadFunctionHash = std::unordered_map<wxString, VarReadFunction, wxStringHash>;
+  using VarUndefinedFunctionHash =
+    std::unordered_map<wxString, VarUndefinedFunction, wxStringHash>;
   //! Maps a variable name to the action run when Maxima advertises its value.
   static VarReadFunctionHash m_variableReadActions;
   //! Maps a variable name to the action run when Maxima reports it undefined.

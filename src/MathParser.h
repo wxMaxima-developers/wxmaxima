@@ -97,8 +97,8 @@ private:
   //! A pointer to a method that handles an XML tag for a type of GroupCell
   using GroupCellFunc = std::unique_ptr<GroupCell> (MathParser::*)(wxXmlNode *node);
 
-  typedef std::unordered_map <wxString, MathCellFunc, wxStringHash> MathCellFunctionHash;
-  typedef std::unordered_map <wxString, GroupCellFunc, wxStringHash> GroupCellFunctionHash;
+  using MathCellFunctionHash = std::unordered_map<wxString, MathCellFunc, wxStringHash>;
+  using GroupCellFunctionHash = std::unordered_map<wxString, GroupCellFunc, wxStringHash>;
 
   //! Who you gonna call if you encounter any of these math cell tags?
   static MathCellFunctionHash m_innerTags;
