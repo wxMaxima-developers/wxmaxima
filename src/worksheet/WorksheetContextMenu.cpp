@@ -109,9 +109,7 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
                                                    EventIDs::menu_help_demo_for_command,
                                                    wxString::Format(_("Demo for \"%s\""),
                                                                     wordUnderCursor));
-#if wxCHECK_VERSION(3, 2, 0)
               demoItem->SetBitmap(ArtProvider::GetQuestionmarkBundle());
-#endif
               popupMenu.Append(demoItem);
             }
           popupMenu.AppendSeparator();
@@ -180,9 +178,7 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
             wxMenuItem *item = new wxMenuItem(&popupMenu,
                                               EventIDs::popid_merge_cells,
                                               _("Merge Cells"));
-#if wxCHECK_VERSION(3, 2, 0)
             item->SetBitmap(ArtProvider::GetCellMergeBundle());
-#endif
             popupMenu.Append(item);
           }
 
@@ -483,9 +479,7 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
         wxMenuItem *item = new wxMenuItem(&popupMenu,
                                           EventIDs::popid_add_watch,
                                           _("Add to watchlist"));
-#if wxCHECK_VERSION(3, 2, 0)
         item->SetBitmap(ArtProvider::GetAddToWatchlistBundle());
-#endif
         popupMenu.Append(item);
       }
 
@@ -494,9 +488,7 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
         wxMenuItem *item = new wxMenuItem(&popupMenu,
                                           EventIDs::popid_divide_cell,
                                           _("Divide Cell"));
-#if wxCHECK_VERSION(3, 2, 0)
         item->SetBitmap(ArtProvider::GetDivideCellBundle());
-#endif
         popupMenu.Append(item);
       }
     GroupCell *group = nullptr;
@@ -565,9 +557,7 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
                                                     EventIDs::menu_help_demo_for_command,
                                                     wxString::Format(_("Demo for \"%s\""),
                                                                      wordUnderCursor));
-#if wxCHECK_VERSION(3, 2, 0)
               demoItem->SetBitmap(ArtProvider::GetQuestionmarkBundle());
-#endif
               popupMenu.Append(demoItem);
             }
           MaximaManual::HelpFileAnchors helpFileAnchors =

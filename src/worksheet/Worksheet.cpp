@@ -92,9 +92,7 @@
 #include <wx/xml/xml.h>
 #include <wx/zipstrm.h>
 #include <cmath>
-#if wxCHECK_VERSION(3, 2, 0)
 #include <wx/bmpbndl.h>
-#endif
 
 //! This class represents the worksheet shown in the middle of the wxMaxima
 //! window.
@@ -131,9 +129,7 @@ Worksheet::Worksheet(wxWindow *parent, int id,
 #if wxUSE_ACCESSIBILITY
   m_accessibilityInfo = nullptr;
 #endif
-#if wxCHECK_VERSION(3, 1, 1)
   EnableTouchEvents(wxTOUCH_ZOOM_GESTURE);
-#endif
   m_configuration->SetWorkSheet(this);
   m_configuration->SetDocumentCellPointers(&m_document.GetCellPointers());
   m_configuration->SetViewCellPointers(&m_viewCellPointers);
@@ -241,12 +237,10 @@ Worksheet::Worksheet(wxWindow *parent, int id,
   // ownership and deletes it on destruction.
   GetTargetWindow()->SetAccessible(m_accessibilityInfo);
 #endif
-#if wxCHECK_VERSION(3, 1, 1)
   //  Disabled, as it resets the zoom to 1:1 on right-click (GTK) or closes the
   //  right-click dialogue (wxMSW)
   //  Connect(wxEVT_GESTURE_ZOOM, wxZoomGestureEventHandler(Worksheet::OnZoom),
   //        nullptr, this);
-#endif
   Bind(SIDEBARKEYEVENT, &Worksheet::OnSidebarKey, this);
   Bind(wxEVT_ERASE_BACKGROUND, &Worksheet::EraseBackground, this);
   Bind(wxEVT_MENU, &Worksheet::OnComplete, this,
@@ -570,21 +564,6 @@ Worksheet::~Worksheet() {
   m_configuration = nullptr;
 }
 
-#if wxCHECK_VERSION(3, 1, 2)
-#define WORKING_DC_CLEAR 1
-#else
-#ifndef __WXGTK__
-#define WORKING_DC_CLEAR 1
-#endif
-#endif
-
-#if wxCHECK_VERSION(3, 1, 2)
-#if wxCHECK_VERSION(3, 1, 3)
-#else
-#define DC_ALREADY_SCROLLED 1
-#endif
-#endif
-
 void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
   m_configuration->ClearAndEnableRedrawTracing();
   m_configuration->SetBackgroundBrush(*(wxTheBrushList->FindOrCreateBrush(
@@ -594,9 +573,7 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
     return;
 
   // Some drawing contents
-#ifndef DC_ALREADY_SCROLLED
   PrepareDC(dc);
-#endif
 
   // Don't attempt to draw in a window of the size 0.
   if ((GetClientSize().x < 1) || (GetClientSize().y < 1))
@@ -3375,17 +3352,6 @@ void Worksheet::SetNotification(const wxString &message, int flags) {
 
   m_notificationMessage.emplace(wxS("wxMaxima"), message, GetParent(), flags);
   m_notificationMessage->Show();
-
-  // In wxGTK 3.1.0 Leaving the notification message object alive until the
-  // message hits its timeout causes a crash
-  // (https://github.com/wxWidgets/wxWidgets/issues/17876). Let's work around this crash by
-  // deleting the object as fast as we can. The crash is fixed in version 3.1.1.
-#if wxCHECK_VERSION(3, 1, 2)
-#else
-#ifdef __WXGTK__
-  ClearNotification();
-#endif
-#endif
 }
 /*****
  * OnChar handles key events. If we have an active cell, sends the
@@ -3494,14 +3460,12 @@ void Worksheet::OnMouseExit(wxMouseEvent &event) {
   }
 }
 
-#if wxCHECK_VERSION(3, 1, 1)
 void Worksheet::OnZoom(wxZoomGestureEvent &event) {
   if (event.IsGestureStart())
     m_zoomAtGestureStart = m_configuration->GetZoomFactor();
 
   SetZoomFactor(m_zoomAtGestureStart * pow(event.GetZoomFactor(), .2));
 }
-#endif
 
 void Worksheet::OnMouseEnter(wxMouseEvent &WXUNUSED(event)) {
   m_mouseOutside = false;

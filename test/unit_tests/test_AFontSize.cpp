@@ -93,11 +93,10 @@ SCENARIO("AFontSize is null by default") {
 
 #define CHECK_REPRESENTS(size, value) \
   do { \
-    auto constexpr wxMargin = wxCHECK_VERSION(3,1,2) ? Size_Unit_Margin : (1 + 1e-5); \
     THEN("It Represents that size") { \
       REQUIRE(size.Get()       == Approx(value).margin(Size_Unit_Margin)); \
       REQUIRE(size.GetAsLong() == Approx(value).margin(1 + 1e-5)); \
-      REQUIRE(size.GetForWX()  == Approx(value).margin(wxMargin)); \
+      REQUIRE(size.GetForWX()  == Approx(value).margin(Size_Unit_Margin)); \
     } \
   } while (0)
 
