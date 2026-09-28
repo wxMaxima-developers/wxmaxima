@@ -2001,6 +2001,13 @@ Submit bug reports by following the 'New issue' link on that page."))
     (t
      `(((mequal simp) $dimensions ,$wxplot_size)))))
 
+;; Shared by the with_slider_draw* / wxanimate_draw* family.
+;;
+;; SCENE-HEAD is the head (($gr2d) or ($gr3d)) that wraps a frame's
+;; arguments into a single scene, which is then passed to draw().
+;; SCENE-HEAD nil means "bare" (with_slider_draw_bare): the frame's
+;; arguments are handed to draw() as they are, so a frame can consist of
+;; several gr2d()/gr3d() scenes plus draw()'s global options.
 (defun wxanimate-draw (scenes scene-head)
   (unless ($get '$draw '$version) ($load "draw"))
   (multiple-value-bind (scene file-name) (get-file-name-opt (cdr scenes))
@@ -2011,6 +2018,10 @@ Submit bug reports by following the 'New issue' link on that page."))
 	   (images ()))
       (when (integerp a-range)
 	(setq a-range (cons '(mlist simp) (loop for i from 1 to a-range collect i))))
+      ;; draw()'s animated_gif terminal makes one gif frame out of each
+      ;; scene, which cannot express a frame made of several scenes.
+      (when (and file-name (null scene-head))
+	(merror "with_slider_draw_bare: file_name is not supported. Right-click the animation in wxMaxima to export it as a gif instead."))
       (if file-name
 	  ;; If file_name is set, draw the animation into gif using gnuplot
 	  (let (imgs)
@@ -2036,9 +2047,11 @@ Submit bug reports by following the 'New issue' link on that page."))
 	      (let* ((filename (wxplot-filename nil))
 		     (gnuplotfilename (wxplot-gnuplotfilename))
 		     (datafilename (wxplot-datafilename))
-		     (args (cons scene-head
-				 (mapcar #'(lambda (arg) (meval (maxima-substitute aval a arg)))
-					 args))))
+		     (frame-args (mapcar #'(lambda (arg) (meval (maxima-substitute aval a arg)))
+					 args))
+		     (draw-args (if scene-head
+				    (list (cons scene-head frame-args))
+				    frame-args)))
 		(setq images (cons (format nil
 					   (if $wxplot_usesvg "~a.svg" "~a.png")
 					   filename)
@@ -2060,7 +2073,7 @@ Submit bug reports by following the 'New issue' link on that page."))
 			   ((mequal simp) $data_file_name ,datafilename)
 			   ((mequal simp) $file_name ,filename))
 			 (get-pic-size-opt)
-			 (list args)))))
+			 draw-args))))
 	    (when images
 	      (slide-tag images))))
       "")))
@@ -2076,6 +2089,12 @@ Submit bug reports by following the 'New issue' link on that page."))
 
 (defmspec $with_slider_draw3d (scene)
   (wxanimate-draw scene '($gr3d)))
+
+;; Like with_slider_draw, but each frame is a plain draw() call rather than
+;; a draw2d() one: the arguments may be several gr2d()/gr3d() scenes and
+;; draw()'s global options (columns, dimensions, ...).
+(defmspec $with_slider_draw_bare (scene)
+  (wxanimate-draw scene nil))
 
 (defmspec $wxanimate_draw3d (scene)
   (wxanimate-draw scene '($gr3d)))

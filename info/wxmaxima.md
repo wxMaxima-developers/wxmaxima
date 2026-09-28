@@ -617,6 +617,24 @@ with_slider_draw3d(
 )$
 ```
 
+`with_slider_draw` and `with_slider_draw3d` make each frame out of a single 2D or 3D scene. `with_slider_draw_bare` instead hands the arguments that follow the variable and its values to a plain `draw` command. Each frame can therefore consist of several `gr2d` and `gr3d` scenes, and `draw`'s global options like `columns` or `dimensions` can be used as well:
+
+```maxima
+with_slider_draw_bare(
+    f,[1,2,3,4,5],
+    columns=2,
+    gr2d(
+        title=concat("f=",f),
+        explicit(sin(f*x),x,0,2*π)
+    ),
+    gr3d(
+        explicit(sin(f*x)*cos(y),x,0,2*π,y,0,2*π)
+    )
+);
+```
+
+Unlike `with_slider_draw`, `with_slider_draw_bare` doesn't accept `file_name`, since a frame of several scenes cannot be turned into a single frame of a gif by `draw`. The animation can still be exported as a gif by right-clicking it.
+
 For those more familiar with `plot` than with `draw`, there is a second set of functions:
 
 - `with_slider` and

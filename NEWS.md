@@ -1,5 +1,9 @@
 # Current development version
 
+- New function `with_slider_draw_bare`, which works like `with_slider_draw`
+  but makes each frame of the animation with a plain `draw()` instead of
+  `draw2d()`. A frame can therefore show several `gr2d()` and `gr3d()`
+  scenes side by side, and use `draw`'s global options like `columns`.
 - New function `wx_version_min("26.09.0")`, which returns `true` if the
   running wxMaxima is at least that version, so a worksheet can check
   whether it can use a feature. In wxMaxima 26.08.0 and older the function
