@@ -3808,7 +3808,7 @@ int Worksheet::ExportSelectionOutputToDir(const wxString &dir, bool svg) {
         base = wxString::Format(wxS("output_%d"), index);
       wxString name = base;
       for (int n = 2;
-           std::find(usedNames.begin(), usedNames.end(), name) !=
+           std::ranges::find(usedNames, name) !=
              usedNames.end();
            ++n)
         name = base + wxString::Format(wxS("_%d"), n);
@@ -5986,7 +5986,7 @@ bool Worksheet::Autocomplete(AutoComplete::autoCompletionType type) {
             // cursor is directly followed by the next command without a space
             // or similar inbetween)
             auto partialAt =
-              std::find(wordList.begin(), wordList.end(), partial);
+              std::ranges::find(wordList, partial);
             m_autocomplete.AddWorksheetWords(wordList.begin(), partialAt);
             if (partialAt != wordList.end())
               m_autocomplete.AddWorksheetWords(std::next(partialAt),
@@ -5999,7 +5999,7 @@ bool Worksheet::Autocomplete(AutoComplete::autoCompletionType type) {
   }
 
   m_completions = m_autocomplete.CompleteSymbol(partial, type);
-  std::sort(m_completions.begin(), m_completions.end());
+  std::ranges::sort(m_completions);
   m_autocompleteTemplates = (type == AutoComplete::tmplte);
 
   /// No completions - clear the selection and return false

@@ -942,7 +942,7 @@ void DiffFrame::AlignCells() {
               heights.push_back(cellLists[i][row[i]]->GetHeight());
           }
       }
-      wxCoord maxHeight = heights.empty() ? 0 : *std::max_element(heights.begin(), heights.end());
+      wxCoord maxHeight = heights.empty() ? 0 : *std::ranges::max_element(heights);
 
       DiffEntry entry = { {nullptr, nullptr, nullptr} };
       for (size_t i = 0; i < numFiles; ++i) {

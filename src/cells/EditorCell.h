@@ -834,7 +834,7 @@ private:
     character having to sit inside \ref m_text.
   */
   bool IsSoftBreakBefore(std::size_t pos) const {
-    return std::binary_search(m_softBreaks.begin(), m_softBreaks.end(), pos);
+    return std::ranges::binary_search(m_softBreaks, pos);
   }
 
   /*! How many chars do we need to indent text at the position the caret is currently at?

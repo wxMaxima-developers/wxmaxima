@@ -1267,7 +1267,7 @@ size_t EditorCell::BeginningOfLine(size_t pos) const {
       break;
     }
   }
-  auto sb = std::upper_bound(m_softBreaks.begin(), m_softBreaks.end(), pos);
+  auto sb = std::ranges::upper_bound(m_softBreaks, pos);
   if (sb != m_softBreaks.begin())
     lineStart = wxMax(lineStart, *(sb - 1));
   return lineStart;
@@ -3660,7 +3660,7 @@ void EditorCell::StyleTextCode() const {
       continue;
     }
   }
-  std::sort(m_wordList.begin(), m_wordList.end());
+  std::ranges::sort(m_wordList);
   if(!suppressedLinesInfo.IsEmpty())
     m_styledText.push_back(StyledText(TS_CODE_COMMENT, suppressedLinesInfo));
 }

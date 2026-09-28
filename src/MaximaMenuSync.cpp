@@ -87,8 +87,8 @@ bool SyncMenusToMaximaVariable(wxMenuBar *menubar, const wxString &variable,
 {
   const std::vector<MaximaMenuSyncRow> &rows = MaximaMenuSyncRows();
   const auto row =
-    std::find_if(rows.begin(), rows.end(),
-                 [&](const MaximaMenuSyncRow &r) { return r.m_variable == variable; });
+    std::ranges::find_if(rows,
+                         [&](const MaximaMenuSyncRow &r) { return r.m_variable == variable; });
   if (row == rows.end())
     return false;
   if (!menubar)

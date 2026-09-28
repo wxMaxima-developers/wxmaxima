@@ -133,7 +133,7 @@ void History::MaximaSessionStart() {
 
 bool History::UpdateDeferred() {
   if (!m_deferredCommands.empty()) {
-    std::reverse(m_deferredCommands.begin(), m_deferredCommands.end());
+    std::ranges::reverse(m_deferredCommands);
     m_history->Insert(m_deferredCommands, 0);
     m_current += m_deferredCommands.size();
     m_deferredCommands.clear();
