@@ -73,6 +73,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><ul>
+<li>Closing the diff viewer no longer resets settings that were changed in the main window while it was open (#2356).</li>
 <li>Output arriving from <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> no longer pushes the cursor down the screen. If the cursor is visible and output is appended to a cell above it, the worksheet now scrolls along by exactly as much, so the line being read or typed in stays where it was and the new output grows upwards instead. The worksheet can only scroll in steps of several pixels; to make this exact its top margin varies by up to one such step.</li>
 <li>Double-clicking a matrix that is too large for the window, and therefore shown with its middle rows and columns left out or in a scrolling box, opens a window that shows all of it. That window can be resized, several can be open at once, and Escape closes it. The tooltip of such a matrix now mentions this.</li>
 <li><code>wx_matrix()</code> has a new option, <code>oversized=full</code>, <code>oversized=elide</code> or <code>oversized=scroll</code>, that decides how that one matrix is shown if it is too large for the window, whatever the configuration says for all the others. The choice is saved with the worksheet. Exporting the matrix as an image still always shows all of it.</li>
