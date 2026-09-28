@@ -203,6 +203,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>AngledParens</b> ()</
 <tr class="memitem:a2d07c6492b09df8046b56346516dca8d"><td class="memItemLeft" align="right" valign="top"><a id="a2d07c6492b09df8046b56346516dca8d" name="a2d07c6492b09df8046b56346516dca8d"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>NoParens</b> ()</td></tr>
 <tr class="separator:a2d07c6492b09df8046b56346516dca8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:affd7f9fc6bb41deac58ca66228625fc6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrCell.html#affd7f9fc6bb41deac58ca66228625fc6">SetOversizedMode</a> (std::optional&lt; <a class="el" href="classConfiguration.html#adb5fa4e3eacde294a5f23ceca1b9283d">Configuration::OversizedMatrices</a> &gt; mode)</td></tr>
+<tr class="memdesc:affd7f9fc6bb41deac58ca66228625fc6"><td class="mdescLeft">&#160;</td><td class="mdescRight">How this matrix wants to be shown if it is too large for the window.  <br /></td></tr>
+<tr class="separator:affd7f9fc6bb41deac58ca66228625fc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16f4aca3873ae1f87f16fe903a20b62e"><td class="memItemLeft" align="right" valign="top"><a id="a16f4aca3873ae1f87f16fe903a20b62e" name="a16f4aca3873ae1f87f16fe903a20b62e"></a>
+std::optional&lt; <a class="el" href="classConfiguration.html#adb5fa4e3eacde294a5f23ceca1b9283d">Configuration::OversizedMatrices</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>GetOversizedMode</b> () const</td></tr>
+<tr class="memdesc:a16f4aca3873ae1f87f16fe903a20b62e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The mode <a class="el" href="classMatrCell.html#affd7f9fc6bb41deac58ca66228625fc6" title="How this matrix wants to be shown if it is too large for the window.">SetOversizedMode()</a> asked for, if any. <br /></td></tr>
+<tr class="separator:a16f4aca3873ae1f87f16fe903a20b62e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a656ce2bac5863f66ef33cf375367fb50"><td class="memItemLeft" align="right" valign="top"><a id="a656ce2bac5863f66ef33cf375367fb50" name="a656ce2bac5863f66ef33cf375367fb50"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsBanded</b> () const</td></tr>
 <tr class="memdesc:a656ce2bac5863f66ef33cf375367fb50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does this matrix get alternating row/column bands? See DrawBands(). <br /></td></tr>
@@ -767,6 +774,14 @@ wxPoint&#160;</td><td class="memItemRight" valign="bottom"><b>GetCurrentPoint</b
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a4143f4fa1bc797a48d7a5ca9455f18b5"><td class="memItemLeft" align="right" valign="top"><a id="a4143f4fa1bc797a48d7a5ca9455f18b5" name="a4143f4fa1bc797a48d7a5ca9455f18b5"></a>
+static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>OversizedModeName</b> (<a class="el" href="classConfiguration.html#adb5fa4e3eacde294a5f23ceca1b9283d">Configuration::OversizedMatrices</a> mode)</td></tr>
+<tr class="memdesc:a4143f4fa1bc797a48d7a5ca9455f18b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">The name wx_matrix() and the XML use for an oversized-matrix mode. <br /></td></tr>
+<tr class="separator:a4143f4fa1bc797a48d7a5ca9455f18b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1975ac73dfd65bd9e5f67c02b67f436"><td class="memItemLeft" align="right" valign="top"><a id="aa1975ac73dfd65bd9e5f67c02b67f436" name="aa1975ac73dfd65bd9e5f67c02b67f436"></a>
+static std::optional&lt; <a class="el" href="classConfiguration.html#adb5fa4e3eacde294a5f23ceca1b9283d">Configuration::OversizedMatrices</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>OversizedModeFromName</b> (const wxString &amp;name)</td></tr>
+<tr class="memdesc:aa1975ac73dfd65bd9e5f67c02b67f436"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses <a class="el" href="classMatrCell.html#a4143f4fa1bc797a48d7a5ca9455f18b5" title="The name wx_matrix() and the XML use for an oversized-matrix mode.">OversizedModeName()</a>'s output; std::nullopt if it isn't one. <br /></td></tr>
+<tr class="separator:aa1975ac73dfd65bd9e5f67c02b67f436"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd71632a3a3deec61e646bca3797a504"><td class="memItemLeft" align="right" valign="top"><a id="acd71632a3a3deec61e646bca3797a504" name="acd71632a3a3deec61e646bca3797a504"></a>
 static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>OMML2RTF</b> (wxXmlNode *node)</td></tr>
 <tr class="memdesc:acd71632a3a3deec61e646bca3797a504"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts an OMML tag to the corresponding RTF snippet. <br /></td></tr>
@@ -909,6 +924,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 <li>**<code>rownames=true</code>**: Treats the first column as labels.</li>
 <li>**<code>colnames=true</code>**: Treats the first row as labels.</li>
 <li>**<code>parenstyle=style</code>**: Sets the bracket type. Supported styles: <code>round</code> (), <code>square</code> [], <code>angled</code> &lt;&gt;, <code>straight</code> ||, or <code>none</code>.</li>
+<li>**<code>oversized=mode</code>**: How to show this matrix if it is too large for the window, overriding the configuration: <code>full</code>, <code>elide</code> or <code>scroll</code>. See <a class="el" href="classMatrCell.html#affd7f9fc6bb41deac58ca66228625fc6" title="How this matrix wants to be shown if it is too large for the window.">SetOversizedMode()</a>.</li>
 </ul>
 <p>Example: <code>wx_matrix(matrix([1,2],[3,4]), lines=true, rownames=true, parenstyle=square);</code></p>
 <p>Matrices too large for the window.** <a class="el" href="classA.html">A</a> matrix has no linear form to fall back on the way a fraction does, so <a class="el" href="classCell.html#ad3bba95038366ea5bccefa8f76e1571e" title="Try to split this command into lines to make it fit on the screen.">BreakUp()</a> cannot help it. If Configuration::GetOversizedMatrices() asks for it, <a class="el" href="classMatrCell.html#a90dac27e04491b35d2585170d79193e4" title="Recalculate the size of the cell and the difference between top and center.">Recalculate()</a> instead leaves out a contiguous run of middle columns (and/or rows) and draws the gap the way a mathematician would write it: ⋯ in each shown row, ⋮ in each shown column and ⋱ where the two gaps cross. The first and the last column and row are always kept, which also keeps the headings of a <code>table_form</code> or <code>wx_matrix(..., rownames=true, colnames=true)</code> in view.</p>
@@ -3380,6 +3396,35 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 
 <p>Tell this list of cells to be an exponent. </p>
 <p>Fractions in exponents are displayed as 1<a class="el" href="classD.html">D</a> maths </p>
+
+</div>
+</div>
+<a id="affd7f9fc6bb41deac58ca66228625fc6" name="affd7f9fc6bb41deac58ca66228625fc6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#affd7f9fc6bb41deac58ca66228625fc6">&#9670;&#160;</a></span>SetOversizedMode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MatrCell::SetOversizedMode </td>
+          <td>(</td>
+          <td class="paramtype">std::optional&lt; <a class="el" href="classConfiguration.html#adb5fa4e3eacde294a5f23ceca1b9283d">Configuration::OversizedMatrices</a> &gt;&#160;</td>
+          <td class="paramname"><em>mode</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>How this matrix wants to be shown if it is too large for the window. </p>
+<p>Set by wx_matrix()'s oversized option (GH #2343). std::nullopt, the default, follows Configuration::GetOversizedMatrices(); anything else overrides it for this one matrix, see <a class="el" href="classConfiguration.html#a37a73721fe321f61f0d3154585fee086" title="How one specific matrix that is too large for the window is shown.">Configuration::OversizedMatricesFor()</a>. Saved with the matrix, so a reopened .wxmx shows it the same way. </p>
 
 </div>
 </div>
