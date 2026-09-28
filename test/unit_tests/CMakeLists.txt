@@ -538,6 +538,17 @@ if(TARGET wxmTestApp)
     add_test(NAME MatrixViewer
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_MatrixViewer>")
 
+    # Closing the diff viewer must not write its panes' configurations back
+    # to the config file (GH #2356).
+    add_executable(test_DiffFrameConfig
+        test_DiffFrameConfig.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_DiffFrameConfig PUBLIC cxx_std_20)
+    target_link_libraries(test_DiffFrameConfig PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME DiffFrameConfig
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_DiffFrameConfig>")
+
     # An integral's "d" (dx/dtheta/...) must render upright in LaTeX export,
     # not in math mode's default italic (GH #972).
     add_executable(test_IntegralToTeX

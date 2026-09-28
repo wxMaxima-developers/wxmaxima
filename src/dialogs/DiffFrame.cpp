@@ -448,6 +448,13 @@ toolBar->AddSeparator();
   for (size_t i = 0; i < files.size(); ++i) {
     m_worksheetConfigurations.push_back(std::make_unique<Configuration>(*m_configuration));
     Worksheet *ws = new Worksheet(this, wxID_ANY, m_worksheetConfigurations.back().get());
+    // A copy of a configuration writes all its settings to the config file
+    // when it is destroyed, unless it is temporary -- and the copy constructor
+    // copies the main window's non-temporary state. So without this, closing
+    // the diff viewer would overwrite anything changed in the main window
+    // while it was open with what the config file said when it was opened
+    // (GH #2356).
+    m_worksheetConfigurations.back()->MakeTemporary();
     m_worksheets.push_back(ws);
     ws->SetCurrentFile(files[i]);
 

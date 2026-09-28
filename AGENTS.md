@@ -516,6 +516,10 @@ a local TCP socket.
      setting changed in the main window while a diff is open would be
      overwritten when the diff closes -- untested, and a separate fix
      (GH #2356).
+     per-pane copies are temporary for the same reason: they only wrote
+     back what they read, but that overwrote any setting changed in the
+     main window while a diff was open (GH #2356,
+     `test_DiffFrameConfig.cpp`).
   The viewer copies its matrix through `ToXML()` and `MathParser` rather
   than `Cell::Copy()`, because a copied cell keeps pointing at the original
   cell's configuration, not the viewer's.

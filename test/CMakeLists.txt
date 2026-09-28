@@ -384,6 +384,30 @@ add_test(
     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wx_matrix(matrix([1,2],[3,4]), oversized=full);" "<tb[^>]* oversized=\"full\""
 )
 
+# wx_matrix() only returns the formatted matrix; it is the display of that
+# result that shows it. So a matrix ended with ";" is shown exactly once...
+add_test(
+    NAME check-wxMathML.lisp_matrix_shown_once
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wx_matrix(matrix([1,2],[3,4]), oversized=full);" "<tb[^>]* oversized=\"full\""
+)
+set_tests_properties(check-wxMathML.lisp_matrix_shown_once PROPERTIES
+    FAIL_REGULAR_EXPRESSION "</tb>.*<tb ")
+
+# ...one ended with "$" isn't shown at all...
+add_test(
+    NAME check-wxMathML.lisp_matrix_dollar_not_shown
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wx_matrix(matrix([1,2],[3,4]), oversized=full)$ 7;" "<mn>7</mn>"
+)
+set_tests_properties(check-wxMathML.lisp_matrix_dollar_not_shown PROPERTIES
+    FAIL_REGULAR_EXPRESSION "<tb")
+
+# ...and the options stay with the returned value, not with what is
+# calculated from it.
+add_test(
+    NAME check-wxMathML.lisp_matrix_options_stay_with_value
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "m:wx_matrix(matrix([1,2],[3,4]), oversized=scroll)$ m; m+1;" "<tb[^>]* oversized=\"scroll\"[^>]*>.*<tb bracketParens=\"true\">"
+)
+
 add_test(
     NAME check-xml-validity_mfrac
     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-xml-validity.sh" "1/2;"
@@ -1475,6 +1499,8 @@ set(WXM_POSIX_TESTS
   check-xml-validity_matrix_default check-xml-validity_matrix_lines
   check-xml-validity_matrix_complex check-xml-validity_mfrac
   check-xml-validity_matrix_oversized check-wxMathML.lisp_matrix_oversized
+  check-wxMathML.lisp_matrix_shown_once check-wxMathML.lisp_matrix_dollar_not_shown
+  check-wxMathML.lisp_matrix_options_stay_with_value
   check-wxmx-validity_all-celltypes check-wxmx-validity_intervals
   wxstatusbar wxbuildinfo wxbug_report show_image
   wxxml-array-no-display-properties wxxml-array-display-properties
