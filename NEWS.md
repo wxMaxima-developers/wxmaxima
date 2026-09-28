@@ -4,6 +4,9 @@
   the last 3.0 release, wxMaxima started but never got a working connection
   to Maxima (#2301). Ubuntu 22.04 only ships wxWidgets 3.0, so the release
   no longer includes a .deb for it; the .deb for Ubuntu 24.04 replaces it.
+- Compiling wxMaxima needs a compiler with good C++20 support: GCC 12 or
+  newer (the one Debian 12 ships), or a similarly recent Clang or MSVC.
+  Every Linux distribution that packages wxWidgets 3.2 has one.
 - Dragging a rectangle across several entries of a matrix now selects just
   that block of entries instead of the whole matrix, and highlights it. Every
   "Copy ..." command -- Copy, plain text, LaTeX, Octave/Matlab, MathML, RTF,
