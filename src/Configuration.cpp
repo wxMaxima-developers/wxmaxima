@@ -206,6 +206,7 @@ Configuration::Configuration(const Configuration &o) :
   m_maxLayoutTime(o.m_maxLayoutTime),
   m_layoutStrategy(o.m_layoutStrategy),
   m_oversizedMatrices(o.m_oversizedMatrices),
+  m_oversizedMatricesOverridable(o.m_oversizedMatricesOverridable),
   m_wxMathML_Filename(o.m_wxMathML_Filename),
   m_maximaHelpFormat(o.m_maximaHelpFormat),
   m_cellCfgCnt(o.m_cellCfgCnt.load())

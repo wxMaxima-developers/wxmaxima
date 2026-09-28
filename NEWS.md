@@ -1,5 +1,10 @@
 # Current development version
 
+- `wx_matrix()` has a new option, `oversized=full`, `oversized=elide` or
+  `oversized=scroll`, that decides how that one matrix is shown if it is too
+  large for the window, whatever the configuration says for all the others.
+  The choice is saved with the worksheet. Exporting the matrix as an image
+  still always shows all of it.
 - Opening Options no longer asks for the keyring's password. The AI Chat
   tab used to read every stored API key just to fill its masked key fields,
   and to write them all back on OK; it now never reads them. A key field

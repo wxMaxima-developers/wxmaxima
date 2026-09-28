@@ -38,6 +38,7 @@
 #include <functional>
 #include <memory>
 #include <mutex>
+#include <optional>
 #include <unordered_map>
 #include <random>
 #include <list>
@@ -488,10 +489,36 @@ public:
     scroll = 2
   };
   OversizedMatrices GetOversizedMatrices() const { return m_oversizedMatrices; }
-  void SetOversizedMatrices(OversizedMatrices mode) {
-    if (mode != m_oversizedMatrices)
+  /*! Sets how oversized matrices are shown
+
+    \param mode How a matrix too large for the window is shown.
+    \param perMatrixOverridable Whether a matrix may ask for a different
+      mode of its own (wx_matrix()'s oversized option, see
+      OversizedMatricesFor()). The worksheet and printing allow that; the
+      graphical exporters don't, since they must never drop entries from
+      their output whatever a matrix asked for on screen.
+  */
+  void SetOversizedMatrices(OversizedMatrices mode, bool perMatrixOverridable = true) {
+    if ((mode != m_oversizedMatrices) ||
+        (perMatrixOverridable != m_oversizedMatricesOverridable))
       RecalculateForce();
     m_oversizedMatrices = mode;
+    m_oversizedMatricesOverridable = perMatrixOverridable;
+  }
+  /*! How one specific matrix that is too large for the window is shown
+
+    \param requested The mode that matrix asked for, if any (see
+      MatrCell::SetOversizedMode()). It wins over the global setting, except
+      where SetOversizedMatrices() was told not to allow that.
+
+    The result is only what is wanted: whether it is possible is up to the
+    matrix, which still falls back to eliding where there is nowhere to put
+    scrollbars, and to showing a nested matrix in full.
+  */
+  OversizedMatrices OversizedMatricesFor(std::optional<OversizedMatrices> requested) const {
+    if (requested && m_oversizedMatricesOverridable)
+      return *requested;
+    return m_oversizedMatrices;
   }
 
   /*! What gives a scrolling matrix its scrollbars, if anything
@@ -1631,6 +1658,8 @@ private:
   int m_maxLayoutTime;
   LayoutStrategy m_layoutStrategy = LayoutStrategy::layout2DIfFits;
   OversizedMatrices m_oversizedMatrices = OversizedMatrices::elide;
+  //! May a matrix override m_oversizedMatrices? See SetOversizedMatrices().
+  bool m_oversizedMatricesOverridable = true;
   //! Not copied by the copy constructor; see GetMatrixScrollHost()
   MatrixScrollHost *m_matrixScrollHost = nullptr;
   wxString m_wxMathML_Filename;

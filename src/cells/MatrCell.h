@@ -24,6 +24,7 @@
 #define MATRCELL_H
 
 #include "Cell.h"
+#include <optional>
 
 #include <vector>
 
@@ -40,6 +41,9 @@
   - **`colnames=true`**: Treats the first row as labels.
   - **`parenstyle=style`**: Sets the bracket type. Supported styles:
     `round` (), `square` [], `angled` <>, `straight` ||, or `none`.
+  - **`oversized=mode`**: How to show this matrix if it is too large for the
+    window, overriding the configuration: `full`, `elide` or `scroll`. See
+    SetOversizedMode().
 
   Example: `wx_matrix(matrix([1,2],[3,4]), lines=true, rownames=true, parenstyle=square);`
 
@@ -175,6 +179,29 @@ public:
   void AngledParens()   { m_parenType = paren_angled;}
   void NoParens()       { m_parenType = paren_none;}
 
+  /*! How this matrix wants to be shown if it is too large for the window
+
+    Set by wx_matrix()'s oversized option (GH #2343). std::nullopt, the
+    default, follows Configuration::GetOversizedMatrices(); anything else
+    overrides it for this one matrix, see
+    Configuration::OversizedMatricesFor(). Saved with the matrix, so a
+    reopened .wxmx shows it the same way.
+  */
+  void SetOversizedMode(std::optional<Configuration::OversizedMatrices> mode) {
+    m_oversizedMode = mode ? static_cast<uint8_t>(*mode) : oversizedFollowConfig;
+  }
+  //! The mode SetOversizedMode() asked for, if any
+  std::optional<Configuration::OversizedMatrices> GetOversizedMode() const {
+    if (m_oversizedMode == oversizedFollowConfig)
+      return std::nullopt;
+    return static_cast<Configuration::OversizedMatrices>(m_oversizedMode);
+  }
+  //! The name wx_matrix() and the XML use for an oversized-matrix mode
+  static wxString OversizedModeName(Configuration::OversizedMatrices mode);
+  //! Parses OversizedModeName()'s output; std::nullopt if it isn't one
+  static std::optional<Configuration::OversizedMatrices>
+  OversizedModeFromName(const wxString &name);
+
 private:
   struct DropCenter
   {
@@ -288,6 +315,13 @@ private:
 //** Bitfield objects (1 bytes)
 //**
   uint8_t m_parenType : 3 = paren_rounded;
+  //! m_oversizedMode's value for "no preference of its own"
+  static constexpr uint8_t oversizedFollowConfig = 3;
+  static_assert(static_cast<uint8_t>(Configuration::OversizedMatrices::scroll) <
+                oversizedFollowConfig,
+                "m_oversizedMode is too narrow for OversizedMatrices");
+  //! A Configuration::OversizedMatrices, or oversizedFollowConfig. See SetOversizedMode().
+  uint8_t m_oversizedMode : 2 = oversizedFollowConfig;
   bool m_specialMatrix : 1 = false;
   bool m_inferenceMatrix : 1 = false;
   bool m_rowNames : 1 = false;

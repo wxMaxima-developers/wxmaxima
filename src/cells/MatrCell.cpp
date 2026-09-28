@@ -45,6 +45,7 @@ MatrCell::MatrCell(GroupCell *group, const MatrCell &cell)
   m_specialMatrix = cell.m_specialMatrix;
   m_inferenceMatrix = cell.m_inferenceMatrix;
   m_parenType = cell.m_parenType;
+  m_oversizedMode = cell.m_oversizedMode;
   m_rowNames = cell.m_rowNames;
   m_colNames = cell.m_colNames;
   m_nestedInMatrix = cell.m_nestedInMatrix;
@@ -123,7 +124,10 @@ void MatrCell::Recalculate(AFontSize const fontsize) const {
     // context without a worksheet) the matrix is elided instead, since paper
     // can't scroll. (The graphical exporters switch all this off; see
     // OutCommon.)
-    Configuration::OversizedMatrices mode = m_configuration->GetOversizedMatrices();
+    // A matrix wx_matrix() gave a mode of its own uses that one, unless the
+    // configuration says it mustn't (the graphical exporters).
+    Configuration::OversizedMatrices mode =
+      m_configuration->OversizedMatricesFor(GetOversizedMode());
     MatrixScrollHost *const host = m_configuration->GetMatrixScrollHost();
     if ((mode == Configuration::OversizedMatrices::scroll) && (host == nullptr))
       mode = Configuration::OversizedMatrices::elide;
@@ -684,6 +688,30 @@ void MatrCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
   }
 }
 
+wxString MatrCell::OversizedModeName(Configuration::OversizedMatrices mode) {
+  // These are wx_matrix()'s option values as well as the XML attribute's, so
+  // they are part of the file format: don't rename them.
+  switch (mode) {
+  case Configuration::OversizedMatrices::showInFull:
+    return wxS("full");
+  case Configuration::OversizedMatrices::elide:
+    return wxS("elide");
+  case Configuration::OversizedMatrices::scroll:
+    return wxS("scroll");
+  }
+  return wxS("elide");
+}
+
+std::optional<Configuration::OversizedMatrices>
+MatrCell::OversizedModeFromName(const wxString &name) {
+  for (auto mode : {Configuration::OversizedMatrices::showInFull,
+                    Configuration::OversizedMatrices::elide,
+                    Configuration::OversizedMatrices::scroll})
+    if (name == OversizedModeName(mode))
+      return mode;
+  return std::nullopt;
+}
+
 void MatrCell::AddNewCell(std::unique_ptr<Cell> &&cell) {
   MarkNestedMatrices(cell.get());
   m_cells.emplace_back(std::move(cell));
@@ -911,6 +939,9 @@ wxString MatrCell::ToXML() const {
     flags += wxS(" roundedParens=\"false\" noneParens=\"true\"");
     break;
   }
+
+  if (const auto mode = GetOversizedMode())
+    flags += wxS(" oversized=\"") + OversizedModeName(*mode) + wxS("\"");
 
   wxString s = wxS("<tb") + flags;
   if (m_specialMatrix) {
