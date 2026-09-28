@@ -130,6 +130,7 @@ set(DIALOG_SOURCE_FILES
     BinaryNameCtrl.cpp
     DiffFrame.cpp
     DiffScrollSync.cpp
+    MatrixViewer.cpp
 )
 list(TRANSFORM DIALOG_SOURCE_FILES PREPEND dialogs/)
 
