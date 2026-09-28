@@ -1,5 +1,11 @@
 # Current development version
 
+- Output arriving from Maxima no longer pushes the cursor down the screen.
+  If the cursor is visible and output is appended to a cell above it, the
+  worksheet now scrolls along by exactly as much, so the line being read or
+  typed in stays where it was and the new output grows upwards instead. The
+  worksheet can only scroll in steps of several pixels; to make this exact
+  its top margin varies by up to one such step.
 - `wx_matrix()` has a new option, `oversized=full`, `oversized=elide` or
   `oversized=scroll`, that decides how that one matrix is shown if it is too
   large for the window, whatever the configuration says for all the others.

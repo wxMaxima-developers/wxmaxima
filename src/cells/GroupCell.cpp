@@ -677,7 +677,8 @@ bool GroupCell::Reposition() const {
 
   wxPoint point(m_configuration->GetIndent(), m_center);
   if (!previous) {
-    point.y += m_configuration->GetBaseIndent();
+    point.y += m_configuration->GetBaseIndent() +
+      m_configuration->GetWorksheetTopOffset();
   } else {
     point.y += m_configuration->GetGroupSkip();
     if (previous->GetCurrentPoint().y >= 0)

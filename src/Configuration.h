@@ -424,6 +424,23 @@ public:
         return ppi / 45;
     }
 
+  /*! An extra top margin of less than one scroll unit, in px
+
+    Lets the worksheet keep the cursor still to the pixel when output appended
+    above it pushes it down, although the view can only scroll in whole scroll
+    units - see ComputeScrollCompensation() and
+    WorksheetLayout::ArmScrollCompensation(). Only the worksheet's own
+    configuration ever sets it: it is deliberately not copied by the copy
+    constructor, as neither printing nor an export wants a stray top margin.
+  */
+  int GetWorksheetTopOffset() const { return m_worksheetTopOffset; }
+  /*! Sets the extra top margin. See GetWorksheetTopOffset().
+
+    Like SetMatrixScrollHost() this doesn't request a recalculation: the only
+    caller repositions the cells itself.
+  */
+  void SetWorksheetTopOffset(int offset) { m_worksheetTopOffset = offset; }
+
   //! The y position the worksheet starts at
   long GetBaseIndent() const
     {
@@ -1662,6 +1679,8 @@ private:
   bool m_oversizedMatricesOverridable = true;
   //! Not copied by the copy constructor; see GetMatrixScrollHost()
   MatrixScrollHost *m_matrixScrollHost = nullptr;
+  //! Not copied by the copy constructor; see GetWorksheetTopOffset()
+  int m_worksheetTopOffset = 0;
   wxString m_wxMathML_Filename;
   maximaHelpFormat m_maximaHelpFormat;
   std::atomic<std::int_fast32_t> m_cellCfgCnt{0};

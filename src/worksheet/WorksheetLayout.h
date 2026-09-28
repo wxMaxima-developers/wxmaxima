@@ -148,6 +148,48 @@ public:
     m_recalculateEnd = nullptr;
   }
 
+  /*! The point of the worksheet the cursor sits at, for ArmScrollCompensation().
+
+    Either the top of a group cell (the cursor is inside it) or its bottom (the
+    horizontal cursor sits right below it). A null cell means "no cursor".
+  */
+  struct ScrollAnchor {
+    GroupCell *cell = nullptr;
+    bool atBottom = false;
+    bool operator==(const ScrollAnchor &o) const
+      { return cell == o.cell && atBottom == o.atBottom; }
+  };
+
+  /*! Tells the engine where the cursor currently is.
+
+    Queried by ArmScrollCompensation() and again once the layout pass has run,
+    so a compensation is dropped if the cursor moved in between: the point to
+    keep still is then a different one. Worksheet sets this; without it (the
+    headless tests) no compensation is ever armed.
+  */
+  void SetScrollAnchorCallback(std::function<ScrollAnchor()> callback)
+    { m_getScrollAnchor = std::move(callback); }
+
+  /*! Keep the cursor still on screen across the next layout pass.
+
+    Called just before output is appended to a cell: the cells below it are
+    about to move down, the cursor with them if it sits below the changed
+    cell. This remembers where the cursor's cell is now; once the pass has laid
+    everything out, the view is scrolled by however far that cell moved -
+    to the pixel, see ComputeScrollCompensation() - so the cursor, and
+    everything around it, stays where the user was looking.
+
+    Only ever arms once per pass: a second append before the pass has run
+    would measure positions that aren't on screen yet. The caller is expected
+    to only arm if the cursor is visible - scrolling to keep an invisible
+    point still would move the part of the worksheet the user actually is
+    looking at.
+  */
+  void ArmScrollCompensation();
+
+  //! Is a scroll compensation waiting for the next layout pass to finish?
+  bool ScrollCompensationArmed() const { return m_scrollAnchor != nullptr; }
+
   //! GroupCells walked by the most recent RecalculateIfNeeded() pass (visited
   //! includes cheap reposition-only cells; recalculated counts only the cells
   //! that actually needed the expensive re-layout). Exposed for tests and
@@ -157,6 +199,14 @@ public:
   int GetLastCellsRecalculated() const { return m_lastCellsRecalculated; }
 
 private:
+  /*! Perform an armed scroll compensation, if the layout is complete.
+
+    See ArmScrollCompensation().
+  */
+  void ApplyScrollCompensation();
+  //! The document y of \p anchor's cursor position
+  static int AnchorY(const ScrollAnchor &anchor);
+
   //! The settings storage, also supplying metrics and the recalc DC.
   Configuration *m_configuration;
   //! The narrow window surface the size pipeline drives.
@@ -190,6 +240,14 @@ private:
   int m_scrollUnit = 10;
   //! Does the worksheet's virtual (scroll) size need re-adjusting?
   bool m_adjustWorksheetSizeNeeded = false;
+  //! Where the cursor is; see SetScrollAnchorCallback()
+  std::function<ScrollAnchor()> m_getScrollAnchor;
+  //! The cell the armed scroll compensation keeps still; null = not armed.
+  CellPtr<GroupCell> m_scrollAnchor;
+  //! Whether m_scrollAnchor's bottom (not its top) is the point to keep still.
+  bool m_scrollAnchorAtBottom = false;
+  //! m_scrollAnchor's document y at the time the compensation was armed.
+  int m_scrollAnchorY = 0;
   //! Bookkeeping from the most recent RecalculateIfNeeded() pass; see the
   //! getters above.
   int m_lastCellsVisited = 0;
