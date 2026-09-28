@@ -54,6 +54,7 @@
 #include "cells/ImgCellBase.h"
 #include "cells/AnimationCell.h"
 #include "cells/GroupCell.h"
+#include "cells/MatrCell.h"
 #include "TreeUndoManager.h"
 #include "WorksheetCursor.h"
 #include "WorksheetDocument.h"
@@ -398,8 +399,32 @@ public:
     DISPLAY_TIMEOUT_ID
   };
 
-  //! Copy the currently selected cells
+  /*! Copy the currently selected cells
+
+    If only a block of a matrix's entries is selected, this is a new matrix
+    holding just that block, see CopySelectedMatrixBlock().
+  */
   std::unique_ptr<Cell> CopySelection(bool asData = false) const;
+
+  /*! The selected sub-matrix, as a new matrix, or null (GH #2345)
+
+    Non-null only if the selection is a block of one matrix's entries, see
+    SelectOutputRect(). Every "Copy ..." command copies this instead of the
+    whole matrix then.
+  */
+  std::unique_ptr<MatrCell> CopySelectedMatrixBlock() const;
+
+  /*! Select what a rectangle dragged across a cell's output covers
+
+    \param group    the cell whose output was clicked into
+    \param down, up where the mouse button went down and where it is now
+
+    What ClickNDrag() does for a drag that started in an output. A rectangle
+    that lies within one matrix but spans several of its entries selects the
+    block of entries it touches (GH #2345); anything else selects the output
+    cells it covers, as it always did.
+  */
+  void SelectOutputRect(GroupCell *group, wxPoint down, wxPoint up);
 
   /*! Copy the currently given list of cells
 

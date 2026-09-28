@@ -538,6 +538,16 @@ if(TARGET wxmTestApp)
     add_test(NAME MatrixViewer
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_MatrixViewer>")
 
+    # Selecting and copying a sub-matrix (GH #2345).
+    add_executable(test_MatrixBlockSelection
+        test_MatrixBlockSelection.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_MatrixBlockSelection PUBLIC cxx_std_20)
+    target_link_libraries(test_MatrixBlockSelection PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME MatrixBlockSelection
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_MatrixBlockSelection>")
+
     # Closing the diff viewer must not write its panes' configurations back
     # to the config file (GH #2356).
     add_executable(test_DiffFrameConfig
