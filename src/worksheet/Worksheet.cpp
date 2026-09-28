@@ -112,7 +112,7 @@ Worksheet::Worksheet(wxWindow *parent, int id,
            [this]{ return GetLastCellInWorksheet(); }),
   m_autocomplete(config),
   m_maximaManual(m_configuration) {
-  m_autocompletePopup = NULL;
+  m_autocompletePopup = nullptr;
 #ifdef __WXGTK__
   wxString gtk_input_method;
   if (wxGetEnv(wxS("GTK_IM_MODULE"), &gtk_input_method)) {
@@ -129,7 +129,7 @@ Worksheet::Worksheet(wxWindow *parent, int id,
   GetTargetWindow()->SetBackgroundStyle(wxBG_STYLE_PAINT);
 
 #if wxUSE_ACCESSIBILITY
-  m_accessibilityInfo = NULL;
+  m_accessibilityInfo = nullptr;
 #endif
 #if wxCHECK_VERSION(3, 1, 1)
   EnableTouchEvents(wxTOUCH_ZOOM_GESTURE);
@@ -150,7 +150,7 @@ Worksheet::Worksheet(wxWindow *parent, int id,
 
   m_configuration->SetBackgroundBrush(*(wxTheBrushList->FindOrCreateBrush(
                                                                           m_configuration->DefaultBackgroundColor(), wxBRUSHSTYLE_SOLID)));
-  m_autocompletePopup = NULL;
+  m_autocompletePopup = nullptr;
   m_wxmFormat = wxDataFormat(wxS("text/x-wxmaxima-batch"));
   m_mathmlFormat = wxDataFormat(wxS("MathML"));
   m_mathmlFormat2 = wxDataFormat(wxS("application/mathml-presentation+xml"));
@@ -163,7 +163,7 @@ Worksheet::Worksheet(wxWindow *parent, int id,
   m_rtfFormat3 = wxDataFormat(wxS("Rich Text Format"));
   m_document.SetDocumentView(this);
   GetTreeUndo().ForgetActiveCell();
-  m_clickInGC = NULL;
+  m_clickInGC = nullptr;
   LastCache() = nullptr;
   m_timer.SetOwner(this, TIMER_ID);
   m_caretTimer.SetOwner(this, CARET_TIMER_ID);
@@ -245,7 +245,7 @@ Worksheet::Worksheet(wxWindow *parent, int id,
   //  Disabled, as it resets the zoom to 1:1 on right-click (GTK) or closes the
   //  right-click dialogue (wxMSW)
   //  Connect(wxEVT_GESTURE_ZOOM, wxZoomGestureEventHandler(Worksheet::OnZoom),
-  //        NULL, this);
+  //        nullptr, this);
 #endif
   Bind(SIDEBARKEYEVENT, &Worksheet::OnSidebarKey, this);
   Bind(wxEVT_ERASE_BACKGROUND, &Worksheet::EraseBackground, this);
@@ -287,7 +287,7 @@ Worksheet::Worksheet(wxWindow *parent, int id,
 }
 
 void Worksheet::OnSidebarKey(wxCommandEvent &event) {
-  if (BTextCtrl::LastActive() == NULL) {
+  if (BTextCtrl::LastActive() == nullptr) {
     SetFocus();
     // Send the char button to the active cell or a new cell on the worksheet
     if (GetActiveCell()) {
@@ -430,7 +430,7 @@ bool Worksheet::RedrawIfRequested() {
 
         if (GetViewCellPointers().GetCellUnderPointer()) {
           const ImgCellBase * const image = GetSelectedImgCellBase();
-          if (image != NULL) {
+          if (image != nullptr) {
             StatusText(wxString::Format(
                                         _("%s image, %li×%li, %li ppi"),
                                         image->GetExtension().ToUTF8().data(),
@@ -456,7 +456,7 @@ bool Worksheet::RedrawIfRequested() {
     // refresh the whole screen even if m_redrawStart is set.
     Refresh();
     m_fullRedrawRequested = false;
-    m_redrawStart = NULL;
+    m_redrawStart = nullptr;
     redrawIssued = true;
   } else {
     // Ignore regions that we marked for redrawing, but that are outside the
@@ -489,7 +489,7 @@ bool Worksheet::RedrawIfRequested() {
 void Worksheet::RequestRedraw(GroupCell *start) {
   m_fullRedrawRequested = true;
 
-  if (start == NULL)
+  if (start == nullptr)
     m_redrawStart = GetTree();
   else {
     if (m_redrawStart) {
@@ -550,24 +550,24 @@ Worksheet::~Worksheet() {
   TreeUndo_ClearRedoActionList();
   TreeUndo_ClearUndoActionList();
 
-  if (wxConfig::Get() != NULL)
+  if (wxConfig::Get() != nullptr)
     wxConfig::Get()->Flush();
   if (HasCapture())
     ReleaseMouse();
 
-  m_mainToolBar = NULL;
+  m_mainToolBar = nullptr;
 
   ClearDocument();
   if (m_configuration->GetViewCellPointers() == &m_viewCellPointers) {
-    m_configuration->SetDocumentCellPointers(NULL);
-    m_configuration->SetViewCellPointers(NULL);
+    m_configuration->SetDocumentCellPointers(nullptr);
+    m_configuration->SetViewCellPointers(nullptr);
   }
   // Detach from the configuration; its destructor asserts that no worksheet
   // is attached any more, which catches owners that destroy their
   // Configuration before the Worksheet that uses it.
   if (m_configuration->GetWorkSheet() == this)
-    m_configuration->SetWorkSheet(NULL);
-  m_configuration = NULL;
+    m_configuration->SetWorkSheet(nullptr);
+  m_configuration = nullptr;
 }
 
 #if wxCHECK_VERSION(3, 1, 2)
@@ -893,14 +893,14 @@ GroupCell *Worksheet::InsertGroupCells(std::unique_ptr<GroupCell> &&cells,
 }
 
 // InsertGroupCells
-// inserts groupcells after position "where" (NULL = top of the document)
-// Multiple groupcells can be inserted when cells->m_next != NULL
+// inserts groupcells after position "where" (nullptr = top of the document)
+// Multiple groupcells can be inserted when cells->m_next != nullptr
 // Returns the pointer to the last inserted group cell to have fun with
 GroupCell *Worksheet::InsertGroupCells(std::unique_ptr<GroupCell> &&cells,
                                        GroupCell *where,
                                        UndoActions *undoBuffer) {
   if (!cells)
-    return NULL; // nothing to insert
+    return nullptr; // nothing to insert
 
   // The document owns the cell tree, so it does the actual splice and notifies
   // this window (recalc/redraw/adjust size/modified) through the
@@ -946,7 +946,7 @@ void Worksheet::ScrollToError() {
   // Set the cursor as close to the error as possible.
   if (errorCell->GetEditable()->ErrorIndexSet()) {
     ClearSelection();
-    GetHCaretCursor().SetSelectionAnchors(NULL, NULL);
+    GetHCaretCursor().SetSelectionAnchors(nullptr, nullptr);
     SetActiveCell(errorCell->GetEditable());
     errorCell->GetEditable()->GotoError();
     ScrollToCaret();
@@ -1099,7 +1099,7 @@ void Worksheet::SetZoomFactor(double newzoom) {
 
   m_configuration->SetZoomFactor(newzoom);
   // Determine if we have a sane thing we can scroll to.
-  Cell *cellToScrollTo = NULL;
+  Cell *cellToScrollTo = nullptr;
   if (CaretVisibleIs())
     cellToScrollTo = GetHCaret();
   if (!cellToScrollTo)
@@ -1110,7 +1110,7 @@ void Worksheet::SetZoomFactor(double newzoom) {
     wxPoint topleft;
     CalcUnscrolledPosition(0, 0, &topleft.x, &topleft.y);
     cellToScrollTo = GetTree();
-    while (cellToScrollTo != NULL) {
+    while (cellToScrollTo != nullptr) {
       wxRect rect = cellToScrollTo->GetRect();
       if (rect.GetBottom() > topleft.y)
         break;
@@ -1176,12 +1176,12 @@ void Worksheet::OnSize(wxSizeEvent &event) {
 void Worksheet::ClearDocument() {
   CloseAutoCompletePopup();
   ClearSelection();
-  SetActiveCell(NULL);
+  SetActiveCell(nullptr);
   m_clickType = CLICK_TYPE_NONE;
-  m_clickInGC = NULL;
+  m_clickInGC = nullptr;
   GetHCaretCursor().Deactivate();
-  SetHCaret(NULL); // horizontal caret at the top of document
-  GetHCaretCursor().SetSelectionAnchors(NULL, NULL);
+  SetHCaret(nullptr); // horizontal caret at the top of document
+  GetHCaretCursor().SetSelectionAnchors(nullptr, nullptr);
   m_layout.CancelPendingRecalculation();
   GetEvaluationQueue().Clear();
   TreeUndo_ClearBuffers();
@@ -1529,15 +1529,15 @@ void Worksheet::OnMouseLeftDown(wxMouseEvent &event) {
   // default when clicking
   m_clickType = CLICK_TYPE_NONE;
   ClearSelection();
-  GetHCaretCursor().SetSelectionAnchors(NULL, NULL);
-  GetHCaretCursor().SetPosition(NULL);
+  GetHCaretCursor().SetSelectionAnchors(nullptr, nullptr);
+  GetHCaretCursor().SetPosition(nullptr);
   GetHCaretCursor().Deactivate();
-  SetActiveCell(NULL);
+  SetActiveCell(nullptr);
 
   wxRect rect;
-  GroupCell *previous = NULL;
-  const GroupCell *clickedBeforeGC = NULL;
-  GroupCell *clickedInGC = NULL;
+  GroupCell *previous = nullptr;
+  const GroupCell *clickedBeforeGC = nullptr;
+  GroupCell *clickedInGC = nullptr;
   for (GroupCell &cell : OnList(GetTree())) { // go through all groupcells
     rect = cell.GetRect();
     if (m_down.y < rect.GetTop()) {
@@ -1564,7 +1564,7 @@ void Worksheet::OnMouseLeftDown(wxMouseEvent &event) {
   }
 
   else { // we clicked below last groupcell (both clickedInGC and
-    // clickedBeforeGC == NULL)
+    // clickedBeforeGC == nullptr)
     // set hCaret (or activate last cell?)
     SetHCaret(GetLastCellInWorksheet());
     m_clickType = CLICK_TYPE_GROUP_SELECTION;
@@ -1596,13 +1596,13 @@ void Worksheet::OnMouseLeftUp(wxMouseEvent &event) {
     ReleaseMouse();
 
   AnimationCell * const animCell = GetSelectedAnimation();
-  if (animCell != NULL)
+  if (animCell != nullptr)
     animCell->ToggleAnimationRunning();
 
   m_leftDown = false;
   m_mouseDrag = false;
   m_clickInGC =
-    NULL; // pointer to NULL to prevent crashes if the cell is deleted
+    nullptr; // pointer to nullptr to prevent crashes if the cell is deleted
   m_clickType = CLICK_TYPE_NONE;
   CheckUnixCopy();
   SetFocus();
@@ -1705,7 +1705,7 @@ void Worksheet::SelectGroupCells(wxPoint down, wxPoint up) {
       SetHCaret(GetDocumentCellPointers().GetSelectionEnd().CastAs<GroupCell *>());
     } else {
       GetHCaretCursor().Deactivate();
-      GetHCaretCursor().SetPosition(NULL);
+      GetHCaretCursor().SetPosition(nullptr);
     }
   } else {
     GetHCaretCursor().Activate();
@@ -1750,7 +1750,7 @@ void Worksheet::ClickNDrag(wxPoint down, wxPoint up) {
         // the already-selected text in the cell we have started selecting in.
         if (GetActiveCell()) {
           GetActiveCell()->SelectNone();
-          SetActiveCell(NULL);
+          SetActiveCell(nullptr);
         }
 
         // we have left the cell we started to select in =>
@@ -2276,7 +2276,7 @@ void Worksheet::DeleteSelection() {
 }
 
 void Worksheet::DeleteCurrentCell() {
-  GroupCell *cellToDelete = NULL;
+  GroupCell *cellToDelete = nullptr;
   if (GetHCaretCursor().IsActive())
     cellToDelete = GetHCaretCursor().Position();
   if (GetActiveCell())
@@ -2374,10 +2374,10 @@ void Worksheet::DeleteRegion(GroupCell *start, GroupCell *end,
   if (!m_document.CanRemoveCells(start, end))
     return;
 
-  GetHCaretCursor().SetSelectionAnchors(NULL, NULL);
+  GetHCaretCursor().SetSelectionAnchors(nullptr, nullptr);
 
   //! Set the cursor to a sane place
-  SetActiveCell(NULL);
+  SetActiveCell(nullptr);
   ClearSelection();
   SetHCaret(start->GetPrevious());
 
@@ -2506,7 +2506,7 @@ void Worksheet::OpenHCaret(const wxString &txt, GroupType type) {
       GroupCell *result = GetHCaretCursor().Position()->Unfold();
       if (!result) // assumes that unfold sets hcaret to the end of unfolded
         // cells
-        break;     // unfold returns NULL when it cannot unfold
+        break;     // unfold returns nullptr when it cannot unfold
       SetHCaret(result);
     }
   }
@@ -2650,7 +2650,7 @@ bool Worksheet::GCContainsCurrentQuestion(const GroupCell *cell) {
 
 void Worksheet::QuestionAnswered() {
   if (GetDocumentCellPointers().GetAnswerCell() || QuestionPending()) {
-    SetActiveCell(NULL);
+    SetActiveCell(nullptr);
     GroupCell *wg = GetWorkingGroup(true);
     if (wg) {
       SetHCaret(wg);
@@ -2674,7 +2674,7 @@ void Worksheet::UpdateScrollPos() {
 
 GroupCell *Worksheet::StartOfSectioningUnit(GroupCell *start) {
   wxASSERT(start);
-  if(start == NULL)
+  if(start == nullptr)
     return start;
   // If the current cell is a sectioning cell we return this cell
   if (IsLesserGCType(GC_TYPE_TEXT, start->GetGroupType()))
@@ -2738,7 +2738,7 @@ void Worksheet::OnCharInActive(wxKeyEvent &event) {
 
       GetActiveCell()->KeyboardSelectionStartedHere();
       GetActiveCell()->SelectNone();
-      SetActiveCell(NULL);
+      SetActiveCell(nullptr);
       RequestRedraw(GetHCaretCursor().Position());
     } else {
       if (GCContainsCurrentQuestion(previous)) {
@@ -2780,7 +2780,7 @@ void Worksheet::OnCharInActive(wxKeyEvent &event) {
 
       GetActiveCell()->KeyboardSelectionStartedHere();
       GetActiveCell()->SelectNone();
-      SetActiveCell(NULL);
+      SetActiveCell(nullptr);
       ScrolledAwayFromEvaluation();
       RequestRedraw();
     } else {
@@ -2972,7 +2972,7 @@ void Worksheet::SelectWithChar(int ccode) {
       SetActiveCell(KeyboardSelectionStart());
       ClearSelection();
       KeyboardSelectionStart()->ReturnToSelectionFromBot();
-      GetHCaretCursor().SetSelectionAnchors(NULL, NULL);
+      GetHCaretCursor().SetSelectionAnchors(nullptr, nullptr);
     } else {
       // extend / shorten up selection
       GroupCell *prev = GetHCaretCursor().SelectionEnd()->GetPrevious();
@@ -2996,7 +2996,7 @@ void Worksheet::SelectWithChar(int ccode) {
       // We are in the cell the selection started in
       SetActiveCell(KeyboardSelectionStart());
       ClearSelection();
-      GetHCaretCursor().SetSelectionAnchors(NULL, NULL);
+      GetHCaretCursor().SetSelectionAnchors(nullptr, nullptr);
       KeyboardSelectionStart()->ReturnToSelectionFromTop();
     } else {
       // extend/shorten down selection
@@ -3078,7 +3078,7 @@ void Worksheet::OnCharNoActive(wxKeyEvent &event) {
   }
 
   // Remove selection with shift+WXK_UP/WXK_DOWN
-  GetHCaretCursor().SetSelectionAnchors(NULL, NULL);
+  GetHCaretCursor().SetSelectionAnchors(nullptr, nullptr);
 
   switch (ccode) {
   case WXK_PAGEUP:
@@ -3150,7 +3150,7 @@ void Worksheet::OnCharNoActive(wxKeyEvent &event) {
 
     if (event.CmdDown()) {
       GroupCell *oldCell = GetHCaret();
-      SetHCaret(NULL);
+      SetHCaret(nullptr);
       if (GetTree())
         ScheduleScrollToCell(GetTree(), true);
       if (event.ShiftDown()) {
@@ -3211,7 +3211,7 @@ void Worksheet::OnCharNoActive(wxKeyEvent &event) {
   case WXK_LEFT:
     {
       AnimationCell * const animCell = GetSelectedAnimation();
-      if (animCell != NULL) {
+      if (animCell != nullptr) {
         animCell->AnimationRunning(false);
         StepAnimation(-1);
         break;
@@ -3277,7 +3277,7 @@ void Worksheet::OnCharNoActive(wxKeyEvent &event) {
   case WXK_RIGHT:
     {
       AnimationCell * const animation = GetSelectedAnimation();
-      if (animation != NULL) {
+      if (animation != nullptr) {
         animation->AnimationRunning(false);
         StepAnimation(1);
         break;
@@ -3455,7 +3455,7 @@ void Worksheet::OnChar(wxKeyEvent &event) {
   // entering unicode characters instead.
   if (m_findDialog && event.GetKeyCode() == WXK_ESCAPE) {
     m_findDialog->Destroy();
-    m_findDialog = NULL;
+    m_findDialog = nullptr;
     return;
   }
 
@@ -3489,7 +3489,7 @@ void Worksheet::OnMouseExit(wxMouseEvent &event) {
   // deleted.
   if (m_configuration->HideBrackets()) {
     if (GetTree())
-      GetTree()->CellUnderPointer(NULL);
+      GetTree()->CellUnderPointer(nullptr);
     RequestRedraw();
   }
 }
@@ -3639,11 +3639,11 @@ void Worksheet::RequestRedraw(wxRect rect) {
  */
 void Worksheet::DestroyTree() {
   GetHCaretCursor().Deactivate();
-  SetHCaret(NULL);
+  SetHCaret(nullptr);
   TreeUndo_ClearUndoActionList();
   TreeUndo_ClearRedoActionList();
   TreeOwner().reset();
-  LastCache() = NULL;
+  LastCache() = nullptr;
 }
 
 std::unique_ptr<GroupCell> Worksheet::CopyTree() const {
@@ -3659,7 +3659,7 @@ bool Worksheet::CopyBitmap() const {
 
 bool Worksheet::CopyAnimation() const {
   AnimationCell * const animation = GetSelectedAnimation();
-  if (animation != NULL)
+  if (animation != nullptr)
     return animation->CopyAnimationToClipboard();
   else
     return false;
@@ -3780,7 +3780,7 @@ static wxString OutputFileStem(const wxString &label) {
 int Worksheet::ExportSelectionOutputToDir(const wxString &dir, bool svg) {
   Cell *const selStart = GetDocumentCellPointers().GetSelectionStart();
   Cell *const selEnd = GetDocumentCellPointers().GetSelectionEnd();
-  if ((selStart == NULL) || (selEnd == NULL))
+  if ((selStart == nullptr) || (selEnd == nullptr))
     return 0;
 
   // Render the cells at full size, exactly like the HTML exporter does.
@@ -3795,7 +3795,7 @@ int Worksheet::ExportSelectionOutputToDir(const wxString &dir, bool svg) {
   const GroupCell *const lastGroup = selEnd->GetGroup();
   for (auto &group : OnList(selStart->GetGroup())) {
     Cell *const output = group.GetLabel();
-    if (output != NULL) {
+    if (output != nullptr) {
       ++index;
       // Name the file after the (%oN)/(%iN) label when the output has one;
       // otherwise (a warning, an error, a bare string, an image) use a running
@@ -3816,9 +3816,9 @@ int Worksheet::ExportSelectionOutputToDir(const wxString &dir, bool svg) {
 
       const wxString path = dir + wxS("/") + name + ext;
       if (svg) {
-        Svgout out(&m_configuration, CopySelection(output, NULL, false), path);
+        Svgout out(&m_configuration, CopySelection(output, nullptr, false), path);
       } else {
-        CopyToFile(path, output, NULL, /*asData=*/true,
+        CopyToFile(path, output, nullptr, /*asData=*/true,
                    m_configuration->BitmapScale());
       }
       ++count;
@@ -4707,7 +4707,7 @@ void Worksheet::SetActiveCell(EditorCell *cell) {
     GetActiveCell()->DeactivateCursor();
 
 #if wxUSE_ACCESSIBILITY
-  if (m_accessibilityInfo != NULL) {
+  if (m_accessibilityInfo != nullptr) {
     int childId = GetAccessibilityId(cell);
     // Notify on GetTargetWindow() because that's where the AccessibilityInfo is attached
     wxAccessible::NotifyEvent(wxACC_EVENT_OBJECT_FOCUS, GetTargetWindow(), wxOBJID_CLIENT, childId);
@@ -4724,7 +4724,7 @@ void Worksheet::SetActiveCell(EditorCell *cell) {
       blinktime = 200;
     m_caretTimer.StartOnce(blinktime);
     GetHCaretCursor().Deactivate(); // we have activated a cell .. disable caret
-    GetHCaretCursor().SetPosition(NULL);
+    GetHCaretCursor().SetPosition(nullptr);
   }
 
   RequestRedraw();
@@ -4746,8 +4746,8 @@ void Worksheet::SetSelection(Cell *start, Cell *end) {
   GetDocumentCellPointers().SetSelectionEnd(end);
 
   if (!GetDocumentCellPointers().GetSelectionStart()) {
-    GetHCaretCursor().SetSelectionStart(NULL);
-    GetHCaretCursor().SetSelectionEnd(NULL);
+    GetHCaretCursor().SetSelectionStart(nullptr);
+    GetHCaretCursor().SetSelectionEnd(nullptr);
   }
 
   if (m_mainToolBar) {
@@ -4846,7 +4846,7 @@ bool Worksheet::CutToClipboard() {
   } else if (GetDocumentCellPointers().GetSelectionStart() &&
              GetDocumentCellPointers().GetSelectionStart()->GetType() == MC_TYPE_GROUP) {
     if (CopyCells()) {
-      GroupCell *group = NULL;
+      GroupCell *group = nullptr;
       if (GetActiveCell())
         group = GetActiveCell()->GetGroup();
       if (group && (group->GetPrevious()))
@@ -5007,7 +5007,7 @@ void Worksheet::SelectAll() {
     if (!GetActiveCell()->AllSelected())
       GetActiveCell()->SelectAll();
     else {
-      SetActiveCell(NULL);
+      SetActiveCell(nullptr);
       SetSelection(GetTree(), GetLastCellInWorksheet());
       m_clickType = CLICK_TYPE_GROUP_SELECTION;
       GetHCaretCursor().Deactivate();
@@ -5117,7 +5117,7 @@ void Worksheet::CheckUnixCopy() {
 //! commands
 void Worksheet::Animate(bool run) const {
   AnimationCell * const animation = GetSelectedAnimation();
-  if(animation != NULL)
+  if(animation != nullptr)
     animation->AnimationRunning(run);
 }
 
@@ -5154,8 +5154,8 @@ void Worksheet::SetHCaret(GroupCell *where) {
     m_mainToolBar->UnsetCellStyle();
   }
 
-  GetHCaretCursor().SetSelectionAnchors(NULL, NULL);
-  SetActiveCell(NULL);
+  GetHCaretCursor().SetSelectionAnchors(nullptr, nullptr);
+  SetActiveCell(nullptr);
   if (where)
     wxASSERT_MSG(where->GetType() == MC_TYPE_GROUP,
                  _("Bug: Trying to move the horizontally-drawn cursor to a "
@@ -5409,7 +5409,7 @@ WorksheetSearch::SearchStart Worksheet::FindStart(bool down) {
     pos = (down && GetHCaretCursor().Position() && GetHCaretCursor().Position()->GetNext())
       ? GetHCaretCursor().Position()->GetNext()
       : GetHCaretCursor().Position();
-    if(pos == NULL)
+    if(pos == nullptr)
       pos = GetTree();
   }
   start.m_group = pos;
@@ -5431,7 +5431,7 @@ bool Worksheet::ApplyFindResult(const WorksheetSearch::SearchTarget &target,
     SetActiveCell(target.m_group->GetEditable());
     ScrollToCaret();
   } else {
-    SetActiveCell(NULL);
+    SetActiveCell(nullptr);
     SetSelection(target.m_cell);
     ScheduleScrollToCell(GetSelectionStart(), false);
   }
@@ -6246,7 +6246,7 @@ void Worksheet::OpenNextOrCreateCell() {
 void Worksheet::SelectGroupCell(GroupCell *cell) {
   SetSelection(cell);
   GetHCaretCursor().Deactivate();
-  SetActiveCell(NULL);
+  SetActiveCell(nullptr);
   if (cell) {
     if (GCContainsCurrentQuestion(cell)) {
       FollowEvaluation(true);
@@ -6502,7 +6502,7 @@ Worksheet::AccessibilityInfo::GetDefaultAction(int childId,
     return wxACC_OK;
   }
 
-  wxAccessible *acc = NULL;
+  wxAccessible *acc = nullptr;
   if (GetChild(childId, &acc) == wxACC_OK && acc)
     return acc->GetDefaultAction(0, actionName);
 
@@ -6528,7 +6528,7 @@ wxAccStatus Worksheet::AccessibilityInfo::GetFocus(int *childId,
     if (childId)
       *childId = 0;
     if (child)
-      *child = NULL;
+      *child = nullptr;
     return wxACC_FALSE;
   }
 
@@ -6556,7 +6556,7 @@ wxAccStatus Worksheet::AccessibilityInfo::GetFocus(int *childId,
       GroupCell *cell = m_worksheet->GetTree();
       for (int i = 1; cell && i < id; ++i)
         cell = cell->GetNext();
-      *child = cell ? cell->GetAccessible() : NULL;
+      *child = cell ? cell->GetAccessible() : nullptr;
     }
     return wxACC_OK;
   }
@@ -6576,7 +6576,7 @@ wxAccStatus Worksheet::AccessibilityInfo::GetLocation(wxRect &rect,
     return wxACC_OK;
   }
 
-  wxAccessible *acc = NULL;
+  wxAccessible *acc = nullptr;
   GetChild(elementId, &acc);
   return (acc && acc != this) ? acc->GetLocation(rect, 0) : wxACC_FAIL;
 }
@@ -6589,7 +6589,7 @@ wxAccStatus Worksheet::AccessibilityInfo::HitTest(const wxPoint &pt,
     if (childId)
       *childId = 0;
     if (childObject)
-      *childObject = NULL;
+      *childObject = nullptr;
     return wxACC_FALSE;
   }
 

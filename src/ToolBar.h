@@ -107,7 +107,7 @@ public:
   };
 
   //! The slider for animations
-  wxSlider *m_plotSlider = NULL;
+  wxSlider *m_plotSlider = nullptr;
 
   wxBitmap  m_undoIcon;
   wxBitmap  m_redoIcon;
@@ -281,7 +281,7 @@ private:
   //! The default style for new cells.
   GroupType m_defaultCellStyle = GC_TYPE_CODE;
   //! The drop-down-box for text styles
-  wxChoice *m_textStyle = NULL;
+  wxChoice *m_textStyle = nullptr;
   //! The position in the current animation at the last call of UpdateSlider()
   std::size_t m_animationDisplayedIndex = 0;
   //! The length of the current animation at the last call of UpdateSlider()

@@ -339,7 +339,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
 
 #ifdef WXM_USE_AI_TOOLS
       // Hidden outright (no menu entry, no pane, sidebar pointer stays
-      // NULL) rather than just disabled when there's nowhere safe to keep
+      // nullptr) rather than just disabled when there's nowhere safe to keep
       // an API key -- see AiProvider::SecretStoreAvailable()'s own doc
       // comment for why this doesn't fall back to plain-text storage
       // instead. ShowPane()/IsPaneDisplayed() et al. already null-check
@@ -498,7 +498,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
       wxSize minSiz;
       if(m_manager.GetPane(name).IsOk())
         {
-          if(m_manager.GetPane(name).window != NULL)
+          if(m_manager.GetPane(name).window != nullptr)
             minSiz = m_manager.GetPane(name).window->GetMinClientSize();
           else
             minSiz = wxSize(300 * GetContentScaleFactor(), 300 * GetContentScaleFactor());
@@ -545,7 +545,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
           // Give the pane's window an accessible name: without it a screen
           // reader announces every sidebar as an unnamed "panel". The default
           // wxWindowAccessible reports the window's label as its name.
-          if(m_manager.GetPane(name).window != NULL)
+          if(m_manager.GetPane(name).window != nullptr)
             m_manager.GetPane(name).window->SetLabel(m_sidebarCaption[paneId]);
         }
     }
@@ -602,7 +602,7 @@ std::size_t wxMaximaFrame::CountWindows() {
   wxWindowList::compatibility_iterator node = wxTopLevelWindows.GetFirst();
   while (node) {
     // Only count windows of the type wxMaxima
-    if(dynamic_cast<wxMaximaFrame *>(node->GetData()) != NULL)
+    if(dynamic_cast<wxMaximaFrame *>(node->GetData()) != nullptr)
       numberOfWindows++;
     node = node->GetNext();
   }
@@ -660,7 +660,7 @@ void wxMaximaFrame::UpdateStatusMaximaBusy() {
         m_bytesFromMaxima_last = 0;
         if(GetWorksheet())
           {
-            GetWorksheet()->SetWorkingGroup(NULL);
+            GetWorksheet()->SetWorkingGroup(nullptr);
             // If we evaluated a cell that produces no output we still want the
             // cell to be unselected after evaluating it.
             if (GetWorksheet()->FollowEvaluation())
@@ -2352,7 +2352,7 @@ void wxMaximaFrame::ReReadConfig() {
                                        Configuration::m_configfileLocation_override));
       }
       wxDELETE(config);
-      config = NULL;
+      config = nullptr;
     }
 #endif
 }

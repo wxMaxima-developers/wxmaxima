@@ -474,7 +474,7 @@ void TextCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
 }
 
 void TextCell::SetFont(wxDC *dc, AFontSize fontsize) const {
-  if(dc == NULL)
+  if(dc == nullptr)
     {
       wxLogMessage(_("Bug: dc == NULL"));
       return;

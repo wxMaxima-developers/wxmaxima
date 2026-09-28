@@ -242,7 +242,7 @@ public:
     {
       m_renderContext.SetRecalcDC(&dc);
     }
-  void UnsetContext() {m_renderContext.SetRecalcDC(NULL);}
+  void UnsetContext() {m_renderContext.SetRecalcDC(nullptr);}
 
   //! Set the brush to be used for the worksheet background
   void SetBackgroundBrush(const wxBrush &brush);
@@ -1540,11 +1540,11 @@ private:
   //! Which objects do we want to convert into subscripts if they occur after an underscore?
   long m_autoSubscript;
   //! The worksheet canvas this configuration storage is valid for
-  wxScrolledCanvas *m_workSheet = NULL;
+  wxScrolledCanvas *m_workSheet = nullptr;
   //! The document-model half of the cell registry. Not copied.
-  DocumentCellPointers *m_documentCellPointers = NULL;
+  DocumentCellPointers *m_documentCellPointers = nullptr;
   //! The transient view-state half of the cell registry. Not copied.
-  ViewCellPointers *m_viewCellPointers = NULL;
+  ViewCellPointers *m_viewCellPointers = nullptr;
   //! The view's recalculation-request callback (see RequestRecalculate()). Not copied.
   std::function<void(GroupCell *)> m_recalculateRequest;
   //! The view's whole-document recalculation callback (see RequestRecalculateAll()). Not copied.

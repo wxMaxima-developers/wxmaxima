@@ -116,7 +116,7 @@ private:
   CellPtr<GroupCell> m_dndEndCell;
   wxTimer m_scrollUpTimer;
   wxTimer m_scrollDownTimer;
-  wxDragImage *m_dragImage = NULL;
+  wxDragImage *m_dragImage = nullptr;
   // CellPtrs, not raw pointers: these caches can lag the worksheet tree, so an
   // entry may refer to a cell that has since been deleted. Auto-nulling turns a
   // stale entry into nullptr rather than a dangling pointer (see "Long-lived

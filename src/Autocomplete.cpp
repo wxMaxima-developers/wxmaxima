@@ -174,9 +174,9 @@ void AutoComplete::AddSymbols_Backgroundtask_string(stop_token stopToken, wxStri
 
 void AutoComplete::AddSymbols_Backgroundtask(stop_token stopToken, wxXmlDocument xmldoc) {
   wxXmlNode *node = xmldoc.GetRoot();
-  if (node != NULL) {
+  if (node != nullptr) {
     wxXmlNode *children = node->GetChildren();
-    while (children != NULL) {
+    while (children != nullptr) {
       if (stopToken.stop_requested()) return;
       if (children->GetType() == wxXML_ELEMENT_NODE) {
         if (children->GetName() == wxS("function")) {

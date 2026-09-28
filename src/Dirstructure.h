@@ -59,7 +59,7 @@ class Dirstructure
 public:
   //! The constructor and destructor
   Dirstructure();
-  ~Dirstructure(){ m_dirStructure = NULL; }
+  ~Dirstructure(){ m_dirStructure = nullptr; }
 private:
   //! The directory all data is stored relative to.
   static wxString ResourcesDir();

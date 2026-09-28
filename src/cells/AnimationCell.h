@@ -99,7 +99,7 @@ public:
   static wxDataFormat m_gifFormat;
 
   //! Can the current image be exported in SVG format?
-  bool CanExportSVG() const override {return (m_images.at(m_displayed) != NULL) && m_images.at(m_displayed)->CanExportSVG();}
+  bool CanExportSVG() const override {return (m_images.at(m_displayed) != nullptr) && m_images.at(m_displayed)->CanExportSVG();}
 
   //! A Gif object for the clipboard
   class GifDataObject : public wxCustomDataObject

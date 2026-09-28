@@ -1065,9 +1065,9 @@ bool CellIsProseText(const Cell *cell) {
   they are not top-level cells of the chunk.
  */
 bool ChunkIsPlainText(const Cell *content) {
-  if (content == NULL)
+  if (content == nullptr)
     return false;
-  for (const Cell *c = content; c != NULL; c = c->GetNext())
+  for (const Cell *c = content; c != nullptr; c = c->GetNext())
     if (!CellIsProseText(c))
       return false;
   return true;
@@ -1102,14 +1102,14 @@ void ExportOutputChunk(wxString &output, std::unique_ptr<Cell> chunk,
                        Configuration *configuration, const wxString &imgDir,
                        const wxString &filename,
                        const wxString &filename_encoded, int count) {
-  if (dynamic_cast<AnimationCell *>(&(*chunk)) != NULL) {
+  if (dynamic_cast<AnimationCell *>(&(*chunk)) != nullptr) {
     dynamic_cast<AnimationCell *>(&(*chunk))->ToGif(
                                                     imgDir + wxS("/") + filename +
                                                     wxString::Format(wxS("_%d.gif"), count));
     output << HtmlImageTag(filename_encoded, count, wxS(".gif"),
                            /*widthPx=*/-1, _("Animated Diagram"),
                            /*withBreak=*/false);
-  } else if (dynamic_cast<ImgCellBase *>(&(*chunk)) == NULL) {
+  } else if (dynamic_cast<ImgCellBase *>(&(*chunk)) == nullptr) {
     // Split off a leading output label (e.g. "(%o1)") so it can be shown
     // beside the content rather than fed to the math renderer.
     Cell *first = &(*chunk);
@@ -1149,7 +1149,7 @@ void ExportOutputChunk(wxString &output, std::unique_ptr<Cell> chunk,
       wxSize size =
         WorksheetExport::CopyToFile(imgDir + wxS("/") + filename +
                                       wxString::Format(wxS("_%d.png"), count),
-                                    &(*chunk), NULL, true,
+                                    &(*chunk), nullptr, true,
                                     configuration->BitmapScale(), &configuration);
       wxString alttext =
         EditorCell::EscapeHTMLChars(chunk->ListToString());
@@ -1176,7 +1176,7 @@ void ExportOutputChunk(wxString &output, std::unique_ptr<Cell> chunk,
         output << wxS("  <span class=\"eqlabel\">")
                << EditorCell::EscapeHTMLChars(labelText)
                << wxS("</span>\n");
-      if (content != NULL)
+      if (content != nullptr)
         output
           << wxS("  <math xmlns=\"http://www.w3.org/1998/Math/MathML\" "
                  "display=\"block\">")
@@ -1235,7 +1235,7 @@ void ExportCodeCell(wxString &output, GroupCell &tmp,
   }
 
   // Handle the output - if output exists.
-  if (out == NULL) {
+  if (out == nullptr) {
     // No output to export.x
     output << wxS("\n");
   } else {
@@ -1244,12 +1244,12 @@ void ExportCodeCell(wxString &output, GroupCell &tmp,
     // animations. We need to handle each of these item types separately =>
     // break down the list into chunks of one type.
     Cell *chunkStart = tmp.GetLabel();
-    while (chunkStart != NULL) {
+    while (chunkStart != nullptr) {
       Cell *chunkEnd = chunkStart;
 
       if ((chunkEnd->GetType() != MC_TYPE_SLIDE) &&
           (chunkEnd->GetType() != MC_TYPE_IMAGE))
-        while (chunkEnd->GetNext() != NULL) {
+        while (chunkEnd->GetNext() != nullptr) {
           auto *chunkNext = chunkEnd->GetNext();
           if ((chunkNext->GetType() == MC_TYPE_SLIDE) ||
               (chunkNext->GetType() == MC_TYPE_IMAGE) ||
@@ -1367,7 +1367,7 @@ void ExportOtherCell(wxString &output, GroupCell &tmp, MarkDownHTML &MarkDown,
                                               tmp.GetEditable()->ToString())
                << wxS("\n");
         output << wxS("<br>\n");
-        if (dynamic_cast<AnimationCell *>(tmp.GetOutput()) != NULL) {
+        if (dynamic_cast<AnimationCell *>(tmp.GetOutput()) != nullptr) {
           dynamic_cast<AnimationCell *>(tmp.GetOutput())
             ->ToGif(imgDir + wxS("/") + filename +
                     wxString::Format(wxS("_%d.gif"), count));
@@ -1717,7 +1717,7 @@ wxString WorksheetExport::SelectionToSelfContainedHTML(GroupCell *startGroup,
   wxString body;
   int count = 0;
   MarkDownHTML MarkDown(configuration);
-  for (GroupCell *tmp = startGroup; tmp != NULL; tmp = tmp->GetNext()) {
+  for (GroupCell *tmp = startGroup; tmp != nullptr; tmp = tmp->GetNext()) {
     if (tmp->GetGroupType() == GC_TYPE_CODE)
       ExportCodeCell(body, *tmp, configuration, imgDir, filename, filename,
                      count);

@@ -253,9 +253,9 @@ wxString SumCell::ToString() const {
   wxString var = tmp->ToString();
   wxString from;
   tmp = tmp->GetNext();
-  if (tmp != NULL) {
+  if (tmp != nullptr) {
     tmp = tmp->GetNext();
-    if (tmp != NULL)
+    if (tmp != nullptr)
       from = tmp->ListToString();
   }
   wxString to = m_over->ListToString();
@@ -275,9 +275,9 @@ wxString SumCell::ToMatlab() const {
   wxString var = tmp->ToMatlab();
   wxString from;
   tmp = tmp->GetNext();
-  if (tmp != NULL) {
+  if (tmp != nullptr) {
     tmp = tmp->GetNext();
-    if (tmp != NULL)
+    if (tmp != nullptr)
       from = tmp->ListToMatlab();
   }
   wxString to = m_over->ListToMatlab();

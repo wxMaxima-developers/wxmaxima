@@ -82,7 +82,7 @@ public:
 
   /*! The position this action started at.
 
-    NULL = At the begin of the document.
+    nullptr = At the begin of the document.
 
     A CellPtr (not a raw pointer) so that it auto-nulls if the GroupCell it
     refers to is destroyed while this action still sits in the undo/redo list -
@@ -112,7 +112,7 @@ public:
 
     To undo it these cells have to be deleted again.
 
-    If this field's value is NULL no cells have to be deleted to undo this action.
+    If this field's value is nullptr no cells have to be deleted to undo this action.
 
     A CellPtr for the same reason as m_start: it auto-nulls if the referenced
     GroupCell is destroyed before this action is undone.
@@ -124,7 +124,7 @@ public:
     This field will have to contain the cells themselves, not a copy of them because
     the latter might break consecutive undos.
 
-    If this field's value is NULL no cells have to be added to undo this action.
+    If this field's value is nullptr no cells have to be added to undo this action.
   */
   std::unique_ptr<GroupCell> m_oldCells;
 

@@ -132,7 +132,7 @@ protected:
   //! Linebreak characters
   static const wxString m_linebreaks;
 
-  const Configuration * const m_configuration = NULL;
+  const Configuration * const m_configuration = nullptr;
 
   typedef std::unordered_map <wxString, int, wxStringHash> StringHash;
   /*! Names of functions that don't require parenthesis

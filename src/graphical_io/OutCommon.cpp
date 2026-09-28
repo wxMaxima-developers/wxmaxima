@@ -171,7 +171,7 @@ bool OutCommon::PrepareLayout(Cell *tree) {
             tmp.Recalculate();
     }
 
-    if(m_recalculationDc == NULL)
+    if(m_recalculationDc == nullptr)
         return false;
     if (!m_recalculationDc->IsOk())
         return false;

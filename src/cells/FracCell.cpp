@@ -237,16 +237,16 @@ wxString FracCell::ToString() const {
         Denom()->ListToString() + wxS(")");
     } else {
       const Cell *tmp = Denom();
-      while (tmp != NULL) {
+      while (tmp != nullptr) {
         tmp = tmp->GetNext(); // Skip the d
-        if (tmp == NULL)
+        if (tmp == nullptr)
           break;
         tmp = tmp->GetNext(); // Skip the *
-        if (tmp == NULL)
+        if (tmp == nullptr)
           break;
         s += tmp->GetDiffPart();
         tmp = tmp->GetNext(); // Skip the *
-        if (tmp == NULL)
+        if (tmp == nullptr)
           break;
         tmp = tmp->GetNext();
       }

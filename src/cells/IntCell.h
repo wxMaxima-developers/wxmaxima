@@ -155,7 +155,7 @@ public:
 
   //! Does this integral have limits?
   bool HasLimits() const {return (m_intStyle == INT_DEF) &&
-      (m_upperLimit != NULL) && (m_lowerLimit != NULL); }
+      (m_upperLimit != nullptr) && (m_lowerLimit != nullptr); }
   
 private:
   wxCoord IntSignLimitYoffset() const { return Scale_Px(8); }

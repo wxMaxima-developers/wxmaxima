@@ -54,7 +54,7 @@ private:
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wattributes"
 #endif
-  [[maybe_unused]] Configuration *m_configuration = NULL;
+  [[maybe_unused]] Configuration *m_configuration = nullptr;
 #if defined(__GNUC__) && !defined(__clang__) && __GNUC__ < 12
 #pragma GCC diagnostic pop
 #endif

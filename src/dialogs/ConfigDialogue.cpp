@@ -368,7 +368,7 @@ ConfigDialogue::~ConfigDialogue() {
   // sample worksheet deterministically while the configuration is whole.
   if (m_sampleWorksheet) {
     m_sampleWorksheet->Destroy();
-    m_sampleWorksheet = NULL;
+    m_sampleWorksheet = nullptr;
   }
 }
 
@@ -2666,7 +2666,7 @@ bool ConfigDialogue::AddCustomAiProviderDialog() {
   dlg.SetSizerAndFit(dlgVbox);
 
   wxButton *okButton = static_cast<wxButton *>(dlg.FindWindow(wxID_OK));
-  if (okButton != NULL)
+  if (okButton != nullptr)
     okButton->Bind(wxEVT_UPDATE_UI, [nameCtrl, urlCtrl, urlProblem, &dlg](wxUpdateUIEvent &evt) {
       wxString url = urlCtrl->GetValue();
       // An empty field is "not filled in yet", not "wrong" -- only nag once
@@ -2994,7 +2994,7 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
     do
       {
         entry = zipstream.GetNextEntry();
-      } while((entry != NULL) && (entry->GetName() != "content.xml"));
+      } while((entry != nullptr) && (entry->GetName() != "content.xml"));
     wxXmlDocument xmlText;
     xmlText.Load(zipstream);
     wxXmlNode *xmlcells = xmlText.GetRoot();

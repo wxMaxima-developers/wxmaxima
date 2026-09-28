@@ -50,7 +50,7 @@ History::History(wxWindow *parent, int id, Configuration *cfg)
   // Windows
   m_history =
     new wxListBox(this, history_ctrl_id, wxDefaultPosition, wxDefaultSize, 0,
-                  NULL, wxLB_EXTENDED | wxLB_HSCROLL | wxLB_NEEDED_SB);
+                  nullptr, wxLB_EXTENDED | wxLB_HSCROLL | wxLB_NEEDED_SB);
   m_regex = new RegexCtrl(this, wxID_ANY, cfg, "History");
   wxBoxSizer *box = new wxBoxSizer(wxVERTICAL);
 

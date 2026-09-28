@@ -629,7 +629,7 @@ public:
   //! Close the autocompletion pop-up if it is currently open.
   void CloseAutoCompletePopup()
     {
-      if(m_autocompletePopup != NULL)
+      if(m_autocompletePopup != nullptr)
         m_autocompletePopup->Destroy();
     }
 
@@ -682,7 +682,7 @@ private:
   static std::mutex m_drawDCLock;
   /*! The pointer to thesettings storage
    */
-  Configuration *m_configuration = NULL;
+  Configuration *m_configuration = nullptr;
   /*! The layout/recalculation engine.
 
     Owns the layout scheduling state (resume point, cached widths, virtual-size
@@ -707,7 +707,7 @@ public:
   //! Whichever find/replace UI is actually in use right now: the dockable
   //! sidebar (GH #2249) if Configuration::FindDialogDockable() is set and
   //! it exists, otherwise the floating dialog's own pane, if one is open.
-  //! Returns NULL if neither is currently available.
+  //! Returns nullptr if neither is currently available.
   FindReplacePane *GetActiveFindPane() const;
   //! The storage for the autocompletion feature
   AutoComplete &GetAutocomplete() { return m_autocomplete; }
@@ -770,7 +770,7 @@ public:
   //! Request the worksheet to be redrawn
   void MarkRefreshAsDone()
     {
-      m_redrawStart = NULL;
+      m_redrawStart = nullptr;
       m_fullRedrawRequested = false;
     }
 
@@ -792,7 +792,7 @@ public:
 
     \return true, if we did redraw a workscreet portion.
   */
-  void RequestRedraw(GroupCell *start = NULL);
+  void RequestRedraw(GroupCell *start = nullptr);
   /*! Request a part of the worksheet to be redrawn
 
     \param rect The rectangle that is to be requested to be redrawn. If this
@@ -850,11 +850,11 @@ public:
   void ScrollToError();
 
   //! The find-and-replace-dialog
-  FindReplaceDialog *m_findDialog = NULL;
+  FindReplaceDialog *m_findDialog = nullptr;
   //! The dockable find-and-replace sidebar (GH #2249), set once by
   //! wxMaximaFrame at startup and never destroyed -- unlike m_findDialog,
   //! which is created/destroyed on demand.
-  FindReplacePane *m_findPane = NULL;
+  FindReplacePane *m_findPane = nullptr;
 
   //! Is the vertically-drawn cursor active?
   bool HCaretActive() const { return GetHCaretCursor().IsActive(); }
@@ -913,13 +913,13 @@ public:
   /*! Insert group cells into the worksheet
 
     \param cells The list of cells that has to be inserted
-    \param where The cell the cells have to be inserted after. NULL means:
+    \param where The cell the cells have to be inserted after. nullptr means:
     Insert the cells at the beginning of the worksheet.
     \param undoBuffer The buffer the undo information for this action has
     to be kept in. Might be
     - GetTreeUndo().UndoStack() for normal deletes,
     - GetTreeUndo().RedoStack() for deletions while executing an undo or
-    - NULL for: Don't keep any copy of the cells.
+    - nullptr for: Don't keep any copy of the cells.
   */
   GroupCell *InsertGroupCells(std::unique_ptr<GroupCell> &&cells, GroupCell *where,
                               UndoActions *undoBuffer);
@@ -929,7 +929,7 @@ public:
     \param cells The list of cells that has to be inserted
     \param where The cell the cells have to be inserted after
   */
-  GroupCell *InsertGroupCells(std::unique_ptr<GroupCell> &&cells, GroupCell *where = NULL);
+  GroupCell *InsertGroupCells(std::unique_ptr<GroupCell> &&cells, GroupCell *where = nullptr);
 
   /*! Add a new line to the output cell of the working group.
 
@@ -1105,7 +1105,7 @@ public:
     \param undoBuffer The buffer the undo information has to be kept in. Might be
     - GetTreeUndo().UndoStack() for normal deletes,
     - GetTreeUndo().RedoStack() for deletions while executing an undo or
-    - NULL for: Don't keep any copy of the cells.
+    - nullptr for: Don't keep any copy of the cells.
     \addtogroup UndoBufferFill
   */
   void DeleteRegion(
@@ -1146,35 +1146,35 @@ public:
   */
   void DeleteCurrentCell();
 
-  //! Returns the selected cell - or NULL, if the selection isn't an animation 
+  //! Returns the selected cell - or nullptr, if the selection isn't an animation 
   AnimationCell *GetSelectedAnimation() const
     {
       if(GetDocumentCellPointers().GetSelectionStart() != GetDocumentCellPointers().GetSelectionEnd())
-        return NULL;
+        return nullptr;
       return dynamic_cast<AnimationCell *>(GetSelectionStart());
     }
 
-  //! Returns the selected cell - or NULL, if the selection isn't an image 
+  //! Returns the selected cell - or nullptr, if the selection isn't an image 
   ImgCell *GetSelectedImgCell() const
     {
       if(GetDocumentCellPointers().GetSelectionStart() != GetDocumentCellPointers().GetSelectionEnd())
-        return NULL;
+        return nullptr;
       return dynamic_cast<ImgCell *>(GetSelectionStart());
     }
   
-  //! Returns the selected cell - or NULL, if the selection isn't image nor animation
+  //! Returns the selected cell - or nullptr, if the selection isn't image nor animation
   ImgCellBase *GetSelectedImgCellBase() const
     {
       if(GetDocumentCellPointers().GetSelectionStart() != GetDocumentCellPointers().GetSelectionEnd())
-        return NULL;
+        return nullptr;
       return dynamic_cast<ImgCellBase *>(GetSelectionStart());
     }
 
-  //! Returns the selected cell - or NULL, if the selection isn't a text cell
+  //! Returns the selected cell - or nullptr, if the selection isn't a text cell
   TextCell *GetSelectedTextCell() const
     {
       if(GetDocumentCellPointers().GetSelectionStart() != GetDocumentCellPointers().GetSelectionEnd())
-        return NULL;
+        return nullptr;
       return dynamic_cast<TextCell *>(GetSelectionStart());
     }
 
@@ -1182,7 +1182,7 @@ public:
   bool CanAnimate() const
     {
       return GetDocumentCellPointers().GetSelectionStart() && GetDocumentCellPointers().GetSelectionStart() == GetDocumentCellPointers().GetSelectionEnd() &&
-        (dynamic_cast<AnimationCell *>(GetSelectionStart()) != NULL);
+        (dynamic_cast<AnimationCell *>(GetSelectionStart()) != nullptr);
     }
 
   /*! Animate the current slide show
@@ -1323,14 +1323,14 @@ public:
 
   /*! Return the first of the currently selected cells.
 
-    NULL means: No cell is selected.
+    nullptr means: No cell is selected.
   */
   Cell *GetSelectionStart() const
     { return GetDocumentCellPointers().GetSelectionStart(); }
 
   /*! Return the last of the currently selected cells.
 
-    NULL means: No cell is selected.
+    nullptr means: No cell is selected.
   */
   Cell *GetSelectionEnd() const
     { return GetDocumentCellPointers().GetSelectionEnd(); }
@@ -1487,13 +1487,13 @@ public:
     @param where   The cell to place the cursor before.
   */
   void SetHCaret(GroupCell *where); // call with false, when manually refreshing
-  //! The cell the horizontal cursor is above. NULL means at the start of the document.
+  //! The cell the horizontal cursor is above. nullptr means at the start of the document.
   GroupCell *GetHCaret();
 
   //! Place the cursor into a new cell where the horizontal cursor is
   void OpenHCaret(const wxString &txt = {})
     {
-      if(m_mainToolBar == NULL)
+      if(m_mainToolBar == nullptr)
         OpenHCaret(txt, GC_TYPE_CODE);
       else
         OpenHCaret(txt, m_mainToolBar->GetCellType());
@@ -1727,7 +1727,7 @@ public:
   void OnFollow();
 
   //! The toolbar of the main window: We need to access it and therefore have it defined here.
-  ToolBar *m_mainToolBar = NULL;
+  ToolBar *m_mainToolBar = nullptr;
 
   //! Set this cell as the currently selected one
   void SelectGroupCell(GroupCell *cell);
@@ -1778,9 +1778,9 @@ public:
   bool WillAutoAnswer() const;
   void UpdateScrollPos();
 
-  /*! Returns the cell maxima currently works on. NULL if there isn't such a cell.
+  /*! Returns the cell maxima currently works on. nullptr if there isn't such a cell.
 
-    \param resortToLast true = if we already have set the cell maxima works on to NULL
+    \param resortToLast true = if we already have set the cell maxima works on to nullptr
     use the last cell maxima was known to work on.
   */
   GroupCell *GetWorkingGroup(bool resortToLast = false) const;
@@ -1816,8 +1816,8 @@ public:
     wxAccStatus GetRole(int childId, wxAccRole *role);
     wxAccStatus GetState(int childId, long *state);
   private:
-    wxWindow *m_parent = NULL;
-    Worksheet *m_worksheet = NULL;
+    wxWindow *m_parent = nullptr;
+    Worksheet *m_worksheet = nullptr;
 
     class CaretAccessibilityInfo : public wxAccessible {
     public:
@@ -1853,7 +1853,7 @@ protected:
   wxBitmap m_memory;
   virtual wxSize DoGetBestClientSize() const override;
 #if wxUSE_ACCESSIBILITY
-  AccessibilityInfo *m_accessibilityInfo = NULL;
+  AccessibilityInfo *m_accessibilityInfo = nullptr;
 #endif
   //! The x position of the mouse pointer
   int m_pointer_x = -1;

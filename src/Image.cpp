@@ -119,14 +119,14 @@ Image::Image(Configuration *config, const wxBitmap &bitmap) {
 Image::Image(Configuration *config, const wxString &image,
              const wxString &wxmxFile, bool remove)
 {
-  m_svgImage = NULL;
+  m_svgImage = nullptr;
   m_configuration = config;
   m_ppi = m_configuration->GetPPI().x;
   LoadImage(image, wxmxFile, remove);
 }
 
 Image::Image(Configuration *config, const Image &image) {
-  m_svgImage = NULL;
+  m_svgImage = nullptr;
   m_configuration = config;
   m_scaledBitmap.Create(1, 1);
   m_maxWidth = image.m_maxWidth;
@@ -446,7 +446,7 @@ Image::WxmxStream::WxmxStream(wxInputStream &wxmxFile, const wxString &fileInWxm
 {
   while(!Eof())
   {
-    wxZipEntry *contentsEntry = NULL;
+    wxZipEntry *contentsEntry = nullptr;
     contentsEntry = GetNextEntry();
     if((!contentsEntry) || (contentsEntry->GetName() == fileInWxmx))
       break;

@@ -50,7 +50,7 @@ private:
     back here. */
   void RewrapTo(int width);
 
-  wxStaticText *m_textCtrl = NULL;
+  wxStaticText *m_textCtrl = nullptr;
   wxString m_label;
   //! The width m_textCtrl is currently wrapped to. See RewrapTo().
   int m_wrappedAt = -1;

@@ -56,7 +56,7 @@ std::vector<BidiRun> Bidi::GetRuns(const std::vector<uint32_t> &codepoints,
 
   // visual_str and positions_V_to_L aren't needed here (runs are derived from
   // embedding_levels and positions_L_to_V below), but a real buffer is passed
-  // for all of them regardless of the "NULL is ignored" contract the header
+  // for all of them regardless of the "nullptr is ignored" contract the header
   // documents, since it's cheap for a single editor line and removes any
   // doubt about it.
   std::vector<FriBidiChar> visual(len);

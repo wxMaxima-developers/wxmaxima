@@ -43,17 +43,17 @@ void MaximaOutputAppender::ConsoleAppend(wxXmlDocument xml, CellType type,
 
   // If we want to append an error message to the worksheet and there is no cell
   // that can contain it we need to create such a cell.
-  if (m_wxMaxima.GetWorksheet()->GetTree() == NULL)
+  if (m_wxMaxima.GetWorksheet()->GetTree() == nullptr)
     m_wxMaxima.GetWorksheet()->InsertGroupCells(
                                   std::make_unique<GroupCell>(&m_wxMaxima.m_configuration, GC_TYPE_CODE));
   m_wxMaxima.m_dispReadOut = false;
   GroupCell *tmp = m_wxMaxima.GetWorksheet()->GetWorkingGroup(true);
 
-  if (tmp == NULL) {
+  if (tmp == nullptr) {
     if (m_wxMaxima.GetWorksheet()->GetActiveCell())
       tmp = m_wxMaxima.GetWorksheet()->GetActiveCell()->GetGroup();
   }
-  if(tmp != NULL)
+  if(tmp != nullptr)
     {
       m_wxMaxima.m_parser.SetUserLabel(userLabel);
       m_wxMaxima.m_parser.SetGroup(m_wxMaxima.GetWorksheet()->GetInsertGroup());
@@ -87,12 +87,12 @@ void MaximaOutputAppender::ConsoleAppend(wxXmlDocument xml, CellType type,
  */
 TextCell *MaximaOutputAppender::ConsoleAppend(wxString s, CellType type) {
   if(!m_wxMaxima.GetWorksheet())
-    return NULL;
+    return nullptr;
 
-  TextCell *lastLine = NULL;
+  TextCell *lastLine = nullptr;
   // If we want to append an error message to the worksheet and there is no cell
   // that can contain it we need to create such a cell.
-  if (m_wxMaxima.GetWorksheet()->GetTree() == NULL)
+  if (m_wxMaxima.GetWorksheet()->GetTree() == nullptr)
     m_wxMaxima.GetWorksheet()->InsertGroupCells(
                                   std::make_unique<GroupCell>(&m_wxMaxima.m_configuration, GC_TYPE_CODE));
 
@@ -106,7 +106,7 @@ TextCell *MaximaOutputAppender::ConsoleAppend(wxString s, CellType type) {
   t.Trim();
   t.Trim(false);
   if (t.IsEmpty())
-    return NULL;
+    return nullptr;
 
   if (m_wxMaxima.m_maxOutputCellsPerCommand > 0) {
     // If we already have output more lines than we are allowed, we inform the
@@ -118,7 +118,7 @@ TextCell *MaximaOutputAppender::ConsoleAppend(wxString s, CellType type) {
                            MC_TYPE_ERROR);
         m_wxMaxima.m_outputCellsFromCurrentCommand++;
       }
-      return NULL;
+      return nullptr;
     } else {
       m_wxMaxima.m_outputCellsFromCurrentCommand++;
     }
@@ -126,7 +126,7 @@ TextCell *MaximaOutputAppender::ConsoleAppend(wxString s, CellType type) {
     // If we already have output more lines than we are allowed to and we
     // already have informed the user about this we return immediately
     if (m_wxMaxima.m_outputCellsFromCurrentCommand > m_wxMaxima.m_maxOutputCellsPerCommand)
-      return NULL;
+      return nullptr;
   }
 
   if ((type != MC_TYPE_ERROR) && (type != MC_TYPE_WARNING))
@@ -152,12 +152,12 @@ TextCell *MaximaOutputAppender::ConsoleAppend(wxString s, CellType type) {
     lastLine = DoRawConsoleAppend(s, MC_TYPE_ERROR);
     GroupCell *tmp = m_wxMaxima.GetWorksheet()->GetWorkingGroup(true);
 
-    if (tmp == NULL) {
+    if (tmp == nullptr) {
       if (m_wxMaxima.GetWorksheet()->GetActiveCell())
         tmp = m_wxMaxima.GetWorksheet()->GetActiveCell()->GetGroup();
     }
 
-    if (tmp != NULL) {
+    if (tmp != nullptr) {
       m_wxMaxima.GetWorksheet()->GetErrorList().Add(tmp);
       tmp->GetEditable()->SetErrorIndex(m_wxMaxima.m_commandIndex - 1);
     }
@@ -212,10 +212,10 @@ void MaximaOutputAppender::DoConsoleAppend(wxString s, CellType type, AppendOpt 
 TextCell *MaximaOutputAppender::DoRawConsoleAppend(wxString s, CellType type,
                                                    AppendOpt opts) {
   if(!m_wxMaxima.GetWorksheet())
-    return NULL;
+    return nullptr;
 
   if (s.IsEmpty())
-    return NULL;
+    return nullptr;
 
   if (type == MC_TYPE_ERROR)
     wxLogMessage(wxS("Maxima error: %s"), s);
@@ -225,7 +225,7 @@ TextCell *MaximaOutputAppender::DoRawConsoleAppend(wxString s, CellType type,
   TextCell *cell = nullptr;
   // If we want to append an error message to the worksheet and there is no cell
   // that can contain it we need to create such a cell.
-  if (m_wxMaxima.GetWorksheet()->GetTree() == NULL)
+  if (m_wxMaxima.GetWorksheet()->GetTree() == nullptr)
     m_wxMaxima.GetWorksheet()->InsertGroupCells(
                                   std::make_unique<GroupCell>(&m_wxMaxima.m_configuration, GC_TYPE_CODE));
 

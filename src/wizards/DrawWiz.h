@@ -49,13 +49,13 @@ public:
 private:
   int m_dimensions;
   BTextCtrl *m_expression;
-  BTextCtrl *m_filledfunc  = NULL;
+  BTextCtrl *m_filledfunc  = nullptr;
   BTextCtrl *m_x;
   BTextCtrl *m_xStart;
   BTextCtrl *m_xEnd;
-  BTextCtrl *m_y = NULL;
-  BTextCtrl *m_yStart = NULL;
-  BTextCtrl *m_yEnd = NULL;
+  BTextCtrl *m_y = nullptr;
+  BTextCtrl *m_yStart = nullptr;
+  BTextCtrl *m_yEnd = nullptr;
 };
 
 //! A wizard for parametric plots using draw
@@ -69,9 +69,9 @@ private:
   int m_dimensions;
   BTextCtrl *m_expression_x;
   BTextCtrl *m_expression_y;
-  BTextCtrl *m_expression_z = NULL;
+  BTextCtrl *m_expression_z = nullptr;
   BTextCtrl *m_parameter;
-  BTextCtrl *m_parameterStart = NULL;
+  BTextCtrl *m_parameterStart = nullptr;
   BTextCtrl *m_parameterEnd;
 };
 
@@ -91,9 +91,9 @@ private:
   BTextCtrl *m_y;
   BTextCtrl *m_yStart;
   BTextCtrl *m_yEnd;
-  BTextCtrl *m_z = NULL;
-  BTextCtrl *m_zStart = NULL;
-  BTextCtrl *m_zEnd = NULL;
+  BTextCtrl *m_z = nullptr;
+  BTextCtrl *m_zStart = nullptr;
+  BTextCtrl *m_zEnd = nullptr;
 };
 
 //! A wizard for axis setup for draw
@@ -111,17 +111,17 @@ private:
   BTextCtrl *m_yLabel;
   BTextCtrl *m_yStart;
   BTextCtrl *m_yEnd;
-  BTextCtrl *m_zLabel = NULL;
-  BTextCtrl *m_zStart = NULL;
-  BTextCtrl *m_zEnd = NULL;
+  BTextCtrl *m_zLabel = nullptr;
+  BTextCtrl *m_zStart = nullptr;
+  BTextCtrl *m_zEnd = nullptr;
   wxCheckBox *m_useSecondaryX;
   wxCheckBox *m_useSecondaryY;
-  BTextCtrl *m_x2Label = NULL;
-  BTextCtrl *m_x2Start = NULL;
-  BTextCtrl *m_x2End = NULL;
-  BTextCtrl *m_y2Label = NULL;
-  BTextCtrl *m_y2Start = NULL;
-  BTextCtrl *m_y2End = NULL;
+  BTextCtrl *m_x2Label = nullptr;
+  BTextCtrl *m_x2Start = nullptr;
+  BTextCtrl *m_x2End = nullptr;
+  BTextCtrl *m_y2Label = nullptr;
+  BTextCtrl *m_y2Start = nullptr;
+  BTextCtrl *m_y2End = nullptr;
 };
 
 
@@ -202,15 +202,15 @@ private:
   int m_dimensions;
   BTextCtrl *m_nticks;
   BTextCtrl *m_adapt_depth;
-  BTextCtrl *m_xu_grid  = NULL;
-  BTextCtrl *m_yv_grid  = NULL;
-  BTextCtrl *m_ip_grid_x = NULL;
-  BTextCtrl *m_ip_grid_y = NULL;
-  BTextCtrl *m_ip_grid_in_x = NULL;
-  BTextCtrl *m_ip_grid_in_y = NULL;
-  BTextCtrl *m_x_voxel = NULL;
-  BTextCtrl *m_y_voxel = NULL;
-  BTextCtrl *m_z_voxel = NULL;
+  BTextCtrl *m_xu_grid  = nullptr;
+  BTextCtrl *m_yv_grid  = nullptr;
+  BTextCtrl *m_ip_grid_x = nullptr;
+  BTextCtrl *m_ip_grid_y = nullptr;
+  BTextCtrl *m_ip_grid_in_x = nullptr;
+  BTextCtrl *m_ip_grid_in_y = nullptr;
+  BTextCtrl *m_x_voxel = nullptr;
+  BTextCtrl *m_y_voxel = nullptr;
+  BTextCtrl *m_z_voxel = nullptr;
 };
 
 #endif // DRAWWIZ_H

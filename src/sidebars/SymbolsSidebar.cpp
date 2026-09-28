@@ -129,7 +129,7 @@ SymbolsSidebar::SymbolsSidebar(wxWindow *parent,
     {L'\u220e', _("End of proof")},
   };
 
-  m_userSymbols = NULL;
+  m_userSymbols = nullptr;
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
 
   m_builtInSymbolsSizer = new Buttonwrapsizer(wxHORIZONTAL);
@@ -167,7 +167,7 @@ void SymbolsSidebar::OnMenu(wxCommandEvent &event) {
   std::unordered_map<int, std::function<void()>> m{
     {EventIDs::enable_unicodePane, [&](){
       const wxWindow *mainWin = this;
-      while (mainWin->GetParent() != NULL)
+      while (mainWin->GetParent() != nullptr)
         mainWin = mainWin->GetParent();
       wxCommandEvent *ev = new wxCommandEvent(event);
       mainWin->GetEventHandler()->QueueEvent(ev);
@@ -212,7 +212,7 @@ void SymbolsSidebar::UpdateUserSymbols() {
   if(m_userSymbols_Last == m_configuration->SymbolPaneAdditionalChars())
     return;
   
-  if (m_userSymbols == NULL)
+  if (m_userSymbols == nullptr)
     return;
 
   wxLogNull blocker;
@@ -227,7 +227,7 @@ void SymbolsSidebar::UpdateUserSymbols() {
 }
 
 void SymbolsSidebar::AddUserSymbols() {  
-  if (m_userSymbols == NULL)
+  if (m_userSymbols == nullptr)
     return;
 
   wxLogNull blocker;

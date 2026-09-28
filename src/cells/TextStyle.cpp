@@ -57,7 +57,7 @@ Style::Style()
     SetFontName(wxNORMAL_FONT->GetFaceName());
   else
     SetFontName(wxS("Sans"));
-  wxASSERT(m.fontCache != NULL);
+  wxASSERT(m.fontCache != nullptr);
 }
 
 Style::Style(AFontSize fontSize)
@@ -67,11 +67,11 @@ Style::Style(AFontSize fontSize)
     SetFontName(wxNORMAL_FONT->GetFaceName());
   else
     SetFontName(wxS("Sans"));
-  wxASSERT(m.fontCache != NULL);
+  wxASSERT(m.fontCache != nullptr);
 }
 
 Style::Style(const Style &o) : m(o.m) {
-  wxASSERT(m.fontCache != NULL);
+  wxASSERT(m.fontCache != nullptr);
 }
 
 Style &Style::operator=(const Style &o) {
@@ -80,7 +80,7 @@ Style &Style::operator=(const Style &o) {
       m = o.m;
       SetFontName(o.GetFontName());
     }
-  wxASSERT(m.fontCache != NULL);
+  wxASSERT(m.fontCache != nullptr);
 
   return *this;
 }
@@ -173,7 +173,7 @@ did_change Style::SetStrikethrough(bool strikethrough) {
 }
 
 did_change Style::SetFontName(wxString fontName) {
-  if ((m.fontCache != NULL) && (GetFontName() == fontName))
+  if ((m.fontCache != nullptr) && (GetFontName() == fontName))
     {
       return false;
     }
@@ -185,7 +185,7 @@ did_change Style::SetFontName(wxString fontName) {
     }
   else
     m.fontCache = it->second;
-  wxASSERT(m.fontCache != NULL);
+  wxASSERT(m.fontCache != nullptr);
 
   return true;
 }

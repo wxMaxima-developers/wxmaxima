@@ -28,11 +28,11 @@
 #include <wx/menuitem.h>
 
 wxString MenuHelpString(wxMenu *menu, int id) {
-  if ((menu == NULL) || (id <= 0))
+  if ((menu == nullptr) || (id <= 0))
     return {};
   // wxMenu::GetHelpString() asserts in wxWidgets 3.3 if id is not one of this
   // menu's items; FindItem() recurses into submenus and returns nullptr for a
   // non-match instead, so we look the item up ourselves and never assert.
   wxMenuItem *item = menu->FindItem(id);
-  return (item != NULL) ? item->GetHelp() : wxString();
+  return (item != nullptr) ? item->GetHelp() : wxString();
 }

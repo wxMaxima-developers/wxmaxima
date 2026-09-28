@@ -196,7 +196,7 @@ public:
     \param imgDir The directory eventual images should be stored in
     \param filename The base filename for all images
     \param imgCounter The location of the counter that tells how many unique
-    image filenames we have already generated. NULL means: This TeX export
+    image filenames we have already generated. nullptr means: This TeX export
     doesn't contain other GroupCells that can export images and therefore
     need to enumerate them.
   */
@@ -395,15 +395,15 @@ public:
 
   /*! The cell this cell is hidden inside, if it is part of a folded subtree
 
-    \return NULL if this cell is part of the visible worksheet tree
+    \return nullptr if this cell is part of the visible worksheet tree
   */
   GroupCell *GetHiddenTreeParent() const { return m_hiddenTreeParent; }
 
   /*! Fold this cell
 
-    \return the cell's address if folding was successful, else NULL
+    \return the cell's address if folding was successful, else nullptr
   */
-  GroupCell *Fold(); // returns pointer to this or NULL if not successful
+  GroupCell *Fold(); // returns pointer to this or nullptr if not successful
   /*! Unfold this cell
 
     \return the last cell that was unfolded.
@@ -415,7 +415,7 @@ public:
     \param affected If non-null, every cell actually folded by this call is
                      appended here, in the order it was folded -- the
                      caller can use this to record one undo action per cell.
-    \return the cell's address if folding was successful, else NULL
+    \return the cell's address if folding was successful, else nullptr
   */
   GroupCell *FoldAll(std::vector<GroupCell *> *affected = nullptr);
 
@@ -424,7 +424,7 @@ public:
     \param affected If non-null, every cell actually unfolded by this call
                      is appended here, in the order it was unfolded -- the
                      caller can use this to record one undo action per cell.
-    \return the last unfolded cell's address if unfolding was successful, else NULL
+    \return the last unfolded cell's address if unfolding was successful, else nullptr
   */
   GroupCell *UnfoldAll(std::vector<GroupCell *> *affected = nullptr);
 
