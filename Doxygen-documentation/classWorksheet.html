@@ -141,6 +141,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1db988b3949369c5bb556a1c61ea6ecc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a1db988b3949369c5bb556a1c61ea6ecc">GetViewPosition</a> (int *x, int *y) const override</td></tr>
 <tr class="memdesc:a1db988b3949369c5bb556a1c61ea6ecc"><td class="mdescLeft">&#160;</td><td class="mdescRight">The view's position within its parent, in device pixels (wxWindow::GetPosition).  <br /></td></tr>
 <tr class="separator:a1db988b3949369c5bb556a1c61ea6ecc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf92852b0c9251d9d39e349fba6c1d79"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#aaf92852b0c9251d9d39e349fba6c1d79">ScrollViewToUnitY</a> (int unitY) override</td></tr>
+<tr class="memdesc:aaf92852b0c9251d9d39e349fba6c1d79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scroll vertically to the given position, in scroll units.  <br /></td></tr>
+<tr class="separator:aaf92852b0c9251d9d39e349fba6c1d79"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acb762cdfd74fa911756a0a8308df8660"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#acb762cdfd74fa911756a0a8308df8660">NotifyRecalculation</a> (<a class="el" href="classGroupCell.html">GroupCell</a> *start) override</td></tr>
 <tr class="memdesc:acb762cdfd74fa911756a0a8308df8660"><td class="mdescLeft">&#160;</td><td class="mdescRight">Schedule a re-layout of the document starting at <code>start</code> (null = all).  <br /></td></tr>
 <tr class="separator:acb762cdfd74fa911756a0a8308df8660"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -667,6 +670,12 @@ std::unique_ptr&lt; <a class="el" href="classGroupCell.html">GroupCell</a> &gt;&
 <tr class="memitem:a723960d4c1221d561d35dbcb88f90383"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a723960d4c1221d561d35dbcb88f90383">InsertLine</a> (std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt; &amp;&amp;newCell, bool forceNewLine=false)</td></tr>
 <tr class="memdesc:a723960d4c1221d561d35dbcb88f90383"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a new line to the output cell of the working group.  <br /></td></tr>
 <tr class="separator:a723960d4c1221d561d35dbcb88f90383"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a245929456ed885c6effbac74bdd1b01f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structWorksheetLayout_1_1ScrollAnchor.html">WorksheetLayout::ScrollAnchor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a245929456ed885c6effbac74bdd1b01f">GetScrollAnchor</a> () const</td></tr>
+<tr class="memdesc:a245929456ed885c6effbac74bdd1b01f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Where the cursor is, as the layout engine's scroll compensation needs it.  <br /></td></tr>
+<tr class="separator:a245929456ed885c6effbac74bdd1b01f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6239ddf4ccf69ab82da96429da776f2c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a6239ddf4ccf69ab82da96429da776f2c">ScrollAnchorVisible</a> ()</td></tr>
+<tr class="memdesc:a6239ddf4ccf69ab82da96429da776f2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is the cursor on screen?  <br /></td></tr>
+<tr class="separator:a6239ddf4ccf69ab82da96429da776f2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1f88d0ae3d7219b394d964c79a894a3a"><td class="memItemLeft" align="right" valign="top"><a id="a1f88d0ae3d7219b394d964c79a894a3a" name="a1f88d0ae3d7219b394d964c79a894a3a"></a>
 <a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>GetInsertGroup</b> () const</td></tr>
 <tr class="memdesc:a1f88d0ae3d7219b394d964c79a894a3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The group that the line's cells will belong to - used by InsertLine. <br /></td></tr>
@@ -2044,6 +2053,26 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 
 </div>
 </div>
+<a id="a245929456ed885c6effbac74bdd1b01f" name="a245929456ed885c6effbac74bdd1b01f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a245929456ed885c6effbac74bdd1b01f">&#9670;&#160;</a></span>GetScrollAnchor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structWorksheetLayout_1_1ScrollAnchor.html">WorksheetLayout::ScrollAnchor</a> Worksheet::GetScrollAnchor </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Where the cursor is, as the layout engine's scroll compensation needs it. </p>
+<p>The group cell the cursor is in, or the one the horizontal cursor sits below. See <a class="el" href="classWorksheetLayout.html#abe38b5bcf743326957c03f083a7e381b" title="Tells the engine where the cursor currently is.">WorksheetLayout::SetScrollAnchorCallback()</a>. </p>
+
+</div>
+</div>
 <a id="a3c9e3f64f332c8dc0281eb79f1ce3f6a" name="a3c9e3f64f332c8dc0281eb79f1ce3f6a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3c9e3f64f332c8dc0281eb79f1ce3f6a">&#9670;&#160;</a></span>GetSelectionEnd()</h2>
 
@@ -3033,6 +3062,26 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 
 </div>
 </div>
+<a id="a6239ddf4ccf69ab82da96429da776f2c" name="a6239ddf4ccf69ab82da96429da776f2c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6239ddf4ccf69ab82da96429da776f2c">&#9670;&#160;</a></span>ScrollAnchorVisible()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Worksheet::ScrollAnchorVisible </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Is the cursor on screen? </p>
+<p>Unlike <a class="el" href="classWorksheet.html#a85e0e572501a859a450a6fdc5def3de5" title="Is the caret (hcaret or vcaret) currently visible on the worksheet?">CaretVisibleIs()</a> this never triggers a layout pass: it is asked right before output is appended, when the positions on screen are the ones that matter, not the ones a pass would compute. </p>
+
+</div>
+</div>
 <a id="a1f9f0cd99abf147d9b386b84ea192fdc" name="a1f9f0cd99abf147d9b386b84ea192fdc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1f9f0cd99abf147d9b386b84ea192fdc">&#9670;&#160;</a></span>ScrolledAwayFromEvaluation()</h2>
 
@@ -3051,6 +3100,36 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 
 <p>Set or get the "Scrolled away from evaluation" status. </p>
 <p>Sets <a class="el" href="classWorksheet.html#af02bfd71d23fe6804fc27525f41e84bb" title="Query if we want to automatically scroll to the cell that is currently evaluated.">FollowEvaluation()</a> to false and enables the toolbar button to follow the evaluation process again. </p>
+
+</div>
+</div>
+<a id="aaf92852b0c9251d9d39e349fba6c1d79" name="aaf92852b0c9251d9d39e349fba6c1d79"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaf92852b0c9251d9d39e349fba6c1d79">&#9670;&#160;</a></span>ScrollViewToUnitY()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Worksheet::ScrollViewToUnitY </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>unitY</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Scroll vertically to the given position, in scroll units. </p>
+
+<p>Implements <a class="el" href="classWorksheetView.html#acf1809ec626e67745d75820123948616">WorksheetView</a>.</p>
 
 </div>
 </div>

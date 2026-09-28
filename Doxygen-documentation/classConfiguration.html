@@ -376,6 +376,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>AutosaveMinutes</b> (
 long&#160;</td><td class="memItemRight" valign="bottom"><b>GetCursorWidth</b> () const</td></tr>
 <tr class="memdesc:ab846659feaf663040485851b722a2106"><td class="mdescLeft">&#160;</td><td class="mdescRight">How much vertical space is to be left between two group cells? <br /></td></tr>
 <tr class="separator:ab846659feaf663040485851b722a2106"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3ea385b7a1495cae3da369cd51fffe6"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#ac3ea385b7a1495cae3da369cd51fffe6">GetWorksheetTopOffset</a> () const</td></tr>
+<tr class="memdesc:ac3ea385b7a1495cae3da369cd51fffe6"><td class="mdescLeft">&#160;</td><td class="mdescRight">An extra top margin of less than one scroll unit, in px.  <br /></td></tr>
+<tr class="separator:ac3ea385b7a1495cae3da369cd51fffe6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87b494d70699a11e13a693c356e1d169"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#a87b494d70699a11e13a693c356e1d169">SetWorksheetTopOffset</a> (int offset)</td></tr>
+<tr class="memdesc:a87b494d70699a11e13a693c356e1d169"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the extra top margin.  <br /></td></tr>
+<tr class="separator:a87b494d70699a11e13a693c356e1d169"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8004ace11a8c74983670984d521cecbb"><td class="memItemLeft" align="right" valign="top"><a id="a8004ace11a8c74983670984d521cecbb" name="a8004ace11a8c74983670984d521cecbb"></a>
 long&#160;</td><td class="memItemRight" valign="bottom"><b>GetBaseIndent</b> () const</td></tr>
 <tr class="memdesc:a8004ace11a8c74983670984d521cecbb"><td class="mdescLeft">&#160;</td><td class="mdescRight">The y position the worksheet starts at. <br /></td></tr>
@@ -1975,6 +1981,34 @@ static <a class="el" href="structConfiguration_1_1PerformanceStats.html">Perform
 
 </div>
 </div>
+<a id="ac3ea385b7a1495cae3da369cd51fffe6" name="ac3ea385b7a1495cae3da369cd51fffe6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac3ea385b7a1495cae3da369cd51fffe6">&#9670;&#160;</a></span>GetWorksheetTopOffset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Configuration::GetWorksheetTopOffset </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>An extra top margin of less than one scroll unit, in px. </p>
+<p>Lets the worksheet keep the cursor still to the pixel when output appended above it pushes it down, although the view can only scroll in whole scroll units - see <a class="el" href="WorksheetSizeMath_8h.html#a1d9718491ad63b3def0ba9ed538f068b" title="Compute the scroll position that keeps a point of the worksheet still on screen.">ComputeScrollCompensation()</a> and <a class="el" href="classWorksheetLayout.html#a8a366c23ec8831c29b851c22de632c33" title="Keep the cursor still on screen across the next layout pass.">WorksheetLayout::ArmScrollCompensation()</a>. Only the worksheet's own configuration ever sets it: it is deliberately not copied by the copy constructor, as neither printing nor an export wants a stray top margin. </p>
+
+</div>
+</div>
 <a id="a52eae5b3d909fc63a406c1a6c3c9a59b" name="a52eae5b3d909fc63a406c1a6c3c9a59b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a52eae5b3d909fc63a406c1a6c3c9a59b">&#9670;&#160;</a></span>GetWritableStyle()</h2>
 
@@ -2549,6 +2583,36 @@ static <a class="el" href="structConfiguration_1_1PerformanceStats.html">Perform
 
 <p>Are we currently printing? </p>
 <p>This affects the bitmap scale as well as the fact if we want to output objects that are outside the region that currently is redrawn. </p>
+
+</div>
+</div>
+<a id="a87b494d70699a11e13a693c356e1d169" name="a87b494d70699a11e13a693c356e1d169"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a87b494d70699a11e13a693c356e1d169">&#9670;&#160;</a></span>SetWorksheetTopOffset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Configuration::SetWorksheetTopOffset </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>offset</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets the extra top margin. </p>
+<p>See <a class="el" href="classConfiguration.html#ac3ea385b7a1495cae3da369cd51fffe6" title="An extra top margin of less than one scroll unit, in px.">GetWorksheetTopOffset()</a>.</p>
+<p>Like <a class="el" href="classConfiguration.html#ae256b00ca5287c4843a49063e2021226" title="Sets the scrollbar host.">SetMatrixScrollHost()</a> this doesn't request a recalculation: the only caller repositions the cells itself. </p>
 
 </div>
 </div>

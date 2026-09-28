@@ -107,6 +107,9 @@ Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structWorksheetVirtualSize.html">WorksheetVirtualSize</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The scrollable size + scroll granularity computed for a worksheet.  <a href="structWorksheetVirtualSize.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structScrollCompensation.html">ScrollCompensation</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Where to scroll to, and how far to shift the document, to keep a point still.  <a href="structScrollCompensation.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheetView.html">WorksheetView</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The narrow view surface the worksheet's layout pipeline needs.  <a href="classWorksheetView.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -125,6 +128,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a5f9e2985516cffa080d3f9ea86664a7d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structWorksheetVirtualSize.html">WorksheetVirtualSize</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="WorksheetSizeMath_8h.html#a5f9e2985516cffa080d3f9ea86664a7d">ComputeWorksheetVirtualSize</a> (bool hasTree, int maxPointWidth, int maxPointHeight, int clientHeight, int currentScrollPixelY)</td></tr>
 <tr class="memdesc:a5f9e2985516cffa080d3f9ea86664a7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a worksheet's virtual size and scroll unit.  <br /></td></tr>
 <tr class="separator:a5f9e2985516cffa080d3f9ea86664a7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d9718491ad63b3def0ba9ed538f068b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structScrollCompensation.html">ScrollCompensation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="WorksheetSizeMath_8h.html#a1d9718491ad63b3def0ba9ed538f068b">ComputeScrollCompensation</a> (int scrollUnitsY, int scrollUnit, int topOffset, int shift)</td></tr>
+<tr class="memdesc:a1d9718491ad63b3def0ba9ed538f068b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the scroll position that keeps a point of the worksheet still on screen.  <br /></td></tr>
+<tr class="separator:a1d9718491ad63b3def0ba9ed538f068b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a456bca249b5a259a7f757eb662038732"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="WorksheetSizeMath_8h.html#a456bca249b5a259a7f757eb662038732">ApplyWorksheetVirtualSize</a> (<a class="el" href="classWorksheetView.html">WorksheetView</a> &amp;view, bool hasTree, int maxWidth, int maxHeight, <a class="el" href="structWorksheetVirtualSizeCache.html">WorksheetVirtualSizeCache</a> &amp;cache, int &amp;scrollUnit)</td></tr>
 <tr class="memdesc:a456bca249b5a259a7f757eb662038732"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measure the view, compute the virtual size and apply it, skipping no-ops.  <br /></td></tr>
 <tr class="separator:a456bca249b5a259a7f757eb662038732"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -204,6 +210,68 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a1d9718491ad63b3def0ba9ed538f068b" name="a1d9718491ad63b3def0ba9ed538f068b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1d9718491ad63b3def0ba9ed538f068b">&#9670;&#160;</a></span>ComputeScrollCompensation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structScrollCompensation.html">ScrollCompensation</a> ComputeScrollCompensation </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>scrollUnitsY</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>scrollUnit</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>topOffset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>shift</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Compute the scroll position that keeps a point of the worksheet still on screen. </p>
+<p>When <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> appends output to a cell above the cursor, everything below that cell moves down, the cursor with it. Scrolling down by the same amount would put it back - but the view can only scroll in whole scroll units (10 px or more), so on its own that would still leave the cursor jittering by up to one unit on every append. The remainder is absorbed by the worksheet's top offset: an extra top margin of less than one scroll unit that shifts the whole document down. Scrolling one unit further than needed and moving the document down by the excess makes the compensation pixel-exact.</p>
+<p>With the scroll position S, the top offset t and the point having moved down by <code>shift</code> pixels, the point stays where it was on screen exactly if the new values S', t' satisfy S' - t' = S + shift - t. This picks the smallest S' that is a multiple of the scroll unit and allows a t' in [0, scrollUnit). Near the top of the document, where S' cannot go below 0, t' is clamped to that range and the compensation is only as good as it can be.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">scrollUnitsY</td><td>The current vertical scroll position, in scroll units. </td></tr>
+    <tr><td class="paramname">scrollUnit</td><td>The scroll granularity in px (&gt; 0). </td></tr>
+    <tr><td class="paramname">topOffset</td><td>The current top offset in px. </td></tr>
+    <tr><td class="paramname">shift</td><td>How far (px) the point to keep still has moved down in the document; negative if it moved up.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Kept GUI-free so it can be unit-tested in isolation - see test_WorksheetSizeMath. </p>
 
 </div>
 </div>
