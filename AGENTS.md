@@ -219,13 +219,14 @@ working without extra checks.
   every startup, and `ctest` targets that use `--exit-on-error`
   (`openMacFiles`, `openMacFiles2`, and most of the `*_cmdline_wxmathml`/
   `tutorial_*`/similar batch tests in `test/CMakeLists.txt`) fail near-instantly
-  on that warning alone -- with the workaround applied, those specific two
-  tests (`openMacFiles`/`openMacFiles2`) instead *time out* (confirmed to
-  reproduce identically on an unmodified `main` checkout in an isolated
-  worktree, so it's pre-existing and unrelated to any particular change) --
-  not yet root-caused, tracked as GH #2350. Don't burn time re-diagnosing
-  either symptom from scratch; both are sandbox/pre-existing, not something a code change here
-  broke. **Neither this workaround nor `gnuplot`'s installation (below)
+  on that warning alone. With the workaround applied they pass; the
+  `openMacFiles`/`openMacFiles2` timeouts recorded here on 2026-09-14 no
+  longer reproduce (GH #2350: 24 loaded runs, none hung, on `main` and on a
+  build from before the 2026-09-18 batch-startup race fix). `openMacFiles`
+  legitimately takes 75-130 s, mostly gnuplot rendering a 60-frame
+  animation, so a ctest `--timeout` below that reads as a hang. Don't burn
+  time re-diagnosing the help-system symptom from scratch; it is
+  sandbox-only, not something a code change here broke. **Neither this workaround nor `gnuplot`'s installation (below)
   persists across sandbox instances** -- confirmed directly: a session that
   applied both earlier came back to a broad `ctest -E
   "tutorial|openMacFiles|_cmdline_wxmathml|wxmaxima_version"` run showing 66
