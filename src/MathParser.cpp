@@ -196,6 +196,7 @@ MathParser::MathParser(Configuration *cfg, const wxString &zipfile) {
       wxS("inference"),
       wxS("rownames"),
       wxS("colnames"),
+      wxS("oversized"),
       wxS("line"),
       wxS("print"),
       wxS("mat"),
@@ -1226,6 +1227,11 @@ std::unique_ptr<Cell> MathParser::ParseTableTag(wxXmlNode *node, int depth) {
     matrix->ColNames(true);
   if (node->GetAttribute(wxS("rownames"), wxS("false")) == wxS("true"))
     matrix->RowNames(true);
+  // How to show this matrix if it doesn't fit the window (wx_matrix()'s
+  // oversized option). An unknown value, e.g. from a newer wxMaxima, is
+  // ignored, leaving the matrix to follow the configuration.
+  matrix->SetOversizedMode(
+    MatrCell::OversizedModeFromName(node->GetAttribute(wxS("oversized"))));
   if (node->GetAttribute(wxS("bracketParens")) == wxS("true"))
     matrix->BracketParens();
   else if (node->GetAttribute(wxS("angledParens")) == wxS("true"))

@@ -1116,6 +1116,15 @@ Submit bug reports by following the 'New issue' link on that page."))
 	       (setq tb-tag (concatenate 'string tb-tag " rownames=\"true\"")))
 	     (when (find 'colnames mtrx)
 	       (setq tb-tag (concatenate 'string tb-tag " colnames=\"true\""))))
+	   ;; wx_matrix()'s oversized option: how to show this matrix if it
+	   ;; is too large for the window, overriding the configuration.
+	   (cond
+	     ((find 'oversized_full mtrx)
+	      (setq tb-tag (concatenate 'string tb-tag " oversized=\"full\"")))
+	     ((find 'oversized_elide mtrx)
+	      (setq tb-tag (concatenate 'string tb-tag " oversized=\"elide\"")))
+	     ((find 'oversized_scroll mtrx)
+	      (setq tb-tag (concatenate 'string tb-tag " oversized=\"scroll\""))))
 	   (cond
 	     ((find 'paren_round mtrx)
 	      (setq tb-tag (concatenate 'string tb-tag " roundedParens=\"true\"")))
@@ -2644,6 +2653,16 @@ Submit bug reports by following the 'New issue' link on that page."))
          ((eq paren '$angled) (setq mtrx (append mtrx '(paren_angled))))
          ((eq paren '$straight) (setq mtrx (append mtrx '(paren_straight))))
          ((eq paren '$none) (setq mtrx (append mtrx '(paren_none)))))
+       ;; How to show the matrix if it is too large for the window; without
+       ;; this option the configuration decides.
+       (let ((oversized ($assoc '$oversized opts-list)))
+         (cond
+           ((null oversized))
+           ((eq oversized '$full) (setq mtrx (append mtrx '(oversized_full))))
+           ((eq oversized '$elide) (setq mtrx (append mtrx '(oversized_elide))))
+           ((eq oversized '$scroll) (setq mtrx (append mtrx '(oversized_scroll))))
+           (t (merror "wx_matrix: oversized must be full, elide or scroll, not ~M"
+                      oversized))))
        (let ((res (cons (append '($matrix simp) mtrx) (cdr mat))))
          (displa res)
          res)))))

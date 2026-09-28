@@ -115,8 +115,10 @@ OutCommon::OutCommon(const Configuration * const *configuration, const wxString 
     // exports always get the whole matrix, whatever the worksheet shows.
     // Printing is different, and deliberately not built on this: a page is a
     // real limit, so a printed matrix is elided to fit it just as the
-    // worksheet elides one to fit the window.
-    m_thisconfig.SetOversizedMatrices(Configuration::OversizedMatrices::showInFull);
+    // worksheet elides one to fit the window. The same reasoning overrules a
+    // matrix that asked wx_matrix() to be elided or scrolled.
+    m_thisconfig.SetOversizedMatrices(Configuration::OversizedMatrices::showInFull,
+                                      false);
 }
 
 OutCommon::OutCommon(const Configuration * const *configuration, int fullWidth, double scale)

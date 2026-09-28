@@ -1011,6 +1011,105 @@ SCENARIO("Without a scrollbar host, scroll mode elides instead") {
   CHECK(matr->ElidedColumns() > 0);
 }
 
+// A rows x cols matrix as wx_matrix(..., oversized=<mode>) sends it.
+static wxString MatrixXmlWithOversizedMode(size_t rows, size_t cols,
+                                           const wxString &mode) {
+  wxString xml = MatrixXml(rows, cols);
+  xml.Replace(wxS("<tb roundedParens=\"true\">"),
+              wxS("<tb roundedParens=\"true\" oversized=\"") + mode + wxS("\">"));
+  return xml;
+}
+
+SCENARIO("wx_matrix()'s oversized option overrides the configuration (GH #2343)") {
+  g_cfg->SetZoomFactor(1.0);
+  g_cfg->SetCanvasSize(wxSize(600, 300));
+  const size_t rows = 60, cols = 40;
+
+  GIVEN("the configuration elides, and a matrix asks to be shown in full") {
+    OversizedMatricesMode mode(Configuration::OversizedMatrices::elide);
+    std::unique_ptr<GroupCell> group;
+    MatrCell *matr =
+      LayOutMatrixXml(group, MatrixXmlWithOversizedMode(rows, cols, wxS("full")));
+    THEN("that matrix is shown in full") {
+      REQUIRE(matr->GetOversizedMode() ==
+              Configuration::OversizedMatrices::showInFull);
+      CHECK(matr->ElidedColumns() == 0);
+      CHECK(matr->ElidedRows() == 0);
+      CHECK(matr->GetWidth() > 600);
+    }
+    THEN("a plain matrix next to it is still elided") {
+      std::unique_ptr<GroupCell> plainGroup;
+      MatrCell *plain = LayOutMatrix(plainGroup, rows, cols);
+      CHECK_FALSE(plain->GetOversizedMode().has_value());
+      CHECK(plain->ElidedColumns() > 0);
+    }
+    THEN("the choice survives saving and a copy") {
+      CHECK(matr->ToXML().Contains(wxS("oversized=\"full\"")));
+      auto copy = matr->Copy(group.get());
+      auto *copiedMatrix = dynamic_cast<MatrCell *>(copy.get());
+      REQUIRE(copiedMatrix != nullptr);
+      CHECK(copiedMatrix->GetOversizedMode() ==
+            Configuration::OversizedMatrices::showInFull);
+    }
+    WHEN("the configuration forbids per-matrix modes, as the image exporters do") {
+      g_cfg->SetOversizedMatrices(Configuration::OversizedMatrices::elide, false);
+      group->Recalculate();
+      THEN("the configuration wins") {
+        CHECK(matr->ElidedColumns() > 0);
+      }
+    }
+  }
+
+  GIVEN("the configuration shows matrices in full, and a matrix asks to be elided") {
+    OversizedMatricesMode mode(Configuration::OversizedMatrices::showInFull);
+    std::unique_ptr<GroupCell> group;
+    MatrCell *matr =
+      LayOutMatrixXml(group, MatrixXmlWithOversizedMode(rows, cols, wxS("elide")));
+    THEN("that matrix is elided") {
+      CHECK(matr->ElidedColumns() > 0);
+      CHECK(matr->ElidedRows() > 0);
+      CHECK(matr->GetWidth() < 600);
+    }
+  }
+
+  GIVEN("a matrix that asks to scroll, with a scrollbar host") {
+    OversizedMatricesMode mode(Configuration::OversizedMatrices::elide);
+    FakeScrollHost host;
+    MatrixScrollHost *oldHost = g_cfg->GetMatrixScrollHost();
+    g_cfg->SetMatrixScrollHost(&host);
+    std::unique_ptr<GroupCell> group;
+    MatrCell *matr =
+      LayOutMatrixXml(group, MatrixXmlWithOversizedMode(rows, cols, wxS("scroll")));
+    THEN("it gets scrollbars instead of being elided") {
+      CHECK(matr->HasHorizontalScrollbar());
+      CHECK(matr->HasVerticalScrollbar());
+      CHECK(matr->ElidedColumns() == 0);
+    }
+    g_cfg->SetMatrixScrollHost(oldHost);
+  }
+
+  GIVEN("a matrix that asks to scroll, but no scrollbar host (printing)") {
+    OversizedMatricesMode mode(Configuration::OversizedMatrices::showInFull);
+    REQUIRE(g_cfg->GetMatrixScrollHost() == nullptr);
+    std::unique_ptr<GroupCell> group;
+    MatrCell *matr =
+      LayOutMatrixXml(group, MatrixXmlWithOversizedMode(rows, cols, wxS("scroll")));
+    THEN("it is elided, as paper can't scroll") {
+      CHECK_FALSE(matr->HasHorizontalScrollbar());
+      CHECK(matr->ElidedColumns() > 0);
+    }
+  }
+
+  GIVEN("an oversized mode this version doesn't know") {
+    std::unique_ptr<GroupCell> group;
+    MatrCell *matr =
+      LayOutMatrixXml(group, MatrixXmlWithOversizedMode(rows, cols, wxS("zoom")));
+    THEN("the matrix follows the configuration") {
+      CHECK_FALSE(matr->GetOversizedMode().has_value());
+    }
+  }
+}
+
 SCENARIO("The worksheet's matrix scrollbars follow the matrices they belong to") {
   // MatrixScrollbars is driven exactly as Worksheet::OnPaint() drives it --
   // BeginPaint(), the drawn matrices reporting in, EndPaint() with what was
