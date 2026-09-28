@@ -133,6 +133,17 @@ public:
     the viewport if the matrix scrolls. Empty if none of them is shown.
   */
   wxRect BlockRect(const MatrixBlock &block) const;
+  /*! The entry one step away from this one, for Shift+arrow keys (GH #2370)
+
+    \param rowStep, colStep -1, 0 or +1: the direction to step in.
+
+    A run of elided rows or columns counts as one step: stepping into it
+    lands on the first shown entry beyond it, so the corner of a block never
+    rests on an entry that isn't drawn. At the edge of the matrix the entry
+    stays where it is.
+  */
+  MatrixEntry StepEntry(const MatrixEntry &entry, int rowStep,
+                        int colStep) const;
   /*! A new matrix holding only this block of entries
 
     Keeps the brackets and the other flags, but a heading row or column only
