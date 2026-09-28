@@ -156,8 +156,7 @@ public:
   struct ScrollAnchor {
     GroupCell *cell = nullptr;
     bool atBottom = false;
-    bool operator==(const ScrollAnchor &o) const
-      { return cell == o.cell && atBottom == o.atBottom; }
+    bool operator==(const ScrollAnchor &) const = default;
   };
 
   /*! Tells the engine where the cursor currently is.

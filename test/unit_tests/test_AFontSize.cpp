@@ -254,6 +254,22 @@ SCENARIO("EqualToWithin works") {
   }
 }
 
+SCENARIO("EnumWrapper compares in every direction (#2373)") {
+  // EnumWrapper only defines operator==; C++20 derives != and the
+  // reversed "enum == wrapper" forms from it. Pin all four so dropping
+  // the hand-written ones can't silently change what compiles or what
+  // it returns.
+  const AFontStyle italic = wxFONTSTYLE_ITALIC;
+  const AFontStyle normal = wxFONTSTYLE_NORMAL;
+  REQUIRE(italic == wxFONTSTYLE_ITALIC);
+  REQUIRE(wxFONTSTYLE_ITALIC == italic);
+  REQUIRE(italic != wxFONTSTYLE_NORMAL);
+  REQUIRE(wxFONTSTYLE_NORMAL != italic);
+  REQUIRE(italic != normal);
+  REQUIRE_FALSE(italic == normal);
+  REQUIRE(AFontStyle() == normal);
+}
+
 // If we don't provide our own main when compiling on MinGW
 // we currently get an error message that WinMain@16 is missing
 // (https://github.com/catchorg/Catch2/issues/1287)
