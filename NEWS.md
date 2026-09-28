@@ -1,5 +1,10 @@
 # Current development version
 
+- Hovering the mouse over a matrix now shows which entry it is over, as
+  "Row 2, column 3", numbered like `M[2,3]`. This makes it easier to find
+  your way around a large matrix, including one whose middle rows or columns
+  are left out or that scrolls. In a matrix of matrices the row and column
+  of the outer matrix are shown.
 - `wx_matrix()` now only returns the formatted matrix instead of also
   displaying it, so `wx_matrix(M);` shows the matrix once, not twice, and
   `wx_matrix(M)$` doesn't show it at all. The formatting stays with that
