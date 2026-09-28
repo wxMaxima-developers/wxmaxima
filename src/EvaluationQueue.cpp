@@ -55,15 +55,15 @@ void EvaluationQueue::Clear() {
 }
 
 bool EvaluationQueue::IsInQueue(GroupCell *gr) const {
-  return std::find_if(m_queue.begin(), m_queue.end(),
-                       [gr](const QueuedCell &qc) { return qc.cell == gr; }) !=
+  return std::ranges::find_if(m_queue,
+                               [gr](const QueuedCell &qc) { return qc.cell == gr; }) !=
          m_queue.end();
 }
 
 void EvaluationQueue::Remove(GroupCell *gr) {
   bool removeFirst = IsLastInQueue(gr);
-  auto pos = std::find_if(m_queue.begin(), m_queue.end(),
-                           [gr](const QueuedCell &qc) { return qc.cell == gr; });
+  auto pos = std::ranges::find_if(m_queue,
+                                   [gr](const QueuedCell &qc) { return qc.cell == gr; });
   if (pos != m_queue.end())
     m_queue.erase(pos);
   m_size = m_queue.size();

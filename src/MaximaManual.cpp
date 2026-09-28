@@ -288,7 +288,7 @@ MaximaManual::GetHTMLFiles::OnFile(const wxString &filename) {
     m_prefix + wxFileName::GetPathSeparator() + newItemName.GetFullName();
   newItem.Replace(wxFileName::GetPathSeparator(), "/");
   if (newItem.EndsWith(".html") &&
-      (std::find(m_files.begin(), m_files.end(), newItem) == m_files.end()))
+      (std::ranges::find(m_files, newItem) == m_files.end()))
     m_files.push_back(newItem);
   return wxDIR_CONTINUE;
 }
@@ -307,7 +307,7 @@ MaximaManual::GetHTMLFiles_Recursive::OnFile(const wxString &filename) {
   wxString newItem = newItemName.GetFullPath();
   newItem.Replace(wxFileName::GetPathSeparator(), "/");
   if (newItem.EndsWith(".html") &&
-      (std::find(m_files.begin(), m_files.end(), newItem) == m_files.end()))
+      (std::ranges::find(m_files, newItem) == m_files.end()))
     m_files.push_back(newItem);
   return wxDIR_CONTINUE;
 }

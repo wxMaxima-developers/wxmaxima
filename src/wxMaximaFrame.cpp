@@ -2499,10 +2499,10 @@ std::vector<McpSidebarInfo> wxMaximaFrame::McpSidebarList() const {
   }
   // m_sidebarNames is an unordered_map, so without this the same wxMaxima
   // would list its sidebars in a different order from one run to the next.
-  std::sort(sidebars.begin(), sidebars.end(),
-            [](const McpSidebarInfo &a, const McpSidebarInfo &b) {
-              return a.name < b.name;
-            });
+  std::ranges::sort(sidebars,
+                    [](const McpSidebarInfo &a, const McpSidebarInfo &b) {
+                      return a.name < b.name;
+                    });
   return sidebars;
 }
 

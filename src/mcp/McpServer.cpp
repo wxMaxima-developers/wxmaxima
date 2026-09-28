@@ -36,8 +36,8 @@ enum { ID_MCP_SERVER_SOCKET = 1, ID_MCP_CLIENT_SOCKET = 2 };
 constexpr std::size_t MAX_REQUEST_BYTES = 4 * 1024 * 1024;
 
 std::string ToLower(std::string s) {
-  std::transform(s.begin(), s.end(), s.begin(),
-                 [](unsigned char c) { return std::tolower(c); });
+  std::ranges::transform(s, s.begin(),
+                         [](unsigned char c) { return std::tolower(c); });
   return s;
 }
 

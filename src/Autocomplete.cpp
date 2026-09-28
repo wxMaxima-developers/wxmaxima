@@ -92,9 +92,9 @@ void AutoComplete::LoadBuiltinSymbols() {
       const std::lock_guard<std::mutex> lock(m_keywordsLock);
       wordList = m_wordList.at(tmplte);
     }
-    std::sort(wordList.begin(), wordList.end());
-    auto newEnd = std::unique(wordList.begin(), wordList.end());
-    wordList.erase(newEnd, wordList.end());
+    std::ranges::sort(wordList);
+    const auto duplicates = std::ranges::unique(wordList);
+    wordList.erase(duplicates.begin(), duplicates.end());
     {
       const std::lock_guard<std::mutex> lock(m_keywordsLock);
       m_wordList.at(tmplte) = std::move(wordList);
@@ -107,9 +107,9 @@ void AutoComplete::LoadBuiltinSymbols() {
       const std::lock_guard<std::mutex> lock(m_keywordsLock);
       wordList = m_wordList.at(command);
     }
-    std::sort(wordList.begin(), wordList.end());
-    auto newEnd = std::unique(wordList.begin(), wordList.end());
-    wordList.erase(newEnd, wordList.end());
+    std::ranges::sort(wordList);
+    const auto duplicates = std::ranges::unique(wordList);
+    wordList.erase(duplicates.begin(), duplicates.end());
     {
       const std::lock_guard<std::mutex> lock(m_keywordsLock);
       m_wordList.at(command) = std::move(wordList);

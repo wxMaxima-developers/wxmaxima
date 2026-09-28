@@ -132,12 +132,12 @@ std::vector<std::pair<int, int>> Align2(const std::vector<CellMatchData>& s1,
             i--;
         }
     }
-    std::reverse(alignment.begin(), alignment.end());
+    std::ranges::reverse(alignment);
     return alignment;
 }
 
 std::vector<CharRange> MergeRanges(std::vector<CharRange> ranges) {
-    std::sort(ranges.begin(), ranges.end());
+    std::ranges::sort(ranges);
     std::vector<CharRange> merged;
     for (const auto &r : ranges) {
         if (r.first >= r.second)
@@ -239,7 +239,7 @@ std::vector<std::pair<int, int>> AlignSpans(const std::vector<Span> &a,
             i--;
         }
     }
-    std::reverse(alignment.begin(), alignment.end());
+    std::ranges::reverse(alignment);
     return alignment;
 }
 

@@ -74,10 +74,10 @@ wxCoord MatrixScrollbars::ScrollbarThickness() const {
 
 void MatrixScrollbars::MatrixDrawn(MatrCell *matrix) {
   // Only take note: this runs inside the paint handler.
-  auto found = std::find_if(m_entries.begin(), m_entries.end(),
-                            [matrix](const std::unique_ptr<Entry> &entry) {
-                              return entry->matrix.get() == matrix;
-                            });
+  auto found = std::ranges::find_if(m_entries,
+                                    [matrix](const std::unique_ptr<Entry> &entry) {
+                                      return entry->matrix.get() == matrix;
+                                    });
   Entry *entry;
   if (found != m_entries.end())
     entry = found->get();
@@ -178,11 +178,11 @@ void MatrixScrollbars::SyncScrollbar(wxScrollBar *&scrollbar, int orientation,
 void MatrixScrollbars::OnScroll(wxScrollEvent &event) {
   event.Skip();
   const wxObject *scrollbar = event.GetEventObject();
-  auto found = std::find_if(m_entries.begin(), m_entries.end(),
-                            [scrollbar](const std::unique_ptr<Entry> &entry) {
-                              return (entry->horizontal == scrollbar) ||
-                                (entry->vertical == scrollbar);
-                            });
+  auto found = std::ranges::find_if(m_entries,
+                                    [scrollbar](const std::unique_ptr<Entry> &entry) {
+                                      return (entry->horizontal == scrollbar) ||
+                                        (entry->vertical == scrollbar);
+                                    });
   if (found == m_entries.end())
     return;
   MatrCell *matrix = (*found)->matrix.get();

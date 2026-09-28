@@ -45,7 +45,7 @@ void AutocompletePopup::UpdateResults(bool allowAutoFinish) {
   if (!m_editor)
     return;
   m_completions = m_autocomplete->CompleteSymbol(m_partial, m_type);
-  std::sort(m_completions.begin(), m_completions.end());
+  std::ranges::sort(m_completions);
 
   switch (m_completions.size()) {
   case 1:

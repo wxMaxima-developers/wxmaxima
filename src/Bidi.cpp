@@ -88,7 +88,7 @@ std::vector<BidiRun> Bidi::GetRuns(const std::vector<uint32_t> &codepoints,
     // that stretch back to front), so the run's leftmost visual position -
     // the lower of its first and last character's visual index - orders the
     // runs against each other correctly.
-    std::sort(runs.begin(), runs.end(), [&](const BidiRun &a, const BidiRun &b) {
+    std::ranges::sort(runs, [&](const BidiRun &a, const BidiRun &b) {
       auto visualStart = [&](const BidiRun &r) {
         return std::min(logicalToVisual[r.logicalStart], logicalToVisual[r.logicalEnd - 1]);
       };

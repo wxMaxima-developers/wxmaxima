@@ -1312,7 +1312,7 @@ wxMaxima::~wxMaxima() {
       std::vector<wxString> knownwords_sorted;
       for(const auto &i : knownWords)
         knownwords_sorted.push_back(i.first);
-      std::sort(knownwords_sorted.begin(), knownwords_sorted.end());
+      std::ranges::sort(knownwords_sorted);
 
       wxString knownSymbolsFile =
         Dirstructure::Get()->UserConfDir() + "knownSymbols.txt";
