@@ -1,5 +1,8 @@
 # Current development version
 
+- wxMaxima now needs wxWidgets 3.2 or newer to compile. With wxWidgets 3.0.5,
+  the last 3.0 release, wxMaxima started but never got a working connection
+  to Maxima (#2301).
 - New function `with_slider_draw_bare`, which works like `with_slider_draw`
   but makes each frame of the animation with a plain `draw()` instead of
   `draw2d()`. A frame can therefore show several `gr2d()` and `gr3d()`
