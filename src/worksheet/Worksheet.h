@@ -377,6 +377,7 @@ public:
   void TreeUndo_MarkCellsAsAdded(GroupCell *parentOfStart, GroupCell *end);
   //! @}
 
+
 private:
   bool m_scrolledAwayFromEvaluation = false;
 public:
@@ -459,6 +460,19 @@ public:
   bool EnterOutputFromInput();
   //! @}
 
+  /*! Grow or shrink the selected block of a matrix's entries (GH #2370)
+
+    \param keyCode WXK_LEFT, WXK_RIGHT, WXK_UP or WXK_DOWN
+
+    What Shift+arrow keys do while a block is selected: move the block's far
+    corner -- the one opposite to where the drag started -- one entry in
+    that direction. A block that grows to cover the whole matrix becomes an
+    ordinary whole-matrix selection, but can still be shrunk again. Returns
+    false, and does nothing, if no block is selected or keyCode isn't an
+    arrow key.
+  */
+  bool StepSelectedMatrixBlock(int keyCode);
+
   /*! Copy the currently given list of cells
 
     \param start The cell to start copying at
@@ -475,10 +489,8 @@ public:
   //! Is executed if a timer associated with Worksheet has expired.
   void OnTimer(wxTimerEvent &event);
 
-#if wxCHECK_VERSION(3, 1, 1)
   //! Handle pinch-to-zoom-events using the gesture interface
   void OnZoom(wxZoomGestureEvent &event);
-#endif
 
   void OnMouseExit(wxMouseEvent &event);
 
@@ -1405,6 +1417,12 @@ public:
   }
   bool StatusTextHas() const {return m_statusTextHas;}
 private:
+  /*! Sets the selection string to the text of the selected output
+
+    The block of a matrix's entries, if only a block is selected, else every
+    selected cell from GetSelectionStart() to GetSelectionEnd().
+  */
+  void UpdateOutputSelectionString();
   /* ! A timer that tells us to urgently update the display
 
      Normally we prioritize tasks: If there are GUI actions to process we do so.

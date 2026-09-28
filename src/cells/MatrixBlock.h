@@ -22,7 +22,16 @@
 #ifndef MATRIXBLOCK_H
 #define MATRIXBLOCK_H
 
+#include <algorithm>
 #include <cstddef>
+
+//! One entry of a matrix, by its zero-based row and column
+struct MatrixEntry
+{
+  std::size_t row = 0;
+  std::size_t col = 0;
+  bool operator==(const MatrixEntry &) const = default;
+};
 
 /*! A rectangular block of a matrix's entries: a sub-matrix (GH #2345)
 
@@ -48,6 +57,12 @@ struct MatrixBlock
       (col >= firstCol) && (col <= lastCol);
   }
   bool operator==(const MatrixBlock &) const = default;
+
+  //! The smallest block holding both entries: the rectangle they are corners of
+  static MatrixBlock Spanning(const MatrixEntry &a, const MatrixEntry &b) {
+    return MatrixBlock{std::min(a.row, b.row), std::max(a.row, b.row),
+                       std::min(a.col, b.col), std::max(a.col, b.col)};
+  }
 };
 
 #endif // MATRIXBLOCK_H

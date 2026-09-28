@@ -28,9 +28,7 @@
 
 #include <wx/bitmap.h>
 #include <wx/window.h>
-#if wxCHECK_VERSION(3, 2, 0)
 #include <wx/bmpbndl.h>
-#endif
 
 #ifndef _ARTPROVIDER_H
 #define _ARTPROVIDER_H
@@ -43,7 +41,6 @@ public:
                            unsigned const char *data,
                            std::size_t dataLen);
   static wxBitmap GetQuestionmarkBitmap(wxWindow *win, wxSize siz);
-#if wxCHECK_VERSION(3, 2, 0)
   static wxBitmapBundle GetQuestionmarkBundle(){return m_questionmarkBundle;}
   static wxBitmapBundle GetDivideCellBundle(){return m_dividecellBundle;}
   static wxBitmapBundle GetAddToWatchlistBundle(){return m_addToWatchlistBundle;}
@@ -53,7 +50,6 @@ private:
   static wxBitmapBundle m_dividecellBundle;
   static wxBitmapBundle m_addToWatchlistBundle;
   static wxBitmapBundle m_cellMergeBundle;
-#endif
 };
 
 #endif

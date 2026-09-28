@@ -62,9 +62,7 @@
 #include <wx/sstream.h>
 #include <wx/xml/xml.h>
 #include "SvgBitmap.h"
-#if wxCHECK_VERSION(3, 1, 6)
 #include <wx/bmpbndl.h>
-#endif
 
 const wxString &Cell::GetLocalToolTip() const { return *m_toolTip; }
 
@@ -176,15 +174,9 @@ wxBitmap Cell::BitmapFromSVG(wxString svgData, wxSize size)
                   "\"#" + wxColor2HtmlString(GetForegroundColor()) + "\"");
   svgData.Replace("\"#FFFFFF\"",
                   "\"#" + wxColor2HtmlString(m_configuration->DefaultBackgroundColor()) + "\"");
-#if wxCHECK_VERSION(3, 1, 6)
   wxBitmapBundle sumbitmap = wxBitmapBundle::FromSVG(svgData.c_str(),
                                                      size);
   wxBitmap bmp(sumbitmap.GetBitmap(size));
-#else
-  SvgBitmap bmp(m_configuration->GetWorkSheet(),
-                svgData,
-                size);
-#endif
   return bmp;
 }
 
