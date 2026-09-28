@@ -113,7 +113,7 @@ public:
   */
   static bool IsHardcodedKeyword(const wxString &text) {
     EnsureHardcodedFunctionsInitialized();
-    return m_hardcodedFunctions.find(text) != m_hardcodedFunctions.end();
+    return m_hardcodedFunctions.contains(text);
   }
 
 protected:

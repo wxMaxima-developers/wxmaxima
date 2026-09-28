@@ -1029,7 +1029,7 @@ void MathParser::ParseCommonAttrs(wxXmlNode *node, Cell *cell) {
     wxString value = attr->GetValue();
     if (name == wxS("uuid"))
       cell->SetUUID(value);
-    else if (m_knownAttributes.find(name) == m_knownAttributes.end() &&
+    else if (!m_knownAttributes.contains(name) &&
              !name.StartsWith(wxS("question")) &&
              !name.StartsWith(wxS("answer")) &&
              !name.StartsWith(wxS("gnuplot"))) {

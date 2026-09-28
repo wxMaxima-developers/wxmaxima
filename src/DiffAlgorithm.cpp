@@ -72,7 +72,7 @@ std::vector<std::pair<int, int>> Align2(const std::vector<CellMatchData>& s1,
             if (!c.uuid.IsEmpty())
                 uuids1.insert(c.uuid);
         for (const auto &c : s2)
-            if (!c.uuid.IsEmpty() && uuids1.count(c.uuid)) {
+            if (!c.uuid.IsEmpty() && uuids1.contains(c.uuid)) {
                 useUuids = true;
                 break;
             }

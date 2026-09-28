@@ -5757,7 +5757,7 @@ void Worksheet::AnonymizeCodeCells() {
 
   std::unordered_map<wxString, wxString, wxStringHash> renameMap;
   for (auto const &name : candidateNames)
-    if (knownToMaxima.find(name) == knownToMaxima.end())
+    if (!knownToMaxima.contains(name))
       renameMap[name] = GenerateAnonymousName(m_configuration, usedNames);
 
   if (renameMap.empty())

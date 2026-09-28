@@ -352,7 +352,7 @@ MaximaTokenizer::MaximaTokenizer(const wxString &commands,
         name += token.Mid(prev);
       }
       TextStyle style;
-      if (m_hardcodedFunctions.find(name) != m_hardcodedFunctions.end())
+      if (m_hardcodedFunctions.contains(name))
         style = TS_CODE_FUNCTION;
       else if (m_configuration->IsOperator(name))
         style = TS_CODE_OPERATOR;

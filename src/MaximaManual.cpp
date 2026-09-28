@@ -139,8 +139,7 @@ void MaximaManual::AnchorAliasses(HelpFileAnchors &anchors) {
   aliases["with_slider_draw_bare"] = "draw";
 
   for (auto const &[alias, target] : aliases) {
-    if ((anchors.find(alias) == anchors.end()) &&
-        (anchors.find(target) != anchors.end()))
+    if (!anchors.contains(alias) && anchors.contains(target))
       anchors[alias] = anchors[target];
   }
 }
