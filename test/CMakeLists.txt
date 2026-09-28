@@ -1499,6 +1499,8 @@ set(WXM_POSIX_TESTS
   check-xml-validity_matrix_default check-xml-validity_matrix_lines
   check-xml-validity_matrix_complex check-xml-validity_mfrac
   check-xml-validity_matrix_oversized check-wxMathML.lisp_matrix_oversized
+  check-wxMathML.lisp_matrix_shown_once check-wxMathML.lisp_matrix_dollar_not_shown
+  check-wxMathML.lisp_matrix_options_stay_with_value
   check-wxmx-validity_all-celltypes check-wxmx-validity_intervals
   wxstatusbar wxbuildinfo wxbug_report show_image
   wxxml-array-no-display-properties wxxml-array-display-properties
