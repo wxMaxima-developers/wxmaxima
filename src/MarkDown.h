@@ -63,7 +63,7 @@ protected:
     wxString replaceBy; //!< The thing we replace it with
   };
 
-  typedef std::list<RegexReplacer> replaceList;
+  using replaceList = std::list<RegexReplacer>;
   replaceList regexReplaceList;
 public:
   explicit MarkDownParser(Configuration *cfg);

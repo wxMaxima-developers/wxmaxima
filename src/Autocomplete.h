@@ -59,7 +59,7 @@
 */
 class AutoComplete : public wxEvtHandler
 {
-  typedef std::unordered_map <wxString, int, wxStringHash> WorksheetWords;
+  using WorksheetWords = std::unordered_map<wxString, int, wxStringHash>;
 public:
   using WordList = std::vector<wxString>;
 

@@ -145,8 +145,8 @@ private:
   std::unique_ptr<Configuration> m_configuration;
   Worksheet *m_sampleWorksheet = nullptr;
 
-  typedef std::unordered_map <wxString, wxString, wxStringHash> StringHash;
-  typedef std::unordered_map <wxString, long, wxStringHash> Languages;
+  using StringHash = std::unordered_map<wxString, wxString, wxStringHash>;
+  using Languages = std::unordered_map<wxString, long, wxStringHash>;
 
   Languages m_languages;
   /*! TheSample text that is shown by the style selector.

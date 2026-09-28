@@ -32,7 +32,7 @@
 
 class wxWindow;
 template<class T> class wxScrolled;
-typedef wxScrolled<wxWindow> wxScrolledCanvas;
+using wxScrolledCanvas = wxScrolled<wxWindow>;
 
 class EditorCell;
 class TextCell;

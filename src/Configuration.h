@@ -80,7 +80,7 @@ class ViewCellPointers;
 class GroupCell;
 class MatrixScrollHost;
 template<class T> class wxScrolled;
-typedef wxScrolled<wxWindow> wxScrolledCanvas;
+using wxScrolledCanvas = wxScrolled<wxWindow>;
 
 /*! The configuration storage for the current worksheet.
 
@@ -189,7 +189,7 @@ public:
     display_1dASCII
   };
 
-  typedef std::unordered_map <wxString, bool, wxStringHash> StringBoolHash;
+  using StringBoolHash = std::unordered_map<wxString, bool, wxStringHash>;
   //! Coincides name with a operator known to maxima?
   bool IsOperator(wxString name) const {return m_maximaSession.IsOperator(name);}
   //! Register name as an operator known to maxima.
