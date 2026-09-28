@@ -114,12 +114,18 @@ const <a class="el" href="classCellPtr.html">CellPtr</a>&lt; <a class="el" href=
 <tr class="separator:a37e8821752c50d315831031a3ba62055"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a899cf1fcbd64ee5ae0dd27658401e380"><td class="memItemLeft" align="right" valign="top"><a id="a899cf1fcbd64ee5ae0dd27658401e380" name="a899cf1fcbd64ee5ae0dd27658401e380"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetSelectionStart</b> (<a class="el" href="classCell.html">Cell</a> *cell)</td></tr>
-<tr class="memdesc:a899cf1fcbd64ee5ae0dd27658401e380"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the first cell of the selected range (may be null). <br /></td></tr>
+<tr class="memdesc:a899cf1fcbd64ee5ae0dd27658401e380"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the first cell of the selected range (may be null). Forgets any selected matrix block, see <a class="el" href="classDocumentCellPointers.html#a1b04a46f92b3afb24b49a7fdd0d3fd03" title="Narrow the selection to a block of one matrix&#39;s entries (GH #2345)">SetSelectedMatrixBlock()</a>. <br /></td></tr>
 <tr class="separator:a899cf1fcbd64ee5ae0dd27658401e380"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06f220f3471158d355e8c559e57025f8"><td class="memItemLeft" align="right" valign="top"><a id="a06f220f3471158d355e8c559e57025f8" name="a06f220f3471158d355e8c559e57025f8"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetSelectionEnd</b> (<a class="el" href="classCell.html">Cell</a> *cell)</td></tr>
-<tr class="memdesc:a06f220f3471158d355e8c559e57025f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the last cell of the selected range (may be null). <br /></td></tr>
+<tr class="memdesc:a06f220f3471158d355e8c559e57025f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the last cell of the selected range (may be null). Forgets any selected matrix block, see <a class="el" href="classDocumentCellPointers.html#a1b04a46f92b3afb24b49a7fdd0d3fd03" title="Narrow the selection to a block of one matrix&#39;s entries (GH #2345)">SetSelectedMatrixBlock()</a>. <br /></td></tr>
 <tr class="separator:a06f220f3471158d355e8c559e57025f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b04a46f92b3afb24b49a7fdd0d3fd03"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDocumentCellPointers.html#a1b04a46f92b3afb24b49a7fdd0d3fd03">SetSelectedMatrixBlock</a> (<a class="el" href="classCell.html">Cell</a> *matrix, const <a class="el" href="structMatrixBlock.html">MatrixBlock</a> &amp;block)</td></tr>
+<tr class="memdesc:a1b04a46f92b3afb24b49a7fdd0d3fd03"><td class="mdescLeft">&#160;</td><td class="mdescRight">Narrow the selection to a block of one matrix's entries (GH #2345)  <br /></td></tr>
+<tr class="separator:a1b04a46f92b3afb24b49a7fdd0d3fd03"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b2509d78965e586e72155c43849cd93"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="structMatrixBlock.html">MatrixBlock</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDocumentCellPointers.html#a6b2509d78965e586e72155c43849cd93">GetSelectedMatrixBlock</a> () const</td></tr>
+<tr class="memdesc:a6b2509d78965e586e72155c43849cd93"><td class="mdescLeft">&#160;</td><td class="mdescRight">The selected block of a matrix's entries, if only a block is selected.  <br /></td></tr>
+<tr class="separator:a6b2509d78965e586e72155c43849cd93"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a66b9e2e9a539eff14fbfda9b336bf456"><td class="memItemLeft" align="right" valign="top"><a id="a66b9e2e9a539eff14fbfda9b336bf456" name="a66b9e2e9a539eff14fbfda9b336bf456"></a>
 <a class="el" href="classEditorCell.html">EditorCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>GetAnswerCell</b> () const</td></tr>
 <tr class="memdesc:a66b9e2e9a539eff14fbfda9b336bf456"><td class="mdescLeft">&#160;</td><td class="mdescRight">The editor cell maxima's current question is being answered in, or null. <br /></td></tr>
@@ -182,6 +188,34 @@ const <a class="el" href="classDocumentCellPointers_1_1ErrorList.html">ErrorList
 <p>These pointers describe the edited document itself: what is selected, which editor is active or answering maxima's question, which text cell maxima's incoming output is appended to, which group cell maxima is working on, and which group cells hold errors. None of them depend on how the document is displayed, so this half will eventually be owned by <a class="el" href="classWorksheetDocument.html" title="The view-independent state and commands of an edited worksheet document.">WorksheetDocument</a>.</p>
 <p>Every stored pointer is a <a class="el" href="classCellPtr.html" title="A weak non-owning pointer that becomes null whenever the observed object is destroyed.">CellPtr</a>, which auto-nulls when its cell is destroyed, so a stale reference reads as null instead of dangling. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a6b2509d78965e586e72155c43849cd93" name="a6b2509d78965e586e72155c43849cd93"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6b2509d78965e586e72155c43849cd93">&#9670;&#160;</a></span>GetSelectedMatrixBlock()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt; <a class="el" href="structMatrixBlock.html">MatrixBlock</a> &gt; DocumentCellPointers::GetSelectedMatrixBlock </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The selected block of a matrix's entries, if only a block is selected. </p>
+<p>Valid only while the selection is exactly the matrix the block was chosen in. Changing the selection in any way forgets the block, so a matrix selected later &ndash; or the same one, selected as a whole &ndash; never picks up a stale one. </p>
+
+</div>
+</div>
 <a id="a8593b288eb29bd6cbeba866f5bb81640" name="a8593b288eb29bd6cbeba866f5bb81640"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8593b288eb29bd6cbeba866f5bb81640">&#9670;&#160;</a></span>GetWorkingGroup()</h2>
 
@@ -205,6 +239,45 @@ const <a class="el" href="classDocumentCellPointers_1_1ErrorList.html">ErrorList
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a1b04a46f92b3afb24b49a7fdd0d3fd03" name="a1b04a46f92b3afb24b49a7fdd0d3fd03"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1b04a46f92b3afb24b49a7fdd0d3fd03">&#9670;&#160;</a></span>SetSelectedMatrixBlock()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void DocumentCellPointers::SetSelectedMatrixBlock </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classCell.html">Cell</a> *&#160;</td>
+          <td class="paramname"><em>matrix</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structMatrixBlock.html">MatrixBlock</a> &amp;&#160;</td>
+          <td class="paramname"><em>block</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Narrow the selection to a block of one matrix's entries (GH #2345) </p>
+<p>Selects matrix &ndash; which must be a <a class="el" href="classMatrCell.html" title="A Cell that displays a matrix.">MatrCell</a> &ndash; and remembers that only this block of its entries is meant. Every copy of the selection then copies just that sub-matrix. </p>
 
 </div>
 </div>

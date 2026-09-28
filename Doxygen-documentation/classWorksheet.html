@@ -224,10 +224,15 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>TreeUndo_CellLeft</b>
 <tr class="memitem:gaf87a1cbf5d891c48fc0d26622cd2fac7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__UndoBufferFill.html#gaf87a1cbf5d891c48fc0d26622cd2fac7">TreeUndo_MarkCellsAsAdded</a> (<a class="el" href="classGroupCell.html">GroupCell</a> *parentOfStart, <a class="el" href="classGroupCell.html">GroupCell</a> *end)</td></tr>
 <tr class="memdesc:gaf87a1cbf5d891c48fc0d26622cd2fac7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remember that these cells were just added so this addition can be undone.  <br /></td></tr>
 <tr class="separator:gaf87a1cbf5d891c48fc0d26622cd2fac7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac6171080f34084cc1694b75089f360ac"><td class="memItemLeft" align="right" valign="top"><a id="ac6171080f34084cc1694b75089f360ac" name="ac6171080f34084cc1694b75089f360ac"></a>
-std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>CopySelection</b> (bool asData=false) const</td></tr>
-<tr class="memdesc:ac6171080f34084cc1694b75089f360ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy the currently selected cells. <br /></td></tr>
+<tr class="memitem:ac6171080f34084cc1694b75089f360ac"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#ac6171080f34084cc1694b75089f360ac">CopySelection</a> (bool asData=false) const</td></tr>
+<tr class="memdesc:ac6171080f34084cc1694b75089f360ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy the currently selected cells.  <br /></td></tr>
 <tr class="separator:ac6171080f34084cc1694b75089f360ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd3a9829e7b8bbadd2a81cef5b416ba1"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classMatrCell.html">MatrCell</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#afd3a9829e7b8bbadd2a81cef5b416ba1">CopySelectedMatrixBlock</a> () const</td></tr>
+<tr class="memdesc:afd3a9829e7b8bbadd2a81cef5b416ba1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The selected sub-matrix, as a new matrix, or null (GH #2345)  <br /></td></tr>
+<tr class="separator:afd3a9829e7b8bbadd2a81cef5b416ba1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1869320e591b04959319004a4c8da4c3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a1869320e591b04959319004a4c8da4c3">SelectOutputRect</a> (<a class="el" href="classGroupCell.html">GroupCell</a> *group, wxPoint down, wxPoint up)</td></tr>
+<tr class="memdesc:a1869320e591b04959319004a4c8da4c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Select what a rectangle dragged across a cell's output covers.  <br /></td></tr>
+<tr class="separator:a1869320e591b04959319004a4c8da4c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac59dea6967c097fd0d6633eb4ccd5bab"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#ac59dea6967c097fd0d6633eb4ccd5bab">CopySelection</a> (<a class="el" href="classCell.html">Cell</a> *start, <a class="el" href="classCell.html">Cell</a> *end, bool asData=false) const</td></tr>
 <tr class="memdesc:ac59dea6967c097fd0d6633eb4ccd5bab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy the currently given list of cells.  <br /></td></tr>
 <tr class="separator:ac59dea6967c097fd0d6633eb4ccd5bab"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1611,8 +1616,49 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 
 </div>
 </div>
+<a id="afd3a9829e7b8bbadd2a81cef5b416ba1" name="afd3a9829e7b8bbadd2a81cef5b416ba1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afd3a9829e7b8bbadd2a81cef5b416ba1">&#9670;&#160;</a></span>CopySelectedMatrixBlock()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unique_ptr&lt; <a class="el" href="classMatrCell.html">MatrCell</a> &gt; Worksheet::CopySelectedMatrixBlock </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The selected sub-matrix, as a new matrix, or null (GH #2345) </p>
+<p>Non-null only if the selection is a block of one matrix's entries, see <a class="el" href="classWorksheet.html#a1869320e591b04959319004a4c8da4c3" title="Select what a rectangle dragged across a cell&#39;s output covers.">SelectOutputRect()</a>. Every "Copy ..." command copies this instead of the whole matrix then. </p>
+
+</div>
+</div>
+<a id="ac6171080f34084cc1694b75089f360ac" name="ac6171080f34084cc1694b75089f360ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac6171080f34084cc1694b75089f360ac">&#9670;&#160;</a></span>CopySelection() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt; Worksheet::CopySelection </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>asData</em> = <code>false</code></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Copy the currently selected cells. </p>
+<p>If only a block of a matrix's entries is selected, this is a new matrix holding just that block, see <a class="el" href="classWorksheet.html#afd3a9829e7b8bbadd2a81cef5b416ba1" title="The selected sub-matrix, as a new matrix, or null (GH #2345)">CopySelectedMatrixBlock()</a>. </p>
+
+</div>
+</div>
 <a id="ac59dea6967c097fd0d6633eb4ccd5bab" name="ac59dea6967c097fd0d6633eb4ccd5bab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac59dea6967c097fd0d6633eb4ccd5bab">&#9670;&#160;</a></span>CopySelection()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac59dea6967c097fd0d6633eb4ccd5bab">&#9670;&#160;</a></span>CopySelection() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3130,6 +3176,50 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 <p>Scroll vertically to the given position, in scroll units. </p>
 
 <p>Implements <a class="el" href="classWorksheetView.html#acf1809ec626e67745d75820123948616">WorksheetView</a>.</p>
+
+</div>
+</div>
+<a id="a1869320e591b04959319004a4c8da4c3" name="a1869320e591b04959319004a4c8da4c3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1869320e591b04959319004a4c8da4c3">&#9670;&#160;</a></span>SelectOutputRect()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Worksheet::SelectOutputRect </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td>
+          <td class="paramname"><em>group</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">wxPoint&#160;</td>
+          <td class="paramname"><em>down</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">wxPoint&#160;</td>
+          <td class="paramname"><em>up</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Select what a rectangle dragged across a cell's output covers. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">group</td><td>the cell whose output was clicked into </td></tr>
+    <tr><td class="paramname">down,up</td><td>where the mouse button went down and where it is now</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>What <a class="el" href="classWorksheet.html#a3dcbb54240b30f35bfb7c9e0118d61da" title="Select the rectangle surrounded by down and up.">ClickNDrag()</a> does for a drag that started in an output. <a class="el" href="classA.html">A</a> rectangle that lies within one matrix but spans several of its entries selects the block of entries it touches (GH #2345); anything else selects the output cells it covers, as it always did. </p>
 
 </div>
 </div>

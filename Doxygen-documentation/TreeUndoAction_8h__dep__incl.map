@@ -1,8 +1,8 @@
 <map id="src/TreeUndoAction.h" name="src/TreeUndoAction.h">
-<area shape="rect" id="node1" title="Declares TreeUndoAction, the immutable record of one cell&#45;tree undo/redo step, and the UndoActions li..." alt="" coords="2851,5,3009,31"/>
-<area shape="rect" id="node2" href="$TreeUndoManager_8h.html" title="Declares TreeUndoManager: the owner of the cell&#45;tree undo/redo state." alt="" coords="2843,79,3017,104"/>
-<area shape="rect" id="node3" href="$Worksheet_8h.html" title="This file defines the class Worksheet." alt="" coords="2745,225,2944,251"/>
-<area shape="rect" id="node45" href="$WorksheetDocument_8h.html" title="The document half of the worksheet: the state and commands that describe the edited document itself,..." alt="" coords="2883,152,3148,177"/>
+<area shape="rect" id="node1" title="Declares TreeUndoAction, the immutable record of one cell&#45;tree undo/redo step, and the UndoActions li..." alt="" coords="2945,5,3104,31"/>
+<area shape="rect" id="node2" href="$TreeUndoManager_8h.html" title="Declares TreeUndoManager: the owner of the cell&#45;tree undo/redo state." alt="" coords="2937,79,3112,104"/>
+<area shape="rect" id="node3" href="$Worksheet_8h.html" title="This file defines the class Worksheet." alt="" coords="2840,225,3039,251"/>
+<area shape="rect" id="node46" href="$WorksheetDocument_8h.html" title="The document half of the worksheet: the state and commands that describe the edited document itself,..." alt="" coords="2977,152,3243,177"/>
 <area shape="rect" id="node4" href="$MaximaFileIO_8cpp.html" title="Implements the worksheet file loaders/savers extracted from the wxMaxima god class." alt="" coords="433,460,595,485"/>
 <area shape="rect" id="node5" href="$MaximaOutputAppender_8cpp.html" title="Implements the worksheet output appenders extracted from the wxMaxima god class." alt="" coords="620,460,851,485"/>
 <area shape="rect" id="node6" href="$ConfigDialogue_8h.html" title="The configuration dialog." alt="" coords="201,460,408,485"/>
@@ -18,18 +18,19 @@
 <area shape="rect" id="node30" href="$test__EvalQueueCommands_8cpp.html" title="Command&#45;level behavior of the EvaluationQueue: how a GroupCell&#39;s input is broken into the individual ..." alt="" coords="2538,299,2738,339"/>
 <area shape="rect" id="node31" href="$test__GroupCellLayout_8cpp.html" title="Regression tests for the GroupCell &lt;&#45;&gt; EditorCell layout coupling." alt="" coords="2763,299,2927,339"/>
 <area shape="rect" id="node32" href="$test__LayoutInvariants_8cpp.html" title="Layout idempotency invariants." alt="" coords="2951,299,3117,339"/>
-<area shape="rect" id="node33" href="$test__MatrixViewer_8cpp.html" title="The matrix viewer a double&#45;click on an elided matrix opens (GH #2344)." alt="" coords="3141,299,3285,339"/>
-<area shape="rect" id="node34" href="$test__McpTools_8cpp.html" title="Pins McpTools (the MCP server&#39;s read&#45;only &quot;worksheet context&quot; tools, src/mcp/McpTools...." alt="" coords="3309,299,3453,339"/>
-<area shape="rect" id="node35" href="$test__TableOfContentsDnD_8cpp.html" title="Regression tests for the table of contents sidebar&#39;s drag&#45;and&#45;drop reorder (GH #1524)." alt="" coords="3477,299,3668,339"/>
-<area shape="rect" id="node36" href="$test__TreeUndo_8cpp.html" title="Regression tests for the worksheet&#39;s cell&#45;tree undo/redo (the TreeUndo_* subsystem of Worksheet)." alt="" coords="3693,299,3837,339"/>
-<area shape="rect" id="node37" href="$test__WXMRoundtrip_8cpp.html" title="Regression tests for images surviving the .wxm serialization round&#45;trip." alt="" coords="3861,299,4015,339"/>
-<area shape="rect" id="node38" href="$test__WXMXRoundtrip_8cpp.html" title="Round&#45;trip tests for the .wxmx content.xml (the MathML&#45;like math format)." alt="" coords="4039,299,4202,339"/>
-<area shape="rect" id="node39" href="$test__WorksheetClipboard_8cpp.html" title="Safety net for the multi&#45;format clipboard / drag&#45;and&#45;drop payload of Worksheet." alt="" coords="4226,299,4413,339"/>
-<area shape="rect" id="node40" href="$test__WorksheetContextMenu_8cpp.html" title="Regression tests for the worksheet&#39;s right&#45;click context menu." alt="" coords="4437,299,4649,339"/>
-<area shape="rect" id="node41" href="$test__WorksheetCursor_8cpp.html" title="Pins the worksheet&#39;s cursor model before it is gathered into a cursor class." alt="" coords="4673,299,4840,339"/>
-<area shape="rect" id="node42" href="$test__WorksheetEvalQueue_8cpp.html" title="Pins the worksheet&#39;s &quot;add cells to the evaluation queue&quot; behavior before the Add*ToEvaluationQueue fa..." alt="" coords="4865,299,5059,339"/>
-<area shape="rect" id="node43" href="$test__WorksheetExport_8cpp.html" title="Safety net for the export/serialization cluster of Worksheet." alt="" coords="5084,299,5251,339"/>
-<area shape="rect" id="node44" href="$test__WorksheetFind_8cpp.html" title="Pins the worksheet&#39;s find/replace behavior before the search engine is extracted into WorksheetSearch..." alt="" coords="5275,299,5427,339"/>
+<area shape="rect" id="node33" href="$test__MatrixBlockSelection_8cpp.html" title="Selecting and copying a sub&#45;matrix (GH #2345)." alt="" coords="3141,299,3335,339"/>
+<area shape="rect" id="node34" href="$test__MatrixViewer_8cpp.html" title="The matrix viewer a double&#45;click on an elided matrix opens (GH #2344)." alt="" coords="3359,299,3503,339"/>
+<area shape="rect" id="node35" href="$test__McpTools_8cpp.html" title="Pins McpTools (the MCP server&#39;s read&#45;only &quot;worksheet context&quot; tools, src/mcp/McpTools...." alt="" coords="3527,299,3671,339"/>
+<area shape="rect" id="node36" href="$test__TableOfContentsDnD_8cpp.html" title="Regression tests for the table of contents sidebar&#39;s drag&#45;and&#45;drop reorder (GH #1524)." alt="" coords="3696,299,3887,339"/>
+<area shape="rect" id="node37" href="$test__TreeUndo_8cpp.html" title="Regression tests for the worksheet&#39;s cell&#45;tree undo/redo (the TreeUndo_* subsystem of Worksheet)." alt="" coords="3911,299,4055,339"/>
+<area shape="rect" id="node38" href="$test__WXMRoundtrip_8cpp.html" title="Regression tests for images surviving the .wxm serialization round&#45;trip." alt="" coords="4080,299,4233,339"/>
+<area shape="rect" id="node39" href="$test__WXMXRoundtrip_8cpp.html" title="Round&#45;trip tests for the .wxmx content.xml (the MathML&#45;like math format)." alt="" coords="4258,299,4421,339"/>
+<area shape="rect" id="node40" href="$test__WorksheetClipboard_8cpp.html" title="Safety net for the multi&#45;format clipboard / drag&#45;and&#45;drop payload of Worksheet." alt="" coords="4445,299,4631,339"/>
+<area shape="rect" id="node41" href="$test__WorksheetContextMenu_8cpp.html" title="Regression tests for the worksheet&#39;s right&#45;click context menu." alt="" coords="4656,299,4868,339"/>
+<area shape="rect" id="node42" href="$test__WorksheetCursor_8cpp.html" title="Pins the worksheet&#39;s cursor model before it is gathered into a cursor class." alt="" coords="4892,299,5059,339"/>
+<area shape="rect" id="node43" href="$test__WorksheetEvalQueue_8cpp.html" title="Pins the worksheet&#39;s &quot;add cells to the evaluation queue&quot; behavior before the Add*ToEvaluationQueue fa..." alt="" coords="5083,299,5278,339"/>
+<area shape="rect" id="node44" href="$test__WorksheetExport_8cpp.html" title="Safety net for the export/serialization cluster of Worksheet." alt="" coords="5303,299,5469,339"/>
+<area shape="rect" id="node45" href="$test__WorksheetFind_8cpp.html" title="Pins the worksheet&#39;s find/replace behavior before the search engine is extracted into WorksheetSearch..." alt="" coords="5494,299,5646,339"/>
 <area shape="rect" id="node7" href="$MaximaCommandMenus_8cpp.html" title="Implementation of the menu&#45;command handlers extracted from wxMaxima &#45; see MaximaCommandMenus...." alt="" coords="193,541,427,566"/>
 <area shape="rect" id="node8" href="$main_8cpp.html" title="The file that defines the starting point of the program." alt="" coords="692,541,797,566"/>
 <area shape="rect" id="node9" href="$wxMaxima_8cpp.html" title="This file defines the contents of the class wxMaxima that contains most of the program&#39;s logic." alt="" coords="1302,541,1446,566"/>
@@ -44,5 +45,5 @@
 <area shape="rect" id="node23" href="$MaximaEvaluator_8cpp.html" title="Implements the evaluation&#45;queue driver extracted from the wxMaxima god class." alt="" coords="926,460,1113,485"/>
 <area shape="rect" id="node24" href="$MaximaProcessManager_8cpp.html" title="Implements the Maxima process/socket lifecycle extracted from the wxMaxima god class." alt="" coords="1137,460,1368,485"/>
 <area shape="rect" id="node25" href="$MaximaResponseReader_8cpp.html" title="Implements the Maxima&#45;response handlers extracted from the wxMaxima god class." alt="" coords="1392,460,1625,485"/>
-<area shape="rect" id="node46" href="$WorksheetDocument_8cpp.html" title="Implementation of WorksheetDocument&#39;s structural edits &#45; see WorksheetDocument.h." alt="" coords="2969,225,3249,251"/>
+<area shape="rect" id="node47" href="$WorksheetDocument_8cpp.html" title="Implementation of WorksheetDocument&#39;s structural edits &#45; see WorksheetDocument.h." alt="" coords="3063,225,3343,251"/>
 </map>

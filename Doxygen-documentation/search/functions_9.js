@@ -43,7 +43,7 @@ var searchData=
   ['isavailable_40',['IsAvailable',['../classBidi.html#a10cb67ac585bd2d82bc580687d079716',1,'Bidi']]],
   ['isbanded_41',['IsBanded',['../classMatrCell.html#a656ce2bac5863f66ef33cf375367fb50',1,'MatrCell']]],
   ['isbrokenintolines_42',['IsBrokenIntoLines',['../classCell.html#a0d729564b9738d49cf62ed37720534f3',1,'Cell']]],
-  ['iscodeeditor_43',['IsCodeEditor',['../classCodeEditorCell.html#a959b6cddeed2a5e4c48af7b71690cbcd',1,'CodeEditorCell::IsCodeEditor()'],['../classEditorCell.html#a538f99f180a49fc01c3e628db793cf1d',1,'EditorCell::IsCodeEditor() const']]],
+  ['iscodeeditor_43',['IsCodeEditor',['../classEditorCell.html#a538f99f180a49fc01c3e628db793cf1d',1,'EditorCell::IsCodeEditor()'],['../classCodeEditorCell.html#a959b6cddeed2a5e4c48af7b71690cbcd',1,'CodeEditorCell::IsCodeEditor()']]],
   ['iscodetype_44',['IsCodeType',['../classEditorCell.html#ac0e56e5dc5c0dee87121952965fced43',1,'EditorCell']]],
   ['iscomment_45',['IsComment',['../classCell.html#acd452bb5f74e9b11692b91c3c7a18dc7',1,'Cell']]],
   ['iscompound_46',['IsCompound',['../classCell.html#ad480438870ee7c585045b66a8b856c12',1,'Cell']]],
@@ -83,9 +83,10 @@ var searchData=
   ['isstrongrighttoleft_80',['IsStrongRightToLeft',['../classEditorCell.html#aeec7fe555eb52998175e1fa3599f953e',1,'EditorCell']]],
   ['isvalid_81',['IsValid',['../classWorksheetSearch_1_1RegexMatcher.html#ade8021e8a378b3f38154989285065a9f',1,'WorksheetSearch::RegexMatcher']]],
   ['isvalidvariable_82',['IsValidVariable',['../classVariablespane.html#a7ad9c02ee28a4e8dedab236c44ef1994',1,'Variablespane']]],
-  ['isxmlinspectorshown_83',['IsXMLInspectorShown',['../classwxMaximaFrame.html#a417d6b9fde48cc771065d3d8b2c06ab5',1,'wxMaximaFrame']]],
-  ['items_84',['items',['../classbasic__json.html#ac12884e86980aa85b6a9ffbb8b84de6a',1,'basic_json::items() noexcept'],['../classbasic__json.html#a3f2fdaf6048ea339c901b5208b93a64d',1,'basic_json::items() const noexcept']]],
-  ['iter_5fimpl_85',['iter_impl',['../classdetail_1_1iter__impl.html#a21ce449bdce08e15eaf8333322a81039',1,'detail::iter_impl::iter_impl(pointer object) noexcept'],['../classdetail_1_1iter__impl.html#af8d8847a82d9dab28bd4650ed13a7c90',1,'detail::iter_impl::iter_impl(const iter_impl&lt; const BasicJsonType &gt; &amp;other) noexcept'],['../classdetail_1_1iter__impl.html#a26079f33eb8a16683577cf3782558f26',1,'detail::iter_impl::iter_impl(const iter_impl&lt; typename std::remove_const&lt; BasicJsonType &gt;::type &gt; &amp;other) noexcept']]],
-  ['iteration_5fproxy_86',['iteration_proxy',['../classdetail_1_1iteration__proxy.html#abc711365efc12210a983fba0e39b5811',1,'detail::iteration_proxy']]],
-  ['iterator_5fwrapper_87',['iterator_wrapper',['../classbasic__json.html#ab8b4e0acdea49e5f0a77abdf1ce465d2',1,'basic_json::iterator_wrapper(reference ref) noexcept'],['../classbasic__json.html#a7c0314258e5347eade0c6851017bf5a5',1,'basic_json::iterator_wrapper(const_reference ref) noexcept']]]
+  ['iswholematrix_83',['IsWholeMatrix',['../classMatrCell.html#a61d57d0b58b3c12ed3cd600604498d79',1,'MatrCell']]],
+  ['isxmlinspectorshown_84',['IsXMLInspectorShown',['../classwxMaximaFrame.html#a417d6b9fde48cc771065d3d8b2c06ab5',1,'wxMaximaFrame']]],
+  ['items_85',['items',['../classbasic__json.html#ac12884e86980aa85b6a9ffbb8b84de6a',1,'basic_json::items() noexcept'],['../classbasic__json.html#a3f2fdaf6048ea339c901b5208b93a64d',1,'basic_json::items() const noexcept']]],
+  ['iter_5fimpl_86',['iter_impl',['../classdetail_1_1iter__impl.html#a21ce449bdce08e15eaf8333322a81039',1,'detail::iter_impl::iter_impl(pointer object) noexcept'],['../classdetail_1_1iter__impl.html#af8d8847a82d9dab28bd4650ed13a7c90',1,'detail::iter_impl::iter_impl(const iter_impl&lt; const BasicJsonType &gt; &amp;other) noexcept'],['../classdetail_1_1iter__impl.html#a26079f33eb8a16683577cf3782558f26',1,'detail::iter_impl::iter_impl(const iter_impl&lt; typename std::remove_const&lt; BasicJsonType &gt;::type &gt; &amp;other) noexcept']]],
+  ['iteration_5fproxy_87',['iteration_proxy',['../classdetail_1_1iteration__proxy.html#abc711365efc12210a983fba0e39b5811',1,'detail::iteration_proxy']]],
+  ['iterator_5fwrapper_88',['iterator_wrapper',['../classbasic__json.html#ab8b4e0acdea49e5f0a77abdf1ce465d2',1,'basic_json::iterator_wrapper(reference ref) noexcept'],['../classbasic__json.html#a7c0314258e5347eade0c6851017bf5a5',1,'basic_json::iterator_wrapper(const_reference ref) noexcept']]]
 ];

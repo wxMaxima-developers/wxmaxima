@@ -724,6 +724,22 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasControlBlock</b> (
 <tr class="memitem:a51973edd395e7418e299006b534bee70"><td class="memItemLeft" align="right" valign="top"><a id="a51973edd395e7418e299006b534bee70" name="a51973edd395e7418e299006b534bee70"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasOneCellPtr</b> () const</td></tr>
 <tr class="separator:a51973edd395e7418e299006b534bee70"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Sub-matrices (GH #2345)</div></td></tr>
+<tr><td colspan="2"><div class="groupText"><p>Dragging a rectangle across a matrix selects the block of entries it touches; copying then copies just that sub-matrix. </p>
+</div></td></tr>
+<tr class="memitem:af475f943afc46e8fbcfeb5f572c9617d"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="structMatrixBlock.html">MatrixBlock</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrCell.html#af475f943afc46e8fbcfeb5f572c9617d">BlockInRect</a> (const wxRect &amp;rect) const</td></tr>
+<tr class="memdesc:af475f943afc46e8fbcfeb5f572c9617d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The block of shown entries a rectangle touches.  <br /></td></tr>
+<tr class="separator:af475f943afc46e8fbcfeb5f572c9617d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61d57d0b58b3c12ed3cd600604498d79"><td class="memItemLeft" align="right" valign="top"><a id="a61d57d0b58b3c12ed3cd600604498d79" name="a61d57d0b58b3c12ed3cd600604498d79"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsWholeMatrix</b> (const <a class="el" href="structMatrixBlock.html">MatrixBlock</a> &amp;block) const</td></tr>
+<tr class="memdesc:a61d57d0b58b3c12ed3cd600604498d79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is this block every entry of the matrix? <br /></td></tr>
+<tr class="separator:a61d57d0b58b3c12ed3cd600604498d79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30e230edce86c4fa292dc24ef5a92b52"><td class="memItemLeft" align="right" valign="top">wxRect&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrCell.html#a30e230edce86c4fa292dc24ef5a92b52">BlockRect</a> (const <a class="el" href="structMatrixBlock.html">MatrixBlock</a> &amp;block) const</td></tr>
+<tr class="memdesc:a30e230edce86c4fa292dc24ef5a92b52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Where the shown part of a block is drawn, e.g.  <br /></td></tr>
+<tr class="separator:a30e230edce86c4fa292dc24ef5a92b52"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7dc953a54eb96d07bf10fc66b3d38cc"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classMatrCell.html">MatrCell</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrCell.html#aa7dc953a54eb96d07bf10fc66b3d38cc">CopyBlock</a> (const <a class="el" href="structMatrixBlock.html">MatrixBlock</a> &amp;block, <a class="el" href="classGroupCell.html">GroupCell</a> *group) const</td></tr>
+<tr class="memdesc:aa7dc953a54eb96d07bf10fc66b3d38cc"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classA.html">A</a> new matrix holding only this block of entries.  <br /></td></tr>
+<tr class="separator:aa7dc953a54eb96d07bf10fc66b3d38cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Scrolling (Configuration::OversizedMatrices::scroll)</div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p><a class="el" href="classA.html">A</a> scrolling matrix shows a window-sized viewport onto the whole matrix, with a native scrollbar below it and/or to its right.</p>
 <p>Everything here is in worksheet (unscrolled) coordinates; the scrollbars themselves belong to the <a class="el" href="classMatrixScrollHost.html" title="Whatever can give a matrix real scrollbars.">MatrixScrollHost</a>. </p>
@@ -985,6 +1001,49 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 <p>Defined in <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a> and <a class="el" href="classEditorCell.html" title="This class defines what the user sees as input cell.">EditorCell</a> </p>
 
 <p>Reimplemented in <a class="el" href="classEditorCell.html#add4b1605ec516805a42af9d667fdf641">EditorCell</a>, and <a class="el" href="classGroupCell.html#ac592a77ab3fed321981f25d68cc16234">GroupCell</a>.</p>
+
+</div>
+</div>
+<a id="af475f943afc46e8fbcfeb5f572c9617d" name="af475f943afc46e8fbcfeb5f572c9617d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af475f943afc46e8fbcfeb5f572c9617d">&#9670;&#160;</a></span>BlockInRect()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt; <a class="el" href="structMatrixBlock.html">MatrixBlock</a> &gt; MatrCell::BlockInRect </td>
+          <td>(</td>
+          <td class="paramtype">const wxRect &amp;&#160;</td>
+          <td class="paramname"><em>rect</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The block of shown entries a rectangle touches. </p>
+<p>An entry counts if the rectangle meets its slot: the entry's row and column, plus half the gap to its neighbours, so that dragging across the gaps between entries still counts. Entries that are elided or scrolled out of view can't be touched, but a block reaching across an elided run includes it. std::nullopt if the rectangle touches no entry. </p>
+
+</div>
+</div>
+<a id="a30e230edce86c4fa292dc24ef5a92b52" name="a30e230edce86c4fa292dc24ef5a92b52"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a30e230edce86c4fa292dc24ef5a92b52">&#9670;&#160;</a></span>BlockRect()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxRect MatrCell::BlockRect </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structMatrixBlock.html">MatrixBlock</a> &amp;&#160;</td>
+          <td class="paramname"><em>block</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Where the shown part of a block is drawn, e.g. </p>
+<p>to highlight it</p>
+<p>The union of the slots (see <a class="el" href="classMatrCell.html#af475f943afc46e8fbcfeb5f572c9617d" title="The block of shown entries a rectangle touches.">BlockInRect()</a>) of its shown entries, cut to the viewport if the matrix scrolls. Empty if none of them is shown. </p>
 
 </div>
 </div>
@@ -1420,6 +1479,37 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 <p>This method is purely virtual, which means every child class has to define its own <a class="el" href="classMatrCell.html#aaf5196e77cadec42457f09248a8db799" title="Create a copy of this cell.">Copy()</a> method. </p>
 
 <p>Implements <a class="el" href="classCell.html#aa2db105aac0ca1c6080d83c47901c204">Cell</a>.</p>
+
+</div>
+</div>
+<a id="aa7dc953a54eb96d07bf10fc66b3d38cc" name="aa7dc953a54eb96d07bf10fc66b3d38cc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa7dc953a54eb96d07bf10fc66b3d38cc">&#9670;&#160;</a></span>CopyBlock()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unique_ptr&lt; <a class="el" href="classMatrCell.html">MatrCell</a> &gt; MatrCell::CopyBlock </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structMatrixBlock.html">MatrixBlock</a> &amp;&#160;</td>
+          <td class="paramname"><em>block</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td>
+          <td class="paramname"><em>group</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><a class="el" href="classA.html">A</a> new matrix holding only this block of entries. </p>
+<p>Keeps the brackets and the other flags, but a heading row or column only if the block includes it: otherwise the block's first row or column would be shown, and exported, as if it were a heading. The block is clamped to the matrix. </p>
 
 </div>
 </div>
