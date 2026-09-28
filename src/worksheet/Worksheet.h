@@ -1067,6 +1067,22 @@ public:
    */
   bool CanCopyAsMathML() const;
 
+  //! Is the selection a matrix, or a block of one, that "Copy as CSV" can copy?
+  bool CanCopyCSV() const;
+  /*! The selected matrix, or selected block of one, as CSV (GH #2364)
+
+    Empty if CanCopyCSV() is false. See MatrCell::ToCSV() and CSVDelimiter().
+  */
+  wxString SelectionToCSV() const;
+  /*! What separates the values "Copy as CSV" writes
+
+    A comma, unless the locale writes numbers with a decimal comma: a
+    spreadsheet in such a locale expects ";" in a CSV file, and a comma would
+    split its numbers apart. There, a tab, which every spreadsheet reads as
+    a column break when text is pasted, whatever its locale.
+  */
+  static wxString CSVDelimiter();
+
   bool CanPaste() const
     { return GetDocumentCellPointers().GetActiveCell() || GetHCaretCursor().IsActive(); }
 
@@ -1219,6 +1235,9 @@ public:
 
   //! Copy a Matlab representation of the current selection to the clipboard
   bool CopyMatlab() const;
+
+  //! Copy the selected matrix, or block of one, to the clipboard as CSV
+  bool CopyCSV() const;
 
   //! Copy a textual representation of the current selection to the clipboard
   bool CopyText() const;

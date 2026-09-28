@@ -239,6 +239,78 @@ SCENARIO("A copied block keeps a heading only if it includes it") {
   g_ws->DestroyTree();
 }
 
+SCENARIO("A matrix, or a block of one, can be copied as CSV (GH #2364)") {
+  g_cfg->SetZoomFactor(1.0);
+  g_cfg->SetCanvasSize(wxSize(1000, 1000));
+  MatrCell *matr = ShowMatrix(MatrixTableXml(3, 3));
+
+  THEN("each row becomes one line of delimited values") {
+    CHECK(matr->ToCSV(wxS(",")) == wxS("100,101,102\n110,111,112\n120,121,122\n"));
+    CHECK(matr->ToCSV(wxS("\t")) ==
+          wxS("100\t101\t102\n110\t111\t112\n120\t121\t122\n"));
+  }
+  THEN("the delimiter is a comma unless numbers are written with a decimal comma") {
+    const wxString delimiter = Worksheet::CSVDelimiter();
+    CHECK(((delimiter == wxS(",")) || (delimiter == wxS("\t"))));
+  }
+  WHEN("the whole matrix is selected") {
+    g_ws->SetSelection(matr);
+    THEN("\"Copy as CSV\" is offered and copies all of it") {
+      CHECK(g_ws->CanCopyCSV());
+      CHECK(g_ws->SelectionToCSV() == matr->ToCSV(Worksheet::CSVDelimiter()));
+    }
+  }
+  WHEN("a block of it is selected") {
+    Drag(matr, 1, 1, 2, 2);
+    REQUIRE(Pointers().GetSelectedMatrixBlock());
+    THEN("only the block is copied") {
+      const wxString d = Worksheet::CSVDelimiter();
+      CHECK(g_ws->CanCopyCSV());
+      CHECK(g_ws->SelectionToCSV() ==
+            wxS("111") + d + wxS("112\n121") + d + wxS("122\n"));
+    }
+  }
+  WHEN("a single entry is selected") {
+    g_ws->SetSelection(matr->GetInnerCell(0, 0));
+    THEN("\"Copy as CSV\" is not offered") {
+      CHECK_FALSE(g_ws->CanCopyCSV());
+      CHECK(g_ws->SelectionToCSV().IsEmpty());
+    }
+  }
+  g_ws->DestroyTree();
+
+  GIVEN("entries that contain the delimiter, quotes or a line break") {
+    MatrCell *special = ShowMatrix(
+      wxS("<tb roundedParens=\"true\"><mtr>"
+          "<mtd><st>a,b</st></mtd>"
+          "<mtd><st>say \"hi\"</st></mtd>"
+          "<mtd><mn>1</mn></mtd>"
+          "</mtr></tb>"));
+    const wxString csv = special->ToCSV(wxS(","));
+    THEN("they are quoted, with inner quotes doubled, as RFC 4180 says") {
+      INFO("CSV: " << csv.ToStdString());
+      // The first entry holds a comma, so it is quoted...
+      CHECK(csv.StartsWith(wxS("\"")));
+      // ...the last one, a plain number, isn't...
+      CHECK(csv.EndsWith(wxS(",1\n")));
+      // ...and no lone double quote is left inside a quoted field: splitting
+      // at the field-separating commas leaves exactly three fields.
+      wxString rest = csv.BeforeLast(wxS('\n'));
+      size_t fields = 1;
+      bool inQuotes = false;
+      for (size_t i = 0; i < rest.Length(); i++) {
+        if (rest[i] == wxS('"'))
+          inQuotes = !inQuotes;
+        else if ((rest[i] == wxS(',')) && !inQuotes)
+          fields++;
+      }
+      CHECK_FALSE(inQuotes);
+      CHECK(fields == 3);
+    }
+    g_ws->DestroyTree();
+  }
+}
+
 class TestApp : public wxApp {
 public:
   bool OnInit() override { return true; }

@@ -479,6 +479,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_integrate);
   Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_float);
   Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_copy_matlab);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_copy_csv);
   Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_copy_tex);
   Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::EventIDs::popid_copy_text);
   Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_image);
