@@ -221,6 +221,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ReadConfig</b> ()</td
 <tr class="memitem:a98f47986d60090ae9ee5fe663545f43d"><td class="memItemLeft" align="right" valign="top"><a id="a98f47986d60090ae9ee5fe663545f43d" name="a98f47986d60090ae9ee5fe663545f43d"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Configuration</b> (const <a class="el" href="classConfiguration.html">Configuration</a> &amp;o)</td></tr>
 <tr class="separator:a98f47986d60090ae9ee5fe663545f43d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd68586c893e5e2d640d01624e7f9065"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#abd68586c893e5e2d640d01624e7f9065">MakeTemporary</a> ()</td></tr>
+<tr class="memdesc:abd68586c893e5e2d640d01624e7f9065"><td class="mdescLeft">&#160;</td><td class="mdescRight">Makes this configuration temporary.  <br /></td></tr>
+<tr class="separator:abd68586c893e5e2d640d01624e7f9065"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad67d1d85a3e09ea96baf5f7dee4c9b82"><td class="memItemLeft" align="right" valign="top"><a id="ad67d1d85a3e09ea96baf5f7dee4c9b82" name="ad67d1d85a3e09ea96baf5f7dee4c9b82"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ResetAllToDefaults</b> ()</td></tr>
 <tr class="memdesc:ad67d1d85a3e09ea96baf5f7dee4c9b82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset the whole configuration to its default values. <br /></td></tr>
@@ -2003,6 +2006,34 @@ static <a class="el" href="structConfiguration_1_1PerformanceStats.html">Perform
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="abd68586c893e5e2d640d01624e7f9065" name="abd68586c893e5e2d640d01624e7f9065"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd68586c893e5e2d640d01624e7f9065">&#9670;&#160;</a></span>MakeTemporary()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Configuration::MakeTemporary </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Makes this configuration temporary. </p>
+<p><a class="el" href="classA.html">A</a> configuration that isn't temporary writes its settings to the config file when it is destroyed. <a class="el" href="classA.html">A</a> copy made to show something differently from the worksheet &ndash; the <a class="el" href="classMatrixViewer.html" title="A window that shows a matrix the worksheet only shows part of (GH #2344)">MatrixViewer</a>'s, say, which shows every matrix in full and hides all labels &ndash; must never do that, or its settings would silently become the user's. The copy constructor copies this, so a copy of the worksheet's configuration isn't temporary until told. </p>
 
 </div>
 </div>

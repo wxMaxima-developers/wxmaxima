@@ -291,6 +291,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>OnMouseMotion</b> (wx
 void&#160;</td><td class="memItemRight" valign="bottom"><b>OnDoubleClick</b> (wxMouseEvent &amp;event)</td></tr>
 <tr class="memdesc:afc02263b1e218b1c7d09b7f6ce486833"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is called on double click on a cell. <br /></td></tr>
 <tr class="separator:afc02263b1e218b1c7d09b7f6ce486833"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9eba6ff998a546b062c72c4a97841dd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#ab9eba6ff998a546b062c72c4a97841dd">OpenMatrixViewerAt</a> (wxPoint position)</td></tr>
+<tr class="memdesc:ab9eba6ff998a546b062c72c4a97841dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens a <a class="el" href="classMatrixViewer.html" title="A window that shows a matrix the worksheet only shows part of (GH #2344)">MatrixViewer</a> if there is a partially shown matrix at this point.  <br /></td></tr>
+<tr class="separator:ab9eba6ff998a546b062c72c4a97841dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a75438158a4e03dc3e6dde313f9fd1b8b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a75438158a4e03dc3e6dde313f9fd1b8b">OnCharInActive</a> (wxKeyEvent &amp;event)</td></tr>
 <tr class="memdesc:a75438158a4e03dc3e6dde313f9fd1b8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Key pressed inside a cell.  <br /></td></tr>
 <tr class="separator:a75438158a4e03dc3e6dde313f9fd1b8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -614,6 +617,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ScrollToError</b> ()<
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>HCaretActive</b> () const</td></tr>
 <tr class="memdesc:a338c8d1a351010a4a4e8526bfff8a6d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is the vertically-drawn cursor active? <br /></td></tr>
 <tr class="separator:a338c8d1a351010a4a4e8526bfff8a6d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a704aeffa1f19ae5e788e253d52453fb2"><td class="memItemLeft" align="right" valign="top"><a id="a704aeffa1f19ae5e788e253d52453fb2" name="a704aeffa1f19ae5e788e253d52453fb2"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>DeactivateHCaret</b> ()</td></tr>
+<tr class="memdesc:a704aeffa1f19ae5e788e253d52453fb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hides the horizontal cursor, e.g. in a worksheet nothing can be inserted into. <br /></td></tr>
+<tr class="separator:a704aeffa1f19ae5e788e253d52453fb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0e57f9fc0b4afd0c0c693f677fc06576"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a0e57f9fc0b4afd0c0c693f677fc06576">CanMergeSelection</a> () const</td></tr>
 <tr class="memdesc:a0e57f9fc0b4afd0c0c693f677fc06576"><td class="mdescLeft">&#160;</td><td class="mdescRight">Can we merge the selected cells into one?  <br /></td></tr>
 <tr class="separator:a0e57f9fc0b4afd0c0c693f677fc06576"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2649,6 +2656,32 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 
 <p>Called if the user is using the scrollbar for scrolling through the document. </p>
 <p>See also OnThumbtrack and OnMouseWheel </p>
+
+</div>
+</div>
+<a id="ab9eba6ff998a546b062c72c4a97841dd" name="ab9eba6ff998a546b062c72c4a97841dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab9eba6ff998a546b062c72c4a97841dd">&#9670;&#160;</a></span>OpenMatrixViewerAt()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Worksheet::OpenMatrixViewerAt </td>
+          <td>(</td>
+          <td class="paramtype">wxPoint&#160;</td>
+          <td class="paramname"><em>position</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Opens a <a class="el" href="classMatrixViewer.html" title="A window that shows a matrix the worksheet only shows part of (GH #2344)">MatrixViewer</a> if there is a partially shown matrix at this point. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">position</td><td><a class="el" href="classA.html">A</a> point in window (scrolled) coordinates, as a mouse event reports it. Returns true if a viewer was opened. See <a class="el" href="classMatrixViewer.html#a6a438d6c5cb0a14ad673de4197584adb" title="The matrix a double-click at this point should open a viewer for.">MatrixViewer::PartiallyShownMatrixAt()</a> for which matrices qualify. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

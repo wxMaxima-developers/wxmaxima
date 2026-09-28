@@ -12,6 +12,7 @@ var searchData=
   ['vehicle_9',['Vehicle',['../structVehicle.html',1,'']]],
   ['versionnumber_10',['VersionNumber',['../classwxMaxima_1_1VersionNumber.html',1,'wxMaxima']]],
   ['viewcellpointers_11',['ViewCellPointers',['../classViewCellPointers.html',1,'']]],
-  ['visiblyinvalidcell_12',['VisiblyInvalidCell',['../classVisiblyInvalidCell.html',1,'']]],
-  ['void_5ftype_13',['void_type',['../structCatch_1_1detail_1_1void__type.html',1,'Catch::detail']]]
+  ['viewerconfiguration_12',['ViewerConfiguration',['../classViewerConfiguration.html',1,'']]],
+  ['visiblyinvalidcell_13',['VisiblyInvalidCell',['../classVisiblyInvalidCell.html',1,'']]],
+  ['void_5ftype_14',['void_type',['../structCatch_1_1detail_1_1void__type.html',1,'Catch::detail']]]
 ];

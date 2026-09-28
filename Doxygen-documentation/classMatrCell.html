@@ -134,6 +134,14 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa221c5700f6e29abd0abc6248386ef8c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structCell_1_1Range.html">Range</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrCell.html#aa221c5700f6e29abd0abc6248386ef8c">GetInnerCellsInRect</a> (const wxRect &amp;rect) const override</td></tr>
 <tr class="memdesc:aa221c5700f6e29abd0abc6248386ef8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Select the cells inside this cell described by the rectangle rect.  <br /></td></tr>
 <tr class="separator:aa221c5700f6e29abd0abc6248386ef8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f671e5bdf723d6d296a7c2c62672642"><td class="memItemLeft" align="right" valign="top"><a id="a2f671e5bdf723d6d296a7c2c62672642" name="a2f671e5bdf723d6d296a7c2c62672642"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><b>GetMatrixRows</b> () const</td></tr>
+<tr class="memdesc:a2f671e5bdf723d6d296a7c2c62672642"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many rows the matrix has. <br /></td></tr>
+<tr class="separator:a2f671e5bdf723d6d296a7c2c62672642"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8bcce14d4fe158d75e398634f8a5afe"><td class="memItemLeft" align="right" valign="top"><a id="aa8bcce14d4fe158d75e398634f8a5afe" name="aa8bcce14d4fe158d75e398634f8a5afe"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><b>GetMatrixColumns</b> () const</td></tr>
+<tr class="memdesc:aa8bcce14d4fe158d75e398634f8a5afe"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many columns the matrix has. <br /></td></tr>
+<tr class="separator:aa8bcce14d4fe158d75e398634f8a5afe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaa64deef616f10e3b73c23a20e61dcfd"><td class="memItemLeft" align="right" valign="top"><a id="aaa64deef616f10e3b73c23a20e61dcfd" name="aaa64deef616f10e3b73c23a20e61dcfd"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsElided</b> (size_t row, size_t col) const</td></tr>
 <tr class="memdesc:aaa64deef616f10e3b73c23a20e61dcfd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is the entry in this row and column left out of the display? <br /></td></tr>
@@ -210,6 +218,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>NoParens</b> ()</td><
 std::optional&lt; <a class="el" href="classConfiguration.html#adb5fa4e3eacde294a5f23ceca1b9283d">Configuration::OversizedMatrices</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>GetOversizedMode</b> () const</td></tr>
 <tr class="memdesc:a16f4aca3873ae1f87f16fe903a20b62e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The mode <a class="el" href="classMatrCell.html#affd7f9fc6bb41deac58ca66228625fc6" title="How this matrix wants to be shown if it is too large for the window.">SetOversizedMode()</a> asked for, if any. <br /></td></tr>
 <tr class="separator:a16f4aca3873ae1f87f16fe903a20b62e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a944ece4d2ab87eb88f089b04086d1b20"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrCell.html#a944ece4d2ab87eb88f089b04086d1b20">IsShownPartially</a> () const</td></tr>
+<tr class="memdesc:a944ece4d2ab87eb88f089b04086d1b20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does the worksheet show only part of this matrix right now?  <br /></td></tr>
+<tr class="separator:a944ece4d2ab87eb88f089b04086d1b20"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a656ce2bac5863f66ef33cf375367fb50"><td class="memItemLeft" align="right" valign="top"><a id="a656ce2bac5863f66ef33cf375367fb50" name="a656ce2bac5863f66ef33cf375367fb50"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsBanded</b> () const</td></tr>
 <tr class="memdesc:a656ce2bac5863f66ef33cf375367fb50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does this matrix get alternating row/column bands? See DrawBands(). <br /></td></tr>
@@ -2743,6 +2754,34 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 <p>True if this cell represents a short number. </p>
 
 <p>Reimplemented in <a class="el" href="classTextCell.html#a8915bfe798fc73eeeeda6bcd7025d6f8">TextCell</a>.</p>
+
+</div>
+</div>
+<a id="a944ece4d2ab87eb88f089b04086d1b20" name="a944ece4d2ab87eb88f089b04086d1b20"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a944ece4d2ab87eb88f089b04086d1b20">&#9670;&#160;</a></span>IsShownPartially()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool MatrCell::IsShownPartially </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Does the worksheet show only part of this matrix right now? </p>
+<p>True if rows or columns are elided or the matrix scrolls. Double-clicking such a matrix opens a <a class="el" href="classMatrixViewer.html" title="A window that shows a matrix the worksheet only shows part of (GH #2344)">MatrixViewer</a> showing all of it (GH #2344). </p>
 
 </div>
 </div>
