@@ -157,6 +157,60 @@ inline WorksheetVirtualSize ComputeWorksheetVirtualSize(bool hasTree,
   return result;
 }
 
+//! Where to scroll to, and how far to shift the document, to keep a point still.
+struct ScrollCompensation {
+  //! The new vertical scroll position, in scroll units.
+  int scrollUnitsY = 0;
+  //! The new worksheet top offset (Configuration::GetWorksheetTopOffset), in px.
+  int topOffset = 0;
+};
+
+/*! Compute the scroll position that keeps a point of the worksheet still on screen.
+
+  When Maxima appends output to a cell above the cursor, everything below that
+  cell moves down, the cursor with it. Scrolling down by the same amount would
+  put it back - but the view can only scroll in whole scroll units (10 px or
+  more), so on its own that would still leave the cursor jittering by up to
+  one unit on every append. The remainder is absorbed by the worksheet's top
+  offset: an extra top margin of less than one scroll unit that shifts the
+  whole document down. Scrolling one unit further than needed and moving the
+  document down by the excess makes the compensation pixel-exact.
+
+  With the scroll position S, the top offset t and the point having moved down
+  by \p shift pixels, the point stays where it was on screen exactly if the new
+  values S', t' satisfy S' - t' = S + shift - t. This picks the smallest S'
+  that is a multiple of the scroll unit and allows a t' in [0, scrollUnit).
+  Near the top of the document, where S' cannot go below 0, t' is clamped to
+  that range and the compensation is only as good as it can be.
+
+  \param scrollUnitsY The current vertical scroll position, in scroll units.
+  \param scrollUnit   The scroll granularity in px (> 0).
+  \param topOffset    The current top offset in px.
+  \param shift        How far (px) the point to keep still has moved down in the
+                      document; negative if it moved up.
+
+  Kept GUI-free so it can be unit-tested in isolation - see test_WorksheetSizeMath.
+*/
+inline ScrollCompensation ComputeScrollCompensation(int scrollUnitsY,
+                                                    int scrollUnit,
+                                                    int topOffset, int shift) {
+  ScrollCompensation result;
+  if (scrollUnit < 1)
+    scrollUnit = 1;
+  // The pixel position the view's top edge must be at, measured in a document
+  // whose top offset is 0.
+  const int target = scrollUnitsY * scrollUnit + shift - topOffset;
+  if (target <= 0) {
+    result.scrollUnitsY = 0;
+    result.topOffset = std::clamp(-target, 0, scrollUnit - 1);
+    return result;
+  }
+  // Round up to a whole scroll unit and shift the document down by the excess.
+  result.scrollUnitsY = (target + scrollUnit - 1) / scrollUnit;
+  result.topOffset = result.scrollUnitsY * scrollUnit - target;
+  return result;
+}
+
 /*! The narrow view surface the worksheet's layout pipeline needs.
 
   Worksheet's AdjustSize() historically read the window (client size, scroll
@@ -182,6 +236,8 @@ public:
   virtual void SetViewScrollRate(int rate) = 0;
   //! The view's position within its parent, in device pixels (wxWindow::GetPosition).
   virtual void GetViewPosition(int *x, int *y) const = 0;
+  //! Scroll vertically to the given position, in scroll units.
+  virtual void ScrollViewToUnitY(int unitY) = 0;
 };
 
 //! Remembers the last virtual size applied, so an unchanged size is a no-op.

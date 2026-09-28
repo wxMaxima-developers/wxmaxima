@@ -1,5 +1,11 @@
 # Current development version
 
+- Output arriving from Maxima no longer pushes the cursor down the screen.
+  If the cursor is visible and output is appended to a cell above it, the
+  worksheet now scrolls along by exactly as much, so the line being read or
+  typed in stays where it was and the new output grows upwards instead. The
+  worksheet can only scroll in steps of several pixels; to make this exact
+  its top margin varies by up to one such step.
 - Double-clicking a matrix that is too large for the window, and therefore
   shown with its middle rows and columns left out or in a scrolling box,
   opens a window that shows all of it. That window can be resized, several

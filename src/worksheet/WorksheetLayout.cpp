@@ -48,6 +48,9 @@ bool WorksheetLayout::RecalculateIfNeeded(bool timeout, long timeSliceMs) {
   if (!m_recalculateStart || !tree) {
     m_recalculateStart = {};
     m_recalculateEnd = {};
+    // A time-sliced pass that reached the end of the worksheet returns without
+    // passing the tail below, so this is where its compensation happens.
+    ApplyScrollCompensation();
     return false;
   }
 
@@ -172,8 +175,60 @@ bool WorksheetLayout::RecalculateIfNeeded(bool timeout, long timeSliceMs) {
   m_recalculateEnd = {};
   if (m_adjustWorksheetSizeNeeded)
     AdjustSize();
+  ApplyScrollCompensation();
 
   return true;
+}
+
+int WorksheetLayout::AnchorY(const ScrollAnchor &anchor) {
+  // The same numbers GroupCell::Reposition() derives its successor's position
+  // from, so a cell's bottom moves exactly as far as the cell below it would.
+  const int y = anchor.cell->GetCurrentPoint().y;
+  if (anchor.atBottom)
+    return y + anchor.cell->GetMaxDrop();
+  return y - anchor.cell->GetCenter();
+}
+
+void WorksheetLayout::ArmScrollCompensation() {
+  if (m_scrollAnchor || !m_getScrollAnchor)
+    return;
+  const ScrollAnchor anchor = m_getScrollAnchor();
+  // A cell that hasn't been positioned yet has no on-screen place to keep.
+  if (!anchor.cell || anchor.cell->GetCurrentPoint().y < 0)
+    return;
+  m_scrollAnchor = anchor.cell;
+  m_scrollAnchorAtBottom = anchor.atBottom;
+  m_scrollAnchorY = AnchorY(anchor);
+}
+
+void WorksheetLayout::ApplyScrollCompensation() {
+  if (!m_scrollAnchor || m_recalculateStart)
+    return;
+  const ScrollAnchor anchor{m_scrollAnchor.get(), m_scrollAnchorAtBottom};
+  m_scrollAnchor = {};
+  // The cursor moved elsewhere meanwhile: the point to keep still is gone.
+  if (!m_getScrollAnchor || !(m_getScrollAnchor() == anchor))
+    return;
+  if (anchor.cell->GetCurrentPoint().y < 0)
+    return;
+  const int shift = AnchorY(anchor) - m_scrollAnchorY;
+  if (shift == 0)
+    return;
+
+  const int oldOffset = m_configuration->GetWorksheetTopOffset();
+  const ScrollCompensation comp = ComputeScrollCompensation(
+    m_view.GetViewScrollUnitY(), m_scrollUnit, oldOffset, shift);
+  if (comp.topOffset != oldOffset) {
+    m_configuration->SetWorksheetTopOffset(comp.topOffset);
+    // Every cell's size is still valid, only its position moved: repositioning
+    // is enough, and cheap, compared to a recalculation.
+    for (auto &cell : OnList(m_getTree()))
+      static_cast<GroupCell &>(cell).Reposition();
+    m_adjustWorksheetSizeNeeded = true;
+  }
+  // The document got longer: make sure the view may scroll far enough.
+  AdjustSize();
+  m_view.ScrollViewToUnitY(comp.scrollUnitsY);
 }
 
 void WorksheetLayout::RequestRecalculation(Cell *start) {

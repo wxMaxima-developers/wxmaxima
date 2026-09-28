@@ -127,6 +127,8 @@ public:
   void SetViewScrollRate(int rate) override { SetScrollRate(rate, rate); }
   void GetViewPosition(int *x, int *y) const override
     { const wxPoint p = GetPosition(); *x = p.x; *y = p.y; }
+  void ScrollViewToUnitY(int unitY) override
+    { Scroll(-1, unitY); RequestRedraw(); }
 
   // WorksheetDocumentView: how m_document tells this window that a structural
   // edit happened; each forwards to the real layout/redraw/save machinery.
@@ -910,6 +912,21 @@ public:
     the line is appended to the last cell of the worksheet, instead.
   */
   void InsertLine(std::unique_ptr<Cell> &&newCell, bool forceNewLine = false);
+
+  /*! Where the cursor is, as the layout engine's scroll compensation needs it
+
+    The group cell the cursor is in, or the one the horizontal cursor sits
+    below. See WorksheetLayout::SetScrollAnchorCallback().
+  */
+  WorksheetLayout::ScrollAnchor GetScrollAnchor() const;
+
+  /*! Is the cursor on screen?
+
+    Unlike CaretVisibleIs() this never triggers a layout pass: it is asked
+    right before output is appended, when the positions on screen are the ones
+    that matter, not the ones a pass would compute.
+  */
+  bool ScrollAnchorVisible();
 
   //! The group that the line's cells will belong to - used by InsertLine
   GroupCell *GetInsertGroup() const;

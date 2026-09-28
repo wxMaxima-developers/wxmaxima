@@ -93,6 +93,11 @@ public:
     *x = 0;
     *y = 0;
   }
+  int scrollCalls = 0;
+  void ScrollViewToUnitY(int unitY) override {
+    ++scrollCalls;
+    scrollUnitY = unitY;
+  }
 };
 
 GroupCell *LastGroup(GroupCell *tree) {
@@ -123,6 +128,7 @@ struct EngineFixture {
     g_cfg->SetCanvasSize(wxSize(1000, 800));
   }
   ~EngineFixture() {
+    g_cfg->SetWorksheetTopOffset(0);
     g_cfg->SetRecalculateRequestCallback({});
     g_cfg->SetRecalculateAllRequestCallback({});
     g_cfg->SetAdjustWorksheetSizeRequestCallback({});
@@ -248,6 +254,107 @@ SCENARIO("A cell growing taller reaches the view through the callbacks") {
 
       THEN("the view received a taller virtual size") {
         REQUIRE(f.view.lastSetH > heightBefore);
+      }
+    }
+  }
+}
+
+namespace {
+//! Make \p group's input one line taller, the way a keypress does.
+void GrowInput(GroupCell *group) {
+  EditorCell *editor = group->GetEditable();
+  REQUIRE(editor != nullptr);
+  wxKeyEvent ev(wxEVT_CHAR);
+  ev.m_keyCode = WXK_RETURN;
+  ev.m_uniChar = WXK_RETURN;
+  editor->ProcessEvent(ev);
+  editor->Recalculate(g_cfg->GetDefaultFontSize());
+  group->InputHeightChanged();
+}
+
+//! Where \p group's top is on the (mock) screen.
+int ScreenTop(const EngineFixture &f, const GroupCell *group) {
+  return group->GetCurrentPoint().y - group->GetCenter() -
+    f.view.scrollUnitY * f.layout.GetScrollUnit();
+}
+} // namespace
+
+SCENARIO("A cell growing above the cursor doesn't move the cursor on screen") {
+  GIVEN("four laid-out cells, the cursor in the third, the view scrolled a bit") {
+    EngineFixture f;
+    GroupCell *A = f.AddCell(wxS("a:1$"));
+    f.AddCell(wxS("b:2$"));
+    GroupCell *C = f.AddCell(wxS("c:3$"));
+    GroupCell *D = f.AddCell(wxS("d:4$"));
+    f.layout.RequestRecalculation(A);
+    REQUIRE(f.layout.RecalculateIfNeeded());
+    f.view.scrollUnitY = 1;
+    WorksheetLayout::ScrollAnchor cursor{C, false};
+    f.layout.SetScrollAnchorCallback([&cursor] { return cursor; });
+    const int unit = f.layout.GetScrollUnit();
+    REQUIRE(unit >= 10);
+
+    WHEN("the first cell grows by a line, in one pass or time-sliced") {
+      const int screenBefore = ScreenTop(f, C);
+      const int docBefore = C->GetCurrentPoint().y;
+      const bool sliced = GENERATE(false, true);
+      f.layout.ArmScrollCompensation();
+      REQUIRE(f.layout.ScrollCompensationArmed());
+      GrowInput(A);
+      int ticks = 0;
+      while (f.layout.RecalculateIfNeeded(sliced, -1) && ++ticks < 100)
+        ;
+
+      THEN("the cursor's cell moved in the document") {
+        REQUIRE(C->GetCurrentPoint().y > docBefore);
+      }
+      THEN("but stays exactly where it was on screen") {
+        REQUIRE(f.view.scrollCalls == 1);
+        REQUIRE(ScreenTop(f, C) == screenBefore);
+        REQUIRE_FALSE(f.layout.ScrollCompensationArmed());
+      }
+      THEN("the top offset stays below one scroll unit") {
+        REQUIRE(g_cfg->GetWorksheetTopOffset() >= 0);
+        REQUIRE(g_cfg->GetWorksheetTopOffset() < unit);
+      }
+      THEN("the offset moved every cell, the first one included") {
+        REQUIRE(A->GetCurrentPoint().y - A->GetCenter() ==
+                g_cfg->GetBaseIndent() + g_cfg->GetWorksheetTopOffset());
+        REQUIRE(D->GetCurrentPoint().y > C->GetCurrentPoint().y);
+      }
+    }
+    WHEN("the cell that grows is below the cursor") {
+      cursor = {A, false};
+      f.layout.ArmScrollCompensation();
+      GrowInput(C);
+      f.layout.RecalculateIfNeeded();
+      THEN("nothing is scrolled") {
+        REQUIRE(f.view.scrollCalls == 0);
+        REQUIRE(f.view.scrollUnitY == 1);
+        REQUIRE(g_cfg->GetWorksheetTopOffset() == 0);
+      }
+    }
+    WHEN("the cursor moves elsewhere before the layout pass runs") {
+      f.layout.ArmScrollCompensation();
+      GrowInput(A);
+      cursor = {D, true};
+      f.layout.RecalculateIfNeeded();
+      THEN("the compensation is dropped") {
+        REQUIRE(f.view.scrollCalls == 0);
+        REQUIRE_FALSE(f.layout.ScrollCompensationArmed());
+      }
+    }
+    WHEN("the horizontal cursor sits right below the cell that grows") {
+      cursor = {A, true};
+      const int bottomBefore = A->GetCurrentPoint().y + A->GetMaxDrop() -
+        f.view.scrollUnitY * unit;
+      f.layout.ArmScrollCompensation();
+      GrowInput(A);
+      f.layout.RecalculateIfNeeded();
+      THEN("the cursor stays where it was on screen") {
+        REQUIRE(f.view.scrollCalls == 1);
+        REQUIRE(A->GetCurrentPoint().y + A->GetMaxDrop() -
+                f.view.scrollUnitY * unit == bottomBefore);
       }
     }
   }

@@ -163,6 +163,51 @@ SCENARIO("The content width is the widest cell, floored at the base indent") {
   }
 }
 
+// ComputeScrollCompensation(): after a point moved down by `shift`, the new
+// scroll position minus the new top offset has to equal the old one plus the
+// shift - that is what keeps the point at the same place on screen.
+namespace {
+int ScreenY(int docYWithoutOffset, int scrollUnits, int unit, int offset) {
+  return docYWithoutOffset + offset - scrollUnits * unit;
+}
+} // namespace
+
+SCENARIO("Scroll compensation keeps a point still to the pixel") {
+  const int unit = 26;
+  const int scroll = GENERATE(0, 1, 7, 40);
+  const int offset = GENERATE(0, 5, 25);
+  const int shift = GENERATE(1, 13, 26, 27, 100, 523);
+  GIVEN("a point at document y 1000 that moves down by some pixels") {
+    const int before = ScreenY(1000, scroll, unit, offset);
+    const ScrollCompensation c =
+      ComputeScrollCompensation(scroll, unit, offset, shift);
+    THEN("it is where it was on screen, and the offset stays below a unit") {
+      REQUIRE(ScreenY(1000 + shift, c.scrollUnitsY, unit, c.topOffset) == before);
+      REQUIRE(c.topOffset >= 0);
+      REQUIRE(c.topOffset < unit);
+      REQUIRE(c.scrollUnitsY >= scroll);
+    }
+  }
+}
+
+SCENARIO("Scroll compensation for a point that moved up") {
+  GIVEN("a view scrolled far enough to follow it") {
+    const ScrollCompensation c = ComputeScrollCompensation(10, 20, 3, -47);
+    THEN("it is compensated exactly") {
+      REQUIRE(ScreenY(500 - 47, c.scrollUnitsY, 20, c.topOffset) ==
+              ScreenY(500, 10, 20, 3));
+      REQUIRE(c.topOffset < 20);
+    }
+  }
+  GIVEN("a view at the very top of the document") {
+    const ScrollCompensation c = ComputeScrollCompensation(0, 20, 0, -47);
+    THEN("it can't scroll above the top, but pads it by up to a unit") {
+      REQUIRE(c.scrollUnitsY == 0);
+      REQUIRE(c.topOffset == 19);
+    }
+  }
+}
+
 // ApplyWorksheetVirtualSize() is the view-facing half of Worksheet::AdjustSize().
 // A mock WorksheetView lets us drive it headlessly - injecting a client size and
 // scroll position and capturing what it pushes back to the scrollbars - which is
@@ -201,6 +246,7 @@ public:
     *x = 0;
     *y = 0;
   }
+  void ScrollViewToUnitY(int unitY) override { scrollUnitY = unitY; }
 };
 } // namespace
 

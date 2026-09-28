@@ -142,6 +142,7 @@ Worksheet::Worksheet(wxWindow *parent, int id,
     [this]{ m_layout.RequestFullRecalculation(); });
   m_configuration->SetAdjustWorksheetSizeRequestCallback(
     [this]{ m_layout.RequestAdjustSize(); });
+  m_layout.SetScrollAnchorCallback([this]{ return GetScrollAnchor(); });
   m_configuration->ReadConfig();
   ApplyOverlayScrollbarsSetting();
   SetBackgroundColour(m_configuration->DefaultBackgroundColor());
@@ -747,7 +748,7 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
             wxRect(upperLeftScreenCorner.x + m_configuration->GetCellBracketWidth(),
                    (m_configuration->GetBaseIndent() -
                     m_configuration->GetCursorWidth()) /
-                   2,
+                   2 + m_configuration->GetWorksheetTopOffset(),
                    MC_HCARET_WIDTH, m_configuration->GetCursorWidth());
           dc.DrawRectangle(cursor);
         }
@@ -1010,6 +1011,12 @@ void Worksheet::InsertLine(std::unique_ptr<Cell> &&newCell, bool forceNewLine) {
   if (!cell)
     return;
 
+  // The append is about to push everything below this cell down, including
+  // the cursor if it sits there. If the user can see the cursor, keep it where
+  // it is on screen: that is where they are reading or typing.
+  if (ScrollAnchorVisible())
+    m_layout.ArmScrollCompensation();
+
   newCell->ForceBreakLine(forceNewLine);
   cell->AppendOutput(std::move(newCell));
   m_layout.RequestAdjustSize();
@@ -1033,6 +1040,36 @@ void Worksheet::InsertLine(std::unique_ptr<Cell> &&newCell, bool forceNewLine) {
     else
       ScrollToCaret();
   }
+}
+
+WorksheetLayout::ScrollAnchor Worksheet::GetScrollAnchor() const {
+  if (GetHCaretCursor().IsActive())
+    return {GetHCaretCursor().Position(), true};
+  if (GetActiveCell())
+    return {GetActiveCell()->GetGroup(), false};
+  return {};
+}
+
+bool Worksheet::ScrollAnchorVisible() {
+  const WorksheetLayout::ScrollAnchor anchor = GetScrollAnchor();
+  if (!anchor.cell)
+    return false;
+  int y;
+  if (!anchor.atBottom && GetActiveCell())
+    // Inside a cell only the line the caret is on has to be visible: a tall
+    // cell's top may well be scrolled away while the user types at its bottom.
+    y = GetActiveCell()->PositionToPoint().y;
+  else
+    y = anchor.cell->GetCurrentPoint().y + anchor.cell->GetMaxDrop();
+  if (y < 0)
+    return false;
+
+  int view_x, view_y;
+  GetViewStart(&view_x, &view_y);
+  view_y *= m_layout.GetScrollUnit();
+  int width, height;
+  GetClientSize(&width, &height);
+  return (y >= view_y) && (y <= view_y + height);
 }
 
 void Worksheet::SetZoomFactor(double newzoom) {
