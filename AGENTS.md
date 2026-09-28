@@ -258,13 +258,14 @@ working without extra checks.
 
 - **Two intermittent CI failures -- `tutorial_10Minutes` and `lisp_mode` --
   are documented in full in the `wxmaxima-maxima-protocol` skill.**
-  `lisp_mode` is fixed. `tutorial_10Minutes` has a verified workaround, but
-  the real bug behind it -- the first statement of a multi-statement cell
-  silently dropped before it ever reaches `Maxima::Write()` -- is confirmed
-  and still open (GH #2196). That is a genuine correctness issue (a
-  side-effecting command a worksheet depends on can silently never execute),
-  not merely a flaky test, and it would be invisible to nearly every other
-  test in this suite. Two things to know before touching either: **an
+  **Both are fixed, and by the same change**: the statement
+  `tutorial_10Minutes` saw silently dropped (GH #2196) was a knock-on of the
+  batch-startup race behind `lisp_mode` -- the document started evaluating
+  before the Maxima that replaced the startup one had prompted, so the queue
+  ran one prompt out of step with Maxima. 5c3627d (2026-09-18) fixed that
+  race; measured on the same machine and load, 10 of 300 tutorial runs
+  failed before it and 0 of 600 after, and all 10 failures showed the race's
+  signature. Two things to know before touching either: **an
   unloaded machine is the one condition guaranteed to hide the `lisp_mode`
   race** -- it needs CPU contention, not repetition -- and **"cannot
   reproduce" means nothing for `tutorial_10Minutes` under ~50 attempts.**

@@ -90,14 +90,41 @@ on Linux, can disrupt the global menu.
 ## Two intermittent CI failures, in full
 
 Both are evaluation-queue bugs that surface as a flaky test, and both cost
-several sessions each. `lisp_mode` is **fixed**; `tutorial_10Minutes` has a
-verified workaround but its underlying bug - a whole statement silently
-dropped before it ever reaches `Maxima::Write()` - is **confirmed and still
-open** (GH #2196).
-GH #2196 was closed on 2026-08-05 by a comment citing 912da1c, which is
-actually the fix for #2178 (image loading) and does not touch the evaluation
-queue; it was reopened on 2026-09-28. Don't read its closed-then-reopened
-history as "fixed".
+several sessions each. **Both are fixed, and it turned out to be one bug**
+(settled 2026-09-28, GH #2196): the statement `tutorial_10Minutes` saw
+silently dropped was a knock-on of the batch-startup race described under
+`lisp_mode` below. When the document starts evaluating before the Maxima
+that replaced the startup one has printed its first prompt, the first
+command goes out too early. That prompt then arrives on top of the prompt
+answering that command, and from then on
+`RemoveFirst()` - one queue step per main prompt - runs one step ahead of
+Maxima. Somewhere later in the file that swallows a statement that was
+never sent, and in `10MinuteTutorial.wxm` the victim happened to be
+`assume(a > 0)$`, whose absence makes `integrate()` ask a question.
+The evidence, all from one machine under the same 12-worker / 4-core load:
+
+| build | runs | failures |
+|---|---|---|
+| `5c3627d^` (before the `lisp_mode` fix) | 300 | 10 (exit 91, the unanswered question) |
+| `main` at 8029e83 | 600 | 0 |
+
+All 10 failing logs show `Starting evaluation of the document` *before* the
+replacement Maxima's `Received maxima's first prompt`, followed by two
+`Sending a new command to Maxima.` lines with no prompt between them:
+exactly the `lisp_mode` signature. Note that the tutorial file no longer
+carries the auto-answer workaround the entry below describes, so
+`tutorial_10Minutes` is back to being a real canary for this.
+The integrity check (`EvaluationQueue::m_integrityFailure`) and the
+`commandSequenceIntegrity` test added while hunting it stay: they cost
+nothing and would catch a drop with any other cause.
+GH #2196 was once closed by mistake by a comment citing 912da1c, the fix for
+#2178; it was reopened, and is now closed for the reason above.
+
+What the entry below gets wrong, read with hindsight: it assumed the queue
+could not be out of step, so a statement missing from the wire had to have
+been lost *inside* the client. It was lost in the sense that it was never
+sent, but only because a prompt meant for an earlier command advanced the
+queue past it.
 
 Kept at length deliberately: most of the value is the list of theories that
 were directly disproven, and the reproduction recipes, which are not obvious
