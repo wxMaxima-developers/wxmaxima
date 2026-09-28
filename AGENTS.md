@@ -264,7 +264,7 @@ working without extra checks.
   before the Maxima that replaced the startup one had prompted, so the queue
   ran one prompt out of step with Maxima. 5c3627d (2026-09-18) fixed that
   race; measured on the same machine and load, 10 of 300 tutorial runs
-  failed before it and 0 of 300 after, and all 10 failures showed the race's
+  failed before it and 0 of 600 after, and all 10 failures showed the race's
   signature. Two things to know before touching either: **an
   unloaded machine is the one condition guaranteed to hide the `lisp_mode`
   race** -- it needs CPU contention, not repetition -- and **"cannot

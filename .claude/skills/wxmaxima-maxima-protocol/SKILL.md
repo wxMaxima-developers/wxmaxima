@@ -106,7 +106,7 @@ The evidence, all from one machine under the same 12-worker / 4-core load:
 | build | runs | failures |
 |---|---|---|
 | `5c3627d^` (before the `lisp_mode` fix) | 300 | 10 (exit 91, the unanswered question) |
-| `main` at 8029e83 | 300 | 0 |
+| `main` at 8029e83 | 600 | 0 |
 
 All 10 failing logs show `Starting evaluation of the document` *before* the
 replacement Maxima's `Received maxima's first prompt`, followed by two
