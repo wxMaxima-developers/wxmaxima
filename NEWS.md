@@ -8,6 +8,20 @@
   menu, to paste it into a spreadsheet: one line per row, the values
   separated by commas, or by tabs where numbers are written with a decimal
   comma (#2364).
+- New function `with_slider_draw_bare`, which works like `with_slider_draw`
+  but makes each frame of the animation with a plain `draw()` instead of
+  `draw2d()`. A frame can therefore show several `gr2d()` and `gr3d()`
+  scenes side by side, and use `draw`'s global options like `columns`.
+- New function `wx_version_min("26.09.0")`, which returns `true` if the
+  running wxMaxima is at least that version, so a worksheet can check
+  whether it can use a feature. In wxMaxima 26.08.0 and older the function
+  doesn't exist and the call returns itself unevaluated; comparing the
+  result with `true` handles that, too.
+- Hovering the mouse over a matrix now shows which entry it is over, as
+  "Row 2, column 3", numbered like `M[2,3]`. This makes it easier to find
+  your way around a large matrix, including one whose middle rows or columns
+  are left out or that scrolls. In a matrix of matrices the row and column
+  of the outer matrix are shown.
 - `wx_matrix()` now only returns the formatted matrix instead of also
   displaying it, so `wx_matrix(M);` shows the matrix once, not twice, and
   `wx_matrix(M)$` doesn't show it at all. The formatting stays with that
