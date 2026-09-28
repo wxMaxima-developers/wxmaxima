@@ -113,7 +113,7 @@ jobs:
              cmake --build .
              cpack -G DEB -B _CPack_DEB
              # CPack's default .deb name doesn't encode which Ubuntu release
-             # it was built on, and compile_2204 (below) would otherwise
+             # it was built on, and compile_2404 (below) would otherwise
              # produce an identically-named file - rename so both can attach
              # to the same GitHub release without colliding.
              mv _CPack_DEB/*.deb wxmaxima-ubuntu-latest-amd64.deb
@@ -251,8 +251,12 @@ jobs:
              cmake --build . --target update-locale
              cd ..
 
-  compile_2204:
-    runs-on: ubuntu-22.04
+  compile_2404:
+    # Pinned to an LTS release (not ubuntu-latest) so the .deb it ships is
+    # installable on a stock system of a release users actually run. 22.04
+    # was dropped with GH #2301: it only ships wxWidgets 3.0, so a .deb built
+    # there could not be installed without a third-party PPA.
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     permissions:
       contents: write  # for softprops/action-gh-release to attach the .deb to a release
@@ -267,7 +271,7 @@ jobs:
       - name: install_packages
         run: |
              sudo apt-get update
-             sudo apt-get install cmake dpkg-dev gettext libwxgtk3.0-gtk3-dev libwxgtk-webview3.0-gtk3-dev libfribidi-dev pandoc make po4a
+             sudo apt-get install cmake dpkg-dev gettext libwxgtk3.2-dev libwxgtk-webview3.2-dev libfribidi-dev pandoc make po4a
       - name: configure
         run: |
              export CXXFLAGS="-Wall -Wextra"
@@ -285,7 +289,7 @@ jobs:
         # run git diff to see, if the configure/build process has changed the source files (po4a can do that)
         run: git diff --compact-summary
       - name: cat_german_translation
-        # output the german translation - how does it look like on Ubuntu 22.04?
+        # output the german translation - how does it look like on Ubuntu 24.04?
         run: cat build/info/wxmaxima.de.md
       - name: Package .deb (release only)
         # See the matching step in compile_latest_and_test: a separate
@@ -297,7 +301,7 @@ jobs:
              cmake -DCMAKE_BUILD_TYPE=Release ..
              cmake --build .
              cpack -G DEB -B _CPack_DEB
-             mv _CPack_DEB/*.deb wxmaxima-ubuntu-22.04-amd64.deb
+             mv _CPack_DEB/*.deb wxmaxima-ubuntu-24.04-amd64.deb
              cd ..
       - name: Publish release
         if: startsWith(github.ref, 'refs/tags/Version')

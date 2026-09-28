@@ -54,6 +54,12 @@
 #include <wx/tipdlg.h>
 #include <wx/utils.h>
 #include <wx/wx.h>
+// The CMake build already refuses anything older, but a build that bypasses
+// its find_package() check should fail here too instead of producing a
+// wxMaxima that never connects to Maxima (GH #2301).
+#if !wxCHECK_VERSION(3, 2, 0)
+#error "wxMaxima needs wxWidgets 3.2 or newer"
+#endif
 #include <vector>
 #ifdef __WXMSW__
 #include <windows.h>
