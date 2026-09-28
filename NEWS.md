@@ -11,6 +11,12 @@
   that block of entries instead of the whole matrix, and highlights it. Every
   "Copy ..." command -- Copy, plain text, LaTeX, Octave/Matlab, MathML, RTF,
   image and SVG -- then copies only that sub-matrix (#2345).
+- A cell's output can now be reached with the keyboard: Down at the end of
+  a cell's input selects its first result, further presses step through the
+  results one at a time, and Up walks back into the input. Once a result is
+  selected, the Menu key or Shift+F10 opens the same menu a right-click does,
+  so it can be copied in any format. On Windows, screen readers announce the
+  selected result (#2382).
 - A selected block of a matrix's entries can be grown or shrunk with
   Shift+arrow keys: each press moves the block's far corner -- the one the
   drag ended at -- by one entry. A run of left-out rows or columns counts as
