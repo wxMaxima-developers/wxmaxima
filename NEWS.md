@@ -2,7 +2,8 @@
 
 - wxMaxima now needs wxWidgets 3.2 or newer to compile. With wxWidgets 3.0.5,
   the last 3.0 release, wxMaxima started but never got a working connection
-  to Maxima (#2301).
+  to Maxima (#2301). Ubuntu 22.04 only ships wxWidgets 3.0, so the release
+  no longer includes a .deb for it; the .deb for Ubuntu 24.04 replaces it.
 - New function `with_slider_draw_bare`, which works like `with_slider_draw`
   but makes each frame of the animation with a plain `draw()` instead of
   `draw2d()`. A frame can therefore show several `gr2d()` and `gr3d()`
