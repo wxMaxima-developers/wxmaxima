@@ -223,6 +223,17 @@ public:
   explicit Configuration(wxDC *dc = {}, InitOpt options = none);
   Configuration(const Configuration &o);
 
+  /*! Makes this configuration temporary
+
+    A configuration that isn't temporary writes its settings to the config
+    file when it is destroyed. A copy made to show something differently
+    from the worksheet -- the MatrixViewer's, say, which shows every matrix
+    in full and hides all labels -- must never do that, or its settings
+    would silently become the user's. The copy constructor copies this, so
+    a copy of the worksheet's configuration isn't temporary until told.
+  */
+  void MakeTemporary() { m_initOpts = temporary; }
+
   //! Reset the whole configuration to its default values
   void ResetAllToDefaults();
 

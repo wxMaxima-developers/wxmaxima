@@ -42,6 +42,8 @@
 #include "MarkDown.h"
 #include "dialogs/MaxSizeChooser.h"
 #include "dialogs/ResolutionChooser.h"
+#include "dialogs/MatrixViewer.h"
+#include "cells/MatrCell.h"
 #include "graphical_io/SVGout.h"
 #include "Version.h"
 #include "Compat.h"
@@ -4016,6 +4018,11 @@ void Worksheet::OnDoubleClick(wxMouseEvent &event) {
   if (HasCapture())
     ReleaseMouse();
 
+  // Double-clicking a matrix the worksheet only shows part of opens a viewer
+  // showing all of it (GH #2344).
+  if (!GetActiveCell() && OpenMatrixViewerAt(event.GetPosition()))
+    return;
+
   if (GetActiveCell())
     GetActiveCell()->SelectWordUnderCaret();
   else if (GetDocumentCellPointers().GetSelectionStart()) {
@@ -4030,6 +4037,27 @@ void Worksheet::OnDoubleClick(wxMouseEvent &event) {
   RequestRedraw();
   // Re-calculate the table of contents
   UpdateTableOfContents();
+}
+
+bool Worksheet::OpenMatrixViewerAt(wxPoint position) {
+  wxPoint point;
+  CalcUnscrolledPosition(position.x, position.y, &point.x, &point.y);
+  for (GroupCell &group : OnList(GetTree())) {
+    if (point.y < group.GetRect().GetTop())
+      break;
+    if (point.y > group.GetRect().GetBottom())
+      continue;
+    MatrCell *matrix = MatrixViewer::PartiallyShownMatrixAt(&group, point);
+    if (!matrix)
+      return false;
+    // A top-level window of its own, so it can be moved next to the worksheet
+    // and kept open; it closes with the main window.
+    auto *viewer = new MatrixViewer(wxGetTopLevelParent(this), *matrix,
+                                    m_configuration);
+    viewer->Show();
+    return true;
+  }
+  return false;
 }
 
 bool Worksheet::ActivateInput(int direction) {

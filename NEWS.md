@@ -1,5 +1,10 @@
 # Current development version
 
+- Double-clicking a matrix that is too large for the window, and therefore
+  shown with its middle rows and columns left out or in a scrolling box,
+  opens a window that shows all of it. That window can be resized, several
+  can be open at once, and Escape closes it. The tooltip of such a matrix
+  now mentions this.
 - `wx_matrix()` has a new option, `oversized=full`, `oversized=elide` or
   `oversized=scroll`, that decides how that one matrix is shown if it is too
   large for the window, whatever the configuration says for all the others.
