@@ -638,6 +638,28 @@ void GroupCell::RecalculateOutput() const {
   }
 }
 
+std::vector<GroupCell::OutputResult> GroupCell::GetOutputResults() const {
+  std::vector<OutputResult> results;
+  if (IsHidden())
+    return results;
+  for (Cell &cell : OnList(DisplayedOutput())) {
+    if (results.empty() || cell.HasHardLineBreak())
+      results.push_back(OutputResult{&cell, &cell});
+    else
+      results.back().last = &cell;
+  }
+  std::erase_if(results, [](const OutputResult &result) {
+    for (const Cell *cell = result.first; cell; cell = cell->GetNext()) {
+      if (!cell->IsHidden() && !cell->ToString().IsEmpty())
+        return false;
+      if (cell == result.last)
+        break;
+    }
+    return true;
+  });
+  return results;
+}
+
 Cell *GroupCell::DisplayedOutput() const {
   if (!m_layoutSuppressed)
     return m_output.get();

@@ -548,6 +548,16 @@ if(TARGET wxmTestApp)
     add_test(NAME MatrixBlockSelection
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_MatrixBlockSelection>")
 
+    # Reaching a cell's output with the keyboard (GH #2382).
+    add_executable(test_OutputKeyboardNavigation
+        test_OutputKeyboardNavigation.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_OutputKeyboardNavigation PUBLIC cxx_std_20)
+    target_link_libraries(test_OutputKeyboardNavigation PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME OutputKeyboardNavigation
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_OutputKeyboardNavigation>")
+
     # Closing the diff viewer must not write its panes' configurations back
     # to the config file (GH #2356).
     add_executable(test_DiffFrameConfig

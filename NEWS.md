@@ -11,6 +11,12 @@
   that block of entries instead of the whole matrix, and highlights it. Every
   "Copy ..." command -- Copy, plain text, LaTeX, Octave/Matlab, MathML, RTF,
   image and SVG -- then copies only that sub-matrix (#2345).
+- A cell's output can now be reached with the keyboard: Down at the end of
+  a cell's input selects its first result, further presses step through the
+  results one at a time, and Up walks back into the input. Once a result is
+  selected, the Menu key or Shift+F10 opens the same menu a right-click does,
+  so it can be copied in any format. On Windows, screen readers announce the
+  selected result (#2382).
 - A matrix, or a block of one, can be copied as CSV from the right-click
   menu, to paste it into a spreadsheet: one line per row, the values
   separated by commas, or by tabs where numbers are written with a decimal

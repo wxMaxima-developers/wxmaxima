@@ -299,6 +299,23 @@ public:
   Cell *GetOutput() const
     { return m_output ? m_output->GetNext() : nullptr; }
 
+  /*! One result of this cell's output, as the keyboard steps through it (GH #2382)
+
+    A run of top-level output cells from one hard line break to the next: an
+    output label with its expression, a line of text output, an image, ...
+  */
+  struct OutputResult
+  {
+    Cell *first = nullptr;
+    Cell *last = nullptr;
+  };
+  /*! The results the output consists of, top to bottom
+
+    Empty if the output is hidden. Leaves out results in which nothing is
+    shown, such as an empty label.
+  */
+  std::vector<OutputResult> GetOutputResults() const;
+
   //! Determine which rectangle is occupied by this GroupCell
   wxRect GetOutputRect() const { return m_outputRect; }
 

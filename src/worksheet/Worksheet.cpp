@@ -263,6 +263,7 @@ Worksheet::Worksheet(wxWindow *parent, int id,
       Bind(wxEVT_LEFT_UP, &Worksheet::OnMouseLeftUp, this);
       Bind(wxEVT_LEFT_DOWN, &Worksheet::OnMouseLeftDown, this);
       Bind(wxEVT_RIGHT_DOWN, &Worksheet::OnMouseRightDown, this);
+      Bind(wxEVT_CONTEXT_MENU, &Worksheet::OnContextMenuKey, this);
       Bind(wxEVT_LEFT_DCLICK, &Worksheet::OnDoubleClick, this);
       Bind(wxEVT_MIDDLE_UP, &Worksheet::OnMouseMiddleUp, this);
       Bind(wxEVT_KEY_DOWN, &Worksheet::OnKeyDown, this);
@@ -1342,6 +1343,32 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
   }
 }
 
+void Worksheet::OnContextMenuKey(wxContextMenuEvent &event) {
+  // A right click opens its menu in OnMouseRightDown(); only the keyboard's
+  // context-menu key and Shift+F10 arrive here without a position.
+  const auto &start = GetDocumentCellPointers().GetSelectionStart();
+  if ((event.GetPosition() != wxDefaultPosition) || GetActiveCell() || !start) {
+    event.Skip();
+    return;
+  }
+  RecalculateIfNeeded();
+  const wxRect rect = start->GetRect();
+  wxPoint where(rect.x + rect.width / 2, rect.y + rect.height / 2);
+  // Whole cells are selected by their brackets, so that's where their menu is
+  if (start->GetType() == MC_TYPE_GROUP)
+    where.x = m_configuration->GetCellBracketWidth() / 2;
+
+  wxMenu popupMenu;
+  PopulateWorksheetContextMenu(*this, popupMenu, where.x, where.y, true);
+  if (popupMenu.GetMenuItemCount() > 0) {
+    m_inPopupMenu = true;
+    if (HasCapture())
+      ReleaseMouse();
+    PopupMenu(&popupMenu, CalcScrolledPosition(where));
+    m_inPopupMenu = false;
+  }
+}
+
 /***
  * We have a mouse click to the left of a GroupCel.
  */
@@ -1830,6 +1857,94 @@ void Worksheet::SelectOutputRect(GroupCell *group, wxPoint down, wxPoint up) {
       }
   }
   GetDocumentCellPointers().SetSelectionString(selectionString);
+}
+
+std::optional<std::size_t> Worksheet::SelectedOutputResult() const {
+  const Cell *start = GetDocumentCellPointers().GetSelectionStart();
+  const Cell *end = GetDocumentCellPointers().GetSelectionEnd();
+  if (!start || !end || (start->GetType() == MC_TYPE_GROUP) || !start->GetGroup())
+    return std::nullopt;
+  const auto results = start->GetGroup()->GetOutputResults();
+  for (std::size_t i = 0; i < results.size(); i++)
+    if ((results[i].first == start) && (results[i].last == end))
+      return i;
+  return std::nullopt;
+}
+
+void Worksheet::SelectOutputResult(GroupCell *group, std::size_t index) {
+  const auto results = group->GetOutputResults();
+  if (index >= results.size())
+    return;
+  const auto &result = results[index];
+  SetActiveCell(nullptr);
+  GetHCaretCursor().Deactivate();
+  GetHCaretCursor().SetSelectionAnchors(nullptr, nullptr);
+  SetSelection(result.first, result.last);
+  GetDocumentCellPointers().SetSelectionString(GetString());
+  ScheduleScrollToCell(result.first, false);
+  RequestRedraw();
+#if wxUSE_ACCESSIBILITY
+  if (m_accessibilityInfo != nullptr) {
+    int count = 0;
+    for ([[maybe_unused]] const auto &c : OnList(GetTree()))
+      count++;
+    wxAccessible::NotifyEvent(wxACC_EVENT_OBJECT_FOCUS, GetTargetWindow(),
+                              wxOBJID_CLIENT, count + 2);
+  }
+#endif
+}
+
+bool Worksheet::StepOutputResult(int keyCode) {
+  if ((keyCode != WXK_UP) && (keyCode != WXK_DOWN))
+    return false;
+
+  if (const auto index = SelectedOutputResult()) {
+    GroupCell *group = GetDocumentCellPointers().GetSelectionStart()->GetGroup();
+    const std::size_t count = group->GetOutputResults().size();
+    if (keyCode == WXK_DOWN) {
+      if (*index + 1 < count)
+        SelectOutputResult(group, *index + 1);
+      else
+        SetHCaret(group);
+    } else {
+      if (*index > 0)
+        SelectOutputResult(group, *index - 1);
+      else if (EditorCell *input = group->GetEditable();
+               input && (m_configuration->ShowCodeCells() ||
+                         (input->GetType() != MC_TYPE_INPUT))) {
+        SetSelection(nullptr);
+        SelectEditable(input, false);
+      } else
+        SetHCaret(group->GetPrevious());
+    }
+    return true;
+  }
+
+  // Up from the horizontal cursor right below a cell goes into its output.
+  if ((keyCode == WXK_UP) && GetHCaretCursor().IsActive() &&
+      !GetDocumentCellPointers().GetSelectionStart()) {
+    GroupCell *group = GetHCaretCursor().Position();
+    if (!group || GCContainsCurrentQuestion(group))
+      return false;
+    const std::size_t count = group->GetOutputResults().size();
+    if (count == 0)
+      return false;
+    SelectOutputResult(group, count - 1);
+    return true;
+  }
+  return false;
+}
+
+bool Worksheet::EnterOutputFromInput() {
+  EditorCell *active = GetActiveCell();
+  if (!active)
+    return false;
+  GroupCell *group = active->GetGroup();
+  if (!group || (group->GetEditable() != active) ||
+      GCContainsCurrentQuestion(group) || group->GetOutputResults().empty())
+    return false;
+  SelectOutputResult(group, 0);
+  return true;
 }
 
 std::unique_ptr<MatrCell> Worksheet::CopySelectedMatrixBlock() const {
@@ -2763,6 +2878,12 @@ void Worksheet::OnCharInActive(wxKeyEvent &event) {
 
   if ((event.GetKeyCode() == WXK_DOWN || event.GetKeyCode() == WXK_PAGEDOWN) &&
       GetActiveCell()->CaretAtEnd()) {
+    // Down (not PageDown) goes on into the cell's own output first (GH #2382)
+    if ((event.GetKeyCode() == WXK_DOWN) && !event.ShiftDown() &&
+        !event.CmdDown() && !event.AltDown() && EnterOutputFromInput()) {
+      ScrolledAwayFromEvaluation();
+      return;
+    }
     // Get the first next cell that isn't hidden
     GroupCell *start = GetActiveCell()->GetGroup();
     while (start && start->GetNext() && start->GetNext()->GetMaxDrop() == 0)
@@ -3059,6 +3180,13 @@ void Worksheet::SelectEditable(EditorCell *editor, bool up) {
 
 void Worksheet::OnCharNoActive(wxKeyEvent &event) {
   int ccode = event.GetKeyCode();
+
+  // Up and Down step through the results of a cell's output (GH #2382)
+  if (!event.ShiftDown() && !event.CmdDown() && !event.AltDown() &&
+      StepOutputResult(ccode)) {
+    ScrolledAwayFromEvaluation();
+    return;
+  }
 
   // If Shift is down we are selecting with WXK_UP and WXK_DOWN
   if (event.ShiftDown() && (ccode == WXK_UP || ccode == WXK_DOWN)) {
@@ -6408,6 +6536,60 @@ wxAccStatus Worksheet::AccessibilityInfo::CaretAccessibilityInfo::GetRole(int ch
   return wxACC_FAIL;
 }
 
+int Worksheet::AccessibilityInfo::SelectionChildId() const {
+  int count = 0;
+  for ([[maybe_unused]] const auto &c : OnList(m_worksheet->GetTree()))
+    count++;
+  return count + 2;
+}
+
+bool Worksheet::AccessibilityInfo::HasOutputSelection(const Worksheet *worksheet) {
+  const auto &start = worksheet->GetDocumentCellPointers().GetSelectionStart();
+  return start && (start->GetType() != MC_TYPE_GROUP);
+}
+
+wxAccStatus Worksheet::AccessibilityInfo::SelectionAccessibilityInfo::GetName(int WXUNUSED(childId), wxString *name) {
+  if (!name)
+    return wxACC_FAIL;
+  *name = OutCommon::AccessibleText(m_worksheet->CopySelection().get());
+  return wxACC_OK;
+}
+
+wxAccStatus Worksheet::AccessibilityInfo::SelectionAccessibilityInfo::GetParent(wxAccessible **parent) {
+  if (parent)
+    return (*parent = m_parent), wxACC_OK;
+  return wxACC_FAIL;
+}
+
+wxAccStatus Worksheet::AccessibilityInfo::SelectionAccessibilityInfo::GetChildCount(int *childCount) {
+  if (childCount)
+    return (*childCount = 0), wxACC_OK;
+  return wxACC_FAIL;
+}
+
+wxAccStatus Worksheet::AccessibilityInfo::SelectionAccessibilityInfo::GetChild(int childId, wxAccessible **child) {
+  if (childId == 0 && child)
+    return (*child = this), wxACC_OK;
+  return wxACC_FAIL;
+}
+
+wxAccStatus Worksheet::AccessibilityInfo::SelectionAccessibilityInfo::GetRole(int childId, wxAccRole *role) {
+  if (childId == 0 && role)
+    return (*role = wxROLE_SYSTEM_EQUATION), wxACC_OK;
+  return wxACC_FAIL;
+}
+
+wxAccStatus Worksheet::AccessibilityInfo::SelectionAccessibilityInfo::GetState(int childId, long *state) {
+  if (childId != 0 || !state)
+    return wxACC_FAIL;
+  *state = wxACC_STATE_SYSTEM_READONLY | wxACC_STATE_SYSTEM_SELECTABLE;
+  if (HasOutputSelection(m_worksheet))
+    *state |= wxACC_STATE_SYSTEM_SELECTED | wxACC_STATE_SYSTEM_FOCUSED;
+  else
+    *state |= wxACC_STATE_SYSTEM_INVISIBLE;
+  return wxACC_OK;
+}
+
 wxAccStatus Worksheet::AccessibilityInfo::GetName(int childId, wxString *name) {
   if (!name)
     return wxACC_FAIL;
@@ -6450,7 +6632,8 @@ wxAccStatus Worksheet::AccessibilityInfo::GetChildCount(int *childCount) {
   for ([[maybe_unused]] const auto &cell : OnList(m_worksheet->GetTree()))
     (*childCount)++;
 
-  (*childCount)++; // The caret is the last child
+  (*childCount)++; // The caret
+  (*childCount)++; // The selected output, see SelectionAccessibilityInfo
 
   return wxACC_OK;
 }
@@ -6484,6 +6667,12 @@ wxAccStatus Worksheet::AccessibilityInfo::GetChild(int childId,
          m_caretAccessible = new CaretAccessibilityInfo(this, m_worksheet);
       }
       *child = m_caretAccessible;
+      return wxACC_OK;
+    }
+    if (childId == SelectionChildId()) {
+      if (!m_selectionAccessible)
+        m_selectionAccessible = new SelectionAccessibilityInfo(this, m_worksheet);
+      *child = m_selectionAccessible;
       return wxACC_OK;
     }
   }
@@ -6542,6 +6731,17 @@ wxAccStatus Worksheet::AccessibilityInfo::GetFocus(int *childId,
          m_caretAccessible = new CaretAccessibilityInfo(this, m_worksheet);
       }
       *child = m_caretAccessible;
+    }
+    return wxACC_OK;
+  }
+
+  if (HasOutputSelection(m_worksheet)) {
+    if (childId)
+      *childId = SelectionChildId();
+    if (child) {
+      if (!m_selectionAccessible)
+        m_selectionAccessible = new SelectionAccessibilityInfo(this, m_worksheet);
+      *child = m_selectionAccessible;
     }
     return wxACC_OK;
   }

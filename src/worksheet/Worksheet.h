@@ -426,6 +426,39 @@ public:
   */
   void SelectOutputRect(GroupCell *group, wxPoint down, wxPoint up);
 
+  /*! \name Walking through a cell's output with the keyboard (GH #2382)
+
+    Down at the end of a cell's input selects the first result of its output
+    (see GroupCell::GetOutputResults()) instead of leaving the cell; further
+    Down presses step through the results and, past the last one, on to the
+    horizontal cursor below the cell, as before. Up walks back the same way,
+    into the input's end. A selected result can be copied and has its
+    right-click menu on the context-menu key, like one clicked with the mouse.
+    @{
+  */
+  /*! Which result of its cell's output is selected, if exactly one is
+
+    True only for a selection that is one whole result, as SelectOutputResult()
+    makes it; a part of a result selected with the mouse doesn't count.
+  */
+  std::optional<std::size_t> SelectedOutputResult() const;
+  //! Select one result of a cell's output, scroll to it and announce it
+  void SelectOutputResult(GroupCell *group, std::size_t index);
+  /*! Move between results with the Up or Down key while no editor is active
+
+    Handles the key if a result is selected, or if Up is pressed with the
+    horizontal cursor right below a cell that has output. Returns false,
+    having done nothing, otherwise.
+  */
+  bool StepOutputResult(int keyCode);
+  /*! Down at the end of a cell's input: select the output's first result
+
+    Returns false, having done nothing, if the active editor isn't a cell's
+    input or the cell has no output to step into.
+  */
+  bool EnterOutputFromInput();
+  //! @}
+
   /*! Copy the currently given list of cells
 
     \param start The cell to start copying at
@@ -481,6 +514,12 @@ public:
   void OnSize(wxSizeEvent &event);
 
   void OnMouseRightDown(wxMouseEvent &event);
+  /*! Opens the right-click menu for the selection from the keyboard (GH #2382)
+
+    For the context-menu key and Shift+F10, which have no mouse position: the
+    menu opens on the selected cells, as a right click into them would.
+  */
+  void OnContextMenuKey(wxContextMenuEvent &event);
 
   void OnSidebarKey(wxCommandEvent &event);
 
@@ -1835,6 +1874,34 @@ public:
       Worksheet* m_worksheet;
     };
     CaretAccessibilityInfo* m_caretAccessible = nullptr;
+
+    /*! The selected part of the output, as a screen reader sees it (GH #2382)
+
+      Named after the selection's text, so moving the selection with the
+      keyboard reads the newly selected result out. The worksheet's last
+      child, after the caret.
+    */
+    class SelectionAccessibilityInfo : public wxAccessible {
+    public:
+      SelectionAccessibilityInfo(AccessibilityInfo* parent, Worksheet* worksheet)
+        : wxAccessible(worksheet->GetTargetWindow()), m_parent(parent), m_worksheet(worksheet) {}
+
+      wxAccStatus GetName(int childId, wxString *name) override;
+      wxAccStatus GetParent(wxAccessible **parent) override;
+      wxAccStatus GetChildCount(int *childCount) override;
+      wxAccStatus GetChild(int childId, wxAccessible **child) override;
+      wxAccStatus GetRole(int childId, wxAccRole *role) override;
+      wxAccStatus GetState(int childId, long *state) override;
+    private:
+      AccessibilityInfo* m_parent;
+      Worksheet* m_worksheet;
+    };
+    SelectionAccessibilityInfo* m_selectionAccessible = nullptr;
+    //! The child id of SelectionAccessibilityInfo; the caret's is one less
+    int SelectionChildId() const;
+  public:
+    //! Is output (not whole cells) selected, so the selection has a child?
+    static bool HasOutputSelection(const Worksheet *worksheet);
   };
 #endif
   MaximaManual m_maximaManual;
