@@ -210,7 +210,7 @@ $(function() {
 <div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>        newItem.Replace(wxFileName::GetPathSeparator(), <span class="stringliteral">&quot;/&quot;</span>);</div>
 <div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>        {</div>
 <div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>          <span class="keyword">const</span> std::lock_guard&lt;std::mutex&gt; lock(*m_lock);</div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>          <span class="keywordflow">if</span> (m_filesHash.find(newItem) == m_filesHash.end())</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>          <span class="keywordflow">if</span> (!m_filesHash.contains(newItem))</div>
 <div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>          {</div>
 <div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>            m_files.push_back(newItem);</div>
 <div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>            m_filesHash[newItem];</div>
@@ -226,7 +226,7 @@ $(function() {
 <div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>        newItem.Replace(wxFileName::GetPathSeparator(), <span class="stringliteral">&quot;/&quot;</span>);</div>
 <div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>        {</div>
 <div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>          <span class="keyword">const</span> std::lock_guard&lt;std::mutex&gt; lock(*m_lock);</div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>          <span class="keywordflow">if</span> (m_filesHash.find(newItem) == m_filesHash.end())</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>          <span class="keywordflow">if</span> (!m_filesHash.contains(newItem))</div>
 <div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>          {</div>
 <div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>            m_files.push_back(newItem);</div>
 <div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>            m_filesHash[newItem];</div>
@@ -272,7 +272,7 @@ $(function() {
 <div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>          newItem.Replace(wxFileName::GetPathSeparator(), <span class="stringliteral">&quot;/&quot;</span>);</div>
 <div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>          {</div>
 <div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>            <span class="keyword">const</span> std::lock_guard&lt;std::mutex&gt; lock(*m_lock);</div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>            <span class="keywordflow">if</span> (m_filesHash.find(newItem) == m_filesHash.end())</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>            <span class="keywordflow">if</span> (!m_filesHash.contains(newItem))</div>
 <div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>            {</div>
 <div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>              m_files.push_back(newItem);</div>
 <div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>              m_filesHash[newItem];</div>
@@ -322,7 +322,7 @@ $(function() {
 <div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>        newItem.Replace(wxFileName::GetPathSeparator(), <span class="stringliteral">&quot;/&quot;</span>);</div>
 <div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>        {</div>
 <div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>          <span class="keyword">const</span> std::lock_guard&lt;std::mutex&gt; lock(*m_lock);</div>
-<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>          <span class="keywordflow">if</span> (m_filesHash.find(newItem) == m_filesHash.end())</div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>          <span class="keywordflow">if</span> (!m_filesHash.contains(newItem))</div>
 <div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>          {</div>
 <div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>            m_files.push_back(newItem);</div>
 <div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>            m_filesHash[newItem];</div>
@@ -354,7 +354,7 @@ $(function() {
 <div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>          newItem.Replace(wxFileName::GetPathSeparator(), <span class="stringliteral">&quot;/&quot;</span>);</div>
 <div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>          {</div>
 <div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>            <span class="keyword">const</span> std::lock_guard&lt;std::mutex&gt; lock(*m_lock);</div>
-<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>            <span class="keywordflow">if</span> (m_filesHash.find(newItem) == m_filesHash.end())</div>
+<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>            <span class="keywordflow">if</span> (!m_filesHash.contains(newItem))</div>
 <div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span>            {</div>
 <div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>              m_files.push_back(newItem);</div>
 <div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>              m_filesHash[newItem];</div>
@@ -404,7 +404,7 @@ $(function() {
 <div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>        newItem.Replace(wxFileName::GetPathSeparator(), <span class="stringliteral">&quot;/&quot;</span>);</div>
 <div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>        {</div>
 <div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>          <span class="keyword">const</span> std::lock_guard&lt;std::mutex&gt; lock(*m_lock);</div>
-<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span>          <span class="keywordflow">if</span> (m_filesHash.find(newItem) == m_filesHash.end())</div>
+<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span>          <span class="keywordflow">if</span> (!m_filesHash.contains(newItem))</div>
 <div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>          {</div>
 <div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>            m_files.push_back(newItem);</div>
 <div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>            m_filesHash[newItem];</div>
