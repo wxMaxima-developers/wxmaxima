@@ -67,9 +67,6 @@ public:
   constexpr bool operator==(const CellListIterator &o) const {
     return m_ptr == o.m_ptr;
   }
-  constexpr bool operator!=(const CellListIterator &o) const {
-    return m_ptr != o.m_ptr;
-  }
   constexpr operator bool() const { return m_ptr; }
   constexpr operator Cell *() const { return m_ptr; }
   constexpr Cell *operator->() const { return m_ptr; }
@@ -168,8 +165,6 @@ public:
     }
   bool operator==(const CellDrawListIterator &o) const
     { return m_ptr == o.m_ptr; }
-  bool operator!=(const CellDrawListIterator &o) const
-    { return m_ptr != o.m_ptr; }
   operator bool() const { return m_ptr; }
   operator Cell*() const { return m_ptr; }
   Cell *operator->() const { return m_ptr; }
@@ -232,8 +227,6 @@ public:
     }
   bool operator==(const InnerCellIterator &o) const
     { return m_innerCell == o.m_innerCell; }
-  bool operator!=(const InnerCellIterator &o) const
-    { return m_innerCell != o.m_innerCell; }
   operator bool() const { return m_innerCell; }
   operator Cell*() const { return m_innerCell; }
   Cell *operator->() const { return m_innerCell; }

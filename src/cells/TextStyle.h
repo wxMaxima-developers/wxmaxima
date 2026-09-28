@@ -71,8 +71,6 @@ public:
   Style(const Style &);
 
   Style &operator=(const Style &);
-  //! Compares
-  bool operator==(const Style &o) const;
 
   /*! Read this style from a config source.
    *

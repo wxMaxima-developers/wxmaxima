@@ -94,17 +94,10 @@ template <typename Enum, typename Storage, Enum defaultValue = Enum{},
     constexpr operator Storage() const = delete;
     constexpr std::size_t hash() const { return std::hash<Storage>()(value); }
 
+    // C++20 derives != and the reversed forms (enum == wrapper) from these.
     constexpr bool operator==(EnumWrapper o) const { return value == o.value;  }
     constexpr bool operator==(Enum o) const { return value == o;  }
-    constexpr bool operator!=(EnumWrapper o) const { return value != o.value;  }
-    constexpr bool operator!=(Enum o) const { return value != o;  }
   };
-
-template <typename E, typename S, E defVal>
-constexpr bool operator==(E a, EnumWrapper<E, S, defVal> b) { return b == a;  }
-
-template <typename E, typename S, E defVal>
-constexpr bool operator!=(E a, EnumWrapper<E, S, defVal> b) { return b != a;  }
 
 namespace std {
 
