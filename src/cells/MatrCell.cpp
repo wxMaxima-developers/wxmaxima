@@ -463,9 +463,74 @@ void MatrCell::SetCurrentPoint(wxPoint point) const {
   }
 }
 
+bool MatrCell::EntryAt(const wxPoint point, size_t &row, size_t &col) const {
+  if (!ViewportRect().Contains(point))
+    return false;
+  // The same walk as DrawBands(), which is what shows the user where one row
+  // or column ends and the next begins.
+  const wxCoord dotsGap = DotsExtent() + Scale_Px(10);
+
+  bool rowFound = false;
+  wxCoord y = m_currentPoint.y - m_center - m_scroll.y;
+  for (size_t j = 0; (j < m_matHeight) && !rowFound; j++) {
+    if (m_rowElision.Active() && (j == m_rowElision.first)) {
+      // On the dots: no row at all.
+      if (point.y < y + dotsGap)
+        return false;
+      y += dotsGap;
+    }
+    if (m_rowElision.Hides(j))
+      continue;
+    y += m_dropCenters.at(j).Sum() + Scale_Px(10);
+    if (point.y < y) {
+      row = j;
+      rowFound = true;
+    }
+  }
+
+  bool colFound = false;
+  wxCoord x = m_currentPoint.x - m_scroll.x;
+  for (size_t i = 0; (i < m_matWidth) && !colFound; i++) {
+    if (m_colElision.Active() && (i == m_colElision.first)) {
+      if (point.x < x + dotsGap)
+        return false;
+      x += dotsGap;
+    }
+    if (m_colElision.Hides(i))
+      continue;
+    x += m_widths.at(i) + Scale_Px(10);
+    if (point.x < x) {
+      col = i;
+      colFound = true;
+    }
+  }
+
+  return rowFound && colFound && ((row * m_matWidth + col) < m_cells.size());
+}
+
 const wxString MatrCell::GetToolTip(const wxPoint point) const {
   if (!ContainsPoint(point))
     return wxm::emptyString;
+
+  // Which entry the mouse is over, as Maxima would index it (M[2,3]), so a
+  // row or a column can be told apart in a big matrix without counting.
+  // Only the outermost matrix says so: in a matrix of matrices that is the
+  // position that is hard to see, and two positions stacked on top of each
+  // other would leave it unclear which one belongs to which matrix.
+  wxString position;
+  size_t row = 0, col = 0;
+  if (!IsNestedInMatrix() && EntryAt(point, row, col))
+    position = wxString::Format(_("Row %lu, column %lu"),
+                                static_cast<unsigned long>(row + 1),
+                                static_cast<unsigned long>(col + 1));
+  // Puts the position on a line of its own ahead of what else there is to say.
+  const auto withPosition = [&position](const wxString &toolTip) -> wxString {
+    if (position.empty())
+      return toolTip;
+    if (toolTip.empty())
+      return position;
+    return position + wxS("\n") + toolTip;
+  };
 
   // Same as Cell::GetToolTip(), but asking only the entries that are shown:
   // an elided one still carries the position it had before it was left out,
@@ -477,7 +542,7 @@ const wxString MatrCell::GetToolTip(const wxPoint point) const {
       for (const Cell &tmp : OnList(GetInnerCell(j, i))) {
         auto &toolTip = tmp.GetToolTip(point);
         if (!toolTip.empty())
-          return toolTip;
+          return withPosition(toolTip);
       }
     }
 
@@ -492,22 +557,22 @@ const wxString MatrCell::GetToolTip(const wxPoint point) const {
   const unsigned long firstCol = m_colElision.first + 1;
   const unsigned long lastCol = m_colElision.first + m_colElision.count;
   if (m_rowElision.Active() && m_colElision.Active())
-    return wxString::Format(
+    return withPosition(wxString::Format(
       _("Rows %lu to %lu and columns %lu to %lu of this matrix are not shown, "
         "so that it fits the window. Copying the matrix copies all of it."),
-      firstRow, lastRow, firstCol, lastCol) + seeAll;
+      firstRow, lastRow, firstCol, lastCol) + seeAll);
   if (m_rowElision.Active())
-    return wxString::Format(
+    return withPosition(wxString::Format(
       _("Rows %lu to %lu of this matrix are not shown, so that it fits the "
         "window. Copying the matrix copies all of it."),
-      firstRow, lastRow) + seeAll;
+      firstRow, lastRow) + seeAll);
   if (m_colElision.Active())
-    return wxString::Format(
+    return withPosition(wxString::Format(
       _("Columns %lu to %lu of this matrix are not shown, so that it fits the "
         "window. Copying the matrix copies all of it."),
-      firstCol, lastCol) + seeAll;
+      firstCol, lastCol) + seeAll);
 
-  return GetLocalToolTip();
+  return withPosition(GetLocalToolTip());
 }
 
 Cell::Range MatrCell::GetInnerCellsInRect(const wxRect &rect) const {

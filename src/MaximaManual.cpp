@@ -136,6 +136,7 @@ void MaximaManual::AnchorAliasses(HelpFileAnchors &anchors) {
   aliases["with_slider_draw"] = "draw";
   aliases["with_slider_draw2d"] = "draw2d";
   aliases["with_slider_draw3d"] = "draw3d";
+  aliases["with_slider_draw_bare"] = "draw";
 
   for (auto const &[alias, target] : aliases) {
     if ((anchors.find(alias) == anchors.end()) &&

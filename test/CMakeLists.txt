@@ -351,6 +351,42 @@ add_test(
     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxstatusbar(\"a<1>b\");" "<statusbar>a&lt;1&gt;b</statusbar>"
 )
 
+# wx_version_min(): $wxmaximaversion is set the way wxMaxima sets it (a
+# "-dev" suffix plus a toolkit suffix), then compared against versions that
+# are equal, shorter, older and newer, including "26.10" vs "26.9", which a
+# string comparison would get wrong.
+add_test(
+    NAME wx_version_min
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh"
+    ":lisp (setq $wxmaximaversion \"26.09.0-dev_GTK3\")\n[wx_version_min(\"26.09.0\"), wx_version_min(\"26.9\"), wx_version_min(\"26.08.3\"), wx_version_min(\"25.12.9\"), wx_version_min(\"26.09.1\"), wx_version_min(\"26.10.0\"), wx_version_min(\"27\")];"
+    "(%o1) </lbl><mrow list=\"true\"><t[^>]*>\\[</t><mrow><t lisp=\"true\">true</t></mrow><mo>,</mo><mrow><t lisp=\"true\">true</t></mrow><mo>,</mo><mrow><t lisp=\"true\">true</t></mrow><mo>,</mo><mrow><t lisp=\"true\">true</t></mrow><mo>,</mo><mrow><t lisp=\"false\">false</t></mrow><mo>,</mo><mrow><t lisp=\"false\">false</t></mrow><mo>,</mo><mrow><t lisp=\"false\">false</t></mrow><t[^>]*>]</t></mrow>"
+)
+
+# ...and outside wxMaxima, where $wxmaximaversion is never set, it is false.
+add_test(
+    NAME wx_version_min_outside_wxmaxima
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wx_version_min(\"1.0\");" "<t lisp=\"false\">false</t>"
+)
+
+# with_slider_draw_bare(): each frame is a plain draw() call, so a frame can
+# hold several scenes, 2D and 3D mixed. Two frames means two gnuplot scripts
+# in the <slide> tag.
+add_test(
+    NAME with_slider_draw_bare
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh"
+    "with_slider_draw_bare(a,[1,2],columns=2,gr2d(explicit(sin(a*x),x,0,1)),gr3d(explicit(a*x*y,x,0,1,y,0,1)));"
+    "<slide[^>]*>[^<]*\\.gnuplot;[^<]*\\.gnuplot;[^<]*</slide>"
+)
+
+# ...and file_name, which draw()'s animated_gif terminal cannot honour for a
+# frame made of several scenes, is refused with an explanation.
+add_test(
+    NAME with_slider_draw_bare_file_name
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh"
+    "with_slider_draw_bare(a,[1,2],file_name=\"anim\",gr2d(explicit(sin(a*x),x,0,1)));"
+    "with_slider_draw_bare: file_name is not supported"
+)
+
 add_test(
     NAME wxbuildinfo
     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxbuild_info();" "WxMaxima"

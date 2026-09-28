@@ -2599,6 +2599,7 @@ with_slider(<a_var>,<a_list>,<expr>,<x_range>)
 with_slider_draw
 with_slider_draw2d
 with_slider_draw3d
+with_slider_draw_bare
 with_stdout(<f>, <expr_1>, <expr_2>, <expr_3>, ...)
 with_stdout(<s>, <expr_1>, <expr_2>, <expr_3>, ...)
 %w[<k>,<u>] (<z>) 
@@ -2607,6 +2608,7 @@ write_data(<X>, <D>)
 write_data(<X>, <D>, <separator_flag>)
 writefile(<filename>)
 wronskian([<f_1>, <...>, <f_n>], <x>)
+wx_version_min(<version>)
 wxanimate
 wxanimate_autoplay
 wxanimate_draw
