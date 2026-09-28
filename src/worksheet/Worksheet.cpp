@@ -1787,17 +1787,32 @@ void Worksheet::SelectOutputRect(GroupCell *group, wxPoint down, wxPoint up) {
   // A rectangle that lies within one matrix but spans several of its entries
   // comes back as the whole matrix. Narrow that to the block of entries the
   // rectangle actually touches, so a sub-matrix can be copied (GH #2345).
+  // The block's corners are remembered even if it is the whole matrix, so
+  // Shift+arrow keys can go on from there (GH #2370). The anchor is the
+  // corner the drag started at.
   if (first && (first == last))
     if (auto *matrix = dynamic_cast<MatrCell *>(first))
-      if (auto block = matrix->BlockInRect(rect))
-        if (!matrix->IsWholeMatrix(*block))
-          GetDocumentCellPointers().SetSelectedMatrixBlock(matrix, *block);
+      if (auto block = matrix->BlockInRect(rect)) {
+        const MatrixEntry downCorner{
+          (down.y <= up.y) ? block->firstRow : block->lastRow,
+          (down.x <= up.x) ? block->firstCol : block->lastCol};
+        const MatrixEntry upCorner{
+          (down.y <= up.y) ? block->lastRow : block->firstRow,
+          (down.x <= up.x) ? block->lastCol : block->firstCol};
+        GetDocumentCellPointers().SetSelectedMatrixBlock(
+          matrix, downCorner, upCorner, matrix->IsWholeMatrix(*block));
+      }
 
+  UpdateOutputSelectionString();
+}
+
+void Worksheet::UpdateOutputSelectionString() {
   wxString selectionString;
   if (auto block = CopySelectedMatrixBlock())
     selectionString = block->ToString();
   else {
-    Cell *cell = first;
+    const Cell *last = GetDocumentCellPointers().GetSelectionEnd();
+    const Cell *cell = GetDocumentCellPointers().GetSelectionStart();
     while(cell)
       {
         selectionString.Append(cell->ToString());
@@ -1807,6 +1822,44 @@ void Worksheet::SelectOutputRect(GroupCell *group, wxPoint down, wxPoint up) {
       }
   }
   GetDocumentCellPointers().SetSelectionString(selectionString);
+}
+
+bool Worksheet::StepSelectedMatrixBlock(int keyCode) {
+  const auto corners = GetDocumentCellPointers().GetSelectedMatrixBlockCorners();
+  if (!corners)
+    return false;
+  auto *matrix = GetDocumentCellPointers().GetSelectionStart().CastAs<MatrCell *>();
+  if (!matrix)
+    return false;
+
+  int rowStep = 0;
+  int colStep = 0;
+  switch (keyCode) {
+  case WXK_UP:
+    rowStep = -1;
+    break;
+  case WXK_DOWN:
+    rowStep = 1;
+    break;
+  case WXK_LEFT:
+    colStep = -1;
+    break;
+  case WXK_RIGHT:
+    colStep = 1;
+    break;
+  default:
+    return false;
+  }
+
+  const MatrixEntry corner = matrix->StepEntry(corners->corner, rowStep, colStep);
+  // Grown to cover everything, the block becomes an ordinary whole-matrix
+  // selection, just as a drag across the whole matrix makes one.
+  GetDocumentCellPointers().SetSelectedMatrixBlock(
+    matrix, corners->anchor, corner,
+    matrix->IsWholeMatrix(MatrixBlock::Spanning(corners->anchor, corner)));
+  UpdateOutputSelectionString();
+  RequestRedraw();
+  return true;
 }
 
 std::unique_ptr<MatrCell> Worksheet::CopySelectedMatrixBlock() const {
@@ -3036,6 +3089,12 @@ void Worksheet::SelectEditable(EditorCell *editor, bool up) {
 
 void Worksheet::OnCharNoActive(wxKeyEvent &event) {
   int ccode = event.GetKeyCode();
+
+  // With a block of a matrix's entries selected, Shift+arrow keys grow or
+  // shrink the block instead (GH #2370).
+  if (event.ShiftDown() && !event.CmdDown() && !event.AltDown() &&
+      StepSelectedMatrixBlock(ccode))
+    return;
 
   // If Shift is down we are selecting with WXK_UP and WXK_DOWN
   if (event.ShiftDown() && (ccode == WXK_UP || ccode == WXK_DOWN)) {

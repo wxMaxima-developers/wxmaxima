@@ -105,14 +105,26 @@ public:
   /*! Narrow the selection to a block of one matrix's entries (GH #2345)
 
     Selects matrix -- which must be a MatrCell -- and remembers that only
-    this block of its entries is meant. Every copy of the selection then
-    copies just that sub-matrix.
+    the block with the corners anchor and corner is meant. Every copy of the
+    selection then copies just that sub-matrix.
+
+    The anchor is the corner that stays put: where a drag started. The other
+    corner is the one Shift+arrow keys move (GH #2370).
+
+    \param wholeMatrix true if the block covers every entry. The selection is
+    then an ordinary whole-matrix one -- GetSelectedMatrixBlock() returns
+    nothing -- but the corners are still remembered, so the keyboard can
+    shrink it back into a block.
   */
-  void SetSelectedMatrixBlock(Cell *matrix, const MatrixBlock &block) {
+  void SetSelectedMatrixBlock(Cell *matrix, const MatrixEntry &anchor,
+                              const MatrixEntry &corner,
+                              bool wholeMatrix = false) {
     m_selectionStart = matrix;
     m_selectionEnd = matrix;
     m_blockMatrix = matrix;
-    m_matrixBlock = block;
+    m_blockAnchor = anchor;
+    m_blockCorner = corner;
+    m_blockIsWholeMatrix = wholeMatrix;
   }
   /*! The selected block of a matrix's entries, if only a block is selected
 
@@ -122,9 +134,25 @@ public:
     stale one.
   */
   std::optional<MatrixBlock> GetSelectedMatrixBlock() const {
-    if (m_blockMatrix && (m_selectionStart == m_blockMatrix) &&
-        (m_selectionEnd == m_blockMatrix))
-      return m_matrixBlock;
+    if (IsBlockMatrixSelected() && !m_blockIsWholeMatrix)
+      return MatrixBlock::Spanning(m_blockAnchor, m_blockCorner);
+    return std::nullopt;
+  }
+  //! The two corners of a selected block: the anchor first, then the moving one
+  struct BlockCorners
+  {
+    MatrixEntry anchor;
+    MatrixEntry corner;
+  };
+  /*! The corners of the selected block, even if it has grown to the whole matrix
+
+    What the keyboard needs in order to grow or shrink the block (GH #2370).
+    Valid under the same condition as GetSelectedMatrixBlock(), except that it
+    is also returned while the block covers the whole matrix.
+  */
+  std::optional<BlockCorners> GetSelectedMatrixBlockCorners() const {
+    if (IsBlockMatrixSelected())
+      return BlockCorners{m_blockAnchor, m_blockCorner};
     return std::nullopt;
   }
 
@@ -193,10 +221,19 @@ private:
     always below m_selectionStart.
   */
   CellPtr<Cell> m_selectionEnd;
-  //! The matrix m_matrixBlock was selected in, see GetSelectedMatrixBlock().
+  //! The matrix a block of entries was selected in, see GetSelectedMatrixBlock().
   CellPtr<Cell> m_blockMatrix;
-  //! The selected block of m_blockMatrix's entries.
-  MatrixBlock m_matrixBlock;
+  //! The corner of the selected block of m_blockMatrix's entries that stays put
+  MatrixEntry m_blockAnchor;
+  //! The corner of the selected block that Shift+arrow keys move
+  MatrixEntry m_blockCorner;
+  //! Has the block grown to cover the whole of m_blockMatrix?
+  bool m_blockIsWholeMatrix = false;
+  //! Is the selection exactly the matrix a block was chosen in?
+  bool IsBlockMatrixSelected() const {
+    return m_blockMatrix && (m_selectionStart == m_blockMatrix) &&
+      (m_selectionEnd == m_blockMatrix);
+  }
   /*! The currently selected string.
 
     Since this string is reachable from every editor cell (via the accessors

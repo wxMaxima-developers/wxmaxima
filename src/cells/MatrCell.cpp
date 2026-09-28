@@ -641,6 +641,26 @@ wxRect MatrCell::BlockRect(const MatrixBlock &block) const {
   return rect;
 }
 
+MatrixEntry MatrCell::StepEntry(const MatrixEntry &entry, int rowStep,
+                                int colStep) const {
+  // Steps one index in the given direction, then on past whatever this
+  // elision hides. Returns index unchanged if that would leave the matrix.
+  const auto step = [](size_t index, int direction, size_t size,
+                       const Elision &elision) {
+    if (direction == 0)
+      return index;
+    size_t next = index;
+    do {
+      if ((direction < 0) ? (next == 0) : (next + 1 >= size))
+        return index;
+      next = (direction < 0) ? next - 1 : next + 1;
+    } while (elision.Hides(next));
+    return next;
+  };
+  return MatrixEntry{step(entry.row, rowStep, m_matHeight, m_rowElision),
+                     step(entry.col, colStep, m_matWidth, m_colElision)};
+}
+
 std::unique_ptr<MatrCell> MatrCell::CopyBlock(const MatrixBlock &block,
                                               GroupCell *group) const {
   auto copy = std::make_unique<MatrCell>(group, m_configuration);
