@@ -1,5 +1,7 @@
 # Current development version
 
+- Closing the diff viewer no longer resets settings that were changed in the
+  main window while it was open (#2356).
 - Output arriving from Maxima no longer pushes the cursor down the screen.
   If the cursor is visible and output is appended to a cell above it, the
   worksheet now scrolls along by exactly as much, so the line being read or
