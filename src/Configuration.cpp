@@ -234,7 +234,6 @@ wxSize Configuration::GetPPI() const {
       if(GetRecalcDC()->IsOk())
         ppi = GetRecalcDC()->GetPPI();
     }
-#if wxCHECK_VERSION(3, 1, 1)
   if((ppi.x < 10 ) || (ppi.y < 10 ))
     {
       if (GetWorkSheet()) {
@@ -243,7 +242,6 @@ wxSize Configuration::GetPPI() const {
           ppi = wxDisplay(display_idx).GetPPI();
       }
     }
-#endif
   if((ppi.x < 10 ) || (ppi.y < 10 ))
     ppi = wxSize(96, 96);
   return ppi;
@@ -526,11 +524,7 @@ void Configuration::InitStyles() {
 }
 
 bool Configuration::SystemIsDark() {
-#if wxCHECK_VERSION(3, 1, 3)
   return wxSystemSettings::GetAppearance().IsDark();
-#else
-  return false; // no reliable way to ask the OS on this wx version
-#endif
 }
 
 const wxString &Configuration::GetEscCode(const wxString &key) {
@@ -1300,11 +1294,7 @@ bool Configuration::InUpdateRegion(wxRect const rect) const {
 bool Configuration::OfferInternalHelpBrowser() const {
 #ifdef USE_WEBVIEW
 #ifdef __WINDOWS__
-#if wxCHECK_VERSION(3, 1, 5)
   return wxWebView::IsBackendAvailable(wxWebViewBackendEdge);
-#else
-  return false;
-#endif
 #else
   return true;
 #endif

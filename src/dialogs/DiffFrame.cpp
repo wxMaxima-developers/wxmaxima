@@ -24,9 +24,7 @@
 #include "WXMformat.h"
 #include "MathParser.h"
 #include "cells/CellList.h"
-#if wxCHECK_VERSION(3, 1, 6)
 #include "wxMaximaArtProvider.h"
-#endif
 #include <wx/artprov.h>
 #include <wx/file.h>
 #include <wx/wfstream.h>
@@ -365,7 +363,6 @@ wxToolBar *toolBar = CreateToolBar();
 m_toolBar = toolBar;
 const int idSyncHorizontal = wxWindow::NewControlId();
 const int idSyncVertical = wxWindow::NewControlId();
-#if wxCHECK_VERSION(3, 1, 6)
   wxBitmapBundle syncBmp = wxArtProvider::GetBitmapBundle(wxmaximaART_SYNC_HORIZONTAL, wxART_TOOLBAR);
   toolBar->AddCheckTool(idSyncHorizontal, _("Sync Horizontal"), syncBmp, wxNullBitmap, _("Toggle horizontal scroll synchronization"));
   // There is no dedicated "sync vertical" icon, so reuse the horizontal one
@@ -380,13 +377,6 @@ const int idSyncVertical = wxWindow::NewControlId();
     }
   }
   toolBar->AddCheckTool(idSyncVertical, _("Sync Vertical"), syncVBmp, wxNullBitmap, _("Toggle vertical scroll synchronization"));
-#else
-  // old wxWidgets version. Don't use the graphic from wxMaximaArtprovider, but a standard one (wxART_MINUS)
-  // not a such nice graphics, but compiles (and we are going to require wxWidgets >= 3.2 maybe soon...
-  wxBitmap syncBmp = wxArtProvider::GetBitmap(wxART_MINUS, wxART_TOOLBAR);
-  toolBar->AddCheckTool(idSyncHorizontal, _("Sync Horizontal"), syncBmp, wxNullBitmap, _("Toggle horizontal scroll synchronization"));
-  toolBar->AddCheckTool(idSyncVertical, _("Sync Vertical"), syncBmp, wxNullBitmap, _("Toggle vertical scroll synchronization"));
-#endif
 
 toolBar->ToggleTool(idSyncHorizontal, m_syncHorizontal);
 toolBar->ToggleTool(idSyncVertical, m_syncVertical);
@@ -394,13 +384,8 @@ toolBar->Bind(wxEVT_TOOL, &DiffFrame::OnToggleHorizontalSync, this, idSyncHorizo
 toolBar->Bind(wxEVT_TOOL, &DiffFrame::OnToggleVerticalSync, this, idSyncVertical);
 
 toolBar->AddSeparator();
-#if wxCHECK_VERSION(3, 1, 6)
 wxBitmapBundle prevBmp = wxArtProvider::GetBitmapBundle(wxART_GO_UP, wxART_TOOLBAR);
 wxBitmapBundle nextBmp = wxArtProvider::GetBitmapBundle(wxART_GO_DOWN, wxART_TOOLBAR);
-#else
-wxBitmap prevBmp = wxArtProvider::GetBitmap(wxART_GO_UP, wxART_TOOLBAR);
-wxBitmap nextBmp = wxArtProvider::GetBitmap(wxART_GO_DOWN, wxART_TOOLBAR);
-#endif
 toolBar->AddTool(EventIDs::button_diff_prev, _("Previous Difference"), prevBmp, _("Jump to previous difference"));
 toolBar->AddTool(EventIDs::button_diff_next, _("Next Difference"), nextBmp, _("Jump to next difference"));
 toolBar->Bind(wxEVT_TOOL, &DiffFrame::OnDiffPrev, this, EventIDs::button_diff_prev);

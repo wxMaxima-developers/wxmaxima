@@ -30,7 +30,6 @@
 SvgPanel::SvgPanel(wxWindow *parent, unsigned char *data, std::size_t len)
   : wxPanel(parent), m_bitmap(this, data, len) {
   int ppi;
-#if wxCHECK_VERSION(3, 1, 1)
   wxDisplay display;
 
   int display_idx = wxDisplay::GetFromWindow(GetParent());
@@ -38,9 +37,6 @@ SvgPanel::SvgPanel(wxWindow *parent, unsigned char *data, std::size_t len)
     ppi = 72;
   else
     ppi = wxDisplay(display_idx).GetPPI().x;
-#else
-  ppi = wxGetDisplayPPI().x;
-#endif
   ppi = std::max(ppi, 75);
 
   SetMinSize(wxSize(ppi * 4, ppi * 4));

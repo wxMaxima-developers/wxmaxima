@@ -28,9 +28,7 @@ BTextCtrl::BTextCtrl(wxWindow *parent, wxWindowID id, Configuration *cfg,
                      const wxSize &size, long style)
   : wxTextCtrl(parent, id, value, pos, size, style) {
 #ifdef __WXOSX__
-#if wxCHECK_VERSION(3, 1, 1)
   OSXDisableAllSmartSubstitutions();
-#endif
 #endif
   m_config = cfg;
   if (m_config->FixedFontInTextControls()) {
@@ -54,9 +52,7 @@ BTextCtrl::BTextCtrl(wxWindow *parent, wxWindowID id, Configuration *cfg,
   Bind(wxEVT_SET_FOCUS, &BTextCtrl::OnFocus, this);
 
 #ifdef __WXOSX__
-#if wxCHECK_VERSION(3, 1, 1)
   OSXDisableAllSmartSubstitutions();
-#endif
 #endif
 }
 

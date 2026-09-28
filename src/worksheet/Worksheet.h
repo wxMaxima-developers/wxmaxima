@@ -442,10 +442,8 @@ public:
   //! Is executed if a timer associated with Worksheet has expired.
   void OnTimer(wxTimerEvent &event);
 
-#if wxCHECK_VERSION(3, 1, 1)
   //! Handle pinch-to-zoom-events using the gesture interface
   void OnZoom(wxZoomGestureEvent &event);
-#endif
 
   void OnMouseExit(wxMouseEvent &event);
 

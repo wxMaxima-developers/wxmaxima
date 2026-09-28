@@ -52,9 +52,7 @@
 #include <wx/config.h>
 #include <wx/iconbndl.h>
 #include <wx/intl.h>
-#if wxCHECK_VERSION(3, 1, 6)
 #include <wx/uilocale.h>
-#endif
 #include <wx/display.h>
 #include <wx/fileconf.h>
 #include <wx/filename.h>
@@ -740,11 +738,6 @@ wxMaximaFrame::~wxMaximaFrame() {
   wxConfig::Get()->Write(wxS("AUI/perspective"), perspective);
   wxConfig::Get()->Flush();
 
-  // In modern wxWidgets wxAUIManager does UnInit() itself.
-#if !wxCHECK_VERSION(3, 1, 4)
-  m_manager.UnInit();
-#endif
-
   // Child windows are normally destroyed by the wxWindow base class
   // destructor - i.e. AFTER this class's members, m_configuration included.
   // The worksheet's destructor (and the destructors of the cells it owns)
@@ -766,9 +759,7 @@ wxMaximaFrame::~wxMaximaFrame() {
   m_manager.DetachPane(m_worksheet);
   m_worksheet->Destroy();
 }
-#if wxCHECK_VERSION(3, 1, 0)
 #include <wx/taskbarbutton.h>
-#endif
 void wxMaximaFrame::SetupFileMenu() {
   m_FileMenu = new wxMenu;
   m_FileMenu->Append(wxID_NEW, _("New\tCtrl+N"), _("Open a new window"));
@@ -1124,18 +1115,14 @@ void wxMaximaFrame::SetupCellMenu() {
     wxMenuItem *item = new wxMenuItem(m_CellMenu,
                                       EventIDs::popid_merge_cells,
                                       _("Merge Cells"));
-#if wxCHECK_VERSION(3, 2, 0)
     item->SetBitmap(ArtProvider::GetCellMergeBundle());
-#endif
     m_CellMenu->Append(item);
   }
   {
         wxMenuItem *item = new wxMenuItem(m_CellMenu,
                                           EventIDs::popid_divide_cell,
                                           _("Divide Cell"));
-#if wxCHECK_VERSION(3, 2, 0)
         item->SetBitmap(ArtProvider::GetDivideCellBundle());
-#endif
         m_CellMenu->Append(item);
   }
   m_CellMenu->AppendSeparator();
@@ -2230,11 +2217,7 @@ wxString wxMaximaFrame::wxMaximaManualLocation() {
   if (lang_long.IsEmpty()) {
     // wxLANGUAGE_DEFAULT (or an unrecognized language ID): fall back to
     // whatever the OS/active locale actually resolved to.
-#if wxCHECK_VERSION(3, 1, 6)
     lang_long = wxUILocale::GetCurrent().GetName();
-#else
-    lang_long = wxLocale().GetCanonicalName();
-#endif
   }
   wxString lang_short = lang_long.Left(lang_long.Find('_'));
 

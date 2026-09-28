@@ -47,9 +47,7 @@
 #include <unistd.h>   // write(), STDERR_FILENO (async-signal-safe output in crash handler)
 #endif
 #endif
-#if wxCHECK_VERSION(3, 1, 6)
 #include <wx/uilocale.h>
-#endif
 #include <wx/sysopt.h>
 #include <wx/tipdlg.h>
 #include <wx/utils.h>
@@ -85,9 +83,7 @@
 #include "examples/variableNames.h"
 
 #include "wxMaxima.h"
-#if wxCHECK_VERSION(3, 2, 0)
 #include "wxMaximaArtProvider.h"
-#endif
 
 // On wxGTK2 we support printing only if wxWidgets is compiled with gnome_print.
 // We have to force gnome_print support to be linked in static builds of
@@ -527,9 +523,7 @@ bool MyApp::OnInit() {
   // use this feature. But it doesn't harm to be prepared
   wxSocketBase::Initialize();
 
-#if wxCHECK_VERSION(3, 2, 0)
   wxArtProvider::Push(new wxMaximaArtProvider);
-#endif
   m_translations = std::unique_ptr<wxTranslations>(new wxTranslations());
   wxTranslations::Set(m_translations.get());
   {
@@ -559,7 +553,6 @@ bool MyApp::OnInit() {
 
     // Migrate an eventual old config file to the location XDG wants it to be.
 #ifndef __WXMSW__
-#if wxCHECK_VERSION(3, 1, 1)
     wxStandardPaths::Get().SetFileLayout(wxStandardPaths::FileLayout_Classic);
     wxString configFileOld =
       wxStandardPaths::Get().GetUserConfigDir() + wxS("/") +
@@ -580,7 +573,6 @@ bool MyApp::OnInit() {
         wxCopyFile(configFileOld, configFileXDG);
     }
 #endif
-#endif
 
     wxLanguage lang;
     {
@@ -593,7 +585,6 @@ bool MyApp::OnInit() {
     }
 
     {
-#if wxCHECK_VERSION(3, 1, 6)
       // UseDefault() alone would apply the *system's* default locale
       // unconditionally, silently ignoring a language the user explicitly
       // picked in our own configuration (as opposed to "follow the system
@@ -606,10 +597,6 @@ bool MyApp::OnInit() {
       }
       if (!localeSet)
         wxUILocale::UseDefault();
-#else
-      m_locale = std::unique_ptr<wxLocale>(new wxLocale);
-      m_locale->Init(lang);
-#endif
     }
 
     // Create the temporary directory if it doesn't exist
@@ -647,11 +634,7 @@ bool MyApp::OnInit() {
       // after UseLocaleName("de") above, while wxLocale().GetCanonicalName()
       // stays empty).
       wxString localeName;
-#if wxCHECK_VERSION(3, 1, 6)
       localeName = wxUILocale::GetCurrent().GetName();
-#else
-      localeName = wxLocale().GetCanonicalName();
-#endif
       if(localeName.IsEmpty())
         localeName = wxS("C");
       if ((!localeName.Upper().EndsWith(wxS("UTF-8"))) &&
@@ -860,9 +843,7 @@ bool MyApp::OnInit() {
       wxSetWorkingDirectory(
                             wxPathOnly(wxStandardPaths::Get().GetExecutablePath()));
   }
-#if wxCHECK_VERSION(3, 1, 1)
   wxSetWorkingDirectory(oldWorkingDir);
-#endif
 #endif
 
   Bind(wxEVT_MENU, &MyApp::OnFileMenu, this);

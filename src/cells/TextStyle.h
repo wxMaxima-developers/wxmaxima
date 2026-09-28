@@ -169,9 +169,6 @@ public:
   did_change SetFontFaceFrom(const Style&);
   //! Sets font-face and size only properties based on another style (not attributes like bold, etc.)
   did_change SetFontFaceAndSizeFrom(const Style&);
-  //! Old wxWidgets versions only support integers as font sizes
-  constexpr static bool IsFractionalFontSizeSupported() {
-    return wxCHECK_VERSION(3, 1, 2); } //-V686 //-V501
   //! Returns the font size that this style has when not zoomed or being used as subscript/...
   static AFontSize GetFontSize(const wxFont &);
   //! Sets the font size that this style has when not zoomed or being used as subscript/...

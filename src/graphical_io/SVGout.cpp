@@ -49,9 +49,7 @@ Svgout::Svgout(const Configuration * const *configuration, const wxString &filen
     wxSetWorkingDirectory(path);
   m_cmn.SetRecalculationContext(&m_recalculationDc);
 
-#if wxCHECK_VERSION(3, 1, 0)
   m_recalculationDc.SetBitmapHandler(new wxSVGBitmapEmbedHandler());
-#endif
   auto *config = m_cmn.GetConfiguration();
   config->SetRecalcContext(m_recalculationDc);
   config->SetCanvasSize(wxSize(700 * scale, 100000 * scale));
@@ -92,9 +90,7 @@ bool Svgout::Layout() {
   wxSVGFileDC dc(m_cmn.GetFilename(), size.x, size.y, 20 * m_cmn.GetScale());
 #endif
   m_cmn.SetRecalculationContext(&dc);
-#if wxCHECK_VERSION(3, 1, 0)
   dc.SetBitmapHandler(new wxSVGBitmapEmbedHandler());
-#endif
 
   config->SetRecalcContext(dc);
 #if wxCHECK_VERSION(3, 3, 3)
