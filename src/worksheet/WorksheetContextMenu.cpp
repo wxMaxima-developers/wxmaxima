@@ -276,6 +276,10 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
                            wxITEM_NORMAL);
           popupMenu.Append(EventIDs::popid_copy_text, _("Copy as plain text"),
                            wxEmptyString, wxITEM_NORMAL);
+          if (worksheet.CanCopyCSV())
+            popupMenu.Append(EventIDs::popid_copy_csv, _("Copy as CSV"),
+                             _("Copy the matrix as rows of values a spreadsheet can paste"),
+                             wxITEM_NORMAL);
           if (worksheet.CanCopyAsMathML())
             popupMenu.Append(EventIDs::popid_copy_mathml,
                              _("Copy as MathML (e.g. to word processor)"),

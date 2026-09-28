@@ -44,6 +44,7 @@
 #include "dialogs/ResolutionChooser.h"
 #include "dialogs/MatrixViewer.h"
 #include "cells/MatrCell.h"
+#include <wx/numformatter.h>
 #include "graphical_io/SVGout.h"
 #include "Version.h"
 #include "Compat.h"
@@ -860,20 +861,27 @@ void Worksheet::DrawGroupCell(wxDC &dc, wxDC &adc, GroupCell &cell)
         (&cell == GetDocumentCellPointers().GetSelectionStart()->GetGroup())) {
       // Draw the marker that tells us which output cells are selected -
       // if output cells are selected, that is.
-      for (Cell &c : OnDrawList(GetDocumentCellPointers().GetSelectionStart().get())) {
-        if (!c.IsBrokenIntoLines() && !c.IsHidden() &&
-            &c != GetActiveCell())
-          {
-            dc.SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_SELECTION),
-                                                      1, wxPENSTYLE_SOLID)));
-            dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_SELECTION))));
+      dc.SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_SELECTION),
+                                                1, wxPENSTYLE_SOLID)));
+      dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_SELECTION))));
+      const auto block = GetDocumentCellPointers().GetSelectedMatrixBlock();
+      auto *blockMatrix = GetDocumentCellPointers().GetSelectionStart().CastAs<MatrCell *>();
+      if (block && blockMatrix) {
+        // Only a block of this matrix's entries is selected (GH #2345)
+        const wxRect rect = blockMatrix->BlockRect(*block);
+        if (!rect.IsEmpty())
+          dc.DrawRectangle(rect);
+      } else {
+        for (Cell &c : OnDrawList(GetDocumentCellPointers().GetSelectionStart().get())) {
+          if (!c.IsBrokenIntoLines() && !c.IsHidden() &&
+              &c != GetActiveCell())
             c.DrawBoundingBox(dc, false);
-            dc.SetBrush(m_configuration->GetBackgroundBrush());
-            dc.SetPen(*wxTRANSPARENT_PEN);
-          }
-        if (&c == GetDocumentCellPointers().GetSelectionEnd())
-          break;
+          if (&c == GetDocumentCellPointers().GetSelectionEnd())
+            break;
+        }
       }
+      dc.SetBrush(m_configuration->GetBackgroundBrush());
+      dc.SetPen(*wxTRANSPARENT_PEN);
     }
   }
   cell.Draw(&dc, &adc);
@@ -1770,29 +1778,7 @@ void Worksheet::ClickNDrag(wxPoint down, wxPoint up) {
     break;
 
   case CLICK_TYPE_OUTPUT_SELECTION:
-      GetDocumentCellPointers().ClearSelectionString();
-      ClearSelection();
-      rect.x = std::min(down.x, up.x);
-      rect.y = std::min(down.y, up.y);
-      rect.width = std::max(abs(down.x - up.x), 1);
-      rect.height = std::max(abs(down.y - up.y), 1);
-
-      if (m_clickInGC) {
-        auto const [first, last] = m_clickInGC->GetCellsInOutputRect(rect, down, up);
-        GetDocumentCellPointers().SetSelectionStart(first);
-        GetDocumentCellPointers().SetSelectionEnd(last);
-        
-        wxString selectionString;
-        Cell *cell = first;
-        while(cell)
-          {
-            selectionString.Append(cell->ToString());
-            if(cell == last)
-              break;
-            cell = cell->GetNext();
-          }
-        GetDocumentCellPointers().SetSelectionString(selectionString);
-      }
+      SelectOutputRect(m_clickInGC, down, up);
       break;
 
     default:
@@ -1805,12 +1791,66 @@ void Worksheet::ClickNDrag(wxPoint down, wxPoint up) {
     RequestRedraw();
 }
 
+void Worksheet::SelectOutputRect(GroupCell *group, wxPoint down, wxPoint up) {
+  GetDocumentCellPointers().ClearSelectionString();
+  ClearSelection();
+  if (!group)
+    return;
+
+  wxRect rect;
+  rect.x = std::min(down.x, up.x);
+  rect.y = std::min(down.y, up.y);
+  rect.width = std::max(abs(down.x - up.x), 1);
+  rect.height = std::max(abs(down.y - up.y), 1);
+
+  auto const [first, last] = group->GetCellsInOutputRect(rect, down, up);
+  GetDocumentCellPointers().SetSelectionStart(first);
+  GetDocumentCellPointers().SetSelectionEnd(last);
+
+  // A rectangle that lies within one matrix but spans several of its entries
+  // comes back as the whole matrix. Narrow that to the block of entries the
+  // rectangle actually touches, so a sub-matrix can be copied (GH #2345).
+  if (first && (first == last))
+    if (auto *matrix = dynamic_cast<MatrCell *>(first))
+      if (auto block = matrix->BlockInRect(rect))
+        if (!matrix->IsWholeMatrix(*block))
+          GetDocumentCellPointers().SetSelectedMatrixBlock(matrix, *block);
+
+  wxString selectionString;
+  if (auto block = CopySelectedMatrixBlock())
+    selectionString = block->ToString();
+  else {
+    Cell *cell = first;
+    while(cell)
+      {
+        selectionString.Append(cell->ToString());
+        if(cell == last)
+          break;
+        cell = cell->GetNext();
+      }
+  }
+  GetDocumentCellPointers().SetSelectionString(selectionString);
+}
+
+std::unique_ptr<MatrCell> Worksheet::CopySelectedMatrixBlock() const {
+  const auto block = GetDocumentCellPointers().GetSelectedMatrixBlock();
+  if (!block)
+    return {};
+  auto *matrix = GetDocumentCellPointers().GetSelectionStart().CastAs<MatrCell *>();
+  if (!matrix)
+    return {};
+  return matrix->CopyBlock(*block, matrix->GetGroup());
+}
+
 /***
  * Get the string representation of the selection
  */
 wxString Worksheet::GetString(bool lb) const {
   if (!GetDocumentCellPointers().GetSelectionStart())
     return GetActiveCell() ? GetActiveCell()->ToString() : wxString{};
+
+  if (auto block = CopySelectedMatrixBlock())
+    return block->ToString();
 
   wxString s;
   for (const Cell &cell : OnDrawList(GetDocumentCellPointers().GetSelectionStart().get())) {
@@ -1920,8 +1960,7 @@ wxString Worksheet::ConvertSelectionToMathML() const {
     return {};
 
   wxString s;
-  std::unique_ptr<Cell> tmp(CopySelection(GetDocumentCellPointers().GetSelectionStart(),
-                                          GetDocumentCellPointers().GetSelectionEnd(), true));
+  std::unique_ptr<Cell> tmp(CopySelection(true));
 
   s = wxString(wxS("<math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n")) +
     wxS("<semantics>") + tmp->ListToMathML(true) +
@@ -1959,6 +1998,44 @@ wxString Worksheet::ConvertSelectionToMathML() const {
     }
   }
   return s;
+}
+
+bool Worksheet::CanCopyCSV() const {
+  if (GetActiveCell())
+    return false;
+  const auto &start = GetDocumentCellPointers().GetSelectionStart();
+  return start && (start == GetDocumentCellPointers().GetSelectionEnd()) &&
+    start.CastAs<MatrCell *>();
+}
+
+wxString Worksheet::CSVDelimiter() {
+  if (wxNumberFormatter::GetDecimalSeparator() == wxS(','))
+    return wxS("\t");
+  return wxS(",");
+}
+
+wxString Worksheet::SelectionToCSV() const {
+  if (!CanCopyCSV())
+    return {};
+  if (auto block = CopySelectedMatrixBlock())
+    return block->ToCSV(CSVDelimiter());
+  return GetDocumentCellPointers().GetSelectionStart().CastAs<MatrCell *>()
+    ->ToCSV(CSVDelimiter());
+}
+
+bool Worksheet::CopyCSV() const {
+  const wxString csv = SelectionToCSV();
+  if (csv.IsEmpty())
+    return false;
+
+  wxASSERT_MSG(!wxTheClipboard->IsOpened(),
+               _("Bug: The clipboard is already opened"));
+  if (wxTheClipboard->Open()) {
+    wxTheClipboard->SetData(new wxTextDataObject(csv));
+    wxTheClipboard->Close();
+    return true;
+  }
+  return false;
 }
 
 bool Worksheet::CanCopyAsMathML() const {
@@ -2015,14 +2092,18 @@ bool Worksheet::CopyMatlab() const {
     return false;
 
   wxString result;
-  bool firstcell = true;
-  for (const Cell &tmp : OnList(GetDocumentCellPointers().GetSelectionStart().get())) {
-    if (tmp.HasHardLineBreak() && !firstcell)
-      result += wxS("\n");
-    result += tmp.ToMatlab();
-    if (&tmp == GetDocumentCellPointers().GetSelectionEnd())
-      break;
-    firstcell = false;
+  if (auto block = CopySelectedMatrixBlock())
+    result = block->ToMatlab();
+  else {
+    bool firstcell = true;
+    for (const Cell &tmp : OnList(GetDocumentCellPointers().GetSelectionStart().get())) {
+      if (tmp.HasHardLineBreak() && !firstcell)
+        result += wxS("\n");
+      result += tmp.ToMatlab();
+      if (&tmp == GetDocumentCellPointers().GetSelectionEnd())
+        break;
+      firstcell = false;
+    }
   }
 
   wxASSERT_MSG(!wxTheClipboard->IsOpened(),
@@ -2051,11 +2132,14 @@ bool Worksheet::CopyTeX() const {
     if (inMath)
       s = wxS("\\[");
   }
-  for (const Cell &tmp : OnList(start)) {
-    s += tmp.ToTeX();
-    if (&tmp == GetDocumentCellPointers().GetSelectionEnd())
-      break;
-  }
+  if (auto block = CopySelectedMatrixBlock())
+    s += block->ToTeX();
+  else
+    for (const Cell &tmp : OnList(start)) {
+      s += tmp.ToTeX();
+      if (&tmp == GetDocumentCellPointers().GetSelectionEnd())
+        break;
+    }
   if (inMath)
     s += wxS("\\]");
 
@@ -2078,14 +2162,18 @@ bool Worksheet::CopyText() const {
     return false;
 
   wxString result;
-  bool firstcell = true;
-  for (const Cell &tmp : OnList(GetDocumentCellPointers().GetSelectionStart().get())) {
-    if (tmp.HasHardLineBreak() && !firstcell)
-      result += wxS("\n");
-    result += tmp.ToString();
-    if (&tmp == GetDocumentCellPointers().GetSelectionEnd())
-      break;
-    firstcell = false;
+  if (auto block = CopySelectedMatrixBlock())
+    result = block->ToString();
+  else {
+    bool firstcell = true;
+    for (const Cell &tmp : OnList(GetDocumentCellPointers().GetSelectionStart().get())) {
+      if (tmp.HasHardLineBreak() && !firstcell)
+        result += wxS("\n");
+      result += tmp.ToString();
+      if (&tmp == GetDocumentCellPointers().GetSelectionEnd())
+        break;
+      firstcell = false;
+    }
   }
 
   wxASSERT_MSG(!wxTheClipboard->IsOpened(),
@@ -3603,12 +3691,18 @@ bool Worksheet::CopyRTF() const {
   wxDataObjectComposite *data = new wxDataObjectComposite;
 
   wxString rtf = RTFStart();
-  const GroupCell *end = GetDocumentCellPointers().GetSelectionEnd()->GetGroup();
+  if (auto block = CopySelectedMatrixBlock())
+    // Only part of a matrix is selected: copy that sub-matrix rather than the
+    // whole cell it is in, the same way Copy() puts it into its RTF flavour.
+    rtf += block->ListToRTF();
+  else {
+    const GroupCell *end = GetDocumentCellPointers().GetSelectionEnd()->GetGroup();
 
-  for (auto &tmp : OnList(GetDocumentCellPointers().GetSelectionStart()->GetGroup())) {
-    rtf += tmp.ToRTF();
-    if (&tmp == end)
-      break;
+    for (auto &tmp : OnList(GetDocumentCellPointers().GetSelectionStart()->GetGroup())) {
+      rtf += tmp.ToRTF();
+      if (&tmp == end)
+        break;
+    }
   }
 
   rtf += wxS("\\par") + RTFEnd();
@@ -3739,6 +3833,8 @@ int Worksheet::ExportSelectionOutputToDir(const wxString &dir, bool svg) {
 }
 
 std::unique_ptr<Cell> Worksheet::CopySelection(bool asData) const {
+  if (auto block = CopySelectedMatrixBlock())
+    return block;
   return CopySelection(GetDocumentCellPointers().GetSelectionStart(),
                        GetDocumentCellPointers().GetSelectionEnd(), asData);
 }

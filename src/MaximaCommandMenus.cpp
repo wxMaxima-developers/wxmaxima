@@ -3460,6 +3460,9 @@ void MaximaCommandMenus::PopupMenu(wxCommandEvent &event) {
     if (m_wxMaxima.GetWorksheet()->CanCopy())
       m_wxMaxima.GetWorksheet()->CopyMatlab();
   }
+  else if(event.GetId() == EventIDs::popid_copy_csv){
+    m_wxMaxima.GetWorksheet()->CopyCSV();
+  }
   else if(event.GetId() == EventIDs::popid_copy_tex){
     if (m_wxMaxima.GetWorksheet()->CanCopy())
       m_wxMaxima.GetWorksheet()->CopyTeX();

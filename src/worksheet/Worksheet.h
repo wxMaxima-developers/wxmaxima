@@ -54,6 +54,7 @@
 #include "cells/ImgCellBase.h"
 #include "cells/AnimationCell.h"
 #include "cells/GroupCell.h"
+#include "cells/MatrCell.h"
 #include "TreeUndoManager.h"
 #include "WorksheetCursor.h"
 #include "WorksheetDocument.h"
@@ -398,8 +399,32 @@ public:
     DISPLAY_TIMEOUT_ID
   };
 
-  //! Copy the currently selected cells
+  /*! Copy the currently selected cells
+
+    If only a block of a matrix's entries is selected, this is a new matrix
+    holding just that block, see CopySelectedMatrixBlock().
+  */
   std::unique_ptr<Cell> CopySelection(bool asData = false) const;
+
+  /*! The selected sub-matrix, as a new matrix, or null (GH #2345)
+
+    Non-null only if the selection is a block of one matrix's entries, see
+    SelectOutputRect(). Every "Copy ..." command copies this instead of the
+    whole matrix then.
+  */
+  std::unique_ptr<MatrCell> CopySelectedMatrixBlock() const;
+
+  /*! Select what a rectangle dragged across a cell's output covers
+
+    \param group    the cell whose output was clicked into
+    \param down, up where the mouse button went down and where it is now
+
+    What ClickNDrag() does for a drag that started in an output. A rectangle
+    that lies within one matrix but spans several of its entries selects the
+    block of entries it touches (GH #2345); anything else selects the output
+    cells it covers, as it always did.
+  */
+  void SelectOutputRect(GroupCell *group, wxPoint down, wxPoint up);
 
   /*! Copy the currently given list of cells
 
@@ -1042,6 +1067,22 @@ public:
    */
   bool CanCopyAsMathML() const;
 
+  //! Is the selection a matrix, or a block of one, that "Copy as CSV" can copy?
+  bool CanCopyCSV() const;
+  /*! The selected matrix, or selected block of one, as CSV (GH #2364)
+
+    Empty if CanCopyCSV() is false. See MatrCell::ToCSV() and CSVDelimiter().
+  */
+  wxString SelectionToCSV() const;
+  /*! What separates the values "Copy as CSV" writes
+
+    A comma, unless the locale writes numbers with a decimal comma: a
+    spreadsheet in such a locale expects ";" in a CSV file, and a comma would
+    split its numbers apart. There, a tab, which every spreadsheet reads as
+    a column break when text is pasted, whatever its locale.
+  */
+  static wxString CSVDelimiter();
+
   bool CanPaste() const
     { return GetDocumentCellPointers().GetActiveCell() || GetHCaretCursor().IsActive(); }
 
@@ -1194,6 +1235,9 @@ public:
 
   //! Copy a Matlab representation of the current selection to the clipboard
   bool CopyMatlab() const;
+
+  //! Copy the selected matrix, or block of one, to the clipboard as CSV
+  bool CopyCSV() const;
 
   //! Copy a textual representation of the current selection to the clipboard
   bool CopyText() const;

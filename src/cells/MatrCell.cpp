@@ -593,6 +593,82 @@ Cell::Range MatrCell::GetInnerCellsInRect(const wxRect &rect) const {
   return retval;
 }
 
+wxRect MatrCell::EntrySlotRect(size_t row, size_t col) const {
+  // Mirrors SetCurrentPoint(): each entry is centred in its column, and its
+  // centre line sits m_dropCenters[row].center below the top of its row.
+  // Neighbouring slots are Scale_Px(10) apart, half of which goes to each.
+  const Cell *entry = GetInnerCell(static_cast<int>(row), static_cast<int>(col));
+  const wxCoord halfGap = Scale_Px(5);
+  return wxRect(entry->GetCurrentX() -
+                (m_widths.at(col) - entry->SumOfWidths()) / 2 - halfGap,
+                entry->GetCurrentY() - m_dropCenters.at(row).center - halfGap,
+                m_widths.at(col) + 2 * halfGap,
+                m_dropCenters.at(row).Sum() + 2 * halfGap);
+}
+
+std::optional<MatrixBlock> MatrCell::BlockInRect(const wxRect &rect) const {
+  std::optional<MatrixBlock> block;
+  for (size_t row = 0; row < m_matHeight; row++)
+    for (size_t col = 0; col < m_matWidth; col++) {
+      if (!IsEntryShown(row, col) || !EntrySlotRect(row, col).Intersects(rect))
+        continue;
+      if (!block)
+        block = MatrixBlock{row, row, col, col};
+      else {
+        block->firstRow = std::min(block->firstRow, row);
+        block->lastRow = std::max(block->lastRow, row);
+        block->firstCol = std::min(block->firstCol, col);
+        block->lastCol = std::max(block->lastCol, col);
+      }
+    }
+  return block;
+}
+
+bool MatrCell::IsWholeMatrix(const MatrixBlock &block) const {
+  return (block.firstRow == 0) && (block.firstCol == 0) &&
+    (block.lastRow + 1 >= m_matHeight) && (block.lastCol + 1 >= m_matWidth);
+}
+
+wxRect MatrCell::BlockRect(const MatrixBlock &block) const {
+  wxRect rect;
+  for (size_t row = block.firstRow; row <= block.lastRow && row < m_matHeight; row++)
+    for (size_t col = block.firstCol; col <= block.lastCol && col < m_matWidth; col++)
+      if (IsEntryShown(row, col))
+        rect = rect.IsEmpty() ? EntrySlotRect(row, col)
+          : rect.Union(EntrySlotRect(row, col));
+  if (IsScrolling())
+    rect.Intersect(ViewportRect());
+  return rect;
+}
+
+std::unique_ptr<MatrCell> MatrCell::CopyBlock(const MatrixBlock &block,
+                                              GroupCell *group) const {
+  auto copy = std::make_unique<MatrCell>(group, m_configuration);
+  copy->CopyCommonData(*this);
+  copy->m_specialMatrix = m_specialMatrix;
+  copy->m_inferenceMatrix = m_inferenceMatrix;
+  copy->m_parenType = m_parenType;
+  copy->m_oversizedMode = m_oversizedMode;
+  copy->m_nestedInMatrix = m_nestedInMatrix;
+  copy->m_rowNames = m_rowNames && (block.firstCol == 0);
+  copy->m_colNames = m_colNames && (block.firstRow == 0);
+  if ((m_matHeight == 0) || (m_matWidth == 0))
+    return copy;
+
+  const size_t lastRow = std::min(block.lastRow, m_matHeight - 1);
+  const size_t lastCol = std::min(block.lastCol, m_matWidth - 1);
+  for (size_t row = block.firstRow; row <= lastRow; row++) {
+    copy->NewRow();
+    for (size_t col = block.firstCol; col <= lastCol; col++)
+      if ((row * m_matWidth + col) < m_cells.size())
+        copy->m_cells.emplace_back(
+          GetInnerCell(static_cast<int>(row), static_cast<int>(col))->CopyList(group));
+  }
+  for (size_t col = block.firstCol; col <= lastCol; col++)
+    copy->NewColumn();
+  return copy;
+}
+
 void MatrCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
   Cell::Draw(dc, antialiassingDC);
   SetBrush(dc);
@@ -834,6 +910,28 @@ wxString MatrCell::ToMatlab() const {
 
   s += wxS("];");
 
+  return s;
+}
+
+wxString MatrCell::ToCSV(const wxString &delimiter) const {
+  wxString s;
+  for (size_t row = 0; row < m_matHeight; row++) {
+    for (size_t col = 0; col < m_matWidth; col++) {
+      if (col > 0)
+        s += delimiter;
+      if ((row * m_matWidth + col) >= m_cells.size())
+        continue;
+      wxString entry =
+        GetInnerCell(static_cast<int>(row), static_cast<int>(col))->ListToString();
+      if (entry.Contains(delimiter) || entry.Contains(wxS("\"")) ||
+          entry.Contains(wxS("\n")) || entry.Contains(wxS("\r"))) {
+        entry.Replace(wxS("\""), wxS("\"\""));
+        entry = wxS("\"") + entry + wxS("\"");
+      }
+      s += entry;
+    }
+    s += wxS("\n");
+  }
   return s;
 }
 

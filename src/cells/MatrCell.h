@@ -24,6 +24,7 @@
 #define MATRCELL_H
 
 #include "Cell.h"
+#include "MatrixBlock.h"
 #include <optional>
 
 #include <vector>
@@ -109,6 +110,40 @@ public:
   const wxString GetToolTip(wxPoint point) const override;
   Range GetInnerCellsInRect(const wxRect &rect) const override;
 
+  /*! \name Sub-matrices (GH #2345)
+
+    Dragging a rectangle across a matrix selects the block of entries it
+    touches; copying then copies just that sub-matrix.
+    @{
+  */
+  /*! The block of shown entries a rectangle touches
+
+    An entry counts if the rectangle meets its slot: the entry's row and
+    column, plus half the gap to its neighbours, so that dragging across the
+    gaps between entries still counts. Entries that are elided or scrolled
+    out of view can't be touched, but a block reaching across an elided run
+    includes it. std::nullopt if the rectangle touches no entry.
+  */
+  std::optional<MatrixBlock> BlockInRect(const wxRect &rect) const;
+  //! Is this block every entry of the matrix?
+  bool IsWholeMatrix(const MatrixBlock &block) const;
+  /*! Where the shown part of a block is drawn, e.g. to highlight it
+
+    The union of the slots (see BlockInRect()) of its shown entries, cut to
+    the viewport if the matrix scrolls. Empty if none of them is shown.
+  */
+  wxRect BlockRect(const MatrixBlock &block) const;
+  /*! A new matrix holding only this block of entries
+
+    Keeps the brackets and the other flags, but a heading row or column only
+    if the block includes it: otherwise the block's first row or column would
+    be shown, and exported, as if it were a heading. The block is clamped to
+    the matrix.
+  */
+  std::unique_ptr<MatrCell> CopyBlock(const MatrixBlock &block,
+                                      GroupCell *group) const;
+  //! @}
+
   //! How many rows the matrix has
   size_t GetMatrixRows() const { return m_matHeight; }
   //! How many columns the matrix has
@@ -175,6 +210,15 @@ public:
 
   wxString ToMathML() const override;
   wxString ToMatlab() const override;
+  /*! The matrix as comma- (or tab-, ...) separated values (GH #2364)
+
+    One line per row, entries separated by delimiter, each entry being what
+    ToString() would give for it. An entry that contains the delimiter, a
+    double quote or a line break is quoted as RFC 4180 says: wrapped in
+    double quotes, with every double quote inside it doubled. Heading rows
+    and columns are ordinary rows and columns here.
+  */
+  wxString ToCSV(const wxString &delimiter) const;
   wxString ToOMML() const override;
   wxString ToString() const override;
   wxString ToTeX() const override;
@@ -292,6 +336,8 @@ private:
     { return m_hasHorizontalScrollbar || m_hasVerticalScrollbar; }
   //! Is (any part of) this entry visible, i.e. neither elided nor scrolled out?
   bool IsEntryShown(size_t row, size_t col) const;
+  //! The area an entry's row and column give it, plus half the gap around it
+  wxRect EntrySlotRect(size_t row, size_t col) const;
   //! Clamps m_scroll to what m_scrollableSize and m_contentSize allow
   void ClampScrollPosition() const;
   //! Flags every matrix in this list, and anywhere inside it, as nested
