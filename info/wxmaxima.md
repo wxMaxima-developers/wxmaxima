@@ -617,6 +617,24 @@ with_slider_draw3d(
 )$
 ```
 
+`with_slider_draw` and `with_slider_draw3d` make each frame out of a single 2D or 3D scene. `with_slider_draw_bare` instead hands the arguments that follow the variable and its values to a plain `draw` command. Each frame can therefore consist of several `gr2d` and `gr3d` scenes, and `draw`'s global options like `columns` or `dimensions` can be used as well:
+
+```maxima
+with_slider_draw_bare(
+    f,[1,2,3,4,5],
+    columns=2,
+    gr2d(
+        title=concat("f=",f),
+        explicit(sin(f*x),x,0,2*π)
+    ),
+    gr3d(
+        explicit(sin(f*x)*cos(y),x,0,2*π,y,0,2*π)
+    )
+);
+```
+
+Unlike `with_slider_draw`, `with_slider_draw_bare` doesn't accept `file_name`, since a frame of several scenes cannot be turned into a single frame of a gif by `draw`. The animation can still be exported as a gif by right-clicking it.
+
 For those more familiar with `plot` than with `draw`, there is a second set of functions:
 
 - `with_slider` and
@@ -1140,6 +1158,19 @@ You can find these symbols in the Unicode sidebar (search for ’double-struck c
 If wxMaxima is used, the Maxima variable `maxima_frontend` is set to `wxmaxima`. The Maxima variable `maxima_frontend_version` contains the wxMaxima version in this case.
 
 If no frontend is used (you are using command line Maxima), these variables are `false`.
+
+### Is wxMaxima new enough for this worksheet?
+
+`wx_version_min("26.09.0")` returns `true` if the running _wxMaxima_ is at least version 26.09.0, and `false` if it is older, or if the command runs in command line _Maxima_. The parts of the version number are compared as numbers, so 26.10.0 counts as newer than 26.9.0, and a part that is left out counts as 0: `wx_version_min("26.9")` is the same as `wx_version_min("26.09.0")`. A development version counts as the version it will be released as.
+
+_wxMaxima_ 26.08.0 and older don't know `wx_version_min()` yet. There, as with any function _Maxima_ doesn't know, the call isn't an error: it just returns itself, unevaluated, as `wx_version_min("26.09.0")`, which is neither `true` nor `false`. So a plain `if wx_version_min("26.09.0") then ...` stays unevaluated on these versions, too. A worksheet that has to work with them as well can compare the result with `true`, which gives `false` there:
+
+```maxima
+if wx_version_min("26.09.0") = true then
+    wx_matrix(M, oversized=scroll)
+else
+    M;
+```
 
 ## Help! I can not save my document!
 

@@ -236,6 +236,47 @@
 	 (rest (subseq v (1+ d2))))
     (list '(mlist simp) (parse-integer year) (parse-integer month) rest)))
 
+;;; Splits the leading "26.08.0" part of a version string into a list of
+;;; integers, (26 8 0). Anything from the first character that is neither a
+;;; digit nor a dot on is ignored, which drops both a "-dev" suffix and the
+;;; "_GTK3"-style toolkit suffix wxMaxima appends to $wxmaximaversion.
+;;; Returns nil if the string doesn't start with a number.
+(defun wx-version-components (v)
+  (let* ((end (or (position-if-not (lambda (c) (or (digit-char-p c) (char= c #\.))) v)
+                  (length v)))
+         (numeric (subseq v 0 end))
+         (result nil)
+         (start 0))
+    (loop
+      (let* ((dot (position #\. numeric :start start))
+             (part (subseq numeric start dot)))
+        (when (string= part "") (return))
+        (push (parse-integer part) result)
+        (if dot (setq start (1+ dot)) (return))))
+    (nreverse result)))
+
+;;; wx_version_min("26.08.0"): true if the running wxMaxima is at least that
+;;; version. Components are compared numerically, so "26.10.0" is newer than
+;;; "26.9.0", and a missing component counts as 0 ("26.08" = "26.08.0").
+;;; A development build counts as the version it will be released as, since
+;;; it already contains that version's features. Outside wxMaxima (where
+;;; $wxmaximaversion never gets set to a string) the answer is false.
+(defun $wx_version_min (required)
+  (unless (stringp required)
+    (merror "wx_version_min: expected a version string like \"26.08.0\", got ~M" required))
+  (let ((want (wx-version-components required)))
+    (unless want
+      (merror "wx_version_min: ~M is not a version number like \"26.08.0\"" required))
+    (unless (stringp $wxmaximaversion)
+      (return-from $wx_version_min nil))
+    (let ((have (wx-version-components $wxmaximaversion)))
+      (loop
+        (when (and (null have) (null want)) (return t))
+        (let ((h (or (pop have) 0))
+              (w (or (pop want) 0)))
+          (cond ((> h w) (return t))
+                ((< h w) (return nil))))))))
+
   ;;; Any half-way new maxima will define these variables that add
   ;;; info about the front-end to the build_info(). If we encounter
   ;;; an old maxima that is no problem since we can create them
@@ -1960,6 +2001,13 @@ Submit bug reports by following the 'New issue' link on that page."))
     (t
      `(((mequal simp) $dimensions ,$wxplot_size)))))
 
+;; Shared by the with_slider_draw* / wxanimate_draw* family.
+;;
+;; SCENE-HEAD is the head (($gr2d) or ($gr3d)) that wraps a frame's
+;; arguments into a single scene, which is then passed to draw().
+;; SCENE-HEAD nil means "bare" (with_slider_draw_bare): the frame's
+;; arguments are handed to draw() as they are, so a frame can consist of
+;; several gr2d()/gr3d() scenes plus draw()'s global options.
 (defun wxanimate-draw (scenes scene-head)
   (unless ($get '$draw '$version) ($load "draw"))
   (multiple-value-bind (scene file-name) (get-file-name-opt (cdr scenes))
@@ -1970,6 +2018,10 @@ Submit bug reports by following the 'New issue' link on that page."))
 	   (images ()))
       (when (integerp a-range)
 	(setq a-range (cons '(mlist simp) (loop for i from 1 to a-range collect i))))
+      ;; draw()'s animated_gif terminal makes one gif frame out of each
+      ;; scene, which cannot express a frame made of several scenes.
+      (when (and file-name (null scene-head))
+	(merror "with_slider_draw_bare: file_name is not supported. Right-click the animation in wxMaxima to export it as a gif instead."))
       (if file-name
 	  ;; If file_name is set, draw the animation into gif using gnuplot
 	  (let (imgs)
@@ -1995,9 +2047,11 @@ Submit bug reports by following the 'New issue' link on that page."))
 	      (let* ((filename (wxplot-filename nil))
 		     (gnuplotfilename (wxplot-gnuplotfilename))
 		     (datafilename (wxplot-datafilename))
-		     (args (cons scene-head
-				 (mapcar #'(lambda (arg) (meval (maxima-substitute aval a arg)))
-					 args))))
+		     (frame-args (mapcar #'(lambda (arg) (meval (maxima-substitute aval a arg)))
+					 args))
+		     (draw-args (if scene-head
+				    (list (cons scene-head frame-args))
+				    frame-args)))
 		(setq images (cons (format nil
 					   (if $wxplot_usesvg "~a.svg" "~a.png")
 					   filename)
@@ -2019,7 +2073,7 @@ Submit bug reports by following the 'New issue' link on that page."))
 			   ((mequal simp) $data_file_name ,datafilename)
 			   ((mequal simp) $file_name ,filename))
 			 (get-pic-size-opt)
-			 (list args)))))
+			 draw-args))))
 	    (when images
 	      (slide-tag images))))
       "")))
@@ -2035,6 +2089,12 @@ Submit bug reports by following the 'New issue' link on that page."))
 
 (defmspec $with_slider_draw3d (scene)
   (wxanimate-draw scene '($gr3d)))
+
+;; Like with_slider_draw, but each frame is a plain draw() call rather than
+;; a draw2d() one: the arguments may be several gr2d()/gr3d() scenes and
+;; draw()'s global options (columns, dimensions, ...).
+(defmspec $with_slider_draw_bare (scene)
+  (wxanimate-draw scene nil))
 
 (defmspec $wxanimate_draw3d (scene)
   (wxanimate-draw scene '($gr3d)))

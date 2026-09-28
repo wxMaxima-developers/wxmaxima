@@ -152,6 +152,16 @@ public:
   //! Is the entry in this row and column left out of the display?
   bool IsElided(size_t row, size_t col) const
     { return m_rowElision.Hides(row) || m_colElision.Hides(col); }
+  /*! Which entry's slot is at this point?
+
+    Finds the row and the column whose band (see DrawBands()) the point lies
+    in -- the whole slot, gaps included, not just the entry's own text, so the
+    answer doesn't flicker between an entry and nothing as the mouse crosses
+    the space between two entries. Counts from 0. False on the brackets, on
+    the dots that mark elided rows or columns, and outside the viewport of a
+    scrolling matrix.
+  */
+  bool EntryAt(wxPoint point, size_t &row, size_t &col) const;
   //! How many columns are left out of the display (0 = none)
   size_t ElidedColumns() const { return m_colElision.count; }
   //! How many rows are left out of the display (0 = none)
