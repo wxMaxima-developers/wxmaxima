@@ -1,5 +1,11 @@
 # Current development version
 
+- `wx_matrix()` now only returns the formatted matrix instead of also
+  displaying it, so `wx_matrix(M);` shows the matrix once, not twice, and
+  `wx_matrix(M)$` doesn't show it at all. The formatting stays with that
+  value: `F: wx_matrix(M, lines=true)$` followed by `F;` shows `F`
+  formatted, while a result calculated from it, like `F+1`, is shown the
+  normal way.
 - Output arriving from Maxima no longer pushes the cursor down the screen.
   If the cursor is visible and output is appended to a cell above it, the
   worksheet now scrolls along by exactly as much, so the line being read or
