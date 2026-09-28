@@ -1,5 +1,10 @@
 # Current development version
 
+- New function `wx_version_min("26.09.0")`, which returns `true` if the
+  running wxMaxima is at least that version, so a worksheet can check
+  whether it can use a feature. In wxMaxima 26.08.0 and older the function
+  doesn't exist and the call returns itself unevaluated; comparing the
+  result with `true` handles that, too.
 - `wx_matrix()` now only returns the formatted matrix instead of also
   displaying it, so `wx_matrix(M);` shows the matrix once, not twice, and
   `wx_matrix(M)$` doesn't show it at all. The formatting stays with that

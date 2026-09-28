@@ -236,6 +236,47 @@
 	 (rest (subseq v (1+ d2))))
     (list '(mlist simp) (parse-integer year) (parse-integer month) rest)))
 
+;;; Splits the leading "26.08.0" part of a version string into a list of
+;;; integers, (26 8 0). Anything from the first character that is neither a
+;;; digit nor a dot on is ignored, which drops both a "-dev" suffix and the
+;;; "_GTK3"-style toolkit suffix wxMaxima appends to $wxmaximaversion.
+;;; Returns nil if the string doesn't start with a number.
+(defun wx-version-components (v)
+  (let* ((end (or (position-if-not (lambda (c) (or (digit-char-p c) (char= c #\.))) v)
+                  (length v)))
+         (numeric (subseq v 0 end))
+         (result nil)
+         (start 0))
+    (loop
+      (let* ((dot (position #\. numeric :start start))
+             (part (subseq numeric start dot)))
+        (when (string= part "") (return))
+        (push (parse-integer part) result)
+        (if dot (setq start (1+ dot)) (return))))
+    (nreverse result)))
+
+;;; wx_version_min("26.08.0"): true if the running wxMaxima is at least that
+;;; version. Components are compared numerically, so "26.10.0" is newer than
+;;; "26.9.0", and a missing component counts as 0 ("26.08" = "26.08.0").
+;;; A development build counts as the version it will be released as, since
+;;; it already contains that version's features. Outside wxMaxima (where
+;;; $wxmaximaversion never gets set to a string) the answer is false.
+(defun $wx_version_min (required)
+  (unless (stringp required)
+    (merror "wx_version_min: expected a version string like \"26.08.0\", got ~M" required))
+  (let ((want (wx-version-components required)))
+    (unless want
+      (merror "wx_version_min: ~M is not a version number like \"26.08.0\"" required))
+    (unless (stringp $wxmaximaversion)
+      (return-from $wx_version_min nil))
+    (let ((have (wx-version-components $wxmaximaversion)))
+      (loop
+        (when (and (null have) (null want)) (return t))
+        (let ((h (or (pop have) 0))
+              (w (or (pop want) 0)))
+          (cond ((> h w) (return t))
+                ((< h w) (return nil))))))))
+
   ;;; Any half-way new maxima will define these variables that add
   ;;; info about the front-end to the build_info(). If we encounter
   ;;; an old maxima that is no problem since we can create them
