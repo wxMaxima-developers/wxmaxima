@@ -1,5 +1,11 @@
 # Current development version
 
+- `wx_matrix()` now only returns the formatted matrix instead of also
+  displaying it, so `wx_matrix(M);` shows the matrix once, not twice, and
+  `wx_matrix(M)$` doesn't show it at all. The formatting stays with that
+  value: `F: wx_matrix(M, lines=true)$` followed by `F;` shows `F`
+  formatted, while a result calculated from it, like `F+1`, is shown the
+  normal way.
 - Closing the diff viewer no longer resets settings that were changed in the
   main window while it was open (#2356).
 - Output arriving from Maxima no longer pushes the cursor down the screen.

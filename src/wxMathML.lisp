@@ -2663,9 +2663,13 @@ Submit bug reports by following the 'New issue' link on that page."))
            ((eq oversized '$scroll) (setq mtrx (append mtrx '(oversized_scroll))))
            (t (merror "wx_matrix: oversized must be full, elide or scroll, not ~M"
                       oversized))))
-       (let ((res (cons (append '($matrix simp) mtrx) (cdr mat))))
-         (displa res)
-         res)))))
+       ;; Only return the matrix, don't display it: the options travel in
+       ;; the matrix's own header, which wxxml-matrix reads when the result
+       ;; is displayed. They stay with this value (assigning it, %, putting
+       ;; it in a list, copymatrix, subst, ...), while a calculation that
+       ;; builds a new matrix (m+1, transpose(m), m.m, ...) drops them, so
+       ;; its result is shown the normal way.
+       (cons (append '($matrix simp) mtrx) (cdr mat))))))
 
 (no-warning
  (defun mredef-check (fnname)
