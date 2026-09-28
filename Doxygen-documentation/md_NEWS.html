@@ -73,6 +73,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><ul>
+<li>Hovering the mouse over a matrix now shows which entry it is over, as "Row 2, column 3", numbered like <code>M[2,3]</code>. This makes it easier to find your way around a large matrix, including one whose middle rows or columns are left out or that scrolls. In a matrix of matrices the row and column of the outer matrix are shown.</li>
 <li><code>wx_matrix()</code> now only returns the formatted matrix instead of also displaying it, so <code>wx_matrix(M);</code> shows the matrix once, not twice, and <code>wx_matrix(M)$</code> doesn't show it at all. The formatting stays with that value: <code>F: wx_matrix(M, lines=true)$</code> followed by <code>F;</code> shows <code>F</code> formatted, while a result calculated from it, like <code>F+1</code>, is shown the normal way.</li>
 <li>Closing the diff viewer no longer resets settings that were changed in the main window while it was open (#2356).</li>
 <li>Output arriving from <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> no longer pushes the cursor down the screen. If the cursor is visible and output is appended to a cell above it, the worksheet now scrolls along by exactly as much, so the line being read or typed in stays where it was and the new output grows upwards instead. The worksheet can only scroll in steps of several pixels; to make this exact its top margin varies by up to one such step.</li>

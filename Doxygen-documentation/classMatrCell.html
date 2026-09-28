@@ -146,6 +146,9 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>GetMatrixColumns</b
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsElided</b> (size_t row, size_t col) const</td></tr>
 <tr class="memdesc:aaa64deef616f10e3b73c23a20e61dcfd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is the entry in this row and column left out of the display? <br /></td></tr>
 <tr class="separator:aaa64deef616f10e3b73c23a20e61dcfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a955229448cedfe64c12966e5719de778"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrCell.html#a955229448cedfe64c12966e5719de778">EntryAt</a> (wxPoint point, size_t &amp;row, size_t &amp;col) const</td></tr>
+<tr class="memdesc:a955229448cedfe64c12966e5719de778"><td class="mdescLeft">&#160;</td><td class="mdescRight">Which entry's slot is at this point?  <br /></td></tr>
+<tr class="separator:a955229448cedfe64c12966e5719de778"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0923ef260e9349a556f4486aad251462"><td class="memItemLeft" align="right" valign="top"><a id="a0923ef260e9349a556f4486aad251462" name="a0923ef260e9349a556f4486aad251462"></a>
 size_t&#160;</td><td class="memItemRight" valign="bottom"><b>ElidedColumns</b> () const</td></tr>
 <tr class="memdesc:a0923ef260e9349a556f4486aad251462"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many columns are left out of the display (0 = none) <br /></td></tr>
@@ -1638,6 +1641,43 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 
 <p>Is this cell currently visible in the window? </p>
 <p>Uses <a class="el" href="classCell.html#abad02e43ae23b7de040b79d013d41485" title="Returns the pre-calculated worksheet position of the cell.">GetCurrentPoint()</a> to check visibility. </p>
+
+</div>
+</div>
+<a id="a955229448cedfe64c12966e5719de778" name="a955229448cedfe64c12966e5719de778"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a955229448cedfe64c12966e5719de778">&#9670;&#160;</a></span>EntryAt()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool MatrCell::EntryAt </td>
+          <td>(</td>
+          <td class="paramtype">wxPoint&#160;</td>
+          <td class="paramname"><em>point</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t &amp;&#160;</td>
+          <td class="paramname"><em>row</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t &amp;&#160;</td>
+          <td class="paramname"><em>col</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Which entry's slot is at this point? </p>
+<p>Finds the row and the column whose band (see DrawBands()) the point lies in &ndash; the whole slot, gaps included, not just the entry's own text, so the answer doesn't flicker between an entry and nothing as the mouse crosses the space between two entries. Counts from 0. False on the brackets, on the dots that mark elided rows or columns, and outside the viewport of a scrolling matrix. </p>
 
 </div>
 </div>
@@ -3552,7 +3592,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 </div><div class="memdoc">
 
 <p>Allows to change the text a <a class="el" href="classTextCell.html" title="A Text cell.">TextCell</a> contains. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000007">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
 
 </div>
 </div>
