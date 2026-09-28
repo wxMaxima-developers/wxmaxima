@@ -175,6 +175,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetDimension</b> ()</
 <tr class="memitem:ae06c4cb971ff43fe55e998d16fb9728c"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrCell.html#ae06c4cb971ff43fe55e998d16fb9728c">ToMatlab</a> () const override</td></tr>
 <tr class="memdesc:ae06c4cb971ff43fe55e998d16fb9728c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert this cell to its Matlab representation.  <br /></td></tr>
 <tr class="separator:ae06c4cb971ff43fe55e998d16fb9728c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74c31bc344819381737537de17fb5225"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrCell.html#a74c31bc344819381737537de17fb5225">ToCSV</a> (const wxString &amp;delimiter) const</td></tr>
+<tr class="memdesc:a74c31bc344819381737537de17fb5225"><td class="mdescLeft">&#160;</td><td class="mdescRight">The matrix as comma- (or tab-, ...) separated values (GH #2364)  <br /></td></tr>
+<tr class="separator:a74c31bc344819381737537de17fb5225"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5bcde3c481e5f361a61a359a097be6b0"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrCell.html#a5bcde3c481e5f361a61a359a097be6b0">ToOMML</a> () const override</td></tr>
 <tr class="memdesc:a5bcde3c481e5f361a61a359a097be6b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the cell's representation as OMML.  <br /></td></tr>
 <tr class="separator:a5bcde3c481e5f361a61a359a097be6b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3682,7 +3685,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 </div><div class="memdoc">
 
 <p>Allows to change the text a <a class="el" href="classTextCell.html" title="A Text cell.">TextCell</a> contains. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000007">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
 
 </div>
 </div>
@@ -3788,6 +3791,27 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 
 <p>Recursively visits this cell and everything nested inside it (including an image produced by the very last evaluated cell, which may still be loading on a background thread at the instant this is called), tallying GH #2178 image load failures into <em>dataUnavailable/<em>decodeFailed</em>.</em> </p>
 <p>Reflects only the CURRENT, final state of each image: one that failed once but was then reloaded successfully (e.g. a stale embedded copy later replaced by a fresh evaluation) is not counted. </p>
+
+</div>
+</div>
+<a id="a74c31bc344819381737537de17fb5225" name="a74c31bc344819381737537de17fb5225"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a74c31bc344819381737537de17fb5225">&#9670;&#160;</a></span>ToCSV()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxString MatrCell::ToCSV </td>
+          <td>(</td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
+          <td class="paramname"><em>delimiter</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The matrix as comma- (or tab-, ...) separated values (GH #2364) </p>
+<p>One line per row, entries separated by delimiter, each entry being what <a class="el" href="classMatrCell.html#a19076077cadb18e3a778ce01a11616d4" title="Returns the cell&#39;s representation as a string.">ToString()</a> would give for it. An entry that contains the delimiter, a double quote or a line break is quoted as RFC 4180 says: wrapped in double quotes, with every double quote inside it doubled. Heading rows and columns are ordinary rows and columns here. </p>
 
 </div>
 </div>
