@@ -251,6 +251,33 @@ jobs:
              cmake --build . --target update-locale
              cd ..
 
+  compile_gcc12:
+    # Builds with the oldest compiler wxMaxima supports: GCC 12, Debian 12's
+    # stock compiler (the oldest distribution that still packages wxWidgets
+    # 3.2). The code may use any C++20 feature this compiler implements -- see
+    # "C++ Standard" in AGENTS.md -- and this job is what tells us when a
+    # change uses one it doesn't (std::format being the notable example).
+    # Every other job uses a newer compiler, so without it such a change
+    # would only break for the people building on Debian 12.
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout_git
+        uses: actions/checkout@v7
+      - name: install_packages
+        run: |
+             sudo apt-get update
+             sudo apt-get install cmake g++-12 gettext libwxgtk3.2-dev libwxgtk-webview3.2-dev libfribidi-dev ninja-build
+      - name: configure
+        run: |
+             export CXXFLAGS="-Wall -Wextra"
+             cmake -S . -B build -G Ninja -DCMAKE_C_COMPILER=gcc-12 -DCMAKE_CXX_COMPILER=g++-12 -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=16 -DWXM_UNIT_TESTS=YES
+      - name: compile
+        # Everything, including the unit tests, so their code is held to the
+        # same compiler.
+        run: cmake --build build
+
   compile_2404:
     # Pinned to an LTS release (not ubuntu-latest) so the .deb it ships is
     # installable on a stock system of a release users actually run. 22.04
