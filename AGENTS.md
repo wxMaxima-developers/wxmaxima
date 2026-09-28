@@ -223,8 +223,8 @@ working without extra checks.
   tests (`openMacFiles`/`openMacFiles2`) instead *time out* (confirmed to
   reproduce identically on an unmodified `main` checkout in an isolated
   worktree, so it's pre-existing and unrelated to any particular change) --
-  not yet root-caused. Don't burn time re-diagnosing either symptom from
-  scratch; both are sandbox/pre-existing, not something a code change here
+  not yet root-caused, tracked as GH #2350. Don't burn time re-diagnosing
+  either symptom from scratch; both are sandbox/pre-existing, not something a code change here
   broke. **Neither this workaround nor `gnuplot`'s installation (below)
   persists across sandbox instances** -- confirmed directly: a session that
   applied both earlier came back to a broad `ctest -E
@@ -271,8 +271,8 @@ working without extra checks.
   Read the skill before re-investigating either: most of its length is
   theories already disproven by hard evidence.
 
-- **macOS translation files never reaching the app bundle (GH #1711) --
-  two independent bugs, neither of which this sandbox (Linux, no
+- **macOS translation files never reaching the app bundle (GH #1711, closed
+  as fixed) -- two independent bugs, neither of which this sandbox (Linux, no
   `.app`/`MACOSX_BUNDLE`/DragNDrop support at all) can actually build or
   verify.** `Dirstructure::LocaleDir()`/`wxFileTranslationsLoader` (see
   `main.cpp`) look specifically under
@@ -404,7 +404,7 @@ a local TCP socket.
   it directly -- including that it leaves a *sidebar's* legitimate non-zero
   row alone, and that a caption containing text like `row=2` is not mistaken
   for a geometry field.
-  **Still failing afterwards, and unrelated:** `testbench_simple.wxmx`
+  **Still failing afterwards, and unrelated (GH #2349):** `testbench_simple.wxmx`
   aborts inside GTK4's own widget allocation (`gtk_widget_allocate` /
   `gtk_scrolled_window_set_vadjustment`, reached through
   `wxPizza::size_allocate_child`). The assert used to abort that test before
@@ -496,7 +496,8 @@ a local TCP socket.
     the matrix, nesting). **The focus behaviour is the untested part on MSW/macOS**:
     the scrollbars override `AcceptsFocus()` so a click can't leave the arrow
     keys scrolling the matrix, but whether a native Windows scrollbar honours
-    that on a click wasn't checkable here.
+    that on a click wasn't checkable here. Tracked as GH #2352, with steps
+    for whoever has a Windows or macOS build.
 - **A second `Worksheet` on a copy of the configuration -- the matrix
   viewer (GH #2344, `src/dialogs/MatrixViewer.{h,cpp}`) -- has two traps,
   both found only by a test failing for the wrong reason.**
@@ -510,6 +511,11 @@ a local TCP socket.
      temporary. The viewer's copy hides labels and code cells and shows
      every matrix in full; without `Configuration::MakeTemporary()` closing
      the viewer made those the user's own settings. `DiffFrame`'s
+     per-pane copies are not made temporary either; they change nothing
+     after `ReadConfig()`, so they only write back what they read, but a
+     setting changed in the main window while a diff is open would be
+     overwritten when the diff closes -- untested, and a separate fix
+     (GH #2356).
      per-pane copies are temporary for the same reason: they only wrote
      back what they read, but that overwrote any setting changed in the
      main window while a diff was open (GH #2356,
@@ -833,67 +839,14 @@ a local TCP socket.
   code, selected the group cell via hCaret + Shift+Up, confirmed the
   rendered text changed consistently and a single Ctrl+Z restored it).
 
-- **GH #2278 -- selection-rectangle width can slightly differ from the
-  rendered text's actual width, investigated but NOT YET FIXED (2026-08).**
-  Root cause confirmed by reading the measurement/draw code side by side, not
-  guessed: `EditorCell` computes horizontal position two structurally
-  different ways that both amount to "measure pieces separately and sum
-  them," and the pieces don't line up the same way in both places.
-  `EditorCell::Draw()` (`EditorCell.cpp` ~line 1042) paints text **per
-  `StyledText` token** -- each token gets its own `dc->GetTextExtent()` /
-  `dc->DrawText()` call, and `TextCurrentPoint.x += width` accumulates the
-  *pen* position as the sum of those independently-shaped token widths, so
-  any kerning or (for a contextual script) glyph-shape change that would
-  normally happen *across* a token boundary is never applied -- the two
-  neighboring glyphs are shaped in total isolation from each other.
-  `EditorCell::GetLineWidth()` (used by `PositionToPoint()` for an
-  ordinary, single-direction line) reimplements that same per-token
-  accumulation independently (`lineWidth += GetTextSize(snippet).GetWidth()`,
-  with the final partial token measured via `snippet.Left(pos)`) -- so for a
-  single-direction line the two at least agree with each other, both being
-  equally kerning-blind at token boundaries. The bidi work
-  (`MixedDirectionOffset()`, added for mixed-direction line support) does
-  something different: it measures each `BidiRun` **as one whole
-  substring** via `MeasureTextWidth()` (`m_text.SubString(...)`), which
-  *does* let the font shape it correctly -- kerning pairs and (critically,
-  for Arabic-like scripts) contextual join forms all resolve the way they
-  would if the run were drawn as a single unit. That's a strictly *more*
-  accurate measurement of what the font would produce for that span, but
-  it's answering a different question than what `Draw()` actually paints
-  (per-token, unshaped-across-boundaries) -- so on a mixed-direction line,
-  `MarkSelection()`'s selection rectangle (built from two
-  `MixedDirectionOffset()`-derived `PositionToPoint()` calls, `EditorCell.cpp`
-  ~line 852-877) can come out a few pixels narrower or wider than the glyphs
-  `Draw()` actually painted for that same span, especially where a token
-  boundary falls in the middle of a script that reshapes heavily by context.
-  **This is not a simple "measures per character instead of per whole
-  string" bug** (that specific hypothesis, which is how the issue itself is
-  worded, doesn't survive reading `MeasureTextWidth()` -- it already
-  measures its input as one `GetTextExtent()` call, not character by
-  character); it is a *disagreement between two independently-correct-looking
-  but differently-grained measurement strategies*, one of which (`Draw()`'s
-  per-token painting) is the one that actually determines what's on screen
-  and should be the one every other measurement is judged against.
-  A real fix needs one of: (a) make `MixedDirectionOffset()` sum cached
-  per-`StyledText`-token widths the same way `GetLineWidth()`/`Draw()` do
-  (loses the bidi work's kerning-accuracy improvement, but makes the
-  selection rectangle match pixel-for-pixel what's actually drawn -- the
-  correct alignment target), or (b) make `Draw()` paint each maximal
-  same-direction run as a single `DrawText()` call instead of per token
-  (recovers the accuracy `MixedDirectionOffset()` already computes, but
-  touches the same per-token color-styling/tab/indent-char logic that
-  `EditorCell::Draw()`'s text loop handles all at once, and duplicated across
-  `MarkSelection()`'s own line-splitting loop). Deliberately **not**
-  attempted in this pass: both routes touch code that the 2026-08 bidi work
-  (cursor placement, click-to-position, arrow-key navigation -- see
-  "Extend bidi fix to caret placement..." in git log) already spent real
-  effort getting right, and a "few pixels off" selection-rectangle glitch
-  does not obviously justify the regression risk of changing it blind. Route
-  (a) is probably the lower-risk one to attempt first: `StyledText` doesn't
-  currently track its own `m_text` character offset, so the main work is
-  adding/deriving that mapping (tokens are already emitted in `m_text`
-  order, so it is a running-counter walk, not a search) rather than touching
-  any of the already-stabilized cursor/click bidi logic itself.
+- **GH #2278 -- the selection rectangle can be a few pixels off the
+  rendered text on a mixed-direction line (still open).** `Draw()` paints per
+  `StyledText` token while `MixedDirectionOffset()` measures each bidi run as
+  one substring, so the two disagree wherever shaping crosses a token
+  boundary. The full analysis and the two candidate fixes (the lower-risk one
+  is making `MixedDirectionOffset()` sum per-token widths) are in
+  [the issue](https://github.com/wxMaxima-developers/wxmaxima/issues/2278#issuecomment-5864685775);
+  read it before touching `EditorCell`'s measurement code.
 
 - **GH #2274 -- Windows Dark Mode only affecting the worksheet, not the rest
   of the interface. Root cause found by reading wxWidgets 3.3's own MSW
@@ -1213,7 +1166,7 @@ tried without rebuilding.
     channel that never touches wxMaxima's stdio. Pointing `--maxima` at a
     wrapper that appends a line to a file and then runs the real Maxima
     would count spawns on every platform; that is the way to get the
-    Windows coverage back, and it is untried.
+    Windows coverage back, and it is untried (GH #2351).
 
 - **`m_configCommands` (`wxMaxima.cpp`):** the string of startup/config commands
   sent to Maxima on connect (and again whenever settings change while it's
@@ -1350,6 +1303,8 @@ tried without rebuilding.
   reader) has no corresponding unescape, since round-tripping a
   wxMaxima-exported `.mac`'s text cells back into wxMaxima is out of scope
   for this fix and only costs a cosmetic `&#47;` showing up literally.
+  Doing it properly needs a way to tell a wxMaxima-written `.mac` from a
+  hand-written one, which the export doesn't currently provide -- GH #2353.
   **Known, accepted limitation** (also already flagged in the same GH
   #1907 thread): this can't retroactively fix a `.wxm` file already on
   disk from before this existed, and a file whose prose coincidentally
@@ -1651,7 +1606,7 @@ tried without rebuilding.
 - **wxWidgets Version:** Maintain compatibility with wxWidgets 3.0.5 where possible. Avoid features only available in 3.1+ (e.g., use `MakeAbsolute()` + `GetFullPath()` instead of `GetAbsolutePath()`).
 - **Sizer Flags Are Different Enum Types:** `wxDirection` (`wxLEFT`/`wxRIGHT`/`wxALL`/...), `wxAlignment` (`wxALIGN_*`) and `wxStretch` (`wxEXPAND`/...) are three distinct unscoped enums; OR'ing two of them directly (e.g. `wxALIGN_CENTER_VERTICAL | wxALL`) is deprecated in C++20 and GCC warns `-Wdeprecated-enum-enum-conversion`. Fix by casting the *first* operand of the OR-chain to `int` (e.g. `static_cast<int>(wxALIGN_CENTER_VERTICAL) | wxALL`) -- since `|` is left-associative, this makes every subsequent operation `int | enum`, which is unambiguous and unwarned, without needing to touch the rest of the chain. Only the leftmost token needs the cast, however many differently-typed flags follow.
 - **`[[maybe_unused]]` on data members and GCC < 12:** GCC before version 12 doesn't support `[[maybe_unused]]` on non-static data members at all and warns `'maybe_unused' attribute ignored [-Wattributes]` regardless of whether the member is actually used (reproduced directly against `g++-11`; fixed by `g++-12`). Since the attribute is still needed for Clang (`-Wunused-private-field`), don't just delete it -- wrap the declaration in `#if defined(__GNUC__) && !defined(__clang__) && __GNUC__ < 12` / `#pragma GCC diagnostic push/ignored "-Wattributes"` ... `#pragma GCC diagnostic pop` / `#endif` (see `SvgBitmap.h`, `wxMathml.h`, `graphical_io/Printout.h`).
-- **CI Warnings Live On the Non-`-Werror` Jobs:** `compile_latest_and_test` and `compile_without_webview` (Ubuntu) build with `-Werror`, so they can't show warnings by construction -- check `compile_2204` (Ubuntu 22.04, plain `-Wall -Wextra`, GCC 11) for real warnings that survive to a release build. Don't assume that job's warning list is exhaustive, though: e.g. the `[[maybe_unused]]`-on-a-data-member GCC<12 warning above showed up for `Printout.h` in one such log but not for the identical pattern in `SvgBitmap.h`/`wxMathml.h` in the same run, for reasons that weren't tracked down (not precompiled headers -- `WXM_ENABLE_PRECOMPILED_HEADERS` defaults `OFF`) -- a clean local build with `g++-11 -Wall -Wextra` is the more reliable check for this specific class of warning.
+- **CI Warnings Live On the Non-`-Werror` Jobs:** `compile_latest_and_test` and `compile_without_webview` (Ubuntu) build with `-Werror`, so they can't show warnings by construction -- check `compile_2204` (Ubuntu 22.04, plain `-Wall -Wextra`, GCC 11) for real warnings that survive to a release build. Don't assume that job's warning list is exhaustive, though: e.g. the `[[maybe_unused]]`-on-a-data-member GCC<12 warning above showed up for `Printout.h` in one such log but not for the identical pattern in `SvgBitmap.h`/`wxMathml.h` in the same run, for reasons that weren't tracked down (not precompiled headers: until 2026-09 that option silently did nothing, see the build-speed notes under Build System) -- a clean local build with `g++-11 -Wall -Wextra` is the more reliable check for this specific class of warning.
 - **`Cell` Bitfields Use C++20 Default Member Initializers, Not `InitBitFields_ClassName()`:** Every per-class flag bit-field (`Cell`, `EditorCell`, `GroupCell`, `TextCell`, `MatrCell`, and the rest of `src/cells/`) declares its default inline, e.g. `bool m_foo : 1 = false;`. The older pattern -- an `InitBitFields_ClassName()` method called from the constructor body, with each field tagged `/* InitBitFields_ClassName */` -- predated C++20 support for bit-field default member initializers and has been fully removed (2026-08); don't reintroduce it for new flags. Classes with zero bit-fields of their own no longer carry an empty stub either. Before folding an existing full-size `bool m_foo;` into a class's bitfield, check (1) nothing takes its address (`&m_foo` doesn't work on a bit-field member) and (2) it's only touched from the GUI thread (no cross-thread `bool` atomicity/tearing expectations) -- worksheet cells are not thread-shared, but double-check call sites rather than assuming. **Declaration order matters more than usual here**: C++ initializes members in declaration order, not constructor-init-list order, so a bit-field read by a *later*-declared member's own initializer (e.g. `IntervalCell::m_leftBracketOpensLeft`/`m_rightBracketOpensRight`, read by the `m_openBracket`/`m_closeBracket` initializers) must stay declared *before* those members -- relocating it next to an unrelated bitfield group to save a byte is undefined behavior (reading the bit-field before it's initialized), not just a style choice, caught before it shipped by tracing the actual initialization order rather than trusting the mem-initializer-list order. When a field can't move, bit-fielding it in place still works: two adjacent `: 1` declarations pack into a shared byte regardless of position.
 - **Tab Characters in `EditorCell`:** A `'\t'` is a real, single character in `m_text` (see `EditorCell::NormalizeLineEndings()`, which replaced the old `TabExpand()` that irreversibly rewrote every tab to 1-4 spaces on input/paste/load). It is expanded to the next 4-column tab stop -- one column being the width of a space glyph in the current font -- only where text becomes pixels, via `EditorCell::NextTabStop(startX)`/`MeasureTextWidth(startX, text)`. Tab width is **position-dependent**, the one thing `GetTextExtent()`/`GetTextSize()` cannot compute on their own (unlike every other character), so it can never be cached the way `StyledText::SetWidth()` caches other tokens' widths. `MaximaTokenizer` guarantees a tab is always its own isolated, single-character token (never merged into a space run, mirroring how a newline is already its own token) -- this is *load-bearing*: every `m_styledText`-based site (`Draw()`, `Recalculate()`, `GetLineWidth()`, `SelectPointText()`'s code-cell branch, `StyleTextCode()`) only needs a `text == wxS("\t")` equality check as a result, never substring splitting. Prose/text cells don't go through `MaximaTokenizer` at all, so `EditorCell::StyleTextTexts()` uses its own splitter, `PushTextLine()`, to get the same isolation guarantee for a tab embedded in an otherwise plain line of text. Sites that measure a raw `m_text` substring instead of a single token (`MarkSelection()`, `MixedDirectionOffset()`, `StyleTextTexts()`'s wrap check) go through `MeasureTextWidth()` instead, which splits on `'\t'` internally since a substring can still have one embedded anywhere. Left/Right arrow and Delete need **no special-casing** for tabs -- they already move/delete exactly one `m_text` character, which is now correct automatically. The plain `WXK_BACK` case's old "gobble up to 4 trailing spaces" shim was a workaround for the old space-expanded-tab world and is gone; a real tab deletes in one plain single-character backspace like anything else.
 
@@ -1951,14 +1906,10 @@ tried without rebuilding.
      replacement query for this specific "which language did the user pick"
      question). This lookup needs no version guard -- it's been present and
      works identically on both pre- and post-3.1.6 wxWidgets.
-  - **Not yet done** (deferred, filed as open follow-ups by the maintainer,
-    not part of this fix): #2229 (minimizable sidebars, wxWidgets >= 3.3.2),
-    #2230 (accessible SVG export, >= 3.3.3), #2231 (PNG description chunks
-    on exported cells, >= 3.3.1), #2232 (`wxNO_UNUSED_VARIABLES`, >= 3.2.7).
-    None of the four could be verified in this sandbox, which only has
-    wxWidgets 3.2.4 installed -- any implementation of them here could only
-    be compile-checked on the pre-version-guard fallback path, not the
-    actual new behavior.
+  - The follow-ups filed alongside it -- #2229 (minimizable sidebars),
+    #2230 (accessible SVG export), #2231 (PNG description chunks) and #2232
+    (`wxNO_UNUSED_VARIABLES`) -- have all since been implemented behind
+    `wxCHECK_VERSION` guards and closed.
 
 - **Scaled images losing transparency (GH #2227, `Image::GetBitmap()` in
   `src/Image.cpp`):** the final step of building a scaled display bitmap
@@ -2250,30 +2201,10 @@ Items the maintainer has flagged as worth doing but hasn't asked for yet -- don'
 start on these without checking in first, but pick them up if asked for "what's
 next" style work.
 
-- **GH #1335 -- cell allocations are non-local (still open, unstarted):**
-  `Cell`s are still individually heap-allocated and linked via each cell's own
-  `m_previous`/`m_next`, not stored contiguously. `CellList.h`'s own header
-  comment already says "the eventual plan is to have a list of cells be a
-  dedicated lightweight class working together with an arena allocator", but
-  `CellListBuilderBase` still just holds a `std::unique_ptr<Cell> m_head` --
-  that plan was never implemented. The issue's three proposed moves are all
-  still open: (1) drop `m_previous`/`m_next` from `Cell` in favor of a
-  `CellList` that owns contiguous storage, (2) hoist `m_group` from `Cell` to
-  `CellList` (one owner per list), (3) hoist the per-line-geometry caches --
-  the issue calls them `m_fullWidth`/`m_maxCenter`/`m_maxDrop`, renamed since
-  to `m_cachedSumOfWidths`/`m_cachedCenterList`/`m_cachedMaxDrop`/
-  `m_cachedLineWidth` -- from `Cell` to `CellList` too. Confirmed `sizeof(Cell)`
-  is 224 bytes on the current tree (checked directly, post-#1445), not the 112
-  the issue was measured against in 2020 -- `Cell` has grown substantially
-  since (accessibility support, config-change-tracking atomics, UUID string,
-  extra-XML-attributes map, ...), so the issue's "112 -> 76 bytes" estimate is
-  stale, but the underlying proposal is still real. This is a bigger
-  undertaking than #1445: it changes the core list *storage model*
-  (`m_next`/`m_previous` becoming array-relative instead of pointer-based),
-  touching every list-manipulation site in `CellList.cpp` plus anything
-  walking `GetNext()`/`GetPrevious()` directly -- scope it out carefully
-  before starting, don't assume it's a small follow-on to #1445 just because
-  they're adjacent/both filed by KubaO in 2020.
+Nothing at the moment. Open work lives in GitHub issues rather than here;
+when an entry above says something is still open, it names the issue that
+tracks it. (GH #1335, contiguous cell storage, used to be listed here; it was
+closed as not planned.)
 
 ## Error resilience
 

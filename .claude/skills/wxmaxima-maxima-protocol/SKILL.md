@@ -94,6 +94,10 @@ several sessions each. `lisp_mode` is **fixed**; `tutorial_10Minutes` has a
 verified workaround but its underlying bug - a whole statement silently
 dropped before it ever reaches `Maxima::Write()` - is **confirmed and still
 open** (GH #2196).
+GH #2196 was closed on 2026-08-05 by a comment citing 912da1c, which is
+actually the fix for #2178 (image loading) and does not touch the evaluation
+queue; it was reopened on 2026-09-28. Don't read its closed-then-reopened
+history as "fixed".
 
 Kept at length deliberately: most of the value is the list of theories that
 were directly disproven, and the reproduction recipes, which are not obvious
