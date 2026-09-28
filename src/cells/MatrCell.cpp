@@ -483,7 +483,10 @@ const wxString MatrCell::GetToolTip(const wxPoint point) const {
 
   // Anywhere else on an elided matrix -- including its entries, which have no
   // tooltip of their own, just as Cell::GetToolTip() lets a parent's tooltip
-  // cover its children -- say what is missing, and that nothing is lost by it.
+  // cover its children -- say what is missing, that nothing is lost by it,
+  // and how to see it anyway (the MatrixViewer, GH #2344). That last hint is a
+  // sentence of its own, so the existing translations of the rest still fit.
+  const wxString seeAll = wxS(" ") + _("Double-click the matrix to see all of it.");
   const unsigned long firstRow = m_rowElision.first + 1;
   const unsigned long lastRow = m_rowElision.first + m_rowElision.count;
   const unsigned long firstCol = m_colElision.first + 1;
@@ -492,17 +495,17 @@ const wxString MatrCell::GetToolTip(const wxPoint point) const {
     return wxString::Format(
       _("Rows %lu to %lu and columns %lu to %lu of this matrix are not shown, "
         "so that it fits the window. Copying the matrix copies all of it."),
-      firstRow, lastRow, firstCol, lastCol);
+      firstRow, lastRow, firstCol, lastCol) + seeAll;
   if (m_rowElision.Active())
     return wxString::Format(
       _("Rows %lu to %lu of this matrix are not shown, so that it fits the "
         "window. Copying the matrix copies all of it."),
-      firstRow, lastRow);
+      firstRow, lastRow) + seeAll;
   if (m_colElision.Active())
     return wxString::Format(
       _("Columns %lu to %lu of this matrix are not shown, so that it fits the "
         "window. Copying the matrix copies all of it."),
-      firstCol, lastCol);
+      firstCol, lastCol) + seeAll;
 
   return GetLocalToolTip();
 }

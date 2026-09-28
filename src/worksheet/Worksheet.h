@@ -474,6 +474,14 @@ public:
 
   //! Is called on double click on a cell.
   void OnDoubleClick(wxMouseEvent &event);
+  /*! Opens a MatrixViewer if there is a partially shown matrix at this point
+
+    \param position A point in window (scrolled) coordinates, as a mouse event
+                    reports it.
+    Returns true if a viewer was opened. See
+    MatrixViewer::PartiallyShownMatrixAt() for which matrices qualify.
+  */
+  bool OpenMatrixViewerAt(wxPoint position);
 
   //! Key pressed inside a cell
   void OnCharInActive(wxKeyEvent &event);
@@ -823,6 +831,8 @@ public:
 
   //! Is the vertically-drawn cursor active?
   bool HCaretActive() const { return GetHCaretCursor().IsActive(); }
+  //! Hides the horizontal cursor, e.g. in a worksheet nothing can be inserted into
+  void DeactivateHCaret() { GetHCaretCursor().Deactivate(); }
 
   /*! Can we merge the selected cells into one?
 

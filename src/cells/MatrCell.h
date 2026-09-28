@@ -109,6 +109,11 @@ public:
   const wxString GetToolTip(wxPoint point) const override;
   Range GetInnerCellsInRect(const wxRect &rect) const override;
 
+  //! How many rows the matrix has
+  size_t GetMatrixRows() const { return m_matHeight; }
+  //! How many columns the matrix has
+  size_t GetMatrixColumns() const { return m_matWidth; }
+
   //! Is the entry in this row and column left out of the display?
   bool IsElided(size_t row, size_t col) const
     { return m_rowElision.Hides(row) || m_colElision.Hides(col); }
@@ -262,9 +267,15 @@ private:
   */
   void DrawBands(wxDC *dc) const;
 public:
-  //! Does this matrix get alternating row/column bands? See DrawBands().
-  bool IsBanded() const
+  /*! Does the worksheet show only part of this matrix right now?
+
+    True if rows or columns are elided or the matrix scrolls. Double-clicking
+    such a matrix opens a MatrixViewer showing all of it (GH #2344).
+  */
+  bool IsShownPartially() const
     { return m_colElision.Active() || m_rowElision.Active() || IsScrolling(); }
+  //! Does this matrix get alternating row/column bands? See DrawBands().
+  bool IsBanded() const { return IsShownPartially(); }
 private:
   //! Is this matrix shown in a scrolling viewport right now?
   bool IsScrolling() const

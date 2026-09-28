@@ -497,6 +497,26 @@ a local TCP socket.
     the scrollbars override `AcceptsFocus()` so a click can't leave the arrow
     keys scrolling the matrix, but whether a native Windows scrollbar honours
     that on a click wasn't checkable here.
+- **A second `Worksheet` on a copy of the configuration -- the matrix
+  viewer (GH #2344, `src/dialogs/MatrixViewer.{h,cpp}`) -- has two traps,
+  both found only by a test failing for the wrong reason.**
+  1. **`Worksheet`'s constructor calls `ReadConfig()` on the configuration
+     it is given**, so anything set on a copied `Configuration` before the
+     worksheet exists is silently replaced by what the config file says.
+     Configure the copy *after* constructing its worksheet.
+  2. **A `Configuration` writes all its settings to the config file when it
+     is destroyed**, unless it is `temporary` -- and the copy constructor
+     copies that, so a copy of the worksheet's configuration is not
+     temporary. The viewer's copy hides labels and code cells and shows
+     every matrix in full; without `Configuration::MakeTemporary()` closing
+     the viewer made those the user's own settings. `DiffFrame`'s
+     per-pane copies are not made temporary either; they change nothing
+     after `ReadConfig()`, so they only write back what they read, but a
+     setting changed in the main window while a diff is open would be
+     overwritten when the diff closes -- untested, and a separate fix.
+  The viewer copies its matrix through `ToXML()` and `MathParser` rather
+  than `Cell::Copy()`, because a copied cell keeps pointing at the original
+  cell's configuration, not the viewer's.
 - **Cursors:** The worksheet has 2 types of Cursor: A standard cursor in an EditorCell or a hCaret between two worksheet cells (`m_hCaretPosition`, the horizontal bar that marks a position *between* group cells, used for inserting and for selecting whole cells). Only one cursor is active at a time.
 - **Key Classes:**
   - `wxMaxima` (`src/wxMaxima.cpp`): The main application class (subclass of `wxMaximaFrame`). Holds most of the program logic -- Maxima process management, parsing incoming XML, menu and toolbar actions, file I/O.
