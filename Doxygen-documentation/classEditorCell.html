@@ -326,6 +326,9 @@ wxPoint&#160;</td><td class="memItemRight" valign="bottom"><b>PositionToPoint</b
 <tr class="memitem:adfa73a425db8d54d6b13bfdff40cee54"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#adfa73a425db8d54d6b13bfdff40cee54">SelectPointText</a> (wxPoint point) override</td></tr>
 <tr class="memdesc:adfa73a425db8d54d6b13bfdff40cee54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the cursor to the screen coordinate point.  <br /></td></tr>
 <tr class="separator:adfa73a425db8d54d6b13bfdff40cee54"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70bc01930bd4f121f2f9fb41dcbf8abe"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#a70bc01930bd4f121f2f9fb41dcbf8abe">GetLinkAt</a> (wxPoint point)</td></tr>
+<tr class="memdesc:a70bc01930bd4f121f2f9fb41dcbf8abe"><td class="mdescLeft">&#160;</td><td class="mdescRight">The address of the link drawn at the screen coordinate point, if any.  <br /></td></tr>
+<tr class="separator:a70bc01930bd4f121f2f9fb41dcbf8abe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa2766d7df796869feda0879eb85192b3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#aa2766d7df796869feda0879eb85192b3">SelectRectText</a> (wxPoint one, wxPoint two) override</td></tr>
 <tr class="memdesc:aa2766d7df796869feda0879eb85192b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Selects the text between the screen coordinates one and two.  <br /></td></tr>
 <tr class="separator:aa2766d7df796869feda0879eb85192b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1236,7 +1239,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 </ul>
 <p>Since Unicode doesn't provide us with a "soft linebreak" letter we use <code>\r</code> as a marker that this line has to be broken here if we don't want it to extend beyond the right margin of the screen.</p>
 <p>In a few places we use wxString::const_iterator instead of accessing individual letters within the string using the [] operator. This might look overly complicated. But in UTF-8 all non-standard-ASCII-characters use more than one byte making iterating over every single char of the string the only way of determining which address char n is at. An iterator is the only way of not having to determine the address of every single char independently.</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>Draw only tokens that are in the redraw region. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000005">Todo:</a></b></dt><dd>Draw only tokens that are in the redraw region. </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="ac3aaa6e05945f0185ff534a310d94e99" name="ac3aaa6e05945f0185ff534a310d94e99"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac3aaa6e05945f0185ff534a310d94e99">&#9670;&#160;</a></span>ActivateCursor()</h2>
@@ -2688,6 +2691,27 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 
 <p>How many pixels is the current line of this list of cells wide? </p>
 <p>This command returns the real line width when all line breaks are really performed. See <a class="el" href="classCell.html#a9c188747e83c42019f7d8c6e87e9829f" title="How many pixels is this list of cells wide, if we don&#39;t break it into lines?">SumOfWidths()</a>. </p>
+
+</div>
+</div>
+<a id="a70bc01930bd4f121f2f9fb41dcbf8abe" name="a70bc01930bd4f121f2f9fb41dcbf8abe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a70bc01930bd4f121f2f9fb41dcbf8abe">&#9670;&#160;</a></span>GetLinkAt()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxString EditorCell::GetLinkAt </td>
+          <td>(</td>
+          <td class="paramtype">wxPoint&#160;</td>
+          <td class="paramname"><em>point</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The address of the link drawn at the screen coordinate point, if any. </p>
+<p>Only text cells have links (GH #2396); a code cell always returns an empty string. Cheap for a cell without links, which returns at once, and otherwise one walk over the cell's snippets with their cached widths. </p>
 
 </div>
 </div>
@@ -4357,7 +4381,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 </div><div class="memdoc">
 
 <p>Allows to change the text a <a class="el" href="classTextCell.html" title="A Text cell.">TextCell</a> contains. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000007">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
 
 </div>
 </div>

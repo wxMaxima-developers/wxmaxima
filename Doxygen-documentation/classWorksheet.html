@@ -332,6 +332,18 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SelectEditable</b> (<
 <tr class="memitem:adf7c839a859941b9ff8c08e00b8831df"><td class="memItemLeft" align="right" valign="top"><a id="adf7c839a859941b9ff8c08e00b8831df" name="adf7c839a859941b9ff8c08e00b8831df"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SelectGroupCells</b> (wxPoint down, wxPoint up)</td></tr>
 <tr class="separator:adf7c839a859941b9ff8c08e00b8831df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba2aec1e6858c5ae1bc6dd973806aa54"><td class="memItemLeft" align="right" valign="top"><a id="aba2aec1e6858c5ae1bc6dd973806aa54" name="aba2aec1e6858c5ae1bc6dd973806aa54"></a>
+wxString&#160;</td><td class="memItemRight" valign="bottom"><b>LinkUnderPointer</b> ()</td></tr>
+<tr class="memdesc:aba2aec1e6858c5ae1bc6dd973806aa54"><td class="mdescLeft">&#160;</td><td class="mdescRight">The link a text cell draws under the mouse pointer, or an empty string. <br /></td></tr>
+<tr class="separator:aba2aec1e6858c5ae1bc6dd973806aa54"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a940d7eac6b76312edfe862def3a19ee5"><td class="memItemLeft" align="right" valign="top"><a id="a940d7eac6b76312edfe862def3a19ee5" name="a940d7eac6b76312edfe862def3a19ee5"></a>
+const wxString &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>GetContextMenuLink</b> () const</td></tr>
+<tr class="memdesc:a940d7eac6b76312edfe862def3a19ee5"><td class="mdescLeft">&#160;</td><td class="mdescRight">The link the last context menu was opened on, or an empty string. <br /></td></tr>
+<tr class="separator:a940d7eac6b76312edfe862def3a19ee5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acbb75a09ef0609c66f57fbd30ca1e36d"><td class="memItemLeft" align="right" valign="top"><a id="acbb75a09ef0609c66f57fbd30ca1e36d" name="acbb75a09ef0609c66f57fbd30ca1e36d"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetContextMenuLink</b> (const wxString &amp;link)</td></tr>
+<tr class="memdesc:acbb75a09ef0609c66f57fbd30ca1e36d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remembers the link the context menu is being opened on. <br /></td></tr>
+<tr class="separator:acbb75a09ef0609c66f57fbd30ca1e36d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf4ec45a1b780ac72ba159358806d376"><td class="memItemLeft" align="right" valign="top"><a id="aaf4ec45a1b780ac72ba159358806d376" name="aaf4ec45a1b780ac72ba159358806d376"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>AdjustSize</b> ()</td></tr>
 <tr class="memdesc:aaf4ec45a1b780ac72ba159358806d376"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adjust the virtual size and scrollbars; see <a class="el" href="classWorksheetLayout.html#a94a4b95c9a596798afe30e907badce31" title="Adjust the virtual size and scrollbars to the document&#39;s extent.">WorksheetLayout::AdjustSize()</a>. <br /></td></tr>
@@ -533,6 +545,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SelectOutputResult</b
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a4476b1a4c96170effc5edec863f09493"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a4476b1a4c96170effc5edec863f09493">OpenLink</a> (const wxString &amp;url)</td></tr>
+<tr class="memdesc:a4476b1a4c96170effc5edec863f09493"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens a link from a text cell in the user's web browser (GH #2396).  <br /></td></tr>
+<tr class="separator:a4476b1a4c96170effc5edec863f09493"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac9172378ffd18695685cdd506c73934a"><td class="memItemLeft" align="right" valign="top"><a id="ac9172378ffd18695685cdd506c73934a" name="ac9172378ffd18695685cdd506c73934a"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsLesserGCType</b> (int type, int comparedTo)</td></tr>
 <tr class="separator:ac9172378ffd18695685cdd506c73934a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -586,6 +601,18 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>m_pointer_y</b> = -1</
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_mouseMotionWas</b> = false</td></tr>
 <tr class="memdesc:a6d313e3c46f2e58c44f5db1669b90f30"><td class="mdescLeft">&#160;</td><td class="mdescRight">Was there a mouse motion we didn't react to until now? <br /></td></tr>
 <tr class="separator:a6d313e3c46f2e58c44f5db1669b90f30"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae812bb270203d97992612dc7a809674e"><td class="memItemLeft" align="right" valign="top"><a id="ae812bb270203d97992612dc7a809674e" name="ae812bb270203d97992612dc7a809674e"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_pointerCmdDown</b> = false</td></tr>
+<tr class="memdesc:ae812bb270203d97992612dc7a809674e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Was Ctrl (Cmd on macOS) held during the last mouse motion? <br /></td></tr>
+<tr class="separator:ae812bb270203d97992612dc7a809674e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc551c181311e6704fafdbbdad66fd24"><td class="memItemLeft" align="right" valign="top"><a id="adc551c181311e6704fafdbbdad66fd24" name="adc551c181311e6704fafdbbdad66fd24"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_linkCursorShown</b> = false</td></tr>
+<tr class="memdesc:adc551c181311e6704fafdbbdad66fd24"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does the worksheet currently show the hand cursor for a link? <br /></td></tr>
+<tr class="separator:adc551c181311e6704fafdbbdad66fd24"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a595c36bbcc13b4607a0ba3d691c323d1"><td class="memItemLeft" align="right" valign="top"><a id="a595c36bbcc13b4607a0ba3d691c323d1" name="a595c36bbcc13b4607a0ba3d691c323d1"></a>
+wxString&#160;</td><td class="memItemRight" valign="bottom"><b>m_contextMenuLink</b></td></tr>
+<tr class="memdesc:a595c36bbcc13b4607a0ba3d691c323d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The link the last context menu was opened on, see <a class="el" href="classWorksheet.html#a940d7eac6b76312edfe862def3a19ee5" title="The link the last context menu was opened on, or an empty string.">GetContextMenuLink()</a>. <br /></td></tr>
+<tr class="separator:a595c36bbcc13b4607a0ba3d691c323d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a484337330b21f0736d93fa935f9e0369"><td class="memItemLeft" align="right" valign="top"><a id="a484337330b21f0736d93fa935f9e0369" name="a484337330b21f0736d93fa935f9e0369"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_inPopupMenu</b> = false</td></tr>
 <tr class="memdesc:a484337330b21f0736d93fa935f9e0369"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is there an active popup menu? <br /></td></tr>
@@ -2844,6 +2871,35 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 
 <p>Called if the user is using the scrollbar for scrolling through the document. </p>
 <p>See also OnThumbtrack and OnMouseWheel </p>
+
+</div>
+</div>
+<a id="a4476b1a4c96170effc5edec863f09493" name="a4476b1a4c96170effc5edec863f09493"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4476b1a4c96170effc5edec863f09493">&#9670;&#160;</a></span>OpenLink()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Worksheet::OpenLink </td>
+          <td>(</td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
+          <td class="paramname"><em>url</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Opens a link from a text cell in the user's web browser (GH #2396). </p>
+<p>Refuses anything <a class="el" href="UrlDetection_8cpp.html#a1267634eb840a7cd8298576f56a4ab5e" title="Is this a link wxMaxima may hand to the web browser?">wxm::IsLaunchableUrl()</a> doesn't allow, so a worksheet from elsewhere can't make a click start a local program. </p><dl class="section return"><dt>Returns</dt><dd>true if the browser was asked to open it. </dd></dl>
 
 </div>
 </div>
