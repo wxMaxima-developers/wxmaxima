@@ -1562,6 +1562,10 @@ foreach(wxm_t IN LISTS wxm_all_tests)
   endif()
   file(MAKE_DIRECTORY "${wxm_envdir}")
   file(MAKE_DIRECTORY "${wxm_envdir}/TMPDIR")
+  # Maxima writes plot data and gnuplot scripts to MAXIMA_TEMPDIR but does not
+  # create it, so a test that plots from a bare Maxima (the with_slider_draw
+  # ones) fails with "Cannot create" on its first gnuplot file.
+  file(MAKE_DIRECTORY "${wxm_envdir}/MAXIMA_TEMPDIR")
   set_property(TEST "${wxm_t}" APPEND PROPERTY ENVIRONMENT
     "TMPDIR=${wxm_envdir}/TMPDIR"
     #"TEMPDIR=${wxm_envdir}/TMPDIR"
