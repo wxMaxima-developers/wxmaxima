@@ -785,6 +785,9 @@ wxPoint&#160;</td><td class="memItemRight" valign="bottom"><b>ScrollPosition</b>
 <tr class="memitem:ac7ee0047dfce24e56c615a7a159f7bb1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrCell.html#ac7ee0047dfce24e56c615a7a159f7bb1">ScrollTo</a> (wxPoint position)</td></tr>
 <tr class="memdesc:ac7ee0047dfce24e56c615a7a159f7bb1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scrolls the matrix, clamped to its scrollable range.  <br /></td></tr>
 <tr class="separator:ac7ee0047dfce24e56c615a7a159f7bb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a939c6cd63f9505b8332013242d5e26ca"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrCell.html#a939c6cd63f9505b8332013242d5e26ca">ScrollEntryIntoView</a> (size_t row, size_t col)</td></tr>
+<tr class="memdesc:a939c6cd63f9505b8332013242d5e26ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scrolls just far enough that an entry is inside the viewport (GH #2380)  <br /></td></tr>
+<tr class="separator:a939c6cd63f9505b8332013242d5e26ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaa421f495d3b475901ba4d50dbdbc343"><td class="memItemLeft" align="right" valign="top"><a id="aaa421f495d3b475901ba4d50dbdbc343" name="aaa421f495d3b475901ba4d50dbdbc343"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsNestedInMatrix</b> () const</td></tr>
 <tr class="memdesc:aaa421f495d3b475901ba4d50dbdbc343"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does this matrix sit inside another matrix? Only the outermost one scrolls. <br /></td></tr>
@@ -3198,6 +3201,37 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 
 <p>Scale font sizes and line widths according to the zoom factor. </p>
 <p>Is used for displaying/printing/exporting of text/maths </p>
+
+</div>
+</div>
+<a id="a939c6cd63f9505b8332013242d5e26ca" name="a939c6cd63f9505b8332013242d5e26ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a939c6cd63f9505b8332013242d5e26ca">&#9670;&#160;</a></span>ScrollEntryIntoView()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool MatrCell::ScrollEntryIntoView </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>row</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>col</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Scrolls just far enough that an entry is inside the viewport (GH #2380) </p>
+<p>Used to keep the corner of a selected block in view while the keyboard moves it. An entry that is already fully visible, or a matrix that doesn't scroll, stays as it is; an entry larger than the viewport gets its top left corner shown. Returns true if the matrix actually scrolled. </p>
 
 </div>
 </div>
