@@ -1,5 +1,7 @@
 # Current development version
 
+- `with_slider_draw(..., file_name="name")` no longer deletes `name.gif`
+  right after showing it in the worksheet (#2389).
 - wxMaxima now needs wxWidgets 3.2 or newer to compile. With wxWidgets 3.0.5,
   the last 3.0 release, wxMaxima started but never got a working connection
   to Maxima (#2301). Ubuntu 22.04 only ships wxWidgets 3.0, so the release

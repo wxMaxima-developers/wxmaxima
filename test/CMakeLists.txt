@@ -378,6 +378,15 @@ add_test(
     "<slide[^>]*>[^<]*\\.gnuplot;[^<]*\\.gnuplot;[^<]*</slide>"
 )
 
+# with_slider_draw()'s file_name writes a gif the user asked for, so wxMaxima
+# must not delete it once it has displayed it (GH #2389).
+add_test(
+    NAME with_slider_draw_file_name_kept
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh"
+    "with_slider_draw(a,[1,2],explicit(a*x,x,0,1),file_name=\"anim_kept\");"
+    "<img del=\"no\">anim_kept\\.gif</img>"
+)
+
 # ...and file_name, which draw()'s animated_gif terminal cannot honour for a
 # frame made of several scenes: the frames are rendered as usual, and the
 # <slide> tag asks wxMaxima to assemble them into anim.gif (GH #2361), named

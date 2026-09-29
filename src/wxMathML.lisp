@@ -2043,7 +2043,10 @@ Submit bug reports by following the 'New issue' link on that page."))
 		       ((mequal simp) $file_name ,file-name))
 		     (get-pic-size-opt)
 		     imgs))
-	    (format t "<math><img del=\"yes\">~a.gif</img></math>" file-name))
+	    ;; del="no": this gif is the file the user asked for, not a
+	    ;; temporary one wxMaxima may delete once it has read it (GH #2389).
+	    (format t "<math><img del=\"no\">~a</img></math>"
+		    (wxxml-fix-string (format nil "~a.gif" file-name))))
 	  ;; If file_name is not set, show the animation in wxMaxima
 	  (progn
 	    (dolist (aval (reverse (cdr a-range)))
