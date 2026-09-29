@@ -159,6 +159,12 @@ public:
     wxEmptyString means: No toolTip.
   */
   const wxString GetToolTip(wxPoint point) const override;
+  /*! The link at point, if any: in the text cell's text or in the output.
+
+    Walks the output in drawing order, so a link inside an expression that
+    has been broken into lines is found where it is actually drawn.
+  */
+  wxString GetLinkAt(wxPoint point) override;
 
   // general methods
   GroupType GetGroupType() const { return m_groupType; }
@@ -196,7 +202,7 @@ public:
     \param imgDir The directory eventual images should be stored in
     \param filename The base filename for all images
     \param imgCounter The location of the counter that tells how many unique
-    image filenames we have already generated. NULL means: This TeX export
+    image filenames we have already generated. nullptr means: This TeX export
     doesn't contain other GroupCells that can export images and therefore
     need to enumerate them.
   */
@@ -299,8 +305,36 @@ public:
   Cell *GetOutput() const
     { return m_output ? m_output->GetNext() : nullptr; }
 
+  /*! One result of this cell's output, as the keyboard steps through it (GH #2382)
+
+    A run of top-level output cells from one hard line break to the next: an
+    output label with its expression, a line of text output, an image, ...
+  */
+  struct OutputResult
+  {
+    Cell *first = nullptr;
+    Cell *last = nullptr;
+  };
+  /*! The results the output consists of, top to bottom
+
+    Empty if the output is hidden. Leaves out results in which nothing is
+    shown, such as an empty label.
+  */
+  std::vector<OutputResult> GetOutputResults() const;
+
   //! Determine which rectangle is occupied by this GroupCell
   wxRect GetOutputRect() const { return m_outputRect; }
+
+  /*! Is this point inside the cell or its output?
+
+    Unlike ContainsPoint(), this also finds the part of a wide output that
+    reaches past GetRect(): the output starts right of the group's left edge,
+    and the group's width doesn't include that indent. GetOutputRect() is
+    widened to where the output really ends. Use this for hit tests that
+    are meant to reach cells in the output, such as tooltips.
+  */
+  bool ContainsPointOrOutput(wxPoint point) const
+    { return ContainsPoint(point) || m_outputRect.Contains(point); }
 
   /*! The on-screen rectangle occupied by this cell's bracket.
 
@@ -395,15 +429,15 @@ public:
 
   /*! The cell this cell is hidden inside, if it is part of a folded subtree
 
-    \return NULL if this cell is part of the visible worksheet tree
+    \return nullptr if this cell is part of the visible worksheet tree
   */
   GroupCell *GetHiddenTreeParent() const { return m_hiddenTreeParent; }
 
   /*! Fold this cell
 
-    \return the cell's address if folding was successful, else NULL
+    \return the cell's address if folding was successful, else nullptr
   */
-  GroupCell *Fold(); // returns pointer to this or NULL if not successful
+  GroupCell *Fold(); // returns pointer to this or nullptr if not successful
   /*! Unfold this cell
 
     \return the last cell that was unfolded.
@@ -415,7 +449,7 @@ public:
     \param affected If non-null, every cell actually folded by this call is
                      appended here, in the order it was folded -- the
                      caller can use this to record one undo action per cell.
-    \return the cell's address if folding was successful, else NULL
+    \return the cell's address if folding was successful, else nullptr
   */
   GroupCell *FoldAll(std::vector<GroupCell *> *affected = nullptr);
 
@@ -424,7 +458,7 @@ public:
     \param affected If non-null, every cell actually unfolded by this call
                      is appended here, in the order it was unfolded -- the
                      caller can use this to record one undo action per cell.
-    \return the last unfolded cell's address if unfolding was successful, else NULL
+    \return the last unfolded cell's address if unfolding was successful, else nullptr
   */
   GroupCell *UnfoldAll(std::vector<GroupCell *> *affected = nullptr);
 
@@ -500,7 +534,7 @@ public:
   //! Reset the data when the output size changes
   void OutputHeightChanged();
 
-  typedef std::unordered_map <wxString, int, wxStringHash> CmdsAndVariables;
+  using CmdsAndVariables = std::unordered_map<wxString, int, wxStringHash>;
 
   //! A list of answers provided by the user
   std::vector<std::pair<wxString, wxString>> m_knownAnswers;

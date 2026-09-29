@@ -31,25 +31,21 @@
 
 #include "Notification.h"
 Notification::Notification() : wxNotificationMessage() {
-  m_parent = NULL;
-  m_errorNotificationCell = NULL;
-#if wxCHECK_VERSION(3, 1, 0)
+  m_parent = nullptr;
+  m_errorNotificationCell = nullptr;
   //  AddAction(wxID_ANY,_("Focus window"));
   Bind(wxEVT_NOTIFICATION_MESSAGE_CLICK, &Notification::OnClick, this);
   Bind(wxEVT_NOTIFICATION_MESSAGE_ACTION, &Notification::OnClick, this);
-#endif
 }
 
 Notification::Notification(const wxString &title, const wxString &message,
                            wxWindow *parent, int flags)
   : wxNotificationMessage(title, message, parent, flags) {
-  m_errorNotificationCell = NULL;
+  m_errorNotificationCell = nullptr;
   m_parent = parent;
-#if wxCHECK_VERSION(3, 1, 0)
   //  AddAction(wxID_ANY,_("Focus window"));
   Bind(wxEVT_NOTIFICATION_MESSAGE_CLICK, &Notification::OnClick, this);
   Bind(wxEVT_NOTIFICATION_MESSAGE_ACTION, &Notification::OnClick, this);
-#endif
 }
 
 void Notification::SetParent(wxWindow *parent) {

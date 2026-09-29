@@ -56,7 +56,7 @@ std::vector<BidiRun> Bidi::GetRuns(const std::vector<uint32_t> &codepoints,
 
   // visual_str and positions_V_to_L aren't needed here (runs are derived from
   // embedding_levels and positions_L_to_V below), but a real buffer is passed
-  // for all of them regardless of the "NULL is ignored" contract the header
+  // for all of them regardless of the "nullptr is ignored" contract the header
   // documents, since it's cheap for a single editor line and removes any
   // doubt about it.
   std::vector<FriBidiChar> visual(len);
@@ -88,7 +88,7 @@ std::vector<BidiRun> Bidi::GetRuns(const std::vector<uint32_t> &codepoints,
     // that stretch back to front), so the run's leftmost visual position -
     // the lower of its first and last character's visual index - orders the
     // runs against each other correctly.
-    std::sort(runs.begin(), runs.end(), [&](const BidiRun &a, const BidiRun &b) {
+    std::ranges::sort(runs, [&](const BidiRun &a, const BidiRun &b) {
       auto visualStart = [&](const BidiRun &r) {
         return std::min(logicalToVisual[r.logicalStart], logicalToVisual[r.logicalEnd - 1]);
       };

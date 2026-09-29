@@ -59,7 +59,7 @@
 */
 class AutoComplete : public wxEvtHandler
 {
-  typedef std::unordered_map <wxString, int, wxStringHash> WorksheetWords;
+  using WorksheetWords = std::unordered_map<wxString, int, wxStringHash>;
 public:
   using WordList = std::vector<wxString>;
 
@@ -180,7 +180,7 @@ private:
         newItem.Replace(wxFileName::GetPathSeparator(), "/");
         {
           const std::lock_guard<std::mutex> lock(*m_lock);
-          if (m_filesHash.find(newItem) == m_filesHash.end())
+          if (!m_filesHash.contains(newItem))
           {
             m_files.push_back(newItem);
             m_filesHash[newItem];
@@ -196,7 +196,7 @@ private:
         newItem.Replace(wxFileName::GetPathSeparator(), "/");
         {
           const std::lock_guard<std::mutex> lock(*m_lock);
-          if (m_filesHash.find(newItem) == m_filesHash.end())
+          if (!m_filesHash.contains(newItem))
           {
             m_files.push_back(newItem);
             m_filesHash[newItem];
@@ -245,7 +245,7 @@ private:
           newItem.Replace(wxFileName::GetPathSeparator(), "/");
           {
             const std::lock_guard<std::mutex> lock(*m_lock);
-            if (m_filesHash.find(newItem) == m_filesHash.end())
+            if (!m_filesHash.contains(newItem))
             {
               m_files.push_back(newItem);
               m_filesHash[newItem];
@@ -298,7 +298,7 @@ private:
         newItem.Replace(wxFileName::GetPathSeparator(), "/");
         {
           const std::lock_guard<std::mutex> lock(*m_lock);
-          if (m_filesHash.find(newItem) == m_filesHash.end())
+          if (!m_filesHash.contains(newItem))
           {
             m_files.push_back(newItem);
             m_filesHash[newItem];
@@ -331,7 +331,7 @@ private:
           newItem.Replace(wxFileName::GetPathSeparator(), "/");
           {
             const std::lock_guard<std::mutex> lock(*m_lock);
-            if (m_filesHash.find(newItem) == m_filesHash.end())
+            if (!m_filesHash.contains(newItem))
             {
               m_files.push_back(newItem);
               m_filesHash[newItem];
@@ -384,7 +384,7 @@ private:
         newItem.Replace(wxFileName::GetPathSeparator(), "/");
         {
           const std::lock_guard<std::mutex> lock(*m_lock);
-          if (m_filesHash.find(newItem) == m_filesHash.end())
+          if (!m_filesHash.contains(newItem))
           {
             m_files.push_back(newItem);
             m_filesHash[newItem];

@@ -236,6 +236,47 @@
 	 (rest (subseq v (1+ d2))))
     (list '(mlist simp) (parse-integer year) (parse-integer month) rest)))
 
+;;; Splits the leading "26.08.0" part of a version string into a list of
+;;; integers, (26 8 0). Anything from the first character that is neither a
+;;; digit nor a dot on is ignored, which drops both a "-dev" suffix and the
+;;; "_GTK3"-style toolkit suffix wxMaxima appends to $wxmaximaversion.
+;;; Returns nil if the string doesn't start with a number.
+(defun wx-version-components (v)
+  (let* ((end (or (position-if-not (lambda (c) (or (digit-char-p c) (char= c #\.))) v)
+                  (length v)))
+         (numeric (subseq v 0 end))
+         (result nil)
+         (start 0))
+    (loop
+      (let* ((dot (position #\. numeric :start start))
+             (part (subseq numeric start dot)))
+        (when (string= part "") (return))
+        (push (parse-integer part) result)
+        (if dot (setq start (1+ dot)) (return))))
+    (nreverse result)))
+
+;;; wx_version_min("26.08.0"): true if the running wxMaxima is at least that
+;;; version. Components are compared numerically, so "26.10.0" is newer than
+;;; "26.9.0", and a missing component counts as 0 ("26.08" = "26.08.0").
+;;; A development build counts as the version it will be released as, since
+;;; it already contains that version's features. Outside wxMaxima (where
+;;; $wxmaximaversion never gets set to a string) the answer is false.
+(defun $wx_version_min (required)
+  (unless (stringp required)
+    (merror "wx_version_min: expected a version string like \"26.08.0\", got ~M" required))
+  (let ((want (wx-version-components required)))
+    (unless want
+      (merror "wx_version_min: ~M is not a version number like \"26.08.0\"" required))
+    (unless (stringp $wxmaximaversion)
+      (return-from $wx_version_min nil))
+    (let ((have (wx-version-components $wxmaximaversion)))
+      (loop
+        (when (and (null have) (null want)) (return t))
+        (let ((h (or (pop have) 0))
+              (w (or (pop want) 0)))
+          (cond ((> h w) (return t))
+                ((< h w) (return nil))))))))
+
   ;;; Any half-way new maxima will define these variables that add
   ;;; info about the front-end to the build_info(). If we encounter
   ;;; an old maxima that is no problem since we can create them
@@ -1116,6 +1157,15 @@ Submit bug reports by following the 'New issue' link on that page."))
 	       (setq tb-tag (concatenate 'string tb-tag " rownames=\"true\"")))
 	     (when (find 'colnames mtrx)
 	       (setq tb-tag (concatenate 'string tb-tag " colnames=\"true\""))))
+	   ;; wx_matrix()'s oversized option: how to show this matrix if it
+	   ;; is too large for the window, overriding the configuration.
+	   (cond
+	     ((find 'oversized_full mtrx)
+	      (setq tb-tag (concatenate 'string tb-tag " oversized=\"full\"")))
+	     ((find 'oversized_elide mtrx)
+	      (setq tb-tag (concatenate 'string tb-tag " oversized=\"elide\"")))
+	     ((find 'oversized_scroll mtrx)
+	      (setq tb-tag (concatenate 'string tb-tag " oversized=\"scroll\""))))
 	   (cond
 	     ((find 'paren_round mtrx)
 	      (setq tb-tag (concatenate 'string tb-tag " roundedParens=\"true\"")))
@@ -1871,25 +1921,30 @@ Submit bug reports by following the 'New issue' link on that page."))
 
 (defvar *default-framerate* 2)
 (defvar $wxanimate_framerate *default-framerate*)
-(defun slide-tag (images)
-  (if (eql *default-framerate* $wxanimate_framerate)
-      ($ldisp
-       (list '(wxxmltag simp)
-	     (wxxml-fix-string (format nil "~{~a;~}" images))
-	     "slide"
-	     (if (eql $wxanimate_autoplay 't)
-		 "running=\"true\" del=\"yes\""
-		 "running=\"false\" del=\"yes\""))
-       (format nil "~%"))
-      ($ldisp
-       (list '(wxxmltag simp)
-	     (wxxml-fix-string
-	      (format nil "~{~a;~}" images))
-	     "slide"
-	     (if (eql $wxanimate_autoplay 't)
-		 (format nil "fr=\"~a\" running=\"true\" del=\"yes\"" $wxanimate_framerate)
-		 (format nil "fr=\"~a\" running=\"false\" del=\"yes\"" $wxanimate_framerate)))
-       (format nil "~%"))))
+(defun slide-tag (images &optional gif-file)
+  ;; GIF-FILE, if given, asks wxMaxima to also save the animation as that gif
+  ;; file (with_slider_draw_bare's file_name, GH #2361).
+  (let ((attrs (format nil "~@[fr=\"~a\" ~]running=\"~a\" del=\"yes\"~@[ gifFile=\"~a\"~]"
+		       (unless (eql *default-framerate* $wxanimate_framerate)
+			 $wxanimate_framerate)
+		       (if (eql $wxanimate_autoplay 't) "true" "false")
+		       (and gif-file (wxxml-fix-string gif-file)))))
+    ($ldisp
+     (list '(wxxmltag simp)
+	   (wxxml-fix-string (format nil "~{~a;~}" images))
+	   "slide"
+	   attrs)
+     (format nil "~%"))))
+
+;; The absolute name of the gif file draw()'s file_name=NAME would make:
+;; NAME.gif, relative to Maxima's working directory. wxMaxima, which writes
+;; the file for with_slider_draw_bare, may be working in another directory.
+(defun wx-gif-file-name (name)
+  (let ((file (format nil "~a.gif" name)))
+    ;; (truename "./") rather than *default-pathname-defaults*, which some
+    ;; lisps (GCL) leave empty until wx-cd has run.
+    (or (ignore-errors (namestring (merge-pathnames file (truename "./"))))
+	file)))
 
 (defun wxanimate (scene)
   (let* ((scene (cdr scene))
@@ -1951,6 +2006,13 @@ Submit bug reports by following the 'New issue' link on that page."))
     (t
      `(((mequal simp) $dimensions ,$wxplot_size)))))
 
+;; Shared by the with_slider_draw* / wxanimate_draw* family.
+;;
+;; SCENE-HEAD is the head (($gr2d) or ($gr3d)) that wraps a frame's
+;; arguments into a single scene, which is then passed to draw().
+;; SCENE-HEAD nil means "bare" (with_slider_draw_bare): the frame's
+;; arguments are handed to draw() as they are, so a frame can consist of
+;; several gr2d()/gr3d() scenes plus draw()'s global options.
 (defun wxanimate-draw (scenes scene-head)
   (unless ($get '$draw '$version) ($load "draw"))
   (multiple-value-bind (scene file-name) (get-file-name-opt (cdr scenes))
@@ -1961,7 +2023,11 @@ Submit bug reports by following the 'New issue' link on that page."))
 	   (images ()))
       (when (integerp a-range)
 	(setq a-range (cons '(mlist simp) (loop for i from 1 to a-range collect i))))
-      (if file-name
+      ;; draw()'s animated_gif terminal makes one gif frame out of each
+      ;; scene, which cannot express a frame made of several scenes. So
+      ;; with_slider_draw_bare renders its frames as usual and has wxMaxima
+      ;; assemble them into the gif file (GH #2361).
+      (if (and file-name scene-head)
 	  ;; If file_name is set, draw the animation into gif using gnuplot
 	  (let (imgs)
 	    (dolist (aval (reverse (cdr a-range)))
@@ -1977,7 +2043,10 @@ Submit bug reports by following the 'New issue' link on that page."))
 		       ((mequal simp) $file_name ,file-name))
 		     (get-pic-size-opt)
 		     imgs))
-	    (format t "<math><img del=\"yes\">~a.gif</img></math>" file-name))
+	    ;; del="no": this gif is the file the user asked for, not a
+	    ;; temporary one wxMaxima may delete once it has read it (GH #2389).
+	    (format t "<math><img del=\"no\">~a</img></math>"
+		    (wxxml-fix-string (format nil "~a.gif" file-name))))
 	  ;; If file_name is not set, show the animation in wxMaxima
 	  (progn
 	    (dolist (aval (reverse (cdr a-range)))
@@ -1986,9 +2055,11 @@ Submit bug reports by following the 'New issue' link on that page."))
 	      (let* ((filename (wxplot-filename nil))
 		     (gnuplotfilename (wxplot-gnuplotfilename))
 		     (datafilename (wxplot-datafilename))
-		     (args (cons scene-head
-				 (mapcar #'(lambda (arg) (meval (maxima-substitute aval a arg)))
-					 args))))
+		     (frame-args (mapcar #'(lambda (arg) (meval (maxima-substitute aval a arg)))
+					 args))
+		     (draw-args (if scene-head
+				    (list (cons scene-head frame-args))
+				    frame-args)))
 		(setq images (cons (format nil
 					   (if $wxplot_usesvg "~a.svg" "~a.png")
 					   filename)
@@ -2010,9 +2081,10 @@ Submit bug reports by following the 'New issue' link on that page."))
 			   ((mequal simp) $data_file_name ,datafilename)
 			   ((mequal simp) $file_name ,filename))
 			 (get-pic-size-opt)
-			 (list args)))))
+			 draw-args))))
 	    (when images
-	      (slide-tag images))))
+	      (slide-tag images
+			 (and file-name (wx-gif-file-name (meval file-name)))))))
       "")))
 
 (defmspec $wxanimate_draw (scene)
@@ -2026,6 +2098,12 @@ Submit bug reports by following the 'New issue' link on that page."))
 
 (defmspec $with_slider_draw3d (scene)
   (wxanimate-draw scene '($gr3d)))
+
+;; Like with_slider_draw, but each frame is a plain draw() call rather than
+;; a draw2d() one: the arguments may be several gr2d()/gr3d() scenes and
+;; draw()'s global options (columns, dimensions, ...).
+(defmspec $with_slider_draw_bare (scene)
+  (wxanimate-draw scene nil))
 
 (defmspec $wxanimate_draw3d (scene)
   (wxanimate-draw scene '($gr3d)))
@@ -2407,6 +2485,11 @@ Submit bug reports by following the 'New issue' link on that page."))
   (format t "<variable><name>*lisp-version*</name><value>~a</value></variable>"
 	  #+sbcl (ensure-readably-printable-string (lisp-implementation-version))
 	  #-sbcl (lisp-implementation-version))
+  ;; Whether wxMaxima can interrupt this Lisp through its own channel, see
+  ;; wx-open-interrupt-channel below. Tells a user who cannot interrupt a
+  ;; computation why, in the log.
+  (format t "<variable><name>*wx-interrupt-channel-available*</name><value>~a</value></variable>"
+	  (if (wx-interrupt-channel-available-p) "true" "false"))
   (format t "</variables>~%")
   (finish-output)
   )
@@ -2644,9 +2727,23 @@ Submit bug reports by following the 'New issue' link on that page."))
          ((eq paren '$angled) (setq mtrx (append mtrx '(paren_angled))))
          ((eq paren '$straight) (setq mtrx (append mtrx '(paren_straight))))
          ((eq paren '$none) (setq mtrx (append mtrx '(paren_none)))))
-       (let ((res (cons (append '($matrix simp) mtrx) (cdr mat))))
-         (displa res)
-         res)))))
+       ;; How to show the matrix if it is too large for the window; without
+       ;; this option the configuration decides.
+       (let ((oversized ($assoc '$oversized opts-list)))
+         (cond
+           ((null oversized))
+           ((eq oversized '$full) (setq mtrx (append mtrx '(oversized_full))))
+           ((eq oversized '$elide) (setq mtrx (append mtrx '(oversized_elide))))
+           ((eq oversized '$scroll) (setq mtrx (append mtrx '(oversized_scroll))))
+           (t (merror "wx_matrix: oversized must be full, elide or scroll, not ~M"
+                      oversized))))
+       ;; Only return the matrix, don't display it: the options travel in
+       ;; the matrix's own header, which wxxml-matrix reads when the result
+       ;; is displayed. They stay with this value (assigning it, %, putting
+       ;; it in a list, copymatrix, subst, ...), while a calculation that
+       ;; builds a new matrix (m+1, transpose(m), m.m, ...) drops them, so
+       ;; its result is shown the normal way.
+       (cons (append '($matrix simp) mtrx) (cdr mat))))))
 
 (no-warning
  (defun mredef-check (fnname)
@@ -2945,6 +3042,148 @@ than disappearing with the thread."
               "This Maxima was built on a Lisp without thread support, so it cannot run anything in the background."
               ,id)
              nil)))))
+
+;;; ---------------------------------------------------------------------
+;;; The interrupt channel
+;;;
+;;; How wxMaxima interrupts a computation without depending on signals.
+;;; POSIX has kill(SIGINT), but MS Windows has nothing like it: there the
+;;; only ways in were a shared-memory segment named after the Lisp's pid
+;;; (which needs the pid, and a signal thread Maxima only starts if the
+;;; MAXIMA_SIGNALS_THREAD environment variable survived maxima.bat) and a
+;;; console Ctrl+C (which needs a console, and which a new process group
+;;; ignores). Either one failing leaves the user no way to stop a
+;;; computation but to restart Maxima and lose the session (GH #2289).
+;;;
+;;; So wxMaxima tells a Lisp that has threads to open a second connection
+;;; to wxMaxima's own server. A thread waits on it; when wxMaxima writes
+;;; "interrupt" there, the thread interrupts the thread that evaluates
+;;; Maxima's commands. No pid, no named objects, no console, the same on
+;;; every operating system. A Lisp without threads (GCL, a clisp built
+;;; without them) simply doesn't open the channel, and wxMaxima falls back
+;;; to what it did before.
+;;;
+;;; Is interrupting a thread this way safe, e.g. in the middle of a hash
+;;; table operation? It is exactly what SBCL itself does on Ctrl+C: its
+;;; SIGINT handler (sigint-handler in SBCL's src/code/target-signal.lisp)
+;;; just calls interrupt-thread on the foreground thread. The interrupt runs
+;;; in the interrupted thread itself, so nothing is accessed concurrently, and
+;;; SBCL wraps its own critical sections, hash table rehashing included, in
+;;; without-interrupts, which defers the interrupt until they are done.
+;;;
+;;; The first line sent is the token wxMaxima passed to Maxima in
+;;; MAXIMA_AUTH_CODE, so that nothing else on this machine can connect to
+;;; wxMaxima's server and pose as the channel.
+;;; ---------------------------------------------------------------------
+
+(define-condition wx-user-interrupt (condition) ()
+  (:report (lambda (condition stream)
+             (declare (ignore condition))
+             (format stream "User interrupt"))))
+
+(defvar *wx-interrupt-channel-thread* nil
+  "The thread waiting for wxMaxima's interrupt requests, if any.")
+
+(defun wx-interrupt-channel-available-p ()
+  "True if this Lisp can run the interrupt channel's thread."
+  #+(or sb-thread (and ecl threads) (and clisp mt) openmcl ccl) t
+  #-(or sb-thread (and ecl threads) (and clisp mt) openmcl ccl) nil)
+
+(defun wx-current-thread ()
+  #+sb-thread sb-thread:*current-thread*
+  #+(and ecl threads) mp:*current-process*
+  #+(and clisp mt) (mt:current-thread)
+  #+(or openmcl ccl) ccl:*current-process*
+  #-(or sb-thread (and ecl threads) (and clisp mt) openmcl ccl) nil)
+
+(defun wx-thread-alive-p (thread)
+  (and thread
+       #+sb-thread (sb-thread:thread-alive-p thread)
+       #+(and ecl threads) (mp:process-active-p thread)
+       #+(and clisp mt) (mt:thread-active-p thread)
+       #+(or openmcl ccl) (not (ccl:process-exhausted-p thread))
+       #-(or sb-thread (and ecl threads) (and clisp mt) openmcl ccl) nil))
+
+(defun wx-make-thread (name function)
+  #+sb-thread (sb-thread:make-thread function :name name)
+  #+(and ecl threads) (mp:process-run-function name function)
+  #+(and clisp mt) (mt:make-thread function :name name)
+  #+(or openmcl ccl) (ccl:process-run-function name function)
+  #-(or sb-thread (and ecl threads) (and clisp mt) openmcl ccl)
+  (declare (ignore name function)))
+
+(defun wx-interrupt-thread (thread function)
+  "Makes THREAD run FUNCTION, interrupting whatever it is doing."
+  #+sb-thread (sb-thread:interrupt-thread thread function)
+  #+(and ecl threads) (mp:interrupt-process thread function)
+  #+(and clisp mt) (mt:thread-interrupt thread :function function)
+  #+(or openmcl ccl) (ccl:process-interrupt thread function)
+  #-(or sb-thread (and ecl threads) (and clisp mt) openmcl ccl)
+  (declare (ignore thread function)))
+
+(defun wx-open-channel-socket (host port)
+  "A bidirectional character stream connected to HOST:PORT."
+  #+(or sbcl ecl)
+  (let ((socket (make-instance 'sb-bsd-sockets:inet-socket
+                               :type :stream :protocol :tcp)))
+    (sb-bsd-sockets:socket-connect
+     socket (sb-bsd-sockets:make-inet-address host) port)
+    (sb-bsd-sockets:socket-make-stream
+     socket :input t :output t :buffering :full :element-type 'character))
+  #+clisp (socket:socket-connect port host)
+  #+(or openmcl ccl) (ccl:make-socket :remote-host host :remote-port port)
+  #-(or sbcl ecl clisp openmcl ccl)
+  (error "No sockets in this Lisp: ~a ~a" host port))
+
+(defun wx-interrupt-main-thread (main)
+  "Makes the thread MAIN abandon its computation the way a Ctrl+C would.
+
+The interrupt goes through INVOKE-DEBUGGER, not ERROR: Maxima's *debugger-hook*
+reports it and returns to Maxima's top level, exactly as it does for a
+SIGINT. ERROR would first look for handlers, and a computation running inside
+errcatch() or ignore-errors would catch the interrupt and carry on."
+  (wx-interrupt-thread
+   main
+   (lambda ()
+     ;; SBCL runs an interrupt with further interrupts disabled. The debugger
+     ;; hook prints and unwinds, both of which want them back on.
+     #+sb-thread (sb-sys:with-interrupts
+                   (invoke-debugger (make-condition 'wx-user-interrupt)))
+     #-sb-thread (invoke-debugger (make-condition 'wx-user-interrupt)))))
+
+(defun wx-interrupt-channel-loop (stream main)
+  "Interrupts MAIN each time wxMaxima writes \"interrupt\" to STREAM."
+  (unwind-protect
+       ;; Nothing that goes wrong in here may reach the debugger hook: it
+       ;; would print on the shared output stream and then throw to a catch
+       ;; tag that only exists in the main thread. Losing the channel just
+       ;; means wxMaxima falls back to its other ways of interrupting.
+       (ignore-errors
+        (loop for line = (read-line stream nil nil)
+              while line
+              when (string= (string-trim '(#\Space #\Return) line) "interrupt")
+                do (wx-interrupt-main-thread main)))
+    (ignore-errors (close stream))))
+
+(defun wx-open-interrupt-channel (host port token)
+  "Connects to wxMaxima's server at HOST:PORT as the interrupt channel.
+
+Called by wxMaxima once per Maxima process, from the thread that evaluates
+Maxima's commands -- which is therefore the one that gets interrupted. Does
+nothing if the Lisp has no threads, if the channel is already open, or if the
+connection fails. Returns T if a channel thread is running afterwards."
+  (when (wx-interrupt-channel-available-p)
+    (unless (wx-thread-alive-p *wx-interrupt-channel-thread*)
+      (let ((main (wx-current-thread))
+            (stream (ignore-errors (wx-open-channel-socket host port))))
+        (when stream
+          (write-line token stream)
+          (finish-output stream)
+          (setq *wx-interrupt-channel-thread*
+                (wx-make-thread "wxMaxima interrupt channel"
+                                (lambda ()
+                                  (wx-interrupt-channel-loop stream main)))))))
+    (and (wx-thread-alive-p *wx-interrupt-channel-thread*) t)))
 
 (format t "</suppressOutput>~%")
 ;; Publish all new global variables maxima might contain to wxMaxima's

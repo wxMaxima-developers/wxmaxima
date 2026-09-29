@@ -219,13 +219,14 @@ working without extra checks.
   every startup, and `ctest` targets that use `--exit-on-error`
   (`openMacFiles`, `openMacFiles2`, and most of the `*_cmdline_wxmathml`/
   `tutorial_*`/similar batch tests in `test/CMakeLists.txt`) fail near-instantly
-  on that warning alone -- with the workaround applied, those specific two
-  tests (`openMacFiles`/`openMacFiles2`) instead *time out* (confirmed to
-  reproduce identically on an unmodified `main` checkout in an isolated
-  worktree, so it's pre-existing and unrelated to any particular change) --
-  not yet root-caused. Don't burn time re-diagnosing either symptom from
-  scratch; both are sandbox/pre-existing, not something a code change here
-  broke. **Neither this workaround nor `gnuplot`'s installation (below)
+  on that warning alone. With the workaround applied they pass; the
+  `openMacFiles`/`openMacFiles2` timeouts recorded here on 2026-09-14 no
+  longer reproduce (GH #2350: 24 loaded runs, none hung, on `main` and on a
+  build from before the 2026-09-18 batch-startup race fix). `openMacFiles`
+  legitimately takes 75-130 s, mostly gnuplot rendering a 60-frame
+  animation, so a ctest `--timeout` below that reads as a hang. Don't burn
+  time re-diagnosing the help-system symptom from scratch; it is
+  sandbox-only, not something a code change here broke. **Neither this workaround nor `gnuplot`'s installation (below)
   persists across sandbox instances** -- confirmed directly: a session that
   applied both earlier came back to a broad `ctest -E
   "tutorial|openMacFiles|_cmdline_wxmathml|wxmaxima_version"` run showing 66
@@ -258,21 +259,22 @@ working without extra checks.
 
 - **Two intermittent CI failures -- `tutorial_10Minutes` and `lisp_mode` --
   are documented in full in the `wxmaxima-maxima-protocol` skill.**
-  `lisp_mode` is fixed. `tutorial_10Minutes` has a verified workaround, but
-  the real bug behind it -- the first statement of a multi-statement cell
-  silently dropped before it ever reaches `Maxima::Write()` -- is confirmed
-  and still open (GH #2196). That is a genuine correctness issue (a
-  side-effecting command a worksheet depends on can silently never execute),
-  not merely a flaky test, and it would be invisible to nearly every other
-  test in this suite. Two things to know before touching either: **an
+  **Both are fixed, and by the same change**: the statement
+  `tutorial_10Minutes` saw silently dropped (GH #2196) was a knock-on of the
+  batch-startup race behind `lisp_mode` -- the document started evaluating
+  before the Maxima that replaced the startup one had prompted, so the queue
+  ran one prompt out of step with Maxima. 5c3627d (2026-09-18) fixed that
+  race; measured on the same machine and load, 10 of 300 tutorial runs
+  failed before it and 0 of 600 after, and all 10 failures showed the race's
+  signature. Two things to know before touching either: **an
   unloaded machine is the one condition guaranteed to hide the `lisp_mode`
   race** -- it needs CPU contention, not repetition -- and **"cannot
   reproduce" means nothing for `tutorial_10Minutes` under ~50 attempts.**
   Read the skill before re-investigating either: most of its length is
   theories already disproven by hard evidence.
 
-- **macOS translation files never reaching the app bundle (GH #1711) --
-  two independent bugs, neither of which this sandbox (Linux, no
+- **macOS translation files never reaching the app bundle (GH #1711, closed
+  as fixed) -- two independent bugs, neither of which this sandbox (Linux, no
   `.app`/`MACOSX_BUNDLE`/DragNDrop support at all) can actually build or
   verify.** `Dirstructure::LocaleDir()`/`wxFileTranslationsLoader` (see
   `main.cpp`) look specifically under
@@ -359,7 +361,7 @@ a local TCP socket.
     `.Row(1)`). Per `wxAuiPaneInfo::IsValid()`'s own contract, a center
     pane's `dock_layer`/`dock_row`/`dock_pos` must all be exactly 0 --
     `Row(2)` violates that unconditionally. This most likely went unnoticed
-    on the officially-supported wxWidgets 3.0.5-3.2.x/GTK3 combination
+    on the then officially-supported wxWidgets 3.0.5-3.2.x/GTK3 combination
     either because that older `IsValid()` didn't check this for center
     panes, or because assertions are compiled out (`NDEBUG`) in the release
     builds most users and CI actually run -- `IsValid()`'s own fallback
@@ -404,7 +406,7 @@ a local TCP socket.
   it directly -- including that it leaves a *sidebar's* legitimate non-zero
   row alone, and that a caption containing text like `row=2` is not mistaken
   for a geometry field.
-  **Still failing afterwards, and unrelated:** `testbench_simple.wxmx`
+  **Still failing afterwards, and unrelated (GH #2349):** `testbench_simple.wxmx`
   aborts inside GTK4's own widget allocation (`gtk_widget_allocate` /
   `gtk_scrolled_window_set_vadjustment`, reached through
   `wxPizza::size_allocate_child`). The assert used to abort that test before
@@ -496,7 +498,33 @@ a local TCP socket.
     the matrix, nesting). **The focus behaviour is the untested part on MSW/macOS**:
     the scrollbars override `AcceptsFocus()` so a click can't leave the arrow
     keys scrolling the matrix, but whether a native Windows scrollbar honours
-    that on a click wasn't checkable here.
+    that on a click wasn't checkable here. Tracked as GH #2352, with steps
+    for whoever has a Windows or macOS build.
+- **A second `Worksheet` on a copy of the configuration -- the matrix
+  viewer (GH #2344, `src/dialogs/MatrixViewer.{h,cpp}`) -- has two traps,
+  both found only by a test failing for the wrong reason.**
+  1. **`Worksheet`'s constructor calls `ReadConfig()` on the configuration
+     it is given**, so anything set on a copied `Configuration` before the
+     worksheet exists is silently replaced by what the config file says.
+     Configure the copy *after* constructing its worksheet.
+  2. **A `Configuration` writes all its settings to the config file when it
+     is destroyed**, unless it is `temporary` -- and the copy constructor
+     copies that, so a copy of the worksheet's configuration is not
+     temporary. The viewer's copy hides labels and code cells and shows
+     every matrix in full; without `Configuration::MakeTemporary()` closing
+     the viewer made those the user's own settings. `DiffFrame`'s
+     per-pane copies are not made temporary either; they change nothing
+     after `ReadConfig()`, so they only write back what they read, but a
+     setting changed in the main window while a diff is open would be
+     overwritten when the diff closes -- untested, and a separate fix
+     (GH #2356).
+     per-pane copies are temporary for the same reason: they only wrote
+     back what they read, but that overwrote any setting changed in the
+     main window while a diff was open (GH #2356,
+     `test_DiffFrameConfig.cpp`).
+  The viewer copies its matrix through `ToXML()` and `MathParser` rather
+  than `Cell::Copy()`, because a copied cell keeps pointing at the original
+  cell's configuration, not the viewer's.
 - **Cursors:** The worksheet has 2 types of Cursor: A standard cursor in an EditorCell or a hCaret between two worksheet cells (`m_hCaretPosition`, the horizontal bar that marks a position *between* group cells, used for inserting and for selecting whole cells). Only one cursor is active at a time.
 - **Key Classes:**
   - `wxMaxima` (`src/wxMaxima.cpp`): The main application class (subclass of `wxMaximaFrame`). Holds most of the program logic -- Maxima process management, parsing incoming XML, menu and toolbar actions, file I/O.
@@ -625,9 +653,15 @@ a local TCP socket.
   SelectionToSelfContainedHTML()` / `Worksheet::CopyHTML()`:** a right-click
   context menu item placing a *self-contained* HTML document on the
   clipboard (inline `<style>`, every image as a base64 `data:` URI, no
-  external file references at all) -- unlike `ExportToHTML()`'s on-disk
-  export, which deliberately writes a separate `.css` file and an
-  `_htmlimg/` directory next to the `.html`. Reuses `ExportCodeCell()`/
+  external file references at all). `ExportToHTML()`'s on-disk export does
+  the same when `Configuration::HTMLExportSelfContained()` is set (GH #2266;
+  it also embeds the optional `.wxmx` as a `data:` href with a `download`
+  attribute). That option is **off by default on purpose** -- the maintainer
+  wants it only for mailing a single file -- so by default the export still
+  writes an `_htmlimg/` directory next to the `.html`. In self-contained mode
+  the images are written under the fixed prefix `img`, not the file name:
+  `HtmlImageTag()` URL-encodes the prefix into the `src`, so a file name with
+  a space would no longer match the file `InlineImagesAsDataURIs()` looks up. Reuses `ExportCodeCell()`/
   `ExportOtherCell()` (the same per-GroupCell renderers `ExportToHTML()`
   uses) completely unchanged, rather than duplicating them, by pointing
   their `imgDir` at a fresh private scratch directory and post-processing
@@ -813,67 +847,14 @@ a local TCP socket.
   code, selected the group cell via hCaret + Shift+Up, confirmed the
   rendered text changed consistently and a single Ctrl+Z restored it).
 
-- **GH #2278 -- selection-rectangle width can slightly differ from the
-  rendered text's actual width, investigated but NOT YET FIXED (2026-08).**
-  Root cause confirmed by reading the measurement/draw code side by side, not
-  guessed: `EditorCell` computes horizontal position two structurally
-  different ways that both amount to "measure pieces separately and sum
-  them," and the pieces don't line up the same way in both places.
-  `EditorCell::Draw()` (`EditorCell.cpp` ~line 1042) paints text **per
-  `StyledText` token** -- each token gets its own `dc->GetTextExtent()` /
-  `dc->DrawText()` call, and `TextCurrentPoint.x += width` accumulates the
-  *pen* position as the sum of those independently-shaped token widths, so
-  any kerning or (for a contextual script) glyph-shape change that would
-  normally happen *across* a token boundary is never applied -- the two
-  neighboring glyphs are shaped in total isolation from each other.
-  `EditorCell::GetLineWidth()` (used by `PositionToPoint()` for an
-  ordinary, single-direction line) reimplements that same per-token
-  accumulation independently (`lineWidth += GetTextSize(snippet).GetWidth()`,
-  with the final partial token measured via `snippet.Left(pos)`) -- so for a
-  single-direction line the two at least agree with each other, both being
-  equally kerning-blind at token boundaries. The bidi work
-  (`MixedDirectionOffset()`, added for mixed-direction line support) does
-  something different: it measures each `BidiRun` **as one whole
-  substring** via `MeasureTextWidth()` (`m_text.SubString(...)`), which
-  *does* let the font shape it correctly -- kerning pairs and (critically,
-  for Arabic-like scripts) contextual join forms all resolve the way they
-  would if the run were drawn as a single unit. That's a strictly *more*
-  accurate measurement of what the font would produce for that span, but
-  it's answering a different question than what `Draw()` actually paints
-  (per-token, unshaped-across-boundaries) -- so on a mixed-direction line,
-  `MarkSelection()`'s selection rectangle (built from two
-  `MixedDirectionOffset()`-derived `PositionToPoint()` calls, `EditorCell.cpp`
-  ~line 852-877) can come out a few pixels narrower or wider than the glyphs
-  `Draw()` actually painted for that same span, especially where a token
-  boundary falls in the middle of a script that reshapes heavily by context.
-  **This is not a simple "measures per character instead of per whole
-  string" bug** (that specific hypothesis, which is how the issue itself is
-  worded, doesn't survive reading `MeasureTextWidth()` -- it already
-  measures its input as one `GetTextExtent()` call, not character by
-  character); it is a *disagreement between two independently-correct-looking
-  but differently-grained measurement strategies*, one of which (`Draw()`'s
-  per-token painting) is the one that actually determines what's on screen
-  and should be the one every other measurement is judged against.
-  A real fix needs one of: (a) make `MixedDirectionOffset()` sum cached
-  per-`StyledText`-token widths the same way `GetLineWidth()`/`Draw()` do
-  (loses the bidi work's kerning-accuracy improvement, but makes the
-  selection rectangle match pixel-for-pixel what's actually drawn -- the
-  correct alignment target), or (b) make `Draw()` paint each maximal
-  same-direction run as a single `DrawText()` call instead of per token
-  (recovers the accuracy `MixedDirectionOffset()` already computes, but
-  touches the same per-token color-styling/tab/indent-char logic that
-  `EditorCell::Draw()`'s text loop handles all at once, and duplicated across
-  `MarkSelection()`'s own line-splitting loop). Deliberately **not**
-  attempted in this pass: both routes touch code that the 2026-08 bidi work
-  (cursor placement, click-to-position, arrow-key navigation -- see
-  "Extend bidi fix to caret placement..." in git log) already spent real
-  effort getting right, and a "few pixels off" selection-rectangle glitch
-  does not obviously justify the regression risk of changing it blind. Route
-  (a) is probably the lower-risk one to attempt first: `StyledText` doesn't
-  currently track its own `m_text` character offset, so the main work is
-  adding/deriving that mapping (tokens are already emitted in `m_text`
-  order, so it is a running-counter walk, not a search) rather than touching
-  any of the already-stabilized cursor/click bidi logic itself.
+- **GH #2278 -- the selection rectangle can be a few pixels off the
+  rendered text on a mixed-direction line (still open).** `Draw()` paints per
+  `StyledText` token while `MixedDirectionOffset()` measures each bidi run as
+  one substring, so the two disagree wherever shaping crosses a token
+  boundary. The full analysis and the two candidate fixes (the lower-risk one
+  is making `MixedDirectionOffset()` sum per-token widths) are in
+  [the issue](https://github.com/wxMaxima-developers/wxmaxima/issues/2278#issuecomment-5864685775);
+  read it before touching `EditorCell`'s measurement code.
 
 - **GH #2274 -- Windows Dark Mode only affecting the worksheet, not the rest
   of the interface. Root cause found by reading wxWidgets 3.3's own MSW
@@ -1168,32 +1149,21 @@ tried without rebuilding.
     which needs a Maxima to send that command to and never starts one
     itself.
   - Regression coverage: `wxmaxima_one_maxima_per_file`
-    (`test/check_maxima_spawn_count.cmake`) counts the "Running maxima as:"
-    lines in one batch run's log. That marker is a translatable string, so
-    the test pins `LC_ALL`/`LANG`/`LANGUAGE` in its `ENVIRONMENT`; a reworded
-    or translated marker counts zero and fails loudly rather than passing
-    while checking nothing.
-  - **That test is `if(NOT WIN32)`, and the reason is a trap worth carrying
-    to any future test: on Windows you cannot assert on text wxMaxima wrote
-    to its own stdout or stderr.** It shipped without that guard and turned
-    the minGW job red on `main` immediately -- a job #2318 had made green
-    days earlier, which is exactly the "a permanently red job is not a
-    warning anyone still reads" cost this file opens with. The failure was
-    `Opening one file started 0 Maxima process(es), expected 1`: the batch
-    run itself exited 0, and the captured log was simply empty. A
-    GUI-subsystem process's standard handles do not reliably reach whoever
-    is capturing them -- the same unexplained `FILE_TYPE_CHAR` behaviour the
-    `wxmaxima-packaging` skill records as investigated for a month and
-    shelved, and why *that* test's content assertion is non-Windows-only
-    too. Note
-    that a real file (CMake's `ERROR_FILE`) does not dodge it: the shipped
-    traces show the failure concentrated on `STD_ERROR_HANDLE` regardless of
-    what it is bound to. Before adding any test that reads wxMaxima's own
-    log, check that it is not expected to run on Windows -- or give it a
-    channel that never touches wxMaxima's stdio. Pointing `--maxima` at a
-    wrapper that appends a line to a file and then runs the real Maxima
-    would count spawns on every platform; that is the way to get the
-    Windows coverage back, and it is untried.
+    (`test/check_maxima_spawn_count.cmake`) points `--maxima` at a wrapper
+    script (a `.cmd` on Windows) that appends a line to a file and then runs
+    the real Maxima, and counts those lines (GH #2351). It used to count the
+    "Running maxima as:" lines in wxMaxima's own log, which is why it was
+    `if(NOT WIN32)`.
+  - **The trap that wrapper exists for is worth carrying to any future test:
+    on Windows you cannot assert on text wxMaxima wrote to its own stdout or
+    stderr.** The log-counting version shipped without a Windows guard and
+    turned the minGW job red with `Opening one file started 0 Maxima
+    process(es)`: the batch run exited 0 and the captured log was simply
+    empty. A GUI-subsystem process's standard handles do not reliably reach
+    whoever is capturing them -- the unexplained `FILE_TYPE_CHAR` behaviour
+    the `wxmaxima-packaging` skill records -- and a real file (CMake's
+    `ERROR_FILE`) does not dodge it. Give such a test a channel that never
+    touches wxMaxima's stdio, as this one now does.
 
 - **`m_configCommands` (`wxMaxima.cpp`):** the string of startup/config commands
   sent to Maxima on connect (and again whenever settings change while it's
@@ -1326,10 +1296,18 @@ tried without rebuilding.
   happen to contain an ordinary fraction. Also applied to the equivalent
   `GC_TYPE_TEXT` write path in the non-`.wxm` (`.mac`/xmaxima interop)
   export, for the same reason (defense in depth -- `.mac` is always
-  directly Maxima-loadable) -- but `Format::ParseMACContents` (the `.mac`
-  reader) has no corresponding unescape, since round-tripping a
-  wxMaxima-exported `.mac`'s text cells back into wxMaxima is out of scope
-  for this fix and only costs a cosmetic `&#47;` showing up literally.
+  directly Maxima-loadable) -- but only where it is needed. A `.mac` is a
+  Maxima program the user may have written in an editor, so it has to
+  round-trip unchanged (the maintainer's call, GH #2353): a text cell Maxima
+  would read back as exactly one comment (`IsMaximaCommentBody()`: Maxima
+  *nests* comments, and a `/*`/`*/` pair uses up both characters, so `/*/`
+  only opens one) is written as it is, and only one that would end its
+  comment early or leave it open gets its `/` next to a `*` escaped -- and
+  is never unescaped on reading, since a hand-written comment may contain
+  `&#47;` legitimately. `ParseMACContents()` skips comments by the same
+  nesting rules. A `.mac` gets no "Created with wxMaxima" line either.
+  Headings in a `.mac` (open-comment markers, like in a `.wxm`) use the
+  reversible `.wxm` escaping, which `TreeFromWXM()` undoes.
   **Known, accepted limitation** (also already flagged in the same GH
   #1907 thread): this can't retroactively fix a `.wxm` file already on
   disk from before this existed, and a file whose prose coincidentally
@@ -1614,6 +1592,7 @@ tried without rebuilding.
 
 - **Branches and pull requests:** one branch per feature or bugfix, cut fresh from `main`, PR when it is finished -- see "Branches and pull requests" at the top of this file for why reusing one long-lived branch has already caused trouble.
 - **Red CI:** fixing a failure is welcome whoever caused it, and causing one is nobody's fault -- but never make a test pass by removing or weakening it. See "A red CI is everyone's to fix" at the top of this file.
+- **A test that needs a POSIX shell goes into `WXM_POSIX_TESTS`** (`test/CMakeLists.txt`). That list labels its tests `needs_posix`, and the Windows jobs run `ctest -LE "unittest|needs_posix"`, so this is how a test that runs a `.sh` helper (`check-wxMathML.sh`, `check-lintian.sh`, ...) or otherwise assumes `/bin/sh` stays off MSW. A test missing from it fails there as `BAD_COMMAND`, which is how the minGW job went red on `main` in 2026-09 with four such tests. Configure now refuses a test whose `COMMAND` is a `check-*.sh` helper unless it is in the list, but that guard only recognises that one shape: a test that reaches a shell some other way still has to be added by hand.
 - **Git Environment:** Note that running `git diff` might launch the visual diff tool `meld` instead of outputting to the terminal. Always use `git diff --no-ext-diff` if you need terminal output.
 - **String Literals & Translations:** Use the `wxS()` macro for all string literals and `_()` for user-facing translatable strings.
 - **Logging:** Use `wxLogMessage()` for debugging; messages are visible in **View -> Toggle Log Window** or by using the option `--logtostderr`.
@@ -1627,11 +1606,11 @@ tried without rebuilding.
 - **Maxima Restart (Windows):** Restarting requires a manual reset of the network client (`m_client.reset()`) and streams in `KillMaxima` (which lives in `MaximaProcessManager`, not in `wxMaxima` any more) to avoid socket state errors.
 - **Worksheet Search Logic:** Traverse in visual order: Prompt → Editor → Output (Forward) or Output → Editor → Prompt (Reverse). Resume from current caret position.
 - **Layout Timeout:** Complex output can trigger a timeout (configurable in Options), replacing slow-to-render cells with a warning.
-- **C++ Standard:** The project uses **C++20**. To support users on older operating systems (like Debian-oldstable or RHEL), wxMaxima aims to stay approximately 10 years behind the current C++ standard.
-- **wxWidgets Version:** Maintain compatibility with wxWidgets 3.0.5 where possible. Avoid features only available in 3.1+ (e.g., use `MakeAbsolute()` + `GetFullPath()` instead of `GetAbsolutePath()`).
+- **C++ Standard:** The project uses **C++20, all of it** -- but the real limit is the oldest *compiler* we support, not the standard's number, and that is **GCC 12** (Debian 12's stock compiler; decided 2026-09 after GH #2301 made wxWidgets 3.2 the minimum). Dropping wx 3.0 is what raised that floor: the distros with older compilers (Ubuntu 22.04's GCC 11, Debian 11's GCC 10, RHEL 8's GCC 8) only packaged wx 3.0/3.1 and are unsupported anyway. (RHEL/Alma/Rocky 9 still defaults to GCC 11; building there needs one of the newer `gcc-toolset-*` compilers its AppStream repository provides.) So any C++20 language or library feature GCC 12 implements is fine to use; the one notable gap is **`std::format`, which needs GCC 13** -- keep using `wxString::Format()` until GCC 12 is dropped. `compile_gcc12` in `compile_ubuntu.yml` builds with exactly that compiler and is what enforces this: a feature it rejects is too new, however standard it is. **C++23 is deliberately postponed**: GCC 12 only offers its small library additions (`std::expected`, `std::to_underlying`, `std::unreachable`), while the features that would change this code (deducing `this`, `std::ranges::to`, `std::print`) need GCC 14, which no still-supported distro ships as its default compiler. Checked 2026-09: `main` builds cleanly with `-std=gnu++23` on GCC 13 and Clang 18, so the switch itself will be cheap once that floor moves -- it also needs `cmake_minimum_required` raised from 3.16 to 3.20, the first CMake that knows the value 23. (This replaces an older rule of thumb, "stay about 10 years behind the current standard", which C++20 already no longer matched.)
+- **wxWidgets Version:** wxWidgets 3.2 is the minimum (since 2026-09, GH #2301): 3.0.5, the last 3.0 release, has a bug that leaves wxMaxima unable to talk to Maxima, with no fix in sight. `CMakeLists.txt` (`WXM_MIN_WXWIDGETS_VERSION`) and an `#error` in `main.cpp` enforce it. Features newer than 3.2 still need a `wxCHECK_VERSION` guard; guards for 3.2 and older were removed as dead code (GH #2368), so don't add new ones. The one deliberate exception is `main.cpp`'s `#if !wxCHECK_VERSION(3, 2, 0)` `#error`, which is the enforcement itself. `Compat.h`'s `wxWARN_UNUSED` fallback is still needed: wxWidgets only defines that macro from 3.3 on.
 - **Sizer Flags Are Different Enum Types:** `wxDirection` (`wxLEFT`/`wxRIGHT`/`wxALL`/...), `wxAlignment` (`wxALIGN_*`) and `wxStretch` (`wxEXPAND`/...) are three distinct unscoped enums; OR'ing two of them directly (e.g. `wxALIGN_CENTER_VERTICAL | wxALL`) is deprecated in C++20 and GCC warns `-Wdeprecated-enum-enum-conversion`. Fix by casting the *first* operand of the OR-chain to `int` (e.g. `static_cast<int>(wxALIGN_CENTER_VERTICAL) | wxALL`) -- since `|` is left-associative, this makes every subsequent operation `int | enum`, which is unambiguous and unwarned, without needing to touch the rest of the chain. Only the leftmost token needs the cast, however many differently-typed flags follow.
 - **`[[maybe_unused]]` on data members and GCC < 12:** GCC before version 12 doesn't support `[[maybe_unused]]` on non-static data members at all and warns `'maybe_unused' attribute ignored [-Wattributes]` regardless of whether the member is actually used (reproduced directly against `g++-11`; fixed by `g++-12`). Since the attribute is still needed for Clang (`-Wunused-private-field`), don't just delete it -- wrap the declaration in `#if defined(__GNUC__) && !defined(__clang__) && __GNUC__ < 12` / `#pragma GCC diagnostic push/ignored "-Wattributes"` ... `#pragma GCC diagnostic pop` / `#endif` (see `SvgBitmap.h`, `wxMathml.h`, `graphical_io/Printout.h`).
-- **CI Warnings Live On the Non-`-Werror` Jobs:** `compile_latest_and_test` and `compile_without_webview` (Ubuntu) build with `-Werror`, so they can't show warnings by construction -- check `compile_2204` (Ubuntu 22.04, plain `-Wall -Wextra`, GCC 11) for real warnings that survive to a release build. Don't assume that job's warning list is exhaustive, though: e.g. the `[[maybe_unused]]`-on-a-data-member GCC<12 warning above showed up for `Printout.h` in one such log but not for the identical pattern in `SvgBitmap.h`/`wxMathml.h` in the same run, for reasons that weren't tracked down (not precompiled headers -- `WXM_ENABLE_PRECOMPILED_HEADERS` defaults `OFF`) -- a clean local build with `g++-11 -Wall -Wextra` is the more reliable check for this specific class of warning.
+- **CI Warnings Live On the Non-`-Werror` Jobs:** `compile_latest_and_test` and `compile_without_webview` (Ubuntu) build with `-Werror`, so they can't show warnings by construction -- check `compile_2404` (Ubuntu 24.04, plain `-Wall -Wextra`, GCC 13; it was `compile_2204` on GCC 11 until 22.04 was dropped with GH #2301) for real warnings that survive to a release build. Don't assume that job's warning list is exhaustive, though: e.g. the `[[maybe_unused]]`-on-a-data-member GCC<12 warning above showed up for `Printout.h` in one such log but not for the identical pattern in `SvgBitmap.h`/`wxMathml.h` in the same run, for reasons that weren't tracked down (not precompiled headers: until 2026-09 that option silently did nothing, see the build-speed notes under Build System) -- a clean local build with `g++-11 -Wall -Wextra` is the more reliable check for this specific class of warning.
 - **`Cell` Bitfields Use C++20 Default Member Initializers, Not `InitBitFields_ClassName()`:** Every per-class flag bit-field (`Cell`, `EditorCell`, `GroupCell`, `TextCell`, `MatrCell`, and the rest of `src/cells/`) declares its default inline, e.g. `bool m_foo : 1 = false;`. The older pattern -- an `InitBitFields_ClassName()` method called from the constructor body, with each field tagged `/* InitBitFields_ClassName */` -- predated C++20 support for bit-field default member initializers and has been fully removed (2026-08); don't reintroduce it for new flags. Classes with zero bit-fields of their own no longer carry an empty stub either. Before folding an existing full-size `bool m_foo;` into a class's bitfield, check (1) nothing takes its address (`&m_foo` doesn't work on a bit-field member) and (2) it's only touched from the GUI thread (no cross-thread `bool` atomicity/tearing expectations) -- worksheet cells are not thread-shared, but double-check call sites rather than assuming. **Declaration order matters more than usual here**: C++ initializes members in declaration order, not constructor-init-list order, so a bit-field read by a *later*-declared member's own initializer (e.g. `IntervalCell::m_leftBracketOpensLeft`/`m_rightBracketOpensRight`, read by the `m_openBracket`/`m_closeBracket` initializers) must stay declared *before* those members -- relocating it next to an unrelated bitfield group to save a byte is undefined behavior (reading the bit-field before it's initialized), not just a style choice, caught before it shipped by tracing the actual initialization order rather than trusting the mem-initializer-list order. When a field can't move, bit-fielding it in place still works: two adjacent `: 1` declarations pack into a shared byte regardless of position.
 - **Tab Characters in `EditorCell`:** A `'\t'` is a real, single character in `m_text` (see `EditorCell::NormalizeLineEndings()`, which replaced the old `TabExpand()` that irreversibly rewrote every tab to 1-4 spaces on input/paste/load). It is expanded to the next 4-column tab stop -- one column being the width of a space glyph in the current font -- only where text becomes pixels, via `EditorCell::NextTabStop(startX)`/`MeasureTextWidth(startX, text)`. Tab width is **position-dependent**, the one thing `GetTextExtent()`/`GetTextSize()` cannot compute on their own (unlike every other character), so it can never be cached the way `StyledText::SetWidth()` caches other tokens' widths. `MaximaTokenizer` guarantees a tab is always its own isolated, single-character token (never merged into a space run, mirroring how a newline is already its own token) -- this is *load-bearing*: every `m_styledText`-based site (`Draw()`, `Recalculate()`, `GetLineWidth()`, `SelectPointText()`'s code-cell branch, `StyleTextCode()`) only needs a `text == wxS("\t")` equality check as a result, never substring splitting. Prose/text cells don't go through `MaximaTokenizer` at all, so `EditorCell::StyleTextTexts()` uses its own splitter, `PushTextLine()`, to get the same isolation guarantee for a tab embedded in an otherwise plain line of text. Sites that measure a raw `m_text` substring instead of a single token (`MarkSelection()`, `MixedDirectionOffset()`, `StyleTextTexts()`'s wrap check) go through `MeasureTextWidth()` instead, which splits on `'\t'` internally since a substring can still have one embedded anywhere. Left/Right arrow and Delete need **no special-casing** for tabs -- they already move/delete exactly one `m_text` character, which is now correct automatically. The plain `WXK_BACK` case's old "gobble up to 4 trailing spaces" shim was a workaround for the old space-expanded-tab world and is gone; a real tab deletes in one plain single-character backspace like anything else.
 
@@ -1931,14 +1910,10 @@ tried without rebuilding.
      replacement query for this specific "which language did the user pick"
      question). This lookup needs no version guard -- it's been present and
      works identically on both pre- and post-3.1.6 wxWidgets.
-  - **Not yet done** (deferred, filed as open follow-ups by the maintainer,
-    not part of this fix): #2229 (minimizable sidebars, wxWidgets >= 3.3.2),
-    #2230 (accessible SVG export, >= 3.3.3), #2231 (PNG description chunks
-    on exported cells, >= 3.3.1), #2232 (`wxNO_UNUSED_VARIABLES`, >= 3.2.7).
-    None of the four could be verified in this sandbox, which only has
-    wxWidgets 3.2.4 installed -- any implementation of them here could only
-    be compile-checked on the pre-version-guard fallback path, not the
-    actual new behavior.
+  - The follow-ups filed alongside it -- #2229 (minimizable sidebars),
+    #2230 (accessible SVG export), #2231 (PNG description chunks) and #2232
+    (`wxNO_UNUSED_VARIABLES`) -- have all since been implemented behind
+    `wxCHECK_VERSION` guards and closed.
 
 - **Scaled images losing transparency (GH #2227, `Image::GetBitmap()` in
   `src/Image.cpp`):** the final step of building a scaled display bitmap
@@ -2230,30 +2205,10 @@ Items the maintainer has flagged as worth doing but hasn't asked for yet -- don'
 start on these without checking in first, but pick them up if asked for "what's
 next" style work.
 
-- **GH #1335 -- cell allocations are non-local (still open, unstarted):**
-  `Cell`s are still individually heap-allocated and linked via each cell's own
-  `m_previous`/`m_next`, not stored contiguously. `CellList.h`'s own header
-  comment already says "the eventual plan is to have a list of cells be a
-  dedicated lightweight class working together with an arena allocator", but
-  `CellListBuilderBase` still just holds a `std::unique_ptr<Cell> m_head` --
-  that plan was never implemented. The issue's three proposed moves are all
-  still open: (1) drop `m_previous`/`m_next` from `Cell` in favor of a
-  `CellList` that owns contiguous storage, (2) hoist `m_group` from `Cell` to
-  `CellList` (one owner per list), (3) hoist the per-line-geometry caches --
-  the issue calls them `m_fullWidth`/`m_maxCenter`/`m_maxDrop`, renamed since
-  to `m_cachedSumOfWidths`/`m_cachedCenterList`/`m_cachedMaxDrop`/
-  `m_cachedLineWidth` -- from `Cell` to `CellList` too. Confirmed `sizeof(Cell)`
-  is 224 bytes on the current tree (checked directly, post-#1445), not the 112
-  the issue was measured against in 2020 -- `Cell` has grown substantially
-  since (accessibility support, config-change-tracking atomics, UUID string,
-  extra-XML-attributes map, ...), so the issue's "112 -> 76 bytes" estimate is
-  stale, but the underlying proposal is still real. This is a bigger
-  undertaking than #1445: it changes the core list *storage model*
-  (`m_next`/`m_previous` becoming array-relative instead of pointer-based),
-  touching every list-manipulation site in `CellList.cpp` plus anything
-  walking `GetNext()`/`GetPrevious()` directly -- scope it out carefully
-  before starting, don't assume it's a small follow-on to #1445 just because
-  they're adjacent/both filed by KubaO in 2020.
+Nothing at the moment. Open work lives in GitHub issues rather than here;
+when an entry above says something is still open, it names the issue that
+tracks it. (GH #1335, contiguous cell storage, used to be listed here; it was
+closed as not planned.)
 
 ## Error resilience
 

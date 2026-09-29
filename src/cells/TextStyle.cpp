@@ -57,7 +57,7 @@ Style::Style()
     SetFontName(wxNORMAL_FONT->GetFaceName());
   else
     SetFontName(wxS("Sans"));
-  wxASSERT(m.fontCache != NULL);
+  wxASSERT(m.fontCache != nullptr);
 }
 
 Style::Style(AFontSize fontSize)
@@ -67,11 +67,11 @@ Style::Style(AFontSize fontSize)
     SetFontName(wxNORMAL_FONT->GetFaceName());
   else
     SetFontName(wxS("Sans"));
-  wxASSERT(m.fontCache != NULL);
+  wxASSERT(m.fontCache != nullptr);
 }
 
 Style::Style(const Style &o) : m(o.m) {
-  wxASSERT(m.fontCache != NULL);
+  wxASSERT(m.fontCache != nullptr);
 }
 
 Style &Style::operator=(const Style &o) {
@@ -80,7 +80,7 @@ Style &Style::operator=(const Style &o) {
       m = o.m;
       SetFontName(o.GetFontName());
     }
-  wxASSERT(m.fontCache != NULL);
+  wxASSERT(m.fontCache != nullptr);
 
   return *this;
 }
@@ -173,7 +173,7 @@ did_change Style::SetStrikethrough(bool strikethrough) {
 }
 
 did_change Style::SetFontName(wxString fontName) {
-  if ((m.fontCache != NULL) && (GetFontName() == fontName))
+  if ((m.fontCache != nullptr) && (GetFontName() == fontName))
     {
       return false;
     }
@@ -185,7 +185,7 @@ did_change Style::SetFontName(wxString fontName) {
     }
   else
     m.fontCache = it->second;
-  wxASSERT(m.fontCache != NULL);
+  wxASSERT(m.fontCache != nullptr);
 
   return true;
 }
@@ -250,19 +250,11 @@ did_change Style::SetFromFont(const wxFont &font) {
 }
 
 AFontSize Style::GetFontSize(const wxFont &font) {
-#if wxCHECK_VERSION(3, 1, 2)
   return AFontSize(font.GetFractionalPointSize());
-#else
-  return AFontSize(font.GetPointSize());
-#endif
 }
 
 void Style::SetFontSize(wxFont &font, AFontSize fontSize) {
-#if wxCHECK_VERSION(3, 1, 2)
   return font.SetFractionalPointSize(fontSize.Get());
-#else
-  return font.SetPointSize(fontSize.GetAsLong());
-#endif
 }
 
 wxFontInfo Style::GetAsFontInfo() const {
@@ -274,16 +266,7 @@ wxFontInfo Style::GetAsFontInfo() const {
     .Strikethrough(IsStrikethrough())
     .Encoding(GetEncoding());
 
-  // This pattern is used to ensure that the legacy variant
-  // still compiles (doesn't bitrot).
-#if wxCHECK_VERSION(3, 1, 2)
   return result.Style(GetFontStyle()).Weight(GetWeight());
-#else
-  return result.Slant(IsSlant())
-    .Italic(IsItalic())
-    .Bold(IsBold())
-    .Light(IsLight());
-#endif
 }
 
 const wxColor &Style::Default_Color() {
@@ -440,6 +423,7 @@ std::ostream& operator<<(std::ostream& out, const TextStyle textstyle){
   case TS_SELECTION: result = "TS_SELECTION"; break;
   case TS_EQUALSSELECTION: result = "TS_EQUALSSELECTION"; break;
   case TS_DIFF_CHANGED: result = "TS_DIFF_CHANGED"; break;
+  case TS_LINK: result = "TS_LINK"; break;
   default: result = "!!!Bug: Unknown text style!!!";
   }
   return out << result;

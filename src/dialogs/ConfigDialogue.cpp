@@ -44,18 +44,6 @@
 #include "WrappingStaticText.h"
 #include "wxMaximaArtProvider.h"
 
-#if !wxCHECK_VERSION(3, 1, 6)
-#include "art/config/edit-copy-confdialogue.h"
-#include "art/config/options.h"
-#include "art/config/document-export.h"
-#include "art/config/editing.h"
-#include "art/config/styles.h"
-#include "art/config/edit-copy_backup.h"
-#include "art/config/maxima.h"
-#include "art/config/view-refresh.h"
-#include "art/config/accessibility.h"
-#include "art/config/ai-chat.h"
-#endif
 
 #include "MathParser.h"
 #include "cells/CellList.h"
@@ -107,7 +95,6 @@ static const int s_htmlEqFormatCount =
 
 int ConfigDialogue::GetImageSize() {
   int ppi;
-#if wxCHECK_VERSION(3, 1, 1)
   wxDisplay display;
 
   int display_idx = wxDisplay::GetFromWindow(this);
@@ -115,9 +102,6 @@ int ConfigDialogue::GetImageSize() {
     ppi = 72;
   else
     ppi = wxDisplay(display_idx).GetPPI().x;
-#else
-  ppi = wxGetDisplayPPI().x;
-#endif
   if (ppi < 10)
     ppi = 72;
 
@@ -220,9 +204,7 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent)
   m_languages[_("Indonesian")] = wxLANGUAGE_INDONESIAN;
   m_languages[_("Italian")] = wxLANGUAGE_ITALIAN;
   m_languages[_("Japanese")] = wxLANGUAGE_JAPANESE;
-#if wxCHECK_VERSION(3, 0, 2)
   m_languages[_("Kabyle")] = wxLANGUAGE_KABYLE;
-#endif
   m_languages[_("Korean")] = wxLANGUAGE_KOREAN;
   m_languages[_("Latvian")] = wxLANGUAGE_LATVIAN;
   m_languages[_("Lithuanian")] = wxLANGUAGE_LITHUANIAN;
@@ -255,7 +237,6 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent)
 #if defined __WXOSX__
 #else
   int imgSize = GetImageSize();
-#if wxCHECK_VERSION(3, 1, 6)
   wxVector<wxBitmapBundle> imageList;
   imageList.clear();
   imageList.push_back(wxArtProvider::GetBitmapBundle(wxmaximaART_CONFIG_EDITING, wxART_OTHER, wxSize(imgSize, imgSize)));
@@ -270,32 +251,6 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent)
   imageList.push_back(wxArtProvider::GetBitmapBundle(wxmaximaART_CONFIG_AI_CHAT, wxART_OTHER, wxSize(imgSize, imgSize)));
   imageList.push_back(wxArtProvider::GetBitmapBundle(wxmaximaART_CONFIG_ACCESSIBILITY, wxART_OTHER, wxSize(imgSize, imgSize)));
   m_notebook->SetImages(imageList);
-#else
-  m_imageList = std::unique_ptr<wxImageList>(new wxImageList(imgSize, imgSize, false, 0));
-  m_imageList->Add(ArtProvider::GetImage(this, wxS("editing"), imgSize, EDITING_SVG_GZ,
-                                         EDITING_SVG_GZ_SIZE));
-  m_imageList->Add(ArtProvider::GetImage(this, wxS("maxima"), imgSize, MAXIMA_SVG_GZ,
-                                         MAXIMA_SVG_GZ_SIZE));
-  m_imageList->Add(ArtProvider::GetImage(this, wxS("styles"), imgSize, STYLES_SVG_GZ,
-                                         STYLES_SVG_GZ_SIZE));
-  m_imageList->Add(ArtProvider::GetImage(this, wxS("document-export"), imgSize,
-                                         DOCUMENT_EXPORT_SVG_GZ,
-                                         DOCUMENT_EXPORT_SVG_GZ_SIZE));
-  m_imageList->Add(ArtProvider::GetImage(this, wxS("options"), imgSize, OPTIONS_SVG_GZ,
-                                         OPTIONS_SVG_GZ_SIZE));
-  m_imageList->Add(wxArtProvider::GetBitmap(wxART_COPY, wxART_OTHER, wxSize(imgSize, imgSize)));
-  m_imageList->Add(ArtProvider::GetImage(this, wxS("media-playback-start"), imgSize,
-                                         MEDIA_PLAYBACK_START_SVG_GZ,
-                                         MEDIA_PLAYBACK_START_SVG_GZ_SIZE));
-  m_imageList->Add(wxArtProvider::GetBitmap(wxART_PRINT, wxART_OTHER, wxSize(imgSize, imgSize)));
-  m_imageList->Add(ArtProvider::GetImage(this, wxS("edit-undo"), imgSize, VIEW_REFRESH_SVG_GZ,
-                                         VIEW_REFRESH_SVG_GZ_SIZE));
-  m_imageList->Add(ArtProvider::GetImage(this, wxS("ai-chat"), imgSize, AI_CHAT_SVG_GZ,
-                                         AI_CHAT_SVG_GZ_SIZE));
-  m_imageList->Add(ArtProvider::GetImage(this, wxS("accessibility"), imgSize, ACCESSIBILITY_SVG_GZ,
-                                         ACCESSIBILITY_SVG_GZ_SIZE));
-  m_notebook->SetImageList(m_imageList.get());
-#endif
 #endif
   m_notebook->AddPage(CreateWorksheetPanel(), _("Worksheet"), true, 0);
   m_notebook->AddPage(CreateMaximaPanel(), _("Maxima"), false, 1);
@@ -368,7 +323,7 @@ ConfigDialogue::~ConfigDialogue() {
   // sample worksheet deterministically while the configuration is whole.
   if (m_sampleWorksheet) {
     m_sampleWorksheet->Destroy();
-    m_sampleWorksheet = NULL;
+    m_sampleWorksheet = nullptr;
   }
 }
 
@@ -472,6 +427,11 @@ void ConfigDialogue::SetCheckboxValues() {
   m_exportContainsWXMX->SetToolTip(
                                    _("If this option is set the .wxmx source of the current file is copied "
                                      "to a place a link to is put into the result of an export."));
+  m_htmlExportSelfContained->SetToolTip(
+    _("If this option is set, the HTML export writes a single .html file that "
+      "contains its images (and, if requested, the .wxmx source) instead of "
+      "placing them in a separate folder next to it. Such a file can be mailed "
+      "or uploaded on its own, but is larger."));
   m_printBrackets->SetToolTip(
                               _("For each Text-, Sectioning or code cell wxMaxima can display a "
                                 "bracket showing the extend of the cell and allowing to fold it. This "
@@ -588,6 +548,7 @@ void ConfigDialogue::SetCheckboxValues() {
   m_usePartialForDiff->SetValue(configuration->UsePartialForDiff());
   m_wrapLatexMath->SetValue(configuration->WrapLatexMath());
   m_exportContainsWXMX->SetValue(configuration->ExportContainsWXMX());
+  m_htmlExportSelfContained->SetValue(configuration->HTMLExportSelfContained());
   m_printBrackets->SetValue(configuration->PrintBrackets());
   {
     // Map the stored format to a choice index; anything not offered anymore
@@ -620,6 +581,7 @@ void ConfigDialogue::SetCheckboxValues() {
   m_insertAns->SetValue(configuration->GetInsertAns());
   m_autoIndent->SetValue(configuration->GetAutoIndent());
   m_cursorJump->SetValue(configuration->CursorJump());
+  m_arrowKeysSkipOutput->SetValue(configuration->ArrowKeysSkipOutput());
   m_hideBrackets->SetValue(configuration->HideBrackets());
 #ifdef __WXGTK__
   m_overlayScrollbars->SetValue(configuration->OverlayScrollbars());
@@ -1040,6 +1002,15 @@ wxWindow *ConfigDialogue::CreateWorksheetPanel() {
                                 _("New lines: Jump to text"));
   actionSizer->Add(m_cursorJump, wxSizerFlags());
 
+  m_arrowKeysSkipOutput = new wxCheckBox(actionSizer->GetStaticBox(), wxID_ANY,
+                                         _("Up/Down keys skip over output"));
+  m_arrowKeysSkipOutput->SetToolTip(
+    _("If this checkbox is set, Down at the end of a cell's input moves on to "
+      "the next cell, as in older versions of wxMaxima. If it isn't set, Down "
+      "selects the cell's output one result at a time, so it can be copied "
+      "without using the mouse."));
+  actionSizer->Add(m_arrowKeysSkipOutput, wxSizerFlags());
+
   m_openHCaret = new wxCheckBox(actionSizer->GetStaticBox(), wxID_ANY,
                                 _("Open a cell when Maxima expects input"));
   actionSizer->Add(m_openHCaret, wxSizerFlags());
@@ -1400,6 +1371,12 @@ wxWindow *ConfigDialogue::CreateExportPanel() {
     new wxCheckBox(html_sizer->GetStaticBox(), wxID_ANY,
                    _("Add the .wxmx file to the HTML export"));
   html_sizer->Add(m_exportContainsWXMX,
+                  wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
+
+  m_htmlExportSelfContained =
+    new wxCheckBox(html_sizer->GetStaticBox(), wxID_ANY,
+                   _("Embed images into the .html file"));
+  html_sizer->Add(m_htmlExportSelfContained,
                   wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
 
   vsizer->Add(html_sizer, wxSizerFlags().Expand().Border(
@@ -2666,7 +2643,7 @@ bool ConfigDialogue::AddCustomAiProviderDialog() {
   dlg.SetSizerAndFit(dlgVbox);
 
   wxButton *okButton = static_cast<wxButton *>(dlg.FindWindow(wxID_OK));
-  if (okButton != NULL)
+  if (okButton != nullptr)
     okButton->Bind(wxEVT_UPDATE_UI, [nameCtrl, urlCtrl, urlProblem, &dlg](wxUpdateUIEvent &evt) {
       wxString url = urlCtrl->GetValue();
       // An empty field is "not filled in yet", not "wrong" -- only nag once
@@ -2994,7 +2971,7 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
     do
       {
         entry = zipstream.GetNextEntry();
-      } while((entry != NULL) && (entry->GetName() != "content.xml"));
+      } while((entry != nullptr) && (entry->GetName() != "content.xml"));
     wxXmlDocument xmlText;
     xmlText.Load(zipstream);
     wxXmlNode *xmlcells = xmlText.GetRoot();
@@ -3111,6 +3088,7 @@ void ConfigDialogue::WriteSettings() {
   configuration->SetInsertAns(m_insertAns->GetValue());
   configuration->SetAutoIndent(m_autoIndent->GetValue());
   configuration->CursorJump(m_cursorJump->GetValue());
+  configuration->ArrowKeysSkipOutput(m_arrowKeysSkipOutput->GetValue());
   configuration->HideBrackets(m_hideBrackets->GetValue());
 #ifdef __WXGTK__
   configuration->OverlayScrollbars(m_overlayScrollbars->GetValue());
@@ -3210,6 +3188,7 @@ void ConfigDialogue::WriteSettings() {
   configuration->UsePartialForDiff(m_usePartialForDiff->GetValue());
   configuration->WrapLatexMath(m_wrapLatexMath->GetValue());
   configuration->ExportContainsWXMX(m_exportContainsWXMX->GetValue());
+  configuration->HTMLExportSelfContained(m_htmlExportSelfContained->GetValue());
   configuration->PrintBrackets(m_printBrackets->GetValue());
   {
     int sel = m_exportWithMathJAX->GetSelection();

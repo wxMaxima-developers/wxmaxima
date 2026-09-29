@@ -351,6 +351,53 @@ add_test(
     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxstatusbar(\"a<1>b\");" "<statusbar>a&lt;1&gt;b</statusbar>"
 )
 
+# wx_version_min(): $wxmaximaversion is set the way wxMaxima sets it (a
+# "-dev" suffix plus a toolkit suffix), then compared against versions that
+# are equal, shorter, older and newer, including "26.10" vs "26.9", which a
+# string comparison would get wrong.
+add_test(
+    NAME wx_version_min
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh"
+    ":lisp (setq $wxmaximaversion \"26.09.0-dev_GTK3\")\n[wx_version_min(\"26.09.0\"), wx_version_min(\"26.9\"), wx_version_min(\"26.08.3\"), wx_version_min(\"25.12.9\"), wx_version_min(\"26.09.1\"), wx_version_min(\"26.10.0\"), wx_version_min(\"27\")];"
+    "(%o1) </lbl><mrow list=\"true\"><t[^>]*>\\[</t><mrow><t lisp=\"true\">true</t></mrow><mo>,</mo><mrow><t lisp=\"true\">true</t></mrow><mo>,</mo><mrow><t lisp=\"true\">true</t></mrow><mo>,</mo><mrow><t lisp=\"true\">true</t></mrow><mo>,</mo><mrow><t lisp=\"false\">false</t></mrow><mo>,</mo><mrow><t lisp=\"false\">false</t></mrow><mo>,</mo><mrow><t lisp=\"false\">false</t></mrow><t[^>]*>]</t></mrow>"
+)
+
+# ...and outside wxMaxima, where $wxmaximaversion is never set, it is false.
+add_test(
+    NAME wx_version_min_outside_wxmaxima
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wx_version_min(\"1.0\");" "<t lisp=\"false\">false</t>"
+)
+
+# with_slider_draw_bare(): each frame is a plain draw() call, so a frame can
+# hold several scenes, 2D and 3D mixed. Two frames means two gnuplot scripts
+# in the <slide> tag.
+add_test(
+    NAME with_slider_draw_bare
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh"
+    "with_slider_draw_bare(a,[1,2],columns=2,gr2d(explicit(sin(a*x),x,0,1)),gr3d(explicit(a*x*y,x,0,1,y,0,1)));"
+    "<slide[^>]*>[^<]*\\.gnuplot;[^<]*\\.gnuplot;[^<]*</slide>"
+)
+
+# with_slider_draw()'s file_name writes a gif the user asked for, so wxMaxima
+# must not delete it once it has displayed it (GH #2389).
+add_test(
+    NAME with_slider_draw_file_name_kept
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh"
+    "with_slider_draw(a,[1,2],explicit(a*x,x,0,1),file_name=\"anim_kept\");"
+    "<img del=\"no\">anim_kept\\.gif</img>"
+)
+
+# ...and file_name, which draw()'s animated_gif terminal cannot honour for a
+# frame made of several scenes: the frames are rendered as usual, and the
+# <slide> tag asks wxMaxima to assemble them into anim.gif (GH #2361), named
+# with its full path, as wxMaxima may work in another directory than Maxima.
+add_test(
+    NAME with_slider_draw_bare_file_name
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh"
+    "with_slider_draw_bare(a,[1,2],file_name=\"anim\",gr2d(explicit(sin(a*x),x,0,1)));"
+    "<slide[^>]* gifFile=\"/[^\"]*/anim\\.gif\"[^>]*>[^<]*\\.gnuplot;[^<]*\\.gnuplot;[^<]*</slide>"
+)
+
 add_test(
     NAME wxbuildinfo
     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxbuild_info();" "WxMaxima"
@@ -370,6 +417,42 @@ add_test(
 add_test(
     NAME check-xml-validity_matrix_complex
     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-xml-validity.sh" "wx_matrix(matrix([1,2],[3,4]), lines=true, rownames=true, colnames=true, parenstyle=square);"
+)
+
+# GH #2343: wx_matrix()'s oversized option reaches wxMaxima as an attribute
+# of the <tb> tag, and doesn't clash with any attribute already on it.
+add_test(
+    NAME check-xml-validity_matrix_oversized
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-xml-validity.sh" "wx_matrix(matrix([1,2],[3,4]), lines=true, parenstyle=none, oversized=scroll);"
+)
+
+add_test(
+    NAME check-wxMathML.lisp_matrix_oversized
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wx_matrix(matrix([1,2],[3,4]), oversized=full);" "<tb[^>]* oversized=\"full\""
+)
+
+# wx_matrix() only returns the formatted matrix; it is the display of that
+# result that shows it. So a matrix ended with ";" is shown exactly once...
+add_test(
+    NAME check-wxMathML.lisp_matrix_shown_once
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wx_matrix(matrix([1,2],[3,4]), oversized=full);" "<tb[^>]* oversized=\"full\""
+)
+set_tests_properties(check-wxMathML.lisp_matrix_shown_once PROPERTIES
+    FAIL_REGULAR_EXPRESSION "</tb>.*<tb ")
+
+# ...one ended with "$" isn't shown at all...
+add_test(
+    NAME check-wxMathML.lisp_matrix_dollar_not_shown
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wx_matrix(matrix([1,2],[3,4]), oversized=full)$ 7;" "<mn>7</mn>"
+)
+set_tests_properties(check-wxMathML.lisp_matrix_dollar_not_shown PROPERTIES
+    FAIL_REGULAR_EXPRESSION "<tb")
+
+# ...and the options stay with the returned value, not with what is
+# calculated from it.
+add_test(
+    NAME check-wxMathML.lisp_matrix_options_stay_with_value
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "m:wx_matrix(matrix([1,2],[3,4]), oversized=scroll)$ m; m+1;" "<tb[^>]* oversized=\"scroll\"[^>]*>.*<tb bracketParens=\"true\">"
 )
 
 add_test(
@@ -634,36 +717,21 @@ set_tests_properties(wxmaxima_no_stray_children PROPERTIES RUN_SERIAL TRUE)
 # can then reuse the process instead of killing it and spawning a replacement.
 # See check_maxima_spawn_count.cmake for why it used to be unable to.
 #
-# Not on Windows, and this is the one thing to read before "fixing" that: the
-# test counts a line wxMaxima writes to its own stderr, and a GUI-subsystem
-# process's stderr does not reliably reach whoever is capturing it there. That
-# is not this test's bug and not a thing it can work around -- it is the same
-# unexplained failure the wxmaxima_version_string entry (in the
-# wxmaxima-packaging skill) spent a month on and then shelved, which is why
-# that test's content assertion is
-# non-Windows-only too. Here it cost a real red minGW build: the run itself
-# succeeded, and the captured log was simply empty, so the test read it as
-# "started 0 Maxima processes". What is therefore NOT covered on Windows is
-# how many Maxima processes opening a file starts; the fix it guards
-# (MaximaProcessManager::StartMaxima) is platform-independent, so it is the
-# coverage that is missing there, not the behaviour. Getting it back needs a
-# count that does not travel through wxMaxima's stdio at all -- pointing
-# --maxima at a wrapper that appends to a file before exec'ing the real
-# Maxima would do it on every platform, and is the thing to try.
-if(NOT WIN32)
+# The count comes from a wrapper the script puts in front of the real Maxima
+# (GH #2351), not from wxMaxima's own log: on Windows a GUI-subsystem
+# process's stderr does not reliably reach whoever captures it, which once
+# turned the minGW job red with an empty log read as "0 processes". So this
+# runs on every platform now, and needs to know where the real Maxima is.
+if(MAXIMA)
     add_test(
         NAME wxmaxima_one_maxima_per_file
         COMMAND ${CMAKE_COMMAND}
                 -DWXMAXIMA=$<TARGET_FILE:wxmaxima>
+                -DMAXIMA=${MAXIMA}
                 -DTESTFILE=one_maxima_per_file.wxm
                 -DWORKDIR=${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
                 -DEXPECTED=1
                 -P ${CMAKE_CURRENT_SOURCE_DIR}/check_maxima_spawn_count.cmake)
-    # The marker this counts is a translatable log message, so pin the
-    # language: an unexpectedly translated log would otherwise be
-    # indistinguishable from a run that started no Maxima at all.
-    set_property(TEST wxmaxima_one_maxima_per_file APPEND PROPERTY ENVIRONMENT
-        "LC_ALL=C" "LANG=C" "LANGUAGE=en")
 endif()
 
 # GH #2276: a --batch run whose input file doesn't exist has nothing to do and
@@ -1462,6 +1530,9 @@ set(WXM_POSIX_TESTS
   check-wizard-commands check-translations
   check-xml-validity_matrix_default check-xml-validity_matrix_lines
   check-xml-validity_matrix_complex check-xml-validity_mfrac
+  check-xml-validity_matrix_oversized check-wxMathML.lisp_matrix_oversized
+  check-wxMathML.lisp_matrix_shown_once check-wxMathML.lisp_matrix_dollar_not_shown
+  check-wxMathML.lisp_matrix_options_stay_with_value
   check-wxmx-validity_all-celltypes check-wxmx-validity_intervals
   wxstatusbar wxbuildinfo wxbug_report show_image
   wxxml-array-no-display-properties wxxml-array-display-properties
@@ -1470,7 +1541,27 @@ set(WXM_POSIX_TESTS
   true false mfrac load_symbol check-markdown
   subscriptp_1 subscriptp_2 subscriptp_3 subscriptp_4 subscriptp_5
   subscriptp_6 subscriptp_7 subscriptp_8 subscriptp_9 subscriptp_10
-  subscriptp_11)
+  subscriptp_11
+  wx_version_min wx_version_min_outside_wxmaxima
+  with_slider_draw_bare with_slider_draw_file_name_kept
+  with_slider_draw_bare_file_name
+  check-lintian check-rpmlint)
+
+# A test missing from that list shows up only on the Windows CI, as a red
+# BAD_COMMAND nobody sees until the job runs -- five slipped through that way
+# in 2026-09. So check it here, on every platform's configure: each test whose
+# COMMAND is one of the check-*.sh helpers has to be in WXM_POSIX_TESTS.
+file(READ "${CMAKE_CURRENT_LIST_FILE}" wxm_this_file)
+string(REGEX MATCHALL
+  "NAME[ \t\r\n]+[^ \t\r\n]+[ \t\r\n]+COMMAND[ \t\r\n]+\"\\$\\{CMAKE_CURRENT_BINARY_DIR\\}/check-[^\"]*\\.sh\""
+  wxm_sh_tests "${wxm_this_file}")
+foreach(wxm_sh_test IN LISTS wxm_sh_tests)
+  string(REGEX REPLACE "^NAME[ \t\r\n]+([^ \t\r\n]+).*" "\\1" wxm_sh_test "${wxm_sh_test}")
+  if(NOT wxm_sh_test IN_LIST WXM_POSIX_TESTS)
+    message(FATAL_ERROR "Test ${wxm_sh_test} runs a check-*.sh helper, so it "
+      "needs a POSIX shell: add it to WXM_POSIX_TESTS in ${CMAKE_CURRENT_LIST_FILE}.")
+  endif()
+endforeach()
 
 # ...with one deliberate exception: the typical real-world case is multiple
 # wxMaxima sessions (over time or at once) SHARING one ~/.maxima, reusing and
@@ -1489,8 +1580,13 @@ foreach(wxm_t IN LISTS wxm_all_tests)
   else()
     set(wxm_envdir "${CMAKE_CURRENT_BINARY_DIR}/test_envdirs/${wxm_t}")
   endif()
-  file(MAKE_DIRECTORY "${wxm_envdir}")
-  file(MAKE_DIRECTORY "${wxm_envdir}/TMPDIR")
+  # Create every directory the environment below points at: nothing creates
+  # them on demand. Maxima in particular writes its plot data and gnuplot
+  # scripts straight into MAXIMA_TEMPDIR and fails with "Cannot create" if
+  # that folder is missing.
+  foreach(wxm_d TMPDIR MAXIMA_USERDIR MAXIMA_OBJDIR MAXIMA_TEMPDIR XDG_CONFIG_HOME)
+    file(MAKE_DIRECTORY "${wxm_envdir}/${wxm_d}")
+  endforeach()
   set_property(TEST "${wxm_t}" APPEND PROPERTY ENVIRONMENT
     "TMPDIR=${wxm_envdir}/TMPDIR"
     #"TEMPDIR=${wxm_envdir}/TMPDIR"

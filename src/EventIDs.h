@@ -671,6 +671,8 @@ public:
   static const wxWindowIDRef popid_export_output_svg;
   static const wxWindowIDRef popid_export_output_png;
   static const wxWindowIDRef popid_add_watch;
+  static const wxWindowIDRef popid_open_link;
+  static const wxWindowIDRef popid_copy_link;
   static const wxWindowIDRef popid_add_watch_label;
   static const wxWindowIDRef popid_special_constant_percent;
   static const wxWindowIDRef popid_changeasterisk;
@@ -691,6 +693,7 @@ public:
   static const wxWindowIDRef popid_add_comment;
   static const wxWindowIDRef popid_insert_input;
   static const wxWindowIDRef popid_copy_matlab;
+  static const wxWindowIDRef popid_copy_csv;
   static const wxWindowIDRef popid_copy_tex;
   static const wxWindowIDRef popid_copy_text;
   static const wxWindowIDRef popid_copy_mathml;

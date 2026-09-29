@@ -78,7 +78,7 @@ private:
   void OnChar(wxKeyEvent &event);
   void OnFocus(wxFocusEvent &event);
 
-  Configuration *m_config = NULL;
+  Configuration *m_config = nullptr;
 };
 
 #endif // BTEXTCTRL_H

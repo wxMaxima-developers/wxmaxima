@@ -349,7 +349,7 @@ private:
   */
   void RecordDecodeFailure(const wxString &message, bool missingCodec);
   LoadFailureKind m_loadFailureKind = LoadFailureKind::None;
-  Configuration *m_configuration = NULL;
+  Configuration *m_configuration = nullptr;
   /*! The upper width limit for displaying this image
    */
   wxCoord m_maxWidth = -1;

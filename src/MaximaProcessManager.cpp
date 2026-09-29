@@ -33,6 +33,14 @@
 #include <wx/sstream.h>
 #include <wx/tokenzr.h>
 
+#include "ProcessTree.h"
+#include <vector>
+
+#ifdef __WXMSW__
+#include <windows.h>
+#include <tlhelp32.h>
+#endif
+
 #ifndef __WXMSW__
 #include <csignal>
 #include <cstring>
@@ -141,14 +149,28 @@ void MaximaProcessManager::ServerEvent(wxSocketEvent &event) {
 
 void MaximaProcessManager::OnMaximaConnect() {
   if (m_wxMaxima.m_client && (m_wxMaxima.m_client->IsConnected())) {
-    wxLogMessage(_("New connection attempt whilst already connected."));
+    // Once Maxima is connected, it opens a second connection to interrupt
+    // it through (see MaximaInterruptChannel) -- or somebody else on this
+    // machine connects, which the channel's handshake rejects.
+    if (m_wxMaxima.m_server == nullptr)
+      return;
+    wxSocketBase *socket = m_wxMaxima.m_server->Accept(false);
+    if (m_wxMaxima.m_interruptChannel && !m_wxMaxima.m_interruptChannel->IsDead()) {
+      // Keep the channel we have: a newcomer mustn't be able to replace it.
+      wxLogMessage(_("New connection attempt whilst already connected."));
+      if (socket)
+        socket->Destroy();
+      return;
+    }
+    m_wxMaxima.m_interruptChannel =
+      std::make_unique<MaximaInterruptChannel>(socket, m_wxMaxima.m_maximaAuthString);
     return;
   }
-  if (m_wxMaxima.m_maximaProcess == NULL) {
+  if (m_wxMaxima.m_maximaProcess == nullptr) {
     wxLogMessage(_("New connection attempt, but no currently running maxima process."));
     return;
   }
-  if (m_wxMaxima.m_server == NULL) {
+  if (m_wxMaxima.m_server == nullptr) {
     wxLogMessage(_("New connection attempt, but no currently no socket maxima could connect to."));
     return;
   }
@@ -258,12 +280,12 @@ bool MaximaProcessManager::StartMaxima(bool force) {
   wxString dirname_Old;
   wxGetEnv("MAXIMA_INITIAL_FOLDER", &dirname_Old);
 
-  if ((m_wxMaxima.m_maximaProcess == NULL) || (m_wxMaxima.m_hasEvaluatedCells) || force ||
+  if ((m_wxMaxima.m_maximaProcess == nullptr) || (m_wxMaxima.m_hasEvaluatedCells) || force ||
       (dirname != dirname_Old)) {
     if (!StartServer())
       return false;
 
-    if ((m_wxMaxima.m_maximaProcess != NULL) || (m_wxMaxima.m_pid >= 0) || (m_wxMaxima.m_client))
+    if ((m_wxMaxima.m_maximaProcess != nullptr) || (m_wxMaxima.m_pid >= 0) || (m_wxMaxima.m_client))
       {
         m_wxMaxima.m_unsuccessfulConnectionAttempts = 0;
         KillMaxima();
@@ -310,10 +332,11 @@ bool MaximaProcessManager::StartMaxima(bool force) {
       wxEnvVariableHashMap environment;
       environment = m_wxMaxima.m_configuration.MaximaEnvVars();
       wxGetEnvMap(&environment);
-      // Tell Maxima we want to be able to kill it on Ctrl+G by sending it a
-      // signal. Strictly necessary only on MS Windows where we don't have a
-      // kill() command.
-      environment["MAXIMA_SIGNALS_THREAD"] = "1";
+      // MAXIMA_SIGNALS_THREAD is deliberately not set any more: it made an
+      // SBCL or CCL Maxima on MS Windows start a thread that polls a
+      // shared-memory segment for Ctrl+G. Both Lisps have threads, so they
+      // open wxMaxima's own interrupt channel instead (MaximaInterruptChannel),
+      // which needs neither the pid nor Maxima's winkill_lib.dll.
       if(!Configuration::GetMaximaLang().IsEmpty())
         environment["LANG"] = Configuration::GetMaximaLang();
       // TODO: Is this still necessary for gnuplot on MacOs?
@@ -350,9 +373,9 @@ bool MaximaProcessManager::StartMaxima(bool force) {
       if (m_wxMaxima.m_pid <= 0) {
         m_wxMaxima.StatusMaximaBusy(StatusBar::MaximaStatus::process_wont_start);
         m_wxMaxima.StatusText(_("Cannot start the maxima binary"));
-        m_wxMaxima.m_maximaProcess = NULL;
-        m_wxMaxima.m_maximaStdout = NULL;
-        m_wxMaxima.m_maximaStderr = NULL;
+        m_wxMaxima.m_maximaProcess = nullptr;
+        m_wxMaxima.m_maximaStdout = nullptr;
+        m_wxMaxima.m_maximaStderr = nullptr;
         m_wxMaxima.m_statusBar->NetworkStatus(StatusBar::offline);
         // Deferred: StartMaxima can run under a wxProcess-termination event
         // (restart after a crash), and a modal dialog inside an event handler
@@ -409,7 +432,7 @@ bool MaximaProcessManager::StartMaxima(bool force) {
 
 void MaximaProcessManager::KillMaxima(bool logMessage) {
   m_wxMaxima.m_maximaConnectWatchdogTimer.Stop();
-  if (logMessage && (m_wxMaxima.m_closing || (m_wxMaxima.m_maximaProcess == NULL) || (m_wxMaxima.m_pid > 0))) {
+  if (logMessage && (m_wxMaxima.m_closing || (m_wxMaxima.m_maximaProcess == nullptr) || (m_wxMaxima.m_pid > 0))) {
     if (m_wxMaxima.m_maximaPid > 0)
       wxLogMessage("Killing Maxima. Wrapper PID=%ld, Maxima PID=%ld", m_wxMaxima.m_pid,
                    m_wxMaxima.m_maximaPid);
@@ -447,12 +470,13 @@ void MaximaProcessManager::KillMaxima(bool logMessage) {
     // If Maxima no more has a stdout it should automatically close
     m_wxMaxima.m_maximaProcess->CloseOutput();
   }
-  m_wxMaxima.m_maximaStdout = NULL;
-  m_wxMaxima.m_maximaStderr = NULL;
-  m_wxMaxima.m_maximaStdin = NULL;
+  m_wxMaxima.m_maximaStdout = nullptr;
+  m_wxMaxima.m_maximaStderr = nullptr;
+  m_wxMaxima.m_maximaStdin = nullptr;
   m_wxMaxima.m_inLDB = false;
   // This closes Maxima's network connection.
   m_wxMaxima.m_client.reset();
+  m_wxMaxima.m_interruptChannel.reset();
 
   // Finally found a long outstanding problem with leftover Lisp processes
   // (using debugging with command line Maxima and netcat):
@@ -549,13 +573,13 @@ void MaximaProcessManager::KillMaxima(bool logMessage) {
   // kill actually exits.
   if(m_wxMaxima.m_maximaProcess) {
     m_wxMaxima.m_maximaProcess->Detach();
-    m_wxMaxima.m_maximaProcess = NULL;
+    m_wxMaxima.m_maximaProcess = nullptr;
   }
 }
 
 void MaximaProcessManager::OnMaximaClose(){
   if (wxProcess::Exists(m_wxMaxima.m_pid)) KillMaxima();
-  m_wxMaxima.m_maximaProcess = NULL;
+  m_wxMaxima.m_maximaProcess = nullptr;
   MaximaProcessManager::UnregisterChildMaxima(m_wxMaxima.m_pid);
   m_wxMaxima.m_pid = -1;
   if (m_wxMaxima.m_maximaStdout) {
@@ -584,9 +608,9 @@ void MaximaProcessManager::OnMaximaClose(){
     if (!o.IsEmpty())
       wxLogMessage(_("Last message from maxima's stderr: %s"), o);
   }
-  m_wxMaxima.m_maximaStdout = NULL;
-  m_wxMaxima.m_maximaStderr = NULL;
-  m_wxMaxima.m_maximaStdin = NULL;
+  m_wxMaxima.m_maximaStdout = nullptr;
+  m_wxMaxima.m_maximaStderr = nullptr;
+  m_wxMaxima.m_maximaStdin = nullptr;
   // An LDB session ends with its process: retire the pending prompt's answer
   // cell (and the question-pending state that made it clickable).
   if (m_wxMaxima.m_inLDB)
@@ -828,6 +852,91 @@ void MaximaProcessManager::MaximaEvent(wxThreadEvent &event) {
   }
 }
 
+#ifdef __WXMSW__
+namespace {
+//! The last Windows error as a human-readable text.
+wxString LastWindowsError() {
+  const DWORD error = GetLastError();
+  LPTSTR errorText = nullptr;
+  // With FORMAT_MESSAGE_ALLOCATE_BUFFER the buffer argument is the *address*
+  // of a pointer that FormatMessage() sets to a buffer it allocates. Passing
+  // the pointer itself (as a previous version did) makes FormatMessage() fail
+  // and loses the actual reason every time.
+  FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_ALLOCATE_BUFFER |
+                FORMAT_MESSAGE_IGNORE_INSERTS,
+                nullptr, error, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+                reinterpret_cast<LPTSTR>(&errorText), 0, nullptr);
+  wxString result;
+  if (errorText) {
+    result = wxString(errorText).Trim();
+    LocalFree(errorText);
+  }
+  return wxString::Format("%s (error %lu)", result, static_cast<unsigned long>(error));
+}
+
+//! All processes currently running, with their parents.
+std::vector<ProcessEntry> SnapshotProcesses() {
+  std::vector<ProcessEntry> processes;
+  HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+  if (snapshot == INVALID_HANDLE_VALUE) {
+    wxLogMessage("Cannot list the running processes: %s", LastWindowsError());
+    return processes;
+  }
+  PROCESSENTRY32 entry;
+  entry.dwSize = sizeof(entry);
+  if (Process32First(snapshot, &entry)) {
+    do {
+      processes.push_back({static_cast<long>(entry.th32ProcessID),
+                           static_cast<long>(entry.th32ParentProcessID)});
+    } while (Process32Next(snapshot, &entry));
+  }
+  CloseHandle(snapshot);
+  return processes;
+}
+
+/*! Sets the SIGINT bit in the shared memory Maxima's Lisp process \p pid watches.
+
+  Adapted from maxima's winkill which William Schelter has written and which
+  has been improved by David Billinghurst and Andrej Vodopivec. For Maxima's
+  end of this means of communication see
+  interfaces/xmaxima/win32/win_signals.lisp and
+  interfaces/xmaxima/win32/winkill_lib.c in maxima's tree.
+
+  GCL creates gcl-<pid> itself. maxima-<pid> is created by Maxima's signal
+  thread (SBCL, CCL), which only runs if MAXIMA_SIGNALS_THREAD is set -- which
+  wxMaxima no longer does, since those Lisps have the interrupt channel.
+
+  \param name Is set to the name of the segment that was found.
+  \return true, if the bit could be set.
+*/
+bool SetInterruptBitInSharedMemory(long pid, wxString &name) {
+  for (const auto &prefix : {wxS("gcl-"), wxS("maxima-")}) {
+    name = prefix + wxString::Format("%li", pid);
+    HANDLE sharedMemoryHandle =
+      OpenFileMapping(FILE_MAP_WRITE, FALSE, name.wc_str());
+    if (sharedMemoryHandle == nullptr)
+      continue;
+    LPVOID sharedMemoryAddress =
+      MapViewOfFile(sharedMemoryHandle, FILE_MAP_WRITE, 0, 0, 0);
+    if (sharedMemoryAddress == nullptr) {
+      wxLogMessage(_("Could not map view of the file needed in order to "
+                     "send an interrupt signal to maxima."));
+      wxLogMessage("%s: %s", name, LastWindowsError());
+      CloseHandle(sharedMemoryHandle);
+      continue;
+    }
+    volatile int *sharedMemoryContents = reinterpret_cast<int *>(sharedMemoryAddress);
+    *sharedMemoryContents = *sharedMemoryContents | (1 << (wxSIGINT));
+    UnmapViewOfFile(sharedMemoryAddress);
+    CloseHandle(sharedMemoryHandle);
+    return true;
+  }
+  return false;
+}
+
+} // namespace
+#endif
+
 void MaximaProcessManager::Interrupt(wxCommandEvent &WXUNUSED(event)) {
   if(m_wxMaxima.GetWorksheet())
     m_wxMaxima.GetWorksheet()->CloseAutoCompletePopup();
@@ -837,118 +946,52 @@ void MaximaProcessManager::Interrupt(wxCommandEvent &WXUNUSED(event)) {
     return;
   }
 
+  // The interrupt channel works the same on every operating system and needs
+  // no process id, so it is preferred whenever the Lisp has opened one.
+  if (m_wxMaxima.m_interruptChannel && m_wxMaxima.m_interruptChannel->SendInterrupt()) {
+    wxLogMessage(_("Sending an interrupt signal to Maxima."));
+    wxLogMessage("Sent the request through Maxima's interrupt channel.");
+    return;
+  }
+
 #if defined(__WXMSW__)
-  if (m_wxMaxima.m_pid > 0) {
-    // The following lines are adapted from maxima's winkill which William
-    // Schelter has written and which has been improved by David Billinghurst
-    // and Andrej Vodopivec.
-    //
-    // Winkill tries to find a shared memory region maxima provides we can set
-    // signals in that maxima can listen to.
-    //
-    // For Maxima's end of this means of communication see
-    // interfaces/xmaxima/win32/win_signals.lisp
-    // and interfaces/xmaxima/win32/winkill_lib.c in maxima's tree.
-    HANDLE sharedMemoryHandle = 0;
-    LPVOID sharedMemoryAddress = NULL;
+  // MS Windows has no kill(). Maxima's Lisp therefore watches a named
+  // shared-memory segment, and we set the SIGINT bit in it. Its name contains
+  // the Lisp's pid, which we only know if Maxima's first prompt told us: we
+  // started maxima.bat, not the Lisp. So every process below the one we
+  // started is a candidate, too.
+  std::vector<long> candidates;
+  if (m_wxMaxima.m_maximaPid > 0)
+    candidates.push_back(m_wxMaxima.m_maximaPid);
+  for (auto pid : DescendantPids(m_wxMaxima.m_pid, SnapshotProcesses()))
+    if (pid != m_wxMaxima.m_maximaPid)
+      candidates.push_back(pid);
 
-    // wxMaxima doesn't want to get interrupt signals.
-    // SetConsoleCtrlHandler(NULL, true);
-
-    /* First try to send the signal to gcl. */
-    long signalPid = (m_wxMaxima.m_maximaPid > 0) ? m_wxMaxima.m_maximaPid : m_wxMaxima.m_pid;
-    wxWCharBuffer sharedMemoryName(wxString::Format("gcl-%d", signalPid).wc_str());
-    sharedMemoryHandle =
-      OpenFileMapping(FILE_MAP_WRITE,    /*  Read/write permission.   */
-                      FALSE,             /*  Do not inherit the name  */
-                      sharedMemoryName.data()); /*  of the mapping object.   */
-
-    /* If gcl is not running, send to maxima. */
-    wxWCharBuffer sharedMemoryName2(wxString::Format("maxima-%d", signalPid).wc_str());
-    if (sharedMemoryHandle == NULL) {
-      sharedMemoryHandle =
-        OpenFileMapping(FILE_MAP_WRITE,    /*  Read/write permission.   */
-                        FALSE,             /*  Do not inherit the name  */
-                        sharedMemoryName2.data()); /*  of the mapping object.   */
-    }
-
-    if (sharedMemoryHandle == NULL) {
-      wxLogMessage(_("The Maxima process doesn't offer a shared memory segment "
-                     "we can send an interrupt signal to."));
-
-      // No shared memory location we can send break signals to => send a
-      // console interrupt.
-      // Before we do that we stop our program from closing on receiving a
-      // Ctrl+C from the console.
-      SetConsoleCtrlHandler(NULL, TRUE);
-
-      // We could send a CTRL_BREAK_EVENT instead of a CTRL_C_EVENT that
-      // isn't handled in the 2010 clisp release (see:
-      // https://sourceforge.net/p/clisp/bugs/735/)
-      // ...but CTRL_BREAK_EVENT seems to crash clisp, see
-      // https://sourceforge.net/p/clisp/bugs/736/
-      //
-      // And we need to send the CTRL_BREAK_EVENT to our own console, which
-      // has the group ID 0, see
-      // https://docs.microsoft.com/en-us/windows/console/generateconsolectrlevent
-      if (GenerateConsoleCtrlEvent(CTRL_C_EVENT, 0) == 0) {
-        LPTSTR errorText = NULL;
-
-        FormatMessage(
-                      FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_ALLOCATE_BUFFER |
-                      FORMAT_MESSAGE_IGNORE_INSERTS,
-                      NULL, GetLastError(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-                      errorText, 0, NULL);
-
-        wxString errorMessage;
-        if (!errorText)
-          errorMessage = _("Could not send an interrupt signal to maxima.");
-        else {
-          errorMessage =
-            wxString::Format(_("Interrupting maxima: %s"), errorText);
-          LocalFree(errorText);
-        }
-
-        m_wxMaxima.StatusText(errorMessage);
-        wxLogMessage("%s", errorMessage);
-        return;
-      }
-    } else {
-      sharedMemoryAddress =
-        MapViewOfFile(sharedMemoryHandle, /* Handle to mapping object.  */
-                      FILE_MAP_WRITE,     /* Read/write permission.  */
-                      0,                  /* Max.  object size.  */
-                      0,                  /* Size of hFile.  */
-                      0);                 /* Map entire file.  */
-
-      if (sharedMemoryAddress == NULL) {
-        wxLogMessage(_("Could not map view of the file needed in order to "
-                       "send an interrupt signal to maxima."));
-        return;
-      }
-
-      // Set the bit for the SIGINT handler
-      int value = (1 << (wxSIGINT));
-      volatile int *sharedMemoryContents = reinterpret_cast<int *>(sharedMemoryAddress);
-      *sharedMemoryContents = *sharedMemoryContents | value;
+  wxString triedNames;
+  for (auto pid : candidates) {
+    wxString name;
+    if (SetInterruptBitInSharedMemory(pid, name)) {
       wxLogMessage(_("Sending an interrupt signal to Maxima."));
-      UnmapViewOfFile(sharedMemoryAddress);
-      CloseHandle(sharedMemoryHandle);
-      sharedMemoryAddress = NULL;
-      sharedMemoryHandle = NULL;
+      wxLogMessage("Set the interrupt bit in shared memory segment %s", name);
       return;
     }
+    triedNames += wxS(" gcl-") + wxString::Format("%li", pid) +
+      wxS(" maxima-") + wxString::Format("%li", pid);
   }
+  wxLogMessage(_("The Maxima process doesn't offer a shared memory segment "
+                 "we can send an interrupt signal to."));
+  wxLogMessage("Tried the shared memory segments:%s (Maxima's PID: %li, "
+               "PID of the process we started: %li)",
+               triedNames, m_wxMaxima.m_maximaPid, m_wxMaxima.m_pid);
 
-  if (m_wxMaxima.m_maximaProcess) {
-    // We need to send the CTRL_BREAK_EVENT to the process group, not
-    // to the lisp.
-    auto pid = m_wxMaxima.m_maximaProcess->GetPid();
-    if (!GenerateConsoleCtrlEvent(CTRL_C_EVENT, pid)) {
-      wxLogMessage(_("Could not send an interrupt signal to maxima."));
-      return;
-    }
-  }
+  // There used to be a last resort here: a Ctrl+C to Maxima's console. It
+  // was dropped because it never worked: wxmaxima.exe has no console to send
+  // one from, and Maxima runs as the leader of a new process group, which
+  // Windows makes ignore Ctrl+C.
+  const wxString errorMessage = _("Could not send an interrupt signal to maxima.");
+  m_wxMaxima.StatusText(errorMessage);
+  wxLogMessage("%s", errorMessage);
+  return;
 #else
   wxLogMessage(_("Sending Maxima a SIGINT signal."));
   wxProcess::Kill(m_wxMaxima.m_pid, wxSIGINT);
@@ -1014,7 +1057,7 @@ void MaximaProcessManager::OnGnuplotQueryTerminals(wxProcessEvent &event) {
   m_wxMaxima.m_gnuplotTerminalQueryProcess->CloseOutput();
   // Drop our reference only - the Skip() above leaves the event unprocessed,
   // which makes wxProcess::OnTerminate delete the object itself.
-  m_wxMaxima.m_gnuplotTerminalQueryProcess = NULL;
+  m_wxMaxima.m_gnuplotTerminalQueryProcess = nullptr;
   // Remember which gnuplot we just probed so a Maxima restart with an
   // unchanged gnuplot doesn't probe again. The PID guard above ensures this
   // event belongs to the latest query, i.e. to the current m_gnuplotcommand.
@@ -1022,7 +1065,7 @@ void MaximaProcessManager::OnGnuplotQueryTerminals(wxProcessEvent &event) {
 }
 
 void MaximaProcessManager::OnGnuplotClose(wxProcessEvent &event) {
-  m_wxMaxima.m_gnuplotProcess = NULL;
+  m_wxMaxima.m_gnuplotProcess = nullptr;
   wxLogMessage(_("Gnuplot has closed."));
   event.Skip();
 }
@@ -1094,7 +1137,7 @@ void MaximaProcessManager::OnGnuplotPopoutCheckClose(wxProcessEvent &event) {
       wxFileExists(m_wxMaxima.m_gnuplotPopoutCheckFile))
     wxRemoveFile(m_wxMaxima.m_gnuplotPopoutCheckFile);
   m_wxMaxima.m_gnuplotPopoutCheckFile.Clear();
-  m_wxMaxima.m_gnuplotPopoutCheckProcess = NULL;
+  m_wxMaxima.m_gnuplotPopoutCheckProcess = nullptr;
 
   // A script that prepares a plot without errors normally produces no
   // (remaining, after the filtering above) output at all in gnuplot's

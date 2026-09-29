@@ -82,6 +82,34 @@ they have sharp edges that have all bitten:
   (`m_client.reset()`) and streams in `KillMaxima`, or the socket state is
   wrong on the next start.
 
+## Interrupting (Ctrl+G)
+
+`MaximaProcessManager::Interrupt()` tries, in order: the **interrupt
+channel** (`MaximaInterruptChannel`, `wx-open-interrupt-channel` in
+`wxMathML.lisp`), then SIGINT on POSIX, or on MS Windows the `gcl-<pid>` /
+`maxima-<pid>` shared-memory segments (a console Ctrl+C fallback was dropped:
+it never worked, wxmaxima.exe has no console). The channel is a
+second connection a Lisp with threads opens to wxMaxima's own server after
+`SetupVariables()` asks it to; `OnMaximaConnect()` treats any connection that
+arrives while `m_client` is connected as a channel candidate, and it only
+counts after sending the `MAXIMA_AUTH_CODE` token (`InterruptChannelHandshake`).
+Things learned the hard way (GH #2289):
+
+- The Lisp side interrupts with `invoke-debugger`, not `error`, so errcatch()
+  or ignore-errors in the interrupted code can't swallow it. Maxima's
+  `*debugger-hook*` then prints "Maxima encountered a Lisp error: User
+  interrupt" and returns to the top level, exactly like a SIGINT on SBCL.
+- **A home-built SBCL Maxima image whose dump ran under `sbcl
+  --non-interactive` quits on *every* Lisp error** (the disabled debugger is
+  saved into the core), including a SIGINT -- which looks exactly like the
+  interrupt killing Maxima. Dump without `--non-interactive`. How to build
+  one here: `maxima-src` has the sources; add `lisp-utils/defsystem.lisp` and
+  `src/maxima.system` from Maxima's git, compile in one `sbcl` process and
+  `maxima-load`+`maxima-dump` in a fresh one, then copy the core to
+  `/usr/lib/maxima/<ver>/binary-sbcl/` and run `maxima -l sbcl`.
+- `wxSOCKET_NOWAIT_READ | wxSOCKET_WAITALL_WRITE` asserts in wxWidgets 3.2;
+  `test_InterruptChannel` fails on any wx assertion for that reason.
+
 ## Probing gnuplot
 
 Must be asynchronous (`wxEXEC_ASYNC`). A synchronous probe blocks the UI and,
@@ -90,10 +118,41 @@ on Linux, can disrupt the global menu.
 ## Two intermittent CI failures, in full
 
 Both are evaluation-queue bugs that surface as a flaky test, and both cost
-several sessions each. `lisp_mode` is **fixed**; `tutorial_10Minutes` has a
-verified workaround but its underlying bug - a whole statement silently
-dropped before it ever reaches `Maxima::Write()` - is **confirmed and still
-open** (GH #2196).
+several sessions each. **Both are fixed, and it turned out to be one bug**
+(settled 2026-09-28, GH #2196): the statement `tutorial_10Minutes` saw
+silently dropped was a knock-on of the batch-startup race described under
+`lisp_mode` below. When the document starts evaluating before the Maxima
+that replaced the startup one has printed its first prompt, the first
+command goes out too early. That prompt then arrives on top of the prompt
+answering that command, and from then on
+`RemoveFirst()` - one queue step per main prompt - runs one step ahead of
+Maxima. Somewhere later in the file that swallows a statement that was
+never sent, and in `10MinuteTutorial.wxm` the victim happened to be
+`assume(a > 0)$`, whose absence makes `integrate()` ask a question.
+The evidence, all from one machine under the same 12-worker / 4-core load:
+
+| build | runs | failures |
+|---|---|---|
+| `5c3627d^` (before the `lisp_mode` fix) | 300 | 10 (exit 91, the unanswered question) |
+| `main` at 8029e83 | 600 | 0 |
+
+All 10 failing logs show `Starting evaluation of the document` *before* the
+replacement Maxima's `Received maxima's first prompt`, followed by two
+`Sending a new command to Maxima.` lines with no prompt between them:
+exactly the `lisp_mode` signature. Note that the tutorial file no longer
+carries the auto-answer workaround the entry below describes, so
+`tutorial_10Minutes` is back to being a real canary for this.
+The integrity check (`EvaluationQueue::m_integrityFailure`) and the
+`commandSequenceIntegrity` test added while hunting it stay: they cost
+nothing and would catch a drop with any other cause.
+GH #2196 was once closed by mistake by a comment citing 912da1c, the fix for
+#2178; it was reopened, and is now closed for the reason above.
+
+What the entry below gets wrong, read with hindsight: it assumed the queue
+could not be out of step, so a statement missing from the wire had to have
+been lost *inside* the client. It was lost in the sense that it was never
+sent, but only because a prompt meant for an earlier command advanced the
+queue past it.
 
 Kept at length deliberately: most of the value is the list of theories that
 were directly disproven, and the reproduction recipes, which are not obvious

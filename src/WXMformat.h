@@ -102,6 +102,10 @@ namespace Format
 
 //! First line of the WXM files - used by both loading and saving code.
   extern const wxString WXMFirstLine;
+//! The "Created with wxMaxima" line a .wxm file's header ends with
+  extern const wxString CreatedWithLine;
+//! What every version's CreatedWithLine starts with
+  extern const wxString CreatedWithLinePrefix;
   extern const wxString m_emptyString;
 
 }; // namespace Format

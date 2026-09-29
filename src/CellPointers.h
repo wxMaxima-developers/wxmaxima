@@ -25,12 +25,14 @@
 #define WXMAXIMA_CELLPOINTERS_H
 
 #include "cells/Cell.h"
+#include "cells/MatrixBlock.h"
+#include <optional>
 #include <wx/string.h>
 #include <vector>
 
 class wxWindow;
 template<class T> class wxScrolled;
-typedef wxScrolled<wxWindow> wxScrolledCanvas;
+using wxScrolledCanvas = wxScrolled<wxWindow>;
 
 class EditorCell;
 class TextCell;
@@ -73,13 +75,13 @@ public:
     std::vector<CellPtr<GroupCell>> m_errors;
   };
 
-  //! Returns the cell maxima currently works on. NULL if there isn't such a cell.
+  //! Returns the cell maxima currently works on. nullptr if there isn't such a cell.
   /*!
-    \param resortToLast true = if we already have set the cell maxima works on to NULL
+    \param resortToLast true = if we already have set the cell maxima works on to nullptr
     use the last cell maxima was known to work on.
   */
   GroupCell *GetWorkingGroup(bool resortToLast = false) const;
-  //! Sets the cell maxima currently works on. NULL if there isn't such a cell.
+  //! Sets the cell maxima currently works on. nullptr if there isn't such a cell.
   void SetWorkingGroup(GroupCell *group);
   //! The last group cell maxima was working on (regardless of the current one).
   GroupCell *GetLastWorkingGroup() const { return m_lastWorkingGroup; }
@@ -94,9 +96,65 @@ public:
   //! The last cell of the currently selected range of cells, or null.
   const CellPtr<Cell> &GetSelectionEnd() const { return m_selectionEnd; }
   //! Set the first cell of the selected range (may be null).
-  void SetSelectionStart(Cell *cell) { m_selectionStart = cell; }
+  //! Forgets any selected matrix block, see SetSelectedMatrixBlock().
+  void SetSelectionStart(Cell *cell) { m_selectionStart = cell; m_blockMatrix = {}; }
   //! Set the last cell of the selected range (may be null).
-  void SetSelectionEnd(Cell *cell) { m_selectionEnd = cell; }
+  //! Forgets any selected matrix block, see SetSelectedMatrixBlock().
+  void SetSelectionEnd(Cell *cell) { m_selectionEnd = cell; m_blockMatrix = {}; }
+
+  /*! Narrow the selection to a block of one matrix's entries (GH #2345)
+
+    Selects matrix -- which must be a MatrCell -- and remembers that only
+    the block with the corners anchor and corner is meant. Every copy of the
+    selection then copies just that sub-matrix.
+
+    The anchor is the corner that stays put: where a drag started. The other
+    corner is the one Shift+arrow keys move (GH #2370).
+
+    \param wholeMatrix true if the block covers every entry. The selection is
+    then an ordinary whole-matrix one -- GetSelectedMatrixBlock() returns
+    nothing -- but the corners are still remembered, so the keyboard can
+    shrink it back into a block.
+  */
+  void SetSelectedMatrixBlock(Cell *matrix, const MatrixEntry &anchor,
+                              const MatrixEntry &corner,
+                              bool wholeMatrix = false) {
+    m_selectionStart = matrix;
+    m_selectionEnd = matrix;
+    m_blockMatrix = matrix;
+    m_blockAnchor = anchor;
+    m_blockCorner = corner;
+    m_blockIsWholeMatrix = wholeMatrix;
+  }
+  /*! The selected block of a matrix's entries, if only a block is selected
+
+    Valid only while the selection is exactly the matrix the block was chosen
+    in. Changing the selection in any way forgets the block, so a matrix
+    selected later -- or the same one, selected as a whole -- never picks up a
+    stale one.
+  */
+  std::optional<MatrixBlock> GetSelectedMatrixBlock() const {
+    if (IsBlockMatrixSelected() && !m_blockIsWholeMatrix)
+      return MatrixBlock::Spanning(m_blockAnchor, m_blockCorner);
+    return std::nullopt;
+  }
+  //! The two corners of a selected block: the anchor first, then the moving one
+  struct BlockCorners
+  {
+    MatrixEntry anchor;
+    MatrixEntry corner;
+  };
+  /*! The corners of the selected block, even if it has grown to the whole matrix
+
+    What the keyboard needs in order to grow or shrink the block (GH #2370).
+    Valid under the same condition as GetSelectedMatrixBlock(), except that it
+    is also returned while the block covers the whole matrix.
+  */
+  std::optional<BlockCorners> GetSelectedMatrixBlockCorners() const {
+    if (IsBlockMatrixSelected())
+      return BlockCorners{m_blockAnchor, m_blockCorner};
+    return std::nullopt;
+  }
 
   // The out-of-line definitions convert a CellPtr to (or a raw pointer from)
   // EditorCell*/TextCell*, which needs the complete type this header only
@@ -138,7 +196,7 @@ public:
 private:
   /*! The group cell maxima is currently working on.
 
-    NULL means that maxima isn't currently evaluating a cell.
+    nullptr means that maxima isn't currently evaluating a cell.
   */
   CellPtr<GroupCell> m_workingGroup;
   //! The last group cell maxima was working on.
@@ -151,18 +209,31 @@ private:
   CellPtr<EditorCell> m_activeCell;
   /*! The first cell of the currently selected range of Cells.
 
-    NULL, when no Cells are selected and NULL, if only stuff inside a EditorCell
+    nullptr, when no Cells are selected and nullptr, if only stuff inside a EditorCell
     is selected and therefore the selection is handled by EditorCell; This cell is
     always above m_selectionEnd.
   */
   CellPtr<Cell> m_selectionStart;
   /*! The last cell of the currently selected range of Cells.
 
-    NULL, when no Cells are selected and NULL, if only stuff inside a EditorCell
+    nullptr, when no Cells are selected and nullptr, if only stuff inside a EditorCell
     is selected and therefore the selection is handled by EditorCell; This cell is
     always below m_selectionStart.
   */
   CellPtr<Cell> m_selectionEnd;
+  //! The matrix a block of entries was selected in, see GetSelectedMatrixBlock().
+  CellPtr<Cell> m_blockMatrix;
+  //! The corner of the selected block of m_blockMatrix's entries that stays put
+  MatrixEntry m_blockAnchor;
+  //! The corner of the selected block that Shift+arrow keys move
+  MatrixEntry m_blockCorner;
+  //! Has the block grown to cover the whole of m_blockMatrix?
+  bool m_blockIsWholeMatrix = false;
+  //! Is the selection exactly the matrix a block was chosen in?
+  bool IsBlockMatrixSelected() const {
+    return m_blockMatrix && (m_selectionStart == m_blockMatrix) &&
+      (m_selectionEnd == m_blockMatrix);
+  }
   /*! The currently selected string.
 
     Since this string is reachable from every editor cell (via the accessors

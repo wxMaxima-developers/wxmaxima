@@ -26,7 +26,6 @@
 
 // only use that for recent wxWidgets versions
 #include <wx/version.h>
-#if wxCHECK_VERSION(3, 2, 0)
 
 #include <wx/bmpbndl.h>
 
@@ -148,4 +147,3 @@ wxBitmapBundle wxMaximaArtProvider::CreateBitmapBundle(const wxArtID& id,
     return wxNullBitmap;
   }
 }
-#endif

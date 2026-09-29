@@ -130,6 +130,7 @@ set(DIALOG_SOURCE_FILES
     BinaryNameCtrl.cpp
     DiffFrame.cpp
     DiffScrollSync.cpp
+    MatrixViewer.cpp
 )
 list(TRANSFORM DIALOG_SOURCE_FILES PREPEND dialogs/)
 
@@ -177,6 +178,7 @@ set(SOURCE_FILES
     SvgPanel.cpp
     ToolBar.cpp
     TrayIcon.cpp
+    UrlDetection.cpp
     worksheet/MatrixScrollbars.cpp
     worksheet/Worksheet.cpp
     worksheet/WorksheetContextMenu.cpp
@@ -191,6 +193,9 @@ set(SOURCE_FILES
     levenshtein/levenshtein.cpp
     main.cpp
     AuiPerspectiveRepair.cpp
+    ProcessTree.cpp
+    InterruptChannelHandshake.cpp
+    MaximaInterruptChannel.cpp
     MenuHelpString.cpp
     wxMathml.cpp
     wxMaxima.cpp

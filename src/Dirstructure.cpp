@@ -273,5 +273,5 @@ wxString Dirstructure::UserAutocompleteFile() {
   return newFileName;
 }
 
-Dirstructure *Dirstructure::m_dirStructure = NULL;
+Dirstructure *Dirstructure::m_dirStructure = nullptr;
 wxString Dirstructure::m_userConfDir;

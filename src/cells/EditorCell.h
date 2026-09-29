@@ -331,6 +331,14 @@ public:
   //! Sets the cursor to the screen coordinate point
   void SelectPointText(wxPoint point) override;
 
+  /*! The address of the link drawn at the screen coordinate point, if any.
+
+    Only text cells have links (GH #2396); a code cell always returns an empty
+    string. Cheap for a cell without links, which returns at once, and
+    otherwise one walk over the cell's snippets with their cached widths.
+  */
+  wxString GetLinkAt(wxPoint point) override;
+
   //! Selects the text between the screen coordinates one and two
   void SelectRectText(wxPoint one, wxPoint two) override;
 
@@ -704,6 +712,25 @@ private:
   //! indentChar, since Draw() draws it at a fixed position regardless of
   //! which snippet triggers it.
   void PushTextLine(const wxString &line, const wxString &indentChar) const;
+  /*! PushTextLine()'s second step: pushes a run that contains no '\t',
+    giving each link in it (see UrlDetection.h) a StyledText of its own that
+    IsLink(). A link needs to be a snippet of its own so that Draw() can
+    paint it in the link color and GetLinkAt() can find it -- the same
+    reasoning that isolates a tab. Soft line breaks only ever happen at
+    spaces, and a link contains none, so a link never has to be split.
+  */
+  void PushTextRun(const wxString &run, const wxString &indentChar) const;
+
+  /*! Walks m_styledText the way Draw() lays it out.
+
+    Calls onSnippet(snippet, topLeft, width, indentX) for every snippet that
+    draws text (newlines and tabs only move the pen), with topLeft the corner
+    of the snippet's box and indentX where the current line's indentation
+    marker goes. Draw() paints what it is handed, GetLinkAt() hit-tests it,
+    so the two can't disagree about where a link is.
+  */
+  template <typename SnippetFunc>
+  void WalkDrawnSnippets(wxDC *dc, SnippetFunc &&onSnippet);
 
   //! Clamps a (possibly negative or past-the-end) position to a valid index into
   //! the current text, i.e. to [0, m_text.Length()]. Used by the selection and
@@ -746,6 +773,8 @@ protected:
     wxCoord m_indentPixels = 0;
     //! Do we really want to style this text portion different than the default?
     bool m_styleThisText = false;
+    //! Is this text portion a link (see UrlDetection.h)?
+    bool m_isLink = false;
   public:
     //! Defines a piece of styled text
     StyledText(TextStyle style, const wxString &text)
@@ -778,6 +807,10 @@ protected:
     TextStyle GetTextStyle() const { return m_style; }
     // Has an individual text style been set for this text portion?
     bool IsStyleSet() const { return m_styleThisText; }
+    //! Is this text portion a link? Its text is then the link's address.
+    bool IsLink() const { return m_isLink; }
+    //! Marks this text portion as a link.
+    void SetLink() { m_isLink = true; }
   };
 
 private:
@@ -834,7 +867,7 @@ private:
     character having to sit inside \ref m_text.
   */
   bool IsSoftBreakBefore(std::size_t pos) const {
-    return std::binary_search(m_softBreaks.begin(), m_softBreaks.end(), pos);
+    return std::ranges::binary_search(m_softBreaks, pos);
   }
 
   /*! How many chars do we need to indent text at the position the caret is currently at?
@@ -867,7 +900,7 @@ private:
 
 //** Large fields
 //**
-  typedef std::unordered_map <wxString, wxSize, wxStringHash> StringHash;
+  using StringHash = std::unordered_map<wxString, wxSize, wxStringHash>;
   //! Cached widths of text snippets, one width per style
   mutable StringHash m_widths;
 
@@ -946,6 +979,8 @@ private:
   mutable bool m_tokens_including_hidden_valid : 1 = false;
   //! Does the list of displayed tokens need to be recalculated?
   mutable bool m_tokens_valid : 1 = false;
+  //! Does m_styledText contain a link? Lets GetLinkAt() skip the rest at once.
+  mutable bool m_containsLinks : 1 = false;
   mutable bool m_isDirty : 1 = true;
 };
 

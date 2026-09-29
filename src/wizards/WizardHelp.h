@@ -40,7 +40,7 @@ public:
 private:
   WrappingStaticText *m_message;
   wxStaticLine *static_line_1;
-  wxButton *button_1 = NULL;
+  wxButton *button_1 = nullptr;
 };
 
 #endif // WIZARDHELP_H

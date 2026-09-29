@@ -66,7 +66,7 @@ public:
 
   /*! Append one or more lines of ordinary unicode text to the console.
 
-    \return A pointer to the last line that was appended or NULL if there is
+    \return A pointer to the last line that was appended or nullptr if there is
     no such line.
   */
   TextCell *DoRawConsoleAppend(wxString s, CellType type, AppendOpt opts = {});

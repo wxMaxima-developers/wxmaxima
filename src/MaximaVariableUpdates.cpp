@@ -30,15 +30,15 @@ ParseMaximaVariableUpdates(const wxXmlDocument &xmldoc) {
   std::vector<MaximaVariableUpdate> updates;
 
   wxXmlNode *node = xmldoc.GetRoot();
-  if (node == NULL)
+  if (node == nullptr)
     return updates;
 
-  for (wxXmlNode *vars = node->GetChildren(); vars != NULL;
+  for (wxXmlNode *vars = node->GetChildren(); vars != nullptr;
        vars = vars->GetNext()) {
     MaximaVariableUpdate update;
     bool haveName = false;
 
-    for (wxXmlNode *var = vars->GetChildren(); var != NULL;
+    for (wxXmlNode *var = vars->GetChildren(); var != nullptr;
          var = var->GetNext()) {
       if (var->GetName() == wxS("name")) {
         wxXmlNode *namenode = var->GetChildren();
@@ -67,10 +67,10 @@ ParseWatchVariableAdditions(const wxXmlDocument &xmldoc) {
   std::vector<wxString> names;
 
   wxXmlNode *node = xmldoc.GetRoot();
-  if (node == NULL)
+  if (node == nullptr)
     return names;
 
-  for (wxXmlNode *var = node->GetChildren(); var != NULL;
+  for (wxXmlNode *var = node->GetChildren(); var != nullptr;
        var = var->GetNext()) {
     if (var->GetName() == wxS("variable")) {
       wxXmlNode *valnode = var->GetChildren();

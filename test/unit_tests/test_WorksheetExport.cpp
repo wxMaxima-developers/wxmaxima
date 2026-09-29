@@ -230,6 +230,9 @@ static std::unique_ptr<GroupCell> ParseCorpusFile(const wxString &name) {
 static const wxChar *const kTitleSentinel = wxS("ExportNetDocumentTitle");
 static const wxChar *const kSectionSentinel = wxS("ExportNetSectionHeading");
 static const wxChar *const kTextSentinel = wxS("ExportNetTextParagraph");
+//! A text cell with a link (GH #2396), holding characters both exporters escape.
+static const wxChar *const kLinkSentinel =
+  wxS("ExportNetLink https://example.org/a_b%20c?x=1&y=2#top (see).");
 static const wxChar *const kCodeSentinel = wxS("factor(xexportnet^2-1);");
 
 // A code cell whose output is *non-math* text: a warning (whose message
@@ -304,6 +307,7 @@ static void BuildDocumentOnce() {
   appendCell(GC_TYPE_TITLE, kTitleSentinel);
   appendCell(GC_TYPE_SECTION, kSectionSentinel);
   appendCell(GC_TYPE_TEXT, kTextSentinel);
+  appendCell(GC_TYPE_TEXT, kLinkSentinel);
   appendCell(GC_TYPE_CODE, kCodeSentinel);
 
   g_ws->RecalculateIfNeeded();
@@ -528,6 +532,11 @@ static void RequireValidHtml(const wxString &htmlPath) {
 
 SCENARIO("HTML export succeeds, is deterministic and contains the document") {
   BuildDocumentOnce();
+  // This scenario checks the image files the export writes next to the
+  // .html, so it pins the (default) linked layout; the self-contained one
+  // has its own scenario below.
+  const bool oldSelfContained = g_cfg->HTMLExportSelfContained();
+  g_cfg->HTMLExportSelfContained(false);
 
   // Every equation-rendering flavor is a separate code path in the exporter;
   // bitmap and svg additionally exercise the CopyToFile image rendering.
@@ -569,6 +578,11 @@ SCENARIO("HTML export succeeds, is deterministic and contains the document") {
       REQUIRE(html.Contains(wxS("replaced a &amp; b &lt; c")));
       REQUIRE(html.Contains(kStringSentinel));
       REQUIRE_FALSE(html.Contains(wxS("<mo>ExportNetWarning")));
+      // A text cell's link becomes an anchor with the address as its text,
+      // the "&" escaped once and nothing else touched (GH #2396).
+      REQUIRE(html.Contains(
+        wxS("<a href=\"https://example.org/a_b%20c?x=1&amp;y=2#top\">"
+            "https://example.org/a_b%20c?x=1&amp;y=2#top</a> (see).")));
       // The exported HTML must be structurally valid (skipped if tidy absent).
       RequireValidHtml(dir1 + wxS("/doc.html"));
       // Image links must not dangle (broken-link regression, see helper).
@@ -613,6 +627,64 @@ SCENARIO("HTML export succeeds, is deterministic and contains the document") {
     }
   }
   g_cfg->HTMLequationFormat(oldFormat);
+  g_cfg->HTMLExportSelfContained(oldSelfContained);
+}
+
+//! How many times needle occurs in haystack.
+static size_t CountOccurrences(const wxString &haystack, const wxString &needle) {
+  size_t n = 0;
+  for (size_t pos = haystack.find(needle); pos != wxString::npos;
+       pos = haystack.find(needle, pos + needle.length()))
+    ++n;
+  return n;
+}
+
+SCENARIO("A self-contained HTML export is a single file (GH #2266)") {
+  BuildDocumentOnce();
+  const Configuration::htmlExportFormat oldFormat =
+    g_cfg->HTMLequationFormat();
+  const bool oldSelfContained = g_cfg->HTMLExportSelfContained();
+  const bool oldWxmx = g_cfg->ExportContainsWXMX();
+  g_cfg->HTMLExportSelfContained(true);
+  g_cfg->ExportContainsWXMX(true);
+
+  // The image flavors are the ones that write files; a file name with a
+  // space exercises the URL-encoding a linked export would apply to it.
+  const Configuration::htmlExportFormat formats[] = {Configuration::bitmap,
+                                                     Configuration::svg};
+  for (const auto format : formats) {
+    g_cfg->HTMLequationFormat(format);
+    const wxString dir = MakeExportDir(
+      format == Configuration::bitmap ? wxS("html_selfcontained_bitmap")
+                                      : wxS("html_selfcontained_svg"));
+    REQUIRE(g_ws->ExportToHTML(dir + wxS("/my doc.html")));
+
+    THEN("only the .html file is written") {
+      const auto snap = SnapshotDir(dir);
+      REQUIRE(snap.size() == 1);
+      REQUIRE(snap.count(wxS("my doc.html")) == 1);
+      REQUIRE_FALSE(wxDirExists(dir + wxS("/my doc_htmlimg")));
+    }
+    THEN("every image is a data: URI and the stylesheet is inline") {
+      const wxString html = ReadTextFile(dir + wxS("/my doc.html"));
+      RequireContainsSentinels(html);
+      REQUIRE(html.Contains(wxS("<style>")));
+      const size_t imgs = CountOccurrences(html, wxS("<img "));
+      REQUIRE(imgs > 0);
+      REQUIRE(CountOccurrences(html, wxS("src=\"data:image/")) == imgs);
+      REQUIRE_FALSE(html.Contains(wxS("_htmlimg")));
+      RequireValidHtml(dir + wxS("/my doc.html"));
+    }
+    THEN("the .wxmx source is embedded under its real name") {
+      const wxString html = ReadTextFile(dir + wxS("/my doc.html"));
+      REQUIRE(html.Contains(wxS("href=\"data:application/zip;base64,UEsD")));
+      REQUIRE(html.Contains(wxS("download=\"my doc.wxmx\"")));
+    }
+  }
+
+  g_cfg->HTMLequationFormat(oldFormat);
+  g_cfg->HTMLExportSelfContained(oldSelfContained);
+  g_cfg->ExportContainsWXMX(oldWxmx);
 }
 
 /*! Compile an exported .tex with a LaTeX engine, when it is installed.
@@ -664,6 +736,10 @@ SCENARIO("TeX export succeeds, is deterministic and contains the document") {
     REQUIRE(tex.Contains(wxS("\\documentclass")));
     REQUIRE(tex.Contains(wxS("\\end{document}")));
     RequireContainsSentinels(tex);
+    // A text cell's link is written verbatim as a \url{}, which needs the
+    // url package (GH #2396).
+    REQUIRE(tex.Contains(wxS("\\usepackage{url}")));
+    REQUIRE(tex.Contains(wxS("\\url{https://example.org/a_b%20c?x=1&y=2#top}")));
   }
 
   THEN("non-math output is emitted as text, not forced through math mode") {
@@ -748,7 +824,8 @@ SCENARIO("Batch (.mac) and .wxm export succeed, are deterministic and complete")
           wxS(" export is deterministic and complete")).ToStdString()) {
       RequireIdenticalTrees(SnapshotDir(dir1), SnapshotDir(dir2));
       const wxString mac = ReadTextFile(dir1 + wxS("/") + name);
-      // The wxMaxima version header is a .wxm-only feature.
+      // The wxMaxima version header is a .wxm-only feature: a .mac is the
+      // user's own Maxima program and gets no line it didn't have (GH #2353).
       REQUIRE(mac.Contains(wxS("Created with wxMaxima")) ==
               (wxString(ext) == wxS("wxm")));
       REQUIRE(mac.Contains(wxS("xexportnet")));
@@ -881,6 +958,42 @@ SCENARIO("An animation exports to LaTeX as \\animategraphics and compiles") {
                     wxConvUTF8));
     f.Close();
     RequireTexCompiles(docTex, wxS("pdflatex"));
+  }
+}
+
+SCENARIO("A slideshow Maxima asks to save as a gif is saved (GH #2361)") {
+  // What with_slider_draw_bare(..., file_name=...) sends: the frames as
+  // usual, plus the gif file wxMaxima is to assemble them into.
+  const wxString dir = MakeExportDir(wxS("gifFile"));
+  wxString frames;
+  const unsigned char shades[] = {0, 128, 255};
+  for (int i = 0; i < 3; i++) {
+    wxImage frame(40, 30);
+    frame.SetRGB(wxRect(0, 0, 40, 30), shades[i], 0, 255 - shades[i]);
+    const wxString name = dir + wxString::Format(wxS("/frame%d.png"), i);
+    REQUIRE(frame.SaveFile(name, wxBITMAP_TYPE_PNG));
+    frames += name + wxS(";");
+  }
+  const wxString gif = dir + wxS("/anim.gif");
+  wxRemoveFile(gif);
+
+  MathParser parser(g_cfg);
+  auto group = std::make_unique<GroupCell>(g_cfg, GC_TYPE_CODE);
+  parser.SetGroup(group.get());
+  auto cell = parser.ParseLine(wxS("<mth><slide running=\"false\" gifFile=\"") +
+                               gif + wxS("\">") + frames + wxS("</slide></mth>"));
+  REQUIRE(cell != nullptr);
+  auto *anim = dynamic_cast<AnimationCell *>(cell.get());
+  REQUIRE(anim != nullptr);
+  REQUIRE(anim->Length() == 3);
+
+  THEN("the gif file exists and holds every frame") {
+    REQUIRE(wxFileExists(gif));
+    CHECK(wxImage::GetImageCount(gif, wxBITMAP_TYPE_GIF) == 3);
+  }
+  THEN("the request isn't saved with the worksheet, so reopening it won't "
+       "write the file again") {
+    CHECK_FALSE(static_cast<const Cell *>(anim)->ToXML().Contains(wxS("gifFile")));
   }
 }
 

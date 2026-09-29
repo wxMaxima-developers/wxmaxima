@@ -564,7 +564,7 @@ public:
   template <typename PtrT, typename std::enable_if<std::is_pointer<PtrT>::value, bool>::type = true>
   PtrT CastAs() const noexcept;
 
-  // Operations with NULL and integers in general
+  // Operations with nullptr and integers in general
   //
   explicit CellPtr(int) = delete;
   explicit CellPtr(void *) = delete;

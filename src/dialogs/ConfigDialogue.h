@@ -143,10 +143,10 @@ private:
   std::unique_ptr<struct wxm_NSVGrasterizer, decltype(std::free)*> m_svgRast{nullptr, std::free};
   //! The configuration storage
   std::unique_ptr<Configuration> m_configuration;
-  Worksheet *m_sampleWorksheet = NULL;
+  Worksheet *m_sampleWorksheet = nullptr;
 
-  typedef std::unordered_map <wxString, wxString, wxStringHash> StringHash;
-  typedef std::unordered_map <wxString, long, wxStringHash> Languages;
+  using StringHash = std::unordered_map<wxString, wxString, wxStringHash>;
+  using Languages = std::unordered_map<wxString, long, wxStringHash>;
 
   Languages m_languages;
   /*! TheSample text that is shown by the style selector.
@@ -319,6 +319,8 @@ protected:
   wxCheckBox *m_usePartialForDiff;
   //! A checkbox that asks if all newlines in text cells have to be passed to HTML.
   wxCheckBox *m_exportContainsWXMX;
+  //! Embed images and the .wxmx into the exported .html file
+  wxCheckBox *m_htmlExportSelfContained;
   wxCheckBox *m_printBrackets;
   wxChoice *m_exportWithMathJAX;
   wxCheckBox *m_matchParens;
@@ -337,6 +339,8 @@ protected:
   wxCheckBox *m_insertAns;
   wxCheckBox *m_autoIndent;
   wxCheckBox *m_cursorJump;
+  //! Up/Down skip over a cell's output instead of selecting it (GH #2382)
+  wxCheckBox *m_arrowKeysSkipOutput;
   wxCheckBox *m_hideBrackets;
 #ifdef __WXGTK__
   //! Use GTK's fading overlay scrollbars on the worksheet (slow: see
@@ -402,7 +406,7 @@ protected:
     own size did not change, so the shown controls keep whatever position
     they had while hidden: none. See the comment at the end of
     LoadAiProviderRecordIntoUi(). */
-  wxScrolled<wxPanel> *m_aiChatPanel = NULL;
+  wxScrolled<wxPanel> *m_aiChatPanel = nullptr;
   wxChoice *m_aiChatProviderChoice;
   //! One reusable box showing whichever provider is currently selected,
   //! rather than all of them stacked at once -- repopulated by
@@ -561,11 +565,7 @@ protected:
   int m_mathFontSize;
 
   //! A list containing the pictograms for the tabs.
-#if wxCHECK_VERSION(3, 1, 6)
   wxVector<wxBitmapBundle> m_imageList;
-#else
-  std::unique_ptr<wxImageList> m_imageList;
-#endif
 };
 
 #ifndef __WXMSW__

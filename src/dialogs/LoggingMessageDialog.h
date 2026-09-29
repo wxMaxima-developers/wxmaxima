@@ -57,7 +57,7 @@ private:
 extern int LoggingMessageBox(   const wxString &        message,
                                 const wxString &        caption = wxString(wxMessageBoxCaptionStr),
                                 int     style = wxOK|wxCENTRE,
-                                wxWindow *      parent = NULL,
+                                wxWindow *      parent = nullptr,
                                 int     x = wxDefaultCoord,
                                 int     y = wxDefaultCoord
   );

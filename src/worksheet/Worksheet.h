@@ -54,6 +54,7 @@
 #include "cells/ImgCellBase.h"
 #include "cells/AnimationCell.h"
 #include "cells/GroupCell.h"
+#include "cells/MatrCell.h"
 #include "TreeUndoManager.h"
 #include "WorksheetCursor.h"
 #include "WorksheetDocument.h"
@@ -127,6 +128,8 @@ public:
   void SetViewScrollRate(int rate) override { SetScrollRate(rate, rate); }
   void GetViewPosition(int *x, int *y) const override
     { const wxPoint p = GetPosition(); *x = p.x; *y = p.y; }
+  void ScrollViewToUnitY(int unitY) override
+    { Scroll(-1, unitY); RequestRedraw(); }
 
   // WorksheetDocumentView: how m_document tells this window that a structural
   // edit happened; each forwards to the real layout/redraw/save machinery.
@@ -374,6 +377,7 @@ public:
   void TreeUndo_MarkCellsAsAdded(GroupCell *parentOfStart, GroupCell *end);
   //! @}
 
+
 private:
   bool m_scrolledAwayFromEvaluation = false;
 public:
@@ -396,8 +400,80 @@ public:
     DISPLAY_TIMEOUT_ID
   };
 
-  //! Copy the currently selected cells
+  /*! Copy the currently selected cells
+
+    If only a block of a matrix's entries is selected, this is a new matrix
+    holding just that block, see CopySelectedMatrixBlock().
+  */
   std::unique_ptr<Cell> CopySelection(bool asData = false) const;
+
+  /*! The selected sub-matrix, as a new matrix, or null (GH #2345)
+
+    Non-null only if the selection is a block of one matrix's entries, see
+    SelectOutputRect(). Every "Copy ..." command copies this instead of the
+    whole matrix then.
+  */
+  std::unique_ptr<MatrCell> CopySelectedMatrixBlock() const;
+
+  /*! Select what a rectangle dragged across a cell's output covers
+
+    \param group    the cell whose output was clicked into
+    \param down, up where the mouse button went down and where it is now
+
+    What ClickNDrag() does for a drag that started in an output. A rectangle
+    that lies within one matrix but spans several of its entries selects the
+    block of entries it touches (GH #2345); anything else selects the output
+    cells it covers, as it always did.
+  */
+  void SelectOutputRect(GroupCell *group, wxPoint down, wxPoint up);
+
+  /*! \name Walking through a cell's output with the keyboard (GH #2382)
+
+    Down at the end of a cell's input selects the first result of its output
+    (see GroupCell::GetOutputResults()) instead of leaving the cell; further
+    Down presses step through the results and, past the last one, on to the
+    horizontal cursor below the cell, as before. Up walks back the same way,
+    into the input's end. A selected result can be copied and has its
+    right-click menu on the context-menu key, like one clicked with the mouse.
+    Configuration::ArrowKeysSkipOutput() switches the Up/Down part off again,
+    for users who prefer the old behaviour.
+    @{
+  */
+  /*! Which result of its cell's output is selected, if exactly one is
+
+    True only for a selection that is one whole result, as SelectOutputResult()
+    makes it; a part of a result selected with the mouse doesn't count.
+  */
+  std::optional<std::size_t> SelectedOutputResult() const;
+  //! Select one result of a cell's output, scroll to it and announce it
+  void SelectOutputResult(GroupCell *group, std::size_t index);
+  /*! Move between results with the Up or Down key while no editor is active
+
+    Handles the key if a result is selected, or if Up is pressed with the
+    horizontal cursor right below a cell that has output. Returns false,
+    having done nothing, otherwise.
+  */
+  bool StepOutputResult(int keyCode);
+  /*! Down at the end of a cell's input: select the output's first result
+
+    Returns false, having done nothing, if the active editor isn't a cell's
+    input or the cell has no output to step into.
+  */
+  bool EnterOutputFromInput();
+  //! @}
+
+  /*! Grow or shrink the selected block of a matrix's entries (GH #2370)
+
+    \param keyCode WXK_LEFT, WXK_RIGHT, WXK_UP or WXK_DOWN
+
+    What Shift+arrow keys do while a block is selected: move the block's far
+    corner -- the one opposite to where the drag started -- one entry in
+    that direction. A block that grows to cover the whole matrix becomes an
+    ordinary whole-matrix selection, but can still be shrunk again. Returns
+    false, and does nothing, if no block is selected or keyCode isn't an
+    arrow key.
+  */
+  bool StepSelectedMatrixBlock(int keyCode);
 
   /*! Copy the currently given list of cells
 
@@ -415,10 +491,8 @@ public:
   //! Is executed if a timer associated with Worksheet has expired.
   void OnTimer(wxTimerEvent &event);
 
-#if wxCHECK_VERSION(3, 1, 1)
   //! Handle pinch-to-zoom-events using the gesture interface
   void OnZoom(wxZoomGestureEvent &event);
-#endif
 
   void OnMouseExit(wxMouseEvent &event);
 
@@ -454,6 +528,12 @@ public:
   void OnSize(wxSizeEvent &event);
 
   void OnMouseRightDown(wxMouseEvent &event);
+  /*! Opens the right-click menu for the selection from the keyboard (GH #2382)
+
+    For the context-menu key and Shift+F10, which have no mouse position: the
+    menu opens on the selected cells, as a right click into them would.
+  */
+  void OnContextMenuKey(wxContextMenuEvent &event);
 
   void OnSidebarKey(wxCommandEvent &event);
 
@@ -474,6 +554,14 @@ public:
 
   //! Is called on double click on a cell.
   void OnDoubleClick(wxMouseEvent &event);
+  /*! Opens a MatrixViewer if there is a partially shown matrix at this point
+
+    \param position A point in window (scrolled) coordinates, as a mouse event
+                    reports it.
+    Returns true if a viewer was opened. See
+    MatrixViewer::PartiallyShownMatrixAt() for which matrices qualify.
+  */
+  bool OpenMatrixViewerAt(wxPoint position);
 
   //! Key pressed inside a cell
   void OnCharInActive(wxKeyEvent &event);
@@ -512,6 +600,29 @@ public:
   void SelectGroupCells(wxPoint down, wxPoint up);
 
 public:
+  /*! Opens a link from a text cell in the user's web browser (GH #2396).
+
+    Refuses anything wxm::IsLaunchableUrl() doesn't allow, so a worksheet
+    from elsewhere can't make a click start a local program.
+    \return true if the browser was asked to open it.
+  */
+  static bool OpenLink(const wxString &url);
+
+  //! The link a text cell or the output draws under the mouse pointer, or "".
+  wxString LinkUnderPointer();
+  /*! The link drawn at a point in worksheet coordinates, or "".
+
+    Walks the cells from the top, so it is for a single click, not for
+    tracking the pointer: LinkUnderPointer() starts from the cell the pointer
+    is already known to be over.
+  */
+  wxString GetLinkAt(wxPoint point);
+
+  //! The link the last context menu was opened on, or an empty string.
+  const wxString &GetContextMenuLink() const { return m_contextMenuLink; }
+  //! Remembers the link the context menu is being opened on.
+  void SetContextMenuLink(const wxString &link) { m_contextMenuLink = link; }
+
   //! Adjust the virtual size and scrollbars; see WorksheetLayout::AdjustSize().
   void AdjustSize() { m_layout.AdjustSize(); }
 
@@ -594,7 +705,7 @@ public:
   //! Close the autocompletion pop-up if it is currently open.
   void CloseAutoCompletePopup()
     {
-      if(m_autocompletePopup != NULL)
+      if(m_autocompletePopup != nullptr)
         m_autocompletePopup->Destroy();
     }
 
@@ -647,7 +758,7 @@ private:
   static std::mutex m_drawDCLock;
   /*! The pointer to thesettings storage
    */
-  Configuration *m_configuration = NULL;
+  Configuration *m_configuration = nullptr;
   /*! The layout/recalculation engine.
 
     Owns the layout scheduling state (resume point, cached widths, virtual-size
@@ -672,7 +783,7 @@ public:
   //! Whichever find/replace UI is actually in use right now: the dockable
   //! sidebar (GH #2249) if Configuration::FindDialogDockable() is set and
   //! it exists, otherwise the floating dialog's own pane, if one is open.
-  //! Returns NULL if neither is currently available.
+  //! Returns nullptr if neither is currently available.
   FindReplacePane *GetActiveFindPane() const;
   //! The storage for the autocompletion feature
   AutoComplete &GetAutocomplete() { return m_autocomplete; }
@@ -735,7 +846,7 @@ public:
   //! Request the worksheet to be redrawn
   void MarkRefreshAsDone()
     {
-      m_redrawStart = NULL;
+      m_redrawStart = nullptr;
       m_fullRedrawRequested = false;
     }
 
@@ -757,7 +868,7 @@ public:
 
     \return true, if we did redraw a workscreet portion.
   */
-  void RequestRedraw(GroupCell *start = NULL);
+  void RequestRedraw(GroupCell *start = nullptr);
   /*! Request a part of the worksheet to be redrawn
 
     \param rect The rectangle that is to be requested to be redrawn. If this
@@ -815,14 +926,16 @@ public:
   void ScrollToError();
 
   //! The find-and-replace-dialog
-  FindReplaceDialog *m_findDialog = NULL;
+  FindReplaceDialog *m_findDialog = nullptr;
   //! The dockable find-and-replace sidebar (GH #2249), set once by
   //! wxMaximaFrame at startup and never destroyed -- unlike m_findDialog,
   //! which is created/destroyed on demand.
-  FindReplacePane *m_findPane = NULL;
+  FindReplacePane *m_findPane = nullptr;
 
   //! Is the vertically-drawn cursor active?
   bool HCaretActive() const { return GetHCaretCursor().IsActive(); }
+  //! Hides the horizontal cursor, e.g. in a worksheet nothing can be inserted into
+  void DeactivateHCaret() { GetHCaretCursor().Deactivate(); }
 
   /*! Can we merge the selected cells into one?
 
@@ -876,13 +989,13 @@ public:
   /*! Insert group cells into the worksheet
 
     \param cells The list of cells that has to be inserted
-    \param where The cell the cells have to be inserted after. NULL means:
+    \param where The cell the cells have to be inserted after. nullptr means:
     Insert the cells at the beginning of the worksheet.
     \param undoBuffer The buffer the undo information for this action has
     to be kept in. Might be
     - GetTreeUndo().UndoStack() for normal deletes,
     - GetTreeUndo().RedoStack() for deletions while executing an undo or
-    - NULL for: Don't keep any copy of the cells.
+    - nullptr for: Don't keep any copy of the cells.
   */
   GroupCell *InsertGroupCells(std::unique_ptr<GroupCell> &&cells, GroupCell *where,
                               UndoActions *undoBuffer);
@@ -892,7 +1005,7 @@ public:
     \param cells The list of cells that has to be inserted
     \param where The cell the cells have to be inserted after
   */
-  GroupCell *InsertGroupCells(std::unique_ptr<GroupCell> &&cells, GroupCell *where = NULL);
+  GroupCell *InsertGroupCells(std::unique_ptr<GroupCell> &&cells, GroupCell *where = nullptr);
 
   /*! Add a new line to the output cell of the working group.
 
@@ -900,6 +1013,21 @@ public:
     the line is appended to the last cell of the worksheet, instead.
   */
   void InsertLine(std::unique_ptr<Cell> &&newCell, bool forceNewLine = false);
+
+  /*! Where the cursor is, as the layout engine's scroll compensation needs it
+
+    The group cell the cursor is in, or the one the horizontal cursor sits
+    below. See WorksheetLayout::SetScrollAnchorCallback().
+  */
+  WorksheetLayout::ScrollAnchor GetScrollAnchor() const;
+
+  /*! Is the cursor on screen?
+
+    Unlike CaretVisibleIs() this never triggers a layout pass: it is asked
+    right before output is appended, when the positions on screen are the ones
+    that matter, not the ones a pass would compute.
+  */
+  bool ScrollAnchorVisible();
 
   //! The group that the line's cells will belong to - used by InsertLine
   GroupCell *GetInsertGroup() const;
@@ -1015,6 +1143,22 @@ public:
    */
   bool CanCopyAsMathML() const;
 
+  //! Is the selection a matrix, or a block of one, that "Copy as CSV" can copy?
+  bool CanCopyCSV() const;
+  /*! The selected matrix, or selected block of one, as CSV (GH #2364)
+
+    Empty if CanCopyCSV() is false. See MatrCell::ToCSV() and CSVDelimiter().
+  */
+  wxString SelectionToCSV() const;
+  /*! What separates the values "Copy as CSV" writes
+
+    A comma, unless the locale writes numbers with a decimal comma: a
+    spreadsheet in such a locale expects ";" in a CSV file, and a comma would
+    split its numbers apart. There, a tab, which every spreadsheet reads as
+    a column break when text is pasted, whatever its locale.
+  */
+  static wxString CSVDelimiter();
+
   bool CanPaste() const
     { return GetDocumentCellPointers().GetActiveCell() || GetHCaretCursor().IsActive(); }
 
@@ -1037,7 +1181,7 @@ public:
     \param undoBuffer The buffer the undo information has to be kept in. Might be
     - GetTreeUndo().UndoStack() for normal deletes,
     - GetTreeUndo().RedoStack() for deletions while executing an undo or
-    - NULL for: Don't keep any copy of the cells.
+    - nullptr for: Don't keep any copy of the cells.
     \addtogroup UndoBufferFill
   */
   void DeleteRegion(
@@ -1078,35 +1222,35 @@ public:
   */
   void DeleteCurrentCell();
 
-  //! Returns the selected cell - or NULL, if the selection isn't an animation 
+  //! Returns the selected cell - or nullptr, if the selection isn't an animation 
   AnimationCell *GetSelectedAnimation() const
     {
       if(GetDocumentCellPointers().GetSelectionStart() != GetDocumentCellPointers().GetSelectionEnd())
-        return NULL;
+        return nullptr;
       return dynamic_cast<AnimationCell *>(GetSelectionStart());
     }
 
-  //! Returns the selected cell - or NULL, if the selection isn't an image 
+  //! Returns the selected cell - or nullptr, if the selection isn't an image 
   ImgCell *GetSelectedImgCell() const
     {
       if(GetDocumentCellPointers().GetSelectionStart() != GetDocumentCellPointers().GetSelectionEnd())
-        return NULL;
+        return nullptr;
       return dynamic_cast<ImgCell *>(GetSelectionStart());
     }
   
-  //! Returns the selected cell - or NULL, if the selection isn't image nor animation
+  //! Returns the selected cell - or nullptr, if the selection isn't image nor animation
   ImgCellBase *GetSelectedImgCellBase() const
     {
       if(GetDocumentCellPointers().GetSelectionStart() != GetDocumentCellPointers().GetSelectionEnd())
-        return NULL;
+        return nullptr;
       return dynamic_cast<ImgCellBase *>(GetSelectionStart());
     }
 
-  //! Returns the selected cell - or NULL, if the selection isn't a text cell
+  //! Returns the selected cell - or nullptr, if the selection isn't a text cell
   TextCell *GetSelectedTextCell() const
     {
       if(GetDocumentCellPointers().GetSelectionStart() != GetDocumentCellPointers().GetSelectionEnd())
-        return NULL;
+        return nullptr;
       return dynamic_cast<TextCell *>(GetSelectionStart());
     }
 
@@ -1114,7 +1258,7 @@ public:
   bool CanAnimate() const
     {
       return GetDocumentCellPointers().GetSelectionStart() && GetDocumentCellPointers().GetSelectionStart() == GetDocumentCellPointers().GetSelectionEnd() &&
-        (dynamic_cast<AnimationCell *>(GetSelectionStart()) != NULL);
+        (dynamic_cast<AnimationCell *>(GetSelectionStart()) != nullptr);
     }
 
   /*! Animate the current slide show
@@ -1168,6 +1312,9 @@ public:
   //! Copy a Matlab representation of the current selection to the clipboard
   bool CopyMatlab() const;
 
+  //! Copy the selected matrix, or block of one, to the clipboard as CSV
+  bool CopyCSV() const;
+
   //! Copy a textual representation of the current selection to the clipboard
   bool CopyText() const;
 
@@ -1204,6 +1351,15 @@ public:
     -- see WorksheetExport::SelectionToSelfContainedHTML()) of the current
     selection to the clipboard (GH #2265/#2266/#2267). */
   bool CopyHTML() const;
+
+  /*! What CopyHTML() puts on the clipboard, without touching the clipboard
+
+    A selection of whole cells becomes those cells, exported the way "Export
+    as HTML" exports them. A selection inside a cell's output -- a result, a
+    sub-expression, a block of a matrix's entries -- becomes just that part,
+    as CopySelection() returns it (GH #2369). Empty if nothing is selected.
+  */
+  wxString SelectionToSelfContainedHTML() const;
 
   wxSize CopyToFile(const wxString &file) const;
 
@@ -1252,14 +1408,14 @@ public:
 
   /*! Return the first of the currently selected cells.
 
-    NULL means: No cell is selected.
+    nullptr means: No cell is selected.
   */
   Cell *GetSelectionStart() const
     { return GetDocumentCellPointers().GetSelectionStart(); }
 
   /*! Return the last of the currently selected cells.
 
-    NULL means: No cell is selected.
+    nullptr means: No cell is selected.
   */
   Cell *GetSelectionEnd() const
     { return GetDocumentCellPointers().GetSelectionEnd(); }
@@ -1295,6 +1451,12 @@ public:
   }
   bool StatusTextHas() const {return m_statusTextHas;}
 private:
+  /*! Sets the selection string to the text of the selected output
+
+    The block of a matrix's entries, if only a block is selected, else every
+    selected cell from GetSelectionStart() to GetSelectionEnd().
+  */
+  void UpdateOutputSelectionString();
   /* ! A timer that tells us to urgently update the display
 
      Normally we prioritize tasks: If there are GUI actions to process we do so.
@@ -1416,13 +1578,13 @@ public:
     @param where   The cell to place the cursor before.
   */
   void SetHCaret(GroupCell *where); // call with false, when manually refreshing
-  //! The cell the horizontal cursor is above. NULL means at the start of the document.
+  //! The cell the horizontal cursor is above. nullptr means at the start of the document.
   GroupCell *GetHCaret();
 
   //! Place the cursor into a new cell where the horizontal cursor is
   void OpenHCaret(const wxString &txt = {})
     {
-      if(m_mainToolBar == NULL)
+      if(m_mainToolBar == nullptr)
         OpenHCaret(txt, GC_TYPE_CODE);
       else
         OpenHCaret(txt, m_mainToolBar->GetCellType());
@@ -1656,7 +1818,7 @@ public:
   void OnFollow();
 
   //! The toolbar of the main window: We need to access it and therefore have it defined here.
-  ToolBar *m_mainToolBar = NULL;
+  ToolBar *m_mainToolBar = nullptr;
 
   //! Set this cell as the currently selected one
   void SelectGroupCell(GroupCell *cell);
@@ -1707,9 +1869,9 @@ public:
   bool WillAutoAnswer() const;
   void UpdateScrollPos();
 
-  /*! Returns the cell maxima currently works on. NULL if there isn't such a cell.
+  /*! Returns the cell maxima currently works on. nullptr if there isn't such a cell.
 
-    \param resortToLast true = if we already have set the cell maxima works on to NULL
+    \param resortToLast true = if we already have set the cell maxima works on to nullptr
     use the last cell maxima was known to work on.
   */
   GroupCell *GetWorkingGroup(bool resortToLast = false) const;
@@ -1745,8 +1907,8 @@ public:
     wxAccStatus GetRole(int childId, wxAccRole *role);
     wxAccStatus GetState(int childId, long *state);
   private:
-    wxWindow *m_parent = NULL;
-    Worksheet *m_worksheet = NULL;
+    wxWindow *m_parent = nullptr;
+    Worksheet *m_worksheet = nullptr;
 
     class CaretAccessibilityInfo : public wxAccessible {
     public:
@@ -1764,6 +1926,34 @@ public:
       Worksheet* m_worksheet;
     };
     CaretAccessibilityInfo* m_caretAccessible = nullptr;
+
+    /*! The selected part of the output, as a screen reader sees it (GH #2382)
+
+      Named after the selection's text, so moving the selection with the
+      keyboard reads the newly selected result out. The worksheet's last
+      child, after the caret.
+    */
+    class SelectionAccessibilityInfo : public wxAccessible {
+    public:
+      SelectionAccessibilityInfo(AccessibilityInfo* parent, Worksheet* worksheet)
+        : wxAccessible(worksheet->GetTargetWindow()), m_parent(parent), m_worksheet(worksheet) {}
+
+      wxAccStatus GetName(int childId, wxString *name) override;
+      wxAccStatus GetParent(wxAccessible **parent) override;
+      wxAccStatus GetChildCount(int *childCount) override;
+      wxAccStatus GetChild(int childId, wxAccessible **child) override;
+      wxAccStatus GetRole(int childId, wxAccRole *role) override;
+      wxAccStatus GetState(int childId, long *state) override;
+    private:
+      AccessibilityInfo* m_parent;
+      Worksheet* m_worksheet;
+    };
+    SelectionAccessibilityInfo* m_selectionAccessible = nullptr;
+    //! The child id of SelectionAccessibilityInfo; the caret's is one less
+    int SelectionChildId() const;
+  public:
+    //! Is output (not whole cells) selected, so the selection has a child?
+    static bool HasOutputSelection(const Worksheet *worksheet);
   };
 #endif
   MaximaManual m_maximaManual;
@@ -1782,7 +1972,7 @@ protected:
   wxBitmap m_memory;
   virtual wxSize DoGetBestClientSize() const override;
 #if wxUSE_ACCESSIBILITY
-  AccessibilityInfo *m_accessibilityInfo = NULL;
+  AccessibilityInfo *m_accessibilityInfo = nullptr;
 #endif
   //! The x position of the mouse pointer
   int m_pointer_x = -1;
@@ -1790,6 +1980,16 @@ protected:
   int m_pointer_y = -1;
   //! Was there a mouse motion we didn't react to until now?
   bool m_mouseMotionWas = false;
+  //! Was Ctrl (Cmd on macOS) held during the last mouse motion?
+  bool m_pointerCmdDown = false;
+  //! Does the worksheet currently show the hand cursor for a link?
+  bool m_linkCursorShown = false;
+  //! The tooltip for the pointer being over link: its address and how to open it.
+  static wxString LinkToolTip(const wxString &link);
+  //! Shows the hand cursor while the pointer is over a link and Ctrl is held.
+  void UpdateLinkCursor(bool overLink);
+  //! The link the last context menu was opened on, see GetContextMenuLink().
+  wxString m_contextMenuLink;
   //! Is there an active popup menu?
   bool m_inPopupMenu = false;
 };

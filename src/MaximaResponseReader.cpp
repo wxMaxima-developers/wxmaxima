@@ -49,7 +49,7 @@ void MaximaResponseReader::ReadStatusBar(const wxXmlDocument &xmldoc) {
   else
     {
       wxXmlNode *node = xmldoc.GetRoot();
-      if (node != NULL) {
+      if (node != nullptr) {
         wxXmlNode *contents = node->GetChildren();
         if (contents)
           m_wxMaxima.StatusText(contents->GetContent(), false);
@@ -70,7 +70,7 @@ void MaximaResponseReader::ReadWorksheetExport(const wxXmlDocument &xmldoc) {
   }
 
   wxXmlNode *const root = xmldoc.GetRoot();
-  if (root == NULL)
+  if (root == nullptr)
     return;
 
   wxString type = wxS("html");
@@ -79,7 +79,7 @@ void MaximaResponseReader::ReadWorksheetExport(const wxXmlDocument &xmldoc) {
   bool wxmx = false;
   wxString documentclass;
   wxString documentclassOptions;
-  for (wxXmlNode *child = root->GetChildren(); child != NULL;
+  for (wxXmlNode *child = root->GetChildren(); child != nullptr;
        child = child->GetNext()) {
     const wxString name = child->GetName();
     wxString content = child->GetNodeContent();
@@ -128,10 +128,10 @@ void MaximaResponseReader::ReadManualTopicNames(const wxXmlDocument &xmldoc) {
       while ((node) && (node->GetName() != wxS("html-manual-keywords")))
         node = node->GetNext();
 
-      if (node == NULL) {
+      if (node == nullptr) {
         wxLogMessage(_("No topics found in topic tag"));
       } else {
-        for (wxXmlNode *entry = node->GetChildren(); entry != NULL;
+        for (wxXmlNode *entry = node->GetChildren(); entry != nullptr;
              entry = entry->GetNext())
           {
             if (entry->GetName() == wxS("keyword")) {
@@ -258,7 +258,7 @@ void MaximaResponseReader::ReadFirstPrompt(const wxString &data) {
     // Inform the user that the evaluation queue is empty.
     m_wxMaxima.EvaluationQueueLength(0);
     if (m_wxMaxima.GetWorksheet() && (m_wxMaxima.m_configuration.GetOpenHCaret()) &&
-        (m_wxMaxima.GetWorksheet()->GetActiveCell() == NULL))
+        (m_wxMaxima.GetWorksheet()->GetActiveCell() == nullptr))
       m_wxMaxima.GetWorksheet()->OpenNextOrCreateCell();
   } else
     m_wxMaxima.m_evaluator.TriggerEvaluation();
@@ -587,7 +587,7 @@ void MaximaResponseReader::ReadPrompt(const wxString &data) {
 
     if (m_wxMaxima.GetWorksheet()->GetEvaluationQueue().Empty()) {
       if ((m_wxMaxima.m_configuration.GetOpenHCaret()) &&
-          (m_wxMaxima.GetWorksheet()->GetActiveCell() == NULL))
+          (m_wxMaxima.GetWorksheet()->GetActiveCell() == nullptr))
         m_wxMaxima.GetWorksheet()->OpenNextOrCreateCell();
     }
   } else { // We have a question
@@ -647,7 +647,7 @@ void MaximaResponseReader::ReadPrompt(const wxString &data) {
     }
 
     if (!autoAnswer) {
-      if ((m_wxMaxima.GetWorksheet()->GetWorkingGroup() == NULL) ||
+      if ((m_wxMaxima.GetWorksheet()->GetWorkingGroup() == nullptr) ||
           ((m_wxMaxima.GetWorksheet()->GetWorkingGroup()->m_knownAnswers.empty()) &&
            m_wxMaxima.GetWorksheet()->GetWorkingGroup()->AutoAnswer()))
         m_wxMaxima.GetWorksheet()->SetNotification(_("Maxima asks a question!"),
@@ -704,14 +704,14 @@ void MaximaResponseReader::ReadStdErr() {
   // here. We also want to surface anything that turns up if something is
   // severely broken. Hence we keep reading and reporting both streams.
 
-  if (m_wxMaxima.m_maximaProcess == NULL)
+  if (m_wxMaxima.m_maximaProcess == nullptr)
     return;
 
   if (m_wxMaxima.m_maximaProcess->IsInputAvailable()) {
     wxASSERT_MSG(
-                 m_wxMaxima.m_maximaStdout != NULL,
+                 m_wxMaxima.m_maximaStdout != nullptr,
                  wxS("Bug: Trying to read from maxima but don't have an input stream"));
-    if(m_wxMaxima.m_maximaStdout == NULL)
+    if(m_wxMaxima.m_maximaStdout == nullptr)
       return;
     wxTextInputStream istrm(*m_wxMaxima.m_maximaStdout, wxS('\t'),
                             wxConvAuto(wxFONTENCODING_UTF8));
@@ -740,10 +740,10 @@ void MaximaResponseReader::ReadStdErr() {
     }
   }
   if (m_wxMaxima.m_maximaProcess->IsErrorAvailable()) {
-    wxASSERT_MSG(m_wxMaxima.m_maximaStderr != NULL,
+    wxASSERT_MSG(m_wxMaxima.m_maximaStderr != nullptr,
                  wxS("Bug: Trying to read from maxima but don't have a error "
                      "input stream"));
-    if(m_wxMaxima.m_maximaStderr == NULL)
+    if(m_wxMaxima.m_maximaStderr == nullptr)
       return;
     wxTextInputStream istrm(*m_wxMaxima.m_maximaStderr, wxS('\t'),
                             wxConvAuto(wxFONTENCODING_UTF8));
@@ -1000,6 +1000,16 @@ void MaximaResponseReader::VariableActionLispVersion(const wxString &value) {
   m_wxMaxima.m_configuration.SetLispVersion(value);
   wxLogMessage(_("Lisp version: %s"), value);
 }
+void MaximaResponseReader::VariableActionInterruptChannelAvailable(const wxString &value) {
+  // Without threads the Lisp cannot open the channel MaximaInterruptChannel
+  // interrupts it through, and interrupting falls back to what the operating
+  // system offers: a signal on POSIX, which works; on MS Windows only the
+  // shared-memory segment GCL provides.
+  if (value != wxS("true"))
+    wxLogMessage(_("The Lisp Maxima runs on has no thread support: wxMaxima can "
+                   "interrupt a computation only by the means the operating "
+                   "system provides, which on MS Windows may fail."));
+}
 void MaximaResponseReader::VariableActionWxLoadFileName(const wxString &value) {
   m_wxMaxima.m_recentPackages.AddDocument(value);
   m_wxMaxima.UpdateRecentDocuments();
@@ -1084,7 +1094,7 @@ void MaximaResponseReader::VariableActionOperators(const wxString &value) {
   else
     {
       wxXmlNode *node = xmldoc.GetRoot();
-      if (node != NULL) {
+      if (node != nullptr) {
         wxXmlNode *contents = node->GetChildren();
         while (contents) {
           if (contents->GetName() == wxS("operator")) {
@@ -1170,6 +1180,8 @@ void MaximaResponseReader::RegisterVariableActions() {
       &MaximaResponseReader::VariableActionLispName;
     m_variableReadActions[wxS("*lisp-version*")] =
       &MaximaResponseReader::VariableActionLispVersion;
+    m_variableReadActions[wxS("*wx-interrupt-channel-available*")] =
+      &MaximaResponseReader::VariableActionInterruptChannelAvailable;
     m_variableReadActions[wxS("*wx-load-file-name*")] =
       &MaximaResponseReader::VariableActionWxLoadFileName;
     m_variableReadActions[wxS("output_format_for_help")] =

@@ -258,7 +258,7 @@ void AnimationCell::Recalculate(AFontSize fontsize) const {
 
     // Make the cell as big as the biggest image plus its border.
     for (auto &i : m_images) {
-      if (i != NULL) {
+      if (i != nullptr) {
         if (m_configuration->GetPrinting()) {
           i->Recalculate(m_configuration->GetZoomFactor() *
                          PRINT_SIZE_MULTIPLIER);
@@ -283,7 +283,7 @@ void AnimationCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
   if (m_animationRunning)
     ReloadTimer();
 
-  if (DrawThisCell() && (m_images.at(m_displayed) != NULL)) {
+  if (DrawThisCell() && (m_images.at(m_displayed) != nullptr)) {
     // Start the timer once the animation appears on the screen.
     // But start it only once: Else the animation could be refreshed
     // more frequent than it can be drawn. Each update of the animation
@@ -351,7 +351,7 @@ wxString AnimationCell::ToXML() const {
   for (const auto &i: m_images) {
     wxString basename = m_viewCellPointers->WXMXGetNewFileName();
     // add the file to memory
-    if (i != NULL) {
+    if (i != nullptr) {
       // Anonymize the name of our temp directory for saving
       wxString gnuplotSource;
       wxString gnuplotData;
@@ -388,7 +388,7 @@ wxString AnimationCell::ToXML() const {
   wxString flags = GetXMLFlags();
   flags += wxS(" gnuplotSources_gz=\"") + gnuplotSourceFiles + wxS("\"");
   flags += wxS(" gnuplotData_gz=\"") + gnuplotDataFiles + "\"";
-  if ((Length() > 0) && (m_images.at(0) != NULL))
+  if ((Length() > 0) && (m_images.at(0) != nullptr))
     flags += wxString::Format(wxS(" ppi=\"%li\""), static_cast<long>(m_images.at(0)->GetPPI()));
 
   if (m_animationRunning)
@@ -526,7 +526,7 @@ wxSize AnimationCell::ToGif(wxString file) {
 
 void AnimationCell::ClearCache() {
   for (auto &i: m_images)
-    if (i != NULL)
+    if (i != nullptr)
       i->ClearCache();
 }
 

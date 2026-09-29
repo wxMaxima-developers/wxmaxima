@@ -227,7 +227,7 @@ bool MaximaEvaluator::AbortOnError() {
 }
 
 void MaximaEvaluator::EvaluateEvent(wxCommandEvent &WXUNUSED(event)) {
-  if (m_wxMaxima.GetWorksheet() == NULL)
+  if (m_wxMaxima.GetWorksheet() == nullptr)
     return;
   m_wxMaxima.GetWorksheet()->CloseAutoCompletePopup();
 
@@ -260,8 +260,8 @@ void MaximaEvaluator::EvaluateEvent(wxCommandEvent &WXUNUSED(event)) {
   if (m_wxMaxima.GetWorksheet()->QuestionPending() && m_wxMaxima.GetWorksheet()->GetDocumentCellPointers().GetAnswerCell())
     editor = m_wxMaxima.GetWorksheet()->GetDocumentCellPointers().GetAnswerCell();
 
-  if (editor == NULL) {
-    GroupCell *group = NULL;
+  if (editor == nullptr) {
+    GroupCell *group = nullptr;
     if (m_wxMaxima.GetWorksheet()->HasCellsSelected()) {
       // More than one cell is selected
       m_wxMaxima.GetWorksheet()->AddSelectionToEvaluationQueue();
@@ -270,27 +270,27 @@ void MaximaEvaluator::EvaluateEvent(wxCommandEvent &WXUNUSED(event)) {
       {
         if (m_wxMaxima.GetWorksheet()->HCaretActive()) {
           group = m_wxMaxima.GetWorksheet()->GetHCaret();
-          if (group == NULL)
-            // If the cursor is before the 1st cell of the worksheet hcaret reads NULL.
+          if (group == nullptr)
+            // If the cursor is before the 1st cell of the worksheet hcaret reads nullptr.
             group = m_wxMaxima.GetWorksheet()->GetTree();
           else
             // The HCaret points to the cell before the horizontal cursor.
             group = group->GetNext();
 
           // Now we search for the first cell below the cursor that actually contains code.
-          while ((group != NULL) &&
-                 (!((group->GetEditable() != NULL) &&
+          while ((group != nullptr) &&
+                 (!((group->GetEditable() != nullptr) &&
                     (group->GetEditable()->GetType() == MC_TYPE_INPUT)) &&
                   (!m_wxMaxima.GetWorksheet()->GetEvaluationQueue().IsLastInQueue(group))))
             group = group->GetNext();
         }
-        if ((group != NULL) && (group->GetEditable() != NULL) &&
+        if ((group != nullptr) && (group->GetEditable() != nullptr) &&
             (group->GetEditable()->GetType() == MC_TYPE_INPUT))
           editor = group->GetEditable();
       }
   }
 
-  if (editor != NULL) // The cursor is in an active cell
+  if (editor != nullptr) // The cursor is in an active cell
     {
       if (editor->GetType() == MC_TYPE_INPUT && (!m_wxMaxima.m_configuration.InLispMode()))
         editor->AddEnding();
@@ -365,7 +365,7 @@ void MaximaEvaluator::TriggerEvaluation() {
 
     // If the window isn't active we can inform the user that maxima in the
     // meantime has finished working.
-    if ((m_wxMaxima.m_configuration.NotifyIfIdle()) && (m_wxMaxima.GetWorksheet()->GetTree() != NULL))
+    if ((m_wxMaxima.m_configuration.NotifyIfIdle()) && (m_wxMaxima.GetWorksheet()->GetTree() != nullptr))
       m_wxMaxima.GetWorksheet()->SetNotification(_("Maxima has finished calculating."));
 
     if (m_wxMaxima.m_configCommands != wxEmptyString)
@@ -377,8 +377,8 @@ void MaximaEvaluator::TriggerEvaluation() {
 
   // GH #2196: the cell that just became current has different text now than
   // when it was queued -- the signature of a statement being silently
-  // dropped (a live tcpdump capture confirmed this happens; the exact
-  // mechanism is still unknown, see AGENTS.md). Only treated as a hard
+  // dropped (seen once, from a batch startup race that has since been
+  // fixed; kept as a guard, see EvaluationQueue::AddTokens()). Only treated as a hard
   // error in --batch mode: there, nothing legitimate could have changed a
   // not-yet-reached queued cell's text (no interactive user to edit it), so
   // a mismatch there can only be this bug. In interactive use the same
@@ -534,7 +534,7 @@ void MaximaEvaluator::TriggerEvaluation() {
       tmp->GetEditable()->SetErrorIndex((m_wxMaxima.m_commandIndex = index) - 1);
 
       if (m_wxMaxima.GetWorksheet()->FollowEvaluation())
-        m_wxMaxima.GetWorksheet()->SetSelection(NULL);
+        m_wxMaxima.GetWorksheet()->SetSelection(nullptr);
 
       m_wxMaxima.GetWorksheet()->SetWorkingGroup(nullptr);
       m_wxMaxima.GetWorksheet()->RequestRedraw();
@@ -648,6 +648,14 @@ void MaximaEvaluator::SetupVariables() {
     default:
       SendMaxima(":lisp-quiet (msetq $output_format_for_help '$frontend)");
     }
+  // Ask a Lisp that has threads to open a second connection we can interrupt
+  // it through; see MaximaInterruptChannel. Guarded by fboundp, since
+  // --wxmathml-lisp may load an older wxMathML.lisp that doesn't define it.
+  SendMaxima(wxString::Format(
+               ":lisp-quiet (when (fboundp 'wx-open-interrupt-channel) "
+               "(wx-open-interrupt-channel \"127.0.0.1\" %i \"%s\"))",
+               m_wxMaxima.m_port,
+               m_wxMaxima.EscapeForLisp(m_wxMaxima.m_maximaAuthString)));
   wxString wxmaximaversion_lisp(WXMAXIMA_VERSION);
 
 #ifdef __WXMSW__

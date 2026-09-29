@@ -107,7 +107,7 @@ void HelpBrowser::OnTopicButton(wxCommandEvent &event) {
 }
 
 void HelpBrowser::CreateIfNeeded() {
-  if (m_webView == NULL) {
+  if (m_webView == nullptr) {
     wxLogMessage(_("Instantiating the HTML manual browser"));
 #ifdef __WXMSW__
     // Tell MSW not to emulate all bugs of Internet Explorer 7

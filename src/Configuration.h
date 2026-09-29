@@ -38,6 +38,7 @@
 #include <functional>
 #include <memory>
 #include <mutex>
+#include <optional>
 #include <unordered_map>
 #include <random>
 #include <list>
@@ -79,7 +80,7 @@ class ViewCellPointers;
 class GroupCell;
 class MatrixScrollHost;
 template<class T> class wxScrolled;
-typedef wxScrolled<wxWindow> wxScrolledCanvas;
+using wxScrolledCanvas = wxScrolled<wxWindow>;
 
 /*! The configuration storage for the current worksheet.
 
@@ -188,7 +189,7 @@ public:
     display_1dASCII
   };
 
-  typedef std::unordered_map <wxString, bool, wxStringHash> StringBoolHash;
+  using StringBoolHash = std::unordered_map<wxString, bool, wxStringHash>;
   //! Coincides name with a operator known to maxima?
   bool IsOperator(wxString name) const {return m_maximaSession.IsOperator(name);}
   //! Register name as an operator known to maxima.
@@ -222,6 +223,17 @@ public:
   explicit Configuration(wxDC *dc = {}, InitOpt options = none);
   Configuration(const Configuration &o);
 
+  /*! Makes this configuration temporary
+
+    A configuration that isn't temporary writes its settings to the config
+    file when it is destroyed. A copy made to show something differently
+    from the worksheet -- the MatrixViewer's, say, which shows every matrix
+    in full and hides all labels -- must never do that, or its settings
+    would silently become the user's. The copy constructor copies this, so
+    a copy of the worksheet's configuration isn't temporary until told.
+  */
+  void MakeTemporary() { m_initOpts = temporary; }
+
   //! Reset the whole configuration to its default values
   void ResetAllToDefaults();
 
@@ -230,7 +242,7 @@ public:
     {
       m_renderContext.SetRecalcDC(&dc);
     }
-  void UnsetContext() {m_renderContext.SetRecalcDC(NULL);}
+  void UnsetContext() {m_renderContext.SetRecalcDC(nullptr);}
 
   //! Set the brush to be used for the worksheet background
   void SetBackgroundBrush(const wxBrush &brush);
@@ -423,6 +435,23 @@ public:
         return ppi / 45;
     }
 
+  /*! An extra top margin of less than one scroll unit, in px
+
+    Lets the worksheet keep the cursor still to the pixel when output appended
+    above it pushes it down, although the view can only scroll in whole scroll
+    units - see ComputeScrollCompensation() and
+    WorksheetLayout::ArmScrollCompensation(). Only the worksheet's own
+    configuration ever sets it: it is deliberately not copied by the copy
+    constructor, as neither printing nor an export wants a stray top margin.
+  */
+  int GetWorksheetTopOffset() const { return m_worksheetTopOffset; }
+  /*! Sets the extra top margin. See GetWorksheetTopOffset().
+
+    Like SetMatrixScrollHost() this doesn't request a recalculation: the only
+    caller repositions the cells itself.
+  */
+  void SetWorksheetTopOffset(int offset) { m_worksheetTopOffset = offset; }
+
   //! The y position the worksheet starts at
   long GetBaseIndent() const
     {
@@ -488,10 +517,36 @@ public:
     scroll = 2
   };
   OversizedMatrices GetOversizedMatrices() const { return m_oversizedMatrices; }
-  void SetOversizedMatrices(OversizedMatrices mode) {
-    if (mode != m_oversizedMatrices)
+  /*! Sets how oversized matrices are shown
+
+    \param mode How a matrix too large for the window is shown.
+    \param perMatrixOverridable Whether a matrix may ask for a different
+      mode of its own (wx_matrix()'s oversized option, see
+      OversizedMatricesFor()). The worksheet and printing allow that; the
+      graphical exporters don't, since they must never drop entries from
+      their output whatever a matrix asked for on screen.
+  */
+  void SetOversizedMatrices(OversizedMatrices mode, bool perMatrixOverridable = true) {
+    if ((mode != m_oversizedMatrices) ||
+        (perMatrixOverridable != m_oversizedMatricesOverridable))
       RecalculateForce();
     m_oversizedMatrices = mode;
+    m_oversizedMatricesOverridable = perMatrixOverridable;
+  }
+  /*! How one specific matrix that is too large for the window is shown
+
+    \param requested The mode that matrix asked for, if any (see
+      MatrCell::SetOversizedMode()). It wins over the global setting, except
+      where SetOversizedMatrices() was told not to allow that.
+
+    The result is only what is wanted: whether it is possible is up to the
+    matrix, which still falls back to eliding where there is nowhere to put
+    scrollbars, and to showing a nested matrix in full.
+  */
+  OversizedMatrices OversizedMatricesFor(std::optional<OversizedMatrices> requested) const {
+    if (requested && m_oversizedMatricesOverridable)
+      return *requested;
+    return m_oversizedMatrices;
   }
 
   /*! What gives a scrolling matrix its scrollbars, if anything
@@ -566,6 +621,16 @@ public:
 
   bool CursorJump() const { return m_cursorJump;}
   void CursorJump(bool save){m_cursorJump = save;}
+
+  /*! Do the Up and Down keys skip over a cell's output?
+
+    Off by default: Down at the end of an input then selects the first result
+    of the cell's output (GH #2382). On restores the older behaviour, where
+    Down went straight on to the next cell and output could only be selected
+    with the mouse.
+  */
+  bool ArrowKeysSkipOutput() const { return m_arrowKeysSkipOutput;}
+  void ArrowKeysSkipOutput(bool skip){m_arrowKeysSkipOutput = skip;}
 
   bool NumpadEnterEvaluates() const { return m_numpadEnterEvaluates;}
   void NumpadEnterEvaluates(bool eval){m_numpadEnterEvaluates = eval;}
@@ -1361,6 +1426,16 @@ public:
   bool MaximaUsesWxmaximaBrowser() const {return m_maximaUsesWxmaximaBrowser && OfferInternalHelpBrowser();}
   void ExportContainsWXMX(bool exportContainsWXMX){m_exportContainsWXMX = exportContainsWXMX;}
   bool ExportContainsWXMX() const {return m_exportContainsWXMX;}
+  /*! Does the HTML export produce one self-contained file?
+
+    If true, the stylesheet, every image and (if ExportContainsWXMX()) the
+    .wxmx source are embedded into the .html file as data: URIs, so it can
+    be mailed or uploaded on its own. If false, images and the .wxmx go
+    into a separate <name>_htmlimg directory next to it.
+  */
+  bool HTMLExportSelfContained() const {return m_htmlExportSelfContained;}
+  void HTMLExportSelfContained(bool selfContained)
+    {m_htmlExportSelfContained = selfContained;}
   void WizardTab(long tab){m_wizardTab = tab;}
   long WizardTab() const {return m_wizardTab;}
 
@@ -1485,11 +1560,11 @@ private:
   //! Which objects do we want to convert into subscripts if they occur after an underscore?
   long m_autoSubscript;
   //! The worksheet canvas this configuration storage is valid for
-  wxScrolledCanvas *m_workSheet = NULL;
+  wxScrolledCanvas *m_workSheet = nullptr;
   //! The document-model half of the cell registry. Not copied.
-  DocumentCellPointers *m_documentCellPointers = NULL;
+  DocumentCellPointers *m_documentCellPointers = nullptr;
   //! The transient view-state half of the cell registry. Not copied.
-  ViewCellPointers *m_viewCellPointers = NULL;
+  ViewCellPointers *m_viewCellPointers = nullptr;
   //! The view's recalculation-request callback (see RequestRecalculate()). Not copied.
   std::function<void(GroupCell *)> m_recalculateRequest;
   //! The view's whole-document recalculation callback (see RequestRecalculateAll()). Not copied.
@@ -1501,6 +1576,7 @@ private:
   bool m_wrapLatexMath;
   bool m_allowNetworkHelp;
   bool m_exportContainsWXMX;
+  bool m_htmlExportSelfContained;
   wxString m_texPreamble;
 
   drawMode m_parenthesisDrawMode;
@@ -1607,6 +1683,7 @@ private:
   long m_defaultPlotWidth;
   bool m_saveUntitled;
   bool m_cursorJump;
+  bool m_arrowKeysSkipOutput;
   bool m_numpadEnterEvaluates;
   bool m_saveImgFileName;
   wxString m_documentclass;
@@ -1631,8 +1708,12 @@ private:
   int m_maxLayoutTime;
   LayoutStrategy m_layoutStrategy = LayoutStrategy::layout2DIfFits;
   OversizedMatrices m_oversizedMatrices = OversizedMatrices::elide;
+  //! May a matrix override m_oversizedMatrices? See SetOversizedMatrices().
+  bool m_oversizedMatricesOverridable = true;
   //! Not copied by the copy constructor; see GetMatrixScrollHost()
   MatrixScrollHost *m_matrixScrollHost = nullptr;
+  //! Not copied by the copy constructor; see GetWorksheetTopOffset()
+  int m_worksheetTopOffset = 0;
   wxString m_wxMathML_Filename;
   maximaHelpFormat m_maximaHelpFormat;
   std::atomic<std::int_fast32_t> m_cellCfgCnt{0};

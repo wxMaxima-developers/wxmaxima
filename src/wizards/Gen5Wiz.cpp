@@ -78,7 +78,7 @@ Gen5Wiz::Gen5Wiz(wxString lab1, wxString lab2, wxString lab3, wxString lab4,
     m_warning = new wxStaticText(this, -1, wxEmptyString);
     m_warning->SetToolTip(warningToolTip);
   } else
-    m_warning = NULL;
+    m_warning = nullptr;
   set_properties();
   SetName(title);
   wxPersistenceManager::Get().RegisterAndRestore(this);
@@ -104,7 +104,7 @@ void Gen5Wiz::do_layout() {
   grid_sizer_2->Add(label_6, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
                     5);
   grid_sizer_2->Add(text_ctrl_5, 0, wxALL, 5);
-  if (m_warning != NULL)
+  if (m_warning != nullptr)
     grid_sizer_1->Add(m_warning, 0, wxALL, 5);
   grid_sizer_1->Add(grid_sizer_2, 1, wxEXPAND, 0);
   grid_sizer_1->Add(static_line_1, 0, static_cast<int>(wxEXPAND) | wxLEFT | wxRIGHT, 2);
@@ -116,7 +116,7 @@ void Gen5Wiz::do_layout() {
   grid_sizer_1->Fit(this);
   grid_sizer_1->SetSizeHints(this);
   Layout();
-  if (m_warning != NULL) {
+  if (m_warning != nullptr) {
     m_warning->SetLabel(m_warningText);
     m_warning->Wrap(GetClientSize().GetWidth());
     Fit();

@@ -34,29 +34,8 @@
 #if wxUSE_ACCESSIBILITY
 #include <wx/access.h>
 #endif
-#if !wxCHECK_VERSION(3, 1, 6)
-#include "art/toolbar/arrow-up-square.h"
-#include "art/toolbar/dialog-information.h"
-#include "art/toolbar/gtk-preferences.h"
-#include "art/toolbar/eye-slash.h"
-#include "art/toolbar/go-bottom.h"
-#include "art/toolbar/gtk-select-all.h"
-#include "art/toolbar/go-jump.h"
-#include "art/toolbar/gtk-stop.h"
-#include "art/toolbar/go-last.h"
-#include "art/toolbar/go-next.h"
-#include "art/toolbar/input.h"
-#include "art/toolbar/media-playback-stop.h"
-#include "art/toolbar/software-update-urgent.h"
-#include "art/toolbar/text.h"
-#include "art/toolbar/view-refresh1.h"
-#include "art/media-playback-start.h"
-#include "art/media-playback-reverse.h"
-#endif
 
-#if wxCHECK_VERSION(3, 1, 6)
 #include "wxMaximaArtProvider.h"
-#endif
 #include <cstdlib>
 #include <wx/artprov.h>
 #include <wx/display.h>
@@ -67,25 +46,17 @@
 #include <wx/zstream.h>
 #include <algorithm>
 
-#if wxCHECK_VERSION(3, 1, 0)
 #define TOOLBAR_ICON_SCALE (0.25)
-#else
-#define TOOLBAR_ICON_SCALE (0.35)
-#endif
 
 wxSize ToolBar::GetOptimalBitmapSize()
 {
   wxSize siz;
-#if wxCHECK_VERSION(3, 1, 1)
   wxDisplay display;
   int display_idx = wxDisplay::GetFromWindow(GetParent());
   if (display_idx < 0)
     m_ppi = wxSize(72, 72);
   else
     m_ppi = wxDisplay(display_idx).GetPPI();
-#else
-  m_ppi = wxGetDisplayPPI();
-#endif
   if ((m_ppi.x <= 10) || (m_ppi.y <= 10))
     m_ppi = wxSize(72, 72);
 
@@ -113,10 +84,10 @@ wxSize ToolBar::GetOptimalBitmapSize()
   return siz;
 }
 
-ToolBar::~ToolBar() { m_plotSlider = NULL; }
+ToolBar::~ToolBar() { m_plotSlider = nullptr; }
 
 void ToolBar::UpdateSlider(AnimationCell *cell) {
-  if (cell == NULL)
+  if (cell == nullptr)
     return;
   std::size_t animationDisplayedIndex = cell->GetDisplayedIndex();
   std::size_t animationMaxIndex = cell->Length();
@@ -125,7 +96,7 @@ void ToolBar::UpdateSlider(AnimationCell *cell) {
       (m_animationMaxIndex != animationMaxIndex)) {
     m_animationMaxIndex = animationMaxIndex;
     m_animationDisplayedIndex = animationDisplayedIndex;
-    if (m_plotSlider != NULL) {
+    if (m_plotSlider != nullptr) {
       m_plotSlider->SetRange(0, cell->Length() - 1);
       m_plotSlider->SetValue(cell->GetDisplayedIndex());
       m_plotSlider->SetToolTip(wxString::Format(
@@ -158,7 +129,7 @@ public:
   wxAccStatus GetChild(int childId, wxAccessible **child) override {
     if (!child)
       return wxACC_FAIL;
-    *child = nullptr; // NULL + wxACC_OK => a "simple element" answered by us
+    *child = nullptr; // nullptr + wxACC_OK => a "simple element" answered by us
     if (childId == 0)
       return wxACC_OK;
     wxAuiToolBarItem *item = ItemFor(childId);
@@ -314,60 +285,50 @@ ToolBar::ToolBar(wxWindow *parent)
 }
 
 void ToolBar::AddTools() {
-#if !wxCHECK_VERSION(3, 1, 6)
-  wxSize bitmapSize = GetOptimalBitmapSize();
-#endif
   Clear();
   m_ppi = wxDefaultSize;
+  // Every tool added below starts out enabled, so the remembered states
+  // CanUndo(), CanCopy(), ... compare against must say so, too. Otherwise, after
+  // the user added or removed a group of tools via the context menu, a tool
+  // whose remembered state was "disabled" would stay enabled until that state
+  // happened to change - e.g. an Undo button that is active with nothing to
+  // undo.
+  m_canUndo_old = true;
+  m_canRedo_old = true;
+  m_canCopy_old = true;
+  m_canCut_old = true;
+  m_canSave_old = true;
+  m_canPrint_old = true;
+  m_canEvalTillHere_old = true;
+  m_canEvalThisCell_old = true;
+  m_worksheetEmpty_old = false;
   if (ShowNew())
-#if wxCHECK_VERSION(3, 1, 6)
     AddTool(wxID_NEW, _("New"), wxArtProvider::GetBitmapBundle(wxART_NEW, wxART_TOOLBAR), _("New document"));
-#else
-    AddTool(wxID_NEW, _("New"), wxArtProvider::GetBitmap(wxART_NEW, wxART_TOOLBAR), _("New document"));
-#endif
   if (ShowOpenSave()) {
-#if wxCHECK_VERSION(3, 1, 6)
     AddTool(wxID_OPEN, _("Open"), wxArtProvider::GetBitmapBundle(wxART_FILE_OPEN, wxART_TOOLBAR), _("Open document"));
     AddTool(wxID_SAVE, _("Save"), wxArtProvider::GetBitmapBundle(wxART_FILE_SAVE, wxART_TOOLBAR), _("Save document"));
-#else
-    AddTool(wxID_OPEN, _("Open"), wxArtProvider::GetBitmap(wxART_FILE_OPEN, wxART_TOOLBAR), _("Open document"));
-    AddTool(wxID_SAVE, _("Save"), wxArtProvider::GetBitmap(wxART_FILE_SAVE, wxART_TOOLBAR), _("Save document"));
-#endif
   }
   if (ShowPrint()) {
 #ifndef __WXOSX__
     if (ShowOpenSave() || ShowNew())
       AddSeparator();
 #endif
-#if wxCHECK_VERSION(3, 1, 6)
     AddTool(wxID_PRINT, _("Print"), wxArtProvider::GetBitmapBundle(wxART_PRINT, wxART_TOOLBAR), _("Print document"));
-#else
-    AddTool(wxID_PRINT, _("Print"), wxArtProvider::GetBitmap(wxART_PRINT, wxART_TOOLBAR), _("Print document"));
-#endif
   }
   if (ShowUndoRedo()) {
 #ifndef __WXOSX__
     if (ShowOpenSave() || ShowNew())
       AddSeparator();
 #endif
-#if wxCHECK_VERSION(3, 1, 6)
     AddTool(wxID_UNDO, _("Undo"), wxArtProvider::GetBitmapBundle(wxART_UNDO, wxART_TOOLBAR));
     AddTool(wxID_REDO, _("Redo"), wxArtProvider::GetBitmapBundle(wxART_REDO, wxART_TOOLBAR));
-#else
-    AddTool(wxID_UNDO, _("Undo"), wxArtProvider::GetBitmap(wxART_UNDO, wxART_TOOLBAR));
-    AddTool(wxID_REDO, _("Redo"), wxArtProvider::GetBitmap(wxART_REDO, wxART_TOOLBAR));
-#endif
   }
   if (ShowOptions()) {
 #ifndef __WXOSX__
     if (ShowOpenSave() || ShowNew() || ShowUndoRedo())
       AddSeparator();
 #endif
-#if wxCHECK_VERSION(3, 1, 6)
     AddTool(wxID_PREFERENCES, _("Options"), wxArtProvider::GetBitmapBundle(wxmaximaART_GTK_PREFERENCES, wxART_TOOLBAR), _("Configure wxMaxima"));
-#else
-    AddTool(wxID_PREFERENCES, _("Options"), GetPreferencesBitmap(bitmapSize), _("Configure wxMaxima"));
-#endif
   }
   if (ShowCopyPaste()) {
 #ifndef __WXOSX__
@@ -375,70 +336,36 @@ void ToolBar::AddTools() {
         ShowUndoRedo())
       AddSeparator();
 #endif
-#if wxCHECK_VERSION(3, 1, 6)
     AddTool(wxID_CUT, _("Cut"), wxArtProvider::GetBitmapBundle(wxART_CUT, wxART_TOOLBAR), _("Cut selection"));
     AddTool(wxID_COPY, _("Copy"), wxArtProvider::GetBitmapBundle(wxART_COPY, wxART_TOOLBAR), _("Copy selection"));
     AddTool(wxID_PASTE, _("Paste"), wxArtProvider::GetBitmapBundle(wxART_PASTE, wxART_TOOLBAR), _("Paste from clipboard"));
-#else
-    AddTool(wxID_CUT, _("Cut"), wxArtProvider::GetBitmap(wxART_CUT, wxART_TOOLBAR), _("Cut selection"));
-    AddTool(wxID_COPY, _("Copy"), wxArtProvider::GetBitmap(wxART_COPY, wxART_TOOLBAR), _("Copy selection"));
-    AddTool(wxID_PASTE, _("Paste"), wxArtProvider::GetBitmap(wxART_PASTE, wxART_TOOLBAR), _("Paste from clipboard"));
-#endif
   }
   if (ShowSelectAll())
-#if wxCHECK_VERSION(3, 1, 6)
     AddTool(tb_hideCode, _("Select all"), wxArtProvider::GetBitmapBundle(wxmaximaART_GTK_SELECT_ALL, wxART_TOOLBAR), _("Select all"));
-#else
-    AddTool(wxID_SELECTALL, _("Select all"), GetSelectAllBitmap(bitmapSize), _("Select all"));
-#endif
 
   if (ShowSearch()) {
 #ifndef __WXOSX__
     if (ShowSelectAll() || ShowOpenSave() || ShowNew() || ShowPrint() || ShowUndoRedo() || ShowCopyPaste())
       AddSeparator();
 #endif
-#if wxCHECK_VERSION(3, 1, 6)
     AddTool(wxID_FIND, _("Find"), wxArtProvider::GetBitmapBundle(wxART_FIND_AND_REPLACE, wxART_TOOLBAR), _("Find and replace"));
-#else
-    AddTool(wxID_FIND, _("Find"), wxArtProvider::GetBitmap(wxART_FIND_AND_REPLACE, wxART_TOOLBAR), _("Find and replace"));
-#endif
   }
 #ifndef __WXOSX__
   if (ShowSelectAll() || ShowOpenSave() || ShowNew() || ShowPrint() || ShowOptions() || ShowUndoRedo() || ShowSearch())
     AddSeparator();
 #endif
-#if wxCHECK_VERSION(3, 1, 6)
   AddTool(menu_restart_id, _("Restart Maxima"), wxArtProvider::GetBitmapBundle(wxmaximaART_VIEW_REFRESH1, wxART_TOOLBAR),
           _("Completely stop maxima and restart it"));
   AddTool(tb_interrupt, _("Interrupt"), wxArtProvider::GetBitmapBundle(wxmaximaART_GTK_STOP, wxART_TOOLBAR),
           _("Interrupt current computation. To completely restart maxima press "
             "the button left to this one."));
-#else
-  AddTool(menu_restart_id, _("Restart Maxima"), GetRestartBitmap(bitmapSize),
-          _("Completely stop maxima and restart it"));
-  AddTool(tb_interrupt, _("Interrupt"), GetInterruptBitmap(bitmapSize),
-          _("Interrupt current computation. To completely restart maxima press "
-            "the button left to this one."));
-#endif
-#if wxCHECK_VERSION(3, 1, 6)
   AddTool(tb_follow, _("Follow"), wxArtProvider::GetBitmapBundle(wxmaximaART_ARROW_UP_SQUARE, wxART_TOOLBAR), _("Return to the cell that is currently being evaluated"));
-#else
-  int bitmapWidth = GetOptimalBitmapSize().x;
-  m_followIcon = ArtProvider::GetImage(this, wxS("arrow_up_square"), bitmapWidth, ARROW_UP_SQUARE_SVG_GZ,
-                                       ARROW_UP_SQUARE_SVG_GZ_SIZE);
-  m_needsInformationIcon =
-    ArtProvider::GetImage(this, wxS("software-update-urgent"), bitmapWidth, SOFTWARE_UPDATE_URGENT_SVG_GZ,
-                          SOFTWARE_UPDATE_URGENT_SVG_GZ_SIZE);
-  AddTool(tb_follow, _("Follow"), m_followIcon,
-          _("Return to the cell that is currently being evaluated"));
-#endif
   EnableTool(tb_follow, false);
 
 #ifndef __WXOSX__
   AddSeparator();
 #endif
 
-#if wxCHECK_VERSION(3, 1, 6)
   AddTool(tb_eval, _("Evaluate current cell"), wxArtProvider::GetBitmapBundle(wxmaximaART_GO_NEXT, wxART_TOOLBAR),
           _("Send the current cell to maxima"));
 
@@ -450,28 +377,11 @@ void ToolBar::AddTools() {
 
   AddTool(tb_evaluate_rest, _("Evaluate the rest"), wxArtProvider::GetBitmapBundle(wxmaximaART_GO_LAST, wxART_TOOLBAR),
           _("Evaluate the file from the cursor to its end"));
-#else
-  AddTool(tb_eval, _("Evaluate current cell"), GetEvalBitmap(bitmapSize),
-          _("Send the current cell to maxima"));
-
-  AddTool(tb_eval_all, _("Evaluate all"), GetEvalAllBitmap(bitmapSize),
-          _("Send all cells to maxima"));
-
-  AddTool(tb_evaltillhere, _("Evaluate to point"), GetEvalTillHereBitmap(bitmapSize),
-          _("Evaluate the file from its beginning to the cell above the cursor"));
-
-  AddTool(tb_evaluate_rest, _("Evaluate the rest"), GetEvalRestBitmap(bitmapSize),
-          _("Evaluate the file from the cursor to its end"));
-#endif
 
 #ifndef __WXOSX__
   AddSeparator();
 #endif
-#if wxCHECK_VERSION(3, 1, 6)
   AddTool(tb_hideCode, _("Hide Code"), wxArtProvider::GetBitmapBundle(wxmaximaART_EYE_SLASH, wxART_TOOLBAR), _("Toggle the visibility of code cells"));
-#else
-  AddTool(tb_hideCode, _("Hide Code"), GetHideCodeBitmap(bitmapSize), _("Toggle the visibility of code cells"));
-#endif
 
 #ifndef __WXOSX__
   AddSeparator();
@@ -503,23 +413,9 @@ void ToolBar::AddTools() {
                             "   Ctrl+7: Heading6 cell\n"));
   m_textStyle->SetSelection(textStyleSelection);
   AddControl(m_textStyle);
-#if wxCHECK_VERSION(3, 1, 6)
     AddTool(tb_animation_startStop, _("Start or Stop animation"), wxArtProvider::GetBitmapBundle(wxmaximaART_MEDIA_PLAYBACK_START, wxART_TOOLBAR),
           _("Start or stop the currently selected animation that has been "
             "created with the with_slider class of commands"));
-#else
-  m_PlayButton =
-    ArtProvider::GetImage(this, wxS("media-playback-start"), bitmapWidth, MEDIA_PLAYBACK_START_SVG_GZ,
-                          MEDIA_PLAYBACK_START_SVG_GZ_SIZE);
-  m_StopButton =
-    ArtProvider::GetImage(this, wxS("media-playback-stop"), bitmapWidth, MEDIA_PLAYBACK_STOP_SVG_GZ,
-                          MEDIA_PLAYBACK_STOP_SVG_GZ_SIZE);
-
-  // It felt like a good idea to combine the play and the stop button.
-  AddTool(tb_animation_startStop, _("Start or Stop animation"), m_PlayButton,
-          _("Start or stop the currently selected animation that has been "
-            "created with the with_slider class of commands"));
-#endif
   EnableTool(tb_animation_startStop, false);
 
   m_ppi = GetPPI();
@@ -540,11 +436,7 @@ void ToolBar::AddTools() {
   AddControl(m_plotSlider);
   AddStretchSpacer(100);
   if (ShowHelp())
-#if wxCHECK_VERSION(3, 1, 6)
     AddTool(wxID_HELP, _("Help"), wxArtProvider::GetBitmapBundle(wxART_HELP, wxART_TOOLBAR), _("Show wxMaxima help"));
-#else
-    AddTool(wxID_HELP, _("Help"), wxArtProvider::GetBitmap(wxART_HELP, wxART_TOOLBAR), _("Show wxMaxima help"));
-#endif
   Bind(wxEVT_SIZE, &ToolBar::OnSize, this);
   Bind(wxEVT_RIGHT_DOWN, &ToolBar::OnMouseRightDown, this);
   Realize();
@@ -553,15 +445,11 @@ void ToolBar::AddTools() {
 wxSize ToolBar::GetPPI()
 {
   wxSize ppi(-1, -1);
-#if wxCHECK_VERSION(3, 1, 1)
   int display_idx = wxDisplay::GetFromWindow(GetParent());
   if (display_idx < 0)
     ppi = wxSize(72, 72);
   else
     ppi = wxDisplay(display_idx).GetPPI();
-#else
-  m_ppi = wxGetDisplayPPI();
-#endif
   if ((ppi.x <= 10) || (ppi.y <= 10))
     ppi = wxSize(72, 72);
   return ppi;
@@ -570,9 +458,6 @@ wxSize ToolBar::GetPPI()
 void ToolBar::UpdateBitmaps() {
   wxSize bitmapSize = GetOptimalBitmapSize();
   SetToolBitmapSize(bitmapSize);
-#if !wxCHECK_VERSION(3, 1, 6)
-  int bitmapWidth = bitmapSize.x;
-#endif
 
   wxSize ppi = GetPPI();
   if ((ppi.x == m_ppi.x) && (ppi.y == m_ppi.y))
@@ -583,87 +468,21 @@ void ToolBar::UpdateBitmaps() {
 
   m_ppi = ppi;
 
-#if wxCHECK_VERSION(3, 1, 6)
   SetToolBitmap(tb_eval, wxArtProvider::GetBitmapBundle(wxmaximaART_GO_NEXT, wxART_TOOLBAR));
   SetToolBitmap(tb_eval_all, wxArtProvider::GetBitmapBundle(wxmaximaART_GO_JUMP, wxART_TOOLBAR));
   SetToolBitmap(wxID_PREFERENCES, wxArtProvider::GetBitmapBundle(wxmaximaART_GTK_PREFERENCES, wxART_TOOLBAR));
   SetToolBitmap(wxID_SELECTALL, wxArtProvider::GetBitmapBundle(wxmaximaART_GTK_SELECT_ALL, wxART_TOOLBAR));
   SetToolBitmap(menu_restart_id, wxArtProvider::GetBitmapBundle(wxmaximaART_VIEW_REFRESH1, wxART_TOOLBAR));
   SetToolBitmap(tb_interrupt, wxArtProvider::GetBitmapBundle(wxmaximaART_GTK_STOP, wxART_TOOLBAR));
-#else
-  SetToolBitmap(tb_eval, GetEvalBitmap(bitmapSize));
-  SetToolBitmap(tb_eval_all, GetEvalAllBitmap(bitmapSize));
-  SetToolBitmap(wxID_PREFERENCES, GetPreferencesBitmap(bitmapSize));
-  SetToolBitmap(wxID_SELECTALL, GetSelectAllBitmap(bitmapSize));
-  SetToolBitmap(menu_restart_id, GetRestartBitmap(bitmapSize));
-  SetToolBitmap(tb_interrupt, GetInterruptBitmap(bitmapSize));
-#endif
-#if wxCHECK_VERSION(3, 1, 6)
   SetToolBitmap(tb_follow, m_followIcon);
-#else
-  m_followIcon = ArtProvider::GetImage(this, wxS("arrow_up_square"), bitmapWidth, ARROW_UP_SQUARE_SVG_GZ,
-                                       ARROW_UP_SQUARE_SVG_GZ_SIZE);
-  m_needsInformationIcon =
-    ArtProvider::GetImage(this, wxS("software-update-urgent"), bitmapWidth, SOFTWARE_UPDATE_URGENT_SVG_GZ,
-                          SOFTWARE_UPDATE_URGENT_SVG_GZ_SIZE);
-  SetToolBitmap(tb_follow, m_followIcon);
-#endif
-#if wxCHECK_VERSION(3, 1, 6)
   SetToolBitmap(tb_evaltillhere, wxArtProvider::GetBitmapBundle(wxmaximaART_GO_BOTTOM, wxART_TOOLBAR));
   SetToolBitmap(tb_evaluate_rest, wxArtProvider::GetBitmapBundle(wxmaximaART_GO_LAST, wxART_TOOLBAR));
   SetToolBitmap(tb_hideCode, wxArtProvider::GetBitmapBundle(wxmaximaART_EYE_SLASH, wxART_TOOLBAR));
-#else
-  SetToolBitmap(tb_evaltillhere, GetEvalTillHereBitmap(bitmapSize));
-  SetToolBitmap(tb_evaluate_rest, GetEvalRestBitmap(bitmapSize));
-  SetToolBitmap(tb_hideCode, GetHideCodeBitmap(bitmapSize));
-#endif
 
-#if wxCHECK_VERSION(3, 1, 6)
   SetToolBitmap(tb_animation_startStop, wxArtProvider::GetBitmapBundle(wxmaximaART_MEDIA_PLAYBACK_START, wxART_TOOLBAR));
-#else
-  m_PlayButton =
-    ArtProvider::GetImage(this, wxS("media-playback-start"), bitmapWidth, MEDIA_PLAYBACK_START_SVG_GZ,
-                          MEDIA_PLAYBACK_START_SVG_GZ_SIZE);
-  m_StopButton =
-    ArtProvider::GetImage(this, wxS("media-playback-stop"), bitmapWidth, MEDIA_PLAYBACK_STOP_SVG_GZ,
-                          MEDIA_PLAYBACK_STOP_SVG_GZ_SIZE);
-  SetToolBitmap(tb_animation_startStop, m_PlayButton);
-#endif
   Realize();
 }
 
-#if !wxCHECK_VERSION(3, 1, 6)
-wxBitmap ToolBar::GetEvalAllBitmap(wxSize siz) {
-  return ArtProvider::GetImage(this, wxS("go-next"), siz.x, GO_JUMP_SVG_GZ, GO_JUMP_SVG_GZ_SIZE);
-}
-wxBitmap ToolBar::GetEvalBitmap(wxSize siz) {
-  return ArtProvider::GetImage(this, wxS("go-next"), siz.x, GO_NEXT_SVG_GZ, GO_NEXT_SVG_GZ_SIZE);
-}
-wxBitmap ToolBar::GetPreferencesBitmap(wxSize siz) {
-  return ArtProvider::GetImage(this, wxS("gtk-preferences"), siz.x, GTK_PREFERENCES_SVG_GZ,
-                               GTK_PREFERENCES_SVG_GZ_SIZE);
-}
-wxBitmap ToolBar::GetSelectAllBitmap(wxSize siz) {
-  return ArtProvider::GetImage(this, wxS("gtk-select-all"), siz.x, GTK_SELECT_ALL_SVG_GZ,
-                               GTK_SELECT_ALL_SVG_GZ_SIZE);
-}
-wxBitmap ToolBar::GetRestartBitmap(wxSize siz) {
-  return ArtProvider::GetImage(this, wxS("view-refresh"), siz.x, VIEW_REFRESH1_SVG_GZ,
-                               VIEW_REFRESH1_SVG_GZ_SIZE);
-}
-wxBitmap ToolBar::GetInterruptBitmap(wxSize siz) {
-  return ArtProvider::GetImage(this, wxS("gtk-stop"), siz.x, GTK_STOP_SVG_GZ, GTK_STOP_SVG_GZ_SIZE);
-}
-wxBitmap ToolBar::GetEvalTillHereBitmap(wxSize siz) {
-  return ArtProvider::GetImage(this, wxS("go-bottom"), siz.x, GO_BOTTOM_SVG_GZ, GO_BOTTOM_SVG_GZ_SIZE);
-}
-wxBitmap ToolBar::GetEvalRestBitmap(wxSize siz) {
-  return ArtProvider::GetImage(this, wxS("go-last"), siz.x, GO_LAST_SVG_GZ, GO_LAST_SVG_GZ_SIZE);
-}
-wxBitmap ToolBar::GetHideCodeBitmap(wxSize siz) {
-  return ArtProvider::GetImage(this, wxS("eye-slash"), siz.x, EYE_SLASH_SVG_GZ, EYE_SLASH_SVG_GZ_SIZE);
-}
-#endif
 void ToolBar::SetDefaultCellStyle() {
   switch (m_textStyle->GetSelection()) {
   case 0:

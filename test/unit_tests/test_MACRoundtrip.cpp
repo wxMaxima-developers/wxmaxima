@@ -53,6 +53,22 @@ wxBitmap *g_bmp = nullptr;
 wxMemoryDC *g_dc = nullptr;
 Configuration *g_cfg = nullptr;
 
+// What Worksheet::ExportToMAC() writes for a one-cell tree.
+wxString ExportedMAC(GroupType type, const wxString &text) {
+  auto group = std::make_unique<GroupCell>(g_cfg, type, text);
+  return Format::TreeToWXM(group.get(), /*wxm=*/false);
+}
+
+// Parses .mac text and returns its only cell's text, requiring its type.
+wxString OnlyCellText(const wxString &macContents, GroupType type) {
+  auto reloaded = Format::ParseMACContents(macContents, g_cfg);
+  REQUIRE(reloaded != nullptr);
+  CHECK(reloaded->GetNext() == nullptr);
+  REQUIRE(reloaded->GetGroupType() == type);
+  REQUIRE(reloaded->GetEditable() != nullptr);
+  return reloaded->GetEditable()->GetValue();
+}
+
 // Serializes a one-cell tree to plain .mac text (wxm=false, the format
 // ExportToMAC() writes) and parses it straight back, the way OpenMACFile()
 // does. Returns the reloaded cell's own text.
@@ -88,6 +104,77 @@ SCENARIO("A tab inside a code cell survives the .mac round-trip byte-for-byte") 
     THEN("all of them survive, not just the first") {
       REQUIRE(RoundTripThroughMAC(GC_TYPE_CODE, original) == original);
     }
+  }
+}
+
+SCENARIO("A hand-written .mac comes back as it was read (GH #2353)") {
+  GIVEN("comments that nest, or contain \"&\" and entities") {
+    // Maxima reads each of these lines as one comment.
+    const wxString comments[] = {
+      wxS("a /* nested */ comment"),
+      wxS("/*/ opens and */ closes"),
+      wxS("Q&A, &amp; and &#47; stay as they are"),
+      wxS("1/2 * 3/4"),
+    };
+    for (const auto &comment : comments) {
+      const wxString mac = wxS("/* ") + comment + wxS(" */\n");
+      THEN(("\"" + comment + "\" is one text cell").ToStdString()) {
+        CHECK(OnlyCellText(mac, GC_TYPE_TEXT) == comment);
+      }
+      THEN(("\"" + comment + "\" is written back unchanged").ToStdString()) {
+        CHECK(ExportedMAC(GC_TYPE_TEXT, comment) == mac);
+      }
+    }
+  }
+  GIVEN("a nested comment followed by code") {
+    auto tree = Format::ParseMACContents(
+      wxS("/* a /* b */ c */\nx:1$\n"), g_cfg);
+    THEN("the code after it is still code") {
+      REQUIRE(tree != nullptr);
+      CHECK(tree->GetGroupType() == GC_TYPE_TEXT);
+      REQUIRE(tree->GetNext() != nullptr);
+      CHECK(tree->GetNext()->GetGroupType() == GC_TYPE_CODE);
+      CHECK(tree->GetNext()->GetEditable()->GetValue() == wxS("x:1$"));
+    }
+  }
+}
+
+SCENARIO("A text cell that isn't one Maxima comment stays inert in a .mac (GH #1907)") {
+  // Each would end its comment early, or leave it open and swallow the
+  // code after it, if it were written as it is.
+  const wxString texts[] = {
+    wxS("see a*/b x:1$"),
+    wxS("files in src/*/lib"),
+    wxS("*/ x:2$ /* and more"),
+  };
+  for (const auto &text : texts) {
+    const wxString mac = ExportedMAC(GC_TYPE_TEXT, text) + wxS("y:3$\n");
+    THEN(("\"" + text + "\" is one text cell followed by the code").ToStdString()) {
+      auto tree = Format::ParseMACContents(mac, g_cfg);
+      REQUIRE(tree != nullptr);
+      CHECK(tree->GetGroupType() == GC_TYPE_TEXT);
+      REQUIRE(tree->GetNext() != nullptr);
+      CHECK(tree->GetNext()->GetEditable()->GetValue() == wxS("y:3$"));
+      // Only the slashes next to a star changed.
+      wxString expected = text;
+      expected.Replace(wxS("*/"), wxS("*&#47;"));
+      expected.Replace(wxS("/*"), wxS("&#47;*"));
+      CHECK(tree->GetEditable()->GetValue() == expected);
+    }
+  }
+}
+
+SCENARIO("A heading can't end its .mac comment early (GH #2353)") {
+  // A heading's start marker opens a comment that only its end marker
+  // closes. Unescaped, the "*/" below would end it and make "x:2$" code.
+  const wxString title = wxS("abc */ x:2$ /* def & more");
+  const wxString mac = ExportedMAC(GC_TYPE_TITLE, title);
+  THEN("the title's own slashes next to a star are escaped") {
+    CHECK_FALSE(mac.Contains(wxS("abc */")));
+    CHECK_FALSE(mac.Contains(wxS("/* def")));
+  }
+  THEN("and the title comes back as it was") {
+    CHECK(OnlyCellText(mac, GC_TYPE_TITLE) == title);
   }
 }
 

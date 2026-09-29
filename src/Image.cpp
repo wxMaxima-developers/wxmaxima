@@ -49,9 +49,7 @@
 #include <wx/wfstream.h>
 #include <wx/zstream.h>
 #include <wx/sstream.h>
-#if wxCHECK_VERSION(3, 1, 6)
 #include <wx/bmpbndl.h>
-#endif
 
 Image::Image(Configuration *config) {
   m_configuration = config;
@@ -73,7 +71,6 @@ Image::Image(Configuration *config, const wxMemoryBuffer &image, const wxString 
 
   wxLogMessage(_("Image of type %s found."), type); // should output the type for every loaded image. However, I can't see any log message. Why?
   if (m_compressedImage.GetDataLen() > 0) {
-#if wxCHECK_VERSION(3, 1, 6)
     if (type == wxS("svgz")) {
       wxMemoryInputStream memIn(m_compressedImage.GetData(), m_compressedImage.GetDataLen());
       wxZlibInputStream gzipInput(memIn, wxZLIB_GZIP);
@@ -91,11 +88,6 @@ Image::Image(Configuration *config, const wxMemoryBuffer &image, const wxString 
                                   m_compressedImage.GetDataLen());
       Image.LoadFile(istream);
     }
-#else
-      wxMemoryInputStream istream(m_compressedImage.GetData(),
-                                  m_compressedImage.GetDataLen());
-      Image.LoadFile(istream);
-#endif
     // Image.IsOk() is now true for svgz files too (wxWidgets >= 3.1.6). Before it was not. However, the SVG is still not displayed in WXM files... Strange!
     if(Image.IsOk())
     {
@@ -119,14 +111,14 @@ Image::Image(Configuration *config, const wxBitmap &bitmap) {
 Image::Image(Configuration *config, const wxString &image,
              const wxString &wxmxFile, bool remove)
 {
-  m_svgImage = NULL;
+  m_svgImage = nullptr;
   m_configuration = config;
   m_ppi = m_configuration->GetPPI().x;
   LoadImage(image, wxmxFile, remove);
 }
 
 Image::Image(Configuration *config, const Image &image) {
-  m_svgImage = NULL;
+  m_svgImage = nullptr;
   m_configuration = config;
   m_scaledBitmap.Create(1, 1);
   m_maxWidth = image.m_maxWidth;
@@ -446,7 +438,7 @@ Image::WxmxStream::WxmxStream(wxInputStream &wxmxFile, const wxString &fileInWxm
 {
   while(!Eof())
   {
-    wxZipEntry *contentsEntry = NULL;
+    wxZipEntry *contentsEntry = nullptr;
     contentsEntry = GetNextEntry();
     if((!contentsEntry) || (contentsEntry->GetName() == fileInWxmx))
       break;

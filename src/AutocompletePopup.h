@@ -121,7 +121,7 @@ public:
     \param editor The cell that contains the text that is to be completed
     \param autocomplete The autocompletion data
     \param type The type of completion needed
-    \param doneptr A pointer that will be set to NULL when the pop-up is destroyed.
+    \param doneptr A pointer that will be set to nullptr when the pop-up is destroyed.
     \param fileBaseDir The directory relative file names are resolved against
     (used by the file-name completion types to descend into subdirectories).
   */

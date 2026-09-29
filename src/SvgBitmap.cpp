@@ -135,4 +135,4 @@ wxBitmap SvgBitmap::GetInvalidBitmap(int targetSize) {
   return wxBitmap(img, wxBITMAP_SCREEN_DEPTH);
 }
 
-struct wxm_NSVGrasterizer *SvgBitmap::m_svgRast = NULL;
+struct wxm_NSVGrasterizer *SvgBitmap::m_svgRast = nullptr;

@@ -61,7 +61,7 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
                          wxEmptyString, wxITEM_NORMAL);
       } else {
         const ImgCell * const img = worksheet.GetSelectedImgCell();
-        if (img != NULL) {
+        if (img != nullptr) {
           popupMenu.AppendSeparator();
           popupMenu.Append(EventIDs::popid_maxsizechooser, _("Restrict Maximum size"),
                            wxEmptyString, wxITEM_NORMAL);
@@ -94,6 +94,16 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
                          wxEmptyString, wxITEM_NORMAL);
       }
     } else if (worksheet.GetDocumentCellPointers().GetSelectionStart()) {
+      // A right click on a link Maxima printed offers to follow it (GH #2396).
+      const wxString link = worksheet.GetLinkAt(wxPoint(downx, downy));
+      worksheet.SetContextMenuLink(link);
+      if (!link.empty()) {
+        popupMenu.Append(EventIDs::popid_open_link, _("Open Link"), wxEmptyString,
+                         wxITEM_NORMAL);
+        popupMenu.Append(EventIDs::popid_copy_link, _("Copy Link Address"),
+                         wxEmptyString, wxITEM_NORMAL);
+        popupMenu.AppendSeparator();
+      }
       if (worksheet.IsSelected(MC_TYPE_DEFAULT)) {
         wxString wordUnderCursor = worksheet.GetSelectionStart()->ToString();
         wxString anchor = worksheet.GetMaximaManual()->GetHelpfileAnchorName(wordUnderCursor);
@@ -109,9 +119,7 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
                                                    EventIDs::menu_help_demo_for_command,
                                                    wxString::Format(_("Demo for \"%s\""),
                                                                     wordUnderCursor));
-#if wxCHECK_VERSION(3, 2, 0)
               demoItem->SetBitmap(ArtProvider::GetQuestionmarkBundle());
-#endif
               popupMenu.Append(demoItem);
             }
           popupMenu.AppendSeparator();
@@ -134,7 +142,7 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
                              wxEmptyString, wxITEM_NORMAL);
           popupMenu.Append(EventIDs::popid_copy_image, _("Copy as Image"), wxEmptyString,
                            wxITEM_NORMAL);
-          if ((worksheet.GetSelectionStart() != NULL) &&
+          if ((worksheet.GetSelectionStart() != nullptr) &&
               (worksheet.GetSelectionStart() == worksheet.GetSelectionEnd()) &&
               (worksheet.GetSelectionStart()->GetType() == MC_TYPE_SLIDE))
             popupMenu.Append(EventIDs::popid_copy_animation, _("Copy Animation"),
@@ -180,9 +188,7 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
             wxMenuItem *item = new wxMenuItem(&popupMenu,
                                               EventIDs::popid_merge_cells,
                                               _("Merge Cells"));
-#if wxCHECK_VERSION(3, 2, 0)
             item->SetBitmap(ArtProvider::GetCellMergeBundle());
-#endif
             popupMenu.Append(item);
           }
 
@@ -276,6 +282,10 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
                            wxITEM_NORMAL);
           popupMenu.Append(EventIDs::popid_copy_text, _("Copy as plain text"),
                            wxEmptyString, wxITEM_NORMAL);
+          if (worksheet.CanCopyCSV())
+            popupMenu.Append(EventIDs::popid_copy_csv, _("Copy as CSV"),
+                             _("Copy the matrix as rows of values a spreadsheet can paste"),
+                             wxITEM_NORMAL);
           if (worksheet.CanCopyAsMathML())
             popupMenu.Append(EventIDs::popid_copy_mathml,
                              _("Copy as MathML (e.g. to word processor)"),
@@ -283,7 +293,7 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
 
           popupMenu.Append(EventIDs::popid_copy_image, _("Copy as Image"), wxEmptyString,
                            wxITEM_NORMAL);
-          if ((worksheet.GetSelectionStart() != NULL) &&
+          if ((worksheet.GetSelectionStart() != nullptr) &&
               (worksheet.GetSelectionStart() == worksheet.GetSelectionEnd()) &&
               (worksheet.GetSelectionStart()->GetType() == MC_TYPE_SLIDE))
             popupMenu.Append(EventIDs::popid_copy_animation, _("Copy Animation"),
@@ -311,7 +321,7 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
 
         {
           const TextCell * const textCell = worksheet.GetSelectedTextCell();
-          if (textCell != NULL)
+          if (textCell != nullptr)
             {
               if(textCell->GetTextStyle() == TS_SPECIAL_CONSTANT) {
                 if (popupMenu.GetMenuItemCount() > 0)
@@ -457,6 +467,17 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
 
   // popup menu in active cell
   else {
+    // A right click on a text cell's link offers to follow it (GH #2396).
+    const wxString link =
+      worksheet.GetActiveCell()->GetLinkAt(wxPoint(downx, downy));
+    worksheet.SetContextMenuLink(link);
+    if (!link.empty()) {
+      popupMenu.Append(EventIDs::popid_open_link, _("Open Link"), wxEmptyString,
+                       wxITEM_NORMAL);
+      popupMenu.Append(EventIDs::popid_copy_link, _("Copy Link Address"),
+                       wxEmptyString, wxITEM_NORMAL);
+      popupMenu.AppendSeparator();
+    }
     popupMenu.Append(wxID_CUT, _("Cut"), wxEmptyString, wxITEM_NORMAL);
     popupMenu.Append(wxID_COPY, _("Copy"), wxEmptyString, wxITEM_NORMAL);
     popupMenu.Append(wxID_PASTE, _("Paste"), wxEmptyString, wxITEM_NORMAL);
@@ -479,9 +500,7 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
         wxMenuItem *item = new wxMenuItem(&popupMenu,
                                           EventIDs::popid_add_watch,
                                           _("Add to watchlist"));
-#if wxCHECK_VERSION(3, 2, 0)
         item->SetBitmap(ArtProvider::GetAddToWatchlistBundle());
-#endif
         popupMenu.Append(item);
       }
 
@@ -490,12 +509,10 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
         wxMenuItem *item = new wxMenuItem(&popupMenu,
                                           EventIDs::popid_divide_cell,
                                           _("Divide Cell"));
-#if wxCHECK_VERSION(3, 2, 0)
         item->SetBitmap(ArtProvider::GetDivideCellBundle());
-#endif
         popupMenu.Append(item);
       }
-    GroupCell *group = NULL;
+    GroupCell *group = nullptr;
     if (worksheet.GetActiveCell()) {
       wxASSERT(worksheet.GetActiveCell()->GetGroup());
       group = worksheet.GetActiveCell()->GetGroup();
@@ -543,7 +560,7 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
       }
       switch (group->GetGroupType()) {
       case GC_TYPE_CODE:
-        if ((group->GetEditable() != NULL) &&
+        if ((group->GetEditable() != nullptr) &&
             (group->GetEditable()->ContainsPoint(wxPoint(downx, downy)))) {
           wxString wordUnderCursor = group->GetEditable()->GetWordUnderCaret();
           std::array<std::vector<wxString>, 4> dst;
@@ -561,9 +578,7 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
                                                     EventIDs::menu_help_demo_for_command,
                                                     wxString::Format(_("Demo for \"%s\""),
                                                                      wordUnderCursor));
-#if wxCHECK_VERSION(3, 2, 0)
               demoItem->SetBitmap(ArtProvider::GetQuestionmarkBundle());
-#endif
               popupMenu.Append(demoItem);
             }
           MaximaManual::HelpFileAnchors helpFileAnchors =
@@ -624,7 +639,7 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
         }
         break;
       case GC_TYPE_TITLE:
-        if (group->GetHiddenTree() != NULL)
+        if (group->GetHiddenTree() != nullptr)
           popupMenu.Append(EventIDs::popid_unfold, _("Unhide Part"), wxEmptyString,
                            wxITEM_NORMAL);
         else
@@ -632,7 +647,7 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
                            wxITEM_NORMAL);
         break;
       case GC_TYPE_SECTION:
-        if (group->GetHiddenTree() != NULL)
+        if (group->GetHiddenTree() != nullptr)
           popupMenu.Append(EventIDs::popid_unfold, _("Unhide Section"), wxEmptyString,
                            wxITEM_NORMAL);
         else
@@ -643,7 +658,7 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
         popupMenu.Append(EventIDs::popid_evaluate_section,
                          _("Evaluate Subsection\tShift+Ctrl+Enter"),
                          wxEmptyString, wxITEM_NORMAL);
-        if (group->GetHiddenTree() != NULL)
+        if (group->GetHiddenTree() != nullptr)
           popupMenu.Append(EventIDs::popid_unfold, _("Unhide Subsection"), wxEmptyString,
                            wxITEM_NORMAL);
         else
@@ -654,7 +669,7 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
         popupMenu.Append(EventIDs::popid_evaluate_section,
                          _("Evaluate Sub-Subsection\tShift+Ctrl+Enter"),
                          wxEmptyString, wxITEM_NORMAL);
-        if (group->GetHiddenTree() != NULL)
+        if (group->GetHiddenTree() != nullptr)
           popupMenu.Append(EventIDs::popid_unfold, _("Unhide Subsubsection"),
                            wxEmptyString, wxITEM_NORMAL);
         else
@@ -665,7 +680,7 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
         popupMenu.Append(EventIDs::popid_evaluate_section,
                          _("Evaluate Heading 5\tShift+Ctrl+Enter"),
                          wxEmptyString, wxITEM_NORMAL);
-        if (group->GetHiddenTree() != NULL)
+        if (group->GetHiddenTree() != nullptr)
           popupMenu.Append(EventIDs::popid_unfold, _("Unhide Heading 5"), wxEmptyString,
                            wxITEM_NORMAL);
         else
@@ -676,7 +691,7 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
         popupMenu.Append(EventIDs::popid_evaluate_section,
                          _("Evaluate Heading 6\tShift+Ctrl+Enter"),
                          wxEmptyString, wxITEM_NORMAL);
-        if (group->GetHiddenTree() != NULL)
+        if (group->GetHiddenTree() != nullptr)
           popupMenu.Append(EventIDs::popid_unfold, _("Unhide Heading 6"), wxEmptyString,
                            wxITEM_NORMAL);
         else
@@ -684,7 +699,7 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
                            wxITEM_NORMAL);
         break;
       default:
-        if (group->GetHiddenTree() != NULL)
+        if (group->GetHiddenTree() != nullptr)
           popupMenu.Append(EventIDs::popid_unfold, _("Unhide contents"), wxEmptyString,
                            wxITEM_NORMAL);
         else

@@ -72,7 +72,7 @@ private:
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wattributes"
 #endif
-  [[maybe_unused]] wxWindow *m_window = NULL;
+  [[maybe_unused]] wxWindow *m_window = nullptr;
 #if defined(__GNUC__) && !defined(__clang__) && __GNUC__ < 12
 #pragma GCC diagnostic pop
 #endif

@@ -179,6 +179,39 @@ target_link_libraries(test_AuiPerspectiveRepair PRIVATE ${wxWidgets_LIBRARIES})
 add_test(NAME AuiPerspectiveRepair
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_AuiPerspectiveRepair>")
 
+# Link detection in text cells (GH #2396) is a pure string function shared by
+# the display and the HTML/LaTeX exporters, so it is tested directly.
+add_executable(test_UrlDetection
+    test_UrlDetection.cpp ${CMAKE_SOURCE_DIR}/src/UrlDetection.cpp
+    ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
+target_include_directories(test_UrlDetection PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_link_libraries(test_UrlDetection PRIVATE ${wxWidgets_LIBRARIES})
+add_test(NAME UrlDetection
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_UrlDetection>")
+
+# On MS Windows an interrupt has to find the shared-memory segment of the Lisp
+# maxima.bat started, whose name contains the Lisp's pid (GH #2289). Finding
+# the candidates is a pure walk over a process list, so it is tested directly.
+add_executable(test_ProcessTree
+    test_ProcessTree.cpp ${CMAKE_SOURCE_DIR}/src/ProcessTree.cpp
+    ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
+target_include_directories(test_ProcessTree PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_link_libraries(test_ProcessTree PRIVATE ${wxWidgets_LIBRARIES})
+add_test(NAME ProcessTree
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_ProcessTree>")
+
+# The channel wxMaxima interrupts Maxima through (GH #2289): its handshake,
+# and the channel over a real local socket with the test playing the Lisp.
+add_executable(test_InterruptChannel
+    test_InterruptChannel.cpp
+    ${CMAKE_SOURCE_DIR}/src/InterruptChannelHandshake.cpp
+    ${CMAKE_SOURCE_DIR}/src/MaximaInterruptChannel.cpp
+    ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
+target_include_directories(test_InterruptChannel PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_link_libraries(test_InterruptChannel PRIVATE ${wxWidgets_LIBRARIES})
+add_test(NAME InterruptChannel
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_InterruptChannel>")
+
 add_executable(test_MenuHelpString
     test_MenuHelpString.cpp ${CMAKE_SOURCE_DIR}/src/MenuHelpString.cpp ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
 target_link_libraries(test_MenuHelpString PRIVATE ${wxWidgets_LIBRARIES})
@@ -287,6 +320,29 @@ if(TARGET wxmTestApp)
     add_test(NAME EditorCellTabs
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_EditorCellTabs>")
 
+    # Links in text cells (GH #2396): that they become snippets of their own,
+    # that a point over one finds it and one beside it doesn't, and that the
+    # LaTeX export writes them as \url{}.
+    add_executable(test_EditorCellLinks
+        test_EditorCellLinks.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_EditorCellLinks PUBLIC cxx_std_20)
+    target_link_libraries(test_EditorCellLinks PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME EditorCellLinks
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_EditorCellLinks>")
+
+    # Which toolbar buttons are active: Redo used to switch the Undo button,
+    # and re-created tools could stay active with nothing to act on.
+    add_executable(test_ToolBarUndoRedo
+        test_ToolBarUndoRedo.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_ToolBarUndoRedo PUBLIC cxx_std_20)
+    target_link_libraries(test_ToolBarUndoRedo PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME ToolBarUndoRedo
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_ToolBarUndoRedo>")
+
     # Logic-level regression tests for the custom wxAccessible classes (worksheet
     # and toolbar). They only assert where wxUSE_ACCESSIBILITY is set (the Windows
     # CI); elsewhere they compile out to a harness sanity check. This catches the
@@ -300,6 +356,17 @@ if(TARGET wxmTestApp)
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
     add_test(NAME Accessibility
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_Accessibility>")
+
+    # wxAuiToolBar doesn't repaint when a tool is enabled or its icon changes;
+    # ToolBar has to, or the "follow" button looks disabled until hovered.
+    add_executable(test_ToolBarRefresh
+        test_ToolBarRefresh.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_ToolBarRefresh PUBLIC cxx_std_20)
+    target_link_libraries(test_ToolBarRefresh PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME ToolBarRefresh
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_ToolBarRefresh>")
 
     # Guards everything a .wxm file (= the copy-to-clipboard path) can hold --
     # images in several formats, every text cell type, code cell answers and the
@@ -527,6 +594,47 @@ if(TARGET wxmTestApp)
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
     add_test(NAME LayoutInvariants
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_LayoutInvariants>")
+
+    # The matrix viewer a double-click on an elided matrix opens (GH #2344).
+    add_executable(test_MatrixViewer
+        test_MatrixViewer.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_MatrixViewer PUBLIC cxx_std_20)
+    target_link_libraries(test_MatrixViewer PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME MatrixViewer
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_MatrixViewer>")
+
+    # Selecting and copying a sub-matrix (GH #2345).
+    add_executable(test_MatrixBlockSelection
+        test_MatrixBlockSelection.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_MatrixBlockSelection PUBLIC cxx_std_20)
+    target_link_libraries(test_MatrixBlockSelection PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME MatrixBlockSelection
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_MatrixBlockSelection>")
+
+    # Reaching a cell's output with the keyboard (GH #2382).
+    add_executable(test_OutputKeyboardNavigation
+        test_OutputKeyboardNavigation.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_OutputKeyboardNavigation PUBLIC cxx_std_20)
+    target_link_libraries(test_OutputKeyboardNavigation PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME OutputKeyboardNavigation
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_OutputKeyboardNavigation>")
+
+    # Closing the diff viewer must not write its panes' configurations back
+    # to the config file (GH #2356).
+    add_executable(test_DiffFrameConfig
+        test_DiffFrameConfig.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_DiffFrameConfig PUBLIC cxx_std_20)
+    target_link_libraries(test_DiffFrameConfig PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME DiffFrameConfig
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_DiffFrameConfig>")
 
     # An integral's "d" (dx/dtheta/...) must render upright in LaTeX export,
     # not in math mode's default italic (GH #972).

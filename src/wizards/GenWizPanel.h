@@ -101,7 +101,7 @@ public:
   wxString GetHelpKeyword(wxWindowID ID);
   virtual ~GenWizPanel();
 protected:
-  typedef std::unordered_map <wxString, int, wxStringHash> keywordHash;
+  using keywordHash = std::unordered_map<wxString, int, wxStringHash>;
 
   void OnSize(wxSizeEvent &event);
   wxNotebook *m_notebook;
@@ -114,7 +114,7 @@ protected:
   std::vector<wxStaticText *> m_label;
   wxButton *button_1;
   wxButton *button_2;
-  wxContextHelpButton *m_helpButton = NULL;
+  wxContextHelpButton *m_helpButton = nullptr;
   wxButton *m_insertButton;
   wxString m_commandRule;
   wxTextCtrl *m_output;

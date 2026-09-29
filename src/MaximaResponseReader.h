@@ -176,6 +176,8 @@ private:
   void VariableActionLispName(const wxString &value);
   //! Called if maxima tells us the lisp version.
   void VariableActionLispVersion(const wxString &value);
+  //! Called when Maxima tells whether its Lisp can open an interrupt channel.
+  void VariableActionInterruptChannelAvailable(const wxString &value);
   //! Called if maxima tells us the name of a package that was loaded
   void VariableActionWxLoadFileName(const wxString &value);
   //! Called if maxima tells us the value of the maxima variable <code>display2d</code>
@@ -195,11 +197,11 @@ private:
   //! Populates the dispatch tables below (once; they are static).
   void RegisterVariableActions();
 
-  typedef void (MaximaResponseReader::*VarReadFunction)(const wxString &value);
-  typedef void (MaximaResponseReader::*VarUndefinedFunction)();
-  typedef std::unordered_map <wxString, VarReadFunction, wxStringHash> VarReadFunctionHash;
-  typedef std::unordered_map <wxString, VarUndefinedFunction,
-                              wxStringHash> VarUndefinedFunctionHash;
+  using VarReadFunction = void (MaximaResponseReader::*)(const wxString &value);
+  using VarUndefinedFunction = void (MaximaResponseReader::*)();
+  using VarReadFunctionHash = std::unordered_map<wxString, VarReadFunction, wxStringHash>;
+  using VarUndefinedFunctionHash =
+    std::unordered_map<wxString, VarUndefinedFunction, wxStringHash>;
   //! Maps a variable name to the action run when Maxima advertises its value.
   static VarReadFunctionHash m_variableReadActions;
   //! Maps a variable name to the action run when Maxima reports it undefined.

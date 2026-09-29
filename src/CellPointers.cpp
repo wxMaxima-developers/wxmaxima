@@ -40,8 +40,8 @@ wxString ViewCellPointers::WXMXGetNewFileName() {
 
 void ViewCellPointers::SetTimerIdForCell(Cell *const cell, int const timerId) {
   auto match =
-    std::find_if(m_timerIds.begin(), m_timerIds.end(),
-                 [cell](auto const &ctid) { return ctid.cell == cell; });
+    std::ranges::find_if(m_timerIds,
+                         [cell](auto const &ctid) { return ctid.cell == cell; });
   if (match != m_timerIds.end()) {
     match->timerId = timerId;
     return;
@@ -52,17 +52,17 @@ void ViewCellPointers::SetTimerIdForCell(Cell *const cell, int const timerId) {
 
 int ViewCellPointers::GetTimerIdForCell(Cell *const cell) const {
   auto match =
-    std::find_if(m_timerIds.begin(), m_timerIds.end(),
-                 [cell](auto const &ctid) { return ctid.cell == cell; });
+    std::ranges::find_if(m_timerIds,
+                         [cell](auto const &ctid) { return ctid.cell == cell; });
   if (match != m_timerIds.end())
     return match->timerId;
   return -1;
 }
 
 Cell *ViewCellPointers::GetCellForTimerId(int const timerId) const {
-  auto match = std::find_if(
-                            m_timerIds.begin(), m_timerIds.end(),
-                            [timerId](auto const &ctid) { return ctid.timerId == timerId; });
+  auto match =
+    std::ranges::find_if(m_timerIds,
+                         [timerId](auto const &ctid) { return ctid.timerId == timerId; });
   if (match != m_timerIds.end())
     return match->cell;
   return nullptr;
@@ -102,12 +102,11 @@ void ViewCellPointers::SetGroupCellUnderPointer(GroupCell *cell) {
 // ======================================================================
 
 void DocumentCellPointers::ErrorList::Remove(GroupCell *cell) {
-  m_errors.erase(std::remove(m_errors.begin(), m_errors.end(), cell),
-                 m_errors.end());
+  std::erase(m_errors, cell);
 }
 
 bool DocumentCellPointers::ErrorList::Contains(GroupCell *cell) const {
-  return std::find(m_errors.begin(), m_errors.end(), cell) != m_errors.end();
+  return std::ranges::find(m_errors, cell) != m_errors.end();
 }
 
 void DocumentCellPointers::ErrorList::Add(GroupCell *cell) {

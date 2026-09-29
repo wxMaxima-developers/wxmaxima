@@ -104,23 +104,13 @@ void LicenseDialog::OnSize(wxSizeEvent &event) {
   double pointSize = 8;
   int width;
   do {
-#if wxCHECK_VERSION(3, 1, 2)
     pointSize += .1;
     fnt.SetFractionalPointSize(pointSize);
-#else
-    pointSize += 1;
-    fnt.SetPointSize(pointSize);
-#endif
     dc.SetFont(fnt);
     width = dc.GetTextExtent(m_longestLine).x;
   } while ((pointSize < 128) && (width < event.GetSize().x));
-#if wxCHECK_VERSION(3, 1, 2)
   pointSize -= .1;
   fnt.SetFractionalPointSize(pointSize);
-#else
-  pointSize -= 1;
-  fnt.SetPointSize(pointSize);
-#endif
   m_license->SetFont(fnt);
   m_notices->SetFont(fnt);
   event.Skip();
