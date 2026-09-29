@@ -337,7 +337,7 @@ public:
     string. Cheap for a cell without links, which returns at once, and
     otherwise one walk over the cell's snippets with their cached widths.
   */
-  wxString GetLinkAt(wxPoint point);
+  wxString GetLinkAt(wxPoint point) override;
 
   //! Selects the text between the screen coordinates one and two
   void SelectRectText(wxPoint one, wxPoint two) override;

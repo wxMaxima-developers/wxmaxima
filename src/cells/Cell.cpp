@@ -88,6 +88,18 @@ const wxString Cell::GetToolTip(const wxPoint point) const {
   return GetLocalToolTip();
 }
 
+wxString Cell::GetLinkAt(wxPoint point) {
+  if (!ContainsPoint(point))
+    return {};
+  for (Cell &cell : OnInner(this))
+    for (Cell &tmp : OnList(&cell)) {
+      wxString link = tmp.GetLinkAt(point);
+      if (!link.empty())
+        return link;
+    }
+  return {};
+}
+
 Cell::Cell(GroupCell *group, Configuration *config)
   : m_group(group), m_configuration(config), m_toolTip(&wxm::emptyString) {
   wxASSERT((!group) || ((group->GetType() == MC_TYPE_GROUP || group == this)));

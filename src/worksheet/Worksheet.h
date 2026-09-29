@@ -608,8 +608,15 @@ public:
   */
   static bool OpenLink(const wxString &url);
 
-  //! The link a text cell draws under the mouse pointer, or an empty string.
+  //! The link a text cell or the output draws under the mouse pointer, or "".
   wxString LinkUnderPointer();
+  /*! The link drawn at a point in worksheet coordinates, or "".
+
+    Walks the cells from the top, so it is for a single click, not for
+    tracking the pointer: LinkUnderPointer() starts from the cell the pointer
+    is already known to be over.
+  */
+  wxString GetLinkAt(wxPoint point);
 
   //! The link the last context menu was opened on, or an empty string.
   const wxString &GetContextMenuLink() const { return m_contextMenuLink; }
@@ -1977,6 +1984,10 @@ protected:
   bool m_pointerCmdDown = false;
   //! Does the worksheet currently show the hand cursor for a link?
   bool m_linkCursorShown = false;
+  //! The tooltip for the pointer being over link: its address and how to open it.
+  static wxString LinkToolTip(const wxString &link);
+  //! Shows the hand cursor while the pointer is over a link and Ctrl is held.
+  void UpdateLinkCursor(bool overLink);
   //! The link the last context menu was opened on, see GetContextMenuLink().
   wxString m_contextMenuLink;
   //! Is there an active popup menu?
