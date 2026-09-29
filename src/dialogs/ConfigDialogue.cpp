@@ -575,6 +575,7 @@ void ConfigDialogue::SetCheckboxValues() {
   m_insertAns->SetValue(configuration->GetInsertAns());
   m_autoIndent->SetValue(configuration->GetAutoIndent());
   m_cursorJump->SetValue(configuration->CursorJump());
+  m_arrowKeysSkipOutput->SetValue(configuration->ArrowKeysSkipOutput());
   m_hideBrackets->SetValue(configuration->HideBrackets());
 #ifdef __WXGTK__
   m_overlayScrollbars->SetValue(configuration->OverlayScrollbars());
@@ -994,6 +995,15 @@ wxWindow *ConfigDialogue::CreateWorksheetPanel() {
   m_cursorJump = new wxCheckBox(actionSizer->GetStaticBox(), wxID_ANY,
                                 _("New lines: Jump to text"));
   actionSizer->Add(m_cursorJump, wxSizerFlags());
+
+  m_arrowKeysSkipOutput = new wxCheckBox(actionSizer->GetStaticBox(), wxID_ANY,
+                                         _("Up/Down keys skip over output"));
+  m_arrowKeysSkipOutput->SetToolTip(
+    _("If this checkbox is set, Down at the end of a cell's input moves on to "
+      "the next cell, as in older versions of wxMaxima. If it isn't set, Down "
+      "selects the cell's output one result at a time, so it can be copied "
+      "without using the mouse."));
+  actionSizer->Add(m_arrowKeysSkipOutput, wxSizerFlags());
 
   m_openHCaret = new wxCheckBox(actionSizer->GetStaticBox(), wxID_ANY,
                                 _("Open a cell when Maxima expects input"));
@@ -3066,6 +3076,7 @@ void ConfigDialogue::WriteSettings() {
   configuration->SetInsertAns(m_insertAns->GetValue());
   configuration->SetAutoIndent(m_autoIndent->GetValue());
   configuration->CursorJump(m_cursorJump->GetValue());
+  configuration->ArrowKeysSkipOutput(m_arrowKeysSkipOutput->GetValue());
   configuration->HideBrackets(m_hideBrackets->GetValue());
 #ifdef __WXGTK__
   configuration->OverlayScrollbars(m_overlayScrollbars->GetValue());
