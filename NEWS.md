@@ -22,6 +22,9 @@
   drag ended at -- by one entry. A run of left-out rows or columns counts as
   one step. Grown to the whole matrix, the block becomes an ordinary
   selection of the matrix, which Shift+arrow keys can shrink again (#2370).
+- "Copy as HTML" now copies only what is selected when the selection is part
+  of a cell's output -- a result, a sub-expression or a block of a matrix's
+  entries -- instead of the whole cell (#2369).
 - A matrix, or a block of one, can be copied as CSV from the right-click
   menu, to paste it into a spreadsheet: one line per row, the values
   separated by commas, or by tabs where numbers are written with a decimal

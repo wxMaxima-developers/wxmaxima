@@ -55,6 +55,7 @@
 #include <wx/uri.h>
 #include <wx/wfstream.h>
 #include <wx/xml/xml.h>
+#include <functional>
 
 namespace {
 
@@ -1201,6 +1202,45 @@ void ExportOutputChunk(wxString &output, std::unique_ptr<Cell> chunk,
   }
 }
 
+/*! Export a list of output cells, starting at first
+
+  Output is a list that can consist of equations, images and animations, which
+  need to be handled separately. So the list is split into chunks of one type,
+  each rendered by ExportOutputChunk() and consuming one image index (count).
+  A label starts a new chunk, too, so every equation keeps its own label.
+ */
+void ExportOutputList(wxString &output, Cell *first,
+                      Configuration *configuration, const wxString &imgDir,
+                      const wxString &filename,
+                      const wxString &filename_encoded, int &count) {
+  Cell *chunkStart = first;
+  while (chunkStart != nullptr) {
+    Cell *chunkEnd = chunkStart;
+
+    if ((chunkEnd->GetType() != MC_TYPE_SLIDE) &&
+        (chunkEnd->GetType() != MC_TYPE_IMAGE))
+      while (chunkEnd->GetNext() != nullptr) {
+        auto *chunkNext = chunkEnd->GetNext();
+        if ((chunkNext->GetType() == MC_TYPE_SLIDE) ||
+            (chunkNext->GetType() == MC_TYPE_IMAGE) ||
+            (chunkNext->GetTextStyle() == TS_LABEL) ||
+            (chunkNext->GetTextStyle() == TS_USERLABEL))
+          break;
+        chunkEnd = chunkNext;
+      }
+
+    // Create a list containing only our chunk.
+    auto chunk = WorksheetExport::CopySelection(chunkStart, chunkEnd);
+
+    // Export the chunk.
+    ExportOutputChunk(output, std::move(chunk), configuration, imgDir,
+                      filename, filename_encoded, count);
+    count++;
+
+    chunkStart = chunkEnd->GetNext();
+  }
+}
+
 /*! Export one GC_TYPE_CODE group cell: the prompt, the input and the output.
 
   The output is a mixed list of equations, images and animations; it is split
@@ -1240,35 +1280,8 @@ void ExportCodeCell(wxString &output, GroupCell &tmp,
     output << wxS("\n");
   } else {
     // We got output.
-    // Output is a list that can consist of equations, images and
-    // animations. We need to handle each of these item types separately =>
-    // break down the list into chunks of one type.
-    Cell *chunkStart = tmp.GetLabel();
-    while (chunkStart != nullptr) {
-      Cell *chunkEnd = chunkStart;
-
-      if ((chunkEnd->GetType() != MC_TYPE_SLIDE) &&
-          (chunkEnd->GetType() != MC_TYPE_IMAGE))
-        while (chunkEnd->GetNext() != nullptr) {
-          auto *chunkNext = chunkEnd->GetNext();
-          if ((chunkNext->GetType() == MC_TYPE_SLIDE) ||
-              (chunkNext->GetType() == MC_TYPE_IMAGE) ||
-              (chunkNext->GetTextStyle() == TS_LABEL) ||
-              (chunkNext->GetTextStyle() == TS_USERLABEL))
-            break;
-          chunkEnd = chunkNext;
-        }
-
-      // Create a list containing only our chunk.
-      auto chunk = WorksheetExport::CopySelection(chunkStart, chunkEnd);
-
-      // Export the chunk.
-      ExportOutputChunk(output, std::move(chunk), configuration, imgDir,
-                        filename, filename_encoded, count);
-      count++;
-
-      chunkStart = chunkEnd->GetNext();
-    }
+    ExportOutputList(output, tmp.GetLabel(), configuration, imgDir, filename,
+                     filename_encoded, count);
   }
 }
 
@@ -1683,12 +1696,18 @@ bool WorksheetExport::ExportToHTML(GroupCell *tree, Configuration *configuration
   return outfileOK;
 }
 
-wxString WorksheetExport::SelectionToSelfContainedHTML(GroupCell *startGroup,
-                                                        GroupCell *endGroup,
-                                                        Configuration *configuration) {
-  if (!startGroup || !endGroup)
-    return {};
+namespace {
+/*! The frame shared by the "Copy as HTML" flavours: a private scratch directory
+  for the images, the inlined stylesheet, and the images inlined afterwards.
 
+  renderBody appends the body's HTML to its first argument, writing any
+  image it needs into the directory its second argument names, under the
+  fixed prefix "clip" -- correct only because InlineImagesAsDataURIs() looks
+  the rendered images up by their basename, not by reconstructing a prefix.
+*/
+wxString SelfContainedHTML(
+  Configuration *configuration,
+  const std::function<void(wxString &body, const wxString &imgDir)> &renderBody) {
   const wxString tempDir = MakeSelfContainedHtmlTempDir();
   if (tempDir.IsEmpty())
     return {};
@@ -1708,25 +1727,8 @@ wxString WorksheetExport::SelectionToSelfContainedHTML(GroupCell *startGroup,
   wxTextOutputStream css(cssStream);
   WriteHtmlStyleSheet(css, wxConfig::Get());
 
-  // The body: the exact same per-cell renderers ExportToHTML() uses, so a
-  // selection copied to the clipboard looks identical to the same cells
-  // exported to a file. filename/filename_encoded is an arbitrary, fixed
-  // prefix -- correct only because InlineImagesAsDataURIs() below looks the
-  // rendered images up by their basename, not by reconstructing this prefix.
-  const wxString filename = wxS("clip");
   wxString body;
-  int count = 0;
-  MarkDownHTML MarkDown(configuration);
-  for (GroupCell *tmp = startGroup; tmp != nullptr; tmp = tmp->GetNext()) {
-    if (tmp->GetGroupType() == GC_TYPE_CODE)
-      ExportCodeCell(body, *tmp, configuration, imgDir, filename, filename,
-                     count);
-    else
-      ExportOtherCell(body, *tmp, MarkDown, imgDir, filename, filename,
-                      count);
-    if (tmp == endGroup)
-      break;
-  }
+  renderBody(body, imgDir);
 
   InlineImagesAsDataURIs(body, imgDir);
 
@@ -1743,5 +1745,46 @@ wxString WorksheetExport::SelectionToSelfContainedHTML(GroupCell *startGroup,
   html << body;
   html << wxS(" </body>\n</html>\n");
   return html;
+}
+} // namespace
+
+wxString WorksheetExport::SelectionToSelfContainedHTML(GroupCell *startGroup,
+                                                        GroupCell *endGroup,
+                                                        Configuration *configuration) {
+  if (!startGroup || !endGroup)
+    return {};
+
+  return SelfContainedHTML(configuration, [&](wxString &body, const wxString &imgDir) {
+    // The exact same per-cell renderers ExportToHTML() uses, so a selection
+    // copied to the clipboard looks identical to the same cells exported to
+    // a file.
+    const wxString filename = wxS("clip");
+    int count = 0;
+    MarkDownHTML MarkDown(configuration);
+    for (GroupCell *tmp = startGroup; tmp != nullptr; tmp = tmp->GetNext()) {
+      if (tmp->GetGroupType() == GC_TYPE_CODE)
+        ExportCodeCell(body, *tmp, configuration, imgDir, filename, filename,
+                       count);
+      else
+        ExportOtherCell(body, *tmp, MarkDown, imgDir, filename, filename,
+                        count);
+      if (tmp == endGroup)
+        break;
+    }
+  });
+}
+
+wxString WorksheetExport::OutputToSelfContainedHTML(Cell *cells,
+                                                     Configuration *configuration) {
+  if (!cells)
+    return {};
+
+  return SelfContainedHTML(configuration, [&](wxString &body, const wxString &imgDir) {
+    // Rendered the way ExportCodeCell() renders a cell's output.
+    const wxString filename = wxS("clip");
+    int count = 0;
+    ExportOutputList(body, cells, configuration, imgDir, filename, filename,
+                     count);
+  });
 }
 

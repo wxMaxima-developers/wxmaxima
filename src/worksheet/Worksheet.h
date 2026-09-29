@@ -1327,6 +1327,15 @@ public:
     selection to the clipboard (GH #2265/#2266/#2267). */
   bool CopyHTML() const;
 
+  /*! What CopyHTML() puts on the clipboard, without touching the clipboard
+
+    A selection of whole cells becomes those cells, exported the way "Export
+    as HTML" exports them. A selection inside a cell's output -- a result, a
+    sub-expression, a block of a matrix's entries -- becomes just that part,
+    as CopySelection() returns it (GH #2369). Empty if nothing is selected.
+  */
+  wxString SelectionToSelfContainedHTML() const;
+
   wxSize CopyToFile(const wxString &file) const;
 
   wxSize CopyToFile(const wxString &file, Cell *start, Cell *end, bool asData = false, double scale = 1) const;

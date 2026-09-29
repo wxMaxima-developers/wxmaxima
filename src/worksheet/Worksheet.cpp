@@ -3867,6 +3867,24 @@ bool Worksheet::CopyRTF() const {
   return true;
 }
 
+wxString Worksheet::SelectionToSelfContainedHTML() const {
+  const Cell *selStart = GetDocumentCellPointers().GetSelectionStart();
+  if (!selStart)
+    return {};
+  // Part of a cell's output -- a sub-expression, a result, a block of a
+  // matrix's entries -- is copied as just that, the way the image and SVG
+  // flavours copy it. Only a selection of whole cells copies whole cells.
+  if (selStart->GetType() != MC_TYPE_GROUP) {
+    auto cells = CopySelection();
+    return WorksheetExport::OutputToSelfContainedHTML(cells.get(),
+                                                      m_configuration);
+  }
+  GroupCell *start = GetDocumentCellPointers().GetSelectionStart()->GetGroup();
+  GroupCell *end = GetDocumentCellPointers().GetSelectionEnd()->GetGroup();
+  return WorksheetExport::SelectionToSelfContainedHTML(start, end,
+                                                       m_configuration);
+}
+
 bool Worksheet::CopyHTML() const {
   if (!HasCellsSelected())
     return false;
@@ -3876,10 +3894,7 @@ bool Worksheet::CopyHTML() const {
   if (!wxTheClipboard->Open())
     return false;
 
-  GroupCell *start = GetDocumentCellPointers().GetSelectionStart()->GetGroup();
-  GroupCell *end = GetDocumentCellPointers().GetSelectionEnd()->GetGroup();
-  const wxString html =
-    WorksheetExport::SelectionToSelfContainedHTML(start, end, m_configuration);
+  const wxString html = SelectionToSelfContainedHTML();
 
   wxDataObjectComposite *data = new wxDataObjectComposite;
   // The \0 tries to work around a strange bug in wxWidgets that sometimes

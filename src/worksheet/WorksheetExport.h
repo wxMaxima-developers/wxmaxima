@@ -127,6 +127,20 @@ wxString RTFEnd();
 wxString SelectionToSelfContainedHTML(GroupCell *startGroup,
                                       GroupCell *endGroup,
                                       Configuration *configuration);
+
+/*! Render a list of output cells as one self-contained HTML document (GH #2369)
+
+  What "Copy as HTML" uses when the selection is part of a cell's output, not
+  whole cells -- for example a block of a matrix's entries, which
+  Worksheet::CopySelection() hands over as a new matrix of just that block.
+  The cells are rendered the way SelectionToSelfContainedHTML() renders a
+  cell's output, with the same inlined stylesheet and images.
+
+  \param cells  The first cell of the list; the list is not modified.
+  \return the HTML document, or an empty string if cells is null or the
+  private scratch directory couldn't be created.
+*/
+wxString OutputToSelfContainedHTML(Cell *cells, Configuration *configuration);
 } // namespace WorksheetExport
 
 #endif // WORKSHEETEXPORT_H
