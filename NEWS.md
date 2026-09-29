@@ -1,5 +1,8 @@
 # Current development version
 
+- The matrix viewer (double-click an elided or scrolling matrix) now shows
+  the matrix with alternating row and column bands, without brackets, and
+  starting at the left margin instead of indented like worksheet output.
 - Interrupting Maxima (Ctrl+G) no longer depends on the operating system
   when Maxima runs on a Lisp with threads (SBCL, which the MS Windows
   installer uses, CCL, ECL, or a clisp built with threads): the Lisp opens a

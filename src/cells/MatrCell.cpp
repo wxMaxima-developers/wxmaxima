@@ -49,6 +49,7 @@ MatrCell::MatrCell(GroupCell *group, const MatrCell &cell)
   m_rowNames = cell.m_rowNames;
   m_colNames = cell.m_colNames;
   m_nestedInMatrix = cell.m_nestedInMatrix;
+  m_alwaysBanded = cell.m_alwaysBanded;
   m_matWidth = cell.m_matWidth;
   m_matHeight = cell.m_matHeight;
   for (size_t i = 0; i < cell.m_matWidth * cell.m_matHeight; i++)

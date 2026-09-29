@@ -82,6 +82,14 @@ void MatrixViewer::ConfigureForViewer(Configuration &config) {
                               /*perMatrixOverridable=*/false);
   config.ShowCodeCells(false);
   config.SetLabelChoice(Configuration::labels_none);
+  // The matrix is all there is, so it starts at the left margin: no room for
+  // the (hidden) labels in front of output, and only a little air where the
+  // worksheet keeps a column for the cell brackets. The same margin as at
+  // the top, which is GetBaseIndent(). Nothing can be selected or evaluated
+  // here, so there is nothing a cell bracket could show, either.
+  config.IndentMaths(false);
+  config.SetIndent(config.GetBaseIndent());
+  config.HideBrackets(true);
 }
 
 std::unique_ptr<GroupCell> MatrixViewer::CopyForViewer(const MatrCell &matrix,
@@ -94,6 +102,17 @@ std::unique_ptr<GroupCell> MatrixViewer::CopyForViewer(const MatrCell &matrix,
   // itself. An empty one is enough: the viewer doesn't show labels anyway.
   auto output = parser.ParseLine(wxS("<mth><lbl> </lbl>") + matrix.ToXML() +
                                  wxS("</mth>"));
+  // The first cell after the label is the matrix. It gets no brackets --
+  // the viewer's title already says it is a matrix, and at this size they
+  // only take room -- and alternating bands, which make a row or column
+  // easier to follow across a matrix this large, even though the viewer
+  // shows it in full. Only the outermost matrix: a nested one keeps its
+  // brackets, which are what separates it from its neighbours.
+  if (output && output->GetNext())
+    if (auto *copied = dynamic_cast<MatrCell *>(output->GetNext())) {
+      copied->NoParens();
+      copied->AlwaysBanded(true);
+    }
   if (output)
     group->AppendOutput(std::move(output));
   return group;

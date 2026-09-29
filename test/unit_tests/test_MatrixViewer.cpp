@@ -191,6 +191,24 @@ SCENARIO("The viewer's copy of an elided matrix shows all of it") {
         CHECK_FALSE(cfg->ShowCodeCells());
         CHECK_FALSE(cfg->ShowLabels());
       }
+      THEN("the copy is banded and has no brackets, unlike the original") {
+        REQUIRE(copied != nullptr);
+        CHECK(copied->IsBanded());
+        // Only ToMathML() says which brackets a matrix draws.
+        CHECK(matr->ToMathML().StartsWith(wxS("<mrow><mo>")));
+        CHECK_FALSE(copied->ToMathML().StartsWith(wxS("<mrow><mo>")));
+        // The original is only copied, never changed.
+        CHECK(matr->IsBanded());
+      }
+      THEN("the matrix starts at the left margin, not indented like output") {
+        REQUIRE(copied != nullptr);
+        CHECK(cfg->GetIndent() == cfg->GetBaseIndent());
+        CHECK(cfg->GetIndent() < g_cfg->GetIndent());
+        CHECK_FALSE(cfg->IndentMaths());
+        CHECK(cfg->HideBrackets());
+        copy->SetCurrentPoint(wxPoint(cfg->GetIndent(), 50));
+        CHECK(copied->GetRect().GetLeft() == cfg->GetIndent());
+      }
     }
   }
 
@@ -209,6 +227,8 @@ SCENARIO("The viewer's copy of an elided matrix shows all of it") {
       // the viewer keeps the option; the viewer just doesn't honour it.
       CHECK(copied->GetOversizedMode() == Configuration::OversizedMatrices::elide);
       CHECK_FALSE(copied->IsShownPartially());
+      // ...but bands it, as it bands every matrix it shows.
+      CHECK(copied->IsBanded());
     }
   }
 
@@ -222,6 +242,19 @@ SCENARIO("The viewer's copy of an elided matrix shows all of it") {
       auto copy = MatrixViewer::CopyForViewer(*matr, cfg.get());
       copy->Recalculate();
       CHECK_FALSE(AnyMatrixShownPartially(copy->GetOutput()));
+    }
+    THEN("only the outer one loses its brackets and is banded") {
+      ViewerConfiguration cfg;
+      auto copy = MatrixViewer::CopyForViewer(*matr, cfg.get());
+      copy->Recalculate();
+      auto *outer = dynamic_cast<MatrCell *>(copy->GetOutput());
+      REQUIRE(outer != nullptr);
+      auto *inner = dynamic_cast<MatrCell *>(outer->GetInnerCell(0, 0));
+      REQUIRE(inner != nullptr);
+      CHECK(outer->IsBanded());
+      CHECK_FALSE(outer->ToMathML().StartsWith(wxS("<mrow><mo>")));
+      CHECK_FALSE(inner->IsBanded());
+      CHECK(inner->ToMathML().StartsWith(wxS("<mrow><mo>")));
     }
   }
 }
