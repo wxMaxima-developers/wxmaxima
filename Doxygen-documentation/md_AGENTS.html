@@ -491,12 +491,18 @@ Communication with Maxima</h2>
   happen to contain an ordinary fraction. Also applied to the equivalent
   &lt;tt&gt;GC_TYPE_TEXT&lt;/tt&gt; write path in the non-&lt;tt&gt;.wxm&lt;/tt&gt; (&lt;tt&gt;.mac&lt;/tt&gt;/xmaxima interop)
   export, for the same reason (defense in depth &amp;ndash; &lt;tt&gt;.mac&lt;/tt&gt; is always
-  directly Maxima-loadable) &amp;ndash; but &lt;tt&gt;Format::ParseMACContents&lt;/tt&gt; (the &lt;tt&gt;.mac&lt;/tt&gt;
-  reader) has no corresponding unescape, since round-tripping a
-  wxMaxima-exported &lt;tt&gt;.mac&lt;/tt&gt;'s text cells back into wxMaxima is out of scope
-  for this fix and only costs a cosmetic &lt;tt&gt;\&amp;\#47;&lt;/tt&gt; showing up literally.
-  Doing it properly needs a way to tell a wxMaxima-written &lt;tt&gt;.mac&lt;/tt&gt; from a
-  hand-written one, which the export doesn't currently provide &amp;ndash; GH #2353.
+  directly Maxima-loadable) &amp;ndash; but only where it is needed. A &lt;tt&gt;.mac&lt;/tt&gt; is a
+  Maxima program the user may have written in an editor, so it has to
+  round-trip unchanged (the maintainer's call, GH #2353): a text cell Maxima
+  would read back as exactly one comment (&lt;tt&gt;IsMaximaCommentBody()&lt;/tt&gt;: Maxima
+  &lt;em&gt;nests&lt;/em&gt; comments, and a &lt;tt&gt;/*&lt;/tt&gt;/&lt;tt&gt;*/&lt;/tt&gt; pair uses up both characters, so &lt;tt&gt;/*/&lt;/tt&gt;
+  only opens one) is written as it is, and only one that would end its
+  comment early or leave it open gets its &lt;tt&gt;/&lt;/tt&gt; next to a &lt;tt&gt;*&lt;/tt&gt; escaped &amp;ndash; and
+  is never unescaped on reading, since a hand-written comment may contain
+  &lt;tt&gt;\&amp;\#47;&lt;/tt&gt; legitimately. &lt;tt&gt;ParseMACContents()&lt;/tt&gt; skips comments by the same
+  nesting rules. A &lt;tt&gt;.mac&lt;/tt&gt; gets no "Created with <a class="el" href="classwxMaxima.html">wxMaxima</a>" line either.
+  Headings in a &lt;tt&gt;.mac&lt;/tt&gt; (open-comment markers, like in a &lt;tt&gt;.wxm&lt;/tt&gt;) use the
+  reversible &lt;tt&gt;.wxm&lt;/tt&gt; escaping, which &lt;tt&gt;TreeFromWXM()&lt;/tt&gt; undoes.
   &lt;strong&gt;Known, accepted limitation&lt;/strong&gt; (also already flagged in the same GH
   #1907 thread): this can't retroactively fix a &lt;tt&gt;.wxm&lt;/tt&gt; file already on
   disk from before this existed, and a file whose prose coincidentally
