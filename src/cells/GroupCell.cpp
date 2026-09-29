@@ -1842,6 +1842,25 @@ const wxString GroupCell::GetToolTip(const wxPoint point) const {
   return retval;
 }
 
+wxString GroupCell::GetLinkAt(wxPoint point) {
+  // No overall rectangle check: an output line can reach beyond GetRect().
+  if (IsHidden())
+    return {};
+  if (EditorCell *editor = GetEditable()) {
+    wxString link = editor->GetLinkAt(point);
+    if (!link.empty())
+      return link;
+  }
+  if (!GetOutputRect().Contains(point))
+    return {};
+  for (Cell &tmp : OnDrawList(DisplayedOutput())) {
+    wxString link = tmp.GetLinkAt(point);
+    if (!link.empty())
+      return link;
+  }
+  return {};
+}
+
 bool GroupCell::SetEditableContent(const wxString &text) {
   if (GetEditable()) {
     GetEditable()->SetValue(text);

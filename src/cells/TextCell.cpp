@@ -402,8 +402,10 @@ void TextCell::UpdateDisplayedText() const {
       m_displayedText = wxS("\u03A8");
   }
 
-  if ((GetTextStyle() == TS_MATH) && m_text.StartsWith("\""))
+  if ((GetTextStyle() == TS_MATH) && m_text.StartsWith("\"")) {
+    m_hasLinks = !LinkSpans().empty();
     return;
+  }
 
   if ((GetTextStyle() == TS_GREEK_CONSTANT) && m_configuration->Latin2Greek())
     m_displayedText = GetGreekStringUnicode();
@@ -419,8 +421,58 @@ void TextCell::UpdateDisplayedText() const {
     if (m_displayedText == wxS("#"))
       m_displayedText = wxS("\u2260");
   }
+  m_hasLinks = !LinkSpans().empty();
   if(displayedText_old != m_displayedText)
     ScheduleRecalculation();
+}
+
+std::vector<wxm::UrlSpan> TextCell::LinkSpans() const {
+  std::vector<wxm::UrlSpan> spans = wxm::FindUrls(m_displayedText);
+  std::erase_if(spans, [this](const wxm::UrlSpan &span) {
+    return !m_text.Contains(m_displayedText.Mid(span.start, span.length));
+  });
+  return spans;
+}
+
+template <typename RunFunc>
+void TextCell::WalkTextRuns(wxDC *dc, wxCoord x, RunFunc &&func) const {
+  size_t done = 0;
+  auto run = [&](size_t start, size_t length, bool isLink) {
+    if (length == 0)
+      return;
+    const wxString text = m_displayedText.Mid(start, length);
+    const wxCoord width = dc->GetTextExtent(text).GetWidth();
+    func(text, x, width, isLink);
+    x += width;
+  };
+  for (const auto &span : LinkSpans()) {
+    run(done, span.start - done, false);
+    run(span.start, span.length, true);
+    done = span.start + span.length;
+  }
+  run(done, m_displayedText.Length() - done, false);
+}
+
+wxString TextCell::GetLinkAt(wxPoint point) {
+  if (!m_hasLinks || IsHidden() ||
+      (GetHidableMultSign() && m_configuration->HidemultiplicationSign()) ||
+      m_width.IsInvalid() || m_height.IsInvalid() || !ContainsPoint(point))
+    return {};
+  wxDC *dc = m_configuration->GetRecalcDC();
+  if (!dc)
+    return {};
+  SetFont(dc, m_fontSize_Scaled);
+  const wxCoord padding = (GetTextStyle() != TS_ASCIIMATHS) ? MC_TEXT_PADDING : 0;
+  wxString link;
+  WalkTextRuns(dc, m_currentPoint.x + padding,
+               [&](const wxString &text, wxCoord x, wxCoord width, bool isLink) {
+                 if (isLink && point.x >= x && point.x < x + width)
+                   link = text;
+               });
+  // MathParser turns every "-" Maxima sends into a unicode minus sign, which
+  // is right for maths but not for a web address with a hyphen in it.
+  link.Replace(wxS("\u2212"), wxS("-"));
+  return link;
 }
 
 void TextCell::Recalculate(AFontSize fontsize) const {
@@ -468,8 +520,30 @@ void TextCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
 
     SetFont(dc, m_fontSize_Scaled);
     SetTextColor(dc);
-    dc->DrawText(m_displayedText, m_currentPoint.x + padding,
-                 m_currentPoint.y - m_center + MC_TEXT_PADDING);
+    const wxCoord y = m_currentPoint.y - m_center + MC_TEXT_PADDING;
+    if (!m_hasLinks)
+      dc->DrawText(m_displayedText, m_currentPoint.x + padding, y);
+    else {
+      // Links (GH #2396) are drawn in the link color and underlined by hand,
+      // so that the font and with it the cell's size stay what Recalculate()
+      // measured.
+      const wxColour textColor = dc->GetTextForeground();
+      const wxColour linkColor = m_configuration->GetColor(TS_LINK);
+      WalkTextRuns(dc, m_currentPoint.x + padding,
+                   [&](const wxString &text, wxCoord x, wxCoord width, bool isLink) {
+                     dc->SetTextForeground(isLink ? linkColor : textColor);
+                     dc->DrawText(text, x, y);
+                     if (isLink) {
+                       wxCoord w, h, descent;
+                       dc->GetTextExtent(text, &w, &h, &descent);
+                       const wxCoord baseline = y + h - descent + 1;
+                       dc->SetPen(*(wxThePenList->FindOrCreatePen(
+                                      linkColor, 1, wxPENSTYLE_SOLID)));
+                       dc->DrawLine(x, baseline, x + width, baseline);
+                     }
+                   });
+      dc->SetTextForeground(textColor);
+    }
   }
 }
 

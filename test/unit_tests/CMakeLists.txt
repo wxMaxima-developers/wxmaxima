@@ -332,6 +332,17 @@ if(TARGET wxmTestApp)
     add_test(NAME EditorCellLinks
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_EditorCellLinks>")
 
+    # Which toolbar buttons are active: Redo used to switch the Undo button,
+    # and re-created tools could stay active with nothing to act on.
+    add_executable(test_ToolBarUndoRedo
+        test_ToolBarUndoRedo.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_ToolBarUndoRedo PUBLIC cxx_std_20)
+    target_link_libraries(test_ToolBarUndoRedo PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME ToolBarUndoRedo
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_ToolBarUndoRedo>")
+
     # Logic-level regression tests for the custom wxAccessible classes (worksheet
     # and toolbar). They only assert where wxUSE_ACCESSIBILITY is set (the Windows
     # CI); elsewhere they compile out to a harness sanity check. This catches the
@@ -345,6 +356,17 @@ if(TARGET wxmTestApp)
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
     add_test(NAME Accessibility
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_Accessibility>")
+
+    # wxAuiToolBar doesn't repaint when a tool is enabled or its icon changes;
+    # ToolBar has to, or the "follow" button looks disabled until hovered.
+    add_executable(test_ToolBarRefresh
+        test_ToolBarRefresh.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_ToolBarRefresh PUBLIC cxx_std_20)
+    target_link_libraries(test_ToolBarRefresh PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME ToolBarRefresh
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_ToolBarRefresh>")
 
     # Guards everything a .wxm file (= the copy-to-clipboard path) can hold --
     # images in several formats, every text cell type, code cell answers and the

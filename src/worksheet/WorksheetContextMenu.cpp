@@ -94,6 +94,16 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
                          wxEmptyString, wxITEM_NORMAL);
       }
     } else if (worksheet.GetDocumentCellPointers().GetSelectionStart()) {
+      // A right click on a link Maxima printed offers to follow it (GH #2396).
+      const wxString link = worksheet.GetLinkAt(wxPoint(downx, downy));
+      worksheet.SetContextMenuLink(link);
+      if (!link.empty()) {
+        popupMenu.Append(EventIDs::popid_open_link, _("Open Link"), wxEmptyString,
+                         wxITEM_NORMAL);
+        popupMenu.Append(EventIDs::popid_copy_link, _("Copy Link Address"),
+                         wxEmptyString, wxITEM_NORMAL);
+        popupMenu.AppendSeparator();
+      }
       if (worksheet.IsSelected(MC_TYPE_DEFAULT)) {
         wxString wordUnderCursor = worksheet.GetSelectionStart()->ToString();
         wxString anchor = worksheet.GetMaximaManual()->GetHelpfileAnchorName(wordUnderCursor);

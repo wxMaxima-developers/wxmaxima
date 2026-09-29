@@ -287,6 +287,21 @@ ToolBar::ToolBar(wxWindow *parent)
 void ToolBar::AddTools() {
   Clear();
   m_ppi = wxDefaultSize;
+  // Every tool added below starts out enabled, so the remembered states
+  // CanUndo(), CanCopy(), ... compare against must say so, too. Otherwise, after
+  // the user added or removed a group of tools via the context menu, a tool
+  // whose remembered state was "disabled" would stay enabled until that state
+  // happened to change - e.g. an Undo button that is active with nothing to
+  // undo.
+  m_canUndo_old = true;
+  m_canRedo_old = true;
+  m_canCopy_old = true;
+  m_canCut_old = true;
+  m_canSave_old = true;
+  m_canPrint_old = true;
+  m_canEvalTillHere_old = true;
+  m_canEvalThisCell_old = true;
+  m_worksheetEmpty_old = false;
   if (ShowNew())
     AddTool(wxID_NEW, _("New"), wxArtProvider::GetBitmapBundle(wxART_NEW, wxART_TOOLBAR), _("New document"));
   if (ShowOpenSave()) {

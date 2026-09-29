@@ -15,6 +15,19 @@
   sent a Ctrl+C to a console was dropped: wxmaxima.exe has no console, so it
   could never work. A failure now logs which shared-memory segments were
   tried and what Windows said.
+- The toolbar's Redo button now becomes active and inactive with whether
+  there is something to redo; before, that state switched the Undo button
+  instead. After showing or hiding a group of toolbar buttons, buttons with
+  nothing to act on (Undo, Copy, ...) no longer stay active.
+- The toolbar's "return to the cell being evaluated" button now becomes
+  active as soon as one scrolls away from the evaluation. Before, it kept
+  looking disabled until the mouse pointer entered the toolbar. The same
+  delay affected every other toolbar button whose state or icon changed.
+- Web addresses in Maxima's output are links, too (GH #2396): a string
+  like print("See https://...") or a message naming a web page shows the
+  address underlined in the link color, and Ctrl+click (Cmd+click on macOS)
+  or the context menu's "Open Link" opens it. A plain click still selects
+  the output, so it can be copied as before.
 - The HTML export can now write one single file that contains its images
   and, if requested, the downloadable .wxmx copy, so the page can be mailed
   on its own: check "Embed images into the .html file" in the Export tab of

@@ -9,6 +9,7 @@
 
 #if !DISABLE_CELLPOINTER_STUBS
 #include "CellPointers.cpp"
+#include "UrlDetection.cpp"
 
 // The two halves of the split cell-pointer registry - mirrors how the
 // WorksheetDocument and the Worksheet own them in the real app.
@@ -60,6 +61,7 @@ wxString GroupCell::ToTeX() const { return {}; }
 wxString GroupCell::ToRTF() const { return {}; }
 Cell::Range GroupCell::GetInnerCellsInRect(const wxRect &) const { return {}; }
 const wxString GroupCell::GetToolTip(wxPoint) const { return {}; }
+wxString GroupCell::GetLinkAt(wxPoint) { return {}; }
 bool GroupCell::AddEnding() { return {}; }
 bool GroupCell::FirstLineOnlyEditor() const { return false; }
 void GroupCell::SetCurrentPoint(wxPoint) const {}
