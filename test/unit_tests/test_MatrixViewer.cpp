@@ -241,6 +241,17 @@ SCENARIO("A double-click finds the matrix the worksheet shows only part of") {
       CHECK(MatrixViewer::PartiallyShownMatrixAt(
               group.get(), wxPoint(rect.x + rect.width / 2, rect.y + rect.height / 2)) == matr);
     }
+    THEN("a click near its right edge finds it, too") {
+      // The output starts right of the group's own left edge, so the matrix
+      // reaches further right than GroupCell::GetRect() does. Only the right
+      // part of such a matrix used to ignore a double-click.
+      REQUIRE(rect.GetRight() > group->GetRect().GetRight());
+      CHECK(MatrixViewer::PartiallyShownMatrixAt(
+              group.get(), wxPoint(rect.GetRight() - 5, rect.y + 5)) == matr);
+      // ...and so does its tooltip, which comes through the group, too.
+      CHECK(group->GetToolTip(wxPoint(rect.GetRight() - 5, rect.y + 5))
+            .Contains(wxS("Double-click")));
+    }
     THEN("its tooltip says that a double-click shows all of it") {
       CHECK(matr->GetToolTip(wxPoint(rect.x + rect.width / 2,
                                      rect.y + rect.height / 2))

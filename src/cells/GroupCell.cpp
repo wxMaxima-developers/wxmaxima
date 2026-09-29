@@ -1806,7 +1806,7 @@ const wxString GroupCell::GetToolTip(const wxPoint point) const {
   // TODO: There's a question of whether we want to return
   // the local tooltip, or empty string (latter would be in line
   // with Cell's behavior.
-  if (!ContainsPoint(point))
+  if (!ContainsPointOrOutput(point))
     return GetLocalToolTip();
 
   // Default assumption: will be overwritten by the next command,

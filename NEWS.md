@@ -1,5 +1,8 @@
 # Current development version
 
+- Double-clicking the right-hand part of a wide elided or scrolling matrix
+  now opens the matrix viewer, too; before, only a click near its left
+  edge did. The matrix's tooltip was missing there for the same reason.
 - A .mac file opened in wxMaxima and saved again keeps its comments as they
   were: a comment containing `&` or a nested `/* ... */` is no longer changed
   on the way through, and a nested comment is now read as one comment, the

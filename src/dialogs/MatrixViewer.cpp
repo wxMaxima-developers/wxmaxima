@@ -102,7 +102,7 @@ std::unique_ptr<GroupCell> MatrixViewer::CopyForViewer(const MatrCell &matrix,
 MatrCell *MatrixViewer::PartiallyShownMatrixAt(const GroupCell *group,
                                                wxPoint point) {
   // Hidden output isn't drawn, so its cells' positions are stale.
-  if (!group || group->IsHidden() || !group->GetRect().Contains(point))
+  if (!group || group->IsHidden() || !group->ContainsPointOrOutput(point))
     return nullptr;
   return PartiallyShownMatrixIn(group->GetOutput(), point);
 }

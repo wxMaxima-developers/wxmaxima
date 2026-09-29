@@ -319,6 +319,17 @@ public:
   //! Determine which rectangle is occupied by this GroupCell
   wxRect GetOutputRect() const { return m_outputRect; }
 
+  /*! Is this point inside the cell or its output?
+
+    Unlike ContainsPoint(), this also finds the part of a wide output that
+    reaches past GetRect(): the output starts right of the group's left edge,
+    and the group's width doesn't include that indent. GetOutputRect() is
+    widened to where the output really ends. Use this for hit tests that
+    are meant to reach cells in the output, such as tooltips.
+  */
+  bool ContainsPointOrOutput(wxPoint point) const
+    { return ContainsPoint(point) || m_outputRect.Contains(point); }
+
   /*! The on-screen rectangle occupied by this cell's bracket.
 
     The bracket is drawn in the indentation to the *left* of the cell's content,
