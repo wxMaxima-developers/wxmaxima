@@ -82,6 +82,34 @@ they have sharp edges that have all bitten:
   (`m_client.reset()`) and streams in `KillMaxima`, or the socket state is
   wrong on the next start.
 
+## Interrupting (Ctrl+G)
+
+`MaximaProcessManager::Interrupt()` tries, in order: the **interrupt
+channel** (`MaximaInterruptChannel`, `wx-open-interrupt-channel` in
+`wxMathML.lisp`), then SIGINT on POSIX, or on MS Windows the `gcl-<pid>` /
+`maxima-<pid>` shared-memory segments (a console Ctrl+C fallback was dropped:
+it never worked, wxmaxima.exe has no console). The channel is a
+second connection a Lisp with threads opens to wxMaxima's own server after
+`SetupVariables()` asks it to; `OnMaximaConnect()` treats any connection that
+arrives while `m_client` is connected as a channel candidate, and it only
+counts after sending the `MAXIMA_AUTH_CODE` token (`InterruptChannelHandshake`).
+Things learned the hard way (GH #2289):
+
+- The Lisp side interrupts with `invoke-debugger`, not `error`, so errcatch()
+  or ignore-errors in the interrupted code can't swallow it. Maxima's
+  `*debugger-hook*` then prints "Maxima encountered a Lisp error: User
+  interrupt" and returns to the top level, exactly like a SIGINT on SBCL.
+- **A home-built SBCL Maxima image whose dump ran under `sbcl
+  --non-interactive` quits on *every* Lisp error** (the disabled debugger is
+  saved into the core), including a SIGINT -- which looks exactly like the
+  interrupt killing Maxima. Dump without `--non-interactive`. How to build
+  one here: `maxima-src` has the sources; add `lisp-utils/defsystem.lisp` and
+  `src/maxima.system` from Maxima's git, compile in one `sbcl` process and
+  `maxima-load`+`maxima-dump` in a fresh one, then copy the core to
+  `/usr/lib/maxima/<ver>/binary-sbcl/` and run `maxima -l sbcl`.
+- `wxSOCKET_NOWAIT_READ | wxSOCKET_WAITALL_WRITE` asserts in wxWidgets 3.2;
+  `test_InterruptChannel` fails on any wx assertion for that reason.
+
 ## Probing gnuplot
 
 Must be asynchronous (`wxEXEC_ASYNC`). A synchronous probe blocks the UI and,

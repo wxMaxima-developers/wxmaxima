@@ -648,6 +648,14 @@ void MaximaEvaluator::SetupVariables() {
     default:
       SendMaxima(":lisp-quiet (msetq $output_format_for_help '$frontend)");
     }
+  // Ask a Lisp that has threads to open a second connection we can interrupt
+  // it through; see MaximaInterruptChannel. Guarded by fboundp, since
+  // --wxmathml-lisp may load an older wxMathML.lisp that doesn't define it.
+  SendMaxima(wxString::Format(
+               ":lisp-quiet (when (fboundp 'wx-open-interrupt-channel) "
+               "(wx-open-interrupt-channel \"127.0.0.1\" %i \"%s\"))",
+               m_wxMaxima.m_port,
+               m_wxMaxima.EscapeForLisp(m_wxMaxima.m_maximaAuthString)));
   wxString wxmaximaversion_lisp(WXMAXIMA_VERSION);
 
 #ifdef __WXMSW__

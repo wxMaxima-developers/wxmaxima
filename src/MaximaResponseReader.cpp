@@ -1000,6 +1000,16 @@ void MaximaResponseReader::VariableActionLispVersion(const wxString &value) {
   m_wxMaxima.m_configuration.SetLispVersion(value);
   wxLogMessage(_("Lisp version: %s"), value);
 }
+void MaximaResponseReader::VariableActionInterruptChannelAvailable(const wxString &value) {
+  // Without threads the Lisp cannot open the channel MaximaInterruptChannel
+  // interrupts it through, and interrupting falls back to what the operating
+  // system offers: a signal on POSIX, which works; on MS Windows only the
+  // shared-memory segment GCL provides.
+  if (value != wxS("true"))
+    wxLogMessage(_("The Lisp Maxima runs on has no thread support: wxMaxima can "
+                   "interrupt a computation only by the means the operating "
+                   "system provides, which on MS Windows may fail."));
+}
 void MaximaResponseReader::VariableActionWxLoadFileName(const wxString &value) {
   m_wxMaxima.m_recentPackages.AddDocument(value);
   m_wxMaxima.UpdateRecentDocuments();
@@ -1170,6 +1180,8 @@ void MaximaResponseReader::RegisterVariableActions() {
       &MaximaResponseReader::VariableActionLispName;
     m_variableReadActions[wxS("*lisp-version*")] =
       &MaximaResponseReader::VariableActionLispVersion;
+    m_variableReadActions[wxS("*wx-interrupt-channel-available*")] =
+      &MaximaResponseReader::VariableActionInterruptChannelAvailable;
     m_variableReadActions[wxS("*wx-load-file-name*")] =
       &MaximaResponseReader::VariableActionWxLoadFileName;
     m_variableReadActions[wxS("output_format_for_help")] =

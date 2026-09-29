@@ -200,6 +200,18 @@ target_link_libraries(test_ProcessTree PRIVATE ${wxWidgets_LIBRARIES})
 add_test(NAME ProcessTree
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_ProcessTree>")
 
+# The channel wxMaxima interrupts Maxima through (GH #2289): its handshake,
+# and the channel over a real local socket with the test playing the Lisp.
+add_executable(test_InterruptChannel
+    test_InterruptChannel.cpp
+    ${CMAKE_SOURCE_DIR}/src/InterruptChannelHandshake.cpp
+    ${CMAKE_SOURCE_DIR}/src/MaximaInterruptChannel.cpp
+    ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
+target_include_directories(test_InterruptChannel PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_link_libraries(test_InterruptChannel PRIVATE ${wxWidgets_LIBRARIES})
+add_test(NAME InterruptChannel
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_InterruptChannel>")
+
 add_executable(test_MenuHelpString
     test_MenuHelpString.cpp ${CMAKE_SOURCE_DIR}/src/MenuHelpString.cpp ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
 target_link_libraries(test_MenuHelpString PRIVATE ${wxWidgets_LIBRARIES})
