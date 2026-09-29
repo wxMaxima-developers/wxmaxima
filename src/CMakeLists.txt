@@ -178,6 +178,7 @@ set(SOURCE_FILES
     SvgPanel.cpp
     ToolBar.cpp
     TrayIcon.cpp
+    UrlDetection.cpp
     worksheet/MatrixScrollbars.cpp
     worksheet/Worksheet.cpp
     worksheet/WorksheetContextMenu.cpp

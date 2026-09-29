@@ -52,9 +52,12 @@ class Configuration;
 namespace WorksheetExport {
 /*! Export the tree to an HTML file.
 
-  Writes the HTML to \a file and the stylesheet, the equation images (in the
-  format selected by Configuration::HTMLequationFormat()) and a .wxmx copy of
-  the document into a <name>_htmlimg directory next to it.
+  Writes the HTML, with its stylesheet inlined, to \a file. The equation
+  images (in the format selected by Configuration::HTMLequationFormat()),
+  animations, embedded images and the optional .wxmx copy of the document are
+  either embedded into the same file as data: URIs
+  (Configuration::HTMLExportSelfContained(), off by default) or written into
+  a <name>_htmlimg directory next to it (the default).
 
   \param cellPointers and \param hCaret are only passed through to the
   embedded .wxmx copy, which stores the cursor position.

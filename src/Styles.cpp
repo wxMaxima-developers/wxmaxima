@@ -182,6 +182,7 @@ const wxString &Styles::Name(TextStyle textStyle) {
     {TS_SELECTION, _("Selection color")},
     {TS_EQUALSSELECTION, _("Color of text equal to selection")},
     {TS_DIFF_CHANGED, _("Diff viewer: changed text")},
+    {TS_LINK, _("Links in text cells")},
     {TS_OUTDATED, _("Color of Outdated cells")},
     {TS_CODE_VARIABLE, _("Code highlighting: Variables")},
     {TS_CODE_FUNCTION, _("Code highlighting: Functions")},
@@ -248,6 +249,8 @@ void Styles::SetDefaults() {
     .ChangeLightness(150);
   // A soft amber, distinct from the (usually blue-ish) selection colors.
   m_styles[TS_DIFF_CHANGED].Color(255, 232, 150);
+  // The blue browsers use for a link nobody has visited yet.
+  m_styles[TS_LINK].Color(0, 0, 238);
   m_styles[TS_OUTDATED].Color(153, 153, 153);
 }
 
@@ -292,6 +295,9 @@ void Styles::SetDarkDefaults() {
 
   // The diff-changed background must stay dark enough for light text on it.
   m_stylesDark[TS_DIFF_CHANGED].Color(110, 90, 20);
+
+  // Link blue, light enough to read on the dark background.
+  m_stylesDark[TS_LINK].Color(120, 170, 255);
 }
 
 void Styles::ClearCaches() {
@@ -370,6 +376,7 @@ const std::vector<std::pair<TextStyle, wxString>> &Styles::ConfigKeys() {
     {TS_SELECTION, wxS("Style/Selection/")},
     {TS_EQUALSSELECTION, wxS("Style/EqualsSelection/")},
     {TS_DIFF_CHANGED, wxS("Style/DiffChanged/")},
+    {TS_LINK, wxS("Style/Link/")},
     {TS_OUTDATED, wxS("Style/Outdated/")},
   };
   return keys;
