@@ -33,6 +33,14 @@
 #include <wx/sstream.h>
 #include <wx/tokenzr.h>
 
+#include "ProcessTree.h"
+#include <vector>
+
+#ifdef __WXMSW__
+#include <windows.h>
+#include <tlhelp32.h>
+#endif
+
 #ifndef __WXMSW__
 #include <csignal>
 #include <cstring>
@@ -828,6 +836,122 @@ void MaximaProcessManager::MaximaEvent(wxThreadEvent &event) {
   }
 }
 
+#ifdef __WXMSW__
+namespace {
+//! The last Windows error as a human-readable text.
+wxString LastWindowsError() {
+  const DWORD error = GetLastError();
+  LPTSTR errorText = nullptr;
+  // With FORMAT_MESSAGE_ALLOCATE_BUFFER the buffer argument is the *address*
+  // of a pointer that FormatMessage() sets to a buffer it allocates. Passing
+  // the pointer itself (as a previous version did) makes FormatMessage() fail
+  // and loses the actual reason every time.
+  FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_ALLOCATE_BUFFER |
+                FORMAT_MESSAGE_IGNORE_INSERTS,
+                nullptr, error, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+                reinterpret_cast<LPTSTR>(&errorText), 0, nullptr);
+  wxString result;
+  if (errorText) {
+    result = wxString(errorText).Trim();
+    LocalFree(errorText);
+  }
+  return wxString::Format("%s (error %lu)", result, static_cast<unsigned long>(error));
+}
+
+//! All processes currently running, with their parents.
+std::vector<ProcessEntry> SnapshotProcesses() {
+  std::vector<ProcessEntry> processes;
+  HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+  if (snapshot == INVALID_HANDLE_VALUE) {
+    wxLogMessage("Cannot list the running processes: %s", LastWindowsError());
+    return processes;
+  }
+  PROCESSENTRY32 entry;
+  entry.dwSize = sizeof(entry);
+  if (Process32First(snapshot, &entry)) {
+    do {
+      processes.push_back({static_cast<long>(entry.th32ProcessID),
+                           static_cast<long>(entry.th32ParentProcessID)});
+    } while (Process32Next(snapshot, &entry));
+  }
+  CloseHandle(snapshot);
+  return processes;
+}
+
+/*! Sets the SIGINT bit in the shared memory Maxima's Lisp process \p pid watches.
+
+  Adapted from maxima's winkill which William Schelter has written and which
+  has been improved by David Billinghurst and Andrej Vodopivec. For Maxima's
+  end of this means of communication see
+  interfaces/xmaxima/win32/win_signals.lisp and
+  interfaces/xmaxima/win32/winkill_lib.c in maxima's tree.
+
+  \param name Is set to the name of the segment that was found.
+  \return true, if the bit could be set.
+*/
+bool SetInterruptBitInSharedMemory(long pid, wxString &name) {
+  for (const auto &prefix : {wxS("gcl-"), wxS("maxima-")}) {
+    name = prefix + wxString::Format("%li", pid);
+    HANDLE sharedMemoryHandle =
+      OpenFileMapping(FILE_MAP_WRITE, FALSE, name.wc_str());
+    if (sharedMemoryHandle == nullptr)
+      continue;
+    LPVOID sharedMemoryAddress =
+      MapViewOfFile(sharedMemoryHandle, FILE_MAP_WRITE, 0, 0, 0);
+    if (sharedMemoryAddress == nullptr) {
+      wxLogMessage(_("Could not map view of the file needed in order to "
+                     "send an interrupt signal to maxima."));
+      wxLogMessage("%s: %s", name, LastWindowsError());
+      CloseHandle(sharedMemoryHandle);
+      continue;
+    }
+    volatile int *sharedMemoryContents = reinterpret_cast<int *>(sharedMemoryAddress);
+    *sharedMemoryContents = *sharedMemoryContents | (1 << (wxSIGINT));
+    UnmapViewOfFile(sharedMemoryAddress);
+    CloseHandle(sharedMemoryHandle);
+    return true;
+  }
+  return false;
+}
+
+/*! Sends a Ctrl+C to the console process \p pid is attached to.
+
+  GenerateConsoleCtrlEvent() only reaches processes sharing the caller's
+  console. wxmaxima.exe is a GUI program and normally has no console at all,
+  while Maxima runs in a hidden console of its own -- so we briefly attach to
+  that one. A process can be attached to only one console, though: if we
+  already have one (wxMaxima started from a console window with a debug
+  build, for example), we keep it and signal it, which reaches Maxima only if
+  Maxima shares it.
+
+  The Ctrl+C reaches every process on that console, including us while we
+  are attached, which is why we ignore Ctrl+C ourselves beforehand.
+
+  \param error Is set to the reason, if this fails.
+*/
+bool SendCtrlCToConsoleOf(long pid, wxString &error) {
+  const bool attached = AttachConsole(static_cast<DWORD>(pid));
+  if (!attached && (GetLastError() != ERROR_ACCESS_DENIED)) {
+    // ERROR_ACCESS_DENIED means that we already have a console.
+    error = LastWindowsError();
+    return false;
+  }
+  SetConsoleCtrlHandler(nullptr, TRUE);
+  // We could send a CTRL_BREAK_EVENT instead of a CTRL_C_EVENT that
+  // isn't handled in the 2010 clisp release (see:
+  // https://sourceforge.net/p/clisp/bugs/735/)
+  // ...but CTRL_BREAK_EVENT seems to crash clisp, see
+  // https://sourceforge.net/p/clisp/bugs/736/
+  const bool sent = GenerateConsoleCtrlEvent(CTRL_C_EVENT, 0);
+  if (!sent)
+    error = LastWindowsError();
+  if (attached)
+    FreeConsole();
+  return sent;
+}
+} // namespace
+#endif
+
 void MaximaProcessManager::Interrupt(wxCommandEvent &WXUNUSED(event)) {
   if(m_wxMaxima.GetWorksheet())
     m_wxMaxima.GetWorksheet()->CloseAutoCompletePopup();
@@ -838,117 +962,53 @@ void MaximaProcessManager::Interrupt(wxCommandEvent &WXUNUSED(event)) {
   }
 
 #if defined(__WXMSW__)
-  if (m_wxMaxima.m_pid > 0) {
-    // The following lines are adapted from maxima's winkill which William
-    // Schelter has written and which has been improved by David Billinghurst
-    // and Andrej Vodopivec.
-    //
-    // Winkill tries to find a shared memory region maxima provides we can set
-    // signals in that maxima can listen to.
-    //
-    // For Maxima's end of this means of communication see
-    // interfaces/xmaxima/win32/win_signals.lisp
-    // and interfaces/xmaxima/win32/winkill_lib.c in maxima's tree.
-    HANDLE sharedMemoryHandle = 0;
-    LPVOID sharedMemoryAddress = nullptr;
+  // MS Windows has no kill(). Maxima's Lisp therefore watches a named
+  // shared-memory segment, and we set the SIGINT bit in it. Its name contains
+  // the Lisp's pid, which we only know if Maxima's first prompt told us: we
+  // started maxima.bat, not the Lisp. So every process below the one we
+  // started is a candidate, too.
+  std::vector<long> candidates;
+  if (m_wxMaxima.m_maximaPid > 0)
+    candidates.push_back(m_wxMaxima.m_maximaPid);
+  for (auto pid : DescendantPids(m_wxMaxima.m_pid, SnapshotProcesses()))
+    if (pid != m_wxMaxima.m_maximaPid)
+      candidates.push_back(pid);
 
-    // wxMaxima doesn't want to get interrupt signals.
-    // SetConsoleCtrlHandler(nullptr, true);
-
-    /* First try to send the signal to gcl. */
-    long signalPid = (m_wxMaxima.m_maximaPid > 0) ? m_wxMaxima.m_maximaPid : m_wxMaxima.m_pid;
-    wxWCharBuffer sharedMemoryName(wxString::Format("gcl-%d", signalPid).wc_str());
-    sharedMemoryHandle =
-      OpenFileMapping(FILE_MAP_WRITE,    /*  Read/write permission.   */
-                      FALSE,             /*  Do not inherit the name  */
-                      sharedMemoryName.data()); /*  of the mapping object.   */
-
-    /* If gcl is not running, send to maxima. */
-    wxWCharBuffer sharedMemoryName2(wxString::Format("maxima-%d", signalPid).wc_str());
-    if (sharedMemoryHandle == nullptr) {
-      sharedMemoryHandle =
-        OpenFileMapping(FILE_MAP_WRITE,    /*  Read/write permission.   */
-                        FALSE,             /*  Do not inherit the name  */
-                        sharedMemoryName2.data()); /*  of the mapping object.   */
-    }
-
-    if (sharedMemoryHandle == nullptr) {
-      wxLogMessage(_("The Maxima process doesn't offer a shared memory segment "
-                     "we can send an interrupt signal to."));
-
-      // No shared memory location we can send break signals to => send a
-      // console interrupt.
-      // Before we do that we stop our program from closing on receiving a
-      // Ctrl+C from the console.
-      SetConsoleCtrlHandler(nullptr, TRUE);
-
-      // We could send a CTRL_BREAK_EVENT instead of a CTRL_C_EVENT that
-      // isn't handled in the 2010 clisp release (see:
-      // https://sourceforge.net/p/clisp/bugs/735/)
-      // ...but CTRL_BREAK_EVENT seems to crash clisp, see
-      // https://sourceforge.net/p/clisp/bugs/736/
-      //
-      // And we need to send the CTRL_BREAK_EVENT to our own console, which
-      // has the group ID 0, see
-      // https://docs.microsoft.com/en-us/windows/console/generateconsolectrlevent
-      if (GenerateConsoleCtrlEvent(CTRL_C_EVENT, 0) == 0) {
-        LPTSTR errorText = nullptr;
-
-        FormatMessage(
-                      FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_ALLOCATE_BUFFER |
-                      FORMAT_MESSAGE_IGNORE_INSERTS,
-                      nullptr, GetLastError(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-                      errorText, 0, nullptr);
-
-        wxString errorMessage;
-        if (!errorText)
-          errorMessage = _("Could not send an interrupt signal to maxima.");
-        else {
-          errorMessage =
-            wxString::Format(_("Interrupting maxima: %s"), errorText);
-          LocalFree(errorText);
-        }
-
-        m_wxMaxima.StatusText(errorMessage);
-        wxLogMessage("%s", errorMessage);
-        return;
-      }
-    } else {
-      sharedMemoryAddress =
-        MapViewOfFile(sharedMemoryHandle, /* Handle to mapping object.  */
-                      FILE_MAP_WRITE,     /* Read/write permission.  */
-                      0,                  /* Max.  object size.  */
-                      0,                  /* Size of hFile.  */
-                      0);                 /* Map entire file.  */
-
-      if (sharedMemoryAddress == nullptr) {
-        wxLogMessage(_("Could not map view of the file needed in order to "
-                       "send an interrupt signal to maxima."));
-        return;
-      }
-
-      // Set the bit for the SIGINT handler
-      int value = (1 << (wxSIGINT));
-      volatile int *sharedMemoryContents = reinterpret_cast<int *>(sharedMemoryAddress);
-      *sharedMemoryContents = *sharedMemoryContents | value;
+  wxString triedNames;
+  for (auto pid : candidates) {
+    wxString name;
+    if (SetInterruptBitInSharedMemory(pid, name)) {
       wxLogMessage(_("Sending an interrupt signal to Maxima."));
-      UnmapViewOfFile(sharedMemoryAddress);
-      CloseHandle(sharedMemoryHandle);
-      sharedMemoryAddress = nullptr;
-      sharedMemoryHandle = nullptr;
+      wxLogMessage("Set the interrupt bit in shared memory segment %s", name);
       return;
     }
+    triedNames += wxS(" gcl-") + wxString::Format("%li", pid) +
+      wxS(" maxima-") + wxString::Format("%li", pid);
   }
+  wxLogMessage(_("The Maxima process doesn't offer a shared memory segment "
+                 "we can send an interrupt signal to."));
+  wxLogMessage("Tried the shared memory segments:%s (Maxima's PID: %li, "
+               "PID of the process we started: %li)",
+               triedNames, m_wxMaxima.m_maximaPid, m_wxMaxima.m_pid);
 
-  if (m_wxMaxima.m_maximaProcess) {
-    // We need to send the CTRL_BREAK_EVENT to the process group, not
-    // to the lisp.
-    auto pid = m_wxMaxima.m_maximaProcess->GetPid();
-    if (!GenerateConsoleCtrlEvent(CTRL_C_EVENT, pid)) {
-      wxLogMessage(_("Could not send an interrupt signal to maxima."));
+  // No shared memory to signal to => send a Ctrl+C to Maxima's console
+  // instead. Lisps without a signal thread (e.g. clisp) listen to that.
+  wxString consoleError;
+  for (auto pid : candidates)
+    if (SendCtrlCToConsoleOf(pid, consoleError)) {
+      wxLogMessage(_("Sending an interrupt signal to Maxima."));
+      wxLogMessage("Sent a Ctrl+C to the console of process %li", pid);
       return;
     }
-  }
+
+  wxString errorMessage;
+  if (consoleError.IsEmpty())
+    errorMessage = _("Could not send an interrupt signal to maxima.");
+  else
+    errorMessage = wxString::Format(_("Interrupting maxima: %s"), consoleError);
+  m_wxMaxima.StatusText(errorMessage);
+  wxLogMessage("%s", errorMessage);
+  return;
 #else
   wxLogMessage(_("Sending Maxima a SIGINT signal."));
   wxProcess::Kill(m_wxMaxima.m_pid, wxSIGINT);
