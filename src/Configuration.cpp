@@ -104,6 +104,7 @@ Configuration::Configuration(const Configuration &o) :
   m_wrapLatexMath(o.m_wrapLatexMath),
   m_allowNetworkHelp(o.m_allowNetworkHelp),
   m_exportContainsWXMX(o.m_exportContainsWXMX),
+  m_htmlExportSelfContained(o.m_htmlExportSelfContained),
   m_texPreamble(o.m_texPreamble),
   m_parenthesisDrawMode(o.m_parenthesisDrawMode),
   m_TeXExponentsAfterSubscript(o.m_TeXExponentsAfterSubscript),
@@ -272,6 +273,7 @@ void Configuration::ResetAllToDefaults() {
   m_wrapLatexMath = true;
   m_allowNetworkHelp = false;
   m_exportContainsWXMX = true;
+  m_htmlExportSelfContained = true;
   m_maximaUsesHhtmlBrowser = true;
   m_maximaUsesWxmaximaBrowser = OfferInternalHelpBrowser();
   m_bitmapScale = 3;
@@ -1378,6 +1380,7 @@ Configuration::ScalarConfigSettings() {
     {wxS("documentclassoptions"), &Configuration::m_documentclassOptions},
     {wxS("enterEvaluates"), &Configuration::m_enterEvaluates},
     {wxS("exportContainsWXMX"), &Configuration::m_exportContainsWXMX},
+    {wxS("htmlExportSelfContained"), &Configuration::m_htmlExportSelfContained},
     {wxS("fixedFontTC"), &Configuration::m_fixedFontTC},
     {wxS("fixReorderedIndices"), &Configuration::m_fixReorderedIndices},
     {wxS("greekSidebar_ShowLatinLookalikes"),

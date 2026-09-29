@@ -1,5 +1,12 @@
 # Current development version
 
+- Exporting a worksheet to HTML now writes one single file that contains its
+  images and, if requested, the downloadable .wxmx copy, so the page can be
+  mailed or uploaded on its own. Before, those went into a separate
+  `<name>_htmlimg` folder next to it, which had to be passed along, too.
+  Unchecking "Embed images into the .html file" in the Export tab of the
+  configuration dialog brings back the old layout, which keeps the .html file
+  small (#2266).
 - Double-clicking the right-hand part of a wide elided or scrolling matrix
   now opens the matrix viewer, too; before, only a click near its left
   edge did. The matrix's tooltip was missing there for the same reason.
