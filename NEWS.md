@@ -1,5 +1,14 @@
 # Current development version
 
+- A fraction or parenthesis inside a subscript no longer vanishes, or gets
+  partly broken into lines, when the window is too narrow for it. A
+  subscript has no linear form, so it is always drawn in 2D - but the
+  line-breaking step still converted the wide cells inside it to their
+  linear form, which only a cell that is itself broken into lines can draw.
+  Those cells were then positioned and drawn by nobody, and were never
+  returned to 2D when the window grew again. The same applied to matrices
+  and to the fractions of a diff(). Now nothing inside a cell that stays in
+  2D is broken into lines.
 - Opening Options no longer asks for the keyring's password. The AI Chat
   tab used to read every stored API key just to fill its masked key fields,
   and to write them all back on OK; it now never reads them. A key field

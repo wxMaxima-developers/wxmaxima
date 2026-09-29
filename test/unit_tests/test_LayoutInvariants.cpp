@@ -333,6 +333,64 @@ SCENARIO("Nested fractions keep their reduced font sizes through partial break-u
   }
 }
 
+// A subscript whose base is a wide parenthesized fraction (with subscripted
+// variables inside), followed by a subscript whose *index* is one - i.e.
+// ((x_1+...)/(y_2+...))_k and a_((...)/(...)). A SubCell has no linear form:
+// it is always drawn in 2D, and so is everything inside it.
+static const char *const subscriptedFracXml =
+  R"(<mth><lbl altCopy="%o1">(%o1) </lbl><i><r><p><f><r><i><r><mi>x</mi></r><r><mn>1</mn></r></i><mo>+</mo><mi>aLongVariableName</mi><mo>+</mo><mi>moreNumeratorContent</mi></r><r><i><r><mi>y</mi></r><r><mn>2</mn></r></i><mo>+</mo><mi>anotherLongName</mi><mo>+</mo><mi>denominatorName</mi></r></f></p></r><r><mi>k</mi></r></i><mo>+</mo><i><r><mi>a</mi></r><r><p><f><r><i><r><mi>x</mi></r><r><mn>1</mn></r></i><mo>+</mo><mi>aVeryLongVariableNameInTheIndex</mi><mo>+</mo><mi>moreIndexContent</mi></r><r><mi>anotherLongName</mi><mo>+</mo><mn>1234.5678</mn><mo>+</mo><mi>andSomeMore</mi></r></f></p></r></i></mth>)";
+
+// CHECKs that no cell reachable from "list" is broken into lines unless every
+// one of its ancestors is broken, too. Only a broken cell hands its contents
+// to the flattened draw list (OnDrawList()), so a broken cell below a cell that
+// is still drawn in 2D is neither positioned nor drawn by anyone, is never
+// unbroken again by UnBreakUpCells() (which walks the same draw list), and its
+// 2D owner still sizes itself for the linear form's zero width.
+static void RequireBrokenOnlyBelowBroken(Cell *list, const wxString &path,
+                                         bool ancestorsBroken) {
+  int idx = 0;
+  for (Cell *c = list; c != nullptr; c = c->GetNext(), ++idx) {
+    wxString here = wxString::Format(wxS("%s/%d:%s"), path, idx,
+                                     c->GetInfo().GetName());
+    INFO("cell broken into lines inside a cell drawn in 2D: "
+         << here.utf8_str());
+    if (!ancestorsBroken)
+      CHECK_FALSE(c->IsBrokenIntoLines());
+    int innerIdx = 0;
+    for (Cell &inner : OnInner(c))
+      RequireBrokenOnlyBelowBroken(
+          &inner, here + wxString::Format(wxS("(%d)"), innerIdx++),
+          ancestorsBroken && c->IsBrokenIntoLines());
+  }
+}
+
+SCENARIO("Nothing inside a subscript is broken into lines") {
+  GIVEN("subscripts containing wide parenthesized fractions") {
+    g_cfg->SetZoomFactor(1.0);
+    g_cfg->SetCanvasSize(wxSize(900, 600));
+    MathParser parser(g_cfg);
+    auto group = std::make_unique<GroupCell>(g_cfg, GC_TYPE_CODE,
+                                             wxS("subscripted;"));
+    auto output = parser.ParseLine(wxString::FromUTF8(subscriptedFracXml));
+    REQUIRE(output != nullptr);
+    group->AppendOutput(std::move(output));
+    group->Recalculate();
+
+    const int narrowWidth = GENERATE(600, 400, 300, 200);
+
+    WHEN("the canvas is too narrow for them") {
+      INFO("narrow canvas width: " << narrowWidth);
+      g_cfg->SetCanvasSize(wxSize(narrowWidth, 600));
+      group->Recalculate();
+
+      THEN("the subscripts' contents stay in 2D, like the subscripts") {
+        RequireBrokenOnlyBelowBroken(group->GetOutput(), wxS("out"), true);
+        RequireExpectedFontSizes(group->GetOutput(), wxS("out"));
+      }
+    }
+  }
+}
+
 // Builds a worksheet of "count" one-line code groups in g_ws and lays it out.
 // Returns the group at "index" (0-based) for the scenario to operate on.
 static GroupCell *BuildWorksheet(int count, int index) {

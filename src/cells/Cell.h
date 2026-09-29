@@ -253,13 +253,27 @@ public:
   */
   bool BreakUpCells() const;
 
+  //! A cell CollectWideCells() found too wide, and where it was found.
+  struct WideCell {
+    const Cell *cell;
+    /*! Index (in the same vector) of the wide cell this one was found in, or
+      -1 for a cell of the draw list itself. */
+    int parent;
+  };
+
   /*! Recursively collect all cells that are too wide to fit the line.
+   *
+   * Cells are collected parents first. Only the contents of a cell that is
+   * collected itself are searched: the contents of a cell that stays in 2D
+   * must stay in 2D, too (see BreakUpCells()).
    *
    * \param wideCells is the list to add the cells to.
    * \param clientWidth is the width available for a line.
+   * \param parent is the index in wideCells of the wide cell this cell is
+   *        part of, or -1 for a cell of the draw list itself.
    */
-  void CollectWideCells(std::vector<const Cell *> &wideCells,
-                        int clientWidth) const;
+  void CollectWideCells(std::vector<WideCell> &wideCells,
+                        int clientWidth, int parent = -1) const;
 
   /*! Convert all maths objects in this call list into their 2D form */
   bool UnBreakUpCells() const;

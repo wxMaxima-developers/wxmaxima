@@ -31,7 +31,7 @@ The `timeout` path time-slices (50 ms by default) so a huge worksheet stays
 responsive; a cell whose layout is cancelled mid-flight is the subject of one of
 the traps below.
 
-## The four invariants
+## The five invariants
 
 **1. Scheduling is not doing.** `RequestRecalculation()` only marks work
 pending; `RecalculateIfNeeded()` performs it. Never read a size or position on
@@ -62,6 +62,18 @@ cell renders at a stale or first-pass size. `MatrCell::Recalculate()` shows the
 fix: `m_width.Invalidate()` before the early return. Test-drive this with
 `Configuration::SetLayoutDeadline(0)`, which makes `IsLayoutCancelled()` true
 immediately - see the matrix scenario in `test_GroupCellLayout.cpp`.
+
+**5. A cell may only be broken into lines if every cell around it is.** Only a
+broken cell hands its contents to the flattened draw list (`OnDrawList()`);
+a cell drawn in 2D positions and draws its contents itself, and cannot draw a
+broken (zero-width, linear) child. `SubCell`, `SubSupCell`, `AtCell`,
+`MatrCell` and a `diff()` `FracCell` never break up, yet `CollectWideCells()`
+used to descend into them anyway, so a wide fraction inside a subscript was
+linearized inside a 2D cell: invisible, or partly drawn, and never unbroken
+again (`UnBreakUpCells()` walks the same draw list). `BreakUpCells()` now
+breaks a nested cell only if the wide cell it was found in actually broke.
+Debug builds assert this in `Cell::Draw()`; `test_LayoutInvariants`'
+"Nothing inside a subscript is broken into lines" pins it.
 
 ## Recurring bug shapes
 

@@ -2155,7 +2155,7 @@ which loads on demand -- keep the detail there rather than growing this file.
   1. `UnBreakUpCells()`: Reset to 2D.
   2. `BreakUpCells()`: Convert wide 2D objects to 1D fallback.
 
-     **Recursive Strategy:** If a 2D object is too wide, `CollectWideCells` recursively identifies sub-cells that are already >80% of the available width. These sub-cells are also converted to linear form in the same pass. This heuristic accounts for font size increases that occur when a parent object is linearized, preventing redundant O(N^2) size resets and recalculations in deeply nested structures.
+     **Recursive Strategy:** If a 2D object is too wide, `CollectWideCells` also searches its sub-cells (those already >80% of the available width) for ones that are too wide themselves, and breaks those up in the same pass, avoiding one full recalculation per nesting level. **A sub-cell is only broken if the cell it was found in actually broke up**: cells that have no linear form (subscripts, matrices, `diff()` fractions) draw their contents in 2D, and a broken cell inside them is drawn by nobody (see invariant 5 in the `wxmaxima-layout` skill).
   3. `BreakLines_List()`: Final line wrapping.
 - **High-DPI / wxBitmapBundle:** Use `wxBitmapBundle` for SVG rendering.
 - **Windows Focus Management:** Use `CallAfter` for focus transitions (e.g., `m_searchText->SetFocus()`) to prevent the worksheet from "stealing" focus back.
