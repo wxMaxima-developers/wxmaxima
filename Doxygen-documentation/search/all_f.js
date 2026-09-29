@@ -130,12 +130,13 @@ var searchData=
   ['outputheightchanged_127',['OutputHeightChanged',['../classGroupCell.html#a261107dd67c2c3bbd0a3bd561e00ad62',1,'GroupCell']]],
   ['outputlinewidths_128',['OutputLineWidths',['../structGroupCell_1_1OutputLineWidths.html',1,'GroupCell']]],
   ['outputresult_129',['OutputResult',['../structGroupCell_1_1OutputResult.html',1,'GroupCell']]],
-  ['overlayscrollbars_130',['OverlayScrollbars',['../classConfiguration.html#ab47f0eff43b0d7e3f812f2f2413723ac',1,'Configuration::OverlayScrollbars() const'],['../classConfiguration.html#accf3101066b9662eb6e2de4c1b44f9d1',1,'Configuration::OverlayScrollbars(bool overlay)']]],
-  ['overload_5ftest_131',['Overload_Test',['../classOverload__Test.html',1,'']]],
-  ['oversizedmatrices_132',['OversizedMatrices',['../classConfiguration.html#adb5fa4e3eacde294a5f23ceca1b9283d',1,'Configuration']]],
-  ['oversizedmatricesfor_133',['OversizedMatricesFor',['../classConfiguration.html#a37a73721fe321f61f0d3154585fee086',1,'Configuration']]],
-  ['oversizedmatricesmode_134',['OversizedMatricesMode',['../classOversizedMatricesMode.html',1,'']]],
-  ['oversizedmodefromname_135',['OversizedModeFromName',['../classMatrCell.html#aa1975ac73dfd65bd9e5f67c02b67f436',1,'MatrCell']]],
-  ['oversizedmodename_136',['OversizedModeName',['../classMatrCell.html#a4143f4fa1bc797a48d7a5ca9455f18b5',1,'MatrCell']]],
-  ['unique_5fptr_3c_20t_20_3e_137',['unique_ptr&lt; T &gt;',['../classCellListBuilder.html#af7962cb0f42dd905c9db70d5eb6e54b3',1,'CellListBuilder']]]
+  ['outputtoselfcontainedhtml_130',['OutputToSelfContainedHTML',['../WorksheetExport_8h.html#a0a7a0093d87a87444f34e39db5287968',1,'WorksheetExport']]],
+  ['overlayscrollbars_131',['OverlayScrollbars',['../classConfiguration.html#ab47f0eff43b0d7e3f812f2f2413723ac',1,'Configuration::OverlayScrollbars() const'],['../classConfiguration.html#accf3101066b9662eb6e2de4c1b44f9d1',1,'Configuration::OverlayScrollbars(bool overlay)']]],
+  ['overload_5ftest_132',['Overload_Test',['../classOverload__Test.html',1,'']]],
+  ['oversizedmatrices_133',['OversizedMatrices',['../classConfiguration.html#adb5fa4e3eacde294a5f23ceca1b9283d',1,'Configuration']]],
+  ['oversizedmatricesfor_134',['OversizedMatricesFor',['../classConfiguration.html#a37a73721fe321f61f0d3154585fee086',1,'Configuration']]],
+  ['oversizedmatricesmode_135',['OversizedMatricesMode',['../classOversizedMatricesMode.html',1,'']]],
+  ['oversizedmodefromname_136',['OversizedModeFromName',['../classMatrCell.html#aa1975ac73dfd65bd9e5f67c02b67f436',1,'MatrCell']]],
+  ['oversizedmodename_137',['OversizedModeName',['../classMatrCell.html#a4143f4fa1bc797a48d7a5ca9455f18b5',1,'MatrCell']]],
+  ['unique_5fptr_3c_20t_20_3e_138',['unique_ptr&lt; T &gt;',['../classCellListBuilder.html#af7962cb0f42dd905c9db70d5eb6e54b3',1,'CellListBuilder']]]
 ];

@@ -138,6 +138,9 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><b>WorksheetExport::
 <tr class="memitem:a7c35e91bfe94140ace64fdcb6fbdce3f"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="WorksheetExport_8h.html#a7c35e91bfe94140ace64fdcb6fbdce3f">WorksheetExport::SelectionToSelfContainedHTML</a> (<a class="el" href="classGroupCell.html">GroupCell</a> *startGroup, <a class="el" href="classGroupCell.html">GroupCell</a> *endGroup, <a class="el" href="classConfiguration.html">Configuration</a> *configuration)</td></tr>
 <tr class="memdesc:a7c35e91bfe94140ace64fdcb6fbdce3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Render a range of GroupCells as one self-contained HTML document (GH #2265/#2266/#2267): the stylesheet is inlined into a &lt;style&gt; element and every image is inlined as a base64 data: URI, so the result has no external file references at all and can be dropped straight onto the clipboard for "Copy as HTML" or otherwise used outside the context of the original document's directory.  <br /></td></tr>
 <tr class="separator:a7c35e91bfe94140ace64fdcb6fbdce3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a7a0093d87a87444f34e39db5287968"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="WorksheetExport_8h.html#a0a7a0093d87a87444f34e39db5287968">WorksheetExport::OutputToSelfContainedHTML</a> (<a class="el" href="classCell.html">Cell</a> *cells, <a class="el" href="classConfiguration.html">Configuration</a> *configuration)</td></tr>
+<tr class="memdesc:a0a7a0093d87a87444f34e39db5287968"><td class="mdescLeft">&#160;</td><td class="mdescRight">Render a list of output cells as one self-contained HTML document (GH #2369)  <br /></td></tr>
+<tr class="separator:a0a7a0093d87a87444f34e39db5287968"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Document serializers extracted from the <a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a> class. </p>
@@ -334,6 +337,44 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><b>WorksheetExport::
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a0a7a0093d87a87444f34e39db5287968" name="a0a7a0093d87a87444f34e39db5287968"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0a7a0093d87a87444f34e39db5287968">&#9670;&#160;</a></span>OutputToSelfContainedHTML()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxString WorksheetExport::OutputToSelfContainedHTML </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classCell.html">Cell</a> *&#160;</td>
+          <td class="paramname"><em>cells</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classConfiguration.html">Configuration</a> *&#160;</td>
+          <td class="paramname"><em>configuration</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Render a list of output cells as one self-contained HTML document (GH #2369) </p>
+<p>What "Copy as HTML" uses when the selection is part of a cell's output, not whole cells &ndash; for example a block of a matrix's entries, which <a class="el" href="classWorksheet.html#ac6171080f34084cc1694b75089f360ac" title="Copy the currently selected cells.">Worksheet::CopySelection()</a> hands over as a new matrix of just that block. The cells are rendered the way SelectionToSelfContainedHTML() renders a cell's output, with the same inlined stylesheet and images.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cells</td><td>The first cell of the list; the list is not modified. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the HTML document, or an empty string if cells is null or the private scratch directory couldn't be created. </dd></dl>
 
 </div>
 </div>
