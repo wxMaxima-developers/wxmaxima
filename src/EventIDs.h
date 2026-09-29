@@ -671,6 +671,8 @@ public:
   static const wxWindowIDRef popid_export_output_svg;
   static const wxWindowIDRef popid_export_output_png;
   static const wxWindowIDRef popid_add_watch;
+  static const wxWindowIDRef popid_open_link;
+  static const wxWindowIDRef popid_copy_link;
   static const wxWindowIDRef popid_add_watch_label;
   static const wxWindowIDRef popid_special_constant_percent;
   static const wxWindowIDRef popid_changeasterisk;

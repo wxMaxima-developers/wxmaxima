@@ -600,6 +600,22 @@ public:
   void SelectGroupCells(wxPoint down, wxPoint up);
 
 public:
+  /*! Opens a link from a text cell in the user's web browser (GH #2396).
+
+    Refuses anything wxm::IsLaunchableUrl() doesn't allow, so a worksheet
+    from elsewhere can't make a click start a local program.
+    \return true if the browser was asked to open it.
+  */
+  static bool OpenLink(const wxString &url);
+
+  //! The link a text cell draws under the mouse pointer, or an empty string.
+  wxString LinkUnderPointer();
+
+  //! The link the last context menu was opened on, or an empty string.
+  const wxString &GetContextMenuLink() const { return m_contextMenuLink; }
+  //! Remembers the link the context menu is being opened on.
+  void SetContextMenuLink(const wxString &link) { m_contextMenuLink = link; }
+
   //! Adjust the virtual size and scrollbars; see WorksheetLayout::AdjustSize().
   void AdjustSize() { m_layout.AdjustSize(); }
 
@@ -1957,6 +1973,12 @@ protected:
   int m_pointer_y = -1;
   //! Was there a mouse motion we didn't react to until now?
   bool m_mouseMotionWas = false;
+  //! Was Ctrl (Cmd on macOS) held during the last mouse motion?
+  bool m_pointerCmdDown = false;
+  //! Does the worksheet currently show the hand cursor for a link?
+  bool m_linkCursorShown = false;
+  //! The link the last context menu was opened on, see GetContextMenuLink().
+  wxString m_contextMenuLink;
   //! Is there an active popup menu?
   bool m_inPopupMenu = false;
 };
