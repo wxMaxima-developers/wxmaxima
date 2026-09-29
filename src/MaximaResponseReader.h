@@ -176,6 +176,8 @@ private:
   void VariableActionLispName(const wxString &value);
   //! Called if maxima tells us the lisp version.
   void VariableActionLispVersion(const wxString &value);
+  //! Called when Maxima tells whether its Lisp can open an interrupt channel.
+  void VariableActionInterruptChannelAvailable(const wxString &value);
   //! Called if maxima tells us the name of a package that was loaded
   void VariableActionWxLoadFileName(const wxString &value);
   //! Called if maxima tells us the value of the maxima variable <code>display2d</code>

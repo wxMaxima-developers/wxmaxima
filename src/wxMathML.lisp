@@ -2485,6 +2485,11 @@ Submit bug reports by following the 'New issue' link on that page."))
   (format t "<variable><name>*lisp-version*</name><value>~a</value></variable>"
 	  #+sbcl (ensure-readably-printable-string (lisp-implementation-version))
 	  #-sbcl (lisp-implementation-version))
+  ;; Whether wxMaxima can interrupt this Lisp through its own channel, see
+  ;; wx-open-interrupt-channel below. Tells a user who cannot interrupt a
+  ;; computation why, in the log.
+  (format t "<variable><name>*wx-interrupt-channel-available*</name><value>~a</value></variable>"
+	  (if (wx-interrupt-channel-available-p) "true" "false"))
   (format t "</variables>~%")
   (finish-output)
   )
@@ -3037,6 +3042,140 @@ than disappearing with the thread."
               "This Maxima was built on a Lisp without thread support, so it cannot run anything in the background."
               ,id)
              nil)))))
+
+;;; ---------------------------------------------------------------------
+;;; The interrupt channel
+;;;
+;;; How wxMaxima interrupts a computation without depending on signals.
+;;; POSIX has kill(SIGINT), but MS Windows has nothing like it: there the
+;;; only ways in were a shared-memory segment named after the Lisp's pid
+;;; (which needs the pid, and a signal thread Maxima only starts if the
+;;; MAXIMA_SIGNALS_THREAD environment variable survived maxima.bat) and a
+;;; console Ctrl+C (which needs a console, and which a new process group
+;;; ignores). Either one failing leaves the user no way to stop a
+;;; computation but to restart Maxima and lose the session (GH #2289).
+;;;
+;;; So wxMaxima tells a Lisp that has threads to open a second connection
+;;; to wxMaxima's own server. A thread waits on it; when wxMaxima writes
+;;; "interrupt" there, the thread interrupts the thread that evaluates
+;;; Maxima's commands. No pid, no named objects, no console, the same on
+;;; every operating system. A Lisp without threads (GCL, a clisp built
+;;; without them) simply doesn't open the channel, and wxMaxima falls back
+;;; to what it did before.
+;;;
+;;; The first line sent is the token wxMaxima passed to Maxima in
+;;; MAXIMA_AUTH_CODE, so that nothing else on this machine can connect to
+;;; wxMaxima's server and pose as the channel.
+;;; ---------------------------------------------------------------------
+
+(define-condition wx-user-interrupt (condition) ()
+  (:report (lambda (condition stream)
+             (declare (ignore condition))
+             (format stream "User interrupt"))))
+
+(defvar *wx-interrupt-channel-thread* nil
+  "The thread waiting for wxMaxima's interrupt requests, if any.")
+
+(defun wx-interrupt-channel-available-p ()
+  "True if this Lisp can run the interrupt channel's thread."
+  #+(or sb-thread (and ecl threads) (and clisp mt) openmcl ccl) t
+  #-(or sb-thread (and ecl threads) (and clisp mt) openmcl ccl) nil)
+
+(defun wx-current-thread ()
+  #+sb-thread sb-thread:*current-thread*
+  #+(and ecl threads) mp:*current-process*
+  #+(and clisp mt) (mt:current-thread)
+  #+(or openmcl ccl) ccl:*current-process*
+  #-(or sb-thread (and ecl threads) (and clisp mt) openmcl ccl) nil)
+
+(defun wx-thread-alive-p (thread)
+  (and thread
+       #+sb-thread (sb-thread:thread-alive-p thread)
+       #+(and ecl threads) (mp:process-active-p thread)
+       #+(and clisp mt) (mt:thread-active-p thread)
+       #+(or openmcl ccl) (not (ccl:process-exhausted-p thread))
+       #-(or sb-thread (and ecl threads) (and clisp mt) openmcl ccl) nil))
+
+(defun wx-make-thread (name function)
+  #+sb-thread (sb-thread:make-thread function :name name)
+  #+(and ecl threads) (mp:process-run-function name function)
+  #+(and clisp mt) (mt:make-thread function :name name)
+  #+(or openmcl ccl) (ccl:process-run-function name function)
+  #-(or sb-thread (and ecl threads) (and clisp mt) openmcl ccl)
+  (declare (ignore name function)))
+
+(defun wx-interrupt-thread (thread function)
+  "Makes THREAD run FUNCTION, interrupting whatever it is doing."
+  #+sb-thread (sb-thread:interrupt-thread thread function)
+  #+(and ecl threads) (mp:interrupt-process thread function)
+  #+(and clisp mt) (mt:thread-interrupt thread :function function)
+  #+(or openmcl ccl) (ccl:process-interrupt thread function)
+  #-(or sb-thread (and ecl threads) (and clisp mt) openmcl ccl)
+  (declare (ignore thread function)))
+
+(defun wx-open-channel-socket (host port)
+  "A bidirectional character stream connected to HOST:PORT."
+  #+(or sbcl ecl)
+  (let ((socket (make-instance 'sb-bsd-sockets:inet-socket
+                               :type :stream :protocol :tcp)))
+    (sb-bsd-sockets:socket-connect
+     socket (sb-bsd-sockets:make-inet-address host) port)
+    (sb-bsd-sockets:socket-make-stream
+     socket :input t :output t :buffering :full :element-type 'character))
+  #+clisp (socket:socket-connect port host)
+  #+(or openmcl ccl) (ccl:make-socket :remote-host host :remote-port port)
+  #-(or sbcl ecl clisp openmcl ccl)
+  (error "No sockets in this Lisp: ~a ~a" host port))
+
+(defun wx-interrupt-main-thread (main)
+  "Makes the thread MAIN abandon its computation the way a Ctrl+C would.
+
+The interrupt goes through INVOKE-DEBUGGER, not ERROR: Maxima's *debugger-hook*
+reports it and returns to Maxima's top level, exactly as it does for a
+SIGINT. ERROR would first look for handlers, and a computation running inside
+errcatch() or ignore-errors would catch the interrupt and carry on."
+  (wx-interrupt-thread
+   main
+   (lambda ()
+     ;; SBCL runs an interrupt with further interrupts disabled. The debugger
+     ;; hook prints and unwinds, both of which want them back on.
+     #+sb-thread (sb-sys:with-interrupts
+                   (invoke-debugger (make-condition 'wx-user-interrupt)))
+     #-sb-thread (invoke-debugger (make-condition 'wx-user-interrupt)))))
+
+(defun wx-interrupt-channel-loop (stream main)
+  "Interrupts MAIN each time wxMaxima writes \"interrupt\" to STREAM."
+  (unwind-protect
+       ;; Nothing that goes wrong in here may reach the debugger hook: it
+       ;; would print on the shared output stream and then throw to a catch
+       ;; tag that only exists in the main thread. Losing the channel just
+       ;; means wxMaxima falls back to its other ways of interrupting.
+       (ignore-errors
+        (loop for line = (read-line stream nil nil)
+              while line
+              when (string= (string-trim '(#\Space #\Return) line) "interrupt")
+                do (wx-interrupt-main-thread main)))
+    (ignore-errors (close stream))))
+
+(defun wx-open-interrupt-channel (host port token)
+  "Connects to wxMaxima's server at HOST:PORT as the interrupt channel.
+
+Called by wxMaxima once per Maxima process, from the thread that evaluates
+Maxima's commands -- which is therefore the one that gets interrupted. Does
+nothing if the Lisp has no threads, if the channel is already open, or if the
+connection fails. Returns T if a channel thread is running afterwards."
+  (when (wx-interrupt-channel-available-p)
+    (unless (wx-thread-alive-p *wx-interrupt-channel-thread*)
+      (let ((main (wx-current-thread))
+            (stream (ignore-errors (wx-open-channel-socket host port))))
+        (when stream
+          (write-line token stream)
+          (finish-output stream)
+          (setq *wx-interrupt-channel-thread*
+                (wx-make-thread "wxMaxima interrupt channel"
+                                (lambda ()
+                                  (wx-interrupt-channel-loop stream main)))))))
+    (and (wx-thread-alive-p *wx-interrupt-channel-thread*) t)))
 
 (format t "</suppressOutput>~%")
 ;; Publish all new global variables maxima might contain to wxMaxima's

@@ -149,7 +149,21 @@ void MaximaProcessManager::ServerEvent(wxSocketEvent &event) {
 
 void MaximaProcessManager::OnMaximaConnect() {
   if (m_wxMaxima.m_client && (m_wxMaxima.m_client->IsConnected())) {
-    wxLogMessage(_("New connection attempt whilst already connected."));
+    // Once Maxima is connected, it opens a second connection to interrupt
+    // it through (see MaximaInterruptChannel) -- or somebody else on this
+    // machine connects, which the channel's handshake rejects.
+    if (m_wxMaxima.m_server == nullptr)
+      return;
+    wxSocketBase *socket = m_wxMaxima.m_server->Accept(false);
+    if (m_wxMaxima.m_interruptChannel && !m_wxMaxima.m_interruptChannel->IsDead()) {
+      // Keep the channel we have: a newcomer mustn't be able to replace it.
+      wxLogMessage(_("New connection attempt whilst already connected."));
+      if (socket)
+        socket->Destroy();
+      return;
+    }
+    m_wxMaxima.m_interruptChannel =
+      std::make_unique<MaximaInterruptChannel>(socket, m_wxMaxima.m_maximaAuthString);
     return;
   }
   if (m_wxMaxima.m_maximaProcess == nullptr) {
@@ -318,10 +332,11 @@ bool MaximaProcessManager::StartMaxima(bool force) {
       wxEnvVariableHashMap environment;
       environment = m_wxMaxima.m_configuration.MaximaEnvVars();
       wxGetEnvMap(&environment);
-      // Tell Maxima we want to be able to kill it on Ctrl+G by sending it a
-      // signal. Strictly necessary only on MS Windows where we don't have a
-      // kill() command.
-      environment["MAXIMA_SIGNALS_THREAD"] = "1";
+      // MAXIMA_SIGNALS_THREAD is deliberately not set any more: it made an
+      // SBCL or CCL Maxima on MS Windows start a thread that polls a
+      // shared-memory segment for Ctrl+G. Both Lisps have threads, so they
+      // open wxMaxima's own interrupt channel instead (MaximaInterruptChannel),
+      // which needs neither the pid nor Maxima's winkill_lib.dll.
       if(!Configuration::GetMaximaLang().IsEmpty())
         environment["LANG"] = Configuration::GetMaximaLang();
       // TODO: Is this still necessary for gnuplot on MacOs?
@@ -461,6 +476,7 @@ void MaximaProcessManager::KillMaxima(bool logMessage) {
   m_wxMaxima.m_inLDB = false;
   // This closes Maxima's network connection.
   m_wxMaxima.m_client.reset();
+  m_wxMaxima.m_interruptChannel.reset();
 
   // Finally found a long outstanding problem with leftover Lisp processes
   // (using debugging with command line Maxima and netcat):
@@ -886,6 +902,10 @@ std::vector<ProcessEntry> SnapshotProcesses() {
   interfaces/xmaxima/win32/win_signals.lisp and
   interfaces/xmaxima/win32/winkill_lib.c in maxima's tree.
 
+  GCL creates gcl-<pid> itself. maxima-<pid> is created by Maxima's signal
+  thread (SBCL, CCL), which only runs if MAXIMA_SIGNALS_THREAD is set -- which
+  wxMaxima no longer does, since those Lisps have the interrupt channel.
+
   \param name Is set to the name of the segment that was found.
   \return true, if the bit could be set.
 */
@@ -958,6 +978,14 @@ void MaximaProcessManager::Interrupt(wxCommandEvent &WXUNUSED(event)) {
 
   if (m_wxMaxima.m_pid < 0) {
     m_wxMaxima.m_MenuBar->EnableItem(EventIDs::menu_interrupt_id, false);
+    return;
+  }
+
+  // The interrupt channel works the same on every operating system and needs
+  // no process id, so it is preferred whenever the Lisp has opened one.
+  if (m_wxMaxima.m_interruptChannel && m_wxMaxima.m_interruptChannel->SendInterrupt()) {
+    wxLogMessage(_("Sending an interrupt signal to Maxima."));
+    wxLogMessage("Sent the request through Maxima's interrupt channel.");
     return;
   }
 

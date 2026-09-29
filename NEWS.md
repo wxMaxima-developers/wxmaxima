@@ -1,5 +1,13 @@
 # Current development version
 
+- Interrupting Maxima (Ctrl+G) no longer depends on the operating system
+  when Maxima runs on a Lisp with threads (SBCL, which the MS Windows
+  installer uses, CCL, ECL, or a clisp built with threads): the Lisp opens a
+  second connection to wxMaxima that the interrupt is sent through (#2289).
+  This works without Maxima's process id, the shared-memory segment and
+  winkill_lib.dll, or a console, so wxMaxima no longer sets
+  MAXIMA_SIGNALS_THREAD. On a Lisp without threads (GCL) wxMaxima interrupts
+  as before, and says in the log window why it can't do better.
 - MS Windows: Interrupting Maxima (Ctrl+G) is more robust (#2289). If
   Maxima's first prompt didn't tell wxMaxima Maxima's process id, the
   interrupt was sent to maxima.bat instead of to the Lisp and failed. Now

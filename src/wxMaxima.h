@@ -44,6 +44,7 @@
 #include "MaximaEvaluator.h"
 #include "MaximaFileIO.h"
 #include "MaximaOutputAppender.h"
+#include "MaximaInterruptChannel.h"
 #include "Dirstructure.h"
 #include <wx/socket.h>
 #include <wx/config.h>
@@ -609,6 +610,13 @@ protected:
     }
 
   std::unique_ptr<Maxima> m_client;
+  /*! The second connection Maxima's Lisp opens so we can interrupt it.
+
+    Only a Lisp with threads opens one, and only once it has connected;
+    MaximaProcessManager::Interrupt() falls back to signals, shared memory or
+    a console Ctrl+C while there is none.
+  */
+  std::unique_ptr<MaximaInterruptChannel> m_interruptChannel;
   /*! The Right Way to delete a wxSocketServer
 
     The destructor might delete the server before all pending server events have been

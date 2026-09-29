@@ -194,6 +194,8 @@ set(SOURCE_FILES
     main.cpp
     AuiPerspectiveRepair.cpp
     ProcessTree.cpp
+    InterruptChannelHandshake.cpp
+    MaximaInterruptChannel.cpp
     MenuHelpString.cpp
     wxMathml.cpp
     wxMaxima.cpp
