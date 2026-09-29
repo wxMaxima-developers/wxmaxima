@@ -653,9 +653,15 @@ a local TCP socket.
   SelectionToSelfContainedHTML()` / `Worksheet::CopyHTML()`:** a right-click
   context menu item placing a *self-contained* HTML document on the
   clipboard (inline `<style>`, every image as a base64 `data:` URI, no
-  external file references at all) -- unlike `ExportToHTML()`'s on-disk
-  export, which deliberately writes a separate `.css` file and an
-  `_htmlimg/` directory next to the `.html`. Reuses `ExportCodeCell()`/
+  external file references at all). `ExportToHTML()`'s on-disk export does
+  the same when `Configuration::HTMLExportSelfContained()` is set (GH #2266;
+  it also embeds the optional `.wxmx` as a `data:` href with a `download`
+  attribute). That option is **off by default on purpose** -- the maintainer
+  wants it only for mailing a single file -- so by default the export still
+  writes an `_htmlimg/` directory next to the `.html`. In self-contained mode
+  the images are written under the fixed prefix `img`, not the file name:
+  `HtmlImageTag()` URL-encodes the prefix into the `src`, so a file name with
+  a space would no longer match the file `InlineImagesAsDataURIs()` looks up. Reuses `ExportCodeCell()`/
   `ExportOtherCell()` (the same per-GroupCell renderers `ExportToHTML()`
   uses) completely unchanged, rather than duplicating them, by pointing
   their `imgDir` at a fresh private scratch directory and post-processing
@@ -1586,6 +1592,7 @@ tried without rebuilding.
 
 - **Branches and pull requests:** one branch per feature or bugfix, cut fresh from `main`, PR when it is finished -- see "Branches and pull requests" at the top of this file for why reusing one long-lived branch has already caused trouble.
 - **Red CI:** fixing a failure is welcome whoever caused it, and causing one is nobody's fault -- but never make a test pass by removing or weakening it. See "A red CI is everyone's to fix" at the top of this file.
+- **A test that needs a POSIX shell goes into `WXM_POSIX_TESTS`** (`test/CMakeLists.txt`). That list labels its tests `needs_posix`, and the Windows jobs run `ctest -LE "unittest|needs_posix"`, so this is how a test that runs a `.sh` helper (`check-wxMathML.sh`, `check-lintian.sh`, ...) or otherwise assumes `/bin/sh` stays off MSW. A test missing from it fails there as `BAD_COMMAND`, which is how the minGW job went red on `main` in 2026-09 with four such tests. Configure now refuses a test whose `COMMAND` is a `check-*.sh` helper unless it is in the list, but that guard only recognises that one shape: a test that reaches a shell some other way still has to be added by hand.
 - **Git Environment:** Note that running `git diff` might launch the visual diff tool `meld` instead of outputting to the terminal. Always use `git diff --no-ext-diff` if you need terminal output.
 - **String Literals & Translations:** Use the `wxS()` macro for all string literals and `_()` for user-facing translatable strings.
 - **Logging:** Use `wxLogMessage()` for debugging; messages are visible in **View -> Toggle Log Window** or by using the option `--logtostderr`.

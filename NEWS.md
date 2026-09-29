@@ -5,6 +5,12 @@
   address underlined in the link color, and Ctrl+click (Cmd+click on macOS)
   or the context menu's "Open Link" opens it. A plain click still selects
   the output, so it can be copied as before.
+- The HTML export can now write one single file that contains its images
+  and, if requested, the downloadable .wxmx copy, so the page can be mailed
+  on its own: check "Embed images into the .html file" in the Export tab of
+  the configuration dialog. By default these still go into a separate
+  `<name>_htmlimg` folder next to the .html file, which keeps it small
+  (#2266).
 - Web addresses in text cells are now links (GH #2396). An address
   starting with http://, https:// or mailto: is drawn underlined in a link
   color (configurable in Options -> Style), and Ctrl+click (Cmd+click on

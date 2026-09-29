@@ -484,6 +484,8 @@ A relative file name is interpreted relative to _Maxima_’s working directory. 
 | `flavor` | `mathml` (default), `mathjax`, `svg`, `bitmap`  | how the equations are rendered in the exported page |
 | `wxmx`   | `false` (default), `true`                       | embed a downloadable `.wxmx` copy of the session    |
 
+The images and the `.wxmx` copy are written into a folder named after the HTML file, with `_htmlimg` appended. If "Embed images into the .html file" is checked in the Export tab of the configuration dialog, they are embedded into the HTML file instead, so it can be mailed as a single file.
+
 The `flavor` values match the equation formats offered by the graphical **File → Export** dialog: `mathml` produces a self-contained page that needs no internet connection, `mathjax` adds a MathJaX fall-back for browsers that still lack MathML, and `svg`/`bitmap` render every equation to an image.
 
 The companion command `wxworksheettotex()` exports to a LaTeX (`.tex`) file the same way:
