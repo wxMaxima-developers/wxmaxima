@@ -273,7 +273,7 @@ void Configuration::ResetAllToDefaults() {
   m_wrapLatexMath = true;
   m_allowNetworkHelp = false;
   m_exportContainsWXMX = true;
-  m_htmlExportSelfContained = true;
+  m_htmlExportSelfContained = false;
   m_maximaUsesHhtmlBrowser = true;
   m_maximaUsesWxmaximaBrowser = OfferInternalHelpBrowser();
   m_bitmapScale = 3;

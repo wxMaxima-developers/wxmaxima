@@ -654,9 +654,10 @@ a local TCP socket.
   context menu item placing a *self-contained* HTML document on the
   clipboard (inline `<style>`, every image as a base64 `data:` URI, no
   external file references at all). `ExportToHTML()`'s on-disk export does
-  the same by default since GH #2266 (`Configuration::
-  HTMLExportSelfContained()`, which also embeds the optional `.wxmx` as a
-  `data:` href with a `download` attribute); with that option off it still
+  the same when `Configuration::HTMLExportSelfContained()` is set (GH #2266;
+  it also embeds the optional `.wxmx` as a `data:` href with a `download`
+  attribute). That option is **off by default on purpose** -- the maintainer
+  wants it only for mailing a single file -- so by default the export still
   writes an `_htmlimg/` directory next to the `.html`. In self-contained mode
   the images are written under the fixed prefix `img`, not the file name:
   `HtmlImageTag()` URL-encodes the prefix into the `src`, so a file name with

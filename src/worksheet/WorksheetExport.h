@@ -56,8 +56,8 @@ namespace WorksheetExport {
   images (in the format selected by Configuration::HTMLequationFormat()),
   animations, embedded images and the optional .wxmx copy of the document are
   either embedded into the same file as data: URIs
-  (Configuration::HTMLExportSelfContained(), the default) or written into a
-  <name>_htmlimg directory next to it.
+  (Configuration::HTMLExportSelfContained(), off by default) or written into
+  a <name>_htmlimg directory next to it (the default).
 
   \param cellPointers and \param hCaret are only passed through to the
   embedded .wxmx copy, which stores the cursor position.

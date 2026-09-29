@@ -529,8 +529,8 @@ static void RequireValidHtml(const wxString &htmlPath) {
 SCENARIO("HTML export succeeds, is deterministic and contains the document") {
   BuildDocumentOnce();
   // This scenario checks the image files the export writes next to the
-  // .html, so it needs the (non-default) linked layout; the self-contained
-  // one has its own scenario below.
+  // .html, so it pins the (default) linked layout; the self-contained one
+  // has its own scenario below.
   const bool oldSelfContained = g_cfg->HTMLExportSelfContained();
   g_cfg->HTMLExportSelfContained(false);
 
