@@ -87,7 +87,8 @@ they have sharp edges that have all bitten:
 `MaximaProcessManager::Interrupt()` tries, in order: the **interrupt
 channel** (`MaximaInterruptChannel`, `wx-open-interrupt-channel` in
 `wxMathML.lisp`), then SIGINT on POSIX, or on MS Windows the `gcl-<pid>` /
-`maxima-<pid>` shared-memory segments and a console Ctrl+C. The channel is a
+`maxima-<pid>` shared-memory segments (a console Ctrl+C fallback was dropped:
+it never worked, wxmaxima.exe has no console). The channel is a
 second connection a Lisp with threads opens to wxMaxima's own server after
 `SetupVariables()` asks it to; `OnMaximaConnect()` treats any connection that
 arrives while `m_client` is connected as a channel candidate, and it only

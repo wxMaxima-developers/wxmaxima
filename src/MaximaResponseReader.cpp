@@ -1003,8 +1003,8 @@ void MaximaResponseReader::VariableActionLispVersion(const wxString &value) {
 void MaximaResponseReader::VariableActionInterruptChannelAvailable(const wxString &value) {
   // Without threads the Lisp cannot open the channel MaximaInterruptChannel
   // interrupts it through, and interrupting falls back to what the operating
-  // system offers: a signal on POSIX, which works; on MS Windows a
-  // shared-memory segment GCL provides, or a console Ctrl+C.
+  // system offers: a signal on POSIX, which works; on MS Windows only the
+  // shared-memory segment GCL provides.
   if (value != wxS("true"))
     wxLogMessage(_("The Lisp Maxima runs on has no thread support: wxMaxima can "
                    "interrupt a computation only by the means the operating "

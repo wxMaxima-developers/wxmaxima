@@ -613,8 +613,8 @@ protected:
   /*! The second connection Maxima's Lisp opens so we can interrupt it.
 
     Only a Lisp with threads opens one, and only once it has connected;
-    MaximaProcessManager::Interrupt() falls back to signals, shared memory or
-    a console Ctrl+C while there is none.
+    MaximaProcessManager::Interrupt() falls back to SIGINT, or on MS Windows
+    to GCL's shared memory, while there is none.
   */
   std::unique_ptr<MaximaInterruptChannel> m_interruptChannel;
   /*! The Right Way to delete a wxSocketServer
