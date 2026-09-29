@@ -1,5 +1,9 @@
 # Current development version
 
+- The toolbar's "return to the cell being evaluated" button now becomes
+  active as soon as one scrolls away from the evaluation. Before, it kept
+  looking disabled until the mouse pointer entered the toolbar. The same
+  delay affected every other toolbar button whose state or icon changed.
 - Web addresses in Maxima's output are links, too (GH #2396): a string
   like print("See https://...") or a message naming a web page shows the
   address underlined in the link color, and Ctrl+click (Cmd+click on macOS)
