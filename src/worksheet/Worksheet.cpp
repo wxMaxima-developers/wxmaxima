@@ -40,6 +40,7 @@
 #include "graphical_io/EMFout.h"
 #include "cells/ImgCell.h"
 #include "MarkDown.h"
+#include "UrlDetection.h"
 #include "dialogs/MaxSizeChooser.h"
 #include "dialogs/ResolutionChooser.h"
 #include "dialogs/MatrixViewer.h"
@@ -69,6 +70,7 @@
 #endif
 #include <wx/caret.h>
 #include <wx/clipbrd.h>
+#include <wx/utils.h>
 #include <wx/config.h>
 #include <wx/dcbuffer.h>
 #include <wx/dcgraph.h>
@@ -434,11 +436,33 @@ bool Worksheet::RedrawIfRequested() {
                                         static_cast<long>(image->GetPPI())));
           }
         }
-      } else
-        UnsetToolTip();
+      } else {
+        // Over a text cell's link the tooltip says where it leads and how to
+        // follow it, and while Ctrl is held the pointer turns into a hand.
+        const wxString link = LinkUnderPointer();
+        if (!link.empty()) {
+#ifdef __WXOSX__
+          const wxString toolTip = wxString::Format(_("%s\nCmd+click to open the link"), link);
+#else
+          const wxString toolTip = wxString::Format(_("%s\nCtrl+click to open the link"), link);
+#endif
+          if (toolTip != GetToolTipText())
+            SetToolTip(toolTip);
+        } else
+          UnsetToolTip();
+        const bool showHand = !link.empty() && m_pointerCmdDown;
+        if (showHand != m_linkCursorShown) {
+          SetCursor(showHand ? wxCursor(wxCURSOR_HAND) : wxNullCursor);
+          m_linkCursorShown = showHand;
+        }
+      }
     } else {
       UnsetToolTip();
       GetViewCellPointers().ClearCellUnderPointer();
+    }
+    if (m_linkCursorShown && !GetViewCellPointers().GetGroupCellUnderPointer()) {
+      SetCursor(wxNullCursor);
+      m_linkCursorShown = false;
     }
     m_mouseMotionWas = false;
     redrawIssued = true;
@@ -1315,6 +1339,8 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
     // request to un-capture it.
     if(HasCapture())
       ReleaseMouse();
+    // A link's tooltip would otherwise sit on top of the menu's first entries.
+    UnsetToolTip();
     PopupMenu(&popupMenu);
     m_inPopupMenu = false;
   }
@@ -1375,8 +1401,25 @@ void Worksheet::OnMouseLeftInGcLeft(wxMouseEvent &event,
 /***
  * We have a mouse click in the GroupCell.
  */
-void Worksheet::OnMouseLeftInGcCell(wxMouseEvent &WXUNUSED(event),
+void Worksheet::OnMouseLeftInGcCell(wxMouseEvent &event,
                                     GroupCell *clickedInGC) {
+  // Ctrl+click (Cmd+click on macOS) follows a link in a text cell. A plain
+  // click has to keep placing the caret, since text cells are always
+  // editable. The link opens instead of the cell becoming active, so nothing
+  // is dragged or selected by the button being held afterwards.
+  if (event.CmdDown()) {
+    EditorCell *editor = clickedInGC->GetEditable();
+    if (editor) {
+      const wxString link = editor->GetLinkAt(m_down);
+      if (!link.empty()) {
+        m_clickType = CLICK_TYPE_NONE;
+        // Let the mouse go before a browser window can take the focus.
+        CallAfter([link] { OpenLink(link); });
+        return;
+      }
+    }
+  }
+
   if (GCContainsCurrentQuestion(clickedInGC)) {
     // The user clicked at the cell maxima has asked a question in.
     FollowEvaluation(true);
@@ -1653,11 +1696,28 @@ void Worksheet::OnMouseWheel(wxMouseEvent &event) {
     }
 }
 
+bool Worksheet::OpenLink(const wxString &url) {
+  if (!wxm::IsLaunchableUrl(url)) {
+    wxLogMessage(_("Not opening \"%s\": only http, https and mailto links are opened."),
+                 url);
+    return false;
+  }
+  return wxLaunchDefaultBrowser(url);
+}
+
+wxString Worksheet::LinkUnderPointer() {
+  GroupCell *group = GetViewCellPointers().GetGroupCellUnderPointer();
+  if (!group || !group->GetEditable())
+    return {};
+  return group->GetEditable()->GetLinkAt(wxPoint(m_pointer_x, m_pointer_y));
+}
+
 void Worksheet::OnMouseMotion(wxMouseEvent &event) {
   event.Skip();
   CalcUnscrolledPosition(event.GetX(), event.GetY(), &m_pointer_x,
                          &m_pointer_y);
   m_mouseMotionWas = true;
+  m_pointerCmdDown = event.CmdDown();
   m_updateControls = true;
   if (!GetTree() || !m_leftDown)
     return;
