@@ -1560,8 +1560,13 @@ foreach(wxm_t IN LISTS wxm_all_tests)
   else()
     set(wxm_envdir "${CMAKE_CURRENT_BINARY_DIR}/test_envdirs/${wxm_t}")
   endif()
-  file(MAKE_DIRECTORY "${wxm_envdir}")
-  file(MAKE_DIRECTORY "${wxm_envdir}/TMPDIR")
+  # Create every directory the environment below points at: nothing creates
+  # them on demand. Maxima in particular writes its plot data and gnuplot
+  # scripts straight into MAXIMA_TEMPDIR and fails with "Cannot create" if
+  # that folder is missing.
+  foreach(wxm_d TMPDIR MAXIMA_USERDIR MAXIMA_OBJDIR MAXIMA_TEMPDIR XDG_CONFIG_HOME)
+    file(MAKE_DIRECTORY "${wxm_envdir}/${wxm_d}")
+  endforeach()
   set_property(TEST "${wxm_t}" APPEND PROPERTY ENVIRONMENT
     "TMPDIR=${wxm_envdir}/TMPDIR"
     #"TEMPDIR=${wxm_envdir}/TMPDIR"
