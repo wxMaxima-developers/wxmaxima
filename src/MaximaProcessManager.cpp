@@ -914,41 +914,6 @@ bool SetInterruptBitInSharedMemory(long pid, wxString &name) {
   return false;
 }
 
-/*! Sends a Ctrl+C to the console process \p pid is attached to.
-
-  GenerateConsoleCtrlEvent() only reaches processes sharing the caller's
-  console. wxmaxima.exe is a GUI program and normally has no console at all,
-  while Maxima runs in a hidden console of its own -- so we briefly attach to
-  that one. A process can be attached to only one console, though: if we
-  already have one (wxMaxima started from a console window with a debug
-  build, for example), we keep it and signal it, which reaches Maxima only if
-  Maxima shares it.
-
-  The Ctrl+C reaches every process on that console, including us while we
-  are attached, which is why we ignore Ctrl+C ourselves beforehand.
-
-  \param error Is set to the reason, if this fails.
-*/
-bool SendCtrlCToConsoleOf(long pid, wxString &error) {
-  const bool attached = AttachConsole(static_cast<DWORD>(pid));
-  if (!attached && (GetLastError() != ERROR_ACCESS_DENIED)) {
-    // ERROR_ACCESS_DENIED means that we already have a console.
-    error = LastWindowsError();
-    return false;
-  }
-  SetConsoleCtrlHandler(nullptr, TRUE);
-  // We could send a CTRL_BREAK_EVENT instead of a CTRL_C_EVENT that
-  // isn't handled in the 2010 clisp release (see:
-  // https://sourceforge.net/p/clisp/bugs/735/)
-  // ...but CTRL_BREAK_EVENT seems to crash clisp, see
-  // https://sourceforge.net/p/clisp/bugs/736/
-  const bool sent = GenerateConsoleCtrlEvent(CTRL_C_EVENT, 0);
-  if (!sent)
-    error = LastWindowsError();
-  if (attached)
-    FreeConsole();
-  return sent;
-}
 } // namespace
 #endif
 
@@ -991,21 +956,11 @@ void MaximaProcessManager::Interrupt(wxCommandEvent &WXUNUSED(event)) {
                "PID of the process we started: %li)",
                triedNames, m_wxMaxima.m_maximaPid, m_wxMaxima.m_pid);
 
-  // No shared memory to signal to => send a Ctrl+C to Maxima's console
-  // instead. Lisps without a signal thread (e.g. clisp) listen to that.
-  wxString consoleError;
-  for (auto pid : candidates)
-    if (SendCtrlCToConsoleOf(pid, consoleError)) {
-      wxLogMessage(_("Sending an interrupt signal to Maxima."));
-      wxLogMessage("Sent a Ctrl+C to the console of process %li", pid);
-      return;
-    }
-
-  wxString errorMessage;
-  if (consoleError.IsEmpty())
-    errorMessage = _("Could not send an interrupt signal to maxima.");
-  else
-    errorMessage = wxString::Format(_("Interrupting maxima: %s"), consoleError);
+  // There used to be a last resort here: a Ctrl+C to Maxima's console. It
+  // was dropped because it never worked: wxmaxima.exe has no console to send
+  // one from, and Maxima runs as the leader of a new process group, which
+  // Windows makes ignore Ctrl+C.
+  const wxString errorMessage = _("Could not send an interrupt signal to maxima.");
   m_wxMaxima.StatusText(errorMessage);
   wxLogMessage("%s", errorMessage);
   return;

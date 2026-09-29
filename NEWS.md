@@ -3,11 +3,10 @@
 - MS Windows: Interrupting Maxima (Ctrl+G) is more robust (#2289). If
   Maxima's first prompt didn't tell wxMaxima Maxima's process id, the
   interrupt was sent to maxima.bat instead of to the Lisp and failed. Now
-  every process below the one wxMaxima started is tried. If no Lisp offers a
-  way to be signalled, wxMaxima now attaches to Maxima's hidden console to
-  send it a Ctrl+C: the previous fallback could never work, since
-  wxmaxima.exe has no console of its own. A failure now also reports what
-  Windows said instead of a generic message.
+  every process below the one wxMaxima started is tried. The fallback that
+  sent a Ctrl+C to a console was dropped: wxmaxima.exe has no console, so it
+  could never work. A failure now logs which shared-memory segments were
+  tried and what Windows said.
 - The HTML export can now write one single file that contains its images
   and, if requested, the downloadable .wxmx copy, so the page can be mailed
   on its own: check "Embed images into the .html file" in the Export tab of
