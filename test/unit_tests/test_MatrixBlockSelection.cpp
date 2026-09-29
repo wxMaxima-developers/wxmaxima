@@ -314,6 +314,63 @@ SCENARIO("A matrix, or a block of one, can be copied as CSV (GH #2364)") {
   }
 }
 
+SCENARIO("Copy as HTML copies just the selected part of an output (GH #2369)") {
+  g_cfg->SetZoomFactor(1.0);
+  g_cfg->SetCanvasSize(wxSize(1000, 1000));
+  const auto oldFormat = g_cfg->HTMLequationFormat();
+  // MathML keeps the entries as text in the HTML, where the test can see them.
+  g_cfg->HTMLequationFormat(Configuration::mathML);
+  MatrCell *matr = ShowMatrix(MatrixTableXml(4, 4));
+
+  WHEN("a block of the matrix is selected") {
+    Drag(matr, 1, 1, 2, 2);
+    REQUIRE(Pointers().GetSelectedMatrixBlock());
+    const wxString html = g_ws->SelectionToSelfContainedHTML();
+    THEN("the HTML holds that block's entries") {
+      CHECK(html.Contains(wxS("<math")));
+      for (const auto *entry : {"111", "112", "121", "122"})
+        CHECK(html.Contains(wxString(entry)));
+    }
+    THEN("and none of the others, nor the input or the label") {
+      for (const auto *entry : {"100", "103", "113", "130", "133"})
+        CHECK_FALSE(html.Contains(wxString(entry)));
+      CHECK_FALSE(html.Contains(wxS("class=\"input\"")));
+      CHECK_FALSE(html.Contains(wxS("%o1")));
+    }
+  }
+  WHEN("a single entry of the matrix is selected") {
+    const wxRect entry = matr->GetInnerCell(3, 0)->GetRect();
+    g_ws->SelectOutputRect(g_ws->GetTree(), entry.GetTopLeft() + wxPoint(1, 1),
+                           entry.GetBottomRight() - wxPoint(1, 1));
+    REQUIRE(Pointers().GetSelectionStart() == matr->GetInnerCell(3, 0));
+    const wxString html = g_ws->SelectionToSelfContainedHTML();
+    THEN("the HTML holds just that entry") {
+      CHECK(html.Contains(wxS("130")));
+      CHECK_FALSE(html.Contains(wxS("100")));
+    }
+  }
+  WHEN("the whole cell is selected") {
+    g_ws->SetSelection(g_ws->GetTree());
+    const wxString html = g_ws->SelectionToSelfContainedHTML();
+    THEN("the HTML holds the whole matrix and its label, as before") {
+      CHECK(html.Contains(wxS("100")));
+      CHECK(html.Contains(wxS("133")));
+      CHECK(html.Contains(wxS("%o1")));
+      if (g_cfg->ShowCodeCells())
+        CHECK(html.Contains(wxS("class=\"input\"")));
+    }
+  }
+  WHEN("nothing is selected") {
+    g_ws->ClearSelection();
+    THEN("there is nothing to copy") {
+      CHECK(g_ws->SelectionToSelfContainedHTML().IsEmpty());
+    }
+  }
+
+  g_ws->DestroyTree();
+  g_cfg->HTMLequationFormat(oldFormat);
+}
+
 SCENARIO("Shift+arrow keys grow or shrink a selected block (GH #2370)") {
   g_cfg->SetZoomFactor(1.0);
   g_cfg->SetCanvasSize(wxSize(1000, 1000));
