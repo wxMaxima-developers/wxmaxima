@@ -17,7 +17,7 @@ var searchData=
   ['hcaretactive_14',['HCaretActive',['../classWorksheet.html#a338c8d1a351010a4a4e8526bfff8a6d5',1,'Worksheet']]],
   ['heightforwidth_15',['HeightForWidth',['../classButtonwrapsizer.html#a1100bfcefde065150206de25e6a8ecee',1,'Buttonwrapsizer']]],
   ['helpbrowser_16',['HelpBrowser',['../classHelpBrowser.html#aa30aa60b164108f643cac263f3006a77',1,'HelpBrowser']]],
-  ['helpbrowseruserlocation_17',['HelpBrowserUserLocation',['../classConfiguration.html#a0c5f8dc5f190f8c061097f230e6070be',1,'Configuration::HelpBrowserUserLocation() const'],['../classConfiguration.html#a8704e8f0514e29f02578230d39e30e27',1,'Configuration::HelpBrowserUserLocation(wxString helpBrowser)']]],
+  ['helpbrowseruserlocation_17',['HelpBrowserUserLocation',['../classConfiguration.html#a8704e8f0514e29f02578230d39e30e27',1,'Configuration::HelpBrowserUserLocation(wxString helpBrowser)'],['../classConfiguration.html#a0c5f8dc5f190f8c061097f230e6070be',1,'Configuration::HelpBrowserUserLocation() const']]],
   ['helpdir_18',['HelpDir',['../classDirstructure.html#ad67a848e54d1e40f97453a8e4279f59c',1,'Dirstructure::HelpDir() const'],['../classDirstructure.html#a566f3960bf573e37465b6a09b34eaddf',1,'Dirstructure::HelpDir(const wxString &amp;helpDir)']]],
   ['helpmenu_19',['HelpMenu',['../classMaximaCommandMenus.html#a3eade0ddf1a3f6ec04f6ecabd55dc1c3',1,'MaximaCommandMenus']]],
   ['hide_20',['Hide',['../classCell.html#a87f7f4583027ae2e5e5baf664d488dc2',1,'Cell::Hide()'],['../classGroupCell.html#a02dab13af6158beb628cd2bb0be34a20',1,'GroupCell::Hide()']]],
@@ -25,5 +25,6 @@ var searchData=
   ['hidesidebar_22',['HideSidebar',['../classMcpTools.html#a6d4f36b88efb763e6c06d5fca207d03e',1,'McpTools']]],
   ['hidetree_23',['HideTree',['../classGroupCell.html#aa79c40d6d88603e83be78a30e5ba190d',1,'GroupCell']]],
   ['historydclick_24',['HistoryDClick',['../classwxMaxima.html#a779cec517fcd3071172c32d05e7b17af',1,'wxMaxima']]],
-  ['horizontalscrollbarrect_25',['HorizontalScrollbarRect',['../classMatrCell.html#aef348a203ec2890b5fbd1798e0b2944d',1,'MatrCell']]]
+  ['horizontalscrollbarrect_25',['HorizontalScrollbarRect',['../classMatrCell.html#aef348a203ec2890b5fbd1798e0b2944d',1,'MatrCell']]],
+  ['htmlexportselfcontained_26',['HTMLExportSelfContained',['../classConfiguration.html#a09614451291eeb82685331e594616a99',1,'Configuration']]]
 ];

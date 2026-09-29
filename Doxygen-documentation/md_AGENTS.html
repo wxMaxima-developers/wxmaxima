@@ -261,9 +261,15 @@ Architecture &amp; GUI</h1>
   SelectionToSelfContainedHTML()&lt;/tt&gt; / &lt;tt&gt;Worksheet::CopyHTML()&lt;/tt&gt;:** a right-click
   context menu item placing a &lt;em&gt;self-contained&lt;/em&gt; HTML document on the
   clipboard (inline &lt;tt&gt;\&lt;style\&gt;&lt;/tt&gt;, every image as a base64 &lt;tt&gt;data:&lt;/tt&gt; URI, no
-  external file references at all) &amp;ndash; unlike &lt;tt&gt;ExportToHTML()&lt;/tt&gt;'s on-disk
-  export, which deliberately writes a separate &lt;tt&gt;.css&lt;/tt&gt; file and an
-  &lt;tt&gt;_htmlimg/&lt;/tt&gt; directory next to the &lt;tt&gt;.html&lt;/tt&gt;. Reuses &lt;tt&gt;ExportCodeCell()&lt;/tt&gt;/
+  external file references at all). &lt;tt&gt;ExportToHTML()&lt;/tt&gt;'s on-disk export does
+  the same when &lt;tt&gt;Configuration::HTMLExportSelfContained()&lt;/tt&gt; is set (GH #2266;
+  it also embeds the optional &lt;tt&gt;.wxmx&lt;/tt&gt; as a &lt;tt&gt;data:&lt;/tt&gt; href with a &lt;tt&gt;download&lt;/tt&gt;
+  attribute). That option is &lt;strong&gt;off by default on purpose&lt;/strong&gt; &amp;ndash; the maintainer
+  wants it only for mailing a single file &amp;ndash; so by default the export still
+  writes an &lt;tt&gt;_htmlimg/&lt;/tt&gt; directory next to the &lt;tt&gt;.html&lt;/tt&gt;. In self-contained mode
+  the images are written under the fixed prefix &lt;tt&gt;img&lt;/tt&gt;, not the file name:
+  &lt;tt&gt;HtmlImageTag()&lt;/tt&gt; URL-encodes the prefix into the &lt;tt&gt;src&lt;/tt&gt;, so a file name with
+  a space would no longer match the file &lt;tt&gt;InlineImagesAsDataURIs()&lt;/tt&gt; looks up. Reuses &lt;tt&gt;ExportCodeCell()&lt;/tt&gt;/
   &lt;tt&gt;ExportOtherCell()&lt;/tt&gt; (the same per-GroupCell renderers &lt;tt&gt;ExportToHTML()&lt;/tt&gt;
   uses) completely unchanged, rather than duplicating them, by pointing
   their &lt;tt&gt;imgDir&lt;/tt&gt; at a fresh private scratch directory and post-processing

@@ -46,5 +46,6 @@ var searchData=
   ['historyentry_43',['HistoryEntry',['../classEditorCell_1_1History_1_1HistoryEntry.html',1,'EditorCell::History']]],
   ['horizontalscrollbarrect_44',['HorizontalScrollbarRect',['../classMatrCell.html#aef348a203ec2890b5fbd1798e0b2944d',1,'MatrCell']]],
   ['htmlexportformat_45',['htmlExportFormat',['../classConfiguration.html#ae285be0c26dbdd7a86eac37c9cebdd7d',1,'Configuration']]],
-  ['htmlexportformats_46',['htmlExportFormats',['../classConfigDialogue.html#ad25b60509b8711db5f1fb118b88b2d95',1,'ConfigDialogue']]]
+  ['htmlexportformats_46',['htmlExportFormats',['../classConfigDialogue.html#ad25b60509b8711db5f1fb118b88b2d95',1,'ConfigDialogue']]],
+  ['htmlexportselfcontained_47',['HTMLExportSelfContained',['../classConfiguration.html#a09614451291eeb82685331e594616a99',1,'Configuration']]]
 ];

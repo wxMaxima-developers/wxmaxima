@@ -275,7 +275,7 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><b>WorksheetExport::
 </div><div class="memdoc">
 
 <p>Export the tree to an HTML file. </p>
-<p>Writes the HTML to <em>file</em> and the stylesheet, the equation images (in the format selected by Configuration::HTMLequationFormat()) and a .wxmx copy of the document into a &lt;name&gt;_htmlimg directory next to it.</p>
+<p>Writes the HTML, with its stylesheet inlined, to <em>file</em>. The equation images (in the format selected by Configuration::HTMLequationFormat()), animations, embedded images and the optional .wxmx copy of the document are either embedded into the same file as data: URIs (<a class="el" href="classConfiguration.html#a09614451291eeb82685331e594616a99" title="Does the HTML export produce one self-contained file?">Configuration::HTMLExportSelfContained()</a>, off by default) or written into a &lt;name&gt;_htmlimg directory next to it (the default).</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">cellPointers</td><td>and</td></tr>

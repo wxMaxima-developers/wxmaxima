@@ -1325,6 +1325,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ExportContainsWXMX</b
 <tr class="memitem:a366c01b392e653aa1fa390877f1233ec"><td class="memItemLeft" align="right" valign="top"><a id="a366c01b392e653aa1fa390877f1233ec" name="a366c01b392e653aa1fa390877f1233ec"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>ExportContainsWXMX</b> () const</td></tr>
 <tr class="separator:a366c01b392e653aa1fa390877f1233ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09614451291eeb82685331e594616a99"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#a09614451291eeb82685331e594616a99">HTMLExportSelfContained</a> () const</td></tr>
+<tr class="memdesc:a09614451291eeb82685331e594616a99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does the HTML export produce one self-contained file?  <br /></td></tr>
+<tr class="separator:a09614451291eeb82685331e594616a99"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3cb59c04e5161d7adee559e95920d710"><td class="memItemLeft" align="right" valign="top"><a id="a3cb59c04e5161d7adee559e95920d710" name="a3cb59c04e5161d7adee559e95920d710"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>HTMLExportSelfContained</b> (bool selfContained)</td></tr>
+<tr class="separator:a3cb59c04e5161d7adee559e95920d710"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a12e4e8c8b39e0281a213b26d9d212dd0"><td class="memItemLeft" align="right" valign="top"><a id="a12e4e8c8b39e0281a213b26d9d212dd0" name="a12e4e8c8b39e0281a213b26d9d212dd0"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>WizardTab</b> (long tab)</td></tr>
 <tr class="separator:a12e4e8c8b39e0281a213b26d9d212dd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2074,6 +2080,34 @@ static <a class="el" href="structConfiguration_1_1PerformanceStats.html">Perform
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a09614451291eeb82685331e594616a99" name="a09614451291eeb82685331e594616a99"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a09614451291eeb82685331e594616a99">&#9670;&#160;</a></span>HTMLExportSelfContained()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Configuration::HTMLExportSelfContained </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Does the HTML export produce one self-contained file? </p>
+<p>If true, the stylesheet, every image and (if ExportContainsWXMX()) the .wxmx source are embedded into the .html file as data: URIs, so it can be mailed or uploaded on its own. If false, images and the .wxmx go into a separate &lt;name&gt;_htmlimg directory next to it. </p>
 
 </div>
 </div>
