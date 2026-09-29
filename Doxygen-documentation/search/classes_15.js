@@ -26,11 +26,12 @@ var searchData=
   ['wrappingstatictext_23',['WrappingStaticText',['../classWrappingStaticText.html',1,'']]],
   ['wxmathml_24',['wxMathML',['../classwxMathML.html',1,'']]],
   ['wxmaxima_25',['wxMaxima',['../classwxMaxima.html',1,'']]],
-  ['wxmaximaframe_26',['wxMaximaFrame',['../classwxMaximaFrame.html',1,'']]],
-  ['wxmheader_27',['WXMHeader',['../structFormat_1_1WXMHeader.html',1,'Format']]],
-  ['wxmheadercollection_28',['WXMHeaderCollection',['../classFormat_1_1WXMHeaderCollection.html',1,'Format']]],
-  ['wxmxstream_29',['WxmxStream',['../classImage_1_1WxmxStream.html',1,'Image']]],
-  ['wxscrolled_30',['wxScrolled',['../classwxScrolled.html',1,'']]],
-  ['wxscrolled_3c_20wxpanel_20_3e_31',['wxScrolled&lt; wxPanel &gt;',['../classwxScrolled.html',1,'']]],
-  ['wxscrolled_3c_20wxwindow_20_3e_32',['wxScrolled&lt; wxWindow &gt;',['../classwxScrolled.html',1,'']]]
+  ['wxmaximaartprovider_26',['wxMaximaArtProvider',['../classwxMaximaArtProvider.html',1,'']]],
+  ['wxmaximaframe_27',['wxMaximaFrame',['../classwxMaximaFrame.html',1,'']]],
+  ['wxmheader_28',['WXMHeader',['../structFormat_1_1WXMHeader.html',1,'Format']]],
+  ['wxmheadercollection_29',['WXMHeaderCollection',['../classFormat_1_1WXMHeaderCollection.html',1,'Format']]],
+  ['wxmxstream_30',['WxmxStream',['../classImage_1_1WxmxStream.html',1,'Image']]],
+  ['wxscrolled_31',['wxScrolled',['../classwxScrolled.html',1,'']]],
+  ['wxscrolled_3c_20wxpanel_20_3e_32',['wxScrolled&lt; wxPanel &gt;',['../classwxScrolled.html',1,'']]],
+  ['wxscrolled_3c_20wxwindow_20_3e_33',['wxScrolled&lt; wxWindow &gt;',['../classwxScrolled.html',1,'']]]
 ];

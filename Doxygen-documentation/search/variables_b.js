@@ -70,7 +70,7 @@ var searchData=
   ['m_5fhiddentree_67',['m_hiddenTree',['../classGroupCell.html#aa90d3470615a1057cd9810c5f4541a83',1,'GroupCell']]],
   ['m_5fhiddentreeparent_68',['m_hiddenTreeParent',['../classGroupCell.html#a069818c4fe43f213e5c293f12b8d3c6c',1,'GroupCell']]],
   ['m_5fhistory_69',['m_history',['../classwxMaximaFrame.html#a8bd088851c2448772b4c4f955db6af05',1,'wxMaximaFrame']]],
-  ['m_5fimagelist_70',['m_imageList',['../classConfigDialogue.html#a270f8e743a41bf08808a3fe018732336',1,'ConfigDialogue']]],
+  ['m_5fimagelist_70',['m_imageList',['../classConfigDialogue.html#a794d1910caafa070c70ac8cab3a5ae10',1,'ConfigDialogue']]],
   ['m_5fineditor_71',['m_inEditor',['../structWorksheetSearch_1_1SearchStart.html#a016abdeb001a7b17b4d3d731d1111fa6',1,'WorksheetSearch::SearchStart']]],
   ['m_5finldb_72',['m_inLDB',['../classwxMaxima.html#acbee674f9f360c58b1157bd6daca7b31',1,'wxMaxima']]],
   ['m_5finpopupmenu_73',['m_inPopupMenu',['../classWorksheet.html#a484337330b21f0736d93fa935f9e0369',1,'Worksheet']]],

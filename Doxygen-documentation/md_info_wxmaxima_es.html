@@ -75,9 +75,9 @@ $(function() {
 <div class="textblock"><p>WxMaxima es un interfaz gráfico del usuario (IGU) para el sistema algebraico de computación <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> (CAS). WxMaxima le permite a uno utilizar todas las funciones de <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>. Además, proporciona asistentes convenientes para acceder a las características más comúnmente utilizadas. Este manual describe alguna de las características que hacen de <a class="el" href="classwxMaxima.html">wxMaxima</a> una de las IGU más populares para <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>.</p>
 <p><img src="./wxMaximaLogo.png" alt="Logotipo wxMaxima" class="inline"/></p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md183"></a>
+<h1><a class="anchor" id="autotoc_md184"></a>
 Introduction to wxMaxima</h1>
-<h2><a class="anchor" id="autotoc_md184"></a>
+<h2><a class="anchor" id="autotoc_md185"></a>
 &lt;em&gt;Maxima&lt;/em&gt; and wxMaxima</h2>
 <p>En el dominio de código abierto, los sistemas grandes están divididos normalmente en proyectos más pequeños que son más fáciles para manipular en grupos pequeños de desarrolladores. Por ejemplo un programa para el quemado del DVD consistirá de una herramienta de línea de instrucciones que actualmente quema el CD un interfaz gráfico de usuario que permite a los usuarios implementarlo sin tener que aprenderse todas las opciones de línea de instrucciones como complemento “enviar-a-CD” para una aplicación de gestión de archivos, para la función N “quemar a CD” de un reproductor de música y como el grabador de CD para una herramienta de respaldo DVD. Otra ventaja es que dividiendo una tarea grande en partes más pequeñas permite a los desarrolladores proporcionar varios interfaces de usuarios para el mismo programa.</p>
 <p>Un sistema de computación algebraico (CAS) como <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> encaja dentro de este marco referencial. Un CAS puede proporcionar la lógica detrás de la aplicación de precisión de cálculo arbitrario o puede hacer transformaciones automáticas de fórmulas en el segundo plano de un sistema más grande (p.e., [Sage] (<a href="https://www.sagemath.org/">https://www.sagemath.org/</a>)). Alternativamente, puede ser utilizado directamente como un sistema independiente. <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> pude ser accedido vía una línea de instrucción. <a class="el" href="classA.html">A</a> menudo, sin embargo, un interfaz como <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> proporciona una manera más eficiente para acceder al software, especialmente para los recién llegados.</p>
@@ -922,36 +922,36 @@ Logging</h2>
 <p>Such messages may be helpful, when you create bug reports (or trying to find a bug by yourself).</p>
 <p>Log messages can (additionally) be printed to STDERR, when using the command line option "--logtostderr". On Windows a separate text console will be opened, as a Windows GUI application does not have the standard IO connected.</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md270"></a>
+<h1><a class="anchor" id="autotoc_md271"></a>
 FAQ</h1>
-<h2><a class="anchor" id="autotoc_md271"></a>
+<h2><a class="anchor" id="autotoc_md272"></a>
 Is there a way to make more text fit on a LaTeX page?</h2>
 <p>Sí. Utilice el <a href="https://ctan.org/pkg/geometry">paquete "geometry" de LaTeX</a> para especificar el tamaño de los bordes.</p>
 <p>You can add the following line to the LaTeX preamble (for example by using the respective field in the config dialogue ("Export"-&gt;"Additional lines for the TeX preamble"), to set borders of 1cm):</p>
 <div class="fragment"><div class="line">\usepackage[left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md272"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md273"></a>
 Is there a dark mode?</h2>
 <p>Si wxWidgets es suficientemente nuevo <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> automáticamente estará en modo oscuro si el resto del sistema operativo también lo está. La misma hoja de trabajo por defecto está equipada con un fondo brillante. Pero puede ser configurado de otras maneras. Alternativamente hay un apunte del menú para ‘Ver/Invertir brillo de la hoja de trabajo’ para convertir rápidamente la hoja de trabajo desde oscuro a claro y viceversa.</p>
-<h2><a class="anchor" id="autotoc_md273"></a>
+<h2><a class="anchor" id="autotoc_md274"></a>
 &lt;em&gt;WxMaxima&lt;/em&gt; sometimes hangs for several seconds once in the first minute</h2>
 <p><em>WxMaxima</em> delegates some big tasks like parsing <em>Maxima_’s &gt;1000-page-manual to background tasks, which normally goes totally unnoticed. At the moment the result of such a task is needed, though, it is possible that _wxMaxima</em> needs to wait a couple of seconds before it can continue its work.</p>
-<h2><a class="anchor" id="autotoc_md274"></a>
+<h2><a class="anchor" id="autotoc_md275"></a>
 Especially when testing new locale settings, a message box "locale ’xx_YY’ can not be set" occurs</h2>
 <p><img src="./locale-warning.png" alt="Aviso local" class="inline"/></p>
 <p>(El mismo problema puede suceder con otras aplicaciones también). Los traslados parecen ok tras que pulse sobre ‘Aceptar’. Wxmaxima no solo utiliza su propias transacciones sino también las transacciones del marco de trabajo de wxWidgets.</p>
 <p>Estos locales quizá no sean presente dentro del sistema. En sistemas Ubuntu/Debian pueden ser generados utilizando: <code>dpkg-reconfigure locales</code></p>
-<h2><a class="anchor" id="autotoc_md275"></a>
+<h2><a class="anchor" id="autotoc_md276"></a>
 How can I use symbols for real numbers, natural numbers (ℝ, ℕ), etc.?</h2>
 <p>Puede encontrar estos símbolos en la barra lateral Unicode (busca ’doble-stuck capital’). Pero la tipografía seleccionada además debe mantener estos símbolos. Si no representan apropiadamente, seleccione otra tipografía.</p>
-<h2><a class="anchor" id="autotoc_md276"></a>
+<h2><a class="anchor" id="autotoc_md277"></a>
 How can a Maxima script determine, if it is running under wxMaxima or command line Maxima?</h2>
 <p>Si se utiliza <a class="el" href="classwxMaxima.html">wxMaxima</a>, la variable <code>maxima_frontend</code> de <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> está fijada a <code>wxmaxima</code>. La variable <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> <code>maxima_frontend_version</code> contiene la versión de <a class="el" href="classwxMaxima.html">wxMaxima</a> en este caso.</p>
 <p>Si no ningún frontend es utilizado (está utilizando <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> en línea de instrucción), estas variables son falsas.</p>
-<h2><a class="anchor" id="autotoc_md277"></a>
+<h2><a class="anchor" id="autotoc_md278"></a>
 Help! I can not save my document!</h2>
 <p>If saving as wxmx file does not work, try saving the document as wxm file (and vice versa). And you can also try to remove all output (Menu Cell-&gt;Remove all output) and save that file, maybe some unexpected output causes issues during the save process.</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md278"></a>
+<h1><a class="anchor" id="autotoc_md279"></a>
 Command-line arguments</h1>
 <p>Usualmente puede iniciar programas con un interfaz gráfico de usuario tan solo pulsando en un icono de escritorio o apunte de menú del escritorio. <a class="el" href="classwxMaxima.html">wxMaxima</a> -si inició desde la línea de instrucción- aún proporciona algunos interruptores en línea de instrucción, sin embargo.</p>
 <ul>
