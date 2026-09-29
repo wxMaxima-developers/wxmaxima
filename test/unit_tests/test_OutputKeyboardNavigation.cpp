@@ -217,6 +217,40 @@ SCENARIO("Down leaves a cell that has no output, as before") {
   g_ws->DestroyTree();
 }
 
+SCENARIO("Up and Down can be told to skip the output, as they used to") {
+  GroupCell *group = ShowCell(wxS("a;b;"), {Result(1, wxS("<mi>a</mi>")),
+                                            Result(2, wxS("<mi>b</mi>"))});
+  g_cfg->ArrowKeysSkipOutput(true);
+
+  WHEN("Down is pressed at the end of the cell's input") {
+    CursorToEndOfInput(group);
+    Press(WXK_DOWN);
+    THEN("the output is skipped and the horizontal cursor sits below the cell") {
+      CHECK_FALSE(Pointers().GetSelectionStart());
+      CHECK(g_ws->HCaretActive());
+      CHECK(g_ws->GetHCaret() == group);
+    }
+    AND_WHEN("Up is pressed there") {
+      Press(WXK_UP);
+      THEN("the cursor goes back into the input, not into the output") {
+        CHECK_FALSE(Pointers().GetSelectionStart());
+        CHECK(g_ws->GetActiveCell() == group->GetEditable());
+      }
+    }
+  }
+
+  g_cfg->ArrowKeysSkipOutput(false);
+  g_ws->DestroyTree();
+}
+
+SCENARIO("By default Up and Down don't skip the output") {
+  // Temporary, so it doesn't write its settings back to the config file
+  Configuration cfg(g_dc, Configuration::temporary);
+  cfg.ArrowKeysSkipOutput(true);
+  cfg.ResetAllToDefaults();
+  CHECK_FALSE(cfg.ArrowKeysSkipOutput());
+}
+
 class TestApp : public wxApp {
 public:
   bool OnInit() override { return true; }

@@ -622,6 +622,16 @@ public:
   bool CursorJump() const { return m_cursorJump;}
   void CursorJump(bool save){m_cursorJump = save;}
 
+  /*! Do the Up and Down keys skip over a cell's output?
+
+    Off by default: Down at the end of an input then selects the first result
+    of the cell's output (GH #2382). On restores the older behaviour, where
+    Down went straight on to the next cell and output could only be selected
+    with the mouse.
+  */
+  bool ArrowKeysSkipOutput() const { return m_arrowKeysSkipOutput;}
+  void ArrowKeysSkipOutput(bool skip){m_arrowKeysSkipOutput = skip;}
+
   bool NumpadEnterEvaluates() const { return m_numpadEnterEvaluates;}
   void NumpadEnterEvaluates(bool eval){m_numpadEnterEvaluates = eval;}
 
@@ -1662,6 +1672,7 @@ private:
   long m_defaultPlotWidth;
   bool m_saveUntitled;
   bool m_cursorJump;
+  bool m_arrowKeysSkipOutput;
   bool m_numpadEnterEvaluates;
   bool m_saveImgFileName;
   wxString m_documentclass;

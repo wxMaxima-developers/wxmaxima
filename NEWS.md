@@ -23,11 +23,17 @@
   selected, the Menu key or Shift+F10 opens the same menu a right-click does,
   so it can be copied in any format. On Windows, screen readers announce the
   selected result (#2382).
+  Anyone who prefers the old behaviour, where Down went straight on to the
+  next cell, can switch it back with "Up/Down keys skip over output" in the
+  Worksheet tab of the configuration dialog.
 - A selected block of a matrix's entries can be grown or shrunk with
   Shift+arrow keys: each press moves the block's far corner -- the one the
   drag ended at -- by one entry. A run of left-out rows or columns counts as
   one step. Grown to the whole matrix, the block becomes an ordinary
   selection of the matrix, which Shift+arrow keys can shrink again (#2370).
+- In a matrix shown with scrollbars, moving a selected block's corner with
+  Shift+arrow keys now scrolls the matrix along, so the corner stays in
+  view (#2380).
 - A matrix, or a block of one, can be copied as CSV from the right-click
   menu, to paste it into a spreadsheet: one line per row, the values
   separated by commas, or by tabs where numbers are written with a decimal
@@ -36,6 +42,10 @@
   but makes each frame of the animation with a plain `draw()` instead of
   `draw2d()`. A frame can therefore show several `gr2d()` and `gr3d()`
   scenes side by side, and use `draw`'s global options like `columns`.
+- `with_slider_draw_bare` now accepts `file_name`, like `with_slider_draw`,
+  and saves the animation as a gif file. wxMaxima assembles the gif from the
+  frames, since `draw` can't make one out of frames with several scenes
+  (#2361).
 - New function `wx_version_min("26.09.0")`, which returns `true` if the
   running wxMaxima is at least that version, so a worksheet can check
   whether it can use a feature. In wxMaxima 26.08.0 and older the function

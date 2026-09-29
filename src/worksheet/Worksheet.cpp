@@ -1889,6 +1889,9 @@ void Worksheet::SelectOutputResult(GroupCell *group, std::size_t index) {
 bool Worksheet::StepOutputResult(int keyCode) {
   if ((keyCode != WXK_UP) && (keyCode != WXK_DOWN))
     return false;
+  // The user asked for the old behaviour, which never stops at the output
+  if (m_configuration->ArrowKeysSkipOutput())
+    return false;
 
   if (const auto index = SelectedOutputResult()) {
     GroupCell *group = GetDocumentCellPointers().GetSelectionStart()->GetGroup();
@@ -1928,6 +1931,8 @@ bool Worksheet::StepOutputResult(int keyCode) {
 }
 
 bool Worksheet::EnterOutputFromInput() {
+  if (m_configuration->ArrowKeysSkipOutput())
+    return false;
   EditorCell *active = GetActiveCell();
   if (!active)
     return false;
@@ -1972,6 +1977,10 @@ bool Worksheet::StepSelectedMatrixBlock(int keyCode) {
   GetDocumentCellPointers().SetSelectedMatrixBlock(
     matrix, corners->anchor, corner,
     matrix->IsWholeMatrix(MatrixBlock::Spanning(corners->anchor, corner)));
+  // In a scrolling matrix the corner may have moved into the part that is
+  // scrolled out of view. The redraw below makes the matrix report in to its
+  // MatrixScrollbars, which then move the scrollbars' thumbs along.
+  matrix->ScrollEntryIntoView(corner.row, corner.col);
   UpdateOutputSelectionString();
   RequestRedraw();
   return true;

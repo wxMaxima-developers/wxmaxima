@@ -200,7 +200,8 @@ MathParser::MathParser(Configuration *cfg, const wxString &zipfile) {
       wxS("line"),
       wxS("print"),
       wxS("mat"),
-      wxS("pos")
+      wxS("pos"),
+      wxS("gifFile")
     };
     for (const auto &s : known)
       m_knownAttributes.insert(s);
@@ -403,6 +404,28 @@ std::unique_ptr<Cell> MathParser::ParseAnimationTag(wxXmlNode *node, int WXUNUSE
         }
       }
     }
+
+  // with_slider_draw_bare(..., file_name=...) asks for the animation to be
+  // saved as a gif, too (GH #2361). draw() can't make that gif itself, as its
+  // animated_gif terminal turns each scene into a frame of its own. This
+  // attribute only ever comes fresh from Maxima: it is never saved, so
+  // reopening a worksheet doesn't write the file again.
+  wxString gifFile;
+  if (node->GetAttribute(wxS("gifFile"), &gifFile) && !gifFile.IsEmpty()) {
+    const wxSize size = animation->ToGif(gifFile);
+    if ((size == wxDefaultSize) || (size == wxSize(1, 1))) {
+      // Deferred, as for invalid XML below: no modal dialog from inside the
+      // parse.
+      const wxString msg =
+        wxString::Format(_("Could not save the animation as \"%s\"."), gifFile);
+      wxLogMessage(msg);
+      if (wxTheApp)
+        wxTheApp->CallAfter([msg]{
+          LoggingMessageBox(msg, _("Warning"), wxOK | wxICON_WARNING);
+        });
+    } else
+      wxLogMessage(_("Saved the animation as \"%s\"."), gifFile);
+  }
 
   return animation;
 }

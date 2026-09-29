@@ -435,6 +435,8 @@ public:
     horizontal cursor below the cell, as before. Up walks back the same way,
     into the input's end. A selected result can be copied and has its
     right-click menu on the context-menu key, like one clicked with the mouse.
+    Configuration::ArrowKeysSkipOutput() switches the Up/Down part off again,
+    for users who prefer the old behaviour.
     @{
   */
   /*! Which result of its cell's output is selected, if exactly one is
