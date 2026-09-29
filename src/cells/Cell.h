@@ -224,6 +224,15 @@ public:
    */
   virtual const wxString GetToolTip(wxPoint point) const;
 
+  /*! The address of the link drawn at the screen coordinate point, if any (GH #2396).
+
+    Links are the http://, https:// and mailto: addresses UrlDetection finds
+    in a text cell or in a piece of Maxima's output. This default searches
+    the cells inside this one, if the point is inside it at all; the cells
+    that actually draw text override it.
+  */
+  virtual wxString GetLinkAt(wxPoint point);
+
   //! Delete this list of cells.
   virtual ~Cell();
 
