@@ -4,6 +4,11 @@
   active as soon as one scrolls away from the evaluation. Before, it kept
   looking disabled until the mouse pointer entered the toolbar. The same
   delay affected every other toolbar button whose state or icon changed.
+- Web addresses in Maxima's output are links, too (GH #2396): a string
+  like print("See https://...") or a message naming a web page shows the
+  address underlined in the link color, and Ctrl+click (Cmd+click on macOS)
+  or the context menu's "Open Link" opens it. A plain click still selects
+  the output, so it can be copied as before.
 - The HTML export can now write one single file that contains its images
   and, if requested, the downloadable .wxmx copy, so the page can be mailed
   on its own: check "Embed images into the .html file" in the Export tab of

@@ -159,6 +159,12 @@ public:
     wxEmptyString means: No toolTip.
   */
   const wxString GetToolTip(wxPoint point) const override;
+  /*! The link at point, if any: in the text cell's text or in the output.
+
+    Walks the output in drawing order, so a link inside an expression that
+    has been broken into lines is found where it is actually drawn.
+  */
+  wxString GetLinkAt(wxPoint point) override;
 
   // general methods
   GroupType GetGroupType() const { return m_groupType; }
