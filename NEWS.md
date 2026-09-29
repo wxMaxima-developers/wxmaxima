@@ -7,6 +7,8 @@
   one comment still has its `/` next to a `*` written as `&#47;`. A heading
   containing `*/` can no longer end its comment early and turn the rest of
   its text into code when the .mac file is loaded into Maxima (#2353).
+- `with_slider_draw(..., file_name="name")` no longer deletes `name.gif`
+  right after showing it in the worksheet (#2389).
 - wxMaxima now needs wxWidgets 3.2 or newer to compile. With wxWidgets 3.0.5,
   the last 3.0 release, wxMaxima started but never got a working connection
   to Maxima (#2301). Ubuntu 22.04 only ships wxWidgets 3.0, so the release
@@ -32,6 +34,9 @@
   drag ended at -- by one entry. A run of left-out rows or columns counts as
   one step. Grown to the whole matrix, the block becomes an ordinary
   selection of the matrix, which Shift+arrow keys can shrink again (#2370).
+- "Copy as HTML" now copies only what is selected when the selection is part
+  of a cell's output -- a result, a sub-expression or a block of a matrix's
+  entries -- instead of the whole cell (#2369).
 - In a matrix shown with scrollbars, moving a selected block's corner with
   Shift+arrow keys now scrolls the matrix along, so the corner stays in
   view (#2380).

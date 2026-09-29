@@ -1143,32 +1143,21 @@ tried without rebuilding.
     which needs a Maxima to send that command to and never starts one
     itself.
   - Regression coverage: `wxmaxima_one_maxima_per_file`
-    (`test/check_maxima_spawn_count.cmake`) counts the "Running maxima as:"
-    lines in one batch run's log. That marker is a translatable string, so
-    the test pins `LC_ALL`/`LANG`/`LANGUAGE` in its `ENVIRONMENT`; a reworded
-    or translated marker counts zero and fails loudly rather than passing
-    while checking nothing.
-  - **That test is `if(NOT WIN32)`, and the reason is a trap worth carrying
-    to any future test: on Windows you cannot assert on text wxMaxima wrote
-    to its own stdout or stderr.** It shipped without that guard and turned
-    the minGW job red on `main` immediately -- a job #2318 had made green
-    days earlier, which is exactly the "a permanently red job is not a
-    warning anyone still reads" cost this file opens with. The failure was
-    `Opening one file started 0 Maxima process(es), expected 1`: the batch
-    run itself exited 0, and the captured log was simply empty. A
-    GUI-subsystem process's standard handles do not reliably reach whoever
-    is capturing them -- the same unexplained `FILE_TYPE_CHAR` behaviour the
-    `wxmaxima-packaging` skill records as investigated for a month and
-    shelved, and why *that* test's content assertion is non-Windows-only
-    too. Note
-    that a real file (CMake's `ERROR_FILE`) does not dodge it: the shipped
-    traces show the failure concentrated on `STD_ERROR_HANDLE` regardless of
-    what it is bound to. Before adding any test that reads wxMaxima's own
-    log, check that it is not expected to run on Windows -- or give it a
-    channel that never touches wxMaxima's stdio. Pointing `--maxima` at a
-    wrapper that appends a line to a file and then runs the real Maxima
-    would count spawns on every platform; that is the way to get the
-    Windows coverage back, and it is untried (GH #2351).
+    (`test/check_maxima_spawn_count.cmake`) points `--maxima` at a wrapper
+    script (a `.cmd` on Windows) that appends a line to a file and then runs
+    the real Maxima, and counts those lines (GH #2351). It used to count the
+    "Running maxima as:" lines in wxMaxima's own log, which is why it was
+    `if(NOT WIN32)`.
+  - **The trap that wrapper exists for is worth carrying to any future test:
+    on Windows you cannot assert on text wxMaxima wrote to its own stdout or
+    stderr.** The log-counting version shipped without a Windows guard and
+    turned the minGW job red with `Opening one file started 0 Maxima
+    process(es)`: the batch run exited 0 and the captured log was simply
+    empty. A GUI-subsystem process's standard handles do not reliably reach
+    whoever is capturing them -- the unexplained `FILE_TYPE_CHAR` behaviour
+    the `wxmaxima-packaging` skill records -- and a real file (CMake's
+    `ERROR_FILE`) does not dodge it. Give such a test a channel that never
+    touches wxMaxima's stdio, as this one now does.
 
 - **`m_configCommands` (`wxMaxima.cpp`):** the string of startup/config commands
   sent to Maxima on connect (and again whenever settings change while it's
