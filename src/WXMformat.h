@@ -102,6 +102,14 @@ namespace Format
 
 //! First line of the WXM files - used by both loading and saving code.
   extern const wxString WXMFirstLine;
+/*! The "Created with wxMaxima" line .wxm and .mac exports start with
+
+  In a .mac file it is also what tells ParseMACContents() that wxMaxima wrote
+  the file, and therefore escaped its text cells (GH #2353).
+*/
+  extern const wxString CreatedWithLine;
+//! What every version's CreatedWithLine starts with
+  extern const wxString CreatedWithLinePrefix;
   extern const wxString m_emptyString;
 
 }; // namespace Format

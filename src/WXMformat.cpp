@@ -31,6 +31,7 @@
 #include <cstdlib>
 #include <vector>
 #include "WXMformat.h"
+#include "Version.h"
 #include "cells/CellList.h"
 #include "cells/ImgCell.h"
 #include <wx/debug.h>
@@ -41,6 +42,10 @@ namespace Format {
 
   const wxString WXMFirstLine =
     wxS("/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/");
+  const wxString CreatedWithLinePrefix =
+    wxS("/* [ Created with wxMaxima version ");
+  const wxString CreatedWithLine =
+    CreatedWithLinePrefix + wxS(WXMAXIMA_VERSION " ] */");
 
   struct WXMHeader //-V730
   {
@@ -258,11 +263,9 @@ namespace Format {
                << Headers.GetEnd(groupType) << '\n';
       else {
         // Same open-comment injection risk as the wxm branch above (GH
-        // #1907) -- this .mac export has no wxMaxima-specific unescaping on
-        // read (.mac is a foreign/interop format, read as plain Maxima
-        // comments), so a round trip through this exact file will show the
-        // escaped entities literally rather than "/"; that's a purely
-        // cosmetic cost, worth paying to keep the exported .mac inert.
+        // #1907). A .mac is read as plain Maxima comments, so
+        // ParseMACContents() only undoes this in a file that starts with
+        // CreatedWithLine, i.e. one wxMaxima wrote (GH #2353).
         retval << wxS("/* ") << EscapeWXMSlashes(cell->GetEditable()->ToString(true)) << wxS(" */\n");
       }
       break;
@@ -272,15 +275,18 @@ namespace Format {
     case GC_TYPE_HEADING5:
     case GC_TYPE_HEADING6:
     case GC_TYPE_TITLE:
+      // A heading's start marker leaves a comment open until its end marker,
+      // in a .mac as much as in a .wxm, so a "*/" in its text has to be
+      // escaped there, too (GH #2353). TreeFromWXM() undoes it for both.
       retval << Headers.GetStart(groupType) << '\n'
              << (wxm ? EscapeWXMTextContent(cell->GetEditable()->ToString(true))
-                     : cell->GetEditable()->ToString(true)) << '\n'
+                     : EscapeWXMSlashes(cell->GetEditable()->ToString(true))) << '\n'
              << Headers.GetEnd(groupType) << '\n';
       break;
     case GC_TYPE_IMAGE:
       retval << Headers.GetStart(groupType) << '\n'
              << (wxm ? EscapeWXMTextContent(cell->GetEditable()->ToString(true))
-                     : cell->GetEditable()->ToString(true)) << '\n'
+                     : EscapeWXMSlashes(cell->GetEditable()->ToString(true))) << '\n'
              << Headers.GetEnd(groupType) << '\n';
       if (cell->GetLabel() && cell->GetLabel()->GetType() == MC_TYPE_IMAGE) {
         const ImgCell *image = dynamic_cast<ImgCell *>(cell->GetLabel());
@@ -499,7 +505,7 @@ namespace Format {
           if (thisLine.StartsWith(wxS("/* Old versions of Maxima abort on loading files that end in a comment.")) ||
               thisLine.StartsWith(wxS("\"Created with wxMaxima ")) ||
               thisLine == WXMFirstLine ||
-              thisLine.StartsWith(wxS("/* [ Created with wxMaxima version ")))
+              thisLine.StartsWith(CreatedWithLinePrefix))
             break;
 
           wxString content = last->GetEditable()->GetValue();
@@ -562,6 +568,11 @@ namespace Format {
       return s;
     };
 
+    // Did wxMaxima write this file? Then its plain comments are text cells
+    // whose "&" and "/" next to a "*" it escaped (GH #2353). Comments in a
+    // hand-written .mac may contain "&amp;" or "&#47;" legitimately, so only
+    // a file that starts with the marker is unescaped.
+    bool writtenByWxMaxima = false;
     wxString line;
     for (State s{' ', macContents.begin()}; s.ch != macContents.end();) {
       wxChar c = *s.ch;
@@ -589,6 +600,13 @@ namespace Format {
           line.Trim(true);
           line.Trim(false);
 
+          // The marker wxMaxima's .mac export starts with?
+          if (tree.GetTail() == nullptr && wxmLines.IsEmpty() &&
+              line.StartsWith(CreatedWithLinePrefix)) {
+            writtenByWxMaxima = true;
+            line.clear();
+            continue;
+          }
           // Is this a comment from wxMaxima?
           if (line.StartsWith(wxS("/* [wxMaxima: "))) {
             // Add the rest of this comment block to the "line". Stop at EOF too:
@@ -642,6 +660,8 @@ namespace Format {
             else
               line.erase(0, 2);
 
+            if (writtenByWxMaxima)
+              line = UnescapeWXMSlashes(line);
             tree.Append(std::make_unique<GroupCell>(config, GC_TYPE_TEXT, line));
           }
           line.clear();

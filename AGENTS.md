@@ -1301,12 +1301,12 @@ tried without rebuilding.
   happen to contain an ordinary fraction. Also applied to the equivalent
   `GC_TYPE_TEXT` write path in the non-`.wxm` (`.mac`/xmaxima interop)
   export, for the same reason (defense in depth -- `.mac` is always
-  directly Maxima-loadable) -- but `Format::ParseMACContents` (the `.mac`
-  reader) has no corresponding unescape, since round-tripping a
-  wxMaxima-exported `.mac`'s text cells back into wxMaxima is out of scope
-  for this fix and only costs a cosmetic `&#47;` showing up literally.
-  Doing it properly needs a way to tell a wxMaxima-written `.mac` from a
-  hand-written one, which the export doesn't currently provide -- GH #2353.
+  directly Maxima-loadable). `Format::ParseMACContents` (the `.mac`
+  reader) undoes it only in a file that starts with
+  `Format::CreatedWithLine`, which the `.mac` export writes since GH #2353:
+  a hand-written `.mac` may contain `&amp;` in a comment legitimately.
+  Headings in a `.mac` (open-comment markers, like in a `.wxm`) are
+  escaped too since then; `TreeFromWXM()` always unescaped them.
   **Known, accepted limitation** (also already flagged in the same GH
   #1907 thread): this can't retroactively fix a `.wxm` file already on
   disk from before this existed, and a file whose prose coincidentally

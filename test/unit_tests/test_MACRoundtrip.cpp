@@ -53,6 +53,24 @@ wxBitmap *g_bmp = nullptr;
 wxMemoryDC *g_dc = nullptr;
 Configuration *g_cfg = nullptr;
 
+// What Worksheet::ExportToMAC() writes for a one-cell tree: the marker line,
+// then the cell.
+wxString ExportedMAC(GroupType type, const wxString &text) {
+  auto group = std::make_unique<GroupCell>(g_cfg, type, text);
+  return Format::CreatedWithLine + wxS("\n") +
+    Format::TreeToWXM(group.get(), /*wxm=*/false);
+}
+
+// Parses .mac text and returns its only cell's text, requiring its type.
+wxString OnlyCellText(const wxString &macContents, GroupType type) {
+  auto reloaded = Format::ParseMACContents(macContents, g_cfg);
+  REQUIRE(reloaded != nullptr);
+  CHECK(reloaded->GetNext() == nullptr);
+  REQUIRE(reloaded->GetGroupType() == type);
+  REQUIRE(reloaded->GetEditable() != nullptr);
+  return reloaded->GetEditable()->GetValue();
+}
+
 // Serializes a one-cell tree to plain .mac text (wxm=false, the format
 // ExportToMAC() writes) and parses it straight back, the way OpenMACFile()
 // does. Returns the reloaded cell's own text.
@@ -88,6 +106,45 @@ SCENARIO("A tab inside a code cell survives the .mac round-trip byte-for-byte") 
     THEN("all of them survive, not just the first") {
       REQUIRE(RoundTripThroughMAC(GC_TYPE_CODE, original) == original);
     }
+  }
+}
+
+SCENARIO("Text cells survive a round trip through a wxMaxima-written .mac (GH #2353)") {
+  const wxString text = wxS("Q&A: see a*/b, &amp; /* not code */ 1/2");
+
+  GIVEN("a text cell exported the way File > Export writes a .mac") {
+    const wxString mac = ExportedMAC(GC_TYPE_TEXT, text);
+    THEN("the exported file keeps the text inert for Maxima") {
+      // Only the file's own comment delimiters may remain.
+      const wxString body = mac.AfterFirst(wxS('\n'));
+      CHECK(body.Freq(wxS('*')) == text.Freq(wxS('*')) + 2);
+      CHECK_FALSE(body.Mid(2, body.Length() - 5).Contains(wxS("*/")));
+      CHECK_FALSE(body.Mid(2, body.Length() - 5).Contains(wxS("/*")));
+    }
+    THEN("reading it back gives the original text, not the entities") {
+      CHECK(OnlyCellText(mac, GC_TYPE_TEXT) == text);
+    }
+  }
+
+  GIVEN("a hand-written .mac, without wxMaxima's marker") {
+    const wxString mac = wxS("/* Q&amp;A &#47; */\n");
+    THEN("its comments are read as they are") {
+      CHECK(OnlyCellText(mac, GC_TYPE_TEXT) == wxS("Q&amp;A &#47;"));
+    }
+  }
+}
+
+SCENARIO("A heading can't end its .mac comment early (GH #2353)") {
+  // A heading's start marker opens a comment that only its end marker
+  // closes. Unescaped, the "*/" below would end it and make "x:2$" code.
+  const wxString title = wxS("abc */ x:2$ /* def & more");
+  const wxString mac = ExportedMAC(GC_TYPE_TITLE, title);
+  THEN("the title's own slashes next to a star are escaped") {
+    CHECK_FALSE(mac.Contains(wxS("abc */")));
+    CHECK_FALSE(mac.Contains(wxS("/* def")));
+  }
+  THEN("and the title comes back as it was") {
+    CHECK(OnlyCellText(mac, GC_TYPE_TITLE) == title);
   }
 }
 
