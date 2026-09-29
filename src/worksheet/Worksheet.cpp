@@ -1889,6 +1889,9 @@ void Worksheet::SelectOutputResult(GroupCell *group, std::size_t index) {
 bool Worksheet::StepOutputResult(int keyCode) {
   if ((keyCode != WXK_UP) && (keyCode != WXK_DOWN))
     return false;
+  // The user asked for the old behaviour, which never stops at the output
+  if (m_configuration->ArrowKeysSkipOutput())
+    return false;
 
   if (const auto index = SelectedOutputResult()) {
     GroupCell *group = GetDocumentCellPointers().GetSelectionStart()->GetGroup();
@@ -1928,6 +1931,8 @@ bool Worksheet::StepOutputResult(int keyCode) {
 }
 
 bool Worksheet::EnterOutputFromInput() {
+  if (m_configuration->ArrowKeysSkipOutput())
+    return false;
   EditorCell *active = GetActiveCell();
   if (!active)
     return false;

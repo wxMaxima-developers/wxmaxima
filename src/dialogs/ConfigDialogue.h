@@ -337,6 +337,8 @@ protected:
   wxCheckBox *m_insertAns;
   wxCheckBox *m_autoIndent;
   wxCheckBox *m_cursorJump;
+  //! Up/Down skip over a cell's output instead of selecting it (GH #2382)
+  wxCheckBox *m_arrowKeysSkipOutput;
   wxCheckBox *m_hideBrackets;
 #ifdef __WXGTK__
   //! Use GTK's fading overlay scrollbars on the worksheet (slow: see
