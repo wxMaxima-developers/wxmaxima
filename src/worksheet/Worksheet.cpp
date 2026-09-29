@@ -1972,6 +1972,10 @@ bool Worksheet::StepSelectedMatrixBlock(int keyCode) {
   GetDocumentCellPointers().SetSelectedMatrixBlock(
     matrix, corners->anchor, corner,
     matrix->IsWholeMatrix(MatrixBlock::Spanning(corners->anchor, corner)));
+  // In a scrolling matrix the corner may have moved into the part that is
+  // scrolled out of view. The redraw below makes the matrix report in to its
+  // MatrixScrollbars, which then move the scrollbars' thumbs along.
+  matrix->ScrollEntryIntoView(corner.row, corner.col);
   UpdateOutputSelectionString();
   RequestRedraw();
   return true;

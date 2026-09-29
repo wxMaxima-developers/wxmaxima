@@ -234,6 +234,35 @@ bool MatrCell::ScrollTo(wxPoint position) {
   return true;
 }
 
+// Moves one axis of a viewport by as little as possible so that it covers the
+// range [first, first + size); if that can't fit, the start of it is shown.
+static wxCoord ScrollDeltaToShow(wxCoord viewFirst, wxCoord viewSize,
+                                 wxCoord first, wxCoord size) {
+  if ((first < viewFirst) || (size > viewSize))
+    return first - viewFirst;
+  if (first + size > viewFirst + viewSize)
+    return (first + size) - (viewFirst + viewSize);
+  return 0;
+}
+
+bool MatrCell::ScrollEntryIntoView(size_t row, size_t col) {
+  if (!IsScrolling() || (row >= m_matHeight) || (col >= m_matWidth) ||
+      ((row * m_matWidth + col) >= m_cells.size()) ||
+      (m_currentPoint == wxPoint(-1, -1)))
+    return false;
+  const wxRect view = ViewportRect();
+  const wxRect slot = EntrySlotRect(row, col);
+  // The slot includes half the gap around the entry, so an entry next to the
+  // viewport's edge doesn't end up flush against it. At the matrix's own
+  // edges that half gap lies outside the scroll range, and ScrollTo()'s
+  // clamping takes care of that.
+  const wxPoint delta(ScrollDeltaToShow(view.x, view.width, slot.x, slot.width),
+                      ScrollDeltaToShow(view.y, view.height, slot.y, slot.height));
+  if (delta == wxPoint(0, 0))
+    return false;
+  return ScrollTo(m_scroll + delta);
+}
+
 wxRect MatrCell::ViewportRect() const {
   // Inside the brackets' margins, which is where the entries of a matrix
   // that isn't scrolled begin and end, too.
