@@ -27,7 +27,11 @@
 
 #include "UrlDetection.h"
 
-#define CATCH_CONFIG_MAIN
+// Not CATCH_CONFIG_MAIN: with _UNICODE defined (as wxWidgets does on Windows)
+// Catch then defines wmain(), which MinGW's startup code does not look for --
+// the link fails with "undefined symbol: WinMain". Every test here therefore
+// supplies its own main(), at the end of this file.
+#define CATCH_CONFIG_RUNNER
 #include <catch2/catch.hpp>
 
 using wxm::FindUrls;
@@ -171,3 +175,5 @@ SCENARIO("Links survive an exporter's escaping via placeholders") {
     }
   }
 }
+
+int main(int argc, char *argv[]) { return Catch::Session().run(argc, argv); }

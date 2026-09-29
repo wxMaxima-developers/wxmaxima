@@ -409,6 +409,11 @@ bool Worksheet::RedrawIfRequested() {
         wxString toolTip = GetViewCellPointers().GetGroupCellUnderPointer()->GetToolTip(
                                                                               wxPoint(m_pointer_x, m_pointer_y));
 
+        // A link in the output says where it leads instead (GH #2396).
+        const wxString link = LinkUnderPointer();
+        if (!link.empty())
+          toolTip = LinkToolTip(link);
+        UpdateLinkCursor(!link.empty());
         if (!toolTip.empty()) {
           if (!GetToolTipText().empty()) {
             if (toolTip != GetToolTipText()) {
@@ -441,29 +446,19 @@ bool Worksheet::RedrawIfRequested() {
         // follow it, and while Ctrl is held the pointer turns into a hand.
         const wxString link = LinkUnderPointer();
         if (!link.empty()) {
-#ifdef __WXOSX__
-          const wxString toolTip = wxString::Format(_("%s\nCmd+click to open the link"), link);
-#else
-          const wxString toolTip = wxString::Format(_("%s\nCtrl+click to open the link"), link);
-#endif
+          const wxString toolTip = LinkToolTip(link);
           if (toolTip != GetToolTipText())
             SetToolTip(toolTip);
         } else
           UnsetToolTip();
-        const bool showHand = !link.empty() && m_pointerCmdDown;
-        if (showHand != m_linkCursorShown) {
-          SetCursor(showHand ? wxCursor(wxCURSOR_HAND) : wxNullCursor);
-          m_linkCursorShown = showHand;
-        }
+        UpdateLinkCursor(!link.empty());
       }
     } else {
       UnsetToolTip();
       GetViewCellPointers().ClearCellUnderPointer();
     }
-    if (m_linkCursorShown && !GetViewCellPointers().GetGroupCellUnderPointer()) {
-      SetCursor(wxNullCursor);
-      m_linkCursorShown = false;
-    }
+    if (!GetViewCellPointers().GetGroupCellUnderPointer())
+      UpdateLinkCursor(false);
     m_mouseMotionWas = false;
     redrawIssued = true;
   }
@@ -1403,20 +1398,18 @@ void Worksheet::OnMouseLeftInGcLeft(wxMouseEvent &event,
  */
 void Worksheet::OnMouseLeftInGcCell(wxMouseEvent &event,
                                     GroupCell *clickedInGC) {
-  // Ctrl+click (Cmd+click on macOS) follows a link in a text cell. A plain
-  // click has to keep placing the caret, since text cells are always
-  // editable. The link opens instead of the cell becoming active, so nothing
-  // is dragged or selected by the button being held afterwards.
+  // Ctrl+click (Cmd+click on macOS) follows a link in a text cell or in the
+  // output. A plain click has to keep placing the caret, since text cells are
+  // always editable, and selecting output, so it can be copied. The link
+  // opens instead of the cell becoming active, so nothing is dragged or
+  // selected by the button being held afterwards.
   if (event.CmdDown()) {
-    EditorCell *editor = clickedInGC->GetEditable();
-    if (editor) {
-      const wxString link = editor->GetLinkAt(m_down);
-      if (!link.empty()) {
-        m_clickType = CLICK_TYPE_NONE;
-        // Let the mouse go before a browser window can take the focus.
-        CallAfter([link] { OpenLink(link); });
-        return;
-      }
+    const wxString link = clickedInGC->GetLinkAt(m_down);
+    if (!link.empty()) {
+      m_clickType = CLICK_TYPE_NONE;
+      // Let the mouse go before a browser window can take the focus.
+      CallAfter([link] { OpenLink(link); });
+      return;
     }
   }
 
@@ -1705,11 +1698,38 @@ bool Worksheet::OpenLink(const wxString &url) {
   return wxLaunchDefaultBrowser(url);
 }
 
+wxString Worksheet::LinkToolTip(const wxString &link) {
+#ifdef __WXOSX__
+  return wxString::Format(_("%s\nCmd+click to open the link"), link);
+#else
+  return wxString::Format(_("%s\nCtrl+click to open the link"), link);
+#endif
+}
+
+void Worksheet::UpdateLinkCursor(bool overLink) {
+  const bool showHand = overLink && m_pointerCmdDown;
+  if (showHand != m_linkCursorShown) {
+    SetCursor(showHand ? wxCursor(wxCURSOR_HAND) : wxNullCursor);
+    m_linkCursorShown = showHand;
+  }
+}
+
+wxString Worksheet::GetLinkAt(wxPoint point) {
+  for (GroupCell &group : OnList(GetTree())) {
+    if (group.GetRect().GetTop() > point.y)
+      break;
+    const wxString link = group.GetLinkAt(point);
+    if (!link.empty())
+      return link;
+  }
+  return {};
+}
+
 wxString Worksheet::LinkUnderPointer() {
   GroupCell *group = GetViewCellPointers().GetGroupCellUnderPointer();
-  if (!group || !group->GetEditable())
+  if (!group)
     return {};
-  return group->GetEditable()->GetLinkAt(wxPoint(m_pointer_x, m_pointer_y));
+  return group->GetLinkAt(wxPoint(m_pointer_x, m_pointer_y));
 }
 
 void Worksheet::OnMouseMotion(wxMouseEvent &event) {

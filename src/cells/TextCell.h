@@ -26,6 +26,8 @@
 
 #include <wx/regex.h>
 #include "Cell.h"
+#include "UrlDetection.h"
+#include <vector>
 
 /*! A Text cell
 
@@ -96,12 +98,36 @@ public:
 
   void SetPromptTooltip(bool use) { m_promptTooltip = use; }
 
+  /*! The link drawn at point, if any (GH #2396).
+
+    A string Maxima prints -- print("See https://...") or an error message
+    naming a web page -- shows its http://, https:// and mailto: addresses as
+    links, just as a text cell does. Free for a cell without links, which is
+    known from the moment its text is set.
+  */
+  wxString GetLinkAt(wxPoint point) override;
+
 protected:
   mutable wxString m_altCopyText;
   //! Returns the XML flags this cell needs in wxMathML
   wxString GetXMLFlags() const override;
   //! The text we actually display depends on many factors, unfortunately
   virtual void UpdateDisplayedText() const;
+  /*! The links in m_displayedText.
+
+    Only those also found in m_text verbatim count: UpdateDisplayedText()
+    replaces "->" by an arrow, and a link has to open what Maxima printed,
+    not what it looks like on screen.
+  */
+  std::vector<wxm::UrlSpan> LinkSpans() const;
+  /*! Walks m_displayedText as Draw() paints it: plain runs and links.
+
+    func(text, x, width, isLink) is called for each run from left to right,
+    x being where the run starts. Draw() and GetLinkAt() both use this, so
+    what is painted as a link and what is found under the pointer can't
+    disagree.
+  */
+  template <typename RunFunc> void WalkTextRuns(wxDC *dc, wxCoord x, RunFunc &&func) const;
   //! Update the tooltip for this cell
   void UpdateToolTip();
   const wxString &GetAltCopyText() const override { return m_altCopyText; }
@@ -152,6 +178,8 @@ protected:
   bool m_dontEscapeOpeningParenthesis : 1 = false;
   //! Default to a special tooltip for prompts?
   bool m_promptTooltip : 1 = false;
+  //! Does m_displayedText contain a link? Keeps Draw() a single DrawText() if not.
+  mutable bool m_hasLinks : 1 = false;
 };
 
 #endif // TEXTCELL_H
