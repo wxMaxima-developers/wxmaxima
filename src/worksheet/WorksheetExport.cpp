@@ -32,6 +32,7 @@
 #include "Configuration.h"
 #include "Dirstructure.h"
 #include "MarkDown.h"
+#include "UrlDetection.h"
 #include "Version.h"
 #include "WXMformat.h"
 #include "WXMXformat.h"
@@ -697,7 +698,7 @@ void WriteTeXPreamble(wxTextOutputStream &output, Configuration *configuration) 
   // graphicx loads all the code needed in order to include graphics; animate
   // lets \animategraphics embed the frames of an animation as a real animation
   // that plays in PDF viewers supporting it (and shows the first frame in the
-  // rest).
+  // rest). url typesets the links in text cells.
   output << wxS(R"TEX(\setlength{\parskip}{\medskipamount}
 \setlength{\parindent}{0pt}
 \usepackage{iftex}
@@ -712,6 +713,7 @@ void WriteTeXPreamble(wxTextOutputStream &output, Configuration *configuration) 
 \fi
 \usepackage{graphicx}
 \usepackage{animate}
+\usepackage{url}
 )TEX");
 
   // Carries the worksheet itself inside the PDF as a file attachment, so the
@@ -1285,6 +1287,20 @@ void ExportCodeCell(wxString &output, GroupCell &tmp,
   }
 }
 
+//! A link from a text cell (GH #2396) as an HTML anchor showing its address.
+wxString HtmlAnchorForUrl(const wxString &url) {
+  const wxString escaped = EditorCell::EscapeHTMLChars(url);
+  return wxS("<a href=\"") + escaped + wxS("\">") + escaped + wxS("</a>");
+}
+
+//! EditorCell::EscapeHTMLChars(), but with every link turned into an anchor.
+wxString EscapeHTMLWithLinks(const wxString &text) {
+  std::vector<wxString> links;
+  const wxString protectedText = wxm::ProtectUrls(text, links);
+  return wxm::RestoreUrls(EditorCell::EscapeHTMLChars(protectedText), links,
+                          HtmlAnchorForUrl);
+}
+
 /*! Export one non-code group cell (text, heading, section, image, page break).
 
   These have no math-output chunking; each maps to a single styled <div>. Image
@@ -1300,16 +1316,24 @@ void ExportOtherCell(wxString &output, GroupCell &tmp, MarkDownHTML &MarkDown,
     // A text cell can include block-level HTML elements, e.g. <ul> ...
     // </ul> (converted from Markdown) Therefore do not output <p> ... </p>
     // elements, that would result in invalid HTML.
-    output << MarkDown.MarkDown(EditorCell::EscapeHTMLChars(
-                                                            tmp.GetEditable()->ToString())) +
-      "\n";
+    {
+      // The links are taken out before the Markdown conversion and put back
+      // afterwards, so that nothing in it can change an address.
+      std::vector<wxString> links;
+      const wxString text =
+        wxm::ProtectUrls(tmp.GetEditable()->ToString(), links);
+      output << wxm::RestoreUrls(
+                  MarkDown.MarkDown(EditorCell::EscapeHTMLChars(text)), links,
+                  HtmlAnchorForUrl) +
+        "\n";
+    }
     output << wxS("</div>\n");
     break;
   case GC_TYPE_SECTION:
     output << wxS("\n\n<!-- Section cell -->\n\n\n");
     output << wxS("<div class=\"section\">\n");
     output << wxS("<p>\n");
-    output << EditorCell::EscapeHTMLChars(tmp.GetPrompt()->ToString() +
+    output << EscapeHTMLWithLinks(tmp.GetPrompt()->ToString() +
                                           tmp.GetEditable()->ToString()) +
       "\n";
     output << wxS("</p>\n");
@@ -1319,7 +1343,7 @@ void ExportOtherCell(wxString &output, GroupCell &tmp, MarkDownHTML &MarkDown,
     output << wxS("\n\n<!-- Subsection cell -->\n\n\n");
     output << wxS("<div class=\"subsect\">\n");
     output << wxS("<p>\n");
-    output << EditorCell::EscapeHTMLChars(tmp.GetPrompt()->ToString() +
+    output << EscapeHTMLWithLinks(tmp.GetPrompt()->ToString() +
                                           tmp.GetEditable()->ToString()) +
       "\n";
     output << wxS("</p>\n");
@@ -1329,7 +1353,7 @@ void ExportOtherCell(wxString &output, GroupCell &tmp, MarkDownHTML &MarkDown,
     output << wxS("\n\n<!-- Subsubsection cell -->\n\n\n");
     output << wxS("<div class=\"subsubsect\">\n");
     output << wxS("<p>\n");
-    output << EditorCell::EscapeHTMLChars(tmp.GetPrompt()->ToString() +
+    output << EscapeHTMLWithLinks(tmp.GetPrompt()->ToString() +
                                           tmp.GetEditable()->ToString()) +
       "\n";
     output << wxS("</p>\n");
@@ -1339,7 +1363,7 @@ void ExportOtherCell(wxString &output, GroupCell &tmp, MarkDownHTML &MarkDown,
     output << wxS("\n\n<!-- Heading5 cell -->\n\n\n");
     output << wxS("<div class=\"heading5\">\n");
     output << wxS("<p>\n");
-    output << EditorCell::EscapeHTMLChars(tmp.GetPrompt()->ToString() +
+    output << EscapeHTMLWithLinks(tmp.GetPrompt()->ToString() +
                                           tmp.GetEditable()->ToString()) +
       "\n";
     output << wxS("</p>\n");
@@ -1349,7 +1373,7 @@ void ExportOtherCell(wxString &output, GroupCell &tmp, MarkDownHTML &MarkDown,
     output << wxS("\n\n<!-- Heading6 cell -->\n\n\n");
     output << wxS("<div class=\"heading6\">\n");
     output << wxS("<p>\n");
-    output << EditorCell::EscapeHTMLChars(tmp.GetPrompt()->ToString() +
+    output << EscapeHTMLWithLinks(tmp.GetPrompt()->ToString() +
                                           tmp.GetEditable()->ToString()) +
       "\n";
     output << wxS("</p>\n");
@@ -1359,7 +1383,7 @@ void ExportOtherCell(wxString &output, GroupCell &tmp, MarkDownHTML &MarkDown,
     output << wxS("\n\n<!-- Title cell -->\n\n\n");
     output << wxS("<div class=\"title\">\n");
     output << wxS("<p>\n");
-    output << EditorCell::EscapeHTMLChars(tmp.GetEditable()->ToString()) +
+    output << EscapeHTMLWithLinks(tmp.GetEditable()->ToString()) +
       "\n";
     output << wxS("</p>\n");
     output << wxS("</div>\n");
@@ -1376,7 +1400,7 @@ void ExportOtherCell(wxString &output, GroupCell &tmp, MarkDownHTML &MarkDown,
       {
         output << wxS("\n\n<!-- Image cell -->\n\n\n");
         output << wxS("<div class=\"image\">\n");
-        output << EditorCell::EscapeHTMLChars(tmp.GetPrompt()->ToString() +
+        output << EscapeHTMLWithLinks(tmp.GetPrompt()->ToString() +
                                               tmp.GetEditable()->ToString())
                << wxS("\n");
         output << wxS("<br>\n");
@@ -1435,17 +1459,37 @@ void WriteHTMLBody(wxString &output, GroupCell *tree,
   }
 }
 
+//! Base64-encode a whole file's contents, or return empty if it can't be read.
+wxString FileToBase64(const wxString &path) {
+  wxFile file(path, wxFile::read); // flawfinder: ignore -- wxFile::read is an open-mode enum, not the read() syscall
+  if (!file.IsOpened())
+    return {};
+  const wxFileOffset len = file.Length();
+  if (len <= 0)
+    return {};
+  std::vector<unsigned char> buf(static_cast<size_t>(len));
+  if (file.Read(buf.data(), buf.size()) != len)
+    return {};
+  return wxBase64Encode(buf.data(), buf.size());
+}
+
 /*! Write the HTML footer, and optionally an embedded .wxmx download link.
 
   Closes the running output with the wxMaxima credit line and, when
   Configuration::ExportContainsWXMX() is set, writes a .wxmx copy of the tree
   into imgDir and links to it before closing `</body></html>`.
+
+  If Configuration::HTMLExportSelfContained() is set, imgDir is a private
+  scratch directory that is deleted after the export: the .wxmx is then read
+  back and embedded as a `data:` URI whose `download` attribute restores its
+  real file name, since a relative link into that directory would dangle.
  */
 void WriteHTMLFooter(wxString &output, GroupCell *tree,
                      Configuration *configuration,
                      ViewCellPointers *cellPointers, GroupCell *hCaret,
                      const wxString &path, const wxString &imgDir_rel,
-                     const wxString &filename) {
+                     const wxString &filename,
+                     const wxString &displayName) {
   output << wxS("\n");
   output << wxS(" <hr>\n");
   output << wxS(" <p><small> Created with "
@@ -1453,7 +1497,21 @@ void WriteHTMLFooter(wxString &output, GroupCell *tree,
                 "wxMaxima</a>.</small></p>\n");
   output << wxEmptyString;
 
-  if (configuration->ExportContainsWXMX()) {
+  if (configuration->ExportContainsWXMX() &&
+      configuration->HTMLExportSelfContained()) {
+    const wxString wxmxfileName = path + wxS("/") + filename + wxS(".wxmx");
+    std::vector<wxString> dummy;
+    Format::ExportToWXMX(tree, wxmxfileName, configuration,
+                         cellPointers, dummy, hCaret);
+    const wxString base64 = FileToBase64(wxmxfileName);
+    if (!base64.IsEmpty())
+      output
+        << wxS(" <small> The source of this Maxima session can be downloaded "
+               "<a href=\"data:application/zip;base64,") +
+        base64 + wxS("\" download=\"") +
+        EditorCell::EscapeHTMLChars(displayName + wxS(".wxmx")) +
+        wxS("\">here</a>.</small>\n");
+  } else if (configuration->ExportContainsWXMX()) {
     wxString wxmxfileName_rel = imgDir_rel + wxS("/") + filename + wxS(".wxmx");
     wxString wxmxfileName = path + wxS("/") + wxmxfileName_rel;
     std::vector<wxString> dummy;
@@ -1473,20 +1531,6 @@ void WriteHTMLFooter(wxString &output, GroupCell *tree,
   //
   output << wxS(" </body>\n");
   output << wxS("</html>\n");
-}
-
-//! Base64-encode a whole file's contents, or return empty if it can't be read.
-wxString FileToBase64(const wxString &path) {
-  wxFile file(path, wxFile::read); // flawfinder: ignore -- wxFile::read is an open-mode enum, not the read() syscall
-  if (!file.IsOpened())
-    return {};
-  const wxFileOffset len = file.Length();
-  if (len <= 0)
-    return {};
-  std::vector<unsigned char> buf(static_cast<size_t>(len));
-  if (file.Read(buf.data(), buf.size()) != len)
-    return {};
-  return wxBase64Encode(buf.data(), buf.size());
 }
 
 //! The MIME type for one of the image extensions this exporter ever writes.
@@ -1608,16 +1652,41 @@ bool WorksheetExport::ExportToHTML(GroupCell *tree, Configuration *configuration
   wxConfigBase *config = wxConfig::Get();
 
   wxFileName::SplitPath(file, &path, &filename, &ext);
-  imgDir_rel = filename + wxS("_htmlimg");
-  imgDir = path + wxS("/") + imgDir_rel;
 
-  if (!wxDirExists(imgDir)) {
-    if (!wxMkdir(imgDir))
+  // The base name the image files are written under, and its URL-encoded
+  // form HtmlImageTag() puts into the src attributes.
+  wxString imgPrefix = filename;
+  wxString imgPrefix_encoded;
+  // A self-contained export renders its images into a private scratch
+  // directory, inlines them as data: URIs and deletes the directory again,
+  // exactly like "Copy as HTML" does: no <name>_htmlimg folder is created.
+  const bool selfContained = configuration->HTMLExportSelfContained();
+  wxString tempDir;
+  if (selfContained) {
+    tempDir = MakeSelfContainedHtmlTempDir();
+    if (tempDir.IsEmpty())
       return false;
-  }
+    // MakeSelfContainedHtmlTempDir() returns the path with a trailing
+    // separator; the image writers append their own.
+    imgDir = tempDir.Left(tempDir.Length() - 1);
+    // A fixed, ASCII-only prefix: InlineImagesAsDataURIs() looks the files up
+    // by the basename in the src attribute, which for a file name with
+    // spaces or non-ASCII characters would be URL-encoded and no longer
+    // match the file on disk.
+    imgPrefix = wxS("img");
+    imgPrefix_encoded = imgPrefix;
+  } else {
+    imgDir_rel = filename + wxS("_htmlimg");
+    imgDir = path + wxS("/") + imgDir_rel;
 
-  wxURI filename_uri(filename);
-  wxString filename_encoded = filename_uri.BuildURI(); /* handle HTML entities like " " => "%20" */
+    if (!wxDirExists(imgDir)) {
+      if (!wxMkdir(imgDir))
+        return false;
+    }
+
+    wxURI filename_uri(filename);
+    imgPrefix_encoded = filename_uri.BuildURI(); /* handle HTML entities like " " => "%20" */
+  }
 
   wxString output;
 
@@ -1641,15 +1710,23 @@ bool WorksheetExport::ExportToHTML(GroupCell *tree, Configuration *configuration
   // Write the actual contents
   //////////////////////////////////////////////
 
-  WriteHTMLBody(output, tree, configuration, imgDir, filename,
-                filename_encoded);
+  WriteHTMLBody(output, tree, configuration, imgDir, imgPrefix,
+                imgPrefix_encoded);
 
   //////////////////////////////////////////////
   // Footer
   //////////////////////////////////////////////
 
-  WriteHTMLFooter(output, tree, configuration, cellPointers, hCaret, path,
-                  imgDir_rel, filename);
+  if (selfContained) {
+    // Before the footer: its embedded .wxmx link is an href, not a src, but
+    // there is no need to scan the (possibly large) base64 blob either.
+    InlineImagesAsDataURIs(output, imgDir);
+    WriteHTMLFooter(output, tree, configuration, cellPointers, hCaret, imgDir,
+                    wxEmptyString, imgPrefix, filename);
+    wxFileName::Rmdir(tempDir, wxPATH_RMDIR_RECURSIVE);
+  } else
+    WriteHTMLFooter(output, tree, configuration, cellPointers, hCaret, path,
+                    imgDir_rel, filename, filename);
 
   configuration->ClipToDrawRegion(true);
 

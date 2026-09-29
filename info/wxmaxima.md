@@ -266,6 +266,10 @@ cogito => sum.
 
 Other symbols the HTML and TeX export will recognize are `<=` and `>=` for comparisons, a double-pointed double arrow (`<=>`), single-headed arrows (`<->`, `->` and `<-`) and `+/-` as the respective sign. For TeX output also `<<` and `>>` are recognized.
 
+### Links in text cells
+
+A web address in a text cell that starts with `http://`, `https://` or `mailto:` is shown as a link. Since clicking into a text cell places the cursor there, a link is followed by <kbd>CTRL</kbd>+clicking it (<kbd>CMD</kbd>+clicking on macOS), or by right-clicking it and choosing "Open Link"; hovering over it shows where it leads. The HTML export turns it into a link, the TeX export into a `\url{}`. Links are always recognized from the text itself, so nothing about them is stored in the file.
+
 ### Hotkeys
 
 Most hotkeys can be found in the text of the respective menus. Since they are actually taken from the menu text and thus can be customized by the translations of _wxMaxima_ to match the needs of users of the local keyboard, we do not document them here. A few hotkeys or hotkey aliases, though, are not documented in the menus:
@@ -477,6 +481,8 @@ A relative file name is interpreted relative to _Maxima_’s working directory. 
 | -------- | ----------------------------------------------- | --------------------------------------------------- |
 | `flavor` | `mathml` (default), `mathjax`, `svg`, `bitmap`  | how the equations are rendered in the exported page |
 | `wxmx`   | `false` (default), `true`                       | embed a downloadable `.wxmx` copy of the session    |
+
+The images and the `.wxmx` copy are written into a folder named after the HTML file, with `_htmlimg` appended. If "Embed images into the .html file" is checked in the Export tab of the configuration dialog, they are embedded into the HTML file instead, so it can be mailed as a single file.
 
 The `flavor` values match the equation formats offered by the graphical **File → Export** dialog: `mathml` produces a self-contained page that needs no internet connection, `mathjax` adds a MathJaX fall-back for browsers that still lack MathML, and `svg`/`bitmap` render every equation to an image.
 

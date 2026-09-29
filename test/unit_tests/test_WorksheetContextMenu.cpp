@@ -186,6 +186,35 @@ SCENARIO("The active-cell menu offers editing operations") {
   }
 }
 
+SCENARIO("A right click on a text cell's link offers to open it (GH #2396)") {
+  g_ws->ClearDocument();
+  const wxString text = wxS("Docs: https://example.org/manual here");
+  GroupCell *group = g_ws->InsertGroupCells(
+    std::make_unique<GroupCell>(g_cfg, GC_TYPE_TEXT, text), nullptr);
+  g_ws->RecalculateIfNeeded();
+  EditorCell *editor = group->GetEditable();
+  REQUIRE(editor != nullptr);
+  g_ws->SetActiveCell(editor);
+
+  const wxPoint onLink = editor->PositionToPoint(text.Find(wxS("example")));
+  const wxPoint offLink = editor->PositionToPoint(1);
+
+  THEN("on the link, the menu offers opening and copying it") {
+    wxMenu menu;
+    PopulateWorksheetContextMenu(*g_ws, menu, onLink.x + 2, onLink.y, false);
+    REQUIRE(HasItem(menu, wxS("Open Link")));
+    REQUIRE(HasItem(menu, wxS("Copy Link Address")));
+    REQUIRE(HasItem(menu, wxS("Cut"))); // the editing entries stay
+    REQUIRE(g_ws->GetContextMenuLink() == wxS("https://example.org/manual"));
+  }
+  THEN("beside it, it doesn't") {
+    wxMenu menu;
+    PopulateWorksheetContextMenu(*g_ws, menu, offLink.x + 2, offLink.y, false);
+    REQUIRE_FALSE(HasItem(menu, wxS("Open Link")));
+    REQUIRE(g_ws->GetContextMenuLink().empty());
+  }
+}
+
 class TestApp : public wxApp {
 public:
   bool OnInit() override { return true; }

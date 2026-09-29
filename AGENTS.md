@@ -653,9 +653,15 @@ a local TCP socket.
   SelectionToSelfContainedHTML()` / `Worksheet::CopyHTML()`:** a right-click
   context menu item placing a *self-contained* HTML document on the
   clipboard (inline `<style>`, every image as a base64 `data:` URI, no
-  external file references at all) -- unlike `ExportToHTML()`'s on-disk
-  export, which deliberately writes a separate `.css` file and an
-  `_htmlimg/` directory next to the `.html`. Reuses `ExportCodeCell()`/
+  external file references at all). `ExportToHTML()`'s on-disk export does
+  the same when `Configuration::HTMLExportSelfContained()` is set (GH #2266;
+  it also embeds the optional `.wxmx` as a `data:` href with a `download`
+  attribute). That option is **off by default on purpose** -- the maintainer
+  wants it only for mailing a single file -- so by default the export still
+  writes an `_htmlimg/` directory next to the `.html`. In self-contained mode
+  the images are written under the fixed prefix `img`, not the file name:
+  `HtmlImageTag()` URL-encodes the prefix into the `src`, so a file name with
+  a space would no longer match the file `InlineImagesAsDataURIs()` looks up. Reuses `ExportCodeCell()`/
   `ExportOtherCell()` (the same per-GroupCell renderers `ExportToHTML()`
   uses) completely unchanged, rather than duplicating them, by pointing
   their `imgDir` at a fresh private scratch directory and post-processing

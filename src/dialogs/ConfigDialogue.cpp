@@ -427,6 +427,11 @@ void ConfigDialogue::SetCheckboxValues() {
   m_exportContainsWXMX->SetToolTip(
                                    _("If this option is set the .wxmx source of the current file is copied "
                                      "to a place a link to is put into the result of an export."));
+  m_htmlExportSelfContained->SetToolTip(
+    _("If this option is set, the HTML export writes a single .html file that "
+      "contains its images (and, if requested, the .wxmx source) instead of "
+      "placing them in a separate folder next to it. Such a file can be mailed "
+      "or uploaded on its own, but is larger."));
   m_printBrackets->SetToolTip(
                               _("For each Text-, Sectioning or code cell wxMaxima can display a "
                                 "bracket showing the extend of the cell and allowing to fold it. This "
@@ -543,6 +548,7 @@ void ConfigDialogue::SetCheckboxValues() {
   m_usePartialForDiff->SetValue(configuration->UsePartialForDiff());
   m_wrapLatexMath->SetValue(configuration->WrapLatexMath());
   m_exportContainsWXMX->SetValue(configuration->ExportContainsWXMX());
+  m_htmlExportSelfContained->SetValue(configuration->HTMLExportSelfContained());
   m_printBrackets->SetValue(configuration->PrintBrackets());
   {
     // Map the stored format to a choice index; anything not offered anymore
@@ -1365,6 +1371,12 @@ wxWindow *ConfigDialogue::CreateExportPanel() {
     new wxCheckBox(html_sizer->GetStaticBox(), wxID_ANY,
                    _("Add the .wxmx file to the HTML export"));
   html_sizer->Add(m_exportContainsWXMX,
+                  wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
+
+  m_htmlExportSelfContained =
+    new wxCheckBox(html_sizer->GetStaticBox(), wxID_ANY,
+                   _("Embed images into the .html file"));
+  html_sizer->Add(m_htmlExportSelfContained,
                   wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
 
   vsizer->Add(html_sizer, wxSizerFlags().Expand().Border(
@@ -3176,6 +3188,7 @@ void ConfigDialogue::WriteSettings() {
   configuration->UsePartialForDiff(m_usePartialForDiff->GetValue());
   configuration->WrapLatexMath(m_wrapLatexMath->GetValue());
   configuration->ExportContainsWXMX(m_exportContainsWXMX->GetValue());
+  configuration->HTMLExportSelfContained(m_htmlExportSelfContained->GetValue());
   configuration->PrintBrackets(m_printBrackets->GetValue());
   {
     int sel = m_exportWithMathJAX->GetSelection();
