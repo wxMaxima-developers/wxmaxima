@@ -441,6 +441,14 @@ void Cell::Draw(wxDC *dc, wxDC *WXUNUSED(adc)) {
       wxASSERT_MSG(FontSizeMatchesExpectation(),
                    wxS("Cell drawn at a different font size than it was laid out with"));
     }
+    // A cell drawn in 2D lays out and draws its contents itself, which only
+    // works if none of them is broken into lines (see BreakUpCells()). The
+    // exception is a GroupCell: its output is laid out via the draw list.
+    if (!m_isBrokenIntoLines && (m_type != MC_TYPE_GROUP))
+      for (const Cell &inner : OnInner(this))
+        for (const Cell &cell : OnList(&inner))
+          wxASSERT_MSG(!cell.IsBrokenIntoLines(),
+                       wxS("Cell broken into lines inside a cell drawn in 2D"));
   }
   m_configuration->NotifyOfCellRedraw(this);
 
@@ -728,7 +736,7 @@ bool Cell::BreakUpCells() const {
     if (m_configuration->IsLayoutCancelled())
       return anyChanged;
     changedInThisPass = false;
-    std::vector<const Cell *> wideCells;
+    std::vector<WideCell> wideCells;
 
     if (!IsHidden()) {
       for (const Cell &tmp : OnDrawList(this)) {
@@ -746,8 +754,21 @@ bool Cell::BreakUpCells() const {
     }
 
     if (!wideCells.empty()) {
-      for (const Cell *cell : wideCells) {
-        if (cell->BreakUp()) {
+      for (const WideCell &wide : wideCells) {
+        // Only a cell that is broken into lines hands its contents to the
+        // draw list; the contents of a cell that stays in 2D are laid out,
+        // positioned and drawn by that cell. Breaking up a cell inside one
+        // that stays in 2D (a subscript, a matrix, a diff() fraction - none of
+        // them has a linear form - or one that just wasn't wide enough)
+        // would leave it in its linear, zero-width form inside the 2D one: no
+        // one would position or draw its contents, and UnBreakUpCells(),
+        // which walks the draw list, would never return it to 2D again.
+        // Parents precede their contents in wideCells, so the parent's
+        // BreakUp() has already been tried here.
+        if ((wide.parent >= 0) &&
+            !wideCells[wide.parent].cell->IsBrokenIntoLines())
+          continue;
+        if (wide.cell->BreakUp()) {
           Configuration::g_stats.cellsConvertedToLinear++;
           changedInThisPass = true;
           anyChanged = true;
@@ -762,16 +783,18 @@ bool Cell::BreakUpCells() const {
   return anyChanged;
 }
 
-void Cell::CollectWideCells(std::vector<const Cell *> &wideCells,
-                            int clientWidth) const {
+void Cell::CollectWideCells(std::vector<WideCell> &wideCells,
+                            int clientWidth, int parent) const {
   if (IsBrokenIntoLines())
     return;
 
   // If this cell is already wider than the threshold, it's a candidate for
-  // linearization.
-  if (GetWidth() > clientWidth) {
-    wideCells.push_back(this);
-  }
+  // linearization. If it isn't, it stays in 2D - and so do its contents: a
+  // cell broken into lines inside a 2D one would be drawn by no one.
+  if (GetWidth() <= clientWidth)
+    return;
+  wideCells.push_back({this, parent});
+  const int self = static_cast<int>(wideCells.size()) - 1;
 
   // Also recursively check sub-cells. We use a threshold of 80% because
   // sub-cells often use a smaller font size. If they are already 80% of the
@@ -782,7 +805,7 @@ void Cell::CollectWideCells(std::vector<const Cell *> &wideCells,
     // because we want to recursively find the deepest wide cells first
     // if possible, but actually we just collect them all.
     if (inner.GetWidth() > 0.8 * clientWidth) {
-      inner.CollectWideCells(wideCells, clientWidth);
+      inner.CollectWideCells(wideCells, clientWidth, self);
     }
   }
 }

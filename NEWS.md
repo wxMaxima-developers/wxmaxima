@@ -1,5 +1,14 @@
 # Current development version
 
+- A fraction or parenthesis inside a subscript no longer vanishes, or gets
+  partly broken into lines, when the window is too narrow for it. A
+  subscript has no linear form, so it is always drawn in 2D - but the
+  line-breaking step still converted the wide cells inside it to their
+  linear form, which only a cell that is itself broken into lines can draw.
+  Those cells were then positioned and drawn by nobody, and were never
+  returned to 2D when the window grew again. The same applied to matrices
+  and to the fractions of a diff(). Now nothing inside a cell that stays in
+  2D is broken into lines.
 - The matrix viewer (double-click an elided or scrolling matrix) now shows
   the matrix with alternating row and column bands, without brackets, and
   starting at the left margin instead of indented like worksheet output.
