@@ -477,6 +477,12 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>CursorJump</b> () con
 <tr class="memitem:ab4d187dd22be3d5bf8da43d97f24615d"><td class="memItemLeft" align="right" valign="top"><a id="ab4d187dd22be3d5bf8da43d97f24615d" name="ab4d187dd22be3d5bf8da43d97f24615d"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>CursorJump</b> (bool save)</td></tr>
 <tr class="separator:ab4d187dd22be3d5bf8da43d97f24615d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9476f5002dc14dc335da45696d27cc3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#ae9476f5002dc14dc335da45696d27cc3">ArrowKeysSkipOutput</a> () const</td></tr>
+<tr class="memdesc:ae9476f5002dc14dc335da45696d27cc3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Do the Up and Down keys skip over a cell's output?  <br /></td></tr>
+<tr class="separator:ae9476f5002dc14dc335da45696d27cc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abcb92a06b8c1063149f4171b67e1462c"><td class="memItemLeft" align="right" valign="top"><a id="abcb92a06b8c1063149f4171b67e1462c" name="abcb92a06b8c1063149f4171b67e1462c"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>ArrowKeysSkipOutput</b> (bool skip)</td></tr>
+<tr class="separator:abcb92a06b8c1063149f4171b67e1462c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af042c713e54a16edce525f5c27c1ef25"><td class="memItemLeft" align="right" valign="top"><a id="af042c713e54a16edce525f5c27c1ef25" name="af042c713e54a16edce525f5c27c1ef25"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>NumpadEnterEvaluates</b> () const</td></tr>
 <tr class="separator:af042c713e54a16edce525f5c27c1ef25"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1666,6 +1672,34 @@ static <a class="el" href="structConfiguration_1_1PerformanceStats.html">Perform
 
 <p>Which AI provider the AI chat sidebar talks to, as an AiProviderKind cast to int (0 = AiProviderKind::None, i.e. </p>
 <p>not configured/disabled). Stored as a plain int, not the enum itself, so <a class="el" href="Configuration_8h_source.html">Configuration.h</a> doesn't need to include <a class="el" href="AiProvider_8h.html" title="Talks to one of a handful of external AI chat APIs for the AI chat sidebar (AiChatSidebar).">AiProvider.h</a> just for this one field. </p>
+
+</div>
+</div>
+<a id="ae9476f5002dc14dc335da45696d27cc3" name="ae9476f5002dc14dc335da45696d27cc3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9476f5002dc14dc335da45696d27cc3">&#9670;&#160;</a></span>ArrowKeysSkipOutput()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Configuration::ArrowKeysSkipOutput </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Do the Up and Down keys skip over a cell's output? </p>
+<p>Off by default: Down at the end of an input then selects the first result of the cell's output (GH #2382). On restores the older behaviour, where Down went straight on to the next cell and output could only be selected with the mouse. </p>
 
 </div>
 </div>
