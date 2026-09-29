@@ -440,6 +440,7 @@ std::ostream& operator<<(std::ostream& out, const TextStyle textstyle){
   case TS_SELECTION: result = "TS_SELECTION"; break;
   case TS_EQUALSSELECTION: result = "TS_EQUALSSELECTION"; break;
   case TS_DIFF_CHANGED: result = "TS_DIFF_CHANGED"; break;
+  case TS_LINK: result = "TS_LINK"; break;
   default: result = "!!!Bug: Unknown text style!!!";
   }
   return out << result;

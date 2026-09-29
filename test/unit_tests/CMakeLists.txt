@@ -179,6 +179,16 @@ target_link_libraries(test_AuiPerspectiveRepair PRIVATE ${wxWidgets_LIBRARIES})
 add_test(NAME AuiPerspectiveRepair
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_AuiPerspectiveRepair>")
 
+# Link detection in text cells (GH #2396) is a pure string function shared by
+# the display and the HTML/LaTeX exporters, so it is tested directly.
+add_executable(test_UrlDetection
+    test_UrlDetection.cpp ${CMAKE_SOURCE_DIR}/src/UrlDetection.cpp
+    ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
+target_include_directories(test_UrlDetection PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_link_libraries(test_UrlDetection PRIVATE ${wxWidgets_LIBRARIES})
+add_test(NAME UrlDetection
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_UrlDetection>")
+
 add_executable(test_MenuHelpString
     test_MenuHelpString.cpp ${CMAKE_SOURCE_DIR}/src/MenuHelpString.cpp ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
 target_link_libraries(test_MenuHelpString PRIVATE ${wxWidgets_LIBRARIES})
@@ -286,6 +296,18 @@ if(TARGET wxmTestApp)
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
     add_test(NAME EditorCellTabs
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_EditorCellTabs>")
+
+    # Links in text cells (GH #2396): that they become snippets of their own,
+    # that a point over one finds it and one beside it doesn't, and that the
+    # LaTeX export writes them as \url{}.
+    add_executable(test_EditorCellLinks
+        test_EditorCellLinks.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_EditorCellLinks PUBLIC cxx_std_20)
+    target_link_libraries(test_EditorCellLinks PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME EditorCellLinks
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_EditorCellLinks>")
 
     # Logic-level regression tests for the custom wxAccessible classes (worksheet
     # and toolbar). They only assert where wxUSE_ACCESSIBILITY is set (the Windows

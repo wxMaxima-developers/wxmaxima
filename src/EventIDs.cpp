@@ -600,6 +600,8 @@ const wxWindowIDRef EventIDs::popid_copy_html(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::popid_export_output_svg(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::popid_export_output_png(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::popid_add_watch(wxWindow::NewControlId());
+const wxWindowIDRef EventIDs::popid_open_link(wxWindow::NewControlId());
+const wxWindowIDRef EventIDs::popid_copy_link(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::popid_add_watch_label(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::popid_special_constant_percent(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::popid_changeasterisk(wxWindow::NewControlId());

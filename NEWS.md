@@ -1,5 +1,16 @@
 # Current development version
 
+- Web addresses in text cells are now links (GH #2396). An address
+  starting with http://, https:// or mailto: is drawn underlined in a link
+  color (configurable in Options -> Style), and Ctrl+click (Cmd+click on
+  macOS) or the context menu's "Open Link" opens it in the browser; a plain
+  click still places the cursor, since text cells are always editable.
+  Hovering over a link shows where it leads, and the pointer turns into a
+  hand while Ctrl is held. The HTML export writes such an address as a
+  link, the LaTeX export as \url{} (the export now loads the url package).
+  Nothing is stored in the file: links are recognized from the text itself,
+  so a worksheet looks the same in older versions. Only http, https and
+  mailto links are ever opened.
 - Opening Options no longer asks for the keyring's password. The AI Chat
   tab used to read every stored API key just to fill its masked key fields,
   and to write them all back on OK; it now never reads them. A key field

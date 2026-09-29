@@ -230,6 +230,9 @@ static std::unique_ptr<GroupCell> ParseCorpusFile(const wxString &name) {
 static const wxChar *const kTitleSentinel = wxS("ExportNetDocumentTitle");
 static const wxChar *const kSectionSentinel = wxS("ExportNetSectionHeading");
 static const wxChar *const kTextSentinel = wxS("ExportNetTextParagraph");
+//! A text cell with a link (GH #2396), holding characters both exporters escape.
+static const wxChar *const kLinkSentinel =
+  wxS("ExportNetLink https://example.org/a_b%20c?x=1&y=2#top (see).");
 static const wxChar *const kCodeSentinel = wxS("factor(xexportnet^2-1);");
 
 // A code cell whose output is *non-math* text: a warning (whose message
@@ -304,6 +307,7 @@ static void BuildDocumentOnce() {
   appendCell(GC_TYPE_TITLE, kTitleSentinel);
   appendCell(GC_TYPE_SECTION, kSectionSentinel);
   appendCell(GC_TYPE_TEXT, kTextSentinel);
+  appendCell(GC_TYPE_TEXT, kLinkSentinel);
   appendCell(GC_TYPE_CODE, kCodeSentinel);
 
   g_ws->RecalculateIfNeeded();
@@ -569,6 +573,11 @@ SCENARIO("HTML export succeeds, is deterministic and contains the document") {
       REQUIRE(html.Contains(wxS("replaced a &amp; b &lt; c")));
       REQUIRE(html.Contains(kStringSentinel));
       REQUIRE_FALSE(html.Contains(wxS("<mo>ExportNetWarning")));
+      // A text cell's link becomes an anchor with the address as its text,
+      // the "&" escaped once and nothing else touched (GH #2396).
+      REQUIRE(html.Contains(
+        wxS("<a href=\"https://example.org/a_b%20c?x=1&amp;y=2#top\">"
+            "https://example.org/a_b%20c?x=1&amp;y=2#top</a> (see).")));
       // The exported HTML must be structurally valid (skipped if tidy absent).
       RequireValidHtml(dir1 + wxS("/doc.html"));
       // Image links must not dangle (broken-link regression, see helper).
@@ -664,6 +673,10 @@ SCENARIO("TeX export succeeds, is deterministic and contains the document") {
     REQUIRE(tex.Contains(wxS("\\documentclass")));
     REQUIRE(tex.Contains(wxS("\\end{document}")));
     RequireContainsSentinels(tex);
+    // A text cell's link is written verbatim as a \url{}, which needs the
+    // url package (GH #2396).
+    REQUIRE(tex.Contains(wxS("\\usepackage{url}")));
+    REQUIRE(tex.Contains(wxS("\\url{https://example.org/a_b%20c?x=1&y=2#top}")));
   }
 
   THEN("non-math output is emitted as text, not forced through math mode") {

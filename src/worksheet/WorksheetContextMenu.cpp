@@ -457,6 +457,17 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
 
   // popup menu in active cell
   else {
+    // A right click on a text cell's link offers to follow it (GH #2396).
+    const wxString link =
+      worksheet.GetActiveCell()->GetLinkAt(wxPoint(downx, downy));
+    worksheet.SetContextMenuLink(link);
+    if (!link.empty()) {
+      popupMenu.Append(EventIDs::popid_open_link, _("Open Link"), wxEmptyString,
+                       wxITEM_NORMAL);
+      popupMenu.Append(EventIDs::popid_copy_link, _("Copy Link Address"),
+                       wxEmptyString, wxITEM_NORMAL);
+      popupMenu.AppendSeparator();
+    }
     popupMenu.Append(wxID_CUT, _("Cut"), wxEmptyString, wxITEM_NORMAL);
     popupMenu.Append(wxID_COPY, _("Copy"), wxEmptyString, wxITEM_NORMAL);
     popupMenu.Append(wxID_PASTE, _("Paste"), wxEmptyString, wxITEM_NORMAL);

@@ -32,6 +32,7 @@
 #include "Configuration.h"
 #include "Dirstructure.h"
 #include "MarkDown.h"
+#include "UrlDetection.h"
 #include "Version.h"
 #include "WXMformat.h"
 #include "WXMXformat.h"
@@ -696,7 +697,7 @@ void WriteTeXPreamble(wxTextOutputStream &output, Configuration *configuration) 
   // graphicx loads all the code needed in order to include graphics; animate
   // lets \animategraphics embed the frames of an animation as a real animation
   // that plays in PDF viewers supporting it (and shows the first frame in the
-  // rest).
+  // rest). url typesets the links in text cells.
   output << wxS(R"TEX(\setlength{\parskip}{\medskipamount}
 \setlength{\parindent}{0pt}
 \usepackage{iftex}
@@ -711,6 +712,7 @@ void WriteTeXPreamble(wxTextOutputStream &output, Configuration *configuration) 
 \fi
 \usepackage{graphicx}
 \usepackage{animate}
+\usepackage{url}
 )TEX");
 
   // Carries the worksheet itself inside the PDF as a file attachment, so the
@@ -1272,6 +1274,20 @@ void ExportCodeCell(wxString &output, GroupCell &tmp,
   }
 }
 
+//! A link from a text cell (GH #2396) as an HTML anchor showing its address.
+wxString HtmlAnchorForUrl(const wxString &url) {
+  const wxString escaped = EditorCell::EscapeHTMLChars(url);
+  return wxS("<a href=\"") + escaped + wxS("\">") + escaped + wxS("</a>");
+}
+
+//! EditorCell::EscapeHTMLChars(), but with every link turned into an anchor.
+wxString EscapeHTMLWithLinks(const wxString &text) {
+  std::vector<wxString> links;
+  const wxString protectedText = wxm::ProtectUrls(text, links);
+  return wxm::RestoreUrls(EditorCell::EscapeHTMLChars(protectedText), links,
+                          HtmlAnchorForUrl);
+}
+
 /*! Export one non-code group cell (text, heading, section, image, page break).
 
   These have no math-output chunking; each maps to a single styled <div>. Image
@@ -1287,16 +1303,24 @@ void ExportOtherCell(wxString &output, GroupCell &tmp, MarkDownHTML &MarkDown,
     // A text cell can include block-level HTML elements, e.g. <ul> ...
     // </ul> (converted from Markdown) Therefore do not output <p> ... </p>
     // elements, that would result in invalid HTML.
-    output << MarkDown.MarkDown(EditorCell::EscapeHTMLChars(
-                                                            tmp.GetEditable()->ToString())) +
-      "\n";
+    {
+      // The links are taken out before the Markdown conversion and put back
+      // afterwards, so that nothing in it can change an address.
+      std::vector<wxString> links;
+      const wxString text =
+        wxm::ProtectUrls(tmp.GetEditable()->ToString(), links);
+      output << wxm::RestoreUrls(
+                  MarkDown.MarkDown(EditorCell::EscapeHTMLChars(text)), links,
+                  HtmlAnchorForUrl) +
+        "\n";
+    }
     output << wxS("</div>\n");
     break;
   case GC_TYPE_SECTION:
     output << wxS("\n\n<!-- Section cell -->\n\n\n");
     output << wxS("<div class=\"section\">\n");
     output << wxS("<p>\n");
-    output << EditorCell::EscapeHTMLChars(tmp.GetPrompt()->ToString() +
+    output << EscapeHTMLWithLinks(tmp.GetPrompt()->ToString() +
                                           tmp.GetEditable()->ToString()) +
       "\n";
     output << wxS("</p>\n");
@@ -1306,7 +1330,7 @@ void ExportOtherCell(wxString &output, GroupCell &tmp, MarkDownHTML &MarkDown,
     output << wxS("\n\n<!-- Subsection cell -->\n\n\n");
     output << wxS("<div class=\"subsect\">\n");
     output << wxS("<p>\n");
-    output << EditorCell::EscapeHTMLChars(tmp.GetPrompt()->ToString() +
+    output << EscapeHTMLWithLinks(tmp.GetPrompt()->ToString() +
                                           tmp.GetEditable()->ToString()) +
       "\n";
     output << wxS("</p>\n");
@@ -1316,7 +1340,7 @@ void ExportOtherCell(wxString &output, GroupCell &tmp, MarkDownHTML &MarkDown,
     output << wxS("\n\n<!-- Subsubsection cell -->\n\n\n");
     output << wxS("<div class=\"subsubsect\">\n");
     output << wxS("<p>\n");
-    output << EditorCell::EscapeHTMLChars(tmp.GetPrompt()->ToString() +
+    output << EscapeHTMLWithLinks(tmp.GetPrompt()->ToString() +
                                           tmp.GetEditable()->ToString()) +
       "\n";
     output << wxS("</p>\n");
@@ -1326,7 +1350,7 @@ void ExportOtherCell(wxString &output, GroupCell &tmp, MarkDownHTML &MarkDown,
     output << wxS("\n\n<!-- Heading5 cell -->\n\n\n");
     output << wxS("<div class=\"heading5\">\n");
     output << wxS("<p>\n");
-    output << EditorCell::EscapeHTMLChars(tmp.GetPrompt()->ToString() +
+    output << EscapeHTMLWithLinks(tmp.GetPrompt()->ToString() +
                                           tmp.GetEditable()->ToString()) +
       "\n";
     output << wxS("</p>\n");
@@ -1336,7 +1360,7 @@ void ExportOtherCell(wxString &output, GroupCell &tmp, MarkDownHTML &MarkDown,
     output << wxS("\n\n<!-- Heading6 cell -->\n\n\n");
     output << wxS("<div class=\"heading6\">\n");
     output << wxS("<p>\n");
-    output << EditorCell::EscapeHTMLChars(tmp.GetPrompt()->ToString() +
+    output << EscapeHTMLWithLinks(tmp.GetPrompt()->ToString() +
                                           tmp.GetEditable()->ToString()) +
       "\n";
     output << wxS("</p>\n");
@@ -1346,7 +1370,7 @@ void ExportOtherCell(wxString &output, GroupCell &tmp, MarkDownHTML &MarkDown,
     output << wxS("\n\n<!-- Title cell -->\n\n\n");
     output << wxS("<div class=\"title\">\n");
     output << wxS("<p>\n");
-    output << EditorCell::EscapeHTMLChars(tmp.GetEditable()->ToString()) +
+    output << EscapeHTMLWithLinks(tmp.GetEditable()->ToString()) +
       "\n";
     output << wxS("</p>\n");
     output << wxS("</div>\n");
@@ -1363,7 +1387,7 @@ void ExportOtherCell(wxString &output, GroupCell &tmp, MarkDownHTML &MarkDown,
       {
         output << wxS("\n\n<!-- Image cell -->\n\n\n");
         output << wxS("<div class=\"image\">\n");
-        output << EditorCell::EscapeHTMLChars(tmp.GetPrompt()->ToString() +
+        output << EscapeHTMLWithLinks(tmp.GetPrompt()->ToString() +
                                               tmp.GetEditable()->ToString())
                << wxS("\n");
         output << wxS("<br>\n");

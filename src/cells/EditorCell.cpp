@@ -35,6 +35,7 @@
 #include "CellImpl.h"
 #include "CellPointers.h"
 #include "MarkDown.h"
+#include "UrlDetection.h"
 #include "wxMaxima.h"
 #include "wxMaximaFrame.h"
 #include <algorithm>
@@ -465,6 +466,14 @@ wxString EditorCell::ToRTF() const {
 wxString EditorCell::ToTeX() const {
   wxString text = m_text;
   if (!text.StartsWith(wxS("TeX:"))) {
+    // A text cell's links (GH #2396) become \url{}s. They are taken out
+    // before the character escaping below and put back at the end, since
+    // \url{} wants the address verbatim. Headings keep theirs as text:
+    // they end up inside \section{} and friends, where \url{} can't cope
+    // with a "#" or "%".
+    std::vector<wxString> links;
+    if (m_type == MC_TYPE_TEXT)
+      text = wxm::ProtectUrls(text, links);
     text.Replace(wxS("\u00a0"), wxS("~"));
     text.Replace(wxS("\\"), wxS("\\ensuremath{\\backslash}"));
     text.Replace(wxS("^"), wxS("\\^ "));
@@ -586,6 +595,9 @@ wxString EditorCell::ToTeX() const {
       text.Replace(wxS("\n"), wxS("\\\\\n"));
       text.Replace(wxS(" "), wxS("\\ "));
     }
+    text = wxm::RestoreUrls(text, links, [](const wxString &url) {
+      return wxS("\\url{") + url + wxS("}");
+    });
   } else {
     text = text.Mid(5, text.Length());
   }
@@ -914,6 +926,55 @@ void EditorCell::SetCurrentPoint(wxPoint point) const {
   Cell::SetCurrentPoint(point);
 }
 
+template <typename SnippetFunc>
+void EditorCell::WalkDrawnSnippets(wxDC *dc, SnippetFunc &&onSnippet) {
+  const wxPoint textStartingPoint = GetCurrentPoint();
+  wxPoint textCurrentPoint = textStartingPoint;
+  wxCoord lastIndent = 0;
+  // In a right-to-left document only the point each line *starts* at moves:
+  // the snippets keep their order, since that order is already the logical
+  // one and the toolkit shapes and orders the text inside each of them.
+  const std::vector<wxCoord> rtlLineOffsets = RightToLeftLineOffsets();
+  size_t rtlLine = 0;
+  if (!rtlLineOffsets.empty())
+    textCurrentPoint.x += rtlLineOffsets.front();
+  for (auto &textSnippet : m_styledText) {
+    // A newline is a separate token.
+    if ((textSnippet.GetText() == wxS("\n")) || (textSnippet.GetText() == wxS("\r"))) {
+      if ((textSnippet.GetText() == wxS("\n")))
+        lastIndent = textSnippet.GetIndentPixels();
+
+      // A newline =>
+      // set the point to the beginning of the next line.
+      textCurrentPoint.x = textStartingPoint.x;
+      textCurrentPoint.y += m_charHeight;
+      textCurrentPoint.x += textSnippet.GetIndentPixels();
+      if (++rtlLine < rtlLineOffsets.size())
+        textCurrentPoint.x += rtlLineOffsets.at(rtlLine);
+    } else if (textSnippet.GetText() == wxS("\t")) {
+      // A tab draws no glyph of its own -- it just advances to the next
+      // tab stop, measured from the current line's own start (including
+      // its indentation).
+      const wxCoord lineOrigin = textStartingPoint.x + lastIndent;
+      textCurrentPoint.x =
+        lineOrigin + NextTabStop(textCurrentPoint.x - lineOrigin);
+    } else {
+      // Determine the box the text will be in.
+      wxCoord width;
+      if (!textSnippet.SizeKnown()) {
+        wxCoord height;
+        dc->GetTextExtent(textSnippet.GetText(), &width, &height);
+        textSnippet.SetWidth(width);
+      } else
+        width = textSnippet.GetWidth();
+      onSnippet(textSnippet,
+                wxPoint(textCurrentPoint.x, textCurrentPoint.y - m_center),
+                width, textStartingPoint.x + lastIndent);
+      textCurrentPoint.x += width;
+    }
+  }
+}
+
 void EditorCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
   Cell::Draw(dc, antialiassingDC);
 
@@ -1028,73 +1089,39 @@ void EditorCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
     //
 
     wxRect updateRegion = m_configuration->GetUpdateRegion();
-    wxPoint TextStartingpoint = point;
-    wxPoint TextCurrentPoint = TextStartingpoint;
     int lastStyle = -1;
-    size_t lastIndent = 0;
-    // In a right-to-left document only the point each line *starts* at moves:
-    // the snippets keep their order, since that order is already the logical
-    // one and the toolkit shapes and orders the text inside each of them.
-    const std::vector<wxCoord> rtlLineOffsets = RightToLeftLineOffsets();
-    size_t rtlLine = 0;
-    if (!rtlLineOffsets.empty())
-      TextCurrentPoint.x += rtlLineOffsets.front();
-    for (auto &textSnippet : m_styledText) {
-      wxCoord width;
-
-      // A newline is a separate token.
-      if ((textSnippet.GetText() == wxS("\n")) || (textSnippet.GetText() == wxS("\r"))) {
-        if ((textSnippet.GetText() == wxS("\n")))
-          lastIndent = textSnippet.GetIndentPixels();
-
-        // A newline =>
-        // set the point to the beginning of the next line.
-        TextCurrentPoint.x = TextStartingpoint.x;
-        TextCurrentPoint.y += m_charHeight;
-        TextCurrentPoint.x += textSnippet.GetIndentPixels();
-        if (++rtlLine < rtlLineOffsets.size())
-          TextCurrentPoint.x += rtlLineOffsets.at(rtlLine);
-      } else if (textSnippet.GetText() == wxS("\t")) {
-        // A tab draws no glyph of its own -- it just advances to the next
-        // tab stop, measured from the current line's own start (including
-        // its indentation).
-        const wxCoord lineOrigin = TextStartingpoint.x + lastIndent;
-        TextCurrentPoint.x =
-          lineOrigin + NextTabStop(TextCurrentPoint.x - lineOrigin);
-      } else {
-        // We need to draw some text.
-
-        // Grab a pen of the right color.
-        if (lastStyle != textSnippet.GetTextStyle()) {
-          dc->SetTextForeground(m_configuration->GetColor(textSnippet.GetTextStyle()));
-          lastStyle = textSnippet.GetTextStyle();
-        }
-
-        // Draw a char that shows we continue an indentation - if this is
-        // needed.
-        if (!textSnippet.GetIndentChar().IsEmpty())
-          dc->DrawText(textSnippet.GetIndentChar(),
-                       TextStartingpoint.x + lastIndent,
-                       TextCurrentPoint.y - m_center);
-
-        // Determine the box the will be is in.
-        if (!textSnippet.SizeKnown()) {
-          wxCoord height;
-          dc->GetTextExtent(textSnippet.GetText(), &width, &height);
-          textSnippet.SetWidth(width);
-        } else
-          width = textSnippet.GetWidth();
-        wxRect textRect(TextCurrentPoint.x, TextCurrentPoint.y - m_center,
-                        width, m_charHeight);
-
-        // Draw the text only if it overlaps the update region
-        if (((!m_configuration->ClipToDrawRegion())) ||
-            (updateRegion.Intersects(textRect)))
-          dc->DrawText(textSnippet.GetText(), TextCurrentPoint.x,
-                       TextCurrentPoint.y - m_center);
-        TextCurrentPoint.x += width;
+    WalkDrawnSnippets(dc, [&](const StyledText &textSnippet, wxPoint topLeft,
+                              wxCoord width, wxCoord indentX) {
+      // Grab a pen of the right color.
+      const TextStyle style =
+        textSnippet.IsLink() ? TS_LINK : textSnippet.GetTextStyle();
+      if (lastStyle != style) {
+        dc->SetTextForeground(m_configuration->GetColor(style));
+        lastStyle = style;
       }
-    }
+
+      // Draw a char that shows we continue an indentation - if this is
+      // needed.
+      if (!textSnippet.GetIndentChar().IsEmpty())
+        dc->DrawText(textSnippet.GetIndentChar(), indentX, topLeft.y);
+
+      const wxRect textRect(topLeft.x, topLeft.y, width, m_charHeight);
+      // Draw the text only if it overlaps the update region
+      if (((!m_configuration->ClipToDrawRegion())) ||
+          (updateRegion.Intersects(textRect))) {
+        dc->DrawText(textSnippet.GetText(), topLeft.x, topLeft.y);
+        if (textSnippet.IsLink()) {
+          // Underline the link by hand instead of switching to an underlined
+          // font: that way nothing about the text's measurements can change.
+          wxCoord w, h, descent;
+          dc->GetTextExtent(textSnippet.GetText(), &w, &h, &descent);
+          const wxCoord baseline = topLeft.y + h - descent + 1;
+          dc->SetPen(*(wxThePenList->FindOrCreatePen(
+            m_configuration->GetColor(TS_LINK), 1, wxPENSTYLE_SOLID)));
+          dc->DrawLine(topLeft.x, baseline, topLeft.x + width, baseline);
+        }
+      }
+    });
     //
     // Draw the caret
     //
@@ -1115,6 +1142,28 @@ void EditorCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
                         m_configuration->GetCursorWidth(), m_charHeight - Scale_Px(5));
     }
   }
+}
+
+wxString EditorCell::GetLinkAt(wxPoint point) {
+  if (IsCodeEditor() || IsHidden())
+    return {};
+  if (!m_tokens_valid)
+    StyleText();
+  if (!m_containsLinks || m_height.IsInvalid() || m_width.IsInvalid() ||
+      !GetRect().Contains(point))
+    return {};
+  wxDC *dc = m_configuration->GetRecalcDC();
+  if (!dc)
+    return {};
+  SetFont(dc);
+  wxString link;
+  WalkDrawnSnippets(dc, [&](const StyledText &textSnippet, wxPoint topLeft,
+                            wxCoord width, wxCoord) {
+    if (textSnippet.IsLink() &&
+        wxRect(topLeft.x, topLeft.y, width, m_charHeight).Contains(point))
+      link = textSnippet.GetText();
+  });
+  return link;
 }
 
 void EditorCell::SetType(CellType type) {
@@ -3667,7 +3716,7 @@ void EditorCell::StyleTextCode() const {
 
 void EditorCell::PushTextLine(const wxString &line, const wxString &indentChar) const {
   if (line.Find(wxS('\t')) == wxNOT_FOUND) {
-    m_styledText.push_back(StyledText(line, GetTextStyle(), 0, indentChar));
+    PushTextRun(line, indentChar);
     return;
   }
 
@@ -3675,16 +3724,41 @@ void EditorCell::PushTextLine(const wxString &line, const wxString &indentChar) 
   wxString run;
   for (wxString::const_iterator ch = line.begin(); ch != line.end(); ++ch) {
     if (*ch == wxS('\t')) {
-      m_styledText.push_back(
-        StyledText(run, GetTextStyle(), 0, pushedAny ? wxString() : indentChar));
+      PushTextRun(run, pushedAny ? wxString() : indentChar);
       pushedAny = true;
       run.clear();
       m_styledText.push_back(StyledText(wxS("\t"), GetTextStyle()));
     } else
       run += *ch;
   }
-  m_styledText.push_back(
-    StyledText(run, GetTextStyle(), 0, pushedAny ? wxString() : indentChar));
+  PushTextRun(run, pushedAny ? wxString() : indentChar);
+}
+
+void EditorCell::PushTextRun(const wxString &run, const wxString &indentChar) const {
+  const std::vector<wxm::UrlSpan> links = wxm::FindUrls(run);
+  if (links.empty()) {
+    m_styledText.push_back(StyledText(run, GetTextStyle(), 0, indentChar));
+    return;
+  }
+
+  m_containsLinks = true;
+  // The text in front of the first link is pushed even if it is empty: it is
+  // the snippet that carries the line's indentation marker.
+  size_t copied = 0;
+  bool first = true;
+  for (const auto &link : links) {
+    if (first || link.start > copied)
+      m_styledText.push_back(StyledText(run.Mid(copied, link.start - copied),
+                                        GetTextStyle(), 0,
+                                        first ? indentChar : wxString()));
+    first = false;
+    m_styledText.push_back(
+      StyledText(run.Mid(link.start, link.length), GetTextStyle()));
+    m_styledText.back().SetLink();
+    copied = link.start + link.length;
+  }
+  if (copied < run.Length())
+    m_styledText.push_back(StyledText(run.Mid(copied), GetTextStyle()));
 }
 
 void EditorCell::StyleTextTexts() const {
@@ -3987,6 +4061,7 @@ void EditorCell::StyleText() const {
 
   m_wordList.clear();
   m_styledText.clear();
+  m_containsLinks = false;
   // Soft breaks are derived layout data; re-derive them from scratch on every
   // restyle. They live in a side table (m_softBreaks), never inside m_text.
   m_softBreaks.clear();

@@ -3474,6 +3474,16 @@ void MaximaCommandMenus::PopupMenu(wxCommandEvent &event) {
   else if(event.GetId() == EventIDs::popid_divide_cell){
     m_wxMaxima.GetWorksheet()->DivideCell();
   }
+  else if(event.GetId() == EventIDs::popid_open_link){
+    Worksheet::OpenLink(m_wxMaxima.GetWorksheet()->GetContextMenuLink());
+  }
+  else if(event.GetId() == EventIDs::popid_copy_link){
+    const wxString &link = m_wxMaxima.GetWorksheet()->GetContextMenuLink();
+    if (!link.empty() && wxTheClipboard->Open()) {
+      wxTheClipboard->SetData(new wxTextDataObject(link));
+      wxTheClipboard->Close();
+    }
+  }
   else if(event.GetId() == EventIDs::popid_copy_image){
     if (m_wxMaxima.GetWorksheet()->CanCopy())
       m_wxMaxima.GetWorksheet()->CopyBitmap();
