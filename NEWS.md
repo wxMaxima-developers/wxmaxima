@@ -1,5 +1,12 @@
 # Current development version
 
+- A .mac file opened in wxMaxima and saved again keeps its comments as they
+  were: a comment containing `&` or a nested `/* ... */` is no longer changed
+  on the way through, and a nested comment is now read as one comment, the
+  way Maxima reads it. Only a text cell that Maxima couldn't read back as
+  one comment still has its `/` next to a `*` written as `&#47;`. A heading
+  containing `*/` can no longer end its comment early and turn the rest of
+  its text into code when the .mac file is loaded into Maxima (#2353).
 - `with_slider_draw(..., file_name="name")` no longer deletes `name.gif`
   right after showing it in the worksheet (#2389).
 - wxMaxima now needs wxWidgets 3.2 or newer to compile. With wxWidgets 3.0.5,

@@ -4267,7 +4267,7 @@ bool Worksheet::ExportToMAC(const wxString &file) {
 
   if (wxm) {
     WorksheetExport::AddLineToFile(backupfile, Format::WXMFirstLine);
-    WorksheetExport::AddLineToFile(backupfile, wxS("/* [ Created with wxMaxima version " WXMAXIMA_VERSION " ] */"));
+    WorksheetExport::AddLineToFile(backupfile, Format::CreatedWithLine);
   }
 
   bool fixReorderedIndices = m_configuration->FixReorderedIndices();

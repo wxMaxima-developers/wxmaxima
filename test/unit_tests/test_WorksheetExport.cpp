@@ -748,7 +748,8 @@ SCENARIO("Batch (.mac) and .wxm export succeed, are deterministic and complete")
           wxS(" export is deterministic and complete")).ToStdString()) {
       RequireIdenticalTrees(SnapshotDir(dir1), SnapshotDir(dir2));
       const wxString mac = ReadTextFile(dir1 + wxS("/") + name);
-      // The wxMaxima version header is a .wxm-only feature.
+      // The wxMaxima version header is a .wxm-only feature: a .mac is the
+      // user's own Maxima program and gets no line it didn't have (GH #2353).
       REQUIRE(mac.Contains(wxS("Created with wxMaxima")) ==
               (wxString(ext) == wxS("wxm")));
       REQUIRE(mac.Contains(wxS("xexportnet")));
