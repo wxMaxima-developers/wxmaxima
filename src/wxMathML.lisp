@@ -1921,25 +1921,30 @@ Submit bug reports by following the 'New issue' link on that page."))
 
 (defvar *default-framerate* 2)
 (defvar $wxanimate_framerate *default-framerate*)
-(defun slide-tag (images)
-  (if (eql *default-framerate* $wxanimate_framerate)
-      ($ldisp
-       (list '(wxxmltag simp)
-	     (wxxml-fix-string (format nil "~{~a;~}" images))
-	     "slide"
-	     (if (eql $wxanimate_autoplay 't)
-		 "running=\"true\" del=\"yes\""
-		 "running=\"false\" del=\"yes\""))
-       (format nil "~%"))
-      ($ldisp
-       (list '(wxxmltag simp)
-	     (wxxml-fix-string
-	      (format nil "~{~a;~}" images))
-	     "slide"
-	     (if (eql $wxanimate_autoplay 't)
-		 (format nil "fr=\"~a\" running=\"true\" del=\"yes\"" $wxanimate_framerate)
-		 (format nil "fr=\"~a\" running=\"false\" del=\"yes\"" $wxanimate_framerate)))
-       (format nil "~%"))))
+(defun slide-tag (images &optional gif-file)
+  ;; GIF-FILE, if given, asks wxMaxima to also save the animation as that gif
+  ;; file (with_slider_draw_bare's file_name, GH #2361).
+  (let ((attrs (format nil "~@[fr=\"~a\" ~]running=\"~a\" del=\"yes\"~@[ gifFile=\"~a\"~]"
+		       (unless (eql *default-framerate* $wxanimate_framerate)
+			 $wxanimate_framerate)
+		       (if (eql $wxanimate_autoplay 't) "true" "false")
+		       (and gif-file (wxxml-fix-string gif-file)))))
+    ($ldisp
+     (list '(wxxmltag simp)
+	   (wxxml-fix-string (format nil "~{~a;~}" images))
+	   "slide"
+	   attrs)
+     (format nil "~%"))))
+
+;; The absolute name of the gif file draw()'s file_name=NAME would make:
+;; NAME.gif, relative to Maxima's working directory. wxMaxima, which writes
+;; the file for with_slider_draw_bare, may be working in another directory.
+(defun wx-gif-file-name (name)
+  (let ((file (format nil "~a.gif" name)))
+    ;; (truename "./") rather than *default-pathname-defaults*, which some
+    ;; lisps (GCL) leave empty until wx-cd has run.
+    (or (ignore-errors (namestring (merge-pathnames file (truename "./"))))
+	file)))
 
 (defun wxanimate (scene)
   (let* ((scene (cdr scene))
@@ -2019,10 +2024,10 @@ Submit bug reports by following the 'New issue' link on that page."))
       (when (integerp a-range)
 	(setq a-range (cons '(mlist simp) (loop for i from 1 to a-range collect i))))
       ;; draw()'s animated_gif terminal makes one gif frame out of each
-      ;; scene, which cannot express a frame made of several scenes.
-      (when (and file-name (null scene-head))
-	(merror "with_slider_draw_bare: file_name is not supported. Right-click the animation in wxMaxima to export it as a gif instead."))
-      (if file-name
+      ;; scene, which cannot express a frame made of several scenes. So
+      ;; with_slider_draw_bare renders its frames as usual and has wxMaxima
+      ;; assemble them into the gif file (GH #2361).
+      (if (and file-name scene-head)
 	  ;; If file_name is set, draw the animation into gif using gnuplot
 	  (let (imgs)
 	    (dolist (aval (reverse (cdr a-range)))
@@ -2075,7 +2080,8 @@ Submit bug reports by following the 'New issue' link on that page."))
 			 (get-pic-size-opt)
 			 draw-args))))
 	    (when images
-	      (slide-tag images))))
+	      (slide-tag images
+			 (and file-name (wx-gif-file-name (meval file-name)))))))
       "")))
 
 (defmspec $wxanimate_draw (scene)

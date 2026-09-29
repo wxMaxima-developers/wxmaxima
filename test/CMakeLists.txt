@@ -379,12 +379,14 @@ add_test(
 )
 
 # ...and file_name, which draw()'s animated_gif terminal cannot honour for a
-# frame made of several scenes, is refused with an explanation.
+# frame made of several scenes: the frames are rendered as usual, and the
+# <slide> tag asks wxMaxima to assemble them into anim.gif (GH #2361), named
+# with its full path, as wxMaxima may work in another directory than Maxima.
 add_test(
     NAME with_slider_draw_bare_file_name
     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh"
     "with_slider_draw_bare(a,[1,2],file_name=\"anim\",gr2d(explicit(sin(a*x),x,0,1)));"
-    "with_slider_draw_bare: file_name is not supported"
+    "<slide[^>]* gifFile=\"/[^\"]*/anim\\.gif\"[^>]*>[^<]*\\.gnuplot;[^<]*\\.gnuplot;[^<]*</slide>"
 )
 
 add_test(

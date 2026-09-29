@@ -884,6 +884,42 @@ SCENARIO("An animation exports to LaTeX as \\animategraphics and compiles") {
   }
 }
 
+SCENARIO("A slideshow Maxima asks to save as a gif is saved (GH #2361)") {
+  // What with_slider_draw_bare(..., file_name=...) sends: the frames as
+  // usual, plus the gif file wxMaxima is to assemble them into.
+  const wxString dir = MakeExportDir(wxS("gifFile"));
+  wxString frames;
+  const unsigned char shades[] = {0, 128, 255};
+  for (int i = 0; i < 3; i++) {
+    wxImage frame(40, 30);
+    frame.SetRGB(wxRect(0, 0, 40, 30), shades[i], 0, 255 - shades[i]);
+    const wxString name = dir + wxString::Format(wxS("/frame%d.png"), i);
+    REQUIRE(frame.SaveFile(name, wxBITMAP_TYPE_PNG));
+    frames += name + wxS(";");
+  }
+  const wxString gif = dir + wxS("/anim.gif");
+  wxRemoveFile(gif);
+
+  MathParser parser(g_cfg);
+  auto group = std::make_unique<GroupCell>(g_cfg, GC_TYPE_CODE);
+  parser.SetGroup(group.get());
+  auto cell = parser.ParseLine(wxS("<mth><slide running=\"false\" gifFile=\"") +
+                               gif + wxS("\">") + frames + wxS("</slide></mth>"));
+  REQUIRE(cell != nullptr);
+  auto *anim = dynamic_cast<AnimationCell *>(cell.get());
+  REQUIRE(anim != nullptr);
+  REQUIRE(anim->Length() == 3);
+
+  THEN("the gif file exists and holds every frame") {
+    REQUIRE(wxFileExists(gif));
+    CHECK(wxImage::GetImageCount(gif, wxBITMAP_TYPE_GIF) == 3);
+  }
+  THEN("the request isn't saved with the worksheet, so reopening it won't "
+       "write the file again") {
+    CHECK_FALSE(static_cast<const Cell *>(anim)->ToXML().Contains(wxS("gifFile")));
+  }
+}
+
 class TestApp : public wxApp {
 public:
   bool OnInit() override { return true; }

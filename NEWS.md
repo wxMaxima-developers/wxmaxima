@@ -30,6 +30,10 @@
   but makes each frame of the animation with a plain `draw()` instead of
   `draw2d()`. A frame can therefore show several `gr2d()` and `gr3d()`
   scenes side by side, and use `draw`'s global options like `columns`.
+- `with_slider_draw_bare` now accepts `file_name`, like `with_slider_draw`,
+  and saves the animation as a gif file. wxMaxima assembles the gif from the
+  frames, since `draw` can't make one out of frames with several scenes
+  (#2361).
 - New function `wx_version_min("26.09.0")`, which returns `true` if the
   running wxMaxima is at least that version, so a worksheet can check
   whether it can use a feature. In wxMaxima 26.08.0 and older the function
