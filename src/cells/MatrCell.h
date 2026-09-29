@@ -208,6 +208,14 @@ public:
     new layout. Returns true if the position actually changed.
   */
   bool ScrollTo(wxPoint position);
+  /*! Scrolls just far enough that an entry is inside the viewport (GH #2380)
+
+    Used to keep the corner of a selected block in view while the keyboard
+    moves it. An entry that is already fully visible, or a matrix that
+    doesn't scroll, stays as it is; an entry larger than the viewport gets
+    its top left corner shown. Returns true if the matrix actually scrolled.
+  */
+  bool ScrollEntryIntoView(size_t row, size_t col);
   //! Does this matrix sit inside another matrix? Only the outermost one scrolls.
   bool IsNestedInMatrix() const { return m_nestedInMatrix; }
   /*! @} */

@@ -186,6 +186,7 @@ Configuration::Configuration(const Configuration &o) :
   m_defaultPlotWidth(o.m_defaultPlotWidth),
   m_saveUntitled(o.m_saveUntitled),
   m_cursorJump(o.m_cursorJump),
+  m_arrowKeysSkipOutput(o.m_arrowKeysSkipOutput),
   m_numpadEnterEvaluates(o.m_numpadEnterEvaluates),
   m_saveImgFileName(o.m_saveImgFileName),
   m_documentclass(o.m_documentclass),
@@ -308,6 +309,7 @@ void Configuration::ResetAllToDefaults() {
   m_TeXExponentsAfterSubscript = false;
   m_saveUntitled = true;
   m_cursorJump = true;
+  m_arrowKeysSkipOutput = false;
   m_autoSaveAsTempFile = false;
   m_htmlEquationFormat = mathML;
   m_autodetectMaxima = true;
@@ -1347,6 +1349,7 @@ Configuration::ScalarConfigSettings() {
     {wxS("allowNetworkHelp"), &Configuration::m_allowNetworkHelp},
     {wxS("autodetectHelpBrowser"), &Configuration::m_autodetectHelpBrowser},
     {wxS("autodetectMaxima"), &Configuration::m_autodetectMaxima},
+    {wxS("arrowKeysSkipOutput"), &Configuration::m_arrowKeysSkipOutput},
     {wxS("autoIndent"), &Configuration::m_autoIndent},
     // Read a second time, raw, further down: a stored 0 means "autosave as a
     // temp file", a state this clamped copy can no longer represent once

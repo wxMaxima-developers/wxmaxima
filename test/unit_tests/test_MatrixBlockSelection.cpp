@@ -41,6 +41,7 @@
 #include "MathParser.h"
 #include "cells/GroupCell.h"
 #include "cells/MatrCell.h"
+#include "cells/MatrixScrollHost.h"
 #include "worksheet/Worksheet.h"
 
 #define CATCH_CONFIG_RUNNER
@@ -511,6 +512,78 @@ SCENARIO("Stepping over elided rows takes a single step (GH #2370)") {
 
   g_ws->DestroyTree();
   g_cfg->SetOversizedMatrices(Configuration::OversizedMatrices::showInFull);
+}
+
+// Stands in for the worksheet's MatrixScrollbars, which only a worksheet that
+// reacts to events installs.
+class FakeScrollHost final : public MatrixScrollHost {
+public:
+  wxCoord ScrollbarThickness() const override { return 15; }
+  void MatrixDrawn(MatrCell *) override {}
+};
+
+// Is the middle of this entry inside the matrix's viewport?
+static bool InViewport(const MatrCell *matr, int row, int col) {
+  return matr->ViewportRect().Contains(Middle(matr, row, col));
+}
+
+SCENARIO("Shift+arrow keys scroll a scrolling matrix along (GH #2380)") {
+  g_cfg->SetZoomFactor(1.0);
+  g_cfg->SetCanvasSize(wxSize(600, 300));
+  FakeScrollHost host;
+  g_cfg->SetMatrixScrollHost(&host);
+  g_cfg->SetOversizedMatrices(Configuration::OversizedMatrices::scroll);
+  const int rows = 60, cols = 40;
+  MatrCell *matr = ShowMatrix(MatrixTableXml(rows, cols), true);
+  REQUIRE(matr->HasHorizontalScrollbar());
+  REQUIRE(matr->HasVerticalScrollbar());
+  REQUIRE(matr->ScrollPosition() == wxPoint(0, 0));
+  REQUIRE_FALSE(InViewport(matr, rows - 1, cols - 1));
+
+  // Anchored at row 1, column 1, so that no block reaches all of the matrix
+  // and turns into a whole-matrix selection.
+  Drag(matr, 1, 1, 2, 2);
+  REQUIRE(*Pointers().GetSelectedMatrixBlock() == MatrixBlock{1, 2, 1, 2});
+
+  WHEN("Shift+Right and Shift+Down move the corner past the viewport's edge") {
+    for (int i = 2; i < cols - 1; i++)
+      REQUIRE(g_ws->StepSelectedMatrixBlock(WXK_RIGHT));
+    for (int i = 2; i < rows - 1; i++)
+      REQUIRE(g_ws->StepSelectedMatrixBlock(WXK_DOWN));
+    REQUIRE(Pointers().GetSelectedMatrixBlock());
+    REQUIRE(*Pointers().GetSelectedMatrixBlock() ==
+            MatrixBlock{1, static_cast<size_t>(rows - 1), 1,
+                        static_cast<size_t>(cols - 1)});
+    THEN("the matrix has scrolled so that the corner is visible") {
+      CHECK(matr->ScrollPosition().x > 0);
+      CHECK(matr->ScrollPosition().y > 0);
+      CHECK(InViewport(matr, rows - 1, cols - 1));
+    }
+    AND_WHEN("the corner is moved back to the start") {
+      for (int i = 1; i < cols; i++)
+        g_ws->StepSelectedMatrixBlock(WXK_LEFT);
+      for (int i = 1; i < rows; i++)
+        g_ws->StepSelectedMatrixBlock(WXK_UP);
+      REQUIRE(Pointers().GetSelectedMatrixBlock());
+      REQUIRE(*Pointers().GetSelectedMatrixBlock() == MatrixBlock{0, 1, 0, 1});
+      THEN("the matrix scrolls back to its top left") {
+        CHECK(matr->ScrollPosition() == wxPoint(0, 0));
+        CHECK(InViewport(matr, 0, 0));
+      }
+    }
+  }
+
+  WHEN("the corner moves within the part that is already visible") {
+    REQUIRE(g_ws->StepSelectedMatrixBlock(WXK_RIGHT));
+    REQUIRE(g_ws->StepSelectedMatrixBlock(WXK_DOWN));
+    THEN("the matrix doesn't scroll") {
+      CHECK(matr->ScrollPosition() == wxPoint(0, 0));
+    }
+  }
+
+  g_ws->DestroyTree();
+  g_cfg->SetOversizedMatrices(Configuration::OversizedMatrices::showInFull);
+  g_cfg->SetMatrixScrollHost(nullptr);
 }
 
 class TestApp : public wxApp {
