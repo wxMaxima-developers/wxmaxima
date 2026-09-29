@@ -1,5 +1,9 @@
 # Current development version
 
+- The toolbar's "return to the cell being evaluated" button now becomes
+  active as soon as one scrolls away from the evaluation. Before, it kept
+  looking disabled until the mouse pointer entered the toolbar. The same
+  delay affected every other toolbar button whose state or icon changed.
 - The HTML export can now write one single file that contains its images
   and, if requested, the downloadable .wxmx copy, so the page can be mailed
   on its own: check "Embed images into the .html file" in the Export tab of

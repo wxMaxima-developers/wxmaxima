@@ -65,6 +65,34 @@ public:
 
   virtual ~ToolBar();
 
+  /*! Enable or disable a tool, and repaint the toolbar if that changed anything
+
+    wxAuiToolBar::EnableTool() only flips a flag in the tool's state: unlike
+    wxToolBar it neither refreshes nor repaints, so the button kept showing
+    its old state until something else happened to repaint the toolbar -
+    typically the mouse pointer entering it and triggering the hover
+    highlight. This was most visible on the "return to the cell being
+    evaluated" button, which is enabled from a scroll handler while the
+    pointer is over the worksheet. The base class' method isn't virtual, so
+    this hides it rather than overriding it: every caller in wxMaxima goes
+    through a ToolBar pointer and therefore reaches this one.
+   */
+  void EnableTool(int toolId, bool state)
+    {
+      if (GetToolEnabled(toolId) == state)
+        return;
+      wxAuiToolBar::EnableTool(toolId, state);
+      Refresh();
+    }
+
+  //! Change a tool's icon, and repaint the toolbar so the change shows at once
+  //! (wxAuiToolBar::SetToolBitmap() doesn't repaint either, see EnableTool())
+  void SetToolBitmap(int toolId, const wxBitmapBundle &bitmap)
+    {
+      wxAuiToolBar::SetToolBitmap(toolId, bitmap);
+      Refresh();
+    }
+
   //! Show that user input is needed for maxima to continue
   void ShowUserInputBitmap()
     {
