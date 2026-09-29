@@ -693,6 +693,7 @@ public:
   static const wxWindowIDRef popid_add_comment;
   static const wxWindowIDRef popid_insert_input;
   static const wxWindowIDRef popid_copy_matlab;
+  static const wxWindowIDRef popid_copy_csv;
   static const wxWindowIDRef popid_copy_tex;
   static const wxWindowIDRef popid_copy_text;
   static const wxWindowIDRef popid_copy_mathml;

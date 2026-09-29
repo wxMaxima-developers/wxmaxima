@@ -52,9 +52,7 @@
 #include <wx/config.h>
 #include <wx/iconbndl.h>
 #include <wx/intl.h>
-#if wxCHECK_VERSION(3, 1, 6)
 #include <wx/uilocale.h>
-#endif
 #include <wx/display.h>
 #include <wx/fileconf.h>
 #include <wx/filename.h>
@@ -339,7 +337,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
 
 #ifdef WXM_USE_AI_TOOLS
       // Hidden outright (no menu entry, no pane, sidebar pointer stays
-      // NULL) rather than just disabled when there's nowhere safe to keep
+      // nullptr) rather than just disabled when there's nowhere safe to keep
       // an API key -- see AiProvider::SecretStoreAvailable()'s own doc
       // comment for why this doesn't fall back to plain-text storage
       // instead. ShowPane()/IsPaneDisplayed() et al. already null-check
@@ -498,7 +496,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
       wxSize minSiz;
       if(m_manager.GetPane(name).IsOk())
         {
-          if(m_manager.GetPane(name).window != NULL)
+          if(m_manager.GetPane(name).window != nullptr)
             minSiz = m_manager.GetPane(name).window->GetMinClientSize();
           else
             minSiz = wxSize(300 * GetContentScaleFactor(), 300 * GetContentScaleFactor());
@@ -545,7 +543,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
           // Give the pane's window an accessible name: without it a screen
           // reader announces every sidebar as an unnamed "panel". The default
           // wxWindowAccessible reports the window's label as its name.
-          if(m_manager.GetPane(name).window != NULL)
+          if(m_manager.GetPane(name).window != nullptr)
             m_manager.GetPane(name).window->SetLabel(m_sidebarCaption[paneId]);
         }
     }
@@ -602,7 +600,7 @@ std::size_t wxMaximaFrame::CountWindows() {
   wxWindowList::compatibility_iterator node = wxTopLevelWindows.GetFirst();
   while (node) {
     // Only count windows of the type wxMaxima
-    if(dynamic_cast<wxMaximaFrame *>(node->GetData()) != NULL)
+    if(dynamic_cast<wxMaximaFrame *>(node->GetData()) != nullptr)
       numberOfWindows++;
     node = node->GetNext();
   }
@@ -660,7 +658,7 @@ void wxMaximaFrame::UpdateStatusMaximaBusy() {
         m_bytesFromMaxima_last = 0;
         if(GetWorksheet())
           {
-            GetWorksheet()->SetWorkingGroup(NULL);
+            GetWorksheet()->SetWorkingGroup(nullptr);
             // If we evaluated a cell that produces no output we still want the
             // cell to be unselected after evaluating it.
             if (GetWorksheet()->FollowEvaluation())
@@ -740,11 +738,6 @@ wxMaximaFrame::~wxMaximaFrame() {
   wxConfig::Get()->Write(wxS("AUI/perspective"), perspective);
   wxConfig::Get()->Flush();
 
-  // In modern wxWidgets wxAUIManager does UnInit() itself.
-#if !wxCHECK_VERSION(3, 1, 4)
-  m_manager.UnInit();
-#endif
-
   // Child windows are normally destroyed by the wxWindow base class
   // destructor - i.e. AFTER this class's members, m_configuration included.
   // The worksheet's destructor (and the destructors of the cells it owns)
@@ -766,9 +759,7 @@ wxMaximaFrame::~wxMaximaFrame() {
   m_manager.DetachPane(m_worksheet);
   m_worksheet->Destroy();
 }
-#if wxCHECK_VERSION(3, 1, 0)
 #include <wx/taskbarbutton.h>
-#endif
 void wxMaximaFrame::SetupFileMenu() {
   m_FileMenu = new wxMenu;
   m_FileMenu->Append(wxID_NEW, _("New\tCtrl+N"), _("Open a new window"));
@@ -1124,18 +1115,14 @@ void wxMaximaFrame::SetupCellMenu() {
     wxMenuItem *item = new wxMenuItem(m_CellMenu,
                                       EventIDs::popid_merge_cells,
                                       _("Merge Cells"));
-#if wxCHECK_VERSION(3, 2, 0)
     item->SetBitmap(ArtProvider::GetCellMergeBundle());
-#endif
     m_CellMenu->Append(item);
   }
   {
         wxMenuItem *item = new wxMenuItem(m_CellMenu,
                                           EventIDs::popid_divide_cell,
                                           _("Divide Cell"));
-#if wxCHECK_VERSION(3, 2, 0)
         item->SetBitmap(ArtProvider::GetDivideCellBundle());
-#endif
         m_CellMenu->Append(item);
   }
   m_CellMenu->AppendSeparator();
@@ -2230,11 +2217,7 @@ wxString wxMaximaFrame::wxMaximaManualLocation() {
   if (lang_long.IsEmpty()) {
     // wxLANGUAGE_DEFAULT (or an unrecognized language ID): fall back to
     // whatever the OS/active locale actually resolved to.
-#if wxCHECK_VERSION(3, 1, 6)
     lang_long = wxUILocale::GetCurrent().GetName();
-#else
-    lang_long = wxLocale().GetCanonicalName();
-#endif
   }
   wxString lang_short = lang_long.Left(lang_long.Find('_'));
 
@@ -2352,7 +2335,7 @@ void wxMaximaFrame::ReReadConfig() {
                                        Configuration::m_configfileLocation_override));
       }
       wxDELETE(config);
-      config = NULL;
+      config = nullptr;
     }
 #endif
 }
@@ -2499,10 +2482,10 @@ std::vector<McpSidebarInfo> wxMaximaFrame::McpSidebarList() const {
   }
   // m_sidebarNames is an unordered_map, so without this the same wxMaxima
   // would list its sidebars in a different order from one run to the next.
-  std::sort(sidebars.begin(), sidebars.end(),
-            [](const McpSidebarInfo &a, const McpSidebarInfo &b) {
-              return a.name < b.name;
-            });
+  std::ranges::sort(sidebars,
+                    [](const McpSidebarInfo &a, const McpSidebarInfo &b) {
+                      return a.name < b.name;
+                    });
   return sidebars;
 }
 

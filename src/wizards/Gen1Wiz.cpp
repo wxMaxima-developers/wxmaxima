@@ -52,7 +52,7 @@ Gen1Wiz::Gen1Wiz(wxWindow *parent, int id, Configuration *cfg,
     m_warning = new wxStaticText(this, -1, wxEmptyString);
     m_warning->SetToolTip(warningToolTip);
   } else
-    m_warning = NULL;
+    m_warning = nullptr;
 
   set_properties();
   SetName(title);
@@ -77,7 +77,7 @@ void Gen1Wiz::do_layout() {
   grid_sizer_1->Add(text_ctrl_1, 0, static_cast<int>(wxALL) | wxEXPAND, 5);
   grid_sizer_1->Add(static_line_1, 0, static_cast<int>(wxEXPAND) | wxLEFT | wxRIGHT, 2);
 
-  if (m_warning != NULL)
+  if (m_warning != nullptr)
     grid_sizer_1->Add(m_warning, 0, wxALL, 5);
 
   sizer_1->Add(button_1, 0, wxALL, 5);

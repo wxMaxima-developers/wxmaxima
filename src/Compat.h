@@ -30,7 +30,7 @@
   CMake-independent (so this header is a plain committed file, not generated).
 
   It also carries the same kind of fall-back for wxWidgets macros that only
-  exist in newer wxWidgets than the 3.0.5 we still support - currently
+  exist in newer wxWidgets than the oldest one we support - currently
   wxWARN_UNUSED, see its documentation at the bottom of this file.
 */
 

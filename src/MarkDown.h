@@ -45,7 +45,7 @@
 class MarkDownParser
 {
 protected:
-  Configuration *m_configuration = NULL;
+  Configuration *m_configuration = nullptr;
 
   //! A pair of a regExp and a string that has to replace the matches.
   class RegexReplacer : public wxRegEx
@@ -63,7 +63,7 @@ protected:
     wxString replaceBy; //!< The thing we replace it with
   };
 
-  typedef std::list<RegexReplacer> replaceList;
+  using replaceList = std::list<RegexReplacer>;
   replaceList regexReplaceList;
 public:
   explicit MarkDownParser(Configuration *cfg);

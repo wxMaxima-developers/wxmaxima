@@ -1316,7 +1316,7 @@ size_t EditorCell::BeginningOfLine(size_t pos) const {
       break;
     }
   }
-  auto sb = std::upper_bound(m_softBreaks.begin(), m_softBreaks.end(), pos);
+  auto sb = std::ranges::upper_bound(m_softBreaks, pos);
   if (sb != m_softBreaks.begin())
     lineStart = wxMax(lineStart, *(sb - 1));
   return lineStart;
@@ -3709,7 +3709,7 @@ void EditorCell::StyleTextCode() const {
       continue;
     }
   }
-  std::sort(m_wordList.begin(), m_wordList.end());
+  std::ranges::sort(m_wordList);
   if(!suppressedLinesInfo.IsEmpty())
     m_styledText.push_back(StyledText(TS_CODE_COMMENT, suppressedLinesInfo));
 }
@@ -4049,7 +4049,7 @@ const MaximaTokenizer::TokenList &EditorCell::GetAllTokens() const {
 }
 
 void EditorCell::StyleText() const {
-  wxASSERT(m_configuration->GetRecalcDC() != NULL);
+  wxASSERT(m_configuration->GetRecalcDC() != nullptr);
   if(!m_configuration->GetRecalcDC())
     {
       wxLogMessage(_("Bug: dc == NULL"));
@@ -4583,7 +4583,7 @@ wxAccStatus EditorCell::GetDescription(int childId,
   if (childId != 0)
     return wxACC_FAIL;
 
-  if (description == NULL)
+  if (description == nullptr)
     return wxACC_FAIL;
 
   switch (GetType()) {
@@ -4621,7 +4621,7 @@ wxAccStatus EditorCell::GetDescription(int childId,
 
 wxAccStatus EditorCell::GetDefaultAction(int WXUNUSED(childId),
                                          wxString *actionName) const {
-  if (actionName != NULL) {
+  if (actionName != nullptr) {
     *actionName = _("Type in text");
     return wxACC_OK;
   }
@@ -4648,22 +4648,22 @@ wxAccStatus EditorCell::GetValue(int WXUNUSED(childId),
 
 wxAccStatus EditorCell::GetFocus(int *childId, Cell **child) const {
   if (IsActive()) {
-    if (child != NULL)
+    if (child != nullptr)
       *child = const_cast<EditorCell *>(this);
-    if (childId != NULL)
+    if (childId != nullptr)
       *childId = 0;
     return wxACC_OK;
   } else {
-    if (child != NULL)
-      *child = NULL;
-    if (childId != NULL)
+    if (child != nullptr)
+      *child = nullptr;
+    if (childId != nullptr)
       *childId = 0;
     return wxACC_FAIL;
   }
 }
 
 wxAccStatus EditorCell::GetRole(int childId, wxAccRole *role) const {
-  if ((childId == 0) && (role != NULL)) {
+  if ((childId == 0) && (role != nullptr)) {
     *role = wxROLE_SYSTEM_TEXT;
     return wxACC_OK;
   } else {

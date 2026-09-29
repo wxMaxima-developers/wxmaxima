@@ -45,6 +45,7 @@ MatrCell::MatrCell(GroupCell *group, const MatrCell &cell)
   m_specialMatrix = cell.m_specialMatrix;
   m_inferenceMatrix = cell.m_inferenceMatrix;
   m_parenType = cell.m_parenType;
+  m_oversizedMode = cell.m_oversizedMode;
   m_rowNames = cell.m_rowNames;
   m_colNames = cell.m_colNames;
   m_nestedInMatrix = cell.m_nestedInMatrix;
@@ -123,7 +124,10 @@ void MatrCell::Recalculate(AFontSize const fontsize) const {
     // context without a worksheet) the matrix is elided instead, since paper
     // can't scroll. (The graphical exporters switch all this off; see
     // OutCommon.)
-    Configuration::OversizedMatrices mode = m_configuration->GetOversizedMatrices();
+    // A matrix wx_matrix() gave a mode of its own uses that one, unless the
+    // configuration says it mustn't (the graphical exporters).
+    Configuration::OversizedMatrices mode =
+      m_configuration->OversizedMatricesFor(GetOversizedMode());
     MatrixScrollHost *const host = m_configuration->GetMatrixScrollHost();
     if ((mode == Configuration::OversizedMatrices::scroll) && (host == nullptr))
       mode = Configuration::OversizedMatrices::elide;
@@ -228,6 +232,35 @@ bool MatrCell::ScrollTo(wxPoint position) {
   if (m_currentPoint != wxPoint(-1, -1))
     SetCurrentPoint(m_currentPoint);
   return true;
+}
+
+// Moves one axis of a viewport by as little as possible so that it covers the
+// range [first, first + size); if that can't fit, the start of it is shown.
+static wxCoord ScrollDeltaToShow(wxCoord viewFirst, wxCoord viewSize,
+                                 wxCoord first, wxCoord size) {
+  if ((first < viewFirst) || (size > viewSize))
+    return first - viewFirst;
+  if (first + size > viewFirst + viewSize)
+    return (first + size) - (viewFirst + viewSize);
+  return 0;
+}
+
+bool MatrCell::ScrollEntryIntoView(size_t row, size_t col) {
+  if (!IsScrolling() || (row >= m_matHeight) || (col >= m_matWidth) ||
+      ((row * m_matWidth + col) >= m_cells.size()) ||
+      (m_currentPoint == wxPoint(-1, -1)))
+    return false;
+  const wxRect view = ViewportRect();
+  const wxRect slot = EntrySlotRect(row, col);
+  // The slot includes half the gap around the entry, so an entry next to the
+  // viewport's edge doesn't end up flush against it. At the matrix's own
+  // edges that half gap lies outside the scroll range, and ScrollTo()'s
+  // clamping takes care of that.
+  const wxPoint delta(ScrollDeltaToShow(view.x, view.width, slot.x, slot.width),
+                      ScrollDeltaToShow(view.y, view.height, slot.y, slot.height));
+  if (delta == wxPoint(0, 0))
+    return false;
+  return ScrollTo(m_scroll + delta);
 }
 
 wxRect MatrCell::ViewportRect() const {
@@ -459,9 +492,74 @@ void MatrCell::SetCurrentPoint(wxPoint point) const {
   }
 }
 
+bool MatrCell::EntryAt(const wxPoint point, size_t &row, size_t &col) const {
+  if (!ViewportRect().Contains(point))
+    return false;
+  // The same walk as DrawBands(), which is what shows the user where one row
+  // or column ends and the next begins.
+  const wxCoord dotsGap = DotsExtent() + Scale_Px(10);
+
+  bool rowFound = false;
+  wxCoord y = m_currentPoint.y - m_center - m_scroll.y;
+  for (size_t j = 0; (j < m_matHeight) && !rowFound; j++) {
+    if (m_rowElision.Active() && (j == m_rowElision.first)) {
+      // On the dots: no row at all.
+      if (point.y < y + dotsGap)
+        return false;
+      y += dotsGap;
+    }
+    if (m_rowElision.Hides(j))
+      continue;
+    y += m_dropCenters.at(j).Sum() + Scale_Px(10);
+    if (point.y < y) {
+      row = j;
+      rowFound = true;
+    }
+  }
+
+  bool colFound = false;
+  wxCoord x = m_currentPoint.x - m_scroll.x;
+  for (size_t i = 0; (i < m_matWidth) && !colFound; i++) {
+    if (m_colElision.Active() && (i == m_colElision.first)) {
+      if (point.x < x + dotsGap)
+        return false;
+      x += dotsGap;
+    }
+    if (m_colElision.Hides(i))
+      continue;
+    x += m_widths.at(i) + Scale_Px(10);
+    if (point.x < x) {
+      col = i;
+      colFound = true;
+    }
+  }
+
+  return rowFound && colFound && ((row * m_matWidth + col) < m_cells.size());
+}
+
 const wxString MatrCell::GetToolTip(const wxPoint point) const {
   if (!ContainsPoint(point))
     return wxm::emptyString;
+
+  // Which entry the mouse is over, as Maxima would index it (M[2,3]), so a
+  // row or a column can be told apart in a big matrix without counting.
+  // Only the outermost matrix says so: in a matrix of matrices that is the
+  // position that is hard to see, and two positions stacked on top of each
+  // other would leave it unclear which one belongs to which matrix.
+  wxString position;
+  size_t row = 0, col = 0;
+  if (!IsNestedInMatrix() && EntryAt(point, row, col))
+    position = wxString::Format(_("Row %lu, column %lu"),
+                                static_cast<unsigned long>(row + 1),
+                                static_cast<unsigned long>(col + 1));
+  // Puts the position on a line of its own ahead of what else there is to say.
+  const auto withPosition = [&position](const wxString &toolTip) -> wxString {
+    if (position.empty())
+      return toolTip;
+    if (toolTip.empty())
+      return position;
+    return position + wxS("\n") + toolTip;
+  };
 
   // Same as Cell::GetToolTip(), but asking only the entries that are shown:
   // an elided one still carries the position it had before it was left out,
@@ -473,34 +571,37 @@ const wxString MatrCell::GetToolTip(const wxPoint point) const {
       for (const Cell &tmp : OnList(GetInnerCell(j, i))) {
         auto &toolTip = tmp.GetToolTip(point);
         if (!toolTip.empty())
-          return toolTip;
+          return withPosition(toolTip);
       }
     }
 
   // Anywhere else on an elided matrix -- including its entries, which have no
   // tooltip of their own, just as Cell::GetToolTip() lets a parent's tooltip
-  // cover its children -- say what is missing, and that nothing is lost by it.
+  // cover its children -- say what is missing, that nothing is lost by it,
+  // and how to see it anyway (the MatrixViewer, GH #2344). That last hint is a
+  // sentence of its own, so the existing translations of the rest still fit.
+  const wxString seeAll = wxS(" ") + _("Double-click the matrix to see all of it.");
   const unsigned long firstRow = m_rowElision.first + 1;
   const unsigned long lastRow = m_rowElision.first + m_rowElision.count;
   const unsigned long firstCol = m_colElision.first + 1;
   const unsigned long lastCol = m_colElision.first + m_colElision.count;
   if (m_rowElision.Active() && m_colElision.Active())
-    return wxString::Format(
+    return withPosition(wxString::Format(
       _("Rows %lu to %lu and columns %lu to %lu of this matrix are not shown, "
         "so that it fits the window. Copying the matrix copies all of it."),
-      firstRow, lastRow, firstCol, lastCol);
+      firstRow, lastRow, firstCol, lastCol) + seeAll);
   if (m_rowElision.Active())
-    return wxString::Format(
+    return withPosition(wxString::Format(
       _("Rows %lu to %lu of this matrix are not shown, so that it fits the "
         "window. Copying the matrix copies all of it."),
-      firstRow, lastRow);
+      firstRow, lastRow) + seeAll);
   if (m_colElision.Active())
-    return wxString::Format(
+    return withPosition(wxString::Format(
       _("Columns %lu to %lu of this matrix are not shown, so that it fits the "
         "window. Copying the matrix copies all of it."),
-      firstCol, lastCol);
+      firstCol, lastCol) + seeAll);
 
-  return GetLocalToolTip();
+  return withPosition(GetLocalToolTip());
 }
 
 Cell::Range MatrCell::GetInnerCellsInRect(const wxRect &rect) const {
@@ -519,6 +620,102 @@ Cell::Range MatrCell::GetInnerCellsInRect(const wxRect &rect) const {
         }
     }
   return retval;
+}
+
+wxRect MatrCell::EntrySlotRect(size_t row, size_t col) const {
+  // Mirrors SetCurrentPoint(): each entry is centred in its column, and its
+  // centre line sits m_dropCenters[row].center below the top of its row.
+  // Neighbouring slots are Scale_Px(10) apart, half of which goes to each.
+  const Cell *entry = GetInnerCell(static_cast<int>(row), static_cast<int>(col));
+  const wxCoord halfGap = Scale_Px(5);
+  return wxRect(entry->GetCurrentX() -
+                (m_widths.at(col) - entry->SumOfWidths()) / 2 - halfGap,
+                entry->GetCurrentY() - m_dropCenters.at(row).center - halfGap,
+                m_widths.at(col) + 2 * halfGap,
+                m_dropCenters.at(row).Sum() + 2 * halfGap);
+}
+
+std::optional<MatrixBlock> MatrCell::BlockInRect(const wxRect &rect) const {
+  std::optional<MatrixBlock> block;
+  for (size_t row = 0; row < m_matHeight; row++)
+    for (size_t col = 0; col < m_matWidth; col++) {
+      if (!IsEntryShown(row, col) || !EntrySlotRect(row, col).Intersects(rect))
+        continue;
+      if (!block)
+        block = MatrixBlock{row, row, col, col};
+      else {
+        block->firstRow = std::min(block->firstRow, row);
+        block->lastRow = std::max(block->lastRow, row);
+        block->firstCol = std::min(block->firstCol, col);
+        block->lastCol = std::max(block->lastCol, col);
+      }
+    }
+  return block;
+}
+
+bool MatrCell::IsWholeMatrix(const MatrixBlock &block) const {
+  return (block.firstRow == 0) && (block.firstCol == 0) &&
+    (block.lastRow + 1 >= m_matHeight) && (block.lastCol + 1 >= m_matWidth);
+}
+
+wxRect MatrCell::BlockRect(const MatrixBlock &block) const {
+  wxRect rect;
+  for (size_t row = block.firstRow; row <= block.lastRow && row < m_matHeight; row++)
+    for (size_t col = block.firstCol; col <= block.lastCol && col < m_matWidth; col++)
+      if (IsEntryShown(row, col))
+        rect = rect.IsEmpty() ? EntrySlotRect(row, col)
+          : rect.Union(EntrySlotRect(row, col));
+  if (IsScrolling())
+    rect.Intersect(ViewportRect());
+  return rect;
+}
+
+MatrixEntry MatrCell::StepEntry(const MatrixEntry &entry, int rowStep,
+                                int colStep) const {
+  // Steps one index in the given direction, then on past whatever this
+  // elision hides. Returns index unchanged if that would leave the matrix.
+  const auto step = [](size_t index, int direction, size_t size,
+                       const Elision &elision) {
+    if (direction == 0)
+      return index;
+    size_t next = index;
+    do {
+      if ((direction < 0) ? (next == 0) : (next + 1 >= size))
+        return index;
+      next = (direction < 0) ? next - 1 : next + 1;
+    } while (elision.Hides(next));
+    return next;
+  };
+  return MatrixEntry{step(entry.row, rowStep, m_matHeight, m_rowElision),
+                     step(entry.col, colStep, m_matWidth, m_colElision)};
+}
+
+std::unique_ptr<MatrCell> MatrCell::CopyBlock(const MatrixBlock &block,
+                                              GroupCell *group) const {
+  auto copy = std::make_unique<MatrCell>(group, m_configuration);
+  copy->CopyCommonData(*this);
+  copy->m_specialMatrix = m_specialMatrix;
+  copy->m_inferenceMatrix = m_inferenceMatrix;
+  copy->m_parenType = m_parenType;
+  copy->m_oversizedMode = m_oversizedMode;
+  copy->m_nestedInMatrix = m_nestedInMatrix;
+  copy->m_rowNames = m_rowNames && (block.firstCol == 0);
+  copy->m_colNames = m_colNames && (block.firstRow == 0);
+  if ((m_matHeight == 0) || (m_matWidth == 0))
+    return copy;
+
+  const size_t lastRow = std::min(block.lastRow, m_matHeight - 1);
+  const size_t lastCol = std::min(block.lastCol, m_matWidth - 1);
+  for (size_t row = block.firstRow; row <= lastRow; row++) {
+    copy->NewRow();
+    for (size_t col = block.firstCol; col <= lastCol; col++)
+      if ((row * m_matWidth + col) < m_cells.size())
+        copy->m_cells.emplace_back(
+          GetInnerCell(static_cast<int>(row), static_cast<int>(col))->CopyList(group));
+  }
+  for (size_t col = block.firstCol; col <= lastCol; col++)
+    copy->NewColumn();
+  return copy;
 }
 
 void MatrCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
@@ -684,6 +881,30 @@ void MatrCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
   }
 }
 
+wxString MatrCell::OversizedModeName(Configuration::OversizedMatrices mode) {
+  // These are wx_matrix()'s option values as well as the XML attribute's, so
+  // they are part of the file format: don't rename them.
+  switch (mode) {
+  case Configuration::OversizedMatrices::showInFull:
+    return wxS("full");
+  case Configuration::OversizedMatrices::elide:
+    return wxS("elide");
+  case Configuration::OversizedMatrices::scroll:
+    return wxS("scroll");
+  }
+  return wxS("elide");
+}
+
+std::optional<Configuration::OversizedMatrices>
+MatrCell::OversizedModeFromName(const wxString &name) {
+  for (auto mode : {Configuration::OversizedMatrices::showInFull,
+                    Configuration::OversizedMatrices::elide,
+                    Configuration::OversizedMatrices::scroll})
+    if (name == OversizedModeName(mode))
+      return mode;
+  return std::nullopt;
+}
+
 void MatrCell::AddNewCell(std::unique_ptr<Cell> &&cell) {
   MarkNestedMatrices(cell.get());
   m_cells.emplace_back(std::move(cell));
@@ -738,6 +959,28 @@ wxString MatrCell::ToMatlab() const {
 
   s += wxS("];");
 
+  return s;
+}
+
+wxString MatrCell::ToCSV(const wxString &delimiter) const {
+  wxString s;
+  for (size_t row = 0; row < m_matHeight; row++) {
+    for (size_t col = 0; col < m_matWidth; col++) {
+      if (col > 0)
+        s += delimiter;
+      if ((row * m_matWidth + col) >= m_cells.size())
+        continue;
+      wxString entry =
+        GetInnerCell(static_cast<int>(row), static_cast<int>(col))->ListToString();
+      if (entry.Contains(delimiter) || entry.Contains(wxS("\"")) ||
+          entry.Contains(wxS("\n")) || entry.Contains(wxS("\r"))) {
+        entry.Replace(wxS("\""), wxS("\"\""));
+        entry = wxS("\"") + entry + wxS("\"");
+      }
+      s += entry;
+    }
+    s += wxS("\n");
+  }
   return s;
 }
 
@@ -911,6 +1154,9 @@ wxString MatrCell::ToXML() const {
     flags += wxS(" roundedParens=\"false\" noneParens=\"true\"");
     break;
   }
+
+  if (const auto mode = GetOversizedMode())
+    flags += wxS(" oversized=\"") + OversizedModeName(*mode) + wxS("\"");
 
   wxString s = wxS("<tb") + flags;
   if (m_specialMatrix) {

@@ -253,7 +253,7 @@ namespace Format {
                 wxDataObjectComposite *data = new wxDataObjectComposite;
                 data->Add(new wxTextDataObject(xmlText));
                 wxTheClipboard->SetData(data);
-                LoggingMessageDialog dialog(NULL, _("Produced invalid XML. The erroneous XML data has "
+                LoggingMessageDialog dialog(nullptr, _("Produced invalid XML. The erroneous XML data has "
                                                     "therefore not been saved but has been put on the "
                                                     "clipboard in order to allow debugging it.\n"
                                                     "Try saving the document in wxm format. Or maybe it helps to remove all output before saving the file, if the conversion of the output causes the problem."),
@@ -286,7 +286,7 @@ namespace Format {
       }
       if (!zip.Close())
         {
-          LoggingMessageDialog dialog(NULL, _("Could not write the file's contents during saving => aborting."),
+          LoggingMessageDialog dialog(nullptr, _("Could not write the file's contents during saving => aborting."),
                                       _("Error"), wxCENTER | wxOK);
           dialog.ShowModal();
           return false;
@@ -294,7 +294,7 @@ namespace Format {
     }
     if (!out.Close())
       {
-        LoggingMessageDialog dialog(NULL, _("Could not create the backup file during saving => aborting."),
+        LoggingMessageDialog dialog(nullptr, _("Could not create the backup file during saving => aborting."),
                                     _("Error"), wxCENTER | wxOK);
         dialog.ShowModal();
         return false;
@@ -309,7 +309,7 @@ namespace Format {
   // succeeded.
   if (!wxFileExists(backupfile))
     {
-      LoggingMessageDialog dialog(NULL, _("Saving succeeded, but the resulting files has disappeared ?!?."),
+      LoggingMessageDialog dialog(nullptr, _("Saving succeeded, but the resulting files has disappeared ?!?."),
                                   _("Error"), wxCENTER | wxOK);
       dialog.ShowModal();
       return false;
@@ -320,7 +320,7 @@ namespace Format {
   {
     wxFileInputStream wxmxFile(file + "~");
     wxZipInputStream wxmxContents(wxmxFile);
-    wxZipEntry *contentsEntry = NULL;
+    wxZipEntry *contentsEntry = nullptr;
     while(!wxmxContents.Eof())
       {
         contentsEntry = wxmxContents.GetNextEntry();
@@ -329,7 +329,7 @@ namespace Format {
       }
     // Did we succeed in opening the file?
     if (!contentsEntry) {
-      LoggingMessageDialog dialog(NULL, _(wxS("Saving succeeded, but the file could not be read "
+      LoggingMessageDialog dialog(nullptr, _(wxS("Saving succeeded, but the file could not be read "
                                               "again \u21D2 Not replacing the old saved file.")),
                                   _("Error"), wxCENTER | wxOK);
       dialog.ShowModal();
@@ -360,7 +360,7 @@ namespace Format {
       wxSleep(1);
       if (!wxRenameFile(backupfile, file, true))
         {
-          LoggingMessageDialog dialog(NULL, _(wxS("Creating a backup file succeeded, but could not move the .wxmx file to the intended location.")),
+          LoggingMessageDialog dialog(nullptr, _(wxS("Creating a backup file succeeded, but could not move the .wxmx file to the intended location.")),
                                       _("Error"), wxCENTER | wxOK);
           dialog.ShowModal();
           return false;

@@ -30,7 +30,6 @@
 
 // only use that for recent wxWidgets versions
 #include <wx/version.h>
-#if wxCHECK_VERSION(3, 1, 6)
 
 #include <wx/artprov.h>
 
@@ -83,6 +82,5 @@ private:
   // gunzip the (gzip compressed) SVG in Memory
   wxString gunzip(unsigned char * svg_gz, size_t svg_gz_size);
 };
-#endif
 
 #endif // WXMAXIMAARTPROVIDER_H

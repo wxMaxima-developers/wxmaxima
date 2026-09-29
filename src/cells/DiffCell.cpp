@@ -120,7 +120,7 @@ wxString DiffCell::ToString() const {
     return wxEmptyString;
   const Cell *tmp = m_baseCell->GetNext();
   wxString s = wxS("'diff(");
-  if (tmp != NULL)
+  if (tmp != nullptr)
     s += tmp->ListToString();
   s += m_diffCell->ListToString();
   s += wxS(")");
@@ -136,7 +136,7 @@ wxString DiffCell::ToMatlab() const {
     return wxEmptyString;
   const Cell *tmp = m_baseCell->GetNext();
   wxString s = wxS("'diff(");
-  if (tmp != NULL)
+  if (tmp != nullptr)
     s += tmp->ListToMatlab();
   s += m_diffCell->ListToMatlab();
   s += wxS(")");

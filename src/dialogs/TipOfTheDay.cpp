@@ -312,7 +312,6 @@ TipOfTheDay::~TipOfTheDay() {
 
 wxImage TipOfTheDay::GetImage(unsigned char *data, std::size_t len) {
   int ppi;
-#if wxCHECK_VERSION(3, 1, 1)
   wxDisplay display;
 
   int display_idx = wxDisplay::GetFromWindow(GetParent());
@@ -320,9 +319,6 @@ wxImage TipOfTheDay::GetImage(unsigned char *data, std::size_t len) {
     ppi = 72;
   else
     ppi = wxDisplay(display_idx).GetPPI().x;
-#else
-  ppi = wxGetDisplayPPI().x;
-#endif
   if (ppi <= 10)
     ppi = 72;
 
@@ -348,13 +344,11 @@ wxImage TipOfTheDay::GetImage(unsigned char *data, std::size_t len) {
     SvgBitmap(this, data, len, targetSize, targetSize).ConvertToImage();
 
 #if defined __WXMSW__
-#if wxCHECK_VERSION(3, 1, 1)
   // MSW is notorious for having problems with transparent black pixels.
   // Let's see if we can avoid these problems by converting the alpha
   // channel to a mask even if that means we cannot antialias a transparent
   // and a colored pixel to a half-transparent one any more.
   img.ConvertAlphaToMask();
-#endif
 #endif
 
   img.Rescale(targetSize, targetSize, wxIMAGE_QUALITY_HIGH);

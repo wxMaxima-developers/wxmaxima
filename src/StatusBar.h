@@ -95,7 +95,7 @@ public:
   wxWindow *GetMaximaStatusElement()
     { return m_maximaStatus; }
 
-  /*! The AI status icon, or NULL if aiChatAvailable was false at
+  /*! The AI status icon, or nullptr if aiChatAvailable was false at
     construction time (the AI Chat feature isn't compiled in / usable here).
     Callers must null-check before binding events to it or querying its
     screen position.
@@ -231,17 +231,17 @@ private:
   bool m_icon_shows_transmit = false;
   bool m_overlayIconIsSet = false;
   //! The background for m_statusText;
-  wxPanel *m_statusTextPanel = NULL;
+  wxPanel *m_statusTextPanel = nullptr;
   //! The currently shown network status bitmap
-  wxStaticText *m_statusText = NULL;
+  wxStaticText *m_statusText = nullptr;
   //! The currently shown network status bitmap
-  wxStaticBitmap *m_networkStatus = NULL;
+  wxStaticBitmap *m_networkStatus = nullptr;
   //! The currently shown network status bitmap
-  wxStaticBitmap *m_maximaStatus = NULL;
+  wxStaticBitmap *m_maximaStatus = nullptr;
   //! Whether the AI Chat feature is available at all, see the constructor.
   bool m_aiChatAvailable = false;
-  //! The AI status icon (4th status bar field), or NULL if !m_aiChatAvailable
-  wxStaticBitmap *m_aiStatus = NULL;
+  //! The AI status icon (4th status bar field), or nullptr if !m_aiChatAvailable
+  wxStaticBitmap *m_aiStatus = nullptr;
   //! The logical state UpdateAiStatus() was last called with, so UpdateBitmaps()
   //! can re-apply it with freshly-rescaled bitmaps after a PPI change.
   AiStatus m_aiStatusState = AiStatus::None;

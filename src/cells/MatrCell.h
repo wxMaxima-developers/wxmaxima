@@ -24,6 +24,8 @@
 #define MATRCELL_H
 
 #include "Cell.h"
+#include "MatrixBlock.h"
+#include <optional>
 
 #include <vector>
 
@@ -40,6 +42,9 @@
   - **`colnames=true`**: Treats the first row as labels.
   - **`parenstyle=style`**: Sets the bracket type. Supported styles:
     `round` (), `square` [], `angled` <>, `straight` ||, or `none`.
+  - **`oversized=mode`**: How to show this matrix if it is too large for the
+    window, overriding the configuration: `full`, `elide` or `scroll`. See
+    SetOversizedMode().
 
   Example: `wx_matrix(matrix([1,2],[3,4]), lines=true, rownames=true, parenstyle=square);`
 
@@ -105,9 +110,69 @@ public:
   const wxString GetToolTip(wxPoint point) const override;
   Range GetInnerCellsInRect(const wxRect &rect) const override;
 
+  /*! \name Sub-matrices (GH #2345)
+
+    Dragging a rectangle across a matrix selects the block of entries it
+    touches; copying then copies just that sub-matrix.
+    @{
+  */
+  /*! The block of shown entries a rectangle touches
+
+    An entry counts if the rectangle meets its slot: the entry's row and
+    column, plus half the gap to its neighbours, so that dragging across the
+    gaps between entries still counts. Entries that are elided or scrolled
+    out of view can't be touched, but a block reaching across an elided run
+    includes it. std::nullopt if the rectangle touches no entry.
+  */
+  std::optional<MatrixBlock> BlockInRect(const wxRect &rect) const;
+  //! Is this block every entry of the matrix?
+  bool IsWholeMatrix(const MatrixBlock &block) const;
+  /*! Where the shown part of a block is drawn, e.g. to highlight it
+
+    The union of the slots (see BlockInRect()) of its shown entries, cut to
+    the viewport if the matrix scrolls. Empty if none of them is shown.
+  */
+  wxRect BlockRect(const MatrixBlock &block) const;
+  /*! The entry one step away from this one, for Shift+arrow keys (GH #2370)
+
+    \param rowStep, colStep -1, 0 or +1: the direction to step in.
+
+    A run of elided rows or columns counts as one step: stepping into it
+    lands on the first shown entry beyond it, so the corner of a block never
+    rests on an entry that isn't drawn. At the edge of the matrix the entry
+    stays where it is.
+  */
+  MatrixEntry StepEntry(const MatrixEntry &entry, int rowStep,
+                        int colStep) const;
+  /*! A new matrix holding only this block of entries
+
+    Keeps the brackets and the other flags, but a heading row or column only
+    if the block includes it: otherwise the block's first row or column would
+    be shown, and exported, as if it were a heading. The block is clamped to
+    the matrix.
+  */
+  std::unique_ptr<MatrCell> CopyBlock(const MatrixBlock &block,
+                                      GroupCell *group) const;
+  //! @}
+
+  //! How many rows the matrix has
+  size_t GetMatrixRows() const { return m_matHeight; }
+  //! How many columns the matrix has
+  size_t GetMatrixColumns() const { return m_matWidth; }
+
   //! Is the entry in this row and column left out of the display?
   bool IsElided(size_t row, size_t col) const
     { return m_rowElision.Hides(row) || m_colElision.Hides(col); }
+  /*! Which entry's slot is at this point?
+
+    Finds the row and the column whose band (see DrawBands()) the point lies
+    in -- the whole slot, gaps included, not just the entry's own text, so the
+    answer doesn't flicker between an entry and nothing as the mouse crosses
+    the space between two entries. Counts from 0. False on the brackets, on
+    the dots that mark elided rows or columns, and outside the viewport of a
+    scrolling matrix.
+  */
+  bool EntryAt(wxPoint point, size_t &row, size_t &col) const;
   //! How many columns are left out of the display (0 = none)
   size_t ElidedColumns() const { return m_colElision.count; }
   //! How many rows are left out of the display (0 = none)
@@ -143,6 +208,14 @@ public:
     new layout. Returns true if the position actually changed.
   */
   bool ScrollTo(wxPoint position);
+  /*! Scrolls just far enough that an entry is inside the viewport (GH #2380)
+
+    Used to keep the corner of a selected block in view while the keyboard
+    moves it. An entry that is already fully visible, or a matrix that
+    doesn't scroll, stays as it is; an entry larger than the viewport gets
+    its top left corner shown. Returns true if the matrix actually scrolled.
+  */
+  bool ScrollEntryIntoView(size_t row, size_t col);
   //! Does this matrix sit inside another matrix? Only the outermost one scrolls.
   bool IsNestedInMatrix() const { return m_nestedInMatrix; }
   /*! @} */
@@ -156,6 +229,15 @@ public:
 
   wxString ToMathML() const override;
   wxString ToMatlab() const override;
+  /*! The matrix as comma- (or tab-, ...) separated values (GH #2364)
+
+    One line per row, entries separated by delimiter, each entry being what
+    ToString() would give for it. An entry that contains the delimiter, a
+    double quote or a line break is quoted as RFC 4180 says: wrapped in
+    double quotes, with every double quote inside it doubled. Heading rows
+    and columns are ordinary rows and columns here.
+  */
+  wxString ToCSV(const wxString &delimiter) const;
   wxString ToOMML() const override;
   wxString ToString() const override;
   wxString ToTeX() const override;
@@ -174,6 +256,29 @@ public:
   void StraightParens() { m_parenType = paren_straight;}
   void AngledParens()   { m_parenType = paren_angled;}
   void NoParens()       { m_parenType = paren_none;}
+
+  /*! How this matrix wants to be shown if it is too large for the window
+
+    Set by wx_matrix()'s oversized option (GH #2343). std::nullopt, the
+    default, follows Configuration::GetOversizedMatrices(); anything else
+    overrides it for this one matrix, see
+    Configuration::OversizedMatricesFor(). Saved with the matrix, so a
+    reopened .wxmx shows it the same way.
+  */
+  void SetOversizedMode(std::optional<Configuration::OversizedMatrices> mode) {
+    m_oversizedMode = mode ? static_cast<uint8_t>(*mode) : oversizedFollowConfig;
+  }
+  //! The mode SetOversizedMode() asked for, if any
+  std::optional<Configuration::OversizedMatrices> GetOversizedMode() const {
+    if (m_oversizedMode == oversizedFollowConfig)
+      return std::nullopt;
+    return static_cast<Configuration::OversizedMatrices>(m_oversizedMode);
+  }
+  //! The name wx_matrix() and the XML use for an oversized-matrix mode
+  static wxString OversizedModeName(Configuration::OversizedMatrices mode);
+  //! Parses OversizedModeName()'s output; std::nullopt if it isn't one
+  static std::optional<Configuration::OversizedMatrices>
+  OversizedModeFromName(const wxString &name);
 
 private:
   struct DropCenter
@@ -235,15 +340,23 @@ private:
   */
   void DrawBands(wxDC *dc) const;
 public:
-  //! Does this matrix get alternating row/column bands? See DrawBands().
-  bool IsBanded() const
+  /*! Does the worksheet show only part of this matrix right now?
+
+    True if rows or columns are elided or the matrix scrolls. Double-clicking
+    such a matrix opens a MatrixViewer showing all of it (GH #2344).
+  */
+  bool IsShownPartially() const
     { return m_colElision.Active() || m_rowElision.Active() || IsScrolling(); }
+  //! Does this matrix get alternating row/column bands? See DrawBands().
+  bool IsBanded() const { return IsShownPartially(); }
 private:
   //! Is this matrix shown in a scrolling viewport right now?
   bool IsScrolling() const
     { return m_hasHorizontalScrollbar || m_hasVerticalScrollbar; }
   //! Is (any part of) this entry visible, i.e. neither elided nor scrolled out?
   bool IsEntryShown(size_t row, size_t col) const;
+  //! The area an entry's row and column give it, plus half the gap around it
+  wxRect EntrySlotRect(size_t row, size_t col) const;
   //! Clamps m_scroll to what m_scrollableSize and m_contentSize allow
   void ClampScrollPosition() const;
   //! Flags every matrix in this list, and anywhere inside it, as nested
@@ -288,6 +401,13 @@ private:
 //** Bitfield objects (1 bytes)
 //**
   uint8_t m_parenType : 3 = paren_rounded;
+  //! m_oversizedMode's value for "no preference of its own"
+  static constexpr uint8_t oversizedFollowConfig = 3;
+  static_assert(static_cast<uint8_t>(Configuration::OversizedMatrices::scroll) <
+                oversizedFollowConfig,
+                "m_oversizedMode is too narrow for OversizedMatrices");
+  //! A Configuration::OversizedMatrices, or oversizedFollowConfig. See SetOversizedMode().
+  uint8_t m_oversizedMode : 2 = oversizedFollowConfig;
   bool m_specialMatrix : 1 = false;
   bool m_inferenceMatrix : 1 = false;
   bool m_rowNames : 1 = false;

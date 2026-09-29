@@ -113,7 +113,7 @@ public:
   */
   static bool IsHardcodedKeyword(const wxString &text) {
     EnsureHardcodedFunctionsInitialized();
-    return m_hardcodedFunctions.find(text) != m_hardcodedFunctions.end();
+    return m_hardcodedFunctions.contains(text);
   }
 
 protected:
@@ -132,9 +132,9 @@ protected:
   //! Linebreak characters
   static const wxString m_linebreaks;
 
-  const Configuration * const m_configuration = NULL;
+  const Configuration * const m_configuration = nullptr;
 
-  typedef std::unordered_map <wxString, int, wxStringHash> StringHash;
+  using StringHash = std::unordered_map<wxString, int, wxStringHash>;
   /*! Names of functions that don't require parenthesis
 
     The maxima parser automatically parses everything that is followed by

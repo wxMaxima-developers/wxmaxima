@@ -49,7 +49,7 @@ Printout::Printout(wxString title, GroupCell *tree, double scaleFactor)
   m_configuration.LineWidth_em(10000);
 
   // Don't take the ppi rate from the worksheet
-  m_configuration.SetWorkSheet(NULL);
+  m_configuration.SetWorkSheet(nullptr);
 
   // Settings that apply to printing, but not to displaying
   m_configuration.ClipToDrawRegion(false);
@@ -116,7 +116,7 @@ bool Printout::OnPrintPage(int num) {
   dc->SetDeviceOrigin(deviceOrigin.x, deviceOrigin.y);
 
   // Print the page contents
-  const Cell *end = NULL;
+  const Cell *end = nullptr;
   wxCoord startpoint;
   wxCoord endpoint;
   startpoint = m_pages.at(static_cast<size_t>(num) - 1)->GetRect(true).GetTop();
@@ -155,7 +155,7 @@ bool Printout::OnBeginDocument(int startPage, int endPage) {
 }
 
 void Printout::BreakPages() {
-  if (m_tree == NULL)
+  if (m_tree == nullptr)
     return;
   wxSize canvasSize = m_configuration.GetCanvasSize();
 
@@ -174,7 +174,7 @@ void Printout::BreakPages() {
     if(out)
       {
         for (Cell &tmp : OnDrawList(out)) {
-          if((tmp.BreakLineHere()) || (tmp.GetNext() == NULL))
+          if((tmp.BreakLineHere()) || (tmp.GetNext() == nullptr))
             lineStarts.push_back(&tmp);
         }
       }
@@ -245,7 +245,7 @@ void Printout::OnPreparePrinting() {
   // wxSize screenPPI;
   // screenPPI = m_configuration.GetDC()->GetPPI();
   // double oldZoomFactor = m_configuration.GetZoomFactor();
-  // wxMessageDialog dialog(NULL,
+  // wxMessageDialog dialog(nullptr,
   //   wxString::Format(wxS("screenPPI.x=%i,\nprintPPI.x=%i\nzoomFactor=%f\nUserScale.x=%f"),
   //     screenPPI.x, printPPI.x, oldZoomFactor, userScale_x),
   //   wxString("Printer Parameters"));
@@ -278,7 +278,7 @@ void Printout::Recalculate() {
 
   wxLogMessage(_("Printout: Layouting the whole worksheet as a endless scroll of the width of the paper"));
   // Don't take the ppi rate from the worksheet but use a fixed one instead
-  m_configuration.SetWorkSheet(NULL);
+  m_configuration.SetWorkSheet(nullptr);
   m_configuration.SetRecalcContext(*GetDC());
   m_tree->ResetSize();
 

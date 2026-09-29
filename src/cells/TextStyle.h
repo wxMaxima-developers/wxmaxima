@@ -71,8 +71,6 @@ public:
   Style(const Style &);
 
   Style &operator=(const Style &);
-  //! Compares
-  bool operator==(const Style &o) const;
 
   /*! Read this style from a config source.
    *
@@ -171,9 +169,6 @@ public:
   did_change SetFontFaceFrom(const Style&);
   //! Sets font-face and size only properties based on another style (not attributes like bold, etc.)
   did_change SetFontFaceAndSizeFrom(const Style&);
-  //! Old wxWidgets versions only support integers as font sizes
-  constexpr static bool IsFractionalFontSizeSupported() {
-    return wxCHECK_VERSION(3, 1, 2); } //-V686 //-V501
   //! Returns the font size that this style has when not zoomed or being used as subscript/...
   static AFontSize GetFontSize(const wxFont &);
   //! Sets the font size that this style has when not zoomed or being used as subscript/...
@@ -186,8 +181,8 @@ public:
     }
   std::shared_ptr<FontVariantCache> GetFontCache() const {return m.fontCache;}
 private:
-  typedef std::unordered_map <wxString, std::shared_ptr<FontVariantCache>,
-                              wxStringHash> FontVariantCachesMap;
+  using FontVariantCachesMap =
+    std::unordered_map<wxString, std::shared_ptr<FontVariantCache>, wxStringHash>;
 
   //! An empty string we can return a reference to
   static wxString m_emptyString;

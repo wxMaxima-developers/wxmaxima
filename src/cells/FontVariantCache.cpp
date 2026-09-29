@@ -87,11 +87,7 @@ std::shared_ptr<wxFont> FontVariantCache::GetFont (double size,
     }
     if(isStrikeThrough)
       font->MakeStrikethrough();
-#if wxCHECK_VERSION(3, 1, 2)
     font->SetFractionalPointSize(size);
-#else
-    font->SetPointSize(size);
-#endif
     m_fontCaches[index][size] = font;
     wxLogMessage(_("Caching font variant: %s"), font->GetNativeFontInfoDesc().mb_str());
     return font;

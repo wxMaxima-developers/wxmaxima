@@ -93,11 +93,10 @@ SCENARIO("AFontSize is null by default") {
 
 #define CHECK_REPRESENTS(size, value) \
   do { \
-    auto constexpr wxMargin = wxCHECK_VERSION(3,1,2) ? Size_Unit_Margin : (1 + 1e-5); \
     THEN("It Represents that size") { \
       REQUIRE(size.Get()       == Approx(value).margin(Size_Unit_Margin)); \
       REQUIRE(size.GetAsLong() == Approx(value).margin(1 + 1e-5)); \
-      REQUIRE(size.GetForWX()  == Approx(value).margin(wxMargin)); \
+      REQUIRE(size.GetForWX()  == Approx(value).margin(Size_Unit_Margin)); \
     } \
   } while (0)
 
@@ -252,6 +251,22 @@ SCENARIO("EqualToWithin works") {
     REQUIRE(EqualToWithin(AFontSize(20.1f), AFontSize(20.0f), 0.2f));
     REQUIRE_FALSE(EqualToWithin(AFontSize(20.2f), AFontSize(20.0f), 0.2f));
   }
+}
+
+SCENARIO("EnumWrapper compares in every direction (#2373)") {
+  // EnumWrapper only defines operator==; C++20 derives != and the
+  // reversed "enum == wrapper" forms from it. Pin all four so dropping
+  // the hand-written ones can't silently change what compiles or what
+  // it returns.
+  const AFontStyle italic = wxFONTSTYLE_ITALIC;
+  const AFontStyle normal = wxFONTSTYLE_NORMAL;
+  REQUIRE(italic == wxFONTSTYLE_ITALIC);
+  REQUIRE(wxFONTSTYLE_ITALIC == italic);
+  REQUIRE(italic != wxFONTSTYLE_NORMAL);
+  REQUIRE(wxFONTSTYLE_NORMAL != italic);
+  REQUIRE(italic != normal);
+  REQUIRE_FALSE(italic == normal);
+  REQUIRE(AFontStyle() == normal);
 }
 
 // If we don't provide our own main when compiling on MinGW

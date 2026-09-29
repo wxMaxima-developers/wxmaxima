@@ -39,7 +39,7 @@ FindReplaceDialog::FindReplaceDialog(wxWindow *parent,
   Create(parent, wxID_ANY, title, wxDefaultPosition, wxDefaultSize,
          style);
   m_pointerToDialogue = pointerToDialogue;
-  if(m_pointerToDialogue != NULL)
+  if(m_pointerToDialogue != nullptr)
     *m_pointerToDialogue = this;
   m_contents = new FindReplacePane(this, data);
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
@@ -67,7 +67,7 @@ FindReplaceDialog::~FindReplaceDialog()
 {
   if(m_pointerToDialogue)
     {
-      *m_pointerToDialogue = NULL;
+      *m_pointerToDialogue = nullptr;
     }
 }
 

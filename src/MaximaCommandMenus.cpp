@@ -1639,7 +1639,7 @@ void MaximaCommandMenus::PropertiesMenu(wxCommandEvent &event) {
   if(!m_wxMaxima.GetWorksheet())
     return;
   EditorCell *editor = m_wxMaxima.GetWorksheet()->GetActiveCell();
-  if (editor == NULL)
+  if (editor == nullptr)
     return;
   wxString obj = editor->GetWordUnderCaret();
   if (obj.IsEmpty())
@@ -2269,7 +2269,7 @@ void MaximaCommandMenus::FileMenu(wxCommandEvent &event) {
     if (file.Length() == 0)
       file = _("untitled");
     else
-      wxFileName::SplitPath(file, NULL, NULL, &file, NULL);
+      wxFileName::SplitPath(file, nullptr, nullptr, &file, nullptr);
 
     wxString fileExt = "html";
     wxConfig::Get()->Read(wxS("defaultExportExt"), &fileExt);
@@ -2402,11 +2402,11 @@ void MaximaCommandMenus::OnInsertMenu(wxCommandEvent &event) {
         GC_TYPE_CODE)
       m_wxMaxima.GetWorksheet()->GetActiveCell()->GetGroup()->SetAutoAnswer(
                                                               event.IsChecked());
-    else if ((m_wxMaxima.GetWorksheet()->GetSelectionStart() != NULL) &&
+    else if ((m_wxMaxima.GetWorksheet()->GetSelectionStart() != nullptr) &&
              (m_wxMaxima.GetWorksheet()->GetSelectionStart()->GetType() == MC_TYPE_GROUP)) {
       GroupCell *gc =
         dynamic_cast<GroupCell *>(m_wxMaxima.GetWorksheet()->GetSelectionStart());
-      while (gc != NULL) {
+      while (gc != nullptr) {
         if (gc->GetGroupType() == GC_TYPE_CODE)
           gc->SetAutoAnswer(event.IsChecked());
 
@@ -2429,7 +2429,7 @@ void MaximaCommandMenus::OnInsertMenu(wxCommandEvent &event) {
         m_wxMaxima.m_variablesPane->AddWatchCode(selectionString);
       m_wxMaxima.wxMaximaFrame::ShowPane(EventIDs::menu_pane_variables, true);
     }
-    if (selectionString.IsEmpty() && (m_wxMaxima.GetWorksheet()->GetSelectionStart() != NULL))
+    if (selectionString.IsEmpty() && (m_wxMaxima.GetWorksheet()->GetSelectionStart() != nullptr))
       selectionString = m_wxMaxima.GetWorksheet()->GetSelectionStart()->ToString();
     if (!selectionString.IsEmpty()) {
       if(m_wxMaxima.m_variablesPane)
@@ -2606,7 +2606,7 @@ void MaximaCommandMenus::OnInsertMenu(wxCommandEvent &event) {
     m_wxMaxima.GetWorksheet()->FoldAll();
     m_wxMaxima.GetWorksheet()->RequestRecalculation();
     // send cursor to the top
-    m_wxMaxima.GetWorksheet()->SetHCaret(NULL);
+    m_wxMaxima.GetWorksheet()->SetHCaret(nullptr);
   }
   else if(event.GetId() == EventIDs::menu_unfold_all_cells){
     m_wxMaxima.GetWorksheet()->UnfoldAll();
@@ -2648,7 +2648,7 @@ void MaximaCommandMenus::EditMenu(wxCommandEvent &event) {
     return;
   m_wxMaxima.GetWorksheet()->CloseAutoCompletePopup();
 
-  // if (m_wxMaxima.GetWorksheet()->m_findDialog != NULL) {
+  // if (m_wxMaxima.GetWorksheet()->m_findDialog != nullptr) {
   //   event.Skip();
   //   return;
   // }
@@ -2785,7 +2785,7 @@ void MaximaCommandMenus::EditMenu(wxCommandEvent &event) {
     argv.push_back(urlbuffer.data());
     wxCharBuffer persist_opt = wxString(wxS("--persist")).mb_str();
     argv.push_back(persist_opt.data());
-    argv.push_back(NULL);
+    argv.push_back(nullptr);
 
     wxLogMessage(_("Running %s on the file %s: "), commandnamebuffer, urlbuffer);
     m_wxMaxima.m_gnuplotProcess = new wxProcess(&m_wxMaxima, m_wxMaxima.m_gnuplot_process_id);
@@ -2837,7 +2837,7 @@ void MaximaCommandMenus::EditMenu(wxCommandEvent &event) {
       checkArgv.push_back(checkCommandnamebuffer.data());
       wxCharBuffer checkUrlbuffer = wxString(gnuplot_popout_checkfilename).mb_str();
       checkArgv.push_back(checkUrlbuffer.data());
-      checkArgv.push_back(NULL);
+      checkArgv.push_back(nullptr);
       if (wxExecute(checkArgv.data(),
                     wxEXEC_ASYNC | wxEXEC_HIDE_CONSOLE | wxEXEC_MAKE_GROUP_LEADER,
                     m_wxMaxima.m_gnuplotPopoutCheckProcess) < 0)
@@ -3080,7 +3080,7 @@ void MaximaCommandMenus::EditMenu(wxCommandEvent &event) {
   }
   else if(event.GetId() == EventIDs::menu_show_logwindow) {
     // FIXME: if the log window was closed as the parent 'disable' the toggle function, otherwise we risk a crash.
-    if (MyApp::m_logWindow->GetFrame() != NULL) {
+    if (MyApp::m_logWindow->GetFrame() != nullptr) {
       MyApp::m_logWindow->Show(!MyApp::m_logWindow->GetFrame()->IsShown());
     };
   }
@@ -3105,7 +3105,7 @@ void MaximaCommandMenus::EditMenu(wxCommandEvent &event) {
       // whether Ctrl+F still works while the sidebar is minimized.
       bool findPaneActiveWas = m_wxMaxima.IsPaneDisplayed(EventIDs::menu_pane_find);
       m_wxMaxima.wxMaximaFrame::ShowPane(EventIDs::menu_pane_find, true);
-      if (m_wxMaxima.GetWorksheet()->GetActiveCell() != NULL) {
+      if (m_wxMaxima.GetWorksheet()->GetActiveCell() != nullptr) {
         wxString selected = m_wxMaxima.GetWorksheet()->GetActiveCell()->GetSelectionString();
 
         // Start incremental search and highlighting of search results again.
@@ -3123,11 +3123,11 @@ void MaximaCommandMenus::EditMenu(wxCommandEvent &event) {
 #endif
       return;
     }
-    bool findDialogActiveWas = ((m_wxMaxima.GetWorksheet()->m_findDialog != NULL) &&
+    bool findDialogActiveWas = ((m_wxMaxima.GetWorksheet()->m_findDialog != nullptr) &&
                                 (m_wxMaxima.GetWorksheet()->m_findDialog->IsShown()));
-    if (m_wxMaxima.GetWorksheet()->m_findDialog == NULL)
+    if (m_wxMaxima.GetWorksheet()->m_findDialog == nullptr)
       new FindReplaceDialog(&m_wxMaxima, &m_wxMaxima.m_findData, _("Find and Replace"), &m_wxMaxima.GetWorksheet()->m_findDialog);
-    if (m_wxMaxima.GetWorksheet()->GetActiveCell() != NULL) {
+    if (m_wxMaxima.GetWorksheet()->GetActiveCell() != nullptr) {
       wxString selected = m_wxMaxima.GetWorksheet()->GetActiveCell()->GetSelectionString();
 
       // Start incremental search and highlighting of search results again.
@@ -3160,7 +3160,7 @@ void MaximaCommandMenus::EditMenu(wxCommandEvent &event) {
   }
   else if(event.GetId() == EventIDs::popid_hide_tooltipMarkerForThisMessage) {
     const Cell *cell = m_wxMaxima.GetWorksheet()->GetSelectionStart();
-    if (cell == NULL)
+    if (cell == nullptr)
       return;
     wxString toolTip = cell->GetLocalToolTip();
     if (toolTip.IsEmpty())
@@ -3172,11 +3172,11 @@ void MaximaCommandMenus::EditMenu(wxCommandEvent &event) {
     m_wxMaxima.GetWorksheet()->OutputChanged();
   }
   else if(event.GetId() == EventIDs::popid_hide_tooltipMarker) {
-    if (m_wxMaxima.GetWorksheet()->GetSelectionStart() == NULL)
+    if (m_wxMaxima.GetWorksheet()->GetSelectionStart() == nullptr)
       return;
     GroupCell *cell = m_wxMaxima.GetWorksheet()->GetSelectionStart()->GetGroup();
-    const GroupCell *end = NULL;
-    if (m_wxMaxima.GetWorksheet()->GetSelectionEnd() != NULL)
+    const GroupCell *end = nullptr;
+    if (m_wxMaxima.GetWorksheet()->GetSelectionEnd() != nullptr)
       end = m_wxMaxima.GetWorksheet()->GetSelectionEnd()->GetGroup();
     bool marked = !cell->GetSuppressTooltipMarker();
 
@@ -3219,7 +3219,7 @@ void MaximaCommandMenus::PopupMenu(wxCommandEvent &event) {
   else if(event.GetId() == EventIDs::popid_maxsizechooser){
     if (m_wxMaxima.GetWorksheet()->GetSelectionStart()) {
       Cell *output = m_wxMaxima.GetWorksheet()->GetSelectionStart()->GetGroup()->GetLabel();
-      if (output == NULL)
+      if (output == nullptr)
         return;
       if ((output->GetType() != MC_TYPE_IMAGE) &&
           (output->GetType() != MC_TYPE_SLIDE))
@@ -3249,7 +3249,7 @@ void MaximaCommandMenus::PopupMenu(wxCommandEvent &event) {
   else if(event.GetId() == EventIDs::popid_resolutionchooser){
     if (m_wxMaxima.GetWorksheet()->GetSelectionStart()) {
       Cell *output = m_wxMaxima.GetWorksheet()->GetSelectionStart()->GetGroup()->GetLabel();
-      if (output == NULL)
+      if (output == nullptr)
         return;
       if ((output->GetType() != MC_TYPE_IMAGE) &&
           (output->GetType() != MC_TYPE_SLIDE))
@@ -3275,7 +3275,7 @@ void MaximaCommandMenus::PopupMenu(wxCommandEvent &event) {
 
     {
       Cell *output = m_wxMaxima.GetWorksheet()->GetSelectionStart()->GetGroup()->GetLabel();
-      if (output == NULL)
+      if (output == nullptr)
         return;
       if (output->GetType() != MC_TYPE_IMAGE)
         return;
@@ -3317,7 +3317,7 @@ void MaximaCommandMenus::PopupMenu(wxCommandEvent &event) {
       m_wxMaxima.GetWorksheet()->UpdateTableOfContents();
   }
   else if(event.GetId() == EventIDs::popid_Fold){
-    if (m_wxMaxima.m_tableOfContents != NULL) {
+    if (m_wxMaxima.m_tableOfContents != nullptr) {
       // We only update the table of contents when there is time => no guarantee
       // that the cell that was clicked at actually still is part of the tree.
       if ((m_wxMaxima.GetWorksheet()->GetTree()) &&
@@ -3331,7 +3331,7 @@ void MaximaCommandMenus::PopupMenu(wxCommandEvent &event) {
     }
   }
   else if(event.GetId() == EventIDs::popid_Unfold){
-    if (m_wxMaxima.m_tableOfContents != NULL) {
+    if (m_wxMaxima.m_tableOfContents != nullptr) {
       // We only update the table of contents when there is time => no guarantee
       // that the cell that was clicked at actually still is part of the tree.
       if ((m_wxMaxima.GetWorksheet()->GetTree()) &&
@@ -3345,7 +3345,7 @@ void MaximaCommandMenus::PopupMenu(wxCommandEvent &event) {
     }
   }
   else if(event.GetId() == EventIDs::popid_SelectTocChapter){
-    if (m_wxMaxima.m_tableOfContents != NULL) {
+    if (m_wxMaxima.m_tableOfContents != nullptr) {
       if (m_wxMaxima.m_tableOfContents->RightClickedOn()) {
         GroupCell *SelectionStart =
           m_wxMaxima.m_tableOfContents->RightClickedOn();
@@ -3355,11 +3355,11 @@ void MaximaCommandMenus::PopupMenu(wxCommandEvent &event) {
         if ((m_wxMaxima.GetWorksheet()->GetTree()) &&
             (m_wxMaxima.GetWorksheet()->GetTree()->Contains(SelectionStart))) {
           GroupCell *SelectionEnd = SelectionStart;
-          while ((SelectionEnd->GetNext() != NULL) &&
+          while ((SelectionEnd->GetNext() != nullptr) &&
                  (SelectionEnd->GetNext()->IsLesserGCType(
                                                           SelectionStart->GetGroupType())))
             SelectionEnd = SelectionEnd->GetNext();
-          m_wxMaxima.GetWorksheet()->SetActiveCell(NULL);
+          m_wxMaxima.GetWorksheet()->SetActiveCell(nullptr);
           m_wxMaxima.GetWorksheet()->ScrolledAwayFromEvaluation(true);
           m_wxMaxima.GetWorksheet()->SetHCaret(SelectionEnd);
           m_wxMaxima.GetWorksheet()->SetSelection(SelectionStart, SelectionEnd);
@@ -3414,7 +3414,7 @@ void MaximaCommandMenus::PopupMenu(wxCommandEvent &event) {
     m_wxMaxima.GetWorksheet()->UpdateTableOfContents();
   }
   else if(event.GetId() == EventIDs::popid_evaluate_section){
-      GroupCell *group = NULL;
+      GroupCell *group = nullptr;
       if (m_wxMaxima.GetWorksheet()->GetActiveCell()) {
         // This "if" is pure paranoia. But - since the costs of an "if" are low...
         if (m_wxMaxima.GetWorksheet()->GetActiveCell()->GetGroup())
@@ -3459,6 +3459,9 @@ void MaximaCommandMenus::PopupMenu(wxCommandEvent &event) {
   else if(event.GetId() == EventIDs::popid_copy_matlab){
     if (m_wxMaxima.GetWorksheet()->CanCopy())
       m_wxMaxima.GetWorksheet()->CopyMatlab();
+  }
+  else if(event.GetId() == EventIDs::popid_copy_csv){
+    m_wxMaxima.GetWorksheet()->CopyCSV();
   }
   else if(event.GetId() == EventIDs::popid_copy_tex){
     if (m_wxMaxima.GetWorksheet()->CanCopy())
@@ -3620,7 +3623,7 @@ void MaximaCommandMenus::PopupMenu(wxCommandEvent &event) {
   }
   else if(event.GetId() == EventIDs::popid_image){
       if ((m_wxMaxima.GetWorksheet()->GetSelectionStart() == m_wxMaxima.GetWorksheet()->GetSelectionEnd()) &&
-          (m_wxMaxima.GetWorksheet()->GetSelectionStart() != NULL))
+          (m_wxMaxima.GetWorksheet()->GetSelectionStart() != nullptr))
         {
           bool canExportSVG = false;
 
@@ -3671,7 +3674,7 @@ void MaximaCommandMenus::PopupMenu(wxCommandEvent &event) {
         return;
 
       Cell *cell = m_wxMaxima.GetWorksheet()->GetSelectionStart()->GetGroup()->GetLabel();
-      if (cell == NULL)
+      if (cell == nullptr)
         return;
 
       if (cell->GetType() != MC_TYPE_IMAGE)
@@ -3756,7 +3759,7 @@ void MaximaCommandMenus::PopupMenu(wxCommandEvent &event) {
                                      wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
       if (file.Length()) {
         Cell *selectedCell = m_wxMaxima.GetWorksheet()->GetSelectionStart();
-        if (selectedCell != NULL && selectedCell->GetType() == MC_TYPE_SLIDE)
+        if (selectedCell != nullptr && selectedCell->GetType() == MC_TYPE_SLIDE)
           {
             wxBusyCursor crs;
             dynamic_cast<AnimationCell *>(selectedCell)->ToGif(file);
@@ -4624,7 +4627,7 @@ void MaximaCommandMenus::EditInputMenu(wxCommandEvent &WXUNUSED(event)) {
   EditorCell *tmp =
     dynamic_cast<EditorCell *>(m_wxMaxima.GetWorksheet()->GetSelectionStart());
 
-  if (tmp == NULL)
+  if (tmp == nullptr)
     return;
 
   m_wxMaxima.GetWorksheet()->SetActiveCell(tmp);
@@ -4645,7 +4648,7 @@ void MaximaCommandMenus::PrintMenu(wxCommandEvent &event) {
 
     if (m_wxMaxima.GetWorksheet()->GetCurrentFile().Length()) {
       wxString suffix;
-      wxFileName::SplitPath(m_wxMaxima.GetWorksheet()->GetCurrentFile(), NULL, NULL, &title,
+      wxFileName::SplitPath(m_wxMaxima.GetWorksheet()->GetCurrentFile(), nullptr, nullptr, &title,
                             &suffix);
       title << wxS(".") << suffix;
     }

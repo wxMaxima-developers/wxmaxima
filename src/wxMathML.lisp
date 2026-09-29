@@ -236,6 +236,47 @@
 	 (rest (subseq v (1+ d2))))
     (list '(mlist simp) (parse-integer year) (parse-integer month) rest)))
 
+;;; Splits the leading "26.08.0" part of a version string into a list of
+;;; integers, (26 8 0). Anything from the first character that is neither a
+;;; digit nor a dot on is ignored, which drops both a "-dev" suffix and the
+;;; "_GTK3"-style toolkit suffix wxMaxima appends to $wxmaximaversion.
+;;; Returns nil if the string doesn't start with a number.
+(defun wx-version-components (v)
+  (let* ((end (or (position-if-not (lambda (c) (or (digit-char-p c) (char= c #\.))) v)
+                  (length v)))
+         (numeric (subseq v 0 end))
+         (result nil)
+         (start 0))
+    (loop
+      (let* ((dot (position #\. numeric :start start))
+             (part (subseq numeric start dot)))
+        (when (string= part "") (return))
+        (push (parse-integer part) result)
+        (if dot (setq start (1+ dot)) (return))))
+    (nreverse result)))
+
+;;; wx_version_min("26.08.0"): true if the running wxMaxima is at least that
+;;; version. Components are compared numerically, so "26.10.0" is newer than
+;;; "26.9.0", and a missing component counts as 0 ("26.08" = "26.08.0").
+;;; A development build counts as the version it will be released as, since
+;;; it already contains that version's features. Outside wxMaxima (where
+;;; $wxmaximaversion never gets set to a string) the answer is false.
+(defun $wx_version_min (required)
+  (unless (stringp required)
+    (merror "wx_version_min: expected a version string like \"26.08.0\", got ~M" required))
+  (let ((want (wx-version-components required)))
+    (unless want
+      (merror "wx_version_min: ~M is not a version number like \"26.08.0\"" required))
+    (unless (stringp $wxmaximaversion)
+      (return-from $wx_version_min nil))
+    (let ((have (wx-version-components $wxmaximaversion)))
+      (loop
+        (when (and (null have) (null want)) (return t))
+        (let ((h (or (pop have) 0))
+              (w (or (pop want) 0)))
+          (cond ((> h w) (return t))
+                ((< h w) (return nil))))))))
+
   ;;; Any half-way new maxima will define these variables that add
   ;;; info about the front-end to the build_info(). If we encounter
   ;;; an old maxima that is no problem since we can create them
@@ -1116,6 +1157,15 @@ Submit bug reports by following the 'New issue' link on that page."))
 	       (setq tb-tag (concatenate 'string tb-tag " rownames=\"true\"")))
 	     (when (find 'colnames mtrx)
 	       (setq tb-tag (concatenate 'string tb-tag " colnames=\"true\""))))
+	   ;; wx_matrix()'s oversized option: how to show this matrix if it
+	   ;; is too large for the window, overriding the configuration.
+	   (cond
+	     ((find 'oversized_full mtrx)
+	      (setq tb-tag (concatenate 'string tb-tag " oversized=\"full\"")))
+	     ((find 'oversized_elide mtrx)
+	      (setq tb-tag (concatenate 'string tb-tag " oversized=\"elide\"")))
+	     ((find 'oversized_scroll mtrx)
+	      (setq tb-tag (concatenate 'string tb-tag " oversized=\"scroll\""))))
 	   (cond
 	     ((find 'paren_round mtrx)
 	      (setq tb-tag (concatenate 'string tb-tag " roundedParens=\"true\"")))
@@ -1871,25 +1921,30 @@ Submit bug reports by following the 'New issue' link on that page."))
 
 (defvar *default-framerate* 2)
 (defvar $wxanimate_framerate *default-framerate*)
-(defun slide-tag (images)
-  (if (eql *default-framerate* $wxanimate_framerate)
-      ($ldisp
-       (list '(wxxmltag simp)
-	     (wxxml-fix-string (format nil "~{~a;~}" images))
-	     "slide"
-	     (if (eql $wxanimate_autoplay 't)
-		 "running=\"true\" del=\"yes\""
-		 "running=\"false\" del=\"yes\""))
-       (format nil "~%"))
-      ($ldisp
-       (list '(wxxmltag simp)
-	     (wxxml-fix-string
-	      (format nil "~{~a;~}" images))
-	     "slide"
-	     (if (eql $wxanimate_autoplay 't)
-		 (format nil "fr=\"~a\" running=\"true\" del=\"yes\"" $wxanimate_framerate)
-		 (format nil "fr=\"~a\" running=\"false\" del=\"yes\"" $wxanimate_framerate)))
-       (format nil "~%"))))
+(defun slide-tag (images &optional gif-file)
+  ;; GIF-FILE, if given, asks wxMaxima to also save the animation as that gif
+  ;; file (with_slider_draw_bare's file_name, GH #2361).
+  (let ((attrs (format nil "~@[fr=\"~a\" ~]running=\"~a\" del=\"yes\"~@[ gifFile=\"~a\"~]"
+		       (unless (eql *default-framerate* $wxanimate_framerate)
+			 $wxanimate_framerate)
+		       (if (eql $wxanimate_autoplay 't) "true" "false")
+		       (and gif-file (wxxml-fix-string gif-file)))))
+    ($ldisp
+     (list '(wxxmltag simp)
+	   (wxxml-fix-string (format nil "~{~a;~}" images))
+	   "slide"
+	   attrs)
+     (format nil "~%"))))
+
+;; The absolute name of the gif file draw()'s file_name=NAME would make:
+;; NAME.gif, relative to Maxima's working directory. wxMaxima, which writes
+;; the file for with_slider_draw_bare, may be working in another directory.
+(defun wx-gif-file-name (name)
+  (let ((file (format nil "~a.gif" name)))
+    ;; (truename "./") rather than *default-pathname-defaults*, which some
+    ;; lisps (GCL) leave empty until wx-cd has run.
+    (or (ignore-errors (namestring (merge-pathnames file (truename "./"))))
+	file)))
 
 (defun wxanimate (scene)
   (let* ((scene (cdr scene))
@@ -1951,6 +2006,13 @@ Submit bug reports by following the 'New issue' link on that page."))
     (t
      `(((mequal simp) $dimensions ,$wxplot_size)))))
 
+;; Shared by the with_slider_draw* / wxanimate_draw* family.
+;;
+;; SCENE-HEAD is the head (($gr2d) or ($gr3d)) that wraps a frame's
+;; arguments into a single scene, which is then passed to draw().
+;; SCENE-HEAD nil means "bare" (with_slider_draw_bare): the frame's
+;; arguments are handed to draw() as they are, so a frame can consist of
+;; several gr2d()/gr3d() scenes plus draw()'s global options.
 (defun wxanimate-draw (scenes scene-head)
   (unless ($get '$draw '$version) ($load "draw"))
   (multiple-value-bind (scene file-name) (get-file-name-opt (cdr scenes))
@@ -1961,7 +2023,11 @@ Submit bug reports by following the 'New issue' link on that page."))
 	   (images ()))
       (when (integerp a-range)
 	(setq a-range (cons '(mlist simp) (loop for i from 1 to a-range collect i))))
-      (if file-name
+      ;; draw()'s animated_gif terminal makes one gif frame out of each
+      ;; scene, which cannot express a frame made of several scenes. So
+      ;; with_slider_draw_bare renders its frames as usual and has wxMaxima
+      ;; assemble them into the gif file (GH #2361).
+      (if (and file-name scene-head)
 	  ;; If file_name is set, draw the animation into gif using gnuplot
 	  (let (imgs)
 	    (dolist (aval (reverse (cdr a-range)))
@@ -1977,7 +2043,10 @@ Submit bug reports by following the 'New issue' link on that page."))
 		       ((mequal simp) $file_name ,file-name))
 		     (get-pic-size-opt)
 		     imgs))
-	    (format t "<math><img del=\"yes\">~a.gif</img></math>" file-name))
+	    ;; del="no": this gif is the file the user asked for, not a
+	    ;; temporary one wxMaxima may delete once it has read it (GH #2389).
+	    (format t "<math><img del=\"no\">~a</img></math>"
+		    (wxxml-fix-string (format nil "~a.gif" file-name))))
 	  ;; If file_name is not set, show the animation in wxMaxima
 	  (progn
 	    (dolist (aval (reverse (cdr a-range)))
@@ -1986,9 +2055,11 @@ Submit bug reports by following the 'New issue' link on that page."))
 	      (let* ((filename (wxplot-filename nil))
 		     (gnuplotfilename (wxplot-gnuplotfilename))
 		     (datafilename (wxplot-datafilename))
-		     (args (cons scene-head
-				 (mapcar #'(lambda (arg) (meval (maxima-substitute aval a arg)))
-					 args))))
+		     (frame-args (mapcar #'(lambda (arg) (meval (maxima-substitute aval a arg)))
+					 args))
+		     (draw-args (if scene-head
+				    (list (cons scene-head frame-args))
+				    frame-args)))
 		(setq images (cons (format nil
 					   (if $wxplot_usesvg "~a.svg" "~a.png")
 					   filename)
@@ -2010,9 +2081,10 @@ Submit bug reports by following the 'New issue' link on that page."))
 			   ((mequal simp) $data_file_name ,datafilename)
 			   ((mequal simp) $file_name ,filename))
 			 (get-pic-size-opt)
-			 (list args)))))
+			 draw-args))))
 	    (when images
-	      (slide-tag images))))
+	      (slide-tag images
+			 (and file-name (wx-gif-file-name (meval file-name)))))))
       "")))
 
 (defmspec $wxanimate_draw (scene)
@@ -2026,6 +2098,12 @@ Submit bug reports by following the 'New issue' link on that page."))
 
 (defmspec $with_slider_draw3d (scene)
   (wxanimate-draw scene '($gr3d)))
+
+;; Like with_slider_draw, but each frame is a plain draw() call rather than
+;; a draw2d() one: the arguments may be several gr2d()/gr3d() scenes and
+;; draw()'s global options (columns, dimensions, ...).
+(defmspec $with_slider_draw_bare (scene)
+  (wxanimate-draw scene nil))
 
 (defmspec $wxanimate_draw3d (scene)
   (wxanimate-draw scene '($gr3d)))
@@ -2644,9 +2722,23 @@ Submit bug reports by following the 'New issue' link on that page."))
          ((eq paren '$angled) (setq mtrx (append mtrx '(paren_angled))))
          ((eq paren '$straight) (setq mtrx (append mtrx '(paren_straight))))
          ((eq paren '$none) (setq mtrx (append mtrx '(paren_none)))))
-       (let ((res (cons (append '($matrix simp) mtrx) (cdr mat))))
-         (displa res)
-         res)))))
+       ;; How to show the matrix if it is too large for the window; without
+       ;; this option the configuration decides.
+       (let ((oversized ($assoc '$oversized opts-list)))
+         (cond
+           ((null oversized))
+           ((eq oversized '$full) (setq mtrx (append mtrx '(oversized_full))))
+           ((eq oversized '$elide) (setq mtrx (append mtrx '(oversized_elide))))
+           ((eq oversized '$scroll) (setq mtrx (append mtrx '(oversized_scroll))))
+           (t (merror "wx_matrix: oversized must be full, elide or scroll, not ~M"
+                      oversized))))
+       ;; Only return the matrix, don't display it: the options travel in
+       ;; the matrix's own header, which wxxml-matrix reads when the result
+       ;; is displayed. They stay with this value (assigning it, %, putting
+       ;; it in a list, copymatrix, subst, ...), while a calculation that
+       ;; builds a new matrix (m+1, transpose(m), m.m, ...) drops them, so
+       ;; its result is shown the normal way.
+       (cons (append '($matrix simp) mtrx) (cdr mat))))))
 
 (no-warning
  (defun mredef-check (fnname)

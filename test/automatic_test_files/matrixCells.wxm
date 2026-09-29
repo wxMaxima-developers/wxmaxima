@@ -152,6 +152,9 @@ wx_matrix(M, parenstyle=angled);
 wx_matrix(M, parenstyle=straight);
 wx_matrix(M, parenstyle=none);
 wx_matrix(M, lines=true, rownames=true, colnames=true, parenstyle=square);
+wx_matrix(M, oversized=full);
+wx_matrix(M, oversized=elide);
+wx_matrix(M, oversized=scroll);
 /* [wxMaxima: input   end   ] */
 
 

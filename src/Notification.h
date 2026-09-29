@@ -50,19 +50,19 @@ public:
   //! A constructor that completely prepares the notification, but doesn't call Show() yet.
   explicit Notification(const wxString &title,
                         const wxString &message = {},
-                        wxWindow *parent = NULL,
+                        wxWindow *parent = nullptr,
                         int flags = wxICON_INFORMATION);
   //! A destructor that also closes the notification
   virtual ~Notification() { Notification::Close(); }
   //! Informs the notification which the main window is it notified for.
   void SetParent(wxWindow *parent);
-  //! Returns a pointer to the main window or NULL, if no main window is set.
+  //! Returns a pointer to the main window or nullptr, if no main window is set.
   wxWindow *GetParent() { return m_parent; }
   //! The cell we signal an error for
-  GroupCell *m_errorNotificationCell = NULL;
+  GroupCell *m_errorNotificationCell = nullptr;
 private:
   //! The main window we notify for.
-  wxWindow *m_parent = NULL;
+  wxWindow *m_parent = nullptr;
 protected:
   //! Called on clicking at the notification, if the OS supports that.
   void OnClick(wxCommandEvent &event);

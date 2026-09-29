@@ -55,15 +55,15 @@ void EvaluationQueue::Clear() {
 }
 
 bool EvaluationQueue::IsInQueue(GroupCell *gr) const {
-  return std::find_if(m_queue.begin(), m_queue.end(),
-                       [gr](const QueuedCell &qc) { return qc.cell == gr; }) !=
+  return std::ranges::find_if(m_queue,
+                               [gr](const QueuedCell &qc) { return qc.cell == gr; }) !=
          m_queue.end();
 }
 
 void EvaluationQueue::Remove(GroupCell *gr) {
   bool removeFirst = IsLastInQueue(gr);
-  auto pos = std::find_if(m_queue.begin(), m_queue.end(),
-                           [gr](const QueuedCell &qc) { return qc.cell == gr; });
+  auto pos = std::ranges::find_if(m_queue,
+                                   [gr](const QueuedCell &qc) { return qc.cell == gr; });
   if (pos != m_queue.end())
     m_queue.erase(pos);
   m_size = m_queue.size();
@@ -78,11 +78,11 @@ void EvaluationQueue::Remove(GroupCell *gr) {
 }
 
 void EvaluationQueue::AddToQueue(GroupCell *gr) {
-  if (gr == NULL)
+  if (gr == nullptr)
     return;
 
   if (gr->GetGroupType() != GC_TYPE_CODE ||
-      gr->GetEditable() == NULL) // don't add cells which can't be evaluated
+      gr->GetEditable() == nullptr) // don't add cells which can't be evaluated
     return;
 
   const bool wasEmpty = m_queue.empty();
@@ -154,15 +154,14 @@ void EvaluationQueue::AddTokens() {
     return;
   m_pendingConfig = cell->GetEditable()->GetConfiguration();
   m_pendingText = cell->GetEditable()->ToString(true);
-  // GH #2196: the first statement of a multi-statement cell has been
-  // observed to silently vanish somewhere between a cell being queued and
-  // becoming current, with no error and nothing sent to Maxima. The root
-  // cause is still unknown (a live tcpdump capture confirmed the drop, but
-  // repeated live instrumentation to catch the mechanism itself failed --
-  // see AGENTS.md). This comparison can't fix the unknown cause, but it can
-  // catch its one observable effect: if the cell's text now differs from
-  // what was captured when it was queued, that mismatch itself is the bug
-  // signature. Recorded here regardless of caller; MaximaEvaluator decides
+  // GH #2196: the first statement of a multi-statement cell was once
+  // observed to silently vanish, with nothing sent to Maxima. That turned
+  // out to be the queue running one prompt ahead of Maxima after a batch
+  // startup race (fixed in MaximaResponseReader::ReadFirstPrompt() and
+  // wxMaxima::OnIdle(); see the wxmaxima-maxima-protocol skill). This
+  // comparison stays as a cheap guard against a drop with any other cause:
+  // if the cell's text now differs from what was captured when it was
+  // queued, that mismatch itself is the bug signature. Recorded here regardless of caller; MaximaEvaluator decides
   // whether it matters (batch mode has no interactive user who could have
   // legitimately edited a not-yet-reached queued cell in the meantime, so
   // there a mismatch can only be this bug).
@@ -347,7 +346,7 @@ int EvaluationQueue::CommandsLeftInCell() const {
 
 GroupCell *EvaluationQueue::GetCell() {
   if (m_queue.empty())
-    return NULL;
+    return nullptr;
   else
     return m_queue.front().cell;
 }

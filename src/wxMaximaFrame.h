@@ -218,16 +218,16 @@ public:
 
 protected:
   //! The panel the user can display variable contents in
-  Variablespane *m_variablesPane = NULL;
+  Variablespane *m_variablesPane = nullptr;
 #ifdef WXM_USE_AI_TOOLS
   //! The AI chat sidebar -- see src/sidebars/AiChatSidebar.h.
-  AiChatSidebar *m_aiChatSidebar = NULL;
+  AiChatSidebar *m_aiChatSidebar = nullptr;
   //! The AI connection monitor sidebar (double-click on the AI status icon)
   //! -- see src/sidebars/AiConnectionMonitor.h.
-  AiConnectionMonitor *m_aiConnectionMonitor = NULL;
+  AiConnectionMonitor *m_aiConnectionMonitor = nullptr;
 #endif
   //! The table of contents pane
-  TableOfContents *m_tableOfContents = NULL;
+  TableOfContents *m_tableOfContents = nullptr;
   Configuration m_configuration;
   //! The (opt-in, off by default) MCP server -- see ReconcileMcpServer().
   std::unique_ptr<McpServer> m_mcpServer;
@@ -242,7 +242,7 @@ protected:
   //! Issued if a notification is closed.
   void OnNotificationClose(wxCommandEvent WXUNUSED(&event));
   //! The status bar
-  StatusBar *m_statusBar = NULL;
+  StatusBar *m_statusBar = nullptr;
 #if wxUSE_TASKBARICON
   //! The system tray/notification-area icon (GH #2286): mirrors the status
   //! bar's busy indicator and offers a small quick-access menu. A
@@ -252,56 +252,56 @@ protected:
   std::unique_ptr<TrayIcon> m_trayIcon;
 #endif
   //! The menu bar
-  MainMenuBar *m_MenuBar = NULL;
+  MainMenuBar *m_MenuBar = nullptr;
   //! The "demo" sub-menu
-  wxMenu *m_demo_sub = NULL;
+  wxMenu *m_demo_sub = nullptr;
   //! The submenus for the various "demo" sub-submenus
   std::vector<wxMenu *> m_demoSubs;
   //! The "view" menu
-  wxMenu *m_viewMenu = NULL;
+  wxMenu *m_viewMenu = nullptr;
   //! The gentran menu
-  wxMenu *m_gentranMenu = NULL;
+  wxMenu *m_gentranMenu = nullptr;
   //! The subst submenu
-  wxMenu *m_subst_Sub = NULL;
+  wxMenu *m_subst_Sub = nullptr;
   //! The logexpand submenu
-  wxMenu * m_logexpand_Sub = NULL;
+  wxMenu * m_logexpand_Sub = nullptr;
   //! The file menu.
-  wxMenu *m_FileMenu = NULL;
+  wxMenu *m_FileMenu = nullptr;
   //! The edit menu.
-  wxMenu *m_EditMenu = NULL;
+  wxMenu *m_EditMenu = nullptr;
   //! The cell menu.
-  wxMenu *m_CellMenu = NULL;
+  wxMenu *m_CellMenu = nullptr;
   //! The zoom submenu
-  wxMenu *m_Edit_Zoom_Sub = NULL;
+  wxMenu *m_Edit_Zoom_Sub = nullptr;
   //! The panes submenu
-  wxMenu *m_Maxima_Panes_Sub = NULL;
+  wxMenu *m_Maxima_Panes_Sub = nullptr;
   //! The equations menu.
-  wxMenu *m_EquationsMenu = NULL;
+  wxMenu *m_EquationsMenu = nullptr;
   //! The maxima menu.
-  wxMenu *m_MaximaMenu = NULL;
+  wxMenu *m_MaximaMenu = nullptr;
   //! The matrix menu.
-  wxMenu *m_matrix_menu = NULL;
+  wxMenu *m_matrix_menu = nullptr;
   //! The simplify menu
-  wxMenu *m_SimplifyMenu = NULL;
+  wxMenu *m_SimplifyMenu = nullptr;
   //! The factorials and gamma submenu
-  wxMenu *m_Simplify_Gamma_Sub = NULL;
+  wxMenu *m_Simplify_Gamma_Sub = nullptr;
   //! Contains the menu for the debugger trigger settingxc
-  wxMenu *m_debugTypeMenu = NULL;
+  wxMenu *m_debugTypeMenu = nullptr;
   //! The trigonometric submenu
-  wxMenu *m_Simplify_Trig_Sub = NULL;
+  wxMenu *m_Simplify_Trig_Sub = nullptr;
   //! The complex submenu
-  wxMenu *m_Simplify_Complex_Sub = NULL;
+  wxMenu *m_Simplify_Complex_Sub = nullptr;
   //! The calculus menu
-  wxMenu *m_CalculusMenu = NULL;
+  wxMenu *m_CalculusMenu = nullptr;
 
   //! The plot menu
-  wxMenu *m_PlotMenu = NULL;
+  wxMenu *m_PlotMenu = nullptr;
   //! The list menu
-  wxMenu *m_listMenu = NULL;
+  wxMenu *m_listMenu = nullptr;
   //! The numeric menu
-  wxMenu *m_NumericMenu = NULL;
+  wxMenu *m_NumericMenu = nullptr;
   //! The help menu
-  wxMenu *m_HelpMenu = NULL;
+  wxMenu *m_HelpMenu = nullptr;
   //! Remove an eventual temporary autosave file.
   void RemoveTempAutosavefile();
   //! Re-read the configuration.
@@ -384,15 +384,15 @@ private:
 public:
   void StatusText(const wxString &text, bool saveInLog = true);
 protected:
-  ScrollingGenWizPanel *m_wizard = NULL;
+  ScrollingGenWizPanel *m_wizard = nullptr;
   //! Are we inside a 2d or 3d draw command?
   long m_drawDimensions_last = -1;
   //! The default size for the window.
   virtual wxSize DoGetBestClientSize() const;
   //! The sidebar with the draw commands
-  DrawSidebar *m_drawPane = NULL;
+  DrawSidebar *m_drawPane = nullptr;
 #ifdef USE_WEBVIEW
-  HelpBrowser *m_helpPane = NULL;
+  HelpBrowser *m_helpPane = nullptr;
 #endif
   //! The data backing the dockable find/replace sidebar (GH #2249) -- kept
   //! separate from wxMaxima::m_findData (the floating dialog's own data)
@@ -407,7 +407,7 @@ protected:
   void OnMenuStatusText(wxMenuEvent &event);
   std::unordered_map<wxWindowID, wxString> m_demoFilesIDs;
 
-  SymbolsSidebar *m_symbolsSidebar = NULL;
+  SymbolsSidebar *m_symbolsSidebar = nullptr;
   //! The current length of the evaluation queue of commands we still need to send to maxima
   int m_EvaluationQueueLength = 0;
   //! Do we need to update the display showing the evaluation queue length?
@@ -423,22 +423,22 @@ protected:
   //! The manager for dynamic screen layouts
   wxAuiManager m_manager;
   //! The worksheet itself
-  Worksheet * const m_worksheet = NULL;
+  Worksheet * const m_worksheet = nullptr;
   //! The history pane
-  History * const m_history = NULL;
+  History * const m_history = nullptr;
   //! A XmlInspector-like xml monitor
-  XmlInspector *m_xmlInspector = NULL;
+  XmlInspector *m_xmlInspector = nullptr;
   //! The panel showing performance statistics
-  PerformanceSidebar *m_performanceSidebar = NULL;
+  PerformanceSidebar *m_performanceSidebar = nullptr;
   //! The panel the log and debug messages will appear on
   RecentDocuments m_recentDocuments;
   RecentDocuments m_recentPackages;
-  wxMenu *m_recentDocumentsMenu = NULL;
-  wxMenu *m_unsavedDocumentsMenu = NULL;
-  wxMenu *m_recentPackagesMenu = NULL;
-  wxMenu *m_autoSubscriptMenu = NULL;
-  wxMenu *m_equationTypeMenuMenu = NULL;
-  wxMenu *m_roundedMatrixParensMenu = NULL;
+  wxMenu *m_recentDocumentsMenu = nullptr;
+  wxMenu *m_unsavedDocumentsMenu = nullptr;
+  wxMenu *m_recentPackagesMenu = nullptr;
+  wxMenu *m_autoSubscriptMenu = nullptr;
+  wxMenu *m_equationTypeMenuMenu = nullptr;
+  wxMenu *m_roundedMatrixParensMenu = nullptr;
 };
 
 #endif // WXMAXIMAFRAME_H

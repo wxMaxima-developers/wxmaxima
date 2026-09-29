@@ -80,6 +80,31 @@ Recognise these before starting a fresh investigation.
 - **Geometry read too early.** Invariant 1. Symptom: correct after the next
   interaction, wrong on the first paint.
 
+## Keeping the cursor still while output arrives
+
+`Worksheet::InsertLine()` calls `WorksheetLayout::ArmScrollCompensation()`
+before appending, if the cursor is on screen. That remembers the cursor's
+group cell (its top, or its bottom for the horizontal cursor) and where it is
+now; once a layout pass has *finished* (both the one-shot tail and the
+time-sliced "reached the end" early return), `ApplyScrollCompensation()`
+scrolls by however far that point moved. Three things worth knowing:
+
+- **The view scrolls in whole units (>= 10 px), so pixel exactness comes from
+  `Configuration::GetWorksheetTopOffset()`**, an extra top margin in
+  `[0, scrollUnit)` that only the first `GroupCell::Reposition()` adds. The
+  arithmetic is `ComputeScrollCompensation()` in `WorksheetSizeMath.h`.
+  Anything else that computes "the top of the document" by hand (the
+  horizontal cursor above the first cell, in `Worksheet::OnPaint`) must add
+  it too. It is not copied with the configuration, so printing and export
+  never see it.
+- **Changing the offset only needs repositioning, not recalculation**: every
+  cell's size is still valid, so `ApplyScrollCompensation()` walks the list
+  calling `Reposition()` and then `AdjustSize()` before scrolling, or
+  wxWidgets would clamp the scroll position to the old virtual size.
+- **The compensation is dropped if the cursor moved** between arming and the
+  pass finishing (`SetScrollAnchorCallback()` is re-asked), and it arms only
+  once per pass: a second append would measure positions not on screen yet.
+
 ## Testing layout without a window
 
 `test_WorksheetLayout` drives the pipeline with no `Worksheet` window.

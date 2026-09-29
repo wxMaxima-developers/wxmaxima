@@ -622,6 +622,7 @@ const wxWindowIDRef EventIDs::popid_edit(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::popid_add_comment(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::popid_insert_input(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::popid_copy_matlab(wxWindow::NewControlId());
+const wxWindowIDRef EventIDs::popid_copy_csv(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::popid_copy_tex(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::popid_copy_text(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::popid_copy_mathml(wxWindow::NewControlId());

@@ -278,7 +278,7 @@ void GroupCell::AppendInput(std::unique_ptr<Cell> &&cell) {
   if (!m_inputLabel) {
     m_inputLabel = std::move(cell);
   } else {
-    if (m_inputLabel->GetNext() == NULL)
+    if (m_inputLabel->GetNext() == nullptr)
       CellList::AppendCell(m_inputLabel, std::move(cell));
     else if (m_inputLabel->GetNext()->GetValue().Length() == 0) {
       // AppendCell is needed due to its side effect of doing
@@ -445,14 +445,14 @@ bool GroupCell::Recalculate() const {
 
 void GroupCell::InputHeightChanged() {
   const EditorCell *editorCell = GetEditable();
-  if (editorCell == NULL)
+  if (editorCell == nullptr)
     return;
 
   int oldHeight = m_height;
   int oldCenter = m_center;
   ResetSize();
   RecalculateInput();
-  if (m_output != NULL) {
+  if (m_output != nullptr) {
     m_height += m_outputRect.GetHeight();
     m_outputRect.y = m_currentPoint.y + (m_inputHeight - m_center);
     m_width = std::max(m_width.GetOrElse(0), m_output->GetLineWidth());
@@ -574,7 +574,7 @@ void GroupCell::RecalculateOutput() const {
   if (IsHidden())
     return;
 
-  if (m_output == NULL)
+  if (m_output == nullptr)
     return;
 
   if (!m_layoutSuppressed) {
@@ -611,7 +611,7 @@ void GroupCell::RecalculateOutput() const {
   // From here on operate on whatever we actually display: the real output, or
   // the placeholder notice if layout was suppressed.
   Cell *const displayed = DisplayedOutput();
-  if (displayed == NULL)
+  if (displayed == nullptr)
     return;
 
   // Recalculate size of cells again: Their size might have changed during
@@ -636,6 +636,28 @@ void GroupCell::RecalculateOutput() const {
         m_outputRect.height += MC_LINE_SKIP;
     }
   }
+}
+
+std::vector<GroupCell::OutputResult> GroupCell::GetOutputResults() const {
+  std::vector<OutputResult> results;
+  if (IsHidden())
+    return results;
+  for (Cell &cell : OnList(DisplayedOutput())) {
+    if (results.empty() || cell.HasHardLineBreak())
+      results.push_back(OutputResult{&cell, &cell});
+    else
+      results.back().last = &cell;
+  }
+  std::erase_if(results, [](const OutputResult &result) {
+    for (const Cell *cell = result.first; cell; cell = cell->GetNext()) {
+      if (!cell->IsHidden() && !cell->ToString().IsEmpty())
+        return false;
+      if (cell == result.last)
+        break;
+    }
+    return true;
+  });
+  return results;
 }
 
 Cell *GroupCell::DisplayedOutput() const {
@@ -677,7 +699,8 @@ bool GroupCell::Reposition() const {
 
   wxPoint point(m_configuration->GetIndent(), m_center);
   if (!previous) {
-    point.y += m_configuration->GetBaseIndent();
+    point.y += m_configuration->GetBaseIndent() +
+      m_configuration->GetWorksheetTopOffset();
   } else {
     point.y += m_configuration->GetGroupSkip();
     if (previous->GetCurrentPoint().y >= 0)
@@ -733,7 +756,7 @@ wxCoord GroupCell::GetInputIndent() const {
   if (m_configuration->IndentMaths())
     labelWidth = Scale_Px(m_configuration->GetLabelWidth()) + MC_TEXT_PADDING;
 
-  if (m_inputLabel != NULL) {
+  if (m_inputLabel != nullptr) {
     if (m_inputLabel->GetWidth() >= 0)
       labelWidth =
         std::max(m_inputLabel->GetWidth() + MC_TEXT_PADDING, labelWidth);
@@ -964,7 +987,7 @@ wxRect GroupCell::GetRect(bool WXUNUSED(all)) const {
 }
 
 void GroupCell::UpdateCellsInGroup() {
-  if (m_output != NULL)
+  if (m_output != nullptr)
     m_cellsInGroup = 2 + m_output->CellsInListRecursive();
   else
     m_cellsInGroup = 2;
@@ -1082,7 +1105,7 @@ void GroupCell::DrawBracket(wxDC *dc, wxDC *antialiassingDC) {
   }
 
   const Cell *editable = GetEditable();
-  if (editable != NULL && editable->IsActive()) {
+  if (editable != nullptr && editable->IsActive()) {
     drawBracket = true;
     antialiassingDC->SetPen(*(wxThePenList->FindOrCreatePen(
                                                             m_configuration->GetColor(TS_ACTIVE_CELL_BRACKET),
@@ -1170,11 +1193,11 @@ wxString GroupCell::ToString() const {
   wxLogNull logNull;
   wxString str;
 
-  if (m_inputLabel != NULL) {
+  if (m_inputLabel != nullptr) {
     if ((m_configuration->ShowCodeCells()) || (m_groupType != GC_TYPE_CODE)) {
       str = m_inputLabel->ToString();
 
-      if (GetEditable() != NULL)
+      if (GetEditable() != nullptr)
         str += GetEditable()->ToString();
 
       str.Replace(wxS("\n"), wxS("\n\t"));
@@ -1194,7 +1217,7 @@ wxString GroupCell::ToString() const {
 }
 
 wxString GroupCell::ToTeX() const {
-  return ToTeX(wxEmptyString, wxEmptyString, NULL);
+  return ToTeX(wxEmptyString, wxEmptyString, nullptr);
 }
 
 wxString GroupCell::ToRTF() const {
@@ -1220,11 +1243,11 @@ wxString GroupCell::ToRTF() const {
   } else
     retval = wxS("\\par}\n{");
 
-  if (GetEditable() != NULL)
+  if (GetEditable() != nullptr)
     retval += GetEditable()->ToRTF();
 
   const Cell *out = GetLabel();
-  if (out != NULL) {
+  if (out != nullptr) {
     retval += out->ListToRTF(true);
   }
   return retval;
@@ -1233,7 +1256,7 @@ wxString GroupCell::ToRTF() const {
 wxString GroupCell::ToTeX(const wxString &imgDir, const wxString &filename,
                           std::size_t *imgCounter) const {
   std::size_t myImgCounter = 0;
-  if (imgCounter == NULL)
+  if (imgCounter == nullptr)
     imgCounter = &myImgCounter;
   wxString str;
   switch (m_groupType) {
@@ -1274,7 +1297,7 @@ wxString GroupCell::ToTeX(const wxString &imgDir, const wxString &filename,
     break;
 
   default:
-    if (GetEditable() != NULL && !IsHidden()) {
+    if (GetEditable() != nullptr && !IsHidden()) {
       str = GetEditable()->ListToTeX();
       str.Trim(true);
       switch (GetEditable()->GetTextStyle()) {
@@ -1370,7 +1393,7 @@ wxString GroupCell::ToTeXCodeCell(const wxString &imgDir, const wxString &filena
     const char *old_lc_numeric;
     wxString saved_lc_numeric("C");
     old_lc_numeric =
-      std::setlocale(LC_NUMERIC, NULL); // get current LC_NUMERIC locale
+      std::setlocale(LC_NUMERIC, nullptr); // get current LC_NUMERIC locale
     if (old_lc_numeric)
       saved_lc_numeric = wxString::FromUTF8(old_lc_numeric);
     std::setlocale(LC_NUMERIC, "C");
@@ -1387,10 +1410,10 @@ wxString GroupCell::ToTeXCodeCell(const wxString &imgDir, const wxString &filena
     }
   }
 
-  if (m_output != NULL) {
+  if (m_output != nullptr) {
     str += wxS("\n%%%% OUTPUT:\n");
     // Need to define labelcolor if this is Copy as LaTeX!
-    if (imgCounter == NULL)
+    if (imgCounter == nullptr)
       str += wxS("\\definecolor{labelcolor}{RGB}{100,0,0}\n");
 
     // The output is a run of cells that each need to be typeset in math mode,
@@ -1520,12 +1543,12 @@ wxString GroupCell::ToTeXCodeCell(const wxString &imgDir, const wxString &filena
 
 wxString GroupCell::ToTeXImage(const Cell *tmp, const wxString &imgDir, const wxString &filename,
                                std::size_t *imgCounter) {
-  wxASSERT_MSG((imgCounter != NULL), _("Bug: No image counter to write to!"));
-  if(tmp == NULL) {
+  wxASSERT_MSG((imgCounter != nullptr), _("Bug: No image counter to write to!"));
+  if(tmp == nullptr) {
       wxLogMessage(_("No image to export"));
       return wxEmptyString;
     }
-  if (imgCounter == NULL)
+  if (imgCounter == nullptr)
     return wxEmptyString;
 
   wxString str;
@@ -1559,7 +1582,7 @@ wxString GroupCell::ToTeXAnimation(const Cell *tmp, const wxString &imgDir,
                                    const wxString &filename,
                                    std::size_t *imgCounter) {
   const AnimationCell *const anim = dynamic_cast<const AnimationCell *>(tmp);
-  if ((anim == NULL) || (imgCounter == NULL) || imgDir.IsEmpty())
+  if ((anim == nullptr) || (imgCounter == nullptr) || imgDir.IsEmpty())
     return wxEmptyString;
   const int frames = anim->Length();
   if (frames <= 0)
@@ -1673,12 +1696,12 @@ wxString GroupCell::ToXML() const {
   // write contents
   switch (m_groupType) {
   case GC_TYPE_CODE:
-    if (input != NULL) {
+    if (input != nullptr) {
       str += wxS("<input>\n");
       str += input->ListToXML();
       str += wxS("</input>");
     }
-    if (output != NULL) {
+    if (output != nullptr) {
       str += wxS("\n<output>\n");
       str += wxS("<mth>");
       str += output->ListToXML();
@@ -1686,9 +1709,9 @@ wxString GroupCell::ToXML() const {
     }
     break;
   case GC_TYPE_IMAGE:
-    if (input != NULL)
+    if (input != nullptr)
       str += input->ListToXML();
-    if (output != NULL)
+    if (output != nullptr)
       str += output->ListToXML();
     break;
   case GC_TYPE_TEXT:
@@ -1783,7 +1806,7 @@ const wxString GroupCell::GetToolTip(const wxPoint point) const {
   // TODO: There's a question of whether we want to return
   // the local tooltip, or empty string (latter would be in line
   // with Cell's behavior.
-  if (!ContainsPoint(point))
+  if (!ContainsPointOrOutput(point))
     return GetLocalToolTip();
 
   // Default assumption: will be overwritten by the next command,
@@ -1830,7 +1853,7 @@ bool GroupCell::SetEditableContent(const wxString &text) {
 void GroupCell::BreakLines() const {
   const Cell * const cell = m_output.get();
 
-  if (cell == NULL)
+  if (cell == nullptr)
     return;
 
   //  if (NeedsRecalculation(EditorFontSize()))
@@ -1950,22 +1973,22 @@ void GroupCell::SetHiddenTreeParent(GroupCell *parent, GroupCell *last) {
 
 GroupCell *GroupCell::Fold() {
   if (!IsFoldable() || m_hiddenTree) // already folded?? shouldn't happen
-    return NULL;
-  if (GetNext() == NULL)
-    return NULL;
+    return nullptr;
+  if (GetNext() == nullptr)
+    return nullptr;
   GroupType nextgct = GetNext()->GetGroupType(); // groupType of the next cell
   if ((m_groupType == nextgct) || IsLesserGCType(nextgct))
-    return NULL; // if the next gc shouldn't be folded, exit
+    return nullptr; // if the next gc shouldn't be folded, exit
 
   // now there is at least one cell to fold (at least m_next)
   GroupCell *end = GetNext();
 
-  while (end != NULL) {
+  while (end != nullptr) {
     if (end->GetLabel())
       end->GetLabel()->ClearCacheList();
 
     GroupCell *tmp = end->GetNext();
-    if (tmp == NULL)
+    if (tmp == nullptr)
       break;
     if ((m_groupType == tmp->GetGroupType()) ||
         IsLesserGCType(tmp->GetGroupType()))
@@ -1987,7 +2010,7 @@ GroupCell *GroupCell::Fold() {
 // be careful to update m_last if this happens in the main tree in MathCtrl
 GroupCell *GroupCell::Unfold() {
   if (!IsFoldable() || !m_hiddenTree)
-    return NULL;
+    return nullptr;
 
   MarkNeedsRecalculate();
   auto splicedIn = CellList::SpliceInAfter(this, std::move(m_hiddenTree));
@@ -1997,7 +2020,7 @@ GroupCell *GroupCell::Unfold() {
 }
 
 GroupCell *GroupCell::FoldAll(std::vector<GroupCell *> *affected) {
-  GroupCell *result = NULL;
+  GroupCell *result = nullptr;
   for (auto &tmp : OnList(this)) {
     if (tmp.IsFoldable() && !tmp.m_hiddenTree) {
       tmp.Fold();
@@ -2005,7 +2028,7 @@ GroupCell *GroupCell::FoldAll(std::vector<GroupCell *> *affected) {
       if (affected)
         affected->push_back(&tmp);
     }
-    if (tmp.m_hiddenTree != NULL)
+    if (tmp.m_hiddenTree != nullptr)
       tmp.m_hiddenTree->FoldAll(affected);
   }
   return result;
@@ -2014,15 +2037,15 @@ GroupCell *GroupCell::FoldAll(std::vector<GroupCell *> *affected) {
 // unfolds recursively its contents
 // if (all) then also calls it on it's m_next
 GroupCell *GroupCell::UnfoldAll(std::vector<GroupCell *> *affected) {
-  GroupCell *result = NULL;
+  GroupCell *result = nullptr;
   for (auto &tmp : OnList(this)) {
-    if (tmp.IsFoldable() && (tmp.m_hiddenTree != NULL)) {
+    if (tmp.IsFoldable() && (tmp.m_hiddenTree != nullptr)) {
       tmp.Unfold();
       result = &tmp;
       if (affected)
         affected->push_back(&tmp);
     }
-    if (tmp.m_hiddenTree != NULL)
+    if (tmp.m_hiddenTree != nullptr)
       tmp.m_hiddenTree->UnfoldAll(affected);
   }
   return result;
@@ -2162,7 +2185,7 @@ bool GroupCell::Contains(GroupCell *cell) const {
       return true;
 
     // If this cell contains a hidden tree we have to search that at well.
-    if ((tmp.IsFoldable()) && (tmp.GetHiddenTree()) != NULL) {
+    if ((tmp.IsFoldable()) && (tmp.GetHiddenTree()) != nullptr) {
       if (tmp.GetHiddenTree()->Contains(cell))
         return true;
     }
@@ -2191,7 +2214,7 @@ wxAccStatus GroupCell::GetName(int childId, wxString *name) const {
 
 wxAccStatus GroupCell::GetDescription(int childId,
                                       wxString *description) const {
-  if (description == NULL)
+  if (description == nullptr)
     return wxACC_FAIL;
 
   if (childId == 0) {

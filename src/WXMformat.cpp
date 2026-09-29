@@ -31,6 +31,7 @@
 #include <cstdlib>
 #include <vector>
 #include "WXMformat.h"
+#include "Version.h"
 #include "cells/CellList.h"
 #include "cells/ImgCell.h"
 #include <wx/debug.h>
@@ -41,6 +42,10 @@ namespace Format {
 
   const wxString WXMFirstLine =
     wxS("/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/");
+  const wxString CreatedWithLinePrefix =
+    wxS("/* [ Created with wxMaxima version ");
+  const wxString CreatedWithLine =
+    CreatedWithLinePrefix + wxS(WXMAXIMA_VERSION " ] */");
 
   struct WXMHeader //-V730
   {
@@ -187,22 +192,26 @@ namespace Format {
   // already on disk from before this existed, and can't be applied to code
   // cells at all (they must stay byte-identical so a plain Maxima can still
   // batch() them with zero wxMaxima-specific decoding) -- see the callers.
-  static wxString EscapeWXMSlashes(const wxString &content) {
-    wxString ampEscaped = content;
-    ampEscaped.Replace(wxS("&"), wxS("&amp;"));
-
+  //! Replaces every '/' next to a '*' by "&#47;", touching nothing else
+  static wxString EscapeSlashesNextToStars(const wxString &content) {
     wxString result;
-    result.reserve(ampEscaped.Length());
-    for (size_t i = 0; i < ampEscaped.Length(); i++) {
-      wxUniChar c = ampEscaped[i];
+    result.reserve(content.Length());
+    for (size_t i = 0; i < content.Length(); i++) {
+      wxUniChar c = content[i];
       if (c == wxS('/') &&
-          ((i > 0 && ampEscaped[i - 1] == wxS('*')) ||
-           (i + 1 < ampEscaped.Length() && ampEscaped[i + 1] == wxS('*'))))
+          ((i > 0 && content[i - 1] == wxS('*')) ||
+           (i + 1 < content.Length() && content[i + 1] == wxS('*'))))
         result << wxS("&#47;");
       else
         result << c;
     }
     return result;
+  }
+
+  static wxString EscapeWXMSlashes(const wxString &content) {
+    wxString ampEscaped = content;
+    ampEscaped.Replace(wxS("&"), wxS("&amp;"));
+    return EscapeSlashesNextToStars(ampEscaped);
   }
 
   //! The exact inverse of EscapeWXMSlashes() -- see its comment.
@@ -211,6 +220,29 @@ namespace Format {
     result.Replace(wxS("&#47;"), wxS("/"));
     result.Replace(wxS("&amp;"), wxS("&"));
     return result;
+  }
+
+  /// Would Maxima read "/* text */" back as exactly one comment?
+  ///
+  /// Maxima nests comments: each "/*" opens a level and each "*/" closes
+  /// one, and the two characters of a pair are used up, so "/*/" only opens.
+  /// Strings mean nothing inside a comment. A text cell for which this holds
+  /// is written to a .mac as it is -- which every comment read from a .mac
+  /// is, so a .mac round trips unchanged (GH #2353). Only text typed in
+  /// wxMaxima can fail it, and ParseMACContents() applies the same rules.
+  static bool IsMaximaCommentBody(const wxString &text) {
+    int depth = 1;
+    for (size_t i = 0; i + 1 < text.Length(); i++) {
+      if (text[i] == wxS('/') && text[i + 1] == wxS('*')) {
+        depth++;
+        i++;
+      } else if (text[i] == wxS('*') && text[i + 1] == wxS('/')) {
+        if (--depth == 0)
+          return false;
+        i++;
+      }
+    }
+    return depth == 1;
   }
 
   static wxString EscapeWXMTextContent(const wxString &content) {
@@ -257,13 +289,15 @@ namespace Format {
                << EscapeWXMTextContent(cell->GetEditable()->ToString(true)) << '\n'
                << Headers.GetEnd(groupType) << '\n';
       else {
-        // Same open-comment injection risk as the wxm branch above (GH
-        // #1907) -- this .mac export has no wxMaxima-specific unescaping on
-        // read (.mac is a foreign/interop format, read as plain Maxima
-        // comments), so a round trip through this exact file will show the
-        // escaped entities literally rather than "/"; that's a purely
-        // cosmetic cost, worth paying to keep the exported .mac inert.
-        retval << wxS("/* ") << EscapeWXMSlashes(cell->GetEditable()->ToString(true)) << wxS(" */\n");
+        // A .mac is a Maxima program, which the user may have written in an
+        // editor: its comments come back as they were read (GH #2353). Only
+        // a text that would end its comment early, or leave it open, is
+        // escaped (GH #1907) -- and not unescaped when read back, as a
+        // hand-written comment may contain "&#47;" legitimately.
+        const wxString text = cell->GetEditable()->ToString(true);
+        retval << wxS("/* ")
+               << (IsMaximaCommentBody(text) ? text : EscapeSlashesNextToStars(text))
+               << wxS(" */\n");
       }
       break;
     case GC_TYPE_SECTION:
@@ -272,15 +306,18 @@ namespace Format {
     case GC_TYPE_HEADING5:
     case GC_TYPE_HEADING6:
     case GC_TYPE_TITLE:
+      // A heading's start marker leaves a comment open until its end marker,
+      // in a .mac as much as in a .wxm, so a "*/" in its text has to be
+      // escaped there, too (GH #2353). TreeFromWXM() undoes it for both.
       retval << Headers.GetStart(groupType) << '\n'
              << (wxm ? EscapeWXMTextContent(cell->GetEditable()->ToString(true))
-                     : cell->GetEditable()->ToString(true)) << '\n'
+                     : EscapeWXMSlashes(cell->GetEditable()->ToString(true))) << '\n'
              << Headers.GetEnd(groupType) << '\n';
       break;
     case GC_TYPE_IMAGE:
       retval << Headers.GetStart(groupType) << '\n'
              << (wxm ? EscapeWXMTextContent(cell->GetEditable()->ToString(true))
-                     : cell->GetEditable()->ToString(true)) << '\n'
+                     : EscapeWXMSlashes(cell->GetEditable()->ToString(true))) << '\n'
              << Headers.GetEnd(groupType) << '\n';
       if (cell->GetLabel() && cell->GetLabel()->GetType() == MC_TYPE_IMAGE) {
         const ImgCell *image = dynamic_cast<ImgCell *>(cell->GetLabel());
@@ -499,7 +536,7 @@ namespace Format {
           if (thisLine.StartsWith(wxS("/* Old versions of Maxima abort on loading files that end in a comment.")) ||
               thisLine.StartsWith(wxS("\"Created with wxMaxima ")) ||
               thisLine == WXMFirstLine ||
-              thisLine.StartsWith(wxS("/* [ Created with wxMaxima version ")))
+              thisLine.StartsWith(CreatedWithLinePrefix))
             break;
 
           wxString content = last->GetEditable()->GetValue();
@@ -576,13 +613,24 @@ namespace Format {
           line = trimmed;
         }
 
-        // Skip to the end of the comment
+        // Skip to the end of the comment. Maxima nests comments, and a
+        // "/*" or "*/" uses up both of its characters (see
+        // IsMaximaCommentBody()), so this has to do the same, or a comment
+        // containing "/* ... */" or "/*/" would end in the wrong place.
+        // The first pair found is the "/*" that got us here.
+        int depth = 0;
         while (s.ch != macContents.end()) {
           wxChar ch = *s.ch++;
-          bool finished = (s.lastChar == wxS('*') && ch == wxS('/'));
-          line += s.lastChar = ch;
-          if (finished)
-            break;
+          line += ch;
+          if (s.lastChar == wxS('/') && ch == wxS('*')) {
+            depth++;
+            s.lastChar = wxS(' ');
+          } else if (s.lastChar == wxS('*') && ch == wxS('/')) {
+            s.lastChar = wxS(' ');
+            if (--depth == 0)
+              break;
+          } else
+            s.lastChar = ch;
         }
 
         if (isCommentLine) {

@@ -66,7 +66,7 @@ bool BitmapOut::Render(std::unique_ptr<Cell> &&tree, long int maxSize) {
 }
 
 bool BitmapOut::Layout(long int maxSize) {
-  if(m_tree == NULL)
+  if(m_tree == nullptr)
     return false;
 
   if (!m_cmn.PrepareLayout(m_tree.get()))

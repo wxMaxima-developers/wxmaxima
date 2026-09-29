@@ -69,7 +69,7 @@ Configuration::Configuration(wxDC *dc, InitOpt options) :
   m_maximaHelpFormat = frontend;
   m_outdated = false;
   m_lineWidth_em = 88;
-  m_workSheet = NULL;
+  m_workSheet = nullptr;
   SetBackgroundBrush(*wxWHITE_BRUSH);
   ResetAllToDefaults();
   ReadConfig();
@@ -186,6 +186,7 @@ Configuration::Configuration(const Configuration &o) :
   m_defaultPlotWidth(o.m_defaultPlotWidth),
   m_saveUntitled(o.m_saveUntitled),
   m_cursorJump(o.m_cursorJump),
+  m_arrowKeysSkipOutput(o.m_arrowKeysSkipOutput),
   m_numpadEnterEvaluates(o.m_numpadEnterEvaluates),
   m_saveImgFileName(o.m_saveImgFileName),
   m_documentclass(o.m_documentclass),
@@ -206,6 +207,7 @@ Configuration::Configuration(const Configuration &o) :
   m_maxLayoutTime(o.m_maxLayoutTime),
   m_layoutStrategy(o.m_layoutStrategy),
   m_oversizedMatrices(o.m_oversizedMatrices),
+  m_oversizedMatricesOverridable(o.m_oversizedMatricesOverridable),
   m_wxMathML_Filename(o.m_wxMathML_Filename),
   m_maximaHelpFormat(o.m_maximaHelpFormat),
   m_cellCfgCnt(o.m_cellCfgCnt.load())
@@ -233,7 +235,6 @@ wxSize Configuration::GetPPI() const {
       if(GetRecalcDC()->IsOk())
         ppi = GetRecalcDC()->GetPPI();
     }
-#if wxCHECK_VERSION(3, 1, 1)
   if((ppi.x < 10 ) || (ppi.y < 10 ))
     {
       if (GetWorkSheet()) {
@@ -242,7 +243,6 @@ wxSize Configuration::GetPPI() const {
           ppi = wxDisplay(display_idx).GetPPI();
       }
     }
-#endif
   if((ppi.x < 10 ) || (ppi.y < 10 ))
     ppi = wxSize(96, 96);
   return ppi;
@@ -309,6 +309,7 @@ void Configuration::ResetAllToDefaults() {
   m_TeXExponentsAfterSubscript = false;
   m_saveUntitled = true;
   m_cursorJump = true;
+  m_arrowKeysSkipOutput = false;
   m_autoSaveAsTempFile = false;
   m_htmlEquationFormat = mathML;
   m_autodetectMaxima = true;
@@ -525,11 +526,7 @@ void Configuration::InitStyles() {
 }
 
 bool Configuration::SystemIsDark() {
-#if wxCHECK_VERSION(3, 1, 3)
   return wxSystemSettings::GetAppearance().IsDark();
-#else
-  return false; // no reliable way to ask the OS on this wx version
-#endif
 }
 
 const wxString &Configuration::GetEscCode(const wxString &key) {
@@ -1111,7 +1108,7 @@ Configuration::~Configuration() {
   // for that layout. Such a config never owns the worksheet and is destroyed
   // (harmlessly) while the worksheet is still alive - e.g. on every Ctrl+X /
   // copy-as-bitmap - so it is not subject to the ownership-order invariant.
-  wxASSERT_MSG(m_workSheet == NULL || m_initOpts == temporary,
+  wxASSERT_MSG(m_workSheet == nullptr || m_initOpts == temporary,
                wxS("Bug: a Configuration was destroyed before the Worksheet "
                    "that still uses it"));
   if(m_initOpts != temporary)
@@ -1140,7 +1137,7 @@ wxString Configuration::MaximaDefaultLocation() {
 
 void Configuration::ReadStyles(const wxString &file) {
   RecalculateForce();
-  wxConfigBase *config = NULL;
+  wxConfigBase *config = nullptr;
   if (file == wxEmptyString)
     config = wxConfig::Get();
   else {
@@ -1167,7 +1164,7 @@ void Configuration::ReadStyles(const wxString &file) {
 
 //! Saves the settings to a file.
 void Configuration::WriteSettings(const wxString &file) {
-  wxConfigBase *config = NULL;
+  wxConfigBase *config = nullptr;
   if (file == wxEmptyString)
     config = wxConfig::Get();
   else
@@ -1175,7 +1172,7 @@ void Configuration::WriteSettings(const wxString &file) {
 
   {
     wxXmlNode *topNode =
-      new wxXmlNode(NULL, wxXML_DOCUMENT_NODE, wxEmptyString, wxEmptyString);
+      new wxXmlNode(nullptr, wxXML_DOCUMENT_NODE, wxEmptyString, wxEmptyString);
     wxXmlNode *entriesNode =
       new wxXmlNode(topNode, wxXML_ELEMENT_NODE, "entries");
     wxEnvVariableHashMap::const_iterator it;
@@ -1207,7 +1204,7 @@ void Configuration::WriteSettings(const wxString &file) {
   }
   {
     wxXmlNode *topNode =
-      new wxXmlNode(NULL, wxXML_DOCUMENT_NODE, wxEmptyString, wxEmptyString);
+      new wxXmlNode(nullptr, wxXML_DOCUMENT_NODE, wxEmptyString, wxEmptyString);
     wxXmlNode *headNode = new wxXmlNode(topNode, wxXML_ELEMENT_NODE,
                                         wxS("markers"), wxEmptyString);
     StringBoolHash::const_iterator it;
@@ -1299,11 +1296,7 @@ bool Configuration::InUpdateRegion(wxRect const rect) const {
 bool Configuration::OfferInternalHelpBrowser() const {
 #ifdef USE_WEBVIEW
 #ifdef __WINDOWS__
-#if wxCHECK_VERSION(3, 1, 5)
   return wxWebView::IsBackendAvailable(wxWebViewBackendEdge);
-#else
-  return false;
-#endif
 #else
   return true;
 #endif
@@ -1356,6 +1349,7 @@ Configuration::ScalarConfigSettings() {
     {wxS("allowNetworkHelp"), &Configuration::m_allowNetworkHelp},
     {wxS("autodetectHelpBrowser"), &Configuration::m_autodetectHelpBrowser},
     {wxS("autodetectMaxima"), &Configuration::m_autodetectMaxima},
+    {wxS("arrowKeysSkipOutput"), &Configuration::m_arrowKeysSkipOutput},
     {wxS("autoIndent"), &Configuration::m_autoIndent},
     // Read a second time, raw, further down: a stored 0 means "autosave as a
     // temp file", a state this clamped copy can no longer represent once
@@ -1470,7 +1464,7 @@ Configuration::StyleConfigKeys() {
 //! Saves the style settings to a file.
 void Configuration::WriteStyles(const wxString &file) {
   MakeStylesConsistent();
-  wxConfigBase *config = NULL;
+  wxConfigBase *config = nullptr;
   if (file == wxEmptyString)
     config = wxConfig::Get();
   else

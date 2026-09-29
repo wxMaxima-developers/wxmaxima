@@ -200,7 +200,7 @@ wxString IntCell::ToString() const {
   const Cell *tmp = m_var.get();
   wxString var;
   tmp = tmp->GetNext();
-  if (tmp != NULL) {
+  if (tmp != nullptr) {
     var = tmp->ListToString();
   }
 
@@ -223,7 +223,7 @@ wxString IntCell::ToMatlab() const {
   const Cell *tmp = m_var.get();
   wxString var;
   tmp = tmp->GetNext();
-  if (tmp != NULL)
+  if (tmp != nullptr)
     var = tmp->ListToMatlab();
 
   wxString to = m_upperLimit->ListToMatlab();
@@ -316,22 +316,22 @@ wxString IntCell::ToOMML() const {
 
 wxString IntCell::ToXML() const {
   wxString from;
-  if (m_lowerLimit != NULL)
+  if (m_lowerLimit != nullptr)
     from = m_lowerLimit->ListToXML();
   from = wxS("<r>") + from + wxS("</r>");
 
   wxString to;
-  if (m_upperLimit != NULL)
+  if (m_upperLimit != nullptr)
     to = m_upperLimit->ListToXML();
   to = wxS("<r>") + to + wxS("</r>");
 
   wxString base;
-  if (m_base != NULL)
+  if (m_base != nullptr)
     base = m_base->ListToXML();
   base = wxS("<r>") + base + wxS("</r>");
 
   wxString var;
-  if (m_var != NULL)
+  if (m_var != nullptr)
     var = m_var->ListToXML();
   var = wxS("<r>") + var + wxS("</r>");
 

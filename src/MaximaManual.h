@@ -59,7 +59,7 @@ class MaximaManual
 {
 public:
   explicit MaximaManual(Configuration *configuration);
-  typedef std::unordered_map <wxString, wxString, wxStringHash> HelpFileAnchors;
+  using HelpFileAnchors = std::unordered_map<wxString, wxString, wxStringHash>;
   HelpFileAnchors GetHelpfileAnchors();
   void FindMaximaHtmlDir(const wxString &docDir);
   wxString GetHelpfileAnchorName(wxString keyword);
@@ -130,7 +130,7 @@ private:
   std::atomic<bool> m_anchorsCompileInFlight{false};
     std::mutex m_helpFileAnchorsLock;
   //! The configuration storage
-  Configuration *m_configuration = NULL;
+  Configuration *m_configuration = nullptr;
   //! All anchors for keywords maxima's helpfile contains (singlepage version)
 
   HelpFileAnchors m_helpFileURLs_singlePage;

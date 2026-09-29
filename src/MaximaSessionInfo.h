@@ -70,7 +70,7 @@ public:
 
   //! Is this name an operator known to maxima?
   bool IsOperator(const wxString &name) const
-    { return m_operators.find(name) != m_operators.end(); }
+    { return m_operators.contains(name); }
   //! Registers name as an operator known to maxima.
   void AddOperator(const wxString &name) { m_operators[name] = 1; }
 

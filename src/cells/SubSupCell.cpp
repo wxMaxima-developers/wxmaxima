@@ -55,7 +55,7 @@ DEFINE_CELL(SubSupCell)
 
 static void RemoveCell(std::vector<Cell *> &cells,
                        std::unique_ptr<Cell> const &cell) {
-  cells.erase(std::remove(cells.begin(), cells.end(), cell.get()), cells.end());
+  std::erase(cells, cell.get());
 }
 
 void SubSupCell::SetPreSup(std::unique_ptr<Cell> &&index) {

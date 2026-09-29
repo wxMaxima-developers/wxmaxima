@@ -201,26 +201,30 @@ if(NOT WXM_DISABLE_QA)
   unset(wxWidgets_FOUND)
 endif()
 
+# wxWidgets 3.2 is the oldest version wxMaxima supports: the last 3.0
+# release (3.0.5) has a bug that leaves wxMaxima unable to get a working
+# connection to Maxima (GH #2301), and no 3.0 bugfix release is in sight.
+set(WXM_MIN_WXWIDGETS_VERSION 3.2)
+
 # The package order below matters.
 ###
 ###  Incorrect order WILL BREAK Unix and MinGW STATIC BUILDS.
 ###
 # The correct order is a topological sort based on the dependency graph
-# here: https://docs.wxwidgets.org/3.0/page_libs.html
-# (or for wxWidgets 3.2): https://docs.wxwidgets.org/3.2/page_libs.html
+# here: https://docs.wxwidgets.org/3.2/page_libs.html
 # The root dependency (base) must come last.
 #
 if(WXM_DISABLE_WEBVIEW)
   if(WXM_DISABLE_QA)
-    find_package(wxWidgets 3 REQUIRED richtext aui adv net html xml core base)
+    find_package(wxWidgets ${WXM_MIN_WXWIDGETS_VERSION} REQUIRED richtext aui adv net html xml core base)
   else()
-    find_package(wxWidgets 3 REQUIRED richtext aui adv net qa html xml core base)
+    find_package(wxWidgets ${WXM_MIN_WXWIDGETS_VERSION} REQUIRED richtext aui adv net qa html xml core base)
   endif()
 else()
   if(WXM_DISABLE_QA)
-    find_package(wxWidgets 3 REQUIRED richtext aui adv webview net html xml core base)
+    find_package(wxWidgets ${WXM_MIN_WXWIDGETS_VERSION} REQUIRED richtext aui adv webview net html xml core base)
   else()
-    find_package(wxWidgets 3 REQUIRED richtext aui adv webview net qa html xml core base)
+    find_package(wxWidgets ${WXM_MIN_WXWIDGETS_VERSION} REQUIRED richtext aui adv webview net qa html xml core base)
   endif()
 endif()
 message(STATUS "Found wxWidgets: (found version \"${wxWidgets_VERSION_STRING}\")")
