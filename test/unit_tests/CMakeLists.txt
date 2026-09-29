@@ -189,6 +189,17 @@ target_link_libraries(test_UrlDetection PRIVATE ${wxWidgets_LIBRARIES})
 add_test(NAME UrlDetection
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_UrlDetection>")
 
+# On MS Windows an interrupt has to find the shared-memory segment of the Lisp
+# maxima.bat started, whose name contains the Lisp's pid (GH #2289). Finding
+# the candidates is a pure walk over a process list, so it is tested directly.
+add_executable(test_ProcessTree
+    test_ProcessTree.cpp ${CMAKE_SOURCE_DIR}/src/ProcessTree.cpp
+    ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
+target_include_directories(test_ProcessTree PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_link_libraries(test_ProcessTree PRIVATE ${wxWidgets_LIBRARIES})
+add_test(NAME ProcessTree
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_ProcessTree>")
+
 add_executable(test_MenuHelpString
     test_MenuHelpString.cpp ${CMAKE_SOURCE_DIR}/src/MenuHelpString.cpp ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
 target_link_libraries(test_MenuHelpString PRIVATE ${wxWidgets_LIBRARIES})

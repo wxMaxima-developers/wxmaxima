@@ -1,5 +1,12 @@
 # Current development version
 
+- MS Windows: Interrupting Maxima (Ctrl+G) is more robust (#2289). If
+  Maxima's first prompt didn't tell wxMaxima Maxima's process id, the
+  interrupt was sent to maxima.bat instead of to the Lisp and failed. Now
+  every process below the one wxMaxima started is tried. The fallback that
+  sent a Ctrl+C to a console was dropped: wxmaxima.exe has no console, so it
+  could never work. A failure now logs which shared-memory segments were
+  tried and what Windows said.
 - The toolbar's Redo button now becomes active and inactive with whether
   there is something to redo; before, that state switched the Undo button
   instead. After showing or hiding a group of toolbar buttons, buttons with
