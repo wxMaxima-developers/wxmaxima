@@ -280,6 +280,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>AppendInput</b> (std:
 wxRect&#160;</td><td class="memItemRight" valign="bottom"><b>GetOutputRect</b> () const</td></tr>
 <tr class="memdesc:a824ff61ee94c2e70e0742214b62021a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine which rectangle is occupied by this <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a>. <br /></td></tr>
 <tr class="separator:a824ff61ee94c2e70e0742214b62021a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5ea10865d8e4bd49fdc54445b269f82"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#af5ea10865d8e4bd49fdc54445b269f82">ContainsPointOrOutput</a> (wxPoint point) const</td></tr>
+<tr class="memdesc:af5ea10865d8e4bd49fdc54445b269f82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is this point inside the cell or its output?  <br /></td></tr>
+<tr class="separator:af5ea10865d8e4bd49fdc54445b269f82"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2fdda0c9deb4de211792b1ce80e605dc"><td class="memItemLeft" align="right" valign="top">wxRect&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#a2fdda0c9deb4de211792b1ce80e605dc">GetBracketRect</a> () const</td></tr>
 <tr class="memdesc:a2fdda0c9deb4de211792b1ce80e605dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">The on-screen rectangle occupied by this cell's bracket.  <br /></td></tr>
 <tr class="separator:a2fdda0c9deb4de211792b1ce80e605dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1641,6 +1644,35 @@ static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>m_lookalik
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="af5ea10865d8e4bd49fdc54445b269f82" name="af5ea10865d8e4bd49fdc54445b269f82"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af5ea10865d8e4bd49fdc54445b269f82">&#9670;&#160;</a></span>ContainsPointOrOutput()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool GroupCell::ContainsPointOrOutput </td>
+          <td>(</td>
+          <td class="paramtype">wxPoint&#160;</td>
+          <td class="paramname"><em>point</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Is this point inside the cell or its output? </p>
+<p>Unlike <a class="el" href="classCell.html#a4c07e3008eb63bacdb765980f8ccdc12" title="Is a given point inside this cell?">ContainsPoint()</a>, this also finds the part of a wide output that reaches past <a class="el" href="classGroupCell.html#a5ce94d5adb8176267439335240927526" title="Get the smallest rectangle this cell fits in.">GetRect()</a>: the output starts right of the group's left edge, and the group's width doesn't include that indent. <a class="el" href="classGroupCell.html#a824ff61ee94c2e70e0742214b62021a0" title="Determine which rectangle is occupied by this GroupCell.">GetOutputRect()</a> is widened to where the output really ends. Use this for hit tests that are meant to reach cells in the output, such as tooltips. </p>
 
 </div>
 </div>
@@ -4415,7 +4447,7 @@ true if any cells were unfolded. </dd></dl>
 </div><div class="memdoc">
 
 <p>Allows to change the text a <a class="el" href="classTextCell.html" title="A Text cell.">TextCell</a> contains. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000007">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
 
 </div>
 </div>
