@@ -3063,6 +3063,14 @@ than disappearing with the thread."
 ;;; without them) simply doesn't open the channel, and wxMaxima falls back
 ;;; to what it did before.
 ;;;
+;;; Is interrupting a thread this way safe, e.g. in the middle of a hash
+;;; table operation? It is exactly what SBCL itself does on Ctrl+C: its
+;;; SIGINT handler (sigint-handler in SBCL's src/code/target-signal.lisp)
+;;; just calls interrupt-thread on the foreground thread. The interrupt runs
+;;; in the interrupted thread itself, so nothing is accessed concurrently, and
+;;; SBCL wraps its own critical sections, hash table rehashing included, in
+;;; without-interrupts, which defers the interrupt until they are done.
+;;;
 ;;; The first line sent is the token wxMaxima passed to Maxima in
 ;;; MAXIMA_AUTH_CODE, so that nothing else on this machine can connect to
 ;;; wxMaxima's server and pose as the channel.
