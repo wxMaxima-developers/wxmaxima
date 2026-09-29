@@ -706,36 +706,21 @@ set_tests_properties(wxmaxima_no_stray_children PROPERTIES RUN_SERIAL TRUE)
 # can then reuse the process instead of killing it and spawning a replacement.
 # See check_maxima_spawn_count.cmake for why it used to be unable to.
 #
-# Not on Windows, and this is the one thing to read before "fixing" that: the
-# test counts a line wxMaxima writes to its own stderr, and a GUI-subsystem
-# process's stderr does not reliably reach whoever is capturing it there. That
-# is not this test's bug and not a thing it can work around -- it is the same
-# unexplained failure the wxmaxima_version_string entry (in the
-# wxmaxima-packaging skill) spent a month on and then shelved, which is why
-# that test's content assertion is
-# non-Windows-only too. Here it cost a real red minGW build: the run itself
-# succeeded, and the captured log was simply empty, so the test read it as
-# "started 0 Maxima processes". What is therefore NOT covered on Windows is
-# how many Maxima processes opening a file starts; the fix it guards
-# (MaximaProcessManager::StartMaxima) is platform-independent, so it is the
-# coverage that is missing there, not the behaviour. Getting it back needs a
-# count that does not travel through wxMaxima's stdio at all -- pointing
-# --maxima at a wrapper that appends to a file before exec'ing the real
-# Maxima would do it on every platform, and is the thing to try.
-if(NOT WIN32)
+# The count comes from a wrapper the script puts in front of the real Maxima
+# (GH #2351), not from wxMaxima's own log: on Windows a GUI-subsystem
+# process's stderr does not reliably reach whoever captures it, which once
+# turned the minGW job red with an empty log read as "0 processes". So this
+# runs on every platform now, and needs to know where the real Maxima is.
+if(MAXIMA)
     add_test(
         NAME wxmaxima_one_maxima_per_file
         COMMAND ${CMAKE_COMMAND}
                 -DWXMAXIMA=$<TARGET_FILE:wxmaxima>
+                -DMAXIMA=${MAXIMA}
                 -DTESTFILE=one_maxima_per_file.wxm
                 -DWORKDIR=${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
                 -DEXPECTED=1
                 -P ${CMAKE_CURRENT_SOURCE_DIR}/check_maxima_spawn_count.cmake)
-    # The marker this counts is a translatable log message, so pin the
-    # language: an unexpectedly translated log would otherwise be
-    # indistinguishable from a run that started no Maxima at all.
-    set_property(TEST wxmaxima_one_maxima_per_file APPEND PROPERTY ENVIRONMENT
-        "LC_ALL=C" "LANG=C" "LANGUAGE=en")
 endif()
 
 # GH #2276: a --batch run whose input file doesn't exist has nothing to do and
