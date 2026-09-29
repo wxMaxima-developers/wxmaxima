@@ -1580,12 +1580,6 @@ foreach(wxm_t IN LISTS wxm_all_tests)
   else()
     set(wxm_envdir "${CMAKE_CURRENT_BINARY_DIR}/test_envdirs/${wxm_t}")
   endif()
-  file(MAKE_DIRECTORY "${wxm_envdir}")
-  file(MAKE_DIRECTORY "${wxm_envdir}/TMPDIR")
-  # Maxima writes plot data and gnuplot scripts to MAXIMA_TEMPDIR but does not
-  # create it, so a test that plots from a bare Maxima (the with_slider_draw
-  # ones) fails with "Cannot create" on its first gnuplot file.
-  file(MAKE_DIRECTORY "${wxm_envdir}/MAXIMA_TEMPDIR")
   # Create every directory the environment below points at: nothing creates
   # them on demand. Maxima in particular writes its plot data and gnuplot
   # scripts straight into MAXIMA_TEMPDIR and fails with "Cannot create" if
