@@ -1541,7 +1541,10 @@ set(WXM_POSIX_TESTS
   true false mfrac load_symbol check-markdown
   subscriptp_1 subscriptp_2 subscriptp_3 subscriptp_4 subscriptp_5
   subscriptp_6 subscriptp_7 subscriptp_8 subscriptp_9 subscriptp_10
-  subscriptp_11)
+  subscriptp_11
+  wx_version_min wx_version_min_outside_wxmaxima
+  with_slider_draw_bare with_slider_draw_file_name_kept
+  with_slider_draw_bare_file_name)
 
 # ...with one deliberate exception: the typical real-world case is multiple
 # wxMaxima sessions (over time or at once) SHARING one ~/.maxima, reusing and
