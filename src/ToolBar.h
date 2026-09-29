@@ -129,7 +129,7 @@ public:
     {
       if (value != m_canRedo_old)
       {
-        EnableTool(wxID_UNDO, value);
+        EnableTool(wxID_REDO, value);
         m_canRedo_old = value;
       }
     }

@@ -1,5 +1,9 @@
 # Current development version
 
+- The toolbar's Redo button now becomes active and inactive with whether
+  there is something to redo; before, that state switched the Undo button
+  instead. After showing or hiding a group of toolbar buttons, buttons with
+  nothing to act on (Undo, Copy, ...) no longer stay active.
 - The HTML export can now write one single file that contains its images
   and, if requested, the downloadable .wxmx copy, so the page can be mailed
   on its own: check "Embed images into the .html file" in the Export tab of
