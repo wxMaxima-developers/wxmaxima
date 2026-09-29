@@ -1,5 +1,9 @@
 # Current development version
 
+- The toolbar's Redo button now becomes active and inactive with whether
+  there is something to redo; before, that state switched the Undo button
+  instead. After showing or hiding a group of toolbar buttons, buttons with
+  nothing to act on (Undo, Copy, ...) no longer stay active.
 - The toolbar's "return to the cell being evaluated" button now becomes
   active as soon as one scrolls away from the evaluation. Before, it kept
   looking disabled until the mouse pointer entered the toolbar. The same

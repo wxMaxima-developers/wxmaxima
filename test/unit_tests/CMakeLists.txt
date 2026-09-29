@@ -309,6 +309,17 @@ if(TARGET wxmTestApp)
     add_test(NAME EditorCellLinks
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_EditorCellLinks>")
 
+    # Which toolbar buttons are active: Redo used to switch the Undo button,
+    # and re-created tools could stay active with nothing to act on.
+    add_executable(test_ToolBarUndoRedo
+        test_ToolBarUndoRedo.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_ToolBarUndoRedo PUBLIC cxx_std_20)
+    target_link_libraries(test_ToolBarUndoRedo PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME ToolBarUndoRedo
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_ToolBarUndoRedo>")
+
     # Logic-level regression tests for the custom wxAccessible classes (worksheet
     # and toolbar). They only assert where wxUSE_ACCESSIBILITY is set (the Windows
     # CI); elsewhere they compile out to a harness sanity check. This catches the
