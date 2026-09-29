@@ -740,6 +740,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsWholeMatrix</b> (co
 <tr class="memitem:a30e230edce86c4fa292dc24ef5a92b52"><td class="memItemLeft" align="right" valign="top">wxRect&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrCell.html#a30e230edce86c4fa292dc24ef5a92b52">BlockRect</a> (const <a class="el" href="structMatrixBlock.html">MatrixBlock</a> &amp;block) const</td></tr>
 <tr class="memdesc:a30e230edce86c4fa292dc24ef5a92b52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Where the shown part of a block is drawn, e.g.  <br /></td></tr>
 <tr class="separator:a30e230edce86c4fa292dc24ef5a92b52"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade29a8b68edc6e4bbc7829bc3df1a2a7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structMatrixEntry.html">MatrixEntry</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrCell.html#ade29a8b68edc6e4bbc7829bc3df1a2a7">StepEntry</a> (const <a class="el" href="structMatrixEntry.html">MatrixEntry</a> &amp;entry, int rowStep, int colStep) const</td></tr>
+<tr class="memdesc:ade29a8b68edc6e4bbc7829bc3df1a2a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">The entry one step away from this one, for Shift+arrow keys (GH #2370)  <br /></td></tr>
+<tr class="separator:ade29a8b68edc6e4bbc7829bc3df1a2a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa7dc953a54eb96d07bf10fc66b3d38cc"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classMatrCell.html">MatrCell</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrCell.html#aa7dc953a54eb96d07bf10fc66b3d38cc">CopyBlock</a> (const <a class="el" href="structMatrixBlock.html">MatrixBlock</a> &amp;block, <a class="el" href="classGroupCell.html">GroupCell</a> *group) const</td></tr>
 <tr class="memdesc:aa7dc953a54eb96d07bf10fc66b3d38cc"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classA.html">A</a> new matrix holding only this block of entries.  <br /></td></tr>
 <tr class="separator:aa7dc953a54eb96d07bf10fc66b3d38cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3686,6 +3689,49 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 
 <p>Allows to change the text a <a class="el" href="classTextCell.html" title="A Text cell.">TextCell</a> contains. </p>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
+
+</div>
+</div>
+<a id="ade29a8b68edc6e4bbc7829bc3df1a2a7" name="ade29a8b68edc6e4bbc7829bc3df1a2a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ade29a8b68edc6e4bbc7829bc3df1a2a7">&#9670;&#160;</a></span>StepEntry()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structMatrixEntry.html">MatrixEntry</a> MatrCell::StepEntry </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structMatrixEntry.html">MatrixEntry</a> &amp;&#160;</td>
+          <td class="paramname"><em>entry</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>rowStep</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>colStep</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The entry one step away from this one, for Shift+arrow keys (GH #2370) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rowStep,colStep</td><td>-1, 0 or +1: the direction to step in.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p><a class="el" href="classA.html">A</a> run of elided rows or columns counts as one step: stepping into it lands on the first shown entry beyond it, so the corner of a block never rests on an entry that isn't drawn. At the edge of the matrix the entry stays where it is. </p>
 
 </div>
 </div>

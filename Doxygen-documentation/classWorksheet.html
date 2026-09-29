@@ -233,6 +233,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>TreeUndo_CellLeft</b>
 <tr class="memitem:a1869320e591b04959319004a4c8da4c3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a1869320e591b04959319004a4c8da4c3">SelectOutputRect</a> (<a class="el" href="classGroupCell.html">GroupCell</a> *group, wxPoint down, wxPoint up)</td></tr>
 <tr class="memdesc:a1869320e591b04959319004a4c8da4c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Select what a rectangle dragged across a cell's output covers.  <br /></td></tr>
 <tr class="separator:a1869320e591b04959319004a4c8da4c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d815d0846e8b05c3da488e2fdf9da21"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a7d815d0846e8b05c3da488e2fdf9da21">StepSelectedMatrixBlock</a> (int keyCode)</td></tr>
+<tr class="memdesc:a7d815d0846e8b05c3da488e2fdf9da21"><td class="mdescLeft">&#160;</td><td class="mdescRight">Grow or shrink the selected block of a matrix's entries (GH #2370)  <br /></td></tr>
+<tr class="separator:a7d815d0846e8b05c3da488e2fdf9da21"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac59dea6967c097fd0d6633eb4ccd5bab"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#ac59dea6967c097fd0d6633eb4ccd5bab">CopySelection</a> (<a class="el" href="classCell.html">Cell</a> *start, <a class="el" href="classCell.html">Cell</a> *end, bool asData=false) const</td></tr>
 <tr class="memdesc:ac59dea6967c097fd0d6633eb4ccd5bab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy the currently given list of cells.  <br /></td></tr>
 <tr class="separator:ac59dea6967c097fd0d6633eb4ccd5bab"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3565,6 +3568,33 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a7d815d0846e8b05c3da488e2fdf9da21" name="a7d815d0846e8b05c3da488e2fdf9da21"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d815d0846e8b05c3da488e2fdf9da21">&#9670;&#160;</a></span>StepSelectedMatrixBlock()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Worksheet::StepSelectedMatrixBlock </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>keyCode</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Grow or shrink the selected block of a matrix's entries (GH #2370) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">keyCode</td><td>WXK_LEFT, WXK_RIGHT, WXK_UP or WXK_DOWN</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>What Shift+arrow keys do while a block is selected: move the block's far corner &ndash; the one opposite to where the drag started &ndash; one entry in that direction. <a class="el" href="classA.html">A</a> block that grows to cover the whole matrix becomes an ordinary whole-matrix selection, but can still be shrunk again. Returns false, and does nothing, if no block is selected or keyCode isn't an arrow key. </p>
 
 </div>
 </div>

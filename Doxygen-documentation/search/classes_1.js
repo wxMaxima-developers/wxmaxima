@@ -12,9 +12,10 @@ var searchData=
   ['binaryexpr_9',['BinaryExpr',['../classCatch_1_1BinaryExpr.html',1,'Catch']]],
   ['binarynamectrl_10',['BinaryNameCtrl',['../classBinaryNameCtrl.html',1,'']]],
   ['bitmapout_11',['BitmapOut',['../classBitmapOut.html',1,'']]],
-  ['boundaries_12',['boundaries',['../structdetail_1_1dtoa__impl_1_1boundaries.html',1,'detail::dtoa_impl']]],
-  ['boxcell_13',['BoxCell',['../classBoxCell.html',1,'']]],
-  ['btextctrl_14',['BTextCtrl',['../classBTextCtrl.html',1,'']]],
-  ['buttonwrapsizer_15',['Buttonwrapsizer',['../classButtonwrapsizer.html',1,'']]],
-  ['byte_5fcontainer_5fwith_5fsubtype_16',['byte_container_with_subtype',['../classbyte__container__with__subtype.html',1,'']]]
+  ['blockcorners_12',['BlockCorners',['../structDocumentCellPointers_1_1BlockCorners.html',1,'DocumentCellPointers']]],
+  ['boundaries_13',['boundaries',['../structdetail_1_1dtoa__impl_1_1boundaries.html',1,'detail::dtoa_impl']]],
+  ['boxcell_14',['BoxCell',['../classBoxCell.html',1,'']]],
+  ['btextctrl_15',['BTextCtrl',['../classBTextCtrl.html',1,'']]],
+  ['buttonwrapsizer_16',['Buttonwrapsizer',['../classButtonwrapsizer.html',1,'']]],
+  ['byte_5fcontainer_5fwith_5fsubtype_17',['byte_container_with_subtype',['../classbyte__container__with__subtype.html',1,'']]]
 ];
