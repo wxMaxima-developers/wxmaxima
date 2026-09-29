@@ -633,7 +633,7 @@ with_slider_draw_bare(
 );
 ```
 
-Unlike `with_slider_draw`, `with_slider_draw_bare` doesn't accept `file_name`, since a frame of several scenes cannot be turned into a single frame of a gif by `draw`. The animation can still be exported as a gif by right-clicking it.
+Like `with_slider_draw`, `with_slider_draw_bare` accepts `file_name="name"`, which saves the animation as `name.gif` in Maxima's working directory. As `draw` cannot turn a frame of several scenes into a single frame of a gif, wxMaxima assembles that gif from the frames it shows, and the animation is still shown in the worksheet. The gif file is only written when the command is evaluated in wxMaxima.
 
 For those more familiar with `plot` than with `draw`, there is a second set of functions:
 
