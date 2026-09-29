@@ -49,8 +49,10 @@ class Worksheet;
   The viewer's Configuration is a copy of the worksheet's, so the matrix
   looks the same as in the worksheet (fonts, colours, zoom), except that
   ConfigureForViewer() makes it show every matrix in full, whatever
-  wx_matrix()'s oversized option asked for, and hides the input and the
-  output label.
+  wx_matrix()'s oversized option asked for, hides the input and the
+  output label and doesn't indent the output. The matrix itself is shown
+  without brackets and with alternating row and column bands (see
+  CopyForViewer()).
 */
 class MatrixViewer : public wxFrame
 {
@@ -74,7 +76,8 @@ public:
     Shows every matrix in full -- the configuration doesn't let a matrix
     ask for anything else, so a nested matrix or one made by
     wx_matrix(..., oversized=elide) is shown in full, too -- and hides the
-    code cell's (empty) input and the output label. Makes the configuration
+    code cell's (empty) input, the output label and the cell brackets, and
+    moves the output to the left margin. Makes the configuration
     temporary, so none of that is written to the config file when it is
     destroyed.
 
@@ -89,6 +92,7 @@ public:
     The copy is made through the matrix's XML, parsed with \p config, so
     every cell of it belongs to \p config -- which a Cell::Copy() would not
     ensure. The output label is empty: the viewer shows only the matrix.
+    The copy has no brackets and is banded (MatrCell::AlwaysBanded()).
   */
   static std::unique_ptr<GroupCell> CopyForViewer(const MatrCell &matrix,
                                                   Configuration *config);

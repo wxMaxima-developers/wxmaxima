@@ -329,7 +329,8 @@ private:
 
     Only a matrix that is elided or scrolls gets bands: that is where losing
     track of a row or column is a real risk. One that fits is left plain, as
-    shading it would distract more than it helps.
+    shading it would distract more than it helps -- except where
+    AlwaysBanded() asks for bands anyway, as the MatrixViewer does.
 
     The bands are a translucent tint of the text colour, so they need a
     graphics context to blend on (the antialiassing DC): the worksheet has
@@ -348,7 +349,13 @@ public:
   bool IsShownPartially() const
     { return m_colElision.Active() || m_rowElision.Active() || IsScrolling(); }
   //! Does this matrix get alternating row/column bands? See DrawBands().
-  bool IsBanded() const { return IsShownPartially(); }
+  bool IsBanded() const { return m_alwaysBanded || IsShownPartially(); }
+  /*! Band this matrix even if it is shown in full
+
+    For the MatrixViewer, which shows a matrix only because it is large, so
+    the bands help there even though the viewer never elides or scrolls it.
+  */
+  void AlwaysBanded(bool banded) { m_alwaysBanded = banded; }
 private:
   //! Is this matrix shown in a scrolling viewport right now?
   bool IsScrolling() const
@@ -414,6 +421,8 @@ private:
   bool m_colNames : 1 = false;
   //! Does this matrix sit inside another one? See MarkNestedMatrices().
   bool m_nestedInMatrix : 1 = false;
+  //! Draw bands even if the matrix is shown in full? See AlwaysBanded().
+  bool m_alwaysBanded : 1 = false;
   mutable bool m_hasHorizontalScrollbar : 1 = false;
   mutable bool m_hasVerticalScrollbar : 1 = false;
 };
