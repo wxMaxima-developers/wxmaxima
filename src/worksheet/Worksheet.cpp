@@ -4250,11 +4250,10 @@ bool Worksheet::ExportToMAC(const wxString &file) {
   } else if (!backupfile.Create())
     return false;
 
-  if (wxm)
+  if (wxm) {
     WorksheetExport::AddLineToFile(backupfile, Format::WXMFirstLine);
-  // In a .mac this line also tells wxMaxima, when it reads the file back,
-  // that it may undo the escaping of the text cells (GH #2353).
-  WorksheetExport::AddLineToFile(backupfile, Format::CreatedWithLine);
+    WorksheetExport::AddLineToFile(backupfile, Format::CreatedWithLine);
+  }
 
   bool fixReorderedIndices = m_configuration->FixReorderedIndices();
   std::vector<int> cellMap;

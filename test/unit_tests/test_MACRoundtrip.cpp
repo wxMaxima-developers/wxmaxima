@@ -53,12 +53,10 @@ wxBitmap *g_bmp = nullptr;
 wxMemoryDC *g_dc = nullptr;
 Configuration *g_cfg = nullptr;
 
-// What Worksheet::ExportToMAC() writes for a one-cell tree: the marker line,
-// then the cell.
+// What Worksheet::ExportToMAC() writes for a one-cell tree.
 wxString ExportedMAC(GroupType type, const wxString &text) {
   auto group = std::make_unique<GroupCell>(g_cfg, type, text);
-  return Format::CreatedWithLine + wxS("\n") +
-    Format::TreeToWXM(group.get(), /*wxm=*/false);
+  return Format::TreeToWXM(group.get(), /*wxm=*/false);
 }
 
 // Parses .mac text and returns its only cell's text, requiring its type.
@@ -109,27 +107,59 @@ SCENARIO("A tab inside a code cell survives the .mac round-trip byte-for-byte") 
   }
 }
 
-SCENARIO("Text cells survive a round trip through a wxMaxima-written .mac (GH #2353)") {
-  const wxString text = wxS("Q&A: see a*/b, &amp; /* not code */ 1/2");
-
-  GIVEN("a text cell exported the way File > Export writes a .mac") {
-    const wxString mac = ExportedMAC(GC_TYPE_TEXT, text);
-    THEN("the exported file keeps the text inert for Maxima") {
-      // Only the file's own comment delimiters may remain.
-      const wxString body = mac.AfterFirst(wxS('\n'));
-      CHECK(body.Freq(wxS('*')) == text.Freq(wxS('*')) + 2);
-      CHECK_FALSE(body.Mid(2, body.Length() - 5).Contains(wxS("*/")));
-      CHECK_FALSE(body.Mid(2, body.Length() - 5).Contains(wxS("/*")));
-    }
-    THEN("reading it back gives the original text, not the entities") {
-      CHECK(OnlyCellText(mac, GC_TYPE_TEXT) == text);
+SCENARIO("A hand-written .mac comes back as it was read (GH #2353)") {
+  GIVEN("comments that nest, or contain \"&\" and entities") {
+    // Maxima reads each of these lines as one comment.
+    const wxString comments[] = {
+      wxS("a /* nested */ comment"),
+      wxS("/*/ opens and */ closes"),
+      wxS("Q&A, &amp; and &#47; stay as they are"),
+      wxS("1/2 * 3/4"),
+    };
+    for (const auto &comment : comments) {
+      const wxString mac = wxS("/* ") + comment + wxS(" */\n");
+      THEN(("\"" + comment + "\" is one text cell").ToStdString()) {
+        CHECK(OnlyCellText(mac, GC_TYPE_TEXT) == comment);
+      }
+      THEN(("\"" + comment + "\" is written back unchanged").ToStdString()) {
+        CHECK(ExportedMAC(GC_TYPE_TEXT, comment) == mac);
+      }
     }
   }
+  GIVEN("a nested comment followed by code") {
+    auto tree = Format::ParseMACContents(
+      wxS("/* a /* b */ c */\nx:1$\n"), g_cfg);
+    THEN("the code after it is still code") {
+      REQUIRE(tree != nullptr);
+      CHECK(tree->GetGroupType() == GC_TYPE_TEXT);
+      REQUIRE(tree->GetNext() != nullptr);
+      CHECK(tree->GetNext()->GetGroupType() == GC_TYPE_CODE);
+      CHECK(tree->GetNext()->GetEditable()->GetValue() == wxS("x:1$"));
+    }
+  }
+}
 
-  GIVEN("a hand-written .mac, without wxMaxima's marker") {
-    const wxString mac = wxS("/* Q&amp;A &#47; */\n");
-    THEN("its comments are read as they are") {
-      CHECK(OnlyCellText(mac, GC_TYPE_TEXT) == wxS("Q&amp;A &#47;"));
+SCENARIO("A text cell that isn't one Maxima comment stays inert in a .mac (GH #1907)") {
+  // Each would end its comment early, or leave it open and swallow the
+  // code after it, if it were written as it is.
+  const wxString texts[] = {
+    wxS("see a*/b x:1$"),
+    wxS("files in src/*/lib"),
+    wxS("*/ x:2$ /* and more"),
+  };
+  for (const auto &text : texts) {
+    const wxString mac = ExportedMAC(GC_TYPE_TEXT, text) + wxS("y:3$\n");
+    THEN(("\"" + text + "\" is one text cell followed by the code").ToStdString()) {
+      auto tree = Format::ParseMACContents(mac, g_cfg);
+      REQUIRE(tree != nullptr);
+      CHECK(tree->GetGroupType() == GC_TYPE_TEXT);
+      REQUIRE(tree->GetNext() != nullptr);
+      CHECK(tree->GetNext()->GetEditable()->GetValue() == wxS("y:3$"));
+      // Only the slashes next to a star changed.
+      wxString expected = text;
+      expected.Replace(wxS("*/"), wxS("*&#47;"));
+      expected.Replace(wxS("/*"), wxS("&#47;*"));
+      CHECK(tree->GetEditable()->GetValue() == expected);
     }
   }
 }

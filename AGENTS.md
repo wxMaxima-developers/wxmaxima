@@ -1301,12 +1301,18 @@ tried without rebuilding.
   happen to contain an ordinary fraction. Also applied to the equivalent
   `GC_TYPE_TEXT` write path in the non-`.wxm` (`.mac`/xmaxima interop)
   export, for the same reason (defense in depth -- `.mac` is always
-  directly Maxima-loadable). `Format::ParseMACContents` (the `.mac`
-  reader) undoes it only in a file that starts with
-  `Format::CreatedWithLine`, which the `.mac` export writes since GH #2353:
-  a hand-written `.mac` may contain `&amp;` in a comment legitimately.
-  Headings in a `.mac` (open-comment markers, like in a `.wxm`) are
-  escaped too since then; `TreeFromWXM()` always unescaped them.
+  directly Maxima-loadable) -- but only where it is needed. A `.mac` is a
+  Maxima program the user may have written in an editor, so it has to
+  round-trip unchanged (the maintainer's call, GH #2353): a text cell Maxima
+  would read back as exactly one comment (`IsMaximaCommentBody()`: Maxima
+  *nests* comments, and a `/*`/`*/` pair uses up both characters, so `/*/`
+  only opens one) is written as it is, and only one that would end its
+  comment early or leave it open gets its `/` next to a `*` escaped -- and
+  is never unescaped on reading, since a hand-written comment may contain
+  `&#47;` legitimately. `ParseMACContents()` skips comments by the same
+  nesting rules. A `.mac` gets no "Created with wxMaxima" line either.
+  Headings in a `.mac` (open-comment markers, like in a `.wxm`) use the
+  reversible `.wxm` escaping, which `TreeFromWXM()` undoes.
   **Known, accepted limitation** (also already flagged in the same GH
   #1907 thread): this can't retroactively fix a `.wxm` file already on
   disk from before this existed, and a file whose prose coincidentally

@@ -1,11 +1,12 @@
 # Current development version
 
-- Text cells exported to a .mac file and opened again in wxMaxima no longer
-  show `&amp;` or `&#47;` instead of `&` and `/`. Exported .mac files now
-  start with a "Created with wxMaxima" comment, which is how wxMaxima knows
-  it may undo that escaping. A heading containing `*/` can no longer end its
-  comment early and turn the rest of its text into code when the .mac file
-  is loaded into Maxima (#2353).
+- A .mac file opened in wxMaxima and saved again keeps its comments as they
+  were: a comment containing `&` or a nested `/* ... */` is no longer changed
+  on the way through, and a nested comment is now read as one comment, the
+  way Maxima reads it. Only a text cell that Maxima couldn't read back as
+  one comment still has its `/` next to a `*` written as `&#47;`. A heading
+  containing `*/` can no longer end its comment early and turn the rest of
+  its text into code when the .mac file is loaded into Maxima (#2353).
 - wxMaxima now needs wxWidgets 3.2 or newer to compile. With wxWidgets 3.0.5,
   the last 3.0 release, wxMaxima started but never got a working connection
   to Maxima (#2301). Ubuntu 22.04 only ships wxWidgets 3.0, so the release

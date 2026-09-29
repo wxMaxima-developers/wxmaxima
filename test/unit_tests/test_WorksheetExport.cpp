@@ -748,13 +748,9 @@ SCENARIO("Batch (.mac) and .wxm export succeed, are deterministic and complete")
           wxS(" export is deterministic and complete")).ToStdString()) {
       RequireIdenticalTrees(SnapshotDir(dir1), SnapshotDir(dir2));
       const wxString mac = ReadTextFile(dir1 + wxS("/") + name);
-      // Both start with the "Created with wxMaxima" line, which in a .mac
-      // is what tells wxMaxima to undo its text cells' escaping on reading
-      // (GH #2353). Only a .wxm is marked as a wxMaxima batch file.
-      REQUIRE(mac.StartsWith(wxS("/* [ Created with wxMaxima")) ==
-              (wxString(ext) == wxS("mac")));
-      REQUIRE(mac.Contains(wxS("[ Created with wxMaxima version ")));
-      REQUIRE(mac.Contains(wxS("[wxMaxima batch file version 1]")) ==
+      // The wxMaxima version header is a .wxm-only feature: a .mac is the
+      // user's own Maxima program and gets no line it didn't have (GH #2353).
+      REQUIRE(mac.Contains(wxS("Created with wxMaxima")) ==
               (wxString(ext) == wxS("wxm")));
       REQUIRE(mac.Contains(wxS("xexportnet")));
       // Comment-type cells survive as maxima comments in both flavors.
