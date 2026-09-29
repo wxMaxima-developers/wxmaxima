@@ -1426,6 +1426,16 @@ public:
   bool MaximaUsesWxmaximaBrowser() const {return m_maximaUsesWxmaximaBrowser && OfferInternalHelpBrowser();}
   void ExportContainsWXMX(bool exportContainsWXMX){m_exportContainsWXMX = exportContainsWXMX;}
   bool ExportContainsWXMX() const {return m_exportContainsWXMX;}
+  /*! Does the HTML export produce one self-contained file?
+
+    If true, the stylesheet, every image and (if ExportContainsWXMX()) the
+    .wxmx source are embedded into the .html file as data: URIs, so it can
+    be mailed or uploaded on its own. If false, images and the .wxmx go
+    into a separate <name>_htmlimg directory next to it.
+  */
+  bool HTMLExportSelfContained() const {return m_htmlExportSelfContained;}
+  void HTMLExportSelfContained(bool selfContained)
+    {m_htmlExportSelfContained = selfContained;}
   void WizardTab(long tab){m_wizardTab = tab;}
   long WizardTab() const {return m_wizardTab;}
 
@@ -1566,6 +1576,7 @@ private:
   bool m_wrapLatexMath;
   bool m_allowNetworkHelp;
   bool m_exportContainsWXMX;
+  bool m_htmlExportSelfContained;
   wxString m_texPreamble;
 
   drawMode m_parenthesisDrawMode;

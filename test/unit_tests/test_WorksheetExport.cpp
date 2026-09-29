@@ -532,6 +532,11 @@ static void RequireValidHtml(const wxString &htmlPath) {
 
 SCENARIO("HTML export succeeds, is deterministic and contains the document") {
   BuildDocumentOnce();
+  // This scenario checks the image files the export writes next to the
+  // .html, so it pins the (default) linked layout; the self-contained one
+  // has its own scenario below.
+  const bool oldSelfContained = g_cfg->HTMLExportSelfContained();
+  g_cfg->HTMLExportSelfContained(false);
 
   // Every equation-rendering flavor is a separate code path in the exporter;
   // bitmap and svg additionally exercise the CopyToFile image rendering.
@@ -622,6 +627,64 @@ SCENARIO("HTML export succeeds, is deterministic and contains the document") {
     }
   }
   g_cfg->HTMLequationFormat(oldFormat);
+  g_cfg->HTMLExportSelfContained(oldSelfContained);
+}
+
+//! How many times needle occurs in haystack.
+static size_t CountOccurrences(const wxString &haystack, const wxString &needle) {
+  size_t n = 0;
+  for (size_t pos = haystack.find(needle); pos != wxString::npos;
+       pos = haystack.find(needle, pos + needle.length()))
+    ++n;
+  return n;
+}
+
+SCENARIO("A self-contained HTML export is a single file (GH #2266)") {
+  BuildDocumentOnce();
+  const Configuration::htmlExportFormat oldFormat =
+    g_cfg->HTMLequationFormat();
+  const bool oldSelfContained = g_cfg->HTMLExportSelfContained();
+  const bool oldWxmx = g_cfg->ExportContainsWXMX();
+  g_cfg->HTMLExportSelfContained(true);
+  g_cfg->ExportContainsWXMX(true);
+
+  // The image flavors are the ones that write files; a file name with a
+  // space exercises the URL-encoding a linked export would apply to it.
+  const Configuration::htmlExportFormat formats[] = {Configuration::bitmap,
+                                                     Configuration::svg};
+  for (const auto format : formats) {
+    g_cfg->HTMLequationFormat(format);
+    const wxString dir = MakeExportDir(
+      format == Configuration::bitmap ? wxS("html_selfcontained_bitmap")
+                                      : wxS("html_selfcontained_svg"));
+    REQUIRE(g_ws->ExportToHTML(dir + wxS("/my doc.html")));
+
+    THEN("only the .html file is written") {
+      const auto snap = SnapshotDir(dir);
+      REQUIRE(snap.size() == 1);
+      REQUIRE(snap.count(wxS("my doc.html")) == 1);
+      REQUIRE_FALSE(wxDirExists(dir + wxS("/my doc_htmlimg")));
+    }
+    THEN("every image is a data: URI and the stylesheet is inline") {
+      const wxString html = ReadTextFile(dir + wxS("/my doc.html"));
+      RequireContainsSentinels(html);
+      REQUIRE(html.Contains(wxS("<style>")));
+      const size_t imgs = CountOccurrences(html, wxS("<img "));
+      REQUIRE(imgs > 0);
+      REQUIRE(CountOccurrences(html, wxS("src=\"data:image/")) == imgs);
+      REQUIRE_FALSE(html.Contains(wxS("_htmlimg")));
+      RequireValidHtml(dir + wxS("/my doc.html"));
+    }
+    THEN("the .wxmx source is embedded under its real name") {
+      const wxString html = ReadTextFile(dir + wxS("/my doc.html"));
+      REQUIRE(html.Contains(wxS("href=\"data:application/zip;base64,UEsD")));
+      REQUIRE(html.Contains(wxS("download=\"my doc.wxmx\"")));
+    }
+  }
+
+  g_cfg->HTMLequationFormat(oldFormat);
+  g_cfg->HTMLExportSelfContained(oldSelfContained);
+  g_cfg->ExportContainsWXMX(oldWxmx);
 }
 
 /*! Compile an exported .tex with a LaTeX engine, when it is installed.

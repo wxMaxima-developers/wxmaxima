@@ -319,6 +319,8 @@ protected:
   wxCheckBox *m_usePartialForDiff;
   //! A checkbox that asks if all newlines in text cells have to be passed to HTML.
   wxCheckBox *m_exportContainsWXMX;
+  //! Embed images and the .wxmx into the exported .html file
+  wxCheckBox *m_htmlExportSelfContained;
   wxCheckBox *m_printBrackets;
   wxChoice *m_exportWithMathJAX;
   wxCheckBox *m_matchParens;
