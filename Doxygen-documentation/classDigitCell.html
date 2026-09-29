@@ -202,6 +202,9 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><b>GetSymbolUnicode<
 <tr class="memitem:a6f86c482b724b22e806cdd1b847475e0"><td class="memItemLeft" align="right" valign="top"><a id="a6f86c482b724b22e806cdd1b847475e0" name="a6f86c482b724b22e806cdd1b847475e0"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetPromptTooltip</b> (bool use)</td></tr>
 <tr class="separator:a6f86c482b724b22e806cdd1b847475e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a49125adf325a2a6c8a5571b8f884d746"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTextCell.html#a49125adf325a2a6c8a5571b8f884d746">GetLinkAt</a> (wxPoint point) override</td></tr>
+<tr class="memdesc:a49125adf325a2a6c8a5571b8f884d746"><td class="mdescLeft">&#160;</td><td class="mdescRight">The link drawn at point, if any (GH #2396).  <br /></td></tr>
+<tr class="separator:a49125adf325a2a6c8a5571b8f884d746"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a47609f0f35aa58b174a6d137f7e082b6"><td class="memItemLeft" align="right" valign="top">wxCoord&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a47609f0f35aa58b174a6d137f7e082b6">Scale_Px</a> (double px) const</td></tr>
 <tr class="memdesc:a47609f0f35aa58b174a6d137f7e082b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scale font sizes and line widths according to the zoom factor.  <br /></td></tr>
 <tr class="separator:a47609f0f35aa58b174a6d137f7e082b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -741,6 +744,13 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:a5ae994a7422fb27ad9768b1d728ae9d6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTextCell.html#a5ae994a7422fb27ad9768b1d728ae9d6">UpdateDisplayedText</a> () const</td></tr>
 <tr class="memdesc:a5ae994a7422fb27ad9768b1d728ae9d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">The text we actually display depends on many factors, unfortunately.  <br /></td></tr>
 <tr class="separator:a5ae994a7422fb27ad9768b1d728ae9d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2282f0bcf5cfbec4d0901e34cb5d90e7"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structwxm_1_1UrlSpan.html">wxm::UrlSpan</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTextCell.html#a2282f0bcf5cfbec4d0901e34cb5d90e7">LinkSpans</a> () const</td></tr>
+<tr class="memdesc:a2282f0bcf5cfbec4d0901e34cb5d90e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">The links in m_displayedText.  <br /></td></tr>
+<tr class="separator:a2282f0bcf5cfbec4d0901e34cb5d90e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf1f45b787bd1e1687ebf37b3231a4c9"><td class="memTemplParams" colspan="2">template&lt;typename RunFunc &gt; </td></tr>
+<tr class="memitem:adf1f45b787bd1e1687ebf37b3231a4c9"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classTextCell.html#adf1f45b787bd1e1687ebf37b3231a4c9">WalkTextRuns</a> (wxDC *dc, wxCoord x, RunFunc &amp;&amp;<a class="el" href="group__group1.html#ga24f647174760cac13d2624b5ad74b00c">func</a>) const</td></tr>
+<tr class="memdesc:adf1f45b787bd1e1687ebf37b3231a4c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Walks m_displayedText as <a class="el" href="classTextCell.html#a7a6e74684bff07839bdf196d3b4d9da2" title="Pass 3 (Paint): Renders the cell using pre-calculated coordinates.">Draw()</a> paints it: plain runs and links.  <br /></td></tr>
+<tr class="separator:adf1f45b787bd1e1687ebf37b3231a4c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3bdc757f15710e049a6ad0045e0b1a87"><td class="memItemLeft" align="right" valign="top"><a id="a3bdc757f15710e049a6ad0045e0b1a87" name="a3bdc757f15710e049a6ad0045e0b1a87"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateToolTip</b> ()</td></tr>
 <tr class="memdesc:a3bdc757f15710e049a6ad0045e0b1a87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the tooltip for this cell. <br /></td></tr>
@@ -806,6 +816,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_dontEscapeOpeningPa
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_promptTooltip</b>: 1 = false</td></tr>
 <tr class="memdesc:abc72edb63ab7cdfcb2739807452d9019"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default to a special tooltip for prompts? <br /></td></tr>
 <tr class="separator:abc72edb63ab7cdfcb2739807452d9019"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2cf8f1386781dbc17b3d6ba8c8bc7cf"><td class="memItemLeft" align="right" valign="top"><a id="af2cf8f1386781dbc17b3d6ba8c8bc7cf" name="af2cf8f1386781dbc17b3d6ba8c8bc7cf"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_hasLinks</b>: 1 = false</td></tr>
+<tr class="memdesc:af2cf8f1386781dbc17b3d6ba8c8bc7cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does m_displayedText contain a link? Keeps <a class="el" href="classTextCell.html#a7a6e74684bff07839bdf196d3b4d9da2" title="Pass 3 (Paint): Renders the cell using pre-calculated coordinates.">Draw()</a> a single DrawText() if not. <br /></td></tr>
+<tr class="separator:af2cf8f1386781dbc17b3d6ba8c8bc7cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a82735e7fb2d5fd1dbefd3a37ae758b32"><td class="memItemLeft" align="right" valign="top">wxPoint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a82735e7fb2d5fd1dbefd3a37ae758b32">m_currentPoint</a> {-1, -1}</td></tr>
 <tr class="memdesc:a82735e7fb2d5fd1dbefd3a37ae758b32"><td class="mdescLeft">&#160;</td><td class="mdescRight">The point in the work sheet at which this cell begins.  <br /></td></tr>
 <tr class="separator:a82735e7fb2d5fd1dbefd3a37ae758b32"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2240,6 +2254,37 @@ static wxRegEx&#160;</td><td class="memItemRight" valign="bottom"><b>m_roundingE
 
 </div>
 </div>
+<a id="a49125adf325a2a6c8a5571b8f884d746" name="a49125adf325a2a6c8a5571b8f884d746"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a49125adf325a2a6c8a5571b8f884d746">&#9670;&#160;</a></span>GetLinkAt()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxString TextCell::GetLinkAt </td>
+          <td>(</td>
+          <td class="paramtype">wxPoint&#160;</td>
+          <td class="paramname"><em>point</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The link drawn at point, if any (GH #2396). </p>
+<p><a class="el" href="classA.html">A</a> string <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> prints &ndash; print("See https://...") or an error message naming a web page &ndash; shows its <a href="http://">http://</a>, <a href="https://">https://</a> and mailto: addresses as links, just as a text cell does. Free for a cell without links, which is known from the moment its text is set. </p>
+
+<p>Reimplemented from <a class="el" href="classCell.html#a42b967e82da26019ecf81619754c7559">Cell</a>.</p>
+
+</div>
+</div>
 <a id="ab1be3819e507454d4313f6ccbdac16c5" name="ab1be3819e507454d4313f6ccbdac16c5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab1be3819e507454d4313f6ccbdac16c5">&#9670;&#160;</a></span>GetMaxDrop()</h2>
 
@@ -2755,6 +2800,34 @@ static wxRegEx&#160;</td><td class="memItemRight" valign="bottom"><b>m_roundingE
 <p>True if this cell represents a short number. </p>
 
 <p>Reimplemented from <a class="el" href="classCell.html#a4c9f48de399a16a801e0e3c53f805b4e">Cell</a>.</p>
+
+</div>
+</div>
+<a id="a2282f0bcf5cfbec4d0901e34cb5d90e7" name="a2282f0bcf5cfbec4d0901e34cb5d90e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2282f0bcf5cfbec4d0901e34cb5d90e7">&#9670;&#160;</a></span>LinkSpans()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="structwxm_1_1UrlSpan.html">wxm::UrlSpan</a> &gt; TextCell::LinkSpans </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The links in m_displayedText. </p>
+<p>Only those also found in m_text verbatim count: <a class="el" href="classTextCell.html#a5ae994a7422fb27ad9768b1d728ae9d6" title="The text we actually display depends on many factors, unfortunately.">UpdateDisplayedText()</a> replaces "-&gt;" by an arrow, and a link has to open what <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> printed, not what it looks like on screen. </p>
 
 </div>
 </div>
@@ -3907,6 +3980,53 @@ static wxRegEx&#160;</td><td class="memItemRight" valign="bottom"><b>m_roundingE
 
 <p>Returns all variable and function names used inside this list of cells. </p>
 <p>Used for detecting lookalike chars in function and variable names. </p>
+
+</div>
+</div>
+<a id="adf1f45b787bd1e1687ebf37b3231a4c9" name="adf1f45b787bd1e1687ebf37b3231a4c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf1f45b787bd1e1687ebf37b3231a4c9">&#9670;&#160;</a></span>WalkTextRuns()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename RunFunc &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TextCell::WalkTextRuns </td>
+          <td>(</td>
+          <td class="paramtype">wxDC *&#160;</td>
+          <td class="paramname"><em>dc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">wxCoord&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">RunFunc &amp;&amp;&#160;</td>
+          <td class="paramname"><em>func</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Walks m_displayedText as <a class="el" href="classDigitCell.html#a464e144cb22c879f8d4d05a18aa6203b" title="Pass 3 (Paint): Renders the cell using pre-calculated coordinates.">Draw()</a> paints it: plain runs and links. </p>
+<p>func(text, x, width, isLink) is called for each run from left to right, x being where the run starts. <a class="el" href="classDigitCell.html#a464e144cb22c879f8d4d05a18aa6203b" title="Pass 3 (Paint): Renders the cell using pre-calculated coordinates.">Draw()</a> and <a class="el" href="classTextCell.html#a49125adf325a2a6c8a5571b8f884d746" title="The link drawn at point, if any (GH #2396).">GetLinkAt()</a> both use this, so what is painted as a link and what is found under the pointer can't disagree. </p>
 
 </div>
 </div>

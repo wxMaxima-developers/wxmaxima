@@ -81,7 +81,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>Tests for links in text cells (GH #2396).  
+<p>Tests for links in text cells and in <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s output (GH #2396).  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;wx/app.h&gt;</code><br />
 <code>#include &lt;wx/bitmap.h&gt;</code><br />
@@ -91,6 +91,8 @@ $(function() {
 <code>#include &quot;Configuration.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="EditorCell_8h_source.html">cells/EditorCell.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="GroupCell_8h_source.html">cells/GroupCell.h</a>&quot;</code><br />
+<code>#include &quot;cells/TextCell.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="MathParser_8h_source.html">MathParser.h</a>&quot;</code><br />
 <code>#include &lt;memory&gt;</code><br />
 <code>#include &lt;catch2/catch.hpp&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
@@ -113,6 +115,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a072abc7c3f823c02adb37eddd22e7798"><td class="memItemLeft" align="right" valign="top"><a id="a072abc7c3f823c02adb37eddd22e7798" name="a072abc7c3f823c02adb37eddd22e7798"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;The LaTeX export writes a text cell's links as \\url{}&quot;)</td></tr>
 <tr class="separator:a072abc7c3f823c02adb37eddd22e7798"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a843e91b5b6167c4999ef84dd5590c221"><td class="memItemLeft" align="right" valign="top"><a id="a843e91b5b6167c4999ef84dd5590c221" name="a843e91b5b6167c4999ef84dd5590c221"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;A link <a class="el" href="classMaxima.html">Maxima</a> prints is found under the pointer&quot;)</td></tr>
+<tr class="separator:a843e91b5b6167c4999ef84dd5590c221"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06df7029011fe181f338255fa9645905"><td class="memItemLeft" align="right" valign="top"><a id="a06df7029011fe181f338255fa9645905" name="a06df7029011fe181f338255fa9645905"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>wxDECLARE_APP</b> (<a class="el" href="classTestApp.html">TestApp</a>)</td></tr>
 <tr class="separator:a06df7029011fe181f338255fa9645905"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -121,8 +126,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>main</b> (int argc, ch
 <tr class="separator:a3c04138a5bfe5d72780bb7e82a18e627"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Tests for links in text cells (GH #2396). </p>
+<div class="textblock"><p>Tests for links in text cells and in <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s output (GH #2396). </p>
 <p><a class="el" href="classA.html">A</a> link in a text cell becomes a text snippet of its own, which Draw() paints in the link color and GetLinkAt() hit-tests &ndash; both through the same walk over the snippets, WalkDrawnSnippets(). These tests pin GetLinkAt() against PositionToPoint(), an independent source for where each character is drawn: if the two ever disagree, a Ctrl+click would open a link the pointer isn't on, or miss one it is.</p>
+<p>Links in the output are TextCells parsed from the XML wxMathML.lisp sends, through the real <a class="el" href="classMathParser.html" title="This class handles parsing the xml representation of a cell tree.">MathParser</a>; they are checked against the cell's own rectangle, whose parts left and right of the link are known to be plain text.</p>
 <p>Windowless: real GroupCell/EditorCell against a memory-DC <a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a>, no <a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a>, no wxFrame &ndash; the test_EditorCellTabs pattern. </p>
 </div></div><!-- contents -->
 <!-- start footer part -->

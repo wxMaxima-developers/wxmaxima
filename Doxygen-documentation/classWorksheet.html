@@ -76,6 +76,7 @@ $(function() {
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Data Fields</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pro-static-methods">Static Protected Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a>  </div>
   <div class="headertitle"><div class="title">Worksheet Class Reference</div></div>
 </div><!--header-->
@@ -334,8 +335,11 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SelectGroupCells</b> 
 <tr class="separator:adf7c839a859941b9ff8c08e00b8831df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aba2aec1e6858c5ae1bc6dd973806aa54"><td class="memItemLeft" align="right" valign="top"><a id="aba2aec1e6858c5ae1bc6dd973806aa54" name="aba2aec1e6858c5ae1bc6dd973806aa54"></a>
 wxString&#160;</td><td class="memItemRight" valign="bottom"><b>LinkUnderPointer</b> ()</td></tr>
-<tr class="memdesc:aba2aec1e6858c5ae1bc6dd973806aa54"><td class="mdescLeft">&#160;</td><td class="mdescRight">The link a text cell draws under the mouse pointer, or an empty string. <br /></td></tr>
+<tr class="memdesc:aba2aec1e6858c5ae1bc6dd973806aa54"><td class="mdescLeft">&#160;</td><td class="mdescRight">The link a text cell or the output draws under the mouse pointer, or "". <br /></td></tr>
 <tr class="separator:aba2aec1e6858c5ae1bc6dd973806aa54"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4728d532e195ee7207502a2498e2c99a"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a4728d532e195ee7207502a2498e2c99a">GetLinkAt</a> (wxPoint point)</td></tr>
+<tr class="memdesc:a4728d532e195ee7207502a2498e2c99a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The link drawn at a point in worksheet coordinates, or "".  <br /></td></tr>
+<tr class="separator:a4728d532e195ee7207502a2498e2c99a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a940d7eac6b76312edfe862def3a19ee5"><td class="memItemLeft" align="right" valign="top"><a id="a940d7eac6b76312edfe862def3a19ee5" name="a940d7eac6b76312edfe862def3a19ee5"></a>
 const wxString &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>GetContextMenuLink</b> () const</td></tr>
 <tr class="memdesc:a940d7eac6b76312edfe862def3a19ee5"><td class="mdescLeft">&#160;</td><td class="mdescRight">The link the last context menu was opened on, or an empty string. <br /></td></tr>
@@ -574,6 +578,17 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>FocusTextControl</b> 
 <tr class="memitem:a7edf834bd725da34971b9b6a51e8e523"><td class="memItemLeft" align="right" valign="top"><a id="a7edf834bd725da34971b9b6a51e8e523" name="a7edf834bd725da34971b9b6a51e8e523"></a>
 virtual wxSize&#160;</td><td class="memItemRight" valign="bottom"><b>DoGetBestClientSize</b> () const override</td></tr>
 <tr class="separator:a7edf834bd725da34971b9b6a51e8e523"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab62e9aa33b0b3e783c25f9dc655583d5"><td class="memItemLeft" align="right" valign="top"><a id="ab62e9aa33b0b3e783c25f9dc655583d5" name="ab62e9aa33b0b3e783c25f9dc655583d5"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateLinkCursor</b> (bool overLink)</td></tr>
+<tr class="memdesc:ab62e9aa33b0b3e783c25f9dc655583d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shows the hand cursor while the pointer is over a link and Ctrl is held. <br /></td></tr>
+<tr class="separator:ab62e9aa33b0b3e783c25f9dc655583d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-static-methods" name="pro-static-methods"></a>
+Static Protected Member Functions</h2></td></tr>
+<tr class="memitem:ab3d3e55bf15ffcfdf880c2834d32bd15"><td class="memItemLeft" align="right" valign="top"><a id="ab3d3e55bf15ffcfdf880c2834d32bd15" name="ab3d3e55bf15ffcfdf880c2834d32bd15"></a>
+static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>LinkToolTip</b> (const wxString &amp;link)</td></tr>
+<tr class="memdesc:ab3d3e55bf15ffcfdf880c2834d32bd15"><td class="mdescLeft">&#160;</td><td class="mdescRight">The tooltip for the pointer being over link: its address and how to open it. <br /></td></tr>
+<tr class="separator:ab3d3e55bf15ffcfdf880c2834d32bd15"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -2215,6 +2230,27 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 
 <p>Do we want to follow the evaluation process? </p>
 <p><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> can automagically scroll to the cell that is currently evaluated. If it does do so can be queried by <a class="el" href="classWorksheet.html#af02bfd71d23fe6804fc27525f41e84bb" title="Query if we want to automatically scroll to the cell that is currently evaluated.">FollowEvaluation()</a>. Changing the behavior (for example because the user has scrolled away from the cell being evaluated and now clearly wants the cursor to stay where it is) can be achieved by FollowEvaluation(true) or FollowEvaluation(false). </p>
+
+</div>
+</div>
+<a id="a4728d532e195ee7207502a2498e2c99a" name="a4728d532e195ee7207502a2498e2c99a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4728d532e195ee7207502a2498e2c99a">&#9670;&#160;</a></span>GetLinkAt()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxString Worksheet::GetLinkAt </td>
+          <td>(</td>
+          <td class="paramtype">wxPoint&#160;</td>
+          <td class="paramname"><em>point</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The link drawn at a point in worksheet coordinates, or "". </p>
+<p>Walks the cells from the top, so it is for a single click, not for tracking the pointer: <a class="el" href="classWorksheet.html#aba2aec1e6858c5ae1bc6dd973806aa54" title="The link a text cell or the output draws under the mouse pointer, or &quot;&quot;.">LinkUnderPointer()</a> starts from the cell the pointer is already known to be over. </p>
 
 </div>
 </div>

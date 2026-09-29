@@ -326,9 +326,9 @@ wxPoint&#160;</td><td class="memItemRight" valign="bottom"><b>PositionToPoint</b
 <tr class="memitem:adfa73a425db8d54d6b13bfdff40cee54"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#adfa73a425db8d54d6b13bfdff40cee54">SelectPointText</a> (wxPoint point) override</td></tr>
 <tr class="memdesc:adfa73a425db8d54d6b13bfdff40cee54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the cursor to the screen coordinate point.  <br /></td></tr>
 <tr class="separator:adfa73a425db8d54d6b13bfdff40cee54"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a70bc01930bd4f121f2f9fb41dcbf8abe"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#a70bc01930bd4f121f2f9fb41dcbf8abe">GetLinkAt</a> (wxPoint point)</td></tr>
-<tr class="memdesc:a70bc01930bd4f121f2f9fb41dcbf8abe"><td class="mdescLeft">&#160;</td><td class="mdescRight">The address of the link drawn at the screen coordinate point, if any.  <br /></td></tr>
-<tr class="separator:a70bc01930bd4f121f2f9fb41dcbf8abe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a166f2c886891601e3993bd9d6e3c3805"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#a166f2c886891601e3993bd9d6e3c3805">GetLinkAt</a> (wxPoint point) override</td></tr>
+<tr class="memdesc:a166f2c886891601e3993bd9d6e3c3805"><td class="mdescLeft">&#160;</td><td class="mdescRight">The address of the link drawn at the screen coordinate point, if any.  <br /></td></tr>
+<tr class="separator:a166f2c886891601e3993bd9d6e3c3805"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa2766d7df796869feda0879eb85192b3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#aa2766d7df796869feda0879eb85192b3">SelectRectText</a> (wxPoint one, wxPoint two) override</td></tr>
 <tr class="memdesc:aa2766d7df796869feda0879eb85192b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Selects the text between the screen coordinates one and two.  <br /></td></tr>
 <tr class="separator:aa2766d7df796869feda0879eb85192b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2694,11 +2694,14 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 
 </div>
 </div>
-<a id="a70bc01930bd4f121f2f9fb41dcbf8abe" name="a70bc01930bd4f121f2f9fb41dcbf8abe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a70bc01930bd4f121f2f9fb41dcbf8abe">&#9670;&#160;</a></span>GetLinkAt()</h2>
+<a id="a166f2c886891601e3993bd9d6e3c3805" name="a166f2c886891601e3993bd9d6e3c3805"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a166f2c886891601e3993bd9d6e3c3805">&#9670;&#160;</a></span>GetLinkAt()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">wxString EditorCell::GetLinkAt </td>
@@ -2708,10 +2711,17 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>The address of the link drawn at the screen coordinate point, if any. </p>
 <p>Only text cells have links (GH #2396); a code cell always returns an empty string. Cheap for a cell without links, which returns at once, and otherwise one walk over the cell's snippets with their cached widths. </p>
+
+<p>Reimplemented from <a class="el" href="classCell.html#a42b967e82da26019ecf81619754c7559">Cell</a>.</p>
 
 </div>
 </div>

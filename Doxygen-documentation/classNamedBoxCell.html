@@ -126,6 +126,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a06ac058dd29257ca5125f8afb0c27e88"><td class="memItemLeft" align="right" valign="top">virtual const wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a06ac058dd29257ca5125f8afb0c27e88">GetToolTip</a> (wxPoint point) const</td></tr>
 <tr class="memdesc:a06ac058dd29257ca5125f8afb0c27e88"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the ToolTip this cell provides at a given point.  <br /></td></tr>
 <tr class="separator:a06ac058dd29257ca5125f8afb0c27e88"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a42b967e82da26019ecf81619754c7559"><td class="memItemLeft" align="right" valign="top">virtual wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a42b967e82da26019ecf81619754c7559">GetLinkAt</a> (wxPoint point)</td></tr>
+<tr class="memdesc:a42b967e82da26019ecf81619754c7559"><td class="mdescLeft">&#160;</td><td class="mdescRight">The address of the link drawn at the screen coordinate point, if any (GH #2396).  <br /></td></tr>
+<tr class="separator:a42b967e82da26019ecf81619754c7559"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5cf56227ab908a76e812c0bd29df39ad"><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a5cf56227ab908a76e812c0bd29df39ad">CellsInListRecursive</a> () const</td></tr>
 <tr class="memdesc:a5cf56227ab908a76e812c0bd29df39ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many cells does this cell contain?  <br /></td></tr>
 <tr class="separator:a5cf56227ab908a76e812c0bd29df39ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2057,6 +2060,37 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 
 <p>How many pixels is the current line of this list of cells wide? </p>
 <p>This command returns the real line width when all line breaks are really performed. See <a class="el" href="classCell.html#a9c188747e83c42019f7d8c6e87e9829f" title="How many pixels is this list of cells wide, if we don&#39;t break it into lines?">SumOfWidths()</a>. </p>
+
+</div>
+</div>
+<a id="a42b967e82da26019ecf81619754c7559" name="a42b967e82da26019ecf81619754c7559"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a42b967e82da26019ecf81619754c7559">&#9670;&#160;</a></span>GetLinkAt()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxString Cell::GetLinkAt </td>
+          <td>(</td>
+          <td class="paramtype">wxPoint&#160;</td>
+          <td class="paramname"><em>point</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The address of the link drawn at the screen coordinate point, if any (GH #2396). </p>
+<p>Links are the <a href="http://">http://</a>, <a href="https://">https://</a> and mailto: addresses UrlDetection finds in a text cell or in a piece of <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s output. This default searches the cells inside this one, if the point is inside it at all; the cells that actually draw text override it. </p>
+
+<p>Reimplemented in <a class="el" href="classEditorCell.html#a166f2c886891601e3993bd9d6e3c3805">EditorCell</a>, <a class="el" href="classGroupCell.html#a2a0176886075077e0d3e06512f52a0a5">GroupCell</a>, and <a class="el" href="classTextCell.html#a49125adf325a2a6c8a5571b8f884d746">TextCell</a>.</p>
 
 </div>
 </div>
