@@ -104,6 +104,9 @@ Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGroupCell_1_1OutputLineWidths.html">OutputLineWidths</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The widths of one line of output, split at the label that starts it.  <a href="structGroupCell_1_1OutputLineWidths.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGroupCell_1_1OutputResult.html">OutputResult</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One result of this cell's output, as the keyboard steps through it (GH #2382)  <a href="structGroupCell_1_1OutputResult.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
@@ -280,6 +283,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>AppendInput</b> (std:
 <tr class="memitem:aa6d1d453c0c356538464ffefb935bbde"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCell.html">Cell</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#aa6d1d453c0c356538464ffefb935bbde">GetOutput</a> () const</td></tr>
 <tr class="memdesc:aa6d1d453c0c356538464ffefb935bbde"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the list of cells the output consists of, starting after the label.  <br /></td></tr>
 <tr class="separator:aa6d1d453c0c356538464ffefb935bbde"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1491cd123347d50b526474d39a54efe7"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structGroupCell_1_1OutputResult.html">OutputResult</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#a1491cd123347d50b526474d39a54efe7">GetOutputResults</a> () const</td></tr>
+<tr class="memdesc:a1491cd123347d50b526474d39a54efe7"><td class="mdescLeft">&#160;</td><td class="mdescRight">The results the output consists of, top to bottom.  <br /></td></tr>
+<tr class="separator:a1491cd123347d50b526474d39a54efe7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a824ff61ee94c2e70e0742214b62021a0"><td class="memItemLeft" align="right" valign="top"><a id="a824ff61ee94c2e70e0742214b62021a0" name="a824ff61ee94c2e70e0742214b62021a0"></a>
 wxRect&#160;</td><td class="memItemRight" valign="bottom"><b>GetOutputRect</b> () const</td></tr>
 <tr class="memdesc:a824ff61ee94c2e70e0742214b62021a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine which rectangle is occupied by this <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a>. <br /></td></tr>
@@ -2820,6 +2826,26 @@ The y position used here must be in sync with the one calculated by <a class="el
 
 <p>Returns the list of cells the output consists of, starting after the label. </p>
 <p>See also <a class="el" href="classGroupCell.html#a4dc3948ae91e73930ffc9ff74c050517" title="Returns the list of cells the output consists of, starting with the label.">GetLabel()</a> </p>
+
+</div>
+</div>
+<a id="a1491cd123347d50b526474d39a54efe7" name="a1491cd123347d50b526474d39a54efe7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1491cd123347d50b526474d39a54efe7">&#9670;&#160;</a></span>GetOutputResults()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="structGroupCell_1_1OutputResult.html">GroupCell::OutputResult</a> &gt; GroupCell::GetOutputResults </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The results the output consists of, top to bottom. </p>
+<p>Empty if the output is hidden. Leaves out results in which nothing is shown, such as an empty label. </p>
 
 </div>
 </div>

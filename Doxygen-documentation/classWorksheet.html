@@ -277,6 +277,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>OnSize</b> (wxSizeEve
 <tr class="memitem:a07a7a218bfb1d57fabcd1af37c4f7e88"><td class="memItemLeft" align="right" valign="top"><a id="a07a7a218bfb1d57fabcd1af37c4f7e88" name="a07a7a218bfb1d57fabcd1af37c4f7e88"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>OnMouseRightDown</b> (wxMouseEvent &amp;event)</td></tr>
 <tr class="separator:a07a7a218bfb1d57fabcd1af37c4f7e88"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00241f82bb83598d05bb27489143a8df"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a00241f82bb83598d05bb27489143a8df">OnContextMenuKey</a> (wxContextMenuEvent &amp;event)</td></tr>
+<tr class="memdesc:a00241f82bb83598d05bb27489143a8df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens the right-click menu for the selection from the keyboard (GH #2382)  <br /></td></tr>
+<tr class="separator:a00241f82bb83598d05bb27489143a8df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a50ef88c7df352e24d2743507d465eaff"><td class="memItemLeft" align="right" valign="top"><a id="a50ef88c7df352e24d2743507d465eaff" name="a50ef88c7df352e24d2743507d465eaff"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>OnSidebarKey</b> (wxCommandEvent &amp;event)</td></tr>
 <tr class="separator:a50ef88c7df352e24d2743507d465eaff"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -510,6 +513,23 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><b>GetHelpfileURL</b
 <tr class="memitem:a3cd056218eb65c8929db7a0b8814a4f0"><td class="memItemLeft" align="right" valign="top"><a id="a3cd056218eb65c8929db7a0b8814a4f0" name="a3cd056218eb65c8929db7a0b8814a4f0"></a>
 <a class="el" href="classMaximaManual.html">MaximaManual</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>GetMaximaManual</b> ()</td></tr>
 <tr class="separator:a3cd056218eb65c8929db7a0b8814a4f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Walking through a cell's output with the keyboard (GH #2382)</div></td></tr>
+<tr><td colspan="2"><div class="groupText"><p>Down at the end of a cell's input selects the first result of its output (see <a class="el" href="classGroupCell.html#a1491cd123347d50b526474d39a54efe7" title="The results the output consists of, top to bottom.">GroupCell::GetOutputResults()</a>) instead of leaving the cell; further Down presses step through the results and, past the last one, on to the horizontal cursor below the cell, as before.</p>
+<p>Up walks back the same way, into the input's end. <a class="el" href="classA.html">A</a> selected result can be copied and has its right-click menu on the context-menu key, like one clicked with the mouse. </p>
+</div></td></tr>
+<tr class="memitem:a1e6878e75746ad63ff2656f1a05f3690"><td class="memItemLeft" align="right" valign="top">std::optional&lt; std::size_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a1e6878e75746ad63ff2656f1a05f3690">SelectedOutputResult</a> () const</td></tr>
+<tr class="memdesc:a1e6878e75746ad63ff2656f1a05f3690"><td class="mdescLeft">&#160;</td><td class="mdescRight">Which result of its cell's output is selected, if exactly one is.  <br /></td></tr>
+<tr class="separator:a1e6878e75746ad63ff2656f1a05f3690"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae14d06aaef8495f7336c82804f1ec85e"><td class="memItemLeft" align="right" valign="top"><a id="ae14d06aaef8495f7336c82804f1ec85e" name="ae14d06aaef8495f7336c82804f1ec85e"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SelectOutputResult</b> (<a class="el" href="classGroupCell.html">GroupCell</a> *group, std::size_t index)</td></tr>
+<tr class="memdesc:ae14d06aaef8495f7336c82804f1ec85e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Select one result of a cell's output, scroll to it and announce it. <br /></td></tr>
+<tr class="separator:ae14d06aaef8495f7336c82804f1ec85e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48251e5bfa1286b77e882c9e1e47938b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a48251e5bfa1286b77e882c9e1e47938b">StepOutputResult</a> (int keyCode)</td></tr>
+<tr class="memdesc:a48251e5bfa1286b77e882c9e1e47938b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move between results with the Up or Down key while no editor is active.  <br /></td></tr>
+<tr class="separator:a48251e5bfa1286b77e882c9e1e47938b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac801886b6f7a46bfd05cd1255c407cd8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#ac801886b6f7a46bfd05cd1255c407cd8">EnterOutputFromInput</a> ()</td></tr>
+<tr class="memdesc:ac801886b6f7a46bfd05cd1255c407cd8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Down at the end of a cell's input: select the output's first result.  <br /></td></tr>
+<tr class="separator:ac801886b6f7a46bfd05cd1255c407cd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -1880,6 +1900,26 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 
 </div>
 </div>
+<a id="ac801886b6f7a46bfd05cd1255c407cd8" name="ac801886b6f7a46bfd05cd1255c407cd8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac801886b6f7a46bfd05cd1255c407cd8">&#9670;&#160;</a></span>EnterOutputFromInput()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Worksheet::EnterOutputFromInput </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Down at the end of a cell's input: select the output's first result. </p>
+<p>Returns false, having done nothing, if the active editor isn't a cell's input or the cell has no output to step into. </p>
+
+</div>
+</div>
 <a id="a7b3e88ac91c894dd9944defa95f5c290" name="a7b3e88ac91c894dd9944defa95f5c290"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7b3e88ac91c894dd9944defa95f5c290">&#9670;&#160;</a></span>EraseBackground()</h2>
 
@@ -2698,6 +2738,27 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 
 </div>
 </div>
+<a id="a00241f82bb83598d05bb27489143a8df" name="a00241f82bb83598d05bb27489143a8df"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a00241f82bb83598d05bb27489143a8df">&#9670;&#160;</a></span>OnContextMenuKey()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Worksheet::OnContextMenuKey </td>
+          <td>(</td>
+          <td class="paramtype">wxContextMenuEvent &amp;&#160;</td>
+          <td class="paramname"><em>event</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Opens the right-click menu for the selection from the keyboard (GH #2382) </p>
+<p>For the context-menu key and Shift+F10, which have no mouse position: the menu opens on the selected cells, as a right click into them would. </p>
+
+</div>
+</div>
 <a id="a9e3fd586f9ce0444292f60c94ab69c44" name="a9e3fd586f9ce0444292f60c94ab69c44"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9e3fd586f9ce0444292f60c94ab69c44">&#9670;&#160;</a></span>OnKeyDown()</h2>
 
@@ -3228,6 +3289,26 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 
 </div>
 </div>
+<a id="a1e6878e75746ad63ff2656f1a05f3690" name="a1e6878e75746ad63ff2656f1a05f3690"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e6878e75746ad63ff2656f1a05f3690">&#9670;&#160;</a></span>SelectedOutputResult()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt; std::size_t &gt; Worksheet::SelectedOutputResult </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Which result of its cell's output is selected, if exactly one is. </p>
+<p>True only for a selection that is one whole result, as <a class="el" href="classWorksheet.html#ae14d06aaef8495f7336c82804f1ec85e" title="Select one result of a cell&#39;s output, scroll to it and announce it.">SelectOutputResult()</a> makes it; a part of a result selected with the mouse doesn't count. </p>
+
+</div>
+</div>
 <a id="aa968d1ecabcda17dd85f3d1632c59df6" name="aa968d1ecabcda17dd85f3d1632c59df6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa968d1ecabcda17dd85f3d1632c59df6">&#9670;&#160;</a></span>SelectionToCSV()</h2>
 
@@ -3568,6 +3649,27 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a48251e5bfa1286b77e882c9e1e47938b" name="a48251e5bfa1286b77e882c9e1e47938b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a48251e5bfa1286b77e882c9e1e47938b">&#9670;&#160;</a></span>StepOutputResult()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Worksheet::StepOutputResult </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>keyCode</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Move between results with the Up or Down key while no editor is active. </p>
+<p>Handles the key if a result is selected, or if Up is pressed with the horizontal cursor right below a cell that has output. Returns false, having done nothing, otherwise. </p>
 
 </div>
 </div>

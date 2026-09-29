@@ -13,6 +13,7 @@ var searchData=
   ['output_5fstring_5fadapter_10',['output_string_adapter',['../classdetail_1_1output__string__adapter.html',1,'detail']]],
   ['output_5fvector_5fadapter_11',['output_vector_adapter',['../classdetail_1_1output__vector__adapter.html',1,'detail']]],
   ['outputlinewidths_12',['OutputLineWidths',['../structGroupCell_1_1OutputLineWidths.html',1,'GroupCell']]],
-  ['overload_5ftest_13',['Overload_Test',['../classOverload__Test.html',1,'']]],
-  ['oversizedmatricesmode_14',['OversizedMatricesMode',['../classOversizedMatricesMode.html',1,'']]]
+  ['outputresult_13',['OutputResult',['../structGroupCell_1_1OutputResult.html',1,'GroupCell']]],
+  ['overload_5ftest_14',['Overload_Test',['../classOverload__Test.html',1,'']]],
+  ['oversizedmatricesmode_15',['OversizedMatricesMode',['../classOversizedMatricesMode.html',1,'']]]
 ];
