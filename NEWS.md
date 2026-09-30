@@ -6,8 +6,8 @@ Large matrices and keyboard access to output are the main topics of this
 release, which again was developed with substantial help from the AI
 assistant **Claude**. A matrix too large for the window no longer widens
 the worksheet, output can be explored part by part with the keyboard, links
-in text and output can be opened, and an optional AI chat sidebar and MCP
-server can read the worksheet. Plus many fixes, among them a security fix
+in text and output can be opened, and an optional MCP server lets AI tools
+read the worksheet. Plus many fixes, among them a security fix
 for .wxm files.
 
 ## Matrices
