@@ -20,6 +20,7 @@ var searchData=
   ['printout_17',['Printout',['../classPrintout.html',1,'']]],
   ['priority_5ftag_18',['priority_tag',['../structdetail_1_1priority__tag.html',1,'detail']]],
   ['priority_5ftag_3c_200_20_3e_19',['priority_tag&lt; 0 &gt;',['../structdetail_1_1priority__tag_3_010_01_4.html',1,'detail']]],
-  ['productcell_20',['ProductCell',['../classProductCell.html',1,'']]],
-  ['pyclass_21',['PyClass',['../classdocstring_1_1PyClass.html',1,'docstring.PyClass'],['../classpyexample_1_1PyClass.html',1,'pyexample.PyClass']]]
+  ['processentry_20',['ProcessEntry',['../structProcessEntry.html',1,'']]],
+  ['productcell_21',['ProductCell',['../classProductCell.html',1,'']]],
+  ['pyclass_22',['PyClass',['../classdocstring_1_1PyClass.html',1,'docstring.PyClass'],['../classpyexample_1_1PyClass.html',1,'pyexample.PyClass']]]
 ];

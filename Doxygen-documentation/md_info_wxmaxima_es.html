@@ -456,7 +456,7 @@ Subscripted variables</h2>
 wxsubscripts" class="inline"/></p>
 <p>Si el nombre de variable no coincide estos requerimientos, aún puede ser declarado como "para ser sub-guionado" utilizando la instrucción <code>wxdeclare_subscript(nombre_variable);</code> o <code>wxdeclare_subscript([nombre_variable1,nombre_variable2,...]);</code> declarando una variable como sub-guion puede ser revertido utilizando la instrucción siguiente: <code>wxdeclare_subscript(nombre_variable,false);</code></p>
 <p>You can use the menu "View-&gt;Autosubscript" to set these values.</p>
-<h2><a class="anchor" id="autotoc_md217"></a>
+<h2><a class="anchor" id="autotoc_md216"></a>
 User feedback in the status bar</h2>
 <p>Las instrucciones de ejecución largas pueden proporcionar al usuario su estado dentro de la barra de estado. Esta comentario es sustituído por cualquier comentario devuelto que es colocada allí (permitiendo utilizarlo como un indicador de progreso) y es borrado tan pronto como la instrucción actual enviada a <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> ha finalizado. Es seguro de utilizar <code>wxstatusbar()</code> incluso dentro de bibliotecas que tal vez sean utilizadas con el simple <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> (como opuesto a <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>): si <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> no está presente la instrucción <code>wxstatusbar()</code> será tan solo dejada sin evaluar.</p>
 <div class="fragment"><div class="line">for i:1 thru 10 do (</div>
@@ -467,7 +467,7 @@ User feedback in the status bar</h2>
 <div class="line">    /* program execution (here: for 3 seconds) */</div>
 <div class="line">    ?sleep(3)</div>
 <div class="line">)$</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md218"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md217"></a>
 Exporting the worksheet from within Maxima</h2>
 <p>The command <code>wxworksheettohtml()</code> exports the current worksheet to an HTML file from within a running <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> session, which is convenient for scripted or batch export. Like <code>wxstatusbar()</code> it is safe to use in code that might also run in plain (console) <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>: if <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> isn’t present the command is simply left unevaluated.</p>
 <div class="fragment"><div class="line">wxworksheettohtml(&quot;report.html&quot;)$</div>
@@ -494,10 +494,10 @@ Exporting the worksheet from within Maxima</h2>
 <td class="markdownTableBodyNone"><code>documentclassoptions</code>   </td><td class="markdownTableBodyNone">overrides its options (e.g. <code>"12pt,a4paper"</code>)   </td></tr>
 </table>
 <p>Support for <code>wxworksheettopdf()</code> is planned.</p>
-<h2><a class="anchor" id="autotoc_md219"></a>
+<h2><a class="anchor" id="autotoc_md218"></a>
 Plotting</h2>
 <p>Tramar (teniendo fundamentalmente hacerlo con gráficas) es un lugar donde un interfaz gráfico del usuario tendrá para proporcionar algunas extensiones para el programa original.</p>
-<h3><a class="anchor" id="autotoc_md220"></a>
+<h3><a class="anchor" id="autotoc_md219"></a>
 Embedding a plot into the worksheet</h3>
 <p><em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> normalmente instrumenta el programa <em>Gnuplot</em> externo para abrir una ventana separada por cada diagrama que crea. Debido a que muchas veces es conveniente empotrar grafos a la hoja de trabajo en vez que <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> proporcione su propio conjunto de funciones de trama que no difieran desde las funciones correspondientes a <em>maxima</em> que guarda dentro de su nombre: todo está prefijado por un “wx”.</p>
 <p>Las siguientes funciones de tramado tienen contrapartes wx:</p>
@@ -529,7 +529,7 @@ Embedding a plot into the worksheet</h3>
 </table>
 <p>Si un archivo de <code>wxm</code> es leído por (consola) <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>, estas funciones son ignoradas (y escritas como salida, como otras funciones desconocidas en <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>).</p>
 <p>If you got problems with one of these functions, please check, if the problem exists in the the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> function too (e.g. you got an error with <code>wxplot2d()</code>, check the same plot in the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> command <code>plot2d()</code> (which opens the plot in a separate Window)). If the problem does not disappear, it is most likely a <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> issue and should be reported in the <a href="https://sourceforge.net/p/maxima/bugs/">Maxima bugtracker</a>. Or maybe a Gnuplot issue.</p>
-<h3><a class="anchor" id="autotoc_md221"></a>
+<h3><a class="anchor" id="autotoc_md220"></a>
 Making embedded plots bigger or smaller</h3>
 <p>Tal como notó arriba, el dialogo de configuración proporciona una manera de modificar el tamaño de trama predeterminada lo cual fija el valor de inicio de <code>wxplot_size</code>. Las rutinas de tramado de <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> respeta esta variable que especifica el tamaño de una trama en píxeles. Siempre puede ser solicitado o utilizado para fijar el tamaño de las tramas siguientes:</p>
 <div class="fragment"><div class="line">wxplot_size:[1200,800]$</div>
