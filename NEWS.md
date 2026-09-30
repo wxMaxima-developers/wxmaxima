@@ -1,5 +1,9 @@
 # Current development version
 
+- Ctrl+F in the matrix viewer searches the matrix: each match selects the
+  entry it is in and scrolls it into view, and searching again steps on to
+  the next matching entry. The search dialog there only searches, as
+  nothing in the viewer can be replaced.
 - Code cells now treat a bracket or quote escaped by a backslash as part
   of a name or string (#528). Typing `a\(3` no longer adds a closing bracket,
   `\)` no longer jumps over a real ")" that follows, a `\"` inside a string no
