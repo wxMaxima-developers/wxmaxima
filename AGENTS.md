@@ -2162,6 +2162,7 @@ which loads on demand -- keep the detail there rather than growing this file.
 ## Performance & Documentation Mandates
 
 - **NEWS.md Updates:** Every non-trivial change MUST be documented in `NEWS.md` under the "# Current development version" section.
+  **When merging `main` into a branch conflicts in `NEWS.md`, take `main`'s side and re-add only your own new entry.** Keeping "both sides" brings back entries that release prep has since condensed into a version section: on 2026-09-30 three branches in a row put ~190 old lines back above `# 26.09.0`. The tag workflow publishes whatever sits under the top heading as the release notes, so that would have become the release body.
 - **Doxygen Comments:** Include descriptions for all new classes and public methods. Complex algorithms (e.g., LCS alignment) require detailed architectural comments.
 - **Background Tasks:** Use `jthread` for automatic joining, protect data with `std::mutex`, check for abort flags regularly, and update `Doxygen/Readme.md`.
 - **Lisp Performance (`wxMathML.lisp`):**
