@@ -36,6 +36,7 @@
 #include <wx/panel.h>
 #include <wx/radiobut.h>
 #include <wx/checkbox.h>
+#include <wx/stattext.h>
 #include <wx/textctrl.h>
 #include <wx/combobox.h>
 #include <wx/config.h>
@@ -84,8 +85,31 @@ private:
   wxCheckBox *m_matchCase;
   wxCheckBox *m_searchInInput;
   wxCheckBox *m_searchInOutput;
+  wxStaticText *m_replaceLabel;
+  //! Where the search events go; nullptr = the outermost window, see QueueSearchEvent()
+  wxEvtHandler *m_eventTarget = nullptr;
+  //! Sends a search or replace event to whoever carries out the search
+  void QueueSearchEvent(wxFindDialogEvent *event) const;
 public:
-  FindReplacePane(wxWindow *parent, FindReplaceData *data);
+  /*! \param parent     The window the pane is shown in
+      \param data       Where the search string and the settings are kept
+      \param searchOnly Hide everything that is about replacing, and the
+                        choice of searching in input or output: for a
+                        read-only view like the matrix viewer, which has no
+                        input and nothing that could be replaced.
+  */
+  FindReplacePane(wxWindow *parent, FindReplaceData *data, bool searchOnly = false);
+
+  /*! Send the search events to this handler instead of the outermost window
+
+    By default the events go to the window at the top of the parent chain,
+    which is wxMaxima's main window -- also for the dockable pane after it
+    was undocked into a floating frame of its own. A window that isn't the
+    main window, but whose find dialog nevertheless ends up with the main
+    window as its outermost parent (the matrix viewer), has to say that it
+    wants the events itself.
+  */
+  void SetEventTarget(wxEvtHandler *target) { m_eventTarget = target; }
 
   void SetFocus() override;
 

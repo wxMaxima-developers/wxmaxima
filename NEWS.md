@@ -1,5 +1,9 @@
 # Current development version
 
+- Ctrl+F in the matrix viewer searches the matrix: each match selects the
+  entry it is in and scrolls it into view, and searching again steps on to
+  the next matching entry. The search dialog there only searches, as
+  nothing in the viewer can be replaced.
 - The toolbar's height is now taken from its contents every time wxMaxima
   starts. It used to be restored from the layout the previous session
   saved, and never recomputed after that: a height that once came out

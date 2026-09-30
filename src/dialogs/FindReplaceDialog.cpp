@@ -33,7 +33,8 @@
 FindReplaceDialog::FindReplaceDialog(wxWindow *parent,
                                      FindReplacePane::FindReplaceData *data,
                                      const wxString &title,
-                                     FindReplaceDialog **pointerToDialogue, int style)
+                                     FindReplaceDialog **pointerToDialogue, int style,
+                                     bool searchOnly)
   : wxDialog() {
   SetBackgroundStyle(wxBG_STYLE_PAINT);
   Create(parent, wxID_ANY, title, wxDefaultPosition, wxDefaultSize,
@@ -41,7 +42,7 @@ FindReplaceDialog::FindReplaceDialog(wxWindow *parent,
   m_pointerToDialogue = pointerToDialogue;
   if(m_pointerToDialogue != nullptr)
     *m_pointerToDialogue = this;
-  m_contents = new FindReplacePane(this, data);
+  m_contents = new FindReplacePane(this, data, searchOnly);
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
   vbox->Add(m_contents, wxSizerFlags().Expand());
   SetSizerAndFit(vbox);
@@ -56,7 +57,9 @@ FindReplaceDialog::FindReplaceDialog(wxWindow *parent,
   // leaving the width free, so the resize border still allows widening.
   SetSizeHints(wxSize(GetSizer()->GetMinSize().GetWidth(), GetSize().GetHeight()),
                wxSize(wxDefaultCoord, GetSize().GetHeight()));
-  SetName("FindDialog");
+  // A search-only dialog is smaller than the full one: don't let the one
+  // restore the other's remembered size.
+  SetName(searchOnly ? "SearchOnlyFindDialog" : "FindDialog");
   wxPersistenceManager::Get().RegisterAndRestore(this);
 
   Bind(wxEVT_ACTIVATE, &FindReplaceDialog::OnActivateEvent, this);
@@ -65,6 +68,11 @@ FindReplaceDialog::FindReplaceDialog(wxWindow *parent,
 
 FindReplaceDialog::~FindReplaceDialog()
 {
+  // wxWidgets sends the destroy event only from ~wxTopLevelWindowGTK and the
+  // like, when this is no whole wxTopLevelWindow any more -- yet the
+  // persistence manager, which saves the dialog's size and position on that
+  // event, treats it as one. Send it while that is still true.
+  SendDestroyEvent();
   if(m_pointerToDialogue)
     {
       *m_pointerToDialogue = nullptr;
