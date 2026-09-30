@@ -832,19 +832,38 @@ wxString EditorCell::ToHTML() const {
   return retval;
 }
 
-wxCoord EditorCell::SelectionRunLeft(size_t runStart, size_t runEnd,
-                                     wxCoord runStartX, wxCoord runWidth) {
+wxPoint EditorCell::SelectionLineSpan(size_t lineStart, size_t lineEnd,
+                                      wxCoord *width) {
   size_t column, line;
-  PositionToXY(runStart, &column, &line);
-  if (!LineIsRightToLeft(line) || LineIsMixedDirection(line))
-    return runStartX;
+  PositionToXY(lineStart, &column, &line);
+  wxPoint point = LineColumnToPoint(line, column, lineStart);
+  *width = 0;
+  if (lineEnd <= lineStart)
+    return point;
 
-  // The run reads right to left, so runStart sits at its right edge: the left
-  // edge is one run-width further left. Deriving it from runStartX rather than
-  // from PositionToPoint(runEnd) keeps the rectangle exactly as wide as the
-  // text it covers, even where the two differ by a rounding.
-  (void)runEnd;
-  return runStartX - runWidth;
+  // Both edges come from the very function that places the caret, rather
+  // than one caret position plus a separately measured width: the caret (and
+  // Draw()) add up the widths of the individual styled text snippets, while
+  // measuring the selected text as one string lets the font kern or ligate
+  // across snippet boundaries - which, with many TrueType fonts, gives a
+  // different width and left the highlight a few pixels off the text.
+  //
+  // lineEnd's own line and column are forced to the ones lineStart has: at a
+  // soft break lineEnd is where the *next* display line begins, which is
+  // where PositionToPoint(lineEnd) would put it.
+  const wxCoord endX =
+    LineColumnToPoint(line, column + (lineEnd - lineStart), lineEnd).x;
+
+  // Whichever edge is further left is where the rectangle starts. On a
+  // right-to-left line the selected run is drawn from its *end* leftwards,
+  // so that is lineEnd's edge, not lineStart's; on a mixed-direction line
+  // each edge sits in whatever bidi run it belongs to (see
+  // MixedDirectionOffset()), and a range spanning more than one run gets a
+  // single bounding rectangle - the same approximation a wholly
+  // right-to-left line already makes.
+  *width = (endX > point.x) ? (endX - point.x) : (point.x - endX);
+  point.x = std::min(point.x, endX);
+  return point;
 }
 
 void EditorCell::MarkSelection(wxDC *dc, size_t start, size_t end, TextStyle style) {
@@ -878,33 +897,8 @@ void EditorCell::MarkSelection(wxDC *dc, size_t start, size_t end, TextStyle sty
            !((pos != lineStart) && IsSoftBreakBefore(pos)))
       pos++;
 
-    point = PositionToPoint(lineStart); // left edge (includes any indentation)
-    wxCoord selectionWidth =
-      MeasureTextWidth(point.x,
-                       m_text.SubString(lineStart, pos > lineStart ? pos - 1 : lineStart));
-    if (pos == lineStart) // empty line
-      selectionWidth = 0;
-
-    // On a right-to-left line the selected run is drawn from its *end*
-    // leftwards, so the first selected character is at the run's right edge and
-    // the rectangle has to start at the last one instead. Taking
-    // PositionToPoint(lineStart) as the left edge there would highlight the
-    // text that follows the selection rather than the selection itself.
-    size_t dispColumn, dispLine;
-    PositionToXY(lineStart, &dispColumn, &dispLine);
-    if (LineIsMixedDirection(dispLine) && Bidi::IsAvailable()) {
-      // SelectionRunLeft() below only knows the *line's* direction, which
-      // isn't enough here; PositionToPoint() itself does know the run
-      // [lineStart, pos) is in (see MixedDirectionOffset()), for lineStart
-      // and pos independently, so the rectangle is simply the span between
-      // them. That also covers a range spanning more than one run as a
-      // single bounding rectangle - the same approximation a wholly
-      // right-to-left line already makes.
-      const wxCoord endX = PositionToPoint(pos).x;
-      selectionWidth = (endX > point.x) ? (endX - point.x) : (point.x - endX);
-      point.x = std::min(point.x, endX);
-    } else
-      point.x = SelectionRunLeft(lineStart, pos, point.x, selectionWidth);
+    wxCoord selectionWidth = 0;
+    point = SelectionLineSpan(lineStart, pos, &selectionWidth);
 
     wxRect rect;
 #if defined(__WXOSX__)
@@ -2670,15 +2664,18 @@ size_t EditorCell::XYToPosition(size_t x, size_t y) {
 }
 
 wxPoint EditorCell::PositionToPoint(size_t pos) {
+  size_t cX, cY;
+  PositionToXY(pos, &cX, &cY);
+  return LineColumnToPoint(cY, cX, pos);
+}
+
+wxPoint EditorCell::LineColumnToPoint(size_t cY, size_t cX, size_t pos) {
   SetFont(m_configuration->GetRecalcDC());
 
   wxCoord x = m_currentPoint.x, y = m_currentPoint.y;
 
   if ((x < 0) || (y < 0))
     return wxDefaultPosition;
-
-  size_t cX, cY;
-  PositionToXY(pos, &cX, &cY);
 
   wxCoord mixedOffset;
   if (LineIsMixedDirection(cY) && MixedDirectionOffset(cY, pos, &mixedOffset)) {
@@ -3320,7 +3317,7 @@ bool EditorCell::MixedDirectionOffset(size_t line, size_t position, wxCoord *off
   // Within the run itself: a left-to-right run measures normally, from its
   // own start; a right-to-left one is drawn back to front, so a position's
   // distance from the run's *left* edge is the width of what comes *after*
-  // it in logical order - the same reasoning SelectionRunLeft() uses for a
+  // it in logical order - the same reasoning SelectionLineSpan() uses for a
   // wholly-right-to-left line, just local to this one run instead of the
   // whole line.
   if (run->rightToLeft) {

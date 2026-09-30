@@ -327,6 +327,11 @@ public:
 
   //! The screen coordinates of the cursor
   wxPoint PositionToPoint(size_t pos) override;
+  /*! PositionToPoint() for a position whose display line and column are
+    already known - or have to be forced, as for the soft break that ends a
+    line, which PositionToXY() assigns to the line after it.
+   */
+  wxPoint LineColumnToPoint(size_t line, size_t column, size_t pos);
   wxPoint PositionToPoint() override {return PositionToPoint(CursorPosition());}
 
   //! Sets the cursor to the screen coordinate point
@@ -450,17 +455,20 @@ public:
   //! How many characters the given display line holds, excluding its newline.
   size_t LineLength(size_t line);
 
-  /*! The left edge of the rectangle covering the run [runStart, runEnd).
+  /*! Where the selection rectangle for [lineStart, lineEnd) goes.
 
-    \param runStartX where PositionToPoint() puts runStart
-    \param runWidth  how wide the run's text is
+    lineStart and lineEnd have to be on the same display line (lineEnd may be
+    the soft break that ends it). Both edges are caret positions, exactly as
+    PositionToPoint() computes them, so the highlight always ends where the
+    caret would be drawn - even for a font that kerns or ligates across the
+    boundaries of the snippets the text is drawn in.
 
-    The same for both directions except in one respect: on a right-to-left line
-    the run is drawn from its end leftwards, so runStart marks its *right* edge
-    and the rectangle begins a run-width further left.
+    \param width receives the rectangle's width
+    \return the rectangle's top-left corner (its left edge being whichever
+            end of the range is drawn further left, which for right-to-left
+            text is lineEnd)
    */
-  wxCoord SelectionRunLeft(size_t runStart, size_t runEnd, wxCoord runStartX,
-                           wxCoord runWidth);
+  wxPoint SelectionLineSpan(size_t lineStart, size_t lineEnd, wxCoord *width);
 
   /*! Bidi::GetRuns() for a display line, as absolute positions into m_text
     (Bidi::GetRuns() itself only knows the line's own text, so its runs are
