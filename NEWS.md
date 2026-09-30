@@ -1,5 +1,8 @@
 # Current development version
 
+- Double-clicking an elided matrix that disp() printed now opens the matrix
+  viewer once the worksheet has been saved and reopened, too. Output without
+  an "(%o1)" label was not searched from its first cell.
 - Ctrl+F in the matrix viewer searches the matrix: each match selects the
   entry it is in and scrolls it into view, and searching again steps on to
   the next matching entry. The search dialog there only searches, as

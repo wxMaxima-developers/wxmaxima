@@ -341,6 +341,33 @@ SCENARIO("A double-click finds the matrix the worksheet shows only part of") {
   }
 }
 
+SCENARIO("A double-click finds an elided matrix that has no output label") {
+  g_cfg->SetZoomFactor(1.0);
+  g_cfg->SetCanvasSize(wxSize(600, 300));
+  OversizedMatricesMode mode(Configuration::OversizedMatrices::elide);
+
+  GIVEN("a matrix shown by disp(), read back from a file") {
+    // disp() prints no "(%o1)" label, so the matrix is the output's first
+    // cell -- which a GroupCell keeps in its label slot, where GetOutput()
+    // doesn't look. It is drawn all the same.
+    auto group = std::make_unique<GroupCell>(g_cfg, GC_TYPE_CODE, wxS("m;"));
+    MathParser parser(g_cfg);
+    auto output = parser.ParseLine(wxS("<mth>") + MatrixTableXml(60, 40) + wxS("</mth>"));
+    REQUIRE(output != nullptr);
+    group->AppendOutput(std::move(output));
+    group->Recalculate();
+    group->SetCurrentPoint(wxPoint(50, 50));
+    auto *matr = dynamic_cast<MatrCell *>(group->GetLabel());
+    REQUIRE(matr != nullptr);
+    REQUIRE(matr->IsShownPartially());
+    const wxRect rect = matr->GetRect();
+    THEN("a double-click on it finds it") {
+      CHECK(MatrixViewer::PartiallyShownMatrixAt(group.get(),
+                                                 rect.GetPosition() + wxPoint(5, 5)) == matr);
+    }
+  }
+}
+
 // How many matrix viewers are open right now?
 // The entry a search in the viewer has selected, if it selected exactly one
 static std::optional<MatrixEntry> SelectedEntry(const MatrixViewer &viewer) {
