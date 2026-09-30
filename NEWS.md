@@ -276,6 +276,10 @@ for .wxm files.
   llama.cpp. It uses your own API key, stored in the operating system's
   secret store, and can read the worksheet but never change or evaluate
   it. A status bar icon and a connection monitor show what it is doing.
+  The sidebar needs wxWidgets 3.3.4 or newer, the first version it works
+  reliably with; a build against an older wxWidgets leaves it out. That
+  includes this release's Windows installer and Linux .deb, which are built
+  with wxWidgets 3.3.2 and 3.2.
 - An optional MCP server lets an external AI tool read the worksheet, the
   Variables sidebar and the evaluation status, and show or hide sidebars.
   It listens only on this machine and cannot change the worksheet.
