@@ -83,7 +83,7 @@ var searchData=
   ['cmppointers_80',['cmpPointers',['../classCellPtrBase.html#a0de21cedfa166aa830acda35184dd231',1,'CellPtrBase']]],
   ['codecellvisibilitychanged_81',['CodeCellVisibilityChanged',['../classWorksheet.html#ab5933436512be0418142944bf19f5836',1,'Worksheet']]],
   ['codestyleslist_82',['CodeStylesList',['../classStyles.html#a69d4bb4639d7e221db08363c4f1b3bc3',1,'Styles']]],
-  ['collectwidecells_83',['CollectWideCells',['../classCell.html#a39f16d4f7fe6e1066fd90874e00a095d',1,'Cell']]],
+  ['collectwidecells_83',['CollectWideCells',['../classCell.html#a90e50e6e9417530c7f8a25ff62b6086a',1,'Cell']]],
   ['coloronlystyleslist_84',['ColorOnlyStylesList',['../classStyles.html#a49b5484862197fc8b85fab5fb8d47835',1,'Styles']]],
   ['commandisblank_85',['CommandIsBlank',['../MaximaProtocol_8cpp.html#a8437a1b238e7e06f2d360dacd86c6feb',1,'MaximaProtocol']]],
   ['commandsleftincell_86',['CommandsLeftInCell',['../classEvaluationQueue.html#aa2d62d074c9b0112eddb9f97e1256105',1,'EvaluationQueue']]],

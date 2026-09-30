@@ -1318,7 +1318,7 @@ which loads on demand &amp;ndash; keep the detail there rather than growing this
   1. &lt;tt&gt;UnBreakUpCells()&lt;/tt&gt;: Reset to 2D.
   2. &lt;tt&gt;BreakUpCells()&lt;/tt&gt;: Convert wide 2D objects to 1D fallback.
 
-     &lt;strong&gt;Recursive Strategy:&lt;/strong&gt; If a 2D object is too wide, &lt;tt&gt;CollectWideCells&lt;/tt&gt; recursively identifies sub-cells that are already &gt;80% of the available width. These sub-cells are also converted to linear form in the same pass. This heuristic accounts for font size increases that occur when a parent object is linearized, preventing redundant O(N^2) size resets and recalculations in deeply nested structures.
+     &lt;strong&gt;Recursive Strategy:&lt;/strong&gt; If a 2D object is too wide, &lt;tt&gt;CollectWideCells&lt;/tt&gt; also searches its sub-cells (those already &gt;80% of the available width) for ones that are too wide themselves, and breaks those up in the same pass, avoiding one full recalculation per nesting level. &lt;strong&gt;A sub-cell is only broken if the cell it was found in actually broke up&lt;/strong&gt;: cells that have no linear form (subscripts, matrices, &lt;tt&gt;diff()&lt;/tt&gt; fractions) draw their contents in 2D, and a broken cell inside them is drawn by nobody (see invariant 5 in the &lt;tt&gt;wxmaxima-layout&lt;/tt&gt; skill).
   3. &lt;tt&gt;BreakLines_List()&lt;/tt&gt;: Final line wrapping.
 - &lt;strong&gt;High-DPI / wxBitmapBundle:&lt;/strong&gt; Use &lt;tt&gt;wxBitmapBundle&lt;/tt&gt; for SVG rendering.
 - &lt;strong&gt;Windows Focus Management:&lt;/strong&gt; Use &lt;tt&gt;CallAfter&lt;/tt&gt; for focus transitions (e.g., &lt;tt&gt;m_searchText-\&gt;SetFocus()&lt;/tt&gt;) to prevent the worksheet from "stealing" focus back.
