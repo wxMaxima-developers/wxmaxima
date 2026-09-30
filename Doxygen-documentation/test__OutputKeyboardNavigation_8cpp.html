@@ -90,6 +90,7 @@ $(function() {
 <code>#include &lt;wx/log.h&gt;</code><br />
 <code>#include &quot;Configuration.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="MathParser_8h_source.html">MathParser.h</a>&quot;</code><br />
+<code>#include &quot;cells/MatrCell.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="GroupCell_8h_source.html">cells/GroupCell.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="Worksheet_8h_source.html">worksheet/Worksheet.h</a>&quot;</code><br />
 <code>#include &lt;catch2/catch.hpp&gt;</code><br />
@@ -122,6 +123,21 @@ Functions</h2></td></tr>
 <tr class="memitem:a74140bd971248863bf42bb55c985155d"><td class="memItemLeft" align="right" valign="top"><a id="a74140bd971248863bf42bb55c985155d" name="a74140bd971248863bf42bb55c985155d"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;By default Up and Down don't skip the output&quot;)</td></tr>
 <tr class="separator:a74140bd971248863bf42bb55c985155d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a0b4f971b7bbcceea75ec1e5dab14cb"><td class="memItemLeft" align="right" valign="top"><a id="a1a0b4f971b7bbcceea75ec1e5dab14cb" name="a1a0b4f971b7bbcceea75ec1e5dab14cb"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;Enter and Escape go into an expression and back out (GH #2382)&quot;)</td></tr>
+<tr class="separator:a1a0b4f971b7bbcceea75ec1e5dab14cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b44a97b5ee4d91381579e66ad162e42"><td class="memItemLeft" align="right" valign="top"><a id="a5b44a97b5ee4d91381579e66ad162e42" name="a5b44a97b5ee4d91381579e66ad162e42"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;The parts of an expression leave out linear-form glyphs&quot;)</td></tr>
+<tr class="separator:a5b44a97b5ee4d91381579e66ad162e42"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85257627c96c25a7a2df02bd0901ef55"><td class="memItemLeft" align="right" valign="top"><a id="a85257627c96c25a7a2df02bd0901ef55" name="a85257627c96c25a7a2df02bd0901ef55"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;Enter on a part that has no parts keeps its old meaning&quot;)</td></tr>
+<tr class="separator:a85257627c96c25a7a2df02bd0901ef55"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a201f6dbbd46e8f974b4fcaf68f48d7ed"><td class="memItemLeft" align="right" valign="top"><a id="a201f6dbbd46e8f974b4fcaf68f48d7ed" name="a201f6dbbd46e8f974b4fcaf68f48d7ed"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;Shift+Left/Right grow and shrink the selection over neighbours&quot;)</td></tr>
+<tr class="separator:a201f6dbbd46e8f974b4fcaf68f48d7ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae88e6262cefc4e980c3d3ada82b38020"><td class="memItemLeft" align="right" valign="top"><a id="ae88e6262cefc4e980c3d3ada82b38020" name="ae88e6262cefc4e980c3d3ada82b38020"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;In a matrix the arrow keys move from entry to entry&quot;)</td></tr>
+<tr class="separator:ae88e6262cefc4e980c3d3ada82b38020"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06df7029011fe181f338255fa9645905"><td class="memItemLeft" align="right" valign="top"><a id="a06df7029011fe181f338255fa9645905" name="a06df7029011fe181f338255fa9645905"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>wxDECLARE_APP</b> (<a class="el" href="classTestApp.html">TestApp</a>)</td></tr>
 <tr class="separator:a06df7029011fe181f338255fa9645905"><td class="memSeparator" colspan="2">&#160;</td></tr>

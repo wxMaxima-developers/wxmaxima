@@ -546,6 +546,16 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SelectOutputResult</b
 <tr class="memitem:ac801886b6f7a46bfd05cd1255c407cd8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#ac801886b6f7a46bfd05cd1255c407cd8">EnterOutputFromInput</a> ()</td></tr>
 <tr class="memdesc:ac801886b6f7a46bfd05cd1255c407cd8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Down at the end of a cell's input: select the output's first result.  <br /></td></tr>
 <tr class="separator:ac801886b6f7a46bfd05cd1255c407cd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a3b28a6c5c83c2dcbe914dabeeec0b9"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="structOutputNavigation_1_1Item.html">OutputNavigation::Item</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a9a3b28a6c5c83c2dcbe914dabeeec0b9">SelectedOutputItem</a> () const</td></tr>
+<tr class="memdesc:a9a3b28a6c5c83c2dcbe914dabeeec0b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">The selected part of an output, as a node of OutputNavigation's tree.  <br /></td></tr>
+<tr class="separator:a9a3b28a6c5c83c2dcbe914dabeeec0b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1da54e9bd974da4419ef552990613574"><td class="memItemLeft" align="right" valign="top"><a id="a1da54e9bd974da4419ef552990613574" name="a1da54e9bd974da4419ef552990613574"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SelectOutputItem</b> (const <a class="el" href="structOutputNavigation_1_1Item.html">OutputNavigation::Item</a> &amp;item)</td></tr>
+<tr class="memdesc:a1da54e9bd974da4419ef552990613574"><td class="mdescLeft">&#160;</td><td class="mdescRight">Select a node of the output tree, scroll to it and announce it. <br /></td></tr>
+<tr class="separator:a1da54e9bd974da4419ef552990613574"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a298f3b0c5d6c129835d4268913e086be"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a298f3b0c5d6c129835d4268913e086be">NavigateOutput</a> (int keyCode, bool shift)</td></tr>
+<tr class="memdesc:a298f3b0c5d6c129835d4268913e086be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Walk through the parts of the selected output with the keyboard.  <br /></td></tr>
+<tr class="separator:a298f3b0c5d6c129835d4268913e086be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -2153,7 +2163,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 </div><div class="memdoc">
 
 <p>Do an incremental search from the cursor or the point the last search started at. </p>
-<p>Used by the find dialog. </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000016">Todo:</a></b></dt><dd>Keep a list of positions the last few letters were found at? </dd></dl>
+<p>Used by the find dialog. </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000017">Todo:</a></b></dt><dd>Keep a list of positions the last few letters were found at? </dd></dl>
 
 </div>
 </div>
@@ -2639,6 +2649,44 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 <p>Handle redrawing the worksheet or of parts of it. </p>
 <p>This functionality is important for scrolling, if we have changed anything that needs updating or if part of the screen memory containing a window was overwritten by a window that was in front of it and now needs to be redrawn for this reason.</p>
 <p>We don't redraw the window immediately if this seems necessary but wait for the idle loop instead - which is called when all selected gui events have been processed. This allows us to handle events as fast as the user can type and (if the user types faster than we can display the text) enables us to update the display as often as the typing speed allows, but not more often. Request the worksheet to be redrawn </p>
+
+</div>
+</div>
+<a id="a298f3b0c5d6c129835d4268913e086be" name="a298f3b0c5d6c129835d4268913e086be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a298f3b0c5d6c129835d4268913e086be">&#9670;&#160;</a></span>NavigateOutput()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Worksheet::NavigateOutput </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>keyCode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>shift</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Walk through the parts of the selected output with the keyboard. </p>
+<p>What Enter, Escape and the arrow keys do while a part of an output is selected (GH #2382, steps two and three):</p>
+<ul>
+<li>Enter selects the first part of the selected expression.</li>
+<li>Escape selects what the selection is a part of; from a whole result it goes back into the cell's input.</li>
+<li>Left and Right select the previous or next part at the same level. In a matrix, all four arrow keys move from entry to entry.</li>
+<li>Shift+Left and Shift+Right grow or shrink the selection over the neighbouring parts. In a matrix Shift+arrow keys grow a block instead, see <a class="el" href="classWorksheet.html#a7d815d0846e8b05c3da488e2fdf9da21" title="Grow or shrink the selected block of a matrix&#39;s entries (GH #2370)">StepSelectedMatrixBlock()</a>.</li>
+</ul>
+<p>Returns false, having done nothing, if the key isn't one of these or the selection isn't one it knows how to walk from. Left and Right on a whole result, for example, keep doing what they did before, which for an animation is stepping through its frames. </p>
 
 </div>
 </div>
@@ -3381,6 +3429,26 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 <p>Scroll vertically to the given position, in scroll units. </p>
 
 <p>Implements <a class="el" href="classWorksheetView.html#acf1809ec626e67745d75820123948616">WorksheetView</a>.</p>
+
+</div>
+</div>
+<a id="a9a3b28a6c5c83c2dcbe914dabeeec0b9" name="a9a3b28a6c5c83c2dcbe914dabeeec0b9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9a3b28a6c5c83c2dcbe914dabeeec0b9">&#9670;&#160;</a></span>SelectedOutputItem()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt; <a class="el" href="structOutputNavigation_1_1Item.html">OutputNavigation::Item</a> &gt; Worksheet::SelectedOutputItem </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The selected part of an output, as a node of OutputNavigation's tree. </p>
+<p><a class="el" href="classA.html">A</a> one-entry block of a matrix counts as that entry; any other selection of output cells as the run from its first to its last cell, whether or not that run is a node of the tree. std::nullopt if nothing, or not output, is selected. </p>
 
 </div>
 </div>

@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['labelcell_0',['LabelCell',['../classLabelCell.html#a00cf44447f4482f9d66e0354ca53a314',1,'LabelCell::LabelCell()'],['../classLabelCell.html',1,'LabelCell']]],
+  ['labelcell_0',['LabelCell',['../classLabelCell.html',1,'LabelCell'],['../classLabelCell.html#a00cf44447f4482f9d66e0354ca53a314',1,'LabelCell::LabelCell()']]],
   ['labelcell_2ecpp_1',['LabelCell.cpp',['../LabelCell_8cpp.html',1,'']]],
-  ['labelwidth_2',['LabelWidth',['../classConfiguration.html#a77a60713054dd9d878976dd81c00f81e',1,'Configuration::LabelWidth() const'],['../classConfiguration.html#af3b0f8fb4028e08a740f513ba164c260',1,'Configuration::LabelWidth(long labelWidth)']]],
+  ['labelwidth_2',['LabelWidth',['../classConfiguration.html#af3b0f8fb4028e08a740f513ba164c260',1,'Configuration::LabelWidth(long labelWidth)'],['../classConfiguration.html#a77a60713054dd9d878976dd81c00f81e',1,'Configuration::LabelWidth() const']]],
   ['last_3',['last',['../classCell.html#a67b0906e71228e806a3ff42a571fe91c',1,'Cell']]],
   ['lastactive_4',['LastActive',['../classBTextCtrl.html#a1fc69047ab758c8950aeb7d362db11e7',1,'BTextCtrl']]],
   ['lastcache_5',['LastCache',['../classWorksheetDocument.html#a13c617f8ecf9c94bf606a3e815f2a3cf',1,'WorksheetDocument']]],
@@ -65,12 +65,13 @@ var searchData=
   ['loadsymbols_62',['LoadSymbols',['../classAutoComplete.html#a6022d262109966147cbda01d6166d2ca',1,'AutoComplete::LoadSymbols()'],['../classWorksheet.html#aaa5b37aee0c005bb6f303c7dd84c64d1',1,'Worksheet::LoadSymbols()']]],
   ['loc_63',['loc',['../classdetail_1_1serializer.html#a80ca90565eec446d377ab65a023297ab',1,'detail::serializer']]],
   ['localedir_64',['LocaleDir',['../classDirstructure.html#a07774426dee2c4edafa95ce9f7465661',1,'Dirstructure']]],
-  ['loggingmessagedialog_65',['LoggingMessageDialog',['../classLoggingMessageDialog.html',1,'']]],
-  ['loggingmessagedialog_2eh_66',['LoggingMessageDialog.h',['../LoggingMessageDialog_8h.html',1,'']]],
-  ['logicalend_67',['logicalEnd',['../structBidiRun.html#a34f116b6e5a21e826c1edb38d4a93959',1,'BidiRun']]],
-  ['logicalstart_68',['logicalStart',['../structBidiRun.html#a428f3a52bd7412f8a2560f246c57ab59',1,'BidiRun']]],
-  ['longnumbercell_69',['LongNumberCell',['../classLongNumberCell.html',1,'LongNumberCell'],['../classLongNumberCell.html#ae650abe2ed7d371b47a6ed2aa55e3424',1,'LongNumberCell::LongNumberCell()']]],
-  ['longnumbercell_2ecpp_70',['LongNumberCell.cpp',['../LongNumberCell_8cpp.html',1,'']]],
-  ['lookslikeldb_71',['LooksLikeLdb',['../LdbSupport_8cpp.html#a4ad83c27ca9d16abc6068282936aae76',1,'LdbSupport']]],
-  ['low_72',['Low',['../classBackgroundTask.html#a217da7631d4231f559cbad8f0e7e1566a28d0edd045e05cf5af64e35ae0c4c6ef',1,'BackgroundTask']]]
+  ['location_65',['Location',['../structOutputNavigation_1_1Location.html',1,'OutputNavigation']]],
+  ['loggingmessagedialog_66',['LoggingMessageDialog',['../classLoggingMessageDialog.html',1,'']]],
+  ['loggingmessagedialog_2eh_67',['LoggingMessageDialog.h',['../LoggingMessageDialog_8h.html',1,'']]],
+  ['logicalend_68',['logicalEnd',['../structBidiRun.html#a34f116b6e5a21e826c1edb38d4a93959',1,'BidiRun']]],
+  ['logicalstart_69',['logicalStart',['../structBidiRun.html#a428f3a52bd7412f8a2560f246c57ab59',1,'BidiRun']]],
+  ['longnumbercell_70',['LongNumberCell',['../classLongNumberCell.html',1,'LongNumberCell'],['../classLongNumberCell.html#ae650abe2ed7d371b47a6ed2aa55e3424',1,'LongNumberCell::LongNumberCell()']]],
+  ['longnumbercell_2ecpp_71',['LongNumberCell.cpp',['../LongNumberCell_8cpp.html',1,'']]],
+  ['lookslikeldb_72',['LooksLikeLdb',['../LdbSupport_8cpp.html#a4ad83c27ca9d16abc6068282936aae76',1,'LdbSupport']]],
+  ['low_73',['Low',['../classBackgroundTask.html#a217da7631d4231f559cbad8f0e7e1566a28d0edd045e05cf5af64e35ae0c4c6ef',1,'BackgroundTask']]]
 ];

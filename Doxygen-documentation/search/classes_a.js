@@ -10,6 +10,7 @@ var searchData=
   ['limitwiz_7',['LimitWiz',['../classLimitWiz.html',1,'']]],
   ['listcell_8',['ListCell',['../classListCell.html',1,'']]],
   ['listsortwiz_9',['ListSortWiz',['../classListSortWiz.html',1,'']]],
-  ['loggingmessagedialog_10',['LoggingMessageDialog',['../classLoggingMessageDialog.html',1,'']]],
-  ['longnumbercell_11',['LongNumberCell',['../classLongNumberCell.html',1,'']]]
+  ['location_10',['Location',['../structOutputNavigation_1_1Location.html',1,'OutputNavigation']]],
+  ['loggingmessagedialog_11',['LoggingMessageDialog',['../classLoggingMessageDialog.html',1,'']]],
+  ['longnumbercell_12',['LongNumberCell',['../classLongNumberCell.html',1,'']]]
 ];
