@@ -44,7 +44,8 @@ public:
   FindReplaceDialog(wxWindow *parent, FindReplacePane::FindReplaceData *data,
                     const wxString &title,
                     FindReplaceDialog **pointerToDialogue = nullptr,
-                    int style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
+                    int style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER,
+                    bool searchOnly = false);
 
   ~FindReplaceDialog();
 

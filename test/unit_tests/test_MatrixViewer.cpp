@@ -24,7 +24,8 @@
 
   Checks that the viewer's copy shows every entry of a matrix the worksheet
   only shows part of -- whatever the worksheet's setting or the matrix's own
-  oversized option says -- and that a double-click finds the right matrix.
+  oversized option says -- that a double-click finds the right matrix, and
+  that Ctrl+F's search steps through the matrix entry by entry.
   The matrices are parsed from the XML Maxima sends, so no Maxima is needed.
 */
 
@@ -40,8 +41,11 @@
 #include "cells/CellList.h"
 #include "cells/GroupCell.h"
 #include "cells/MatrCell.h"
+#include "dialogs/FindReplaceDialog.h"
+#include "dialogs/LoggingMessageDialog.h"
 #include "dialogs/MatrixViewer.h"
 #include "worksheet/Worksheet.h"
+#include "worksheet/WorksheetSearch.h"
 
 #define CATCH_CONFIG_RUNNER
 #include <catch2/catch.hpp>
@@ -365,6 +369,153 @@ SCENARIO("A double-click finds an elided matrix that has no output label") {
 }
 
 // How many matrix viewers are open right now?
+// The entry a search in the viewer has selected, if it selected exactly one
+static std::optional<MatrixEntry> SelectedEntry(const MatrixViewer &viewer) {
+  const auto item = viewer.GetWorksheet()->SelectedOutputItem();
+  if (!item || !item->IsMatrixEntry() || (item->matrix != viewer.GetMatrix()))
+    return std::nullopt;
+  return item->entry;
+}
+
+SCENARIO("A search in the viewer finds matrix entries, one at a time") {
+  // Entry (r, c) of MatrixTableXml() is 100000 + 1000 r + c.
+  g_cfg->SetZoomFactor(1.0);
+  g_cfg->SetCanvasSize(wxSize(600, 300));
+  ViewerConfiguration cfg;
+  std::unique_ptr<GroupCell> group;
+  MatrCell *matr = LayOut(group, cfg.get(), OutputXml(MatrixTableXml(3, 4)));
+  const WorksheetSearch::StringMatcher every(wxS("00"), false);
+  bool wrapped = true;
+
+  GIVEN("no entry to start at") {
+    THEN("searching down finds the first match, searching up the last") {
+      const WorksheetSearch::StringMatcher row1(wxS("1010"), false);
+      CHECK(MatrixViewer::FindEntry(*matr, std::nullopt, true, false, row1,
+                                    &wrapped) == MatrixEntry{1, 0});
+      CHECK_FALSE(wrapped);
+      CHECK(MatrixViewer::FindEntry(*matr, std::nullopt, false, false, row1,
+                                    &wrapped) == MatrixEntry{1, 3});
+      CHECK_FALSE(wrapped);
+    }
+  }
+  GIVEN("a start entry") {
+    THEN("the search moves on row by row, in either direction") {
+      CHECK(MatrixViewer::FindEntry(*matr, MatrixEntry{0, 3}, true, false,
+                                    every, &wrapped) == MatrixEntry{1, 0});
+      CHECK_FALSE(wrapped);
+      CHECK(MatrixViewer::FindEntry(*matr, MatrixEntry{1, 0}, false, false,
+                                    every, &wrapped) == MatrixEntry{0, 3});
+      CHECK_FALSE(wrapped);
+    }
+    THEN("past the last entry it starts over, and says so") {
+      CHECK(MatrixViewer::FindEntry(*matr, MatrixEntry{2, 3}, true, false,
+                                    every, &wrapped) == MatrixEntry{0, 0});
+      CHECK(wrapped);
+      CHECK(MatrixViewer::FindEntry(*matr, MatrixEntry{0, 0}, false, false,
+                                    every, &wrapped) == MatrixEntry{2, 3});
+      CHECK(wrapped);
+    }
+    THEN("the only match is found again after a full round") {
+      const WorksheetSearch::StringMatcher one(wxS("102002"), false);
+      CHECK(MatrixViewer::FindEntry(*matr, MatrixEntry{2, 2}, true, false,
+                                    one, &wrapped) == MatrixEntry{2, 2});
+      CHECK(wrapped);
+      AND_THEN("an incremental search keeps it without wrapping") {
+        CHECK(MatrixViewer::FindEntry(*matr, MatrixEntry{2, 2}, true, true,
+                                      one, &wrapped) == MatrixEntry{2, 2});
+        CHECK_FALSE(wrapped);
+      }
+    }
+  }
+  THEN("regular expressions work, and a search without a match finds nothing") {
+    const WorksheetSearch::RegexMatcher regex(wxS("^10200[23]$"));
+    REQUIRE(regex.IsValid());
+    CHECK(MatrixViewer::FindEntry(*matr, std::nullopt, true, false, regex) ==
+          MatrixEntry{2, 2});
+    const WorksheetSearch::StringMatcher none(wxS("x"), false);
+    CHECK_FALSE(MatrixViewer::FindEntry(*matr, std::nullopt, true, false, none));
+  }
+}
+
+SCENARIO("Ctrl+F in the viewer searches the viewer's matrix") {
+  g_cfg->SetZoomFactor(1.0);
+  g_cfg->SetCanvasSize(wxSize(600, 300));
+  OversizedMatricesMode mode(Configuration::OversizedMatrices::elide);
+  LoggingMessageDialog::SetNonInteractive(true);
+  std::unique_ptr<GroupCell> group;
+  MatrCell *matr = LayOut(group, g_cfg, OutputXml(MatrixTableXml(60, 40)));
+  auto *viewer = new MatrixViewer(g_frame, *matr, g_cfg);
+  viewer->GetWorksheet()->RecalculateIfNeeded();
+  REQUIRE(viewer->GetMatrix() != nullptr);
+
+  WHEN("an entry is searched for") {
+    REQUIRE(viewer->FindNext(wxS("159039"), true, true, false, false));
+    THEN("that entry is selected, even though the worksheet elides it") {
+      CHECK(SelectedEntry(*viewer) == MatrixEntry{59, 39});
+    }
+    THEN("the viewer is scrolled so that the entry is visible") {
+      // The last entry: far right and far below of what the window shows
+      // unscrolled.
+      Worksheet *ws = viewer->GetWorksheet();
+      const wxRect rect = viewer->GetMatrix()->BlockRect({59, 59, 39, 39});
+      REQUIRE_FALSE(rect.IsEmpty());
+      wxPoint topLeft, bottomRight;
+      ws->CalcScrolledPosition(rect.GetLeft(), rect.GetTop(),
+                               &topLeft.x, &topLeft.y);
+      ws->CalcScrolledPosition(rect.GetRight(), rect.GetBottom(),
+                               &bottomRight.x, &bottomRight.y);
+      const wxSize client = ws->GetClientSize();
+      INFO("entry at " << topLeft.x << "," << topLeft.y << " in a view of "
+           << client.x << "x" << client.y);
+      CHECK(topLeft.x >= 0);
+      CHECK(topLeft.y >= 0);
+      CHECK(bottomRight.x < client.x);
+      CHECK(bottomRight.y < client.y);
+    }
+    AND_WHEN("the search is repeated for something several entries share") {
+      // 101000 ... 101039, i.e. row 1
+      REQUIRE(viewer->FindNext(wxS("1010"), true, true, false, false));
+      CHECK(SelectedEntry(*viewer) == MatrixEntry{1, 0});
+      REQUIRE(viewer->FindNext(wxS("1010"), true, true, false, false));
+      THEN("it steps on to the next match") {
+        CHECK(SelectedEntry(*viewer) == MatrixEntry{1, 1});
+      }
+    }
+  }
+  WHEN("nothing matches") {
+    THEN("nothing gets selected") {
+      CHECK_FALSE(viewer->FindNext(wxS("nowhere"), true, true, false, false));
+      CHECK_FALSE(SelectedEntry(*viewer));
+    }
+  }
+  WHEN("the search dialog's Find button is pressed") {
+    viewer->OpenFindDialog();
+    FindReplaceDialog *dialog = viewer->GetFindDialog();
+    REQUIRE(dialog != nullptr);
+    dialog->SetFindString(wxS("100002"));
+    // The search runs down, whichever direction the config file remembers.
+    dialog->GetData()->SetFlags(dialog->GetData()->GetFlags() | wxFR_DOWN);
+    wxWindow *findButton = dialog->FindWindow(wxID_FIND);
+    REQUIRE(findButton != nullptr);
+    wxCommandEvent press(wxEVT_BUTTON, wxID_FIND);
+    press.SetEventObject(findButton);
+    findButton->GetEventHandler()->ProcessEvent(press);
+    wxTheApp->ProcessPendingEvents();
+    THEN("the viewer searches its own matrix, not the main worksheet") {
+      CHECK(SelectedEntry(*viewer) == MatrixEntry{0, 2});
+    }
+    THEN("the dialog has nothing to replace") {
+      wxWindow *replaceButton = dialog->FindWindow(wxID_REPLACE);
+      REQUIRE(replaceButton != nullptr);
+      CHECK_FALSE(replaceButton->IsShown());
+    }
+  }
+
+  // Closes the search dialog, too: it is the viewer's child.
+  delete viewer;
+  LoggingMessageDialog::SetNonInteractive(false);
+}
+
 static std::vector<MatrixViewer *> OpenViewers() {
   std::vector<MatrixViewer *> viewers;
   for (wxWindow *window : wxTopLevelWindows)

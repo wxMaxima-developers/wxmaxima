@@ -57,6 +57,19 @@
     <content_attribute id="social-info">mild</content_attribute>
   </content_rating>
   <releases>
+    <release version="26.09.0" date="2026-09-30T12:00:00Z">
+      <description>
+        <p>
+          Large matrices and keyboard access to output are the main topics of
+          this release, again developed with help from the AI assistant
+          Claude: a matrix too large for the window no longer widens the
+          worksheet, output can be explored part by part with the keyboard,
+          links in text and output can be opened, and an optional AI chat
+          sidebar and MCP server can read the worksheet. Plus many fixes,
+          among them a security fix for .wxm files.
+        </p>
+      </description>
+    </release>
     <release version="26.08.0" date="2026-08-11T12:00:00Z">
       <description>
         <p>

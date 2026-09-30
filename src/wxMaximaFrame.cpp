@@ -32,6 +32,7 @@
 #include "Version.h"
 #include "wxMaximaFrame.h"
 #include "AuiPerspectiveRepair.h"
+#include "ToolbarPane.h"
 #include "ArtProvider.h"
 #include "Dirstructure.h"
 #include "MenuHelpString.h"
@@ -245,20 +246,13 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
       m_sidebarNames[EventIDs::menu_pane_toolbar] = wxS("toolbar");
       m_sidebarCaption[EventIDs::menu_pane_toolbar] = _("The main toolbar");
       m_manager.AddPane(GetWorksheet()->m_mainToolBar,
-                        wxAuiPaneInfo()
-                        .Name(m_sidebarNames[EventIDs::menu_pane_toolbar])
-                        .Top()
-                        .TopDockable(true)
-                        .BottomDockable(true)
-                        // .ToolbarPane().
-                        .CaptionVisible(false)
-                        .CloseButton(false)
-                        .LeftDockable(false)
-                        .DockFixed()
-                        .Floatable(false)
-                        .RightDockable(false)
-                        .Gripper(false)
-                        .Row(0));
+                        SetToolbarPaneProperties(
+                          wxAuiPaneInfo()
+                          .Name(m_sidebarNames[EventIDs::menu_pane_toolbar])
+                          .Top()
+                          // .ToolbarPane().
+                          .Row(0),
+                          GetWorksheet()->m_mainToolBar));
     }
   m_sidebarNames[EventIDs::menu_pane_history] = wxS("history");
   m_sidebarCaption[EventIDs::menu_pane_history] = _("History");
@@ -481,7 +475,15 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
   }
 
   if(GetWorksheet())
-    GetWorksheet()->m_mainToolBar->Realize();
+    {
+      GetWorksheet()->m_mainToolBar->Realize();
+      // LoadPerspective() has just replaced the toolbar's size by the one the
+      // previous session stored, which wxAUI would then keep forever. Its
+      // height follows from its contents, though, so take it from them again.
+      SetToolbarPaneProperties(
+        m_manager.GetPane(m_sidebarNames[EventIDs::menu_pane_toolbar]),
+        GetWorksheet()->m_mainToolBar);
+    }
 
   // Loading the perspective rarely fails. But it might - and in this case we want
   // to set the common properties of our sidebars after loading them: This way we

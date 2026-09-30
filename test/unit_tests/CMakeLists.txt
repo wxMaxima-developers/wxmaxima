@@ -148,7 +148,10 @@ target_include_directories(test_MaximaProtocol PRIVATE ${CMAKE_SOURCE_DIR}/src)
 target_link_libraries(test_MaximaProtocol PRIVATE ${wxWidgets_LIBRARIES})
 add_test(MaximaProtocol test_MaximaProtocol)
 
-if(WXM_USE_AI_TOOLS)
+# Keyed on WXM_AI_TOOLS_REQUESTED, not WXM_USE_AI_TOOLS: this test needs
+# nothing from wxWidgets 3.3.4, which the AI tools themselves require (see
+# the top-level CMakeLists.txt).
+if(WXM_AI_TOOLS_REQUESTED)
 # AiProvider's request-building/response-parsing (the AI chat sidebar's
 # per-provider HTTP shapes) is pure JSON in and out, so it is tested
 # directly, the same way as MaximaProtocol above -- the actual network call
@@ -178,6 +181,18 @@ target_include_directories(test_AuiPerspectiveRepair PRIVATE ${CMAKE_SOURCE_DIR}
 target_link_libraries(test_AuiPerspectiveRepair PRIVATE ${wxWidgets_LIBRARIES})
 add_test(NAME AuiPerspectiveRepair
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_AuiPerspectiveRepair>")
+
+# The main toolbar's height follows from its contents, but wxAUI restores the
+# one the previous session stored over it -- and on MS Windows rescales that
+# stored value on every DPI change, so it can drift a pixel per session.
+# SetToolbarPaneProperties() takes it from the toolbar again after loading.
+add_executable(test_ToolbarPane
+    test_ToolbarPane.cpp ${CMAKE_SOURCE_DIR}/src/ToolbarPane.cpp
+    ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
+target_include_directories(test_ToolbarPane PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_link_libraries(test_ToolbarPane PRIVATE ${wxWidgets_LIBRARIES})
+add_test(NAME ToolbarPane
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_ToolbarPane>")
 
 # Link detection in text cells (GH #2396) is a pure string function shared by
 # the display and the HTML/LaTeX exporters, so it is tested directly.
