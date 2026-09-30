@@ -231,6 +231,9 @@ std::optional&lt; <a class="el" href="classConfiguration.html#adb5fa4e3eacde294a
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsBanded</b> () const</td></tr>
 <tr class="memdesc:a656ce2bac5863f66ef33cf375367fb50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does this matrix get alternating row/column bands? See DrawBands(). <br /></td></tr>
 <tr class="separator:a656ce2bac5863f66ef33cf375367fb50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3ac7c5a9da8867ce8907cba1999cbe4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrCell.html#ab3ac7c5a9da8867ce8907cba1999cbe4">AlwaysBanded</a> (bool banded)</td></tr>
+<tr class="memdesc:ab3ac7c5a9da8867ce8907cba1999cbe4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Band this matrix even if it is shown in full.  <br /></td></tr>
+<tr class="separator:ab3ac7c5a9da8867ce8907cba1999cbe4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac3a292ab7d72829835b49ceb185e2a46"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrCell.html#ac3a292ab7d72829835b49ceb185e2a46">SetCurrentPoint</a> (wxPoint point) const</td></tr>
 <tr class="memdesc:ac3a292ab7d72829835b49ceb185e2a46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pass 2: Arrangement.  <br /></td></tr>
 <tr class="separator:ac3a292ab7d72829835b49ceb185e2a46"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1013,6 +1016,35 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 <p>Defined in <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a> and <a class="el" href="classEditorCell.html" title="This class defines what the user sees as input cell.">EditorCell</a> </p>
 
 <p>Reimplemented in <a class="el" href="classEditorCell.html#add4b1605ec516805a42af9d667fdf641">EditorCell</a>, and <a class="el" href="classGroupCell.html#ac592a77ab3fed321981f25d68cc16234">GroupCell</a>.</p>
+
+</div>
+</div>
+<a id="ab3ac7c5a9da8867ce8907cba1999cbe4" name="ab3ac7c5a9da8867ce8907cba1999cbe4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab3ac7c5a9da8867ce8907cba1999cbe4">&#9670;&#160;</a></span>AlwaysBanded()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MatrCell::AlwaysBanded </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>banded</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Band this matrix even if it is shown in full. </p>
+<p>For the <a class="el" href="classMatrixViewer.html" title="A window that shows a matrix the worksheet only shows part of (GH #2344)">MatrixViewer</a>, which shows a matrix only because it is large, so the bands help there even though the viewer never elides or scrolls it. </p>
 
 </div>
 </div>

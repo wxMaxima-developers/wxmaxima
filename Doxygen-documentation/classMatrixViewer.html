@@ -119,7 +119,7 @@ Static Public Member Functions</h2></td></tr>
 <div class="textblock"><p><a class="el" href="classA.html">A</a> window that shows a matrix the worksheet only shows part of (GH #2344) </p>
 <p><a class="el" href="classA.html">A</a> matrix too large for the window is elided or scrolls (see <a class="el" href="classMatrCell.html" title="A Cell that displays a matrix.">MatrCell</a>). Double-clicking one opens this viewer, which shows a copy of the whole matrix &ndash; every row and every column &ndash; in a worksheet of its own that scrolls as far as the matrix needs.</p>
 <p>The viewer is independent of the matrix it was opened from: it takes a copy (through the matrix's XML, so the copy's cells belong to the viewer's own <a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a>), so re-evaluating or deleting the original doesn't affect it, and several viewers can be open at once. It is read-only: its worksheet doesn't react to clicks or keys, so nothing can be typed into it or evaluated there.</p>
-<p>The viewer's <a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a> is a copy of the worksheet's, so the matrix looks the same as in the worksheet (fonts, colours, zoom), except that <a class="el" href="classMatrixViewer.html#a961c06db46a7c950b338156d869291d6" title="Makes a copy of the worksheet&#39;s configuration suitable for the viewer.">ConfigureForViewer()</a> makes it show every matrix in full, whatever wx_matrix()'s oversized option asked for, and hides the input and the output label. </p>
+<p>The viewer's <a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a> is a copy of the worksheet's, so the matrix looks the same as in the worksheet (fonts, colours, zoom), except that <a class="el" href="classMatrixViewer.html#a961c06db46a7c950b338156d869291d6" title="Makes a copy of the worksheet&#39;s configuration suitable for the viewer.">ConfigureForViewer()</a> makes it show every matrix in full, whatever wx_matrix()'s oversized option asked for, hides the input and the output label and doesn't indent the output. The matrix itself is shown without brackets and with alternating row and column bands (see <a class="el" href="classMatrixViewer.html#a60ca946b3bbd82c690f4bfe33defe458" title="A group cell whose output is a copy of this matrix.">CopyForViewer()</a>). </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ae073866590e00ac7870227a7c554179b" name="ae073866590e00ac7870227a7c554179b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae073866590e00ac7870227a7c554179b">&#9670;&#160;</a></span>MatrixViewer()</h2>
@@ -191,7 +191,7 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Makes a copy of the worksheet's configuration suitable for the viewer. </p>
-<p>Shows every matrix in full &ndash; the configuration doesn't let a matrix ask for anything else, so a nested matrix or one made by wx_matrix(..., oversized=elide) is shown in full, too &ndash; and hides the code cell's (empty) input and the output label. Makes the configuration temporary, so none of that is written to the config file when it is destroyed.</p>
+<p>Shows every matrix in full &ndash; the configuration doesn't let a matrix ask for anything else, so a nested matrix or one made by wx_matrix(..., oversized=elide) is shown in full, too &ndash; and hides the code cell's (empty) input, the output label and the cell brackets, and moves the output to the left margin. Makes the configuration temporary, so none of that is written to the config file when it is destroyed.</p>
 <p>Call it only once the viewer's worksheet exists: the worksheet's constructor reads the config file into the configuration, undoing anything set before. </p>
 
 </div>
@@ -231,7 +231,7 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p><a class="el" href="classA.html">A</a> group cell whose output is a copy of this matrix. </p>
-<p>The copy is made through the matrix's XML, parsed with <code>config</code>, so every cell of it belongs to <code>config</code> &ndash; which a <a class="el" href="classCell.html#aa2db105aac0ca1c6080d83c47901c204" title="Create a copy of this cell.">Cell::Copy()</a> would not ensure. The output label is empty: the viewer shows only the matrix. </p>
+<p>The copy is made through the matrix's XML, parsed with <code>config</code>, so every cell of it belongs to <code>config</code> &ndash; which a <a class="el" href="classCell.html#aa2db105aac0ca1c6080d83c47901c204" title="Create a copy of this cell.">Cell::Copy()</a> would not ensure. The output label is empty: the viewer shows only the matrix. The copy has no brackets and is banded (<a class="el" href="classMatrCell.html#ab3ac7c5a9da8867ce8907cba1999cbe4" title="Band this matrix even if it is shown in full.">MatrCell::AlwaysBanded()</a>). </p>
 
 </div>
 </div>
