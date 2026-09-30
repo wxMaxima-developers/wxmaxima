@@ -955,8 +955,23 @@ public:
   /*! Make a few unicode characters interpretable by maxima.
 
     Does convert the not equal sign to a '#' and similar.
+
+    Symbols that stand for a single Maxima name (the greek letter pi, the
+    sum and square root signs, the logical operators, ...) are no longer
+    replaced here: wxMathML.lisp makes them Maxima aliases of that name
+    (see wx-define-unicode-aliases there), so they also work in files
+    loaded via batch() or load(), and Maxima's aliases variable lists
+    the names they stand for. They are only surrounded by spaces here, since Maxima treats
+    them as letters, which would glue "a⋀b" into one name. Only what
+    an alias cannot express stays here: the fractions and superscripts,
+    which become several tokens, the operators Maxima writes with
+    punctuation, and wrapping a square root's simple argument in
+    parenthesis, which makes "√x" mean sqrt(x).
   */
-  const wxString UnicodeToMaxima(wxString s);
+  const wxString UnicodeToMaxima(wxString s) const
+    { return UnicodeToMaxima(std::move(s), m_configuration); }
+  //! The same, for a configuration that belongs to no worksheet
+  static wxString UnicodeToMaxima(wxString s, const Configuration *configuration);
 
   //! Scroll to the start of the worksheet.
   void ScrollToStart() { Scroll(0, 0); }

@@ -1,5 +1,14 @@
 # Current development version
 
+- The unicode symbols wxMaxima offers for Maxima names (π, ⅈ, ⅇ, ∞, ∑, ∏,
+  ∫, √ and the logical operators ⋀ ⋁ ⊻ ⊼ ⊽ ⇒ ⇔ ¬) are now Maxima aliases
+  instead of being replaced by wxMaxima before a command is sent. They
+  therefore also work in files loaded by `batch()` or `load()` and in
+  `eval_string()`, and `aliases` lists the names they stand for. They
+  survive `kill(all)`, and Maxima still writes `%pi` as `%pi`.
+- A square root sign followed by a number or a variable now gets
+  parenthesis around it: `√2` and `√x` mean `sqrt(2)` and `sqrt(x)`.
+
 # 26.09.0
 
 Large matrices and keyboard access to output are the main topics of this

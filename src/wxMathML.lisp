@@ -3185,6 +3185,83 @@ connection fails. Returns T if a channel thread is running afterwards."
                                   (wx-interrupt-channel-loop stream main)))))))
     (and (wx-thread-alive-p *wx-interrupt-channel-thread*) t)))
 
+;;; ------------------------------------------------------------------
+;;; Unicode symbols as Maxima aliases
+;;;
+;;; wxMaxima's editor offers a few unicode symbols that stand for a Maxima
+;;; name: the greek letter pi for %pi, the sum sign for sum, the logical
+;;; "and" sign for and, and so on. Defining them as aliases here (instead of
+;;; wxMaxima replacing them before sending a command) makes them work in
+;;; files loaded via batch() or load(), too, and makes Maxima's aliases
+;;; variable list the names they stand for.
+;;;
+;;; What alias() does is deliberately not copied in full: it also gives the
+;;; old name a "reversealias" property, which makes Maxima *print* the old
+;;; name as the unicode symbol. With that string(%pi) returns the greek letter and
+;;; stringout() writes files a Maxima without wxMaxima cannot read, and
+;;; kill(all) removes the aliases again (it only finds an alias via the
+;;; reversealias of the old name). Without it both output and kill(all)
+;;; leave the aliases alone.
+;;;
+;;; This file is kept ASCII-only, so the symbols are built from their code
+;;; points. A Lisp whose characters are Unicode (SBCL, ECL, CLISP, CCL...)
+;;; reads them as one character each; one whose characters are bytes (GCL)
+;;; reads the UTF-8 bytes wxMaxima sends, so there the symbol is spelled as
+;;; those bytes.
+;;;
+;;; Worksheet::UnicodeToMaxima() in wxMaxima has a matching list: it
+;;; surrounds these symbols with spaces, since Maxima reads them as letters.
+(defun wx-unicode-string (codepoint)
+  (if (> char-code-limit #xFFFF)
+      (string (code-char codepoint))
+      (map 'string #'code-char
+	   (cond ((< codepoint #x80) (list codepoint))
+		 ((< codepoint #x800)
+		  (list (logior #xC0 (ash codepoint -6))
+			(logior #x80 (logand codepoint #x3F))))
+		 (t
+		  (list (logior #xE0 (ash codepoint -12))
+			(logior #x80 (logand (ash codepoint -6) #x3F))
+			(logior #x80 (logand codepoint #x3F))))))))
+
+(defun wx-define-unicode-alias (codepoint old)
+  (ignore-errors
+    (let ((name (wx-unicode-string codepoint)))
+      ;; Most of these symbols aren't letters to Maxima, which means it would
+      ;; not read them as a name.
+      (meval `(($declare) ,name $alphabetic))
+      ;; implode spells the name as a symbol the way Maxima's reader does:
+      ;; it inverts the case of an all-lowercase name, for example, which
+      ;; for the greek letter pi means the symbol is named "$" + capital pi.
+      ;; Reading the name with mread instead would print input prompts,
+      ;; which wxMaxima would mistake for the end of a command.
+      (let ((new (implode (coerce (concatenate 'string "$" name) 'list))))
+	(putprop new old 'alias)
+	(unless (member old (cdr $aliases))
+	  (setq $aliases (append $aliases (list old))))))))
+
+(defun wx-define-unicode-aliases ()
+  (loop for (codepoint old) in
+	'((#x03C0 $%pi)       ; greek small letter pi
+	  (#x2148 $%i)        ; double-struck italic small i
+	  (#x2147 $%e)        ; double-struck italic small e
+	  (#x221E $inf)       ; infinity
+	  (#x2211 $sum)       ; n-ary summation
+	  (#x220F $product)   ; n-ary product
+	  (#x222B $integrate) ; integral
+	  (#x221A $sqrt)      ; square root
+	  (#x22C0 $and)       ; n-ary logical and
+	  (#x22C1 $or)        ; n-ary logical or
+	  (#x22BB $xor)       ; xor
+	  (#x22BC $nand)      ; nand
+	  (#x22BD $nor)       ; nor
+	  (#x21D2 $implies)   ; rightwards double arrow
+	  (#x21D4 $equiv)     ; left right double arrow
+	  (#x00AC $not))      ; not sign
+	do (wx-define-unicode-alias codepoint old)))
+
+(wx-define-unicode-aliases)
+
 (format t "</suppressOutput>~%")
 ;; Publish all new global variables maxima might contain to wxMaxima's
 ;; autocompletion feature.

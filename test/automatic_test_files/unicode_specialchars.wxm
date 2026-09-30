@@ -120,5 +120,65 @@ if ∏≠product then
 
 
 
+/* [wxMaxima: input   start ] */
+if sin(π/2)≠1 then
+     error ("The greek letter pi isn't properly substituted.")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+if √2≠sqrt(2) then
+     error ("The square root doesn't get parenthesis around a number.")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+if √2.25≠1.5 then
+     error ("The square root doesn't get parenthesis around a decimal number.")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+x:4$
+if √x+1≠3 then
+     error ("The square root doesn't get parenthesis around a variable.")$
+kill(x)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+/* The symbols are Maxima aliases, so they work in commands that never pass
+   through wxMaxima, too */
+if eval_string("sin(π/2)")≠1 then
+     error ("The greek letter pi is no Maxima alias.")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+if eval_string("√(4)")≠2 then
+     error ("The square root is no Maxima alias.")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+if not member(%pi, aliases) then
+     error ("aliases doesn't list the greek letter pi's alias.")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+/* An alias must not change how Maxima writes the name it stands for */
+if string(%pi)≠"%pi" then
+     error ("string(%pi) doesn't return %pi.")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+kill(all)$
+if sin(π/2)≠1 then
+     error ("kill(all) has removed the aliases.")$
+/* [wxMaxima: input   end   ] */
+
+
 /* Old versions of Maxima abort on loading files that end in a comment. */
 "Created with wxMaxima 20.07.0"$

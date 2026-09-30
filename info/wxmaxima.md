@@ -210,7 +210,9 @@ To solve that problem, select other fonts (using: Edit -> Configure -> Style).
 
 ### Unicode replacement
 
-wxMaxima will replace several Unicode characters with their respective Maxima expressions, e.g. `²` with `^2`, `³` with `^3`, the square root sign with the function `sqrt()`, the (mathematical) Sigma sign (which is not the same Unicode character as the corresponding Greek letter) with `sum()`, etc.
+wxMaxima will replace several Unicode characters with their respective Maxima expressions, e.g. `²` with `^2`, `³` with `^3`, `≠` with `#` or `≤` with `<=`.
+
+Unicode characters that stand for a Maxima name are instead defined as _Maxima_ aliases of that name when wxMaxima starts _Maxima_: `π` for `%pi`, `ⅈ` for `%i`, `ⅇ` for `%e`, `∞` for `inf`, the (mathematical) Sigma sign (which is not the same Unicode character as the corresponding Greek letter) for `sum`, `∏` for `product`, `∫` for `integrate`, the square root sign for `sqrt` and `⋀`, `⋁`, `⊻`, `⊼`, `⊽`, `⇒`, `⇔` and `¬` for `and`, `or`, `xor`, `nand`, `nor`, `implies`, `equiv` and `not`. This means they work in files loaded by `batch()` or `load()`, too, and `aliases` lists the names they stand for. As _Maxima_ reads these characters as letters they need to be separated from neighbouring names by spaces in such a file: `a⋀b` is a variable name, `a ⋀ b` means `a and b`. In an input cell wxMaxima adds these spaces automatically. It also puts parenthesis around a number or a variable that directly follows the square root sign, so `√2` means `sqrt(2)`.
 
 Unicode has several "common" fractions encoded as one Unicode code point:
 `¼, ½, ¾, ⅐, ⅑, ⅒, ⅓, ⅔, ⅕, ⅖, ⅗, ⅘, ⅙, ⅚, ⅛, ⅜, ⅝, ⅞`
