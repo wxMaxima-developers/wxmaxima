@@ -73,6 +73,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><ul>
+<li>Double-clicking an elided matrix that disp() printed now opens the matrix viewer once the worksheet has been saved and reopened, too. Output without an "(%o1)" label was not searched from its first cell.</li>
 <li>Ctrl+F in the matrix viewer searches the matrix: each match selects the entry it is in and scrolls it into view, and searching again steps on to the next matching entry. The search dialog there only searches, as nothing in the viewer can be replaced.</li>
 <li>The toolbar's height is now taken from its contents every time <a class="el" href="classwxMaxima.html">wxMaxima</a> starts. It used to be restored from the layout the previous session saved, and never recomputed after that: a height that once came out wrong stayed wrong, and on MS Windows, which rescales the stored height whenever the window moves to a screen with a different resolution, it could shrink by a pixel from one session to the next.</li>
 <li>The AI chat sidebar and the AI connection monitor now need wxWidgets 3.3.4 or newer, the first version they work reliably with. <a class="el" href="classA.html">A</a> build against an older wxWidgets leaves them out, together with their menu entries and their page in the options dialog. The MCP server is not affected.</li>
