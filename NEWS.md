@@ -1,592 +1,126 @@
 # Current development version
 
-- Code cells now treat a bracket or quote escaped by a backslash as part
-  of a name or string (#528). Typing `a\(3` no longer adds a closing bracket,
-  `\)` no longer jumps over a real ")" that follows, a `\"` inside a string no
-  longer ends it, and the bracket highlight ignores escaped brackets.
-- A selected output can now be explored part by part with the keyboard
-  (#2382): Enter goes into the selected expression -- from a result to its
-  expression, from a fraction to its numerator, from a matrix to its first
-  entry -- and Escape comes back out, all the way back into the cell's
-  input. Left and Right select the neighbouring parts, and in a matrix all
-  four arrow keys move from entry to entry. Shift+Left and Shift+Right grow
-  the selection over neighbouring parts, and Shift+arrow keys grow a matrix
-  entry into a block. On Windows, screen readers announce each part as it
-  is selected. Enter on a part that has no parts still opens a new cell
-  holding it. The manual has a new section, "Exploring output with the
-  keyboard", on all of this.
-- A fraction or parenthesis inside a subscript no longer vanishes, or gets
-  partly broken into lines, when the window is too narrow for it. A
-  subscript has no linear form, so it is always drawn in 2D - but the
-  line-breaking step still converted the wide cells inside it to their
-  linear form, which only a cell that is itself broken into lines can draw.
-  Those cells were then positioned and drawn by nobody, and were never
-  returned to 2D when the window grew again. The same applied to matrices
-  and to the fractions of a diff(). Now nothing inside a cell that stays in
-  2D is broken into lines.
-- The matrix viewer (double-click an elided or scrolling matrix) now shows
-  the matrix with alternating row and column bands, without brackets, and
-  starting at the left margin instead of indented like worksheet output.
-- Interrupting Maxima (Ctrl+G) no longer depends on the operating system
-  when Maxima runs on a Lisp with threads (SBCL, which the MS Windows
-  installer uses, CCL, ECL, or a clisp built with threads): the Lisp opens a
-  second connection to wxMaxima that the interrupt is sent through (#2289).
-  This works without Maxima's process id, the shared-memory segment and
-  winkill_lib.dll, or a console, so wxMaxima no longer sets
-  MAXIMA_SIGNALS_THREAD. On a Lisp without threads (GCL) wxMaxima interrupts
-  as before, and says in the log window why it can't do better.
-- MS Windows: Interrupting Maxima (Ctrl+G) is more robust (#2289). If
-  Maxima's first prompt didn't tell wxMaxima Maxima's process id, the
-  interrupt was sent to maxima.bat instead of to the Lisp and failed. Now
-  every process below the one wxMaxima started is tried. The fallback that
-  sent a Ctrl+C to a console was dropped: wxmaxima.exe has no console, so it
-  could never work. A failure now logs which shared-memory segments were
-  tried and what Windows said.
-- The toolbar's Redo button now becomes active and inactive with whether
-  there is something to redo; before, that state switched the Undo button
-  instead. After showing or hiding a group of toolbar buttons, buttons with
-  nothing to act on (Undo, Copy, ...) no longer stay active.
-- The toolbar's "return to the cell being evaluated" button now becomes
-  active as soon as one scrolls away from the evaluation. Before, it kept
-  looking disabled until the mouse pointer entered the toolbar. The same
-  delay affected every other toolbar button whose state or icon changed.
-- Web addresses in Maxima's output are links, too (GH #2396): a string
-  like print("See https://...") or a message naming a web page shows the
-  address underlined in the link color, and Ctrl+click (Cmd+click on macOS)
-  or the context menu's "Open Link" opens it. A plain click still selects
-  the output, so it can be copied as before.
-- The HTML export can now write one single file that contains its images
-  and, if requested, the downloadable .wxmx copy, so the page can be mailed
-  on its own: check "Embed images into the .html file" in the Export tab of
-  the configuration dialog. By default these still go into a separate
-  `<name>_htmlimg` folder next to the .html file, which keeps it small
-  (#2266).
-- Web addresses in text cells are now links (GH #2396). An address
-  starting with http://, https:// or mailto: is drawn underlined in a link
-  color (configurable in Options -> Style), and Ctrl+click (Cmd+click on
-  macOS) or the context menu's "Open Link" opens it in the browser; a plain
-  click still places the cursor, since text cells are always editable.
-  Hovering over a link shows where it leads, and the pointer turns into a
-  hand while Ctrl is held. The HTML export writes such an address as a
-  link, the LaTeX export as \url{} (the export now loads the url package).
-  Nothing is stored in the file: links are recognized from the text itself,
-  so a worksheet looks the same in older versions. Only http, https and
-  mailto links are ever opened.
-- Double-clicking the right-hand part of a wide elided or scrolling matrix
-  now opens the matrix viewer, too; before, only a click near its left
-  edge did. The matrix's tooltip was missing there for the same reason.
-- A .mac file opened in wxMaxima and saved again keeps its comments as they
-  were: a comment containing `&` or a nested `/* ... */` is no longer changed
-  on the way through, and a nested comment is now read as one comment, the
-  way Maxima reads it. Only a text cell that Maxima couldn't read back as
-  one comment still has its `/` next to a `*` written as `&#47;`. A heading
-  containing `*/` can no longer end its comment early and turn the rest of
-  its text into code when the .mac file is loaded into Maxima (#2353).
-- `with_slider_draw(..., file_name="name")` no longer deletes `name.gif`
-  right after showing it in the worksheet (#2389).
-- wxMaxima now needs wxWidgets 3.2 or newer to compile. With wxWidgets 3.0.5,
-  the last 3.0 release, wxMaxima started but never got a working connection
-  to Maxima (#2301). Ubuntu 22.04 only ships wxWidgets 3.0, so the release
-  no longer includes a .deb for it; the .deb for Ubuntu 24.04 replaces it.
-- Compiling wxMaxima needs a compiler with good C++20 support: GCC 12 or
-  newer (the one Debian 12 ships), or a similarly recent Clang or MSVC.
-  Every Linux distribution that packages wxWidgets 3.2 has one.
-- Dragging a rectangle across several entries of a matrix now selects just
-  that block of entries instead of the whole matrix, and highlights it. Every
-  "Copy ..." command -- Copy, plain text, LaTeX, Octave/Matlab, MathML, RTF,
-  image and SVG -- then copies only that sub-matrix (#2345).
-- A cell's output can now be reached with the keyboard: Down at the end of
-  a cell's input selects its first result, further presses step through the
-  results one at a time, and Up walks back into the input. Once a result is
-  selected, the Menu key or Shift+F10 opens the same menu a right-click does,
-  so it can be copied in any format. On Windows, screen readers announce the
-  selected result (#2382).
-  Anyone who prefers the old behaviour, where Down went straight on to the
-  next cell, can switch it back with "Up/Down keys skip over output" in the
-  Worksheet tab of the configuration dialog.
-- A selected block of a matrix's entries can be grown or shrunk with
-  Shift+arrow keys: each press moves the block's far corner -- the one the
-  drag ended at -- by one entry. A run of left-out rows or columns counts as
-  one step. Grown to the whole matrix, the block becomes an ordinary
-  selection of the matrix, which Shift+arrow keys can shrink again (#2370).
-- "Copy as HTML" now copies only what is selected when the selection is part
-  of a cell's output -- a result, a sub-expression or a block of a matrix's
-  entries -- instead of the whole cell (#2369).
-- In a matrix shown with scrollbars, moving a selected block's corner with
-  Shift+arrow keys now scrolls the matrix along, so the corner stays in
-  view (#2380).
-- A matrix, or a block of one, can be copied as CSV from the right-click
-  menu, to paste it into a spreadsheet: one line per row, the values
-  separated by commas, or by tabs where numbers are written with a decimal
-  comma (#2364).
-- New function `with_slider_draw_bare`, which works like `with_slider_draw`
-  but makes each frame of the animation with a plain `draw()` instead of
-  `draw2d()`. A frame can therefore show several `gr2d()` and `gr3d()`
-  scenes side by side, and use `draw`'s global options like `columns`.
-- `with_slider_draw_bare` now accepts `file_name`, like `with_slider_draw`,
-  and saves the animation as a gif file. wxMaxima assembles the gif from the
-  frames, since `draw` can't make one out of frames with several scenes
-  (#2361).
-- New function `wx_version_min("26.09.0")`, which returns `true` if the
-  running wxMaxima is at least that version, so a worksheet can check
-  whether it can use a feature. In wxMaxima 26.08.0 and older the function
-  doesn't exist and the call returns itself unevaluated; comparing the
-  result with `true` handles that, too.
-- Hovering the mouse over a matrix now shows which entry it is over, as
-  "Row 2, column 3", numbered like `M[2,3]`. This makes it easier to find
-  your way around a large matrix, including one whose middle rows or columns
-  are left out or that scrolls. In a matrix of matrices the row and column
-  of the outer matrix are shown.
-- `wx_matrix()` now only returns the formatted matrix instead of also
-  displaying it, so `wx_matrix(M);` shows the matrix once, not twice, and
-  `wx_matrix(M)$` doesn't show it at all. The formatting stays with that
-  value: `F: wx_matrix(M, lines=true)$` followed by `F;` shows `F`
-  formatted, while a result calculated from it, like `F+1`, is shown the
-  normal way.
-- Closing the diff viewer no longer resets settings that were changed in the
-  main window while it was open (#2356).
-- Output arriving from Maxima no longer pushes the cursor down the screen.
-  If the cursor is visible and output is appended to a cell above it, the
-  worksheet now scrolls along by exactly as much, so the line being read or
-  typed in stays where it was and the new output grows upwards instead. The
-  worksheet can only scroll in steps of several pixels; to make this exact
-  its top margin varies by up to one such step.
-- Double-clicking a matrix that is too large for the window, and therefore
-  shown with its middle rows and columns left out or in a scrolling box,
-  opens a window that shows all of it. That window can be resized, several
-  can be open at once, and Escape closes it. The tooltip of such a matrix
-  now mentions this.
-- `wx_matrix()` has a new option, `oversized=full`, `oversized=elide` or
-  `oversized=scroll`, that decides how that one matrix is shown if it is too
-  large for the window, whatever the configuration says for all the others.
-  The choice is saved with the worksheet. Exporting the matrix as an image
-  still always shows all of it.
-- Opening Options no longer asks for the keyring's password. The AI Chat
-  tab used to read every stored API key just to fill its masked key fields,
-  and to write them all back on OK; it now never reads them. A key field
-  starts empty and means "keep the stored key", typing a new key replaces
-  it, and "Forget the stored key" deletes it. Only "Fetch models" still
-  reads the key, since the provider wants it for that request.
-- The vertical scrollbar of a matrix too large for the window no longer
-  blinks when the pointer is over it, and can be dragged again. The matrix
-  starts to the right of its group cell, behind the width of the label
-  column, so the cell did not reach as far right as the scrollbar; a repaint
-  of just the scrollbar (which moving the pointer onto it causes, on
-  Wayland at least) then skipped the matrix, and a matrix that isn't drawn
-  where it was is taken to be gone, scrollbars and all.
-- DeepSeek and OpenRouter are now built-in AI Chat providers. Both need
-  only an API key, pasted into Options -> AI Chat, and each has a link there
-  to where that key is made. OpenRouter passes a request on to one of many
-  other providers' models, chosen by name ("anthropic/claude-sonnet-5",
-  ...), or picks one itself with the preset "openrouter/auto"; DeepSeek
-  starts with its general "deepseek-chat" model, and its "deepseek-reasoner"
-  can be picked instead, in which case the chat shows its answer, not its
-  reasoning.
+# 26.09.0
+
+Large matrices and keyboard access to output are the main topics of this
+release, which again was developed with substantial help from the AI
+assistant **Claude**. A matrix too large for the window no longer widens
+the worksheet, output can be explored part by part with the keyboard, links
+in text and output can be opened, and an optional AI chat sidebar and MCP
+server can read the worksheet. Plus many fixes, among them a security fix
+for .wxm files.
+
+## Matrices
+
 - A matrix too large for the window no longer widens the whole worksheet.
-  Instead its middle rows and columns are left out and the gap is marked
-  with ⋯ ⋮ ⋱, the way a large matrix is written by hand: the first and last
-  rows and columns always stay in view, and hovering over the matrix tells
-  which ones are not shown. The matrix is elided to fit the window,
-  re-elided whenever the window is resized, and elided to fit the page when
-  printed. Nothing is lost by it: copying, saving and exporting the matrix
-  always include every entry. This is a change of the default: the old
-  behaviour is still available as "Show them in full" under Options ->
-  Worksheet -> "Matrices too large for the window".
-- The same setting can instead show such a matrix in a window-sized box
-  with its own, native scrollbars, the way a spreadsheet does. Only the
-  matrix scrolls: the mouse wheel still scrolls the worksheet, so a matrix
-  never traps it, and the scrollbars never take the keyboard focus away
-  from the worksheet. A matrix shown this way is printed with its middle
-  rows and columns left out, since paper cannot scroll. A matrix inside
-  another one never gets scrollbars of its own: the outer one scrolls over
-  both.
-- A matrix too large for the window, whether elided or scrolling, has every
-  other row and column very faintly shaded, so the eye can follow a row or
-  a column across it. A matrix that fits the window stays plain.
+  By default its middle rows and columns are left out and marked with
+  ⋯ ⋮ ⋱; alternatively it can get its own scrollbars, or be shown in full
+  as before (Options -> Worksheet -> "Matrices too large for the window").
+  Copying, saving and exporting always include every entry.
+- `wx_matrix(M, oversized=full|elide|scroll)` chooses this for one matrix.
+  `wx_matrix()` now only returns the formatted matrix instead of also
+  displaying it.
+- Double-clicking such a matrix opens a resizable window showing all of it.
+- Hovering over a matrix shows which entry the mouse is over ("Row 2,
+  column 3"), and large matrices have faintly banded rows and columns.
+- Dragging across a matrix selects a block of entries, which Shift+arrow
+  keys can grow or shrink (#2345, #2370, #2380). Every "Copy ..." command,
+  including "Copy as HTML", copies only that block (#2369), and a matrix or
+  block can be copied as CSV for a spreadsheet (#2364).
 
-- The AI chat now scrolls to an answer when it arrives, instead of leaving
-  it below the bottom edge of the transcript for anything longer than a line
-  or two.
-- The AI chat has an Interrupt button. It is greyed out until there is
-  something to interrupt, and stopping a request that way is recorded as
-  what it is -- the transcript says the request was interrupted, and the
-  status bar's AI icon doesn't go red over it.
+## Keyboard and accessibility
 
-- Translatable strings now reach translators without waiting for whoever
-  added them to remember to regenerate the catalogue: a weekly job refreshes
-  it, and refuses to commit anything if the regeneration would silently drop
-  strings.
+- A cell's output can be reached with the keyboard: Down at the end of the
+  input selects the first result, Enter goes into a selected expression
+  (numerator, matrix entry, ...), Escape comes back out, and the arrow keys
+  move between parts. The Menu key or Shift+F10 opens the context menu, and
+  on Windows screen readers announce each selected part (#2382). The manual
+  has a new section, "Exploring output with the keyboard". The old
+  behaviour of Down can be switched back in the configuration dialog.
+- Output arriving from Maxima no longer pushes the cursor down the screen.
 
-- A custom AI provider can now sit behind HTTP Basic authentication, which
-  is what Ollama's own documentation recommends for an instance reachable
-  from beyond localhost. Fill in the new Username field in Options -> AI
-  Chat and the credential below it is sent as the Basic password rather
-  than as an API key -- the field relabels itself to say so. Leaving the
-  username empty keeps every provider behaving exactly as before.
-- An AI tool connected to wxMaxima's MCP server can now ask which sidebars
-  are on screen and show or hide them, so it can open the Variables pane
-  before talking about variables, or clear a sidebar out of the way, instead
-  of asking you to do it. Like every other MCP tool it cannot touch the
-  worksheet itself: it changes which panes are visible and nothing else, and
-  it refuses to hide the worksheet.
-- Building the unit tests with `-DCMAKE_UNITY_BUILD=ON` works again. One of
-  the test harness's stub files has to be compiled on its own, and merging it
-  with a test that defines the same function differently made the compiler
-  refuse the whole translation unit.
-- The AI Chat settings now offer a model to pick instead of only a name to
-  type: a "Fetch models" button beside the Model field asks the provider
-  which models it currently has and fills the field's dropdown with them.
-  Nothing is fetched unless that button is pressed -- most of these
-  providers want an API key for the request, and merely selecting a provider
-  shouldn't send them one. The field stays a text field as well, so a model
-  the provider doesn't advertise -- a fine-tune, a preview, or whatever a
-  local server was started with -- can still simply be typed, and a provider
-  that offers no such list, or can't be reached, works exactly as before.
-- The AI chat sidebar's status bar icon and its connection monitor now
-  actually exist. Neither was reachable: the status bar was never told to
-  reserve the field the AI icon lives in, so the icon was never created and
-  every attempt to update it was silently discarded; the connection monitor
-  was never constructed at all, had no sidebar entry in View -> Sidebars and
-  no pane for the AI icon's double-click to toggle; and the chat sidebar was
-  never handed either of them, so it had nowhere to report to even once they
-  existed. The AI icon now shows whether a provider is configured, busy or
-  in error, a click on it opens the chat, a double-click opens the
-  connection monitor, and that monitor shows the requests wxMaxima sends and
-  the replies it gets back.
-- Clicking the AI status icon no longer does nothing: the single-click and
-  right-click handlers tested whether a system secret store was available
-  and then gave up if it *was*, which is precisely the case in which there
-  is an AI chat sidebar to open.
+## Editing, links and plots
 
-- Compiling wxMaxima is about a third faster. Precompiled headers are now
-  switched on by default -- and, more to the point, they now actually do
-  something: the option to enable them has existed for years, but the header
-  it precompiled was empty, so turning it on changed nothing at all.
-- Batch runs (`--batch`) no longer occasionally hand the worksheet's first
-  command to a Maxima that isn't listening yet. Opening the file restarts
-  Maxima, and on a loaded machine the replacement could still be starting up
-  when wxMaxima began sending it the document -- the first command was then
-  lost, and everything after it was read as the answer to the wrong
-  question, so the run aborted somewhere in the middle for no visible
-  reason. wxMaxima now waits for the new Maxima to announce itself before
-  sending it anything. The same fix stops batch runs from occasionally
-  skipping a statement later in the file, which could otherwise produce a
-  wrong result with no error at all (#2196).
-- Opening a file no longer starts Maxima twice. wxMaxima starts a Maxima as
-  soon as it comes up, so that it is ready by the time you send off your
-  first cell; when a file was named on the command line or double-clicked,
-  that process was started in the wrong directory, thrown away again a
-  moment later and replaced. Starting a worksheet this way is now about two
-  seconds faster, and only one Maxima is ever launched.
+- Web addresses in text cells and in Maxima's output are links: Ctrl+click
+  (Cmd+click on macOS) or the context menu's "Open Link" opens them
+  (#2396). The HTML and LaTeX exports keep them as links.
+- Code cells treat a bracket or quote escaped by a backslash as part of a
+  name or string (#528).
+- New functions `with_slider_draw_bare` (animations made with plain
+  `draw()`, so a frame can hold several scenes; `file_name` saves a gif,
+  #2361) and `wx_version_min("26.09.0")`, which lets a worksheet check the
+  wxMaxima version it runs in.
+- `with_slider_draw(..., file_name="name")` no longer deletes the gif right
+  after showing it (#2389).
+- A system tray icon shows whether Maxima is busy and offers Interrupt and
+  Exit (#2286).
 
-- Windows: `wxmaxima --logtostderr ... 2>&1` no longer loses everything that
-  wxMaxima writes to stderr. Whenever the shell pointed stdout and stderr at
-  the same place -- which is what `2>&1` does, and what a pipe to `more` or
-  `findstr` usually involves -- wxMaxima closed that destination while
-  setting up the first of the two streams, so the second one silently went
-  nowhere. The log output was never written rather than merely misplaced,
-  which is what made it look as though `--logtostderr` had had no effect.
-- Builds no longer redo work that is already done: the step that copies each
-  translation into the build tree, so that ./wxmaxima-local finds it without
-  installing, ran once per language on every single build -- 50 file copies
-  even when nothing at all had changed, which is why a rebuild never reported
-  having nothing to do. It now runs only for the translations that actually
-  changed. Nothing about the result differs: the same files are produced in
-  the same places.
-- Added wxmaxima-cli.exe on Windows: a small console program that starts
-  wxMaxima, hands it the console's own input and output, waits for it and
-  returns its exit code. `--version`, `--help` and `--batch` only behave
-  like a normal command-line tool when invoked through it. Windows fixes an
-  executable's "subsystem" in the program file at link time, and cmd.exe
-  does not wait for a graphical program: run `wxmaxima.exe --version`
-  directly and the prompt comes back before the version has been printed.
-  Nothing about the graphical wxMaxima changes; on Linux and macOS, where
-  no such distinction exists, nothing changes either.
-- Windows releases now also offer a .zip alongside the installer (GH #2298).
-  Unpack it wherever you like -- including a USB stick or a directory in
-  your home folder -- and run bin/wxmaxima.exe from there: no installation
-  and no administrator rights. The installer still needs them, because it
-  writes to Program Files and registers file associations for all users,
-  and it remains the recommended choice where that is possible. The .zip
-  contains exactly the same program and data files; what it does not do is
-  register file associations or create Start Menu entries.
+## Export and files
 
-- AI Chat failures now show what the provider actually said. A failed
-  request can still carry a real HTTP response, and its body is where the
-  provider explains itself -- so an unrecognised model id, which Anthropic
-  answers with a bare HTTP 404, used to reach the user as an unexplained
-  "could not reach Anthropic", for a request that had in fact reached it
-  perfectly well.
-- Updated the default Anthropic model, which had gone stale. An existing
-  configuration keeps whatever model it already has: change it under
-  Options -> AI Chat, or use "Revert all to defaults".
-- The AI Chat sidebar no longer repeats the same "this provider's settings
-  need fixing" message into the conversation each time Options is closed.
-- Fixed wxMaxima discarding the worksheet's stored window layout when
-  reading a configuration written by an older version. Those versions
-  recorded the worksheet pane at a dock row wxAUI considers invalid for a
-  centre pane, and wxAUI does not merely complain: LoadPerspective() drops
-  such a pane's stored geometry entirely. On a wxWidgets built with
-  assertions enabled it aborted wxMaxima on startup instead. The stored
-  layout is now repaired before wxAUI ever sees it.
-- Fixed every wrapping paragraph in the Options dialog rendering as
-  nothing: the AI Chat tab's introduction, its note about an API key being
-  billed separately from a chat subscription, and the "OpenAI-compatible
-  covers most third-party APIs" hint in the Add-custom-provider dialog were
-  all invisible. WrappingStaticText re-wrapped its text on every size
-  event, which changed the size it asked for, which produced another size
-  event -- a loop that settled on the text not being wrapped at all, as a
-  single long line in a much narrower panel. It now wraps only when the
-  width it is given actually changes, and measures the wrapped text itself
-  rather than asking wxStaticText, which on GTK deliberately reports the
-  size the text would have if it were *not* wrapped.
+- The HTML export can optionally write a single self-contained file with
+  all images embedded (#2266), and "Copy as HTML" puts such a document on
+  the clipboard (#2265, #2267).
+- Security fix: a crafted .wxm file could run Maxima code when opened or
+  loaded, as text containing `*/` ended its comment early (#1907).
+- A .mac file saved by wxMaxima keeps its comments unchanged (#2353).
+- "Copy as RTF" now pastes into MS Word (#2264); hidden multiplication
+  signs get proper spacing in MathML/OMML export (#2263).
+- The manual's PDF no longer needs CJK fonts for non-CJK languages (#2271).
 
-- Fixed the two links on the Options dialog's AI Chat tab ("Get an API
-  key for ..." and "See current models for ...") being drawn on top of
-  each other, above the fields they belong under, instead of stacked
-  below them. They are created hidden -- their real text isn't known
-  until a provider is picked -- and a hidden sizer item is never given a
-  position, so nothing ever positioned them once shown: the code laid out
-  the dialog rather than the tab they live on.
-- Added the wxMaxima half of a protocol for asynchronous ("background
-  job") output, ready for a future Maxima that can run a command in the
-  background. wxMaxima now tells Maxima which cell it is currently
-  evaluating, and understands output that names the cell it belongs to --
-  so a job's result lands on the cell that started it rather than on
-  whichever cell happens to be current minutes later. A background job
-  cannot ask questions (it is refused with a message on its own cell
-  instead of hijacking another cell's prompt), its output cannot be
-  interleaved with another job's, and output naming a cell that no longer
-  exists is discarded. Nothing changes in a normal session: today's Maxima
-  never sends such output. See Doxygen/AsyncMaximaOutput.md.
-- Fixed a custom AI provider silently changing its own wire format: the
-  "API style" dropdown lists "OpenAI-compatible" first, but the code that
-  filled it in used the raw enum value as the selection index, so a
-  freshly added OpenAI-compatible provider (e.g. a local Ollama server)
-  was shown -- and then, on the next save, genuinely stored -- as an
-  Anthropic-style one.
-- A custom AI provider no longer requires an API key. A local AI server
-  (Ollama, LM Studio, llama.cpp server) has nothing to authenticate to and
-  normally has no key at all, but the sidebar refused to use such an entry
-  and reported "No AI provider configured" instead. With no key, no
-  credential header is sent at all rather than an empty one.
-- AI Chat network failures now say what actually went wrong ("could not
-  connect to server", "could not resolve host", a TLS error, ...) instead
-  of a bare "network error" that gave the user nothing to act on.
-- The "Add custom AI provider" dialog now rejects a request URL with no
-  `http://` or `https://` scheme in front of it, and the AI Chat sidebar explains
-  the problem instead of attempting the request, rather than letting a
-  natural-looking but unusable "127.0.0.1:11434" through to fail later as
-  an unexplained network error.
-- Added a third status bar icon for the AI Chat sidebar (next to the
-  existing Maxima/network status icons): hidden when no AI provider is
-  configured, shown with a distinct icon while a request is in flight, on
-  success, and on failure (with the error in the tooltip). Single-click
-  brings the AI Chat sidebar to the front; double-click opens a new AI
-  Connection Monitor sidebar showing the raw request/response traffic
-  (View -> Sidebars); right-click offers a small menu (open the chat, open
-  Options, clear the conversation). If a request takes longer than usual,
-  the status text and icon tooltip say so, mirroring how a long Maxima
-  calculation is already shown.
-- Fixed the AI Chat sidebar being silently compiled out of every build
-  regardless of the WXM_USE_AI_TOOLS option's value: the option was never
-  actually passed to the C++ preprocessor, so every #if(WXM_USE_AI_TOOLS)
-  guard evaluated false unconditionally, and a separate CMake source-list
-  bug meant AiChatSidebar.cpp was never compiled in even when the option
-  was fixed. Now wired through BuildConfig.h like the project's other
-  optional features (e.g. USE_FRIBIDI).
-- Added an optional MCP (Model Context Protocol) server that lets an external
-  AI tool read the current worksheet as context: list/read cells, read the
-  table of contents, read a whole section by heading, read the whole
-  worksheet, and read/add/remove entries in the Variables sidebar's
-  watchlist. Off by default; enable it in Options and it only ever listens
-  on this machine (127.0.0.1). It cannot insert, edit or evaluate anything
-  in the worksheet -- every tool only reads, except adding/removing a
-  variable from the watchlist, which only changes what that sidebar
-  displays, the same as typing a name into it by hand.
-- Added an MCP search_cells tool that finds every cell whose input and/or
-  output contains a given plain-text or regular-expression pattern, so an
-  AI can jump straight to the relevant cell(s) of a large worksheet instead
-  of reading it all.
-- Added an MCP evaluation_status tool that reports whether Maxima is
-  actively evaluating a command right now, which cell, the exact statement
-  within that cell currently running (a cell can hold several $/;-separated
-  statements), and how many milliseconds that specific statement has been
-  running.
-- MCP's watch_variable now reports maxima_busy in its own response, so an
-  AI adding a watch no longer needs a separate read_variables call just to
-  learn that Maxima is still busy and the value isn't available yet.
-- MCP's read_variables, watch_variable and evaluation_status now report
-  maxima_connected, so an AI can tell "Maxima isn't running at all" apart
-  from "Maxima is running and genuinely idle" -- previously both cases
-  looked identical (maxima_busy/evaluating both false).
-- Added GitHub Models as a fifth built-in AI Chat provider -- GitHub's own
-  official, OpenAI-compatible model-hosting API, authenticated with a plain
-  GitHub personal access token. (This is a deliberately different thing
-  from "GitHub Copilot Chat", which has no sanctioned third-party API and
-  was not added.)
-- The MCP server and AI Chat sidebar's worksheet context now tell an AI
-  where the user's cursor is and which cell (if any) has an error, so it
-  can actually answer "what's wrong with my current cell" or "the cell
-  above the cursor" -- both were previously invisible to it. Also capped
-  how much of a single cell's output can dominate a response (a huge
-  matrix or list no longer crowds out every other cell), with a way to
-  ask for just a preview or specifically the end of a long output, and
-  made read_variables report when Maxima is still busy so an empty value
-  isn't mistaken for "undefined" when it's really just "not answered yet."
-- Options -> AI Chat now links directly to each provider's own page for
-  getting an API key, and the AI Chat sidebar itself shows an "Open
-  Options..." button whenever none is configured yet.
-- The AI Chat and Accessibility tabs in Options no longer share a generic
-  icon with an unrelated tab -- both now have their own. Options -> AI Chat
-  also gained a note explaining that an API key is billed separately from
-  a consumer chat subscription (a Claude Pro/Max, ChatGPT Plus or Gemini
-  Advanced plan does not include API usage), since a provider's site asking
-  for prepaid credit before it hands out a key can otherwise look like a
-  mistake.
-- Options -> AI Chat redesigned: instead of all four providers' key/model
-  fields shown stacked at once, a single "Active provider" dropdown now
-  shows only the selected one's own fields. You can also add any number of
-  your own custom providers (a name, an API style -- OpenAI-compatible,
-  Anthropic, or Google Gemini -- a request URL and a model), which covers
-  most third-party and self-hosted endpoints (OpenRouter, Groq, a local
-  Ollama server, a proxy in front of one of the big three, ...) without
-  needing built-in support for each one by name.
-- Adding a custom AI provider now offers a "Quick fill" shortcut for a few
-  well-known local AI servers (Ollama, LM Studio, llama.cpp server) that
-  pre-fills the URL/model fields with that server's usual defaults -- still
-  a plain custom provider afterward, and every field stays editable.
-- AI provider API keys are now stored in the operating system's own secret
-  store (the same keyring Windows/macOS/most Linux desktops already use for
-  other apps' passwords) instead of in wxMaxima's own plain-text settings
-  file; a key saved by an older version is moved into the secret store
-  automatically the first time you start this version. On a system with no
-  such secret store available at all, the AI Chat tab, sidebar and menu
-  entry are hidden entirely rather than falling back to storing a key in
-  plain text.
-- Added an "AI Chat" sidebar (View -> Sidebars -> AI Chat) that lets you
-  chat about the current worksheet with Anthropic, OpenAI, Google Gemini or
-  Qwen, using your own API key (configured in Options -> AI Chat). It sends
-  a read-only snapshot of the worksheet as context; it cannot edit,
-  evaluate or otherwise change the worksheet itself.
-- Made the GUI-subsystem binary's stdout/stderr redirection
-  (`RedirectStdioToParent()`) use `_dup2()` to repoint the existing stream's
-  descriptor instead of a shallow struct-copy over a second, throwaway
-  `FILE*` -- the standard, documented way to do this, regardless of the item
-  below. This does *not* fix the `wxmaxima_version_string` CI failure on the
-  Windows runner: that was the working theory, but the next CI run
-  reproduced the exact same failure on this change, and a follow-up
-  Wine-based test confirmed both the old and new code deliver a
-  GUI-subsystem process's piped stdout correctly in isolation. That failure
-  remains open; see AGENTS.md for what's been ruled out and the most
-  promising remaining lead.
-- Added a system tray/notification-area icon (GH #2286) that mirrors
-  wxMaxima's busy status -- the same information the status bar's own icon
-  and, on Windows, the taskbar button's progress overlay already show -- and
-  offers a small quick-access menu (Interrupt, Show wxMaxima, Exit). Uses
-  the portable `wxTaskBarIcon`, so it works on any platform wxWidgets
-  supports it on; on GTK/Linux specifically it only renders as a genuinely
-  visible icon when the linked wxWidgets was itself built with
-  AppIndicator/Ayatana support, a property of the wxWidgets package
-  wxMaxima links against, not something wxMaxima's own build controls.
-- Fixed a security issue (GH #1907): a crafted `.wxm` file could execute
-  arbitrary Maxima code as soon as it was opened or `load()`/`batch()`ed by
-  plain Maxima, without the user ever running anything themselves. A
-  title/section/subsection/heading/text-cell's `.wxm` marker opens a
-  `/* ... */` comment that stays open across the *entire* cell content, only
-  closing at the end marker's own trailing `*/` -- so a literal `*/`
-  anywhere inside such a cell's own text closed that comment early, turning
-  whatever followed (up to the next `*/` in the file) into live, executable
-  Maxima input. Fixed by escaping any `/` that sits next to a `*` in these
-  cells' text (as the HTML entity `&#47;`) on write, and reversing it on
-  read; code/input cells are deliberately left untouched, since their own
-  markers are already fully self-closed on one line and they must stay
-  byte-identical for a plain Maxima to `batch()` them correctly.
-- Fixed a modal dialog popping up at every startup on wxWidgets >= 3.3
-  reporting the (successful) dark/light appearance change as a debug
-  message -- the diagnostic log call ran before wxMaxima's own log window
-  was created (GH #2274 moved it later), so it fell through to wx's
-  default log target, which shows a dialog for every message. The
-  appearance change itself still happens at the same point as before; only
-  logging its result is now deferred until the log window exists.
-- Fixed the "Maxima isn't connecting" warning (GH #1182) sometimes firing
-  spuriously on Linux/Windows for a large worksheet: it was counting the
-  time wxMaxima itself spent parsing and laying out the worksheet against
-  Maxima's 5-second connection budget, instead of only the time wxMaxima
-  was actually free to notice the connection. Also reworded the warning to
-  mention that wxMaxima/Maxima talk over a local loopback socket, which
-  some security software blocks even though no traffic leaves the machine.
-- Fixed `product()`/`prod()` cells showing the wrong operator text ("sum(")
-  once broken into lines, and rendering as nothing at all when they weren't
-  broken -- both caused by `ProductCell` failing to reach the code it
-  inherits from `SumCell`: a virtual call made during `SumCell`'s own
-  constructor can never dispatch to `ProductCell`'s override, and two
-  do-nothing `SetCurrentPoint()`/`Draw()` overrides skipped `SumCell`'s
-  actual positioning/drawing logic entirely.
-- Fixed an assert on newer wxWidgets ("Center pane must have dock layer, row
-  and pos set to 0") from the worksheet's AUI pane being declared with both
-  `.Center()` and a (meaningless, for a center pane) `.Row(2)`.
-- Fixed Windows Dark Mode only affecting the worksheet, not the rest of the
-  interface (GH #2274). `wxLogWindow`'s constructor always creates a real
-  `wxFrame` under the hood regardless of its "show" argument, and wxMaxima
-  built its (normally hidden) log window near the very start of `OnInit()` --
-  before `wxApp::SetAppearance()` got a chance to run. On Windows,
-  `SetAppearance()` silently gives up (`AppearanceResult::CannotChange`) the
-  moment *any* top-level window already exists, shown or not, so the
-  app-wide appearance was never actually being applied to the native chrome
-  (menus, toolbars, dialogs) -- only the worksheet, which wxMaxima colors
-  itself independently of `SetAppearance()`, ever reflected the setting.
-  Moved the log window's construction to after the appearance is applied.
-- Fixed composing the manual PDF for a non-CJK language failing outright if
-  `texlive`'s CJK support wasn't installed (GH #2271, e.g. `wxmaxima.hu.pdf`
-  on a Debian/Sid box without it) -- the build passed `-V CJKmainfont:...` to
-  pandoc unconditionally for every language, not just Chinese, making every
-  manual's PDF hard-depend on a large, easy-to-not-have package it never
-  actually needed. Only the CJK languages' PDFs request a CJK font now.
-- `--batch`/`--exit-on-error` runs that halt before finishing now exit with a
-  dedicated status code (90-95) instead of a generic `1` for every reason
-  (GH #2276) -- a caller's script can now tell a Maxima error, an unanswered
-  interactive question ("Halting, as documented for --batch"), a file that
-  failed to open or save, or an image that failed to load/decode apart
-  without parsing the log. See the new "EXIT STATUS" section of the
-  `wxmaxima(1)` man page for the full list.
-- Fixed a Maxima "set" (`{...}`, `setify(...)`, ...) rendering as completely
-  blank output (GH #2270), even though the value was computed correctly (a
-  right-click "Copy" of the invisible cell, or `listify(%)`, revealed the
-  right content). `SetCell::SetCurrentPoint()` shadowed the inherited
-  `ListCell::SetCurrentPoint()` with an override that positioned only the
-  cell itself, never its opening/closing brace or its contents -- so those
-  child cells kept whatever stale position they last had (or none at all)
-  and were drawn off in the wrong place instead of inside the set's visible
-  bounding box. The override did strictly less than the version it shadowed
-  and served no purpose, so it was removed outright, letting `SetCell`
-  inherit `ListCell`'s (correct) positioning logic. Also fixed the "{"/"}"
-  brace cells not getting the `TS_FUNCTION` style `ListCell`'s "["/"]"
-  cells get, a related inconsistency found while fixing this.
-- Fixed the "ASCII maths" style defaulting to a non-monospace font, which
-  misaligned Maxima's own ASCII-art 2D output (fractions, matrices, sums,
-  ...) since it pads with literal spaces assuming every character is the
-  same width. Two bugs stacked: the picked font family was only ever a loose
-  hint the platform's font substitution was free to resolve to something
-  proportional, and separately, reading a fresh configuration with no
-  persisted font choice silently overwrote every style's carefully-chosen
-  default font with one generic UI font -- both now fixed.
-- Added a "Copy as HTML" right-click menu item (GH #2265, #2266, #2267) that
-  places a self-contained HTML document on the clipboard: the stylesheet is
-  inlined and every image is embedded as a base64 data: URI, so the result
-  pastes correctly into browsers, email clients and word processors without
-  depending on any file from the original worksheet.
-- Fixed "Copy as RTF" (and RTF on the general copy/cut clipboard) being
-  silently ignored when pasted into MS Word (GH #2264): the RTF data was only
-  advertised under the MIME-style clipboard format names Linux/GTK word
-  processors expect, never under the literal "Rich Text Format" name Windows
-  registers CF_RTF under and that Word's clipboard handler actually looks up.
-- Fixed a hidden multiplication sign leaving almost no horizontal gap in
-  MathML/OMML export (GH #2263), unlike the real gap it reserves on screen:
-  the export substituted a genuinely zero-width Unicode marker for it. The
-  marker itself (needed for accessibility, so screen readers still announce
-  the implicit multiplication) is unchanged; it now carries explicit spacing
-  so it takes up the same amount of room as it does in the worksheet.
+## AI chat and MCP server (optional)
+
+- An "AI Chat" sidebar chats about the current worksheet with Anthropic,
+  OpenAI, Google Gemini, Qwen, GitHub Models, DeepSeek, OpenRouter or a
+  custom provider, including local servers like Ollama, LM Studio or
+  llama.cpp. It uses your own API key, stored in the operating system's
+  secret store, and can read the worksheet but never change or evaluate
+  it. A status bar icon and a connection monitor show what it is doing.
+- An optional MCP server lets an external AI tool read the worksheet, the
+  Variables sidebar and the evaluation status, and show or hide sidebars.
+  It listens only on this machine and cannot change the worksheet.
+
+## Talking to Maxima
+
+- Interrupting Maxima (Ctrl+G) goes through a second connection when the
+  Lisp has threads (SBCL, CCL, ECL), which also makes it work reliably on
+  Windows (#2289).
+- Batch runs no longer occasionally lose or skip a statement (#2196), and
+  exit with a status code saying why they stopped (#2276, see the man
+  page).
+- Opening a file starts Maxima only once, about two seconds faster.
+- The "Maxima isn't connecting" warning no longer fires for large
+  worksheets (#1182).
+
+## Windows
+
+- Releases also offer a portable .zip that runs without installation
+  (#2298).
+- New `wxmaxima-cli.exe` for command-line use: it waits for wxMaxima and
+  shows `--version`, `--help` and `--batch` output in the console.
+- Dark mode now also themes menus, toolbars and dialogs (#2274).
+- `--logtostderr ... 2>&1` no longer loses the log.
+
+## Other fixes
+
+- Sets (`{1,2,3}`) and `product()` no longer render as blank output
+  (#2270), and `product()` no longer turns into "sum(" when broken into
+  lines.
+- A fraction inside a subscript, matrix or `diff()` no longer vanishes in a
+  narrow window.
+- The "ASCII maths" style now uses a real monospace font, so Maxima's
+  ASCII art lines up.
+- The window layout stored by older versions is no longer discarded.
+- Toolbar buttons (Redo, "return to the evaluating cell", ...) update their
+  state immediately and correctly.
+- Closing the diff viewer no longer resets settings changed meanwhile
+  (#2356).
+
+## Building
+
+- wxWidgets 3.2 and a C++20 compiler (GCC 12 or newer) are now required
+  (#2301). There is no longer a .deb for Ubuntu 22.04.
+- Compiling is about a third faster: precompiled headers are on by default
+  and actually work now.
 
 # 26.08.0
 
