@@ -180,6 +180,7 @@ set(SOURCE_FILES
     TrayIcon.cpp
     UrlDetection.cpp
     worksheet/MatrixScrollbars.cpp
+    worksheet/OutputNavigation.cpp
     worksheet/Worksheet.cpp
     worksheet/WorksheetContextMenu.cpp
     worksheet/WorksheetDocument.cpp
