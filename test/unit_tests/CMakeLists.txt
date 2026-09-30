@@ -179,6 +179,18 @@ target_link_libraries(test_AuiPerspectiveRepair PRIVATE ${wxWidgets_LIBRARIES})
 add_test(NAME AuiPerspectiveRepair
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_AuiPerspectiveRepair>")
 
+# The main toolbar's height follows from its contents, but wxAUI restores the
+# one the previous session stored over it -- and on MS Windows rescales that
+# stored value on every DPI change, so it can drift a pixel per session.
+# SetToolbarPaneProperties() takes it from the toolbar again after loading.
+add_executable(test_ToolbarPane
+    test_ToolbarPane.cpp ${CMAKE_SOURCE_DIR}/src/ToolbarPane.cpp
+    ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
+target_include_directories(test_ToolbarPane PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_link_libraries(test_ToolbarPane PRIVATE ${wxWidgets_LIBRARIES})
+add_test(NAME ToolbarPane
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_ToolbarPane>")
+
 # Link detection in text cells (GH #2396) is a pure string function shared by
 # the display and the HTML/LaTeX exporters, so it is tested directly.
 add_executable(test_UrlDetection

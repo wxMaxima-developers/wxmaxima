@@ -1,5 +1,12 @@
 # Current development version
 
+- The toolbar's height is now taken from its contents every time wxMaxima
+  starts. It used to be restored from the layout the previous session
+  saved, and never recomputed after that: a height that once came out
+  wrong stayed wrong, and on MS Windows, which rescales the stored height
+  whenever the window moves to a screen with a different resolution, it
+  could shrink by a pixel from one session to the next.
+
 - Code cells now treat a bracket or quote escaped by a backslash as part
   of a name or string (#528). Typing `a\(3` no longer adds a closing bracket,
   `\)` no longer jumps over a real ")" that follows, a `\"` inside a string no
