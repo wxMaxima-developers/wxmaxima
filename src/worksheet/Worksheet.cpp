@@ -4367,7 +4367,83 @@ bool Worksheet::ExportToTeX(const wxString &file) {
 
 void Worksheet::LoadSymbols() { m_autocomplete.LoadSymbols(); }
 
-const wxString Worksheet::UnicodeToMaxima(wxString s) {
+namespace {
+/*! The unicode symbols wxMathML.lisp defines as Maxima aliases.
+
+  Must match the list in wx-define-unicode-aliases (wxMathML.lisp): a
+  symbol that is listed here but not there reaches Maxima untranslated.
+*/
+bool IsMaximaAlias(const wxString &token) {
+  static const wxString aliases[] = {
+    wxS("\u03C0"), // pi -> %pi
+    wxS("\u2148"), // double-struck italic i -> %i
+    wxS("\u2147"), // double-struck italic e -> %e
+    wxS("\u221E"), // infinity -> inf
+    wxS("\u2211"), // n-ary summation -> sum
+    wxS("\u220F"), // n-ary product -> product
+    wxS("\u222B"), // integral -> integrate
+    wxS("\u221A"), // square root -> sqrt
+    wxS("\u22C0"), // n-ary logical and -> and
+    wxS("\u22C1"), // n-ary logical or -> or
+    wxS("\u22BB"), // xor -> xor
+    wxS("\u22BC"), // nand -> nand
+    wxS("\u22BD"), // nor -> nor
+    wxS("\u21D2"), // rightwards double arrow -> implies
+    wxS("\u21D4"), // left right double arrow -> equiv
+    wxS("\u00AC")  // not sign -> not
+  };
+  for (const auto &alias : aliases)
+    if (token == alias)
+      return true;
+  return false;
+}
+
+bool IsWhitespaceToken(const MaximaTokenizer::Token &token) {
+  wxString text = token.GetText();
+  return text.Trim(true).Trim(false).IsEmpty();
+}
+
+/*! If a square root sign at tokens[sqrtPos] is followed by a simple argument,
+  returns how many tokens (whitespace included) that argument occupies.
+
+  A simple argument is a number (2, 2.5, 1e-3, ½, ∞) or a variable that is
+  neither a function call nor subscripted by brackets. Anything else --
+  an opening parenthesis in particular -- is left to Maxima, which treats
+  the square root sign as the name of the sqrt function.
+*/
+std::size_t SimpleSqrtArgumentLength(const MaximaTokenizer::TokenList &tokens,
+                                     std::size_t sqrtPos) {
+  std::size_t pos = sqrtPos + 1;
+  while ((pos < tokens.size()) && IsWhitespaceToken(tokens[pos]))
+    pos++;
+  if (pos >= tokens.size())
+    return 0;
+  const auto &first = tokens[pos];
+  if (first.GetTextStyle() == TS_CODE_NUMBER) {
+    // The superscripts are "number-like" to the tokenizer, but mean "^2"
+    if ((first.GetText() == wxS("\u00B2")) || (first.GetText() == wxS("\u00B3")))
+      return 0;
+    pos++;
+    // The tokenizer splits a decimal number at its point: 2.5 is "2" "." "5"
+    while ((pos + 1 < tokens.size()) && (tokens[pos].GetText() == wxS(".")) &&
+           (tokens[pos + 1].GetTextStyle() == TS_CODE_NUMBER))
+      pos += 2;
+    return pos - sqrtPos - 1;
+  }
+  if (first.GetTextStyle() == TS_CODE_VARIABLE) {
+    std::size_t next = pos + 1;
+    while ((next < tokens.size()) && IsWhitespaceToken(tokens[next]))
+      next++;
+    // a[1] is a subscripted variable, which a single token doesn't cover
+    if ((next < tokens.size()) && (tokens[next].GetText() == wxS("[")))
+      return 0;
+    return pos - sqrtPos;
+  }
+  return 0;
+}
+} // namespace
+
+wxString Worksheet::UnicodeToMaxima(wxString s, const Configuration *configuration) {
   s.Replace(wxS("\u2052"), "-"); // commercial minus sign
   s.Replace(wxS("\uFE63"), "-"); // unicode small minus sign
   s.Replace(wxS("\uFF0D"), "-"); // unicode big minus sign
@@ -4376,81 +4452,39 @@ const wxString Worksheet::UnicodeToMaxima(wxString s) {
 
   wxString retval;
 
-  for (auto const &tok : MaximaTokenizer(s, m_configuration).PopTokens()) {
-    auto const &tokenString = tok.GetText();
-    switch (tok.GetTextStyle()) {
+  const auto tokens = MaximaTokenizer(s, configuration).PopTokens();
+  for (std::size_t i = 0; i < tokens.size(); i++) {
+    const auto &tokenString = tokens[i].GetText();
+    switch (tokens[i].GetTextStyle()) {
     case TS_CODE_DEFAULT:
     case TS_CODE_OPERATOR:
     case TS_CODE_VARIABLE:
     case TS_CODE_FUNCTION:
+    case TS_CODE_NUMBER:
       if (tokenString == wxS("\u221A")) {
-        retval += wxS(" sqrt ");
+        // Maxima knows the square root sign as an alias of sqrt, which makes
+        // "√(x)" work. Wrap a simple argument in parenthesis, so "√x" and
+        // "√2" work, too.
+        std::size_t argLength = SimpleSqrtArgumentLength(tokens, i);
+        if (argLength > 0) {
+          retval += wxS(" \u221A(");
+          for (std::size_t arg = i + 1; arg <= i + argLength; arg++)
+            if (!IsWhitespaceToken(tokens[arg]))
+              retval += tokens[arg].GetText();
+          retval += wxS(") ");
+          i += argLength;
+          continue;
+        }
+      }
+      // Maxima reads these symbols as letters, so they must not touch the
+      // neighbouring names: "a⋀b" would be one name, "a ⋀ b" is "a and b".
+      if (IsMaximaAlias(tokenString)) {
+        retval += wxS(" ") + tokenString + wxS(" ");
         continue;
       }
-      if (tokenString == wxS("\u222B")) {
-        retval += wxS(" integrate ");
-        continue;
-      }
-      if (tokenString == wxS("\u2211")) {
-        retval += wxS(" sum ");
-        continue;
-      }
-      if (tokenString == wxS("\u220F")) {
-        retval += wxS(" product ");
-        continue;
-      }
-      if (tokenString == wxS("\u2148")) {
-        retval += wxS(" %i ");
-        continue;
-      }
-      if (tokenString == wxS("\u2147")) {
-        retval += wxS(" %e ");
-        continue;
-      }
-      if (tokenString == wxS("\u22C0")) {
-        retval += wxS(" and ");
-        continue;
-      }
-      if (tokenString == wxS("\u22C1")) {
-        retval += wxS(" or ");
-        continue;
-      }
-      if (tokenString == wxS("\u22BB")) {
-        retval += wxS(" xor ");
-        continue;
-      }
-      if (tokenString == wxS("\u22BC")) {
-        retval += wxS(" nand ");
-        continue;
-      }
-      if (tokenString == wxS("\u22BD")) {
-        retval += wxS(" nor ");
-        continue;
-      }
-      if (tokenString == wxS("\u21D2")) {
-        retval += wxS(" implies ");
-        continue;
-      }
-      if (tokenString == wxS("\u21D4")) {
-        retval += wxS(" equiv ");
-        continue;
-      }
-      if (tokenString == wxS("\u00AC")) {
-        retval += wxS(" not ");
-        continue;
-      }
-      if (tokenString == wxS("\u03C0")) {
-        retval += wxS(" %pi ");
-        continue;
-      }
-      // Only executed if none of the conditions that can be found above fires
       retval += tokenString;
       break;
     default:
-      if (tokenString == wxS("\u221E")) {
-        retval += wxS(" inf ");
-        continue;
-      }
       retval += tokenString;
     }
   }

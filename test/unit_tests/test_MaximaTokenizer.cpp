@@ -44,6 +44,7 @@
 
 #include "Configuration.h"
 #include "MaximaTokenizer.h"
+#include "worksheet/Worksheet.h"
 
 #include <cstdlib>
 #ifndef _WIN32
@@ -123,6 +124,63 @@ SCENARIO("An ordinary escaped character in an identifier is unaffected by the fi
   REQUIRE(tokens.size() >= 1);
   REQUIRE(tokens[0].GetText() == wxS("a\\,b"));
   REQUIRE(tokens[0].GetTextStyle() == TS_CODE_VARIABLE);
+}
+
+// Worksheet::UnicodeToMaxima() is what turns the unicode symbols the editor
+// offers into something Maxima can read, right before a command is sent.
+// Most of them are Maxima aliases (defined by wxMathML.lisp) now, so they are
+// passed on unchanged -- but surrounded by spaces, since Maxima reads them as
+// letters.
+static wxString ToMaxima(const wxString &commands) {
+  wxString result = Worksheet::UnicodeToMaxima(commands, g_cfg);
+  // Collapse the runs of spaces, which only are there to separate names.
+  while (result.Replace(wxS("  "), wxS(" ")) > 0) {}
+  return result.Trim(true).Trim(false);
+}
+
+SCENARIO("Symbols Maxima knows as aliases are passed on, separated from their neighbours") {
+  REQUIRE(ToMaxima(wxS("sin(\u03C0);")) == wxS("sin( \u03C0 );"));
+  REQUIRE(ToMaxima(wxS("a\u22C0b;")) == wxS("a \u22C0 b;"));
+  REQUIRE(ToMaxima(wxS("\u00ACa;")) == wxS("\u00AC a;"));
+  REQUIRE(ToMaxima(wxS("limit(1/x,x,\u221E);")) == wxS("limit(1/x,x, \u221E );"));
+  REQUIRE(ToMaxima(wxS("\u2211(k,k,1,n);")) == wxS("\u2211 (k,k,1,n);"));
+  REQUIRE(ToMaxima(wxS("\u220F(k,k,1,n);")) == wxS("\u220F (k,k,1,n);"));
+  REQUIRE(ToMaxima(wxS("\u222B(x,x);")) == wxS("\u222B (x,x);"));
+}
+
+SCENARIO("Symbols inside strings are left alone") {
+  REQUIRE(ToMaxima(wxS("\"\u03C0\u22C0\u221E\";")) == wxS("\"\u03C0\u22C0\u221E\";"));
+}
+
+SCENARIO("What an alias can't express is still translated by wxMaxima") {
+  REQUIRE(ToMaxima(wxS("x\u00B2;")) == wxS("x^2;"));
+  REQUIRE(ToMaxima(wxS("\u00BD*x;")) == wxS("(1/2)*x;"));
+  REQUIRE(ToMaxima(wxS("a\u2260b;")) == wxS("a#b;"));
+  REQUIRE(ToMaxima(wxS("a\u2264b;")) == wxS("a<=b;"));
+}
+
+SCENARIO("A square root's simple argument gets parenthesis") {
+  WHEN("the argument is a number") {
+    REQUIRE(ToMaxima(wxS("\u221A2;")) == wxS("\u221A(2) ;"));
+    REQUIRE(ToMaxima(wxS("\u221A 2;")) == wxS("\u221A(2) ;"));
+  }
+  WHEN("the argument is a decimal number") {
+    REQUIRE(ToMaxima(wxS("\u221A2.5+1;")) == wxS("\u221A(2.5) +1;"));
+  }
+  WHEN("the argument is a variable") {
+    REQUIRE(ToMaxima(wxS("\u221Ax+1;")) == wxS("\u221A(x) +1;"));
+    REQUIRE(ToMaxima(wxS("\u221A\u03C0;")) == wxS("\u221A(\u03C0) ;"));
+  }
+  WHEN("the argument is a fraction symbol") {
+    REQUIRE(ToMaxima(wxS("\u221A\u00BD;")) == wxS("\u221A((1/2)) ;"));
+  }
+  WHEN("the argument already has parenthesis") {
+    REQUIRE(ToMaxima(wxS("\u221A(x+1);")) == wxS("\u221A (x+1);"));
+  }
+  WHEN("the argument is a function call or a subscripted variable") {
+    REQUIRE(ToMaxima(wxS("\u221Af(x);")) == wxS("\u221A f(x);"));
+    REQUIRE(ToMaxima(wxS("\u221Aa[1];")) == wxS("\u221A a[1];"));
+  }
 }
 
 class TestApp : public wxApp {
