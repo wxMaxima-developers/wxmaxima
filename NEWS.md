@@ -18,8 +18,8 @@ Large matrices and keyboard access to output are the main topics of this
 release, which again was developed with substantial help from the AI
 assistant **Claude**. A matrix too large for the window no longer widens
 the worksheet, output can be explored part by part with the keyboard, links
-in text and output can be opened, and an optional AI chat sidebar and MCP
-server can read the worksheet. Plus many fixes, among them a security fix
+in text and output can be opened, and an optional MCP server lets AI tools
+read the worksheet. Plus many fixes, among them a security fix
 for .wxm files.
 
 ## Matrices
@@ -60,6 +60,10 @@ for .wxm files.
   (#2396). The HTML and LaTeX exports keep them as links.
 - Code cells treat a bracket or quote escaped by a backslash as part of a
   name or string (#528).
+- The unicode symbols wxMaxima offers for Maxima names (π, ⅈ, ⅇ, ∞, ∑, ∏,
+  ∫, √, and the logical operators ⋀ ⋁ ⊻ ⊼ ⊽ ⇒ ⇔ ¬) are now Maxima aliases,
+  so they also work in files loaded by `batch()` or `load()` and in
+  `eval_string()`. `√2` and `√x` mean `sqrt(2)` and `sqrt(x)`.
 - New functions `with_slider_draw_bare` (animations made with plain
   `draw()`, so a frame can hold several scenes; `file_name` saves a gif,
   #2361) and `wx_version_min("26.09.0")`, which lets a worksheet check the
