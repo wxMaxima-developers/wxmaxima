@@ -1,14 +1,5 @@
 # Current development version
 
-- The unicode symbols wxMaxima offers for Maxima names (π, ⅈ, ⅇ, ∞, ∑, ∏,
-  ∫, √ and the logical operators ⋀ ⋁ ⊻ ⊼ ⊽ ⇒ ⇔ ¬) are now Maxima aliases
-  instead of being replaced by wxMaxima before a command is sent. They
-  therefore also work in files loaded by `batch()` or `load()` and in
-  `eval_string()`, and `aliases` lists the names they stand for. They
-  survive `kill(all)`, and Maxima still writes `%pi` as `%pi`.
-- A square root sign followed by a number or a variable now gets
-  parenthesis around it: `√2` and `√x` mean `sqrt(2)` and `sqrt(x)`.
-
 # 26.09.0
 
 Large matrices and keyboard access to output are the main topics of this
@@ -57,6 +48,10 @@ for .wxm files.
   (#2396). The HTML and LaTeX exports keep them as links.
 - Code cells treat a bracket or quote escaped by a backslash as part of a
   name or string (#528).
+- The unicode symbols wxMaxima offers for Maxima names (π, ⅈ, ⅇ, ∞, ∑, ∏,
+  ∫, √, and the logical operators ⋀ ⋁ ⊻ ⊼ ⊽ ⇒ ⇔ ¬) are now Maxima aliases,
+  so they also work in files loaded by `batch()` or `load()` and in
+  `eval_string()`. `√2` and `√x` mean `sqrt(2)` and `sqrt(x)`.
 - New functions `with_slider_draw_bare` (animations made with plain
   `draw()`, so a frame can hold several scenes; `file_name` saves a gif,
   #2361) and `wx_version_min("26.09.0")`, which lets a worksheet check the
