@@ -31,6 +31,7 @@
 #include <algorithm>
 #include <list>
 #include <unordered_map>
+#include <utility>
 
 struct BidiRun;
 
@@ -390,6 +391,13 @@ public:
   bool FindMatchingQuotes();
 
   void FindMatchingParens();
+
+  /*! The pair of brackets or quotes FindMatchingParens() found to highlight.
+
+    Both are text positions; both are -1 if the character under the cursor has
+    no partner (or isn't a bracket or quote at all).
+  */
+  std::pair<long, long> GetMatchingParens() const { return {m_paren1, m_paren2}; }
 
   wxCoord GetLineWidth(size_t line, size_t pos);
 

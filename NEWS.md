@@ -1,5 +1,9 @@
 # Current development version
 
+- Code cells now treat a bracket or quote escaped by a backslash as part
+  of a name or string (#528). Typing `a\(3` no longer adds a closing bracket,
+  `\)` no longer jumps over a real ")" that follows, a `\"` inside a string no
+  longer ends it, and the bracket highlight ignores escaped brackets.
 - A fraction or parenthesis inside a subscript no longer vanishes, or gets
   partly broken into lines, when the window is too narrow for it. A
   subscript has no linear form, so it is always drawn in 2D - but the
