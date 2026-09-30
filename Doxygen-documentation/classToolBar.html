@@ -140,6 +140,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a63152c75b4e3b4b5a92ec29d2ac9e043"><td class="memItemLeft" align="right" valign="top"><a id="a63152c75b4e3b4b5a92ec29d2ac9e043" name="a63152c75b4e3b4b5a92ec29d2ac9e043"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>ToolBar</b> (wxWindow *parent)</td></tr>
 <tr class="separator:a63152c75b4e3b4b5a92ec29d2ac9e043"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96bcc761bc712788c9937de257c5ff9b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classToolBar.html#a96bcc761bc712788c9937de257c5ff9b">EnableTool</a> (int toolId, bool state)</td></tr>
+<tr class="memdesc:a96bcc761bc712788c9937de257c5ff9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable or disable a tool, and repaint the toolbar if that changed anything.  <br /></td></tr>
+<tr class="separator:a96bcc761bc712788c9937de257c5ff9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a583107a71f4d26ff8c637a211a9223a0"><td class="memItemLeft" align="right" valign="top"><a id="a583107a71f4d26ff8c637a211a9223a0" name="a583107a71f4d26ff8c637a211a9223a0"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetToolBitmap</b> (int toolId, const wxBitmapBundle &amp;bitmap)</td></tr>
+<tr class="memdesc:a583107a71f4d26ff8c637a211a9223a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change a tool's icon, and repaint the toolbar so the change shows at once (wxAuiToolBar::SetToolBitmap() doesn't repaint either, see <a class="el" href="classToolBar.html#a96bcc761bc712788c9937de257c5ff9b" title="Enable or disable a tool, and repaint the toolbar if that changed anything.">EnableTool()</a>) <br /></td></tr>
+<tr class="separator:a583107a71f4d26ff8c637a211a9223a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d5ce6075969191ba8ee8cf6a3ea6264"><td class="memItemLeft" align="right" valign="top"><a id="a0d5ce6075969191ba8ee8cf6a3ea6264" name="a0d5ce6075969191ba8ee8cf6a3ea6264"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ShowUserInputBitmap</b> ()</td></tr>
 <tr class="memdesc:a0d5ce6075969191ba8ee8cf6a3ea6264"><td class="mdescLeft">&#160;</td><td class="mdescRight">Show that user input is needed for maxima to continue. <br /></td></tr>
@@ -357,6 +364,47 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>OnMenu</b> (wxCommand
 <tr><td class="fieldname"><a id="a327b655c366e7932f751d2815cc629fca8b0edf47e7aef5c0e26028bd98b43ee4" name="a327b655c366e7932f751d2815cc629fca8b0edf47e7aef5c0e26028bd98b43ee4"></a>Inactive&#160;</td><td class="fielddoc"><p>No animation is currently running. </p>
 </td></tr>
 </table>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a96bcc761bc712788c9937de257c5ff9b" name="a96bcc761bc712788c9937de257c5ff9b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a96bcc761bc712788c9937de257c5ff9b">&#9670;&#160;</a></span>EnableTool()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ToolBar::EnableTool </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>toolId</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>state</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Enable or disable a tool, and repaint the toolbar if that changed anything. </p>
+<p>wxAuiToolBar::EnableTool() only flips a flag in the tool's state: unlike wxToolBar it neither refreshes nor repaints, so the button kept showing its old state until something else happened to repaint the toolbar - typically the mouse pointer entering it and triggering the hover highlight. This was most visible on the "return to the cell being
+evaluated" button, which is enabled from a scroll handler while the pointer is over the worksheet. The base class' method isn't virtual, so this hides it rather than overriding it: every caller in <a class="el" href="classwxMaxima.html">wxMaxima</a> goes through a <a class="el" href="classToolBar.html">ToolBar</a> pointer and therefore reaches this one. </p>
 
 </div>
 </div>
