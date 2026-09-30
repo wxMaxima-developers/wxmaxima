@@ -94,8 +94,11 @@ $(function() {
 <code>#include &quot;<a class="el" href="CellList_8h_source.html">cells/CellList.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="GroupCell_8h_source.html">cells/GroupCell.h</a>&quot;</code><br />
 <code>#include &quot;cells/MatrCell.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="FindReplaceDialog_8h_source.html">dialogs/FindReplaceDialog.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="LoggingMessageDialog_8h_source.html">dialogs/LoggingMessageDialog.h</a>&quot;</code><br />
 <code>#include &quot;dialogs/MatrixViewer.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="Worksheet_8h_source.html">worksheet/Worksheet.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="WorksheetSearch_8h_source.html">worksheet/WorksheetSearch.h</a>&quot;</code><br />
 <code>#include &lt;catch2/catch.hpp&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for test_MatrixViewer.cpp:</div>
@@ -121,6 +124,12 @@ Functions</h2></td></tr>
 <tr class="memitem:a108cceda02eed20fa7bf668790a54392"><td class="memItemLeft" align="right" valign="top"><a id="a108cceda02eed20fa7bf668790a54392" name="a108cceda02eed20fa7bf668790a54392"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;A double-click finds the matrix the worksheet shows only part of&quot;)</td></tr>
 <tr class="separator:a108cceda02eed20fa7bf668790a54392"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abacedffcb14750ac3c71faa301cbfc87"><td class="memItemLeft" align="right" valign="top"><a id="abacedffcb14750ac3c71faa301cbfc87" name="abacedffcb14750ac3c71faa301cbfc87"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;A search in the viewer finds matrix entries, one at a time&quot;)</td></tr>
+<tr class="separator:abacedffcb14750ac3c71faa301cbfc87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1698f827a87270727df3a7ce37a6fa14"><td class="memItemLeft" align="right" valign="top"><a id="a1698f827a87270727df3a7ce37a6fa14" name="a1698f827a87270727df3a7ce37a6fa14"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;Ctrl+F in the viewer searches the viewer's matrix&quot;)</td></tr>
+<tr class="separator:a1698f827a87270727df3a7ce37a6fa14"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6b9dd6474d4e5b45a9d22f723a349a8c"><td class="memItemLeft" align="right" valign="top"><a id="a6b9dd6474d4e5b45a9d22f723a349a8c" name="a6b9dd6474d4e5b45a9d22f723a349a8c"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;Double-clicking an elided matrix in the worksheet opens a viewer&quot;)</td></tr>
 <tr class="separator:a6b9dd6474d4e5b45a9d22f723a349a8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -133,7 +142,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>main</b> (int argc, ch
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The matrix viewer a double-click on an elided matrix opens (GH #2344). </p>
-<p>Checks that the viewer's copy shows every entry of a matrix the worksheet only shows part of &ndash; whatever the worksheet's setting or the matrix's own oversized option says &ndash; and that a double-click finds the right matrix. The matrices are parsed from the XML <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> sends, so no <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> is needed. </p>
+<p>Checks that the viewer's copy shows every entry of a matrix the worksheet only shows part of &ndash; whatever the worksheet's setting or the matrix's own oversized option says &ndash; that a double-click finds the right matrix, and that Ctrl+F's search steps through the matrix entry by entry. The matrices are parsed from the XML <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> sends, so no <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> is needed. </p>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

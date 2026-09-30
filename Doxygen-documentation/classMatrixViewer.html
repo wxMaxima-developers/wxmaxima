@@ -102,6 +102,10 @@ Public Member Functions</h2></td></tr>
 <a class="el" href="classWorksheet.html">Worksheet</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>GetWorksheet</b> () const</td></tr>
 <tr class="memdesc:a69ed444d968d61efc26ecc0cff974452"><td class="mdescLeft">&#160;</td><td class="mdescRight">The worksheet the viewer shows the matrix in. <br /></td></tr>
 <tr class="separator:a69ed444d968d61efc26ecc0cff974452"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4e467bd739824ec9067952be03075c2"><td class="memItemLeft" align="right" valign="top"><a id="ab4e467bd739824ec9067952be03075c2" name="ab4e467bd739824ec9067952be03075c2"></a>
+<a class="el" href="classMatrCell.html">MatrCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>GetMatrix</b> () const</td></tr>
+<tr class="memdesc:ab4e467bd739824ec9067952be03075c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">The viewer's copy of the matrix. <br /></td></tr>
+<tr class="separator:ab4e467bd739824ec9067952be03075c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -114,12 +118,29 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a6a438d6c5cb0a14ad673de4197584adb"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classMatrCell.html">MatrCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrixViewer.html#a6a438d6c5cb0a14ad673de4197584adb">PartiallyShownMatrixAt</a> (const <a class="el" href="classGroupCell.html">GroupCell</a> *group, wxPoint point)</td></tr>
 <tr class="memdesc:a6a438d6c5cb0a14ad673de4197584adb"><td class="mdescLeft">&#160;</td><td class="mdescRight">The matrix a double-click at this point should open a viewer for.  <br /></td></tr>
 <tr class="separator:a6a438d6c5cb0a14ad673de4197584adb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader">Searching the matrix</h2></td></tr>
+<tr class="memitem:afa9daaad961117d80dd7515c430680ac"><td class="memItemLeft" align="right" valign="top"><a id="afa9daaad961117d80dd7515c430680ac" name="afa9daaad961117d80dd7515c430680ac"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>OpenFindDialog</b> ()</td></tr>
+<tr class="memdesc:afa9daaad961117d80dd7515c430680ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens the search dialog (Ctrl+F), or brings it to the front. <br /></td></tr>
+<tr class="separator:afa9daaad961117d80dd7515c430680ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace454982ee8761b9b9b6cd06b9526e62"><td class="memItemLeft" align="right" valign="top"><a id="ace454982ee8761b9b9b6cd06b9526e62" name="ace454982ee8761b9b9b6cd06b9526e62"></a>
+<a class="el" href="classFindReplaceDialog.html">FindReplaceDialog</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>GetFindDialog</b> () const</td></tr>
+<tr class="memdesc:ace454982ee8761b9b9b6cd06b9526e62"><td class="mdescLeft">&#160;</td><td class="mdescRight">The search dialog, or nullptr if it hasn't been opened. <br /></td></tr>
+<tr class="separator:ace454982ee8761b9b9b6cd06b9526e62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ca37e16e4c3679b9d6cfbbcb1655c9b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrixViewer.html#a0ca37e16e4c3679b9d6cfbbcb1655c9b">FindNext</a> (const wxString &amp;str, bool down, bool ignoreCase, bool regex, bool warn=true)</td></tr>
+<tr class="memdesc:a0ca37e16e4c3679b9d6cfbbcb1655c9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Selects the next entry that matches, and scrolls it into view.  <br /></td></tr>
+<tr class="separator:a0ca37e16e4c3679b9d6cfbbcb1655c9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a97f3f685a2b548e7f91f73d378212426"><td class="memItemLeft" align="right" valign="top">static std::optional&lt; <a class="el" href="structMatrixEntry.html">MatrixEntry</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrixViewer.html#a97f3f685a2b548e7f91f73d378212426">FindEntry</a> (const <a class="el" href="classMatrCell.html">MatrCell</a> &amp;matrix, std::optional&lt; <a class="el" href="structMatrixEntry.html">MatrixEntry</a> &gt; start, bool down, bool inclusive, const <a class="el" href="classWorksheetSearch_1_1Matcher.html">WorksheetSearch::Matcher</a> &amp;matcher, bool *wrapped=nullptr)</td></tr>
+<tr class="memdesc:a97f3f685a2b548e7f91f73d378212426"><td class="mdescLeft">&#160;</td><td class="mdescRight">The next entry of a matrix whose text matches.  <br /></td></tr>
+<tr class="separator:a97f3f685a2b548e7f91f73d378212426"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classA.html">A</a> window that shows a matrix the worksheet only shows part of (GH #2344) </p>
 <p><a class="el" href="classA.html">A</a> matrix too large for the window is elided or scrolls (see <a class="el" href="classMatrCell.html" title="A Cell that displays a matrix.">MatrCell</a>). Double-clicking one opens this viewer, which shows a copy of the whole matrix &ndash; every row and every column &ndash; in a worksheet of its own that scrolls as far as the matrix needs.</p>
 <p>The viewer is independent of the matrix it was opened from: it takes a copy (through the matrix's XML, so the copy's cells belong to the viewer's own <a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a>), so re-evaluating or deleting the original doesn't affect it, and several viewers can be open at once. It is read-only: its worksheet doesn't react to clicks or keys, so nothing can be typed into it or evaluated there.</p>
-<p>The viewer's <a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a> is a copy of the worksheet's, so the matrix looks the same as in the worksheet (fonts, colours, zoom), except that <a class="el" href="classMatrixViewer.html#a961c06db46a7c950b338156d869291d6" title="Makes a copy of the worksheet&#39;s configuration suitable for the viewer.">ConfigureForViewer()</a> makes it show every matrix in full, whatever wx_matrix()'s oversized option asked for, hides the input and the output label and doesn't indent the output. The matrix itself is shown without brackets and with alternating row and column bands (see <a class="el" href="classMatrixViewer.html#a60ca946b3bbd82c690f4bfe33defe458" title="A group cell whose output is a copy of this matrix.">CopyForViewer()</a>). </p>
+<p>The viewer's <a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a> is a copy of the worksheet's, so the matrix looks the same as in the worksheet (fonts, colours, zoom), except that <a class="el" href="classMatrixViewer.html#a961c06db46a7c950b338156d869291d6" title="Makes a copy of the worksheet&#39;s configuration suitable for the viewer.">ConfigureForViewer()</a> makes it show every matrix in full, whatever wx_matrix()'s oversized option asked for, hides the input and the output label and doesn't indent the output. The matrix itself is shown without brackets and with alternating row and column bands (see <a class="el" href="classMatrixViewer.html#a60ca946b3bbd82c690f4bfe33defe458" title="A group cell whose output is a copy of this matrix.">CopyForViewer()</a>).</p>
+<p>Ctrl+F opens a search dialog that searches the matrix entry by entry: each match selects its entry, as a click on it would, and scrolls it into view (see <a class="el" href="classMatrixViewer.html#a0ca37e16e4c3679b9d6cfbbcb1655c9b" title="Selects the next entry that matches, and scrolls it into view.">FindNext()</a>). Only the entries are searched, not the matrix as a whole: the worksheet's own search, which knows only whole output cells, would find the one matrix and nothing inside it. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ae073866590e00ac7870227a7c554179b" name="ae073866590e00ac7870227a7c554179b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae073866590e00ac7870227a7c554179b">&#9670;&#160;</a></span>MatrixViewer()</h2>
@@ -232,6 +253,139 @@ Static Public Member Functions</h2></td></tr>
 
 <p><a class="el" href="classA.html">A</a> group cell whose output is a copy of this matrix. </p>
 <p>The copy is made through the matrix's XML, parsed with <code>config</code>, so every cell of it belongs to <code>config</code> &ndash; which a <a class="el" href="classCell.html#aa2db105aac0ca1c6080d83c47901c204" title="Create a copy of this cell.">Cell::Copy()</a> would not ensure. The output label is empty: the viewer shows only the matrix. The copy has no brackets and is banded (<a class="el" href="classMatrCell.html#ab3ac7c5a9da8867ce8907cba1999cbe4" title="Band this matrix even if it is shown in full.">MatrCell::AlwaysBanded()</a>). </p>
+
+</div>
+</div>
+<a id="a97f3f685a2b548e7f91f73d378212426" name="a97f3f685a2b548e7f91f73d378212426"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a97f3f685a2b548e7f91f73d378212426">&#9670;&#160;</a></span>FindEntry()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt; <a class="el" href="structMatrixEntry.html">MatrixEntry</a> &gt; MatrixViewer::FindEntry </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classMatrCell.html">MatrCell</a> &amp;&#160;</td>
+          <td class="paramname"><em>matrix</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::optional&lt; <a class="el" href="structMatrixEntry.html">MatrixEntry</a> &gt;&#160;</td>
+          <td class="paramname"><em>start</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>down</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>inclusive</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classWorksheetSearch_1_1Matcher.html">WorksheetSearch::Matcher</a> &amp;&#160;</td>
+          <td class="paramname"><em>matcher</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool *&#160;</td>
+          <td class="paramname"><em>wrapped</em> = <code>nullptr</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The next entry of a matrix whose text matches. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">matrix</td><td>The matrix to search </td></tr>
+    <tr><td class="paramname">start</td><td>The entry to start at; std::nullopt = before the first entry (searching down) or after the last one (searching up) </td></tr>
+    <tr><td class="paramname">down</td><td>Search row by row, left to right, or backwards </td></tr>
+    <tr><td class="paramname">inclusive</td><td>Can start itself be the match? True for a search that is refined while the search term is typed, false for one that steps to the next match. </td></tr>
+    <tr><td class="paramname">matcher</td><td>What counts as a match </td></tr>
+    <tr><td class="paramname">wrapped</td><td>If not nullptr, set to whether the search went past the end of the matrix and started over</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>An entry matches if the text of all of it (<a class="el" href="classCell.html#a2e94a614cedb0f1ad744b71ced439fd3" title="Returns this cell list&#39;s representation as a string.">Cell::ListToString()</a>) does. Every entry counts, including ones the worksheet would elide, and even start itself is checked last, after a full round. std::nullopt if no entry matches. </p>
+
+</div>
+</div>
+<a id="a0ca37e16e4c3679b9d6cfbbcb1655c9b" name="a0ca37e16e4c3679b9d6cfbbcb1655c9b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0ca37e16e4c3679b9d6cfbbcb1655c9b">&#9670;&#160;</a></span>FindNext()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool MatrixViewer::FindNext </td>
+          <td>(</td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
+          <td class="paramname"><em>str</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>down</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>ignoreCase</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>regex</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>warn</em> = <code>true</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Selects the next entry that matches, and scrolls it into view. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">str</td><td>What to search for </td></tr>
+    <tr><td class="paramname">down</td><td>Search in reading order (row by row), or backwards </td></tr>
+    <tr><td class="paramname">ignoreCase</td><td>Only for a plain search: a regex decides that itself </td></tr>
+    <tr><td class="paramname">regex</td><td>Is str a regular expression? </td></tr>
+    <tr><td class="paramname">warn</td><td>Tell the user if nothing matched, or if the search went past the end and started over</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Starts behind the selected entry, or at the first (or, searching backwards, the last) entry if none is selected, and wraps around, so repeating it steps through all matches. If the selected entry is the only match, it stays selected. Returns false if nothing matched. </p>
 
 </div>
 </div>

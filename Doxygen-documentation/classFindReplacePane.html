@@ -109,9 +109,11 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a73d8c57c6d795b539fb55a4656ed27be"><td class="memItemLeft" align="right" valign="top"><a id="a73d8c57c6d795b539fb55a4656ed27be" name="a73d8c57c6d795b539fb55a4656ed27be"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>FindReplacePane</b> (wxWindow *parent, <a class="el" href="classFindReplacePane_1_1FindReplaceData.html">FindReplaceData</a> *data)</td></tr>
-<tr class="separator:a73d8c57c6d795b539fb55a4656ed27be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a16e5bcc1f5c5a10174dc2796374bbf"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFindReplacePane.html#a2a16e5bcc1f5c5a10174dc2796374bbf">FindReplacePane</a> (wxWindow *parent, <a class="el" href="classFindReplacePane_1_1FindReplaceData.html">FindReplaceData</a> *data, bool searchOnly=false)</td></tr>
+<tr class="separator:a2a16e5bcc1f5c5a10174dc2796374bbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb2cf7602e49762fb81859ec76b68c50"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFindReplacePane.html#afb2cf7602e49762fb81859ec76b68c50">SetEventTarget</a> (wxEvtHandler *target)</td></tr>
+<tr class="memdesc:afb2cf7602e49762fb81859ec76b68c50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send the search events to this handler instead of the outermost window.  <br /></td></tr>
+<tr class="separator:afb2cf7602e49762fb81859ec76b68c50"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa0ce5abf5d348598f64ab61d876775ff"><td class="memItemLeft" align="right" valign="top"><a id="aa0ce5abf5d348598f64ab61d876775ff" name="aa0ce5abf5d348598f64ab61d876775ff"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetFocus</b> () override</td></tr>
 <tr class="separator:aa0ce5abf5d348598f64ab61d876775ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -163,7 +165,80 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>OnKeyDown</b> (wxKeyE
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The find+replace pane. </p>
-</div><hr/>The documentation for this class was generated from the following files:<ul>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a2a16e5bcc1f5c5a10174dc2796374bbf" name="a2a16e5bcc1f5c5a10174dc2796374bbf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2a16e5bcc1f5c5a10174dc2796374bbf">&#9670;&#160;</a></span>FindReplacePane()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">FindReplacePane::FindReplacePane </td>
+          <td>(</td>
+          <td class="paramtype">wxWindow *&#160;</td>
+          <td class="paramname"><em>parent</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classFindReplacePane_1_1FindReplaceData.html">FindReplaceData</a> *&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>searchOnly</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">parent</td><td>The window the pane is shown in </td></tr>
+    <tr><td class="paramname">data</td><td>Where the search string and the settings are kept </td></tr>
+    <tr><td class="paramname">searchOnly</td><td>Hide everything that is about replacing, and the choice of searching in input or output: for a read-only view like the matrix viewer, which has no input and nothing that could be replaced. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="afb2cf7602e49762fb81859ec76b68c50" name="afb2cf7602e49762fb81859ec76b68c50"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb2cf7602e49762fb81859ec76b68c50">&#9670;&#160;</a></span>SetEventTarget()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void FindReplacePane::SetEventTarget </td>
+          <td>(</td>
+          <td class="paramtype">wxEvtHandler *&#160;</td>
+          <td class="paramname"><em>target</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Send the search events to this handler instead of the outermost window. </p>
+<p>By default the events go to the window at the top of the parent chain, which is <a class="el" href="classwxMaxima.html">wxMaxima</a>'s main window &ndash; also for the dockable pane after it was undocked into a floating frame of its own. <a class="el" href="classA.html">A</a> window that isn't the main window, but whose find dialog nevertheless ends up with the main window as its outermost parent (the matrix viewer), has to say that it wants the events itself. </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/dialogs/<a class="el" href="FindReplacePane_8h_source.html">FindReplacePane.h</a></li>
 <li>src/dialogs/<a class="el" href="FindReplacePane_8cpp.html">FindReplacePane.cpp</a></li>
 </ul>
