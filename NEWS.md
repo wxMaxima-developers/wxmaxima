@@ -1,17 +1,5 @@
 # Current development version
 
-- The unicode symbols wxMaxima offers for Maxima names (π, ⅈ, ⅇ, ∞, ∑, ∏,
-  ∫, √ and the logical operators ⋀ ⋁ ⊻ ⊼ ⊽ ⇒ ⇔ ¬) are now Maxima aliases
-  instead of being replaced by wxMaxima before a command is sent. They
-  therefore also work in files loaded by `batch()` or `load()` and in
-  `eval_string()`, and `aliases` lists the names they stand for. They
-  survive `kill(all)`, and Maxima still writes `%pi` as `%pi`.
-- A square root sign followed by a number or a variable now gets
-  parenthesis around it: `√2` and `√x` mean `sqrt(2)` and `sqrt(x)`.
-- The highlight of selected text in a cell now ends exactly where the text
-  cursor would be. With fonts that kern or join letters it used to be off by
-  a few pixels (#2278).
-
 # 26.09.0
 
 Large matrices and keyboard access to output are the main topics of this
@@ -19,8 +7,8 @@ release, which again was developed with substantial help from the AI
 assistant **Claude**. A matrix too large for the window no longer widens
 the worksheet, output can be explored part by part with the keyboard, links
 in text and output can be opened, and an optional MCP server lets AI tools
-read the worksheet. Plus many fixes, among them a security fix
-for .wxm files.
+read the worksheet. Plus many fixes, among them a security fix for .wxm
+files.
 
 ## Matrices
 
@@ -136,6 +124,9 @@ for .wxm files.
   state immediately and correctly.
 - Closing the diff viewer no longer resets settings changed meanwhile
   (#2356).
+- The highlight of selected text now ends exactly where the text cursor
+  would be; with fonts that kern or join letters it was a few pixels off
+  (#2278).
 - The toolbar's height is recomputed at every start instead of being
   restored from the previous session, so it can no longer shrink by a pixel
   per session on MS Windows.
