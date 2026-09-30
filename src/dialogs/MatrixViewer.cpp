@@ -123,7 +123,10 @@ MatrCell *MatrixViewer::PartiallyShownMatrixAt(const GroupCell *group,
   // Hidden output isn't drawn, so its cells' positions are stale.
   if (!group || group->IsHidden() || !group->ContainsPointOrOutput(point))
     return nullptr;
-  return PartiallyShownMatrixIn(group->GetOutput(), point);
+  // From the label slot on, not from GetOutput(): output that has no label,
+  // like a disp()layed matrix read back from a file, keeps its first cell in
+  // that slot, and it is drawn just the same.
+  return PartiallyShownMatrixIn(group->GetLabel(), point);
 }
 
 MatrCell *MatrixViewer::PartiallyShownMatrixIn(Cell *list, wxPoint point) {

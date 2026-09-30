@@ -1,5 +1,8 @@
 # Current development version
 
+- Double-clicking an elided matrix that disp() printed now opens the matrix
+  viewer once the worksheet has been saved and reopened, too. Output without
+  an "(%o1)" label was not searched from its first cell.
 - Code cells now treat a bracket or quote escaped by a backslash as part
   of a name or string (#528). Typing `a\(3` no longer adds a closing bracket,
   `\)` no longer jumps over a real ")" that follows, a `\"` inside a string no
