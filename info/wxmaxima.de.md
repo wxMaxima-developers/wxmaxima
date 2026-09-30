@@ -403,6 +403,12 @@ cogito => sum.
 
 Other symbols the HTML and TeX export will recognize are `<=` and `>=` for comparisons, a double-pointed double arrow (`<=>`), single-headed arrows (`<->`, `->` and `<-`) and `+/-` as the respective sign. For TeX output also `<<` and `>>` are recognized.
 
+### Links in text cells
+
+A web address in a text cell that starts with `http://`, `https://` or `mailto:` is shown as a link. Since clicking into a text cell places the cursor there, a link is followed by <kbd>CTRL</kbd>+clicking it (<kbd>CMD</kbd>+clicking on macOS), or by right-clicking it and choosing "Open Link"; hovering over it shows where it leads. The HTML export turns it into a link, the TeX export into a `\url{}`. Links are always recognized from the text itself, so nothing about them is stored in the file.
+
+The same goes for web addresses in _Maxima_'s output, for example in a string printed by `print("See https://wxmaxima-developers.github.io/wxmaxima/")`: <kbd>CTRL</kbd>+clicking the address or choosing "Open Link" from its context menu opens it, while a plain click still selects the output.
+
 ### Hotkeys
 
 Die meisten Tastenkürzel entstammen den Menüs, was bedeutet, dass sie mit
@@ -691,6 +697,11 @@ directory. The optional keyword options are:
 | `flavor` | `mathml` (default), `mathjax`, `svg`, `bitmap`  | how the equations are rendered in the exported page |
 | `wxmx`   | `false` (default), `true`                       | embed a downloadable `.wxmx` copy of the session    |
 
+The images and the `.wxmx` copy are written into a folder named after the
+HTML file, with `_htmlimg` appended. If "Embed images into the .html file"
+is checked in the Export tab of the configuration dialog, they are embedded
+into the HTML file instead, so it can be mailed as a single file.
+
 The `flavor` values match the equation formats offered by the graphical
 **File → Export** dialog: `mathml` produces a self-contained page that needs
 no internet connection, `mathjax` adds a MathJaX fall-back for browsers that
@@ -876,6 +887,33 @@ with_slider_draw3d(
     )
 )$
 ```
+
+`with_slider_draw` and `with_slider_draw3d` make each frame out of a single
+2D or 3D scene. `with_slider_draw_bare` instead hands the arguments that
+follow the variable and its values to a plain `draw` command. Each frame can
+therefore consist of several `gr2d` and `gr3d` scenes, and `draw`'s global
+options like `columns` or `dimensions` can be used as well:
+
+```maxima
+with_slider_draw_bare(
+    f,[1,2,3,4,5],
+    columns=2,
+    gr2d(
+        title=concat("f=",f),
+        explicit(sin(f*x),x,0,2*π)
+    ),
+    gr3d(
+        explicit(sin(f*x)*cos(y),x,0,2*π,y,0,2*π)
+    )
+);
+```
+
+Like `with_slider_draw`, `with_slider_draw_bare` accepts `file_name="name"`,
+which saves the animation as `name.gif` in Maxima's working directory. As
+`draw` cannot turn a frame of several scenes into a single frame of a gif,
+wxMaxima assembles that gif from the frames it shows, and the animation is
+still shown in the worksheet. The gif file is only written when the command
+is evaluated in wxMaxima.
 
 Wer `plot` `draw` vorzieht, dem steht ein zweiter Satz an Funktionen zur
 Verfügung:
@@ -1186,6 +1224,11 @@ allows for more flexible formatting of matrices in wxMaxima:
 - **`parenstyle=<style>`**: Sets the type of parenthesis or brackets to draw
   around the matrix. Supported styles are: `round` `()`, `square` `[]`,
   `angled` `<>`, `straight` `||`, or `none`.
+- **`oversized=<mode>`**: Decides how this one matrix is shown if it is too
+  large for the window, whatever the option _Matrices too large for the
+  window_ (see below) says: `full` draws it in full, `elide` leaves out its
+  middle rows and columns, and `scroll` shows it in a box the size of the
+  window, with scrollbars of its own.
 
 Example:
 
@@ -1193,6 +1236,35 @@ Example:
 wx_matrix(matrix(["Name", "Value"], ["X", 10], ["Y", 20]),
           lines=true, rownames=true, colnames=true, parenstyle=square);
 ```
+
+`wx_matrix()` doesn't display anything itself: it returns the matrix with
+the formatting attached, which is used whenever that value is displayed. So
+it can be stored in a variable and displayed later, formatted, and a matrix
+ended with `$` isn't displayed at all. A new matrix calculated from it, for
+example by adding to it or transposing it, is displayed the normal way
+again.
+
+A matrix cannot be broken into lines the way a long sum can. So by default
+wxMaxima leaves out the middle rows and columns of a matrix that is too
+large for the window and marks the gap with `⋯`, `⋮` and `⋱`, the way a
+large matrix is written by hand. The first and last rows and columns always
+stay visible, and hovering the mouse over the matrix tells which rows and
+columns are not shown. The option _Matrices too large for the window_ in the
+_Worksheet_ tab of the configuration dialog can instead draw such a matrix
+in full, which makes the whole worksheet scroll sideways, or show it in a
+box the size of the window, with scrollbars of its own; there the mouse
+wheel still scrolls the worksheet, and such a matrix is printed with its
+middle rows and columns left out. Whether it is elided or shown in a
+scrolling box, every other row and column of such a matrix is faintly
+shaded, so that a row or a column is easy to follow across it; a matrix that
+fits the window stays plain. All of this affects only what is shown on
+screen and printed: copying, saving and exporting the matrix always include
+every entry. `wx_matrix()`'s `oversized` option overrides that option for a
+single matrix; a matrix it asks to scroll is still elided on paper, and
+exporting a matrix as an image still always shows all of it. Double-clicking
+a matrix that is elided or shown in a scrolling box opens a window of its
+own that shows all of it; the window can be resized and scrolled, and
+_Escape_ closes it.
 
 ## Bug reporting
 
@@ -1577,6 +1649,31 @@ die wxMaxima-Version.
 
 Wenn kein Frontend verwendet wird (Kommandozeilen-Maxima wird verwendet),
 dann haben diese Variablen den Wert `false`).
+
+### Is wxMaxima new enough for this worksheet?
+
+`wx_version_min("26.09.0")` returns `true` if the running _wxMaxima_ is at
+least version 26.09.0, and `false` if it is older, or if the command runs in
+command line _Maxima_. The parts of the version number are compared as
+numbers, so 26.10.0 counts as newer than 26.9.0, and a part that is left out
+counts as 0: `wx_version_min("26.9")` is the same as
+`wx_version_min("26.09.0")`. A development version counts as the version it
+will be released as.
+
+_wxMaxima_ 26.08.0 and older don't know `wx_version_min()` yet. There, as
+with any function _Maxima_ doesn't know, the call isn't an error: it just
+returns itself, unevaluated, as `wx_version_min("26.09.0")`, which is
+neither `true` nor `false`. So a plain `if wx_version_min("26.09.0") then
+...` stays unevaluated on these versions, too. A worksheet that has to work
+with them as well can compare the result with `true`, which gives `false`
+there:
+
+```maxima
+if wx_version_min("26.09.0") = true then
+    wx_matrix(M, oversized=scroll)
+else
+    M;
+```
 
 ## Help! I can not save my document!
 

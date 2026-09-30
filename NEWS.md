@@ -1,17 +1,3 @@
-# Current development version
-
-- The unicode symbols wxMaxima offers for Maxima names (π, ⅈ, ⅇ, ∞, ∑, ∏,
-  ∫, √ and the logical operators ⋀ ⋁ ⊻ ⊼ ⊽ ⇒ ⇔ ¬) are now Maxima aliases
-  instead of being replaced by wxMaxima before a command is sent. They
-  therefore also work in files loaded by `batch()` or `load()` and in
-  `eval_string()`, and `aliases` lists the names they stand for. They
-  survive `kill(all)`, and Maxima still writes `%pi` as `%pi`.
-- A square root sign followed by a number or a variable now gets
-  parenthesis around it: `√2` and `√x` mean `sqrt(2)` and `sqrt(x)`.
-- The highlight of selected text in a cell now ends exactly where the text
-  cursor would be. With fonts that kern or join letters it used to be off by
-  a few pixels (#2278).
-
 # 26.09.0
 
 Large matrices and keyboard access to output are the main topics of this
@@ -24,11 +10,8 @@ for .wxm files.
 
 ## Matrices
 
-- A matrix too large for the window no longer widens the whole worksheet.
-  By default its middle rows and columns are left out and marked with
-  ⋯ ⋮ ⋱; alternatively it can get its own scrollbars, or be shown in full
-  as before (Options -> Worksheet -> "Matrices too large for the window").
-  Copying, saving and exporting always include every entry.
+- A matrix too large for the window by default is displayed with an
+  elipsis( ⋯, ⋮ and/o ⋱)
 - `wx_matrix(M, oversized=full|elide|scroll)` chooses this for one matrix.
   `wx_matrix()` now only returns the formatted matrix instead of also
   displaying it.
@@ -41,6 +24,9 @@ for .wxm files.
   keys can grow or shrink (#2345, #2370, #2380). Every "Copy ..." command,
   including "Copy as HTML", copies only that block (#2369), and a matrix or
   block can be copied as CSV for a spreadsheet (#2364).
+- The highlight of selected text in a cell now ends exactly where the text
+  cursor would be. With fonts that kern or join letters it used to be off by
+  a few pixels (#2278).
 
 ## Keyboard and accessibility
 
