@@ -847,12 +847,20 @@ a local TCP socket.
   code, selected the group cell via hCaret + Shift+Up, confirmed the
   rendered text changed consistently and a single Ctrl+Z restored it).
 
-- **GH #2278 -- the selection rectangle can be a few pixels off the
-  rendered text on a mixed-direction line (still open).** `Draw()` paints per
-  `StyledText` token while `MixedDirectionOffset()` measures each bidi run as
-  one substring, so the two disagree wherever shaping crosses a token
-  boundary. The full analysis and the two candidate fixes (the lower-risk one
-  is making `MixedDirectionOffset()` sum per-token widths) are in
+- **GH #2278 -- the selection rectangle vs. the rendered text.** `Draw()`
+  paints per `StyledText` token, and that is the reference every measurement
+  has to match: measuring a longer substring in one go lets the font kern or
+  ligate across token boundaries and comes out a pixel or two different.
+  **On an ordinary line this is fixed**: `MarkSelection()` used to add the
+  whole selected substring's width to the caret position of its start, and
+  now takes both edges from the caret code (`EditorCell::SelectionLineSpan()`
+  / `LineColumnToPoint()`), which sums per token like `Draw()`. Don't
+  reintroduce a separately measured width there; `test_EditorCellBidi`'s
+  "A selection ends exactly where the caret does" catches it (1 px off with
+  DejaVu Sans Mono here). **Still open on a mixed-direction line**:
+  `MixedDirectionOffset()` measures each bidi run as one substring, so caret
+  and highlight agree with each other there but can both be off the drawn
+  glyphs. The analysis and two candidate fixes are in
   [the issue](https://github.com/wxMaxima-developers/wxmaxima/issues/2278#issuecomment-5864685775);
   read it before touching `EditorCell`'s measurement code.
 
