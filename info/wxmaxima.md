@@ -280,6 +280,17 @@ Most hotkeys can be found in the text of the respective menus. Since they are ac
 - <kbd>CTRL</kbd>+<kbd>TAB</kbd> or <kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>TAB</kbd> triggers the auto-completion mechanism.
 - <kbd>SHIFT</kbd>+<kbd>SPACE</kbd> inserts a non-breaking space.
 
+### Exploring output with the keyboard
+
+A cell's output can be selected, and explored part by part, without a mouse:
+
+- <kbd>DOWN</kbd> at the end of a cell's input selects the first result of its output. Further presses of <kbd>DOWN</kbd> and <kbd>UP</kbd> step through the results; past the last one the cursor leaves the cell. If you prefer <kbd>DOWN</kbd> to skip over the output, switch on "Up/Down keys skip over output" in the Worksheet tab of the configuration dialog.
+- <kbd>ENTER</kbd> goes into the selected expression and selects its first part: the expression without its label, the numerator of a fraction, the name of a function, the first entry of a matrix, ... If the selection has no parts, <kbd>ENTER</kbd> opens a new input cell holding it, as it always did.
+- <kbd>ESCAPE</kbd> selects what the selection is a part of. From a whole result it goes back into the cell's input.
+- <kbd>LEFT</kbd> and <kbd>RIGHT</kbd> select the previous or next part at the same level. In a matrix all four arrow keys move from entry to entry.
+- <kbd>SHIFT</kbd>+<kbd>LEFT</kbd> and <kbd>SHIFT</kbd>+<kbd>RIGHT</kbd> grow or shrink the selection over the neighbouring parts; in a matrix, <kbd>SHIFT</kbd> and any arrow key grow the selected entry into a block of entries.
+- The context-menu key or <kbd>SHIFT</kbd>+<kbd>F10</kbd> opens the right-click menu for the selection, so it can be copied in any format.
+
 ### Raw TeX in the TeX export
 
 If a text cell begins with `TeX:` the TeX export contains the literal text that follows the `TeX:` marker. Using this feature allows the entry of TeX markup within the _wxMaxima_ workbook.

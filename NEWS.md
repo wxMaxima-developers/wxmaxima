@@ -4,6 +4,17 @@
   of a name or string (#528). Typing `a\(3` no longer adds a closing bracket,
   `\)` no longer jumps over a real ")" that follows, a `\"` inside a string no
   longer ends it, and the bracket highlight ignores escaped brackets.
+- A selected output can now be explored part by part with the keyboard
+  (#2382): Enter goes into the selected expression -- from a result to its
+  expression, from a fraction to its numerator, from a matrix to its first
+  entry -- and Escape comes back out, all the way back into the cell's
+  input. Left and Right select the neighbouring parts, and in a matrix all
+  four arrow keys move from entry to entry. Shift+Left and Shift+Right grow
+  the selection over neighbouring parts, and Shift+arrow keys grow a matrix
+  entry into a block. On Windows, screen readers announce each part as it
+  is selected. Enter on a part that has no parts still opens a new cell
+  holding it. The manual has a new section, "Exploring output with the
+  keyboard", on all of this.
 - A fraction or parenthesis inside a subscript no longer vanishes, or gets
   partly broken into lines, when the window is too narrow for it. A
   subscript has no linear form, so it is always drawn in 2D - but the
