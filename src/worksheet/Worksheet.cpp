@@ -1947,13 +1947,41 @@ void Worksheet::SelectOutputResult(GroupCell *group, std::size_t index) {
   const auto results = group->GetOutputResults();
   if (index >= results.size())
     return;
-  const auto &result = results[index];
+  SelectOutputItem(OutputNavigation::Run(results[index].first,
+                                         results[index].last));
+}
+
+std::optional<OutputNavigation::Item> Worksheet::SelectedOutputItem() const {
+  Cell *start = GetDocumentCellPointers().GetSelectionStart();
+  Cell *end = GetDocumentCellPointers().GetSelectionEnd();
+  if (!start || !end || (start->GetType() == MC_TYPE_GROUP) || !start->GetGroup())
+    return std::nullopt;
+  if (const auto corners = GetDocumentCellPointers().GetSelectedMatrixBlockCorners())
+    if ((corners->anchor.row == corners->corner.row) &&
+        (corners->anchor.col == corners->corner.col))
+      if (auto *matrix = dynamic_cast<MatrCell *>(start))
+        return OutputNavigation::Entry(matrix, corners->anchor);
+  return OutputNavigation::Run(start, end);
+}
+
+void Worksheet::SelectOutputItem(const OutputNavigation::Item &item) {
+  if (!item.first)
+    return;
   SetActiveCell(nullptr);
   GetHCaretCursor().Deactivate();
   GetHCaretCursor().SetSelectionAnchors(nullptr, nullptr);
-  SetSelection(result.first, result.last);
-  GetDocumentCellPointers().SetSelectionString(GetString());
-  ScheduleScrollToCell(result.first, false);
+  if (item.IsMatrixEntry()) {
+    RequestRedraw();
+    GetDocumentCellPointers().SetSelectedMatrixBlock(
+      item.matrix, item.entry, item.entry,
+      item.matrix->IsWholeMatrix(MatrixBlock::Spanning(item.entry, item.entry)));
+    item.matrix->ScrollEntryIntoView(item.entry.row, item.entry.col);
+    UpdateOutputSelectionString();
+  } else {
+    SetSelection(item.first, item.last);
+    GetDocumentCellPointers().SetSelectionString(GetString());
+  }
+  ScheduleScrollToCell(item.first, false);
   RequestRedraw();
 #if wxUSE_ACCESSIBILITY
   if (m_accessibilityInfo != nullptr) {
@@ -2021,6 +2049,139 @@ bool Worksheet::EnterOutputFromInput() {
       GCContainsCurrentQuestion(group) || group->GetOutputResults().empty())
     return false;
   SelectOutputResult(group, 0);
+  return true;
+}
+
+bool Worksheet::NavigateOutput(int keyCode, bool shift) {
+  using namespace OutputNavigation;
+  if (keyCode == WXK_NUMPAD_ENTER)
+    keyCode = WXK_RETURN;
+  const bool vertical = (keyCode == WXK_UP) || (keyCode == WXK_DOWN);
+  const bool horizontal = (keyCode == WXK_LEFT) || (keyCode == WXK_RIGHT);
+  if ((keyCode != WXK_RETURN) && (keyCode != WXK_ESCAPE) && !vertical &&
+      !horizontal)
+    return false;
+  // Shift only means something together with Left and Right; Shift+Up/Down
+  // keep selecting whole cells.
+  if (shift && !horizontal)
+    return false;
+
+  const auto item = SelectedOutputItem();
+  if (!item)
+    return false;
+  GroupCell *group = item->first->GetGroup();
+  if (!group)
+    return false;
+
+  // Enter goes into the selected expression. Where there is nothing to go
+  // into, it keeps its old meaning: a new cell holding the selection's text.
+  if (keyCode == WXK_RETURN) {
+    const auto children = Children(*item);
+    if (children.empty())
+      return false;
+    SelectOutputItem(children.front());
+    return true;
+  }
+
+  // In a matrix the arrow keys step from entry to entry, skipping any that
+  // are elided. At the matrix's edge the entry stays where it is.
+  if (item->IsMatrixEntry() && !shift && (vertical || horizontal)) {
+    const int rowStep = (keyCode == WXK_UP) ? -1 : (keyCode == WXK_DOWN) ? 1 : 0;
+    const int colStep = (keyCode == WXK_LEFT) ? -1 : (keyCode == WXK_RIGHT) ? 1 : 0;
+    SelectOutputItem(Entry(item->matrix,
+                           item->matrix->StepEntry(item->entry, rowStep, colStep)));
+    return true;
+  }
+
+  // Where is the selection? Either it is a node of the tree, or -- after
+  // Shift+Left/Right -- a run of neighbouring nodes.
+  const auto location = Locate(group, *item);
+  std::vector<Item> path;     // from the top-level result to the parent
+  std::vector<Item> siblings; // the level the selection is part of
+  std::size_t firstIndex = 0, lastIndex = 0;
+  if (location.found) {
+    path.assign(location.path.begin(), location.path.end() - 1);
+    siblings = location.siblings;
+    firstIndex = lastIndex = location.index;
+  } else if (!item->IsMatrixEntry()) {
+    const auto run = LocateRun(group, item->first, item->last);
+    if (!run.found)
+      return false;
+    path = run.path;
+    siblings = run.siblings;
+    firstIndex = run.firstIndex;
+    lastIndex = run.lastIndex;
+  } else
+    return false;
+  const bool topLevel = path.empty();
+
+  if (keyCode == WXK_ESCAPE) {
+    if (!topLevel) {
+      SelectOutputItem(path.back());
+      return true;
+    }
+    // From a whole result back into the cell's input
+    if (EditorCell *input = group->GetEditable();
+        input && (m_configuration->ShowCodeCells() ||
+                  (input->GetType() != MC_TYPE_INPUT))) {
+      SetSelection(nullptr);
+      SelectEditable(input, false);
+    } else
+      SetHCaret(group);
+    return true;
+  }
+
+  // What Up and Down do to whole results is StepOutputResult()'s business,
+  // and Left/Right on a result stay what they were.
+  if (topLevel)
+    return false;
+
+  // Below the level of whole results, Up and Down keep leaving the cell,
+  // as they always did for a part of a result selected with the mouse.
+  if (vertical)
+    return false;
+
+  if (!shift) {
+    m_outputRunAnchor = nullptr;
+    std::size_t target;
+    if (keyCode == WXK_LEFT)
+      target = (firstIndex > 0) ? firstIndex - 1 : firstIndex;
+    else
+      target = (lastIndex + 1 < siblings.size()) ? lastIndex + 1 : lastIndex;
+    SelectOutputItem(siblings[target]);
+    return true;
+  }
+
+  // Shift+Left/Right: one end of the run stays put, the other one moves.
+  std::size_t anchor = firstIndex;
+  std::size_t moving = lastIndex;
+  if ((firstIndex != lastIndex) && m_outputRunAnchor &&
+      (siblings[lastIndex].first == m_outputRunAnchor)) {
+    anchor = lastIndex;
+    moving = firstIndex;
+  }
+  if (keyCode == WXK_LEFT) {
+    if (moving > 0)
+      moving--;
+  } else if (moving + 1 < siblings.size())
+    moving++;
+  const std::size_t first = std::min(anchor, moving);
+  const std::size_t last = std::max(anchor, moving);
+  if (siblings[first].IsMatrixEntry() || siblings[last].IsMatrixEntry())
+    return false;
+  // A selection is a run of cells in one list. A fraction's numerator and
+  // its denominator are neighbours at the same level, but each is a list of
+  // its own, so no selection can span both: leave the selection as it is.
+  bool sameList = false;
+  for (const Cell *cell = siblings[first].first; cell; cell = cell->GetNext())
+    if (cell == siblings[last].last) {
+      sameList = true;
+      break;
+    }
+  if (!sameList)
+    return true;
+  SelectOutputItem(Run(siblings[first].first, siblings[last].last));
+  m_outputRunAnchor = siblings[anchor].first;
   return true;
 }
 
@@ -3312,6 +3473,14 @@ void Worksheet::OnCharNoActive(wxKeyEvent &event) {
   if (event.ShiftDown() && !event.CmdDown() && !event.AltDown() &&
       StepSelectedMatrixBlock(ccode))
     return;
+
+  // Enter, Escape and the arrow keys walk through the parts of a selected
+  // expression (GH #2382)
+  if (!event.CmdDown() && !event.AltDown() &&
+      NavigateOutput(ccode, event.ShiftDown())) {
+    ScrolledAwayFromEvaluation();
+    return;
+  }
 
   // If Shift is down we are selecting with WXK_UP and WXK_DOWN
   if (event.ShiftDown() && (ccode == WXK_UP || ccode == WXK_DOWN)) {

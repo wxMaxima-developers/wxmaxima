@@ -62,6 +62,7 @@
 #include "WorksheetSearch.h"
 #include "WorksheetLayout.h"
 #include "MatrixScrollbars.h"
+#include "OutputNavigation.h"
 #include "cells/TextCell.h"
 #include "EvaluationQueue.h"
 #include "dialogs/FindReplaceDialog.h"
@@ -460,6 +461,37 @@ public:
     input or the cell has no output to step into.
   */
   bool EnterOutputFromInput();
+
+  /*! The selected part of an output, as a node of OutputNavigation's tree
+
+    A one-entry block of a matrix counts as that entry; any other selection
+    of output cells as the run from its first to its last cell, whether or
+    not that run is a node of the tree. std::nullopt if nothing, or not
+    output, is selected.
+  */
+  std::optional<OutputNavigation::Item> SelectedOutputItem() const;
+  //! Select a node of the output tree, scroll to it and announce it
+  void SelectOutputItem(const OutputNavigation::Item &item);
+  /*! Walk through the parts of the selected output with the keyboard
+
+    What Enter, Escape and the arrow keys do while a part of an output is
+    selected (GH #2382, steps two and three):
+
+    - Enter selects the first part of the selected expression.
+    - Escape selects what the selection is a part of; from a whole result
+      it goes back into the cell's input.
+    - Left and Right select the previous or next part at the same level.
+      In a matrix, all four arrow keys move from entry to entry.
+    - Shift+Left and Shift+Right grow or shrink the selection over the
+      neighbouring parts. In a matrix Shift+arrow keys grow a block instead,
+      see StepSelectedMatrixBlock().
+
+    Returns false, having done nothing, if the key isn't one of these or the
+    selection isn't one it knows how to walk from. Left and Right on a whole
+    result, for example, keep doing what they did before, which for an
+    animation is stepping through its frames.
+  */
+  bool NavigateOutput(int keyCode, bool shift);
   //! @}
 
   /*! Grow or shrink the selected block of a matrix's entries (GH #2370)
@@ -686,6 +718,13 @@ private:
     job named can have been deleted in the meantime, and a CellPtr reads
     back as nullptr instead of dangling. */
   CellPtr<GroupCell> m_asyncOutputTarget;
+  /*! Where Shift+Left/Right started growing an output selection (GH #2382)
+
+    The first cell of the part that was selected when the first Shift+arrow
+    was pressed: that end of the selection stays put while the other one
+    moves. Only trusted while it still is one end of the selection.
+  */
+  CellPtr<Cell> m_outputRunAnchor;
   //! true = blink the cursor
   bool m_blinkDisplayCaret = true;
   //! Is the blinking vertically-drawn cursor currently visible?

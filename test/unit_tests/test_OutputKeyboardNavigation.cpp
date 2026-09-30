@@ -37,6 +37,7 @@
 
 #include "Configuration.h"
 #include "MathParser.h"
+#include "cells/MatrCell.h"
 #include "cells/GroupCell.h"
 #include "worksheet/Worksheet.h"
 
@@ -79,6 +80,14 @@ static GroupCell *ShowCell(const wxString &input,
 static void Press(int keyCode) {
   wxKeyEvent event(wxEVT_CHAR);
   event.m_keyCode = keyCode;
+  g_ws->OnChar(event);
+}
+
+// Sends Shift and a key to the worksheet
+static void PressShifted(int keyCode) {
+  wxKeyEvent event(wxEVT_CHAR);
+  event.m_keyCode = keyCode;
+  event.m_shiftDown = true;
   g_ws->OnChar(event);
 }
 
@@ -249,6 +258,254 @@ SCENARIO("By default Up and Down don't skip the output") {
   cfg.ArrowKeysSkipOutput(true);
   cfg.ResetAllToDefaults();
   CHECK_FALSE(cfg.ArrowKeysSkipOutput());
+}
+
+// The text of the selection, without the spaces between the cells
+static wxString Selected() {
+  wxString text = g_ws->GetString();
+  text.Replace(wxS(" "), wxEmptyString);
+  return text;
+}
+
+SCENARIO("Enter and Escape go into an expression and back out (GH #2382)") {
+  GroupCell *group = ShowCell(
+    wxS("(a+b)/c;"),
+    {Result(1, wxS("<f><r><mi>a</mi><mo>+</mo><mi>b</mi></r><r><mi>c</mi></r></f>"))});
+  const auto results = group->GetOutputResults();
+  REQUIRE(results.size() == 1);
+
+  GIVEN("the result is selected") {
+    g_ws->SelectOutputResult(group, 0);
+    Cell *fraction = results[0].last;
+
+    WHEN("Enter is pressed") {
+      Press(WXK_RETURN);
+      THEN("the fraction, without its label, is selected") {
+        CHECK(Pointers().GetSelectionStart() == fraction);
+        CHECK(Pointers().GetSelectionEnd() == fraction);
+        CHECK(g_ws->GetActiveCell() == nullptr);
+      }
+      AND_WHEN("Enter is pressed again") {
+        Press(WXK_RETURN);
+        THEN("the numerator is selected") {
+          CHECK(Selected() == wxS("a+b"));
+        }
+        AND_WHEN("Right is pressed") {
+          Press(WXK_RIGHT);
+          THEN("the denominator is selected, not the fraction bar") {
+            CHECK(Selected() == wxS("c"));
+          }
+          AND_WHEN("Right is pressed at the last part") {
+            Press(WXK_RIGHT);
+            THEN("the selection stays") {
+              CHECK(Selected() == wxS("c"));
+            }
+          }
+          AND_WHEN("Left is pressed") {
+            Press(WXK_LEFT);
+            THEN("the numerator is selected again") {
+              CHECK(Selected() == wxS("a+b"));
+            }
+          }
+          AND_WHEN("Shift+Left is pressed") {
+            PressShifted(WXK_LEFT);
+            THEN("the selection doesn't grow, as numerator and denominator "
+                 "are no run of cells") {
+              CHECK(Selected() == wxS("c"));
+            }
+          }
+        }
+        AND_WHEN("Enter goes into the numerator, and Escape comes back out step by step") {
+          Press(WXK_RETURN);
+          CHECK(Selected() == wxS("a"));
+          Press(WXK_RIGHT);
+          CHECK(Selected() == wxS("+"));
+          Press(WXK_ESCAPE);
+          CHECK(Selected() == wxS("a+b"));
+          Press(WXK_ESCAPE);
+          CHECK(Pointers().GetSelectionStart() == fraction);
+          Press(WXK_ESCAPE);
+          CHECK(g_ws->SelectedOutputResult() == std::optional<std::size_t>(0));
+          Press(WXK_ESCAPE);
+          THEN("the last Escape goes back into the input") {
+            CHECK_FALSE(Pointers().GetSelectionStart());
+            CHECK(g_ws->GetActiveCell() == group->GetEditable());
+          }
+        }
+      }
+    }
+  }
+  g_ws->DestroyTree();
+}
+
+SCENARIO("The parts of an expression leave out linear-form glyphs") {
+  GroupCell *group = ShowCell(
+    wxS("sin(x)/c;"),
+    {Result(1, wxS("<f><r><fn><r><fnm>sin</fnm></r><r><p><mi>x</mi></p></r></fn></r>"
+                   "<r><mi>c</mi></r></f>"))});
+  const auto results = OutputNavigation::Results(group);
+  REQUIRE(results.size() == 1);
+  const auto fraction = OutputNavigation::Children(results[0]);
+  REQUIRE(fraction.size() == 1);
+
+  THEN("a fraction has two parts, and no \"/\"") {
+    const auto parts = OutputNavigation::Children(fraction[0]);
+    REQUIRE(parts.size() == 2);
+    CHECK(parts[1].first->ToString() == wxS("c"));
+    AND_THEN("a function's parts are its name and its argument, without brackets") {
+      const auto function = OutputNavigation::Children(parts[0]);
+      REQUIRE(function.size() == 2);
+      CHECK(function[0].first->ToString() == wxS("sin"));
+      const auto argument = OutputNavigation::Children(function[1]);
+      REQUIRE(argument.size() == 1);
+      CHECK(argument[0].first->ToString() == wxS("x"));
+      CHECK(OutputNavigation::Children(argument[0]).empty());
+    }
+    AND_THEN("every part can be found again, with its path") {
+      const auto location = OutputNavigation::Locate(group, parts[1]);
+      REQUIRE(location.found);
+      CHECK(location.path.size() == 3);
+      CHECK(location.index == 1);
+    }
+  }
+  g_ws->DestroyTree();
+}
+
+SCENARIO("Enter on a part that has no parts keeps its old meaning") {
+  GroupCell *group = ShowCell(wxS("x;"), {Result(1, wxS("<mi>x</mi>"))});
+  g_ws->SelectOutputResult(group, 0);
+  Press(WXK_RETURN);
+  REQUIRE(Selected() == wxS("x"));
+  WHEN("Enter is pressed on the x") {
+    Press(WXK_RETURN);
+    THEN("a new input cell holding it opens, as before") {
+      REQUIRE(g_ws->GetActiveCell() != nullptr);
+      CHECK(g_ws->GetActiveCell()->GetValue() == wxS("x"));
+    }
+  }
+  g_ws->DestroyTree();
+}
+
+SCENARIO("Shift+Left/Right grow and shrink the selection over neighbours") {
+  GroupCell *group = ShowCell(
+    wxS("a+b+c;"),
+    {Result(1, wxS("<mi>a</mi><mo>+</mo><mi>b</mi><mo>+</mo><mi>c</mi>"))});
+  g_ws->SelectOutputResult(group, 0);
+  Press(WXK_RETURN);
+  REQUIRE(Selected() == wxS("a"));
+
+  WHEN("Shift+Right is pressed twice") {
+    PressShifted(WXK_RIGHT);
+    CHECK(Selected() == wxS("a+"));
+    PressShifted(WXK_RIGHT);
+    THEN("the selection covers a+b") {
+      CHECK(Selected() == wxS("a+b"));
+    }
+    AND_WHEN("Shift+Left is pressed") {
+      PressShifted(WXK_LEFT);
+      THEN("it shrinks again from the moving end") {
+        CHECK(Selected() == wxS("a+"));
+      }
+    }
+    AND_WHEN("Escape is pressed") {
+      Press(WXK_ESCAPE);
+      THEN("the whole result is selected") {
+        CHECK(g_ws->SelectedOutputResult() == std::optional<std::size_t>(0));
+      }
+    }
+    AND_WHEN("Right is pressed") {
+      Press(WXK_RIGHT);
+      THEN("the part after the run is selected") {
+        CHECK(Selected() == wxS("+"));
+      }
+    }
+  }
+  WHEN("the selection starts at the end and grows to the left") {
+    for (int i = 0; i < 4; i++)
+      Press(WXK_RIGHT);
+    REQUIRE(Selected() == wxS("c"));
+    PressShifted(WXK_LEFT);
+    PressShifted(WXK_LEFT);
+    CHECK(Selected() == wxS("b+c"));
+    PressShifted(WXK_RIGHT);
+    THEN("Shift+Right moves the left end, the c stays") {
+      CHECK(Selected() == wxS("+c"));
+    }
+  }
+  g_ws->DestroyTree();
+}
+
+SCENARIO("In a matrix the arrow keys move from entry to entry") {
+  GroupCell *group = ShowCell(
+    wxS("matrix([1,2],[3,a/b]);"),
+    {Result(1, wxS("<tb><mtr><mtd><mn>1</mn></mtd><mtd><mn>2</mn></mtd></mtr>"
+                   "<mtr><mtd><mn>3</mn></mtd><mtd><f><r><mi>a</mi></r><r><mi>b</mi></r></f></mtd></mtr></tb>"))});
+  const auto results = group->GetOutputResults();
+  REQUIRE(results.size() == 1);
+  auto *matrix = dynamic_cast<MatrCell *>(results[0].last);
+  REQUIRE(matrix != nullptr);
+  g_ws->SelectOutputResult(group, 0);
+  Press(WXK_RETURN);
+  REQUIRE(Pointers().GetSelectionStart() == matrix);
+
+  auto entry = [](std::size_t row, std::size_t col) {
+    const auto item = g_ws->SelectedOutputItem();
+    return item && item->IsMatrixEntry() && (item->entry.row == row) &&
+      (item->entry.col == col);
+  };
+
+  WHEN("Enter is pressed on the matrix") {
+    Press(WXK_RETURN);
+    THEN("its first entry is selected, as a one-entry block") {
+      CHECK(entry(0, 0));
+      CHECK(Pointers().GetSelectedMatrixBlock().has_value());
+    }
+    AND_WHEN("the arrow keys go round the matrix") {
+      Press(WXK_RIGHT);
+      CHECK(entry(0, 1));
+      Press(WXK_DOWN);
+      CHECK(entry(1, 1));
+      Press(WXK_LEFT);
+      CHECK(entry(1, 0));
+      Press(WXK_UP);
+      CHECK(entry(0, 0));
+      Press(WXK_UP);
+      THEN("at the edge the entry stays where it is") {
+        CHECK(entry(0, 0));
+      }
+    }
+    AND_WHEN("Shift+Right is pressed") {
+      PressShifted(WXK_RIGHT);
+      THEN("the entry grows into a block, as a block dragged with the mouse would") {
+        const auto block = Pointers().GetSelectedMatrixBlock();
+        REQUIRE(block.has_value());
+        CHECK(block->firstCol == 0);
+        CHECK(block->lastCol == 1);
+      }
+    }
+    AND_WHEN("Enter goes into the entry holding a fraction") {
+      Press(WXK_RIGHT);
+      Press(WXK_DOWN);
+      Press(WXK_RETURN);
+      THEN("its numerator is selected straight away") {
+        CHECK(Selected() == wxS("a"));
+      }
+      AND_WHEN("Escape is pressed") {
+        Press(WXK_ESCAPE);
+        THEN("the entry is selected again") {
+          CHECK(entry(1, 1));
+        }
+        AND_WHEN("Escape is pressed again") {
+          Press(WXK_ESCAPE);
+          THEN("the whole matrix is selected") {
+            CHECK(Pointers().GetSelectionStart() == matrix);
+            CHECK_FALSE(Pointers().GetSelectedMatrixBlockCorners().has_value());
+          }
+        }
+      }
+    }
+  }
+  g_ws->DestroyTree();
 }
 
 class TestApp : public wxApp {
