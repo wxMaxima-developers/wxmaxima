@@ -11,7 +11,7 @@ endif (POLICY CMP0048)
 project(wxMaxima
         DESCRIPTION "wxMaxima is a document based interface for the computer algebra system Maxima."
         HOMEPAGE_URL "https://wxmaxima-developers.github.io/wxmaxima/"
-        VERSION 26.08.0
+        VERSION 26.09.0
         LANGUAGES CXX
        )
 
@@ -229,6 +229,26 @@ else()
 endif()
 message(STATUS "Found wxWidgets: (found version \"${wxWidgets_VERSION_STRING}\")")
 include(${wxWidgets_USE_FILE})
+
+# The AI tools (the AI chat sidebar, the AI connection monitor and their
+# options tab) only work reliably from wxWidgets 3.3.4 on, so older versions
+# build without them. This is done here rather than with wxCHECK_VERSION()
+# in the sources because WXM_USE_AI_TOOLS decides three things at once: the
+# #define in BuildConfig.h, which source files are compiled (src/) and which
+# unit tests exist (test/unit_tests/). A plain variable, not the cache entry,
+# is overridden, so the user's setting comes back into effect as soon as a
+# new enough wxWidgets is found. An empty version string (a FindwxWidgets
+# that could not tell) leaves the setting alone rather than guessing.
+# WXM_AI_TOOLS_REQUESTED keeps what was asked for: the AiProvider unit test
+# is plain JSON in and out, works with any wxWidgets, and would otherwise not
+# be compiled by any CI job until one of them uses wxWidgets 3.3.4.
+set(WXM_AI_TOOLS_MIN_WXWIDGETS_VERSION 3.3.4)
+set(WXM_AI_TOOLS_REQUESTED ${WXM_USE_AI_TOOLS})
+if(WXM_USE_AI_TOOLS AND wxWidgets_VERSION_STRING AND
+    wxWidgets_VERSION_STRING VERSION_LESS WXM_AI_TOOLS_MIN_WXWIDGETS_VERSION)
+  message(STATUS "wxWidgets ${wxWidgets_VERSION_STRING} is older than ${WXM_AI_TOOLS_MIN_WXWIDGETS_VERSION}: building without the AI tools.")
+  set(WXM_USE_AI_TOOLS OFF)
+endif()
 
 
 # Get the git version, if available.

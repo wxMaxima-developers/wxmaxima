@@ -148,7 +148,10 @@ target_include_directories(test_MaximaProtocol PRIVATE ${CMAKE_SOURCE_DIR}/src)
 target_link_libraries(test_MaximaProtocol PRIVATE ${wxWidgets_LIBRARIES})
 add_test(MaximaProtocol test_MaximaProtocol)
 
-if(WXM_USE_AI_TOOLS)
+# Keyed on WXM_AI_TOOLS_REQUESTED, not WXM_USE_AI_TOOLS: this test needs
+# nothing from wxWidgets 3.3.4, which the AI tools themselves require (see
+# the top-level CMakeLists.txt).
+if(WXM_AI_TOOLS_REQUESTED)
 # AiProvider's request-building/response-parsing (the AI chat sidebar's
 # per-provider HTTP shapes) is pure JSON in and out, so it is tested
 # directly, the same way as MaximaProtocol above -- the actual network call
