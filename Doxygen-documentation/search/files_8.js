@@ -6,6 +6,8 @@ var searchData=
   ['imgcellbase_2ecpp_3',['ImgCellBase.cpp',['../ImgCellBase_8cpp.html',1,'']]],
   ['intcell_2ecpp_4',['IntCell.cpp',['../IntCell_8cpp.html',1,'']]],
   ['intcell_2eh_5',['IntCell.h',['../IntCell_8h.html',1,'']]],
-  ['intervalcell_2ecpp_6',['IntervalCell.cpp',['../IntervalCell_8cpp.html',1,'']]],
-  ['intervalcell_2eh_7',['IntervalCell.h',['../IntervalCell_8h.html',1,'']]]
+  ['interruptchannelhandshake_2ecpp_6',['InterruptChannelHandshake.cpp',['../InterruptChannelHandshake_8cpp.html',1,'']]],
+  ['interruptchannelhandshake_2eh_7',['InterruptChannelHandshake.h',['../InterruptChannelHandshake_8h.html',1,'']]],
+  ['intervalcell_2ecpp_8',['IntervalCell.cpp',['../IntervalCell_8cpp.html',1,'']]],
+  ['intervalcell_2eh_9',['IntervalCell.h',['../IntervalCell_8h.html',1,'']]]
 ];
