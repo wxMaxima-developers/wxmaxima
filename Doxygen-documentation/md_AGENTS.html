@@ -1350,6 +1350,7 @@ which loads on demand &amp;ndash; keep the detail there rather than growing this
 @section autotoc_md53 Performance &amp; Documentation Mandates
 
 - &lt;strong&gt;NEWS.md Updates:&lt;/strong&gt; Every non-trivial change MUST be documented in &lt;tt&gt;NEWS.md&lt;/tt&gt; under the "# Current development version" section.
+  &lt;strong&gt;When merging &lt;tt&gt;main&lt;/tt&gt; into a branch conflicts in &lt;tt&gt;NEWS.md&lt;/tt&gt;, take &lt;tt&gt;main&lt;/tt&gt;'s side and re-add only your own new entry.&lt;/strong&gt; Keeping "both sides" brings back entries that release prep has since condensed into a version section: on 2026-09-30 three branches in a row put ~190 old lines back above &lt;tt&gt;\# 26.09.0&lt;/tt&gt;. The tag workflow publishes whatever sits under the top heading as the release notes, so that would have become the release body.
 - &lt;strong&gt;Doxygen Comments:&lt;/strong&gt; Include descriptions for all new classes and public methods. Complex algorithms (e.g., LCS alignment) require detailed architectural comments.
 - &lt;strong&gt;Background Tasks:&lt;/strong&gt; Use &lt;tt&gt;jthread&lt;/tt&gt; for automatic joining, protect data with &lt;tt&gt;std::mutex&lt;/tt&gt;, check for abort flags regularly, and update &lt;tt&gt;Doxygen/Readme.md&lt;/tt&gt;.
 - **Lisp Performance (&lt;tt&gt;wxMathML.lisp&lt;/tt&gt;):**
