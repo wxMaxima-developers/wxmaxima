@@ -189,9 +189,10 @@ SCENARIO("A selection covers the characters it selects") {
     THEN("the rectangle starts where the first selected character is") {
       const wxCoord startX = editor->PositionToPoint(from).x;
       const wxCoord endX = editor->PositionToPoint(to).x;
-      const wxCoord width = endX - startX;
-      REQUIRE(width > 0);
-      REQUIRE(editor->SelectionRunLeft(from, to, startX, width) == startX);
+      REQUIRE(endX > startX);
+      wxCoord width = 0;
+      REQUIRE(editor->SelectionLineSpan(from, to, &width).x == startX);
+      REQUIRE(width == endX - startX);
     }
   }
 
@@ -205,14 +206,85 @@ SCENARIO("A selection covers the characters it selects") {
       const wxCoord endX = editor->PositionToPoint(to).x;
       // Reading right to left, a later position is further left.
       REQUIRE(endX < startX);
-      const wxCoord width = startX - endX;
-
-      const wxCoord left = editor->SelectionRunLeft(from, to, startX, width);
+      wxCoord width = 0;
+      const wxCoord left = editor->SelectionLineSpan(from, to, &width).x;
       // Taking the run's start as the left edge would have highlighted the text
       // *after* the selection; the rectangle has to sit over the glyphs.
       REQUIRE(left == endX);
       REQUIRE(left + width == startX);
     }
+  }
+}
+
+SCENARIO("A selection ends exactly where the caret does") {
+  // The caret (and Draw()) add up the widths of the individual snippets the
+  // text is styled in; the selection used to take the caret position of its
+  // first character plus the width of the whole selected string, measured in
+  // one go. With a font that kerns or forms ligatures across snippet
+  // boundaries - "AV", "To", "fi" and friends in most TrueType fonts - the two
+  // disagree and the highlight ended a few pixels away from the text it was
+  // meant to cover. Which pairs a font kerns is up to the font, so rather than
+  // depending on that, every range of a line full of such pairs is checked to
+  // start and end on the very pixels the caret is drawn at.
+  const wxString code = wxS("AV:To.Ta+WA.fi(Yo)-LT$");
+  // Wide enough that the line isn't wrapped: PositionToPoint() puts the
+  // position a soft break sits at on the *next* line, which is the right
+  // place for a caret but not for the end of a selection (see the check
+  // for that below).
+  const wxSize savedCanvas = g_cfg->GetCanvasSize();
+  g_cfg->SetCanvasSize(wxSize(4000, 800));
+  auto group = std::make_unique<GroupCell>(g_cfg, GC_TYPE_CODE, code);
+  group->Recalculate();
+  EditorCell *editor = group->GetEditable();
+  REQUIRE(editor != nullptr);
+  REQUIRE(editor->GetValue() == code);
+
+  bool fontKernsAcrossSnippets = false;
+  for (size_t from = 0; from < code.Length(); from++)
+    for (size_t to = from + 1; to <= code.Length(); to++) {
+      const wxCoord startX = editor->PositionToPoint(from).x;
+      const wxCoord endX = editor->PositionToPoint(to).x;
+      wxCoord width = 0;
+      const wxCoord left = editor->SelectionLineSpan(from, to, &width).x;
+      INFO("selection [" << from << ", " << to << ")");
+      REQUIRE(left == startX);
+      REQUIRE(left + width == endX);
+
+      editor->SetFont(g_cfg->GetRecalcDC());
+      if (g_cfg->GetRecalcDC()->GetTextExtent(code.SubString(from, to - 1)).GetWidth() !=
+          endX - startX)
+        fontKernsAcrossSnippets = true;
+    }
+  // Not a requirement - it depends on the fonts installed - but it says
+  // whether this run could have caught the bug at all.
+  if (!fontKernsAcrossSnippets)
+    WARN("The code font measures every range as the sum of its snippets, so "
+         "this run could not have told the old measurement from the new one");
+
+  // Now wrap the very same line, and select up to the soft break the first
+  // display line ends at: the rectangle has to reach that line's last
+  // character, not the start of the line after it.
+  g_cfg->SetCanvasSize(wxSize(80, 800));
+  group->ResetSize_Recursively();
+  group->Recalculate();
+  size_t softBreak = 0;
+  for (size_t pos = 1; pos < code.Length(); pos++) {
+    size_t column, line;
+    editor->PositionToXY(pos, &column, &line);
+    if (line > 0) {
+      softBreak = pos;
+      break;
+    }
+  }
+  g_cfg->SetCanvasSize(savedCanvas);
+  if (softBreak == 0)
+    WARN("The line didn't wrap, so the soft-break case went unchecked");
+  else {
+    wxCoord width = 0;
+    const wxPoint topLeft = editor->SelectionLineSpan(0, softBreak, &width);
+    REQUIRE(topLeft.x == editor->PositionToPoint(0).x);
+    REQUIRE(topLeft.y == editor->PositionToPoint(0).y);
+    REQUIRE(topLeft.x + width > editor->PositionToPoint(softBreak - 1).x);
   }
 }
 
@@ -241,7 +313,7 @@ SCENARIO("The caret is placed correctly on a mixed-direction line") {
 
     if (Bidi::IsAvailable()) {
       THEN("it succeeds and mirrors the run, the same way a wholly "
-           "right-to-left line does in SelectionRunLeft() above") {
+           "right-to-left line does in SelectionLineSpan() above") {
         REQUIRE(ok);
         // Later position -> smaller offset: reading right to left, "from" is
         // closer to the run's right (later-drawn) end than "to" is.

@@ -8,6 +8,9 @@
   survive `kill(all)`, and Maxima still writes `%pi` as `%pi`.
 - A square root sign followed by a number or a variable now gets
   parenthesis around it: `√2` and `√x` mean `sqrt(2)` and `sqrt(x)`.
+- The highlight of selected text in a cell now ends exactly where the text
+  cursor would be. With fonts that kern or join letters it used to be off by
+  a few pixels (#2278).
 
 # 26.09.0
 
