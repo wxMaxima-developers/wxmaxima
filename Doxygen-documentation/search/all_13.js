@@ -59,7 +59,7 @@ var searchData=
   ['selectedoutputresult_56',['SelectedOutputResult',['../classWorksheet.html#a1e6878e75746ad63ff2656f1a05f3690',1,'Worksheet']]],
   ['selectgroupcell_57',['SelectGroupCell',['../classWorksheet.html#aaac2ea098bc70818f791407bd25af904',1,'Worksheet']]],
   ['selectionend_58',['SelectionEnd',['../classWorksheetCursor.html#a878700373c6ac408186c0a561ec9700d',1,'WorksheetCursor']]],
-  ['selectionrunleft_59',['SelectionRunLeft',['../classEditorCell.html#a8af9e8241de76cbdf5c5bc78f861d22d',1,'EditorCell']]],
+  ['selectionlinespan_59',['SelectionLineSpan',['../classEditorCell.html#a2d7c226277439b83e9027eb6570aaaf8',1,'EditorCell']]],
   ['selectionstart_60',['SelectionStart',['../classWorksheetCursor.html#aedb2553ba7cd0716a6b5c47e984cc872',1,'WorksheetCursor']]],
   ['selectiontocsv_61',['SelectionToCSV',['../classWorksheet.html#aa968d1ecabcda17dd85f3d1632c59df6',1,'Worksheet']]],
   ['selectiontoselfcontainedhtml_62',['SelectionToSelfContainedHTML',['../WorksheetExport_8h.html#a7c35e91bfe94140ace64fdcb6fbdce3f',1,'WorksheetExport::SelectionToSelfContainedHTML()'],['../classWorksheet.html#ad6a6c5c66447250dd91b734333f564b5',1,'Worksheet::SelectionToSelfContainedHTML()']]],

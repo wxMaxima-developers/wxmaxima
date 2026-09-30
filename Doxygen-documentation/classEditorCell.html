@@ -320,6 +320,10 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>XYToPosition</b> (s
 wxPoint&#160;</td><td class="memItemRight" valign="bottom"><b>PositionToPoint</b> (size_t pos) override</td></tr>
 <tr class="memdesc:aee2e4419dba49c4fe442356e4fe86dd8"><td class="mdescLeft">&#160;</td><td class="mdescRight">The screen coordinates of the cursor. <br /></td></tr>
 <tr class="separator:aee2e4419dba49c4fe442356e4fe86dd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0bf7cccffde514e9dc384d97114aa73b"><td class="memItemLeft" align="right" valign="top"><a id="a0bf7cccffde514e9dc384d97114aa73b" name="a0bf7cccffde514e9dc384d97114aa73b"></a>
+wxPoint&#160;</td><td class="memItemRight" valign="bottom"><b>LineColumnToPoint</b> (size_t line, size_t column, size_t pos)</td></tr>
+<tr class="memdesc:a0bf7cccffde514e9dc384d97114aa73b"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classEditorCell.html#a984fe2e0c07f031fc103bbdd72c1f70a" title="Locates the cursor in the editable text of this cell.">PositionToPoint()</a> for a position whose display line and column are already known - or have to be forced, as for the soft break that ends a line, which <a class="el" href="classEditorCell.html#aab014fc6b15be1b1e5c265c06f7a5509" title="Determines which line and column the pos&#39;th char is at.">PositionToXY()</a> assigns to the line after it. <br /></td></tr>
+<tr class="separator:a0bf7cccffde514e9dc384d97114aa73b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a984fe2e0c07f031fc103bbdd72c1f70a"><td class="memItemLeft" align="right" valign="top">wxPoint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#a984fe2e0c07f031fc103bbdd72c1f70a">PositionToPoint</a> () override</td></tr>
 <tr class="memdesc:a984fe2e0c07f031fc103bbdd72c1f70a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Locates the cursor in the editable text of this cell.  <br /></td></tr>
 <tr class="separator:a984fe2e0c07f031fc103bbdd72c1f70a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -402,9 +406,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>LineIsMixedDirection<
 size_t&#160;</td><td class="memItemRight" valign="bottom"><b>LineLength</b> (size_t line)</td></tr>
 <tr class="memdesc:aa3eb0dffd98545b2d87e2c24da0f9ac8"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many characters the given display line holds, excluding its newline. <br /></td></tr>
 <tr class="separator:aa3eb0dffd98545b2d87e2c24da0f9ac8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8af9e8241de76cbdf5c5bc78f861d22d"><td class="memItemLeft" align="right" valign="top">wxCoord&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#a8af9e8241de76cbdf5c5bc78f861d22d">SelectionRunLeft</a> (size_t runStart, size_t runEnd, wxCoord runStartX, wxCoord runWidth)</td></tr>
-<tr class="memdesc:a8af9e8241de76cbdf5c5bc78f861d22d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The left edge of the rectangle covering the run [runStart, runEnd).  <br /></td></tr>
-<tr class="separator:a8af9e8241de76cbdf5c5bc78f861d22d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d7c226277439b83e9027eb6570aaaf8"><td class="memItemLeft" align="right" valign="top">wxPoint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#a2d7c226277439b83e9027eb6570aaaf8">SelectionLineSpan</a> (size_t lineStart, size_t lineEnd, wxCoord *width)</td></tr>
+<tr class="memdesc:a2d7c226277439b83e9027eb6570aaaf8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Where the selection rectangle for [lineStart, lineEnd) goes.  <br /></td></tr>
+<tr class="separator:a2d7c226277439b83e9027eb6570aaaf8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b4ff35d700a313978316ceb4a638b01"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#a9b4ff35d700a313978316ceb4a638b01">GetLineBidiRuns</a> (size_t line, std::vector&lt; <a class="el" href="structBidiRun.html">BidiRun</a> &gt; *runs)</td></tr>
 <tr class="memdesc:a9b4ff35d700a313978316ceb4a638b01"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classBidi.html#a32b1067e51fc8e6dd30b0a6e4011adfc" title="The runs that make up line, in visual (left-to-right on screen) order.">Bidi::GetRuns()</a> for a display line, as absolute positions into m_text (<a class="el" href="classBidi.html#a32b1067e51fc8e6dd30b0a6e4011adfc" title="The runs that make up line, in visual (left-to-right on screen) order.">Bidi::GetRuns()</a> itself only knows the line's own text, so its runs are relative to that - this is the shared first step for anything that needs the real bidi run structure at a whole-cell position instead).  <br /></td></tr>
 <tr class="separator:a9b4ff35d700a313978316ceb4a638b01"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3914,35 +3918,29 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 
 </div>
 </div>
-<a id="a8af9e8241de76cbdf5c5bc78f861d22d" name="a8af9e8241de76cbdf5c5bc78f861d22d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8af9e8241de76cbdf5c5bc78f861d22d">&#9670;&#160;</a></span>SelectionRunLeft()</h2>
+<a id="a2d7c226277439b83e9027eb6570aaaf8" name="a2d7c226277439b83e9027eb6570aaaf8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2d7c226277439b83e9027eb6570aaaf8">&#9670;&#160;</a></span>SelectionLineSpan()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">wxCoord EditorCell::SelectionRunLeft </td>
+          <td class="memname">wxPoint EditorCell::SelectionLineSpan </td>
           <td>(</td>
           <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>runStart</em>, </td>
+          <td class="paramname"><em>lineStart</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>runEnd</em>, </td>
+          <td class="paramname"><em>lineEnd</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">wxCoord&#160;</td>
-          <td class="paramname"><em>runStartX</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">wxCoord&#160;</td>
-          <td class="paramname"><em>runWidth</em>&#160;</td>
+          <td class="paramtype">wxCoord *&#160;</td>
+          <td class="paramname"><em>width</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -3952,15 +3950,15 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
       </table>
 </div><div class="memdoc">
 
-<p>The left edge of the rectangle covering the run [runStart, runEnd). </p>
+<p>Where the selection rectangle for [lineStart, lineEnd) goes. </p>
+<p>lineStart and lineEnd have to be on the same display line (lineEnd may be the soft break that ends it). Both edges are caret positions, exactly as <a class="el" href="classEditorCell.html#a984fe2e0c07f031fc103bbdd72c1f70a" title="Locates the cursor in the editable text of this cell.">PositionToPoint()</a> computes them, so the highlight always ends where the caret would be drawn - even for a font that kerns or ligates across the boundaries of the snippets the text is drawn in.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">runStartX</td><td>where <a class="el" href="classEditorCell.html#a984fe2e0c07f031fc103bbdd72c1f70a" title="Locates the cursor in the editable text of this cell.">PositionToPoint()</a> puts runStart </td></tr>
-    <tr><td class="paramname">runWidth</td><td>how wide the run's text is</td></tr>
+    <tr><td class="paramname">width</td><td>receives the rectangle's width </td></tr>
   </table>
   </dd>
 </dl>
-<p>The same for both directions except in one respect: on a right-to-left line the run is drawn from its end leftwards, so runStart marks its <em>right</em> edge and the rectangle begins a run-width further left. </p>
+<dl class="section return"><dt>Returns</dt><dd>the rectangle's top-left corner (its left edge being whichever end of the range is drawn further left, which for right-to-left text is lineEnd) </dd></dl>
 
 </div>
 </div>
