@@ -13,7 +13,7 @@ var searchData=
   ['ungroupedfunction_10',['ungroupedFunction',['../classMemgrp__Test.html#a8a3a4ac34b2e25696159ac420bd4bdc6',1,'Memgrp_Test']]],
   ['unhidetree_11',['UnhideTree',['../classGroupCell.html#a3670bf4a157be63688d1554e78f8eb93',1,'GroupCell']]],
   ['unicodesidebar_12',['UnicodeSidebar',['../classUnicodeSidebar.html#ab880d1a15ee6873c5149b96d5fc169c0',1,'UnicodeSidebar']]],
-  ['unicodetomaxima_13',['UnicodeToMaxima',['../classWorksheet.html#a0aeae79d8c7dadb1b4f622bc3c646d39',1,'Worksheet']]],
+  ['unicodetomaxima_13',['UnicodeToMaxima',['../classWorksheet.html#aa0c24f0eca2bb778c89be1135df52a89',1,'Worksheet::UnicodeToMaxima(wxString s, const Configuration *configuration)'],['../classWorksheet.html#a559337711478e0b21583c82e842cd9df',1,'Worksheet::UnicodeToMaxima(wxString s) const']]],
   ['unregisterchildmaxima_14',['UnregisterChildMaxima',['../classMaximaProcessManager.html#a61fd842a4b7205946ec3b2edb9b62204',1,'MaximaProcessManager']]],
   ['unsaveddocuments_15',['UnsavedDocuments',['../classWorksheet.html#a4473708dd4d8a1197c96a2df9947a93c',1,'Worksheet']]],
   ['unsetcellstyle_16',['UnsetCellStyle',['../classToolBar.html#a56051971c1b3ca42d5208d9577e8bf48',1,'ToolBar']]],

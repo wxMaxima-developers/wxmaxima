@@ -689,9 +689,9 @@ const wxString &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>GetCu
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetCurrentFile</b> (const wxString &amp;file)</td></tr>
 <tr class="memdesc:a43fe8e1ecbeac021f087ca2e015ebb0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the name of the currently-opened file. <br /></td></tr>
 <tr class="separator:a43fe8e1ecbeac021f087ca2e015ebb0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0aeae79d8c7dadb1b4f622bc3c646d39"><td class="memItemLeft" align="right" valign="top">const wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a0aeae79d8c7dadb1b4f622bc3c646d39">UnicodeToMaxima</a> (wxString s)</td></tr>
-<tr class="memdesc:a0aeae79d8c7dadb1b4f622bc3c646d39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make a few unicode characters interpretable by maxima.  <br /></td></tr>
-<tr class="separator:a0aeae79d8c7dadb1b4f622bc3c646d39"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a559337711478e0b21583c82e842cd9df"><td class="memItemLeft" align="right" valign="top">const wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a559337711478e0b21583c82e842cd9df">UnicodeToMaxima</a> (wxString s) const</td></tr>
+<tr class="memdesc:a559337711478e0b21583c82e842cd9df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make a few unicode characters interpretable by maxima.  <br /></td></tr>
+<tr class="separator:a559337711478e0b21583c82e842cd9df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac81b31416b9f059cdaaad32402b071ac"><td class="memItemLeft" align="right" valign="top"><a id="ac81b31416b9f059cdaaad32402b071ac" name="ac81b31416b9f059cdaaad32402b071ac"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ScrollToStart</b> ()</td></tr>
 <tr class="memdesc:ac81b31416b9f059cdaaad32402b071ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scroll to the start of the worksheet. <br /></td></tr>
@@ -1323,6 +1323,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 <tr class="memitem:a213f82e67d6b8602c55d0e509d59976f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a213f82e67d6b8602c55d0e509d59976f">QuestionPending</a> () const</td></tr>
 <tr class="memdesc:a213f82e67d6b8602c55d0e509d59976f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does maxima wait for the answer of a question?  <br /></td></tr>
 <tr class="separator:a213f82e67d6b8602c55d0e509d59976f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0c24f0eca2bb778c89be1135df52a89"><td class="memItemLeft" align="right" valign="top"><a id="aa0c24f0eca2bb778c89be1135df52a89" name="aa0c24f0eca2bb778c89be1135df52a89"></a>
+static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>UnicodeToMaxima</b> (wxString s, const <a class="el" href="classConfiguration.html">Configuration</a> *configuration)</td></tr>
+<tr class="memdesc:aa0c24f0eca2bb778c89be1135df52a89"><td class="mdescLeft">&#160;</td><td class="mdescRight">The same, for a configuration that belongs to no worksheet. <br /></td></tr>
+<tr class="separator:aa0c24f0eca2bb778c89be1135df52a89"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae97f44ee9357066d1c47af4f814f832c"><td class="memItemLeft" align="right" valign="top">static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#ae97f44ee9357066d1c47af4f814f832c">CSVDelimiter</a> ()</td></tr>
 <tr class="memdesc:ae97f44ee9357066d1c47af4f814f832c"><td class="mdescLeft">&#160;</td><td class="mdescRight">What separates the values "Copy as CSV" writes.  <br /></td></tr>
 <tr class="separator:ae97f44ee9357066d1c47af4f814f832c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3884,24 +3888,33 @@ as HTML" exports them. <a class="el" href="classA.html">A</a> selection inside a
 
 </div>
 </div>
-<a id="a0aeae79d8c7dadb1b4f622bc3c646d39" name="a0aeae79d8c7dadb1b4f622bc3c646d39"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0aeae79d8c7dadb1b4f622bc3c646d39">&#9670;&#160;</a></span>UnicodeToMaxima()</h2>
+<a id="a559337711478e0b21583c82e842cd9df" name="a559337711478e0b21583c82e842cd9df"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a559337711478e0b21583c82e842cd9df">&#9670;&#160;</a></span>UnicodeToMaxima()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const wxString Worksheet::UnicodeToMaxima </td>
           <td>(</td>
           <td class="paramtype">wxString&#160;</td>
           <td class="paramname"><em>s</em></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Make a few unicode characters interpretable by maxima. </p>
-<p>Does convert the not equal sign to a '#' and similar. </p>
+<p>Does convert the not equal sign to a '#' and similar.</p>
+<p>Symbols that stand for a single <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> name (the greek letter pi, the sum and square root signs, the logical operators, ...) are no longer replaced here: wxMathML.lisp makes them <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> aliases of that name (see wx-define-unicode-aliases there), so they also work in files loaded via batch() or load(), and <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s aliases variable lists the names they stand for. They are only surrounded by spaces here, since <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> treats them as letters, which would glue "a⋀b" into one name. Only what an alias cannot express stays here: the fractions and superscripts, which become several tokens, the operators <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> writes with punctuation, and wrapping a square root's simple argument in parenthesis, which makes "√x" mean sqrt(x). </p>
 
 </div>
 </div>
