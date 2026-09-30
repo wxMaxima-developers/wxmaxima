@@ -1,5 +1,9 @@
 # Current development version
 
+- Code cells now treat a bracket or quote escaped by a backslash as part
+  of a name or string (#528). Typing `a\(3` no longer adds a closing bracket,
+  `\)` no longer jumps over a real ")" that follows, a `\"` inside a string no
+  longer ends it, and the bracket highlight ignores escaped brackets.
 - A selected output can now be explored part by part with the keyboard
   (#2382): Enter goes into the selected expression -- from a result to its
   expression, from a fraction to its numerator, from a matrix to its first

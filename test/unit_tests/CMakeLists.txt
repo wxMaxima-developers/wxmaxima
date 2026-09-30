@@ -320,6 +320,18 @@ if(TARGET wxmTestApp)
     add_test(NAME EditorCellTabs
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_EditorCellTabs>")
 
+    # Escaped brackets and quotes in code cells (GH #528): typing "a\(3"
+    # adds no closing bracket, "\)" doesn't jump over a real ")", and the
+    # bracket highlight ignores escaped ones.
+    add_executable(test_EditorCellEscapedParens
+        test_EditorCellEscapedParens.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_EditorCellEscapedParens PUBLIC cxx_std_20)
+    target_link_libraries(test_EditorCellEscapedParens PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME EditorCellEscapedParens
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_EditorCellEscapedParens>")
+
     # Links in text cells (GH #2396): that they become snippets of their own,
     # that a point over one finds it and one beside it doesn't, and that the
     # LaTeX export writes them as \url{}.

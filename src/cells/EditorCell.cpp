@@ -94,6 +94,24 @@ wxString EditorCell::EscapeHTMLChars(wxString input) {
 
 DEFINE_CELL(EditorCell)
 
+namespace {
+/*! Whether the character at \p pos is escaped by a backslash.
+
+  In Maxima a backslash makes the next character an ordinary part of a name,
+  so the "(" in "a\\(3" opens nothing (GH #528). A run of backslashes escapes
+  itself pairwise: "\\\\(" is an escaped backslash followed by a real "(".
+  So the character is escaped exactly when an odd number of backslashes
+  immediately precedes it.
+*/
+bool IsEscaped(const wxString &text, size_t pos) {
+  size_t backslashes = 0;
+  while ((pos > backslashes) && (pos - backslashes - 1 < text.Length()) &&
+         (text.at(pos - backslashes - 1) == wxS('\\')))
+    backslashes++;
+  return (backslashes % 2) == 1;
+}
+} // namespace
+
 // --- EditorCell split ----------------------------------------------------
 // Two subclasses along the only axis that actually diverges: code vs. prose.
 // CodeEditorCell is Maxima input (and the editor Maxima's questions are
@@ -2002,8 +2020,11 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event) {
             // trailing spaces to emulate deleting a space-expanded tab).
             /// If deleting ( in () then delete both.
             size_t right = pos;
+            // An escaped opener ("\\(") never got a partner auto-inserted,
+            // so the character after it is not its closing half.
             if (pos < m_text.Length() &&
                 m_configuration->GetMatchParens() &&
+                !IsEscaped(m_text, pos - 1) &&
                 ((m_text.at(pos - 1) == '[' &&
                   m_text.at(pos) == ']') ||
                  (m_text.at(pos - 1) == '(' &&
@@ -2283,7 +2304,11 @@ bool EditorCell::HandleOrdinaryKey(wxKeyEvent &event) {
 
     CursorMove(1);
 
-    if (m_configuration->GetMatchParens()) {
+    // A bracket or quote typed right after a backslash is an ordinary
+    // character of a name or string (GH #528): it neither gets a partner
+    // inserted nor jumps over a closing bracket that follows it.
+    if (m_configuration->GetMatchParens() &&
+        !IsEscaped(m_text, CursorPosition() - 1)) {
       switch (keyCode) {
       case '(':
         m_text = m_text.SubString(0, CursorPosition() - 1) + wxS(")") +
@@ -2389,6 +2414,11 @@ bool EditorCell::FindMatchingQuotes() {
 void EditorCell::FindMatchingParens() {
   m_paren1 = m_paren2 = -1;
   if (CursorPosition() >= m_text.Length())
+    return;
+
+  // An escaped bracket or quote is part of a name or string, not a
+  // delimiter, so it has no partner to highlight (GH #528).
+  if (IsEscaped(m_text, CursorPosition()))
     return;
 
   wxChar charUnderCursor = m_text.at(CursorPosition());
