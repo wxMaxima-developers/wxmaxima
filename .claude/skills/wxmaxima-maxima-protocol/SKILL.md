@@ -109,6 +109,12 @@ Things learned the hard way (GH #2289):
   `/usr/lib/maxima/<ver>/binary-sbcl/` and run `maxima -l sbcl`.
 - `wxSOCKET_NOWAIT_READ | wxSOCKET_WAITALL_WRITE` asserts in wxWidgets 3.2;
   `test_InterruptChannel` fails on any wx assertion for that reason.
+- **A test that waits for socket events must activate an event loop**
+  (`wxEventLoopActivator`). On MSW `wxYield()` without an active loop
+  dispatches nothing (`wxApp::Dispatch()` returns false), so the messages
+  `WSAAsyncSelect()` posts never arrive; GTK iterates GLib directly and
+  hides this. `test_InterruptChannel` was red on the Windows jobs for exactly
+  that until it activated one in `main()`.
 
 ## Probing gnuplot
 

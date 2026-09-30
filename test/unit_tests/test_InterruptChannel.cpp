@@ -29,6 +29,7 @@
 #include "InterruptChannelHandshake.h"
 #include "MaximaInterruptChannel.h"
 #include <wx/app.h>
+#include <wx/evtloop.h>
 #include <wx/log.h>
 #include <wx/socket.h>
 #include <wx/stopwatch.h>
@@ -95,6 +96,9 @@ SCENARIO("The interrupt channel handshake only accepts the secret") {
 
 //! Runs the event loop until \p done returns true or a few seconds passed.
 static bool WaitFor(const std::function<bool()> &done) {
+  // Without an active event loop wxYield() does nothing on MS Windows: see
+  // main(). Fail here, on every platform, rather than by a timeout on one.
+  REQUIRE(wxEventLoopBase::GetActive() != nullptr);
   wxStopWatch watch;
   while (!done() && (watch.Time() < 5000)) {
     wxTheApp->Yield(true);
@@ -204,7 +208,20 @@ int main(int argc, char **argv) {
   wxApp::SetInstance(new TestApp());
   wxEntryStart(argc, argv);
   wxTheApp->CallOnInit();
-  int result = Catch::Session().run(argc, argv);
+  int result;
+  {
+    // The socket events the channel waits for have to be dispatched by an
+    // event loop, and wxMaxima has one running. This test never runs one, so
+    // it only yields -- and on MS Windows wxYield() needs an *active* loop to
+    // do even that: without one it peeks at the first message, finds nothing
+    // to hand it to (wxApp::Dispatch() returns false) and gives up. The
+    // messages WSAAsyncSelect() posts for a socket then are never delivered,
+    // and the channel never sees its token. GTK's wxYield() iterates the
+    // GLib main context directly, which is why only MSW noticed.
+    wxEventLoop loop;
+    wxEventLoopActivator activate(&loop);
+    result = Catch::Session().run(argc, argv);
+  }
   wxEntryCleanup();
   if (g_failedAssertions > 0) {
     fprintf(stderr, "%i wxWidgets assertion(s) failed.\n", g_failedAssertions);
