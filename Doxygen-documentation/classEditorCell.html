@@ -377,6 +377,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SelectNone</b> ()</td
 <tr class="memitem:adfddc1bf8896361bee821f273b57a18a"><td class="memItemLeft" align="right" valign="top"><a id="adfddc1bf8896361bee821f273b57a18a" name="adfddc1bf8896361bee821f273b57a18a"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>FindMatchingParens</b> ()</td></tr>
 <tr class="separator:adfddc1bf8896361bee821f273b57a18a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95947c3c6a682c4896cee7c2f0eb8b45"><td class="memItemLeft" align="right" valign="top">std::pair&lt; long, long &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#a95947c3c6a682c4896cee7c2f0eb8b45">GetMatchingParens</a> () const</td></tr>
+<tr class="memdesc:a95947c3c6a682c4896cee7c2f0eb8b45"><td class="mdescLeft">&#160;</td><td class="mdescRight">The pair of brackets or quotes FindMatchingParens() found to highlight.  <br /></td></tr>
+<tr class="separator:a95947c3c6a682c4896cee7c2f0eb8b45"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aab555df03f1b668d5b7cca422291bd48"><td class="memItemLeft" align="right" valign="top"><a id="aab555df03f1b668d5b7cca422291bd48" name="aab555df03f1b668d5b7cca422291bd48"></a>
 wxCoord&#160;</td><td class="memItemRight" valign="bottom"><b>GetLineWidth</b> (size_t line, size_t pos)</td></tr>
 <tr class="separator:aab555df03f1b668d5b7cca422291bd48"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1239,7 +1242,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 </ul>
 <p>Since Unicode doesn't provide us with a "soft linebreak" letter we use <code>\r</code> as a marker that this line has to be broken here if we don't want it to extend beyond the right margin of the screen.</p>
 <p>In a few places we use wxString::const_iterator instead of accessing individual letters within the string using the [] operator. This might look overly complicated. But in UTF-8 all non-standard-ASCII-characters use more than one byte making iterating over every single char of the string the only way of determining which address char n is at. An iterator is the only way of not having to determine the address of every single char independently.</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000005">Todo:</a></b></dt><dd>Draw only tokens that are in the redraw region. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>Draw only tokens that are in the redraw region. </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="ac3aaa6e05945f0185ff534a310d94e99" name="ac3aaa6e05945f0185ff534a310d94e99"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac3aaa6e05945f0185ff534a310d94e99">&#9670;&#160;</a></span>ActivateCursor()</h2>
@@ -2730,6 +2733,34 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 <p>Only text cells have links (GH #2396); a code cell always returns an empty string. Cheap for a cell without links, which returns at once, and otherwise one walk over the cell's snippets with their cached widths. </p>
 
 <p>Reimplemented from <a class="el" href="classCell.html#a42b967e82da26019ecf81619754c7559">Cell</a>.</p>
+
+</div>
+</div>
+<a id="a95947c3c6a682c4896cee7c2f0eb8b45" name="a95947c3c6a682c4896cee7c2f0eb8b45"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a95947c3c6a682c4896cee7c2f0eb8b45">&#9670;&#160;</a></span>GetMatchingParens()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::pair&lt; long, long &gt; EditorCell::GetMatchingParens </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The pair of brackets or quotes FindMatchingParens() found to highlight. </p>
+<p>Both are text positions; both are -1 if the character under the cursor has no partner (or isn't a bracket or quote at all). </p>
 
 </div>
 </div>
@@ -4399,7 +4430,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 </div><div class="memdoc">
 
 <p>Allows to change the text a <a class="el" href="classTextCell.html" title="A Text cell.">TextCell</a> contains. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000005">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
 
 </div>
 </div>

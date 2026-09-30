@@ -379,6 +379,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SelectNone</b> ()</td
 <tr class="memitem:adfddc1bf8896361bee821f273b57a18a"><td class="memItemLeft" align="right" valign="top"><a id="adfddc1bf8896361bee821f273b57a18a" name="adfddc1bf8896361bee821f273b57a18a"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>FindMatchingParens</b> ()</td></tr>
 <tr class="separator:adfddc1bf8896361bee821f273b57a18a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95947c3c6a682c4896cee7c2f0eb8b45"><td class="memItemLeft" align="right" valign="top">std::pair&lt; long, long &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#a95947c3c6a682c4896cee7c2f0eb8b45">GetMatchingParens</a> () const</td></tr>
+<tr class="memdesc:a95947c3c6a682c4896cee7c2f0eb8b45"><td class="mdescLeft">&#160;</td><td class="mdescRight">The pair of brackets or quotes FindMatchingParens() found to highlight.  <br /></td></tr>
+<tr class="separator:a95947c3c6a682c4896cee7c2f0eb8b45"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aab555df03f1b668d5b7cca422291bd48"><td class="memItemLeft" align="right" valign="top"><a id="aab555df03f1b668d5b7cca422291bd48" name="aab555df03f1b668d5b7cca422291bd48"></a>
 wxCoord&#160;</td><td class="memItemRight" valign="bottom"><b>GetLineWidth</b> (size_t line, size_t pos)</td></tr>
 <tr class="separator:aab555df03f1b668d5b7cca422291bd48"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2748,6 +2751,34 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 
 </div>
 </div>
+<a id="a95947c3c6a682c4896cee7c2f0eb8b45" name="a95947c3c6a682c4896cee7c2f0eb8b45"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a95947c3c6a682c4896cee7c2f0eb8b45">&#9670;&#160;</a></span>GetMatchingParens()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::pair&lt; long, long &gt; EditorCell::GetMatchingParens </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The pair of brackets or quotes FindMatchingParens() found to highlight. </p>
+<p>Both are text positions; both are -1 if the character under the cursor has no partner (or isn't a bracket or quote at all). </p>
+
+</div>
+</div>
 <a id="ab1be3819e507454d4313f6ccbdac16c5" name="ab1be3819e507454d4313f6ccbdac16c5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab1be3819e507454d4313f6ccbdac16c5">&#9670;&#160;</a></span>GetMaxDrop()</h2>
 
@@ -4462,7 +4493,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 </div><div class="memdoc">
 
 <p>Allows to change the text a <a class="el" href="classTextCell.html" title="A Text cell.">TextCell</a> contains. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000005">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
 
 </div>
 </div>

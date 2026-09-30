@@ -1,52 +1,52 @@
 <map id="src/worksheet/WorksheetDocument.cpp" name="src/worksheet/WorksheetDocument.cpp">
-<area shape="rect" id="node1" title="Implementation of WorksheetDocument&#39;s structural edits &#45; see WorksheetDocument.h." alt="" coords="2609,5,2889,31"/>
-<area shape="rect" id="node2" href="$WorksheetDocument_8h.html" title="The document half of the worksheet: the state and commands that describe the edited document itself,..." alt="" coords="2217,79,2388,104"/>
-<area shape="rect" id="node7" href="$CellPtr_8h.html" title="Implementation of an observing weak Cell pointer." alt="" coords="2807,519,2883,544"/>
-<area shape="rect" id="node41" href="$GroupCell_8h.html" title="This file defines the class GroupCell that bundles input and output in the worksheet." alt="" coords="1741,299,1873,324"/>
-<area shape="rect" id="node49" href="$WorksheetDocumentView_8h.html" title="The narrow &quot;something in the document changed&quot; surface a WorksheetDocument needs to poke its view." alt="" coords="2787,79,2989,104"/>
-<area shape="rect" id="node50" href="$CellList_8h.html" title="Declares the cell list management functionality." alt="" coords="2787,445,2903,471"/>
-<area shape="rect" id="node3" href="$CellPointers_8h_source.html" title=" " alt="" coords="1945,372,2057,397"/>
-<area shape="rect" id="node14" title=" " alt="" coords="2192,592,2269,617"/>
+<area shape="rect" id="node1" title="Implementation of WorksheetDocument&#39;s structural edits &#45; see WorksheetDocument.h." alt="" coords="2581,5,2861,31"/>
+<area shape="rect" id="node2" href="$WorksheetDocument_8h.html" title="The document half of the worksheet: the state and commands that describe the edited document itself,..." alt="" coords="2429,79,2600,104"/>
+<area shape="rect" id="node7" href="$CellPtr_8h.html" title="Implementation of an observing weak Cell pointer." alt="" coords="2799,519,2875,544"/>
+<area shape="rect" id="node41" href="$GroupCell_8h.html" title="This file defines the class GroupCell that bundles input and output in the worksheet." alt="" coords="1850,299,1982,324"/>
+<area shape="rect" id="node49" href="$WorksheetDocumentView_8h.html" title="The narrow &quot;something in the document changed&quot; surface a WorksheetDocument needs to poke its view." alt="" coords="2759,79,2961,104"/>
+<area shape="rect" id="node50" href="$CellList_8h.html" title="Declares the cell list management functionality." alt="" coords="2895,445,3011,471"/>
+<area shape="rect" id="node3" href="$CellPointers_8h_source.html" title=" " alt="" coords="2140,372,2252,397"/>
+<area shape="rect" id="node14" title=" " alt="" coords="2764,592,2841,617"/>
 <area shape="rect" id="node18" title=" " alt="" coords="195,592,258,617"/>
-<area shape="rect" id="node32" title=" " alt="" coords="685,665,779,691"/>
-<area shape="rect" id="node40" href="$EvaluationQueue_8h.html" title="The evaluation queue." alt="" coords="1734,225,1879,251"/>
-<area shape="rect" id="node46" href="$TreeUndoManager_8h.html" title="Declares TreeUndoManager: the owner of the cell&#45;tree undo/redo state." alt="" coords="2150,152,2301,177"/>
-<area shape="rect" id="node48" href="$WorksheetCursor_8h.html" title="The worksheet&#39;s &quot;between the cells&quot; cursor (the horizontally drawn caret)." alt="" coords="2467,152,2611,177"/>
-<area shape="rect" id="node4" href="$Cell_8h.html" title="The definition of the base class of all cells the worksheet consists of." alt="" coords="1955,445,2048,471"/>
-<area shape="rect" id="node34" title=" " alt="" coords="3176,592,3251,617"/>
-<area shape="rect" id="node39" href="$MatrixBlock_8h_source.html" title=" " alt="" coords="3237,519,3384,544"/>
-<area shape="rect" id="node5" href="$precomp_8h_source.html" title=" " alt="" coords="1902,665,2005,691"/>
-<area shape="rect" id="node15" title=" " alt="" coords="2441,592,2533,617"/>
-<area shape="rect" id="node16" href="$CellIterators_8h.html" title="Declares the various iterators useful with the Cell class." alt="" coords="2271,519,2385,544"/>
-<area shape="rect" id="node19" href="$Configuration_8h_source.html" title=" " alt="" coords="1191,519,1313,544"/>
-<area shape="rect" id="node26" href="$TextStyle_8h.html" title="This file declares everything needed for the text style system used to style all the elements on the ..." alt="" coords="1461,592,1589,617"/>
-<area shape="rect" id="node27" title=" " alt="" coords="1677,665,1728,691"/>
-<area shape="rect" id="node29" title=" " alt="" coords="2803,739,2888,764"/>
-<area shape="rect" id="node36" href="$StringUtils_8h_source.html" title=" " alt="" coords="974,519,1077,544"/>
-<area shape="rect" id="node37" href="$CachedValue_8h.html" title="Declares &quot;mostly read&#45;only&quot; wrappers around values that are expensive to compute and are thus cached." alt="" coords="2511,519,2630,544"/>
-<area shape="rect" id="node38" title=" " alt="" coords="1959,519,2044,544"/>
-<area shape="rect" id="node6" title=" " alt="" coords="1899,739,2007,764"/>
-<area shape="rect" id="node8" title=" " alt="" coords="2609,592,2706,617"/>
-<area shape="rect" id="node9" title=" " alt="" coords="2532,665,2609,691"/>
-<area shape="rect" id="node10" title=" " alt="" coords="3041,592,3101,617"/>
-<area shape="rect" id="node11" title=" " alt="" coords="3275,592,3346,617"/>
-<area shape="rect" id="node12" title=" " alt="" coords="1521,739,1588,764"/>
-<area shape="rect" id="node13" title=" " alt="" coords="2933,592,3016,617"/>
-<area shape="rect" id="node17" title=" " alt="" coords="2294,592,2365,617"/>
-<area shape="rect" id="node20" title=" " alt="" coords="385,592,461,617"/>
-<area shape="rect" id="node21" title=" " alt="" coords="1376,665,1472,691"/>
-<area shape="rect" id="node22" title=" " alt="" coords="1089,592,1191,617"/>
-<area shape="rect" id="node23" title=" " alt="" coords="1216,592,1336,617"/>
-<area shape="rect" id="node24" title=" " alt="" coords="925,665,1043,691"/>
-<area shape="rect" id="node25" href="$LoggingMessageDialog_8h.html" title="This file declares a message dialog that sends its contents to the log message sink." alt="" coords="1933,592,2169,617"/>
-<area shape="rect" id="node30" title=" " alt="" coords="537,665,661,691"/>
+<area shape="rect" id="node32" title=" " alt="" coords="299,665,394,691"/>
+<area shape="rect" id="node40" href="$EvaluationQueue_8h.html" title="The evaluation queue." alt="" coords="1639,225,1785,251"/>
+<area shape="rect" id="node46" href="$TreeUndoManager_8h.html" title="Declares TreeUndoManager: the owner of the cell&#45;tree undo/redo state." alt="" coords="2382,152,2533,177"/>
+<area shape="rect" id="node48" href="$WorksheetCursor_8h.html" title="The worksheet&#39;s &quot;between the cells&quot; cursor (the horizontally drawn caret)." alt="" coords="2608,152,2752,177"/>
+<area shape="rect" id="node4" href="$Cell_8h.html" title="The definition of the base class of all cells the worksheet consists of." alt="" coords="2095,445,2188,471"/>
+<area shape="rect" id="node34" title=" " alt="" coords="3175,592,3249,617"/>
+<area shape="rect" id="node39" href="$MatrixBlock_8h_source.html" title=" " alt="" coords="3289,519,3436,544"/>
+<area shape="rect" id="node5" href="$precomp_8h_source.html" title=" " alt="" coords="1786,665,1889,691"/>
+<area shape="rect" id="node15" title=" " alt="" coords="2474,592,2566,617"/>
+<area shape="rect" id="node16" href="$CellIterators_8h.html" title="Declares the various iterators useful with the Cell class." alt="" coords="2263,519,2377,544"/>
+<area shape="rect" id="node19" href="$Configuration_8h_source.html" title=" " alt="" coords="1243,519,1365,544"/>
+<area shape="rect" id="node26" href="$TextStyle_8h.html" title="This file declares everything needed for the text style system used to style all the elements on the ..." alt="" coords="1088,592,1216,617"/>
+<area shape="rect" id="node27" title=" " alt="" coords="1560,665,1611,691"/>
+<area shape="rect" id="node29" title=" " alt="" coords="3044,739,3129,764"/>
+<area shape="rect" id="node36" href="$StringUtils_8h_source.html" title=" " alt="" coords="766,519,869,544"/>
+<area shape="rect" id="node37" href="$CachedValue_8h.html" title="Declares &quot;mostly read&#45;only&quot; wrappers around values that are expensive to compute and are thus cached." alt="" coords="2453,519,2571,544"/>
+<area shape="rect" id="node38" title=" " alt="" coords="2052,519,2137,544"/>
+<area shape="rect" id="node6" title=" " alt="" coords="1783,739,1891,764"/>
+<area shape="rect" id="node8" title=" " alt="" coords="2642,592,2739,617"/>
+<area shape="rect" id="node9" title=" " alt="" coords="2565,665,2643,691"/>
+<area shape="rect" id="node10" title=" " alt="" coords="1934,592,1994,617"/>
+<area shape="rect" id="node11" title=" " alt="" coords="3274,592,3345,617"/>
+<area shape="rect" id="node12" title=" " alt="" coords="1331,739,1397,764"/>
+<area shape="rect" id="node13" title=" " alt="" coords="2967,592,3049,617"/>
+<area shape="rect" id="node17" title=" " alt="" coords="2379,592,2450,617"/>
+<area shape="rect" id="node20" title=" " alt="" coords="486,592,562,617"/>
+<area shape="rect" id="node21" title=" " alt="" coords="1171,665,1267,691"/>
+<area shape="rect" id="node22" title=" " alt="" coords="1342,592,1445,617"/>
+<area shape="rect" id="node23" title=" " alt="" coords="1469,592,1589,617"/>
+<area shape="rect" id="node24" title=" " alt="" coords="919,665,1036,691"/>
+<area shape="rect" id="node25" href="$LoggingMessageDialog_8h.html" title="This file declares a message dialog that sends its contents to the log message sink." alt="" coords="2119,592,2355,617"/>
+<area shape="rect" id="node30" title=" " alt="" coords="538,665,662,691"/>
 <area shape="rect" id="node31" href="$FontRenderabilityCache_8h.html" title="Declares FontRenderabilityCache: which chars can each font render?" alt="" coords="824,592,1013,617"/>
 <area shape="rect" id="node33" href="$MaximaSessionInfo_8h.html" title="Declares MaximaSessionInfo: what we know about the connected Maxima." alt="" coords="637,592,800,617"/>
 <area shape="rect" id="node35" title=" " alt="" coords="1816,592,1859,617"/>
-<area shape="rect" id="node28" href="$FontAttribs_8h_source.html" title=" " alt="" coords="1547,665,1653,691"/>
-<area shape="rect" id="node44" title=" " alt="" coords="1489,519,1580,544"/>
-<area shape="rect" id="node45" title=" " alt="" coords="1593,299,1717,324"/>
-<area shape="rect" id="node42" href="$EditorCell_8h.html" title="This file contains the definition of the class EditorCell." alt="" coords="1646,372,1743,397"/>
-<area shape="rect" id="node43" href="$MaximaTokenizer_8h.html" title="This file declares the class Maximatokenizer." alt="" coords="1277,445,1424,471"/>
-<area shape="rect" id="node47" href="$TreeUndoAction_8h.html" title="Declares TreeUndoAction, the immutable record of one cell&#45;tree undo/redo step, and the UndoActions li..." alt="" coords="2108,225,2244,251"/>
+<area shape="rect" id="node28" href="$FontAttribs_8h_source.html" title=" " alt="" coords="1371,665,1477,691"/>
+<area shape="rect" id="node44" title=" " alt="" coords="448,519,539,544"/>
+<area shape="rect" id="node45" title=" " alt="" coords="1599,299,1723,324"/>
+<area shape="rect" id="node42" href="$EditorCell_8h.html" title="This file contains the definition of the class EditorCell." alt="" coords="1626,372,1723,397"/>
+<area shape="rect" id="node43" href="$MaximaTokenizer_8h.html" title="This file declares the class Maximatokenizer." alt="" coords="1079,445,1225,471"/>
+<area shape="rect" id="node47" href="$TreeUndoAction_8h.html" title="Declares TreeUndoAction, the immutable record of one cell&#45;tree undo/redo step, and the UndoActions li..." alt="" coords="2389,225,2525,251"/>
 </map>
