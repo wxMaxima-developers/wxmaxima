@@ -106,15 +106,16 @@ wxString SetToolbarField(const wxString &perspective, const wxString &key,
   return result;
 }
 
-//! Shrinks every stored dock size by one pixel, like a drifted layout would.
-wxString ShrinkDockSizes(const wxString &perspective) {
+//! Changes every stored top/bottom dock size by \p delta pixels, like a
+//! drifted layout would.
+wxString AdjustDockSizes(const wxString &perspective, long delta) {
   wxString result;
   for (const wxString &entry : wxSplit(perspective, '|', '\0')) {
     wxString out = entry;
     if (entry.StartsWith(wxS("dock_size(1,"))) {
       long size;
       if (entry.AfterFirst('=').ToLong(&size))
-        out = entry.BeforeFirst('=') + wxString::Format(wxS("=%ld"), size - 1);
+        out = entry.BeforeFirst('=') + wxString::Format(wxS("=%ld"), size + delta);
     }
     if (!result.IsEmpty())
       result += wxS("|");
@@ -131,17 +132,25 @@ SCENARIO("The toolbar's height comes from its contents, not the stored layout") 
   REQUIRE(natural > 1);
   REQUIRE(f.ActualHeight() == natural);
 
-  GIVEN("a stored layout that remembers the toolbar one pixel too short") {
+  // One pixel too short is the reported symptom; too tall is the other way a
+  // stored height can be stale.
+  const int offset = GENERATE(-1, 10);
+
+  GIVEN("a stored layout that remembers the wrong toolbar height") {
     wxString stored = f.manager.SavePerspective();
-    stored = SetToolbarField(stored, wxS("besth"), natural - 1);
-    stored = ShrinkDockSizes(stored);
+    stored = SetToolbarField(stored, wxS("besth"), natural + offset);
+    stored = AdjustDockSizes(stored, offset);
 
     WHEN("it is loaded without repairing the toolbar pane") {
       f.Load(stored, false);
-      THEN("wxAUI keeps the stored, wrong height") {
-        // Not what we want -- but it shows the scenario really reproduces
-        // the bug, so the check below means something.
-        CHECK(f.ActualHeight() == natural - 1);
+      THEN("whether wxAUI keeps the wrong height depends on the platform") {
+        // Only reported, not asserted: this is wxWidgets' behaviour, not
+        // ours. wxGTK 3.2 keeps a height one pixel too short, while wxMSW
+        // 3.3.2 grows it back to what the toolbar needs. The checks below
+        // are the ones that matter; reverting the fix makes them fail on
+        // wxGTK.
+        WARN("offset " << offset << ": natural height " << natural
+             << ", without the repair " << f.ActualHeight());
       }
     }
     WHEN("it is loaded the way wxMaxima does") {
@@ -162,8 +171,8 @@ SCENARIO("The toolbar's height comes from its contents, not the stored layout") 
                              f.Pane().state &
                              ~static_cast<unsigned int>(
                                wxAuiPaneInfo::optionDockFixed));
-    stored = SetToolbarField(stored, wxS("besth"), natural - 1);
-    stored = ShrinkDockSizes(stored);
+    stored = SetToolbarField(stored, wxS("besth"), natural + offset);
+    stored = AdjustDockSizes(stored, offset);
 
     WHEN("it is loaded the way wxMaxima does") {
       f.Load(stored, true);
