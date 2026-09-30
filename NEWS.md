@@ -1,5 +1,10 @@
 # Current development version
 
+- The AI chat sidebar and the AI connection monitor now need wxWidgets
+  3.3.4 or newer, the first version they work reliably with. A build
+  against an older wxWidgets leaves them out, together with their menu
+  entries and their page in the options dialog. The MCP server is not
+  affected.
 - Code cells now treat a bracket or quote escaped by a backslash as part
   of a name or string (#528). Typing `a\(3` no longer adds a closing bracket,
   `\)` no longer jumps over a real ")" that follows, a `\"` inside a string no

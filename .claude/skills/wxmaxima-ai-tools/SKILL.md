@@ -11,8 +11,24 @@ wxMaxima's own UI. They share `McpTools` - the actual worksheet-reading logic -
 so a change to what an AI can see usually belongs there rather than in either
 front end.
 
-Both are gated at compile time by `WXM_USE_AI_TOOLS`, and the sidebar is gated
-again at runtime by whether an OS secret store is actually reachable.
+The chat sidebar, the connection monitor and their options tab are gated at
+compile time by `WXM_USE_AI_TOOLS` (the MCP server is always built), and the
+sidebar is gated again at runtime by whether an OS secret store is actually
+reachable.
+
+**`WXM_USE_AI_TOOLS` is forced off for wxWidgets older than 3.3.4** (the
+top-level `CMakeLists.txt`, right after `find_package(wxWidgets)`), because
+the maintainer found the AI tools only work reliably from that version on.
+It is done in CMake, not with `wxCHECK_VERSION()`, because the one variable
+decides the `#define`, the source list and the unit tests together. It
+overrides a plain variable, not the cache entry, so upgrading wxWidgets
+brings the feature back without touching the cache. **Consequence worth
+knowing: as of 2026-09 no CI job uses wxWidgets 3.3.4** (Windows/MSVC pin
+3.3.2, Ubuntu uses its 3.2 packages), so the sidebar's code is compiled by
+no CI job at all. `test_AiProvider` is keyed on `WXM_AI_TOOLS_REQUESTED`
+instead, which keeps it running everywhere, but it only covers the
+provider JSON. Build against a 3.3.4 wxWidgets before trusting a change to
+`AiChatSidebar`/`AiConnectionMonitor`/the options tab.
 
 **The single most important rule here: every tool is read-only except two
 explicitly approved exceptions** (`watch_variable`/`unwatch_variable`). See the
