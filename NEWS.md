@@ -1,5 +1,192 @@
 # Current development version
 
+- The AI chat sidebar and the AI connection monitor now need wxWidgets
+  3.3.4 or newer, the first version they work reliably with. A build
+  against an older wxWidgets leaves them out, together with their menu
+  entries and their page in the options dialog. The MCP server is not
+  affected.
+- Code cells now treat a bracket or quote escaped by a backslash as part
+  of a name or string (#528). Typing `a\(3` no longer adds a closing bracket,
+  `\)` no longer jumps over a real ")" that follows, a `\"` inside a string no
+  longer ends it, and the bracket highlight ignores escaped brackets.
+- A selected output can now be explored part by part with the keyboard
+  (#2382): Enter goes into the selected expression -- from a result to its
+  expression, from a fraction to its numerator, from a matrix to its first
+  entry -- and Escape comes back out, all the way back into the cell's
+  input. Left and Right select the neighbouring parts, and in a matrix all
+  four arrow keys move from entry to entry. Shift+Left and Shift+Right grow
+  the selection over neighbouring parts, and Shift+arrow keys grow a matrix
+  entry into a block. On Windows, screen readers announce each part as it
+  is selected. Enter on a part that has no parts still opens a new cell
+  holding it. The manual has a new section, "Exploring output with the
+  keyboard", on all of this.
+- A fraction or parenthesis inside a subscript no longer vanishes, or gets
+  partly broken into lines, when the window is too narrow for it. A
+  subscript has no linear form, so it is always drawn in 2D - but the
+  line-breaking step still converted the wide cells inside it to their
+  linear form, which only a cell that is itself broken into lines can draw.
+  Those cells were then positioned and drawn by nobody, and were never
+  returned to 2D when the window grew again. The same applied to matrices
+  and to the fractions of a diff(). Now nothing inside a cell that stays in
+  2D is broken into lines.
+- The matrix viewer (double-click an elided or scrolling matrix) now shows
+  the matrix with alternating row and column bands, without brackets, and
+  starting at the left margin instead of indented like worksheet output.
+- Interrupting Maxima (Ctrl+G) no longer depends on the operating system
+  when Maxima runs on a Lisp with threads (SBCL, which the MS Windows
+  installer uses, CCL, ECL, or a clisp built with threads): the Lisp opens a
+  second connection to wxMaxima that the interrupt is sent through (#2289).
+  This works without Maxima's process id, the shared-memory segment and
+  winkill_lib.dll, or a console, so wxMaxima no longer sets
+  MAXIMA_SIGNALS_THREAD. On a Lisp without threads (GCL) wxMaxima interrupts
+  as before, and says in the log window why it can't do better.
+- MS Windows: Interrupting Maxima (Ctrl+G) is more robust (#2289). If
+  Maxima's first prompt didn't tell wxMaxima Maxima's process id, the
+  interrupt was sent to maxima.bat instead of to the Lisp and failed. Now
+  every process below the one wxMaxima started is tried. The fallback that
+  sent a Ctrl+C to a console was dropped: wxmaxima.exe has no console, so it
+  could never work. A failure now logs which shared-memory segments were
+  tried and what Windows said.
+- The toolbar's Redo button now becomes active and inactive with whether
+  there is something to redo; before, that state switched the Undo button
+  instead. After showing or hiding a group of toolbar buttons, buttons with
+  nothing to act on (Undo, Copy, ...) no longer stay active.
+- The toolbar's "return to the cell being evaluated" button now becomes
+  active as soon as one scrolls away from the evaluation. Before, it kept
+  looking disabled until the mouse pointer entered the toolbar. The same
+  delay affected every other toolbar button whose state or icon changed.
+- Web addresses in Maxima's output are links, too (GH #2396): a string
+  like print("See https://...") or a message naming a web page shows the
+  address underlined in the link color, and Ctrl+click (Cmd+click on macOS)
+  or the context menu's "Open Link" opens it. A plain click still selects
+  the output, so it can be copied as before.
+- The HTML export can now write one single file that contains its images
+  and, if requested, the downloadable .wxmx copy, so the page can be mailed
+  on its own: check "Embed images into the .html file" in the Export tab of
+  the configuration dialog. By default these still go into a separate
+  `<name>_htmlimg` folder next to the .html file, which keeps it small
+  (#2266).
+- Web addresses in text cells are now links (GH #2396). An address
+  starting with http://, https:// or mailto: is drawn underlined in a link
+  color (configurable in Options -> Style), and Ctrl+click (Cmd+click on
+  macOS) or the context menu's "Open Link" opens it in the browser; a plain
+  click still places the cursor, since text cells are always editable.
+  Hovering over a link shows where it leads, and the pointer turns into a
+  hand while Ctrl is held. The HTML export writes such an address as a
+  link, the LaTeX export as \url{} (the export now loads the url package).
+  Nothing is stored in the file: links are recognized from the text itself,
+  so a worksheet looks the same in older versions. Only http, https and
+  mailto links are ever opened.
+- Double-clicking the right-hand part of a wide elided or scrolling matrix
+  now opens the matrix viewer, too; before, only a click near its left
+  edge did. The matrix's tooltip was missing there for the same reason.
+- A .mac file opened in wxMaxima and saved again keeps its comments as they
+  were: a comment containing `&` or a nested `/* ... */` is no longer changed
+  on the way through, and a nested comment is now read as one comment, the
+  way Maxima reads it. Only a text cell that Maxima couldn't read back as
+  one comment still has its `/` next to a `*` written as `&#47;`. A heading
+  containing `*/` can no longer end its comment early and turn the rest of
+  its text into code when the .mac file is loaded into Maxima (#2353).
+- `with_slider_draw(..., file_name="name")` no longer deletes `name.gif`
+  right after showing it in the worksheet (#2389).
+- wxMaxima now needs wxWidgets 3.2 or newer to compile. With wxWidgets 3.0.5,
+  the last 3.0 release, wxMaxima started but never got a working connection
+  to Maxima (#2301). Ubuntu 22.04 only ships wxWidgets 3.0, so the release
+  no longer includes a .deb for it; the .deb for Ubuntu 24.04 replaces it.
+- Compiling wxMaxima needs a compiler with good C++20 support: GCC 12 or
+  newer (the one Debian 12 ships), or a similarly recent Clang or MSVC.
+  Every Linux distribution that packages wxWidgets 3.2 has one.
+- Dragging a rectangle across several entries of a matrix now selects just
+  that block of entries instead of the whole matrix, and highlights it. Every
+  "Copy ..." command -- Copy, plain text, LaTeX, Octave/Matlab, MathML, RTF,
+  image and SVG -- then copies only that sub-matrix (#2345).
+- A cell's output can now be reached with the keyboard: Down at the end of
+  a cell's input selects its first result, further presses step through the
+  results one at a time, and Up walks back into the input. Once a result is
+  selected, the Menu key or Shift+F10 opens the same menu a right-click does,
+  so it can be copied in any format. On Windows, screen readers announce the
+  selected result (#2382).
+  Anyone who prefers the old behaviour, where Down went straight on to the
+  next cell, can switch it back with "Up/Down keys skip over output" in the
+  Worksheet tab of the configuration dialog.
+- A selected block of a matrix's entries can be grown or shrunk with
+  Shift+arrow keys: each press moves the block's far corner -- the one the
+  drag ended at -- by one entry. A run of left-out rows or columns counts as
+  one step. Grown to the whole matrix, the block becomes an ordinary
+  selection of the matrix, which Shift+arrow keys can shrink again (#2370).
+- "Copy as HTML" now copies only what is selected when the selection is part
+  of a cell's output -- a result, a sub-expression or a block of a matrix's
+  entries -- instead of the whole cell (#2369).
+- In a matrix shown with scrollbars, moving a selected block's corner with
+  Shift+arrow keys now scrolls the matrix along, so the corner stays in
+  view (#2380).
+- A matrix, or a block of one, can be copied as CSV from the right-click
+  menu, to paste it into a spreadsheet: one line per row, the values
+  separated by commas, or by tabs where numbers are written with a decimal
+  comma (#2364).
+- New function `with_slider_draw_bare`, which works like `with_slider_draw`
+  but makes each frame of the animation with a plain `draw()` instead of
+  `draw2d()`. A frame can therefore show several `gr2d()` and `gr3d()`
+  scenes side by side, and use `draw`'s global options like `columns`.
+- `with_slider_draw_bare` now accepts `file_name`, like `with_slider_draw`,
+  and saves the animation as a gif file. wxMaxima assembles the gif from the
+  frames, since `draw` can't make one out of frames with several scenes
+  (#2361).
+- New function `wx_version_min("26.09.0")`, which returns `true` if the
+  running wxMaxima is at least that version, so a worksheet can check
+  whether it can use a feature. In wxMaxima 26.08.0 and older the function
+  doesn't exist and the call returns itself unevaluated; comparing the
+  result with `true` handles that, too.
+- Hovering the mouse over a matrix now shows which entry it is over, as
+  "Row 2, column 3", numbered like `M[2,3]`. This makes it easier to find
+  your way around a large matrix, including one whose middle rows or columns
+  are left out or that scrolls. In a matrix of matrices the row and column
+  of the outer matrix are shown.
+- `wx_matrix()` now only returns the formatted matrix instead of also
+  displaying it, so `wx_matrix(M);` shows the matrix once, not twice, and
+  `wx_matrix(M)$` doesn't show it at all. The formatting stays with that
+  value: `F: wx_matrix(M, lines=true)$` followed by `F;` shows `F`
+  formatted, while a result calculated from it, like `F+1`, is shown the
+  normal way.
+- Closing the diff viewer no longer resets settings that were changed in the
+  main window while it was open (#2356).
+- Output arriving from Maxima no longer pushes the cursor down the screen.
+  If the cursor is visible and output is appended to a cell above it, the
+  worksheet now scrolls along by exactly as much, so the line being read or
+  typed in stays where it was and the new output grows upwards instead. The
+  worksheet can only scroll in steps of several pixels; to make this exact
+  its top margin varies by up to one such step.
+- Double-clicking a matrix that is too large for the window, and therefore
+  shown with its middle rows and columns left out or in a scrolling box,
+  opens a window that shows all of it. That window can be resized, several
+  can be open at once, and Escape closes it. The tooltip of such a matrix
+  now mentions this.
+- `wx_matrix()` has a new option, `oversized=full`, `oversized=elide` or
+  `oversized=scroll`, that decides how that one matrix is shown if it is too
+  large for the window, whatever the configuration says for all the others.
+  The choice is saved with the worksheet. Exporting the matrix as an image
+  still always shows all of it.
+- Opening Options no longer asks for the keyring's password. The AI Chat
+  tab used to read every stored API key just to fill its masked key fields,
+  and to write them all back on OK; it now never reads them. A key field
+  starts empty and means "keep the stored key", typing a new key replaces
+  it, and "Forget the stored key" deletes it. Only "Fetch models" still
+  reads the key, since the provider wants it for that request.
+- The vertical scrollbar of a matrix too large for the window no longer
+  blinks when the pointer is over it, and can be dragged again. The matrix
+  starts to the right of its group cell, behind the width of the label
+  column, so the cell did not reach as far right as the scrollbar; a repaint
+  of just the scrollbar (which moving the pointer onto it causes, on
+  Wayland at least) then skipped the matrix, and a matrix that isn't drawn
+  where it was is taken to be gone, scrollbars and all.
+- DeepSeek and OpenRouter are now built-in AI Chat providers. Both need
+  only an API key, pasted into Options -> AI Chat, and each has a link there
+  to where that key is made. OpenRouter passes a request on to one of many
+  other providers' models, chosen by name ("anthropic/claude-sonnet-5",
+  ...), or picks one itself with the preset "openrouter/auto"; DeepSeek
+  starts with its general "deepseek-chat" model, and its "deepseek-reasoner"
+  can be picked instead, in which case the chat shows its answer, not its
+  reasoning.
 # 26.09.0
 
 Large matrices and keyboard access to output are the main topics of this
