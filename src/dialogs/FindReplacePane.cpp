@@ -32,7 +32,8 @@
 #include <wx/stattext.h>
 #include <wx/regex.h>
 
-FindReplacePane::FindReplacePane(wxWindow *parent, FindReplaceData *data)
+FindReplacePane::FindReplacePane(wxWindow *parent, FindReplaceData *data,
+                                 bool searchOnly)
   : wxPanel(parent, -1) {
   m_findReplaceData = data;
   wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
@@ -59,7 +60,8 @@ FindReplacePane::FindReplacePane(wxWindow *parent, FindReplaceData *data)
   m_searchButton->Bind(wxEVT_BUTTON, &FindReplacePane::OnSearch, this);
   m_searchButton->SetDefault();
 
-  grid_sizer->Add(new wxStaticText(this, -1, _("Replacement:")),
+  m_replaceLabel = new wxStaticText(this, -1, _("Replacement:"));
+  grid_sizer->Add(m_replaceLabel,
                   wxSizerFlags().Right().Center().Border(wxALL, 5));
 
   m_replaceText = new wxComboBox(this, -1, data->GetReplaceString(), wxDefaultPosition,
@@ -129,6 +131,16 @@ FindReplacePane::FindReplacePane(wxWindow *parent, FindReplaceData *data)
   // replacement text box immediately.
   m_replaceText->MoveAfterInTabOrder(m_searchText);
   Bind(wxEVT_CHAR_HOOK, &FindReplacePane::OnKeyDown, this);
+  if (searchOnly) {
+    // Hidden, not left out: the event handlers still read these controls.
+    // A sizer leaves hidden windows out of the layout.
+    m_replaceLabel->Hide();
+    m_replaceText->Hide();
+    m_replaceButton->Hide();
+    m_replaceAllButton->Hide();
+    m_searchInInput->Hide();
+    m_searchInOutput->Hide();
+  }
   this->SetSizerAndFit(mainSizer);
 }
 
@@ -206,6 +218,17 @@ void FindReplacePane::SetFindString(wxString strng) {
   m_searchText->SetFocus();
 }
 
+void FindReplacePane::QueueSearchEvent(wxFindDialogEvent *event) const {
+  if (m_eventTarget) {
+    m_eventTarget->QueueEvent(event);
+    return;
+  }
+  const wxWindow *topLevelWindow = this;
+  while(topLevelWindow->GetParent())
+    topLevelWindow = topLevelWindow->GetParent();
+  topLevelWindow->GetEventHandler()->QueueEvent(event);
+}
+
 void FindReplacePane::OnSearch(wxCommandEvent &event) {
   event.Skip();
   AddToHistory(m_searchText, wxS("SearchHistory"),
@@ -213,10 +236,7 @@ void FindReplacePane::OnSearch(wxCommandEvent &event) {
   wxFindDialogEvent *findEvent = new wxFindDialogEvent(wxEVT_FIND_NEXT);
   findEvent->SetFindString(m_findReplaceData->GetFindString());
   findEvent->SetFlags(m_findReplaceData->GetFlags());
-  const wxWindow *topLevelWindow = this;
-  while(topLevelWindow->GetParent())
-    topLevelWindow = topLevelWindow->GetParent();
-  topLevelWindow->GetEventHandler()->QueueEvent(findEvent);
+  QueueSearchEvent(findEvent);
 }
 
 void FindReplacePane::OnReplace(wxCommandEvent &event) {
@@ -229,10 +249,7 @@ void FindReplacePane::OnReplace(wxCommandEvent &event) {
   findEvent->SetFindString(m_findReplaceData->GetFindString());
   findEvent->SetReplaceString(m_findReplaceData->GetReplaceString());
   findEvent->SetFlags(m_findReplaceData->GetFlags());
-  const wxWindow *topLevelWindow = this;
-  while(topLevelWindow->GetParent())
-    topLevelWindow = topLevelWindow->GetParent();
-  topLevelWindow->GetEventHandler()->QueueEvent(findEvent);
+  QueueSearchEvent(findEvent);
 }
 
 void FindReplacePane::OnReplaceAll(wxCommandEvent &event) {
@@ -245,10 +262,7 @@ void FindReplacePane::OnReplaceAll(wxCommandEvent &event) {
   findEvent->SetFindString(m_findReplaceData->GetFindString());
   findEvent->SetReplaceString(m_findReplaceData->GetReplaceString());
   findEvent->SetFlags(m_findReplaceData->GetFlags());
-  const wxWindow *topLevelWindow = this;
-  while(topLevelWindow->GetParent())
-    topLevelWindow = topLevelWindow->GetParent();
-  topLevelWindow->GetEventHandler()->QueueEvent(findEvent);
+  QueueSearchEvent(findEvent);
 }
 
 void FindReplacePane::OnDirectionChange(wxCommandEvent &event) {
