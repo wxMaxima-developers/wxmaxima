@@ -14,6 +14,11 @@
 - The worksheet no longer scrolls a whole screen past its end: below the
   last cell there is now only room for a horizontal cursor and one scroll
   step.
+- The cursor no longer jumps when Maxima's output appears in a cell above
+  it. Keeping it still failed whenever the output arrived quickly, which is
+  most of the time, and when a cell's old output was removed.
+- wxMaxima builds on Cygwin again: precompiled headers, which broke the
+  build there, are now off by default on Cygwin.
 
 # 26.09.0
 
