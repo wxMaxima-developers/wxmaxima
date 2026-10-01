@@ -197,6 +197,7 @@ MathParser::MathParser(Configuration *cfg, const wxString &zipfile) {
       wxS("rownames"),
       wxS("colnames"),
       wxS("oversized"),
+      wxS("banding"),
       wxS("line"),
       wxS("print"),
       wxS("mat"),
@@ -1255,6 +1256,15 @@ std::unique_ptr<Cell> MathParser::ParseTableTag(wxXmlNode *node, int depth) {
   // ignored, leaving the matrix to follow the configuration.
   matrix->SetOversizedMode(
     MatrCell::OversizedModeFromName(node->GetAttribute(wxS("oversized"))));
+  // wx_matrix()'s banding option; without it, or with a value this version
+  // doesn't know, only a matrix too large for the window is banded.
+  {
+    const wxString banding = node->GetAttribute(wxS("banding"));
+    if (banding == wxS("true"))
+      matrix->SetBanding(true);
+    else if (banding == wxS("false"))
+      matrix->SetBanding(false);
+  }
   if (node->GetAttribute(wxS("bracketParens")) == wxS("true"))
     matrix->BracketParens();
   else if (node->GetAttribute(wxS("angledParens")) == wxS("true"))

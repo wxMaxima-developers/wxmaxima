@@ -431,6 +431,27 @@ add_test(
     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wx_matrix(matrix([1,2],[3,4]), oversized=full);" "<tb[^>]* oversized=\"full\""
 )
 
+# wx_matrix()'s banding option reaches wxMaxima as an attribute of the <tb>
+# tag; banding=auto, the default, adds none.
+add_test(
+    NAME check-wxMathML.lisp_matrix_banding_on
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wx_matrix(matrix([1,2],[3,4]), banding=true);" "<tb[^>]* banding=\"true\""
+)
+add_test(
+    NAME check-wxMathML.lisp_matrix_banding_off
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wx_matrix(matrix([1,2],[3,4]), banding=false);" "<tb[^>]* banding=\"false\""
+)
+add_test(
+    NAME check-wxMathML.lisp_matrix_banding_auto
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wx_matrix(matrix([1,2],[3,4]), banding=auto);" "<tb"
+)
+set_tests_properties(check-wxMathML.lisp_matrix_banding_auto PROPERTIES
+    FAIL_REGULAR_EXPRESSION "banding=")
+add_test(
+    NAME check-xml-validity_matrix_banding
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-xml-validity.sh" "wx_matrix(matrix([1,2],[3,4]), lines=true, oversized=scroll, banding=false);"
+)
+
 # wx_matrix() only returns the formatted matrix; it is the display of that
 # result that shows it. So a matrix ended with ";" is shown exactly once...
 add_test(
@@ -1533,6 +1554,8 @@ set(WXM_POSIX_TESTS
   check-xml-validity_matrix_oversized check-wxMathML.lisp_matrix_oversized
   check-wxMathML.lisp_matrix_shown_once check-wxMathML.lisp_matrix_dollar_not_shown
   check-wxMathML.lisp_matrix_options_stay_with_value
+  check-wxMathML.lisp_matrix_banding_on check-wxMathML.lisp_matrix_banding_off
+  check-wxMathML.lisp_matrix_banding_auto check-xml-validity_matrix_banding
   check-wxmx-validity_all-celltypes check-wxmx-validity_intervals
   wxstatusbar wxbuildinfo wxbug_report show_image
   wxxml-array-no-display-properties wxxml-array-display-properties

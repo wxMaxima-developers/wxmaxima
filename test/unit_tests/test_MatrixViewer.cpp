@@ -236,6 +236,23 @@ SCENARIO("The viewer's copy of an elided matrix shows all of it") {
     }
   }
 
+  GIVEN("a matrix that asked for no bands (wx_matrix(..., banding=false))") {
+    std::unique_ptr<GroupCell> group;
+    wxString table = MatrixTableXml(rows, cols);
+    table.Replace(wxS("<tb roundedParens=\"true\""),
+                  wxS("<tb roundedParens=\"true\" banding=\"false\""));
+    MatrCell *matr = LayOut(group, g_cfg, OutputXml(table));
+    REQUIRE(matr->IsShownPartially());
+    THEN("the viewer doesn't band it either") {
+      ViewerConfiguration cfg;
+      auto copy = MatrixViewer::CopyForViewer(*matr, cfg.get());
+      copy->Recalculate();
+      auto *copied = dynamic_cast<MatrCell *>(copy->GetOutput());
+      REQUIRE(copied != nullptr);
+      CHECK_FALSE(copied->IsBanded());
+    }
+  }
+
   GIVEN("an oversized matrix nested in an elided one") {
     std::unique_ptr<GroupCell> group;
     MatrCell *matr = LayOut(group, g_cfg,
