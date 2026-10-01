@@ -1019,8 +1019,7 @@ void Worksheet::InsertLine(std::unique_ptr<Cell> &&newCell, bool forceNewLine) {
   // The append is about to push everything below this cell down, including
   // the cursor if it sits there. If the user can see the cursor, keep it where
   // it is on screen: that is where they are reading or typing.
-  if (ScrollAnchorVisible())
-    m_layout.ArmScrollCompensation();
+  KeepCursorStillOnScreen();
 
   newCell->ForceBreakLine(forceNewLine);
   cell->AppendOutput(std::move(newCell));
@@ -1055,9 +1054,14 @@ WorksheetLayout::ScrollAnchor Worksheet::GetScrollAnchor() const {
   return {};
 }
 
+void Worksheet::KeepCursorStillOnScreen() {
+  if (ScrollAnchorVisible())
+    m_layout.ArmScrollCompensation();
+}
+
 bool Worksheet::ScrollAnchorVisible() {
   const WorksheetLayout::ScrollAnchor anchor = GetScrollAnchor();
-  if (!anchor.cell)
+  if (!anchor.cell || anchor.cell->GetCurrentPoint().y < 0)
     return false;
   int y;
   if (!anchor.atBottom && GetActiveCell())
@@ -1065,7 +1069,7 @@ bool Worksheet::ScrollAnchorVisible() {
     // cell's top may well be scrolled away while the user types at its bottom.
     y = GetActiveCell()->PositionToPoint().y;
   else
-    y = anchor.cell->GetCurrentPoint().y + anchor.cell->GetMaxDrop();
+    y = WorksheetLayout::AnchorY(anchor);
   if (y < 0)
     return false;
 
