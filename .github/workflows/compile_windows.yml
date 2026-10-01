@@ -52,10 +52,26 @@ jobs:
           fetch-depth: 15
           path: wxMaxima
 
+      # CPack's NSIS generator needs makensis. This used to be
+      # repolevedavaj/install-nsis, which looks the installer up in
+      # SourceForge's file-list feed; on 2026-10-01 that feed stopped listing
+      # nsis-3.12-setup.exe and the step failed on every push. Chocolatey
+      # downloads the installer directly instead. The action's extras (the
+      # 8192-byte long-string build and the EnVar plugin) are not needed:
+      # our CPack config uses neither CPACK_NSIS_MODIFY_PATH nor EnVar.
       - name: Install NSIS
-        uses: repolevedavaj/install-nsis@v1.3.0
-        with:
-          nsis-version: '3.12'
+        run: |
+          foreach ($try in 1..3) {
+            choco install nsis -y --no-progress
+            if (Test-Path 'C:\Program Files (x86)\NSIS\makensis.exe') { break }
+            echo "::warning::makensis.exe not found after install attempt $try; retrying."
+            Start-Sleep -Seconds 15
+          }
+          if (-not (Test-Path 'C:\Program Files (x86)\NSIS\makensis.exe')) {
+            echo "::error::Could not install NSIS."
+            exit 1
+          }
+          'C:\Program Files (x86)\NSIS' | Out-File -FilePath $env:GITHUB_PATH -Append
 
       - name: Cache wxWidgets
         uses: actions/cache@v6
