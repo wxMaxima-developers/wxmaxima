@@ -45,6 +45,9 @@
   - **`oversized=mode`**: How to show this matrix if it is too large for the
     window, overriding the configuration: `full`, `elide` or `scroll`. See
     SetOversizedMode().
+  - **`banding=mode`**: Alternating row and column bands: `true`, `false`,
+    or `auto` (the default: only if the matrix is too large). See
+    SetBanding().
 
   Example: `wx_matrix(matrix([1,2],[3,4]), lines=true, rownames=true, parenstyle=square);`
 
@@ -348,8 +351,31 @@ public:
   */
   bool IsShownPartially() const
     { return m_colElision.Active() || m_rowElision.Active() || IsScrolling(); }
-  //! Does this matrix get alternating row/column bands? See DrawBands().
-  bool IsBanded() const { return m_alwaysBanded || IsShownPartially(); }
+  /*! Does this matrix get alternating row/column bands? See DrawBands().
+
+    SetBanding() decides if it was called; otherwise only a matrix shown
+    partially, or one AlwaysBanded() asks for, is banded.
+  */
+  bool IsBanded() const {
+    if (const auto banding = GetBanding())
+      return *banding;
+    return m_alwaysBanded || IsShownPartially();
+  }
+  /*! Force alternating bands on (true) or off (false), or std::nullopt to decide by size
+
+    Set by wx_matrix()'s banding option. Wins over AlwaysBanded(), so a
+    matrix that asked for no bands doesn't get any in the MatrixViewer
+    either. Saved with the matrix, like SetOversizedMode().
+  */
+  void SetBanding(std::optional<bool> banding) {
+    m_banding = !banding ? bandingAuto : (*banding ? bandingOn : bandingOff);
+  }
+  //! What SetBanding() asked for, if anything
+  std::optional<bool> GetBanding() const {
+    if (m_banding == bandingAuto)
+      return std::nullopt;
+    return m_banding == bandingOn;
+  }
   /*! Band this matrix even if it is shown in full
 
     For the MatrixViewer, which shows a matrix only because it is large, so
@@ -423,6 +449,10 @@ private:
   bool m_nestedInMatrix : 1 = false;
   //! Draw bands even if the matrix is shown in full? See AlwaysBanded().
   bool m_alwaysBanded : 1 = false;
+  //! m_banding's values. See SetBanding().
+  static constexpr uint8_t bandingAuto = 0, bandingOn = 1, bandingOff = 2;
+  //! bandingAuto, bandingOn or bandingOff. See SetBanding().
+  uint8_t m_banding : 2 = bandingAuto;
   mutable bool m_hasHorizontalScrollbar : 1 = false;
   mutable bool m_hasVerticalScrollbar : 1 = false;
 };

@@ -2,6 +2,11 @@
 
 - Shift+Up/Down with a cell's output selected now selects whole cells
   starting from that cell. It used to start at the top of the worksheet.
+- `wx_matrix()` is offered by autocompletion, with a template for its
+  arguments.
+- `wx_matrix(M, banding=true|false|auto)` shades every other row and
+  column of a matrix always, never, or only if it is too large for the
+  window (the default).
 
 # 26.09.0
 
