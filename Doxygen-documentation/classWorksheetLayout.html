@@ -71,7 +71,8 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
-<a href="#pub-methods">Public Member Functions</a>  </div>
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a>  </div>
   <div class="headertitle"><div class="title">WorksheetLayout Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -147,6 +148,12 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>GetLastCellsVisited</b
 <tr class="memitem:aab80b2504e212b1aa34d5a71ce6d389d"><td class="memItemLeft" align="right" valign="top"><a id="aab80b2504e212b1aa34d5a71ce6d389d" name="aab80b2504e212b1aa34d5a71ce6d389d"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>GetLastCellsRecalculated</b> () const</td></tr>
 <tr class="separator:aab80b2504e212b1aa34d5a71ce6d389d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a80d1dc65be67b136399affbb3430bec0"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheetLayout.html#a80d1dc65be67b136399affbb3430bec0">AnchorY</a> (const <a class="el" href="structWorksheetLayout_1_1ScrollAnchor.html">ScrollAnchor</a> &amp;anchor)</td></tr>
+<tr class="memdesc:a80d1dc65be67b136399affbb3430bec0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The document y of <code>anchor's</code> cursor position.  <br /></td></tr>
+<tr class="separator:a80d1dc65be67b136399affbb3430bec0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The layout/recalculation engine of a worksheet. </p>
@@ -224,6 +231,35 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>GetLastCellsRecalculat
 
 </div>
 </div>
+<a id="a80d1dc65be67b136399affbb3430bec0" name="a80d1dc65be67b136399affbb3430bec0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a80d1dc65be67b136399affbb3430bec0">&#9670;&#160;</a></span>AnchorY()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int WorksheetLayout::AnchorY </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structWorksheetLayout_1_1ScrollAnchor.html">ScrollAnchor</a> &amp;&#160;</td>
+          <td class="paramname"><em>anchor</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The document y of <code>anchor's</code> cursor position. </p>
+<p>The top of its cell, or the bottom for the horizontal cursor. Lays the cell out first if its size has been reset, as reading a reset size gives 0. </p>
+
+</div>
+</div>
 <a id="a8a366c23ec8831c29b851c22de632c33" name="a8a366c23ec8831c29b851c22de632c33"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8a366c23ec8831c29b851c22de632c33">&#9670;&#160;</a></span>ArmScrollCompensation()</h2>
 
@@ -240,7 +276,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>GetLastCellsRecalculat
 </div><div class="memdoc">
 
 <p>Keep the cursor still on screen across the next layout pass. </p>
-<p>Called just before output is appended to a cell: the cells below it are about to move down, the cursor with them if it sits below the changed cell. This remembers where the cursor's cell is now; once the pass has laid everything out, the view is scrolled by however far that cell moved - to the pixel, see <a class="el" href="WorksheetSizeMath_8h.html#a1d9718491ad63b3def0ba9ed538f068b" title="Compute the scroll position that keeps a point of the worksheet still on screen.">ComputeScrollCompensation()</a> - so the cursor, and everything around it, stays where the user was looking.</p>
+<p>Called just before output is appended to a cell, or removed from it: the cells below it are about to move, the cursor with them if it sits below the changed cell. This remembers where the cursor's cell is now; once the pass has laid everything out, the view is scrolled by however far that cell moved - to the pixel, see <a class="el" href="WorksheetSizeMath_8h.html#a1d9718491ad63b3def0ba9ed538f068b" title="Compute the scroll position that keeps a point of the worksheet still on screen.">ComputeScrollCompensation()</a> - so the cursor, and everything around it, stays where the user was looking.</p>
 <p>Only ever arms once per pass: a second append before the pass has run would measure positions that aren't on screen yet. The caller is expected to only arm if the cursor is visible - scrolling to keep an invisible point still would move the part of the worksheet the user actually is looking at. </p>
 
 </div>

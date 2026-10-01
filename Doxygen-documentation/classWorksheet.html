@@ -763,6 +763,9 @@ std::unique_ptr&lt; <a class="el" href="classGroupCell.html">GroupCell</a> &gt;&
 <tr class="memitem:a6239ddf4ccf69ab82da96429da776f2c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a6239ddf4ccf69ab82da96429da776f2c">ScrollAnchorVisible</a> ()</td></tr>
 <tr class="memdesc:a6239ddf4ccf69ab82da96429da776f2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is the cursor on screen?  <br /></td></tr>
 <tr class="separator:a6239ddf4ccf69ab82da96429da776f2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a139a6a5d185b3b075a707777c0efc88b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a139a6a5d185b3b075a707777c0efc88b">KeepCursorStillOnScreen</a> ()</td></tr>
+<tr class="memdesc:a139a6a5d185b3b075a707777c0efc88b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Keep the cursor where it is on screen while a cell's output changes.  <br /></td></tr>
+<tr class="separator:a139a6a5d185b3b075a707777c0efc88b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1f88d0ae3d7219b394d964c79a894a3a"><td class="memItemLeft" align="right" valign="top"><a id="a1f88d0ae3d7219b394d964c79a894a3a" name="a1f88d0ae3d7219b394d964c79a894a3a"></a>
 <a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>GetInsertGroup</b> () const</td></tr>
 <tr class="memdesc:a1f88d0ae3d7219b394d964c79a894a3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The group that the line's cells will belong to - used by InsertLine. <br /></td></tr>
@@ -2630,6 +2633,26 @@ static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>UnicodeToM
 
 </div>
 </div>
+<a id="a139a6a5d185b3b075a707777c0efc88b" name="a139a6a5d185b3b075a707777c0efc88b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a139a6a5d185b3b075a707777c0efc88b">&#9670;&#160;</a></span>KeepCursorStillOnScreen()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Worksheet::KeepCursorStillOnScreen </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Keep the cursor where it is on screen while a cell's output changes. </p>
+<p>To be called right before output is added to or removed from a cell: if that cell is above the cursor, the cursor would otherwise move with everything below it. Does nothing if the cursor isn't on screen - see <a class="el" href="classWorksheetLayout.html#a8a366c23ec8831c29b851c22de632c33" title="Keep the cursor still on screen across the next layout pass.">WorksheetLayout::ArmScrollCompensation()</a>. </p>
+
+</div>
+</div>
 <a id="abba5bae26979028e72ebd8e81a16e113" name="abba5bae26979028e72ebd8e81a16e113"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abba5bae26979028e72ebd8e81a16e113">&#9670;&#160;</a></span>MarkRefreshAsDone()</h2>
 
@@ -3384,7 +3407,7 @@ static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>UnicodeToM
 </div><div class="memdoc">
 
 <p>Is the cursor on screen? </p>
-<p>Unlike <a class="el" href="classWorksheet.html#a85e0e572501a859a450a6fdc5def3de5" title="Is the caret (hcaret or vcaret) currently visible on the worksheet?">CaretVisibleIs()</a> this never triggers a layout pass: it is asked right before output is appended, when the positions on screen are the ones that matter, not the ones a pass would compute. </p>
+<p>Unlike <a class="el" href="classWorksheet.html#a85e0e572501a859a450a6fdc5def3de5" title="Is the caret (hcaret or vcaret) currently visible on the worksheet?">CaretVisibleIs()</a> this never triggers a layout pass: it is asked right before output is appended, when the positions on screen are the ones that matter, not the ones a pass would compute. (At most it lays out the cursor's own cell, if that cell's size has been reset - see <a class="el" href="classWorksheetLayout.html#a80d1dc65be67b136399affbb3430bec0" title="The document y of anchor&#39;s cursor position.">WorksheetLayout::AnchorY()</a>.) </p>
 
 </div>
 </div>
