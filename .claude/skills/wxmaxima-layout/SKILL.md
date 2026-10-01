@@ -116,6 +116,17 @@ scrolls by however far that point moved. Three things worth knowing:
 - **The compensation is dropped if the cursor moved** between arming and the
   pass finishing (`SetScrollAnchorCallback()` is re-asked), and it arms only
   once per pass: a second append would measure positions not on screen yet.
+- **Measure the cursor's cell with `GetHeight()`/`GetCenter()`, never
+  `GroupCell::GetMaxDrop()`.** The latter reads the raw size and gives 0 once
+  `ResetSize()` has run, and `MaximaEvaluator` resets the group of every
+  command it sends. A quick answer is then appended before any pass has laid
+  that cell out again, the drop counted as part of the shift, and the
+  horizontal cursor below it jumped up by exactly that drop - which is how
+  this still went wrong after the compensation first landed.
+  `WorksheetLayout::AnchorY()` is the one place that measures it.
+- **Removing output is compensated too**: `MaximaEvaluator` calls
+  `Worksheet::KeepCursorStillOnScreen()` before `RemoveOutput()`, as
+  `InsertLine()` does before appending.
 
 ## Testing layout without a window
 

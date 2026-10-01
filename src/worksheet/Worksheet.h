@@ -1088,9 +1088,20 @@ public:
 
     Unlike CaretVisibleIs() this never triggers a layout pass: it is asked
     right before output is appended, when the positions on screen are the ones
-    that matter, not the ones a pass would compute.
+    that matter, not the ones a pass would compute. (At most it lays out the
+    cursor's own cell, if that cell's size has been reset - see
+    WorksheetLayout::AnchorY().)
   */
   bool ScrollAnchorVisible();
+
+  /*! Keep the cursor where it is on screen while a cell's output changes.
+
+    To be called right before output is added to or removed from a cell: if
+    that cell is above the cursor, the cursor would otherwise move with
+    everything below it. Does nothing if the cursor isn't on screen - see
+    WorksheetLayout::ArmScrollCompensation().
+  */
+  void KeepCursorStillOnScreen();
 
   //! The group that the line's cells will belong to - used by InsertLine
   GroupCell *GetInsertGroup() const;
