@@ -7,6 +7,11 @@
 - `wx_matrix(M, banding=true|false|auto)` shades every other row and
   column of a matrix always, never, or only if it is too large for the
   window (the default).
+- The commands wxMaxima adds to Maxima (`wx_matrix()`, `table_form()`,
+  `wxstatusbar()`, `wxplot2d()`, the `wx...` variables, ...) now get a
+  "Help on" entry in the right-click menu, and F1 on them opens wxMaxima's
+  manual at the place that describes them. The entry now also shows a help
+  icon.
 - The Windows installer no longer needs administrator rights: without them
   it installs wxMaxima for the current user only, into
   `%LOCALAPPDATA%\Programs`. With them it installs for all users into

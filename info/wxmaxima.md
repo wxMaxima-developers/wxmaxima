@@ -449,6 +449,8 @@ _WxMaxima_ is primarily a graphical user interface for _Maxima_. As such, its ma
 
 ## Subscripted variables
 
+<div id="wxsubscripts"></div>
+
 `wxsubscripts` specifies, if (and how) _wxMaxima_ will autosubscript variable names:
 
 If it is `false`, the functionality is off, wxMaxima will not autosubscript part of variable names after an underscore.
@@ -462,11 +464,15 @@ If it is set to `true` variable names of the format `x_y` are displayed using a 
 
 ![How variables are autosubscripted using wxsubscripts](./wxsubscripts.png){ id=img_wxsubscripts }
 
+<div id="wxdeclare_subscript"></div>
+
 If the variable name doesn’t match these requirements, it can still be declared as "to be subscripted" using the command `wxdeclare_subscript(variable_name);` or `wxdeclare_subscript([variable_name1,variable_name2,...]);` Declaring a variable as subscripted can be reverted using the following command: `wxdeclare_subscript(variable_name,false);`
 
 You can use the menu "View->Autosubscript" to set these values.
 
 ## User feedback in the status bar
+
+<div id="wxstatusbar"></div>
 
 Long-running commands can provide user feedback in the status bar. This user feedback is replaced by any new feedback that is placed there (allowing to use it as a progress indicator) and is deleted as soon as the current command sent to _Maxima_ is finished. It is safe to use `wxstatusbar()` even in libraries that might be used with plain _Maxima_ (as opposed to _wxMaxima_): If _wxMaxima_ isn’t present the `wxstatusbar()` command will just be left unevaluated.
 
@@ -482,6 +488,8 @@ for i:1 thru 10 do (
 ```
 
 ## Exporting the worksheet from within Maxima
+
+<div id="wxworksheettohtml"></div>
 
 The command `wxworksheettohtml()` exports the current worksheet to an HTML file from within a running _Maxima_ session, which is convenient for scripted or batch export. Like `wxstatusbar()` it is safe to use in code that might also run in plain (console) _Maxima_: if _wxMaxima_ isn’t present the command is simply left unevaluated.
 
@@ -500,6 +508,8 @@ A relative file name is interpreted relative to _Maxima_’s working directory. 
 The images and the `.wxmx` copy are written into a folder named after the HTML file, with `_htmlimg` appended. If "Embed images into the .html file" is checked in the Export tab of the configuration dialog, they are embedded into the HTML file instead, so it can be mailed as a single file.
 
 The `flavor` values match the equation formats offered by the graphical **File → Export** dialog: `mathml` produces a self-contained page that needs no internet connection, `mathjax` adds a MathJaX fall-back for browsers that still lack MathML, and `svg`/`bitmap` render every equation to an image.
+
+<div id="wxworksheettotex"></div>
 
 The companion command `wxworksheettotex()` exports to a LaTeX (`.tex`) file the same way:
 
@@ -520,6 +530,11 @@ Support for `wxworksheettopdf()` is planned.
 Plotting (having fundamentally to do with graphics) is a place where a graphical user interface will have to provide some extensions to the original program.
 
 ### Embedding a plot into the worksheet
+
+<div id="wxplot2d"></div>
+<div id="wxplot3d"></div>
+<div id="wximplicit_plot"></div>
+<div id="wxcontour_plot"></div>
 
 _Maxima_ normally instructs the external program _Gnuplot_ to open a separate window for every diagram it creates. Since many times it is convenient to embed graphs into the worksheet instead _wxMaxima_ provides its own set of plot functions that don’t differ from the corresponding _maxima_ functions save in their name: They are all prefixed by a “wx”.
 
@@ -544,6 +559,8 @@ If a `wxm`-file is read by (console) Maxima, these functions are ignored (and pr
 If you got problems with one of these functions, please check, if the problem exists in the the Maxima function too (e.g. you got an error with `wxplot2d()`, check the same plot in the Maxima command `plot2d()` (which opens the plot in a separate Window)). If the problem does not disappear, it is most likely a Maxima issue and should be reported in the [Maxima bugtracker](https://sourceforge.net/p/maxima/bugs/). Or maybe a Gnuplot issue.
 
 ### Making embedded plots bigger or smaller
+
+<div id="wxplot_size"></div>
 
 As noted above, the configure dialog provides a way to change the default size plots created which sets the starting value of `wxplot_size`. The plotting routines of _wxMaxima_ respect this variable that specifies the size of a plot in pixels. It can always be queried or used to set the size of the following plots:
 
@@ -656,10 +673,15 @@ with_slider_draw_bare(
 
 Like `with_slider_draw`, `with_slider_draw_bare` accepts `file_name="name"`, which saves the animation as `name.gif` in Maxima's working directory. As `draw` cannot turn a frame of several scenes into a single frame of a gif, wxMaxima assembles that gif from the frames it shows, and the animation is still shown in the worksheet. The gif file is only written when the command is evaluated in wxMaxima.
 
+<div id="with_slider"></div>
+<div id="wxanimate"></div>
+
 For those more familiar with `plot` than with `draw`, there is a second set of functions:
 
 - `with_slider` and
 - `wxanimate`.
+
+<div id="wxanimate_framerate"></div>
 
 Normally the animations are played back or exported with the frame rate chosen in the configuration of _wxMaxima_. To set the speed at an individual animation is played back the variable `wxanimate_framerate` can be used:
 
@@ -831,6 +853,15 @@ These files are in the Maxima user directory (usually `%USERPROFILE%/maxima` in 
 
 ## Special variables wx...
 
+<div id="wxfilename"></div>
+<div id="wxdirname"></div>
+<div id="wxplot_pngcairo"></div>
+<div id="wxchangedir"></div>
+<div id="wxanimate_autoplay"></div>
+<div id="wxmaximaversion"></div>
+<div id="wxwidgetsversion"></div>
+<div id="wxdirs"></div>
+
 - `wxsubscripts` tells _Maxima_ if it should convert variable names that contain an underscore (`R_150` or the like) into subscripted variables. See `wxdeclare_subscript` for details which variable names are automatically converted.
 - `wxfilename`: This variable contains the name of the file currently opened in _wxMaxima_.
 - `wxdirname`: This variable contains the name the directory, in which the file currently opened in _wxMaxima_ is.
@@ -850,6 +881,8 @@ These files are in the Maxima user directory (usually `%USERPROFILE%/maxima` in 
 
 ## Pretty-printing 2D output
 
+<div id="table_form"></div>
+
 The function `table_form()` displays a 2D list in a form that is more readable than the output from _Maxima_’s default output routine. The input is a list of one or more lists. Like the "print" command, this command displays output even when ended with a dollar sign. Ending the command with a semicolon results in the same table along with a "done" statement.
 
 ```maxima
@@ -868,6 +901,8 @@ As the next example shows, the lists that are assembled by the `table_form` comm
 Also, because a matrix is a list of lists, matrices can be converted to tables in a similar fashion.
 
 ![Another table_form example](./SecondTableExample.png){ id=img_SecondTableExample }
+
+<div id="wx_matrix"></div>
 
 The function `wx_matrix()` is a wrapper for Maxima's `matrix()` command that allows for more flexible formatting of matrices in wxMaxima:
 
@@ -892,6 +927,9 @@ wx_matrix(matrix(["Name", "Value"], ["X", 10], ["Y", 20]),
 A matrix cannot be broken into lines the way a long sum can. So by default wxMaxima leaves out the middle rows and columns of a matrix that is too large for the window and marks the gap with `⋯`, `⋮` and `⋱`, the way a large matrix is written by hand. The first and last rows and columns always stay visible, and hovering the mouse over the matrix tells which rows and columns are not shown. The option _Matrices too large for the window_ in the _Worksheet_ tab of the configuration dialog can instead draw such a matrix in full, which makes the whole worksheet scroll sideways, or show it in a box the size of the window, with scrollbars of its own; there the mouse wheel still scrolls the worksheet, and such a matrix is printed with its middle rows and columns left out. Whether it is elided or shown in a scrolling box, every other row and column of such a matrix is faintly shaded, so that a row or a column is easy to follow across it; a matrix that fits the window stays plain, unless `wx_matrix()`'s `banding` option says otherwise. All of this affects only what is shown on screen and printed: copying, saving and exporting the matrix always include every entry. `wx_matrix()`'s `oversized` option overrides that option for a single matrix; a matrix it asks to scroll is still elided on paper, and exporting a matrix as an image still always shows all of it. Double-clicking a matrix that is elided or shown in a scrolling box opens a window of its own that shows all of it; the window can be resized and scrolled, and _Escape_ closes it. _Ctrl+F_ in that window searches the matrix: each match selects the entry it is in and scrolls it into view, and searching again steps on to the next matching entry.
 
 ## Bug reporting
+
+<div id="wxbuild_info"></div>
+<div id="wxbug_report"></div>
 
 _WxMaxima_ provides a few functions that gather bug reporting information about the current system:
 
@@ -1182,6 +1220,8 @@ If wxMaxima is used, the Maxima variable `maxima_frontend` is set to `wxmaxima`.
 If no frontend is used (you are using command line Maxima), these variables are `false`.
 
 ### Is wxMaxima new enough for this worksheet?
+
+<div id="wx_version_min"></div>
 
 `wx_version_min("26.09.0")` returns `true` if the running _wxMaxima_ is at least version 26.09.0, and `false` if it is older, or if the command runs in command line _Maxima_. The parts of the version number are compared as numbers, so 26.10.0 counts as newer than 26.9.0, and a part that is left out counts as 0: `wx_version_min("26.9")` is the same as `wx_version_min("26.09.0")`. A development version counts as the version it will be released as.
 

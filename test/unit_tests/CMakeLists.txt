@@ -140,6 +140,14 @@ target_include_directories(test_LdbSupport PRIVATE ${CMAKE_SOURCE_DIR}/src)
 target_link_libraries(test_LdbSupport PRIVATE ${wxWidgets_LIBRARIES})
 add_test(LdbSupport test_LdbSupport)
 
+# The keywords context-sensitive help finds in wxMaxima's own manual: checked
+# against the manuals in info/, whose hand-written anchors have to match them.
+add_executable(test_WxMaximaManualAnchors test_WxMaximaManualAnchors.cpp ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
+target_include_directories(test_WxMaximaManualAnchors PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_compile_definitions(test_WxMaximaManualAnchors PRIVATE WXM_SOURCE_DIR="${CMAKE_SOURCE_DIR}")
+target_link_libraries(test_WxMaximaManualAnchors PRIVATE ${wxWidgets_LIBRARIES})
+add_test(WxMaximaManualAnchors test_WxMaximaManualAnchors)
+
 # The Maxima-protocol helpers (MaximaProtocol) - prompt classification and the
 # blank-command predicate - are GUI-free, so they are tested directly against
 # captured prompt/command strings.

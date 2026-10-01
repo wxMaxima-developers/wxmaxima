@@ -644,6 +644,8 @@ inclusion of graphics in a session.
 
 ## Subscripted variables
 
+<div id="wxsubscripts"></div>
+
 `wxsubscripts` specifies, if (and how) _wxMaxima_ will autosubscript
 variable names:
 
@@ -661,6 +663,8 @@ using a subscript if
 ![How variables are autosubscripted using wxsubscripts](./wxsubscripts.png){
 id=img_wxsubscripts }
 
+<div id="wxdeclare_subscript"></div>
+
 If the variable name doesn’t match these requirements, it can still be
 declared as "to be subscripted" using the command
 `wxdeclare_subscript(variable_name);` or
@@ -671,6 +675,8 @@ variable as subscripted can be reverted using the following command:
 You can use the menu "View->Autosubscript" to set these values.
 
 ## User feedback in the status bar
+
+<div id="wxstatusbar"></div>
 
 Long-running commands can provide user feedback in the status bar. This user
 feedback is replaced by any new feedback that is placed there (allowing to
@@ -692,6 +698,8 @@ for i:1 thru 10 do (
 ```
 
 ## Exporting the worksheet from within Maxima
+
+<div id="wxworksheettohtml"></div>
 
 The command `wxworksheettohtml()` exports the current worksheet to an HTML
 file from within a running _Maxima_ session, which is convenient for
@@ -722,6 +730,8 @@ The `flavor` values match the equation formats offered by the graphical
 no internet connection, `mathjax` adds a MathJaX fall-back for browsers that
 still lack MathML, and `svg`/`bitmap` render every equation to an image.
 
+<div id="wxworksheettotex"></div>
+
 The companion command `wxworksheettotex()` exports to a LaTeX (`.tex`) file
 the same way:
 
@@ -744,6 +754,11 @@ arayüzünün orijinal programa bazı uzantılar sağlamak zorunda kalacağı bi
 yerdir.
 
 ### Embedding a plot into the worksheet
+
+<div id="wxplot2d"></div>
+<div id="wxplot3d"></div>
+<div id="wximplicit_plot"></div>
+<div id="wxcontour_plot"></div>
 
 _Maxima_ normally instructs the external program _Gnuplot_ to open a
 separate window for every diagram it creates. Since many times it is
@@ -779,6 +794,8 @@ bugtracker](https://sourceforge.net/p/maxima/bugs/). Or maybe a Gnuplot
 issue.
 
 ### Making embedded plots bigger or smaller
+
+<div id="wxplot_size"></div>
 
 As noted above, the configure dialog provides a way to change the default
 size plots created which sets the starting value of `wxplot_size`. The
@@ -934,11 +951,16 @@ wxMaxima assembles that gif from the frames it shows, and the animation is
 still shown in the worksheet. The gif file is only written when the command
 is evaluated in wxMaxima.
 
+<div id="with_slider"></div>
+<div id="wxanimate"></div>
+
 For those more familiar with `plot` than with `draw`, there is a second set
 of functions:
 
 - `with_slider` and
 - `wxanimate`.
+
+<div id="wxanimate_framerate"></div>
 
 Normally the animations are played back or exported with the frame rate
 chosen in the configuration of _wxMaxima_. To set the speed at an individual
@@ -1163,6 +1185,15 @@ the command: `maxima_userdir;`
 
 ## Special variables wx...
 
+<div id="wxfilename"></div>
+<div id="wxdirname"></div>
+<div id="wxplot_pngcairo"></div>
+<div id="wxchangedir"></div>
+<div id="wxanimate_autoplay"></div>
+<div id="wxmaximaversion"></div>
+<div id="wxwidgetsversion"></div>
+<div id="wxdirs"></div>
+
 - `wxsubscripts`, _Maxima_ öğesine alt çizgi (` R_150` veya benzeri) içeren
   değişken adlarını abone değişkenlere dönüştürüp dönüştürmeyeceğini
   bildirir. Hangi değişken adlarının otomatik olarak dönüştürüldüğünü
@@ -1204,6 +1235,8 @@ the command: `maxima_userdir;`
 
 ## Pretty-printing 2D output
 
+<div id="table_form"></div>
+
 The function `table_form()` displays a 2D list in a form that is more
 readable than the output from _Maxima_’s default output routine. The input
 is a list of one or more lists. Like the "print" command, this command
@@ -1230,6 +1263,8 @@ tablolara dönüştürülebilir.
 
 ![Bir başkar table_form Örneüi](./SecondTableExample.png){
 id=img_İkinciTabloÖrneği }
+
+<div id="wx_matrix"></div>
 
 The function `wx_matrix()` is a wrapper for Maxima's `matrix()` command that
 allows for more flexible formatting of matrices in wxMaxima:
@@ -1288,6 +1323,9 @@ own that shows all of it; the window can be resized and scrolled, and
 _Escape_ closes it.
 
 ## Bug reporting
+
+<div id="wxbuild_info"></div>
+<div id="wxbug_report"></div>
 
 _WxMaxima_ provides a few functions that gather bug reporting information
 about the current system:
@@ -1681,6 +1719,8 @@ If no frontend is used (you are using command line Maxima), these variables
 are `false`.
 
 ### Is wxMaxima new enough for this worksheet?
+
+<div id="wx_version_min"></div>
 
 `wx_version_min("26.09.0")` returns `true` if the running _wxMaxima_ is at
 least version 26.09.0, and `false` if it is older, or if the command runs in

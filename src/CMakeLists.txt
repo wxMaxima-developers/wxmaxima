@@ -163,6 +163,7 @@ set(SOURCE_FILES
     MaximaFileIO.cpp
     MaximaOutputAppender.cpp
     LdbSupport.cpp
+    WxMaximaManualAnchors.cpp
     MaximaProtocol.cpp
     MaximaMenuSync.cpp
     MaximaTokenizer.cpp
@@ -206,6 +207,16 @@ set(SOURCE_FILES
     wxMaximaArtProvider.cpp
     wxMaximaOSDescription.cpp
 )
+
+# nanoSVG.cpp has to stay a translation unit of its own. It defines
+# NANOSVG_IMPLEMENTATION before including nanosvg_private.h, which is the only
+# place the nanoSVG functions get compiled. In a unity build, a file batched
+# before it that already includes that header makes the include guard skip the
+# implementation, and linking fails with "undefined reference to
+# wxm_nsvgParse". Which file lands before it depends only on how many files
+# precede it in the list above, so adding any unrelated source file could
+# break the build.
+set_source_files_properties(nanoSVG.cpp PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)
 
 if(NOT CYGWIN)
     list(APPEND SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.rc)
