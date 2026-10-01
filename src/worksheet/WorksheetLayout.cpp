@@ -385,6 +385,6 @@ void WorksheetLayout::AdjustSize() {
     GetMaxPoint(&maxWidth, &maxHeight);
 
   ApplyWorksheetVirtualSize(m_view, hasTree, maxWidth, maxHeight,
-                            m_virtualSizeCache, m_scrollUnit);
+                            m_configuration->GetGroupSkip(), m_virtualSizeCache, m_scrollUnit);
   m_adjustWorksheetSizeNeeded = false;
 }

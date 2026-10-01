@@ -11,6 +11,9 @@
   it installs wxMaxima for the current user only, into
   `%LOCALAPPDATA%\Programs`. With them it installs for all users into
   Program Files, as before.
+- The worksheet no longer scrolls a whole screen past its end: below the
+  last cell there is now only room for a horizontal cursor and one scroll
+  step.
 
 # 26.09.0
 
