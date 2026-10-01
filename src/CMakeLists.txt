@@ -556,7 +556,12 @@ if(WIN32)
     # wxMaxima for themselves instead of being refused (GH #2298); see the
     # file for how. It is included with single quotes because CPack writes
     # this value into CPackConfig.cmake without escaping double quotes.
-    set(CPACK_NSIS_DEFINES "ManifestDPIAware true\n!include '${CMAKE_CURRENT_SOURCE_DIR}/nsis/PerUserInstall.nsh'")
+    # The last path separator has to be a backslash: with forward slashes
+    # throughout makensis failed with "!include: could not find", although
+    # the file was there. That is the NSIS bug with Unix-style paths that
+    # CMake's documentation of CPACK_PACKAGE_ICON describes. CMake's "\\\\" becomes
+    # "\\" here, which CPackConfig.cmake reads back as a single backslash.
+    set(CPACK_NSIS_DEFINES "ManifestDPIAware true\n!include '${CMAKE_CURRENT_SOURCE_DIR}/nsis\\\\PerUserInstall.nsh'")
     include(InstallRequiredSystemLibraries)
     install(FILES ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS} DESTINATION bin)
 
