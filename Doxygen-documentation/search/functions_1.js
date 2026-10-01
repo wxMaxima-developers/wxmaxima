@@ -71,7 +71,7 @@ var searchData=
   ['appendcell_68',['AppendCell',['../classCellList.html#a5ec4a3a497bd03cba055bf8531757c37',1,'CellList']]],
   ['applyappearancetoapp_69',['ApplyAppearanceToApp',['../wxMaxima_8h.html#aebe80bdcaeb3621aaafb72b79d4f32fc',1,'ApplyAppearanceToApp(Configuration::Appearance appearance, bool logImmediately=true):&#160;wxMaxima.cpp'],['../wxMaxima_8cpp.html#a5a6b85d84c1ff97226eacd289f4494a5',1,'ApplyAppearanceToApp(Configuration::Appearance appearance, bool logImmediately):&#160;wxMaxima.cpp']]],
   ['applyoverlayscrollbarssetting_70',['ApplyOverlayScrollbarsSetting',['../classWorksheet.html#a31f00c070f65b7afefde35d7d8b04de7',1,'Worksheet']]],
-  ['applyworksheetvirtualsize_71',['ApplyWorksheetVirtualSize',['../WorksheetSizeMath_8h.html#a456bca249b5a259a7f757eb662038732',1,'WorksheetSizeMath.h']]],
+  ['applyworksheetvirtualsize_71',['ApplyWorksheetVirtualSize',['../WorksheetSizeMath_8h.html#a3135e36f1ed4540555dbd66a89f12354',1,'WorksheetSizeMath.h']]],
   ['armscrollcompensation_72',['ArmScrollCompensation',['../classWorksheetLayout.html#a8a366c23ec8831c29b851c22de632c33',1,'WorksheetLayout']]],
   ['array_73',['array',['../classbasic__json.html#ac736994a792cb8460a30a3f4dd86fd78',1,'basic_json']]],
   ['arrowkeysskipoutput_74',['ArrowKeysSkipOutput',['../classConfiguration.html#ae9476f5002dc14dc335da45696d27cc3',1,'Configuration']]],

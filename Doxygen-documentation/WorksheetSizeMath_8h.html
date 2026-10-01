@@ -125,22 +125,22 @@ Functions</h2></td></tr>
 <tr class="memitem:a8c32bd37d3328a6acf12282d024ec76a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="WorksheetSizeMath_8h.html#a8c32bd37d3328a6acf12282d024ec76a">ComputeWorksheetContentHeight</a> (const std::vector&lt; <a class="el" href="structTrailingGroupGeometry.html">TrailingGroupGeometry</a> &gt; &amp;trailing, int groupSkip, int baseIndent)</td></tr>
 <tr class="memdesc:a8c32bd37d3328a6acf12282d024ec76a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the worksheet's content height from its trailing cells' geometry.  <br /></td></tr>
 <tr class="separator:a8c32bd37d3328a6acf12282d024ec76a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5f9e2985516cffa080d3f9ea86664a7d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structWorksheetVirtualSize.html">WorksheetVirtualSize</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="WorksheetSizeMath_8h.html#a5f9e2985516cffa080d3f9ea86664a7d">ComputeWorksheetVirtualSize</a> (bool hasTree, int maxPointWidth, int maxPointHeight, int clientHeight, int currentScrollPixelY)</td></tr>
-<tr class="memdesc:a5f9e2985516cffa080d3f9ea86664a7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a worksheet's virtual size and scroll unit.  <br /></td></tr>
-<tr class="separator:a5f9e2985516cffa080d3f9ea86664a7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a373005642b211bfd83a0a873b62850e0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structWorksheetVirtualSize.html">WorksheetVirtualSize</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="WorksheetSizeMath_8h.html#a373005642b211bfd83a0a873b62850e0">ComputeWorksheetVirtualSize</a> (bool hasTree, int maxPointWidth, int maxPointHeight, int clientHeight, int currentScrollPixelY, int groupSkip)</td></tr>
+<tr class="memdesc:a373005642b211bfd83a0a873b62850e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a worksheet's virtual size and scroll unit.  <br /></td></tr>
+<tr class="separator:a373005642b211bfd83a0a873b62850e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1d9718491ad63b3def0ba9ed538f068b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structScrollCompensation.html">ScrollCompensation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="WorksheetSizeMath_8h.html#a1d9718491ad63b3def0ba9ed538f068b">ComputeScrollCompensation</a> (int scrollUnitsY, int scrollUnit, int topOffset, int shift)</td></tr>
 <tr class="memdesc:a1d9718491ad63b3def0ba9ed538f068b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the scroll position that keeps a point of the worksheet still on screen.  <br /></td></tr>
 <tr class="separator:a1d9718491ad63b3def0ba9ed538f068b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a456bca249b5a259a7f757eb662038732"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="WorksheetSizeMath_8h.html#a456bca249b5a259a7f757eb662038732">ApplyWorksheetVirtualSize</a> (<a class="el" href="classWorksheetView.html">WorksheetView</a> &amp;view, bool hasTree, int maxWidth, int maxHeight, <a class="el" href="structWorksheetVirtualSizeCache.html">WorksheetVirtualSizeCache</a> &amp;cache, int &amp;scrollUnit)</td></tr>
-<tr class="memdesc:a456bca249b5a259a7f757eb662038732"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measure the view, compute the virtual size and apply it, skipping no-ops.  <br /></td></tr>
-<tr class="separator:a456bca249b5a259a7f757eb662038732"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3135e36f1ed4540555dbd66a89f12354"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="WorksheetSizeMath_8h.html#a3135e36f1ed4540555dbd66a89f12354">ApplyWorksheetVirtualSize</a> (<a class="el" href="classWorksheetView.html">WorksheetView</a> &amp;view, bool hasTree, int maxWidth, int maxHeight, int groupSkip, <a class="el" href="structWorksheetVirtualSizeCache.html">WorksheetVirtualSizeCache</a> &amp;cache, int &amp;scrollUnit)</td></tr>
+<tr class="memdesc:a3135e36f1ed4540555dbd66a89f12354"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measure the view, compute the virtual size and apply it, skipping no-ops.  <br /></td></tr>
+<tr class="separator:a3135e36f1ed4540555dbd66a89f12354"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The pure arithmetic that turns a laid-out worksheet's extent into the scrollable (virtual) size and scroll granularity. </p>
 <p>Kept deliberately free of any GUI/wxWidgets dependency so the scroll-range math - historically a source of "the pane won't scroll" bugs - can be unit-tested in isolation. <a class="el" href="classWorksheetLayout.html#a94a4b95c9a596798afe30e907badce31" title="Adjust the virtual size and scrollbars to the document&#39;s extent.">WorksheetLayout::AdjustSize()</a> measures the document (GetMaxPoint) and the window (GetClientSize) and feeds the numbers here, then applies the result with SetVirtualSize()/SetScrollRate(). </p>
 </div><h2 class="groupheader">Function Documentation</h2>
-<a id="a456bca249b5a259a7f757eb662038732" name="a456bca249b5a259a7f757eb662038732"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a456bca249b5a259a7f757eb662038732">&#9670;&#160;</a></span>ApplyWorksheetVirtualSize()</h2>
+<a id="a3135e36f1ed4540555dbd66a89f12354" name="a3135e36f1ed4540555dbd66a89f12354"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3135e36f1ed4540555dbd66a89f12354">&#9670;&#160;</a></span>ApplyWorksheetVirtualSize()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -175,6 +175,12 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>groupSkip</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype"><a class="el" href="structWorksheetVirtualSizeCache.html">WorksheetVirtualSizeCache</a> &amp;&#160;</td>
           <td class="paramname"><em>cache</em>, </td>
         </tr>
@@ -198,13 +204,14 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Measure the view, compute the virtual size and apply it, skipping no-ops. </p>
-<p>This is the view-facing half of <a class="el" href="classWorksheetLayout.html#a94a4b95c9a596798afe30e907badce31" title="Adjust the virtual size and scrollbars to the document&#39;s extent.">WorksheetLayout::AdjustSize()</a>: it reads the client size and scroll position from <code>view</code>, feeds them (with the already-measured document extent <code>maxWidth</code> / <code>maxHeight</code>) to <a class="el" href="WorksheetSizeMath_8h.html#a5f9e2985516cffa080d3f9ea86664a7d" title="Compute a worksheet&#39;s virtual size and scroll unit.">ComputeWorksheetVirtualSize()</a>, and - only if the result actually changed and is positive - pushes it back to the view and updates the scroll rate.</p>
+<p>This is the view-facing half of <a class="el" href="classWorksheetLayout.html#a94a4b95c9a596798afe30e907badce31" title="Adjust the virtual size and scrollbars to the document&#39;s extent.">WorksheetLayout::AdjustSize()</a>: it reads the client size and scroll position from <code>view</code>, feeds them (with the already-measured document extent <code>maxWidth</code> / <code>maxHeight</code>) to <a class="el" href="WorksheetSizeMath_8h.html#a373005642b211bfd83a0a873b62850e0" title="Compute a worksheet&#39;s virtual size and scroll unit.">ComputeWorksheetVirtualSize()</a>, and - only if the result actually changed and is positive - pushes it back to the view and updates the scroll rate.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">view</td><td>The window abstraction (real worksheet or a test mock). </td></tr>
     <tr><td class="paramname">hasTree</td><td>Whether the worksheet has content (ignores the extent if not). </td></tr>
     <tr><td class="paramname">maxWidth</td><td>The document's right extent (<a class="el" href="classWorksheetLayout.html#a4306ed59a2e317b8183608de4494f4bd" title="Get the coordinates of the bottom right point of the worksheet.">WorksheetLayout::GetMaxPoint</a> x). </td></tr>
     <tr><td class="paramname">maxHeight</td><td>The document's bottom extent (<a class="el" href="classWorksheetLayout.html#a4306ed59a2e317b8183608de4494f4bd" title="Get the coordinates of the bottom right point of the worksheet.">WorksheetLayout::GetMaxPoint</a> y). </td></tr>
+    <tr><td class="paramname">groupSkip</td><td>The gap between group cells (<a class="el" href="classConfiguration.html#a8648bf145ef9280e734a08eb2271664b" title="The vertical space between GroupCells.">Configuration::GetGroupSkip</a>). </td></tr>
     <tr><td class="paramname">cache</td><td>The last-applied size, updated in place to dedupe. </td></tr>
     <tr><td class="paramname">scrollUnit</td><td>Read to turn the scroll position into pixels, and updated to the new granularity. <a class="el" href="classWorksheetLayout.html" title="The layout/recalculation engine of a worksheet.">WorksheetLayout</a> keeps it as a member because <a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a>'s scroll handlers read it too. </td></tr>
   </table>
@@ -376,8 +383,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a5f9e2985516cffa080d3f9ea86664a7d" name="a5f9e2985516cffa080d3f9ea86664a7d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5f9e2985516cffa080d3f9ea86664a7d">&#9670;&#160;</a></span>ComputeWorksheetVirtualSize()</h2>
+<a id="a373005642b211bfd83a0a873b62850e0" name="a373005642b211bfd83a0a873b62850e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a373005642b211bfd83a0a873b62850e0">&#9670;&#160;</a></span>ComputeWorksheetVirtualSize()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -413,7 +420,13 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>currentScrollPixelY</em>&#160;</td>
+          <td class="paramname"><em>currentScrollPixelY</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>groupSkip</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -435,16 +448,18 @@ Functions</h2></td></tr>
     <tr><td class="paramname">maxPointWidth</td><td>The document's right extent (<a class="el" href="classWorksheetLayout.html#a4306ed59a2e317b8183608de4494f4bd" title="Get the coordinates of the bottom right point of the worksheet.">WorksheetLayout::GetMaxPoint</a> x). </td></tr>
     <tr><td class="paramname">maxPointHeight</td><td>The document's bottom extent (<a class="el" href="classWorksheetLayout.html#a4306ed59a2e317b8183608de4494f4bd" title="Get the coordinates of the bottom right point of the worksheet.">WorksheetLayout::GetMaxPoint</a> y). </td></tr>
     <tr><td class="paramname">clientHeight</td><td>The visible height of the worksheet window. </td></tr>
-    <tr><td class="paramname">currentScrollPixelY</td><td>The current vertical scroll offset in pixels.</td></tr>
+    <tr><td class="paramname">currentScrollPixelY</td><td>The current vertical scroll offset in pixels. </td></tr>
+    <tr><td class="paramname">groupSkip</td><td>The vertical gap between group cells (<a class="el" href="classConfiguration.html#a8648bf145ef9280e734a08eb2271664b" title="The vertical space between GroupCells.">Configuration::GetGroupSkip</a>): the room a horizontal cursor below the last cell needs.</td></tr>
   </table>
   </dd>
 </dl>
 <p>Invariants (that the callers rely on):</p><ul>
 <li>a vertical scrollbar always has room to move: height &gt;= clientHeight + 10;</li>
-<li>the virtual size never shrinks below what the current scroll position needs (height &gt;= currentScrollPixelY + clientHeight + 10), so wxWidgets does not clamp the scroll position and jump the view;</li>
-<li>a little over-scroll past the end is allowed (with the view scrolled fully down the document occupies the top 1/8 of the client area);</li>
-<li>the scroll unit is at least 10 px, so scrolling never feels sluggish on hi-res screens nor degenerates on tiny ones. </li>
+<li>the virtual size never shrinks below what the current scroll position needs (height &gt;= currentScrollPixelY + clientHeight), so wxWidgets does not clamp the scroll position and jump the view;</li>
+<li>scrolling past the end of the document is limited to one scroll unit plus one group skip: enough to see a horizontal cursor below the last cell with a little air beneath it, instead of the screenful of empty worksheet the over-scroll used to allow;</li>
+<li>the scroll unit is at least 10 px, so scrolling never feels sluggish on hi-res screens nor degenerates on tiny ones.</li>
 </ul>
+<p>The scroll-position clamp deliberately has no "+ 10" margin of its own: with one, every AdjustSize() while the view was scrolled to the very bottom grew the virtual height by another 10 px, so editing at the end of a worksheet slowly ratcheted the over-scroll back up. </p>
 
 </div>
 </div>

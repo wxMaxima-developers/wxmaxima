@@ -98,7 +98,7 @@ var searchData=
   ['computesyncedscrolly_95',['ComputeSyncedScrollY',['../DiffScrollSync_8h.html#a3c697016071f0ffaafee26a3f2933600',1,'DiffScrollSync.cpp']]],
   ['computeworksheetcontentheight_96',['ComputeWorksheetContentHeight',['../WorksheetSizeMath_8h.html#a8c32bd37d3328a6acf12282d024ec76a',1,'WorksheetSizeMath.h']]],
   ['computeworksheetcontentwidth_97',['ComputeWorksheetContentWidth',['../WorksheetSizeMath_8h.html#a823ea8c7afdb1b75360e6a31c14a7d71',1,'WorksheetSizeMath.h']]],
-  ['computeworksheetvirtualsize_98',['ComputeWorksheetVirtualSize',['../WorksheetSizeMath_8h.html#a5f9e2985516cffa080d3f9ea86664a7d',1,'WorksheetSizeMath.h']]],
+  ['computeworksheetvirtualsize_98',['ComputeWorksheetVirtualSize',['../WorksheetSizeMath_8h.html#a373005642b211bfd83a0a873b62850e0',1,'WorksheetSizeMath.h']]],
   ['configchanged_99',['ConfigChanged',['../classwxMaxima.html#af2f5e80d2d27151a20ffc5efd641bc4e',1,'wxMaxima::ConfigChanged()'],['../classCell.html#a01f036f4f68d223e2464097a7728def3',1,'Cell::ConfigChanged()']]],
   ['configdialogue_100',['ConfigDialogue',['../classConfigDialogue.html#a58672512562a99cc7c4f77783e60224a',1,'ConfigDialogue']]],
   ['configkeys_101',['ConfigKeys',['../classStyles.html#a0a7e361eb4d21f2b7a6cd8f4b6daf8c1',1,'Styles']]],

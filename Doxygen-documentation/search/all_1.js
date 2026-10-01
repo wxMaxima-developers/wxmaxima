@@ -108,7 +108,7 @@ var searchData=
   ['applied_105',['Applied',['../classWorksheetDocument.html#a597da4ddc26d35569b9346897dff3b72a733d43480c8589b1368e5def6b480415',1,'WorksheetDocument']]],
   ['applyappearancetoapp_106',['ApplyAppearanceToApp',['../wxMaxima_8h.html#aebe80bdcaeb3621aaafb72b79d4f32fc',1,'ApplyAppearanceToApp(Configuration::Appearance appearance, bool logImmediately=true):&#160;wxMaxima.cpp'],['../wxMaxima_8cpp.html#a5a6b85d84c1ff97226eacd289f4494a5',1,'ApplyAppearanceToApp(Configuration::Appearance appearance, bool logImmediately):&#160;wxMaxima.cpp']]],
   ['applyoverlayscrollbarssetting_107',['ApplyOverlayScrollbarsSetting',['../classWorksheet.html#a31f00c070f65b7afefde35d7d8b04de7',1,'Worksheet']]],
-  ['applyworksheetvirtualsize_108',['ApplyWorksheetVirtualSize',['../WorksheetSizeMath_8h.html#a456bca249b5a259a7f757eb662038732',1,'WorksheetSizeMath.h']]],
+  ['applyworksheetvirtualsize_108',['ApplyWorksheetVirtualSize',['../WorksheetSizeMath_8h.html#a3135e36f1ed4540555dbd66a89f12354',1,'WorksheetSizeMath.h']]],
   ['approx_109',['Approx',['../classCatch_1_1Detail_1_1Approx.html',1,'Catch::Detail']]],
   ['approxmatcher_110',['ApproxMatcher',['../structCatch_1_1Matchers_1_1Vector_1_1ApproxMatcher.html',1,'Catch::Matchers::Vector']]],
   ['armscrollcompensation_111',['ArmScrollCompensation',['../classWorksheetLayout.html#a8a366c23ec8831c29b851c22de632c33',1,'WorksheetLayout']]],
