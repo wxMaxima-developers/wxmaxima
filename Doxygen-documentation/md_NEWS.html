@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.6"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>wxMaxima: 26.09.0</title>
+<title>wxMaxima: Current development version</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -69,12 +69,17 @@ $(function() {
 
 </div><!-- top -->
 <div><div class="header">
-  <div class="headertitle"><div class="title">26.09.0 </div></div>
+  <div class="headertitle"><div class="title">Current development version </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>Large matrices and keyboard access to output are the main topics of this release, which again was developed with substantial help from the AI assistant <b>Claude</b>. <a class="el" href="classA.html">A</a> matrix too large for the window no longer widens the worksheet, output can be explored part by part with the keyboard, links in text and output can be opened, and an optional MCP server lets AI tools read the worksheet. Plus many fixes, among them a security fix for .wxm files.</p>
-<h1><a class="anchor" id="autotoc_md991"></a>
-Matrices</h1>
+<div class="textblock"><ul>
+<li><code>wx_matrix(M, banding=true|false|auto)</code> shades every other row and column of a matrix always, never, or only if it is too large for the window (the default).</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md1003"></a>
+26.09.0</h1>
+<p>Large matrices and keyboard access to output are the main topics of this release, which again was developed with substantial help from the AI assistant <b>Claude</b>. <a class="el" href="classA.html">A</a> matrix too large for the window no longer widens the worksheet, output can be explored part by part with the keyboard, links in text and output can be opened, and an optional MCP server lets AI tools read the worksheet. Plus many fixes, among them a security fix for .wxm files.</p>
+<h2><a class="anchor" id="autotoc_md1004"></a>
+Matrices</h2>
 <ul>
 <li><a class="el" href="classA.html">A</a> matrix too large for the window by default is displayed with an elipsis( ⋯, ⋮ and/o ⋱)</li>
 <li><code>wx_matrix(M, oversized=full|elide|scroll)</code> chooses this for one matrix. <code>wx_matrix()</code> now only returns the formatted matrix instead of also displaying it.</li>
@@ -84,14 +89,14 @@ Matrices</h1>
 <li>Dragging across a matrix selects a block of entries, which Shift+arrow keys can grow or shrink (#2345, #2370, #2380). Every "Copy ..." command, including "Copy as HTML", copies only that block (#2369), and a matrix or block can be copied as CSV for a spreadsheet (#2364).</li>
 <li>The highlight of selected text in a cell now ends exactly where the text cursor would be. With fonts that kern or join letters it used to be off by a few pixels (#2278).</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md992"></a>
-Keyboard and accessibility</h1>
+<h2><a class="anchor" id="autotoc_md1005"></a>
+Keyboard and accessibility</h2>
 <ul>
 <li><a class="el" href="classA.html">A</a> cell's output can be reached with the keyboard: Down at the end of the input selects the first result, Enter goes into a selected expression (numerator, matrix entry, ...), Escape comes back out, and the arrow keys move between parts. The Menu key or Shift+F10 opens the context menu, and on Windows screen readers announce each selected part (#2382). The manual has a new section, "Exploring output with the keyboard". The old behaviour of Down can be switched back in the configuration dialog.</li>
 <li>Output arriving from <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> no longer pushes the cursor down the screen.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md993"></a>
-Editing, links and plots</h1>
+<h2><a class="anchor" id="autotoc_md1006"></a>
+Editing, links and plots</h2>
 <ul>
 <li>Web addresses in text cells and in <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s output are links: Ctrl+click (Cmd+click on macOS) or the context menu's "Open Link" opens them (#2396). The HTML and LaTeX exports keep them as links.</li>
 <li>Code cells treat a bracket or quote escaped by a backslash as part of a name or string (#528).</li>
@@ -100,8 +105,8 @@ Editing, links and plots</h1>
 <li><code>with_slider_draw(..., file_name="name")</code> no longer deletes the gif right after showing it (#2389).</li>
 <li><a class="el" href="classA.html">A</a> system tray icon shows whether <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> is busy and offers Interrupt and Exit (#2286).</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md994"></a>
-Export and files</h1>
+<h2><a class="anchor" id="autotoc_md1007"></a>
+Export and files</h2>
 <ul>
 <li>The HTML export can optionally write a single self-contained file with all images embedded (#2266), and "Copy as HTML" puts such a document on the clipboard (#2265, #2267).</li>
 <li>Security fix: a crafted .wxm file could run <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> code when opened or loaded, as text containing <code>*/</code> ended its comment early (#1907).</li>
@@ -109,30 +114,30 @@ Export and files</h1>
 <li>"Copy as RTF" now pastes into MS Word (#2264); hidden multiplication signs get proper spacing in MathML/OMML export (#2263).</li>
 <li>The manual's PDF no longer needs CJK fonts for non-CJK languages (#2271).</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md995"></a>
-AI chat and MCP server (optional)</h1>
+<h2><a class="anchor" id="autotoc_md1008"></a>
+AI chat and MCP server (optional)</h2>
 <ul>
 <li>An "AI Chat" sidebar chats about the current worksheet with Anthropic, OpenAI, Google Gemini, Qwen, GitHub Models, DeepSeek, OpenRouter or a custom provider, including local servers like Ollama, LM Studio or llama.cpp. It uses your own API key, stored in the operating system's secret store, and can read the worksheet but never change or evaluate it. <a class="el" href="classA.html">A</a> status bar icon and a connection monitor show what it is doing. The sidebar needs wxWidgets 3.3.4 or newer, the first version it works reliably with; a build against an older wxWidgets leaves it out. That includes this release's Windows installer and Linux .deb, which are built with wxWidgets 3.3.2 and 3.2.</li>
 <li>An optional MCP server lets an external AI tool read the worksheet, the Variables sidebar and the evaluation status, and show or hide sidebars. It listens only on this machine and cannot change the worksheet.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md996"></a>
-Talking to Maxima</h1>
+<h2><a class="anchor" id="autotoc_md1009"></a>
+Talking to Maxima</h2>
 <ul>
 <li>Interrupting <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> (Ctrl+G) goes through a second connection when the Lisp has threads (SBCL, CCL, ECL), which also makes it work reliably on Windows (#2289).</li>
 <li>Batch runs no longer occasionally lose or skip a statement (#2196), and exit with a status code saying why they stopped (#2276, see the man page).</li>
 <li>Opening a file starts <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> only once, about two seconds faster.</li>
 <li>The "Maxima isn't connecting" warning no longer fires for large worksheets (#1182).</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md997"></a>
-Windows</h1>
+<h2><a class="anchor" id="autotoc_md1010"></a>
+Windows</h2>
 <ul>
 <li>Releases also offer a portable .zip that runs without installation (#2298).</li>
 <li>New <code>wxmaxima-cli.exe</code> for command-line use: it waits for <a class="el" href="classwxMaxima.html">wxMaxima</a> and shows <code>--version</code>, <code>--help</code> and <code>--batch</code> output in the console.</li>
 <li>Dark mode now also themes menus, toolbars and dialogs (#2274).</li>
 <li><code>--logtostderr ... 2&gt;&amp;1</code> no longer loses the log.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md998"></a>
-Other fixes</h1>
+<h2><a class="anchor" id="autotoc_md1011"></a>
+Other fixes</h2>
 <ul>
 <li>Sets (<code>{1,2,3}</code>) and <code>product()</code> no longer render as blank output (#2270), and <code>product()</code> no longer turns into "sum(" when broken into lines.</li>
 <li><a class="el" href="classA.html">A</a> fraction inside a subscript, matrix or <code>diff()</code> no longer vanishes in a narrow window.</li>
@@ -142,13 +147,13 @@ Other fixes</h1>
 <li>Closing the diff viewer no longer resets settings changed meanwhile (#2356).</li>
 <li>The toolbar's height is recomputed at every start instead of being restored from the previous session, so it can no longer shrink by a pixel per session on MS Windows.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md999"></a>
-Building</h1>
+<h2><a class="anchor" id="autotoc_md1012"></a>
+Building</h2>
 <ul>
 <li>wxWidgets 3.2 and a C++20 compiler (GCC 12 or newer) are now required (#2301). There is no longer a .deb for Ubuntu 22.04.</li>
 <li>Compiling is about a third faster: precompiled headers are on by default and actually work now.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1000"></a>
+<h1><a class="anchor" id="autotoc_md1013"></a>
 26.08.0</h1>
 <p>Another large batch of improvements, many of them developed with substantial help from the AI assistant <b>Claude</b>: sidebars can now be minimized, "Find
 and Replace" can be docked like the other sidebars, right-to-left interface languages and mixed-direction text are now properly supported, translation losses across dozens of languages were found and restored, and a long list of export, layout and stability fixes.</p>
@@ -178,7 +183,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 <li>Added "Anonymize Code for Bug Report" to the Help menu (#1339): replaces every non-builtin name in the selected code (or, after confirmation, the whole document) with a random name, consistently, so a worksheet can be shared in a bug report without revealing the original names.</li>
 <li>Reduced the memory footprint of every cell on the worksheet by computing line-wrap draw order on demand instead of storing it per cell (#1445).</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1001"></a>
+<h1><a class="anchor" id="autotoc_md1014"></a>
 26.07.1</h1>
 <p>This release contains an unusually large batch of improvements &ndash; many of them developed with substantial help from the AI assistants <b>Claude</b> and <b>Fable</b>: dark mode for the whole Windows user interface, native Windows-on-Arm builds, numerous speedups, and a large number of bug and stability fixes.</p>
 <ul>
@@ -250,7 +255,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 <li>Snap package: opening a link in the system web browser (the manual, "visit website", <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s online documentation) now works. The confined snap reaches the host's default browser through the XDG Desktop Portal instead of trying to launch a browser that is not visible inside the sandbox &ndash; no browser is bundled and confinement stays strict.</li>
 <li>Find: a match found inside a cell's output now scrolls to the matching part of the output, even in a long output cell. Previously the view only scrolled to the top of the output because the matched item &ndash; if it had not been drawn yet &ndash; had no on-screen position, so the scroll fell back to the start of the output.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1002"></a>
+<h1><a class="anchor" id="autotoc_md1015"></a>
 26.07.0</h1>
 <ul>
 <li>Fixed a crash on loading a worksheet containing an empty <code>&lt;img/&gt;</code> or <code>&lt;slideshow/&gt;</code> tag (found by the parser fuzzer).</li>
@@ -272,7 +277,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 <li><a class="el" href="classA.html">A</a> correctness review for all wizards.</li>
 <li>EditorCells again grow and shrink when the user adds and removes lines</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1003"></a>
+<h1><a class="anchor" id="autotoc_md1016"></a>
 26.06.2</h1>
 <ul>
 <li><a class="el" href="classA.html">A</a> whole AI-driven safety review</li>
@@ -294,7 +299,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 <li>Better undo handling.</li>
 <li>Another try to make accessibility work.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1004"></a>
+<h1><a class="anchor" id="autotoc_md1017"></a>
 26.06.1</h1>
 <ul>
 <li>Fix the Ctrl+F keyboard focus on MS Windows to correctly focus the find dialogue instead of leaving it on the worksheet.</li>
@@ -307,7 +312,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 <li>Fix scroll position tracking: call ScrolledAwayFromEvaluation(true) when the user manually scrolls so that the active cell is completely outside the visible portion of the worksheet.</li>
 <li>Fix inserting a new cell (via hCaret) on large worksheets causing the scroll range to shrink to the first screen and the view to jump to the top.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1005"></a>
+<h1><a class="anchor" id="autotoc_md1018"></a>
 26.06.0</h1>
 <ul>
 <li>Optimize drawing during mouse moves (bracket autohide): redraw only the actual height of the cell, rather than drawing all the way to the absolute bottom coordinate.</li>
@@ -353,7 +358,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 <li>Files opened by double-clicking now have a consistent layout</li>
 <li>Added automatic tests and repaired others.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1006"></a>
+<h1><a class="anchor" id="autotoc_md1019"></a>
 26.05.0</h1>
 <ul>
 <li>Fix search and replace. Before in a longer string - e.g. "aaaaaaaaa" only every second occurrence was replaced, when (e.g.) one wanted to replace "a" by "b".</li>
@@ -384,7 +389,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 <li>Fix inconsistent behavior in the list menu (mentioned in the discussion forum)</li>
 <li>Make toolbar icons HDPI (#2074).</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1007"></a>
+<h1><a class="anchor" id="autotoc_md1020"></a>
 26.01.0</h1>
 <ul>
 <li>Keep the wxm/mac difference when saving wxm/exporting mac. This omits unneeded comments (/* [<a class="el" href="classwxMaxima.html">wxMaxima</a>: input start ] */ (and input end) in a mac file (structural comments (section, ...) are still saved) and especially omits question/answer comments - they are unreadable by <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> (see #2014, not only wxm files but also mac files were problematic). At least the issue with mac files is solved.</li>
@@ -407,7 +412,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 <li><a class="el" href="classA.html">A</a> more consistent worksheet zoom feature.</li>
 <li><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s state should now be displayed in the windows task bar.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1008"></a>
+<h1><a class="anchor" id="autotoc_md1021"></a>
 25.04.0</h1>
 <ul>
 <li>Use the (standard) wxWidgets log window instead of our own log pane. Less code to maintain, more features (e.g. clear log, save log). In "Release" builds the log window will be hidden (and can be enabled using View-&gt;Toggle log window, otherwise it is shown.</li>
@@ -422,7 +427,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 - Fix compiling with wxWidgets without webview.
 - HTML export/Mathjax: Don't remove 1st/last label char (#2003)
 
-@section autotoc_md1009 25.01.0
+@section autotoc_md1022 25.01.0
 
 - Remove the change label width popup menu (#1964).
   It was not working at all and caused crashes. And I think the
@@ -437,7 +442,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 - Fix the (Windows) crash in the suggestions menu (#1980).
 - HTML export: print the output labels on the left side.
 
-@section autotoc_md1010 24.11.0
+@section autotoc_md1023 24.11.0
 
 - A Spanish translation update by cyphra.
 - Resolved a crash when inverting the worksheet (#1951)
@@ -452,7 +457,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 - Allow Maxima strings with newlines. (#76)
 - Support Maxima which uses ABCL.
 
-@section autotoc_md1011 24.08.0
+@section autotoc_md1024 24.08.0
 
 - An advanced plotting tutorial
 - Try harder to kill maxima on closing it
@@ -479,7 +484,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 - On MS Windows one can now choose between Gnuplot and wGnuplot (#1934)
 - Fixed the error message about dual manifest files on MSVC
 
-@section autotoc_md1012 24.05.0
+@section autotoc_md1025 24.05.0
 
 - Faster discarding of maths that is too long to read
 - Resolved a crash on closing the last window (#1898)
@@ -513,13 +518,13 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 - On MSW wxWidgets &gt;=3.2 now is mandatory for getting high-DPI support
 - A backward-search fix (#1913)
 
-@section autotoc_md1013 24.02.2
+@section autotoc_md1026 24.02.2
 
 - Set maxima's LANG variable, not wxMaxima's LANG (#1897)
 - Sped up the communication between maxima and wxMaxima
 - Sometimes newlines in misc text from maxima got lost (#1894)
 
-@section autotoc_md1014 24.02.1
+@section autotoc_md1027 24.02.1
 
 - wxMaxima now correctly installs its icons (#1892)
 - A race condition on closing Maxima
@@ -532,7 +537,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 - Ctrl+Alt+M now restarts maxima
 - Added a Maxima/Memory menu
 
-@section autotoc_md1015 24.02.0
+@section autotoc_md1028 24.02.0
 
 - Faster start-up
 - Better performance directly after startup
@@ -565,7 +570,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 - Fix crash when exporting a worksheet with animations to TeX
 - Resolved a crash on closing a window (#1889)
 
-@section autotoc_md1016 23.12.0
+@section autotoc_md1029 23.12.0
 
 - Input text selection was cleared when right-clicking
   on it (#1845)
@@ -584,7 +589,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 - Hidden cells weren't restored from wxm files (#1855)
 - diff() no longer causes spurious multiplication dots (#1825)
 
-@section autotoc_md1017 23.11.0
+@section autotoc_md1030 23.11.0
 
 - Correctly draw the bracket of the cell under the cursor (#1811)
 - Maths display was corrupted if the window was temporarily not wide
@@ -604,7 +609,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 - Resolved many warnings from several static analysis tools
 - Fine-tuning of the "undo" function
 
-@section autotoc_md1018 23.10.0
+@section autotoc_md1031 23.10.0
 
 - A big rewrite to make the static analysis tools happy
 - Many stability improvements
@@ -622,7 +627,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 - Better error messages for bitmaps
 - Many additional bug fixes
 
-@section autotoc_md1019 23.08.0
+@section autotoc_md1032 23.08.0
 
 - Better print scaling
 - More consistent page size handling for printing
@@ -630,7 +635,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 - Resolved many warnings from cppcheck
 - A RegEx search
 
-@section autotoc_md1020 23.07.0
+@section autotoc_md1033 23.07.0
 
 - Printing: Made the page margins configurable (#1787)
 - Printing: We no more print page headers (#1791)
@@ -645,7 +650,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 - The cursor no more disappears (#1788)
 - Updated italian translation
 
-@section autotoc_md1021 23.05.1
+@section autotoc_md1034 23.05.1
 
 - Updated the Russian and Italian translation.
 - Process the command line option &lt;tt&gt;--maxima=\&lt;str\&gt;&lt;/tt&gt;.
@@ -657,7 +662,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
   window width changes
 - 2D display of integrals had zero size (#1780)
 
-@section autotoc_md1022 23.05.0
+@section autotoc_md1035 23.05.0
 
 - Got rid of some compiler and cppcheck warnings
 - Big performance improvements
@@ -676,7 +681,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
   of the parent process
 - wxMaxima no more tries to install its own fonts.
 
-@section autotoc_md1023 23.04.1
+@section autotoc_md1036 23.04.1
 
 - More config dialogue tweaks
 - MacOs: No more create config icons that aren't needed
@@ -687,7 +692,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 - Be aware that the MSW port recycles unused window IDs.
 - The load() command now again works with symbols as package names.
 
-@section autotoc_md1024 23.04.0
+@section autotoc_md1037 23.04.0
 
 - Made the GUI more responsive for functions with much output
 - Handle errors in the XML from maxima more gracefully
@@ -701,7 +706,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 - Resolved several asserts
 - Resolved a few small bugs in the autosave logic
 
-@section autotoc_md1025 23.03.0
+@section autotoc_md1038 23.03.0
 
 - Make sure all bitmaps are valid on High-DPI MacOs (#1749)
 - More styles consistency (#1753)
@@ -714,7 +719,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 - Completely rewrote the dockable-sidebars-stuff
 - Many files are now build on demand, not at configure time
 
-@section autotoc_md1026 23.02.0
+@section autotoc_md1039 23.02.0
 
 - Fix XML generation of wxmx documents (#1556)
 - A faster font cache
@@ -725,7 +730,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 - A separate style for operators (#1002)
 - A nicer ChangeLog
 
-@section autotoc_md1027 22.12.0
+@section autotoc_md1040 22.12.0
 
 - A cleaner status bar with double-click actions
 - Better display of labels
@@ -740,11 +745,11 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 - Faster saving of .wxmx files
 - Better toolbar bitmap handling
 
-@section autotoc_md1028 22.11.1
+@section autotoc_md1041 22.11.1
 
 - Repaired zooming the worksheet
 
-@section autotoc_md1029 22.11.0
+@section autotoc_md1042 22.11.0
 
 - Resolved an ID collision (#1726)
 - Faster restart of maxima (#1715)
@@ -757,7 +762,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 - Many windows build improvements
 - Resolved a crash on restarting maxima
 
-@section autotoc_md1030 22.09.0
+@section autotoc_md1043 22.09.0
 
 - Support for wxWidgets 3.1.7
 - The description field for wizards no more is a MouseOverToolTip
@@ -789,7 +794,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 - Better unicode handling (#1691)
 - Many additional bugfixes
 
-@section autotoc_md1031 22.05.0:
+@section autotoc_md1044 22.05.0:
 
 - Updated the Ukrainian translation
 - Added &lt;tt&gt;guess_exact_value&lt;/tt&gt; to the numeric menu.
@@ -811,14 +816,14 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 - The Cygwin build works again
 - Support for wxWidgets 3.1.6
 
-@section autotoc_md1032 22.04.0:
+@section autotoc_md1045 22.04.0:
 
 - A Russian translation update from Olesya Gerasimenko
 - Repaired drag-and-drop on MacOs (#1624)
 - Resolved a bug in parenthesis matching (#1649)
 - Faster startup logic
 
-@section autotoc_md1033 22.03.0:
+@section autotoc_md1046 22.03.0:
 
 - Add an compile option "WXM_INCLUDE_FONTS", which allows to
   specify, if additional fonts should be included.
@@ -845,7 +850,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 - Merging cells per keyboard shortcut works again (#1626)
 - Symbols buttons whose symbols the GUI font lacks are now hidden
 
-@section autotoc_md1034 21.11.0:
+@section autotoc_md1047 21.11.0:
 
 - Allow seeing all files in the file save dialog. (#1557)
 - Fix an error when using Alt up arrow (show previous command) (#1566)
@@ -863,15 +868,15 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 - Handle power events (#1607)
 - Fix ugly buttons in the sidebars with recent wxWidgets
 
-@section autotoc_md1035 21.05.2:
+@section autotoc_md1048 21.05.2:
 
 - The integral signs disappeared or were misplaced on some MS Windows computers
 
-@section autotoc_md1036 21.05.1:
+@section autotoc_md1049 21.05.1:
 
 - Resolved a segfault on printing that could be triggered on some computers
 
-@section autotoc_md1037 21.05.0:
+@section autotoc_md1050 21.05.0:
 
 - Long numbers now can be broken into lines
 - On Export long numbers sometimes got lost
@@ -885,7 +890,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
   (before cyrillic, chinese and greek characters were missing).
 - Solved a crash when printing.
 
-@section autotoc_md1038 21.04.0
+@section autotoc_md1051 21.04.0
 
 - Fix visualization after "Evaluate all cells (Ctrl+Shift+R)" (bug #1512).</li>
 <li>Fix context sensitive help with F1 (bug #1508).</li>
@@ -899,7 +904,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 <li>Many external build scripts are now replaced by C++ and CMake commands.</li>
 <li><a class="el" href="classA.html">A</a> menu entry for when to invoke the debugger.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1039"></a>
+<h1><a class="anchor" id="autotoc_md1052"></a>
 21.02.0</h1>
 <ul>
 <li><a class="el" href="classA.html">A</a> Spanish translation update by cyphra</li>
@@ -911,14 +916,14 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 <li>Made the time between autosaves configurable.</li>
 <li>Fixed an issue with reproducible builds.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1040"></a>
+<h1><a class="anchor" id="autotoc_md1053"></a>
 21.01.0</h1>
 <ul>
 <li>Chinese translation updates by 刘荣.</li>
 <li><a class="el" href="classA.html">A</a> Russian translation update by OlesyaGerasimenko</li>
 <li>Many small bugfixes including a crash on loading files with images.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1041"></a>
+<h1><a class="anchor" id="autotoc_md1054"></a>
 Changes in older wxMaxima versions you can find here</h1>
 <p><a href="https://github.com/wxMaxima-developers/wxmaxima/blob/Version-21.02.0/NEWS.md">https://github.com/wxMaxima-developers/wxmaxima/blob/Version-21.02.0/NEWS.md</a> </p>
 </div></div><!-- contents -->

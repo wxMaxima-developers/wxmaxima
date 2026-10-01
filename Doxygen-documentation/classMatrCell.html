@@ -227,10 +227,16 @@ std::optional&lt; <a class="el" href="classConfiguration.html#adb5fa4e3eacde294a
 <tr class="memitem:a944ece4d2ab87eb88f089b04086d1b20"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrCell.html#a944ece4d2ab87eb88f089b04086d1b20">IsShownPartially</a> () const</td></tr>
 <tr class="memdesc:a944ece4d2ab87eb88f089b04086d1b20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does the worksheet show only part of this matrix right now?  <br /></td></tr>
 <tr class="separator:a944ece4d2ab87eb88f089b04086d1b20"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a656ce2bac5863f66ef33cf375367fb50"><td class="memItemLeft" align="right" valign="top"><a id="a656ce2bac5863f66ef33cf375367fb50" name="a656ce2bac5863f66ef33cf375367fb50"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsBanded</b> () const</td></tr>
-<tr class="memdesc:a656ce2bac5863f66ef33cf375367fb50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does this matrix get alternating row/column bands? See DrawBands(). <br /></td></tr>
+<tr class="memitem:a656ce2bac5863f66ef33cf375367fb50"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrCell.html#a656ce2bac5863f66ef33cf375367fb50">IsBanded</a> () const</td></tr>
+<tr class="memdesc:a656ce2bac5863f66ef33cf375367fb50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does this matrix get alternating row/column bands? See DrawBands().  <br /></td></tr>
 <tr class="separator:a656ce2bac5863f66ef33cf375367fb50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:affa0fa189510c9bc7b263b2f1256818b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrCell.html#affa0fa189510c9bc7b263b2f1256818b">SetBanding</a> (std::optional&lt; bool &gt; banding)</td></tr>
+<tr class="memdesc:affa0fa189510c9bc7b263b2f1256818b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Force alternating bands on (true) or off (false), or std::nullopt to decide by size.  <br /></td></tr>
+<tr class="separator:affa0fa189510c9bc7b263b2f1256818b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf94a35fc8f1206e948478358f4023d7"><td class="memItemLeft" align="right" valign="top"><a id="adf94a35fc8f1206e948478358f4023d7" name="adf94a35fc8f1206e948478358f4023d7"></a>
+std::optional&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>GetBanding</b> () const</td></tr>
+<tr class="memdesc:adf94a35fc8f1206e948478358f4023d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">What <a class="el" href="classMatrCell.html#affa0fa189510c9bc7b263b2f1256818b" title="Force alternating bands on (true) or off (false), or std::nullopt to decide by size.">SetBanding()</a> asked for, if anything. <br /></td></tr>
+<tr class="separator:adf94a35fc8f1206e948478358f4023d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab3ac7c5a9da8867ce8907cba1999cbe4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrCell.html#ab3ac7c5a9da8867ce8907cba1999cbe4">AlwaysBanded</a> (bool banded)</td></tr>
 <tr class="memdesc:ab3ac7c5a9da8867ce8907cba1999cbe4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Band this matrix even if it is shown in full.  <br /></td></tr>
 <tr class="separator:ab3ac7c5a9da8867ce8907cba1999cbe4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -970,6 +976,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 <li>**<code>colnames=true</code>**: Treats the first row as labels.</li>
 <li>**<code>parenstyle=style</code>**: Sets the bracket type. Supported styles: <code>round</code> (), <code>square</code> [], <code>angled</code> &lt;&gt;, <code>straight</code> ||, or <code>none</code>.</li>
 <li>**<code>oversized=mode</code>**: How to show this matrix if it is too large for the window, overriding the configuration: <code>full</code>, <code>elide</code> or <code>scroll</code>. See <a class="el" href="classMatrCell.html#affd7f9fc6bb41deac58ca66228625fc6" title="How this matrix wants to be shown if it is too large for the window.">SetOversizedMode()</a>.</li>
+<li>**<code>banding=mode</code>**: Alternating row and column bands: <code>true</code>, <code>false</code>, or <code>auto</code> (the default: only if the matrix is too large). See <a class="el" href="classMatrCell.html#affa0fa189510c9bc7b263b2f1256818b" title="Force alternating bands on (true) or off (false), or std::nullopt to decide by size.">SetBanding()</a>.</li>
 </ul>
 <p>Example: <code>wx_matrix(matrix([1,2],[3,4]), lines=true, rownames=true, parenstyle=square);</code></p>
 <p>Matrices too large for the window.** <a class="el" href="classA.html">A</a> matrix has no linear form to fall back on the way a fraction does, so <a class="el" href="classCell.html#ad3bba95038366ea5bccefa8f76e1571e" title="Try to split this command into lines to make it fit on the screen.">BreakUp()</a> cannot help it. If Configuration::GetOversizedMatrices() asks for it, <a class="el" href="classMatrCell.html#a90dac27e04491b35d2585170d79193e4" title="Recalculate the size of the cell and the difference between top and center.">Recalculate()</a> instead leaves out a contiguous run of middle columns (and/or rows) and draws the gap the way a mathematician would write it: ⋯ in each shown row, ⋮ in each shown column and ⋱ where the two gaps cross. The first and the last column and row are always kept, which also keeps the headings of a <code>table_form</code> or <code>wx_matrix(..., rownames=true, colnames=true)</code> in view.</p>
@@ -2765,6 +2772,34 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 
 </div>
 </div>
+<a id="a656ce2bac5863f66ef33cf375367fb50" name="a656ce2bac5863f66ef33cf375367fb50"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a656ce2bac5863f66ef33cf375367fb50">&#9670;&#160;</a></span>IsBanded()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool MatrCell::IsBanded </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Does this matrix get alternating row/column bands? See DrawBands(). </p>
+<p><a class="el" href="classMatrCell.html#affa0fa189510c9bc7b263b2f1256818b" title="Force alternating bands on (true) or off (false), or std::nullopt to decide by size.">SetBanding()</a> decides if it was called; otherwise only a matrix shown partially, or one <a class="el" href="classMatrCell.html#ab3ac7c5a9da8867ce8907cba1999cbe4" title="Band this matrix even if it is shown in full.">AlwaysBanded()</a> asks for, is banded. </p>
+
+</div>
+</div>
 <a id="a0d729564b9738d49cf62ed37720534f3" name="a0d729564b9738d49cf62ed37720534f3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0d729564b9738d49cf62ed37720534f3">&#9670;&#160;</a></span>IsBrokenIntoLines()</h2>
 
@@ -3457,6 +3492,35 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 <p>AltCopyTexts for example make sense for subCells: a_n looks like a[n], even if both are lookalikes and the cell therefore needs to know what to put on the clipboard if this cell were copied. They also make sense in many other places we may never have thought about. But since we seriously want to save memory space on the ubiuitous TextCells it might be scary to apply this principle to them, at least if you know that text you copy from the internet to a terminal might contain additional commands with TextSize=0... </p>
 
 <p>Reimplemented in <a class="el" href="classExptCell.html#aae916ad7eddc77e56eb4b97cd6ec3541">ExptCell</a>, <a class="el" href="classFunCell.html#acb98e5c219932bd7e37b8345f21676ef">FunCell</a>, <a class="el" href="classSubCell.html#a656938c921eacd228544cc6812669684">SubCell</a>, <a class="el" href="classSubSupCell.html#a8235971425a34c8e3944aebde0260436">SubSupCell</a>, <a class="el" href="classSumCell.html#a7ff6af1448700c3d1d00fd8cfc152ab5">SumCell</a>, and <a class="el" href="classTextCell.html#af18c197bcddc094a8ba38bc44a16c841">TextCell</a>.</p>
+
+</div>
+</div>
+<a id="affa0fa189510c9bc7b263b2f1256818b" name="affa0fa189510c9bc7b263b2f1256818b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#affa0fa189510c9bc7b263b2f1256818b">&#9670;&#160;</a></span>SetBanding()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MatrCell::SetBanding </td>
+          <td>(</td>
+          <td class="paramtype">std::optional&lt; bool &gt;&#160;</td>
+          <td class="paramname"><em>banding</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Force alternating bands on (true) or off (false), or std::nullopt to decide by size. </p>
+<p>Set by wx_matrix()'s banding option. Wins over <a class="el" href="classMatrCell.html#ab3ac7c5a9da8867ce8907cba1999cbe4" title="Band this matrix even if it is shown in full.">AlwaysBanded()</a>, so a matrix that asked for no bands doesn't get any in the <a class="el" href="classMatrixViewer.html" title="A window that shows a matrix the worksheet only shows part of (GH #2344)">MatrixViewer</a> either. Saved with the matrix, like <a class="el" href="classMatrCell.html#affd7f9fc6bb41deac58ca66228625fc6" title="How this matrix wants to be shown if it is too large for the window.">SetOversizedMode()</a>. </p>
 
 </div>
 </div>
