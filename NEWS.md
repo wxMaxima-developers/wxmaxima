@@ -11,6 +11,9 @@
   it installs wxMaxima for the current user only, into
   `%LOCALAPPDATA%\Programs`. With them it installs for all users into
   Program Files, as before.
+- A hidden multiplication sign is drawn if output is broken into lines
+  there, so a product that continues on the next line is recognizable as
+  one. The line is broken after the sign wherever possible (#2263).
 
 # 26.09.0
 

@@ -320,6 +320,44 @@ public:
   //! Does this cell begin with a manual linebreak?
   bool HasHardLineBreak() const { return m_forceBreakLine; }
 
+  /*! Is this cell directly before or after a line break BreakLines_List() added?
+
+    Only matters for a hidden multiplication sign: one at a soft line break is
+    drawn after all (GH #2263), as otherwise nothing would tell the reader
+    that the expression continues with a product on the next line.
+    BreakLines_List() only sets this for hidden multiplication signs.
+  */
+  bool IsAtLineBreak() const { return m_atLineBreak; }
+
+  /*! Tell this cell whether it is directly before or after a soft line break.
+
+    Changing this invalidates the size of a hidden multiplication sign, as one
+    at a line break takes the width of the visible sign.
+  */
+  void SetAtLineBreak(bool atLineBreak) const;
+
+  /*! Is this a multiplication sign the user has chosen to hide?
+
+    True even if this sign is at a line break and therefore is drawn after
+    all, see IsDrawnHidden().
+  */
+  bool IsHiddenMultSign() const;
+
+  /*! Is this cell drawn as empty space on the screen?
+
+    True for cells that are hidden (e.g. invisible parentheses) and for hidden
+    multiplication signs - except for the ones at a line break.
+  */
+  bool IsDrawnHidden() const;
+
+  /*! The width this cell would have if it were at a line break.
+
+    Differs from GetWidth() only for a hidden multiplication sign, which is
+    drawn if it is at a line break. Used by BreakLines_List() for deciding if
+    such a sign still fits on the current line.
+  */
+  virtual wxCoord GetWidthAtLineBreak() const { return GetWidth(); }
+
   /*! Try to split this command into lines to make it fit on the screen
 
     \retval true = This cell was split into lines.
@@ -1239,6 +1277,8 @@ private:
   bool m_suppressMultiplicationDot : 1 = false;
   //! Are we allowed to add a line break before this cell?
   mutable bool m_breakLine : 1 = false;
+  //! Is this cell at a soft line break? See IsAtLineBreak().
+  mutable bool m_atLineBreak : 1 = false;
 protected:
   //! The UUID of this cell
   wxString m_uuid;

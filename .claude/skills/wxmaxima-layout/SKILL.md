@@ -27,6 +27,15 @@ window at all (which is what `test_WorksheetLayout` does).
 Inside a single group, sizing drops into the cell-layer break pipeline
 (`Cell.cpp`): `UnBreakUpCells()` → `BreakUpCells()` → `BreakLines_List()`.
 
+**One cell's width depends on where the lines break** (GH #2263): a hidden
+multiplication sign at a soft line break is drawn (`Cell::IsAtLineBreak()`,
+`IsDrawnHidden()`), so it takes the visible sign's width. `BreakLines_List()`
+sets that flag (only ever on hidden multiplication signs) and fits such a sign
+on a line by `GetWidthAtLineBreak()`, so the dot never pushes a line past the
+window. `Unbreak()` clears it, as a cell that leaves the draw list (its parent
+went back to 2D) is never visited by the line breaker again and would keep
+drawing a stale dot.
+
 The `timeout` path time-slices (50 ms by default) so a huge worksheet stays
 responsive; a cell whose layout is cancelled mid-flight is the subject of one of
 the traps below.

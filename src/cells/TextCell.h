@@ -63,6 +63,8 @@ public:
   //cppcheck-suppress functionConst
   void SetFont(wxDC *dc, AFontSize fontsize) const;
 
+  wxCoord GetWidthAtLineBreak() const override;
+
   /*! Calling this function signals that the "(" this cell ends in isn't part of the function name
 
     The "(" is the opening parenthesis of a function instead.
@@ -171,6 +173,8 @@ protected:
   //! The text we display: We might want to convert some characters or do similar things
   mutable wxString m_displayedText;
   mutable std::vector<SizeEntry> m_sizeCache;
+  //! The width this cell has if it is at a line break, see GetWidthAtLineBreak()
+  mutable wxCoord m_widthAtLineBreak = 0;
 
 //** Bitfield objects (1 bytes)
 //**
