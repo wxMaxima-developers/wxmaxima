@@ -1515,6 +1515,95 @@ public:
 };
 wxDECLARE_APP(TestApp);
 
+// a1*bb2*ccc3*... as Maxima sends it: a long product whose multiplication
+// signs are hidable.
+static wxString LongProductXml() {
+  wxString xml = wxS("<mth><lbl altCopy=\"%o1\">(%o1) </lbl>");
+  for (int i = 0; i < 40; i++) {
+    if (i > 0)
+      xml += wxS("<h>*</h>");
+    xml += wxS("<mi>") + wxString(static_cast<wxChar>('a' + i % 26), 1 + i % 4) +
+      wxString::Format(wxS("%d"), i) + wxS("</mi>");
+  }
+  return xml + wxS("</mth>");
+}
+
+SCENARIO("A hidden multiplication sign at a line break is drawn (GH #2263)") {
+  g_cfg->SetZoomFactor(1.0);
+  const bool hideMultSignBefore = g_cfg->HidemultiplicationSign();
+  g_cfg->HidemultiplicationSign(true);
+  g_cfg->SetCanvasSize(wxSize(4000, 600));
+  auto group = std::make_unique<GroupCell>(g_cfg, GC_TYPE_CODE,
+                                           wxS("product;"));
+  MathParser parser(g_cfg);
+  auto output = parser.ParseLine(LongProductXml());
+  REQUIRE(output != nullptr);
+  group->AppendOutput(std::move(output));
+  group->Recalculate();
+
+  GIVEN("a product too long for one line") {
+    const int narrowWidth = GENERATE(600, 400, 300, 200);
+    INFO("narrow canvas width: " << narrowWidth);
+    g_cfg->SetCanvasSize(wxSize(narrowWidth, 600));
+    group->Recalculate();
+
+    THEN("every soft line break has a visible multiplication sign next to it") {
+      const Cell *prev = nullptr;
+      int endingWithSign = 0, startingWithSign = 0;
+      for (const Cell &cell : OnDrawList(group->GetOutput())) {
+        if (prev && cell.BreakLineHere() && !cell.HasHardLineBreak()) {
+          const Cell *sign = nullptr;
+          if (prev->IsHiddenMultSign()) {
+            endingWithSign++;
+            sign = prev;
+          }
+          if (cell.IsHiddenMultSign()) {
+            startingWithSign++;
+            sign = &cell;
+          }
+          REQUIRE(sign != nullptr);
+          CHECK(sign->IsAtLineBreak());
+          CHECK_FALSE(sign->IsDrawnHidden());
+          CHECK(sign->GetWidth() == sign->GetWidthAtLineBreak());
+        }
+        prev = &cell;
+      }
+      CHECK(endingWithSign > 0);
+      THEN("the sign ends the line unless a factor fills a whole line") {
+        if (narrowWidth >= 300)
+          CHECK(startingWithSign == 0);
+      }
+    }
+
+    THEN("every other multiplication sign stays hidden") {
+      for (const Cell &cell : OnDrawList(group->GetOutput()))
+        if (cell.IsHiddenMultSign() && !cell.IsAtLineBreak()) {
+          CHECK(cell.IsDrawnHidden());
+          CHECK(cell.GetWidth() < cell.GetWidthAtLineBreak());
+        }
+    }
+
+    THEN("the visible signs still fit on their lines") {
+      for (const Cell &cell : OnDrawList(group->GetOutput()))
+        if (cell.BreakLineHere())
+          CHECK(cell.GetLineWidth() < std::max(narrowWidth, 150));
+    }
+
+    WHEN("the canvas is wide enough again") {
+      g_cfg->SetCanvasSize(wxSize(4000, 600));
+      group->Recalculate();
+      THEN("all multiplication signs are hidden again") {
+        for (const Cell &cell : OnDrawList(group->GetOutput()))
+          if (cell.IsHiddenMultSign()) {
+            CHECK_FALSE(cell.IsAtLineBreak());
+            CHECK(cell.IsDrawnHidden());
+          }
+      }
+    }
+  }
+  g_cfg->HidemultiplicationSign(hideMultSignBefore);
+}
+
 int main(int argc, char **argv) {
   wxLog::EnableLogging(false);
   wxApp::SetInstance(new TestApp());

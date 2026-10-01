@@ -454,8 +454,7 @@ void TextCell::WalkTextRuns(wxDC *dc, wxCoord x, RunFunc &&func) const {
 }
 
 wxString TextCell::GetLinkAt(wxPoint point) {
-  if (!m_hasLinks || IsHidden() ||
-      (GetHidableMultSign() && m_configuration->HidemultiplicationSign()) ||
+  if (!m_hasLinks || IsDrawnHidden() ||
       m_width.IsInvalid() || m_height.IsInvalid() || !ContainsPoint(point))
     return {};
   wxDC *dc = m_configuration->GetRecalcDC();
@@ -494,13 +493,16 @@ void TextCell::Recalculate(AFontSize fontsize) const {
 
     m_width += 2 * MC_TEXT_PADDING;
     m_height += 2 * MC_TEXT_PADDING;
+    m_widthAtLineBreak = m_width;
 
     /// Hidden cells (multiplication * is not displayed)
-    if (IsHidden() ||
-        (GetHidableMultSign() && (m_configuration->HidemultiplicationSign()))) {
+    if (IsDrawnHidden()) {
       m_height = m_fontSize_Scaled.Get();
       m_width = m_fontSize_Scaled.Get() / 4;
     }
+    // Only a hidden multiplication sign is drawn if it is at a line break
+    if (IsHidden())
+      m_widthAtLineBreak = m_width;
     if (m_height < Scale_Px(4))
       m_height = Scale_Px(4);
     m_center = m_height / 2;
@@ -510,9 +512,7 @@ void TextCell::Recalculate(AFontSize fontsize) const {
 void TextCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
   Cell::Draw(dc, antialiassingDC);
 
-  if (DrawThisCell() &&
-      !(IsHidden() ||
-        (GetHidableMultSign() && m_configuration->HidemultiplicationSign()))) {
+  if (DrawThisCell() && !IsDrawnHidden()) {
 
     int padding = 0;
     if (GetTextStyle() != TS_ASCIIMATHS)
@@ -545,6 +545,12 @@ void TextCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
       dc->SetTextForeground(textColor);
     }
   }
+}
+
+wxCoord TextCell::GetWidthAtLineBreak() const {
+  // Recalculates m_widthAtLineBreak along with the width, if necessary
+  GetWidth();
+  return m_widthAtLineBreak;
 }
 
 void TextCell::SetFont(wxDC *dc, AFontSize fontsize) const {

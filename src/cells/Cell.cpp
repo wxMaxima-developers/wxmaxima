@@ -693,8 +693,24 @@ void Cell::BreakLines_List() const
     fullWidth = Scale_Px(150);
 
   // 4th step: break the output into lines.
+  //
+  // A hidden multiplication sign at a soft line break is drawn after all
+  // (GH #2263): otherwise nothing would tell that the expression continues
+  // with a product on the next line. We want it to end the line:
+  //  - Such a sign only stays on the current line if its visible form fits,
+  //    as it might end up ending that line.
+  //  - If it doesn't fit, breaking the line right before it would move it to
+  //    the start of the next line. If the cell before it follows another
+  //    hidden multiplication sign, the line is broken before that cell
+  //    instead, so the line ends with that sign, which is known to fit
+  //    visibly, by the first rule.
+  //  - Only if that isn't possible (e.g. if a single factor fills a whole
+  //    line) the sign starts the next line, and is drawn there.
   if (!IsHidden()) {
     bool prevBroken = false;
+    // The two cells drawn before tmp, if they are on tmp's line
+    const Cell *prev = nullptr;
+    const Cell *prevPrev = nullptr;
     for (const Cell &tmp : OnDrawList(this)) {
       if (m_configuration->IsLayoutCancelled())
         return;
@@ -702,16 +718,71 @@ void Cell::BreakLines_List() const
         currentWidth += tmp.GetLineIndent();
         prevBroken = false;
       }
-      wxCoord const cellWidth = tmp.GetWidth();
       tmp.SoftLineBreak(false);
-      if (tmp.HasHardLineBreak() || (currentWidth + cellWidth >= fullWidth)) {
+      tmp.SetAtLineBreak(false);
+      wxCoord const cellWidth = tmp.GetWidth();
+      wxCoord const neededWidth =
+        tmp.IsHiddenMultSign() ? tmp.GetWidthAtLineBreak() : cellWidth;
+      if (tmp.HasHardLineBreak()) {
         tmp.SoftLineBreak(true);
         currentWidth = tmp.GetLineIndent();
         prevBroken = true;
+        prev = prevPrev = nullptr;
+      } else if (currentWidth + neededWidth >= fullWidth) {
+        // The width of the line if it were broken before prev, not before tmp.
+        // Mirrors what this loop would have done when breaking before prev,
+        // including adding the indentation of the cell following the break.
+        wxCoord widthAfterMovingBack = 0;
+        if (prev)
+          widthAfterMovingBack = prev->GetLineIndent() + prev->GetWidth() +
+            tmp.GetLineIndent();
+        if (tmp.IsHiddenMultSign() && prev && prevPrev &&
+            !prev->BreakLineHere() && prevPrev->IsHiddenMultSign() &&
+            (widthAfterMovingBack + neededWidth < fullWidth)) {
+          prev->SoftLineBreak(true);
+          prevPrev->SetAtLineBreak(true);
+          currentWidth = widthAfterMovingBack;
+        } else {
+          if (prev && prev->IsHiddenMultSign())
+            prev->SetAtLineBreak(true);
+          if (tmp.IsHiddenMultSign())
+            tmp.SetAtLineBreak(true);
+          tmp.SoftLineBreak(true);
+          currentWidth = tmp.GetLineIndent();
+          prevBroken = true;
+          prev = prevPrev = nullptr;
+        }
       }
-      currentWidth += cellWidth;
+      // tmp's width might have changed if it now is at a line break
+      currentWidth += tmp.GetWidth();
+      prevPrev = prev;
+      prev = &tmp;
     }
   }
+}
+
+void Cell::SetAtLineBreak(bool atLineBreak) const {
+  if (m_atLineBreak == atLineBreak)
+    return;
+  m_atLineBreak = atLineBreak;
+  // Only a hidden multiplication sign changes its size. The size is
+  // recalculated on the next GetWidth(); the group is recalculating anyway,
+  // as we are called while it breaks its output into lines.
+  if (IsHiddenMultSign()) {
+    m_width.Invalidate();
+    m_height.Invalidate();
+    m_center.Invalidate();
+    InvalidateListCache();
+  }
+}
+
+bool Cell::IsHiddenMultSign() const {
+  return m_isHidableMultSign && !m_isHidden &&
+    m_configuration->HidemultiplicationSign();
+}
+
+bool Cell::IsDrawnHidden() const {
+  return m_isHidden || (IsHiddenMultSign() && !m_atLineBreak);
 }
 
 bool Cell::BreakUpCells() const {
@@ -1430,6 +1501,7 @@ void Cell::Unbreak() const {
     m_isBrokenIntoLines = false;
   }
   SoftLineBreak(false);
+  SetAtLineBreak(false);
 }
 
 void Cell::UnbreakList() const {
