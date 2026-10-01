@@ -1,3 +1,8 @@
+# Current development version
+
+- `wx_matrix()` is offered by autocompletion, with a template for its
+  arguments.
+
 # 26.09.0
 
 Large matrices and keyboard access to output are the main topics of this
