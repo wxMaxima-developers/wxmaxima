@@ -55,23 +55,46 @@ jobs:
       # CPack's NSIS generator needs makensis. This used to be
       # repolevedavaj/install-nsis, which looks the installer up in
       # SourceForge's file-list feed; on 2026-10-01 that feed stopped listing
-      # nsis-3.12-setup.exe and the step failed on every push. Chocolatey
-      # downloads the installer directly instead. The action's extras (the
-      # 8192-byte long-string build and the EnVar plugin) are not needed:
-      # our CPack config uses neither CPACK_NSIS_MODIFY_PATH nor EnVar.
+      # nsis-3.12-setup.exe and the step failed on every push. The action's
+      # extras (the 8192-byte long-string build and the EnVar plugin) are not
+      # needed: our CPack config uses neither CPACK_NSIS_MODIFY_PATH nor EnVar.
+      #
+      # Every NSIS download (the action, Chocolatey, winget, Scoop) ends up at
+      # SourceForge, so a SourceForge outage can't be routed around by picking
+      # another installer. Instead NSIS lives in C:\nsis and is cached: once
+      # one build has got it, later builds don't need SourceForge at all. NSIS
+      # is portable -- makensis finds its stubs and plugins next to itself --
+      # so the copied directory works without the installer's registry keys.
+      - name: Cache NSIS
+        id: cache-nsis
+        uses: actions/cache@v6
+        with:
+          path: C:\nsis
+          key: nsis-3-v1
+
       - name: Install NSIS
+        if: steps.cache-nsis.outputs.cache-hit != 'true'
         run: |
-          foreach ($try in 1..3) {
-            choco install nsis -y --no-progress
-            if (Test-Path 'C:\Program Files (x86)\NSIS\makensis.exe') { break }
-            echo "::warning::makensis.exe not found after install attempt $try; retrying."
-            Start-Sleep -Seconds 15
+          $installed = 'C:\Program Files (x86)\NSIS'
+          # Some runner images ship NSIS already.
+          if (-not (Test-Path "$installed\makensis.exe")) {
+            foreach ($try in 1..3) {
+              choco install nsis -y --no-progress
+              if (Test-Path "$installed\makensis.exe") { break }
+              echo "::warning::makensis.exe not found after install attempt $try; retrying."
+              Start-Sleep -Seconds 15
+            }
           }
-          if (-not (Test-Path 'C:\Program Files (x86)\NSIS\makensis.exe')) {
-            echo "::error::Could not install NSIS."
+          if (-not (Test-Path "$installed\makensis.exe")) {
+            echo "::error::Could not install NSIS, and no cached copy exists yet."
             exit 1
           }
-          'C:\Program Files (x86)\NSIS' | Out-File -FilePath $env:GITHUB_PATH -Append
+          Copy-Item -Recurse $installed C:\nsis
+
+      - name: Put NSIS on PATH
+        run: |
+          C:\nsis\makensis.exe /VERSION
+          'C:\nsis' | Out-File -FilePath $env:GITHUB_PATH -Append
 
       - name: Cache wxWidgets
         uses: actions/cache@v6
