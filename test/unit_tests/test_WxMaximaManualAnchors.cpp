@@ -23,7 +23,7 @@
   Tests for WxMaximaManualAnchors: the keywords context-sensitive help looks up
   in wxMaxima's own manual, and that every manual really has their anchors.
 
-  The anchors are hand-written `<div id="..."></div>` lines in info/*.md, and
+  The anchors are hand-written `<div id="..."></div>` lines in the manuals in info/, and
   the keyword list is in the code, so nothing else would notice if a manual
   edit dropped one, or if a keyword was added to the list but not to a manual:
   Help would then silently open the top of the manual.
