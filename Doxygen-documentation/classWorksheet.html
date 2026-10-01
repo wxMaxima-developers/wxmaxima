@@ -327,6 +327,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SelectEditable</b> (<
 <tr class="memitem:a5cf3825d7d3e6d07ad10e23c0ff2d575"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a5cf3825d7d3e6d07ad10e23c0ff2d575">SelectWithChar</a> (int ccode)</td></tr>
 <tr class="memdesc:a5cf3825d7d3e6d07ad10e23c0ff2d575"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle selecting text using the keyboard Is called when the all of the following is true:  <br /></td></tr>
 <tr class="separator:a5cf3825d7d3e6d07ad10e23c0ff2d575"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab01c5db4c99a1e5e344cd796fb6497ae"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#ab01c5db4c99a1e5e344cd796fb6497ae">SelectWholeCellsFromOutput</a> (int ccode)</td></tr>
+<tr class="memdesc:ab01c5db4c99a1e5e344cd796fb6497ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shift+Up/Down with something inside a cell's output selected.  <br /></td></tr>
+<tr class="separator:ab01c5db4c99a1e5e344cd796fb6497ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3dcbb54240b30f35bfb7c9e0118d61da"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a3dcbb54240b30f35bfb7c9e0118d61da">ClickNDrag</a> (wxPoint down, wxPoint up)</td></tr>
 <tr class="memdesc:a3dcbb54240b30f35bfb7c9e0118d61da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Select the rectangle surrounded by down and up.  <br /></td></tr>
 <tr class="separator:a3dcbb54240b30f35bfb7c9e0118d61da"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3558,6 +3561,27 @@ as HTML" exports them. <a class="el" href="classA.html">A</a> selection inside a
   </dd>
 </dl>
 <p>What <a class="el" href="classWorksheet.html#a3dcbb54240b30f35bfb7c9e0118d61da" title="Select the rectangle surrounded by down and up.">ClickNDrag()</a> does for a drag that started in an output. <a class="el" href="classA.html">A</a> rectangle that lies within one matrix but spans several of its entries selects the block of entries it touches (GH #2345); anything else selects the output cells it covers, as it always did. </p>
+
+</div>
+</div>
+<a id="ab01c5db4c99a1e5e344cd796fb6497ae" name="ab01c5db4c99a1e5e344cd796fb6497ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab01c5db4c99a1e5e344cd796fb6497ae">&#9670;&#160;</a></span>SelectWholeCellsFromOutput()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Worksheet::SelectWholeCellsFromOutput </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>ccode</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Shift+Up/Down with something inside a cell's output selected. </p>
+<p>Selects the cell the output belongs to together with its visible neighbour above (Up) or below (Down), just as Shift+Up/Down at the edge of the cell's input does, and sets the horizontal cursor's selection anchors so that further presses extend the selection from there. Returns false, having done nothing, if the selection isn't inside an output. </p>
 
 </div>
 </div>
