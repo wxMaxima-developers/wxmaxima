@@ -508,6 +508,73 @@ SCENARIO("In a matrix the arrow keys move from entry to entry") {
   g_ws->DestroyTree();
 }
 
+SCENARIO("Shift+Up/Down in a cell's output select whole cells from there") {
+  // Cells above and below the one with the output, so that a selection
+  // starting at the top of the worksheet can be told apart from one starting
+  // at the cell itself.
+  GroupCell *group = ShowCell(wxS("a;b;"), {Result(1, wxS("<mi>a</mi>")),
+                                            Result(2, wxS("<mi>b</mi>"))});
+  GroupCell *below = group->GetNext();
+  REQUIRE(below != nullptr);
+  g_ws->InsertGroupCells(std::make_unique<GroupCell>(g_cfg, GC_TYPE_CODE, wxS("c;")),
+                         below, nullptr);
+  GroupCell *last = below->GetNext();
+  REQUIRE(last != nullptr);
+  g_ws->InsertGroupCells(std::make_unique<GroupCell>(g_cfg, GC_TYPE_CODE, wxS("top;")),
+                         nullptr, nullptr);
+  GroupCell *top = g_ws->GetTree();
+  REQUIRE(top != group);
+  REQUIRE(top->GetNext() == group);
+  g_ws->RecalculateIfNeeded();
+
+  // The output is entered from the input, which leaves the horizontal cursor
+  // where it was: above the first cell.
+  CursorToEndOfInput(group);
+  Press(WXK_DOWN);
+  REQUIRE(g_ws->SelectedOutputResult() == std::optional<std::size_t>(0));
+
+  WHEN("Shift+Down is pressed") {
+    PressShifted(WXK_DOWN);
+    THEN("the cell and the one below it are selected, not the top of the worksheet") {
+      CHECK(Pointers().GetSelectionStart() == group);
+      CHECK(Pointers().GetSelectionEnd() == below);
+    }
+    AND_WHEN("Shift+Down is pressed again") {
+      PressShifted(WXK_DOWN);
+      THEN("the selection grows downwards") {
+        CHECK(Pointers().GetSelectionStart() == group);
+        CHECK(Pointers().GetSelectionEnd() == last);
+      }
+      AND_WHEN("Shift+Up is pressed") {
+        PressShifted(WXK_UP);
+        THEN("it shrinks again") {
+          CHECK(Pointers().GetSelectionStart() == group);
+          CHECK(Pointers().GetSelectionEnd() == below);
+        }
+      }
+    }
+  }
+
+  WHEN("Shift+Up is pressed") {
+    PressShifted(WXK_UP);
+    THEN("the cell and the one above it are selected") {
+      CHECK(Pointers().GetSelectionStart() == top);
+      CHECK(Pointers().GetSelectionEnd() == group);
+    }
+  }
+
+  WHEN("only a part of a result is selected") {
+    g_ws->SetSelection(group->GetOutputResults()[1].last);
+    REQUIRE_FALSE(g_ws->SelectedOutputResult());
+    PressShifted(WXK_DOWN);
+    THEN("Shift+Down starts from that cell, too") {
+      CHECK(Pointers().GetSelectionStart() == group);
+      CHECK(Pointers().GetSelectionEnd() == below);
+    }
+  }
+  g_ws->DestroyTree();
+}
+
 class TestApp : public wxApp {
 public:
   bool OnInit() override { return true; }

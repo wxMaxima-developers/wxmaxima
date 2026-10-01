@@ -3348,6 +3348,18 @@ void Worksheet::SelectWithChar(int ccode) {
   // GetHCaretCursor().SelectionStart() is the first group selected
   // GetHCaretCursor().SelectionEnd() is tle last group selected
   // we always move GetHCaretCursor().Position()
+
+  // Something inside a cell's output is selected: neither cursor is active,
+  // and the horizontal cursor's position is whatever it was before, often
+  // nothing, which used to make the selection start at the top of the
+  // worksheet. Start from the cell the output belongs to instead, as
+  // Shift+Up/Down at the edge of its input would (GH #2382).
+  if ((!GetHCaretCursor().SelectionStart() || !GetHCaretCursor().SelectionEnd()) &&
+      SelectWholeCellsFromOutput(ccode)) {
+    RequestRedraw();
+    return;
+  }
+
   if (!GetHCaretCursor().SelectionStart() || !GetHCaretCursor().SelectionEnd()) {
     if (GetHCaretCursor().Position())
       GetHCaretCursor().SetSelectionAnchors(GetHCaretCursor().Position(), GetHCaretCursor().Position());
@@ -3425,6 +3437,46 @@ void Worksheet::SelectWithChar(int ccode) {
     }
   }
   RequestRedraw();
+}
+
+bool Worksheet::SelectWholeCellsFromOutput(int ccode) {
+  if ((ccode != WXK_UP) && (ccode != WXK_DOWN))
+    return false;
+  const Cell *start = GetDocumentCellPointers().GetSelectionStart();
+  if (!start || (start->GetType() == MC_TYPE_GROUP))
+    return false;
+  GroupCell *group = start->GetGroup();
+  if (!group || !GetTree() || !GetTree()->Contains(group))
+    return false;
+
+  // Like from the input: the cell itself and its visible neighbour
+  GroupCell *neighbour = group;
+  if (ccode == WXK_DOWN) {
+    for (GroupCell *next = group->GetNext(); next; next = next->GetNext())
+      if (next->GetMaxDrop() != 0) {
+        neighbour = next;
+        break;
+      }
+  } else {
+    for (GroupCell *prev = group->GetPrevious(); prev; prev = prev->GetPrevious())
+      if (prev->GetMaxDrop() != 0) {
+        neighbour = prev;
+        break;
+      }
+  }
+
+  GetViewCellPointers().ResetKeyboardSelectionStart();
+  m_outputRunAnchor = nullptr;
+  // SelectionStart() is where the gesture began, SelectionEnd() the end that
+  // further Shift+Up/Down presses move.
+  GetHCaretCursor().SetPosition((ccode == WXK_DOWN) ? group : neighbour);
+  GetHCaretCursor().SetSelectionAnchors(group, neighbour);
+  if (ccode == WXK_DOWN)
+    SetSelection(group, neighbour);
+  else
+    SetSelection(neighbour, group);
+  ScheduleScrollToCell(neighbour, false);
+  return true;
 }
 
 void Worksheet::SelectEditable(EditorCell *editor, bool up) {

@@ -1,3 +1,8 @@
+# Current development version
+
+- Shift+Up/Down with a cell's output selected now selects whole cells
+  starting from that cell. It used to start at the top of the worksheet.
+
 # 26.09.0
 
 Large matrices and keyboard access to output are the main topics of this

@@ -611,6 +611,15 @@ public:
     - keycode (ccode) is WXK_UP/WXK_DOWN
   */
   void SelectWithChar(int ccode);
+  /*! Shift+Up/Down with something inside a cell's output selected
+
+    Selects the cell the output belongs to together with its visible
+    neighbour above (Up) or below (Down), just as Shift+Up/Down at the edge
+    of the cell's input does, and sets the horizontal cursor's selection
+    anchors so that further presses extend the selection from there. Returns
+    false, having done nothing, if the selection isn't inside an output.
+  */
+  bool SelectWholeCellsFromOutput(int ccode);
 
   /*!
    * Select the rectangle surrounded by down and up. Called from OnMouseMotion.
