@@ -4,6 +4,14 @@ name: compile_windows
 # "Sign the installer" steps below) on demand, without having to tag a release.
 on: [push, workflow_dispatch]
 
+# A newer push to the same branch makes a still-running build of the old
+# commit pointless, so cancel it rather than let it hold a runner. Never for
+# tags: a release build must always finish (on release day the queue held
+# 86 runs and the tag builds waited about three hours).
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: ${{ !startsWith(github.ref, 'refs/tags/') }}
+
 env:
   BUILD_TYPE: Release
   WXVERSION: 3.3.2
