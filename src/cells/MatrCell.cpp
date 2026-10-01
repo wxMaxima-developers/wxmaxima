@@ -46,6 +46,7 @@ MatrCell::MatrCell(GroupCell *group, const MatrCell &cell)
   m_inferenceMatrix = cell.m_inferenceMatrix;
   m_parenType = cell.m_parenType;
   m_oversizedMode = cell.m_oversizedMode;
+  m_banding = cell.m_banding;
   m_rowNames = cell.m_rowNames;
   m_colNames = cell.m_colNames;
   m_nestedInMatrix = cell.m_nestedInMatrix;
@@ -699,6 +700,7 @@ std::unique_ptr<MatrCell> MatrCell::CopyBlock(const MatrixBlock &block,
   copy->m_inferenceMatrix = m_inferenceMatrix;
   copy->m_parenType = m_parenType;
   copy->m_oversizedMode = m_oversizedMode;
+  copy->m_banding = m_banding;
   copy->m_nestedInMatrix = m_nestedInMatrix;
   copy->m_rowNames = m_rowNames && (block.firstCol == 0);
   copy->m_colNames = m_colNames && (block.firstRow == 0);
@@ -1158,6 +1160,8 @@ wxString MatrCell::ToXML() const {
 
   if (const auto mode = GetOversizedMode())
     flags += wxS(" oversized=\"") + OversizedModeName(*mode) + wxS("\"");
+  if (const auto banding = GetBanding())
+    flags += *banding ? wxS(" banding=\"true\"") : wxS(" banding=\"false\"");
 
   wxString s = wxS("<tb") + flags;
   if (m_specialMatrix) {
