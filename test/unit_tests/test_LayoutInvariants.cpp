@@ -1448,6 +1448,67 @@ SCENARIO("Only a matrix too large for the window gets alternating bands") {
   }
 }
 
+// A rows x cols matrix as wx_matrix(..., banding=<mode>) sends it.
+static wxString MatrixXmlWithBanding(size_t rows, size_t cols,
+                                     const wxString &banding) {
+  wxString xml = MatrixXml(rows, cols);
+  xml.Replace(wxS("<tb roundedParens=\"true\">"),
+              wxS("<tb roundedParens=\"true\" banding=\"") + banding + wxS("\">"));
+  return xml;
+}
+
+SCENARIO("wx_matrix()'s banding option forces bands on or off") {
+  g_cfg->SetZoomFactor(1.0);
+  g_cfg->SetCanvasSize(wxSize(600, 300));
+  OversizedMatricesMode mode(Configuration::OversizedMatrices::elide);
+
+  GIVEN("a matrix that fits, with banding=true") {
+    std::unique_ptr<GroupCell> group;
+    MatrCell *matr = LayOutMatrixXml(group, MatrixXmlWithBanding(3, 3, wxS("true")));
+    REQUIRE_FALSE(matr->IsShownPartially());
+    THEN("it is banded anyway") {
+      CHECK(matr->GetBanding() == std::optional<bool>(true));
+      CHECK(matr->IsBanded());
+      CHECK(ColourAboveEntry(matr, 0, 0) == *wxWHITE);
+      CHECK(ColourAboveEntry(matr, 1, 0) != *wxWHITE);
+    }
+    THEN("the option survives saving") {
+      CHECK(matr->ToXML().Contains(wxS("banding=\"true\"")));
+    }
+  }
+
+  GIVEN("an elided matrix, with banding=false") {
+    std::unique_ptr<GroupCell> group;
+    MatrCell *matr =
+      LayOutMatrixXml(group, MatrixXmlWithBanding(60, 40, wxS("false")));
+    REQUIRE(matr->ElidedColumns() > 0);
+    THEN("it stays plain") {
+      CHECK(matr->GetBanding() == std::optional<bool>(false));
+      CHECK_FALSE(matr->IsBanded());
+      CHECK(ColourAboveEntry(matr, 1, 0) == *wxWHITE);
+      CHECK(ColourAboveEntry(matr, 1, 1) == *wxWHITE);
+    }
+    THEN("the option survives saving and copying a block") {
+      CHECK(matr->ToXML().Contains(wxS("banding=\"false\"")));
+      auto block = matr->CopyBlock(
+        {.firstRow = 0, .lastRow = 2, .firstCol = 0, .lastCol = 2}, nullptr);
+      REQUIRE(block != nullptr);
+      CHECK(block->ToXML().Contains(wxS("banding=\"false\"")));
+    }
+  }
+
+  GIVEN("banding=auto or a value this version doesn't know") {
+    for (const wxString value : {wxS("auto"), wxS("sometimes")}) {
+      std::unique_ptr<GroupCell> group;
+      MatrCell *matr = LayOutMatrixXml(group, MatrixXmlWithBanding(3, 3, value));
+      INFO(value);
+      CHECK_FALSE(matr->GetBanding().has_value());
+      CHECK_FALSE(matr->IsBanded());
+      CHECK_FALSE(matr->ToXML().Contains(wxS("banding=")));
+    }
+  }
+}
+
 class TestApp : public wxApp {
 public:
   bool OnInit() override { return true; }

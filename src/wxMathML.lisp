@@ -1166,6 +1166,13 @@ Submit bug reports by following the 'New issue' link on that page."))
 	      (setq tb-tag (concatenate 'string tb-tag " oversized=\"elide\"")))
 	     ((find 'oversized_scroll mtrx)
 	      (setq tb-tag (concatenate 'string tb-tag " oversized=\"scroll\""))))
+	   ;; wx_matrix()'s banding option: tint every other row and column
+	   ;; whatever the matrix's size, or never.
+	   (cond
+	     ((find 'banding_on mtrx)
+	      (setq tb-tag (concatenate 'string tb-tag " banding=\"true\"")))
+	     ((find 'banding_off mtrx)
+	      (setq tb-tag (concatenate 'string tb-tag " banding=\"false\""))))
 	   (cond
 	     ((find 'paren_round mtrx)
 	      (setq tb-tag (concatenate 'string tb-tag " roundedParens=\"true\"")))
@@ -2737,6 +2744,16 @@ Submit bug reports by following the 'New issue' link on that page."))
            ((eq oversized '$scroll) (setq mtrx (append mtrx '(oversized_scroll))))
            (t (merror "wx_matrix: oversized must be full, elide or scroll, not ~M"
                       oversized))))
+       ;; Alternating row/column bands: true and false force them on or
+       ;; off, auto (the default) bands only a matrix too large for the
+       ;; window. The default argument tells a missing option from false.
+       (let ((banding ($assoc '$banding opts-list '$auto)))
+         (cond
+           ((eq banding '$auto))
+           ((eq banding t) (setq mtrx (append mtrx '(banding_on))))
+           ((null banding) (setq mtrx (append mtrx '(banding_off))))
+           (t (merror "wx_matrix: banding must be true, false or auto, not ~M"
+                      banding))))
        ;; Only return the matrix, don't display it: the options travel in
        ;; the matrix's own header, which wxxml-matrix reads when the result
        ;; is displayed. They stay with this value (assigning it, %, putting

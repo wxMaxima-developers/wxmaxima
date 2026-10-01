@@ -1,3 +1,9 @@
+# Current development version
+
+- `wx_matrix(M, banding=true|false|auto)` shades every other row and
+  column of a matrix always, never, or only if it is too large for the
+  window (the default).
+
 # 26.09.0
 
 Large matrices and keyboard access to output are the main topics of this
