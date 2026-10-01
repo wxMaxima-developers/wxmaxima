@@ -552,7 +552,11 @@ endif()
 # Build Packages
 if(WIN32)
     set(CPACK_GENERATOR "ZIP;NSIS")
-    set(CPACK_NSIS_DEFINES "ManifestDPIAware true")
+    # PerUserInstall.nsh lets a user without administrator rights install
+    # wxMaxima for themselves instead of being refused (GH #2298); see the
+    # file for how. It is included with single quotes because CPack writes
+    # this value into CPackConfig.cmake without escaping double quotes.
+    set(CPACK_NSIS_DEFINES "ManifestDPIAware true\n!include '${CMAKE_CURRENT_SOURCE_DIR}/nsis/PerUserInstall.nsh'")
     include(InstallRequiredSystemLibraries)
     install(FILES ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS} DESTINATION bin)
 

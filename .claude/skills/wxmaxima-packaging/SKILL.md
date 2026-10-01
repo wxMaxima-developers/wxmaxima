@@ -39,6 +39,19 @@ one signal, it is several partial ones.**
 - Unit-test executables need that manifest too, or wx 3.3's
   `wxApp::Initialize()` pops a modal "no correct manifest" message box and the
   test hangs headlessly until the ctest timeout.
+- **The installer runs as `RequestExecutionLevel highest`, not `admin`**
+  (GH #2298): admins get UAC and a Program Files install, standard users a
+  per-user install into `%LOCALAPPDATA%\Programs`. CPack's template hard-codes
+  `admin`; `src/nsis/PerUserInstall.nsh`, spliced in through
+  `CPACK_NSIS_DEFINES`, overrides it only because CPack emits the defines
+  *after* that line. A CI step checks the built installer's manifest says
+  `highestAvailable`, so a CPack upgrade that moves the line turns CI red.
+  `CPACK_NSIS_DEFINES` is written into `CPackConfig.cmake` unescaped: a double
+  quote or backslash in it breaks CPack, which is why the `.nsh` is
+  `!include`d with single quotes rather than inlined.
+  Checked with Linux `makensis` 3.09 only, not run on real Windows. A
+  standard user who already has an all-users install simply gets a second,
+  per-user copy (we don't set `CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL`).
 
 ## Code signing (SignPath)
 

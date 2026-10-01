@@ -7,6 +7,10 @@
 - `wx_matrix(M, banding=true|false|auto)` shades every other row and
   column of a matrix always, never, or only if it is too large for the
   window (the default).
+- The Windows installer no longer needs administrator rights: without them
+  it installs wxMaxima for the current user only, into
+  `%LOCALAPPDATA%\Programs`. With them it installs for all users into
+  Program Files, as before.
 
 # 26.09.0
 

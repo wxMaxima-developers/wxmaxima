@@ -268,6 +268,26 @@ jobs:
               exit 1
             }
             echo "All required MinGW runtime DLLs are present in the package."
+      - name: Verify the installer does not insist on administrator rights
+        # GH #2298: src/nsis/PerUserInstall.nsh overrides the
+        # "RequestExecutionLevel admin" in CPack's NSIS template, which only
+        # works as long as CPack keeps placing CPACK_NSIS_DEFINES after it.
+        # The level ends up in the installer's manifest, so check it there.
+        run: |
+            # CPack writes the installer to the build root; tell it apart from
+            # any other .exe there by the NSIS signature every installer has.
+            $exe = $null
+            foreach ($candidate in Get-ChildItem -Path wxMaxima\build -Filter *.exe) {
+              $text = [System.Text.Encoding]::ASCII.GetString([System.IO.File]::ReadAllBytes($candidate.FullName))
+              if ($text.Contains("NullsoftInst")) { $exe = $candidate; break }
+            }
+            if (-not $exe) { echo "::error::no NSIS installer was produced"; exit 1 }
+            if ($text -match 'requestedExecutionLevel level="(\w+)"') { $level = $Matches[1] } else { $level = "none" }
+            echo "$($exe.Name) requests execution level: $level"
+            if ($level -ne "highestAvailable") {
+              echo "::error::the installer requests '$level' instead of 'highestAvailable', so standard users can no longer install it"
+              exit 1
+            }
       - name: Stage runtime DLLs next to wxmaxima.exe
         # The release wxmaxima.exe is built non-static, so it depends on the MinGW
         # runtime DLLs (libstdc++-6 / libgcc_s_seh-1 / libwinpthread-1) being found
@@ -425,9 +445,9 @@ jobs:
           body_path: wxMaxima/release-notes.md
           # Both packages CPack already produces (CPACK_GENERATOR "ZIP;NSIS"),
           # not just the installer:
-          #   *.exe - the NSIS installer, which asks for administrator rights
-          #           because it writes to Program Files and registers file
-          #           associations for every user.
+          #   *.exe - the NSIS installer. It installs for all users into
+          #           Program Files if the user can get administrator rights,
+          #           and for that user alone otherwise (GH #2298).
           #   *.zip - the very same tree, unpacked wherever the user likes and
           #           run from there (GH #2298). It needs no administrator
           #           rights and no installation at all; it just does not
