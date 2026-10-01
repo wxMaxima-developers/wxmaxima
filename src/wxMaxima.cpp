@@ -80,6 +80,7 @@
 #include "dialogs/ResolutionChooser.h"
 #include "wizards/SeriesWiz.h"
 #include "StringUtils.h"
+#include "WxMaximaManualAnchors.h"
 #include "wizards/SubstituteWiz.h"
 #include "wizards/SumWiz.h"
 #include "wizards/SystemWiz.h"
@@ -108,6 +109,7 @@
 #include <wx/filedlg.h>
 #include <wx/filefn.h>
 #include <wx/filename.h>
+#include <wx/file.h>
 #include <wx/log.h>
 #include <wx/mimetype.h>
 #include <wx/msgdlg.h>
@@ -1757,8 +1759,28 @@ void wxMaxima::LaunchHelpBrowser(wxString uri) {
     }
 }
 
-void wxMaxima::ShowWxMaximaHelp() {
+// Reads a manual in order to find out if it contains an anchor
+static bool ManualHasAnchor(const wxString &file, const wxString &anchor) {
+  wxFile manual;
+  wxString contents;
+  if (!wxFileExists(file) || !manual.Open(file) ||
+      !manual.ReadAll(&contents, wxConvUTF8))
+    return false;
+  return WxMaximaManualAnchors::HtmlHasAnchor(contents, anchor);
+}
+
+void wxMaxima::ShowWxMaximaHelp(const wxString &anchor) {
   wxString helpfile = wxMaximaManualLocation();
+
+  // The translated manuals that are shipped as HTML may be older than the
+  // anchor. Then the English manual, which is in the same directory, is
+  // more helpful than the start of the translated one.
+  if (!anchor.IsEmpty() && wxFileExists(helpfile) &&
+      !ManualHasAnchor(helpfile, anchor)) {
+    wxString english = wxFileName(helpfile).GetPathWithSep() + wxS("wxmaxima.html");
+    if (ManualHasAnchor(english, anchor))
+      helpfile = english;
+  }
 
   if (!wxFileExists(helpfile)) {
     if (!HelpBrowser::AllowOnlineManualP(&m_configuration, this))
@@ -1791,6 +1813,8 @@ void wxMaxima::ShowWxMaximaHelp() {
                      helpfile)
       .BuildURI();
   }
+  if (!anchor.IsEmpty())
+    helpfile += wxS("#") + anchor;
   LaunchHelpBrowser(helpfile);
 }
 
@@ -1841,8 +1865,17 @@ void wxMaxima::ShowMaximaHelpWithoutAnchor() {
 void wxMaxima::ShowHelp(const wxString &keyword) {
   if ((keyword.IsEmpty()) || (keyword == "%"))
     ShowWxMaximaHelp();
-  else
-    ShowMaximaHelp(keyword);
+  else {
+    // The commands wxMaxima adds to Maxima are documented in wxMaxima's
+    // manual, not in Maxima's. Maxima's manual still wins if it documents a
+    // keyword, too.
+    const wxString wxMaximaAnchor = WxMaximaManualAnchors::AnchorFor(keyword);
+    if (!wxMaximaAnchor.IsEmpty() &&
+        (!GetWorksheet() || GetWorksheet()->GetHelpfileAnchorName(keyword).IsEmpty()))
+      ShowWxMaximaHelp(wxMaximaAnchor);
+    else
+      ShowMaximaHelp(keyword);
+  }
 }
 
 void wxMaxima::ShowMaximaHelp(wxString keyword) {

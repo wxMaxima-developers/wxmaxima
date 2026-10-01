@@ -796,6 +796,29 @@ a local TCP socket.
   `style=0` so it never touches disk at all -- the in-memory-only
   hermeticity this whole investigation shows is worth having).
 
+- **Context-sensitive help for wxMaxima's own commands
+  (`src/WxMaximaManualAnchors.{h,cpp}`).** Help used to know only Maxima's
+  manual, whose index `MaximaManual` reads from the manual itself, so
+  `wx_matrix()`, `table_form()` and friends got no "Help on" entry. Our own
+  manual has no index and its headings (hence pandoc's heading ids) are
+  translated, so each such keyword has a hand-written `<div id="keyword"></div>`
+  paragraph in `info/wxmaxima.md` **and in every `info/wxmaxima.<lang>.md`**,
+  in front of the paragraph documenting it. A paragraph of its own, so po4a
+  sees a new untranslated msgid whose output is the anchor itself, and
+  translations of the surrounding text don't go fuzzy. When documenting a new
+  wxMaxima command, add its anchor to all of these and its name to
+  `WxMaximaManualAnchors::Keywords()`; `test_WxMaximaManualAnchors` fails if the
+  two disagree, and also checks the committed English `info/wxmaxima.html`
+  (shipped to builds without pandoc), so regenerate that with the pandoc
+  command in `info/CMakeLists.txt`. Keywords Maxima's manual already documents
+  (including `MaximaManual::AnchorAliasses()`, e.g. `wxdraw2d`) stay out of the
+  list: Maxima's description of the wrapped command explains the arguments.
+- **`nanoSVG.cpp` is excluded from unity builds (`SKIP_UNITY_BUILD_INCLUSION`).**
+  It is the one file that compiles nanoSVG's implementation; batched after a
+  file that already included the header, the include guard drops it and the
+  link fails with `undefined reference to wxm_nsvgParse`. Which file precedes
+  it depends only on its position in `SOURCE_FILES`, so this surfaced simply
+  by adding an unrelated source file to that list.
 - **`Worksheet::AnonymizeCodeCells()` (GH #1339, Help menu -> "Anonymize Code
   for Bug Report"):** renames every non-builtin variable/function name in the
   selected code cells (whole document if nothing's selected, after a
