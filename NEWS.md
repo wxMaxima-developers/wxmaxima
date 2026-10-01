@@ -11,6 +11,8 @@
   it installs wxMaxima for the current user only, into
   `%LOCALAPPDATA%\Programs`. With them it installs for all users into
   Program Files, as before.
+- wxMaxima builds on Cygwin again: precompiled headers, which broke the
+  build there, are now off by default on Cygwin.
 
 # 26.09.0
 
