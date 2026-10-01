@@ -26,5 +26,6 @@ var searchData=
   ['hidetree_23',['HideTree',['../classGroupCell.html#aa79c40d6d88603e83be78a30e5ba190d',1,'GroupCell']]],
   ['historydclick_24',['HistoryDClick',['../classwxMaxima.html#a779cec517fcd3071172c32d05e7b17af',1,'wxMaxima']]],
   ['horizontalscrollbarrect_25',['HorizontalScrollbarRect',['../classMatrCell.html#aef348a203ec2890b5fbd1798e0b2944d',1,'MatrCell']]],
-  ['htmlexportselfcontained_26',['HTMLExportSelfContained',['../classConfiguration.html#a09614451291eeb82685331e594616a99',1,'Configuration']]]
+  ['htmlexportselfcontained_26',['HTMLExportSelfContained',['../classConfiguration.html#a09614451291eeb82685331e594616a99',1,'Configuration']]],
+  ['htmlhasanchor_27',['HtmlHasAnchor',['../WxMaximaManualAnchors_8cpp.html#aa9870cf5dd6e86ace9d76a2e260bf445',1,'WxMaximaManualAnchors']]]
 ];

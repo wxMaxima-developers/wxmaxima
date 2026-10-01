@@ -29,6 +29,8 @@ var searchData=
   ['wxmaximaframe_2eh_26',['wxMaximaFrame.h',['../wxMaximaFrame_8h.html',1,'']]],
   ['wxmaximaicon_2ecpp_27',['wxMaximaIcon.cpp',['../wxMaximaIcon_8cpp.html',1,'']]],
   ['wxmaximaicon_2eh_28',['wxMaximaIcon.h',['../wxMaximaIcon_8h.html',1,'']]],
-  ['wxmaximaosdescription_2ecpp_29',['wxMaximaOSDescription.cpp',['../wxMaximaOSDescription_8cpp.html',1,'']]],
-  ['wxmaximaosdescription_2eh_30',['wxMaximaOSDescription.h',['../wxMaximaOSDescription_8h.html',1,'']]]
+  ['wxmaximamanualanchors_2ecpp_29',['WxMaximaManualAnchors.cpp',['../WxMaximaManualAnchors_8cpp.html',1,'']]],
+  ['wxmaximamanualanchors_2eh_30',['WxMaximaManualAnchors.h',['../WxMaximaManualAnchors_8h.html',1,'']]],
+  ['wxmaximaosdescription_2ecpp_31',['wxMaximaOSDescription.cpp',['../wxMaximaOSDescription_8cpp.html',1,'']]],
+  ['wxmaximaosdescription_2eh_32',['wxMaximaOSDescription.h',['../wxMaximaOSDescription_8h.html',1,'']]]
 ];

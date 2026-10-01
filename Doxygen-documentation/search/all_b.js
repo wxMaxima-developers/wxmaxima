@@ -6,7 +6,8 @@ var searchData=
   ['keyboardinactivetimer_3',['KeyboardInactiveTimer',['../classWorksheet.html#a79d3f9c91582dac67a19780cd5c4006c',1,'Worksheet']]],
   ['keyboardselectionstart_4',['KeyboardSelectionStart',['../classViewCellPointers.html#abdf44185af2d06ef9e2c4b2d0e62041e',1,'ViewCellPointers::KeyboardSelectionStart()'],['../classWorksheet.html#aa3a64ca2a00762474da8be283bae84c2',1,'Worksheet::KeyboardSelectionStart()']]],
   ['keyboardselectionstartedhere_5',['KeyboardSelectionStartedHere',['../classEditorCell.html#a657f28462a91ec41213a446b5b85bc31',1,'EditorCell']]],
-  ['killallchildmaximas_6',['KillAllChildMaximas',['../classMaximaProcessManager.html#a65f3dea0993f8ef1caa647f2a02a6072',1,'MaximaProcessManager']]],
-  ['killmaxima_7',['KillMaxima',['../classMaximaProcessManager.html#a6ba1a201f97636e0ca03d06629d1e799',1,'MaximaProcessManager']]],
-  ['kind_8',['Kind',['../structMaximaMenuSyncRow.html#aab1861fb80f5b88b3b3c6f6abba42efa',1,'MaximaMenuSyncRow']]]
+  ['keywords_6',['Keywords',['../WxMaximaManualAnchors_8cpp.html#a90e0de777a9e2b4df60c38af1f32b04c',1,'WxMaximaManualAnchors']]],
+  ['killallchildmaximas_7',['KillAllChildMaximas',['../classMaximaProcessManager.html#a65f3dea0993f8ef1caa647f2a02a6072',1,'MaximaProcessManager']]],
+  ['killmaxima_8',['KillMaxima',['../classMaximaProcessManager.html#a6ba1a201f97636e0ca03d06629d1e799',1,'MaximaProcessManager']]],
+  ['kind_9',['Kind',['../structMaximaMenuSyncRow.html#aab1861fb80f5b88b3b3c6f6abba42efa',1,'MaximaMenuSyncRow']]]
 ];

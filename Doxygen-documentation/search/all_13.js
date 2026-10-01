@@ -243,7 +243,7 @@ var searchData=
   ['showtoolbar_240',['ShowToolBar',['../classwxMaximaFrame.html#ac5db54a12de1656538f2a8e9d572b9f9',1,'wxMaximaFrame']]],
   ['showuserinputbitmap_241',['ShowUserInputBitmap',['../classToolBar.html#a0d5ce6075969191ba8ee8cf6a3ea6264',1,'ToolBar']]],
   ['showwizardpane_242',['ShowWizardPane',['../classwxMaximaFrame.html#aacb1598bfb464a0a87062054c42ec7df',1,'wxMaximaFrame']]],
-  ['showwxmaximahelp_243',['ShowWxMaximaHelp',['../classwxMaxima.html#a2dcef5ae1e2c9457b9e27282067da7b2',1,'wxMaxima']]],
+  ['showwxmaximahelp_243',['ShowWxMaximaHelp',['../classwxMaxima.html#a89e523348965a14e0720e453ee3fa2aa',1,'wxMaxima']]],
   ['sidebarkeyevent_244',['SidebarKeyEvent',['../classSidebarKeyEvent.html',1,'']]],
   ['simplepcg32_245',['SimplePcg32',['../classCatch_1_1SimplePcg32.html',1,'Catch']]],
   ['simplifymenu_246',['SimplifyMenu',['../classMaximaCommandMenus.html#afb96fdd44972cd33e20c22a2f6edec27',1,'MaximaCommandMenus']]],
