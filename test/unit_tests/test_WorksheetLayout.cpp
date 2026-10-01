@@ -43,6 +43,7 @@
 #include "cells/CellList.h"
 #include "cells/EditorCell.h"
 #include "cells/GroupCell.h"
+#include "cells/TextCell.h"
 
 #include <cstdlib>
 #include <memory>
@@ -352,6 +353,49 @@ SCENARIO("A cell growing above the cursor doesn't move the cursor on screen") {
       GrowInput(A);
       f.layout.RecalculateIfNeeded();
       THEN("the cursor stays where it was on screen") {
+        REQUIRE(f.view.scrollCalls == 1);
+        REQUIRE(A->GetCurrentPoint().y + A->GetMaxDrop() -
+                f.view.scrollUnitY * unit == bottomBefore);
+      }
+    }
+    WHEN("the first cell's output is removed, as when it is evaluated again") {
+      for (int line = 0; line < 3; ++line) {
+        auto text = std::make_unique<TextCell>(A, g_cfg, wxS("output"));
+        text->ForceBreakLine(true);
+        A->AppendOutput(std::move(text));
+      }
+      A->OutputHeightChanged();
+      f.layout.RequestRecalculation(A);
+      f.layout.RecalculateIfNeeded();
+      // Scroll far enough down that removing the output can be compensated.
+      f.view.scrollUnitY = 5;
+      const int screenBefore = ScreenTop(f, C);
+      const int docBefore = C->GetCurrentPoint().y;
+      f.layout.ArmScrollCompensation();
+      A->RemoveOutput();
+      f.layout.RequestRecalculation(A);
+      f.layout.RecalculateIfNeeded();
+      THEN("the cursor's cell moved up in the document") {
+        REQUIRE(C->GetCurrentPoint().y < docBefore);
+      }
+      THEN("but stays exactly where it was on screen") {
+        REQUIRE(f.view.scrollCalls == 1);
+        REQUIRE(ScreenTop(f, C) == screenBefore);
+      }
+    }
+    WHEN("the cell above the horizontal cursor had its size reset when output arrives") {
+      // What sending a command to Maxima does to the cell it belongs to
+      // (MaximaEvaluator). A quick answer arrives before any layout pass has
+      // run, while the cell's size still reads 0.
+      cursor = {A, true};
+      const int bottomBefore = A->GetCurrentPoint().y + A->GetMaxDrop() -
+        f.view.scrollUnitY * unit;
+      REQUIRE(A->GetMaxDrop() > 0);
+      A->ResetSize();
+      f.layout.ArmScrollCompensation();
+      GrowInput(A);
+      f.layout.RecalculateIfNeeded();
+      THEN("the cursor still stays where it was on screen") {
         REQUIRE(f.view.scrollCalls == 1);
         REQUIRE(A->GetCurrentPoint().y + A->GetMaxDrop() -
                 f.view.scrollUnitY * unit == bottomBefore);

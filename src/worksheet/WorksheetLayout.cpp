@@ -183,9 +183,17 @@ bool WorksheetLayout::RecalculateIfNeeded(bool timeout, long timeSliceMs) {
 int WorksheetLayout::AnchorY(const ScrollAnchor &anchor) {
   // The same numbers GroupCell::Reposition() derives its successor's position
   // from, so a cell's bottom moves exactly as far as the cell below it would.
+  //
+  // Not GetMaxDrop(), though: unlike GetHeight() and GetCenter(), it doesn't
+  // recalculate a cell whose size has been reset, and then reads 0. That is
+  // the normal state of the cell output arrives for: sending a command to
+  // Maxima resets its group's size (MaximaEvaluator), and a quick answer
+  // arrives before any layout pass has run. Measured as 0, the drop was
+  // counted as part of the shift once the pass had laid the cell out again,
+  // and the cursor below it ended up that drop too high on screen.
   const int y = anchor.cell->GetCurrentPoint().y;
   if (anchor.atBottom)
-    return y + anchor.cell->GetMaxDrop();
+    return y + anchor.cell->GetHeight() - anchor.cell->GetCenter();
   return y - anchor.cell->GetCenter();
 }
 
@@ -385,6 +393,6 @@ void WorksheetLayout::AdjustSize() {
     GetMaxPoint(&maxWidth, &maxHeight);
 
   ApplyWorksheetVirtualSize(m_view, hasTree, maxWidth, maxHeight,
-                            m_virtualSizeCache, m_scrollUnit);
+                            m_configuration->GetGroupSkip(), m_virtualSizeCache, m_scrollUnit);
   m_adjustWorksheetSizeNeeded = false;
 }
