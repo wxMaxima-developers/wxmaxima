@@ -73,12 +73,13 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><ul>
+<li><code>wx_matrix()</code> is offered by autocompletion, with a template for its arguments.</li>
 <li><code>wx_matrix(M, banding=true|false|auto)</code> shades every other row and column of a matrix always, never, or only if it is too large for the window (the default).</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1003"></a>
+<h1><a class="anchor" id="autotoc_md995"></a>
 26.09.0</h1>
 <p>Large matrices and keyboard access to output are the main topics of this release, which again was developed with substantial help from the AI assistant <b>Claude</b>. <a class="el" href="classA.html">A</a> matrix too large for the window no longer widens the worksheet, output can be explored part by part with the keyboard, links in text and output can be opened, and an optional MCP server lets AI tools read the worksheet. Plus many fixes, among them a security fix for .wxm files.</p>
-<h2><a class="anchor" id="autotoc_md1004"></a>
+<h2><a class="anchor" id="autotoc_md997"></a>
 Matrices</h2>
 <ul>
 <li><a class="el" href="classA.html">A</a> matrix too large for the window by default is displayed with an elipsis( ⋯, ⋮ and/o ⋱)</li>
@@ -89,13 +90,13 @@ Matrices</h2>
 <li>Dragging across a matrix selects a block of entries, which Shift+arrow keys can grow or shrink (#2345, #2370, #2380). Every "Copy ..." command, including "Copy as HTML", copies only that block (#2369), and a matrix or block can be copied as CSV for a spreadsheet (#2364).</li>
 <li>The highlight of selected text in a cell now ends exactly where the text cursor would be. With fonts that kern or join letters it used to be off by a few pixels (#2278).</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1005"></a>
+<h2><a class="anchor" id="autotoc_md998"></a>
 Keyboard and accessibility</h2>
 <ul>
 <li><a class="el" href="classA.html">A</a> cell's output can be reached with the keyboard: Down at the end of the input selects the first result, Enter goes into a selected expression (numerator, matrix entry, ...), Escape comes back out, and the arrow keys move between parts. The Menu key or Shift+F10 opens the context menu, and on Windows screen readers announce each selected part (#2382). The manual has a new section, "Exploring output with the keyboard". The old behaviour of Down can be switched back in the configuration dialog.</li>
 <li>Output arriving from <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> no longer pushes the cursor down the screen.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1006"></a>
+<h2><a class="anchor" id="autotoc_md999"></a>
 Editing, links and plots</h2>
 <ul>
 <li>Web addresses in text cells and in <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s output are links: Ctrl+click (Cmd+click on macOS) or the context menu's "Open Link" opens them (#2396). The HTML and LaTeX exports keep them as links.</li>
@@ -105,7 +106,7 @@ Editing, links and plots</h2>
 <li><code>with_slider_draw(..., file_name="name")</code> no longer deletes the gif right after showing it (#2389).</li>
 <li><a class="el" href="classA.html">A</a> system tray icon shows whether <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> is busy and offers Interrupt and Exit (#2286).</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1007"></a>
+<h2><a class="anchor" id="autotoc_md1002"></a>
 Export and files</h2>
 <ul>
 <li>The HTML export can optionally write a single self-contained file with all images embedded (#2266), and "Copy as HTML" puts such a document on the clipboard (#2265, #2267).</li>
@@ -114,13 +115,13 @@ Export and files</h2>
 <li>"Copy as RTF" now pastes into MS Word (#2264); hidden multiplication signs get proper spacing in MathML/OMML export (#2263).</li>
 <li>The manual's PDF no longer needs CJK fonts for non-CJK languages (#2271).</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1008"></a>
+<h2><a class="anchor" id="autotoc_md1004"></a>
 AI chat and MCP server (optional)</h2>
 <ul>
 <li>An "AI Chat" sidebar chats about the current worksheet with Anthropic, OpenAI, Google Gemini, Qwen, GitHub Models, DeepSeek, OpenRouter or a custom provider, including local servers like Ollama, LM Studio or llama.cpp. It uses your own API key, stored in the operating system's secret store, and can read the worksheet but never change or evaluate it. <a class="el" href="classA.html">A</a> status bar icon and a connection monitor show what it is doing. The sidebar needs wxWidgets 3.3.4 or newer, the first version it works reliably with; a build against an older wxWidgets leaves it out. That includes this release's Windows installer and Linux .deb, which are built with wxWidgets 3.3.2 and 3.2.</li>
 <li>An optional MCP server lets an external AI tool read the worksheet, the Variables sidebar and the evaluation status, and show or hide sidebars. It listens only on this machine and cannot change the worksheet.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1009"></a>
+<h2><a class="anchor" id="autotoc_md1006"></a>
 Talking to Maxima</h2>
 <ul>
 <li>Interrupting <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> (Ctrl+G) goes through a second connection when the Lisp has threads (SBCL, CCL, ECL), which also makes it work reliably on Windows (#2289).</li>
@@ -128,7 +129,7 @@ Talking to Maxima</h2>
 <li>Opening a file starts <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> only once, about two seconds faster.</li>
 <li>The "Maxima isn't connecting" warning no longer fires for large worksheets (#1182).</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1010"></a>
+<h2><a class="anchor" id="autotoc_md1007"></a>
 Windows</h2>
 <ul>
 <li>Releases also offer a portable .zip that runs without installation (#2298).</li>
@@ -136,7 +137,7 @@ Windows</h2>
 <li>Dark mode now also themes menus, toolbars and dialogs (#2274).</li>
 <li><code>--logtostderr ... 2&gt;&amp;1</code> no longer loses the log.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1011"></a>
+<h2><a class="anchor" id="autotoc_md1008"></a>
 Other fixes</h2>
 <ul>
 <li>Sets (<code>{1,2,3}</code>) and <code>product()</code> no longer render as blank output (#2270), and <code>product()</code> no longer turns into "sum(" when broken into lines.</li>
@@ -147,13 +148,13 @@ Other fixes</h2>
 <li>Closing the diff viewer no longer resets settings changed meanwhile (#2356).</li>
 <li>The toolbar's height is recomputed at every start instead of being restored from the previous session, so it can no longer shrink by a pixel per session on MS Windows.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1012"></a>
+<h2><a class="anchor" id="autotoc_md1009"></a>
 Building</h2>
 <ul>
 <li>wxWidgets 3.2 and a C++20 compiler (GCC 12 or newer) are now required (#2301). There is no longer a .deb for Ubuntu 22.04.</li>
 <li>Compiling is about a third faster: precompiled headers are on by default and actually work now.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1013"></a>
+<h1><a class="anchor" id="autotoc_md1010"></a>
 26.08.0</h1>
 <p>Another large batch of improvements, many of them developed with substantial help from the AI assistant <b>Claude</b>: sidebars can now be minimized, "Find
 and Replace" can be docked like the other sidebars, right-to-left interface languages and mixed-direction text are now properly supported, translation losses across dozens of languages were found and restored, and a long list of export, layout and stability fixes.</p>
@@ -183,7 +184,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 <li>Added "Anonymize Code for Bug Report" to the Help menu (#1339): replaces every non-builtin name in the selected code (or, after confirmation, the whole document) with a random name, consistently, so a worksheet can be shared in a bug report without revealing the original names.</li>
 <li>Reduced the memory footprint of every cell on the worksheet by computing line-wrap draw order on demand instead of storing it per cell (#1445).</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1014"></a>
+<h1><a class="anchor" id="autotoc_md1011"></a>
 26.07.1</h1>
 <p>This release contains an unusually large batch of improvements &ndash; many of them developed with substantial help from the AI assistants <b>Claude</b> and <b>Fable</b>: dark mode for the whole Windows user interface, native Windows-on-Arm builds, numerous speedups, and a large number of bug and stability fixes.</p>
 <ul>
