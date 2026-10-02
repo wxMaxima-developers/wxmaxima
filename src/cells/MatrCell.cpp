@@ -343,7 +343,7 @@ MatrCell::Elision MatrCell::ChooseElision(const std::vector<wxCoord> &sizes,
 wxCoord MatrCell::DotPitch() const {
   // Roughly the spacing of TeX's \cdots, measured in the entries' font size.
   const double em = Scale_Px(AFontSize{MC_MIN_SIZE, m_fontSize - 2}).Get();
-  return std::max(Scale_Px(3), static_cast<wxCoord>(0.4 * em + 0.5));
+  return std::max(Scale_Px(4), static_cast<wxCoord>(.8 * em + 0.5));
 }
 
 wxCoord MatrCell::DotRadius() const {
@@ -358,7 +358,7 @@ void MatrCell::DrawDots(wxDC *dc, wxPoint start, wxPoint step) const {
 }
 
 void MatrCell::DrawElisionMarks(wxDC *dc) const {
-  SetPen(dc, 1);
+  SetPen(dc, 0);
   SetBrush(dc);
   const wxCoord dotsGap = DotsExtent() + Scale_Px(10);
   const wxCoord pitch = DotPitch();
