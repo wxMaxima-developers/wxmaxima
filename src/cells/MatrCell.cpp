@@ -152,7 +152,7 @@ void MatrCell::Recalculate(AFontSize const fontsize) const {
     const wxCoord widthBudget = std::max(
       static_cast<wxCoord>(canvas.x - m_configuration->GetIndent() -
                            Scale_Px(m_configuration->GetLabelWidth()) -
-                           Scale_Px(5)),
+                           Scale_Px(15)),
       Scale_Px(150));
     // A matrix taller than most of the window can never be seen whole
     // without scrolling past it, which is where the 80% comes from.
