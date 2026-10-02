@@ -160,6 +160,21 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>BreakLineHere</b> () 
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasHardLineBreak</b> () const</td></tr>
 <tr class="memdesc:a5a5d819c65594c03a045838db113a1eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does this cell begin with a manual linebreak? <br /></td></tr>
 <tr class="separator:a5a5d819c65594c03a045838db113a1eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5fc9b5019de78ee13826f00876c2d726"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a5fc9b5019de78ee13826f00876c2d726">IsAtLineBreak</a> () const</td></tr>
+<tr class="memdesc:a5fc9b5019de78ee13826f00876c2d726"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is this cell directly before or after a line break <a class="el" href="classCell.html#a81b738e213a8390ed10aefe8d286ce9d" title="Break lines in this list of cells.">BreakLines_List()</a> added?  <br /></td></tr>
+<tr class="separator:a5fc9b5019de78ee13826f00876c2d726"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0cd75990b2a4f02dd7272aba26c5d6ae"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a0cd75990b2a4f02dd7272aba26c5d6ae">SetAtLineBreak</a> (bool atLineBreak) const</td></tr>
+<tr class="memdesc:a0cd75990b2a4f02dd7272aba26c5d6ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tell this cell whether it is directly before or after a soft line break.  <br /></td></tr>
+<tr class="separator:a0cd75990b2a4f02dd7272aba26c5d6ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afbfc3b158c56e791ef3997a58cdc240f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#afbfc3b158c56e791ef3997a58cdc240f">IsHiddenMultSign</a> () const</td></tr>
+<tr class="memdesc:afbfc3b158c56e791ef3997a58cdc240f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is this a multiplication sign the user has chosen to hide?  <br /></td></tr>
+<tr class="separator:afbfc3b158c56e791ef3997a58cdc240f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b6954af220bdcc8e9bf00e9e5b83354"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a1b6954af220bdcc8e9bf00e9e5b83354">IsDrawnHidden</a> () const</td></tr>
+<tr class="memdesc:a1b6954af220bdcc8e9bf00e9e5b83354"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is this cell drawn as empty space on the screen?  <br /></td></tr>
+<tr class="separator:a1b6954af220bdcc8e9bf00e9e5b83354"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb79ae495517abf9e63642d48a86677a"><td class="memItemLeft" align="right" valign="top">virtual wxCoord&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#acb79ae495517abf9e63642d48a86677a">GetWidthAtLineBreak</a> () const</td></tr>
+<tr class="memdesc:acb79ae495517abf9e63642d48a86677a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The width this cell would have if it were at a line break.  <br /></td></tr>
+<tr class="separator:acb79ae495517abf9e63642d48a86677a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad3bba95038366ea5bccefa8f76e1571e"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#ad3bba95038366ea5bccefa8f76e1571e">BreakUp</a> () const</td></tr>
 <tr class="memdesc:ad3bba95038366ea5bccefa8f76e1571e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Try to split this command into lines to make it fit on the screen.  <br /></td></tr>
 <tr class="separator:ad3bba95038366ea5bccefa8f76e1571e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2323,6 +2338,36 @@ template&lt;int N&gt; </div>
  
 </div>
 </div>
+<a id="acb79ae495517abf9e63642d48a86677a" name="acb79ae495517abf9e63642d48a86677a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acb79ae495517abf9e63642d48a86677a">&#9670;&#160;</a></span>GetWidthAtLineBreak()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual wxCoord Cell::GetWidthAtLineBreak </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The width this cell would have if it were at a line break. </p>
+<p>Differs from <a class="el" href="classCell.html#ab8c503658c4afca17cbd62784fdbdce3" title="Get the width of this cell.">GetWidth()</a> only for a hidden multiplication sign, which is drawn if it is at a line break. Used by <a class="el" href="classCell.html#a81b738e213a8390ed10aefe8d286ce9d" title="Break lines in this list of cells.">BreakLines_List()</a> for deciding if such a sign still fits on the current line. </p>
+
+<p>Reimplemented in <a class="el" href="classTextCell.html#a93c31454c0a5f576d29c92e602c97f99">TextCell</a>.</p>
+
+</div>
+</div>
 <a id="a8c533b16aad3335b0c98c5c37ed60b59" name="a8c533b16aad3335b0c98c5c37ed60b59"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8c533b16aad3335b0c98c5c37ed60b59">&#9670;&#160;</a></span>GetXMLFlags()</h2>
 
@@ -2439,6 +2484,34 @@ template&lt;int N&gt; </div>
 
 </div>
 </div>
+<a id="a5fc9b5019de78ee13826f00876c2d726" name="a5fc9b5019de78ee13826f00876c2d726"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5fc9b5019de78ee13826f00876c2d726">&#9670;&#160;</a></span>IsAtLineBreak()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Cell::IsAtLineBreak </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Is this cell directly before or after a line break <a class="el" href="classCell.html#a81b738e213a8390ed10aefe8d286ce9d" title="Break lines in this list of cells.">BreakLines_List()</a> added? </p>
+<p>Only matters for a hidden multiplication sign: one at a soft line break is drawn after all (GH #2263), as otherwise nothing would tell the reader that the expression continues with a product on the next line. <a class="el" href="classCell.html#a81b738e213a8390ed10aefe8d286ce9d" title="Break lines in this list of cells.">BreakLines_List()</a> only sets this for hidden multiplication signs. </p>
+
+</div>
+</div>
 <a id="a0d729564b9738d49cf62ed37720534f3" name="a0d729564b9738d49cf62ed37720534f3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0d729564b9738d49cf62ed37720534f3">&#9670;&#160;</a></span>IsBrokenIntoLines()</h2>
 
@@ -2524,6 +2597,34 @@ template&lt;int N&gt; </div>
 
 </div>
 </div>
+<a id="a1b6954af220bdcc8e9bf00e9e5b83354" name="a1b6954af220bdcc8e9bf00e9e5b83354"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1b6954af220bdcc8e9bf00e9e5b83354">&#9670;&#160;</a></span>IsDrawnHidden()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Cell::IsDrawnHidden </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Is this cell drawn as empty space on the screen? </p>
+<p>True for cells that are hidden (e.g. invisible parentheses) and for hidden multiplication signs - except for the ones at a line break. </p>
+
+</div>
+</div>
 <a id="a74963ceb4e65f3f0b9e69c58a81c89bc" name="a74963ceb4e65f3f0b9e69c58a81c89bc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a74963ceb4e65f3f0b9e69c58a81c89bc">&#9670;&#160;</a></span>IsEditable()</h2>
 
@@ -2583,6 +2684,34 @@ template&lt;int N&gt; </div>
 <li>The output in folded GroupCells</li>
 </ul>
 <p>Additionally folded GroupCells are marked as "hidden". </p>
+
+</div>
+</div>
+<a id="afbfc3b158c56e791ef3997a58cdc240f" name="afbfc3b158c56e791ef3997a58cdc240f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afbfc3b158c56e791ef3997a58cdc240f">&#9670;&#160;</a></span>IsHiddenMultSign()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Cell::IsHiddenMultSign </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Is this a multiplication sign the user has chosen to hide? </p>
+<p>True even if this sign is at a line break and therefore is drawn after all, see <a class="el" href="classCell.html#a1b6954af220bdcc8e9bf00e9e5b83354" title="Is this cell drawn as empty space on the screen?">IsDrawnHidden()</a>. </p>
 
 </div>
 </div>
@@ -3051,6 +3180,35 @@ template&lt;int N&gt; </div>
 <p>AltCopyTexts for example make sense for subCells: a_n looks like a[n], even if both are lookalikes and the cell therefore needs to know what to put on the clipboard if this cell were copied. They also make sense in many other places we may never have thought about. But since we seriously want to save memory space on the ubiuitous TextCells it might be scary to apply this principle to them, at least if you know that text you copy from the internet to a terminal might contain additional commands with TextSize=0... </p>
 
 <p>Reimplemented in <a class="el" href="classExptCell.html#aae916ad7eddc77e56eb4b97cd6ec3541">ExptCell</a>, <a class="el" href="classFunCell.html#acb98e5c219932bd7e37b8345f21676ef">FunCell</a>, <a class="el" href="classSubCell.html#a656938c921eacd228544cc6812669684">SubCell</a>, <a class="el" href="classSubSupCell.html#a8235971425a34c8e3944aebde0260436">SubSupCell</a>, <a class="el" href="classSumCell.html#a7ff6af1448700c3d1d00fd8cfc152ab5">SumCell</a>, and <a class="el" href="classTextCell.html#af18c197bcddc094a8ba38bc44a16c841">TextCell</a>.</p>
+
+</div>
+</div>
+<a id="a0cd75990b2a4f02dd7272aba26c5d6ae" name="a0cd75990b2a4f02dd7272aba26c5d6ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0cd75990b2a4f02dd7272aba26c5d6ae">&#9670;&#160;</a></span>SetAtLineBreak()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Cell::SetAtLineBreak </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>atLineBreak</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Tell this cell whether it is directly before or after a soft line break. </p>
+<p>Changing this invalidates the size of a hidden multiplication sign, as one at a line break takes the width of the visible sign. </p>
 
 </div>
 </div>
