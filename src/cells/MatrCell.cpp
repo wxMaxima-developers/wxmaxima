@@ -312,10 +312,7 @@ MatrCell::Elision MatrCell::ChooseElision(const std::vector<wxCoord> &sizes,
   if (total <= budget)
     return {};
 
-  // The first and the last are kept even if they alone don't fit: they are
-  // what tells the reader where the matrix begins and ends, and in a
-  // table_form they are the headings.
-  size_t left = 1, right = 1;
+  size_t left = 0, right = 0;
   wxCoord used = sizes.front() + sizes.back() + gapSize;
   // Then alternate between the two ends, so what is left out is the middle
   // and both edges of the matrix stay in view, stopping at the first one that
