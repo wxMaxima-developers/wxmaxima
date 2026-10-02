@@ -621,12 +621,11 @@ wxRect MatrCell::EntrySlotRect(size_t row, size_t col) const {
   // centre line sits m_dropCenters[row].center below the top of its row.
   // Neighbouring slots are ElementSkip()*2 apart, half of which goes to each.
   const Cell *entry = GetInnerCell(static_cast<int>(row), static_cast<int>(col));
-  const wxCoord halfGap = ElementSkip();
   return wxRect(entry->GetCurrentX() -
-                (m_widths.at(col) - entry->SumOfWidths()) / 2 - halfGap,
-                entry->GetCurrentY() - m_dropCenters.at(row).center - halfGap,
-                m_widths.at(col) + 2 * halfGap,
-                m_dropCenters.at(row).Sum() + 2 * halfGap);
+                (m_widths.at(col) - entry->SumOfWidths()) / 2 - ElementSkip(),
+                entry->GetCurrentY() - m_dropCenters.at(row).center - ElementSkip(),
+                m_widths.at(col) + 2 * ElementSkip(),
+                m_dropCenters.at(row).Sum() + 2 * ElementSkip());
 }
 
 std::optional<MatrixBlock> MatrCell::BlockInRect(const wxRect &rect) const {
