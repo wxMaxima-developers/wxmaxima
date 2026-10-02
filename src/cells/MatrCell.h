@@ -318,12 +318,18 @@ private:
   static Elision ChooseElision(const std::vector<wxCoord> &sizes,
                                wxCoord gapSize, wxCoord budget);
 
+  //! The distance between the cell border and the cell contents
+  wxCoord ElementSkip() const {return Scale_Px(5);}
+  //! The distance between the cell border and the elipsis dots
+  wxCoord DotsSkip() const {return Scale_Px(20);}
   //! The distance between the centres of two neighbouring dots of ⋯ ⋮ ⋱
   wxCoord DotPitch() const;
   //! The radius of one dot of ⋯ ⋮ ⋱
   wxCoord DotRadius() const;
   //! The extent of a ⋯, ⋮ or ⋱ along the direction of its dots
   wxCoord DotsExtent() const { return 2 * DotPitch() + 2 * DotRadius(); }
+  /*! The width of the elipsis part of a elided matrix */
+  wxCoord DotsGap() const {return DotsExtent() + DotsSkip() * 2;}
   //! Draws three dots, starting at start and each step further along
   void DrawDots(wxDC *dc, wxPoint start, wxPoint step) const;
   //! Draws the ⋯ ⋮ ⋱ that mark where rows or columns are left out

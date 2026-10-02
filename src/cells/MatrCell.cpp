@@ -97,7 +97,7 @@ void MatrCell::Recalculate(AFontSize const fontsize) const {
           width = std::max(width, GetInnerCell(j, i)->SumOfWidths());
       }
       m_widths.emplace_back(width);
-      colSizes.emplace_back(width + Scale_Px(10));
+      colSizes.emplace_back(width + ElementSkip()*2);
     }
 
     std::vector<wxCoord> rowSizes;
@@ -110,7 +110,7 @@ void MatrCell::Recalculate(AFontSize const fontsize) const {
           drop = std::max(drop, GetInnerCell(i, j)->GetMaxDrop());
         }
       m_dropCenters.emplace_back(drop, center);
-      rowSizes.emplace_back(center + drop + Scale_Px(10));
+      rowSizes.emplace_back(center + drop + ElementSkip()*2);
     }
 
     wxCoord fullWidth = 0;
@@ -159,7 +159,6 @@ void MatrCell::Recalculate(AFontSize const fontsize) const {
     const wxCoord heightBudget =
       std::max(static_cast<wxCoord>(canvas.y * 8 / 10), Scale_Px(100));
 
-    const wxCoord dotsGap = DotsExtent() + Scale_Px(10);
     m_colElision = {};
     m_rowElision = {};
     m_hasHorizontalScrollbar = false;
@@ -167,9 +166,9 @@ void MatrCell::Recalculate(AFontSize const fontsize) const {
     m_scrollbarThickness = 0;
     if (mode == Configuration::OversizedMatrices::elide) {
       if (canvas.x > 0)
-        m_colElision = ChooseElision(colSizes, dotsGap, widthBudget);
+        m_colElision = ChooseElision(colSizes, DotsGap(), widthBudget);
       if (canvas.y > 0)
-        m_rowElision = ChooseElision(rowSizes, dotsGap, heightBudget);
+        m_rowElision = ChooseElision(rowSizes, DotsGap(), heightBudget);
     } else if (mode == Configuration::OversizedMatrices::scroll) {
       const wxCoord thickness = host->ScrollbarThickness();
       // A vertical scrollbar takes room from the columns, so it can make a
@@ -184,7 +183,7 @@ void MatrCell::Recalculate(AFontSize const fontsize) const {
     }
 
     // The box between the brackets
-    wxCoord contentWidth = m_colElision.Active() ? dotsGap : 0;
+    wxCoord contentWidth = m_colElision.Active() ? DotsGap() : 0;
     for (size_t i = 0; i < colSizes.size(); i++)
       if (!m_colElision.Hides(i))
         contentWidth += colSizes.at(i);
@@ -193,14 +192,14 @@ void MatrCell::Recalculate(AFontSize const fontsize) const {
     if (contentWidth < Scale_Px(14))
       contentWidth = Scale_Px(14);
 
-    wxCoord contentHeight = m_rowElision.Active() ? dotsGap : 0;
+    wxCoord contentHeight = m_rowElision.Active() ? DotsGap() : 0;
     for (size_t i = 0; i < rowSizes.size(); i++)
       if (!m_rowElision.Hides(i))
         contentHeight += rowSizes.at(i);
     if (m_hasVerticalScrollbar)
       contentHeight = heightBudget;
     if (contentHeight == 0)
-      contentHeight = fontsize + Scale_Px(10);
+      contentHeight = fontsize + ElementSkip()*2;
 
     m_contentSize = wxSize(contentWidth, contentHeight);
     // Keep the scroll position the reader chose across a relayout, as far as
@@ -268,10 +267,10 @@ bool MatrCell::ScrollEntryIntoView(size_t row, size_t col) {
 wxRect MatrCell::ViewportRect() const {
   // Inside the brackets' margins, which is where the entries of a matrix
   // that isn't scrolled begin and end, too.
-  return wxRect(m_currentPoint.x + Scale_Px(5),
-                m_currentPoint.y - m_center + Scale_Px(5),
-                m_contentSize.x - 2 * Scale_Px(5),
-                m_contentSize.y - 2 * Scale_Px(5));
+  return wxRect(m_currentPoint.x + ElementSkip(),
+                m_currentPoint.y - m_center + ElementSkip(),
+                m_contentSize.x - 2 * ElementSkip(),
+                m_contentSize.y - 2 * ElementSkip());
 }
 
 wxRect MatrCell::HorizontalScrollbarRect() const {
@@ -357,7 +356,6 @@ void MatrCell::DrawDots(wxDC *dc, wxPoint start, wxPoint step) const {
 void MatrCell::DrawElisionMarks(wxDC *dc) const {
   SetPen(dc, 0);
   SetBrush(dc);
-  const wxCoord dotsGap = DotsExtent() + Scale_Px(10);
   const wxCoord pitch = DotPitch();
   const wxCoord radius = DotRadius();
 
@@ -366,41 +364,41 @@ void MatrCell::DrawElisionMarks(wxDC *dc) const {
   // is shown.
   wxCoord gapX = 0;
   std::vector<wxCoord> colMiddles;
-  wxCoord x = m_currentPoint.x + Scale_Px(5);
+  wxCoord x = m_currentPoint.x + ElementSkip();
   for (size_t i = 0; i < m_matWidth; i++) {
     if (m_colElision.Active() && (i == m_colElision.first)) {
       gapX = x;
-      x += dotsGap;
+      x += DotsGap();
     }
     if (m_colElision.Hides(i))
       continue;
     colMiddles.emplace_back(x + m_widths.at(i) / 2);
-    x += m_widths.at(i) + Scale_Px(10);
+    x += m_widths.at(i) + ElementSkip()*2;
   }
   wxCoord gapY = 0;
   std::vector<wxCoord> rowMiddles;
-  wxCoord y = m_currentPoint.y - m_center + Scale_Px(5);
+  wxCoord y = m_currentPoint.y - m_center + ElementSkip();
   for (size_t j = 0; j < m_matHeight; j++) {
     if (m_rowElision.Active() && (j == m_rowElision.first)) {
       gapY = y;
-      y += dotsGap;
+      y += DotsGap();
     }
     if (m_rowElision.Hides(j))
       continue;
     rowMiddles.emplace_back(y + m_dropCenters.at(j).center);
-    y += m_dropCenters.at(j).Sum() + Scale_Px(10);
+    y += m_dropCenters.at(j).Sum() + ElementSkip()*2;
   }
 
   // ⋯ in every row that is shown, at the height the row's entries are
   // centred on; ⋮ in every column that is shown; ⋱ where the two gaps cross.
   if (m_colElision.Active())
     for (wxCoord middle : rowMiddles)
-      DrawDots(dc, {gapX + radius, middle}, {pitch, 0});
+      DrawDots(dc, {gapX + (DotsSkip() - ElementSkip()), middle}, {pitch, 0});
   if (m_rowElision.Active())
     for (wxCoord middle : colMiddles)
-      DrawDots(dc, {middle, gapY + radius}, {0, pitch});
+      DrawDots(dc, {middle, gapY + (DotsSkip() - ElementSkip())}, {0, pitch});
   if (m_colElision.Active() && m_rowElision.Active())
-    DrawDots(dc, {gapX + radius, gapY + radius}, {pitch, pitch});
+    DrawDots(dc, {gapX + (DotsSkip() - ElementSkip()), gapY + (DotsSkip() - ElementSkip())}, {pitch, pitch});
 }
 
 void MatrCell::DrawBands(wxDC *dc) const {
@@ -415,7 +413,6 @@ void MatrCell::DrawBands(wxDC *dc) const {
 
   // The bands fill the box between the brackets, not the brackets' margins.
   const wxRect inside = ViewportRect();
-  const wxCoord dotsGap = DotsExtent() + Scale_Px(10);
 
   // Each row's band runs from halfway through the gap above it to halfway
   // through the gap below, so neighbouring bands meet without a seam. Same
@@ -424,10 +421,10 @@ void MatrCell::DrawBands(wxDC *dc) const {
   wxCoord y = m_currentPoint.y - m_center - m_scroll.y;
   for (size_t j = 0; j < m_matHeight; j++) {
     if (m_rowElision.Active() && (j == m_rowElision.first))
-      y += dotsGap;
+      y += DotsGap();
     if (m_rowElision.Hides(j))
       continue;
-    const wxCoord size = m_dropCenters.at(j).Sum() + Scale_Px(10);
+    const wxCoord size = m_dropCenters.at(j).Sum() + ElementSkip()*2;
     if (j % 2 == 1) {
       const wxRect band =
         wxRect(inside.x, y, inside.width, size).Intersect(inside);
@@ -440,10 +437,10 @@ void MatrCell::DrawBands(wxDC *dc) const {
   wxCoord x = m_currentPoint.x - m_scroll.x;
   for (size_t i = 0; i < m_matWidth; i++) {
     if (m_colElision.Active() && (i == m_colElision.first))
-      x += dotsGap;
+      x += DotsGap();
     if (m_colElision.Hides(i))
       continue;
-    const wxCoord size = m_widths.at(i) + Scale_Px(10);
+    const wxCoord size = m_widths.at(i) + ElementSkip()*2;
     if (i % 2 == 1) {
       const wxRect band =
         wxRect(x, inside.y, size, inside.height).Intersect(inside);
@@ -465,18 +462,17 @@ void MatrCell::SetCurrentPoint(wxPoint point) const {
   // A scrolling matrix positions every entry, including those scrolled out
   // of the viewport: Draw() clips them, and IsEntryShown() keeps them out of
   // hit-testing.
-  const wxCoord dotsGap = DotsExtent() + Scale_Px(10);
   wxPoint mp;
-  mp.x = point.x + Scale_Px(5) - m_scroll.x;
+  mp.x = point.x + ElementSkip() - m_scroll.x;
   for (size_t i = 0; i < m_matWidth; i++) {
     if (m_colElision.Active() && (i == m_colElision.first))
-      mp.x += dotsGap;
+      mp.x += DotsGap();
     if (m_colElision.Hides(i))
       continue;
-    mp.y = point.y - m_center + Scale_Px(5) - m_scroll.y;
+    mp.y = point.y - m_center + ElementSkip() - m_scroll.y;
     for (size_t j = 0; j < m_matHeight; j++) {
       if (m_rowElision.Active() && (j == m_rowElision.first))
-        mp.y += dotsGap;
+        mp.y += DotsGap();
       if (m_rowElision.Hides(j))
         continue;
       if ((j * m_matWidth + i) < m_cells.size()) {
@@ -484,10 +480,10 @@ void MatrCell::SetCurrentPoint(wxPoint point) const {
         wxPoint mp1(mp);
         mp1.x = mp.x + (m_widths.at(i) - GetInnerCell(j, i)->SumOfWidths()) / 2;
         GetInnerCell(j, i)->SetCurrentPointList(mp1);
-        mp.y += (m_dropCenters.at(j).drop + Scale_Px(10));
+        mp.y += (m_dropCenters.at(j).drop + ElementSkip()*2);
       }
     }
-    mp.x += (m_widths.at(i) + Scale_Px(10));
+    mp.x += (m_widths.at(i) + ElementSkip()*2);
   }
 }
 
@@ -496,20 +492,19 @@ bool MatrCell::EntryAt(const wxPoint point, size_t &row, size_t &col) const {
     return false;
   // The same walk as DrawBands(), which is what shows the user where one row
   // or column ends and the next begins.
-  const wxCoord dotsGap = DotsExtent() + Scale_Px(10);
 
   bool rowFound = false;
   wxCoord y = m_currentPoint.y - m_center - m_scroll.y;
   for (size_t j = 0; (j < m_matHeight) && !rowFound; j++) {
     if (m_rowElision.Active() && (j == m_rowElision.first)) {
       // On the dots: no row at all.
-      if (point.y < y + dotsGap)
+      if (point.y < y + DotsGap())
         return false;
-      y += dotsGap;
+      y += DotsGap();
     }
     if (m_rowElision.Hides(j))
       continue;
-    y += m_dropCenters.at(j).Sum() + Scale_Px(10);
+    y += m_dropCenters.at(j).Sum() + ElementSkip()*2;
     if (point.y < y) {
       row = j;
       rowFound = true;
@@ -520,13 +515,13 @@ bool MatrCell::EntryAt(const wxPoint point, size_t &row, size_t &col) const {
   wxCoord x = m_currentPoint.x - m_scroll.x;
   for (size_t i = 0; (i < m_matWidth) && !colFound; i++) {
     if (m_colElision.Active() && (i == m_colElision.first)) {
-      if (point.x < x + dotsGap)
+      if (point.x < x + DotsGap())
         return false;
-      x += dotsGap;
+      x += DotsGap();
     }
     if (m_colElision.Hides(i))
       continue;
-    x += m_widths.at(i) + Scale_Px(10);
+    x += m_widths.at(i) + ElementSkip()*2;
     if (point.x < x) {
       col = i;
       colFound = true;
@@ -624,9 +619,9 @@ Cell::Range MatrCell::GetInnerCellsInRect(const wxRect &rect) const {
 wxRect MatrCell::EntrySlotRect(size_t row, size_t col) const {
   // Mirrors SetCurrentPoint(): each entry is centred in its column, and its
   // centre line sits m_dropCenters[row].center below the top of its row.
-  // Neighbouring slots are Scale_Px(10) apart, half of which goes to each.
+  // Neighbouring slots are ElementSkip()*2 apart, half of which goes to each.
   const Cell *entry = GetInnerCell(static_cast<int>(row), static_cast<int>(col));
-  const wxCoord halfGap = Scale_Px(5);
+  const wxCoord halfGap = ElementSkip();
   return wxRect(entry->GetCurrentX() -
                 (m_widths.at(col) - entry->SumOfWidths()) / 2 - halfGap,
                 entry->GetCurrentY() - m_dropCenters.at(row).center - halfGap,
@@ -758,16 +753,16 @@ void MatrCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
       if (m_specialMatrix && !m_inferenceMatrix) {
         if (m_rowNames && !m_widths.empty())
           antialiassingDC->DrawLine(
-            point.x + m_widths.at(0) + 2 * Scale_Px(5) - m_scroll.x,
+            point.x + m_widths.at(0) + 2 * ElementSkip() - m_scroll.x,
             point.y - m_center + Scale_Px(2),
-            point.x + m_widths.at(0) + 2 * Scale_Px(5) - m_scroll.x,
+            point.x + m_widths.at(0) + 2 * ElementSkip() - m_scroll.x,
             point.y + m_center - Scale_Px(2));
         if (m_colNames && !m_dropCenters.empty())
           antialiassingDC->DrawLine(
             point.x + Scale_Px(1),
-            point.y - m_center + m_dropCenters.at(0).Sum() + 2 * Scale_Px(5) - m_scroll.y,
+            point.y - m_center + m_dropCenters.at(0).Sum() + 2 * ElementSkip() - m_scroll.y,
             point.x + Scale_Px(1) + width,
-            point.y - m_center + m_dropCenters.at(0).Sum() + 2 * Scale_Px(5) - m_scroll.y);
+            point.y - m_center + m_dropCenters.at(0).Sum() + 2 * ElementSkip() - m_scroll.y);
       }
     }
     SetPen(antialiassingDC, 1.5);
@@ -854,17 +849,17 @@ void MatrCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
       case paren_brackets: {
         SetPen(dc, 1.5);
         // left bracket
-        const wxPoint pointsL[4] = {{Scale_Px(5), -m_center + Scale_Px(2)},
+        const wxPoint pointsL[4] = {{ElementSkip(), -m_center + Scale_Px(2)},
                                     {Scale_Px(1), -m_center + Scale_Px(2)},
                                     {Scale_Px(1), m_center - Scale_Px(2)},
-                                    {Scale_Px(5), m_center - Scale_Px(2)}};
+                                    {ElementSkip(), m_center - Scale_Px(2)}};
         antialiassingDC->DrawLines(4, pointsL, point.x, point.y);
 
         // right bracket
-        const wxPoint pointsR[4] = {{-Scale_Px(5), -m_center + Scale_Px(2)},
+        const wxPoint pointsR[4] = {{-ElementSkip(), -m_center + Scale_Px(2)},
                                     {-Scale_Px(1), -m_center + Scale_Px(2)},
                                     {-Scale_Px(1), m_center - Scale_Px(2)},
-                                    {-Scale_Px(5), m_center - Scale_Px(2)}};
+                                    {-ElementSkip(), m_center - Scale_Px(2)}};
         antialiassingDC->DrawLines(4, pointsR, point.x + width - 1, point.y);
         break;
       }
