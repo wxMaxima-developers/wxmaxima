@@ -169,6 +169,38 @@ void MatrCell::Recalculate(AFontSize const fontsize) const {
         m_colElision = ChooseElision(colSizes, DotsGap(), widthBudget);
       if (canvas.y > 0)
         m_rowElision = ChooseElision(rowSizes, DotsGap(), heightBudget);
+
+      // Hiding stuff might have change The extent of each column and row
+      if(m_rowElision.Active())
+        {
+          colSizes.clear();
+          m_widths.clear();
+          for (size_t i = 0; i < m_matWidth; i++) {
+            wxCoord width = 0;
+            for (size_t j = 0; j < m_matHeight; j++) {
+              if (((m_matWidth * j + i) < m_cells.size()) && (!m_rowElision.Hides(j)))
+                width = std::max(width, GetInnerCell(j, i)->SumOfWidths());
+            }
+            m_widths.emplace_back(width);
+            colSizes.emplace_back(width + ElementSkip()*2);
+          }
+        }
+
+      if(m_colElision.Active())
+        {
+          rowSizes.clear();
+          m_dropCenters.clear();
+          for (size_t i = 0; i < m_matHeight; i++) {
+            wxCoord center = 0, drop = 0;
+            for (size_t j = 0; j < m_matWidth; j++)
+              if ((m_matWidth * i + j < m_cells.size()) && (!m_colElision.Hides(j))) {
+                center = std::max(center, GetInnerCell(i, j)->GetCenterList());
+                drop = std::max(drop, GetInnerCell(i, j)->GetMaxDrop());
+              }
+            m_dropCenters.emplace_back(drop, center);
+            rowSizes.emplace_back(center + drop + ElementSkip()*2);
+          }
+        }
     } else if (mode == Configuration::OversizedMatrices::scroll) {
       const wxCoord thickness = host->ScrollbarThickness();
       // A vertical scrollbar takes room from the columns, so it can make a
