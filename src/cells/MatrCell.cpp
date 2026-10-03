@@ -389,7 +389,6 @@ void MatrCell::DrawElisionMarks(wxDC *dc) const {
   SetPen(dc, 0);
   SetBrush(dc);
   const wxCoord pitch = DotPitch();
-  const wxCoord radius = DotRadius();
 
   // Walk the columns and rows the way SetCurrentPoint() does, noting where
   // the gap for the dots begins and the middle of every column and row that
