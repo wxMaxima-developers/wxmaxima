@@ -2854,6 +2854,10 @@ void Worksheet::SetCellStyle(GroupCell *group, GroupType style) {
     cellContents = group->GetEditable()->GetValue();
   auto newGroupCell = std::make_unique<GroupCell>(m_configuration, style);
   newGroupCell->GetEditable()->SetValue(cellContents);
+  // Bold stays bold when a text cell becomes a heading (GH #492). A code
+  // cell drops the formatting, as it has syntax highlighting instead.
+  if (group->GetEditable())
+    newGroupCell->GetEditable()->CopyFormatsFrom(*group->GetEditable());
   GroupCell *prev = group->GetPrevious();
   DeleteRegion(group, group);
   TreeUndo_AppendAction();
@@ -5816,6 +5820,32 @@ void Worksheet::UndoInsideCell() {
     RequestRecalculation(GetActiveCell()->GetGroup());
     RequestRedraw();
   }
+}
+
+void Worksheet::ToggleTextFormat(TextFormat::Format flag) {
+  EditorCell *editor = GetActiveCell();
+  if (!editor || !editor->CanFormat())
+    return;
+  if (editor->ToggleFormat(flag)) {
+    // Bold and italic text is wider: the cell has to be laid out anew.
+    if (editor->GetGroup()) {
+      editor->GetGroup()->ResetSize();
+      RequestRecalculation(editor->GetGroup());
+    }
+    SetSaved(false);
+  }
+  UpdateControlsNeeded(true);
+  RequestRedraw();
+}
+
+bool Worksheet::HasTextFormat(TextFormat::Format flag) const {
+  const EditorCell *editor = GetActiveCell();
+  return editor && editor->HasFormat(flag);
+}
+
+bool Worksheet::CanFormatText() const {
+  const EditorCell *editor = GetActiveCell();
+  return editor && editor->CanFormat();
 }
 
 void Worksheet::RedoInsideCell() {

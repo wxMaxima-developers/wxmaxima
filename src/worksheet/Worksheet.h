@@ -1715,6 +1715,17 @@ public:
   */
   bool CanUndoInsideCell() const { return m_document.CanUndoInsideCell(); }
 
+  /*! Switch a character format (bold, ...) of the active text cell on or off.
+
+    What the toolbar's formatting buttons do (GH #492); see
+    EditorCell::ToggleFormat(). Does nothing outside a text cell.
+  */
+  void ToggleTextFormat(TextFormat::Format flag);
+  //! Is this character format on where the cursor is? (For the toolbar.)
+  bool HasTextFormat(TextFormat::Format flag) const;
+  //! Is the cursor in a cell whose text can be formatted?
+  bool CanFormatText() const;
+
   void UndoInsideCell();
 
   /*! Is it possible to issue an undo in the currently selected cell?

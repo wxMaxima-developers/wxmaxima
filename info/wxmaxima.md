@@ -274,6 +274,12 @@ A web address in a text cell that starts with `http://`, `https://` or `mailto:`
 
 The same goes for web addresses in _Maxima_'s output, for example in a string printed by `print("See https://wxmaxima-developers.github.io/wxmaxima/")`: <kbd>CTRL</kbd>+clicking the address or choosing "Open Link" from its context menu opens it, while a plain click still selects the output.
 
+### Bold, italic, underlined and struck-through text
+
+Text in a text cell, a title or a section heading can be made bold, italic, underlined or struck through. Select the text and press the respective button in the toolbar; pressing the button again removes that formatting from the selection. With nothing selected the button switches the formatting on or off for what is typed next. The buttons are hidden by right-clicking the toolbar and unchecking "Text formatting buttons". Code cells cannot be formatted: their colors already show the syntax of the code.
+
+The formatting is saved in `.wxmx` files. Older versions of _wxMaxima_ open such a file without the formatting but keep all of the text. `.wxm` files, the exports and the clipboard contain the text without its formatting.
+
 ### Hotkeys
 
 Most hotkeys can be found in the text of the respective menus. Since they are actually taken from the menu text and thus can be customized by the translations of _wxMaxima_ to match the needs of users of the local keyboard, we do not document them here. A few hotkeys or hotkey aliases, though, are not documented in the menus:

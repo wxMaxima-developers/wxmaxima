@@ -213,6 +213,17 @@ target_link_libraries(test_ToolbarPane PRIVATE ${wxWidgets_LIBRARIES})
 add_test(NAME ToolbarPane
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_ToolbarPane>")
 
+# Character formatting in text cells (GH #492): how formats follow an edit and
+# how they are saved to and read from .wxmx is pure string/XML code, so it is
+# tested directly.
+add_executable(test_TextFormat
+    test_TextFormat.cpp ${CMAKE_SOURCE_DIR}/src/cells/TextFormat.cpp
+    ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
+target_include_directories(test_TextFormat PRIVATE ${CMAKE_SOURCE_DIR}/src/cells)
+target_link_libraries(test_TextFormat PRIVATE ${wxWidgets_LIBRARIES})
+add_test(NAME TextFormat
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_TextFormat>")
+
 # Link detection in text cells (GH #2396) is a pure string function shared by
 # the display and the HTML/LaTeX exporters, so it is tested directly.
 add_executable(test_UrlDetection
@@ -340,6 +351,18 @@ if(TARGET wxmTestApp)
     # out of the test, which is what flawfinder rightly objects to.
     add_test(NAME EditorCellBidi
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_EditorCellBidi>")
+
+    # The toolbar's bold/italic/underline/strikethrough buttons on a text cell
+    # (GH #492): formatting a selection, the format for what is typed next,
+    # undo, and that bold text is laid out wider.
+    add_executable(test_EditorCellFormat
+        test_EditorCellFormat.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_EditorCellFormat PUBLIC cxx_std_20)
+    target_link_libraries(test_EditorCellFormat PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME EditorCellFormat
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_EditorCellFormat>")
 
     # Real tab-character support: a '\t' is a single character in m_text,
     # expanded to the next 4-column stop only at draw/measure time

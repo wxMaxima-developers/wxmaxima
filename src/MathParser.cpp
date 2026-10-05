@@ -36,6 +36,7 @@
 #include <wx/tokenzr.h>
 
 #include "MathParser.h"
+#include "cells/TextFormat.h"
 
 #include "cells/AbsCell.h"
 #include "cells/AnimationCell.h"
@@ -581,8 +582,13 @@ std::unique_ptr<Cell> MathParser::ParseCellTag(wxXmlNode *node, int depth) {
   while (children) {
     if (children->GetName() == wxS("editor")) {
       std::unique_ptr<Cell> ed(ParseEditorTag(children, depth));
-      if (ed)
+      if (ed) {
         group->SetEditableContent(ed->GetValue());
+        // A text cell's formatting (GH #492) travels with its text.
+        const auto *editor = dynamic_cast<const EditorCell *>(ed.get());
+        if (editor && group->GetEditable())
+          group->GetEditable()->CopyFormatsFrom(*editor);
+      }
     } else if (children->GetName() ==
                wxS("fold")) { // This GroupCell contains folded groupcells
       CellListBuilder<GroupCell> tree;
@@ -736,16 +742,27 @@ std::unique_ptr<Cell> MathParser::ParseEditorTag(wxXmlNode *node, int WXUNUSED(d
     editor->SetType(MC_TYPE_HEADING6);
 
   wxString text;
+  // The character formatting of a text cell (GH #492), and the attributes of
+  // its lines this version doesn't know, see TextFormat.h
+  TextFormat::Formats formats;
+  std::vector<std::pair<wxString, wxString>> unknownLineAttributes;
   wxXmlNode *line = node->GetChildren();
   while (line) {
     if (line->GetName() == wxS("line")) {
       if (!text.IsEmpty())
         text += wxS("\n");
-      text += line->GetNodeContent();
+      const std::size_t lineStart = text.Length();
+      wxString unknownAttributes;
+      TextFormat::ReadLine(line, text, formats, &unknownAttributes);
+      if (!unknownAttributes.IsEmpty())
+        unknownLineAttributes.emplace_back(text.Mid(lineStart), unknownAttributes);
     }
     line = line->GetNext();
   } // end while
   editor->SetValue(text);
+  if (!TextFormat::IsPlain(formats))
+    editor->SetFormats(std::move(formats));
+  editor->SetUnknownLineAttributes(std::move(unknownLineAttributes));
   return editor;
 }
 

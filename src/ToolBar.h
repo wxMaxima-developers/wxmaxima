@@ -60,7 +60,8 @@ public:
     shownew,
     search,
     help,
-    selectAll
+    selectAll,
+    textFormat
   };
 
   virtual ~ToolBar();
@@ -131,7 +132,12 @@ public:
     tb_animation_stop,
     tb_hideCode,
     tb_changeStyle,
-    menu_restart_id
+    menu_restart_id,
+    //! The character formatting buttons for text cells (GH #492)
+    tb_bold,
+    tb_italic,
+    tb_underline,
+    tb_strikethrough
   };
 
   //! The slider for animations
@@ -217,6 +223,15 @@ public:
       }
     }
 
+  /*! Enable the character formatting buttons (only in a text cell)
+
+    \param value       Can the text the cursor is in be formatted?
+    \param bold, italic, underline, strikethrough Is that format on where the
+                        cursor is? Shown as the button being pressed.
+  */
+  void TextFormatState(bool value, bool bold, bool italic, bool underline,
+                       bool strikethrough);
+
   void WorksheetEmpty(bool value)
     {
       if (value != m_worksheetEmpty_old)
@@ -294,6 +309,9 @@ public:
 
   bool ShowSelectAll(){bool show = true; wxConfig::Get()->Read("Toolbar/showSelectAll", &show);
     return show;}
+  bool ShowTextFormat(){bool show = true; wxConfig::Get()->Read("Toolbar/showTextFormat", &show);
+    return show;}
+  void ShowTextFormat(bool show){wxConfig::Get()->Write("Toolbar/showTextFormat", show);}
   void ShowSelectAll(bool show){wxConfig::Get()->Write("Toolbar/showSelectAll", show);}
 
 protected:
@@ -319,6 +337,8 @@ private:
   bool m_canPrint_old = true;
   bool m_canEvalTillHere_old = true;
   bool m_canEvalThisCell_old = true;
+  //! The state TextFormatState() last showed, to avoid needless repaints
+  bool m_canFormatText_old = true;
   std::unique_ptr<struct wxm_NSVGrasterizer, decltype(std::free)*> m_svgRast{nullptr, std::free};
   bool m_worksheetEmpty_old  = false;
   AnimationStartStopState m_AnimationStartStopState = Inactive;

@@ -27,6 +27,8 @@
 #include "Cell.h"
 #include "FontAttribs.h"
 #include "MaximaTokenizer.h"
+#include "TextFormat.h"
+#include <array>
 #include <vector>
 #include <algorithm>
 #include <list>
@@ -207,6 +209,13 @@ public:
   const wxFont &GetFont() const {
     return m_configuration->GetStyle(GetTextStyle())->GetFont(m_fontSize_Scaled);
   }
+  /*! The font for text with the given character formatting (GH #492).
+
+    Only bold and italic change the font; underline and strikethrough are
+    lines Draw() adds on top. Cached, since Draw() asks for it once per
+    snippet.
+  */
+  const wxFont &GetFont(TextFormat::Format format) const;
   //! Set the currently used font to the one that matches this cell's formatting
   void SetFont(wxDC *dc) const;
 
@@ -224,6 +233,59 @@ public:
     Naturally all soft line breaks are converted back to spaces beforehand.
   */
   const wxString &GetValue() const override { return m_text; }
+
+  /*! \name Character formatting (bold, italic, ...) of a text cell (GH #492)
+
+    One TextFormat::Format per character of GetValue(); see TextFormat.h. Code
+    cells have syntax highlighting instead and are never formatted.
+
+    The formats are not updated by each of the many places that edit the
+    text. Instead they remember the text they were made for, and whenever
+    they are needed and the text has changed since, TextFormat::Reconcile()
+    works out which characters survived the edit (SyncFormats()). That way
+    no edit, present or future, can leave them out of step with the text.
+    @{
+  */
+  //! Can this cell's text be formatted at all? (Not if it is code.)
+  bool CanFormat() const { return !IsCodeEditor(); }
+  //! The formats of GetValue(), one per character; empty if it is plain.
+  const TextFormat::Formats &GetFormats() const;
+  /*! Replace the formats; one per character of GetValue(), or empty.
+
+    Not an edit: it doesn't go into the undo history. Meant for loading a
+    file.
+  */
+  void SetFormats(TextFormat::Formats formats);
+  /*! Is this format on where the user is?
+
+    With a selection: is every selected character formatted that way. Without
+    one: will what is typed at the cursor be.
+  */
+  bool HasFormat(TextFormat::Format flag) const;
+  /*! Switch a format on or off, as the toolbar's buttons do.
+
+    With a selection the selected characters get it - unless they all have
+    it already, in which case they all lose it. Without one it is switched for
+    what is typed next at the cursor.
+    \return true if the cell's content changed (and so did the undo history).
+  */
+  bool ToggleFormat(TextFormat::Format flag);
+  /*! The attributes of the \<line\> elements of a loaded file this version
+    doesn't understand, each with the text of the line it was on.
+
+    Written out again by ToXML() for every line whose text is still the same,
+    so a newer version's formatting survives this one opening and saving the
+    file.
+  */
+  void SetUnknownLineAttributes(std::vector<std::pair<wxString, wxString>> attributes);
+  /*! Take over another cell's formatting, for a cell that took over its text.
+
+    For the places that build a new cell from an old one's GetValue() - a
+    change of the cell's type, loading a file. If the texts differ the formats
+    are mapped onto this cell's text the way an edit would map them.
+  */
+  void CopyFormatsFrom(const EditorCell &source);
+  //! @}
 
   /*! The soft (word-wrap) line-break offsets of the last styling pass.
 
@@ -563,18 +625,26 @@ public:
     {
     public:
       HistoryEntry(){};
-      HistoryEntry(const wxString &text, long long selStart, long long selEnd) :
-        m_text(text), m_selStart(selStart), m_selEnd(selEnd) {}
+      HistoryEntry(const wxString &text, long long selStart, long long selEnd,
+                   TextFormat::Formats formats = {}) :
+        m_text(text), m_formats(std::move(formats)), m_selStart(selStart), m_selEnd(selEnd) {}
       long long SelectionStart() const {return m_selStart;}
       long long SelectionEnd() const {return m_selEnd;}
       wxString GetText() const {return m_text;}
+      const TextFormat::Formats &GetFormats() const {return m_formats;}
+      //! Do both entries hold the same text with the same formatting?
+      bool SameContent(const HistoryEntry &other) const
+        {return (m_text == other.m_text) && (m_formats == other.m_formats);}
     private:
       wxString m_text;
+      //! The text's character formatting (empty for plain text and code)
+      TextFormat::Formats m_formats;
       long long m_selStart = -1;
       long long m_selEnd = -1;
     };
     bool AddState(HistoryEntry entry, Action action = any);
-    bool AddState(const wxString &text, long long selStart, long long selEnd, Action action = any);
+    bool AddState(const wxString &text, long long selStart, long long selEnd, Action action = any,
+                  TextFormat::Formats formats = {});
     bool Undo();
     bool Redo();
     bool CanUndo() const;
@@ -727,7 +797,8 @@ private:
   //! for a tab, meaningless) glyph. Only the first resulting snippet carries
   //! indentChar, since Draw() draws it at a fixed position regardless of
   //! which snippet triggers it.
-  void PushTextLine(const wxString &line, const wxString &indentChar) const;
+  void PushTextLine(const wxString &line, const wxString &indentChar,
+                    std::size_t startPos) const;
   /*! PushTextLine()'s second step: pushes a run that contains no '\t',
     giving each link in it (see UrlDetection.h) a StyledText of its own that
     IsLink(). A link needs to be a snippet of its own so that Draw() can
@@ -735,7 +806,14 @@ private:
     reasoning that isolates a tab. Soft line breaks only ever happen at
     spaces, and a link contains none, so a link never has to be split.
   */
-  void PushTextRun(const wxString &run, const wxString &indentChar) const;
+  void PushTextRun(const wxString &run, const wxString &indentChar,
+                   std::size_t startPos) const;
+  /*! PushTextRun()'s last step: pushes a piece of text as one snippet per
+    stretch of equal character formatting (GH #492), since a snippet is drawn
+    in a single font. startPos is where piece starts in m_text.
+  */
+  void PushFormattedPiece(const wxString &piece, const wxString &indentChar,
+                          std::size_t startPos, bool isLink) const;
 
   /*! Walks m_styledText the way Draw() lays it out.
 
@@ -791,6 +869,8 @@ protected:
     bool m_styleThisText = false;
     //! Is this text portion a link (see UrlDetection.h)?
     bool m_isLink = false;
+    //! The character formatting (bold, ...) of this text portion (GH #492)
+    TextFormat::Format m_format = TextFormat::None;
   public:
     //! Defines a piece of styled text
     StyledText(TextStyle style, const wxString &text)
@@ -827,6 +907,10 @@ protected:
     bool IsLink() const { return m_isLink; }
     //! Marks this text portion as a link.
     void SetLink() { m_isLink = true; }
+    //! The character formatting all of this text portion has
+    TextFormat::Format GetFormat() const { return m_format; }
+    //! Sets the character formatting of this text portion
+    void SetFormat(TextFormat::Format format) { m_format = format; }
   };
 
 private:
@@ -906,6 +990,15 @@ private:
 
   //! Determines the size of a text snippet
   wxSize GetTextSize(const wxString &text) const;
+  //! Determines the size of a text snippet drawn with the given formatting
+  wxSize GetTextSize(const wxString &text, TextFormat::Format format) const;
+  /*! MeasureTextWidth() for the m_text substring that starts at startPos,
+    measuring each stretch of equal character formatting in its own font.
+  */
+  wxCoord MeasureTextWidth(wxCoord startX, const wxString &text,
+                           std::size_t startPos) const;
+  //! Brings m_formats up to date with m_text; see GetFormats().
+  void SyncFormats() const;
 
   //! The memory for the undo history
   History m_history;  
@@ -952,6 +1045,35 @@ private:
     throw-away rendering representation, so it may carry layout markers).
   */
   mutable std::vector<std::size_t> m_softBreaks;
+
+  /*! Everything about the character formatting of a text cell (GH #492).
+
+    Allocated only once a cell gets formatted (or is loaded with formats), so
+    a cell nobody formats - every code cell and most text cells - carries a
+    single null pointer for it.
+  */
+  struct FormatState {
+    //! The character formatting of formatsText; see GetFormats(). Empty = plain.
+    TextFormat::Formats formats;
+    //! The text formats was last brought up to date for (see SyncFormats())
+    wxString formatsText;
+    /*! A format switched on or off with nothing selected (see ToggleFormat()):
+      what is typed at pendingPos next gets it.
+    */
+    TextFormat::Format pendingFormat = TextFormat::None;
+    std::size_t pendingPos = 0;
+    bool hasPending = false;
+    //! See SetUnknownLineAttributes(): pairs of (line text, attributes)
+    std::vector<std::pair<wxString, wxString>> unknownLineAttributes;
+    //! The fonts GetFont(format) returned, indexed by the font-relevant bits
+    std::array<wxFont, TextFormat::WidthAffecting + 1> fonts;
+    //! The base font the fonts were made from
+    wxFont fontsBase;
+  };
+  //! See FormatState; null as long as the cell has never been formatted.
+  mutable std::unique_ptr<FormatState> m_formatState;
+  //! m_formatState, created if it doesn't exist yet.
+  FormatState &GetFormatState() const;
 
   //! See SetDiffHighlights(). Empty for every cell outside the diff viewer.
   std::vector<std::pair<std::size_t, std::size_t>> m_diffHighlights;

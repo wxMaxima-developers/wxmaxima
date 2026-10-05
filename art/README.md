@@ -12,6 +12,13 @@ replace.
 The toolbar icons "arrow-up-square.svg" and "eye-slash.svg" are
 from the Bootstrap icons (<https://icons.getbootstrap.com/>).
 
+The toolbar icons "format-text-bold.svg", "format-text-italic.svg",
+"format-text-underline.svg" and "format-text-strikethrough.svg" are
+letters converted to outlines with fontTools: the "B", "U" and "S" from
+DejaVu Sans (Bitstream Vera license) and the "I" from Liberation Serif
+Italic (SIL Open Font License), plus a plain bar for the underline and
+the strike.
+
 wxMaxima icons (wxmac.icns, maximaicon.ico, io.github.wxmaxima_developers.wxMaxima.png) were created
 by Sven Hodapp and are licensed under GPL.
 io.github.wxmaxima_developers.wxMaxima.svg was an attempt to make a scaleable vector image that

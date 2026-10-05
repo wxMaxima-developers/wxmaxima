@@ -8,6 +8,10 @@
   backdrop's color is a new style, and an option in the "Worksheet" tab of
   the configuration dialog can switch it off or use it on a bright
   worksheet, too (#2227).
+- Text cells, titles and section headings can contain bold, italic,
+  underlined and struck-through text, set using new toolbar buttons. The
+  formatting is saved in .wxmx files in a way that lets older versions of
+  wxMaxima still read all of the text (#492).
 - `wxdeclare_subscripted(variable, false)` keeps a variable from being
   displayed with a subscript again, and `wxdeclare_subscripted(variable)`
   subscripts one the current `wxsubscripts` setting wouldn't. Both were
