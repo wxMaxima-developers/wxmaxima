@@ -1248,7 +1248,7 @@ Usually you can start programs with a graphical user interface just by clicking 
 - `-h` or `--help`: Output a short help text
 - `-o` or `--open=<str>`: Open the filename given as an argument to this command-line switch
 - `-e` or `--eval`: Evaluate the file after opening it.
-- `-b` or `--batch`: If the command-line opens a file all cells in this file are evaluated and the file is saved afterward. This is for example useful if the session described in the file makes _Maxima_ generate output files. Batch-processing will be stopped if _wxMaxima_ detects that _Maxima_ has output an error and will pause if _Maxima_ has a question: Mathematics is somewhat interactive by nature so a completely interaction-free batch processing cannot always be guaranteed.
+- `-b` or `--batch`: If the command-line opens a file all cells in this file are evaluated and the file is saved afterward. This is for example useful if the session described in the file makes _Maxima_ generate output files. Batch-processing will be stopped if _wxMaxima_ detects that _Maxima_ has output an error and will exit if _Maxima_ asks a question no scripted answer exists for: Mathematics is somewhat interactive by nature so a completely interaction-free batch processing cannot always be guaranteed.
 - `--logtostderr`:                 Log all "debug messages" sidebar messages to stderr, too.
 - `--pipe`:                        Pipe messages from Maxima to stdout.
 - `--exit-on-error`:               Close the program on any maxima error.
@@ -1261,6 +1261,15 @@ Usually you can start programs with a graphical user interface just by clicking 
 - `--wxmathml-lisp=<str>`:   Location of wxMathML.lisp (if not the built-in should be used, mainly for developers).
 
 Instead of a minus, some operating systems might use a dash in front of the command-line switches.
+
+A successful run exits with status 0. A batch run that had to stop before finishing exits with one of the following statuses instead, so a script that calls _wxMaxima_ can tell why it stopped without reading its log:
+
+- `90`: _Maxima_ reported an error and `--exit-on-error` was given.
+- `91`: _Maxima_ asked a question no scripted answer exists for.
+- `92`: The file named on the command line could not be opened.
+- `93`: Saving the worksheet failed.
+- `94`: The data of an image in the worksheet could not be loaded.
+- `95`: An image in the worksheet could not be decoded (only checked with `--debug`).
 
 ______________________________________________________________________
 

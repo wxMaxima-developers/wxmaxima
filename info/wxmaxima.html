@@ -2680,9 +2680,10 @@ file all cells in this file are evaluated and the file is saved
 afterward. This is for example useful if the session described in the
 file makes <em>Maxima</em> generate output files. Batch-processing will
 be stopped if <em>wxMaxima</em> detects that <em>Maxima</em> has output
-an error and will pause if <em>Maxima</em> has a question: Mathematics
-is somewhat interactive by nature so a completely interaction-free batch
-processing cannot always be guaranteed.</li>
+an error and will exit if <em>Maxima</em> asks a question no scripted
+answer exists for: Mathematics is somewhat interactive by nature so a
+completely interaction-free batch processing cannot always be
+guaranteed.</li>
 <li><code>--logtostderr</code>: Log all “debug messages” sidebar
 messages to stderr, too.</li>
 <li><code>--pipe</code>: Pipe messages from Maxima to stdout.</li>
@@ -2705,6 +2706,23 @@ interprocess communications. Use this option with care.</li>
 </ul>
 <p>Instead of a minus, some operating systems might use a dash in front
 of the command-line switches.</p>
+<p>A successful run exits with status 0. A batch run that had to stop
+before finishing exits with one of the following statuses instead, so a
+script that calls <em>wxMaxima</em> can tell why it stopped without
+reading its log:</p>
+<ul>
+<li><code>90</code>: <em>Maxima</em> reported an error and
+<code>--exit-on-error</code> was given.</li>
+<li><code>91</code>: <em>Maxima</em> asked a question no scripted answer
+exists for.</li>
+<li><code>92</code>: The file named on the command line could not be
+opened.</li>
+<li><code>93</code>: Saving the worksheet failed.</li>
+<li><code>94</code>: The data of an image in the worksheet could not be
+loaded.</li>
+<li><code>95</code>: An image in the worksheet could not be decoded
+(only checked with <code>--debug</code>).</li>
+</ul>
 <hr />
 <h1 data-number="8"
 id="about-the-program-contributing-to-wxmaxima"><span

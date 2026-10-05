@@ -123,8 +123,8 @@ for .wxm files.
   Lisp has threads (SBCL, CCL, ECL), which also makes it work reliably on
   Windows (#2289).
 - Batch runs no longer occasionally lose or skip a statement (#2196), and
-  exit with a status code saying why they stopped (#2276, see the man
-  page).
+  exit with a status code saying why they stopped (#2276, listed in the
+  manual and the man page).
 - Opening a file starts Maxima only once, about two seconds faster.
 - The "Maxima isn't connecting" warning no longer fires for large
   worksheets (#1182).
