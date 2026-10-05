@@ -195,6 +195,7 @@ set(SOURCE_FILES
     levenshtein/levenshtein.cpp
     main.cpp
     AuiPerspectiveRepair.cpp
+    SaveAsDefaults.cpp
     ToolbarPane.cpp
     ProcessTree.cpp
     InterruptChannelHandshake.cpp
