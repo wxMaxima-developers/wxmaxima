@@ -83,6 +83,9 @@
 #include <wx/log.h>
 #include <wx/mstream.h>
 #include <wx/xml/xml.h>
+#ifdef __WXMSW__
+#include <wx/msw/wrapwin.h>
+#endif
 
 #include "Configuration.h"
 #include "Dirstructure.h"
@@ -191,6 +194,17 @@ static void RequireDistinctAndRetrievable(const wxDataObject &obj) {
     }
     // Retrievable: the format actually has data behind it.
     INFO("clipboard format index " << i << " carries no data");
+#if defined(__WXMSW__) && wxUSE_ENH_METAFILE
+    // An enhanced metafile is handed over as a handle, not as bytes, so its
+    // size is 0 by design (see wxEnhMetaFileDataObject::GetDataSize()).
+    if (fmts[i] == wxDataFormat(wxDF_ENHMETAFILE)) {
+      HENHMETAFILE metafile = nullptr;
+      REQUIRE(obj.GetDataHere(fmts[i], &metafile));
+      REQUIRE(metafile != nullptr);
+      DeleteEnhMetaFile(metafile);
+      continue;
+    }
+#endif
     const size_t size = obj.GetDataSize(fmts[i]);
     REQUIRE(size > 0);
     std::vector<char> buf(size);
@@ -206,6 +220,12 @@ static const wxDataFormat kRtf2Format{wxS("text/rtf")};
 static const wxDataFormat kRtf3Format{wxS("Rich Text Format")};
 
 static const wxDataFormat kSvgFormat{wxS("image/svg+xml")};
+
+//! The format a bitmap is offered in: wxDF_BITMAP on GTK and macOS, a DIB on
+//! Windows.
+static wxDataFormat BitmapFormat() {
+  return wxBitmapDataObject().GetPreferredFormat();
+}
 
 //! The bytes a data object holds in one format, as a string
 static std::string GetData(const wxDataObject &obj, const wxDataFormat &format) {
@@ -235,7 +255,7 @@ SCENARIO("The whole-cell (cut/copy-cells) clipboard object is well-formed") {
       REQUIRE(HasFormat(fmts, kRtf2Format));
       REQUIRE(HasFormat(fmts, kRtf3Format));
       REQUIRE(HasFormat(fmts, wxDataFormat(wxDF_UNICODETEXT)));
-      REQUIRE(HasFormat(fmts, wxDataFormat(wxDF_BITMAP)));
+      REQUIRE(HasFormat(fmts, BitmapFormat()));
       REQUIRE(HasFormat(fmts, kSvgFormat));
     }
     THEN("the \"Rich Text Format\"-named flavor MS Word looks for (GH #2264) "
@@ -274,7 +294,7 @@ SCENARIO("The selection (copy-as-output) clipboard object is well-formed") {
       REQUIRE(HasFormat(fmts, kRtf2Format));
       REQUIRE(HasFormat(fmts, kRtf3Format));
       REQUIRE(HasFormat(fmts, wxDataFormat(wxDF_UNICODETEXT)));
-      REQUIRE(HasFormat(fmts, wxDataFormat(wxDF_BITMAP)));
+      REQUIRE(HasFormat(fmts, BitmapFormat()));
     }
     THEN("it doesn't offer MathML as HTML, which word processors mishandle") {
       REQUIRE_FALSE(HasFormat(GetFormats(*data), wxDataFormat(wxDF_HTML)));
@@ -436,7 +456,7 @@ SCENARIO("The data handed over when the worksheet closes no longer needs it "
       REQUIRE(HasFormat(fmts, kRtf2Format));
       REQUIRE(HasFormat(fmts, kRtf3Format));
       REQUIRE(HasFormat(fmts, wxDataFormat(wxDF_UNICODETEXT)));
-      REQUIRE(HasFormat(fmts, wxDataFormat(wxDF_BITMAP)));
+      REQUIRE(HasFormat(fmts, BitmapFormat()));
       REQUIRE_FALSE(HasFormat(fmts, kSvgFormat));
       RequireDistinctAndRetrievable(*data);
     }
