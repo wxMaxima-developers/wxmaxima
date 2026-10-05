@@ -1,10 +1,5 @@
 var searchData=
 [
-  ['scrollunit_0',['scrollUnit',['../structWorksheetVirtualSize.html#a5427cdbe4e0135a05997fbc87e027c19',1,'WorksheetVirtualSize']]],
-  ['scrollunitsy_1',['scrollUnitsY',['../structScrollCompensation.html#adfa7cc1c1ea571fec2107847d838736f',1,'ScrollCompensation']]],
-  ['sel_2',['sel',['../classmux__using__with.html#ac474329b8f25c575e4376d65f6a3e43f',1,'mux_using_with']]],
-  ['sizeisstale_3',['sizeIsStale',['../structTrailingGroupGeometry.html#a0628cfa6e780d07852ed6871edb02204',1,'TrailingGroupGeometry']]],
-  ['std_5flogic_5f1164_4',['std_logic_1164',['../classmux__using__with.html#ae984d6918908b859c4f9c9a950a0cfee',1,'mux_using_with']]],
-  ['string_5fbuffer_5',['string_buffer',['../classdetail_1_1serializer.html#a27a61728ed0fbc65de009286531a6e70',1,'detail::serializer']]],
-  ['symbol_6',['symbol',['../structCharButton_1_1Definition.html#a729facda1debc6701b74676bebd92ae2',1,'CharButton::Definition']]]
+  ['righttoleft_0',['rightToLeft',['../structBidiRun.html#a3a06760adcb00e1780dd161a09a8371b',1,'BidiRun']]],
+  ['role_1',['role',['../structAiChatMessage.html#a7108d7feea6e305192a39177192af2ac',1,'AiChatMessage']]]
 ];

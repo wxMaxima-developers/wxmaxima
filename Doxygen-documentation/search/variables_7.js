@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['handler_0',['handler',['../classJavadoc__Test.html#ace81a523a4eef44501a841a6d338832b',1,'Javadoc_Test::handler()'],['../classQTstyle__Test.html#a79dd4e5498f09057775a819d911349e2',1,'QTstyle_Test::handler()']]],
-  ['height_1',['height',['../structWorksheetVirtualSize.html#a3a53f2b630e089fed27325c1e9ad546b',1,'WorksheetVirtualSize']]]
+  ['globalvalue_0',['globalValue',['../file_8h.html#a4a86bef4b6181cb3f53bd0461a9a511b',1,'file.h']]],
+  ['globvar_1',['globVar',['../autolink_8cpp.html#a88d0bae800d600a11d7bd60f0bc4b858',1,'autolink.cpp']]]
 ];

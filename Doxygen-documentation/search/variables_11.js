@@ -1,6 +1,10 @@
 var searchData=
 [
-  ['tailowner_0',['tailOwner',['../structCellList_1_1TornOut.html#a68edf68e8bd2135c90a02e1d7d309e31',1,'CellList::TornOut']]],
-  ['thousands_5fsep_1',['thousands_sep',['../classdetail_1_1serializer.html#a5b75b99511362e4e5d011c8a961e96bb',1,'detail::serializer']]],
-  ['topoffset_2',['topOffset',['../structScrollCompensation.html#a83cf60a1f688428cf8fd6adccd605c4c',1,'ScrollCompensation']]]
+  ['scrollunit_0',['scrollUnit',['../structWorksheetVirtualSize.html#a5427cdbe4e0135a05997fbc87e027c19',1,'WorksheetVirtualSize']]],
+  ['scrollunitsy_1',['scrollUnitsY',['../structScrollCompensation.html#adfa7cc1c1ea571fec2107847d838736f',1,'ScrollCompensation']]],
+  ['sel_2',['sel',['../classmux__using__with.html#ac474329b8f25c575e4376d65f6a3e43f',1,'mux_using_with']]],
+  ['sizeisstale_3',['sizeIsStale',['../structTrailingGroupGeometry.html#a0628cfa6e780d07852ed6871edb02204',1,'TrailingGroupGeometry']]],
+  ['std_5flogic_5f1164_4',['std_logic_1164',['../classmux__using__with.html#ae984d6918908b859c4f9c9a950a0cfee',1,'mux_using_with']]],
+  ['string_5fbuffer_5',['string_buffer',['../classdetail_1_1serializer.html#a27a61728ed0fbc65de009286531a6e70',1,'detail::serializer']]],
+  ['symbol_6',['symbol',['../structCharButton_1_1Definition.html#a729facda1debc6701b74676bebd92ae2',1,'CharButton::Definition']]]
 ];

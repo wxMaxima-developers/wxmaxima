@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['parent_0',['parent',['../structCell_1_1WideCell.html#af0c1b4599f661de62702c4ea9135b624',1,'Cell::WideCell']]],
-  ['path_1',['path',['../structOutputNavigation_1_1RunLocation.html#ae23e188285cbc1b53e722649da1ae8d4',1,'OutputNavigation::RunLocation']]],
-  ['primitive_5fiterator_2',['primitive_iterator',['../structdetail_1_1internal__iterator.html#a8bb8034d2d35fb129e0dd742ce024e44',1,'detail::internal_iterator']]],
-  ['publicvar_3',['publicVar',['../classJavadoc__Test.html#a44a516fbc3a4865e2dcae34649c9df6a',1,'Javadoc_Test::publicVar()'],['../classQTstyle__Test.html#aabf7b2e9ed83ea44aca4d213baae06d3',1,'QTstyle_Test::publicVar()']]]
+  ['object_5fiterator_0',['object_iterator',['../structdetail_1_1internal__iterator.html#acf787101c4778e750cfdb0f44066a6ef',1,'detail::internal_iterator']]],
+  ['output_5fpreview_5flength_1',['OUTPUT_PREVIEW_LENGTH',['../classMcpTools.html#a56d37bf8f53bc6ccf552fec1a0dfcff1',1,'McpTools']]]
 ];
