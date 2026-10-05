@@ -76,9 +76,11 @@ bool BitmapOut::Layout(long int maxSize) {
   auto size = m_cmn.GetScaledSize();
 
   // Bitmaps that are bigger than the available memory can lead to crashes within
-  // MS Windows or the X server.
-  if (maxSize >= 0 && (((long)size.x * size.y >= maxSize) ||
-                       (size.x >= 20000) || (size.y >= 20000)))
+  // MS Windows or the X server. The limit on the sides applies even if the
+  // caller sets no maxSize: it used to be checked only together with
+  // maxSize, so a large enough matrix asked for a bitmap of many gigabytes.
+  if ((size.x >= 20000) || (size.y >= 20000) ||
+      (maxSize >= 0 && (long)size.x * size.y >= maxSize))
     goto failed;
 
   // Allocate the canvas at the full *device* size (the already-scaled size) and
@@ -112,6 +114,26 @@ bool BitmapOut::Layout(long int maxSize) {
  failed:
   m_bmp = wxNullBitmap;
   return false;
+}
+
+wxBitmap BitmapOut::RenderForClipboard(const Configuration * const *configuration,
+                                       const std::function<std::unique_ptr<Cell>()> &cells,
+                                       double scale) {
+  {
+    BitmapOut output(configuration, cells(), scale, CLIPBOARD_MAX_PIXELS);
+    if (output.IsOk())
+      return output.GetBitmap();
+    if (scale <= 1)
+      return {};
+    // The layout is done even if the bitmap was too large: if even a bitmap
+    // at scale 1 would be too large, don't lay the cells out a second time.
+    const wxSize size = output.m_cmn.GetScaledSize();
+    const double unscaledPixels = (double)size.x * size.y / (scale * scale);
+    if (size.x <= 0 || size.y <= 0 || unscaledPixels >= CLIPBOARD_MAX_PIXELS)
+      return {};
+  }
+  BitmapOut output(configuration, cells(), 1, CLIPBOARD_MAX_PIXELS);
+  return output.IsOk() ? output.GetBitmap() : wxBitmap();
 }
 
 void BitmapOut::Draw() {

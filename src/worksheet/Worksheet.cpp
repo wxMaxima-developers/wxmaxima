@@ -2333,9 +2333,10 @@ std::unique_ptr<wxDataObject> Worksheet::CreateSelectionDataObject() const {
        WorksheetExport::RTFEnd()).utf8_str());
   });
   contents->bitmap = LazyValue<wxBitmap>([snapshot] {
-    BitmapOut output(snapshot->GetConfigurationPointer(), snapshot->CopyCells(),
-                     snapshot->GetConfiguration()->BitmapScale());
-    return output.IsOk() ? output.GetBitmap() : wxBitmap();
+    return BitmapOut::RenderForClipboard(
+      snapshot->GetConfigurationPointer(),
+      [&snapshot] { return snapshot->CopyCells(); },
+      snapshot->GetConfiguration()->BitmapScale());
   });
 
   // The data objects point into contents and share its ownership: it lives
@@ -2665,9 +2666,10 @@ std::unique_ptr<wxDataObject> Worksheet::CreateCellsDataObject() const {
     return std::string(rtf.utf8_str());
   });
   contents->bitmap = LazyValue<wxBitmap>([snapshot] {
-    BitmapOut output(snapshot->GetConfigurationPointer(), snapshot->CopyCells(),
-                     snapshot->GetConfiguration()->BitmapScale());
-    return output.IsOk() ? output.GetBitmap() : wxBitmap();
+    return BitmapOut::RenderForClipboard(
+      snapshot->GetConfigurationPointer(),
+      [&snapshot] { return snapshot->CopyCells(); },
+      snapshot->GetConfiguration()->BitmapScale());
   });
   contents->svg = LazyValue<std::string>([snapshot] {
     Svgout svg(snapshot->GetConfigurationPointer(), snapshot->CopyCells());
