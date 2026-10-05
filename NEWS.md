@@ -1,5 +1,12 @@
 # Current development version
 
+- Copying puts every clipboard format on the clipboard again (RTF, MathML,
+  a bitmap, SVG, ...), but renders each only when a program actually pastes
+  it, so copying a large selection is fast and doesn't fill the memory with
+  formats nobody uses. The program you paste into picks the format, which
+  is why the list of formats to copy is gone from the configuration dialog.
+  When the window you copied from is closed, the .wxm code, text, RTF,
+  MathML and the bitmap are kept on the clipboard (#2030).
 - "Save As" of a document opened from a `.wxm` file proposed a `.wxmx`
   file name on Linux, although the dialog showed the `.wxm` file type, so
   the document was saved as `.wxmx` (#2440).

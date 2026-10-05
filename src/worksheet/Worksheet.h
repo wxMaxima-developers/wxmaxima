@@ -62,6 +62,7 @@
 #include "WorksheetSearch.h"
 #include "WorksheetLayout.h"
 #include "MatrixScrollbars.h"
+#include "ClipboardContents.h"
 #include "OutputNavigation.h"
 #include "cells/TextCell.h"
 #include "EvaluationQueue.h"
@@ -807,6 +808,16 @@ private:
   /*! The pointer to thesettings storage
    */
   Configuration *m_configuration = nullptr;
+  /*! What this worksheet's last copy put on the clipboard (GH #2030)
+
+    Most of its formats render only when another program pastes them, using
+    this worksheet's configuration. The data objects on the clipboard share
+    ownership of it, so this expires as soon as something else is copied,
+    and while it is still alive this worksheet's data is on the clipboard --
+    which RenderClipboardContents() must deal with before the worksheet, or
+    its configuration, goes away.
+  */
+  mutable std::weak_ptr<ClipboardContents> m_clipboardContents;
   /*! The layout/recalculation engine.
 
     Owns the layout scheduling state (resume point, cached widths, virtual-size
@@ -1397,6 +1408,34 @@ public:
 
   //! Convert the current selection to MathML
   wxString ConvertSelectionToMathML() const;
+
+  //! A MathML document showing a list of cells, nicely indented
+  static wxString CellsToMathML(const Cell *cells);
+
+  /*! Replace this worksheet's lazily rendered clipboard data by data that
+    no longer needs the worksheet (GH #2030)
+
+    The formats Copy() and CopyCells() put on the clipboard are rendered when
+    another program asks for them, which a closed worksheet cannot do: its
+    configuration -- which the copied cells are drawn with -- is gone, and
+    once wxMaxima has exited there is nobody left to ask at all. So if the
+    clipboard still holds this worksheet's data, this renders the formats
+    worth keeping (.wxm, text, RTF, MathML and the bitmap -- not SVG or EMF),
+    puts them on the clipboard instead, and asks the system to keep them
+    after wxMaxima exits (wxClipboard::Flush()). Called by the destructor;
+    does nothing if something else has been copied since.
+
+    \return true if there was data to hand over.
+  */
+  bool RenderClipboardContents();
+
+  /*! The data RenderClipboardContents() puts on the clipboard
+
+    Everything in it is rendered by the time this returns, and none of it
+    refers to the cells or the configuration any more.
+  */
+  static std::unique_ptr<wxDataObject>
+  CreateIndependentDataObject(const ClipboardContents &contents);
 
   //! Convert the current selection to a bitmap
   wxBitmap ConvertSelectionToBitmap() const;

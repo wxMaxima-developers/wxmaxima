@@ -1186,22 +1186,9 @@ public:
   //! Returns the URL MathJaX can be found at.
   void MathJaXURL(wxString url){m_mathJaxURL = std::move(url);}
 
-  bool CopyBitmap() const {return m_copyBitmap;}
-  void CopyBitmap(bool copyBitmap){ m_copyBitmap = copyBitmap; }
-
-  bool CopyMathML() const {return m_copyMathML;}
-  void CopyMathML(bool copyMathML){ m_copyMathML = copyMathML;}
-  bool CopyMathMLHTML() const {return m_copyMathMLHTML;}
-  void CopyMathMLHTML(bool copyMathMLHTML){ m_copyMathMLHTML = copyMathMLHTML; }
   bool HideMarkerForThisMessage(wxString message);
   void HideMarkerForThisMessage(const wxString &message, bool hide)
     {m_hideMarkerForThisMessage[message] = hide;}
-  bool CopyRTF() const {return m_copyRTF;}
-  void CopyRTF(bool copyRTF) { m_copyRTF = copyRTF; }
-  bool CopySVG() const {return m_copySVG;}
-  void CopySVG(bool copySVG) { m_copySVG = copySVG; }
-  bool CopyEMF() const {return m_copyEMF;}
-  void CopyEMF(bool copyEMF) { m_copyEMF = copyEMF; }
   bool UseSVG() const {return m_useSVG;}
   void UseSVG(bool useSVG) { m_useSVG = useSVG ;}
   //! The choice for the "maximum output length to display" setting
@@ -1658,17 +1645,11 @@ private:
   wxString m_mathJaxURL;
   bool m_mathJaxURL_UseUser;
   bool m_showCodeCells;
-  bool m_copyBitmap;
-  bool m_copyMathML;
-  bool m_copyMathMLHTML;
   long m_showLength;
   bool m_usepngCairo;
   bool m_enterEvaluates;
   bool m_useSVG;
   bool m_fixedFontTC;
-  bool m_copyRTF;
-  bool m_copySVG;
-  bool m_copyEMF;
   bool m_TOCshowsSectionNumbers;
   bool m_useUnicodeMaths;
   bool m_indentMaths;

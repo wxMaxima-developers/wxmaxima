@@ -208,10 +208,6 @@ private:
   wxCheckBox *m_screenReaderMathML;
 #endif
 
-  wxCheckBox *m_copyBitmap, *m_copyMathML, *m_copyMathMLHTML, *m_copyRTF, *m_copySVG;
-#if wxUSE_ENH_METAFILE
-  wxCheckBox *m_copyEMF;
-#endif
 
   //! The panel that allows to set the editing options
   wxWindow *CreateWorksheetPanel();
