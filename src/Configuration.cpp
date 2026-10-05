@@ -202,6 +202,7 @@ Configuration::Configuration(const Configuration &o) :
   m_layoutStrategy(o.m_layoutStrategy),
   m_oversizedMatrices(o.m_oversizedMatrices),
   m_oversizedMatricesOverridable(o.m_oversizedMatricesOverridable),
+  m_imageBackdrop(o.m_imageBackdrop),
   m_wxMathML_Filename(o.m_wxMathML_Filename),
   m_maximaHelpFormat(o.m_maximaHelpFormat),
   m_cellCfgCnt(o.m_cellCfgCnt.load())
@@ -359,6 +360,7 @@ void Configuration::ResetAllToDefaults() {
   m_showLength = 2;
   m_layoutStrategy = LayoutStrategy::layout2DIfFits;
   m_oversizedMatrices = OversizedMatrices::elide;
+  m_imageBackdrop = ImageBackdrop::onDarkBackground;
   m_useUnicodeMaths = true;
   m_offerKnownAnswers = true;
   m_screenReaderAnnouncesMathML = false;
@@ -826,6 +828,13 @@ void Configuration::ReadConfig() {
     if (om < 0 || om > static_cast<int>(OversizedMatrices::scroll))
       om = static_cast<int>(OversizedMatrices::elide);
     m_oversizedMatrices = static_cast<OversizedMatrices>(om);
+  }
+  {
+    int ib = static_cast<int>(m_imageBackdrop);
+    config->Read(wxS("imageBackdrop"), &ib);
+    if (ib < 0 || ib > static_cast<int>(ImageBackdrop::always))
+      ib = static_cast<int>(ImageBackdrop::onDarkBackground);
+    m_imageBackdrop = static_cast<ImageBackdrop>(ib);
   }
   if(m_showLength < 0)
     m_showLength = 0;
@@ -1317,6 +1326,7 @@ void Configuration::WriteStyles(wxConfigBase *config) {
   config->Write(wxS("helpBrowser"), m_helpBrowserUserLocation);
   config->Write(wxS("layoutStrategy"), static_cast<int>(m_layoutStrategy));
   config->Write(wxS("oversizedMatrices"), static_cast<int>(m_oversizedMatrices));
+  config->Write(wxS("imageBackdrop"), static_cast<int>(m_imageBackdrop));
   config->Write("HTMLequationFormat", static_cast<int>(m_htmlEquationFormat));
   config->Write("autosubscript", m_autoSubscript);
   config->Write("language", m_language);

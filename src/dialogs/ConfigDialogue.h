@@ -323,6 +323,8 @@ protected:
   wxRadioBox *m_layoutStrategy;
   //! How to show a matrix too large for the window
   wxRadioBox *m_oversizedMatrices;
+  //! What is drawn behind transparent parts of images
+  wxRadioBox *m_imageBackdrop;
   wxRadioButton *m_enterEvaluates;
   wxRadioButton *m_ctrlEnterEvaluates;
   wxCheckBox *m_numpadEnterEvaluates;

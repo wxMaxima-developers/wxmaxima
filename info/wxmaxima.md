@@ -1198,6 +1198,8 @@ You can add the following line to the LaTeX preamble (for example by using the r
 
 If wxWidgets is new enough, _wxMaxima_ will automatically be in dark mode if the rest of the operating system is. The worksheet itself is by default equipped with a bright background. But it can be configured otherwise. Alternatively, there is a `View/Invert worksheet brightness` menu entry that allows to quickly convert the worksheet from dark to bright and vice versa.
 
+Most images are drawn for a white background, and black line art with a transparent background would be invisible on a dark worksheet. So by default, if the worksheet background is dark, the transparent parts of images are filled with a backdrop color. Its color is the style _Backdrop of transparent images_ in the _Style_ tab of the configuration dialog, and the option _Behind transparent parts of images_ in its _Worksheet_ tab can switch the backdrop off, or draw it on a bright worksheet, too.
+
 ## _WxMaxima_ sometimes hangs for several seconds once in the first minute
 
 _WxMaxima_ delegates some big tasks like parsing _Maxima_’s >1000-page-manual to background tasks, which normally goes totally unnoticed. At the moment the result of such a task is needed, though, it is possible that _wxMaxima_ needs to wait a couple of seconds before it can continue its work.

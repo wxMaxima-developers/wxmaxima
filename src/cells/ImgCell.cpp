@@ -193,6 +193,7 @@ void ImgCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
       xSrc += SELECTION_BORDER_WDTH;
       ySrc += SELECTION_BORDER_WDTH;
     }
+    DrawImageBackdrop(dc, wxRect(xDst, yDst, widthDst, heightDst));
     if (m_configuration->GetPrinting()) {
       dc->StretchBlit(xDst, yDst, widthDst, heightDst, &bitmapDC, xSrc, ySrc,
                       bitmap.GetWidth(), bitmap.GetHeight(), wxCOPY,

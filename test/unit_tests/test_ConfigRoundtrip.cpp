@@ -218,6 +218,89 @@ SCENARIO("How oversized matrices are shown survives a round-trip") {
   }
 }
 
+static Configuration::ImageBackdrop ReadImageBackdrop(const wxString &file) {
+  wxConfigBase *oldConfig = wxConfig::Get(false);
+  wxConfigBase *fileConfig = new wxFileConfig(wxS("wxMaxima"), wxEmptyString, file);
+  wxConfig::Set(fileConfig);
+  Configuration cfgRead(nullptr, Configuration::temporary);
+  cfgRead.ReadConfig();
+  wxConfig::Set(oldConfig);
+  delete fileConfig;
+  return cfgRead.GetImageBackdrop();
+}
+
+SCENARIO("What is drawn behind transparent images survives a round-trip") {
+  GIVEN("a configuration that always draws the backdrop") {
+    // Not the default, for the same reason as above.
+    const wxString file = wxFileName::CreateTempFileName(wxS("wxm_configtest"));
+    REQUIRE(!file.IsEmpty());
+    Configuration cfgWrite(nullptr, Configuration::temporary);
+    REQUIRE(cfgWrite.GetImageBackdrop() ==
+            Configuration::ImageBackdrop::onDarkBackground);
+    cfgWrite.SetImageBackdrop(Configuration::ImageBackdrop::always);
+    WHEN("it is written and read into a fresh configuration") {
+      cfgWrite.WriteSettings(file);
+      THEN("the fresh configuration always draws it, too") {
+        CHECK(ReadImageBackdrop(file) == Configuration::ImageBackdrop::always);
+      }
+    }
+    wxRemoveFile(file);
+  }
+
+  GIVEN("a config file holding a value this version doesn't know") {
+    const wxString file = wxFileName::CreateTempFileName(wxS("wxm_configtest"));
+    REQUIRE(!file.IsEmpty());
+    {
+      wxFileConfig fileConfig(wxS("wxMaxima"), wxEmptyString, file);
+      fileConfig.Write(wxS("imageBackdrop"), 7);
+      fileConfig.Flush();
+    }
+    THEN("reading it falls back to the default") {
+      CHECK(ReadImageBackdrop(file) ==
+            Configuration::ImageBackdrop::onDarkBackground);
+    }
+    wxRemoveFile(file);
+  }
+}
+
+SCENARIO("Transparent images get a backdrop exactly where the setting says (GH #2227)") {
+  Configuration cfg(nullptr, Configuration::temporary);
+  const auto setBackground = [&cfg](const wxColour &color) {
+    cfg.GetWritableStyle(TS_DOCUMENT_BACKGROUND)->SetColor(color);
+  };
+  GIVEN("the default setting") {
+    REQUIRE(cfg.GetImageBackdrop() == Configuration::ImageBackdrop::onDarkBackground);
+    THEN("a white worksheet gets no backdrop") {
+      setBackground(*wxWHITE);
+      CHECK(!cfg.DrawImageBackdrop());
+    }
+    THEN("a dark worksheet gets one") {
+      setBackground(wxColour(30, 30, 30));
+      CHECK(cfg.DrawImageBackdrop());
+    }
+    THEN("printing a dark worksheet doesn't, since paper is white") {
+      setBackground(wxColour(30, 30, 30));
+      cfg.SetPrinting(true);
+      CHECK(!cfg.DrawImageBackdrop());
+      cfg.SetPrinting(false);
+    }
+  }
+  GIVEN("the backdrop switched off") {
+    cfg.SetImageBackdrop(Configuration::ImageBackdrop::none);
+    THEN("not even a dark worksheet gets one") {
+      setBackground(wxColour(30, 30, 30));
+      CHECK(!cfg.DrawImageBackdrop());
+    }
+  }
+  GIVEN("the backdrop switched on for good") {
+    cfg.SetImageBackdrop(Configuration::ImageBackdrop::always);
+    THEN("a white worksheet gets one, too") {
+      setBackground(*wxWHITE);
+      CHECK(cfg.DrawImageBackdrop());
+    }
+  }
+}
+
 class TestApp : public wxApp {
 public:
   bool OnInit() override { return true; }
