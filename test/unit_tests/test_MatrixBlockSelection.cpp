@@ -33,6 +33,7 @@
 
 #include <wx/app.h>
 #include <wx/bitmap.h>
+#include <wx/dataobj.h>
 #include <wx/dcmemory.h>
 #include <wx/frame.h>
 #include <wx/log.h>
@@ -42,6 +43,8 @@
 #include "cells/GroupCell.h"
 #include "cells/MatrCell.h"
 #include "cells/MatrixScrollHost.h"
+#include "graphical_io/BitmapOut.h"
+#include "worksheet/ClipboardContents.h"
 #include "worksheet/Worksheet.h"
 
 #define CATCH_CONFIG_RUNNER
@@ -584,6 +587,65 @@ SCENARIO("Shift+arrow keys scroll a scrolling matrix along (GH #2380)") {
   g_ws->DestroyTree();
   g_cfg->SetOversizedMatrices(Configuration::OversizedMatrices::showInFull);
   g_cfg->SetMatrixScrollHost(nullptr);
+}
+
+//! The bitmap a clipboard object offers, drawn now; invalid if it offers none.
+static wxBitmap ClipboardBitmap(const wxDataObject &data) {
+  std::vector<wxDataFormat> formats(data.GetFormatCount(wxDataObject::Get));
+  data.GetAllFormats(formats.data(), wxDataObject::Get);
+  const auto &composite = dynamic_cast<const wxDataObjectComposite &>(data);
+  for (const auto &format : formats)
+    if (auto *bitmap = dynamic_cast<LazyBitmapDataObject *>(
+          composite.GetObject(format)))
+      return bitmap->GetBitmap();
+  return {};
+}
+
+SCENARIO("Copying a whole large matrix keeps the bitmap within bounds") {
+  // Copying a whole matrix copies all of it, however much of it is shown, and
+  // the bitmap used to be drawn at full size, whatever that took: Ctrl+C on a
+  // 300x300 matrix grew wxMaxima to 8 GB, and on wxQt, which draws every
+  // format right away, nothing reached the clipboard for minutes.
+  g_cfg->SetZoomFactor(1.0);
+  g_cfg->SetCanvasSize(wxSize(900, 300));
+  g_cfg->SetOversizedMatrices(Configuration::OversizedMatrices::elide);
+  const double scale = g_cfg->BitmapScale();
+  REQUIRE(scale > 1);
+
+  GIVEN("a matrix too large for a bitmap at the bitmap scale, but not at scale 1") {
+    MatrCell *matr = ShowMatrix(MatrixTableXml(60, 60), true);
+    REQUIRE(matr->ElidedRows() > 0);
+    g_ws->SetSelection(matr, matr);
+    const auto data = g_ws->CreateSelectionDataObject();
+    THEN("it is offered as a bitmap at scale 1") {
+      const wxBitmap bitmap = ClipboardBitmap(*data);
+      REQUIRE(bitmap.IsOk());
+      CHECK((long)bitmap.GetWidth() * bitmap.GetHeight() <
+            BitmapOut::CLIPBOARD_MAX_PIXELS);
+      // A scale-1 bitmap of 60 columns is far narrower than 60 entries at
+      // the bitmap scale would be: checks it really fell back to scale 1.
+      CHECK(bitmap.GetWidth() < 60 * 30 * scale);
+    }
+  }
+  GIVEN("a matrix too large for a bitmap even at scale 1") {
+    // Longer than the default "maximum output length to display".
+    const long showLength = g_cfg->ShowLength();
+    g_cfg->ShowLength(3);
+    MatrCell *matr = ShowMatrix(MatrixTableXml(150, 150), true);
+    g_cfg->ShowLength(showLength);
+    REQUIRE(matr->ElidedRows() > 0);
+    g_ws->SetSelection(matr, matr);
+    const auto data = g_ws->CreateSelectionDataObject();
+    THEN("there is no bitmap, but everything else is copied") {
+      CHECK_FALSE(ClipboardBitmap(*data).IsOk());
+      const auto &composite = dynamic_cast<const wxDataObjectComposite &>(*data);
+      const auto *text = dynamic_cast<wxTextDataObject *>(
+        composite.GetObject(wxDF_UNICODETEXT));
+      REQUIRE(text != nullptr);
+      CHECK(text->GetText().Contains(wxS("1149149")));
+    }
+  }
+  g_cfg->SetOversizedMatrices(Configuration::OversizedMatrices::showInFull);
 }
 
 class TestApp : public wxApp {

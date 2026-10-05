@@ -80,6 +80,7 @@
 #include "dialogs/ResolutionChooser.h"
 #include "wizards/SeriesWiz.h"
 #include "StringUtils.h"
+#include "WxMaximaManualAnchors.h"
 #include "wizards/SubstituteWiz.h"
 #include "wizards/SumWiz.h"
 #include "wizards/SystemWiz.h"
@@ -108,6 +109,7 @@
 #include <wx/filedlg.h>
 #include <wx/filefn.h>
 #include <wx/filename.h>
+#include <wx/file.h>
 #include <wx/log.h>
 #include <wx/mimetype.h>
 #include <wx/msgdlg.h>
@@ -926,6 +928,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::menu_copy_as_rtf);
   Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::menu_copy_to_file);
   Bind(wxEVT_TOOL, &MaximaProcessManager::Interrupt, &m_processManager, ToolBar::tb_interrupt);
+  Bind(wxEVT_TOOL, &wxMaxima::OnTextFormat, this, ToolBar::tb_bold, ToolBar::tb_strikethrough);
   Bind(wxEVT_TOOL, &MaximaCommandMenus::FileMenu, &m_menuCommands, ToolBar::tb_animation_startStop);
   Bind(wxEVT_TOOL, &MaximaCommandMenus::FileMenu, &m_menuCommands, ToolBar::tb_animation_start);
   Bind(wxEVT_TOOL, &MaximaCommandMenus::FileMenu, &m_menuCommands, ToolBar::tb_animation_stop);
@@ -1757,8 +1760,28 @@ void wxMaxima::LaunchHelpBrowser(wxString uri) {
     }
 }
 
-void wxMaxima::ShowWxMaximaHelp() {
+// Reads a manual in order to find out if it contains an anchor
+static bool ManualHasAnchor(const wxString &file, const wxString &anchor) {
+  wxFile manual;
+  wxString contents;
+  if (!wxFileExists(file) || !manual.Open(file) ||
+      !manual.ReadAll(&contents, wxConvUTF8))
+    return false;
+  return WxMaximaManualAnchors::HtmlHasAnchor(contents, anchor);
+}
+
+void wxMaxima::ShowWxMaximaHelp(const wxString &anchor) {
   wxString helpfile = wxMaximaManualLocation();
+
+  // The translated manuals that are shipped as HTML may be older than the
+  // anchor. Then the English manual, which is in the same directory, is
+  // more helpful than the start of the translated one.
+  if (!anchor.IsEmpty() && wxFileExists(helpfile) &&
+      !ManualHasAnchor(helpfile, anchor)) {
+    wxString english = wxFileName(helpfile).GetPathWithSep() + wxS("wxmaxima.html");
+    if (ManualHasAnchor(english, anchor))
+      helpfile = english;
+  }
 
   if (!wxFileExists(helpfile)) {
     if (!HelpBrowser::AllowOnlineManualP(&m_configuration, this))
@@ -1791,6 +1814,8 @@ void wxMaxima::ShowWxMaximaHelp() {
                      helpfile)
       .BuildURI();
   }
+  if (!anchor.IsEmpty())
+    helpfile += wxS("#") + anchor;
   LaunchHelpBrowser(helpfile);
 }
 
@@ -1841,8 +1866,17 @@ void wxMaxima::ShowMaximaHelpWithoutAnchor() {
 void wxMaxima::ShowHelp(const wxString &keyword) {
   if ((keyword.IsEmpty()) || (keyword == "%"))
     ShowWxMaximaHelp();
-  else
-    ShowMaximaHelp(keyword);
+  else {
+    // The commands wxMaxima adds to Maxima are documented in wxMaxima's
+    // manual, not in Maxima's. Maxima's manual still wins if it documents a
+    // keyword, too.
+    const wxString wxMaximaAnchor = WxMaximaManualAnchors::AnchorFor(keyword);
+    if (!wxMaximaAnchor.IsEmpty() &&
+        (!GetWorksheet() || GetWorksheet()->GetHelpfileAnchorName(keyword).IsEmpty()))
+      ShowWxMaximaHelp(wxMaximaAnchor);
+    else
+      ShowMaximaHelp(keyword);
+  }
 }
 
 void wxMaxima::ShowMaximaHelp(wxString keyword) {
@@ -2499,6 +2533,11 @@ void wxMaxima::UpdateToolBar() {
   else
     GetWorksheet()->m_mainToolBar->CanEvalThisCell(false);
   GetWorksheet()->m_mainToolBar->WorksheetEmpty(GetWorksheet()->GetTree() == nullptr);
+  GetWorksheet()->m_mainToolBar->TextFormatState(
+    GetWorksheet()->CanFormatText(), GetWorksheet()->HasTextFormat(TextFormat::Bold),
+    GetWorksheet()->HasTextFormat(TextFormat::Italic),
+    GetWorksheet()->HasTextFormat(TextFormat::Underline),
+    GetWorksheet()->HasTextFormat(TextFormat::Strikethrough));
 
   GetWorksheet()->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, false);
 }
@@ -3063,42 +3102,33 @@ bool wxMaxima::SaveOnClose() {
     return true;
   }
 
-  // If we want to keep the file saved we automatically save the file on
-  // closing.
-  if (m_configuration.AutoSaveAsTempFile()) {
-    int close = SaveDocumentP();
+  // If the document is kept saved (autosave writes the file itself, not a
+  // temp file) and it already has a name we just save it, silently, as an
+  // autosave would. An untitled document must not get here, though: for it
+  // SaveFile() opens a "Save As" dialog, which would pop up before the
+  // question whether to save at all - and cancelling it then led to that
+  // question being asked anyway (#1737).
+  if ((!m_configuration.AutoSaveAsTempFile()) &&
+      (!GetWorksheet()->GetCurrentFile().IsEmpty()) &&
+      m_fileIO.SaveFile())
+    return true;
 
-    if (close == wxID_CANCEL)
-      return false;
-    if (close == wxID_NO)
-      return true;
-    else {
-      if (close == wxID_YES) {
-        if (!m_fileIO.SaveFile(true)) {
-          return false;
-        }
-      }
-      return true;
-    }
-  } else {
-    {
-      if(m_fileIO.SaveFile())
-        return true;
-    }
-    int close = SaveDocumentP();
+  int close = SaveDocumentP();
 
-    if (close == wxID_CANCEL)
-      return false;
-    else {
-      if (close == wxID_YES) {
-        if (!m_fileIO.SaveFile()) {
-          if (!m_fileIO.SaveFile(true))
-            return false;
-        }
-      }
-    }
-  }
-  return true;
+  if (close == wxID_CANCEL)
+    return false;
+  if (close != wxID_YES)
+    return true;
+
+  // The user wants the changes saved. For an untitled document this is where
+  // the "Save As" dialog comes up; cancelling it cancels closing the window.
+  const bool untitled = GetWorksheet()->GetCurrentFile().IsEmpty();
+  if (m_fileIO.SaveFile())
+    return true;
+  // A named file that could not be written: offer to save it elsewhere.
+  if (!untitled && m_fileIO.SaveFile(true))
+    return true;
+  return false;
 }
 
 void wxMaxima::OnClose(wxCloseEvent &event) {
@@ -3699,8 +3729,12 @@ int wxMaxima::SaveDocumentP() {
 #else
   file = _("unsaved");
 #endif
-  wxFileName::SplitPath(GetWorksheet()->GetCurrentFile(), nullptr, nullptr, &file, &ext);
-  file += wxS(".") + ext;
+  // An untitled document has no file name to split - which used to leave
+  // the question asking about the document ".".
+  if (!GetWorksheet()->GetCurrentFile().IsEmpty()) {
+    wxFileName::SplitPath(GetWorksheet()->GetCurrentFile(), nullptr, nullptr, &file, &ext);
+    file += wxS(".") + ext;
+  }
   LoggingMessageDialog dialog(
                               this,
                               wxString::Format(
@@ -3738,6 +3772,32 @@ void wxMaxima::OnMinimize(wxIconizeEvent &event) {
   if (!event.IsIconized())
     CallAfter([this]{GetWorksheet()->SetFocus();});
   event.Skip();
+}
+
+void wxMaxima::OnTextFormat(wxCommandEvent &event) {
+  if (!GetWorksheet())
+    return;
+  switch (event.GetId()) {
+  case ToolBar::tb_bold:
+    GetWorksheet()->ToggleTextFormat(TextFormat::Bold);
+    break;
+  case ToolBar::tb_italic:
+    GetWorksheet()->ToggleTextFormat(TextFormat::Italic);
+    break;
+  case ToolBar::tb_underline:
+    GetWorksheet()->ToggleTextFormat(TextFormat::Underline);
+    break;
+  case ToolBar::tb_strikethrough:
+    GetWorksheet()->ToggleTextFormat(TextFormat::Strikethrough);
+    break;
+  default:
+    break;
+  }
+  // Clicking the button toggled it, which may not be what the text says now:
+  // let UpdateToolBar() show the real state. And give the keyboard back to
+  // the text, so that typing simply continues.
+  GetWorksheet()->UpdateControlsNeeded(true);
+  CallAfter([this]{GetWorksheet()->SetFocus();});
 }
 
 void wxMaxima::ChangeCellStyle(wxCommandEvent &WXUNUSED(event)) {

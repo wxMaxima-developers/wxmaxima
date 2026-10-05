@@ -171,9 +171,9 @@ public:
 
   /*! Keep the cursor still on screen across the next layout pass.
 
-    Called just before output is appended to a cell: the cells below it are
-    about to move down, the cursor with them if it sits below the changed
-    cell. This remembers where the cursor's cell is now; once the pass has laid
+    Called just before output is appended to a cell, or removed from it: the
+    cells below it are about to move, the cursor with them if it sits below
+    the changed cell. This remembers where the cursor's cell is now; once the pass has laid
     everything out, the view is scrolled by however far that cell moved -
     to the pixel, see ComputeScrollCompensation() - so the cursor, and
     everything around it, stays where the user was looking.
@@ -185,6 +185,13 @@ public:
     looking at.
   */
   void ArmScrollCompensation();
+
+  /*! The document y of \p anchor's cursor position.
+
+    The top of its cell, or the bottom for the horizontal cursor. Lays the cell
+    out first if its size has been reset, as reading a reset size gives 0.
+  */
+  static int AnchorY(const ScrollAnchor &anchor);
 
   //! Is a scroll compensation waiting for the next layout pass to finish?
   bool ScrollCompensationArmed() const { return m_scrollAnchor != nullptr; }
@@ -203,8 +210,6 @@ private:
     See ArmScrollCompensation().
   */
   void ApplyScrollCompensation();
-  //! The document y of \p anchor's cursor position
-  static int AnchorY(const ScrollAnchor &anchor);
 
   //! The settings storage, also supplying metrics and the recalc DC.
   Configuration *m_configuration;

@@ -42,6 +42,7 @@ set(CELL_SOURCE_FILES
     VisiblyInvalidCell.cpp
     FontAttribs.cpp
     TextStyle.cpp
+    TextFormat.cpp
     FontVariantCache.cpp
 )
 list(TRANSFORM CELL_SOURCE_FILES PREPEND cells/)
@@ -163,6 +164,7 @@ set(SOURCE_FILES
     MaximaFileIO.cpp
     MaximaOutputAppender.cpp
     LdbSupport.cpp
+    WxMaximaManualAnchors.cpp
     MaximaProtocol.cpp
     MaximaMenuSync.cpp
     MaximaTokenizer.cpp
@@ -181,6 +183,7 @@ set(SOURCE_FILES
     UrlDetection.cpp
     worksheet/MatrixScrollbars.cpp
     worksheet/OutputNavigation.cpp
+    worksheet/ClipboardContents.cpp
     worksheet/Worksheet.cpp
     worksheet/WorksheetContextMenu.cpp
     worksheet/WorksheetDocument.cpp
@@ -194,6 +197,7 @@ set(SOURCE_FILES
     levenshtein/levenshtein.cpp
     main.cpp
     AuiPerspectiveRepair.cpp
+    SaveAsDefaults.cpp
     ToolbarPane.cpp
     ProcessTree.cpp
     InterruptChannelHandshake.cpp
@@ -206,6 +210,16 @@ set(SOURCE_FILES
     wxMaximaArtProvider.cpp
     wxMaximaOSDescription.cpp
 )
+
+# nanoSVG.cpp has to stay a translation unit of its own. It defines
+# NANOSVG_IMPLEMENTATION before including nanosvg_private.h, which is the only
+# place the nanoSVG functions get compiled. In a unity build, a file batched
+# before it that already includes that header makes the include guard skip the
+# implementation, and linking fails with "undefined reference to
+# wxm_nsvgParse". Which file lands before it depends only on how many files
+# precede it in the list above, so adding any unrelated source file could
+# break the build.
+set_source_files_properties(nanoSVG.cpp PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)
 
 if(NOT CYGWIN)
     list(APPEND SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.rc)
@@ -552,7 +566,16 @@ endif()
 # Build Packages
 if(WIN32)
     set(CPACK_GENERATOR "ZIP;NSIS")
-    set(CPACK_NSIS_DEFINES "ManifestDPIAware true")
+    # PerUserInstall.nsh lets a user without administrator rights install
+    # wxMaxima for themselves instead of being refused (GH #2298); see the
+    # file for how. It is included with single quotes because CPack writes
+    # this value into CPackConfig.cmake without escaping double quotes.
+    # The last path separator has to be a backslash: with forward slashes
+    # throughout makensis failed with "!include: could not find", although
+    # the file was there. That is the NSIS bug with Unix-style paths that
+    # CMake's documentation of CPACK_PACKAGE_ICON describes. CMake's "\\\\" becomes
+    # "\\" here, which CPackConfig.cmake reads back as a single backslash.
+    set(CPACK_NSIS_DEFINES "ManifestDPIAware true\n!include '${CMAKE_CURRENT_SOURCE_DIR}/nsis\\\\PerUserInstall.nsh'")
     include(InstallRequiredSystemLibraries)
     install(FILES ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS} DESTINATION bin)
 

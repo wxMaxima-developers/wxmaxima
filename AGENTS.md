@@ -649,6 +649,25 @@ a local TCP socket.
   draw-list-mirroring bookkeeping, since there's nothing stored to keep in
   sync.
 
+- **Ordinary copy renders its formats lazily (GH #2030,
+  `src/worksheet/ClipboardContents.{h,cpp}`).** `Copy()`/`CopyCells()` make
+  only the .wxm and text flavours up front; RTF, MathML, the bitmap, SVG and
+  EMF are rendered from a private `ClipboardSnapshot` of the selection when a
+  program pastes them (GTK's SelectionRequest and Windows' OLE `GetData()`
+  both end in `wxDataObject::GetDataHere()`; macOS' wxClipboard writes every
+  format at once, so there nothing is lazy). Three things to keep in mind:
+  - **The snapshot hangs off a `GroupCell` of its own.** `Cell::Copy()` keeps
+    the original's group, and the original may be deleted before the paste.
+  - **The copied cells use the worksheet's `Configuration`**, so before the
+    worksheet goes away `~Worksheet()` calls `RenderClipboardContents()`,
+    which swaps the lazy data for rendered .wxm/text/RTF/MathML/bitmap and
+    calls `wxClipboard::Flush()`. Whether the clipboard still holds this
+    worksheet's data is a `std::weak_ptr` to the `ClipboardContents` the
+    data objects share -- wx deletes them when another owner takes over.
+  - **A clipboard manager that copies every new clipboard right away**
+    (xfsettingsd does) asks for every format at copy time, which renders
+    them all. Nothing wxMaxima can do about that, and its data survives
+    the exit anyway. To check the handover live, run without one.
 - **"Copy as HTML" (GH #2265/#2266/#2267) -- `WorksheetExport::
   SelectionToSelfContainedHTML()` / `Worksheet::CopyHTML()`:** a right-click
   context menu item placing a *self-contained* HTML document on the
@@ -796,6 +815,29 @@ a local TCP socket.
   `style=0` so it never touches disk at all -- the in-memory-only
   hermeticity this whole investigation shows is worth having).
 
+- **Context-sensitive help for wxMaxima's own commands
+  (`src/WxMaximaManualAnchors.{h,cpp}`).** Help used to know only Maxima's
+  manual, whose index `MaximaManual` reads from the manual itself, so
+  `wx_matrix()`, `table_form()` and friends got no "Help on" entry. Our own
+  manual has no index and its headings (hence pandoc's heading ids) are
+  translated, so each such keyword has a hand-written `<div id="keyword"></div>`
+  paragraph in `info/wxmaxima.md` **and in every `info/wxmaxima.<lang>.md`**,
+  in front of the paragraph documenting it. A paragraph of its own, so po4a
+  sees a new untranslated msgid whose output is the anchor itself, and
+  translations of the surrounding text don't go fuzzy. When documenting a new
+  wxMaxima command, add its anchor to all of these and its name to
+  `WxMaximaManualAnchors::Keywords()`; `test_WxMaximaManualAnchors` fails if the
+  two disagree, and also checks the committed English `info/wxmaxima.html`
+  (shipped to builds without pandoc), so regenerate that with the pandoc
+  command in `info/CMakeLists.txt`. Keywords Maxima's manual already documents
+  (including `MaximaManual::AnchorAliasses()`, e.g. `wxdraw2d`) stay out of the
+  list: Maxima's description of the wrapped command explains the arguments.
+- **`nanoSVG.cpp` is excluded from unity builds (`SKIP_UNITY_BUILD_INCLUSION`).**
+  It is the one file that compiles nanoSVG's implementation; batched after a
+  file that already included the header, the include guard drops it and the
+  link fails with `undefined reference to wxm_nsvgParse`. Which file precedes
+  it depends only on its position in `SOURCE_FILES`, so this surfaced simply
+  by adding an unrelated source file to that list.
 - **`Worksheet::AnonymizeCodeCells()` (GH #1339, Help menu -> "Anonymize Code
   for Bug Report"):** renames every non-builtin variable/function name in the
   selected code cells (whole document if nothing's selected, after a

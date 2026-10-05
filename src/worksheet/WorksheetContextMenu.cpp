@@ -32,10 +32,37 @@
 #include "WorksheetContextMenu.h"
 #include "ArtProvider.h"
 #include "Worksheet.h"
+#include "WxMaximaManualAnchors.h"
 #include "levenshtein/levenshtein.h"
+#include <wx/artprov.h>
 #include <wx/menu.h>
 #include <array>
 #include <vector>
+
+namespace {
+/*! Whether one of the manuals documents \p word
+
+  Maxima's manual documents the commands Maxima has, wxMaxima's own manual
+  the ones wxMaxima adds (wx_matrix(), table_form(), the wx... variables).
+*/
+bool HasHelpFor(Worksheet &worksheet, const wxString &word) {
+  return !worksheet.GetMaximaManual()->GetHelpfileAnchorName(word).IsEmpty() ||
+    !WxMaximaManualAnchors::AnchorFor(word).IsEmpty();
+}
+
+//! Appends the "Help on <word>" entry, with the same help icon the toolbar uses
+void AppendHelpItem(wxMenu &popupMenu, const wxString &word) {
+  wxMenuItem *helpItem = new wxMenuItem(&popupMenu, wxID_HELP,
+                                        wxString::Format(_("Help on \"%s\""), word));
+  wxBitmapBundle icon = wxArtProvider::GetBitmapBundle(wxART_HELP, wxART_MENU);
+  // wxART_HELP comes from the desktop's icon theme on GTK, and not every
+  // theme has one.
+  if (!icon.IsOk())
+    icon = ArtProvider::GetQuestionmarkBundle();
+  helpItem->SetBitmap(icon);
+  popupMenu.Append(helpItem);
+}
+} // namespace
 
 void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
                                   int downx, int downy, bool clickInSelection) {
@@ -106,12 +133,8 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
       }
       if (worksheet.IsSelected(MC_TYPE_DEFAULT)) {
         wxString wordUnderCursor = worksheet.GetSelectionStart()->ToString();
-        wxString anchor = worksheet.GetMaximaManual()->GetHelpfileAnchorName(wordUnderCursor);
-        if (!anchor.IsEmpty()) {
-          {
-            popupMenu.Append(wxID_HELP, wxString::Format(_("Help on \"%s\""),
-                                                         wordUnderCursor));
-          }
+        if (HasHelpFor(worksheet, wordUnderCursor)) {
+          AppendHelpItem(popupMenu, wordUnderCursor);
           popupMenu.Append(EventIDs::menu_copy_uuid, _("Copy position (UUID)"));
           if(worksheet.GetAutocomplete().HasDemofile(wordUnderCursor))
             {
@@ -565,13 +588,8 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
           wxString wordUnderCursor = group->GetEditable()->GetWordUnderCaret();
           std::array<std::vector<wxString>, 4> dst;
           std::vector<wxString> sameBeginning;
-          wxString anchor =
-            worksheet.GetMaximaManual()->GetHelpfileAnchorName(wordUnderCursor);
-          if (!anchor.IsEmpty())
-            {
-              popupMenu.Append(wxID_HELP, wxString::Format(_("Help on \"%s\""),
-                                                           wordUnderCursor));
-            }
+          if (HasHelpFor(worksheet, wordUnderCursor))
+            AppendHelpItem(popupMenu, wordUnderCursor);
           if(worksheet.GetAutocomplete().HasDemofile(wordUnderCursor))
             {
               wxMenuItem *demoItem = new wxMenuItem(&popupMenu,

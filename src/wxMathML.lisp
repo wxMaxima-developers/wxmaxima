@@ -98,7 +98,7 @@
 (defvar $wxwidgetsversion t "The wxWidgets version wxMaxima is using.")
 (wx-defprop $wxwidgetsversion read-only-assign assign)
 (defvar *wx-defer-queries* nil "If true, wxMaxima defers querying variables and functions until it leaves batch mode.")
-(defvar $wxsubscripts 'all
+(defvar $wxsubscripts '$all
   "Recognize TeX-style subscripts")
 (defvar $wxplot_usesvg nil "Create scalable plots?")
 (defvar $wxplot_pngcairo nil "Use gnuplot's pngcairo terminal for new plots?")
@@ -436,12 +436,28 @@ Submit bug reports by following the 'New issue' link on that page."))
   opt)
 
 ;; Declare one or more variables to be always displayed with autosubscript on
+;;
+;; The declaration is a plain Lisp property, not a Maxima one made by put():
+;; put() adds the symbol to the props infolist, and kill(all) then unbinds
+;; every symbol on that list - which, as wxMathML.lisp declares Maxima's own
+;; underscore variables at startup, unbound variables like
+;; display_format_internal that Maxima needs to display anything.
 (defun $wxdeclare_subscripted (x &optional (opt t))
   (unless (listp x)
     (setq x (list '(mlist simp) x)))
   (dolist (s (cdr x))
-    ($put s opt '$wxxml_subscripted))
+    (when (symbolp s)
+      (setf (get s 'wxxml-subscripted) (if opt :yes :no))))
   opt)
+
+;; What wxdeclare_subscripted() said about the symbol x: (t) or (nil) if it
+;; was declared to be (or not to be) subscripted, nil if it never was declared.
+;; "Declared false" has to differ from "not declared" (#1653), hence :yes/:no.
+(defun wx-subscripted-declaration (x)
+  (when (symbolp x)
+    (case (get x 'wxxml-subscripted)
+      (:yes (list t))
+      (:no (list nil)))))
 
 ;; Returns either nil (no autosubscript needed) or the result
 ;; of the autosubscript process
@@ -462,17 +478,16 @@ Submit bug reports by following the 'New issue' link on that page."))
 	     (sub-int (ignore-errors
 			(parse-integer sub))))
 	(when (and (and (> (length sub-var) 0) (> (length sub) 0) )
-		   (or
-		    ($get x '$wxxml_subscripted)
-		    (and
-		     (or sub-int
-			 (eq $wxsubscripts '$all)
-			 (= (length sub) 1)
-			 (= (length sub-var) 1)
-			 ($get sub-symb '$wxxml_subscript)
-			 )
-		     (ignore-errors (not
-				     (member '$WXXML_SUBSCRIPTED (cdr (properties x))))))))
+		   (let ((declared (wx-subscripted-declaration x)))
+		     ;; An explicit wxdeclare_subscripted(x, true|false) wins
+		     ;; over the rules wxsubscripts selects.
+		     (if declared
+			 (car declared)
+			 (or sub-int
+			     (eq $wxsubscripts '$all)
+			     (= (length sub) 1)
+			     (= (length sub-var) 1)
+			     ($get sub-symb '$wxxml_subscript)))))
 	  (format nil  "<munder altCopy=\"~A\"><mrow>~a</mrow><mrow>~a</mrow></munder>"
 		  (wxxml-alt-copy-text x)
 		  (or (get sub-var-symb 'wxxmlword) (format nil "<mi>~a</mi>" (wxxml-fix-string (remove (char "\\" 0) (format nil "~A" sub-var)))))
@@ -1166,6 +1181,13 @@ Submit bug reports by following the 'New issue' link on that page."))
 	      (setq tb-tag (concatenate 'string tb-tag " oversized=\"elide\"")))
 	     ((find 'oversized_scroll mtrx)
 	      (setq tb-tag (concatenate 'string tb-tag " oversized=\"scroll\""))))
+	   ;; wx_matrix()'s banding option: tint every other row and column
+	   ;; whatever the matrix's size, or never.
+	   (cond
+	     ((find 'banding_on mtrx)
+	      (setq tb-tag (concatenate 'string tb-tag " banding=\"true\"")))
+	     ((find 'banding_off mtrx)
+	      (setq tb-tag (concatenate 'string tb-tag " banding=\"false\""))))
 	   (cond
 	     ((find 'paren_round mtrx)
 	      (setq tb-tag (concatenate 'string tb-tag " roundedParens=\"true\"")))
@@ -2737,6 +2759,16 @@ Submit bug reports by following the 'New issue' link on that page."))
            ((eq oversized '$scroll) (setq mtrx (append mtrx '(oversized_scroll))))
            (t (merror "wx_matrix: oversized must be full, elide or scroll, not ~M"
                       oversized))))
+       ;; Alternating row/column bands: true and false force them on or
+       ;; off, auto (the default) bands only a matrix too large for the
+       ;; window. The default argument tells a missing option from false.
+       (let ((banding ($assoc '$banding opts-list '$auto)))
+         (cond
+           ((eq banding '$auto))
+           ((eq banding t) (setq mtrx (append mtrx '(banding_on))))
+           ((null banding) (setq mtrx (append mtrx '(banding_off))))
+           (t (merror "wx_matrix: banding must be true, false or auto, not ~M"
+                      banding))))
        ;; Only return the matrix, don't display it: the options travel in
        ;; the matrix's own header, which wxxml-matrix reads when the result
        ;; is displayed. They stay with this value (assigning it, %, putting
@@ -3272,7 +3304,9 @@ connection fails. Returns T if a channel thread is running afterwards."
 ;; Declare that we want all builtins with underscore not to be printed with subscript
 (maphash (lambda (key val)
 	   (declare (ignore val))
+	   ;; key is the symbol itself. print_value would return it wrapped
+	   ;; in XML, which declared a string nobody ever displays instead.
 	   (if
-	    (search "_" (print_value key))
-	    ($wxdeclare_subscripted (print_value key) nil))) *variable-initial-values*)
+	    (and (symbolp key) (search "_" (symbol-name key)))
+	    ($wxdeclare_subscripted key nil))) *variable-initial-values*)
 (finish-output)

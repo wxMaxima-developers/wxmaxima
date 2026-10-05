@@ -25,6 +25,7 @@
 */
 
 #include "MaximaFileIO.h"
+#include "SaveAsDefaults.h"
 #include "wxMaxima.h"
 #include "dialogs/LoggingMessageDialog.h"
 #include "worksheet/Worksheet.h"
@@ -769,27 +770,17 @@ bool MaximaFileIO::SaveFile(bool forceSave) {
       return false;
     }
 
-    if (file.Length() == 0) {
+    if (file.Length() == 0)
       config->Read(wxS("defaultExt"), &fileExt);
-      file = _("untitled") + wxS(".") + fileExt;
-    } else
-      wxFileName::SplitPath(file, nullptr, nullptr, &file, &fileExt);
+    const SaveAsDefault proposal = SaveAsDefaults(file, fileExt, _("untitled"));
 
     wxFileDialog fileDialog(
-                            &m_wxMaxima, _("Save As"), m_wxMaxima.m_lastPath, file,
+                            &m_wxMaxima, _("Save As"), m_wxMaxima.m_lastPath, proposal.name,
                             _("Whole document (*.wxmx)|*.wxmx|"
                               "The input, readable by load() (maxima > 5.38) (*.wxm)|*.wxm|"
                               "All Files (*.*)|*"),
                             wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
-
-    if (fileExt == wxS("wxmx"))
-      fileDialog.SetFilterIndex(0);
-    else if (fileExt == wxS("wxm"))
-      fileDialog.SetFilterIndex(1);
-    else {
-      fileDialog.SetFilterIndex(0);
-      fileExt = wxS("wxmx");
-    }
+    fileDialog.SetFilterIndex(proposal.filterIndex);
     if (fileDialog.ShowModal() == wxID_OK) {
       file = fileDialog.GetPath();
       ext = fileDialog.GetFilterIndex();

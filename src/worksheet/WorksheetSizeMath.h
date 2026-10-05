@@ -124,36 +124,49 @@ struct WorksheetVirtualSize {
   \param maxPointHeight     The document's bottom extent (WorksheetLayout::GetMaxPoint y).
   \param clientHeight       The visible height of the worksheet window.
   \param currentScrollPixelY The current vertical scroll offset in pixels.
+  \param groupSkip          The vertical gap between group cells
+                            (Configuration::GetGroupSkip): the room a horizontal
+                            cursor below the last cell needs.
 
   Invariants (that the callers rely on):
   - a vertical scrollbar always has room to move: height >= clientHeight + 10;
   - the virtual size never shrinks below what the current scroll position needs
-    (height >= currentScrollPixelY + clientHeight + 10), so wxWidgets does not
+    (height >= currentScrollPixelY + clientHeight), so wxWidgets does not
     clamp the scroll position and jump the view;
-  - a little over-scroll past the end is allowed (with the view scrolled fully
-    down the document occupies the top 1/8 of the client area);
+  - scrolling past the end of the document is limited to one scroll unit plus
+    one group skip: enough to see a horizontal cursor below the last cell with
+    a little air beneath it, instead of the screenful of empty worksheet the
+    over-scroll used to allow;
   - the scroll unit is at least 10 px, so scrolling never feels sluggish on
     hi-res screens nor degenerates on tiny ones.
+
+  The scroll-position clamp deliberately has no "+ 10" margin of its own: with
+  one, every AdjustSize() while the view was scrolled to the very bottom grew
+  the virtual height by another 10 px, so editing at the end of a worksheet
+  slowly ratcheted the over-scroll back up.
 */
 inline WorksheetVirtualSize ComputeWorksheetVirtualSize(bool hasTree,
                                                         int maxPointWidth,
                                                         int maxPointHeight,
                                                         int clientHeight,
-                                                        int currentScrollPixelY) {
+                                                        int currentScrollPixelY,
+                                                        int groupSkip) {
   WorksheetVirtualSize result;
   int scrollUnitBasisHeight = 40;
+  if (hasTree)
+    scrollUnitBasisHeight = clientHeight;
+  result.scrollUnit = std::max(scrollUnitBasisHeight / 30, 10);
   if (hasTree) {
     result.width = maxPointWidth;
-    // Allow scrolling a little past the end of the document.
-    int height = maxPointHeight + clientHeight - clientHeight / 8;
+    // Allow scrolling one scroll step past the room a horizontal cursor below
+    // the last cell needs.
+    int height = maxPointHeight + groupSkip + result.scrollUnit;
     // Keep a vertical scrollbar active.
     result.height = std::max(clientHeight + 10, height);
     // Never shrink below what the current scroll position requires.
     result.height =
-      std::max(result.height, currentScrollPixelY + clientHeight + 10);
-    scrollUnitBasisHeight = clientHeight;
+      std::max(result.height, currentScrollPixelY + clientHeight);
   }
-  result.scrollUnit = std::max(scrollUnitBasisHeight / 30, 10);
   return result;
 }
 
@@ -258,6 +271,7 @@ struct WorksheetVirtualSizeCache {
   \param hasTree     Whether the worksheet has content (ignores the extent if not).
   \param maxWidth    The document's right extent (WorksheetLayout::GetMaxPoint x).
   \param maxHeight   The document's bottom extent (WorksheetLayout::GetMaxPoint y).
+  \param groupSkip   The gap between group cells (Configuration::GetGroupSkip).
   \param cache       The last-applied size, updated in place to dedupe.
   \param scrollUnit  Read to turn the scroll position into pixels, and updated to
                      the new granularity. WorksheetLayout keeps it as a member
@@ -265,6 +279,7 @@ struct WorksheetVirtualSizeCache {
 */
 inline void ApplyWorksheetVirtualSize(WorksheetView &view, bool hasTree,
                                       int maxWidth, int maxHeight,
+                                      int groupSkip,
                                       WorksheetVirtualSizeCache &cache,
                                       int &scrollUnit) {
   int clientWidth, clientHeight;
@@ -275,7 +290,8 @@ inline void ApplyWorksheetVirtualSize(WorksheetView &view, bool hasTree,
     currentScrollPixelY = view.GetViewScrollUnitY() * scrollUnit;
 
   const WorksheetVirtualSize vs = ComputeWorksheetVirtualSize(
-    hasTree, maxWidth, maxHeight, clientHeight, currentScrollPixelY);
+    hasTree, maxWidth, maxHeight, clientHeight, currentScrollPixelY,
+    groupSkip);
 
   if ((cache.lastWidth != vs.width || cache.lastHeight != vs.height) &&
       vs.height > 0) {

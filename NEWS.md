@@ -2,6 +2,84 @@
 
 - The Greek letters and Symbols sidebars no longer come up laid out wrongly
   until they are resized (seen with wxWidgets' Qt port).
+- Copying a whole large matrix no longer tries to draw a bitmap of many
+  gigabytes for the clipboard. On wxWidgets' Qt port, which draws every
+  clipboard format right away, Ctrl+C kept wxMaxima busy for minutes and
+  nothing reached the clipboard. Such a bitmap is now drawn at a lower
+  resolution, or left out if even that is too large; the text, RTF and
+  MathML are copied as before.
+- GIF and XPM images no longer get a black background where they are
+  meant to be transparent. Those formats mark transparency with a mask
+  colour, which the worksheet drew instead of what lies behind it (#2227).
+- On a dark worksheet, images are drawn on a white backdrop by default, so
+  that black line art with a transparent background stays visible. The
+  backdrop's color is a new style, and an option in the "Worksheet" tab of
+  the configuration dialog can switch it off or use it on a bright
+  worksheet, too (#2227).
+- Text cells, titles and section headings can contain bold, italic,
+  underlined and struck-through text, set using new toolbar buttons. The
+  formatting is saved in .wxmx files in a way that lets older versions of
+  wxMaxima still read all of the text (#492).
+- `wxdeclare_subscripted(variable, false)` keeps a variable from being
+  displayed with a subscript again, and `wxdeclare_subscripted(variable)`
+  subscripts one the current `wxsubscripts` setting wouldn't. Both were
+  ignored (#1653).
+- Autosubscripting set to "Always" now really subscripts everything after
+  an underscore. wxMaxima passed the setting to Maxima in a way that made
+  it behave like "Integers and single letters".
+- The manual described declaring a variable as subscripted using
+  `wxdeclare_subscript()`, which declares a text snippet instead. Both
+  commands are documented now, and F1 finds `wxdeclare_subscripted`.
+- Closing wxMaxima with unsaved changes in an untitled document asks
+  whether to save them first, and opens the "Save As" dialog only if you
+  choose "Save". It used to open "Save As" first and, if that was
+  cancelled, ask anyway. The question also names the document "unsaved"
+  instead of ".", and "Save" no longer asks for a new file name for a
+  document that already has one (#1737).
+- Copying puts every clipboard format on the clipboard again (RTF, MathML,
+  a bitmap, SVG, ...), but renders each only when a program actually pastes
+  it, so copying a large selection is fast and doesn't fill the memory with
+  formats nobody uses. The program you paste into picks the format, which
+  is why the list of formats to copy is gone from the configuration dialog.
+  When the window you copied from is closed, the .wxm code, text, RTF,
+  MathML and the bitmap are kept on the clipboard (#2030).
+- The size limit for bitmaps on the clipboard, and with it the "Copy" tab
+  of the configuration dialog, is gone: a bitmap is only drawn when a
+  program pastes it, and today's systems handle big ones fine.
+- Copying now also puts the image on the clipboard in builds that use
+  wxWidgets' Qt port: a bitmap offered alongside other formats never
+  reached another program there, so pasting into an image editor pasted
+  whatever was on the clipboard before.
+- "Save As" of a document opened from a `.wxm` file proposed a `.wxmx`
+  file name on Linux, although the dialog showed the `.wxm` file type, so
+  the document was saved as `.wxmx` (#2440).
+- Shift+Up/Down with a cell's output selected now selects whole cells
+  starting from that cell. It used to start at the top of the worksheet.
+- `wx_matrix()` is offered by autocompletion, with a template for its
+  arguments.
+- `wx_matrix(M, banding=true|false|auto)` shades every other row and
+  column of a matrix always, never, or only if it is too large for the
+  window (the default).
+- The commands wxMaxima adds to Maxima (`wx_matrix()`, `table_form()`,
+  `wxstatusbar()`, `wxplot2d()`, the `wx...` variables, ...) now get a
+  "Help on" entry in the right-click menu, and F1 on them opens wxMaxima's
+  manual at the place that describes them. The entry now also shows a help
+  icon.
+- The Windows installer no longer needs administrator rights: without them
+  it installs wxMaxima for the current user only, into
+  `%LOCALAPPDATA%\Programs`. With them it installs for all users into
+  Program Files, as before.
+- A hidden multiplication sign is drawn if output is broken into lines
+  there, so a product that continues on the next line is recognizable as
+  one. The line is broken after the sign wherever possible (#2263).
+- The worksheet no longer scrolls a whole screen past its end: below the
+  last cell there is now only room for a horizontal cursor and one scroll
+  step.
+- The cursor no longer jumps when Maxima's output appears in a cell above
+  it. Keeping it still failed whenever the output arrived quickly, which is
+  most of the time, and when a cell's old output was removed.
+- wxMaxima builds on Cygwin again: precompiled headers, which broke the
+  build there, are now off by default on Cygwin.
 
 # 26.09.0
 
@@ -98,8 +176,8 @@ for .wxm files.
   Lisp has threads (SBCL, CCL, ECL), which also makes it work reliably on
   Windows (#2289).
 - Batch runs no longer occasionally lose or skip a statement (#2196), and
-  exit with a status code saying why they stopped (#2276, see the man
-  page).
+  exit with a status code saying why they stopped (#2276, listed in the
+  manual and the man page).
 - Opening a file starts Maxima only once, about two seconds faster.
 - The "Maxima isn't connecting" warning no longer fires for large
   worksheets (#1182).

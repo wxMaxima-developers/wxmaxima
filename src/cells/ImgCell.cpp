@@ -193,9 +193,13 @@ void ImgCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
       xSrc += SELECTION_BORDER_WDTH;
       ySrc += SELECTION_BORDER_WDTH;
     }
+    DrawImageBackdrop(dc, wxRect(xDst, yDst, widthDst, heightDst));
     if (m_configuration->GetPrinting()) {
       dc->StretchBlit(xDst, yDst, widthDst, heightDst, &bitmapDC, xSrc, ySrc,
-                      bitmap.GetWidth(), bitmap.GetHeight());
+                      bitmap.GetWidth(), bitmap.GetHeight(), wxCOPY,
+                      // The unscaled bitmap still carries a GIF's or XPM's
+                      // transparency as a mask, not as alpha (GH #2227).
+                      true);
     } else
       dc->Blit(xDst, yDst, widthDst, heightDst, &bitmapDC, xSrc, ySrc);
   } else

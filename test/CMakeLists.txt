@@ -431,6 +431,27 @@ add_test(
     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wx_matrix(matrix([1,2],[3,4]), oversized=full);" "<tb[^>]* oversized=\"full\""
 )
 
+# wx_matrix()'s banding option reaches wxMaxima as an attribute of the <tb>
+# tag; banding=auto, the default, adds none.
+add_test(
+    NAME check-wxMathML.lisp_matrix_banding_on
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wx_matrix(matrix([1,2],[3,4]), banding=true);" "<tb[^>]* banding=\"true\""
+)
+add_test(
+    NAME check-wxMathML.lisp_matrix_banding_off
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wx_matrix(matrix([1,2],[3,4]), banding=false);" "<tb[^>]* banding=\"false\""
+)
+add_test(
+    NAME check-wxMathML.lisp_matrix_banding_auto
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wx_matrix(matrix([1,2],[3,4]), banding=auto);" "<tb"
+)
+set_tests_properties(check-wxMathML.lisp_matrix_banding_auto PROPERTIES
+    FAIL_REGULAR_EXPRESSION "banding=")
+add_test(
+    NAME check-xml-validity_matrix_banding
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-xml-validity.sh" "wx_matrix(matrix([1,2],[3,4]), lines=true, oversized=scroll, banding=false);"
+)
+
 # wx_matrix() only returns the formatted matrix; it is the display of that
 # result that shows it. So a matrix ended with ";" is shown exactly once...
 add_test(
@@ -653,6 +674,45 @@ add_test(
 add_test(
     NAME subscriptp_11
     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxsubscripts:true\$a\\,b_1;" "a,b"
+)
+
+# GH #1653: wxdeclare_subscripted(x, false) has to keep x unsubscripted even
+# where the rules wxsubscripts selects would subscript it, and
+# wxdeclare_subscripted(x) has to subscript it where they would not.
+add_test(
+    NAME subscriptp_declared_false_wins_over_all
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxsubscripts: 'all\$wxdeclare_subscripted(eree_ssss,false)\$eree_ssss;" "<mi lisp=.*>eree_ssss</mi>"
+)
+
+add_test(
+    NAME subscriptp_declared_false_can_be_taken_back
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxsubscripts:true\$wxdeclare_subscripted(eree_ssss,false)\$wxdeclare_subscripted(eree_ssss)\$eree_ssss;" "<munder altCopy=\"eree_ssss\"><mrow><mi>eree</mi></mrow><mrow><mi>ssss</mi></mrow></munder>"
+)
+
+# A variable Maxima itself defines whose name contains an underscore is
+# declared "never subscripted" at startup - that declaration is what the two
+# tests above make work, and it has to keep working for the names it was
+# written for.
+add_test(
+    NAME subscriptp_maxima_own_variable_not_subscripted
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxsubscripts: 'all\$'float_approx_equal_tolerance;" "<mi lisp=.*>float_approx_equal_tolerance</mi>"
+)
+
+# kill(all) unbinds every symbol Maxima lists as having user properties. The
+# startup declarations above must not put Maxima's own variables on that
+# list, or kill(all) unbinds ones Maxima needs (display_format_internal broke
+# every display after it on Maxima 5.48).
+add_test(
+    NAME subscriptp_kill_all_keeps_maxima_variables
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "kill(all)\$float_approx_equal_tolerance;" "<lbl altCopy=\"%o1\">(%o1) </lbl><mrow><mn>"
+)
+
+# wxsubscripts' own default is the Maxima symbol $all - it used to be the
+# Lisp symbol of the same name, which nothing compares against, so an
+# unconfigured wxMaxima silently behaved as if "true" was set.
+add_test(
+    NAME subscriptp_default_is_all
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "eree_ssss;" "<munder altCopy=\"eree_ssss\"><mrow><mi>eree</mi></mrow><mrow><mi>ssss</mi></mrow></munder>"
 )
 
 add_test(
@@ -1533,6 +1593,8 @@ set(WXM_POSIX_TESTS
   check-xml-validity_matrix_oversized check-wxMathML.lisp_matrix_oversized
   check-wxMathML.lisp_matrix_shown_once check-wxMathML.lisp_matrix_dollar_not_shown
   check-wxMathML.lisp_matrix_options_stay_with_value
+  check-wxMathML.lisp_matrix_banding_on check-wxMathML.lisp_matrix_banding_off
+  check-wxMathML.lisp_matrix_banding_auto check-xml-validity_matrix_banding
   check-wxmx-validity_all-celltypes check-wxmx-validity_intervals
   wxstatusbar wxbuildinfo wxbug_report show_image
   wxxml-array-no-display-properties wxxml-array-display-properties
@@ -1542,6 +1604,11 @@ set(WXM_POSIX_TESTS
   subscriptp_1 subscriptp_2 subscriptp_3 subscriptp_4 subscriptp_5
   subscriptp_6 subscriptp_7 subscriptp_8 subscriptp_9 subscriptp_10
   subscriptp_11
+  subscriptp_declared_false_wins_over_all
+  subscriptp_declared_false_can_be_taken_back
+  subscriptp_maxima_own_variable_not_subscripted
+  subscriptp_default_is_all
+  subscriptp_kill_all_keeps_maxima_variables
   wx_version_min wx_version_min_outside_wxmaxima
   with_slider_draw_bare with_slider_draw_file_name_kept
   with_slider_draw_bare_file_name

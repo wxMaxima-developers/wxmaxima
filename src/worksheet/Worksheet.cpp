@@ -554,6 +554,12 @@ void Worksheet::ApplyOverlayScrollbarsSetting() {
 }
 
 Worksheet::~Worksheet() {
+  // Data this worksheet copied is still rendered on request, from cells that
+  // use m_configuration: replace it by data that doesn't, while the
+  // configuration still exists (GH #2030). First thing, while this object is
+  // still whole: on GTK, wxClipboard::Flush() runs the event loop until the
+  // clipboard manager has fetched the data.
+  RenderClipboardContents();
   // The view is dying: cells may no longer schedule recalculations on it.
   m_configuration->SetRecalculateRequestCallback({});
   m_configuration->SetRecalculateAllRequestCallback({});
@@ -1019,8 +1025,7 @@ void Worksheet::InsertLine(std::unique_ptr<Cell> &&newCell, bool forceNewLine) {
   // The append is about to push everything below this cell down, including
   // the cursor if it sits there. If the user can see the cursor, keep it where
   // it is on screen: that is where they are reading or typing.
-  if (ScrollAnchorVisible())
-    m_layout.ArmScrollCompensation();
+  KeepCursorStillOnScreen();
 
   newCell->ForceBreakLine(forceNewLine);
   cell->AppendOutput(std::move(newCell));
@@ -1055,9 +1060,14 @@ WorksheetLayout::ScrollAnchor Worksheet::GetScrollAnchor() const {
   return {};
 }
 
+void Worksheet::KeepCursorStillOnScreen() {
+  if (ScrollAnchorVisible())
+    m_layout.ArmScrollCompensation();
+}
+
 bool Worksheet::ScrollAnchorVisible() {
   const WorksheetLayout::ScrollAnchor anchor = GetScrollAnchor();
-  if (!anchor.cell)
+  if (!anchor.cell || anchor.cell->GetCurrentPoint().y < 0)
     return false;
   int y;
   if (!anchor.atBottom && GetActiveCell())
@@ -1065,7 +1075,7 @@ bool Worksheet::ScrollAnchorVisible() {
     // cell's top may well be scrolled away while the user types at its bottom.
     y = GetActiveCell()->PositionToPoint().y;
   else
-    y = anchor.cell->GetCurrentPoint().y + anchor.cell->GetMaxDrop();
+    y = WorksheetLayout::AnchorY(anchor);
   if (y < 0)
     return false;
 
@@ -2291,59 +2301,77 @@ bool Worksheet::Copy(bool astext) const {
 }
 
 std::unique_ptr<wxDataObject> Worksheet::CreateSelectionDataObject() const {
-  wxDataObjectComposite *data = new wxDataObjectComposite;
-
-  // Add the wxm code corresponding to the selected output to the clipboard
-  wxString s = GetString(true);
-  data->Add(new wxmDataObject(s));
+  // Only the .wxm code and the plain text are made right away: they are cheap
+  // and nearly every paste wants one of them. Every other format is rendered
+  // from a private copy of the selection, and only once a program actually
+  // asks for it (GH #2030) -- see ClipboardContents.h.
+  auto contents = std::make_shared<ClipboardContents>();
+  contents->wxm = GetString(true);
 
   std::unique_ptr<Cell> cell(CopySelection());
+  contents->text = cell->ListToString();
 
-  if (m_configuration->CopyMathML()) {
-    // Add a mathML representation of the data to the clipboard
-    s = ConvertSelectionToMathML();
-    if (s != wxEmptyString) {
-      // We mark the MathML version of the data on the clipboard as
-      // "preferred" as if an application supports MathML neither bitmaps nor
-      // plain text makes much sense.
-      data->Add(new MathMLDataObject(s), true);
-      data->Add(new MathMLDataObject2(s), true);
-      if (m_configuration->CopyMathMLHTML())
-        data->Add(new wxHTMLDataObject(s), true);
-      // wxMathML is a HTML5 flavour, as well.
-      // See
-      // https://github.com/fred-wang/Mathzilla/blob/master/mathml-copy/lib/copy-mathml.js#L21
-      //
-      // Unfortunately MS Word and Libreoffice Writer don't like this idea so
-      // I have disabled the following line of code again:
-      //
-      // data->Add(new wxHTMLDataObject(s));
-    }
+  auto snapshot = std::make_shared<const ClipboardSnapshot>(m_configuration,
+                                                            cell.get());
+  // MathML describes the maths, not the way it happens to be broken into
+  // lines on the screen, so it is made from the cells, not their draw list.
+  {
+    std::unique_ptr<Cell> data(CopySelection(true));
+    auto dataSnapshot =
+      std::make_shared<const ClipboardSnapshot>(m_configuration, data.get());
+    contents->mathML = LazyValue<std::string>([dataSnapshot] {
+      return std::string(CellsToMathML(dataSnapshot->GetCells()).utf8_str());
+    });
   }
+  // For some reason LibreOffice likes RTF more than it likes the MathML -
+  // which is standardized.
+  contents->rtf = LazyValue<std::string>([snapshot] {
+    Configuration *configuration = snapshot->GetConfiguration();
+    return std::string(
+      (WorksheetExport::RTFStart(configuration) +
+       snapshot->GetCells()->ListToRTF() + wxS("\\par\n") +
+       WorksheetExport::RTFEnd()).utf8_str());
+  });
+  contents->bitmap = LazyValue<wxBitmap>([snapshot] {
+    return BitmapOut::RenderForClipboard(
+      snapshot->GetConfigurationPointer(),
+      [&snapshot] { return snapshot->CopyCells(); },
+      snapshot->GetConfiguration()->BitmapScale());
+  });
 
-  if (m_configuration->CopyRTF()) {
-    // Add a RTF representation of the currently selected text
-    // to the clipboard: For some reason Libreoffice likes RTF more than
-    // it likes the MathML - which is standardized.
-    wxString rtf;
-    rtf = RTFStart() + cell->ListToRTF() + wxS("\\par\n") + RTFEnd();
-    data->Add(new RtfDataObject(rtf));
-    data->Add(new RtfDataObject2(rtf));
-    data->Add(new RtfDataObject3(rtf), true);
-  }
+  // The data objects point into contents and share its ownership: it lives
+  // as long as any of them is on the clipboard.
+  const std::shared_ptr<const LazyValue<std::string>> mathML(contents,
+                                                             &contents->mathML);
+  const std::shared_ptr<const LazyValue<std::string>> rtf(contents,
+                                                          &contents->rtf);
+  const std::shared_ptr<const LazyValue<wxBitmap>> bitmap(contents,
+                                                          &contents->bitmap);
 
-  // Add a string representation of the selected output to the clipboard
-  s = cell->ListToString();
-  data->Add(new wxTextDataObject(s));
+  wxDataObjectComposite *data = new wxDataObjectComposite;
+  data->Add(new wxmDataObject(contents->wxm));
+  // We mark the MathML version of the data on the clipboard as "preferred" as
+  // if an application supports MathML neither bitmaps nor plain text makes
+  // much sense. (The RTF that is added last overrides that, though, see
+  // test_WorksheetClipboard.cpp.)
+  //
+  // wxMathML is a HTML5 flavour, as well. See
+  // https://github.com/fred-wang/Mathzilla/blob/master/mathml-copy/lib/copy-mathml.js#L21
+  // But MS Word and Libreoffice Writer don't like this idea, so it isn't
+  // offered as HTML here; "Copy as MathML" does that.
+  data->Add(new LazyDataObject(m_mathmlFormat, mathML), true);
+  data->Add(new LazyDataObject(m_mathmlFormat2, mathML), true);
+  data->Add(new LazyDataObject(m_rtfFormat, rtf));
+  data->Add(new LazyDataObject(m_rtfFormat2, rtf));
+  data->Add(new LazyDataObject(m_rtfFormat3, rtf), true);
+  data->Add(new wxTextDataObject(contents->text));
+  data->Add(new LazyBitmapDataObject(bitmap));
+#ifdef __WXQT__
+  // On wxQt the bitmap above reaches nobody -- see LazyPngDataObject.
+  data->Add(new LazyPngDataObject(bitmap));
+#endif
 
-  if (m_configuration->CopyBitmap()) {
-    // Try to fill bmp with a high-res version of the cells
-    BitmapOut output(&m_configuration, std::move(cell),
-                     m_configuration->BitmapScale(),
-                     1000000 * m_configuration->MaxClipbrdBitmapMegabytes());
-    if (output.IsOk())
-      data->Add(output.GetDataObject().release());
-  }
+  m_clipboardContents = contents;
   return std::unique_ptr<wxDataObject>(data);
 }
 
@@ -2354,11 +2382,16 @@ wxString Worksheet::ConvertSelectionToMathML() const {
   if (!GetDocumentCellPointers().GetSelectionStart() || !GetDocumentCellPointers().GetSelectionEnd())
     return {};
 
-  wxString s;
   std::unique_ptr<Cell> tmp(CopySelection(true));
+  return CellsToMathML(tmp.get());
+}
 
-  s = wxString(wxS("<math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n")) +
-    wxS("<semantics>") + tmp->ListToMathML(true) +
+wxString Worksheet::CellsToMathML(const Cell *cells) {
+  if (!cells)
+    return {};
+
+  wxString s = wxString(wxS("<math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n")) +
+    wxS("<semantics>") + cells->ListToMathML(true) +
     wxS("</semantics>") + wxS("</math>");
 
   // We might add indentation as additional eye candy to all but extremely long
@@ -2602,63 +2635,144 @@ std::unique_ptr<wxDataObject> Worksheet::CreateCellsDataObject() const {
   if (!GetDocumentCellPointers().GetSelectionStart())
     return nullptr;
 
-#if wxUSE_ENH_METAFILE
-  auto *data = new CompositeDataObject;
-#else
-  wxDataObjectComposite *data = new wxDataObjectComposite;
-#endif
-  wxString wxm;
-  wxString str;
-  wxString rtf = RTFStart();
+  // As in CreateSelectionDataObject(): the .wxm code and the text right away,
+  // everything else only when a program asks for it (GH #2030).
+  auto contents = std::make_shared<ClipboardContents>();
 
   const GroupCell *const end = GetDocumentCellPointers().GetSelectionEnd()->GetGroup();
   bool firstcell = true;
   for (auto &tmp : OnList(GetDocumentCellPointers().GetSelectionStart()->GetGroup())) {
     if (!firstcell)
-      str += wxS("\n");
-    str += tmp.ToString();
+      contents->text += wxS("\n");
+    contents->text += tmp.ToString();
     firstcell = false;
 
-    if (m_configuration->CopyRTF())
-      rtf += tmp.ToRTF();
-    wxm += Format::TreeToWXM(&tmp);
+    contents->wxm += Format::TreeToWXM(&tmp);
 
     if (&tmp == end)
       break;
   }
 
-  rtf += wxS("\\par") + RTFEnd();
+  // A list of copies of the selected GroupCells
+  auto snapshot =
+    std::make_shared<const ClipboardSnapshot>(m_configuration,
+                                              CopySelection().get());
+  contents->rtf = LazyValue<std::string>([snapshot] {
+    Configuration *configuration = snapshot->GetConfiguration();
+    wxString rtf = WorksheetExport::RTFStart(configuration);
+    for (const Cell &tmp : OnList(snapshot->GetCells()))
+      rtf += tmp.ToRTF();
+    rtf += wxS("\\par") + WorksheetExport::RTFEnd();
+    return std::string(rtf.utf8_str());
+  });
+  contents->bitmap = LazyValue<wxBitmap>([snapshot] {
+    return BitmapOut::RenderForClipboard(
+      snapshot->GetConfigurationPointer(),
+      [&snapshot] { return snapshot->CopyCells(); },
+      snapshot->GetConfiguration()->BitmapScale());
+  });
+  contents->svg = LazyValue<std::string>([snapshot] {
+    Svgout svg(snapshot->GetConfigurationPointer(), snapshot->CopyCells());
+    if (!svg.IsOk())
+      return std::string();
+    auto obj = svg.GetDataObject();
+    if (!obj)
+      return std::string();
+    std::string bytes(obj->GetDataSize(), '\0');
+    if (bytes.empty() || !obj->GetDataHere(bytes.data()))
+      return std::string();
+    return bytes;
+  });
+#if wxUSE_ENH_METAFILE
+  contents->emf = LazyValue<wxEnhMetaFile>([snapshot] {
+    Emfout emf(snapshot->GetConfigurationPointer(), snapshot->CopyCells());
+    if (!emf.IsOk())
+      return wxEnhMetaFile();
+    auto obj = emf.GetDataObject();
+    return obj ? obj->GetMetafile() : wxEnhMetaFile();
+  });
+#endif
 
-  if (m_configuration->CopyRTF()) {
-    data->Add(new RtfDataObject(rtf));
-    data->Add(new RtfDataObject2(rtf));
-    data->Add(new RtfDataObject3(rtf), true);
-  }
-  data->Add(new wxTextDataObject(str));
-  data->Add(new wxmDataObject(wxm));
-
-  if (m_configuration->CopyBitmap()) {
-    std::unique_ptr<BitmapOut> output(new BitmapOut(&m_configuration, CopySelection(),
-                                                    m_configuration->BitmapScale(),
-                                                    1000000 * m_configuration->MaxClipbrdBitmapMegabytes()));
-    if (output->IsOk())
-      data->Add(output->GetDataObject().release());
-  }
+  const std::shared_ptr<const LazyValue<std::string>> rtf(contents,
+                                                          &contents->rtf);
+  const std::shared_ptr<const LazyValue<wxBitmap>> bitmap(contents,
+                                                          &contents->bitmap);
+  const std::shared_ptr<const LazyValue<std::string>> svg(contents,
+                                                          &contents->svg);
 
 #if wxUSE_ENH_METAFILE
-  if (m_configuration->CopyEMF()) {
-    std::unique_ptr<Emfout> emf(new Emfout(&m_configuration, CopySelection()));
-    if (emf->IsOk())
-      data->Add(emf->GetDataObject().release());
-  }
+  // wxEnhMetaFileDataObject isn't a wxDataObjectSimple, which is all
+  // wxDataObjectComposite accepts.
+  auto *data = new CompositeDataObject;
+#else
+  wxDataObjectComposite *data = new wxDataObjectComposite;
 #endif
-  if (m_configuration->CopySVG()) {
-    std::unique_ptr<Svgout> svg(new Svgout(&m_configuration, CopySelection()));
-    if (svg->IsOk())
-      data->Add(svg->GetDataObject().release());
-  }
+  data->Add(new LazyDataObject(m_rtfFormat, rtf));
+  data->Add(new LazyDataObject(m_rtfFormat2, rtf));
+  data->Add(new LazyDataObject(m_rtfFormat3, rtf), true);
+  data->Add(new wxTextDataObject(contents->text));
+  data->Add(new wxmDataObject(contents->wxm));
+  data->Add(new LazyBitmapDataObject(bitmap));
+#ifdef __WXQT__
+  // On wxQt the bitmap above reaches nobody -- see LazyPngDataObject.
+  data->Add(new LazyPngDataObject(bitmap));
+#endif
+#if wxUSE_ENH_METAFILE
+  data->Add(new LazyEnhMetaFileDataObject(
+              std::shared_ptr<const LazyValue<wxEnhMetaFile>>(contents,
+                                                              &contents->emf)));
+#endif
+  data->Add(new LazyDataObject(Svgout::GetDataFormat(), svg));
 
+  m_clipboardContents = contents;
   return std::unique_ptr<wxDataObject>(data);
+}
+
+std::unique_ptr<wxDataObject>
+Worksheet::CreateIndependentDataObject(const ClipboardContents &contents) {
+  wxDataObjectComposite *data = new wxDataObjectComposite;
+  data->Add(new wxmDataObject(contents.wxm));
+  if (contents.mathML.IsOffered()) {
+    const wxString mathML = wxString::FromUTF8(contents.mathML.Get());
+    if (!mathML.IsEmpty()) {
+      data->Add(new MathMLDataObject(mathML), true);
+      data->Add(new MathMLDataObject2(mathML), true);
+    }
+  }
+  if (contents.rtf.IsOffered()) {
+    const wxString rtf = wxString::FromUTF8(contents.rtf.Get());
+    if (!rtf.IsEmpty()) {
+      data->Add(new RtfDataObject(rtf));
+      data->Add(new RtfDataObject2(rtf));
+      data->Add(new RtfDataObject3(rtf), true);
+    }
+  }
+  data->Add(new wxTextDataObject(contents.text));
+  // An invalid bitmap means it could not be drawn.
+  if (contents.bitmap.IsOffered() && contents.bitmap.Get().IsOk())
+    data->Add(new wxBitmapDataObject(contents.bitmap.Get()));
+  return std::unique_ptr<wxDataObject>(data);
+}
+
+bool Worksheet::RenderClipboardContents() {
+  std::shared_ptr<ClipboardContents> contents = m_clipboardContents.lock();
+  m_clipboardContents.reset();
+  if (!contents)
+    return false;
+
+  // Rendered before the clipboard is touched: replacing the clipboard's data
+  // deletes the data objects, which may be the last owners of contents.
+  std::unique_ptr<wxDataObject> data = CreateIndependentDataObject(*contents);
+  contents.reset();
+
+  if (wxTheClipboard->IsOpened() || !wxTheClipboard->Open())
+    return false;
+  wxTheClipboard->SetData(data.release());
+  wxTheClipboard->Close();
+  // Ask the system to keep the data after we exit. GTK hands it to the
+  // clipboard manager, if there is one; Windows takes a copy of every format.
+  wxTheClipboard->Flush();
+  return true;
 }
 
 void Worksheet::DeleteSelection() {
@@ -2742,6 +2856,10 @@ void Worksheet::SetCellStyle(GroupCell *group, GroupType style) {
     cellContents = group->GetEditable()->GetValue();
   auto newGroupCell = std::make_unique<GroupCell>(m_configuration, style);
   newGroupCell->GetEditable()->SetValue(cellContents);
+  // Bold stays bold when a text cell becomes a heading (GH #492). A code
+  // cell drops the formatting, as it has syntax highlighting instead.
+  if (group->GetEditable())
+    newGroupCell->GetEditable()->CopyFormatsFrom(*group->GetEditable());
   GroupCell *prev = group->GetPrevious();
   DeleteRegion(group, group);
   TreeUndo_AppendAction();
@@ -3348,6 +3466,18 @@ void Worksheet::SelectWithChar(int ccode) {
   // GetHCaretCursor().SelectionStart() is the first group selected
   // GetHCaretCursor().SelectionEnd() is tle last group selected
   // we always move GetHCaretCursor().Position()
+
+  // Something inside a cell's output is selected: neither cursor is active,
+  // and the horizontal cursor's position is whatever it was before, often
+  // nothing, which used to make the selection start at the top of the
+  // worksheet. Start from the cell the output belongs to instead, as
+  // Shift+Up/Down at the edge of its input would (GH #2382).
+  if ((!GetHCaretCursor().SelectionStart() || !GetHCaretCursor().SelectionEnd()) &&
+      SelectWholeCellsFromOutput(ccode)) {
+    RequestRedraw();
+    return;
+  }
+
   if (!GetHCaretCursor().SelectionStart() || !GetHCaretCursor().SelectionEnd()) {
     if (GetHCaretCursor().Position())
       GetHCaretCursor().SetSelectionAnchors(GetHCaretCursor().Position(), GetHCaretCursor().Position());
@@ -3425,6 +3555,46 @@ void Worksheet::SelectWithChar(int ccode) {
     }
   }
   RequestRedraw();
+}
+
+bool Worksheet::SelectWholeCellsFromOutput(int ccode) {
+  if ((ccode != WXK_UP) && (ccode != WXK_DOWN))
+    return false;
+  const Cell *start = GetDocumentCellPointers().GetSelectionStart();
+  if (!start || (start->GetType() == MC_TYPE_GROUP))
+    return false;
+  GroupCell *group = start->GetGroup();
+  if (!group || !GetTree() || !GetTree()->Contains(group))
+    return false;
+
+  // Like from the input: the cell itself and its visible neighbour
+  GroupCell *neighbour = group;
+  if (ccode == WXK_DOWN) {
+    for (GroupCell *next = group->GetNext(); next; next = next->GetNext())
+      if (next->GetMaxDrop() != 0) {
+        neighbour = next;
+        break;
+      }
+  } else {
+    for (GroupCell *prev = group->GetPrevious(); prev; prev = prev->GetPrevious())
+      if (prev->GetMaxDrop() != 0) {
+        neighbour = prev;
+        break;
+      }
+  }
+
+  GetViewCellPointers().ResetKeyboardSelectionStart();
+  m_outputRunAnchor = nullptr;
+  // SelectionStart() is where the gesture began, SelectionEnd() the end that
+  // further Shift+Up/Down presses move.
+  GetHCaretCursor().SetPosition((ccode == WXK_DOWN) ? group : neighbour);
+  GetHCaretCursor().SetSelectionAnchors(group, neighbour);
+  if (ccode == WXK_DOWN)
+    SetSelection(group, neighbour);
+  else
+    SetSelection(neighbour, group);
+  ScheduleScrollToCell(neighbour, false);
+  return true;
 }
 
 void Worksheet::SelectEditable(EditorCell *editor, bool up) {
@@ -4060,8 +4230,7 @@ std::unique_ptr<GroupCell> Worksheet::CopyTree() const {
 }
 
 bool Worksheet::CopyBitmap() const {
-  BitmapOut bitmap(&m_configuration, CopySelection(), 1,
-                   1000000 * m_configuration->MaxClipbrdBitmapMegabytes());
+  BitmapOut bitmap(&m_configuration, CopySelection());
   bool retval = bitmap.ToClipboard();
   return retval;
 }
@@ -5653,6 +5822,32 @@ void Worksheet::UndoInsideCell() {
     RequestRecalculation(GetActiveCell()->GetGroup());
     RequestRedraw();
   }
+}
+
+void Worksheet::ToggleTextFormat(TextFormat::Format flag) {
+  EditorCell *editor = GetActiveCell();
+  if (!editor || !editor->CanFormat())
+    return;
+  if (editor->ToggleFormat(flag)) {
+    // Bold and italic text is wider: the cell has to be laid out anew.
+    if (editor->GetGroup()) {
+      editor->GetGroup()->ResetSize();
+      RequestRecalculation(editor->GetGroup());
+    }
+    SetSaved(false);
+  }
+  UpdateControlsNeeded(true);
+  RequestRedraw();
+}
+
+bool Worksheet::HasTextFormat(TextFormat::Format flag) const {
+  const EditorCell *editor = GetActiveCell();
+  return editor && editor->HasFormat(flag);
+}
+
+bool Worksheet::CanFormatText() const {
+  const EditorCell *editor = GetActiveCell();
+  return editor && editor->CanFormat();
 }
 
 void Worksheet::RedoInsideCell() {

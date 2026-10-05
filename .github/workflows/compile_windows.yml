@@ -4,6 +4,14 @@ name: compile_windows
 # "Sign the installer" steps below) on demand, without having to tag a release.
 on: [push, workflow_dispatch]
 
+# A newer push to the same branch makes a still-running build of the old
+# commit pointless, so cancel it rather than let it hold a runner. Never for
+# tags: a release build must always finish (on release day the queue held
+# 86 runs and the tag builds waited about three hours).
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: ${{ !startsWith(github.ref, 'refs/tags/') }}
+
 env:
   BUILD_TYPE: Release
   WXVERSION: 3.3.2
@@ -52,10 +60,49 @@ jobs:
           fetch-depth: 15
           path: wxMaxima
 
-      - name: Install NSIS
-        uses: repolevedavaj/install-nsis@v1.3.0
+      # CPack's NSIS generator needs makensis. This used to be
+      # repolevedavaj/install-nsis, which looks the installer up in
+      # SourceForge's file-list feed; on 2026-10-01 that feed stopped listing
+      # nsis-3.12-setup.exe and the step failed on every push. The action's
+      # extras (the 8192-byte long-string build and the EnVar plugin) are not
+      # needed: our CPack config uses neither CPACK_NSIS_MODIFY_PATH nor EnVar.
+      #
+      # Every NSIS download (the action, Chocolatey, winget, Scoop) ends up at
+      # SourceForge, so a SourceForge outage can't be routed around by picking
+      # another installer. Instead NSIS lives in C:\nsis and is cached: once
+      # one build has got it, later builds don't need SourceForge at all. NSIS
+      # is portable -- makensis finds its stubs and plugins next to itself --
+      # so the copied directory works without the installer's registry keys.
+      - name: Cache NSIS
+        id: cache-nsis
+        uses: actions/cache@v6
         with:
-          nsis-version: '3.12'
+          path: C:\nsis
+          key: nsis-3-v1
+
+      - name: Install NSIS
+        if: steps.cache-nsis.outputs.cache-hit != 'true'
+        run: |
+          $installed = 'C:\Program Files (x86)\NSIS'
+          # Some runner images ship NSIS already.
+          if (-not (Test-Path "$installed\makensis.exe")) {
+            foreach ($try in 1..3) {
+              choco install nsis -y --no-progress
+              if (Test-Path "$installed\makensis.exe") { break }
+              echo "::warning::makensis.exe not found after install attempt $try; retrying."
+              Start-Sleep -Seconds 15
+            }
+          }
+          if (-not (Test-Path "$installed\makensis.exe")) {
+            echo "::error::Could not install NSIS, and no cached copy exists yet."
+            exit 1
+          }
+          Copy-Item -Recurse $installed C:\nsis
+
+      - name: Put NSIS on PATH
+        run: |
+          C:\nsis\makensis.exe /VERSION
+          'C:\nsis' | Out-File -FilePath $env:GITHUB_PATH -Append
 
       - name: Cache wxWidgets
         uses: actions/cache@v6
@@ -221,6 +268,26 @@ jobs:
               exit 1
             }
             echo "All required MinGW runtime DLLs are present in the package."
+      - name: Verify the installer does not insist on administrator rights
+        # GH #2298: src/nsis/PerUserInstall.nsh overrides the
+        # "RequestExecutionLevel admin" in CPack's NSIS template, which only
+        # works as long as CPack keeps placing CPACK_NSIS_DEFINES after it.
+        # The level ends up in the installer's manifest, so check it there.
+        run: |
+            # CPack writes the installer to the build root; tell it apart from
+            # any other .exe there by the NSIS signature every installer has.
+            $exe = $null
+            foreach ($candidate in Get-ChildItem -Path wxMaxima\build -Filter *.exe) {
+              $text = [System.Text.Encoding]::ASCII.GetString([System.IO.File]::ReadAllBytes($candidate.FullName))
+              if ($text.Contains("NullsoftInst")) { $exe = $candidate; break }
+            }
+            if (-not $exe) { echo "::error::no NSIS installer was produced"; exit 1 }
+            if ($text -match 'requestedExecutionLevel level="(\w+)"') { $level = $Matches[1] } else { $level = "none" }
+            echo "$($exe.Name) requests execution level: $level"
+            if ($level -ne "highestAvailable") {
+              echo "::error::the installer requests '$level' instead of 'highestAvailable', so standard users can no longer install it"
+              exit 1
+            }
       - name: Stage runtime DLLs next to wxmaxima.exe
         # The release wxmaxima.exe is built non-static, so it depends on the MinGW
         # runtime DLLs (libstdc++-6 / libgcc_s_seh-1 / libwinpthread-1) being found
@@ -378,9 +445,9 @@ jobs:
           body_path: wxMaxima/release-notes.md
           # Both packages CPack already produces (CPACK_GENERATOR "ZIP;NSIS"),
           # not just the installer:
-          #   *.exe - the NSIS installer, which asks for administrator rights
-          #           because it writes to Program Files and registers file
-          #           associations for every user.
+          #   *.exe - the NSIS installer. It installs for all users into
+          #           Program Files if the user can get administrator rights,
+          #           and for that user alone otherwise (GH #2298).
           #   *.zip - the very same tree, unpacked wherever the user likes and
           #           run from there (GH #2298). It needs no administrator
           #           rights and no installation at all; it just does not

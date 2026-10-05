@@ -726,6 +726,17 @@ SCENARIO("A matrix too wide for the window is elided unless shown in full") {
       CHECK(matr->GetWidth() < 600);
     }
 
+    THEN("the columns that are shown use up the width there is") {
+      // Every column is equally wide, so if one more of them would still
+      // have fit, the elision gave away room it had. Choosing what to leave
+      // out once counted the first and the last column twice, which left the
+      // room for two columns unused.
+      const wxCoord colSize = matr->GetInnerCell(0, 0)->GetWidth() + 10;
+      const wxCoord budget = 600 - g_cfg->GetIndent() -
+        g_cfg->GetLabelWidth() - 15;
+      CHECK(matr->GetWidth() + colSize > budget);
+    }
+
     THEN("the first and the last column are kept") {
       for (size_t row = 0; row < rows; row++) {
         CHECK_FALSE(matr->IsElided(row, 0));
@@ -801,6 +812,32 @@ SCENARIO("A matrix too wide for the window is elided unless shown in full") {
         CHECK(matr->GetWidth() > 600);
       }
     }
+  }
+}
+
+SCENARIO("A matrix whose first column alone is too wide shows only the dots (GH #2438)") {
+  g_cfg->SetZoomFactor(1.0);
+  g_cfg->SetCanvasSize(wxSize(600, 600));
+  OversizedMatricesMode mode(Configuration::OversizedMatrices::elide);
+  const size_t rows = 2, cols = 3;
+  wxString wide;
+  for (int i = 0; i < 200; i++)
+    wide += wxS("x");
+  wxString table = wxS("<tb roundedParens=\"true\">");
+  for (size_t r = 0; r < rows; r++)
+    table += wxS("<mtr><mtd><mi>") + wide +
+      wxS("</mi></mtd><mtd><mn>1</mn></mtd><mtd><mn>2</mn></mtd></mtr>");
+  table += wxS("</tb>");
+  std::unique_ptr<GroupCell> group;
+  MatrCell *matr = LayOutMatrixXml(
+    group, wxS("<mth><lbl altCopy=\"%o1\">(%o1) </lbl>") + table + wxS("</mth>"));
+  THEN("every column is left out, and what is left fits the window") {
+    CHECK(matr->ElidedColumns() == cols);
+    CHECK(matr->GetWidth() < 600);
+  }
+  THEN("drawing it does not throw") {
+    NoClipToDrawRegion noClip(g_cfg);
+    REQUIRE_NOTHROW(matr->Draw(g_dc, g_dc));
   }
 }
 
@@ -1448,11 +1485,161 @@ SCENARIO("Only a matrix too large for the window gets alternating bands") {
   }
 }
 
+// A rows x cols matrix as wx_matrix(..., banding=<mode>) sends it.
+static wxString MatrixXmlWithBanding(size_t rows, size_t cols,
+                                     const wxString &banding) {
+  wxString xml = MatrixXml(rows, cols);
+  xml.Replace(wxS("<tb roundedParens=\"true\">"),
+              wxS("<tb roundedParens=\"true\" banding=\"") + banding + wxS("\">"));
+  return xml;
+}
+
+SCENARIO("wx_matrix()'s banding option forces bands on or off") {
+  g_cfg->SetZoomFactor(1.0);
+  g_cfg->SetCanvasSize(wxSize(600, 300));
+  OversizedMatricesMode mode(Configuration::OversizedMatrices::elide);
+
+  GIVEN("a matrix that fits, with banding=true") {
+    std::unique_ptr<GroupCell> group;
+    MatrCell *matr = LayOutMatrixXml(group, MatrixXmlWithBanding(3, 3, wxS("true")));
+    REQUIRE_FALSE(matr->IsShownPartially());
+    THEN("it is banded anyway") {
+      CHECK(matr->GetBanding() == std::optional<bool>(true));
+      CHECK(matr->IsBanded());
+      CHECK(ColourAboveEntry(matr, 0, 0) == *wxWHITE);
+      CHECK(ColourAboveEntry(matr, 1, 0) != *wxWHITE);
+    }
+    THEN("the option survives saving") {
+      CHECK(matr->ToXML().Contains(wxS("banding=\"true\"")));
+    }
+  }
+
+  GIVEN("an elided matrix, with banding=false") {
+    std::unique_ptr<GroupCell> group;
+    MatrCell *matr =
+      LayOutMatrixXml(group, MatrixXmlWithBanding(60, 40, wxS("false")));
+    REQUIRE(matr->ElidedColumns() > 0);
+    THEN("it stays plain") {
+      CHECK(matr->GetBanding() == std::optional<bool>(false));
+      CHECK_FALSE(matr->IsBanded());
+      CHECK(ColourAboveEntry(matr, 1, 0) == *wxWHITE);
+      CHECK(ColourAboveEntry(matr, 1, 1) == *wxWHITE);
+    }
+    THEN("the option survives saving and copying a block") {
+      CHECK(matr->ToXML().Contains(wxS("banding=\"false\"")));
+      auto block = matr->CopyBlock(
+        {.firstRow = 0, .lastRow = 2, .firstCol = 0, .lastCol = 2}, nullptr);
+      REQUIRE(block != nullptr);
+      CHECK(block->ToXML().Contains(wxS("banding=\"false\"")));
+    }
+  }
+
+  GIVEN("banding=auto or a value this version doesn't know") {
+    for (const wxString value : {wxS("auto"), wxS("sometimes")}) {
+      std::unique_ptr<GroupCell> group;
+      MatrCell *matr = LayOutMatrixXml(group, MatrixXmlWithBanding(3, 3, value));
+      INFO(value);
+      CHECK_FALSE(matr->GetBanding().has_value());
+      CHECK_FALSE(matr->IsBanded());
+      CHECK_FALSE(matr->ToXML().Contains(wxS("banding=")));
+    }
+  }
+}
+
 class TestApp : public wxApp {
 public:
   bool OnInit() override { return true; }
 };
 wxDECLARE_APP(TestApp);
+
+// a1*bb2*ccc3*... as Maxima sends it: a long product whose multiplication
+// signs are hidable.
+static wxString LongProductXml() {
+  wxString xml = wxS("<mth><lbl altCopy=\"%o1\">(%o1) </lbl>");
+  for (int i = 0; i < 40; i++) {
+    if (i > 0)
+      xml += wxS("<h>*</h>");
+    xml += wxS("<mi>") + wxString(static_cast<wxChar>('a' + i % 26), 1 + i % 4) +
+      wxString::Format(wxS("%d"), i) + wxS("</mi>");
+  }
+  return xml + wxS("</mth>");
+}
+
+SCENARIO("A hidden multiplication sign at a line break is drawn (GH #2263)") {
+  g_cfg->SetZoomFactor(1.0);
+  const bool hideMultSignBefore = g_cfg->HidemultiplicationSign();
+  g_cfg->HidemultiplicationSign(true);
+  g_cfg->SetCanvasSize(wxSize(4000, 600));
+  auto group = std::make_unique<GroupCell>(g_cfg, GC_TYPE_CODE,
+                                           wxS("product;"));
+  MathParser parser(g_cfg);
+  auto output = parser.ParseLine(LongProductXml());
+  REQUIRE(output != nullptr);
+  group->AppendOutput(std::move(output));
+  group->Recalculate();
+
+  GIVEN("a product too long for one line") {
+    const int narrowWidth = GENERATE(600, 400, 300, 200);
+    INFO("narrow canvas width: " << narrowWidth);
+    g_cfg->SetCanvasSize(wxSize(narrowWidth, 600));
+    group->Recalculate();
+
+    THEN("every soft line break has a visible multiplication sign next to it") {
+      const Cell *prev = nullptr;
+      int endingWithSign = 0, startingWithSign = 0;
+      for (const Cell &cell : OnDrawList(group->GetOutput())) {
+        if (prev && cell.BreakLineHere() && !cell.HasHardLineBreak()) {
+          const Cell *sign = nullptr;
+          if (prev->IsHiddenMultSign()) {
+            endingWithSign++;
+            sign = prev;
+          }
+          if (cell.IsHiddenMultSign()) {
+            startingWithSign++;
+            sign = &cell;
+          }
+          REQUIRE(sign != nullptr);
+          CHECK(sign->IsAtLineBreak());
+          CHECK_FALSE(sign->IsDrawnHidden());
+          CHECK(sign->GetWidth() == sign->GetWidthAtLineBreak());
+        }
+        prev = &cell;
+      }
+      CHECK(endingWithSign > 0);
+      THEN("the sign ends the line unless a factor fills a whole line") {
+        if (narrowWidth >= 300)
+          CHECK(startingWithSign == 0);
+      }
+    }
+
+    THEN("every other multiplication sign stays hidden") {
+      for (const Cell &cell : OnDrawList(group->GetOutput()))
+        if (cell.IsHiddenMultSign() && !cell.IsAtLineBreak()) {
+          CHECK(cell.IsDrawnHidden());
+          CHECK(cell.GetWidth() < cell.GetWidthAtLineBreak());
+        }
+    }
+
+    THEN("the visible signs still fit on their lines") {
+      for (const Cell &cell : OnDrawList(group->GetOutput()))
+        if (cell.BreakLineHere())
+          CHECK(cell.GetLineWidth() < std::max(narrowWidth, 150));
+    }
+
+    WHEN("the canvas is wide enough again") {
+      g_cfg->SetCanvasSize(wxSize(4000, 600));
+      group->Recalculate();
+      THEN("all multiplication signs are hidden again") {
+        for (const Cell &cell : OnDrawList(group->GetOutput()))
+          if (cell.IsHiddenMultSign()) {
+            CHECK_FALSE(cell.IsAtLineBreak());
+            CHECK(cell.IsDrawnHidden());
+          }
+      }
+    }
+  }
+  g_cfg->HidemultiplicationSign(hideMultSignBefore);
+}
 
 int main(int argc, char **argv) {
   wxLog::EnableLogging(false);

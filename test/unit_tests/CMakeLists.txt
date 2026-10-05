@@ -140,6 +140,14 @@ target_include_directories(test_LdbSupport PRIVATE ${CMAKE_SOURCE_DIR}/src)
 target_link_libraries(test_LdbSupport PRIVATE ${wxWidgets_LIBRARIES})
 add_test(LdbSupport test_LdbSupport)
 
+# The keywords context-sensitive help finds in wxMaxima's own manual: checked
+# against the manuals in info/, whose hand-written anchors have to match them.
+add_executable(test_WxMaximaManualAnchors test_WxMaximaManualAnchors.cpp ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
+target_include_directories(test_WxMaximaManualAnchors PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_compile_definitions(test_WxMaximaManualAnchors PRIVATE WXM_SOURCE_DIR="${CMAKE_SOURCE_DIR}")
+target_link_libraries(test_WxMaximaManualAnchors PRIVATE ${wxWidgets_LIBRARIES})
+add_test(WxMaximaManualAnchors test_WxMaximaManualAnchors)
+
 # The Maxima-protocol helpers (MaximaProtocol) - prompt classification and the
 # blank-command predicate - are GUI-free, so they are tested directly against
 # captured prompt/command strings.
@@ -182,6 +190,17 @@ target_link_libraries(test_AuiPerspectiveRepair PRIVATE ${wxWidgets_LIBRARIES})
 add_test(NAME AuiPerspectiveRepair
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_AuiPerspectiveRepair>")
 
+# The "Save As" dialog has to propose a file name whose extension agrees with
+# the file type it shows: wxGTK appends the first type's extension to a name
+# that has none, and a .wxm document got saved as .wxmx (GH #2440).
+add_executable(test_SaveAsDefaults
+    test_SaveAsDefaults.cpp ${CMAKE_SOURCE_DIR}/src/SaveAsDefaults.cpp
+    ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
+target_include_directories(test_SaveAsDefaults PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_link_libraries(test_SaveAsDefaults PRIVATE ${wxWidgets_LIBRARIES})
+add_test(NAME SaveAsDefaults
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_SaveAsDefaults>")
+
 # The main toolbar's height follows from its contents, but wxAUI restores the
 # one the previous session stored over it -- and on MS Windows rescales that
 # stored value on every DPI change, so it can drift a pixel per session.
@@ -193,6 +212,17 @@ target_include_directories(test_ToolbarPane PRIVATE ${CMAKE_SOURCE_DIR}/src)
 target_link_libraries(test_ToolbarPane PRIVATE ${wxWidgets_LIBRARIES})
 add_test(NAME ToolbarPane
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_ToolbarPane>")
+
+# Character formatting in text cells (GH #492): how formats follow an edit and
+# how they are saved to and read from .wxmx is pure string/XML code, so it is
+# tested directly.
+add_executable(test_TextFormat
+    test_TextFormat.cpp ${CMAKE_SOURCE_DIR}/src/cells/TextFormat.cpp
+    ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
+target_include_directories(test_TextFormat PRIVATE ${CMAKE_SOURCE_DIR}/src/cells)
+target_link_libraries(test_TextFormat PRIVATE ${wxWidgets_LIBRARIES})
+add_test(NAME TextFormat
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_TextFormat>")
 
 # Link detection in text cells (GH #2396) is a pure string function shared by
 # the display and the HTML/LaTeX exporters, so it is tested directly.
@@ -321,6 +351,18 @@ if(TARGET wxmTestApp)
     # out of the test, which is what flawfinder rightly objects to.
     add_test(NAME EditorCellBidi
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_EditorCellBidi>")
+
+    # The toolbar's bold/italic/underline/strikethrough buttons on a text cell
+    # (GH #492): formatting a selection, the format for what is typed next,
+    # undo, and that bold text is laid out wider.
+    add_executable(test_EditorCellFormat
+        test_EditorCellFormat.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_EditorCellFormat PUBLIC cxx_std_20)
+    target_link_libraries(test_EditorCellFormat PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME EditorCellFormat
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_EditorCellFormat>")
 
     # Real tab-character support: a '\t' is a single character in m_text,
     # expanded to the next 4-column stop only at draw/measure time

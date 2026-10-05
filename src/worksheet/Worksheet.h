@@ -62,6 +62,7 @@
 #include "WorksheetSearch.h"
 #include "WorksheetLayout.h"
 #include "MatrixScrollbars.h"
+#include "ClipboardContents.h"
 #include "OutputNavigation.h"
 #include "cells/TextCell.h"
 #include "EvaluationQueue.h"
@@ -611,6 +612,15 @@ public:
     - keycode (ccode) is WXK_UP/WXK_DOWN
   */
   void SelectWithChar(int ccode);
+  /*! Shift+Up/Down with something inside a cell's output selected
+
+    Selects the cell the output belongs to together with its visible
+    neighbour above (Up) or below (Down), just as Shift+Up/Down at the edge
+    of the cell's input does, and sets the horizontal cursor's selection
+    anchors so that further presses extend the selection from there. Returns
+    false, having done nothing, if the selection isn't inside an output.
+  */
+  bool SelectWholeCellsFromOutput(int ccode);
 
   /*!
    * Select the rectangle surrounded by down and up. Called from OnMouseMotion.
@@ -798,6 +808,16 @@ private:
   /*! The pointer to thesettings storage
    */
   Configuration *m_configuration = nullptr;
+  /*! What this worksheet's last copy put on the clipboard (GH #2030)
+
+    Most of its formats render only when another program pastes them, using
+    this worksheet's configuration. The data objects on the clipboard share
+    ownership of it, so this expires as soon as something else is copied,
+    and while it is still alive this worksheet's data is on the clipboard --
+    which RenderClipboardContents() must deal with before the worksheet, or
+    its configuration, goes away.
+  */
+  mutable std::weak_ptr<ClipboardContents> m_clipboardContents;
   /*! The layout/recalculation engine.
 
     Owns the layout scheduling state (resume point, cached widths, virtual-size
@@ -1079,9 +1099,20 @@ public:
 
     Unlike CaretVisibleIs() this never triggers a layout pass: it is asked
     right before output is appended, when the positions on screen are the ones
-    that matter, not the ones a pass would compute.
+    that matter, not the ones a pass would compute. (At most it lays out the
+    cursor's own cell, if that cell's size has been reset - see
+    WorksheetLayout::AnchorY().)
   */
   bool ScrollAnchorVisible();
+
+  /*! Keep the cursor where it is on screen while a cell's output changes.
+
+    To be called right before output is added to or removed from a cell: if
+    that cell is above the cursor, the cursor would otherwise move with
+    everything below it. Does nothing if the cursor isn't on screen - see
+    WorksheetLayout::ArmScrollCompensation().
+  */
+  void KeepCursorStillOnScreen();
 
   //! The group that the line's cells will belong to - used by InsertLine
   GroupCell *GetInsertGroup() const;
@@ -1378,6 +1409,34 @@ public:
   //! Convert the current selection to MathML
   wxString ConvertSelectionToMathML() const;
 
+  //! A MathML document showing a list of cells, nicely indented
+  static wxString CellsToMathML(const Cell *cells);
+
+  /*! Replace this worksheet's lazily rendered clipboard data by data that
+    no longer needs the worksheet (GH #2030)
+
+    The formats Copy() and CopyCells() put on the clipboard are rendered when
+    another program asks for them, which a closed worksheet cannot do: its
+    configuration -- which the copied cells are drawn with -- is gone, and
+    once wxMaxima has exited there is nobody left to ask at all. So if the
+    clipboard still holds this worksheet's data, this renders the formats
+    worth keeping (.wxm, text, RTF, MathML and the bitmap -- not SVG or EMF),
+    puts them on the clipboard instead, and asks the system to keep them
+    after wxMaxima exits (wxClipboard::Flush()). Called by the destructor;
+    does nothing if something else has been copied since.
+
+    \return true if there was data to hand over.
+  */
+  bool RenderClipboardContents();
+
+  /*! The data RenderClipboardContents() puts on the clipboard
+
+    Everything in it is rendered by the time this returns, and none of it
+    refers to the cells or the configuration any more.
+  */
+  static std::unique_ptr<wxDataObject>
+  CreateIndependentDataObject(const ClipboardContents &contents);
+
   //! Convert the current selection to a bitmap
   wxBitmap ConvertSelectionToBitmap() const;
 
@@ -1655,6 +1714,17 @@ public:
     \return false if no cell is selected or there is no further undo information
   */
   bool CanUndoInsideCell() const { return m_document.CanUndoInsideCell(); }
+
+  /*! Switch a character format (bold, ...) of the active text cell on or off.
+
+    What the toolbar's formatting buttons do (GH #492); see
+    EditorCell::ToggleFormat(). Does nothing outside a text cell.
+  */
+  void ToggleTextFormat(TextFormat::Format flag);
+  //! Is this character format on where the cursor is? (For the toolbar.)
+  bool HasTextFormat(TextFormat::Format flag) const;
+  //! Is the cursor in a cell whose text can be formatted?
+  bool CanFormatText() const;
 
   void UndoInsideCell();
 

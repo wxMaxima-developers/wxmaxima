@@ -188,8 +188,6 @@ private:
   //! Calculates the size of the images for a configuration tab
   int GetImageSize();
 
-  //! The panel that allows to choose which formats to put on the clipboard
-  wxWindow *CreateClipboardPanel();
 #ifdef WXM_USE_AI_TOOLS
   wxWindow *CreateAiChatPanel();
 #endif
@@ -208,10 +206,6 @@ private:
   wxCheckBox *m_screenReaderMathML;
 #endif
 
-  wxCheckBox *m_copyBitmap, *m_copyMathML, *m_copyMathMLHTML, *m_copyRTF, *m_copySVG;
-#if wxUSE_ENH_METAFILE
-  wxCheckBox *m_copyEMF;
-#endif
 
   //! The panel that allows to set the editing options
   wxWindow *CreateWorksheetPanel();
@@ -312,7 +306,6 @@ protected:
   wxRadioButton *m_displayNDigits;
   wxRadioButton *m_displayAllDigits;
   wxRadioButton *m_linebreaksInLongNums;
-  wxSpinCtrl *m_maxClipbrdBitmapMegabytes;
   //! A checkbox that asks if TeX should put the exponents above or after the subscripts.
   wxCheckBox *m_TeXExponentsAfterSubscript;
   //! A checkbox that asks if TeX should use the \\partial symbol for representing diff()
@@ -330,6 +323,8 @@ protected:
   wxRadioBox *m_layoutStrategy;
   //! How to show a matrix too large for the window
   wxRadioBox *m_oversizedMatrices;
+  //! What is drawn behind transparent parts of images
+  wxRadioBox *m_imageBackdrop;
   wxRadioButton *m_enterEvaluates;
   wxRadioButton *m_ctrlEnterEvaluates;
   wxCheckBox *m_numpadEnterEvaluates;

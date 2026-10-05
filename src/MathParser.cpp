@@ -36,6 +36,7 @@
 #include <wx/tokenzr.h>
 
 #include "MathParser.h"
+#include "cells/TextFormat.h"
 
 #include "cells/AbsCell.h"
 #include "cells/AnimationCell.h"
@@ -197,6 +198,7 @@ MathParser::MathParser(Configuration *cfg, const wxString &zipfile) {
       wxS("rownames"),
       wxS("colnames"),
       wxS("oversized"),
+      wxS("banding"),
       wxS("line"),
       wxS("print"),
       wxS("mat"),
@@ -580,8 +582,13 @@ std::unique_ptr<Cell> MathParser::ParseCellTag(wxXmlNode *node, int depth) {
   while (children) {
     if (children->GetName() == wxS("editor")) {
       std::unique_ptr<Cell> ed(ParseEditorTag(children, depth));
-      if (ed)
+      if (ed) {
         group->SetEditableContent(ed->GetValue());
+        // A text cell's formatting (GH #492) travels with its text.
+        const auto *editor = dynamic_cast<const EditorCell *>(ed.get());
+        if (editor && group->GetEditable())
+          group->GetEditable()->CopyFormatsFrom(*editor);
+      }
     } else if (children->GetName() ==
                wxS("fold")) { // This GroupCell contains folded groupcells
       CellListBuilder<GroupCell> tree;
@@ -735,16 +742,27 @@ std::unique_ptr<Cell> MathParser::ParseEditorTag(wxXmlNode *node, int WXUNUSED(d
     editor->SetType(MC_TYPE_HEADING6);
 
   wxString text;
+  // The character formatting of a text cell (GH #492), and the attributes of
+  // its lines this version doesn't know, see TextFormat.h
+  TextFormat::Formats formats;
+  std::vector<std::pair<wxString, wxString>> unknownLineAttributes;
   wxXmlNode *line = node->GetChildren();
   while (line) {
     if (line->GetName() == wxS("line")) {
       if (!text.IsEmpty())
         text += wxS("\n");
-      text += line->GetNodeContent();
+      const std::size_t lineStart = text.Length();
+      wxString unknownAttributes;
+      TextFormat::ReadLine(line, text, formats, &unknownAttributes);
+      if (!unknownAttributes.IsEmpty())
+        unknownLineAttributes.emplace_back(text.Mid(lineStart), unknownAttributes);
     }
     line = line->GetNext();
   } // end while
   editor->SetValue(text);
+  if (!TextFormat::IsPlain(formats))
+    editor->SetFormats(std::move(formats));
+  editor->SetUnknownLineAttributes(std::move(unknownLineAttributes));
   return editor;
 }
 
@@ -1255,6 +1273,15 @@ std::unique_ptr<Cell> MathParser::ParseTableTag(wxXmlNode *node, int depth) {
   // ignored, leaving the matrix to follow the configuration.
   matrix->SetOversizedMode(
     MatrCell::OversizedModeFromName(node->GetAttribute(wxS("oversized"))));
+  // wx_matrix()'s banding option; without it, or with a value this version
+  // doesn't know, only a matrix too large for the window is banded.
+  {
+    const wxString banding = node->GetAttribute(wxS("banding"));
+    if (banding == wxS("true"))
+      matrix->SetBanding(true);
+    else if (banding == wxS("false"))
+      matrix->SetBanding(false);
+  }
   if (node->GetAttribute(wxS("bracketParens")) == wxS("true"))
     matrix->BracketParens();
   else if (node->GetAttribute(wxS("angledParens")) == wxS("true"))

@@ -56,6 +56,10 @@
 #include "art/toolbar/sync-horizontal.h"
 #include "art/toolbar/text.h"
 #include "art/toolbar/view-refresh1.h"
+#include "art/toolbar/format-text-bold.h"
+#include "art/toolbar/format-text-italic.h"
+#include "art/toolbar/format-text-underline.h"
+#include "art/toolbar/format-text-strikethrough.h"
 
 #include "art/config/document-export.h"
 #include "art/config/edit-copy_backup.h"
@@ -122,6 +126,14 @@ wxBitmapBundle wxMaximaArtProvider::CreateBitmapBundle(const wxArtID& id,
     return wxBitmapBundle::FromSVG(wxMaximaArtProvider::gunzip(TEXT_SVG_GZ, TEXT_SVG_GZ_SIZE).mb_str(), artsize);
   } else if (id == wxmaximaART_VIEW_REFRESH1) {
     return wxBitmapBundle::FromSVG(wxMaximaArtProvider::gunzip(VIEW_REFRESH1_SVG_GZ, VIEW_REFRESH1_SVG_GZ_SIZE).mb_str(), artsize);
+  } else if (id == wxmaximaART_FORMAT_TEXT_BOLD) {
+    return wxBitmapBundle::FromSVG(wxMaximaArtProvider::gunzip(FORMAT_TEXT_BOLD_SVG_GZ, FORMAT_TEXT_BOLD_SVG_GZ_SIZE).mb_str(), artsize);
+  } else if (id == wxmaximaART_FORMAT_TEXT_ITALIC) {
+    return wxBitmapBundle::FromSVG(wxMaximaArtProvider::gunzip(FORMAT_TEXT_ITALIC_SVG_GZ, FORMAT_TEXT_ITALIC_SVG_GZ_SIZE).mb_str(), artsize);
+  } else if (id == wxmaximaART_FORMAT_TEXT_UNDERLINE) {
+    return wxBitmapBundle::FromSVG(wxMaximaArtProvider::gunzip(FORMAT_TEXT_UNDERLINE_SVG_GZ, FORMAT_TEXT_UNDERLINE_SVG_GZ_SIZE).mb_str(), artsize);
+  } else if (id == wxmaximaART_FORMAT_TEXT_STRIKETHROUGH) {
+    return wxBitmapBundle::FromSVG(wxMaximaArtProvider::gunzip(FORMAT_TEXT_STRIKETHROUGH_SVG_GZ, FORMAT_TEXT_STRIKETHROUGH_SVG_GZ_SIZE).mb_str(), artsize);
 
   } else if (id == wxmaximaART_CONFIG_DOCUMENT_EXPORT) {
     return wxBitmapBundle::FromSVG(wxMaximaArtProvider::gunzip(DOCUMENT_EXPORT_SVG_GZ, DOCUMENT_EXPORT_SVG_GZ_SIZE).mb_str(), artsize);

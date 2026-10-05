@@ -162,17 +162,11 @@ Configuration::Configuration(const Configuration &o) :
   m_mathJaxURL(o.m_mathJaxURL),
   m_mathJaxURL_UseUser(o.m_mathJaxURL_UseUser),
   m_showCodeCells(o.m_showCodeCells),
-  m_copyBitmap(o.m_copyBitmap),
-  m_copyMathML(o.m_copyMathML),
-  m_copyMathMLHTML(o.m_copyMathMLHTML),
   m_showLength(o.m_showLength),
   m_usepngCairo(o.m_usepngCairo),
   m_enterEvaluates(o.m_enterEvaluates),
   m_useSVG(o.m_useSVG),
   m_fixedFontTC(o.m_fixedFontTC),
-  m_copyRTF(o.m_copyRTF),
-  m_copySVG(o.m_copySVG),
-  m_copyEMF(o.m_copyEMF),
   m_TOCshowsSectionNumbers(o.m_TOCshowsSectionNumbers),
   m_useUnicodeMaths(o.m_useUnicodeMaths),
   m_indentMaths(o.m_indentMaths),
@@ -203,12 +197,12 @@ Configuration::Configuration(const Configuration &o) :
   m_bitmapScale(o.m_bitmapScale),
   m_defaultFramerate(o.m_defaultFramerate),
   m_tocDepth(o.m_tocDepth),
-  m_maxClipbrd_BitmapMegabytes(o.m_maxClipbrd_BitmapMegabytes),
   m_autoSaveMinutes(o.m_autoSaveMinutes),
   m_maxLayoutTime(o.m_maxLayoutTime),
   m_layoutStrategy(o.m_layoutStrategy),
   m_oversizedMatrices(o.m_oversizedMatrices),
   m_oversizedMatricesOverridable(o.m_oversizedMatricesOverridable),
+  m_imageBackdrop(o.m_imageBackdrop),
   m_wxMathML_Filename(o.m_wxMathML_Filename),
   m_maximaHelpFormat(o.m_maximaHelpFormat),
   m_cellCfgCnt(o.m_cellCfgCnt.load())
@@ -277,7 +271,6 @@ void Configuration::ResetAllToDefaults() {
   m_maximaUsesHhtmlBrowser = true;
   m_maximaUsesWxmaximaBrowser = OfferInternalHelpBrowser();
   m_bitmapScale = 3;
-  m_maxClipbrd_BitmapMegabytes = 4;
   m_defaultFramerate = 12;
   m_tocDepth = 255;
   m_fixedFontTC = false;
@@ -364,18 +357,10 @@ void Configuration::ResetAllToDefaults() {
   m_showCodeCells = true;
   m_greekSidebar_ShowLatinLookalikes = false;
   m_greekSidebar_Show_mu = false;
-  m_copyBitmap = false; // Otherwise MS Office, OpenOffice and LibreOffice
-  // prefer the bitmap
-  // to Mathml and RTF. Also mail programs prefer bitmaps to text - which is
-  // counter-productive for maxima-discuss.
-  m_copyMathML = true;
-  m_copyMathMLHTML = false;
-  m_copyRTF = true;
-  m_copySVG = true;
-  m_copyEMF = false;
   m_showLength = 2;
   m_layoutStrategy = LayoutStrategy::layout2DIfFits;
   m_oversizedMatrices = OversizedMatrices::elide;
+  m_imageBackdrop = ImageBackdrop::onDarkBackground;
   m_useUnicodeMaths = true;
   m_offerKnownAnswers = true;
   m_screenReaderAnnouncesMathML = false;
@@ -553,7 +538,9 @@ wxString Configuration::GetAutosubscript_string() const {
   case 1:
     return "t";
   default:
-    return "'all";
+    // The Maxima symbol is $all: 'all would be a Lisp symbol of the same
+    // name, which no comparison in wxMathML.lisp matches (#1653).
+    return "'$all";
   }
 }
 
@@ -776,10 +763,6 @@ void Configuration::ReadConfig() {
       }
     }
   }
-  // Read by the table loop above; clamp here, same as autoSaveMinutes/
-  // MaxLayoutTime.
-  if (m_maxClipbrd_BitmapMegabytes < 0)
-    m_maxClipbrd_BitmapMegabytes = 1;
   #ifdef __WXMSW__
   config->Read("usewgnuplot", &m_useWgnuplot);
   #endif
@@ -845,6 +828,13 @@ void Configuration::ReadConfig() {
     if (om < 0 || om > static_cast<int>(OversizedMatrices::scroll))
       om = static_cast<int>(OversizedMatrices::elide);
     m_oversizedMatrices = static_cast<OversizedMatrices>(om);
+  }
+  {
+    int ib = static_cast<int>(m_imageBackdrop);
+    config->Read(wxS("imageBackdrop"), &ib);
+    if (ib < 0 || ib > static_cast<int>(ImageBackdrop::always))
+      ib = static_cast<int>(ImageBackdrop::onDarkBackground);
+    m_imageBackdrop = static_cast<ImageBackdrop>(ib);
   }
   if(m_showLength < 0)
     m_showLength = 0;
@@ -1239,8 +1229,8 @@ void Configuration::WriteSettings(const wxString &file) {
   config->Write("maximaHelpFormat", static_cast<long>(m_maximaHelpFormat));
 
   // Print margins, showAllDigits, lineBreaksInLongNums, keepPercent,
-  // labelWidth, saveUntitled, cursorJump, autoSaveMinutes, MaxLayoutTime and
-  // maxClipbrd_BitmapMegabytes are all in ScalarConfigSettings() now, so
+  // labelWidth, saveUntitled, cursorJump, autoSaveMinutes and MaxLayoutTime
+  // are all in ScalarConfigSettings() now, so
   // WriteStyles() below writes them.
 
   WriteStyles(config);
@@ -1336,6 +1326,7 @@ void Configuration::WriteStyles(wxConfigBase *config) {
   config->Write(wxS("helpBrowser"), m_helpBrowserUserLocation);
   config->Write(wxS("layoutStrategy"), static_cast<int>(m_layoutStrategy));
   config->Write(wxS("oversizedMatrices"), static_cast<int>(m_oversizedMatrices));
+  config->Write(wxS("imageBackdrop"), static_cast<int>(m_imageBackdrop));
   config->Write("HTMLequationFormat", static_cast<int>(m_htmlEquationFormat));
   config->Write("autosubscript", m_autoSubscript);
   config->Write("language", m_language);
@@ -1360,12 +1351,6 @@ Configuration::ScalarConfigSettings() {
     {wxS("autoWrapMode"), &Configuration::m_autoWrap},
     {wxS("bitmapScale"), &Configuration::m_bitmapScale},
     {wxS("changeAsterisk"), &Configuration::m_changeAsterisk},
-    {wxS("copyBitmap"), &Configuration::m_copyBitmap},
-    {wxS("copyEMF"), &Configuration::m_copyEMF},
-    {wxS("copyMathMLHTML"), &Configuration::m_copyMathMLHTML},
-    {wxS("copyMathML"), &Configuration::m_copyMathML},
-    {wxS("copyRTF"), &Configuration::m_copyRTF},
-    {wxS("copySVG"), &Configuration::m_copySVG},
     {wxS("cursorJump"), &Configuration::m_cursorJump},
     // Key renamed (was "DefaultFramerate") when the value changed from int to
     // double: reading an existing integer-typed registry/plist value back as a
@@ -1399,8 +1384,6 @@ Configuration::ScalarConfigSettings() {
     {wxS("matchParens"), &Configuration::m_matchParens},
     {wxS("mathJaxURL"), &Configuration::m_mathJaxURL},
     {wxS("mathJaxURL_UseUser"), &Configuration::m_mathJaxURL_UseUser},
-    {wxS("maxClipbrd_BitmapMegabytes"),
-     &Configuration::m_maxClipbrd_BitmapMegabytes},
     {wxS("maxGnuplotMegabytes"), &Configuration::m_maxGnuplotMegabytes},
     {wxS("maxima"), &Configuration::m_maximaUserLocation},
     {wxS("maximaUsesHhtmlBrowser"), &Configuration::m_maximaUsesHhtmlBrowser},

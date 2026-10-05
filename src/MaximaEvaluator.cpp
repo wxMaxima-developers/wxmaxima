@@ -439,6 +439,9 @@ void MaximaEvaluator::TriggerEvaluation() {
       if (m_wxMaxima.GetWorksheet()->GetSelectionEnd()->GetGroup() == tmp)
         m_wxMaxima.GetWorksheet()->ClearSelection();
     }
+    // Removing the old output pulls everything below this cell up, the cursor
+    // too if the user is reading or typing further down.
+    m_wxMaxima.GetWorksheet()->KeepCursorStillOnScreen();
     tmp->RemoveOutput();
     m_wxMaxima.GetWorksheet()->RequestRecalculation(tmp);
     m_wxMaxima.GetWorksheet()->RequestRedraw();

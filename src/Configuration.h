@@ -549,6 +549,38 @@ public:
     return m_oversizedMatrices;
   }
 
+  /*! What is drawn behind the transparent parts of an image (GH #2227)
+
+    Images are usually made for paper, i.e. for a white background: black line
+    art on a transparent background disappears on a dark worksheet. The
+    backdrop's colour is the TS_IMAGE_BACKDROP style.
+  */
+  enum class ImageBackdrop {
+    //! Nothing: the worksheet shows through
+    none = 0,
+    //! The backdrop colour, but only if the worksheet's background is dark (the default)
+    onDarkBackground = 1,
+    //! Always the backdrop colour
+    always = 2
+  };
+  ImageBackdrop GetImageBackdrop() const { return m_imageBackdrop; }
+  void SetImageBackdrop(ImageBackdrop mode) { m_imageBackdrop = mode; }
+  /*! Whether images are to be drawn on the TS_IMAGE_BACKDROP colour right now
+
+    Printing never needs the "dark background" variant: paper is white.
+  */
+  bool DrawImageBackdrop() {
+    switch (m_imageBackdrop) {
+    case ImageBackdrop::always:
+      return true;
+    case ImageBackdrop::onDarkBackground:
+      return !GetPrinting() && (DefaultBackgroundColor().GetLuminance() < 0.5);
+    case ImageBackdrop::none:
+      break;
+    }
+    return false;
+  }
+
   /*! What gives a scrolling matrix its scrollbars, if anything
 
     Set only on the worksheet's own configuration, by the worksheet. It is
@@ -1186,22 +1218,9 @@ public:
   //! Returns the URL MathJaX can be found at.
   void MathJaXURL(wxString url){m_mathJaxURL = std::move(url);}
 
-  bool CopyBitmap() const {return m_copyBitmap;}
-  void CopyBitmap(bool copyBitmap){ m_copyBitmap = copyBitmap; }
-
-  bool CopyMathML() const {return m_copyMathML;}
-  void CopyMathML(bool copyMathML){ m_copyMathML = copyMathML;}
-  bool CopyMathMLHTML() const {return m_copyMathMLHTML;}
-  void CopyMathMLHTML(bool copyMathMLHTML){ m_copyMathMLHTML = copyMathMLHTML; }
   bool HideMarkerForThisMessage(wxString message);
   void HideMarkerForThisMessage(const wxString &message, bool hide)
     {m_hideMarkerForThisMessage[message] = hide;}
-  bool CopyRTF() const {return m_copyRTF;}
-  void CopyRTF(bool copyRTF) { m_copyRTF = copyRTF; }
-  bool CopySVG() const {return m_copySVG;}
-  void CopySVG(bool copySVG) { m_copySVG = copySVG; }
-  bool CopyEMF() const {return m_copyEMF;}
-  void CopyEMF(bool copyEMF) { m_copyEMF = copyEMF; }
   bool UseSVG() const {return m_useSVG;}
   void UseSVG(bool useSVG) { m_useSVG = useSVG ;}
   //! The choice for the "maximum output length to display" setting
@@ -1416,9 +1435,6 @@ public:
       RecalculateForce();
     m_lineBreaksInLongNums = brk;
   }
-  int  MaxClipbrdBitmapMegabytes() const {return m_maxClipbrd_BitmapMegabytes;}
-  void MaxClipbrdBitmapMegabytes(int maxClipbrd_BitmapMegabytes)
-    {m_maxClipbrd_BitmapMegabytes = maxClipbrd_BitmapMegabytes;}
 
   void MaximaUsesHtmlBrowser(bool maximaUsesHhtmlBrowser){m_maximaUsesHhtmlBrowser = maximaUsesHhtmlBrowser;}
   bool MaximaUsesHtmlBrowser() const {return m_maximaUsesHhtmlBrowser;}
@@ -1658,17 +1674,11 @@ private:
   wxString m_mathJaxURL;
   bool m_mathJaxURL_UseUser;
   bool m_showCodeCells;
-  bool m_copyBitmap;
-  bool m_copyMathML;
-  bool m_copyMathMLHTML;
   long m_showLength;
   bool m_usepngCairo;
   bool m_enterEvaluates;
   bool m_useSVG;
   bool m_fixedFontTC;
-  bool m_copyRTF;
-  bool m_copySVG;
-  bool m_copyEMF;
   bool m_TOCshowsSectionNumbers;
   bool m_useUnicodeMaths;
   bool m_indentMaths;
@@ -1703,13 +1713,13 @@ private:
   int m_bitmapScale;
   double m_defaultFramerate;
   int m_tocDepth;
-  int m_maxClipbrd_BitmapMegabytes;
   int m_autoSaveMinutes;
   int m_maxLayoutTime;
   LayoutStrategy m_layoutStrategy = LayoutStrategy::layout2DIfFits;
   OversizedMatrices m_oversizedMatrices = OversizedMatrices::elide;
   //! May a matrix override m_oversizedMatrices? See SetOversizedMatrices().
   bool m_oversizedMatricesOverridable = true;
+  ImageBackdrop m_imageBackdrop = ImageBackdrop::onDarkBackground;
   //! Not copied by the copy constructor; see GetMatrixScrollHost()
   MatrixScrollHost *m_matrixScrollHost = nullptr;
   //! Not copied by the copy constructor; see GetWorksheetTopOffset()

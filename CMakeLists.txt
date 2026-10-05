@@ -61,8 +61,21 @@ option(WXM_DISABLE_WEBVIEW
     "Disable webview for https://trac.macports.org/ticket/62904" OFF)
 option(WXM_DISABLE_QA
     "Disable wxWidgets qa for https://github.com/wxMaxima-developers/wxmaxima/issues/2064" OFF)
+# Off by default on Cygwin: there the precompiled header fails in wx's own
+# wx/platform.h, which takes the build for a native Windows one (__WINDOWS__)
+# and includes wx/msw/gccpriv.h, a header Cygwin's GTK build of wxWidgets
+# doesn't ship. The Cygwin CI job was green until the precompiled header
+# stopped being empty (20127e1) and red on every push after it. Which header
+# makes wx see _WIN32 there hasn't been established yet (no Cygwin to test
+# on); the precompiled header's Compat.h includes standard headers ahead of
+# <wx/defs.h>, which is the first suspect.
+if(CYGWIN)
+  set(WXM_PCH_DEFAULT OFF)
+else()
+  set(WXM_PCH_DEFAULT ON)
+endif()
 option(WXM_ENABLE_PRECOMPILED_HEADERS
-    "Enable precompiled headers, which speeds compilation up by about a third." ON)
+    "Enable precompiled headers, which speeds compilation up by about a third." ${WXM_PCH_DEFAULT})
 option(WXM_USE_CPPCHECK
     "Perform CPPCHECK during compilation." OFF)
 option(WXM_UNIT_TESTS

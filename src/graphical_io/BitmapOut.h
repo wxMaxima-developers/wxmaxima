@@ -24,6 +24,7 @@
 #define BITMAPOUT_H
 
 #include "OutCommon.h"
+#include <functional>
 
 /*! Renders portions of the work sheet (including 2D maths) as bitmap.
 
@@ -55,6 +56,32 @@ public:
     \return true, if the bitmap could be created.
   */
   bool Render(std::unique_ptr<Cell> &&tree, long int maxSize = -1);
+
+  /*! The largest bitmap, in pixels, that is put on the clipboard.
+
+    Without a limit, copying a large matrix as a whole (a selected block only
+    contains the selected entries) asked for a bitmap of several gigabytes:
+    copying a 300x300 matrix grew wxMaxima to 8 GB and kept it busy for
+    minutes. wxQt draws every clipboard format when Ctrl+C is pressed, so
+    there nothing reached the clipboard until that was over. 32 million
+    pixels are 128 MB, more than any program pasting a picture wants.
+  */
+  static constexpr long CLIPBOARD_MAX_PIXELS = 32000000;
+
+  /*! Draws cells as a bitmap for the clipboard
+
+    Draws at the given scale if the bitmap stays below CLIPBOARD_MAX_PIXELS,
+    else at scale 1 if that is small enough, and else not at all.
+
+    \param configuration A pointer to the pointer to the configuration to draw with
+    \param cells Makes a fresh copy of the cells each time it is called: a
+    BitmapOut consumes the cells it draws, and the second try needs them again.
+    \param scale The scale to try first
+    \return The bitmap, or an invalid bitmap if it would have been too large.
+  */
+  static wxBitmap RenderForClipboard(const Configuration * const *configuration,
+                                     const std::function<std::unique_ptr<Cell>()> &cells,
+                                     double scale);
 
   //! Returns whether the tree rendering succeeded.
   bool IsOk() const { return m_isOk; }

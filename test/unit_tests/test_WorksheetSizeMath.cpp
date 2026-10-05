@@ -34,12 +34,13 @@ SCENARIO("A tall document gets a scroll range proportional to its height") {
   GIVEN("a document far taller than the window") {
     const int clientHeight = 800;
     const WorksheetVirtualSize vs =
-      ComputeWorksheetVirtualSize(true, 500, 5000, clientHeight, 0);
+      ComputeWorksheetVirtualSize(true, 500, 5000, clientHeight, 0, 30);
     THEN("the virtual height exceeds the client height, so there is room to "
          "scroll") {
       REQUIRE(vs.height > clientHeight);
-      // document height + the deliberate over-scroll (clientHeight - 1/8).
-      REQUIRE(vs.height == 5000 + 800 - 100);
+      // document height + room for a horizontal cursor (the group skip) +
+      // one scroll unit (800 / 30 = 26 px).
+      REQUIRE(vs.height == 5000 + 30 + 26);
       REQUIRE(vs.width == 500);
     }
   }
@@ -49,7 +50,7 @@ SCENARIO("A short document still keeps a vertical scrollbar active") {
   GIVEN("a document shorter than the window") {
     const int clientHeight = 800;
     const WorksheetVirtualSize vs =
-      ComputeWorksheetVirtualSize(true, 300, 50, clientHeight, 0);
+      ComputeWorksheetVirtualSize(true, 300, 50, clientHeight, 0, 30);
     THEN("the virtual height is at least clientHeight + 10") {
       REQUIRE(vs.height >= clientHeight + 10);
     }
@@ -62,10 +63,13 @@ SCENARIO("The virtual size never shrinks below the current scroll position") {
     const int clientHeight = 800;
     const int scrollY = 4000;
     const WorksheetVirtualSize vs =
-      ComputeWorksheetVirtualSize(true, 300, 0, clientHeight, scrollY);
+      ComputeWorksheetVirtualSize(true, 300, 0, clientHeight, scrollY, 30);
     THEN("the virtual height still covers the scrolled-to region, so the view "
          "does not get clamped and jump") {
-      REQUIRE(vs.height >= scrollY + clientHeight + 10);
+      // Exactly the scrolled-to region and no extra margin: a margin here
+      // would grow the worksheet every time it is laid out while scrolled to
+      // the bottom (see "Scrolling past the end of the document is limited").
+      REQUIRE(vs.height >= scrollY + clientHeight);
     }
   }
 }
@@ -73,7 +77,7 @@ SCENARIO("The virtual size never shrinks below the current scroll position") {
 SCENARIO("An empty worksheet gets a small fixed size and a sane scroll unit") {
   GIVEN("no cell tree") {
     const WorksheetVirtualSize vs =
-      ComputeWorksheetVirtualSize(false, 12345, 67890, 800, 0);
+      ComputeWorksheetVirtualSize(false, 12345, 67890, 800, 0, 30);
     THEN("the measured extents are ignored") {
       REQUIRE(vs.width == 40);
       REQUIRE(vs.height == 40);
@@ -84,10 +88,10 @@ SCENARIO("An empty worksheet gets a small fixed size and a sane scroll unit") {
 
 SCENARIO("The scroll unit scales with the window but never drops below 10") {
   THEN("a normal window scrolls by clientHeight/30") {
-    REQUIRE(ComputeWorksheetVirtualSize(true, 100, 100, 900, 0).scrollUnit == 30);
+    REQUIRE(ComputeWorksheetVirtualSize(true, 100, 100, 900, 0, 30).scrollUnit == 30);
   }
   THEN("a tiny window is clamped to 10") {
-    REQUIRE(ComputeWorksheetVirtualSize(true, 100, 100, 60, 0).scrollUnit == 10);
+    REQUIRE(ComputeWorksheetVirtualSize(true, 100, 100, 60, 0, 30).scrollUnit == 10);
   }
 }
 
@@ -256,10 +260,10 @@ SCENARIO("Applying the virtual size pushes the computed extent to the view") {
     view.clientH = 800;
     WorksheetVirtualSizeCache cache;
     int scrollUnit = 10;
-    ApplyWorksheetVirtualSize(view, true, 500, 5000, cache, scrollUnit);
+    ApplyWorksheetVirtualSize(view, true, 500, 5000, 30, cache, scrollUnit);
     THEN("the view receives exactly the numbers ComputeWorksheetVirtualSize gives") {
       const WorksheetVirtualSize vs =
-        ComputeWorksheetVirtualSize(true, 500, 5000, 800, 0);
+        ComputeWorksheetVirtualSize(true, 500, 5000, 800, 0, 30);
       REQUIRE(view.setVirtualCalls == 1);
       REQUIRE(view.lastSetW == vs.width);
       REQUIRE(view.lastSetH == vs.height);
@@ -277,21 +281,21 @@ SCENARIO("An unchanged virtual size is not re-applied") {
     MockView view;
     WorksheetVirtualSizeCache cache;
     int scrollUnit = 10;
-    ApplyWorksheetVirtualSize(view, true, 500, 5000, cache, scrollUnit);
+    ApplyWorksheetVirtualSize(view, true, 500, 5000, 30, cache, scrollUnit);
     REQUIRE(view.setVirtualCalls == 1);
     WHEN("the same measurement is applied again") {
-      ApplyWorksheetVirtualSize(view, true, 500, 5000, cache, scrollUnit);
+      ApplyWorksheetVirtualSize(view, true, 500, 5000, 30, cache, scrollUnit);
       THEN("the view is not touched a second time") {
         REQUIRE(view.setVirtualCalls == 1);
         REQUIRE(view.setScrollRateCalls == 1);
       }
     }
     WHEN("the document then grows") {
-      ApplyWorksheetVirtualSize(view, true, 500, 9000, cache, scrollUnit);
+      ApplyWorksheetVirtualSize(view, true, 500, 9000, 30, cache, scrollUnit);
       THEN("the new size is applied") {
         REQUIRE(view.setVirtualCalls == 2);
         REQUIRE(view.lastSetH == ComputeWorksheetVirtualSize(true, 500, 9000,
-                                                             800, 0).height);
+                                                             800, 0, 30).height);
       }
     }
   }
@@ -302,7 +306,7 @@ SCENARIO("Without a tree the scroll position is not consulted") {
     MockView view;
     WorksheetVirtualSizeCache cache;
     int scrollUnit = 10;
-    ApplyWorksheetVirtualSize(view, false, 12345, 67890, cache, scrollUnit);
+    ApplyWorksheetVirtualSize(view, false, 12345, 67890, 30, cache, scrollUnit);
     THEN("the fixed empty size is applied and the scroll position is untouched") {
       REQUIRE(view.scrollReads == 0);
       REQUIRE(view.setVirtualCalls == 1);
@@ -320,10 +324,35 @@ SCENARIO("A tiny document scrolled far down keeps the scroll position valid") {
     view.scrollUnitY = 200; // 200 units * 20 px = 4000 px down
     WorksheetVirtualSizeCache cache;
     int scrollUnit = 20;
-    ApplyWorksheetVirtualSize(view, true, 300, 0, cache, scrollUnit);
+    ApplyWorksheetVirtualSize(view, true, 300, 0, 30, cache, scrollUnit);
     THEN("the applied height still covers the scrolled-to region") {
       REQUIRE(view.scrollReads == 1);
-      REQUIRE(view.lastSetH >= 200 * 20 + 800 + 10);
+      REQUIRE(view.lastSetH >= 200 * 20 + 800);
+    }
+  }
+}
+
+SCENARIO("Scrolling past the end of the document is limited") {
+  GIVEN("a document taller than the window, scrolled fully down") {
+    const int clientHeight = 800;
+    const int groupSkip = 30;
+    const WorksheetVirtualSize vs =
+      ComputeWorksheetVirtualSize(true, 500, 5000, clientHeight, 0, groupSkip);
+    const int bottomScroll = vs.height - clientHeight;
+    THEN("below the last cell there is room for a horizontal cursor plus one "
+         "scroll step, not a screenful") {
+      REQUIRE(bottomScroll + clientHeight - 5000 == groupSkip + vs.scrollUnit);
+      REQUIRE(groupSkip + vs.scrollUnit < clientHeight / 2);
+    }
+    WHEN("the size is re-computed repeatedly while scrolled to the bottom") {
+      WorksheetVirtualSize again = vs;
+      for (int i = 0; i < 20; ++i)
+        again = ComputeWorksheetVirtualSize(true, 500, 5000, clientHeight,
+                                            again.height - clientHeight,
+                                            groupSkip);
+      THEN("the over-scroll does not ratchet up") {
+        REQUIRE(again.height == vs.height);
+      }
     }
   }
 }

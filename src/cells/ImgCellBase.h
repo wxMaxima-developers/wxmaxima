@@ -101,6 +101,16 @@ public:
 
   virtual void Draw(wxDC *dc, wxDC *antialiassingDC) override = 0;
 
+protected:
+  /*! Fills the rectangle an image is about to be drawn into with the backdrop
+    for its transparent parts, if the configuration asks for one
+
+    See Configuration::ImageBackdrop. Leaves the DC's pen and brush changed.
+  */
+  void DrawImageBackdrop(wxDC *dc, const wxRect &rect) const;
+
+public:
+
   virtual wxString ToMatlab() const override = 0;
   virtual wxString ToRTF() const override = 0;
   virtual wxString ToString() const override = 0;

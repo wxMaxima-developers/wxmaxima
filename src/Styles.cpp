@@ -183,6 +183,7 @@ const wxString &Styles::Name(TextStyle textStyle) {
     {TS_EQUALSSELECTION, _("Color of text equal to selection")},
     {TS_DIFF_CHANGED, _("Diff viewer: changed text")},
     {TS_LINK, _("Links in text cells")},
+    {TS_IMAGE_BACKDROP, _("Backdrop of transparent images")},
     {TS_OUTDATED, _("Color of Outdated cells")},
     {TS_CODE_VARIABLE, _("Code highlighting: Variables")},
     {TS_CODE_FUNCTION, _("Code highlighting: Functions")},
@@ -251,6 +252,8 @@ void Styles::SetDefaults() {
   m_styles[TS_DIFF_CHANGED].Color(255, 232, 150);
   // The blue browsers use for a link nobody has visited yet.
   m_styles[TS_LINK].Color(0, 0, 238);
+  // Most line art is drawn for paper, i.e. for a white background.
+  m_styles[TS_IMAGE_BACKDROP].Color(*wxWHITE);
   m_styles[TS_OUTDATED].Color(153, 153, 153);
 }
 
@@ -377,6 +380,7 @@ const std::vector<std::pair<TextStyle, wxString>> &Styles::ConfigKeys() {
     {TS_EQUALSSELECTION, wxS("Style/EqualsSelection/")},
     {TS_DIFF_CHANGED, wxS("Style/DiffChanged/")},
     {TS_LINK, wxS("Style/Link/")},
+    {TS_IMAGE_BACKDROP, wxS("Style/ImageBackdrop/")},
     {TS_OUTDATED, wxS("Style/Outdated/")},
   };
   return keys;

@@ -388,8 +388,13 @@ protected:
   //! Show the help for Maxima (without handling of anchors).
   void ShowMaximaHelpWithoutAnchor();
 
-  //! Show the help for wxMaxima
-  void ShowWxMaximaHelp();
+  /*! Show the help for wxMaxima
+
+    \param anchor The anchor in wxMaxima's manual to scroll to, if any (see
+    WxMaximaManualAnchors). If the manual in the user's language is too old
+    to have it, the English manual is shown instead.
+  */
+  void ShowWxMaximaHelp(const wxString &anchor = wxEmptyString);
 
   //! Try to determine if help is needed for maxima or wxMaxima and show this help
   void ShowHelp(const wxString &keyword);
@@ -471,6 +476,8 @@ protected:
 
   //! Is triggered when the textstyle drop-down box's value is changed.
   void ChangeCellStyle(wxCommandEvent &event);
+  //! A character formatting button of the toolbar (bold, ...) was pressed
+  void OnTextFormat(wxCommandEvent &event);
 
   //! Is triggered when the "Find" button in the search dialog is pressed
   void OnFind(wxFindDialogEvent &event);

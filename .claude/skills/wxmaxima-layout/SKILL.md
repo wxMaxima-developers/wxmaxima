@@ -27,6 +27,15 @@ window at all (which is what `test_WorksheetLayout` does).
 Inside a single group, sizing drops into the cell-layer break pipeline
 (`Cell.cpp`): `UnBreakUpCells()` → `BreakUpCells()` → `BreakLines_List()`.
 
+**One cell's width depends on where the lines break** (GH #2263): a hidden
+multiplication sign at a soft line break is drawn (`Cell::IsAtLineBreak()`,
+`IsDrawnHidden()`), so it takes the visible sign's width. `BreakLines_List()`
+sets that flag (only ever on hidden multiplication signs) and fits such a sign
+on a line by `GetWidthAtLineBreak()`, so the dot never pushes a line past the
+window. `Unbreak()` clears it, as a cell that leaves the draw list (its parent
+went back to 2D) is never visited by the line breaker again and would keep
+drawing a stale dot.
+
 The `timeout` path time-slices (50 ms by default) so a huge worksheet stays
 responsive; a cell whose layout is cancelled mid-flight is the subject of one of
 the traps below.
@@ -116,6 +125,17 @@ scrolls by however far that point moved. Three things worth knowing:
 - **The compensation is dropped if the cursor moved** between arming and the
   pass finishing (`SetScrollAnchorCallback()` is re-asked), and it arms only
   once per pass: a second append would measure positions not on screen yet.
+- **Measure the cursor's cell with `GetHeight()`/`GetCenter()`, never
+  `GroupCell::GetMaxDrop()`.** The latter reads the raw size and gives 0 once
+  `ResetSize()` has run, and `MaximaEvaluator` resets the group of every
+  command it sends. A quick answer is then appended before any pass has laid
+  that cell out again, the drop counted as part of the shift, and the
+  horizontal cursor below it jumped up by exactly that drop - which is how
+  this still went wrong after the compensation first landed.
+  `WorksheetLayout::AnchorY()` is the one place that measures it.
+- **Removing output is compensated too**: `MaximaEvaluator` calls
+  `Worksheet::KeepCursorStillOnScreen()` before `RemoveOutput()`, as
+  `InsertLine()` does before appending.
 
 ## Testing layout without a window
 
