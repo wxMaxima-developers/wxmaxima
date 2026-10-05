@@ -436,25 +436,28 @@ Submit bug reports by following the 'New issue' link on that page."))
   opt)
 
 ;; Declare one or more variables to be always displayed with autosubscript on
+;;
+;; The declaration is a plain Lisp property, not a Maxima one made by put():
+;; put() adds the symbol to the props infolist, and kill(all) then unbinds
+;; every symbol on that list - which, as wxMathML.lisp declares Maxima's own
+;; underscore variables at startup, unbound variables like
+;; display_format_internal that Maxima needs to display anything.
 (defun $wxdeclare_subscripted (x &optional (opt t))
   (unless (listp x)
     (setq x (list '(mlist simp) x)))
   (dolist (s (cdr x))
-    ($put s opt '$wxxml_subscripted))
+    (when (symbolp s)
+      (setf (get s 'wxxml-subscripted) (if opt :yes :no))))
   opt)
 
 ;; What wxdeclare_subscripted() said about the symbol x: (t) or (nil) if it
 ;; was declared to be (or not to be) subscripted, nil if it never was declared.
-;;
-;; $get cannot tell "declared false" from "not declared", and neither can a
-;; look at properties(), which nests the indicator in a "user properties"
-;; sublist - checking its top level for it never found anything, so a
-;; declaration to false was ignored (#1653).
+;; "Declared false" has to differ from "not declared" (#1653), hence :yes/:no.
 (defun wx-subscripted-declaration (x)
-  (ignore-errors
-    (multiple-value-bind (indicator value)
-        (get-properties (cdr (mget x '$props)) '($wxxml_subscripted))
-      (when indicator (list (and value t))))))
+  (when (symbolp x)
+    (case (get x 'wxxml-subscripted)
+      (:yes (list t))
+      (:no (list nil)))))
 
 ;; Returns either nil (no autosubscript needed) or the result
 ;; of the autosubscript process
