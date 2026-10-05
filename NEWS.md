@@ -1,5 +1,8 @@
 # Current development version
 
+- "Save As" of a document opened from a `.wxm` file proposed a `.wxmx`
+  file name on Linux, although the dialog showed the `.wxm` file type, so
+  the document was saved as `.wxmx` (#2440).
 - Shift+Up/Down with a cell's output selected now selects whole cells
   starting from that cell. It used to start at the top of the worksheet.
 - `wx_matrix()` is offered by autocompletion, with a template for its

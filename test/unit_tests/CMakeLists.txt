@@ -190,6 +190,17 @@ target_link_libraries(test_AuiPerspectiveRepair PRIVATE ${wxWidgets_LIBRARIES})
 add_test(NAME AuiPerspectiveRepair
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_AuiPerspectiveRepair>")
 
+# The "Save As" dialog has to propose a file name whose extension agrees with
+# the file type it shows: wxGTK appends the first type's extension to a name
+# that has none, and a .wxm document got saved as .wxmx (GH #2440).
+add_executable(test_SaveAsDefaults
+    test_SaveAsDefaults.cpp ${CMAKE_SOURCE_DIR}/src/SaveAsDefaults.cpp
+    ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
+target_include_directories(test_SaveAsDefaults PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_link_libraries(test_SaveAsDefaults PRIVATE ${wxWidgets_LIBRARIES})
+add_test(NAME SaveAsDefaults
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_SaveAsDefaults>")
+
 # The main toolbar's height follows from its contents, but wxAUI restores the
 # one the previous session stored over it -- and on MS Windows rescales that
 # stored value on every DPI change, so it can drift a pixel per session.
