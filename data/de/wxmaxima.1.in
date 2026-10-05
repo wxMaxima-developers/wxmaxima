@@ -93,6 +93,38 @@ Erlaubt, den Pfad zum Maxima Programm anzugeben.
 Erlaubt Maxima die Kontrolle über wxMaxima durch Interprozesskommunikation. Mit Vorsicht benutzen.
 
 
+.SH "EXIT-STATUS"
+.PP
+Ein erfolgreicher Lauf, ob im Batch-Modus oder interaktiv, endet mit dem Status 0.
+Ein mit
+.B \-\-batch
+gestarteter Lauf, der vorzeitig abgebrochen wurde (siehe
+.B \-\-exit-on-error
+oben), endet stattdessen mit einem der folgenden Status, so dass ein aufrufendes
+Skript erkennen kann, warum er abgebrochen wurde, ohne dessen Log auswerten zu m\(:ussen:
+.TP
+.B 90
+Maxima hat einen Fehler gemeldet und
+.B \-\-exit-on-error
+war angegeben.
+.TP
+.B 91
+Maxima hat eine Frage gestellt, f\(:ur die keine vorbereitete Antwort vorliegt.
+.TP
+.B 92
+Die auf der Kommandozeile angegebene Datei konnte nicht ge\(:offnet werden.
+.TP
+.B 93
+Das Speichern des Arbeitsblattes ist fehlgeschlagen.
+.TP
+.B 94
+Die Daten eines eingebetteten Bildes konnten nicht geladen werden.
+.TP
+.B 95
+Ein eingebettetes Bild konnte nicht dekodiert oder dargestellt werden (wird nur mit
+.B \-\-debug
+gepr\(:uft).
+
 .SH DATEIEN
 .TP
 .I @WXMAXIMA_CONFIGFILE_PATH@
