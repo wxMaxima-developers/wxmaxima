@@ -10,6 +10,12 @@
 - The manual described declaring a variable as subscripted using
   `wxdeclare_subscript()`, which declares a text snippet instead. Both
   commands are documented now, and F1 finds `wxdeclare_subscripted`.
+- Closing wxMaxima with unsaved changes in an untitled document asks
+  whether to save them first, and opens the "Save As" dialog only if you
+  choose "Save". It used to open "Save As" first and, if that was
+  cancelled, ask anyway. The question also names the document "unsaved"
+  instead of ".", and "Save" no longer asks for a new file name for a
+  document that already has one (#1737).
 - Copying puts every clipboard format on the clipboard again (RTF, MathML,
   a bitmap, SVG, ...), but renders each only when a program actually pastes
   it, so copying a large selection is fast and doesn't fill the memory with
@@ -17,6 +23,13 @@
   is why the list of formats to copy is gone from the configuration dialog.
   When the window you copied from is closed, the .wxm code, text, RTF,
   MathML and the bitmap are kept on the clipboard (#2030).
+- The size limit for bitmaps on the clipboard, and with it the "Copy" tab
+  of the configuration dialog, is gone: a bitmap is only drawn when a
+  program pastes it, and today's systems handle big ones fine.
+- Copying now also puts the image on the clipboard in builds that use
+  wxWidgets' Qt port: a bitmap offered alongside other formats never
+  reached another program there, so pasting into an image editor pasted
+  whatever was on the clipboard before.
 - "Save As" of a document opened from a `.wxm` file proposed a `.wxmx`
   file name on Linux, although the dialog showed the `.wxm` file type, so
   the document was saved as `.wxmx` (#2440).

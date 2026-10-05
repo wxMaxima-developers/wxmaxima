@@ -188,8 +188,6 @@ private:
   //! Calculates the size of the images for a configuration tab
   int GetImageSize();
 
-  //! The panel that allows to choose which formats to put on the clipboard
-  wxWindow *CreateClipboardPanel();
 #ifdef WXM_USE_AI_TOOLS
   wxWindow *CreateAiChatPanel();
 #endif
@@ -308,7 +306,6 @@ protected:
   wxRadioButton *m_displayNDigits;
   wxRadioButton *m_displayAllDigits;
   wxRadioButton *m_linebreaksInLongNums;
-  wxSpinCtrl *m_maxClipbrdBitmapMegabytes;
   //! A checkbox that asks if TeX should put the exponents above or after the subscripts.
   wxCheckBox *m_TeXExponentsAfterSubscript;
   //! A checkbox that asks if TeX should use the \\partial symbol for representing diff()

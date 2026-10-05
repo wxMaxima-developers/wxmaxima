@@ -197,7 +197,6 @@ Configuration::Configuration(const Configuration &o) :
   m_bitmapScale(o.m_bitmapScale),
   m_defaultFramerate(o.m_defaultFramerate),
   m_tocDepth(o.m_tocDepth),
-  m_maxClipbrd_BitmapMegabytes(o.m_maxClipbrd_BitmapMegabytes),
   m_autoSaveMinutes(o.m_autoSaveMinutes),
   m_maxLayoutTime(o.m_maxLayoutTime),
   m_layoutStrategy(o.m_layoutStrategy),
@@ -271,7 +270,6 @@ void Configuration::ResetAllToDefaults() {
   m_maximaUsesHhtmlBrowser = true;
   m_maximaUsesWxmaximaBrowser = OfferInternalHelpBrowser();
   m_bitmapScale = 3;
-  m_maxClipbrd_BitmapMegabytes = 4;
   m_defaultFramerate = 12;
   m_tocDepth = 255;
   m_fixedFontTC = false;
@@ -763,10 +761,6 @@ void Configuration::ReadConfig() {
       }
     }
   }
-  // Read by the table loop above; clamp here, same as autoSaveMinutes/
-  // MaxLayoutTime.
-  if (m_maxClipbrd_BitmapMegabytes < 0)
-    m_maxClipbrd_BitmapMegabytes = 1;
   #ifdef __WXMSW__
   config->Read("usewgnuplot", &m_useWgnuplot);
   #endif
@@ -1226,8 +1220,8 @@ void Configuration::WriteSettings(const wxString &file) {
   config->Write("maximaHelpFormat", static_cast<long>(m_maximaHelpFormat));
 
   // Print margins, showAllDigits, lineBreaksInLongNums, keepPercent,
-  // labelWidth, saveUntitled, cursorJump, autoSaveMinutes, MaxLayoutTime and
-  // maxClipbrd_BitmapMegabytes are all in ScalarConfigSettings() now, so
+  // labelWidth, saveUntitled, cursorJump, autoSaveMinutes and MaxLayoutTime
+  // are all in ScalarConfigSettings() now, so
   // WriteStyles() below writes them.
 
   WriteStyles(config);
@@ -1380,8 +1374,6 @@ Configuration::ScalarConfigSettings() {
     {wxS("matchParens"), &Configuration::m_matchParens},
     {wxS("mathJaxURL"), &Configuration::m_mathJaxURL},
     {wxS("mathJaxURL_UseUser"), &Configuration::m_mathJaxURL_UseUser},
-    {wxS("maxClipbrd_BitmapMegabytes"),
-     &Configuration::m_maxClipbrd_BitmapMegabytes},
     {wxS("maxGnuplotMegabytes"), &Configuration::m_maxGnuplotMegabytes},
     {wxS("maxima"), &Configuration::m_maximaUserLocation},
     {wxS("maximaUsesHhtmlBrowser"), &Configuration::m_maximaUsesHhtmlBrowser},

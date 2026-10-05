@@ -177,6 +177,8 @@ static bool HasFormat(const std::vector<wxDataFormat> &fmts,
   return false;
 }
 
+static wxDataFormat BitmapFormat();
+
 /*! The core invariants every clipboard composite we build must satisfy.
 
   No two children may share a wxDataFormat (the collision that trips the
@@ -189,9 +191,30 @@ static void RequireDistinctAndRetrievable(const wxDataObject &obj) {
   for (size_t i = 0; i < fmts.size(); ++i) {
     // Distinct: no earlier child advertised the same format.
     for (size_t j = 0; j < i; ++j) {
+#ifdef __WXQT__
+      // wxQt maps both wxDF_TEXT and wxDF_UNICODETEXT to "text/plain" (see
+      // DataFormatIdToMimeType() in its dataobj.cpp), and it is
+      // wxTextDataObject itself that advertises both. Nothing wxMaxima
+      // offers twice is hidden by skipping exactly that pair.
+      if (fmts[i] == wxDataFormat(wxDF_UNICODETEXT) &&
+          fmts[j] == wxDataFormat(wxDF_UNICODETEXT))
+        continue;
+#endif
       INFO("duplicate clipboard format at indices " << j << " and " << i);
       REQUIRE_FALSE(fmts[i] == fmts[j]);
     }
+#ifdef __WXQT__
+    // wxQt converts a wxBitmap into clipboard image data only in
+    // wxBitmapDataObject::QtAddDataTo(), which is never reached for one
+    // child of a composite -- there every format is asked for its bytes,
+    // and a bitmap has none. Confirmed against a real wxQt build with a
+    // plain composite of a text and a bitmap object, so this is wxQt's
+    // limitation rather than wxMaxima's. LazyPngDataObject is what gives
+    // wxQt an image it really can hand over, and the scenario below pins
+    // that; here the byteless bitmap flavour is the one thing skipped.
+    if (fmts[i] == BitmapFormat())
+      continue;
+#endif
     // Retrievable: the format actually has data behind it.
     INFO("clipboard format index " << i << " carries no data");
 #if defined(__WXMSW__) && wxUSE_ENH_METAFILE
@@ -257,6 +280,10 @@ SCENARIO("The whole-cell (cut/copy-cells) clipboard object is well-formed") {
       REQUIRE(HasFormat(fmts, wxDataFormat(wxDF_UNICODETEXT)));
       REQUIRE(HasFormat(fmts, BitmapFormat()));
       REQUIRE(HasFormat(fmts, kSvgFormat));
+#ifdef __WXQT__
+      // wxQt cannot hand a wxBitmap over inside a composite at all.
+      REQUIRE(HasFormat(fmts, LazyPngDataObject::GetDataFormat()));
+#endif
     }
     THEN("the \"Rich Text Format\"-named flavor MS Word looks for (GH #2264) "
          "is the preferred one") {
@@ -295,6 +322,10 @@ SCENARIO("The selection (copy-as-output) clipboard object is well-formed") {
       REQUIRE(HasFormat(fmts, kRtf3Format));
       REQUIRE(HasFormat(fmts, wxDataFormat(wxDF_UNICODETEXT)));
       REQUIRE(HasFormat(fmts, BitmapFormat()));
+#ifdef __WXQT__
+      // wxQt cannot hand a wxBitmap over inside a composite at all.
+      REQUIRE(HasFormat(fmts, LazyPngDataObject::GetDataFormat()));
+#endif
     }
     THEN("it doesn't offer MathML as HTML, which word processors mishandle") {
       REQUIRE_FALSE(HasFormat(GetFormats(*data), wxDataFormat(wxDF_HTML)));
@@ -361,7 +392,15 @@ SCENARIO("Clipboard formats are only rendered when they are asked for "
     LazyBitmapDataObject data(payload);
     THEN("it is drawn on the first request, and only then") {
       REQUIRE(renders == 0);
-      REQUIRE(data.GetDataSize(data.GetPreferredFormat()) > 0);
+      const size_t size = data.GetDataSize(data.GetPreferredFormat());
+#ifndef __WXQT__
+      // On wxQt a bitmap inside a composite has no bytes to offer at all --
+      // see RequireDistinctAndRetrievable() and LazyPngDataObject. Asking
+      // still draws it, which is what this scenario is about.
+      REQUIRE(size > 0);
+#else
+      wxUnusedVar(size);
+#endif
       REQUIRE(data.GetBitmap().GetWidth() == 10);
       REQUIRE(renders == 1);
     }
@@ -577,6 +616,62 @@ public:
 };
 wxDECLARE_APP(TestApp);
 
+/*! GH #2444 follow-up: a bitmap inside a composite data object reaches
+  nobody on wxQt.
+
+  wxQt only turns a wxBitmap into clipboard image data in
+  wxBitmapDataObject::QtAddDataTo(), which runs for the whole clipboard
+  contents, never for one child of a composite: there every format is asked
+  for its bytes, and a bitmap has none. Confirmed against a real wxQt build
+  and a plain wxDataObjectComposite holding nothing but a text and a bitmap
+  object -- so this predates the lazily rendered clipboard and is not
+  specific to wxMaxima. LazyPngDataObject is what gives wxQt an image it can
+  hand over, so the invariants that matter are that it encodes the same
+  bitmap as PNG and that it offers nothing when there is no bitmap.
+*/
+SCENARIO("The bitmap is also offered as PNG bytes (wxQt)") {
+  GIVEN("a bitmap") {
+    wxBitmap bmp(40, 20);
+    {
+      wxMemoryDC dc(bmp);
+      dc.SetBackground(*wxWHITE_BRUSH);
+      dc.Clear();
+    }
+    auto value = std::make_shared<const LazyValue<wxBitmap>>(
+      [bmp] { return bmp; });
+    LazyPngDataObject data(value);
+
+    THEN("it is offered as image/png") {
+      REQUIRE(data.GetPreferredFormat() == wxDataFormat(wxS("image/png")));
+    }
+    THEN("the bytes are a PNG of that bitmap") {
+      const size_t size = data.GetDataSize();
+      REQUIRE(size > 8);
+      std::string png(size, '\0');
+      REQUIRE(data.GetDataHere(&png[0]));
+      // The PNG signature, as every image editor identifies the format by.
+      REQUIRE(png.compare(0, 4, "\x89PNG") == 0);
+      wxMemoryInputStream in(png.data(), png.size());
+      wxImage image;
+      REQUIRE(image.LoadFile(in, wxBITMAP_TYPE_PNG));
+      REQUIRE(image.GetWidth() == bmp.GetWidth());
+      REQUIRE(image.GetHeight() == bmp.GetHeight());
+    }
+  }
+
+  GIVEN("a bitmap that could not be drawn") {
+    auto value = std::make_shared<const LazyValue<wxBitmap>>(
+      [] { return wxBitmap(); });
+    LazyPngDataObject data(value);
+
+    THEN("nothing is offered under it") {
+      REQUIRE(data.GetDataSize() == 0);
+      char buf[1];
+      REQUIRE_FALSE(data.GetDataHere(buf));
+    }
+  }
+}
+
 int main(int argc, char **argv) {
   wxLog::EnableLogging(false);
   wxApp::SetInstance(new TestApp());
@@ -590,9 +685,6 @@ int main(int argc, char **argv) {
   g_cfg = new Configuration(g_dc);
   g_cfg->SetZoomFactor(1.0);
   g_cfg->SetCanvasSize(wxSize(800, 600));
-  // Every flavor is offered now, the bitmap included; let it fit even when the
-  // whole test document is selected, so every flavor carries data.
-  g_cfg->MaxClipbrdBitmapMegabytes(1000);
   g_frame = new wxFrame(nullptr, wxID_ANY, wxS("test"));
   g_ws = new Worksheet(g_frame, wxID_ANY, g_cfg, wxDefaultPosition, wxDefaultSize,
                        /*reactToEvents=*/false);
