@@ -928,6 +928,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::menu_copy_as_rtf);
   Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::menu_copy_to_file);
   Bind(wxEVT_TOOL, &MaximaProcessManager::Interrupt, &m_processManager, ToolBar::tb_interrupt);
+  Bind(wxEVT_TOOL, &wxMaxima::OnTextFormat, this, ToolBar::tb_bold, ToolBar::tb_strikethrough);
   Bind(wxEVT_TOOL, &MaximaCommandMenus::FileMenu, &m_menuCommands, ToolBar::tb_animation_startStop);
   Bind(wxEVT_TOOL, &MaximaCommandMenus::FileMenu, &m_menuCommands, ToolBar::tb_animation_start);
   Bind(wxEVT_TOOL, &MaximaCommandMenus::FileMenu, &m_menuCommands, ToolBar::tb_animation_stop);
@@ -2532,6 +2533,11 @@ void wxMaxima::UpdateToolBar() {
   else
     GetWorksheet()->m_mainToolBar->CanEvalThisCell(false);
   GetWorksheet()->m_mainToolBar->WorksheetEmpty(GetWorksheet()->GetTree() == nullptr);
+  GetWorksheet()->m_mainToolBar->TextFormatState(
+    GetWorksheet()->CanFormatText(), GetWorksheet()->HasTextFormat(TextFormat::Bold),
+    GetWorksheet()->HasTextFormat(TextFormat::Italic),
+    GetWorksheet()->HasTextFormat(TextFormat::Underline),
+    GetWorksheet()->HasTextFormat(TextFormat::Strikethrough));
 
   GetWorksheet()->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, false);
 }
@@ -3766,6 +3772,32 @@ void wxMaxima::OnMinimize(wxIconizeEvent &event) {
   if (!event.IsIconized())
     CallAfter([this]{GetWorksheet()->SetFocus();});
   event.Skip();
+}
+
+void wxMaxima::OnTextFormat(wxCommandEvent &event) {
+  if (!GetWorksheet())
+    return;
+  switch (event.GetId()) {
+  case ToolBar::tb_bold:
+    GetWorksheet()->ToggleTextFormat(TextFormat::Bold);
+    break;
+  case ToolBar::tb_italic:
+    GetWorksheet()->ToggleTextFormat(TextFormat::Italic);
+    break;
+  case ToolBar::tb_underline:
+    GetWorksheet()->ToggleTextFormat(TextFormat::Underline);
+    break;
+  case ToolBar::tb_strikethrough:
+    GetWorksheet()->ToggleTextFormat(TextFormat::Strikethrough);
+    break;
+  default:
+    break;
+  }
+  // Clicking the button toggled it, which may not be what the text says now:
+  // let UpdateToolBar() show the real state. And give the keyboard back to
+  // the text, so that typing simply continues.
+  GetWorksheet()->UpdateControlsNeeded(true);
+  CallAfter([this]{GetWorksheet()->SetFocus();});
 }
 
 void wxMaxima::ChangeCellStyle(wxCommandEvent &WXUNUSED(event)) {

@@ -42,6 +42,7 @@ set(CELL_SOURCE_FILES
     VisiblyInvalidCell.cpp
     FontAttribs.cpp
     TextStyle.cpp
+    TextFormat.cpp
     FontVariantCache.cpp
 )
 list(TRANSFORM CELL_SOURCE_FILES PREPEND cells/)

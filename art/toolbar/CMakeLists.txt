@@ -17,6 +17,10 @@ set(IMAGE_FILES
         sync-horizontal
         text
         view-refresh1
+        format-text-bold
+        format-text-italic
+        format-text-underline
+        format-text-strikethrough
 )
 
 foreach(file ${IMAGE_FILES})

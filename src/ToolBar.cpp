@@ -301,6 +301,7 @@ void ToolBar::AddTools() {
   m_canPrint_old = true;
   m_canEvalTillHere_old = true;
   m_canEvalThisCell_old = true;
+  m_canFormatText_old = true;
   m_worksheetEmpty_old = false;
   if (ShowNew())
     AddTool(wxID_NEW, _("New"), wxArtProvider::GetBitmapBundle(wxART_NEW, wxART_TOOLBAR), _("New document"));
@@ -413,6 +414,21 @@ void ToolBar::AddTools() {
                             "   Ctrl+7: Heading6 cell\n"));
   m_textStyle->SetSelection(textStyleSelection);
   AddControl(m_textStyle);
+  if (ShowTextFormat()) {
+    // Character formatting for text cells (GH #492). Toolbar-only for now:
+    // the obvious shortcuts Ctrl+B/I/U are already taken.
+    AddTool(tb_bold, _("Bold"), wxArtProvider::GetBitmapBundle(wxmaximaART_FORMAT_TEXT_BOLD, wxART_TOOLBAR),
+            _("Bold text"), wxITEM_CHECK);
+    AddTool(tb_italic, _("Italic"), wxArtProvider::GetBitmapBundle(wxmaximaART_FORMAT_TEXT_ITALIC, wxART_TOOLBAR),
+            _("Italic text"), wxITEM_CHECK);
+    AddTool(tb_underline, _("Underline"), wxArtProvider::GetBitmapBundle(wxmaximaART_FORMAT_TEXT_UNDERLINE, wxART_TOOLBAR),
+            _("Underlined text"), wxITEM_CHECK);
+    AddTool(tb_strikethrough, _("Strikethrough"),
+            wxArtProvider::GetBitmapBundle(wxmaximaART_FORMAT_TEXT_STRIKETHROUGH, wxART_TOOLBAR),
+            _("Struck-through text"), wxITEM_CHECK);
+    // Only a text cell can be formatted, and there is none active yet.
+    TextFormatState(false, false, false, false, false);
+  }
     AddTool(tb_animation_startStop, _("Start or Stop animation"), wxArtProvider::GetBitmapBundle(wxmaximaART_MEDIA_PLAYBACK_START, wxART_TOOLBAR),
           _("Start or stop the currently selected animation that has been "
             "created with the with_slider class of commands"));
@@ -478,6 +494,13 @@ void ToolBar::UpdateBitmaps() {
   SetToolBitmap(tb_evaltillhere, wxArtProvider::GetBitmapBundle(wxmaximaART_GO_BOTTOM, wxART_TOOLBAR));
   SetToolBitmap(tb_evaluate_rest, wxArtProvider::GetBitmapBundle(wxmaximaART_GO_LAST, wxART_TOOLBAR));
   SetToolBitmap(tb_hideCode, wxArtProvider::GetBitmapBundle(wxmaximaART_EYE_SLASH, wxART_TOOLBAR));
+  if (FindTool(tb_bold)) {
+    SetToolBitmap(tb_bold, wxArtProvider::GetBitmapBundle(wxmaximaART_FORMAT_TEXT_BOLD, wxART_TOOLBAR));
+    SetToolBitmap(tb_italic, wxArtProvider::GetBitmapBundle(wxmaximaART_FORMAT_TEXT_ITALIC, wxART_TOOLBAR));
+    SetToolBitmap(tb_underline, wxArtProvider::GetBitmapBundle(wxmaximaART_FORMAT_TEXT_UNDERLINE, wxART_TOOLBAR));
+    SetToolBitmap(tb_strikethrough,
+                  wxArtProvider::GetBitmapBundle(wxmaximaART_FORMAT_TEXT_STRIKETHROUGH, wxART_TOOLBAR));
+  }
 
   SetToolBitmap(tb_animation_startStop, wxArtProvider::GetBitmapBundle(wxmaximaART_MEDIA_PLAYBACK_START, wxART_TOOLBAR));
   Realize();
@@ -584,6 +607,31 @@ void ToolBar::SetCellStyle(GroupType style) {
   }
 }
 
+void ToolBar::TextFormatState(bool value, bool bold, bool italic,
+                              bool underline, bool strikethrough) {
+  if (!FindTool(tb_bold))
+    return;
+  if (value != m_canFormatText_old) {
+    EnableTool(tb_bold, value);
+    EnableTool(tb_italic, value);
+    EnableTool(tb_underline, value);
+    EnableTool(tb_strikethrough, value);
+    m_canFormatText_old = value;
+  }
+  // A disabled button doesn't show as pressed: there is no format to show.
+  const std::pair<int, bool> toggled[] = {{tb_bold, value && bold},
+                                          {tb_italic, value && italic},
+                                          {tb_underline, value && underline},
+                                          {tb_strikethrough, value && strikethrough}};
+  for (const auto &[id, state] : toggled) {
+    // Like EnableTool(): wxAuiToolBar::ToggleTool() doesn't repaint.
+    if (GetToolToggled(id) != state) {
+      ToggleTool(id, state);
+      Refresh();
+    }
+  }
+}
+
 void ToolBar::AnimationButtonState(AnimationStartStopState state) {
   if (m_AnimationStartStopState != state) {
     switch (state) {
@@ -654,6 +702,9 @@ void ToolBar::OnMouseRightDown(wxMouseEvent &WXUNUSED(event)) {
   popupMenu->AppendCheckItem(help, _("Help button"),
                              _("Show the \"help\" button?"));
   popupMenu->Check(help, ShowHelp());
+  popupMenu->AppendCheckItem(textFormat, _("Text formatting buttons"),
+                             _("Show the bold, italic, underline and strikethrough buttons?"));
+  popupMenu->Check(textFormat, ShowTextFormat());
 
   if (popupMenu->GetMenuItemCount() > 0) {
     popupMenu->Bind(wxEVT_MENU, &ToolBar::OnMenu, this);
@@ -698,6 +749,10 @@ void ToolBar::OnMenu(wxCommandEvent &event) {
     break;
   case selectAll:
     ShowSelectAll(!ShowSelectAll());
+    AddTools();
+    break;
+  case textFormat:
+    ShowTextFormat(!ShowTextFormat());
     AddTools();
     break;
   }
