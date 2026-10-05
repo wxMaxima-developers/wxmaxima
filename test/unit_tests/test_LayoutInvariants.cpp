@@ -726,6 +726,17 @@ SCENARIO("A matrix too wide for the window is elided unless shown in full") {
       CHECK(matr->GetWidth() < 600);
     }
 
+    THEN("the columns that are shown use up the width there is") {
+      // Every column is equally wide, so if one more of them would still
+      // have fit, the elision gave away room it had. Choosing what to leave
+      // out once counted the first and the last column twice, which left the
+      // room for two columns unused.
+      const wxCoord colSize = matr->GetInnerCell(0, 0)->GetWidth() + 10;
+      const wxCoord budget = 600 - g_cfg->GetIndent() -
+        g_cfg->GetLabelWidth() - 15;
+      CHECK(matr->GetWidth() + colSize > budget);
+    }
+
     THEN("the first and the last column are kept") {
       for (size_t row = 0; row < rows; row++) {
         CHECK_FALSE(matr->IsElided(row, 0));
@@ -801,6 +812,32 @@ SCENARIO("A matrix too wide for the window is elided unless shown in full") {
         CHECK(matr->GetWidth() > 600);
       }
     }
+  }
+}
+
+SCENARIO("A matrix whose first column alone is too wide shows only the dots (GH #2438)") {
+  g_cfg->SetZoomFactor(1.0);
+  g_cfg->SetCanvasSize(wxSize(600, 600));
+  OversizedMatricesMode mode(Configuration::OversizedMatrices::elide);
+  const size_t rows = 2, cols = 3;
+  wxString wide;
+  for (int i = 0; i < 200; i++)
+    wide += wxS("x");
+  wxString table = wxS("<tb roundedParens=\"true\">");
+  for (size_t r = 0; r < rows; r++)
+    table += wxS("<mtr><mtd><mi>") + wide +
+      wxS("</mi></mtd><mtd><mn>1</mn></mtd><mtd><mn>2</mn></mtd></mtr>");
+  table += wxS("</tb>");
+  std::unique_ptr<GroupCell> group;
+  MatrCell *matr = LayOutMatrixXml(
+    group, wxS("<mth><lbl altCopy=\"%o1\">(%o1) </lbl>") + table + wxS("</mth>"));
+  THEN("every column is left out, and what is left fits the window") {
+    CHECK(matr->ElidedColumns() == cols);
+    CHECK(matr->GetWidth() < 600);
+  }
+  THEN("drawing it does not throw") {
+    NoClipToDrawRegion noClip(g_cfg);
+    REQUIRE_NOTHROW(matr->Draw(g_dc, g_dc));
   }
 }
 

@@ -343,9 +343,12 @@ MatrCell::Elision MatrCell::ChooseElision(const std::vector<wxCoord> &sizes,
   if (total <= budget)
     return {};
 
+  // Not even the first and the last are guaranteed a place: if one of them
+  // alone is too wide for the window, everything but the dots is left out
+  // (GH #2438). So nothing is counted as used yet but the gap for the dots.
   size_t left = 0, right = 0;
-  wxCoord used = sizes.front() + sizes.back() + gapSize;
-  // Then alternate between the two ends, so what is left out is the middle
+  wxCoord used = gapSize;
+  // Alternate between the two ends, so what is left out is the middle
   // and both edges of the matrix stay in view, stopping at the first one that
   // doesn't fit so neither end gets far ahead of the other.
   bool fromLeft = true;
