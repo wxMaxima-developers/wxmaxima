@@ -257,6 +257,25 @@ Architecture &amp; GUI</h1>
   draw-list-mirroring bookkeeping, since there's nothing stored to keep in
   sync.
 
+- &lt;strong&gt;Ordinary copy renders its formats lazily (GH #2030,
+  &lt;tt&gt;src/worksheet/ClipboardContents.{h,cpp}&lt;/tt&gt;).&lt;/strong&gt; &lt;tt&gt;Copy()&lt;/tt&gt;/&lt;tt&gt;CopyCells()&lt;/tt&gt; make
+  only the .wxm and text flavours up front; RTF, MathML, the bitmap, SVG and
+  EMF are rendered from a private &lt;tt&gt;ClipboardSnapshot&lt;/tt&gt; of the selection when a
+  program pastes them (GTK's SelectionRequest and Windows' OLE &lt;tt&gt;GetData()&lt;/tt&gt;
+  both end in &lt;tt&gt;wxDataObject::GetDataHere()&lt;/tt&gt;; macOS' wxClipboard writes every
+  format at once, so there nothing is lazy). Three things to keep in mind:
+  - &lt;strong&gt;The snapshot hangs off a &lt;tt&gt;GroupCell&lt;/tt&gt; of its own.&lt;/strong&gt; &lt;tt&gt;Cell::Copy()&lt;/tt&gt; keeps
+    the original's group, and the original may be deleted before the paste.
+  - &lt;strong&gt;The copied cells use the worksheet's &lt;tt&gt;Configuration&lt;/tt&gt;&lt;/strong&gt;, so before the
+    worksheet goes away &lt;tt&gt;~Worksheet()&lt;/tt&gt; calls &lt;tt&gt;RenderClipboardContents()&lt;/tt&gt;,
+    which swaps the lazy data for rendered .wxm/text/RTF/MathML/bitmap and
+    calls &lt;tt&gt;wxClipboard::Flush()&lt;/tt&gt;. Whether the clipboard still holds this
+    worksheet's data is a &lt;tt&gt;std::weak_ptr&lt;/tt&gt; to the &lt;tt&gt;ClipboardContents&lt;/tt&gt; the
+    data objects share &amp;ndash; wx deletes them when another owner takes over.
+  - &lt;strong&gt;A clipboard manager that copies every new clipboard right away&lt;/strong&gt;
+    (xfsettingsd does) asks for every format at copy time, which renders
+    them all. Nothing wxMaxima can do about that, and its data survives
+    the exit anyway. To check the handover live, run without one.
 - **"Copy as HTML" (GH #2265/#2266/#2267) &amp;ndash; &lt;tt&gt;WorksheetExport::
   SelectionToSelfContainedHTML()&lt;/tt&gt; / &lt;tt&gt;Worksheet::CopyHTML()&lt;/tt&gt;:** a right-click
   context menu item placing a &lt;em&gt;self-contained&lt;/em&gt; HTML document on the

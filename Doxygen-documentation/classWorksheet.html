@@ -927,6 +927,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>CopyTeX</b> () const<
 wxString&#160;</td><td class="memItemRight" valign="bottom"><b>ConvertSelectionToMathML</b> () const</td></tr>
 <tr class="memdesc:a8f734b903876fdd6b6e50b7bf95c5b6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert the current selection to MathML. <br /></td></tr>
 <tr class="separator:a8f734b903876fdd6b6e50b7bf95c5b6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0592d778f94b9086b5f777e320636fee"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a0592d778f94b9086b5f777e320636fee">RenderClipboardContents</a> ()</td></tr>
+<tr class="memdesc:a0592d778f94b9086b5f777e320636fee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Replace this worksheet's lazily rendered clipboard data by data that no longer needs the worksheet (GH #2030)  <br /></td></tr>
+<tr class="separator:a0592d778f94b9086b5f777e320636fee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad061059d9bf0265c434b01ef1e0f331a"><td class="memItemLeft" align="right" valign="top"><a id="ad061059d9bf0265c434b01ef1e0f331a" name="ad061059d9bf0265c434b01ef1e0f331a"></a>
 wxBitmap&#160;</td><td class="memItemRight" valign="bottom"><b>ConvertSelectionToBitmap</b> () const</td></tr>
 <tr class="memdesc:ad061059d9bf0265c434b01ef1e0f331a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert the current selection to a bitmap. <br /></td></tr>
@@ -1336,6 +1339,13 @@ static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>UnicodeToM
 <tr class="memitem:ae97f44ee9357066d1c47af4f814f832c"><td class="memItemLeft" align="right" valign="top">static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#ae97f44ee9357066d1c47af4f814f832c">CSVDelimiter</a> ()</td></tr>
 <tr class="memdesc:ae97f44ee9357066d1c47af4f814f832c"><td class="mdescLeft">&#160;</td><td class="mdescRight">What separates the values "Copy as CSV" writes.  <br /></td></tr>
 <tr class="separator:ae97f44ee9357066d1c47af4f814f832c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25d94c400a2c819a1a3c67705bf721a0"><td class="memItemLeft" align="right" valign="top"><a id="a25d94c400a2c819a1a3c67705bf721a0" name="a25d94c400a2c819a1a3c67705bf721a0"></a>
+static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>CellsToMathML</b> (const <a class="el" href="classCell.html">Cell</a> *cells)</td></tr>
+<tr class="memdesc:a25d94c400a2c819a1a3c67705bf721a0"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classA.html">A</a> MathML document showing a list of cells, nicely indented. <br /></td></tr>
+<tr class="separator:a25d94c400a2c819a1a3c67705bf721a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2729aefaba13b4c3ee01ac8a2fdcf086"><td class="memItemLeft" align="right" valign="top">static std::unique_ptr&lt; wxDataObject &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a2729aefaba13b4c3ee01ac8a2fdcf086">CreateIndependentDataObject</a> (const <a class="el" href="structClipboardContents.html">ClipboardContents</a> &amp;contents)</td></tr>
+<tr class="memdesc:a2729aefaba13b4c3ee01ac8a2fdcf086"><td class="mdescLeft">&#160;</td><td class="mdescRight">The data <a class="el" href="classWorksheet.html#a0592d778f94b9086b5f777e320636fee" title="Replace this worksheet&#39;s lazily rendered clipboard data by data that no longer needs the worksheet (G...">RenderClipboardContents()</a> puts on the clipboard.  <br /></td></tr>
+<tr class="separator:a2729aefaba13b4c3ee01ac8a2fdcf086"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The canvas that contains the spreadsheet the whole program is about. </p>
@@ -1828,6 +1838,35 @@ static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>UnicodeToM
 
 <p>Build the multi-format clipboard object for a whole-cell selection. </p>
 <p>The counterpart of <a class="el" href="classWorksheet.html#a869313d1e2e7b142c31bf13de91b3e40" title="Copy the selection to the clipboard as it would appear in a .wxm file.">CopyCells()</a> that produces the data (the RTF/text/wxm/ bitmap/EMF/SVG flavors) without touching the actual clipboard. Returns nullptr when nothing is selected. </p>
+
+</div>
+</div>
+<a id="a2729aefaba13b4c3ee01ac8a2fdcf086" name="a2729aefaba13b4c3ee01ac8a2fdcf086"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2729aefaba13b4c3ee01ac8a2fdcf086">&#9670;&#160;</a></span>CreateIndependentDataObject()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unique_ptr&lt; wxDataObject &gt; Worksheet::CreateIndependentDataObject </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structClipboardContents.html">ClipboardContents</a> &amp;&#160;</td>
+          <td class="paramname"><em>contents</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The data <a class="el" href="classWorksheet.html#a0592d778f94b9086b5f777e320636fee" title="Replace this worksheet&#39;s lazily rendered clipboard data by data that no longer needs the worksheet (G...">RenderClipboardContents()</a> puts on the clipboard. </p>
+<p>Everything in it is rendered by the time this returns, and none of it refers to the cells or the configuration any more. </p>
 
 </div>
 </div>
@@ -3189,6 +3228,27 @@ static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>UnicodeToM
 
 <p>Remove all output cells from the list of cells that starts at <code>cell</code>. </p>
 <p>Schedules a recalculation starting at <code>cell</code> - unless <code>cell</code> is part of a hidden (folded) subtree: hidden cells are detached from the worksheet tree, so they must not become the layout engine's resume point; they get laid out when their fold parent is unfolded. </p>
+
+</div>
+</div>
+<a id="a0592d778f94b9086b5f777e320636fee" name="a0592d778f94b9086b5f777e320636fee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0592d778f94b9086b5f777e320636fee">&#9670;&#160;</a></span>RenderClipboardContents()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Worksheet::RenderClipboardContents </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Replace this worksheet's lazily rendered clipboard data by data that no longer needs the worksheet (GH #2030) </p>
+<p>The formats <a class="el" href="classWorksheet.html#a5442160d0574859589addb87d1f19b4d" title="Copy the current selection to the clipboard.">Copy()</a> and <a class="el" href="classWorksheet.html#a869313d1e2e7b142c31bf13de91b3e40" title="Copy the selection to the clipboard as it would appear in a .wxm file.">CopyCells()</a> put on the clipboard are rendered when another program asks for them, which a closed worksheet cannot do: its configuration &ndash; which the copied cells are drawn with &ndash; is gone, and once <a class="el" href="classwxMaxima.html">wxMaxima</a> has exited there is nobody left to ask at all. So if the clipboard still holds this worksheet's data, this renders the formats worth keeping (.wxm, text, RTF, MathML and the bitmap &ndash; not SVG or EMF), puts them on the clipboard instead, and asks the system to keep them after <a class="el" href="classwxMaxima.html">wxMaxima</a> exits (wxClipboard::Flush()). Called by the destructor; does nothing if something else has been copied since.</p>
+<dl class="section return"><dt>Returns</dt><dd>true if there was data to hand over. </dd></dl>
 
 </div>
 </div>
