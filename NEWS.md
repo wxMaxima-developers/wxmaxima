@@ -1,5 +1,8 @@
 # Current development version
 
+- GIF and XPM images no longer get a black background where they are
+  meant to be transparent. Those formats mark transparency with a mask
+  colour, which the worksheet drew instead of what lies behind it (#2227).
 - `wxdeclare_subscripted(variable, false)` keeps a variable from being
   displayed with a subscript again, and `wxdeclare_subscripted(variable)`
   subscripts one the current `wxsubscripts` setting wouldn't. Both were
