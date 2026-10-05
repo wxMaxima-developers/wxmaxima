@@ -3096,42 +3096,33 @@ bool wxMaxima::SaveOnClose() {
     return true;
   }
 
-  // If we want to keep the file saved we automatically save the file on
-  // closing.
-  if (m_configuration.AutoSaveAsTempFile()) {
-    int close = SaveDocumentP();
+  // If the document is kept saved (autosave writes the file itself, not a
+  // temp file) and it already has a name we just save it, silently, as an
+  // autosave would. An untitled document must not get here, though: for it
+  // SaveFile() opens a "Save As" dialog, which would pop up before the
+  // question whether to save at all - and cancelling it then led to that
+  // question being asked anyway (#1737).
+  if ((!m_configuration.AutoSaveAsTempFile()) &&
+      (!GetWorksheet()->GetCurrentFile().IsEmpty()) &&
+      m_fileIO.SaveFile())
+    return true;
 
-    if (close == wxID_CANCEL)
-      return false;
-    if (close == wxID_NO)
-      return true;
-    else {
-      if (close == wxID_YES) {
-        if (!m_fileIO.SaveFile(true)) {
-          return false;
-        }
-      }
-      return true;
-    }
-  } else {
-    {
-      if(m_fileIO.SaveFile())
-        return true;
-    }
-    int close = SaveDocumentP();
+  int close = SaveDocumentP();
 
-    if (close == wxID_CANCEL)
-      return false;
-    else {
-      if (close == wxID_YES) {
-        if (!m_fileIO.SaveFile()) {
-          if (!m_fileIO.SaveFile(true))
-            return false;
-        }
-      }
-    }
-  }
-  return true;
+  if (close == wxID_CANCEL)
+    return false;
+  if (close != wxID_YES)
+    return true;
+
+  // The user wants the changes saved. For an untitled document this is where
+  // the "Save As" dialog comes up; cancelling it cancels closing the window.
+  const bool untitled = GetWorksheet()->GetCurrentFile().IsEmpty();
+  if (m_fileIO.SaveFile())
+    return true;
+  // A named file that could not be written: offer to save it elsewhere.
+  if (!untitled && m_fileIO.SaveFile(true))
+    return true;
+  return false;
 }
 
 void wxMaxima::OnClose(wxCloseEvent &event) {
@@ -3732,8 +3723,12 @@ int wxMaxima::SaveDocumentP() {
 #else
   file = _("unsaved");
 #endif
-  wxFileName::SplitPath(GetWorksheet()->GetCurrentFile(), nullptr, nullptr, &file, &ext);
-  file += wxS(".") + ext;
+  // An untitled document has no file name to split - which used to leave
+  // the question asking about the document ".".
+  if (!GetWorksheet()->GetCurrentFile().IsEmpty()) {
+    wxFileName::SplitPath(GetWorksheet()->GetCurrentFile(), nullptr, nullptr, &file, &ext);
+    file += wxS(".") + ext;
+  }
   LoggingMessageDialog dialog(
                               this,
                               wxString::Format(

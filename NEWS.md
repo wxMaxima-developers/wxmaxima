@@ -1,5 +1,11 @@
 # Current development version
 
+- Closing wxMaxima with unsaved changes in an untitled document asks
+  whether to save them first, and opens the "Save As" dialog only if you
+  choose "Save". It used to open "Save As" first and, if that was
+  cancelled, ask anyway. The question also names the document "unsaved"
+  instead of ".", and "Save" no longer asks for a new file name for a
+  document that already has one (#1737).
 - Copying puts every clipboard format on the clipboard again (RTF, MathML,
   a bitmap, SVG, ...), but renders each only when a program actually pastes
   it, so copying a large selection is fast and doesn't fill the memory with
