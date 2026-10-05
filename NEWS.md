@@ -1,5 +1,11 @@
 # Current development version
 
+- Copying a whole large matrix no longer tries to draw a bitmap of many
+  gigabytes for the clipboard. On wxWidgets' Qt port, which draws every
+  clipboard format right away, Ctrl+C kept wxMaxima busy for minutes and
+  nothing reached the clipboard. Such a bitmap is now drawn at a lower
+  resolution, or left out if even that is too large; the text, RTF and
+  MathML are copied as before.
 - GIF and XPM images no longer get a black background where they are
   meant to be transparent. Those formats mark transparency with a mask
   colour, which the worksheet drew instead of what lies behind it (#2227).
