@@ -153,6 +153,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a06df7029011fe181f338255fa9645905"><td class="memItemLeft" align="right" valign="top"><a id="a06df7029011fe181f338255fa9645905" name="a06df7029011fe181f338255fa9645905"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>wxDECLARE_APP</b> (<a class="el" href="classTestApp.html">TestApp</a>)</td></tr>
 <tr class="separator:a06df7029011fe181f338255fa9645905"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1207598dbe048e7dc0f5d1099e0ce272"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test__WorksheetClipboard_8cpp.html#a1207598dbe048e7dc0f5d1099e0ce272">SCENARIO</a> (&quot;The bitmap is also offered as PNG bytes (wxQt)&quot;)</td></tr>
+<tr class="memdesc:a1207598dbe048e7dc0f5d1099e0ce272"><td class="mdescLeft">&#160;</td><td class="mdescRight">GH #2444 follow-up: a bitmap inside a composite data object reaches nobody on wxQt.  <br /></td></tr>
+<tr class="separator:a1207598dbe048e7dc0f5d1099e0ce272"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c04138a5bfe5d72780bb7e82a18e627"><td class="memItemLeft" align="right" valign="top"><a id="a3c04138a5bfe5d72780bb7e82a18e627" name="a3c04138a5bfe5d72780bb7e82a18e627"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>main</b> (int argc, char **argv)</td></tr>
 <tr class="separator:a3c04138a5bfe5d72780bb7e82a18e627"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -169,7 +172,29 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>main</b> (int argc, ch
 <p>GH #2030: only the .wxm and the plain-text flavors are made when the copy is made. Everything else (RTF, MathML, the bitmap, the SVG, ...) is rendered from a private copy of the selection only when a program asks for it, which is why every flavor is offered now instead of only the ones a config setting asked for. That is pinned here too: offering renders nothing, a payload offered under several names renders once, a copy survives the worksheet changing under it, and the data handed over when the worksheet closes refers to neither the cells nor the configuration.</p>
 <p>GH #2264: "Copy as RTF" pasted into MS Word was silently ignored. RTF was only advertised under the MIME-style names "application/rtf"/"text/rtf" - what GTK/Linux word processors look for - but Windows registers CF_RTF under the literal name "Rich Text Format" (via RegisterClipboardFormat), which is the name Word's clipboard handler actually looks up. Neither MIME name matches it, so on Windows Word found no RTF data on the clipboard at all. Fixed by additionally advertising RTF under a third wxDataFormat with that exact name (RtfDataObject3 / Worksheet::m_rtfFormat3) and making it the preferred flavor everywhere RTF is offered; this test pins its presence and that it is now the winning "preferred" format.</p>
 <p>GH #2265/#2266/#2267: "Copy as HTML" &ndash; WorksheetExport:: SelectionToSelfContainedHTML() renders a <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a> range into one self-contained HTML document (inline &lt;style&gt;, no external file references), for <a class="el" href="classWorksheet.html#a447b7bced78df7d08a21fd070c7e765a" title="Copy a self-contained HTML version (inline CSS, base64-embedded images – see WorksheetExport::Selecti...">Worksheet::CopyHTML()</a>'s dedicated context-menu command. It can't itself be exercised via the real system clipboard here (same headless-unfriendly reason as the rest of this file), but it is a pure function of the cell tree, so it is tested directly: the returned document must carry its own stylesheet inline and never point at a file outside itself, and it must clean up whatever private scratch directory it used to render into. </p>
-</div></div><!-- contents -->
+</div><h2 class="groupheader">Function Documentation</h2>
+<a id="a1207598dbe048e7dc0f5d1099e0ce272" name="a1207598dbe048e7dc0f5d1099e0ce272"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1207598dbe048e7dc0f5d1099e0ce272">&#9670;&#160;</a></span>SCENARIO()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SCENARIO </td>
+          <td>(</td>
+          <td class="paramtype">&quot;The bitmap is also offered as PNG bytes (wxQt)&quot;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>GH #2444 follow-up: a bitmap inside a composite data object reaches nobody on wxQt. </p>
+<p>wxQt only turns a wxBitmap into clipboard image data in wxBitmapDataObject::QtAddDataTo(), which runs for the whole clipboard contents, never for one child of a composite: there every format is asked for its bytes, and a bitmap has none. Confirmed against a real wxQt build and a plain wxDataObjectComposite holding nothing but a text and a bitmap object &ndash; so this predates the lazily rendered clipboard and is not specific to <a class="el" href="classwxMaxima.html">wxMaxima</a>. <a class="el" href="classLazyPngDataObject.html" title="The same bitmap, as PNG bytes, for ports that can only hand over bytes.">LazyPngDataObject</a> is what gives wxQt an image it can hand over, so the invariants that matter are that it encodes the same bitmap as PNG and that it offers nothing when there is no bitmap. </p>
+
+</div>
+</div>
+</div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.6

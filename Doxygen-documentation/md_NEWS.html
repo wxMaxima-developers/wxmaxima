@@ -74,6 +74,7 @@ $(function() {
 <div class="contents">
 <div class="textblock"><ul>
 <li>Copying puts every clipboard format on the clipboard again (RTF, MathML, a bitmap, SVG, ...), but renders each only when a program actually pastes it, so copying a large selection is fast and doesn't fill the memory with formats nobody uses. The program you paste into picks the format, which is why the list of formats to copy is gone from the configuration dialog. When the window you copied from is closed, the .wxm code, text, RTF, MathML and the bitmap are kept on the clipboard (#2030).</li>
+<li>Copying now also puts the image on the clipboard in builds that use wxWidgets' Qt port: a bitmap offered alongside other formats never reached another program there, so pasting into an image editor pasted whatever was on the clipboard before.</li>
 <li>"Save As" of a document opened from a <code>.wxm</code> file proposed a <code>.wxmx</code> file name on Linux, although the dialog showed the <code>.wxm</code> file type, so the document was saved as <code>.wxmx</code> (#2440).</li>
 <li>Shift+Up/Down with a cell's output selected now selects whole cells starting from that cell. It used to start at the top of the worksheet.</li>
 <li><code>wx_matrix()</code> is offered by autocompletion, with a template for its arguments.</li>
