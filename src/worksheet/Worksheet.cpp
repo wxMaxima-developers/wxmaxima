@@ -2333,10 +2333,8 @@ std::unique_ptr<wxDataObject> Worksheet::CreateSelectionDataObject() const {
        WorksheetExport::RTFEnd()).utf8_str());
   });
   contents->bitmap = LazyValue<wxBitmap>([snapshot] {
-    const Configuration *configuration = snapshot->GetConfiguration();
     BitmapOut output(snapshot->GetConfigurationPointer(), snapshot->CopyCells(),
-                     configuration->BitmapScale(),
-                     1000000 * configuration->MaxClipbrdBitmapMegabytes());
+                     snapshot->GetConfiguration()->BitmapScale());
     return output.IsOk() ? output.GetBitmap() : wxBitmap();
   });
 
@@ -2663,10 +2661,8 @@ std::unique_ptr<wxDataObject> Worksheet::CreateCellsDataObject() const {
     return std::string(rtf.utf8_str());
   });
   contents->bitmap = LazyValue<wxBitmap>([snapshot] {
-    const Configuration *configuration = snapshot->GetConfiguration();
     BitmapOut output(snapshot->GetConfigurationPointer(), snapshot->CopyCells(),
-                     configuration->BitmapScale(),
-                     1000000 * configuration->MaxClipbrdBitmapMegabytes());
+                     snapshot->GetConfiguration()->BitmapScale());
     return output.IsOk() ? output.GetBitmap() : wxBitmap();
   });
   contents->svg = LazyValue<std::string>([snapshot] {
@@ -2742,8 +2738,7 @@ Worksheet::CreateIndependentDataObject(const ClipboardContents &contents) {
     }
   }
   data->Add(new wxTextDataObject(contents.text));
-  // The bitmap is limited to MaxClipbrdBitmapMegabytes() when it is drawn;
-  // a bigger one is not drawn at all.
+  // An invalid bitmap means it could not be drawn.
   if (contents.bitmap.IsOffered() && contents.bitmap.Get().IsOk())
     data->Add(new wxBitmapDataObject(contents.bitmap.Get()));
   return std::unique_ptr<wxDataObject>(data);
@@ -4221,8 +4216,7 @@ std::unique_ptr<GroupCell> Worksheet::CopyTree() const {
 }
 
 bool Worksheet::CopyBitmap() const {
-  BitmapOut bitmap(&m_configuration, CopySelection(), 1,
-                   1000000 * m_configuration->MaxClipbrdBitmapMegabytes());
+  BitmapOut bitmap(&m_configuration, CopySelection());
   bool retval = bitmap.ToClipboard();
   return retval;
 }

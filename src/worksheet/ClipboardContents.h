@@ -161,7 +161,7 @@ struct ClipboardContents
   LazyValue<std::string> rtf;
   //! A SVG image
   LazyValue<std::string> svg;
-  //! A bitmap image. Invalid if the image would exceed the size limit.
+  //! A bitmap image. Invalid if it could not be drawn.
   LazyValue<wxBitmap> bitmap;
 #if wxUSE_ENH_METAFILE
   //! A Windows enhanced metafile
