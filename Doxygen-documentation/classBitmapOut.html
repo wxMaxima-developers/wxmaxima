@@ -70,7 +70,9 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pub-methods">Public Member Functions</a>  </div>
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a>  </div>
   <div class="headertitle"><div class="title">BitmapOut Class Reference<span class="mlabels"><span class="mlabel">final</span></span></div></div>
 </div><!--header-->
 <div class="contents">
@@ -110,6 +112,18 @@ std::unique_ptr&lt; wxBitmapDataObject &gt;&#160;</td><td class="memItemRight" v
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>ToClipboard</b> () const</td></tr>
 <tr class="memdesc:a724a23dc78b6f47a7466914c213b4e2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies the bitmap representation of the list of cells that was passed to SetData() <br /></td></tr>
 <tr class="separator:a724a23dc78b6f47a7466914c213b4e2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:aeffcf5f26b2c1db7b54bc4b158869056"><td class="memItemLeft" align="right" valign="top">static wxBitmap&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBitmapOut.html#aeffcf5f26b2c1db7b54bc4b158869056">RenderForClipboard</a> (const <a class="el" href="classConfiguration.html">Configuration</a> *const *configuration, const std::function&lt; std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt;()&gt; &amp;cells, double scale)</td></tr>
+<tr class="memdesc:aeffcf5f26b2c1db7b54bc4b158869056"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws cells as a bitmap for the clipboard.  <br /></td></tr>
+<tr class="separator:aeffcf5f26b2c1db7b54bc4b158869056"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:a4fafb6436c1aec1227744eb63d699975"><td class="memItemLeft" align="right" valign="top">static constexpr long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBitmapOut.html#a4fafb6436c1aec1227744eb63d699975">CLIPBOARD_MAX_PIXELS</a> = 32000000</td></tr>
+<tr class="memdesc:a4fafb6436c1aec1227744eb63d699975"><td class="mdescLeft">&#160;</td><td class="mdescRight">The largest bitmap, in pixels, that is put on the clipboard.  <br /></td></tr>
+<tr class="separator:a4fafb6436c1aec1227744eb63d699975"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Renders portions of the work sheet (including 2<a class="el" href="classD.html">D</a> maths) as bitmap. </p>
@@ -199,6 +213,60 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>ToClipboard</b> () co
 
 </div>
 </div>
+<a id="aeffcf5f26b2c1db7b54bc4b158869056" name="aeffcf5f26b2c1db7b54bc4b158869056"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeffcf5f26b2c1db7b54bc4b158869056">&#9670;&#160;</a></span>RenderForClipboard()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxBitmap BitmapOut::RenderForClipboard </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classConfiguration.html">Configuration</a> *const *&#160;</td>
+          <td class="paramname"><em>configuration</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::function&lt; std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt;()&gt; &amp;&#160;</td>
+          <td class="paramname"><em>cells</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>scale</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Draws cells as a bitmap for the clipboard. </p>
+<p>Draws at the given scale if the bitmap stays below CLIPBOARD_MAX_PIXELS, else at scale 1 if that is small enough, and else not at all.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">configuration</td><td><a class="el" href="classA.html">A</a> pointer to the pointer to the configuration to draw with </td></tr>
+    <tr><td class="paramname">cells</td><td>Makes a fresh copy of the cells each time it is called: a <a class="el" href="classBitmapOut.html" title="Renders portions of the work sheet (including 2D maths) as bitmap.">BitmapOut</a> consumes the cells it draws, and the second try needs them again. </td></tr>
+    <tr><td class="paramname">scale</td><td>The scale to try first </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The bitmap, or an invalid bitmap if it would have been too large. </dd></dl>
+
+</div>
+</div>
 <a id="a15352668bc913b80e59e8eb670d08d85" name="a15352668bc913b80e59e8eb670d08d85"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a15352668bc913b80e59e8eb670d08d85">&#9670;&#160;</a></span>ToFile()</h2>
 
@@ -217,6 +285,32 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>ToClipboard</b> () co
 
 <p>Exports this bitmap to a file. </p>
 <dl class="section return"><dt>Returns</dt><dd>The size of the bitmap in millimeters. Sizes &lt;0 indicate that the export has failed. </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Field Documentation</h2>
+<a id="a4fafb6436c1aec1227744eb63d699975" name="a4fafb6436c1aec1227744eb63d699975"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4fafb6436c1aec1227744eb63d699975">&#9670;&#160;</a></span>CLIPBOARD_MAX_PIXELS</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr long BitmapOut::CLIPBOARD_MAX_PIXELS = 32000000</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The largest bitmap, in pixels, that is put on the clipboard. </p>
+<p>Without a limit, copying a large matrix as a whole (a selected block only contains the selected entries) asked for a bitmap of several gigabytes: copying a 300x300 matrix grew <a class="el" href="classwxMaxima.html">wxMaxima</a> to 8 GB and kept it busy for minutes. wxQt draws every clipboard format when Ctrl+C is pressed, so there nothing reached the clipboard until that was over. 32 million pixels are 128 MB, more than any program pasting a picture wants. </p>
 
 </div>
 </div>

@@ -85,6 +85,7 @@ $(function() {
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;wx/app.h&gt;</code><br />
 <code>#include &lt;wx/bitmap.h&gt;</code><br />
+<code>#include &lt;wx/dataobj.h&gt;</code><br />
 <code>#include &lt;wx/dcmemory.h&gt;</code><br />
 <code>#include &lt;wx/frame.h&gt;</code><br />
 <code>#include &lt;wx/log.h&gt;</code><br />
@@ -93,6 +94,8 @@ $(function() {
 <code>#include &quot;<a class="el" href="GroupCell_8h_source.html">cells/GroupCell.h</a>&quot;</code><br />
 <code>#include &quot;cells/MatrCell.h&quot;</code><br />
 <code>#include &quot;cells/MatrixScrollHost.h&quot;</code><br />
+<code>#include &quot;graphical_io/BitmapOut.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="ClipboardContents_8h_source.html">worksheet/ClipboardContents.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="Worksheet_8h_source.html">worksheet/Worksheet.h</a>&quot;</code><br />
 <code>#include &lt;catch2/catch.hpp&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
@@ -132,6 +135,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a9d900e96a565c29b041b16c012b6d244"><td class="memItemLeft" align="right" valign="top"><a id="a9d900e96a565c29b041b16c012b6d244" name="a9d900e96a565c29b041b16c012b6d244"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;Shift+arrow keys scroll a scrolling matrix along (GH #2380)&quot;)</td></tr>
 <tr class="separator:a9d900e96a565c29b041b16c012b6d244"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c8e21dcc9f5a2bb4ffd7832f80a0856"><td class="memItemLeft" align="right" valign="top"><a id="a6c8e21dcc9f5a2bb4ffd7832f80a0856" name="a6c8e21dcc9f5a2bb4ffd7832f80a0856"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;Copying a whole large matrix keeps the bitmap within bounds&quot;)</td></tr>
+<tr class="separator:a6c8e21dcc9f5a2bb4ffd7832f80a0856"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06df7029011fe181f338255fa9645905"><td class="memItemLeft" align="right" valign="top"><a id="a06df7029011fe181f338255fa9645905" name="a06df7029011fe181f338255fa9645905"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>wxDECLARE_APP</b> (<a class="el" href="classTestApp.html">TestApp</a>)</td></tr>
 <tr class="separator:a06df7029011fe181f338255fa9645905"><td class="memSeparator" colspan="2">&#160;</td></tr>
