@@ -150,12 +150,12 @@ private:
 };
 #endif // wxUSE_ACCESSIBILITY
 
-void CharButton::OnSize(wxSizeEvent &event) {
-  wxFont fnt = GetFont();
-  wxClientDC dc(this);
-  dc.SetFont(fnt);
-  auto size = dc.GetTextExtent(m_char);
-  auto minSize = dc.GetTextExtent("M");
+void CharButton::UpdateMinSize() {
+  // GetTextExtent() of the window itself, not of a wxClientDC: this also runs
+  // from the constructor, before the window has ever been shown, and a client
+  // DC of a not-yet-realized window is not something every port can provide.
+  wxSize size = GetTextExtent(wxString(m_char));
+  wxSize minSize = GetTextExtent(wxS("M"));
   minSize.x *= 1.5;
   minSize.y *= 1.5;
   size.x += 2 * GetContentScaleFactor();
@@ -166,8 +166,14 @@ void CharButton::OnSize(wxSizeEvent &event) {
     size.x = minSize.x;
   if (minSize.y > size.y)
     size.y = minSize.y;
-  //  SetSize(size);
-  SetMinSize(size);
+  if (size != GetMinSize())
+    SetMinSize(size);
+}
+
+void CharButton::OnSize(wxSizeEvent &event) {
+  // Kept up to date here, too, as the font or the scale factor can change
+  // after construction (moving the window to a screen with a different DPI).
+  UpdateMinSize();
   event.Skip();
 }
 
@@ -184,6 +190,14 @@ CharButton::CharButton(wxWindow *parent, wxWindow *worksheet,
   sizer->AddStretchSpacer(1);
   SetSizer(sizer);
   FitInside();
+  // Know our size right away rather than only once the first size event
+  // arrives: the sidebar computes how many rows its wrapped buttons need from
+  // their sizes as soon as it gets its own first size event. wxQt delivers the
+  // size events of a hidden window only once it is shown, the parent's before
+  // its children's -- so with the min size set only in OnSize() the sidebar
+  // laid its rows out for buttons smaller than they turned out to be, and
+  // nothing re-laid it out until the user resized it.
+  UpdateMinSize();
   SetToolTip(def.description);
   Bind(wxEVT_LEFT_UP, &CharButton::CharButtonPressed, this);
   Bind(wxEVT_IDLE, &CharButton::OnIdleEvent, this);

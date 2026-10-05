@@ -1,5 +1,7 @@
 # Current development version
 
+- The Greek letters and Symbols sidebars no longer come up laid out wrongly
+  until they are resized (seen with wxWidgets' Qt port).
 - Copying a whole large matrix no longer tries to draw a bitmap of many
   gigabytes for the clipboard. On wxWidgets' Qt port, which draws every
   clipboard format right away, Ctrl+C kept wxMaxima busy for minutes and

@@ -68,6 +68,13 @@ public:
     return m_description.IsEmpty() ? wxString(m_char) : m_description;
   }
 #endif
+  /*! Sets the min size the button needs to show its symbol.
+
+    Called from the constructor, so the size is known before the button ever
+    receives a size event, and again on every size event, in case the font or
+    the scale factor has changed since.
+  */
+  void UpdateMinSize();
 protected:
   wchar_t m_char;
   Configuration *m_configuration;
