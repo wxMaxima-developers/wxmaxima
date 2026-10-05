@@ -1,3 +1,8 @@
+# Current development version
+
+- The Greek letters and Symbols sidebars no longer come up laid out wrongly
+  until they are resized (seen with wxWidgets' Qt port).
+
 # 26.09.0
 
 Large matrices and keyboard access to output are the main topics of this
