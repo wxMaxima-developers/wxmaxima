@@ -7,6 +7,10 @@
   is why the list of formats to copy is gone from the configuration dialog.
   When the window you copied from is closed, the .wxm code, text, RTF,
   MathML and the bitmap are kept on the clipboard (#2030).
+- Copying now also puts the image on the clipboard in builds that use
+  wxWidgets' Qt port: a bitmap offered alongside other formats never
+  reached another program there, so pasting into an image editor pasted
+  whatever was on the clipboard before.
 - "Save As" of a document opened from a `.wxm` file proposed a `.wxmx`
   file name on Linux, although the dialog showed the `.wxm` file type, so
   the document was saved as `.wxmx` (#2440).
