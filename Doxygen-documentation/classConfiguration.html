@@ -158,6 +158,12 @@ Public Types</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:adb5fa4e3eacde294a5f23ceca1b9283d"><td class="mdescLeft">&#160;</td><td class="mdescRight">How to show a matrix too large for the window.  <a href="classConfiguration.html#adb5fa4e3eacde294a5f23ceca1b9283d">More...</a><br /></td></tr>
 <tr class="separator:adb5fa4e3eacde294a5f23ceca1b9283d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a698f3aab8c09db7093154b1c8b18b60b"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#a698f3aab8c09db7093154b1c8b18b60b">ImageBackdrop</a> { <a class="el" href="classConfiguration.html#a698f3aab8c09db7093154b1c8b18b60ba334c4a4c42fdb79d7ebc3e73b517e6f8">none</a> = 0
+, <a class="el" href="classConfiguration.html#a698f3aab8c09db7093154b1c8b18b60bafefc45f7d85f6aab9a48c73a49ed66dd">onDarkBackground</a> = 1
+, <a class="el" href="classConfiguration.html#a698f3aab8c09db7093154b1c8b18b60baf9f90eeaf400d228facde6bc48da5cfb">always</a> = 2
+ }</td></tr>
+<tr class="memdesc:a698f3aab8c09db7093154b1c8b18b60b"><td class="mdescLeft">&#160;</td><td class="mdescRight">What is drawn behind the transparent parts of an image (GH #2227)  <a href="classConfiguration.html#a698f3aab8c09db7093154b1c8b18b60b">More...</a><br /></td></tr>
+<tr class="separator:a698f3aab8c09db7093154b1c8b18b60b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0c3c003a32828fe343fb6e3b616a4657"><td class="memItemLeft" align="right" valign="top"><a id="a0c3c003a32828fe343fb6e3b616a4657" name="a0c3c003a32828fe343fb6e3b616a4657"></a>enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#a0c3c003a32828fe343fb6e3b616a4657">Appearance</a> { <b>light</b>
 , <b>dark</b>
 , <b>followSystem</b>
@@ -420,6 +426,15 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetLayoutStrategy</b>
 <tr class="memitem:a37a73721fe321f61f0d3154585fee086"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classConfiguration.html#adb5fa4e3eacde294a5f23ceca1b9283d">OversizedMatrices</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#a37a73721fe321f61f0d3154585fee086">OversizedMatricesFor</a> (std::optional&lt; <a class="el" href="classConfiguration.html#adb5fa4e3eacde294a5f23ceca1b9283d">OversizedMatrices</a> &gt; requested) const</td></tr>
 <tr class="memdesc:a37a73721fe321f61f0d3154585fee086"><td class="mdescLeft">&#160;</td><td class="mdescRight">How one specific matrix that is too large for the window is shown.  <br /></td></tr>
 <tr class="separator:a37a73721fe321f61f0d3154585fee086"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2bbc66ee464b3d879f18661235a19ca"><td class="memItemLeft" align="right" valign="top"><a id="ab2bbc66ee464b3d879f18661235a19ca" name="ab2bbc66ee464b3d879f18661235a19ca"></a>
+<a class="el" href="classConfiguration.html#a698f3aab8c09db7093154b1c8b18b60b">ImageBackdrop</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetImageBackdrop</b> () const</td></tr>
+<tr class="separator:ab2bbc66ee464b3d879f18661235a19ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4acf7d0d01c75f63c7a256c60976cba0"><td class="memItemLeft" align="right" valign="top"><a id="a4acf7d0d01c75f63c7a256c60976cba0" name="a4acf7d0d01c75f63c7a256c60976cba0"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetImageBackdrop</b> (<a class="el" href="classConfiguration.html#a698f3aab8c09db7093154b1c8b18b60b">ImageBackdrop</a> mode)</td></tr>
+<tr class="separator:a4acf7d0d01c75f63c7a256c60976cba0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c0789a3bc397639739cf6d9f48a2861"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#a2c0789a3bc397639739cf6d9f48a2861">DrawImageBackdrop</a> ()</td></tr>
+<tr class="memdesc:a2c0789a3bc397639739cf6d9f48a2861"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether images are to be drawn on the TS_IMAGE_BACKDROP colour right now.  <br /></td></tr>
+<tr class="separator:a2c0789a3bc397639739cf6d9f48a2861"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a74421be4dc53ee0606c3852c8e81d403"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMatrixScrollHost.html">MatrixScrollHost</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#a74421be4dc53ee0606c3852c8e81d403">GetMatrixScrollHost</a> () const</td></tr>
 <tr class="memdesc:a74421be4dc53ee0606c3852c8e81d403"><td class="mdescLeft">&#160;</td><td class="mdescRight">What gives a scrolling matrix its scrollbars, if anything.  <br /></td></tr>
 <tr class="separator:a74421be4dc53ee0606c3852c8e81d403"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1513,6 +1528,39 @@ static <a class="el" href="structConfiguration_1_1PerformanceStats.html">Perform
 
 </div>
 </div>
+<a id="a698f3aab8c09db7093154b1c8b18b60b" name="a698f3aab8c09db7093154b1c8b18b60b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a698f3aab8c09db7093154b1c8b18b60b">&#9670;&#160;</a></span>ImageBackdrop</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="classConfiguration.html#a698f3aab8c09db7093154b1c8b18b60b">Configuration::ImageBackdrop</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>What is drawn behind the transparent parts of an image (GH #2227) </p>
+<p>Images are usually made for paper, i.e. for a white background: black line art on a transparent background disappears on a dark worksheet. The backdrop's colour is the TS_IMAGE_BACKDROP style. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a698f3aab8c09db7093154b1c8b18b60ba334c4a4c42fdb79d7ebc3e73b517e6f8" name="a698f3aab8c09db7093154b1c8b18b60ba334c4a4c42fdb79d7ebc3e73b517e6f8"></a>none&#160;</td><td class="fielddoc"><p>Nothing: the worksheet shows through. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a698f3aab8c09db7093154b1c8b18b60bafefc45f7d85f6aab9a48c73a49ed66dd" name="a698f3aab8c09db7093154b1c8b18b60bafefc45f7d85f6aab9a48c73a49ed66dd"></a>onDarkBackground&#160;</td><td class="fielddoc"><p>The backdrop colour, but only if the worksheet's background is dark (the default) </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a698f3aab8c09db7093154b1c8b18b60baf9f90eeaf400d228facde6bc48da5cfb" name="a698f3aab8c09db7093154b1c8b18b60baf9f90eeaf400d228facde6bc48da5cfb"></a>always&#160;</td><td class="fielddoc"><p>Always the backdrop colour. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
 <a id="ac7d8b1beccdf8f887368251c3e6d0d71" name="ac7d8b1beccdf8f887368251c3e6d0d71"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac7d8b1beccdf8f887368251c3e6d0d71">&#9670;&#160;</a></span>InitOpt</h2>
 
@@ -1692,6 +1740,34 @@ static <a class="el" href="structConfiguration_1_1PerformanceStats.html">Perform
 
 <p><a class="el" href="classA.html">A</a> counter that increases every time we need to recalculate all worksheet cells. </p>
 <p>If that counter eventually wraps that should be fine: The cells will have been recalculated before that and if someone trying to do a speed run with <a class="el" href="classwxMaxima.html">wxMaxima</a> manages to accumulate billions of config changes before the worksheet manages to recalculate itself the worst thing that can happen is a visual glitch. </p>
+
+</div>
+</div>
+<a id="a2c0789a3bc397639739cf6d9f48a2861" name="a2c0789a3bc397639739cf6d9f48a2861"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c0789a3bc397639739cf6d9f48a2861">&#9670;&#160;</a></span>DrawImageBackdrop()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Configuration::DrawImageBackdrop </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether images are to be drawn on the TS_IMAGE_BACKDROP colour right now. </p>
+<p><a class="el" href="classPrinting.html" title="Sets the configuration&#39;s &quot;printing&quot; flag until this class is left.">Printing</a> never needs the "dark background" variant: paper is white. </p>
 
 </div>
 </div>

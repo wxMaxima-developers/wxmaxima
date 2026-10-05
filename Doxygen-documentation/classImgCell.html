@@ -772,6 +772,9 @@ static size_t&#160;</td><td class="memItemRight" valign="bottom"><b>GetLiveContr
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
+<tr class="memitem:a15110edce9ce5a40586fcd107ed06589"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImgCellBase.html#a15110edce9ce5a40586fcd107ed06589">DrawImageBackdrop</a> (wxDC *dc, const wxRect &amp;rect) const</td></tr>
+<tr class="memdesc:a15110edce9ce5a40586fcd107ed06589"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fills the rectangle an image is about to be drawn into with the backdrop for its transparent parts, if the configuration asks for one.  <br /></td></tr>
+<tr class="separator:a15110edce9ce5a40586fcd107ed06589"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e96373d1087101e9c1bb115e0320805"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a2e96373d1087101e9c1bb115e0320805">BreakUpAndMark</a> () const</td></tr>
 <tr class="memdesc:a2e96373d1087101e9c1bb115e0320805"><td class="mdescLeft">&#160;</td><td class="mdescRight">Break up the internal cells of this cell, and mark it as broken up.  <br /></td></tr>
 <tr class="separator:a2e96373d1087101e9c1bb115e0320805"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1536,6 +1539,45 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>AnimationCell</b></t
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a15110edce9ce5a40586fcd107ed06589" name="a15110edce9ce5a40586fcd107ed06589"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a15110edce9ce5a40586fcd107ed06589">&#9670;&#160;</a></span>DrawImageBackdrop()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ImgCellBase::DrawImageBackdrop </td>
+          <td>(</td>
+          <td class="paramtype">wxDC *&#160;</td>
+          <td class="paramname"><em>dc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const wxRect &amp;&#160;</td>
+          <td class="paramname"><em>rect</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Fills the rectangle an image is about to be drawn into with the backdrop for its transparent parts, if the configuration asks for one. </p>
+<p>See <a class="el" href="classConfiguration.html#a698f3aab8c09db7093154b1c8b18b60b" title="What is drawn behind the transparent parts of an image (GH #2227)">Configuration::ImageBackdrop</a>. Leaves the DC's pen and brush changed. </p>
 
 </div>
 </div>
