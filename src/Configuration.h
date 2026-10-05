@@ -1403,9 +1403,6 @@ public:
       RecalculateForce();
     m_lineBreaksInLongNums = brk;
   }
-  int  MaxClipbrdBitmapMegabytes() const {return m_maxClipbrd_BitmapMegabytes;}
-  void MaxClipbrdBitmapMegabytes(int maxClipbrd_BitmapMegabytes)
-    {m_maxClipbrd_BitmapMegabytes = maxClipbrd_BitmapMegabytes;}
 
   void MaximaUsesHtmlBrowser(bool maximaUsesHhtmlBrowser){m_maximaUsesHhtmlBrowser = maximaUsesHhtmlBrowser;}
   bool MaximaUsesHtmlBrowser() const {return m_maximaUsesHhtmlBrowser;}
@@ -1684,7 +1681,6 @@ private:
   int m_bitmapScale;
   double m_defaultFramerate;
   int m_tocDepth;
-  int m_maxClipbrd_BitmapMegabytes;
   int m_autoSaveMinutes;
   int m_maxLayoutTime;
   LayoutStrategy m_layoutStrategy = LayoutStrategy::layout2DIfFits;

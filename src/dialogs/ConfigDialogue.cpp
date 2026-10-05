@@ -244,7 +244,6 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent)
   imageList.push_back(wxArtProvider::GetBitmapBundle(wxmaximaART_CONFIG_STYLES, wxART_OTHER, wxSize(imgSize, imgSize)));
   imageList.push_back(wxArtProvider::GetBitmapBundle(wxmaximaART_CONFIG_DOCUMENT_EXPORT, wxART_OTHER, wxSize(imgSize, imgSize)));
   imageList.push_back(wxArtProvider::GetBitmapBundle(wxmaximaART_CONFIG_OPTIONS, wxART_OTHER, wxSize(imgSize, imgSize)));
-  imageList.push_back(wxArtProvider::GetBitmapBundle(wxART_COPY, wxART_OTHER, wxSize(imgSize, imgSize)));
   imageList.push_back(wxArtProvider::GetBitmapBundle(wxmaximaART_MEDIA_PLAYBACK_START, wxART_OTHER, wxSize(imgSize, imgSize)));
   imageList.push_back(wxArtProvider::GetBitmapBundle(wxART_PRINT, wxART_OTHER, wxSize(imgSize, imgSize)));
   imageList.push_back(wxArtProvider::GetBitmapBundle(wxmaximaART_CONFIG_VIEW_REFRESH, wxART_OTHER, wxSize(imgSize, imgSize)));
@@ -257,25 +256,24 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent)
   m_notebook->AddPage(CreateStylePanel(), _("Style"), false, 2);
   m_notebook->AddPage(CreateExportPanel(), _("Export"), false, 3);
   m_notebook->AddPage(CreateOptionsPanel(), _("Options"), false, 4);
-  m_notebook->AddPage(CreateClipboardPanel(), _("Copy"), false, 5);
-  m_notebook->AddPage(CreateStartupPanel(), _("Startup commands"), false, 6);
-  m_notebook->AddPage(CreatePrintPanel(), _("Printout settings"), false, 7);
+  m_notebook->AddPage(CreateStartupPanel(), _("Startup commands"), false, 5);
+  m_notebook->AddPage(CreatePrintPanel(), _("Printout settings"), false, 6);
 #ifdef WXM_USE_AI_TOOLS
   // Hidden outright, not just disabled, when there's nowhere safe to keep
   // an API key -- see AiProvider::SecretStoreAvailable()'s own doc comment
   // for why this doesn't fall back to plain-text storage instead.
   if (AiProvider::SecretStoreAvailable())
-    m_notebook->AddPage(CreateAiChatPanel(), _("AI Chat"), false, 9);
+    m_notebook->AddPage(CreateAiChatPanel(), _("AI Chat"), false, 8);
 #endif
 
 #if wxUSE_ACCESSIBILITY
   // Only offered when wxWidgets was compiled with accessibility support -
   // without it there is no screen-reader integration these settings could
   // configure.
-  m_notebook->AddPage(CreateAccessibilityPanel(), _("Accessibility"), false, 10);
+  m_notebook->AddPage(CreateAccessibilityPanel(), _("Accessibility"), false, 9);
 #endif
   m_notebook->AddPage(CreateRevertToDefaultsPanel(),
-                      _("Revert all to defaults"), false, 8);
+                      _("Revert all to defaults"), false, 7);
 
 #if !defined(__WXOSX__)
   CreateButtons(wxOK | wxCANCEL);
@@ -509,8 +507,6 @@ void ConfigDialogue::SetCheckboxValues() {
   // The default values for all config items that will be used if there is no
   // saved configuration data for this item.
   m_documentclass->SetValue(configuration->Documentclass());
-  m_maxClipbrdBitmapMegabytes->SetValue(
-                                        configuration->MaxClipbrdBitmapMegabytes());
   m_documentclassOptions->SetValue(configuration->DocumentclassOptions());
   m_mathJaxURL->SetValue(configuration->MathJaXURL_User());
   m_autodetectMathJaX->SetValue(!configuration->MathJaXURL_UseUser());
@@ -2666,44 +2662,6 @@ bool ConfigDialogue::AddCustomAiProviderDialog() {
 }
 #endif
 
-wxWindow *ConfigDialogue::CreateClipboardPanel() {
-  wxScrolled<wxPanel> *panel = new wxScrolled<wxPanel>(m_notebook, wxID_ANY);
-  panel->SetScrollRate(5 * GetContentScaleFactor(),
-                       5 * GetContentScaleFactor());
-  panel->SetMinSize(wxSize(GetContentScaleFactor() * mMinPanelWidth,
-                           GetContentScaleFactor() * mMinPanelHeight));
-
-  wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
-  // There used to be a list of the formats to put on the clipboard here.
-  // Now every format is offered and only rendered once a program asks for
-  // it (GH #2030), so there is nothing left to choose.
-  wxStaticBoxSizer *formatParamsSizer =
-    new wxStaticBoxSizer(wxVERTICAL, panel, _("Clipboard format parameters"));
-
-  wxFlexGridSizer *sizer = new wxFlexGridSizer(5, 2, 0, 0);
-
-  sizer->Add(new wxStaticText(formatParamsSizer->GetStaticBox(), wxID_ANY,
-                              _("Maximum bitmap size on clipboard [Mb]:")),
-             0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL,
-             5 * GetContentScaleFactor());
-  m_maxClipbrdBitmapMegabytes = new wxSpinCtrl(
-                                               formatParamsSizer->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition,
-                                               wxSize(150 * GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 1, 16384);
-  sizer->Add(m_maxClipbrdBitmapMegabytes, wxSizerFlags().Expand());
-  formatParamsSizer->Add(sizer, wxSizerFlags().Expand().Border(
-                                                               wxALL, 5 * GetContentScaleFactor()));
-  vbox->Add(formatParamsSizer,
-            wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
-  panel->SetSizer(vbox);
-  panel->FitInside();
-
-  return panel;
-}
-
-
-
-
-
 wxWindow *ConfigDialogue::CreatePrintPanel() {
   wxScrolled<wxPanel> *panel = new wxScrolled<wxPanel>(m_notebook, wxID_ANY);
   panel->SetScrollRate(5 * GetContentScaleFactor(),
@@ -2998,8 +2956,6 @@ void ConfigDialogue::WriteSettings() {
   }
 
   configuration->SetAbortOnError(m_abortOnError->GetValue());
-  configuration->MaxClipbrdBitmapMegabytes(
-                                           m_maxClipbrdBitmapMegabytes->GetValue());
   configuration->RestartOnReEvaluation(m_restartOnReEvaluation->GetValue());
   configuration->MaximaUserLocation(m_maximaUserLocation->GetValue());
   configuration->AutodetectMaxima(m_autodetectMaxima->GetValue());

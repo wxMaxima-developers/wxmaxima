@@ -685,9 +685,6 @@ int main(int argc, char **argv) {
   g_cfg = new Configuration(g_dc);
   g_cfg->SetZoomFactor(1.0);
   g_cfg->SetCanvasSize(wxSize(800, 600));
-  // Every flavor is offered now, the bitmap included; let it fit even when the
-  // whole test document is selected, so every flavor carries data.
-  g_cfg->MaxClipbrdBitmapMegabytes(1000);
   g_frame = new wxFrame(nullptr, wxID_ANY, wxS("test"));
   g_ws = new Worksheet(g_frame, wxID_ANY, g_cfg, wxDefaultPosition, wxDefaultSize,
                        /*reactToEvents=*/false);

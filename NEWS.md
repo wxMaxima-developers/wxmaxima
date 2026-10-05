@@ -13,6 +13,9 @@
   is why the list of formats to copy is gone from the configuration dialog.
   When the window you copied from is closed, the .wxm code, text, RTF,
   MathML and the bitmap are kept on the clipboard (#2030).
+- The size limit for bitmaps on the clipboard, and with it the "Copy" tab
+  of the configuration dialog, is gone: a bitmap is only drawn when a
+  program pastes it, and today's systems handle big ones fine.
 - Copying now also puts the image on the clipboard in builds that use
   wxWidgets' Qt port: a bitmap offered alongside other formats never
   reached another program there, so pasting into an image editor pasted
