@@ -3,6 +3,11 @@
 - GIF and XPM images no longer get a black background where they are
   meant to be transparent. Those formats mark transparency with a mask
   colour, which the worksheet drew instead of what lies behind it (#2227).
+- On a dark worksheet, images are drawn on a white backdrop by default, so
+  that black line art with a transparent background stays visible. The
+  backdrop's color is a new style, and an option in the "Worksheet" tab of
+  the configuration dialog can switch it off or use it on a bright
+  worksheet, too (#2227).
 - `wxdeclare_subscripted(variable, false)` keeps a variable from being
   displayed with a subscript again, and `wxdeclare_subscripted(variable)`
   subscripts one the current `wxsubscripts` setting wouldn't. Both were

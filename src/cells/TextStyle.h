@@ -270,6 +270,7 @@ enum TextStyle : int8_t
   TS_EQUALSSELECTION    ,
   TS_DIFF_CHANGED       , //!< Background of text the diff viewer's counterpart cell lacks
   TS_LINK               , //!< Links in text cells (GH #2396)
+  TS_IMAGE_BACKDROP     , //!< Drawn behind transparent images (GH #2227)
   NUMBEROFSTYLES, //!< This is not a style, but its value tells us how many styles are defined
   TS_INVALID //!< If a text style cannot be determined this value is used
 };

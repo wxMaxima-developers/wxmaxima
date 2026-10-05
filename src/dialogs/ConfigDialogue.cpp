@@ -562,6 +562,7 @@ void ConfigDialogue::SetCheckboxValues() {
   m_showLength->SetSelection(configuration->ShowLength());
   m_layoutStrategy->SetSelection(static_cast<int>(configuration->GetLayoutStrategy()));
   m_oversizedMatrices->SetSelection(static_cast<int>(configuration->GetOversizedMatrices()));
+  m_imageBackdrop->SetSelection(static_cast<int>(configuration->GetImageBackdrop()));
   m_autosubscript->SetSelection(configuration->GetAutosubscript_Num());
   m_changeAsterisk->SetValue(configuration->GetChangeAsterisk());
   m_hidemultiplicationSign->SetValue(configuration->HidemultiplicationSign());
@@ -887,6 +888,25 @@ wxWindow *ConfigDialogue::CreateWorksheetPanel() {
       "This affects only what is shown on screen and printed: copying, "
       "saving and exporting the matrix always include all of it."));
   displaySizer->Add(m_oversizedMatrices,
+                    wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
+
+  // Order must match Configuration::ImageBackdrop.
+  wxArrayString imageBackdrop;
+  imageBackdrop.Add(_("Nothing: the worksheet shows through"));
+  imageBackdrop.Add(_("The backdrop color, if the worksheet background is dark"));
+  imageBackdrop.Add(_("Always the backdrop color"));
+  m_imageBackdrop = new wxRadioBox(displaySizer->GetStaticBox(), wxID_ANY,
+                                   _("Behind transparent parts of images"),
+                                   wxDefaultPosition, wxDefaultSize,
+                                   imageBackdrop, 0, wxRA_SPECIFY_ROWS);
+  m_imageBackdrop->SetToolTip(
+    _("Most images are made for a white background: black line art on a "
+      "transparent background is invisible on a dark worksheet.\n"
+      "The backdrop color is set in the \"Style\" tab as \"Backdrop of "
+      "transparent images\".\n"
+      "This affects only what is shown on screen and printed, not the images "
+      "themselves."));
+  displaySizer->Add(m_imageBackdrop,
                     wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
 
   wxStaticBoxSizer *numDigitsSizer = new wxStaticBoxSizer(
@@ -2991,6 +3011,8 @@ void ConfigDialogue::WriteSettings() {
     static_cast<Configuration::LayoutStrategy>(m_layoutStrategy->GetSelection()));
   configuration->SetOversizedMatrices(
     static_cast<Configuration::OversizedMatrices>(m_oversizedMatrices->GetSelection()));
+  configuration->SetImageBackdrop(
+    static_cast<Configuration::ImageBackdrop>(m_imageBackdrop->GetSelection()));
   configuration->SetAutosubscript_Num(m_autosubscript->GetSelection());
   configuration->FixedFontInTextControls(m_fixedFontInTC->GetValue());
   configuration->OfferKnownAnswers(m_offerKnownAnswers->GetValue());
