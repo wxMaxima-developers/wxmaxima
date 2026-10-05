@@ -1435,15 +1435,25 @@ alt="How variables are autosubscripted using wxsubscripts" />
 <figcaption aria-hidden="true">How variables are autosubscripted using
 wxsubscripts</figcaption>
 </figure>
+<div id="wxdeclare_subscripted">
+
+</div>
+<p>A variable the rules above don’t cover can still be declared as “to
+be subscripted” using the command
+<code>wxdeclare_subscripted(variable_name);</code> or
+<code>wxdeclare_subscripted([variable_name1,variable_name2,...]);</code>
+Declaring a variable as subscripted can be reverted using the following
+command: <code>wxdeclare_subscripted(variable_name,false);</code>, which
+also keeps a variable the rules above do cover from being
+subscripted.</p>
 <div id="wxdeclare_subscript">
 
 </div>
-<p>If the variable name doesn’t match these requirements, it can still
-be declared as “to be subscripted” using the command
-<code>wxdeclare_subscript(variable_name);</code> or
-<code>wxdeclare_subscript([variable_name1,variable_name2,...]);</code>
-Declaring a variable as subscripted can be reverted using the following
-command: <code>wxdeclare_subscript(variable_name,false);</code></p>
+<p><code>wxdeclare_subscript(text_snippet);</code> or
+<code>wxdeclare_subscript([text_snippet1,text_snippet2,...]);</code>
+instead declares a text snippet: every variable whose name ends in an
+underscore followed by that snippet is subscripted, however long the two
+parts are.</p>
 <p>You can use the menu “View-&gt;Autosubscript” to set these
 values.</p>
 <h2 data-number="3.2" id="user-feedback-in-the-status-bar"><span

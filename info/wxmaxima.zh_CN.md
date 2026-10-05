@@ -624,6 +624,8 @@ using a subscript if
 ![How variables are autosubscripted using wxsubscripts](./wxsubscripts.png){
 id=img_wxsubscripts }
 
+<div id="wxdeclare_subscripted"></div>
+
 <div id="wxdeclare_subscript"></div>
 
 If the variable name doesn’t match these requirements, it can still be

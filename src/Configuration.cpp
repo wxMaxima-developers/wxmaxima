@@ -536,7 +536,9 @@ wxString Configuration::GetAutosubscript_string() const {
   case 1:
     return "t";
   default:
-    return "'all";
+    // The Maxima symbol is $all: 'all would be a Lisp symbol of the same
+    // name, which no comparison in wxMathML.lisp matches (#1653).
+    return "'$all";
   }
 }
 
