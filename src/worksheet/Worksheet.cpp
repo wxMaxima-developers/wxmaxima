@@ -2365,6 +2365,10 @@ std::unique_ptr<wxDataObject> Worksheet::CreateSelectionDataObject() const {
   data->Add(new LazyDataObject(m_rtfFormat3, rtf), true);
   data->Add(new wxTextDataObject(contents->text));
   data->Add(new LazyBitmapDataObject(bitmap));
+#ifdef __WXQT__
+  // On wxQt the bitmap above reaches nobody -- see LazyPngDataObject.
+  data->Add(new LazyPngDataObject(bitmap));
+#endif
 
   m_clipboardContents = contents;
   return std::unique_ptr<wxDataObject>(data);
@@ -2707,6 +2711,10 @@ std::unique_ptr<wxDataObject> Worksheet::CreateCellsDataObject() const {
   data->Add(new wxTextDataObject(contents->text));
   data->Add(new wxmDataObject(contents->wxm));
   data->Add(new LazyBitmapDataObject(bitmap));
+#ifdef __WXQT__
+  // On wxQt the bitmap above reaches nobody -- see LazyPngDataObject.
+  data->Add(new LazyPngDataObject(bitmap));
+#endif
 #if wxUSE_ENH_METAFILE
   data->Add(new LazyEnhMetaFileDataObject(
               std::shared_ptr<const LazyValue<wxEnhMetaFile>>(contents,

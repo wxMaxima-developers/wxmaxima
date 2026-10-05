@@ -26,6 +26,8 @@
 #include "ClipboardContents.h"
 #include "cells/Cell.h"
 #include "cells/GroupCell.h"
+#include <wx/image.h>
+#include <wx/mstream.h>
 #include <cstring>
 
 ClipboardSnapshot::ClipboardSnapshot(Configuration *configuration,
@@ -101,6 +103,44 @@ bool LazyBitmapDataObject::GetDataHere(const wxDataFormat &format,
                                        void *buf) const {
   return Render() && wxDataObjectSimple::GetDataHere(format, buf);
 }
+
+LazyPngDataObject::LazyPngDataObject(
+  std::shared_ptr<const LazyValue<wxBitmap>> bitmap)
+  : wxDataObjectSimple(GetDataFormat()), m_bitmap(std::move(bitmap)) {}
+
+wxDataFormat LazyPngDataObject::GetDataFormat() {
+  return wxDataFormat(wxS("image/png"));
+}
+
+const std::string &LazyPngDataObject::Png() const {
+  if (!m_png) {
+    m_png = std::string();
+    const wxBitmap &bmp = m_bitmap->Get();
+    if (bmp.IsOk()) {
+      wxMemoryOutputStream out;
+      // A bitmap we drew ourselves always converts to an image; a PNG
+      // encoder that isn't compiled in would make SaveFile() fail, which
+      // leaves this flavour empty rather than offering unreadable bytes.
+      if (bmp.ConvertToImage().SaveFile(out, wxBITMAP_TYPE_PNG)) {
+        m_png->resize(out.GetLength());
+        out.CopyTo(&(*m_png)[0], m_png->size());
+      }
+    }
+  }
+  return *m_png;
+}
+
+size_t LazyPngDataObject::GetDataSize() const { return Png().size(); }
+
+bool LazyPngDataObject::GetDataHere(void *buf) const {
+  const std::string &png = Png();
+  if (png.empty())
+    return false;
+  std::memcpy(buf, png.data(), png.size());
+  return true;
+}
+
+bool LazyPngDataObject::SetData(size_t, const void *) { return false; }
 
 #if wxUSE_ENH_METAFILE
 LazyEnhMetaFileDataObject::LazyEnhMetaFileDataObject(

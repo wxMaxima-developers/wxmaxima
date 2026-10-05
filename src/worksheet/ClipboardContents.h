@@ -220,6 +220,42 @@ private:
   mutable bool m_rendered = false;
 };
 
+/*! The same bitmap, as PNG bytes, for ports that can only hand over bytes.
+
+  wxQt turns a bitmap into clipboard image data in
+  wxBitmapDataObject::QtAddDataTo(), which only runs when the bitmap is the
+  whole clipboard contents. Inside a composite, wxDataObject::QtAddDataTo()
+  asks every format for its bytes instead, and a bitmap has none to give, so
+  the image reaches no other program at all. PNG bytes are handed over
+  unchanged, and every image editor reads them.
+*/
+class LazyPngDataObject final : public wxDataObjectSimple
+{
+public:
+  explicit LazyPngDataObject(std::shared_ptr<const LazyValue<wxBitmap>> bitmap);
+
+  //! The format this is offered under: image/png
+  static wxDataFormat GetDataFormat();
+
+  size_t GetDataSize() const override;
+  bool GetDataHere(void *buf) const override;
+  //! Pasting into a LazyPngDataObject is not supported
+  bool SetData(size_t len, const void *buf) override;
+
+  // Don't hide the base class' per-format overloads, which forward to the
+  // ones above.
+  using wxDataObjectSimple::GetDataSize;
+  using wxDataObjectSimple::GetDataHere;
+  using wxDataObjectSimple::SetData;
+
+private:
+  //! The encoded bytes, encoded on the first request. Empty if there is no
+  //! bitmap to encode.
+  const std::string &Png() const;
+  std::shared_ptr<const LazyValue<wxBitmap>> m_bitmap;
+  mutable std::optional<std::string> m_png;
+};
+
 #if wxUSE_ENH_METAFILE
 //! A Windows enhanced metafile that is only drawn when a program asks for it.
 class LazyEnhMetaFileDataObject final : public wxEnhMetaFileDataObject
