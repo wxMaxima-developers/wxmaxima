@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['object_0',['Object',['../manual_8c.html#ab1287b6141419421dc5c14b9f7756b0a',1,'manual.c']]],
-  ['object_5fcomparator_5ft_1',['object_comparator_t',['../classbasic__json.html#af12040e0663db54840d73d363979643a',1,'basic_json']]],
-  ['object_5ft_2',['object_t',['../classbasic__json.html#ac90f70623dc1ad761ea1c5013b2fee47',1,'basic_json']]],
-  ['output_5fadapter_5ft_3',['output_adapter_t',['../namespacedetail.html#a160eb5d333fe01b259af32d3d4798a7b',1,'detail']]]
+  ['number_5ffloat_5ft_0',['number_float_t',['../classbasic__json.html#a80a229dbc84c1334171ce9c49c873c56',1,'basic_json']]],
+  ['number_5finteger_5ft_1',['number_integer_t',['../classbasic__json.html#aba48b0bdee31228a4e19b7c040b6d2a5',1,'basic_json']]],
+  ['number_5funsigned_5ft_2',['number_unsigned_t',['../classbasic__json.html#ae8505b599e706768a1e0bd6718cc7117',1,'basic_json']]]
 ];

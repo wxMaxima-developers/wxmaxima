@@ -249,6 +249,9 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><b>ToString</b> (boo
 const wxFont &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>GetFont</b> () const</td></tr>
 <tr class="memdesc:a0dea17c38d6948249361f46826177afc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the font that matches this cell's formatting. <br /></td></tr>
 <tr class="separator:a0dea17c38d6948249361f46826177afc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a775453345fd9c4aef5d85462cb388f2f"><td class="memItemLeft" align="right" valign="top">const wxFont &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#a775453345fd9c4aef5d85462cb388f2f">GetFont</a> (<a class="el" href="TextFormat_8h.html#a5f5bc96d42493f3c4209d77ec9ab6952">TextFormat::Format</a> format) const</td></tr>
+<tr class="memdesc:a775453345fd9c4aef5d85462cb388f2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The font for text with the given character formatting (GH #492).  <br /></td></tr>
+<tr class="separator:a775453345fd9c4aef5d85462cb388f2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc8468c33d43d800735a5811f0a9488c"><td class="memItemLeft" align="right" valign="top"><a id="abc8468c33d43d800735a5811f0a9488c" name="abc8468c33d43d800735a5811f0a9488c"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetFont</b> (wxDC *dc) const</td></tr>
 <tr class="memdesc:abc8468c33d43d800735a5811f0a9488c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the currently used font to the one that matches this cell's formatting. <br /></td></tr>
@@ -1050,6 +1053,34 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasControlBlock</b> (
 <tr class="memitem:a51973edd395e7418e299006b534bee70"><td class="memItemLeft" align="right" valign="top"><a id="a51973edd395e7418e299006b534bee70" name="a51973edd395e7418e299006b534bee70"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasOneCellPtr</b> () const</td></tr>
 <tr class="separator:a51973edd395e7418e299006b534bee70"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Character formatting (bold, italic, ...) of a text cell (GH #492)</div></td></tr>
+<tr><td colspan="2"><div class="groupText"><p>One <a class="el" href="TextFormat_8h.html#a5f5bc96d42493f3c4209d77ec9ab6952" title="The formatting of one character: a combination of the flags below.">TextFormat::Format</a> per character of <a class="el" href="classEditorCell.html#a7567a287678df7003b301c1a93901b03" title="Returns the text contained in this cell.">GetValue()</a>; see <a class="el" href="TextFormat_8h.html" title="Character formatting (bold, italic, ...) of the text in a text cell (GH #492).">TextFormat.h</a>.</p>
+<p>Code cells have syntax highlighting instead and are never formatted.</p>
+<p>The formats are not updated by each of the many places that edit the text. Instead they remember the text they were made for, and whenever they are needed and the text has changed since, <a class="el" href="TextFormat_8cpp.html#a0bde2a2b15a3b4b8f670a77fa7b477f4" title="The formatting of newText, given that it came from oldText by editing.">TextFormat::Reconcile()</a> works out which characters survived the edit (SyncFormats()). That way no edit, present or future, can leave them out of step with the text. </p>
+</div></td></tr>
+<tr class="memitem:a74b6f69e4d3c6c3f7f2b3ce4650d8698"><td class="memItemLeft" align="right" valign="top"><a id="a74b6f69e4d3c6c3f7f2b3ce4650d8698" name="a74b6f69e4d3c6c3f7f2b3ce4650d8698"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanFormat</b> () const</td></tr>
+<tr class="memdesc:a74b6f69e4d3c6c3f7f2b3ce4650d8698"><td class="mdescLeft">&#160;</td><td class="mdescRight">Can this cell's text be formatted at all? (Not if it is code.) <br /></td></tr>
+<tr class="separator:a74b6f69e4d3c6c3f7f2b3ce4650d8698"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a2a310195089a5560086d9c011208e4"><td class="memItemLeft" align="right" valign="top"><a id="a2a2a310195089a5560086d9c011208e4" name="a2a2a310195089a5560086d9c011208e4"></a>
+const <a class="el" href="TextFormat_8h.html#a13862239022d9d562b6551674458be17">TextFormat::Formats</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>GetFormats</b> () const</td></tr>
+<tr class="memdesc:a2a2a310195089a5560086d9c011208e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">The formats of <a class="el" href="classEditorCell.html#a7567a287678df7003b301c1a93901b03" title="Returns the text contained in this cell.">GetValue()</a>, one per character; empty if it is plain. <br /></td></tr>
+<tr class="separator:a2a2a310195089a5560086d9c011208e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9a60f0fd3faf1537249e49c7de662bf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#ae9a60f0fd3faf1537249e49c7de662bf">SetFormats</a> (<a class="el" href="TextFormat_8h.html#a13862239022d9d562b6551674458be17">TextFormat::Formats</a> formats)</td></tr>
+<tr class="memdesc:ae9a60f0fd3faf1537249e49c7de662bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Replace the formats; one per character of <a class="el" href="classEditorCell.html#a7567a287678df7003b301c1a93901b03" title="Returns the text contained in this cell.">GetValue()</a>, or empty.  <br /></td></tr>
+<tr class="separator:ae9a60f0fd3faf1537249e49c7de662bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afdae731203716ebb74b4d4c68df1f9a4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#afdae731203716ebb74b4d4c68df1f9a4">HasFormat</a> (<a class="el" href="TextFormat_8h.html#a5f5bc96d42493f3c4209d77ec9ab6952">TextFormat::Format</a> flag) const</td></tr>
+<tr class="memdesc:afdae731203716ebb74b4d4c68df1f9a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is this format on where the user is?  <br /></td></tr>
+<tr class="separator:afdae731203716ebb74b4d4c68df1f9a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e8006cd09a17d8dace66781ffd9fbc0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#a2e8006cd09a17d8dace66781ffd9fbc0">ToggleFormat</a> (<a class="el" href="TextFormat_8h.html#a5f5bc96d42493f3c4209d77ec9ab6952">TextFormat::Format</a> flag)</td></tr>
+<tr class="memdesc:a2e8006cd09a17d8dace66781ffd9fbc0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Switch a format on or off, as the toolbar's buttons do.  <br /></td></tr>
+<tr class="separator:a2e8006cd09a17d8dace66781ffd9fbc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a47c6e9c06a496670fa8bcd7dc747bc0d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#a47c6e9c06a496670fa8bcd7dc747bc0d">SetUnknownLineAttributes</a> (std::vector&lt; std::pair&lt; wxString, wxString &gt; &gt; attributes)</td></tr>
+<tr class="memdesc:a47c6e9c06a496670fa8bcd7dc747bc0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The attributes of the &lt;line&gt; elements of a loaded file this version doesn't understand, each with the text of the line it was on.  <br /></td></tr>
+<tr class="separator:a47c6e9c06a496670fa8bcd7dc747bc0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7971f77aa5a1740f3973229dbd171eec"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#a7971f77aa5a1740f3973229dbd171eec">CopyFormatsFrom</a> (const <a class="el" href="classEditorCell.html">EditorCell</a> &amp;source)</td></tr>
+<tr class="memdesc:a7971f77aa5a1740f3973229dbd171eec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Take over another cell's formatting, for a cell that took over its text.  <br /></td></tr>
+<tr class="separator:a7971f77aa5a1740f3973229dbd171eec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Layout Engine (3-Pass Pipeline)</div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p>The layout engine follows a strict 3-pass process to ensure a single source of truth for cell geometry and positioning:</p>
 <ol type="1">
@@ -1736,6 +1767,35 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 <p>This method is purely virtual, which means every child class has to define its own <a class="el" href="classCodeEditorCell.html#a746013bf37bfe13fb4b6d865101702a1" title="Create a copy of this cell.">Copy()</a> method. </p>
 
 <p>Implements <a class="el" href="classCell.html#aa2db105aac0ca1c6080d83c47901c204">Cell</a>.</p>
+
+</div>
+</div>
+<a id="a7971f77aa5a1740f3973229dbd171eec" name="a7971f77aa5a1740f3973229dbd171eec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7971f77aa5a1740f3973229dbd171eec">&#9670;&#160;</a></span>CopyFormatsFrom()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void EditorCell::CopyFormatsFrom </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classEditorCell.html">EditorCell</a> &amp;&#160;</td>
+          <td class="paramname"><em>source</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Take over another cell's formatting, for a cell that took over its text. </p>
+<p>For the places that build a new cell from an old one's <a class="el" href="classEditorCell.html#a7567a287678df7003b301c1a93901b03" title="Returns the text contained in this cell.">GetValue()</a> - a change of the cell's type, loading a file. If the texts differ the formats are mapped onto this cell's text the way an edit would map them. </p>
 
 </div>
 </div>
@@ -2493,6 +2553,35 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
  
 </div>
 </div>
+<a id="a775453345fd9c4aef5d85462cb388f2f" name="a775453345fd9c4aef5d85462cb388f2f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a775453345fd9c4aef5d85462cb388f2f">&#9670;&#160;</a></span>GetFont()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const wxFont &amp; EditorCell::GetFont </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="TextFormat_8h.html#a5f5bc96d42493f3c4209d77ec9ab6952">TextFormat::Format</a>&#160;</td>
+          <td class="paramname"><em>format</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The font for text with the given character formatting (GH #492). </p>
+<p>Only bold and italic change the font; underline and strikethrough are lines <a class="el" href="classEditorCell.html#ae1ea47fbaf84aa982f91f717101d743f" title="Pass 3 (Paint): Renders the cell using pre-calculated coordinates.">Draw()</a> adds on top. Cached, since <a class="el" href="classEditorCell.html#ae1ea47fbaf84aa982f91f717101d743f" title="Pass 3 (Paint): Renders the cell using pre-calculated coordinates.">Draw()</a> asks for it once per snippet. </p>
+
+</div>
+</div>
 <a id="a42e273c4824ddce9e7e1845abb0d886f" name="a42e273c4824ddce9e7e1845abb0d886f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a42e273c4824ddce9e7e1845abb0d886f">&#9670;&#160;</a></span>GetHeight()</h2>
 
@@ -3106,6 +3195,35 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 <p>wxEmptyString means: No such data. </p>
 
 <p>Reimplemented in <a class="el" href="classAnimationCell.html#a69674af20401792e65d0f48438894491">AnimationCell</a>, <a class="el" href="classImgCell.html#aefb8bdaacf6d2957ca76e963a929a83e">ImgCell</a>, and <a class="el" href="classImgCellBase.html#a423fe98bef2b0459e2716e7c596bca26">ImgCellBase</a>.</p>
+
+</div>
+</div>
+<a id="afdae731203716ebb74b4d4c68df1f9a4" name="afdae731203716ebb74b4d4c68df1f9a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afdae731203716ebb74b4d4c68df1f9a4">&#9670;&#160;</a></span>HasFormat()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool EditorCell::HasFormat </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="TextFormat_8h.html#a5f5bc96d42493f3c4209d77ec9ab6952">TextFormat::Format</a>&#160;</td>
+          <td class="paramname"><em>flag</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Is this format on where the user is? </p>
+<p>With a selection: is every selected character formatted that way. Without one: will what is typed at the cursor be. </p>
 
 </div>
 </div>
@@ -4476,6 +4594,35 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 
 </div>
 </div>
+<a id="ae9a60f0fd3faf1537249e49c7de662bf" name="ae9a60f0fd3faf1537249e49c7de662bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9a60f0fd3faf1537249e49c7de662bf">&#9670;&#160;</a></span>SetFormats()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void EditorCell::SetFormats </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="TextFormat_8h.html#a13862239022d9d562b6551674458be17">TextFormat::Formats</a>&#160;</td>
+          <td class="paramname"><em>formats</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Replace the formats; one per character of <a class="el" href="classEditorCell.html#a7567a287678df7003b301c1a93901b03" title="Returns the text contained in this cell.">GetValue()</a>, or empty. </p>
+<p>Not an edit: it doesn't go into the undo history. Meant for loading a file. </p>
+
+</div>
+</div>
 <a id="a6cb012023c40ba183294299e8d20b531" name="a6cb012023c40ba183294299e8d20b531"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6cb012023c40ba183294299e8d20b531">&#9670;&#160;</a></span>SetIsExponent()</h2>
 
@@ -4591,6 +4738,35 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 <p>Sets the text style according to the type. </p>
 
 <p>Reimplemented from <a class="el" href="classCell.html#ace247e64d639871a0d64256f5d81b6e1">Cell</a>.</p>
+
+</div>
+</div>
+<a id="a47c6e9c06a496670fa8bcd7dc747bc0d" name="a47c6e9c06a496670fa8bcd7dc747bc0d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a47c6e9c06a496670fa8bcd7dc747bc0d">&#9670;&#160;</a></span>SetUnknownLineAttributes()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void EditorCell::SetUnknownLineAttributes </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; std::pair&lt; wxString, wxString &gt; &gt;&#160;</td>
+          <td class="paramname"><em>attributes</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The attributes of the &lt;line&gt; elements of a loaded file this version doesn't understand, each with the text of the line it was on. </p>
+<p>Written out again by <a class="el" href="classEditorCell.html#a24abc47fc2fb20832d7c30f850936357" title="Convert the current cell to XML code for inclusion in a .wxmx file.">ToXML()</a> for every line whose text is still the same, so a newer version's formatting survives this one opening and saving the file. </p>
 
 </div>
 </div>
@@ -4814,6 +4990,35 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 
 <p>Recursively visits this cell and everything nested inside it (including an image produced by the very last evaluated cell, which may still be loading on a background thread at the instant this is called), tallying GH #2178 image load failures into <em>dataUnavailable/<em>decodeFailed</em>.</em> </p>
 <p>Reflects only the CURRENT, final state of each image: one that failed once but was then reloaded successfully (e.g. a stale embedded copy later replaced by a fresh evaluation) is not counted. </p>
+
+</div>
+</div>
+<a id="a2e8006cd09a17d8dace66781ffd9fbc0" name="a2e8006cd09a17d8dace66781ffd9fbc0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e8006cd09a17d8dace66781ffd9fbc0">&#9670;&#160;</a></span>ToggleFormat()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool EditorCell::ToggleFormat </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="TextFormat_8h.html#a5f5bc96d42493f3c4209d77ec9ab6952">TextFormat::Format</a>&#160;</td>
+          <td class="paramname"><em>flag</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Switch a format on or off, as the toolbar's buttons do. </p>
+<p>With a selection the selected characters get it - unless they all have it already, in which case they all lose it. Without one it is switched for what is typed next at the cursor. </p><dl class="section return"><dt>Returns</dt><dd>true if the cell's content changed (and so did the undo history). </dd></dl>
 
 </div>
 </div>

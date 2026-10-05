@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['size_5ftype_0',['size_type',['../classbasic__json.html#a2c086af43cf06b1b7118f5351cab3ec9',1,'basic_json']]],
-  ['string_5ft_1',['string_t',['../classbasic__json.html#ac8c9cde32146e6c343e1960aefc11fba',1,'basic_json']]]
+  ['reference_0',['reference',['../classdetail_1_1iter__impl.html#aef4718cdd15a8743df34c4861c375144',1,'detail::iter_impl::reference()'],['../classdetail_1_1json__reverse__iterator.html#a81a4d0a61246d4ece37fd14eacfadda0',1,'detail::json_reverse_iterator::reference()'],['../classbasic__json.html#a6ca7bfb35987ce7cb8d27447cda5b80a',1,'basic_json::reference()']]],
+  ['reverse_5fiterator_1',['reverse_iterator',['../classbasic__json.html#aedc059cdae078322bb0d434b2127d1cf',1,'basic_json']]]
 ];

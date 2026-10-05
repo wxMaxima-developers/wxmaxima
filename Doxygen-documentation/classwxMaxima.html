@@ -468,6 +468,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateToolBar</b> ()<
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ChangeCellStyle</b> (wxCommandEvent &amp;event)</td></tr>
 <tr class="memdesc:a2ee4deb008b0f0798f1800a61c0ef3cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is triggered when the textstyle drop-down box's value is changed. <br /></td></tr>
 <tr class="separator:a2ee4deb008b0f0798f1800a61c0ef3cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c6c6a0474d29de50e26929c634798ee"><td class="memItemLeft" align="right" valign="top"><a id="a8c6c6a0474d29de50e26929c634798ee" name="a8c6c6a0474d29de50e26929c634798ee"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>OnTextFormat</b> (wxCommandEvent &amp;event)</td></tr>
+<tr class="memdesc:a8c6c6a0474d29de50e26929c634798ee"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classA.html">A</a> character formatting button of the toolbar (bold, ...) was pressed. <br /></td></tr>
+<tr class="separator:a8c6c6a0474d29de50e26929c634798ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7efe7b1de16bea5685f8968667f6274f"><td class="memItemLeft" align="right" valign="top"><a id="a7efe7b1de16bea5685f8968667f6274f" name="a7efe7b1de16bea5685f8968667f6274f"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>OnFind</b> (wxFindDialogEvent &amp;event)</td></tr>
 <tr class="memdesc:a7efe7b1de16bea5685f8968667f6274f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is triggered when the "Find" button in the search dialog is pressed. <br /></td></tr>
@@ -1383,7 +1387,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 
 <p>returns the command to start maxima </p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md1064"></a>
+ <h2><a class="anchor" id="autotoc_md1065"></a>
 Getting configuration</h2>
 
 </div>
@@ -1627,7 +1631,7 @@ Getting configuration</h2>
 
 <p>Inserts command cmd into the worksheet. </p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md1067"></a>
+ <h2><a class="anchor" id="autotoc_md1068"></a>
 Menu and button events</h2>
 
 </div>
@@ -1663,7 +1667,7 @@ Menu and button events</h2>
 <p>Moving the screen update to this function, as well, makes sure that if we get events faster than we can update the screen that doesn't cause lag, but causes screen updates for old events to be dropped if we already have new ones. This normally makes programs feel way more responsive.</p>
 <p>The worksheet is additionally refreshed by a timer task in case that th computer is too busy to ever reach the idle task at all.</p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md1066"></a>
+ <h2><a class="anchor" id="autotoc_md1067"></a>
 Idle event</h2>
 
 </div>
@@ -1798,13 +1802,13 @@ Idle event</h2>
 <p>Set the current working directory file I/O from maxima is relative to. </p>
 <p>ServerEvent is triggered when maxima connects to the socket server.</p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md1061"></a>
+ <h2><a class="anchor" id="autotoc_md1062"></a>
 Socket stuff</h2>
 <hr  />
- <h2><a class="anchor" id="autotoc_md1062"></a>
+ <h2><a class="anchor" id="autotoc_md1063"></a>
 Maxima process stuff</h2>
 <hr  />
- <h2><a class="anchor" id="autotoc_md1063"></a>
+ <h2><a class="anchor" id="autotoc_md1064"></a>
 Dealing with stuff read from the socket</h2>
 
 </div>
@@ -1908,7 +1912,7 @@ Dealing with stuff read from the socket</h2>
       </table>
 </div><div class="memdoc">
 <hr  />
- <h2><a class="anchor" id="autotoc_md1065"></a>
+ <h2><a class="anchor" id="autotoc_md1066"></a>
 Tips and help</h2>
 
 </div>
@@ -2077,7 +2081,7 @@ Tips and help</h2>
 
 <p>Enables and disables the Right menu buttons. </p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md1068"></a>
+ <h2><a class="anchor" id="autotoc_md1069"></a>
 Menu and button events</h2>
 
 </div>
@@ -2135,7 +2139,7 @@ Menu and button events</h2>
 
 <p>Updates the slider to show the right frame. </p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md1069"></a>
+ <h2><a class="anchor" id="autotoc_md1070"></a>
 Plot Slider</h2>
 
 </div>
@@ -2165,7 +2169,7 @@ Plot Slider</h2>
 </div><div class="memdoc">
 
 <p>Spawn the "configure" menu. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000017">Todo:</a></b></dt><dd>Inform maxima about the new default plot window size. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000016">Todo:</a></b></dt><dd>Inform maxima about the new default plot window size. </dd></dl>
 <p>Trigger reading all variables from <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> that are shown in the Variables sidebar </p>
 
 </div>

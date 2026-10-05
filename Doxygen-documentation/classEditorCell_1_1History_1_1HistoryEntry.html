@@ -86,9 +86,9 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aacfe988eb48693c5655ee5688d1c3f3c"><td class="memItemLeft" align="right" valign="top"><a id="aacfe988eb48693c5655ee5688d1c3f3c" name="aacfe988eb48693c5655ee5688d1c3f3c"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>HistoryEntry</b> (const wxString &amp;text, long long selStart, long long selEnd)</td></tr>
-<tr class="separator:aacfe988eb48693c5655ee5688d1c3f3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2acee8d1ee13a17b74cd4b512e84d9b1"><td class="memItemLeft" align="right" valign="top"><a id="a2acee8d1ee13a17b74cd4b512e84d9b1" name="a2acee8d1ee13a17b74cd4b512e84d9b1"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>HistoryEntry</b> (const wxString &amp;text, long long selStart, long long selEnd, <a class="el" href="TextFormat_8h.html#a13862239022d9d562b6551674458be17">TextFormat::Formats</a> formats={})</td></tr>
+<tr class="separator:a2acee8d1ee13a17b74cd4b512e84d9b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaa9c5c8914b37e0342ff2a55e3b80d5a"><td class="memItemLeft" align="right" valign="top"><a id="aaa9c5c8914b37e0342ff2a55e3b80d5a" name="aaa9c5c8914b37e0342ff2a55e3b80d5a"></a>
 long long&#160;</td><td class="memItemRight" valign="bottom"><b>SelectionStart</b> () const</td></tr>
 <tr class="separator:aaa9c5c8914b37e0342ff2a55e3b80d5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -98,6 +98,13 @@ long long&#160;</td><td class="memItemRight" valign="bottom"><b>SelectionEnd</b>
 <tr class="memitem:a1726f7ae9d9bd22bd4ba1b04f31d3622"><td class="memItemLeft" align="right" valign="top"><a id="a1726f7ae9d9bd22bd4ba1b04f31d3622" name="a1726f7ae9d9bd22bd4ba1b04f31d3622"></a>
 wxString&#160;</td><td class="memItemRight" valign="bottom"><b>GetText</b> () const</td></tr>
 <tr class="separator:a1726f7ae9d9bd22bd4ba1b04f31d3622"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2b96f0376f0ccdd6c1d58676d7d8833"><td class="memItemLeft" align="right" valign="top"><a id="ac2b96f0376f0ccdd6c1d58676d7d8833" name="ac2b96f0376f0ccdd6c1d58676d7d8833"></a>
+const <a class="el" href="TextFormat_8h.html#a13862239022d9d562b6551674458be17">TextFormat::Formats</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>GetFormats</b> () const</td></tr>
+<tr class="separator:ac2b96f0376f0ccdd6c1d58676d7d8833"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba76cc1ae60c620aebad364a57e182cf"><td class="memItemLeft" align="right" valign="top"><a id="aba76cc1ae60c620aebad364a57e182cf" name="aba76cc1ae60c620aebad364a57e182cf"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>SameContent</b> (const <a class="el" href="classEditorCell_1_1History_1_1HistoryEntry.html">HistoryEntry</a> &amp;other) const</td></tr>
+<tr class="memdesc:aba76cc1ae60c620aebad364a57e182cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Do both entries hold the same text with the same formatting? <br /></td></tr>
+<tr class="separator:aba76cc1ae60c620aebad364a57e182cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>How an entry to the undo history looks like. </p>
