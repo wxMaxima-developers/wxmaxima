@@ -113,6 +113,9 @@ wxWindow *&#160;</td><td class="memItemRight" valign="bottom"><b>GetTextObject</
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ActivateButton</b> ()</td></tr>
 <tr class="memdesc:ae12883c79e624ee7e62415145e66134f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emit this button's symbol to the worksheet &ndash; the button's action, shared by the mouse handler and the accessibility "Press" default action. <br /></td></tr>
 <tr class="separator:ae12883c79e624ee7e62415145e66134f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a007b9cd0d7d293043e420560d9162c12"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCharButton.html#a007b9cd0d7d293043e420560d9162c12">UpdateMinSize</a> ()</td></tr>
+<tr class="memdesc:a007b9cd0d7d293043e420560d9162c12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the min size the button needs to show its symbol.  <br /></td></tr>
+<tr class="separator:a007b9cd0d7d293043e420560d9162c12"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -212,6 +215,27 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><b>m_description</b>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a007b9cd0d7d293043e420560d9162c12" name="a007b9cd0d7d293043e420560d9162c12"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a007b9cd0d7d293043e420560d9162c12">&#9670;&#160;</a></span>UpdateMinSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void CharButton::UpdateMinSize </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets the min size the button needs to show its symbol. </p>
+<p>Called from the constructor, so the size is known before the button ever receives a size event, and again on every size event, in case the font or the scale factor has changed since. </p>
 
 </div>
 </div>
