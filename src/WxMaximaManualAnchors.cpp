@@ -35,6 +35,7 @@ const std::vector<wxString> &Keywords() {
   // their arguments are explained.
   static const std::vector<wxString> keywords = {
     wxS("wxsubscripts"),        wxS("wxdeclare_subscript"),
+    wxS("wxdeclare_subscripted"),
     wxS("wxstatusbar"),         wxS("wxworksheettohtml"),
     wxS("wxworksheettotex"),    wxS("wxplot2d"),
     wxS("wxplot3d"),            wxS("wximplicit_plot"),

@@ -649,6 +649,8 @@ einem tiefgestellten `y` dargestellt, wenn
 ![Wie Variablen mit wxsubscripts automatisch tiefgestellt
 werden](./wxsubscripts.png){ id=img_wxsubscripts }
 
+<div id="wxdeclare_subscripted"></div>
+
 <div id="wxdeclare_subscript"></div>
 
 Wenn nicht, kann jede Variable als mit tiefgestelltem `y` ausgestattet

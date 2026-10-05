@@ -698,6 +698,8 @@ s'affichent avec un indice uniquement si
 ![Comment les variables sont automatiquement mises en indices en utilisant
 wxsubscripts](./wxsubscripts.png){ id=img_wxsubscripts }
 
+<div id="wxdeclare_subscripted"></div>
+
 <div id="wxdeclare_subscript"></div>
 
 If the variable name doesn’t match these requirements, it can still be

@@ -690,6 +690,8 @@ Si está fijado a `true` (verdadero) los nombres de variables del formato
 ![Como variables son auto-suscritas utilizando
 wxsubscripts](./wxsubscripts.png){ id=img_wxsubscripts }
 
+<div id="wxdeclare_subscripted"></div>
+
 <div id="wxdeclare_subscript"></div>
 
 Si el nombre de variable no coincide estos requerimientos, aún puede ser

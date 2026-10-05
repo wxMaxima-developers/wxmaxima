@@ -1,5 +1,15 @@
 # Current development version
 
+- `wxdeclare_subscripted(variable, false)` keeps a variable from being
+  displayed with a subscript again, and `wxdeclare_subscripted(variable)`
+  subscripts one the current `wxsubscripts` setting wouldn't. Both were
+  ignored (#1653).
+- Autosubscripting set to "Always" now really subscripts everything after
+  an underscore. wxMaxima passed the setting to Maxima in a way that made
+  it behave like "Integers and single letters".
+- The manual described declaring a variable as subscripted using
+  `wxdeclare_subscript()`, which declares a text snippet instead. Both
+  commands are documented now, and F1 finds `wxdeclare_subscripted`.
 - Copying puts every clipboard format on the clipboard again (RTF, MathML,
   a bitmap, SVG, ...), but renders each only when a program actually pastes
   it, so copying a large selection is fast and doesn't fill the memory with

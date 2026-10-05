@@ -676,6 +676,36 @@ add_test(
     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxsubscripts:true\$a\\,b_1;" "a,b"
 )
 
+# GH #1653: wxdeclare_subscripted(x, false) has to keep x unsubscripted even
+# where the rules wxsubscripts selects would subscript it, and
+# wxdeclare_subscripted(x) has to subscript it where they would not.
+add_test(
+    NAME subscriptp_declared_false_wins_over_all
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxsubscripts: 'all\$wxdeclare_subscripted(eree_ssss,false)\$eree_ssss;" "<mi lisp=.*>eree_ssss</mi>"
+)
+
+add_test(
+    NAME subscriptp_declared_false_can_be_taken_back
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxsubscripts:true\$wxdeclare_subscripted(eree_ssss,false)\$wxdeclare_subscripted(eree_ssss)\$eree_ssss;" "<munder altCopy=\"eree_ssss\"><mrow><mi>eree</mi></mrow><mrow><mi>ssss</mi></mrow></munder>"
+)
+
+# A variable Maxima itself defines whose name contains an underscore is
+# declared "never subscripted" at startup - that declaration is what the two
+# tests above make work, and it has to keep working for the names it was
+# written for.
+add_test(
+    NAME subscriptp_maxima_own_variable_not_subscripted
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxsubscripts: 'all\$'float_approx_equal_tolerance;" "<mi lisp=.*>float_approx_equal_tolerance</mi>"
+)
+
+# wxsubscripts' own default is the Maxima symbol $all - it used to be the
+# Lisp symbol of the same name, which nothing compares against, so an
+# unconfigured wxMaxima silently behaved as if "true" was set.
+add_test(
+    NAME subscriptp_default_is_all
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "eree_ssss;" "<munder altCopy=\"eree_ssss\"><mrow><mi>eree</mi></mrow><mrow><mi>ssss</mi></mrow></munder>"
+)
+
 add_test(
     NAME mprod
     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "a*2*b;" "<mn>2</mn><h>[*]</h><mi lisp=.*>a</mi><h>[*]</h><mi lisp=.*>b</mi>"
@@ -1565,6 +1595,10 @@ set(WXM_POSIX_TESTS
   subscriptp_1 subscriptp_2 subscriptp_3 subscriptp_4 subscriptp_5
   subscriptp_6 subscriptp_7 subscriptp_8 subscriptp_9 subscriptp_10
   subscriptp_11
+  subscriptp_declared_false_wins_over_all
+  subscriptp_declared_false_can_be_taken_back
+  subscriptp_maxima_own_variable_not_subscripted
+  subscriptp_default_is_all
   wx_version_min wx_version_min_outside_wxmaxima
   with_slider_draw_bare with_slider_draw_file_name_kept
   with_slider_draw_bare_file_name

@@ -687,6 +687,8 @@ se `wxsubscripts` è impostato su vera i nomi delle variabili nel formato
 ![How variables are autosubscripted using wxsubscripts](./wxsubscripts.png){
 id=img_wxsubscripts }
 
+<div id="wxdeclare_subscripted"></div>
+
 <div id="wxdeclare_subscript"></div>
 
 Se il nome della variabile non soddisfa questi requisiti, può comunque

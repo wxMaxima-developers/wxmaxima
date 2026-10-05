@@ -98,7 +98,7 @@
 (defvar $wxwidgetsversion t "The wxWidgets version wxMaxima is using.")
 (wx-defprop $wxwidgetsversion read-only-assign assign)
 (defvar *wx-defer-queries* nil "If true, wxMaxima defers querying variables and functions until it leaves batch mode.")
-(defvar $wxsubscripts 'all
+(defvar $wxsubscripts '$all
   "Recognize TeX-style subscripts")
 (defvar $wxplot_usesvg nil "Create scalable plots?")
 (defvar $wxplot_pngcairo nil "Use gnuplot's pngcairo terminal for new plots?")
@@ -443,6 +443,19 @@ Submit bug reports by following the 'New issue' link on that page."))
     ($put s opt '$wxxml_subscripted))
   opt)
 
+;; What wxdeclare_subscripted() said about the symbol x: (t) or (nil) if it
+;; was declared to be (or not to be) subscripted, nil if it never was declared.
+;;
+;; $get cannot tell "declared false" from "not declared", and neither can a
+;; look at properties(), which nests the indicator in a "user properties"
+;; sublist - checking its top level for it never found anything, so a
+;; declaration to false was ignored (#1653).
+(defun wx-subscripted-declaration (x)
+  (ignore-errors
+    (multiple-value-bind (indicator value)
+        (get-properties (cdr (mget x '$props)) '($wxxml_subscripted))
+      (when indicator (list (and value t))))))
+
 ;; Returns either nil (no autosubscript needed) or the result
 ;; of the autosubscript process
 (defun subscriptp (x)
@@ -462,17 +475,16 @@ Submit bug reports by following the 'New issue' link on that page."))
 	     (sub-int (ignore-errors
 			(parse-integer sub))))
 	(when (and (and (> (length sub-var) 0) (> (length sub) 0) )
-		   (or
-		    ($get x '$wxxml_subscripted)
-		    (and
-		     (or sub-int
-			 (eq $wxsubscripts '$all)
-			 (= (length sub) 1)
-			 (= (length sub-var) 1)
-			 ($get sub-symb '$wxxml_subscript)
-			 )
-		     (ignore-errors (not
-				     (member '$WXXML_SUBSCRIPTED (cdr (properties x))))))))
+		   (let ((declared (wx-subscripted-declaration x)))
+		     ;; An explicit wxdeclare_subscripted(x, true|false) wins
+		     ;; over the rules wxsubscripts selects.
+		     (if declared
+			 (car declared)
+			 (or sub-int
+			     (eq $wxsubscripts '$all)
+			     (= (length sub) 1)
+			     (= (length sub-var) 1)
+			     ($get sub-symb '$wxxml_subscript)))))
 	  (format nil  "<munder altCopy=\"~A\"><mrow>~a</mrow><mrow>~a</mrow></munder>"
 		  (wxxml-alt-copy-text x)
 		  (or (get sub-var-symb 'wxxmlword) (format nil "<mi>~a</mi>" (wxxml-fix-string (remove (char "\\" 0) (format nil "~A" sub-var)))))
@@ -3289,7 +3301,9 @@ connection fails. Returns T if a channel thread is running afterwards."
 ;; Declare that we want all builtins with underscore not to be printed with subscript
 (maphash (lambda (key val)
 	   (declare (ignore val))
+	   ;; key is the symbol itself. print_value would return it wrapped
+	   ;; in XML, which declared a string nobody ever displays instead.
 	   (if
-	    (search "_" (print_value key))
-	    ($wxdeclare_subscripted (print_value key) nil))) *variable-initial-values*)
+	    (and (symbolp key) (search "_" (symbol-name key)))
+	    ($wxdeclare_subscripted key nil))) *variable-initial-values*)
 (finish-output)

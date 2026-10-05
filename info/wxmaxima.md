@@ -464,9 +464,13 @@ If it is set to `true` variable names of the format `x_y` are displayed using a 
 
 ![How variables are autosubscripted using wxsubscripts](./wxsubscripts.png){ id=img_wxsubscripts }
 
+<div id="wxdeclare_subscripted"></div>
+
+A variable the rules above don’t cover can still be declared as "to be subscripted" using the command `wxdeclare_subscripted(variable_name);` or `wxdeclare_subscripted([variable_name1,variable_name2,...]);` Declaring a variable as subscripted can be reverted using the following command: `wxdeclare_subscripted(variable_name,false);`, which also keeps a variable the rules above do cover from being subscripted.
+
 <div id="wxdeclare_subscript"></div>
 
-If the variable name doesn’t match these requirements, it can still be declared as "to be subscripted" using the command `wxdeclare_subscript(variable_name);` or `wxdeclare_subscript([variable_name1,variable_name2,...]);` Declaring a variable as subscripted can be reverted using the following command: `wxdeclare_subscript(variable_name,false);`
+`wxdeclare_subscript(text_snippet);` or `wxdeclare_subscript([text_snippet1,text_snippet2,...]);` instead declares a text snippet: every variable whose name ends in an underscore followed by that snippet is subscripted, however long the two parts are.
 
 You can use the menu "View->Autosubscript" to set these values.
 

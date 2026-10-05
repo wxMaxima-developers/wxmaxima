@@ -676,6 +676,8 @@ _wxMaxima_ позволяет дополнить функциональные в
 ![Как переменные автоматически переводятся в нижний индекс с помощью
 wxsubscripts](./wxsubscripts.png){ id=img_wxsubscripts }
 
+<div id="wxdeclare_subscripted"></div>
+
 <div id="wxdeclare_subscript"></div>
 
 Если имя переменной не соответствует этим требованиям, её всё равно можно

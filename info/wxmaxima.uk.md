@@ -670,6 +670,8 @@ If it is set to `'all`, everything after an underscore will be subscripted.
 ![Автоматичне перетворення нижніх індексів з використанням
 wxsubscripts](./wxsubscripts.png){ id=img_wxsubscripts }
 
+<div id="wxdeclare_subscripted"></div>
+
 <div id="wxdeclare_subscript"></div>
 
 If the variable name doesn’t match these requirements, it can still be
