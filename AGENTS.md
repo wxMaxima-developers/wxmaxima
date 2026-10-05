@@ -649,6 +649,25 @@ a local TCP socket.
   draw-list-mirroring bookkeeping, since there's nothing stored to keep in
   sync.
 
+- **Ordinary copy renders its formats lazily (GH #2030,
+  `src/worksheet/ClipboardContents.{h,cpp}`).** `Copy()`/`CopyCells()` make
+  only the .wxm and text flavours up front; RTF, MathML, the bitmap, SVG and
+  EMF are rendered from a private `ClipboardSnapshot` of the selection when a
+  program pastes them (GTK's SelectionRequest and Windows' OLE `GetData()`
+  both end in `wxDataObject::GetDataHere()`; macOS' wxClipboard writes every
+  format at once, so there nothing is lazy). Three things to keep in mind:
+  - **The snapshot hangs off a `GroupCell` of its own.** `Cell::Copy()` keeps
+    the original's group, and the original may be deleted before the paste.
+  - **The copied cells use the worksheet's `Configuration`**, so before the
+    worksheet goes away `~Worksheet()` calls `RenderClipboardContents()`,
+    which swaps the lazy data for rendered .wxm/text/RTF/MathML/bitmap and
+    calls `wxClipboard::Flush()`. Whether the clipboard still holds this
+    worksheet's data is a `std::weak_ptr` to the `ClipboardContents` the
+    data objects share -- wx deletes them when another owner takes over.
+  - **A clipboard manager that copies every new clipboard right away**
+    (xfsettingsd does) asks for every format at copy time, which renders
+    them all. Nothing wxMaxima can do about that, and its data survives
+    the exit anyway. To check the handover live, run without one.
 - **"Copy as HTML" (GH #2265/#2266/#2267) -- `WorksheetExport::
   SelectionToSelfContainedHTML()` / `Worksheet::CopyHTML()`:** a right-click
   context menu item placing a *self-contained* HTML document on the

@@ -59,6 +59,9 @@ public:
   //! Returns the svg representation in a format that can be placed on the clipBoard.
   std::unique_ptr<wxCustomDataObject> GetDataObject();
 
+  //! The clipboard format SVG data is offered in
+  static const wxDataFormat &GetDataFormat() { return m_svgFormat; }
+
 private:
   std::unique_ptr<Cell> m_tree;
   OutCommon m_cmn;

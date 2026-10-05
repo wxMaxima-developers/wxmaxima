@@ -182,6 +182,7 @@ set(SOURCE_FILES
     UrlDetection.cpp
     worksheet/MatrixScrollbars.cpp
     worksheet/OutputNavigation.cpp
+    worksheet/ClipboardContents.cpp
     worksheet/Worksheet.cpp
     worksheet/WorksheetContextMenu.cpp
     worksheet/WorksheetDocument.cpp

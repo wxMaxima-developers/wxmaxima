@@ -747,14 +747,6 @@ void ConfigDialogue::SetCheckboxValues() {
   }
   m_maximaUsesHtmlHelp->SetValue(m_configuration->MaximaUsesHtmlBrowser());
   m_defaultPort->SetValue(m_configuration->DefaultPort());
-  m_copyBitmap->SetValue(m_configuration->CopyBitmap());
-  m_copyMathML->SetValue(m_configuration->CopyMathML());
-  m_copyMathMLHTML->SetValue(m_configuration->CopyMathMLHTML());
-  m_copyRTF->SetValue(m_configuration->CopyRTF());
-  m_copySVG->SetValue(m_configuration->CopySVG());
-#if wxUSE_ENH_METAFILE
-  m_copyEMF->SetValue(m_configuration->CopyEMF());
-#endif
 
   m_useUnicodeMaths->SetValue(m_configuration->UseUnicodeMaths());
 }
@@ -2682,37 +2674,9 @@ wxWindow *ConfigDialogue::CreateClipboardPanel() {
                            GetContentScaleFactor() * mMinPanelHeight));
 
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
-  wxStaticBoxSizer *formatSizer =
-    new wxStaticBoxSizer(wxVERTICAL, panel,
-                         _("Additional clipboard formats to put on the "
-                           "clipboard on ordinary copy"));
-  m_copyBitmap = new wxCheckBox(formatSizer->GetStaticBox(), wxID_ANY, _("Bitmap"));
-  formatSizer->Add(m_copyBitmap, wxSizerFlags());
-
-  m_copyMathML =
-    new wxCheckBox(formatSizer->GetStaticBox(), wxID_ANY, _("MathML description"));
-  formatSizer->Add(m_copyMathML, wxSizerFlags());
-
-  m_copyMathMLHTML =
-    new wxCheckBox(formatSizer->GetStaticBox(), wxID_ANY, _("MathML as HTML"));
-  formatSizer->Add(m_copyMathMLHTML, wxSizerFlags());
-
-  m_copyRTF =
-    new wxCheckBox(formatSizer->GetStaticBox(), wxID_ANY, _("RTF with OMML maths"));
-  formatSizer->Add(m_copyRTF, wxSizerFlags());
-
-  m_copySVG = new wxCheckBox(formatSizer->GetStaticBox(), wxID_ANY,
-                             _("Scalable Vector Graphics (svg)"));
-  formatSizer->Add(m_copySVG, wxSizerFlags());
-
-#if wxUSE_ENH_METAFILE
-  m_copyEMF = new wxCheckBox(formatSizer->GetStaticBox(), wxID_ANY,
-                             _("Enhanced meta file (emf)"));
-  formatSizer->Add(m_copyEMF, wxSizerFlags());
-#endif
-  vbox->Add(formatSizer,
-            wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
-
+  // There used to be a list of the formats to put on the clipboard here.
+  // Now every format is offered and only rendered once a program asks for
+  // it (GH #2030), so there is nothing left to choose.
   wxStaticBoxSizer *formatParamsSizer =
     new wxStaticBoxSizer(wxVERTICAL, panel, _("Clipboard format parameters"));
 
@@ -3229,15 +3193,6 @@ void ConfigDialogue::WriteSettings() {
   }
   configuration->SymbolPaneAdditionalChars(
                                            m_symbolPaneAdditionalChars->GetValue());
-
-  configuration->CopyBitmap(m_copyBitmap->GetValue());
-  configuration->CopyMathML(m_copyMathML->GetValue());
-  configuration->CopyMathMLHTML(m_copyMathMLHTML->GetValue());
-  configuration->CopyRTF(m_copyRTF->GetValue());
-  configuration->CopySVG(m_copySVG->GetValue());
-#if wxUSE_ENH_METAFILE
-  configuration->CopyEMF(m_copyEMF->GetValue());
-#endif
 
   // Persist through WriteSettings(), NOT WriteStyles(): the code above copied
   // every dialog field into the Configuration, but WriteStyles() only writes

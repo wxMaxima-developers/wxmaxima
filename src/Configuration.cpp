@@ -162,17 +162,11 @@ Configuration::Configuration(const Configuration &o) :
   m_mathJaxURL(o.m_mathJaxURL),
   m_mathJaxURL_UseUser(o.m_mathJaxURL_UseUser),
   m_showCodeCells(o.m_showCodeCells),
-  m_copyBitmap(o.m_copyBitmap),
-  m_copyMathML(o.m_copyMathML),
-  m_copyMathMLHTML(o.m_copyMathMLHTML),
   m_showLength(o.m_showLength),
   m_usepngCairo(o.m_usepngCairo),
   m_enterEvaluates(o.m_enterEvaluates),
   m_useSVG(o.m_useSVG),
   m_fixedFontTC(o.m_fixedFontTC),
-  m_copyRTF(o.m_copyRTF),
-  m_copySVG(o.m_copySVG),
-  m_copyEMF(o.m_copyEMF),
   m_TOCshowsSectionNumbers(o.m_TOCshowsSectionNumbers),
   m_useUnicodeMaths(o.m_useUnicodeMaths),
   m_indentMaths(o.m_indentMaths),
@@ -364,15 +358,6 @@ void Configuration::ResetAllToDefaults() {
   m_showCodeCells = true;
   m_greekSidebar_ShowLatinLookalikes = false;
   m_greekSidebar_Show_mu = false;
-  m_copyBitmap = false; // Otherwise MS Office, OpenOffice and LibreOffice
-  // prefer the bitmap
-  // to Mathml and RTF. Also mail programs prefer bitmaps to text - which is
-  // counter-productive for maxima-discuss.
-  m_copyMathML = true;
-  m_copyMathMLHTML = false;
-  m_copyRTF = true;
-  m_copySVG = true;
-  m_copyEMF = false;
   m_showLength = 2;
   m_layoutStrategy = LayoutStrategy::layout2DIfFits;
   m_oversizedMatrices = OversizedMatrices::elide;
@@ -1360,12 +1345,6 @@ Configuration::ScalarConfigSettings() {
     {wxS("autoWrapMode"), &Configuration::m_autoWrap},
     {wxS("bitmapScale"), &Configuration::m_bitmapScale},
     {wxS("changeAsterisk"), &Configuration::m_changeAsterisk},
-    {wxS("copyBitmap"), &Configuration::m_copyBitmap},
-    {wxS("copyEMF"), &Configuration::m_copyEMF},
-    {wxS("copyMathMLHTML"), &Configuration::m_copyMathMLHTML},
-    {wxS("copyMathML"), &Configuration::m_copyMathML},
-    {wxS("copyRTF"), &Configuration::m_copyRTF},
-    {wxS("copySVG"), &Configuration::m_copySVG},
     {wxS("cursorJump"), &Configuration::m_cursorJump},
     // Key renamed (was "DefaultFramerate") when the value changed from int to
     // double: reading an existing integer-typed registry/plist value back as a
