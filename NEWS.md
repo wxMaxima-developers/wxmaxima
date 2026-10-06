@@ -8,6 +8,8 @@
   section decides what is pushed to the right edge of the window.
 - The toolbar's context menu no longer pops up again after closing it once
   for every time a section had been shown or hidden.
+- The toolbar's "Select all" button now selects all cells. It toggled
+  the visibility of the code cells instead.
 - The Greek letters and Symbols sidebars no longer come up laid out wrongly
   until they are resized (seen with wxWidgets' Qt port).
 - Copying a whole large matrix no longer tries to draw a bitmap of many

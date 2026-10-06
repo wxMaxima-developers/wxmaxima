@@ -110,6 +110,25 @@ SCENARIO("Re-creating the tools doesn't leave them wrongly active") {
   toolbar->Destroy();
 }
 
+SCENARIO("The Select All button selects all instead of hiding the code") {
+  // The button used to be created with the id of the "Hide code" button, so
+  // clicking it toggled the visibility of all code cells.
+  auto *toolbar = new TestToolBar(g_frame);
+  THEN("Select All has its own id") {
+    REQUIRE(toolbar->FindTool(wxID_SELECTALL) != nullptr);
+  }
+  THEN("the only button with the id of Hide code is Hide code") {
+    int hideCodeButtons = 0;
+    for (size_t i = 0; i < toolbar->GetToolCount(); i++)
+      if (toolbar->FindToolByIndex(i)->GetId() == ToolBar::tb_hideCode)
+        hideCodeButtons++;
+    REQUIRE(hideCodeButtons == 1);
+    REQUIRE(toolbar->FindTool(ToolBar::tb_hideCode)->GetLabel() ==
+            _("Hide Code"));
+  }
+  toolbar->Destroy();
+}
+
 class TestApp : public wxApp {
 public:
   bool OnInit() override { return true; }
