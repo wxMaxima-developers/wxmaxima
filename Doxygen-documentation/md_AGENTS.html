@@ -1360,6 +1360,15 @@ which loads on demand &amp;ndash; keep the detail there rather than growing this
   &lt;tt&gt;MinimizePane()&lt;/tt&gt; asserts on panes without a minimize button &amp;ndash; so wherever
   &lt;tt&gt;MinimizeButton(true)&lt;/tt&gt; is handed out, the worksheet and the toolbar must be
   excluded.
+- **&lt;tt&gt;wxFont::IsOk()&lt;/tt&gt; cannot tell "not set yet" on wxQt.** With wxWidgets' Qt
+  port a default-constructed &lt;tt&gt;wxFont&lt;/tt&gt; (and &lt;tt&gt;wxNullFont&lt;/tt&gt;) has ref data of its
+  own and reports itself ok &amp;ndash; a default font, unrelated to anything. A cache
+  that marked its empty slots with &lt;tt&gt;wxFont()&lt;/tt&gt; and filled them &lt;tt&gt;if
+  (!font.IsOk())&lt;/tt&gt; therefore never filled them there: every bold, italic and
+  sub-/superscript text cell format came out in that one small default font
+  (measured narrower than plain text, and all formats looking alike), while
+  wxGTK was fine. Mark "not made yet" with &lt;tt&gt;std::optional\&lt;wxFont\&gt;&lt;/tt&gt; instead
+  (see &lt;tt&gt;EditorCell::GetFont(TextFormat::Format)&lt;/tt&gt;).
 - &lt;strong&gt;A wxWidgets-version fallback &lt;tt&gt;\#define&lt;/tt&gt; must come AFTER the wx header that
   may define it.&lt;/strong&gt; &lt;tt&gt;Compat.h&lt;/tt&gt; includes &lt;tt&gt;\&lt;wx/defs.h\&gt;&lt;/tt&gt; &lt;em&gt;above&lt;/em&gt; its
   &lt;tt&gt;\#ifndef wxWARN_UNUSED&lt;/tt&gt; fallback for this reason. Reached in the other order,
