@@ -1350,6 +1350,9 @@ static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>UnicodeToM
 <tr class="memitem:ae97f44ee9357066d1c47af4f814f832c"><td class="memItemLeft" align="right" valign="top">static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#ae97f44ee9357066d1c47af4f814f832c">CSVDelimiter</a> ()</td></tr>
 <tr class="memdesc:ae97f44ee9357066d1c47af4f814f832c"><td class="mdescLeft">&#160;</td><td class="mdescRight">What separates the values "Copy as CSV" writes.  <br /></td></tr>
 <tr class="separator:ae97f44ee9357066d1c47af4f814f832c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0075de0742a6171762877a14fca0dc7a"><td class="memItemLeft" align="right" valign="top">static constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a0075de0742a6171762877a14fca0dc7a">HasPrimarySelection</a> ()</td></tr>
+<tr class="memdesc:a0075de0742a6171762877a14fca0dc7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does this platform have a primary selection?  <br /></td></tr>
+<tr class="separator:a0075de0742a6171762877a14fca0dc7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a25d94c400a2c819a1a3c67705bf721a0"><td class="memItemLeft" align="right" valign="top"><a id="a25d94c400a2c819a1a3c67705bf721a0" name="a25d94c400a2c819a1a3c67705bf721a0"></a>
 static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>CellsToMathML</b> (const <a class="el" href="classCell.html">Cell</a> *cells)</td></tr>
 <tr class="memdesc:a25d94c400a2c819a1a3c67705bf721a0"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classA.html">A</a> MathML document showing a list of cells, nicely indented. <br /></td></tr>
@@ -2566,6 +2569,34 @@ static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>CellsToMat
 
 </div>
 </div>
+<a id="a0075de0742a6171762877a14fca0dc7a" name="a0075de0742a6171762877a14fca0dc7a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0075de0742a6171762877a14fca0dc7a">&#9670;&#160;</a></span>HasPrimarySelection()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static constexpr bool Worksheet::HasPrimarySelection </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Does this platform have a primary selection? </p>
+<p>X11 (and Wayland, through GTK and Qt) keeps the last selected text in a clipboard of its own that a middle-click pastes. Windows and macOS have no such thing, and wxWidgets can't tell: UsePrimarySelection(true) is accepted everywhere, IsUsingPrimarySelection() then answers true, and on MSW every later clipboard operation silently does nothing. So this is decided at compile time. </p>
+
+</div>
+</div>
 <a id="a6ad45fa9b11048ff373bca4d85a0efc9" name="a6ad45fa9b11048ff373bca4d85a0efc9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6ad45fa9b11048ff373bca4d85a0efc9">&#9670;&#160;</a></span>InsertGroupCells() <span class="overload">[1/2]</span></h2>
 
@@ -3112,7 +3143,7 @@ static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>CellsToMat
 <p>Paste into the worksheet. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">primary</td><td>true = paste X11's primary selection (what a middle-click pastes), false = the ordinary Ctrl+V clipboard. On platforms without a primary selection wxWidgets silently uses the ordinary clipboard. </td></tr>
+    <tr><td class="paramname">primary</td><td>true = paste X11's primary selection (what a middle-click pastes), false = the ordinary Ctrl+V clipboard. Only pass true where <a class="el" href="classWorksheet.html#a0075de0742a6171762877a14fca0dc7a" title="Does this platform have a primary selection?">HasPrimarySelection()</a> is true. </td></tr>
   </table>
   </dd>
 </dl>

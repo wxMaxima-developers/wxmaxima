@@ -109,15 +109,9 @@ Data Structures</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a885a79af5096de62dcdaaaf550696ad3"><td class="memItemLeft" align="right" valign="top"><a id="a885a79af5096de62dcdaaaf550696ad3" name="a885a79af5096de62dcdaaaf550696ad3"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;Pasting the primary selection into a cell inserts the primary selection&quot;)</td></tr>
-<tr class="separator:a885a79af5096de62dcdaaaf550696ad3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae50c933f620e47322425abb657b497d9"><td class="memItemLeft" align="right" valign="top"><a id="ae50c933f620e47322425abb657b497d9" name="ae50c933f620e47322425abb657b497d9"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;An ordinary paste into a cell still inserts the Ctrl+<a class="el" href="classC.html">C</a> clipboard&quot;)</td></tr>
 <tr class="separator:ae50c933f620e47322425abb657b497d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8b4e7bde3d6b346973db81c44f07a4c8"><td class="memItemLeft" align="right" valign="top"><a id="a8b4e7bde3d6b346973db81c44f07a4c8" name="a8b4e7bde3d6b346973db81c44f07a4c8"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;Pasting the primary selection at the h-caret opens a cell with it&quot;)</td></tr>
-<tr class="separator:a8b4e7bde3d6b346973db81c44f07a4c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06df7029011fe181f338255fa9645905"><td class="memItemLeft" align="right" valign="top"><a id="a06df7029011fe181f338255fa9645905" name="a06df7029011fe181f338255fa9645905"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>wxDECLARE_APP</b> (<a class="el" href="classTestApp.html">TestApp</a>)</td></tr>
 <tr class="separator:a06df7029011fe181f338255fa9645905"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -128,7 +122,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>main</b> (int argc, ch
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>GH #794: a middle-click pastes the primary selection, not the Ctrl+C clipboard. </p>
 <p>X11 has two clipboards: the ordinary one (Ctrl+C / Ctrl+V) and the primary selection, which holds whatever was last selected and is pasted by a middle-click. Worksheet::OnMouseMiddleUp() switched wxTheClipboard to the primary selection, but <a class="el" href="classWorksheet.html#a8f9d14795ddb507df7ab922d782cb7e8" title="Paste into the worksheet.">Worksheet::PasteFromClipboard()</a> then handed the paste to <a class="el" href="classEditorCell.html#aae3f133b4f77aa5839e9c55ae71119dc" title="Paste from the clipboard into this cell.">EditorCell::PasteFromClipboard()</a> without saying which clipboard it was for - and that function's default switched back to the ordinary clipboard. So a middle-click into a cell pasted the Ctrl+C contents, while a middle-click between cells (which never reaches the cell) worked. Anyone testing with both clipboards holding the same text could not see it.</p>
-<p>This test uses the real clipboard, so it needs a display (CI runs it under xvfb). Only platforms that have a primary selection can show the bug; on the others wxWidgets ignores UsePrimarySelection(true), and the scenarios check only that pasting still reads the one clipboard there is. </p>
+<p>This test uses the real clipboard, so it needs a display (CI runs it under xvfb). Windows and macOS have no primary selection, so there only the ordinary paste is checked. wxWidgets can't be asked whether there is one: on MSW UsePrimarySelection(true) is accepted, IsUsingPrimarySelection() answers true, and the clipboard then silently stays empty. An earlier version of this test asked it anyway and turned the minGW job red; it now goes by <a class="el" href="classWorksheet.html#a0075de0742a6171762877a14fca0dc7a" title="Does this platform have a primary selection?">Worksheet::HasPrimarySelection()</a>. </p>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

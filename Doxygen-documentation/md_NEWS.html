@@ -74,7 +74,7 @@ $(function() {
 <div class="contents">
 <div class="textblock"><ul>
 <li>With wxWidgets' Qt port, a symbol in the Greek letters or Symbols sidebar no longer stays highlighted after the mouse has left it.</li>
-<li>On Linux, a middle-click into a cell pasted the Ctrl+C clipboard instead of the last selected text (GH #794).</li>
+<li>On Linux, a middle-click into a cell pasted the Ctrl+C clipboard instead of the last selected text (GH #794). On Windows and macOS, which have no "last selected text" clipboard, a middle-click pastes nothing.</li>
 <li>With wxWidgets 3.3's Qt port, closing the configuration dialog, the tip of the day, the plot and other wizards and most other dialogs no longer crashes <a class="el" href="classwxMaxima.html">wxMaxima</a>.</li>
 <li>Text cells, titles and section headings can contain superscripts and subscripts, set using two new toolbar buttons next to the bold, italic, ... ones. <a class="el" href="classA.html">A</a> line of a text cell now gets taller if something in it needs more room than the plain text: a superscript, a subscript, or a character a taller font has to supply, such as an emoji.</li>
 <li>The sections of the toolbar can be rearranged: a new "Toolbar" tab in the configuration dialog lists them, and a section can be dragged to another place there or moved using "Up" and "Down". Every section, including the evaluation buttons and the cell type, can now be hidden, from that tab or by right-clicking the toolbar. <a class="el" href="classA.html">A</a> "flexible space" section decides what is pushed to the right edge of the window.</li>
