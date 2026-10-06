@@ -262,15 +262,36 @@ SCENARIO("The character formatting of a text cell survives the content.xml round
   GIVEN("a text cell with attributes of a newer version") {
     const wxString newer =
       wxS("<cell type=\"text\">\n<editor type=\"text\">\n")
-      wxS("<line bold=\"0-1\" superscript=\"1-2\">x2</line>\n")
+      wxS("<line bold=\"0-1\" overline=\"1-2\">x2</line>\n")
       wxS("</editor>\n</cell>");
     std::unique_ptr<GroupCell> tree = ParseDocument(WrapDocument(newer));
     THEN("saving it unchanged keeps them") {
-      REQUIRE(tree->ToXML().Contains(wxS("<line bold=\"0-1\" superscript=\"1-2\">x2</line>")));
+      REQUIRE(tree->ToXML().Contains(wxS("<line bold=\"0-1\" overline=\"1-2\">x2</line>")));
     }
     THEN("once the text is changed they are dropped, as they no longer fit it") {
       tree->GetEditable()->SetValue(wxS("x2 changed"));
-      REQUIRE(!tree->ToXML().Contains(wxS("superscript")));
+      REQUIRE(!tree->ToXML().Contains(wxS("overline")));
+    }
+  }
+  GIVEN("a text cell with a superscript and a subscript") {
+    const wxString formatted =
+      wxS("<cell type=\"text\">\n<editor type=\"text\">\n")
+      wxS("<line superscript=\"1-2\" subscript=\"4-5\">x2 ai</line>\n")
+      wxS("</editor>\n</cell>");
+    std::unique_ptr<GroupCell> tree = ParseDocument(WrapDocument(formatted));
+    THEN("they arrive on the right characters") {
+      const TextFormat::Formats &formats = tree->GetEditable()->GetFormats();
+      REQUIRE(formats.size() == 5);
+      REQUIRE(formats[1] == TextFormat::Superscript);
+      REQUIRE(formats[4] == TextFormat::Subscript);
+      REQUIRE(formats[0] == TextFormat::None);
+    }
+    THEN("saving it again writes the same attributes") {
+      REQUIRE(tree->ToXML().Contains(
+        wxS("<line superscript=\"1-2\" subscript=\"4-5\">x2 ai</line>")));
+    }
+    THEN("the round-trip is a fixed point") {
+      RequireIdempotent(WrapDocument(formatted));
     }
   }
   GIVEN("a plain text cell") {

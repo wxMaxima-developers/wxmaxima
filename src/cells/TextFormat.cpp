@@ -41,7 +41,9 @@ constexpr FormatName g_formatNames[] = {
   {Bold, wxS("bold")},
   {Italic, wxS("italic")},
   {Underline, wxS("underline")},
-  {Strikethrough, wxS("strikethrough")}};
+  {Strikethrough, wxS("strikethrough")},
+  {Superscript, wxS("superscript")},
+  {Subscript, wxS("subscript")}};
 
 Format FlagForAttribute(const wxString &name) {
   for (const auto &f : g_formatNames)
@@ -60,6 +62,10 @@ Format FlagForTag(const wxString &tag) {
     return Underline;
   if ((t == wxS("s")) || (t == wxS("strike")) || (t == wxS("del")))
     return Strikethrough;
+  if (t == wxS("sup"))
+    return Superscript;
+  if (t == wxS("sub"))
+    return Subscript;
   return None;
 }
 
@@ -362,7 +368,7 @@ void ReadChildren(const wxXmlNode *node, Format format, wxString &text,
     }
     case wxXML_ELEMENT_NODE:
       // An unknown tag adds no format, but its text is kept.
-      ReadChildren(node->GetChildren(), format | FlagForTag(node->GetName()),
+      ReadChildren(node->GetChildren(), WithFlag(format, FlagForTag(node->GetName())),
                    text, formats);
       break;
     default:
@@ -393,7 +399,7 @@ void ReadLine(const wxXmlNode *line, wxString &text, Formats &formats,
       const std::size_t start = IndexOfCodePoint(text, lineStart, range.first);
       const std::size_t end = IndexOfCodePoint(text, lineStart, range.second);
       for (std::size_t i = start; i < end; ++i)
-        formats[i] |= flag;
+        formats[i] = WithFlag(formats[i], flag);
     }
   }
 }

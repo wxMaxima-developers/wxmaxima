@@ -222,7 +222,7 @@ SCENARIO("Every toolbar section can be hidden") {
     toolbar->CanCopy(false);
     toolbar->CanEvalThisCell(false);
     toolbar->WorksheetEmpty(true);
-    toolbar->TextFormatState(true, true, false, false, false);
+    toolbar->TextFormatState(true, TextFormat::Bold);
     toolbar->AnimationButtonState(ToolBar::Running);
     toolbar->UpdateBitmaps();
   }

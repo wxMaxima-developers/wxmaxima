@@ -1,5 +1,10 @@
 # Current development version
 
+- Text cells, titles and section headings can contain superscripts and
+  subscripts, set using two new toolbar buttons next to the bold, italic,
+  ... ones. A line of a text cell now gets taller if something in it needs
+  more room than the plain text: a superscript, a subscript, or a
+  character a taller font has to supply, such as an emoji.
 - The sections of the toolbar can be rearranged: a new "Toolbar" tab in
   the configuration dialog lists them, and a section can be dragged to
   another place there or moved using "Up" and "Down". Every section,
