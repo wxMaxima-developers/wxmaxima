@@ -387,6 +387,18 @@ if(TARGET wxmTestApp)
     add_test(NAME EditorCellTabs
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_EditorCellTabs>")
 
+    # The gaps between digit groups of numbers in code cells (GH #192): the
+    # caret, clicks and the selection have to allow for gaps the text itself
+    # doesn't contain.
+    add_executable(test_EditorCellDigitGroups
+        test_EditorCellDigitGroups.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_EditorCellDigitGroups PUBLIC cxx_std_20)
+    target_link_libraries(test_EditorCellDigitGroups PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME EditorCellDigitGroups
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_EditorCellDigitGroups>")
+
     # Escaped brackets and quotes in code cells (GH #528): typing "a\(3"
     # adds no closing bracket, "\)" doesn't jump over a real ")", and the
     # bracket highlight ignores escaped ones.

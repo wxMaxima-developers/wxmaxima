@@ -924,6 +924,20 @@ protected:
     wxCoord GetYOffset() const { return m_yOffset; }
     //! See m_yOffset
     void SetYOffset(wxCoord yOffset) { m_yOffset = yOffset; }
+    /*! Where this text portion, a number in a code cell, gets the small gaps
+      that separate its digit groups (GH #192).
+
+      Indices into GetText() before which a gap is drawn; empty for anything
+      but a number, or if Configuration::DigitGrouping() is off. The width
+      SetWidth() caches includes the gaps: unlike a tab's, it doesn't depend
+      on where on the line the text portion starts.
+    */
+    const std::vector<size_t> &GetDigitGaps() const { return m_digitGaps; }
+    //! See GetDigitGaps()
+    void SetDigitGaps(std::vector<size_t> gaps) { m_digitGaps = std::move(gaps); }
+  private:
+    //! See GetDigitGaps()
+    std::vector<size_t> m_digitGaps;
   };
 
 private:
@@ -960,8 +974,37 @@ private:
     bool valid = false;
   };
 
+  /*! Places a soft break before a token, if the line has grown too wide.
+
+    tokenWidth is the token's width, digit-group gaps included.
+  */
   void HandleSoftLineBreaks_Code(SoftBreakCandidate &candidate, wxCoord &lineWidth,
-                                 const wxString &token, wxCoord &indentationPixels) const;
+                                 wxCoord tokenWidth, wxCoord &indentationPixels) const;
+
+  //! The width of one digit-group gap in a number (GH #192)
+  wxCoord DigitGroupGapWidth() const;
+  /*! The width of the first length characters of snippet.
+
+    Like GetTextSize(), but including the digit-group gaps among them (see
+    StyledText::GetDigitGaps()). A number's digit groups are measured one at
+    a time, the way DrawSnippetText() draws them, so that what is measured
+    and what is drawn can't disagree by the odd pixel of kerning.
+  */
+  wxCoord SnippetWidth(const StyledText &snippet, size_t length) const;
+  //! The width of all of snippet, see SnippetWidth()
+  wxCoord SnippetWidth(const StyledText &snippet) const {
+    return SnippetWidth(snippet, snippet.GetText().Length());
+  }
+  //! Draws snippet's text at (x, y), digit groups separated by their gaps
+  void DrawSnippetText(wxDC *dc, const StyledText &snippet, wxCoord x,
+                       wxCoord y) const;
+  /*! The width the digit-group gaps take up inside the m_text substring
+    [from, to)
+
+    For the places that measure a raw m_text substring rather than whole
+    StyledText snippets; see m_digitGapPositions.
+  */
+  wxCoord DigitGapsWidthIn(size_t from, size_t to) const;
 
   /*! May a soft break be placed right after this operator token?
 
@@ -1096,6 +1139,13 @@ private:
     throw-away rendering representation, so it may carry layout markers).
   */
   mutable std::vector<std::size_t> m_softBreaks;
+  /*! The m_text positions before which a number's digit-group gap is drawn,
+    ascending (GH #192).
+
+    The same gaps as the StyledText snippets' GetDigitGaps(), only as
+    positions in the whole text. Derived layout data, like m_softBreaks.
+  */
+  mutable std::vector<std::size_t> m_digitGapPositions;
 
   /*! Everything about the character formatting of a text cell (GH #492).
 
