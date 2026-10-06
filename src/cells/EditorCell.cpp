@@ -1359,22 +1359,25 @@ const wxFont &EditorCell::GetFont(TextFormat::Format format) const {
   const wxFont &base = GetFont();
   // A new zoom factor or a changed style setting gives a new base font, and
   // every formatted variant has to follow it.
-  if (!formatState.fontsBase.IsOk() || !formatState.fontsBase.IsSameAs(base)) {
+  if (!formatState.fontsBase || !formatState.fontsBase->IsSameAs(base)) {
     for (auto &font : formatState.fonts)
-      font = wxNullFont;
+      font.reset();
     formatState.fontsBase = base;
   }
-  wxFont &font = formatState.fonts.at(TextFormat::FontIndex(format));
-  if (!font.IsOk()) {
+  // Which fonts were made already can't be told by wxFont::IsOk(): with
+  // wxWidgets' Qt port even a default-constructed wxFont is "ok" (a default
+  // font of its own), which made every formatted text use that font.
+  std::optional<wxFont> &font = formatState.fonts.at(TextFormat::FontIndex(format));
+  if (!font) {
     font = base;
     if (format & TextFormat::Bold)
-      font.MakeBold();
+      font->MakeBold();
     if (format & TextFormat::Italic)
-      font.MakeItalic();
+      font->MakeItalic();
     if (format & TextFormat::VerticalPosition)
-      font.SetFractionalPointSize(font.GetFractionalPointSize() * g_superSubscriptScale);
+      font->SetFractionalPointSize(font->GetFractionalPointSize() * g_superSubscriptScale);
   }
-  return font;
+  return *font;
 }
 
 wxCoord EditorCell::BaselineShift(TextFormat::Format format, wxCoord plainAscent) {

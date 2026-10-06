@@ -164,6 +164,84 @@ SCENARIO("Superscript and subscript") {
   }
 }
 
+SCENARIO("Each format gets a font made from the cell's own") {
+  // With wxWidgets' Qt port a default-constructed wxFont counts as "ok", so
+  // a cache that told "not made yet" by IsOk() handed every format the same
+  // unrelated default font: formatted text came out narrower than plain
+  // text, and bold, subscript and italic all looked alike.
+  auto group = MakeCell(wxS("abc"));
+  EditorCell *editor = group->GetEditable();
+  editor->SetSelection(0, 1);
+  editor->ToggleFormat(TextFormat::Bold);
+  const wxFont plain = editor->GetFont();
+  const double size = plain.GetFractionalPointSize();
+  REQUIRE(size > 0);
+  THEN("bold is the cell's font, in bold") {
+    const wxFont &bold = editor->GetFont(TextFormat::Bold);
+    REQUIRE(bold.GetFaceName() == plain.GetFaceName());
+    REQUIRE(bold.GetFractionalPointSize() == Approx(size));
+    REQUIRE(bold.GetWeight() == wxFONTWEIGHT_BOLD);
+    REQUIRE(bold.GetStyle() == plain.GetStyle());
+  }
+  THEN("italic is the cell's font, in italic") {
+    const wxFont &italic = editor->GetFont(TextFormat::Italic);
+    REQUIRE(italic.GetFaceName() == plain.GetFaceName());
+    REQUIRE(italic.GetFractionalPointSize() == Approx(size));
+    REQUIRE(italic.GetStyle() == wxFONTSTYLE_ITALIC);
+    REQUIRE(italic.GetWeight() == plain.GetWeight());
+  }
+  THEN("a bold subscript is bold and smaller, a plain one only smaller") {
+    const wxFont &boldSub =
+      editor->GetFont(TextFormat::Format(TextFormat::Bold | TextFormat::Subscript));
+    const wxFont &sub = editor->GetFont(TextFormat::Subscript);
+    REQUIRE(boldSub.GetFaceName() == plain.GetFaceName());
+    REQUIRE(boldSub.GetWeight() == wxFONTWEIGHT_BOLD);
+    REQUIRE(boldSub.GetFractionalPointSize() < size);
+    REQUIRE(sub.GetWeight() == plain.GetWeight());
+    REQUIRE(sub.GetFractionalPointSize() == Approx(boldSub.GetFractionalPointSize()));
+  }
+  THEN("text in a bold font is wider than plain text") {
+    Relayout(group.get());
+    editor->SetCurrentPoint(wxPoint(10, 100));
+    auto plainCell = MakeCell(wxS("abc"));
+    plainCell->GetEditable()->SetCurrentPoint(wxPoint(10, 100));
+    REQUIRE(editor->PositionToPoint(1).x > plainCell->GetEditable()->PositionToPoint(1).x);
+  }
+}
+
+SCENARIO("Overlapping formats keep every character its own width") {
+  // The order Gunter formatted things in: a subscript, then bold across it
+  // and the text around it, then italic from inside the bold to past it.
+  auto group = MakeCell(wxS("aaxbbcc"));
+  EditorCell *editor = group->GetEditable();
+  editor->SetSelection(2, 3);
+  editor->ToggleFormat(TextFormat::Subscript);
+  editor->SetSelection(1, 5);
+  editor->ToggleFormat(TextFormat::Bold);
+  editor->SetSelection(4, 6);
+  editor->ToggleFormat(TextFormat::Italic);
+  Relayout(group.get());
+  editor->SetCurrentPoint(wxPoint(10, 100));
+  THEN("each character has the formats it was given") {
+    using namespace TextFormat;
+    REQUIRE(editor->GetFormats() ==
+            Formats({None, Bold, Format(Bold | Subscript), Bold, Format(Bold | Italic),
+                     Italic, None}));
+  }
+  THEN("no character is laid out with zero width") {
+    for (size_t i = 0; i < editor->GetValue().Length(); ++i)
+      REQUIRE(editor->PositionToPoint(i + 1).x > editor->PositionToPoint(i).x);
+  }
+  THEN("the bold text after the subscript is as wide as bold text elsewhere") {
+    const wxCoord boldA = editor->PositionToPoint(2).x - editor->PositionToPoint(1).x;
+    const wxCoord boldB = editor->PositionToPoint(4).x - editor->PositionToPoint(3).x;
+    const wxCoord subX = editor->PositionToPoint(3).x - editor->PositionToPoint(2).x;
+    // "a" and "b" differ a little; a subscript is far narrower than either.
+    REQUIRE(subX < boldA);
+    REQUIRE(subX < boldB);
+  }
+}
+
 SCENARIO("A line grows to make room for what is raised or lowered") {
   // The cell's geometry: its height, and where the middle of its first
   // line's plain text is.
