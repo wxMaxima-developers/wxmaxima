@@ -52,9 +52,15 @@ jobs:
              ls -l /usr/bin/wx-config* /etc/alternatives/wx* 2>&1 || true
              for w in /usr/bin/wx-config*; do echo "== $w"; timeout 60 sh "$w" --selected-config < /dev/null; echo "rc=$?"; done
              set +e
-             timeout 300 cmake --trace-expand ../wxmaxima < /dev/null > ../cfg-out.txt 2> ../cfg-trace.txt
-             echo "cmake rc=$?"
-             tail -n 60 ../cfg-trace.txt
+             cmake --trace-expand ../wxmaxima < /dev/null > ../cfg-out.txt 2> ../cfg-trace.txt &
+             pid=$!
+             for i in $(seq 1 48); do sleep 5; kill -0 $pid 2>/dev/null || break; done
+             kill -0 $pid 2>/dev/null && echo "=== cmake still running after 4 minutes" || { wait $pid; echo "=== cmake exited rc=$?"; }
+             echo "=== processes"; ps -ef
+             echo "=== windows processes"; ps -W | grep -viE "svchost|conhost|runtimebroker" | tail -n 60
+             echo "=== trace tail"; tail -n 80 ../cfg-trace.txt
+             echo "=== output tail"; tail -n 20 ../cfg-out.txt
+             kill -9 $pid 2>/dev/null
              exit 1
       - name: compile
         shell: bash --noprofile --norc -eo pipefail -o igncr '{0}'
