@@ -29,6 +29,7 @@
 #include "MaximaTokenizer.h"
 #include "TextFormat.h"
 #include <array>
+#include <optional>
 #include <vector>
 #include <algorithm>
 #include <list>
@@ -1115,10 +1116,11 @@ private:
     bool hasPending = false;
     //! See SetUnknownLineAttributes(): pairs of (line text, attributes)
     std::vector<std::pair<wxString, wxString>> unknownLineAttributes;
-    //! The fonts GetFont(format) returned, indexed by the font-relevant bits
-    std::array<wxFont, TextFormat::FontVariants> fonts;
+    //! The fonts GetFont(format) returned, indexed by TextFormat::FontIndex();
+    //! empty until first needed
+    std::array<std::optional<wxFont>, TextFormat::FontVariants> fonts;
     //! The base font the fonts were made from
-    wxFont fontsBase;
+    std::optional<wxFont> fontsBase;
   };
   //! See FormatState; null as long as the cell has never been formatted.
   mutable std::unique_ptr<FormatState> m_formatState;

@@ -2201,6 +2201,15 @@ which loads on demand -- keep the detail there rather than growing this file.
   `MinimizePane()` asserts on panes without a minimize button -- so wherever
   `MinimizeButton(true)` is handed out, the worksheet and the toolbar must be
   excluded.
+- **`wxFont::IsOk()` cannot tell "not set yet" on wxQt.** With wxWidgets' Qt
+  port a default-constructed `wxFont` (and `wxNullFont`) has ref data of its
+  own and reports itself ok -- a default font, unrelated to anything. A cache
+  that marked its empty slots with `wxFont()` and filled them `if
+  (!font.IsOk())` therefore never filled them there: every bold, italic and
+  sub-/superscript text cell format came out in that one small default font
+  (measured narrower than plain text, and all formats looking alike), while
+  wxGTK was fine. Mark "not made yet" with `std::optional<wxFont>` instead
+  (see `EditorCell::GetFont(TextFormat::Format)`).
 - **A wxWidgets-version fallback `#define` must come AFTER the wx header that
   may define it.** `Compat.h` includes `<wx/defs.h>` *above* its
   `#ifndef wxWARN_UNUSED` fallback for this reason. Reached in the other order,
