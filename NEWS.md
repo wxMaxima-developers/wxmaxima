@@ -1,5 +1,13 @@
 # Current development version
 
+- The sections of the toolbar can be rearranged: a new "Toolbar" tab in
+  the configuration dialog lists them, and a section can be dragged to
+  another place there or moved using "Up" and "Down". Every section,
+  including the evaluation buttons and the cell type, can now be hidden,
+  from that tab or by right-clicking the toolbar. A "flexible space"
+  section decides what is pushed to the right edge of the window.
+- The toolbar's context menu no longer pops up again after closing it once
+  for every time a section had been shown or hidden.
 - The toolbar's "Select all" button now selects all cells. It toggled
   the visibility of the code cells instead.
 - The Greek letters and Symbols sidebars no longer come up laid out wrongly

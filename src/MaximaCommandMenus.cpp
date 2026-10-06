@@ -2863,6 +2863,10 @@ void MaximaCommandMenus::EditMenu(wxCommandEvent &event) {
       if (m_wxMaxima.GetWorksheet()->GetTree())
         m_wxMaxima.GetWorksheet()->GetTree()->FontsChangedList();
       m_wxMaxima.ConfigChanged();
+      // The order of the toolbar's sections, or which are shown, may have
+      // changed in the "Toolbar" tab.
+      if (m_wxMaxima.GetWorksheet()->m_mainToolBar)
+        m_wxMaxima.GetWorksheet()->m_mainToolBar->AddTools();
       m_wxMaxima.GetWorksheet()->RequestRecalculation();
       m_wxMaxima.GetWorksheet()->RequestRedraw();
     }

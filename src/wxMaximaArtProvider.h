@@ -71,6 +71,7 @@
 #define wxmaximaART_CONFIG_EDITING                wxART_MAKE_ART_ID(wxmaximaART_CONFIG_EDITING)
 #define wxmaximaART_CONFIG_ACCESSIBILITY          wxART_MAKE_ART_ID(wxmaximaART_CONFIG_ACCESSIBILITY)
 #define wxmaximaART_CONFIG_AI_CHAT                wxART_MAKE_ART_ID(wxmaximaART_CONFIG_AI_CHAT)
+#define wxmaximaART_CONFIG_TOOLBAR                wxART_MAKE_ART_ID(wxmaximaART_CONFIG_TOOLBAR)
 
 
 class wxMaximaArtProvider : public wxArtProvider

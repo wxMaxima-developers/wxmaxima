@@ -127,6 +127,7 @@ set(DIALOG_SOURCE_FILES
     ResolutionChooser.cpp
     TipOfTheDay.cpp
     ConfigDialogue.cpp
+    ToolBarSectionsPanel.cpp
     MaximaNotStartingDialog.cpp
     BinaryNameCtrl.cpp
     DiffFrame.cpp
@@ -179,6 +180,7 @@ set(SOURCE_FILES
     SvgBitmap.cpp
     SvgPanel.cpp
     ToolBar.cpp
+    ToolBarSections.cpp
     TrayIcon.cpp
     UrlDetection.cpp
     worksheet/MatrixScrollbars.cpp

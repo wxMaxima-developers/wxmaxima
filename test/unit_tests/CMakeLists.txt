@@ -412,6 +412,17 @@ if(TARGET wxmTestApp)
     add_test(NAME ToolBarUndoRedo
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_ToolBarUndoRedo>")
 
+    # The toolbar's sections in a stored order, every one of them hideable,
+    # and the configuration dialogue's "Toolbar" tab that reorders them.
+    add_executable(test_ToolBarSections
+        test_ToolBarSections.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_ToolBarSections PUBLIC cxx_std_20)
+    target_link_libraries(test_ToolBarSections PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME ToolBarSections
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_ToolBarSections>")
+
     # Logic-level regression tests for the custom wxAccessible classes (worksheet
     # and toolbar). They only assert where wxUSE_ACCESSIBILITY is set (the Windows
     # CI); elsewhere they compile out to a harness sanity check. This catches the

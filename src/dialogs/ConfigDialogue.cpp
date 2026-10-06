@@ -249,6 +249,7 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent)
   imageList.push_back(wxArtProvider::GetBitmapBundle(wxmaximaART_CONFIG_VIEW_REFRESH, wxART_OTHER, wxSize(imgSize, imgSize)));
   imageList.push_back(wxArtProvider::GetBitmapBundle(wxmaximaART_CONFIG_AI_CHAT, wxART_OTHER, wxSize(imgSize, imgSize)));
   imageList.push_back(wxArtProvider::GetBitmapBundle(wxmaximaART_CONFIG_ACCESSIBILITY, wxART_OTHER, wxSize(imgSize, imgSize)));
+  imageList.push_back(wxArtProvider::GetBitmapBundle(wxmaximaART_CONFIG_TOOLBAR, wxART_OTHER, wxSize(imgSize, imgSize)));
   m_notebook->SetImages(imageList);
 #endif
   m_notebook->AddPage(CreateWorksheetPanel(), _("Worksheet"), true, 0);
@@ -258,6 +259,10 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent)
   m_notebook->AddPage(CreateOptionsPanel(), _("Options"), false, 4);
   m_notebook->AddPage(CreateStartupPanel(), _("Startup commands"), false, 5);
   m_notebook->AddPage(CreatePrintPanel(), _("Printout settings"), false, 6);
+  m_toolBarSections = new ToolBarSectionsPanel(m_notebook);
+  m_toolBarSections->SetMinSize(wxSize(GetContentScaleFactor() * mMinPanelWidth,
+                                       GetContentScaleFactor() * mMinPanelHeight));
+  m_notebook->AddPage(m_toolBarSections, _("Toolbar"), false, 10);
 #ifdef WXM_USE_AI_TOOLS
   // Hidden outright, not just disabled, when there's nowhere safe to keep
   // an API key -- see AiProvider::SecretStoreAvailable()'s own doc comment
@@ -3019,6 +3024,7 @@ void ConfigDialogue::WriteSettings() {
 #if wxUSE_ACCESSIBILITY
   configuration->ScreenReaderAnnouncesMathML(m_screenReaderMathML->GetValue());
 #endif
+  m_toolBarSections->Write();
   configuration->SetChangeAsterisk(m_changeAsterisk->GetValue());
   configuration->HidemultiplicationSign(m_hidemultiplicationSign->GetValue());
   configuration->Latin2Greek(m_latin2Greek->GetValue());

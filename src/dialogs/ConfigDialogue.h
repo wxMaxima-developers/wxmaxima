@@ -61,6 +61,7 @@ extern unsigned char view_refresh_svg_gz[];
 #include "cells/TextStyle.h"
 #include "worksheet/Worksheet.h"
 #include "../Configuration.h"
+#include "ToolBarSectionsPanel.h"
 #ifdef WXM_USE_AI_TOOLS
 #include "ai/AiProvider.h"
 #endif
@@ -197,6 +198,9 @@ private:
 
   //! The panel that allows to choose which formats to put on the clipboard
   wxWindow *CreateRevertToDefaultsPanel();
+
+  //! The "Toolbar" tab: the order of the toolbar's sections and which are shown
+  ToolBarSectionsPanel *m_toolBarSections = nullptr;
 
 #if wxUSE_ACCESSIBILITY
   //! The panel with the screen reader settings

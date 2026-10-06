@@ -45,6 +45,7 @@
 #include <wx/wfstream.h>
 #include <wx/zstream.h>
 #include <algorithm>
+#include <optional>
 
 #define TOOLBAR_ICON_SCALE (0.25)
 
@@ -277,7 +278,11 @@ ToolBar::ToolBar(wxWindow *parent)
   SetGripperVisible(false);
   SetToolBitmapSize(GetOptimalBitmapSize());
   AddTools();
-  Realize();
+  // Bound here, not in AddTools(), which runs again every time the user shows
+  // or hides a section: binding there made the context menu pop up once more
+  // for every time it had run.
+  Bind(wxEVT_SIZE, &ToolBar::OnSize, this);
+  Bind(wxEVT_RIGHT_DOWN, &ToolBar::OnMouseRightDown, this);
 #if wxUSE_ACCESSIBILITY
   // Expose the owner-drawn tools to screen readers (the window takes ownership).
   SetAccessible(new ToolBarAccessible(this));
@@ -303,90 +308,10 @@ void ToolBar::AddTools() {
   m_canEvalThisCell_old = true;
   m_canFormatText_old = true;
   m_worksheetEmpty_old = false;
-  if (ShowNew())
-    AddTool(wxID_NEW, _("New"), wxArtProvider::GetBitmapBundle(wxART_NEW, wxART_TOOLBAR), _("New document"));
-  if (ShowOpenSave()) {
-    AddTool(wxID_OPEN, _("Open"), wxArtProvider::GetBitmapBundle(wxART_FILE_OPEN, wxART_TOOLBAR), _("Open document"));
-    AddTool(wxID_SAVE, _("Save"), wxArtProvider::GetBitmapBundle(wxART_FILE_SAVE, wxART_TOOLBAR), _("Save document"));
-  }
-  if (ShowPrint()) {
-#ifndef __WXOSX__
-    if (ShowOpenSave() || ShowNew())
-      AddSeparator();
-#endif
-    AddTool(wxID_PRINT, _("Print"), wxArtProvider::GetBitmapBundle(wxART_PRINT, wxART_TOOLBAR), _("Print document"));
-  }
-  if (ShowUndoRedo()) {
-#ifndef __WXOSX__
-    if (ShowOpenSave() || ShowNew())
-      AddSeparator();
-#endif
-    AddTool(wxID_UNDO, _("Undo"), wxArtProvider::GetBitmapBundle(wxART_UNDO, wxART_TOOLBAR));
-    AddTool(wxID_REDO, _("Redo"), wxArtProvider::GetBitmapBundle(wxART_REDO, wxART_TOOLBAR));
-  }
-  if (ShowOptions()) {
-#ifndef __WXOSX__
-    if (ShowOpenSave() || ShowNew() || ShowUndoRedo())
-      AddSeparator();
-#endif
-    AddTool(wxID_PREFERENCES, _("Options"), wxArtProvider::GetBitmapBundle(wxmaximaART_GTK_PREFERENCES, wxART_TOOLBAR), _("Configure wxMaxima"));
-  }
-  if (ShowCopyPaste()) {
-#ifndef __WXOSX__
-    if (ShowSelectAll() || ShowOpenSave() || ShowNew() || ShowPrint() ||
-        ShowUndoRedo())
-      AddSeparator();
-#endif
-    AddTool(wxID_CUT, _("Cut"), wxArtProvider::GetBitmapBundle(wxART_CUT, wxART_TOOLBAR), _("Cut selection"));
-    AddTool(wxID_COPY, _("Copy"), wxArtProvider::GetBitmapBundle(wxART_COPY, wxART_TOOLBAR), _("Copy selection"));
-    AddTool(wxID_PASTE, _("Paste"), wxArtProvider::GetBitmapBundle(wxART_PASTE, wxART_TOOLBAR), _("Paste from clipboard"));
-  }
-  if (ShowSelectAll())
-    AddTool(wxID_SELECTALL, _("Select all"), wxArtProvider::GetBitmapBundle(wxmaximaART_GTK_SELECT_ALL, wxART_TOOLBAR), _("Select all"));
 
-  if (ShowSearch()) {
-#ifndef __WXOSX__
-    if (ShowSelectAll() || ShowOpenSave() || ShowNew() || ShowPrint() || ShowUndoRedo() || ShowCopyPaste())
-      AddSeparator();
-#endif
-    AddTool(wxID_FIND, _("Find"), wxArtProvider::GetBitmapBundle(wxART_FIND_AND_REPLACE, wxART_TOOLBAR), _("Find and replace"));
-  }
-#ifndef __WXOSX__
-  if (ShowSelectAll() || ShowOpenSave() || ShowNew() || ShowPrint() || ShowOptions() || ShowUndoRedo() || ShowSearch())
-    AddSeparator();
-#endif
-  AddTool(menu_restart_id, _("Restart Maxima"), wxArtProvider::GetBitmapBundle(wxmaximaART_VIEW_REFRESH1, wxART_TOOLBAR),
-          _("Completely stop maxima and restart it"));
-  AddTool(tb_interrupt, _("Interrupt"), wxArtProvider::GetBitmapBundle(wxmaximaART_GTK_STOP, wxART_TOOLBAR),
-          _("Interrupt current computation. To completely restart maxima press "
-            "the button left to this one."));
-  AddTool(tb_follow, _("Follow"), wxArtProvider::GetBitmapBundle(wxmaximaART_ARROW_UP_SQUARE, wxART_TOOLBAR), _("Return to the cell that is currently being evaluated"));
-  EnableTool(tb_follow, false);
-
-#ifndef __WXOSX__
-  AddSeparator();
-#endif
-
-  AddTool(tb_eval, _("Evaluate current cell"), wxArtProvider::GetBitmapBundle(wxmaximaART_GO_NEXT, wxART_TOOLBAR),
-          _("Send the current cell to maxima"));
-
-  AddTool(tb_eval_all, _("Evaluate all"), wxArtProvider::GetBitmapBundle(wxmaximaART_GO_NEXT, wxART_TOOLBAR),
-          _("Send all cells to maxima"));
-
-  AddTool(tb_evaltillhere, _("Evaluate to point"), wxArtProvider::GetBitmapBundle(wxmaximaART_GO_BOTTOM, wxART_TOOLBAR),
-          _("Evaluate the file from its beginning to the cell above the cursor"));
-
-  AddTool(tb_evaluate_rest, _("Evaluate the rest"), wxArtProvider::GetBitmapBundle(wxmaximaART_GO_LAST, wxART_TOOLBAR),
-          _("Evaluate the file from the cursor to its end"));
-
-#ifndef __WXOSX__
-  AddSeparator();
-#endif
-  AddTool(tb_hideCode, _("Hide Code"), wxArtProvider::GetBitmapBundle(wxmaximaART_EYE_SLASH, wxART_TOOLBAR), _("Toggle the visibility of code cells"));
-
-#ifndef __WXOSX__
-  AddSeparator();
-#endif
+  // The cell type drop-down and the animation slider are asked for their
+  // state from elsewhere (e.g. GetCellType() decides the type of a new cell),
+  // so they are created even if their section is hidden - just not shown.
   wxArrayString textStyle;
   textStyle.Add(_("Maths"));
   textStyle.Add(_("Text"));
@@ -413,29 +338,9 @@ void ToolBar::AddTools() {
                             "   Ctrl+6: Heading5 cell\n"
                             "   Ctrl+7: Heading6 cell\n"));
   m_textStyle->SetSelection(textStyleSelection);
-  AddControl(m_textStyle);
-  if (ShowTextFormat()) {
-    // Character formatting for text cells (GH #492). Toolbar-only for now:
-    // the obvious shortcuts Ctrl+B/I/U are already taken.
-    AddTool(tb_bold, _("Bold"), wxArtProvider::GetBitmapBundle(wxmaximaART_FORMAT_TEXT_BOLD, wxART_TOOLBAR),
-            _("Bold text"), wxITEM_CHECK);
-    AddTool(tb_italic, _("Italic"), wxArtProvider::GetBitmapBundle(wxmaximaART_FORMAT_TEXT_ITALIC, wxART_TOOLBAR),
-            _("Italic text"), wxITEM_CHECK);
-    AddTool(tb_underline, _("Underline"), wxArtProvider::GetBitmapBundle(wxmaximaART_FORMAT_TEXT_UNDERLINE, wxART_TOOLBAR),
-            _("Underlined text"), wxITEM_CHECK);
-    AddTool(tb_strikethrough, _("Strikethrough"),
-            wxArtProvider::GetBitmapBundle(wxmaximaART_FORMAT_TEXT_STRIKETHROUGH, wxART_TOOLBAR),
-            _("Struck-through text"), wxITEM_CHECK);
-    // Only a text cell can be formatted, and there is none active yet.
-    TextFormatState(false, false, false, false, false);
-  }
-    AddTool(tb_animation_startStop, _("Start or Stop animation"), wxArtProvider::GetBitmapBundle(wxmaximaART_MEDIA_PLAYBACK_START, wxART_TOOLBAR),
-          _("Start or stop the currently selected animation that has been "
-            "created with the with_slider class of commands"));
-  EnableTool(tb_animation_startStop, false);
+  m_textStyle->Show(ShowSection(ToolBarSections::Section::CellStyle));
 
   m_ppi = GetPPI();
-
   int sliderWidth = std::max(m_ppi.x, 75) * 200 / 72;
   int width, height;
   wxDisplaySize(&width, &height);
@@ -449,13 +354,168 @@ void ToolBar::AddTools() {
                              "similar, this slider allows changing the current frame."));
   m_plotSlider->Enable(false);
   m_animationMaxIndex = 0;
-  AddControl(m_plotSlider);
-  AddStretchSpacer(100);
-  if (ShowHelp())
-    AddTool(wxID_HELP, _("Help"), wxArtProvider::GetBitmapBundle(wxART_HELP, wxART_TOOLBAR), _("Show wxMaxima help"));
-  Bind(wxEVT_SIZE, &ToolBar::OnSize, this);
-  Bind(wxEVT_RIGHT_DOWN, &ToolBar::OnMouseRightDown, this);
+  m_plotSlider->Show(ShowSection(ToolBarSections::Section::Animation));
+
+  // The last section that was shown
+  std::optional<ToolBarSections::Section> previous;
+  for (const auto section : SectionOrder()) {
+    if (!ShowSection(section))
+      continue;
+#ifndef __WXOSX__
+    if (previous && ToolBarSections::SeparatorBetween(*previous, section))
+      AddSeparator();
+#endif
+    AddSection(section);
+    previous = section;
+  }
   Realize();
+}
+
+void ToolBar::AddSection(ToolBarSections::Section section) {
+  using ToolBarSections::Section;
+  switch (section) {
+  case Section::New:
+    AddTool(wxID_NEW, _("New"), wxArtProvider::GetBitmapBundle(wxART_NEW, wxART_TOOLBAR), _("New document"));
+    break;
+  case Section::OpenSave:
+    AddTool(wxID_OPEN, _("Open"), wxArtProvider::GetBitmapBundle(wxART_FILE_OPEN, wxART_TOOLBAR), _("Open document"));
+    AddTool(wxID_SAVE, _("Save"), wxArtProvider::GetBitmapBundle(wxART_FILE_SAVE, wxART_TOOLBAR), _("Save document"));
+    break;
+  case Section::Print:
+    AddTool(wxID_PRINT, _("Print"), wxArtProvider::GetBitmapBundle(wxART_PRINT, wxART_TOOLBAR), _("Print document"));
+    break;
+  case Section::UndoRedo:
+    AddTool(wxID_UNDO, _("Undo"), wxArtProvider::GetBitmapBundle(wxART_UNDO, wxART_TOOLBAR));
+    AddTool(wxID_REDO, _("Redo"), wxArtProvider::GetBitmapBundle(wxART_REDO, wxART_TOOLBAR));
+    break;
+  case Section::Options:
+    AddTool(wxID_PREFERENCES, _("Options"), wxArtProvider::GetBitmapBundle(wxmaximaART_GTK_PREFERENCES, wxART_TOOLBAR), _("Configure wxMaxima"));
+    break;
+  case Section::CopyPaste:
+    AddTool(wxID_CUT, _("Cut"), wxArtProvider::GetBitmapBundle(wxART_CUT, wxART_TOOLBAR), _("Cut selection"));
+    AddTool(wxID_COPY, _("Copy"), wxArtProvider::GetBitmapBundle(wxART_COPY, wxART_TOOLBAR), _("Copy selection"));
+    AddTool(wxID_PASTE, _("Paste"), wxArtProvider::GetBitmapBundle(wxART_PASTE, wxART_TOOLBAR), _("Paste from clipboard"));
+    break;
+  case Section::SelectAll:
+    AddTool(wxID_SELECTALL, _("Select all"), wxArtProvider::GetBitmapBundle(wxmaximaART_GTK_SELECT_ALL, wxART_TOOLBAR), _("Select all"));
+    break;
+  case Section::Search:
+    AddTool(wxID_FIND, _("Find"), wxArtProvider::GetBitmapBundle(wxART_FIND_AND_REPLACE, wxART_TOOLBAR), _("Find and replace"));
+    break;
+  case Section::MaximaControl:
+    AddTool(menu_restart_id, _("Restart Maxima"), wxArtProvider::GetBitmapBundle(wxmaximaART_VIEW_REFRESH1, wxART_TOOLBAR),
+            _("Completely stop maxima and restart it"));
+    AddTool(tb_interrupt, _("Interrupt"), wxArtProvider::GetBitmapBundle(wxmaximaART_GTK_STOP, wxART_TOOLBAR),
+            _("Interrupt current computation. To completely restart maxima press "
+              "the button left to this one."));
+    AddTool(tb_follow, _("Follow"), wxArtProvider::GetBitmapBundle(wxmaximaART_ARROW_UP_SQUARE, wxART_TOOLBAR), _("Return to the cell that is currently being evaluated"));
+    EnableTool(tb_follow, false);
+    break;
+  case Section::Evaluate:
+    AddTool(tb_eval, _("Evaluate current cell"), wxArtProvider::GetBitmapBundle(wxmaximaART_GO_NEXT, wxART_TOOLBAR),
+            _("Send the current cell to maxima"));
+    AddTool(tb_eval_all, _("Evaluate all"), wxArtProvider::GetBitmapBundle(wxmaximaART_GO_NEXT, wxART_TOOLBAR),
+            _("Send all cells to maxima"));
+    AddTool(tb_evaltillhere, _("Evaluate to point"), wxArtProvider::GetBitmapBundle(wxmaximaART_GO_BOTTOM, wxART_TOOLBAR),
+            _("Evaluate the file from its beginning to the cell above the cursor"));
+    AddTool(tb_evaluate_rest, _("Evaluate the rest"), wxArtProvider::GetBitmapBundle(wxmaximaART_GO_LAST, wxART_TOOLBAR),
+            _("Evaluate the file from the cursor to its end"));
+    break;
+  case Section::HideCode:
+    AddTool(tb_hideCode, _("Hide Code"), wxArtProvider::GetBitmapBundle(wxmaximaART_EYE_SLASH, wxART_TOOLBAR), _("Toggle the visibility of code cells"));
+    break;
+  case Section::CellStyle:
+    AddControl(m_textStyle);
+    break;
+  case Section::TextFormat:
+    // Character formatting for text cells (GH #492). Toolbar-only for now:
+    // the obvious shortcuts Ctrl+B/I/U are already taken.
+    AddTool(tb_bold, _("Bold"), wxArtProvider::GetBitmapBundle(wxmaximaART_FORMAT_TEXT_BOLD, wxART_TOOLBAR),
+            _("Bold text"), wxITEM_CHECK);
+    AddTool(tb_italic, _("Italic"), wxArtProvider::GetBitmapBundle(wxmaximaART_FORMAT_TEXT_ITALIC, wxART_TOOLBAR),
+            _("Italic text"), wxITEM_CHECK);
+    AddTool(tb_underline, _("Underline"), wxArtProvider::GetBitmapBundle(wxmaximaART_FORMAT_TEXT_UNDERLINE, wxART_TOOLBAR),
+            _("Underlined text"), wxITEM_CHECK);
+    AddTool(tb_strikethrough, _("Strikethrough"),
+            wxArtProvider::GetBitmapBundle(wxmaximaART_FORMAT_TEXT_STRIKETHROUGH, wxART_TOOLBAR),
+            _("Struck-through text"), wxITEM_CHECK);
+    // Only a text cell can be formatted, and there is none active yet.
+    TextFormatState(false, false, false, false, false);
+    break;
+  case Section::Animation:
+    AddTool(tb_animation_startStop, _("Start or Stop animation"), wxArtProvider::GetBitmapBundle(wxmaximaART_MEDIA_PLAYBACK_START, wxART_TOOLBAR),
+            _("Start or stop the currently selected animation that has been "
+              "created with the with_slider class of commands"));
+    EnableTool(tb_animation_startStop, false);
+    AddControl(m_plotSlider);
+    break;
+  case Section::FlexibleSpace:
+    AddStretchSpacer(100);
+    break;
+  case Section::Help:
+    AddTool(wxID_HELP, _("Help"), wxArtProvider::GetBitmapBundle(wxART_HELP, wxART_TOOLBAR), _("Show wxMaxima help"));
+    break;
+  }
+}
+
+bool ToolBar::ShowSection(ToolBarSections::Section section) {
+  bool show = ToolBarSections::ShownByDefault(section);
+  wxConfig::Get()->Read(ToolBarSections::VisibilityConfigKey(section), &show);
+  return show;
+}
+
+void ToolBar::ShowSection(ToolBarSections::Section section, bool show) {
+  wxConfig::Get()->Write(ToolBarSections::VisibilityConfigKey(section), show);
+}
+
+std::vector<ToolBarSections::Section> ToolBar::SectionOrder() {
+  wxString order;
+  wxConfig::Get()->Read(wxS("Toolbar/sectionOrder"), &order);
+  return ToolBarSections::ParseOrder(order);
+}
+
+void ToolBar::SectionOrder(const std::vector<ToolBarSections::Section> &order) {
+  wxConfig::Get()->Write(wxS("Toolbar/sectionOrder"),
+                         ToolBarSections::OrderToString(order));
+}
+
+wxString ToolBar::SectionName(ToolBarSections::Section section) {
+  using ToolBarSections::Section;
+  switch (section) {
+  case Section::New:
+    return _("New button");
+  case Section::OpenSave:
+    return _("Open and save button");
+  case Section::Print:
+    return _("Print button");
+  case Section::UndoRedo:
+    return _("Undo and redo button");
+  case Section::Options:
+    return _("Preferences button");
+  case Section::CopyPaste:
+    return _("Copy, Cut and Paste button");
+  case Section::SelectAll:
+    return _("Select All button");
+  case Section::Search:
+    return _("Search button");
+  case Section::MaximaControl:
+    return _("Restart, interrupt and follow buttons");
+  case Section::Evaluate:
+    return _("Evaluation buttons");
+  case Section::HideCode:
+    return _("Hide code button");
+  case Section::CellStyle:
+    return _("Cell type");
+  case Section::TextFormat:
+    return _("Text formatting buttons");
+  case Section::Animation:
+    return _("Animation controls");
+  case Section::FlexibleSpace:
+    return _("Flexible space (pushes what follows to the right)");
+  case Section::Help:
+    return _("Help button");
+  }
+  return wxEmptyString;
 }
 
 wxSize ToolBar::GetPPI()
@@ -674,87 +734,23 @@ void ToolBar::OnSize(wxSizeEvent &event) {
 }
 
 void ToolBar::OnMouseRightDown(wxMouseEvent &WXUNUSED(event)) {
-  wxMenu *popupMenu = new wxMenu();
-  popupMenu->AppendCheckItem(shownew, _("New button"),
-                             _("Show the \"New\" button?"));
-  popupMenu->Check(shownew, ShowNew());
-  popupMenu->AppendCheckItem(undo_redo, _("Undo and redo button"),
-                             _("Show the undo and redo button?"));
-  popupMenu->Check(undo_redo, ShowUndoRedo());
-  popupMenu->AppendCheckItem(open_save, _("Open and save button"),
-                             _("Show the open and the save button?"));
-  popupMenu->Check(open_save, ShowOpenSave());
-  popupMenu->AppendCheckItem(print, _("Print button"),
-                             _("Show the print button?"));
-  popupMenu->Check(print, ShowPrint());
-  popupMenu->AppendCheckItem(copy_paste, _("Copy, Cut and Paste button"),
-                             _("Show the Copy, Cut and the Paste button?"));
-  popupMenu->Check(copy_paste, ShowCopyPaste());
-  popupMenu->AppendCheckItem(options, _("Preferences button"),
-                             _("Show the preferences button?"));
-  popupMenu->Check(options, ShowOptions());
-  popupMenu->AppendCheckItem(selectAll, _("Select All button"),
-                             _("Show the \"select all\" button?"));
-  popupMenu->Check(selectAll, ShowSelectAll());
-  popupMenu->AppendCheckItem(search, _("Search button"),
-                             _("Show the \"search\" button?"));
-  popupMenu->Check(search, ShowSearch());
-  popupMenu->AppendCheckItem(help, _("Help button"),
-                             _("Show the \"help\" button?"));
-  popupMenu->Check(help, ShowHelp());
-  popupMenu->AppendCheckItem(textFormat, _("Text formatting buttons"),
-                             _("Show the bold, italic, underline and strikethrough buttons?"));
-  popupMenu->Check(textFormat, ShowTextFormat());
-
-  if (popupMenu->GetMenuItemCount() > 0) {
-    popupMenu->Bind(wxEVT_MENU, &ToolBar::OnMenu, this);
-    PopupMenu(popupMenu);
+  // Lists the sections in the order they are shown in, so the menu matches
+  // the toolbar. Reordering them is done in the configuration dialogue.
+  wxMenu popupMenu;
+  for (const auto section : SectionOrder()) {
+    popupMenu.AppendCheckItem(SectionMenuId(section), SectionName(section));
+    popupMenu.Check(SectionMenuId(section), ShowSection(section));
   }
-  wxDELETE(popupMenu);
+  popupMenu.Bind(wxEVT_MENU, &ToolBar::OnMenu, this);
+  PopupMenu(&popupMenu);
 }
 
 void ToolBar::OnMenu(wxCommandEvent &event) {
-  switch (event.GetId()) {
-  case copy_paste:
-    ShowCopyPaste(!ShowCopyPaste());
-    AddTools();
-    break;
-  case open_save:
-    ShowOpenSave(!ShowOpenSave());
-    AddTools();
-    break;
-  case undo_redo:
-    ShowUndoRedo(!ShowUndoRedo());
-    AddTools();
-    break;
-  case print:
-    ShowPrint(!ShowPrint());
-    AddTools();
-    break;
-  case options:
-    ShowOptions(!ShowOptions());
-    AddTools();
-    break;
-  case shownew:
-    ShowNew(!ShowNew());
-    AddTools();
-    break;
-  case search:
-    ShowSearch(!ShowSearch());
-    AddTools();
-    break;
-  case help:
-    ShowHelp(!ShowHelp());
-    AddTools();
-    break;
-  case selectAll:
-    ShowSelectAll(!ShowSelectAll());
-    AddTools();
-    break;
-  case textFormat:
-    ShowTextFormat(!ShowTextFormat());
-    AddTools();
-    break;
+  for (const auto section : ToolBarSections::DefaultOrder()) {
+    if (event.GetId() == SectionMenuId(section)) {
+      ShowSection(section, !ShowSection(section));
+      AddTools();
+      return;
+    }
   }
-  Realize();
 }

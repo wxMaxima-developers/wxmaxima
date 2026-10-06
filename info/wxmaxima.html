@@ -183,9 +183,12 @@ controls</a></li>
 id="toc-dont-save-the-worksheet-automatically"><span
 class="toc-section-number">2.4.4</span> Don’t save the worksheet
 automatically</a></li>
+<li><a href="#arranging-the-toolbar"
+id="toc-arranging-the-toolbar"><span
+class="toc-section-number">2.4.5</span> Arranging the toolbar</a></li>
 <li><a href="#where-is-the-configuration-saved"
 id="toc-where-is-the-configuration-saved"><span
-class="toc-section-number">2.4.5</span> Where is the configuration
+class="toc-section-number">2.4.6</span> Where is the configuration
 saved?</a></li>
 </ul></li>
 </ul></li>
@@ -1402,8 +1405,18 @@ cellphone app:</p>
 <li>Files are saved automatically on exit</li>
 <li>And the file will automatically be saved every 3 minutes.</li>
 </ul>
-<h3 data-number="2.4.5" id="where-is-the-configuration-saved"><span
-class="header-section-number">2.4.5</span> Where is the configuration
+<h3 data-number="2.4.5" id="arranging-the-toolbar"><span
+class="header-section-number">2.4.5</span> Arranging the toolbar</h3>
+<p>The toolbar is made of sections, like the “Open” and “Save” buttons,
+the evaluation buttons or the drop-down list that sets the type of a
+cell. The “Toolbar” tab of the configuration dialog lists them in the
+order the toolbar shows them in: drag a section to another place, or
+select it and press “Up” or “Down”, to move it, and uncheck it to hide
+it. The flexible space pushes every section after it to the right edge
+of the window. “Default order” restores the original arrangement.
+Sections can also be shown or hidden by right-clicking the toolbar.</p>
+<h3 data-number="2.4.6" id="where-is-the-configuration-saved"><span
+class="header-section-number">2.4.6</span> Where is the configuration
 saved?</h3>
 <p>If you are using Unix/Linux, the configuration information will be
 saved in a file <code>.wxMaxima</code> in your home directory (if you
@@ -2611,6 +2624,14 @@ itself is by default equipped with a bright background. But it can be
 configured otherwise. Alternatively, there is a
 <code>View/Invert worksheet brightness</code> menu entry that allows to
 quickly convert the worksheet from dark to bright and vice versa.</p>
+<p>Most images are drawn for a white background, and black line art with
+a transparent background would be invisible on a dark worksheet. So by
+default, if the worksheet background is dark, the transparent parts of
+images are filled with a backdrop color. Its color is the style
+<em>Backdrop of transparent images</em> in the <em>Style</em> tab of the
+configuration dialog, and the option <em>Behind transparent parts of
+images</em> in its <em>Worksheet</em> tab can switch the backdrop off,
+or draw it on a bright worksheet, too.</p>
 <h2 data-number="6.3"
 id="wxmaxima-sometimes-hangs-for-several-seconds-once-in-the-first-minute"><span
 class="header-section-number">6.3</span> <em>WxMaxima</em> sometimes
