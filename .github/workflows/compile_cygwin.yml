@@ -34,7 +34,7 @@ jobs:
       - name: setup_cygwin
         uses: cygwin/cygwin-install-action@v6
         with:
-          packages: cmake git libwx_baseu3.2-devel libwx_gtk3u3.2-devel gcc-core gcc-g++ make gettext-devel
+          packages: cygwin=3.6.10-1 cmake=4.4.3-1 git libwx_baseu3.2-devel libwx_gtk3u3.2-devel gcc-core gcc-g++ make gettext-devel
       # Both steps run in Cygwin's own bash, as cygwin-install-action
       # recommends, rather than in the runner's default PowerShell, with
       # stdin closed. Started from PowerShell, cmake now and then hung in
@@ -63,14 +63,11 @@ jobs:
                printf 'foreach(i RANGE 1 %s)\n  execute_process(COMMAND %s RESULT_VARIABLE r)\n  message("%s ${i} rc=${r}")\nendforeach()\n' "$n" "$*" "$name" > ../$name.cmake
                run_bg $name 40 cmake -P ../$name.cmake
              }
-             mk dbg-quiet 1 sh /usr/bin/wx-config-3.2 --debug=yes OUTPUT_QUIET ERROR_QUIET
-             mk dbg-var 1 sh /usr/bin/wx-config-3.2 --debug=yes OUTPUT_VARIABLE o ERROR_VARIABLE e
-             mk dbg-plain 1 sh /usr/bin/wx-config-3.2 --debug=yes
+             cygcheck -c cygwin cmake 2>&1 | tail -n 2
              mk true-x40 40 sh -c true
-             mk true-quiet-x40 40 sh -c true OUTPUT_QUIET ERROR_QUIET
              mk sel-x40 40 sh /usr/bin/wx-config-3.2 --selected-config OUTPUT_VARIABLE o
-             mk dbg-quiet-x10 10 sh /usr/bin/wx-config-3.2 --debug=yes OUTPUT_QUIET ERROR_QUIET
-             exit 1
+             set -e
+             cmake ../wxmaxima < /dev/null
       - name: compile
         shell: bash --noprofile --norc -eo pipefail -o igncr '{0}'
         timeout-minutes: 120
