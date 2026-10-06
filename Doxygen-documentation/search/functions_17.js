@@ -9,7 +9,7 @@ var searchData=
   ['workers_6',['Workers',['../classBackgroundQueue.html#a31458e8c027f4f5ff1452ecb89804401',1,'BackgroundQueue']]],
   ['worksheet_7',['Worksheet',['../classWorksheet.html#a7ba34e68818f5c6b3374773683e5710c',1,'Worksheet']]],
   ['worksheetlayout_8',['WorksheetLayout',['../classWorksheetLayout.html#a53fa578d33254cb3c4ad0f27f66ecbdc',1,'WorksheetLayout']]],
-  ['write_9',['Write',['../classStyle.html#a259bf27abcb1f6d66dbb02bc9bc9f6cb',1,'Style::Write()'],['../classMaxima.html#aeb45e2fda6a941f99aa9181b644c75be',1,'Maxima::Write()'],['../classStyles.html#aaea29fa13c11dede7a91739e1da4f4ce',1,'Styles::Write()']]],
+  ['write_9',['Write',['../classStyle.html#a259bf27abcb1f6d66dbb02bc9bc9f6cb',1,'Style::Write()'],['../classToolBarSectionsPanel.html#aee6f4f4f2afd226fae3bdb32e257f176',1,'ToolBarSectionsPanel::Write()'],['../classMaxima.html#aeb45e2fda6a941f99aa9181b644c75be',1,'Maxima::Write()'],['../classStyles.html#aaea29fa13c11dede7a91739e1da4f4ce',1,'Styles::Write()']]],
   ['write_10',['write',['../structcmd_8h.html#af2a3ea719b83f672637febdd87c36c36',1,'structcmd.h']]],
   ['write_5fbson_11',['write_bson',['../classdetail_1_1binary__writer.html#a1aae361b7492825979cbb80245b9c0d6',1,'detail::binary_writer']]],
   ['write_5fcbor_12',['write_cbor',['../classdetail_1_1binary__writer.html#ae6ab36b61e8ad346e75d9f9abc983d4c',1,'detail::binary_writer']]],

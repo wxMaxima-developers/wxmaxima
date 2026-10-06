@@ -18,7 +18,7 @@ var searchData=
   ['value_5fseparator_15',['value_separator',['../classdetail_1_1lexer__base.html#add65fa7a85aa15052963809fbcc04540a745373036100d7392ad62c617cab59af',1,'detail::lexer_base']]],
   ['value_5fstring_16',['value_string',['../classdetail_1_1lexer__base.html#add65fa7a85aa15052963809fbcc04540a2b490e8bf366b4cbe3ebd99b26ce15ce',1,'detail::lexer_base']]],
   ['value_5ft_17',['value_t',['../namespacedetail.html#a917c3efabea8a20dc72d9ae2c673d632',1,'detail']]],
-  ['value_5ftype_18',['value_type',['../classbasic__json.html#a0d9e6a7acee2992e310ea21a7b59c67a',1,'basic_json::value_type()'],['../classdetail_1_1iter__impl.html#ab6c453d3fea1df38fa45fd4f97ea42df',1,'detail::iter_impl::value_type()']]],
+  ['value_5ftype_18',['value_type',['../classdetail_1_1iter__impl.html#ab6c453d3fea1df38fa45fd4f97ea42df',1,'detail::iter_impl::value_type()'],['../classbasic__json.html#a0d9e6a7acee2992e310ea21a7b59c67a',1,'basic_json::value_type()']]],
   ['value_5funsigned_19',['value_unsigned',['../classdetail_1_1lexer__base.html#add65fa7a85aa15052963809fbcc04540aaf1f040fcd2f674d2e5893d7a731078f',1,'detail::lexer_base']]],
   ['var_20',['var',['../classAutolink__Test.html#a8de85603114bc9b9e53bd40764e9b499',1,'Autolink_Test']]],
   ['varaddallevent_21',['VarAddAllEvent',['../classwxMaxima.html#a8e85cffaff14de4595889f050473c5e9',1,'wxMaxima']]],
@@ -37,9 +37,11 @@ var searchData=
   ['viewerconfiguration_34',['ViewerConfiguration',['../classViewerConfiguration.html',1,'']]],
   ['viewportrect_35',['ViewportRect',['../classMatrCell.html#ac7115ee82a7182a8ffbfa1d31624114d',1,'MatrCell']]],
   ['viewportsize_36',['ViewportSize',['../classMatrCell.html#ad988787ce44564daecef2c2fa84ba612',1,'MatrCell']]],
-  ['visible_37',['visible',['../structMcpSidebarInfo.html#aff3b46795e217e1f1dce36e11c699d74',1,'McpSidebarInfo']]],
-  ['visiblescrollbars_38',['VisibleScrollbars',['../classMatrixScrollbars.html#a2390729c3ee186489129a073fe607ec7',1,'MatrixScrollbars']]],
-  ['visiblyinvalidcell_39',['VisiblyInvalidCell',['../classVisiblyInvalidCell.html#ac5a17667589fa2a237647f3d0b2ae941',1,'VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group, Configuration *config)'],['../classVisiblyInvalidCell.html#ab87f908b177ea4b2b4a148445c750cf1',1,'VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group, Configuration *config, wxString &amp;&amp;toolTip)'],['../classVisiblyInvalidCell.html',1,'VisiblyInvalidCell']]],
-  ['visiblyinvalidcell_2ecpp_40',['VisiblyInvalidCell.cpp',['../VisiblyInvalidCell_8cpp.html',1,'']]],
-  ['void_5ftype_41',['void_type',['../structCatch_1_1detail_1_1void__type.html',1,'Catch::detail']]]
+  ['visibilityconfigkey_37',['VisibilityConfigKey',['../ToolBarSections_8cpp.html#ad5f1032e1da421b58bf7bde94a85ef21',1,'ToolBarSections']]],
+  ['visibilitykey_38',['visibilityKey',['../ToolBarSections_8cpp.html#aadd715fd01081592b1bbfd8871dfdd28',1,'ToolBarSections.cpp']]],
+  ['visible_39',['visible',['../structMcpSidebarInfo.html#aff3b46795e217e1f1dce36e11c699d74',1,'McpSidebarInfo']]],
+  ['visiblescrollbars_40',['VisibleScrollbars',['../classMatrixScrollbars.html#a2390729c3ee186489129a073fe607ec7',1,'MatrixScrollbars']]],
+  ['visiblyinvalidcell_41',['VisiblyInvalidCell',['../classVisiblyInvalidCell.html#ac5a17667589fa2a237647f3d0b2ae941',1,'VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group, Configuration *config)'],['../classVisiblyInvalidCell.html#ab87f908b177ea4b2b4a148445c750cf1',1,'VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group, Configuration *config, wxString &amp;&amp;toolTip)'],['../classVisiblyInvalidCell.html',1,'VisiblyInvalidCell']]],
+  ['visiblyinvalidcell_2ecpp_42',['VisiblyInvalidCell.cpp',['../VisiblyInvalidCell_8cpp.html',1,'']]],
+  ['void_5ftype_43',['void_type',['../structCatch_1_1detail_1_1void__type.html',1,'Catch::detail']]]
 ];

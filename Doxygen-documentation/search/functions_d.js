@@ -29,7 +29,7 @@ var searchData=
   ['maximasessioninfo_26',['MaximaSessionInfo',['../classMaximaSessionInfo.html#aee3201bb277b6e2ee0a0af7496dad509',1,'MaximaSessionInfo']]],
   ['maximasessionstart_27',['MaximaSessionStart',['../classHistory.html#a4a50b4c22d87784dee4b52719d06c655',1,'History']]],
   ['maximatokenizer_28',['MaximaTokenizer',['../classMaximaTokenizer.html#aece7dce3250f6c4b86dd977577f74bb5',1,'MaximaTokenizer::MaximaTokenizer(const wxString &amp;commands, const Configuration *const configuration, const TokenList &amp;initialTokens)'],['../classMaximaTokenizer.html#a86f0055757187f8b7533adde1d4a32d0',1,'MaximaTokenizer::MaximaTokenizer(const wxString &amp;commands, const Configuration *const configuration)']]],
-  ['maximauserlocation_29',['MaximaUserLocation',['../classConfiguration.html#a52c3103a8a856b7ef2263c50e4ce6711',1,'Configuration::MaximaUserLocation() const'],['../classConfiguration.html#ab243f8140f4f378ddd57caa0dbb2b9b0',1,'Configuration::MaximaUserLocation(wxString maxima)']]],
+  ['maximauserlocation_29',['MaximaUserLocation',['../classConfiguration.html#ab243f8140f4f378ddd57caa0dbb2b9b0',1,'Configuration::MaximaUserLocation(wxString maxima)'],['../classConfiguration.html#a52c3103a8a856b7ef2263c50e4ce6711',1,'Configuration::MaximaUserLocation() const']]],
   ['maximavarnametolisp_30',['MaximaVarnameToLisp',['../classMaxima.html#aa463e9595a0b289f322d56d68db9f636',1,'Maxima']]],
   ['mcpserverenabled_31',['McpServerEnabled',['../classConfiguration.html#a480cc8fedf36e05a56b6321d2576e001',1,'Configuration']]],
   ['mcpserverport_32',['McpServerPort',['../classConfiguration.html#a4cecee0db3a0b3459ba4b462a3bbcddc',1,'Configuration']]],
@@ -46,6 +46,7 @@ var searchData=
   ['modelsrequesturl_43',['ModelsRequestUrl',['../classAiProvider.html#adf3e096147c40a1ced3c94cd267c0ae9',1,'AiProvider']]],
   ['mouseselectionstart_44',['MouseSelectionStart',['../classViewCellPointers.html#a69ca67350af0390921aa19fc930a18a8',1,'ViewCellPointers']]],
   ['mouseselectionstartedhere_45',['MouseSelectionStartedHere',['../classEditorCell.html#aeb91a26e7fbfb314b31bfd8625139abe',1,'EditorCell']]],
-  ['msgids_46',['msgids',['../namespacecheck__pot__not__truncated.html#a7ca37e679f2775017697ba88812964af',1,'check_pot_not_truncated']]],
-  ['mul_47',['mul',['../structdetail_1_1dtoa__impl_1_1diyfp.html#a046c61f2c13411677eedfb5b9b7a8226',1,'detail::dtoa_impl::diyfp']]]
+  ['moveentry_46',['MoveEntry',['../classToolBarSectionsPanel.html#ac503042572c743c499e5dea821988279',1,'ToolBarSectionsPanel']]],
+  ['msgids_47',['msgids',['../namespacecheck__pot__not__truncated.html#a7ca37e679f2775017697ba88812964af',1,'check_pot_not_truncated']]],
+  ['mul_48',['mul',['../structdetail_1_1dtoa__impl_1_1diyfp.html#a046c61f2c13411677eedfb5b9b7a8226',1,'detail::dtoa_impl::diyfp']]]
 ];

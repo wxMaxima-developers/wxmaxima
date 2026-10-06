@@ -4951,9 +4951,9 @@ $(function() {
 <div class="line"><a id="l05043" name="l05043"></a><span class="lineno"> 5043</span>    <span class="keywordflow">return</span> from_json_tuple_impl(std::forward&lt;BasicJsonType&gt;(j), std::forward&lt;TupleRelated&gt;(t), priority_tag&lt;3&gt; {});</div>
 <div class="line"><a id="l05044" name="l05044"></a><span class="lineno"> 5044</span>}</div>
 <div class="line"><a id="l05045" name="l05045"></a><span class="lineno"> 5045</span> </div>
-<div class="line"><a id="l05046" name="l05046"></a><span class="lineno"> 5046</span><span class="keyword">template</span> &lt; <span class="keyword">typename</span> BasicJsonType, <span class="keyword">typename</span> Key, <span class="keyword">typename</span> Value, <span class="keyword">typename</span> Compare, <span class="keyword">typename</span> Allocator,</div>
+<div class="line"><a id="l05046" name="l05046"></a><span class="lineno"> 5046</span><span class="keyword">template</span> &lt; <span class="keyword">typename</span> BasicJsonType, <span class="keyword">typename</span> <a class="code hl_function" href="ToolBarSections_8cpp.html#ab2f0af83120b0ab54abd434d16e7b2b2">Key</a>, <span class="keyword">typename</span> Value, <span class="keyword">typename</span> Compare, <span class="keyword">typename</span> Allocator,</div>
 <div class="line"><a id="l05047" name="l05047"></a><span class="lineno"> 5047</span>           <span class="keyword">typename</span> = enable_if_t &lt; !std::is_constructible &lt;</div>
-<div class="line"><a id="l05048" name="l05048"></a><span class="lineno"> 5048</span>                                        <span class="keyword">typename</span> BasicJsonType::string_t, Key &gt;<a class="code hl_enumvalue" href="namespacedetail.html#a47b1bb0bbd3596589ed9187059c312efa2063c1608d6e0baf80249c42e2be5804">::value</a> &gt;&gt;</div>
+<div class="line"><a id="l05048" name="l05048"></a><span class="lineno"> 5048</span>                                        <span class="keyword">typename</span> BasicJsonType::string_t, <a class="code hl_function" href="ToolBarSections_8cpp.html#ab2f0af83120b0ab54abd434d16e7b2b2">Key</a> &gt;<a class="code hl_enumvalue" href="namespacedetail.html#a47b1bb0bbd3596589ed9187059c312efa2063c1608d6e0baf80249c42e2be5804">::value</a> &gt;&gt;</div>
 <div class="line"><a id="l05049" name="l05049"></a><span class="lineno"> 5049</span><span class="keyword">inline</span> <span class="keywordtype">void</span> from_json(<span class="keyword">const</span> BasicJsonType&amp; j, std::map&lt;Key, Value, Compare, Allocator&gt;&amp; m)</div>
 <div class="line"><a id="l05050" name="l05050"></a><span class="lineno"> 5050</span>{</div>
 <div class="line"><a id="l05051" name="l05051"></a><span class="lineno"> 5051</span>    <span class="keywordflow">if</span> (JSON_HEDLEY_UNLIKELY(!j.is_array()))</div>
@@ -4971,9 +4971,9 @@ $(function() {
 <div class="line"><a id="l05063" name="l05063"></a><span class="lineno"> 5063</span>    }</div>
 <div class="line"><a id="l05064" name="l05064"></a><span class="lineno"> 5064</span>}</div>
 <div class="line"><a id="l05065" name="l05065"></a><span class="lineno"> 5065</span> </div>
-<div class="line"><a id="l05066" name="l05066"></a><span class="lineno"> 5066</span><span class="keyword">template</span> &lt; <span class="keyword">typename</span> BasicJsonType, <span class="keyword">typename</span> Key, <span class="keyword">typename</span> Value, <span class="keyword">typename</span> Hash, <span class="keyword">typename</span> KeyEqual, <span class="keyword">typename</span> Allocator,</div>
+<div class="line"><a id="l05066" name="l05066"></a><span class="lineno"> 5066</span><span class="keyword">template</span> &lt; <span class="keyword">typename</span> BasicJsonType, <span class="keyword">typename</span> <a class="code hl_function" href="ToolBarSections_8cpp.html#ab2f0af83120b0ab54abd434d16e7b2b2">Key</a>, <span class="keyword">typename</span> Value, <span class="keyword">typename</span> Hash, <span class="keyword">typename</span> KeyEqual, <span class="keyword">typename</span> Allocator,</div>
 <div class="line"><a id="l05067" name="l05067"></a><span class="lineno"> 5067</span>           <span class="keyword">typename</span> = enable_if_t &lt; !std::is_constructible &lt;</div>
-<div class="line"><a id="l05068" name="l05068"></a><span class="lineno"> 5068</span>                                        <span class="keyword">typename</span> BasicJsonType::string_t, Key &gt;<a class="code hl_enumvalue" href="namespacedetail.html#a47b1bb0bbd3596589ed9187059c312efa2063c1608d6e0baf80249c42e2be5804">::value</a> &gt;&gt;</div>
+<div class="line"><a id="l05068" name="l05068"></a><span class="lineno"> 5068</span>                                        <span class="keyword">typename</span> BasicJsonType::string_t, <a class="code hl_function" href="ToolBarSections_8cpp.html#ab2f0af83120b0ab54abd434d16e7b2b2">Key</a> &gt;<a class="code hl_enumvalue" href="namespacedetail.html#a47b1bb0bbd3596589ed9187059c312efa2063c1608d6e0baf80249c42e2be5804">::value</a> &gt;&gt;</div>
 <div class="line"><a id="l05069" name="l05069"></a><span class="lineno"> 5069</span><span class="keyword">inline</span> <span class="keywordtype">void</span> from_json(<span class="keyword">const</span> BasicJsonType&amp; j, std::unordered_map&lt;Key, Value, Hash, KeyEqual, Allocator&gt;&amp; m)</div>
 <div class="line"><a id="l05070" name="l05070"></a><span class="lineno"> 5070</span>{</div>
 <div class="line"><a id="l05071" name="l05071"></a><span class="lineno"> 5071</span>    <span class="keywordflow">if</span> (JSON_HEDLEY_UNLIKELY(!j.is_array()))</div>
@@ -6607,7 +6607,7 @@ $(function() {
 <div class="line"><a id="l06875" name="l06875"></a><span class="lineno"> 6875</span>        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><a id="l06876" name="l06876"></a><span class="lineno"> 6876</span>    }</div>
 <div class="line"><a id="l06877" name="l06877"></a><span class="lineno"> 6877</span> </div>
-<div class="line"><a id="l06878" name="l06878"></a><span class="lineno"> 6878</span>    <span class="keywordtype">bool</span> <a class="code hl_enumvalue" href="namespacedetail.html#a47b1bb0bbd3596589ed9187059c312efa3c6e0b8a9c15224a8228b9a98ca1531d">key</a>(string_t&amp; val)</div>
+<div class="line"><a id="l06878" name="l06878"></a><span class="lineno"> 6878</span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>(string_t&amp; val)</div>
 <div class="line"><a id="l06879" name="l06879"></a><span class="lineno"> 6879</span>    {</div>
 <div class="line"><a id="l06880" name="l06880"></a><span class="lineno"> 6880</span>        JSON_ASSERT(!ref_stack.empty());</div>
 <div class="line"><a id="l06881" name="l06881"></a><span class="lineno"> 6881</span>        JSON_ASSERT(ref_stack.back()-&gt;is_object());</div>
@@ -6786,7 +6786,7 @@ $(function() {
 <div class="line"><a id="l07065" name="l07065"></a><span class="lineno"> 7065</span>        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><a id="l07066" name="l07066"></a><span class="lineno"> 7066</span>    }</div>
 <div class="line"><a id="l07067" name="l07067"></a><span class="lineno"> 7067</span> </div>
-<div class="line"><a id="l07068" name="l07068"></a><span class="lineno"> 7068</span>    <span class="keywordtype">bool</span> <a class="code hl_enumvalue" href="namespacedetail.html#a47b1bb0bbd3596589ed9187059c312efa3c6e0b8a9c15224a8228b9a98ca1531d">key</a>(string_t&amp; val)</div>
+<div class="line"><a id="l07068" name="l07068"></a><span class="lineno"> 7068</span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>(string_t&amp; val)</div>
 <div class="line"><a id="l07069" name="l07069"></a><span class="lineno"> 7069</span>    {</div>
 <div class="line"><a id="l07070" name="l07070"></a><span class="lineno"> 7070</span>        BasicJsonType k = BasicJsonType(val);</div>
 <div class="line"><a id="l07071" name="l07071"></a><span class="lineno"> 7071</span> </div>
@@ -7032,7 +7032,7 @@ $(function() {
 <div class="line"><a id="l07335" name="l07335"></a><span class="lineno"> 7335</span>        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><a id="l07336" name="l07336"></a><span class="lineno"> 7336</span>    }</div>
 <div class="line"><a id="l07337" name="l07337"></a><span class="lineno"> 7337</span> </div>
-<div class="line"><a id="l07338" name="l07338"></a><span class="lineno"> 7338</span>    <span class="keywordtype">bool</span> <a class="code hl_enumvalue" href="namespacedetail.html#a47b1bb0bbd3596589ed9187059c312efa3c6e0b8a9c15224a8228b9a98ca1531d">key</a>(string_t&amp; <span class="comment">/*unused*/</span>)</div>
+<div class="line"><a id="l07338" name="l07338"></a><span class="lineno"> 7338</span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>(string_t&amp; <span class="comment">/*unused*/</span>)</div>
 <div class="line"><a id="l07339" name="l07339"></a><span class="lineno"> 7339</span>    {</div>
 <div class="line"><a id="l07340" name="l07340"></a><span class="lineno"> 7340</span>        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><a id="l07341" name="l07341"></a><span class="lineno"> 7341</span>    }</div>
@@ -8963,7 +8963,7 @@ $(function() {
 <div class="line"><a id="l09483" name="l09483"></a><span class="lineno"> 9483</span> </div>
 <div class="line"><a id="l09496" name="l09496"></a><span class="lineno"> 9496</span>    <span class="keywordtype">bool</span> parse_bson_element_list(<span class="keyword">const</span> <span class="keywordtype">bool</span> is_array)</div>
 <div class="line"><a id="l09497" name="l09497"></a><span class="lineno"> 9497</span>    {</div>
-<div class="line"><a id="l09498" name="l09498"></a><span class="lineno"> 9498</span>        string_t <a class="code hl_enumvalue" href="namespacedetail.html#a47b1bb0bbd3596589ed9187059c312efa3c6e0b8a9c15224a8228b9a98ca1531d">key</a>;</div>
+<div class="line"><a id="l09498" name="l09498"></a><span class="lineno"> 9498</span>        string_t <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>;</div>
 <div class="line"><a id="l09499" name="l09499"></a><span class="lineno"> 9499</span> </div>
 <div class="line"><a id="l09500" name="l09500"></a><span class="lineno"> 9500</span>        <span class="keywordflow">while</span> (<span class="keyword">auto</span> element_type = get())</div>
 <div class="line"><a id="l09501" name="l09501"></a><span class="lineno"> 9501</span>        {</div>
@@ -8973,12 +8973,12 @@ $(function() {
 <div class="line"><a id="l09505" name="l09505"></a><span class="lineno"> 9505</span>            }</div>
 <div class="line"><a id="l09506" name="l09506"></a><span class="lineno"> 9506</span> </div>
 <div class="line"><a id="l09507" name="l09507"></a><span class="lineno"> 9507</span>            <span class="keyword">const</span> std::size_t element_type_parse_position = chars_read;</div>
-<div class="line"><a id="l09508" name="l09508"></a><span class="lineno"> 9508</span>            <span class="keywordflow">if</span> (JSON_HEDLEY_UNLIKELY(!get_bson_cstr(key)))</div>
+<div class="line"><a id="l09508" name="l09508"></a><span class="lineno"> 9508</span>            <span class="keywordflow">if</span> (JSON_HEDLEY_UNLIKELY(!get_bson_cstr(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>)))</div>
 <div class="line"><a id="l09509" name="l09509"></a><span class="lineno"> 9509</span>            {</div>
 <div class="line"><a id="l09510" name="l09510"></a><span class="lineno"> 9510</span>                <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l09511" name="l09511"></a><span class="lineno"> 9511</span>            }</div>
 <div class="line"><a id="l09512" name="l09512"></a><span class="lineno"> 9512</span> </div>
-<div class="line"><a id="l09513" name="l09513"></a><span class="lineno"> 9513</span>            <span class="keywordflow">if</span> (!is_array &amp;&amp; !sax-&gt;key(key))</div>
+<div class="line"><a id="l09513" name="l09513"></a><span class="lineno"> 9513</span>            <span class="keywordflow">if</span> (!is_array &amp;&amp; !sax-&gt;key(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>))</div>
 <div class="line"><a id="l09514" name="l09514"></a><span class="lineno"> 9514</span>            {</div>
 <div class="line"><a id="l09515" name="l09515"></a><span class="lineno"> 9515</span>                <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l09516" name="l09516"></a><span class="lineno"> 9516</span>            }</div>
@@ -8989,7 +8989,7 @@ $(function() {
 <div class="line"><a id="l09521" name="l09521"></a><span class="lineno"> 9521</span>            }</div>
 <div class="line"><a id="l09522" name="l09522"></a><span class="lineno"> 9522</span> </div>
 <div class="line"><a id="l09523" name="l09523"></a><span class="lineno"> 9523</span>            <span class="comment">// get_bson_cstr only appends</span></div>
-<div class="line"><a id="l09524" name="l09524"></a><span class="lineno"> 9524</span>            <a class="code hl_enumvalue" href="namespacedetail.html#a47b1bb0bbd3596589ed9187059c312efa3c6e0b8a9c15224a8228b9a98ca1531d">key</a>.clear();</div>
+<div class="line"><a id="l09524" name="l09524"></a><span class="lineno"> 9524</span>            <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>.clear();</div>
 <div class="line"><a id="l09525" name="l09525"></a><span class="lineno"> 9525</span>        }</div>
 <div class="line"><a id="l09526" name="l09526"></a><span class="lineno"> 9526</span> </div>
 <div class="line"><a id="l09527" name="l09527"></a><span class="lineno"> 9527</span>        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
@@ -9711,13 +9711,13 @@ $(function() {
 <div class="line"><a id="l10291" name="l10291"></a><span class="lineno">10291</span> </div>
 <div class="line"><a id="l10292" name="l10292"></a><span class="lineno">10292</span>        <span class="keywordflow">if</span> (len != 0)</div>
 <div class="line"><a id="l10293" name="l10293"></a><span class="lineno">10293</span>        {</div>
-<div class="line"><a id="l10294" name="l10294"></a><span class="lineno">10294</span>            string_t <a class="code hl_enumvalue" href="namespacedetail.html#a47b1bb0bbd3596589ed9187059c312efa3c6e0b8a9c15224a8228b9a98ca1531d">key</a>;</div>
+<div class="line"><a id="l10294" name="l10294"></a><span class="lineno">10294</span>            string_t <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>;</div>
 <div class="line"><a id="l10295" name="l10295"></a><span class="lineno">10295</span>            <span class="keywordflow">if</span> (len != <span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(-1))</div>
 <div class="line"><a id="l10296" name="l10296"></a><span class="lineno">10296</span>            {</div>
 <div class="line"><a id="l10297" name="l10297"></a><span class="lineno">10297</span>                <span class="keywordflow">for</span> (std::size_t i = 0; i &lt; len; ++i)</div>
 <div class="line"><a id="l10298" name="l10298"></a><span class="lineno">10298</span>                {</div>
 <div class="line"><a id="l10299" name="l10299"></a><span class="lineno">10299</span>                    get();</div>
-<div class="line"><a id="l10300" name="l10300"></a><span class="lineno">10300</span>                    <span class="keywordflow">if</span> (JSON_HEDLEY_UNLIKELY(!get_cbor_string(key) || !sax-&gt;key(key)))</div>
+<div class="line"><a id="l10300" name="l10300"></a><span class="lineno">10300</span>                    <span class="keywordflow">if</span> (JSON_HEDLEY_UNLIKELY(!get_cbor_string(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>) || !sax-&gt;key(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>)))</div>
 <div class="line"><a id="l10301" name="l10301"></a><span class="lineno">10301</span>                    {</div>
 <div class="line"><a id="l10302" name="l10302"></a><span class="lineno">10302</span>                        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l10303" name="l10303"></a><span class="lineno">10303</span>                    }</div>
@@ -9726,14 +9726,14 @@ $(function() {
 <div class="line"><a id="l10306" name="l10306"></a><span class="lineno">10306</span>                    {</div>
 <div class="line"><a id="l10307" name="l10307"></a><span class="lineno">10307</span>                        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l10308" name="l10308"></a><span class="lineno">10308</span>                    }</div>
-<div class="line"><a id="l10309" name="l10309"></a><span class="lineno">10309</span>                    <a class="code hl_enumvalue" href="namespacedetail.html#a47b1bb0bbd3596589ed9187059c312efa3c6e0b8a9c15224a8228b9a98ca1531d">key</a>.clear();</div>
+<div class="line"><a id="l10309" name="l10309"></a><span class="lineno">10309</span>                    <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>.clear();</div>
 <div class="line"><a id="l10310" name="l10310"></a><span class="lineno">10310</span>                }</div>
 <div class="line"><a id="l10311" name="l10311"></a><span class="lineno">10311</span>            }</div>
 <div class="line"><a id="l10312" name="l10312"></a><span class="lineno">10312</span>            <span class="keywordflow">else</span></div>
 <div class="line"><a id="l10313" name="l10313"></a><span class="lineno">10313</span>            {</div>
 <div class="line"><a id="l10314" name="l10314"></a><span class="lineno">10314</span>                <span class="keywordflow">while</span> (get() != 0xFF)</div>
 <div class="line"><a id="l10315" name="l10315"></a><span class="lineno">10315</span>                {</div>
-<div class="line"><a id="l10316" name="l10316"></a><span class="lineno">10316</span>                    <span class="keywordflow">if</span> (JSON_HEDLEY_UNLIKELY(!get_cbor_string(key) || !sax-&gt;key(key)))</div>
+<div class="line"><a id="l10316" name="l10316"></a><span class="lineno">10316</span>                    <span class="keywordflow">if</span> (JSON_HEDLEY_UNLIKELY(!get_cbor_string(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>) || !sax-&gt;key(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>)))</div>
 <div class="line"><a id="l10317" name="l10317"></a><span class="lineno">10317</span>                    {</div>
 <div class="line"><a id="l10318" name="l10318"></a><span class="lineno">10318</span>                        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l10319" name="l10319"></a><span class="lineno">10319</span>                    }</div>
@@ -9742,7 +9742,7 @@ $(function() {
 <div class="line"><a id="l10322" name="l10322"></a><span class="lineno">10322</span>                    {</div>
 <div class="line"><a id="l10323" name="l10323"></a><span class="lineno">10323</span>                        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l10324" name="l10324"></a><span class="lineno">10324</span>                    }</div>
-<div class="line"><a id="l10325" name="l10325"></a><span class="lineno">10325</span>                    <a class="code hl_enumvalue" href="namespacedetail.html#a47b1bb0bbd3596589ed9187059c312efa3c6e0b8a9c15224a8228b9a98ca1531d">key</a>.clear();</div>
+<div class="line"><a id="l10325" name="l10325"></a><span class="lineno">10325</span>                    <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>.clear();</div>
 <div class="line"><a id="l10326" name="l10326"></a><span class="lineno">10326</span>                }</div>
 <div class="line"><a id="l10327" name="l10327"></a><span class="lineno">10327</span>            }</div>
 <div class="line"><a id="l10328" name="l10328"></a><span class="lineno">10328</span>        }</div>
@@ -10328,11 +10328,11 @@ $(function() {
 <div class="line"><a id="l10941" name="l10941"></a><span class="lineno">10941</span>            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l10942" name="l10942"></a><span class="lineno">10942</span>        }</div>
 <div class="line"><a id="l10943" name="l10943"></a><span class="lineno">10943</span> </div>
-<div class="line"><a id="l10944" name="l10944"></a><span class="lineno">10944</span>        string_t <a class="code hl_enumvalue" href="namespacedetail.html#a47b1bb0bbd3596589ed9187059c312efa3c6e0b8a9c15224a8228b9a98ca1531d">key</a>;</div>
+<div class="line"><a id="l10944" name="l10944"></a><span class="lineno">10944</span>        string_t <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>;</div>
 <div class="line"><a id="l10945" name="l10945"></a><span class="lineno">10945</span>        <span class="keywordflow">for</span> (std::size_t i = 0; i &lt; len; ++i)</div>
 <div class="line"><a id="l10946" name="l10946"></a><span class="lineno">10946</span>        {</div>
 <div class="line"><a id="l10947" name="l10947"></a><span class="lineno">10947</span>            get();</div>
-<div class="line"><a id="l10948" name="l10948"></a><span class="lineno">10948</span>            <span class="keywordflow">if</span> (JSON_HEDLEY_UNLIKELY(!get_msgpack_string(key) || !sax-&gt;key(key)))</div>
+<div class="line"><a id="l10948" name="l10948"></a><span class="lineno">10948</span>            <span class="keywordflow">if</span> (JSON_HEDLEY_UNLIKELY(!get_msgpack_string(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>) || !sax-&gt;key(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>)))</div>
 <div class="line"><a id="l10949" name="l10949"></a><span class="lineno">10949</span>            {</div>
 <div class="line"><a id="l10950" name="l10950"></a><span class="lineno">10950</span>                <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l10951" name="l10951"></a><span class="lineno">10951</span>            }</div>
@@ -10341,7 +10341,7 @@ $(function() {
 <div class="line"><a id="l10954" name="l10954"></a><span class="lineno">10954</span>            {</div>
 <div class="line"><a id="l10955" name="l10955"></a><span class="lineno">10955</span>                <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l10956" name="l10956"></a><span class="lineno">10956</span>            }</div>
-<div class="line"><a id="l10957" name="l10957"></a><span class="lineno">10957</span>            <a class="code hl_enumvalue" href="namespacedetail.html#a47b1bb0bbd3596589ed9187059c312efa3c6e0b8a9c15224a8228b9a98ca1531d">key</a>.clear();</div>
+<div class="line"><a id="l10957" name="l10957"></a><span class="lineno">10957</span>            <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>.clear();</div>
 <div class="line"><a id="l10958" name="l10958"></a><span class="lineno">10958</span>        }</div>
 <div class="line"><a id="l10959" name="l10959"></a><span class="lineno">10959</span> </div>
 <div class="line"><a id="l10960" name="l10960"></a><span class="lineno">10960</span>        <span class="keywordflow">return</span> sax-&gt;end_object();</div>
@@ -10669,8 +10669,8 @@ $(function() {
 <div class="line"><a id="l11320" name="l11320"></a><span class="lineno">11320</span>                        }</div>
 <div class="line"><a id="l11321" name="l11321"></a><span class="lineno">11321</span>                    }</div>
 <div class="line"><a id="l11322" name="l11322"></a><span class="lineno">11322</span> </div>
-<div class="line"><a id="l11323" name="l11323"></a><span class="lineno">11323</span>                    string_t <a class="code hl_enumvalue" href="namespacedetail.html#a47b1bb0bbd3596589ed9187059c312efa3c6e0b8a9c15224a8228b9a98ca1531d">key</a> = <span class="stringliteral">&quot;_ArraySize_&quot;</span>;</div>
-<div class="line"><a id="l11324" name="l11324"></a><span class="lineno">11324</span>                    <span class="keywordflow">if</span> (JSON_HEDLEY_UNLIKELY(!sax-&gt;start_object(3) || !sax-&gt;key(key) || !sax-&gt;start_array(dim.size())))</div>
+<div class="line"><a id="l11323" name="l11323"></a><span class="lineno">11323</span>                    string_t <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a> = <span class="stringliteral">&quot;_ArraySize_&quot;</span>;</div>
+<div class="line"><a id="l11324" name="l11324"></a><span class="lineno">11324</span>                    <span class="keywordflow">if</span> (JSON_HEDLEY_UNLIKELY(!sax-&gt;start_object(3) || !sax-&gt;key(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>) || !sax-&gt;start_array(dim.size())))</div>
 <div class="line"><a id="l11325" name="l11325"></a><span class="lineno">11325</span>                    {</div>
 <div class="line"><a id="l11326" name="l11326"></a><span class="lineno">11326</span>                        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l11327" name="l11327"></a><span class="lineno">11327</span>                    }</div>
@@ -10972,7 +10972,7 @@ $(function() {
 <div class="line"><a id="l11641" name="l11641"></a><span class="lineno">11641</span>            {</div>
 <div class="line"><a id="l11642" name="l11642"></a><span class="lineno">11642</span>                return p.first &lt; t;</div>
 <div class="line"><a id="l11643" name="l11643"></a><span class="lineno">11643</span>            });</div>
-<div class="line"><a id="l11644" name="l11644"></a><span class="lineno">11644</span>            string_t <a class="code hl_enumvalue" href="namespacedetail.html#a47b1bb0bbd3596589ed9187059c312efa3c6e0b8a9c15224a8228b9a98ca1531d">key</a> = <span class="stringliteral">&quot;_ArrayType_&quot;</span>;</div>
+<div class="line"><a id="l11644" name="l11644"></a><span class="lineno">11644</span>            string_t <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a> = <span class="stringliteral">&quot;_ArrayType_&quot;</span>;</div>
 <div class="line"><a id="l11645" name="l11645"></a><span class="lineno">11645</span>            <span class="keywordflow">if</span> (JSON_HEDLEY_UNLIKELY(it == bjd_types_map.end() || it-&gt;first != size_and_type.second))</div>
 <div class="line"><a id="l11646" name="l11646"></a><span class="lineno">11646</span>            {</div>
 <div class="line"><a id="l11647" name="l11647"></a><span class="lineno">11647</span>                <span class="keyword">auto</span> last_token = get_token_string();</div>
@@ -10981,7 +10981,7 @@ $(function() {
 <div class="line"><a id="l11650" name="l11650"></a><span class="lineno">11650</span>            }</div>
 <div class="line"><a id="l11651" name="l11651"></a><span class="lineno">11651</span> </div>
 <div class="line"><a id="l11652" name="l11652"></a><span class="lineno">11652</span>            string_t type = it-&gt;second; <span class="comment">// sax-&gt;string() takes a reference</span></div>
-<div class="line"><a id="l11653" name="l11653"></a><span class="lineno">11653</span>            <span class="keywordflow">if</span> (JSON_HEDLEY_UNLIKELY(!sax-&gt;key(key) || !sax-&gt;string(type)))</div>
+<div class="line"><a id="l11653" name="l11653"></a><span class="lineno">11653</span>            <span class="keywordflow">if</span> (JSON_HEDLEY_UNLIKELY(!sax-&gt;key(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>) || !sax-&gt;string(type)))</div>
 <div class="line"><a id="l11654" name="l11654"></a><span class="lineno">11654</span>            {</div>
 <div class="line"><a id="l11655" name="l11655"></a><span class="lineno">11655</span>                <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l11656" name="l11656"></a><span class="lineno">11656</span>            }</div>
@@ -10991,8 +10991,8 @@ $(function() {
 <div class="line"><a id="l11660" name="l11660"></a><span class="lineno">11660</span>                size_and_type.second = <span class="charliteral">&#39;U&#39;</span>;</div>
 <div class="line"><a id="l11661" name="l11661"></a><span class="lineno">11661</span>            }</div>
 <div class="line"><a id="l11662" name="l11662"></a><span class="lineno">11662</span> </div>
-<div class="line"><a id="l11663" name="l11663"></a><span class="lineno">11663</span>            <a class="code hl_enumvalue" href="namespacedetail.html#a47b1bb0bbd3596589ed9187059c312efa3c6e0b8a9c15224a8228b9a98ca1531d">key</a> = <span class="stringliteral">&quot;_ArrayData_&quot;</span>;</div>
-<div class="line"><a id="l11664" name="l11664"></a><span class="lineno">11664</span>            <span class="keywordflow">if</span> (JSON_HEDLEY_UNLIKELY(!sax-&gt;key(key) || !sax-&gt;start_array(size_and_type.first) ))</div>
+<div class="line"><a id="l11663" name="l11663"></a><span class="lineno">11663</span>            <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a> = <span class="stringliteral">&quot;_ArrayData_&quot;</span>;</div>
+<div class="line"><a id="l11664" name="l11664"></a><span class="lineno">11664</span>            <span class="keywordflow">if</span> (JSON_HEDLEY_UNLIKELY(!sax-&gt;key(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>) || !sax-&gt;start_array(size_and_type.first) ))</div>
 <div class="line"><a id="l11665" name="l11665"></a><span class="lineno">11665</span>            {</div>
 <div class="line"><a id="l11666" name="l11666"></a><span class="lineno">11666</span>                <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l11667" name="l11667"></a><span class="lineno">11667</span>            }</div>
@@ -11075,7 +11075,7 @@ $(function() {
 <div class="line"><a id="l11747" name="l11747"></a><span class="lineno">11747</span>                                    exception_message(input_format, <span class="stringliteral">&quot;BJData object does not support ND-array size in optimized format&quot;</span>, <span class="stringliteral">&quot;object&quot;</span>), <span class="keyword">nullptr</span>));</div>
 <div class="line"><a id="l11748" name="l11748"></a><span class="lineno">11748</span>        }</div>
 <div class="line"><a id="l11749" name="l11749"></a><span class="lineno">11749</span> </div>
-<div class="line"><a id="l11750" name="l11750"></a><span class="lineno">11750</span>        string_t <a class="code hl_enumvalue" href="namespacedetail.html#a47b1bb0bbd3596589ed9187059c312efa3c6e0b8a9c15224a8228b9a98ca1531d">key</a>;</div>
+<div class="line"><a id="l11750" name="l11750"></a><span class="lineno">11750</span>        string_t <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>;</div>
 <div class="line"><a id="l11751" name="l11751"></a><span class="lineno">11751</span>        <span class="keywordflow">if</span> (size_and_type.first != npos)</div>
 <div class="line"><a id="l11752" name="l11752"></a><span class="lineno">11752</span>        {</div>
 <div class="line"><a id="l11753" name="l11753"></a><span class="lineno">11753</span>            <span class="keywordflow">if</span> (JSON_HEDLEY_UNLIKELY(!sax-&gt;start_object(size_and_type.first)))</div>
@@ -11087,7 +11087,7 @@ $(function() {
 <div class="line"><a id="l11759" name="l11759"></a><span class="lineno">11759</span>            {</div>
 <div class="line"><a id="l11760" name="l11760"></a><span class="lineno">11760</span>                <span class="keywordflow">for</span> (std::size_t i = 0; i &lt; size_and_type.first; ++i)</div>
 <div class="line"><a id="l11761" name="l11761"></a><span class="lineno">11761</span>                {</div>
-<div class="line"><a id="l11762" name="l11762"></a><span class="lineno">11762</span>                    <span class="keywordflow">if</span> (JSON_HEDLEY_UNLIKELY(!get_ubjson_string(key) || !sax-&gt;key(key)))</div>
+<div class="line"><a id="l11762" name="l11762"></a><span class="lineno">11762</span>                    <span class="keywordflow">if</span> (JSON_HEDLEY_UNLIKELY(!get_ubjson_string(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>) || !sax-&gt;key(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>)))</div>
 <div class="line"><a id="l11763" name="l11763"></a><span class="lineno">11763</span>                    {</div>
 <div class="line"><a id="l11764" name="l11764"></a><span class="lineno">11764</span>                        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l11765" name="l11765"></a><span class="lineno">11765</span>                    }</div>
@@ -11095,14 +11095,14 @@ $(function() {
 <div class="line"><a id="l11767" name="l11767"></a><span class="lineno">11767</span>                    {</div>
 <div class="line"><a id="l11768" name="l11768"></a><span class="lineno">11768</span>                        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l11769" name="l11769"></a><span class="lineno">11769</span>                    }</div>
-<div class="line"><a id="l11770" name="l11770"></a><span class="lineno">11770</span>                    <a class="code hl_enumvalue" href="namespacedetail.html#a47b1bb0bbd3596589ed9187059c312efa3c6e0b8a9c15224a8228b9a98ca1531d">key</a>.clear();</div>
+<div class="line"><a id="l11770" name="l11770"></a><span class="lineno">11770</span>                    <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>.clear();</div>
 <div class="line"><a id="l11771" name="l11771"></a><span class="lineno">11771</span>                }</div>
 <div class="line"><a id="l11772" name="l11772"></a><span class="lineno">11772</span>            }</div>
 <div class="line"><a id="l11773" name="l11773"></a><span class="lineno">11773</span>            <span class="keywordflow">else</span></div>
 <div class="line"><a id="l11774" name="l11774"></a><span class="lineno">11774</span>            {</div>
 <div class="line"><a id="l11775" name="l11775"></a><span class="lineno">11775</span>                <span class="keywordflow">for</span> (std::size_t i = 0; i &lt; size_and_type.first; ++i)</div>
 <div class="line"><a id="l11776" name="l11776"></a><span class="lineno">11776</span>                {</div>
-<div class="line"><a id="l11777" name="l11777"></a><span class="lineno">11777</span>                    <span class="keywordflow">if</span> (JSON_HEDLEY_UNLIKELY(!get_ubjson_string(key) || !sax-&gt;key(key)))</div>
+<div class="line"><a id="l11777" name="l11777"></a><span class="lineno">11777</span>                    <span class="keywordflow">if</span> (JSON_HEDLEY_UNLIKELY(!get_ubjson_string(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>) || !sax-&gt;key(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>)))</div>
 <div class="line"><a id="l11778" name="l11778"></a><span class="lineno">11778</span>                    {</div>
 <div class="line"><a id="l11779" name="l11779"></a><span class="lineno">11779</span>                        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l11780" name="l11780"></a><span class="lineno">11780</span>                    }</div>
@@ -11110,7 +11110,7 @@ $(function() {
 <div class="line"><a id="l11782" name="l11782"></a><span class="lineno">11782</span>                    {</div>
 <div class="line"><a id="l11783" name="l11783"></a><span class="lineno">11783</span>                        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l11784" name="l11784"></a><span class="lineno">11784</span>                    }</div>
-<div class="line"><a id="l11785" name="l11785"></a><span class="lineno">11785</span>                    <a class="code hl_enumvalue" href="namespacedetail.html#a47b1bb0bbd3596589ed9187059c312efa3c6e0b8a9c15224a8228b9a98ca1531d">key</a>.clear();</div>
+<div class="line"><a id="l11785" name="l11785"></a><span class="lineno">11785</span>                    <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>.clear();</div>
 <div class="line"><a id="l11786" name="l11786"></a><span class="lineno">11786</span>                }</div>
 <div class="line"><a id="l11787" name="l11787"></a><span class="lineno">11787</span>            }</div>
 <div class="line"><a id="l11788" name="l11788"></a><span class="lineno">11788</span>        }</div>
@@ -11123,7 +11123,7 @@ $(function() {
 <div class="line"><a id="l11795" name="l11795"></a><span class="lineno">11795</span> </div>
 <div class="line"><a id="l11796" name="l11796"></a><span class="lineno">11796</span>            <span class="keywordflow">while</span> (current != <span class="charliteral">&#39;}&#39;</span>)</div>
 <div class="line"><a id="l11797" name="l11797"></a><span class="lineno">11797</span>            {</div>
-<div class="line"><a id="l11798" name="l11798"></a><span class="lineno">11798</span>                <span class="keywordflow">if</span> (JSON_HEDLEY_UNLIKELY(!get_ubjson_string(key, <span class="keyword">false</span>) || !sax-&gt;key(key)))</div>
+<div class="line"><a id="l11798" name="l11798"></a><span class="lineno">11798</span>                <span class="keywordflow">if</span> (JSON_HEDLEY_UNLIKELY(!get_ubjson_string(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>, <span class="keyword">false</span>) || !sax-&gt;key(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>)))</div>
 <div class="line"><a id="l11799" name="l11799"></a><span class="lineno">11799</span>                {</div>
 <div class="line"><a id="l11800" name="l11800"></a><span class="lineno">11800</span>                    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l11801" name="l11801"></a><span class="lineno">11801</span>                }</div>
@@ -11132,7 +11132,7 @@ $(function() {
 <div class="line"><a id="l11804" name="l11804"></a><span class="lineno">11804</span>                    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l11805" name="l11805"></a><span class="lineno">11805</span>                }</div>
 <div class="line"><a id="l11806" name="l11806"></a><span class="lineno">11806</span>                get_ignore_noop();</div>
-<div class="line"><a id="l11807" name="l11807"></a><span class="lineno">11807</span>                <a class="code hl_enumvalue" href="namespacedetail.html#a47b1bb0bbd3596589ed9187059c312efa3c6e0b8a9c15224a8228b9a98ca1531d">key</a>.clear();</div>
+<div class="line"><a id="l11807" name="l11807"></a><span class="lineno">11807</span>                <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>.clear();</div>
 <div class="line"><a id="l11808" name="l11808"></a><span class="lineno">11808</span>            }</div>
 <div class="line"><a id="l11809" name="l11809"></a><span class="lineno">11809</span>        }</div>
 <div class="line"><a id="l11810" name="l11810"></a><span class="lineno">11810</span> </div>
@@ -11469,7 +11469,7 @@ $(function() {
 <div class="line"><a id="l12207" name="l12207"></a><span class="lineno">12207</span>    <a class="code hl_enumvalue" href="namespacedetail.html#a47b1bb0bbd3596589ed9187059c312efaf63e2a2468a37aa4f394fcc3bcb8249c">object_end</a>,</div>
 <div class="line"><a id="l12209" name="l12209"></a><span class="lineno">12209</span>    <a class="code hl_enumvalue" href="namespacedetail.html#a47b1bb0bbd3596589ed9187059c312efaa4388a3d92419edbb1c6efd4d52461f3">array_start</a>,</div>
 <div class="line"><a id="l12211" name="l12211"></a><span class="lineno">12211</span>    <a class="code hl_enumvalue" href="namespacedetail.html#a47b1bb0bbd3596589ed9187059c312efa49642fb732aa2e112188fba1f9d3ef7f">array_end</a>,</div>
-<div class="line"><a id="l12213" name="l12213"></a><span class="lineno">12213</span>    <a class="code hl_enumvalue" href="namespacedetail.html#a47b1bb0bbd3596589ed9187059c312efa3c6e0b8a9c15224a8228b9a98ca1531d">key</a>,</div>
+<div class="line"><a id="l12213" name="l12213"></a><span class="lineno">12213</span>    <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>,</div>
 <div class="line"><a id="l12215" name="l12215"></a><span class="lineno">12215</span>    value</div>
 <div class="line"><a id="l12216" name="l12216"></a><span class="lineno">12216</span>};</div>
 <div class="line"><a id="l12217" name="l12217"></a><span class="lineno">12217</span> </div>
@@ -12759,7 +12759,7 @@ $(function() {
 <div class="line"><a id="l13735" name="l13735"></a><span class="lineno">13735</span>        <span class="keywordflow">return</span> *(this-&gt;operator+(n));</div>
 <div class="line"><a id="l13736" name="l13736"></a><span class="lineno">13736</span>    }</div>
 <div class="line"><a id="l13737" name="l13737"></a><span class="lineno">13737</span> </div>
-<div class="line"><a id="l13739" name="l13739"></a><span class="lineno"><a class="line" href="classdetail_1_1json__reverse__iterator.html#a68d4f0c3e978afdc7509ee88e2f7b996">13739</a></span>    <span class="keyword">auto</span> <a class="code hl_function" href="classdetail_1_1json__reverse__iterator.html#a68d4f0c3e978afdc7509ee88e2f7b996">key</a>() const -&gt; decltype(std::declval&lt;Base&gt;().key())</div>
+<div class="line"><a id="l13739" name="l13739"></a><span class="lineno"><a class="line" href="classdetail_1_1json__reverse__iterator.html#a68d4f0c3e978afdc7509ee88e2f7b996">13739</a></span>    <span class="keyword">auto</span> <a class="code hl_function" href="classdetail_1_1json__reverse__iterator.html#a68d4f0c3e978afdc7509ee88e2f7b996">key</a>() const -&gt; decltype(std::declval&lt;Base&gt;().<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>())</div>
 <div class="line"><a id="l13740" name="l13740"></a><span class="lineno">13740</span>    {</div>
 <div class="line"><a id="l13741" name="l13741"></a><span class="lineno">13741</span>        <span class="keyword">auto</span> it = --this-&gt;base();</div>
 <div class="line"><a id="l13742" name="l13742"></a><span class="lineno">13742</span>        <span class="keywordflow">return</span> it.key();</div>
@@ -15412,23 +15412,23 @@ $(function() {
 <div class="line"><a id="l16660" name="l16660"></a><span class="lineno">16660</span>            {<span class="stringliteral">&quot;uint32&quot;</span>, <span class="charliteral">&#39;m&#39;</span>}, {<span class="stringliteral">&quot;int32&quot;</span>, <span class="charliteral">&#39;l&#39;</span>}, {<span class="stringliteral">&quot;uint64&quot;</span>, <span class="charliteral">&#39;M&#39;</span>}, {<span class="stringliteral">&quot;int64&quot;</span>, <span class="charliteral">&#39;L&#39;</span>}, {<span class="stringliteral">&quot;single&quot;</span>, <span class="charliteral">&#39;d&#39;</span>}, {<span class="stringliteral">&quot;double&quot;</span>, <span class="charliteral">&#39;D&#39;</span>}, {<span class="stringliteral">&quot;char&quot;</span>, <span class="charliteral">&#39;C&#39;</span>}</div>
 <div class="line"><a id="l16661" name="l16661"></a><span class="lineno">16661</span>        };</div>
 <div class="line"><a id="l16662" name="l16662"></a><span class="lineno">16662</span> </div>
-<div class="line"><a id="l16663" name="l16663"></a><span class="lineno">16663</span>        string_t <a class="code hl_enumvalue" href="namespacedetail.html#a47b1bb0bbd3596589ed9187059c312efa3c6e0b8a9c15224a8228b9a98ca1531d">key</a> = <span class="stringliteral">&quot;_ArrayType_&quot;</span>;</div>
-<div class="line"><a id="l16664" name="l16664"></a><span class="lineno">16664</span>        <span class="keyword">auto</span> it = bjdtype.find(<span class="keyword">static_cast&lt;</span>string_t<span class="keyword">&gt;</span>(value.at(key)));</div>
+<div class="line"><a id="l16663" name="l16663"></a><span class="lineno">16663</span>        string_t <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a> = <span class="stringliteral">&quot;_ArrayType_&quot;</span>;</div>
+<div class="line"><a id="l16664" name="l16664"></a><span class="lineno">16664</span>        <span class="keyword">auto</span> it = bjdtype.find(<span class="keyword">static_cast&lt;</span>string_t<span class="keyword">&gt;</span>(value.at(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>)));</div>
 <div class="line"><a id="l16665" name="l16665"></a><span class="lineno">16665</span>        <span class="keywordflow">if</span> (it == bjdtype.end())</div>
 <div class="line"><a id="l16666" name="l16666"></a><span class="lineno">16666</span>        {</div>
 <div class="line"><a id="l16667" name="l16667"></a><span class="lineno">16667</span>            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><a id="l16668" name="l16668"></a><span class="lineno">16668</span>        }</div>
 <div class="line"><a id="l16669" name="l16669"></a><span class="lineno">16669</span>        CharType dtype = it-&gt;second;</div>
 <div class="line"><a id="l16670" name="l16670"></a><span class="lineno">16670</span> </div>
-<div class="line"><a id="l16671" name="l16671"></a><span class="lineno">16671</span>        <a class="code hl_enumvalue" href="namespacedetail.html#a47b1bb0bbd3596589ed9187059c312efa3c6e0b8a9c15224a8228b9a98ca1531d">key</a> = <span class="stringliteral">&quot;_ArraySize_&quot;</span>;</div>
-<div class="line"><a id="l16672" name="l16672"></a><span class="lineno">16672</span>        std::size_t len = (value.at(key).empty() ? 0 : 1);</div>
-<div class="line"><a id="l16673" name="l16673"></a><span class="lineno">16673</span>        <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; el : value.at(key))</div>
+<div class="line"><a id="l16671" name="l16671"></a><span class="lineno">16671</span>        <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a> = <span class="stringliteral">&quot;_ArraySize_&quot;</span>;</div>
+<div class="line"><a id="l16672" name="l16672"></a><span class="lineno">16672</span>        std::size_t len = (value.at(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>).empty() ? 0 : 1);</div>
+<div class="line"><a id="l16673" name="l16673"></a><span class="lineno">16673</span>        <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; el : value.at(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>))</div>
 <div class="line"><a id="l16674" name="l16674"></a><span class="lineno">16674</span>        {</div>
 <div class="line"><a id="l16675" name="l16675"></a><span class="lineno">16675</span>            len *= <span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(el.m_data.m_value.number_unsigned);</div>
 <div class="line"><a id="l16676" name="l16676"></a><span class="lineno">16676</span>        }</div>
 <div class="line"><a id="l16677" name="l16677"></a><span class="lineno">16677</span> </div>
-<div class="line"><a id="l16678" name="l16678"></a><span class="lineno">16678</span>        <a class="code hl_enumvalue" href="namespacedetail.html#a47b1bb0bbd3596589ed9187059c312efa3c6e0b8a9c15224a8228b9a98ca1531d">key</a> = <span class="stringliteral">&quot;_ArrayData_&quot;</span>;</div>
-<div class="line"><a id="l16679" name="l16679"></a><span class="lineno">16679</span>        <span class="keywordflow">if</span> (value.at(key).size() != len)</div>
+<div class="line"><a id="l16678" name="l16678"></a><span class="lineno">16678</span>        <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a> = <span class="stringliteral">&quot;_ArrayData_&quot;</span>;</div>
+<div class="line"><a id="l16679" name="l16679"></a><span class="lineno">16679</span>        <span class="keywordflow">if</span> (value.at(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>).size() != len)</div>
 <div class="line"><a id="l16680" name="l16680"></a><span class="lineno">16680</span>        {</div>
 <div class="line"><a id="l16681" name="l16681"></a><span class="lineno">16681</span>            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><a id="l16682" name="l16682"></a><span class="lineno">16682</span>        }</div>
@@ -15438,76 +15438,76 @@ $(function() {
 <div class="line"><a id="l16686" name="l16686"></a><span class="lineno">16686</span>        oa-&gt;write_character(dtype);</div>
 <div class="line"><a id="l16687" name="l16687"></a><span class="lineno">16687</span>        oa-&gt;write_character(<span class="charliteral">&#39;#&#39;</span>);</div>
 <div class="line"><a id="l16688" name="l16688"></a><span class="lineno">16688</span> </div>
-<div class="line"><a id="l16689" name="l16689"></a><span class="lineno">16689</span>        <a class="code hl_enumvalue" href="namespacedetail.html#a47b1bb0bbd3596589ed9187059c312efa3c6e0b8a9c15224a8228b9a98ca1531d">key</a> = <span class="stringliteral">&quot;_ArraySize_&quot;</span>;</div>
-<div class="line"><a id="l16690" name="l16690"></a><span class="lineno">16690</span>        write_ubjson(value.at(key), use_count, use_type, <span class="keyword">true</span>,  <span class="keyword">true</span>);</div>
+<div class="line"><a id="l16689" name="l16689"></a><span class="lineno">16689</span>        <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a> = <span class="stringliteral">&quot;_ArraySize_&quot;</span>;</div>
+<div class="line"><a id="l16690" name="l16690"></a><span class="lineno">16690</span>        write_ubjson(value.at(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>), use_count, use_type, <span class="keyword">true</span>,  <span class="keyword">true</span>);</div>
 <div class="line"><a id="l16691" name="l16691"></a><span class="lineno">16691</span> </div>
-<div class="line"><a id="l16692" name="l16692"></a><span class="lineno">16692</span>        <a class="code hl_enumvalue" href="namespacedetail.html#a47b1bb0bbd3596589ed9187059c312efa3c6e0b8a9c15224a8228b9a98ca1531d">key</a> = <span class="stringliteral">&quot;_ArrayData_&quot;</span>;</div>
+<div class="line"><a id="l16692" name="l16692"></a><span class="lineno">16692</span>        <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a> = <span class="stringliteral">&quot;_ArrayData_&quot;</span>;</div>
 <div class="line"><a id="l16693" name="l16693"></a><span class="lineno">16693</span>        <span class="keywordflow">if</span> (dtype == <span class="charliteral">&#39;U&#39;</span> || dtype == <span class="charliteral">&#39;C&#39;</span>)</div>
 <div class="line"><a id="l16694" name="l16694"></a><span class="lineno">16694</span>        {</div>
-<div class="line"><a id="l16695" name="l16695"></a><span class="lineno">16695</span>            <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; el : value.at(key))</div>
+<div class="line"><a id="l16695" name="l16695"></a><span class="lineno">16695</span>            <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; el : value.at(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>))</div>
 <div class="line"><a id="l16696" name="l16696"></a><span class="lineno">16696</span>            {</div>
 <div class="line"><a id="l16697" name="l16697"></a><span class="lineno">16697</span>                write_number(<span class="keyword">static_cast&lt;</span>std::uint8_t<span class="keyword">&gt;</span>(el.m_data.m_value.number_unsigned), <span class="keyword">true</span>);</div>
 <div class="line"><a id="l16698" name="l16698"></a><span class="lineno">16698</span>            }</div>
 <div class="line"><a id="l16699" name="l16699"></a><span class="lineno">16699</span>        }</div>
 <div class="line"><a id="l16700" name="l16700"></a><span class="lineno">16700</span>        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (dtype == <span class="charliteral">&#39;i&#39;</span>)</div>
 <div class="line"><a id="l16701" name="l16701"></a><span class="lineno">16701</span>        {</div>
-<div class="line"><a id="l16702" name="l16702"></a><span class="lineno">16702</span>            <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; el : value.at(key))</div>
+<div class="line"><a id="l16702" name="l16702"></a><span class="lineno">16702</span>            <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; el : value.at(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>))</div>
 <div class="line"><a id="l16703" name="l16703"></a><span class="lineno">16703</span>            {</div>
 <div class="line"><a id="l16704" name="l16704"></a><span class="lineno">16704</span>                write_number(<span class="keyword">static_cast&lt;</span>std::int8_t<span class="keyword">&gt;</span>(el.m_data.m_value.number_integer), <span class="keyword">true</span>);</div>
 <div class="line"><a id="l16705" name="l16705"></a><span class="lineno">16705</span>            }</div>
 <div class="line"><a id="l16706" name="l16706"></a><span class="lineno">16706</span>        }</div>
 <div class="line"><a id="l16707" name="l16707"></a><span class="lineno">16707</span>        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (dtype == <span class="charliteral">&#39;u&#39;</span>)</div>
 <div class="line"><a id="l16708" name="l16708"></a><span class="lineno">16708</span>        {</div>
-<div class="line"><a id="l16709" name="l16709"></a><span class="lineno">16709</span>            <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; el : value.at(key))</div>
+<div class="line"><a id="l16709" name="l16709"></a><span class="lineno">16709</span>            <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; el : value.at(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>))</div>
 <div class="line"><a id="l16710" name="l16710"></a><span class="lineno">16710</span>            {</div>
 <div class="line"><a id="l16711" name="l16711"></a><span class="lineno">16711</span>                write_number(<span class="keyword">static_cast&lt;</span>std::uint16_t<span class="keyword">&gt;</span>(el.m_data.m_value.number_unsigned), <span class="keyword">true</span>);</div>
 <div class="line"><a id="l16712" name="l16712"></a><span class="lineno">16712</span>            }</div>
 <div class="line"><a id="l16713" name="l16713"></a><span class="lineno">16713</span>        }</div>
 <div class="line"><a id="l16714" name="l16714"></a><span class="lineno">16714</span>        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (dtype == <span class="charliteral">&#39;I&#39;</span>)</div>
 <div class="line"><a id="l16715" name="l16715"></a><span class="lineno">16715</span>        {</div>
-<div class="line"><a id="l16716" name="l16716"></a><span class="lineno">16716</span>            <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; el : value.at(key))</div>
+<div class="line"><a id="l16716" name="l16716"></a><span class="lineno">16716</span>            <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; el : value.at(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>))</div>
 <div class="line"><a id="l16717" name="l16717"></a><span class="lineno">16717</span>            {</div>
 <div class="line"><a id="l16718" name="l16718"></a><span class="lineno">16718</span>                write_number(<span class="keyword">static_cast&lt;</span>std::int16_t<span class="keyword">&gt;</span>(el.m_data.m_value.number_integer), <span class="keyword">true</span>);</div>
 <div class="line"><a id="l16719" name="l16719"></a><span class="lineno">16719</span>            }</div>
 <div class="line"><a id="l16720" name="l16720"></a><span class="lineno">16720</span>        }</div>
 <div class="line"><a id="l16721" name="l16721"></a><span class="lineno">16721</span>        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (dtype == <span class="charliteral">&#39;m&#39;</span>)</div>
 <div class="line"><a id="l16722" name="l16722"></a><span class="lineno">16722</span>        {</div>
-<div class="line"><a id="l16723" name="l16723"></a><span class="lineno">16723</span>            <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; el : value.at(key))</div>
+<div class="line"><a id="l16723" name="l16723"></a><span class="lineno">16723</span>            <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; el : value.at(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>))</div>
 <div class="line"><a id="l16724" name="l16724"></a><span class="lineno">16724</span>            {</div>
 <div class="line"><a id="l16725" name="l16725"></a><span class="lineno">16725</span>                write_number(<span class="keyword">static_cast&lt;</span>std::uint32_t<span class="keyword">&gt;</span>(el.m_data.m_value.number_unsigned), <span class="keyword">true</span>);</div>
 <div class="line"><a id="l16726" name="l16726"></a><span class="lineno">16726</span>            }</div>
 <div class="line"><a id="l16727" name="l16727"></a><span class="lineno">16727</span>        }</div>
 <div class="line"><a id="l16728" name="l16728"></a><span class="lineno">16728</span>        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (dtype == <span class="charliteral">&#39;l&#39;</span>)</div>
 <div class="line"><a id="l16729" name="l16729"></a><span class="lineno">16729</span>        {</div>
-<div class="line"><a id="l16730" name="l16730"></a><span class="lineno">16730</span>            <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; el : value.at(key))</div>
+<div class="line"><a id="l16730" name="l16730"></a><span class="lineno">16730</span>            <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; el : value.at(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>))</div>
 <div class="line"><a id="l16731" name="l16731"></a><span class="lineno">16731</span>            {</div>
 <div class="line"><a id="l16732" name="l16732"></a><span class="lineno">16732</span>                write_number(<span class="keyword">static_cast&lt;</span>std::int32_t<span class="keyword">&gt;</span>(el.m_data.m_value.number_integer), <span class="keyword">true</span>);</div>
 <div class="line"><a id="l16733" name="l16733"></a><span class="lineno">16733</span>            }</div>
 <div class="line"><a id="l16734" name="l16734"></a><span class="lineno">16734</span>        }</div>
 <div class="line"><a id="l16735" name="l16735"></a><span class="lineno">16735</span>        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (dtype == <span class="charliteral">&#39;M&#39;</span>)</div>
 <div class="line"><a id="l16736" name="l16736"></a><span class="lineno">16736</span>        {</div>
-<div class="line"><a id="l16737" name="l16737"></a><span class="lineno">16737</span>            <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; el : value.at(key))</div>
+<div class="line"><a id="l16737" name="l16737"></a><span class="lineno">16737</span>            <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; el : value.at(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>))</div>
 <div class="line"><a id="l16738" name="l16738"></a><span class="lineno">16738</span>            {</div>
 <div class="line"><a id="l16739" name="l16739"></a><span class="lineno">16739</span>                write_number(<span class="keyword">static_cast&lt;</span>std::uint64_t<span class="keyword">&gt;</span>(el.m_data.m_value.number_unsigned), <span class="keyword">true</span>);</div>
 <div class="line"><a id="l16740" name="l16740"></a><span class="lineno">16740</span>            }</div>
 <div class="line"><a id="l16741" name="l16741"></a><span class="lineno">16741</span>        }</div>
 <div class="line"><a id="l16742" name="l16742"></a><span class="lineno">16742</span>        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (dtype == <span class="charliteral">&#39;L&#39;</span>)</div>
 <div class="line"><a id="l16743" name="l16743"></a><span class="lineno">16743</span>        {</div>
-<div class="line"><a id="l16744" name="l16744"></a><span class="lineno">16744</span>            <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; el : value.at(key))</div>
+<div class="line"><a id="l16744" name="l16744"></a><span class="lineno">16744</span>            <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; el : value.at(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>))</div>
 <div class="line"><a id="l16745" name="l16745"></a><span class="lineno">16745</span>            {</div>
 <div class="line"><a id="l16746" name="l16746"></a><span class="lineno">16746</span>                write_number(<span class="keyword">static_cast&lt;</span>std::int64_t<span class="keyword">&gt;</span>(el.m_data.m_value.number_integer), <span class="keyword">true</span>);</div>
 <div class="line"><a id="l16747" name="l16747"></a><span class="lineno">16747</span>            }</div>
 <div class="line"><a id="l16748" name="l16748"></a><span class="lineno">16748</span>        }</div>
 <div class="line"><a id="l16749" name="l16749"></a><span class="lineno">16749</span>        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (dtype == <span class="charliteral">&#39;d&#39;</span>)</div>
 <div class="line"><a id="l16750" name="l16750"></a><span class="lineno">16750</span>        {</div>
-<div class="line"><a id="l16751" name="l16751"></a><span class="lineno">16751</span>            <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; el : value.at(key))</div>
+<div class="line"><a id="l16751" name="l16751"></a><span class="lineno">16751</span>            <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; el : value.at(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>))</div>
 <div class="line"><a id="l16752" name="l16752"></a><span class="lineno">16752</span>            {</div>
 <div class="line"><a id="l16753" name="l16753"></a><span class="lineno">16753</span>                write_number(<span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(el.m_data.m_value.number_float), <span class="keyword">true</span>);</div>
 <div class="line"><a id="l16754" name="l16754"></a><span class="lineno">16754</span>            }</div>
 <div class="line"><a id="l16755" name="l16755"></a><span class="lineno">16755</span>        }</div>
 <div class="line"><a id="l16756" name="l16756"></a><span class="lineno">16756</span>        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (dtype == <span class="charliteral">&#39;D&#39;</span>)</div>
 <div class="line"><a id="l16757" name="l16757"></a><span class="lineno">16757</span>        {</div>
-<div class="line"><a id="l16758" name="l16758"></a><span class="lineno">16758</span>            <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; el : value.at(key))</div>
+<div class="line"><a id="l16758" name="l16758"></a><span class="lineno">16758</span>            <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; el : value.at(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>))</div>
 <div class="line"><a id="l16759" name="l16759"></a><span class="lineno">16759</span>            {</div>
 <div class="line"><a id="l16760" name="l16760"></a><span class="lineno">16760</span>                write_number(<span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(el.m_data.m_value.number_float), <span class="keyword">true</span>);</div>
 <div class="line"><a id="l16761" name="l16761"></a><span class="lineno">16761</span>            }</div>
@@ -17607,63 +17607,63 @@ $(function() {
 <div class="line"><a id="l19055" name="l19055"></a><span class="lineno">19055</span>    <a class="code hl_struct" href="structordered__map.html">ordered_map</a>(std::initializer_list&lt;value_type&gt; init, <span class="keyword">const</span> Allocator&amp; alloc = Allocator() )</div>
 <div class="line"><a id="l19056" name="l19056"></a><span class="lineno">19056</span>        : Container{init, alloc} {}</div>
 <div class="line"><a id="l19057" name="l19057"></a><span class="lineno">19057</span> </div>
-<div class="line"><a id="l19058" name="l19058"></a><span class="lineno">19058</span>    std::pair&lt;iterator, bool&gt; emplace(<span class="keyword">const</span> key_type&amp; key, T&amp;&amp; t)</div>
+<div class="line"><a id="l19058" name="l19058"></a><span class="lineno">19058</span>    std::pair&lt;iterator, bool&gt; emplace(<span class="keyword">const</span> key_type&amp; <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>, T&amp;&amp; t)</div>
 <div class="line"><a id="l19059" name="l19059"></a><span class="lineno">19059</span>    {</div>
 <div class="line"><a id="l19060" name="l19060"></a><span class="lineno">19060</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> it = this-&gt;begin(); it != this-&gt;end(); ++it)</div>
 <div class="line"><a id="l19061" name="l19061"></a><span class="lineno">19061</span>        {</div>
-<div class="line"><a id="l19062" name="l19062"></a><span class="lineno">19062</span>            <span class="keywordflow">if</span> (m_compare(it-&gt;first, key))</div>
+<div class="line"><a id="l19062" name="l19062"></a><span class="lineno">19062</span>            <span class="keywordflow">if</span> (m_compare(it-&gt;first, <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>))</div>
 <div class="line"><a id="l19063" name="l19063"></a><span class="lineno">19063</span>            {</div>
 <div class="line"><a id="l19064" name="l19064"></a><span class="lineno">19064</span>                <span class="keywordflow">return</span> {it, <span class="keyword">false</span>};</div>
 <div class="line"><a id="l19065" name="l19065"></a><span class="lineno">19065</span>            }</div>
 <div class="line"><a id="l19066" name="l19066"></a><span class="lineno">19066</span>        }</div>
-<div class="line"><a id="l19067" name="l19067"></a><span class="lineno">19067</span>        Container::emplace_back(key, std::forward&lt;T&gt;(t));</div>
+<div class="line"><a id="l19067" name="l19067"></a><span class="lineno">19067</span>        Container::emplace_back(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>, std::forward&lt;T&gt;(t));</div>
 <div class="line"><a id="l19068" name="l19068"></a><span class="lineno">19068</span>        <span class="keywordflow">return</span> {std::prev(this-&gt;end()), <span class="keyword">true</span>};</div>
 <div class="line"><a id="l19069" name="l19069"></a><span class="lineno">19069</span>    }</div>
 <div class="line"><a id="l19070" name="l19070"></a><span class="lineno">19070</span> </div>
 <div class="line"><a id="l19071" name="l19071"></a><span class="lineno">19071</span>    <span class="keyword">template</span>&lt;<span class="keyword">class </span>KeyType, detail::enable_if_t&lt;</div>
 <div class="line"><a id="l19072" name="l19072"></a><span class="lineno">19072</span>                 detail::is_usable_as_key_type&lt;key_compare, key_type, KeyType&gt;::value, <span class="keywordtype">int</span>&gt; = 0&gt;</div>
-<div class="line"><a id="l19073" name="l19073"></a><span class="lineno">19073</span>    std::pair&lt;iterator, bool&gt; emplace(KeyType &amp;&amp; key, T &amp;&amp; t)</div>
+<div class="line"><a id="l19073" name="l19073"></a><span class="lineno">19073</span>    std::pair&lt;iterator, bool&gt; emplace(KeyType &amp;&amp; <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>, T &amp;&amp; t)</div>
 <div class="line"><a id="l19074" name="l19074"></a><span class="lineno">19074</span>    {</div>
 <div class="line"><a id="l19075" name="l19075"></a><span class="lineno">19075</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> it = this-&gt;begin(); it != this-&gt;end(); ++it)</div>
 <div class="line"><a id="l19076" name="l19076"></a><span class="lineno">19076</span>        {</div>
-<div class="line"><a id="l19077" name="l19077"></a><span class="lineno">19077</span>            <span class="keywordflow">if</span> (m_compare(it-&gt;first, key))</div>
+<div class="line"><a id="l19077" name="l19077"></a><span class="lineno">19077</span>            <span class="keywordflow">if</span> (m_compare(it-&gt;first, <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>))</div>
 <div class="line"><a id="l19078" name="l19078"></a><span class="lineno">19078</span>            {</div>
 <div class="line"><a id="l19079" name="l19079"></a><span class="lineno">19079</span>                <span class="keywordflow">return</span> {it, <span class="keyword">false</span>};</div>
 <div class="line"><a id="l19080" name="l19080"></a><span class="lineno">19080</span>            }</div>
 <div class="line"><a id="l19081" name="l19081"></a><span class="lineno">19081</span>        }</div>
-<div class="line"><a id="l19082" name="l19082"></a><span class="lineno">19082</span>        Container::emplace_back(std::forward&lt;KeyType&gt;(key), std::forward&lt;T&gt;(t));</div>
+<div class="line"><a id="l19082" name="l19082"></a><span class="lineno">19082</span>        Container::emplace_back(std::forward&lt;KeyType&gt;(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>), std::forward&lt;T&gt;(t));</div>
 <div class="line"><a id="l19083" name="l19083"></a><span class="lineno">19083</span>        <span class="keywordflow">return</span> {std::prev(this-&gt;end()), <span class="keyword">true</span>};</div>
 <div class="line"><a id="l19084" name="l19084"></a><span class="lineno">19084</span>    }</div>
 <div class="line"><a id="l19085" name="l19085"></a><span class="lineno">19085</span> </div>
-<div class="line"><a id="l19086" name="l19086"></a><span class="lineno">19086</span>    T&amp; operator[](<span class="keyword">const</span> key_type&amp; key)</div>
+<div class="line"><a id="l19086" name="l19086"></a><span class="lineno">19086</span>    T&amp; operator[](<span class="keyword">const</span> key_type&amp; <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>)</div>
 <div class="line"><a id="l19087" name="l19087"></a><span class="lineno">19087</span>    {</div>
-<div class="line"><a id="l19088" name="l19088"></a><span class="lineno">19088</span>        <span class="keywordflow">return</span> emplace(key, T{}).first-&gt;second;</div>
+<div class="line"><a id="l19088" name="l19088"></a><span class="lineno">19088</span>        <span class="keywordflow">return</span> emplace(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>, T{}).first-&gt;second;</div>
 <div class="line"><a id="l19089" name="l19089"></a><span class="lineno">19089</span>    }</div>
 <div class="line"><a id="l19090" name="l19090"></a><span class="lineno">19090</span> </div>
 <div class="line"><a id="l19091" name="l19091"></a><span class="lineno">19091</span>    <span class="keyword">template</span>&lt;<span class="keyword">class </span>KeyType, detail::enable_if_t&lt;</div>
 <div class="line"><a id="l19092" name="l19092"></a><span class="lineno">19092</span>                 detail::is_usable_as_key_type&lt;key_compare, key_type, KeyType&gt;::value, <span class="keywordtype">int</span>&gt; = 0&gt;</div>
-<div class="line"><a id="l19093" name="l19093"></a><span class="lineno">19093</span>    T &amp; operator[](KeyType &amp;&amp; key)</div>
+<div class="line"><a id="l19093" name="l19093"></a><span class="lineno">19093</span>    T &amp; operator[](KeyType &amp;&amp; <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>)</div>
 <div class="line"><a id="l19094" name="l19094"></a><span class="lineno">19094</span>    {</div>
-<div class="line"><a id="l19095" name="l19095"></a><span class="lineno">19095</span>        <span class="keywordflow">return</span> emplace(std::forward&lt;KeyType&gt;(key), T{}).first-&gt;second;</div>
+<div class="line"><a id="l19095" name="l19095"></a><span class="lineno">19095</span>        <span class="keywordflow">return</span> emplace(std::forward&lt;KeyType&gt;(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>), T{}).first-&gt;second;</div>
 <div class="line"><a id="l19096" name="l19096"></a><span class="lineno">19096</span>    }</div>
 <div class="line"><a id="l19097" name="l19097"></a><span class="lineno">19097</span> </div>
-<div class="line"><a id="l19098" name="l19098"></a><span class="lineno">19098</span>    <span class="keyword">const</span> T&amp; operator[](<span class="keyword">const</span> key_type&amp; key)<span class="keyword"> const</span></div>
+<div class="line"><a id="l19098" name="l19098"></a><span class="lineno">19098</span>    <span class="keyword">const</span> T&amp; operator[](<span class="keyword">const</span> key_type&amp; <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>)<span class="keyword"> const</span></div>
 <div class="line"><a id="l19099" name="l19099"></a><span class="lineno">19099</span><span class="keyword">    </span>{</div>
-<div class="line"><a id="l19100" name="l19100"></a><span class="lineno">19100</span>        <span class="keywordflow">return</span> at(key);</div>
+<div class="line"><a id="l19100" name="l19100"></a><span class="lineno">19100</span>        <span class="keywordflow">return</span> at(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>);</div>
 <div class="line"><a id="l19101" name="l19101"></a><span class="lineno">19101</span>    }</div>
 <div class="line"><a id="l19102" name="l19102"></a><span class="lineno">19102</span> </div>
 <div class="line"><a id="l19103" name="l19103"></a><span class="lineno">19103</span>    <span class="keyword">template</span>&lt;<span class="keyword">class </span>KeyType, detail::enable_if_t&lt;</div>
 <div class="line"><a id="l19104" name="l19104"></a><span class="lineno">19104</span>                 detail::is_usable_as_key_type&lt;key_compare, key_type, KeyType&gt;::value, <span class="keywordtype">int</span>&gt; = 0&gt;</div>
-<div class="line"><a id="l19105" name="l19105"></a><span class="lineno">19105</span>    <span class="keyword">const</span> T &amp; operator[](KeyType &amp;&amp; key)<span class="keyword"> const</span></div>
+<div class="line"><a id="l19105" name="l19105"></a><span class="lineno">19105</span>    <span class="keyword">const</span> T &amp; operator[](KeyType &amp;&amp; <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>)<span class="keyword"> const</span></div>
 <div class="line"><a id="l19106" name="l19106"></a><span class="lineno">19106</span><span class="keyword">    </span>{</div>
-<div class="line"><a id="l19107" name="l19107"></a><span class="lineno">19107</span>        <span class="keywordflow">return</span> at(std::forward&lt;KeyType&gt;(key));</div>
+<div class="line"><a id="l19107" name="l19107"></a><span class="lineno">19107</span>        <span class="keywordflow">return</span> at(std::forward&lt;KeyType&gt;(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>));</div>
 <div class="line"><a id="l19108" name="l19108"></a><span class="lineno">19108</span>    }</div>
 <div class="line"><a id="l19109" name="l19109"></a><span class="lineno">19109</span> </div>
-<div class="line"><a id="l19110" name="l19110"></a><span class="lineno">19110</span>    T&amp; at(<span class="keyword">const</span> key_type&amp; key)</div>
+<div class="line"><a id="l19110" name="l19110"></a><span class="lineno">19110</span>    T&amp; at(<span class="keyword">const</span> key_type&amp; <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>)</div>
 <div class="line"><a id="l19111" name="l19111"></a><span class="lineno">19111</span>    {</div>
 <div class="line"><a id="l19112" name="l19112"></a><span class="lineno">19112</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> it = this-&gt;begin(); it != this-&gt;end(); ++it)</div>
 <div class="line"><a id="l19113" name="l19113"></a><span class="lineno">19113</span>        {</div>
-<div class="line"><a id="l19114" name="l19114"></a><span class="lineno">19114</span>            <span class="keywordflow">if</span> (m_compare(it-&gt;first, key))</div>
+<div class="line"><a id="l19114" name="l19114"></a><span class="lineno">19114</span>            <span class="keywordflow">if</span> (m_compare(it-&gt;first, <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>))</div>
 <div class="line"><a id="l19115" name="l19115"></a><span class="lineno">19115</span>            {</div>
 <div class="line"><a id="l19116" name="l19116"></a><span class="lineno">19116</span>                <span class="keywordflow">return</span> it-&gt;second;</div>
 <div class="line"><a id="l19117" name="l19117"></a><span class="lineno">19117</span>            }</div>
@@ -17674,11 +17674,11 @@ $(function() {
 <div class="line"><a id="l19122" name="l19122"></a><span class="lineno">19122</span> </div>
 <div class="line"><a id="l19123" name="l19123"></a><span class="lineno">19123</span>    <span class="keyword">template</span>&lt;<span class="keyword">class </span>KeyType, detail::enable_if_t&lt;</div>
 <div class="line"><a id="l19124" name="l19124"></a><span class="lineno">19124</span>                 detail::is_usable_as_key_type&lt;key_compare, key_type, KeyType&gt;::value, <span class="keywordtype">int</span>&gt; = 0&gt;</div>
-<div class="line"><a id="l19125" name="l19125"></a><span class="lineno">19125</span>    T &amp; at(KeyType &amp;&amp; key) <span class="comment">// NOLINT(cppcoreguidelines-missing-std-forward)</span></div>
+<div class="line"><a id="l19125" name="l19125"></a><span class="lineno">19125</span>    T &amp; at(KeyType &amp;&amp; <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>) <span class="comment">// NOLINT(cppcoreguidelines-missing-std-forward)</span></div>
 <div class="line"><a id="l19126" name="l19126"></a><span class="lineno">19126</span>    {</div>
 <div class="line"><a id="l19127" name="l19127"></a><span class="lineno">19127</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> it = this-&gt;begin(); it != this-&gt;end(); ++it)</div>
 <div class="line"><a id="l19128" name="l19128"></a><span class="lineno">19128</span>        {</div>
-<div class="line"><a id="l19129" name="l19129"></a><span class="lineno">19129</span>            <span class="keywordflow">if</span> (m_compare(it-&gt;first, key))</div>
+<div class="line"><a id="l19129" name="l19129"></a><span class="lineno">19129</span>            <span class="keywordflow">if</span> (m_compare(it-&gt;first, <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>))</div>
 <div class="line"><a id="l19130" name="l19130"></a><span class="lineno">19130</span>            {</div>
 <div class="line"><a id="l19131" name="l19131"></a><span class="lineno">19131</span>                <span class="keywordflow">return</span> it-&gt;second;</div>
 <div class="line"><a id="l19132" name="l19132"></a><span class="lineno">19132</span>            }</div>
@@ -17687,11 +17687,11 @@ $(function() {
 <div class="line"><a id="l19135" name="l19135"></a><span class="lineno">19135</span>        JSON_THROW(std::out_of_range(<span class="stringliteral">&quot;key not found&quot;</span>));</div>
 <div class="line"><a id="l19136" name="l19136"></a><span class="lineno">19136</span>    }</div>
 <div class="line"><a id="l19137" name="l19137"></a><span class="lineno">19137</span> </div>
-<div class="line"><a id="l19138" name="l19138"></a><span class="lineno">19138</span>    <span class="keyword">const</span> T&amp; at(<span class="keyword">const</span> key_type&amp; key)<span class="keyword"> const</span></div>
+<div class="line"><a id="l19138" name="l19138"></a><span class="lineno">19138</span>    <span class="keyword">const</span> T&amp; at(<span class="keyword">const</span> key_type&amp; <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>)<span class="keyword"> const</span></div>
 <div class="line"><a id="l19139" name="l19139"></a><span class="lineno">19139</span><span class="keyword">    </span>{</div>
 <div class="line"><a id="l19140" name="l19140"></a><span class="lineno">19140</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> it = this-&gt;begin(); it != this-&gt;end(); ++it)</div>
 <div class="line"><a id="l19141" name="l19141"></a><span class="lineno">19141</span>        {</div>
-<div class="line"><a id="l19142" name="l19142"></a><span class="lineno">19142</span>            <span class="keywordflow">if</span> (m_compare(it-&gt;first, key))</div>
+<div class="line"><a id="l19142" name="l19142"></a><span class="lineno">19142</span>            <span class="keywordflow">if</span> (m_compare(it-&gt;first, <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>))</div>
 <div class="line"><a id="l19143" name="l19143"></a><span class="lineno">19143</span>            {</div>
 <div class="line"><a id="l19144" name="l19144"></a><span class="lineno">19144</span>                <span class="keywordflow">return</span> it-&gt;second;</div>
 <div class="line"><a id="l19145" name="l19145"></a><span class="lineno">19145</span>            }</div>
@@ -17702,11 +17702,11 @@ $(function() {
 <div class="line"><a id="l19150" name="l19150"></a><span class="lineno">19150</span> </div>
 <div class="line"><a id="l19151" name="l19151"></a><span class="lineno">19151</span>    <span class="keyword">template</span>&lt;<span class="keyword">class </span>KeyType, detail::enable_if_t&lt;</div>
 <div class="line"><a id="l19152" name="l19152"></a><span class="lineno">19152</span>                 detail::is_usable_as_key_type&lt;key_compare, key_type, KeyType&gt;::value, <span class="keywordtype">int</span>&gt; = 0&gt;</div>
-<div class="line"><a id="l19153" name="l19153"></a><span class="lineno">19153</span>    <span class="keyword">const</span> T &amp; at(KeyType &amp;&amp; key) <span class="keyword">const</span> <span class="comment">// NOLINT(cppcoreguidelines-missing-std-forward)</span></div>
+<div class="line"><a id="l19153" name="l19153"></a><span class="lineno">19153</span>    <span class="keyword">const</span> T &amp; at(KeyType &amp;&amp; <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>) <span class="keyword">const</span> <span class="comment">// NOLINT(cppcoreguidelines-missing-std-forward)</span></div>
 <div class="line"><a id="l19154" name="l19154"></a><span class="lineno">19154</span>    {</div>
 <div class="line"><a id="l19155" name="l19155"></a><span class="lineno">19155</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> it = this-&gt;begin(); it != this-&gt;end(); ++it)</div>
 <div class="line"><a id="l19156" name="l19156"></a><span class="lineno">19156</span>        {</div>
-<div class="line"><a id="l19157" name="l19157"></a><span class="lineno">19157</span>            <span class="keywordflow">if</span> (m_compare(it-&gt;first, key))</div>
+<div class="line"><a id="l19157" name="l19157"></a><span class="lineno">19157</span>            <span class="keywordflow">if</span> (m_compare(it-&gt;first, <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>))</div>
 <div class="line"><a id="l19158" name="l19158"></a><span class="lineno">19158</span>            {</div>
 <div class="line"><a id="l19159" name="l19159"></a><span class="lineno">19159</span>                <span class="keywordflow">return</span> it-&gt;second;</div>
 <div class="line"><a id="l19160" name="l19160"></a><span class="lineno">19160</span>            }</div>
@@ -17715,11 +17715,11 @@ $(function() {
 <div class="line"><a id="l19163" name="l19163"></a><span class="lineno">19163</span>        JSON_THROW(std::out_of_range(<span class="stringliteral">&quot;key not found&quot;</span>));</div>
 <div class="line"><a id="l19164" name="l19164"></a><span class="lineno">19164</span>    }</div>
 <div class="line"><a id="l19165" name="l19165"></a><span class="lineno">19165</span> </div>
-<div class="line"><a id="l19166" name="l19166"></a><span class="lineno">19166</span>    size_type erase(<span class="keyword">const</span> key_type&amp; key)</div>
+<div class="line"><a id="l19166" name="l19166"></a><span class="lineno">19166</span>    size_type erase(<span class="keyword">const</span> key_type&amp; <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>)</div>
 <div class="line"><a id="l19167" name="l19167"></a><span class="lineno">19167</span>    {</div>
 <div class="line"><a id="l19168" name="l19168"></a><span class="lineno">19168</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> it = this-&gt;begin(); it != this-&gt;end(); ++it)</div>
 <div class="line"><a id="l19169" name="l19169"></a><span class="lineno">19169</span>        {</div>
-<div class="line"><a id="l19170" name="l19170"></a><span class="lineno">19170</span>            <span class="keywordflow">if</span> (m_compare(it-&gt;first, key))</div>
+<div class="line"><a id="l19170" name="l19170"></a><span class="lineno">19170</span>            <span class="keywordflow">if</span> (m_compare(it-&gt;first, <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>))</div>
 <div class="line"><a id="l19171" name="l19171"></a><span class="lineno">19171</span>            {</div>
 <div class="line"><a id="l19172" name="l19172"></a><span class="lineno">19172</span>                <span class="comment">// Since we cannot move const Keys, re-construct them in place</span></div>
 <div class="line"><a id="l19173" name="l19173"></a><span class="lineno">19173</span>                <span class="keywordflow">for</span> (<span class="keyword">auto</span> next = it; ++next != this-&gt;end(); ++it)</div>
@@ -17736,11 +17736,11 @@ $(function() {
 <div class="line"><a id="l19184" name="l19184"></a><span class="lineno">19184</span> </div>
 <div class="line"><a id="l19185" name="l19185"></a><span class="lineno">19185</span>    <span class="keyword">template</span>&lt;<span class="keyword">class </span>KeyType, detail::enable_if_t&lt;</div>
 <div class="line"><a id="l19186" name="l19186"></a><span class="lineno">19186</span>                 detail::is_usable_as_key_type&lt;key_compare, key_type, KeyType&gt;::value, <span class="keywordtype">int</span>&gt; = 0&gt;</div>
-<div class="line"><a id="l19187" name="l19187"></a><span class="lineno">19187</span>    size_type erase(KeyType &amp;&amp; key) <span class="comment">// NOLINT(cppcoreguidelines-missing-std-forward)</span></div>
+<div class="line"><a id="l19187" name="l19187"></a><span class="lineno">19187</span>    size_type erase(KeyType &amp;&amp; <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>) <span class="comment">// NOLINT(cppcoreguidelines-missing-std-forward)</span></div>
 <div class="line"><a id="l19188" name="l19188"></a><span class="lineno">19188</span>    {</div>
 <div class="line"><a id="l19189" name="l19189"></a><span class="lineno">19189</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> it = this-&gt;begin(); it != this-&gt;end(); ++it)</div>
 <div class="line"><a id="l19190" name="l19190"></a><span class="lineno">19190</span>        {</div>
-<div class="line"><a id="l19191" name="l19191"></a><span class="lineno">19191</span>            <span class="keywordflow">if</span> (m_compare(it-&gt;first, key))</div>
+<div class="line"><a id="l19191" name="l19191"></a><span class="lineno">19191</span>            <span class="keywordflow">if</span> (m_compare(it-&gt;first, <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>))</div>
 <div class="line"><a id="l19192" name="l19192"></a><span class="lineno">19192</span>            {</div>
 <div class="line"><a id="l19193" name="l19193"></a><span class="lineno">19193</span>                <span class="comment">// Since we cannot move const Keys, re-construct them in place</span></div>
 <div class="line"><a id="l19194" name="l19194"></a><span class="lineno">19194</span>                <span class="keywordflow">for</span> (<span class="keyword">auto</span> next = it; ++next != this-&gt;end(); ++it)</div>
@@ -17813,11 +17813,11 @@ $(function() {
 <div class="line"><a id="l19261" name="l19261"></a><span class="lineno">19261</span>        <span class="keywordflow">return</span> Container::begin() + offset;</div>
 <div class="line"><a id="l19262" name="l19262"></a><span class="lineno">19262</span>    }</div>
 <div class="line"><a id="l19263" name="l19263"></a><span class="lineno">19263</span> </div>
-<div class="line"><a id="l19264" name="l19264"></a><span class="lineno">19264</span>    size_type count(<span class="keyword">const</span> key_type&amp; key)<span class="keyword"> const</span></div>
+<div class="line"><a id="l19264" name="l19264"></a><span class="lineno">19264</span>    size_type count(<span class="keyword">const</span> key_type&amp; <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>)<span class="keyword"> const</span></div>
 <div class="line"><a id="l19265" name="l19265"></a><span class="lineno">19265</span><span class="keyword">    </span>{</div>
 <div class="line"><a id="l19266" name="l19266"></a><span class="lineno">19266</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> it = this-&gt;begin(); it != this-&gt;end(); ++it)</div>
 <div class="line"><a id="l19267" name="l19267"></a><span class="lineno">19267</span>        {</div>
-<div class="line"><a id="l19268" name="l19268"></a><span class="lineno">19268</span>            <span class="keywordflow">if</span> (m_compare(it-&gt;first, key))</div>
+<div class="line"><a id="l19268" name="l19268"></a><span class="lineno">19268</span>            <span class="keywordflow">if</span> (m_compare(it-&gt;first, <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>))</div>
 <div class="line"><a id="l19269" name="l19269"></a><span class="lineno">19269</span>            {</div>
 <div class="line"><a id="l19270" name="l19270"></a><span class="lineno">19270</span>                <span class="keywordflow">return</span> 1;</div>
 <div class="line"><a id="l19271" name="l19271"></a><span class="lineno">19271</span>            }</div>
@@ -17827,11 +17827,11 @@ $(function() {
 <div class="line"><a id="l19275" name="l19275"></a><span class="lineno">19275</span> </div>
 <div class="line"><a id="l19276" name="l19276"></a><span class="lineno">19276</span>    <span class="keyword">template</span>&lt;<span class="keyword">class </span>KeyType, detail::enable_if_t&lt;</div>
 <div class="line"><a id="l19277" name="l19277"></a><span class="lineno">19277</span>                 detail::is_usable_as_key_type&lt;key_compare, key_type, KeyType&gt;::value, <span class="keywordtype">int</span>&gt; = 0&gt;</div>
-<div class="line"><a id="l19278" name="l19278"></a><span class="lineno">19278</span>    size_type count(KeyType &amp;&amp; key) <span class="keyword">const</span> <span class="comment">// NOLINT(cppcoreguidelines-missing-std-forward)</span></div>
+<div class="line"><a id="l19278" name="l19278"></a><span class="lineno">19278</span>    size_type count(KeyType &amp;&amp; <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>) <span class="keyword">const</span> <span class="comment">// NOLINT(cppcoreguidelines-missing-std-forward)</span></div>
 <div class="line"><a id="l19279" name="l19279"></a><span class="lineno">19279</span>    {</div>
 <div class="line"><a id="l19280" name="l19280"></a><span class="lineno">19280</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> it = this-&gt;begin(); it != this-&gt;end(); ++it)</div>
 <div class="line"><a id="l19281" name="l19281"></a><span class="lineno">19281</span>        {</div>
-<div class="line"><a id="l19282" name="l19282"></a><span class="lineno">19282</span>            <span class="keywordflow">if</span> (m_compare(it-&gt;first, key))</div>
+<div class="line"><a id="l19282" name="l19282"></a><span class="lineno">19282</span>            <span class="keywordflow">if</span> (m_compare(it-&gt;first, <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>))</div>
 <div class="line"><a id="l19283" name="l19283"></a><span class="lineno">19283</span>            {</div>
 <div class="line"><a id="l19284" name="l19284"></a><span class="lineno">19284</span>                <span class="keywordflow">return</span> 1;</div>
 <div class="line"><a id="l19285" name="l19285"></a><span class="lineno">19285</span>            }</div>
@@ -17839,11 +17839,11 @@ $(function() {
 <div class="line"><a id="l19287" name="l19287"></a><span class="lineno">19287</span>        <span class="keywordflow">return</span> 0;</div>
 <div class="line"><a id="l19288" name="l19288"></a><span class="lineno">19288</span>    }</div>
 <div class="line"><a id="l19289" name="l19289"></a><span class="lineno">19289</span> </div>
-<div class="line"><a id="l19290" name="l19290"></a><span class="lineno">19290</span>    iterator find(<span class="keyword">const</span> key_type&amp; key)</div>
+<div class="line"><a id="l19290" name="l19290"></a><span class="lineno">19290</span>    iterator find(<span class="keyword">const</span> key_type&amp; <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>)</div>
 <div class="line"><a id="l19291" name="l19291"></a><span class="lineno">19291</span>    {</div>
 <div class="line"><a id="l19292" name="l19292"></a><span class="lineno">19292</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> it = this-&gt;begin(); it != this-&gt;end(); ++it)</div>
 <div class="line"><a id="l19293" name="l19293"></a><span class="lineno">19293</span>        {</div>
-<div class="line"><a id="l19294" name="l19294"></a><span class="lineno">19294</span>            <span class="keywordflow">if</span> (m_compare(it-&gt;first, key))</div>
+<div class="line"><a id="l19294" name="l19294"></a><span class="lineno">19294</span>            <span class="keywordflow">if</span> (m_compare(it-&gt;first, <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>))</div>
 <div class="line"><a id="l19295" name="l19295"></a><span class="lineno">19295</span>            {</div>
 <div class="line"><a id="l19296" name="l19296"></a><span class="lineno">19296</span>                <span class="keywordflow">return</span> it;</div>
 <div class="line"><a id="l19297" name="l19297"></a><span class="lineno">19297</span>            }</div>
@@ -17853,11 +17853,11 @@ $(function() {
 <div class="line"><a id="l19301" name="l19301"></a><span class="lineno">19301</span> </div>
 <div class="line"><a id="l19302" name="l19302"></a><span class="lineno">19302</span>    <span class="keyword">template</span>&lt;<span class="keyword">class </span>KeyType, detail::enable_if_t&lt;</div>
 <div class="line"><a id="l19303" name="l19303"></a><span class="lineno">19303</span>                 detail::is_usable_as_key_type&lt;key_compare, key_type, KeyType&gt;::value, <span class="keywordtype">int</span>&gt; = 0&gt;</div>
-<div class="line"><a id="l19304" name="l19304"></a><span class="lineno">19304</span>    iterator find(KeyType &amp;&amp; key) <span class="comment">// NOLINT(cppcoreguidelines-missing-std-forward)</span></div>
+<div class="line"><a id="l19304" name="l19304"></a><span class="lineno">19304</span>    iterator find(KeyType &amp;&amp; <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>) <span class="comment">// NOLINT(cppcoreguidelines-missing-std-forward)</span></div>
 <div class="line"><a id="l19305" name="l19305"></a><span class="lineno">19305</span>    {</div>
 <div class="line"><a id="l19306" name="l19306"></a><span class="lineno">19306</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> it = this-&gt;begin(); it != this-&gt;end(); ++it)</div>
 <div class="line"><a id="l19307" name="l19307"></a><span class="lineno">19307</span>        {</div>
-<div class="line"><a id="l19308" name="l19308"></a><span class="lineno">19308</span>            <span class="keywordflow">if</span> (m_compare(it-&gt;first, key))</div>
+<div class="line"><a id="l19308" name="l19308"></a><span class="lineno">19308</span>            <span class="keywordflow">if</span> (m_compare(it-&gt;first, <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>))</div>
 <div class="line"><a id="l19309" name="l19309"></a><span class="lineno">19309</span>            {</div>
 <div class="line"><a id="l19310" name="l19310"></a><span class="lineno">19310</span>                <span class="keywordflow">return</span> it;</div>
 <div class="line"><a id="l19311" name="l19311"></a><span class="lineno">19311</span>            }</div>
@@ -17865,11 +17865,11 @@ $(function() {
 <div class="line"><a id="l19313" name="l19313"></a><span class="lineno">19313</span>        <span class="keywordflow">return</span> Container::end();</div>
 <div class="line"><a id="l19314" name="l19314"></a><span class="lineno">19314</span>    }</div>
 <div class="line"><a id="l19315" name="l19315"></a><span class="lineno">19315</span> </div>
-<div class="line"><a id="l19316" name="l19316"></a><span class="lineno">19316</span>    const_iterator find(<span class="keyword">const</span> key_type&amp; key)<span class="keyword"> const</span></div>
+<div class="line"><a id="l19316" name="l19316"></a><span class="lineno">19316</span>    const_iterator find(<span class="keyword">const</span> key_type&amp; <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>)<span class="keyword"> const</span></div>
 <div class="line"><a id="l19317" name="l19317"></a><span class="lineno">19317</span><span class="keyword">    </span>{</div>
 <div class="line"><a id="l19318" name="l19318"></a><span class="lineno">19318</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> it = this-&gt;begin(); it != this-&gt;end(); ++it)</div>
 <div class="line"><a id="l19319" name="l19319"></a><span class="lineno">19319</span>        {</div>
-<div class="line"><a id="l19320" name="l19320"></a><span class="lineno">19320</span>            <span class="keywordflow">if</span> (m_compare(it-&gt;first, key))</div>
+<div class="line"><a id="l19320" name="l19320"></a><span class="lineno">19320</span>            <span class="keywordflow">if</span> (m_compare(it-&gt;first, <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>))</div>
 <div class="line"><a id="l19321" name="l19321"></a><span class="lineno">19321</span>            {</div>
 <div class="line"><a id="l19322" name="l19322"></a><span class="lineno">19322</span>                <span class="keywordflow">return</span> it;</div>
 <div class="line"><a id="l19323" name="l19323"></a><span class="lineno">19323</span>            }</div>
@@ -19352,7 +19352,7 @@ $(function() {
 <div class="line"><a id="l21281" name="l21281"></a><span class="lineno">21281</span>        }</div>
 <div class="line"><a id="l21282" name="l21282"></a><span class="lineno">21282</span>    }</div>
 <div class="line"><a id="l21283" name="l21283"></a><span class="lineno">21283</span> </div>
-<div class="line"><a id="l21286" name="l21286"></a><span class="lineno"><a class="line" href="classbasic__json.html#accafaaf23f60bb245ddb1fa0972b33a3">21286</a></span>    <a class="code hl_class" href="classbasic__json.html">reference</a> <a class="code hl_function" href="classbasic__json.html#accafaaf23f60bb245ddb1fa0972b33a3">at</a>(<span class="keyword">const</span> <span class="keyword">typename</span> object_t::key_type&amp; key)</div>
+<div class="line"><a id="l21286" name="l21286"></a><span class="lineno"><a class="line" href="classbasic__json.html#accafaaf23f60bb245ddb1fa0972b33a3">21286</a></span>    <a class="code hl_class" href="classbasic__json.html">reference</a> <a class="code hl_function" href="classbasic__json.html#accafaaf23f60bb245ddb1fa0972b33a3">at</a>(<span class="keyword">const</span> <span class="keyword">typename</span> object_t::key_type&amp; <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>)</div>
 <div class="line"><a id="l21287" name="l21287"></a><span class="lineno">21287</span>    {</div>
 <div class="line"><a id="l21288" name="l21288"></a><span class="lineno">21288</span>        <span class="comment">// at only works for objects</span></div>
 <div class="line"><a id="l21289" name="l21289"></a><span class="lineno">21289</span>        <span class="keywordflow">if</span> (JSON_HEDLEY_UNLIKELY(!is_object()))</div>
@@ -19360,17 +19360,17 @@ $(function() {
 <div class="line"><a id="l21291" name="l21291"></a><span class="lineno">21291</span>            JSON_THROW(type_error::create(304, detail::concat(<span class="stringliteral">&quot;cannot use at() with &quot;</span>, type_name()), <span class="keyword">this</span>));</div>
 <div class="line"><a id="l21292" name="l21292"></a><span class="lineno">21292</span>        }</div>
 <div class="line"><a id="l21293" name="l21293"></a><span class="lineno">21293</span> </div>
-<div class="line"><a id="l21294" name="l21294"></a><span class="lineno">21294</span>        <span class="keyword">auto</span> it = m_data.m_value.object-&gt;find(key);</div>
+<div class="line"><a id="l21294" name="l21294"></a><span class="lineno">21294</span>        <span class="keyword">auto</span> it = m_data.m_value.object-&gt;find(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>);</div>
 <div class="line"><a id="l21295" name="l21295"></a><span class="lineno">21295</span>        <span class="keywordflow">if</span> (it == m_data.m_value.object-&gt;end())</div>
 <div class="line"><a id="l21296" name="l21296"></a><span class="lineno">21296</span>        {</div>
-<div class="line"><a id="l21297" name="l21297"></a><span class="lineno">21297</span>            JSON_THROW(out_of_range::create(403, detail::concat(<span class="stringliteral">&quot;key &#39;&quot;</span>, key, <span class="stringliteral">&quot;&#39; not found&quot;</span>), <span class="keyword">this</span>));</div>
+<div class="line"><a id="l21297" name="l21297"></a><span class="lineno">21297</span>            JSON_THROW(out_of_range::create(403, detail::concat(<span class="stringliteral">&quot;key &#39;&quot;</span>, <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>, <span class="stringliteral">&quot;&#39; not found&quot;</span>), <span class="keyword">this</span>));</div>
 <div class="line"><a id="l21298" name="l21298"></a><span class="lineno">21298</span>        }</div>
 <div class="line"><a id="l21299" name="l21299"></a><span class="lineno">21299</span>        <span class="keywordflow">return</span> set_parent(it-&gt;second);</div>
 <div class="line"><a id="l21300" name="l21300"></a><span class="lineno">21300</span>    }</div>
 <div class="line"><a id="l21301" name="l21301"></a><span class="lineno">21301</span> </div>
 <div class="line"><a id="l21304" name="l21304"></a><span class="lineno">21304</span>    <span class="keyword">template</span>&lt;<span class="keyword">class </span>KeyType, detail::enable_if_t&lt;</div>
 <div class="line"><a id="l21305" name="l21305"></a><span class="lineno">21305</span>                 detail::is_usable_as_basic_json_key_type&lt;basic_json_t, KeyType&gt;::value, <span class="keywordtype">int</span>&gt; = 0&gt;</div>
-<div class="line"><a id="l21306" name="l21306"></a><span class="lineno"><a class="line" href="classbasic__json.html#a4cd9ba2f2164d9cee83b07f76d40843f">21306</a></span>    <a class="code hl_class" href="classbasic__json.html">reference</a> <a class="code hl_function" href="classbasic__json.html#a4cd9ba2f2164d9cee83b07f76d40843f">at</a>(KeyType &amp;&amp; key)</div>
+<div class="line"><a id="l21306" name="l21306"></a><span class="lineno"><a class="line" href="classbasic__json.html#a4cd9ba2f2164d9cee83b07f76d40843f">21306</a></span>    <a class="code hl_class" href="classbasic__json.html">reference</a> <a class="code hl_function" href="classbasic__json.html#a4cd9ba2f2164d9cee83b07f76d40843f">at</a>(KeyType &amp;&amp; <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>)</div>
 <div class="line"><a id="l21307" name="l21307"></a><span class="lineno">21307</span>    {</div>
 <div class="line"><a id="l21308" name="l21308"></a><span class="lineno">21308</span>        <span class="comment">// at only works for objects</span></div>
 <div class="line"><a id="l21309" name="l21309"></a><span class="lineno">21309</span>        <span class="keywordflow">if</span> (JSON_HEDLEY_UNLIKELY(!is_object()))</div>
@@ -19378,15 +19378,15 @@ $(function() {
 <div class="line"><a id="l21311" name="l21311"></a><span class="lineno">21311</span>            JSON_THROW(type_error::create(304, detail::concat(<span class="stringliteral">&quot;cannot use at() with &quot;</span>, type_name()), <span class="keyword">this</span>));</div>
 <div class="line"><a id="l21312" name="l21312"></a><span class="lineno">21312</span>        }</div>
 <div class="line"><a id="l21313" name="l21313"></a><span class="lineno">21313</span> </div>
-<div class="line"><a id="l21314" name="l21314"></a><span class="lineno">21314</span>        <span class="keyword">auto</span> it = m_data.m_value.object-&gt;find(std::forward&lt;KeyType&gt;(key));</div>
+<div class="line"><a id="l21314" name="l21314"></a><span class="lineno">21314</span>        <span class="keyword">auto</span> it = m_data.m_value.object-&gt;find(std::forward&lt;KeyType&gt;(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>));</div>
 <div class="line"><a id="l21315" name="l21315"></a><span class="lineno">21315</span>        <span class="keywordflow">if</span> (it == m_data.m_value.object-&gt;end())</div>
 <div class="line"><a id="l21316" name="l21316"></a><span class="lineno">21316</span>        {</div>
-<div class="line"><a id="l21317" name="l21317"></a><span class="lineno">21317</span>            JSON_THROW(out_of_range::create(403, detail::concat(<span class="stringliteral">&quot;key &#39;&quot;</span>, <a class="code hl_typedef" href="classbasic__json.html#ac8c9cde32146e6c343e1960aefc11fba">string_t</a>(std::forward&lt;KeyType&gt;(key)), <span class="stringliteral">&quot;&#39; not found&quot;</span>), <span class="keyword">this</span>));</div>
+<div class="line"><a id="l21317" name="l21317"></a><span class="lineno">21317</span>            JSON_THROW(out_of_range::create(403, detail::concat(<span class="stringliteral">&quot;key &#39;&quot;</span>, <a class="code hl_typedef" href="classbasic__json.html#ac8c9cde32146e6c343e1960aefc11fba">string_t</a>(std::forward&lt;KeyType&gt;(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>)), <span class="stringliteral">&quot;&#39; not found&quot;</span>), <span class="keyword">this</span>));</div>
 <div class="line"><a id="l21318" name="l21318"></a><span class="lineno">21318</span>        }</div>
 <div class="line"><a id="l21319" name="l21319"></a><span class="lineno">21319</span>        <span class="keywordflow">return</span> set_parent(it-&gt;second);</div>
 <div class="line"><a id="l21320" name="l21320"></a><span class="lineno">21320</span>    }</div>
 <div class="line"><a id="l21321" name="l21321"></a><span class="lineno">21321</span> </div>
-<div class="line"><a id="l21324" name="l21324"></a><span class="lineno"><a class="line" href="classbasic__json.html#aba9a21714e81e98fc5786a2339ea1665">21324</a></span>    <a class="code hl_class" href="classbasic__json.html">const_reference</a> <a class="code hl_function" href="classbasic__json.html#aba9a21714e81e98fc5786a2339ea1665">at</a>(<span class="keyword">const</span> <span class="keyword">typename</span> object_t::key_type&amp; key)<span class="keyword"> const</span></div>
+<div class="line"><a id="l21324" name="l21324"></a><span class="lineno"><a class="line" href="classbasic__json.html#aba9a21714e81e98fc5786a2339ea1665">21324</a></span>    <a class="code hl_class" href="classbasic__json.html">const_reference</a> <a class="code hl_function" href="classbasic__json.html#aba9a21714e81e98fc5786a2339ea1665">at</a>(<span class="keyword">const</span> <span class="keyword">typename</span> object_t::key_type&amp; <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>)<span class="keyword"> const</span></div>
 <div class="line"><a id="l21325" name="l21325"></a><span class="lineno">21325</span><span class="keyword">    </span>{</div>
 <div class="line"><a id="l21326" name="l21326"></a><span class="lineno">21326</span>        <span class="comment">// at only works for objects</span></div>
 <div class="line"><a id="l21327" name="l21327"></a><span class="lineno">21327</span>        <span class="keywordflow">if</span> (JSON_HEDLEY_UNLIKELY(!is_object()))</div>
@@ -19394,17 +19394,17 @@ $(function() {
 <div class="line"><a id="l21329" name="l21329"></a><span class="lineno">21329</span>            JSON_THROW(type_error::create(304, detail::concat(<span class="stringliteral">&quot;cannot use at() with &quot;</span>, type_name()), <span class="keyword">this</span>));</div>
 <div class="line"><a id="l21330" name="l21330"></a><span class="lineno">21330</span>        }</div>
 <div class="line"><a id="l21331" name="l21331"></a><span class="lineno">21331</span> </div>
-<div class="line"><a id="l21332" name="l21332"></a><span class="lineno">21332</span>        <span class="keyword">auto</span> it = m_data.m_value.object-&gt;find(key);</div>
+<div class="line"><a id="l21332" name="l21332"></a><span class="lineno">21332</span>        <span class="keyword">auto</span> it = m_data.m_value.object-&gt;find(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>);</div>
 <div class="line"><a id="l21333" name="l21333"></a><span class="lineno">21333</span>        <span class="keywordflow">if</span> (it == m_data.m_value.object-&gt;end())</div>
 <div class="line"><a id="l21334" name="l21334"></a><span class="lineno">21334</span>        {</div>
-<div class="line"><a id="l21335" name="l21335"></a><span class="lineno">21335</span>            JSON_THROW(out_of_range::create(403, detail::concat(<span class="stringliteral">&quot;key &#39;&quot;</span>, key, <span class="stringliteral">&quot;&#39; not found&quot;</span>), <span class="keyword">this</span>));</div>
+<div class="line"><a id="l21335" name="l21335"></a><span class="lineno">21335</span>            JSON_THROW(out_of_range::create(403, detail::concat(<span class="stringliteral">&quot;key &#39;&quot;</span>, <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>, <span class="stringliteral">&quot;&#39; not found&quot;</span>), <span class="keyword">this</span>));</div>
 <div class="line"><a id="l21336" name="l21336"></a><span class="lineno">21336</span>        }</div>
 <div class="line"><a id="l21337" name="l21337"></a><span class="lineno">21337</span>        <span class="keywordflow">return</span> it-&gt;second;</div>
 <div class="line"><a id="l21338" name="l21338"></a><span class="lineno">21338</span>    }</div>
 <div class="line"><a id="l21339" name="l21339"></a><span class="lineno">21339</span> </div>
 <div class="line"><a id="l21342" name="l21342"></a><span class="lineno">21342</span>    <span class="keyword">template</span>&lt;<span class="keyword">class </span>KeyType, detail::enable_if_t&lt;</div>
 <div class="line"><a id="l21343" name="l21343"></a><span class="lineno">21343</span>                 detail::is_usable_as_basic_json_key_type&lt;basic_json_t, KeyType&gt;::value, <span class="keywordtype">int</span>&gt; = 0&gt;</div>
-<div class="line"><a id="l21344" name="l21344"></a><span class="lineno"><a class="line" href="classbasic__json.html#a7ae6267ca4bd85e25f61dc5ba30204da">21344</a></span>    <a class="code hl_class" href="classbasic__json.html">const_reference</a> <a class="code hl_function" href="classbasic__json.html#a7ae6267ca4bd85e25f61dc5ba30204da">at</a>(KeyType &amp;&amp; key)<span class="keyword"> const</span></div>
+<div class="line"><a id="l21344" name="l21344"></a><span class="lineno"><a class="line" href="classbasic__json.html#a7ae6267ca4bd85e25f61dc5ba30204da">21344</a></span>    <a class="code hl_class" href="classbasic__json.html">const_reference</a> <a class="code hl_function" href="classbasic__json.html#a7ae6267ca4bd85e25f61dc5ba30204da">at</a>(KeyType &amp;&amp; <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>)<span class="keyword"> const</span></div>
 <div class="line"><a id="l21345" name="l21345"></a><span class="lineno">21345</span><span class="keyword">    </span>{</div>
 <div class="line"><a id="l21346" name="l21346"></a><span class="lineno">21346</span>        <span class="comment">// at only works for objects</span></div>
 <div class="line"><a id="l21347" name="l21347"></a><span class="lineno">21347</span>        <span class="keywordflow">if</span> (JSON_HEDLEY_UNLIKELY(!is_object()))</div>
@@ -19412,10 +19412,10 @@ $(function() {
 <div class="line"><a id="l21349" name="l21349"></a><span class="lineno">21349</span>            JSON_THROW(type_error::create(304, detail::concat(<span class="stringliteral">&quot;cannot use at() with &quot;</span>, type_name()), <span class="keyword">this</span>));</div>
 <div class="line"><a id="l21350" name="l21350"></a><span class="lineno">21350</span>        }</div>
 <div class="line"><a id="l21351" name="l21351"></a><span class="lineno">21351</span> </div>
-<div class="line"><a id="l21352" name="l21352"></a><span class="lineno">21352</span>        <span class="keyword">auto</span> it = m_data.m_value.object-&gt;find(std::forward&lt;KeyType&gt;(key));</div>
+<div class="line"><a id="l21352" name="l21352"></a><span class="lineno">21352</span>        <span class="keyword">auto</span> it = m_data.m_value.object-&gt;find(std::forward&lt;KeyType&gt;(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>));</div>
 <div class="line"><a id="l21353" name="l21353"></a><span class="lineno">21353</span>        <span class="keywordflow">if</span> (it == m_data.m_value.object-&gt;end())</div>
 <div class="line"><a id="l21354" name="l21354"></a><span class="lineno">21354</span>        {</div>
-<div class="line"><a id="l21355" name="l21355"></a><span class="lineno">21355</span>            JSON_THROW(out_of_range::create(403, detail::concat(<span class="stringliteral">&quot;key &#39;&quot;</span>, <a class="code hl_typedef" href="classbasic__json.html#ac8c9cde32146e6c343e1960aefc11fba">string_t</a>(std::forward&lt;KeyType&gt;(key)), <span class="stringliteral">&quot;&#39; not found&quot;</span>), <span class="keyword">this</span>));</div>
+<div class="line"><a id="l21355" name="l21355"></a><span class="lineno">21355</span>            JSON_THROW(out_of_range::create(403, detail::concat(<span class="stringliteral">&quot;key &#39;&quot;</span>, <a class="code hl_typedef" href="classbasic__json.html#ac8c9cde32146e6c343e1960aefc11fba">string_t</a>(std::forward&lt;KeyType&gt;(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>)), <span class="stringliteral">&quot;&#39; not found&quot;</span>), <span class="keyword">this</span>));</div>
 <div class="line"><a id="l21356" name="l21356"></a><span class="lineno">21356</span>        }</div>
 <div class="line"><a id="l21357" name="l21357"></a><span class="lineno">21357</span>        <span class="keywordflow">return</span> it-&gt;second;</div>
 <div class="line"><a id="l21358" name="l21358"></a><span class="lineno">21358</span>    }</div>
@@ -19475,7 +19475,7 @@ $(function() {
 <div class="line"><a id="l21416" name="l21416"></a><span class="lineno">21416</span>        JSON_THROW(type_error::create(305, detail::concat(<span class="stringliteral">&quot;cannot use operator[] with a numeric argument with &quot;</span>, type_name()), <span class="keyword">this</span>));</div>
 <div class="line"><a id="l21417" name="l21417"></a><span class="lineno">21417</span>    }</div>
 <div class="line"><a id="l21418" name="l21418"></a><span class="lineno">21418</span> </div>
-<div class="line"><a id="l21421" name="l21421"></a><span class="lineno"><a class="line" href="classbasic__json.html#a9c5825034534bf9256a33d2dd995c25a">21421</a></span>    <a class="code hl_class" href="classbasic__json.html">reference</a> <a class="code hl_function" href="classbasic__json.html#a9c5825034534bf9256a33d2dd995c25a">operator[]</a>(<span class="keyword">typename</span> object_t::key_type key)</div>
+<div class="line"><a id="l21421" name="l21421"></a><span class="lineno"><a class="line" href="classbasic__json.html#a9c5825034534bf9256a33d2dd995c25a">21421</a></span>    <a class="code hl_class" href="classbasic__json.html">reference</a> <a class="code hl_function" href="classbasic__json.html#a9c5825034534bf9256a33d2dd995c25a">operator[]</a>(<span class="keyword">typename</span> object_t::key_type <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>)</div>
 <div class="line"><a id="l21422" name="l21422"></a><span class="lineno">21422</span>    {</div>
 <div class="line"><a id="l21423" name="l21423"></a><span class="lineno">21423</span>        <span class="comment">// implicitly convert null value to an empty object</span></div>
 <div class="line"><a id="l21424" name="l21424"></a><span class="lineno">21424</span>        <span class="keywordflow">if</span> (is_null())</div>
@@ -19488,19 +19488,19 @@ $(function() {
 <div class="line"><a id="l21431" name="l21431"></a><span class="lineno">21431</span>        <span class="comment">// operator[] only works for objects</span></div>
 <div class="line"><a id="l21432" name="l21432"></a><span class="lineno">21432</span>        <span class="keywordflow">if</span> (JSON_HEDLEY_LIKELY(is_object()))</div>
 <div class="line"><a id="l21433" name="l21433"></a><span class="lineno">21433</span>        {</div>
-<div class="line"><a id="l21434" name="l21434"></a><span class="lineno">21434</span>            <span class="keyword">auto</span> result = m_data.m_value.object-&gt;emplace(std::move(key), <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l21434" name="l21434"></a><span class="lineno">21434</span>            <span class="keyword">auto</span> result = m_data.m_value.object-&gt;emplace(std::move(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>), <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l21435" name="l21435"></a><span class="lineno">21435</span>            <span class="keywordflow">return</span> set_parent(result.first-&gt;second);</div>
 <div class="line"><a id="l21436" name="l21436"></a><span class="lineno">21436</span>        }</div>
 <div class="line"><a id="l21437" name="l21437"></a><span class="lineno">21437</span> </div>
 <div class="line"><a id="l21438" name="l21438"></a><span class="lineno">21438</span>        JSON_THROW(type_error::create(305, detail::concat(<span class="stringliteral">&quot;cannot use operator[] with a string argument with &quot;</span>, type_name()), <span class="keyword">this</span>));</div>
 <div class="line"><a id="l21439" name="l21439"></a><span class="lineno">21439</span>    }</div>
 <div class="line"><a id="l21440" name="l21440"></a><span class="lineno">21440</span> </div>
-<div class="line"><a id="l21443" name="l21443"></a><span class="lineno"><a class="line" href="classbasic__json.html#a3d3ea17617e94886f3e86ac921095a13">21443</a></span>    <a class="code hl_class" href="classbasic__json.html">const_reference</a> <a class="code hl_function" href="classbasic__json.html#a3d3ea17617e94886f3e86ac921095a13">operator[]</a>(<span class="keyword">const</span> <span class="keyword">typename</span> object_t::key_type&amp; key)<span class="keyword"> const</span></div>
+<div class="line"><a id="l21443" name="l21443"></a><span class="lineno"><a class="line" href="classbasic__json.html#a3d3ea17617e94886f3e86ac921095a13">21443</a></span>    <a class="code hl_class" href="classbasic__json.html">const_reference</a> <a class="code hl_function" href="classbasic__json.html#a3d3ea17617e94886f3e86ac921095a13">operator[]</a>(<span class="keyword">const</span> <span class="keyword">typename</span> object_t::key_type&amp; <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>)<span class="keyword"> const</span></div>
 <div class="line"><a id="l21444" name="l21444"></a><span class="lineno">21444</span><span class="keyword">    </span>{</div>
 <div class="line"><a id="l21445" name="l21445"></a><span class="lineno">21445</span>        <span class="comment">// const operator[] only works for objects</span></div>
 <div class="line"><a id="l21446" name="l21446"></a><span class="lineno">21446</span>        <span class="keywordflow">if</span> (JSON_HEDLEY_LIKELY(is_object()))</div>
 <div class="line"><a id="l21447" name="l21447"></a><span class="lineno">21447</span>        {</div>
-<div class="line"><a id="l21448" name="l21448"></a><span class="lineno">21448</span>            <span class="keyword">auto</span> it = m_data.<a class="code hl_variable" href="classbasic__json.html#acd0f167153f047a246b51858d7c921b8">m_value</a>.object-&gt;find(key);</div>
+<div class="line"><a id="l21448" name="l21448"></a><span class="lineno">21448</span>            <span class="keyword">auto</span> it = m_data.<a class="code hl_variable" href="classbasic__json.html#acd0f167153f047a246b51858d7c921b8">m_value</a>.object-&gt;find(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>);</div>
 <div class="line"><a id="l21449" name="l21449"></a><span class="lineno">21449</span>            JSON_ASSERT(it != m_data.m_value.object-&gt;end());</div>
 <div class="line"><a id="l21450" name="l21450"></a><span class="lineno">21450</span>            <span class="keywordflow">return</span> it-&gt;second;</div>
 <div class="line"><a id="l21451" name="l21451"></a><span class="lineno">21451</span>        }</div>
@@ -19511,20 +19511,20 @@ $(function() {
 <div class="line"><a id="l21456" name="l21456"></a><span class="lineno">21456</span>    <span class="comment">// these two functions resolve a (const) char * ambiguity affecting Clang and MSVC</span></div>
 <div class="line"><a id="l21457" name="l21457"></a><span class="lineno">21457</span>    <span class="comment">// (they seemingly cannot be constrained to resolve the ambiguity)</span></div>
 <div class="line"><a id="l21458" name="l21458"></a><span class="lineno">21458</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a id="l21459" name="l21459"></a><span class="lineno">21459</span>    reference operator[](T* key)</div>
+<div class="line"><a id="l21459" name="l21459"></a><span class="lineno">21459</span>    reference operator[](T* <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>)</div>
 <div class="line"><a id="l21460" name="l21460"></a><span class="lineno">21460</span>    {</div>
-<div class="line"><a id="l21461" name="l21461"></a><span class="lineno">21461</span>        <span class="keywordflow">return</span> operator[](<span class="keyword">typename</span> object_t::key_type(key));</div>
+<div class="line"><a id="l21461" name="l21461"></a><span class="lineno">21461</span>        <span class="keywordflow">return</span> operator[](<span class="keyword">typename</span> object_t::key_type(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>));</div>
 <div class="line"><a id="l21462" name="l21462"></a><span class="lineno">21462</span>    }</div>
 <div class="line"><a id="l21463" name="l21463"></a><span class="lineno">21463</span> </div>
 <div class="line"><a id="l21464" name="l21464"></a><span class="lineno">21464</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a id="l21465" name="l21465"></a><span class="lineno">21465</span>    const_reference operator[](T* key)<span class="keyword"> const</span></div>
+<div class="line"><a id="l21465" name="l21465"></a><span class="lineno">21465</span>    const_reference operator[](T* <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>)<span class="keyword"> const</span></div>
 <div class="line"><a id="l21466" name="l21466"></a><span class="lineno">21466</span><span class="keyword">    </span>{</div>
-<div class="line"><a id="l21467" name="l21467"></a><span class="lineno">21467</span>        <span class="keywordflow">return</span> operator[](<span class="keyword">typename</span> object_t::key_type(key));</div>
+<div class="line"><a id="l21467" name="l21467"></a><span class="lineno">21467</span>        <span class="keywordflow">return</span> operator[](<span class="keyword">typename</span> object_t::key_type(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>));</div>
 <div class="line"><a id="l21468" name="l21468"></a><span class="lineno">21468</span>    }</div>
 <div class="line"><a id="l21469" name="l21469"></a><span class="lineno">21469</span> </div>
 <div class="line"><a id="l21472" name="l21472"></a><span class="lineno">21472</span>    <span class="keyword">template</span>&lt;<span class="keyword">class </span>KeyType, detail::enable_if_t&lt;</div>
 <div class="line"><a id="l21473" name="l21473"></a><span class="lineno">21473</span>                 detail::is_usable_as_basic_json_key_type&lt;basic_json_t, KeyType&gt;::value, <span class="keywordtype">int</span> &gt; = 0 &gt;</div>
-<div class="line"><a id="l21474" name="l21474"></a><span class="lineno"><a class="line" href="classbasic__json.html#a06fe1a1c7aa8c193c73aa40b17ee5f68">21474</a></span>    <a class="code hl_class" href="classbasic__json.html">reference</a> <a class="code hl_function" href="classbasic__json.html#a06fe1a1c7aa8c193c73aa40b17ee5f68">operator[]</a>(KeyType &amp;&amp; key)</div>
+<div class="line"><a id="l21474" name="l21474"></a><span class="lineno"><a class="line" href="classbasic__json.html#a06fe1a1c7aa8c193c73aa40b17ee5f68">21474</a></span>    <a class="code hl_class" href="classbasic__json.html">reference</a> <a class="code hl_function" href="classbasic__json.html#a06fe1a1c7aa8c193c73aa40b17ee5f68">operator[]</a>(KeyType &amp;&amp; <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>)</div>
 <div class="line"><a id="l21475" name="l21475"></a><span class="lineno">21475</span>    {</div>
 <div class="line"><a id="l21476" name="l21476"></a><span class="lineno">21476</span>        <span class="comment">// implicitly convert null value to an empty object</span></div>
 <div class="line"><a id="l21477" name="l21477"></a><span class="lineno">21477</span>        <span class="keywordflow">if</span> (is_null())</div>
@@ -19537,7 +19537,7 @@ $(function() {
 <div class="line"><a id="l21484" name="l21484"></a><span class="lineno">21484</span>        <span class="comment">// operator[] only works for objects</span></div>
 <div class="line"><a id="l21485" name="l21485"></a><span class="lineno">21485</span>        <span class="keywordflow">if</span> (JSON_HEDLEY_LIKELY(is_object()))</div>
 <div class="line"><a id="l21486" name="l21486"></a><span class="lineno">21486</span>        {</div>
-<div class="line"><a id="l21487" name="l21487"></a><span class="lineno">21487</span>            <span class="keyword">auto</span> result = m_data.m_value.object-&gt;emplace(std::forward&lt;KeyType&gt;(key), <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l21487" name="l21487"></a><span class="lineno">21487</span>            <span class="keyword">auto</span> result = m_data.m_value.object-&gt;emplace(std::forward&lt;KeyType&gt;(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>), <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l21488" name="l21488"></a><span class="lineno">21488</span>            <span class="keywordflow">return</span> set_parent(result.first-&gt;second);</div>
 <div class="line"><a id="l21489" name="l21489"></a><span class="lineno">21489</span>        }</div>
 <div class="line"><a id="l21490" name="l21490"></a><span class="lineno">21490</span> </div>
@@ -19546,12 +19546,12 @@ $(function() {
 <div class="line"><a id="l21493" name="l21493"></a><span class="lineno">21493</span> </div>
 <div class="line"><a id="l21496" name="l21496"></a><span class="lineno">21496</span>    <span class="keyword">template</span>&lt;<span class="keyword">class </span>KeyType, detail::enable_if_t&lt;</div>
 <div class="line"><a id="l21497" name="l21497"></a><span class="lineno">21497</span>                 detail::is_usable_as_basic_json_key_type&lt;basic_json_t, KeyType&gt;::value, <span class="keywordtype">int</span> &gt; = 0 &gt;</div>
-<div class="line"><a id="l21498" name="l21498"></a><span class="lineno"><a class="line" href="classbasic__json.html#a2e11a3f2a234cd296b515173b6a3b986">21498</a></span>    <a class="code hl_class" href="classbasic__json.html">const_reference</a> <a class="code hl_function" href="classbasic__json.html#a2e11a3f2a234cd296b515173b6a3b986">operator[]</a>(KeyType &amp;&amp; key)<span class="keyword"> const</span></div>
+<div class="line"><a id="l21498" name="l21498"></a><span class="lineno"><a class="line" href="classbasic__json.html#a2e11a3f2a234cd296b515173b6a3b986">21498</a></span>    <a class="code hl_class" href="classbasic__json.html">const_reference</a> <a class="code hl_function" href="classbasic__json.html#a2e11a3f2a234cd296b515173b6a3b986">operator[]</a>(KeyType &amp;&amp; <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>)<span class="keyword"> const</span></div>
 <div class="line"><a id="l21499" name="l21499"></a><span class="lineno">21499</span><span class="keyword">    </span>{</div>
 <div class="line"><a id="l21500" name="l21500"></a><span class="lineno">21500</span>        <span class="comment">// const operator[] only works for objects</span></div>
 <div class="line"><a id="l21501" name="l21501"></a><span class="lineno">21501</span>        <span class="keywordflow">if</span> (JSON_HEDLEY_LIKELY(is_object()))</div>
 <div class="line"><a id="l21502" name="l21502"></a><span class="lineno">21502</span>        {</div>
-<div class="line"><a id="l21503" name="l21503"></a><span class="lineno">21503</span>            <span class="keyword">auto</span> it = m_data.<a class="code hl_variable" href="classbasic__json.html#acd0f167153f047a246b51858d7c921b8">m_value</a>.object-&gt;find(std::forward&lt;KeyType&gt;(key));</div>
+<div class="line"><a id="l21503" name="l21503"></a><span class="lineno">21503</span>            <span class="keyword">auto</span> it = m_data.<a class="code hl_variable" href="classbasic__json.html#acd0f167153f047a246b51858d7c921b8">m_value</a>.object-&gt;find(std::forward&lt;KeyType&gt;(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>));</div>
 <div class="line"><a id="l21504" name="l21504"></a><span class="lineno">21504</span>            JSON_ASSERT(it != m_data.m_value.object-&gt;end());</div>
 <div class="line"><a id="l21505" name="l21505"></a><span class="lineno">21505</span>            <span class="keywordflow">return</span> it-&gt;second;</div>
 <div class="line"><a id="l21506" name="l21506"></a><span class="lineno">21506</span>        }</div>
@@ -19574,13 +19574,13 @@ $(function() {
 <div class="line"><a id="l21525" name="l21525"></a><span class="lineno">21525</span>                   !<a class="code hl_struct" href="structdetail_1_1is__transparent.html">detail::is_transparent&lt;object_comparator_t&gt;::value</a></div>
 <div class="line"><a id="l21526" name="l21526"></a><span class="lineno">21526</span>                   &amp;&amp; <a class="code hl_struct" href="structdetail_1_1is__getable.html">detail::is_getable&lt;basic_json_t, ValueType&gt;::value</a></div>
 <div class="line"><a id="l21527" name="l21527"></a><span class="lineno">21527</span>                   &amp;&amp; !std::is_same&lt;value_t, detail::uncvref_t&lt;ValueType&gt;&gt;::value, <span class="keywordtype">int</span> &gt; = 0 &gt;</div>
-<div class="line"><a id="l21528" name="l21528"></a><span class="lineno"><a class="line" href="classbasic__json.html#a80c2436388fd16a1529ce9afce8229ef">21528</a></span>    ValueType <a class="code hl_function" href="classbasic__json.html#a80c2436388fd16a1529ce9afce8229ef">value</a>(<span class="keyword">const</span> <span class="keyword">typename</span> object_t::key_type&amp; key, <span class="keyword">const</span> ValueType&amp; default_value)<span class="keyword"> const</span></div>
+<div class="line"><a id="l21528" name="l21528"></a><span class="lineno"><a class="line" href="classbasic__json.html#a80c2436388fd16a1529ce9afce8229ef">21528</a></span>    ValueType <a class="code hl_function" href="classbasic__json.html#a80c2436388fd16a1529ce9afce8229ef">value</a>(<span class="keyword">const</span> <span class="keyword">typename</span> object_t::key_type&amp; <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>, <span class="keyword">const</span> ValueType&amp; default_value)<span class="keyword"> const</span></div>
 <div class="line"><a id="l21529" name="l21529"></a><span class="lineno">21529</span><span class="keyword">    </span>{</div>
 <div class="line"><a id="l21530" name="l21530"></a><span class="lineno">21530</span>        <span class="comment">// value only works for objects</span></div>
 <div class="line"><a id="l21531" name="l21531"></a><span class="lineno">21531</span>        <span class="keywordflow">if</span> (JSON_HEDLEY_LIKELY(is_object()))</div>
 <div class="line"><a id="l21532" name="l21532"></a><span class="lineno">21532</span>        {</div>
 <div class="line"><a id="l21533" name="l21533"></a><span class="lineno">21533</span>            <span class="comment">// if key is found, return value and given default value otherwise</span></div>
-<div class="line"><a id="l21534" name="l21534"></a><span class="lineno">21534</span>            <span class="keyword">const</span> <span class="keyword">auto</span> it = find(key);</div>
+<div class="line"><a id="l21534" name="l21534"></a><span class="lineno">21534</span>            <span class="keyword">const</span> <span class="keyword">auto</span> it = find(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>);</div>
 <div class="line"><a id="l21535" name="l21535"></a><span class="lineno">21535</span>            <span class="keywordflow">if</span> (it != end())</div>
 <div class="line"><a id="l21536" name="l21536"></a><span class="lineno">21536</span>            {</div>
 <div class="line"><a id="l21537" name="l21537"></a><span class="lineno">21537</span>                <span class="keywordflow">return</span> it-&gt;template get&lt;ValueType&gt;();</div>
@@ -19597,13 +19597,13 @@ $(function() {
 <div class="line"><a id="l21550" name="l21550"></a><span class="lineno">21550</span>                   !<a class="code hl_struct" href="structdetail_1_1is__transparent.html">detail::is_transparent&lt;object_comparator_t&gt;::value</a></div>
 <div class="line"><a id="l21551" name="l21551"></a><span class="lineno">21551</span>                   &amp;&amp; <a class="code hl_struct" href="structdetail_1_1is__getable.html">detail::is_getable&lt;basic_json_t, ReturnType&gt;::value</a></div>
 <div class="line"><a id="l21552" name="l21552"></a><span class="lineno">21552</span>                   &amp;&amp; !std::is_same&lt;value_t, detail::uncvref_t&lt;ValueType&gt;&gt;::value, <span class="keywordtype">int</span> &gt; = 0 &gt;</div>
-<div class="line"><a id="l21553" name="l21553"></a><span class="lineno"><a class="line" href="classbasic__json.html#a56244e0ed0943ad62faf61b06e7ba139">21553</a></span>    ReturnType <a class="code hl_function" href="classbasic__json.html#a56244e0ed0943ad62faf61b06e7ba139">value</a>(<span class="keyword">const</span> <span class="keyword">typename</span> object_t::key_type&amp; key, ValueType &amp;&amp; default_value)<span class="keyword"> const</span></div>
+<div class="line"><a id="l21553" name="l21553"></a><span class="lineno"><a class="line" href="classbasic__json.html#a56244e0ed0943ad62faf61b06e7ba139">21553</a></span>    ReturnType <a class="code hl_function" href="classbasic__json.html#a56244e0ed0943ad62faf61b06e7ba139">value</a>(<span class="keyword">const</span> <span class="keyword">typename</span> object_t::key_type&amp; <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>, ValueType &amp;&amp; default_value)<span class="keyword"> const</span></div>
 <div class="line"><a id="l21554" name="l21554"></a><span class="lineno">21554</span><span class="keyword">    </span>{</div>
 <div class="line"><a id="l21555" name="l21555"></a><span class="lineno">21555</span>        <span class="comment">// value only works for objects</span></div>
 <div class="line"><a id="l21556" name="l21556"></a><span class="lineno">21556</span>        <span class="keywordflow">if</span> (JSON_HEDLEY_LIKELY(is_object()))</div>
 <div class="line"><a id="l21557" name="l21557"></a><span class="lineno">21557</span>        {</div>
 <div class="line"><a id="l21558" name="l21558"></a><span class="lineno">21558</span>            <span class="comment">// if key is found, return value and given default value otherwise</span></div>
-<div class="line"><a id="l21559" name="l21559"></a><span class="lineno">21559</span>            <span class="keyword">const</span> <span class="keyword">auto</span> it = find(key);</div>
+<div class="line"><a id="l21559" name="l21559"></a><span class="lineno">21559</span>            <span class="keyword">const</span> <span class="keyword">auto</span> it = find(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>);</div>
 <div class="line"><a id="l21560" name="l21560"></a><span class="lineno">21560</span>            <span class="keywordflow">if</span> (it != end())</div>
 <div class="line"><a id="l21561" name="l21561"></a><span class="lineno">21561</span>            {</div>
 <div class="line"><a id="l21562" name="l21562"></a><span class="lineno">21562</span>                <span class="keywordflow">return</span> it-&gt;template get&lt;ReturnType&gt;();</div>
@@ -19621,13 +19621,13 @@ $(function() {
 <div class="line"><a id="l21576" name="l21576"></a><span class="lineno">21576</span>                   &amp;&amp; is_comparable_with_object_key&lt;KeyType&gt;::value</div>
 <div class="line"><a id="l21577" name="l21577"></a><span class="lineno">21577</span>                   &amp;&amp; <a class="code hl_struct" href="structdetail_1_1is__getable.html">detail::is_getable&lt;basic_json_t, ValueType&gt;::value</a></div>
 <div class="line"><a id="l21578" name="l21578"></a><span class="lineno">21578</span>                   &amp;&amp; !std::is_same&lt;value_t, detail::uncvref_t&lt;ValueType&gt;&gt;::value, <span class="keywordtype">int</span> &gt; = 0 &gt;</div>
-<div class="line"><a id="l21579" name="l21579"></a><span class="lineno"><a class="line" href="classbasic__json.html#acbe572bbfbd4687a7a9167465e4d41f2">21579</a></span>    ValueType <a class="code hl_function" href="classbasic__json.html#acbe572bbfbd4687a7a9167465e4d41f2">value</a>(KeyType &amp;&amp; key, <span class="keyword">const</span> ValueType&amp; default_value)<span class="keyword"> const</span></div>
+<div class="line"><a id="l21579" name="l21579"></a><span class="lineno"><a class="line" href="classbasic__json.html#acbe572bbfbd4687a7a9167465e4d41f2">21579</a></span>    ValueType <a class="code hl_function" href="classbasic__json.html#acbe572bbfbd4687a7a9167465e4d41f2">value</a>(KeyType &amp;&amp; <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>, <span class="keyword">const</span> ValueType&amp; default_value)<span class="keyword"> const</span></div>
 <div class="line"><a id="l21580" name="l21580"></a><span class="lineno">21580</span><span class="keyword">    </span>{</div>
 <div class="line"><a id="l21581" name="l21581"></a><span class="lineno">21581</span>        <span class="comment">// value only works for objects</span></div>
 <div class="line"><a id="l21582" name="l21582"></a><span class="lineno">21582</span>        <span class="keywordflow">if</span> (JSON_HEDLEY_LIKELY(is_object()))</div>
 <div class="line"><a id="l21583" name="l21583"></a><span class="lineno">21583</span>        {</div>
 <div class="line"><a id="l21584" name="l21584"></a><span class="lineno">21584</span>            <span class="comment">// if key is found, return value and given default value otherwise</span></div>
-<div class="line"><a id="l21585" name="l21585"></a><span class="lineno">21585</span>            <span class="keyword">const</span> <span class="keyword">auto</span> it = find(std::forward&lt;KeyType&gt;(key));</div>
+<div class="line"><a id="l21585" name="l21585"></a><span class="lineno">21585</span>            <span class="keyword">const</span> <span class="keyword">auto</span> it = find(std::forward&lt;KeyType&gt;(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>));</div>
 <div class="line"><a id="l21586" name="l21586"></a><span class="lineno">21586</span>            <span class="keywordflow">if</span> (it != end())</div>
 <div class="line"><a id="l21587" name="l21587"></a><span class="lineno">21587</span>            {</div>
 <div class="line"><a id="l21588" name="l21588"></a><span class="lineno">21588</span>                <span class="keywordflow">return</span> it-&gt;template get&lt;ValueType&gt;();</div>
@@ -19646,13 +19646,13 @@ $(function() {
 <div class="line"><a id="l21603" name="l21603"></a><span class="lineno">21603</span>                   &amp;&amp; is_comparable_with_object_key&lt;KeyType&gt;::value</div>
 <div class="line"><a id="l21604" name="l21604"></a><span class="lineno">21604</span>                   &amp;&amp; <a class="code hl_struct" href="structdetail_1_1is__getable.html">detail::is_getable&lt;basic_json_t, ReturnType&gt;::value</a></div>
 <div class="line"><a id="l21605" name="l21605"></a><span class="lineno">21605</span>                   &amp;&amp; !std::is_same&lt;value_t, detail::uncvref_t&lt;ValueType&gt;&gt;::value, <span class="keywordtype">int</span> &gt; = 0 &gt;</div>
-<div class="line"><a id="l21606" name="l21606"></a><span class="lineno"><a class="line" href="classbasic__json.html#a694398741710ce1c22797ad47109898b">21606</a></span>    ReturnType <a class="code hl_function" href="classbasic__json.html#a694398741710ce1c22797ad47109898b">value</a>(KeyType &amp;&amp; key, ValueType &amp;&amp; default_value)<span class="keyword"> const</span></div>
+<div class="line"><a id="l21606" name="l21606"></a><span class="lineno"><a class="line" href="classbasic__json.html#a694398741710ce1c22797ad47109898b">21606</a></span>    ReturnType <a class="code hl_function" href="classbasic__json.html#a694398741710ce1c22797ad47109898b">value</a>(KeyType &amp;&amp; <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>, ValueType &amp;&amp; default_value)<span class="keyword"> const</span></div>
 <div class="line"><a id="l21607" name="l21607"></a><span class="lineno">21607</span><span class="keyword">    </span>{</div>
 <div class="line"><a id="l21608" name="l21608"></a><span class="lineno">21608</span>        <span class="comment">// value only works for objects</span></div>
 <div class="line"><a id="l21609" name="l21609"></a><span class="lineno">21609</span>        <span class="keywordflow">if</span> (JSON_HEDLEY_LIKELY(is_object()))</div>
 <div class="line"><a id="l21610" name="l21610"></a><span class="lineno">21610</span>        {</div>
 <div class="line"><a id="l21611" name="l21611"></a><span class="lineno">21611</span>            <span class="comment">// if key is found, return value and given default value otherwise</span></div>
-<div class="line"><a id="l21612" name="l21612"></a><span class="lineno">21612</span>            <span class="keyword">const</span> <span class="keyword">auto</span> it = find(std::forward&lt;KeyType&gt;(key));</div>
+<div class="line"><a id="l21612" name="l21612"></a><span class="lineno">21612</span>            <span class="keyword">const</span> <span class="keyword">auto</span> it = find(std::forward&lt;KeyType&gt;(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>));</div>
 <div class="line"><a id="l21613" name="l21613"></a><span class="lineno">21613</span>            <span class="keywordflow">if</span> (it != end())</div>
 <div class="line"><a id="l21614" name="l21614"></a><span class="lineno">21614</span>            {</div>
 <div class="line"><a id="l21615" name="l21615"></a><span class="lineno">21615</span>                <span class="keywordflow">return</span> it-&gt;template get&lt;ReturnType&gt;();</div>
@@ -19896,7 +19896,7 @@ $(function() {
 <div class="line"><a id="l21869" name="l21869"></a><span class="lineno">21869</span>  <span class="keyword">private</span>:</div>
 <div class="line"><a id="l21870" name="l21870"></a><span class="lineno">21870</span>    <span class="keyword">template</span> &lt; <span class="keyword">typename</span> KeyType, detail::enable_if_t &lt;</div>
 <div class="line"><a id="l21871" name="l21871"></a><span class="lineno">21871</span>                   detail::has_erase_with_key_type&lt;basic_json_t, KeyType&gt;::value, <span class="keywordtype">int</span> &gt; = 0 &gt;</div>
-<div class="line"><a id="l21872" name="l21872"></a><span class="lineno">21872</span>    size_type erase_internal(KeyType &amp;&amp; key)</div>
+<div class="line"><a id="l21872" name="l21872"></a><span class="lineno">21872</span>    size_type erase_internal(KeyType &amp;&amp; <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>)</div>
 <div class="line"><a id="l21873" name="l21873"></a><span class="lineno">21873</span>    {</div>
 <div class="line"><a id="l21874" name="l21874"></a><span class="lineno">21874</span>        <span class="comment">// this erase only works for objects</span></div>
 <div class="line"><a id="l21875" name="l21875"></a><span class="lineno">21875</span>        <span class="keywordflow">if</span> (JSON_HEDLEY_UNLIKELY(!is_object()))</div>
@@ -19904,12 +19904,12 @@ $(function() {
 <div class="line"><a id="l21877" name="l21877"></a><span class="lineno">21877</span>            JSON_THROW(type_error::create(307, detail::concat(<span class="stringliteral">&quot;cannot use erase() with &quot;</span>, type_name()), <span class="keyword">this</span>));</div>
 <div class="line"><a id="l21878" name="l21878"></a><span class="lineno">21878</span>        }</div>
 <div class="line"><a id="l21879" name="l21879"></a><span class="lineno">21879</span> </div>
-<div class="line"><a id="l21880" name="l21880"></a><span class="lineno">21880</span>        <span class="keywordflow">return</span> m_data.m_value.object-&gt;erase(std::forward&lt;KeyType&gt;(key));</div>
+<div class="line"><a id="l21880" name="l21880"></a><span class="lineno">21880</span>        <span class="keywordflow">return</span> m_data.m_value.object-&gt;erase(std::forward&lt;KeyType&gt;(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>));</div>
 <div class="line"><a id="l21881" name="l21881"></a><span class="lineno">21881</span>    }</div>
 <div class="line"><a id="l21882" name="l21882"></a><span class="lineno">21882</span> </div>
 <div class="line"><a id="l21883" name="l21883"></a><span class="lineno">21883</span>    <span class="keyword">template</span> &lt; <span class="keyword">typename</span> KeyType, detail::enable_if_t &lt;</div>
 <div class="line"><a id="l21884" name="l21884"></a><span class="lineno">21884</span>                   !detail::has_erase_with_key_type&lt;basic_json_t, KeyType&gt;::value, <span class="keywordtype">int</span> &gt; = 0 &gt;</div>
-<div class="line"><a id="l21885" name="l21885"></a><span class="lineno">21885</span>    size_type erase_internal(KeyType &amp;&amp; key)</div>
+<div class="line"><a id="l21885" name="l21885"></a><span class="lineno">21885</span>    size_type erase_internal(KeyType &amp;&amp; <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>)</div>
 <div class="line"><a id="l21886" name="l21886"></a><span class="lineno">21886</span>    {</div>
 <div class="line"><a id="l21887" name="l21887"></a><span class="lineno">21887</span>        <span class="comment">// this erase only works for objects</span></div>
 <div class="line"><a id="l21888" name="l21888"></a><span class="lineno">21888</span>        <span class="keywordflow">if</span> (JSON_HEDLEY_UNLIKELY(!is_object()))</div>
@@ -19917,7 +19917,7 @@ $(function() {
 <div class="line"><a id="l21890" name="l21890"></a><span class="lineno">21890</span>            JSON_THROW(type_error::create(307, detail::concat(<span class="stringliteral">&quot;cannot use erase() with &quot;</span>, type_name()), <span class="keyword">this</span>));</div>
 <div class="line"><a id="l21891" name="l21891"></a><span class="lineno">21891</span>        }</div>
 <div class="line"><a id="l21892" name="l21892"></a><span class="lineno">21892</span> </div>
-<div class="line"><a id="l21893" name="l21893"></a><span class="lineno">21893</span>        <span class="keyword">const</span> <span class="keyword">auto</span> it = m_data.m_value.object-&gt;find(std::forward&lt;KeyType&gt;(key));</div>
+<div class="line"><a id="l21893" name="l21893"></a><span class="lineno">21893</span>        <span class="keyword">const</span> <span class="keyword">auto</span> it = m_data.m_value.object-&gt;find(std::forward&lt;KeyType&gt;(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>));</div>
 <div class="line"><a id="l21894" name="l21894"></a><span class="lineno">21894</span>        <span class="keywordflow">if</span> (it != m_data.m_value.object-&gt;end())</div>
 <div class="line"><a id="l21895" name="l21895"></a><span class="lineno">21895</span>        {</div>
 <div class="line"><a id="l21896" name="l21896"></a><span class="lineno">21896</span>            m_data.m_value.object-&gt;erase(it);</div>
@@ -19928,18 +19928,18 @@ $(function() {
 <div class="line"><a id="l21901" name="l21901"></a><span class="lineno">21901</span> </div>
 <div class="line"><a id="l21902" name="l21902"></a><span class="lineno">21902</span>  <span class="keyword">public</span>:</div>
 <div class="line"><a id="l21903" name="l21903"></a><span class="lineno">21903</span> </div>
-<div class="line"><a id="l21906" name="l21906"></a><span class="lineno"><a class="line" href="classbasic__json.html#a05da3b93f2d4a7164589abffaa9acb33">21906</a></span>    <a class="code hl_typedef" href="classbasic__json.html#a2c086af43cf06b1b7118f5351cab3ec9">size_type</a> <a class="code hl_function" href="classbasic__json.html#a05da3b93f2d4a7164589abffaa9acb33">erase</a>(<span class="keyword">const</span> <span class="keyword">typename</span> object_t::key_type&amp; key)</div>
+<div class="line"><a id="l21906" name="l21906"></a><span class="lineno"><a class="line" href="classbasic__json.html#a05da3b93f2d4a7164589abffaa9acb33">21906</a></span>    <a class="code hl_typedef" href="classbasic__json.html#a2c086af43cf06b1b7118f5351cab3ec9">size_type</a> <a class="code hl_function" href="classbasic__json.html#a05da3b93f2d4a7164589abffaa9acb33">erase</a>(<span class="keyword">const</span> <span class="keyword">typename</span> object_t::key_type&amp; <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>)</div>
 <div class="line"><a id="l21907" name="l21907"></a><span class="lineno">21907</span>    {</div>
 <div class="line"><a id="l21908" name="l21908"></a><span class="lineno">21908</span>        <span class="comment">// the indirection via erase_internal() is added to avoid making this</span></div>
 <div class="line"><a id="l21909" name="l21909"></a><span class="lineno">21909</span>        <span class="comment">// function a template and thus de-rank it during overload resolution</span></div>
-<div class="line"><a id="l21910" name="l21910"></a><span class="lineno">21910</span>        <span class="keywordflow">return</span> erase_internal(key);</div>
+<div class="line"><a id="l21910" name="l21910"></a><span class="lineno">21910</span>        <span class="keywordflow">return</span> erase_internal(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>);</div>
 <div class="line"><a id="l21911" name="l21911"></a><span class="lineno">21911</span>    }</div>
 <div class="line"><a id="l21912" name="l21912"></a><span class="lineno">21912</span> </div>
 <div class="line"><a id="l21915" name="l21915"></a><span class="lineno">21915</span>    <span class="keyword">template</span>&lt;<span class="keyword">class </span>KeyType, detail::enable_if_t&lt;</div>
 <div class="line"><a id="l21916" name="l21916"></a><span class="lineno">21916</span>                 detail::is_usable_as_basic_json_key_type&lt;basic_json_t, KeyType&gt;::value, <span class="keywordtype">int</span>&gt; = 0&gt;</div>
-<div class="line"><a id="l21917" name="l21917"></a><span class="lineno"><a class="line" href="classbasic__json.html#a5f763336e84232f38e2d80e142f9820e">21917</a></span>    <a class="code hl_typedef" href="classbasic__json.html#a2c086af43cf06b1b7118f5351cab3ec9">size_type</a> <a class="code hl_function" href="classbasic__json.html#a5f763336e84232f38e2d80e142f9820e">erase</a>(KeyType &amp;&amp; key)</div>
+<div class="line"><a id="l21917" name="l21917"></a><span class="lineno"><a class="line" href="classbasic__json.html#a5f763336e84232f38e2d80e142f9820e">21917</a></span>    <a class="code hl_typedef" href="classbasic__json.html#a2c086af43cf06b1b7118f5351cab3ec9">size_type</a> <a class="code hl_function" href="classbasic__json.html#a5f763336e84232f38e2d80e142f9820e">erase</a>(KeyType &amp;&amp; <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>)</div>
 <div class="line"><a id="l21918" name="l21918"></a><span class="lineno">21918</span>    {</div>
-<div class="line"><a id="l21919" name="l21919"></a><span class="lineno">21919</span>        <span class="keywordflow">return</span> erase_internal(std::forward&lt;KeyType&gt;(key));</div>
+<div class="line"><a id="l21919" name="l21919"></a><span class="lineno">21919</span>        <span class="keywordflow">return</span> erase_internal(std::forward&lt;KeyType&gt;(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>));</div>
 <div class="line"><a id="l21920" name="l21920"></a><span class="lineno">21920</span>    }</div>
 <div class="line"><a id="l21921" name="l21921"></a><span class="lineno">21921</span> </div>
 <div class="line"><a id="l21924" name="l21924"></a><span class="lineno"><a class="line" href="classbasic__json.html#ac2c58b5f34c2ff56e27630214f5a9df4">21924</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classbasic__json.html#ac2c58b5f34c2ff56e27630214f5a9df4">erase</a>(<span class="keyword">const</span> <a class="code hl_typedef" href="classbasic__json.html#a2c086af43cf06b1b7118f5351cab3ec9">size_type</a> idx)</div>
@@ -19964,25 +19964,25 @@ $(function() {
 <div class="line"><a id="l21945" name="l21945"></a><span class="lineno">21945</span>    <span class="comment">// lookup //</span></div>
 <div class="line"><a id="l21947" name="l21947"></a><span class="lineno">21947</span><span class="comment"></span> </div>
 <div class="line"><a id="l21950" name="l21950"></a><span class="lineno">21950</span> </div>
-<div class="line"><a id="l21953" name="l21953"></a><span class="lineno"><a class="line" href="classbasic__json.html#a727e3cfb5a874314d8deb12cb53a8105">21953</a></span>    <a class="code hl_typedef" href="classbasic__json.html#ae206a491161d043f8efaa1330f1ccf97">iterator</a> <a class="code hl_function" href="classbasic__json.html#a727e3cfb5a874314d8deb12cb53a8105">find</a>(<span class="keyword">const</span> <span class="keyword">typename</span> object_t::key_type&amp; key)</div>
+<div class="line"><a id="l21953" name="l21953"></a><span class="lineno"><a class="line" href="classbasic__json.html#a727e3cfb5a874314d8deb12cb53a8105">21953</a></span>    <a class="code hl_typedef" href="classbasic__json.html#ae206a491161d043f8efaa1330f1ccf97">iterator</a> <a class="code hl_function" href="classbasic__json.html#a727e3cfb5a874314d8deb12cb53a8105">find</a>(<span class="keyword">const</span> <span class="keyword">typename</span> object_t::key_type&amp; <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>)</div>
 <div class="line"><a id="l21954" name="l21954"></a><span class="lineno">21954</span>    {</div>
 <div class="line"><a id="l21955" name="l21955"></a><span class="lineno">21955</span>        <span class="keyword">auto</span> result = end();</div>
 <div class="line"><a id="l21956" name="l21956"></a><span class="lineno">21956</span> </div>
 <div class="line"><a id="l21957" name="l21957"></a><span class="lineno">21957</span>        <span class="keywordflow">if</span> (is_object())</div>
 <div class="line"><a id="l21958" name="l21958"></a><span class="lineno">21958</span>        {</div>
-<div class="line"><a id="l21959" name="l21959"></a><span class="lineno">21959</span>            result.m_it.object_iterator = m_data.m_value.object-&gt;find(key);</div>
+<div class="line"><a id="l21959" name="l21959"></a><span class="lineno">21959</span>            result.m_it.object_iterator = m_data.m_value.object-&gt;find(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>);</div>
 <div class="line"><a id="l21960" name="l21960"></a><span class="lineno">21960</span>        }</div>
 <div class="line"><a id="l21961" name="l21961"></a><span class="lineno">21961</span> </div>
 <div class="line"><a id="l21962" name="l21962"></a><span class="lineno">21962</span>        <span class="keywordflow">return</span> result;</div>
 <div class="line"><a id="l21963" name="l21963"></a><span class="lineno">21963</span>    }</div>
 <div class="line"><a id="l21964" name="l21964"></a><span class="lineno">21964</span> </div>
-<div class="line"><a id="l21967" name="l21967"></a><span class="lineno"><a class="line" href="classbasic__json.html#a7bf93ae61eb63a9e543cafb3f723900c">21967</a></span>    <a class="code hl_typedef" href="classbasic__json.html#a1f5af3d9d06d43b91fefe1767794b1e8">const_iterator</a> <a class="code hl_function" href="classbasic__json.html#a7bf93ae61eb63a9e543cafb3f723900c">find</a>(<span class="keyword">const</span> <span class="keyword">typename</span> object_t::key_type&amp; key)<span class="keyword"> const</span></div>
+<div class="line"><a id="l21967" name="l21967"></a><span class="lineno"><a class="line" href="classbasic__json.html#a7bf93ae61eb63a9e543cafb3f723900c">21967</a></span>    <a class="code hl_typedef" href="classbasic__json.html#a1f5af3d9d06d43b91fefe1767794b1e8">const_iterator</a> <a class="code hl_function" href="classbasic__json.html#a7bf93ae61eb63a9e543cafb3f723900c">find</a>(<span class="keyword">const</span> <span class="keyword">typename</span> object_t::key_type&amp; <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>)<span class="keyword"> const</span></div>
 <div class="line"><a id="l21968" name="l21968"></a><span class="lineno">21968</span><span class="keyword">    </span>{</div>
 <div class="line"><a id="l21969" name="l21969"></a><span class="lineno">21969</span>        <span class="keyword">auto</span> result = cend();</div>
 <div class="line"><a id="l21970" name="l21970"></a><span class="lineno">21970</span> </div>
 <div class="line"><a id="l21971" name="l21971"></a><span class="lineno">21971</span>        <span class="keywordflow">if</span> (is_object())</div>
 <div class="line"><a id="l21972" name="l21972"></a><span class="lineno">21972</span>        {</div>
-<div class="line"><a id="l21973" name="l21973"></a><span class="lineno">21973</span>            result.m_it.object_iterator = m_data.m_value.object-&gt;find(key);</div>
+<div class="line"><a id="l21973" name="l21973"></a><span class="lineno">21973</span>            result.m_it.object_iterator = m_data.m_value.object-&gt;find(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>);</div>
 <div class="line"><a id="l21974" name="l21974"></a><span class="lineno">21974</span>        }</div>
 <div class="line"><a id="l21975" name="l21975"></a><span class="lineno">21975</span> </div>
 <div class="line"><a id="l21976" name="l21976"></a><span class="lineno">21976</span>        <span class="keywordflow">return</span> result;</div>
@@ -19990,13 +19990,13 @@ $(function() {
 <div class="line"><a id="l21978" name="l21978"></a><span class="lineno">21978</span> </div>
 <div class="line"><a id="l21981" name="l21981"></a><span class="lineno">21981</span>    <span class="keyword">template</span>&lt;<span class="keyword">class </span>KeyType, detail::enable_if_t&lt;</div>
 <div class="line"><a id="l21982" name="l21982"></a><span class="lineno">21982</span>                 detail::is_usable_as_basic_json_key_type&lt;basic_json_t, KeyType&gt;::value, <span class="keywordtype">int</span>&gt; = 0&gt;</div>
-<div class="line"><a id="l21983" name="l21983"></a><span class="lineno"><a class="line" href="classbasic__json.html#a89dd769ce700326266883ba96a98a8f2">21983</a></span>    <a class="code hl_typedef" href="classbasic__json.html#ae206a491161d043f8efaa1330f1ccf97">iterator</a> <a class="code hl_function" href="classbasic__json.html#a89dd769ce700326266883ba96a98a8f2">find</a>(KeyType &amp;&amp; key)</div>
+<div class="line"><a id="l21983" name="l21983"></a><span class="lineno"><a class="line" href="classbasic__json.html#a89dd769ce700326266883ba96a98a8f2">21983</a></span>    <a class="code hl_typedef" href="classbasic__json.html#ae206a491161d043f8efaa1330f1ccf97">iterator</a> <a class="code hl_function" href="classbasic__json.html#a89dd769ce700326266883ba96a98a8f2">find</a>(KeyType &amp;&amp; <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>)</div>
 <div class="line"><a id="l21984" name="l21984"></a><span class="lineno">21984</span>    {</div>
 <div class="line"><a id="l21985" name="l21985"></a><span class="lineno">21985</span>        <span class="keyword">auto</span> result = end();</div>
 <div class="line"><a id="l21986" name="l21986"></a><span class="lineno">21986</span> </div>
 <div class="line"><a id="l21987" name="l21987"></a><span class="lineno">21987</span>        <span class="keywordflow">if</span> (is_object())</div>
 <div class="line"><a id="l21988" name="l21988"></a><span class="lineno">21988</span>        {</div>
-<div class="line"><a id="l21989" name="l21989"></a><span class="lineno">21989</span>            result.m_it.object_iterator = m_data.m_value.object-&gt;find(std::forward&lt;KeyType&gt;(key));</div>
+<div class="line"><a id="l21989" name="l21989"></a><span class="lineno">21989</span>            result.m_it.object_iterator = m_data.m_value.object-&gt;find(std::forward&lt;KeyType&gt;(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>));</div>
 <div class="line"><a id="l21990" name="l21990"></a><span class="lineno">21990</span>        }</div>
 <div class="line"><a id="l21991" name="l21991"></a><span class="lineno">21991</span> </div>
 <div class="line"><a id="l21992" name="l21992"></a><span class="lineno">21992</span>        <span class="keywordflow">return</span> result;</div>
@@ -20004,42 +20004,42 @@ $(function() {
 <div class="line"><a id="l21994" name="l21994"></a><span class="lineno">21994</span> </div>
 <div class="line"><a id="l21997" name="l21997"></a><span class="lineno">21997</span>    <span class="keyword">template</span>&lt;<span class="keyword">class </span>KeyType, detail::enable_if_t&lt;</div>
 <div class="line"><a id="l21998" name="l21998"></a><span class="lineno">21998</span>                 detail::is_usable_as_basic_json_key_type&lt;basic_json_t, KeyType&gt;::value, <span class="keywordtype">int</span>&gt; = 0&gt;</div>
-<div class="line"><a id="l21999" name="l21999"></a><span class="lineno"><a class="line" href="classbasic__json.html#afe1bb257797042aef7142c91f35390d8">21999</a></span>    <a class="code hl_typedef" href="classbasic__json.html#a1f5af3d9d06d43b91fefe1767794b1e8">const_iterator</a> <a class="code hl_function" href="classbasic__json.html#afe1bb257797042aef7142c91f35390d8">find</a>(KeyType &amp;&amp; key)<span class="keyword"> const</span></div>
+<div class="line"><a id="l21999" name="l21999"></a><span class="lineno"><a class="line" href="classbasic__json.html#afe1bb257797042aef7142c91f35390d8">21999</a></span>    <a class="code hl_typedef" href="classbasic__json.html#a1f5af3d9d06d43b91fefe1767794b1e8">const_iterator</a> <a class="code hl_function" href="classbasic__json.html#afe1bb257797042aef7142c91f35390d8">find</a>(KeyType &amp;&amp; <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>)<span class="keyword"> const</span></div>
 <div class="line"><a id="l22000" name="l22000"></a><span class="lineno">22000</span><span class="keyword">    </span>{</div>
 <div class="line"><a id="l22001" name="l22001"></a><span class="lineno">22001</span>        <span class="keyword">auto</span> result = cend();</div>
 <div class="line"><a id="l22002" name="l22002"></a><span class="lineno">22002</span> </div>
 <div class="line"><a id="l22003" name="l22003"></a><span class="lineno">22003</span>        <span class="keywordflow">if</span> (is_object())</div>
 <div class="line"><a id="l22004" name="l22004"></a><span class="lineno">22004</span>        {</div>
-<div class="line"><a id="l22005" name="l22005"></a><span class="lineno">22005</span>            result.m_it.object_iterator = m_data.m_value.object-&gt;find(std::forward&lt;KeyType&gt;(key));</div>
+<div class="line"><a id="l22005" name="l22005"></a><span class="lineno">22005</span>            result.m_it.object_iterator = m_data.m_value.object-&gt;find(std::forward&lt;KeyType&gt;(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>));</div>
 <div class="line"><a id="l22006" name="l22006"></a><span class="lineno">22006</span>        }</div>
 <div class="line"><a id="l22007" name="l22007"></a><span class="lineno">22007</span> </div>
 <div class="line"><a id="l22008" name="l22008"></a><span class="lineno">22008</span>        <span class="keywordflow">return</span> result;</div>
 <div class="line"><a id="l22009" name="l22009"></a><span class="lineno">22009</span>    }</div>
 <div class="line"><a id="l22010" name="l22010"></a><span class="lineno">22010</span> </div>
-<div class="line"><a id="l22013" name="l22013"></a><span class="lineno"><a class="line" href="classbasic__json.html#ad1e1eff03a320299e6a8639a7579ca46">22013</a></span>    <a class="code hl_typedef" href="classbasic__json.html#a2c086af43cf06b1b7118f5351cab3ec9">size_type</a> <a class="code hl_function" href="classbasic__json.html#ad1e1eff03a320299e6a8639a7579ca46">count</a>(<span class="keyword">const</span> <span class="keyword">typename</span> object_t::key_type&amp; key)<span class="keyword"> const</span></div>
+<div class="line"><a id="l22013" name="l22013"></a><span class="lineno"><a class="line" href="classbasic__json.html#ad1e1eff03a320299e6a8639a7579ca46">22013</a></span>    <a class="code hl_typedef" href="classbasic__json.html#a2c086af43cf06b1b7118f5351cab3ec9">size_type</a> <a class="code hl_function" href="classbasic__json.html#ad1e1eff03a320299e6a8639a7579ca46">count</a>(<span class="keyword">const</span> <span class="keyword">typename</span> object_t::key_type&amp; <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>)<span class="keyword"> const</span></div>
 <div class="line"><a id="l22014" name="l22014"></a><span class="lineno">22014</span><span class="keyword">    </span>{</div>
 <div class="line"><a id="l22015" name="l22015"></a><span class="lineno">22015</span>        <span class="comment">// return 0 for all nonobject types</span></div>
-<div class="line"><a id="l22016" name="l22016"></a><span class="lineno">22016</span>        <span class="keywordflow">return</span> is_object() ? m_data.m_value.object-&gt;count(key) : 0;</div>
+<div class="line"><a id="l22016" name="l22016"></a><span class="lineno">22016</span>        <span class="keywordflow">return</span> is_object() ? m_data.m_value.object-&gt;count(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>) : 0;</div>
 <div class="line"><a id="l22017" name="l22017"></a><span class="lineno">22017</span>    }</div>
 <div class="line"><a id="l22018" name="l22018"></a><span class="lineno">22018</span> </div>
 <div class="line"><a id="l22021" name="l22021"></a><span class="lineno">22021</span>    <span class="keyword">template</span>&lt;<span class="keyword">class </span>KeyType, detail::enable_if_t&lt;</div>
 <div class="line"><a id="l22022" name="l22022"></a><span class="lineno">22022</span>                 detail::is_usable_as_basic_json_key_type&lt;basic_json_t, KeyType&gt;::value, <span class="keywordtype">int</span>&gt; = 0&gt;</div>
-<div class="line"><a id="l22023" name="l22023"></a><span class="lineno"><a class="line" href="classbasic__json.html#a1ba1cd73d36a2cd58a9da7021b0f7317">22023</a></span>    <a class="code hl_typedef" href="classbasic__json.html#a2c086af43cf06b1b7118f5351cab3ec9">size_type</a> <a class="code hl_function" href="classbasic__json.html#a1ba1cd73d36a2cd58a9da7021b0f7317">count</a>(KeyType &amp;&amp; key)<span class="keyword"> const</span></div>
+<div class="line"><a id="l22023" name="l22023"></a><span class="lineno"><a class="line" href="classbasic__json.html#a1ba1cd73d36a2cd58a9da7021b0f7317">22023</a></span>    <a class="code hl_typedef" href="classbasic__json.html#a2c086af43cf06b1b7118f5351cab3ec9">size_type</a> <a class="code hl_function" href="classbasic__json.html#a1ba1cd73d36a2cd58a9da7021b0f7317">count</a>(KeyType &amp;&amp; <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>)<span class="keyword"> const</span></div>
 <div class="line"><a id="l22024" name="l22024"></a><span class="lineno">22024</span><span class="keyword">    </span>{</div>
 <div class="line"><a id="l22025" name="l22025"></a><span class="lineno">22025</span>        <span class="comment">// return 0 for all nonobject types</span></div>
-<div class="line"><a id="l22026" name="l22026"></a><span class="lineno">22026</span>        <span class="keywordflow">return</span> is_object() ? m_data.m_value.object-&gt;count(std::forward&lt;KeyType&gt;(key)) : 0;</div>
+<div class="line"><a id="l22026" name="l22026"></a><span class="lineno">22026</span>        <span class="keywordflow">return</span> is_object() ? m_data.m_value.object-&gt;count(std::forward&lt;KeyType&gt;(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>)) : 0;</div>
 <div class="line"><a id="l22027" name="l22027"></a><span class="lineno">22027</span>    }</div>
 <div class="line"><a id="l22028" name="l22028"></a><span class="lineno">22028</span> </div>
-<div class="line"><a id="l22031" name="l22031"></a><span class="lineno"><a class="line" href="classbasic__json.html#afd5ea67fe1a4778be5189423e2545d7a">22031</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classbasic__json.html#afd5ea67fe1a4778be5189423e2545d7a">contains</a>(<span class="keyword">const</span> <span class="keyword">typename</span> object_t::key_type&amp; key)<span class="keyword"> const</span></div>
+<div class="line"><a id="l22031" name="l22031"></a><span class="lineno"><a class="line" href="classbasic__json.html#afd5ea67fe1a4778be5189423e2545d7a">22031</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classbasic__json.html#afd5ea67fe1a4778be5189423e2545d7a">contains</a>(<span class="keyword">const</span> <span class="keyword">typename</span> object_t::key_type&amp; <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>)<span class="keyword"> const</span></div>
 <div class="line"><a id="l22032" name="l22032"></a><span class="lineno">22032</span><span class="keyword">    </span>{</div>
-<div class="line"><a id="l22033" name="l22033"></a><span class="lineno">22033</span>        <span class="keywordflow">return</span> is_object() &amp;&amp; m_data.m_value.object-&gt;find(key) != m_data.m_value.object-&gt;end();</div>
+<div class="line"><a id="l22033" name="l22033"></a><span class="lineno">22033</span>        <span class="keywordflow">return</span> is_object() &amp;&amp; m_data.m_value.object-&gt;find(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>) != m_data.m_value.object-&gt;end();</div>
 <div class="line"><a id="l22034" name="l22034"></a><span class="lineno">22034</span>    }</div>
 <div class="line"><a id="l22035" name="l22035"></a><span class="lineno">22035</span> </div>
 <div class="line"><a id="l22038" name="l22038"></a><span class="lineno">22038</span>    <span class="keyword">template</span>&lt;<span class="keyword">class </span>KeyType, detail::enable_if_t&lt;</div>
 <div class="line"><a id="l22039" name="l22039"></a><span class="lineno">22039</span>                 detail::is_usable_as_basic_json_key_type&lt;basic_json_t, KeyType&gt;::value, <span class="keywordtype">int</span>&gt; = 0&gt;</div>
-<div class="line"><a id="l22040" name="l22040"></a><span class="lineno"><a class="line" href="classbasic__json.html#a7053bdd8e9ee2fcb0ca9c54ec85f1297">22040</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classbasic__json.html#a7053bdd8e9ee2fcb0ca9c54ec85f1297">contains</a>(KeyType &amp;&amp; key)<span class="keyword"> const</span></div>
+<div class="line"><a id="l22040" name="l22040"></a><span class="lineno"><a class="line" href="classbasic__json.html#a7053bdd8e9ee2fcb0ca9c54ec85f1297">22040</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classbasic__json.html#a7053bdd8e9ee2fcb0ca9c54ec85f1297">contains</a>(KeyType &amp;&amp; <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>)<span class="keyword"> const</span></div>
 <div class="line"><a id="l22041" name="l22041"></a><span class="lineno">22041</span><span class="keyword">    </span>{</div>
-<div class="line"><a id="l22042" name="l22042"></a><span class="lineno">22042</span>        <span class="keywordflow">return</span> is_object() &amp;&amp; m_data.m_value.object-&gt;find(std::forward&lt;KeyType&gt;(key)) != m_data.m_value.object-&gt;end();</div>
+<div class="line"><a id="l22042" name="l22042"></a><span class="lineno">22042</span>        <span class="keywordflow">return</span> is_object() &amp;&amp; m_data.m_value.object-&gt;find(std::forward&lt;KeyType&gt;(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>)) != m_data.m_value.object-&gt;end();</div>
 <div class="line"><a id="l22043" name="l22043"></a><span class="lineno">22043</span>    }</div>
 <div class="line"><a id="l22044" name="l22044"></a><span class="lineno">22044</span> </div>
 <div class="line"><a id="l22047" name="l22047"></a><span class="lineno"><a class="line" href="classbasic__json.html#ac4c37affef3aa8c79cab9f3bfa2cb5e1">22047</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classbasic__json.html#ac4c37affef3aa8c79cab9f3bfa2cb5e1">contains</a>(<span class="keyword">const</span> <a class="code hl_class" href="classjson__pointer.html">json_pointer</a>&amp; ptr)<span class="keyword"> const</span></div>
@@ -20410,9 +20410,9 @@ $(function() {
 <div class="line"><a id="l22487" name="l22487"></a><span class="lineno">22487</span>    {</div>
 <div class="line"><a id="l22488" name="l22488"></a><span class="lineno">22488</span>        <span class="keywordflow">if</span> (is_object() &amp;&amp; init.size() == 2 &amp;&amp; (*init.begin())-&gt;is_string())</div>
 <div class="line"><a id="l22489" name="l22489"></a><span class="lineno">22489</span>        {</div>
-<div class="line"><a id="l22490" name="l22490"></a><span class="lineno">22490</span>            <a class="code hl_class" href="classbasic__json.html">basic_json</a>&amp;&amp; key = init.begin()-&gt;moved_or_copied();</div>
+<div class="line"><a id="l22490" name="l22490"></a><span class="lineno">22490</span>            <a class="code hl_class" href="classbasic__json.html">basic_json</a>&amp;&amp; <a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a> = init.begin()-&gt;moved_or_copied();</div>
 <div class="line"><a id="l22491" name="l22491"></a><span class="lineno">22491</span>            push_back(<span class="keyword">typename</span> object_t::value_type(</div>
-<div class="line"><a id="l22492" name="l22492"></a><span class="lineno">22492</span>                          std::move(key.get_ref&lt;<a class="code hl_typedef" href="classbasic__json.html#ac8c9cde32146e6c343e1960aefc11fba">string_t</a>&amp;&gt;()), (init.begin() + 1)-&gt;moved_or_copied()));</div>
+<div class="line"><a id="l22492" name="l22492"></a><span class="lineno">22492</span>                          std::move(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>.get_ref&lt;<a class="code hl_typedef" href="classbasic__json.html#ac8c9cde32146e6c343e1960aefc11fba">string_t</a>&amp;&gt;()), (init.begin() + 1)-&gt;moved_or_copied()));</div>
 <div class="line"><a id="l22493" name="l22493"></a><span class="lineno">22493</span>        }</div>
 <div class="line"><a id="l22494" name="l22494"></a><span class="lineno">22494</span>        <span class="keywordflow">else</span></div>
 <div class="line"><a id="l22495" name="l22495"></a><span class="lineno">22495</span>        {</div>
@@ -22430,6 +22430,8 @@ $(function() {
 <div class="line"><a id="l24764" name="l24764"></a><span class="lineno">24764</span> </div>
 <div class="line"><a id="l24765" name="l24765"></a><span class="lineno">24765</span><span class="preprocessor">#endif  </span><span class="comment">// INCLUDE_NLOHMANN_JSON_HPP_</span></div>
 <div class="ttc" id="aCell_8cpp_html_a8c95ef4e61f61447dbae73a1c524c053"><div class="ttname"><a href="Cell_8cpp.html#a8c95ef4e61f61447dbae73a1c524c053">operator&lt;&lt;</a></div><div class="ttdeci">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;out, const CellType celltype)</div><div class="ttdoc">Allow Standard c++ streams to print out our enum values as text.</div><div class="ttdef"><b>Definition:</b> Cell.cpp:1927</div></div>
+<div class="ttc" id="aToolBarSections_8cpp_html_ab2f0af83120b0ab54abd434d16e7b2b2"><div class="ttname"><a href="ToolBarSections_8cpp.html#ab2f0af83120b0ab54abd434d16e7b2b2">ToolBarSections::Key</a></div><div class="ttdeci">wxString Key(Section section)</div><div class="ttdoc">The name a section is stored under in the config file. Never translated.</div><div class="ttdef"><b>Definition:</b> ToolBarSections.cpp:93</div></div>
+<div class="ttc" id="aToolBarSections_8cpp_html_ae9babfa19ef17d110412cb778d8ee389"><div class="ttname"><a href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a></div><div class="ttdeci">const wxChar * key</div><div class="ttdoc">The name in the config file.</div><div class="ttdef"><b>Definition:</b> ToolBarSections.cpp:37</div></div>
 <div class="ttc" id="aclassA_html"><div class="ttname"><a href="classA.html">A</a></div><div class="ttdef"><b>Definition:</b> diagrams_a.h:3</div></div>
 <div class="ttc" id="aclassB_html"><div class="ttname"><a href="classB.html">B</a></div><div class="ttdef"><b>Definition:</b> diagrams_b.h:4</div></div>
 <div class="ttc" id="aclassC_html"><div class="ttname"><a href="classC.html">C</a></div><div class="ttdef"><b>Definition:</b> diagrams_c.h:5</div></div>
@@ -22775,7 +22777,6 @@ $(function() {
 <div class="ttc" id="anamespacedetail_html_a160eb5d333fe01b259af32d3d4798a7b"><div class="ttname"><a href="namespacedetail.html#a160eb5d333fe01b259af32d3d4798a7b">detail::output_adapter_t</a></div><div class="ttdeci">std::shared_ptr&lt; output_adapter_protocol&lt; CharType &gt; &gt; output_adapter_t</div><div class="ttdoc">a type to simplify interfaces</div><div class="ttdef"><b>Definition:</b> json.hpp:14959</div></div>
 <div class="ttc" id="anamespacedetail_html_a47b1bb0bbd3596589ed9187059c312ef"><div class="ttname"><a href="namespacedetail.html#a47b1bb0bbd3596589ed9187059c312ef">detail::parse_event_t</a></div><div class="ttdeci">parse_event_t</div><div class="ttdef"><b>Definition:</b> json.hpp:12203</div></div>
 <div class="ttc" id="anamespacedetail_html_a47b1bb0bbd3596589ed9187059c312efa2063c1608d6e0baf80249c42e2be5804"><div class="ttname"><a href="namespacedetail.html#a47b1bb0bbd3596589ed9187059c312efa2063c1608d6e0baf80249c42e2be5804">detail::parse_event_t::value</a></div><div class="ttdeci">@ value</div><div class="ttdoc">the parser finished reading a JSON value</div></div>
-<div class="ttc" id="anamespacedetail_html_a47b1bb0bbd3596589ed9187059c312efa3c6e0b8a9c15224a8228b9a98ca1531d"><div class="ttname"><a href="namespacedetail.html#a47b1bb0bbd3596589ed9187059c312efa3c6e0b8a9c15224a8228b9a98ca1531d">detail::parse_event_t::key</a></div><div class="ttdeci">@ key</div><div class="ttdoc">the parser read a key of a value in an object</div></div>
 <div class="ttc" id="anamespacedetail_html_a47b1bb0bbd3596589ed9187059c312efa49642fb732aa2e112188fba1f9d3ef7f"><div class="ttname"><a href="namespacedetail.html#a47b1bb0bbd3596589ed9187059c312efa49642fb732aa2e112188fba1f9d3ef7f">detail::parse_event_t::array_end</a></div><div class="ttdeci">@ array_end</div><div class="ttdoc">the parser read ] and finished processing a JSON array</div></div>
 <div class="ttc" id="anamespacedetail_html_a47b1bb0bbd3596589ed9187059c312efaa4388a3d92419edbb1c6efd4d52461f3"><div class="ttname"><a href="namespacedetail.html#a47b1bb0bbd3596589ed9187059c312efaa4388a3d92419edbb1c6efd4d52461f3">detail::parse_event_t::array_start</a></div><div class="ttdeci">@ array_start</div><div class="ttdoc">the parser read [ and started to process a JSON array</div></div>
 <div class="ttc" id="anamespacedetail_html_a47b1bb0bbd3596589ed9187059c312efae73f17027cb0acbb537f29d0a6944b26"><div class="ttname"><a href="namespacedetail.html#a47b1bb0bbd3596589ed9187059c312efae73f17027cb0acbb537f29d0a6944b26">detail::parse_event_t::object_start</a></div><div class="ttdeci">@ object_start</div><div class="ttdoc">the parser read { and started to process a JSON object</div></div>

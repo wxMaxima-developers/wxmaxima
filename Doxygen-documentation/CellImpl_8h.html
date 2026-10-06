@@ -144,10 +144,11 @@ Macros</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">  std::unique_ptr&lt;Cell&gt; type::Copy(<a class="code hl_class" href="classGroupCell.html">GroupCell</a> *group) <span class="keyword">const</span>      \</div>
+<b>Value:</b><div class="fragment"><div class="line">  std::unique_ptr&lt;Cell&gt; type::Copy(<a class="code hl_class" href="classGroupCell.html">GroupCell</a> *<a class="code hl_variable" href="ToolBarSections_8cpp.html#a0242027ec3331f3d5793c42d21b6f4e1">group</a>) <span class="keyword">const</span>      \</div>
 <div class="line">  {                                                             \</div>
-<div class="line">    <span class="keywordflow">return</span> std::make_unique&lt;type&gt;(group, *<span class="keyword">this</span>);                \</div>
+<div class="line">    <span class="keywordflow">return</span> std::make_unique&lt;type&gt;(<a class="code hl_variable" href="ToolBarSections_8cpp.html#a0242027ec3331f3d5793c42d21b6f4e1">group</a>, *<span class="keyword">this</span>);                \</div>
 <div class="line">  }                                                             \</div>
+<div class="ttc" id="aToolBarSections_8cpp_html_a0242027ec3331f3d5793c42d21b6f4e1"><div class="ttname"><a href="ToolBarSections_8cpp.html#a0242027ec3331f3d5793c42d21b6f4e1">group</a></div><div class="ttdeci">int group</div><div class="ttdoc">Neighbouring sections of the same group aren't separated.</div><div class="ttdef"><b>Definition:</b> ToolBarSections.cpp:45</div></div>
 <div class="ttc" id="aclassGroupCell_html"><div class="ttname"><a href="classGroupCell.html">GroupCell</a></div><div class="ttdoc">A cell grouping input (and, if there is one, also the output) cell to a foldable item.</div><div class="ttdef"><b>Definition:</b> GroupCell.h:88</div></div>
 </div><!-- fragment -->
 </div>

@@ -690,44 +690,44 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><b>AiApiKeyAnthropic
 <tr class="memdesc:af0536a35baa199414549091c19c2f009"><td class="mdescLeft">&#160;</td><td class="mdescRight">The user's API key for each provider, kept separate so switching providers in Options doesn't lose the others. Stored in the OS secret store (<a class="el" href="classAiProvider.html#a5b1e24c3ee7a6d408fdb13442f84ab06" title="Saves (or, for an empty key, deletes) an API key for service – a stable identifier: AiProviderKindNam...">AiProvider::SaveApiKey()</a>/LoadApiKey()), never in plain Configuration/wxConfig &ndash; defined out-of-line in <a class="el" href="Configuration_8cpp.html" title="This file defines the class Configuration which serves as a fast configuration storage.">Configuration.cpp</a> specifically so this header doesn't need to include <a class="el" href="AiProvider_8h.html" title="Talks to one of a handful of external AI chat APIs for the AI chat sidebar (AiChatSidebar).">ai/AiProvider.h</a> just for these four accessors. The whole AI Chat feature is hidden (see <a class="el" href="classAiProvider.html#af1e55c3b86011c3b0f8f1e84f437286e" title="True if this build of wxWidgets has a working wxSecretStore backend (&gt;= 3.1.1, compiled with wxUSE_SE...">AiProvider::SecretStoreAvailable()</a>) on a build/system where no secret store is actually available, so these are never called in a way that would need a plain-text fallback. <br /></td></tr>
 <tr class="separator:af0536a35baa199414549091c19c2f009"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab798da11330aefb228f060556244d018"><td class="memItemLeft" align="right" valign="top"><a id="ab798da11330aefb228f060556244d018" name="ab798da11330aefb228f060556244d018"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>AiApiKeyAnthropic</b> (const wxString &amp;key)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>AiApiKeyAnthropic</b> (const wxString &amp;<a class="el" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>)</td></tr>
 <tr class="separator:ab798da11330aefb228f060556244d018"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb5c8ceab85af427088abad3aab64e33"><td class="memItemLeft" align="right" valign="top"><a id="afb5c8ceab85af427088abad3aab64e33" name="afb5c8ceab85af427088abad3aab64e33"></a>
 wxString&#160;</td><td class="memItemRight" valign="bottom"><b>AiApiKeyOpenAI</b> () const</td></tr>
 <tr class="separator:afb5c8ceab85af427088abad3aab64e33"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad12edba0fc01160d1bbd68117a486f40"><td class="memItemLeft" align="right" valign="top"><a id="ad12edba0fc01160d1bbd68117a486f40" name="ad12edba0fc01160d1bbd68117a486f40"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>AiApiKeyOpenAI</b> (const wxString &amp;key)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>AiApiKeyOpenAI</b> (const wxString &amp;<a class="el" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>)</td></tr>
 <tr class="separator:ad12edba0fc01160d1bbd68117a486f40"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abf4d5f8cd4e35cc32c7a88624053d753"><td class="memItemLeft" align="right" valign="top"><a id="abf4d5f8cd4e35cc32c7a88624053d753" name="abf4d5f8cd4e35cc32c7a88624053d753"></a>
 wxString&#160;</td><td class="memItemRight" valign="bottom"><b>AiApiKeyGoogle</b> () const</td></tr>
 <tr class="separator:abf4d5f8cd4e35cc32c7a88624053d753"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a820dfb03fb7e0788fe2d18485edf7e5c"><td class="memItemLeft" align="right" valign="top"><a id="a820dfb03fb7e0788fe2d18485edf7e5c" name="a820dfb03fb7e0788fe2d18485edf7e5c"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>AiApiKeyGoogle</b> (const wxString &amp;key)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>AiApiKeyGoogle</b> (const wxString &amp;<a class="el" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>)</td></tr>
 <tr class="separator:a820dfb03fb7e0788fe2d18485edf7e5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7fd709457ca4b67fe3a881f7d2fe2b26"><td class="memItemLeft" align="right" valign="top"><a id="a7fd709457ca4b67fe3a881f7d2fe2b26" name="a7fd709457ca4b67fe3a881f7d2fe2b26"></a>
 wxString&#160;</td><td class="memItemRight" valign="bottom"><b>AiApiKeyQwen</b> () const</td></tr>
 <tr class="separator:a7fd709457ca4b67fe3a881f7d2fe2b26"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a39ca5f84ce8726146c44987bec81a7be"><td class="memItemLeft" align="right" valign="top"><a id="a39ca5f84ce8726146c44987bec81a7be" name="a39ca5f84ce8726146c44987bec81a7be"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>AiApiKeyQwen</b> (const wxString &amp;key)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>AiApiKeyQwen</b> (const wxString &amp;<a class="el" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>)</td></tr>
 <tr class="separator:a39ca5f84ce8726146c44987bec81a7be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a69b47e1cae145c13c667d099e304e9ce"><td class="memItemLeft" align="right" valign="top"><a id="a69b47e1cae145c13c667d099e304e9ce" name="a69b47e1cae145c13c667d099e304e9ce"></a>
 wxString&#160;</td><td class="memItemRight" valign="bottom"><b>AiApiKeyGitHubModels</b> () const</td></tr>
 <tr class="memdesc:a69b47e1cae145c13c667d099e304e9ce"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classA.html">A</a> GitHub personal access token (fine-grained, "Models: read" permission) &ndash; see AiProviderKind::GitHubModels's own doc comment for why this is GitHub's official Models API, not Copilot Chat. <br /></td></tr>
 <tr class="separator:a69b47e1cae145c13c667d099e304e9ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac05b96a988363df7f1ea45bf3ee3e050"><td class="memItemLeft" align="right" valign="top"><a id="ac05b96a988363df7f1ea45bf3ee3e050" name="ac05b96a988363df7f1ea45bf3ee3e050"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>AiApiKeyGitHubModels</b> (const wxString &amp;key)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>AiApiKeyGitHubModels</b> (const wxString &amp;<a class="el" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>)</td></tr>
 <tr class="separator:ac05b96a988363df7f1ea45bf3ee3e050"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1875868fdf565dda934e5db012cde517"><td class="memItemLeft" align="right" valign="top"><a id="a1875868fdf565dda934e5db012cde517" name="a1875868fdf565dda934e5db012cde517"></a>
 wxString&#160;</td><td class="memItemRight" valign="bottom"><b>AiApiKeyDeepSeek</b> () const</td></tr>
 <tr class="separator:a1875868fdf565dda934e5db012cde517"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adf15054d9d7c23e7981ade783397365e"><td class="memItemLeft" align="right" valign="top"><a id="adf15054d9d7c23e7981ade783397365e" name="adf15054d9d7c23e7981ade783397365e"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>AiApiKeyDeepSeek</b> (const wxString &amp;key)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>AiApiKeyDeepSeek</b> (const wxString &amp;<a class="el" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>)</td></tr>
 <tr class="separator:adf15054d9d7c23e7981ade783397365e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0af0aaf5a6571eebbbf56151e39017ef"><td class="memItemLeft" align="right" valign="top"><a id="a0af0aaf5a6571eebbbf56151e39017ef" name="a0af0aaf5a6571eebbbf56151e39017ef"></a>
 wxString&#160;</td><td class="memItemRight" valign="bottom"><b>AiApiKeyOpenRouter</b> () const</td></tr>
 <tr class="separator:a0af0aaf5a6571eebbbf56151e39017ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab383b9e95ca382aeb001835ba28d8081"><td class="memItemLeft" align="right" valign="top"><a id="ab383b9e95ca382aeb001835ba28d8081" name="ab383b9e95ca382aeb001835ba28d8081"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>AiApiKeyOpenRouter</b> (const wxString &amp;key)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>AiApiKeyOpenRouter</b> (const wxString &amp;<a class="el" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>)</td></tr>
 <tr class="separator:ab383b9e95ca382aeb001835ba28d8081"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2ab3a52c59a511ce06026ae05e4dd5af"><td class="memItemLeft" align="right" valign="top"><a id="a2ab3a52c59a511ce06026ae05e4dd5af" name="a2ab3a52c59a511ce06026ae05e4dd5af"></a>
 wxString&#160;</td><td class="memItemRight" valign="bottom"><b>AiModelAnthropic</b> () const</td></tr>
@@ -1061,7 +1061,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetDocumentCellPointe
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetViewCellPointers</b> (<a class="el" href="classViewCellPointers.html">ViewCellPointers</a> *p)</td></tr>
 <tr class="memdesc:a135dddfd5306ae55acf50702f373703c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register the transient view-state half of the cell-pointer registry. <br /></td></tr>
 <tr class="separator:a135dddfd5306ae55acf50702f373703c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af4b0a3094f44b6d504d24aa0e26ac2fd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#af4b0a3094f44b6d504d24aa0e26ac2fd">RequestRecalculate</a> (<a class="el" href="classGroupCell.html">GroupCell</a> *group) const</td></tr>
+<tr class="memitem:af4b0a3094f44b6d504d24aa0e26ac2fd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#af4b0a3094f44b6d504d24aa0e26ac2fd">RequestRecalculate</a> (<a class="el" href="classGroupCell.html">GroupCell</a> *<a class="el" href="ToolBarSections_8cpp.html#a0242027ec3331f3d5793c42d21b6f4e1">group</a>) const</td></tr>
 <tr class="memdesc:af4b0a3094f44b6d504d24aa0e26ac2fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ask the view (if any) to recalculate the layout starting at the given group cell.  <br /></td></tr>
 <tr class="separator:af4b0a3094f44b6d504d24aa0e26ac2fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac7adce7e949fc75ef2e1c8f9e2e6419f"><td class="memItemLeft" align="right" valign="top"><a id="ac7adce7e949fc75ef2e1c8f9e2e6419f" name="ac7adce7e949fc75ef2e1c8f9e2e6419f"></a>
@@ -1403,7 +1403,7 @@ std::default_random_engine &amp;&#160;</td><td class="memItemRight" valign="bott
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a33c31133e51e360dadbf6e9bb2f31f0b"><td class="memItemLeft" align="right" valign="top"><a id="a33c31133e51e360dadbf6e9bb2f31f0b" name="a33c31133e51e360dadbf6e9bb2f31f0b"></a>
-static const wxString &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>GetEscCode</b> (const wxString &amp;key)</td></tr>
+static const wxString &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>GetEscCode</b> (const wxString &amp;<a class="el" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>)</td></tr>
 <tr class="memdesc:a33c31133e51e360dadbf6e9bb2f31f0b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve a symbol for the escape codes that can be typed after hitting the Escape key in the worksheet. <br /></td></tr>
 <tr class="separator:a33c31133e51e360dadbf6e9bb2f31f0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3a91c07eed224ef2eee334a54f6a4828"><td class="memItemLeft" align="right" valign="top"><a id="a3a91c07eed224ef2eee334a54f6a4828" name="a3a91c07eed224ef2eee334a54f6a4828"></a>

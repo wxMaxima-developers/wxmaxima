@@ -72,8 +72,10 @@ $(function() {
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Data Fields</a> &#124;
-<a href="#pro-methods">Protected Member Functions</a>  </div>
+<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pro-static-attribs">Static Protected Attributes</a>  </div>
   <div class="headertitle"><div class="title">ToolBar Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -98,22 +100,6 @@ Public Types</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:a327b655c366e7932f751d2815cc629fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">All states the "start/stop animation" toolbar button can be in.  <a href="classToolBar.html#a327b655c366e7932f751d2815cc629fc">More...</a><br /></td></tr>
 <tr class="separator:a327b655c366e7932f751d2815cc629fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad53e743c7d8825d5a3c2dc3f23b1d449"><td class="memItemLeft" align="right" valign="top"><a id="ad53e743c7d8825d5a3c2dc3f23b1d449" name="ad53e743c7d8825d5a3c2dc3f23b1d449"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>popupitems</b> { <br />
-&#160;&#160;<b>undo_redo</b>
-, <b>copy_paste</b>
-, <b>open_save</b>
-, <b>print</b>
-, <br />
-&#160;&#160;<b>options</b>
-, <b>shownew</b>
-, <b>search</b>
-, <b>help</b>
-, <br />
-&#160;&#160;<b>selectAll</b>
-, <b>textFormat</b>
-<br />
- }</td></tr>
-<tr class="separator:ad53e743c7d8825d5a3c2dc3f23b1d449"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a70cc9d7a523d9d4fcb418fb7b05332c2"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classToolBar.html#a70cc9d7a523d9d4fcb418fb7b05332c2">Event</a> { <br />
 &#160;&#160;<b>plot_slider_id</b> = 5500
 , <b>tb_interrupt</b>
@@ -259,66 +245,32 @@ wxSize&#160;</td><td class="memItemRight" valign="bottom"><b>GetOptimalBitmapSiz
 <tr class="memitem:aa239e2132be9324c3c57f50368055b9e"><td class="memItemLeft" align="right" valign="top"><a id="aa239e2132be9324c3c57f50368055b9e" name="aa239e2132be9324c3c57f50368055b9e"></a>
 wxSize&#160;</td><td class="memItemRight" valign="bottom"><b>GetPPI</b> ()</td></tr>
 <tr class="separator:aa239e2132be9324c3c57f50368055b9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2d5160c249bbed800d90dd88f90631ef"><td class="memItemLeft" align="right" valign="top"><a id="a2d5160c249bbed800d90dd88f90631ef" name="a2d5160c249bbed800d90dd88f90631ef"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>ShowUndoRedo</b> ()</td></tr>
-<tr class="separator:a2d5160c249bbed800d90dd88f90631ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8ba7e3852a08b08eba5f382d83cc7da8"><td class="memItemLeft" align="right" valign="top"><a id="a8ba7e3852a08b08eba5f382d83cc7da8" name="a8ba7e3852a08b08eba5f382d83cc7da8"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ShowUndoRedo</b> (bool show)</td></tr>
-<tr class="separator:a8ba7e3852a08b08eba5f382d83cc7da8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abeae38a5ee5b69ff005eb49468a7b736"><td class="memItemLeft" align="right" valign="top"><a id="abeae38a5ee5b69ff005eb49468a7b736" name="abeae38a5ee5b69ff005eb49468a7b736"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>ShowCopyPaste</b> ()</td></tr>
-<tr class="separator:abeae38a5ee5b69ff005eb49468a7b736"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4826e93e9bafa26a3b8aa30c03cd53ea"><td class="memItemLeft" align="right" valign="top"><a id="a4826e93e9bafa26a3b8aa30c03cd53ea" name="a4826e93e9bafa26a3b8aa30c03cd53ea"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ShowCopyPaste</b> (bool show)</td></tr>
-<tr class="separator:a4826e93e9bafa26a3b8aa30c03cd53ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a53fa8ec00caad378a83b129b1c25eb36"><td class="memItemLeft" align="right" valign="top"><a id="a53fa8ec00caad378a83b129b1c25eb36" name="a53fa8ec00caad378a83b129b1c25eb36"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>ShowOpenSave</b> ()</td></tr>
-<tr class="separator:a53fa8ec00caad378a83b129b1c25eb36"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac6b44c41487acda6c1b3d7976785f791"><td class="memItemLeft" align="right" valign="top"><a id="ac6b44c41487acda6c1b3d7976785f791" name="ac6b44c41487acda6c1b3d7976785f791"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ShowOpenSave</b> (bool show)</td></tr>
-<tr class="separator:ac6b44c41487acda6c1b3d7976785f791"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa47dd5ddc6f2f2d6beac2d61ca4a33a5"><td class="memItemLeft" align="right" valign="top"><a id="aa47dd5ddc6f2f2d6beac2d61ca4a33a5" name="aa47dd5ddc6f2f2d6beac2d61ca4a33a5"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>ShowNew</b> ()</td></tr>
-<tr class="separator:aa47dd5ddc6f2f2d6beac2d61ca4a33a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa8fdb567f7ceb028e2ecf26eadb5d930"><td class="memItemLeft" align="right" valign="top"><a id="aa8fdb567f7ceb028e2ecf26eadb5d930" name="aa8fdb567f7ceb028e2ecf26eadb5d930"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ShowNew</b> (bool show)</td></tr>
-<tr class="separator:aa8fdb567f7ceb028e2ecf26eadb5d930"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac223fe780363504f44fac1f751e0109e"><td class="memItemLeft" align="right" valign="top"><a id="ac223fe780363504f44fac1f751e0109e" name="ac223fe780363504f44fac1f751e0109e"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>ShowSearch</b> ()</td></tr>
-<tr class="separator:ac223fe780363504f44fac1f751e0109e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac83fd29a4fb7514081412a1f36bcf86a"><td class="memItemLeft" align="right" valign="top"><a id="ac83fd29a4fb7514081412a1f36bcf86a" name="ac83fd29a4fb7514081412a1f36bcf86a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ShowSearch</b> (bool show)</td></tr>
-<tr class="separator:ac83fd29a4fb7514081412a1f36bcf86a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaae29943266891d96270d811be1f8177"><td class="memItemLeft" align="right" valign="top"><a id="aaae29943266891d96270d811be1f8177" name="aaae29943266891d96270d811be1f8177"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>ShowHelp</b> ()</td></tr>
-<tr class="separator:aaae29943266891d96270d811be1f8177"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a65dd9c6088edfe0b840b79fdbb3cd938"><td class="memItemLeft" align="right" valign="top"><a id="a65dd9c6088edfe0b840b79fdbb3cd938" name="a65dd9c6088edfe0b840b79fdbb3cd938"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ShowHelp</b> (bool show)</td></tr>
-<tr class="separator:a65dd9c6088edfe0b840b79fdbb3cd938"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0f53fbab0bf390f7a721f81e4287c629"><td class="memItemLeft" align="right" valign="top"><a id="a0f53fbab0bf390f7a721f81e4287c629" name="a0f53fbab0bf390f7a721f81e4287c629"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>ShowPrint</b> ()</td></tr>
-<tr class="separator:a0f53fbab0bf390f7a721f81e4287c629"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4015da8f191910cbf67008f372f79c56"><td class="memItemLeft" align="right" valign="top"><a id="a4015da8f191910cbf67008f372f79c56" name="a4015da8f191910cbf67008f372f79c56"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ShowPrint</b> (bool show)</td></tr>
-<tr class="separator:a4015da8f191910cbf67008f372f79c56"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab9906e601a8bc2d3f8536c27457b4b39"><td class="memItemLeft" align="right" valign="top"><a id="ab9906e601a8bc2d3f8536c27457b4b39" name="ab9906e601a8bc2d3f8536c27457b4b39"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>ShowOptions</b> ()</td></tr>
-<tr class="separator:ab9906e601a8bc2d3f8536c27457b4b39"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2ad5608efceb0f87c4c8595156442324"><td class="memItemLeft" align="right" valign="top"><a id="a2ad5608efceb0f87c4c8595156442324" name="a2ad5608efceb0f87c4c8595156442324"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ShowOptions</b> (bool show)</td></tr>
-<tr class="separator:a2ad5608efceb0f87c4c8595156442324"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a559a05f8d35f483f0f354abee8871367"><td class="memItemLeft" align="right" valign="top"><a id="a559a05f8d35f483f0f354abee8871367" name="a559a05f8d35f483f0f354abee8871367"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>ShowSelectAll</b> ()</td></tr>
-<tr class="separator:a559a05f8d35f483f0f354abee8871367"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a95c9116a0591652a6c15a210a2630406"><td class="memItemLeft" align="right" valign="top"><a id="a95c9116a0591652a6c15a210a2630406" name="a95c9116a0591652a6c15a210a2630406"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>ShowTextFormat</b> ()</td></tr>
-<tr class="separator:a95c9116a0591652a6c15a210a2630406"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac637ef6599cffac50b73261c32615359"><td class="memItemLeft" align="right" valign="top"><a id="ac637ef6599cffac50b73261c32615359" name="ac637ef6599cffac50b73261c32615359"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ShowTextFormat</b> (bool show)</td></tr>
-<tr class="separator:ac637ef6599cffac50b73261c32615359"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a62c13503ce564d111771d2a84a4f3fce"><td class="memItemLeft" align="right" valign="top"><a id="a62c13503ce564d111771d2a84a4f3fce" name="a62c13503ce564d111771d2a84a4f3fce"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ShowSelectAll</b> (bool show)</td></tr>
-<tr class="separator:a62c13503ce564d111771d2a84a4f3fce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a9411ca97f1b977384d2e695a59bc31fe"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classToolBar.html#a9411ca97f1b977384d2e695a59bc31fe">SectionMenuId</a> (<a class="el" href="ToolBarSections_8h.html#a00b3e7a9e497829a0e732600a8e8b7aa">ToolBarSections::Section</a> section)</td></tr>
+<tr class="memdesc:a9411ca97f1b977384d2e695a59bc31fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">The id of a section's entry in the toolbar's context menu.  <br /></td></tr>
+<tr class="separator:a9411ca97f1b977384d2e695a59bc31fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adcc671c429cc992a641eb41e15d4ee59"><td class="memItemLeft" align="right" valign="top"><a id="adcc671c429cc992a641eb41e15d4ee59" name="adcc671c429cc992a641eb41e15d4ee59"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>ShowSection</b> (<a class="el" href="ToolBarSections_8h.html#a00b3e7a9e497829a0e732600a8e8b7aa">ToolBarSections::Section</a> section)</td></tr>
+<tr class="memdesc:adcc671c429cc992a641eb41e15d4ee59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is a toolbar section shown? See ToolBarSections. <br /></td></tr>
+<tr class="separator:adcc671c429cc992a641eb41e15d4ee59"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09b121f037eef6ab76b4c7318f23e26c"><td class="memItemLeft" align="right" valign="top"><a id="a09b121f037eef6ab76b4c7318f23e26c" name="a09b121f037eef6ab76b4c7318f23e26c"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>ShowSection</b> (<a class="el" href="ToolBarSections_8h.html#a00b3e7a9e497829a0e732600a8e8b7aa">ToolBarSections::Section</a> section, bool show)</td></tr>
+<tr class="memdesc:a09b121f037eef6ab76b4c7318f23e26c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Show or hide a toolbar section. Takes effect on the next <a class="el" href="classToolBar.html#a0d54cfda2bfa40f035d6ee1d72c8d9e2" title="Remove all ools and then add all tools that are requested/fit in the toolbar/...">AddTools()</a>. <br /></td></tr>
+<tr class="separator:a09b121f037eef6ab76b4c7318f23e26c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aefcdb444d205c38bff104b72e5cb9a1f"><td class="memItemLeft" align="right" valign="top"><a id="aefcdb444d205c38bff104b72e5cb9a1f" name="aefcdb444d205c38bff104b72e5cb9a1f"></a>
+static std::vector&lt; <a class="el" href="ToolBarSections_8h.html#a00b3e7a9e497829a0e732600a8e8b7aa">ToolBarSections::Section</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>SectionOrder</b> ()</td></tr>
+<tr class="memdesc:aefcdb444d205c38bff104b72e5cb9a1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The order the toolbar sections are shown in, from the config. <br /></td></tr>
+<tr class="separator:aefcdb444d205c38bff104b72e5cb9a1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad6b296633ef7c5231cc829f2524aed68"><td class="memItemLeft" align="right" valign="top"><a id="ad6b296633ef7c5231cc829f2524aed68" name="ad6b296633ef7c5231cc829f2524aed68"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>SectionOrder</b> (const std::vector&lt; <a class="el" href="ToolBarSections_8h.html#a00b3e7a9e497829a0e732600a8e8b7aa">ToolBarSections::Section</a> &gt; &amp;order)</td></tr>
+<tr class="memdesc:ad6b296633ef7c5231cc829f2524aed68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Store the order of the toolbar sections. Takes effect on the next <a class="el" href="classToolBar.html#a0d54cfda2bfa40f035d6ee1d72c8d9e2" title="Remove all ools and then add all tools that are requested/fit in the toolbar/...">AddTools()</a>. <br /></td></tr>
+<tr class="separator:ad6b296633ef7c5231cc829f2524aed68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a58f01f665513bde13c12193444ab7e22"><td class="memItemLeft" align="right" valign="top"><a id="a58f01f665513bde13c12193444ab7e22" name="a58f01f665513bde13c12193444ab7e22"></a>
+static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>SectionName</b> (<a class="el" href="ToolBarSections_8h.html#a00b3e7a9e497829a0e732600a8e8b7aa">ToolBarSections::Section</a> section)</td></tr>
+<tr class="memdesc:a58f01f665513bde13c12193444ab7e22"><td class="mdescLeft">&#160;</td><td class="mdescRight">The (translated) name of a toolbar section, as the user sees it. <br /></td></tr>
+<tr class="separator:a58f01f665513bde13c12193444ab7e22"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
@@ -347,6 +299,10 @@ wxBitmap&#160;</td><td class="memItemRight" valign="bottom"><b>m_StopButton</b><
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
+<tr class="memitem:a8c0262de10893d4746069929b27ad731"><td class="memItemLeft" align="right" valign="top"><a id="a8c0262de10893d4746069929b27ad731" name="a8c0262de10893d4746069929b27ad731"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>AddSection</b> (<a class="el" href="ToolBarSections_8h.html#a00b3e7a9e497829a0e732600a8e8b7aa">ToolBarSections::Section</a> section)</td></tr>
+<tr class="memdesc:a8c0262de10893d4746069929b27ad731"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add the tools of one section of the toolbar. <br /></td></tr>
+<tr class="separator:a8c0262de10893d4746069929b27ad731"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4f2cfa33d8e0de1c2de7bf2ecf98e750"><td class="memItemLeft" align="right" valign="top"><a id="a4f2cfa33d8e0de1c2de7bf2ecf98e750" name="a4f2cfa33d8e0de1c2de7bf2ecf98e750"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>OnSize</b> (wxSizeEvent &amp;event)</td></tr>
 <tr class="separator:a4f2cfa33d8e0de1c2de7bf2ecf98e750"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -356,6 +312,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>OnMouseRightDown</b> 
 <tr class="memitem:a9112832054bddc8783a6e9ee75d8302b"><td class="memItemLeft" align="right" valign="top"><a id="a9112832054bddc8783a6e9ee75d8302b" name="a9112832054bddc8783a6e9ee75d8302b"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>OnMenu</b> (wxCommandEvent &amp;event)</td></tr>
 <tr class="separator:a9112832054bddc8783a6e9ee75d8302b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-static-attribs" name="pro-static-attribs"></a>
+Static Protected Attributes</h2></td></tr>
+<tr class="memitem:a32b542f05c8445cf45be82a21ff88596"><td class="memItemLeft" align="right" valign="top"><a id="a32b542f05c8445cf45be82a21ff88596" name="a32b542f05c8445cf45be82a21ff88596"></a>
+static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><b>section_menu_first</b> = 6000</td></tr>
+<tr class="memdesc:a32b542f05c8445cf45be82a21ff88596"><td class="mdescLeft">&#160;</td><td class="mdescRight">The first id of the sections' entries in the context menu. <br /></td></tr>
+<tr class="separator:a32b542f05c8445cf45be82a21ff88596"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Enumeration Documentation</h2>
 <a id="a327b655c366e7932f751d2815cc629fc" name="a327b655c366e7932f751d2815cc629fc"></a>
@@ -440,6 +403,35 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>OnMenu</b> (wxCommand
 <p>Enable or disable a tool, and repaint the toolbar if that changed anything. </p>
 <p>wxAuiToolBar::EnableTool() only flips a flag in the tool's state: unlike wxToolBar it neither refreshes nor repaints, so the button kept showing its old state until something else happened to repaint the toolbar - typically the mouse pointer entering it and triggering the hover highlight. This was most visible on the "return to the cell being
 evaluated" button, which is enabled from a scroll handler while the pointer is over the worksheet. The base class' method isn't virtual, so this hides it rather than overriding it: every caller in <a class="el" href="classwxMaxima.html">wxMaxima</a> goes through a <a class="el" href="classToolBar.html">ToolBar</a> pointer and therefore reaches this one. </p>
+
+</div>
+</div>
+<a id="a9411ca97f1b977384d2e695a59bc31fe" name="a9411ca97f1b977384d2e695a59bc31fe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9411ca97f1b977384d2e695a59bc31fe">&#9670;&#160;</a></span>SectionMenuId()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int ToolBar::SectionMenuId </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="ToolBarSections_8h.html#a00b3e7a9e497829a0e732600a8e8b7aa">ToolBarSections::Section</a>&#160;</td>
+          <td class="paramname"><em>section</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The id of a section's entry in the toolbar's context menu. </p>
+<p>The ids are only used in that menu, so they needn't be distinct from the tools' own ids. </p>
 
 </div>
 </div>
