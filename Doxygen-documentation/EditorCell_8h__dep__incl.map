@@ -1,52 +1,52 @@
 <map id="src/cells/EditorCell.h" name="src/cells/EditorCell.h">
-<area shape="rect" id="node1" title="This file contains the definition of the class EditorCell." alt="" coords="4147,5,4301,31"/>
-<area shape="rect" id="node2" href="$AutocompletePopup_8h.html" title="The first number that is open for dynamic ID assignment." alt="" coords="1934,79,2122,104"/>
-<area shape="rect" id="node4" href="$Worksheet_8h.html" title="This file defines the class Worksheet." alt="" coords="1929,159,2127,185"/>
-<area shape="rect" id="node7" href="$test__AnonymizeCodeCells_8cpp.html" title="Pins Worksheet::AnonymizeCodeCells() (GH #1339): replacing every non&#45;builtin variable/function name i..." alt="" coords="1149,240,1344,280"/>
-<area shape="rect" id="node8" href="$test__EditorCellInvariants_8cpp.html" title="Hardening tests for EditorCell&#39;s text&#45;editing core." alt="" coords="1368,240,1552,280"/>
-<area shape="rect" id="node9" href="$test__EvalQueueCommands_8cpp.html" title="Command&#45;level behavior of the EvaluationQueue: how a GroupCell&#39;s input is broken into the individual ..." alt="" coords="5,240,205,280"/>
-<area shape="rect" id="node10" href="$test__GroupCellLayout_8cpp.html" title="Regression tests for the GroupCell &lt;&#45;&gt; EditorCell layout coupling." alt="" coords="230,240,394,280"/>
-<area shape="rect" id="node14" href="$test__McpTools_8cpp.html" title="Pins McpTools (the MCP server&#39;s read&#45;only &quot;worksheet context&quot; tools, src/mcp/McpTools...." alt="" coords="419,240,563,280"/>
-<area shape="rect" id="node16" href="$test__TableOfContentsDnD_8cpp.html" title="Regression tests for the table of contents sidebar&#39;s drag&#45;and&#45;drop reorder (GH #1524)." alt="" coords="587,240,778,280"/>
-<area shape="rect" id="node17" href="$test__TreeUndo_8cpp.html" title="Regression tests for the worksheet&#39;s cell&#45;tree undo/redo (the TreeUndo_* subsystem of Worksheet)." alt="" coords="803,240,947,280"/>
-<area shape="rect" id="node18" href="$test__WXMRoundtrip_8cpp.html" title="Regression tests for images surviving the .wxm serialization round&#45;trip." alt="" coords="971,240,1125,280"/>
-<area shape="rect" id="node21" href="$test__WorksheetContextMenu_8cpp.html" title="Regression tests for the worksheet&#39;s right&#45;click context menu." alt="" coords="4142,240,4354,280"/>
-<area shape="rect" id="node22" href="$test__WorksheetCursor_8cpp.html" title="Pins the worksheet&#39;s cursor model before it is gathered into a cursor class." alt="" coords="4555,240,4722,280"/>
-<area shape="rect" id="node23" href="$test__WorksheetEvalQueue_8cpp.html" title="Pins the worksheet&#39;s &quot;add cells to the evaluation queue&quot; behavior before the Add*ToEvaluationQueue fa..." alt="" coords="4747,240,4941,280"/>
-<area shape="rect" id="node25" href="$test__WorksheetFind_8cpp.html" title="Pins the worksheet&#39;s find/replace behavior before the search engine is extracted into WorksheetSearch..." alt="" coords="4965,240,5117,280"/>
-<area shape="rect" id="node26" href="$MathParser_8h.html" title="The header file for the xml cell parser." alt="" coords="2455,159,2585,185"/>
-<area shape="rect" id="node29" href="$wxMaxima_8cpp.html" title="This file defines the contents of the class wxMaxima that contains most of the program&#39;s logic." alt="" coords="3931,401,4075,427"/>
-<area shape="rect" id="node31" href="$MaximaCommandMenus_8cpp.html" title="Implementation of the menu&#45;command handlers extracted from wxMaxima &#45; see MaximaCommandMenus...." alt="" coords="4511,328,4745,353"/>
-<area shape="rect" id="node32" href="$MaximaEvaluator_8cpp.html" title="Implements the evaluation&#45;queue driver extracted from the wxMaxima god class." alt="" coords="4040,328,4227,353"/>
-<area shape="rect" id="node33" href="$EditorCell_8cpp.html" title="This file defines the class EditorCell." alt="" coords="5170,328,5339,353"/>
-<area shape="rect" id="node34" href="$test__EditorCellLinks_8cpp.html" title="Tests for links in text cells and in Maxima&#39;s output (GH #2396)." alt="" coords="4378,240,4531,280"/>
-<area shape="rect" id="node37" href="$GroupCell_8h.html" title="This file defines the class GroupCell that bundles input and output in the worksheet." alt="" coords="2587,79,2741,104"/>
-<area shape="rect" id="node38" href="$WorksheetEvalQueue_8cpp.html" title="Implementation of the document&#45;pure evaluation&#45;queue helpers &#45; see WorksheetEvalQueue...." alt="" coords="3015,152,3230,192"/>
-<area shape="rect" id="node39" href="$WorksheetExport_8cpp.html" title="The document serializers declared in WorksheetExport.h." alt="" coords="3254,159,3509,185"/>
-<area shape="rect" id="node40" href="$WorksheetSearch_8cpp.html" title="Implementation of the worksheet&#39;s search engine, extracted from Worksheet::FindNext / FindNext_Regex." alt="" coords="3533,159,3790,185"/>
-<area shape="rect" id="node41" href="$test__EditorCellBidi_8cpp.html" title="What the caret, click&#45;to&#45;position and arrow keys do inside bidirectional text." alt="" coords="3815,152,3959,192"/>
-<area shape="rect" id="node42" href="$test__EditorCellEscapedParens_8cpp.html" title="Tests that the code editor treats a backslash&#45;escaped bracket or quote as an ordinary character (GH #..." alt="" coords="3983,152,4199,192"/>
-<area shape="rect" id="node43" href="$test__EditorCellFormat_8cpp.html" title="What the toolbar&#39;s bold/italic/... buttons do to a text cell (GH #492): formatting a selection,..." alt="" coords="4223,152,4388,192"/>
-<area shape="rect" id="node44" href="$test__EditorCellTabs_8cpp.html" title="Tests for real tab&#45;character (&#39;\t&#39;) support inside EditorCell." alt="" coords="4413,152,4561,192"/>
-<area shape="rect" id="node45" href="$test__EditorCellWrapping_8cpp.html" title="Tests for automatic line&#45;wrapping inside EditorCells." alt="" coords="4585,152,4767,192"/>
-<area shape="rect" id="node46" href="$test__MACRoundtrip_8cpp.html" title="Regression test for a plain .mac file surviving wxMaxima&#39;s open/save round&#45;trip byte&#45;for&#45;byte,..." alt="" coords="4791,152,4940,192"/>
-<area shape="rect" id="node47" href="$test__WorksheetLayout_8cpp.html" title="Headless tests for the full WorksheetLayout pipeline." alt="" coords="4965,152,5134,192"/>
-<area shape="rect" id="node48" href="$SumCell_8cpp.html" title="This file defines the class SumCell." alt="" coords="5615,79,5775,104"/>
-<area shape="rect" id="node49" href="$FindReplaceDialog_8cpp.html" title="This file defines the class FindReplaceDialog." alt="" coords="5799,79,6043,104"/>
-<area shape="rect" id="node50" href="$FindReplacePane_8cpp.html" title="This file defines the class FindReplacePane." alt="" coords="6067,79,6301,104"/>
-<area shape="rect" id="node3" href="$AutocompletePopup_8cpp.html" title="This file defines the class AutocompletePopup." alt="" coords="1247,159,1449,185"/>
-<area shape="rect" id="node5" href="$MaximaOutputAppender_8cpp.html" title="Implements the worksheet output appenders extracted from the wxMaxima god class." alt="" coords="3271,328,3502,353"/>
-<area shape="rect" id="node6" href="$MatrixViewer_8cpp.html" title="The viewer a double&#45;click on a partially shown matrix opens (GH #2344)." alt="" coords="2007,247,2217,273"/>
-<area shape="rect" id="node11" href="$test__LayoutInvariants_8cpp.html" title="Layout idempotency invariants." alt="" coords="1627,240,1792,280"/>
-<area shape="rect" id="node12" href="$test__MatrixBlockSelection_8cpp.html" title="Selecting and copying a sub&#45;matrix (GH #2345)." alt="" coords="2241,240,2436,280"/>
-<area shape="rect" id="node13" href="$test__MatrixViewer_8cpp.html" title="The matrix viewer a double&#45;click on an elided matrix opens (GH #2344)." alt="" coords="2857,240,3001,280"/>
-<area shape="rect" id="node15" href="$test__OutputKeyboardNavigation_8cpp.html" title="Reaching a cell&#39;s output with the keyboard (GH #2382)." alt="" coords="3076,240,3308,280"/>
-<area shape="rect" id="node19" href="$test__WXMXRoundtrip_8cpp.html" title="Round&#45;trip tests for the .wxmx content.xml (the MathML&#45;like math format)." alt="" coords="2460,240,2623,280"/>
-<area shape="rect" id="node20" href="$test__WorksheetClipboard_8cpp.html" title="Safety net for the multi&#45;format clipboard / drag&#45;and&#45;drop payload of Worksheet." alt="" coords="2647,240,2833,280"/>
-<area shape="rect" id="node24" href="$test__WorksheetExport_8cpp.html" title="Safety net for the export/serialization cluster of Worksheet." alt="" coords="1817,240,1983,280"/>
-<area shape="rect" id="node27" href="$MathParser_8cpp.html" title="This file defines the class MathParser that reads wxmx data and math from Maxima." alt="" coords="3668,247,3812,273"/>
-<area shape="rect" id="node28" href="$main_8h.html" title="This file declares the class wxMaxima that contains most of the program&#39;s logic." alt="" coords="3875,328,3965,353"/>
-<area shape="rect" id="node30" href="$wxMaxima_8h.html" title="This file declares the class wxMaxima that contains most of the program&#39;s logic." alt="" coords="3938,247,4067,273"/>
-<area shape="rect" id="node35" href="$test__IntegralToTeX_8cpp.html" title="Pins the LaTeX export of an integral&#39;s &quot;d&quot; (GH #972): the &quot;d&quot; of &quot;dx&quot;/ &quot;d\theta&quot;/...." alt="" coords="3332,240,3476,280"/>
-<area shape="rect" id="node36" href="$test__RTFExport_8cpp.html" title="Regression coverage for RTF/OMML/MathML export (Cell::ToRTF()/ToOMML()/ ToMathML(),..." alt="" coords="3500,240,3644,280"/>
+<area shape="rect" id="node1" title="This file contains the definition of the class EditorCell." alt="" coords="3087,5,3242,31"/>
+<area shape="rect" id="node2" href="$AutocompletePopup_8h.html" title="The first number that is open for dynamic ID assignment." alt="" coords="2177,79,2365,104"/>
+<area shape="rect" id="node4" href="$Worksheet_8h.html" title="This file defines the class Worksheet." alt="" coords="2219,159,2417,185"/>
+<area shape="rect" id="node7" href="$test__AnonymizeCodeCells_8cpp.html" title="Pins Worksheet::AnonymizeCodeCells() (GH #1339): replacing every non&#45;builtin variable/function name i..." alt="" coords="194,240,389,280"/>
+<area shape="rect" id="node8" href="$test__EditorCellInvariants_8cpp.html" title="Hardening tests for EditorCell&#39;s text&#45;editing core." alt="" coords="413,240,597,280"/>
+<area shape="rect" id="node9" href="$test__EvalQueueCommands_8cpp.html" title="Command&#45;level behavior of the EvaluationQueue: how a GroupCell&#39;s input is broken into the individual ..." alt="" coords="621,240,821,280"/>
+<area shape="rect" id="node10" href="$test__GroupCellLayout_8cpp.html" title="Regression tests for the GroupCell &lt;&#45;&gt; EditorCell layout coupling." alt="" coords="1824,240,1988,280"/>
+<area shape="rect" id="node14" href="$test__McpTools_8cpp.html" title="Pins McpTools (the MCP server&#39;s read&#45;only &quot;worksheet context&quot; tools, src/mcp/McpTools...." alt="" coords="26,240,170,280"/>
+<area shape="rect" id="node16" href="$test__PrimarySelectionPaste_8cpp.html" title="GH #794: a middle&#45;click pastes the primary selection, not the Ctrl+C clipboard." alt="" coords="845,240,1047,280"/>
+<area shape="rect" id="node17" href="$test__TableOfContentsDnD_8cpp.html" title="Regression tests for the table of contents sidebar&#39;s drag&#45;and&#45;drop reorder (GH #1524)." alt="" coords="1072,240,1263,280"/>
+<area shape="rect" id="node18" href="$test__TreeUndo_8cpp.html" title="Regression tests for the worksheet&#39;s cell&#45;tree undo/redo (the TreeUndo_* subsystem of Worksheet)." alt="" coords="1287,240,1431,280"/>
+<area shape="rect" id="node19" href="$test__WXMRoundtrip_8cpp.html" title="Regression tests for images surviving the .wxm serialization round&#45;trip." alt="" coords="1456,240,1609,280"/>
+<area shape="rect" id="node22" href="$test__WorksheetContextMenu_8cpp.html" title="Regression tests for the worksheet&#39;s right&#45;click context menu." alt="" coords="2063,240,2275,280"/>
+<area shape="rect" id="node23" href="$test__WorksheetCursor_8cpp.html" title="Pins the worksheet&#39;s cursor model before it is gathered into a cursor class." alt="" coords="1633,240,1800,280"/>
+<area shape="rect" id="node24" href="$test__WorksheetEvalQueue_8cpp.html" title="Pins the worksheet&#39;s &quot;add cells to the evaluation queue&quot; behavior before the Add*ToEvaluationQueue fa..." alt="" coords="2299,240,2494,280"/>
+<area shape="rect" id="node25" href="$test__WorksheetFind_8cpp.html" title="Pins the worksheet&#39;s find/replace behavior before the search engine is extracted into WorksheetSearch..." alt="" coords="2518,240,2670,280"/>
+<area shape="rect" id="node26" href="$MathParser_8h.html" title="The header file for the xml cell parser." alt="" coords="3100,159,3229,185"/>
+<area shape="rect" id="node29" href="$wxMaxima_8cpp.html" title="This file defines the contents of the class wxMaxima that contains most of the program&#39;s logic." alt="" coords="4345,401,4489,427"/>
+<area shape="rect" id="node31" href="$MaximaCommandMenus_8cpp.html" title="Implementation of the menu&#45;command handlers extracted from wxMaxima &#45; see MaximaCommandMenus...." alt="" coords="1802,328,2037,353"/>
+<area shape="rect" id="node32" href="$MaximaEvaluator_8cpp.html" title="Implements the evaluation&#45;queue driver extracted from the wxMaxima god class." alt="" coords="4889,328,5075,353"/>
+<area shape="rect" id="node33" href="$EditorCell_8cpp.html" title="This file defines the class EditorCell." alt="" coords="5279,328,5448,353"/>
+<area shape="rect" id="node34" href="$test__EditorCellLinks_8cpp.html" title="Tests for links in text cells and in Maxima&#39;s output (GH #2396)." alt="" coords="5020,240,5173,280"/>
+<area shape="rect" id="node37" href="$GroupCell_8h.html" title="This file defines the class GroupCell that bundles input and output in the worksheet." alt="" coords="2807,79,2962,104"/>
+<area shape="rect" id="node38" href="$WorksheetEvalQueue_8cpp.html" title="Implementation of the document&#45;pure evaluation&#45;queue helpers &#45; see WorksheetEvalQueue...." alt="" coords="3356,152,3571,192"/>
+<area shape="rect" id="node39" href="$WorksheetExport_8cpp.html" title="The document serializers declared in WorksheetExport.h." alt="" coords="3595,159,3849,185"/>
+<area shape="rect" id="node40" href="$WorksheetSearch_8cpp.html" title="Implementation of the worksheet&#39;s search engine, extracted from Worksheet::FindNext / FindNext_Regex." alt="" coords="3873,159,4131,185"/>
+<area shape="rect" id="node41" href="$test__EditorCellBidi_8cpp.html" title="What the caret, click&#45;to&#45;position and arrow keys do inside bidirectional text." alt="" coords="4155,152,4299,192"/>
+<area shape="rect" id="node42" href="$test__EditorCellEscapedParens_8cpp.html" title="Tests that the code editor treats a backslash&#45;escaped bracket or quote as an ordinary character (GH #..." alt="" coords="4323,152,4539,192"/>
+<area shape="rect" id="node43" href="$test__EditorCellFormat_8cpp.html" title="What the toolbar&#39;s bold/italic/... buttons do to a text cell (GH #492): formatting a selection,..." alt="" coords="4563,152,4729,192"/>
+<area shape="rect" id="node44" href="$test__EditorCellTabs_8cpp.html" title="Tests for real tab&#45;character (&#39;\t&#39;) support inside EditorCell." alt="" coords="4753,152,4901,192"/>
+<area shape="rect" id="node45" href="$test__EditorCellWrapping_8cpp.html" title="Tests for automatic line&#45;wrapping inside EditorCells." alt="" coords="4926,152,5107,192"/>
+<area shape="rect" id="node46" href="$test__MACRoundtrip_8cpp.html" title="Regression test for a plain .mac file surviving wxMaxima&#39;s open/save round&#45;trip byte&#45;for&#45;byte,..." alt="" coords="5131,152,5281,192"/>
+<area shape="rect" id="node47" href="$test__WorksheetLayout_8cpp.html" title="Headless tests for the full WorksheetLayout pipeline." alt="" coords="5305,152,5475,192"/>
+<area shape="rect" id="node48" href="$SumCell_8cpp.html" title="This file defines the class SumCell." alt="" coords="5702,79,5862,104"/>
+<area shape="rect" id="node49" href="$FindReplaceDialog_8cpp.html" title="This file defines the class FindReplaceDialog." alt="" coords="5887,79,6131,104"/>
+<area shape="rect" id="node50" href="$FindReplacePane_8cpp.html" title="This file defines the class FindReplacePane." alt="" coords="6155,79,6388,104"/>
+<area shape="rect" id="node3" href="$AutocompletePopup_8cpp.html" title="This file defines the class AutocompletePopup." alt="" coords="1486,159,1689,185"/>
+<area shape="rect" id="node5" href="$MaximaOutputAppender_8cpp.html" title="Implements the worksheet output appenders extracted from the wxMaxima god class." alt="" coords="3292,328,3523,353"/>
+<area shape="rect" id="node6" href="$MatrixViewer_8cpp.html" title="The viewer a double&#45;click on a partially shown matrix opens (GH #2344)." alt="" coords="3567,247,3776,273"/>
+<area shape="rect" id="node11" href="$test__LayoutInvariants_8cpp.html" title="Layout idempotency invariants." alt="" coords="3801,240,3966,280"/>
+<area shape="rect" id="node12" href="$test__MatrixBlockSelection_8cpp.html" title="Selecting and copying a sub&#45;matrix (GH #2345)." alt="" coords="3990,240,4185,280"/>
+<area shape="rect" id="node13" href="$test__MatrixViewer_8cpp.html" title="The matrix viewer a double&#45;click on an elided matrix opens (GH #2344)." alt="" coords="2745,240,2889,280"/>
+<area shape="rect" id="node15" href="$test__OutputKeyboardNavigation_8cpp.html" title="Reaching a cell&#39;s output with the keyboard (GH #2382)." alt="" coords="2913,240,3145,280"/>
+<area shape="rect" id="node20" href="$test__WXMXRoundtrip_8cpp.html" title="Round&#45;trip tests for the .wxmx content.xml (the MathML&#45;like math format)." alt="" coords="3169,240,3331,280"/>
+<area shape="rect" id="node21" href="$test__WorksheetClipboard_8cpp.html" title="Safety net for the multi&#45;format clipboard / drag&#45;and&#45;drop payload of Worksheet." alt="" coords="3355,240,3542,280"/>
+<area shape="rect" id="node27" href="$MathParser_8cpp.html" title="This file defines the class MathParser that reads wxmx data and math from Maxima." alt="" coords="4465,247,4609,273"/>
+<area shape="rect" id="node28" href="$main_8h.html" title="This file declares the class wxMaxima that contains most of the program&#39;s logic." alt="" coords="4289,328,4379,353"/>
+<area shape="rect" id="node30" href="$wxMaxima_8h.html" title="This file declares the class wxMaxima that contains most of the program&#39;s logic." alt="" coords="4311,247,4440,273"/>
+<area shape="rect" id="node35" href="$test__IntegralToTeX_8cpp.html" title="Pins the LaTeX export of an integral&#39;s &quot;d&quot; (GH #972): the &quot;d&quot; of &quot;dx&quot;/ &quot;d\theta&quot;/...." alt="" coords="4633,240,4777,280"/>
+<area shape="rect" id="node36" href="$test__RTFExport_8cpp.html" title="Regression coverage for RTF/OMML/MathML export (Cell::ToRTF()/ToOMML()/ ToMathML(),..." alt="" coords="4801,240,4945,280"/>
 </map>

@@ -891,9 +891,9 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><b>GetLastQuestion</
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>CutToClipboard</b> ()</td></tr>
 <tr class="memdesc:a19df468bef53424aa02222a21ee3bb5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add the currently selected cells to the clipboard and delete them. <br /></td></tr>
 <tr class="separator:a19df468bef53424aa02222a21ee3bb5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ade85564aa3d5dda4237450d1d8fbf2e7"><td class="memItemLeft" align="right" valign="top"><a id="ade85564aa3d5dda4237450d1d8fbf2e7" name="ade85564aa3d5dda4237450d1d8fbf2e7"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>PasteFromClipboard</b> ()</td></tr>
-<tr class="separator:ade85564aa3d5dda4237450d1d8fbf2e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f9d14795ddb507df7ab922d782cb7e8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a8f9d14795ddb507df7ab922d782cb7e8">PasteFromClipboard</a> (bool primary=false)</td></tr>
+<tr class="memdesc:a8f9d14795ddb507df7ab922d782cb7e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Paste into the worksheet.  <br /></td></tr>
+<tr class="separator:a8f9d14795ddb507df7ab922d782cb7e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5442160d0574859589addb87d1f19b4d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a5442160d0574859589addb87d1f19b4d">Copy</a> (bool astext=false) const</td></tr>
 <tr class="memdesc:a5442160d0574859589addb87d1f19b4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy the current selection to the clipboard.  <br /></td></tr>
 <tr class="separator:a5442160d0574859589addb87d1f19b4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3087,6 +3087,32 @@ static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>CellsToMat
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">position</td><td><a class="el" href="classA.html">A</a> point in window (scrolled) coordinates, as a mouse event reports it. Returns true if a viewer was opened. See <a class="el" href="classMatrixViewer.html#a6a438d6c5cb0a14ad673de4197584adb" title="The matrix a double-click at this point should open a viewer for.">MatrixViewer::PartiallyShownMatrixAt()</a> for which matrices qualify. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a8f9d14795ddb507df7ab922d782cb7e8" name="a8f9d14795ddb507df7ab922d782cb7e8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8f9d14795ddb507df7ab922d782cb7e8">&#9670;&#160;</a></span>PasteFromClipboard()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Worksheet::PasteFromClipboard </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>primary</em> = <code>false</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Paste into the worksheet. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">primary</td><td>true = paste X11's primary selection (what a middle-click pastes), false = the ordinary Ctrl+V clipboard. On platforms without a primary selection wxWidgets silently uses the ordinary clipboard. </td></tr>
   </table>
   </dd>
 </dl>
