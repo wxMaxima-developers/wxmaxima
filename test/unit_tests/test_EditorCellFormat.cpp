@@ -201,11 +201,19 @@ SCENARIO("Each format gets a font made from the cell's own") {
     REQUIRE(sub.GetFractionalPointSize() == Approx(boldSub.GetFractionalPointSize()));
   }
   THEN("text in a bold font is wider than plain text") {
-    Relayout(group.get());
-    editor->SetCurrentPoint(wxPoint(10, 100));
-    auto plainCell = MakeCell(wxS("abc"));
+    // A single bold character can round to the plain one's width (it does
+    // on MSW), so this measures a whole run of wide ones.
+    const wxString text = wxS("mmmmmmmmmm");
+    auto boldCell = MakeCell(text);
+    EditorCell *boldEditor = boldCell->GetEditable();
+    boldEditor->SetSelection(0, text.Length());
+    boldEditor->ToggleFormat(TextFormat::Bold);
+    Relayout(boldCell.get());
+    boldEditor->SetCurrentPoint(wxPoint(10, 100));
+    auto plainCell = MakeCell(text);
     plainCell->GetEditable()->SetCurrentPoint(wxPoint(10, 100));
-    REQUIRE(editor->PositionToPoint(1).x > plainCell->GetEditable()->PositionToPoint(1).x);
+    REQUIRE(boldEditor->PositionToPoint(text.Length()).x >
+            plainCell->GetEditable()->PositionToPoint(text.Length()).x);
   }
 }
 

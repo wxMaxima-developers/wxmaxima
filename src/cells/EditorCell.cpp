@@ -756,6 +756,21 @@ void EditorCell::Recalculate(AFontSize fontsize) const {
       // fixed grid of lines.
       const bool lineHeightsVary = !IsCodeEditor();
       std::vector<LineSlot> lineSlots(1);
+      // How far a bold or italic font's ascent and descent differ from the
+      // plain font's. They are the same design, but on MSW a bold font's
+      // extent can be a pixel taller, which made every line containing bold
+      // text a pixel taller than the others. Measured once per font, with
+      // the same characters as the plain text's extent above.
+      std::array<std::optional<wxSize>, TextFormat::FontVariants> metricsDelta;
+      auto fontMetricsDelta = [&](TextFormat::Format fontFormat) {
+        std::optional<wxSize> &delta = metricsDelta.at(TextFormat::FontIndex(fontFormat));
+        if (!delta) {
+          wxCoord w, h, d;
+          dc->GetTextExtent(wxS("äXÄgy"), &w, &h, &d);
+          delta = wxSize((h - d) - plainAscent, d - charDescent);
+        }
+        return *delta;
+      };
 
       for (auto &textSnippet : m_styledText) {
         if ((textSnippet.GetText().StartsWith(wxS('\n')) ||
@@ -774,10 +789,15 @@ void EditorCell::Recalculate(AFontSize fontsize) const {
             wxCoord descent;
             const TextFormat::Format fontFormat =
               textSnippet.GetFormat() & TextFormat::WidthAffecting;
+            // What the font's own design adds above and below the plain
+            // text's extent; only bold and italic text gets it subtracted.
+            wxSize fontDelta;
             if (fontFormat != TextFormat::None) {
               const wxFont previousFont = dc->GetFont();
               dc->SetFont(GetFont(fontFormat));
               dc->GetTextExtent(textSnippet.GetText(), &tokenwidth, &tokenheight, &descent);
+              if (!(fontFormat & TextFormat::VerticalPosition))
+                fontDelta = fontMetricsDelta(fontFormat);
               dc->SetFont(previousFont);
             } else
               dc->GetTextExtent(textSnippet.GetText(), &tokenwidth, &tokenheight, &descent);
@@ -786,9 +806,13 @@ void EditorCell::Recalculate(AFontSize fontsize) const {
             const wxCoord yOffset = plainAscent - (tokenheight - descent) +
               BaselineShift(textSnippet.GetFormat(), plainAscent);
             textSnippet.SetYOffset(yOffset);
+            // The line only grows for what reaches beyond the extent the
+            // snippet's font has anyway: a raised or lowered snippet, or a
+            // character a taller fallback font draws.
             LineSlot &slot = lineSlots.back();
-            slot.above = std::max(slot.above, -yOffset);
-            slot.below = std::max(slot.below, yOffset + tokenheight - plainHeight);
+            slot.above = std::max(slot.above, -yOffset - fontDelta.x);
+            slot.below = std::max(slot.below,
+                                  yOffset + tokenheight - plainHeight - fontDelta.y);
           } else if (textSnippet.GetFormat() & TextFormat::WidthAffecting)
             tokenwidth = GetTextSize(textSnippet.GetText(), textSnippet.GetFormat()).GetWidth();
           else
