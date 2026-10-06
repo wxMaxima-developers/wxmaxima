@@ -1280,6 +1280,19 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>LineBreaksInLongNums<
 <tr class="memitem:ab724467ac43c05ada4333872dc5e13d5"><td class="memItemLeft" align="right" valign="top"><a id="ab724467ac43c05ada4333872dc5e13d5" name="ab724467ac43c05ada4333872dc5e13d5"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>LineBreaksInLongNums</b> (bool brk)</td></tr>
 <tr class="separator:ab724467ac43c05ada4333872dc5e13d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa34bf94cb8e69a7700c7b95d63b3a981"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#aa34bf94cb8e69a7700c7b95d63b3a981">DigitGrouping</a> () const</td></tr>
+<tr class="memdesc:aa34bf94cb8e69a7700c7b95d63b3a981"><td class="mdescLeft">&#160;</td><td class="mdescRight">Separate the digit groups of long numbers by a small gap? (GH #192)  <br /></td></tr>
+<tr class="separator:aa34bf94cb8e69a7700c7b95d63b3a981"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a42ff24aa909d6b7f0f56980a62d90e38"><td class="memItemLeft" align="right" valign="top"><a id="a42ff24aa909d6b7f0f56980a62d90e38" name="a42ff24aa909d6b7f0f56980a62d90e38"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>DigitGrouping</b> (bool <a class="el" href="ToolBarSections_8cpp.html#a0242027ec3331f3d5793c42d21b6f4e1">group</a>)</td></tr>
+<tr class="separator:a42ff24aa909d6b7f0f56980a62d90e38"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54c5433508423d0a63a537f28a6f5344"><td class="memItemLeft" align="right" valign="top"><a id="a54c5433508423d0a63a537f28a6f5344" name="a54c5433508423d0a63a537f28a6f5344"></a>
+long&#160;</td><td class="memItemRight" valign="bottom"><b>DigitGroupingMinDigits</b> () const</td></tr>
+<tr class="memdesc:a54c5433508423d0a63a537f28a6f5344"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many digits a number needs before <a class="el" href="classConfiguration.html#aa34bf94cb8e69a7700c7b95d63b3a981" title="Separate the digit groups of long numbers by a small gap? (GH #192)">DigitGrouping()</a> groups them. <br /></td></tr>
+<tr class="separator:a54c5433508423d0a63a537f28a6f5344"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79751ef669acaceb4d895983a37cb54b"><td class="memItemLeft" align="right" valign="top"><a id="a79751ef669acaceb4d895983a37cb54b" name="a79751ef669acaceb4d895983a37cb54b"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>DigitGroupingMinDigits</b> (long digits)</td></tr>
+<tr class="separator:a79751ef669acaceb4d895983a37cb54b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa270344bee906b5efc5d4119e94776ca"><td class="memItemLeft" align="right" valign="top"><a id="aa270344bee906b5efc5d4119e94776ca" name="aa270344bee906b5efc5d4119e94776ca"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>MaximaUsesHtmlBrowser</b> (bool maximaUsesHhtmlBrowser)</td></tr>
 <tr class="separator:aa270344bee906b5efc5d4119e94776ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1478,6 +1491,10 @@ static <a class="el" href="structConfiguration_1_1PerformanceStats.html">Perform
 <tr class="memitem:ab8f221b042a343fa625bf28c347468e4"><td class="memItemLeft" align="right" valign="top">static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#ab8f221b042a343fa625bf28c347468e4">m_configfileLocation_override</a></td></tr>
 <tr class="memdesc:ab8f221b042a343fa625bf28c347468e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Where to store the configuration.  <br /></td></tr>
 <tr class="separator:ab8f221b042a343fa625bf28c347468e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a29d9014b9bfe1631fa3b5c5ee92e10"><td class="memItemLeft" align="right" valign="top"><a id="a4a29d9014b9bfe1631fa3b5c5ee92e10" name="a4a29d9014b9bfe1631fa3b5c5ee92e10"></a>
+static constexpr long&#160;</td><td class="memItemRight" valign="bottom"><b>DigitGroupingMinDigits_Min</b> = 2</td></tr>
+<tr class="memdesc:a4a29d9014b9bfe1631fa3b5c5ee92e10"><td class="mdescLeft">&#160;</td><td class="mdescRight">The smallest value <a class="el" href="classConfiguration.html#a54c5433508423d0a63a537f28a6f5344" title="How many digits a number needs before DigitGrouping() groups them.">DigitGroupingMinDigits()</a> accepts: 1 digit has no groups. <br /></td></tr>
+<tr class="separator:a4a29d9014b9bfe1631fa3b5c5ee92e10"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The configuration storage for the current worksheet. </p>
@@ -1740,6 +1757,34 @@ static <a class="el" href="structConfiguration_1_1PerformanceStats.html">Perform
 
 <p><a class="el" href="classA.html">A</a> counter that increases every time we need to recalculate all worksheet cells. </p>
 <p>If that counter eventually wraps that should be fine: The cells will have been recalculated before that and if someone trying to do a speed run with <a class="el" href="classwxMaxima.html">wxMaxima</a> manages to accumulate billions of config changes before the worksheet manages to recalculate itself the worst thing that can happen is a visual glitch. </p>
+
+</div>
+</div>
+<a id="aa34bf94cb8e69a7700c7b95d63b3a981" name="aa34bf94cb8e69a7700c7b95d63b3a981"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa34bf94cb8e69a7700c7b95d63b3a981">&#9670;&#160;</a></span>DigitGrouping()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Configuration::DigitGrouping </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Separate the digit groups of long numbers by a small gap? (GH #192) </p>
+<p>Only affects how numbers are drawn, never their text: see <a class="el" href="DigitGrouping_8h.html" title="Declares where a number gets the small gaps that separate its digit groups (GH #192),...">DigitGrouping.h</a>. </p>
 
 </div>
 </div>

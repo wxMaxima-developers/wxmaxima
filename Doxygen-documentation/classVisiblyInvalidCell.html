@@ -770,6 +770,16 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:a2282f0bcf5cfbec4d0901e34cb5d90e7"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structwxm_1_1UrlSpan.html">wxm::UrlSpan</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTextCell.html#a2282f0bcf5cfbec4d0901e34cb5d90e7">LinkSpans</a> () const</td></tr>
 <tr class="memdesc:a2282f0bcf5cfbec4d0901e34cb5d90e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">The links in m_displayedText.  <br /></td></tr>
 <tr class="separator:a2282f0bcf5cfbec4d0901e34cb5d90e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac200bc10baae245b2925e0daaef2eab0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTextCell.html#ac200bc10baae245b2925e0daaef2eab0">UpdateDigitGroupGaps</a> () const</td></tr>
+<tr class="memdesc:ac200bc10baae245b2925e0daaef2eab0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recomputes m_digitGroupGaps for m_displayedText (GH #192).  <br /></td></tr>
+<tr class="separator:ac200bc10baae245b2925e0daaef2eab0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06a8af21ecd5969afb9f7ab9340f4786"><td class="memItemLeft" align="right" valign="top"><a id="a06a8af21ecd5969afb9f7ab9340f4786" name="a06a8af21ecd5969afb9f7ab9340f4786"></a>
+wxCoord&#160;</td><td class="memItemRight" valign="bottom"><b>DigitGroupGapWidth</b> () const</td></tr>
+<tr class="memdesc:a06a8af21ecd5969afb9f7ab9340f4786"><td class="mdescLeft">&#160;</td><td class="mdescRight">The width of one digit-group gap at this cell's font size. <br /></td></tr>
+<tr class="separator:a06a8af21ecd5969afb9f7ab9340f4786"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5ef53fc0f2cf9292b3a786eea9996f0"><td class="memItemLeft" align="right" valign="top">wxCoord&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTextCell.html#aa5ef53fc0f2cf9292b3a786eea9996f0">DrawGroupedDigits</a> (wxDC *dc, const wxString &amp;text, wxCoord x, wxCoord y, bool draw) const</td></tr>
+<tr class="memdesc:aa5ef53fc0f2cf9292b3a786eea9996f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws text, the first text.Length() characters of m_displayedText, with the digit-group gaps that fall into it &ndash; or, if dc is only being measured with (draw = false), just returns the width that would take.  <br /></td></tr>
+<tr class="separator:aa5ef53fc0f2cf9292b3a786eea9996f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adf1f45b787bd1e1687ebf37b3231a4c9"><td class="memTemplParams" colspan="2">template&lt;typename RunFunc &gt; </td></tr>
 <tr class="memitem:adf1f45b787bd1e1687ebf37b3231a4c9"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classTextCell.html#adf1f45b787bd1e1687ebf37b3231a4c9">WalkTextRuns</a> (wxDC *dc, wxCoord x, RunFunc &amp;&amp;<a class="el" href="group__group1.html#ga24f647174760cac13d2624b5ad74b00c">func</a>) const</td></tr>
 <tr class="memdesc:adf1f45b787bd1e1687ebf37b3231a4c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Walks m_displayedText as <a class="el" href="classTextCell.html#a7a6e74684bff07839bdf196d3b4d9da2" title="Pass 3 (Paint): Renders the cell using pre-calculated coordinates.">Draw()</a> paints it: plain runs and links.  <br /></td></tr>
@@ -820,6 +830,9 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:aba0ac8fd2cc8002400bf43631c80ad58"><td class="memItemLeft" align="right" valign="top"><a id="aba0ac8fd2cc8002400bf43631c80ad58" name="aba0ac8fd2cc8002400bf43631c80ad58"></a>
 wxString&#160;</td><td class="memItemRight" valign="bottom"><b>m_altCopyText</b></td></tr>
 <tr class="separator:aba0ac8fd2cc8002400bf43631c80ad58"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4efc132190f8d69fc60773b4ad4ae87"><td class="memItemLeft" align="right" valign="top">std::vector&lt; size_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTextCell.html#ad4efc132190f8d69fc60773b4ad4ae87">m_digitGroupGaps</a></td></tr>
+<tr class="memdesc:ad4efc132190f8d69fc60773b4ad4ae87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Where in m_displayedText <a class="el" href="classTextCell.html#a7a6e74684bff07839bdf196d3b4d9da2" title="Pass 3 (Paint): Renders the cell using pre-calculated coordinates.">Draw()</a> leaves a gap between two digit groups.  <br /></td></tr>
+<tr class="separator:ad4efc132190f8d69fc60773b4ad4ae87"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a25410c28a61e1b2e95fbb454ec901b8e"><td class="memItemLeft" align="right" valign="top"><a id="a25410c28a61e1b2e95fbb454ec901b8e" name="a25410c28a61e1b2e95fbb454ec901b8e"></a>
 wxString&#160;</td><td class="memItemRight" valign="bottom"><b>m_text</b></td></tr>
 <tr class="memdesc:a25410c28a61e1b2e95fbb454ec901b8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The text we keep inside this cell. <br /></td></tr>
@@ -1593,6 +1606,63 @@ static wxRegEx&#160;</td><td class="memItemRight" valign="bottom"><b>m_roundingE
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="aa5ef53fc0f2cf9292b3a786eea9996f0" name="aa5ef53fc0f2cf9292b3a786eea9996f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa5ef53fc0f2cf9292b3a786eea9996f0">&#9670;&#160;</a></span>DrawGroupedDigits()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxCoord TextCell::DrawGroupedDigits </td>
+          <td>(</td>
+          <td class="paramtype">wxDC *&#160;</td>
+          <td class="paramname"><em>dc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
+          <td class="paramname"><em>text</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">wxCoord&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">wxCoord&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>draw</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Draws text, the first text.Length() characters of m_displayedText, with the digit-group gaps that fall into it &ndash; or, if dc is only being measured with (draw = false), just returns the width that would take. </p>
+<p>The groups are measured one at a time, the way they are drawn, so that the width <a class="el" href="classTextCell.html#ab04a7643a14776359e738f167b03c0d4" title="Recalculate the size of the cell and the difference between top and center.">Recalculate()</a> reserves is exactly the width <a class="el" href="classVisiblyInvalidCell.html#aaeb33b1e7a9e9d290726f248db19468f" title="Pass 3 (Paint): Renders the cell using pre-calculated coordinates.">Draw()</a> needs. dc has to have the cell's font set already. </p>
 
 </div>
 </div>
@@ -4107,6 +4177,34 @@ static wxRegEx&#160;</td><td class="memItemRight" valign="bottom"><b>m_roundingE
 
 </div>
 </div>
+<a id="ac200bc10baae245b2925e0daaef2eab0" name="ac200bc10baae245b2925e0daaef2eab0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac200bc10baae245b2925e0daaef2eab0">&#9670;&#160;</a></span>UpdateDigitGroupGaps()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TextCell::UpdateDigitGroupGaps </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Recomputes m_digitGroupGaps for m_displayedText (GH #192). </p>
+<p>Leaves them empty unless this is a number (TS_NUMBER) and <a class="el" href="classConfiguration.html#aa34bf94cb8e69a7700c7b95d63b3a981" title="Separate the digit groups of long numbers by a small gap? (GH #192)">Configuration::DigitGrouping()</a> is on. </p>
+
+</div>
+</div>
 <a id="a5ae994a7422fb27ad9768b1d728ae9d6" name="a5ae994a7422fb27ad9768b1d728ae9d6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5ae994a7422fb27ad9768b1d728ae9d6">&#9670;&#160;</a></span>UpdateDisplayedText()</h2>
 
@@ -4295,6 +4393,31 @@ template&lt;typename RunFunc &gt; </div>
 <li>for EditorCells by it's <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a>'s RecalculateHeight and</li>
 <li>for Cells when they are drawn. </li>
 </ul>
+
+</div>
+</div>
+<a id="ad4efc132190f8d69fc60773b4ad4ae87" name="ad4efc132190f8d69fc60773b4ad4ae87"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4efc132190f8d69fc60773b4ad4ae87">&#9670;&#160;</a></span>m_digitGroupGaps</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;size_t&gt; TextCell::m_digitGroupGaps</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">mutable</span><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Where in m_displayedText <a class="el" href="classVisiblyInvalidCell.html#aaeb33b1e7a9e9d290726f248db19468f" title="Pass 3 (Paint): Renders the cell using pre-calculated coordinates.">Draw()</a> leaves a gap between two digit groups. </p>
+<p>Indices before which the gap goes, see <a class="el" href="DigitGrouping_8cpp.html#a39150533ff60c978a1cc8d2917782f48" title="The indices into number before which a digit-group gap is drawn, ascending.">wxm::DigitGroupGaps()</a>. The text itself never contains these gaps, so copying, saving and exporting the cell is unaffected. </p>
 
 </div>
 </div>

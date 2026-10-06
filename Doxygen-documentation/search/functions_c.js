@@ -40,7 +40,8 @@ var searchData=
   ['loadmanualanchorsfromxml_37',['LoadManualAnchorsFromXML',['../classMaximaManual.html#acddcb69633df12600c39ebea000ef9c2',1,'MaximaManual']]],
   ['loadsave_38',['LoadSave',['../classConfigDialogue.html#afeac2a9acf99d95414b0f0e823550805',1,'ConfigDialogue']]],
   ['loadsymbols_39',['LoadSymbols',['../classAutoComplete.html#a6022d262109966147cbda01d6166d2ca',1,'AutoComplete::LoadSymbols()'],['../classWorksheet.html#aaa5b37aee0c005bb6f303c7dd84c64d1',1,'Worksheet::LoadSymbols()']]],
-  ['localedir_40',['LocaleDir',['../classDirstructure.html#a07774426dee2c4edafa95ce9f7465661',1,'Dirstructure']]],
-  ['longnumbercell_41',['LongNumberCell',['../classLongNumberCell.html#ae650abe2ed7d371b47a6ed2aa55e3424',1,'LongNumberCell']]],
-  ['lookslikeldb_42',['LooksLikeLdb',['../LdbSupport_8cpp.html#a4ad83c27ca9d16abc6068282936aae76',1,'LdbSupport']]]
+  ['localedigitgroupsize_40',['LocaleDigitGroupSize',['../DigitGrouping_8cpp.html#a9b583b0c01ca634c9177e21bfe483d13',1,'wxm']]],
+  ['localedir_41',['LocaleDir',['../classDirstructure.html#a07774426dee2c4edafa95ce9f7465661',1,'Dirstructure']]],
+  ['longnumbercell_42',['LongNumberCell',['../classLongNumberCell.html#ae650abe2ed7d371b47a6ed2aa55e3424',1,'LongNumberCell']]],
+  ['lookslikeldb_43',['LooksLikeLdb',['../LdbSupport_8cpp.html#a4ad83c27ca9d16abc6068282936aae76',1,'LdbSupport']]]
 ];
