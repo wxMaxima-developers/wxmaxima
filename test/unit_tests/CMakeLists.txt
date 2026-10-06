@@ -521,6 +521,17 @@ if(TARGET wxmTestApp)
     add_test(NAME WorksheetClipboard
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_WorksheetClipboard>")
 
+    # GH #794: a middle-click pastes the primary selection, not the Ctrl+C
+    # clipboard. Uses the real clipboard, so it needs a display.
+    add_executable(test_PrimarySelectionPaste
+        test_PrimarySelectionPaste.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_PrimarySelectionPaste PUBLIC cxx_std_20)
+    target_link_libraries(test_PrimarySelectionPaste PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME PrimarySelectionPaste
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_PrimarySelectionPaste>")
+
     # Pins the right-click context menu (WorksheetContextMenu, extracted from
     # Worksheet::OnMouseRightDown): drives the main right-click states on a
     # real Worksheet and checks the expected menu entries appear.
