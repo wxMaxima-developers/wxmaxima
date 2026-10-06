@@ -77,9 +77,20 @@ void CharButton::OnIdleEvent(wxIdleEvent &event) {
   m_backgroundColorChangeNeeded = false;
   if ((m_mouseOverPanel) || (m_mouseOverText))
     SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT));
-  else
+  else {
+#ifdef __WXQT__
+    // wxQt ignores the reset to the default background below: our panel
+    // tells Qt it paints its whole area itself (wxBG_STYLE_ERASE, hence
+    // Qt::WA_OpaquePaintEvent), but wxQt only clears it while an explicit
+    // background colour is set. So the highlight stayed on screen after the
+    // mouse had left. Setting the colour the button sits on explicitly makes
+    // wxQt paint over it.
+    SetBackgroundColour(GetParent()->GetBackgroundColour());
+#else
     // An invalid color means "the default background"
     SetBackgroundColour(wxColour());
+#endif
+  }
   event.Skip();
 }
 
