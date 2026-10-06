@@ -313,6 +313,9 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent)
 }
 
 ConfigDialogue::~ConfigDialogue() {
+  // Save the geometry while this is still a whole dialog. See
+  // FindReplaceDialog::~FindReplaceDialog() for why this is needed.
+  SendDestroyEvent();
 #ifdef WXM_USE_AI_TOOLS
   // Anything still waiting on an HTTP response must not touch this
   // dialog's controls from here on -- they are about to stop existing.

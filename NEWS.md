@@ -1,5 +1,8 @@
 # Current development version
 
+- With wxWidgets 3.3's Qt port, closing the configuration dialog, the tip
+  of the day, the plot and other wizards and most other dialogs no longer
+  crashes wxMaxima.
 - The sections of the toolbar can be rearranged: a new "Toolbar" tab in
   the configuration dialog lists them, and a section can be dragged to
   another place there or moved using "Up" and "Down". Every section,
