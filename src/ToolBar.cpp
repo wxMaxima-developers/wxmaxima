@@ -342,7 +342,7 @@ void ToolBar::AddTools() {
     AddTool(wxID_PASTE, _("Paste"), wxArtProvider::GetBitmapBundle(wxART_PASTE, wxART_TOOLBAR), _("Paste from clipboard"));
   }
   if (ShowSelectAll())
-    AddTool(tb_hideCode, _("Select all"), wxArtProvider::GetBitmapBundle(wxmaximaART_GTK_SELECT_ALL, wxART_TOOLBAR), _("Select all"));
+    AddTool(wxID_SELECTALL, _("Select all"), wxArtProvider::GetBitmapBundle(wxmaximaART_GTK_SELECT_ALL, wxART_TOOLBAR), _("Select all"));
 
   if (ShowSearch()) {
 #ifndef __WXOSX__
