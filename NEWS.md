@@ -1,5 +1,7 @@
 # Current development version
 
+- With wxWidgets' Qt port, a symbol in the Greek letters or Symbols sidebar
+  no longer stays highlighted after the mouse has left it.
 - With wxWidgets 3.3's Qt port, closing the configuration dialog, the tip
   of the day, the plot and other wizards and most other dialogs no longer
   crashes wxMaxima.
