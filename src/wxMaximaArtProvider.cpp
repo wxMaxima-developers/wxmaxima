@@ -71,6 +71,7 @@
 #include "art/config/view-refresh.h"
 #include "art/config/accessibility.h"
 #include "art/config/ai-chat.h"
+#include "art/config/toolbar.h"
 
 // Used to gunzip the (gzip compressed) SVG in Memory
 wxString wxMaximaArtProvider::gunzip(unsigned char * svg_gz, size_t svg_gz_size)
@@ -155,6 +156,8 @@ wxBitmapBundle wxMaximaArtProvider::CreateBitmapBundle(const wxArtID& id,
     return wxBitmapBundle::FromSVG(wxMaximaArtProvider::gunzip(ACCESSIBILITY_SVG_GZ, ACCESSIBILITY_SVG_GZ_SIZE).mb_str(), artsize);
   } else if (id == wxmaximaART_CONFIG_AI_CHAT) {
     return wxBitmapBundle::FromSVG(wxMaximaArtProvider::gunzip(AI_CHAT_SVG_GZ, AI_CHAT_SVG_GZ_SIZE).mb_str(), artsize);
+  } else if (id == wxmaximaART_CONFIG_TOOLBAR) {
+    return wxBitmapBundle::FromSVG(wxMaximaArtProvider::gunzip(TOOLBAR_SVG_GZ, TOOLBAR_SVG_GZ_SIZE).mb_str(), artsize);
   } else {
     return wxNullBitmap;
   }

@@ -92,8 +92,10 @@ SCENARIO("Re-creating the tools doesn't leave them wrongly active") {
   toolbar->CanCopy(false);
 
   WHEN("the user hides and shows a group of tools again") {
-    toolbar->ToggleToolGroup(ToolBar::copy_paste);
-    toolbar->ToggleToolGroup(ToolBar::copy_paste);
+    toolbar->ToggleToolGroup(
+        ToolBar::SectionMenuId(ToolBarSections::Section::CopyPaste));
+    toolbar->ToggleToolGroup(
+        ToolBar::SectionMenuId(ToolBarSections::Section::CopyPaste));
     // The re-created tools are all active; the next update has to correct
     // that.
     toolbar->CanUndo(false);
