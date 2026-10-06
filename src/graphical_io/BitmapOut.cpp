@@ -27,6 +27,7 @@
 
 #include "BitmapOut.h"
 #include "cells/Cell.h"
+#include <memory>
 #include <wx/clipbrd.h>
 // wxIMAGE_OPTION_PNG_DESCRIPTION
 #include <wx/imagpng.h>
@@ -119,21 +120,26 @@ bool BitmapOut::Layout(long int maxSize) {
 wxBitmap BitmapOut::RenderForClipboard(const Configuration * const *configuration,
                                        const std::function<std::unique_ptr<Cell>()> &cells,
                                        double scale) {
+  // A BitmapOut holds a whole copy of the Configuration (~11 KB), so the two
+  // tries below live on the heap: on the stack they made this function use
+  // over 21 KB of it, which MSVC's code analysis warns about.
   {
-    BitmapOut output(configuration, cells(), scale, CLIPBOARD_MAX_PIXELS);
-    if (output.IsOk())
-      return output.GetBitmap();
+    auto output = std::make_unique<BitmapOut>(configuration, cells(), scale,
+                                              CLIPBOARD_MAX_PIXELS);
+    if (output->IsOk())
+      return output->GetBitmap();
     if (scale <= 1)
       return {};
     // The layout is done even if the bitmap was too large: if even a bitmap
     // at scale 1 would be too large, don't lay the cells out a second time.
-    const wxSize size = output.m_cmn.GetScaledSize();
+    const wxSize size = output->m_cmn.GetScaledSize();
     const double unscaledPixels = (double)size.x * size.y / (scale * scale);
     if (size.x <= 0 || size.y <= 0 || unscaledPixels >= CLIPBOARD_MAX_PIXELS)
       return {};
   }
-  BitmapOut output(configuration, cells(), 1, CLIPBOARD_MAX_PIXELS);
-  return output.IsOk() ? output.GetBitmap() : wxBitmap();
+  auto output = std::make_unique<BitmapOut>(configuration, cells(), 1,
+                                            CLIPBOARD_MAX_PIXELS);
+  return output->IsOk() ? output->GetBitmap() : wxBitmap();
 }
 
 void BitmapOut::Draw() {
