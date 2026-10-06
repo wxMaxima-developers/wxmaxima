@@ -1367,10 +1367,27 @@ public:
   /*! Paste into the worksheet
 
     \param primary true = paste X11's primary selection (what a middle-click
-    pastes), false = the ordinary Ctrl+V clipboard. On platforms without a
-    primary selection wxWidgets silently uses the ordinary clipboard.
+    pastes), false = the ordinary Ctrl+V clipboard. Only pass true where
+    HasPrimarySelection() is true.
   */
   void PasteFromClipboard(bool primary = false);
+
+  /*! Does this platform have a primary selection?
+
+    X11 (and Wayland, through GTK and Qt) keeps the last selected text in a
+    clipboard of its own that a middle-click pastes. Windows and macOS have
+    no such thing, and wxWidgets can't tell: UsePrimarySelection(true) is
+    accepted everywhere, IsUsingPrimarySelection() then answers true, and on
+    MSW every later clipboard operation silently does nothing. So this is
+    decided at compile time.
+  */
+  static constexpr bool HasPrimarySelection() {
+#if defined(__UNIX__) && !defined(__APPLE__)
+    return true;
+#else
+    return false;
+#endif
+  }
 
   /*! Copy the current selection to the clipboard
 

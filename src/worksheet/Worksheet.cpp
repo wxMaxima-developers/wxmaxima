@@ -5729,18 +5729,16 @@ void Worksheet::OnKillFocus(wxFocusEvent &event) {
 }
 
 void Worksheet::CheckUnixCopy() {
-  if (CanCopy()) {
+  if (HasPrimarySelection() && CanCopy()) {
     wxTheClipboard->UsePrimarySelection(true);
-    if (wxTheClipboard->IsUsingPrimarySelection()) {
-      wxASSERT_MSG(!wxTheClipboard->IsOpened(),
-                   _("Bug: The clipboard is already opened"));
-      if (wxTheClipboard->Open()) {
-        wxString data = GetString();
-        wxLogMessage(_("Middle-click clipboard data: %s"),
-                     static_cast<const char*>(data.mb_str()));
-        wxTheClipboard->SetData(new wxTextDataObject(data));
-        wxTheClipboard->Close();
-      }
+    wxASSERT_MSG(!wxTheClipboard->IsOpened(),
+                 _("Bug: The clipboard is already opened"));
+    if (wxTheClipboard->Open()) {
+      wxString data = GetString();
+      wxLogMessage(_("Middle-click clipboard data: %s"),
+                   static_cast<const char*>(data.mb_str()));
+      wxTheClipboard->SetData(new wxTextDataObject(data));
+      wxTheClipboard->Close();
     }
     wxTheClipboard->UsePrimarySelection(false);
   }
@@ -5916,8 +5914,9 @@ void Worksheet::OnMouseMiddleUp(wxMouseEvent &event) {
     return;
   GetViewCellPointers().ResetSearchStart();
 
-  wxTheClipboard->UsePrimarySelection(true);
-  if (wxTheClipboard->IsUsingPrimarySelection()) {
+  // Without a primary selection a middle-click doesn't paste anything, as
+  // elsewhere on that platform.
+  if (HasPrimarySelection()) {
     OnMouseLeftDown(event);
     m_leftDown = false;
     if (m_clickType != CLICK_TYPE_NONE)
@@ -5925,7 +5924,6 @@ void Worksheet::OnMouseMiddleUp(wxMouseEvent &event) {
     m_clickType = CLICK_TYPE_NONE;
     if (HasCapture())
       ReleaseMouse();
-    wxTheClipboard->UsePrimarySelection(false);
   }
   event.Skip();
 }
