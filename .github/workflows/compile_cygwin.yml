@@ -35,14 +35,25 @@ jobs:
         uses: cygwin/cygwin-install-action@v6
         with:
           packages: cmake git libwx_baseu3.2-devel libwx_gtk3u3.2-devel gcc-core gcc-g++ make gettext-devel
+      # Both steps run in Cygwin's own bash, as cygwin-install-action
+      # recommends, rather than in the runner's default PowerShell, with
+      # stdin closed. Started from PowerShell, cmake now and then hung in
+      # find_package(wxWidgets) (right after "Looking for wxWidgets libraries
+      # in:") until the run was cancelled or hit GitHub's 6-hour limit,
+      # holding a Windows runner all that time. Why it hung isn't known; the
+      # timeouts make sure a hang shows up as a failure instead.
       - name: configure
+        shell: bash --noprofile --norc -eo pipefail -o igncr '{0}'
+        timeout-minutes: 20
         run: |
+             export PATH=/usr/local/bin:/usr/bin:$PATH
              mkdir build
              cd build
-             cmake ../wxmaxima
-             cd ..
+             cmake ../wxmaxima < /dev/null
       - name: compile
+        shell: bash --noprofile --norc -eo pipefail -o igncr '{0}'
+        timeout-minutes: 120
         run: |
+             export PATH=/usr/local/bin:/usr/bin:$PATH
              cd build
-             make VERBOSE=1 -j 4
-             cd ..
+             make VERBOSE=1 -j 4 < /dev/null

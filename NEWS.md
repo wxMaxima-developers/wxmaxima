@@ -101,8 +101,9 @@
 - The cursor no longer jumps when Maxima's output appears in a cell above
   it. Keeping it still failed whenever the output arrived quickly, which is
   most of the time, and when a cell's old output was removed.
-- wxMaxima builds on Cygwin again: precompiled headers, which broke the
-  build there, are now off by default on Cygwin.
+- wxMaxima builds on Cygwin again: with wxWidgets 3.2 every file failed
+  to compile because Cygwin's wxWidgets lacks wx/msw/gccpriv.h, which its
+  own headers ask for. wxMaxima now brings a stand-in.
 
 # 26.09.0
 
