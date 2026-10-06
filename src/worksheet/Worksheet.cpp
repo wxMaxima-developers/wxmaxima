@@ -5829,7 +5829,8 @@ void Worksheet::ToggleTextFormat(TextFormat::Format flag) {
   if (!editor || !editor->CanFormat())
     return;
   if (editor->ToggleFormat(flag)) {
-    // Bold and italic text is wider: the cell has to be laid out anew.
+    // Bold and italic text is wider, and a superscript can make its line
+    // taller: the cell has to be laid out anew.
     if (editor->GetGroup()) {
       editor->GetGroup()->ResetSize();
       RequestRecalculation(editor->GetGroup());

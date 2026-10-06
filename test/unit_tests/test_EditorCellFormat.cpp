@@ -120,6 +120,138 @@ SCENARIO("Formatting a selection") {
   }
 }
 
+SCENARIO("Superscript and subscript") {
+  GIVEN("a text cell with one character selected") {
+    auto group = MakeCell(wxS("x2"));
+    EditorCell *editor = group->GetEditable();
+    editor->SetSelection(1, 2);
+    WHEN("it is made a superscript") {
+      REQUIRE(editor->ToggleFormat(TextFormat::Superscript));
+      THEN("it is one") {
+        REQUIRE(editor->GetFormats() ==
+                TextFormat::Formats({TextFormat::None, TextFormat::Superscript}));
+        REQUIRE(editor->HasFormat(TextFormat::Superscript));
+      }
+      THEN("making it a subscript makes it no longer a superscript") {
+        REQUIRE(editor->ToggleFormat(TextFormat::Subscript));
+        REQUIRE(editor->GetFormats() ==
+                TextFormat::Formats({TextFormat::None, TextFormat::Subscript}));
+        REQUIRE_FALSE(editor->HasFormat(TextFormat::Superscript));
+      }
+      THEN("it can still be made bold, too") {
+        REQUIRE(editor->ToggleFormat(TextFormat::Bold));
+        REQUIRE(editor->GetFormats()[1] == (TextFormat::Bold | TextFormat::Superscript));
+      }
+      THEN("the cell gets narrower: superscripts are smaller") {
+        auto plain = MakeCell(wxS("x2"));
+        Relayout(group.get());
+        REQUIRE(editor->GetWidth() < plain->GetEditable()->GetWidth());
+      }
+    }
+  }
+  GIVEN("nothing selected") {
+    auto group = MakeCell(wxS("x"));
+    EditorCell *editor = group->GetEditable();
+    editor->SetCaretPosition(1);
+    WHEN("subscript is switched on while superscript is pending") {
+      editor->ToggleFormat(TextFormat::Superscript);
+      editor->ToggleFormat(TextFormat::Subscript);
+      THEN("only the subscript is pending") {
+        REQUIRE(editor->HasFormat(TextFormat::Subscript));
+        REQUIRE_FALSE(editor->HasFormat(TextFormat::Superscript));
+      }
+    }
+  }
+}
+
+SCENARIO("A line grows to make room for what is raised or lowered") {
+  // The cell's geometry: its height, and where the middle of its first
+  // line's plain text is.
+  auto layout = [](const wxString &text, size_t start, size_t end,
+                   TextFormat::Format format) {
+    auto group = MakeCell(text);
+    EditorCell *editor = group->GetEditable();
+    if (format != TextFormat::None) {
+      editor->SetSelection(start, end);
+      editor->ToggleFormat(format);
+    }
+    Relayout(group.get());
+    editor->SetCurrentPoint(wxPoint(10, 100));
+    return group;
+  };
+  GIVEN("a one-line cell") {
+    auto plain = layout(wxS("x2"), 0, 0, TextFormat::None);
+    const EditorCell *plainEditor = plain->GetEditable();
+    WHEN("a character in it is a superscript") {
+      auto sup = layout(wxS("x2"), 1, 2, TextFormat::Superscript);
+      THEN("the room is added above the text") {
+        REQUIRE(sup->GetEditable()->GetHeight() > plainEditor->GetHeight());
+        REQUIRE(sup->GetEditable()->GetCenter() > plainEditor->GetCenter());
+        REQUIRE(sup->GetEditable()->GetHeight() - sup->GetEditable()->GetCenter() ==
+                plainEditor->GetHeight() - plainEditor->GetCenter());
+      }
+    }
+    WHEN("a character in it is a subscript") {
+      auto sub = layout(wxS("x2"), 1, 2, TextFormat::Subscript);
+      THEN("the room is added below the text") {
+        REQUIRE(sub->GetEditable()->GetHeight() > plainEditor->GetHeight());
+        REQUIRE(sub->GetEditable()->GetCenter() == plainEditor->GetCenter());
+      }
+    }
+    WHEN("a character in it is bold") {
+      auto bold = layout(wxS("x2"), 1, 2, TextFormat::Bold);
+      THEN("the line keeps its height") {
+        REQUIRE(bold->GetEditable()->GetHeight() == plainEditor->GetHeight());
+        REQUIRE(bold->GetEditable()->GetCenter() == plainEditor->GetCenter());
+      }
+    }
+  }
+  GIVEN("three lines, the middle one with a superscript") {
+    const wxString text = wxS("a\nx2\nb");
+    auto plain = layout(text, 0, 0, TextFormat::None);
+    auto sup = layout(text, 3, 4, TextFormat::Superscript);
+    EditorCell *plainEditor = plain->GetEditable();
+    EditorCell *supEditor = sup->GetEditable();
+    THEN("the first line stays where it was") {
+      REQUIRE(supEditor->PositionToPoint(0).y == plainEditor->PositionToPoint(0).y);
+    }
+    THEN("the middle line moves down, to make room above it") {
+      REQUIRE(supEditor->PositionToPoint(2).y > plainEditor->PositionToPoint(2).y);
+    }
+    THEN("the last line moves down by just as much") {
+      REQUIRE(supEditor->PositionToPoint(5).y - plainEditor->PositionToPoint(5).y ==
+              supEditor->PositionToPoint(2).y - plainEditor->PositionToPoint(2).y);
+    }
+    THEN("a click on each line puts the cursor into that line") {
+      for (const size_t pos : {size_t(0), size_t(2), size_t(5)}) {
+        supEditor->SelectPointText(supEditor->PositionToPoint(pos) + wxPoint(1, 0));
+        REQUIRE(supEditor->CursorPosition() == pos);
+      }
+    }
+    THEN("a click on the superscript's room above the line still hits that line") {
+      // The middle line moved down by exactly the room above it; aim at the
+      // topmost pixel of that room. PositionToPoint() is the middle of the
+      // plain text, half a line (the first line's GetCenter()) below its top.
+      const wxCoord room = supEditor->PositionToPoint(2).y - plainEditor->PositionToPoint(2).y;
+      REQUIRE(room > 0);
+      supEditor->SelectPointText(supEditor->PositionToPoint(2) +
+                                 wxPoint(1, -plainEditor->GetCenter() - room));
+      REQUIRE(supEditor->CursorPosition() >= 2);
+      REQUIRE(supEditor->CursorPosition() <= 4);
+    }
+    THEN("a click on the bottom pixel of the middle line's text hits that line") {
+      // With every line equally high this pixel would belong to the last
+      // line: the middle line has moved down into its place.
+      const wxCoord lineHeight =
+        plainEditor->PositionToPoint(2).y - plainEditor->PositionToPoint(0).y;
+      supEditor->SelectPointText(supEditor->PositionToPoint(2) +
+                                 wxPoint(1, lineHeight - plainEditor->GetCenter() - 1));
+      REQUIRE(supEditor->CursorPosition() >= 2);
+      REQUIRE(supEditor->CursorPosition() <= 4);
+    }
+  }
+}
+
 SCENARIO("Switching a format on with nothing selected") {
   GIVEN("a caret at the end of a plain text cell") {
     auto group = MakeCell(wxS("ab"));

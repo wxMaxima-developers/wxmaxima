@@ -211,9 +211,9 @@ public:
   }
   /*! The font for text with the given character formatting (GH #492).
 
-    Only bold and italic change the font; underline and strikethrough are
-    lines Draw() adds on top. Cached, since Draw() asks for it once per
-    snippet.
+    Only bold, italic, superscript and subscript change the font (the latter
+    two make it smaller); underline and strikethrough are lines Draw() adds on
+    top. Cached, since Draw() asks for it once per snippet.
   */
   const wxFont &GetFont(TextFormat::Format format) const;
   //! Set the currently used font to the one that matches this cell's formatting
@@ -871,6 +871,14 @@ protected:
     bool m_isLink = false;
     //! The character formatting (bold, ...) of this text portion (GH #492)
     TextFormat::Format m_format = TextFormat::None;
+    /*! How far below the top of its line's plain text this portion is drawn.
+
+      Negative for a superscript, positive for a subscript, and also nonzero
+      for text a taller fallback font draws, so that its baseline lines up
+      with the plain text's. Set by EditorCell::Recalculate(), for text cells
+      only.
+    */
+    wxCoord m_yOffset = 0;
   public:
     //! Defines a piece of styled text
     StyledText(TextStyle style, const wxString &text)
@@ -911,6 +919,10 @@ protected:
     TextFormat::Format GetFormat() const { return m_format; }
     //! Sets the character formatting of this text portion
     void SetFormat(TextFormat::Format format) { m_format = format; }
+    //! See m_yOffset
+    wxCoord GetYOffset() const { return m_yOffset; }
+    //! See m_yOffset
+    void SetYOffset(wxCoord yOffset) { m_yOffset = yOffset; }
   };
 
 private:
@@ -1000,6 +1012,44 @@ private:
   //! Brings m_formats up to date with m_text; see GetFormats().
   void SyncFormats() const;
 
+  /*! \name Lines of different heights
+
+    A line of a text cell is taller than the others if something in it
+    reaches above or below the region plain text occupies: a superscript, a
+    subscript or a character from a taller fallback font. Recalculate()
+    records where each line starts in m_lineSlots; everything that needs the
+    vertical position of a line - drawing, the caret, the selection, mouse
+    clicks - asks LineTop() or LineAt() rather than multiplying by
+    m_charHeight.
+    @{
+  */
+  //! How much a line extends beyond the plain text, and where it starts
+  struct LineSlot {
+    //! The distance between the top of the first line's slot and the top of
+    //! this line's plain text
+    wxCoord top = 0;
+    //! How far something in this line reaches above its plain text
+    wxCoord above = 0;
+    //! How far something in this line reaches below its plain text
+    wxCoord below = 0;
+  };
+  //! The size of a superscript's or subscript's font relative to the text's
+  static constexpr double g_superSubscriptScale = 0.65;
+  /*! How far a format moves the baseline: up (negative) for a superscript,
+    down for a subscript.
+
+    \param plainAscent The plain text's ascent, which the shift scales with.
+  */
+  static wxCoord BaselineShift(TextFormat::Format format, wxCoord plainAscent);
+  //! The distance from the top of the cell's text to the top of the plain
+  //! text of a (display) line
+  wxCoord LineTop(size_t line) const;
+  //! The full vertical extent of a line, relative to the top of the text
+  void LineSlotExtent(size_t line, wxCoord *top, wxCoord *height) const;
+  //! The display line at a distance y below the top of the cell's text
+  size_t LineAt(wxCoord y) const;
+  //! @}
+
   //! The memory for the undo history
   History m_history;  
   //! Set the editor's state from a history entry
@@ -1066,12 +1116,19 @@ private:
     //! See SetUnknownLineAttributes(): pairs of (line text, attributes)
     std::vector<std::pair<wxString, wxString>> unknownLineAttributes;
     //! The fonts GetFont(format) returned, indexed by the font-relevant bits
-    std::array<wxFont, TextFormat::WidthAffecting + 1> fonts;
+    std::array<wxFont, TextFormat::FontVariants> fonts;
     //! The base font the fonts were made from
     wxFont fontsBase;
   };
   //! See FormatState; null as long as the cell has never been formatted.
   mutable std::unique_ptr<FormatState> m_formatState;
+  /*! Where each display line starts; see LineTop().
+
+    Empty as long as all lines have the same height, which is the case in
+    every code cell and every text cell without superscripts and tall
+    characters.
+  */
+  mutable std::vector<LineSlot> m_lineSlots;
   //! m_formatState, created if it doesn't exist yet.
   FormatState &GetFormatState() const;
 

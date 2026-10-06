@@ -278,6 +278,8 @@ The same goes for web addresses in _Maxima_'s output, for example in a string pr
 
 Text in a text cell, a title or a section heading can be made bold, italic, underlined or struck through. Select the text and press the respective button in the toolbar; pressing the button again removes that formatting from the selection. With nothing selected the button switches the formatting on or off for what is typed next. The buttons are hidden by right-clicking the toolbar and unchecking "Text formatting buttons". Code cells cannot be formatted: their colors already show the syntax of the code.
 
+Superscript and subscript buttons work the same way: they make the text smaller and raise it above or lower it below the line, as in E = mc² or H₂O. A character cannot be both, so switching one of them on switches the other off. A line that contains a superscript, a subscript or a character that is taller than the font's usual ones, for example an emoji, gets as much additional room as it needs.
+
 The formatting is saved in `.wxmx` files. Older versions of _wxMaxima_ open such a file without the formatting but keep all of the text. `.wxm` files, the exports and the clipboard contain the text without its formatting.
 
 ### Hotkeys

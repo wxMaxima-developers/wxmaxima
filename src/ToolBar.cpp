@@ -439,8 +439,14 @@ void ToolBar::AddSection(ToolBarSections::Section section) {
     AddTool(tb_strikethrough, _("Strikethrough"),
             wxArtProvider::GetBitmapBundle(wxmaximaART_FORMAT_TEXT_STRIKETHROUGH, wxART_TOOLBAR),
             _("Struck-through text"), wxITEM_CHECK);
+    AddTool(tb_superscript, _("Superscript"),
+            wxArtProvider::GetBitmapBundle(wxmaximaART_FORMAT_TEXT_SUPERSCRIPT, wxART_TOOLBAR),
+            _("Superscript: smaller text, raised above the line"), wxITEM_CHECK);
+    AddTool(tb_subscript, _("Subscript"),
+            wxArtProvider::GetBitmapBundle(wxmaximaART_FORMAT_TEXT_SUBSCRIPT, wxART_TOOLBAR),
+            _("Subscript: smaller text, lowered below the line"), wxITEM_CHECK);
     // Only a text cell can be formatted, and there is none active yet.
-    TextFormatState(false, false, false, false, false);
+    TextFormatState(false, TextFormat::None);
     break;
   case Section::Animation:
     AddTool(tb_animation_startStop, _("Start or Stop animation"), wxArtProvider::GetBitmapBundle(wxmaximaART_MEDIA_PLAYBACK_START, wxART_TOOLBAR),
@@ -560,6 +566,10 @@ void ToolBar::UpdateBitmaps() {
     SetToolBitmap(tb_underline, wxArtProvider::GetBitmapBundle(wxmaximaART_FORMAT_TEXT_UNDERLINE, wxART_TOOLBAR));
     SetToolBitmap(tb_strikethrough,
                   wxArtProvider::GetBitmapBundle(wxmaximaART_FORMAT_TEXT_STRIKETHROUGH, wxART_TOOLBAR));
+    SetToolBitmap(tb_superscript,
+                  wxArtProvider::GetBitmapBundle(wxmaximaART_FORMAT_TEXT_SUPERSCRIPT, wxART_TOOLBAR));
+    SetToolBitmap(tb_subscript,
+                  wxArtProvider::GetBitmapBundle(wxmaximaART_FORMAT_TEXT_SUBSCRIPT, wxART_TOOLBAR));
   }
 
   SetToolBitmap(tb_animation_startStop, wxArtProvider::GetBitmapBundle(wxmaximaART_MEDIA_PLAYBACK_START, wxART_TOOLBAR));
@@ -667,23 +677,24 @@ void ToolBar::SetCellStyle(GroupType style) {
   }
 }
 
-void ToolBar::TextFormatState(bool value, bool bold, bool italic,
-                              bool underline, bool strikethrough) {
+void ToolBar::TextFormatState(bool value, TextFormat::Format active) {
   if (!FindTool(tb_bold))
     return;
+  const std::pair<int, TextFormat::Format> buttons[] = {
+    {tb_bold, TextFormat::Bold},
+    {tb_italic, TextFormat::Italic},
+    {tb_underline, TextFormat::Underline},
+    {tb_strikethrough, TextFormat::Strikethrough},
+    {tb_superscript, TextFormat::Superscript},
+    {tb_subscript, TextFormat::Subscript}};
   if (value != m_canFormatText_old) {
-    EnableTool(tb_bold, value);
-    EnableTool(tb_italic, value);
-    EnableTool(tb_underline, value);
-    EnableTool(tb_strikethrough, value);
+    for (const auto &[id, flag] : buttons)
+      EnableTool(id, value);
     m_canFormatText_old = value;
   }
-  // A disabled button doesn't show as pressed: there is no format to show.
-  const std::pair<int, bool> toggled[] = {{tb_bold, value && bold},
-                                          {tb_italic, value && italic},
-                                          {tb_underline, value && underline},
-                                          {tb_strikethrough, value && strikethrough}};
-  for (const auto &[id, state] : toggled) {
+  for (const auto &[id, flag] : buttons) {
+    // A disabled button doesn't show as pressed: there is no format to show.
+    const bool state = value && (active & flag);
     // Like EnableTool(): wxAuiToolBar::ToggleTool() doesn't repaint.
     if (GetToolToggled(id) != state) {
       ToggleTool(id, state);

@@ -18,6 +18,9 @@ letters converted to outlines with fontTools: the "B", "U" and "S" from
 DejaVu Sans (Bitstream Vera license) and the "I" from Liberation Serif
 Italic (SIL Open Font License), plus a plain bar for the underline and
 the strike.
+"format-text-superscript.svg" and "format-text-subscript.svg" are an "x"
+and a smaller "2" from DejaVu Sans, converted to outlines with fontTools
+the same way.
 
 wxMaxima icons (wxmac.icns, maximaicon.ico, io.github.wxmaxima_developers.wxMaxima.png) were created
 by Sven Hodapp and are licensed under GPL.
