@@ -93,4 +93,54 @@ std::vector<size_t> DigitGroupGaps(const wxString &number, size_t minDigits,
   return gaps;
 }
 
+std::vector<std::vector<size_t>> DigitGroupGapsInTokens(
+  const std::vector<std::pair<wxString, bool>> &tokens, size_t minDigits,
+  size_t groupSize) {
+  std::vector<std::vector<size_t>> result(tokens.size());
+  const size_t n = tokens.size();
+  auto isNumber = [&](size_t i) { return (i < n) && tokens[i].second; };
+  auto isPoint = [&](size_t i) { return (i < n) && (tokens[i].first == wxS(".")); };
+  auto allDigits = [](const wxString &text) {
+    for (const auto c : text)
+      if (!IsAsciiDigit(c))
+        return false;
+    return !text.IsEmpty();
+  };
+
+  size_t i = 0;
+  while (i < n) {
+    // The tokens [i, end) form one number: "123", "123" "." "456" or "." "456"
+    size_t end = i;
+    if (isNumber(i)) {
+      end = i + 1;
+      // Only a plain integer can be followed by a decimal point: "5e10.3"
+      // is no number.
+      if (allDigits(tokens[i].first) && isPoint(end) && isNumber(end + 1))
+        end += 2;
+    } else if (isPoint(i) && isNumber(i + 1) && ((i == 0) || !isNumber(i - 1)))
+      end = i + 2;
+    if (end == i) {
+      i++;
+      continue;
+    }
+
+    wxString number;
+    std::vector<size_t> offsets;
+    for (size_t k = i; k < end; k++) {
+      offsets.push_back(number.Length());
+      number += tokens[k].first;
+    }
+    for (const auto gap : DigitGroupGaps(number, minDigits, groupSize)) {
+      size_t k = end - i;
+      while ((k > 0) && (offsets[k - 1] > gap))
+        k--;
+      // k - 1 is the last token starting at or before the gap
+      if (k > 0)
+        result[i + k - 1].push_back(gap - offsets[k - 1]);
+    }
+    i = end;
+  }
+  return result;
+}
+
 } // namespace wxm

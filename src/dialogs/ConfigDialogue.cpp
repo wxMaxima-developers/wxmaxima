@@ -413,9 +413,10 @@ void ConfigDialogue::SetCheckboxValues() {
                                 _("If numbers are getting longer than this number of digits they will be "
                                   "displayed abbreviated by an ellipsis."));
   m_digitGrouping->SetToolTip(
-    _("Displays 2111230496 as 2 111 230 496, which makes long numbers easier to "
-      "read. Only the display changes: copying, saving and exporting a number "
-      "never adds these gaps."));
+    _("Displays 2111230496 as 2 111 230 496 in the output and in code cells, "
+      "which makes long numbers easier to read. Only the display changes: "
+      "copying, saving, exporting and what is sent to Maxima never contain "
+      "these gaps."));
   m_TeXExponentsAfterSubscript->SetToolTip(
                                            _("In the LaTeX output: Put exponents after an eventual subscript "
                                              "instead of above it. Might increase readability for some fonts and "

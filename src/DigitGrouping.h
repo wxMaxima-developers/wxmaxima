@@ -32,6 +32,7 @@
 #define DIGITGROUPING_H
 
 #include <cstddef>
+#include <utility>
 #include <vector>
 #include <wx/string.h>
 
@@ -63,6 +64,22 @@ int LocaleDigitGroupSize();
 */
 std::vector<size_t> DigitGroupGaps(const wxString &number, size_t minDigits,
                                    size_t groupSize = 3);
+
+/*! DigitGroupGaps() for code, where a number may span several tokens.
+
+  MaximaTokenizer makes "3.14159" three tokens, "3", "." and "14159", and
+  ".5" two. Grouped one token at a time, the digits after the point would be
+  grouped from the right, like an integer's; this joins such tokens up into
+  the number they form first.
+
+  tokens holds each token's text and whether it is a number token. The result
+  has one entry per token: the gaps inside it, as indices into that token's
+  own text. A gap never falls on a token boundary, so each gap belongs to
+  exactly one token.
+*/
+std::vector<std::vector<size_t>> DigitGroupGapsInTokens(
+  const std::vector<std::pair<wxString, bool>> &tokens, size_t minDigits,
+  size_t groupSize = 3);
 
 } // namespace wxm
 

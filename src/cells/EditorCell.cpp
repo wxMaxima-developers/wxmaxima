@@ -30,6 +30,7 @@
 */
 
 #include "EditorCell.h"
+#include "DigitGrouping.h"
 
 #include "Bidi.h"
 #include "CellImpl.h"
@@ -813,8 +814,9 @@ void EditorCell::Recalculate(AFontSize fontsize) const {
             slot.above = std::max(slot.above, -yOffset - fontDelta.x);
             slot.below = std::max(slot.below,
                                   yOffset + tokenheight - plainHeight - fontDelta.y);
-          } else if (textSnippet.GetFormat() & TextFormat::WidthAffecting)
-            tokenwidth = GetTextSize(textSnippet.GetText(), textSnippet.GetFormat()).GetWidth();
+          } else if ((textSnippet.GetFormat() & TextFormat::WidthAffecting) ||
+                     !textSnippet.GetDigitGaps().empty())
+            tokenwidth = SnippetWidth(textSnippet);
           else
             dc->GetTextExtent(textSnippet.GetText(), &tokenwidth, &tokenheight);
           textSnippet.SetWidth(tokenwidth);
@@ -1080,7 +1082,9 @@ void EditorCell::WalkDrawnSnippets(wxDC *dc, SnippetFunc &&onSnippet) {
           dc->SetFont(GetFont(textSnippet.GetFormat()));
           dc->GetTextExtent(textSnippet.GetText(), &width, &height);
           dc->SetFont(previousFont);
-        } else
+        } else if (!textSnippet.GetDigitGaps().empty())
+          width = SnippetWidth(textSnippet);
+        else
           dc->GetTextExtent(textSnippet.GetText(), &width, &height);
         textSnippet.SetWidth(width);
       } else
@@ -1246,7 +1250,7 @@ void EditorCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
       // Draw the text only if it overlaps the update region
       if (((!m_configuration->ClipToDrawRegion())) ||
           (updateRegion.Intersects(textRect))) {
-        dc->DrawText(textSnippet.GetText(), topLeft.x, textY);
+        DrawSnippetText(dc, textSnippet, topLeft.x, textY);
         // Underline and strikethrough are drawn by hand rather than by
         // switching to an underlined font, for the reason links are (see
         // below): that way nothing about the text's measurements can change.
@@ -1711,6 +1715,65 @@ wxCoord EditorCell::MeasureTextWidth(wxCoord startX, const wxString &text,
   if (!run.empty())
     x += GetTextSize(run, runFormat).GetWidth();
   return x - startX;
+}
+
+wxCoord EditorCell::DigitGroupGapWidth() const {
+  // About a sixth of an em, the gap TextCell leaves in output numbers.
+  return std::max(static_cast<wxCoord>(1),
+                  static_cast<wxCoord>(m_fontSize_Scaled.Get() / 6));
+}
+
+wxCoord EditorCell::SnippetWidth(const StyledText &snippet, size_t length) const {
+  const wxString &text = snippet.GetText();
+  length = std::min(length, text.Length());
+  const std::vector<size_t> &gaps = snippet.GetDigitGaps();
+  if (gaps.empty())
+    return GetTextSize(text.Left(length), snippet.GetFormat()).GetWidth();
+
+  // Measured group by group, the way DrawSnippetText() draws them. A gap
+  // belongs to the characters after it, so a prefix ending right before
+  // one doesn't include it: the caret sits directly after a digit.
+  wxCoord width = 0;
+  size_t groupStart = 0;
+  for (const auto gap : gaps) {
+    if (gap >= length)
+      break;
+    width += GetTextSize(text.Mid(groupStart, gap - groupStart),
+                         snippet.GetFormat()).GetWidth() + DigitGroupGapWidth();
+    groupStart = gap;
+  }
+  return width + GetTextSize(text.Mid(groupStart, length - groupStart),
+                             snippet.GetFormat()).GetWidth();
+}
+
+void EditorCell::DrawSnippetText(wxDC *dc, const StyledText &snippet,
+                                 wxCoord x, wxCoord y) const {
+  const std::vector<size_t> &gaps = snippet.GetDigitGaps();
+  if (gaps.empty()) {
+    dc->DrawText(snippet.GetText(), x, y);
+    return;
+  }
+  const wxString &text = snippet.GetText();
+  size_t groupStart = 0;
+  for (size_t i = 0; i <= gaps.size(); i++) {
+    const size_t groupEnd = (i < gaps.size()) ? gaps[i] : text.Length();
+    const wxString group = text.Mid(groupStart, groupEnd - groupStart);
+    dc->DrawText(group, x, y);
+    x += dc->GetTextExtent(group).GetWidth() + DigitGroupGapWidth();
+    groupStart = groupEnd;
+  }
+}
+
+wxCoord EditorCell::DigitGapsWidthIn(size_t from, size_t to) const {
+  // A gap at position p sits between the characters p - 1 and p, so it is
+  // inside [from, to) only if both of them are.
+  const auto first =
+    std::upper_bound(m_digitGapPositions.begin(), m_digitGapPositions.end(), from);
+  const auto last =
+    std::lower_bound(m_digitGapPositions.begin(), m_digitGapPositions.end(), to);
+  if (last <= first)
+    return 0;
+  return static_cast<wxCoord>(last - first) * DigitGroupGapWidth();
 }
 
 size_t EditorCell::BeginningOfLine(size_t pos) const {
@@ -3168,7 +3231,7 @@ void EditorCell::SelectPointText(const wxPoint point) {
       }
 
       wxCoord firstCharWidth = GetTextSize(txt.Left(1)).GetWidth();
-      wxCoord w = GetTextSize(txt).GetWidth();
+      wxCoord w = SnippetWidth(*textSnippet);
       if (xpos + w + firstCharWidth / 2 < posInCell.x) {
         xpos += w;
         pos += txt.Length();
@@ -3196,7 +3259,7 @@ void EditorCell::SelectPointText(const wxPoint point) {
       // Now determine which char inside this text snippet the cursor is at
       if ((snippet != wxS("\r")) && (snippet != wxS("\n"))) {
         for (size_t i = 0; i < snippet.Length(); i++) {
-          wxCoord width = GetTextSize(snippet.Left(i)).GetWidth();
+          wxCoord width = SnippetWidth(*textSnippet, i);
           if (xpos + width + (width - lastwidth) / 2 < posInCell.x)
             pos++;
           else
@@ -3293,7 +3356,8 @@ bool EditorCell::IsPointInSelection(wxPoint point) {
          !((positionOfCaret != lineStart) && IsSoftBreakBefore(positionOfCaret))) {
     wxCoord width;
     wxString strng = m_text.SubString(lineStart, positionOfCaret);
-    width = GetTextSize(strng).GetWidth();
+    width = GetTextSize(strng).GetWidth() +
+      DigitGapsWidthIn(lineStart, positionOfCaret + 1);
     if (width > posInCell.x)
       break;
     positionOfCaret++;
@@ -3711,7 +3775,8 @@ bool EditorCell::MixedDirectionOffset(size_t line, size_t position, wxCoord *off
     if (&r == run)
       break;
     x += MeasureTextWidth(x, m_text.SubString(r.logicalStart, r.logicalEnd - 1),
-                          r.logicalStart);
+                          r.logicalStart) +
+      DigitGapsWidthIn(r.logicalStart, r.logicalEnd);
   }
 
   // Within the run itself: a left-to-right run measures normally, from its
@@ -3723,11 +3788,13 @@ bool EditorCell::MixedDirectionOffset(size_t line, size_t position, wxCoord *off
   if (run->rightToLeft) {
     if (position < run->logicalEnd)
       x += MeasureTextWidth(x, m_text.SubString(position, run->logicalEnd - 1),
-                            position);
+                            position) +
+        DigitGapsWidthIn(position, run->logicalEnd);
   } else {
     if (position > run->logicalStart)
       x += MeasureTextWidth(x, m_text.SubString(run->logicalStart, position - 1),
-                            run->logicalStart);
+                            run->logicalStart) +
+        DigitGapsWidthIn(run->logicalStart, position);
   }
   *offset = x;
   return true;
@@ -3787,17 +3854,14 @@ wxCoord EditorCell::GetLineWidth(size_t line, size_t pos) {
         // GetTextSize() lookup.
         lineWidth = (snippet == wxS("\t"))
           ? NextTabStop(lineWidth)
-          : lineWidth + GetTextSize(snippet, textSnippet->GetFormat()).GetWidth();
+          : lineWidth + SnippetWidth(*textSnippet);
       }
     else
       {
         // pos < snippet.Length() here; for a lone-tab snippet (length 1) the
         // only way to land here is pos == 0, where Left(0) is already
         // correctly "" / width 0, so no tab special-case is needed.
-        wxString partialSnippet = snippet.Left(pos);
-        wxCoord snippetWidth =
-          GetTextSize(partialSnippet, textSnippet->GetFormat()).GetWidth();
-        lineWidth += snippetWidth;
+        lineWidth += SnippetWidth(*textSnippet, pos);
         break;
       }
   }
@@ -3958,7 +4022,7 @@ bool EditorCell::BreakAfterOperator(const wxString &token,
 
 void EditorCell::HandleSoftLineBreaks_Code(SoftBreakCandidate &candidate,
                                            wxCoord &lineWidth,
-                                           const wxString &token,
+                                           wxCoord tokenWidth,
                                            wxCoord &indentationPixels) const {
   // If we don't want to autowrap code we don't do nothing here.
   if (!m_configuration->GetAutoWrapCode())
@@ -3973,7 +4037,7 @@ void EditorCell::HandleSoftLineBreaks_Code(SoftBreakCandidate &candidate,
 
   //  Does the line extend too much to the right to fit on the screen /
   //  to be easy to read?
-  wxCoord width = GetTextSize(token).GetWidth();
+  const wxCoord width = tokenWidth;
   lineWidth += width;
 
   if ((lineWidth + indentationPixels < m_configuration->GetLineWidth()) ||
@@ -4046,12 +4110,26 @@ void EditorCell::StyleTextCode() const {
   // Split the line into commands, numbers etc.
   m_tokens = MaximaTokenizer(textToStyle, m_configuration).PopTokens();
 
+  // Where numbers get the gaps between their digit groups (GH #192)
+  std::vector<std::vector<size_t>> digitGaps;
+  if (m_configuration->DigitGrouping()) {
+    std::vector<std::pair<wxString, bool>> tokens;
+    tokens.reserve(m_tokens.size());
+    for (const auto &token : m_tokens)
+      tokens.emplace_back(token.GetText(),
+                          token.GetTextStyle() == TS_CODE_NUMBER);
+    digitGaps = wxm::DigitGroupGapsInTokens(
+      tokens, static_cast<size_t>(m_configuration->DigitGroupingMinDigits()),
+      static_cast<size_t>(wxm::LocaleDigitGroupSize()));
+  }
+
   // Now handle the text pieces one by one
   size_t pos = 0;
   wxCoord lineWidth = 0;
 
   for (size_t ti = 0; ti < m_tokens.size(); ++ti) {
     auto const &token = m_tokens[ti];
+    const size_t tokenStart = pos;
     pos += token.GetText().Length();
     auto &tokenString = token.GetText();
     if (tokenString.IsEmpty())
@@ -4121,15 +4199,23 @@ void EditorCell::StyleTextCode() const {
         line.Clear();
       }
     }
-    if (line != wxEmptyString)
+    if (line != wxEmptyString) {
       m_styledText.push_back(StyledText(token.GetTextStyle(), line));
+      // A number never contains a newline, so this snippet is all of it.
+      if ((ti < digitGaps.size()) && !digitGaps[ti].empty() && !containedNewline) {
+        for (const auto gap : digitGaps[ti])
+          m_digitGapPositions.push_back(tokenStart + gap);
+        m_styledText.back().SetDigitGaps(std::move(digitGaps[ti]));
+      }
+    }
     if (containedNewline) {
       // Only the remnant after the last hard newline counts towards the
       // current display line; there is no soft-break candidate in it yet.
       if (line != wxEmptyString)
         lineWidth += GetTextSize(line).GetWidth();
     } else {
-      HandleSoftLineBreaks_Code(candidate, lineWidth, tokenString,
+      HandleSoftLineBreaks_Code(candidate, lineWidth,
+                                SnippetWidth(m_styledText.back()),
                                 indentationPixels);
       // Having weighed this token (and possibly broken before it), a breakable
       // operator now becomes the candidate spot for the following tokens: a
@@ -4560,6 +4646,7 @@ void EditorCell::StyleText() const {
   // Soft breaks are derived layout data; re-derive them from scratch on every
   // restyle. They live in a side table (m_softBreaks), never inside m_text.
   m_softBreaks.clear();
+  m_digitGapPositions.clear();
 
   if (m_text != wxEmptyString) {
     // Defensive normalization: a bare '\r' can only reach us as raw input
