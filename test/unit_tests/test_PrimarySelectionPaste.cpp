@@ -33,9 +33,12 @@
   testing with both clipboards holding the same text could not see it.
 
   This test uses the real clipboard, so it needs a display (CI runs it under
-  xvfb). Only platforms that have a primary selection can show the bug; on
-  the others wxWidgets ignores UsePrimarySelection(true), and the scenarios
-  check only that pasting still reads the one clipboard there is.
+  xvfb). Windows and macOS have no primary selection, so there only the
+  ordinary paste is checked. wxWidgets can't be asked whether there is one:
+  on MSW UsePrimarySelection(true) is accepted, IsUsingPrimarySelection()
+  answers true, and the clipboard then silently stays empty. An earlier
+  version of this test asked it anyway and turned the minGW job red; it now
+  goes by Worksheet::HasPrimarySelection().
 */
 
 #include <wx/app.h>
@@ -73,21 +76,6 @@ void SetClipboardText(bool primary, const wxString &text) {
   wxTheClipboard->UsePrimarySelection(false);
 }
 
-//! Does this platform have a primary selection distinct from the clipboard?
-bool HasPrimarySelection() {
-  wxTheClipboard->UsePrimarySelection(true);
-  const bool hasIt = wxTheClipboard->IsUsingPrimarySelection();
-  wxTheClipboard->UsePrimarySelection(false);
-  return hasIt;
-}
-
-//! What the paste is expected to insert when asked for the primary selection
-wxString ExpectedPrimaryPaste() {
-  // Without a primary selection both writes went to the one clipboard, and
-  // the later one (the clipboard text) is what is there.
-  return HasPrimarySelection() ? primaryText : clipboardText;
-}
-
 //! A one-cell document whose editor is active, with the cursor after "abc"
 EditorCell *ActiveCodeCell() {
   g_ws->ClearDocument();
@@ -100,12 +88,16 @@ EditorCell *ActiveCodeCell() {
   return editor;
 }
 
+//! Puts different text on the two clipboards (only the ordinary one if that is all there is)
 void FillBothClipboards() {
-  SetClipboardText(true, primaryText);
+  if (Worksheet::HasPrimarySelection())
+    SetClipboardText(true, primaryText);
   SetClipboardText(false, clipboardText);
 }
 } // namespace
 
+// The same condition as Worksheet::HasPrimarySelection()
+#if defined(__UNIX__) && !defined(__APPLE__)
 SCENARIO("Pasting the primary selection into a cell inserts the primary selection") {
   GIVEN("an active cell and different text on the two clipboards") {
     EditorCell *editor = ActiveCodeCell();
@@ -113,7 +105,7 @@ SCENARIO("Pasting the primary selection into a cell inserts the primary selectio
     WHEN("the primary selection is pasted, as on a middle-click") {
       g_ws->PasteFromClipboard(true);
       THEN("the cell got the primary selection, not the Ctrl+C clipboard") {
-        REQUIRE(editor->GetValue() == wxS("abc") + ExpectedPrimaryPaste());
+        REQUIRE(editor->GetValue() == wxS("abc") + primaryText);
       }
       THEN("the clipboard is switched back to the ordinary one") {
         REQUIRE_FALSE(wxTheClipboard->IsUsingPrimarySelection());
@@ -121,6 +113,7 @@ SCENARIO("Pasting the primary selection into a cell inserts the primary selectio
     }
   }
 }
+#endif
 
 SCENARIO("An ordinary paste into a cell still inserts the Ctrl+C clipboard") {
   GIVEN("an active cell and different text on the two clipboards") {
@@ -135,6 +128,7 @@ SCENARIO("An ordinary paste into a cell still inserts the Ctrl+C clipboard") {
   }
 }
 
+#if defined(__UNIX__) && !defined(__APPLE__)
 SCENARIO("Pasting the primary selection at the h-caret opens a cell with it") {
   GIVEN("a document with the h-caret below its only cell") {
     g_ws->ClearDocument();
@@ -147,12 +141,12 @@ SCENARIO("Pasting the primary selection at the h-caret opens a cell with it") {
       g_ws->PasteFromClipboard(true);
       THEN("a new cell holds the primary selection") {
         REQUIRE(group->GetNext() != nullptr);
-        REQUIRE(group->GetNext()->GetEditable()->GetValue() ==
-                ExpectedPrimaryPaste());
+        REQUIRE(group->GetNext()->GetEditable()->GetValue() == primaryText);
       }
     }
   }
 }
+#endif
 
 class TestApp : public wxApp {
 public:
