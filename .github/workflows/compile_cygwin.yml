@@ -58,13 +58,18 @@ jobs:
                if kill -0 $pid 2>/dev/null; then echo "=== $name: HUNG"; kill -9 $pid; else wait $pid; echo "=== $name: rc=$?"; fi
                tail -n 25 ../$name.txt
              }
-             run_bg sh-true 30 sh -c true
-             run_bg wx-selected 30 sh /usr/bin/wx-config-3.2 --selected-config
-             run_bg wx-debug 30 sh -x /usr/bin/wx-config-3.2 --debug=yes
-             printf 'execute_process(COMMAND sh -c true RESULT_VARIABLE r)\nmessage("rc=${r}")\n' > ../t1.cmake
-             run_bg cmake-sh-true 30 cmake -P ../t1.cmake
-             printf 'execute_process(COMMAND sh /usr/bin/wx-config-3.2 --selected-config RESULT_VARIABLE r OUTPUT_VARIABLE o)\nmessage("rc=${r} ${o}")\n' > ../t2.cmake
-             run_bg cmake-wx-selected 30 cmake -P ../t2.cmake
+             mk() {  # name, count, execute_process arguments
+               local name=$1 n=$2; shift 2
+               printf 'foreach(i RANGE 1 %s)\n  execute_process(COMMAND %s RESULT_VARIABLE r)\n  message("%s ${i} rc=${r}")\nendforeach()\n' "$n" "$*" "$name" > ../$name.cmake
+               run_bg $name 40 cmake -P ../$name.cmake
+             }
+             mk dbg-quiet 1 sh /usr/bin/wx-config-3.2 --debug=yes OUTPUT_QUIET ERROR_QUIET
+             mk dbg-var 1 sh /usr/bin/wx-config-3.2 --debug=yes OUTPUT_VARIABLE o ERROR_VARIABLE e
+             mk dbg-plain 1 sh /usr/bin/wx-config-3.2 --debug=yes
+             mk true-x40 40 sh -c true
+             mk true-quiet-x40 40 sh -c true OUTPUT_QUIET ERROR_QUIET
+             mk sel-x40 40 sh /usr/bin/wx-config-3.2 --selected-config OUTPUT_VARIABLE o
+             mk dbg-quiet-x10 10 sh /usr/bin/wx-config-3.2 --debug=yes OUTPUT_QUIET ERROR_QUIET
              exit 1
       - name: compile
         shell: bash --noprofile --norc -eo pipefail -o igncr '{0}'
