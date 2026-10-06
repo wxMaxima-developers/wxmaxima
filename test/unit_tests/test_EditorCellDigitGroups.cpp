@@ -101,14 +101,24 @@ SCENARIO("A long number in a code cell gets gaps, its text doesn't") {
     }
   }
   THEN("a click resolves to the position whose caret it is drawn at") {
-    // Not the end of the line: a click exactly on the last character's
-    // right edge resolves to the position before it, with or without
-    // grouping -- unrelated to the gaps.
-    for (size_t target = 0; target < code.Length(); target++) {
-      INFO("target=" << target);
-      groupedEditor->SelectPointText(groupedEditor->PositionToPoint(target));
-      REQUIRE(groupedEditor->CursorPosition() == target);
-    }
+    // Up to and including the end of the line, which used to resolve to the
+    // position before the last character, with or without grouping.
+    for (EditorCell *editor : {groupedEditor, plainEditor})
+      for (size_t target = 0; target <= code.Length(); target++) {
+        INFO("grouped=" << (editor == groupedEditor) << " target=" << target);
+        editor->SelectPointText(editor->PositionToPoint(target));
+        REQUIRE(editor->CursorPosition() == target);
+      }
+  }
+  THEN("a click on a character's right half puts the caret after it") {
+    // 1 px left of a caret position is still right of the midpoint of the
+    // character in front of it.
+    for (EditorCell *editor : {groupedEditor, plainEditor})
+      for (size_t target = 1; target <= code.Length(); target++) {
+        INFO("grouped=" << (editor == groupedEditor) << " target=" << target);
+        editor->SelectPointText(editor->PositionToPoint(target) - wxPoint(1, 0));
+        REQUIRE(editor->CursorPosition() == target);
+      }
   }
   THEN("a click into a gap lands right in front of the group after it") {
     // The caret of position 3 is drawn at the left edge of the gap in front

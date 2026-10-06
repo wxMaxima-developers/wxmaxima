@@ -3230,9 +3230,12 @@ void EditorCell::SelectPointText(const wxPoint point) {
         continue;
       }
 
-      wxCoord firstCharWidth = GetTextSize(txt.Left(1)).GetWidth();
+      // Step over a snippet only if the click lies at or past its right
+      // edge; a click inside it is resolved to a character below. (This used
+      // to also demand half the snippet's first character beyond the edge,
+      // so a click on the last character's right half stopped one short.)
       wxCoord w = SnippetWidth(*textSnippet);
-      if (xpos + w + firstCharWidth / 2 < posInCell.x) {
+      if (xpos + w <= posInCell.x) {
         xpos += w;
         pos += txt.Length();
       } else
@@ -3241,7 +3244,6 @@ void EditorCell::SelectPointText(const wxPoint point) {
       ++textSnippet;
     }
 
-    wxCoord lastwidth = 0;
     wxString snippet;
     if (textSnippet != m_styledText.end())
       snippet = textSnippet->GetText();
@@ -3253,18 +3255,19 @@ void EditorCell::SelectPointText(const wxPoint point) {
       if (xpos + (stop - xpos) / 2 < posInCell.x)
         pos++;
     } else {
-      lastwidth = GetTextSize(snippet.Left(1)).GetWidth();
-      lastwidth = -lastwidth;
-
-      // Now determine which char inside this text snippet the cursor is at
+      // Now determine which char inside this text snippet the cursor is at:
+      // the caret goes after character i-1 if the click lies right of that
+      // character's midpoint. The edges come from SnippetWidth(), which
+      // measures exactly what Draw() paints, digit-group gaps included.
       if ((snippet != wxS("\r")) && (snippet != wxS("\n"))) {
-        for (size_t i = 0; i < snippet.Length(); i++) {
-          wxCoord width = SnippetWidth(*textSnippet, i);
-          if (xpos + width + (width - lastwidth) / 2 < posInCell.x)
+        wxCoord left = 0;
+        for (size_t i = 1; i <= snippet.Length(); i++) {
+          const wxCoord right = SnippetWidth(*textSnippet, i);
+          if (xpos + (left + right) / 2 < posInCell.x)
             pos++;
           else
             break;
-          lastwidth = width;
+          left = right;
         }
       }
     }
