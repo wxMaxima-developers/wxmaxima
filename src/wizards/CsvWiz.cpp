@@ -97,6 +97,9 @@ void CsvImportWiz::OnBrowse(wxCommandEvent &WXUNUSED(event)) {
 }
 
 CsvImportWiz::~CsvImportWiz() {
+  // Save the geometry while this is still a whole dialog. See
+  // FindReplaceDialog::~FindReplaceDialog() for why this is needed.
+  SendDestroyEvent();
   wxConfig::Get()->Write(wxS("csvSeparator"), m_separator->GetSelection());
 }
 
@@ -171,5 +174,8 @@ void CsvExportWiz::OnBrowse(wxCommandEvent &WXUNUSED(event)) {
 }
 
 CsvExportWiz::~CsvExportWiz() {
+  // Save the geometry while this is still a whole dialog. See
+  // FindReplaceDialog::~FindReplaceDialog() for why this is needed.
+  SendDestroyEvent();
   wxConfig::Get()->Write(wxS("csvSeparator"), m_separator->GetSelection());
 }

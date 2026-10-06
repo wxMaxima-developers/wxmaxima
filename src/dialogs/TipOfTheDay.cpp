@@ -305,6 +305,9 @@ TipOfTheDay::TipOfTheDay(wxWindow *parent)
 }
 
 TipOfTheDay::~TipOfTheDay() {
+  // Save the geometry while this is still a whole dialog. See
+  // FindReplaceDialog::~FindReplaceDialog() for why this is needed.
+  SendDestroyEvent();
   wxConfigBase *config = wxConfig::Get();
   config->Write(wxS("ShowTips"), m_showAtStartup->GetValue());
   config->Write(wxS("tipNum"), m_num + 1);

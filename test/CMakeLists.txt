@@ -281,6 +281,16 @@ add_test(
 )
 set_property(TEST check-pot-coverage APPEND PROPERTY LABELS unittest)
 
+# Every dialog whose geometry wxPersistenceManager remembers has to send its
+# destroy event from its own destructor, or it crashes on closing with wxQt.
+add_test(
+    NAME check-persistent-dialogs
+    COMMAND "${CMAKE_COMMAND}"
+            "-DSOURCE_DIR=${CMAKE_SOURCE_DIR}"
+            -P "${CMAKE_CURRENT_SOURCE_DIR}/check-persistent-dialogs.cmake"
+)
+set_property(TEST check-persistent-dialogs APPEND PROPERTY LABELS unittest)
+
 add_test(
     NAME multiple_batch_files
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files

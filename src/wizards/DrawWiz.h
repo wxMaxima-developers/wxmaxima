@@ -44,6 +44,9 @@
 class ExplicitWiz : public wxDialog
 {
 public:
+  //! Saves the geometry while this is still a whole dialog, see
+  //! FindReplaceDialog::~FindReplaceDialog()
+  ~ExplicitWiz() override { SendDestroyEvent(); }
   ExplicitWiz(wxWindow *parent, Configuration *config, wxString expression, int dimensions = 2);
   wxString GetValue();
 private:
@@ -63,6 +66,9 @@ private:
 class ParametricWiz : public wxDialog
 {
 public:
+  //! Saves the geometry while this is still a whole dialog, see
+  //! FindReplaceDialog::~FindReplaceDialog()
+  ~ParametricWiz() override { SendDestroyEvent(); }
   ParametricWiz(wxWindow *parent, Configuration *config, int dimensions = 2);
   wxString GetValue();
 private:
@@ -80,6 +86,9 @@ private:
 class ImplicitWiz : public wxDialog
 {
 public:
+  //! Saves the geometry while this is still a whole dialog, see
+  //! FindReplaceDialog::~FindReplaceDialog()
+  ~ImplicitWiz() override { SendDestroyEvent(); }
   ImplicitWiz(wxWindow *parent, Configuration *config, wxString expression, int dimensions = 2);
   wxString GetValue();
 private:
@@ -101,6 +110,9 @@ private:
 class AxisWiz : public wxDialog
 {
 public:
+  //! Saves the geometry while this is still a whole dialog, see
+  //! FindReplaceDialog::~FindReplaceDialog()
+  ~AxisWiz() override { SendDestroyEvent(); }
   AxisWiz(wxWindow *parent, Configuration *config, int dimensions = 2);
   wxString GetValue();
 private:
@@ -130,6 +142,9 @@ private:
 class DrawWiz : public wxDialog
 {
 public:
+  //! Saves the geometry while this is still a whole dialog, see
+  //! FindReplaceDialog::~FindReplaceDialog()
+  ~DrawWiz() override { SendDestroyEvent(); }
   DrawWiz(wxWindow *parent, Configuration *config, int dimensions);
   wxString GetValue();
 protected:
@@ -148,6 +163,9 @@ private:
 class Wiz3D : public wxDialog
 {
 public:
+  //! Saves the geometry while this is still a whole dialog, see
+  //! FindReplaceDialog::~FindReplaceDialog()
+  ~Wiz3D() override { SendDestroyEvent(); }
   Wiz3D(wxWindow *parent, Configuration *config);
   wxString GetValue();
 private:
@@ -160,6 +178,9 @@ private:
 class WizContour : public wxDialog
 {
 public:
+  //! Saves the geometry while this is still a whole dialog, see
+  //! FindReplaceDialog::~FindReplaceDialog()
+  ~WizContour() override { SendDestroyEvent(); }
   WizContour(wxWindow *parent, Configuration *config);
   wxString GetValue();
 protected:
@@ -178,6 +199,9 @@ private:
 class WizPoints : public wxDialog
 {
 public:
+  //! Saves the geometry while this is still a whole dialog, see
+  //! FindReplaceDialog::~FindReplaceDialog()
+  ~WizPoints() override { SendDestroyEvent(); }
   WizPoints(wxWindow *parent, Configuration *config, int dimensions, wxString expr);
   wxString GetValue();
 private:
@@ -196,6 +220,9 @@ private:
 class WizDrawAccuracy : public wxDialog
 {
 public:
+  //! Saves the geometry while this is still a whole dialog, see
+  //! FindReplaceDialog::~FindReplaceDialog()
+  ~WizDrawAccuracy() override { SendDestroyEvent(); }
   WizDrawAccuracy(wxWindow *parent, Configuration *config, int dimensions);
   wxString GetValue();
 private:

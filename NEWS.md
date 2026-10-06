@@ -1,5 +1,8 @@
 # Current development version
 
+- With wxWidgets 3.3's Qt port, closing the configuration dialog, the tip
+  of the day, the plot and other wizards and most other dialogs no longer
+  crashes wxMaxima.
 - Text cells, titles and section headings can contain superscripts and
   subscripts, set using two new toolbar buttons next to the bold, italic,
   ... ones. A line of a text cell now gets taller if something in it needs

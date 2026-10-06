@@ -68,10 +68,16 @@ FindReplaceDialog::FindReplaceDialog(wxWindow *parent,
 
 FindReplaceDialog::~FindReplaceDialog()
 {
-  // wxWidgets sends the destroy event only from ~wxTopLevelWindowGTK and the
-  // like, when this is no whole wxTopLevelWindow any more -- yet the
-  // persistence manager, which saves the dialog's size and position on that
-  // event, treats it as one. Send it while that is still true.
+  // The persistence manager saves the dialog's size and position when it
+  // gets the destroy event, and treats the dialog as a wxTopLevelWindow
+  // then. wxWidgets sends that event from a base class destructor: from
+  // ~wxTopLevelWindowGTK/MSW, when this is no whole dialog any more, and on
+  // wxQt (3.3) only from ~wxWindow, when it isn't even a wxTopLevelWindow:
+  // asking it whether it is maximized then calls whatever the vtable of a
+  // plain wxWindow has in that slot, which crashed every dialog on closing.
+  // Send the event while this is still a whole dialog. Every dialog that
+  // registers with the persistence manager has to do this (checked by the
+  // check-persistent-dialogs test).
   SendDestroyEvent();
   if(m_pointerToDialogue)
     {
