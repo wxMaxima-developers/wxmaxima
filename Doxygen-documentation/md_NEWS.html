@@ -73,6 +73,8 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><ul>
+<li>The right-click menu of a selected cell is shorter: the "Copy as ..." formats and "Copy for Octave/Matlab" moved into a "Copy in Another
+  Format" submenu, and "Export output as SVG/PNG to a folder" is only offered when more than one cell is selected.</li>
 <li>With wxWidgets' Qt port, a symbol in the Greek letters or Symbols sidebar no longer stays highlighted after the mouse has left it.</li>
 <li>On Linux, a middle-click into a cell pasted the Ctrl+C clipboard instead of the last selected text (GH #794). On Windows and macOS, which have no "last selected text" clipboard, a middle-click pastes nothing.</li>
 <li>With wxWidgets 3.3's Qt port, closing the configuration dialog, the tip of the day, the plot and other wizards and most other dialogs no longer crashes <a class="el" href="classwxMaxima.html">wxMaxima</a>.</li>
@@ -103,10 +105,10 @@ $(function() {
 <li>The cursor no longer jumps when <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s output appears in a cell above it. Keeping it still failed whenever the output arrived quickly, which is most of the time, and when a cell's old output was removed.</li>
 <li><a class="el" href="classwxMaxima.html">wxMaxima</a> builds on Cygwin again: with wxWidgets 3.2 every file failed to compile because Cygwin's wxWidgets lacks <a class="el" href="gccpriv_8h_source.html">wx/msw/gccpriv.h</a>, which its own headers ask for. <a class="el" href="classwxMaxima.html">wxMaxima</a> now brings a stand-in.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1002"></a>
+<h1><a class="anchor" id="autotoc_md1005"></a>
 26.09.0</h1>
 <p>Large matrices and keyboard access to output are the main topics of this release, which again was developed with substantial help from the AI assistant <b>Claude</b>. <a class="el" href="classA.html">A</a> matrix too large for the window no longer widens the worksheet, output can be explored part by part with the keyboard, links in text and output can be opened, and an optional MCP server lets AI tools read the worksheet. Plus many fixes, among them a security fix for .wxm files.</p>
-<h2><a class="anchor" id="autotoc_md1003"></a>
+<h2><a class="anchor" id="autotoc_md1006"></a>
 Matrices</h2>
 <ul>
 <li><a class="el" href="classA.html">A</a> matrix too large for the window by default is displayed with an elipsis( ⋯, ⋮ and/o ⋱)</li>
@@ -117,13 +119,13 @@ Matrices</h2>
 <li>Dragging across a matrix selects a block of entries, which Shift+arrow keys can grow or shrink (#2345, #2370, #2380). Every "Copy ..." command, including "Copy as HTML", copies only that block (#2369), and a matrix or block can be copied as CSV for a spreadsheet (#2364).</li>
 <li>The highlight of selected text in a cell now ends exactly where the text cursor would be. With fonts that kern or join letters it used to be off by a few pixels (#2278).</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1004"></a>
+<h2><a class="anchor" id="autotoc_md1007"></a>
 Keyboard and accessibility</h2>
 <ul>
 <li><a class="el" href="classA.html">A</a> cell's output can be reached with the keyboard: Down at the end of the input selects the first result, Enter goes into a selected expression (numerator, matrix entry, ...), Escape comes back out, and the arrow keys move between parts. The Menu key or Shift+F10 opens the context menu, and on Windows screen readers announce each selected part (#2382). The manual has a new section, "Exploring output with the keyboard". The old behaviour of Down can be switched back in the configuration dialog.</li>
 <li>Output arriving from <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> no longer pushes the cursor down the screen.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1005"></a>
+<h2><a class="anchor" id="autotoc_md1008"></a>
 Editing, links and plots</h2>
 <ul>
 <li>Web addresses in text cells and in <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s output are links: Ctrl+click (Cmd+click on macOS) or the context menu's "Open Link" opens them (#2396). The HTML and LaTeX exports keep them as links.</li>
@@ -133,7 +135,7 @@ Editing, links and plots</h2>
 <li><code>with_slider_draw(..., file_name="name")</code> no longer deletes the gif right after showing it (#2389).</li>
 <li><a class="el" href="classA.html">A</a> system tray icon shows whether <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> is busy and offers Interrupt and Exit (#2286).</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1007"></a>
+<h2><a class="anchor" id="autotoc_md1009"></a>
 Export and files</h2>
 <ul>
 <li>The HTML export can optionally write a single self-contained file with all images embedded (#2266), and "Copy as HTML" puts such a document on the clipboard (#2265, #2267).</li>
@@ -142,7 +144,7 @@ Export and files</h2>
 <li>"Copy as RTF" now pastes into MS Word (#2264); hidden multiplication signs get proper spacing in MathML/OMML export (#2263).</li>
 <li>The manual's PDF no longer needs CJK fonts for non-CJK languages (#2271).</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1009"></a>
+<h2><a class="anchor" id="autotoc_md1010"></a>
 AI chat and MCP server (optional)</h2>
 <ul>
 <li>An "AI Chat" sidebar chats about the current worksheet with Anthropic, OpenAI, Google Gemini, Qwen, GitHub Models, DeepSeek, OpenRouter or a custom provider, including local servers like Ollama, LM Studio or llama.cpp. It uses your own API key, stored in the operating system's secret store, and can read the worksheet but never change or evaluate it. <a class="el" href="classA.html">A</a> status bar icon and a connection monitor show what it is doing. The sidebar needs wxWidgets 3.3.4 or newer, the first version it works reliably with; a build against an older wxWidgets leaves it out. That includes this release's Windows installer and Linux .deb, which are built with wxWidgets 3.3.2 and 3.2.</li>
