@@ -126,6 +126,69 @@ SCENARIO("The selected-group-cell menu offers copy, delete and evaluation") {
   }
 }
 
+//! The top-level item whose label starts with \p labelStart, or nullptr.
+static wxMenuItem *TopLevelItem(const wxMenu &menu, const wxString &labelStart) {
+  for (size_t i = 0; i < menu.GetMenuItemCount(); ++i) {
+    wxMenuItem *item = menu.FindItemByPosition(i);
+    if (!item->IsSeparator() &&
+        wxMenuItem::GetLabelText(item->GetItemLabel()).StartsWith(labelStart))
+      return item;
+  }
+  return nullptr;
+}
+
+SCENARIO("The group-cell menu keeps the special copy formats in a submenu") {
+  BuildDocument();
+  GroupCell *first = g_ws->GetTree();
+  GroupCell *second = first->GetNext();
+  REQUIRE(second != nullptr);
+
+  GIVEN("one selected group cell") {
+    g_ws->SetSelection(first, first);
+    wxMenu menu;
+    PopulateWorksheetContextMenu(*g_ws, menu, 0, 0, true);
+
+    THEN("plain Copy stays at the top level") {
+      REQUIRE(TopLevelItem(menu, wxS("Copy")) != nullptr);
+      REQUIRE(TopLevelItem(menu, wxS("Copy position (UUID)")) != nullptr);
+    }
+    THEN("the \"Copy as\" and \"Copy for\" items are only in the submenu") {
+      wxMenuItem *sub = TopLevelItem(menu, wxS("Copy in Another Format"));
+      REQUIRE(sub != nullptr);
+      REQUIRE(sub->GetSubMenu() != nullptr);
+      for (const wxString &label : {wxS("Copy as LaTeX"), wxS("Copy as plain text"),
+                                    wxS("Copy as Image"), wxS("Copy as SVG"),
+                                    wxS("Copy as RTF"), wxS("Copy as HTML"),
+                                    wxS("Copy for Octave/Matlab")}) {
+        INFO(label);
+        REQUIRE(HasItem(*sub->GetSubMenu(), label));
+        REQUIRE(TopLevelItem(menu, label) == nullptr);
+      }
+    }
+    THEN("exporting outputs to a folder is not offered") {
+      REQUIRE_FALSE(HasItem(menu, wxS("Export output as SVG")));
+      REQUIRE_FALSE(HasItem(menu, wxS("Export output as PNG")));
+    }
+  }
+
+  GIVEN("two selected group cells") {
+    g_ws->SetSelection(first, second);
+    wxMenu menu;
+    PopulateWorksheetContextMenu(*g_ws, menu, 0, 0, true);
+
+    THEN("exporting their outputs to a folder is offered") {
+      REQUIRE(TopLevelItem(menu, wxS("Export output as SVG")) != nullptr);
+      REQUIRE(TopLevelItem(menu, wxS("Export output as PNG")) != nullptr);
+    }
+    THEN("the copy formats are still in the submenu") {
+      wxMenuItem *sub = TopLevelItem(menu, wxS("Copy in Another Format"));
+      REQUIRE(sub != nullptr);
+      REQUIRE(sub->GetSubMenu() != nullptr);
+      REQUIRE(HasItem(*sub->GetSubMenu(), wxS("Copy as LaTeX")));
+    }
+  }
+}
+
 SCENARIO("The selected-image menu offers saving and image manipulation") {
   BuildDocument();
   // Build an image group cell holding a small generated PNG.
