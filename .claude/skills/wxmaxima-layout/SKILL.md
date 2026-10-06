@@ -94,6 +94,14 @@ Recognise these before starting a fresh investigation.
   never-cleared dirty flag, not at the width formula.
 - **A `GroupCell` doesn't grow with its `EditorCell`.** Historically a stale
   list cache plus an input-height loop that ignored the second cell on a line.
+- **A text cell's lines are not all equally high.** A line holding a
+  superscript, a subscript or a character from a taller fallback font (an
+  emoji) gets extra room above or below (`EditorCell::m_lineSlots`, filled by
+  `Recalculate()`). Anything that needs a line's vertical position -- drawing,
+  the caret, the selection, mouse clicks -- goes through `LineTop()`/`LineAt()`;
+  `line * m_charHeight` is wrong as soon as one line is taller, and the error
+  only shows below that line. Code cells keep the fixed grid (`m_lineSlots`
+  stays empty), so a test that only uses code cells can't catch it.
 - **Repaint storms on mouse motion.** The big one was GTK's composited overlay
   scrollbar, plus `OnPaint` collapsing the update box, a sidebar `OnSize` that
   re-triggered itself, and status-bar `SetLabel` churn. The performance monitor

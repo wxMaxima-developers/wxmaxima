@@ -33,6 +33,7 @@
 #include "precomp.h"
 #include "cells/AnimationCell.h"
 #include "cells/GroupCell.h"
+#include "cells/TextFormat.h"
 #include "ToolBarSections.h"
 #include <vector>
 
@@ -133,7 +134,9 @@ public:
     tb_bold,
     tb_italic,
     tb_underline,
-    tb_strikethrough
+    tb_strikethrough,
+    tb_superscript,
+    tb_subscript
   };
 
   //! The slider for animations
@@ -222,11 +225,11 @@ public:
   /*! Enable the character formatting buttons (only in a text cell)
 
     \param value       Can the text the cursor is in be formatted?
-    \param bold, italic, underline, strikethrough Is that format on where the
-                        cursor is? Shown as the button being pressed.
+    \param active      The formats that are on where the cursor is
+                        (TextFormat::Bold, ...). Shown as the buttons being
+                        pressed.
   */
-  void TextFormatState(bool value, bool bold, bool italic, bool underline,
-                       bool strikethrough);
+  void TextFormatState(bool value, TextFormat::Format active);
 
   void WorksheetEmpty(bool value)
     {

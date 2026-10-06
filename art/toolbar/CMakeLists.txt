@@ -21,6 +21,8 @@ set(IMAGE_FILES
         format-text-italic
         format-text-underline
         format-text-strikethrough
+        format-text-superscript
+        format-text-subscript
 )
 
 foreach(file ${IMAGE_FILES})

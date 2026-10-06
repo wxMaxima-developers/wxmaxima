@@ -733,8 +733,12 @@ void EditorCell::Recalculate(AFontSize fontsize) const {
 
       // Measure the text height using characters that might extend below or above
       // the region ordinary characters move in.
-      wxCoord charWidth;
-      m_configuration->GetRecalcDC()->GetTextExtent(wxS("äXÄgy"), &charWidth, &m_charHeight);
+      wxCoord charWidth, charDescent;
+      wxDC *dc = m_configuration->GetRecalcDC();
+      dc->GetTextExtent(wxS("äXÄgy"), &charWidth, &m_charHeight, &charDescent);
+      // The extent of the text of a line that holds nothing but plain text.
+      const wxCoord plainHeight = m_charHeight;
+      const wxCoord plainAscent = m_charHeight - charDescent;
 
       // We want a little bit of vertical space between two text lines (and between
       // two labels).
@@ -746,22 +750,49 @@ void EditorCell::Recalculate(AFontSize fontsize) const {
 
       m_numberOfLines = 1;
 
+      // In a text cell a line grows when something in it reaches above or
+      // below the plain text: superscripts, subscripts, or characters the font
+      // doesn't have and a taller fallback font draws. Code cells keep their
+      // fixed grid of lines.
+      const bool lineHeightsVary = !IsCodeEditor();
+      std::vector<LineSlot> lineSlots(1);
+
       for (auto &textSnippet : m_styledText) {
         if ((textSnippet.GetText().StartsWith(wxS('\n')) ||
              (textSnippet.GetText().StartsWith(wxS('\r'))))) {
           m_numberOfLines++;
           linewidth = textSnippet.GetIndentPixels();
+          if (lineHeightsVary)
+            lineSlots.emplace_back();
         } else if (textSnippet.GetText() == wxS("\t")) {
           // A tab's width depends on where it starts on the line, so unlike
           // every other token it must never be cached via SetWidth().
           linewidth = NextTabStop(linewidth);
           width = std::max(width, linewidth);
         } else {
-          if (textSnippet.GetFormat() & TextFormat::WidthAffecting)
+          if (lineHeightsVary) {
+            wxCoord descent;
+            const TextFormat::Format fontFormat =
+              textSnippet.GetFormat() & TextFormat::WidthAffecting;
+            if (fontFormat != TextFormat::None) {
+              const wxFont previousFont = dc->GetFont();
+              dc->SetFont(GetFont(fontFormat));
+              dc->GetTextExtent(textSnippet.GetText(), &tokenwidth, &tokenheight, &descent);
+              dc->SetFont(previousFont);
+            } else
+              dc->GetTextExtent(textSnippet.GetText(), &tokenwidth, &tokenheight, &descent);
+            // Put this snippet's baseline where the plain text has it, moved
+            // up or down if it is a superscript or a subscript.
+            const wxCoord yOffset = plainAscent - (tokenheight - descent) +
+              BaselineShift(textSnippet.GetFormat(), plainAscent);
+            textSnippet.SetYOffset(yOffset);
+            LineSlot &slot = lineSlots.back();
+            slot.above = std::max(slot.above, -yOffset);
+            slot.below = std::max(slot.below, yOffset + tokenheight - plainHeight);
+          } else if (textSnippet.GetFormat() & TextFormat::WidthAffecting)
             tokenwidth = GetTextSize(textSnippet.GetText(), textSnippet.GetFormat()).GetWidth();
           else
-            m_configuration->GetRecalcDC()->GetTextExtent(textSnippet.GetText(),
-                                                          &tokenwidth, &tokenheight);
+            dc->GetTextExtent(textSnippet.GetText(), &tokenwidth, &tokenheight);
           textSnippet.SetWidth(tokenwidth);
           linewidth += tokenwidth;
           width = std::max(width, linewidth);
@@ -769,14 +800,34 @@ void EditorCell::Recalculate(AFontSize fontsize) const {
       }
 
       // Handle folding
-      if (FirstLineOnlyEditor())
+      if (FirstLineOnlyEditor()) {
         m_numberOfLines = 1;
+        lineSlots.resize(1);
+      }
+
+      // Where each line starts. Only needed if a line is taller than the
+      // others: most cells keep an empty m_lineSlots and a fixed line height.
+      m_lineSlots.clear();
+      if (std::any_of(lineSlots.begin(), lineSlots.end(), [](const LineSlot &slot) {
+        return (slot.above > 0) || (slot.below > 0);
+      })) {
+        wxCoord top = 0;
+        for (auto &slot : lineSlots) {
+          top += slot.above;
+          slot.top = top;
+          top += m_charHeight + slot.below;
+        }
+        m_lineSlots = std::move(lineSlots);
+      }
 
       // Add a line border
       m_width = width + 2 * Scale_Px(2);
 
       // Calculate the cell height
-      if (FirstLineOnlyEditor())
+      if (!m_lineSlots.empty())
+        m_height = m_lineSlots.back().top + m_charHeight + m_lineSlots.back().below +
+          2 * Scale_Px(2);
+      else if (FirstLineOnlyEditor())
         m_height = m_charHeight + 2 * Scale_Px(2);
       else
         m_height =
@@ -785,8 +836,8 @@ void EditorCell::Recalculate(AFontSize fontsize) const {
       if (m_height < m_charHeight + 2 * Scale_Px(2))
         m_height = (m_charHeight) + 2 * Scale_Px(2);
 
-      // The center is in the middle of the 1st line
-      m_center = m_charHeight / 2;
+      // The center is in the middle of the 1st line's plain text
+      m_center = LineTop(0) + m_charHeight / 2;
       m_height = std::max(m_height.GetOrElse(0), m_charHeight + 2 * Scale_Px(2));
 
       // Our height/center just changed. The cached list geometry (GetHeightList(),
@@ -924,8 +975,14 @@ void EditorCell::MarkSelection(wxDC *dc, size_t start, size_t end, TextStyle sty
       selectionWidth = rect.GetRight() - point.x;
 #endif
 
-    rect = wxRect(point.x, point.y + Scale_Px(1) - m_center, selectionWidth,
-                  m_charHeight);
+    // The highlight covers all of the line, including whatever in it reaches
+    // above or below its plain text.
+    size_t column, line;
+    PositionToXY(lineStart, &column, &line);
+    wxCoord slotTop, slotHeight;
+    LineSlotExtent(line, &slotTop, &slotHeight);
+    rect = wxRect(point.x, m_currentPoint.y - m_center + slotTop + Scale_Px(1),
+                  selectionWidth, slotHeight);
     // draw the rectangle if it is in the region that is to be updated.
     if (m_configuration->InUpdateRegion(rect))
       dc->DrawRectangle(CropToUpdateRegion(rect));
@@ -967,6 +1024,8 @@ void EditorCell::WalkDrawnSnippets(wxDC *dc, SnippetFunc &&onSnippet) {
   size_t rtlLine = 0;
   if (!rtlLineOffsets.empty())
     textCurrentPoint.x += rtlLineOffsets.front();
+  size_t line = 0;
+  textCurrentPoint.y += LineTop(0);
   for (auto &textSnippet : m_styledText) {
     // A newline is a separate token.
     if ((textSnippet.GetText() == wxS("\n")) || (textSnippet.GetText() == wxS("\r"))) {
@@ -976,7 +1035,7 @@ void EditorCell::WalkDrawnSnippets(wxDC *dc, SnippetFunc &&onSnippet) {
       // A newline =>
       // set the point to the beginning of the next line.
       textCurrentPoint.x = textStartingPoint.x;
-      textCurrentPoint.y += m_charHeight;
+      textCurrentPoint.y = textStartingPoint.y + LineTop(++line);
       textCurrentPoint.x += textSnippet.GetIndentPixels();
       if (++rtlLine < rtlLineOffsets.size())
         textCurrentPoint.x += rtlLineOffsets.at(rtlLine);
@@ -1154,18 +1213,23 @@ void EditorCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
         lastFontFormat = fontFormat;
       }
 
-      const wxRect textRect(topLeft.x, topLeft.y, width, m_charHeight);
+      // Superscripts, subscripts and characters from a taller font sit
+      // higher or lower than the line's plain text (see Recalculate()).
+      const wxCoord yOffset = textSnippet.GetYOffset();
+      const wxCoord textY = topLeft.y + yOffset;
+      const wxRect textRect(topLeft.x, std::min(topLeft.y, textY), width,
+                            m_charHeight + std::abs(yOffset));
       // Draw the text only if it overlaps the update region
       if (((!m_configuration->ClipToDrawRegion())) ||
           (updateRegion.Intersects(textRect))) {
-        dc->DrawText(textSnippet.GetText(), topLeft.x, topLeft.y);
+        dc->DrawText(textSnippet.GetText(), topLeft.x, textY);
         // Underline and strikethrough are drawn by hand rather than by
         // switching to an underlined font, for the reason links are (see
         // below): that way nothing about the text's measurements can change.
         if (textSnippet.GetFormat() & (TextFormat::Underline | TextFormat::Strikethrough)) {
           wxCoord w, h, descent;
           dc->GetTextExtent(textSnippet.GetText(), &w, &h, &descent);
-          const wxCoord baseline = topLeft.y + h - descent;
+          const wxCoord baseline = textY + h - descent;
           dc->SetPen(*(wxThePenList->FindOrCreatePen(
             m_configuration->GetColor(style), 1, wxPENSTYLE_SOLID)));
           if (textSnippet.GetFormat() & TextFormat::Underline)
@@ -1182,7 +1246,7 @@ void EditorCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
           // font: that way nothing about the text's measurements can change.
           wxCoord w, h, descent;
           dc->GetTextExtent(textSnippet.GetText(), &w, &h, &descent);
-          const wxCoord baseline = topLeft.y + h - descent + 1;
+          const wxCoord baseline = textY + h - descent + 1;
           dc->SetPen(*(wxThePenList->FindOrCreatePen(
             m_configuration->GetColor(TS_LINK), 1, wxPENSTYLE_SOLID)));
           dc->DrawLine(topLeft.x, baseline, topLeft.x + width, baseline);
@@ -1207,7 +1271,7 @@ void EditorCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
                                                        wxBRUSHSTYLE_SOLID)));
       dc->DrawRectangle(
                         point.x + lineWidth - m_configuration->GetCursorWidth(),
-                        point.y + Scale_Px(1) - m_center + caretInLine * m_charHeight,
+                        point.y + Scale_Px(1) - m_center + LineTop(caretInLine),
                         m_configuration->GetCursorWidth(), m_charHeight - Scale_Px(5));
     }
   }
@@ -1274,7 +1338,7 @@ wxSize EditorCell::GetTextSize(const wxString &text,
 
   // The same cache as the plain text's, under a key no text can collide
   // with: U+FDD0... are Unicode noncharacters, never part of real text.
-  const wxString key = wxString(wxUniChar(0xFDD0 + format)) + text;
+  const wxString key = wxString(wxUniChar(0xFDD0 + static_cast<int>(TextFormat::FontIndex(format)))) + text;
   if (auto it = m_widths.find(key); it != m_widths.end())
     return it->second;
 
@@ -1300,15 +1364,64 @@ const wxFont &EditorCell::GetFont(TextFormat::Format format) const {
       font = wxNullFont;
     formatState.fontsBase = base;
   }
-  wxFont &font = formatState.fonts.at(format);
+  wxFont &font = formatState.fonts.at(TextFormat::FontIndex(format));
   if (!font.IsOk()) {
     font = base;
     if (format & TextFormat::Bold)
       font.MakeBold();
     if (format & TextFormat::Italic)
       font.MakeItalic();
+    if (format & TextFormat::VerticalPosition)
+      font.SetFractionalPointSize(font.GetFractionalPointSize() * g_superSubscriptScale);
   }
   return font;
+}
+
+wxCoord EditorCell::BaselineShift(TextFormat::Format format, wxCoord plainAscent) {
+  // About what word processors do: a superscript's baseline sits a bit
+  // above the middle of a capital letter, a subscript's a little below the
+  // plain baseline - far enough down for its descenders to need more room.
+  if (format & TextFormat::Superscript)
+    return -plainAscent * 2 / 5;
+  if (format & TextFormat::Subscript)
+    return plainAscent / 5;
+  return 0;
+}
+
+wxCoord EditorCell::LineTop(size_t line) const {
+  if (m_lineSlots.empty())
+    return static_cast<wxCoord>(line) * m_charHeight;
+  if (line < m_lineSlots.size())
+    return m_lineSlots[line].top;
+  // A line Recalculate() didn't know about (the text changed since): below
+  // the last one, at the usual line height.
+  const LineSlot &last = m_lineSlots.back();
+  return last.top + last.below +
+    static_cast<wxCoord>(line - m_lineSlots.size() + 1) * m_charHeight;
+}
+
+void EditorCell::LineSlotExtent(size_t line, wxCoord *top, wxCoord *height) const {
+  *top = LineTop(line);
+  *height = m_charHeight;
+  if (line < m_lineSlots.size()) {
+    *top -= m_lineSlots[line].above;
+    *height += m_lineSlots[line].above + m_lineSlots[line].below;
+  }
+}
+
+size_t EditorCell::LineAt(wxCoord y) const {
+  if (y < 0)
+    return 0;
+  if (m_lineSlots.empty())
+    return static_cast<size_t>(y / std::max<wxCoord>(m_charHeight, 1));
+  for (size_t line = 0; line < m_lineSlots.size(); ++line) {
+    const LineSlot &slot = m_lineSlots[line];
+    if (y < slot.top + m_charHeight + slot.below)
+      return line;
+  }
+  const LineSlot &last = m_lineSlots.back();
+  const wxCoord belowLast = y - (last.top + m_charHeight + last.below);
+  return m_lineSlots.size() + static_cast<size_t>(belowLast / std::max<wxCoord>(m_charHeight, 1));
 }
 
 EditorCell::FormatState &EditorCell::GetFormatState() const {
@@ -1408,10 +1521,8 @@ bool EditorCell::ToggleFormat(TextFormat::Format flag) {
       (formatState.hasPending && (formatState.pendingPos == CursorPosition()))
       ? formatState.pendingFormat
       : TextFormat::FormatForInsertionAt(m_text, formatState.formats, CursorPosition());
-    if (switchOn)
-      format |= flag;
-    else
-      format &= ~flag;
+    format = switchOn ? TextFormat::WithFlag(format, flag)
+                      : static_cast<TextFormat::Format>(format & ~flag);
     formatState.pendingFormat = format;
     formatState.pendingPos = CursorPosition();
     formatState.hasPending = true;
@@ -1423,7 +1534,7 @@ bool EditorCell::ToggleFormat(TextFormat::Format flag) {
   formats.resize(m_text.Length(), TextFormat::None);
   for (size_t i = SelectionLeft(); i < SelectionRight(); ++i) {
     if (switchOn)
-      formats[i] |= flag;
+      formats[i] = TextFormat::WithFlag(formats[i], flag);
     else
       formats[i] &= ~flag;
   }
@@ -2964,7 +3075,7 @@ wxPoint EditorCell::LineColumnToPoint(size_t cY, size_t cX, size_t pos) {
   // The caret has to follow the text when a right-to-left line is set flush
   // right - the same shift Draw() applies to that line.
   x += RightToLeftLineOffset(cY);
-  y += m_charHeight * cY;
+  y += LineTop(cY) - LineTop(0);
 
   return wxPoint(x, y);
 }
@@ -2977,11 +3088,9 @@ void EditorCell::SelectPointText(const wxPoint point) {
   wxASSERT_MSG(m_currentPoint.y >= 0, _("Bug: y position of cell is unknown!"));
   posInCell -= m_currentPoint;
   //  posInCell -= wxPoint(m_fontSize, 2);
-  posInCell.y -= m_center;
 
-  size_t lin = static_cast<size_t>(posInCell.y) / m_charHeight + 1;
-  if (posInCell.y < 0)
-    lin = 0;
+  // The point's distance from the top of the first line
+  size_t lin = LineAt(posInCell.y + m_center);
   size_t lineStart = XYToPosition(0, lin);
 
   auto pos = lineStart;
@@ -3129,7 +3238,7 @@ bool EditorCell::IsPointInSelection(wxPoint point) {
   wxPoint posInCell(point);
   posInCell.x -= m_currentPoint.x - 2;
   posInCell.y -= m_currentPoint.y - 2 - m_center;
-  size_t lin = posInCell.y / m_charHeight;
+  size_t lin = LineAt(posInCell.y);
   size_t lineStart = XYToPosition(0, lin);
   size_t positionOfCaret = lineStart;
 
