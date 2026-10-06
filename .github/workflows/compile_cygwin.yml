@@ -16,7 +16,7 @@ permissions:
 
 jobs:
   setup_cygwin:
-    runs-on: windows-2022
+    runs-on: windows-latest
     steps:
       # Runs before setup_cygwin on purpose: cygwin-install-action puts its own
       # git.exe ahead of the native one on PATH, and that git refuses this
@@ -34,14 +34,19 @@ jobs:
       - name: setup_cygwin
         uses: cygwin/cygwin-install-action@v6
         with:
-          packages: cmake git libwx_baseu3.2-devel libwx_gtk3u3.2-devel gcc-core gcc-g++ make gettext-devel
+          # libuv1 is pinned because with libuv 1.53.0, which spawns processes
+          # with posix_spawn instead of fork, cmake's execute_process() hangs
+          # on Cygwin at random -- even for "sh -c true", and before the first
+          # one returns about half the time. find_package(wxWidgets) runs
+          # wx-config a dozen times that way, so configure hung right after
+          # "Looking for wxWidgets libraries in:" until GitHub's 6-hour limit.
+          # Other projects hit the same (envmodules/modules#708). Drop the pin
+          # once a fixed libuv1 is in Cygwin.
+          packages: cmake libuv1=1.52.1-1 git libwx_baseu3.2-devel libwx_gtk3u3.2-devel gcc-core gcc-g++ make gettext-devel
       # Both steps run in Cygwin's own bash, as cygwin-install-action
       # recommends, rather than in the runner's default PowerShell, with
-      # stdin closed. Started from PowerShell, cmake now and then hung in
-      # find_package(wxWidgets) (right after "Looking for wxWidgets libraries
-      # in:") until the run was cancelled or hit GitHub's 6-hour limit,
-      # holding a Windows runner all that time. Why it hung isn't known; the
-      # timeouts make sure a hang shows up as a failure instead.
+      # stdin closed. The timeouts make a hang like the libuv one above show
+      # up as a failure instead of holding a Windows runner for 6 hours.
       - name: configure
         shell: bash --noprofile --norc -eo pipefail -o igncr '{0}'
         timeout-minutes: 20
@@ -49,24 +54,6 @@ jobs:
              export PATH=/usr/local/bin:/usr/bin:$PATH
              mkdir build
              cd build
-             set +e
-             run_bg() {  # name, seconds, command...: run with a watchdog
-               local name=$1 secs=$2; shift 2
-               "$@" < /dev/null > ../$name.txt 2>&1 &
-               local pid=$! i
-               for i in $(seq 1 $secs); do sleep 1; kill -0 $pid 2>/dev/null || break; done
-               if kill -0 $pid 2>/dev/null; then echo "=== $name: HUNG"; kill -9 $pid; else wait $pid; echo "=== $name: rc=$?"; fi
-               tail -n 25 ../$name.txt
-             }
-             mk() {  # name, count, execute_process arguments
-               local name=$1 n=$2; shift 2
-               printf 'foreach(i RANGE 1 %s)\n  execute_process(COMMAND %s RESULT_VARIABLE r)\n  message("%s ${i} rc=${r}")\nendforeach()\n' "$n" "$*" "$name" > ../$name.cmake
-               run_bg $name 40 cmake -P ../$name.cmake
-             }
-             cygcheck -c cygwin cmake 2>&1 | tail -n 2
-             mk true-x40 40 sh -c true
-             mk sel-x40 40 sh /usr/bin/wx-config-3.2 --selected-config OUTPUT_VARIABLE o
-             set -e
              cmake ../wxmaxima < /dev/null
       - name: compile
         shell: bash --noprofile --norc -eo pipefail -o igncr '{0}'
