@@ -2,6 +2,8 @@
 
 - With wxWidgets' Qt port, a symbol in the Greek letters or Symbols sidebar
   no longer stays highlighted after the mouse has left it.
+- On Linux, a middle-click into a cell pasted the Ctrl+C clipboard
+  instead of the last selected text (GH #794).
 - With wxWidgets 3.3's Qt port, closing the configuration dialog, the tip
   of the day, the plot and other wizards and most other dialogs no longer
   crashes wxMaxima.
