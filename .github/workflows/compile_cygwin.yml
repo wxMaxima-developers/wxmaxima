@@ -49,26 +49,22 @@ jobs:
              export PATH=/usr/local/bin:/usr/bin:$PATH
              mkdir build
              cd build
-             cygcheck -c cygwin cmake bash libuv1 2>&1 | tail -n 6
              set +e
-             for mode in captured quiet; do
-               cat > ../t-$mode.cmake <<EOT
-             foreach(i RANGE 1 40)
-               if("$mode" STREQUAL "quiet")
-                 execute_process(COMMAND sh /usr/bin/wx-config-3.2 --debug=yes RESULT_VARIABLE r OUTPUT_QUIET ERROR_QUIET)
-               else()
-                 execute_process(COMMAND sh /usr/bin/wx-config-3.2 --debug=yes RESULT_VARIABLE r OUTPUT_VARIABLE o ERROR_VARIABLE e)
-               endif()
-               message("$mode \${i} rc=\${r}")
-             endforeach()
-             EOT
-               cmake -P ../t-$mode.cmake < /dev/null > ../t-$mode.txt 2>&1 &
-               pid=$!
-               for i in $(seq 1 24); do sleep 5; kill -0 $pid 2>/dev/null || break; done
-               kill -0 $pid 2>/dev/null && echo "=== $mode: still running after 2 minutes" || echo "=== $mode: finished"
-               tail -n 3 ../t-$mode.txt
-               kill -9 $pid 2>/dev/null
-             done
+             run_bg() {  # name, seconds, command...: run with a watchdog
+               local name=$1 secs=$2; shift 2
+               "$@" < /dev/null > ../$name.txt 2>&1 &
+               local pid=$! i
+               for i in $(seq 1 $secs); do sleep 1; kill -0 $pid 2>/dev/null || break; done
+               if kill -0 $pid 2>/dev/null; then echo "=== $name: HUNG"; kill -9 $pid; else wait $pid; echo "=== $name: rc=$?"; fi
+               tail -n 25 ../$name.txt
+             }
+             run_bg sh-true 30 sh -c true
+             run_bg wx-selected 30 sh /usr/bin/wx-config-3.2 --selected-config
+             run_bg wx-debug 30 sh -x /usr/bin/wx-config-3.2 --debug=yes
+             printf 'execute_process(COMMAND sh -c true RESULT_VARIABLE r)\nmessage("rc=${r}")\n' > ../t1.cmake
+             run_bg cmake-sh-true 30 cmake -P ../t1.cmake
+             printf 'execute_process(COMMAND sh /usr/bin/wx-config-3.2 --selected-config RESULT_VARIABLE r OUTPUT_VARIABLE o)\nmessage("rc=${r} ${o}")\n' > ../t2.cmake
+             run_bg cmake-wx-selected 30 cmake -P ../t2.cmake
              exit 1
       - name: compile
         shell: bash --noprofile --norc -eo pipefail -o igncr '{0}'
