@@ -199,6 +199,7 @@ set(SOURCE_FILES
     levenshtein/levenshtein.cpp
     main.cpp
     AuiPerspectiveRepair.cpp
+    DigitGrouping.cpp
     SaveAsDefaults.cpp
     ToolbarPane.cpp
     ProcessTree.cpp

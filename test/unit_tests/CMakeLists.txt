@@ -190,6 +190,16 @@ target_link_libraries(test_AuiPerspectiveRepair PRIVATE ${wxWidgets_LIBRARIES})
 add_test(NAME AuiPerspectiveRepair
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_AuiPerspectiveRepair>")
 
+# Where a number gets the gaps between its digit groups (GH #192) is decided by
+# a pure function over the number's text, tested directly with no GUI.
+add_executable(test_DigitGrouping
+    test_DigitGrouping.cpp ${CMAKE_SOURCE_DIR}/src/DigitGrouping.cpp
+    ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
+target_include_directories(test_DigitGrouping PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_link_libraries(test_DigitGrouping PRIVATE ${wxWidgets_LIBRARIES})
+add_test(NAME DigitGrouping
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_DigitGrouping>")
+
 # The "Save As" dialog has to propose a file name whose extension agrees with
 # the file type it shows: wxGTK appends the first type's extension to a name
 # that has none, and a .wxm document got saved as .wxmx (GH #2440).

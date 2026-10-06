@@ -310,6 +310,10 @@ protected:
   wxRadioButton *m_displayNDigits;
   wxRadioButton *m_displayAllDigits;
   wxRadioButton *m_linebreaksInLongNums;
+  //! Separate the digit groups of numbers by a small gap? (GH #192)
+  wxCheckBox *m_digitGrouping;
+  //! How many digits a number needs before its digits are grouped
+  wxSpinCtrl *m_digitGroupingMinDigits;
   //! A checkbox that asks if TeX should put the exponents above or after the subscripts.
   wxCheckBox *m_TeXExponentsAfterSubscript;
   //! A checkbox that asks if TeX should use the \\partial symbol for representing diff()

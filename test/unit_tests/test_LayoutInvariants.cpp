@@ -49,6 +49,7 @@
 #include "cells/Cell.h"
 #include "cells/GroupCell.h"
 #include "cells/MatrCell.h"
+#include "cells/LongNumberCell.h"
 #include "cells/ProductCell.h"
 #include "cells/SetCell.h"
 #include "cells/MatrixScrollHost.h"
@@ -636,6 +637,97 @@ SCENARIO("A ProductCell positions its symbol/limits/base and breaks up with the 
       CHECK(open->ToString() == wxS("product("));
     }
   }
+}
+
+namespace {
+//! A group whose output is just the number Maxima sent as \<mn\>number\</mn\>
+std::unique_ptr<GroupCell> NumberOutput(const wxString &number) {
+  auto group = std::make_unique<GroupCell>(g_cfg, GC_TYPE_CODE, wxS("x;"));
+  MathParser parser(g_cfg);
+  parser.SetGroup(group.get());
+  auto output = parser.ParseLine(
+    wxS("<mth><lbl altCopy=\"%o1\">(%o1) </lbl><mn>") + number +
+    wxS("</mn></mth>"));
+  group->AppendOutput(std::move(output));
+  group->Recalculate();
+  return group;
+}
+
+//! The width of number's output cell(s), with digit grouping on or off
+wxCoord NumberWidth(const wxString &number, bool grouping) {
+  g_cfg->DigitGrouping(grouping);
+  auto group = NumberOutput(number);
+  Cell *cell = group->GetOutput();
+  REQUIRE(cell != nullptr);
+  return cell->GetWidth();
+}
+} // namespace
+
+SCENARIO("Output numbers get gaps between their digit groups, on screen only (GH #192)") {
+  g_cfg->SetCanvasSize(wxSize(900, 600));
+  g_cfg->SetZoomFactor(1.0);
+  const bool grouping = g_cfg->DigitGrouping();
+  const long minDigits = g_cfg->DigitGroupingMinDigits();
+  const bool showAllDigits = g_cfg->ShowAllDigits();
+  const bool lineBreaks = g_cfg->LineBreaksInLongNums();
+  g_cfg->DigitGroupingMinDigits(5);
+
+  GIVEN("a 7-digit number") {
+    THEN("grouping makes it wider") {
+      CHECK(NumberWidth(wxS("1234567"), true) >
+            NumberWidth(wxS("1234567"), false));
+    }
+    THEN("its text, which copying and exporting use, has no gaps") {
+      g_cfg->DigitGrouping(true);
+      auto group = NumberOutput(wxS("1234567"));
+      CHECK(group->GetOutput()->ToString() == wxS("1234567"));
+    }
+  }
+  GIVEN("a number shorter than the minimum length") {
+    THEN("grouping changes nothing") {
+      CHECK(NumberWidth(wxS("2026"), true) == NumberWidth(wxS("2026"), false));
+    }
+  }
+  GIVEN("a number with more digits than are displayed") {
+    // LongNumberCell shows only its first digits followed by an ellipsis;
+    // those digits are grouped as they would be in the whole number.
+    const wxString longNumber = wxS("123456789012345678901234567890123456789012");
+    g_cfg->ShowAllDigits(false);
+    g_cfg->LineBreaksInLongNums(false);
+    THEN("its displayed start is grouped") {
+      g_cfg->DigitGrouping(true);
+      auto group = NumberOutput(longNumber);
+      REQUIRE(dynamic_cast<LongNumberCell *>(group->GetOutput()) != nullptr);
+      CHECK(NumberWidth(longNumber, true) > NumberWidth(longNumber, false));
+    }
+  }
+  GIVEN("a number that is broken into lines") {
+    const wxString longNumber = wxS("123456789012345678901234567890123456789012");
+    g_cfg->ShowAllDigits(true);
+    g_cfg->LineBreaksInLongNums(true);
+    auto brokenWidth = [&](bool group) {
+      g_cfg->DigitGrouping(group);
+      auto groupCell = NumberOutput(longNumber);
+      Cell *cell = groupCell->GetOutput();
+      REQUIRE(cell != nullptr);
+      REQUIRE(cell->BreakUp());
+      wxCoord width = 0;
+      for (Cell *digits = cell->GetBrokenCell(0); digits;
+           digits = digits->GetNext()) {
+        digits->Recalculate(AFontSize(12.0f));
+        width += digits->GetWidth();
+      }
+      return width;
+    };
+    THEN("its digit groups are separated, too") {
+      CHECK(brokenWidth(true) > brokenWidth(false));
+    }
+  }
+
+  g_cfg->DigitGrouping(grouping);
+  g_cfg->DigitGroupingMinDigits(minDigits);
+  g_cfg->ShowAllDigits(showAllDigits);
+  g_cfg->LineBreaksInLongNums(lineBreaks);
 }
 
 // Maxima-style output for a rows x cols matrix whose entries are all
