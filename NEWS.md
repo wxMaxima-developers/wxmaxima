@@ -1,5 +1,9 @@
 # Current development version
 
+- The right-click menu of a selected cell is shorter: the "Copy as ..."
+  formats and "Copy for Octave/Matlab" moved into a "Copy in Another
+  Format" submenu, and "Export output as SVG/PNG to a folder" is only
+  offered when more than one cell is selected.
 - With wxWidgets' Qt port, a symbol in the Greek letters or Symbols sidebar
   no longer stays highlighted after the mouse has left it.
 - On Linux, a middle-click into a cell pasted the Ctrl+C clipboard
