@@ -1364,7 +1364,13 @@ public:
   //! Add the currently selected cells to the clipboard and delete them.
   bool CutToClipboard();
 
-  void PasteFromClipboard();
+  /*! Paste into the worksheet
+
+    \param primary true = paste X11's primary selection (what a middle-click
+    pastes), false = the ordinary Ctrl+V clipboard. On platforms without a
+    primary selection wxWidgets silently uses the ordinary clipboard.
+  */
+  void PasteFromClipboard(bool primary = false);
 
   /*! Copy the current selection to the clipboard
 

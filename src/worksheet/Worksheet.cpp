@@ -5496,14 +5496,17 @@ bool Worksheet::CutToClipboard() {
  * If not, then pastes text into activeCell or opens a new cell
  * if hCaretActive == true. If yes, copies the cell structure.
  */
-void Worksheet::PasteFromClipboard() {
+void Worksheet::PasteFromClipboard(const bool primary) {
   bool cells = false;
 
   // Check for cell structure
   wxASSERT_MSG(!wxTheClipboard->IsOpened(),
                _("Bug: The clipboard is already opened"));
-  if (!wxTheClipboard->Open())
+  wxTheClipboard->UsePrimarySelection(primary);
+  if (!wxTheClipboard->Open()) {
+    wxTheClipboard->UsePrimarySelection(false);
     return;
+  }
 
   // Check if the clipboard contains text.
   if ((wxTheClipboard->IsSupported(wxDF_TEXT)) ||
@@ -5600,7 +5603,10 @@ void Worksheet::PasteFromClipboard() {
   // Clipboard does not have the cell structure.
   if (!cells) {
     if (GetActiveCell()) {
-      GetActiveCell()->PasteFromClipboard();
+      // The cell selects the clipboard itself, so it has to be told which one:
+      // without the flag a middle-click into a cell pasted the Ctrl+C
+      // clipboard instead of the primary selection (GH #794).
+      GetActiveCell()->PasteFromClipboard(primary);
       GetActiveCell()->ResetSize();
       GetActiveCell()->GetGroup()->ResetSize();
       RequestRecalculation(GetActiveCell()->GetGroup());
@@ -5620,6 +5626,7 @@ void Worksheet::PasteFromClipboard() {
 
   // Make sure the clipboard is closed!
   wxTheClipboard->Close();
+  wxTheClipboard->UsePrimarySelection(false);
 
   UpdateTableOfContents();
   ScrolledAwayFromEvaluation();
@@ -5914,7 +5921,7 @@ void Worksheet::OnMouseMiddleUp(wxMouseEvent &event) {
     OnMouseLeftDown(event);
     m_leftDown = false;
     if (m_clickType != CLICK_TYPE_NONE)
-      PasteFromClipboard();
+      PasteFromClipboard(true);
     m_clickType = CLICK_TYPE_NONE;
     if (HasCapture())
       ReleaseMouse();
