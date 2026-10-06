@@ -156,6 +156,13 @@ wxCoord&#160;</td><td class="memItemRight" valign="bottom"><b>GetYOffset</b> () 
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetYOffset</b> (wxCoord yOffset)</td></tr>
 <tr class="memdesc:aa17c67d3555c4e55250dca3a73063c77"><td class="mdescLeft">&#160;</td><td class="mdescRight">See m_yOffset. <br /></td></tr>
 <tr class="separator:aa17c67d3555c4e55250dca3a73063c77"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6b66d9656d29873719379cf86558bba"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; size_t &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell_1_1StyledText.html#ab6b66d9656d29873719379cf86558bba">GetDigitGaps</a> () const</td></tr>
+<tr class="memdesc:ab6b66d9656d29873719379cf86558bba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Where this text portion, a number in a code cell, gets the small gaps that separate its digit groups (GH #192).  <br /></td></tr>
+<tr class="separator:ab6b66d9656d29873719379cf86558bba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00951672d0c5eed0a3cb9779b0a59ab8"><td class="memItemLeft" align="right" valign="top"><a id="a00951672d0c5eed0a3cb9779b0a59ab8" name="a00951672d0c5eed0a3cb9779b0a59ab8"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetDigitGaps</b> (std::vector&lt; size_t &gt; gaps)</td></tr>
+<tr class="memdesc:a00951672d0c5eed0a3cb9779b0a59ab8"><td class="mdescLeft">&#160;</td><td class="mdescRight">See <a class="el" href="classEditorCell_1_1StyledText.html#ab6b66d9656d29873719379cf86558bba" title="Where this text portion, a number in a code cell, gets the small gaps that separate its digit groups ...">GetDigitGaps()</a> <br /></td></tr>
+<tr class="separator:a00951672d0c5eed0a3cb9779b0a59ab8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classA.html">A</a> piece of styled text for syntax highlighting. </p>
@@ -168,7 +175,36 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetYOffset</b> (wxCoo
 <li>'\r' indicating a soft line break optionally equipped with indentation and a character that marks a continued quote or similar</li>
 </ul>
 <p>Protected (not private): <a class="el" href="classCodeEditorCell.html#aadf6a7ed34a3e21300c4c54a082a2b30" title="Code serializes to RTF snippet-by-snippet, keeping the syntax highlighting; prose maps its heading/te...">CodeEditorCell::ToRTF()</a> serializes <a class="el" href="classEditorCell.html#a43a98e45fe392edc23b5b6c5053fae78">m_styledText</a> snippet-by-snippet to keep the syntax highlighting. </p>
-</div><hr/>The documentation for this class was generated from the following file:<ul>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="ab6b66d9656d29873719379cf86558bba" name="ab6b66d9656d29873719379cf86558bba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab6b66d9656d29873719379cf86558bba">&#9670;&#160;</a></span>GetDigitGaps()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::vector&lt; size_t &gt; &amp; EditorCell::StyledText::GetDigitGaps </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Where this text portion, a number in a code cell, gets the small gaps that separate its digit groups (GH #192). </p>
+<p>Indices into <a class="el" href="classEditorCell_1_1StyledText.html#a0572cf1a744f0cfceef6ed1d0e81f0c2" title="Returns the piece of text.">GetText()</a> before which a gap is drawn; empty for anything but a number, or if <a class="el" href="classConfiguration.html#aa34bf94cb8e69a7700c7b95d63b3a981" title="Separate the digit groups of long numbers by a small gap? (GH #192)">Configuration::DigitGrouping()</a> is off. The width SetWidth() caches includes the gaps: unlike a tab's, it doesn't depend on where on the line the text portion starts. </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li>src/cells/<a class="el" href="EditorCell_8h_source.html">EditorCell.h</a></li>
 </ul>
 </div><!-- contents -->

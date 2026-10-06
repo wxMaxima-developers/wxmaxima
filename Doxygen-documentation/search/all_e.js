@@ -1,8 +1,8 @@
 var searchData=
 [
   ['n1_0',['N1',['../namespaceN1.html',1,'']]],
-  ['name_1',['Name',['../classStyles.html#a21bf4943137ee7b3ce6971d9eecc51ea',1,'Styles::Name()'],['../classAiProvider.html#a851738a1b9c781f613a9859b3f4b8adc',1,'AiProvider::Name()']]],
-  ['name_2',['name',['../structSaveAsDefault.html#a1c36e1a76073fa31e634857d1d4d51e5',1,'SaveAsDefault::name()'],['../structMcpSidebarInfo.html#aeb3960d7201798a6c45160f6dd7d224a',1,'McpSidebarInfo::name()'],['../structAiCustomProviderConfig.html#afc64f2b1027d0fc34cf5caf4071d5b9a',1,'AiCustomProviderConfig::name()']]],
+  ['name_1',['name',['../structSaveAsDefault.html#a1c36e1a76073fa31e634857d1d4d51e5',1,'SaveAsDefault::name()'],['../structMcpSidebarInfo.html#aeb3960d7201798a6c45160f6dd7d224a',1,'McpSidebarInfo::name()'],['../structAiCustomProviderConfig.html#afc64f2b1027d0fc34cf5caf4071d5b9a',1,'AiCustomProviderConfig::name()']]],
+  ['name_2',['Name',['../classStyles.html#a21bf4943137ee7b3ce6971d9eecc51ea',1,'Styles::Name()'],['../classAiProvider.html#a851738a1b9c781f613a9859b3f4b8adc',1,'AiProvider::Name()']]],
   ['name_5fseparator_3',['name_separator',['../classdetail_1_1lexer__base.html#add65fa7a85aa15052963809fbcc04540acc3c64f8ae08c00de1b33f19a4d2913a',1,'detail::lexer_base']]],
   ['nameandtags_4',['NameAndTags',['../structCatch_1_1NameAndTags.html',1,'Catch']]],
   ['namedboxcell_5',['NamedBoxCell',['../classNamedBoxCell.html',1,'NamedBoxCell'],['../classNamedBoxCell.html#a8a21868ef0a9301271bdaad09eef6705',1,'NamedBoxCell::NamedBoxCell()']]],
@@ -24,8 +24,8 @@ var searchData=
   ['nexttabstop_21',['NextTabStop',['../classEditorCell.html#a1449c2bc0308ca9fbe0378dbc62881b3',1,'EditorCell']]],
   ['nocliptodrawregion_22',['NoClipToDrawRegion',['../classNoClipToDrawRegion.html',1,'']]],
   ['noncopyable_23',['NonCopyable',['../classCatch_1_1NonCopyable.html',1,'Catch']]],
-  ['none_24',['None',['../classStatusBar.html#a7d2d4bad9c6f6a4eec714a4e884e6c34a6adf97f83acf6453d4a6a4b1070f3754',1,'StatusBar']]],
-  ['none_25',['none',['../classConfiguration.html#a698f3aab8c09db7093154b1c8b18b60ba334c4a4c42fdb79d7ebc3e73b517e6f8',1,'Configuration']]],
+  ['none_24',['none',['../classConfiguration.html#a698f3aab8c09db7093154b1c8b18b60ba334c4a4c42fdb79d7ebc3e73b517e6f8',1,'Configuration']]],
+  ['none_25',['None',['../classStatusBar.html#a7d2d4bad9c6f6a4eec714a4e884e6c34a6adf97f83acf6453d4a6a4b1070f3754',1,'StatusBar']]],
   ['nonesuch_26',['nonesuch',['../structdetail_1_1nonesuch.html',1,'detail']]],
   ['noopskipped_27',['NoOpSkipped',['../classWorksheetDocument.html#a597da4ddc26d35569b9346897dff3b72a773b1ab79b5aa284fc01d1ebb6e73c52',1,'WorksheetDocument']]],
   ['normalize_28',['normalize',['../structdetail_1_1dtoa__impl_1_1diyfp.html#a5bad735c2cb50b194938a8a89b82f6ed',1,'detail::dtoa_impl::diyfp']]],

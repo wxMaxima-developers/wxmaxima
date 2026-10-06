@@ -46,7 +46,7 @@ if (edges && edges.length) {
         </defs>
 
 <script type="text/javascript">
-var viewWidth = 575;
+var viewWidth = 720;
 var viewHeight = 93;
 var sectionId = 'dynsection-1';
 </script>
@@ -58,8 +58,8 @@ var sectionId = 'dynsection-1';
 <g id="node1" class="node">
 <title>Node1</title>
 <g id="a_node1"><a xlink:title="Declares where a number gets the small gaps that separate its digit groups (GH #192),...">
-<polygon fill="#999999" stroke="#666666" points="355,-85 245,-85 245,-66 355,-66 355,-85"/>
-<text text-anchor="middle" x="300" y="-73" font-family="Helvetica,sans-Serif" font-size="10.00">src/DigitGrouping.h</text>
+<polygon fill="#999999" stroke="#666666" points="421,-85 311,-85 311,-66 421,-66 421,-85"/>
+<text text-anchor="middle" x="366" y="-73" font-family="Helvetica,sans-Serif" font-size="10.00">src/DigitGrouping.h</text>
 </a>
 </g>
 </g>
@@ -75,54 +75,69 @@ var sectionId = 'dynsection-1';
 <!-- Node1&#45;&gt;Node2 -->
 <g id="edge1" class="edge">
 <title>Node1&#45;&gt;Node2</title>
-<path fill="none" stroke="#63b8ff" d="M255.51,-63.61C209.32,-52.3 138.03,-34.85 95.79,-24.52"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="254.7,-67.02 265.25,-65.99 256.37,-60.22 254.7,-67.02"/>
+<path fill="none" stroke="#63b8ff" d="M309.93,-64.05C262.31,-55.13 192.14,-41.9 131,-30 122,-28.25 112.35,-26.34 103.18,-24.51"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="309.57,-67.54 320.04,-65.94 310.86,-60.66 309.57,-67.54"/>
 </g>
 <!-- Node3 -->
 <g id="node3" class="node">
 <title>Node3</title>
-<g id="a_node3"><a xlink:href="LongNumberCell_8cpp.html" target="_top" xlink:title="This file defines the class LongNumberCell.">
-<polygon fill="white" stroke="#666666" points="301.5,-24.5 140.5,-24.5 140.5,-5.5 301.5,-5.5 301.5,-24.5"/>
-<text text-anchor="middle" x="221" y="-12.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/cells/LongNumberCell.cpp</text>
+<g id="a_node3"><a xlink:href="EditorCell_8cpp.html" target="_top" xlink:title="This file defines the class EditorCell.">
+<polygon fill="white" stroke="#666666" points="267.5,-24.5 140.5,-24.5 140.5,-5.5 267.5,-5.5 267.5,-24.5"/>
+<text text-anchor="middle" x="204" y="-12.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/cells/EditorCell.cpp</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node3 -->
 <g id="edge2" class="edge">
 <title>Node1&#45;&gt;Node3</title>
-<path fill="none" stroke="#63b8ff" d="M280.21,-59.85C265.25,-48.77 245.21,-33.93 232.7,-24.67"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="278.22,-62.73 288.34,-65.87 282.39,-57.1 278.22,-62.73"/>
+<path fill="none" stroke="#63b8ff" d="M332.84,-62.52C301.51,-51.21 255.31,-34.53 227.58,-24.52"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="331.85,-65.89 342.44,-65.99 334.23,-59.31 331.85,-65.89"/>
 </g>
 <!-- Node4 -->
 <g id="node4" class="node">
 <title>Node4</title>
-<g id="a_node4"><a xlink:href="TextCell_8cpp.html" target="_top" xlink:title="This file defines the class TextCell.">
-<polygon fill="white" stroke="#666666" points="438.5,-24.5 319.5,-24.5 319.5,-5.5 438.5,-5.5 438.5,-24.5"/>
-<text text-anchor="middle" x="379" y="-12.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/cells/TextCell.cpp</text>
+<g id="a_node4"><a xlink:href="LongNumberCell_8cpp.html" target="_top" xlink:title="This file defines the class LongNumberCell.">
+<polygon fill="white" stroke="#666666" points="446.5,-24.5 285.5,-24.5 285.5,-5.5 446.5,-5.5 446.5,-24.5"/>
+<text text-anchor="middle" x="366" y="-12.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/cells/LongNumberCell.cpp</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node4 -->
 <g id="edge3" class="edge">
 <title>Node1&#45;&gt;Node4</title>
-<path fill="none" stroke="#63b8ff" d="M319.79,-59.85C334.75,-48.77 354.79,-33.93 367.3,-24.67"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="317.61,-57.1 311.66,-65.87 321.78,-62.73 317.61,-57.1"/>
+<path fill="none" stroke="#63b8ff" d="M366,-55.66C366,-45.24 366,-32.8 366,-24.67"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="362.5,-55.87 366,-65.87 369.5,-55.87 362.5,-55.87"/>
 </g>
 <!-- Node5 -->
 <g id="node5" class="node">
 <title>Node5</title>
-<g id="a_node5"><a xlink:href="test__DigitGrouping_8cpp.html" target="_top" xlink:title="Tests wxm::DigitGroupGaps(), which decides where a number displayed in the worksheet gets the small g...">
-<polygon fill="white" stroke="#666666" points="567,-30 457,-30 457,0 567,0 567,-30"/>
-<text text-anchor="start" x="465" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">test/unit_tests/test</text>
-<text text-anchor="middle" x="512" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">_DigitGrouping.cpp</text>
+<g id="a_node5"><a xlink:href="TextCell_8cpp.html" target="_top" xlink:title="This file defines the class TextCell.">
+<polygon fill="white" stroke="#666666" points="583.5,-24.5 464.5,-24.5 464.5,-5.5 583.5,-5.5 583.5,-24.5"/>
+<text text-anchor="middle" x="524" y="-12.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/cells/TextCell.cpp</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node5 -->
 <g id="edge4" class="edge">
 <title>Node1&#45;&gt;Node5</title>
-<path fill="none" stroke="#63b8ff" d="M340.51,-63.32C374.79,-53.86 424.08,-40.26 461.03,-30.06"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="339.54,-59.96 330.83,-65.99 341.4,-66.71 339.54,-59.96"/>
+<path fill="none" stroke="#63b8ff" d="M398.74,-62.38C429.28,-51.07 474.07,-34.49 501,-24.52"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="397.14,-59.24 388.97,-65.99 399.57,-65.8 397.14,-59.24"/>
+</g>
+<!-- Node6 -->
+<g id="node6" class="node">
+<title>Node6</title>
+<g id="a_node6"><a xlink:href="test__DigitGrouping_8cpp.html" target="_top" xlink:title="Tests wxm::DigitGroupGaps(), which decides where a number displayed in the worksheet gets the small g...">
+<polygon fill="white" stroke="#666666" points="712,-30 602,-30 602,0 712,0 712,-30"/>
+<text text-anchor="start" x="610" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">test/unit_tests/test</text>
+<text text-anchor="middle" x="657" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">_DigitGrouping.cpp</text>
+</a>
+</g>
+</g>
+<!-- Node1&#45;&gt;Node6 -->
+<g id="edge5" class="edge">
+<title>Node1&#45;&gt;Node6</title>
+<path fill="none" stroke="#63b8ff" d="M421.34,-64C467.35,-55.19 534.51,-42.13 593,-30 595.9,-29.4 598.86,-28.78 601.86,-28.14"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="420.45,-60.61 411.28,-65.92 421.76,-67.48 420.45,-60.61"/>
 </g>
 </g>
 </svg>
