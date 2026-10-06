@@ -7,5 +7,7 @@ var searchData=
   ['stopped_4',['Stopped',['../classToolBar.html#a327b655c366e7932f751d2815cc629fca8126b37041204f33de2e1b8601f27ac8',1,'ToolBar']]],
   ['store_5',['store',['../namespacedetail.html#a7c070b2bf3d61e3d8b8013f6fb18d592a8cd892b7b97ef9489ae4479d3f4ef0fc',1,'detail']]],
   ['strict_6',['strict',['../namespacedetail.html#abe7cfa1fd8fa706ff4392bff9d1a8298a2133fd717402a7966ee88d06f9e0b792',1,'detail']]],
-  ['string_7',['string',['../namespacedetail.html#a917c3efabea8a20dc72d9ae2c673d632ab45cffe084dd3d20d928bee85e7b0f21',1,'detail']]]
+  ['string_7',['string',['../namespacedetail.html#a917c3efabea8a20dc72d9ae2c673d632ab45cffe084dd3d20d928bee85e7b0f21',1,'detail']]],
+  ['subscript_8',['Subscript',['../TextFormat_8h.html#aa25bc1375d2da63b921a892d85929c0da9809052b65b0c5d09582318dd2f264de',1,'TextFormat']]],
+  ['superscript_9',['Superscript',['../TextFormat_8h.html#aa25bc1375d2da63b921a892d85929c0da5ab3660cef7e60dee3b3edf970012fc7',1,'TextFormat']]]
 ];

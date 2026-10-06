@@ -1054,7 +1054,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasControlBlock</b> (
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasOneCellPtr</b> () const</td></tr>
 <tr class="separator:a51973edd395e7418e299006b534bee70"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Character formatting (bold, italic, ...) of a text cell (GH #492)</div></td></tr>
-<tr><td colspan="2"><div class="groupText"><p>One <a class="el" href="TextFormat_8h.html#a5f5bc96d42493f3c4209d77ec9ab6952" title="The formatting of one character: a combination of the flags below.">TextFormat::Format</a> per character of <a class="el" href="classEditorCell.html#a7567a287678df7003b301c1a93901b03" title="Returns the text contained in this cell.">GetValue()</a>; see <a class="el" href="TextFormat_8h.html" title="Character formatting (bold, italic, ...) of the text in a text cell (GH #492).">TextFormat.h</a>.</p>
+<tr><td colspan="2"><div class="groupText"><p>One <a class="el" href="TextFormat_8h.html#a5f5bc96d42493f3c4209d77ec9ab6952" title="The formatting of one character: a combination of the flags below.">TextFormat::Format</a> per character of <a class="el" href="classEditorCell.html#a7567a287678df7003b301c1a93901b03" title="Returns the text contained in this cell.">GetValue()</a>; see <a class="el" href="TextFormat_8h.html" title="Character formatting (bold, italic, superscript, ...) of the text in a text cell (GH #492).">TextFormat.h</a>.</p>
 <p>Code cells have syntax highlighting instead and are never formatted.</p>
 <p>The formats are not updated by each of the many places that edit the text. Instead they remember the text they were made for, and whenever they are needed and the text has changed since, <a class="el" href="TextFormat_8cpp.html#a0bde2a2b15a3b4b8f670a77fa7b477f4" title="The formatting of newText, given that it came from oldText by editing.">TextFormat::Reconcile()</a> works out which characters survived the edit (SyncFormats()). That way no edit, present or future, can leave them out of step with the text. </p>
 </div></td></tr>
@@ -2578,7 +2578,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 </div><div class="memdoc">
 
 <p>The font for text with the given character formatting (GH #492). </p>
-<p>Only bold and italic change the font; underline and strikethrough are lines <a class="el" href="classEditorCell.html#ae1ea47fbaf84aa982f91f717101d743f" title="Pass 3 (Paint): Renders the cell using pre-calculated coordinates.">Draw()</a> adds on top. Cached, since <a class="el" href="classEditorCell.html#ae1ea47fbaf84aa982f91f717101d743f" title="Pass 3 (Paint): Renders the cell using pre-calculated coordinates.">Draw()</a> asks for it once per snippet. </p>
+<p>Only bold, italic, superscript and subscript change the font (the latter two make it smaller); underline and strikethrough are lines <a class="el" href="classEditorCell.html#ae1ea47fbaf84aa982f91f717101d743f" title="Pass 3 (Paint): Renders the cell using pre-calculated coordinates.">Draw()</a> adds on top. Cached, since <a class="el" href="classEditorCell.html#ae1ea47fbaf84aa982f91f717101d743f" title="Pass 3 (Paint): Renders the cell using pre-calculated coordinates.">Draw()</a> asks for it once per snippet. </p>
 
 </div>
 </div>

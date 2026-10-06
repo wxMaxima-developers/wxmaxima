@@ -82,7 +82,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>Character formatting (bold, italic, ...) of the text in a text cell (GH #492).  
+<p>Character formatting (bold, italic, superscript, ...) of the text in a text cell (GH #492).  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;cstdint&gt;</code><br />
 <code>#include &lt;cstddef&gt;</code><br />
@@ -116,19 +116,28 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>TextFormat::Formats<
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:aa25bc1375d2da63b921a892d85929c0d"><td class="memItemLeft" align="right" valign="top"><a id="aa25bc1375d2da63b921a892d85929c0d" name="aa25bc1375d2da63b921a892d85929c0d"></a>enum &#160;</td><td class="memItemRight" valign="bottom">: Format { <br />
+<tr class="memitem:aa25bc1375d2da63b921a892d85929c0d"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">: Format { <br />
 &#160;&#160;<b>None</b> = 0
 , <b>Bold</b> = 1
 , <b>Italic</b> = 2
 , <b>Underline</b> = 4
 , <br />
 &#160;&#160;<b>Strikethrough</b> = 8
+, <a class="el" href="TextFormat_8h.html#aa25bc1375d2da63b921a892d85929c0da5ab3660cef7e60dee3b3edf970012fc7">TextFormat::Superscript</a> = 16
+, <a class="el" href="TextFormat_8h.html#aa25bc1375d2da63b921a892d85929c0da9809052b65b0c5d09582318dd2f264de">TextFormat::Subscript</a> = 32
 <br />
  }</td></tr>
 <tr class="separator:aa25bc1375d2da63b921a892d85929c0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a52bbdd1ab397bd82899eaa2f0b2e1198"><td class="memItemLeft" align="right" valign="top"><a id="a52bbdd1ab397bd82899eaa2f0b2e1198" name="a52bbdd1ab397bd82899eaa2f0b2e1198"></a>
+constexpr std::size_t&#160;</td><td class="memItemRight" valign="bottom"><b>TextFormat::FontIndex</b> (Format format)</td></tr>
+<tr class="memdesc:a52bbdd1ab397bd82899eaa2f0b2e1198"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classA.html">A</a> number below FontVariants that tells the fonts the WidthAffecting flags ask for apart. <br /></td></tr>
+<tr class="separator:a52bbdd1ab397bd82899eaa2f0b2e1198"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af3f30776b1ac8c04741a068bede320e9"><td class="memItemLeft" align="right" valign="top">constexpr Format&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="TextFormat_8h.html#af3f30776b1ac8c04741a068bede320e9">TextFormat::WithFlag</a> (Format format, Format flag)</td></tr>
+<tr class="memdesc:af3f30776b1ac8c04741a068bede320e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">The format that results from switching flag on in format.  <br /></td></tr>
+<tr class="separator:af3f30776b1ac8c04741a068bede320e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a93d169326a90f4320ffa5e815d4fba68"><td class="memItemLeft" align="right" valign="top"><a id="a93d169326a90f4320ffa5e815d4fba68" name="a93d169326a90f4320ffa5e815d4fba68"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>TextFormat::IsPlain</b> (const Formats &amp;formats)</td></tr>
 <tr class="memdesc:a93d169326a90f4320ffa5e815d4fba68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does this formatting vector describe plain text? <br /></td></tr>
@@ -164,18 +173,47 @@ std::size_t&#160;</td><td class="memItemRight" valign="bottom"><b>TextFormat::In
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:a49fc5b5c8057a887aae5b24bf9db2f63"><td class="memItemLeft" align="right" valign="top"><a id="a49fc5b5c8057a887aae5b24bf9db2f63" name="a49fc5b5c8057a887aae5b24bf9db2f63"></a>
-constexpr Format&#160;</td><td class="memItemRight" valign="bottom"><b>TextFormat::WidthAffecting</b> = Bold | Italic</td></tr>
+constexpr Format&#160;</td><td class="memItemRight" valign="bottom"><b>TextFormat::WidthAffecting</b> = Bold | Italic | Superscript | Subscript</td></tr>
 <tr class="memdesc:a49fc5b5c8057a887aae5b24bf9db2f63"><td class="mdescLeft">&#160;</td><td class="mdescRight">The flags that change a character's width, and therefore the font it is measured and drawn with. Underline and strikethrough are lines drawn on top. <br /></td></tr>
 <tr class="separator:a49fc5b5c8057a887aae5b24bf9db2f63"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e5a60c1fc4ad42cf39aec404e7e8498"><td class="memItemLeft" align="right" valign="top"><a id="a0e5a60c1fc4ad42cf39aec404e7e8498" name="a0e5a60c1fc4ad42cf39aec404e7e8498"></a>
+constexpr std::size_t&#160;</td><td class="memItemRight" valign="bottom"><b>TextFormat::FontVariants</b> = 16</td></tr>
+<tr class="memdesc:a0e5a60c1fc4ad42cf39aec404e7e8498"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many different fonts the WidthAffecting flags can ask for. <br /></td></tr>
+<tr class="separator:a0e5a60c1fc4ad42cf39aec404e7e8498"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38ccbeda98269c9a9dc54e6ecf2ae111"><td class="memItemLeft" align="right" valign="top"><a id="a38ccbeda98269c9a9dc54e6ecf2ae111" name="a38ccbeda98269c9a9dc54e6ecf2ae111"></a>
+constexpr Format&#160;</td><td class="memItemRight" valign="bottom"><b>TextFormat::VerticalPosition</b> = Superscript | Subscript</td></tr>
+<tr class="memdesc:a38ccbeda98269c9a9dc54e6ecf2ae111"><td class="mdescLeft">&#160;</td><td class="mdescRight">The flags that move a character up or down. <a class="el" href="classA.html">A</a> character is never both. <br /></td></tr>
+<tr class="separator:a38ccbeda98269c9a9dc54e6ecf2ae111"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Character formatting (bold, italic, ...) of the text in a text cell (GH #492). </p>
+<div class="textblock"><p>Character formatting (bold, italic, superscript, ...) of the text in a text cell (GH #492). </p>
 <p>Everything here is a pure function of strings and vectors, needing neither a cell nor a GUI, so that it can be tested on its own.</p>
 <p><b>The model</b>: one Format per character of the cell's text, stored in a vector indexed exactly like the wxString it describes. An empty vector means "no formatting at all", which is what every cell that never had any carries, so plain cells pay nothing.</p>
 <p><b>How it is saved</b>: .wxmx stores a text cell as one <code>&lt;line&gt;</code> element per line. Formatting goes into attributes of those elements, one per format, each a list of half-open ranges counted in Unicode code points from the start of the line: </p><pre class="fragment">&lt;line bold="0-4,10-12" italic="6-9"&gt;Bold, italic and bold&lt;/line&gt;
 </pre><p> This is not a pretty format, but it is the one older <a class="el" href="classwxMaxima.html">wxMaxima</a> versions can read: they take the element's text and never look at its attributes, so they show the text unformatted instead of losing any of it. Inline tags (<code>&lt;b&gt;</code>, <code>&lt;i&gt;</code>, ...) would have been nicer, but an older version reading <code>&lt;line&gt;a</code> &lt;b&gt;b&lt;/b&gt; c&lt;/line&gt; keeps only the "a ".</p>
-<p>ReadLine() nevertheless understands such inline tags too, so a future version can switch to them: <code>&lt;b&gt;/<code>&lt;strong&gt;</code>,</code> <code>&lt;i&gt;/<code>&lt;em&gt;</code>,</code> <code>&lt;u&gt;</code> and <code>&lt;s&gt;/<code>&lt;strike&gt;/<code>&lt;del&gt;</code> set</code> the</code> matching format, and any other tag is read as if it weren't there - its text is kept, only the formatting it stands for is lost. </p>
-</div><h2 class="groupheader">Function Documentation</h2>
+<p>ReadLine() nevertheless understands such inline tags too, so a future version can switch to them: <code>&lt;b&gt;/<code>&lt;strong&gt;</code>,</code> <code>&lt;i&gt;/<code>&lt;em&gt;</code>,</code> <code>&lt;u&gt;</code>, <code>&lt;s&gt;/<code>&lt;strike&gt;/<code>&lt;del&gt;</code>,</code> <code>&lt;sup&gt;</code> and</code> <code>&lt;sub&gt;</code> set the matching format, and any other tag is read as if it weren't there - its text is kept, only the formatting it stands for is lost. </p>
+</div><h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="aa25bc1375d2da63b921a892d85929c0d" name="aa25bc1375d2da63b921a892d85929c0d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa25bc1375d2da63b921a892d85929c0d">&#9670;&#160;</a></span>anonymous enum</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">anonymous enum : Format</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aa25bc1375d2da63b921a892d85929c0da5ab3660cef7e60dee3b3edf970012fc7" name="aa25bc1375d2da63b921a892d85929c0da5ab3660cef7e60dee3b3edf970012fc7"></a>Superscript&#160;</td><td class="fielddoc"><p>Smaller, and raised above the baseline. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aa25bc1375d2da63b921a892d85929c0da9809052b65b0c5d09582318dd2f264de" name="aa25bc1375d2da63b921a892d85929c0da9809052b65b0c5d09582318dd2f264de"></a>Subscript&#160;</td><td class="fielddoc"><p>Smaller, and lowered below the baseline. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
 <a id="a97acb24e4e5504b41aa0d42b602a8cc6" name="a97acb24e4e5504b41aa0d42b602a8cc6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a97acb24e4e5504b41aa0d42b602a8cc6">&#9670;&#160;</a></span>FormatForInsertionAt()</h2>
 
@@ -388,6 +426,45 @@ constexpr Format&#160;</td><td class="memItemRight" valign="bottom"><b>TextForma
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the new formatting, empty if it is plain. </dd></dl>
+
+</div>
+</div>
+<a id="af3f30776b1ac8c04741a068bede320e9" name="af3f30776b1ac8c04741a068bede320e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af3f30776b1ac8c04741a068bede320e9">&#9670;&#160;</a></span>WithFlag()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr Format TextFormat::WithFlag </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="TextFormat_8h.html#a5f5bc96d42493f3c4209d77ec9ab6952">Format</a>&#160;</td>
+          <td class="paramname"><em>format</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="TextFormat_8h.html#a5f5bc96d42493f3c4209d77ec9ab6952">Format</a>&#160;</td>
+          <td class="paramname"><em>flag</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The format that results from switching flag on in format. </p>
+<p>Superscript and subscript exclude each other: switching one on switches the other off. </p>
 
 </div>
 </div>

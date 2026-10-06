@@ -122,6 +122,8 @@ Public Types</h2></td></tr>
 , <b>tb_underline</b>
 , <br />
 &#160;&#160;<b>tb_strikethrough</b>
+, <b>tb_superscript</b>
+, <b>tb_subscript</b>
 <br />
  }</td></tr>
 <tr class="memdesc:a70cc9d7a523d9d4fcb418fb7b05332c2"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classA.html">A</a> list of all events the Toolbar can receive.  <a href="classToolBar.html#a70cc9d7a523d9d4fcb418fb7b05332c2">More...</a><br /></td></tr>
@@ -174,9 +176,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>CanEvalTillHere</b> (
 <tr class="memitem:a7a133ca56a64c29a3e4ccae5ed13d54f"><td class="memItemLeft" align="right" valign="top"><a id="a7a133ca56a64c29a3e4ccae5ed13d54f" name="a7a133ca56a64c29a3e4ccae5ed13d54f"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>CanEvalThisCell</b> (bool value)</td></tr>
 <tr class="separator:a7a133ca56a64c29a3e4ccae5ed13d54f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1177f2e255b6723e2720b41bad046205"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classToolBar.html#a1177f2e255b6723e2720b41bad046205">TextFormatState</a> (bool value, bool bold, bool italic, bool underline, bool strikethrough)</td></tr>
-<tr class="memdesc:a1177f2e255b6723e2720b41bad046205"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable the character formatting buttons (only in a text cell)  <br /></td></tr>
-<tr class="separator:a1177f2e255b6723e2720b41bad046205"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4fddd877c4503d937b7f26324902092d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classToolBar.html#a4fddd877c4503d937b7f26324902092d">TextFormatState</a> (bool value, <a class="el" href="TextFormat_8h.html#a5f5bc96d42493f3c4209d77ec9ab6952">TextFormat::Format</a> active)</td></tr>
+<tr class="memdesc:a4fddd877c4503d937b7f26324902092d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable the character formatting buttons (only in a text cell)  <br /></td></tr>
+<tr class="separator:a4fddd877c4503d937b7f26324902092d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8906285043576f71e5325f607d44fdf0"><td class="memItemLeft" align="right" valign="top"><a id="a8906285043576f71e5325f607d44fdf0" name="a8906285043576f71e5325f607d44fdf0"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>WorksheetEmpty</b> (bool value)</td></tr>
 <tr class="separator:a8906285043576f71e5325f607d44fdf0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -435,8 +437,8 @@ evaluated" button, which is enabled from a scroll handler while the pointer is o
 
 </div>
 </div>
-<a id="a1177f2e255b6723e2720b41bad046205" name="a1177f2e255b6723e2720b41bad046205"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1177f2e255b6723e2720b41bad046205">&#9670;&#160;</a></span>TextFormatState()</h2>
+<a id="a4fddd877c4503d937b7f26324902092d" name="a4fddd877c4503d937b7f26324902092d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4fddd877c4503d937b7f26324902092d">&#9670;&#160;</a></span>TextFormatState()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -450,26 +452,8 @@ evaluated" button, which is enabled from a scroll handler while the pointer is o
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>bold</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>italic</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>underline</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>strikethrough</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="TextFormat_8h.html#a5f5bc96d42493f3c4209d77ec9ab6952">TextFormat::Format</a>&#160;</td>
+          <td class="paramname"><em>active</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -483,7 +467,7 @@ evaluated" button, which is enabled from a scroll handler while the pointer is o
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">value</td><td>Can the text the cursor is in be formatted? </td></tr>
-    <tr><td class="paramname">bold,italic,underline,strikethrough</td><td>Is that format on where the cursor is? Shown as the button being pressed. </td></tr>
+    <tr><td class="paramname">active</td><td>The formats that are on where the cursor is (TextFormat::Bold, ...). Shown as the buttons being pressed. </td></tr>
   </table>
   </dd>
 </dl>

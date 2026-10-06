@@ -93,7 +93,7 @@ var searchData=
   ['textformat_90',['TextFormat',['../ToolBarSections_8h.html#a00b3e7a9e497829a0e732600a8e8b7aaad76fa8dd39ce3311e4d2e2c4de19bc8b',1,'ToolBarSections']]],
   ['textformat_2ecpp_91',['TextFormat.cpp',['../TextFormat_8cpp.html',1,'']]],
   ['textformat_2eh_92',['TextFormat.h',['../TextFormat_8h.html',1,'']]],
-  ['textformatstate_93',['TextFormatState',['../classToolBar.html#a1177f2e255b6723e2720b41bad046205',1,'ToolBar']]],
+  ['textformatstate_93',['TextFormatState',['../classToolBar.html#a4fddd877c4503d937b7f26324902092d',1,'ToolBar']]],
   ['textsnippettodraw_94',['TextsnippetToDraw',['../classConfiguration_1_1TextsnippetToDraw.html',1,'Configuration']]],
   ['textstyle_95',['TextStyle',['../TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993',1,'TextStyle.h']]],
   ['textstyle_2ecpp_96',['TextStyle.cpp',['../TextStyle_8cpp.html',1,'']]],
