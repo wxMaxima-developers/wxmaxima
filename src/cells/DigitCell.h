@@ -43,6 +43,22 @@ public:
   using Cell::SetCurrentPoint;
   void SetCurrentPoint(wxPoint point) const override;
   void Draw(wxDC *dc, wxDC *antialiassingDC) override;
+
+  /*! How many digits the whole number this group belongs to has (GH #192).
+
+    0 if that number isn't one DigitGroupGaps() would group at all. Decides,
+    together with the configuration, whether this group is followed by the
+    small gap that separates digit groups; the configuration can change after
+    LongNumberCell::BreakUp() has made this cell, so this can't be decided
+    up front.
+  */
+  void SetNumberDigits(size_t digits) { m_numberDigits = digits; }
+
+private:
+  //! Does a digit-group gap follow this group? See SetNumberDigits().
+  bool GapFollows() const;
+  //! See SetNumberDigits()
+  size_t m_numberDigits = 0;
 };
 
 #endif // DIGITCELL_H

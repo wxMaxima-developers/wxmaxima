@@ -31,6 +31,7 @@
 
 #include "TextCell.h"
 #include "CellImpl.h"
+#include "DigitGrouping.h"
 #include "StringUtils.h"
 #include <wx/config.h>
 
@@ -489,6 +490,10 @@ void TextCell::Recalculate(AFontSize fontsize) const {
     wxSize sz =
       CalculateTextSize(m_configuration->GetRecalcDC(), m_displayedText, cellText);
     m_width = sz.GetWidth();
+    UpdateDigitGroupGaps();
+    if (!m_digitGroupGaps.empty())
+      m_width = DrawGroupedDigits(m_configuration->GetRecalcDC(),
+                                  m_displayedText, 0, 0, false);
     m_height = sz.GetHeight();
 
     m_width += 2 * MC_TEXT_PADDING;
@@ -521,7 +526,10 @@ void TextCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
     SetFont(dc, m_fontSize_Scaled);
     SetTextColor(dc);
     const wxCoord y = m_currentPoint.y - m_center + MC_TEXT_PADDING;
-    if (!m_hasLinks)
+    if (!m_digitGroupGaps.empty())
+      DrawGroupedDigits(dc, m_displayedText, m_currentPoint.x + padding, y,
+                        true);
+    else if (!m_hasLinks)
       dc->DrawText(m_displayedText, m_currentPoint.x + padding, y);
     else {
       // Links (GH #2396) are drawn in the link color and underlined by hand,
@@ -545,6 +553,47 @@ void TextCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
       dc->SetTextForeground(textColor);
     }
   }
+}
+
+void TextCell::UpdateDigitGroupGaps() const {
+  m_digitGroupGaps.clear();
+  if ((GetTextStyle() != TS_NUMBER) || !m_configuration->DigitGrouping())
+    return;
+  m_digitGroupGaps = wxm::DigitGroupGaps(
+    m_displayedText,
+    static_cast<size_t>(m_configuration->DigitGroupingMinDigits()),
+    static_cast<size_t>(wxm::LocaleDigitGroupSize()));
+}
+
+wxCoord TextCell::DigitGroupGapWidth() const {
+  // About a sixth of an em, the width of a typographic thin space. Measuring
+  // U+2009 itself would depend on the font having that glyph at all.
+  return std::max(static_cast<wxCoord>(1),
+                  static_cast<wxCoord>(m_fontSize_Scaled.Get() / 6));
+}
+
+wxCoord TextCell::DrawGroupedDigits(wxDC *dc, const wxString &text, wxCoord x,
+                                    wxCoord y, bool draw) const {
+  const wxCoord gap = DigitGroupGapWidth();
+  const wxCoord start = x;
+  size_t groupStart = 0;
+  auto group = [&](size_t end) {
+    if (end <= groupStart)
+      return;
+    const wxString digits = text.Mid(groupStart, end - groupStart);
+    if (draw)
+      dc->DrawText(digits, x, y);
+    x += dc->GetTextExtent(digits).GetWidth();
+    groupStart = end;
+  };
+  for (const auto pos : m_digitGroupGaps) {
+    if (pos >= text.Length())
+      break;
+    group(pos);
+    x += gap;
+  }
+  group(text.Length());
+  return x - start;
 }
 
 wxCoord TextCell::GetWidthAtLineBreak() const {

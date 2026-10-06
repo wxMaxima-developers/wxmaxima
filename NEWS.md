@@ -1,5 +1,11 @@
 # Current development version
 
+- Long numbers in the output are easier to read: their digits are shown in
+  groups separated by a small gap, 2111230496 as 2 111 230 496 (GH #192).
+  Only the display changes: copying, saving and exporting a number never
+  adds the gaps. Numbers with fewer than 5 digits, years for example, are
+  left as they are. Both can be changed in the configuration dialog's
+  "Worksheet" tab.
 - With wxWidgets' Qt port, a symbol in the Greek letters or Symbols sidebar
   no longer stays highlighted after the mouse has left it.
 - On Linux, a middle-click into a cell pasted the Ctrl+C clipboard

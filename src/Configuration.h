@@ -1435,6 +1435,26 @@ public:
       RecalculateForce();
     m_lineBreaksInLongNums = brk;
   }
+  /*! Separate the digit groups of long numbers by a small gap? (GH #192)
+
+    Only affects how numbers are drawn, never their text: see DigitGrouping.h.
+  */
+  bool DigitGrouping() const {return m_digitGrouping;}
+  void DigitGrouping(bool group){
+    if(m_digitGrouping != group)
+      RecalculateForce();
+    m_digitGrouping = group;
+  }
+  //! How many digits a number needs before DigitGrouping() groups them
+  long DigitGroupingMinDigits() const {return m_digitGroupingMinDigits;}
+  void DigitGroupingMinDigits(long digits){
+    digits = std::max(digits, DigitGroupingMinDigits_Min);
+    if(m_digitGroupingMinDigits != digits)
+      RecalculateForce();
+    m_digitGroupingMinDigits = digits;
+  }
+  //! The smallest value DigitGroupingMinDigits() accepts: 1 digit has no groups
+  static constexpr long DigitGroupingMinDigits_Min = 2;
 
   void MaximaUsesHtmlBrowser(bool maximaUsesHhtmlBrowser){m_maximaUsesHhtmlBrowser = maximaUsesHhtmlBrowser;}
   bool MaximaUsesHtmlBrowser() const {return m_maximaUsesHhtmlBrowser;}
@@ -1652,6 +1672,10 @@ private:
   bool m_showAllDigits;
   //! Allow linebreaks in numbers that are longer than a line?
   bool m_lineBreaksInLongNums;
+  //! See DigitGrouping()
+  bool m_digitGrouping;
+  //! See DigitGroupingMinDigits()
+  long m_digitGroupingMinDigits;
   //! Do we want to automatically close parenthesis?
   bool m_matchParens;
   //! Do we want to automatically insert new cells containing a "%" at the end of every command?

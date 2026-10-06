@@ -140,6 +140,8 @@ Configuration::Configuration(const Configuration &o) :
   m_autoIndent(o.m_autoIndent),
   m_showAllDigits(o.m_showAllDigits),
   m_lineBreaksInLongNums(o.m_lineBreaksInLongNums),
+  m_digitGrouping(o.m_digitGrouping),
+  m_digitGroupingMinDigits(o.m_digitGroupingMinDigits),
   m_matchParens(o.m_matchParens),
   m_insertAns(o.m_insertAns),
   m_openHCaret(o.m_openHCaret),
@@ -255,6 +257,10 @@ void Configuration::ResetAllToDefaults() {
   m_fontRenderability.ClearValues();
   m_showAllDigits = false;
   m_lineBreaksInLongNums = false;
+  // Opt-out: on unless switched off in the configuration dialogue. 5 digits
+  // leaves 4-digit numbers like years alone, as SI's style guide does.
+  m_digitGrouping = true;
+  m_digitGroupingMinDigits = 5;
   m_autoSaveMinutes = 3;
   m_maxLayoutTime = 5;
   m_numpadEnterEvaluates = true;
@@ -860,6 +866,8 @@ void Configuration::ReadConfig() {
 
   if (m_displayedDigits <= 20)
     m_displayedDigits = 20;
+  if (m_digitGroupingMinDigits < DigitGroupingMinDigits_Min)
+    m_digitGroupingMinDigits = DigitGroupingMinDigits_Min;
 
   ReadStyles();
   if (!haveAppearanceSetting) {
@@ -1360,6 +1368,8 @@ Configuration::ScalarConfigSettings() {
     {wxS("defaultPlotHeight"), &Configuration::m_defaultPlotHeight},
     {wxS("defaultPlotWidth"), &Configuration::m_defaultPlotWidth},
     {wxS("defaultPort"), &Configuration::m_defaultPort},
+    {wxS("digitGrouping"), &Configuration::m_digitGrouping},
+    {wxS("digitGroupingMinDigits"), &Configuration::m_digitGroupingMinDigits},
     {wxS("displayedDigits"), &Configuration::m_displayedDigits},
     {wxS("documentclass"), &Configuration::m_documentclass},
     {wxS("documentclassoptions"), &Configuration::m_documentclassOptions},

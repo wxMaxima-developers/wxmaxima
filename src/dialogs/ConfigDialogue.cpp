@@ -412,6 +412,10 @@ void ConfigDialogue::SetCheckboxValues() {
   m_displayedDigits->SetToolTip(
                                 _("If numbers are getting longer than this number of digits they will be "
                                   "displayed abbreviated by an ellipsis."));
+  m_digitGrouping->SetToolTip(
+    _("Displays 2111230496 as 2 111 230 496, which makes long numbers easier to "
+      "read. Only the display changes: copying, saving and exporting a number "
+      "never adds these gaps."));
   m_TeXExponentsAfterSubscript->SetToolTip(
                                            _("In the LaTeX output: Put exponents after an eventual subscript "
                                              "instead of above it. Might increase readability for some fonts and "
@@ -694,6 +698,9 @@ void ConfigDialogue::SetCheckboxValues() {
   m_defaultPlotWidth->SetValue(configuration->DefaultPlotWidth());
   m_defaultPlotHeight->SetValue(configuration->DefaultPlotHeight());
   m_displayedDigits->SetValue(configuration->GetDisplayedDigits());
+  m_digitGrouping->SetValue(configuration->DigitGrouping());
+  m_digitGroupingMinDigits->SetValue(configuration->DigitGroupingMinDigits());
+  m_digitGroupingMinDigits->Enable(configuration->DigitGrouping());
 
   if (configuration->LineBreaksInLongNums() && configuration->ShowAllDigits())
     m_linebreaksInLongNums->SetValue(true);
@@ -944,6 +951,20 @@ wxWindow *ConfigDialogue::CreateWorksheetPanel() {
                                        _("Display all and allow linebreaks in long numbers")),
                      0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL);
   numDigitsGrid->Add(5 * GetContentScaleFactor(), 5 * GetContentScaleFactor());
+
+  numDigitsGrid->Add(m_digitGrouping =
+                     new wxCheckBox(numDigitsSizer->GetStaticBox(), wxID_ANY,
+                                    _("Separate digit groups of numbers with at least this many digits:")),
+                     0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL);
+  m_digitGroupingMinDigits = new wxSpinCtrl(
+    numDigitsSizer->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition,
+    wxSize(150 * GetContentScaleFactor(), -1), wxSP_ARROW_KEYS,
+    Configuration::DigitGroupingMinDigits_Min, 1000);
+  numDigitsGrid->Add(m_digitGroupingMinDigits, wxSizerFlags());
+  m_digitGrouping->Bind(wxEVT_CHECKBOX, [this](wxCommandEvent &event) {
+    m_digitGroupingMinDigits->Enable(m_digitGrouping->GetValue());
+    event.Skip();
+  });
   displaySizer->Add(numDigitsSizer,
                     wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
 
@@ -3128,6 +3149,8 @@ void ConfigDialogue::WriteSettings() {
   configuration->DefaultPlotWidth(m_defaultPlotWidth->GetValue());
   configuration->DefaultPlotHeight(m_defaultPlotHeight->GetValue());
   configuration->SetDisplayedDigits(m_displayedDigits->GetValue());
+  configuration->DigitGrouping(m_digitGrouping->GetValue());
+  configuration->DigitGroupingMinDigits(m_digitGroupingMinDigits->GetValue());
 
   configuration->PrintMargin_Right(m_printMargin_Right->GetValue());
   configuration->PrintMargin_Left(m_printMargin_Left->GetValue());

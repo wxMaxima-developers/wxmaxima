@@ -32,6 +32,7 @@
 #include "BackgroundQueue.cpp"
 #include "ImgCell.cpp"
 #include "ImgCellBase.cpp"
+#include "DigitGrouping.cpp"
 #include "StringUtils.cpp"
 #include "TestStubs.cpp"
 #include "TextCell.cpp"
