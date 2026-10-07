@@ -476,6 +476,8 @@ protected:
 
   //! Is triggered when the textstyle drop-down box's value is changed.
   void ChangeCellStyle(wxCommandEvent &event);
+  //! A character formatting button of the toolbar (bold, ...) was pressed
+  void OnTextFormat(wxCommandEvent &event);
 
   //! Is triggered when the "Find" button in the search dialog is pressed
   void OnFind(wxFindDialogEvent &event);

@@ -11,6 +11,7 @@ set(IMAGE_FILES
         view-refresh
         accessibility
         ai-chat
+        toolbar
 )
 
 foreach(file ${IMAGE_FILES})

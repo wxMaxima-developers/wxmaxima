@@ -54,6 +54,12 @@
 #define wxmaximaART_SYNC_HORIZONTAL         wxART_MAKE_ART_ID(wxmaximaART_SYNC_HORIZONTAL)
 #define wxmaximaART_TEXT                    wxART_MAKE_ART_ID(wxmaximaART_TEXT)
 #define wxmaximaART_VIEW_REFRESH1           wxART_MAKE_ART_ID(wxmaximaART_VIEW_REFRESH1)
+#define wxmaximaART_FORMAT_TEXT_BOLD        wxART_MAKE_ART_ID(wxmaximaART_FORMAT_TEXT_BOLD)
+#define wxmaximaART_FORMAT_TEXT_ITALIC      wxART_MAKE_ART_ID(wxmaximaART_FORMAT_TEXT_ITALIC)
+#define wxmaximaART_FORMAT_TEXT_UNDERLINE   wxART_MAKE_ART_ID(wxmaximaART_FORMAT_TEXT_UNDERLINE)
+#define wxmaximaART_FORMAT_TEXT_STRIKETHROUGH wxART_MAKE_ART_ID(wxmaximaART_FORMAT_TEXT_STRIKETHROUGH)
+#define wxmaximaART_FORMAT_TEXT_SUPERSCRIPT wxART_MAKE_ART_ID(wxmaximaART_FORMAT_TEXT_SUPERSCRIPT)
+#define wxmaximaART_FORMAT_TEXT_SUBSCRIPT   wxART_MAKE_ART_ID(wxmaximaART_FORMAT_TEXT_SUBSCRIPT)
 
 // from art/config
 #define wxmaximaART_CONFIG_DOCUMENT_EXPORT        wxART_MAKE_ART_ID(wxmaximaART_CONFIG_DOCUMENT_EXPORT)
@@ -67,6 +73,7 @@
 #define wxmaximaART_CONFIG_EDITING                wxART_MAKE_ART_ID(wxmaximaART_CONFIG_EDITING)
 #define wxmaximaART_CONFIG_ACCESSIBILITY          wxART_MAKE_ART_ID(wxmaximaART_CONFIG_ACCESSIBILITY)
 #define wxmaximaART_CONFIG_AI_CHAT                wxART_MAKE_ART_ID(wxmaximaART_CONFIG_AI_CHAT)
+#define wxmaximaART_CONFIG_TOOLBAR                wxART_MAKE_ART_ID(wxmaximaART_CONFIG_TOOLBAR)
 
 
 class wxMaximaArtProvider : public wxArtProvider

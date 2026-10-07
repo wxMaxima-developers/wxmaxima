@@ -42,6 +42,7 @@ set(CELL_SOURCE_FILES
     VisiblyInvalidCell.cpp
     FontAttribs.cpp
     TextStyle.cpp
+    TextFormat.cpp
     FontVariantCache.cpp
 )
 list(TRANSFORM CELL_SOURCE_FILES PREPEND cells/)
@@ -126,6 +127,7 @@ set(DIALOG_SOURCE_FILES
     ResolutionChooser.cpp
     TipOfTheDay.cpp
     ConfigDialogue.cpp
+    ToolBarSectionsPanel.cpp
     MaximaNotStartingDialog.cpp
     BinaryNameCtrl.cpp
     DiffFrame.cpp
@@ -178,6 +180,7 @@ set(SOURCE_FILES
     SvgBitmap.cpp
     SvgPanel.cpp
     ToolBar.cpp
+    ToolBarSections.cpp
     TrayIcon.cpp
     UrlDetection.cpp
     worksheet/MatrixScrollbars.cpp
@@ -196,6 +199,7 @@ set(SOURCE_FILES
     levenshtein/levenshtein.cpp
     main.cpp
     AuiPerspectiveRepair.cpp
+    DigitGrouping.cpp
     SaveAsDefaults.cpp
     ToolbarPane.cpp
     ProcessTree.cpp

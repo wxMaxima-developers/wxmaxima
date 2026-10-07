@@ -26,6 +26,7 @@ wxLogNull dontLog;
 
 #define CATCH_CONFIG_RUNNER
 #include "FontAttribs.cpp"
+#include "DigitGrouping.cpp"
 #include "StringUtils.cpp"
 #include "TestStubs.cpp"
 #include "TextCell.cpp"

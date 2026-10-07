@@ -138,15 +138,19 @@ class="toc-section-number">2.2.8</span> MathML output</a></li>
 class="toc-section-number">2.2.9</span> Markdown support</a></li>
 <li><a href="#links-in-text-cells" id="toc-links-in-text-cells"><span
 class="toc-section-number">2.2.10</span> Links in text cells</a></li>
+<li><a href="#bold-italic-underlined-and-struck-through-text"
+id="toc-bold-italic-underlined-and-struck-through-text"><span
+class="toc-section-number">2.2.11</span> Bold, italic, underlined and
+struck-through text</a></li>
 <li><a href="#hotkeys" id="toc-hotkeys"><span
-class="toc-section-number">2.2.11</span> Hotkeys</a></li>
+class="toc-section-number">2.2.12</span> Hotkeys</a></li>
 <li><a href="#exploring-output-with-the-keyboard"
 id="toc-exploring-output-with-the-keyboard"><span
-class="toc-section-number">2.2.12</span> Exploring output with the
+class="toc-section-number">2.2.13</span> Exploring output with the
 keyboard</a></li>
 <li><a href="#raw-tex-in-the-tex-export"
 id="toc-raw-tex-in-the-tex-export"><span
-class="toc-section-number">2.2.13</span> Raw TeX in the TeX
+class="toc-section-number">2.2.14</span> Raw TeX in the TeX
 export</a></li>
 </ul></li>
 <li><a href="#file-formats" id="toc-file-formats"><span
@@ -179,9 +183,12 @@ controls</a></li>
 id="toc-dont-save-the-worksheet-automatically"><span
 class="toc-section-number">2.4.4</span> Don’t save the worksheet
 automatically</a></li>
+<li><a href="#arranging-the-toolbar"
+id="toc-arranging-the-toolbar"><span
+class="toc-section-number">2.4.5</span> Arranging the toolbar</a></li>
 <li><a href="#where-is-the-configuration-saved"
 id="toc-where-is-the-configuration-saved"><span
-class="toc-section-number">2.4.5</span> Where is the configuration
+class="toc-section-number">2.4.6</span> Where is the configuration
 saved?</a></li>
 </ul></li>
 </ul></li>
@@ -1157,8 +1164,30 @@ example in a string printed by
 <code>print("See https://wxmaxima-developers.github.io/wxmaxima/")</code>:
 <kbd>CTRL</kbd>+clicking the address or choosing “Open Link” from its
 context menu opens it, while a plain click still selects the output.</p>
-<h3 data-number="2.2.11" id="hotkeys"><span
-class="header-section-number">2.2.11</span> Hotkeys</h3>
+<h3 data-number="2.2.11"
+id="bold-italic-underlined-and-struck-through-text"><span
+class="header-section-number">2.2.11</span> Bold, italic, underlined and
+struck-through text</h3>
+<p>Text in a text cell, a title or a section heading can be made bold,
+italic, underlined or struck through. Select the text and press the
+respective button in the toolbar; pressing the button again removes that
+formatting from the selection. With nothing selected the button switches
+the formatting on or off for what is typed next. The buttons are hidden
+by right-clicking the toolbar and unchecking “Text formatting buttons”.
+Code cells cannot be formatted: their colors already show the syntax of
+the code.</p>
+<p>Superscript and subscript buttons work the same way: they make the
+text smaller and raise it above or lower it below the line, as in E =
+mc² or H₂O. A character cannot be both, so switching one of them on
+switches the other off. A line that contains a superscript, a subscript
+or a character that is taller than the font’s usual ones, for example an
+emoji, gets as much additional room as it needs.</p>
+<p>The formatting is saved in <code>.wxmx</code> files. Older versions
+of <em>wxMaxima</em> open such a file without the formatting but keep
+all of the text. <code>.wxm</code> files, the exports and the clipboard
+contain the text without its formatting.</p>
+<h3 data-number="2.2.12" id="hotkeys"><span
+class="header-section-number">2.2.12</span> Hotkeys</h3>
 <p>Most hotkeys can be found in the text of the respective menus. Since
 they are actually taken from the menu text and thus can be customized by
 the translations of <em>wxMaxima</em> to match the needs of users of the
@@ -1172,8 +1201,8 @@ complete cell.</li>
 auto-completion mechanism.</li>
 <li><kbd>SHIFT</kbd>+<kbd>SPACE</kbd> inserts a non-breaking space.</li>
 </ul>
-<h3 data-number="2.2.12" id="exploring-output-with-the-keyboard"><span
-class="header-section-number">2.2.12</span> Exploring output with the
+<h3 data-number="2.2.13" id="exploring-output-with-the-keyboard"><span
+class="header-section-number">2.2.13</span> Exploring output with the
 keyboard</h3>
 <p>A cell’s output can be selected, and explored part by part, without a
 mouse:</p>
@@ -1202,8 +1231,8 @@ the selected entry into a block of entries.</li>
 right-click menu for the selection, so it can be copied in any
 format.</li>
 </ul>
-<h3 data-number="2.2.13" id="raw-tex-in-the-tex-export"><span
-class="header-section-number">2.2.13</span> Raw TeX in the TeX
+<h3 data-number="2.2.14" id="raw-tex-in-the-tex-export"><span
+class="header-section-number">2.2.14</span> Raw TeX in the TeX
 export</h3>
 <p>If a text cell begins with <code>TeX:</code> the TeX export contains
 the literal text that follows the <code>TeX:</code> marker. Using this
@@ -1382,8 +1411,18 @@ cellphone app:</p>
 <li>Files are saved automatically on exit</li>
 <li>And the file will automatically be saved every 3 minutes.</li>
 </ul>
-<h3 data-number="2.4.5" id="where-is-the-configuration-saved"><span
-class="header-section-number">2.4.5</span> Where is the configuration
+<h3 data-number="2.4.5" id="arranging-the-toolbar"><span
+class="header-section-number">2.4.5</span> Arranging the toolbar</h3>
+<p>The toolbar is made of sections, like the “Open” and “Save” buttons,
+the evaluation buttons or the drop-down list that sets the type of a
+cell. The “Toolbar” tab of the configuration dialog lists them in the
+order the toolbar shows them in: drag a section to another place, or
+select it and press “Up” or “Down”, to move it, and uncheck it to hide
+it. The flexible space pushes every section after it to the right edge
+of the window. “Default order” restores the original arrangement.
+Sections can also be shown or hidden by right-clicking the toolbar.</p>
+<h3 data-number="2.4.6" id="where-is-the-configuration-saved"><span
+class="header-section-number">2.4.6</span> Where is the configuration
 saved?</h3>
 <p>If you are using Unix/Linux, the configuration information will be
 saved in a file <code>.wxMaxima</code> in your home directory (if you
@@ -2591,6 +2630,14 @@ itself is by default equipped with a bright background. But it can be
 configured otherwise. Alternatively, there is a
 <code>View/Invert worksheet brightness</code> menu entry that allows to
 quickly convert the worksheet from dark to bright and vice versa.</p>
+<p>Most images are drawn for a white background, and black line art with
+a transparent background would be invisible on a dark worksheet. So by
+default, if the worksheet background is dark, the transparent parts of
+images are filled with a backdrop color. Its color is the style
+<em>Backdrop of transparent images</em> in the <em>Style</em> tab of the
+configuration dialog, and the option <em>Behind transparent parts of
+images</em> in its <em>Worksheet</em> tab can switch the backdrop off,
+or draw it on a bright worksheet, too.</p>
 <h2 data-number="6.3"
 id="wxmaxima-sometimes-hangs-for-several-seconds-once-in-the-first-minute"><span
 class="header-section-number">6.3</span> <em>WxMaxima</em> sometimes

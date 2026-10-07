@@ -1,5 +1,62 @@
 # Current development version
 
+- A click on the right half of the last character of a code cell's line
+  now puts the cursor at the end of the line, not in front of that
+  character. Clicks inside a word land on the nearer side of the
+  character more reliably, too.
+- Long numbers in the output and in code cells are easier to read: their
+  digits are shown in groups separated by a small gap, 2111230496 as
+  2 111 230 496 (GH #192). Only the display changes: copying, saving,
+  exporting and what is sent to Maxima never contain the gaps. Numbers with fewer than 5 digits, years for example, are
+  left as they are. Both can be changed in the configuration dialog's
+  "Worksheet" tab.
+- The right-click menu of a selected cell is shorter: the "Copy as ..."
+  formats and "Copy for Octave/Matlab" moved into a "Copy in Another
+  Format" submenu, and "Export output as SVG/PNG to a folder" is only
+  offered when more than one cell is selected.
+- With wxWidgets' Qt port, a symbol in the Greek letters or Symbols sidebar
+  no longer stays highlighted after the mouse has left it.
+- On Linux, a middle-click into a cell pasted the Ctrl+C clipboard
+  instead of the last selected text (GH #794). On Windows and macOS, which
+  have no "last selected text" clipboard, a middle-click pastes nothing.
+- With wxWidgets 3.3's Qt port, closing the configuration dialog, the tip
+  of the day, the plot and other wizards and most other dialogs no longer
+  crashes wxMaxima.
+- Text cells, titles and section headings can contain superscripts and
+  subscripts, set using two new toolbar buttons next to the bold, italic,
+  ... ones. A line of a text cell now gets taller if something in it needs
+  more room than the plain text: a superscript, a subscript, or a
+  character a taller font has to supply, such as an emoji.
+- The sections of the toolbar can be rearranged: a new "Toolbar" tab in
+  the configuration dialog lists them, and a section can be dragged to
+  another place there or moved using "Up" and "Down". Every section,
+  including the evaluation buttons and the cell type, can now be hidden,
+  from that tab or by right-clicking the toolbar. A "flexible space"
+  section decides what is pushed to the right edge of the window.
+- The toolbar's context menu no longer pops up again after closing it once
+  for every time a section had been shown or hidden.
+- The toolbar's "Select all" button now selects all cells. It toggled
+  the visibility of the code cells instead.
+- The Greek letters and Symbols sidebars no longer come up laid out wrongly
+  until they are resized (seen with wxWidgets' Qt port).
+- Copying a whole large matrix no longer tries to draw a bitmap of many
+  gigabytes for the clipboard. On wxWidgets' Qt port, which draws every
+  clipboard format right away, Ctrl+C kept wxMaxima busy for minutes and
+  nothing reached the clipboard. Such a bitmap is now drawn at a lower
+  resolution, or left out if even that is too large; the text, RTF and
+  MathML are copied as before.
+- GIF and XPM images no longer get a black background where they are
+  meant to be transparent. Those formats mark transparency with a mask
+  colour, which the worksheet drew instead of what lies behind it (#2227).
+- On a dark worksheet, images are drawn on a white backdrop by default, so
+  that black line art with a transparent background stays visible. The
+  backdrop's color is a new style, and an option in the "Worksheet" tab of
+  the configuration dialog can switch it off or use it on a bright
+  worksheet, too (#2227).
+- Text cells, titles and section headings can contain bold, italic,
+  underlined and struck-through text, set using new toolbar buttons. The
+  formatting is saved in .wxmx files in a way that lets older versions of
+  wxMaxima still read all of the text (#492).
 - `wxdeclare_subscripted(variable, false)` keeps a variable from being
   displayed with a subscript again, and `wxdeclare_subscripted(variable)`
   subscripts one the current `wxsubscripts` setting wouldn't. Both were
@@ -58,8 +115,9 @@
 - The cursor no longer jumps when Maxima's output appears in a cell above
   it. Keeping it still failed whenever the output arrived quickly, which is
   most of the time, and when a cell's old output was removed.
-- wxMaxima builds on Cygwin again: precompiled headers, which broke the
-  build there, are now off by default on Cygwin.
+- wxMaxima builds on Cygwin again: with wxWidgets 3.2 every file failed
+  to compile because Cygwin's wxWidgets lacks wx/msw/gccpriv.h, which its
+  own headers ask for. wxMaxima now brings a stand-in.
 
 # 26.09.0
 

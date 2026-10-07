@@ -34,15 +34,31 @@ jobs:
       - name: setup_cygwin
         uses: cygwin/cygwin-install-action@v6
         with:
-          packages: cmake git libwx_baseu3.2-devel libwx_gtk3u3.2-devel gcc-core gcc-g++ make gettext-devel
+          # libuv1 is pinned because with libuv 1.53.0, which spawns processes
+          # with posix_spawn instead of fork, cmake's execute_process() hangs
+          # on Cygwin at random -- even for "sh -c true", and before the first
+          # one returns about half the time. find_package(wxWidgets) runs
+          # wx-config a dozen times that way, so configure hung right after
+          # "Looking for wxWidgets libraries in:" until GitHub's 6-hour limit.
+          # Other projects hit the same (envmodules/modules#708). Drop the pin
+          # once a fixed libuv1 is in Cygwin.
+          packages: cmake libuv1=1.52.1-1 git libwx_baseu3.2-devel libwx_gtk3u3.2-devel gcc-core gcc-g++ make gettext-devel
+      # Both steps run in Cygwin's own bash, as cygwin-install-action
+      # recommends, rather than in the runner's default PowerShell, with
+      # stdin closed. The timeouts make a hang like the libuv one above show
+      # up as a failure instead of holding a Windows runner for 6 hours.
       - name: configure
+        shell: bash --noprofile --norc -eo pipefail -o igncr '{0}'
+        timeout-minutes: 20
         run: |
+             export PATH=/usr/local/bin:/usr/bin:$PATH
              mkdir build
              cd build
-             cmake ../wxmaxima
-             cd ..
+             cmake ../wxmaxima < /dev/null
       - name: compile
+        shell: bash --noprofile --norc -eo pipefail -o igncr '{0}'
+        timeout-minutes: 120
         run: |
+             export PATH=/usr/local/bin:/usr/bin:$PATH
              cd build
-             make VERBOSE=1 -j 4
-             cd ..
+             make VERBOSE=1 -j 4 < /dev/null

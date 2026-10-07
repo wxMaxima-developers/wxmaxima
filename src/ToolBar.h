@@ -33,6 +33,9 @@
 #include "precomp.h"
 #include "cells/AnimationCell.h"
 #include "cells/GroupCell.h"
+#include "cells/TextFormat.h"
+#include "ToolBarSections.h"
+#include <vector>
 
 #ifndef _WXMAXIMA_TOOLBAR_H
 #define _WXMAXIMA_TOOLBAR_H
@@ -50,18 +53,13 @@ public:
     Inactive //!< No animation is currently running
   };
 
-  enum popupitems
-  {
-    undo_redo,
-    copy_paste,
-    open_save,
-    print,
-    options,
-    shownew,
-    search,
-    help,
-    selectAll
-  };
+  /*! The id of a section's entry in the toolbar's context menu
+
+    The ids are only used in that menu, so they needn't be distinct from the
+    tools' own ids.
+  */
+  static int SectionMenuId(ToolBarSections::Section section)
+    { return section_menu_first + static_cast<int>(section); }
 
   virtual ~ToolBar();
 
@@ -131,7 +129,14 @@ public:
     tb_animation_stop,
     tb_hideCode,
     tb_changeStyle,
-    menu_restart_id
+    menu_restart_id,
+    //! The character formatting buttons for text cells (GH #492)
+    tb_bold,
+    tb_italic,
+    tb_underline,
+    tb_strikethrough,
+    tb_superscript,
+    tb_subscript
   };
 
   //! The slider for animations
@@ -217,6 +222,15 @@ public:
       }
     }
 
+  /*! Enable the character formatting buttons (only in a text cell)
+
+    \param value       Can the text the cursor is in be formatted?
+    \param active      The formats that are on where the cursor is
+                        (TextFormat::Bold, ...). Shown as the buttons being
+                        pressed.
+  */
+  void TextFormatState(bool value, TextFormat::Format active);
+
   void WorksheetEmpty(bool value)
     {
       if (value != m_worksheetEmpty_old)
@@ -260,43 +274,22 @@ public:
 
   wxSize GetOptimalBitmapSize();
   wxSize GetPPI();
-  bool ShowUndoRedo(){bool show = false; wxConfig::Get()->Read("Toolbar/showUndoRedo", &show);
-    return show;}
-  void ShowUndoRedo(bool show){wxConfig::Get()->Write("Toolbar/showUndoRedo", show);}
-
-  bool ShowCopyPaste(){bool show = true; wxConfig::Get()->Read("Toolbar/showCopyPaste", &show);
-    return show;}
-  void ShowCopyPaste(bool show){wxConfig::Get()->Write("Toolbar/showCopyPaste", show);}
-
-  bool ShowOpenSave(){bool show = true; wxConfig::Get()->Read("Toolbar/showOpenSave", &show);
-    return show;}
-  void ShowOpenSave(bool show){wxConfig::Get()->Write("Toolbar/showOpenSave", show);}
-
-  bool ShowNew(){bool show = true; wxConfig::Get()->Read("Toolbar/showNew", &show);
-    return show;}
-  void ShowNew(bool show){wxConfig::Get()->Write("Toolbar/showNew", show);}
-
-  bool ShowSearch(){bool show = true; wxConfig::Get()->Read("Toolbar/showSearch", &show);
-    return show;}
-  void ShowSearch(bool show){wxConfig::Get()->Write("Toolbar/showSearch", show);}
-
-  bool ShowHelp(){bool show = true; wxConfig::Get()->Read("Toolbar/showHelp", &show);
-    return show;}
-  void ShowHelp(bool show){wxConfig::Get()->Write("Toolbar/showHelp", show);}
-
-  bool ShowPrint(){bool show = true; wxConfig::Get()->Read("Toolbar/showPrint", &show);
-    return show;}
-  void ShowPrint(bool show){wxConfig::Get()->Write("Toolbar/showPrint", show);}
-
-  bool ShowOptions(){bool show = true; wxConfig::Get()->Read("Toolbar/showOptions", &show);
-    return show;}
-  void ShowOptions(bool show){wxConfig::Get()->Write("Toolbar/showOptions", show);}
-
-  bool ShowSelectAll(){bool show = true; wxConfig::Get()->Read("Toolbar/showSelectAll", &show);
-    return show;}
-  void ShowSelectAll(bool show){wxConfig::Get()->Write("Toolbar/showSelectAll", show);}
+  //! Is a toolbar section shown? See ToolBarSections.
+  static bool ShowSection(ToolBarSections::Section section);
+  //! Show or hide a toolbar section. Takes effect on the next AddTools().
+  static void ShowSection(ToolBarSections::Section section, bool show);
+  //! The order the toolbar sections are shown in, from the config
+  static std::vector<ToolBarSections::Section> SectionOrder();
+  //! Store the order of the toolbar sections. Takes effect on the next AddTools().
+  static void SectionOrder(const std::vector<ToolBarSections::Section> &order);
+  //! The (translated) name of a toolbar section, as the user sees it
+  static wxString SectionName(ToolBarSections::Section section);
 
 protected:
+  //! The first id of the sections' entries in the context menu
+  static constexpr int section_menu_first = 6000;
+  //! Add the tools of one section of the toolbar
+  void AddSection(ToolBarSections::Section section);
   void OnSize(wxSizeEvent &event);
   void OnMouseRightDown(wxMouseEvent &event);
   void OnMenu(wxCommandEvent &event);
@@ -319,6 +312,8 @@ private:
   bool m_canPrint_old = true;
   bool m_canEvalTillHere_old = true;
   bool m_canEvalThisCell_old = true;
+  //! The state TextFormatState() last showed, to avoid needless repaints
+  bool m_canFormatText_old = true;
   std::unique_ptr<struct wxm_NSVGrasterizer, decltype(std::free)*> m_svgRast{nullptr, std::free};
   bool m_worksheetEmpty_old  = false;
   AnimationStartStopState m_AnimationStartStopState = Inactive;

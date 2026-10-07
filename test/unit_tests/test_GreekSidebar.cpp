@@ -37,8 +37,10 @@
 #include <wx/frame.h>
 #include <wx/log.h>
 #include <wx/panel.h>
+#include <wx/settings.h>
 
 #include "Configuration.h"
+#include "sidebars/CharButton.h"
 #include "sidebars/GreekSidebar.h"
 #include "sidebars/StatSidebar.h"
 
@@ -100,6 +102,70 @@ SCENARIO("A too-small Greek sidebar keeps its wrapped rows reachable by scrollin
     }
   }
   sidebar->Destroy();
+}
+
+SCENARIO("A symbol button knows its size before its first size event") {
+  // The sidebars compute how many rows their wrapped buttons need from the
+  // buttons' sizes as soon as they get their own first size event. wxQt sends a
+  // hidden window's size events only once it is shown, the parent's first --
+  // so a button that learned its size only in OnSize() was still at its
+  // smaller, provisional size then, and the sidebars came up laid out wrongly
+  // until the user resized them.
+  GIVEN("a freshly constructed button that has never been sized") {
+    CharButton *button = new CharButton(g_frame, g_worksheet, g_cfg,
+                                        {L'\u03B1', wxS("alpha")}, true);
+    const wxSize atConstruction = button->GetMinSize();
+
+    THEN("it already has the min size it needs") {
+      REQUIRE(atConstruction.x > 0);
+      REQUIRE(atConstruction.y > 0);
+    }
+    AND_WHEN("it receives its first size event") {
+      wxSizeEvent event(wxSize(atConstruction.x * 2, atConstruction.y * 2),
+                        button->GetId());
+      event.SetEventObject(button);
+      button->GetEventHandler()->ProcessEvent(event);
+
+      THEN("that does not change its min size") {
+        REQUIRE(button->GetMinSize() == atConstruction);
+      }
+    }
+    button->Destroy();
+  }
+}
+
+SCENARIO("A symbol button's hover highlight goes away when the mouse leaves") {
+  // On wxQt the highlight used to stay after the mouse had left: resetting
+  // the background to the default with an invalid colour left the highlight
+  // on screen there. Whatever the port does to get rid of it, the button has
+  // to end up with the background it had before the mouse came.
+  CharButton *button = new CharButton(g_frame, g_worksheet, g_cfg,
+                                      {L'\u03B2', wxS("beta")}, true);
+  const wxColour before = button->GetBackgroundColour();
+  auto send = [button](wxEventType type) {
+    wxMouseEvent mouse(type);
+    mouse.SetEventObject(button);
+    button->GetEventHandler()->ProcessEvent(mouse);
+    // The colour is only changed once the application is idle.
+    wxIdleEvent idle;
+    idle.SetEventObject(button);
+    button->GetEventHandler()->ProcessEvent(idle);
+  };
+
+  WHEN("the mouse enters the button") {
+    send(wxEVT_ENTER_WINDOW);
+    THEN("it is highlighted") {
+      REQUIRE(button->GetBackgroundColour() ==
+              wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT));
+    }
+    AND_WHEN("the mouse leaves it again") {
+      send(wxEVT_LEAVE_WINDOW);
+      THEN("it has its original background again") {
+        REQUIRE(button->GetBackgroundColour() == before);
+      }
+    }
+  }
+  button->Destroy();
 }
 
 int main(int argc, char **argv) {

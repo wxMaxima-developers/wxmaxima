@@ -549,6 +549,38 @@ public:
     return m_oversizedMatrices;
   }
 
+  /*! What is drawn behind the transparent parts of an image (GH #2227)
+
+    Images are usually made for paper, i.e. for a white background: black line
+    art on a transparent background disappears on a dark worksheet. The
+    backdrop's colour is the TS_IMAGE_BACKDROP style.
+  */
+  enum class ImageBackdrop {
+    //! Nothing: the worksheet shows through
+    none = 0,
+    //! The backdrop colour, but only if the worksheet's background is dark (the default)
+    onDarkBackground = 1,
+    //! Always the backdrop colour
+    always = 2
+  };
+  ImageBackdrop GetImageBackdrop() const { return m_imageBackdrop; }
+  void SetImageBackdrop(ImageBackdrop mode) { m_imageBackdrop = mode; }
+  /*! Whether images are to be drawn on the TS_IMAGE_BACKDROP colour right now
+
+    Printing never needs the "dark background" variant: paper is white.
+  */
+  bool DrawImageBackdrop() {
+    switch (m_imageBackdrop) {
+    case ImageBackdrop::always:
+      return true;
+    case ImageBackdrop::onDarkBackground:
+      return !GetPrinting() && (DefaultBackgroundColor().GetLuminance() < 0.5);
+    case ImageBackdrop::none:
+      break;
+    }
+    return false;
+  }
+
   /*! What gives a scrolling matrix its scrollbars, if anything
 
     Set only on the worksheet's own configuration, by the worksheet. It is
@@ -1403,6 +1435,26 @@ public:
       RecalculateForce();
     m_lineBreaksInLongNums = brk;
   }
+  /*! Separate the digit groups of long numbers by a small gap? (GH #192)
+
+    Only affects how numbers are drawn, never their text: see DigitGrouping.h.
+  */
+  bool DigitGrouping() const {return m_digitGrouping;}
+  void DigitGrouping(bool group){
+    if(m_digitGrouping != group)
+      RecalculateForce();
+    m_digitGrouping = group;
+  }
+  //! How many digits a number needs before DigitGrouping() groups them
+  long DigitGroupingMinDigits() const {return m_digitGroupingMinDigits;}
+  void DigitGroupingMinDigits(long digits){
+    digits = std::max(digits, DigitGroupingMinDigits_Min);
+    if(m_digitGroupingMinDigits != digits)
+      RecalculateForce();
+    m_digitGroupingMinDigits = digits;
+  }
+  //! The smallest value DigitGroupingMinDigits() accepts: 1 digit has no groups
+  static constexpr long DigitGroupingMinDigits_Min = 2;
 
   void MaximaUsesHtmlBrowser(bool maximaUsesHhtmlBrowser){m_maximaUsesHhtmlBrowser = maximaUsesHhtmlBrowser;}
   bool MaximaUsesHtmlBrowser() const {return m_maximaUsesHhtmlBrowser;}
@@ -1620,6 +1672,10 @@ private:
   bool m_showAllDigits;
   //! Allow linebreaks in numbers that are longer than a line?
   bool m_lineBreaksInLongNums;
+  //! See DigitGrouping()
+  bool m_digitGrouping;
+  //! See DigitGroupingMinDigits()
+  long m_digitGroupingMinDigits;
   //! Do we want to automatically close parenthesis?
   bool m_matchParens;
   //! Do we want to automatically insert new cells containing a "%" at the end of every command?
@@ -1687,6 +1743,7 @@ private:
   OversizedMatrices m_oversizedMatrices = OversizedMatrices::elide;
   //! May a matrix override m_oversizedMatrices? See SetOversizedMatrices().
   bool m_oversizedMatricesOverridable = true;
+  ImageBackdrop m_imageBackdrop = ImageBackdrop::onDarkBackground;
   //! Not copied by the copy constructor; see GetMatrixScrollHost()
   MatrixScrollHost *m_matrixScrollHost = nullptr;
   //! Not copied by the copy constructor; see GetWorksheetTopOffset()

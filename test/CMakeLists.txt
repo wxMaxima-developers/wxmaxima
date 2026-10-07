@@ -281,6 +281,16 @@ add_test(
 )
 set_property(TEST check-pot-coverage APPEND PROPERTY LABELS unittest)
 
+# Every dialog whose geometry wxPersistenceManager remembers has to send its
+# destroy event from its own destructor, or it crashes on closing with wxQt.
+add_test(
+    NAME check-persistent-dialogs
+    COMMAND "${CMAKE_COMMAND}"
+            "-DSOURCE_DIR=${CMAKE_SOURCE_DIR}"
+            -P "${CMAKE_CURRENT_SOURCE_DIR}/check-persistent-dialogs.cmake"
+)
+set_property(TEST check-persistent-dialogs APPEND PROPERTY LABELS unittest)
+
 add_test(
     NAME multiple_batch_files
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
@@ -696,6 +706,15 @@ add_test(
 add_test(
     NAME subscriptp_maxima_own_variable_not_subscripted
     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxsubscripts: 'all\$'float_approx_equal_tolerance;" "<mi lisp=.*>float_approx_equal_tolerance</mi>"
+)
+
+# kill(all) unbinds every symbol Maxima lists as having user properties. The
+# startup declarations above must not put Maxima's own variables on that
+# list, or kill(all) unbinds ones Maxima needs (display_format_internal broke
+# every display after it on Maxima 5.48).
+add_test(
+    NAME subscriptp_kill_all_keeps_maxima_variables
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "kill(all)\$float_approx_equal_tolerance;" "<lbl altCopy=\"%o1\">(%o1) </lbl><mrow><mn>"
 )
 
 # wxsubscripts' own default is the Maxima symbol $all - it used to be the
@@ -1599,6 +1618,7 @@ set(WXM_POSIX_TESTS
   subscriptp_declared_false_can_be_taken_back
   subscriptp_maxima_own_variable_not_subscripted
   subscriptp_default_is_all
+  subscriptp_kill_all_keeps_maxima_variables
   wx_version_min wx_version_min_outside_wxmaxima
   with_slider_draw_bare with_slider_draw_file_name_kept
   with_slider_draw_bare_file_name

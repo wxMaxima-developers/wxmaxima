@@ -30,6 +30,7 @@
 */
 
 #include "EditorCell.h"
+#include "DigitGrouping.h"
 
 #include "Bidi.h"
 #include "CellImpl.h"
@@ -366,6 +367,8 @@ EditorCell::EditorCell(GroupCell *group, const EditorCell &cell)
   : EditorCell(group, cell.m_configuration, cell.m_text) {
   CopyCommonData(cell);
   m_history = cell.m_history;
+  if (cell.m_formatState)
+    m_formatState = std::make_unique<FormatState>(*cell.m_formatState);
 }
 
 wxString EditorCell::ToString() const { return ToString(false); }
@@ -627,7 +630,19 @@ wxString EditorCell::ToXML() const {
   // Handle hard and soft line breaks separately
   xmlstring.Replace(wxS("&#0A;"), wxS("</line>\n<line>"));
   xmlstring.Replace(wxS("&#0D;"), wxS(" "));
-  xmlstring = wxS("<line>") + xmlstring + wxS("</line>\n");
+  // XMLescape() writes a newline as "&#x0A;", which the line above doesn't
+  // match, so the whole text is one <line> - and its formatting is saved as
+  // attributes of it (see TextFormat.h), counted from the start of the text.
+  wxString lineAttributes;
+  if (m_formatState) {
+    lineAttributes = TextFormat::LineAttributes(m_text, GetFormats(), 0, m_text.Length());
+    // Attributes of a newer version, kept as long as the text they were
+    // made for is unchanged.
+    const auto &unknown = m_formatState->unknownLineAttributes;
+    if ((unknown.size() == 1) && (unknown.front().first == m_text))
+      lineAttributes += unknown.front().second;
+  }
+  xmlstring = wxS("<line") + lineAttributes + wxS(">") + xmlstring + wxS("</line>\n");
   wxString head = wxS("<editor");
   head += GetXMLFlags();
   head += XMLTypeAttribute();
@@ -719,8 +734,12 @@ void EditorCell::Recalculate(AFontSize fontsize) const {
 
       // Measure the text height using characters that might extend below or above
       // the region ordinary characters move in.
-      wxCoord charWidth;
-      m_configuration->GetRecalcDC()->GetTextExtent(wxS("äXÄgy"), &charWidth, &m_charHeight);
+      wxCoord charWidth, charDescent;
+      wxDC *dc = m_configuration->GetRecalcDC();
+      dc->GetTextExtent(wxS("äXÄgy"), &charWidth, &m_charHeight, &charDescent);
+      // The extent of the text of a line that holds nothing but plain text.
+      const wxCoord plainHeight = m_charHeight;
+      const wxCoord plainAscent = m_charHeight - charDescent;
 
       // We want a little bit of vertical space between two text lines (and between
       // two labels).
@@ -732,19 +751,74 @@ void EditorCell::Recalculate(AFontSize fontsize) const {
 
       m_numberOfLines = 1;
 
+      // In a text cell a line grows when something in it reaches above or
+      // below the plain text: superscripts, subscripts, or characters the font
+      // doesn't have and a taller fallback font draws. Code cells keep their
+      // fixed grid of lines.
+      const bool lineHeightsVary = !IsCodeEditor();
+      std::vector<LineSlot> lineSlots(1);
+      // How far a bold or italic font's ascent and descent differ from the
+      // plain font's. They are the same design, but on MSW a bold font's
+      // extent can be a pixel taller, which made every line containing bold
+      // text a pixel taller than the others. Measured once per font, with
+      // the same characters as the plain text's extent above.
+      std::array<std::optional<wxSize>, TextFormat::FontVariants> metricsDelta;
+      auto fontMetricsDelta = [&](TextFormat::Format fontFormat) {
+        std::optional<wxSize> &delta = metricsDelta.at(TextFormat::FontIndex(fontFormat));
+        if (!delta) {
+          wxCoord w, h, d;
+          dc->GetTextExtent(wxS("äXÄgy"), &w, &h, &d);
+          delta = wxSize((h - d) - plainAscent, d - charDescent);
+        }
+        return *delta;
+      };
+
       for (auto &textSnippet : m_styledText) {
         if ((textSnippet.GetText().StartsWith(wxS('\n')) ||
              (textSnippet.GetText().StartsWith(wxS('\r'))))) {
           m_numberOfLines++;
           linewidth = textSnippet.GetIndentPixels();
+          if (lineHeightsVary)
+            lineSlots.emplace_back();
         } else if (textSnippet.GetText() == wxS("\t")) {
           // A tab's width depends on where it starts on the line, so unlike
           // every other token it must never be cached via SetWidth().
           linewidth = NextTabStop(linewidth);
           width = std::max(width, linewidth);
         } else {
-          m_configuration->GetRecalcDC()->GetTextExtent(textSnippet.GetText(),
-                                                        &tokenwidth, &tokenheight);
+          if (lineHeightsVary) {
+            wxCoord descent;
+            const TextFormat::Format fontFormat =
+              textSnippet.GetFormat() & TextFormat::WidthAffecting;
+            // What the font's own design adds above and below the plain
+            // text's extent; only bold and italic text gets it subtracted.
+            wxSize fontDelta;
+            if (fontFormat != TextFormat::None) {
+              const wxFont previousFont = dc->GetFont();
+              dc->SetFont(GetFont(fontFormat));
+              dc->GetTextExtent(textSnippet.GetText(), &tokenwidth, &tokenheight, &descent);
+              if (!(fontFormat & TextFormat::VerticalPosition))
+                fontDelta = fontMetricsDelta(fontFormat);
+              dc->SetFont(previousFont);
+            } else
+              dc->GetTextExtent(textSnippet.GetText(), &tokenwidth, &tokenheight, &descent);
+            // Put this snippet's baseline where the plain text has it, moved
+            // up or down if it is a superscript or a subscript.
+            const wxCoord yOffset = plainAscent - (tokenheight - descent) +
+              BaselineShift(textSnippet.GetFormat(), plainAscent);
+            textSnippet.SetYOffset(yOffset);
+            // The line only grows for what reaches beyond the extent the
+            // snippet's font has anyway: a raised or lowered snippet, or a
+            // character a taller fallback font draws.
+            LineSlot &slot = lineSlots.back();
+            slot.above = std::max(slot.above, -yOffset - fontDelta.x);
+            slot.below = std::max(slot.below,
+                                  yOffset + tokenheight - plainHeight - fontDelta.y);
+          } else if ((textSnippet.GetFormat() & TextFormat::WidthAffecting) ||
+                     !textSnippet.GetDigitGaps().empty())
+            tokenwidth = SnippetWidth(textSnippet);
+          else
+            dc->GetTextExtent(textSnippet.GetText(), &tokenwidth, &tokenheight);
           textSnippet.SetWidth(tokenwidth);
           linewidth += tokenwidth;
           width = std::max(width, linewidth);
@@ -752,14 +826,34 @@ void EditorCell::Recalculate(AFontSize fontsize) const {
       }
 
       // Handle folding
-      if (FirstLineOnlyEditor())
+      if (FirstLineOnlyEditor()) {
         m_numberOfLines = 1;
+        lineSlots.resize(1);
+      }
+
+      // Where each line starts. Only needed if a line is taller than the
+      // others: most cells keep an empty m_lineSlots and a fixed line height.
+      m_lineSlots.clear();
+      if (std::any_of(lineSlots.begin(), lineSlots.end(), [](const LineSlot &slot) {
+        return (slot.above > 0) || (slot.below > 0);
+      })) {
+        wxCoord top = 0;
+        for (auto &slot : lineSlots) {
+          top += slot.above;
+          slot.top = top;
+          top += m_charHeight + slot.below;
+        }
+        m_lineSlots = std::move(lineSlots);
+      }
 
       // Add a line border
       m_width = width + 2 * Scale_Px(2);
 
       // Calculate the cell height
-      if (FirstLineOnlyEditor())
+      if (!m_lineSlots.empty())
+        m_height = m_lineSlots.back().top + m_charHeight + m_lineSlots.back().below +
+          2 * Scale_Px(2);
+      else if (FirstLineOnlyEditor())
         m_height = m_charHeight + 2 * Scale_Px(2);
       else
         m_height =
@@ -768,8 +862,8 @@ void EditorCell::Recalculate(AFontSize fontsize) const {
       if (m_height < m_charHeight + 2 * Scale_Px(2))
         m_height = (m_charHeight) + 2 * Scale_Px(2);
 
-      // The center is in the middle of the 1st line
-      m_center = m_charHeight / 2;
+      // The center is in the middle of the 1st line's plain text
+      m_center = LineTop(0) + m_charHeight / 2;
       m_height = std::max(m_height.GetOrElse(0), m_charHeight + 2 * Scale_Px(2));
 
       // Our height/center just changed. The cached list geometry (GetHeightList(),
@@ -907,8 +1001,14 @@ void EditorCell::MarkSelection(wxDC *dc, size_t start, size_t end, TextStyle sty
       selectionWidth = rect.GetRight() - point.x;
 #endif
 
-    rect = wxRect(point.x, point.y + Scale_Px(1) - m_center, selectionWidth,
-                  m_charHeight);
+    // The highlight covers all of the line, including whatever in it reaches
+    // above or below its plain text.
+    size_t column, line;
+    PositionToXY(lineStart, &column, &line);
+    wxCoord slotTop, slotHeight;
+    LineSlotExtent(line, &slotTop, &slotHeight);
+    rect = wxRect(point.x, m_currentPoint.y - m_center + slotTop + Scale_Px(1),
+                  selectionWidth, slotHeight);
     // draw the rectangle if it is in the region that is to be updated.
     if (m_configuration->InUpdateRegion(rect))
       dc->DrawRectangle(CropToUpdateRegion(rect));
@@ -950,6 +1050,8 @@ void EditorCell::WalkDrawnSnippets(wxDC *dc, SnippetFunc &&onSnippet) {
   size_t rtlLine = 0;
   if (!rtlLineOffsets.empty())
     textCurrentPoint.x += rtlLineOffsets.front();
+  size_t line = 0;
+  textCurrentPoint.y += LineTop(0);
   for (auto &textSnippet : m_styledText) {
     // A newline is a separate token.
     if ((textSnippet.GetText() == wxS("\n")) || (textSnippet.GetText() == wxS("\r"))) {
@@ -959,7 +1061,7 @@ void EditorCell::WalkDrawnSnippets(wxDC *dc, SnippetFunc &&onSnippet) {
       // A newline =>
       // set the point to the beginning of the next line.
       textCurrentPoint.x = textStartingPoint.x;
-      textCurrentPoint.y += m_charHeight;
+      textCurrentPoint.y = textStartingPoint.y + LineTop(++line);
       textCurrentPoint.x += textSnippet.GetIndentPixels();
       if (++rtlLine < rtlLineOffsets.size())
         textCurrentPoint.x += rtlLineOffsets.at(rtlLine);
@@ -975,7 +1077,15 @@ void EditorCell::WalkDrawnSnippets(wxDC *dc, SnippetFunc &&onSnippet) {
       wxCoord width;
       if (!textSnippet.SizeKnown()) {
         wxCoord height;
-        dc->GetTextExtent(textSnippet.GetText(), &width, &height);
+        if (textSnippet.GetFormat() & TextFormat::WidthAffecting) {
+          const wxFont previousFont = dc->GetFont();
+          dc->SetFont(GetFont(textSnippet.GetFormat()));
+          dc->GetTextExtent(textSnippet.GetText(), &width, &height);
+          dc->SetFont(previousFont);
+        } else if (!textSnippet.GetDigitGaps().empty())
+          width = SnippetWidth(textSnippet);
+        else
+          dc->GetTextExtent(textSnippet.GetText(), &width, &height);
         textSnippet.SetWidth(width);
       } else
         width = textSnippet.GetWidth();
@@ -1102,6 +1212,7 @@ void EditorCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
 
     wxRect updateRegion = m_configuration->GetUpdateRegion();
     int lastStyle = -1;
+    TextFormat::Format lastFontFormat = TextFormat::None;
     WalkDrawnSnippets(dc, [&](const StyledText &textSnippet, wxPoint topLeft,
                               wxCoord width, wxCoord indentX) {
       // Grab a pen of the right color.
@@ -1113,27 +1224,65 @@ void EditorCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
       }
 
       // Draw a char that shows we continue an indentation - if this is
-      // needed.
-      if (!textSnippet.GetIndentChar().IsEmpty())
+      // needed. It belongs to no formatted text, so it uses the plain font.
+      if (!textSnippet.GetIndentChar().IsEmpty()) {
+        if (lastFontFormat != TextFormat::None) {
+          SetFont(dc);
+          lastFontFormat = TextFormat::None;
+        }
         dc->DrawText(textSnippet.GetIndentChar(), indentX, topLeft.y);
+      }
 
-      const wxRect textRect(topLeft.x, topLeft.y, width, m_charHeight);
+      // Bold and italic text needs a font of its own (GH #492)
+      const TextFormat::Format fontFormat =
+        textSnippet.GetFormat() & TextFormat::WidthAffecting;
+      if (fontFormat != lastFontFormat) {
+        dc->SetFont(GetFont(fontFormat));
+        lastFontFormat = fontFormat;
+      }
+
+      // Superscripts, subscripts and characters from a taller font sit
+      // higher or lower than the line's plain text (see Recalculate()).
+      const wxCoord yOffset = textSnippet.GetYOffset();
+      const wxCoord textY = topLeft.y + yOffset;
+      const wxRect textRect(topLeft.x, std::min(topLeft.y, textY), width,
+                            m_charHeight + std::abs(yOffset));
       // Draw the text only if it overlaps the update region
       if (((!m_configuration->ClipToDrawRegion())) ||
           (updateRegion.Intersects(textRect))) {
-        dc->DrawText(textSnippet.GetText(), topLeft.x, topLeft.y);
+        DrawSnippetText(dc, textSnippet, topLeft.x, textY);
+        // Underline and strikethrough are drawn by hand rather than by
+        // switching to an underlined font, for the reason links are (see
+        // below): that way nothing about the text's measurements can change.
+        if (textSnippet.GetFormat() & (TextFormat::Underline | TextFormat::Strikethrough)) {
+          wxCoord w, h, descent;
+          dc->GetTextExtent(textSnippet.GetText(), &w, &h, &descent);
+          const wxCoord baseline = textY + h - descent;
+          dc->SetPen(*(wxThePenList->FindOrCreatePen(
+            m_configuration->GetColor(style), 1, wxPENSTYLE_SOLID)));
+          if (textSnippet.GetFormat() & TextFormat::Underline)
+            dc->DrawLine(topLeft.x, baseline + 1, topLeft.x + width, baseline + 1);
+          if (textSnippet.GetFormat() & TextFormat::Strikethrough) {
+            // Through the middle of a lower-case letter: a little less than
+            // a third of the height above the baseline.
+            const wxCoord strikeY = baseline - (h - descent) * 3 / 10;
+            dc->DrawLine(topLeft.x, strikeY, topLeft.x + width, strikeY);
+          }
+        }
         if (textSnippet.IsLink()) {
           // Underline the link by hand instead of switching to an underlined
           // font: that way nothing about the text's measurements can change.
           wxCoord w, h, descent;
           dc->GetTextExtent(textSnippet.GetText(), &w, &h, &descent);
-          const wxCoord baseline = topLeft.y + h - descent + 1;
+          const wxCoord baseline = textY + h - descent + 1;
           dc->SetPen(*(wxThePenList->FindOrCreatePen(
             m_configuration->GetColor(TS_LINK), 1, wxPENSTYLE_SOLID)));
           dc->DrawLine(topLeft.x, baseline, topLeft.x + width, baseline);
         }
       }
     });
+    if (lastFontFormat != TextFormat::None)
+      SetFont(dc);
     //
     // Draw the caret
     //
@@ -1150,7 +1299,7 @@ void EditorCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
                                                        wxBRUSHSTYLE_SOLID)));
       dc->DrawRectangle(
                         point.x + lineWidth - m_configuration->GetCursorWidth(),
-                        point.y + Scale_Px(1) - m_center + caretInLine * m_charHeight,
+                        point.y + Scale_Px(1) - m_center + LineTop(caretInLine),
                         m_configuration->GetCursorWidth(), m_charHeight - Scale_Px(5));
     }
   }
@@ -1207,6 +1356,230 @@ wxSize EditorCell::GetTextSize(wxString const &text) const {
   wxSize sz = dc->GetTextExtent(text);
   m_widths[text] = sz;
   return sz;
+}
+
+wxSize EditorCell::GetTextSize(const wxString &text,
+                               TextFormat::Format format) const {
+  format &= TextFormat::WidthAffecting;
+  if (format == TextFormat::None)
+    return GetTextSize(text);
+
+  // The same cache as the plain text's, under a key no text can collide
+  // with: U+FDD0... are Unicode noncharacters, never part of real text.
+  const wxString key = wxString(wxUniChar(0xFDD0 + static_cast<int>(TextFormat::FontIndex(format)))) + text;
+  if (auto it = m_widths.find(key); it != m_widths.end())
+    return it->second;
+
+  wxDC *dc = m_configuration->GetRecalcDC();
+  const wxFont previousFont = dc->GetFont();
+  dc->SetFont(GetFont(format));
+  const wxSize sz = dc->GetTextExtent(text);
+  dc->SetFont(previousFont);
+  m_widths[key] = sz;
+  return sz;
+}
+
+const wxFont &EditorCell::GetFont(TextFormat::Format format) const {
+  format &= TextFormat::WidthAffecting;
+  if ((format == TextFormat::None) || !m_formatState)
+    return GetFont();
+  FormatState &formatState = *m_formatState;
+  const wxFont &base = GetFont();
+  // A new zoom factor or a changed style setting gives a new base font, and
+  // every formatted variant has to follow it.
+  if (!formatState.fontsBase || !formatState.fontsBase->IsSameAs(base)) {
+    for (auto &font : formatState.fonts)
+      font.reset();
+    formatState.fontsBase = base;
+  }
+  // Which fonts were made already can't be told by wxFont::IsOk(): with
+  // wxWidgets' Qt port even a default-constructed wxFont is "ok" (a default
+  // font of its own), which made every formatted text use that font.
+  std::optional<wxFont> &font = formatState.fonts.at(TextFormat::FontIndex(format));
+  if (!font) {
+    font = base;
+    if (format & TextFormat::Bold)
+      font->MakeBold();
+    if (format & TextFormat::Italic)
+      font->MakeItalic();
+    if (format & TextFormat::VerticalPosition)
+      font->SetFractionalPointSize(font->GetFractionalPointSize() * g_superSubscriptScale);
+  }
+  return *font;
+}
+
+wxCoord EditorCell::BaselineShift(TextFormat::Format format, wxCoord plainAscent) {
+  // About what word processors do: a superscript's baseline sits a bit
+  // above the middle of a capital letter, a subscript's a little below the
+  // plain baseline - far enough down for its descenders to need more room.
+  if (format & TextFormat::Superscript)
+    return -plainAscent * 2 / 5;
+  if (format & TextFormat::Subscript)
+    return plainAscent / 5;
+  return 0;
+}
+
+wxCoord EditorCell::LineTop(size_t line) const {
+  if (m_lineSlots.empty())
+    return static_cast<wxCoord>(line) * m_charHeight;
+  if (line < m_lineSlots.size())
+    return m_lineSlots[line].top;
+  // A line Recalculate() didn't know about (the text changed since): below
+  // the last one, at the usual line height.
+  const LineSlot &last = m_lineSlots.back();
+  return last.top + last.below +
+    static_cast<wxCoord>(line - m_lineSlots.size() + 1) * m_charHeight;
+}
+
+void EditorCell::LineSlotExtent(size_t line, wxCoord *top, wxCoord *height) const {
+  *top = LineTop(line);
+  *height = m_charHeight;
+  if (line < m_lineSlots.size()) {
+    *top -= m_lineSlots[line].above;
+    *height += m_lineSlots[line].above + m_lineSlots[line].below;
+  }
+}
+
+size_t EditorCell::LineAt(wxCoord y) const {
+  if (y < 0)
+    return 0;
+  if (m_lineSlots.empty())
+    return static_cast<size_t>(y / std::max<wxCoord>(m_charHeight, 1));
+  for (size_t line = 0; line < m_lineSlots.size(); ++line) {
+    const LineSlot &slot = m_lineSlots[line];
+    if (y < slot.top + m_charHeight + slot.below)
+      return line;
+  }
+  const LineSlot &last = m_lineSlots.back();
+  const wxCoord belowLast = y - (last.top + m_charHeight + last.below);
+  return m_lineSlots.size() + static_cast<size_t>(belowLast / std::max<wxCoord>(m_charHeight, 1));
+}
+
+EditorCell::FormatState &EditorCell::GetFormatState() const {
+  if (!m_formatState) {
+    m_formatState = std::make_unique<FormatState>();
+    m_formatState->formatsText = m_text;
+  }
+  return *m_formatState;
+}
+
+void EditorCell::SyncFormats() const {
+  if (!m_formatState)
+    return;
+  FormatState &formatState = *m_formatState;
+  if (formatState.formatsText == m_text)
+    return;
+  formatState.formats = TextFormat::Reconcile(
+    formatState.formatsText, formatState.formats, m_text, formatState.hasPending,
+    formatState.pendingPos, formatState.pendingFormat);
+  formatState.formatsText = m_text;
+  // A pending format is for the very next edit only: from then on what is
+  // typed continues whatever precedes it - which is the pending format, if
+  // the edit was typing at the place it was set for.
+  formatState.hasPending = false;
+}
+
+const TextFormat::Formats &EditorCell::GetFormats() const {
+  static const TextFormat::Formats noFormats;
+  if (!m_formatState)
+    return noFormats;
+  SyncFormats();
+  return m_formatState->formats;
+}
+
+void EditorCell::SetFormats(TextFormat::Formats formats) {
+  if (!CanFormat() || TextFormat::IsPlain(formats)) {
+    if (m_formatState) {
+      m_formatState->formats.clear();
+      m_formatState->formatsText = m_text;
+    }
+  } else {
+    FormatState &formatState = GetFormatState();
+    formats.resize(m_text.Length(), TextFormat::None);
+    formatState.formats = std::move(formats);
+    formatState.formatsText = m_text;
+    formatState.hasPending = false;
+  }
+  StyleText();
+  m_isDirty = true;
+}
+
+void EditorCell::SetUnknownLineAttributes(
+  std::vector<std::pair<wxString, wxString>> attributes) {
+  if (attributes.empty() && !m_formatState)
+    return;
+  GetFormatState().unknownLineAttributes = std::move(attributes);
+}
+
+void EditorCell::CopyFormatsFrom(const EditorCell &source) {
+  if (!source.m_formatState || !CanFormat())
+    return;
+  source.SyncFormats();
+  m_formatState = std::make_unique<FormatState>(*source.m_formatState);
+  m_formatState->hasPending = false;
+  // The formats still describe the source's text; the next SyncFormats()
+  // maps them onto ours, should the two differ.
+  StyleText();
+  m_isDirty = true;
+}
+
+bool EditorCell::HasFormat(TextFormat::Format flag) const {
+  if (!CanFormat() || !m_formatState)
+    return false;
+  const TextFormat::Formats &formats = GetFormats();
+  if (SelectionActive()) {
+    for (size_t i = SelectionLeft(); i < SelectionRight(); ++i)
+      if (!(TextFormat::At(formats, i) & flag))
+        return false;
+    return true;
+  }
+  const FormatState &formatState = *m_formatState;
+  if (formatState.hasPending && (formatState.pendingPos == CursorPosition()))
+    return formatState.pendingFormat & flag;
+  return TextFormat::FormatForInsertionAt(m_text, formats, CursorPosition()) & flag;
+}
+
+bool EditorCell::ToggleFormat(TextFormat::Format flag) {
+  if (!CanFormat())
+    return false;
+  const bool switchOn = !HasFormat(flag);
+  SyncFormats();
+  FormatState &formatState = GetFormatState();
+
+  if (!SelectionActive()) {
+    // Nothing to format yet: remember it for what is typed next.
+    TextFormat::Format format =
+      (formatState.hasPending && (formatState.pendingPos == CursorPosition()))
+      ? formatState.pendingFormat
+      : TextFormat::FormatForInsertionAt(m_text, formatState.formats, CursorPosition());
+    format = switchOn ? TextFormat::WithFlag(format, flag)
+                      : static_cast<TextFormat::Format>(format & ~flag);
+    formatState.pendingFormat = format;
+    formatState.pendingPos = CursorPosition();
+    formatState.hasPending = true;
+    return false;
+  }
+
+  SaveValue();
+  TextFormat::Formats &formats = formatState.formats;
+  formats.resize(m_text.Length(), TextFormat::None);
+  for (size_t i = SelectionLeft(); i < SelectionRight(); ++i) {
+    if (switchOn)
+      formats[i] = TextFormat::WithFlag(formats[i], flag);
+    else
+      formats[i] &= ~flag;
+  }
+  if (TextFormat::IsPlain(formats))
+    formats.clear();
+  formatState.formatsText = m_text;
+  formatState.hasPending = false;
+
+  StyleText();
+  m_isDirty = true;
+  m_width.Invalidate();
+  m_height.Invalidate();
+  m_center.Invalidate();
+  return true;
 }
 
 void EditorCell::SetForeground(wxDC *dc) {
@@ -1310,6 +1683,97 @@ wxCoord EditorCell::MeasureTextWidth(wxCoord startX, const wxString &text) const
   if (!run.empty())
     x += GetTextSize(run).GetWidth();
   return x - startX;
+}
+
+wxCoord EditorCell::MeasureTextWidth(wxCoord startX, const wxString &text,
+                                    std::size_t startPos) const {
+  const TextFormat::Formats &formats = GetFormats();
+  if (formats.empty())
+    return MeasureTextWidth(startX, text);
+
+  // Measure each stretch of equal formatting in its own font, splitting at
+  // tabs, whose width depends on where they start.
+  wxCoord x = startX;
+  wxString run;
+  TextFormat::Format runFormat = TextFormat::None;
+  for (size_t i = 0; i < text.Length(); ++i) {
+    const wxUniChar ch = text[i];
+    const TextFormat::Format format =
+      TextFormat::At(formats, startPos + i) & TextFormat::WidthAffecting;
+    if ((ch == wxS('\t')) || (format != runFormat)) {
+      if (!run.empty()) {
+        x += GetTextSize(run, runFormat).GetWidth();
+        run.clear();
+      }
+      runFormat = format;
+    }
+    if (ch == wxS('\t'))
+      x = NextTabStop(x);
+    else
+      run += ch;
+  }
+  if (!run.empty())
+    x += GetTextSize(run, runFormat).GetWidth();
+  return x - startX;
+}
+
+wxCoord EditorCell::DigitGroupGapWidth() const {
+  // About a sixth of an em, the gap TextCell leaves in output numbers.
+  return std::max(static_cast<wxCoord>(1),
+                  static_cast<wxCoord>(m_fontSize_Scaled.Get() / 6));
+}
+
+wxCoord EditorCell::SnippetWidth(const StyledText &snippet, size_t length) const {
+  const wxString &text = snippet.GetText();
+  length = std::min(length, text.Length());
+  const std::vector<size_t> &gaps = snippet.GetDigitGaps();
+  if (gaps.empty())
+    return GetTextSize(text.Left(length), snippet.GetFormat()).GetWidth();
+
+  // Measured group by group, the way DrawSnippetText() draws them. A gap
+  // belongs to the characters after it, so a prefix ending right before
+  // one doesn't include it: the caret sits directly after a digit.
+  wxCoord width = 0;
+  size_t groupStart = 0;
+  for (const auto gap : gaps) {
+    if (gap >= length)
+      break;
+    width += GetTextSize(text.Mid(groupStart, gap - groupStart),
+                         snippet.GetFormat()).GetWidth() + DigitGroupGapWidth();
+    groupStart = gap;
+  }
+  return width + GetTextSize(text.Mid(groupStart, length - groupStart),
+                             snippet.GetFormat()).GetWidth();
+}
+
+void EditorCell::DrawSnippetText(wxDC *dc, const StyledText &snippet,
+                                 wxCoord x, wxCoord y) const {
+  const std::vector<size_t> &gaps = snippet.GetDigitGaps();
+  if (gaps.empty()) {
+    dc->DrawText(snippet.GetText(), x, y);
+    return;
+  }
+  const wxString &text = snippet.GetText();
+  size_t groupStart = 0;
+  for (size_t i = 0; i <= gaps.size(); i++) {
+    const size_t groupEnd = (i < gaps.size()) ? gaps[i] : text.Length();
+    const wxString group = text.Mid(groupStart, groupEnd - groupStart);
+    dc->DrawText(group, x, y);
+    x += dc->GetTextExtent(group).GetWidth() + DigitGroupGapWidth();
+    groupStart = groupEnd;
+  }
+}
+
+wxCoord EditorCell::DigitGapsWidthIn(size_t from, size_t to) const {
+  // A gap at position p sits between the characters p - 1 and p, so it is
+  // inside [from, to) only if both of them are.
+  const auto first =
+    std::upper_bound(m_digitGapPositions.begin(), m_digitGapPositions.end(), from);
+  const auto last =
+    std::lower_bound(m_digitGapPositions.begin(), m_digitGapPositions.end(), to);
+  if (last <= first)
+    return 0;
+  return static_cast<wxCoord>(last - first) * DigitGroupGapWidth();
 }
 
 size_t EditorCell::BeginningOfLine(size_t pos) const {
@@ -2701,7 +3165,7 @@ wxPoint EditorCell::LineColumnToPoint(size_t cY, size_t cX, size_t pos) {
   // The caret has to follow the text when a right-to-left line is set flush
   // right - the same shift Draw() applies to that line.
   x += RightToLeftLineOffset(cY);
-  y += m_charHeight * cY;
+  y += LineTop(cY) - LineTop(0);
 
   return wxPoint(x, y);
 }
@@ -2714,11 +3178,9 @@ void EditorCell::SelectPointText(const wxPoint point) {
   wxASSERT_MSG(m_currentPoint.y >= 0, _("Bug: y position of cell is unknown!"));
   posInCell -= m_currentPoint;
   //  posInCell -= wxPoint(m_fontSize, 2);
-  posInCell.y -= m_center;
 
-  size_t lin = static_cast<size_t>(posInCell.y) / m_charHeight + 1;
-  if (posInCell.y < 0)
-    lin = 0;
+  // The point's distance from the top of the first line
+  size_t lin = LineAt(posInCell.y + m_center);
   size_t lineStart = XYToPosition(0, lin);
 
   auto pos = lineStart;
@@ -2768,9 +3230,12 @@ void EditorCell::SelectPointText(const wxPoint point) {
         continue;
       }
 
-      wxCoord firstCharWidth = GetTextSize(txt.Left(1)).GetWidth();
-      wxCoord w = GetTextSize(txt).GetWidth();
-      if (xpos + w + firstCharWidth / 2 < posInCell.x) {
+      // Step over a snippet only if the click lies at or past its right
+      // edge; a click inside it is resolved to a character below. (This used
+      // to also demand half the snippet's first character beyond the edge,
+      // so a click on the last character's right half stopped one short.)
+      wxCoord w = SnippetWidth(*textSnippet);
+      if (xpos + w <= posInCell.x) {
         xpos += w;
         pos += txt.Length();
       } else
@@ -2779,7 +3244,6 @@ void EditorCell::SelectPointText(const wxPoint point) {
       ++textSnippet;
     }
 
-    wxCoord lastwidth = 0;
     wxString snippet;
     if (textSnippet != m_styledText.end())
       snippet = textSnippet->GetText();
@@ -2791,18 +3255,19 @@ void EditorCell::SelectPointText(const wxPoint point) {
       if (xpos + (stop - xpos) / 2 < posInCell.x)
         pos++;
     } else {
-      lastwidth = GetTextSize(snippet.Left(1)).GetWidth();
-      lastwidth = -lastwidth;
-
-      // Now determine which char inside this text snippet the cursor is at
+      // Now determine which char inside this text snippet the cursor is at:
+      // the caret goes after character i-1 if the click lies right of that
+      // character's midpoint. The edges come from SnippetWidth(), which
+      // measures exactly what Draw() paints, digit-group gaps included.
       if ((snippet != wxS("\r")) && (snippet != wxS("\n"))) {
-        for (size_t i = 0; i < snippet.Length(); i++) {
-          wxCoord width = GetTextSize(snippet.Left(i)).GetWidth();
-          if (xpos + width + (width - lastwidth) / 2 < posInCell.x)
+        wxCoord left = 0;
+        for (size_t i = 1; i <= snippet.Length(); i++) {
+          const wxCoord right = SnippetWidth(*textSnippet, i);
+          if (xpos + (left + right) / 2 < posInCell.x)
             pos++;
           else
             break;
-          lastwidth = width;
+          left = right;
         }
       }
     }
@@ -2866,7 +3331,7 @@ bool EditorCell::IsPointInSelection(wxPoint point) {
   wxPoint posInCell(point);
   posInCell.x -= m_currentPoint.x - 2;
   posInCell.y -= m_currentPoint.y - 2 - m_center;
-  size_t lin = posInCell.y / m_charHeight;
+  size_t lin = LineAt(posInCell.y);
   size_t lineStart = XYToPosition(0, lin);
   size_t positionOfCaret = lineStart;
 
@@ -2894,7 +3359,8 @@ bool EditorCell::IsPointInSelection(wxPoint point) {
          !((positionOfCaret != lineStart) && IsSoftBreakBefore(positionOfCaret))) {
     wxCoord width;
     wxString strng = m_text.SubString(lineStart, positionOfCaret);
-    width = GetTextSize(strng).GetWidth();
+    width = GetTextSize(strng).GetWidth() +
+      DigitGapsWidthIn(lineStart, positionOfCaret + 1);
     if (width > posInCell.x)
       break;
     positionOfCaret++;
@@ -3311,7 +3777,9 @@ bool EditorCell::MixedDirectionOffset(size_t line, size_t position, wxCoord *off
   for (const auto &r : runs) {
     if (&r == run)
       break;
-    x += MeasureTextWidth(x, m_text.SubString(r.logicalStart, r.logicalEnd - 1));
+    x += MeasureTextWidth(x, m_text.SubString(r.logicalStart, r.logicalEnd - 1),
+                          r.logicalStart) +
+      DigitGapsWidthIn(r.logicalStart, r.logicalEnd);
   }
 
   // Within the run itself: a left-to-right run measures normally, from its
@@ -3322,10 +3790,14 @@ bool EditorCell::MixedDirectionOffset(size_t line, size_t position, wxCoord *off
   // whole line.
   if (run->rightToLeft) {
     if (position < run->logicalEnd)
-      x += MeasureTextWidth(x, m_text.SubString(position, run->logicalEnd - 1));
+      x += MeasureTextWidth(x, m_text.SubString(position, run->logicalEnd - 1),
+                            position) +
+        DigitGapsWidthIn(position, run->logicalEnd);
   } else {
     if (position > run->logicalStart)
-      x += MeasureTextWidth(x, m_text.SubString(run->logicalStart, position - 1));
+      x += MeasureTextWidth(x, m_text.SubString(run->logicalStart, position - 1),
+                            run->logicalStart) +
+        DigitGapsWidthIn(run->logicalStart, position);
   }
   *offset = x;
   return true;
@@ -3383,17 +3855,16 @@ wxCoord EditorCell::GetLineWidth(size_t line, size_t pos) {
         // MaximaTokenizer), so this is the "fully consumed" case for it; its
         // width is position-dependent, hence NextTabStop() rather than a
         // GetTextSize() lookup.
-        lineWidth = (snippet == wxS("\t")) ? NextTabStop(lineWidth)
-                                            : lineWidth + GetTextSize(snippet).GetWidth();
+        lineWidth = (snippet == wxS("\t"))
+          ? NextTabStop(lineWidth)
+          : lineWidth + SnippetWidth(*textSnippet);
       }
     else
       {
         // pos < snippet.Length() here; for a lone-tab snippet (length 1) the
         // only way to land here is pos == 0, where Left(0) is already
         // correctly "" / width 0, so no tab special-case is needed.
-        wxString partialSnippet = snippet.Left(pos);
-        wxCoord snippetWidth = GetTextSize(partialSnippet).GetWidth();
-        lineWidth += snippetWidth;
+        lineWidth += SnippetWidth(*textSnippet, pos);
         break;
       }
   }
@@ -3409,7 +3880,7 @@ bool EditorCell::History::AddState(EditorCell::History::HistoryEntry entry, Acti
 
   if(!m_history.empty())
     {
-      if(m_history.back().GetText() == entry.GetText())
+      if(m_history.back().SameContent(entry))
         return false;
     }
 
@@ -3421,7 +3892,7 @@ bool EditorCell::History::AddState(EditorCell::History::HistoryEntry entry, Acti
       for(ptrdiff_t i = static_cast<ptrdiff_t>(m_history.size()) - 1;
           i >= static_cast<ptrdiff_t>(m_historyPosition); --i)
         {
-          if(m_history.at(static_cast<size_t>(i)).GetText() == entry.GetText())
+          if(m_history.at(static_cast<size_t>(i)).SameContent(entry))
             {
               m_historyPosition = static_cast<size_t>(i);
               return false;
@@ -3437,9 +3908,10 @@ bool EditorCell::History::AddState(EditorCell::History::HistoryEntry entry, Acti
   return true;
 }
 bool EditorCell::History::AddState(const wxString &text, long long selStart, long long selEnd,
-                                   Action action)
+                                   Action action, TextFormat::Formats formats)
 {
-  return AddState(EditorCell::History::HistoryEntry(text, selStart, selEnd), action);
+  return AddState(EditorCell::History::HistoryEntry(text, selStart, selEnd, std::move(formats)),
+                  action);
 }
 
 bool EditorCell::History::Undo()
@@ -3480,6 +3952,14 @@ void EditorCell::History::ClearUndoBuffer() {
 
 void EditorCell::SetState(const EditorCell::History::HistoryEntry &state) {
   m_text = state.GetText();
+  // The formats saved with the text are the ones that belong to it - no
+  // need to work them out from the text we had before.
+  if (m_formatState || !state.GetFormats().empty()) {
+    FormatState &formatState = GetFormatState();
+    formatState.formats = state.GetFormats();
+    formatState.formatsText = m_text;
+    formatState.hasPending = false;
+  }
   StyleText();
   m_paren1 = m_paren2 = -1;
   m_isDirty = true;
@@ -3501,7 +3981,7 @@ void EditorCell::Undo() {
   // Now actually undo the last change.
   m_history.Undo();
 
-  if(m_history.GetState().GetText() == GetValue())
+  if(m_history.GetState().SameContent(History::HistoryEntry(GetValue(), 0, 0, GetFormats())))
     m_history.Undo();
 
   // We cannot use SetValue() here, since SetValue() tends to move the cursor.
@@ -3520,7 +4000,7 @@ void EditorCell::Redo() {
 }
 
 void EditorCell::SaveValue(History::Action action) {
-  m_history.AddState(GetValue(), SelectionStart(), SelectionEnd(), action);
+  m_history.AddState(GetValue(), SelectionStart(), SelectionEnd(), action, GetFormats());
 }
 
 bool EditorCell::BreakAfterOperator(const wxString &token,
@@ -3545,7 +4025,7 @@ bool EditorCell::BreakAfterOperator(const wxString &token,
 
 void EditorCell::HandleSoftLineBreaks_Code(SoftBreakCandidate &candidate,
                                            wxCoord &lineWidth,
-                                           const wxString &token,
+                                           wxCoord tokenWidth,
                                            wxCoord &indentationPixels) const {
   // If we don't want to autowrap code we don't do nothing here.
   if (!m_configuration->GetAutoWrapCode())
@@ -3560,7 +4040,7 @@ void EditorCell::HandleSoftLineBreaks_Code(SoftBreakCandidate &candidate,
 
   //  Does the line extend too much to the right to fit on the screen /
   //  to be easy to read?
-  wxCoord width = GetTextSize(token).GetWidth();
+  const wxCoord width = tokenWidth;
   lineWidth += width;
 
   if ((lineWidth + indentationPixels < m_configuration->GetLineWidth()) ||
@@ -3633,12 +4113,26 @@ void EditorCell::StyleTextCode() const {
   // Split the line into commands, numbers etc.
   m_tokens = MaximaTokenizer(textToStyle, m_configuration).PopTokens();
 
+  // Where numbers get the gaps between their digit groups (GH #192)
+  std::vector<std::vector<size_t>> digitGaps;
+  if (m_configuration->DigitGrouping()) {
+    std::vector<std::pair<wxString, bool>> tokens;
+    tokens.reserve(m_tokens.size());
+    for (const auto &token : m_tokens)
+      tokens.emplace_back(token.GetText(),
+                          token.GetTextStyle() == TS_CODE_NUMBER);
+    digitGaps = wxm::DigitGroupGapsInTokens(
+      tokens, static_cast<size_t>(m_configuration->DigitGroupingMinDigits()),
+      static_cast<size_t>(wxm::LocaleDigitGroupSize()));
+  }
+
   // Now handle the text pieces one by one
   size_t pos = 0;
   wxCoord lineWidth = 0;
 
   for (size_t ti = 0; ti < m_tokens.size(); ++ti) {
     auto const &token = m_tokens[ti];
+    const size_t tokenStart = pos;
     pos += token.GetText().Length();
     auto &tokenString = token.GetText();
     if (tokenString.IsEmpty())
@@ -3708,15 +4202,23 @@ void EditorCell::StyleTextCode() const {
         line.Clear();
       }
     }
-    if (line != wxEmptyString)
+    if (line != wxEmptyString) {
       m_styledText.push_back(StyledText(token.GetTextStyle(), line));
+      // A number never contains a newline, so this snippet is all of it.
+      if ((ti < digitGaps.size()) && !digitGaps[ti].empty() && !containedNewline) {
+        for (const auto gap : digitGaps[ti])
+          m_digitGapPositions.push_back(tokenStart + gap);
+        m_styledText.back().SetDigitGaps(std::move(digitGaps[ti]));
+      }
+    }
     if (containedNewline) {
       // Only the remnant after the last hard newline counts towards the
       // current display line; there is no soft-break candidate in it yet.
       if (line != wxEmptyString)
         lineWidth += GetTextSize(line).GetWidth();
     } else {
-      HandleSoftLineBreaks_Code(candidate, lineWidth, tokenString,
+      HandleSoftLineBreaks_Code(candidate, lineWidth,
+                                SnippetWidth(m_styledText.back()),
                                 indentationPixels);
       // Having weighed this token (and possibly broken before it), a breakable
       // operator now becomes the candidate spot for the following tokens: a
@@ -3741,30 +4243,36 @@ void EditorCell::StyleTextCode() const {
     m_styledText.push_back(StyledText(TS_CODE_COMMENT, suppressedLinesInfo));
 }
 
-void EditorCell::PushTextLine(const wxString &line, const wxString &indentChar) const {
+void EditorCell::PushTextLine(const wxString &line, const wxString &indentChar,
+                              std::size_t startPos) const {
   if (line.Find(wxS('\t')) == wxNOT_FOUND) {
-    PushTextRun(line, indentChar);
+    PushTextRun(line, indentChar, startPos);
     return;
   }
 
   bool pushedAny = false;
   wxString run;
+  std::size_t runStart = startPos;
+  std::size_t pos = startPos;
   for (wxString::const_iterator ch = line.begin(); ch != line.end(); ++ch) {
     if (*ch == wxS('\t')) {
-      PushTextRun(run, pushedAny ? wxString() : indentChar);
+      PushTextRun(run, pushedAny ? wxString() : indentChar, runStart);
       pushedAny = true;
       run.clear();
       m_styledText.push_back(StyledText(wxS("\t"), GetTextStyle()));
+      runStart = pos + 1;
     } else
       run += *ch;
+    ++pos;
   }
-  PushTextRun(run, pushedAny ? wxString() : indentChar);
+  PushTextRun(run, pushedAny ? wxString() : indentChar, runStart);
 }
 
-void EditorCell::PushTextRun(const wxString &run, const wxString &indentChar) const {
+void EditorCell::PushTextRun(const wxString &run, const wxString &indentChar,
+                             std::size_t startPos) const {
   const std::vector<wxm::UrlSpan> links = wxm::FindUrls(run);
   if (links.empty()) {
-    m_styledText.push_back(StyledText(run, GetTextStyle(), 0, indentChar));
+    PushFormattedPiece(run, indentChar, startPos, false);
     return;
   }
 
@@ -3775,20 +4283,48 @@ void EditorCell::PushTextRun(const wxString &run, const wxString &indentChar) co
   bool first = true;
   for (const auto &link : links) {
     if (first || link.start > copied)
-      m_styledText.push_back(StyledText(run.Mid(copied, link.start - copied),
-                                        GetTextStyle(), 0,
-                                        first ? indentChar : wxString()));
+      PushFormattedPiece(run.Mid(copied, link.start - copied),
+                         first ? indentChar : wxString(), startPos + copied, false);
     first = false;
-    m_styledText.push_back(
-      StyledText(run.Mid(link.start, link.length), GetTextStyle()));
-    m_styledText.back().SetLink();
+    PushFormattedPiece(run.Mid(link.start, link.length), wxString(),
+                       startPos + link.start, true);
     copied = link.start + link.length;
   }
   if (copied < run.Length())
-    m_styledText.push_back(StyledText(run.Mid(copied), GetTextStyle()));
+    PushFormattedPiece(run.Mid(copied), wxString(), startPos + copied, false);
+}
+
+void EditorCell::PushFormattedPiece(const wxString &piece, const wxString &indentChar,
+                                    std::size_t startPos, bool isLink) const {
+  const TextFormat::Formats &formats =
+    m_formatState ? m_formatState->formats : TextFormat::Formats();
+  // A link stays one snippet whatever its formatting, since GetLinkAt()
+  // returns a snippet's text as the address: it is drawn with the format its
+  // first character has.
+  std::size_t splitFrom = std::min<std::size_t>(1, piece.Length());
+  if (isLink || formats.empty() || (startPos >= formats.size()))
+    splitFrom = piece.Length();
+
+  std::size_t snippetStart = 0;
+  for (std::size_t i = splitFrom; i <= piece.Length(); ++i) {
+    if ((i < piece.Length()) &&
+        (TextFormat::At(formats, startPos + i) == TextFormat::At(formats, startPos + i - 1)))
+      continue;
+    m_styledText.push_back(StyledText(piece.Mid(snippetStart, i - snippetStart),
+                                      GetTextStyle(), 0,
+                                      (snippetStart == 0) ? indentChar : wxString()));
+    m_styledText.back().SetFormat(TextFormat::At(formats, startPos + snippetStart));
+    if (isLink)
+      m_styledText.back().SetLink();
+    snippetStart = i;
+  }
 }
 
 void EditorCell::StyleTextTexts() const {
+  // The formats have to describe the very text the snippets are cut from.
+  SyncFormats();
+  const bool formatted = m_formatState && !m_formatState->formats.empty();
+
   // Remove all bullets of item lists as we will introduce them again in the
   // next step, as well.
   m_text.Replace(wxS("\u2022"), wxS("*"));
@@ -3801,6 +4337,8 @@ void EditorCell::StyleTextTexts() const {
     size_t lastSpacePos = 0;
     wxString::iterator lastSpaceIt = m_text.end();
     size_t lastLineStart = 0;
+    // Where in m_text the line that is pushed next starts
+    size_t lineStartPos = 0;
     wxCoord width;
 
     // Is this a new line - or the remainder of the line after a soft break?
@@ -3829,11 +4367,12 @@ void EditorCell::StyleTextTexts() const {
               indent = 0;
 
             // How long is the current line already?
-            width = MeasureTextWidth(0, m_text.SubString(lastLineStart, i));
+            width = MeasureTextWidth(0, m_text.SubString(lastLineStart, i), lastLineStart);
             // Do we need to introduce a soft line break?
             if (width + indent >= m_configuration->GetLineWidth()) {
               // We need a line break in front of the last space
               *lastSpaceIt = wxS('\r');
+              lineStartPos = lastLineStart;
               line = m_text.SubString(lastLineStart, lastSpacePos - 1);
               i = lastSpacePos;
               it = lastSpaceIt;
@@ -3845,6 +4384,7 @@ void EditorCell::StyleTextTexts() const {
               goto lineProcessed;
             }
           }
+          lineStartPos = lastLineStart;
           if ((*it == '\n') || (*it == '\r')) {
             if (i > lastLineStart)
               line = m_text.SubString(lastLineStart, i - 1);
@@ -3868,7 +4408,7 @@ void EditorCell::StyleTextTexts() const {
           // auto-wrapping
           if ((*it == ' ') || (nextChar >= m_text.end())) {
             // Determine the current line's length
-            width = MeasureTextWidth(0, m_text.SubString(lastLineStart, i));
+            width = MeasureTextWidth(0, m_text.SubString(lastLineStart, i), lastLineStart);
             // Determine the current indentation
             if ((!indentPixels.empty()) && (!newLine))
               indent = indentPixels.back();
@@ -3883,6 +4423,7 @@ void EditorCell::StyleTextTexts() const {
               if (lastSpaceIt != m_text.end() && lastSpacePos > 0) {
                 // Introduce a soft line break
                 *lastSpaceIt = wxS('\r');
+                lineStartPos = lastLineStart;
                 line = m_text.SubString(lastLineStart, lastSpacePos - 1);
                 i = lastSpacePos;
                 it = lastSpaceIt;
@@ -3893,6 +4434,7 @@ void EditorCell::StyleTextTexts() const {
               } else {
                 if (*it == wxS(' ')) {
                   *it = wxS('\r');
+                  lineStartPos = lastLineStart;
                   line = m_text.SubString(lastLineStart, i - 1);
                   lastLineStart = i + 1;
                   lastSpacePos = 0;
@@ -3917,9 +4459,13 @@ void EditorCell::StyleTextTexts() const {
 lineProcessed:
   // If we fold the cell we only show the first line of text.
   if (FirstLineOnlyEditor()) {
-        m_styledText.push_back(
-                               StyledText(line + wxString::Format(_(" ... + %li hidden lines"),
-                                                                  static_cast<long>(m_text.Freq(wxS('\n')))), GetTextStyle()));
+        const wxString hiddenLines = wxString::Format(_(" ... + %li hidden lines"),
+                                                      static_cast<long>(m_text.Freq(wxS('\n'))));
+        if (formatted) {
+          PushTextLine(line, wxEmptyString, lineStartPos);
+          m_styledText.push_back(StyledText(hiddenLines, GetTextStyle()));
+        } else
+          m_styledText.push_back(StyledText(line + hiddenLines, GetTextStyle()));
         break;
       }
 
@@ -3995,7 +4541,7 @@ lineProcessed:
           m_styledText.back().SetIndentation(indent);
       }
       // Store the indented line in the list of styled text snippets
-      PushTextLine(line, indentChar);
+      PushTextLine(line, indentChar, lineStartPos);
 
       if (it != m_text.end()) {
         // If the cell doesn't end with the last char of this line we have to
@@ -4040,20 +4586,31 @@ lineProcessed:
   else {
     m_text.Replace(wxS("\r"), wxS("\n"));
     wxStringTokenizer lines(m_text, wxS("\n"), wxTOKEN_RET_EMPTY_ALL);
+    size_t lineStartPos = 0;
     while (lines.HasMoreTokens()) {
       wxString line = lines.GetNextToken();
       if (FirstLineOnlyEditor()) {
-        PushTextLine(line + wxString::Format(_(" ... + %li hidden lines"),
-                                             static_cast<long>(m_text.Freq(wxS('\n')))),
-                    wxEmptyString);
+        const wxString hiddenLines = wxString::Format(_(" ... + %li hidden lines"),
+                                                      static_cast<long>(m_text.Freq(wxS('\n'))));
+        if (formatted) {
+          PushTextLine(line, wxEmptyString, lineStartPos);
+          m_styledText.push_back(StyledText(hiddenLines, GetTextStyle()));
+        } else
+          PushTextLine(line + hiddenLines, wxEmptyString, lineStartPos);
         break;
       }
 
-      PushTextLine(line, wxEmptyString);
+      PushTextLine(line, wxEmptyString, lineStartPos);
+      lineStartPos += line.Length() + 1;
       if ((lines.HasMoreTokens()))
         m_styledText.push_back(StyledText(wxS("\n"), GetTextStyle(), 0, wxEmptyString));
     }
   }
+  // Every change to m_text above replaced one character by another, so the
+  // formats still fit it: no need to work them out anew on the next
+  // SyncFormats().
+  if (m_formatState)
+    m_formatState->formatsText = m_text;
 } // Style text, not code?
 
 const MaximaTokenizer::TokenList &EditorCell::GetAllTokens() const {
@@ -4092,6 +4649,7 @@ void EditorCell::StyleText() const {
   // Soft breaks are derived layout data; re-derive them from scratch on every
   // restyle. They live in a side table (m_softBreaks), never inside m_text.
   m_softBreaks.clear();
+  m_digitGapPositions.clear();
 
   if (m_text != wxEmptyString) {
     // Defensive normalization: a bare '\r' can only reach us as raw input

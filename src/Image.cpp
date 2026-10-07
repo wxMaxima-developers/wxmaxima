@@ -721,6 +721,17 @@ wxBitmap Image::GetBitmap(double scale) {
   // Create a scaled bitmap and return it.
   if (m_scaledBitmap.IsOk()) {
     wxImage img = m_scaledBitmap.ConvertToImage();
+    // GIF and XPM mark their transparent pixels with a mask colour rather than
+    // an alpha channel. A mask only takes effect where a caller explicitly
+    // asks for it (DrawBitmap(..., true), Blit(..., useMask=true)); ImgCell
+    // and AnimationCell Blit() without it, so the mask colour -- usually black
+    // or near-black -- used to be painted where the image is meant to be
+    // transparent (GH #2227). Turning the mask into alpha here makes the
+    // transparency travel with the pixels themselves, which every DC honours,
+    // and lets the bicubic rescale below blend the edges instead of smearing
+    // the mask colour into a dark fringe around them.
+    if (img.HasMask() && !img.HasAlpha())
+      img.InitAlpha();
     img.Rescale(m_width, m_height, wxIMAGE_QUALITY_BICUBIC);
     // Forcing depth=24 here (as this used to) discards any alpha channel
     // Rescale() just carried over from the source image, turning previously

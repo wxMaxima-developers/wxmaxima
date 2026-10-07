@@ -33,6 +33,9 @@
 class Gen2Wiz : public wxDialog
 {
 public:
+  //! Saves the geometry while this is still a whole dialog, see
+  //! FindReplaceDialog::~FindReplaceDialog()
+  ~Gen2Wiz() override { SendDestroyEvent(); }
   Gen2Wiz(wxString lab1, wxString lab2,
           const wxString &val1, const wxString &val2,
           Configuration *cfg,

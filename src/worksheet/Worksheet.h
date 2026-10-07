@@ -1364,7 +1364,30 @@ public:
   //! Add the currently selected cells to the clipboard and delete them.
   bool CutToClipboard();
 
-  void PasteFromClipboard();
+  /*! Paste into the worksheet
+
+    \param primary true = paste X11's primary selection (what a middle-click
+    pastes), false = the ordinary Ctrl+V clipboard. Only pass true where
+    HasPrimarySelection() is true.
+  */
+  void PasteFromClipboard(bool primary = false);
+
+  /*! Does this platform have a primary selection?
+
+    X11 (and Wayland, through GTK and Qt) keeps the last selected text in a
+    clipboard of its own that a middle-click pastes. Windows and macOS have
+    no such thing, and wxWidgets can't tell: UsePrimarySelection(true) is
+    accepted everywhere, IsUsingPrimarySelection() then answers true, and on
+    MSW every later clipboard operation silently does nothing. So this is
+    decided at compile time.
+  */
+  static constexpr bool HasPrimarySelection() {
+#if defined(__UNIX__) && !defined(__APPLE__)
+    return true;
+#else
+    return false;
+#endif
+  }
 
   /*! Copy the current selection to the clipboard
 
@@ -1714,6 +1737,17 @@ public:
     \return false if no cell is selected or there is no further undo information
   */
   bool CanUndoInsideCell() const { return m_document.CanUndoInsideCell(); }
+
+  /*! Switch a character format (bold, ...) of the active text cell on or off.
+
+    What the toolbar's formatting buttons do (GH #492); see
+    EditorCell::ToggleFormat(). Does nothing outside a text cell.
+  */
+  void ToggleTextFormat(TextFormat::Format flag);
+  //! Is this character format on where the cursor is? (For the toolbar.)
+  bool HasTextFormat(TextFormat::Format flag) const;
+  //! Is the cursor in a cell whose text can be formatted?
+  bool CanFormatText() const;
 
   void UndoInsideCell();
 

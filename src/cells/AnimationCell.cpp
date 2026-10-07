@@ -319,6 +319,10 @@ void AnimationCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
       dc->DrawRectangle(wxRect(m_currentPoint.x, m_currentPoint.y - m_center, m_width, m_height));
     }
 
+    DrawImageBackdrop(dc, wxRect(m_currentPoint.x + imageBorderWidth,
+                                 m_currentPoint.y - m_center + imageBorderWidth,
+                                 m_width - 2 * imageBorderWidth,
+                                 m_height - 2 * imageBorderWidth));
     dc->Blit(m_currentPoint.x + imageBorderWidth, m_currentPoint.y - m_center + imageBorderWidth,
              m_width - 2 * imageBorderWidth, m_height - 2 * imageBorderWidth,
              &bitmapDC, imageBorderWidth - m_imageBorderWidth,

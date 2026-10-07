@@ -274,6 +274,14 @@ A web address in a text cell that starts with `http://`, `https://` or `mailto:`
 
 The same goes for web addresses in _Maxima_'s output, for example in a string printed by `print("See https://wxmaxima-developers.github.io/wxmaxima/")`: <kbd>CTRL</kbd>+clicking the address or choosing "Open Link" from its context menu opens it, while a plain click still selects the output.
 
+### Bold, italic, underlined and struck-through text
+
+Text in a text cell, a title or a section heading can be made bold, italic, underlined or struck through. Select the text and press the respective button in the toolbar; pressing the button again removes that formatting from the selection. With nothing selected the button switches the formatting on or off for what is typed next. The buttons are hidden by right-clicking the toolbar and unchecking "Text formatting buttons". Code cells cannot be formatted: their colors already show the syntax of the code.
+
+Superscript and subscript buttons work the same way: they make the text smaller and raise it above or lower it below the line, as in E = mc² or H₂O. A character cannot be both, so switching one of them on switches the other off. A line that contains a superscript, a subscript or a character that is taller than the font's usual ones, for example an emoji, gets as much additional room as it needs.
+
+The formatting is saved in `.wxmx` files. Older versions of _wxMaxima_ open such a file without the formatting but keep all of the text. `.wxm` files, the exports and the clipboard contain the text without its formatting.
+
 ### Hotkeys
 
 Most hotkeys can be found in the text of the respective menus. Since they are actually taken from the menu text and thus can be customized by the translations of _wxMaxima_ to match the needs of users of the local keyboard, we do not document them here. A few hotkeys or hotkey aliases, though, are not documented in the menus:
@@ -433,6 +441,10 @@ If this option isn’t set _wxMaxima_ behaves more like a modern cellphone app:
 
 - Files are saved automatically on exit
 - And the file will automatically be saved every 3 minutes.
+
+### Arranging the toolbar
+
+The toolbar is made of sections, like the "Open" and "Save" buttons, the evaluation buttons or the drop-down list that sets the type of a cell. The "Toolbar" tab of the configuration dialog lists them in the order the toolbar shows them in: drag a section to another place, or select it and press "Up" or "Down", to move it, and uncheck it to hide it. The flexible space pushes every section after it to the right edge of the window. "Default order" restores the original arrangement. Sections can also be shown or hidden by right-clicking the toolbar.
 
 ### Where is the configuration saved?
 
@@ -1197,6 +1209,8 @@ You can add the following line to the LaTeX preamble (for example by using the r
 ## Is there a dark mode?
 
 If wxWidgets is new enough, _wxMaxima_ will automatically be in dark mode if the rest of the operating system is. The worksheet itself is by default equipped with a bright background. But it can be configured otherwise. Alternatively, there is a `View/Invert worksheet brightness` menu entry that allows to quickly convert the worksheet from dark to bright and vice versa.
+
+Most images are drawn for a white background, and black line art with a transparent background would be invisible on a dark worksheet. So by default, if the worksheet background is dark, the transparent parts of images are filled with a backdrop color. Its color is the style _Backdrop of transparent images_ in the _Style_ tab of the configuration dialog, and the option _Behind transparent parts of images_ in its _Worksheet_ tab can switch the backdrop off, or draw it on a bright worksheet, too.
 
 ## _WxMaxima_ sometimes hangs for several seconds once in the first minute
 

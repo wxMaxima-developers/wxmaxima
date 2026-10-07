@@ -2333,9 +2333,10 @@ std::unique_ptr<wxDataObject> Worksheet::CreateSelectionDataObject() const {
        WorksheetExport::RTFEnd()).utf8_str());
   });
   contents->bitmap = LazyValue<wxBitmap>([snapshot] {
-    BitmapOut output(snapshot->GetConfigurationPointer(), snapshot->CopyCells(),
-                     snapshot->GetConfiguration()->BitmapScale());
-    return output.IsOk() ? output.GetBitmap() : wxBitmap();
+    return BitmapOut::RenderForClipboard(
+      snapshot->GetConfigurationPointer(),
+      [&snapshot] { return snapshot->CopyCells(); },
+      snapshot->GetConfiguration()->BitmapScale());
   });
 
   // The data objects point into contents and share its ownership: it lives
@@ -2665,9 +2666,10 @@ std::unique_ptr<wxDataObject> Worksheet::CreateCellsDataObject() const {
     return std::string(rtf.utf8_str());
   });
   contents->bitmap = LazyValue<wxBitmap>([snapshot] {
-    BitmapOut output(snapshot->GetConfigurationPointer(), snapshot->CopyCells(),
-                     snapshot->GetConfiguration()->BitmapScale());
-    return output.IsOk() ? output.GetBitmap() : wxBitmap();
+    return BitmapOut::RenderForClipboard(
+      snapshot->GetConfigurationPointer(),
+      [&snapshot] { return snapshot->CopyCells(); },
+      snapshot->GetConfiguration()->BitmapScale());
   });
   contents->svg = LazyValue<std::string>([snapshot] {
     Svgout svg(snapshot->GetConfigurationPointer(), snapshot->CopyCells());
@@ -2854,6 +2856,10 @@ void Worksheet::SetCellStyle(GroupCell *group, GroupType style) {
     cellContents = group->GetEditable()->GetValue();
   auto newGroupCell = std::make_unique<GroupCell>(m_configuration, style);
   newGroupCell->GetEditable()->SetValue(cellContents);
+  // Bold stays bold when a text cell becomes a heading (GH #492). A code
+  // cell drops the formatting, as it has syntax highlighting instead.
+  if (group->GetEditable())
+    newGroupCell->GetEditable()->CopyFormatsFrom(*group->GetEditable());
   GroupCell *prev = group->GetPrevious();
   DeleteRegion(group, group);
   TreeUndo_AppendAction();
@@ -5490,14 +5496,17 @@ bool Worksheet::CutToClipboard() {
  * If not, then pastes text into activeCell or opens a new cell
  * if hCaretActive == true. If yes, copies the cell structure.
  */
-void Worksheet::PasteFromClipboard() {
+void Worksheet::PasteFromClipboard(const bool primary) {
   bool cells = false;
 
   // Check for cell structure
   wxASSERT_MSG(!wxTheClipboard->IsOpened(),
                _("Bug: The clipboard is already opened"));
-  if (!wxTheClipboard->Open())
+  wxTheClipboard->UsePrimarySelection(primary);
+  if (!wxTheClipboard->Open()) {
+    wxTheClipboard->UsePrimarySelection(false);
     return;
+  }
 
   // Check if the clipboard contains text.
   if ((wxTheClipboard->IsSupported(wxDF_TEXT)) ||
@@ -5594,7 +5603,10 @@ void Worksheet::PasteFromClipboard() {
   // Clipboard does not have the cell structure.
   if (!cells) {
     if (GetActiveCell()) {
-      GetActiveCell()->PasteFromClipboard();
+      // The cell selects the clipboard itself, so it has to be told which one:
+      // without the flag a middle-click into a cell pasted the Ctrl+C
+      // clipboard instead of the primary selection (GH #794).
+      GetActiveCell()->PasteFromClipboard(primary);
       GetActiveCell()->ResetSize();
       GetActiveCell()->GetGroup()->ResetSize();
       RequestRecalculation(GetActiveCell()->GetGroup());
@@ -5614,6 +5626,7 @@ void Worksheet::PasteFromClipboard() {
 
   // Make sure the clipboard is closed!
   wxTheClipboard->Close();
+  wxTheClipboard->UsePrimarySelection(false);
 
   UpdateTableOfContents();
   ScrolledAwayFromEvaluation();
@@ -5716,18 +5729,16 @@ void Worksheet::OnKillFocus(wxFocusEvent &event) {
 }
 
 void Worksheet::CheckUnixCopy() {
-  if (CanCopy()) {
+  if (HasPrimarySelection() && CanCopy()) {
     wxTheClipboard->UsePrimarySelection(true);
-    if (wxTheClipboard->IsUsingPrimarySelection()) {
-      wxASSERT_MSG(!wxTheClipboard->IsOpened(),
-                   _("Bug: The clipboard is already opened"));
-      if (wxTheClipboard->Open()) {
-        wxString data = GetString();
-        wxLogMessage(_("Middle-click clipboard data: %s"),
-                     static_cast<const char*>(data.mb_str()));
-        wxTheClipboard->SetData(new wxTextDataObject(data));
-        wxTheClipboard->Close();
-      }
+    wxASSERT_MSG(!wxTheClipboard->IsOpened(),
+                 _("Bug: The clipboard is already opened"));
+    if (wxTheClipboard->Open()) {
+      wxString data = GetString();
+      wxLogMessage(_("Middle-click clipboard data: %s"),
+                   static_cast<const char*>(data.mb_str()));
+      wxTheClipboard->SetData(new wxTextDataObject(data));
+      wxTheClipboard->Close();
     }
     wxTheClipboard->UsePrimarySelection(false);
   }
@@ -5818,6 +5829,33 @@ void Worksheet::UndoInsideCell() {
   }
 }
 
+void Worksheet::ToggleTextFormat(TextFormat::Format flag) {
+  EditorCell *editor = GetActiveCell();
+  if (!editor || !editor->CanFormat())
+    return;
+  if (editor->ToggleFormat(flag)) {
+    // Bold and italic text is wider, and a superscript can make its line
+    // taller: the cell has to be laid out anew.
+    if (editor->GetGroup()) {
+      editor->GetGroup()->ResetSize();
+      RequestRecalculation(editor->GetGroup());
+    }
+    SetSaved(false);
+  }
+  UpdateControlsNeeded(true);
+  RequestRedraw();
+}
+
+bool Worksheet::HasTextFormat(TextFormat::Format flag) const {
+  const EditorCell *editor = GetActiveCell();
+  return editor && editor->HasFormat(flag);
+}
+
+bool Worksheet::CanFormatText() const {
+  const EditorCell *editor = GetActiveCell();
+  return editor && editor->CanFormat();
+}
+
 void Worksheet::RedoInsideCell() {
   if (GetActiveCell()) {
     GetActiveCell()->Redo();
@@ -5876,16 +5914,16 @@ void Worksheet::OnMouseMiddleUp(wxMouseEvent &event) {
     return;
   GetViewCellPointers().ResetSearchStart();
 
-  wxTheClipboard->UsePrimarySelection(true);
-  if (wxTheClipboard->IsUsingPrimarySelection()) {
+  // Without a primary selection a middle-click doesn't paste anything, as
+  // elsewhere on that platform.
+  if (HasPrimarySelection()) {
     OnMouseLeftDown(event);
     m_leftDown = false;
     if (m_clickType != CLICK_TYPE_NONE)
-      PasteFromClipboard();
+      PasteFromClipboard(true);
     m_clickType = CLICK_TYPE_NONE;
     if (HasCapture())
       ReleaseMouse();
-    wxTheClipboard->UsePrimarySelection(false);
   }
   event.Skip();
 }

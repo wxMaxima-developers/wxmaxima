@@ -213,6 +213,106 @@ SCENARIO("A folded code cell keeps its computed output across the content.xml ro
   }
 }
 
+//! Parse a document and return its first cell.
+static std::unique_ptr<GroupCell> ParseDocument(const wxString &documentXml) {
+  const wxScopedCharBuffer utf8 = documentXml.utf8_str();
+  wxMemoryInputStream in(utf8.data(), utf8.length());
+  wxXmlDocument doc;
+  REQUIRE(doc.Load(in));
+  MathParser mp(g_cfg);
+  std::unique_ptr<GroupCell> tree = mp.CreateTreeFromXMLNode(doc.GetRoot());
+  REQUIRE(tree != nullptr);
+  return tree;
+}
+
+SCENARIO("The character formatting of a text cell survives the content.xml round-trip (GH #492)") {
+  const wxString cell =
+    wxS("<cell type=\"text\">\n")
+    wxS("<editor type=\"text\">\n")
+    wxS("<line bold=\"0-4\" italic=\"6-12\" underline=\"14-18\" strikethrough=\"14-15\">")
+    wxS("Bold, italic, under&#010;line</line>\n")
+    wxS("</editor>\n")
+    wxS("</cell>");
+  GIVEN("a text cell with formatted characters") {
+    std::unique_ptr<GroupCell> tree = ParseDocument(WrapDocument(cell));
+    const EditorCell *editor = tree->GetEditable();
+    REQUIRE(editor != nullptr);
+    THEN("the text arrives unformatted, exactly as older versions read it") {
+      REQUIRE(editor->GetValue() == wxS("Bold, italic, under\nline"));
+    }
+    THEN("the formats arrive on the right characters") {
+      const TextFormat::Formats &formats = editor->GetFormats();
+      REQUIRE(formats.size() == editor->GetValue().Length());
+      REQUIRE(formats[0] == TextFormat::Bold);
+      REQUIRE(formats[3] == TextFormat::Bold);
+      REQUIRE(formats[4] == TextFormat::None);
+      REQUIRE(formats[6] == TextFormat::Italic);
+      REQUIRE(formats[14] == (TextFormat::Underline | TextFormat::Strikethrough));
+      REQUIRE(formats[15] == TextFormat::Underline);
+      REQUIRE(formats[18] == TextFormat::None);
+    }
+    THEN("saving it again writes the same attributes") {
+      REQUIRE(tree->ToXML().Contains(
+        wxS("<line bold=\"0-4\" italic=\"6-12\" underline=\"14-18\" strikethrough=\"14-15\">")));
+    }
+    THEN("the round-trip is a fixed point") {
+      RequireIdempotent(WrapDocument(cell));
+    }
+  }
+  GIVEN("a text cell with attributes of a newer version") {
+    const wxString newer =
+      wxS("<cell type=\"text\">\n<editor type=\"text\">\n")
+      wxS("<line bold=\"0-1\" overline=\"1-2\">x2</line>\n")
+      wxS("</editor>\n</cell>");
+    std::unique_ptr<GroupCell> tree = ParseDocument(WrapDocument(newer));
+    THEN("saving it unchanged keeps them") {
+      REQUIRE(tree->ToXML().Contains(wxS("<line bold=\"0-1\" overline=\"1-2\">x2</line>")));
+    }
+    THEN("once the text is changed they are dropped, as they no longer fit it") {
+      tree->GetEditable()->SetValue(wxS("x2 changed"));
+      REQUIRE(!tree->ToXML().Contains(wxS("overline")));
+    }
+  }
+  GIVEN("a text cell with a superscript and a subscript") {
+    const wxString formatted =
+      wxS("<cell type=\"text\">\n<editor type=\"text\">\n")
+      wxS("<line superscript=\"1-2\" subscript=\"4-5\">x2 ai</line>\n")
+      wxS("</editor>\n</cell>");
+    std::unique_ptr<GroupCell> tree = ParseDocument(WrapDocument(formatted));
+    THEN("they arrive on the right characters") {
+      const TextFormat::Formats &formats = tree->GetEditable()->GetFormats();
+      REQUIRE(formats.size() == 5);
+      REQUIRE(formats[1] == TextFormat::Superscript);
+      REQUIRE(formats[4] == TextFormat::Subscript);
+      REQUIRE(formats[0] == TextFormat::None);
+    }
+    THEN("saving it again writes the same attributes") {
+      REQUIRE(tree->ToXML().Contains(
+        wxS("<line superscript=\"1-2\" subscript=\"4-5\">x2 ai</line>")));
+    }
+    THEN("the round-trip is a fixed point") {
+      RequireIdempotent(WrapDocument(formatted));
+    }
+  }
+  GIVEN("a plain text cell") {
+    std::unique_ptr<GroupCell> tree = ParseDocument(WrapDocument(
+      wxS("<cell type=\"text\">\n<editor type=\"text\">\n<line>plain</line>\n</editor>\n</cell>")));
+    THEN("it is saved exactly as before: no attributes, no formats kept") {
+      REQUIRE(tree->ToXML().Contains(wxS("<line>plain</line>")));
+      REQUIRE(tree->GetEditable()->GetFormats().empty());
+    }
+  }
+  GIVEN("a code cell whose line carries formatting attributes") {
+    std::unique_ptr<GroupCell> tree = ParseDocument(WrapDocument(
+      wxS("<cell type=\"code\">\n<input>\n<editor type=\"input\">\n")
+      wxS("<line bold=\"0-3\">a*b;</line>\n</editor>\n</input>\n</cell>")));
+    THEN("they are ignored: code has syntax highlighting instead") {
+      REQUIRE(tree->GetEditable()->GetFormats().empty());
+      REQUIRE(tree->ToXML().Contains(wxS("<line>a*b;</line>")));
+    }
+  }
+}
+
 class TestApp : public wxApp {
 public:
   bool OnInit() override { return true; }

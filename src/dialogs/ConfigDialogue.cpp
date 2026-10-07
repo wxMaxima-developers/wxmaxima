@@ -249,6 +249,7 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent)
   imageList.push_back(wxArtProvider::GetBitmapBundle(wxmaximaART_CONFIG_VIEW_REFRESH, wxART_OTHER, wxSize(imgSize, imgSize)));
   imageList.push_back(wxArtProvider::GetBitmapBundle(wxmaximaART_CONFIG_AI_CHAT, wxART_OTHER, wxSize(imgSize, imgSize)));
   imageList.push_back(wxArtProvider::GetBitmapBundle(wxmaximaART_CONFIG_ACCESSIBILITY, wxART_OTHER, wxSize(imgSize, imgSize)));
+  imageList.push_back(wxArtProvider::GetBitmapBundle(wxmaximaART_CONFIG_TOOLBAR, wxART_OTHER, wxSize(imgSize, imgSize)));
   m_notebook->SetImages(imageList);
 #endif
   m_notebook->AddPage(CreateWorksheetPanel(), _("Worksheet"), true, 0);
@@ -258,6 +259,10 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent)
   m_notebook->AddPage(CreateOptionsPanel(), _("Options"), false, 4);
   m_notebook->AddPage(CreateStartupPanel(), _("Startup commands"), false, 5);
   m_notebook->AddPage(CreatePrintPanel(), _("Printout settings"), false, 6);
+  m_toolBarSections = new ToolBarSectionsPanel(m_notebook);
+  m_toolBarSections->SetMinSize(wxSize(GetContentScaleFactor() * mMinPanelWidth,
+                                       GetContentScaleFactor() * mMinPanelHeight));
+  m_notebook->AddPage(m_toolBarSections, _("Toolbar"), false, 10);
 #ifdef WXM_USE_AI_TOOLS
   // Hidden outright, not just disabled, when there's nowhere safe to keep
   // an API key -- see AiProvider::SecretStoreAvailable()'s own doc comment
@@ -308,6 +313,9 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent)
 }
 
 ConfigDialogue::~ConfigDialogue() {
+  // Save the geometry while this is still a whole dialog. See
+  // FindReplaceDialog::~FindReplaceDialog() for why this is needed.
+  SendDestroyEvent();
 #ifdef WXM_USE_AI_TOOLS
   // Anything still waiting on an HTTP response must not touch this
   // dialog's controls from here on -- they are about to stop existing.
@@ -404,6 +412,11 @@ void ConfigDialogue::SetCheckboxValues() {
   m_displayedDigits->SetToolTip(
                                 _("If numbers are getting longer than this number of digits they will be "
                                   "displayed abbreviated by an ellipsis."));
+  m_digitGrouping->SetToolTip(
+    _("Displays 2111230496 as 2 111 230 496 in the output and in code cells, "
+      "which makes long numbers easier to read. Only the display changes: "
+      "copying, saving, exporting and what is sent to Maxima never contain "
+      "these gaps."));
   m_TeXExponentsAfterSubscript->SetToolTip(
                                            _("In the LaTeX output: Put exponents after an eventual subscript "
                                              "instead of above it. Might increase readability for some fonts and "
@@ -562,6 +575,7 @@ void ConfigDialogue::SetCheckboxValues() {
   m_showLength->SetSelection(configuration->ShowLength());
   m_layoutStrategy->SetSelection(static_cast<int>(configuration->GetLayoutStrategy()));
   m_oversizedMatrices->SetSelection(static_cast<int>(configuration->GetOversizedMatrices()));
+  m_imageBackdrop->SetSelection(static_cast<int>(configuration->GetImageBackdrop()));
   m_autosubscript->SetSelection(configuration->GetAutosubscript_Num());
   m_changeAsterisk->SetValue(configuration->GetChangeAsterisk());
   m_hidemultiplicationSign->SetValue(configuration->HidemultiplicationSign());
@@ -685,6 +699,9 @@ void ConfigDialogue::SetCheckboxValues() {
   m_defaultPlotWidth->SetValue(configuration->DefaultPlotWidth());
   m_defaultPlotHeight->SetValue(configuration->DefaultPlotHeight());
   m_displayedDigits->SetValue(configuration->GetDisplayedDigits());
+  m_digitGrouping->SetValue(configuration->DigitGrouping());
+  m_digitGroupingMinDigits->SetValue(configuration->DigitGroupingMinDigits());
+  m_digitGroupingMinDigits->Enable(configuration->DigitGrouping());
 
   if (configuration->LineBreaksInLongNums() && configuration->ShowAllDigits())
     m_linebreaksInLongNums->SetValue(true);
@@ -889,6 +906,25 @@ wxWindow *ConfigDialogue::CreateWorksheetPanel() {
   displaySizer->Add(m_oversizedMatrices,
                     wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
 
+  // Order must match Configuration::ImageBackdrop.
+  wxArrayString imageBackdrop;
+  imageBackdrop.Add(_("Nothing: the worksheet shows through"));
+  imageBackdrop.Add(_("The backdrop color, if the worksheet background is dark"));
+  imageBackdrop.Add(_("Always the backdrop color"));
+  m_imageBackdrop = new wxRadioBox(displaySizer->GetStaticBox(), wxID_ANY,
+                                   _("Behind transparent parts of images"),
+                                   wxDefaultPosition, wxDefaultSize,
+                                   imageBackdrop, 0, wxRA_SPECIFY_ROWS);
+  m_imageBackdrop->SetToolTip(
+    _("Most images are made for a white background: black line art on a "
+      "transparent background is invisible on a dark worksheet.\n"
+      "The backdrop color is set in the \"Style\" tab as \"Backdrop of "
+      "transparent images\".\n"
+      "This affects only what is shown on screen and printed, not the images "
+      "themselves."));
+  displaySizer->Add(m_imageBackdrop,
+                    wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
+
   wxStaticBoxSizer *numDigitsSizer = new wxStaticBoxSizer(
                                                           wxVERTICAL, displaySizer->GetStaticBox(), _("Display of long numbers"));
   wxFlexGridSizer *numDigitsGrid = new wxFlexGridSizer(10, 2, 5, 5);
@@ -916,6 +952,20 @@ wxWindow *ConfigDialogue::CreateWorksheetPanel() {
                                        _("Display all and allow linebreaks in long numbers")),
                      0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL);
   numDigitsGrid->Add(5 * GetContentScaleFactor(), 5 * GetContentScaleFactor());
+
+  numDigitsGrid->Add(m_digitGrouping =
+                     new wxCheckBox(numDigitsSizer->GetStaticBox(), wxID_ANY,
+                                    _("Separate digit groups of numbers with at least this many digits:")),
+                     0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL);
+  m_digitGroupingMinDigits = new wxSpinCtrl(
+    numDigitsSizer->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition,
+    wxSize(150 * GetContentScaleFactor(), -1), wxSP_ARROW_KEYS,
+    Configuration::DigitGroupingMinDigits_Min, 1000);
+  numDigitsGrid->Add(m_digitGroupingMinDigits, wxSizerFlags());
+  m_digitGrouping->Bind(wxEVT_CHECKBOX, [this](wxCommandEvent &event) {
+    m_digitGroupingMinDigits->Enable(m_digitGrouping->GetValue());
+    event.Skip();
+  });
   displaySizer->Add(numDigitsSizer,
                     wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
 
@@ -2991,12 +3041,15 @@ void ConfigDialogue::WriteSettings() {
     static_cast<Configuration::LayoutStrategy>(m_layoutStrategy->GetSelection()));
   configuration->SetOversizedMatrices(
     static_cast<Configuration::OversizedMatrices>(m_oversizedMatrices->GetSelection()));
+  configuration->SetImageBackdrop(
+    static_cast<Configuration::ImageBackdrop>(m_imageBackdrop->GetSelection()));
   configuration->SetAutosubscript_Num(m_autosubscript->GetSelection());
   configuration->FixedFontInTextControls(m_fixedFontInTC->GetValue());
   configuration->OfferKnownAnswers(m_offerKnownAnswers->GetValue());
 #if wxUSE_ACCESSIBILITY
   configuration->ScreenReaderAnnouncesMathML(m_screenReaderMathML->GetValue());
 #endif
+  m_toolBarSections->Write();
   configuration->SetChangeAsterisk(m_changeAsterisk->GetValue());
   configuration->HidemultiplicationSign(m_hidemultiplicationSign->GetValue());
   configuration->Latin2Greek(m_latin2Greek->GetValue());
@@ -3097,6 +3150,8 @@ void ConfigDialogue::WriteSettings() {
   configuration->DefaultPlotWidth(m_defaultPlotWidth->GetValue());
   configuration->DefaultPlotHeight(m_defaultPlotHeight->GetValue());
   configuration->SetDisplayedDigits(m_displayedDigits->GetValue());
+  configuration->DigitGrouping(m_digitGrouping->GetValue());
+  configuration->DigitGroupingMinDigits(m_digitGroupingMinDigits->GetValue());
 
   configuration->PrintMargin_Right(m_printMargin_Right->GetValue());
   configuration->PrintMargin_Left(m_printMargin_Left->GetValue());

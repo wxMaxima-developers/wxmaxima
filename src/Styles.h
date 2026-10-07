@@ -97,7 +97,8 @@ public:
                      TS_WARNING,     TS_ERROR, TS_ASCIIMATHS, TS_TEXT},
       m_colorOnlyStyles{TS_TEXT_BACKGROUND, TS_DOCUMENT_BACKGROUND, TS_CELL_BRACKET,
                         TS_ACTIVE_CELL_BRACKET, TS_CURSOR, TS_SELECTION,
-                        TS_EQUALSSELECTION, TS_DIFF_CHANGED, TS_LINK, TS_OUTDATED} {}
+                        TS_EQUALSSELECTION, TS_DIFF_CHANGED, TS_LINK, TS_OUTDATED,
+                        TS_IMAGE_BACKDROP} {}
 
   //! The styles that share the code-default font/attributes.
   const std::vector<TextStyle> &CodeStylesList() const { return m_codeStyles; }

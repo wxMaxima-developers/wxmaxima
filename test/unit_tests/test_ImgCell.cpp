@@ -22,6 +22,8 @@
 #define CATCH_CONFIG_RUNNER
 
 #include <wx/sysopt.h>
+#include <wx/dcmemory.h>
+#include <wx/mstream.h>
 
 #include "test_ImgCell.h"
 #include "FontAttribs.cpp"
@@ -30,6 +32,7 @@
 #include "BackgroundQueue.cpp"
 #include "ImgCell.cpp"
 #include "ImgCellBase.cpp"
+#include "DigitGrouping.cpp"
 #include "StringUtils.cpp"
 #include "TestStubs.cpp"
 #include "TextCell.cpp"
@@ -67,6 +70,55 @@ SCENARIO("RTF Output represents the image") {
   }
 }
 
+// GIF and XPM store transparency as a mask colour, not as alpha. ImgCell and
+// AnimationCell Blit() the bitmap Image::GetBitmap() returns without asking for
+// the mask, which painted the mask colour (black-ish) where the image was meant
+// to be see-through (GH #2227).
+SCENARIO("A masked image stays transparent when drawn like ImgCell draws it") {
+  // A 40x40 image: an opaque white square in the middle of a border whose
+  // pixels carry the mask colour.
+  const unsigned char maskR = 1, maskG = 2, maskB = 3;
+  wxImage source(40, 40);
+  source.SetRGB(wxRect(0, 0, 40, 40), maskR, maskG, maskB);
+  source.SetRGB(wxRect(10, 10, 20, 20), 255, 255, 255);
+  source.SetMaskColour(maskR, maskG, maskB);
+  wxMemoryOutputStream ostream;
+  REQUIRE(source.SaveFile(ostream, wxBITMAP_TYPE_XPM));
+  wxMemoryBuffer xpm;
+  xpm.AppendData(ostream.GetOutputStreamBuffer()->GetBufferStart(),
+                 ostream.GetSize());
+
+  Configuration config;
+  GIVEN("an XPM with a masked border") {
+    Image image(&config, xpm, wxS("xpm"));
+    WHEN("its screen bitmap is blitted onto a red background without a mask") {
+      wxBitmap bitmap = image.GetBitmap();
+      REQUIRE(bitmap.IsOk());
+      wxBitmap target(bitmap.GetWidth(), bitmap.GetHeight(), 24);
+      {
+        wxMemoryDC targetDC(target);
+        targetDC.SetBackground(*wxRED_BRUSH);
+        targetDC.Clear();
+        wxMemoryDC bitmapDC;
+        bitmapDC.SelectObject(bitmap);
+        targetDC.Blit(0, 0, bitmap.GetWidth(), bitmap.GetHeight(), &bitmapDC, 0, 0);
+      }
+      wxImage result = target.ConvertToImage();
+      THEN("the border shows the background, not the mask colour") {
+        CHECK(result.GetRed(0, 0) == 255);
+        CHECK(result.GetGreen(0, 0) == 0);
+        CHECK(result.GetBlue(0, 0) == 0);
+      }
+      THEN("the opaque middle is still drawn") {
+        int cx = result.GetWidth() / 2, cy = result.GetHeight() / 2;
+        CHECK(result.GetRed(cx, cy) == 255);
+        CHECK(result.GetGreen(cx, cy) == 255);
+        CHECK(result.GetBlue(cx, cy) == 255);
+      }
+    }
+  }
+}
+
 class MyApp : public wxApp
 {
 public:
@@ -83,6 +135,7 @@ public:
   }
   bool OnInit() override {
     wxImage::AddHandler(new wxPNGHandler);
+    wxImage::AddHandler(new wxXPMHandler);
     int rc = Catch::Session().run();
     std::exit(rc);
     return false;

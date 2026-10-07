@@ -61,6 +61,7 @@ extern unsigned char view_refresh_svg_gz[];
 #include "cells/TextStyle.h"
 #include "worksheet/Worksheet.h"
 #include "../Configuration.h"
+#include "ToolBarSectionsPanel.h"
 #ifdef WXM_USE_AI_TOOLS
 #include "ai/AiProvider.h"
 #endif
@@ -198,6 +199,9 @@ private:
   //! The panel that allows to choose which formats to put on the clipboard
   wxWindow *CreateRevertToDefaultsPanel();
 
+  //! The "Toolbar" tab: the order of the toolbar's sections and which are shown
+  ToolBarSectionsPanel *m_toolBarSections = nullptr;
+
 #if wxUSE_ACCESSIBILITY
   //! The panel with the screen reader settings
   wxWindow *CreateAccessibilityPanel();
@@ -306,6 +310,10 @@ protected:
   wxRadioButton *m_displayNDigits;
   wxRadioButton *m_displayAllDigits;
   wxRadioButton *m_linebreaksInLongNums;
+  //! Separate the digit groups of numbers by a small gap? (GH #192)
+  wxCheckBox *m_digitGrouping;
+  //! How many digits a number needs before its digits are grouped
+  wxSpinCtrl *m_digitGroupingMinDigits;
   //! A checkbox that asks if TeX should put the exponents above or after the subscripts.
   wxCheckBox *m_TeXExponentsAfterSubscript;
   //! A checkbox that asks if TeX should use the \\partial symbol for representing diff()
@@ -323,6 +331,8 @@ protected:
   wxRadioBox *m_layoutStrategy;
   //! How to show a matrix too large for the window
   wxRadioBox *m_oversizedMatrices;
+  //! What is drawn behind transparent parts of images
+  wxRadioBox *m_imageBackdrop;
   wxRadioButton *m_enterEvaluates;
   wxRadioButton *m_ctrlEnterEvaluates;
   wxCheckBox *m_numpadEnterEvaluates;

@@ -42,3 +42,12 @@ ImgCellBase::ImgCellBase(GroupCell *group, Configuration *config)
   : Cell(group, config) {}
 
 ImgCellBase::~ImgCellBase() {}
+
+void ImgCellBase::DrawImageBackdrop(wxDC *dc, const wxRect &rect) const {
+  if (!m_configuration->DrawImageBackdrop())
+    return;
+  dc->SetPen(*wxTRANSPARENT_PEN);
+  dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(
+                   m_configuration->GetColor(TS_IMAGE_BACKDROP))));
+  dc->DrawRectangle(rect);
+}
