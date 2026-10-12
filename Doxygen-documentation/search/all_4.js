@@ -42,7 +42,7 @@ var searchData=
   ['digitcell_2ecpp_39',['DigitCell.cpp',['../DigitCell_8cpp.html',1,'']]],
   ['digitgroupgaps_40',['DigitGroupGaps',['../DigitGrouping_8cpp.html#a39150533ff60c978a1cc8d2917782f48',1,'wxm']]],
   ['digitgroupgapsintokens_41',['DigitGroupGapsInTokens',['../DigitGrouping_8cpp.html#a316b67731d95f5562212e81fc51ae246',1,'wxm']]],
-  ['digitgroupgapwidth_42',['DigitGroupGapWidth',['../classTextCell.html#a06a8af21ecd5969afb9f7ab9340f4786',1,'TextCell']]],
+  ['digitgroupgapwidth_42',['DigitGroupGapWidth',['../classEditorCell.html#a38e65dd7166909fbaf45a770c9e84c9f',1,'EditorCell::DigitGroupGapWidth()'],['../classTextCell.html#a06a8af21ecd5969afb9f7ab9340f4786',1,'TextCell::DigitGroupGapWidth()']]],
   ['digitgrouping_43',['DigitGrouping',['../classConfiguration.html#aa34bf94cb8e69a7700c7b95d63b3a981',1,'Configuration']]],
   ['digitgrouping_2ecpp_44',['DigitGrouping.cpp',['../DigitGrouping_8cpp.html',1,'']]],
   ['digitgrouping_2eh_45',['DigitGrouping.h',['../DigitGrouping_8h.html',1,'']]],

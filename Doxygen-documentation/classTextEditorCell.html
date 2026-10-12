@@ -417,6 +417,13 @@ wxCoord&#160;</td><td class="memItemRight" valign="bottom"><b>GetLineWidth</b> (
 <tr class="memitem:aa4c30056412188aac10dd2dc97df4020"><td class="memItemLeft" align="right" valign="top">wxCoord&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#aa4c30056412188aac10dd2dc97df4020">GetLineWidth</a> () const</td></tr>
 <tr class="memdesc:aa4c30056412188aac10dd2dc97df4020"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many pixels is the current line of this list of cells wide?  <br /></td></tr>
 <tr class="separator:aa4c30056412188aac10dd2dc97df4020"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38e65dd7166909fbaf45a770c9e84c9f"><td class="memItemLeft" align="right" valign="top">wxCoord&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#a38e65dd7166909fbaf45a770c9e84c9f">DigitGroupGapWidth</a> () const</td></tr>
+<tr class="memdesc:a38e65dd7166909fbaf45a770c9e84c9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The width of one digit-group gap in a number (GH #192)  <br /></td></tr>
+<tr class="separator:a38e65dd7166909fbaf45a770c9e84c9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a622a7bf6e7d27c8c5f1b9bda8b0da12f"><td class="memItemLeft" align="right" valign="top"><a id="a622a7bf6e7d27c8c5f1b9bda8b0da12f" name="a622a7bf6e7d27c8c5f1b9bda8b0da12f"></a>
+wxSize&#160;</td><td class="memItemRight" valign="bottom"><b>GetTextSize</b> (const wxString &amp;text) const</td></tr>
+<tr class="memdesc:a622a7bf6e7d27c8c5f1b9bda8b0da12f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines the size of a text snippet. <br /></td></tr>
+<tr class="separator:a622a7bf6e7d27c8c5f1b9bda8b0da12f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1449c2bc0308ca9fbe0378dbc62881b3"><td class="memItemLeft" align="right" valign="top"><a id="a1449c2bc0308ca9fbe0378dbc62881b3" name="a1449c2bc0308ca9fbe0378dbc62881b3"></a>
 wxCoord&#160;</td><td class="memItemRight" valign="bottom"><b>NextTabStop</b> (wxCoord startX) const</td></tr>
 <tr class="memdesc:a1449c2bc0308ca9fbe0378dbc62881b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pixel x of the next 4-column tab stop at or after startX, where one column is the width of a space glyph in the current font. startX is relative to the current line's own start (post-indentation), matching how GetLineWidth()/Recalculate() already track their x accumulators. <br /></td></tr>
@@ -2009,6 +2016,34 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 <p>Only interesting for EditorCells </p>
 
 <p>Reimplemented from <a class="el" href="classCell.html#ad96add356d2a246e0053262fce4d8010">Cell</a>.</p>
+
+</div>
+</div>
+<a id="a38e65dd7166909fbaf45a770c9e84c9f" name="a38e65dd7166909fbaf45a770c9e84c9f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a38e65dd7166909fbaf45a770c9e84c9f">&#9670;&#160;</a></span>DigitGroupGapWidth()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxCoord EditorCell::DigitGroupGapWidth </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The width of one digit-group gap in a number (GH #192) </p>
+<p>Public, like <a class="el" href="classEditorCell.html#a622a7bf6e7d27c8c5f1b9bda8b0da12f" title="Determines the size of a text snippet.">GetTextSize()</a>, so tests can work out the exact width a grouped number should take up on the platform they run on. </p>
 
 </div>
 </div>
@@ -4926,7 +4961,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 </div><div class="memdoc">
 
 <p>Allows to change the text a <a class="el" href="classTextCell.html" title="A Text cell.">TextCell</a> contains. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000005">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
 
 </div>
 </div>

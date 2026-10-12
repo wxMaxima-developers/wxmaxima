@@ -412,6 +412,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>FindMatchingParens</b
 <tr class="memitem:aab555df03f1b668d5b7cca422291bd48"><td class="memItemLeft" align="right" valign="top"><a id="aab555df03f1b668d5b7cca422291bd48" name="aab555df03f1b668d5b7cca422291bd48"></a>
 wxCoord&#160;</td><td class="memItemRight" valign="bottom"><b>GetLineWidth</b> (size_t line, size_t pos)</td></tr>
 <tr class="separator:aab555df03f1b668d5b7cca422291bd48"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38e65dd7166909fbaf45a770c9e84c9f"><td class="memItemLeft" align="right" valign="top">wxCoord&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#a38e65dd7166909fbaf45a770c9e84c9f">DigitGroupGapWidth</a> () const</td></tr>
+<tr class="memdesc:a38e65dd7166909fbaf45a770c9e84c9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The width of one digit-group gap in a number (GH #192)  <br /></td></tr>
+<tr class="separator:a38e65dd7166909fbaf45a770c9e84c9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a622a7bf6e7d27c8c5f1b9bda8b0da12f"><td class="memItemLeft" align="right" valign="top"><a id="a622a7bf6e7d27c8c5f1b9bda8b0da12f" name="a622a7bf6e7d27c8c5f1b9bda8b0da12f"></a>
+wxSize&#160;</td><td class="memItemRight" valign="bottom"><b>GetTextSize</b> (const wxString &amp;text) const</td></tr>
+<tr class="memdesc:a622a7bf6e7d27c8c5f1b9bda8b0da12f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines the size of a text snippet. <br /></td></tr>
+<tr class="separator:a622a7bf6e7d27c8c5f1b9bda8b0da12f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1449c2bc0308ca9fbe0378dbc62881b3"><td class="memItemLeft" align="right" valign="top"><a id="a1449c2bc0308ca9fbe0378dbc62881b3" name="a1449c2bc0308ca9fbe0378dbc62881b3"></a>
 wxCoord&#160;</td><td class="memItemRight" valign="bottom"><b>NextTabStop</b> (wxCoord startX) const</td></tr>
 <tr class="memdesc:a1449c2bc0308ca9fbe0378dbc62881b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pixel x of the next 4-column tab stop at or after startX, where one column is the width of a space glyph in the current font. startX is relative to the current line's own start (post-indentation), matching how GetLineWidth()/Recalculate() already track their x accumulators. <br /></td></tr>
@@ -1314,7 +1321,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 </ul>
 <p>Since Unicode doesn't provide us with a "soft linebreak" letter we use <code>\r</code> as a marker that this line has to be broken here if we don't want it to extend beyond the right margin of the screen.</p>
 <p>In a few places we use wxString::const_iterator instead of accessing individual letters within the string using the [] operator. This might look overly complicated. But in UTF-8 all non-standard-ASCII-characters use more than one byte making iterating over every single char of the string the only way of determining which address char n is at. An iterator is the only way of not having to determine the address of every single char independently.</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000005">Todo:</a></b></dt><dd>Draw only tokens that are in the redraw region. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>Draw only tokens that are in the redraw region. </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="ac3aaa6e05945f0185ff534a310d94e99" name="ac3aaa6e05945f0185ff534a310d94e99"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac3aaa6e05945f0185ff534a310d94e99">&#9670;&#160;</a></span>ActivateCursor()</h2>
@@ -2002,6 +2009,26 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 <p>Only interesting for EditorCells </p>
 
 <p>Reimplemented from <a class="el" href="classCell.html#ad96add356d2a246e0053262fce4d8010">Cell</a>.</p>
+
+</div>
+</div>
+<a id="a38e65dd7166909fbaf45a770c9e84c9f" name="a38e65dd7166909fbaf45a770c9e84c9f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a38e65dd7166909fbaf45a770c9e84c9f">&#9670;&#160;</a></span>DigitGroupGapWidth()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxCoord EditorCell::DigitGroupGapWidth </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The width of one digit-group gap in a number (GH #192) </p>
+<p>Public, like <a class="el" href="classEditorCell.html#a622a7bf6e7d27c8c5f1b9bda8b0da12f" title="Determines the size of a text snippet.">GetTextSize()</a>, so tests can work out the exact width a grouped number should take up on the platform they run on. </p>
 
 </div>
 </div>
@@ -4807,7 +4834,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 </div><div class="memdoc">
 
 <p>Allows to change the text a <a class="el" href="classTextCell.html" title="A Text cell.">TextCell</a> contains. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000005">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
 
 </div>
 </div>

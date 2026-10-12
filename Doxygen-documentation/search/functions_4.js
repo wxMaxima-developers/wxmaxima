@@ -17,7 +17,7 @@ var searchData=
   ['diffcell_14',['DiffCell',['../classDiffCell.html#aed9543c4b055cfd55beda76a14aba011',1,'DiffCell']]],
   ['digitgroupgaps_15',['DigitGroupGaps',['../DigitGrouping_8cpp.html#a39150533ff60c978a1cc8d2917782f48',1,'wxm']]],
   ['digitgroupgapsintokens_16',['DigitGroupGapsInTokens',['../DigitGrouping_8cpp.html#a316b67731d95f5562212e81fc51ae246',1,'wxm']]],
-  ['digitgroupgapwidth_17',['DigitGroupGapWidth',['../classTextCell.html#a06a8af21ecd5969afb9f7ab9340f4786',1,'TextCell']]],
+  ['digitgroupgapwidth_17',['DigitGroupGapWidth',['../classTextCell.html#a06a8af21ecd5969afb9f7ab9340f4786',1,'TextCell::DigitGroupGapWidth()'],['../classEditorCell.html#a38e65dd7166909fbaf45a770c9e84c9f',1,'EditorCell::DigitGroupGapWidth()']]],
   ['digitgrouping_18',['DigitGrouping',['../classConfiguration.html#aa34bf94cb8e69a7700c7b95d63b3a981',1,'Configuration']]],
   ['digitgroupingmindigits_19',['DigitGroupingMinDigits',['../classConfiguration.html#a54c5433508423d0a63a537f28a6f5344',1,'Configuration']]],
   ['dirstructure_20',['Dirstructure',['../classDirstructure.html#a34b1650abc08ce6c71a1d6fec582bbc0',1,'Dirstructure']]],
