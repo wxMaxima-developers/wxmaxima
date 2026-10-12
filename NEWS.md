@@ -1,5 +1,10 @@
 # Current development version
 
+- While a matrix shown in a box with scrollbars of its own is selected, or
+  something inside it is, the mouse wheel and the touchpad now scroll that
+  matrix instead of the worksheet (GH #2479). Shift+wheel and horizontal
+  wheels scroll it sideways.
+
 - When Maxima reports an error, the code cell now shows where it is
   (GH #289): the statement that failed gets a light red background, and
   for a syntax error the place Maxima stopped at a stronger one, with the
