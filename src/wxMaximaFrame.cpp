@@ -2078,13 +2078,9 @@ void wxMaximaFrame::SetupHelpMenu() {
     {
       m_HelpMenu->AppendSeparator();
       m_HelpMenu->AppendRadioItem(EventIDs::menu_wxmaxima_uses_help_sidebar,
-                                  _("wxMaxima shows help in the sidebar"));
+                                  _("Show help in the sidebar"));
       m_HelpMenu->AppendRadioItem(EventIDs::menu_wxmaxima_uses_help_browser,
-                                  _("wxMaxima shows help in a browser"));
-      if(GetConfiguration().InternalHelpBrowser())
-        m_HelpMenu->Check(EventIDs::menu_wxmaxima_uses_help_sidebar, true);
-      else
-        m_HelpMenu->Check(EventIDs::menu_wxmaxima_uses_help_browser, true);
+                                  _("Show help in a browser"));
     }
   m_HelpMenu->AppendSeparator();
   wxMenu *tutorials_sub = new wxMenu;
@@ -2118,19 +2114,12 @@ void wxMaximaFrame::SetupHelpMenu() {
   m_HelpMenu->Append(EventIDs::menu_help_maxima_homepage,
                      _(wxS("↗Documentation on maxima's homepage")));
   m_HelpMenu->AppendSeparator();
-  m_HelpMenu->AppendRadioItem(EventIDs::menu_maxima_uses_internal_help,
-                              _("Maxima shows help in the console"),
+  m_HelpMenu->AppendCheckItem(EventIDs::menu_maxima_help_in_console,
+                              _("Maxima answers ? on the console"),
                               _("Tells maxima to show the help for ?, ?? and "
-                                "describe() on the console"));
-  if (GetConfiguration().OfferInternalHelpBrowser())
-    m_HelpMenu->AppendRadioItem(EventIDs::menu_maxima_uses_wxmaxima_help,
-                                _("Maxima shows help in a sidebar"),
-                                _("Tells maxima to show the help for ?, ?? and "
-                                  "describe() in a wxMaxima sidebar"));
-  m_HelpMenu->AppendRadioItem(EventIDs::menu_maxima_uses_html_help,
-                              _("Maxima shows help in a browser"),
-                              _("Tells maxima to show the help for ?, ?? and "
-                                "describe() in a separate browser window"));
+                                "describe() on the console instead of where "
+                                "all other help is shown"));
+  UpdateHelpMenuChecks();
   m_HelpMenu->AppendSeparator();
   m_HelpMenu->Append(EventIDs::menu_build_info, _("Build &Info"),
                      _("Info about Maxima build"), wxITEM_NORMAL);
@@ -2436,6 +2425,19 @@ void wxMaximaFrame::TogglePaneVisibility(int id)
     return;
 
   ShowPane(id, !IsPaneDisplayed(id));
+}
+
+void wxMaximaFrame::UpdateHelpMenuChecks() {
+  if (!m_HelpMenu)
+    return;
+  if (GetConfiguration().OfferInternalHelpBrowser()) {
+    if (GetConfiguration().InternalHelpBrowser())
+      m_HelpMenu->Check(EventIDs::menu_wxmaxima_uses_help_sidebar, true);
+    else
+      m_HelpMenu->Check(EventIDs::menu_wxmaxima_uses_help_browser, true);
+  }
+  m_HelpMenu->Check(EventIDs::menu_maxima_help_in_console,
+                    GetConfiguration().MaximaHelpInConsole());
 }
 
 void wxMaximaFrame::ShowPane(int id, bool show) {

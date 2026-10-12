@@ -137,11 +137,6 @@ public:
   };
   static PerformanceStats g_stats;
 
-  enum maximaHelpFormat{
-    maxima = 0,
-    frontend = 1,
-    browser = 2
-  };
   //! The export formats we support for HTML equations
   enum htmlExportFormat
   {
@@ -1456,10 +1451,6 @@ public:
   //! The smallest value DigitGroupingMinDigits() accepts: 1 digit has no groups
   static constexpr long DigitGroupingMinDigits_Min = 2;
 
-  void MaximaUsesHtmlBrowser(bool maximaUsesHhtmlBrowser){m_maximaUsesHhtmlBrowser = maximaUsesHhtmlBrowser;}
-  bool MaximaUsesHtmlBrowser() const {return m_maximaUsesHhtmlBrowser;}
-  void MaximaUsesWxmaximaBrowser(bool maximaUsesWxmaximaBrowser){m_maximaUsesWxmaximaBrowser = maximaUsesWxmaximaBrowser;}
-  bool MaximaUsesWxmaximaBrowser() const {return m_maximaUsesWxmaximaBrowser && OfferInternalHelpBrowser();}
   void ExportContainsWXMX(bool exportContainsWXMX){m_exportContainsWXMX = exportContainsWXMX;}
   bool ExportContainsWXMX() const {return m_exportContainsWXMX;}
   /*! Does the HTML export produce one self-contained file?
@@ -1515,8 +1506,25 @@ public:
   static void SetDebugmode(){m_debugMode = true;}
   //! Enable costly checks?
   static bool GetDebugmode(){return m_debugMode;}
-  maximaHelpFormat MaximaHelpFormat() const;
-  void MaximaHelpFormat(maximaHelpFormat format) {m_maximaHelpFormat = format;}
+  /*! Does Maxima answer ?, ?? and describe() on the console?
+
+    If not, Maxima hands the matching manual topics to wxMaxima
+    (output_format_for_help: frontend), which shows them wherever
+    InternalHelpBrowser() says, like all other help. That sidebar-or-browser
+    choice is the one setting for where help is shown: until 2026-10 Maxima's
+    help had a sidebar/browser choice of its own, so "Help on" and F1 could
+    open a browser while ? used the sidebar, and the two were easily mixed up.
+  */
+  bool MaximaHelpInConsole() const {return m_maximaHelpInConsole;}
+  void MaximaHelpInConsole(bool console) {m_maximaHelpInConsole = console;}
+  //! The value of Maxima's output_format_for_help MaximaHelpInConsole() stands for
+  wxString MaximaHelpFormatName() const;
+  /*! The command that sets Maxima's output_format_for_help accordingly
+
+    A :lisp-quiet one, as everything in wxMaxima::m_configCommands has to be:
+    a plain Maxima statement would answer with a prompt of its own.
+  */
+  wxString MaximaHelpFormatCommand() const;
 
 private:
   //! What we know about the connected Maxima instance
@@ -1577,8 +1585,6 @@ private:
   long m_wizardTab;
   bool m_display2d_Unicode;
   bool m_usePartialForDiff;
-  bool m_maximaUsesHhtmlBrowser;
-  bool m_maximaUsesWxmaximaBrowser;
   //! true = Autosave doesn't save into the current file.
   bool m_autoSaveAsTempFile;
   //! The number of the language wxMaxima uses.
@@ -1749,7 +1755,7 @@ private:
   //! Not copied by the copy constructor; see GetWorksheetTopOffset()
   int m_worksheetTopOffset = 0;
   wxString m_wxMathML_Filename;
-  maximaHelpFormat m_maximaHelpFormat;
+  bool m_maximaHelpInConsole = false;
   std::atomic<std::int_fast32_t> m_cellCfgCnt{0};
   static bool m_use_threads;
 };

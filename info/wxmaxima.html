@@ -1159,6 +1159,9 @@ right-clicking it and choosing “Open Link”; hovering over it shows where
 it leads. The HTML export turns it into a link, the TeX export into a
 <code>\url{}</code>. Links are always recognized from the text itself,
 so nothing about them is stored in the file.</p>
+<p>Links in a code cell’s comments (<code>/* ... */</code>) work the
+same way. Elsewhere in code, for example inside a string, an address is
+Maxima syntax and is not a link.</p>
 <p>The same goes for web addresses in <em>Maxima</em>’s output, for
 example in a string printed by
 <code>print("See https://wxmaxima-developers.github.io/wxmaxima/")</code>:

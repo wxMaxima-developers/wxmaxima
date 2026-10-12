@@ -47,6 +47,8 @@
 #include <cstdlib>
 #include <type_traits>
 #include <variant>
+#include <vector>
+#include <utility>
 #ifndef _WIN32
 #endif
 
@@ -260,6 +262,74 @@ SCENARIO("What is drawn behind transparent images survives a round-trip") {
             Configuration::ImageBackdrop::onDarkBackground);
     }
     wxRemoveFile(file);
+  }
+}
+
+//! Reads a configuration from a config file holding exactly the given entries
+static bool ReadMaximaHelpInConsole(const std::vector<std::pair<wxString, long>> &entries) {
+  const wxString file = wxFileName::CreateTempFileName(wxS("wxm_configtest"));
+  REQUIRE(!file.IsEmpty());
+  {
+    wxFileConfig fileConfig(wxS("wxMaxima"), wxEmptyString, file);
+    for (const auto &entry : entries)
+      fileConfig.Write(entry.first, entry.second);
+    fileConfig.Flush();
+  }
+  wxConfigBase *oldConfig = wxConfig::Get(false);
+  wxConfigBase *fileConfig = new wxFileConfig(wxS("wxMaxima"), wxEmptyString, file);
+  wxConfig::Set(fileConfig);
+  Configuration cfgRead(nullptr, Configuration::temporary);
+  cfgRead.ReadConfig();
+  wxConfig::Set(oldConfig);
+  delete fileConfig;
+  wxRemoveFile(file);
+  return cfgRead.MaximaHelpInConsole();
+}
+
+SCENARIO("Old configs keep Maxima's help on the console if they had it there") {
+  // Before there was one setting for where help is shown, maximaHelpFormat
+  // said where Maxima showed its own help: 0 = console, 1 = sidebar,
+  // 2 = browser. Sidebar and browser are now the general "show help in"
+  // setting's business; only the console has an equivalent.
+  GIVEN("a config from before the merge that showed Maxima's help on the console") {
+    THEN("Maxima's help stays on the console") {
+      CHECK(ReadMaximaHelpInConsole({{wxS("maximaHelpFormat"), 0}}));
+    }
+  }
+  GIVEN("a config from before the merge that showed it in the sidebar or a browser") {
+    THEN("Maxima's help goes where all other help goes") {
+      CHECK(!ReadMaximaHelpInConsole({{wxS("maximaHelpFormat"), 1}}));
+      CHECK(!ReadMaximaHelpInConsole({{wxS("maximaHelpFormat"), 2}}));
+    }
+  }
+  GIVEN("a config that has both the old and the new key") {
+    THEN("the new key wins") {
+      CHECK(!ReadMaximaHelpInConsole({{wxS("maximaHelpFormat"), 0},
+                                      {wxS("maximaHelpInConsole"), 0}}));
+    }
+  }
+  GIVEN("a fresh config") {
+    THEN("Maxima's help goes where all other help goes") {
+      CHECK(!ReadMaximaHelpInConsole({}));
+    }
+  }
+}
+
+SCENARIO("Maxima is told where to show its help") {
+  Configuration cfg(nullptr, Configuration::temporary);
+  GIVEN("Maxima's help on the console") {
+    cfg.MaximaHelpInConsole(true);
+    THEN("output_format_for_help is set to text, quietly") {
+      CHECK(cfg.MaximaHelpFormatCommand() ==
+            wxS(":lisp-quiet (msetq $output_format_for_help '$text)\n"));
+    }
+  }
+  GIVEN("Maxima's help where all other help goes") {
+    cfg.MaximaHelpInConsole(false);
+    THEN("Maxima hands the topics to wxMaxima") {
+      CHECK(cfg.MaximaHelpFormatCommand() ==
+            wxS(":lisp-quiet (msetq $output_format_for_help '$frontend)\n"));
+    }
   }
 }
 

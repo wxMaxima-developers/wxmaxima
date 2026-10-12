@@ -1317,7 +1317,7 @@ void EditorCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
 }
 
 wxString EditorCell::GetLinkAt(wxPoint point) {
-  if (IsCodeEditor() || IsHidden())
+  if (IsHidden())
     return {};
   if (!m_tokens_valid)
     StyleText();
@@ -4200,7 +4200,7 @@ void EditorCell::StyleTextCode() const {
       else {
         containedNewline = true;
         if (line != wxEmptyString)
-          m_styledText.push_back(StyledText(token.GetTextStyle(), line));
+          PushCodeLine(token.GetTextStyle(), line);
         m_styledText.push_back(StyledText(token.GetTextStyle(), "\n"));
         // A hard newline starts a fresh display line: the width accumulated
         // for the previous line and its wrap bookkeeping no longer apply -
@@ -4212,13 +4212,16 @@ void EditorCell::StyleTextCode() const {
         line.Clear();
       }
     }
+    wxCoord lineRemnantWidth = 0;
     if (line != wxEmptyString) {
-      m_styledText.push_back(StyledText(token.GetTextStyle(), line));
+      lineRemnantWidth = PushCodeLine(token.GetTextStyle(), line);
       // A number never contains a newline, so this snippet is all of it.
       if ((ti < digitGaps.size()) && !digitGaps[ti].empty() && !containedNewline) {
         for (const auto gap : digitGaps[ti])
           m_digitGapPositions.push_back(tokenStart + gap);
         m_styledText.back().SetDigitGaps(std::move(digitGaps[ti]));
+        // The gaps widen the number.
+        lineRemnantWidth = SnippetWidth(m_styledText.back());
       }
     }
     if (containedNewline) {
@@ -4227,8 +4230,7 @@ void EditorCell::StyleTextCode() const {
       if (line != wxEmptyString)
         lineWidth += GetTextSize(line).GetWidth();
     } else {
-      HandleSoftLineBreaks_Code(candidate, lineWidth,
-                                SnippetWidth(m_styledText.back()),
+      HandleSoftLineBreaks_Code(candidate, lineWidth, lineRemnantWidth,
                                 indentationPixels);
       // Having weighed this token (and possibly broken before it), a breakable
       // operator now becomes the candidate spot for the following tokens: a
@@ -4251,6 +4253,47 @@ void EditorCell::StyleTextCode() const {
   std::ranges::sort(m_wordList);
   if(!suppressedLinesInfo.IsEmpty())
     m_styledText.push_back(StyledText(TS_CODE_COMMENT, suppressedLinesInfo));
+}
+
+wxCoord EditorCell::PushCodeLine(TextStyle style, const wxString &line) const {
+  // Only a comment can hold a link: anywhere else in code "http://..." is
+  // Maxima syntax (a string, or a division by a symbol) that a click must not
+  // open.
+  std::vector<wxm::UrlSpan> links;
+  if (style == TS_CODE_COMMENT) {
+    // The comment's own "/*" and "*/" consist of characters a link may
+    // contain, so "/* https://a.org*/" would otherwise link to
+    // "https://a.org*/". Blanking them out (keeping every other character
+    // where it is) ends a link there, and the usual trimming of a trailing
+    // "." or ")" still happens in front of them.
+    wxString body = line;
+    body.Replace(wxS("/*"), wxS("  "));
+    body.Replace(wxS("*/"), wxS("  "));
+    links = wxm::FindUrls(body);
+  }
+  if (links.empty()) {
+    m_styledText.push_back(StyledText(style, line));
+    return SnippetWidth(m_styledText.back());
+  }
+
+  m_containsLinks = true;
+  wxCoord width = 0;
+  auto push = [&](const wxString &piece, bool isLink) {
+    m_styledText.push_back(StyledText(style, piece));
+    if (isLink)
+      m_styledText.back().SetLink();
+    width += SnippetWidth(m_styledText.back());
+  };
+  size_t copied = 0;
+  for (const auto &link : links) {
+    if (link.start > copied)
+      push(line.Mid(copied, link.start - copied), false);
+    push(line.Mid(link.start, link.length), true);
+    copied = link.start + link.length;
+  }
+  if (copied < line.Length())
+    push(line.Mid(copied), false);
+  return width;
 }
 
 void EditorCell::PushTextLine(const wxString &line, const wxString &indentChar,
