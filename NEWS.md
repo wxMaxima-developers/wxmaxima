@@ -1,5 +1,12 @@
 # Current development version
 
+- The wizard sidebar no longer hides its OK button: on a fresh
+  configuration it opens in a window of its own next to the worksheet,
+  its Command and Description tabs are only as high as their text, and
+  when docked it is at least as high as the wizard needs (as far as the
+  other sidebars in the same dock leave room). A layout you saved is kept.
+  The Solve ODE wizard now offers help on ode2 instead of on ";", and a
+  wizard offers help only on what the manual actually documents.
 - Pasting into a cell now scrolls that cell into view, as typing does. In a
   long worksheet a paste could land in a cell scrolled out of sight, which
   looked as if nothing had happened (likely GH #2478).

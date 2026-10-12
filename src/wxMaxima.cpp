@@ -2998,7 +2998,7 @@ void wxMaxima::OnWizardOK(wxCommandEvent &event) {
 }
 
 void wxMaxima::OnWizardHelpButton(wxCommandEvent &event) {
-  ShowMaximaHelp(m_wizard->GetHelpKeyword(event.GetId()));
+  ShowHelp(m_wizard->GetHelpKeyword(event.GetId()));
 }
 
 void wxMaxima::OnWizardInsert(wxCommandEvent &WXUNUSED(event)) {
