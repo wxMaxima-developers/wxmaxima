@@ -84,8 +84,21 @@ SCENARIO("A long number in a code cell gets gaps, its text doesn't") {
   THEN("the line is wider by three gaps") {
     const wxCoord extra = groupedEditor->GetLineWidth(0, code.Length()) -
       plainEditor->GetLineWidth(0, code.Length());
-    REQUIRE(extra > 0);
-    REQUIRE(extra % 3 == 0);
+    // The grouped number is drawn, and measured, one group at a time. Where
+    // text is laid out at fractional positions (MSW) the groups' rounded
+    // widths needn't add up to the rounded width of the whole number, so
+    // that difference is part of the expected width, too. Both sides are
+    // read from the cells' own width caches, i.e. in the fonts they were
+    // laid out in.
+    const wxCoord groupWidths =
+      groupedEditor->GetTextSize(wxS("2")).GetWidth() +
+      groupedEditor->GetTextSize(wxS("111")).GetWidth() +
+      groupedEditor->GetTextSize(wxS("230")).GetWidth() +
+      groupedEditor->GetTextSize(wxS("496")).GetWidth();
+    const wxCoord numberWidth = plainEditor->GetTextSize(wxS("2111230496")).GetWidth();
+    const wxCoord gap = groupedEditor->DigitGroupGapWidth();
+    REQUIRE(gap > 0);
+    REQUIRE(extra == 3 * gap + groupWidths - numberWidth);
   }
   THEN("the caret steps over a gap only where 2 111 230 496 has one") {
     // The digits start at position 2; the gaps go before the digits at

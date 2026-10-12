@@ -160,6 +160,7 @@ TextCell *MaximaOutputAppender::ConsoleAppend(wxString s, CellType type) {
     if (tmp != nullptr) {
       m_wxMaxima.GetWorksheet()->GetErrorList().Add(tmp);
       tmp->GetEditable()->SetErrorIndex(m_wxMaxima.m_commandIndex - 1);
+      m_wxMaxima.m_evaluator.MarkErrorStatement(tmp);
     }
   } else if (type == MC_TYPE_WARNING) {
     lastLine = DoRawConsoleAppend(s, MC_TYPE_WARNING);

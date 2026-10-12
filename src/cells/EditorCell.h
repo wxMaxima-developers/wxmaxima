@@ -316,6 +316,34 @@ public:
     return m_diffHighlights;
   }
 
+  /*! Marks a statement Maxima reported an error for (GH #289)
+
+    The range is half-open ([start, end)) and indexes into GetValue(); it is
+    painted with the TS_ERROR_STATEMENT background. More than one statement
+    of a cell can fail if evaluation doesn't stop at the first error.
+
+    The marks belong to the text they were set for: as soon as the text
+    differs from it, Draw() stops painting them. They are dropped by
+    ClearErrorMarks() when the cell is evaluated again, and by SetValue().
+  */
+  void AddErrorStatement(std::size_t start, std::size_t end);
+  /*! Marks the place in a failing statement Maxima's syntax error points at
+
+    Painted with the TS_ERROR_SPOT background, over the statement's own mark.
+    Same lifetime as the marks AddErrorStatement() sets.
+  */
+  void AddErrorSpot(std::size_t start, std::size_t end);
+  //! Drops all marks AddErrorStatement() and AddErrorSpot() have set.
+  void ClearErrorMarks();
+  //! The statements AddErrorStatement() has marked (for tests and inspection).
+  const std::vector<std::pair<std::size_t, std::size_t>> &GetErrorStatements() const;
+  //! The spots AddErrorSpot() has marked (for tests and inspection).
+  const std::vector<std::pair<std::size_t, std::size_t>> &GetErrorSpots() const;
+  //! True if there are error marks that still match the text.
+  bool ErrorMarksValid() const {
+    return m_errorMarks && (m_text == m_errorMarks->text);
+  }
+
   /*! Converts m_text to a list of styled text snippets that will later be displayed by draw().
 
     This function also generates a wordlist for this EditorCell so Autocompletion can learn
@@ -468,6 +496,15 @@ public:
   std::pair<long, long> GetMatchingParens() const { return {m_paren1, m_paren2}; }
 
   wxCoord GetLineWidth(size_t line, size_t pos);
+
+  /*! The width of one digit-group gap in a number (GH #192)
+
+    Public, like GetTextSize(), so tests can work out the exact width a
+    grouped number should take up on the platform they run on.
+  */
+  wxCoord DigitGroupGapWidth() const;
+  //! Determines the size of a text snippet
+  wxSize GetTextSize(const wxString &text) const;
 
   //! Pixel x of the next 4-column tab stop at or after startX, where one
   //! column is the width of a space glyph in the current font. startX is
@@ -981,8 +1018,6 @@ private:
   void HandleSoftLineBreaks_Code(SoftBreakCandidate &candidate, wxCoord &lineWidth,
                                  wxCoord tokenWidth, wxCoord &indentationPixels) const;
 
-  //! The width of one digit-group gap in a number (GH #192)
-  wxCoord DigitGroupGapWidth() const;
   /*! The width of the first length characters of snippet.
 
     Like GetTextSize(), but including the digit-group gaps among them (see
@@ -1044,8 +1079,6 @@ private:
   //! Draw a box that marks the current selection
   void MarkSelection(wxDC *dc, size_t start, size_t end, TextStyle style);
 
-  //! Determines the size of a text snippet
-  wxSize GetTextSize(const wxString &text) const;
   //! Determines the size of a text snippet drawn with the given formatting
   wxSize GetTextSize(const wxString &text, TextFormat::Format format) const;
   /*! MeasureTextWidth() for the m_text substring that starts at startPos,
@@ -1190,6 +1223,19 @@ private:
   //! while no edit happened, and every insertion/deletion changes the length
   //! (soft-wrapping doesn't - it swaps ' ' and '\r' in place).
   std::size_t m_diffHighlightsTextLength = 0;
+  //! The marks AddErrorStatement() and AddErrorSpot() set
+  struct ErrorMarks {
+    std::vector<std::pair<std::size_t, std::size_t>> statements;
+    std::vector<std::pair<std::size_t, std::size_t>> spots;
+    /*! m_text when the marks were set: they only stay valid while it is
+      unchanged. A copy rather than the length, unlike
+      m_diffHighlightsTextLength: typing one character and deleting another
+      keeps the length, but may well have fixed the error.
+    */
+    wxString text;
+  };
+  //! Only allocated while there are error marks: almost no cell has any.
+  std::unique_ptr<ErrorMarks> m_errorMarks;
 
 //** 8/4 bytes
 //**

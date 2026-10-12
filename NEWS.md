@@ -3,12 +3,30 @@
 - With wxWidgets 3.2's Qt port, wxMaxima no longer aborts on startup with
   an "invalid window" assertion, and the toolbar's own icons are no longer
   invisible (GH #2483).
+- A worksheet with output wider than the window, for example a long
+  warning(), no longer loses its horizontal scrollbar as soon as a cell
+  above that output is laid out again, e.g. after opening the file and
+  clicking into the first cell (GH #2480).
+- While a matrix shown in a box with scrollbars of its own is selected, or
+  something inside it is, the mouse wheel and the touchpad now scroll that
+  matrix instead of the worksheet (GH #2479). Shift+wheel and horizontal
+  wheels scroll it sideways.
+
+- When Maxima reports an error, the code cell now shows where it is
+  (GH #289): the statement that failed gets a light red background, and
+  for a syntax error the place Maxima stopped at a stronger one, with the
+  cursor there. Previously the cursor only went to the end of the failing
+  statement, and when wxMaxima itself refused to send a statement with
+  mismatched brackets, to a wrong place in cells with more than one
+  statement. Both colours can be changed in the configuration dialog's
+  "Style" tab.
+
 - A click on the right half of the last character of a code cell's line
   now puts the cursor at the end of the line, not in front of that
   character. Clicks inside a word land on the nearer side of the
   character more reliably, too.
 - Long numbers in the output and in code cells are easier to read: their
-  digits are shown in groups separated by a small gap, 2111230496 as
+  digits are shown in groups separated by a gap of a quarter em, 2111230496 as
   2 111 230 496 (GH #192). Only the display changes: copying, saving,
   exporting and what is sent to Maxima never contain the gaps. Numbers with fewer than 5 digits, years for example, are
   left as they are. Both can be changed in the configuration dialog's

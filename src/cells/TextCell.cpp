@@ -566,10 +566,9 @@ void TextCell::UpdateDigitGroupGaps() const {
 }
 
 wxCoord TextCell::DigitGroupGapWidth() const {
-  // About a sixth of an em, the width of a typographic thin space. Measuring
-  // U+2009 itself would depend on the font having that glyph at all.
-  return std::max(static_cast<wxCoord>(1),
-                  static_cast<wxCoord>(m_fontSize_Scaled.Get() / 6));
+  // Computed from the font size rather than by measuring a thin space
+  // (U+2009), which would depend on the font having that glyph at all.
+  return wxm::DigitGroupGapWidth(m_fontSize_Scaled.Get());
 }
 
 wxCoord TextCell::DrawGroupedDigits(wxDC *dc, const wxString &text, wxCoord x,
