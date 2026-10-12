@@ -79,7 +79,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>Defines <a class="el" href="ToolbarPane_8cpp.html#ad47c1fc4ff2993d0be3ce03be0289c30" title="Sets the main toolbar pane&#39;s properties, its size included.">SetToolbarPaneProperties()</a>, see <a class="el" href="ToolbarPane_8h.html" title="Declares SetToolbarPaneProperties(), which gives the main toolbar&#39;s wxAUI pane its properties – both ...">ToolbarPane.h</a>.  
+<p>Defines <a class="el" href="ToolbarPane_8cpp.html#a6b789763c4d797826fc0b83ef8dd32d9" title="Adds the main toolbar to manager, with SetToolbarPaneProperties().">AddToolbarPane()</a> and <a class="el" href="ToolbarPane_8cpp.html#ad47c1fc4ff2993d0be3ce03be0289c30" title="Sets the main toolbar pane&#39;s properties, its size included.">SetToolbarPaneProperties()</a>, see <a class="el" href="ToolbarPane_8h.html" title="Declares AddToolbarPane() and SetToolbarPaneProperties(), which give the main toolbar&#39;s wxAUI pane it...">ToolbarPane.h</a>.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="ToolbarPane_8h_source.html">ToolbarPane.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
@@ -94,10 +94,58 @@ Functions</h2></td></tr>
 <tr class="memitem:ad47c1fc4ff2993d0be3ce03be0289c30"><td class="memItemLeft" align="right" valign="top">wxAuiPaneInfo &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ToolbarPane_8cpp.html#ad47c1fc4ff2993d0be3ce03be0289c30">SetToolbarPaneProperties</a> (wxAuiPaneInfo &amp;pane, const wxAuiToolBar *toolbar)</td></tr>
 <tr class="memdesc:ad47c1fc4ff2993d0be3ce03be0289c30"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the main toolbar pane's properties, its size included.  <br /></td></tr>
 <tr class="separator:ad47c1fc4ff2993d0be3ce03be0289c30"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b789763c4d797826fc0b83ef8dd32d9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ToolbarPane_8cpp.html#a6b789763c4d797826fc0b83ef8dd32d9">AddToolbarPane</a> (wxAuiManager &amp;manager, wxAuiToolBar *toolbar, wxAuiPaneInfo pane)</td></tr>
+<tr class="memdesc:a6b789763c4d797826fc0b83ef8dd32d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds the main toolbar to <code>manager</code>, with <a class="el" href="ToolbarPane_8h.html#ad47c1fc4ff2993d0be3ce03be0289c30" title="Sets the main toolbar pane&#39;s properties, its size included.">SetToolbarPaneProperties()</a>.  <br /></td></tr>
+<tr class="separator:a6b789763c4d797826fc0b83ef8dd32d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Defines <a class="el" href="ToolbarPane_8cpp.html#ad47c1fc4ff2993d0be3ce03be0289c30" title="Sets the main toolbar pane&#39;s properties, its size included.">SetToolbarPaneProperties()</a>, see <a class="el" href="ToolbarPane_8h.html" title="Declares SetToolbarPaneProperties(), which gives the main toolbar&#39;s wxAUI pane its properties – both ...">ToolbarPane.h</a>. </p>
+<div class="textblock"><p>Defines <a class="el" href="ToolbarPane_8cpp.html#a6b789763c4d797826fc0b83ef8dd32d9" title="Adds the main toolbar to manager, with SetToolbarPaneProperties().">AddToolbarPane()</a> and <a class="el" href="ToolbarPane_8cpp.html#ad47c1fc4ff2993d0be3ce03be0289c30" title="Sets the main toolbar pane&#39;s properties, its size included.">SetToolbarPaneProperties()</a>, see <a class="el" href="ToolbarPane_8h.html" title="Declares AddToolbarPane() and SetToolbarPaneProperties(), which give the main toolbar&#39;s wxAUI pane it...">ToolbarPane.h</a>. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
+<a id="a6b789763c4d797826fc0b83ef8dd32d9" name="a6b789763c4d797826fc0b83ef8dd32d9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6b789763c4d797826fc0b83ef8dd32d9">&#9670;&#160;</a></span>AddToolbarPane()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void AddToolbarPane </td>
+          <td>(</td>
+          <td class="paramtype">wxAuiManager &amp;&#160;</td>
+          <td class="paramname"><em>manager</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">wxAuiToolBar *&#160;</td>
+          <td class="paramname"><em>toolbar</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">wxAuiPaneInfo&#160;</td>
+          <td class="paramname"><em>pane</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Adds the main toolbar to <code>manager</code>, with <a class="el" href="ToolbarPane_8h.html#ad47c1fc4ff2993d0be3ce03be0289c30" title="Sets the main toolbar pane&#39;s properties, its size included.">SetToolbarPaneProperties()</a>. </p>
+<p>Use this instead of calling wxAuiManager::AddPane() directly: since wxWidgets 3.3.4, AddPane() also makes a pane's best size the size of the dock the pane is in. That size is the dock's outer one, though, so the pane's border is taken off it, and the toolbar would end up two pixels shorter than its contents need. This function lets the dock be sized from the toolbar instead, as older wxWidgets versions always did.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">manager</td><td>The frame's AUI manager. </td></tr>
+    <tr><td class="paramname">toolbar</td><td>The toolbar; Realize() must already have been called on it. </td></tr>
+    <tr><td class="paramname">pane</td><td>The pane's name and dock position. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="ad47c1fc4ff2993d0be3ce03be0289c30" name="ad47c1fc4ff2993d0be3ce03be0289c30"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad47c1fc4ff2993d0be3ce03be0289c30">&#9670;&#160;</a></span>SetToolbarPaneProperties()</h2>
 
