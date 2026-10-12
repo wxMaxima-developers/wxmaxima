@@ -1729,9 +1729,8 @@ wxCoord EditorCell::MeasureTextWidth(wxCoord startX, const wxString &text,
 }
 
 wxCoord EditorCell::DigitGroupGapWidth() const {
-  // About a sixth of an em, the gap TextCell leaves in output numbers.
-  return std::max(static_cast<wxCoord>(1),
-                  static_cast<wxCoord>(m_fontSize_Scaled.Get() / 6));
+  // The same gap TextCell leaves in output numbers.
+  return wxm::DigitGroupGapWidth(m_fontSize_Scaled.Get());
 }
 
 wxCoord EditorCell::SnippetWidth(const StyledText &snippet, size_t length) const {
