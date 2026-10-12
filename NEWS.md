@@ -1,5 +1,8 @@
 # Current development version
 
+- The tray icon's menu works with an AppIndicator (StatusNotifier) tray:
+  "Show wxMaxima", "Interrupt" and "Exit" did nothing there. Showing
+  wxMaxima from the tray now also brings back a hidden window.
 - With wxWidgets 3.3.4 or newer the main toolbar was two pixels shorter
   than its contents. It gets its full height again.
 - Asking Maxima for help (`? integrate`, `describe()`) before wxMaxima had
