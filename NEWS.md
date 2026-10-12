@@ -1,5 +1,8 @@
 # Current development version
 
+- Web addresses in code cells' comments are now links, as they already
+  were in text cells: Ctrl+click (Cmd+click on macOS) or the context menu
+  opens them. An address in a string stays plain code.
 - The About dialog and the log window now say why the integrated help
   browser is or isn't offered: whether wxMaxima was built with wxWebView
   and, on Windows, whether wxWidgets has the Edge (WebView2) backend,
