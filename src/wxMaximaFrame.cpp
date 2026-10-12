@@ -31,6 +31,7 @@
 */
 #include "Version.h"
 #include "wxMaximaFrame.h"
+#include "HelpBrowserDiagnosis.h"
 #include "AuiPerspectiveRepair.h"
 #include "ToolbarPane.h"
 #include "ArtProvider.h"
@@ -2070,6 +2071,9 @@ void wxMaximaFrame::SetupHelpMenu() {
     m_HelpMenu->Append(EventIDs::menu_goto_url, _("Go to URL"));
 #endif
   m_HelpMenu->Append(EventIDs::menu_show_tip, _("Show &Tips..."), _("Show a tip"));
+  // Whether the radio items below appear depends on things that fail
+  // silently (GH #2481); the log window, and the About dialog, say which.
+  wxLogMessage(wxS("%s"), wxm::HelpBrowserDiagnosis());
   if(GetConfiguration().OfferInternalHelpBrowser())
     {
       m_HelpMenu->AppendSeparator();

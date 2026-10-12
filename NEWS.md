@@ -1,5 +1,10 @@
 # Current development version
 
+- The About dialog and the log window now say why the integrated help
+  browser is or isn't offered: whether wxMaxima was built with wxWebView
+  and, on Windows, whether wxWidgets has the Edge (WebView2) backend,
+  whether WebView2Loader.dll is found and whether the WebView2 runtime is
+  usable (GH #2481). The Windows CI job prints the same list.
 - Pasting into a cell now scrolls that cell into view, as typing does. In a
   long worksheet a paste could land in a cell scrolled out of sight, which
   looked as if nothing had happened (likely GH #2478).
