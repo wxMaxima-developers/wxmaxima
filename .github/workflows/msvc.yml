@@ -27,7 +27,7 @@ concurrency:
 env:
   build: '${{ github.workspace }}/build'
   config: Debug
-  WXVERSION: 3.3.2
+  WXVERSION: 3.3.4
 
 permissions:
   contents: read
@@ -50,7 +50,10 @@ jobs:
           cache-name: cache-wxWidgets
         with:
           path: wxwidgets-source
-          key: ${{ runner.os }}-build-msvc-${{ env.cache-name }}-${env:WXVERSION}-0
+          # ${{ env.WXVERSION }}, not PowerShell's ${env:WXVERSION}: a key is not
+          # run by a shell, so the latter stayed literal text and a version bump
+          # restored the previous version's build from this version-less path.
+          key: ${{ runner.os }}-build-msvc-${{ env.cache-name }}-${{ env.WXVERSION }}-0
       - name: wxWidgets
         run: |
              if (Test-Path wxwidgets-source) { echo "wxWidgets already present"} else {
