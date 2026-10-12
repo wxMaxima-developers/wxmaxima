@@ -295,17 +295,6 @@ SCENARIO("A double-click finds the matrix the worksheet shows only part of") {
       CHECK(MatrixViewer::PartiallyShownMatrixAt(
               group.get(), wxPoint(rect.x + rect.width / 2, rect.y + rect.height / 2)) == matr);
     }
-    THEN("a click near its right edge finds it, too") {
-      // The output starts right of the group's own left edge, so the matrix
-      // reaches further right than GroupCell::GetRect() does. Only the right
-      // part of such a matrix used to ignore a double-click.
-      REQUIRE(rect.GetRight() > group->GetRect().GetRight());
-      CHECK(MatrixViewer::PartiallyShownMatrixAt(
-              group.get(), wxPoint(rect.GetRight() - 5, rect.y + 5)) == matr);
-      // ...and so does its tooltip, which comes through the group, too.
-      CHECK(group->GetToolTip(wxPoint(rect.GetRight() - 5, rect.y + 5))
-            .Contains(wxS("Double-click")));
-    }
     THEN("its tooltip says that a double-click shows all of it") {
       CHECK(matr->GetToolTip(wxPoint(rect.x + rect.width / 2,
                                      rect.y + rect.height / 2))
@@ -321,6 +310,35 @@ SCENARIO("A double-click finds the matrix the worksheet shows only part of") {
         CHECK(MatrixViewer::PartiallyShownMatrixAt(
                 group.get(), rect.GetPosition() + wxPoint(5, 5)) == nullptr);
       }
+    }
+  }
+
+  GIVEN("an elided matrix on a line of its own, below its label") {
+    // Only then does it start right of the group's own left edge, indented,
+    // and reach further right than GroupCell::GetRect() does. Whether the
+    // label and the matrix share a line depends on how many columns the
+    // elision keeps, so on the font's metrics: at a canvas width of 600 they
+    // do with the fonts the MSW jobs have, and don't with GTK's. So look for
+    // a canvas width that puts the matrix on a line of its own; every
+    // ~60 pixels of width (one more column) that changes once.
+    std::unique_ptr<GroupCell> group;
+    MatrCell *matr = nullptr;
+    for (int width = 600; width < 800; width++) {
+      g_cfg->SetCanvasSize(wxSize(width, 300));
+      matr = LayOut(group, g_cfg, OutputXml(MatrixTableXml(60, 40)));
+      if (matr->GetRect().GetRight() > group->GetRect().GetRight())
+        break;
+    }
+    const wxRect rect = matr->GetRect();
+    REQUIRE(matr->IsShownPartially());
+    REQUIRE(rect.GetRight() > group->GetRect().GetRight());
+    THEN("a click near its right edge finds it") {
+      // Only the right part of such a matrix used to ignore a double-click.
+      CHECK(MatrixViewer::PartiallyShownMatrixAt(
+              group.get(), wxPoint(rect.GetRight() - 5, rect.y + 5)) == matr);
+      // ...and so does its tooltip, which comes through the group, too.
+      CHECK(group->GetToolTip(wxPoint(rect.GetRight() - 5, rect.y + 5))
+            .Contains(wxS("Double-click")));
     }
   }
 
