@@ -6,6 +6,13 @@
   wxWidgets' Edge backend reports itself unavailable, and wxMaxima offers no
   integrated help browser even with the WebView2 runtime installed (GH #2481).
 
+- The wizard sidebar no longer hides its OK button: on a fresh
+  configuration it opens in a window of its own next to the worksheet,
+  its Command and Description tabs are only as high as their text, and
+  when docked it is at least as high as the wizard needs (as far as the
+  other sidebars in the same dock leave room). A layout you saved is kept.
+  The Solve ODE wizard now offers help on ode2 instead of on ";", and a
+  wizard offers help only on what the manual actually documents.
 - If the GUI can't be started, for example because there is no display,
   wxMaxima now exits with an error message instead of crashing.
 - There is now one setting for where help is shown, the sidebar or a

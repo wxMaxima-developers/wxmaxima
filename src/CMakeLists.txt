@@ -72,6 +72,7 @@ set(WIZARD_SOURCE_FILES
     SumWiz.cpp
     SystemWiz.cpp
     WizardHelp.cpp
+    WizardHelpKeywords.cpp
 )
 list(TRANSFORM WIZARD_SOURCE_FILES PREPEND wizards/)
 
