@@ -73,6 +73,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><ul>
+<li>The Windows builds now use wxWidgets 3.3.4, which also means they include the AI chat sidebar.</li>
 <li>On Windows, building <a class="el" href="classwxMaxima.html">wxMaxima</a> now copies WebView2Loader.dll next to wxmaxima.exe and installs it there, when it can be found next to wxWidgets or is named with -DWXM_WEBVIEW2_LOADER=&lt;path&gt;. Without that DLL wxWidgets' Edge backend reports itself unavailable, and <a class="el" href="classwxMaxima.html">wxMaxima</a> offers no integrated help browser even with the WebView2 runtime installed (GH #2481).</li>
 <li>The wizard sidebar no longer hides its OK button: on a fresh configuration it opens in a window of its own next to the worksheet, its Command and Description tabs are only as high as their text, and when docked it is at least as high as the wizard needs (as far as the other sidebars in the same dock leave room). <a class="el" href="classA.html">A</a> layout you saved is kept. The Solve ODE wizard now offers help on ode2 instead of on ";", and a wizard offers help only on what the manual actually documents.</li>
 <li>If the GUI can't be started, for example because there is no display, <a class="el" href="classwxMaxima.html">wxMaxima</a> now exits with an error message instead of crashing.</li>
