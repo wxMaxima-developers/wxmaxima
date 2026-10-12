@@ -1436,13 +1436,18 @@ tried without rebuilding.
   on every push (wired into `compile_ubuntu.yml` as its own fast,
   standalone job, no build dependencies) and fails loudly if any
   translation would go from non-empty to empty. It catches only "translated
-  text disappeared entirely," not "translation is now provably worse," and
-  can in principle false-positive if one push both reworded a translatable
-  string and committed a regenerated `.po` (the old msgid's entry
-  vanishing under a genuine rename looks identical to it being wiped) --
-  rare, since the convention here is not to commit `update-locale` drift
-  alongside unrelated changes, but worth knowing if it ever fires on
-  something legitimate.
+  text disappeared entirely," not "translation is now provably worse."
+  **It only compares msgids the current `wxMaxima.pot` still contains.** A
+  string deleted or reworded in the source leaves the template, and
+  msgmerge then makes its entry obsolete or reuses the text as a fuzzy
+  suggestion for a similar new msgid -- which is not a wipe. Before
+  2026-10-12 it compared every msgid, so the weekly refresh (below) failed
+  as soon as a feature with translated strings had been removed (251
+  "wiped" translations, all of them removed clipboard-format and
+  help-browser options). That leaves the template itself as the way a
+  stale snapshot could hide a wipe, so the same per-push job also runs
+  `check_pot_not_truncated.py` against `origin/main`'s POT, plus
+  `test_check_translations_not_wiped.py`.
   **If a mass wipe ever does need undoing**, patch at the text level: find
   each entry's line range in both the good and the bad file independently
   (`polib`'s `.linenum`) and splice only the `msgstr` block. Re-saving
