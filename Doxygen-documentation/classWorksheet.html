@@ -856,6 +856,12 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanDeleteSelection</b
 <a class="el" href="classAnimationCell.html">AnimationCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>GetSelectedAnimation</b> () const</td></tr>
 <tr class="memdesc:a45cdb4e3bf2dc4283ce4fc5c5eb07fa5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the selected cell - or nullptr, if the selection isn't an animation. <br /></td></tr>
 <tr class="separator:a45cdb4e3bf2dc4283ce4fc5c5eb07fa5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a136d0ece54129c50310e183ecd7f01ae"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMatrCell.html">MatrCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a136d0ece54129c50310e183ecd7f01ae">GetSelectedScrollingMatrix</a> () const</td></tr>
+<tr class="memdesc:a136d0ece54129c50310e183ecd7f01ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">The scrolling matrix the selection lies in, or nullptr (GH #2479)  <br /></td></tr>
+<tr class="separator:a136d0ece54129c50310e183ecd7f01ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5bcbf183125cac43df7f6a93a9f7cc6b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a5bcbf183125cac43df7f6a93a9f7cc6b">ScrollSelectedMatrix</a> (const wxMouseEvent &amp;event)</td></tr>
+<tr class="memdesc:a5bcbf183125cac43df7f6a93a9f7cc6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lets a mouse wheel event scroll the selected scrolling matrix (GH #2479)  <br /></td></tr>
+<tr class="separator:a5bcbf183125cac43df7f6a93a9f7cc6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7a6848e8ed55dd37f906bef17f31b800"><td class="memItemLeft" align="right" valign="top"><a id="a7a6848e8ed55dd37f906bef17f31b800" name="a7a6848e8ed55dd37f906bef17f31b800"></a>
 <a class="el" href="classImgCell.html">ImgCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>GetSelectedImgCell</b> () const</td></tr>
 <tr class="memdesc:a7a6848e8ed55dd37f906bef17f31b800"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the selected cell - or nullptr, if the selection isn't an image. <br /></td></tr>
@@ -2347,6 +2353,26 @@ static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>CellsToMat
 
 </div>
 </div>
+<a id="a136d0ece54129c50310e183ecd7f01ae" name="a136d0ece54129c50310e183ecd7f01ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a136d0ece54129c50310e183ecd7f01ae">&#9670;&#160;</a></span>GetSelectedScrollingMatrix()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classMatrCell.html">MatrCell</a> * Worksheet::GetSelectedScrollingMatrix </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The scrolling matrix the selection lies in, or nullptr (GH #2479) </p>
+<p>That is a matrix shown in a viewport with scrollbars of its own (<a class="el" href="classConfiguration.html#adb5fa4e3eacde294a5f23ceca1b9283da089b0cdd8835d09cb1cabf38b3ce9c09" title="Show a window-sized part of it, with native scrollbars.">Configuration::OversizedMatrices::scroll</a>) that is selected as a whole, has a block of its entries selected, or contains everything that is selected. While there is one, the mouse wheel scrolls it instead of the worksheet. </p>
+
+</div>
+</div>
 <a id="a3c9e3f64f332c8dc0281eb79f1ce3f6a" name="a3c9e3f64f332c8dc0281eb79f1ce3f6a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3c9e3f64f332c8dc0281eb79f1ce3f6a">&#9670;&#160;</a></span>GetSelectionEnd()</h2>
 
@@ -3557,6 +3583,27 @@ static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>CellsToMat
 
 <p>Set or get the "Scrolled away from evaluation" status. </p>
 <p>Sets <a class="el" href="classWorksheet.html#af02bfd71d23fe6804fc27525f41e84bb" title="Query if we want to automatically scroll to the cell that is currently evaluated.">FollowEvaluation()</a> to false and enables the toolbar button to follow the evaluation process again. </p>
+
+</div>
+</div>
+<a id="a5bcbf183125cac43df7f6a93a9f7cc6b" name="a5bcbf183125cac43df7f6a93a9f7cc6b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5bcbf183125cac43df7f6a93a9f7cc6b">&#9670;&#160;</a></span>ScrollSelectedMatrix()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Worksheet::ScrollSelectedMatrix </td>
+          <td>(</td>
+          <td class="paramtype">const wxMouseEvent &amp;&#160;</td>
+          <td class="paramname"><em>event</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Lets a mouse wheel event scroll the selected scrolling matrix (GH #2479) </p>
+<p>Handles vertical and horizontal wheels, Shift+wheel (sideways) and the finer-grained events touchpads send. <a class="el" href="classA.html">A</a> matrix that only scrolls sideways is scrolled sideways by a vertical wheel, too. Returns false, leaving the event to the worksheet, if no scrolling matrix is selected; otherwise the event is consumed even if the matrix is already at its edge, so the worksheet doesn't jump away from what is selected. </p>
 
 </div>
 </div>
