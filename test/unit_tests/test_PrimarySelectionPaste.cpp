@@ -148,6 +148,42 @@ SCENARIO("Pasting the primary selection at the h-caret opens a cell with it") {
 }
 #endif
 
+SCENARIO("A paste into a cell scrolled out of view brings it back into view") {
+  // GH #2478: in a long document the cell with the cursor may be scrolled
+  // away. Typing scrolls back to it; a paste didn't, so the text landed out
+  // of sight and the user pasted again where they wanted it.
+  GIVEN("a long document, scrolled to its top, with the cursor in its last cell") {
+    g_ws->ClearDocument();
+    GroupCell *last = nullptr;
+    for (int i = 0; i < 80; i++)
+      last = g_ws->InsertGroupCells(
+        std::make_unique<GroupCell>(g_cfg, GC_TYPE_CODE,
+                                    wxString::Format(wxS("a%i: %i;"), i, i)),
+        last);
+    g_ws->RecalculateIfNeeded();
+    g_ws->AdjustSize();
+    EditorCell *editor = last->GetEditable();
+    g_ws->SetActiveCell(editor);
+    editor->CaretToEnd();
+    // Whatever the activation itself asked for is done before the document
+    // is scrolled away from the cursor, as with the mouse wheel.
+    g_ws->ScrollToCaretIfNeeded();
+    g_ws->Scroll(0, 0);
+    REQUIRE(g_ws->GetViewStart().y == 0);
+    SetClipboardText(false, clipboardText);
+    WHEN("the clipboard is pasted") {
+      g_ws->PasteFromClipboard();
+      THEN("the text went into the cell with the cursor") {
+        REQUIRE(editor->GetValue().EndsWith(clipboardText));
+      }
+      THEN("the worksheet scrolls to the cursor") {
+        REQUIRE(g_ws->ScrollToCaretIfNeeded());
+        REQUIRE(g_ws->GetViewStart().y > 0);
+      }
+    }
+  }
+}
+
 class TestApp : public wxApp {
 public:
   bool OnInit() override { return true; }
