@@ -1,5 +1,9 @@
 # Current development version
 
+- A worksheet with output wider than the window, for example a long
+  warning(), no longer loses its horizontal scrollbar as soon as a cell
+  above that output is laid out again, e.g. after opening the file and
+  clicking into the first cell (GH #2480).
 - While a matrix shown in a box with scrollbars of its own is selected, or
   something inside it is, the mouse wheel and the touchpad now scroll that
   matrix instead of the worksheet (GH #2479). Shift+wheel and horizontal
