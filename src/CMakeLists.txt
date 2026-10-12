@@ -179,6 +179,7 @@ set(SOURCE_FILES
     StringUtils.cpp
     SvgBitmap.cpp
     SvgPanel.cpp
+    SyntaxErrorLocation.cpp
     ToolBar.cpp
     ToolBarSections.cpp
     TrayIcon.cpp

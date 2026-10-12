@@ -1,5 +1,14 @@
 # Current development version
 
+- When Maxima reports an error, the code cell now shows where it is
+  (GH #289): the statement that failed gets a light red background, and
+  for a syntax error the place Maxima stopped at a stronger one, with the
+  cursor there. Previously the cursor only went to the end of the failing
+  statement, and when wxMaxima itself refused to send a statement with
+  mismatched brackets, to a wrong place in cells with more than one
+  statement. Both colours can be changed in the configuration dialog's
+  "Style" tab.
+
 - A click on the right half of the last character of a code cell's line
   now puts the cursor at the end of the line, not in front of that
   character. Clicks inside a word land on the nearer side of the
