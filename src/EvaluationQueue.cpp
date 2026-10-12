@@ -30,6 +30,7 @@
 
 #include "EvaluationQueue.h"
 #include "MaximaTokenizer.h"
+#include <algorithm>
 
 bool EvaluationQueue::Empty() const {
   return (m_queue.empty()) && (m_commands.empty());
@@ -237,11 +238,12 @@ void EvaluationQueue::ProduceNextCommand() {
       }
       wxString form = m_pendingText.SubString(i, j - 1);
       form.Trim(true).Trim(false);
+      const long start = m_cellConsumedChars + static_cast<long>(i);
       const long index = m_cellConsumedChars + static_cast<long>(j);
       m_cellConsumedChars += static_cast<long>(j);
       m_pendingText = m_pendingText.Mid(j);
       if (!form.IsEmpty()) {
-        m_commands.emplace_back(form, index);
+        m_commands.emplace_back(form, start, index);
         return;
       }
       continue;
@@ -251,12 +253,23 @@ void EvaluationQueue::ProduceNextCommand() {
     wxString command;
     int scanned = 0;   // raw chars walked so far (incl. skipped comments)
     int consumed = 0;  // raw chars this command takes out of m_pendingText
+    // Where in m_pendingText the command's first visible character is. Only
+    // used to tell which part of the cell to mark if Maxima reports an error
+    // (GH #289), so comments and whitespace in front don't count.
+    long firstChar = -1;
     bool haveBoundary = false;
 
     for (auto const &tok : tokens) {
       const TextStyle itemStyle = tok.GetTextStyle();
       wxString itemText = tok.GetText();
       itemText.Replace(wxS("\u00a0"), " ");
+      if ((firstChar < 0) && (itemStyle != TS_CODE_COMMENT)) {
+        for (size_t k = 0; k < itemText.Length(); k++)
+          if (!wxIsspace(itemText[k])) {
+            firstChar = scanned + static_cast<long>(k);
+            break;
+          }
+      }
       scanned += itemText.Length();
       if (itemStyle != TS_CODE_COMMENT)
         command += itemText;
@@ -270,6 +283,7 @@ void EvaluationQueue::ProduceNextCommand() {
           break;
         }
         command.Clear();
+        firstChar = -1;
         continue;
       }
       if (itemStyle == TS_CODE_ENDOFLINE) {
@@ -283,6 +297,7 @@ void EvaluationQueue::ProduceNextCommand() {
           break;
         }
         command.Clear();
+        firstChar = -1;
         continue;
       }
     }
@@ -308,6 +323,7 @@ void EvaluationQueue::ProduceNextCommand() {
       }
     }
 
+    const long start = m_cellConsumedChars + std::max(firstChar, 0L);
     const long index = m_cellConsumedChars + consumed;
     m_cellConsumedChars += consumed;
     m_pendingText = m_pendingText.Mid(consumed);
@@ -315,11 +331,38 @@ void EvaluationQueue::ProduceNextCommand() {
     command.Trim(true);
     command.Trim(false);
     if (!command.IsEmpty()) {
-      m_commands.emplace_back(command, index);
+      m_commands.emplace_back(command, start, index);
       return;
     }
     // command was empty (e.g. a stray ";"): loop and try the next one.
   }
+}
+
+long EvaluationQueue::CommandPositionInCell(const wxString &cellText,
+                                            long start, long end,
+                                            std::size_t offset,
+                                            Configuration *configuration) {
+  if ((start < 0) || (end < start))
+    return std::max(end, 0L);
+  // A lisp form is sent exactly as it is in the cell.
+  if (configuration->InLispMode())
+    return std::min(start + static_cast<long>(offset), end);
+
+  // Walk the statement the way ProduceNextCommand() built the command from it:
+  // comments are in the cell, but not in the command.
+  long pos = start;
+  const wxString statement = cellText.Mid(static_cast<std::size_t>(start),
+                                          static_cast<std::size_t>(end - start));
+  for (auto const &tok : MaximaTokenizer(statement, configuration).PopTokens()) {
+    const std::size_t length = tok.GetText().Length();
+    if (tok.GetTextStyle() != TS_CODE_COMMENT) {
+      if (offset <= length)
+        return std::min(pos + static_cast<long>(offset), end);
+      offset -= length;
+    }
+    pos += static_cast<long>(length);
+  }
+  return end;
 }
 
 int EvaluationQueue::CommandsLeftInCell() const {

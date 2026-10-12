@@ -36,6 +36,7 @@
 #define MAXIMAEVALUATOR_H
 
 #include <wx/string.h>
+#include "cells/CellPtr.h"
 
 class wxMaxima;
 class wxCommandEvent;
@@ -85,6 +86,40 @@ public:
   */
   void SetupVariables();
 
+  /*! Remembers where in its cell the command that is being sent starts.
+
+    Also forgets everything about the previous command's output. The end of
+    the command is wxMaxima::m_commandIndex.
+  */
+  void StartCommand(long start);
+
+  /*! Collects what Maxima printed in reply to the current command.
+
+    Only plain text (the kind an error message is) is collected: a syntax
+    error report can arrive in several pieces, and only all of it together
+    tells where the error is.
+  */
+  void AddCommandOutput(const wxString &text);
+
+  /*! Marks the statement the current command came from as the one that
+    caused an error, in the cell \p cell (GH #289).
+
+    Does nothing if the cell isn't the one that is being evaluated: an error
+    can also arrive when nothing is, and there is no statement to blame then.
+    Marks the statement only once per command, however many pieces the error
+    message arrives in. If the error is a syntax error, also marks where in
+    the statement it is, as soon as Maxima's output tells.
+  */
+  void MarkErrorStatement(GroupCell *cell);
+
+  /*! If Maxima reported a syntax error for the current command, marks where
+    in its statement it is, and puts the cursor there.
+
+    Called whenever more of Maxima's output arrived, as the part that tells
+    where the error is may come after the part that tells that there is one.
+  */
+  void MarkSyntaxErrorSpot();
+
 private:
   //! A ":lisp-quiet (setq $linel ...)" command that tells Maxima's ASCII-art
   //! 2D/1D printer how many columns of the worksheet's monospace ASCII-math
@@ -115,6 +150,15 @@ private:
   //! when it actually changes rather than ahead of every single command of
   //! a multi-statement cell.
   wxString m_lastSentCellId;
+
+  //! Where in its cell the current command starts. See StartCommand().
+  long m_commandStart = -1;
+  //! What Maxima printed in reply to the current command. See AddCommandOutput().
+  wxString m_commandOutput;
+  //! The cell an error for the current command was marked in, if any
+  CellPtr<GroupCell> m_errorGroup;
+  //! True once the place of the current command's syntax error is marked.
+  bool m_errorSpotMarked = false;
 
   //! The wxMaxima frame whose services the driver uses. Not owned; the frame
   //! owns this object.
