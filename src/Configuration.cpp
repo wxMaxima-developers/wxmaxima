@@ -66,7 +66,7 @@ Configuration::Configuration(wxDC *dc, InitOpt options) :
   // We want to read the zoom factor, but don't want it to be updated on each ReadConfig()
   config->Read(wxS("ZoomFactor"), &m_zoomFactor);
 
-  m_maximaHelpFormat = frontend;
+  m_maximaHelpInConsole = false;
   m_outdated = false;
   m_lineWidth_em = 88;
   m_workSheet = nullptr;
@@ -204,7 +204,7 @@ Configuration::Configuration(const Configuration &o) :
   m_oversizedMatricesOverridable(o.m_oversizedMatricesOverridable),
   m_imageBackdrop(o.m_imageBackdrop),
   m_wxMathML_Filename(o.m_wxMathML_Filename),
-  m_maximaHelpFormat(o.m_maximaHelpFormat),
+  m_maximaHelpInConsole(o.m_maximaHelpInConsole),
   m_cellCfgCnt(o.m_cellCfgCnt.load())
 {
 #ifdef __WXMSW__
@@ -777,10 +777,13 @@ void Configuration::ReadConfig() {
   config->Read("language", &m_language);
   if (m_language == wxLANGUAGE_UNKNOWN)
     m_language = wxLANGUAGE_DEFAULT;
-  {
+  // Migration: before there was one setting for where help is shown, this
+  // key said where Maxima showed its own help: 0 = console, 1 = sidebar,
+  // 2 = browser. Only "console" has an equivalent now.
+  if (!config->HasEntry(wxS("maximaHelpInConsole"))) {
     long format;
-    if(config->Read("maximaHelpFormat", &format))
-      MaximaHelpFormat(static_cast<maximaHelpFormat>(format));
+    if (config->Read(wxS("maximaHelpFormat"), &format))
+      m_maximaHelpInConsole = (format == 0);
   }
   // Appearance: read the explicit setting if present; otherwise this is a config
   // from before the dark/light style sets existed -> migrate the old "invert
@@ -886,43 +889,15 @@ void Configuration::ReadConfig() {
   UpdateBackgroundBrush();
 }
 
-Configuration::maximaHelpFormat Configuration::MaximaHelpFormat() const
-{
-  if(
-     (m_maximaHelpFormat == frontend) ||
-     (m_maximaHelpFormat == browser) ||
-     (m_maximaHelpFormat == maxima))
-    return m_maximaHelpFormat;
-  else
-    return frontend;
-}
-
-wxString Configuration::MaximaHelpFormatName(maximaHelpFormat format) {
-  switch (format) {
-  case maxima:
+wxString Configuration::MaximaHelpFormatName() const {
+  if (m_maximaHelpInConsole)
     return wxS("text");
-  case browser:
-    return wxS("html");
-  case frontend:
-  default:
-    return wxS("frontend");
-  }
-}
-
-std::optional<Configuration::maximaHelpFormat>
-Configuration::MaximaHelpFormatFromName(const wxString &name) {
-  if (name == wxS("text"))
-    return maxima;
-  if (name == wxS("html"))
-    return browser;
-  if ((name == wxS("frontend")) || (name == wxS("wxmaxima")))
-    return frontend;
-  return std::nullopt;
+  return wxS("frontend");
 }
 
 wxString Configuration::MaximaHelpFormatCommand() const {
   return wxS(":lisp-quiet (msetq $output_format_for_help '$") +
-    MaximaHelpFormatName(MaximaHelpFormat()) + wxS(")\n");
+    MaximaHelpFormatName() + wxS(")\n");
 }
 
 bool Configuration::HideMarkerForThisMessage(wxString message) {
@@ -1256,7 +1231,6 @@ void Configuration::WriteSettings(const wxString &file) {
 #ifdef __WXMSW__
   config->Write("usewgnuplot", m_useWgnuplot);
 #endif
-  config->Write("maximaHelpFormat", static_cast<long>(m_maximaHelpFormat));
 
   // Print margins, showAllDigits, lineBreaksInLongNums, keepPercent,
   // labelWidth, saveUntitled, cursorJump, autoSaveMinutes and MaxLayoutTime
@@ -1415,6 +1389,7 @@ Configuration::ScalarConfigSettings() {
     {wxS("mathJaxURL_UseUser"), &Configuration::m_mathJaxURL_UseUser},
     {wxS("maxGnuplotMegabytes"), &Configuration::m_maxGnuplotMegabytes},
     {wxS("maxima"), &Configuration::m_maximaUserLocation},
+    {wxS("maximaHelpInConsole"), &Configuration::m_maximaHelpInConsole},
     {wxS("MaxLayoutTime"), &Configuration::m_maxLayoutTime},
     {wxS("notifyIfIdle"), &Configuration::m_notifyIfIdle},
     {wxS("findDialogDockable"), &Configuration::m_findDialogDockable},

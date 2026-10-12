@@ -47,6 +47,8 @@
 #include <cstdlib>
 #include <type_traits>
 #include <variant>
+#include <vector>
+#include <utility>
 #ifndef _WIN32
 #endif
 
@@ -263,7 +265,16 @@ SCENARIO("What is drawn behind transparent images survives a round-trip") {
   }
 }
 
-static Configuration::maximaHelpFormat ReadMaximaHelpFormat(const wxString &file) {
+//! Reads a configuration from a config file holding exactly the given entries
+static bool ReadMaximaHelpInConsole(const std::vector<std::pair<wxString, long>> &entries) {
+  const wxString file = wxFileName::CreateTempFileName(wxS("wxm_configtest"));
+  REQUIRE(!file.IsEmpty());
+  {
+    wxFileConfig fileConfig(wxS("wxMaxima"), wxEmptyString, file);
+    for (const auto &entry : entries)
+      fileConfig.Write(entry.first, entry.second);
+    fileConfig.Flush();
+  }
   wxConfigBase *oldConfig = wxConfig::Get(false);
   wxConfigBase *fileConfig = new wxFileConfig(wxS("wxMaxima"), wxEmptyString, file);
   wxConfig::Set(fileConfig);
@@ -271,72 +282,53 @@ static Configuration::maximaHelpFormat ReadMaximaHelpFormat(const wxString &file
   cfgRead.ReadConfig();
   wxConfig::Set(oldConfig);
   delete fileConfig;
-  return cfgRead.MaximaHelpFormat();
+  wxRemoveFile(file);
+  return cfgRead.MaximaHelpInConsole();
 }
 
-SCENARIO("Where Maxima shows its help survives a round-trip") {
-  // The options dialog and the Help menu used to keep this choice in two
-  // booleans of their own, while what was saved and sent to Maxima on the
-  // next start was a third, separate value only Maxima's own reports
-  // updated. MaximaHelpFormat() is now the one place it is stored.
-  for (const auto format : {Configuration::maxima, Configuration::browser}) {
-    GIVEN("a configuration where Maxima shows its help in " +
-          Configuration::MaximaHelpFormatName(format).ToStdString()) {
-      // Neither is the default (frontend), so a value that fails to round-trip
-      // can't pass by reading back the default.
-      const wxString file = wxFileName::CreateTempFileName(wxS("wxm_configtest"));
-      REQUIRE(!file.IsEmpty());
-      Configuration cfgWrite(nullptr, Configuration::temporary);
-      REQUIRE(cfgWrite.MaximaHelpFormat() == Configuration::frontend);
-      cfgWrite.MaximaHelpFormat(format);
-      WHEN("it is written and read into a fresh configuration") {
-        cfgWrite.WriteSettings(file);
-        THEN("the fresh configuration has the same help format") {
-          CHECK(ReadMaximaHelpFormat(file) == format);
-        }
-      }
-      wxRemoveFile(file);
+SCENARIO("Old configs keep Maxima's help on the console if they had it there") {
+  // Before there was one setting for where help is shown, maximaHelpFormat
+  // said where Maxima showed its own help: 0 = console, 1 = sidebar,
+  // 2 = browser. Sidebar and browser are now the general "show help in"
+  // setting's business; only the console has an equivalent.
+  GIVEN("a config from before the merge that showed Maxima's help on the console") {
+    THEN("Maxima's help stays on the console") {
+      CHECK(ReadMaximaHelpInConsole({{wxS("maximaHelpFormat"), 0}}));
+    }
+  }
+  GIVEN("a config from before the merge that showed it in the sidebar or a browser") {
+    THEN("Maxima's help goes where all other help goes") {
+      CHECK(!ReadMaximaHelpInConsole({{wxS("maximaHelpFormat"), 1}}));
+      CHECK(!ReadMaximaHelpInConsole({{wxS("maximaHelpFormat"), 2}}));
+    }
+  }
+  GIVEN("a config that has both the old and the new key") {
+    THEN("the new key wins") {
+      CHECK(!ReadMaximaHelpInConsole({{wxS("maximaHelpFormat"), 0},
+                                      {wxS("maximaHelpInConsole"), 0}}));
+    }
+  }
+  GIVEN("a fresh config") {
+    THEN("Maxima's help goes where all other help goes") {
+      CHECK(!ReadMaximaHelpInConsole({}));
     }
   }
 }
 
-SCENARIO("Help formats translate to and from Maxima's output_format_for_help") {
-  GIVEN("each help format") {
-    for (const auto format : {Configuration::maxima, Configuration::frontend,
-                              Configuration::browser}) {
-      THEN("its name reads back as the same format") {
-        const auto back = Configuration::MaximaHelpFormatFromName(
-          Configuration::MaximaHelpFormatName(format));
-        REQUIRE(back.has_value());
-        CHECK(*back == format);
-      }
-    }
-  }
-  GIVEN("the values Maxima knows") {
-    THEN("each maps to the right format") {
-      CHECK(Configuration::MaximaHelpFormatFromName(wxS("text")) ==
-            Configuration::maxima);
-      CHECK(Configuration::MaximaHelpFormatFromName(wxS("html")) ==
-            Configuration::browser);
-      CHECK(Configuration::MaximaHelpFormatFromName(wxS("frontend")) ==
-            Configuration::frontend);
-      CHECK(Configuration::MaximaHelpFormatFromName(wxS("wxmaxima")) ==
-            Configuration::frontend);
-    }
-  }
-  GIVEN("a value Maxima doesn't know") {
-    THEN("it maps to no format at all") {
-      CHECK(!Configuration::MaximaHelpFormatFromName(wxS("pdf")).has_value());
-      CHECK(!Configuration::MaximaHelpFormatFromName(wxEmptyString).has_value());
-    }
-  }
-  GIVEN("a configuration set to show Maxima's help in a browser") {
-    Configuration cfg(nullptr, Configuration::temporary);
-    cfg.MaximaHelpFormat(Configuration::browser);
-    THEN("the command for Maxima sets output_format_for_help to html, "
-         "quietly") {
+SCENARIO("Maxima is told where to show its help") {
+  Configuration cfg(nullptr, Configuration::temporary);
+  GIVEN("Maxima's help on the console") {
+    cfg.MaximaHelpInConsole(true);
+    THEN("output_format_for_help is set to text, quietly") {
       CHECK(cfg.MaximaHelpFormatCommand() ==
-            wxS(":lisp-quiet (msetq $output_format_for_help '$html)\n"));
+            wxS(":lisp-quiet (msetq $output_format_for_help '$text)\n"));
+    }
+  }
+  GIVEN("Maxima's help where all other help goes") {
+    cfg.MaximaHelpInConsole(false);
+    THEN("Maxima hands the topics to wxMaxima") {
+      CHECK(cfg.MaximaHelpFormatCommand() ==
+            wxS(":lisp-quiet (msetq $output_format_for_help '$frontend)\n"));
     }
   }
 }

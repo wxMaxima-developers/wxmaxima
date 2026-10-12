@@ -137,11 +137,6 @@ public:
   };
   static PerformanceStats g_stats;
 
-  enum maximaHelpFormat{
-    maxima = 0,
-    frontend = 1,
-    browser = 2
-  };
   //! The export formats we support for HTML equations
   enum htmlExportFormat
   {
@@ -1511,25 +1506,20 @@ public:
   static void SetDebugmode(){m_debugMode = true;}
   //! Enable costly checks?
   static bool GetDebugmode(){return m_debugMode;}
-  /*! Where Maxima shows the help for ?, ?? and describe()
+  /*! Does Maxima answer ?, ?? and describe() on the console?
 
-    The one place this choice is stored: the options dialog, the Help menu and
-    what Maxima reports for its output_format_for_help all read and write it.
-    (Until 2026-10 the dialog and the menu also kept two booleans of their own
-    that nothing told Maxima about, so a choice made there was shown in the
-    dialog but never used, and the Help menu forgot it on every restart.)
+    If not, Maxima hands the matching manual topics to wxMaxima
+    (output_format_for_help: frontend), which shows them wherever
+    InternalHelpBrowser() says, like all other help. That sidebar-or-browser
+    choice is the one setting for where help is shown: until 2026-10 Maxima's
+    help had a sidebar/browser choice of its own, so "Help on" and F1 could
+    open a browser while ? used the sidebar, and the two were easily mixed up.
   */
-  maximaHelpFormat MaximaHelpFormat() const;
-  void MaximaHelpFormat(maximaHelpFormat format) {m_maximaHelpFormat = format;}
-  //! The value of Maxima's output_format_for_help a help format stands for
-  static wxString MaximaHelpFormatName(maximaHelpFormat format);
-  /*! The help format a value of Maxima's output_format_for_help stands for
-
-    "wxmaxima" is accepted as an old name for "frontend". Returns std::nullopt
-    for anything else.
-  */
-  static std::optional<maximaHelpFormat> MaximaHelpFormatFromName(const wxString &name);
-  /*! The command that sets Maxima's output_format_for_help to MaximaHelpFormat()
+  bool MaximaHelpInConsole() const {return m_maximaHelpInConsole;}
+  void MaximaHelpInConsole(bool console) {m_maximaHelpInConsole = console;}
+  //! The value of Maxima's output_format_for_help MaximaHelpInConsole() stands for
+  wxString MaximaHelpFormatName() const;
+  /*! The command that sets Maxima's output_format_for_help accordingly
 
     A :lisp-quiet one, as everything in wxMaxima::m_configCommands has to be:
     a plain Maxima statement would answer with a prompt of its own.
@@ -1765,7 +1755,7 @@ private:
   //! Not copied by the copy constructor; see GetWorksheetTopOffset()
   int m_worksheetTopOffset = 0;
   wxString m_wxMathML_Filename;
-  maximaHelpFormat m_maximaHelpFormat;
+  bool m_maximaHelpInConsole = false;
   std::atomic<std::int_fast32_t> m_cellCfgCnt{0};
   static bool m_use_threads;
 };

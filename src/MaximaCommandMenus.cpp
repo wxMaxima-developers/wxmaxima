@@ -2123,17 +2123,11 @@ void MaximaCommandMenus::HelpMenu(wxCommandEvent &event) {
   else if(event.GetId() == EventIDs::menu_wxmaxima_uses_help_sidebar){
     m_wxMaxima.m_configuration.InternalHelpBrowser(true);
   }
-  else if((event.GetId() == EventIDs::menu_maxima_uses_internal_help) ||
-          (event.GetId() == EventIDs::menu_maxima_uses_html_help) ||
-          (event.GetId() == EventIDs::menu_maxima_uses_wxmaxima_help)){
-    Configuration::maximaHelpFormat format = Configuration::frontend;
-    if(event.GetId() == EventIDs::menu_maxima_uses_internal_help)
-      format = Configuration::maxima;
-    if(event.GetId() == EventIDs::menu_maxima_uses_html_help)
-      format = Configuration::browser;
-    m_wxMaxima.m_configuration.MaximaHelpFormat(format);
+  else if(event.GetId() == EventIDs::menu_maxima_help_in_console){
+    m_wxMaxima.m_configuration.MaximaHelpInConsole(event.IsChecked());
     m_wxMaxima.MenuCommand(wxS("output_format_for_help:'") +
-                           Configuration::MaximaHelpFormatName(format) + wxS("$"));
+                           m_wxMaxima.m_configuration.MaximaHelpFormatName() +
+                           wxS("$"));
   }
 
   else if(event.GetId() == EventIDs::menu_show_tip){

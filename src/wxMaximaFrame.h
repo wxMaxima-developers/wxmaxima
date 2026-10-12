@@ -120,8 +120,8 @@ public:
   void ShowPane(int id, bool show = true);
   /*! Check the Help menu's radio items that match the configuration
 
-    Covers where wxMaxima shows its help and where Maxima shows the help for
-    ?, ?? and describe(). Called when the menu is built, after the options
+    Covers where help is shown and whether Maxima answers ?, ?? and
+    describe() on the console. Called when the menu is built, after the options
     dialog was closed and when Maxima reports a new output_format_for_help.
   */
   void UpdateHelpMenuChecks();

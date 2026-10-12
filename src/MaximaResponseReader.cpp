@@ -147,16 +147,19 @@ void MaximaResponseReader::ReadManualTopicNames(const wxXmlDocument &xmldoc) {
           wxLogMessage(_("No topics found in topic flag"));
         else
           {
+            // Maxima's ? goes where all other help goes: the sidebar, or
+            // else a browser (which can only show one of the topics).
 #ifdef USE_WEBVIEW
-            m_wxMaxima.m_helpPane->SelectKeywords(topics);
-            // wxMaxima hides the base wxMaximaFrame::ShowPane(int, bool) overload
-            // with its own ShowPane(wxCommandEvent&); qualify to reach the base
-            // one (as the menu handlers do) - a bare call fails to compile in the
-            // USE_WEBVIEW build.
-            m_wxMaxima.wxMaximaFrame::ShowPane(EventIDs::menu_pane_help);
-#else
-            m_wxMaxima.ShowMaximaHelp(topics.front());
+            if (m_wxMaxima.m_configuration.InternalHelpBrowser()) {
+              m_wxMaxima.m_helpPane->SelectKeywords(topics);
+              // wxMaxima hides the base wxMaximaFrame::ShowPane(int, bool) overload
+              // with its own ShowPane(wxCommandEvent&); qualify to reach the base
+              // one (as the menu handlers do) - a bare call fails to compile in the
+              // USE_WEBVIEW build.
+              m_wxMaxima.wxMaximaFrame::ShowPane(EventIDs::menu_pane_help);
+            } else
 #endif
+              m_wxMaxima.ShowMaximaHelp(topics.front());
           }
       }
     }
@@ -1027,16 +1030,17 @@ void MaximaResponseReader::VariableActionEngineeringFormat(const wxString &value
   m_wxMaxima.m_maximaVariable_engineeringFormat = value;
 }
 void MaximaResponseReader::VariableActionHtmlHelp(const wxString &value) {
-  // Someone may have set output_format_for_help by hand: make that the
-  // preference, too. "frontend" means the help sidebar, which only exists if
-  // it is offered.
-  auto format = Configuration::MaximaHelpFormatFromName(value);
-  if (!format)
+  // Someone may have set output_format_for_help by hand: make whether it
+  // answers on the console the preference, too. Where else help goes is
+  // wxMaxima's own setting, so "html" and "frontend" both just mean "not on
+  // the console" here.
+  if (value == wxS("text"))
+    m_wxMaxima.m_configuration.MaximaHelpInConsole(true);
+  else if ((value == wxS("frontend")) || (value == wxS("html")) ||
+           (value == wxS("wxmaxima")))
+    m_wxMaxima.m_configuration.MaximaHelpInConsole(false);
+  else
     return;
-  if ((*format == Configuration::frontend) &&
-      !m_wxMaxima.m_configuration.OfferInternalHelpBrowser())
-    return;
-  m_wxMaxima.m_configuration.MaximaHelpFormat(*format);
   m_wxMaxima.UpdateHelpMenuChecks();
 }
 

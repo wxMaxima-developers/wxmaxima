@@ -1,11 +1,15 @@
 # Current development version
 
-- Where Maxima shows its help ("in the console", "in a sidebar", "in a
-  browser") is now remembered properly. The Help menu used to claim "in the
-  console" after every start until something was evaluated, and a choice
-  made in the configuration dialog was saved for the dialog but never told
-  to Maxima, which also made the dialog open with "in a browser" selected
-  after the menu had been used.
+- There is now one setting for where help is shown, the sidebar or a
+  browser (Help menu, or "Show help in" in the configuration dialog's
+  "Maxima" tab). F1, "Help on ...", the manuals and Maxima's own ?, ?? and
+  describe() all follow it. Before, Maxima's help had a sidebar/browser
+  choice of its own, so "Help on ..." could open a browser although the
+  sidebar had been chosen. Whether Maxima answers ? on the console instead
+  is a checkbox, and that choice is now remembered properly: the Help menu
+  used to claim "in the console" after every start, and a choice made in
+  the configuration dialog never reached Maxima. Old configurations keep
+  Maxima's help on the console if it was there.
 - Pasting into a cell now scrolls that cell into view, as typing does. In a
   long worksheet a paste could land in a cell scrolled out of sight, which
   looked as if nothing had happened (likely GH #2478).

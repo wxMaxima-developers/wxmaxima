@@ -695,9 +695,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &MaximaCommandMenus::HelpMenu, &m_menuCommands, EventIDs::menu_apropos);
   Bind(wxEVT_MENU, &MaximaCommandMenus::HelpMenu, &m_menuCommands, EventIDs::menu_wxmaxima_uses_help_sidebar);
   Bind(wxEVT_MENU, &MaximaCommandMenus::HelpMenu, &m_menuCommands, EventIDs::menu_wxmaxima_uses_help_browser);
-  Bind(wxEVT_MENU, &MaximaCommandMenus::HelpMenu, &m_menuCommands, EventIDs::menu_maxima_uses_html_help);
-  Bind(wxEVT_MENU, &MaximaCommandMenus::HelpMenu, &m_menuCommands, EventIDs::menu_maxima_uses_internal_help);
-  Bind(wxEVT_MENU, &MaximaCommandMenus::HelpMenu, &m_menuCommands, EventIDs::menu_maxima_uses_wxmaxima_help);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::HelpMenu, &m_menuCommands, EventIDs::menu_maxima_help_in_console);
   Bind(wxEVT_MENU, &MaximaCommandMenus::HelpMenu, &m_menuCommands, EventIDs::menu_show_tip);
   Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_trigrat);
   Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_solve_de);
