@@ -246,14 +246,12 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
       GetWorksheet()->m_mainToolBar = new ToolBar(this);
       m_sidebarNames[EventIDs::menu_pane_toolbar] = wxS("toolbar");
       m_sidebarCaption[EventIDs::menu_pane_toolbar] = _("The main toolbar");
-      m_manager.AddPane(GetWorksheet()->m_mainToolBar,
-                        SetToolbarPaneProperties(
-                          wxAuiPaneInfo()
-                          .Name(m_sidebarNames[EventIDs::menu_pane_toolbar])
-                          .Top()
-                          // .ToolbarPane().
-                          .Row(0),
-                          GetWorksheet()->m_mainToolBar));
+      AddToolbarPane(m_manager, GetWorksheet()->m_mainToolBar,
+                     wxAuiPaneInfo()
+                     .Name(m_sidebarNames[EventIDs::menu_pane_toolbar])
+                     .Top()
+                     // .ToolbarPane().
+                     .Row(0));
     }
   m_sidebarNames[EventIDs::menu_pane_history] = wxS("history");
   m_sidebarCaption[EventIDs::menu_pane_history] = _("History");

@@ -1,5 +1,7 @@
 # Current development version
 
+- With wxWidgets 3.3.4 or newer the main toolbar was two pixels shorter
+  than its contents. It gets its full height again.
 - Asking Maxima for help (`? integrate`, `describe()`) before wxMaxima had
   read the manual's index froze wxMaxima for good. It happened wherever the
   help goes to an external browser instead of the help sidebar.
