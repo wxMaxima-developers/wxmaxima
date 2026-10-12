@@ -1,5 +1,11 @@
 # Current development version
 
+- The About dialog and the log window now say why the integrated help
+  browser is or isn't offered: whether wxMaxima was built with wxWebView
+  and, on Windows, whether wxWidgets has the Edge (WebView2) backend,
+  whether WebView2Loader.dll is found and whether the WebView2 runtime is
+  usable (GH #2481). The Windows CI job prints the same list.
+
 - When Maxima reports an error, the code cell now shows where it is
   (GH #289): the statement that failed gets a light red background, and
   for a syntax error the place Maxima stopped at a stronger one, with the

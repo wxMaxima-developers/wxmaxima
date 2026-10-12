@@ -148,6 +148,12 @@ target_compile_definitions(test_WxMaximaManualAnchors PRIVATE WXM_SOURCE_DIR="${
 target_link_libraries(test_WxMaximaManualAnchors PRIVATE ${wxWidgets_LIBRARIES})
 add_test(WxMaximaManualAnchors test_WxMaximaManualAnchors)
 
+# Why the integrated help browser is or isn't available (GH #2481). Prints
+# the diagnosis, so the Windows CI log shows what the shipped build has.
+add_executable(test_HelpBrowserDiagnosis test_HelpBrowserDiagnosis.cpp ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
+target_link_libraries(test_HelpBrowserDiagnosis PRIVATE ${wxWidgets_LIBRARIES})
+add_test(NAME HelpBrowserDiagnosis COMMAND test_HelpBrowserDiagnosis -s)
+
 # The Maxima-protocol helpers (MaximaProtocol) - prompt classification and the
 # blank-command predicate - are GUI-free, so they are tested directly against
 # captured prompt/command strings.
