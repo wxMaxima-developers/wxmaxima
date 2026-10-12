@@ -5724,6 +5724,11 @@ void Worksheet::PasteFromClipboard(const bool primary) {
       GetActiveCell()->GetGroup()->ResetSize();
       RequestRecalculation(GetActiveCell()->GetGroup());
       RequestRedraw();
+      // Like typing, a paste brings the cursor into view. In a long document
+      // the cell with the cursor may be scrolled away; without this the text
+      // landed out of sight, so the user pasted a second time where they
+      // wanted it -- and found the text in two places later (GH #2478).
+      ScrollToCaret();
     } else {
       if (GetHCaretCursor().IsActive() && (wxTheClipboard->IsSupported(wxDF_TEXT) ||
                              wxTheClipboard->IsSupported(wxDF_UNICODETEXT))) {

@@ -1,5 +1,8 @@
 # Current development version
 
+- Pasting into a cell now scrolls that cell into view, as typing does. In a
+  long worksheet a paste could land in a cell scrolled out of sight, which
+  looked as if nothing had happened (likely GH #2478).
 - With wxWidgets 3.2's Qt port, wxMaxima no longer aborts on startup with
   an "invalid window" assertion, and the toolbar's own icons are no longer
   invisible (GH #2483).
