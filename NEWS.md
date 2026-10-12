@@ -2,6 +2,24 @@
 
 - If the GUI can't be started, for example because there is no display,
   wxMaxima now exits with an error message instead of crashing.
+- There is now one setting for where help is shown, the sidebar or a
+  browser (Help menu, or "Show help in" in the configuration dialog's
+  "Maxima" tab). F1, "Help on ...", the manuals and Maxima's own ?, ?? and
+  describe() all follow it. Before, Maxima's help had a sidebar/browser
+  choice of its own, so "Help on ..." could open a browser although the
+  sidebar had been chosen. Whether Maxima answers ? on the console instead
+  is a checkbox, and that choice is now remembered properly: the Help menu
+  used to claim "in the console" after every start, and a choice made in
+  the configuration dialog never reached Maxima. Old configurations keep
+  Maxima's help on the console if it was there.
+- Web addresses in code cells' comments are now links, as they already
+  were in text cells: Ctrl+click (Cmd+click on macOS) or the context menu
+  opens them. An address in a string stays plain code.
+- The About dialog and the log window now say why the integrated help
+  browser is or isn't offered: whether wxMaxima was built with wxWebView
+  and, on Windows, whether wxWidgets has the Edge (WebView2) backend,
+  whether WebView2Loader.dll is found and whether the WebView2 runtime is
+  usable (GH #2481). The Windows CI job prints the same list.
 - Pasting into a cell now scrolls that cell into view, as typing does. In a
   long worksheet a paste could land in a cell scrolled out of sight, which
   looked as if nothing had happened (likely GH #2478).
