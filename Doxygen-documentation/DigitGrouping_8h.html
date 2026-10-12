@@ -111,6 +111,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a316b67731d95f5562212e81fc51ae246"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::vector&lt; size_t &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="DigitGrouping_8cpp.html#a316b67731d95f5562212e81fc51ae246">wxm::DigitGroupGapsInTokens</a> (const std::vector&lt; std::pair&lt; wxString, bool &gt; &gt; &amp;tokens, size_t minDigits, size_t groupSize=3)</td></tr>
 <tr class="memdesc:a316b67731d95f5562212e81fc51ae246"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="DigitGrouping_8cpp.html#a39150533ff60c978a1cc8d2917782f48" title="The indices into number before which a digit-group gap is drawn, ascending.">DigitGroupGaps()</a> for code, where a number may span several tokens.  <br /></td></tr>
 <tr class="separator:a316b67731d95f5562212e81fc51ae246"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ccbae3b63f7355f9180cf0fde3ca9dd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="DigitGrouping_8cpp.html#a9ccbae3b63f7355f9180cf0fde3ca9dd">wxm::DigitGroupGapWidth</a> (double fontSize)</td></tr>
+<tr class="memdesc:a9ccbae3b63f7355f9180cf0fde3ca9dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">How wide a digit-group gap is, in pixels, for text of the given font size.  <br /></td></tr>
+<tr class="separator:a9ccbae3b63f7355f9180cf0fde3ca9dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Declares where a number gets the small gaps that separate its digit groups (GH #192), "2111230496" being displayed as "2 111 230 496". </p>
@@ -193,6 +196,27 @@ Functions</h2></td></tr>
 <p>DigitGroupGaps() for code, where a number may span several tokens. </p>
 <p><a class="el" href="classMaximaTokenizer.html" title="Maximatokenizer breaks down maxima input to individual commands.">MaximaTokenizer</a> makes "3.14159" three tokens, "3", "." and "14159", and ".5" two. Grouped one token at a time, the digits after the point would be grouped from the right, like an integer's; this joins such tokens up into the number they form first.</p>
 <p>tokens holds each token's text and whether it is a number token. The result has one entry per token: the gaps inside it, as indices into that token's own text. <a class="el" href="classA.html">A</a> gap never falls on a token boundary, so each gap belongs to exactly one token. </p>
+
+</div>
+</div>
+<a id="a9ccbae3b63f7355f9180cf0fde3ca9dd" name="a9ccbae3b63f7355f9180cf0fde3ca9dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ccbae3b63f7355f9180cf0fde3ca9dd">&#9670;&#160;</a></span>DigitGroupGapWidth()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int wxm::DigitGroupGapWidth </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>fontSize</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>How wide a digit-group gap is, in pixels, for text of the given font size. </p>
+<p><a class="el" href="classA.html">A</a> quarter of an em, a little wider than a typographic thin space (a sixth of an em, what the gap started out as): at that width the groups of a long number are easy to tell apart at a glance. Output (<a class="el" href="classTextCell.html" title="A Text cell.">TextCell</a>) and code (<a class="el" href="classEditorCell.html" title="This class defines what the user sees as input cell.">EditorCell</a>) both use this, so that a number looks the same in either. Never less than one pixel, so the gap doesn't vanish at tiny zoom levels. </p>
 
 </div>
 </div>
