@@ -1,5 +1,10 @@
 # Current development version
 
+- A worksheet with output wider than the window, for example a long
+  warning(), no longer loses its horizontal scrollbar as soon as a cell
+  above that output is laid out again, e.g. after opening the file and
+  clicking into the first cell (GH #2480).
+
 - When Maxima reports an error, the code cell now shows where it is
   (GH #289): the statement that failed gets a light red background, and
   for a syntax error the place Maxima stopped at a stronger one, with the
