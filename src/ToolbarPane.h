@@ -20,9 +20,9 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 /*! \file
-  Declares SetToolbarPaneProperties(), which gives the main toolbar's wxAUI
-  pane its properties -- both when the pane is first added and again after a
-  stored perspective has been loaded over it.
+  Declares AddToolbarPane() and SetToolbarPaneProperties(), which give the
+  main toolbar's wxAUI pane its properties -- both when the pane is first
+  added and again after a stored perspective has been loaded over it.
 */
 
 #ifndef TOOLBARPANE_H
@@ -66,5 +66,21 @@
 */
 wxAuiPaneInfo &SetToolbarPaneProperties(wxAuiPaneInfo &pane,
                                         const wxAuiToolBar *toolbar);
+
+/*! Adds the main toolbar to \p manager, with SetToolbarPaneProperties().
+
+  Use this instead of calling wxAuiManager::AddPane() directly: since
+  wxWidgets 3.3.4, AddPane() also makes a pane's best size the size of the
+  dock the pane is in. That size is the dock's outer one, though, so the
+  pane's border is taken off it, and the toolbar would end up two pixels
+  shorter than its contents need. This function lets the dock be sized from
+  the toolbar instead, as older wxWidgets versions always did.
+
+  \param manager The frame's AUI manager.
+  \param toolbar The toolbar; Realize() must already have been called on it.
+  \param pane    The pane's name and dock position.
+*/
+void AddToolbarPane(wxAuiManager &manager, wxAuiToolBar *toolbar,
+                    wxAuiPaneInfo pane);
 
 #endif // TOOLBARPANE_H
