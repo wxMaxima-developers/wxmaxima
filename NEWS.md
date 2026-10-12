@@ -1,5 +1,8 @@
 # Current development version
 
+- Web addresses in code cells' comments are now links, as they already
+  were in text cells: Ctrl+click (Cmd+click on macOS) or the context menu
+  opens them. An address in a string stays plain code.
 - Pasting into a cell now scrolls that cell into view, as typing does. In a
   long worksheet a paste could land in a cell scrolled out of sight, which
   looked as if nothing had happened (likely GH #2478).
