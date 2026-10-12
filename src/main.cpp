@@ -216,7 +216,10 @@ int main(int argc, char *argv[]) {
   }
 #endif
 #endif
-  wxEntryStart(argc, argv);
+  // Fails if the GUI can't be initialized, e.g. without a display. wxWidgets
+  // has said why by then; there is no wxTheApp to run.
+  if (!wxEntryStart(argc, argv))
+    return 1;
   cmdLineParser.SetCmdLine(argc, argv);
   cmdLineParser.SetDesc(cmdLineDesc);
   return CommonMain();
@@ -232,7 +235,10 @@ int WINAPI WinMain(_In_ HINSTANCE hI, _In_opt_ HINSTANCE hPrevI, _In_ LPSTR lpCm
   //   SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_SYSTEM_AWARE);
   //   #endif
   // #endif
-  wxEntryStart(hI, hPrevI, lpCmdLine, nCmdShow);
+  // Fails if the GUI can't be initialized, e.g. without a display. wxWidgets
+  // has said why by then; there is no wxTheApp to run.
+  if (!wxEntryStart(hI, hPrevI, lpCmdLine, nCmdShow))
+    return 1;
   cmdLineParser.SetCmdLine(lpCmdLine);
   cmdLineParser.SetDesc(cmdLineDesc);
   return CommonMain();

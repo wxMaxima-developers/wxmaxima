@@ -1,5 +1,7 @@
 # Current development version
 
+- If the GUI can't be started, for example because there is no display,
+  wxMaxima now exits with an error message instead of crashing.
 - There is now one setting for where help is shown, the sidebar or a
   browser (Help menu, or "Show help in" in the configuration dialog's
   "Maxima" tab). F1, "Help on ...", the manuals and Maxima's own ?, ?? and
