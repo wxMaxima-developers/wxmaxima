@@ -29,6 +29,7 @@
 #include "Version.h"
 #include "../wxMaximaIcon.h"
 #include "../wxMaximaOSDescription.h"
+#include "../HelpBrowserDiagnosis.h"
 #include <wx/wx.h>
 #include <wx/button.h>
 #include <wx/dialog.h>
@@ -58,6 +59,9 @@ AboutDialog::AboutDialog(wxWindow *WXUNUSED(parent), Configuration *config) {
 
       description += wxString::Format(_("\n\nOperating System: %s\n"),
         wxMaximaOperatingSystemLongDescription());
+      // Not translated, see wxm::HelpBrowserDiagnosis(): it is meant for bug
+      // reports (GH #2481).
+      description += wxS("\n") + wxm::HelpBrowserDiagnosis();
 
       info.SetIcon(wxMaximaIcon());
       info.SetDescription(description);

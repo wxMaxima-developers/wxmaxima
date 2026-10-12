@@ -1115,6 +1115,10 @@ If the automatic fix fails, you can manually start wxMaxima with:
 Either wxWidgets wasn’t compiled with support for Microsoft’s webview2 or
 Microsoft’s webview2 isn’t installed.
 
+_Help/About_ lists which of the things the integrated browser needs this
+wxMaxima has and which it is missing; the log window (_View/Toggle log
+window_) shows the same list.
+
 ## Why is the external manual browser not working on my Linux box?
 
 The HTML browser might be a snap, flatpack or appimage version. All of these typically

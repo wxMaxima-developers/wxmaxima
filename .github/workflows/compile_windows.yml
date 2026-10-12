@@ -240,6 +240,19 @@ jobs:
             ctest -L unittest -E "MenuHelpString|ButtonWrapSizer" --output-on-failure
             cd ..
             cd ..
+      - name: Report what the integrated help browser needs
+        # Informational (GH #2481): which of the Edge (WebView2) backend's
+        # prerequisites this build has. The wxWidgets built above uses the
+        # stock setup.h, so its wxUSE_WEBVIEW_EDGE line says whether the
+        # backend was compiled in at all.
+        continue-on-error: true
+        run: |
+            Select-String -Path "wxWidgets-${{env.WXVERSION}}/lib/gcc_lib/mswu/wx/setup.h" -Pattern "define wxUSE_WEBVIEW"
+            cd wxMaxima
+            cd build
+            ctest -R HelpBrowserDiagnosis -V
+            cd ..
+            cd ..
       - name: Package wxMaxima
         run: |
             cd wxMaxima
