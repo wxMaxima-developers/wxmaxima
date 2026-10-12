@@ -59,7 +59,7 @@
 #endif
 
 StatusBar::StatusBar(wxWindow *parent, int id, bool aiChatAvailable)
-  : wxStatusBar(parent, id), m_ppi(wxDefaultSize), m_overlayIconIsSet(false),
+  : wxStatusBar(parent, id), m_frame(parent), m_ppi(wxDefaultSize), m_overlayIconIsSet(false),
     m_aiChatAvailable(aiChatAvailable) {
   m_svgRast.reset(wxm_nsvgCreateRasterizer());
   int fieldCount = m_aiChatAvailable ? 4 : 3;
@@ -125,7 +125,8 @@ void StatusBar::UpdateBitmaps() {
   wxSize ppi(-1, -1);
   wxDisplay display;
 
-  int display_idx = wxDisplay::GetFromWindow(GetParent());
+  // Not GetParent(), which is nullptr on wxQt 3.2: see m_frame.
+  int display_idx = m_frame ? wxDisplay::GetFromWindow(m_frame) : wxNOT_FOUND;
   if (display_idx < 0)
     ppi = wxSize(72, 72);
   else

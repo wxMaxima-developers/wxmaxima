@@ -2228,6 +2228,16 @@ which loads on demand -- keep the detail there rather than growing this file.
   (measured narrower than plain text, and all formats looking alike), while
   wxGTK was fine. Mark "not made yet" with `std::optional<wxFont>` instead
   (see `EditorCell::GetFont(TextFormat::Format)`).
+- **wxQt 3.2 differs from 3.3 in two ways that aborted startup (GH #2483).**
+  Its `wxStatusBar` never registers with its parent, so `GetParent()` is
+  `nullptr` for the status bar's whole life (`StatusBar` keeps the frame it
+  was given in `m_frame` instead); and it has no native art provider, so
+  `wxArtProvider::GetSizeHint(wxART_TOOLBAR)` is `wxDefaultSize`, which made
+  every SVG toolbar icon pixel-less (`wxMaximaArtProvider` falls back to
+  24x24). Neither shows with wxQt 3.3 or any other port. To reproduce, build
+  wxWidgets 3.2 with `./configure --with-qt --enable-debug` against
+  `qtbase5-dev`, point `-DwxWidgets_CONFIG_EXECUTABLE` at its `wx-config`,
+  and run under gdb with a breakpoint on `wxOnAssert`.
 - **A wxWidgets-version fallback `#define` must come AFTER the wx header that
   may define it.** `Compat.h` includes `<wx/defs.h>` *above* its
   `#ifndef wxWARN_UNUSED` fallback for this reason. Reached in the other order,

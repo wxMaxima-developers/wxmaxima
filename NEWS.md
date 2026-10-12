@@ -5,6 +5,20 @@
   and, on Windows, whether wxWidgets has the Edge (WebView2) backend,
   whether WebView2Loader.dll is found and whether the WebView2 runtime is
   usable (GH #2481). The Windows CI job prints the same list.
+- Pasting into a cell now scrolls that cell into view, as typing does. In a
+  long worksheet a paste could land in a cell scrolled out of sight, which
+  looked as if nothing had happened (likely GH #2478).
+- With wxWidgets 3.2's Qt port, wxMaxima no longer aborts on startup with
+  an "invalid window" assertion, and the toolbar's own icons are no longer
+  invisible (GH #2483).
+- A worksheet with output wider than the window, for example a long
+  warning(), no longer loses its horizontal scrollbar as soon as a cell
+  above that output is laid out again, e.g. after opening the file and
+  clicking into the first cell (GH #2480).
+- While a matrix shown in a box with scrollbars of its own is selected, or
+  something inside it is, the mouse wheel and the touchpad now scroll that
+  matrix instead of the worksheet (GH #2479). Shift+wheel and horizontal
+  wheels scroll it sideways.
 
 - When Maxima reports an error, the code cell now shows where it is
   (GH #289): the statement that failed gets a light red background, and
@@ -20,7 +34,7 @@
   character. Clicks inside a word land on the nearer side of the
   character more reliably, too.
 - Long numbers in the output and in code cells are easier to read: their
-  digits are shown in groups separated by a small gap, 2111230496 as
+  digits are shown in groups separated by a gap of a quarter em, 2111230496 as
   2 111 230 496 (GH #192). Only the display changes: copying, saving,
   exporting and what is sent to Maxima never contain the gaps. Numbers with fewer than 5 digits, years for example, are
   left as they are. Both can be changed in the configuration dialog's

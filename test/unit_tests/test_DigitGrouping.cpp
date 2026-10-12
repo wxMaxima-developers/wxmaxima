@@ -150,4 +150,13 @@ SCENARIO("Number tokens that don't form one number are grouped separately") {
   CHECK(GroupedTokens({}) == wxS(""));
 }
 
+SCENARIO("A digit-group gap is a quarter of an em wide, but never invisible") {
+  CHECK(wxm::DigitGroupGapWidth(12) == 3);
+  CHECK(wxm::DigitGroupGapWidth(24) == 6);
+  // Wider than the sixth of an em the gap used to be
+  CHECK(wxm::DigitGroupGapWidth(24) > 24 / 6);
+  CHECK(wxm::DigitGroupGapWidth(2) == 1);
+  CHECK(wxm::DigitGroupGapWidth(0) == 1);
+}
+
 int main(int argc, char *argv[]) { return Catch::Session().run(argc, argv); }

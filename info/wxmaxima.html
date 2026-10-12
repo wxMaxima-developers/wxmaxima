@@ -2241,23 +2241,23 @@ shown. The option <em>Matrices too large for the window</em> in the
 <em>Worksheet</em> tab of the configuration dialog can instead draw such
 a matrix in full, which makes the whole worksheet scroll sideways, or
 show it in a box the size of the window, with scrollbars of its own;
-there the mouse wheel still scrolls the worksheet, and such a matrix is
-printed with its middle rows and columns left out. Whether it is elided
-or shown in a scrolling box, every other row and column of such a matrix
-is faintly shaded, so that a row or a column is easy to follow across
-it; a matrix that fits the window stays plain, unless
-<code>wx_matrix()</code>’s <code>banding</code> option says otherwise.
-All of this affects only what is shown on screen and printed: copying,
-saving and exporting the matrix always include every entry.
-<code>wx_matrix()</code>’s <code>oversized</code> option overrides that
-option for a single matrix; a matrix it asks to scroll is still elided
-on paper, and exporting a matrix as an image still always shows all of
-it. Double-clicking a matrix that is elided or shown in a scrolling box
-opens a window of its own that shows all of it; the window can be
-resized and scrolled, and <em>Escape</em> closes it. <em>Ctrl+F</em> in
-that window searches the matrix: each match selects the entry it is in
-and scrolls it into view, and searching again steps on to the next
-matching entry.</p>
+there the mouse wheel scrolls the worksheet, unless that matrix or
+something inside it is selected, and such a matrix is printed with its
+middle rows and columns left out. Whether it is elided or shown in a
+scrolling box, every other row and column of such a matrix is faintly
+shaded, so that a row or a column is easy to follow across it; a matrix
+that fits the window stays plain, unless <code>wx_matrix()</code>’s
+<code>banding</code> option says otherwise. All of this affects only
+what is shown on screen and printed: copying, saving and exporting the
+matrix always include every entry. <code>wx_matrix()</code>’s
+<code>oversized</code> option overrides that option for a single matrix;
+a matrix it asks to scroll is still elided on paper, and exporting a
+matrix as an image still always shows all of it. Double-clicking a
+matrix that is elided or shown in a scrolling box opens a window of its
+own that shows all of it; the window can be resized and scrolled, and
+<em>Escape</em> closes it. <em>Ctrl+F</em> in that window searches the
+matrix: each match selects the entry it is in and scrolls it into view,
+and searching again steps on to the next matching entry.</p>
 <h2 data-number="3.9" id="bug-reporting"><span
 class="header-section-number">3.9</span> Bug reporting</h2>
 <div id="wxbuild_info">

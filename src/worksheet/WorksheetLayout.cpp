@@ -99,8 +99,16 @@ bool WorksheetLayout::RecalculateIfNeeded(bool timeout, long timeSliceMs) {
         if (sizeChanged && !timeout)
           m_adjustWorksheetSizeNeeded = true;
 
-        int currentWidth = GroupCellWidthWithMargins(cell.GetWidth());
-        m_maxWidth_Cached = std::max(m_maxWidth_Cached, currentWidth);
+        // Widen the cached document width only if it covers the whole
+        // document. A pass that starts at the first cell discards it (see
+        // above) and may stop early, before reaching a wide cell that needs no
+        // layout: counting just the cells it recalculated would then leave
+        // that cell out, and the worksheet narrower than its contents
+        // (GH #2480). GetMaxPoint() measures every cell instead.
+        if (m_maxWidth_Cached >= 0) {
+          int currentWidth = GroupCellWidthWithMargins(cell.GetWidth());
+          m_maxWidth_Cached = std::max(m_maxWidth_Cached, currentWidth);
+        }
       } else if (propagationNeeded) {
         movedThisTime = group->Reposition();
       } else {

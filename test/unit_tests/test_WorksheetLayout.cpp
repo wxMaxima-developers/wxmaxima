@@ -537,6 +537,39 @@ SCENARIO("The layout pass stops early once the dirty range is covered") {
   }
 }
 
+SCENARIO("Re-laying out the first cell keeps the width of a wider one below (GH #2480)") {
+  // A pass that starts at the first cell used to restart the cached document
+  // width from scratch, but then counted only the cells it recalculated. Once
+  // it stopped early, a wide cell further down that was still clean dropped
+  // out of the width, and the worksheet lost its horizontal scroll range --
+  // seen after opening a file whose warning() output is wider than the window.
+  GIVEN("a narrow first cell above a much wider one, fully laid out") {
+    EngineFixture f;
+    GroupCell *first = f.AddCell(wxS("a:1$"));
+    f.AddCell(wxS("b:\"") + wxString(wxS('x'), 400) + wxS("\"$"));
+    f.layout.RequestRecalculation(first);
+    while (f.layout.RecalculateIfNeeded())
+      ;
+    int fullWidth, height;
+    f.layout.GetMaxPoint(&fullWidth, &height);
+    REQUIRE(fullWidth > 2 * f.layout.GroupCellWidthWithMargins(first->GetWidth()));
+
+    WHEN("only the first cell is laid out again") {
+      f.layout.RequestRecalculation(first);
+      while (f.layout.RecalculateIfNeeded())
+        ;
+      REQUIRE(f.layout.GetLastCellsRecalculated() == 1);
+      THEN("the document is still as wide as the wide cell") {
+        int width;
+        f.layout.GetMaxPoint(&width, &height);
+        CHECK(width == fullWidth);
+        f.layout.AdjustSize();
+        CHECK(f.view.lastSetW == fullWidth);
+      }
+    }
+  }
+}
+
 SCENARIO("A global invalidation recalculates everything (the costly path)") {
   GIVEN("a fully laid-out worksheet") {
     EngineFixture f;
