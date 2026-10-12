@@ -39,17 +39,12 @@ README           text working-tree-encoding=UTF-8 eol=lf
 *.in             text working-tree-encoding=UTF-8 eol=lf
 *.txt            text working-tree-encoding=UTF-8 eol=lf
 *.xpm            text working-tree-encoding=UTF-8 eol=lf
-# ignore several dot files for the release.
-.clang-format export-ignore
-.clang-tidy export-ignore
-.codacy.yaml export-ignore
-.coverity export-ignore
-.editorconfig export-ignore
-.gemini export-ignore
-.gitattributes export-ignore
-.github export-ignore
-.gitignore export-ignore
-.stylelintrc export-ignore
-.claude export-ignore
-.mdl_style.rb export-ignore
-.mdlrc export-ignore
+# Keep every dot file and dot directory (.github, .claude, .clang-tidy,
+# .gitignore at any depth, ...) out of the source tarball GitHub generates from
+# a tag via git archive. Distributions repackage that tarball and reject the
+# clutter (GH #2068, #2101, #2272). It is one pattern rather than a list of
+# names because a list was what kept going wrong: each release added a new dot
+# file that nobody remembered to list here. A pattern without a slash matches
+# the name at any depth, and export-ignore on a directory drops all of it.
+# The source_tarball_has_no_dotfiles ctest checks the result.
+.* export-ignore
