@@ -470,6 +470,17 @@ if(TARGET wxmTestApp)
     add_test(NAME ToolBarRefresh
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_ToolBarRefresh>")
 
+    # wxQt 3.2 knows no toolbar icon size; our SVG icons must still get
+    # pixels, or a disabled tool fails an assertion on every repaint (GH #2483).
+    add_executable(test_ArtProviderSizeHint
+        test_ArtProviderSizeHint.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_ArtProviderSizeHint PUBLIC cxx_std_20)
+    target_link_libraries(test_ArtProviderSizeHint PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME ArtProviderSizeHint
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_ArtProviderSizeHint>")
+
     # Guards everything a .wxm file (= the copy-to-clipboard path) can hold --
     # images in several formats, every text cell type, code cell answers and the
     # send-known-answers flag -- surviving the TreeToWXM/TreeFromWXM round-trip.

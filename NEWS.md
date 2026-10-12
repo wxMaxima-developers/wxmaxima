@@ -1,5 +1,8 @@
 # Current development version
 
+- With wxWidgets 3.2's Qt port, wxMaxima no longer aborts on startup with
+  an "invalid window" assertion, and the toolbar's own icons are no longer
+  invisible (GH #2483).
 - A click on the right half of the last character of a code cell's line
   now puts the cursor at the end of the line, not in front of that
   character. Clicks inside a word land on the nearer side of the
