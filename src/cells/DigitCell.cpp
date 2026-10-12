@@ -39,7 +39,10 @@ DigitCell::DigitCell(GroupCell *group, Configuration *config,
   : TextCell(group, config, text, style) {m_displayedText = m_text;}
 
 DigitCell::DigitCell(GroupCell *group, const DigitCell &cell)
-  : DigitCell(group, cell.m_configuration, cell.m_text, cell.GetTextStyle()) {m_displayedText = cell.m_text;}
+  : DigitCell(group, cell.m_configuration, cell.m_text, cell.GetTextStyle()) {
+  m_displayedText = cell.m_text;
+  m_numberDigits = cell.m_numberDigits;
+}
 
 DEFINE_CELL(DigitCell)
 
@@ -50,9 +53,21 @@ void DigitCell::Recalculate(AFontSize fontsize) const {
     wxSize sz =
       CalculateTextSize(m_configuration->GetRecalcDC(), m_text, cellText);
     m_width = sz.GetWidth();
+    if (GapFollows())
+      m_width += DigitGroupGapWidth();
     m_height = sz.GetHeight();
     m_center = m_height / 2;
   }
+}
+
+bool DigitCell::GapFollows() const {
+  // The last group ends the number, and the group that ends at the decimal
+  // point is followed directly by the first group of the fraction, just like
+  // TextCell draws it unbroken.
+  return m_configuration->DigitGrouping() && (m_numberDigits > 0) &&
+    (m_numberDigits >=
+     static_cast<size_t>(m_configuration->DigitGroupingMinDigits())) &&
+    GetNext() && !m_text.EndsWith(wxS("."));
 }
 
 void DigitCell::SetCurrentPoint(wxPoint point) const {

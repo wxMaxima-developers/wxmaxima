@@ -147,16 +147,19 @@ void MaximaResponseReader::ReadManualTopicNames(const wxXmlDocument &xmldoc) {
           wxLogMessage(_("No topics found in topic flag"));
         else
           {
+            // Maxima's ? goes where all other help goes: the sidebar, or
+            // else a browser (which can only show one of the topics).
 #ifdef USE_WEBVIEW
-            m_wxMaxima.m_helpPane->SelectKeywords(topics);
-            // wxMaxima hides the base wxMaximaFrame::ShowPane(int, bool) overload
-            // with its own ShowPane(wxCommandEvent&); qualify to reach the base
-            // one (as the menu handlers do) - a bare call fails to compile in the
-            // USE_WEBVIEW build.
-            m_wxMaxima.wxMaximaFrame::ShowPane(EventIDs::menu_pane_help);
-#else
-            m_wxMaxima.ShowMaximaHelp(topics.front());
+            if (m_wxMaxima.m_configuration.InternalHelpBrowser()) {
+              m_wxMaxima.m_helpPane->SelectKeywords(topics);
+              // wxMaxima hides the base wxMaximaFrame::ShowPane(int, bool) overload
+              // with its own ShowPane(wxCommandEvent&); qualify to reach the base
+              // one (as the menu handlers do) - a bare call fails to compile in the
+              // USE_WEBVIEW build.
+              m_wxMaxima.wxMaximaFrame::ShowPane(EventIDs::menu_pane_help);
+            } else
 #endif
+              m_wxMaxima.ShowMaximaHelp(topics.front());
           }
       }
     }
@@ -331,7 +334,11 @@ void MaximaResponseReader::ReadMiscText(const wxString &data) {
 
   // Add the text line to the console
   if (m_wxMaxima.GetWorksheet() && (!data.empty())) {
+    // A syntax error's report may arrive in several pieces, and only all of
+    // them together tell where the error is (GH #289).
+    m_wxMaxima.m_evaluator.AddCommandOutput(data);
     m_wxMaxima.GetWorksheet()->SetCurrentTextCell(m_wxMaxima.m_outputAppender.ConsoleAppend(data, style));
+    m_wxMaxima.m_evaluator.MarkSyntaxErrorSpot();
     if (style == MC_TYPE_ERROR)
       m_wxMaxima.m_evaluator.AbortOnError();
   }
@@ -1023,24 +1030,18 @@ void MaximaResponseReader::VariableActionEngineeringFormat(const wxString &value
   m_wxMaxima.m_maximaVariable_engineeringFormat = value;
 }
 void MaximaResponseReader::VariableActionHtmlHelp(const wxString &value) {
-  if (value == wxS("text")) {
-    if (!m_wxMaxima.m_HelpMenu->IsChecked(EventIDs::menu_maxima_uses_internal_help))
-      m_wxMaxima.m_HelpMenu->Check(EventIDs::menu_maxima_uses_internal_help, true);
-    m_wxMaxima.m_configuration.MaximaHelpFormat(Configuration::maxima);
-  }
-  if (value == wxS("html")) {
-    if (!m_wxMaxima.m_HelpMenu->IsChecked(EventIDs::menu_maxima_uses_html_help))
-      m_wxMaxima.m_HelpMenu->Check(EventIDs::menu_maxima_uses_html_help, true);
-    m_wxMaxima.m_configuration.MaximaHelpFormat(Configuration::browser);
-  }
-  if(m_wxMaxima.m_configuration.OfferInternalHelpBrowser())
-    {
-      if ((value == wxS("wxmaxima")) || (value == wxS("frontend"))) {
-        if (!m_wxMaxima.m_HelpMenu->IsChecked(EventIDs::menu_maxima_uses_wxmaxima_help))
-          m_wxMaxima.m_HelpMenu->Check(EventIDs::menu_maxima_uses_wxmaxima_help, true);
-        m_wxMaxima.m_configuration.MaximaHelpFormat(Configuration::frontend);
-      }
-    }
+  // Someone may have set output_format_for_help by hand: make whether it
+  // answers on the console the preference, too. Where else help goes is
+  // wxMaxima's own setting, so "html" and "frontend" both just mean "not on
+  // the console" here.
+  if (value == wxS("text"))
+    m_wxMaxima.m_configuration.MaximaHelpInConsole(true);
+  else if ((value == wxS("frontend")) || (value == wxS("html")) ||
+           (value == wxS("wxmaxima")))
+    m_wxMaxima.m_configuration.MaximaHelpInConsole(false);
+  else
+    return;
+  m_wxMaxima.UpdateHelpMenuChecks();
 }
 
 void MaximaResponseReader::VariableActionDisplay2D(const wxString &value) {

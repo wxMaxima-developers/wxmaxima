@@ -589,6 +589,125 @@ SCENARIO("Shift+arrow keys scroll a scrolling matrix along (GH #2380)") {
   g_cfg->SetMatrixScrollHost(nullptr);
 }
 
+// A mouse wheel event as wx delivers one: rotation is in units of the wheel
+// delta, positive for up (vertical) or right (horizontal).
+static wxMouseEvent Wheel(int rotation,
+                          wxMouseWheelAxis axis = wxMOUSE_WHEEL_VERTICAL,
+                          bool shift = false) {
+  wxMouseEvent event(wxEVT_MOUSEWHEEL);
+  event.m_wheelRotation = rotation;
+  event.m_wheelDelta = 120;
+  event.m_linesPerAction = 3;
+  event.m_wheelAxis = axis;
+  event.m_shiftDown = shift;
+  return event;
+}
+
+SCENARIO("The mouse wheel scrolls a selected scrolling matrix (GH #2479)") {
+  g_cfg->SetZoomFactor(1.0);
+  g_cfg->SetCanvasSize(wxSize(600, 300));
+  FakeScrollHost host;
+  g_cfg->SetMatrixScrollHost(&host);
+  g_cfg->SetOversizedMatrices(Configuration::OversizedMatrices::scroll);
+  MatrCell *matr = ShowMatrix(MatrixTableXml(60, 40), true);
+  REQUIRE(matr->HasHorizontalScrollbar());
+  REQUIRE(matr->HasVerticalScrollbar());
+
+  WHEN("nothing is selected") {
+    g_ws->ClearSelection();
+    THEN("the wheel is left to the worksheet") {
+      CHECK(g_ws->GetSelectedScrollingMatrix() == nullptr);
+      CHECK_FALSE(g_ws->ScrollSelectedMatrix(Wheel(-120)));
+      CHECK(matr->ScrollPosition() == wxPoint(0, 0));
+    }
+  }
+
+  WHEN("a block of the matrix's entries is selected") {
+    Drag(matr, 1, 1, 2, 2);
+    REQUIRE(g_ws->GetSelectedScrollingMatrix() == matr);
+    AND_WHEN("the wheel is turned down") {
+      REQUIRE(g_ws->ScrollSelectedMatrix(Wheel(-120)));
+      THEN("the matrix scrolls down") {
+        CHECK(matr->ScrollPosition().x == 0);
+        CHECK(matr->ScrollPosition().y > 0);
+      }
+      AND_WHEN("it is turned back up") {
+        REQUIRE(g_ws->ScrollSelectedMatrix(Wheel(120)));
+        THEN("the matrix is back at its top") {
+          CHECK(matr->ScrollPosition() == wxPoint(0, 0));
+        }
+      }
+    }
+    AND_WHEN("the wheel is turned up at the matrix's top") {
+      THEN("the matrix stays put, but still keeps the wheel") {
+        CHECK(g_ws->ScrollSelectedMatrix(Wheel(120)));
+        CHECK(matr->ScrollPosition() == wxPoint(0, 0));
+      }
+    }
+    AND_WHEN("a horizontal wheel is turned right") {
+      REQUIRE(g_ws->ScrollSelectedMatrix(Wheel(120, wxMOUSE_WHEEL_HORIZONTAL)));
+      THEN("the matrix scrolls right") {
+        CHECK(matr->ScrollPosition().x > 0);
+        CHECK(matr->ScrollPosition().y == 0);
+      }
+    }
+    AND_WHEN("the wheel is turned down with Shift held") {
+      REQUIRE(g_ws->ScrollSelectedMatrix(Wheel(-120, wxMOUSE_WHEEL_VERTICAL, true)));
+      THEN("the matrix scrolls right") {
+        CHECK(matr->ScrollPosition().x > 0);
+        CHECK(matr->ScrollPosition().y == 0);
+      }
+    }
+    AND_WHEN("a touchpad sends many small steps") {
+      for (int i = 0; i < 10; i++)
+        REQUIRE(g_ws->ScrollSelectedMatrix(Wheel(-12)));
+      THEN("they add up to about what one notch does") {
+        const int smallSteps = matr->ScrollPosition().y;
+        matr->ScrollTo(wxPoint(0, 0));
+        REQUIRE(g_ws->ScrollSelectedMatrix(Wheel(-120)));
+        CHECK(smallSteps > 0);
+        CHECK(std::abs(smallSteps - matr->ScrollPosition().y) <= 10);
+      }
+    }
+  }
+
+  WHEN("the whole matrix is selected") {
+    g_ws->SetSelection(matr);
+    THEN("the wheel scrolls it") {
+      CHECK(g_ws->GetSelectedScrollingMatrix() == matr);
+      REQUIRE(g_ws->ScrollSelectedMatrix(Wheel(-120)));
+      CHECK(matr->ScrollPosition().y > 0);
+    }
+  }
+
+  WHEN("just a cell inside one entry is selected") {
+    Cell *entry = matr->GetInnerCell(1, 1);
+    REQUIRE(entry != nullptr);
+    g_ws->SetSelection(entry);
+    THEN("the wheel scrolls the matrix the entry is in") {
+      CHECK(g_ws->GetSelectedScrollingMatrix() == matr);
+      REQUIRE(g_ws->ScrollSelectedMatrix(Wheel(-120)));
+      CHECK(matr->ScrollPosition().y > 0);
+    }
+  }
+
+  g_ws->ClearSelection();
+  g_ws->DestroyTree();
+  g_cfg->SetOversizedMatrices(Configuration::OversizedMatrices::showInFull);
+  g_cfg->SetMatrixScrollHost(nullptr);
+}
+
+SCENARIO("A selected matrix that doesn't scroll leaves the wheel alone (GH #2479)") {
+  g_cfg->SetZoomFactor(1.0);
+  g_cfg->SetCanvasSize(wxSize(600, 300));
+  MatrCell *matr = ShowMatrix(MatrixTableXml(2, 2));
+  g_ws->SetSelection(matr);
+  CHECK(g_ws->GetSelectedScrollingMatrix() == nullptr);
+  CHECK_FALSE(g_ws->ScrollSelectedMatrix(Wheel(-120)));
+  g_ws->ClearSelection();
+  g_ws->DestroyTree();
+}
+
 //! The bitmap a clipboard object offers, drawn now; invalid if it offers none.
 static wxBitmap ClipboardBitmap(const wxDataObject &data) {
   std::vector<wxDataFormat> formats(data.GetFormatCount(wxDataObject::Get));

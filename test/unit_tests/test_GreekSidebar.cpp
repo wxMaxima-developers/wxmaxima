@@ -37,6 +37,7 @@
 #include <wx/frame.h>
 #include <wx/log.h>
 #include <wx/panel.h>
+#include <wx/settings.h>
 
 #include "Configuration.h"
 #include "sidebars/CharButton.h"
@@ -131,6 +132,40 @@ SCENARIO("A symbol button knows its size before its first size event") {
     }
     button->Destroy();
   }
+}
+
+SCENARIO("A symbol button's hover highlight goes away when the mouse leaves") {
+  // On wxQt the highlight used to stay after the mouse had left: resetting
+  // the background to the default with an invalid colour left the highlight
+  // on screen there. Whatever the port does to get rid of it, the button has
+  // to end up with the background it had before the mouse came.
+  CharButton *button = new CharButton(g_frame, g_worksheet, g_cfg,
+                                      {L'\u03B2', wxS("beta")}, true);
+  const wxColour before = button->GetBackgroundColour();
+  auto send = [button](wxEventType type) {
+    wxMouseEvent mouse(type);
+    mouse.SetEventObject(button);
+    button->GetEventHandler()->ProcessEvent(mouse);
+    // The colour is only changed once the application is idle.
+    wxIdleEvent idle;
+    idle.SetEventObject(button);
+    button->GetEventHandler()->ProcessEvent(idle);
+  };
+
+  WHEN("the mouse enters the button") {
+    send(wxEVT_ENTER_WINDOW);
+    THEN("it is highlighted") {
+      REQUIRE(button->GetBackgroundColour() ==
+              wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT));
+    }
+    AND_WHEN("the mouse leaves it again") {
+      send(wxEVT_LEAVE_WINDOW);
+      THEN("it has its original background again") {
+        REQUIRE(button->GetBackgroundColour() == before);
+      }
+    }
+  }
+  button->Destroy();
 }
 
 int main(int argc, char **argv) {

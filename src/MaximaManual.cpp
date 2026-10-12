@@ -53,11 +53,18 @@ MaximaManual::HelpFileAnchors MaximaManual::GetHelpfileAnchors() {
 }
 
 wxString MaximaManual::GetHelpfileAnchorName(wxString keyword) {
-  const std::lock_guard<std::mutex> lock(m_helpFileAnchorsLock);
-
-  if(m_helpFileAnchors.size() < 100)
+  bool needBuiltInAnchors;
+  {
+    const std::lock_guard<std::mutex> lock(m_helpFileAnchorsLock);
+    needBuiltInAnchors = m_helpFileAnchors.size() < 100;
+  }
+  // Not under the lock: LoadBuiltInManualAnchors() takes it itself, and
+  // std::mutex isn't recursive, so holding it here deadlocked the GUI thread
+  // whenever help was asked for before the manual's anchors were read.
+  if(needBuiltInAnchors)
     LoadBuiltInManualAnchors();
 
+  const std::lock_guard<std::mutex> lock(m_helpFileAnchorsLock);
   auto anchor = m_helpFileAnchors.find(keyword);
   if (anchor == m_helpFileAnchors.end())
     return wxEmptyString;

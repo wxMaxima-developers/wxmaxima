@@ -52,10 +52,8 @@ struct ToolbarFrame {
     toolbar->Realize();
     manager.AddPane(new wxPanel(frame), wxAuiPaneInfo().Name(wxS("console"))
                     .Center().CaptionVisible(false).PaneBorder(false));
-    manager.AddPane(toolbar,
-                    SetToolbarPaneProperties(
-                      wxAuiPaneInfo().Name(wxS("toolbar")).Top().Row(0),
-                      toolbar));
+    AddToolbarPane(manager, toolbar,
+                   wxAuiPaneInfo().Name(wxS("toolbar")).Top().Row(0));
     frame->Show();
     manager.Update();
   }
@@ -125,6 +123,18 @@ wxString AdjustDockSizes(const wxString &perspective, long delta) {
 }
 
 } // namespace
+
+SCENARIO("A newly added toolbar gets the height its contents need") {
+  GIVEN("a toolbar pane that has a border") {
+    ToolbarFrame f;
+    REQUIRE(f.Pane().HasBorder());
+    THEN("the dock leaves room for the border") {
+      // wxWidgets 3.3.4 made AddPane() size the dock from the pane's best
+      // size alone, which made the toolbar two pixels too short.
+      CHECK(f.ActualHeight() == f.NaturalHeight());
+    }
+  }
+}
 
 SCENARIO("The toolbar's height comes from its contents, not the stored layout") {
   ToolbarFrame f;

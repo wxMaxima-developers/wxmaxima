@@ -39,6 +39,9 @@
 class ChangeLogDialog : public wxDialog
 {
 public:
+  //! Saves the geometry while this is still a whole dialog, see
+  //! FindReplaceDialog::~FindReplaceDialog()
+  ~ChangeLogDialog() override { SendDestroyEvent(); }
   explicit ChangeLogDialog(wxWindow *parent);
 private:
   wxRichTextCtrl *m_changelog;

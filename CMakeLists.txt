@@ -61,21 +61,8 @@ option(WXM_DISABLE_WEBVIEW
     "Disable webview for https://trac.macports.org/ticket/62904" OFF)
 option(WXM_DISABLE_QA
     "Disable wxWidgets qa for https://github.com/wxMaxima-developers/wxmaxima/issues/2064" OFF)
-# Off by default on Cygwin: there the precompiled header fails in wx's own
-# wx/platform.h, which takes the build for a native Windows one (__WINDOWS__)
-# and includes wx/msw/gccpriv.h, a header Cygwin's GTK build of wxWidgets
-# doesn't ship. The Cygwin CI job was green until the precompiled header
-# stopped being empty (20127e1) and red on every push after it. Which header
-# makes wx see _WIN32 there hasn't been established yet (no Cygwin to test
-# on); the precompiled header's Compat.h includes standard headers ahead of
-# <wx/defs.h>, which is the first suspect.
-if(CYGWIN)
-  set(WXM_PCH_DEFAULT OFF)
-else()
-  set(WXM_PCH_DEFAULT ON)
-endif()
 option(WXM_ENABLE_PRECOMPILED_HEADERS
-    "Enable precompiled headers, which speeds compilation up by about a third." ${WXM_PCH_DEFAULT})
+    "Enable precompiled headers, which speeds compilation up by about a third." ON)
 option(WXM_USE_CPPCHECK
     "Perform CPPCHECK during compilation." OFF)
 option(WXM_UNIT_TESTS
@@ -242,6 +229,26 @@ else()
 endif()
 message(STATUS "Found wxWidgets: (found version \"${wxWidgets_VERSION_STRING}\")")
 include(${wxWidgets_USE_FILE})
+
+# Cygwin's GTK build of wxWidgets defines __GNUWIN32__ in its setup.h, so
+# wx/platform.h includes wx/msw/gccpriv.h -- a header wxWidgets installs only
+# for native Windows builds, and Cygwin's wx 3.2 packages don't contain. Every
+# file including a wx header then fails with "wx/msw/gccpriv.h: No such file
+# or directory" (the Cygwin CI job was red from the switch to wx 3.2 on).
+# Supply a stand-in, after wx's own include directories, so a wxWidgets that
+# does ship the header still uses its own.
+if(CYGWIN)
+  set(WXM_WX_HAS_GCCPRIV OFF)
+  foreach(dir ${wxWidgets_INCLUDE_DIRS})
+    if(EXISTS "${dir}/wx/msw/gccpriv.h")
+      set(WXM_WX_HAS_GCCPRIV ON)
+    endif()
+  endforeach()
+  if(NOT WXM_WX_HAS_GCCPRIV)
+    message(STATUS "wxWidgets lacks wx/msw/gccpriv.h - using wxMaxima's stand-in")
+    include_directories(AFTER SYSTEM "${CMAKE_SOURCE_DIR}/cmake/cygwin-wx-compat")
+  endif()
+endif()
 
 # The AI tools (the AI chat sidebar, the AI connection monitor and their
 # options tab) only work reliably from wxWidgets 3.3.4 on, so older versions

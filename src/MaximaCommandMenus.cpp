@@ -2123,19 +2123,11 @@ void MaximaCommandMenus::HelpMenu(wxCommandEvent &event) {
   else if(event.GetId() == EventIDs::menu_wxmaxima_uses_help_sidebar){
     m_wxMaxima.m_configuration.InternalHelpBrowser(true);
   }
-  else if(event.GetId() == EventIDs::menu_maxima_uses_internal_help){
-    m_wxMaxima.m_configuration.MaximaUsesHtmlBrowser(false);
-    m_wxMaxima.m_configuration.MaximaUsesWxmaximaBrowser(false);
-    m_wxMaxima.MenuCommand(wxS("output_format_for_help:'text$"));
-  }
-  else if(event.GetId() == EventIDs::menu_maxima_uses_html_help){
-    m_wxMaxima.m_configuration.MaximaUsesHtmlBrowser(true);
-    m_wxMaxima.m_configuration.MaximaUsesWxmaximaBrowser(false);
-    m_wxMaxima.MenuCommand(wxS("output_format_for_help:'html$"));
-  }
-  else if(event.GetId() == EventIDs::menu_maxima_uses_wxmaxima_help){
-    m_wxMaxima.m_configuration.MaximaUsesWxmaximaBrowser(true);
-    m_wxMaxima.MenuCommand(wxS("output_format_for_help:'frontend$"));
+  else if(event.GetId() == EventIDs::menu_maxima_help_in_console){
+    m_wxMaxima.m_configuration.MaximaHelpInConsole(event.IsChecked());
+    m_wxMaxima.MenuCommand(wxS("output_format_for_help:'") +
+                           m_wxMaxima.m_configuration.MaximaHelpFormatName() +
+                           wxS("$"));
   }
 
   else if(event.GetId() == EventIDs::menu_show_tip){
@@ -2863,6 +2855,10 @@ void MaximaCommandMenus::EditMenu(wxCommandEvent &event) {
       if (m_wxMaxima.GetWorksheet()->GetTree())
         m_wxMaxima.GetWorksheet()->GetTree()->FontsChangedList();
       m_wxMaxima.ConfigChanged();
+      // The order of the toolbar's sections, or which are shown, may have
+      // changed in the "Toolbar" tab.
+      if (m_wxMaxima.GetWorksheet()->m_mainToolBar)
+        m_wxMaxima.GetWorksheet()->m_mainToolBar->AddTools();
       m_wxMaxima.GetWorksheet()->RequestRecalculation();
       m_wxMaxima.GetWorksheet()->RequestRedraw();
     }

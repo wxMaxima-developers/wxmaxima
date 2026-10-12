@@ -148,6 +148,12 @@ target_compile_definitions(test_WxMaximaManualAnchors PRIVATE WXM_SOURCE_DIR="${
 target_link_libraries(test_WxMaximaManualAnchors PRIVATE ${wxWidgets_LIBRARIES})
 add_test(WxMaximaManualAnchors test_WxMaximaManualAnchors)
 
+# Why the integrated help browser is or isn't available (GH #2481). Prints
+# the diagnosis, so the Windows CI log shows what the shipped build has.
+add_executable(test_HelpBrowserDiagnosis test_HelpBrowserDiagnosis.cpp ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
+target_link_libraries(test_HelpBrowserDiagnosis PRIVATE ${wxWidgets_LIBRARIES})
+add_test(NAME HelpBrowserDiagnosis COMMAND test_HelpBrowserDiagnosis -s)
+
 # The Maxima-protocol helpers (MaximaProtocol) - prompt classification and the
 # blank-command predicate - are GUI-free, so they are tested directly against
 # captured prompt/command strings.
@@ -155,6 +161,13 @@ add_executable(test_MaximaProtocol test_MaximaProtocol.cpp ${WXM_TEST_SETUP} ${W
 target_include_directories(test_MaximaProtocol PRIVATE ${CMAKE_SOURCE_DIR}/src)
 target_link_libraries(test_MaximaProtocol PRIVATE ${wxWidgets_LIBRARIES})
 add_test(MaximaProtocol test_MaximaProtocol)
+
+# Which words of a wizard's command get a "Help on" button: pure text
+# analysis, so it needs neither a GUI nor a manual.
+add_executable(test_WizardHelpKeywords test_WizardHelpKeywords.cpp ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
+target_include_directories(test_WizardHelpKeywords PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_link_libraries(test_WizardHelpKeywords PRIVATE ${wxWidgets_LIBRARIES})
+add_test(WizardHelpKeywords test_WizardHelpKeywords)
 
 # Keyed on WXM_AI_TOOLS_REQUESTED, not WXM_USE_AI_TOOLS: this test needs
 # nothing from wxWidgets 3.3.4, which the AI tools themselves require (see
@@ -190,6 +203,16 @@ target_link_libraries(test_AuiPerspectiveRepair PRIVATE ${wxWidgets_LIBRARIES})
 add_test(NAME AuiPerspectiveRepair
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_AuiPerspectiveRepair>")
 
+# Where a number gets the gaps between its digit groups (GH #192) is decided by
+# a pure function over the number's text, tested directly with no GUI.
+add_executable(test_DigitGrouping
+    test_DigitGrouping.cpp ${CMAKE_SOURCE_DIR}/src/DigitGrouping.cpp
+    ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
+target_include_directories(test_DigitGrouping PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_link_libraries(test_DigitGrouping PRIVATE ${wxWidgets_LIBRARIES})
+add_test(NAME DigitGrouping
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_DigitGrouping>")
+
 # The "Save As" dialog has to propose a file name whose extension agrees with
 # the file type it shows: wxGTK appends the first type's extension to a name
 # that has none, and a .wxm document got saved as .wxmx (GH #2440).
@@ -223,6 +246,17 @@ target_include_directories(test_TextFormat PRIVATE ${CMAKE_SOURCE_DIR}/src/cells
 target_link_libraries(test_TextFormat PRIVATE ${wxWidgets_LIBRARIES})
 add_test(NAME TextFormat
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_TextFormat>")
+
+# Where in a code cell Maxima's "incorrect syntax" message points (GH #289)
+# is read from Maxima's output text by a pure string function, so it is
+# tested directly.
+add_executable(test_SyntaxErrorLocation
+    test_SyntaxErrorLocation.cpp ${CMAKE_SOURCE_DIR}/src/SyntaxErrorLocation.cpp
+    ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
+target_include_directories(test_SyntaxErrorLocation PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_link_libraries(test_SyntaxErrorLocation PRIVATE ${wxWidgets_LIBRARIES})
+add_test(NAME SyntaxErrorLocation
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_SyntaxErrorLocation>")
 
 # Link detection in text cells (GH #2396) is a pure string function shared by
 # the display and the HTML/LaTeX exporters, so it is tested directly.
@@ -377,6 +411,29 @@ if(TARGET wxmTestApp)
     add_test(NAME EditorCellTabs
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_EditorCellTabs>")
 
+    # The gaps between digit groups of numbers in code cells (GH #192): the
+    # caret, clicks and the selection have to allow for gaps the text itself
+    # doesn't contain.
+    add_executable(test_EditorCellDigitGroups
+        test_EditorCellDigitGroups.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_EditorCellDigitGroups PUBLIC cxx_std_20)
+    target_link_libraries(test_EditorCellDigitGroups PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME EditorCellDigitGroups
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_EditorCellDigitGroups>")
+
+    # The marks a code cell shows where Maxima reported an error (GH #289):
+    # painted where they were set, and only while the text is unchanged.
+    add_executable(test_EditorCellErrorMarks
+        test_EditorCellErrorMarks.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_EditorCellErrorMarks PUBLIC cxx_std_20)
+    target_link_libraries(test_EditorCellErrorMarks PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME EditorCellErrorMarks
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_EditorCellErrorMarks>")
+
     # Escaped brackets and quotes in code cells (GH #528): typing "a\(3"
     # adds no closing bracket, "\)" doesn't jump over a real ")", and the
     # bracket highlight ignores escaped ones.
@@ -412,6 +469,17 @@ if(TARGET wxmTestApp)
     add_test(NAME ToolBarUndoRedo
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_ToolBarUndoRedo>")
 
+    # The toolbar's sections in a stored order, every one of them hideable,
+    # and the configuration dialogue's "Toolbar" tab that reorders them.
+    add_executable(test_ToolBarSections
+        test_ToolBarSections.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_ToolBarSections PUBLIC cxx_std_20)
+    target_link_libraries(test_ToolBarSections PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME ToolBarSections
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_ToolBarSections>")
+
     # Logic-level regression tests for the custom wxAccessible classes (worksheet
     # and toolbar). They only assert where wxUSE_ACCESSIBILITY is set (the Windows
     # CI); elsewhere they compile out to a harness sanity check. This catches the
@@ -436,6 +504,17 @@ if(TARGET wxmTestApp)
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
     add_test(NAME ToolBarRefresh
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_ToolBarRefresh>")
+
+    # wxQt 3.2 knows no toolbar icon size; our SVG icons must still get
+    # pixels, or a disabled tool fails an assertion on every repaint (GH #2483).
+    add_executable(test_ArtProviderSizeHint
+        test_ArtProviderSizeHint.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_ArtProviderSizeHint PUBLIC cxx_std_20)
+    target_link_libraries(test_ArtProviderSizeHint PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME ArtProviderSizeHint
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_ArtProviderSizeHint>")
 
     # Guards everything a .wxm file (= the copy-to-clipboard path) can hold --
     # images in several formats, every text cell type, code cell answers and the
@@ -509,6 +588,17 @@ if(TARGET wxmTestApp)
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
     add_test(NAME WorksheetClipboard
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_WorksheetClipboard>")
+
+    # GH #794: a middle-click pastes the primary selection, not the Ctrl+C
+    # clipboard. Uses the real clipboard, so it needs a display.
+    add_executable(test_PrimarySelectionPaste
+        test_PrimarySelectionPaste.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_PrimarySelectionPaste PUBLIC cxx_std_20)
+    target_link_libraries(test_PrimarySelectionPaste PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME PrimarySelectionPaste
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_PrimarySelectionPaste>")
 
     # Pins the right-click context menu (WorksheetContextMenu, extracted from
     # Worksheet::OnMouseRightDown): drives the main right-click states on a

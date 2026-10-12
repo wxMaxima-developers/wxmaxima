@@ -256,6 +256,10 @@ void wxMaxima::ConfigChanged() {
   m_configCommands += wxS(":lisp-quiet (setq $wxsubscripts ") +
     m_configuration.GetAutosubscript_string() + wxS(")\n");
 
+  // The options dialog may have changed where Maxima shows its help.
+  m_configCommands += m_configuration.MaximaHelpFormatCommand();
+  UpdateHelpMenuChecks();
+
   // A few variables for additional debug info in wxbuild_info();
   m_configCommands += wxString::Format(wxS(":lisp-quiet (setq wxUserConfDir \"%s\")\n"),
                                        EscapeForLisp(Dirstructure::Get()->UserConfDir()));
@@ -691,9 +695,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &MaximaCommandMenus::HelpMenu, &m_menuCommands, EventIDs::menu_apropos);
   Bind(wxEVT_MENU, &MaximaCommandMenus::HelpMenu, &m_menuCommands, EventIDs::menu_wxmaxima_uses_help_sidebar);
   Bind(wxEVT_MENU, &MaximaCommandMenus::HelpMenu, &m_menuCommands, EventIDs::menu_wxmaxima_uses_help_browser);
-  Bind(wxEVT_MENU, &MaximaCommandMenus::HelpMenu, &m_menuCommands, EventIDs::menu_maxima_uses_html_help);
-  Bind(wxEVT_MENU, &MaximaCommandMenus::HelpMenu, &m_menuCommands, EventIDs::menu_maxima_uses_internal_help);
-  Bind(wxEVT_MENU, &MaximaCommandMenus::HelpMenu, &m_menuCommands, EventIDs::menu_maxima_uses_wxmaxima_help);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::HelpMenu, &m_menuCommands, EventIDs::menu_maxima_help_in_console);
   Bind(wxEVT_MENU, &MaximaCommandMenus::HelpMenu, &m_menuCommands, EventIDs::menu_show_tip);
   Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_trigrat);
   Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_solve_de);
@@ -928,7 +930,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::menu_copy_as_rtf);
   Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::menu_copy_to_file);
   Bind(wxEVT_TOOL, &MaximaProcessManager::Interrupt, &m_processManager, ToolBar::tb_interrupt);
-  Bind(wxEVT_TOOL, &wxMaxima::OnTextFormat, this, ToolBar::tb_bold, ToolBar::tb_strikethrough);
+  Bind(wxEVT_TOOL, &wxMaxima::OnTextFormat, this, ToolBar::tb_bold, ToolBar::tb_subscript);
   Bind(wxEVT_TOOL, &MaximaCommandMenus::FileMenu, &m_menuCommands, ToolBar::tb_animation_startStop);
   Bind(wxEVT_TOOL, &MaximaCommandMenus::FileMenu, &m_menuCommands, ToolBar::tb_animation_start);
   Bind(wxEVT_TOOL, &MaximaCommandMenus::FileMenu, &m_menuCommands, ToolBar::tb_animation_stop);
@@ -2533,11 +2535,16 @@ void wxMaxima::UpdateToolBar() {
   else
     GetWorksheet()->m_mainToolBar->CanEvalThisCell(false);
   GetWorksheet()->m_mainToolBar->WorksheetEmpty(GetWorksheet()->GetTree() == nullptr);
-  GetWorksheet()->m_mainToolBar->TextFormatState(
-    GetWorksheet()->CanFormatText(), GetWorksheet()->HasTextFormat(TextFormat::Bold),
-    GetWorksheet()->HasTextFormat(TextFormat::Italic),
-    GetWorksheet()->HasTextFormat(TextFormat::Underline),
-    GetWorksheet()->HasTextFormat(TextFormat::Strikethrough));
+  {
+    TextFormat::Format activeFormats = TextFormat::None;
+    for (const TextFormat::Format flag :
+           {TextFormat::Bold, TextFormat::Italic, TextFormat::Underline,
+            TextFormat::Strikethrough, TextFormat::Superscript, TextFormat::Subscript})
+      if (GetWorksheet()->HasTextFormat(flag))
+        activeFormats |= flag;
+    GetWorksheet()->m_mainToolBar->TextFormatState(GetWorksheet()->CanFormatText(),
+                                                   activeFormats);
+  }
 
   GetWorksheet()->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, false);
 }
@@ -2993,7 +3000,7 @@ void wxMaxima::OnWizardOK(wxCommandEvent &event) {
 }
 
 void wxMaxima::OnWizardHelpButton(wxCommandEvent &event) {
-  ShowMaximaHelp(m_wizard->GetHelpKeyword(event.GetId()));
+  ShowHelp(m_wizard->GetHelpKeyword(event.GetId()));
 }
 
 void wxMaxima::OnWizardInsert(wxCommandEvent &WXUNUSED(event)) {
@@ -3789,6 +3796,12 @@ void wxMaxima::OnTextFormat(wxCommandEvent &event) {
     break;
   case ToolBar::tb_strikethrough:
     GetWorksheet()->ToggleTextFormat(TextFormat::Strikethrough);
+    break;
+  case ToolBar::tb_superscript:
+    GetWorksheet()->ToggleTextFormat(TextFormat::Superscript);
+    break;
+  case ToolBar::tb_subscript:
+    GetWorksheet()->ToggleTextFormat(TextFormat::Subscript);
     break;
   default:
     break;

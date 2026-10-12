@@ -249,6 +249,7 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent)
   imageList.push_back(wxArtProvider::GetBitmapBundle(wxmaximaART_CONFIG_VIEW_REFRESH, wxART_OTHER, wxSize(imgSize, imgSize)));
   imageList.push_back(wxArtProvider::GetBitmapBundle(wxmaximaART_CONFIG_AI_CHAT, wxART_OTHER, wxSize(imgSize, imgSize)));
   imageList.push_back(wxArtProvider::GetBitmapBundle(wxmaximaART_CONFIG_ACCESSIBILITY, wxART_OTHER, wxSize(imgSize, imgSize)));
+  imageList.push_back(wxArtProvider::GetBitmapBundle(wxmaximaART_CONFIG_TOOLBAR, wxART_OTHER, wxSize(imgSize, imgSize)));
   m_notebook->SetImages(imageList);
 #endif
   m_notebook->AddPage(CreateWorksheetPanel(), _("Worksheet"), true, 0);
@@ -258,6 +259,10 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent)
   m_notebook->AddPage(CreateOptionsPanel(), _("Options"), false, 4);
   m_notebook->AddPage(CreateStartupPanel(), _("Startup commands"), false, 5);
   m_notebook->AddPage(CreatePrintPanel(), _("Printout settings"), false, 6);
+  m_toolBarSections = new ToolBarSectionsPanel(m_notebook);
+  m_toolBarSections->SetMinSize(wxSize(GetContentScaleFactor() * mMinPanelWidth,
+                                       GetContentScaleFactor() * mMinPanelHeight));
+  m_notebook->AddPage(m_toolBarSections, _("Toolbar"), false, 10);
 #ifdef WXM_USE_AI_TOOLS
   // Hidden outright, not just disabled, when there's nowhere safe to keep
   // an API key -- see AiProvider::SecretStoreAvailable()'s own doc comment
@@ -308,6 +313,9 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent)
 }
 
 ConfigDialogue::~ConfigDialogue() {
+  // Save the geometry while this is still a whole dialog. See
+  // FindReplaceDialog::~FindReplaceDialog() for why this is needed.
+  SendDestroyEvent();
 #ifdef WXM_USE_AI_TOOLS
   // Anything still waiting on an HTTP response must not touch this
   // dialog's controls from here on -- they are about to stop existing.
@@ -404,6 +412,11 @@ void ConfigDialogue::SetCheckboxValues() {
   m_displayedDigits->SetToolTip(
                                 _("If numbers are getting longer than this number of digits they will be "
                                   "displayed abbreviated by an ellipsis."));
+  m_digitGrouping->SetToolTip(
+    _("Displays 2111230496 as 2 111 230 496 in the output and in code cells, "
+      "which makes long numbers easier to read. Only the display changes: "
+      "copying, saving, exporting and what is sent to Maxima never contain "
+      "these gaps."));
   m_TeXExponentsAfterSubscript->SetToolTip(
                                            _("In the LaTeX output: Put exponents after an eventual subscript "
                                              "instead of above it. Might increase readability for some fonts and "
@@ -686,6 +699,9 @@ void ConfigDialogue::SetCheckboxValues() {
   m_defaultPlotWidth->SetValue(configuration->DefaultPlotWidth());
   m_defaultPlotHeight->SetValue(configuration->DefaultPlotHeight());
   m_displayedDigits->SetValue(configuration->GetDisplayedDigits());
+  m_digitGrouping->SetValue(configuration->DigitGrouping());
+  m_digitGroupingMinDigits->SetValue(configuration->DigitGroupingMinDigits());
+  m_digitGroupingMinDigits->Enable(configuration->DigitGrouping());
 
   if (configuration->LineBreaksInLongNums() && configuration->ShowAllDigits())
     m_linebreaksInLongNums->SetValue(true);
@@ -734,15 +750,7 @@ void ConfigDialogue::SetCheckboxValues() {
   m_noAutodetectMaxima->SetValue(!m_configuration->AutodetectMaxima());
   m_helpBrowserUserLocation->SetValue(
                                       m_configuration->HelpBrowserUserLocation());
-  if (m_configuration->MaximaUsesWxmaximaBrowser()) {
-    m_maximaUsesWxmaximaHelp->SetValue(true);
-  } else {
-    if (m_configuration->MaximaUsesHtmlBrowser())
-      m_maximaUsesHtmlHelp->SetValue(true);
-    else
-      m_maximaUsesInternalHelp->SetValue(true);
-  }
-  m_maximaUsesHtmlHelp->SetValue(m_configuration->MaximaUsesHtmlBrowser());
+  m_maximaHelpInConsole->SetValue(m_configuration->MaximaHelpInConsole());
   m_defaultPort->SetValue(m_configuration->DefaultPort());
 
   m_useUnicodeMaths->SetValue(m_configuration->UseUnicodeMaths());
@@ -936,6 +944,20 @@ wxWindow *ConfigDialogue::CreateWorksheetPanel() {
                                        _("Display all and allow linebreaks in long numbers")),
                      0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL);
   numDigitsGrid->Add(5 * GetContentScaleFactor(), 5 * GetContentScaleFactor());
+
+  numDigitsGrid->Add(m_digitGrouping =
+                     new wxCheckBox(numDigitsSizer->GetStaticBox(), wxID_ANY,
+                                    _("Separate digit groups of numbers with at least this many digits:")),
+                     0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL);
+  m_digitGroupingMinDigits = new wxSpinCtrl(
+    numDigitsSizer->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition,
+    wxSize(150 * GetContentScaleFactor(), -1), wxSP_ARROW_KEYS,
+    Configuration::DigitGroupingMinDigits_Min, 1000);
+  numDigitsGrid->Add(m_digitGroupingMinDigits, wxSizerFlags());
+  m_digitGrouping->Bind(wxEVT_CHECKBOX, [this](wxCommandEvent &event) {
+    m_digitGroupingMinDigits->Enable(m_digitGrouping->GetValue());
+    event.Skip();
+  });
   displaySizer->Add(numDigitsSizer,
                     wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
 
@@ -1619,18 +1641,18 @@ wxWindow *ConfigDialogue::CreateMaximaPanel() {
                  wxSizerFlags().Expand().Border(wxUP | wxDOWN, 0));
 
   nameSizer->Add(
-                 new wxStaticText(invocationSizer->GetStaticBox(), wxID_ANY, _("Help browser:")),
+                 new wxStaticText(invocationSizer->GetStaticBox(), wxID_ANY, _("Show help in:")),
                  wxSizerFlags().Expand().Border(wxUP | wxDOWN, 0));
   nameSizer->Add(10 * GetContentScaleFactor(), 10 * GetContentScaleFactor());
   m_internalHelpBrowser =
-    new wxRadioButton(invocationSizer->GetStaticBox(), wxID_ANY, _("Internal"),
+    new wxRadioButton(invocationSizer->GetStaticBox(), wxID_ANY, _("The sidebar"),
                       wxDefaultPosition, wxDefaultSize, wxRB_GROUP);
   nameSizer->Add(m_internalHelpBrowser,
                  wxSizerFlags().Expand().Border(wxUP | wxDOWN, 0));
   m_internalHelpBrowser->Show(m_configuration->OfferInternalHelpBrowser());
   nameSizer->Add(10 * GetContentScaleFactor(), 10 * GetContentScaleFactor());
   m_autodetectHelpBrowser =
-    new wxRadioButton(invocationSizer->GetStaticBox(), wxID_ANY, _("Autodetect"),
+    new wxRadioButton(invocationSizer->GetStaticBox(), wxID_ANY, _("The default web browser"),
                       wxDefaultPosition, wxDefaultSize);
   nameSizer->Add(m_autodetectHelpBrowser,
                  wxSizerFlags().Expand().Border(wxUP | wxDOWN, 0));
@@ -1638,7 +1660,7 @@ wxWindow *ConfigDialogue::CreateMaximaPanel() {
 
   m_noAutodetectHelpBrowser =
     new wxRadioButton(invocationSizer->GetStaticBox(),
-                      wxID_ANY, _("User specified"));
+                      wxID_ANY, _("This web browser:"));
   nameSizer->Add(m_noAutodetectHelpBrowser,
                  wxSizerFlags().Expand().Border(wxUP | wxDOWN, 0));
 
@@ -1667,25 +1689,14 @@ wxWindow *ConfigDialogue::CreateMaximaPanel() {
   wxStaticBoxSizer *configSizer =
     new wxStaticBoxSizer(wxVERTICAL, panel, _("Maxima configuration"));
 
-  m_maximaUsesInternalHelp =
-    new wxRadioButton(
-                      configSizer->GetStaticBox(), wxID_ANY, _("Maxima shows help in the console"),
-                      wxDefaultPosition, wxDefaultSize, wxRB_GROUP);
+  // Where help is shown at all is the "Show help in" choice above; this only
+  // decides whether Maxima's own ? answers on the console instead.
+  m_maximaHelpInConsole =
+    new wxCheckBox(configSizer->GetStaticBox(), wxID_ANY,
+                   _("Maxima answers ?, ?? and describe() on the console"));
   configSizer->Add(
-                   m_maximaUsesInternalHelp,
+                   m_maximaHelpInConsole,
                    wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
-  m_maximaUsesHtmlHelp =
-    new wxRadioButton(configSizer->GetStaticBox(), wxID_ANY,
-                      _("Maxima shows help in a browser"));
-  configSizer->Add(
-                   m_maximaUsesHtmlHelp,
-                   wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
-  m_maximaUsesWxmaximaHelp = new wxRadioButton(
-                                               configSizer->GetStaticBox(), wxID_ANY, _("Maxima shows help in a sidebar"));
-  configSizer->Add(
-                   m_maximaUsesWxmaximaHelp,
-                   wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
-  m_maximaUsesWxmaximaHelp->Show(m_configuration->OfferInternalHelpBrowser());
   m_defaultPort = new wxSpinCtrl(
                                  configSizer->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition,
                                  wxSize(230 * GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 50, 65534);
@@ -2980,22 +2991,11 @@ void ConfigDialogue::WriteSettings() {
   configuration->MaximaUserLocation(m_maximaUserLocation->GetValue());
   configuration->AutodetectMaxima(m_autodetectMaxima->GetValue());
   configuration->HelpBrowserUserLocation(m_helpBrowserUserLocation->GetValue());
-  if (m_maximaUsesHtmlHelp->GetValue()) {
-    configuration->MaximaUsesHtmlBrowser(true);
-    configuration->MaximaUsesWxmaximaBrowser(false);
-  }
+  configuration->MaximaHelpInConsole(m_maximaHelpInConsole->GetValue());
 #ifdef __WXMSW__
   m_configuration->UseWGnuplot(m_useWgnuplot->GetValue());
 #endif
 
-  if (m_maximaUsesInternalHelp->GetValue()) {
-    configuration->MaximaUsesHtmlBrowser(false);
-    configuration->MaximaUsesWxmaximaBrowser(false);
-  }
-  if (m_maximaUsesWxmaximaHelp->GetValue()) {
-    configuration->MaximaUsesHtmlBrowser(false);
-    configuration->MaximaUsesWxmaximaBrowser(true);
-  }
   configuration->SinglePageManual(m_singlePageManual->GetValue());
   if (m_internalHelpBrowser->GetValue()) {
     configuration->InternalHelpBrowser(true);
@@ -3019,6 +3019,7 @@ void ConfigDialogue::WriteSettings() {
 #if wxUSE_ACCESSIBILITY
   configuration->ScreenReaderAnnouncesMathML(m_screenReaderMathML->GetValue());
 #endif
+  m_toolBarSections->Write();
   configuration->SetChangeAsterisk(m_changeAsterisk->GetValue());
   configuration->HidemultiplicationSign(m_hidemultiplicationSign->GetValue());
   configuration->Latin2Greek(m_latin2Greek->GetValue());
@@ -3119,6 +3120,8 @@ void ConfigDialogue::WriteSettings() {
   configuration->DefaultPlotWidth(m_defaultPlotWidth->GetValue());
   configuration->DefaultPlotHeight(m_defaultPlotHeight->GetValue());
   configuration->SetDisplayedDigits(m_displayedDigits->GetValue());
+  configuration->DigitGrouping(m_digitGrouping->GetValue());
+  configuration->DigitGroupingMinDigits(m_digitGroupingMinDigits->GetValue());
 
   configuration->PrintMargin_Right(m_printMargin_Right->GetValue());
   configuration->PrintMargin_Left(m_printMargin_Left->GetValue());

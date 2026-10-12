@@ -1215,6 +1215,24 @@ tried without rebuilding.
     `ERROR_FILE`) does not dodge it. Give such a test a channel that never
     touches wxMaxima's stdio, as this one now does.
 
+- **Where in a cell an error is (GH #289) is worked out on wxMaxima's side
+  only -- don't hook Maxima's parser for it.** The queue sends one statement
+  at a time and remembers its range in the cell
+  (`EvaluationQueue::GetCommandStart()`/`GetIndex()`), so a runtime error is
+  pinned to its statement for free. For a syntax error, Maxima's own message
+  echoes the tail of the line it was reading, with a caret under it;
+  `wxm::LocateSyntaxError()` (`src/SyntaxErrorLocation.{h,cpp}`) finds that
+  echo in the statement. Redefining `mread-synerr` from `wxMathML.lisp` would
+  be more precise, but would break whenever Maxima's parser changes, which
+  is what the maintainer wanted to avoid; reading the printed text degrades
+  to "the statement is marked" instead. Two facts about that text, both seen
+  live: Maxima 5.46 spells a blank in the echo as the word `Space` (current
+  Maxima prints the character), and the echo stops at a newline, so it is the
+  tail of the error's own line. The parenthesis check wxMaxima runs before
+  sending counts characters of the *command*, which has comments stripped
+  and doesn't start where the cell does --
+  `EvaluationQueue::CommandPositionInCell()` maps that back; before it, the
+  cursor landed in the wrong statement of a multi-statement cell.
 - **`m_configCommands` (`wxMaxima.cpp`):** the string of startup/config commands
   sent to Maxima on connect (and again whenever settings change while it's
   running). **Every entry in it MUST be a `:lisp-quiet (...)` directive --
@@ -1418,13 +1436,18 @@ tried without rebuilding.
   on every push (wired into `compile_ubuntu.yml` as its own fast,
   standalone job, no build dependencies) and fails loudly if any
   translation would go from non-empty to empty. It catches only "translated
-  text disappeared entirely," not "translation is now provably worse," and
-  can in principle false-positive if one push both reworded a translatable
-  string and committed a regenerated `.po` (the old msgid's entry
-  vanishing under a genuine rename looks identical to it being wiped) --
-  rare, since the convention here is not to commit `update-locale` drift
-  alongside unrelated changes, but worth knowing if it ever fires on
-  something legitimate.
+  text disappeared entirely," not "translation is now provably worse."
+  **It only compares msgids the current `wxMaxima.pot` still contains.** A
+  string deleted or reworded in the source leaves the template, and
+  msgmerge then makes its entry obsolete or reuses the text as a fuzzy
+  suggestion for a similar new msgid -- which is not a wipe. Before
+  2026-10-12 it compared every msgid, so the weekly refresh (below) failed
+  as soon as a feature with translated strings had been removed (251
+  "wiped" translations, all of them removed clipboard-format and
+  help-browser options). That leaves the template itself as the way a
+  stale snapshot could hide a wipe, so the same per-push job also runs
+  `check_pot_not_truncated.py` against `origin/main`'s POT, plus
+  `test_check_translations_not_wiped.py`.
   **If a mass wipe ever does need undoing**, patch at the text level: find
   each entry's line range in both the good and the bad file independently
   (`polib`'s `.linenum`) and splice only the `msgstr` block. Re-saving
@@ -2183,6 +2206,7 @@ which loads on demand -- keep the detail there rather than growing this file.
      **Recursive Strategy:** If a 2D object is too wide, `CollectWideCells` also searches its sub-cells (those already >80% of the available width) for ones that are too wide themselves, and breaks those up in the same pass, avoiding one full recalculation per nesting level. **A sub-cell is only broken if the cell it was found in actually broke up**: cells that have no linear form (subscripts, matrices, `diff()` fractions) draw their contents in 2D, and a broken cell inside them is drawn by nobody (see invariant 5 in the `wxmaxima-layout` skill).
   3. `BreakLines_List()`: Final line wrapping.
 - **High-DPI / wxBitmapBundle:** Use `wxBitmapBundle` for SVG rendering.
+- **A dialog registered with `wxPersistenceManager` must call `SendDestroyEvent()` first thing in its own destructor.** The persistence manager saves the geometry on the destroy event and treats the window as a `wxTopLevelWindow`; wxQt (3.3) only sends that event from `~wxWindow`, by which time the object isn't one any more, so saving called a function through the wrong vtable slot and crashed every such dialog on closing (found closing the configuration dialog; the backtrace ends in `wxTLWGeometryGeneric::GetFrom`). Frames are fine, `~wxFrameBase` sends the event itself. `check-persistent-dialogs` (a ctest) fails if a dialog that calls `RegisterAndRestore(this)` lacks the call; see `FindReplaceDialog::~FindReplaceDialog()`.
 - **Windows Focus Management:** Use `CallAfter` for focus transitions (e.g., `m_searchText->SetFocus()`) to prevent the worksheet from "stealing" focus back.
 - **Graphical export temp files (`src/graphical_io/OutCommon.cpp`):** `wxSVGFileDC`/EMF's DC only write to a real path, so the SVG/EMF representation rendered for the clipboard needs a temp file (unlike a real "Export as..." target file, which is the user's own chosen path and untouched by this). `PrivateTempDir()` puts it in a mode-0700 `tmp/` subdirectory of `Dirstructure::UserConfDir()` instead of the shared system temp dir, so another unprivileged user can't win a race between the file's creation and its being opened by name (the classic symlink-swap window any path-only API leaves open). Falls back to `wxFileName::CreateTempFileName()`'s own default location if that directory can't be created.
 - **Bidi (`src/Bidi.h`/`.cpp`):** Reorders a line of text per the Unicode Bidirectional Algorithm (UAX #9), using `libfribidi` when it's available at build time (`USE_FRIBIDI` in `BuildConfig.h`, optional, `WXM_USE_FRIBIDI` CMake option, on by default when `pkg-config fribidi` is found) and falling back to a single-run approximation otherwise. No wxWidgets backend exposes this reordering itself -- Pango/CoreText/DirectWrite compute it internally to shape glyphs but never hand it back to the app. `EditorCell::GetLineBidiRuns()` wraps it as absolute `m_text` positions; `MixedDirectionOffset()` (used by `PositionToPoint()`, hence also `MarkSelection()` and `SelectPointText()`'s click search) and `HandleSpecialKey()`'s arrow-key handling are the consumers. wxmTestApp is an OBJECT library (`test/unit_tests/CMakeLists.txt`): it compiles `Bidi.cpp` itself and needs `PkgConfig::FRIBIDI` linked directly to *it* (not just to `wxmaxima`) to get fribidi's include path at that compile step; separately, its own `target_link_libraries()` don't propagate through `$<TARGET_OBJECTS:wxmTestApp>`, so anything it needs must *also* be linked into each consuming test executable directly (`WXM_TESTAPP_EXTRA_LIBS`) for the final link. The imported target has to be declared `GLOBAL` since `test/` is a sibling directory of `src/`, not a descendant. `#include <fribidi.h>`, not `<fribidi/fribidi.h>`: pkg-config's own `-I` already points *at* fribidi's header directory (confirmed on both Debian's and Homebrew's `.pc` files), so the extra `fribidi/` prefix only "worked" on Linux by accident, via `/usr/include` being an implicit compiler search path Homebrew's non-default prefix doesn't share -- caught by a real macOS CI failure, not by this sandbox.
@@ -2200,6 +2224,25 @@ which loads on demand -- keep the detail there rather than growing this file.
   `MinimizePane()` asserts on panes without a minimize button -- so wherever
   `MinimizeButton(true)` is handed out, the worksheet and the toolbar must be
   excluded.
+- **`wxFont::IsOk()` cannot tell "not set yet" on wxQt.** With wxWidgets' Qt
+  port a default-constructed `wxFont` (and `wxNullFont`) has ref data of its
+  own and reports itself ok -- a default font, unrelated to anything. A cache
+  that marked its empty slots with `wxFont()` and filled them `if
+  (!font.IsOk())` therefore never filled them there: every bold, italic and
+  sub-/superscript text cell format came out in that one small default font
+  (measured narrower than plain text, and all formats looking alike), while
+  wxGTK was fine. Mark "not made yet" with `std::optional<wxFont>` instead
+  (see `EditorCell::GetFont(TextFormat::Format)`).
+- **wxQt 3.2 differs from 3.3 in two ways that aborted startup (GH #2483).**
+  Its `wxStatusBar` never registers with its parent, so `GetParent()` is
+  `nullptr` for the status bar's whole life (`StatusBar` keeps the frame it
+  was given in `m_frame` instead); and it has no native art provider, so
+  `wxArtProvider::GetSizeHint(wxART_TOOLBAR)` is `wxDefaultSize`, which made
+  every SVG toolbar icon pixel-less (`wxMaximaArtProvider` falls back to
+  24x24). Neither shows with wxQt 3.3 or any other port. To reproduce, build
+  wxWidgets 3.2 with `./configure --with-qt --enable-debug` against
+  `qtbase5-dev`, point `-DwxWidgets_CONFIG_EXECUTABLE` at its `wx-config`,
+  and run under gdb with a breakpoint on `wxOnAssert`.
 - **A wxWidgets-version fallback `#define` must come AFTER the wx header that
   may define it.** `Compat.h` includes `<wx/defs.h>` *above* its
   `#ifndef wxWARN_UNUSED` fallback for this reason. Reached in the other order,

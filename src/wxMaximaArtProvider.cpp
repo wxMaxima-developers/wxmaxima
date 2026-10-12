@@ -60,6 +60,8 @@
 #include "art/toolbar/format-text-italic.h"
 #include "art/toolbar/format-text-underline.h"
 #include "art/toolbar/format-text-strikethrough.h"
+#include "art/toolbar/format-text-superscript.h"
+#include "art/toolbar/format-text-subscript.h"
 
 #include "art/config/document-export.h"
 #include "art/config/edit-copy_backup.h"
@@ -71,6 +73,7 @@
 #include "art/config/view-refresh.h"
 #include "art/config/accessibility.h"
 #include "art/config/ai-chat.h"
+#include "art/config/toolbar.h"
 
 // Used to gunzip the (gzip compressed) SVG in Memory
 wxString wxMaximaArtProvider::gunzip(unsigned char * svg_gz, size_t svg_gz_size)
@@ -89,6 +92,15 @@ wxBitmapBundle wxMaximaArtProvider::CreateBitmapBundle(const wxArtID& id,
 {
   wxSize artsize = size;
   if (artsize == wxDefaultSize) artsize = GetSizeHint(client);
+  // Not every port knows a size hint: wxQt 3.2 has no native art provider,
+  // and wxArtProvider's fallback then deliberately answers wxDefaultSize
+  // ("we don't have a clue"). An SVG bundle with that default size makes
+  // bitmaps without any pixels -- invisible toolbar icons, and an assertion
+  // on every repaint of a disabled one, which wxAUI greys out by converting
+  // the empty bitmap to a wxImage (GH #2483). 24 pixels is what wxGTK
+  // reports for a toolbar.
+  if ((artsize.GetWidth() <= 0) || (artsize.GetHeight() <= 0))
+    artsize = wxSize(24, 24);
 
   if (id == wxmaximaART_MEDIA_PLAYBACK_START) {
     return wxBitmapBundle::FromSVG(wxMaximaArtProvider::gunzip(MEDIA_PLAYBACK_START_SVG_GZ, MEDIA_PLAYBACK_START_SVG_GZ_SIZE).mb_str(), artsize);
@@ -134,6 +146,10 @@ wxBitmapBundle wxMaximaArtProvider::CreateBitmapBundle(const wxArtID& id,
     return wxBitmapBundle::FromSVG(wxMaximaArtProvider::gunzip(FORMAT_TEXT_UNDERLINE_SVG_GZ, FORMAT_TEXT_UNDERLINE_SVG_GZ_SIZE).mb_str(), artsize);
   } else if (id == wxmaximaART_FORMAT_TEXT_STRIKETHROUGH) {
     return wxBitmapBundle::FromSVG(wxMaximaArtProvider::gunzip(FORMAT_TEXT_STRIKETHROUGH_SVG_GZ, FORMAT_TEXT_STRIKETHROUGH_SVG_GZ_SIZE).mb_str(), artsize);
+  } else if (id == wxmaximaART_FORMAT_TEXT_SUPERSCRIPT) {
+    return wxBitmapBundle::FromSVG(wxMaximaArtProvider::gunzip(FORMAT_TEXT_SUPERSCRIPT_SVG_GZ, FORMAT_TEXT_SUPERSCRIPT_SVG_GZ_SIZE).mb_str(), artsize);
+  } else if (id == wxmaximaART_FORMAT_TEXT_SUBSCRIPT) {
+    return wxBitmapBundle::FromSVG(wxMaximaArtProvider::gunzip(FORMAT_TEXT_SUBSCRIPT_SVG_GZ, FORMAT_TEXT_SUBSCRIPT_SVG_GZ_SIZE).mb_str(), artsize);
 
   } else if (id == wxmaximaART_CONFIG_DOCUMENT_EXPORT) {
     return wxBitmapBundle::FromSVG(wxMaximaArtProvider::gunzip(DOCUMENT_EXPORT_SVG_GZ, DOCUMENT_EXPORT_SVG_GZ_SIZE).mb_str(), artsize);
@@ -155,6 +171,8 @@ wxBitmapBundle wxMaximaArtProvider::CreateBitmapBundle(const wxArtID& id,
     return wxBitmapBundle::FromSVG(wxMaximaArtProvider::gunzip(ACCESSIBILITY_SVG_GZ, ACCESSIBILITY_SVG_GZ_SIZE).mb_str(), artsize);
   } else if (id == wxmaximaART_CONFIG_AI_CHAT) {
     return wxBitmapBundle::FromSVG(wxMaximaArtProvider::gunzip(AI_CHAT_SVG_GZ, AI_CHAT_SVG_GZ_SIZE).mb_str(), artsize);
+  } else if (id == wxmaximaART_CONFIG_TOOLBAR) {
+    return wxBitmapBundle::FromSVG(wxMaximaArtProvider::gunzip(TOOLBAR_SVG_GZ, TOOLBAR_SVG_GZ_SIZE).mb_str(), artsize);
   } else {
     return wxNullBitmap;
   }

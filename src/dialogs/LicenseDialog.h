@@ -38,6 +38,9 @@
 class LicenseDialog : public wxDialog
 {
 public:
+  //! Saves the geometry while this is still a whole dialog, see
+  //! FindReplaceDialog::~FindReplaceDialog()
+  ~LicenseDialog() override { SendDestroyEvent(); }
   explicit LicenseDialog(wxWindow *parent);
 protected:
   void OnSize(wxSizeEvent &event);

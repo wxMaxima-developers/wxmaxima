@@ -32,8 +32,8 @@
 #include "CellImpl.h"
 #include "CellList.h"
 #include "DigitCell.h"
+#include "DigitGrouping.h"
 #include "StringUtils.h"
-#include <clocale>
 
 LongNumberCell::LongNumberCell(GroupCell *group, Configuration *config,
                                const wxString &number)
@@ -96,7 +96,10 @@ void LongNumberCell::Recalculate(AFontSize fontsize) const {
         SetFont(dc, m_fontSize_Scaled);
         auto numStartSize = CalculateTextSize(dc, m_numStart, numberStart);
         auto ellipsisSize = CalculateTextSize(dc, m_ellipsis, ellipsis);
-        m_numStartWidth = numStartSize.GetWidth();
+        // The gaps are computed for the whole number, so that the groups of
+        // its first digits are the ones it would have if shown in full.
+        UpdateDigitGroupGaps();
+        m_numStartWidth = DrawGroupedDigits(dc, m_numStart, 0, 0, false);
         m_ellipsisWidth = ellipsisSize.GetWidth();
         m_width = m_numStartWidth + m_ellipsisWidth + 2 * MC_TEXT_PADDING;
         m_height = std::max(numStartSize.GetHeight(), ellipsisSize.GetHeight()) +
@@ -124,8 +127,8 @@ void LongNumberCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
         return;
       SetTextColor(dc);
       SetFont(dc, m_fontSize_Scaled);
-      dc->DrawText(m_numStart, point.x + MC_TEXT_PADDING,
-                   point.y - m_center + MC_TEXT_PADDING);
+      DrawGroupedDigits(dc, m_numStart, point.x + MC_TEXT_PADDING,
+                        point.y - m_center + MC_TEXT_PADDING, true);
       wxColor textColor = dc->GetTextForeground();
       wxColor backgroundColor = dc->GetTextBackground();
       dc->SetTextForeground(
@@ -150,14 +153,7 @@ bool LongNumberCell::BreakUp() const {
     return false;
 
   if (!m_innerCell) {
-    int groupSize = 3;
-    struct lconv *lc = localeconv();
-    if (lc && lc->grouping && lc->grouping[0] > 0 && lc->grouping[0] < 127) {
-      int size = lc->grouping[0];
-      if (size == 3 || size == 4) {
-        groupSize = size;
-      }
-    }
+    const int groupSize = wxm::LocaleDigitGroupSize();
 
     wxString prefix = "";
     wxString suffix = "";
@@ -251,16 +247,22 @@ bool LongNumberCell::BreakUp() const {
       finalGroups.push_back(prefix + suffix);
     }
 
+    // Lets each group decide whether it is followed by a digit-group gap
+    // (GH #192), using the same rules an unbroken number is drawn by.
+    const size_t numberDigits =
+      wxm::DigitGroupGaps(m_text, 0, groupSize).empty()
+      ? 0 : integerPart.Length() + fractionalPart.Length();
+
     Cell *last = nullptr;
     for (const auto &groupStr : finalGroups) {
+      auto digits = std::make_unique<DigitCell>(GetGroup(), m_configuration,
+                                                groupStr, TS_NUMBER);
+      digits->SetNumberDigits(numberDigits);
       if (!last) {
-        m_innerCell = std::make_unique<DigitCell>(GetGroup(), m_configuration,
-                                                  groupStr, TS_NUMBER);
+        m_innerCell = std::move(digits);
         last = m_innerCell.get();
       } else {
-        CellList::AppendCell(last, std::make_unique<DigitCell>(GetGroup(),
-                                                               m_configuration,
-                                                               groupStr, TS_NUMBER));
+        CellList::AppendCell(last, std::move(digits));
         last = last->GetNext();
       }
     }

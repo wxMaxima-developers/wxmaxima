@@ -31,6 +31,7 @@
 */
 #include "Version.h"
 #include "wxMaximaFrame.h"
+#include "HelpBrowserDiagnosis.h"
 #include "AuiPerspectiveRepair.h"
 #include "ToolbarPane.h"
 #include "ArtProvider.h"
@@ -245,14 +246,12 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
       GetWorksheet()->m_mainToolBar = new ToolBar(this);
       m_sidebarNames[EventIDs::menu_pane_toolbar] = wxS("toolbar");
       m_sidebarCaption[EventIDs::menu_pane_toolbar] = _("The main toolbar");
-      m_manager.AddPane(GetWorksheet()->m_mainToolBar,
-                        SetToolbarPaneProperties(
-                          wxAuiPaneInfo()
-                          .Name(m_sidebarNames[EventIDs::menu_pane_toolbar])
-                          .Top()
-                          // .ToolbarPane().
-                          .Row(0),
-                          GetWorksheet()->m_mainToolBar));
+      AddToolbarPane(m_manager, GetWorksheet()->m_mainToolBar,
+                     wxAuiPaneInfo()
+                     .Name(m_sidebarNames[EventIDs::menu_pane_toolbar])
+                     .Top()
+                     // .ToolbarPane().
+                     .Row(0));
     }
   m_sidebarNames[EventIDs::menu_pane_history] = wxS("history");
   m_sidebarCaption[EventIDs::menu_pane_history] = _("History");
@@ -396,7 +395,18 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
                                                  GetWorksheet()->GetMaximaManual()),
                         wxAuiPaneInfo()
                         .Name(m_sidebarNames[EventIDs::menu_pane_wizard])
-                        .Caption(wxS("Example Wizard")));
+                        .Caption(wxS("Example Wizard"))
+                        // A fresh configuration starts with the wizard in a
+                        // window of its own: squeezed between the other
+                        // sidebars of a dock it is easily too low to show its
+                        // OK button. A layout the user saved replaces this in
+                        // LoadPerspective() below.
+                        .Float());
+      m_wizard->OnNeededSizeChange([this] {
+        if (m_manager.GetPane(m_sidebarNames[EventIDs::menu_pane_wizard]).IsShown() &&
+            FitWizardPane())
+          AuiManagerUpdate();
+      });
     }
 
   m_sidebarNames[EventIDs::menu_pane_format] = wxS("format");
@@ -459,6 +469,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
   // Read the perspektive (the sidebar state and positions).
   wxConfigBase *config = wxConfig::Get();
   wxString perspective;
+  m_placeFloatingWizard = !config->HasEntry(wxS("AUI/perspective"));
   if(config->Read(wxS("AUI/perspective"), &perspective)) {
     // Repair the stored layout before wxAUI ever sees it. A perspective saved
     // by an older wxMaxima records the worksheet (centre) pane at dock row 2,
@@ -2070,17 +2081,16 @@ void wxMaximaFrame::SetupHelpMenu() {
     m_HelpMenu->Append(EventIDs::menu_goto_url, _("Go to URL"));
 #endif
   m_HelpMenu->Append(EventIDs::menu_show_tip, _("Show &Tips..."), _("Show a tip"));
+  // Whether the radio items below appear depends on things that fail
+  // silently (GH #2481); the log window, and the About dialog, say which.
+  wxLogMessage(wxS("%s"), wxm::HelpBrowserDiagnosis());
   if(GetConfiguration().OfferInternalHelpBrowser())
     {
       m_HelpMenu->AppendSeparator();
       m_HelpMenu->AppendRadioItem(EventIDs::menu_wxmaxima_uses_help_sidebar,
-                                  _("wxMaxima shows help in the sidebar"));
+                                  _("Show help in the sidebar"));
       m_HelpMenu->AppendRadioItem(EventIDs::menu_wxmaxima_uses_help_browser,
-                                  _("wxMaxima shows help in a browser"));
-      if(GetConfiguration().InternalHelpBrowser())
-        m_HelpMenu->Check(EventIDs::menu_wxmaxima_uses_help_sidebar, true);
-      else
-        m_HelpMenu->Check(EventIDs::menu_wxmaxima_uses_help_browser, true);
+                                  _("Show help in a browser"));
     }
   m_HelpMenu->AppendSeparator();
   wxMenu *tutorials_sub = new wxMenu;
@@ -2114,19 +2124,12 @@ void wxMaximaFrame::SetupHelpMenu() {
   m_HelpMenu->Append(EventIDs::menu_help_maxima_homepage,
                      _(wxS("↗Documentation on maxima's homepage")));
   m_HelpMenu->AppendSeparator();
-  m_HelpMenu->AppendRadioItem(EventIDs::menu_maxima_uses_internal_help,
-                              _("Maxima shows help in the console"),
+  m_HelpMenu->AppendCheckItem(EventIDs::menu_maxima_help_in_console,
+                              _("Maxima answers ? on the console"),
                               _("Tells maxima to show the help for ?, ?? and "
-                                "describe() on the console"));
-  if (GetConfiguration().OfferInternalHelpBrowser())
-    m_HelpMenu->AppendRadioItem(EventIDs::menu_maxima_uses_wxmaxima_help,
-                                _("Maxima shows help in a sidebar"),
-                                _("Tells maxima to show the help for ?, ?? and "
-                                  "describe() in a wxMaxima sidebar"));
-  m_HelpMenu->AppendRadioItem(EventIDs::menu_maxima_uses_html_help,
-                              _("Maxima shows help in a browser"),
-                              _("Tells maxima to show the help for ?, ?? and "
-                                "describe() in a separate browser window"));
+                                "describe() on the console instead of where "
+                                "all other help is shown"));
+  UpdateHelpMenuChecks();
   m_HelpMenu->AppendSeparator();
   m_HelpMenu->Append(EventIDs::menu_build_info, _("Build &Info"),
                      _("Info about Maxima build"), wxITEM_NORMAL);
@@ -2378,10 +2381,103 @@ void wxMaximaFrame::OnMenuStatusText(wxMenuEvent &event)
   // (test/unit_tests/test_MenuHelpString.cpp) without a whole frame.
   StatusText(MenuHelpString(event.GetMenu(), event.GetId()), false);
 }
+void wxMaximaFrame::ShowWizardPane(const wxString &title) {
+  wxAuiPaneInfo &pane = m_manager.GetPane(m_sidebarNames[EventIDs::menu_pane_wizard]);
+  if (!pane.IsOk())
+    return;
+  pane.Show(true).Caption(title);
+  FitWizardPane();
+  AuiManagerUpdate();
+  // A floating wizard that has never been placed would end up wherever the
+  // window manager puts new windows, often enough the screen's top left
+  // corner, far from the worksheet. Put it near the worksheet's right edge
+  // instead. Only once, and only when there was no saved layout: where the
+  // user has moved it to is theirs.
+  //
+  // Moved directly rather than via FloatingPosition(): wxAUI creates the
+  // floating frame the first time the pane is shown and doesn't move an
+  // existing one to a changed floating position.
+  if (pane.IsFloating() && (pane.frame != nullptr) && m_placeFloatingWizard) {
+    m_placeFloatingWizard = false;
+    const wxRect frameRect = GetScreenRect();
+    const int margin = static_cast<int>(20 * GetContentScaleFactor());
+    pane.frame->Move(
+      wxPoint(std::max(frameRect.GetRight() - pane.frame->GetSize().x - margin,
+                       frameRect.GetLeft()),
+              frameRect.GetTop() + 4 * margin));
+  }
+}
+
+bool wxMaximaFrame::FitWizardPane() {
+  wxAuiPaneInfo &pane = m_manager.GetPane(m_sidebarNames[EventIDs::menu_pane_wizard]);
+  if ((!pane.IsOk()) || (m_wizard == nullptr))
+    return false;
+  wxSize needed = m_wizard->GetNeededSize();
+  // A wizard with all ten fields in use may be higher than fits next to
+  // the worksheet. Then it scrolls rather than pushing everything else off
+  // the frame.
+  int limit = GetClientSize().GetHeight() * 2 / 3;
+  // The same goes for a wizard docked at the left or right among other
+  // sidebars: they keep their own minimum heights. wxAUI cannot make them
+  // all fit if it can't and then draws them on top of each other.
+  if (pane.IsDocked() && ((pane.dock_direction == wxAUI_DOCK_LEFT) ||
+                          (pane.dock_direction == wxAUI_DOCK_RIGHT))) {
+    const int caption =
+      m_manager.GetArtProvider()->GetMetric(wxAUI_DOCKART_CAPTION_SIZE) +
+      m_manager.GetArtProvider()->GetMetric(wxAUI_DOCKART_SASH_SIZE);
+    int available = GetClientSize().GetHeight() - caption;
+    wxAuiPaneInfoArray &panes = m_manager.GetAllPanes();
+    for (size_t i = 0; i < panes.GetCount(); i++) {
+      const wxAuiPaneInfo &other = panes.Item(i);
+      if ((other.window == m_wizard) || (!other.IsShown()) || (!other.IsDocked()))
+        continue;
+      if ((other.dock_direction == wxAUI_DOCK_TOP) ||
+          (other.dock_direction == wxAUI_DOCK_BOTTOM))
+        // The toolbar, or a sidebar docked above or below: takes away the
+        // height of its whole row.
+        available -= (other.window != nullptr) ? other.window->GetSize().y : 0;
+      else if ((other.dock_direction == pane.dock_direction) &&
+               (other.dock_layer == pane.dock_layer) &&
+               (other.dock_row == pane.dock_row))
+        available -= std::max(other.min_size.y, 0) + caption;
+    }
+    limit = std::min(limit, available);
+  }
+  needed.y = std::max(std::min(needed.y, limit),
+                      static_cast<int>(100 * GetContentScaleFactor()));
+  bool changed = false;
+  if (pane.min_size.y != needed.y) {
+    pane.MinSize(wxSize(std::max(pane.min_size.x,
+                                 static_cast<int>(100 * GetContentScaleFactor())),
+                        needed.y));
+    changed = true;
+  }
+  if (pane.IsFloating()) {
+    wxSize floating = pane.floating_size;
+    if (pane.frame != nullptr)
+      floating = pane.frame->GetSize();
+    // The floating frame's decorations (its caption) come on top.
+    const int decoration = (pane.frame != nullptr)
+      ? pane.frame->GetSize().y - pane.frame->GetClientSize().y : 0;
+    if ((floating.x < needed.x) || (floating.y < needed.y + decoration)) {
+      floating.x = std::max(floating.x, needed.x);
+      floating.y = std::max(floating.y, needed.y + decoration);
+      pane.FloatingSize(floating);
+      if (pane.frame != nullptr)
+        pane.frame->SetSize(floating);
+      changed = true;
+    }
+  }
+  return changed;
+}
+
 void wxMaximaFrame::DockAllSidebars(wxCommandEvent &WXUNUSED(ev)) {
   for(const auto &[paneId, name]: m_sidebarNames)
     m_manager.GetPane(name).Dock();
+  // The wizard's minimum height depends on what it now shares a dock with
   AuiManagerUpdate();
+  if (FitWizardPane())
+    AuiManagerUpdate();
 }
 
 void wxMaximaFrame::HideAllSidebars(wxCommandEvent &WXUNUSED(ev)) {
@@ -2432,6 +2528,19 @@ void wxMaximaFrame::TogglePaneVisibility(int id)
     return;
 
   ShowPane(id, !IsPaneDisplayed(id));
+}
+
+void wxMaximaFrame::UpdateHelpMenuChecks() {
+  if (!m_HelpMenu)
+    return;
+  if (GetConfiguration().OfferInternalHelpBrowser()) {
+    if (GetConfiguration().InternalHelpBrowser())
+      m_HelpMenu->Check(EventIDs::menu_wxmaxima_uses_help_sidebar, true);
+    else
+      m_HelpMenu->Check(EventIDs::menu_wxmaxima_uses_help_browser, true);
+  }
+  m_HelpMenu->Check(EventIDs::menu_maxima_help_in_console,
+                    GetConfiguration().MaximaHelpInConsole());
 }
 
 void wxMaximaFrame::ShowPane(int id, bool show) {

@@ -15,6 +15,14 @@ about the mechanism was specific to it: any bulk catalogue edit can do the
 same. Hence the comparison here is keyed on msgid+msgctxt rather than on a
 line diff.
 
+A translation whose msgid has left the template is not wiped but retired:
+the string was deleted or reworded in the source, and msgmerge then marks
+the entry obsolete (or reuses its text as a fuzzy suggestion for a similar
+new msgid). That is what every refresh after a removed feature looks like,
+so only msgids the current template still contains are compared. The
+template itself cannot be used to sneak a wipe past this: a POT that loses
+strings is what check_pot_not_truncated.py guards against.
+
 Usage: check_translations_not_wiped.py [base-ref]
 """
 import subprocess
@@ -26,6 +34,15 @@ import polib
 
 def translated_map(po):
     return {(e.msgid, e.msgctxt): e.msgstr for e in po if not e.obsolete}
+
+
+def template_keys(pot_path):
+    """The msgid+msgctxt keys the current template offers, or None if there
+    is no template to go by (then every msgid counts as still current)."""
+    if not pot_path.exists():
+        return None
+    return {(e.msgid, e.msgctxt) for e in polib.pofile(str(pot_path))
+            if not e.obsolete}
 
 
 def load_from_ref(ref, path):
@@ -45,6 +62,7 @@ def load_from_ref(ref, path):
 def main():
     base_ref = sys.argv[1] if len(sys.argv) > 1 else "origin/main"
     po_dir = Path("locales/wxMaxima")
+    current = template_keys(po_dir / "wxMaxima.pot")
     total_wiped = 0
     any_wiped = False
 
@@ -62,6 +80,7 @@ def main():
             key
             for key, base_str in base_map.items()
             if base_str and not head_map.get(key)
+            and (current is None or key in current)
         ]
         if wiped:
             any_wiped = True

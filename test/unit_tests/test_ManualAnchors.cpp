@@ -42,9 +42,11 @@
 #include "Configuration.h"
 #include "MaximaManual.h"
 
+#include <chrono>
 #include <cstdlib>
-#ifndef _WIN32
-#endif
+#include <future>
+#include <iostream>
+#include <thread>
 
 #define CATCH_CONFIG_RUNNER
 #include <catch2/catch.hpp>
@@ -101,6 +103,35 @@ SCENARIO("CompileHelpFileAnchors extracts every anchor from the HTML manual") {
       wxRemoveFile(cacheFile);
     }
     wxFileName::Rmdir(docDir, wxPATH_RMDIR_RECURSIVE);
+  }
+}
+
+SCENARIO("Looking up a keyword before the manual was read uses the built-in anchors") {
+  GIVEN("a MaximaManual that hasn't read any manual yet") {
+    Configuration cfg;
+    // Leaked on purpose: if the lookup deadlocks, the thread doing it never
+    // lets go of the object.
+    auto *manual = new MaximaManual(&cfg);
+    WHEN("help for a keyword is asked for") {
+      // GetHelpfileAnchorName() used to hold its lock while loading the
+      // built-in anchors, which take the same lock: Maxima's ? then froze
+      // wxMaxima for good. Look the keyword up on a thread of its own, so
+      // that a deadlock fails this test instead of hanging it.
+      std::promise<wxString> anchor;
+      std::future<wxString> result = anchor.get_future();
+      std::thread([manual, &anchor] {
+        anchor.set_value(manual->GetHelpfileAnchorName(wxS("integrate")));
+      }).detach();
+      if (result.wait_for(std::chrono::seconds(60)) != std::future_status::ready) {
+        std::cerr << "GetHelpfileAnchorName() deadlocked\n";
+        // The blocked thread still references the promise on this stack.
+        std::_Exit(EXIT_FAILURE);
+      }
+      THEN("the keyword is found in the built-in list") {
+        CHECK(!result.get().IsEmpty());
+      }
+    }
+    delete manual;
   }
 }
 

@@ -149,43 +149,55 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
         }
       }
       if (worksheet.GetDocumentCellPointers().GetSelectionStart()->GetType() == MC_TYPE_GROUP) {
+        const bool singleGroup =
+          worksheet.GetDocumentCellPointers().GetSelectionStart() ==
+          worksheet.GetDocumentCellPointers().GetSelectionEnd();
         if (worksheet.CanCopy()) {
           popupMenu.Append(wxID_COPY, _("Copy"), wxEmptyString, wxITEM_NORMAL);
           popupMenu.Append(EventIDs::menu_copy_uuid, _("Copy position (UUID)"));
-          popupMenu.Append(EventIDs::popid_copy_matlab, _("Copy for Octave/Matlab"),
-                           wxEmptyString, wxITEM_NORMAL);
-          popupMenu.Append(EventIDs::popid_copy_tex, _("Copy as LaTeX"), wxEmptyString,
-                           wxITEM_NORMAL);
-          popupMenu.Append(EventIDs::popid_copy_text, _("Copy as plain text"),
-                           wxEmptyString, wxITEM_NORMAL);
-          if ((worksheet.GetDocumentCellPointers().GetSelectionStart() == worksheet.GetDocumentCellPointers().GetSelectionEnd()) &&
-              worksheet.CanCopyAsMathML())
-            popupMenu.Append(EventIDs::popid_copy_mathml,
-                             _("Copy as MathML (e.g. to word processor)"),
+          // The many special-purpose copy formats would make this menu very
+          // long, so they live in a submenu. The items keep their full
+          // "Copy as ..." labels: these are the strings the translations
+          // already cover, and each item still says what it does on its own.
+          wxMenu *copyAsMenu = new wxMenu;
+          copyAsMenu->Append(EventIDs::popid_copy_matlab, _("Copy for Octave/Matlab"),
                              wxEmptyString, wxITEM_NORMAL);
-          popupMenu.Append(EventIDs::popid_copy_image, _("Copy as Image"), wxEmptyString,
-                           wxITEM_NORMAL);
+          copyAsMenu->Append(EventIDs::popid_copy_tex, _("Copy as LaTeX"), wxEmptyString,
+                             wxITEM_NORMAL);
+          copyAsMenu->Append(EventIDs::popid_copy_text, _("Copy as plain text"),
+                             wxEmptyString, wxITEM_NORMAL);
+          if (singleGroup && worksheet.CanCopyAsMathML())
+            copyAsMenu->Append(EventIDs::popid_copy_mathml,
+                               _("Copy as MathML (e.g. to word processor)"),
+                               wxEmptyString, wxITEM_NORMAL);
+          copyAsMenu->Append(EventIDs::popid_copy_image, _("Copy as Image"), wxEmptyString,
+                             wxITEM_NORMAL);
           if ((worksheet.GetSelectionStart() != nullptr) &&
               (worksheet.GetSelectionStart() == worksheet.GetSelectionEnd()) &&
               (worksheet.GetSelectionStart()->GetType() == MC_TYPE_SLIDE))
-            popupMenu.Append(EventIDs::popid_copy_animation, _("Copy Animation"),
-                             wxEmptyString, wxITEM_NORMAL);
-          popupMenu.Append(EventIDs::popid_copy_svg, _("Copy as SVG"), wxEmptyString,
-                           wxITEM_NORMAL);
+            copyAsMenu->Append(EventIDs::popid_copy_animation, _("Copy Animation"),
+                               wxEmptyString, wxITEM_NORMAL);
+          copyAsMenu->Append(EventIDs::popid_copy_svg, _("Copy as SVG"), wxEmptyString,
+                             wxITEM_NORMAL);
 #if wxUSE_ENH_METAFILE
-          popupMenu.Append(EventIDs::popid_copy_emf, _("Copy as EMF"), wxEmptyString,
-                           wxITEM_NORMAL);
+          copyAsMenu->Append(EventIDs::popid_copy_emf, _("Copy as EMF"), wxEmptyString,
+                             wxITEM_NORMAL);
 #endif
-          popupMenu.Append(EventIDs::popid_copy_rtf, _("Copy as RTF"), wxEmptyString,
-                           wxITEM_NORMAL);
-          popupMenu.Append(EventIDs::popid_copy_html, _("Copy as HTML"), wxEmptyString,
-                           wxITEM_NORMAL);
-          popupMenu.Append(EventIDs::popid_export_output_svg,
-                           _("Export output as SVG to a folder..."),
-                           wxEmptyString, wxITEM_NORMAL);
-          popupMenu.Append(EventIDs::popid_export_output_png,
-                           _("Export output as PNG to a folder..."),
-                           wxEmptyString, wxITEM_NORMAL);
+          copyAsMenu->Append(EventIDs::popid_copy_rtf, _("Copy as RTF"), wxEmptyString,
+                             wxITEM_NORMAL);
+          copyAsMenu->Append(EventIDs::popid_copy_html, _("Copy as HTML"), wxEmptyString,
+                             wxITEM_NORMAL);
+          popupMenu.AppendSubMenu(copyAsMenu, _("Copy in Another Format"));
+          // Exporting the outputs into a folder, one file each, only pays
+          // off for several cells, so it is offered only then.
+          if (!singleGroup) {
+            popupMenu.Append(EventIDs::popid_export_output_svg,
+                             _("Export output as SVG to a folder..."),
+                             wxEmptyString, wxITEM_NORMAL);
+            popupMenu.Append(EventIDs::popid_export_output_png,
+                             _("Export output as PNG to a folder..."),
+                             wxEmptyString, wxITEM_NORMAL);
+          }
           if (worksheet.CanDeleteSelection())
             popupMenu.Append(EventIDs::popid_delete, _("Delete Selection"), wxEmptyString,
                              wxITEM_NORMAL);

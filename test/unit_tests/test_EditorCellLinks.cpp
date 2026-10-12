@@ -20,7 +20,8 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 /*! \file
-  Tests for links in text cells and in Maxima's output (GH #2396).
+  Tests for links in text cells, in code cells' comments and in Maxima's
+  output (GH #2396).
 
   A link in a text cell becomes a text snippet of its own, which Draw() paints
   in the link color and GetLinkAt() hit-tests -- both through the same walk
@@ -168,8 +169,77 @@ SCENARIO("A link in a text cell is found under the pointer") {
     EditorCell *editor = group->GetEditable();
     REQUIRE(editor != nullptr);
 
-    THEN("code never has links") {
+    THEN("an address in a string is no link") {
       REQUIRE(editor->GetLinkAt(Inside(editor, 8)).empty());
+    }
+  }
+}
+
+SCENARIO("A link in a code cell's comment is found under the pointer") {
+  GIVEN("a comment with a link, followed by code") {
+    const wxString link = wxS("https://example.org/docs");
+    const wxString text = wxS("/* see ") + link + wxS(" */ x: 1;");
+    auto group = MakeCell(GC_TYPE_CODE, text);
+    EditorCell *editor = group->GetEditable();
+    REQUIRE(editor != nullptr);
+    const size_t linkStart = text.Find(wxS("https"));
+
+    THEN("every character of the link finds it") {
+      for (size_t pos = linkStart; pos < linkStart + link.Length(); ++pos) {
+        INFO("position " << pos);
+        REQUIRE(editor->GetLinkAt(Inside(editor, pos)) == link);
+      }
+    }
+    THEN("the rest of the comment and the code aren't links") {
+      REQUIRE(editor->GetLinkAt(Inside(editor, 4)).empty());
+      REQUIRE(editor->GetLinkAt(Inside(editor, linkStart + link.Length() + 1)).empty());
+      REQUIRE(editor->GetLinkAt(Inside(editor, text.Length() - 2)).empty());
+    }
+    THEN("the cell's text is unchanged") {
+      REQUIRE(editor->GetValue() == text);
+    }
+  }
+
+  GIVEN("a link that runs straight into the end of its comment") {
+    const wxString text = wxS("/* https://a.org/x.*/ y;");
+    auto group = MakeCell(GC_TYPE_CODE, text);
+    EditorCell *editor = group->GetEditable();
+    REQUIRE(editor != nullptr);
+
+    THEN("neither the \"*/\" nor the full stop belongs to the link") {
+      REQUIRE(editor->GetLinkAt(Inside(editor, 6)) == wxS("https://a.org/x"));
+    }
+  }
+
+  GIVEN("a link on the second line of a comment spanning several lines") {
+    const wxString text = wxS("/* Documentation:\n   http://b.org/page\n*/\nf(x) := x^2;");
+    auto group = MakeCell(GC_TYPE_CODE, text);
+    EditorCell *editor = group->GetEditable();
+    REQUIRE(editor != nullptr);
+    const size_t linkStart = text.Find(wxS("http"));
+
+    THEN("it is found where it is drawn") {
+      REQUIRE(editor->PositionToPoint(linkStart).y > editor->PositionToPoint(0).y);
+      REQUIRE(editor->GetLinkAt(Inside(editor, linkStart + 2)) ==
+              wxS("http://b.org/page"));
+      REQUIRE(editor->GetLinkAt(Inside(editor, 2)).empty());
+    }
+  }
+
+  GIVEN("a code line long enough to be wrapped, with a commented link at its end") {
+    wxString text = wxS("x: ");
+    for (int i = 0; i < 60; ++i)
+      text += wxS("a + ");
+    text += wxS("b; ");
+    const size_t linkStart = text.Length() + 3;
+    text += wxS("/* https://example.org/wrapped */");
+    auto group = MakeCell(GC_TYPE_CODE, text);
+    EditorCell *editor = group->GetEditable();
+    REQUIRE(editor != nullptr);
+
+    THEN("the link is found wherever the line ended up") {
+      REQUIRE(editor->GetLinkAt(Inside(editor, linkStart + 3)) ==
+              wxS("https://example.org/wrapped"));
     }
   }
 }

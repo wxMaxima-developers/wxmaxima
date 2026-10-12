@@ -1315,6 +1315,30 @@ public:
       return dynamic_cast<AnimationCell *>(GetSelectionStart());
     }
 
+  /*! The scrolling matrix the selection lies in, or nullptr (GH #2479)
+
+    That is a matrix shown in a viewport with scrollbars of its own
+    (Configuration::OversizedMatrices::scroll) that is selected as a whole,
+    has a block of its entries selected, or contains everything that is
+    selected. While there is one, the mouse wheel scrolls it instead of the
+    worksheet.
+  */
+  MatrCell *GetSelectedScrollingMatrix() const;
+  /*! Lets a mouse wheel event scroll the selected scrolling matrix (GH #2479)
+
+    Handles vertical and horizontal wheels, Shift+wheel (sideways) and the
+    finer-grained events touchpads send. A matrix that only scrolls sideways
+    is scrolled sideways by a vertical wheel, too. Returns false, leaving
+    the event to the worksheet, if no scrolling matrix is selected;
+    otherwise the event is consumed even if the matrix is already at its
+    edge, so the worksheet doesn't jump away from what is selected.
+  */
+  bool ScrollSelectedMatrix(const wxMouseEvent &event);
+private:
+  //! What ScrollSelectedMatrix() has yet to scroll, in pixels times the wheel delta
+  wxPoint m_matrixWheelRemainder;
+public:
+
   //! Returns the selected cell - or nullptr, if the selection isn't an image 
   ImgCell *GetSelectedImgCell() const
     {
@@ -1364,7 +1388,30 @@ public:
   //! Add the currently selected cells to the clipboard and delete them.
   bool CutToClipboard();
 
-  void PasteFromClipboard();
+  /*! Paste into the worksheet
+
+    \param primary true = paste X11's primary selection (what a middle-click
+    pastes), false = the ordinary Ctrl+V clipboard. Only pass true where
+    HasPrimarySelection() is true.
+  */
+  void PasteFromClipboard(bool primary = false);
+
+  /*! Does this platform have a primary selection?
+
+    X11 (and Wayland, through GTK and Qt) keeps the last selected text in a
+    clipboard of its own that a middle-click pastes. Windows and macOS have
+    no such thing, and wxWidgets can't tell: UsePrimarySelection(true) is
+    accepted everywhere, IsUsingPrimarySelection() then answers true, and on
+    MSW every later clipboard operation silently does nothing. So this is
+    decided at compile time.
+  */
+  static constexpr bool HasPrimarySelection() {
+#if defined(__UNIX__) && !defined(__APPLE__)
+    return true;
+#else
+    return false;
+#endif
+  }
 
   /*! Copy the current selection to the clipboard
 

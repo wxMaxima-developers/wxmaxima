@@ -207,6 +207,16 @@ protected:
 
 private:
   std::unique_ptr<struct wxm_NSVGrasterizer, decltype(std::free)*> m_svgRast{nullptr, std::free};
+  /*! The window this status bar was created for
+
+    Used instead of GetParent() for finding out which display we are on:
+    wxQt 3.2's wxStatusBar never registers itself with its parent window
+    (it only hands the parent to the QStatusBar it creates), so there
+    GetParent() stays nullptr for the status bar's whole lifetime, and
+    wxDisplay::GetFromWindow(nullptr) fails an assertion that aborts
+    wxMaxima on startup (GH #2483).
+  */
+  wxWindow *m_frame = nullptr;
   //! The display resolution
   wxSize m_ppi = wxSize(75, 75);
   /*! How many percents of the available CPU power does maxima use?

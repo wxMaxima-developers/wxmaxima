@@ -29,6 +29,7 @@
 #include "MaximaTokenizer.h"
 #include "TextFormat.h"
 #include <array>
+#include <optional>
 #include <vector>
 #include <algorithm>
 #include <list>
@@ -211,9 +212,9 @@ public:
   }
   /*! The font for text with the given character formatting (GH #492).
 
-    Only bold and italic change the font; underline and strikethrough are
-    lines Draw() adds on top. Cached, since Draw() asks for it once per
-    snippet.
+    Only bold, italic, superscript and subscript change the font (the latter
+    two make it smaller); underline and strikethrough are lines Draw() adds on
+    top. Cached, since Draw() asks for it once per snippet.
   */
   const wxFont &GetFont(TextFormat::Format format) const;
   //! Set the currently used font to the one that matches this cell's formatting
@@ -313,6 +314,34 @@ public:
   //! The ranges set by SetDiffHighlights() (empty outside the diff viewer).
   const std::vector<std::pair<std::size_t, std::size_t>> &GetDiffHighlights() const {
     return m_diffHighlights;
+  }
+
+  /*! Marks a statement Maxima reported an error for (GH #289)
+
+    The range is half-open ([start, end)) and indexes into GetValue(); it is
+    painted with the TS_ERROR_STATEMENT background. More than one statement
+    of a cell can fail if evaluation doesn't stop at the first error.
+
+    The marks belong to the text they were set for: as soon as the text
+    differs from it, Draw() stops painting them. They are dropped by
+    ClearErrorMarks() when the cell is evaluated again, and by SetValue().
+  */
+  void AddErrorStatement(std::size_t start, std::size_t end);
+  /*! Marks the place in a failing statement Maxima's syntax error points at
+
+    Painted with the TS_ERROR_SPOT background, over the statement's own mark.
+    Same lifetime as the marks AddErrorStatement() sets.
+  */
+  void AddErrorSpot(std::size_t start, std::size_t end);
+  //! Drops all marks AddErrorStatement() and AddErrorSpot() have set.
+  void ClearErrorMarks();
+  //! The statements AddErrorStatement() has marked (for tests and inspection).
+  const std::vector<std::pair<std::size_t, std::size_t>> &GetErrorStatements() const;
+  //! The spots AddErrorSpot() has marked (for tests and inspection).
+  const std::vector<std::pair<std::size_t, std::size_t>> &GetErrorSpots() const;
+  //! True if there are error marks that still match the text.
+  bool ErrorMarksValid() const {
+    return m_errorMarks && (m_text == m_errorMarks->text);
   }
 
   /*! Converts m_text to a list of styled text snippets that will later be displayed by draw().
@@ -467,6 +496,15 @@ public:
   std::pair<long, long> GetMatchingParens() const { return {m_paren1, m_paren2}; }
 
   wxCoord GetLineWidth(size_t line, size_t pos);
+
+  /*! The width of one digit-group gap in a number (GH #192)
+
+    Public, like GetTextSize(), so tests can work out the exact width a
+    grouped number should take up on the platform they run on.
+  */
+  wxCoord DigitGroupGapWidth() const;
+  //! Determines the size of a text snippet
+  wxSize GetTextSize(const wxString &text) const;
 
   //! Pixel x of the next 4-column tab stop at or after startX, where one
   //! column is the width of a space glyph in the current font. startX is
@@ -799,6 +837,14 @@ private:
   //! which snippet triggers it.
   void PushTextLine(const wxString &line, const wxString &indentChar,
                     std::size_t startPos) const;
+  /*! Pushes one line of a code token (it contains no newline) and returns
+    its width. A comment gets each of its links (see UrlDetection.h) as a
+    StyledText of its own that IsLink(), for the reason PushTextRun() gives;
+    every other token stays one snippet. A comment is one token however many
+    spaces it contains and never gets a soft line break inside, so splitting
+    it doesn't change where a line wraps.
+  */
+  wxCoord PushCodeLine(TextStyle style, const wxString &line) const;
   /*! PushTextLine()'s second step: pushes a run that contains no '\t',
     giving each link in it (see UrlDetection.h) a StyledText of its own that
     IsLink(). A link needs to be a snippet of its own so that Draw() can
@@ -871,6 +917,14 @@ protected:
     bool m_isLink = false;
     //! The character formatting (bold, ...) of this text portion (GH #492)
     TextFormat::Format m_format = TextFormat::None;
+    /*! How far below the top of its line's plain text this portion is drawn.
+
+      Negative for a superscript, positive for a subscript, and also nonzero
+      for text a taller fallback font draws, so that its baseline lines up
+      with the plain text's. Set by EditorCell::Recalculate(), for text cells
+      only.
+    */
+    wxCoord m_yOffset = 0;
   public:
     //! Defines a piece of styled text
     StyledText(TextStyle style, const wxString &text)
@@ -911,6 +965,24 @@ protected:
     TextFormat::Format GetFormat() const { return m_format; }
     //! Sets the character formatting of this text portion
     void SetFormat(TextFormat::Format format) { m_format = format; }
+    //! See m_yOffset
+    wxCoord GetYOffset() const { return m_yOffset; }
+    //! See m_yOffset
+    void SetYOffset(wxCoord yOffset) { m_yOffset = yOffset; }
+    /*! Where this text portion, a number in a code cell, gets the small gaps
+      that separate its digit groups (GH #192).
+
+      Indices into GetText() before which a gap is drawn; empty for anything
+      but a number, or if Configuration::DigitGrouping() is off. The width
+      SetWidth() caches includes the gaps: unlike a tab's, it doesn't depend
+      on where on the line the text portion starts.
+    */
+    const std::vector<size_t> &GetDigitGaps() const { return m_digitGaps; }
+    //! See GetDigitGaps()
+    void SetDigitGaps(std::vector<size_t> gaps) { m_digitGaps = std::move(gaps); }
+  private:
+    //! See GetDigitGaps()
+    std::vector<size_t> m_digitGaps;
   };
 
 private:
@@ -947,8 +1019,35 @@ private:
     bool valid = false;
   };
 
+  /*! Places a soft break before a token, if the line has grown too wide.
+
+    tokenWidth is the token's width, digit-group gaps included.
+  */
   void HandleSoftLineBreaks_Code(SoftBreakCandidate &candidate, wxCoord &lineWidth,
-                                 const wxString &token, wxCoord &indentationPixels) const;
+                                 wxCoord tokenWidth, wxCoord &indentationPixels) const;
+
+  /*! The width of the first length characters of snippet.
+
+    Like GetTextSize(), but including the digit-group gaps among them (see
+    StyledText::GetDigitGaps()). A number's digit groups are measured one at
+    a time, the way DrawSnippetText() draws them, so that what is measured
+    and what is drawn can't disagree by the odd pixel of kerning.
+  */
+  wxCoord SnippetWidth(const StyledText &snippet, size_t length) const;
+  //! The width of all of snippet, see SnippetWidth()
+  wxCoord SnippetWidth(const StyledText &snippet) const {
+    return SnippetWidth(snippet, snippet.GetText().Length());
+  }
+  //! Draws snippet's text at (x, y), digit groups separated by their gaps
+  void DrawSnippetText(wxDC *dc, const StyledText &snippet, wxCoord x,
+                       wxCoord y) const;
+  /*! The width the digit-group gaps take up inside the m_text substring
+    [from, to)
+
+    For the places that measure a raw m_text substring rather than whole
+    StyledText snippets; see m_digitGapPositions.
+  */
+  wxCoord DigitGapsWidthIn(size_t from, size_t to) const;
 
   /*! May a soft break be placed right after this operator token?
 
@@ -988,8 +1087,6 @@ private:
   //! Draw a box that marks the current selection
   void MarkSelection(wxDC *dc, size_t start, size_t end, TextStyle style);
 
-  //! Determines the size of a text snippet
-  wxSize GetTextSize(const wxString &text) const;
   //! Determines the size of a text snippet drawn with the given formatting
   wxSize GetTextSize(const wxString &text, TextFormat::Format format) const;
   /*! MeasureTextWidth() for the m_text substring that starts at startPos,
@@ -999,6 +1096,44 @@ private:
                            std::size_t startPos) const;
   //! Brings m_formats up to date with m_text; see GetFormats().
   void SyncFormats() const;
+
+  /*! \name Lines of different heights
+
+    A line of a text cell is taller than the others if something in it
+    reaches above or below the region plain text occupies: a superscript, a
+    subscript or a character from a taller fallback font. Recalculate()
+    records where each line starts in m_lineSlots; everything that needs the
+    vertical position of a line - drawing, the caret, the selection, mouse
+    clicks - asks LineTop() or LineAt() rather than multiplying by
+    m_charHeight.
+    @{
+  */
+  //! How much a line extends beyond the plain text, and where it starts
+  struct LineSlot {
+    //! The distance between the top of the first line's slot and the top of
+    //! this line's plain text
+    wxCoord top = 0;
+    //! How far something in this line reaches above its plain text
+    wxCoord above = 0;
+    //! How far something in this line reaches below its plain text
+    wxCoord below = 0;
+  };
+  //! The size of a superscript's or subscript's font relative to the text's
+  static constexpr double g_superSubscriptScale = 0.65;
+  /*! How far a format moves the baseline: up (negative) for a superscript,
+    down for a subscript.
+
+    \param plainAscent The plain text's ascent, which the shift scales with.
+  */
+  static wxCoord BaselineShift(TextFormat::Format format, wxCoord plainAscent);
+  //! The distance from the top of the cell's text to the top of the plain
+  //! text of a (display) line
+  wxCoord LineTop(size_t line) const;
+  //! The full vertical extent of a line, relative to the top of the text
+  void LineSlotExtent(size_t line, wxCoord *top, wxCoord *height) const;
+  //! The display line at a distance y below the top of the cell's text
+  size_t LineAt(wxCoord y) const;
+  //! @}
 
   //! The memory for the undo history
   History m_history;  
@@ -1045,6 +1180,13 @@ private:
     throw-away rendering representation, so it may carry layout markers).
   */
   mutable std::vector<std::size_t> m_softBreaks;
+  /*! The m_text positions before which a number's digit-group gap is drawn,
+    ascending (GH #192).
+
+    The same gaps as the StyledText snippets' GetDigitGaps(), only as
+    positions in the whole text. Derived layout data, like m_softBreaks.
+  */
+  mutable std::vector<std::size_t> m_digitGapPositions;
 
   /*! Everything about the character formatting of a text cell (GH #492).
 
@@ -1065,13 +1207,21 @@ private:
     bool hasPending = false;
     //! See SetUnknownLineAttributes(): pairs of (line text, attributes)
     std::vector<std::pair<wxString, wxString>> unknownLineAttributes;
-    //! The fonts GetFont(format) returned, indexed by the font-relevant bits
-    std::array<wxFont, TextFormat::WidthAffecting + 1> fonts;
+    //! The fonts GetFont(format) returned, indexed by TextFormat::FontIndex();
+    //! empty until first needed
+    std::array<std::optional<wxFont>, TextFormat::FontVariants> fonts;
     //! The base font the fonts were made from
-    wxFont fontsBase;
+    std::optional<wxFont> fontsBase;
   };
   //! See FormatState; null as long as the cell has never been formatted.
   mutable std::unique_ptr<FormatState> m_formatState;
+  /*! Where each display line starts; see LineTop().
+
+    Empty as long as all lines have the same height, which is the case in
+    every code cell and every text cell without superscripts and tall
+    characters.
+  */
+  mutable std::vector<LineSlot> m_lineSlots;
   //! m_formatState, created if it doesn't exist yet.
   FormatState &GetFormatState() const;
 
@@ -1081,6 +1231,19 @@ private:
   //! while no edit happened, and every insertion/deletion changes the length
   //! (soft-wrapping doesn't - it swaps ' ' and '\r' in place).
   std::size_t m_diffHighlightsTextLength = 0;
+  //! The marks AddErrorStatement() and AddErrorSpot() set
+  struct ErrorMarks {
+    std::vector<std::pair<std::size_t, std::size_t>> statements;
+    std::vector<std::pair<std::size_t, std::size_t>> spots;
+    /*! m_text when the marks were set: they only stay valid while it is
+      unchanged. A copy rather than the length, unlike
+      m_diffHighlightsTextLength: typing one character and deleting another
+      keeps the length, but may well have fixed the error.
+    */
+    wxString text;
+  };
+  //! Only allocated while there are error marks: almost no cell has any.
+  std::unique_ptr<ErrorMarks> m_errorMarks;
 
 //** 8/4 bytes
 //**

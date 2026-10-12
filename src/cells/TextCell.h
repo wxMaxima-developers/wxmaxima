@@ -122,6 +122,32 @@ protected:
     not what it looks like on screen.
   */
   std::vector<wxm::UrlSpan> LinkSpans() const;
+
+  /*! Recomputes m_digitGroupGaps for m_displayedText (GH #192).
+
+    Leaves them empty unless this is a number (TS_NUMBER) and
+    Configuration::DigitGrouping() is on.
+  */
+  void UpdateDigitGroupGaps() const;
+  //! The width of one digit-group gap at this cell's font size
+  wxCoord DigitGroupGapWidth() const;
+  /*! Draws text, the first text.Length() characters of m_displayedText, with
+    the digit-group gaps that fall into it -- or, if dc is only being measured
+    with (draw = false), just returns the width that would take.
+
+    The groups are measured one at a time, the way they are drawn, so that
+    the width Recalculate() reserves is exactly the width Draw() needs.
+    dc has to have the cell's font set already.
+  */
+  wxCoord DrawGroupedDigits(wxDC *dc, const wxString &text, wxCoord x,
+                            wxCoord y, bool draw) const;
+  /*! Where in m_displayedText Draw() leaves a gap between two digit groups.
+
+    Indices before which the gap goes, see wxm::DigitGroupGaps(). The text
+    itself never contains these gaps, so copying, saving and exporting the
+    cell is unaffected.
+  */
+  mutable std::vector<size_t> m_digitGroupGaps;
   /*! Walks m_displayedText as Draw() paints it: plain runs and links.
 
     func(text, x, width, isLink) is called for each run from left to right,

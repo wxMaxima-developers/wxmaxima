@@ -34,6 +34,9 @@
 class GenWiz : public wxDialog
 {
 public:
+  //! Saves the geometry while this is still a whole dialog, see
+  //! FindReplaceDialog::~FindReplaceDialog()
+  ~GenWiz() override { SendDestroyEvent(); }
   GenWiz(wxWindow *parent, Configuration *cfg, MaximaManual *manual,
          const wxString &title,
          const wxString &description, const wxString &description_tooltip,

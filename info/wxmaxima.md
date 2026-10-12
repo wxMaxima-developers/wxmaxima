@@ -272,11 +272,15 @@ Other symbols the HTML and TeX export will recognize are `<=` and `>=` for compa
 
 A web address in a text cell that starts with `http://`, `https://` or `mailto:` is shown as a link. Since clicking into a text cell places the cursor there, a link is followed by <kbd>CTRL</kbd>+clicking it (<kbd>CMD</kbd>+clicking on macOS), or by right-clicking it and choosing "Open Link"; hovering over it shows where it leads. The HTML export turns it into a link, the TeX export into a `\url{}`. Links are always recognized from the text itself, so nothing about them is stored in the file.
 
+Links in a code cell's comments (`/* ... */`) work the same way. Elsewhere in code, for example inside a string, an address is Maxima syntax and is not a link.
+
 The same goes for web addresses in _Maxima_'s output, for example in a string printed by `print("See https://wxmaxima-developers.github.io/wxmaxima/")`: <kbd>CTRL</kbd>+clicking the address or choosing "Open Link" from its context menu opens it, while a plain click still selects the output.
 
 ### Bold, italic, underlined and struck-through text
 
 Text in a text cell, a title or a section heading can be made bold, italic, underlined or struck through. Select the text and press the respective button in the toolbar; pressing the button again removes that formatting from the selection. With nothing selected the button switches the formatting on or off for what is typed next. The buttons are hidden by right-clicking the toolbar and unchecking "Text formatting buttons". Code cells cannot be formatted: their colors already show the syntax of the code.
+
+Superscript and subscript buttons work the same way: they make the text smaller and raise it above or lower it below the line, as in E = mc² or H₂O. A character cannot be both, so switching one of them on switches the other off. A line that contains a superscript, a subscript or a character that is taller than the font's usual ones, for example an emoji, gets as much additional room as it needs.
 
 The formatting is saved in `.wxmx` files. Older versions of _wxMaxima_ open such a file without the formatting but keep all of the text. `.wxm` files, the exports and the clipboard contain the text without its formatting.
 
@@ -439,6 +443,10 @@ If this option isn’t set _wxMaxima_ behaves more like a modern cellphone app:
 
 - Files are saved automatically on exit
 - And the file will automatically be saved every 3 minutes.
+
+### Arranging the toolbar
+
+The toolbar is made of sections, like the "Open" and "Save" buttons, the evaluation buttons or the drop-down list that sets the type of a cell. The "Toolbar" tab of the configuration dialog lists them in the order the toolbar shows them in: drag a section to another place, or select it and press "Up" or "Down", to move it, and uncheck it to hide it. The flexible space pushes every section after it to the right edge of the window. "Default order" restores the original arrangement. Sections can also be shown or hidden by right-clicking the toolbar.
 
 ### Where is the configuration saved?
 
@@ -934,7 +942,7 @@ wx_matrix(matrix(["Name", "Value"], ["X", 10], ["Y", 20]),
 
 `wx_matrix()` doesn't display anything itself: it returns the matrix with the formatting attached, which is used whenever that value is displayed. So it can be stored in a variable and displayed later, formatted, and a matrix ended with `$` isn't displayed at all. A new matrix calculated from it, for example by adding to it or transposing it, is displayed the normal way again.
 
-A matrix cannot be broken into lines the way a long sum can. So by default wxMaxima leaves out the middle rows and columns of a matrix that is too large for the window and marks the gap with `⋯`, `⋮` and `⋱`, the way a large matrix is written by hand. The first and last rows and columns always stay visible, and hovering the mouse over the matrix tells which rows and columns are not shown. The option _Matrices too large for the window_ in the _Worksheet_ tab of the configuration dialog can instead draw such a matrix in full, which makes the whole worksheet scroll sideways, or show it in a box the size of the window, with scrollbars of its own; there the mouse wheel still scrolls the worksheet, and such a matrix is printed with its middle rows and columns left out. Whether it is elided or shown in a scrolling box, every other row and column of such a matrix is faintly shaded, so that a row or a column is easy to follow across it; a matrix that fits the window stays plain, unless `wx_matrix()`'s `banding` option says otherwise. All of this affects only what is shown on screen and printed: copying, saving and exporting the matrix always include every entry. `wx_matrix()`'s `oversized` option overrides that option for a single matrix; a matrix it asks to scroll is still elided on paper, and exporting a matrix as an image still always shows all of it. Double-clicking a matrix that is elided or shown in a scrolling box opens a window of its own that shows all of it; the window can be resized and scrolled, and _Escape_ closes it. _Ctrl+F_ in that window searches the matrix: each match selects the entry it is in and scrolls it into view, and searching again steps on to the next matching entry.
+A matrix cannot be broken into lines the way a long sum can. So by default wxMaxima leaves out the middle rows and columns of a matrix that is too large for the window and marks the gap with `⋯`, `⋮` and `⋱`, the way a large matrix is written by hand. The first and last rows and columns always stay visible, and hovering the mouse over the matrix tells which rows and columns are not shown. The option _Matrices too large for the window_ in the _Worksheet_ tab of the configuration dialog can instead draw such a matrix in full, which makes the whole worksheet scroll sideways, or show it in a box the size of the window, with scrollbars of its own; there the mouse wheel scrolls the worksheet, unless that matrix or something inside it is selected, and such a matrix is printed with its middle rows and columns left out. Whether it is elided or shown in a scrolling box, every other row and column of such a matrix is faintly shaded, so that a row or a column is easy to follow across it; a matrix that fits the window stays plain, unless `wx_matrix()`'s `banding` option says otherwise. All of this affects only what is shown on screen and printed: copying, saving and exporting the matrix always include every entry. `wx_matrix()`'s `oversized` option overrides that option for a single matrix; a matrix it asks to scroll is still elided on paper, and exporting a matrix as an image still always shows all of it. Double-clicking a matrix that is elided or shown in a scrolling box opens a window of its own that shows all of it; the window can be resized and scrolled, and _Escape_ closes it. _Ctrl+F_ in that window searches the matrix: each match selects the entry it is in and scrolls it into view, and searching again steps on to the next matching entry.
 
 ## Bug reporting
 
@@ -1106,6 +1114,10 @@ If the automatic fix fails, you can manually start wxMaxima with:
 
 Either wxWidgets wasn’t compiled with support for Microsoft’s webview2 or
 Microsoft’s webview2 isn’t installed.
+
+_Help/About_ lists which of the things the integrated browser needs this
+wxMaxima has and which it is missing; the log window (_View/Toggle log
+window_) shows the same list.
 
 ## Why is the external manual browser not working on my Linux box?
 

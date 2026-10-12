@@ -23,6 +23,7 @@
 
 #include "GenWiz.h"
 #include <wx/persist/toplevel.h>
+#include <algorithm>
 
 GenWiz::GenWiz(wxWindow *parent, Configuration *cfg, MaximaManual *manual,
                const wxString &title, const wxString &description,
@@ -51,4 +52,13 @@ GenWiz::GenWiz(wxWindow *parent, Configuration *cfg, MaximaManual *manual,
   SetAutoLayout(true);
   SetSizerAndFit(vbox);
   wxPersistenceManager::Get().RegisterAndRestore(this);
+  // The panel's text fields only know how high they need to be once they
+  // have their final width, i.e. after the Fit() above. Grow if that turns
+  // out to be more than we have, so the buttons stay visible.
+  m_panel->OnBestSizeChange([this] {
+    const wxSize needed = GetBestSize();
+    const wxSize size = GetSize();
+    if ((size.x < needed.x) || (size.y < needed.y))
+      SetSize(wxSize(std::max(size.x, needed.x), std::max(size.y, needed.y)));
+  });
 }

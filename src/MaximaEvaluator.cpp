@@ -31,6 +31,7 @@
 #include "cells/GroupCell.h"
 #include "wxMathml.h"
 #include "MaximaProtocol.h"
+#include "SyntaxErrorLocation.h"
 #include "Version.h"
 #include <wx/tokenzr.h>
 #include <memory>
@@ -443,11 +444,15 @@ void MaximaEvaluator::TriggerEvaluation() {
     // too if the user is reading or typing further down.
     m_wxMaxima.GetWorksheet()->KeepCursorStillOnScreen();
     tmp->RemoveOutput();
+    // The errors the last evaluation found may be fixed now.
+    if (tmp->GetEditable())
+      tmp->GetEditable()->ClearErrorMarks();
     m_wxMaxima.GetWorksheet()->RequestRecalculation(tmp);
     m_wxMaxima.GetWorksheet()->RequestRedraw();
   }
   wxString text = m_wxMaxima.GetWorksheet()->GetEvaluationQueue().GetCommand();
   m_wxMaxima.m_commandIndex = m_wxMaxima.GetWorksheet()->GetEvaluationQueue().GetIndex();
+  StartCommand(m_wxMaxima.GetWorksheet()->GetEvaluationQueue().GetCommandStart());
   if ((text != wxEmptyString) && (text != wxS(";")) && (text != wxS("$"))) {
     std::size_t index;
     // Validate the SINGLE command we are about to send, in the lisp/maxima mode
@@ -533,8 +538,24 @@ void MaximaEvaluator::TriggerEvaluation() {
       tmp->SetOutput(std::move(cell));
       m_wxMaxima.GetWorksheet()->GetEvaluationQueue().Clear();
       m_wxMaxima.GetWorksheet()->SetWorkingGroup(nullptr);
-      tmp->GetEditable()->SetCaretPosition(index);
-      tmp->GetEditable()->SetErrorIndex((m_wxMaxima.m_commandIndex = index) - 1);
+      // index counts the characters of the command, which needn't start
+      // where the cell does (GH #289): convert it to a position in the cell.
+      const wxString cellText = tmp->GetEditable()->ToString(true);
+      const long statementEnd = m_wxMaxima.m_commandIndex;
+      const long errorPos = EvaluationQueue::CommandPositionInCell(
+        cellText, m_commandStart, statementEnd, index,
+        &m_wxMaxima.m_configuration);
+      if ((m_commandStart >= 0) && (statementEnd > m_commandStart)) {
+        tmp->GetEditable()->AddErrorStatement(
+          static_cast<std::size_t>(m_commandStart),
+          static_cast<std::size_t>(statementEnd));
+        // The token the check stopped at.
+        if (errorPos > m_commandStart)
+          tmp->GetEditable()->AddErrorSpot(static_cast<std::size_t>(errorPos - 1),
+                                           static_cast<std::size_t>(errorPos));
+      }
+      tmp->GetEditable()->SetCaretPosition(errorPos);
+      tmp->GetEditable()->SetErrorIndex((m_wxMaxima.m_commandIndex = errorPos) - 1);
 
       if (m_wxMaxima.GetWorksheet()->FollowEvaluation())
         m_wxMaxima.GetWorksheet()->SetSelection(nullptr);
@@ -553,6 +574,66 @@ void MaximaEvaluator::TriggerEvaluation() {
     m_wxMaxima.GetWorksheet()->GetEvaluationQueue().RemoveFirst();
     TriggerEvaluation();
   }
+}
+
+void MaximaEvaluator::StartCommand(long start) {
+  m_commandStart = start;
+  m_commandOutput.Clear();
+  m_errorGroup = nullptr;
+  m_errorSpotMarked = false;
+}
+
+void MaximaEvaluator::AddCommandOutput(const wxString &text) {
+  // Bounded, should a command print a lot: the start of the output is
+  // where an error message would be.
+  if (m_commandOutput.Length() < 100000)
+    m_commandOutput += text;
+}
+
+void MaximaEvaluator::MarkErrorStatement(GroupCell *cell) {
+  if ((cell == nullptr) || (cell->GetEditable() == nullptr))
+    return;
+  if (cell != m_wxMaxima.GetWorksheet()->GetWorkingGroup())
+    return;
+  if (m_errorGroup.get() == cell)
+    return;
+  const long end = m_wxMaxima.m_commandIndex;
+  if ((m_commandStart < 0) || (end <= m_commandStart))
+    return;
+  m_errorGroup = cell;
+  cell->GetEditable()->AddErrorStatement(static_cast<std::size_t>(m_commandStart),
+                                         static_cast<std::size_t>(end));
+  MarkSyntaxErrorSpot();
+  m_wxMaxima.GetWorksheet()->RequestRedraw(cell);
+}
+
+void MaximaEvaluator::MarkSyntaxErrorSpot() {
+  if (m_errorSpotMarked || !m_errorGroup)
+    return;
+  EditorCell *editor = m_errorGroup->GetEditable();
+  if (editor == nullptr)
+    return;
+  const long end = m_wxMaxima.m_commandIndex;
+  const auto spot = wxm::LocateSyntaxError(
+    m_commandOutput, editor->ToString(true),
+    wxm::TextRange{static_cast<std::size_t>(m_commandStart),
+                   static_cast<std::size_t>(end)});
+  if (!spot)
+    return;
+  m_errorSpotMarked = true;
+  editor->AddErrorSpot(spot->start, spot->end);
+
+  // Move the cursor from the end of the statement to the error -- but only
+  // if it is still where the error handling put it: the user may have moved
+  // it since.
+  if (editor->ErrorIndexSet())
+    editor->SetErrorIndex(spot->start);
+  else if ((m_wxMaxima.GetWorksheet()->GetActiveCell() == editor) &&
+           (editor->GetCaretPosition() == static_cast<std::size_t>(end - 1))) {
+    editor->SetCaretPosition(spot->start);
+    m_wxMaxima.GetWorksheet()->ScrollToCaret();
+  }
+  m_wxMaxima.GetWorksheet()->RequestRedraw(m_errorGroup.get());
 }
 
 wxString MaximaEvaluator::CellIdConfigCommand(GroupCell *cell) {
@@ -634,23 +715,7 @@ void MaximaEvaluator::SetupVariables() {
   cmd.Replace(wxS("\\"), wxS("/"));
   SendMaxima(cmd);
 
-  switch(m_wxMaxima.m_configuration.MaximaHelpFormat())
-    {
-    case Configuration::frontend:
-      SendMaxima(":lisp-quiet (msetq $output_format_for_help '$frontend)");
-      break;
-
-    case Configuration::maxima:
-      SendMaxima(":lisp-quiet (msetq $output_format_for_help '$text)");
-      break;
-
-    case Configuration::browser:
-      SendMaxima(":lisp-quiet (msetq $output_format_for_help '$html)");
-      break;
-
-    default:
-      SendMaxima(":lisp-quiet (msetq $output_format_for_help '$frontend)");
-    }
+  SendMaxima(m_wxMaxima.m_configuration.MaximaHelpFormatCommand());
   // Ask a Lisp that has threads to open a second connection we can interrupt
   // it through; see MaximaInterruptChannel. Guarded by fboundp, since
   // --wxmathml-lisp may load an older wxMathML.lisp that doesn't define it.

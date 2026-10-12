@@ -23,6 +23,10 @@
 
 #include "GenWizPanel.h"
 #include "WizardHelp.h"
+#include "WizardHelpKeywords.h"
+#include "WxMaximaManualAnchors.h"
+#include <wx/dcclient.h>
+#include <algorithm>
 #include <wx/msgdlg.h>
 #include <wx/notebook.h>
 
@@ -95,9 +99,12 @@ GenWizPanel::GenWizPanel(
   //  if(m_warning != nullptr)
   //    grid_sizer->Add(m_warning, 0, wxALL, 5);
   m_notebook = new wxNotebook(this, wxID_ANY);
+  // Not stretched: the tabs are as high as their text needs (see
+  // FitTextHeight()), and whatever room is left goes below the buttons
+  // rather than into an empty tab that pushes the buttons out of sight.
   vbox->Add(
             m_notebook,
-            wxSizerFlags(1).Border(wxALL, 5 * GetContentScaleFactor()).Expand());
+            wxSizerFlags(0).Border(wxALL, 5 * GetContentScaleFactor()).Expand());
 
   wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
   m_insertButton = new wxButton(this, wxID_ANY, _("Insert"));
@@ -156,45 +163,13 @@ void GenWizPanel::NewWizard(
                             const wxString &defaultval8, const wxString &tooltip8, const wxString &label9,
                             const wxString &defaultval9, const wxString &tooltip9, const wxString &label10,
                             const wxString &defaultval10, const wxString &tooltip10) {
-  wxString::const_iterator it = commandRule.begin();
-
+  // Only offer help on what the manual actually documents: a button that
+  // opens the help browser on nothing is worse than none.
   m_manualKeywords.clear();
-  while (it < commandRule.end()) {
-    while ((it < commandRule.end()) && (!wxIsalpha(*it)) && (!(*it == '_')))
-      ++it;
-    wxString word;
-    while (((it < commandRule.end()) && (wxIsalpha(*it))) || ((*it == '_'))) {
-      word += *it;
-      ++it;
-    }
-    if (!m_maximaManual->GetHelpfileAnchorName(word).IsEmpty())
-      m_manualKeywords[word] = 1;
-  }
-  if (commandRule.Contains(wxS("''")))
-    m_manualKeywords[wxS("''")] = 1;
-  if (commandRule.Contains(wxS("'")))
-    m_manualKeywords[wxS("'")] = 1;
-  if (commandRule.Contains(wxS("!")))
-    m_manualKeywords[wxS("!")] = 1;
-  if (commandRule.Contains(wxS(";")))
-    m_manualKeywords[wxS(";")] = 1;
-  if (commandRule.Contains(wxS("$")))
-    m_manualKeywords[wxS("$")] = 1;
-  if (commandRule.Contains(wxS("\\")))
-    m_manualKeywords[wxS("\\")] = 1;
-  wxString hashFinder = commandRule;
-  hashFinder.Replace(wxS("#1#"), wxEmptyString);
-  hashFinder.Replace(wxS("#2#"), wxEmptyString);
-  hashFinder.Replace(wxS("#3#"), wxEmptyString);
-  hashFinder.Replace(wxS("#4#"), wxEmptyString);
-  hashFinder.Replace(wxS("#5#"), wxEmptyString);
-  hashFinder.Replace(wxS("#6#"), wxEmptyString);
-  hashFinder.Replace(wxS("#7#"), wxEmptyString);
-  hashFinder.Replace(wxS("#8#"), wxEmptyString);
-  hashFinder.Replace(wxS("#9#"), wxEmptyString);
-  hashFinder.Replace(wxS("#10#"), wxEmptyString);
-  if (hashFinder.Contains(wxS("#")))
-    m_manualKeywords[wxS("#")] = 1;
+  for (const auto &word : wxm::WizardHelpKeywords(commandRule))
+    if ((!m_maximaManual->GetHelpfileAnchorName(word).IsEmpty()) ||
+        (!WxMaximaManualAnchors::AnchorFor(word).IsEmpty()))
+      m_manualKeywords.push_back(word);
   m_ignorePageChange = true;
   long page = m_configuration->WizardTab();
   if (page < 0)
@@ -218,6 +193,10 @@ void GenWizPanel::NewWizard(
     m_output = new wxTextCtrl(
                               outputpane, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize,
                               wxTE_READONLY | wxTE_MULTILINE | wxTE_CHARWRAP | wxTE_NO_VSCROLL);
+    m_output->Bind(wxEVT_SIZE, [this](wxSizeEvent &event) {
+      FitTextHeight(m_output, false);
+      event.Skip();
+    });
     pageSizer->Add(
                    m_output,
                    wxSizerFlags(1).Border(wxALL, 0 * GetContentScaleFactor()).Expand());
@@ -236,16 +215,22 @@ void GenWizPanel::NewWizard(
                                         wxDefaultPosition, wxDefaultSize,
                                         wxTE_READONLY | wxTE_MULTILINE |
                                         wxTE_BESTWRAP | wxTE_NO_VSCROLL);
+      desc->Bind(wxEVT_SIZE, [this, desc](wxSizeEvent &event) {
+        FitTextHeight(desc, true);
+        event.Skip();
+      });
+      FitTextHeight(desc, true);
       pageSizer->Add(
                      desc,
                      wxSizerFlags(1).Border(wxALL, 0 * GetContentScaleFactor()).Expand());
     }
 
+    m_topicButtonIDs.clear();
     m_topicButtonID0 = wxWindow::NewControlId(m_manualKeywords.size());
     int id = m_topicButtonID0;
     for (const auto &i : m_manualKeywords) {
       wxButton *button = new wxButton(
-                                      descriptionpane, id, wxString::Format(_("Help on %s"), i.first));
+                                      descriptionpane, id, wxString::Format(_("Help on %s"), i));
       pageSizer->Add(button, wxSizerFlags(0).Expand());
       m_topicButtonIDs.push_back(id);
       id++;
@@ -317,8 +302,20 @@ void GenWizPanel::NewWizard(
   m_textctrl[9]->Show(!label10.IsEmpty());
   m_textctrl[9]->SetToolTip(tooltip10);
 
+  FitNotebookHeight();
   Layout();
   m_ignorePageChange = false;
+}
+
+void GenWizPanel::FitNotebookHeight() {
+  // wxGTK underestimates the height of the row of tabs above the pages by
+  // about a line of text (measured: it assumes 22 pixels where GTK draws
+  // 37), which cut off the bottom of the highest page, i.e. the last "Help
+  // on" button. Ask for that line on top.
+  m_notebook->SetMinSize(wxDefaultSize);
+  m_notebook->InvalidateBestSize();
+  m_notebook->SetMinSize(
+    wxSize(-1, m_notebook->GetBestSize().GetHeight() + m_notebook->GetCharHeight()));
 }
 
 wxString GenWizPanel::GetHelpKeyword(wxWindowID ID) {
@@ -327,11 +324,7 @@ wxString GenWizPanel::GetHelpKeyword(wxWindowID ID) {
   ID -= m_topicButtonID0;
   if (static_cast<unsigned>(ID) >= m_manualKeywords.size())
     return wxEmptyString;
-  for (const auto &i : m_manualKeywords) {
-    if (ID-- == 0)
-      return i.first;
-  }
-  return wxEmptyString;
+  return m_manualKeywords.at(ID);
 }
 
 void GenWizPanel::OnTextEnter(wxCommandEvent &event) {
@@ -349,8 +342,115 @@ void GenWizPanel::UpdateOutput() {
   wxString output(m_commandRule);
   for (unsigned int i = 0; i < m_textctrl.size(); i++)
     output.Replace(wxString::Format("#%i#", i + 1), m_textctrl.at(i)->GetValue());
-  if (m_output)
+  if (m_output) {
     m_output->SetValue(output);
+    FitTextHeight(m_output, false);
+  }
+}
+
+namespace {
+/*! How many lines \p text needs when wrapped to \p width pixels
+
+  Mirrors what a wrapping text control does: \p wordWrap breaks between
+  words where it can (a word too long for a line of its own is broken
+  anywhere), otherwise the text is broken after whichever character reaches
+  the edge. A newline always starts a new line.
+*/
+int WrappedLineCount(const wxWindow *measurer, const wxString &text, int width,
+                     bool wordWrap) {
+  wxClientDC dc(const_cast<wxWindow *>(measurer));
+  dc.SetFont(measurer->GetFont());
+  auto textWidth = [&dc](const wxString &str) {
+    return dc.GetTextExtent(str).GetWidth();
+  };
+
+  int lines = 0;
+  wxString paragraph;
+  wxString rest = text;
+  do {
+    paragraph = rest.BeforeFirst('\n', &rest);
+    lines++;
+    int x = 0;
+    // The pieces a line may be broken between: words with the blanks that
+    // follow them, or single characters.
+    wxString piece;
+    for (auto it = paragraph.begin(); it != paragraph.end();) {
+      piece.Clear();
+      if (wordWrap) {
+        while ((it != paragraph.end()) && (*it != ' '))
+          piece += *it++;
+        while ((it != paragraph.end()) && (*it == ' '))
+          piece += *it++;
+      } else
+        piece = *it++;
+      // Trailing blanks may hang over the edge: only the word has to fit.
+      wxString visible = piece;
+      visible.Trim();
+      const int visibleWidth = textWidth(visible);
+      if ((x > 0) && (x + visibleWidth > width)) {
+        lines++;
+        x = 0;
+      }
+      if (visibleWidth > width) {
+        // Too long for any line: broken after whichever character reaches
+        // the edge.
+        for (const auto &ch : piece) {
+          const int chWidth = textWidth(wxString(ch));
+          if ((x > 0) && (x + chWidth > width)) {
+            lines++;
+            x = 0;
+          }
+          x += chWidth;
+        }
+      } else
+        x += textWidth(piece);
+    }
+  } while (!rest.IsEmpty());
+  return lines;
+}
+} // namespace
+
+void GenWizPanel::FitTextHeight(wxTextCtrl *ctrl, bool wordWrap) {
+  if (ctrl == nullptr)
+    return;
+  // Before the control has been laid out it has no width of its own yet;
+  // assume the width the rest of the panel will give it.
+  int width = ctrl->GetClientSize().GetWidth();
+  if (width < 10 * ctrl->GetCharWidth())
+    width = GetBestSize().GetWidth();
+  // Leaves room for the text control's own margins, whose size the toolkit
+  // doesn't tell. Erring on the narrow side costs at worst an empty line,
+  // erring on the wide side cuts off the last one.
+  width -= 2 * ctrl->GetCharWidth();
+  if (width < ctrl->GetCharWidth())
+    width = ctrl->GetCharWidth();
+
+  const int lines = WrappedLineCount(ctrl, ctrl->GetValue(), width, wordWrap);
+  const int frame = ctrl->GetSize().GetHeight() - ctrl->GetClientSize().GetHeight();
+  const int height = (lines + 1) * ctrl->GetCharHeight() + std::max(frame, 0);
+  if (ctrl->GetMinSize().GetHeight() == height)
+    return;
+  ctrl->SetMinSize(wxSize(-1, height));
+  // SetMinSize() alone leaves the best sizes the notebook page, the notebook
+  // and this panel have cached unchanged.
+  ctrl->InvalidateBestSize();
+  // The new height has to reach the notebook, this panel and whatever this
+  // panel is docked in -- but not from inside the size event that brought
+  // us here, which is still in the middle of laying all of them out.
+  if (!m_relayoutPending) {
+    m_relayoutPending = true;
+    CallAfter([this] {
+      m_relayoutPending = false;
+      // A page whose text changed height has to rearrange its contents
+      // even if the notebook as a whole keeps its size.
+      for (size_t i = 0; i < m_notebook->GetPageCount(); i++)
+        m_notebook->GetPage(i)->Layout();
+      FitNotebookHeight();
+      Layout();
+      if (m_onBestSizeChange)
+        m_onBestSizeChange();
+    });
+  }
 }
 
 void GenWizPanel::OnNotebookPageChange(wxBookCtrlEvent &event) {

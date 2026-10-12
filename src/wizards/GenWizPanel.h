@@ -32,7 +32,7 @@
 #include <wx/notebook.h>
 #include "MaximaManual.h"
 #include <wx/hashmap.h>
-#include <unordered_map>
+#include <functional>
 
 
 /*! A dockable, embeddable generic wizard
@@ -99,16 +99,34 @@ public:
 #endif
   wxButton *GetInsertButton() const{return m_insertButton;}
   wxString GetHelpKeyword(wxWindowID ID);
+  /*! Tell \p callback whenever the height this panel needs has changed
+
+    Its text fields grow and shrink with their text, and with the width
+    they are wrapped to, so this can happen long after the panel has been
+    shown -- which matters to whatever has to make room for it.
+  */
+  void OnBestSizeChange(std::function<void()> callback)
+    { m_onBestSizeChange = std::move(callback); }
   virtual ~GenWizPanel();
 protected:
-  using keywordHash = std::unordered_map<wxString, int, wxStringHash>;
-
   void OnSize(wxSizeEvent &event);
   wxNotebook *m_notebook;
   void UpdateOutput();
   void OnParamChange(wxCommandEvent& event);
   void OnTextEnter(wxCommandEvent& event);
   void OnNotebookPageChange(wxBookCtrlEvent& event);
+  /*! Make \p ctrl exactly as high as its text needs at its current width
+
+    A multi-line wxTextCtrl has no idea how high its text is: it would
+    otherwise get a fixed height, or with a stretch factor whatever room is
+    left -- which made the Command and Description tabs far higher than
+    their text and pushed the OK button off a docked wizard.
+    \param wordWrap whether \p ctrl wraps between words (wxTE_BESTWRAP)
+    rather than anywhere (wxTE_CHARWRAP)
+  */
+  void FitTextHeight(wxTextCtrl *ctrl, bool wordWrap);
+  //! Make the notebook as high as its highest page needs
+  void FitNotebookHeight();
 
   std::vector<BTextCtrl*> m_textctrl;
   std::vector<wxStaticText *> m_label;
@@ -127,7 +145,11 @@ private:
   int m_topicButtonID0;
   std::vector<wxWindowIDRef> m_topicButtonIDs;
   bool m_ignorePageChange = true;
-  keywordHash m_manualKeywords;
+  //! A FitTextHeight() relayout is already queued
+  bool m_relayoutPending = false;
+  std::function<void()> m_onBestSizeChange;
+  //! The words there is a "Help on" button for, in the buttons' order
+  std::vector<wxString> m_manualKeywords;
 };
 
 #endif // GENWIZ_PANEL_H

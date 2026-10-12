@@ -198,6 +198,58 @@ SCENARIO("Formats are saved as <line> attributes") {
   }
 }
 
+SCENARIO("Superscript and subscript are saved like the other formats") {
+  GIVEN("a line with a superscript and a subscript") {
+    const wxString text = wxS("x2 a_i");
+    const Formats formats = {None, Superscript, None, None, None, Subscript};
+    THEN("each gets an attribute of its own") {
+      REQUIRE(LineAttributes(text, formats, 0, text.Length()) ==
+              wxS(" superscript=\"1-2\" subscript=\"5-6\""));
+    }
+    THEN("reading the attributes back restores the formats") {
+      const auto read = ReadXmlLine(wxS("<line") +
+                                    LineAttributes(text, formats, 0, text.Length()) +
+                                    wxS(">") + text + wxS("</line>"));
+      REQUIRE(read.second == formats);
+    }
+  }
+  GIVEN("a bold superscript") {
+    const Formats formats = {Format(Bold | Superscript)};
+    THEN("it keeps both formats through saving and reading") {
+      const auto read = ReadXmlLine(wxS("<line") + LineAttributes(wxS("2"), formats, 0, 1) +
+                                    wxS(">2</line>"));
+      REQUIRE(read.second == formats);
+    }
+  }
+  GIVEN("a file claiming a character is both raised and lowered") {
+    const auto read = ReadXmlLine(wxS("<line superscript=\"0-1\" subscript=\"0-1\">a</line>"));
+    THEN("it is only one of them") {
+      REQUIRE(((read.second[0] == Superscript) || (read.second[0] == Subscript)));
+    }
+  }
+}
+
+SCENARIO("Superscript and subscript exclude each other") {
+  THEN("switching one on switches the other off") {
+    REQUIRE(WithFlag(Superscript, Subscript) == Subscript);
+    REQUIRE(WithFlag(Format(Bold | Subscript), Superscript) == Format(Bold | Superscript));
+  }
+  THEN("the other formats are combined as usual") {
+    REQUIRE(WithFlag(Superscript, Bold) == Format(Bold | Superscript));
+    REQUIRE(WithFlag(Italic, Underline) == Format(Italic | Underline));
+  }
+  THEN("each combination of font-changing formats gets a font of its own") {
+    std::vector<bool> seen(FontVariants, false);
+    for (Format f = 0; f <= WidthAffecting; ++f) {
+      if ((f & ~WidthAffecting) || ((f & Superscript) && (f & Subscript)))
+        continue;
+      REQUIRE(FontIndex(f) < FontVariants);
+      REQUIRE_FALSE(seen[FontIndex(f)]);
+      seen[FontIndex(f)] = true;
+    }
+  }
+}
+
 SCENARIO("Ranges count Unicode code points") {
   GIVEN("a line with a character outside the Basic Multilingual Plane") {
     // U+1D44E MATHEMATICAL ITALIC SMALL A: one code point, but two wxString
@@ -223,15 +275,28 @@ SCENARIO("Inline formatting tags are read, for a future file format") {
       REQUIRE(read.second == F("01268"));
     }
   }
+  GIVEN("superscript and subscript tags") {
+    const auto read = ReadXmlLine(wxS("<line>x<sup>2</sup>a<sub>i</sub></line>"));
+    THEN("their text is kept and their formats are applied") {
+      REQUIRE(read.first == wxS("x2ai"));
+      REQUIRE(read.second == Formats({None, Superscript, None, Subscript}));
+    }
+  }
+  GIVEN("a subscript tag inside a superscript tag") {
+    const auto read = ReadXmlLine(wxS("<line><sup>a<sub>b</sub></sup></line>"));
+    THEN("the inner one wins: a character can't be raised and lowered at once") {
+      REQUIRE(read.second == Formats({Superscript, Subscript}));
+    }
+  }
   GIVEN("a line with a tag this version doesn't know") {
-    const auto read = ReadXmlLine(wxS("<line>a<sup>2</sup>b</line>"));
+    const auto read = ReadXmlLine(wxS("<line>a<mark>2</mark>b</line>"));
     THEN("its text is kept, only its formatting is lost") {
       REQUIRE(read.first == wxS("a2b"));
       REQUIRE(IsPlain(read.second));
     }
   }
   GIVEN("an unknown tag inside a known one") {
-    const auto read = ReadXmlLine(wxS("<line><b>x<sup>2</sup></b></line>"));
+    const auto read = ReadXmlLine(wxS("<line><b>x<mark>2</mark></b></line>"));
     THEN("the known format still applies to its text") {
       REQUIRE(read.first == wxS("x2"));
       REQUIRE(read.second == F("11"));
@@ -243,11 +308,11 @@ SCENARIO("Attributes this version doesn't know are kept") {
   GIVEN("a line with an attribute from a newer version") {
     wxString unknown;
     const auto read = ReadXmlLine(
-      wxS("<line bold=\"0-1\" superscript=\"1-2\" note=\"a&quot;b\">ab</line>"),
+      wxS("<line bold=\"0-1\" overline=\"1-2\" note=\"a&quot;b\">ab</line>"),
       &unknown);
     THEN("the known one is applied") { REQUIRE(read.second == F("10")); }
     THEN("the unknown ones are returned, ready to be written out again") {
-      REQUIRE(unknown == wxS(" superscript=\"1-2\" note=\"a&quot;b\""));
+      REQUIRE(unknown == wxS(" overline=\"1-2\" note=\"a&quot;b\""));
     }
   }
 }

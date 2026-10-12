@@ -20,7 +20,8 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 /*! \file
-  Character formatting (bold, italic, ...) of the text in a text cell (GH #492).
+  Character formatting (bold, italic, superscript, ...) of the text in a text
+  cell (GH #492).
 
   Everything here is a pure function of strings and vectors, needing neither a
   cell nor a GUI, so that it can be tested on its own.
@@ -45,9 +46,10 @@
 
   ReadLine() nevertheless understands such inline tags too, so a future
   version can switch to them: \c \<b\>/\c \<strong\>, \c \<i\>/\c \<em\>,
-  \c \<u\> and \c \<s\>/\c \<strike\>/\c \<del\> set the matching format, and any
-  other tag is read as if it weren't there - its text is kept, only the
-  formatting it stands for is lost.
+  \c \<u\>, \c \<s\>/\c \<strike\>/\c \<del\>, \c \<sup\> and \c \<sub\> set
+  the matching format, and any other tag is read as if it weren't there - its
+  text is kept, only the formatting it stands for is lost.
+
 */
 
 #ifndef TEXTFORMAT_H
@@ -70,12 +72,40 @@ enum : Format {
   Bold = 1,
   Italic = 2,
   Underline = 4,
-  Strikethrough = 8
+  Strikethrough = 8,
+  //! Smaller, and raised above the baseline
+  Superscript = 16,
+  //! Smaller, and lowered below the baseline
+  Subscript = 32
 };
 
 //! The flags that change a character's width, and therefore the font it is
 //! measured and drawn with. Underline and strikethrough are lines drawn on top.
-constexpr Format WidthAffecting = Bold | Italic;
+constexpr Format WidthAffecting = Bold | Italic | Superscript | Subscript;
+
+//! How many different fonts the WidthAffecting flags can ask for
+constexpr std::size_t FontVariants = 16;
+
+//! A number below FontVariants that tells the fonts the WidthAffecting flags
+//! ask for apart.
+constexpr std::size_t FontIndex(Format format) {
+  return static_cast<std::size_t>((format & (Bold | Italic)) |
+                                  ((format & (Superscript | Subscript)) >> 2));
+}
+
+//! The flags that move a character up or down. A character is never both.
+constexpr Format VerticalPosition = Superscript | Subscript;
+
+/*! The format that results from switching flag on in format.
+
+  Superscript and subscript exclude each other: switching one on switches the
+  other off.
+*/
+constexpr Format WithFlag(Format format, Format flag) {
+  if (flag & VerticalPosition)
+    format &= static_cast<Format>(~VerticalPosition);
+  return static_cast<Format>(format | flag);
+}
 
 //! One Format per character, indexed like the text it belongs to; empty = plain.
 using Formats = std::vector<Format>;

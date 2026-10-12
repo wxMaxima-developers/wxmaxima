@@ -183,9 +183,12 @@ controls</a></li>
 id="toc-dont-save-the-worksheet-automatically"><span
 class="toc-section-number">2.4.4</span> Don’t save the worksheet
 automatically</a></li>
+<li><a href="#arranging-the-toolbar"
+id="toc-arranging-the-toolbar"><span
+class="toc-section-number">2.4.5</span> Arranging the toolbar</a></li>
 <li><a href="#where-is-the-configuration-saved"
 id="toc-where-is-the-configuration-saved"><span
-class="toc-section-number">2.4.5</span> Where is the configuration
+class="toc-section-number">2.4.6</span> Where is the configuration
 saved?</a></li>
 </ul></li>
 </ul></li>
@@ -1156,6 +1159,9 @@ right-clicking it and choosing “Open Link”; hovering over it shows where
 it leads. The HTML export turns it into a link, the TeX export into a
 <code>\url{}</code>. Links are always recognized from the text itself,
 so nothing about them is stored in the file.</p>
+<p>Links in a code cell’s comments (<code>/* ... */</code>) work the
+same way. Elsewhere in code, for example inside a string, an address is
+Maxima syntax and is not a link.</p>
 <p>The same goes for web addresses in <em>Maxima</em>’s output, for
 example in a string printed by
 <code>print("See https://wxmaxima-developers.github.io/wxmaxima/")</code>:
@@ -1173,6 +1179,12 @@ the formatting on or off for what is typed next. The buttons are hidden
 by right-clicking the toolbar and unchecking “Text formatting buttons”.
 Code cells cannot be formatted: their colors already show the syntax of
 the code.</p>
+<p>Superscript and subscript buttons work the same way: they make the
+text smaller and raise it above or lower it below the line, as in E =
+mc² or H₂O. A character cannot be both, so switching one of them on
+switches the other off. A line that contains a superscript, a subscript
+or a character that is taller than the font’s usual ones, for example an
+emoji, gets as much additional room as it needs.</p>
 <p>The formatting is saved in <code>.wxmx</code> files. Older versions
 of <em>wxMaxima</em> open such a file without the formatting but keep
 all of the text. <code>.wxm</code> files, the exports and the clipboard
@@ -1402,8 +1414,18 @@ cellphone app:</p>
 <li>Files are saved automatically on exit</li>
 <li>And the file will automatically be saved every 3 minutes.</li>
 </ul>
-<h3 data-number="2.4.5" id="where-is-the-configuration-saved"><span
-class="header-section-number">2.4.5</span> Where is the configuration
+<h3 data-number="2.4.5" id="arranging-the-toolbar"><span
+class="header-section-number">2.4.5</span> Arranging the toolbar</h3>
+<p>The toolbar is made of sections, like the “Open” and “Save” buttons,
+the evaluation buttons or the drop-down list that sets the type of a
+cell. The “Toolbar” tab of the configuration dialog lists them in the
+order the toolbar shows them in: drag a section to another place, or
+select it and press “Up” or “Down”, to move it, and uncheck it to hide
+it. The flexible space pushes every section after it to the right edge
+of the window. “Default order” restores the original arrangement.
+Sections can also be shown or hidden by right-clicking the toolbar.</p>
+<h3 data-number="2.4.6" id="where-is-the-configuration-saved"><span
+class="header-section-number">2.4.6</span> Where is the configuration
 saved?</h3>
 <p>If you are using Unix/Linux, the configuration information will be
 saved in a file <code>.wxMaxima</code> in your home directory (if you
@@ -2222,23 +2244,23 @@ shown. The option <em>Matrices too large for the window</em> in the
 <em>Worksheet</em> tab of the configuration dialog can instead draw such
 a matrix in full, which makes the whole worksheet scroll sideways, or
 show it in a box the size of the window, with scrollbars of its own;
-there the mouse wheel still scrolls the worksheet, and such a matrix is
-printed with its middle rows and columns left out. Whether it is elided
-or shown in a scrolling box, every other row and column of such a matrix
-is faintly shaded, so that a row or a column is easy to follow across
-it; a matrix that fits the window stays plain, unless
-<code>wx_matrix()</code>’s <code>banding</code> option says otherwise.
-All of this affects only what is shown on screen and printed: copying,
-saving and exporting the matrix always include every entry.
-<code>wx_matrix()</code>’s <code>oversized</code> option overrides that
-option for a single matrix; a matrix it asks to scroll is still elided
-on paper, and exporting a matrix as an image still always shows all of
-it. Double-clicking a matrix that is elided or shown in a scrolling box
-opens a window of its own that shows all of it; the window can be
-resized and scrolled, and <em>Escape</em> closes it. <em>Ctrl+F</em> in
-that window searches the matrix: each match selects the entry it is in
-and scrolls it into view, and searching again steps on to the next
-matching entry.</p>
+there the mouse wheel scrolls the worksheet, unless that matrix or
+something inside it is selected, and such a matrix is printed with its
+middle rows and columns left out. Whether it is elided or shown in a
+scrolling box, every other row and column of such a matrix is faintly
+shaded, so that a row or a column is easy to follow across it; a matrix
+that fits the window stays plain, unless <code>wx_matrix()</code>’s
+<code>banding</code> option says otherwise. All of this affects only
+what is shown on screen and printed: copying, saving and exporting the
+matrix always include every entry. <code>wx_matrix()</code>’s
+<code>oversized</code> option overrides that option for a single matrix;
+a matrix it asks to scroll is still elided on paper, and exporting a
+matrix as an image still always shows all of it. Double-clicking a
+matrix that is elided or shown in a scrolling box opens a window of its
+own that shows all of it; the window can be resized and scrolled, and
+<em>Escape</em> closes it. <em>Ctrl+F</em> in that window searches the
+matrix: each match selects the entry it is in and scrolls it into view,
+and searching again steps on to the next matching entry.</p>
 <h2 data-number="3.9" id="bug-reporting"><span
 class="header-section-number">3.9</span> Bug reporting</h2>
 <div id="wxbuild_info">
@@ -2504,6 +2526,9 @@ class="header-section-number">5.14</span> Why is the integrated manual
 browser not offered on my Windows PC?</h2>
 <p>Either wxWidgets wasn’t compiled with support for Microsoft’s
 webview2 or Microsoft’s webview2 isn’t installed.</p>
+<p><em>Help/About</em> lists which of the things the integrated browser
+needs this wxMaxima has and which it is missing; the log window
+(<em>View/Toggle log window</em>) shows the same list.</p>
 <h2 data-number="5.15"
 id="why-is-the-external-manual-browser-not-working-on-my-linux-box"><span
 class="header-section-number">5.15</span> Why is the external manual
@@ -2611,6 +2636,14 @@ itself is by default equipped with a bright background. But it can be
 configured otherwise. Alternatively, there is a
 <code>View/Invert worksheet brightness</code> menu entry that allows to
 quickly convert the worksheet from dark to bright and vice versa.</p>
+<p>Most images are drawn for a white background, and black line art with
+a transparent background would be invisible on a dark worksheet. So by
+default, if the worksheet background is dark, the transparent parts of
+images are filled with a backdrop color. Its color is the style
+<em>Backdrop of transparent images</em> in the <em>Style</em> tab of the
+configuration dialog, and the option <em>Behind transparent parts of
+images</em> in its <em>Worksheet</em> tab can switch the backdrop off,
+or draw it on a bright worksheet, too.</p>
 <h2 data-number="6.3"
 id="wxmaxima-sometimes-hangs-for-several-seconds-once-in-the-first-minute"><span
 class="header-section-number">6.3</span> <em>WxMaxima</em> sometimes
