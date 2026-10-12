@@ -156,7 +156,7 @@ SCENARIO("The group-cell menu keeps the special copy formats in a submenu") {
       wxMenuItem *sub = TopLevelItem(menu, wxS("Copy in Another Format"));
       REQUIRE(sub != nullptr);
       REQUIRE(sub->GetSubMenu() != nullptr);
-      for (const wxString &label : {wxS("Copy as LaTeX"), wxS("Copy as plain text"),
+      for (const wxString label : {wxS("Copy as LaTeX"), wxS("Copy as plain text"),
                                     wxS("Copy as Image"), wxS("Copy as SVG"),
                                     wxS("Copy as RTF"), wxS("Copy as HTML"),
                                     wxS("Copy for Octave/Matlab")}) {
