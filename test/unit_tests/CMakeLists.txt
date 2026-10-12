@@ -588,6 +588,17 @@ if(TARGET wxmTestApp)
     add_test(NAME AnonymizeCodeCells
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_AnonymizeCodeCells>")
 
+    # The tray icon's menu items must reach their handlers with an
+    # AppIndicator tray, which redirects the menu's events to the icon.
+    add_executable(test_TrayIcon
+        test_TrayIcon.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_TrayIcon PUBLIC cxx_std_20)
+    target_link_libraries(test_TrayIcon PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME TrayIcon
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_TrayIcon>")
+
     # Pins McpTools (src/mcp/McpTools.h), the MCP server's read-only
     # "worksheet context" tools: listing/reading cells, the table of
     # contents, whole sections, and the Variables sidebar's watchlist,

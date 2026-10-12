@@ -28,7 +28,6 @@
 #if wxUSE_TASKBARICON
 
 #include "EventIDs.h"
-#include "wxMaximaFrame.h"
 
 namespace {
 //! Only ever appended to and read from this file's own popup menu -- a
@@ -38,9 +37,18 @@ namespace {
 const wxWindowIDRef menu_show_id(wxWindow::NewControlId());
 } // namespace
 
-TrayIcon::TrayIcon(wxMaximaFrame *frame, StatusBar *statusBar)
+TrayIcon::TrayIcon(wxFrame *frame, StatusBar *statusBar)
   : m_frame(frame), m_statusBar(statusBar) {
   Bind(wxEVT_TASKBAR_LEFT_DCLICK, &TrayIcon::OnLeftDClick, this);
+  // The menu items' handlers live here rather than on the wxMenu
+  // CreatePopupMenu() returns: with an AppIndicator (StatusNotifier) tray,
+  // wxGTK hands the menu to the indicator once and redirects it to this
+  // object via wxMenu::SetEventHandler(), which takes the menu's own bindings
+  // out of the event's path. The other backends pop the menu up from a
+  // hidden window this object is pushed onto, so they reach it here, too.
+  Bind(wxEVT_MENU, &TrayIcon::OnShow, this, menu_show_id);
+  Bind(wxEVT_MENU, &TrayIcon::OnInterrupt, this, EventIDs::menu_interrupt_id);
+  Bind(wxEVT_MENU, &TrayIcon::OnExit, this, wxID_EXIT);
   UpdateStatus(StatusBar::MaximaStatus::wait_for_start);
 }
 
@@ -112,18 +120,19 @@ wxMenu *TrayIcon::CreatePopupMenu() {
   menu->AppendSeparator();
   menu->Append(menu_show_id, _("&Show wxMaxima"));
   menu->Append(wxID_EXIT, _("E&xit\tCtrl+Q"));
-  menu->Bind(wxEVT_MENU, &TrayIcon::OnShow, this, menu_show_id);
-  menu->Bind(wxEVT_MENU, &TrayIcon::OnInterrupt, this,
-             EventIDs::menu_interrupt_id);
-  menu->Bind(wxEVT_MENU, &TrayIcon::OnExit, this, wxID_EXIT);
   return menu;
 }
 
-void TrayIcon::OnShow(wxCommandEvent &WXUNUSED(event)) {
+wxWindowID TrayIcon::ShowMenuId() { return menu_show_id; }
+
+void TrayIcon::ShowFrame() {
+  m_frame->Show();
   m_frame->Iconize(false);
   m_frame->Raise();
   m_frame->SetFocus();
 }
+
+void TrayIcon::OnShow(wxCommandEvent &WXUNUSED(event)) { ShowFrame(); }
 
 void TrayIcon::OnInterrupt(wxCommandEvent &WXUNUSED(event)) {
   // wxTaskBarIcon's own popup menu delivers wxEVT_MENU to this class, not to
@@ -144,9 +153,7 @@ void TrayIcon::OnExit(wxCommandEvent &WXUNUSED(event)) {
 }
 
 void TrayIcon::OnLeftDClick(wxTaskBarIconEvent &WXUNUSED(event)) {
-  m_frame->Iconize(false);
-  m_frame->Raise();
-  m_frame->SetFocus();
+  ShowFrame();
 }
 
 #endif // wxUSE_TASKBARICON

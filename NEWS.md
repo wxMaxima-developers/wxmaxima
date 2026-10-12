@@ -1,5 +1,8 @@
 # Current development version
 
+- The tray icon's menu works with an AppIndicator (StatusNotifier) tray:
+  "Show wxMaxima", "Interrupt" and "Exit" did nothing there. Showing
+  wxMaxima from the tray now also brings back a hidden window.
 - The Greek letters and Symbols sidebars no longer come up laid out wrongly
   until they are resized (seen with wxWidgets' Qt port).
 - Copying a whole large matrix no longer tries to draw a bitmap of many

@@ -34,8 +34,6 @@
 
 #if wxUSE_TASKBARICON
 
-class wxMaximaFrame;
-
 /*! A system tray icon that mirrors wxMaxima's busy status (GH #2286).
 
   Windows already gets an equivalent of this for free via the taskbar
@@ -56,10 +54,21 @@ class wxMaximaFrame;
   under art/statusbar (one per icon) define their byte arrays without
   static/extern, so #include-ing one from a second .cpp file is a
   duplicate-symbol link error (confirmed by trying exactly that first).
+
+  The popup menu's handlers are bound to the TrayIcon itself, never to the
+  wxMenu: wxGTK's AppIndicator backend replaces the menu's event handler
+  with the TrayIcon (wxMenu::SetEventHandler()), so anything bound to the
+  menu is never reached there. Binding to the TrayIcon works on every
+  backend, since the classic ones push it onto the hidden window they pop
+  the menu up from.
 */
 class TrayIcon : public wxTaskBarIcon {
 public:
-  TrayIcon(wxMaximaFrame *frame, StatusBar *statusBar);
+  /*! \param frame The window "Show wxMaxima" brings back, and the one the
+      Interrupt and Exit items are forwarded to.
+      \param statusBar Provides the icons, see StatusBar::GetTrayIconBitmap().
+  */
+  TrayIcon(wxFrame *frame, StatusBar *statusBar);
   ~TrayIcon() override;
 
   //! Refreshes the icon/tooltip for the current Maxima status. The caller
@@ -69,6 +78,9 @@ public:
 
   wxMenu *CreatePopupMenu() override;
 
+  //! The id of the popup menu's "Show wxMaxima" item
+  static wxWindowID ShowMenuId();
+
 private:
   static wxString TooltipFor(StatusBar::MaximaStatus status);
 
@@ -76,8 +88,10 @@ private:
   void OnInterrupt(wxCommandEvent &event);
   void OnExit(wxCommandEvent &event);
   void OnLeftDClick(wxTaskBarIconEvent &event);
+  //! Shows, de-iconizes and raises the main window
+  void ShowFrame();
 
-  wxMaximaFrame *m_frame;
+  wxFrame *m_frame;
   StatusBar *m_statusBar;
 };
 
