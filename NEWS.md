@@ -1,5 +1,8 @@
 # Current development version
 
+- With wxWidgets 3.2's Qt port, wxMaxima no longer aborts on startup with
+  an "invalid window" assertion, and the toolbar's own icons are no longer
+  invisible (GH #2483).
 - A worksheet with output wider than the window, for example a long
   warning(), no longer loses its horizontal scrollbar as soon as a cell
   above that output is laid out again, e.g. after opening the file and
