@@ -276,6 +276,28 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetForeground</b> (wx
 const std::vector&lt; std::pair&lt; std::size_t, std::size_t &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>GetDiffHighlights</b> () const</td></tr>
 <tr class="memdesc:a79b7b9b2e0391a2574f2d4e1aa15cf83"><td class="mdescLeft">&#160;</td><td class="mdescRight">The ranges set by <a class="el" href="classEditorCell.html#a2618523b3432e1d877422cc02e621210" title="Sets the character ranges of this cell&#39;s text the diff viewer wants painted with the TS_DIFF_CHANGED ...">SetDiffHighlights()</a> (empty outside the diff viewer). <br /></td></tr>
 <tr class="separator:a79b7b9b2e0391a2574f2d4e1aa15cf83"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aebb1993fc7d218dace040d0bfc81b49e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#aebb1993fc7d218dace040d0bfc81b49e">AddErrorStatement</a> (std::size_t start, std::size_t end)</td></tr>
+<tr class="memdesc:aebb1993fc7d218dace040d0bfc81b49e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Marks a statement <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> reported an error for (GH #289)  <br /></td></tr>
+<tr class="separator:aebb1993fc7d218dace040d0bfc81b49e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab719c4097bae6622f52f93b5e28b7501"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#ab719c4097bae6622f52f93b5e28b7501">AddErrorSpot</a> (std::size_t start, std::size_t end)</td></tr>
+<tr class="memdesc:ab719c4097bae6622f52f93b5e28b7501"><td class="mdescLeft">&#160;</td><td class="mdescRight">Marks the place in a failing statement <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s syntax error points at.  <br /></td></tr>
+<tr class="separator:ab719c4097bae6622f52f93b5e28b7501"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b48fcaad813abf3efdd1edb01cb1d3d"><td class="memItemLeft" align="right" valign="top"><a id="a7b48fcaad813abf3efdd1edb01cb1d3d" name="a7b48fcaad813abf3efdd1edb01cb1d3d"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>ClearErrorMarks</b> ()</td></tr>
+<tr class="memdesc:a7b48fcaad813abf3efdd1edb01cb1d3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Drops all marks <a class="el" href="classEditorCell.html#aebb1993fc7d218dace040d0bfc81b49e" title="Marks a statement Maxima reported an error for (GH #289)">AddErrorStatement()</a> and <a class="el" href="classEditorCell.html#ab719c4097bae6622f52f93b5e28b7501" title="Marks the place in a failing statement Maxima&#39;s syntax error points at.">AddErrorSpot()</a> have set. <br /></td></tr>
+<tr class="separator:a7b48fcaad813abf3efdd1edb01cb1d3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9fe1059832fad5a572305ee39c46067"><td class="memItemLeft" align="right" valign="top"><a id="ad9fe1059832fad5a572305ee39c46067" name="ad9fe1059832fad5a572305ee39c46067"></a>
+const std::vector&lt; std::pair&lt; std::size_t, std::size_t &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>GetErrorStatements</b> () const</td></tr>
+<tr class="memdesc:ad9fe1059832fad5a572305ee39c46067"><td class="mdescLeft">&#160;</td><td class="mdescRight">The statements <a class="el" href="classEditorCell.html#aebb1993fc7d218dace040d0bfc81b49e" title="Marks a statement Maxima reported an error for (GH #289)">AddErrorStatement()</a> has marked (for tests and inspection). <br /></td></tr>
+<tr class="separator:ad9fe1059832fad5a572305ee39c46067"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a542b41905ca70c9049103f1856ad6b85"><td class="memItemLeft" align="right" valign="top"><a id="a542b41905ca70c9049103f1856ad6b85" name="a542b41905ca70c9049103f1856ad6b85"></a>
+const std::vector&lt; std::pair&lt; std::size_t, std::size_t &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>GetErrorSpots</b> () const</td></tr>
+<tr class="memdesc:a542b41905ca70c9049103f1856ad6b85"><td class="mdescLeft">&#160;</td><td class="mdescRight">The spots <a class="el" href="classEditorCell.html#ab719c4097bae6622f52f93b5e28b7501" title="Marks the place in a failing statement Maxima&#39;s syntax error points at.">AddErrorSpot()</a> has marked (for tests and inspection). <br /></td></tr>
+<tr class="separator:a542b41905ca70c9049103f1856ad6b85"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa958dca5a86e91218c4e8f991a21fcc3"><td class="memItemLeft" align="right" valign="top"><a id="aa958dca5a86e91218c4e8f991a21fcc3" name="aa958dca5a86e91218c4e8f991a21fcc3"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>ErrorMarksValid</b> () const</td></tr>
+<tr class="memdesc:aa958dca5a86e91218c4e8f991a21fcc3"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if there are error marks that still match the text. <br /></td></tr>
+<tr class="separator:aa958dca5a86e91218c4e8f991a21fcc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a882a1f44fe7b82bb0db6dc312d23bd15"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#a882a1f44fe7b82bb0db6dc312d23bd15">StyleText</a> () const</td></tr>
 <tr class="memdesc:a882a1f44fe7b82bb0db6dc312d23bd15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts m_text to a list of styled text snippets that will later be displayed by draw().  <br /></td></tr>
 <tr class="separator:a882a1f44fe7b82bb0db6dc312d23bd15"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1341,6 +1363,69 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 <p>Adds a ";" to the end of the last command in this cell in case that it doesn't end in $ or ;. </p>
 
 <p>Reimplemented from <a class="el" href="classCell.html#af0f18ef99c280e60940d94cd55143cd1">Cell</a>.</p>
+
+</div>
+</div>
+<a id="ab719c4097bae6622f52f93b5e28b7501" name="ab719c4097bae6622f52f93b5e28b7501"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab719c4097bae6622f52f93b5e28b7501">&#9670;&#160;</a></span>AddErrorSpot()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void EditorCell::AddErrorSpot </td>
+          <td>(</td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>start</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>end</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Marks the place in a failing statement <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s syntax error points at. </p>
+<p>Painted with the TS_ERROR_SPOT background, over the statement's own mark. Same lifetime as the marks <a class="el" href="classEditorCell.html#aebb1993fc7d218dace040d0bfc81b49e" title="Marks a statement Maxima reported an error for (GH #289)">AddErrorStatement()</a> sets. </p>
+
+</div>
+</div>
+<a id="aebb1993fc7d218dace040d0bfc81b49e" name="aebb1993fc7d218dace040d0bfc81b49e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aebb1993fc7d218dace040d0bfc81b49e">&#9670;&#160;</a></span>AddErrorStatement()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void EditorCell::AddErrorStatement </td>
+          <td>(</td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>start</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>end</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Marks a statement <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> reported an error for (GH #289) </p>
+<p>The range is half-open ([start, end)) and indexes into <a class="el" href="classEditorCell.html#a7567a287678df7003b301c1a93901b03" title="Returns the text contained in this cell.">GetValue()</a>; it is painted with the TS_ERROR_STATEMENT background. More than one statement of a cell can fail if evaluation doesn't stop at the first error.</p>
+<p>The marks belong to the text they were set for: as soon as the text differs from it, <a class="el" href="classEditorCell.html#ae1ea47fbaf84aa982f91f717101d743f" title="Pass 3 (Paint): Renders the cell using pre-calculated coordinates.">Draw()</a> stops painting them. They are dropped by <a class="el" href="classEditorCell.html#a7b48fcaad813abf3efdd1edb01cb1d3d" title="Drops all marks AddErrorStatement() and AddErrorSpot() have set.">ClearErrorMarks()</a> when the cell is evaluated again, and by <a class="el" href="classEditorCell.html#a06fb7e24c57d9cdfd8146539228b50e7" title="Sets the text that is to be displayed.">SetValue()</a>. </p>
 
 </div>
 </div>

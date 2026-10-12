@@ -72,6 +72,7 @@ $(function() {
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Data Fields</a>  </div>
   <div class="headertitle"><div class="title">EvaluationQueue Class Reference</div></div>
 </div><!--header-->
@@ -90,6 +91,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6817ed7b560b1c0f59d1da9872ab571b"><td class="memItemLeft" align="right" valign="top"><a id="a6817ed7b560b1c0f59d1da9872ab571b" name="a6817ed7b560b1c0f59d1da9872ab571b"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>GetIndex</b> () const</td></tr>
 <tr class="separator:a6817ed7b560b1c0f59d1da9872ab571b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a425ebb636bf7802d26dd1a815925eff3"><td class="memItemLeft" align="right" valign="top"><a id="a425ebb636bf7802d26dd1a815925eff3" name="a425ebb636bf7802d26dd1a815925eff3"></a>
+long&#160;</td><td class="memItemRight" valign="bottom"><b>GetCommandStart</b> () const</td></tr>
+<tr class="separator:a425ebb636bf7802d26dd1a815925eff3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a23427ec51ec0305ef0de66af33101773"><td class="memItemLeft" align="right" valign="top"><a id="a23427ec51ec0305ef0de66af33101773" name="a23427ec51ec0305ef0de66af33101773"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>AddEnding</b> ()</td></tr>
 <tr class="separator:a23427ec51ec0305ef0de66af33101773"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -161,6 +165,12 @@ long&#160;</td><td class="memItemRight" valign="bottom"><b>GetCommandElapsedMill
 <tr class="memdesc:a39591ac17e4617271e2c0f61049d69e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Milliseconds since <a class="el" href="classEvaluationQueue.html#ae6698d19dc9809f5a5b30bc84f86b334" title="Call exactly once, right after the current command&#39;s text is actually written to Maxima&#39;s socket – st...">MarkCommandSent()</a> was last called for the command currently in flight, or -1 if no command has been sent since the last <a class="el" href="classEvaluationQueue.html#a9281421bc414407c4d8fa99335ecb24e" title="Removes the first command in the queue.">RemoveFirst()</a>/Clear() (nothing to report an elapsed time for). <br /></td></tr>
 <tr class="separator:a39591ac17e4617271e2c0f61049d69e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a92b9c095c0b5b722f1e1754924462928"><td class="memItemLeft" align="right" valign="top">static long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEvaluationQueue.html#a92b9c095c0b5b722f1e1754924462928">CommandPositionInCell</a> (const wxString &amp;cellText, long start, long end, std::size_t offset, <a class="el" href="classConfiguration.html">Configuration</a> *configuration)</td></tr>
+<tr class="memdesc:a92b9c095c0b5b722f1e1754924462928"><td class="mdescLeft">&#160;</td><td class="mdescRight">Where in its cell the current command starts.  <br /></td></tr>
+<tr class="separator:a92b9c095c0b5b722f1e1754924462928"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
 <tr class="memitem:a75fbb5fe049ad630a488268ddfd5434e"><td class="memItemLeft" align="right" valign="top"><a id="a75fbb5fe049ad630a488268ddfd5434e" name="a75fbb5fe049ad630a488268ddfd5434e"></a>
@@ -188,6 +198,75 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_workingGroupChanged
 
 <p>Adds all hidden cells attached to the <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a> gr to the evaluation queue. </p>
 <p>Add the tree of hidden cells to the EQ by recursively adding cells' hidden branches to the EQ. </p>
+
+</div>
+</div>
+<a id="a92b9c095c0b5b722f1e1754924462928" name="a92b9c095c0b5b722f1e1754924462928"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a92b9c095c0b5b722f1e1754924462928">&#9670;&#160;</a></span>CommandPositionInCell()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">long EvaluationQueue::CommandPositionInCell </td>
+          <td>(</td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
+          <td class="paramname"><em>cellText</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">long&#160;</td>
+          <td class="paramname"><em>start</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">long&#160;</td>
+          <td class="paramname"><em>end</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>offset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classConfiguration.html">Configuration</a> *&#160;</td>
+          <td class="paramname"><em>configuration</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Where in its cell the current command starts. </p>
+<p>Together with GetIndex(), which is where it ends, this is the statement an error <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> reports for this command belongs to (GH #289). -1 if there is no current command.</p>
+<p>Where in its cell a position in a command is</p>
+<p><a class="el" href="classA.html">A</a> command is not always a verbatim copy of its part of the cell: comments are left out of it, as is whitespace in front. This maps a position in the text sent to <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> back to the cell, for a command produced in the mode (<a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> or Lisp) <code>configuration</code> is in now.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cellText</td><td>The cell's text, as GroupCell::GetEditable()-&gt;ToString(true) returns it. </td></tr>
+    <tr><td class="paramname">start</td><td>Where in it the command starts (GetCommandStart()) </td></tr>
+    <tr><td class="paramname">end</td><td>Where in it the command ends (GetIndex()) </td></tr>
+    <tr><td class="paramname">offset</td><td>The position in the command's text </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The position in cellText, never beyond end. </dd></dl>
 
 </div>
 </div>

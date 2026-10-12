@@ -22,5 +22,7 @@ var searchData=
   ['svgpanel_2ecpp_19',['SvgPanel.cpp',['../SvgPanel_8cpp.html',1,'']]],
   ['svgpanel_2eh_20',['SvgPanel.h',['../SvgPanel_8h.html',1,'']]],
   ['symbolssidebar_2ecpp_21',['SymbolsSidebar.cpp',['../SymbolsSidebar_8cpp.html',1,'']]],
-  ['symbolssidebar_2eh_22',['SymbolsSidebar.h',['../SymbolsSidebar_8h.html',1,'']]]
+  ['symbolssidebar_2eh_22',['SymbolsSidebar.h',['../SymbolsSidebar_8h.html',1,'']]],
+  ['syntaxerrorlocation_2ecpp_23',['SyntaxErrorLocation.cpp',['../SyntaxErrorLocation_8cpp.html',1,'']]],
+  ['syntaxerrorlocation_2eh_24',['SyntaxErrorLocation.h',['../SyntaxErrorLocation_8h.html',1,'']]]
 ];

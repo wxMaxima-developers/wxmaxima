@@ -109,6 +109,18 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>TriggerEvaluation</b>
 <tr class="memitem:a76dac6979bc4b9beef5dc31ec4abc63f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMaximaEvaluator.html#a76dac6979bc4b9beef5dc31ec4abc63f">SetupVariables</a> ()</td></tr>
 <tr class="memdesc:a76dac6979bc4b9beef5dc31ec4abc63f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> the one-time startup configuration.  <br /></td></tr>
 <tr class="separator:a76dac6979bc4b9beef5dc31ec4abc63f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87416745e55ba8aaba425c0da126b0f8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMaximaEvaluator.html#a87416745e55ba8aaba425c0da126b0f8">StartCommand</a> (long start)</td></tr>
+<tr class="memdesc:a87416745e55ba8aaba425c0da126b0f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remembers where in its cell the command that is being sent starts.  <br /></td></tr>
+<tr class="separator:a87416745e55ba8aaba425c0da126b0f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21145b909e25ee75edba1dfc8f404854"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMaximaEvaluator.html#a21145b909e25ee75edba1dfc8f404854">AddCommandOutput</a> (const wxString &amp;text)</td></tr>
+<tr class="memdesc:a21145b909e25ee75edba1dfc8f404854"><td class="mdescLeft">&#160;</td><td class="mdescRight">Collects what <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> printed in reply to the current command.  <br /></td></tr>
+<tr class="separator:a21145b909e25ee75edba1dfc8f404854"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4158bae2031263be8f964d850c1b8c4a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMaximaEvaluator.html#a4158bae2031263be8f964d850c1b8c4a">MarkErrorStatement</a> (<a class="el" href="classGroupCell.html">GroupCell</a> *cell)</td></tr>
+<tr class="memdesc:a4158bae2031263be8f964d850c1b8c4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Marks the statement the current command came from as the one that caused an error, in the cell <code>cell</code> (GH #289).  <br /></td></tr>
+<tr class="separator:a4158bae2031263be8f964d850c1b8c4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ef865ce64365a1acd7ca78458b4d340"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMaximaEvaluator.html#a9ef865ce64365a1acd7ca78458b4d340">MarkSyntaxErrorSpot</a> ()</td></tr>
+<tr class="memdesc:a9ef865ce64365a1acd7ca78458b4d340"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> reported a syntax error for the current command, marks where in its statement it is, and puts the cursor there.  <br /></td></tr>
+<tr class="separator:a9ef865ce64365a1acd7ca78458b4d340"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The evaluation-queue driver / command protocol extracted from <a class="el" href="classwxMaxima.html">wxMaxima</a>. </p>
@@ -131,6 +143,68 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>TriggerEvaluation</b>
 
 <p>Reacts to a <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> error: decides whether to keep evaluating the queue. </p>
 <dl class="section return"><dt>Returns</dt><dd>true if the evaluation queue was cleared (do not send more). </dd></dl>
+
+</div>
+</div>
+<a id="a21145b909e25ee75edba1dfc8f404854" name="a21145b909e25ee75edba1dfc8f404854"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a21145b909e25ee75edba1dfc8f404854">&#9670;&#160;</a></span>AddCommandOutput()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MaximaEvaluator::AddCommandOutput </td>
+          <td>(</td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
+          <td class="paramname"><em>text</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Collects what <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> printed in reply to the current command. </p>
+<p>Only plain text (the kind an error message is) is collected: a syntax error report can arrive in several pieces, and only all of it together tells where the error is. </p>
+
+</div>
+</div>
+<a id="a4158bae2031263be8f964d850c1b8c4a" name="a4158bae2031263be8f964d850c1b8c4a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4158bae2031263be8f964d850c1b8c4a">&#9670;&#160;</a></span>MarkErrorStatement()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MaximaEvaluator::MarkErrorStatement </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td>
+          <td class="paramname"><em>cell</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Marks the statement the current command came from as the one that caused an error, in the cell <code>cell</code> (GH #289). </p>
+<p>Does nothing if the cell isn't the one that is being evaluated: an error can also arrive when nothing is, and there is no statement to blame then. Marks the statement only once per command, however many pieces the error message arrives in. If the error is a syntax error, also marks where in the statement it is, as soon as <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s output tells. </p>
+
+</div>
+</div>
+<a id="a9ef865ce64365a1acd7ca78458b4d340" name="a9ef865ce64365a1acd7ca78458b4d340"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ef865ce64365a1acd7ca78458b4d340">&#9670;&#160;</a></span>MarkSyntaxErrorSpot()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MaximaEvaluator::MarkSyntaxErrorSpot </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>If <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> reported a syntax error for the current command, marks where in its statement it is, and puts the cursor there. </p>
+<p>Called whenever more of <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s output arrived, as the part that tells where the error is may come after the part that tells that there is one. </p>
 
 </div>
 </div>
@@ -209,6 +283,27 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>TriggerEvaluation</b>
 
 <p>Sends <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> the one-time startup configuration. </p>
 <p>Runs once when <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> connects: loads wxmathml.lisp and sets the option variables (help format, prompts, gnuplot binary, version handshake). </p>
+
+</div>
+</div>
+<a id="a87416745e55ba8aaba425c0da126b0f8" name="a87416745e55ba8aaba425c0da126b0f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a87416745e55ba8aaba425c0da126b0f8">&#9670;&#160;</a></span>StartCommand()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MaximaEvaluator::StartCommand </td>
+          <td>(</td>
+          <td class="paramtype">long&#160;</td>
+          <td class="paramname"><em>start</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Remembers where in its cell the command that is being sent starts. </p>
+<p>Also forgets everything about the previous command's output. The end of the command is wxMaxima::m_commandIndex. </p>
 
 </div>
 </div>
