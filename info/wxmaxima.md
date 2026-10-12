@@ -272,6 +272,8 @@ Other symbols the HTML and TeX export will recognize are `<=` and `>=` for compa
 
 A web address in a text cell that starts with `http://`, `https://` or `mailto:` is shown as a link. Since clicking into a text cell places the cursor there, a link is followed by <kbd>CTRL</kbd>+clicking it (<kbd>CMD</kbd>+clicking on macOS), or by right-clicking it and choosing "Open Link"; hovering over it shows where it leads. The HTML export turns it into a link, the TeX export into a `\url{}`. Links are always recognized from the text itself, so nothing about them is stored in the file.
 
+Links in a code cell's comments (`/* ... */`) work the same way. Elsewhere in code, for example inside a string, an address is Maxima syntax and is not a link.
+
 The same goes for web addresses in _Maxima_'s output, for example in a string printed by `print("See https://wxmaxima-developers.github.io/wxmaxima/")`: <kbd>CTRL</kbd>+clicking the address or choosing "Open Link" from its context menu opens it, while a plain click still selects the output.
 
 ### Bold, italic, underlined and struck-through text
@@ -1112,6 +1114,10 @@ If the automatic fix fails, you can manually start wxMaxima with:
 
 Either wxWidgets wasn’t compiled with support for Microsoft’s webview2 or
 Microsoft’s webview2 isn’t installed.
+
+_Help/About_ lists which of the things the integrated browser needs this
+wxMaxima has and which it is missing; the log window (_View/Toggle log
+window_) shows the same list.
 
 ## Why is the external manual browser not working on my Linux box?
 
