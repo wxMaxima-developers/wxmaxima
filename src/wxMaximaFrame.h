@@ -143,11 +143,15 @@ public:
       AuiManagerUpdate();
     }
   //! Show the pane the wizards are in
-  void ShowWizardPane(wxString title)
-    {
-      m_manager.GetPane("wizard").Show(true).Caption(title);
-      AuiManagerUpdate();
-    }
+  void ShowWizardPane(const wxString &title);
+  /*! Make the wizard pane at least as large as the wizard it shows
+
+    Its minimum height is what keeps a docked wizard's OK button visible; a
+    floating wizard window is enlarged instead if it is too small.
+    Doesn't call AuiManagerUpdate() itself.
+    \return true, if anything had to be changed.
+  */
+  bool FitWizardPane();
   void HideWizardPane()
     {
         m_manager.GetPane("wizard").Show(false);
@@ -392,6 +396,8 @@ public:
   void StatusText(const wxString &text, bool saveInLog = true);
 protected:
   ScrollingGenWizPanel *m_wizard = nullptr;
+  //! Whether the floating wizard still needs a position: see ShowWizardPane()
+  bool m_placeFloatingWizard = false;
   //! Are we inside a 2d or 3d draw command?
   long m_drawDimensions_last = -1;
   //! The default size for the window.

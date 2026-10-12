@@ -59,3 +59,17 @@ void ScrollingGenWizPanel::OnSize(wxSizeEvent &event) {
   SetVirtualSize(GetClientSize().x, wxDefaultSize.y);
   event.Skip();
 }
+
+wxSize ScrollingGenWizPanel::GetNeededSize() const {
+  return m_panel->GetBestSize() + (GetSize() - GetClientSize());
+}
+
+void ScrollingGenWizPanel::OnNeededSizeChange(std::function<void()> callback) {
+  m_panel->OnBestSizeChange([this, callback = std::move(callback)] {
+    // What we can scroll to has changed, too.
+    Layout();
+    FitInside();
+    if (callback)
+      callback();
+  });
+}

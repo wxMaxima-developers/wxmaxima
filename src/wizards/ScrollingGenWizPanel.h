@@ -81,6 +81,17 @@ public:
   wxButton *GetAbortButton() const {return m_panel->GetAbortButton();}
   wxButton *GetInsertButton() const{return m_panel->GetInsertButton();}
   wxString GetHelpKeyword(int ID){return m_panel->GetHelpKeyword(ID);}
+  /*! The size the wizard needs to be shown without scrolling
+
+    Including its buttons: a docked pane smaller than this hides the OK
+    button below the bottom edge.
+  */
+  wxSize GetNeededSize() const;
+  /*! Tell \p callback whenever GetNeededSize() has changed
+
+    See GenWizPanel::OnBestSizeChange().
+  */
+  void OnNeededSizeChange(std::function<void()> callback);
 
 protected:
   GenWizPanel *m_panel;

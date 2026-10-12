@@ -162,6 +162,13 @@ target_include_directories(test_MaximaProtocol PRIVATE ${CMAKE_SOURCE_DIR}/src)
 target_link_libraries(test_MaximaProtocol PRIVATE ${wxWidgets_LIBRARIES})
 add_test(MaximaProtocol test_MaximaProtocol)
 
+# Which words of a wizard's command get a "Help on" button: pure text
+# analysis, so it needs neither a GUI nor a manual.
+add_executable(test_WizardHelpKeywords test_WizardHelpKeywords.cpp ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
+target_include_directories(test_WizardHelpKeywords PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_link_libraries(test_WizardHelpKeywords PRIVATE ${wxWidgets_LIBRARIES})
+add_test(WizardHelpKeywords test_WizardHelpKeywords)
+
 # Keyed on WXM_AI_TOOLS_REQUESTED, not WXM_USE_AI_TOOLS: this test needs
 # nothing from wxWidgets 3.3.4, which the AI tools themselves require (see
 # the top-level CMakeLists.txt).
