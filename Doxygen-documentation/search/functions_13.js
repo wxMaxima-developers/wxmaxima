@@ -240,7 +240,7 @@ var searchData=
   ['showtip_237',['ShowTip',['../classwxMaxima.html#a19ab7d30da525d3d704cce97fa9cae75',1,'wxMaxima']]],
   ['showtoolbar_238',['ShowToolBar',['../classwxMaximaFrame.html#ac5db54a12de1656538f2a8e9d572b9f9',1,'wxMaximaFrame']]],
   ['showuserinputbitmap_239',['ShowUserInputBitmap',['../classToolBar.html#a0d5ce6075969191ba8ee8cf6a3ea6264',1,'ToolBar']]],
-  ['showwizardpane_240',['ShowWizardPane',['../classwxMaximaFrame.html#aacb1598bfb464a0a87062054c42ec7df',1,'wxMaximaFrame']]],
+  ['showwizardpane_240',['ShowWizardPane',['../classwxMaximaFrame.html#abe864afc193950c644f974b1223a7e9e',1,'wxMaximaFrame']]],
   ['showwxmaximahelp_241',['ShowWxMaximaHelp',['../classwxMaxima.html#a89e523348965a14e0720e453ee3fa2aa',1,'wxMaxima']]],
   ['simplifymenu_242',['SimplifyMenu',['../classMaximaCommandMenus.html#afb96fdd44972cd33e20c22a2f6edec27',1,'MaximaCommandMenus']]],
   ['singlepagemanual_243',['SinglePageManual',['../classConfiguration.html#a68eabd1c6d16a01528426bd14ffc2e2c',1,'Configuration::SinglePageManual(bool singlePageManual)'],['../classConfiguration.html#a4e3c873b3c8fb75f907b754ec02e8a87',1,'Configuration::SinglePageManual() const']]],

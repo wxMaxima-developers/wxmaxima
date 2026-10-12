@@ -266,7 +266,7 @@ var searchData=
   ['showtip_263',['ShowTip',['../classwxMaxima.html#a19ab7d30da525d3d704cce97fa9cae75',1,'wxMaxima']]],
   ['showtoolbar_264',['ShowToolBar',['../classwxMaximaFrame.html#ac5db54a12de1656538f2a8e9d572b9f9',1,'wxMaximaFrame']]],
   ['showuserinputbitmap_265',['ShowUserInputBitmap',['../classToolBar.html#a0d5ce6075969191ba8ee8cf6a3ea6264',1,'ToolBar']]],
-  ['showwizardpane_266',['ShowWizardPane',['../classwxMaximaFrame.html#aacb1598bfb464a0a87062054c42ec7df',1,'wxMaximaFrame']]],
+  ['showwizardpane_266',['ShowWizardPane',['../classwxMaximaFrame.html#abe864afc193950c644f974b1223a7e9e',1,'wxMaximaFrame']]],
   ['showwxmaximahelp_267',['ShowWxMaximaHelp',['../classwxMaxima.html#a89e523348965a14e0720e453ee3fa2aa',1,'wxMaxima']]],
   ['sidebarkeyevent_268',['SidebarKeyEvent',['../classSidebarKeyEvent.html',1,'']]],
   ['simplepcg32_269',['SimplePcg32',['../classCatch_1_1SimplePcg32.html',1,'Catch']]],

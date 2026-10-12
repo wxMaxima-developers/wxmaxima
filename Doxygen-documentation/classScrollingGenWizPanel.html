@@ -115,6 +115,12 @@ wxButton *&#160;</td><td class="memItemRight" valign="bottom"><b>GetInsertButton
 <tr class="memitem:a28c917225c73a04118e7d1a7ea6d272e"><td class="memItemLeft" align="right" valign="top"><a id="a28c917225c73a04118e7d1a7ea6d272e" name="a28c917225c73a04118e7d1a7ea6d272e"></a>
 wxString&#160;</td><td class="memItemRight" valign="bottom"><b>GetHelpKeyword</b> (int ID)</td></tr>
 <tr class="separator:a28c917225c73a04118e7d1a7ea6d272e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a349f37a5cecbf6873bb5aaa5353fd0d8"><td class="memItemLeft" align="right" valign="top">wxSize&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classScrollingGenWizPanel.html#a349f37a5cecbf6873bb5aaa5353fd0d8">GetNeededSize</a> () const</td></tr>
+<tr class="memdesc:a349f37a5cecbf6873bb5aaa5353fd0d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">The size the wizard needs to be shown without scrolling.  <br /></td></tr>
+<tr class="separator:a349f37a5cecbf6873bb5aaa5353fd0d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae7fc84fb468eb7ee1ea6038db0ded848"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classScrollingGenWizPanel.html#ae7fc84fb468eb7ee1ea6038db0ded848">OnNeededSizeChange</a> (std::function&lt; void()&gt; callback)</td></tr>
+<tr class="memdesc:ae7fc84fb468eb7ee1ea6038db0ded848"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tell <code>callback</code> whenever <a class="el" href="classScrollingGenWizPanel.html#a349f37a5cecbf6873bb5aaa5353fd0d8" title="The size the wizard needs to be shown without scrolling.">GetNeededSize()</a> has changed.  <br /></td></tr>
+<tr class="separator:ae7fc84fb468eb7ee1ea6038db0ded848"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -128,6 +134,48 @@ Protected Attributes</h2></td></tr>
 <a class="el" href="classGenWizPanel.html">GenWizPanel</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_panel</b></td></tr>
 <tr class="separator:a9e4cbe0437025c906a7614e8a632b3a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a349f37a5cecbf6873bb5aaa5353fd0d8" name="a349f37a5cecbf6873bb5aaa5353fd0d8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a349f37a5cecbf6873bb5aaa5353fd0d8">&#9670;&#160;</a></span>GetNeededSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxSize ScrollingGenWizPanel::GetNeededSize </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The size the wizard needs to be shown without scrolling. </p>
+<p>Including its buttons: a docked pane smaller than this hides the OK button below the bottom edge. </p>
+
+</div>
+</div>
+<a id="ae7fc84fb468eb7ee1ea6038db0ded848" name="ae7fc84fb468eb7ee1ea6038db0ded848"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae7fc84fb468eb7ee1ea6038db0ded848">&#9670;&#160;</a></span>OnNeededSizeChange()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ScrollingGenWizPanel::OnNeededSizeChange </td>
+          <td>(</td>
+          <td class="paramtype">std::function&lt; void()&gt;&#160;</td>
+          <td class="paramname"><em>callback</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Tell <code>callback</code> whenever <a class="el" href="classScrollingGenWizPanel.html#a349f37a5cecbf6873bb5aaa5353fd0d8" title="The size the wizard needs to be shown without scrolling.">GetNeededSize()</a> has changed. </p>
+<p>See <a class="el" href="classGenWizPanel.html#ac532bb464ed02e1d3d69e26cff6e74ad" title="Tell callback whenever the height this panel needs has changed.">GenWizPanel::OnBestSizeChange()</a>. </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/wizards/<a class="el" href="ScrollingGenWizPanel_8h_source.html">ScrollingGenWizPanel.h</a></li>
 <li>src/wizards/ScrollingGenWizPanel.cpp</li>

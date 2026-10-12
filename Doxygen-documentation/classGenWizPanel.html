@@ -71,7 +71,6 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pro-types">Protected Types</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a>  </div>
   <div class="headertitle"><div class="title">GenWizPanel Class Reference</div></div>
@@ -127,12 +126,9 @@ wxButton *&#160;</td><td class="memItemRight" valign="bottom"><b>GetInsertButton
 <tr class="memitem:a84d200b38ea9b6e7059b9f2793641eb2"><td class="memItemLeft" align="right" valign="top"><a id="a84d200b38ea9b6e7059b9f2793641eb2" name="a84d200b38ea9b6e7059b9f2793641eb2"></a>
 wxString&#160;</td><td class="memItemRight" valign="bottom"><b>GetHelpKeyword</b> (wxWindowID ID)</td></tr>
 <tr class="separator:a84d200b38ea9b6e7059b9f2793641eb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-types" name="pro-types"></a>
-Protected Types</h2></td></tr>
-<tr class="memitem:a9b4296fbbaa7b9a2fc8e4379f3e356c7"><td class="memItemLeft" align="right" valign="top"><a id="a9b4296fbbaa7b9a2fc8e4379f3e356c7" name="a9b4296fbbaa7b9a2fc8e4379f3e356c7"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>keywordHash</b> = std::unordered_map&lt; wxString, int, wxStringHash &gt;</td></tr>
-<tr class="separator:a9b4296fbbaa7b9a2fc8e4379f3e356c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac532bb464ed02e1d3d69e26cff6e74ad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGenWizPanel.html#ac532bb464ed02e1d3d69e26cff6e74ad">OnBestSizeChange</a> (std::function&lt; void()&gt; callback)</td></tr>
+<tr class="memdesc:ac532bb464ed02e1d3d69e26cff6e74ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tell <code>callback</code> whenever the height this panel needs has changed.  <br /></td></tr>
+<tr class="separator:ac532bb464ed02e1d3d69e26cff6e74ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -151,6 +147,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>OnTextEnter</b> (wxCo
 <tr class="memitem:a9e6b16d6d6abf7cf4fd59fca2036ea2c"><td class="memItemLeft" align="right" valign="top"><a id="a9e6b16d6d6abf7cf4fd59fca2036ea2c" name="a9e6b16d6d6abf7cf4fd59fca2036ea2c"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>OnNotebookPageChange</b> (wxBookCtrlEvent &amp;event)</td></tr>
 <tr class="separator:a9e6b16d6d6abf7cf4fd59fca2036ea2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e17bdbcd7050bfd33b8a657466c23ad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGenWizPanel.html#a2e17bdbcd7050bfd33b8a657466c23ad">FitTextHeight</a> (wxTextCtrl *ctrl, bool wordWrap)</td></tr>
+<tr class="memdesc:a2e17bdbcd7050bfd33b8a657466c23ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make <code>ctrl</code> exactly as high as its text needs at its current width.  <br /></td></tr>
+<tr class="separator:a2e17bdbcd7050bfd33b8a657466c23ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf7e570195b3bf75f31ed3ad36f5e1ad"><td class="memItemLeft" align="right" valign="top"><a id="abf7e570195b3bf75f31ed3ad36f5e1ad" name="abf7e570195b3bf75f31ed3ad36f5e1ad"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>FitNotebookHeight</b> ()</td></tr>
+<tr class="memdesc:abf7e570195b3bf75f31ed3ad36f5e1ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make the notebook as high as its highest page needs. <br /></td></tr>
+<tr class="separator:abf7e570195b3bf75f31ed3ad36f5e1ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -200,7 +203,81 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><b>m_title</b></td><
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classA.html">A</a> dockable, embeddable generic wizard. </p>
 <p>The generic wizard dialogue we use almost everywhere where a wizard is needed. </p>
-</div><hr/>The documentation for this class was generated from the following files:<ul>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a2e17bdbcd7050bfd33b8a657466c23ad" name="a2e17bdbcd7050bfd33b8a657466c23ad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e17bdbcd7050bfd33b8a657466c23ad">&#9670;&#160;</a></span>FitTextHeight()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void GenWizPanel::FitTextHeight </td>
+          <td>(</td>
+          <td class="paramtype">wxTextCtrl *&#160;</td>
+          <td class="paramname"><em>ctrl</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>wordWrap</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Make <code>ctrl</code> exactly as high as its text needs at its current width. </p>
+<p><a class="el" href="classA.html">A</a> multi-line wxTextCtrl has no idea how high its text is: it would otherwise get a fixed height, or with a stretch factor whatever room is left &ndash; which made the Command and Description tabs far higher than their text and pushed the OK button off a docked wizard. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">wordWrap</td><td>whether <code>ctrl</code> wraps between words (wxTE_BESTWRAP) rather than anywhere (wxTE_CHARWRAP) </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ac532bb464ed02e1d3d69e26cff6e74ad" name="ac532bb464ed02e1d3d69e26cff6e74ad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac532bb464ed02e1d3d69e26cff6e74ad">&#9670;&#160;</a></span>OnBestSizeChange()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void GenWizPanel::OnBestSizeChange </td>
+          <td>(</td>
+          <td class="paramtype">std::function&lt; void()&gt;&#160;</td>
+          <td class="paramname"><em>callback</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Tell <code>callback</code> whenever the height this panel needs has changed. </p>
+<p>Its text fields grow and shrink with their text, and with the width they are wrapped to, so this can happen long after the panel has been shown &ndash; which matters to whatever has to make room for it. </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/wizards/<a class="el" href="GenWizPanel_8h_source.html">GenWizPanel.h</a></li>
 <li>src/wizards/GenWizPanel.cpp</li>
 </ul>

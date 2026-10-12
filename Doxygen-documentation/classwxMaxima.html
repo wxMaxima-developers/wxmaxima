@@ -209,10 +209,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ToggleXMLInspector</b
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ToggleLogPane</b> ()</td></tr>
 <tr class="memdesc:ad0ccdcc367f2a24a51c5e4ebbcab92d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Toggle the visibility of the log pane. <br /></td></tr>
 <tr class="separator:ad0ccdcc367f2a24a51c5e4ebbcab92d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aacb1598bfb464a0a87062054c42ec7df"><td class="memItemLeft" align="right" valign="top"><a id="aacb1598bfb464a0a87062054c42ec7df" name="aacb1598bfb464a0a87062054c42ec7df"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ShowWizardPane</b> (wxString title)</td></tr>
-<tr class="memdesc:aacb1598bfb464a0a87062054c42ec7df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Show the pane the wizards are in. <br /></td></tr>
-<tr class="separator:aacb1598bfb464a0a87062054c42ec7df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe864afc193950c644f974b1223a7e9e"><td class="memItemLeft" align="right" valign="top"><a id="abe864afc193950c644f974b1223a7e9e" name="abe864afc193950c644f974b1223a7e9e"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>ShowWizardPane</b> (const wxString &amp;title)</td></tr>
+<tr class="memdesc:abe864afc193950c644f974b1223a7e9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Show the pane the wizards are in. <br /></td></tr>
+<tr class="separator:abe864afc193950c644f974b1223a7e9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f728cb1890b8834acb3c0a7783f8f13"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaximaFrame.html#a2f728cb1890b8834acb3c0a7783f8f13">FitWizardPane</a> ()</td></tr>
+<tr class="memdesc:a2f728cb1890b8834acb3c0a7783f8f13"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make the wizard pane at least as large as the wizard it shows.  <br /></td></tr>
+<tr class="separator:a2f728cb1890b8834acb3c0a7783f8f13"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06898227960815a673d0fd3640d4c618"><td class="memItemLeft" align="right" valign="top"><a id="a06898227960815a673d0fd3640d4c618" name="a06898227960815a673d0fd3640d4c618"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>HideWizardPane</b> ()</td></tr>
 <tr class="separator:a06898227960815a673d0fd3640d4c618"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -910,6 +913,10 @@ wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_HelpMenu</b> = 
 <tr class="memitem:ae8b723ca0c3941018b32ffb7286b4d41"><td class="memItemLeft" align="right" valign="top"><a id="ae8b723ca0c3941018b32ffb7286b4d41" name="ae8b723ca0c3941018b32ffb7286b4d41"></a>
 <a class="el" href="classScrollingGenWizPanel.html">ScrollingGenWizPanel</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_wizard</b> = nullptr</td></tr>
 <tr class="separator:ae8b723ca0c3941018b32ffb7286b4d41"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a0cf45937a7e17c2cd4c2f43cacae53"><td class="memItemLeft" align="right" valign="top"><a id="a1a0cf45937a7e17c2cd4c2f43cacae53" name="a1a0cf45937a7e17c2cd4c2f43cacae53"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_placeFloatingWizard</b> = false</td></tr>
+<tr class="memdesc:a1a0cf45937a7e17c2cd4c2f43cacae53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the floating wizard still needs a position: see <a class="el" href="classwxMaximaFrame.html#abe864afc193950c644f974b1223a7e9e" title="Show the pane the wizards are in.">ShowWizardPane()</a> <br /></td></tr>
+<tr class="separator:a1a0cf45937a7e17c2cd4c2f43cacae53"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a580b275b4d56bb2c1c851404deeea1e0"><td class="memItemLeft" align="right" valign="top"><a id="a580b275b4d56bb2c1c851404deeea1e0" name="a580b275b4d56bb2c1c851404deeea1e0"></a>
 long&#160;</td><td class="memItemRight" valign="bottom"><b>m_drawDimensions_last</b> = -1</td></tr>
 <tr class="memdesc:a580b275b4d56bb2c1c851404deeea1e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Are we inside a 2d or 3d draw command? <br /></td></tr>
@@ -1361,6 +1368,34 @@ class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a2f728cb1890b8834acb3c0a7783f8f13" name="a2f728cb1890b8834acb3c0a7783f8f13"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2f728cb1890b8834acb3c0a7783f8f13">&#9670;&#160;</a></span>FitWizardPane()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool wxMaximaFrame::FitWizardPane </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Make the wizard pane at least as large as the wizard it shows. </p>
+<p>Its minimum height is what keeps a docked wizard's OK button visible; a floating wizard window is enlarged instead if it is too small. Doesn't call <a class="el" href="classwxMaximaFrame.html#a91211d6dffcde03034f085f1d64abbef" title="Updates the AUI manager and re-asserts the menu bar on GTK to prevent it from disappearing.">AuiManagerUpdate()</a> itself. </p><dl class="section return"><dt>Returns</dt><dd>true, if anything had to be changed. </dd></dl>
 
 </div>
 </div>
