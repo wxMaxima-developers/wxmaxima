@@ -497,6 +497,15 @@ public:
 
   wxCoord GetLineWidth(size_t line, size_t pos);
 
+  /*! The width of one digit-group gap in a number (GH #192)
+
+    Public, like GetTextSize(), so tests can work out the exact width a
+    grouped number should take up on the platform they run on.
+  */
+  wxCoord DigitGroupGapWidth() const;
+  //! Determines the size of a text snippet
+  wxSize GetTextSize(const wxString &text) const;
+
   //! Pixel x of the next 4-column tab stop at or after startX, where one
   //! column is the width of a space glyph in the current font. startX is
   //! relative to the current line's own start (post-indentation), matching
@@ -1009,8 +1018,6 @@ private:
   void HandleSoftLineBreaks_Code(SoftBreakCandidate &candidate, wxCoord &lineWidth,
                                  wxCoord tokenWidth, wxCoord &indentationPixels) const;
 
-  //! The width of one digit-group gap in a number (GH #192)
-  wxCoord DigitGroupGapWidth() const;
   /*! The width of the first length characters of snippet.
 
     Like GetTextSize(), but including the digit-group gaps among them (see
@@ -1072,8 +1079,6 @@ private:
   //! Draw a box that marks the current selection
   void MarkSelection(wxDC *dc, size_t start, size_t end, TextStyle style);
 
-  //! Determines the size of a text snippet
-  wxSize GetTextSize(const wxString &text) const;
   //! Determines the size of a text snippet drawn with the given formatting
   wxSize GetTextSize(const wxString &text, TextFormat::Format format) const;
   /*! MeasureTextWidth() for the m_text substring that starts at startPos,
