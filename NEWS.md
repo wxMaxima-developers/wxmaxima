@@ -1,5 +1,9 @@
 # Current development version
 
+- The release source tarball leaves out every dot file and dot directory,
+  not just the ones .gitattributes happened to list, and a test now checks
+  that it does (GH #2272).
+
 - The Windows builds now use wxWidgets 3.3.4, which also means they
   include the AI chat sidebar.
 
