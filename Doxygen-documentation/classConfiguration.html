@@ -106,11 +106,6 @@ Data Structures</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a185d197c4bc11306ee6646e584cfe407"><td class="memItemLeft" align="right" valign="top"><a id="a185d197c4bc11306ee6646e584cfe407" name="a185d197c4bc11306ee6646e584cfe407"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>maximaHelpFormat</b> { <b>maxima</b> = 0
-, <b>frontend</b> = 1
-, <b>browser</b> = 2
- }</td></tr>
-<tr class="separator:a185d197c4bc11306ee6646e584cfe407"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae285be0c26dbdd7a86eac37c9cebdd7d"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#ae285be0c26dbdd7a86eac37c9cebdd7d">htmlExportFormat</a> { <br />
 &#160;&#160;<a class="el" href="classConfiguration.html#ae285be0c26dbdd7a86eac37c9cebdd7dad7f872bc1d23183096102bdf6e2e16e5">mathJaX_TeX</a> = 0
 , <b>bitmap</b> = 1
@@ -1293,18 +1288,6 @@ long&#160;</td><td class="memItemRight" valign="bottom"><b>DigitGroupingMinDigit
 <tr class="memitem:a79751ef669acaceb4d895983a37cb54b"><td class="memItemLeft" align="right" valign="top"><a id="a79751ef669acaceb4d895983a37cb54b" name="a79751ef669acaceb4d895983a37cb54b"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>DigitGroupingMinDigits</b> (long digits)</td></tr>
 <tr class="separator:a79751ef669acaceb4d895983a37cb54b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa270344bee906b5efc5d4119e94776ca"><td class="memItemLeft" align="right" valign="top"><a id="aa270344bee906b5efc5d4119e94776ca" name="aa270344bee906b5efc5d4119e94776ca"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>MaximaUsesHtmlBrowser</b> (bool maximaUsesHhtmlBrowser)</td></tr>
-<tr class="separator:aa270344bee906b5efc5d4119e94776ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad61d998f8402129b1e06b54265245509"><td class="memItemLeft" align="right" valign="top"><a id="ad61d998f8402129b1e06b54265245509" name="ad61d998f8402129b1e06b54265245509"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>MaximaUsesHtmlBrowser</b> () const</td></tr>
-<tr class="separator:ad61d998f8402129b1e06b54265245509"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a05c5c5a7fb25cff97953cf2a861f79d6"><td class="memItemLeft" align="right" valign="top"><a id="a05c5c5a7fb25cff97953cf2a861f79d6" name="a05c5c5a7fb25cff97953cf2a861f79d6"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>MaximaUsesWxmaximaBrowser</b> (bool maximaUsesWxmaximaBrowser)</td></tr>
-<tr class="separator:a05c5c5a7fb25cff97953cf2a861f79d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae5476d91842621e82c291fd52275c654"><td class="memItemLeft" align="right" valign="top"><a id="ae5476d91842621e82c291fd52275c654" name="ae5476d91842621e82c291fd52275c654"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>MaximaUsesWxmaximaBrowser</b> () const</td></tr>
-<tr class="separator:ae5476d91842621e82c291fd52275c654"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8eb66ef5c2ae78b09fed76d58188cf90"><td class="memItemLeft" align="right" valign="top"><a id="a8eb66ef5c2ae78b09fed76d58188cf90" name="a8eb66ef5c2ae78b09fed76d58188cf90"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ExportContainsWXMX</b> (bool exportContainsWXMX)</td></tr>
 <tr class="separator:a8eb66ef5c2ae78b09fed76d58188cf90"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1392,12 +1375,19 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>StyleAffectsColorOnly
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateNeeded</b> () const</td></tr>
 <tr class="memdesc:aea03003b3b121b181a4ec9ff97b81e7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">true means: The system's config storage has changed since the configuration has been read <br /></td></tr>
 <tr class="separator:aea03003b3b121b181a4ec9ff97b81e7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa8f0edc0b747b5da6ed64a099e1b99c6"><td class="memItemLeft" align="right" valign="top"><a id="aa8f0edc0b747b5da6ed64a099e1b99c6" name="aa8f0edc0b747b5da6ed64a099e1b99c6"></a>
-maximaHelpFormat&#160;</td><td class="memItemRight" valign="bottom"><b>MaximaHelpFormat</b> () const</td></tr>
-<tr class="separator:aa8f0edc0b747b5da6ed64a099e1b99c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a112547a8de4f9bf7d7d7d9842c4a381d"><td class="memItemLeft" align="right" valign="top"><a id="a112547a8de4f9bf7d7d7d9842c4a381d" name="a112547a8de4f9bf7d7d7d9842c4a381d"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>MaximaHelpFormat</b> (maximaHelpFormat format)</td></tr>
-<tr class="separator:a112547a8de4f9bf7d7d7d9842c4a381d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a963dc8e28cf107fb3d3ce73354b4b5f5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#a963dc8e28cf107fb3d3ce73354b4b5f5">MaximaHelpInConsole</a> () const</td></tr>
+<tr class="memdesc:a963dc8e28cf107fb3d3ce73354b4b5f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> answer ?, ?? and describe() on the console?  <br /></td></tr>
+<tr class="separator:a963dc8e28cf107fb3d3ce73354b4b5f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af486e5a3a5befdb577392c1a88d3407a"><td class="memItemLeft" align="right" valign="top"><a id="af486e5a3a5befdb577392c1a88d3407a" name="af486e5a3a5befdb577392c1a88d3407a"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>MaximaHelpInConsole</b> (bool console)</td></tr>
+<tr class="separator:af486e5a3a5befdb577392c1a88d3407a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe6968370194186bbb853cdfaf5ca1b8"><td class="memItemLeft" align="right" valign="top"><a id="abe6968370194186bbb853cdfaf5ca1b8" name="abe6968370194186bbb853cdfaf5ca1b8"></a>
+wxString&#160;</td><td class="memItemRight" valign="bottom"><b>MaximaHelpFormatName</b> () const</td></tr>
+<tr class="memdesc:abe6968370194186bbb853cdfaf5ca1b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">The value of <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s output_format_for_help <a class="el" href="classConfiguration.html#a963dc8e28cf107fb3d3ce73354b4b5f5" title="Does Maxima answer ?, ?? and describe() on the console?">MaximaHelpInConsole()</a> stands for. <br /></td></tr>
+<tr class="separator:abe6968370194186bbb853cdfaf5ca1b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5497ef2526321007e377279fe173a773"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#a5497ef2526321007e377279fe173a773">MaximaHelpFormatCommand</a> () const</td></tr>
+<tr class="memdesc:a5497ef2526321007e377279fe173a773"><td class="mdescLeft">&#160;</td><td class="mdescRight">The command that sets <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s output_format_for_help accordingly.  <br /></td></tr>
+<tr class="separator:a5497ef2526321007e377279fe173a773"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a923edf9cb3b793c049d2a6577e7aa6d6"><td class="memItemLeft" align="right" valign="top"><a id="a923edf9cb3b793c049d2a6577e7aa6d6" name="a923edf9cb3b793c049d2a6577e7aa6d6"></a>
 std::random_device::result_type&#160;</td><td class="memItemRight" valign="bottom"><b>RandomEntropy</b> ()</td></tr>
 <tr class="memdesc:a923edf9cb3b793c049d2a6577e7aa6d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">One sample of OS entropy (std::random_device). <br /></td></tr>
@@ -2215,6 +2205,54 @@ static constexpr long&#160;</td><td class="memItemRight" valign="bottom"><b>Digi
 
 <p>Makes this configuration temporary. </p>
 <p><a class="el" href="classA.html">A</a> configuration that isn't temporary writes its settings to the config file when it is destroyed. <a class="el" href="classA.html">A</a> copy made to show something differently from the worksheet &ndash; the <a class="el" href="classMatrixViewer.html" title="A window that shows a matrix the worksheet only shows part of (GH #2344)">MatrixViewer</a>'s, say, which shows every matrix in full and hides all labels &ndash; must never do that, or its settings would silently become the user's. The copy constructor copies this, so a copy of the worksheet's configuration isn't temporary until told. </p>
+
+</div>
+</div>
+<a id="a5497ef2526321007e377279fe173a773" name="a5497ef2526321007e377279fe173a773"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5497ef2526321007e377279fe173a773">&#9670;&#160;</a></span>MaximaHelpFormatCommand()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxString Configuration::MaximaHelpFormatCommand </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The command that sets <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s output_format_for_help accordingly. </p>
+<p><a class="el" href="classA.html">A</a> :lisp-quiet one, as everything in wxMaxima::m_configCommands has to be: a plain <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> statement would answer with a prompt of its own. </p>
+
+</div>
+</div>
+<a id="a963dc8e28cf107fb3d3ce73354b4b5f5" name="a963dc8e28cf107fb3d3ce73354b4b5f5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a963dc8e28cf107fb3d3ce73354b4b5f5">&#9670;&#160;</a></span>MaximaHelpInConsole()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Configuration::MaximaHelpInConsole </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Does <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> answer ?, ?? and describe() on the console? </p>
+<p>If not, <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> hands the matching manual topics to <a class="el" href="classwxMaxima.html">wxMaxima</a> (output_format_for_help: frontend), which shows them wherever <a class="el" href="classConfiguration.html#ac86046404f403903a5ae145117bfb2e4" title="Use the internal help browser? If not a external web browser is used.">InternalHelpBrowser()</a> says, like all other help. That sidebar-or-browser choice is the one setting for where help is shown: until 2026-10 <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s help had a sidebar/browser choice of its own, so "Help on" and F1 could open a browser while ? used the sidebar, and the two were easily mixed up. </p>
 
 </div>
 </div>
