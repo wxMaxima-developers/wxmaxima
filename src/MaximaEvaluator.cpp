@@ -715,23 +715,7 @@ void MaximaEvaluator::SetupVariables() {
   cmd.Replace(wxS("\\"), wxS("/"));
   SendMaxima(cmd);
 
-  switch(m_wxMaxima.m_configuration.MaximaHelpFormat())
-    {
-    case Configuration::frontend:
-      SendMaxima(":lisp-quiet (msetq $output_format_for_help '$frontend)");
-      break;
-
-    case Configuration::maxima:
-      SendMaxima(":lisp-quiet (msetq $output_format_for_help '$text)");
-      break;
-
-    case Configuration::browser:
-      SendMaxima(":lisp-quiet (msetq $output_format_for_help '$html)");
-      break;
-
-    default:
-      SendMaxima(":lisp-quiet (msetq $output_format_for_help '$frontend)");
-    }
+  SendMaxima(m_wxMaxima.m_configuration.MaximaHelpFormatCommand());
   // Ask a Lisp that has threads to open a second connection we can interrupt
   // it through; see MaximaInterruptChannel. Guarded by fboundp, since
   // --wxmathml-lisp may load an older wxMathML.lisp that doesn't define it.
