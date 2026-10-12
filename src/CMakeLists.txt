@@ -545,6 +545,55 @@ if(WIN32)
     install(TARGETS wxmaxima-cli RUNTIME DESTINATION bin)
 endif()
 
+# wxWidgets' Edge (WebView2) backend loads WebView2Loader.dll at run time,
+# unless wxWidgets was built with wxUSE_WEBVIEW_EDGE_STATIC (MSVC only). If
+# Windows can't find that DLL -- in practice: next to wxmaxima.exe -- the
+# backend quietly reports itself unavailable and wxMaxima offers no
+# integrated help browser, even with the WebView2 runtime installed (GH #2481;
+# Help/About says what is missing). So put it there: next to the built exe
+# for wxmaxima-local and the tests, and into bin/ on install, from where the
+# NSIS installer and the combined Maxima installer pick it up.
+# wxWidgets' own CMake build puts the DLL next to its libraries; the NuGet
+# package Microsoft.Web.WebView2 has it in build/native/<arch>/.
+if(WIN32 AND USE_WEBVIEW)
+    set(WXM_WEBVIEW2_LOADER "" CACHE FILEPATH
+        "WebView2Loader.dll to ship next to wxmaxima.exe (empty: search next to wxWidgets)")
+    if(NOT WXM_WEBVIEW2_LOADER)
+        if(CMAKE_SYSTEM_PROCESSOR MATCHES "^(ARM64|arm64|aarch64)$")
+            set(WXM_WEBVIEW2_ARCH arm64)
+        elseif(CMAKE_SIZEOF_VOID_P EQUAL 8)
+            set(WXM_WEBVIEW2_ARCH x64)
+        else()
+            set(WXM_WEBVIEW2_ARCH x86)
+        endif()
+        set(WXM_WEBVIEW2_HINTS ${wxWidgets_LIB_DIR} ${wxWidgets_LIBRARY_DIRS} ${wxWidgets_ROOT_DIR})
+        foreach(dir ${wxWidgets_INCLUDE_DIRS})
+            list(APPEND WXM_WEBVIEW2_HINTS "${dir}/../..")
+        endforeach()
+        find_file(WXM_WEBVIEW2_LOADER_FOUND WebView2Loader.dll
+            HINTS ${WXM_WEBVIEW2_HINTS}
+            PATH_SUFFIXES . bin lib
+                build/native/${WXM_WEBVIEW2_ARCH}
+                3rdparty/webview2/build/native/${WXM_WEBVIEW2_ARCH})
+        set(WXM_WEBVIEW2_LOADER_TO_SHIP "${WXM_WEBVIEW2_LOADER_FOUND}")
+    else()
+        set(WXM_WEBVIEW2_LOADER_TO_SHIP "${WXM_WEBVIEW2_LOADER}")
+    endif()
+    if(WXM_WEBVIEW2_LOADER_TO_SHIP AND EXISTS "${WXM_WEBVIEW2_LOADER_TO_SHIP}")
+        message(STATUS "Shipping the WebView2 loader: ${WXM_WEBVIEW2_LOADER_TO_SHIP}")
+        add_custom_command(TARGET wxmaxima POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                "${WXM_WEBVIEW2_LOADER_TO_SHIP}" "$<TARGET_FILE_DIR:wxmaxima>"
+            VERBATIM)
+        install(FILES "${WXM_WEBVIEW2_LOADER_TO_SHIP}" DESTINATION bin)
+    else()
+        message(STATUS "WebView2Loader.dll not found: unless wxWidgets links the "
+            "WebView2 loader statically, the integrated help browser will only work "
+            "if WebView2Loader.dll is put next to wxmaxima.exe. "
+            "Set WXM_WEBVIEW2_LOADER to ship it.")
+    endif()
+endif()
+
 if(NOT WIN32)
     # Create symlink wxmxdiff -> wxmaxima in bin/
     install(CODE "

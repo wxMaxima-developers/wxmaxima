@@ -1,5 +1,11 @@
 # Current development version
 
+- On Windows, building wxMaxima now copies WebView2Loader.dll next to
+  wxmaxima.exe and installs it there, when it can be found next to
+  wxWidgets or is named with -DWXM_WEBVIEW2_LOADER=<path>. Without that DLL
+  wxWidgets' Edge backend reports itself unavailable, and wxMaxima offers no
+  integrated help browser even with the WebView2 runtime installed (GH #2481).
+
 - The wizard sidebar no longer hides its OK button: on a fresh
   configuration it opens in a window of its own next to the worksheet,
   its Command and Description tabs are only as high as their text, and
