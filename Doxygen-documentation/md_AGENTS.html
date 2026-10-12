@@ -1370,6 +1370,16 @@ which loads on demand &amp;ndash; keep the detail there rather than growing this
   (measured narrower than plain text, and all formats looking alike), while
   wxGTK was fine. Mark "not made yet" with &lt;tt&gt;std::optional\&lt;wxFont\&gt;&lt;/tt&gt; instead
   (see &lt;tt&gt;EditorCell::GetFont(TextFormat::Format)&lt;/tt&gt;).
+- &lt;strong&gt;wxQt 3.2 differs from 3.3 in two ways that aborted startup (GH #2483).&lt;/strong&gt;
+  Its &lt;tt&gt;wxStatusBar&lt;/tt&gt; never registers with its parent, so &lt;tt&gt;GetParent()&lt;/tt&gt; is
+  &lt;tt&gt;nullptr&lt;/tt&gt; for the status bar's whole life (&lt;tt&gt;StatusBar&lt;/tt&gt; keeps the frame it
+  was given in &lt;tt&gt;m_frame&lt;/tt&gt; instead); and it has no native art provider, so
+  &lt;tt&gt;wxArtProvider::GetSizeHint(wxART_TOOLBAR)&lt;/tt&gt; is &lt;tt&gt;wxDefaultSize&lt;/tt&gt;, which made
+  every SVG toolbar icon pixel-less (&lt;tt&gt;wxMaximaArtProvider&lt;/tt&gt; falls back to
+  24x24). Neither shows with wxQt 3.3 or any other port. To reproduce, build
+  wxWidgets 3.2 with &lt;tt&gt;./configure --with-qt --enable-debug&lt;/tt&gt; against
+  &lt;tt&gt;qtbase5-dev&lt;/tt&gt;, point &lt;tt&gt;-DwxWidgets_CONFIG_EXECUTABLE&lt;/tt&gt; at its &lt;tt&gt;wx-config&lt;/tt&gt;,
+  and run under gdb with a breakpoint on &lt;tt&gt;wxOnAssert&lt;/tt&gt;.
 - &lt;strong&gt;A wxWidgets-version fallback &lt;tt&gt;\#define&lt;/tt&gt; must come AFTER the wx header that
   may define it.&lt;/strong&gt; &lt;tt&gt;Compat.h&lt;/tt&gt; includes &lt;tt&gt;\&lt;wx/defs.h\&gt;&lt;/tt&gt; &lt;em&gt;above&lt;/em&gt; its
   &lt;tt&gt;\#ifndef wxWARN_UNUSED&lt;/tt&gt; fallback for this reason. Reached in the other order,

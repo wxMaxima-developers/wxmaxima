@@ -46,7 +46,7 @@ if (edges && edges.length) {
         </defs>
 
 <script type="text/javascript">
-var viewWidth = 919;
+var viewWidth = 1075;
 var viewHeight = 93;
 var sectionId = 'dynsection-1';
 </script>
@@ -58,8 +58,8 @@ var sectionId = 'dynsection-1';
 <g id="node1" class="node">
 <title>Node1</title>
 <g id="a_node1"><a xlink:title="This file declares the class wxMaximaArtprovider &#45; our own wxArtProvider with additional images.">
-<polygon fill="#999999" stroke="#666666" points="514,-85 363,-85 363,-66 514,-66 514,-85"/>
-<text text-anchor="middle" x="438.5" y="-73" font-family="Helvetica,sans-Serif" font-size="10.00">src/wxMaximaArtProvider.h</text>
+<polygon fill="#999999" stroke="#666666" points="584,-85 433,-85 433,-66 584,-66 584,-85"/>
+<text text-anchor="middle" x="508.5" y="-73" font-family="Helvetica,sans-Serif" font-size="10.00">src/wxMaximaArtProvider.h</text>
 </a>
 </g>
 </g>
@@ -75,8 +75,8 @@ var sectionId = 'dynsection-1';
 <!-- Node1&#45;&gt;Node2 -->
 <g id="edge1" class="edge">
 <title>Node1&#45;&gt;Node2</title>
-<path fill="none" stroke="#63b8ff" d="M352.88,-66.41C283.62,-59.12 183.77,-46.95 97.5,-30 89.84,-28.5 81.65,-26.52 74.06,-24.53"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="352.57,-69.89 362.88,-67.45 353.29,-62.93 352.57,-69.89"/>
+<path fill="none" stroke="#63b8ff" d="M422.43,-68.97C338.89,-62.7 208.77,-50.6 97.5,-30 89.73,-28.56 81.43,-26.58 73.76,-24.57"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="422.4,-72.47 432.63,-69.72 422.92,-65.49 422.4,-72.47"/>
 </g>
 <!-- Node3 -->
 <g id="node3" class="node">
@@ -90,8 +90,8 @@ var sectionId = 'dynsection-1';
 <!-- Node1&#45;&gt;Node3 -->
 <g id="edge2" class="edge">
 <title>Node1&#45;&gt;Node3</title>
-<path fill="none" stroke="#63b8ff" d="M373,-64.28C323.89,-56.19 255.15,-43.95 195.5,-30 188.69,-28.41 181.42,-26.47 174.62,-24.54"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="372.74,-67.78 383.17,-65.94 373.87,-60.87 372.74,-67.78"/>
+<path fill="none" stroke="#63b8ff" d="M422.41,-65.48C359.22,-58.08 271.52,-46.19 195.5,-30 188.4,-28.49 180.83,-26.51 173.8,-24.52"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="422.39,-69 432.73,-66.67 423.2,-62.05 422.39,-69"/>
 </g>
 <!-- Node4 -->
 <g id="node4" class="node">
@@ -105,8 +105,8 @@ var sectionId = 'dynsection-1';
 <!-- Node1&#45;&gt;Node4 -->
 <g id="edge3" class="edge">
 <title>Node1&#45;&gt;Node4</title>
-<path fill="none" stroke="#63b8ff" d="M406.8,-62.38C377.22,-51.07 333.85,-34.49 307.77,-24.52"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="405.66,-65.69 416.25,-65.99 408.16,-59.15 405.66,-65.69"/>
+<path fill="none" stroke="#63b8ff" d="M466.17,-63.4C423.05,-52.08 357.12,-34.79 317.97,-24.52"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="465.51,-66.84 476.07,-65.99 467.29,-60.07 465.51,-66.84"/>
 </g>
 <!-- Node5 -->
 <g id="node5" class="node">
@@ -121,56 +121,72 @@ var sectionId = 'dynsection-1';
 <!-- Node1&#45;&gt;Node5 -->
 <g id="edge4" class="edge">
 <title>Node1&#45;&gt;Node5</title>
-<path fill="none" stroke="#63b8ff" d="M438.5,-55.65C438.5,-47.36 438.5,-37.78 438.5,-30.11"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="435,-55.87 438.5,-65.87 442,-55.87 435,-55.87"/>
+<path fill="none" stroke="#63b8ff" d="M490.23,-59.23C479.46,-50.23 465.92,-38.91 455.39,-30.11"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="488.25,-62.14 498.17,-65.87 492.74,-56.77 488.25,-62.14"/>
 </g>
 <!-- Node6 -->
 <g id="node6" class="node">
 <title>Node6</title>
-<g id="a_node6"><a xlink:href="test__ToolBarRefresh_8cpp.html" target="_top" xlink:title="Regression test: changing a toolbar button&#39;s state must repaint the toolbar.">
-<polygon fill="white" stroke="#666666" points="626.5,-30 510.5,-30 510.5,0 626.5,0 626.5,-30"/>
-<text text-anchor="start" x="518.5" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">test/unit_tests/test</text>
-<text text-anchor="middle" x="568.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">_ToolBarRefresh.cpp</text>
+<g id="a_node6"><a xlink:href="test__ArtProviderSizeHint_8cpp.html" target="_top" xlink:title="Regression test for GH #2483: wxMaxima built against wxQt 3.2 aborted on startup.">
+<polygon fill="white" stroke="#666666" points="648,-30 511,-30 511,0 648,0 648,-30"/>
+<text text-anchor="start" x="519" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">test/unit_tests/test</text>
+<text text-anchor="middle" x="579.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">_ArtProviderSizeHint.cpp</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node6 -->
 <g id="edge5" class="edge">
 <title>Node1&#45;&gt;Node6</title>
-<path fill="none" stroke="#63b8ff" d="M466.66,-61.83C487.45,-52.47 515.75,-39.74 537.25,-30.06"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="465.09,-58.7 457.4,-65.99 467.96,-65.08 465.09,-58.7"/>
+<path fill="none" stroke="#63b8ff" d="M526.7,-59.5C537.68,-50.45 551.59,-39 562.37,-30.11"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="524.47,-56.81 518.98,-65.87 528.92,-62.21 524.47,-56.81"/>
 </g>
 <!-- Node7 -->
 <g id="node7" class="node">
 <title>Node7</title>
-<g id="a_node7"><a xlink:href="test__ToolBarSections_8cpp.html" target="_top" xlink:title="Tests for the reorderable sections of the main toolbar.">
-<polygon fill="white" stroke="#666666" points="764,-30 645,-30 645,0 764,0 764,-30"/>
-<text text-anchor="start" x="653" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">test/unit_tests/test</text>
-<text text-anchor="middle" x="704.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">_ToolBarSections.cpp</text>
+<g id="a_node7"><a xlink:href="test__ToolBarRefresh_8cpp.html" target="_top" xlink:title="Regression test: changing a toolbar button&#39;s state must repaint the toolbar.">
+<polygon fill="white" stroke="#666666" points="782.5,-30 666.5,-30 666.5,0 782.5,0 782.5,-30"/>
+<text text-anchor="start" x="674.5" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">test/unit_tests/test</text>
+<text text-anchor="middle" x="724.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">_ToolBarRefresh.cpp</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node7 -->
 <g id="edge6" class="edge">
 <title>Node1&#45;&gt;Node7</title>
-<path fill="none" stroke="#63b8ff" d="M487.15,-63.8C531.55,-54.03 597.32,-39.57 644.88,-29.11"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="486.19,-60.43 477.18,-65.99 487.7,-67.26 486.19,-60.43"/>
+<path fill="none" stroke="#63b8ff" d="M549.78,-63.32C584.7,-53.86 634.92,-40.26 672.57,-30.06"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="548.65,-60 539.91,-65.99 550.48,-66.76 548.65,-60"/>
 </g>
 <!-- Node8 -->
 <g id="node8" class="node">
 <title>Node8</title>
-<g id="a_node8"><a xlink:href="test__ToolBarUndoRedo_8cpp.html" target="_top" xlink:title="Regression tests for which toolbar buttons are active.">
-<polygon fill="white" stroke="#666666" points="910.5,-30 782.5,-30 782.5,0 910.5,0 910.5,-30"/>
-<text text-anchor="start" x="790.5" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">test/unit_tests/test</text>
-<text text-anchor="middle" x="846.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">_ToolBarUndoRedo.cpp</text>
+<g id="a_node8"><a xlink:href="test__ToolBarSections_8cpp.html" target="_top" xlink:title="Tests for the reorderable sections of the main toolbar.">
+<polygon fill="white" stroke="#666666" points="920,-30 801,-30 801,0 920,0 920,-30"/>
+<text text-anchor="start" x="809" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">test/unit_tests/test</text>
+<text text-anchor="middle" x="860.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">_ToolBarSections.cpp</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node8 -->
 <g id="edge7" class="edge">
 <title>Node1&#45;&gt;Node8</title>
-<path fill="none" stroke="#63b8ff" d="M522.08,-64.75C589.97,-56.5 688.12,-43.85 773.5,-30 776.43,-29.52 779.42,-29.02 782.44,-28.5"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="521.38,-61.31 511.87,-65.98 522.22,-68.26 521.38,-61.31"/>
+<path fill="none" stroke="#63b8ff" d="M577.75,-64.48C635.14,-55.97 718.77,-43.09 791.5,-30 794.51,-29.46 797.59,-28.89 800.69,-28.3"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="577.09,-61.04 567.71,-65.97 578.11,-67.97 577.09,-61.04"/>
+</g>
+<!-- Node9 -->
+<g id="node9" class="node">
+<title>Node9</title>
+<g id="a_node9"><a xlink:href="test__ToolBarUndoRedo_8cpp.html" target="_top" xlink:title="Regression tests for which toolbar buttons are active.">
+<polygon fill="white" stroke="#666666" points="1066.5,-30 938.5,-30 938.5,0 1066.5,0 1066.5,-30"/>
+<text text-anchor="start" x="946.5" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">test/unit_tests/test</text>
+<text text-anchor="middle" x="1002.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">_ToolBarUndoRedo.cpp</text>
+</a>
+</g>
+</g>
+<!-- Node1&#45;&gt;Node9 -->
+<g id="edge8" class="edge">
+<title>Node1&#45;&gt;Node9</title>
+<path fill="none" stroke="#63b8ff" d="M594.18,-67.57C679.44,-60.18 813.88,-47.17 929.5,-30 932.44,-29.56 935.43,-29.09 938.46,-28.6"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="593.69,-64.1 584.03,-68.45 594.29,-71.07 593.69,-64.1"/>
 </g>
 </g>
 </svg>

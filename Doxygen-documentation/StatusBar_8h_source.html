@@ -225,59 +225,60 @@ $(function() {
 <div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span> </div>
 <div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span><span class="keyword">private</span>:</div>
 <div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>  std::unique_ptr&lt;<span class="keyword">struct </span>wxm_NSVGrasterizer, decltype(std::free)*&gt; m_svgRast{<span class="keyword">nullptr</span>, std::free};</div>
-<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>  wxSize m_ppi = wxSize(75, 75);</div>
-<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>  <span class="keywordtype">float</span> m_maximaPercentage = -1;</div>
-<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>  <span class="keywordtype">float</span> m_oldmaximaPercentage = -1;</div>
-<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>  <a class="code hl_enumeration" href="classStatusBar.html#a3de8a6b955f99bb7a534c6ddfb47f9d8">networkState</a> m_oldNetworkState = receive;</div>
-<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>  wxString m_stdToolTip;</div>
-<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>  wxString m_networkErrToolTip;</div>
-<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>  wxString m_noConnectionToolTip;</div>
-<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>  <a class="code hl_enumeration" href="classStatusBar.html#a3de8a6b955f99bb7a534c6ddfb47f9d8">networkState</a> m_networkState = offline;</div>
-<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>  <span class="keywordtype">bool</span> m_icon_shows_receive = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>  <span class="keywordtype">bool</span> m_icon_shows_transmit = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>  <span class="keywordtype">bool</span> m_overlayIconIsSet = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>  wxPanel *m_statusTextPanel = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>  wxStaticText *m_statusText = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>  wxStaticBitmap *m_networkStatus = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>  wxStaticBitmap *m_maximaStatus = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>  <span class="keywordtype">bool</span> m_aiChatAvailable = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>  wxStaticBitmap *m_aiStatus = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>  <a class="code hl_enumeration" href="classStatusBar.html#a7d2d4bad9c6f6a4eec714a4e884e6c34">AiStatus</a> m_aiStatusState = <a class="code hl_enumvalue" href="classStatusBar.html#a7d2d4bad9c6f6a4eec714a4e884e6c34a6adf97f83acf6453d4a6a4b1070f3754">AiStatus::None</a>;</div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>  wxString m_aiStatusDetail;</div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>  wxBitmap m_bitmap_ai_active;</div>
-<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>  wxBitmap m_bitmap_ai_busy;</div>
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>  wxBitmap m_bitmap_ai_error;</div>
-<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>  wxBitmap m_network_error;</div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>  wxBitmap m_network_offline;</div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>  wxBitmap m_network_transmit;</div>
-<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>  wxBitmap m_network_idle;</div>
-<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>  wxBitmap m_network_idle_inactive;</div>
-<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>  wxBitmap m_network_receive;</div>
-<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>  wxBitmap m_network_transmit_receive;</div>
-<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>  wxTimer SendTimer;</div>
-<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>  wxTimer ReceiveTimer;</div>
-<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span> </div>
-<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>  wxBitmap m_bitmap_waitForStart;</div>
-<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>  wxBitmap m_bitmap_process_wont_start;</div>
-<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>  wxBitmap m_bitmap_sending;</div>
-<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>  wxBitmap m_bitmap_waiting;</div>
-<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>  wxBitmap m_bitmap_waitingForPrompt;</div>
-<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>  wxBitmap m_bitmap_waitingForAuth;</div>
-<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>  wxBitmap m_bitmap_calculating;</div>
-<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>  wxBitmap m_bitmap_parsing;</div>
-<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>  wxBitmap m_bitmap_transferring;</div>
-<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>  wxBitmap m_bitmap_userinput;</div>
-<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>  wxBitmap m_bitmap_debugging;</div>
-<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>  wxBitmap m_bitmap_lispmode;</div>
-<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>  wxBitmap m_bitmap_disconnected;</div>
-<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>};</div>
-<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span> </div>
-<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span> </div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>  wxWindow *m_frame = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>  wxSize m_ppi = wxSize(75, 75);</div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>  <span class="keywordtype">float</span> m_maximaPercentage = -1;</div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>  <span class="keywordtype">float</span> m_oldmaximaPercentage = -1;</div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>  <a class="code hl_enumeration" href="classStatusBar.html#a3de8a6b955f99bb7a534c6ddfb47f9d8">networkState</a> m_oldNetworkState = receive;</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>  wxString m_stdToolTip;</div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>  wxString m_networkErrToolTip;</div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>  wxString m_noConnectionToolTip;</div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>  <a class="code hl_enumeration" href="classStatusBar.html#a3de8a6b955f99bb7a534c6ddfb47f9d8">networkState</a> m_networkState = offline;</div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>  <span class="keywordtype">bool</span> m_icon_shows_receive = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>  <span class="keywordtype">bool</span> m_icon_shows_transmit = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>  <span class="keywordtype">bool</span> m_overlayIconIsSet = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>  wxPanel *m_statusTextPanel = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>  wxStaticText *m_statusText = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>  wxStaticBitmap *m_networkStatus = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>  wxStaticBitmap *m_maximaStatus = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>  <span class="keywordtype">bool</span> m_aiChatAvailable = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>  wxStaticBitmap *m_aiStatus = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>  <a class="code hl_enumeration" href="classStatusBar.html#a7d2d4bad9c6f6a4eec714a4e884e6c34">AiStatus</a> m_aiStatusState = <a class="code hl_enumvalue" href="classStatusBar.html#a7d2d4bad9c6f6a4eec714a4e884e6c34a6adf97f83acf6453d4a6a4b1070f3754">AiStatus::None</a>;</div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>  wxString m_aiStatusDetail;</div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>  wxBitmap m_bitmap_ai_active;</div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>  wxBitmap m_bitmap_ai_busy;</div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>  wxBitmap m_bitmap_ai_error;</div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>  wxBitmap m_network_error;</div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>  wxBitmap m_network_offline;</div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>  wxBitmap m_network_transmit;</div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>  wxBitmap m_network_idle;</div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>  wxBitmap m_network_idle_inactive;</div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>  wxBitmap m_network_receive;</div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>  wxBitmap m_network_transmit_receive;</div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>  wxTimer SendTimer;</div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>  wxTimer ReceiveTimer;</div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span> </div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>  wxBitmap m_bitmap_waitForStart;</div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>  wxBitmap m_bitmap_process_wont_start;</div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>  wxBitmap m_bitmap_sending;</div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>  wxBitmap m_bitmap_waiting;</div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>  wxBitmap m_bitmap_waitingForPrompt;</div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>  wxBitmap m_bitmap_waitingForAuth;</div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>  wxBitmap m_bitmap_calculating;</div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>  wxBitmap m_bitmap_parsing;</div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>  wxBitmap m_bitmap_transferring;</div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>  wxBitmap m_bitmap_userinput;</div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>  wxBitmap m_bitmap_debugging;</div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>  wxBitmap m_bitmap_lispmode;</div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>  wxBitmap m_bitmap_disconnected;</div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>};</div>
+<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span> </div>
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span> </div>
 <div class="ttc" id="aclassStatusBar_html"><div class="ttname"><a href="classStatusBar.html">StatusBar</a></div><div class="ttdoc">The class that draws the status bar.</div><div class="ttdef"><b>Definition:</b> StatusBar.h:47</div></div>
 <div class="ttc" id="aclassStatusBar_html_a17d9e138b67d55157fe8b89b50f257f0"><div class="ttname"><a href="classStatusBar.html#a17d9e138b67d55157fe8b89b50f257f0">StatusBar::GetAiStatusElement</a></div><div class="ttdeci">wxWindow * GetAiStatusElement()</div><div class="ttdoc">The AI status icon, or nullptr if aiChatAvailable was false at construction time (the AI Chat feature...</div><div class="ttdef"><b>Definition:</b> StatusBar.h:103</div></div>
 <div class="ttc" id="aclassStatusBar_html_a2c9183506f9702f92ac60c2b673ec64e"><div class="ttname"><a href="classStatusBar.html#a2c9183506f9702f92ac60c2b673ec64e">StatusBar::UpdateBitmaps</a></div><div class="ttdeci">void UpdateBitmaps()</div><div class="ttdoc">Update the bitmaps to the Right size for the Resolution.</div><div class="ttdef"><b>Definition:</b> StatusBar.cpp:124</div></div>
-<div class="ttc" id="aclassStatusBar_html_a2ea8def04e08dd2e6be4a5553f567911"><div class="ttname"><a href="classStatusBar.html#a2ea8def04e08dd2e6be4a5553f567911">StatusBar::UpdateAiStatus</a></div><div class="ttdeci">void UpdateAiStatus(AiStatus status, const wxString &amp;detail=wxString())</div><div class="ttdoc">Update the AI status icon.</div><div class="ttdef"><b>Definition:</b> StatusBar.cpp:375</div></div>
+<div class="ttc" id="aclassStatusBar_html_a2ea8def04e08dd2e6be4a5553f567911"><div class="ttname"><a href="classStatusBar.html#a2ea8def04e08dd2e6be4a5553f567911">StatusBar::UpdateAiStatus</a></div><div class="ttdeci">void UpdateAiStatus(AiStatus status, const wxString &amp;detail=wxString())</div><div class="ttdoc">Update the AI status icon.</div><div class="ttdef"><b>Definition:</b> StatusBar.cpp:376</div></div>
 <div class="ttc" id="aclassStatusBar_html_a3de8a6b955f99bb7a534c6ddfb47f9d8"><div class="ttname"><a href="classStatusBar.html#a3de8a6b955f99bb7a534c6ddfb47f9d8">StatusBar::networkState</a></div><div class="ttdeci">networkState</div><div class="ttdoc">The network states that can be passed to NetworkStatus()</div><div class="ttdef"><b>Definition:</b> StatusBar.h:61</div></div>
 <div class="ttc" id="aclassStatusBar_html_a47625898d570191fc10f684df87c8b46"><div class="ttname"><a href="classStatusBar.html#a47625898d570191fc10f684df87c8b46">StatusBar::SetMaximaCPUPercentage</a></div><div class="ttdeci">void SetMaximaCPUPercentage(float percentage)</div><div class="ttdoc">Inform the status bar how many percents of the available CPU power maxima uses.</div><div class="ttdef"><b>Definition:</b> StatusBar.h:116</div></div>
 <div class="ttc" id="aclassStatusBar_html_a7d2d4bad9c6f6a4eec714a4e884e6c34"><div class="ttname"><a href="classStatusBar.html#a7d2d4bad9c6f6a4eec714a4e884e6c34">StatusBar::AiStatus</a></div><div class="ttdeci">AiStatus</div><div class="ttdoc">The states the AI status icon (4th status bar field) can be in.</div><div class="ttdef"><b>Definition:</b> StatusBar.h:71</div></div>
@@ -287,7 +288,7 @@ $(function() {
 <div class="ttc" id="aclassStatusBar_html_a7d2d4bad9c6f6a4eec714a4e884e6c34ad8a942ef2b04672adfafef0ad817a407"><div class="ttname"><a href="classStatusBar.html#a7d2d4bad9c6f6a4eec714a4e884e6c34ad8a942ef2b04672adfafef0ad817a407">StatusBar::AiStatus::Busy</a></div><div class="ttdeci">@ Busy</div><div class="ttdoc">A request to the provider is currently in flight – mirrors how m_maximaStatus shows a &quot;calculating&quot; i...</div></div>
 <div class="ttc" id="aclassStatusBar_html_a99984d665335fb0e11317b92213b4a48"><div class="ttname"><a href="classStatusBar.html#a99984d665335fb0e11317b92213b4a48">StatusBar::SetStatusText</a></div><div class="ttdeci">void SetStatusText(wxString statusText)</div><div class="ttdoc">Set the left status text.</div><div class="ttdef"><b>Definition:</b> StatusBar.h:197</div></div>
 <div class="ttc" id="aclassStatusBar_html_a9e37c25dea90f8000df590c291d14a40"><div class="ttname"><a href="classStatusBar.html#a9e37c25dea90f8000df590c291d14a40">StatusBar::GetTrayIconBitmap</a></div><div class="ttdeci">wxBitmap GetTrayIconBitmap(MaximaStatus status) const</div><div class="ttdoc">The exact bitmap m_maximaStatus itself would show for this status – i.e.</div><div class="ttdef"><b>Definition:</b> StatusBar.h:158</div></div>
-<div class="ttc" id="aclassStatusBar_html_addf51766d62198da4dd162f7f2a05c6f"><div class="ttname"><a href="classStatusBar.html#addf51766d62198da4dd162f7f2a05c6f">StatusBar::NetworkStatus</a></div><div class="ttdeci">void NetworkStatus(networkState status)</div><div class="ttdoc">Informs the status bar about networking events.</div><div class="ttdef"><b>Definition:</b> StatusBar.cpp:461</div></div>
+<div class="ttc" id="aclassStatusBar_html_addf51766d62198da4dd162f7f2a05c6f"><div class="ttname"><a href="classStatusBar.html#addf51766d62198da4dd162f7f2a05c6f">StatusBar::NetworkStatus</a></div><div class="ttdeci">void NetworkStatus(networkState status)</div><div class="ttdoc">Informs the status bar about networking events.</div><div class="ttdef"><b>Definition:</b> StatusBar.cpp:462</div></div>
 <div class="ttc" id="aclassStatusBar_html_af1235c09bed081ebb46dbd8b264f5c96"><div class="ttname"><a href="classStatusBar.html#af1235c09bed081ebb46dbd8b264f5c96">StatusBar::MaximaStatus</a></div><div class="ttdeci">MaximaStatus</div><div class="ttdef"><b>Definition:</b> StatusBar.h:123</div></div>
 <div class="ttc" id="aclassStatusBar_html_af1235c09bed081ebb46dbd8b264f5c96a4420d8cdc87e59da070dc288d199b1b3"><div class="ttname"><a href="classStatusBar.html#af1235c09bed081ebb46dbd8b264f5c96a4420d8cdc87e59da070dc288d199b1b3">StatusBar::debugging</a></div><div class="ttdeci">@ debugging</div><div class="ttdoc">Maxima's Lisp is stopped in a debugger (e.g. sbcl's LDB).</div><div class="ttdef"><b>Definition:</b> StatusBar.h:136</div></div>
 <div class="ttc" id="aclassStatusBar_html_af1235c09bed081ebb46dbd8b264f5c96a6622d76440ce861af9b538f762e7fe68"><div class="ttname"><a href="classStatusBar.html#af1235c09bed081ebb46dbd8b264f5c96a6622d76440ce861af9b538f762e7fe68">StatusBar::lispmode</a></div><div class="ttdeci">@ lispmode</div><div class="ttdoc">Maxima's reader is in Lisp mode (after to_lisp() / a MAXIMA&gt; prompt).</div><div class="ttdef"><b>Definition:</b> StatusBar.h:138</div></div>
