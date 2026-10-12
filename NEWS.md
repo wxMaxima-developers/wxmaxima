@@ -1,5 +1,7 @@
 # Current development version
 
+- If the GUI can't be started, for example because there is no display,
+  wxMaxima now exits with an error message instead of crashing.
 - Pasting into a cell now scrolls that cell into view, as typing does. In a
   long worksheet a paste could land in a cell scrolled out of sight, which
   looked as if nothing had happened (likely GH #2478).
