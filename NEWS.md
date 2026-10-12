@@ -1,5 +1,11 @@
 # Current development version
 
+- On Windows, building wxMaxima now copies WebView2Loader.dll next to
+  wxmaxima.exe and installs it there, when it can be found next to
+  wxWidgets or is named with -DWXM_WEBVIEW2_LOADER=<path>. Without that DLL
+  wxWidgets' Edge backend reports itself unavailable, and wxMaxima offers no
+  integrated help browser even with the WebView2 runtime installed (GH #2481).
+
 - Pasting into a cell now scrolls that cell into view, as typing does. In a
   long worksheet a paste could land in a cell scrolled out of sight, which
   looked as if nothing had happened (likely GH #2478).
