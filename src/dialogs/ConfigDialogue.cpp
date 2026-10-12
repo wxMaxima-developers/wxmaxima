@@ -750,15 +750,21 @@ void ConfigDialogue::SetCheckboxValues() {
   m_noAutodetectMaxima->SetValue(!m_configuration->AutodetectMaxima());
   m_helpBrowserUserLocation->SetValue(
                                       m_configuration->HelpBrowserUserLocation());
-  if (m_configuration->MaximaUsesWxmaximaBrowser()) {
-    m_maximaUsesWxmaximaHelp->SetValue(true);
-  } else {
-    if (m_configuration->MaximaUsesHtmlBrowser())
-      m_maximaUsesHtmlHelp->SetValue(true);
-    else
-      m_maximaUsesInternalHelp->SetValue(true);
+  switch (m_configuration->MaximaHelpFormat()) {
+  case Configuration::maxima:
+    m_maximaUsesInternalHelp->SetValue(true);
+    break;
+  case Configuration::frontend:
+    if (m_configuration->OfferInternalHelpBrowser()) {
+      m_maximaUsesWxmaximaHelp->SetValue(true);
+      break;
+    }
+    // Without the sidebar Maxima's help ends up in a browser
+    [[fallthrough]];
+  case Configuration::browser:
+    m_maximaUsesHtmlHelp->SetValue(true);
+    break;
   }
-  m_maximaUsesHtmlHelp->SetValue(m_configuration->MaximaUsesHtmlBrowser());
   m_defaultPort->SetValue(m_configuration->DefaultPort());
 
   m_useUnicodeMaths->SetValue(m_configuration->UseUnicodeMaths());
@@ -3010,22 +3016,20 @@ void ConfigDialogue::WriteSettings() {
   configuration->MaximaUserLocation(m_maximaUserLocation->GetValue());
   configuration->AutodetectMaxima(m_autodetectMaxima->GetValue());
   configuration->HelpBrowserUserLocation(m_helpBrowserUserLocation->GetValue());
-  if (m_maximaUsesHtmlHelp->GetValue()) {
-    configuration->MaximaUsesHtmlBrowser(true);
-    configuration->MaximaUsesWxmaximaBrowser(false);
-  }
+  // Without the help sidebar "frontend" shows Maxima's help in a browser, too,
+  // and the dialog displays it as "browser": keep it unless the user changed it.
+  if (m_maximaUsesHtmlHelp->GetValue() &&
+      !((configuration->MaximaHelpFormat() == Configuration::frontend) &&
+        !configuration->OfferInternalHelpBrowser()))
+    configuration->MaximaHelpFormat(Configuration::browser);
+  if (m_maximaUsesInternalHelp->GetValue())
+    configuration->MaximaHelpFormat(Configuration::maxima);
+  if (m_maximaUsesWxmaximaHelp->GetValue())
+    configuration->MaximaHelpFormat(Configuration::frontend);
 #ifdef __WXMSW__
   m_configuration->UseWGnuplot(m_useWgnuplot->GetValue());
 #endif
 
-  if (m_maximaUsesInternalHelp->GetValue()) {
-    configuration->MaximaUsesHtmlBrowser(false);
-    configuration->MaximaUsesWxmaximaBrowser(false);
-  }
-  if (m_maximaUsesWxmaximaHelp->GetValue()) {
-    configuration->MaximaUsesHtmlBrowser(false);
-    configuration->MaximaUsesWxmaximaBrowser(true);
-  }
   configuration->SinglePageManual(m_singlePageManual->GetValue());
   if (m_internalHelpBrowser->GetValue()) {
     configuration->InternalHelpBrowser(true);

@@ -1027,24 +1027,17 @@ void MaximaResponseReader::VariableActionEngineeringFormat(const wxString &value
   m_wxMaxima.m_maximaVariable_engineeringFormat = value;
 }
 void MaximaResponseReader::VariableActionHtmlHelp(const wxString &value) {
-  if (value == wxS("text")) {
-    if (!m_wxMaxima.m_HelpMenu->IsChecked(EventIDs::menu_maxima_uses_internal_help))
-      m_wxMaxima.m_HelpMenu->Check(EventIDs::menu_maxima_uses_internal_help, true);
-    m_wxMaxima.m_configuration.MaximaHelpFormat(Configuration::maxima);
-  }
-  if (value == wxS("html")) {
-    if (!m_wxMaxima.m_HelpMenu->IsChecked(EventIDs::menu_maxima_uses_html_help))
-      m_wxMaxima.m_HelpMenu->Check(EventIDs::menu_maxima_uses_html_help, true);
-    m_wxMaxima.m_configuration.MaximaHelpFormat(Configuration::browser);
-  }
-  if(m_wxMaxima.m_configuration.OfferInternalHelpBrowser())
-    {
-      if ((value == wxS("wxmaxima")) || (value == wxS("frontend"))) {
-        if (!m_wxMaxima.m_HelpMenu->IsChecked(EventIDs::menu_maxima_uses_wxmaxima_help))
-          m_wxMaxima.m_HelpMenu->Check(EventIDs::menu_maxima_uses_wxmaxima_help, true);
-        m_wxMaxima.m_configuration.MaximaHelpFormat(Configuration::frontend);
-      }
-    }
+  // Someone may have set output_format_for_help by hand: make that the
+  // preference, too. "frontend" means the help sidebar, which only exists if
+  // it is offered.
+  auto format = Configuration::MaximaHelpFormatFromName(value);
+  if (!format)
+    return;
+  if ((*format == Configuration::frontend) &&
+      !m_wxMaxima.m_configuration.OfferInternalHelpBrowser())
+    return;
+  m_wxMaxima.m_configuration.MaximaHelpFormat(*format);
+  m_wxMaxima.UpdateHelpMenuChecks();
 }
 
 void MaximaResponseReader::VariableActionDisplay2D(const wxString &value) {

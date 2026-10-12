@@ -256,6 +256,10 @@ void wxMaxima::ConfigChanged() {
   m_configCommands += wxS(":lisp-quiet (setq $wxsubscripts ") +
     m_configuration.GetAutosubscript_string() + wxS(")\n");
 
+  // The options dialog may have changed where Maxima shows its help.
+  m_configCommands += m_configuration.MaximaHelpFormatCommand();
+  UpdateHelpMenuChecks();
+
   // A few variables for additional debug info in wxbuild_info();
   m_configCommands += wxString::Format(wxS(":lisp-quiet (setq wxUserConfDir \"%s\")\n"),
                                        EscapeForLisp(Dirstructure::Get()->UserConfDir()));

@@ -2123,19 +2123,17 @@ void MaximaCommandMenus::HelpMenu(wxCommandEvent &event) {
   else if(event.GetId() == EventIDs::menu_wxmaxima_uses_help_sidebar){
     m_wxMaxima.m_configuration.InternalHelpBrowser(true);
   }
-  else if(event.GetId() == EventIDs::menu_maxima_uses_internal_help){
-    m_wxMaxima.m_configuration.MaximaUsesHtmlBrowser(false);
-    m_wxMaxima.m_configuration.MaximaUsesWxmaximaBrowser(false);
-    m_wxMaxima.MenuCommand(wxS("output_format_for_help:'text$"));
-  }
-  else if(event.GetId() == EventIDs::menu_maxima_uses_html_help){
-    m_wxMaxima.m_configuration.MaximaUsesHtmlBrowser(true);
-    m_wxMaxima.m_configuration.MaximaUsesWxmaximaBrowser(false);
-    m_wxMaxima.MenuCommand(wxS("output_format_for_help:'html$"));
-  }
-  else if(event.GetId() == EventIDs::menu_maxima_uses_wxmaxima_help){
-    m_wxMaxima.m_configuration.MaximaUsesWxmaximaBrowser(true);
-    m_wxMaxima.MenuCommand(wxS("output_format_for_help:'frontend$"));
+  else if((event.GetId() == EventIDs::menu_maxima_uses_internal_help) ||
+          (event.GetId() == EventIDs::menu_maxima_uses_html_help) ||
+          (event.GetId() == EventIDs::menu_maxima_uses_wxmaxima_help)){
+    Configuration::maximaHelpFormat format = Configuration::frontend;
+    if(event.GetId() == EventIDs::menu_maxima_uses_internal_help)
+      format = Configuration::maxima;
+    if(event.GetId() == EventIDs::menu_maxima_uses_html_help)
+      format = Configuration::browser;
+    m_wxMaxima.m_configuration.MaximaHelpFormat(format);
+    m_wxMaxima.MenuCommand(wxS("output_format_for_help:'") +
+                           Configuration::MaximaHelpFormatName(format) + wxS("$"));
   }
 
   else if(event.GetId() == EventIDs::menu_show_tip){

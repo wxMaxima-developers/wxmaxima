@@ -263,6 +263,84 @@ SCENARIO("What is drawn behind transparent images survives a round-trip") {
   }
 }
 
+static Configuration::maximaHelpFormat ReadMaximaHelpFormat(const wxString &file) {
+  wxConfigBase *oldConfig = wxConfig::Get(false);
+  wxConfigBase *fileConfig = new wxFileConfig(wxS("wxMaxima"), wxEmptyString, file);
+  wxConfig::Set(fileConfig);
+  Configuration cfgRead(nullptr, Configuration::temporary);
+  cfgRead.ReadConfig();
+  wxConfig::Set(oldConfig);
+  delete fileConfig;
+  return cfgRead.MaximaHelpFormat();
+}
+
+SCENARIO("Where Maxima shows its help survives a round-trip") {
+  // The options dialog and the Help menu used to keep this choice in two
+  // booleans of their own, while what was saved and sent to Maxima on the
+  // next start was a third, separate value only Maxima's own reports
+  // updated. MaximaHelpFormat() is now the one place it is stored.
+  for (const auto format : {Configuration::maxima, Configuration::browser}) {
+    GIVEN("a configuration where Maxima shows its help in " +
+          Configuration::MaximaHelpFormatName(format).ToStdString()) {
+      // Neither is the default (frontend), so a value that fails to round-trip
+      // can't pass by reading back the default.
+      const wxString file = wxFileName::CreateTempFileName(wxS("wxm_configtest"));
+      REQUIRE(!file.IsEmpty());
+      Configuration cfgWrite(nullptr, Configuration::temporary);
+      REQUIRE(cfgWrite.MaximaHelpFormat() == Configuration::frontend);
+      cfgWrite.MaximaHelpFormat(format);
+      WHEN("it is written and read into a fresh configuration") {
+        cfgWrite.WriteSettings(file);
+        THEN("the fresh configuration has the same help format") {
+          CHECK(ReadMaximaHelpFormat(file) == format);
+        }
+      }
+      wxRemoveFile(file);
+    }
+  }
+}
+
+SCENARIO("Help formats translate to and from Maxima's output_format_for_help") {
+  GIVEN("each help format") {
+    for (const auto format : {Configuration::maxima, Configuration::frontend,
+                              Configuration::browser}) {
+      THEN("its name reads back as the same format") {
+        const auto back = Configuration::MaximaHelpFormatFromName(
+          Configuration::MaximaHelpFormatName(format));
+        REQUIRE(back.has_value());
+        CHECK(*back == format);
+      }
+    }
+  }
+  GIVEN("the values Maxima knows") {
+    THEN("each maps to the right format") {
+      CHECK(Configuration::MaximaHelpFormatFromName(wxS("text")) ==
+            Configuration::maxima);
+      CHECK(Configuration::MaximaHelpFormatFromName(wxS("html")) ==
+            Configuration::browser);
+      CHECK(Configuration::MaximaHelpFormatFromName(wxS("frontend")) ==
+            Configuration::frontend);
+      CHECK(Configuration::MaximaHelpFormatFromName(wxS("wxmaxima")) ==
+            Configuration::frontend);
+    }
+  }
+  GIVEN("a value Maxima doesn't know") {
+    THEN("it maps to no format at all") {
+      CHECK(!Configuration::MaximaHelpFormatFromName(wxS("pdf")).has_value());
+      CHECK(!Configuration::MaximaHelpFormatFromName(wxEmptyString).has_value());
+    }
+  }
+  GIVEN("a configuration set to show Maxima's help in a browser") {
+    Configuration cfg(nullptr, Configuration::temporary);
+    cfg.MaximaHelpFormat(Configuration::browser);
+    THEN("the command for Maxima sets output_format_for_help to html, "
+         "quietly") {
+      CHECK(cfg.MaximaHelpFormatCommand() ==
+            wxS(":lisp-quiet (msetq $output_format_for_help '$html)\n"));
+    }
+  }
+}
+
 SCENARIO("Transparent images get a backdrop exactly where the setting says (GH #2227)") {
   Configuration cfg(nullptr, Configuration::temporary);
   const auto setBackground = [&cfg](const wxColour &color) {

@@ -1,5 +1,11 @@
 # Current development version
 
+- Where Maxima shows its help ("in the console", "in a sidebar", "in a
+  browser") is now remembered properly. The Help menu used to claim "in the
+  console" after every start until something was evaluated, and a choice
+  made in the configuration dialog was saved for the dialog but never told
+  to Maxima, which also made the dialog open with "in a browser" selected
+  after the menu had been used.
 - Pasting into a cell now scrolls that cell into view, as typing does. In a
   long worksheet a paste could land in a cell scrolled out of sight, which
   looked as if nothing had happened (likely GH #2478).

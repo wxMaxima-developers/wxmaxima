@@ -1456,10 +1456,6 @@ public:
   //! The smallest value DigitGroupingMinDigits() accepts: 1 digit has no groups
   static constexpr long DigitGroupingMinDigits_Min = 2;
 
-  void MaximaUsesHtmlBrowser(bool maximaUsesHhtmlBrowser){m_maximaUsesHhtmlBrowser = maximaUsesHhtmlBrowser;}
-  bool MaximaUsesHtmlBrowser() const {return m_maximaUsesHhtmlBrowser;}
-  void MaximaUsesWxmaximaBrowser(bool maximaUsesWxmaximaBrowser){m_maximaUsesWxmaximaBrowser = maximaUsesWxmaximaBrowser;}
-  bool MaximaUsesWxmaximaBrowser() const {return m_maximaUsesWxmaximaBrowser && OfferInternalHelpBrowser();}
   void ExportContainsWXMX(bool exportContainsWXMX){m_exportContainsWXMX = exportContainsWXMX;}
   bool ExportContainsWXMX() const {return m_exportContainsWXMX;}
   /*! Does the HTML export produce one self-contained file?
@@ -1515,8 +1511,30 @@ public:
   static void SetDebugmode(){m_debugMode = true;}
   //! Enable costly checks?
   static bool GetDebugmode(){return m_debugMode;}
+  /*! Where Maxima shows the help for ?, ?? and describe()
+
+    The one place this choice is stored: the options dialog, the Help menu and
+    what Maxima reports for its output_format_for_help all read and write it.
+    (Until 2026-10 the dialog and the menu also kept two booleans of their own
+    that nothing told Maxima about, so a choice made there was shown in the
+    dialog but never used, and the Help menu forgot it on every restart.)
+  */
   maximaHelpFormat MaximaHelpFormat() const;
   void MaximaHelpFormat(maximaHelpFormat format) {m_maximaHelpFormat = format;}
+  //! The value of Maxima's output_format_for_help a help format stands for
+  static wxString MaximaHelpFormatName(maximaHelpFormat format);
+  /*! The help format a value of Maxima's output_format_for_help stands for
+
+    "wxmaxima" is accepted as an old name for "frontend". Returns std::nullopt
+    for anything else.
+  */
+  static std::optional<maximaHelpFormat> MaximaHelpFormatFromName(const wxString &name);
+  /*! The command that sets Maxima's output_format_for_help to MaximaHelpFormat()
+
+    A :lisp-quiet one, as everything in wxMaxima::m_configCommands has to be:
+    a plain Maxima statement would answer with a prompt of its own.
+  */
+  wxString MaximaHelpFormatCommand() const;
 
 private:
   //! What we know about the connected Maxima instance
@@ -1577,8 +1595,6 @@ private:
   long m_wizardTab;
   bool m_display2d_Unicode;
   bool m_usePartialForDiff;
-  bool m_maximaUsesHhtmlBrowser;
-  bool m_maximaUsesWxmaximaBrowser;
   //! true = Autosave doesn't save into the current file.
   bool m_autoSaveAsTempFile;
   //! The number of the language wxMaxima uses.

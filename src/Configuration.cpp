@@ -89,8 +89,6 @@ Configuration::Configuration(const Configuration &o) :
   m_wizardTab(o.m_wizardTab),
   m_display2d_Unicode(o.m_display2d_Unicode),
   m_usePartialForDiff(o.m_usePartialForDiff),
-  m_maximaUsesHhtmlBrowser(o.m_maximaUsesHhtmlBrowser),
-  m_maximaUsesWxmaximaBrowser(o.m_maximaUsesWxmaximaBrowser),
   m_autoSaveAsTempFile(o.m_autoSaveAsTempFile),
   m_language(o.m_language),
   m_autodetectMaxima(o.m_autodetectMaxima),
@@ -274,8 +272,6 @@ void Configuration::ResetAllToDefaults() {
   m_allowNetworkHelp = false;
   m_exportContainsWXMX = true;
   m_htmlExportSelfContained = false;
-  m_maximaUsesHhtmlBrowser = true;
-  m_maximaUsesWxmaximaBrowser = OfferInternalHelpBrowser();
   m_bitmapScale = 3;
   m_defaultFramerate = 12;
   m_tocDepth = 255;
@@ -678,8 +674,6 @@ void Configuration::ReadConfig() {
 
   {
     wxString hideMessagesConfigString;
-    config->Read(wxS("maximaUsesWxmaximaBrowser"),
-                 &m_maximaUsesWxmaximaBrowser);
     {
       config->Read(wxS("suppressYellowMarkerMessages"),
                    &hideMessagesConfigString);
@@ -901,6 +895,34 @@ Configuration::maximaHelpFormat Configuration::MaximaHelpFormat() const
     return m_maximaHelpFormat;
   else
     return frontend;
+}
+
+wxString Configuration::MaximaHelpFormatName(maximaHelpFormat format) {
+  switch (format) {
+  case maxima:
+    return wxS("text");
+  case browser:
+    return wxS("html");
+  case frontend:
+  default:
+    return wxS("frontend");
+  }
+}
+
+std::optional<Configuration::maximaHelpFormat>
+Configuration::MaximaHelpFormatFromName(const wxString &name) {
+  if (name == wxS("text"))
+    return maxima;
+  if (name == wxS("html"))
+    return browser;
+  if ((name == wxS("frontend")) || (name == wxS("wxmaxima")))
+    return frontend;
+  return std::nullopt;
+}
+
+wxString Configuration::MaximaHelpFormatCommand() const {
+  return wxS(":lisp-quiet (msetq $output_format_for_help '$") +
+    MaximaHelpFormatName(MaximaHelpFormat()) + wxS(")\n");
 }
 
 bool Configuration::HideMarkerForThisMessage(wxString message) {
@@ -1324,9 +1346,6 @@ void Configuration::WriteStyles(wxConfigBase *config) {
   m_configId = urd(m_eng);
   config->Write(wxS("configID"), m_configId);
   config->Write(wxS("showInputLabels"), m_showInputLabels);
-  if (OfferInternalHelpBrowser())
-    config->Write(wxS("maximaUsesWxmaximaBrowser"),
-                  m_maximaUsesWxmaximaBrowser);
   config->Write(wxS("AutoSaveAsTempFile"), m_autoSaveAsTempFile);
   config->Write(wxS("appearance"), static_cast<long>(m_appearance));
   config->Write(wxS("showLabelChoice"), static_cast<int>(m_showLabelChoice));
@@ -1396,7 +1415,6 @@ Configuration::ScalarConfigSettings() {
     {wxS("mathJaxURL_UseUser"), &Configuration::m_mathJaxURL_UseUser},
     {wxS("maxGnuplotMegabytes"), &Configuration::m_maxGnuplotMegabytes},
     {wxS("maxima"), &Configuration::m_maximaUserLocation},
-    {wxS("maximaUsesHhtmlBrowser"), &Configuration::m_maximaUsesHhtmlBrowser},
     {wxS("MaxLayoutTime"), &Configuration::m_maxLayoutTime},
     {wxS("notifyIfIdle"), &Configuration::m_notifyIfIdle},
     {wxS("findDialogDockable"), &Configuration::m_findDialogDockable},

@@ -2077,10 +2077,6 @@ void wxMaximaFrame::SetupHelpMenu() {
                                   _("wxMaxima shows help in the sidebar"));
       m_HelpMenu->AppendRadioItem(EventIDs::menu_wxmaxima_uses_help_browser,
                                   _("wxMaxima shows help in a browser"));
-      if(GetConfiguration().InternalHelpBrowser())
-        m_HelpMenu->Check(EventIDs::menu_wxmaxima_uses_help_sidebar, true);
-      else
-        m_HelpMenu->Check(EventIDs::menu_wxmaxima_uses_help_browser, true);
     }
   m_HelpMenu->AppendSeparator();
   wxMenu *tutorials_sub = new wxMenu;
@@ -2127,6 +2123,7 @@ void wxMaximaFrame::SetupHelpMenu() {
                               _("Maxima shows help in a browser"),
                               _("Tells maxima to show the help for ?, ?? and "
                                 "describe() in a separate browser window"));
+  UpdateHelpMenuChecks();
   m_HelpMenu->AppendSeparator();
   m_HelpMenu->Append(EventIDs::menu_build_info, _("Build &Info"),
                      _("Info about Maxima build"), wxITEM_NORMAL);
@@ -2432,6 +2429,36 @@ void wxMaximaFrame::TogglePaneVisibility(int id)
     return;
 
   ShowPane(id, !IsPaneDisplayed(id));
+}
+
+void wxMaximaFrame::UpdateHelpMenuChecks() {
+  if (!m_HelpMenu)
+    return;
+  if (GetConfiguration().OfferInternalHelpBrowser()) {
+    if (GetConfiguration().InternalHelpBrowser())
+      m_HelpMenu->Check(EventIDs::menu_wxmaxima_uses_help_sidebar, true);
+    else
+      m_HelpMenu->Check(EventIDs::menu_wxmaxima_uses_help_browser, true);
+  }
+  // A radio group starts with its first item checked, which here is "the
+  // console" - so without this the menu claimed that until Maxima happened
+  // to report its output_format_for_help after an evaluation.
+  switch (GetConfiguration().MaximaHelpFormat()) {
+  case Configuration::maxima:
+    m_HelpMenu->Check(EventIDs::menu_maxima_uses_internal_help, true);
+    break;
+  case Configuration::frontend:
+    if (GetConfiguration().OfferInternalHelpBrowser()) {
+      m_HelpMenu->Check(EventIDs::menu_maxima_uses_wxmaxima_help, true);
+      break;
+    }
+    // Without the sidebar the manual topics Maxima sends end up in a
+    // browser (see MaximaResponseReader::ReadManualTopicNames()).
+    [[fallthrough]];
+  case Configuration::browser:
+    m_HelpMenu->Check(EventIDs::menu_maxima_uses_html_help, true);
+    break;
+  }
 }
 
 void wxMaximaFrame::ShowPane(int id, bool show) {
