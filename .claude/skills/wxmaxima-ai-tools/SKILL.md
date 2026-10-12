@@ -22,12 +22,12 @@ the maintainer found the AI tools only work reliably from that version on.
 It is done in CMake, not with `wxCHECK_VERSION()`, because the one variable
 decides the `#define`, the source list and the unit tests together. It
 overrides a plain variable, not the cache entry, so upgrading wxWidgets
-brings the feature back without touching the cache. **Consequence worth
-knowing: as of 2026-09 no CI job uses wxWidgets 3.3.4** (Windows/MSVC pin
-3.3.2, Ubuntu uses its 3.2 packages), so the sidebar's code is compiled by
-no CI job at all. `test_AiProvider` is keyed on `WXM_AI_TOOLS_REQUESTED`
-instead, which keeps it running everywhere, but it only covers the
-provider JSON. Build against a 3.3.4 wxWidgets before trusting a change to
+brings the feature back without touching the cache. **Since 2026-10 the Windows jobs (minGW and MSVC, which build wxWidgets
+themselves) use 3.3.4**, so they are the only CI jobs that compile the
+sidebar's code -- Ubuntu uses its 3.2 packages and leaves it out.
+`test_AiProvider` is keyed on `WXM_AI_TOOLS_REQUESTED` instead, which keeps
+it running everywhere, but it only covers the provider JSON. On Linux, build
+against a 3.3.4 wxWidgets before trusting a change to
 `AiChatSidebar`/`AiConnectionMonitor`/the options tab.
 
 **The single most important rule here: every tool is read-only except two

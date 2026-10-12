@@ -2,6 +2,9 @@
 
 - With wxWidgets 3.3.4 or newer the main toolbar was two pixels shorter
   than its contents. It gets its full height again.
+- The Windows builds now use wxWidgets 3.3.4, which also means they
+  include the AI chat sidebar.
+
 - On Windows, building wxMaxima now copies WebView2Loader.dll next to
   wxmaxima.exe and installs it there, when it can be found next to
   wxWidgets or is named with -DWXM_WEBVIEW2_LOADER=<path>. Without that DLL

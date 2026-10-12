@@ -40,7 +40,14 @@ jobs:
         run: |
              git fetch --depth=1 origin main
              pip install --quiet polib
+             python3 -m unittest locales/wxMaxima/test_check_translations_not_wiped.py
              python3 locales/wxMaxima/check_translations_not_wiped.py origin/main
+             # The check above only compares msgids the committed template
+             # still has, so a template that lost strings has to be caught
+             # on its own.
+             git show origin/main:locales/wxMaxima/wxMaxima.pot > "$RUNNER_TEMP/base.pot"
+             python3 locales/wxMaxima/check_pot_not_truncated.py \
+                 "$RUNNER_TEMP/base.pot" locales/wxMaxima/wxMaxima.pot
 
   compile_latest_and_test:
     runs-on: ubuntu-latest

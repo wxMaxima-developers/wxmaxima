@@ -14,7 +14,7 @@ concurrency:
 
 env:
   BUILD_TYPE: Release
-  WXVERSION: 3.3.2
+  WXVERSION: 3.3.4
   # SignPath.io code signing. The organization id and the slugs are not secrets
   # (only the API token is); SignPath's own examples put them in the workflow.
   # SIGNPATH_SIGNING_POLICY is "test-signing" while we bring the pipeline up:
@@ -562,7 +562,10 @@ jobs:
           cache-name: cache-wxWidgets
         with:
           path: wxwidgets-source
-          key: ${{ runner.os }}-build-msvc-${{ env.cache-name }}-${env:WXVERSION}-1
+          # ${{ env.WXVERSION }}, not PowerShell's ${env:WXVERSION}: a key is not
+          # run by a shell, so the latter stayed literal text and a version bump
+          # restored the previous version's build from this version-less path.
+          key: ${{ runner.os }}-build-msvc-${{ env.cache-name }}-${{ env.WXVERSION }}-1
       - name: wxWidgets
         run: |
              if (Test-Path wxwidgets-source) { echo "wxWidgets already present"} else {
