@@ -24,6 +24,7 @@
 */
 
 #include "DigitGrouping.h"
+#include <algorithm>
 #include <clocale>
 
 namespace wxm {
@@ -35,6 +36,10 @@ bool IsSign(wxUniChar c) {
   return (c == wxS('-')) || (c == wxS('+')) || (c == wxUniChar(0x2212));
 }
 } // namespace
+
+int DigitGroupGapWidth(double fontSize) {
+  return std::max(1, static_cast<int>(fontSize / 4));
+}
 
 int LocaleDigitGroupSize() {
   const struct lconv *lc = localeconv();
