@@ -1161,6 +1161,17 @@ void EditorCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
         MarkSelection(dc, range.first, range.second, TS_DIFF_CHANGED);
     }
 
+    //
+    // Mark the statements Maxima reported an error for, and within them the
+    // place a syntax error was found at (GH #289).
+    //
+    if (ErrorMarksValid()) {
+      for (const auto &range : m_errorMarks->statements)
+        MarkSelection(dc, range.first, range.second, TS_ERROR_STATEMENT);
+      for (const auto &range : m_errorMarks->spots)
+        MarkSelection(dc, range.first, range.second, TS_ERROR_SPOT);
+    }
+
     if (IsActive()) // draw selection or matching parens
       {
         //
@@ -4672,6 +4683,43 @@ wxString EditorCell::PreprocessNewValue(const wxString &text,
   return text;
 }
 
+namespace {
+const std::vector<std::pair<std::size_t, std::size_t>> noErrorMarks;
+}
+
+void EditorCell::AddErrorStatement(std::size_t start, std::size_t end) {
+  if (start >= end)
+    return;
+  // Marks set for a different text mean nothing in this one.
+  if (!ErrorMarksValid()) {
+    m_errorMarks = std::make_unique<ErrorMarks>();
+    m_errorMarks->text = m_text;
+  }
+  m_errorMarks->statements.emplace_back(start, end);
+}
+
+void EditorCell::AddErrorSpot(std::size_t start, std::size_t end) {
+  if (start >= end)
+    return;
+  if (!ErrorMarksValid()) {
+    m_errorMarks = std::make_unique<ErrorMarks>();
+    m_errorMarks->text = m_text;
+  }
+  m_errorMarks->spots.emplace_back(start, end);
+}
+
+void EditorCell::ClearErrorMarks() { m_errorMarks.reset(); }
+
+const std::vector<std::pair<std::size_t, std::size_t>> &
+EditorCell::GetErrorStatements() const {
+  return m_errorMarks ? m_errorMarks->statements : noErrorMarks;
+}
+
+const std::vector<std::pair<std::size_t, std::size_t>> &
+EditorCell::GetErrorSpots() const {
+  return m_errorMarks ? m_errorMarks->spots : noErrorMarks;
+}
+
 void EditorCell::SetValue(const wxString &text) {
   std::size_t cursorPos = 0;
   m_text = PreprocessNewValue(text, cursorPos);
@@ -4680,6 +4728,8 @@ void EditorCell::SetValue(const wxString &text) {
   // The old text's diff-highlight ranges mean nothing in the new text.
   m_diffHighlights.clear();
   m_diffHighlightsTextLength = 0;
+  // Neither do its error marks.
+  ClearErrorMarks();
 
   FindMatchingParens();
   m_containsChanges = true;

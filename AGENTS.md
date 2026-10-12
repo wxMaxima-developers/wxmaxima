@@ -1215,6 +1215,24 @@ tried without rebuilding.
     `ERROR_FILE`) does not dodge it. Give such a test a channel that never
     touches wxMaxima's stdio, as this one now does.
 
+- **Where in a cell an error is (GH #289) is worked out on wxMaxima's side
+  only -- don't hook Maxima's parser for it.** The queue sends one statement
+  at a time and remembers its range in the cell
+  (`EvaluationQueue::GetCommandStart()`/`GetIndex()`), so a runtime error is
+  pinned to its statement for free. For a syntax error, Maxima's own message
+  echoes the tail of the line it was reading, with a caret under it;
+  `wxm::LocateSyntaxError()` (`src/SyntaxErrorLocation.{h,cpp}`) finds that
+  echo in the statement. Redefining `mread-synerr` from `wxMathML.lisp` would
+  be more precise, but would break whenever Maxima's parser changes, which
+  is what the maintainer wanted to avoid; reading the printed text degrades
+  to "the statement is marked" instead. Two facts about that text, both seen
+  live: Maxima 5.46 spells a blank in the echo as the word `Space` (current
+  Maxima prints the character), and the echo stops at a newline, so it is the
+  tail of the error's own line. The parenthesis check wxMaxima runs before
+  sending counts characters of the *command*, which has comments stripped
+  and doesn't start where the cell does --
+  `EvaluationQueue::CommandPositionInCell()` maps that back; before it, the
+  cursor landed in the wrong statement of a multi-statement cell.
 - **`m_configCommands` (`wxMaxima.cpp`):** the string of startup/config commands
   sent to Maxima on connect (and again whenever settings change while it's
   running). **Every entry in it MUST be a `:lisp-quiet (...)` directive --

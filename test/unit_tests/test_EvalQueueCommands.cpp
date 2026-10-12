@@ -382,6 +382,94 @@ public:
 };
 wxDECLARE_APP(TestApp);
 
+//! The part of the cell text the queue says its current command covers
+static wxString CurrentCommandSpan(const EvaluationQueue &q, const wxString &cell) {
+  const long start = q.GetCommandStart();
+  const long end = q.GetIndex();
+  if ((start < 0) || (end <= start))
+    return wxS("<none>");
+  return cell.Mid(static_cast<size_t>(start), static_cast<size_t>(end - start));
+}
+
+SCENARIO("Each command knows which part of its cell it came from (GH #289)") {
+  // An error Maxima reports is marked on the statement it belongs to, so the
+  // statement has to be found again in the cell's text: from its first
+  // visible character to its terminator, leaving out leading whitespace and
+  // comments.
+  Reset();
+  const wxString code =
+    wxS("a: 1$\n  /* a comment */ f(x):=block(\n  [b],\n  b:x)$\n;  c: 3;\nd: 4");
+  EvaluationQueue q;
+  q.AddToQueue(MakeCodeCell(code));
+  std::vector<wxString> spans;
+  int guard = 0;
+  while (!q.Empty() && (guard++ < 100)) {
+    if (!q.GetCommand().IsEmpty())
+      spans.push_back(CurrentCommandSpan(q, code));
+    q.RemoveFirst();
+  }
+  THEN("every statement's span is exactly its text") {
+    REQUIRE(spans.size() == 4);
+    REQUIRE(spans[0] == wxS("a: 1$"));
+    REQUIRE(spans[1] == wxS("f(x):=block(\n  [b],\n  b:x)$"));
+    REQUIRE(spans[2] == wxS("c: 3;"));
+    // The queue adds the last statement's missing ";" to what it sends, not
+    // to the cell.
+    REQUIRE(spans[3] == wxS("d: 4"));
+  }
+}
+
+SCENARIO("A lisp form knows which part of its cell it came from (GH #289)") {
+  Reset();
+  g_cfg->InLispMode(true);
+  const wxString code = wxS("  (setq x 1)\n(print \"a)\")");
+  EvaluationQueue q;
+  q.AddToQueue(MakeCodeCell(code));
+  std::vector<wxString> spans;
+  int guard = 0;
+  while (!q.Empty() && (guard++ < 100)) {
+    if (!q.GetCommand().IsEmpty())
+      spans.push_back(CurrentCommandSpan(q, code));
+    q.RemoveFirst();
+  }
+  g_cfg->InLispMode(false);
+  THEN("each form's span is exactly its text") {
+    REQUIRE(spans.size() == 2);
+    REQUIRE(spans[0] == wxS("(setq x 1)"));
+    REQUIRE(spans[1] == wxS("(print \"a)\")"));
+  }
+}
+
+SCENARIO("A position in a command is found again in its cell (GH #289)") {
+  // The parenthesis check counts characters of the command it is about to
+  // send. Comments are left out of that command, so its positions are not
+  // the cell's.
+  Reset();
+  const wxString code =
+    wxS("p: 1$ /* note */\nq: [1, /* in between */ 2,\n    3,)$\nr: 2;");
+  EvaluationQueue q;
+  q.AddToQueue(MakeCodeCell(code));
+  REQUIRE(q.GetCommand() == wxS("p: 1$"));
+  q.RemoveFirst();
+  const wxString command = q.GetCommand();
+  REQUIRE(command.StartsWith(wxS("q: [1,")));
+  const long start = q.GetCommandStart();
+  const long end = q.GetIndex();
+
+  THEN("the closing parenthesis maps to the one in the cell") {
+    const size_t inCommand = static_cast<size_t>(command.Find(wxS(")")));
+    REQUIRE(EvaluationQueue::CommandPositionInCell(code, start, end, inCommand, g_cfg) ==
+            code.Find(wxS(")")));
+  }
+  THEN("the start of the command maps to the start of the statement") {
+    REQUIRE(EvaluationQueue::CommandPositionInCell(code, start, end, 0, g_cfg) ==
+            code.Find(wxS("q:")));
+  }
+  THEN("a position beyond the command maps to the statement's end") {
+    REQUIRE(EvaluationQueue::CommandPositionInCell(code, start, end, 1000, g_cfg) == end);
+  }
+}
+
 int main(int argc, char **argv) {
   wxLog::EnableLogging(false);
   wxApp::SetInstance(new TestApp());

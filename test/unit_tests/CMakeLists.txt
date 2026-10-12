@@ -234,6 +234,17 @@ target_link_libraries(test_TextFormat PRIVATE ${wxWidgets_LIBRARIES})
 add_test(NAME TextFormat
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_TextFormat>")
 
+# Where in a code cell Maxima's "incorrect syntax" message points (GH #289)
+# is read from Maxima's output text by a pure string function, so it is
+# tested directly.
+add_executable(test_SyntaxErrorLocation
+    test_SyntaxErrorLocation.cpp ${CMAKE_SOURCE_DIR}/src/SyntaxErrorLocation.cpp
+    ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
+target_include_directories(test_SyntaxErrorLocation PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_link_libraries(test_SyntaxErrorLocation PRIVATE ${wxWidgets_LIBRARIES})
+add_test(NAME SyntaxErrorLocation
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_SyntaxErrorLocation>")
+
 # Link detection in text cells (GH #2396) is a pure string function shared by
 # the display and the HTML/LaTeX exporters, so it is tested directly.
 add_executable(test_UrlDetection
@@ -398,6 +409,17 @@ if(TARGET wxmTestApp)
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
     add_test(NAME EditorCellDigitGroups
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_EditorCellDigitGroups>")
+
+    # The marks a code cell shows where Maxima reported an error (GH #289):
+    # painted where they were set, and only while the text is unchanged.
+    add_executable(test_EditorCellErrorMarks
+        test_EditorCellErrorMarks.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_EditorCellErrorMarks PUBLIC cxx_std_20)
+    target_link_libraries(test_EditorCellErrorMarks PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME EditorCellErrorMarks
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_EditorCellErrorMarks>")
 
     # Escaped brackets and quotes in code cells (GH #528): typing "a\(3"
     # adds no closing bracket, "\)" doesn't jump over a real ")", and the

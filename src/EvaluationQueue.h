@@ -45,21 +45,16 @@ class EvaluationQueue
 private:
   class Command{
   public:
-    Command(const wxString &strng, int index) : m_indexStart(index), m_command(strng) {}
-    Command(Command &&o) noexcept : m_indexStart(o.m_indexStart), m_command(std::move(o.m_command)) {}
-    Command(const Command &o) : m_indexStart(o.m_indexStart), m_command(o.m_command) {}
-    Command &operator=(Command &&o) noexcept
-      {
-        m_indexStart = o.m_indexStart;
-        m_command = std::move(o.m_command);
-        return *this;
-      }
-    Command &operator=(const Command &o)
-      {
-        m_indexStart = o.m_indexStart;
-        m_command = o.m_command;
-        return *this;
-      }
+    /*! A command of the current cell
+
+      \param strng The text that is sent to Maxima
+      \param start Where in the cell the command starts: its first character
+                   that is neither whitespace nor part of a comment
+      \param index Where in the cell the command ends: the position after its
+                   terminator
+    */
+    Command(const wxString &strng, long start, long index)
+      : m_start(start), m_indexStart(index), m_command(strng) {}
 
     const wxString &GetString() const { return m_command; }
     void AddEnding()
@@ -69,8 +64,12 @@ private:
         if (!trimmed.EndsWith(wxS(";")) && !trimmed.EndsWith(wxS("$")))
           m_command += ";";
       }
+    //! Where in the cell the command ends (despite the name: see the constructor)
     int GetIndex() const { return m_indexStart; }
+    //! Where in the cell the command starts
+    long GetStart() const { return m_start; }
   private:
+    long m_start = -1;
     long m_indexStart = -1;
     wxString m_command;
   };
@@ -155,6 +154,38 @@ public:
     {
       if (!m_commands.empty())
         return  m_commands.front().GetIndex();
+      else
+        return -1;
+    }
+
+  /*! Where in its cell the current command starts
+
+    Together with GetIndex(), which is where it ends, this is the statement
+    an error Maxima reports for this command belongs to (GH #289).
+    -1 if there is no current command.
+  */
+  /*! Where in its cell a position in a command is
+
+    A command is not always a verbatim copy of its part of the cell: comments
+    are left out of it, as is whitespace in front. This maps a position in the
+    text sent to Maxima back to the cell, for a command produced in the mode
+    (Maxima or Lisp) \p configuration is in now.
+
+    \param cellText  The cell's text, as GroupCell::GetEditable()->ToString(true)
+                     returns it.
+    \param start     Where in it the command starts (GetCommandStart())
+    \param end       Where in it the command ends (GetIndex())
+    \param offset    The position in the command's text
+    \return The position in cellText, never beyond end.
+  */
+  static long CommandPositionInCell(const wxString &cellText, long start,
+                                    long end, std::size_t offset,
+                                    Configuration *configuration);
+
+  long GetCommandStart() const
+    {
+      if (!m_commands.empty())
+        return  m_commands.front().GetStart();
       else
         return -1;
     }

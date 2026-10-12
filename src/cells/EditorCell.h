@@ -316,6 +316,34 @@ public:
     return m_diffHighlights;
   }
 
+  /*! Marks a statement Maxima reported an error for (GH #289)
+
+    The range is half-open ([start, end)) and indexes into GetValue(); it is
+    painted with the TS_ERROR_STATEMENT background. More than one statement
+    of a cell can fail if evaluation doesn't stop at the first error.
+
+    The marks belong to the text they were set for: as soon as the text
+    differs from it, Draw() stops painting them. They are dropped by
+    ClearErrorMarks() when the cell is evaluated again, and by SetValue().
+  */
+  void AddErrorStatement(std::size_t start, std::size_t end);
+  /*! Marks the place in a failing statement Maxima's syntax error points at
+
+    Painted with the TS_ERROR_SPOT background, over the statement's own mark.
+    Same lifetime as the marks AddErrorStatement() sets.
+  */
+  void AddErrorSpot(std::size_t start, std::size_t end);
+  //! Drops all marks AddErrorStatement() and AddErrorSpot() have set.
+  void ClearErrorMarks();
+  //! The statements AddErrorStatement() has marked (for tests and inspection).
+  const std::vector<std::pair<std::size_t, std::size_t>> &GetErrorStatements() const;
+  //! The spots AddErrorSpot() has marked (for tests and inspection).
+  const std::vector<std::pair<std::size_t, std::size_t>> &GetErrorSpots() const;
+  //! True if there are error marks that still match the text.
+  bool ErrorMarksValid() const {
+    return m_errorMarks && (m_text == m_errorMarks->text);
+  }
+
   /*! Converts m_text to a list of styled text snippets that will later be displayed by draw().
 
     This function also generates a wordlist for this EditorCell so Autocompletion can learn
@@ -1190,6 +1218,19 @@ private:
   //! while no edit happened, and every insertion/deletion changes the length
   //! (soft-wrapping doesn't - it swaps ' ' and '\r' in place).
   std::size_t m_diffHighlightsTextLength = 0;
+  //! The marks AddErrorStatement() and AddErrorSpot() set
+  struct ErrorMarks {
+    std::vector<std::pair<std::size_t, std::size_t>> statements;
+    std::vector<std::pair<std::size_t, std::size_t>> spots;
+    /*! m_text when the marks were set: they only stay valid while it is
+      unchanged. A copy rather than the length, unlike
+      m_diffHighlightsTextLength: typing one character and deleting another
+      keeps the length, but may well have fixed the error.
+    */
+    wxString text;
+  };
+  //! Only allocated while there are error marks: almost no cell has any.
+  std::unique_ptr<ErrorMarks> m_errorMarks;
 
 //** 8/4 bytes
 //**

@@ -184,6 +184,8 @@ const wxString &Styles::Name(TextStyle textStyle) {
     {TS_DIFF_CHANGED, _("Diff viewer: changed text")},
     {TS_LINK, _("Links in text cells")},
     {TS_IMAGE_BACKDROP, _("Backdrop of transparent images")},
+    {TS_ERROR_STATEMENT, _("Code that caused an error")},
+    {TS_ERROR_SPOT, _("Place a syntax error was found at")},
     {TS_OUTDATED, _("Color of Outdated cells")},
     {TS_CODE_VARIABLE, _("Code highlighting: Variables")},
     {TS_CODE_FUNCTION, _("Code highlighting: Functions")},
@@ -254,6 +256,11 @@ void Styles::SetDefaults() {
   m_styles[TS_LINK].Color(0, 0, 238);
   // Most line art is drawn for paper, i.e. for a white background.
   m_styles[TS_IMAGE_BACKDROP].Color(*wxWHITE);
+  // A faint red for the statement that failed, a stronger one for the exact
+  // place a syntax error was found at: both are drawn behind the text, which
+  // has to stay readable on them.
+  m_styles[TS_ERROR_STATEMENT].Color(255, 228, 228);
+  m_styles[TS_ERROR_SPOT].Color(255, 170, 170);
   m_styles[TS_OUTDATED].Color(153, 153, 153);
 }
 
@@ -301,6 +308,10 @@ void Styles::SetDarkDefaults() {
 
   // Link blue, light enough to read on the dark background.
   m_stylesDark[TS_LINK].Color(120, 170, 255);
+
+  // Error marks dark enough for light text on them.
+  m_stylesDark[TS_ERROR_STATEMENT].Color(75, 30, 30);
+  m_stylesDark[TS_ERROR_SPOT].Color(140, 40, 40);
 }
 
 void Styles::ClearCaches() {
@@ -381,6 +392,8 @@ const std::vector<std::pair<TextStyle, wxString>> &Styles::ConfigKeys() {
     {TS_DIFF_CHANGED, wxS("Style/DiffChanged/")},
     {TS_LINK, wxS("Style/Link/")},
     {TS_IMAGE_BACKDROP, wxS("Style/ImageBackdrop/")},
+    {TS_ERROR_STATEMENT, wxS("Style/ErrorStatement/")},
+    {TS_ERROR_SPOT, wxS("Style/ErrorSpot/")},
     {TS_OUTDATED, wxS("Style/Outdated/")},
   };
   return keys;
