@@ -54,7 +54,9 @@
 
   Moving a matrix's scrollbar scrolls the matrix (MatrCell::ScrollTo()) and
   redraws just it; no relayout is needed. The mouse wheel over the matrix
-  still scrolls the worksheet, so a matrix never traps the wheel, and the
+  still scrolls the worksheet, so a matrix never traps the wheel just by
+  being under the pointer; only while the matrix is selected does the wheel
+  scroll it instead (Worksheet::ScrollSelectedMatrix(), GH #2479). The
   scrollbars never keep the keyboard focus: typing always goes to the
   worksheet.
 */

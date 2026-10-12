@@ -1686,7 +1686,7 @@ void Worksheet::OnMouseWheel(wxMouseEvent &event) {
       wxRect rect = animation->GetRect();
       RequestRedraw(rect);
     }
-  else
+  else if (!ScrollSelectedMatrix(event))
     {
       event.Skip();
       // The wheel scrolls the document, but (unlike the scrollbar) does not emit
@@ -1697,6 +1697,119 @@ void Worksheet::OnMouseWheel(wxMouseEvent &event) {
       // button right away.
       CallAfter(&Worksheet::CheckIfActiveCellScrolledOut);
     }
+}
+
+namespace {
+//! Is cell somewhere in the list starting at head, or inside one of its cells?
+bool ListContains(const Cell *head, const Cell *cell) {
+  for (const Cell &listCell : OnList(head)) {
+    if (&listCell == cell)
+      return true;
+    for (const Cell &inner : OnInner(&listCell))
+      if (ListContains(&inner, cell))
+        return true;
+  }
+  return false;
+}
+
+/*! The outermost scrolling matrix in the list starting at head that contains
+  both start and end, or nullptr. Only an outermost matrix ever scrolls, so
+  the search doesn't descend into a matrix that doesn't.
+*/
+MatrCell *ScrollingMatrixContaining(Cell *head, const Cell *start,
+                                    const Cell *end) {
+  for (Cell &listCell : OnList(head)) {
+    auto *matrix = dynamic_cast<MatrCell *>(&listCell);
+    if (matrix && (matrix->HasHorizontalScrollbar() ||
+                   matrix->HasVerticalScrollbar())) {
+      bool hasStart = false;
+      bool hasEnd = false;
+      for (const Cell &inner : OnInner(matrix)) {
+        hasStart = hasStart || ListContains(&inner, start);
+        hasEnd = hasEnd || ListContains(&inner, end);
+      }
+      if (hasStart && hasEnd)
+        return matrix;
+      continue;
+    }
+    if (matrix)
+      continue;
+    for (Cell &inner : OnInner(&listCell))
+      if (auto *found = ScrollingMatrixContaining(&inner, start, end))
+        return found;
+  }
+  return nullptr;
+}
+} // namespace
+
+MatrCell *Worksheet::GetSelectedScrollingMatrix() const {
+  Cell *start = GetDocumentCellPointers().GetSelectionStart();
+  Cell *end = GetDocumentCellPointers().GetSelectionEnd();
+  if (!start || !end || (start->GetType() == MC_TYPE_GROUP))
+    return nullptr;
+  // The matrix itself is selected, or a block of its entries is: then the
+  // selection's start and end are the matrix.
+  if (start == end)
+    if (auto *matrix = dynamic_cast<MatrCell *>(start))
+      return (matrix->HasHorizontalScrollbar() || matrix->HasVerticalScrollbar())
+        ? matrix : nullptr;
+  // Something inside an entry is selected. Cells don't know their parents,
+  // so look for the matrix from the output's top.
+  GroupCell *group = start->GetGroup();
+  if (!group || (end->GetGroup() != group))
+    return nullptr;
+  // GetLabel(), not GetOutput(): output without a label keeps its first
+  // cell in the label slot, which GetOutput() skips.
+  return ScrollingMatrixContaining(group->GetLabel(), start, end);
+}
+
+bool Worksheet::ScrollSelectedMatrix(const wxMouseEvent &event) {
+  MatrCell *matrix = GetSelectedScrollingMatrix();
+  if (!matrix)
+    return false;
+  const int wheelDelta = event.GetWheelDelta();
+  if (wheelDelta == 0)
+    return true;
+
+  // wx counts a vertical wheel turned up (towards the start) as positive,
+  // but a horizontal one turned right (towards the end).
+  bool sideways = (event.GetWheelAxis() == wxMOUSE_WHEEL_HORIZONTAL);
+  int towardsEnd = -event.GetWheelRotation();
+  if (sideways)
+    towardsEnd = -towardsEnd;
+  // Shift+wheel scrolls sideways, as it does almost everywhere else, and so
+  // does any wheel the matrix can't follow the other way.
+  if (!sideways && (event.ShiftDown() || !matrix->HasVerticalScrollbar()))
+    sideways = true;
+  else if (sideways && !matrix->HasHorizontalScrollbar())
+    sideways = false;
+
+  const wxSize viewport = matrix->ViewportSize();
+  int pixels;
+  if (event.IsPageScroll())
+    pixels = towardsEnd * (sideways ? viewport.x : viewport.y) / wheelDelta;
+  else {
+    // A touchpad sends many steps much smaller than the wheel delta. What
+    // each one would lose to rounding is kept for the next, so they add up
+    // to what one notch of a wheel does.
+    int &remainder = sideways ? m_matrixWheelRemainder.x : m_matrixWheelRemainder.y;
+    remainder += towardsEnd * event.GetLinesPerAction() *
+      std::max(m_layout.GetScrollUnit(), 1);
+    pixels = remainder / wheelDelta;
+    remainder -= pixels * wheelDelta;
+  }
+
+  wxPoint position = matrix->ScrollPosition();
+  if (sideways)
+    position.x += pixels;
+  else
+    position.y += pixels;
+  if (matrix->ScrollTo(position)) {
+    // Repainting the matrix makes it report in to its MatrixScrollbars,
+    // which then move the scrollbars' thumbs along.
+    RequestRedraw(matrix->GetRect());
+  }
+  return true;
 }
 
 bool Worksheet::OpenLink(const wxString &url) {
