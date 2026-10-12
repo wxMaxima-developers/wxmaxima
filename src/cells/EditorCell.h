@@ -837,6 +837,14 @@ private:
   //! which snippet triggers it.
   void PushTextLine(const wxString &line, const wxString &indentChar,
                     std::size_t startPos) const;
+  /*! Pushes one line of a code token (it contains no newline) and returns
+    its width. A comment gets each of its links (see UrlDetection.h) as a
+    StyledText of its own that IsLink(), for the reason PushTextRun() gives;
+    every other token stays one snippet. A comment is one token however many
+    spaces it contains and never gets a soft line break inside, so splitting
+    it doesn't change where a line wraps.
+  */
+  wxCoord PushCodeLine(TextStyle style, const wxString &line) const;
   /*! PushTextLine()'s second step: pushes a run that contains no '\t',
     giving each link in it (see UrlDetection.h) a StyledText of its own that
     IsLink(). A link needs to be a snippet of its own so that Draw() can

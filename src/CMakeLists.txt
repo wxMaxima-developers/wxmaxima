@@ -214,6 +214,7 @@ set(SOURCE_FILES
     wxMaximaIcon.cpp
     wxMaximaArtProvider.cpp
     wxMaximaOSDescription.cpp
+    HelpBrowserDiagnosis.cpp
 )
 
 # nanoSVG.cpp has to stay a translation unit of its own. It defines

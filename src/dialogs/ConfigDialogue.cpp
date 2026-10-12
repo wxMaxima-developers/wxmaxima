@@ -750,15 +750,7 @@ void ConfigDialogue::SetCheckboxValues() {
   m_noAutodetectMaxima->SetValue(!m_configuration->AutodetectMaxima());
   m_helpBrowserUserLocation->SetValue(
                                       m_configuration->HelpBrowserUserLocation());
-  if (m_configuration->MaximaUsesWxmaximaBrowser()) {
-    m_maximaUsesWxmaximaHelp->SetValue(true);
-  } else {
-    if (m_configuration->MaximaUsesHtmlBrowser())
-      m_maximaUsesHtmlHelp->SetValue(true);
-    else
-      m_maximaUsesInternalHelp->SetValue(true);
-  }
-  m_maximaUsesHtmlHelp->SetValue(m_configuration->MaximaUsesHtmlBrowser());
+  m_maximaHelpInConsole->SetValue(m_configuration->MaximaHelpInConsole());
   m_defaultPort->SetValue(m_configuration->DefaultPort());
 
   m_useUnicodeMaths->SetValue(m_configuration->UseUnicodeMaths());
@@ -1649,18 +1641,18 @@ wxWindow *ConfigDialogue::CreateMaximaPanel() {
                  wxSizerFlags().Expand().Border(wxUP | wxDOWN, 0));
 
   nameSizer->Add(
-                 new wxStaticText(invocationSizer->GetStaticBox(), wxID_ANY, _("Help browser:")),
+                 new wxStaticText(invocationSizer->GetStaticBox(), wxID_ANY, _("Show help in:")),
                  wxSizerFlags().Expand().Border(wxUP | wxDOWN, 0));
   nameSizer->Add(10 * GetContentScaleFactor(), 10 * GetContentScaleFactor());
   m_internalHelpBrowser =
-    new wxRadioButton(invocationSizer->GetStaticBox(), wxID_ANY, _("Internal"),
+    new wxRadioButton(invocationSizer->GetStaticBox(), wxID_ANY, _("The sidebar"),
                       wxDefaultPosition, wxDefaultSize, wxRB_GROUP);
   nameSizer->Add(m_internalHelpBrowser,
                  wxSizerFlags().Expand().Border(wxUP | wxDOWN, 0));
   m_internalHelpBrowser->Show(m_configuration->OfferInternalHelpBrowser());
   nameSizer->Add(10 * GetContentScaleFactor(), 10 * GetContentScaleFactor());
   m_autodetectHelpBrowser =
-    new wxRadioButton(invocationSizer->GetStaticBox(), wxID_ANY, _("Autodetect"),
+    new wxRadioButton(invocationSizer->GetStaticBox(), wxID_ANY, _("The default web browser"),
                       wxDefaultPosition, wxDefaultSize);
   nameSizer->Add(m_autodetectHelpBrowser,
                  wxSizerFlags().Expand().Border(wxUP | wxDOWN, 0));
@@ -1668,7 +1660,7 @@ wxWindow *ConfigDialogue::CreateMaximaPanel() {
 
   m_noAutodetectHelpBrowser =
     new wxRadioButton(invocationSizer->GetStaticBox(),
-                      wxID_ANY, _("User specified"));
+                      wxID_ANY, _("This web browser:"));
   nameSizer->Add(m_noAutodetectHelpBrowser,
                  wxSizerFlags().Expand().Border(wxUP | wxDOWN, 0));
 
@@ -1697,25 +1689,14 @@ wxWindow *ConfigDialogue::CreateMaximaPanel() {
   wxStaticBoxSizer *configSizer =
     new wxStaticBoxSizer(wxVERTICAL, panel, _("Maxima configuration"));
 
-  m_maximaUsesInternalHelp =
-    new wxRadioButton(
-                      configSizer->GetStaticBox(), wxID_ANY, _("Maxima shows help in the console"),
-                      wxDefaultPosition, wxDefaultSize, wxRB_GROUP);
+  // Where help is shown at all is the "Show help in" choice above; this only
+  // decides whether Maxima's own ? answers on the console instead.
+  m_maximaHelpInConsole =
+    new wxCheckBox(configSizer->GetStaticBox(), wxID_ANY,
+                   _("Maxima answers ?, ?? and describe() on the console"));
   configSizer->Add(
-                   m_maximaUsesInternalHelp,
+                   m_maximaHelpInConsole,
                    wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
-  m_maximaUsesHtmlHelp =
-    new wxRadioButton(configSizer->GetStaticBox(), wxID_ANY,
-                      _("Maxima shows help in a browser"));
-  configSizer->Add(
-                   m_maximaUsesHtmlHelp,
-                   wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
-  m_maximaUsesWxmaximaHelp = new wxRadioButton(
-                                               configSizer->GetStaticBox(), wxID_ANY, _("Maxima shows help in a sidebar"));
-  configSizer->Add(
-                   m_maximaUsesWxmaximaHelp,
-                   wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
-  m_maximaUsesWxmaximaHelp->Show(m_configuration->OfferInternalHelpBrowser());
   m_defaultPort = new wxSpinCtrl(
                                  configSizer->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition,
                                  wxSize(230 * GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 50, 65534);
@@ -3010,22 +2991,11 @@ void ConfigDialogue::WriteSettings() {
   configuration->MaximaUserLocation(m_maximaUserLocation->GetValue());
   configuration->AutodetectMaxima(m_autodetectMaxima->GetValue());
   configuration->HelpBrowserUserLocation(m_helpBrowserUserLocation->GetValue());
-  if (m_maximaUsesHtmlHelp->GetValue()) {
-    configuration->MaximaUsesHtmlBrowser(true);
-    configuration->MaximaUsesWxmaximaBrowser(false);
-  }
+  configuration->MaximaHelpInConsole(m_maximaHelpInConsole->GetValue());
 #ifdef __WXMSW__
   m_configuration->UseWGnuplot(m_useWgnuplot->GetValue());
 #endif
 
-  if (m_maximaUsesInternalHelp->GetValue()) {
-    configuration->MaximaUsesHtmlBrowser(false);
-    configuration->MaximaUsesWxmaximaBrowser(false);
-  }
-  if (m_maximaUsesWxmaximaHelp->GetValue()) {
-    configuration->MaximaUsesHtmlBrowser(false);
-    configuration->MaximaUsesWxmaximaBrowser(true);
-  }
   configuration->SinglePageManual(m_singlePageManual->GetValue());
   if (m_internalHelpBrowser->GetValue()) {
     configuration->InternalHelpBrowser(true);

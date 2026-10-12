@@ -820,6 +820,22 @@ add_test(
             -DEXPECTED_EXIT_CODE=92
             -P ${CMAKE_CURRENT_SOURCE_DIR}/check_exit_code.cmake)
 
+# Without a display wxGTK can't initialize, and wxMaxima must say so and exit
+# with 1 instead of crashing on the wxTheApp that was never made. Seen in CI
+# when Xvfb wasn't ready yet (a segfault in CommonMain()). GTK only: wxQt
+# aborts inside Qt in that case, and MSW and macOS always have a display.
+if(UNIX AND NOT APPLE AND "${wxWidgets_DEFINITIONS}" MATCHES "__WXGTK__")
+  add_test(
+      NAME wxmaxima_exit_code_no_display
+      COMMAND ${CMAKE_COMMAND} -E env --unset=DISPLAY --unset=WAYLAND_DISPLAY
+              ${CMAKE_COMMAND}
+              -DWXMAXIMA=$<TARGET_FILE:wxmaxima>
+              "-DARGS=--batch;fracCells.wxm"
+              -DWORKDIR=${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+              -DEXPECTED_EXIT_CODE=1
+              -P ${CMAKE_CURRENT_SOURCE_DIR}/check_exit_code.cmake)
+endif()
+
 add_test(
     NAME wxmaxima_makelist
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
