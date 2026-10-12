@@ -73,7 +73,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p>This file contains architectural insights, conventions, and operational knowledge to assist AI agents working on the <a class="el" href="classwxMaxima.html">wxMaxima</a> codebase. <b>Agents are explicitly permitted and encouraged to update this file with new findings that improve context and safety.</b></p>
-<h1><a class="anchor" id="autotoc_md43"></a>
+<h1><a class="anchor" id="autotoc_md40"></a>
 Branches and pull requests</h1>
 <p><b>One branch per feature or bugfix, cut fresh from <code>main</code>, and a pull request once that feature is finished.</b> Give the branch a name that says what it is (<code>claude/publish-portable-zip</code>, <code>claude/fix-qa-disabled-link</code>), not a name that just identifies the agent or the session.</p>
 <p><b>Do not reuse one long-lived branch for a series of unrelated changes.</b> This is worth stating because it has already gone wrong: a single branch was reused for roughly twenty successive PRs, and because each PR's content reached <code>main</code> under different commit ids (so the branch itself was never fast-forwarded), it silently drifted about sixty commits behind. What it still carried then <em>looked</em> like unmerged work but was entirely duplicated in <code>main</code> already &ndash; costing real time to establish before anything could safely be pushed to it. <a class="el" href="classA.html">A</a> branch taken fresh from <code>main</code> per change cannot get into that state.</p>
@@ -82,7 +82,7 @@ Branches and pull requests</h1>
 <li>If an agent's own configuration names a fixed branch to develop on (some session templates do), that instruction conflicts with this one. Prefer this file's workflow, and say so, rather than silently reusing the fixed branch &ndash; but note that a fresh session will start from that template again, so the template itself is what needs changing.</li>
 <li>Keep an unrelated fix out of an existing PR's branch. If something needs fixing while a PR is open, that is a new branch and a new PR, even when the fix is one line.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md44"></a>
+<h1><a class="anchor" id="autotoc_md41"></a>
 A red CI is everyone's to fix</h1>
 <p><b>Who turned CI red does not matter, and a test going red is not a lapse &ndash; it is the test doing the job it was written for.</b> Any test fails eventually; that is the point of having one. So there is nothing to apologise for in causing a red build, nobody is disappointed by it, and there is no reason to spend effort establishing whose change it was except where that genuinely helps fix it.</p>
 <p><b>What matters is that a red CI gets fixed, by whoever is in a position to fix it, whether or not they caused it.</b> Picking up someone else's failure is welcome, not an intrusion or a criticism of them. The alternative is what otherwise happens by default: everyone correctly recognises the failure as not-theirs, nobody owns it, and it stays red for weeks.</p>
@@ -590,13 +590,18 @@ Communication with Maxima</h2>
   &lt;tt&gt;check_translations_not_wiped.py&lt;/tt&gt; does exactly that against &lt;tt&gt;origin/main&lt;/tt&gt;
   on every push (wired into &lt;tt&gt;compile_ubuntu.yml&lt;/tt&gt; as its own fast,
   standalone job, no build dependencies) and fails loudly if any
-  translation would go from non-empty to empty. It catches only "translated text disappeared entirely," not "translation is now provably worse," and
-  can in principle false-positive if one push both reworded a translatable
-  string and committed a regenerated &lt;tt&gt;.po&lt;/tt&gt; (the old msgid's entry
-  vanishing under a genuine rename looks identical to it being wiped) &amp;ndash;
-  rare, since the convention here is not to commit &lt;tt&gt;update-locale&lt;/tt&gt; drift
-  alongside unrelated changes, but worth knowing if it ever fires on
-  something legitimate.
+  translation would go from non-empty to empty. It catches only "translated text disappeared entirely," not "translation is now provably worse."
+  &lt;strong&gt;It only compares msgids the current &lt;tt&gt;wxMaxima.pot&lt;/tt&gt; still contains.&lt;/strong&gt; A
+  string deleted or reworded in the source leaves the template, and
+  msgmerge then makes its entry obsolete or reuses the text as a fuzzy
+  suggestion for a similar new msgid &amp;ndash; which is not a wipe. Before
+  2026-10-12 it compared every msgid, so the weekly refresh (below) failed
+  as soon as a feature with translated strings had been removed (251
+  "wiped" translations, all of them removed clipboard-format and
+  help-browser options). That leaves the template itself as the way a
+  stale snapshot could hide a wipe, so the same per-push job also runs
+  &lt;tt&gt;check_pot_not_truncated.py&lt;/tt&gt; against &lt;tt&gt;origin/main&lt;/tt&gt;'s POT, plus
+  &lt;tt&gt;test_check_translations_not_wiped.py&lt;/tt&gt;.
   &lt;strong&gt;If a mass wipe ever does need undoing&lt;/strong&gt;, patch at the text level: find
   each entry's line range in both the good and the bad file independently
   (&lt;tt&gt;polib&lt;/tt&gt;'s &lt;tt&gt;.linenum&lt;/tt&gt;) and splice only the &lt;tt&gt;msgstr&lt;/tt&gt; block. Re-saving
