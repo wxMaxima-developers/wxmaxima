@@ -118,6 +118,13 @@ public:
     - false: hide it
   */
   void ShowPane(int id, bool show = true);
+  /*! Check the Help menu's radio items that match the configuration
+
+    Covers where help is shown and whether Maxima answers ?, ?? and
+    describe() on the console. Called when the menu is built, after the options
+    dialog was closed and when Maxima reports a new output_format_for_help.
+  */
+  void UpdateHelpMenuChecks();
   //! Is the XML inspector shown?
   bool IsXMLInspectorShown(){return m_manager.GetPane(wxS("XmlInspector")).IsShown();}
   //! Is the performance monitor shown?

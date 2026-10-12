@@ -1,5 +1,15 @@
 # Current development version
 
+- There is now one setting for where help is shown, the sidebar or a
+  browser (Help menu, or "Show help in" in the configuration dialog's
+  "Maxima" tab). F1, "Help on ...", the manuals and Maxima's own ?, ?? and
+  describe() all follow it. Before, Maxima's help had a sidebar/browser
+  choice of its own, so "Help on ..." could open a browser although the
+  sidebar had been chosen. Whether Maxima answers ? on the console instead
+  is a checkbox, and that choice is now remembered properly: the Help menu
+  used to claim "in the console" after every start, and a choice made in
+  the configuration dialog never reached Maxima. Old configurations keep
+  Maxima's help on the console if it was there.
 - Web addresses in code cells' comments are now links, as they already
   were in text cells: Ctrl+click (Cmd+click on macOS) or the context menu
   opens them. An address in a string stays plain code.
