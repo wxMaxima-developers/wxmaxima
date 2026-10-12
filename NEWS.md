@@ -1,5 +1,9 @@
 # Current development version
 
+- Asking Maxima for help (`? integrate`, `describe()`) before wxMaxima had
+  read the manual's index froze wxMaxima for good. It happened wherever the
+  help goes to an external browser instead of the help sidebar.
+
 - The release source tarball leaves out every dot file and dot directory,
   not just the ones .gitattributes happened to list, and a test now checks
   that it does (GH #2272).
