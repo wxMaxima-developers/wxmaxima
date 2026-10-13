@@ -1,5 +1,9 @@
 # Current development version
 
+- wxMaxima no longer carries its own copy of the NanoSVG library: SVG
+  images, plots and icons are now rendered by wxWidgets. SVG images in a
+  .wxm file (GH #2087) and copies of SVG images, for example of a copied
+  cell, are shown instead of "Cannot render the image".
 - On Windows, help went to a browser although the help sidebar now works:
   every configuration there had stored "not the sidebar" while the sidebar
   couldn't be offered, and that default was read back as a choice. Such a

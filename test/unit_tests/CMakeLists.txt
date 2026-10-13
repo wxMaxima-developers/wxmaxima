@@ -258,6 +258,16 @@ target_link_libraries(test_SyntaxErrorLocation PRIVATE ${wxWidgets_LIBRARIES})
 add_test(NAME SyntaxErrorLocation
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_SyntaxErrorLocation>")
 
+# wxWidgets can't tell an SVG's own size, so we read it from the root
+# element ourselves; a pure string function, tested directly.
+add_executable(test_SvgSize
+    test_SvgSize.cpp ${CMAKE_SOURCE_DIR}/src/SvgSize.cpp
+    ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
+target_include_directories(test_SvgSize PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_link_libraries(test_SvgSize PRIVATE ${wxWidgets_LIBRARIES})
+add_test(NAME SvgSize
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_SvgSize>")
+
 # Link detection in text cells (GH #2396) is a pure string function shared by
 # the display and the HTML/LaTeX exporters, so it is tested directly.
 add_executable(test_UrlDetection

@@ -75,8 +75,9 @@ With the following license:
 NanoSVG
 -------------------------------------------------------------------------------
 
-wxMaxima includes a copy of NanoSVG (src/nanoSVG/), used to rasterize the
-scalable icons and images embedded in the program.
+wxWidgets, which wxMaxima is built on, includes NanoSVG, which renders
+wxMaxima's scalable icons and images; a build that links wxWidgets
+statically therefore contains it.
 
 The library was obtained from the following website:
 https://github.com/memononen/nanosvg/

@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "Cell.cpp"
 #include "CellImpl.h"
 #include "FontVariantCache.h"
@@ -38,7 +39,11 @@ wxFontStyle Configuration::IsItalic(long) const { return {}; }
 wxColour Configuration::GetColor(TextStyle) { return {}; }
 bool Configuration::HideMarkerForThisMessage(wxString) { return false; }
 void Configuration::NotifyOfCellRedraw(const Cell *) {}
-long Configuration::GetLineWidth() const { return 1; }
+// The canvas width, so a test can make room for an image by setting it; 1, as
+// this stub always used to return, while it is unset.
+long Configuration::GetLineWidth() const {
+  return std::max<long>(1, GetCanvasSize().x);
+}
 
 // ... (rest of commented out code)
 

@@ -832,12 +832,16 @@ a local TCP socket.
   command in `info/CMakeLists.txt`. Keywords Maxima's manual already documents
   (including `MaximaManual::AnchorAliasses()`, e.g. `wxdraw2d`) stay out of the
   list: Maxima's description of the wrapped command explains the arguments.
-- **`nanoSVG.cpp` is excluded from unity builds (`SKIP_UNITY_BUILD_INCLUSION`).**
-  It is the one file that compiles nanoSVG's implementation; batched after a
-  file that already included the header, the include guard drops it and the
-  link fails with `undefined reference to wxm_nsvgParse`. Which file precedes
-  it depends only on its position in `SOURCE_FILES`, so this surfaced simply
-  by adding an unrelated source file to that list.
+- **SVG goes through `wxBitmapBundle::FromSVG()`, and its `GetBitmap()`
+  sets a scale factor.** The vendored nanoSVG copy is gone (2026-10). A
+  bundle's `GetBitmap(size)` returns a bitmap whose scale factor is
+  `size.y / defaultSize.y`, which a HiDPI screen honours by drawing it at the
+  default size. Anything that wants pixels 1:1 resets it with
+  `SetScaleFactor(1)` (see `Image::SvgBitmapAt()` and `SvgBitmap::SetSize()`),
+  or creates the bundle with the size it asks for, as
+  `Cell::BitmapFromSVG()` does. wxWidgets offers no public way to ask an SVG
+  for its own size; `wxm::SvgIntrinsicSize()` (`src/SvgSize.h`) reads it from
+  the root element.
 - **`Worksheet::AnonymizeCodeCells()` (GH #1339, Help menu -> "Anonymize Code
   for Bug Report"):** renames every non-builtin variable/function name in the
   selected code cells (whole document if nothing's selected, after a

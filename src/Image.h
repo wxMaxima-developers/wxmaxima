@@ -39,9 +39,7 @@
 #include <wx/buffer.h>
 #include <wx/zipstrm.h>
 #include <wx/wfstream.h>
-#define NANOSVG_ALL_COLOR_KEYWORDS
-#include "nanosvg_private.h"
-#include "nanosvgrast_private.h"
+#include <wx/bmpbndl.h>
 
 
 /*! Manages an auto-scaling image
@@ -99,9 +97,6 @@ public:
 
   ~Image();
 
-  //! Converts rgba data to a wxBitmap
-  static wxBitmap RGBA2wxBitmap(const unsigned char imgdata[],
-                                const int &width, const int &height);
 
   void SetConfiguration(Configuration *config){
     if(m_loadImageTask)
@@ -278,7 +273,7 @@ public:
   bool CanExportSVG() const {
     if(m_loadImageTask)
       m_loadImageTask->Wait();
-    return m_svgRast != nullptr;}
+    return IsSvg();}
 
   //! The tooltip to use wherever an image that's not Ok is shown.
   static const wxString GetBadImageToolTip();
@@ -359,9 +354,20 @@ private:
   wxString m_imageName;
   //! The image resolution
   double m_ppi = 72;
-  struct free_deleter { void operator()(void *p) const { std::free(p); } };
-  wxm_NSVGimage* m_svgImage = {};
-  std::unique_ptr<struct wxm_NSVGrasterizer, free_deleter> m_svgRast{nullptr};
+  //! Is this an SVG image? Loading stores every SVG gzip-compressed, as .svgz
+  bool IsSvg() const { return m_extension == wxS("svgz"); }
+  /*! The SVG image, ready to be rendered at any size.
+
+    Made the first time it is needed rather than while loading: loading runs
+    in a background thread, and wxWidgets' LunaSVG backend sets up its font
+    cache on first use without guarding it against two threads doing so at
+    once. Rendering happens on the GUI thread anyway.
+  */
+  const wxBitmapBundle &SvgBundle();
+  //! The SVG rendered at size pixels; an invalid bitmap if it can't be
+  wxBitmap SvgBitmapAt(wxSize size);
+  //! The SVG, once SvgBundle() has parsed it
+  wxBitmapBundle m_svgBundle;
 };
 
 #endif // IMAGE_H

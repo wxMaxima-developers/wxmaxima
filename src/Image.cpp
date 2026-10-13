@@ -33,15 +33,13 @@
 
 #include <wx/fs_arc.h>
 #include <wx/buffer.h>
-#define NANOSVG_ALL_COLOR_KEYWORDS
-#include "nanosvg_private.h"
-#include "nanosvgrast_private.h"
 #include <Image.h>
 #include <vector>
 #include <utility>
 #include <wx/log.h>
 #include "StringUtils.h"
 #include "SvgBitmap.h"
+#include "SvgSize.h"
 #include <wx/mstream.h>
 #include <wx/regex.h>
 #include <wx/stdpaths.h>
@@ -63,40 +61,37 @@ Image::Image(Configuration *config, const wxMemoryBuffer &image, const wxString 
   m_extension = type;
 
   wxLogBuffer errorAggregator;
-  wxImage Image;
-  // Remark for issue #2087:
-  // That works, if the image is a usual image format (png, jpeg, ...). For "svgz" (and "svg") we must first convert them
-  // image with wxBitmapBundle::FromSVG (if wxWidgets is new enough) and then load the image.
-  // (Implemented now, but it does not work - why? Was my assumption false? If so, the commit can be reverted...)
-
-  wxLogMessage(_("Image of type %s found."), type); // should output the type for every loaded image. However, I can't see any log message. Why?
   if (m_compressedImage.GetDataLen() > 0) {
-    if (type == wxS("svgz")) {
+    if (IsSvg()) {
+      // Rendered by SvgBundle() when drawn, at whatever size it is drawn
+      // at; only its own size is needed here (GH #2087).
       wxMemoryInputStream memIn(m_compressedImage.GetData(), m_compressedImage.GetDataLen());
       wxZlibInputStream gzipInput(memIn, wxZLIB_GZIP);
-      // Output to a string and get the result as wxString
       wxStringOutputStream stringOut;
       stringOut.Write(gzipInput);
-      wxString decompressedString = stringOut.GetString();
-      // wxBitmapBundle::FromSVG currently does not use the sizes given in the SVG file, but requires a wxSize parameter. Am I right?
-      // Maybe we should read them from the SVG data by ourselves.
-      // For now, just use a constant size...
-      wxBitmapBundle bmb = wxBitmapBundle::FromSVG(decompressedString.mb_str(), wxSize(200,200));
-      Image = bmb.GetBitmap(wxSize(200,200)).ConvertToImage();
+      m_ppi = m_configuration->GetPPI().x;
+      const wxSize size =
+        wxm::SvgIntrinsicSize(stringOut.GetString(), m_ppi);
+      if (size.IsFullySpecified()) {
+        m_originalWidth = size.x;
+        m_originalHeight = size.y;
+      }
+      else
+        InvalidBitmap(_("Could not parse the SVG image data."));
     } else {
+      wxImage Image;
       wxMemoryInputStream istream(m_compressedImage.GetData(),
                                   m_compressedImage.GetDataLen());
       Image.LoadFile(istream);
-    }
-    // Image.IsOk() is now true for svgz files too (wxWidgets >= 3.1.6). Before it was not. However, the SVG is still not displayed in WXM files... Strange!
-    if(Image.IsOk())
-    {
-      m_originalWidth = Image.GetWidth();
-      m_originalHeight = Image.GetHeight();
-    }
-    else
-    {
-      InvalidBitmap(errorAggregator.GetBuffer());
+      if(Image.IsOk())
+      {
+        m_originalWidth = Image.GetWidth();
+        m_originalHeight = Image.GetHeight();
+      }
+      else
+      {
+        InvalidBitmap(errorAggregator.GetBuffer());
+      }
     }
   } else
     InvalidBitmap(_("Image data had zero length!"));
@@ -111,14 +106,12 @@ Image::Image(Configuration *config, const wxBitmap &bitmap) {
 Image::Image(Configuration *config, const wxString &image,
              const wxString &wxmxFile, bool remove)
 {
-  m_svgImage = nullptr;
   m_configuration = config;
   m_ppi = m_configuration->GetPPI().x;
   LoadImage(image, wxmxFile, remove);
 }
 
 Image::Image(Configuration *config, const Image &image) {
-  m_svgImage = nullptr;
   m_configuration = config;
   m_scaledBitmap.Create(1, 1);
   m_maxWidth = image.m_maxWidth;
@@ -128,6 +121,7 @@ Image::Image(Configuration *config, const Image &image) {
   m_compressedImage = image.m_compressedImage;
   m_ppi = image.m_ppi;
   m_extension = image.m_extension;
+  m_svgBundle = image.m_svgBundle;
 }
 
 Image::~Image() {
@@ -166,8 +160,6 @@ Image::~Image() {
                      m_gnuplotData.utf8_str());
     }
   }
-  if (m_svgImage)
-    free(m_svgImage);
 }
 
 wxMemoryBuffer Image::ReadCompressedImage(stop_token stopToken, wxInputStream *data) {
@@ -189,12 +181,8 @@ wxBitmap Image::GetUnscaledBitmap() {
   if (m_isInvalid)
     GenerateInvalidBitmap();
 
-  if (m_svgRast) {
-    std::vector<unsigned char> imgdata(m_originalWidth * m_originalHeight * 4);
-
-    wxm_nsvgRasterize(m_svgRast.get(), m_svgImage, 0, 0, 1, imgdata.data(),
-                      m_originalWidth, m_originalHeight, m_originalWidth * 4);
-    return RGBA2wxBitmap(imgdata.data(), m_originalWidth, m_originalHeight);
+  if (IsSvg()) {
+    return SvgBitmapAt(wxSize(m_originalWidth, m_originalHeight));
   } else {
     wxMemoryInputStream istream(m_compressedImage.GetData(),
                                 m_compressedImage.GetDataLen());
@@ -682,16 +670,14 @@ wxBitmap Image::GetBitmap(double scale) {
     return m_scaledBitmap;
 
   // Seems like we need to create a new scaled bitmap.
-  if (m_svgRast) {
-    // First create rgba data
-    std::vector<unsigned char> imgdata(static_cast<std::size_t>(m_width) * m_height * 4);
-
-    wxm_nsvgRasterize(m_svgRast.get(), m_svgImage, 0, 0,
-                      static_cast<double>(m_width) / (static_cast<double>(m_originalWidth)),
-                      imgdata.data(),
-                      m_width, m_height, m_width * 4);
-    return m_scaledBitmap =
-      RGBA2wxBitmap(imgdata.data(), m_width, m_height);
+  if (IsSvg()) {
+    // The bundle renders from the vector data at exactly this size, so the
+    // image stays sharp at any zoom factor.
+    m_scaledBitmap = SvgBitmapAt(wxSize(m_width, m_height));
+    if (m_scaledBitmap.IsOk())
+      return m_scaledBitmap;
+    InvalidBitmap(_("Could not render the SVG image."));
+    Recalculate();
   } else {
     wxImage img;
     if (m_compressedImage.GetDataLen() > 0) {
@@ -990,25 +976,17 @@ void Image::LoadImage_Backgroundtask(stop_token stopToken,
           svgContents_string += line + wxS("\n");
         }
       }
-      // Convert the data we have read to a modifiable char * containing the svg
-      // file's contents.
-      wxCharBuffer svgContents = svgContents_string.ToUTF8();
-
-      // Parse the svg file's contents
-      int ppi = m_configuration->GetPPI().x;
-
-      if (svgContents.data()) {
-        m_svgImage = wxm_nsvgParse(svgContents.data(), "px", ppi);
-      }
-
-      if (m_svgImage) {
-        if (!m_svgRast)
-          m_svgRast.reset(wxm_nsvgCreateRasterizer());
-        m_originalWidth = m_svgImage->width;
-        m_originalHeight = m_svgImage->height;
+      // Only the size is needed now; the SVG itself is parsed by SvgBundle(),
+      // on the GUI thread, the first time the image is drawn.
+      const wxSize size =
+        wxm::SvgIntrinsicSize(svgContents_string, m_configuration->GetPPI().x);
+      if (size.IsFullySpecified()) {
+        m_originalWidth = size.x;
+        m_originalHeight = size.y;
       } else {
-        // nanosvg is vendored, not a wxWidgets codec: there is no "missing
-        // handler" case here, a parse failure is always a real bug.
+        // Every SVG renderer wxWidgets can use is compiled in whenever SVG
+        // support is: there is no "missing codec" case, a file without a
+        // usable root element is always a real failure.
         RecordDecodeFailure(_("Could not parse the SVG image data."),
                              /* missingCodec = */ false);
       }
@@ -1153,26 +1131,31 @@ const wxString Image::GetBadImageToolTip() {
     "empty images");
 }
 
-wxBitmap Image::RGBA2wxBitmap(const unsigned char imgdata[],
-                              const int &width, const int &height) {
-  wxBitmap retval = wxBitmap(wxSize(width, height), 32);
-  const unsigned char *rgba = imgdata;
-  if (!retval.Ok())
-    return retval;
+wxBitmap Image::SvgBitmapAt(wxSize size) {
+  if (!SvgBundle().IsOk())
+    return wxBitmap();
+  wxBitmap bitmap = SvgBundle().GetBitmap(size);
+  // GetBitmap() marks the bitmap as drawn at size / (the bundle's default
+  // size) on a HiDPI screen, which would make it occupy the default size on
+  // the worksheet whatever size we asked for. Our sizes are in pixels already.
+  if (bitmap.IsOk())
+    bitmap.SetScaleFactor(1);
+  return bitmap;
+}
 
-  wxAlphaPixelData bmpdata(retval);
-  wxAlphaPixelData::Iterator dst(bmpdata);
-  for (int y = 0; y < height; y++) {
-    dst.MoveTo(bmpdata, 0, y);
-    for (int x = 0; x < width; x++) {
-      unsigned char a = rgba[3];
-      dst.Red() = rgba[0] * a / 255;
-      dst.Green() = rgba[1] * a / 255;
-      dst.Blue() = rgba[2] * a / 255;
-      dst.Alpha() = a;
-      dst++;
-      rgba += 4;
-    }
-  }
-  return retval;
+const wxBitmapBundle &Image::SvgBundle() {
+  if (m_svgBundle.IsOk() || !IsSvg())
+    return m_svgBundle;
+  wxMemoryInputStream istream(m_compressedImage.GetData(),
+                              m_compressedImage.GetDataLen());
+  wxZlibInputStream zstream(istream);
+  if (!zstream.IsOk())
+    return m_svgBundle;
+  wxMemoryOutputStream svg;
+  zstream.Read(svg);
+  svg.PutC('\0');
+  m_svgBundle = wxBitmapBundle::FromSVG(
+    static_cast<char *>(svg.GetOutputStreamBuffer()->GetBufferStart()),
+    wxSize(m_originalWidth, m_originalHeight));
+  return m_svgBundle;
 }

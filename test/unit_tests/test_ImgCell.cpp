@@ -24,10 +24,11 @@
 #include <wx/sysopt.h>
 #include <wx/dcmemory.h>
 #include <wx/mstream.h>
+#include <wx/zstream.h>
 
 #include "test_ImgCell.h"
 #include "FontAttribs.cpp"
-#include "nanoSVG.cpp"
+#include "SvgSize.cpp"
 #include "Image.cpp"
 #include "BackgroundQueue.cpp"
 #include "ImgCell.cpp"
@@ -115,6 +116,99 @@ SCENARIO("A masked image stays transparent when drawn like ImgCell draws it") {
         CHECK(result.GetGreen(cx, cy) == 255);
         CHECK(result.GetBlue(cx, cy) == 255);
       }
+    }
+  }
+}
+
+//! A 40x20 SVG with a red 20x10 rectangle in its middle, gzipped like the
+//! .svgz images a .wxm file embeds.
+static wxMemoryBuffer RedRectSvgz() {
+  const char svg[] =
+    "<?xml version=\"1.0\"?>\n"
+    "<svg width=\"40\" height=\"20\" viewBox=\"0 0 40 20\" "
+    "xmlns=\"http://www.w3.org/2000/svg\">"
+    "<rect x=\"10\" y=\"5\" width=\"20\" height=\"10\" fill=\"#ff0000\"/></svg>";
+  wxMemoryOutputStream mstream;
+  {
+    wxZlibOutputStream zstream(mstream, wxZ_BEST_COMPRESSION, wxZLIB_GZIP);
+    zstream.Write(svg, sizeof(svg) - 1);
+  }
+  wxMemoryBuffer svgz;
+  svgz.AppendData(mstream.GetOutputStreamBuffer()->GetBufferStart(),
+                  mstream.GetSize());
+  return svgz;
+}
+
+//! Is the pixel at x, y the opaque red of RedRectSvgz()'s rectangle?
+static bool IsRed(const wxImage &img, int x, int y) {
+  return (img.GetRed(x, y) == 255) && (img.GetGreen(x, y) == 0) &&
+    (img.GetBlue(x, y) == 0) && (!img.HasAlpha() || (img.GetAlpha(x, y) == 255));
+}
+
+// SVG images are rendered by wxWidgets (wxBitmapBundle::FromSVG()) since the
+// vendored nanoSVG copy was dropped; wxWidgets can't tell the SVG's own size,
+// which we therefore read from the root element.
+SCENARIO("An SVG image is drawn at its own size, and re-rendered when zoomed") {
+  Configuration config;
+  // Room for the image even at 200%: an image is shrunk to fit the window.
+  config.SetCanvasSize(wxSize(2000, 2000));
+  GIVEN("an .svgz image of 40x20 pixels") {
+    Image image(&config, RedRectSvgz(), wxS("svgz"));
+    THEN("it knows its own size") {
+      CHECK(image.GetOriginalWidth() == 40);
+      CHECK(image.GetOriginalHeight() == 20);
+    }
+    WHEN("it is drawn at 100%") {
+      wxBitmap bitmap = image.GetBitmap(1.0);
+      REQUIRE(bitmap.IsOk());
+      THEN("the bitmap has the SVG's size, pixel for pixel") {
+        CHECK(bitmap.GetWidth() == 40);
+        CHECK(bitmap.GetHeight() == 20);
+        CHECK(bitmap.GetScaleFactor() == 1.0);
+      }
+      THEN("the rectangle is drawn where the SVG says it is") {
+        wxImage img = bitmap.ConvertToImage();
+        CHECK(IsRed(img, 20, 10));
+        CHECK(!IsRed(img, 5, 10));
+      }
+    }
+    WHEN("it is drawn at 200%") {
+      wxBitmap bitmap = image.GetBitmap(2.0);
+      REQUIRE(bitmap.IsOk());
+      THEN("it is rendered at twice the size, not stretched to it") {
+        CHECK(bitmap.GetWidth() == 80);
+        CHECK(bitmap.GetHeight() == 40);
+        CHECK(bitmap.GetScaleFactor() == 1.0);
+        wxImage img = bitmap.ConvertToImage();
+        // The rectangle's edge is at x=20 now. Rendered from the vector data
+        // it is sharp; a 40px bitmap scaled up would blur it across x=19..20.
+        CHECK(IsRed(img, 20, 20));
+        CHECK(IsRed(img, 59, 20));
+        CHECK(img.GetAlpha(19, 20) == 0);
+      }
+    }
+    WHEN("the image is copied, as copying its cell does") {
+      Image copy(&config, image);
+      THEN("the copy is drawn, too") {
+        wxBitmap bitmap = copy.GetBitmap(1.0);
+        REQUIRE(bitmap.IsOk());
+        CHECK(bitmap.GetWidth() == 40);
+        CHECK(IsRed(bitmap.ConvertToImage(), 20, 10));
+      }
+    }
+  }
+  GIVEN("data that isn't an SVG") {
+    wxMemoryOutputStream mstream;
+    {
+      wxZlibOutputStream zstream(mstream, wxZ_BEST_COMPRESSION, wxZLIB_GZIP);
+      zstream.Write("not an image", 12);
+    }
+    wxMemoryBuffer svgz;
+    svgz.AppendData(mstream.GetOutputStreamBuffer()->GetBufferStart(),
+                    mstream.GetSize());
+    Image image(&config, svgz, wxS("svgz"));
+    THEN("the image is marked invalid instead of drawn empty") {
+      CHECK(image.m_isInvalid);
     }
   }
 }

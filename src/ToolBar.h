@@ -314,7 +314,6 @@ private:
   bool m_canEvalThisCell_old = true;
   //! The state TextFormatState() last showed, to avoid needless repaints
   bool m_canFormatText_old = true;
-  std::unique_ptr<struct wxm_NSVGrasterizer, decltype(std::free)*> m_svgRast{nullptr, std::free};
   bool m_worksheetEmpty_old  = false;
   AnimationStartStopState m_AnimationStartStopState = Inactive;
   //! True if we show the "needs information" button.

@@ -20,32 +20,36 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 /*! \file
-  This file declares the class Image
+  This file declares the class SvgBitmap
 
-  Image stores compressed images and handles scaling and uncompressing them.
+  SvgBitmap is a wxBitmap rendered from one of our embedded, usually
+  gzip-compressed, SVG images.
 */
 
 #ifndef SVGBITMAP_H
 #define SVGBITMAP_H
 
-#include <memory>
 #include "precomp.h"
 #include <wx/bitmap.h>
-#include "nanosvg_private.h"
-#include "nanosvgrast_private.h"
-#include "cells/Cell.h"
-#define NANOSVG_ALL_COLOR_KEYWORDS
+#include <wx/bmpbndl.h>
 
 /*! A wxBitmap with a constructor that generates the image from SVG.
+
+  The rendering is done by wxWidgets (wxBitmapBundle::FromSVG()); this class
+  only unpacks our embedded data and keeps the bundle around, so a new size
+  is rendered from the vector data again rather than scaled from pixels.
  */
 class SvgBitmap: public wxBitmap
 {
 public:
-//! A constructor that loads the data into a wxBitmap
+  /*! Renders an SVG image
+
+    \param window Unused; kept so the call sites read as before
+    \param data   The SVG, either as text or gzip-compressed
+    \param len    The length of data in bytes
+  */
   SvgBitmap(wxWindow *window, const unsigned char *data, const size_t len, int width = 640, int height = 480);
   SvgBitmap(wxWindow *window, const unsigned char *data, const std::size_t len, wxSize siz);
-  SvgBitmap(wxWindow *window, const wxString &data, wxSize siz);
-  virtual ~SvgBitmap() override;
   SvgBitmap(SvgBitmap &&) = delete;
   SvgBitmap &operator=(SvgBitmap &&o) noexcept;
 
@@ -53,29 +57,11 @@ public:
   const SvgBitmap& SetSize(int width, int height);
   //! Sets the bitmap to a new size and renders the svg image at this size.
   const SvgBitmap& SetSize(wxSize siz){return SetSize(siz.x, siz.y);}
-  //! Gets the original size of the svg image
-  wxSize GetOriginalSize() const
-    { return m_svgImage ? wxSize(m_svgImage->width, m_svgImage->height) : wxDefaultSize; }
   /*! An "invalid bitmap" sign */
-  wxBitmap GetInvalidBitmap(int targetSize);
+  static wxBitmap GetInvalidBitmap(int targetSize);
 private:
-  //! No idea what nanoSVG stores here. But can be shared between images.
-  static struct wxm_NSVGrasterizer* m_svgRast;
   //! The renderable svg image after we have read it in
-  std::unique_ptr<wxm_NSVGimage, decltype(std::free)*> m_svgImage{nullptr, std::free};
-  //! The window this bitmap will be drawn o
-#if defined(__GNUC__) && !defined(__clang__) && __GNUC__ < 12
-  // GCC < 12 doesn't support [[maybe_unused]] on non-static data members and
-  // warns "attribute ignored" about it (fixed in GCC 12); Clang needs the
-  // attribute here to silence -Wunused-private-field, so it can't just be
-  // removed.
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wattributes"
-#endif
-  [[maybe_unused]] wxWindow *m_window = nullptr;
-#if defined(__GNUC__) && !defined(__clang__) && __GNUC__ < 12
-#pragma GCC diagnostic pop
-#endif
+  wxBitmapBundle m_svg;
 };
 
 #endif // SVGBITMAP_H

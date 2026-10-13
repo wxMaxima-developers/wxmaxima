@@ -42,8 +42,8 @@ jobs:
       - name: flawfinder_scan
         # Scanning './' (as this step used to) buries wxMaxima's own findings
         # under ~85% noise from vendored third-party code this project doesn't
-        # maintain and can't fix here: the bundled nanoSVG single-header
-        # library, the bundled nlohmann/json single-header library and the
+        # maintain and can't fix here: the bundled nlohmann/json
+        # single-header library and the
         # bundled Catch2 test framework header alone account for the large
         # majority of hits. flawfinder has no path-exclude flag of its own (it
         # only takes a list of files/directories to scan, which it recurses
@@ -65,7 +65,7 @@ jobs:
         # list nobody reads because it is mostly third-party noise is the
         # failure mode this whole file list exists to avoid.
         run: |
-          find . \( -path ./src/nanoSVG -o -path ./src/vendor -o -path ./test/catch2 \
+          find . \( -path ./src/vendor -o -path ./test/catch2 \
                      -o -path ./.git -o -path ./test/unit_tests/test_ImgCell.h \) -prune \
                -o -type f \( -name '*.c' -o -name '*.cc' -o -name '*.cpp' -o -name '*.h' -o -name '*.hpp' \) -print \
                > flawfinder_files.txt
