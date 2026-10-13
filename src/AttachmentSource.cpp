@@ -60,12 +60,15 @@ wxMemoryBuffer AttachmentSource::Read(const wxString &name) const {
   }
   if (!entry || (entry->GetName() != name))
     return result;
-  char buf[65536]; // flawfinder: ignore -- Read() below is bounded by sizeof(buf)
+  // Read straight into the result's own (heap) storage: a chunk buffer big
+  // enough to read efficiently is too big for the stack, which matters on
+  // the background threads that load images.
+  constexpr size_t chunkSize = 65536;
   while (zip.IsOk() && !zip.Eof()) {
-    zip.Read(buf, sizeof(buf));
+    zip.Read(result.GetAppendBuf(chunkSize), chunkSize);
+    result.UngetAppendBuf(zip.LastRead());
     if (zip.LastRead() == 0)
       break;
-    result.AppendData(buf, zip.LastRead());
   }
   return result;
 }
