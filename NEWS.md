@@ -1,5 +1,10 @@
 # Current development version
 
+- The option that makes Maxima print the answer to ?, ?? and describe() as
+  text into the worksheet now sits under "Show help in" in the
+  configuration dialogue, and next to the sidebar/browser choice in the
+  Help menu, and says "worksheet" instead of "console": it is the one
+  exception to where help is shown, not a separate setting.
 - Copied cells keep their bold, italic and other text formatting, their
   output and their images when they are pasted into wxMaxima: besides the
   .wxm code, a copy now also puts the cells on the clipboard as XML, with
