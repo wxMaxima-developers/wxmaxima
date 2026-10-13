@@ -206,6 +206,8 @@ private:
   static VarReadFunctionHash m_variableReadActions;
   //! Maps a variable name to the action run when Maxima reports it undefined.
   static VarUndefinedFunctionHash m_variableUndefinedActions;
+  //! The quoted temp dir the user was last warned about (GH #1106)
+  wxString m_tempDirQuoteWarningShownFor;
 };
 
 #endif // MAXIMARESPONSEREADER_H
