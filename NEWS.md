@@ -4,6 +4,8 @@
   images, plots and icons are now rendered by wxWidgets. SVG images in a
   .wxm file (GH #2087) and copies of SVG images, for example of a copied
   cell, are shown instead of "Cannot render the image".
+- The toolbar's "Evaluate all" button had the same icon as "Evaluate
+  current cell". It gets back its own, curved arrow.
 - On Windows, help went to a browser although the help sidebar now works:
   every configuration there had stored "not the sidebar" while the sidebar
   couldn't be offered, and that default was read back as a choice. Such a
