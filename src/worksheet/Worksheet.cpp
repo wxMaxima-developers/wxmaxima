@@ -562,6 +562,15 @@ Worksheet::~Worksheet() {
   // still whole: on GTK, wxClipboard::Flush() runs the event loop until the
   // clipboard manager has fetched the data.
   RenderClipboardContents();
+  // From here on this object can't handle any events. Its members and
+  // m_configuration go away before the wxWindow base class destructor runs,
+  // and that destructor can still send us events: on wxGTK4 detaching the
+  // widget from its parent unmaps it, and GTK then emits a leave event that
+  // reached OnMouseExit() with m_configuration already null, crashing
+  // wxMaxima on close. Disabling the handler stops every event, including
+  // ones bound to this window from elsewhere, from reaching the dynamic
+  // event table, which is what the next platform quirk would hit, too.
+  SetEvtHandlerEnabled(false);
   // The view is dying: cells may no longer schedule recalculations on it.
   m_configuration->SetRecalculateRequestCallback({});
   m_configuration->SetRecalculateAllRequestCallback({});

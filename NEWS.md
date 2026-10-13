@@ -1,5 +1,7 @@
 # Current development version
 
+- wxMaxima no longer crashes on closing with wxWidgets' GTK4 port, which
+  sends the worksheet a mouse event while its window is being destroyed.
 - The option that makes Maxima print the answer to ?, ?? and describe() as
   text into the worksheet now sits under "Show help in" in the
   configuration dialogue, and next to the sidebar/browser choice in the
