@@ -73,6 +73,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><ul>
+<li><a class="el" href="classwxMaxima.html">wxMaxima</a> no longer crashes on closing with wxWidgets' GTK4 port, which sends the worksheet a mouse event while its window is being destroyed.</li>
 <li>The option that makes <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> print the answer to ?, ?? and describe() as text into the worksheet now sits under "Show help in" in the configuration dialogue, and next to the sidebar/browser choice in the Help menu, and says "worksheet" instead of "console": it is the one exception to where help is shown, not a separate setting.</li>
 <li>Copied cells keep their bold, italic and other text formatting, their output and their images when they are pasted into <a class="el" href="classwxMaxima.html">wxMaxima</a>: besides the .wxm code, a copy now also puts the cells on the clipboard as XML, with the images embedded (GH #2474).</li>
 <li>LaTeX export and "Copy as LaTeX" no longer depend on the window width: an expression too wide for the window, and therefore broken into lines on screen, used to be exported in its linear form, which turned a power into <code>e\hat{}(x+y)</code> instead of <code>e^{x+y}</code> and dropped some cells or exported others twice (GH #408).</li>
