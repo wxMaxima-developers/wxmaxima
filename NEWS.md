@@ -19,6 +19,8 @@
   ("Create scalable plots") is only offered where SVG plots work. SVG plots
   now have the size set in the configuration (they were always 600x480) and
   text as large as in PNG plots.
+  The log window says at startup whether SVG plots are available and, if
+  not, which SVG renderer wxWidgets was built with and what would enable them.
 - wxMaxima no longer carries its own copy of the NanoSVG library: SVG
   images, plots and icons are now rendered by wxWidgets. SVG images in a
   .wxm file (GH #2087) and copies of SVG images, for example of a copied

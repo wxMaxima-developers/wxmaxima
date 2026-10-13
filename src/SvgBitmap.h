@@ -64,9 +64,17 @@ public:
     its labels and tick marks' numbers. Found out by rendering a word set in
     the font gnuplot's svg terminal asks for, so this also says no if the
     renderer can find neither that font nor its fallback. Rendered once, on
-    first use, which has to be on the GUI thread.
+    first use, which has to be on the GUI thread, and logs
+    TextRenderingDiagnosis() then, since the option for scalable plots is
+    hidden without it.
   */
   static bool RendersText();
+  /*! Why SVG plots are available or not, given RendersText()'s result.
+
+    Says which SVG renderer wxWidgets was built with and what would enable
+    scalable plots. Not translated: it is meant for a bug report.
+  */
+  static wxString TextRenderingDiagnosis(bool rendersText);
   /*! An "invalid bitmap" sign */
   static wxBitmap GetInvalidBitmap(int targetSize);
 private:
