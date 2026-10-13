@@ -266,7 +266,8 @@ void wxMaxima::ConfigChanged() {
     }
   wxLogMessage(_("Sending configuration data to maxima."));
   // A renderer that can't draw text would show SVG plots without labels.
-  if (m_configuration.UseSVG() && SvgBitmap::RendersText())
+  // Asked first so that the log always says why plots are or aren't SVG.
+  if (SvgBitmap::RendersText() && m_configuration.UseSVG())
     m_configCommands += wxS(":lisp-quiet (setq $wxplot_usesvg t)\n");
   else
     m_configCommands += wxS(":lisp-quiet (setq $wxplot_usesvg nil)\n");

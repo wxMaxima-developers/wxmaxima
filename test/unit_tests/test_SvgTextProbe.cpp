@@ -44,6 +44,21 @@ SCENARIO("Only a wxWidgets that renders SVG with LunaSVG is said to draw text") 
 #endif
 }
 
+SCENARIO("The log says why plots are or aren't SVG") {
+  const wxString diagnosis =
+    SvgBitmap::TextRenderingDiagnosis(SvgBitmap::RendersText());
+  REQUIRE(diagnosis.Contains(wxString::Format(wxS("%d.%d.%d"), wxMAJOR_VERSION,
+                                              wxMINOR_VERSION, wxRELEASE_NUMBER)));
+#if wxUSE_NANOSVG
+  REQUIRE(diagnosis.Contains(wxS("NanoSVG")));
+  REQUIRE(diagnosis.Contains(wxS("wxUSE_NANOSVG=0")));
+#endif
+  if (SvgBitmap::RendersText())
+    REQUIRE(diagnosis.Contains(wxS("are available")));
+  else
+    REQUIRE(diagnosis.Contains(wxS("option for scalable plots is hidden")));
+}
+
 SCENARIO("Asking twice gives the same answer") {
   REQUIRE(SvgBitmap::RendersText() == SvgBitmap::RendersText());
 }

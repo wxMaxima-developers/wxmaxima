@@ -28,6 +28,8 @@
 #include <vector>
 #include <wx/mstream.h>
 #include <wx/zstream.h>
+#include <wx/image.h>
+#include <wx/log.h>
 #include "SvgBitmap.h"
 #include "invalidImage.h"
 
@@ -86,30 +88,72 @@ SvgBitmap &SvgBitmap::operator=(SvgBitmap &&o) noexcept {
   return *this;
 }
 
+namespace {
+//! Renders a word as gnuplot's svg terminal would and checks that pixels got drawn.
+bool ProbeTextRendering() {
+  // Arial, as in every text element gnuplot's svg terminal writes
+  char svg[] =
+    "<svg width=\"64\" height=\"32\" xmlns=\"http://www.w3.org/2000/svg\">"
+    "<text x=\"2\" y=\"24\" font-family=\"Arial\" font-size=\"24\" "
+    "fill=\"black\">Wx</text></svg>";
+  wxBitmapBundle bundle = wxBitmapBundle::FromSVG(svg, wxSize(64, 32));
+  if (!bundle.IsOk())
+    return false;
+  wxBitmap bitmap = bundle.GetBitmap(wxSize(64, 32));
+  if (!bitmap.IsOk())
+    return false;
+  wxImage image = bitmap.ConvertToImage();
+  if (!image.IsOk() || !image.HasAlpha())
+    return false;
+  // The text is the only thing drawn: any pixel that isn't transparent is
+  // text.
+  const unsigned char *alpha = image.GetAlpha();
+  const size_t pixels = static_cast<size_t>(image.GetWidth()) * image.GetHeight();
+  for (size_t i = 0; i < pixels; i++)
+    if (alpha[i] != 0)
+      return true;
+  return false;
+}
+} // namespace
+
+wxString SvgBitmap::TextRenderingDiagnosis(bool rendersText) {
+  const wxString wxVersion = wxString::Format(wxS("%d.%d.%d"), wxMAJOR_VERSION,
+                                              wxMINOR_VERSION, wxRELEASE_NUMBER);
+  if (rendersText)
+    return wxS("SVG plots are available: wxWidgets ") + wxVersion +
+      wxS(" renders SVG with LunaSVG, which draws text.");
+  const wxString consequence =
+    wxS(" Plots are made as PNG and the option for scalable plots is hidden.");
+  // wxBitmapBundle::FromSVG() uses NanoSVG whenever it is compiled in, even
+  // if LunaSVG is, too.
+#if wxUSE_NANOSVG
+#if defined(wxUSE_LUNASVG) && wxUSE_LUNASVG
+  return wxS("wxWidgets ") + wxVersion +
+    wxS(" was built with both NanoSVG and LunaSVG, and NanoSVG, which draws "
+        "no text, wins.") + consequence +
+    wxS(" Building wxWidgets with wxUSE_NANOSVG=0 makes it use LunaSVG.");
+#else
+  return wxS("wxWidgets ") + wxVersion +
+    wxS(" renders SVG with NanoSVG, which draws no text.") + consequence +
+    wxS(" Scalable plots need a wxWidgets >= 3.3.2 built with wxUSE_LUNASVG=1 "
+        "and wxUSE_NANOSVG=0.");
+#endif
+#elif defined(wxUSE_LUNASVG) && wxUSE_LUNASVG
+  return wxS("wxWidgets ") + wxVersion +
+    wxS(" renders SVG with LunaSVG, but a test text came out blank: LunaSVG "
+        "found neither Arial nor DejaVu Sans in the system font "
+        "directories.") + consequence;
+#else
+  return wxS("wxWidgets ") + wxVersion +
+    wxS(" was built without an SVG renderer.") + consequence;
+#endif
+}
+
 bool SvgBitmap::RendersText() {
   static const bool rendersText = [] {
-    // Arial at 12px, as in every text element gnuplot's svg terminal writes
-    char svg[] =
-      "<svg width=\"64\" height=\"32\" xmlns=\"http://www.w3.org/2000/svg\">"
-      "<text x=\"2\" y=\"24\" font-family=\"Arial\" font-size=\"24\" "
-      "fill=\"black\">Wx</text></svg>";
-    wxBitmapBundle bundle = wxBitmapBundle::FromSVG(svg, wxSize(64, 32));
-    if (!bundle.IsOk())
-      return false;
-    wxBitmap bitmap = bundle.GetBitmap(wxSize(64, 32));
-    if (!bitmap.IsOk())
-      return false;
-    wxImage image = bitmap.ConvertToImage();
-    if (!image.IsOk() || !image.HasAlpha())
-      return false;
-    // The text is the only thing drawn: any pixel that isn't transparent is
-    // text.
-    const unsigned char *alpha = image.GetAlpha();
-    const size_t pixels = static_cast<size_t>(image.GetWidth()) * image.GetHeight();
-    for (size_t i = 0; i < pixels; i++)
-      if (alpha[i] != 0)
-        return true;
-    return false;
+    const bool result = ProbeTextRendering();
+    wxLogMessage(wxS("%s"), TextRenderingDiagnosis(result));
+    return result;
   }();
   return rendersText;
 }
