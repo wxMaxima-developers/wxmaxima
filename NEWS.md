@@ -1,5 +1,9 @@
 # Current development version
 
+- Selecting text in a text cell that wraps over several lines no longer
+  makes the selection's ends jump between lines while the mouse moves
+  (GH #2477). A click on a wrapped line could put the cursor on another
+  line of the same paragraph.
 - Plots are made as SVG by default where wxWidgets renders SVG with LunaSVG,
   which draws their text: they stay sharp at any zoom factor and in print.
   The Windows builds now use it. Elsewhere plots stay PNG, and the option

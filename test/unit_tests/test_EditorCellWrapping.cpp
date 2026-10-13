@@ -453,6 +453,49 @@ SCENARIO("Mouse clicks on indented continuation lines hit the right character") 
   }
 }
 
+SCENARIO("A click on a wrapped text line stays on that line (GH #2477)") {
+  // Regression: SelectPointText's text-cell branch picks the position on the
+  // clicked display line whose caret x is closest to the click. It took the
+  // line's end from LineLength(), which only stopped at a hard newline - so
+  // on a wrapped paragraph the "line" ran on to the paragraph's end, and a
+  // click resolved to whichever display line happened to have a character at
+  // a nearby x. Dragging a selection made its ends jump between lines.
+  WrapSetupGuard guard;
+  GIVEN("a prose cell wrapped into several lines") {
+    g_cfg->SetAutoWrap(1);
+    Narrow();
+    GroupCell group(g_cfg, GC_TYPE_TEXT, LongProseLine());
+    EditorCell *editor = group.GetEditable();
+    group.Recalculate();
+    editor->SetCurrentPoint(wxPoint(0, 0));
+    const std::vector<size_t> breaks = Breaks(editor);
+    REQUIRE(breaks.size() >= 2);
+
+    THEN("every click on a line puts the caret on that line") {
+      // A few lines are enough (each click measures its whole line, so
+      // covering all of them makes this test slow), and so is a step smaller
+      // than a character.
+      for (size_t line = 0; line < 4; line++) {
+        const wxPoint lineStart = editor->PositionToPoint(editor->XYToPosition(0, line));
+        for (wxCoord x = -20; x < 340; x += 3) {
+          editor->SelectPointText(wxPoint(x, lineStart.y));
+          size_t col = 0, clickedLine = 0;
+          editor->PositionToXY(editor->CursorPosition(), &col, &clickedLine);
+          INFO("line " << line << ", x " << x << ", caret at " << editor->CursorPosition());
+          REQUIRE(clickedLine == line);
+        }
+      }
+    }
+    THEN("a click left of a line's text puts the caret at the line's start") {
+      for (size_t b : breaks) {
+        const wxPoint pt = editor->PositionToPoint(b);
+        editor->SelectPointText(wxPoint(pt.x - 5, pt.y));
+        REQUIRE(editor->CursorPosition() == b);
+      }
+    }
+  }
+}
+
 SCENARIO("Hard newlines reset the wrap accounting") {
   WrapSetupGuard guard;
   g_cfg->SetAutoWrap(2);
