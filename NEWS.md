@@ -1,5 +1,9 @@
 # Current development version
 
+- Plots are made as SVG by default where wxWidgets renders SVG with LunaSVG,
+  which draws their text: they stay sharp at any zoom factor and in print.
+  The Windows builds now use it. Elsewhere plots stay PNG, and the option
+  ("Create scalable plots") is only offered where SVG plots work.
 - wxMaxima no longer carries its own copy of the NanoSVG library: SVG
   images, plots and icons are now rendered by wxWidgets. SVG images in a
   .wxm file (GH #2087) and copies of SVG images, for example of a copied

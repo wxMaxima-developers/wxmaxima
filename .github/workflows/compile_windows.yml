@@ -115,7 +115,7 @@ jobs:
           # cache keys are immutable and this one already exists -- a new build can
           # never be saved under it, giving a permanent cache miss (a ~30 min
           # wxWidgets rebuild every run). The MSVC job below versions its key too.
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ env.WXVERSION }}-3
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ env.WXVERSION }}-lunasvg-1
 
       # multi-job compilation is broken in wxWidgets, see https://trac.wxwidgets.org/ticket/19029
       # compiling wxWidgets via cmake works, but the result isn't detected by cmake any more.
@@ -125,9 +125,15 @@ jobs:
                Invoke-WebRequest -Uri https://github.com/wxWidgets/wxWidgets/releases/download/v${{env.WXVERSION}}/wxWidgets-${{env.WXVERSION}}.zip -OutFile wxWidgets-${{env.WXVERSION}}.zip
                Expand-Archive -LiteralPath wxWidgets-${{env.WXVERSION}}.zip -DestinationPath wxWidgets-${{env.WXVERSION}}
                cd wxWidgets-${{env.WXVERSION}}
+               # Render SVG with LunaSVG instead of NanoSVG: only LunaSVG draws
+               # text, which is what lets wxMaxima make plots as SVG
+               # (SvgBitmap::RendersText()). wxBitmapBundle::FromSVG() prefers
+               # NanoSVG whenever it is enabled, so it has to be switched off.
+               $setup = 'include/wx/msw/setup.h'
+               (Get-Content $setup) -replace '#define wxUSE_NANOSVG\s+1', '#define wxUSE_NANOSVG 0' -replace '#define wxUSE_LUNASVG\s+0', '#define wxUSE_LUNASVG 1' | Set-Content $setup
                cd build
                cd msw
-               mingw32-make -f makefile.gcc SHELL=cmd.exe SHARED=0 BUILD=release
+               mingw32-make -f makefile.gcc SHELL=cmd.exe SHARED=0 BUILD=release USE_LUNASVG=1
                cd ..
                cd ..
                cd ..
@@ -243,8 +249,8 @@ jobs:
       - name: Report what the integrated help browser needs
         # Informational (GH #2481): which of the Edge (WebView2) backend's
         # prerequisites this build has. The wxWidgets built above uses the
-        # stock setup.h, so its wxUSE_WEBVIEW_EDGE line says whether the
-        # backend was compiled in at all.
+        # stock setup.h apart from its SVG renderer, so its wxUSE_WEBVIEW_EDGE
+        # line says whether the backend was compiled in at all.
         continue-on-error: true
         run: |
             Select-String -Path "wxWidgets-${{env.WXVERSION}}/lib/gcc_lib/mswu/wx/setup.h" -Pattern "define wxUSE_WEBVIEW"

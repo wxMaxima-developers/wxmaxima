@@ -268,6 +268,16 @@ target_link_libraries(test_SvgSize PRIVATE ${wxWidgets_LIBRARIES})
 add_test(NAME SvgSize
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_SvgSize>")
 
+# Plots are only made as SVG if wxWidgets' SVG renderer draws text, which
+# only LunaSVG does; checked against what wx/setup.h says the renderer is.
+add_executable(test_SvgTextProbe
+    test_SvgTextProbe.cpp ${CMAKE_SOURCE_DIR}/src/SvgBitmap.cpp
+    ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
+target_include_directories(test_SvgTextProbe PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_link_libraries(test_SvgTextProbe PRIVATE ${wxWidgets_LIBRARIES})
+add_test(NAME SvgTextProbe
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_SvgTextProbe>")
+
 # Link detection in text cells (GH #2396) is a pure string function shared by
 # the display and the HTML/LaTeX exporters, so it is tested directly.
 add_executable(test_UrlDetection

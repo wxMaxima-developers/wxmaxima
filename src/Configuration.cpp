@@ -316,7 +316,10 @@ void Configuration::ResetAllToDefaults() {
   m_recentItems = 10;
   m_parenthesisDrawMode = ascii;
   m_zoomFactor = 1.0; // affects returned fontsizes
-  m_useSVG = false;
+  // Plots are made as SVG if the SVG renderer can draw their text
+  // (SvgBitmap::RendersText()); wxMaxima::ConfigChanged() falls back to PNG
+  // otherwise.
+  m_useSVG = true;
   m_changeAsterisk = true;
   m_latin2greek = false;
   m_enterEvaluates = false;
@@ -1459,7 +1462,10 @@ Configuration::ScalarConfigSettings() {
     {wxS("TOCshowsSectionNumbers"), &Configuration::m_TOCshowsSectionNumbers},
     {wxS("usePartialForDiff"), &Configuration::m_usePartialForDiff},
     {wxS("usepngCairo"), &Configuration::m_usepngCairo},
-    {wxS("useSVG"), &Configuration::m_useSVG},
+    // Not "useSVG", which every configuration since 2019 contains as false:
+    // the option was hidden all that time, so that was just the old default,
+    // and keeping the key would have kept it.
+    {wxS("useSVGPlots"), &Configuration::m_useSVG},
     {wxS("useUnicodeMaths"), &Configuration::m_useUnicodeMaths},
     {wxS("wizardTab"), &Configuration::m_wizardTab},
     {wxS("wrapLatexMath"), &Configuration::m_wrapLatexMath},

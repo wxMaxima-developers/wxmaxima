@@ -57,6 +57,16 @@ public:
   const SvgBitmap& SetSize(int width, int height);
   //! Sets the bitmap to a new size and renders the svg image at this size.
   const SvgBitmap& SetSize(wxSize siz){return SetSize(siz.x, siz.y);}
+  /*! Does the SVG renderer wxWidgets was built with draw text?
+
+    Only LunaSVG does (wxWidgets >= 3.3.2, built with LunaSVG on and NanoSVG
+    off); NanoSVG ignores text altogether, which would leave a plot without
+    its labels and tick marks' numbers. Found out by rendering a word set in
+    the font gnuplot's svg terminal asks for, so this also says no if the
+    renderer can find neither that font nor its fallback. Rendered once, on
+    first use, which has to be on the GUI thread.
+  */
+  static bool RendersText();
   /*! An "invalid bitmap" sign */
   static wxBitmap GetInvalidBitmap(int targetSize);
 private:
