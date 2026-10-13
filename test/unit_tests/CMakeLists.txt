@@ -278,6 +278,18 @@ target_link_libraries(test_SvgTextProbe PRIVATE ${wxWidgets_LIBRARIES})
 add_test(NAME SvgTextProbe
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_SvgTextProbe>")
 
+# wxMathML.lisp reaches Maxima squeezed into one line, comments stripped;
+# checks that squeezing it loses no form.
+add_executable(test_wxMathMLCmd
+    test_wxMathMLCmd.cpp ${CMAKE_SOURCE_DIR}/src/wxMathml.cpp
+    ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
+add_dependencies(test_wxMathMLCmd build_wxMathML.h)
+target_include_directories(test_wxMathMLCmd PRIVATE
+    ${CMAKE_SOURCE_DIR}/src ${CMAKE_BINARY_DIR} ${CMAKE_BINARY_DIR}/src)
+target_link_libraries(test_wxMathMLCmd PRIVATE ${wxWidgets_LIBRARIES})
+add_test(NAME wxMathMLCmd
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_wxMathMLCmd>")
+
 # Link detection in text cells (GH #2396) is a pure string function shared by
 # the display and the HTML/LaTeX exporters, so it is tested directly.
 add_executable(test_UrlDetection

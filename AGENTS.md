@@ -862,6 +862,21 @@ a local TCP socket.
   which the probe also catches. The config key is `useSVGPlots`, not
   `useSVG`: every config since 2019 holds `useSVG=0` from when the option
   was hidden.
+  **gnuplot's svg terminal forgets its options when re-selected**, unlike
+  png: plot2d writes a bare `set term svg` after our preamble, which reset
+  every SVG plot to 600x480 and 12px text. So `wxplot-gnuplot-term`
+  (`wxMathML.lisp`) hands plot2d a whole terminal string (`svg size W,H
+  font ",16"`) as `gnuplot_term`; Maxima 5.46 ignores
+  `gnuplot_svg_term_command`. draw names a font only if its `font` option is
+  set, so `wx-draw-defaults` adds one via `set_draw_defaults`' variable.
+- **A `;` inside a multi-line string in `wxMathML.lisp` used to break
+  loading it.** `wxMathML::GetCmd()` strips `;` comments line by line and forgot
+  at each new line that it was inside a string, so a `;` on a docstring's
+  second line cut off the closing quote and Maxima silently loaded nothing
+  after it (no plots, no error). It now carries the string state across
+  lines; `test_wxMathMLCmd` checks the squeezed command still balances.
+  The `check-wxMathML.lisp_*` tests load the file directly and can't see
+  this.
 - **`Worksheet::AnonymizeCodeCells()` (GH #1339, Help menu -> "Anonymize Code
   for Bug Report"):** renames every non-builtin variable/function name in the
   selected code cells (whole document if nothing's selected, after a

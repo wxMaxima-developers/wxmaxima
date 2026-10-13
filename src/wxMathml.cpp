@@ -64,11 +64,15 @@ wxString wxMathML::GetCmd() {
     }
   }
   wxStringTokenizer lines(m_wxMathML, wxS("\n"));
+  // Whether we are inside a string. Carried over from one line to the next:
+  // a docstring may span several lines, and a ";" on one of its later lines
+  // isn't a comment -- cutting the line there left the string unterminated,
+  // which silently swallowed the rest of the file.
+  bool stringIs = false;
   while (lines.HasMoreTokens()) {
     wxString line = lines.GetNextToken();
     wxString lineWithoutComments;
 
-    bool stringIs = false;
     wxChar lastChar = wxS('\n');
     wxString::const_iterator ch = line.begin();
     while (ch < line.end()) {
