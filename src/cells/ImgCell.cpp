@@ -64,11 +64,11 @@ int ImgCell::s_counter = 0;
 
 // constructor which load image
 ImgCell::ImgCell(GroupCell *group, Configuration *config, const wxString &image,
-                 const wxString &wxmFile, bool remove)
+                 const AttachmentSource &attachments, bool remove)
   : ImgCell(group, config) {
   if (image != wxEmptyString) {
     m_image =
-      std::make_shared<Image>(m_configuration, image, wxmFile, remove);
+      std::make_shared<Image>(m_configuration, image, attachments, remove);
   } else
     m_image = std::make_shared<Image>(m_configuration);
   m_drawBoundingBox = false;
@@ -88,14 +88,13 @@ ImgCell::ImgCell(GroupCell *group, const ImgCell &cell)
 
 DEFINE_CELL(ImgCell)
 
-void ImgCell::ReloadImage(const wxString &image,
-                          const wxString &wxmFile) {
+void ImgCell::ReloadImage(const wxString &image) {
   // Store old size limits
   double width = m_image->GetMaxWidth();
   double height = m_image->GetHeightList();
 
   // Load new image
-  m_image = std::make_shared<Image>(m_configuration, image, wxmFile, false);
+  m_image = std::make_shared<Image>(m_configuration, image, AttachmentSource(), false);
 
   // Restore size limits
   m_image->SetMaxHeight(height);
@@ -103,7 +102,7 @@ void ImgCell::ReloadImage(const wxString &image,
 }
 
 void ImgCell::LoadImage(wxString image, bool remove) {
-  m_image = std::make_shared<Image>(m_configuration, image, wxEmptyString, remove);
+  m_image = std::make_shared<Image>(m_configuration, image, AttachmentSource(), remove);
 }
 
 void ImgCell::SetBitmap(const wxBitmap &bitmap) {

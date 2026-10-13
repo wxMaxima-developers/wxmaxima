@@ -3292,8 +3292,7 @@ void MaximaCommandMenus::PopupMenu(wxCommandEvent &event) {
       }
 
       wxLogMessage(_("Reloading image file %s."), imgFile);
-      dynamic_cast<ImgCell *>(output)->ReloadImage(imgFile,
-                                                   wxEmptyString);
+      dynamic_cast<ImgCell *>(output)->ReloadImage(imgFile);
 
       m_wxMaxima.GetWorksheet()->RequestRecalculation();
       m_wxMaxima.GetWorksheet()->RequestRedraw();
@@ -3737,7 +3736,7 @@ void MaximaCommandMenus::PopupMenu(wxCommandEvent &event) {
 
       wxLogMessage(_("Changing image originally loaded from file %s to %s."),
                    ic->GetOrigImageFile(), newImg);
-      ic->ReloadImage(newImg, wxEmptyString);
+      ic->ReloadImage(newImg);
       ic->SetOrigImageFile(newImg);
 
       m_wxMaxima.GetWorksheet()->RequestRecalculation();

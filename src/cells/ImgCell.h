@@ -36,7 +36,7 @@ class ImgCell final : public ImgCellBase
 public:
   ImgCell(GroupCell *group, Configuration *config);
   ImgCell(GroupCell *group, Configuration *config, const wxMemoryBuffer &image, const wxString &type);
-  ImgCell(GroupCell *group, Configuration *config, const wxString &image, const wxString &wxmFile, bool remove = true);
+  ImgCell(GroupCell *group, Configuration *config, const wxString &image, const AttachmentSource &attachments, bool remove = true);
 
   ImgCell(GroupCell *group, Configuration *config, const wxBitmap &bitmap);
   ImgCell(GroupCell *group, const ImgCell &cell);
@@ -48,15 +48,16 @@ public:
   ImgCell &operator=(const ImgCell&) = delete;
 
   //! Tell the image which gnuplot files it was made from
-  void GnuplotSource(wxString sourcefile, wxString datafile, const wxString &wxmFile)
+  void GnuplotSource(wxString sourcefile, wxString datafile,
+                     const AttachmentSource &attachments)
     { if (m_image) m_image->GnuplotSource(std::move(sourcefile),
                                           std::move(datafile),
-                                          wxmFile); }
+                                          attachments); }
   void CompressedGnuplotSource(wxString sourcefile, wxString datafile,
-                               const wxString &wxmFile)
+                               const AttachmentSource &attachments)
     { if (m_image) m_image->CompressedGnuplotSource(std::move(sourcefile),
                                                     std::move(datafile),
-                                                    wxmFile); }
+                                                    attachments); }
 
   //! The name of the file with gnuplot commands that created this file
   wxString GnuplotSource() const override
@@ -78,7 +79,8 @@ public:
     }
   }
 
-  void ReloadImage(const wxString &image, const wxString &wxmFile);
+  //! Loads the image again from this file in the file system
+  void ReloadImage(const wxString &image);
 
   //! Can this image be exported in SVG format?
   bool CanExportSVG() const override {return (m_image != nullptr) && m_image->CanExportSVG();}

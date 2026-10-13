@@ -42,6 +42,7 @@
 #include <unordered_map>
 #include <random>
 #include <list>
+#include <utility>
 #include <variant>
 #include <vector>
 #include <algorithm>
@@ -1005,6 +1006,15 @@ public:
   wxRect GetUpdateRegion() const {return m_renderContext.GetUpdateRegion();}
   const std::list<FileToSave> &GetFilesToSave() const {return m_filesToSave;}
   void ClearFilesToSave () { m_filesToSave.clear();}
+  /*! Hands out the list of files to save, leaving it empty
+
+    Lets something that needs the list for itself (the XML on the clipboard,
+    which is rendered whenever a program asks for it) put back whatever a
+    .wxmx being saved at the same time had collected so far.
+  */
+  std::list<FileToSave> TakeFilesToSave() { return std::exchange(m_filesToSave, {}); }
+  //! Replaces the list of files to save; see TakeFilesToSave().
+  void SetFilesToSave(std::list<FileToSave> files) { m_filesToSave = std::move(files); }
   void SetUpdateRegion(wxRect rect){m_renderContext.SetUpdateRegion(rect);}
 
   //! Whether any part of the given rectangle is within the current update region,

@@ -84,7 +84,7 @@ GroupCell::GroupCell(Configuration *config, GroupType groupType,
     if (wxImage::GetImageCount(initString) < 2) {
       ic = std::make_unique<ImgCell>(
                                      this, m_configuration, initString,
-                                     wxEmptyString, false);
+                                     AttachmentSource(), false);
 
       // Since this is the (only?) place where an ImgCell is constructed when
       // the user manually inserts an image file (not loaded from zip or gnuplot

@@ -16,6 +16,10 @@ anything it cannot reproduce.
 - `src/graphical_io/` - `BitmapOut` (PNG/BMP/XPM/JPEG), `Svgout`, `EMFout`,
   `Printout`, and `OutCommon`, which holds what they share.
 - `Cell::ToXML()` / `MathParser` - the `.wxmx` `content.xml` round trip.
+- `Format::CellsToXMLDocument()` / `TreeFromXMLDocument()` (`WXMXformat.cpp`) -
+  the same XML as one self-contained document, which is what copied cells put
+  on the clipboard (`application/x-wxmaxima-xml`, GH #2474; a paste prefers it
+  over the `.wxm`, which has no text formatting, output or images).
 
 HTML equations have several flavours (`Configuration::htmlExportFormat`): native
 MathML, MathML+MathJax fill-in, bitmap and SVG. Each is a separate code path, so
@@ -58,6 +62,15 @@ text is spoken and makes the label a stuttering mess.
   twice.
 - **Shortened tags.** Some cells serialise under abbreviated names (`LimitCell`
   → `<lm>`). Check `MathParser.cpp` before assuming a tag name.
+- **`ToXML()` doesn't write images, it names them.** `ImgCell`/`AnimationCell`
+  push their bytes (and gnuplot sources) to `Configuration::PushFileToSave()`
+  and put only a file name in the XML. A `.wxmx` stores those files next to
+  `content.xml` in the zip; a self-contained document carries them base64
+  encoded in an `<attachments>` element instead. Reading goes through
+  `AttachmentSource` either way, so `Image` never knows which it was. Anything
+  that calls `ToXML()` outside a save must take the file list out
+  (`TakeFilesToSave()`) and put the previous one back, as the clipboard XML is
+  rendered whenever a program asks for it - possibly while a save is running.
 - **Temp files for DC-based formats.** `wxSVGFileDC`/EMF only write to a real
   path, so clipboard rendering needs a temp file - `OutCommon::PrivateTempDir()`
   puts it in a mode-0700 directory rather than the shared system temp, closing a

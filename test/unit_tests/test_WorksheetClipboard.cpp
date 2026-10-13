@@ -70,6 +70,14 @@
   must carry its own stylesheet inline and never point at a file outside
   itself, and it must clean up whatever private scratch directory it used to
   render into.
+
+  GH #2474: copied cells are also offered as one self-contained XML
+  document (Format::CellsToXMLDocument()) -- the XML of a .wxmx, with the
+  images that a .wxmx keeps beside it in the zip carried inside, base64
+  encoded. It keeps what the .wxm loses: text formatting, output, images.
+  Pinned here: it is offered, it round-trips through
+  Format::TreeFromXMLDocument(), and making it doesn't disturb a .wxmx
+  being saved at the same time.
 */
 
 #include <wx/app.h>
@@ -82,6 +90,8 @@
 #include <wx/image.h>
 #include <wx/log.h>
 #include <wx/mstream.h>
+#include <wx/wfstream.h>
+#include <wx/zipstrm.h>
 #include <wx/xml/xml.h>
 #ifdef __WXMSW__
 #include <wx/msw/wrapwin.h>
@@ -94,6 +104,10 @@
 #include "worksheet/Worksheet.h"
 #include "worksheet/WorksheetExport.h"
 #include "cells/GroupCell.h"
+#include "cells/CellList.h"
+#include "cells/ImgCell.h"
+#include "AttachmentSource.h"
+#include "WXMXformat.h"
 
 #include <cstdlib>
 #include <string>
@@ -236,6 +250,7 @@ static void RequireDistinctAndRetrievable(const wxDataObject &obj) {
 }
 
 static const wxDataFormat kWxmFormat{wxS("text/x-wxmaxima-batch")};
+static const wxDataFormat kXmlFormat{wxS("application/x-wxmaxima-xml")};
 static const wxDataFormat kMathMlFormat{wxS("MathML")};
 static const wxDataFormat kMathMl2Format{wxS("application/mathml-presentation+xml")};
 static const wxDataFormat kRtfFormat{wxS("application/rtf")};
@@ -274,6 +289,7 @@ SCENARIO("The whole-cell (cut/copy-cells) clipboard object is well-formed") {
          "a bitmap and an SVG") {
       const auto fmts = GetFormats(*data);
       REQUIRE(HasFormat(fmts, kWxmFormat));
+      REQUIRE(HasFormat(fmts, kXmlFormat));
       REQUIRE(HasFormat(fmts, kRtfFormat));
       REQUIRE(HasFormat(fmts, kRtf2Format));
       REQUIRE(HasFormat(fmts, kRtf3Format));
@@ -670,6 +686,158 @@ SCENARIO("The bitmap is also offered as PNG bytes (wxQt)") {
       REQUIRE_FALSE(data.GetDataHere(buf));
     }
   }
+}
+
+//! The bytes of a small PNG image, as a program would store them
+static wxMemoryBuffer SmallPng() {
+  wxImage image(7, 5);
+  image.SetRGB(wxRect(0, 0, 7, 5), 200, 30, 30);
+  wxMemoryOutputStream out;
+  REQUIRE(image.SaveFile(out, wxBITMAP_TYPE_PNG));
+  wxMemoryBuffer png;
+  png.AppendData(out.GetOutputStreamBuffer()->GetBufferStart(),
+                 out.GetOutputStreamBuffer()->GetBufferSize());
+  return png;
+}
+
+static bool SameBytes(const wxMemoryBuffer &a, const wxMemoryBuffer &b) {
+  return (a.GetDataLen() == b.GetDataLen()) &&
+    (std::string(static_cast<const char *>(a.GetData()), a.GetDataLen()) ==
+     std::string(static_cast<const char *>(b.GetData()), b.GetDataLen()));
+}
+
+SCENARIO("Copied cells round-trip as a self-contained XML document (GH #2474)") {
+  GIVEN("a formatted text cell and an image cell") {
+    const wxString text = wxS("bold and plain");
+    auto textGroup = std::make_unique<GroupCell>(g_cfg, GC_TYPE_TEXT, text);
+    TextFormat::Formats formats(text.length(), TextFormat::None);
+    for (size_t i = 0; i < 4; i++)
+      formats[i] = TextFormat::Bold;
+    textGroup->GetEditable()->SetFormats(formats);
+
+    const wxMemoryBuffer png = SmallPng();
+    auto imageGroup = std::make_unique<GroupCell>(g_cfg, GC_TYPE_IMAGE);
+    imageGroup->SetOutput(
+      std::make_unique<ImgCell>(imageGroup.get(), g_cfg, png, wxS("png")));
+
+    CellListBuilder<GroupCell> tree;
+    tree.Append(std::move(textGroup));
+    tree.Append(std::move(imageGroup));
+    std::unique_ptr<GroupCell> cells = tree.TakeHead();
+
+    WHEN("they are written as a document and read back") {
+      const wxString xml = Format::CellsToXMLDocument(cells.get(), g_cfg);
+      auto copy = Format::TreeFromXMLDocument(xml, g_cfg);
+
+      THEN("the image travels inside the document, not as a file") {
+        REQUIRE(xml.Contains(wxS("<attachments>")));
+        REQUIRE(xml.Contains(wxS("<file name=\"")));
+      }
+      THEN("the text keeps its formatting") {
+        REQUIRE(copy);
+        REQUIRE(copy->GetGroupType() == GC_TYPE_TEXT);
+        REQUIRE(copy->GetEditable()->GetValue() == text);
+        REQUIRE(copy->GetEditable()->GetFormats() == formats);
+      }
+      THEN("the image has the same bytes as before") {
+        REQUIRE(copy);
+        GroupCell *image = copy->GetNext();
+        REQUIRE(image);
+        REQUIRE(image->GetGroupType() == GC_TYPE_IMAGE);
+        auto *img = dynamic_cast<ImgCell *>(image->GetLabel());
+        REQUIRE(img);
+        REQUIRE(img->GetExtension() == wxS("png"));
+        REQUIRE(SameBytes(img->GetCompressedImage(), png));
+        REQUIRE(img->GetOriginalWidth() == 7);
+      }
+      THEN("the attachments are no cell of their own") {
+        REQUIRE(copy);
+        size_t count = 0;
+        for (const auto &cell : OnList(copy.get())) {
+          (void)cell;
+          count++;
+        }
+        REQUIRE(count == 2);
+      }
+    }
+
+    WHEN("a .wxmx being saved has already collected files of its own") {
+      g_cfg->ClearFilesToSave();
+      g_cfg->PushFileToSave(wxS("someone-elses.png"), png);
+      Format::CellsToXMLDocument(cells.get(), g_cfg);
+
+      THEN("those are still there, and nothing else is") {
+        REQUIRE(g_cfg->GetFilesToSave().size() == 1);
+        REQUIRE(g_cfg->GetFilesToSave().front().FileName() ==
+                wxS("someone-elses.png"));
+      }
+      g_cfg->ClearFilesToSave();
+    }
+  }
+
+  GIVEN("text that is no such document") {
+    THEN("nothing is read from it") {
+      REQUIRE_FALSE(Format::TreeFromXMLDocument(wxS("not xml"), g_cfg));
+      REQUIRE_FALSE(Format::TreeFromXMLDocument(wxS("<other/>"), g_cfg));
+      REQUIRE_FALSE(Format::TreeFromXMLDocument(wxEmptyString, g_cfg));
+    }
+  }
+}
+
+SCENARIO("The clipboard's XML flavour carries the copied cells (GH #2474)") {
+  BuildDocumentOnce();
+  g_ws->SetSelection(g_ws->GetTree(), g_ws->GetLastCellInWorksheet());
+  std::unique_ptr<wxDataObject> data = g_ws->CreateCellsDataObject();
+  REQUIRE(data);
+  const std::string xml = GetData(*data, kXmlFormat);
+  auto copy = Format::TreeFromXMLDocument(wxString::FromUTF8(xml), g_cfg);
+  REQUIRE(copy);
+  size_t copied = 0;
+  for (const auto &cell : OnList(copy.get())) {
+    (void)cell;
+    copied++;
+  }
+  size_t original = 0;
+  for (const auto &cell : OnList(g_ws->GetTree())) {
+    (void)cell;
+    original++;
+  }
+  REQUIRE(copied == original);
+  g_ws->ClearSelection();
+}
+
+SCENARIO("AttachmentSource reads files from memory") {
+  AttachmentSource::Files files;
+  files[wxS("a.png")] = std::string("\x89PNG\0x", 6);
+  const AttachmentSource source = AttachmentSource::FromMemory(files);
+  REQUIRE_FALSE(source.IsEmpty());
+  const wxMemoryBuffer a = source.Read(wxS("a.png"));
+  REQUIRE(a.GetDataLen() == 6);
+  REQUIRE(std::string(static_cast<const char *>(a.GetData()), 6) ==
+          files[wxS("a.png")]);
+  REQUIRE(source.Read(wxS("missing.png")).GetDataLen() == 0);
+  REQUIRE(AttachmentSource().IsEmpty());
+}
+
+SCENARIO("AttachmentSource reads files from a .wxmx archive") {
+  const wxString wxmx = wxFileName::CreateTempFileName(wxS("wxm-attach"));
+  {
+    wxFFileOutputStream out(wxmx);
+    wxZipOutputStream zip(out);
+    zip.PutNextEntry(wxS("content.xml"));
+    zip.Write("<x/>", 4);
+    zip.PutNextEntry(wxS("image1.png"));
+    zip.Write("PNGDATA", 7);
+    zip.CloseEntry();
+    REQUIRE(zip.Close());
+  }
+  const AttachmentSource source = AttachmentSource::FromWxmx(wxmx);
+  REQUIRE_FALSE(source.IsEmpty());
+  const wxMemoryBuffer image = source.Read(wxS("image1.png"));
+  REQUIRE(std::string(static_cast<const char *>(image.GetData()),
+                      image.GetDataLen()) == "PNGDATA");
+  REQUIRE(source.Read(wxS("missing.png")).GetDataLen() == 0);
+  wxRemoveFile(wxmx);
 }
 
 int main(int argc, char **argv) {

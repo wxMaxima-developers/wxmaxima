@@ -32,6 +32,9 @@
   middle-click between cells (which never reaches the cell) worked. Anyone
   testing with both clipboards holding the same text could not see it.
 
+  GH #2474: copied cells keep their text formatting, which only the XML
+  flavour carries, when they are pasted.
+
   This test uses the real clipboard, so it needs a display (CI runs it under
   xvfb). Windows and macOS have no primary selection, so there only the
   ordinary paste is checked. wxWidgets can't be asked whether there is one:
@@ -47,6 +50,7 @@
 #include <wx/dataobj.h>
 #include <wx/dcmemory.h>
 #include <wx/frame.h>
+#include <wx/image.h>
 #include <wx/log.h>
 
 #include "Configuration.h"
@@ -184,6 +188,35 @@ SCENARIO("A paste into a cell scrolled out of view brings it back into view") {
   }
 }
 
+SCENARIO("Copied cells keep their text formatting when pasted (GH #2474)") {
+  // The .wxm on the clipboard has no notion of bold or italic; the XML
+  // flavour next to it does, and a paste prefers it.
+  GIVEN("a text cell with a bold word, copied as a whole cell") {
+    g_ws->ClearDocument();
+    const wxString text = wxS("bold and plain");
+    auto cell = std::make_unique<GroupCell>(g_cfg, GC_TYPE_TEXT, text);
+    TextFormat::Formats formats(text.length(), TextFormat::None);
+    for (size_t i = 0; i < 4; i++)
+      formats[i] = TextFormat::Bold;
+    cell->GetEditable()->SetFormats(formats);
+    GroupCell *group = g_ws->InsertGroupCells(std::move(cell), nullptr);
+    g_ws->RecalculateIfNeeded();
+    g_ws->SetSelection(group, group);
+    REQUIRE(g_ws->CopyCells());
+    g_ws->ClearSelection();
+    WHEN("it is pasted below itself") {
+      g_ws->SetHCaret(group);
+      g_ws->PasteFromClipboard();
+      THEN("the pasted cell is bold where the original was") {
+        GroupCell *pasted = group->GetNext();
+        REQUIRE(pasted != nullptr);
+        REQUIRE(pasted->GetEditable()->GetValue() == text);
+        REQUIRE(pasted->GetEditable()->GetFormats() == formats);
+      }
+    }
+  }
+}
+
 class TestApp : public wxApp {
 public:
   bool OnInit() override { return true; }
@@ -195,6 +228,9 @@ int main(int argc, char **argv) {
   wxApp::SetInstance(new TestApp());
   wxEntryStart(argc, argv);
   wxTheApp->CallOnInit();
+  // Copied cells offer a bitmap, which GTK converts to PNG when it hands the
+  // clipboard over on exit.
+  wxInitAllImageHandlers();
 
   g_bmp = new wxBitmap(800, 600);
   g_dc = new wxMemoryDC();

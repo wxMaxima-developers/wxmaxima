@@ -52,12 +52,13 @@ public:
     has to be set to -1.
     \param config A pointer to the pointer to the configuration storage of the
     worksheet this cell belongs to.
-    \param wxmxFile The wxmx file the contents of this animation can be found in.
-    wxEmptyString = no wxmx file, but the system's filesystem instead
+    \param attachments Where the images of this animation can be found: a
+    .wxmx file, the attachments of a self-contained XML document, or empty
+    for the file system.
     \param group     The parent GroupCell this cell belongs to.
   */
   AnimationCell(GroupCell *group, Configuration *config,
-                const wxString &wxmxFile, double framerate = -1);
+                const AttachmentSource &attachments, double framerate = -1);
   AnimationCell(GroupCell *group, Configuration *config, double framerate = -1);
   AnimationCell(GroupCell *group, const AnimationCell &cell);
   //! A constructor that loads the compressed file from a wxMemoryBuffer
@@ -177,14 +178,14 @@ public:
     { return m_images.at(m_displayed) && (m_images.at(m_displayed)->HasGnuplotSource()); }
 
   void GnuplotSource(int image, wxString gnuplotFilename, wxString dataFilename,
-                     const wxString &wxmxFile)
+                     const AttachmentSource &attachments)
     { m_images.at(image)->GnuplotSource(std::move(gnuplotFilename),
-                                     std::move(dataFilename), wxmxFile); }
+                                     std::move(dataFilename), attachments); }
   void CompressedGnuplotSource(int image, wxString gnuplotFilename, wxString dataFilename,
-                               const wxString &wxmxFile)
+                               const AttachmentSource &attachments)
     { m_images.at(image)->CompressedGnuplotSource(std::move(gnuplotFilename),
                                                std::move(dataFilename),
-                                               wxmxFile); }
+                                               attachments); }
 
   wxString GnuplotSource() const override
     {
@@ -213,7 +214,8 @@ private:
 //**
   bool m_animationRunning : 1 = true;
   bool m_drawBoundingBox : 1 = false;
-  wxString m_wxmxFile;
+  //! Where LoadImages() reads the images from; emptied once they are read
+  AttachmentSource m_attachments;
 
   int GetImageBorderWidth() const override { return m_imageBorderWidth; }
 

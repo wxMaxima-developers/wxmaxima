@@ -55,6 +55,41 @@ namespace Format
                     Configuration *configuration, ViewCellPointers *cellPointers,
                     const std::vector<wxString> &variables, const GroupCell * const cursorCell = nullptr);
 
+  /*! The cells as one self-contained XML document (GH #2474)
+
+    The same XML a .wxmx keeps in its content.xml -- but where a .wxmx keeps
+    the images and gnuplot files those cells refer to next to it in the zip
+    archive, this document carries them itself, base64-encoded:
+
+        <wxMaximaDocument version="1.5" zoom="100">
+          <cell type="text">...</cell>
+          <cell type="code">...<img>image1.png</img>...</cell>
+          <attachments>
+            <file name="image1.png">iVBORw0KGgo...</file>
+          </attachments>
+        </wxMaximaDocument>
+
+    This is what wxMaxima puts on the clipboard when cells are copied, as it
+    keeps everything a .wxm loses: text formatting, output, images.
+    TreeFromXMLDocument() reads it back.
+
+    \param cells The first cell; it and every cell after it are written.
+  */
+  wxString CellsToXMLDocument(const GroupCell *cells, Configuration *configuration);
+
+  /*! Reads a document CellsToXMLDocument() wrote
+
+    \return The cells, or nullptr if xml isn't such a document.
+  */
+  std::unique_ptr<GroupCell> TreeFromXMLDocument(const wxString &xml,
+                                                 Configuration *configuration);
+
+  //! The name of the element that holds a self-contained document's files
+  inline const wxString &AttachmentsTag() {
+    static const wxString tag(wxS("attachments"));
+    return tag;
+  }
+
 }
 
 #endif // WXMXFORMAT_H

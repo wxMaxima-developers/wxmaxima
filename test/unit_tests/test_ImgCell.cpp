@@ -29,6 +29,7 @@
 #include "test_ImgCell.h"
 #include "FontAttribs.cpp"
 #include "SvgSize.cpp"
+#include "AttachmentSource.cpp"
 #include "Image.cpp"
 #include "BackgroundQueue.cpp"
 #include "ImgCell.cpp"

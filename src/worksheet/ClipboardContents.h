@@ -155,6 +155,8 @@ struct ClipboardContents
   wxString wxm;
   //! The selection as plain text
   wxString text;
+  //! Copied cells as a self-contained XML document, UTF-8 encoded
+  LazyValue<std::string> xml;
   //! A MathML document, UTF-8 encoded
   LazyValue<std::string> mathML;
   //! An RTF document with OMML maths, UTF-8 encoded

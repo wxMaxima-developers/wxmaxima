@@ -181,6 +181,12 @@ private:
 
   //! A class that publishes wxm data to the clipboard
   static wxDataFormat m_wxmFormat;
+  /*! Copied cells as a self-contained XML document (GH #2474)
+
+    See Format::CellsToXMLDocument(). Unlike the .wxm, it keeps text
+    formatting, output and images, so a paste prefers it.
+  */
+  static wxDataFormat m_xmlFormat;
   //! A class that publishes MathML data to the clipboard
   static wxDataFormat m_mathmlFormat;
   //! A second way to publish MathML data for the cipboard

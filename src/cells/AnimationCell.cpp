@@ -60,10 +60,10 @@ AnimationCell::AnimationCell(GroupCell *group, Configuration *config,
 }
 
 AnimationCell::AnimationCell(GroupCell *group, Configuration *config,
-                             const wxString &wxmxFile,
+                             const AttachmentSource &attachments,
                              double framerate)
 : AnimationCell(group, config, framerate) {
-  m_wxmxFile = wxmxFile;
+  m_attachments = attachments;
 }
 
 AnimationCell::AnimationCell(GroupCell *group, Configuration *config,
@@ -208,7 +208,7 @@ void AnimationCell::LoadImages(wxArrayString images, bool deleteRead) {
           dataFilename = i;
         else {
           m_images.push_back(std::make_shared<Image>(m_configuration, i,
-                                                     m_wxmxFile, deleteRead));
+                                                     m_attachments, deleteRead));
           if (gnuplotFilename != wxEmptyString) {
             if (m_images.back())
               m_images.back()->GnuplotSource(gnuplotFilename, dataFilename);
@@ -216,7 +216,7 @@ void AnimationCell::LoadImages(wxArrayString images, bool deleteRead) {
         }
       }
     }
-  m_wxmxFile.Clear();
+  m_attachments = {};
   m_displayed = 0;
 }
 
