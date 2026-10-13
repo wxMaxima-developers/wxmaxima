@@ -840,6 +840,37 @@ SCENARIO("AttachmentSource reads files from a .wxmx archive") {
   wxRemoveFile(wxmx);
 }
 
+SCENARIO("AttachmentSource reads a file bigger than one read chunk") {
+  // Not a multiple of the 64 KiB chunk size, so the last chunk is a partial
+  // one, and not all one byte, so chunks appended in the wrong place or
+  // twice would show.
+  std::string big(3 * 65536 + 1234, '\0');
+  for (size_t i = 0; i < big.size(); i++)
+    big[i] = static_cast<char>(i * 7 + i / 251);
+  const wxString wxmx = wxFileName::CreateTempFileName(wxS("wxm-attach"));
+  {
+    wxFFileOutputStream out(wxmx);
+    wxZipOutputStream zip(out);
+    zip.PutNextEntry(wxS("content.xml"));
+    zip.Write("<x/>", 4);
+    zip.PutNextEntry(wxS("big.dat"));
+    zip.Write(big.data(), big.size());
+    zip.PutNextEntry(wxS("after.dat"));
+    zip.Write("AFTER", 5);
+    zip.CloseEntry();
+    REQUIRE(zip.Close());
+  }
+  const AttachmentSource source = AttachmentSource::FromWxmx(wxmx);
+  const wxMemoryBuffer data = source.Read(wxS("big.dat"));
+  REQUIRE(data.GetDataLen() == big.size());
+  REQUIRE(std::string(static_cast<const char *>(data.GetData()),
+                      data.GetDataLen()) == big);
+  const wxMemoryBuffer after = source.Read(wxS("after.dat"));
+  REQUIRE(std::string(static_cast<const char *>(after.GetData()),
+                      after.GetDataLen()) == "AFTER");
+  wxRemoveFile(wxmx);
+}
+
 int main(int argc, char **argv) {
   wxLog::EnableLogging(false);
   wxApp::SetInstance(new TestApp());
