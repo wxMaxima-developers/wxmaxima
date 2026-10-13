@@ -31,8 +31,7 @@ var searchData=
   ['wxmaximaframe_28',['wxMaximaFrame',['../classwxMaximaFrame.html',1,'']]],
   ['wxmheader_29',['WXMHeader',['../structFormat_1_1WXMHeader.html',1,'Format']]],
   ['wxmheadercollection_30',['WXMHeaderCollection',['../classFormat_1_1WXMHeaderCollection.html',1,'Format']]],
-  ['wxmxstream_31',['WxmxStream',['../classImage_1_1WxmxStream.html',1,'Image']]],
-  ['wxscrolled_32',['wxScrolled',['../classwxScrolled.html',1,'']]],
-  ['wxscrolled_3c_20wxpanel_20_3e_33',['wxScrolled&lt; wxPanel &gt;',['../classwxScrolled.html',1,'']]],
-  ['wxscrolled_3c_20wxwindow_20_3e_34',['wxScrolled&lt; wxWindow &gt;',['../classwxScrolled.html',1,'']]]
+  ['wxscrolled_31',['wxScrolled',['../classwxScrolled.html',1,'']]],
+  ['wxscrolled_3c_20wxpanel_20_3e_32',['wxScrolled&lt; wxPanel &gt;',['../classwxScrolled.html',1,'']]],
+  ['wxscrolled_3c_20wxwindow_20_3e_33',['wxScrolled&lt; wxWindow &gt;',['../classwxScrolled.html',1,'']]]
 ];

@@ -799,6 +799,13 @@ const std::list&lt; <a class="el" href="classConfiguration_1_1FileToSave.html">F
 <tr class="memitem:ad9ca9a6210e275be760b9cf69c249d7b"><td class="memItemLeft" align="right" valign="top"><a id="ad9ca9a6210e275be760b9cf69c249d7b" name="ad9ca9a6210e275be760b9cf69c249d7b"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ClearFilesToSave</b> ()</td></tr>
 <tr class="separator:ad9ca9a6210e275be760b9cf69c249d7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a225ac7672e5b9bc0b56000ab72c5cea4"><td class="memItemLeft" align="right" valign="top">std::list&lt; <a class="el" href="classConfiguration_1_1FileToSave.html">FileToSave</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#a225ac7672e5b9bc0b56000ab72c5cea4">TakeFilesToSave</a> ()</td></tr>
+<tr class="memdesc:a225ac7672e5b9bc0b56000ab72c5cea4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hands out the list of files to save, leaving it empty.  <br /></td></tr>
+<tr class="separator:a225ac7672e5b9bc0b56000ab72c5cea4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aabacfc75e61ac3db6e1a5833a16e2984"><td class="memItemLeft" align="right" valign="top"><a id="aabacfc75e61ac3db6e1a5833a16e2984" name="aabacfc75e61ac3db6e1a5833a16e2984"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetFilesToSave</b> (std::list&lt; <a class="el" href="classConfiguration_1_1FileToSave.html">FileToSave</a> &gt; files)</td></tr>
+<tr class="memdesc:aabacfc75e61ac3db6e1a5833a16e2984"><td class="mdescLeft">&#160;</td><td class="mdescRight">Replaces the list of files to save; see <a class="el" href="classConfiguration.html#a225ac7672e5b9bc0b56000ab72c5cea4" title="Hands out the list of files to save, leaving it empty.">TakeFilesToSave()</a>. <br /></td></tr>
+<tr class="separator:aabacfc75e61ac3db6e1a5833a16e2984"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a05128c7f4d694acb18556354d967ed47"><td class="memItemLeft" align="right" valign="top"><a id="a05128c7f4d694acb18556354d967ed47" name="a05128c7f4d694acb18556354d967ed47"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetUpdateRegion</b> (wxRect rect)</td></tr>
 <tr class="separator:a05128c7f4d694acb18556354d967ed47"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2895,6 +2902,34 @@ static constexpr long&#160;</td><td class="memItemRight" valign="bottom"><b>Digi
 
 <p>The single source of truth mapping each persisted text style to its config-key prefix. </p>
 <p><a class="el" href="classConfiguration.html#ae213e1200fd1ed659c4890d33d282b32" title="Reads the style settings.">ReadStyles()</a> and <a class="el" href="classConfiguration.html#a4f7f692a8178c2062765ddafd0fd4782" title="Saves the style settings.">WriteStyles()</a> both iterate this list, so a style can never be read and written under mismatched keys (which used to cause settings to silently fail to round-trip). Adding a persisted style is a one-line edit here. </p>
+
+</div>
+</div>
+<a id="a225ac7672e5b9bc0b56000ab72c5cea4" name="a225ac7672e5b9bc0b56000ab72c5cea4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a225ac7672e5b9bc0b56000ab72c5cea4">&#9670;&#160;</a></span>TakeFilesToSave()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::list&lt; <a class="el" href="classConfiguration_1_1FileToSave.html">FileToSave</a> &gt; Configuration::TakeFilesToSave </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Hands out the list of files to save, leaving it empty. </p>
+<p>Lets something that needs the list for itself (the XML on the clipboard, which is rendered whenever a program asks for it) put back whatever a .wxmx being saved at the same time had collected so far. </p>
 
 </div>
 </div>

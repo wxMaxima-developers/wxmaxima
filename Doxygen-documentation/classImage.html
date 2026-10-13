@@ -70,7 +70,6 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Data Structures</a> &#124;
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
@@ -84,11 +83,6 @@ $(function() {
 
 <p><code>#include &lt;<a class="el" href="Image_8h_source.html">Image.h</a>&gt;</code></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
-Data Structures</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImage_1_1WxmxStream.html">WxmxStream</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
 <tr class="memitem:aa66fcc260d334a93ab2186636f78fc5b"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImage.html#aa66fcc260d334a93ab2186636f78fc5b">LoadFailureKind</a> { <b>None</b>
@@ -112,9 +106,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a5914663cd2c7958ef99bad1c8d0b4a7c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImage.html#a5914663cd2c7958ef99bad1c8d0b4a7c">Image</a> (<a class="el" href="classConfiguration.html">Configuration</a> *config, const wxBitmap &amp;bitmap)</td></tr>
 <tr class="memdesc:a5914663cd2c7958ef99bad1c8d0b4a7c"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classA.html">A</a> constructor that loads a bitmap.  <br /></td></tr>
 <tr class="separator:a5914663cd2c7958ef99bad1c8d0b4a7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6519b2226f7e52d8ea2a57d40b7949c3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImage.html#a6519b2226f7e52d8ea2a57d40b7949c3">Image</a> (<a class="el" href="classConfiguration.html">Configuration</a> *config, const wxString &amp;image, const wxString &amp;wxmxFile, bool remove=true)</td></tr>
-<tr class="memdesc:a6519b2226f7e52d8ea2a57d40b7949c3"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classA.html">A</a> constructor that loads an image.  <br /></td></tr>
-<tr class="separator:a6519b2226f7e52d8ea2a57d40b7949c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0073e83d189bdead3b1d48209cf0b3e6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImage.html#a0073e83d189bdead3b1d48209cf0b3e6">Image</a> (<a class="el" href="classConfiguration.html">Configuration</a> *config, const wxString &amp;image, const <a class="el" href="classAttachmentSource.html">AttachmentSource</a> &amp;attachments, bool remove=true)</td></tr>
+<tr class="memdesc:a0073e83d189bdead3b1d48209cf0b3e6"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classA.html">A</a> constructor that loads an image.  <br /></td></tr>
+<tr class="separator:a0073e83d189bdead3b1d48209cf0b3e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8fe4e9afe10f38133b5ba743a8b4ddb1"><td class="memItemLeft" align="right" valign="top"><a id="a8fe4e9afe10f38133b5ba743a8b4ddb1" name="a8fe4e9afe10f38133b5ba743a8b4ddb1"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Image</b> (<a class="el" href="classConfiguration.html">Configuration</a> *config, const <a class="el" href="classImage.html">Image</a> &amp;image)</td></tr>
 <tr class="separator:a8fe4e9afe10f38133b5ba743a8b4ddb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -143,12 +137,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>GenerateInvalidBitmap
 <a class="el" href="classImage.html#aa66fcc260d334a93ab2186636f78fc5b">LoadFailureKind</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetLoadFailureKind</b> () const</td></tr>
 <tr class="memdesc:a777e5847d982db8cc939c89a455fe9b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Blocks until this image's background load task (if any) has finished, then reports why it ended up invalid, if it did. Reflects only the CURRENT state &ndash; an image that failed once but was then reloaded successfully (e.g. a stale embedded copy later replaced by a fresh evaluation) reports LoadFailureKind::None. <br /></td></tr>
 <tr class="separator:a777e5847d982db8cc939c89a455fe9b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0dbad9d2fc36a7c035e7a067f352d8a4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImage.html#a0dbad9d2fc36a7c035e7a067f352d8a4">GnuplotSource</a> (wxString gnuplotFilename, wxString dataFilename, const wxString &amp;wxmxFile=wxEmptyString)</td></tr>
-<tr class="memdesc:a0dbad9d2fc36a7c035e7a067f352d8a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the name of the gnuplot source and data file of this image.  <br /></td></tr>
-<tr class="separator:a0dbad9d2fc36a7c035e7a067f352d8a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae4ca9ced3889fdb12d0e659ea813fd91"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImage.html#ae4ca9ced3889fdb12d0e659ea813fd91">CompressedGnuplotSource</a> (wxString gnuplotFilename, wxString dataFilename, const wxString &amp;wxmxFile=wxEmptyString)</td></tr>
-<tr class="memdesc:ae4ca9ced3889fdb12d0e659ea813fd91"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads the compressed gnuplot source and data file for this image.  <br /></td></tr>
-<tr class="separator:ae4ca9ced3889fdb12d0e659ea813fd91"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa202e724548644f439ac8817dba143a6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImage.html#aa202e724548644f439ac8817dba143a6">GnuplotSource</a> (wxString gnuplotFilename, wxString dataFilename, const <a class="el" href="classAttachmentSource.html">AttachmentSource</a> &amp;attachments={})</td></tr>
+<tr class="memdesc:aa202e724548644f439ac8817dba143a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the name of the gnuplot source and data file of this image.  <br /></td></tr>
+<tr class="separator:aa202e724548644f439ac8817dba143a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5be426522e4d4dc0bfaa7468ee34acd1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImage.html#a5be426522e4d4dc0bfaa7468ee34acd1">CompressedGnuplotSource</a> (wxString gnuplotFilename, wxString dataFilename, const <a class="el" href="classAttachmentSource.html">AttachmentSource</a> &amp;attachments={})</td></tr>
+<tr class="memdesc:a5be426522e4d4dc0bfaa7468ee34acd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads the compressed gnuplot source and data file for this image.  <br /></td></tr>
+<tr class="separator:a5be426522e4d4dc0bfaa7468ee34acd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a299156259e50c7a78733a252e1ed36bc"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImage.html#a299156259e50c7a78733a252e1ed36bc">GnuplotSource</a> ()</td></tr>
 <tr class="memdesc:a299156259e50c7a78733a252e1ed36bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the gnuplot source file name of this image.  <br /></td></tr>
 <tr class="separator:a299156259e50c7a78733a252e1ed36bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -348,8 +342,8 @@ wxMemoryBuffer&#160;</td><td class="memItemRight" valign="bottom"><b>m_compresse
 
 </div>
 </div>
-<a id="a6519b2226f7e52d8ea2a57d40b7949c3" name="a6519b2226f7e52d8ea2a57d40b7949c3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6519b2226f7e52d8ea2a57d40b7949c3">&#9670;&#160;</a></span>Image() <span class="overload">[2/2]</span></h2>
+<a id="a0073e83d189bdead3b1d48209cf0b3e6" name="a0073e83d189bdead3b1d48209cf0b3e6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0073e83d189bdead3b1d48209cf0b3e6">&#9670;&#160;</a></span>Image() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -369,8 +363,8 @@ wxMemoryBuffer&#160;</td><td class="memItemRight" valign="bottom"><b>m_compresse
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const wxString &amp;&#160;</td>
-          <td class="paramname"><em>wxmxFile</em>, </td>
+          <td class="paramtype">const <a class="el" href="classAttachmentSource.html">AttachmentSource</a> &amp;&#160;</td>
+          <td class="paramname"><em>attachments</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -391,7 +385,7 @@ wxMemoryBuffer&#160;</td><td class="memItemRight" valign="bottom"><b>m_compresse
   <table class="params">
     <tr><td class="paramname">config</td><td>The pointer to the current configuration storage for the worksheet </td></tr>
     <tr><td class="paramname">image</td><td>The name of the file </td></tr>
-    <tr><td class="paramname">wxmxFile</td><td>The wxmx file to load it from. Empty when loading from a standalone file from the filesystem. </td></tr>
+    <tr><td class="paramname">attachments</td><td>Where to load it from: a .wxmx file, the attachments of a self-contained XML document, or empty for the file system. </td></tr>
     <tr><td class="paramname">remove</td><td>true = Delete the file after loading it </td></tr>
   </table>
   </dd>
@@ -428,8 +422,8 @@ wxMemoryBuffer&#160;</td><td class="memItemRight" valign="bottom"><b>m_compresse
 
 </div>
 </div>
-<a id="ae4ca9ced3889fdb12d0e659ea813fd91" name="ae4ca9ced3889fdb12d0e659ea813fd91"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae4ca9ced3889fdb12d0e659ea813fd91">&#9670;&#160;</a></span>CompressedGnuplotSource()</h2>
+<a id="a5be426522e4d4dc0bfaa7468ee34acd1" name="a5be426522e4d4dc0bfaa7468ee34acd1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5be426522e4d4dc0bfaa7468ee34acd1">&#9670;&#160;</a></span>CompressedGnuplotSource()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -449,8 +443,8 @@ wxMemoryBuffer&#160;</td><td class="memItemRight" valign="bottom"><b>m_compresse
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const wxString &amp;&#160;</td>
-          <td class="paramname"><em>wxmxFile</em> = <code>wxEmptyString</code>&#160;</td>
+          <td class="paramtype">const <a class="el" href="classAttachmentSource.html">AttachmentSource</a> &amp;&#160;</td>
+          <td class="paramname"><em>attachments</em> = <code>{}</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -506,8 +500,8 @@ wxMemoryBuffer&#160;</td><td class="memItemRight" valign="bottom"><b>m_compresse
 
 </div>
 </div>
-<a id="a0dbad9d2fc36a7c035e7a067f352d8a4" name="a0dbad9d2fc36a7c035e7a067f352d8a4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0dbad9d2fc36a7c035e7a067f352d8a4">&#9670;&#160;</a></span>GnuplotSource() <span class="overload">[2/2]</span></h2>
+<a id="aa202e724548644f439ac8817dba143a6" name="aa202e724548644f439ac8817dba143a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa202e724548644f439ac8817dba143a6">&#9670;&#160;</a></span>GnuplotSource() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -527,8 +521,8 @@ wxMemoryBuffer&#160;</td><td class="memItemRight" valign="bottom"><b>m_compresse
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const wxString &amp;&#160;</td>
-          <td class="paramname"><em>wxmxFile</em> = <code>wxEmptyString</code>&#160;</td>
+          <td class="paramtype">const <a class="el" href="classAttachmentSource.html">AttachmentSource</a> &amp;&#160;</td>
+          <td class="paramname"><em>attachments</em> = <code>{}</code>&#160;</td>
         </tr>
         <tr>
           <td></td>

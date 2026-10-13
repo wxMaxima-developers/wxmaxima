@@ -118,12 +118,22 @@ $(function() {
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>                    <a class="code hl_class" href="classConfiguration.html">Configuration</a> *configuration, <a class="code hl_class" href="classViewCellPointers.html">ViewCellPointers</a> *cellPointers,</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>                    <span class="keyword">const</span> std::vector&lt;wxString&gt; &amp;variables, <span class="keyword">const</span> <a class="code hl_class" href="classGroupCell.html">GroupCell</a> * <span class="keyword">const</span> cursorCell = <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>}</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="preprocessor">#endif </span><span class="comment">// WXMXFORMAT_H</span></div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  wxString CellsToXMLDocument(<span class="keyword">const</span> <a class="code hl_class" href="classGroupCell.html">GroupCell</a> *cells, <a class="code hl_class" href="classConfiguration.html">Configuration</a> *configuration);</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  std::unique_ptr&lt;GroupCell&gt; TreeFromXMLDocument(<span class="keyword">const</span> wxString &amp;xml,</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>                                                 <a class="code hl_class" href="classConfiguration.html">Configuration</a> *configuration);</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  <span class="keyword">inline</span> <span class="keyword">const</span> wxString &amp;AttachmentsTag() {</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    <span class="keyword">static</span> <span class="keyword">const</span> wxString tag(wxS(<span class="stringliteral">&quot;attachments&quot;</span>));</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    <span class="keywordflow">return</span> tag;</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  }</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>}</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span><span class="preprocessor">#endif </span><span class="comment">// WXMXFORMAT_H</span></div>
 <div class="ttc" id="aGroupCell_8h_html"><div class="ttname"><a href="GroupCell_8h.html">GroupCell.h</a></div><div class="ttdoc">This file defines the class GroupCell that bundles input and output in the worksheet.</div></div>
 <div class="ttc" id="aTextFormat_8h_html_a5f5bc96d42493f3c4209d77ec9ab6952"><div class="ttname"><a href="TextFormat_8h.html#a5f5bc96d42493f3c4209d77ec9ab6952">TextFormat::Format</a></div><div class="ttdeci">std::uint8_t Format</div><div class="ttdoc">The formatting of one character: a combination of the flags below.</div><div class="ttdef"><b>Definition:</b> TextFormat.h:68</div></div>
-<div class="ttc" id="aclassConfiguration_html"><div class="ttname"><a href="classConfiguration.html">Configuration</a></div><div class="ttdoc">The configuration storage for the current worksheet.</div><div class="ttdef"><b>Definition:</b> Configuration.h:100</div></div>
+<div class="ttc" id="aclassConfiguration_html"><div class="ttname"><a href="classConfiguration.html">Configuration</a></div><div class="ttdoc">The configuration storage for the current worksheet.</div><div class="ttdef"><b>Definition:</b> Configuration.h:101</div></div>
 <div class="ttc" id="aclassGroupCell_html"><div class="ttname"><a href="classGroupCell.html">GroupCell</a></div><div class="ttdoc">A cell grouping input (and, if there is one, also the output) cell to a foldable item.</div><div class="ttdef"><b>Definition:</b> GroupCell.h:88</div></div>
 <div class="ttc" id="aclassViewCellPointers_html"><div class="ttname"><a href="classViewCellPointers.html">ViewCellPointers</a></div><div class="ttdoc">The view/interaction half of the cell-pointer registry.</div><div class="ttdef"><b>Definition:</b> CellPointers.h:258</div></div>
 </div><!-- fragment --></div><!-- contents -->

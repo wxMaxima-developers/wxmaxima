@@ -85,6 +85,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad10265ea446b1b75a90c7222fd1fe2a7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMathParser.html#ad10265ea446b1b75a90c7222fd1fe2a7">MathParser</a> (<a class="el" href="classConfiguration.html">Configuration</a> *cfg, const wxString &amp;zipfile={})</td></tr>
 <tr class="memdesc:ad10265ea446b1b75a90c7222fd1fe2a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">The constructor.  <br /></td></tr>
 <tr class="separator:ad10265ea446b1b75a90c7222fd1fe2a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf826b9ba27bf0cbbade12abb434aab9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMathParser.html#acf826b9ba27bf0cbbade12abb434aab9">MathParser</a> (<a class="el" href="classConfiguration.html">Configuration</a> *cfg, <a class="el" href="classAttachmentSource.html">AttachmentSource</a> attachments)</td></tr>
+<tr class="memdesc:acf826b9ba27bf0cbbade12abb434aab9"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classA.html">A</a> parser that reads the images the XML refers to from attachments.  <br /></td></tr>
+<tr class="separator:acf826b9ba27bf0cbbade12abb434aab9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a88bcb342d41f0ffcd126cbea77d1dccd"><td class="memItemLeft" align="right" valign="top"><a id="a88bcb342d41f0ffcd126cbea77d1dccd" name="a88bcb342d41f0ffcd126cbea77d1dccd"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>MathParser</b> (const <a class="el" href="classMathParser.html">MathParser</a> &amp;)=delete</td></tr>
 <tr class="memdesc:a88bcb342d41f0ffcd126cbea77d1dccd"><td class="mdescLeft">&#160;</td><td class="mdescRight">This class doesn't have a copy constructor. <br /></td></tr>
@@ -121,7 +124,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetGroup</b> (<a clas
 <p>The xml representation of a cell tree can be found in the file contents.xml inside a wxmx file </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ad10265ea446b1b75a90c7222fd1fe2a7" name="ad10265ea446b1b75a90c7222fd1fe2a7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad10265ea446b1b75a90c7222fd1fe2a7">&#9670;&#160;</a></span>MathParser()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad10265ea446b1b75a90c7222fd1fe2a7">&#9670;&#160;</a></span>MathParser() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -156,6 +159,37 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetGroup</b> (<a clas
 
 <p>The constructor. </p>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000010">Todo:</a></b></dt><dd>I guess we could increase the performance further by putting the most-frequently-used tags to the front of the list. </dd></dl>
+
+</div>
+</div>
+<a id="acf826b9ba27bf0cbbade12abb434aab9" name="acf826b9ba27bf0cbbade12abb434aab9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acf826b9ba27bf0cbbade12abb434aab9">&#9670;&#160;</a></span>MathParser() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">MathParser::MathParser </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classConfiguration.html">Configuration</a> *&#160;</td>
+          <td class="paramname"><em>cfg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classAttachmentSource.html">AttachmentSource</a>&#160;</td>
+          <td class="paramname"><em>attachments</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><a class="el" href="classA.html">A</a> parser that reads the images the XML refers to from attachments. </p>
+<p>See <a class="el" href="classAttachmentSource.html" title="The files a worksheet&#39;s XML refers to by name.">AttachmentSource</a>; Format::TreeFromXMLDocument() uses this for the self-contained XML on the clipboard. </p>
 
 </div>
 </div>
