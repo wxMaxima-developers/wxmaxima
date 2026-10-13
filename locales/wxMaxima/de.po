@@ -90,27 +90,27 @@ msgstr ""
 #: ../../src/Configuration.cpp:1541
 #, c-format
 msgid "  Cells converted to 2D: %ld"
-msgstr ""
+msgstr "  Zellen nach 2D konvertiert: %ld"
 
 #: ../../src/Configuration.cpp:1540
 #, c-format
 msgid "  Cells converted to linear: %ld"
-msgstr ""
+msgstr "  Zellen in lineare Form konvertiert: %ld"
 
 #: ../../src/Configuration.cpp:1542
 #, c-format
 msgid "  Cells drawn at the wrong font size: %ld"
-msgstr ""
+msgstr "  Zellen mit der falschen Schriftgröße: %ld"
 
 #: ../../src/Configuration.cpp:1532
 #, c-format
 msgid "  Font cache hits: %ld"
-msgstr ""
+msgstr "  Schrift-Cache Treffer: %ld"
 
 #: ../../src/Configuration.cpp:1533
 #, c-format
 msgid "  Font cache misses: %ld"
-msgstr ""
+msgstr "  Schrift-Cache Fehler: &ld"
 
 #: ../../src/Configuration.cpp:1544
 #, c-format
@@ -135,17 +135,17 @@ msgstr ""
 #: ../../src/Configuration.cpp:1531
 #, c-format
 msgid "  Maxima processes spawned: %ld"
-msgstr ""
+msgstr "  Maxima Prozesse generiert: %ld"
 
 #: ../../src/Configuration.cpp:1538
 #, c-format
 msgid "  Recalculation needed - Cells appended: %ld"
-msgstr ""
+msgstr "  Neuberechnung notwendig - Zellen angefügt: %ld"
 
 #: ../../src/Configuration.cpp:1537
 #, c-format
 msgid "  Recalculation needed - Config changed: %ld"
-msgstr ""
+msgstr "  Neuberechung notwendig - Konfiguraten geändert: %ld"
 
 #: ../../src/Configuration.cpp:1539
 #, c-format
@@ -155,7 +155,7 @@ msgstr ""
 #: ../../src/Configuration.cpp:1534
 #, c-format
 msgid "  Recalculation needed - Font invalid: %ld"
-msgstr ""
+msgstr "  Neuberechnung notwendig - Schrift ungültig: %ld"
 
 #: ../../src/Configuration.cpp:1536
 #, c-format
@@ -165,7 +165,7 @@ msgstr ""
 #: ../../src/Configuration.cpp:1535
 #, c-format
 msgid "  Recalculation needed - Size invalid: %ld"
-msgstr ""
+msgstr "  Neuberechung notweding - Größe ungültig: %ld"
 
 #: ../../src/Configuration.cpp:1543
 #, c-format
@@ -185,7 +185,7 @@ msgstr " (Bild) "
 #: ../../src/cells/EditorCell.cpp:3945
 #, c-format
 msgid " ... + %li hidden lines"
-msgstr ""
+msgstr " ... + %li versteckte Zeilen"
 
 #: ../../src/cells/EditorCell.cpp:3553
 msgid " ... + 1 hidden line"
@@ -193,15 +193,15 @@ msgstr "... + 1 versteckte Zeile"
 
 #: ../../src/dialogs/TipOfTheDay.cpp:273
 msgid " Did you know? "
-msgstr ""
+msgstr "Wussten Sie schon?"
 
 #: ../../src/MaximaCommandMenus.cpp:1607
 msgid " Returns the unique elements of the list"
-msgstr ""
+msgstr "Retourniert die eindeutigen Elemente der Liste"
 
 #: ../../src/wxMaximaFrame.cpp:1753
 msgid " Wrong, if a is complex"
-msgstr " Falsch, wenn es eine komplexe"
+msgstr " Falsch, wenn a komplex ist"
 
 #: ../../src/wizards/DrawWiz.cpp:964 ../../src/wizards/DrawWiz.cpp:980
 msgid " samples"
@@ -291,7 +291,7 @@ msgstr "%s-Bild, %li×%li, %li ppi"
 #: ../../src/ai/AiProvider.cpp:807 ../../src/ai/AiProvider.cpp:946
 #, c-format
 msgid "%s rejected the API key (HTTP 401): %s"
-msgstr ""
+msgstr "%s hat den API Schlüssel abgelehnt (HTTP 401): %s"
 
 #: ../../src/ai/AiProvider.cpp:787 ../../src/ai/AiProvider.cpp:910
 #, c-format
@@ -586,7 +586,7 @@ msgstr ""
 
 #: ../../src/cells/ImgCell.cpp:284
 msgid "(Image)"
-msgstr ""
+msgstr "(Bild)"
 
 #: ../../src/MathParser.cpp:1424
 msgid "(Invalid XML from maxima)"
