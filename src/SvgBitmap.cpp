@@ -86,6 +86,34 @@ SvgBitmap &SvgBitmap::operator=(SvgBitmap &&o) noexcept {
   return *this;
 }
 
+bool SvgBitmap::RendersText() {
+  static const bool rendersText = [] {
+    // Arial at 12px, as in every text element gnuplot's svg terminal writes
+    char svg[] =
+      "<svg width=\"64\" height=\"32\" xmlns=\"http://www.w3.org/2000/svg\">"
+      "<text x=\"2\" y=\"24\" font-family=\"Arial\" font-size=\"24\" "
+      "fill=\"black\">Wx</text></svg>";
+    wxBitmapBundle bundle = wxBitmapBundle::FromSVG(svg, wxSize(64, 32));
+    if (!bundle.IsOk())
+      return false;
+    wxBitmap bitmap = bundle.GetBitmap(wxSize(64, 32));
+    if (!bitmap.IsOk())
+      return false;
+    wxImage image = bitmap.ConvertToImage();
+    if (!image.IsOk() || !image.HasAlpha())
+      return false;
+    // The text is the only thing drawn: any pixel that isn't transparent is
+    // text.
+    const unsigned char *alpha = image.GetAlpha();
+    const size_t pixels = static_cast<size_t>(image.GetWidth()) * image.GetHeight();
+    for (size_t i = 0; i < pixels; i++)
+      if (alpha[i] != 0)
+        return true;
+    return false;
+  }();
+  return rendersText;
+}
+
 wxBitmap SvgBitmap::GetInvalidBitmap(int targetSize) {
   wxImage img = wxImage(invalidImage_xpm);
   img.Rescale(targetSize, targetSize, wxIMAGE_QUALITY_HIGH);

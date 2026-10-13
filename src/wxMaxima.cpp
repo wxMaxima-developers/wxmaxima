@@ -94,6 +94,7 @@
 #include "WXMXformat.h"
 #include "wxMathml.h"
 #include "wxMaxima.h"
+#include "SvgBitmap.h"
 #include <wx/app.h>
 #include <wx/apptrait.h>
 #include <wx/stdpaths.h>
@@ -264,7 +265,8 @@ void wxMaxima::ConfigChanged() {
       GetWorksheet()->RequestRedraw();
     }
   wxLogMessage(_("Sending configuration data to maxima."));
-  if (m_configuration.UseSVG())
+  // A renderer that can't draw text would show SVG plots without labels.
+  if (m_configuration.UseSVG() && SvgBitmap::RendersText())
     m_configCommands += wxS(":lisp-quiet (setq $wxplot_usesvg t)\n");
   else
     m_configCommands += wxS(":lisp-quiet (setq $wxplot_usesvg nil)\n");

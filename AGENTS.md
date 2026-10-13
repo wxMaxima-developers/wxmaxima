@@ -845,6 +845,23 @@ a local TCP socket.
   asked for (`bmpsvg.cpp`, 3.2 and 3.3), so zooming needs no new bundle;
   `Image::ClearCache()` still drops it, since it holds the parsed document
   and a full-size rendering of every SVG image in the worksheet.
+- **SVG plots need LunaSVG, and LunaSVG needs NanoSVG switched off.**
+  NanoSVG ignores `<text>`, so a plot would lose every label;
+  `SvgBitmap::RendersText()` renders a word once at startup and only then
+  are plots made as SVG (`wxMaxima::ConfigChanged()`) and the option shown
+  (`ConfigDialogue`). wxWidgets (>= 3.3.2) has LunaSVG off by default, and
+  `wxBitmapBundle::FromSVG()` does `#if wxUSE_NANOSVG ... #elif
+  wxUSE_LUNASVG`, so turning LunaSVG on changes nothing unless NanoSVG is
+  turned off as well (`setup_inc.h` claims LunaSVG overrides it; the code
+  doesn't). The minGW job patches `include/wx/msw/setup.h` for exactly that
+  and builds with `USE_LUNASVG=1`; a static build then also needs
+  `libwxlunasvg.a`, which FindwxWidgets doesn't know (top-level
+  `CMakeLists.txt` adds it). LunaSVG reads fonts only from the system font
+  directories (no fontconfig, no per-user fonts) and falls back to DejaVu
+  Sans on Linux and Arial elsewhere; without either, text silently vanishes,
+  which the probe also catches. The config key is `useSVGPlots`, not
+  `useSVG`: every config since 2019 holds `useSVG=0` from when the option
+  was hidden.
 - **`Worksheet::AnonymizeCodeCells()` (GH #1339, Help menu -> "Anonymize Code
   for Bug Report"):** renames every non-builtin variable/function name in the
   selected code cells (whole document if nothing's selected, after a
