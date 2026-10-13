@@ -25,11 +25,12 @@ var searchData=
   ['helpdir_22',['HelpDir',['../classDirstructure.html#ad67a848e54d1e40f97453a8e4279f59c',1,'Dirstructure::HelpDir() const'],['../classDirstructure.html#a566f3960bf573e37465b6a09b34eaddf',1,'Dirstructure::HelpDir(const wxString &amp;helpDir)']]],
   ['helpmenu_23',['HelpMenu',['../classMaximaCommandMenus.html#a3eade0ddf1a3f6ec04f6ecabd55dc1c3',1,'MaximaCommandMenus']]],
   ['hide_24',['Hide',['../classCell.html#a87f7f4583027ae2e5e5baf664d488dc2',1,'Cell::Hide()'],['../classGroupCell.html#a02dab13af6158beb628cd2bb0be34a20',1,'GroupCell::Hide()']]],
-  ['hidebrackets_25',['HideBrackets',['../classConfiguration.html#ac05473e9ab3c972d4587415e9d5611a9',1,'Configuration::HideBrackets(bool hide)'],['../classConfiguration.html#a352252421e1d5163ce20aff4cefc5a9e',1,'Configuration::HideBrackets() const']]],
+  ['hidebrackets_25',['HideBrackets',['../classConfiguration.html#a352252421e1d5163ce20aff4cefc5a9e',1,'Configuration::HideBrackets() const'],['../classConfiguration.html#ac05473e9ab3c972d4587415e9d5611a9',1,'Configuration::HideBrackets(bool hide)']]],
   ['hidesidebar_26',['HideSidebar',['../classMcpTools.html#a6d4f36b88efb763e6c06d5fca207d03e',1,'McpTools']]],
   ['hidetree_27',['HideTree',['../classGroupCell.html#aa79c40d6d88603e83be78a30e5ba190d',1,'GroupCell']]],
   ['historydclick_28',['HistoryDClick',['../classwxMaxima.html#a779cec517fcd3071172c32d05e7b17af',1,'wxMaxima']]],
-  ['horizontalscrollbarrect_29',['HorizontalScrollbarRect',['../classMatrCell.html#aef348a203ec2890b5fbd1798e0b2944d',1,'MatrCell']]],
-  ['htmlexportselfcontained_30',['HTMLExportSelfContained',['../classConfiguration.html#a09614451291eeb82685331e594616a99',1,'Configuration']]],
-  ['htmlhasanchor_31',['HtmlHasAnchor',['../WxMaximaManualAnchors_8cpp.html#aa9870cf5dd6e86ace9d76a2e260bf445',1,'WxMaximaManualAnchors']]]
+  ['holdssvgrendering_29',['HoldsSvgRendering',['../classImage.html#aa037d990c0708222b49afcd2548bc8d7',1,'Image']]],
+  ['horizontalscrollbarrect_30',['HorizontalScrollbarRect',['../classMatrCell.html#aef348a203ec2890b5fbd1798e0b2944d',1,'MatrCell']]],
+  ['htmlexportselfcontained_31',['HTMLExportSelfContained',['../classConfiguration.html#a09614451291eeb82685331e594616a99',1,'Configuration']]],
+  ['htmlhasanchor_32',['HtmlHasAnchor',['../WxMaximaManualAnchors_8cpp.html#aa9870cf5dd6e86ace9d76a2e260bf445',1,'WxMaximaManualAnchors']]]
 ];

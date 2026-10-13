@@ -73,6 +73,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><ul>
+<li><a class="el" href="classwxMaxima.html">wxMaxima</a> no longer carries its own copy of the NanoSVG library: SVG images, plots and icons are now rendered by wxWidgets. SVG images in a .wxm file (GH #2087) and copies of SVG images, for example of a copied cell, are shown instead of "Cannot render the image".</li>
 <li>The toolbar's "Evaluate all" button had the same icon as "Evaluate
   current cell". It gets back its own, curved arrow.</li>
 <li>On Windows, help went to a browser although the help sidebar now works: every configuration there had stored "not the sidebar" while the sidebar couldn't be offered, and that default was read back as a choice. Such a stored "no" is now ignored once, and where help is shown is only saved where the sidebar is offered. The help browser's own path is now saved on Windows, too.</li>

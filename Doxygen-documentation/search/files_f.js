@@ -21,8 +21,10 @@ var searchData=
   ['svgout_2ecpp_18',['SVGout.cpp',['../SVGout_8cpp.html',1,'']]],
   ['svgpanel_2ecpp_19',['SvgPanel.cpp',['../SvgPanel_8cpp.html',1,'']]],
   ['svgpanel_2eh_20',['SvgPanel.h',['../SvgPanel_8h.html',1,'']]],
-  ['symbolssidebar_2ecpp_21',['SymbolsSidebar.cpp',['../SymbolsSidebar_8cpp.html',1,'']]],
-  ['symbolssidebar_2eh_22',['SymbolsSidebar.h',['../SymbolsSidebar_8h.html',1,'']]],
-  ['syntaxerrorlocation_2ecpp_23',['SyntaxErrorLocation.cpp',['../SyntaxErrorLocation_8cpp.html',1,'']]],
-  ['syntaxerrorlocation_2eh_24',['SyntaxErrorLocation.h',['../SyntaxErrorLocation_8h.html',1,'']]]
+  ['svgsize_2ecpp_21',['SvgSize.cpp',['../SvgSize_8cpp.html',1,'']]],
+  ['svgsize_2eh_22',['SvgSize.h',['../SvgSize_8h.html',1,'']]],
+  ['symbolssidebar_2ecpp_23',['SymbolsSidebar.cpp',['../SymbolsSidebar_8cpp.html',1,'']]],
+  ['symbolssidebar_2eh_24',['SymbolsSidebar.h',['../SymbolsSidebar_8h.html',1,'']]],
+  ['syntaxerrorlocation_2ecpp_25',['SyntaxErrorLocation.cpp',['../SyntaxErrorLocation_8cpp.html',1,'']]],
+  ['syntaxerrorlocation_2eh_26',['SyntaxErrorLocation.h',['../SyntaxErrorLocation_8h.html',1,'']]]
 ];

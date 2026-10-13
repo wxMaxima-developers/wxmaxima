@@ -172,6 +172,10 @@ const wxMemoryBuffer&#160;</td><td class="memItemRight" valign="bottom"><b>GetCo
 <tr class="memitem:ae792e58c167f0210ba8dd3289f46eff4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImage.html#ae792e58c167f0210ba8dd3289f46eff4">ClearCache</a> ()</td></tr>
 <tr class="memdesc:ae792e58c167f0210ba8dd3289f46eff4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Temporarily forget the scaled image in order to save memory.  <br /></td></tr>
 <tr class="separator:ae792e58c167f0210ba8dd3289f46eff4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa037d990c0708222b49afcd2548bc8d7"><td class="memItemLeft" align="right" valign="top"><a id="aa037d990c0708222b49afcd2548bc8d7" name="aa037d990c0708222b49afcd2548bc8d7"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>HoldsSvgRendering</b> () const</td></tr>
+<tr class="memdesc:aa037d990c0708222b49afcd2548bc8d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">True while this SVG image keeps its parsed document and a rendering in memory. <br /></td></tr>
+<tr class="separator:aa037d990c0708222b49afcd2548bc8d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6582ffbd6da1b300a79e002aceac11f6"><td class="memItemLeft" align="right" valign="top"><a id="a6582ffbd6da1b300a79e002aceac11f6" name="a6582ffbd6da1b300a79e002aceac11f6"></a>
 wxString&#160;</td><td class="memItemRight" valign="bottom"><b>GetExtension</b> () const</td></tr>
 <tr class="memdesc:a6582ffbd6da1b300a79e002aceac11f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the file name extension of the current image. <br /></td></tr>
@@ -234,10 +238,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasGnuplotSource</b> 
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a705e57f7d6439e9b2917795f3946c685"><td class="memItemLeft" align="right" valign="top"><a id="a705e57f7d6439e9b2917795f3946c685" name="a705e57f7d6439e9b2917795f3946c685"></a>
-static wxBitmap&#160;</td><td class="memItemRight" valign="bottom"><b>RGBA2wxBitmap</b> (const unsigned char imgdata[], const int &amp;width, const int &amp;height)</td></tr>
-<tr class="memdesc:a705e57f7d6439e9b2917795f3946c685"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts rgba data to a wxBitmap. <br /></td></tr>
-<tr class="separator:a705e57f7d6439e9b2917795f3946c685"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4d9a399068ca20e7111578e274d3296d"><td class="memItemLeft" align="right" valign="top"><a id="a4d9a399068ca20e7111578e274d3296d" name="a4d9a399068ca20e7111578e274d3296d"></a>
 static const wxString&#160;</td><td class="memItemRight" valign="bottom"><b>GetBadImageToolTip</b> ()</td></tr>
 <tr class="memdesc:a4d9a399068ca20e7111578e274d3296d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The tooltip to use wherever an image that's not Ok is shown. <br /></td></tr>

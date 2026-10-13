@@ -11,7 +11,7 @@ var searchData=
   ['has_5fto_5fjson_8',['has_to_json',['../structdetail_1_1has__to__json.html',1,'detail']]],
   ['has_5fto_5fjson_3c_20basicjsontype_2c_20t_2c_20enable_5fif_5ft_3c_20_21is_5fbasic_5fjson_3c_20t_20_3e_3a_3avalue_20_3e_20_3e_9',['has_to_json&lt; BasicJsonType, T, enable_if_t&lt; !is_basic_json&lt; T &gt;::value &gt; &gt;',['../structdetail_1_1has__to__json_3_01BasicJsonType_00_01T_00_01enable__if__t_3_01_9is__basic__json_3_01T_01_4_1_1value_01_4_01_4.html',1,'detail']]],
   ['hasbigskip_10',['HasBigSkip',['../classCell.html#a20bb74d60a63360107eb69f92e5e4f06',1,'Cell']]],
-  ['hascellsselected_11',['HasCellsSelected',['../classWorksheet.html#a6018024486004b1f2bc8a6e37628edfc',1,'Worksheet::HasCellsSelected()'],['../classDocumentCellPointers.html#a961ac74cdc8c25612234eb968d009679',1,'DocumentCellPointers::HasCellsSelected()']]],
+  ['hascellsselected_11',['HasCellsSelected',['../classDocumentCellPointers.html#a961ac74cdc8c25612234eb968d009679',1,'DocumentCellPointers::HasCellsSelected()'],['../classWorksheet.html#a6018024486004b1f2bc8a6e37628edfc',1,'Worksheet::HasCellsSelected()']]],
   ['hasdemofile_12',['HasDemofile',['../classAutoComplete.html#ae1de0de91bf3e6b748e68daa93aade9c',1,'AutoComplete']]],
   ['hasformat_13',['HasFormat',['../classEditorCell.html#afdae731203716ebb74b4d4c68df1f9a4',1,'EditorCell']]],
   ['hash_14',['hash',['../namespacedetail.html#a9dd43d16a6a490b032ceaca358755a29',1,'detail']]],
@@ -52,9 +52,10 @@ var searchData=
   ['history_2eh_49',['History.h',['../History_8h.html',1,'']]],
   ['historydclick_50',['HistoryDClick',['../classwxMaxima.html#a779cec517fcd3071172c32d05e7b17af',1,'wxMaxima']]],
   ['historyentry_51',['HistoryEntry',['../classEditorCell_1_1History_1_1HistoryEntry.html',1,'EditorCell::History']]],
-  ['horizontalscrollbarrect_52',['HorizontalScrollbarRect',['../classMatrCell.html#aef348a203ec2890b5fbd1798e0b2944d',1,'MatrCell']]],
-  ['htmlexportformat_53',['htmlExportFormat',['../classConfiguration.html#ae285be0c26dbdd7a86eac37c9cebdd7d',1,'Configuration']]],
-  ['htmlexportformats_54',['htmlExportFormats',['../classConfigDialogue.html#ad25b60509b8711db5f1fb118b88b2d95',1,'ConfigDialogue']]],
-  ['htmlexportselfcontained_55',['HTMLExportSelfContained',['../classConfiguration.html#a09614451291eeb82685331e594616a99',1,'Configuration']]],
-  ['htmlhasanchor_56',['HtmlHasAnchor',['../WxMaximaManualAnchors_8cpp.html#aa9870cf5dd6e86ace9d76a2e260bf445',1,'WxMaximaManualAnchors']]]
+  ['holdssvgrendering_52',['HoldsSvgRendering',['../classImage.html#aa037d990c0708222b49afcd2548bc8d7',1,'Image']]],
+  ['horizontalscrollbarrect_53',['HorizontalScrollbarRect',['../classMatrCell.html#aef348a203ec2890b5fbd1798e0b2944d',1,'MatrCell']]],
+  ['htmlexportformat_54',['htmlExportFormat',['../classConfiguration.html#ae285be0c26dbdd7a86eac37c9cebdd7d',1,'Configuration']]],
+  ['htmlexportformats_55',['htmlExportFormats',['../classConfigDialogue.html#ad25b60509b8711db5f1fb118b88b2d95',1,'ConfigDialogue']]],
+  ['htmlexportselfcontained_56',['HTMLExportSelfContained',['../classConfiguration.html#a09614451291eeb82685331e594616a99',1,'Configuration']]],
+  ['htmlhasanchor_57',['HtmlHasAnchor',['../WxMaximaManualAnchors_8cpp.html#aa9870cf5dd6e86ace9d76a2e260bf445',1,'WxMaximaManualAnchors']]]
 ];
