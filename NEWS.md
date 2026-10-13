@@ -1,5 +1,7 @@
 # Current development version
 
+- The toolbar's "Evaluate all" button had the same icon as "Evaluate
+  current cell". It gets back its own, curved arrow.
 - The tray icon's menu works with an AppIndicator (StatusNotifier) tray:
   "Show wxMaxima", "Interrupt" and "Exit" did nothing there. Showing
   wxMaxima from the tray now also brings back a hidden window.

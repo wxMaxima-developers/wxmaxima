@@ -209,6 +209,35 @@ SCENARIO("The toolbar shows its sections in the stored order") {
   ResetConfig();
 }
 
+//! The pixels of a tool's icon, so two icons can be compared
+static wxImage ToolIcon(ToolBar *toolbar, int id) {
+  auto *tool = toolbar->FindTool(id);
+  REQUIRE(tool != nullptr);
+  wxBitmap bitmap = tool->GetBitmap();
+  REQUIRE(bitmap.IsOk());
+  return bitmap.ConvertToImage();
+}
+
+//! Whether two icons have the same size and pixels
+static bool SameIcon(const wxImage &a, const wxImage &b) {
+  if (a.GetSize() != b.GetSize())
+    return false;
+  const size_t bytes = 3 * static_cast<size_t>(a.GetWidth()) * a.GetHeight();
+  return std::equal(a.GetData(), a.GetData() + bytes, b.GetData());
+}
+
+SCENARIO("Evaluate current cell and Evaluate all have different icons") {
+  ResetConfig();
+  auto *toolbar = new TestToolBar(g_frame);
+  // Both buttons used to be built with the same "next" arrow.
+  THEN("they differ right after the toolbar was built") {
+    REQUIRE_FALSE(SameIcon(ToolIcon(toolbar, ToolBar::tb_eval),
+                           ToolIcon(toolbar, ToolBar::tb_eval_all)));
+  }
+  toolbar->Destroy();
+  ResetConfig();
+}
+
 SCENARIO("Every toolbar section can be hidden") {
   ResetConfig();
   for (const auto section : ToolBarSections::DefaultOrder())
