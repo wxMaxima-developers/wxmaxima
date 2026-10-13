@@ -28,6 +28,7 @@
 #include <algorithm>
 #include <map>
 #include <optional>
+#include <wx/wxcrt.h>
 
 namespace {
 //! The attributes of the root svg element, or nothing if there is none.
