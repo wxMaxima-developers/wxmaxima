@@ -1383,14 +1383,14 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateNeeded</b> () c
 <tr class="memdesc:aea03003b3b121b181a4ec9ff97b81e7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">true means: The system's config storage has changed since the configuration has been read <br /></td></tr>
 <tr class="separator:aea03003b3b121b181a4ec9ff97b81e7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a963dc8e28cf107fb3d3ce73354b4b5f5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#a963dc8e28cf107fb3d3ce73354b4b5f5">MaximaHelpInConsole</a> () const</td></tr>
-<tr class="memdesc:a963dc8e28cf107fb3d3ce73354b4b5f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> answer ?, ?? and describe() on the console?  <br /></td></tr>
+<tr class="memdesc:a963dc8e28cf107fb3d3ce73354b4b5f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> answer ?, ?? and describe() with plain text in the worksheet?  <br /></td></tr>
 <tr class="separator:a963dc8e28cf107fb3d3ce73354b4b5f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af486e5a3a5befdb577392c1a88d3407a"><td class="memItemLeft" align="right" valign="top"><a id="af486e5a3a5befdb577392c1a88d3407a" name="af486e5a3a5befdb577392c1a88d3407a"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>MaximaHelpInConsole</b> (bool console)</td></tr>
 <tr class="separator:af486e5a3a5befdb577392c1a88d3407a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe6968370194186bbb853cdfaf5ca1b8"><td class="memItemLeft" align="right" valign="top"><a id="abe6968370194186bbb853cdfaf5ca1b8" name="abe6968370194186bbb853cdfaf5ca1b8"></a>
 wxString&#160;</td><td class="memItemRight" valign="bottom"><b>MaximaHelpFormatName</b> () const</td></tr>
-<tr class="memdesc:abe6968370194186bbb853cdfaf5ca1b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">The value of <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s output_format_for_help <a class="el" href="classConfiguration.html#a963dc8e28cf107fb3d3ce73354b4b5f5" title="Does Maxima answer ?, ?? and describe() on the console?">MaximaHelpInConsole()</a> stands for. <br /></td></tr>
+<tr class="memdesc:abe6968370194186bbb853cdfaf5ca1b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">The value of <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s output_format_for_help <a class="el" href="classConfiguration.html#a963dc8e28cf107fb3d3ce73354b4b5f5" title="Does Maxima answer ?, ?? and describe() with plain text in the worksheet?">MaximaHelpInConsole()</a> stands for. <br /></td></tr>
 <tr class="separator:abe6968370194186bbb853cdfaf5ca1b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5497ef2526321007e377279fe173a773"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#a5497ef2526321007e377279fe173a773">MaximaHelpFormatCommand</a> () const</td></tr>
 <tr class="memdesc:a5497ef2526321007e377279fe173a773"><td class="mdescLeft">&#160;</td><td class="mdescRight">The command that sets <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s output_format_for_help accordingly.  <br /></td></tr>
@@ -2261,7 +2261,7 @@ static constexpr long&#160;</td><td class="memItemRight" valign="bottom"><b>Digi
 </table>
 </div><div class="memdoc">
 
-<p>Does <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> answer ?, ?? and describe() on the console? </p>
+<p>Does <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> answer ?, ?? and describe() with plain text in the worksheet? </p>
 <p>If not, <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> hands the matching manual topics to <a class="el" href="classwxMaxima.html">wxMaxima</a> (output_format_for_help: frontend), which shows them wherever <a class="el" href="classConfiguration.html#ac86046404f403903a5ae145117bfb2e4" title="Use the internal help browser? If not a external web browser is used.">InternalHelpBrowser()</a> says, like all other help. That sidebar-or-browser choice is the one setting for where help is shown: until 2026-10 <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s help had a sidebar/browser choice of its own, so "Help on" and F1 could open a browser while ? used the sidebar, and the two were easily mixed up. </p>
 
 </div>
