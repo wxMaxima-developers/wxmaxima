@@ -213,10 +213,8 @@ wxString IntervalCell::ToMatlab() const {
 
 wxString IntervalCell::ToTeX() const {
   wxString s;
-  if (!IsBrokenIntoLines()) {
-    s = wxS("\\left[ ") + m_start->ListToTeX() + "\\ldots " +
-      m_stop->ListToTeX() + wxS("\\right] ");
-  }
+  s = wxS("\\left[ ") + m_start->ListToTeX() + "\\ldots " +
+    m_stop->ListToTeX() + wxS("\\right] ");
   return s;
 }
 

@@ -138,8 +138,6 @@ wxString AbsCell::ToMatlab() const {
 }
 
 wxString AbsCell::ToTeX() const {
-  if (IsBrokenIntoLines())
-    return wxEmptyString;
   return wxS("\\left| ") + m_innerCell->ListToTeX() + wxS("\\right| ");
 }
 

@@ -1,5 +1,10 @@
 # Current development version
 
+- LaTeX export and "Copy as LaTeX" no longer depend on the window width: an
+  expression too wide for the window, and therefore broken into lines on
+  screen, used to be exported in its linear form, which turned a power into
+  `e\hat{}(x+y)` instead of `e^{x+y}` and dropped some cells or exported
+  others twice (GH #408).
 - On Windows, help went to a browser although the help sidebar now works:
   every configuration there had stored "not the sidebar" while the sidebar
   couldn't be offered, and that default was read back as a choice. Such a

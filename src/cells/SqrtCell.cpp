@@ -143,10 +143,7 @@ wxString SqrtCell::ToMatlab() const {
 }
 
 wxString SqrtCell::ToTeX() const {
-  if (IsBrokenIntoLines())
-    return wxEmptyString;
-  else
-    return wxS("\\sqrt{") + m_innerCell->ListToTeX() + wxS("}");
+  return wxS("\\sqrt{") + m_innerCell->ListToTeX() + wxS("}");
 }
 
 wxString SqrtCell::ToMathML() const {

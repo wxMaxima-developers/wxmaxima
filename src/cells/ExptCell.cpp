@@ -168,8 +168,6 @@ wxString ExptCell::ToMatlab() const {
 }
 
 wxString ExptCell::ToTeX() const {
-  if (IsBrokenIntoLines())
-    return wxEmptyString;
   wxString s = wxS("{{") + m_baseCell->ListToTeX() + wxS("}^{") +
     m_exptCell->ListToTeX() + wxS("}}");
   return s;

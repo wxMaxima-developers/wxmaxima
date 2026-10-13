@@ -817,6 +817,17 @@ if(TARGET wxmTestApp)
     add_test(NAME IntegralToTeX
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_IntegralToTeX>")
 
+    # LaTeX export ignores how the window broke wide cells into lines: a
+    # broken power exported only its parenthesis as superscript (GH #408).
+    add_executable(test_BrokenCellsToTeX
+        test_BrokenCellsToTeX.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_BrokenCellsToTeX PUBLIC cxx_std_20)
+    target_link_libraries(test_BrokenCellsToTeX PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME BrokenCellsToTeX
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_BrokenCellsToTeX>")
+
     # RTF/OMML export (GH #1456, GH #1457): previously untested entirely.
     add_executable(test_RTFExport
         test_RTFExport.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}

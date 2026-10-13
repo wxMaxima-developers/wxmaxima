@@ -163,23 +163,21 @@ wxString ListCell::ToMatlab() const {
 
 wxString ListCell::ToTeX() const {
   wxString s;
-  if (!IsBrokenIntoLines()) {
-    wxString innerCell = m_innerCell->ListToTeX();
+  wxString innerCell = m_innerCell->ListToTeX();
 
-    // Let's see if the cell contains anything potentially higher than a normal
-    // character.
-    bool needsLeftRight = false;
-    for (size_t i = 0; i < innerCell.Length(); i++)
-      if (!wxIsalnum(innerCell.at(i))) {
-        needsLeftRight = true;
-        break;
-      }
+  // Let's see if the cell contains anything potentially higher than a normal
+  // character.
+  bool needsLeftRight = false;
+  for (size_t i = 0; i < innerCell.Length(); i++)
+    if (!wxIsalnum(innerCell.at(i))) {
+      needsLeftRight = true;
+      break;
+    }
 
-    if (needsLeftRight)
-      s = wxS("\\left[ ") + m_innerCell->ListToTeX() + wxS("\\right] ");
-    else
-      s = wxS("[") + m_innerCell->ListToTeX() + wxS("]");
-  }
+  if (needsLeftRight)
+    s = wxS("\\left[ ") + m_innerCell->ListToTeX() + wxS("\\right] ");
+  else
+    s = wxS("[") + m_innerCell->ListToTeX() + wxS("]");
   return s;
 }
 
