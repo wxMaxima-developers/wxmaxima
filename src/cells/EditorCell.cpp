@@ -3299,7 +3299,12 @@ void EditorCell::SelectPointText(const wxPoint point) {
       return (x > point.x) ? (x - point.x) : (point.x - x);
     };
 
-    const size_t lineEnd = lineStart + LineLength(lin);
+    size_t lineEnd = lineStart + LineLength(lin);
+    // A caret on the soft break that ends this line belongs to the next
+    // display line (see PositionToXY()), at that line's left edge - not a
+    // place a click on this line may resolve to.
+    if ((lineEnd > lineStart) && IsSoftBreakBefore(lineEnd))
+      lineEnd--;
     size_t best = lineStart;
     wxCoord bestDist = distanceTo(lineStart);
     for (size_t candidate = lineStart + 1; candidate <= lineEnd; candidate++) {
@@ -3705,10 +3710,11 @@ bool EditorCell::IsStrongLeftToRight(wxUniChar c) {
 
 bool EditorCell::LineIsRightToLeft(size_t line) {
   const size_t start = XYToPosition(0, line);
-  for (size_t pos = start; pos < m_text.Length(); pos++) {
+  // Only this display line: a wrapped paragraph's other lines are drawn,
+  // and therefore aligned, on their own.
+  const size_t end = start + LineLength(line);
+  for (size_t pos = start; pos < end; pos++) {
     const wxUniChar c = m_text.at(pos);
-    if (c == wxS('\n'))
-      break;
     if (IsStrongRightToLeft(c))
       return true;
     if (IsStrongLeftToRight(c))
@@ -3719,10 +3725,16 @@ bool EditorCell::LineIsRightToLeft(size_t line) {
 }
 
 size_t EditorCell::LineLength(size_t line) {
+  // A display line ends at a hard newline or at the soft (word-wrap) break
+  // that starts the next display line, the same boundaries XYToPosition()
+  // uses. Stopping only at the newline (as this once did) made a wrapped
+  // paragraph's every display line reach to the paragraph's end, so a click
+  // on one display line could pick a caret position on another (GH #2477).
   const size_t start = XYToPosition(0, line);
   size_t length = 0;
   while ((start + length < m_text.Length()) &&
-         (m_text.at(start + length) != wxS('\n')))
+         (m_text.at(start + length) != wxS('\n')) &&
+         !((length > 0) && IsSoftBreakBefore(start + length)))
     length++;
   return length;
 }
@@ -3731,10 +3743,11 @@ bool EditorCell::LineIsMixedDirection(size_t line) {
   const size_t start = XYToPosition(0, line);
   bool sawRightToLeft = false;
   bool sawLeftToRight = false;
-  for (size_t pos = start; pos < m_text.Length(); pos++) {
+  // Only this display line: a wrapped paragraph's other lines are drawn,
+  // and therefore aligned, on their own.
+  const size_t end = start + LineLength(line);
+  for (size_t pos = start; pos < end; pos++) {
     const wxUniChar c = m_text.at(pos);
-    if (c == wxS('\n'))
-      break;
     sawRightToLeft = sawRightToLeft || IsStrongRightToLeft(c);
     sawLeftToRight = sawLeftToRight || IsStrongLeftToRight(c);
   }

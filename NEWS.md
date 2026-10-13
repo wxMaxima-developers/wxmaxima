@@ -1,5 +1,9 @@
 # Current development version
 
+- Selecting text in a text cell that wraps over several lines no longer
+  makes the selection's ends jump between lines while the mouse moves
+  (GH #2477). A click on a wrapped line could put the cursor on another
+  line of the same paragraph.
 - On Windows, help went to a browser although the help sidebar now works:
   every configuration there had stored "not the sidebar" while the sidebar
   couldn't be offered, and that default was read back as a choice. Such a
