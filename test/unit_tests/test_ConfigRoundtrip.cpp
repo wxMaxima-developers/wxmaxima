@@ -371,6 +371,79 @@ SCENARIO("Transparent images get a backdrop exactly where the setting says (GH #
   }
 }
 
+//! Reads where help is shown from a config file holding exactly these entries
+static bool ReadShowHelpInSidebar(const std::vector<std::pair<wxString, long>> &entries) {
+  const wxString file = wxFileName::CreateTempFileName(wxS("wxm_configtest"));
+  REQUIRE(!file.IsEmpty());
+  {
+    wxFileConfig fileConfig(wxS("wxMaxima"), wxEmptyString, file);
+    for (const auto &entry : entries)
+      fileConfig.Write(entry.first, entry.second);
+    fileConfig.Flush();
+  }
+  wxConfigBase *oldConfig = wxConfig::Get(false);
+  wxConfigBase *fileConfig = new wxFileConfig(wxS("wxMaxima"), wxEmptyString, file);
+  wxConfig::Set(fileConfig);
+  Configuration cfgRead(nullptr, Configuration::temporary);
+  cfgRead.ReadConfig();
+  wxConfig::Set(oldConfig);
+  delete fileConfig;
+  wxRemoveFile(file);
+  return cfgRead.InternalHelpBrowser();
+}
+
+SCENARIO("A stored \"no\" from a build that couldn't offer the help sidebar doesn't hide it") {
+  // On Windows the sidebar wasn't offered until WebView2Loader.dll was
+  // shipped, and every config there stored useInternalHelpBrowser=false.
+  GIVEN("an old key saying \"no\" that was written on Windows") {
+    THEN("it is read as the default") {
+      CHECK(Configuration::ShowHelpInSidebarFromOldKey(false, true, true));
+      CHECK(!Configuration::ShowHelpInSidebarFromOldKey(false, true, false));
+    }
+  }
+  GIVEN("an old key saying \"yes\" that was written on Windows") {
+    THEN("that choice is kept") {
+      CHECK(Configuration::ShowHelpInSidebarFromOldKey(true, true, false));
+    }
+  }
+  GIVEN("an old key written elsewhere, where the sidebar was offered") {
+    THEN("it is the user's choice either way") {
+      CHECK(!Configuration::ShowHelpInSidebarFromOldKey(false, false, true));
+      CHECK(Configuration::ShowHelpInSidebarFromOldKey(true, false, false));
+    }
+  }
+}
+
+SCENARIO("Where help is shown survives a round-trip where the sidebar is offered") {
+  Configuration cfg(nullptr, Configuration::temporary);
+  if (!cfg.OfferInternalHelpBrowser())
+    return; // Built without wxWebView: there is no choice to store.
+  GIVEN("help shown in a browser") {
+    const wxString file = wxFileName::CreateTempFileName(wxS("wxm_configtest"));
+    REQUIRE(!file.IsEmpty());
+    cfg.InternalHelpBrowser(false);
+    cfg.WriteStyles(file);
+    THEN("it is read back as the browser, under the new key") {
+      wxFileConfig fileConfig(wxS("wxMaxima"), wxEmptyString, file);
+      CHECK(fileConfig.HasEntry(wxS("showHelpInSidebar")));
+      CHECK(!fileConfig.HasEntry(wxS("useInternalHelpBrowser")));
+      CHECK(!ReadShowHelpInSidebar({{wxS("showHelpInSidebar"), 0}}));
+    }
+    wxRemoveFile(file);
+  }
+  GIVEN("a config with both keys") {
+    THEN("the new key wins") {
+      CHECK(ReadShowHelpInSidebar({{wxS("useInternalHelpBrowser"), 0},
+                                   {wxS("showHelpInSidebar"), 1}}));
+    }
+  }
+  GIVEN("a fresh config") {
+    THEN("help is shown in the sidebar") {
+      CHECK(ReadShowHelpInSidebar({}));
+    }
+  }
+}
+
 class TestApp : public wxApp {
 public:
   bool OnInit() override { return true; }

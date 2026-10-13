@@ -1,5 +1,11 @@
 # Current development version
 
+- On Windows, help went to a browser although the help sidebar now works:
+  every configuration there had stored "not the sidebar" while the sidebar
+  couldn't be offered, and that default was read back as a choice. Such a
+  stored "no" is now ignored once, and where help is shown is only saved
+  where the sidebar is offered. The help browser's own path is now saved
+  on Windows, too.
 - The tray icon's menu works with an AppIndicator (StatusNotifier) tray:
   "Show wxMaxima", "Interrupt" and "Exit" did nothing there. Showing
   wxMaxima from the tray now also brings back a hidden window.
