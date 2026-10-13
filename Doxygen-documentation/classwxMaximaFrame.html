@@ -127,6 +127,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>PopulateRecentPackage
 <tr class="memitem:a31e164bfb41b1d2bf25ebf51581a70a7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaximaFrame.html#a31e164bfb41b1d2bf25ebf51581a70a7">UpdateHelpMenuChecks</a> ()</td></tr>
 <tr class="memdesc:a31e164bfb41b1d2bf25ebf51581a70a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check the Help menu's radio items that match the configuration.  <br /></td></tr>
 <tr class="separator:a31e164bfb41b1d2bf25ebf51581a70a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a27b791e6f11ec6a343b811ab82b420d3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaximaFrame.html#a27b791e6f11ec6a343b811ab82b420d3">LogHelpMenuContents</a> () const</td></tr>
+<tr class="memdesc:a27b791e6f11ec6a343b811ab82b420d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Logs every entry of the Help menu, as wx and (on Windows) the OS see it.  <br /></td></tr>
+<tr class="separator:a27b791e6f11ec6a343b811ab82b420d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a417d6b9fde48cc771065d3d8b2c06ab5"><td class="memItemLeft" align="right" valign="top"><a id="a417d6b9fde48cc771065d3d8b2c06ab5" name="a417d6b9fde48cc771065d3d8b2c06ab5"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsXMLInspectorShown</b> ()</td></tr>
 <tr class="memdesc:a417d6b9fde48cc771065d3d8b2c06ab5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is the XML inspector shown? <br /></td></tr>
@@ -593,6 +596,26 @@ wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_roundedMatrixPa
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a27b791e6f11ec6a343b811ab82b420d3" name="a27b791e6f11ec6a343b811ab82b420d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a27b791e6f11ec6a343b811ab82b420d3">&#9670;&#160;</a></span>LogHelpMenuContents()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void wxMaximaFrame::LogHelpMenuContents </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Logs every entry of the Help menu, as wx and (on Windows) the OS see it. </p>
+<p>On a Windows nightly the "Show help in the sidebar" entry was missing although the Edge backend was reported usable at the very moment the entry is added. This shows whether wx never got the entry or Windows lost it. </p>
 
 </div>
 </div>

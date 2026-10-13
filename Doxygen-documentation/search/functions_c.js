@@ -35,7 +35,7 @@ var searchData=
   ['loadbuiltinsymbols_32',['LoadBuiltinSymbols',['../classAutoComplete.html#a9ea854df696c5e1ab20e9834dfef8a37',1,'AutoComplete']]],
   ['loadfromconfig_33',['LoadFromConfig',['../classFindReplacePane_1_1FindReplaceData.html#a1ce6384dc353aac616a619dbd5f016bf',1,'FindReplacePane::FindReplaceData']]],
   ['loadhelpfileanchors_34',['LoadHelpFileAnchors',['../classMaximaManual.html#a951e46e3290566074f0c09b2c9652991',1,'MaximaManual::LoadHelpFileAnchors()'],['../classWorksheet.html#a2df6bd0d0d77d61ff730792363efd993',1,'Worksheet::LoadHelpFileAnchors()']]],
-  ['loadimage_35',['LoadImage',['../classwxMaxima.html#a6c78de2506c518c7804f6690f27c5102',1,'wxMaxima::LoadImage()'],['../classImage.html#a07e9f48042ddd9004c24c3ff9e899094',1,'Image::LoadImage()']]],
+  ['loadimage_35',['LoadImage',['../classImage.html#a07e9f48042ddd9004c24c3ff9e899094',1,'Image::LoadImage()'],['../classwxMaxima.html#a6c78de2506c518c7804f6690f27c5102',1,'wxMaxima::LoadImage()']]],
   ['loadmanualanchorsfromcache_36',['LoadManualAnchorsFromCache',['../classMaximaManual.html#a8f70e3615c5761666ac92b7902cc96bc',1,'MaximaManual']]],
   ['loadmanualanchorsfromxml_37',['LoadManualAnchorsFromXML',['../classMaximaManual.html#acddcb69633df12600c39ebea000ef9c2',1,'MaximaManual']]],
   ['loadsave_38',['LoadSave',['../classConfigDialogue.html#afeac2a9acf99d95414b0f0e823550805',1,'ConfigDialogue']]],
@@ -43,6 +43,7 @@ var searchData=
   ['localedigitgroupsize_40',['LocaleDigitGroupSize',['../DigitGrouping_8cpp.html#a9b583b0c01ca634c9177e21bfe483d13',1,'wxm']]],
   ['localedir_41',['LocaleDir',['../classDirstructure.html#a07774426dee2c4edafa95ce9f7465661',1,'Dirstructure']]],
   ['locatesyntaxerror_42',['LocateSyntaxError',['../SyntaxErrorLocation_8cpp.html#a1e90774318898f786fe8af1fe66420f3',1,'wxm']]],
-  ['longnumbercell_43',['LongNumberCell',['../classLongNumberCell.html#ae650abe2ed7d371b47a6ed2aa55e3424',1,'LongNumberCell']]],
-  ['lookslikeldb_44',['LooksLikeLdb',['../LdbSupport_8cpp.html#a4ad83c27ca9d16abc6068282936aae76',1,'LdbSupport']]]
+  ['loghelpmenucontents_43',['LogHelpMenuContents',['../classwxMaximaFrame.html#a27b791e6f11ec6a343b811ab82b420d3',1,'wxMaximaFrame']]],
+  ['longnumbercell_44',['LongNumberCell',['../classLongNumberCell.html#ae650abe2ed7d371b47a6ed2aa55e3424',1,'LongNumberCell']]],
+  ['lookslikeldb_45',['LooksLikeLdb',['../LdbSupport_8cpp.html#a4ad83c27ca9d16abc6068282936aae76',1,'LdbSupport']]]
 ];
