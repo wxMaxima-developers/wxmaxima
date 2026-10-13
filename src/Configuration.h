@@ -1414,6 +1414,18 @@ public:
   void ReportMultipleRedraws();
   //! If we decide that the HTML browser in the sidebar doesn't work for every platform...
   bool OfferInternalHelpBrowser() const;
+  /*! What the "useInternalHelpBrowser" key of an old config means now
+
+    Until 2026-10-13 that key was written whether or not the sidebar was
+    offered. On Windows it wasn't, for nearly everybody (the shipped builds
+    lacked WebView2Loader.dll, GH #2481), so a stored "false" there is the
+    default for "not available", not a choice - and kept the sidebar off
+    once a build shipping the DLL offered it. Such a "false" yields
+    defaultValue; anything else is taken as the user's choice. The key is
+    now "showHelpInSidebar", written only where the sidebar is offered.
+  */
+  static bool ShowHelpInSidebarFromOldKey(bool stored, bool storedOnWindows,
+                                          bool defaultValue);
   bool WrapLatexMath() const {return m_wrapLatexMath;}
   void WrapLatexMath(bool wrapLatexMath){m_wrapLatexMath = wrapLatexMath;}
   bool AllowNetworkHelp() const {return m_allowNetworkHelp;}

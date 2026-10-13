@@ -801,6 +801,20 @@ void Configuration::ReadConfig() {
     m_appearance = Appearance::followSystem;
   }
   config->Read("helpBrowser", &m_helpBrowserUserLocation);
+  if (config->HasEntry(wxS("showHelpInSidebar")))
+    config->Read(wxS("showHelpInSidebar"), &m_useInternalHelpBrowser);
+  else {
+    bool stored;
+    if (config->Read(wxS("useInternalHelpBrowser"), &stored)) {
+#ifdef __WINDOWS__
+      constexpr bool storedOnWindows = true;
+#else
+      constexpr bool storedOnWindows = false;
+#endif
+      m_useInternalHelpBrowser = ShowHelpInSidebarFromOldKey(
+        stored, storedOnWindows, m_useInternalHelpBrowser);
+    }
+  }
   {
     int tmp = static_cast<int>(m_htmlEquationFormat);
     config->Read("HTMLequationFormat", &tmp);
@@ -1289,6 +1303,13 @@ bool Configuration::InUpdateRegion(wxRect const rect) const {
   return updateRegion.Intersects(rect);
 }
 
+bool Configuration::ShowHelpInSidebarFromOldKey(bool stored, bool storedOnWindows,
+                                                bool defaultValue) {
+  if (storedOnWindows && !stored)
+    return defaultValue;
+  return stored;
+}
+
 bool Configuration::OfferInternalHelpBrowser() const {
 #ifdef USE_WEBVIEW
 #ifdef __WINDOWS__
@@ -1323,8 +1344,12 @@ void Configuration::WriteStyles(wxConfigBase *config) {
   config->Write(wxS("AutoSaveAsTempFile"), m_autoSaveAsTempFile);
   config->Write(wxS("appearance"), static_cast<long>(m_appearance));
   config->Write(wxS("showLabelChoice"), static_cast<int>(m_showLabelChoice));
-  if (OfferInternalHelpBrowser())
   config->Write(wxS("helpBrowser"), m_helpBrowserUserLocation);
+  // Only a choice the user could make is stored: where the sidebar isn't
+  // offered, m_useInternalHelpBrowser is just the default "no", and storing
+  // it would keep the sidebar off once a later build can offer it.
+  if (OfferInternalHelpBrowser())
+    config->Write(wxS("showHelpInSidebar"), m_useInternalHelpBrowser);
   config->Write(wxS("layoutStrategy"), static_cast<int>(m_layoutStrategy));
   config->Write(wxS("oversizedMatrices"), static_cast<int>(m_oversizedMatrices));
   config->Write(wxS("imageBackdrop"), static_cast<int>(m_imageBackdrop));
@@ -1432,7 +1457,6 @@ Configuration::ScalarConfigSettings() {
     {wxS("texPreamble"), &Configuration::m_texPreamble},
     {wxS("tocDepth"), &Configuration::m_tocDepth},
     {wxS("TOCshowsSectionNumbers"), &Configuration::m_TOCshowsSectionNumbers},
-    {wxS("useInternalHelpBrowser"), &Configuration::m_useInternalHelpBrowser},
     {wxS("usePartialForDiff"), &Configuration::m_usePartialForDiff},
     {wxS("usepngCairo"), &Configuration::m_usepngCairo},
     {wxS("useSVG"), &Configuration::m_useSVG},

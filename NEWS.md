@@ -1,5 +1,11 @@
 # Current development version
 
+- On Windows, help went to a browser although the help sidebar now works:
+  every configuration there had stored "not the sidebar" while the sidebar
+  couldn't be offered, and that default was read back as a choice. Such a
+  stored "no" is now ignored once, and where help is shown is only saved
+  where the sidebar is offered. The help browser's own path is now saved
+  on Windows, too.
 - `wximplicit_plot()` loads the `implicit_plot` package it needs instead of
   reporting a missing image file (GH #1106).
 - If Maxima's temp directory contains a quote (for example, under a user
