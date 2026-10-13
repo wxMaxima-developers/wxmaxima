@@ -121,6 +121,9 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:acc2672d7389610532a9622ae57af88c5"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSvgBitmap.html#acc2672d7389610532a9622ae57af88c5">RendersText</a> ()</td></tr>
 <tr class="memdesc:acc2672d7389610532a9622ae57af88c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does the SVG renderer wxWidgets was built with draw text?  <br /></td></tr>
 <tr class="separator:acc2672d7389610532a9622ae57af88c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a440ec90876ecb399c121942526494b05"><td class="memItemLeft" align="right" valign="top">static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSvgBitmap.html#a440ec90876ecb399c121942526494b05">TextRenderingDiagnosis</a> (bool rendersText)</td></tr>
+<tr class="memdesc:a440ec90876ecb399c121942526494b05"><td class="mdescLeft">&#160;</td><td class="mdescRight">Why SVG plots are available or not, given <a class="el" href="classSvgBitmap.html#acc2672d7389610532a9622ae57af88c5" title="Does the SVG renderer wxWidgets was built with draw text?">RendersText()</a>'s result.  <br /></td></tr>
+<tr class="separator:a440ec90876ecb399c121942526494b05"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3cb094555331124576038b9300fd9631"><td class="memItemLeft" align="right" valign="top"><a id="a3cb094555331124576038b9300fd9631" name="a3cb094555331124576038b9300fd9631"></a>
 static wxBitmap&#160;</td><td class="memItemRight" valign="bottom"><b>GetInvalidBitmap</b> (int targetSize)</td></tr>
 <tr class="memdesc:a3cb094555331124576038b9300fd9631"><td class="mdescLeft">&#160;</td><td class="mdescRight">An "invalid bitmap" sign. <br /></td></tr>
@@ -211,7 +214,36 @@ static wxBitmap&#160;</td><td class="memItemRight" valign="bottom"><b>GetInvalid
 </div><div class="memdoc">
 
 <p>Does the SVG renderer wxWidgets was built with draw text? </p>
-<p>Only LunaSVG does (wxWidgets &gt;= 3.3.2, built with LunaSVG on and NanoSVG off); NanoSVG ignores text altogether, which would leave a plot without its labels and tick marks' numbers. Found out by rendering a word set in the font gnuplot's svg terminal asks for, so this also says no if the renderer can find neither that font nor its fallback. Rendered once, on first use, which has to be on the GUI thread. </p>
+<p>Only LunaSVG does (wxWidgets &gt;= 3.3.2, built with LunaSVG on and NanoSVG off); NanoSVG ignores text altogether, which would leave a plot without its labels and tick marks' numbers. Found out by rendering a word set in the font gnuplot's svg terminal asks for, so this also says no if the renderer can find neither that font nor its fallback. Rendered once, on first use, which has to be on the GUI thread, and logs <a class="el" href="classSvgBitmap.html#a440ec90876ecb399c121942526494b05" title="Why SVG plots are available or not, given RendersText()&#39;s result.">TextRenderingDiagnosis()</a> then, since the option for scalable plots is hidden without it. </p>
+
+</div>
+</div>
+<a id="a440ec90876ecb399c121942526494b05" name="a440ec90876ecb399c121942526494b05"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a440ec90876ecb399c121942526494b05">&#9670;&#160;</a></span>TextRenderingDiagnosis()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxString SvgBitmap::TextRenderingDiagnosis </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>rendersText</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Why SVG plots are available or not, given <a class="el" href="classSvgBitmap.html#acc2672d7389610532a9622ae57af88c5" title="Does the SVG renderer wxWidgets was built with draw text?">RendersText()</a>'s result. </p>
+<p>Says which SVG renderer wxWidgets was built with and what would enable scalable plots. Not translated: it is meant for a bug report. </p>
 
 </div>
 </div>
