@@ -142,7 +142,7 @@ SCENARIO("An image loaded from a file (background task) survives the .wxm round-
   }
 
   GIVEN("an image cell loaded from that file") {
-    auto imgCell = std::make_unique<ImgCell>(nullptr, g_cfg, file, wxEmptyString,
+    auto imgCell = std::make_unique<ImgCell>(nullptr, g_cfg, file, AttachmentSource(),
                                              /*remove=*/false);
     THEN("its bytes still make it into the reloaded worksheet") {
       const wxMemoryBuffer reloaded = RoundTrip(std::move(imgCell));

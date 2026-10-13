@@ -88,7 +88,12 @@ wxXmlNode *MathParser::GetNextTag(wxXmlNode *node) {
   return SkipWhitespaceNode(node);
 }
 
-MathParser::MathParser(Configuration *cfg, const wxString &zipfile) {
+MathParser::MathParser(Configuration *cfg, const wxString &zipfile)
+  : MathParser(cfg, zipfile.IsEmpty() ? AttachmentSource()
+                                      : AttachmentSource::FromWxmx(zipfile)) {}
+
+MathParser::MathParser(Configuration *cfg, AttachmentSource attachments)
+  : m_attachments(std::move(attachments)) {
   // We cannot do this at the startup of the program as we first need to wait
   // for the language selection to take place
   if (m_unknownXMLTagToolTip.IsEmpty())
@@ -208,7 +213,6 @@ MathParser::MathParser(Configuration *cfg, const wxString &zipfile) {
     for (const auto &s : known)
       m_knownAttributes.insert(s);
   }
-  m_wxmxFile = zipfile;
 }
 
 MathParser::~MathParser() {}
@@ -343,7 +347,7 @@ std::unique_ptr<Cell> MathParser::ParseAnimationTag(wxXmlNode *node, int WXUNUSE
   wxString gnuplotData;
   bool del = node->GetAttribute(wxS("del"), wxS("false")) == wxS("true");
   auto animation =
-    std::make_unique<AnimationCell>(m_group, m_configuration, m_wxmxFile);
+    std::make_unique<AnimationCell>(m_group, m_configuration, m_attachments);
   // A self-closing <slideshow/> with no child node has no content: guard against
   // dereferencing a null GetChildren().
   wxXmlNode *contentNode = node->GetChildren();
@@ -389,7 +393,7 @@ std::unique_ptr<Cell> MathParser::ParseAnimationTag(wxXmlNode *node, int WXUNUSE
       for (int i = 0; i < numImgs; i++) {
         if ((dataFiles.HasMoreTokens()) && (gnuplotFiles.HasMoreTokens())) {
           animation->GnuplotSource(i, gnuplotFiles.GetNextToken(),
-                                   dataFiles.GetNextToken(), m_wxmxFile);
+                                   dataFiles.GetNextToken(), m_attachments);
         }
       }
     }
@@ -402,7 +406,7 @@ std::unique_ptr<Cell> MathParser::ParseAnimationTag(wxXmlNode *node, int WXUNUSE
       for (int i = 0; i < numImgs; i++) {
         if ((dataFiles.HasMoreTokens()) && (gnuplotFiles.HasMoreTokens())) {
           animation->CompressedGnuplotSource(i, gnuplotFiles.GetNextToken(),
-                                             dataFiles.GetNextToken(), m_wxmxFile);
+                                             dataFiles.GetNextToken(), m_attachments);
         }
       }
     }
@@ -439,10 +443,10 @@ std::unique_ptr<Cell> MathParser::ParseImageTag(wxXmlNode *node, int WXUNUSED(de
   wxXmlNode *contentNode = node->GetChildren();
   wxString filename(contentNode ? contentNode->GetContent() : wxString());
 
-  if (!m_wxmxFile.IsEmpty()) // loading from zip
+  if (!m_attachments.IsEmpty()) // loading from a .wxmx or attachments
     {
       imageCell = std::make_unique<ImgCell>(m_group, m_configuration, filename,
-                                            m_wxmxFile, false);
+                                            m_attachments, false);
 
       wxString origImageFile =
         node->GetAttribute(wxS("origImageFile"), wxEmptyString);
@@ -454,7 +458,7 @@ std::unique_ptr<Cell> MathParser::ParseImageTag(wxXmlNode *node, int WXUNUSED(de
     if (node->GetAttribute(wxS("del"), wxS("yes")) != wxS("no")) {
       if ((!wxFileExists(filename)) || (wxImage::GetImageCount(filename) < 2))
         imageCell = std::make_unique<ImgCell>(m_group, m_configuration,
-                                              filename, wxEmptyString, true);
+                                              filename, AttachmentSource(), true);
       else
         return std::make_unique<AnimationCell>(m_group, m_configuration,
                                                filename, true);
@@ -467,7 +471,7 @@ std::unique_ptr<Cell> MathParser::ParseImageTag(wxXmlNode *node, int WXUNUSED(de
         filename = m_configuration->GetWorkingDirectory() + wxS("/") + filename;
       if (wxImage::GetImageCount(filename) < 2)
         imageCell = std::make_unique<ImgCell>(m_group, m_configuration,
-                                              filename, wxEmptyString, false);
+                                              filename, AttachmentSource(), false);
       else
         return std::make_unique<AnimationCell>(m_group, m_configuration,
                                                filename, false);
@@ -483,12 +487,12 @@ std::unique_ptr<Cell> MathParser::ParseImageTag(wxXmlNode *node, int WXUNUSED(de
   if(node->GetAttribute(wxS("gnuplotsource"), &gnuplotSource))
     {
       wxString gnuplotData = node->GetAttribute(wxS("gnuplotdata"), wxEmptyString);
-      imageCell->GnuplotSource(gnuplotSource, gnuplotData, m_wxmxFile);
+      imageCell->GnuplotSource(gnuplotSource, gnuplotData, m_attachments);
     }
   if(node->GetAttribute(wxS("gnuplotsource_gz"), &gnuplotSource))
     {
       wxString gnuplotData = node->GetAttribute(wxS("gnuplotdata_gz"), wxEmptyString);
-      imageCell->CompressedGnuplotSource(gnuplotSource, gnuplotData, m_wxmxFile);
+      imageCell->CompressedGnuplotSource(gnuplotSource, gnuplotData, m_attachments);
     }
 
   if (node->GetAttribute(wxS("rect"), wxS("true")) == wxS("false"))
@@ -1318,6 +1322,12 @@ std::unique_ptr<GroupCell> MathParser::CreateTreeFromXMLNode(wxXmlNode *xmlcells
     xmlcells = xmlcells->GetChildren();
 
   for (; xmlcells; xmlcells = xmlcells->GetNext()) {
+    // The files a self-contained document carries (see
+    // Format::CellsToXMLDocument()) are no cells. The AttachmentSource the
+    // caller made from them is what reads them.
+    if ((xmlcells->GetType() == wxXML_ELEMENT_NODE) &&
+        (xmlcells->GetName() == wxS("attachments")))
+      continue;
     if (xmlcells->GetType() != wxXML_TEXT_NODE) {
       tree.DynamicAppend(ParseTag(xmlcells, false));
     }

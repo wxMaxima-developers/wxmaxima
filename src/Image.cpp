@@ -104,11 +104,11 @@ Image::Image(Configuration *config, const wxBitmap &bitmap) {
 
 // constructor which loads an image
 Image::Image(Configuration *config, const wxString &image,
-             const wxString &wxmxFile, bool remove)
+             const AttachmentSource &attachments, bool remove)
 {
   m_configuration = config;
   m_ppi = m_configuration->GetPPI().x;
-  LoadImage(image, wxmxFile, remove);
+  LoadImage(image, attachments, remove);
 }
 
 Image::Image(Configuration *config, const Image &image) {
@@ -215,7 +215,7 @@ std::size_t Image::GetOriginalHeight() const {
 }
 
 void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename,
-                          const wxString &wxmxFile) {
+                          const AttachmentSource &attachments) {
   if(m_loadGnuplotSourceTask)
   {
     m_loadGnuplotSourceTask->RequestStop();
@@ -229,22 +229,22 @@ void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename,
     m_loadGnuplotSourceTask = BackgroundQueue::Add(
       BackgroundTask::Priority::Low,
       [this, gnuplotFilename, dataFilename,
-       wxmxFile](stop_token stopToken) mutable {
+       attachments](stop_token stopToken) mutable {
         LoadGnuplotSource_Backgroundtask(stopToken,
                                          gnuplotFilename, dataFilename,
-                                         wxmxFile);
+                                         attachments);
       });
   else
     LoadGnuplotSource_Backgroundtask({},
-      m_gnuplotSource, m_gnuplotData, wxmxFile);
+      m_gnuplotSource, m_gnuplotData, attachments);
 }
 
 void Image::LoadGnuplotSource_Backgroundtask(
   stop_token stopToken,
-  wxString gnuplotFile, wxString dataFile, wxString wxmxFile)
+  wxString gnuplotFile, wxString dataFile, AttachmentSource attachments)
 {
   if (stopToken.stop_requested()) return;
-  if(wxmxFile.IsEmpty())
+  if(attachments.IsEmpty())
   {
     {
       wxFileInputStream source(gnuplotFile);
@@ -259,21 +259,25 @@ void Image::LoadGnuplotSource_Backgroundtask(
   else
   {
     {
-      wxFileInputStream wxmx(wxmxFile);
-      WxmxStream source(wxmx, gnuplotFile);
-      LoadGnuplotSource(&source);
+      const wxMemoryBuffer bytes = attachments.Read(gnuplotFile);
+      if (bytes.GetDataLen() > 0) {
+        wxMemoryInputStream source(bytes.GetData(), bytes.GetDataLen());
+        LoadGnuplotSource(&source);
+      }
     }
     if (stopToken.stop_requested()) return;
     {
-      wxFileInputStream wxmx(wxmxFile);
-      WxmxStream data(wxmx, dataFile);
-      LoadGnuplotData(&data);
+      const wxMemoryBuffer bytes = attachments.Read(dataFile);
+      if (bytes.GetDataLen() > 0) {
+        wxMemoryInputStream data(bytes.GetData(), bytes.GetDataLen());
+        LoadGnuplotData(&data);
+      }
     }
   }
 }
 
 void Image::CompressedGnuplotSource(wxString gnuplotFilename, wxString dataFilename,
-                                     const wxString &wxmxFile) {
+                                     const AttachmentSource &attachments) {
   if(m_loadGnuplotSourceTask)
   {
     m_loadGnuplotSourceTask->RequestStop();
@@ -285,15 +289,15 @@ void Image::CompressedGnuplotSource(wxString gnuplotFilename, wxString dataFilen
     m_loadGnuplotSourceTask = BackgroundQueue::Add(
       BackgroundTask::Priority::Low,
       [this, gnuplotSource = m_gnuplotSource,
-       data = m_gnuplotData, wxmxFile](stop_token stopToken) mutable {
+       data = m_gnuplotData, attachments](stop_token stopToken) mutable {
         LoadCompressedGnuplotSource_Backgroundtask(
-          stopToken, gnuplotSource, data, wxmxFile);
+          stopToken, gnuplotSource, data, attachments);
       });
   else
     LoadCompressedGnuplotSource_Backgroundtask({},
       m_gnuplotSource,
       m_gnuplotData,
-      wxmxFile);
+      attachments);
   // Store the filenames without the ".gz".
   if(m_gnuplotSource.EndsWith(".gz"))
     m_gnuplotSource = m_gnuplotSource.Left(m_gnuplotSource.Length()-3);
@@ -385,52 +389,18 @@ void Image::LoadCompressedGnuplotSource_Backgroundtask(
   stop_token stopToken,
   wxString sourcefile,
   wxString datafile,
-  wxString wxmxFile
+  AttachmentSource attachments
   ) {
   if (stopToken.stop_requested()) return;
+  // Read the gnuplot source. A file that isn't there keeps what we had.
   {
-    // Read the gnuplot source
-    {
-      wxFileInputStream wxmx(wxmxFile);
-      WxmxStream source(wxmx, sourcefile);
-      if (!source.Eof()) {
-        m_gnuplotSource_Compressed.Clear();
-        wxMemoryOutputStream mstream;
-        source.Read(mstream);
-        if (stopToken.stop_requested()) return;
-        m_gnuplotSource_Compressed.AppendData(
-          mstream.GetOutputStreamBuffer()->GetBufferStart(),
-          mstream.GetOutputStreamBuffer()->GetBufferSize());
-      }
-    }
-    if (stopToken.stop_requested()) return;
-    // Read the gnuplot data
-    {
-      m_gnuplotData_Compressed.Clear();
-      wxFileInputStream wxmx(wxmxFile);
-      WxmxStream data(wxmx, datafile);
-      if (!data.Eof()) { // open successful
-        wxMemoryOutputStream mstream;
-        data.Read(mstream);
-        if (stopToken.stop_requested()) return;
-        m_gnuplotData_Compressed.AppendData(
-          mstream.GetOutputStreamBuffer()->GetBufferStart(),
-          mstream.GetOutputStreamBuffer()->GetBufferSize());
-      }
-    }
+    const wxMemoryBuffer source = attachments.Read(sourcefile);
+    if (source.GetDataLen() > 0)
+      m_gnuplotSource_Compressed = source;
   }
-}
-
-Image::WxmxStream::WxmxStream(wxInputStream &wxmxFile, const wxString &fileInWxmx):
-  wxZipInputStream(wxmxFile, wxConvLocal)
-{
-  while(!Eof())
-  {
-    wxZipEntry *contentsEntry = nullptr;
-    contentsEntry = GetNextEntry();
-    if((!contentsEntry) || (contentsEntry->GetName() == fileInWxmx))
-      break;
-  }
+  if (stopToken.stop_requested()) return;
+  // Read the gnuplot data
+  m_gnuplotData_Compressed = attachments.Read(datafile);
 }
 
 const wxMemoryBuffer Image::GetGnuplotSource() {
@@ -838,14 +808,14 @@ wxString Image::GetExtension() const {
   return m_extension;
 }
 
-void Image::LoadImage(wxString image, const wxString &wxmxFile,
+void Image::LoadImage(wxString image, const AttachmentSource &attachments,
                       bool remove) {
   if(m_loadImageTask)
   {
     m_loadImageTask->RequestStop();
     m_loadImageTask->Wait();
   }
-  m_fromWxFS = !wxmxFile.IsEmpty();
+  m_fromWxFS = !attachments.IsEmpty();
   m_extension = wxFileName(image).GetExt();
   m_extension = m_extension.Lower();
   m_imageName = image;
@@ -858,19 +828,19 @@ void Image::LoadImage(wxString image, const wxString &wxmxFile,
     m_loadImageTask = BackgroundQueue::Add(
       BackgroundTask::Priority::High,
       [this, image = std::move(image),
-       wxmxFile, remove](stop_token stopToken) mutable {
+       attachments, remove](stop_token stopToken) mutable {
         LoadImage_Backgroundtask(stopToken, std::move(image),
-                                 wxmxFile, remove);
+                                 attachments, remove);
       });
   else
     LoadImage_Backgroundtask({},
-      std::move(image), wxmxFile,
+      std::move(image), attachments,
       remove
       );
 }
 
 void Image::LoadImage_Backgroundtask(stop_token stopToken,
-                                     wxString image, wxString wxmxFile,
+                                     wxString image, AttachmentSource attachments,
                                      bool remove) {
   wxLogBuffer errorAggregator;
   // A fresh attempt starts with a clean slate: if this Image is being
@@ -880,10 +850,8 @@ void Image::LoadImage_Backgroundtask(stop_token stopToken,
 
   if (stopToken.stop_requested()) return;
 
-  if (!wxmxFile.IsEmpty()) {
-    wxFileInputStream wxmx(wxmxFile);
-    WxmxStream imgData(wxmx, image);
-    m_compressedImage = ReadCompressedImage(stopToken, &imgData);
+  if (!attachments.IsEmpty()) {
+    m_compressedImage = attachments.Read(image);
   } else {
     wxFile file;
     // Support relative and absolute paths.

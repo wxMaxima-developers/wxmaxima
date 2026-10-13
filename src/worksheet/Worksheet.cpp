@@ -53,6 +53,7 @@
 #include "WorksheetEvalQueue.h"
 #include "WorksheetExport.h"
 #include "WXMformat.h"
+#include "WXMXformat.h"
 #include "levenshtein/levenshtein.h"
 #include "wxMaxima.h"
 #include "wxMaximaFrame.h"
@@ -150,6 +151,7 @@ Worksheet::Worksheet(wxWindow *parent, int id,
                                                                           m_configuration->DefaultBackgroundColor(), wxBRUSHSTYLE_SOLID)));
   m_autocompletePopup = nullptr;
   m_wxmFormat = wxDataFormat(wxS("text/x-wxmaxima-batch"));
+  m_xmlFormat = wxDataFormat(wxS("application/x-wxmaxima-xml"));
   m_mathmlFormat = wxDataFormat(wxS("MathML"));
   m_mathmlFormat2 = wxDataFormat(wxS("application/mathml-presentation+xml"));
   m_rtfFormat = wxDataFormat(wxS("application/rtf"));
@@ -2770,6 +2772,11 @@ std::unique_ptr<wxDataObject> Worksheet::CreateCellsDataObject() const {
   auto snapshot =
     std::make_shared<const ClipboardSnapshot>(m_configuration,
                                               CopySelection().get());
+  contents->xml = LazyValue<std::string>([snapshot] {
+    return std::string(Format::CellsToXMLDocument(
+                         dynamic_cast<const GroupCell *>(snapshot->GetCells()),
+                         snapshot->GetConfiguration()).utf8_str());
+  });
   contents->rtf = LazyValue<std::string>([snapshot] {
     Configuration *configuration = snapshot->GetConfiguration();
     wxString rtf = WorksheetExport::RTFStart(configuration);
@@ -2825,6 +2832,10 @@ std::unique_ptr<wxDataObject> Worksheet::CreateCellsDataObject() const {
   data->Add(new LazyDataObject(m_rtfFormat3, rtf), true);
   data->Add(new wxTextDataObject(contents->text));
   data->Add(new wxmDataObject(contents->wxm));
+  data->Add(new LazyDataObject(
+              m_xmlFormat,
+              std::shared_ptr<const LazyValue<std::string>>(contents,
+                                                            &contents->xml)));
   data->Add(new LazyBitmapDataObject(bitmap));
 #ifdef __WXQT__
   // On wxQt the bitmap above reaches nobody -- see LazyPngDataObject.
@@ -2845,6 +2856,14 @@ std::unique_ptr<wxDataObject>
 Worksheet::CreateIndependentDataObject(const ClipboardContents &contents) {
   wxDataObjectComposite *data = new wxDataObjectComposite;
   data->Add(new wxmDataObject(contents.wxm));
+  if (contents.xml.IsOffered()) {
+    const std::string &xml = contents.xml.Get();
+    if (!xml.empty()) {
+      auto *xmlData = new wxCustomDataObject(m_xmlFormat);
+      xmlData->SetData(xml.size(), xml.data());
+      data->Add(xmlData);
+    }
+  }
   if (contents.mathML.IsOffered()) {
     const wxString mathML = wxString::FromUTF8(contents.mathML.Get());
     if (!mathML.IsEmpty()) {
@@ -5621,10 +5640,26 @@ void Worksheet::PasteFromClipboard(const bool primary) {
     return;
   }
 
-  // Check if the clipboard contains text.
-  if ((wxTheClipboard->IsSupported(wxDF_TEXT)) ||
-      (wxTheClipboard->IsSupported(wxDF_UNICODETEXT)) ||
-      (wxTheClipboard->IsSupported(m_wxmFormat))) {
+  // Cells copied by wxMaxima come as a self-contained XML document, too,
+  // which keeps everything the .wxm loses (GH #2474).
+  std::unique_ptr<GroupCell> contents;
+  if (wxTheClipboard->IsSupported(m_xmlFormat)) {
+    wxCustomDataObject data(m_xmlFormat);
+    if (wxTheClipboard->GetData(data) && (data.GetSize() > 0))
+      contents = Format::TreeFromXMLDocument(
+        wxString::FromUTF8(static_cast<const char *>(data.GetData()),
+                           data.GetSize()),
+        m_configuration);
+    if (contents)
+      wxLogMessage(_("Read cells as XML from the clipboard"));
+  }
+
+  // Check if the clipboard contains text. Text that isn't cells is pasted
+  // into a cell further down, rather than any image that comes with it.
+  const bool hasText = (wxTheClipboard->IsSupported(wxDF_TEXT)) ||
+    (wxTheClipboard->IsSupported(wxDF_UNICODETEXT)) ||
+    (wxTheClipboard->IsSupported(m_wxmFormat));
+  if (!contents && hasText) {
     wxString inputs;
 
     {
@@ -5657,48 +5692,48 @@ void Worksheet::PasteFromClipboard(const bool primary) {
         lines_array.push_back(lines.GetNextToken());
 
       // Load the array like we would do with a .wxm file
-      auto contents = Format::TreeFromWXM(lines_array, m_configuration);
-
-      // Add the result of the last operation to the worksheet.
-      if (contents) {
-        contents->SetConfigurationList(m_configuration);
-        // ! Tell the rest of this function that we have found cells
-        cells = true;
-
-        // Search for the last cell we want to paste
-        GroupCell *end = contents->last();
-
-        // Now paste the cells
-        if (!GetTree()) {
-          // Empty work sheet => We paste cells as the new cells. The direct
-          // tree assignment doesn't schedule a recalculation on its own.
-          TreeOwner() = std::move(contents);
-          RequestRecalculation();
-        } else {
-          bool hasHSelection =
-            GetDocumentCellPointers().GetSelectionStart() &&
-            (GetDocumentCellPointers().GetSelectionStart()->GetType() == MC_TYPE_GROUP);
-          auto *target =
-            GetActiveCell() ? GetActiveCell()->GetGroup() : nullptr;
-          if (!target)
-            target = GetHCaret();
-          if (hasHSelection) {
-            DeleteSelection();
-            TreeUndo_AppendAction();
-          }
-          // DeleteSelection and InsertGroupCells schedule recalculations
-          // targeted at the changed positions.
-          InsertGroupCells(std::move(contents), target);
-        }
-        NumberSections();
-        RequestRedraw();
-        RedrawIfRequested();
-        SetHCaret(end);
-      }
+      contents = Format::TreeFromWXM(lines_array, m_configuration);
     }
   }
+
+  // Add the cells we found to the worksheet.
+  if (contents) {
+    contents->SetConfigurationList(m_configuration);
+    // ! Tell the rest of this function that we have found cells
+    cells = true;
+
+    // Search for the last cell we want to paste
+    GroupCell *end = contents->last();
+
+    // Now paste the cells
+    if (!GetTree()) {
+      // Empty work sheet => We paste cells as the new cells. The direct
+      // tree assignment doesn't schedule a recalculation on its own.
+      TreeOwner() = std::move(contents);
+      RequestRecalculation();
+    } else {
+      bool hasHSelection =
+        GetDocumentCellPointers().GetSelectionStart() &&
+        (GetDocumentCellPointers().GetSelectionStart()->GetType() == MC_TYPE_GROUP);
+      auto *target =
+        GetActiveCell() ? GetActiveCell()->GetGroup() : nullptr;
+      if (!target)
+        target = GetHCaret();
+      if (hasHSelection) {
+        DeleteSelection();
+        TreeUndo_AppendAction();
+      }
+      // DeleteSelection and InsertGroupCells schedule recalculations
+      // targeted at the changed positions.
+      InsertGroupCells(std::move(contents), target);
+    }
+    NumberSections();
+    RequestRedraw();
+    RedrawIfRequested();
+    SetHCaret(end);
+  }
   // Check if the clipboard contains an image.
-  else if (wxTheClipboard->IsSupported(wxDF_BITMAP)) {
+  else if (!hasText && wxTheClipboard->IsSupported(wxDF_BITMAP)) {
     OpenHCaret(wxEmptyString, GC_TYPE_IMAGE);
     GroupCell *group = GetActiveCell()->GetGroup();
 
@@ -7510,6 +7545,7 @@ wxDataFormat Worksheet::m_rtfFormat;
 wxDataFormat Worksheet::m_rtfFormat2;
 wxDataFormat Worksheet::m_rtfFormat3;
 wxDataFormat Worksheet::m_wxmFormat;
+wxDataFormat Worksheet::m_xmlFormat;
 std::mutex Worksheet::m_drawDCLock;
 
 void Worksheet::UpdateTableOfContents()

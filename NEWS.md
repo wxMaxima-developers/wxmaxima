@@ -1,5 +1,9 @@
 # Current development version
 
+- Copied cells keep their bold, italic and other text formatting, their
+  output and their images when they are pasted into wxMaxima: besides the
+  .wxm code, a copy now also puts the cells on the clipboard as XML, with
+  the images embedded (GH #2474).
 - LaTeX export and "Copy as LaTeX" no longer depend on the window width: an
   expression too wide for the window, and therefore broken into lines on
   screen, used to be exported in its linear form, which turned a power into

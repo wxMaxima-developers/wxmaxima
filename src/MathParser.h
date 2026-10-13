@@ -42,6 +42,7 @@
 #include "cells/EditorCell.h"
 #include "cells/FracCell.h"
 #include "cells/GroupCell.h"
+#include "AttachmentSource.h"
 #include <unordered_map>
 #include <unordered_set>
 
@@ -59,6 +60,12 @@ public:
     most-frequently-used tags to the front of the list.
   */
   explicit MathParser(Configuration *cfg, const wxString &zipfile = {});
+  /*! A parser that reads the images the XML refers to from attachments
+
+    See AttachmentSource; Format::TreeFromXMLDocument() uses this for the
+    self-contained XML on the clipboard.
+  */
+  MathParser(Configuration *cfg, AttachmentSource attachments);
   //! This class doesn't have a copy constructor
   MathParser(const MathParser&) = delete;
   //! This class doesn't have a = operator
@@ -273,7 +280,8 @@ private:
   CellPtr<GroupCell> m_group;
   Configuration *m_configuration = nullptr;
   bool m_highlight = false;
-  wxString m_wxmxFile; // if not wxEmptyString: The wxmx file to load images from
+  //! Where to load images from. Empty: from the file system.
+  AttachmentSource m_attachments;
   static wxString m_unknownXMLTagToolTip;
 };
 

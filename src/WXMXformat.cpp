@@ -35,6 +35,9 @@
 #include "CellPointers.h"
 #include "cells/CellList.h"
 #include "cells/ImgCell.h"
+#include "MathParser.h"
+#include <wx/base64.h>
+#include <wx/log.h>
 #include <wx/debug.h>
 #include <wx/textbuf.h>
 #include <wx/txtstrm.h>
@@ -371,5 +374,80 @@ namespace Format {
   return true;
 }
 
+
+
+wxString CellsToXMLDocument(const GroupCell *cells, Configuration *configuration) {
+  // ToXML() collects the files the cells refer to in the configuration. A
+  // .wxmx being saved right now would collect its own there, too: keep those
+  // apart from ours and put them back afterwards.
+  auto filesOfSomeoneElse = configuration->TakeFilesToSave();
+
+  wxString xml;
+  xml << wxS("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n")
+      << wxS("<wxMaximaDocument version=\"") << DOCUMENT_VERSION_MAJOR
+      << wxS(".") << DOCUMENT_VERSION_MINOR << wxS("\" zoom=\"")
+      << int(100.0 * configuration->GetZoomFactor()) << wxS("\">\n");
+  if (cells)
+    xml << cells->ListToXML();
+
+  const auto files = configuration->TakeFilesToSave();
+  configuration->SetFilesToSave(std::move(filesOfSomeoneElse));
+  if (!files.empty()) {
+    xml << wxS("\n<") << AttachmentsTag() << wxS(">\n");
+    // PushFileToSave() adds to the front: write them in the order they were
+    // made, which is also the order the cells refer to them in.
+    for (auto file = files.rbegin(); file != files.rend(); ++file)
+      xml << wxS("<file name=\"") << Cell::XMLescape(file->FileName())
+          << wxS("\">") << wxBase64Encode(file->Data()) << wxS("</file>\n");
+    xml << wxS("</") << AttachmentsTag() << wxS(">");
+  }
+  xml << wxS("\n</wxMaximaDocument>\n");
+  return xml;
+}
+
+std::unique_ptr<GroupCell> TreeFromXMLDocument(const wxString &xml,
+                                               Configuration *configuration) {
+  if (xml.IsEmpty())
+    return nullptr;
+  const wxScopedCharBuffer utf8 = xml.utf8_str();
+  wxMemoryInputStream istream(utf8.data(), utf8.length());
+  wxXmlDocument doc;
+  {
+    wxLogNull suppressParserErrors;
+#if wxCHECK_VERSION(3, 3, 0)
+    doc.Load(istream, wxXMLDOC_KEEP_WHITESPACE_NODES);
+#else
+    doc.Load(istream, wxS("UTF-8"), wxXMLDOC_KEEP_WHITESPACE_NODES);
+#endif
+  }
+  if (!doc.IsOk() || !doc.GetRoot() ||
+      (doc.GetRoot()->GetName() != wxS("wxMaximaDocument")))
+    return nullptr;
+
+  AttachmentSource::Files files;
+  for (const wxXmlNode *node = doc.GetRoot()->GetChildren(); node;
+       node = node->GetNext()) {
+    if ((node->GetType() != wxXML_ELEMENT_NODE) ||
+        (node->GetName() != AttachmentsTag()))
+      continue;
+    for (const wxXmlNode *file = node->GetChildren(); file;
+         file = file->GetNext()) {
+      if ((file->GetType() != wxXML_ELEMENT_NODE) ||
+          (file->GetName() != wxS("file")))
+        continue;
+      const wxString name = file->GetAttribute(wxS("name"));
+      if (name.IsEmpty())
+        continue;
+      const wxMemoryBuffer data = wxBase64Decode(file->GetNodeContent(),
+                                                 wxBase64DecodeMode_SkipWS);
+      files[name] = std::string(static_cast<const char *>(data.GetData()),
+                                data.GetDataLen());
+    }
+  }
+
+  MathParser parser(configuration,
+                    AttachmentSource::FromMemory(std::move(files)));
+  return parser.CreateTreeFromXMLNode(doc.GetRoot());
+}
 
 } // namespace Format

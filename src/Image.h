@@ -31,6 +31,7 @@
 
 #include <memory>
 #include <thread>
+#include "AttachmentSource.h"
 #include "BackgroundQueue.h"
 #include "precomp.h"
 #include "Compat.h"
@@ -85,12 +86,12 @@ public:
 
     \param config The pointer to the current configuration storage for the worksheet
     \param image The name of the file
-    \param wxmxFile The wxmx file to load it from.
-    Empty when loading from a standalone file from the filesystem.
+    \param attachments Where to load it from: a .wxmx file, the attachments of
+    a self-contained XML document, or empty for the file system.
     \param remove true = Delete the file after loading it
   */
   Image(Configuration *config, const wxString &image,
-        const wxString &wxmxFile, bool remove = true);
+        const AttachmentSource &attachments, bool remove = true);
 
   Image(Configuration *config, const Image &image);
   Image(const Image &image) = delete;
@@ -158,13 +159,13 @@ public:
     memory in their compressed form.
   */
   void GnuplotSource(wxString gnuplotFilename, wxString dataFilename,
-                     const wxString &wxmxFile = wxEmptyString);
+                     const AttachmentSource &attachments = {});
 
   /*! Loads the compressed gnuplot source and data file for this image
 
    */
   void CompressedGnuplotSource(wxString gnuplotFilename, wxString dataFilename,
-                               const wxString &wxmxFile = wxEmptyString);
+                               const AttachmentSource &attachments = {});
 
 /*! Returns the gnuplot source file name of this image
 
@@ -286,12 +287,6 @@ public:
   //! Returns true if the path is in a safe (temporary) directory for deletion
   static bool IsSafePath(const wxString &path);
 
-  class WxmxStream: public wxZipInputStream
-  {
-  public:
-    WxmxStream(wxInputStream &wxmxFile, const wxString &fileInWxmx);
-  };
-
   bool HasGnuplotSource() const {return m_gnuplotSource_Compressed.GetDataLen() > 20;}
 private:
   bool m_fromWxFS = false;
@@ -314,14 +309,14 @@ private:
   //! The high-priority background task that loads this image, if any.
   mutable std::shared_ptr<BackgroundTask> m_loadImageTask;
   void LoadImage_Backgroundtask(stop_token stopToken,
-                                wxString image, wxString wxmxFile,
+                                wxString image, AttachmentSource attachments,
                                 bool remove);
   //! The low-priority background task that loads/compresses the gnuplot
   //! source and data behind this image, if any.
   std::shared_ptr<BackgroundTask> m_loadGnuplotSourceTask;
   void LoadGnuplotSource_Backgroundtask(
     stop_token stopToken,
-    wxString gnuplotFile, wxString dataFile, wxString wxmxFile);
+    wxString gnuplotFile, wxString dataFile, AttachmentSource attachments);
   void LoadGnuplotSource(wxInputStream *source);
   void LoadGnuplotData(wxInputStream *data);
   void LoadGnuplotSource_Backgroundtask_internal(
@@ -332,10 +327,10 @@ private:
   void LoadCompressedGnuplotSource_Backgroundtask(stop_token stopToken,
                                                   wxString sourcefile,
                                                   wxString datafile,
-                                                  wxString wxmxFile
+                                                  AttachmentSource attachments
     );
   //! Loads an image from a file
-  void LoadImage(wxString image, const wxString &wxmxFile, bool remove = true);
+  void LoadImage(wxString image, const AttachmentSource &attachments, bool remove = true);
   //! Reads the compressed image into a memory buffer
   wxMemoryBuffer ReadCompressedImage(stop_token stopToken, wxInputStream *data);
   //! We never even got this image's bytes.

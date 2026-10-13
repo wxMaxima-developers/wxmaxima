@@ -153,6 +153,7 @@ set(SOURCE_FILES
     EvaluationQueue.cpp
     EventIDs.cpp
     FontRenderabilityCache.cpp
+    AttachmentSource.cpp
     Image.cpp
     MainMenuBar.cpp
     MarkDown.cpp
