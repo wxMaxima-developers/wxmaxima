@@ -230,6 +230,19 @@ endif()
 message(STATUS "Found wxWidgets: (found version \"${wxWidgets_VERSION_STRING}\")")
 include(${wxWidgets_USE_FILE})
 
+# A static Windows wxWidgets built with LunaSVG (USE_LUNASVG=1, which makes
+# SVG plots possible, see SvgBitmap::RendersText()) needs its libwxlunasvg.a
+# linked after wxcore. FindwxWidgets only knows the built-in libraries it
+# always knew (png, tiff, jpeg, zlib, regex, expat), so add it ourselves.
+if(WIN32 AND wxWidgets_USE_STATIC AND wxWidgets_LIB_DIR)
+  find_library(WXM_WX_LUNASVG_LIBRARY NAMES wxlunasvg wxlunasvgd
+    PATHS "${wxWidgets_LIB_DIR}" NO_DEFAULT_PATH)
+  if(WXM_WX_LUNASVG_LIBRARY)
+    message(STATUS "wxWidgets was built with LunaSVG: ${WXM_WX_LUNASVG_LIBRARY}")
+    list(APPEND wxWidgets_LIBRARIES "${WXM_WX_LUNASVG_LIBRARY}")
+  endif()
+endif()
+
 # Cygwin's GTK build of wxWidgets defines __GNUWIN32__ in its setup.h, so
 # wx/platform.h includes wx/msw/gccpriv.h -- a header wxWidgets installs only
 # for native Windows builds, and Cygwin's wx 3.2 packages don't contain. Every

@@ -201,10 +201,14 @@ knowing going in:
 ## Third-party notices
 
 Shipping a component means reproducing its licence: `THIRD-PARTY-NOTICES.txt`
-plus a tab in the licence dialog. The WebView2 loader and the vendored nanoSVG
-are the current cases. On nanoSVG specifically: the symbol-renamed private copy
-stays deliberately - `wxBitmapBundle::FromSVG` caches every resize resolution
-with no eviction. Do not "modernise" it away.
+plus a tab in the licence dialog. The WebView2 loader is the current case.
+wxMaxima used to vendor a symbol-renamed copy of nanoSVG, on the belief that
+`wxBitmapBundle::FromSVG` caches every resolution it was ever asked for. It
+doesn't: its SVG implementation keeps exactly one bitmap and re-renders when a
+different size is requested (`wxBitmapBundleImplSVG::GetBitmap()` in
+`src/generic/bmpsvg.cpp`, 3.2 and 3.3 alike), so the copy was dropped in
+2026-10 and every SVG now goes through wxWidgets. The bitmap-*set* bundles
+(`FromBitmaps()`) are what cache rescaled sizes.
 
 ## Windows stdio: the subsystem bit, and the capture bug it causes
 

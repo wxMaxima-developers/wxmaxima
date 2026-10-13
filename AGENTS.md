@@ -832,12 +832,51 @@ a local TCP socket.
   command in `info/CMakeLists.txt`. Keywords Maxima's manual already documents
   (including `MaximaManual::AnchorAliasses()`, e.g. `wxdraw2d`) stay out of the
   list: Maxima's description of the wrapped command explains the arguments.
-- **`nanoSVG.cpp` is excluded from unity builds (`SKIP_UNITY_BUILD_INCLUSION`).**
-  It is the one file that compiles nanoSVG's implementation; batched after a
-  file that already included the header, the include guard drops it and the
-  link fails with `undefined reference to wxm_nsvgParse`. Which file precedes
-  it depends only on its position in `SOURCE_FILES`, so this surfaced simply
-  by adding an unrelated source file to that list.
+- **SVG goes through `wxBitmapBundle::FromSVG()`, and its `GetBitmap()`
+  sets a scale factor.** The vendored nanoSVG copy is gone (2026-10). A
+  bundle's `GetBitmap(size)` returns a bitmap whose scale factor is
+  `size.y / defaultSize.y`, which a HiDPI screen honours by drawing it at the
+  default size. Anything that wants pixels 1:1 resets it with
+  `SetScaleFactor(1)` (see `Image::SvgBitmapAt()` and `SvgBitmap::SetSize()`),
+  or creates the bundle with the size it asks for, as
+  `Cell::BitmapFromSVG()` does. wxWidgets offers no public way to ask an SVG
+  for its own size; `wxm::SvgIntrinsicSize()` (`src/SvgSize.h`) reads it from
+  the root element. An SVG bundle caches exactly one bitmap, the last size
+  asked for (`bmpsvg.cpp`, 3.2 and 3.3), so zooming needs no new bundle;
+  `Image::ClearCache()` still drops it, since it holds the parsed document
+  and a full-size rendering of every SVG image in the worksheet.
+- **SVG plots need LunaSVG, and LunaSVG needs NanoSVG switched off.**
+  NanoSVG ignores `<text>`, so a plot would lose every label;
+  `SvgBitmap::RendersText()` renders a word once at startup and only then
+  are plots made as SVG (`wxMaxima::ConfigChanged()`) and the option shown
+  (`ConfigDialogue`). wxWidgets (>= 3.3.2) has LunaSVG off by default, and
+  `wxBitmapBundle::FromSVG()` does `#if wxUSE_NANOSVG ... #elif
+  wxUSE_LUNASVG`, so turning LunaSVG on changes nothing unless NanoSVG is
+  turned off as well (`setup_inc.h` claims LunaSVG overrides it; the code
+  doesn't). The minGW job patches `include/wx/msw/setup.h` for exactly that
+  and builds with `USE_LUNASVG=1`; a static build then also needs
+  `libwxlunasvg.a`, which FindwxWidgets doesn't know (top-level
+  `CMakeLists.txt` adds it). LunaSVG reads fonts only from the system font
+  directories (no fontconfig, no per-user fonts) and falls back to DejaVu
+  Sans on Linux and Arial elsewhere; without either, text silently vanishes,
+  which the probe also catches. The config key is `useSVGPlots`, not
+  `useSVG`: every config since 2019 holds `useSVG=0` from when the option
+  was hidden.
+  **gnuplot's svg terminal forgets its options when re-selected**, unlike
+  png: plot2d writes a bare `set term svg` after our preamble, which reset
+  every SVG plot to 600x480 and 12px text. So `wxplot-gnuplot-term`
+  (`wxMathML.lisp`) hands plot2d a whole terminal string (`svg size W,H
+  font ",16"`) as `gnuplot_term`; Maxima 5.46 ignores
+  `gnuplot_svg_term_command`. draw names a font only if its `font` option is
+  set, so `wx-draw-defaults` adds one via `set_draw_defaults`' variable.
+- **A `;` inside a multi-line string in `wxMathML.lisp` used to break
+  loading it.** `wxMathML::GetCmd()` strips `;` comments line by line and forgot
+  at each new line that it was inside a string, so a `;` on a docstring's
+  second line cut off the closing quote and Maxima silently loaded nothing
+  after it (no plots, no error). It now carries the string state across
+  lines; `test_wxMathMLCmd` checks the squeezed command still balances.
+  The `check-wxMathML.lisp_*` tests load the file directly and can't see
+  this.
 - **`Worksheet::AnonymizeCodeCells()` (GH #1339, Help menu -> "Anonymize Code
   for Bug Report"):** renames every non-builtin variable/function name in the
   selected code cells (whole document if nothing's selected, after a

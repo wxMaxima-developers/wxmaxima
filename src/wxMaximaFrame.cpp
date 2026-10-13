@@ -67,6 +67,9 @@
 #include <functional>
 #include <vector>
 #include <unordered_map>
+#ifdef __WXMSW__
+#include <wx/msw/wrapwin.h>
+#endif
 
 wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
                              const wxString &title, const wxPoint &pos,
@@ -2084,7 +2087,10 @@ void wxMaximaFrame::SetupHelpMenu() {
   // Whether the radio items below appear depends on things that fail
   // silently (GH #2481); the log window, and the About dialog, say which.
   wxLogMessage(wxS("%s"), wxm::HelpBrowserDiagnosis());
-  if(GetConfiguration().OfferInternalHelpBrowser())
+  const bool offerSidebar = GetConfiguration().OfferInternalHelpBrowser();
+  wxLogMessage(wxS("Help menu: offering the help sidebar: %s"),
+               offerSidebar ? wxS("yes") : wxS("no"));
+  if(offerSidebar)
     {
       m_HelpMenu->AppendSeparator();
       m_HelpMenu->AppendRadioItem(EventIDs::menu_wxmaxima_uses_help_sidebar,
@@ -2130,6 +2136,8 @@ void wxMaximaFrame::SetupHelpMenu() {
                                 "describe() on the console instead of where "
                                 "all other help is shown"));
   UpdateHelpMenuChecks();
+  // Once the menu bar is attached and the frame is up.
+  CallAfter([this]{LogHelpMenuContents();});
   m_HelpMenu->AppendSeparator();
   m_HelpMenu->Append(EventIDs::menu_build_info, _("Build &Info"),
                      _("Info about Maxima build"), wxITEM_NORMAL);
@@ -2528,6 +2536,31 @@ void wxMaximaFrame::TogglePaneVisibility(int id)
     return;
 
   ShowPane(id, !IsPaneDisplayed(id));
+}
+
+void wxMaximaFrame::LogHelpMenuContents() const {
+  if (!m_HelpMenu)
+    return;
+  wxString text = wxS("Help menu entries as wxWidgets knows them:\n");
+  for (const wxMenuItem *item : m_HelpMenu->GetMenuItems()) {
+    if (item->IsSeparator())
+      text += wxS("  ---\n");
+    else
+      text += wxString::Format(wxS("  %s%s\n"), item->GetItemLabelText(),
+                               item->IsRadio() ? wxS(" (radio)") : wxS(""));
+  }
+#ifdef __WXMSW__
+  HMENU hmenu = static_cast<HMENU>(m_HelpMenu->GetHMenu());
+  const int count = ::GetMenuItemCount(hmenu);
+  text += wxString::Format(wxS("Help menu entries as Windows knows them (%d):\n"),
+                           count);
+  for (int pos = 0; pos < count; pos++) {
+    wchar_t label[256] = {0};
+    ::GetMenuStringW(hmenu, pos, label, 255, MF_BYPOSITION);
+    text += wxS("  ") + wxString(label) + wxS("\n");
+  }
+#endif
+  wxLogMessage(wxS("%s"), text);
 }
 
 void wxMaximaFrame::UpdateHelpMenuChecks() {

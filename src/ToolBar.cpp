@@ -274,7 +274,6 @@ ToolBar::ToolBar(wxWindow *parent)
     m_canEvalThisCell_old(true),
     m_worksheetEmpty_old(false)
 {
-  m_svgRast.reset(wxm_nsvgCreateRasterizer());
   SetGripperVisible(false);
   SetToolBitmapSize(GetOptimalBitmapSize());
   AddTools();
@@ -414,7 +413,10 @@ void ToolBar::AddSection(ToolBarSections::Section section) {
   case Section::Evaluate:
     AddTool(tb_eval, _("Evaluate current cell"), wxArtProvider::GetBitmapBundle(wxmaximaART_GO_NEXT, wxART_TOOLBAR),
             _("Send the current cell to maxima"));
-    AddTool(tb_eval_all, _("Evaluate all"), wxArtProvider::GetBitmapBundle(wxmaximaART_GO_NEXT, wxART_TOOLBAR),
+    // Not GO_NEXT, which is the "Evaluate current cell" icon: with it both
+    // buttons looked identical. UpdateBitmaps() always used GO_JUMP, but
+    // nothing in the app calls it, so that never showed.
+    AddTool(tb_eval_all, _("Evaluate all"), wxArtProvider::GetBitmapBundle(wxmaximaART_GO_JUMP, wxART_TOOLBAR),
             _("Send all cells to maxima"));
     AddTool(tb_evaltillhere, _("Evaluate to point"), wxArtProvider::GetBitmapBundle(wxmaximaART_GO_BOTTOM, wxART_TOOLBAR),
             _("Evaluate the file from its beginning to the cell above the cursor"));
