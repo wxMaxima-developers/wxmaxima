@@ -38,6 +38,7 @@
 #include <wx/notifmsg.h>
 #if defined __WXMSW__
 //#include <wchar.h>
+#include <wx/msw/wrapwin.h>
 #endif
 #include <functional>
 #include <unordered_map>
@@ -155,12 +156,20 @@ wxDECLARE_APP(MyApp);
 // appearance from inside the app; on older wx this is a no-op (the worksheet is
 // themed via its style set, the chrome stays whatever the OS gives us).
 //
-// On Windows the native chrome only honours this when it runs during startup,
-// before the first top-level window exists: a later SetAppearance() returns
+// On Windows wxWidgets before 3.3.4 only honours this during startup, before
+// the first top-level window exists: a later SetAppearance() returns
 // AppearanceResult::CannotChange and leaves the chrome untouched (which is why
 // only the worksheet used to switch). It is therefore also called early from
 // MyApp::OnInit(), not just from ConfigChanged() at runtime. Declared in
 // wxMaxima.h so OnInit() can reach it.
+//
+// wxWidgets 3.3.4 can switch at runtime, but only tells one window about it:
+// wxApp::MSWEnableDarkMode() sends WM_SYSCOLORCHANGE to GetTopWindow(), and
+// that is how every window re-themes itself. wxMaxima never calls
+// SetTopWindow(), so GetTopWindow() is the first top-level window ever
+// created -- the hidden log window -- and the worksheet's frame, its floating
+// sidebars and an open configuration dialog kept the old appearance: a light
+// worksheet in dark chrome. So every top-level window gets the message here.
 wxString ApplyAppearanceToApp(Configuration::Appearance appearance,
                               bool logImmediately) {
 #if wxCHECK_VERSION(3, 3, 0)
@@ -179,6 +188,17 @@ wxString ApplyAppearanceToApp(Configuration::Appearance appearance,
     break;
   }
   wxApp::AppearanceResult app_res = wxTheApp->SetAppearance(a);
+#ifdef __WXMSW__
+  if (app_res == wxApp::AppearanceResult::Ok) {
+    // Each window passes the message on to its non-top-level children.
+    // Empty during the startup call, when there is nothing to re-theme yet.
+    for (auto node = wxTopLevelWindows.GetFirst(); node; node = node->GetNext()) {
+      wxWindow *win = node->GetData();
+      if (!win->IsBeingDeleted())
+        ::SendMessage(static_cast<HWND>(win->GetHWND()), WM_SYSCOLORCHANGE, 0, 0);
+    }
+  }
+#endif
   wxString msg;
   if (app_res == wxApp::AppearanceResult::Failure) {
     msg = "Changing the appearance failed.";
