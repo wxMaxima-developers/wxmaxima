@@ -1000,6 +1000,17 @@ a local TCP socket.
     know?" startup tip, `Show tips at startup` -- present with or without
     this change).
 
+  - **Second follow-up (2026-10): with wxWidgets 3.3.4 the startup-only
+    restriction above is gone** -- `SetAppearance()` no longer checks
+    `wxTopLevelWindows` and can switch at runtime. But it re-themes only by
+    sending `WM_SYSCOLORCHANGE` to `wxApp::GetTopWindow()`, and wxMaxima never
+    calls `SetTopWindow()`, so that is the first top-level window ever made:
+    the hidden log window. Switching to "Light" in the config dialog left a
+    light worksheet in dark chrome (reported by the maintainer on Windows).
+    `ApplyAppearanceToApp()` now sends the message to every top-level window
+    itself; each passes it on to its children. Unverified on Windows from
+    this sandbox (the code is `__WXMSW__`-only).
+
 - **Windows stdio, the subsystem bit, and `wxmaxima-cli.exe` -- see the
   `wxmaxima-packaging` skill**, which carries the whole
   `wxmaxima_version_string` investigation. `wxmaxima.exe` is a GUI-subsystem

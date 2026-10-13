@@ -6,6 +6,15 @@
   stored "no" is now ignored once, and where help is shown is only saved
   where the sidebar is offered. The help browser's own path is now saved
   on Windows, too.
+- `wximplicit_plot()` loads the `implicit_plot` package it needs instead of
+  reporting a missing image file (GH #1106).
+- If Maxima's temp directory contains a quote (for example, under a user
+  name like "Jay's"), wxMaxima now explains that Maxima's draw package
+  cannot plot there and how to set MAXIMA_TEMPDIR instead (GH #1106).
+- On Windows, switching the appearance in the configuration dialog now
+  switches the menus, toolbars, sidebars and dialogs too, not only the
+  worksheet. Before, choosing "Light" could leave a light worksheet in a
+  dark window until wxMaxima was restarted.
 - The tray icon's menu works with an AppIndicator (StatusNotifier) tray:
   "Show wxMaxima", "Interrupt" and "Exit" did nothing there. Showing
   wxMaxima from the tray now also brings back a hidden window.
