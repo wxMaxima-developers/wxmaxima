@@ -61,7 +61,6 @@
 StatusBar::StatusBar(wxWindow *parent, int id, bool aiChatAvailable)
   : wxStatusBar(parent, id), m_frame(parent), m_ppi(wxDefaultSize), m_overlayIconIsSet(false),
     m_aiChatAvailable(aiChatAvailable) {
-  m_svgRast.reset(wxm_nsvgCreateRasterizer());
   int fieldCount = m_aiChatAvailable ? 4 : 3;
   int widths[] = {-1, GetSize().GetHeight(), GetSize().GetHeight(), GetSize().GetHeight()};
   SetFieldsCount(fieldCount, widths);

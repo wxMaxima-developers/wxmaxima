@@ -133,10 +133,7 @@ and not a natural next step.
     a hand-rolled JSON parser is exactly the kind of "looks fine until an
     edge case" component not worth re-deriving for this. Wired in via
     `include_directories(SYSTEM ".../src/vendor")` in `src/CMakeLists.txt`
-    (so its own warnings don't hit `-Werror` builds, the same reasoning
-    `privateNanoSVG.cmake`'s pragma-based warning guard exists for, just via
-    CMake's own mechanism since there's no symbol collision to rename around
-    the way nanoSVG's vendoring needs) -- **this include path is
+    (so its own warnings don't hit `-Werror` builds) -- **this include path is
     directory-scoped and does not reach `test/unit_tests/`** (a sibling
     directory of `src/`, not a descendant -- the exact same trap
     `WXM_USE_FRIBIDI`'s include wiring already documents elsewhere in this

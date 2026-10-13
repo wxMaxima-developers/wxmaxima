@@ -25,6 +25,7 @@
 */
 
 #include "SvgPanel.h"
+#include <wx/display.h>
 #include <algorithm>
 
 SvgPanel::SvgPanel(wxWindow *parent, unsigned char *data, std::size_t len)

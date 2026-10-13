@@ -172,13 +172,13 @@ set(SOURCE_FILES
     MaximaTokenizer.cpp
     MaximaManual.cpp
     MaximaVariableUpdates.cpp
-    nanoSVG.cpp
     Notification.cpp
     RecentDocuments.cpp
     RegexSearch.cpp
     StatusBar.cpp
     StringUtils.cpp
     SvgBitmap.cpp
+    SvgSize.cpp
     SvgPanel.cpp
     SyntaxErrorLocation.cpp
     ToolBar.cpp
@@ -217,16 +217,6 @@ set(SOURCE_FILES
     HelpBrowserDiagnosis.cpp
 )
 
-# nanoSVG.cpp has to stay a translation unit of its own. It defines
-# NANOSVG_IMPLEMENTATION before including nanosvg_private.h, which is the only
-# place the nanoSVG functions get compiled. In a unity build, a file batched
-# before it that already includes that header makes the include guard skip the
-# implementation, and linking fails with "undefined reference to
-# wxm_nsvgParse". Which file lands before it depends only on how many files
-# precede it in the list above, so adding any unrelated source file could
-# break the build.
-set_source_files_properties(nanoSVG.cpp PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)
-
 if(NOT CYGWIN)
     list(APPEND SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.rc)
 endif()
@@ -257,10 +247,7 @@ include_directories(
 # Vendored third-party headers (currently just nlohmann/json.hpp for the MCP
 # server's JSON-RPC handling, src/mcp/). SYSTEM so their own warnings -- a
 # 24000-line single header from a project with different style conventions --
-# don't show up under wxMaxima's -Wall -Wextra -Werror builds, the same
-# reasoning privateNanoSVG.cmake's warning-guard pragmas exist for, just via
-# CMake's own mechanism instead of a text-rewrite since there's no symbol
-# collision to rename around here.
+# don't show up under wxMaxima's -Wall -Wextra -Werror builds.
 include_directories(SYSTEM "${CMAKE_SOURCE_DIR}/src/vendor")
 
 
@@ -736,29 +723,6 @@ set(CPACK_SOURCE_IGNORE_FILES
   "wxmaxima-.*\\\\.gz$"
   "${CPACK_SOURCE_IGNORE_FILES}")
 
-add_custom_command(
-        OUTPUT ${CMAKE_BINARY_DIR}/nanosvg_private.h
-        COMMAND ${CMAKE_COMMAND} ARGS
-        -DINPUT_FILE="${CMAKE_CURRENT_SOURCE_DIR}/nanoSVG/nanosvg.h"
-        -DOUTPUT_FILE=${CMAKE_BINARY_DIR}/nanosvg_private.h
-        -P "${CMAKE_CURRENT_SOURCE_DIR}/privateNanoSVG.cmake"
-        COMMENT "Generating our private copy of nanosvg.h"
-        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/nanoSVG/nanosvg.h ${CMAKE_CURRENT_SOURCE_DIR}/privateNanoSVG.cmake
-)
-add_custom_target(build_nanosvg_private.h DEPENDS ${CMAKE_BINARY_DIR}/nanosvg_private.h)
-add_dependencies(wxmaxima build_nanosvg_private.h)
-
-add_custom_command(
-        OUTPUT ${CMAKE_BINARY_DIR}/nanosvgrast_private.h
-        COMMAND ${CMAKE_COMMAND} ARGS
-        -DINPUT_FILE="${CMAKE_CURRENT_SOURCE_DIR}/nanoSVG/nanosvgrast.h"
-        -DOUTPUT_FILE=${CMAKE_BINARY_DIR}/nanosvgrast_private.h
-        -P "${CMAKE_CURRENT_SOURCE_DIR}/privateNanoSVG.cmake"
-        COMMENT "Generating our private copy of nanosvgrast.h"
-        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/nanoSVG/nanosvgrast.h ${CMAKE_CURRENT_SOURCE_DIR}/privateNanoSVG.cmake
-)
-add_custom_target(build_nanosvgrast_private.h DEPENDS ${CMAKE_BINARY_DIR}/nanosvgrast_private.h)
-add_dependencies(wxmaxima build_nanosvgrast_private.h)
 
 
 add_custom_command(

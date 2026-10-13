@@ -141,7 +141,6 @@ private:
     HOME,
     VAR_DELETE
   };
-  std::unique_ptr<struct wxm_NSVGrasterizer, decltype(std::free)*> m_svgRast{nullptr, std::free};
   //! The configuration storage
   std::unique_ptr<Configuration> m_configuration;
   Worksheet *m_sampleWorksheet = nullptr;

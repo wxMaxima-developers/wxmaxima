@@ -274,7 +274,6 @@ ToolBar::ToolBar(wxWindow *parent)
     m_canEvalThisCell_old(true),
     m_worksheetEmpty_old(false)
 {
-  m_svgRast.reset(wxm_nsvgCreateRasterizer());
   SetGripperVisible(false);
   SetToolBitmapSize(GetOptimalBitmapSize());
   AddTools();
