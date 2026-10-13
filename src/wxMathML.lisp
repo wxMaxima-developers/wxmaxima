@@ -1921,6 +1921,43 @@ Submit bug reports by following the 'New issue' link on that page."))
 			      (getpid) *image-counter* (random 1000000))
 		      (format nil "maxout_~d_~d_~d" (getpid) *image-counter* (random 1000000)))))
 
+(defvar *wxplot-svg-font-size* 16
+  "Font size, in px, of the text in SVG plots.
+gnuplot's svg terminal defaults to 12px, which looks much smaller than the
+text of the png and pngcairo terminals at the same plot size. 16 makes them
+look alike in the worksheet.")
+
+(defun wxplot-gnuplot-term ()
+  "The gnuplot_term option wx* plot commands hand to plot2d and friends.
+For SVG it is a whole terminal specification rather than just svg: plot2d
+writes its own set term line after the preamble, and unlike png the svg
+terminal then falls back to its default size and font, so the size and
+font in $wxplot_preamble were silently lost (every SVG plot was 600x480)."
+  (cond
+    ($wxplot_usesvg
+     (format nil "svg size ~d,~d font \",~d\""
+	     ($first $wxplot_size) ($second $wxplot_size) *wxplot-svg-font-size*))
+    ($wxplot_pngcairo '$pngcairo)
+    (t '$png)))
+
+;; Defined by the draw package, which wx*draw commands load on demand.
+(defvar *user-gr-default-options* nil)
+
+(defun wx-draw-defaults ()
+  "The draw defaults (set_draw_defaults) wx*draw commands run with.
+draw's svg terminal only names a font if the font option is set, and its
+default text is as small as gnuplot's. So for SVG plots a font is added,
+unless the user's own defaults already choose one. Options the user gives
+in a scene still win, as draw applies these defaults first."
+  (if (and $wxplot_usesvg
+	   (notany #'(lambda (opt)
+		       (and (listp opt) (member (cadr opt) '($font $font_size))))
+		   *user-gr-default-options*))
+      (append `(((mequal simp) $font "Arial")
+		((mequal simp) $font_size ,*wxplot-svg-font-size*))
+	      *user-gr-default-options*)
+      *user-gr-default-options*))
+
 (defun $wxplot_preamble ()
   (let ((frmt
 	 (cond
@@ -1994,9 +2031,7 @@ Submit bug reports by following the 'New issue' link on that page."))
 				     preamble (meval (maxima-substitute aval a (caddr arg)))))))
 	(apply #'$plot2d `(,(meval expr) ,@(mapcar #'meval args)
 			    ((mlist simp) $plot_format $gnuplot)
-			    ((mlist simp) $gnuplot_term ,(if
-							  $wxplot_usesvg '$svg
-							  (if $wxplot_pngcairo '$pngcairo '$png)))
+			    ((mlist simp) $gnuplot_term ,(wxplot-gnuplot-term))
 			    ((mlist simp) $gnuplot_preamble ,preamble)
 			    ((mlist simp) $gnuplot_out_file ,filename)))
 	(setq images (cons filename images))))
@@ -2094,7 +2129,8 @@ Submit bug reports by following the 'New issue' link on that page."))
 		      (cons
 		       (format nil "~a/~a" $maxima_tempdir datafilename)
 		       images))
-		($apply '$draw
+		(let ((*user-gr-default-options* (wx-draw-defaults)))
+		 ($apply '$draw
 			(append
 			 `((mlist simp)
 			   ((mequal simp) $terminal ,(if $wxplot_usesvg '$svg
@@ -2103,7 +2139,7 @@ Submit bug reports by following the 'New issue' link on that page."))
 			   ((mequal simp) $data_file_name ,datafilename)
 			   ((mequal simp) $file_name ,filename))
 			 (get-pic-size-opt)
-			 draw-args))))
+			 draw-args)))))
 	    (when images
 	      (slide-tag images
 			 (and file-name (wx-gif-file-name (meval file-name)))))))
@@ -2142,8 +2178,7 @@ Submit bug reports by following the 'New issue' link on that page."))
 	  (setq preamble (format nil "~a; ~a" preamble (caddr arg)))))
     (apply #'$plot2d `(,@args
 		       ((mlist simp) $plot_format $gnuplot)
-		       ((mlist simp) $gnuplot_term ,(if $wxplot_usesvg '$svg
-							(if $wxplot_pngcairo '$pngcairo '$png)))
+		       ((mlist simp) $gnuplot_term ,(wxplot-gnuplot-term))
 		       ((mlist simp) $gnuplot_preamble ,preamble)
 		       ((mlist simp) $gnuplot_out_file ,filename)))
     ($ldisp `((wxxmltag simp) ,(wxxml-fix-string filename) "img")))
@@ -2162,8 +2197,7 @@ Submit bug reports by following the 'New issue' link on that page."))
 				 preamble (caddr arg)))))
     (apply #'$plot3d `(,@args
 		       ((mlist simp) $plot_format $gnuplot)
-		       ((mlist simp) $gnuplot_term ,(if $wxplot_usesvg '$svg
-							(if $wxplot_pngcairo '$pngcairo '$png)))
+		       ((mlist simp) $gnuplot_term ,(wxplot-gnuplot-term))
 		       ((mlist simp) $gnuplot_preamble ,preamble)
 		       ((mlist simp) $gnuplot_out_file ,filename)))
     ($ldisp `((wxxmltag simp) ,(wxxml-fix-string filename) "img")))
@@ -2195,7 +2229,8 @@ Submit bug reports by following the 'New issue' link on that page."))
 	 (datafilename (wxplot-datafilename))
 	 (filename (or file_name_spec (wxplot-filename nil)))
 	 res)
-    (setq res ($apply '$draw
+    (setq res (let ((*user-gr-default-options* (wx-draw-defaults)))
+		($apply '$draw
 		      (append
 		       '((mlist simp))
 		       args
@@ -2209,7 +2244,7 @@ Submit bug reports by following the 'New issue' link on that page."))
 			  `(((mequal simp) $pic_width ,($first $wxplot_size))
 			    ((mequal simp) $pic_height ,($second $wxplot_size))))
 			 (t
-			  `(((mequal simp) $dimensions ,$wxplot_size)))))))
+			  `(((mequal simp) $dimensions ,$wxplot_size))))))))
     (if $display_graphics
 	(progn
 	  ($ldisp `((wxxmltag simp) ,(wxxml-fix-string (format nil
@@ -2249,8 +2284,7 @@ Submit bug reports by following the 'New issue' link on that page."))
 				 preamble (caddr arg)))))
     ($apply '$implicit_plot `((mlist simp) ,@args
 			      ((mlist simp) $plot_format $gnuplot)
-			      ((mlist simp) $gnuplot_term ,(if $wxplot_usesvg '$svg
-							       (if $wxplot_pngcairo '$pngcairo '$png)))
+			      ((mlist simp) $gnuplot_term ,(wxplot-gnuplot-term))
 			      ((mlist simp) $gnuplot_preamble ,preamble)
 			      ((mlist simp) $gnuplot_out_file ,filename)))
     ($ldisp `((wxxmltag simp) ,(wxxml-fix-string filename) "img")))
@@ -2269,8 +2303,7 @@ Submit bug reports by following the 'New issue' link on that page."))
       (if (and (listp arg) (eql (cadr arg) '$gnuplot_preamble))
 	  (setq preamble (format nil "~a; ~a" preamble (caddr arg)))))
     (apply #'$contour_plot `(,@args
-			     ((mlist simp) $gnuplot_term ,(if $wxplot_usesvg '$svg
-							      (if $wxplot_pngcairo '$pngcairo '$png)))
+			     ((mlist simp) $gnuplot_term ,(wxplot-gnuplot-term))
 			     ((mlist simp) $plot_format $gnuplot)
 			     ((mlist simp) $gnuplot_preamble ,preamble)
 			     ((mlist simp) $gnuplot_out_file ,filename)))

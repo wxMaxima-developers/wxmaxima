@@ -206,7 +206,6 @@ protected:
   void HandleTimerEvent();
 
 private:
-  std::unique_ptr<struct wxm_NSVGrasterizer, decltype(std::free)*> m_svgRast{nullptr, std::free};
   /*! The window this status bar was created for
 
     Used instead of GetParent() for finding out which display we are on:

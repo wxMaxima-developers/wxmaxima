@@ -32,9 +32,6 @@
 #include <wx/mstream.h>
 #include <wx/zstream.h>
 #include <wx/sstream.h>
-#include "SvgBitmap.h"
-#include "nanosvg_private.h"
-#include "nanosvgrast_private.h"
 #include "art/menu/Text-questionmark.h"
 #include "art/menu/cell-divide.h"
 #include "art/menu/watchlist.h"
@@ -42,8 +39,7 @@
 
 namespace {
 //! Our embedded SVG blobs are either raw text (which starts with '<') or
-//! gzip-compressed. Returns the SVG as text, decompressing if needed -- so the
-//! same data can feed either the bundled nanoSVG (SvgBitmap) or wxWidgets'
+//! gzip-compressed. Returns the SVG as text, decompressing if needed, for
 //! wxBitmapBundle::FromSVG.
 wxString DecompressSvg(const unsigned char *data, std::size_t len) {
   if (!data || len == 0)
@@ -58,7 +54,7 @@ wxString DecompressSvg(const unsigned char *data, std::size_t len) {
 }
 } // namespace
 
-wxBitmap ArtProvider::GetImage(wxWindow *win, const wxString &name, int width,
+wxBitmap ArtProvider::GetImage(wxWindow *WXUNUSED(win), const wxString &name, int width,
                                unsigned const char *data, std::size_t dataLen) {
   wxBitmap bmp = wxArtProvider::GetBitmap(name, wxART_TOOLBAR,
                                           wxSize(width * 4, width * 4));
@@ -72,9 +68,6 @@ wxBitmap ArtProvider::GetImage(wxWindow *win, const wxString &name, int width,
       img.Rescale(width, width, wxIMAGE_QUALITY_BICUBIC);
       bmp = wxBitmap(img, wxBITMAP_SCREEN_DEPTH);
     }
-  // Prefer letting wxWidgets rasterize the SVG (it uses nanoSVG internally) over
-  // our bundled private nanoSVG copy, so the latter can eventually be dropped on
-  // modern wxWidgets. SvgBitmap below stays as the fallback for older wx.
   if (!bmp.IsOk()) {
     const wxString svg = DecompressSvg(data, dataLen);
     if (!svg.IsEmpty()) {
@@ -84,10 +77,6 @@ wxBitmap ArtProvider::GetImage(wxWindow *win, const wxString &name, int width,
         bmp = bundle.GetBitmap(wxSize(width, width));
     }
   }
-
-  if(!bmp.IsOk())
-    bmp = SvgBitmap(win, data, dataLen, width, width);
-
 
   if(!bmp.IsOk())
     bmp = wxBitmap(wxSize(width, width), wxBITMAP_SCREEN_DEPTH);

@@ -258,6 +258,38 @@ target_link_libraries(test_SyntaxErrorLocation PRIVATE ${wxWidgets_LIBRARIES})
 add_test(NAME SyntaxErrorLocation
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_SyntaxErrorLocation>")
 
+# wxWidgets can't tell an SVG's own size, so we read it from the root
+# element ourselves; a pure string function, tested directly.
+add_executable(test_SvgSize
+    test_SvgSize.cpp ${CMAKE_SOURCE_DIR}/src/SvgSize.cpp
+    ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
+target_include_directories(test_SvgSize PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_link_libraries(test_SvgSize PRIVATE ${wxWidgets_LIBRARIES})
+add_test(NAME SvgSize
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_SvgSize>")
+
+# Plots are only made as SVG if wxWidgets' SVG renderer draws text, which
+# only LunaSVG does; checked against what wx/setup.h says the renderer is.
+add_executable(test_SvgTextProbe
+    test_SvgTextProbe.cpp ${CMAKE_SOURCE_DIR}/src/SvgBitmap.cpp
+    ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
+target_include_directories(test_SvgTextProbe PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_link_libraries(test_SvgTextProbe PRIVATE ${wxWidgets_LIBRARIES})
+add_test(NAME SvgTextProbe
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_SvgTextProbe>")
+
+# wxMathML.lisp reaches Maxima squeezed into one line, comments stripped;
+# checks that squeezing it loses no form.
+add_executable(test_wxMathMLCmd
+    test_wxMathMLCmd.cpp ${CMAKE_SOURCE_DIR}/src/wxMathml.cpp
+    ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
+add_dependencies(test_wxMathMLCmd build_wxMathML.h)
+target_include_directories(test_wxMathMLCmd PRIVATE
+    ${CMAKE_SOURCE_DIR}/src ${CMAKE_BINARY_DIR} ${CMAKE_BINARY_DIR}/src)
+target_link_libraries(test_wxMathMLCmd PRIVATE ${wxWidgets_LIBRARIES})
+add_test(NAME wxMathMLCmd
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_wxMathMLCmd>")
+
 # Link detection in text cells (GH #2396) is a pure string function shared by
 # the display and the HTML/LaTeX exporters, so it is tested directly.
 add_executable(test_UrlDetection

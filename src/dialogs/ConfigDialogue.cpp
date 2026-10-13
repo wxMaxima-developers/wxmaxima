@@ -29,6 +29,7 @@
 */
 
 #include "ConfigDialogue.h"
+#include "SvgBitmap.h"
 #ifdef WXM_USE_AI_TOOLS
 #include "ai/AiProvider.h"
 #endif
@@ -460,8 +461,10 @@ void ConfigDialogue::SetCheckboxValues() {
                                     "advanced features like drag-and-drop or accessibility. Also they "
                                     "have problems aligning and scaling with the rest of the text and "
                                     "might use fonts that don't match the rest of the document."));
-  m_usesvg->SetToolTip(_("PNG images can be read by old wxMaxima versions - "
-                         "but aren't really scalable."));
+  m_usesvg->SetToolTip(_("SVG plots stay sharp at any zoom factor and when "
+                         "printed. Older wxMaxima versions, and builds whose "
+                         "SVG renderer can't draw text, show them without "
+                         "their labels."));
   m_matchParens->SetToolTip(_("Automatically insert a closing parenthesis the "
                               "moment the user enters an opening one."));
   m_showMatchingParens->SetToolTip(
@@ -1534,7 +1537,9 @@ wxWindow *ConfigDialogue::CreateOptionsPanel() {
   m_usesvg = new wxCheckBox(stdOpts_sizer->GetStaticBox(), wxID_ANY,
                             _("Create scalable plots."));
   m_usesvg->Bind(wxEVT_CHECKBOX, &ConfigDialogue::UsesvgChanged, this);
-  m_usesvg->Show(false);
+  // Only offered where the SVG renderer can draw a plot's labels: elsewhere
+  // plots are always PNG (wxMaxima::ConfigChanged()).
+  m_usesvg->Show(SvgBitmap::RendersText());
   stdOpts_sizer->Add(m_usesvg,
                      wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
 
