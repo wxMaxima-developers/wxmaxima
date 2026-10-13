@@ -208,8 +208,13 @@ public:
       if (m_scaledBitmap.IsOk() &&
           ((m_scaledBitmap.GetWidth() > 1) || (m_scaledBitmap.GetHeight() > 1)))
         m_scaledBitmap.Create(1, 1);
+      // An SVG bundle holds the parsed document plus the last bitmap it
+      // rendered, at full size. SvgBundle() makes a new one when needed.
+      m_svgBundle = wxBitmapBundle();
     }
 
+  //! True while this SVG image keeps its parsed document and a rendering in memory
+  bool HoldsSvgRendering() const { return m_svgBundle.IsOk(); }
   //! Returns the file name extension of the current image
   wxString GetExtension() const;
   //! The maximum width this image shall be displayed with

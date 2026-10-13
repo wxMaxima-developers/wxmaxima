@@ -841,7 +841,10 @@ a local TCP socket.
   or creates the bundle with the size it asks for, as
   `Cell::BitmapFromSVG()` does. wxWidgets offers no public way to ask an SVG
   for its own size; `wxm::SvgIntrinsicSize()` (`src/SvgSize.h`) reads it from
-  the root element.
+  the root element. An SVG bundle caches exactly one bitmap, the last size
+  asked for (`bmpsvg.cpp`, 3.2 and 3.3), so zooming needs no new bundle;
+  `Image::ClearCache()` still drops it, since it holds the parsed document
+  and a full-size rendering of every SVG image in the worksheet.
 - **`Worksheet::AnonymizeCodeCells()` (GH #1339, Help menu -> "Anonymize Code
   for Bug Report"):** renames every non-builtin variable/function name in the
   selected code cells (whole document if nothing's selected, after a

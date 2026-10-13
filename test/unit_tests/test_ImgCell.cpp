@@ -187,6 +187,20 @@ SCENARIO("An SVG image is drawn at its own size, and re-rendered when zoomed") {
         CHECK(img.GetAlpha(19, 20) == 0);
       }
     }
+    WHEN("its cache is cleared, as for a cell scrolled out of view") {
+      REQUIRE(image.GetBitmap(1.0).IsOk());
+      REQUIRE(image.HoldsSvgRendering());
+      image.ClearCache();
+      THEN("the parsed SVG and its full-size rendering are released") {
+        CHECK(!image.HoldsSvgRendering());
+      }
+      THEN("it is rendered again when drawn next") {
+        wxBitmap bitmap = image.GetBitmap(2.0);
+        REQUIRE(bitmap.IsOk());
+        CHECK(bitmap.GetWidth() == 80);
+        CHECK(IsRed(bitmap.ConvertToImage(), 40, 20));
+      }
+    }
     WHEN("the image is copied, as copying its cell does") {
       Image copy(&config, image);
       THEN("the copy is drawn, too") {
