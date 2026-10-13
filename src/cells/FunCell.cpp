@@ -109,8 +109,6 @@ wxString FunCell::ToMatlab() const {
 }
 
 wxString FunCell::ToTeX() const {
-  if (IsBrokenIntoLines()) return wxEmptyString;
-
   if (m_nameCell->ToString() == wxS("sin")) return wxS("\\sin{") + m_argCell->ListToTeX() + wxS("}");
   if (m_nameCell->ToString() == wxS("cos")) return wxS("\\cos{") + m_argCell->ListToTeX() + wxS("}");
   if (m_nameCell->ToString() == wxS("tan")) return wxS("\\tan{") + m_argCell->ListToTeX() + wxS("}");

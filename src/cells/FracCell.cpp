@@ -290,14 +290,12 @@ wxString FracCell::ToMatlab() const {
 
 wxString FracCell::ToTeX() const {
   wxString s;
-  if (!IsBrokenIntoLines()) {
-    if (m_fracStyle == FC_CHOOSE) {
-      s = wxS("\\begin{pmatrix}") + Num()->ListToTeX() + wxS("\\\\\n") +
-        Denom()->ListToTeX() + wxS("\\end{pmatrix}");
-    } else {
-      s = wxS("\\frac{") + Num()->ListToTeX() + wxS("}{") +
-        Denom()->ListToTeX() + wxS("}");
-    }
+  if (m_fracStyle == FC_CHOOSE) {
+    s = wxS("\\begin{pmatrix}") + Num()->ListToTeX() + wxS("\\\\\n") +
+      Denom()->ListToTeX() + wxS("\\end{pmatrix}");
+  } else {
+    s = wxS("\\frac{") + Num()->ListToTeX() + wxS("}{") +
+      Denom()->ListToTeX() + wxS("}");
   }
   return s;
 }

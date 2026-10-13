@@ -144,8 +144,6 @@ wxString DiffCell::ToMatlab() const {
 }
 
 wxString DiffCell::ToTeX() const {
-  if (IsBrokenIntoLines())
-    return wxEmptyString;
   wxString diff = m_diffCell->ListToTeX();
   wxString function = m_baseCell->ListToTeX();
 

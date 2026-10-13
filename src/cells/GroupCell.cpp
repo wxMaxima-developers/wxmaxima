@@ -1450,8 +1450,13 @@ wxString GroupCell::ToTeXCodeCell(const wxString &imgDir, const wxString &filena
       asciiArt = false;
     };
 
-    auto const outputDrawList = OnDrawList(m_output.get());
-    for (auto it = outputDrawList.begin(), listEnd = outputDrawList.end();
+    // The cells themselves, not the draw list: a cell too wide for the window
+    // is drawn as a linear sequence of pieces instead (a power as base, "^",
+    // "(", exponent, ")"), and exporting those pieces turned e^{x+y} into
+    // e\hat{}(x+y) (GH #408). LaTeX does its own typesetting, so the export is
+    // that of the unbroken expression, whatever the window width.
+    auto const outputList = OnList(m_output.get());
+    for (auto it = outputList.begin(), listEnd = outputList.end();
          it != listEnd; ++it) {
       const Cell &tmp = *it;
       // 2-D ASCII-art maths -- what maxima prints when it isn't asked for XML,

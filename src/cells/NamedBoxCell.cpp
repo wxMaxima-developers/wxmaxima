@@ -174,10 +174,7 @@ wxString NamedBoxCell::ToMatlab() const {
 }
 
 wxString NamedBoxCell::ToTeX() const {
-  if (IsBrokenIntoLines())
-    return wxEmptyString;
-  else
-    return wxS("\\fbox{") + m_innerCell->ListToTeX() + wxS("} % Named Box, Name: ") + m_boxname->ListToTeX() + wxS("\n");
+  return wxS("\\fbox{") + m_innerCell->ListToTeX() + wxS("} % Named Box, Name: ") + m_boxname->ListToTeX() + wxS("\n");
 }
 
 wxString NamedBoxCell::ToMathML() const {

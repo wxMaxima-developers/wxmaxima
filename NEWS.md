@@ -1,5 +1,10 @@
 # Current development version
 
+- LaTeX export and "Copy as LaTeX" no longer depend on the window width: an
+  expression too wide for the window, and therefore broken into lines on
+  screen, used to be exported in its linear form, which turned a power into
+  `e\hat{}(x+y)` instead of `e^{x+y}` and dropped some cells or exported
+  others twice (GH #408).
 - Selecting text in a text cell that wraps over several lines no longer
   makes the selection's ends jump between lines while the mouse moves
   (GH #2477). A click on a wrapped line could put the cursor on another

@@ -122,10 +122,7 @@ wxString ConjugateCell::ToMatlab() const {
 }
 
 wxString ConjugateCell::ToTeX() const {
-  if (IsBrokenIntoLines())
-    return wxEmptyString;
-  else
-    return wxS("\\overline{") + m_innerCell->ListToTeX() + wxS("}");
+  return wxS("\\overline{") + m_innerCell->ListToTeX() + wxS("}");
 }
 
 wxString ConjugateCell::ToMathML() const {

@@ -142,10 +142,7 @@ wxString BoxCell::ToMatlab() const {
 }
 
 wxString BoxCell::ToTeX() const {
-  if (IsBrokenIntoLines())
-    return wxEmptyString;
-  else
-    return wxS("\\fbox{") + m_innerCell->ListToTeX() + wxS("}");
+  return wxS("\\fbox{") + m_innerCell->ListToTeX() + wxS("}");
 }
 
 wxString BoxCell::ToMathML() const {
