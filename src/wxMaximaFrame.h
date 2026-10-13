@@ -125,6 +125,14 @@ public:
     dialog was closed and when Maxima reports a new output_format_for_help.
   */
   void UpdateHelpMenuChecks();
+  /*! Logs every entry of the Help menu, as wx and (on Windows) the OS see it
+
+    On a Windows nightly the "Show help in the sidebar" entry was missing
+    although the Edge backend was reported usable at the very moment the
+    entry is added. This shows whether wx never got the entry or Windows lost
+    it.
+  */
+  void LogHelpMenuContents() const;
   //! Is the XML inspector shown?
   bool IsXMLInspectorShown(){return m_manager.GetPane(wxS("XmlInspector")).IsShown();}
   //! Is the performance monitor shown?
