@@ -1,5 +1,10 @@
 # Current development version
 
+- `wximplicit_plot()` loads the `implicit_plot` package it needs instead of
+  reporting a missing image file (GH #1106).
+- If Maxima's temp directory contains a quote (for example, under a user
+  name like "Jay's"), wxMaxima now explains that Maxima's draw package
+  cannot plot there and how to set MAXIMA_TEMPDIR instead (GH #1106).
 - The tray icon's menu works with an AppIndicator (StatusNotifier) tray:
   "Show wxMaxima", "Interrupt" and "Exit" did nothing there. Showing
   wxMaxima from the tray now also brings back a hidden window.

@@ -891,6 +891,32 @@ void MaximaResponseReader::VariableActionTempDir(const wxString &value) {
     // and gnuplot won't create a new one for them.
     wxMkdir(value, wxS_DIR_DEFAULT);
   }
+  // Maxima's draw package (draw2d, drawdf, with_slider_draw, ...) writes
+  // the temp dir's files into its gnuplot script inside single quotes, and
+  // into the shell command that runs gnuplot inside double quotes, without
+  // escaping either. So a temp dir under a user name like "Jay's" breaks
+  // every draw plot with nothing but a cryptic gnuplot or shell syntax error,
+  // after which wxMaxima can only report the image as missing (GH #1106).
+  // plot2d quotes correctly, so only draw is affected. The fix belongs in
+  // Maxima; until it is there, tell the user how to work around it, once
+  // per directory rather than on every restart of Maxima.
+  if ((value.Find('\'') != wxNOT_FOUND || value.Find('"') != wxNOT_FOUND) &&
+      value != m_tempDirQuoteWarningShownFor) {
+    m_tempDirQuoteWarningShownFor = value;
+    m_wxMaxima.CallAfter([value]{
+      LoggingMessageBox(
+        wxString::Format(
+          _("Maxima's temp directory, %s, contains a quote character.\n\n"
+            "Plots made with Maxima's draw package (wxdraw2d, wxdraw3d, "
+            "wxdrawdf, with_slider_draw, ...) cannot be created in such a "
+            "directory.\n\n"
+            "To work around this, set the environment variable "
+            "MAXIMA_TEMPDIR to a directory whose path contains no quotes, "
+            "in Edit > Configure > Maxima > Environment variables for maxima."),
+          value),
+        _("Warning"), wxOK | wxICON_EXCLAMATION);
+    });
+  }
 }
 
 void MaximaResponseReader::VariableActionAutoconfVersion(const wxString &value) {

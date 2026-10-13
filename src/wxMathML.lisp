@@ -2233,6 +2233,10 @@ Submit bug reports by following the 'New issue' link on that page."))
   '$done)
 
 (defun $wximplicit_plot (&rest args)
+  ;; implicit_plot lives in a share package that isn't autoloaded. Without
+  ;; it, $implicit_plot stays an unevaluated noun, no image gets written and
+  ;; wxMaxima reports a missing file instead of a plot (GH #1106).
+  (unless (fboundp '$implicit_plot) ($load "implicit_plot"))
   (let ((preamble ($wxplot_preamble))
 	(system-preamble (get-plot-option-string '$gnuplot_preamble 2))
 	(filename (wxplot-filename)))

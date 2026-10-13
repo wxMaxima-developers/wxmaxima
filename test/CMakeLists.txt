@@ -423,6 +423,16 @@ add_test(
     "<slide[^>]* gifFile=\"/[^\"]*/anim\\.gif\"[^>]*>[^<]*\\.gnuplot;[^<]*\\.gnuplot;[^<]*</slide>"
 )
 
+# wximplicit_plot() has to load the implicit_plot package itself: without it
+# implicit_plot() stays unevaluated, no image is written, and wxMaxima reports
+# a missing file instead of a plot (GH #1106).
+add_test(
+    NAME wximplicit_plot_loads_package
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh"
+    "wximplicit_plot(x^2+y^2=1,[x,-2,2],[y,-2,2])$ is(?fboundp('implicit_plot) # false);"
+    "<t lisp=\"true\">true</t>"
+)
+
 add_test(
     NAME wxbuildinfo
     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxbuild_info();" "WxMaxima"
@@ -1652,6 +1662,7 @@ set(WXM_POSIX_TESTS
   subscriptp_kill_all_keeps_maxima_variables
   wx_version_min wx_version_min_outside_wxmaxima
   with_slider_draw_bare with_slider_draw_file_name_kept
+  wximplicit_plot_loads_package
   with_slider_draw_bare_file_name
   check-lintian check-rpmlint)
 
