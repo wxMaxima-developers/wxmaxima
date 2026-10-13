@@ -1528,7 +1528,7 @@ public:
   static void SetDebugmode(){m_debugMode = true;}
   //! Enable costly checks?
   static bool GetDebugmode(){return m_debugMode;}
-  /*! Does Maxima answer ?, ?? and describe() on the console?
+  /*! Does Maxima answer ?, ?? and describe() with plain text in the worksheet?
 
     If not, Maxima hands the matching manual topics to wxMaxima
     (output_format_for_help: frontend), which shows them wherever

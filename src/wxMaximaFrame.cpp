@@ -2098,6 +2098,13 @@ void wxMaximaFrame::SetupHelpMenu() {
       m_HelpMenu->AppendRadioItem(EventIDs::menu_wxmaxima_uses_help_browser,
                                   _("Show help in a browser"));
     }
+  // Next to the choice it is an exception to (see ConfigDialogue).
+  m_HelpMenu->AppendSeparator();
+  m_HelpMenu->AppendCheckItem(EventIDs::menu_maxima_help_in_console,
+                              _("Print ?, ?? and describe() into the worksheet"),
+                              _("Maxima answers ?, ?? and describe() with plain "
+                                "text in the worksheet instead of where all "
+                                "other help is shown"));
   m_HelpMenu->AppendSeparator();
   wxMenu *tutorials_sub = new wxMenu;
   tutorials_sub->Append(EventIDs::menu_help_solving, _("Solving equations with Maxima"),
@@ -2129,12 +2136,6 @@ void wxMaximaFrame::SetupHelpMenu() {
   m_HelpMenu->Append(wxWindow::NewControlId(), _("Demos"), m_demo_sub);
   m_HelpMenu->Append(EventIDs::menu_help_maxima_homepage,
                      _(wxS("↗Documentation on maxima's homepage")));
-  m_HelpMenu->AppendSeparator();
-  m_HelpMenu->AppendCheckItem(EventIDs::menu_maxima_help_in_console,
-                              _("Maxima answers ? on the console"),
-                              _("Tells maxima to show the help for ?, ?? and "
-                                "describe() on the console instead of where "
-                                "all other help is shown"));
   UpdateHelpMenuChecks();
   // Once the menu bar is attached and the frame is up.
   CallAfter([this]{LogHelpMenuContents();});

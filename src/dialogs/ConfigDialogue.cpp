@@ -1620,7 +1620,7 @@ wxWindow *ConfigDialogue::CreateMaximaPanel() {
   wxStaticBoxSizer *invocationSizer =
     new wxStaticBoxSizer(wxVERTICAL, panel, _("Maxima Location"));
 
-  wxFlexGridSizer *nameSizer = new wxFlexGridSizer(9, 2, 0, 0);
+  wxFlexGridSizer *nameSizer = new wxFlexGridSizer(0, 2, 0, 0);
   nameSizer->Add(new wxStaticText(invocationSizer->GetStaticBox(), wxID_ANY,
                                   _("Maxima program:")),
                  wxSizerFlags().Expand().Border(wxUP | wxDOWN, 0));
@@ -1675,6 +1675,17 @@ wxWindow *ConfigDialogue::CreateMaximaPanel() {
 
   nameSizer->Add(m_helpBrowserUserLocation,
                  wxSizerFlags().Expand().Border(wxUP | wxDOWN, 0));
+  // Not a fourth place for "Show help in": it only covers Maxima's own ?, ??
+  // and describe(), whose answer can also be plain text in the worksheet.
+  // F1, "Help on" and the manuals have no such form. It sits here so that
+  // it reads as the exception to the choice above, not as a rival of it.
+  m_maximaHelpInConsole =
+    new wxCheckBox(invocationSizer->GetStaticBox(), wxID_ANY,
+                   _("Except ?, ?? and describe(): print their answer into the worksheet"));
+  nameSizer->Add(m_maximaHelpInConsole,
+                 wxSizerFlags().Expand().Border(wxUP | wxDOWN, 0));
+  // nameSizer has two columns: keep the next row's control in the first one.
+  nameSizer->Add(10 * GetContentScaleFactor(), 10 * GetContentScaleFactor());
   m_singlePageManual =
     new wxCheckBox(invocationSizer->GetStaticBox(), wxID_ANY,
                    _("Prefer the all-in-one-file >1000 page manual"));
@@ -1694,14 +1705,6 @@ wxWindow *ConfigDialogue::CreateMaximaPanel() {
   wxStaticBoxSizer *configSizer =
     new wxStaticBoxSizer(wxVERTICAL, panel, _("Maxima configuration"));
 
-  // Where help is shown at all is the "Show help in" choice above; this only
-  // decides whether Maxima's own ? answers on the console instead.
-  m_maximaHelpInConsole =
-    new wxCheckBox(configSizer->GetStaticBox(), wxID_ANY,
-                   _("Maxima answers ?, ?? and describe() on the console"));
-  configSizer->Add(
-                   m_maximaHelpInConsole,
-                   wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
   m_defaultPort = new wxSpinCtrl(
                                  configSizer->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition,
                                  wxSize(230 * GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 50, 65534);
