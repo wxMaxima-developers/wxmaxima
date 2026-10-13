@@ -644,6 +644,18 @@ if(TARGET wxmTestApp)
     add_test(NAME WorksheetContextMenu
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_WorksheetContextMenu>")
 
+    # Events that reach a Worksheet while its wxWindow base is being
+    # destroyed (wxGTK4 sends a leave event then) must not reach handlers
+    # that use the already-released configuration.
+    add_executable(test_WorksheetTeardown
+        test_WorksheetTeardown.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_WorksheetTeardown PUBLIC cxx_std_20)
+    target_link_libraries(test_WorksheetTeardown PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME WorksheetTeardown
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_WorksheetTeardown>")
+
     # Pins MaximaTokenizer's handling of an identifier split by an escaped
     # newline (GH #898): both halves must stay one logical name for
     # function/variable/operator/keyword classification, even though a
