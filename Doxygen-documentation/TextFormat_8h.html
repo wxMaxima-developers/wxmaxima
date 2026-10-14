@@ -168,6 +168,9 @@ Format&#160;</td><td class="memItemRight" valign="bottom"><b>TextFormat::At</b> 
 <tr class="memitem:ab674b96d533e2f74a614985965c7017f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="TextFormat_8cpp.html#ab674b96d533e2f74a614985965c7017f">TextFormat::ReadLine</a> (const wxXmlNode *line, wxString &amp;text, Formats &amp;formats, wxString *unknownAttributes=nullptr)</td></tr>
 <tr class="memdesc:ab674b96d533e2f74a614985965c7017f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Append the text and formatting of a <code>&lt;line&gt;</code> element.  <br /></td></tr>
 <tr class="separator:ab674b96d533e2f74a614985965c7017f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff8f8c5d1102792e5c9de1a5fe5c3047"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="TextFormat_8cpp.html#aff8f8c5d1102792e5c9de1a5fe5c3047">TextFormat::ReadHTML</a> (const wxString &amp;html, wxString &amp;text, Formats &amp;formats)</td></tr>
+<tr class="memdesc:aff8f8c5d1102792e5c9de1a5fe5c3047"><td class="mdescLeft">&#160;</td><td class="mdescRight">The text and formatting of an HTML fragment other programs put on the clipboard.  <br /></td></tr>
+<tr class="separator:aff8f8c5d1102792e5c9de1a5fe5c3047"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afe91507a9c907deae37903569570458d"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::pair&lt; std::size_t, std::size_t &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="TextFormat_8cpp.html#afe91507a9c907deae37903569570458d">TextFormat::ParseRanges</a> (const wxString &amp;ranges)</td></tr>
 <tr class="memdesc:afe91507a9c907deae37903569570458d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse a range list like "0-4,10-12" (half-open, in code points).  <br /></td></tr>
 <tr class="separator:afe91507a9c907deae37903569570458d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -322,6 +325,49 @@ constexpr Format&#160;</td><td class="memItemRight" valign="bottom"><b>TextForma
 
 <p>Parse a range list like "0-4,10-12" (half-open, in code points). </p>
 <p>Malformed entries are skipped. Exposed for the tests. </p>
+
+</div>
+</div>
+<a id="aff8f8c5d1102792e5c9de1a5fe5c3047" name="aff8f8c5d1102792e5c9de1a5fe5c3047"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aff8f8c5d1102792e5c9de1a5fe5c3047">&#9670;&#160;</a></span>ReadHTML()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TextFormat::ReadHTML </td>
+          <td>(</td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
+          <td class="paramname"><em>html</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">wxString &amp;&#160;</td>
+          <td class="paramname"><em>text</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="TextFormat_8h.html#a13862239022d9d562b6551674458be17">Formats</a> &amp;&#160;</td>
+          <td class="paramname"><em>formats</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The text and formatting of an HTML fragment other programs put on the clipboard. </p>
+<p>Lenient, as clipboard HTML is rarely well-formed XML: unclosed &lt;br&gt;, &lt;meta&gt; or &lt;p&gt;, entities like &amp;nbsp;, a Windows CF_HTML header. Reads what is inside &lt;body&gt;, or else between the &lt;!--StartFragment&ndash;&gt; and &lt;!--EndFragment&ndash;&gt; markers, if there are any. Understands the elements FlagForTag() knows and the CSS a &lt;span&gt; or any other element carries in its style attribute (font-weight, font-style, text-decoration, vertical-align), which is how Google Docs and Word mark their formatting - including switching a format off again, as Google Docs wraps a whole copy in &lt;b style="font-weight:normal"&gt;. Whitespace collapses as a browser collapses it; &lt;br&gt; and the end of a paragraph, heading, list item, table row or &lt;div&gt; make a line break; &lt;script&gt;, &lt;style&gt; and &lt;head&gt; are skipped.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">formats</td><td>Receives one format per character of text. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

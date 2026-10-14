@@ -84,11 +84,12 @@ $(function() {
 <div class="textblock"><code>#include &quot;<a class="el" href="TextFormat_8h_source.html">TextFormat.h</a>&quot;</code><br />
 <code>#include &lt;algorithm&gt;</code><br />
 <code>#include &lt;wx/tokenzr.h&gt;</code><br />
+<code>#include &lt;wx/wxcrt.h&gt;</code><br />
 <code>#include &lt;wx/xml/xml.h&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for TextFormat.cpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="TextFormat_8cpp__incl.svg" width="610" height="183"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="TextFormat_8cpp__incl.svg" width="100%" height="437"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 </div><table class="memberdecls">
@@ -124,6 +125,9 @@ std::size_t&#160;</td><td class="memItemRight" valign="bottom"><b>TextFormat::In
 <tr class="memitem:ab674b96d533e2f74a614985965c7017f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="TextFormat_8cpp.html#ab674b96d533e2f74a614985965c7017f">TextFormat::ReadLine</a> (const wxXmlNode *line, wxString &amp;text, Formats &amp;formats, wxString *unknownAttributes=nullptr)</td></tr>
 <tr class="memdesc:ab674b96d533e2f74a614985965c7017f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Append the text and formatting of a <code>&lt;line&gt;</code> element.  <br /></td></tr>
 <tr class="separator:ab674b96d533e2f74a614985965c7017f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff8f8c5d1102792e5c9de1a5fe5c3047"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="TextFormat_8cpp.html#aff8f8c5d1102792e5c9de1a5fe5c3047">TextFormat::ReadHTML</a> (const wxString &amp;html, wxString &amp;text, Formats &amp;formats)</td></tr>
+<tr class="memdesc:aff8f8c5d1102792e5c9de1a5fe5c3047"><td class="mdescLeft">&#160;</td><td class="mdescRight">The text and formatting of an HTML fragment other programs put on the clipboard.  <br /></td></tr>
+<tr class="separator:aff8f8c5d1102792e5c9de1a5fe5c3047"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Character formatting of text cells; see <a class="el" href="TextFormat_8h.html" title="Character formatting (bold, italic, superscript, ...) of the text in a text cell (GH #492).">TextFormat.h</a>. </p>
@@ -226,6 +230,49 @@ std::size_t&#160;</td><td class="memItemRight" valign="bottom"><b>TextFormat::In
 
 <p>Parse a range list like "0-4,10-12" (half-open, in code points). </p>
 <p>Malformed entries are skipped. Exposed for the tests. </p>
+
+</div>
+</div>
+<a id="aff8f8c5d1102792e5c9de1a5fe5c3047" name="aff8f8c5d1102792e5c9de1a5fe5c3047"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aff8f8c5d1102792e5c9de1a5fe5c3047">&#9670;&#160;</a></span>ReadHTML()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TextFormat::ReadHTML </td>
+          <td>(</td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
+          <td class="paramname"><em>html</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">wxString &amp;&#160;</td>
+          <td class="paramname"><em>text</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="TextFormat_8h.html#a13862239022d9d562b6551674458be17">Formats</a> &amp;&#160;</td>
+          <td class="paramname"><em>formats</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The text and formatting of an HTML fragment other programs put on the clipboard. </p>
+<p>Lenient, as clipboard HTML is rarely well-formed XML: unclosed &lt;br&gt;, &lt;meta&gt; or &lt;p&gt;, entities like &amp;nbsp;, a Windows CF_HTML header. Reads what is inside &lt;body&gt;, or else between the &lt;!--StartFragment&ndash;&gt; and &lt;!--EndFragment&ndash;&gt; markers, if there are any. Understands the elements FlagForTag() knows and the CSS a &lt;span&gt; or any other element carries in its style attribute (font-weight, font-style, text-decoration, vertical-align), which is how Google Docs and Word mark their formatting - including switching a format off again, as Google Docs wraps a whole copy in &lt;b style="font-weight:normal"&gt;. Whitespace collapses as a browser collapses it; &lt;br&gt; and the end of a paragraph, heading, list item, table row or &lt;div&gt; make a line break; &lt;script&gt;, &lt;style&gt; and &lt;head&gt; are skipped.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">formats</td><td>Receives one format per character of text. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
