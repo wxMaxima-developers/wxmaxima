@@ -41,6 +41,9 @@
 #include "wxMaximaFrame.h"
 #include <algorithm>
 #include <wx/clipbrd.h>
+#include <wx/log.h>
+#include <wx/sstream.h>
+#include <wx/xml/xml.h>
 #include <wx/regex.h>
 #include <wx/tokenzr.h>
 #include "RegexSearch.h"
@@ -1532,6 +1535,69 @@ void EditorCell::CopyFormatsFrom(const EditorCell &source) {
   // maps them onto ours, should the two differ.
   StyleText();
   m_isDirty = true;
+}
+
+wxString EditorCell::SelectionToXML() const {
+  const size_t start = std::min(SelectionLeft(), m_text.Length());
+  const size_t end = std::min(std::max(SelectionRight(), start), m_text.Length());
+  // A soft line break is a space that happens to sit at the end of a line;
+  // swapping it back keeps the text exactly as long as its formats.
+  wxString text = m_text;
+  text.Replace(wxS("\r"), wxS(" "));
+  wxString attributes;
+  if (m_formatState)
+    attributes = TextFormat::LineAttributes(text, GetFormats(), start, end);
+  return wxS("<line") + attributes + wxS(">") +
+    XMLescape(text.SubString(start, end - 1)) + wxS("</line>");
+}
+
+bool EditorCell::InsertXML(const wxString &xml) {
+  wxXmlDocument doc;
+  {
+    wxLogNull suppressor;
+    wxStringInputStream stream(xml);
+    // Without KEEP_WHITESPACE a copied run of blanks would arrive empty.
+#if wxCHECK_VERSION(3, 3, 0)
+    const bool loaded = doc.Load(stream, wxXMLDOC_KEEP_WHITESPACE_NODES);
+#else
+    const bool loaded = doc.Load(stream, wxS("UTF-8"), wxXMLDOC_KEEP_WHITESPACE_NODES);
+#endif
+    if (!loaded || !doc.GetRoot() ||
+        (doc.GetRoot()->GetName() != wxS("line")))
+      return false;
+  }
+  wxString text;
+  TextFormat::Formats pasted;
+  TextFormat::ReadLine(doc.GetRoot(), text, pasted);
+  // Only the clipboard's own line endings would make a line break here, and
+  // SelectionToXML() writes none but '\n'.
+  text.Replace(wxS("\r"), wxS(" "));
+
+  const size_t start = SelectionActive() ? SelectionLeft() : CursorPosition();
+  InsertText(text);
+  if (!CanFormat())
+    return true;
+
+  // InsertText() let the new characters continue the format in front of
+  // them, as it does for typing. They have formats of their own, though.
+  TextFormat::Formats formats = GetFormats();
+  if (TextFormat::IsPlain(formats) && TextFormat::IsPlain(pasted))
+    return true;
+  formats.resize(m_text.Length(), TextFormat::None);
+  for (size_t i = 0; (i < text.Length()) && (start + i < formats.size()); ++i)
+    formats[start + i] = TextFormat::At(pasted, i);
+  SetFormats(std::move(formats));
+  m_width.Invalidate();
+  m_height.Invalidate();
+  m_center.Invalidate();
+  return true;
+}
+
+wxDataFormat EditorCell::FormattedTextDataFormat() {
+  // Made on first use: a wxDataFormat can't be registered before wxWidgets
+  // is initialized.
+  static const wxDataFormat format(wxS("application/x-wxmaxima-formatted-text"));
+  return format;
 }
 
 bool EditorCell::HasFormat(TextFormat::Format flag) const {
@@ -3536,15 +3602,30 @@ bool EditorCell::CopyToClipboard() const {
   // cause problems
   if (GetType() == MC_TYPE_INPUT)
     s.Replace(wxS("\u00a0"), wxS(" "));
+  // Text copied out of a text cell keeps its bold, italic, ... for pasting
+  // into another one; other programs get the plain text.
+  std::string xml;
+  if (CanFormat())
+    xml = SelectionToXML().utf8_string();
+  const auto dataObject = [&s, &xml]() -> wxDataObject * {
+    if (xml.empty())
+      return new wxTextDataObject(s);
+    auto *data = new wxDataObjectComposite;
+    data->Add(new wxTextDataObject(s), true);
+    auto *formatted = new wxCustomDataObject(FormattedTextDataFormat());
+    formatted->SetData(xml.size(), xml.data());
+    data->Add(formatted);
+    return data;
+  };
   if (!s.IsEmpty() && (wxTheClipboard->Open())) {
-    if (!wxTheClipboard->SetData(new wxTextDataObject(s))) {
+    if (!wxTheClipboard->SetData(dataObject())) {
       wxLogMessage(_("Cannot put the copied text on the clipboard (1st try)"));
       wxMicroSleep(500000);
-      if (!wxTheClipboard->SetData(new wxTextDataObject(s))) {
+      if (!wxTheClipboard->SetData(dataObject())) {
         wxLogMessage(
                      _("Cannot put the copied text on the clipboard (2nd try)"));
         wxMicroSleep(500000);
-        if (!wxTheClipboard->SetData(new wxTextDataObject(s)))
+        if (!wxTheClipboard->SetData(dataObject()))
           wxLogMessage(_("Cannot put the copied text on the clipboard"));
       }
     }
@@ -3606,8 +3687,19 @@ void EditorCell::PasteFromClipboard(const bool primary) {
   wxASSERT_MSG(
                wxTheClipboard->IsOpened(),
                _("Bug: The clipboard isn't open on pasting into an editor cell"));
-  if (wxTheClipboard->IsSupported(wxDF_TEXT) ||
-      wxTheClipboard->IsSupported(wxDF_UNICODETEXT)) {
+  bool pasted = false;
+  if (CanFormat() && wxTheClipboard->IsSupported(FormattedTextDataFormat())) {
+    wxCustomDataObject data(FormattedTextDataFormat());
+    if (wxTheClipboard->GetData(data) && (data.GetSize() > 0))
+      pasted = InsertXML(wxString::FromUTF8(static_cast<const char *>(data.GetData()),
+                                            data.GetSize()));
+    if (pasted) {
+      m_containsChanges = true;
+      StyleText();
+    }
+  }
+  if (!pasted && (wxTheClipboard->IsSupported(wxDF_TEXT) ||
+                  wxTheClipboard->IsSupported(wxDF_UNICODETEXT))) {
     wxTextDataObject obj;
     wxTheClipboard->GetData(obj);
     wxString text = obj.GetText();
