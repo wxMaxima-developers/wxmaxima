@@ -1573,17 +1573,44 @@ bool EditorCell::InsertXML(const wxString &xml) {
   // Only the clipboard's own line endings would make a line break here, and
   // SelectionToXML() writes none but '\n'.
   text.Replace(wxS("\r"), wxS(" "));
+  InsertFormatted(text, pasted);
+  return true;
+}
 
+bool EditorCell::InsertHTML(const wxString &html, wxString plainText) {
+  wxString text;
+  TextFormat::Formats formats;
+  TextFormat::ReadHTML(html, text, formats);
+  if (text.IsEmpty())
+    return false;
+  // The program that put the HTML on the clipboard knows best which
+  // characters it meant (a list's bullet, a tab between table cells), so its
+  // plain text wins, and only the formats come from the HTML.
+  plainText.Replace(wxS("\r\n"), wxS("\n"));
+  plainText.Replace(wxS("\r"), wxS("\n"));
+  while (!plainText.IsEmpty() &&
+         ((plainText.Last() == '\n') || (plainText.Last() == ' ')))
+    plainText.RemoveLast();
+  if (!plainText.IsEmpty() && (plainText != text)) {
+    formats = TextFormat::Reconcile(text, formats, plainText);
+    text = plainText;
+  }
+  InsertFormatted(text, formats);
+  return true;
+}
+
+void EditorCell::InsertFormatted(const wxString &text,
+                                 const TextFormat::Formats &pasted) {
   const size_t start = SelectionActive() ? SelectionLeft() : CursorPosition();
   InsertText(text);
   if (!CanFormat())
-    return true;
+    return;
 
   // InsertText() let the new characters continue the format in front of
   // them, as it does for typing. They have formats of their own, though.
   TextFormat::Formats formats = GetFormats();
   if (TextFormat::IsPlain(formats) && TextFormat::IsPlain(pasted))
-    return true;
+    return;
   formats.resize(m_text.Length(), TextFormat::None);
   for (size_t i = 0; (i < text.Length()) && (start + i < formats.size()); ++i)
     formats[start + i] = TextFormat::At(pasted, i);
@@ -1591,7 +1618,6 @@ bool EditorCell::InsertXML(const wxString &xml) {
   m_width.Invalidate();
   m_height.Invalidate();
   m_center.Invalidate();
-  return true;
 }
 
 namespace {
@@ -3826,11 +3852,27 @@ void EditorCell::PasteFromClipboard(const bool primary) {
       StyleText();
     }
   }
-  if (!pasted && (wxTheClipboard->IsSupported(wxDF_TEXT) ||
-                  wxTheClipboard->IsSupported(wxDF_UNICODETEXT))) {
+  wxString text;
+  const bool hasText = wxTheClipboard->IsSupported(wxDF_TEXT) ||
+    wxTheClipboard->IsSupported(wxDF_UNICODETEXT);
+  if (!pasted && hasText) {
     wxTextDataObject obj;
     wxTheClipboard->GetData(obj);
-    wxString text = obj.GetText();
+    text = obj.GetText();
+  }
+  // Formatted text from other programs (GH #2475). Not from the primary
+  // selection: that is offered while the user is still selecting, and asking
+  // for a second format there means a second round trip to the other program.
+  if (!pasted && !primary && CanFormat() && wxTheClipboard->IsSupported(wxDF_HTML)) {
+    wxHTMLDataObject html;
+    if (wxTheClipboard->GetData(html))
+      pasted = InsertHTML(html.GetHTML(), text);
+    if (pasted) {
+      m_containsChanges = true;
+      StyleText();
+    }
+  }
+  if (!pasted && hasText) {
     // Normalize external line endings to the hard break '\n': Windows uses
     // "\r\n" and classic macOS a lone '\r'. Internally '\r' is wxMaxima's *soft*
     // word-wrap break, so pasted text must not smuggle one in (it would freeze a

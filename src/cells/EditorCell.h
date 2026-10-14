@@ -325,6 +325,14 @@ public:
             then.
   */
   bool InsertXML(const wxString &xml);
+  /*! Insert HTML another program put on the clipboard, formatting included.
+
+    \param plainText The plain text the same program offered next to the
+           HTML, if any. Its characters are what gets inserted; the HTML
+           only contributes their formats (see TextFormat::ReadHTML()).
+    \return false if the HTML holds no text; nothing is inserted then.
+  */
+  bool InsertHTML(const wxString &html, wxString plainText = wxEmptyString);
   /*! The private clipboard format SelectionToXML()'s result travels in.
 
     Offered next to the plain text whenever text is copied out of a cell that
@@ -873,6 +881,12 @@ public:
   const MaximaTokenizer::TokenList &GetAllTokens() const;
 
 private:
+  /*! Insert text whose characters keep the formats they came with.
+
+    Used by the pastes: unlike typing, pasted characters don't continue the
+    format of the text in front of them.
+  */
+  void InsertFormatted(const wxString &text, const TextFormat::Formats &pasted);
   //! Used by StyleTextTexts(): pushes `line` as one or more StyledText
   //! snippets, isolating each '\t' into its own snippet the way the code-cell
   //! tokenizer already guarantees -- so Draw()/Recalculate()/GetLineWidth()

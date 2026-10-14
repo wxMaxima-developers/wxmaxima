@@ -1,5 +1,9 @@
 # Current development version
 
+- Text pasted into a text cell from a word processor, a web browser or a
+  mail program keeps its bold, italic, underline, strikethrough,
+  superscript and subscript: wxMaxima now reads the HTML other programs put
+  on the clipboard (GH #2475).
 - Formatted text copied out of a text cell reaches word processors, mail
   programs and web editors with its bold, italic and other formatting:
   the copy now also offers RTF and HTML. Whole cells copied as RTF and the

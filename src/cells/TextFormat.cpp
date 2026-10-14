@@ -26,6 +26,7 @@
 #include "TextFormat.h"
 #include <algorithm>
 #include <wx/tokenzr.h>
+#include <wx/wxcrt.h>
 #include <wx/xml/xml.h>
 
 namespace TextFormat {
@@ -417,6 +418,367 @@ void ReadLine(const wxXmlNode *line, wxString &text, Formats &formats,
       for (std::size_t i = start; i < end; ++i)
         formats[i] = WithFlag(formats[i], flag);
     }
+  }
+}
+
+namespace {
+//! What an element does to the format of the text inside it
+struct FormatChange {
+  wxString tag;
+  Format set = None;
+  Format clear = None;
+};
+
+//! The format text inside all of these elements gets
+Format FormatOf(const std::vector<FormatChange> &stack) {
+  Format format = None;
+  for (const auto &change : stack) {
+    format &= static_cast<Format>(~change.clear);
+    for (Format flag = 1; flag != 0 && flag <= Subscript; flag <<= 1)
+      if (change.set & flag)
+        format = WithFlag(format, flag);
+  }
+  return format;
+}
+
+//! Adds what a CSS style attribute says about our formats to change
+void ReadStyle(const wxString &style, FormatChange &change) {
+  auto set = [&change](Format flag) {
+    change.set |= flag;
+    change.clear &= static_cast<Format>(~flag);
+  };
+  auto clear = [&change](Format flag) {
+    change.clear |= flag;
+    change.set &= static_cast<Format>(~flag);
+  };
+  wxStringTokenizer declarations(style, wxS(";"));
+  while (declarations.HasMoreTokens()) {
+    const wxString declaration = declarations.GetNextToken();
+    const wxString property = declaration.BeforeFirst(wxS(':')).Trim().Trim(false).Lower();
+    wxString value = declaration.AfterFirst(wxS(':')).Trim().Trim(false).Lower();
+    value.Replace(wxS("!important"), wxEmptyString);
+    value.Trim();
+    if (property == wxS("font-weight")) {
+      long weight = 0;
+      if ((value == wxS("bold")) || (value == wxS("bolder")) ||
+          (value.ToLong(&weight) && (weight >= 600)))
+        set(Bold);
+      else if ((value == wxS("normal")) || (value == wxS("lighter")) ||
+               value.ToLong(&weight))
+        clear(Bold);
+    } else if (property == wxS("font-style")) {
+      if (value.StartsWith(wxS("italic")) || value.StartsWith(wxS("oblique")))
+        set(Italic);
+      else if (value == wxS("normal"))
+        clear(Italic);
+    } else if ((property == wxS("text-decoration")) ||
+               (property == wxS("text-decoration-line"))) {
+      if (value.StartsWith(wxS("none")))
+        clear(Underline | Strikethrough);
+      if (value.Contains(wxS("underline")))
+        set(Underline);
+      if (value.Contains(wxS("line-through")))
+        set(Strikethrough);
+    } else if (property == wxS("vertical-align")) {
+      if (value == wxS("super"))
+        set(Superscript);
+      else if (value == wxS("sub"))
+        set(Subscript);
+      else if (value == wxS("baseline"))
+        clear(VerticalPosition);
+    }
+  }
+}
+
+//! The character a named or numeric entity (without & and ;) stands for
+bool DecodeEntity(const wxString &name, wxString &result) {
+  if (name.StartsWith(wxS("#"))) {
+    unsigned long code = 0;
+    const bool ok = (name.Length() > 1) && ((name[1] == 'x') || (name[1] == 'X'))
+      ? name.Mid(2).ToULong(&code, 16)
+      : name.Mid(1).ToULong(&code, 10);
+    if (!ok || (code == 0) || (code > 0x10FFFF))
+      return false;
+    result = wxString(wxUniChar(static_cast<wxUint32>(code)));
+    return true;
+  }
+  static const struct {
+    const wxChar *name;
+    wxUint32 code;
+  } entities[] = {
+    {wxS("amp"), '&'},       {wxS("lt"), '<'},         {wxS("gt"), '>'},
+    {wxS("quot"), '"'},      {wxS("apos"), '\''},      {wxS("nbsp"), 0xA0},
+    {wxS("ndash"), 0x2013},  {wxS("mdash"), 0x2014},   {wxS("hellip"), 0x2026},
+    {wxS("euro"), 0x20AC},   {wxS("copy"), 0xA9},      {wxS("reg"), 0xAE},
+    {wxS("laquo"), 0xAB},    {wxS("raquo"), 0xBB},     {wxS("lsquo"), 0x2018},
+    {wxS("rsquo"), 0x2019},  {wxS("ldquo"), 0x201C},   {wxS("rdquo"), 0x201D},
+    {wxS("bdquo"), 0x201E},  {wxS("times"), 0xD7},     {wxS("divide"), 0xF7},
+    {wxS("deg"), 0xB0},      {wxS("middot"), 0xB7},    {wxS("plusmn"), 0xB1},
+    {wxS("minus"), 0x2212},  {wxS("bull"), 0x2022},    {wxS("shy"), 0xAD}};
+  for (const auto &entity : entities)
+    if (name == entity.name) {
+      result = wxString(wxUniChar(entity.code));
+      return true;
+    }
+  return false;
+}
+
+bool IsHTMLSpace(wxUniChar c) {
+  return (c == ' ') || (c == '\t') || (c == '\n') || (c == '\r') || (c == '\f');
+}
+
+//! The part of a clipboard HTML document that holds what was copied
+wxString HTMLFragment(const wxString &html) {
+  const wxString lower = html.Lower();
+  // Everything between start and the end marker, or else nothing
+  auto between = [&](const wxString &start, const wxChar *startEnd,
+                     const wxString &end, wxString &result) {
+    const std::size_t startPos = lower.find(start);
+    if (startPos == wxString::npos)
+      return false;
+    const std::size_t contentStart = lower.find(startEnd, startPos);
+    if (contentStart == wxString::npos)
+      return false;
+    const std::size_t from = contentStart + wxStrlen(startEnd);
+    const std::size_t endPos = lower.find(end, from);
+    result = html.Mid(from, (endPos == wxString::npos) ? wxString::npos : endPos - from);
+    return true;
+  };
+  wxString result;
+  if (between(wxS("<!--startfragment"), wxS("-->"), wxS("<!--endfragment"), result))
+    return result;
+  if (between(wxS("<body"), wxS(">"), wxS("</body"), result))
+    return result;
+  // A CF_HTML header without fragment markers: skip to the first tag
+  if (html.StartsWith(wxS("Version:"))) {
+    const std::size_t firstTag = html.find(wxS('<'));
+    if (firstTag != wxString::npos)
+      return html.Mid(firstTag);
+  }
+  return html;
+}
+
+bool IsVoidElement(const wxString &tag) {
+  static const wxString voids[] = {wxS("br"),  wxS("img"),  wxS("hr"),    wxS("meta"),
+                                   wxS("link"), wxS("input"), wxS("wbr"),  wxS("col"),
+                                   wxS("area"), wxS("base"), wxS("param"), wxS("source")};
+  for (const auto &v : voids)
+    if (tag == v)
+      return true;
+  return false;
+}
+
+//! Elements whose start and end end the current line
+bool IsBlockElement(const wxString &tag) {
+  static const wxString blocks[] = {
+    wxS("p"),  wxS("div"), wxS("h1"), wxS("h2"), wxS("h3"), wxS("h4"),
+    wxS("h5"), wxS("h6"),  wxS("li"), wxS("tr"), wxS("ul"), wxS("ol"),
+    wxS("table"), wxS("blockquote"), wxS("pre"), wxS("hr"), wxS("dt"), wxS("dd")};
+  for (const auto &b : blocks)
+    if (tag == b)
+      return true;
+  return false;
+}
+} // namespace
+
+void ReadHTML(const wxString &html, wxString &text, Formats &formats) {
+  text.clear();
+  formats.clear();
+  const wxString fragment = HTMLFragment(html);
+  std::vector<FormatChange> stack;
+  Format format = None;
+  bool pendingSpace = false;
+  Format pendingSpaceFormat = None;
+  int preDepth = 0;
+
+  auto append = [&](const wxString &chars, Format f) {
+    text += chars;
+    formats.insert(formats.end(), chars.Length(), f);
+  };
+  auto atLineStart = [&]() { return text.IsEmpty() || text.Last() == '\n'; };
+  auto lineBreak = [&]() {
+    pendingSpace = false;
+    if (!atLineStart())
+      append(wxS("\n"), None);
+  };
+  auto emit = [&](const wxString &chars) {
+    if (pendingSpace && !atLineStart())
+      append(wxS(" "), pendingSpaceFormat);
+    pendingSpace = false;
+    append(chars, format);
+  };
+
+  const std::size_t len = fragment.Length();
+  std::size_t i = 0;
+  while (i < len) {
+    const wxUniChar c = fragment[i];
+    if (c == '<') {
+      // Not a tag, like the "<" in "a < b"
+      const wxUniChar next = (i + 1 < len) ? fragment[i + 1] : wxUniChar(' ');
+      if (!wxIsalpha(next.GetValue()) && (next != '/') && (next != '!') && (next != '?')) {
+        emit(wxS("<"));
+        ++i;
+        continue;
+      }
+      if (fragment.compare(i, 4, wxS("<!--")) == 0) {
+        const std::size_t end = fragment.find(wxS("-->"), i + 4);
+        i = (end == wxString::npos) ? len : end + 3;
+        continue;
+      }
+      if ((i + 1 < len) && ((fragment[i + 1] == '!') || (fragment[i + 1] == '?'))) {
+        const std::size_t end = fragment.find(wxS('>'), i);
+        i = (end == wxString::npos) ? len : end + 1;
+        continue;
+      }
+      // A tag: find its end, minding quoted attribute values
+      std::size_t end = i + 1;
+      wxUniChar quote = 0;
+      while (end < len) {
+        const wxUniChar d = fragment[end];
+        if (quote != 0) {
+          if (d == quote)
+            quote = 0;
+        } else if ((d == '"') || (d == '\''))
+          quote = d;
+        else if (d == '>')
+          break;
+        ++end;
+      }
+      wxString tagText = fragment.Mid(i + 1, end - i - 1);
+      i = (end >= len) ? len : end + 1;
+      const bool closing = tagText.StartsWith(wxS("/"));
+      if (closing)
+        tagText.Remove(0, 1);
+      std::size_t nameEnd = 0;
+      while ((nameEnd < tagText.Length()) && !IsHTMLSpace(tagText[nameEnd]) &&
+             (tagText[nameEnd] != '/'))
+        ++nameEnd;
+      const wxString tag = tagText.Left(nameEnd).Lower();
+      if (tag.IsEmpty())
+        continue;
+      if (closing) {
+        if (IsBlockElement(tag))
+          lineBreak();
+        if ((tag == wxS("td")) || (tag == wxS("th"))) {
+          pendingSpace = true;
+          pendingSpaceFormat = None;
+        }
+        for (std::size_t n = stack.size(); n > 0; --n)
+          if (stack[n - 1].tag == tag) {
+            if (tag == wxS("pre"))
+              preDepth = std::max(0, preDepth - 1);
+            stack.resize(n - 1);
+            format = FormatOf(stack);
+            break;
+          }
+        continue;
+      }
+      if ((tag == wxS("script")) || (tag == wxS("style")) ||
+          (tag == wxS("head")) || (tag == wxS("title"))) {
+        if (tagText.EndsWith(wxS("/")))
+          continue;
+        const std::size_t close = fragment.Lower().find(wxS("</") + tag, i);
+        if (close == wxString::npos)
+          i = len;
+        else {
+          const std::size_t closeEnd = fragment.find(wxS('>'), close);
+          i = (closeEnd == wxString::npos) ? len : closeEnd + 1;
+        }
+        continue;
+      }
+      if (tag == wxS("br")) {
+        pendingSpace = false;
+        append(wxS("\n"), None);
+        continue;
+      }
+      if (IsBlockElement(tag))
+        lineBreak();
+      if (IsVoidElement(tag) || tagText.EndsWith(wxS("/")))
+        continue;
+      FormatChange change;
+      change.tag = tag;
+      change.set = FlagForTag(tag);
+      // The style attribute, if there is one
+      const wxString lowerTag = tagText.Lower();
+      std::size_t pos = 0;
+      while ((pos = lowerTag.find(wxS("style"), pos)) != wxString::npos) {
+        const bool startsWord = (pos > 0) && IsHTMLSpace(lowerTag[pos - 1]);
+        pos += 5;
+        std::size_t eq = pos;
+        while ((eq < lowerTag.Length()) && IsHTMLSpace(lowerTag[eq]))
+          ++eq;
+        if (!startsWord || (eq >= lowerTag.Length()) || (lowerTag[eq] != '='))
+          continue;
+        std::size_t valueStart = eq + 1;
+        while ((valueStart < tagText.Length()) && IsHTMLSpace(tagText[valueStart]))
+          ++valueStart;
+        if (valueStart >= tagText.Length())
+          break;
+        std::size_t valueEnd;
+        if ((tagText[valueStart] == '"') || (tagText[valueStart] == '\'')) {
+          valueEnd = tagText.find(tagText[valueStart], valueStart + 1);
+          ++valueStart;
+        } else {
+          valueEnd = valueStart;
+          while ((valueEnd < tagText.Length()) && !IsHTMLSpace(tagText[valueEnd]))
+            ++valueEnd;
+        }
+        wxString style = tagText.Mid(valueStart, (valueEnd == wxString::npos)
+                                                   ? wxString::npos
+                                                   : valueEnd - valueStart);
+        style.Replace(wxS("&quot;"), wxS("\""));
+        ReadStyle(style, change);
+        break;
+      }
+      if (tag == wxS("pre"))
+        ++preDepth;
+      stack.push_back(change);
+      format = FormatOf(stack);
+      if (tag == wxS("li"))
+        emit(wxS("* "));
+      continue;
+    }
+    if (c == '&') {
+      const std::size_t semicolon = fragment.find(wxS(';'), i);
+      wxString decoded;
+      if ((semicolon != wxString::npos) && (semicolon - i <= 10) &&
+          DecodeEntity(fragment.Mid(i + 1, semicolon - i - 1), decoded)) {
+        // A non-breaking space is a space to us
+        if (decoded == wxString(wxUniChar(0xA0)))
+          decoded = wxS(" ");
+        // ...and a soft hyphen nothing
+        if (decoded != wxString(wxUniChar(0xAD)))
+          emit(decoded);
+        i = semicolon + 1;
+        continue;
+      }
+      emit(wxS("&"));
+      ++i;
+      continue;
+    }
+    if (IsHTMLSpace(c)) {
+      if (preDepth > 0) {
+        if (c == '\n')
+          append(wxS("\n"), None);
+        else if (c != '\r')
+          append(wxString(c), format);
+      } else if (!pendingSpace) {
+        pendingSpace = true;
+        pendingSpaceFormat = format;
+      }
+      ++i;
+      continue;
+    }
+    if (c == wxUniChar(0xA0))
+      emit(wxS(" "));
+    else
+      emit(wxString(c));
+    ++i;
+  }
+  // What the browser wouldn't show either: trailing white space and blank lines
+  while (!text.IsEmpty() && IsHTMLSpace(text.Last())) {
+    text.RemoveLast();
+    formats.pop_back();
   }
 }
 

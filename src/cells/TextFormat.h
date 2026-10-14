@@ -193,6 +193,27 @@ wxString LineAttributes(const wxString &text, const Formats &formats,
 void ReadLine(const wxXmlNode *line, wxString &text, Formats &formats,
               wxString *unknownAttributes = nullptr);
 
+/*! The text and formatting of an HTML fragment other programs put on the
+    clipboard.
+
+  Lenient, as clipboard HTML is rarely well-formed XML: unclosed \<br\>,
+  \<meta\> or \<p\>, entities like \&nbsp;, a Windows CF_HTML header.
+  Reads what is inside \<body\>, or else between the
+  \<!--StartFragment--\> and \<!--EndFragment--\> markers, if there are
+  any. Understands the elements FlagForTag() knows and the CSS a
+  \<span\> or any other element carries in its style attribute
+  (font-weight, font-style, text-decoration, vertical-align), which is how
+  Google Docs and Word mark their formatting - including switching a format
+  off again, as Google Docs wraps a whole copy in
+  \<b style="font-weight:normal"\>. Whitespace collapses as a browser
+  collapses it; \<br\> and the end of a paragraph, heading, list item, table
+  row or \<div\> make a line break; \<script\>, \<style\> and \<head\>
+  are skipped.
+
+  \param formats Receives one format per character of text.
+*/
+void ReadHTML(const wxString &html, wxString &text, Formats &formats);
+
 /*! Parse a range list like "0-4,10-12" (half-open, in code points).
 
   Malformed entries are skipped. Exposed for the tests.

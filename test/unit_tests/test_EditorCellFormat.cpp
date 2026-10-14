@@ -587,3 +587,60 @@ int main(int argc, char **argv) {
   wxEntryCleanup();
   return result;
 }
+
+SCENARIO("Formatted HTML from other programs is pasted into a text cell (GH #2475)") {
+  GIVEN("HTML a word processor copied, and the plain text it offered next to it") {
+    const wxString html = wxS("<p>An <b>important</b> point</p>");
+    WHEN("it is pasted into a plain text cell") {
+      auto target = MakeCell(wxS("xy"));
+      EditorCell *to = target->GetEditable();
+      to->SetCaretPosition(1);
+      REQUIRE(to->InsertHTML(html, wxS("An important point\r\n")));
+      THEN("the text arrives with its formatting, the trailing line break not") {
+        REQUIRE(to->GetValue() == wxS("xAn important pointy"));
+        const TextFormat::Formats &formats = to->GetFormats();
+        for (size_t i = 0; i < to->GetValue().Length(); ++i)
+          REQUIRE((TextFormat::At(formats, i) == TextFormat::Bold) ==
+                  (i >= 4 && i < 13));
+      }
+    }
+    WHEN("the plain text differs from what the HTML reads as") {
+      auto target = MakeCell(wxS(""));
+      EditorCell *to = target->GetEditable();
+      REQUIRE(to->InsertHTML(wxS("<ul><li>An <b>item</b></li></ul>"),
+                             wxS("- An item")));
+      THEN("the plain text's characters win and keep the HTML's formats") {
+        REQUIRE(to->GetValue() == wxS("- An item"));
+        const TextFormat::Formats &formats = to->GetFormats();
+        for (size_t i = 0; i < to->GetValue().Length(); ++i)
+          REQUIRE((TextFormat::At(formats, i) == TextFormat::Bold) == (i >= 5));
+      }
+    }
+    WHEN("there is no plain text") {
+      auto target = MakeCell(wxS(""));
+      EditorCell *to = target->GetEditable();
+      REQUIRE(to->InsertHTML(html));
+      THEN("the HTML's own text is used") {
+        REQUIRE(to->GetValue() == wxS("An important point"));
+        REQUIRE(TextFormat::At(to->GetFormats(), 3) == TextFormat::Bold);
+      }
+    }
+    WHEN("it is pasted into a code cell") {
+      auto target = MakeCell(wxS(""), GC_TYPE_CODE);
+      EditorCell *to = target->GetEditable();
+      REQUIRE(to->InsertHTML(html, wxS("An important point")));
+      THEN("only the text arrives") {
+        REQUIRE(to->GetValue() == wxS("An important point"));
+        REQUIRE(TextFormat::IsPlain(to->GetFormats()));
+      }
+    }
+  }
+  GIVEN("HTML without any text") {
+    auto target = MakeCell(wxS("xy"));
+    EditorCell *to = target->GetEditable();
+    THEN("nothing is pasted, so that the plain text can be") {
+      REQUIRE(!to->InsertHTML(wxS("<img src=\"a.png\">"), wxS("")));
+      REQUIRE(to->GetValue() == wxS("xy"));
+    }
+  }
+}
