@@ -380,3 +380,115 @@ int main(int argc, char *argv[]) {
   wxInitializer initializer;
   return Catch::Session().run(argc, argv);
 }
+
+namespace {
+/*! The format of every character of word in text, if they all share one.
+
+  Returns 255 if word isn't in text or its characters are formatted
+  differently, which no format test expects.
+*/
+Format FormatOfWord(const wxString &text, const Formats &formats, const wxString &word) {
+  const auto pos = text.find(word);
+  if (pos == wxString::npos)
+    return 255;
+  const Format format = At(formats, pos);
+  for (std::size_t i = pos; i < pos + word.Length(); ++i)
+    if (At(formats, i) != format)
+      return 255;
+  return format;
+}
+} // namespace
+
+SCENARIO("Formatted HTML from other programs is read (GH #2475)") {
+  wxString text;
+  Formats formats;
+  GIVEN("what a browser copies: a whole document with a fragment marker") {
+    const wxString html = wxS(
+      "<html><head><meta charset=\"utf-8\"><style>p {color: red}</style>"
+      "<title>Not this</title></head><body>\n<!--StartFragment-->"
+      "Plain <b>bold</b> and <em>italic</em>,\n   x<sup>2</sup> "
+      "&amp; H<sub>2</sub>O<!--EndFragment-->\n</body></html>");
+    WHEN("it is read") {
+      ReadHTML(html, text, formats);
+      THEN("the text is what the fragment shows, white space collapsed") {
+        REQUIRE(text == wxS("Plain bold and italic, x2 & H2O"));
+        REQUIRE(formats.size() == text.Length());
+      }
+      THEN("each word has its format") {
+        REQUIRE(FormatOfWord(text, formats, wxS("Plain ")) == None);
+        REQUIRE(FormatOfWord(text, formats, wxS("bold")) == Bold);
+        REQUIRE(FormatOfWord(text, formats, wxS("italic")) == Italic);
+        REQUIRE(At(formats, text.find(wxS("x2")) + 1) == Superscript);
+        REQUIRE(At(formats, text.find(wxS("H2O")) + 1) == Subscript);
+        REQUIRE(FormatOfWord(text, formats, wxS("O")) == None);
+      }
+    }
+  }
+  GIVEN("what Google Docs copies: CSS on spans, inside a bold that isn't") {
+    const wxString html = wxS(
+      "<meta charset=\"utf-8\"><b style=\"font-weight:normal;\" id=\"docs-internal-guid-1\">"
+      "<span style=\"font-weight:400;font-style:normal\">Plain </span>"
+      "<span style=\"font-weight:700\">bold</span> "
+      "<span style=\"font-style:italic;text-decoration:underline\">both</span> "
+      "<span style='text-decoration: line-through'>gone</span> "
+      "<span style=\"vertical-align:super\">up</span></b>");
+    WHEN("it is read") {
+      ReadHTML(html, text, formats);
+      THEN("the CSS decides, the wrapping <b> not") {
+        REQUIRE(text == wxS("Plain bold both gone up"));
+        REQUIRE(FormatOfWord(text, formats, wxS("Plain")) == None);
+        REQUIRE(FormatOfWord(text, formats, wxS("bold")) == Bold);
+        REQUIRE(FormatOfWord(text, formats, wxS("both")) == (Italic | Underline));
+        REQUIRE(FormatOfWord(text, formats, wxS("gone")) == Strikethrough);
+        REQUIRE(FormatOfWord(text, formats, wxS("up")) == Superscript);
+      }
+    }
+  }
+  GIVEN("paragraphs, line breaks and a list") {
+    const wxString html = wxS(
+      "<p>First <strong>para</p><p>graph</strong></p><p>a<br>b<br/></p>"
+      "<ul><li>one</li><li>two</li></ul><div>end</div>");
+    WHEN("it is read") {
+      ReadHTML(html, text, formats);
+      THEN("they become line breaks, a list item a bullet") {
+        REQUIRE(text == wxS("First para\ngraph\na\nb\n* one\n* two\nend"));
+      }
+      THEN("an element left open is closed by the one around it") {
+        REQUIRE(FormatOfWord(text, formats, wxS("para")) == Bold);
+        REQUIRE(FormatOfWord(text, formats, wxS("graph")) == None);
+      }
+    }
+  }
+  GIVEN("entities and a lone less-than sign") {
+    WHEN("they are read") {
+      ReadHTML(wxS("a&nbsp;&lt;&nbsp;b &#8594; c&#x2192;d &unknown; e < f"), text, formats);
+      THEN("they become the characters they stand for") {
+        REQUIRE(text == wxString::FromUTF8("a < b \xe2\x86\x92 c\xe2\x86\x92" "d &unknown; e < f"));
+      }
+    }
+  }
+  GIVEN("a Windows CF_HTML header without fragment markers") {
+    WHEN("it is read") {
+      ReadHTML(wxS("Version:0.9\r\nStartHTML:0000000105\r\n<i>it</i>"), text, formats);
+      THEN("the header isn't text") {
+        REQUIRE(text == wxS("it"));
+        REQUIRE(FormatOfWord(text, formats, wxS("it")) == Italic);
+      }
+    }
+  }
+  GIVEN("preformatted text") {
+    WHEN("it is read") {
+      ReadHTML(wxS("<pre>a  b\nc</pre>"), text, formats);
+      THEN("its white space stays") { REQUIRE(text == wxS("a  b\nc")); }
+    }
+  }
+  GIVEN("HTML without text") {
+    WHEN("it is read") {
+      ReadHTML(wxS("<img src=\"x.png\"><script>var a = '<b>';</script>"), text, formats);
+      THEN("there is none") {
+        REQUIRE(text.IsEmpty());
+        REQUIRE(formats.empty());
+      }
+    }
+  }
+}
