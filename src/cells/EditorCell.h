@@ -28,6 +28,7 @@
 #include "FontAttribs.h"
 #include "MaximaTokenizer.h"
 #include "TextFormat.h"
+#include <wx/dataobj.h>
 #include <array>
 #include <optional>
 #include <vector>
@@ -286,6 +287,33 @@ public:
     are mapped onto this cell's text the way an edit would map them.
   */
   void CopyFormatsFrom(const EditorCell &source);
+  /*! The selected text with its formatting, for the clipboard.
+
+    A single \c \<line\> element of the form .wxmx stores a text cell's text
+    in (see TextFormat.h), with the formats counted from the start of the
+    selection. Soft line breaks become the spaces they stand for, so the
+    formats stay one per character.
+
+    Without this, copying part of a text cell and pasting it into another
+    lost its bold, italic, ... as the clipboard only carried plain text.
+  */
+  wxString SelectionToXML() const;
+  /*! Insert what SelectionToXML() made, formatting included.
+
+    Replaces the selection, if there is one, like a paste of plain text does.
+    The pasted characters keep the formats they were copied with, rather than
+    continuing those of the text in front of them.
+
+    \return false if \p xml isn't a \c \<line\> element; nothing is inserted
+            then.
+  */
+  bool InsertXML(const wxString &xml);
+  /*! The private clipboard format SelectionToXML()'s result travels in.
+
+    Offered next to the plain text whenever text is copied out of a cell that
+    can be formatted; only a cell that can be formatted reads it back.
+  */
+  static wxDataFormat FormattedTextDataFormat();
   //! @}
 
   /*! The soft (word-wrap) line-break offsets of the last styling pass.

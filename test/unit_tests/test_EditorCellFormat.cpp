@@ -400,6 +400,111 @@ SCENARIO("Formats move to the cell that replaces a cell") {
   }
 }
 
+SCENARIO("Part of a formatted text cell is copied into another one") {
+  GIVEN("a text cell with a bold word, and part of it selected") {
+    auto source = MakeCell(wxS("plainboldplain"));
+    EditorCell *from = source->GetEditable();
+    from->SetSelection(5, 9);
+    from->ToggleFormat(TextFormat::Bold);
+    // "inboldpl": two plain characters, four bold ones, two plain ones
+    from->SetSelection(3, 11);
+    const wxString xml = from->SelectionToXML();
+    THEN("the copy counts its formats from the start of the selection") {
+      REQUIRE(xml == wxS("<line bold=\"2-6\">inboldpl</line>"));
+    }
+    WHEN("it is pasted into the middle of a plain text cell") {
+      auto target = MakeCell(wxS("xy"));
+      EditorCell *to = target->GetEditable();
+      to->SetCaretPosition(1);
+      REQUIRE(to->InsertXML(xml));
+      THEN("the text arrives with its formatting") {
+        REQUIRE(to->GetValue() == wxS("xinboldply"));
+        const TextFormat::Formats &formats = to->GetFormats();
+        for (size_t i = 0; i < to->GetValue().Length(); ++i)
+          REQUIRE((TextFormat::At(formats, i) == TextFormat::Bold) ==
+                  (i >= 3 && i < 7));
+      }
+    }
+    WHEN("it is pasted behind an italic character") {
+      auto target = MakeCell(wxS("xy"));
+      EditorCell *to = target->GetEditable();
+      to->SetSelection(0, 1);
+      to->ToggleFormat(TextFormat::Italic);
+      to->SetCaretPosition(1);
+      REQUIRE(to->InsertXML(xml));
+      THEN("the pasted characters keep their own formats instead of continuing "
+           "the italic") {
+        const TextFormat::Formats &formats = to->GetFormats();
+        REQUIRE(TextFormat::At(formats, 0) == TextFormat::Italic);
+        REQUIRE(TextFormat::At(formats, 1) == TextFormat::None);
+        REQUIRE(TextFormat::At(formats, 3) == TextFormat::Bold);
+        REQUIRE(TextFormat::At(formats, 9) == TextFormat::None);
+      }
+    }
+    WHEN("it replaces a selection") {
+      auto target = MakeCell(wxS("aXXb"));
+      EditorCell *to = target->GetEditable();
+      to->SetSelection(1, 3);
+      REQUIRE(to->InsertXML(xml));
+      THEN("the selection is gone and the formats line up with the new text") {
+        REQUIRE(to->GetValue() == wxS("ainboldplb"));
+        const TextFormat::Formats &formats = to->GetFormats();
+        for (size_t i = 0; i < to->GetValue().Length(); ++i)
+          REQUIRE((TextFormat::At(formats, i) == TextFormat::Bold) ==
+                  (i >= 3 && i < 7));
+      }
+    }
+    WHEN("it is pasted into a code cell") {
+      auto target = MakeCell(wxS("xy"), GC_TYPE_CODE);
+      EditorCell *to = target->GetEditable();
+      to->SetCaretPosition(1);
+      REQUIRE(to->InsertXML(xml));
+      THEN("only the text arrives") {
+        REQUIRE(to->GetValue() == wxS("xinboldply"));
+        REQUIRE(TextFormat::IsPlain(to->GetFormats()));
+      }
+    }
+  }
+  GIVEN("a selection spanning lines, blanks and characters XML escapes") {
+    auto source = MakeCell(wxS("a <b>\n  & c"));
+    EditorCell *from = source->GetEditable();
+    from->SetSelection(6, 8);
+    from->ToggleFormat(TextFormat::Italic);
+    from->SetSelection(0, from->GetValue().Length());
+    WHEN("it is copied into an empty cell") {
+      auto target = MakeCell(wxEmptyString);
+      EditorCell *to = target->GetEditable();
+      REQUIRE(to->InsertXML(from->SelectionToXML()));
+      THEN("text and formats survive unchanged") {
+        REQUIRE(to->GetValue() == from->GetValue());
+        REQUIRE(to->GetFormats() == from->GetFormats());
+      }
+    }
+  }
+  GIVEN("a selection of nothing but blanks") {
+    auto source = MakeCell(wxS("a   b"));
+    EditorCell *from = source->GetEditable();
+    from->SetSelection(1, 4);
+    WHEN("it is pasted") {
+      auto target = MakeCell(wxS("xy"));
+      EditorCell *to = target->GetEditable();
+      to->SetCaretPosition(1);
+      REQUIRE(to->InsertXML(from->SelectionToXML()));
+      THEN("the blanks arrive, too") {
+        REQUIRE(to->GetValue() == wxS("x   y"));
+      }
+    }
+  }
+  GIVEN("something that isn't a copied line") {
+    auto target = MakeCell(wxS("xy"));
+    THEN("nothing is inserted") {
+      REQUIRE_FALSE(target->GetEditable()->InsertXML(wxS("<b>no</b>")));
+      REQUIRE_FALSE(target->GetEditable()->InsertXML(wxS("not xml")));
+      REQUIRE(target->GetEditable()->GetValue() == wxS("xy"));
+    }
+  }
+}
+
 class TestApp : public wxApp {
 public:
   bool OnInit() override { return true; }

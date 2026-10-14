@@ -1,5 +1,8 @@
 # Current development version
 
+- Copying part of a text cell and pasting it into another text cell keeps
+  its bold, italic and other formatting, too. Other programs still get the
+  plain text.
 - wxMaxima no longer crashes on closing with wxWidgets' GTK4 port, which
   sends the worksheet a mouse event while its window is being destroyed.
 - The option that makes Maxima print the answer to ?, ?? and describe() as
