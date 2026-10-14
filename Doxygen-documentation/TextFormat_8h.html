@@ -74,6 +74,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Data Structures</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a> &#124;
@@ -103,6 +104,12 @@ This graph shows which files directly or indirectly include this file:</div>
 </div>
 <p><a href="TextFormat_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Data Structures</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTextFormat_1_1Run.html">TextFormat::Run</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classA.html">A</a> stretch of text whose characters all have the same format.  <a href="structTextFormat_1_1Run.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr class="memitem:a5f5bc96d42493f3c4209d77ec9ab6952"><td class="memItemLeft" align="right" valign="top"><a id="a5f5bc96d42493f3c4209d77ec9ab6952" name="a5f5bc96d42493f3c4209d77ec9ab6952"></a>
@@ -152,6 +159,9 @@ Format&#160;</td><td class="memItemRight" valign="bottom"><b>TextFormat::At</b> 
 <tr class="memitem:a0bde2a2b15a3b4b8f670a77fa7b477f4"><td class="memItemLeft" align="right" valign="top">Formats&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="TextFormat_8cpp.html#a0bde2a2b15a3b4b8f670a77fa7b477f4">TextFormat::Reconcile</a> (const wxString &amp;oldText, const Formats &amp;oldFormats, const wxString &amp;newText, bool hasPending=false, std::size_t pendingPos=0, Format pendingFormat=None)</td></tr>
 <tr class="memdesc:a0bde2a2b15a3b4b8f670a77fa7b477f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">The formatting of newText, given that it came from oldText by editing.  <br /></td></tr>
 <tr class="separator:a0bde2a2b15a3b4b8f670a77fa7b477f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a356fe77251ab4139ed1c8019d089d719"><td class="memItemLeft" align="right" valign="top">std::vector&lt; Run &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="TextFormat_8cpp.html#a356fe77251ab4139ed1c8019d089d719">TextFormat::Runs</a> (const wxString &amp;text, const Formats &amp;formats, std::size_t start, std::size_t end)</td></tr>
+<tr class="memdesc:a356fe77251ab4139ed1c8019d089d719"><td class="mdescLeft">&#160;</td><td class="mdescRight">Splits [start, end) of text into runs of equally formatted characters.  <br /></td></tr>
+<tr class="separator:a356fe77251ab4139ed1c8019d089d719"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad85dbf447ddf2bbe9c1272b85dc9fd63"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="TextFormat_8cpp.html#ad85dbf447ddf2bbe9c1272b85dc9fd63">TextFormat::LineAttributes</a> (const wxString &amp;text, const Formats &amp;formats, std::size_t lineStart, std::size_t lineEnd)</td></tr>
 <tr class="memdesc:ad85dbf447ddf2bbe9c1272b85dc9fd63"><td class="mdescLeft">&#160;</td><td class="mdescRight">The attributes that store the formatting of [lineStart, lineEnd) of text.  <br /></td></tr>
 <tr class="separator:ad85dbf447ddf2bbe9c1272b85dc9fd63"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -426,6 +436,50 @@ constexpr Format&#160;</td><td class="memItemRight" valign="bottom"><b>TextForma
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the new formatting, empty if it is plain. </dd></dl>
+
+</div>
+</div>
+<a id="a356fe77251ab4139ed1c8019d089d719" name="a356fe77251ab4139ed1c8019d089d719"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a356fe77251ab4139ed1c8019d089d719">&#9670;&#160;</a></span>Runs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; Run &gt; TextFormat::Runs </td>
+          <td>(</td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
+          <td class="paramname"><em>text</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="TextFormat_8h.html#a13862239022d9d562b6551674458be17">Formats</a> &amp;&#160;</td>
+          <td class="paramname"><em>formats</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>start</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>end</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Splits [start, end) of text into runs of equally formatted characters. </p>
+<p>For the formats of other programs (RTF, HTML), which switch formatting on and off around runs of text rather than storing one format per character. <a class="el" href="classA.html">A</a> hard line break ('<br  />
+') is always a run of its own and never formatted, so a run never spans two paragraphs: RTF and HTML both end a paragraph in a way that doesn't nest in a formatting group. </p>
 
 </div>
 </div>

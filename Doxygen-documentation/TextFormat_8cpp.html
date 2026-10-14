@@ -112,6 +112,9 @@ std::size_t&#160;</td><td class="memItemRight" valign="bottom"><b>TextFormat::Co
 std::size_t&#160;</td><td class="memItemRight" valign="bottom"><b>TextFormat::IndexOfCodePoint</b> (const wxString &amp;text, std::size_t start, std::size_t codePoints)</td></tr>
 <tr class="memdesc:a8dae7f8de9e007ae9c858c0a311446f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">The wxString index of the codePoints'th code point after start. <br /></td></tr>
 <tr class="separator:a8dae7f8de9e007ae9c858c0a311446f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a356fe77251ab4139ed1c8019d089d719"><td class="memItemLeft" align="right" valign="top">std::vector&lt; Run &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="TextFormat_8cpp.html#a356fe77251ab4139ed1c8019d089d719">TextFormat::Runs</a> (const wxString &amp;text, const Formats &amp;formats, std::size_t start, std::size_t end)</td></tr>
+<tr class="memdesc:a356fe77251ab4139ed1c8019d089d719"><td class="mdescLeft">&#160;</td><td class="mdescRight">Splits [start, end) of text into runs of equally formatted characters.  <br /></td></tr>
+<tr class="separator:a356fe77251ab4139ed1c8019d089d719"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad85dbf447ddf2bbe9c1272b85dc9fd63"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="TextFormat_8cpp.html#ad85dbf447ddf2bbe9c1272b85dc9fd63">TextFormat::LineAttributes</a> (const wxString &amp;text, const Formats &amp;formats, std::size_t lineStart, std::size_t lineEnd)</td></tr>
 <tr class="memdesc:ad85dbf447ddf2bbe9c1272b85dc9fd63"><td class="mdescLeft">&#160;</td><td class="mdescRight">The attributes that store the formatting of [lineStart, lineEnd) of text.  <br /></td></tr>
 <tr class="separator:ad85dbf447ddf2bbe9c1272b85dc9fd63"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -337,6 +340,50 @@ std::size_t&#160;</td><td class="memItemRight" valign="bottom"><b>TextFormat::In
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the new formatting, empty if it is plain. </dd></dl>
+
+</div>
+</div>
+<a id="a356fe77251ab4139ed1c8019d089d719" name="a356fe77251ab4139ed1c8019d089d719"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a356fe77251ab4139ed1c8019d089d719">&#9670;&#160;</a></span>Runs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; Run &gt; TextFormat::Runs </td>
+          <td>(</td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
+          <td class="paramname"><em>text</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="TextFormat_8h.html#a13862239022d9d562b6551674458be17">Formats</a> &amp;&#160;</td>
+          <td class="paramname"><em>formats</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>start</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>end</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Splits [start, end) of text into runs of equally formatted characters. </p>
+<p>For the formats of other programs (RTF, HTML), which switch formatting on and off around runs of text rather than storing one format per character. <a class="el" href="classA.html">A</a> hard line break ('<br  />
+') is always a run of its own and never formatted, so a run never spans two paragraphs: RTF and HTML both end a paragraph in a way that doesn't nest in a formatting group. </p>
 
 </div>
 </div>

@@ -16,6 +16,7 @@ var searchData=
   ['resultdisposition_13',['ResultDisposition',['../structCatch_1_1ResultDisposition.html',1,'Catch']]],
   ['resultwas_14',['ResultWas',['../structCatch_1_1ResultWas.html',1,'Catch']]],
   ['reusablestringstream_15',['ReusableStringStream',['../classCatch_1_1ReusableStringStream.html',1,'Catch']]],
-  ['runlocation_16',['RunLocation',['../structOutputNavigation_1_1RunLocation.html',1,'OutputNavigation']]],
-  ['runtests_17',['RunTests',['../structCatch_1_1RunTests.html',1,'Catch']]]
+  ['run_16',['Run',['../structTextFormat_1_1Run.html',1,'TextFormat']]],
+  ['runlocation_17',['RunLocation',['../structOutputNavigation_1_1RunLocation.html',1,'OutputNavigation']]],
+  ['runtests_18',['RunTests',['../structCatch_1_1RunTests.html',1,'Catch']]]
 ];

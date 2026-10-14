@@ -1300,6 +1300,20 @@ const <a class="el" href="TextFormat_8h.html#a13862239022d9d562b6551674458be17">
 <tr class="memitem:a9a27ab59bc0c35062fcef42734b7930a"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#a9a27ab59bc0c35062fcef42734b7930a">SelectionToXML</a> () const</td></tr>
 <tr class="memdesc:a9a27ab59bc0c35062fcef42734b7930a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The selected text with its formatting, for the clipboard.  <br /></td></tr>
 <tr class="separator:a9a27ab59bc0c35062fcef42734b7930a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7098eaac4766cd8b467e684a1849b34"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#af7098eaac4766cd8b467e684a1849b34">FormattedRTF</a> (size_t start, size_t end, bool markDown) const</td></tr>
+<tr class="memdesc:af7098eaac4766cd8b467e684a1849b34"><td class="mdescLeft">&#160;</td><td class="mdescRight">[start, end) of the text as RTF, with its formatting.  <br /></td></tr>
+<tr class="separator:af7098eaac4766cd8b467e684a1849b34"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7186053c6e966ae70843f98c2b45fae2"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#a7186053c6e966ae70843f98c2b45fae2">FormattedHTML</a> (size_t start, size_t end) const</td></tr>
+<tr class="memdesc:a7186053c6e966ae70843f98c2b45fae2"><td class="mdescLeft">&#160;</td><td class="mdescRight">[start, end) of the text as HTML, with its formatting.  <br /></td></tr>
+<tr class="separator:a7186053c6e966ae70843f98c2b45fae2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a746aadbb0838c16038ca27fd648e1482"><td class="memItemLeft" align="right" valign="top"><a id="a746aadbb0838c16038ca27fd648e1482" name="a746aadbb0838c16038ca27fd648e1482"></a>
+wxString&#160;</td><td class="memItemRight" valign="bottom"><b>SelectionToRTF</b> () const</td></tr>
+<tr class="memdesc:a746aadbb0838c16038ca27fd648e1482"><td class="mdescLeft">&#160;</td><td class="mdescRight">The selected text as a whole RTF document, for other programs. <br /></td></tr>
+<tr class="separator:a746aadbb0838c16038ca27fd648e1482"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b980fb4ec3295f549c7e9d17fd86c8d"><td class="memItemLeft" align="right" valign="top"><a id="a2b980fb4ec3295f549c7e9d17fd86c8d" name="a2b980fb4ec3295f549c7e9d17fd86c8d"></a>
+wxString&#160;</td><td class="memItemRight" valign="bottom"><b>SelectionToHTML</b> () const</td></tr>
+<tr class="memdesc:a2b980fb4ec3295f549c7e9d17fd86c8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The selected text as a whole HTML document, for other programs. <br /></td></tr>
+<tr class="separator:a2b980fb4ec3295f549c7e9d17fd86c8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa5e5632df69955da616d63d5938f5c2d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#aa5e5632df69955da616d63d5938f5c2d">InsertXML</a> (const wxString &amp;xml)</td></tr>
 <tr class="memdesc:aa5e5632df69955da616d63d5938f5c2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Insert what <a class="el" href="classEditorCell.html#a9a27ab59bc0c35062fcef42734b7930a" title="The selected text with its formatting, for the clipboard.">SelectionToXML()</a> made, formatting included.  <br /></td></tr>
 <tr class="separator:aa5e5632df69955da616d63d5938f5c2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2396,6 +2410,95 @@ const <a class="el" href="TextFormat_8h.html#a13862239022d9d562b6551674458be17">
 <li>false: Remove the forced linebreak </li>
 </ul>
 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a7186053c6e966ae70843f98c2b45fae2" name="a7186053c6e966ae70843f98c2b45fae2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7186053c6e966ae70843f98c2b45fae2">&#9670;&#160;</a></span>FormattedHTML()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxString EditorCell::FormattedHTML </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>start</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>end</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>[start, end) of the text as HTML, with its formatting. </p>
+<p>Only the text, escaped, with &lt;b&gt;, &lt;i&gt;, &lt;u&gt;, &lt;s&gt;, &lt;sup&gt; and &lt;sub&gt; around the formatted runs and a &lt;br&gt; per line break. </p>
+
+</div>
+</div>
+<a id="af7098eaac4766cd8b467e684a1849b34" name="af7098eaac4766cd8b467e684a1849b34"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af7098eaac4766cd8b467e684a1849b34">&#9670;&#160;</a></span>FormattedRTF()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxString EditorCell::FormattedRTF </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>start</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>end</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>markDown</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>[start, end) of the text as RTF, with its formatting. </p>
+<p>Only the text: no document around it and no paragraph style. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">markDown</td><td>Whether a single line break is a soft one, as it is in text cells, where two make a new paragraph (see <a class="el" href="classCell.html#a6ea50434cf209c0179201dfaae87cb5c" title="Escape a string for RTF.">RTFescape()</a>). </td></tr>
   </table>
   </dd>
 </dl>
@@ -5057,7 +5160,7 @@ const <a class="el" href="TextFormat_8h.html#a13862239022d9d562b6551674458be17">
 </div><div class="memdoc">
 
 <p>Allows to change the text a <a class="el" href="classTextCell.html" title="A Text cell.">TextCell</a> contains. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000005">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
 
 </div>
 </div>

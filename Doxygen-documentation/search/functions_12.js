@@ -103,5 +103,6 @@ var searchData=
   ['rtfend_100',['RTFEnd',['../WorksheetExport_8h.html#a73ebb9aeb31a0dc5ad6faa76eeb67c64',1,'WorksheetExport::RTFEnd()'],['../classWorksheet.html#a377e690362492a35b801df92ce527a40',1,'Worksheet::RTFEnd()']]],
   ['rtfescape_101',['RTFescape',['../classCell.html#a6ea50434cf209c0179201dfaae87cb5c',1,'Cell']]],
   ['rtfstart_102',['RTFStart',['../classWorksheet.html#a13a5d3be1d3d582e866d8705572cc20d',1,'Worksheet::RTFStart()'],['../WorksheetExport_8h.html#a1ec393575f9b3d9bd877d76b1b0ae50a',1,'WorksheetExport::RTFStart()']]],
-  ['run_103',['Run',['../OutputNavigation_8cpp.html#a9df8ab87721d966c52e66fc1e3514cb4',1,'OutputNavigation']]]
+  ['run_103',['Run',['../OutputNavigation_8cpp.html#a9df8ab87721d966c52e66fc1e3514cb4',1,'OutputNavigation']]],
+  ['runs_104',['Runs',['../TextFormat_8cpp.html#a356fe77251ab4139ed1c8019d089d719',1,'TextFormat']]]
 ];
