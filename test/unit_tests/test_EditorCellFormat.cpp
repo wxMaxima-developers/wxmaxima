@@ -505,6 +505,57 @@ SCENARIO("Part of a formatted text cell is copied into another one") {
   }
 }
 
+SCENARIO("Formatted text is offered to other programs as RTF and HTML") {
+  GIVEN("a text cell with bold, italic and superscript text") {
+    // "a b c x2": "b" bold, "c" bold+italic, "2" superscript
+    auto group = MakeCell(wxS("a b c x2"));
+    EditorCell *editor = group->GetEditable();
+    editor->SetSelection(2, 5);
+    editor->ToggleFormat(TextFormat::Bold);
+    editor->SetSelection(4, 5);
+    editor->ToggleFormat(TextFormat::Italic);
+    editor->SetSelection(7, 8);
+    editor->ToggleFormat(TextFormat::Superscript);
+    THEN("its RTF switches each format on for exactly its own run") {
+      REQUIRE(editor->FormattedRTF(0, 8, true) ==
+              wxS("a {\\b b }{\\b\\i c} x{\\super 2}"));
+    }
+    THEN("its HTML wraps each run in the matching elements") {
+      REQUIRE(editor->FormattedHTML(0, 8) ==
+              wxS("a <b>b </b><b><i>c</i></b> x<sup>2</sup>"));
+    }
+    THEN("saving the cell as RTF keeps the formatting, too") {
+      REQUIRE(editor->ToRTF().Contains(wxS("{\\b\\i c}")));
+    }
+    WHEN("only part of it is selected") {
+      editor->SetSelection(4, 8);
+      THEN("the RTF and HTML documents hold just that part") {
+        const wxString rtf = editor->SelectionToRTF();
+        REQUIRE(rtf.StartsWith(wxS("{\\rtf1")));
+        REQUIRE(rtf.Contains(wxS("\\pard\\s0 {\\b\\i c} x{\\super 2}\\par")));
+        REQUIRE_FALSE(rtf.Contains(wxS("{\\b b ")));
+        REQUIRE(rtf.Freq(wxS('{')) == rtf.Freq(wxS('}')));
+        const wxString html = editor->SelectionToHTML();
+        REQUIRE(html.Contains(wxS("<body>\n<b><i>c</i></b> x<sup>2</sup>\n</body>")));
+      }
+    }
+  }
+  GIVEN("a formatted text cell with a paragraph break in it") {
+    auto group = MakeCell(wxS("a <b>\n\nx"));
+    EditorCell *editor = group->GetEditable();
+    editor->SetSelection(0, 5);
+    editor->ToggleFormat(TextFormat::Bold);
+    THEN("RTF ends the paragraph outside the formatted group") {
+      REQUIRE(editor->FormattedRTF(0, 8, true) ==
+              wxS("{\\b a <b>}\n\\par}\n{\\pard x"));
+    }
+    THEN("HTML escapes the text, not the tags") {
+      REQUIRE(editor->FormattedHTML(0, 8) ==
+              wxS("<b>a &lt;b&gt;</b><br>\n<br>\nx"));
+    }
+  }
+}
+
 class TestApp : public wxApp {
 public:
   bool OnInit() override { return true; }

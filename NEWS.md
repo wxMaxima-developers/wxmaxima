@@ -1,5 +1,9 @@
 # Current development version
 
+- Formatted text copied out of a text cell reaches word processors, mail
+  programs and web editors with its bold, italic and other formatting:
+  the copy now also offers RTF and HTML. Whole cells copied as RTF and the
+  RTF export keep the formatting of text cells, too (GH #2475).
 - Copying part of a text cell and pasting it into another text cell keeps
   its bold, italic and other formatting, too. Other programs still get the
   plain text.

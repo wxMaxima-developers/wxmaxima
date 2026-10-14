@@ -298,6 +298,23 @@ public:
     lost its bold, italic, ... as the clipboard only carried plain text.
   */
   wxString SelectionToXML() const;
+  /*! [start, end) of the text as RTF, with its formatting.
+
+    Only the text: no document around it and no paragraph style.
+    \param markDown Whether a single line break is a soft one, as it is in
+           text cells, where two make a new paragraph (see RTFescape()).
+  */
+  wxString FormattedRTF(size_t start, size_t end, bool markDown) const;
+  /*! [start, end) of the text as HTML, with its formatting.
+
+    Only the text, escaped, with \<b\>, \<i\>, \<u\>, \<s\>, \<sup\>
+    and \<sub\> around the formatted runs and a \<br\> per line break.
+  */
+  wxString FormattedHTML(size_t start, size_t end) const;
+  //! The selected text as a whole RTF document, for other programs
+  wxString SelectionToRTF() const;
+  //! The selected text as a whole HTML document, for other programs
+  wxString SelectionToHTML() const;
   /*! Insert what SelectionToXML() made, formatting included.
 
     Replaces the selection, if there is one, like a paste of plain text does.
