@@ -151,6 +151,26 @@ Formats Reconcile(const wxString &oldText, const Formats &oldFormats,
                   const wxString &newText, bool hasPending = false,
                   std::size_t pendingPos = 0, Format pendingFormat = None);
 
+//! A stretch of text whose characters all have the same format
+struct Run {
+  //! The index of its first character
+  std::size_t start;
+  //! The index after its last character
+  std::size_t end;
+  Format format;
+};
+
+/*! Splits [start, end) of text into runs of equally formatted characters.
+
+  For the formats of other programs (RTF, HTML), which switch formatting on
+  and off around runs of text rather than storing one format per character.
+  A hard line break ('\n') is always a run of its own and never formatted,
+  so a run never spans two paragraphs: RTF and HTML both end a paragraph in
+  a way that doesn't nest in a formatting group.
+*/
+std::vector<Run> Runs(const wxString &text, const Formats &formats,
+                      std::size_t start, std::size_t end);
+
 /*! The attributes that store the formatting of [lineStart, lineEnd) of text.
 
   \return a string like <code> bold="0-4" italic="2-3"</code> (with a leading

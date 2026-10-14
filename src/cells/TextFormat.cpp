@@ -310,6 +310,22 @@ std::size_t IndexOfCodePoint(const wxString &text, std::size_t start,
   return i;
 }
 
+std::vector<Run> Runs(const wxString &text, const Formats &formats,
+                      std::size_t start, std::size_t end) {
+  std::vector<Run> runs;
+  end = std::min(end, text.Length());
+  for (std::size_t pos = start; pos < end; ++pos) {
+    const bool lineBreak = (text[pos] == wxS('\n'));
+    const Format format = lineBreak ? Format(None) : At(formats, pos);
+    if (lineBreak || runs.empty() || (runs.back().format != format) ||
+        (text[pos - 1] == wxS('\n')))
+      runs.push_back({pos, pos + 1, format});
+    else
+      runs.back().end = pos + 1;
+  }
+  return runs;
+}
+
 wxString LineAttributes(const wxString &text, const Formats &formats,
                         std::size_t lineStart, std::size_t lineEnd) {
   wxString retval;

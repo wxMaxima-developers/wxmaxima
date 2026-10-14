@@ -330,6 +330,52 @@ SCENARIO("Malformed ranges are skipped") {
   }
 }
 
+SCENARIO("Text is split into runs for other programs' formats") {
+  GIVEN("two lines, partly bold, the bold part spanning the line break") {
+    const wxString text = wxS("ab\ncd");
+    const Formats formats = {None, Bold, Bold, Bold, None};
+    WHEN("the whole text is split") {
+      const std::vector<Run> runs = Runs(text, formats, 0, text.Length());
+      THEN("the line break is a plain run of its own") {
+        REQUIRE(runs.size() == 5);
+        REQUIRE(runs[0].start == 0); REQUIRE(runs[0].end == 1);
+        REQUIRE(runs[0].format == None);
+        REQUIRE(runs[1].start == 1); REQUIRE(runs[1].end == 2);
+        REQUIRE(runs[1].format == Bold);
+        REQUIRE(runs[2].start == 2); REQUIRE(runs[2].end == 3);
+        REQUIRE(runs[2].format == None);
+        REQUIRE(runs[3].start == 3); REQUIRE(runs[3].end == 4);
+        REQUIRE(runs[3].format == Bold);
+        REQUIRE(runs[4].start == 4); REQUIRE(runs[4].end == 5);
+        REQUIRE(runs[4].format == None);
+      }
+    }
+    WHEN("only part of it is split") {
+      const std::vector<Run> runs = Runs(text, formats, 1, 2);
+      THEN("only that part is covered") {
+        REQUIRE(runs.size() == 1);
+        REQUIRE(runs[0].start == 1);
+        REQUIRE(runs[0].end == 2);
+      }
+    }
+  }
+  GIVEN("plain text") {
+    THEN("it is one run") {
+      const std::vector<Run> runs = Runs(wxS("abc"), Formats(), 0, 3);
+      REQUIRE(runs.size() == 1);
+      REQUIRE(runs[0].format == None);
+      REQUIRE(runs[0].end == 3);
+    }
+  }
+  GIVEN("a range past the end") {
+    THEN("it is cut off at the end of the text") {
+      const std::vector<Run> runs = Runs(wxS("abc"), Formats(), 1, 99);
+      REQUIRE(runs.size() == 1);
+      REQUIRE(runs[0].end == 3);
+    }
+  }
+}
+
 int main(int argc, char *argv[]) {
   wxInitializer initializer;
   return Catch::Session().run(argc, argv);

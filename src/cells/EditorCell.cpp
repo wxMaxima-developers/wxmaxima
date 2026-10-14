@@ -47,6 +47,7 @@
 #include <wx/regex.h>
 #include <wx/tokenzr.h>
 #include "RegexSearch.h"
+#include "worksheet/WorksheetExport.h"
 
 EditorCell::EditorCell(GroupCell *group, Configuration *config,
                        wxString text)
@@ -458,30 +459,30 @@ wxString EditorCell::ToRTF() const {
 
   switch (m_type) {
   case MC_TYPE_TITLE:
-    retval += wxS("\\pard\\s16\\b\\f0\\fs56 ") + RTFescape(m_text) + wxS("\n");
+    retval += wxS("\\pard\\s16\\b\\f0\\fs56 ") + FormattedRTF(0, m_text.Length(), false) + wxS("\n");
     break;
   case MC_TYPE_SECTION:
-    retval += wxS("\\pard\\s1\\b\\f0\\fs40 ") + RTFescape(m_text) + wxS("\n");
+    retval += wxS("\\pard\\s1\\b\\f0\\fs40 ") + FormattedRTF(0, m_text.Length(), false) + wxS("\n");
     break;
   case MC_TYPE_SUBSECTION:
-    retval += wxS("\\pard\\s2\\b\\f0\\fs36 ") + RTFescape(m_text) + wxS("\n");
+    retval += wxS("\\pard\\s2\\b\\f0\\fs36 ") + FormattedRTF(0, m_text.Length(), false) + wxS("\n");
     break;
   case MC_TYPE_SUBSUBSECTION:
-    retval += wxS("\\pard\\s3\\b\\f0\\fs32 ") + RTFescape(m_text) + wxS("\n");
+    retval += wxS("\\pard\\s3\\b\\f0\\fs32 ") + FormattedRTF(0, m_text.Length(), false) + wxS("\n");
     break;
   case MC_TYPE_HEADING5:
-    retval += wxS("\\pard\\s4\\b\\f0\\fs32 ") + RTFescape(m_text) + wxS("\n");
+    retval += wxS("\\pard\\s4\\b\\f0\\fs32 ") + FormattedRTF(0, m_text.Length(), false) + wxS("\n");
     break;
   case MC_TYPE_HEADING6:
-    retval += wxS("\\pard\\s5\\b\\f0\\fs32 ") + RTFescape(m_text) + wxS("\n");
+    retval += wxS("\\pard\\s5\\b\\f0\\fs32 ") + FormattedRTF(0, m_text.Length(), false) + wxS("\n");
     break;
   case MC_TYPE_TEXT:
-    retval += wxS("\\pard\\s0 ") + RTFescape(m_text, true);
+    retval += wxS("\\pard\\s0 ") + FormattedRTF(0, m_text.Length(), true);
     break;
   // MC_TYPE_INPUT and MC_TYPE_PROMPT are code types (see IsCodeType); they
   // never occur here since CodeEditorCell overrides ToRTF().
   default:
-    retval += wxS("\\pard\\s0 ") + RTFescape(m_text);
+    retval += wxS("\\pard\\s0 ") + FormattedRTF(0, m_text.Length(), false);
     break;
   }
   return retval;
@@ -1591,6 +1592,113 @@ bool EditorCell::InsertXML(const wxString &xml) {
   m_height.Invalidate();
   m_center.Invalidate();
   return true;
+}
+
+namespace {
+//! The RTF control words that switch a format on, each followed by a blank
+wxString RTFFormatWords(TextFormat::Format format) {
+  wxString words;
+  if (format & TextFormat::Bold)
+    words += wxS("\\b");
+  if (format & TextFormat::Italic)
+    words += wxS("\\i");
+  if (format & TextFormat::Underline)
+    words += wxS("\\ul");
+  if (format & TextFormat::Strikethrough)
+    words += wxS("\\strike");
+  if (format & TextFormat::Superscript)
+    words += wxS("\\super");
+  if (format & TextFormat::Subscript)
+    words += wxS("\\sub");
+  return words + wxS(" ");
+}
+
+//! The HTML elements a format stands for, outermost first
+std::vector<wxString> HTMLFormatTags(TextFormat::Format format) {
+  std::vector<wxString> tags;
+  if (format & TextFormat::Bold)
+    tags.push_back(wxS("b"));
+  if (format & TextFormat::Italic)
+    tags.push_back(wxS("i"));
+  if (format & TextFormat::Underline)
+    tags.push_back(wxS("u"));
+  if (format & TextFormat::Strikethrough)
+    tags.push_back(wxS("s"));
+  if (format & TextFormat::Superscript)
+    tags.push_back(wxS("sup"));
+  if (format & TextFormat::Subscript)
+    tags.push_back(wxS("sub"));
+  return tags;
+}
+
+wxString FormattedRTF(const wxString &text, const TextFormat::Formats &formats,
+                      size_t start, size_t end, bool markDown) {
+  wxString rtf;
+  for (const auto &run : TextFormat::Runs(text, formats, start, end)) {
+    const wxString runText = text.SubString(run.start, run.end - 1);
+    if (runText == wxS("\n")) {
+      // What RTFescape() makes of it, which needs to see the character in
+      // front of it: in a text cell only an empty line ends a paragraph.
+      if (!markDown || ((run.start > 0) && (text[run.start - 1] == wxS('\n'))))
+        rtf += wxS("\\par}\n{\\pard ");
+      else
+        rtf += wxS("\n");
+    } else if (run.format == TextFormat::None)
+      rtf += Cell::RTFescape(runText, markDown);
+    else
+      // A group, so that whatever it switches on ends with it
+      rtf += wxS("{") + RTFFormatWords(run.format) +
+        Cell::RTFescape(runText, markDown) + wxS("}");
+  }
+  return rtf;
+}
+
+wxString FormattedHTML(const wxString &text, const TextFormat::Formats &formats,
+                       size_t start, size_t end) {
+  wxString html;
+  for (const auto &run : TextFormat::Runs(text, formats, start, end)) {
+    const std::vector<wxString> tags = HTMLFormatTags(run.format);
+    for (const auto &tag : tags)
+      html += wxS("<") + tag + wxS(">");
+    html += EditorCell::EscapeHTMLChars(text.SubString(run.start, run.end - 1));
+    for (auto tag = tags.rbegin(); tag != tags.rend(); ++tag)
+      html += wxS("</") + *tag + wxS(">");
+  }
+  return html;
+}
+
+//! The text with the soft line breaks turned back into the spaces they are
+wxString WithoutSoftBreaks(wxString text) {
+  text.Replace(wxS("\r"), wxS(" "));
+  return text;
+}
+} // namespace
+
+wxString EditorCell::FormattedRTF(size_t start, size_t end, bool markDown) const {
+  return ::FormattedRTF(m_text, GetFormats(), start, end, markDown);
+}
+
+wxString EditorCell::FormattedHTML(size_t start, size_t end) const {
+  return ::FormattedHTML(m_text, GetFormats(), start, end);
+}
+
+wxString EditorCell::SelectionToRTF() const {
+  const size_t start = std::min(SelectionLeft(), m_text.Length());
+  const size_t end = std::min(std::max(SelectionRight(), start), m_text.Length());
+  // RTFStart() opens a group for the body that RTFEnd() closes.
+  return WorksheetExport::RTFStart(m_configuration) + wxS("\\pard\\s0 ") +
+    ::FormattedRTF(WithoutSoftBreaks(m_text), GetFormats(), start, end,
+                   m_type == MC_TYPE_TEXT) +
+    wxS("\\par") + WorksheetExport::RTFEnd();
+}
+
+wxString EditorCell::SelectionToHTML() const {
+  const size_t start = std::min(SelectionLeft(), m_text.Length());
+  const size_t end = std::min(std::max(SelectionRight(), start), m_text.Length());
+  return wxS("<!DOCTYPE html>\n<html>\n<head><meta charset=\"utf-8\"></head>\n"
+             "<body>\n") +
+    ::FormattedHTML(WithoutSoftBreaks(m_text), GetFormats(), start, end) +
+    wxS("\n</body>\n</html>\n");
 }
 
 wxDataFormat EditorCell::FormattedTextDataFormat() {
@@ -3602,19 +3710,39 @@ bool EditorCell::CopyToClipboard() const {
   // cause problems
   if (GetType() == MC_TYPE_INPUT)
     s.Replace(wxS("\u00a0"), wxS(" "));
-  // Text copied out of a text cell keeps its bold, italic, ... for pasting
-  // into another one; other programs get the plain text.
-  std::string xml;
-  if (CanFormat())
+  // Text copied out of a text cell keeps its bold, italic, ...: for pasting
+  // into another one in our own format, and for other programs as RTF and
+  // HTML, of which they pick the one they like best (GH #2475). The plain
+  // text stays the preferred format, so that a program that takes anything
+  // isn't handed markup.
+  std::string xml, rtf;
+  wxString html;
+  if (CanFormat()) {
     xml = SelectionToXML().utf8_string();
-  const auto dataObject = [&s, &xml]() -> wxDataObject * {
+    rtf = SelectionToRTF().utf8_string();
+    html = SelectionToHTML();
+  }
+  const auto dataObject = [&s, &xml, &rtf, &html]() -> wxDataObject * {
     if (xml.empty())
       return new wxTextDataObject(s);
     auto *data = new wxDataObjectComposite;
     data->Add(new wxTextDataObject(s), true);
-    auto *formatted = new wxCustomDataObject(FormattedTextDataFormat());
-    formatted->SetData(xml.size(), xml.data());
-    data->Add(formatted);
+    const auto addCustom = [data](const wxDataFormat &format,
+                                  const std::string &bytes) {
+      auto *object = new wxCustomDataObject(format);
+      object->SetData(bytes.size(), bytes.data());
+      data->Add(object);
+    };
+    addCustom(FormattedTextDataFormat(), xml);
+    // The three names RTF goes by: the MIME types GTK and macOS programs
+    // look for, and the one Windows registers CF_RTF under (GH #2264). The
+    // same ones Worksheet offers whole cells' RTF under.
+    addCustom(wxDataFormat(wxS("application/rtf")), rtf);
+    addCustom(wxDataFormat(wxS("text/rtf")), rtf);
+    addCustom(wxDataFormat(wxS("Rich Text Format")), rtf);
+    // The \0 works around wxWidgets sometimes losing the end of the string,
+    // as in Worksheet::CopyMathML().
+    data->Add(new wxHTMLDataObject(html + wxS('\0')));
     return data;
   };
   if (!s.IsEmpty() && (wxTheClipboard->Open())) {
