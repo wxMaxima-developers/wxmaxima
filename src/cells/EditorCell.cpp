@@ -1727,6 +1727,113 @@ wxString EditorCell::SelectionToHTML() const {
     wxS("\n</body>\n</html>\n");
 }
 
+namespace {
+//! The RTF control words that switch a format on, each followed by a blank
+wxString RTFFormatWords(TextFormat::Format format) {
+  wxString words;
+  if (format & TextFormat::Bold)
+    words += wxS("\\b");
+  if (format & TextFormat::Italic)
+    words += wxS("\\i");
+  if (format & TextFormat::Underline)
+    words += wxS("\\ul");
+  if (format & TextFormat::Strikethrough)
+    words += wxS("\\strike");
+  if (format & TextFormat::Superscript)
+    words += wxS("\\super");
+  if (format & TextFormat::Subscript)
+    words += wxS("\\sub");
+  return words + wxS(" ");
+}
+
+//! The HTML elements a format stands for, outermost first
+std::vector<wxString> HTMLFormatTags(TextFormat::Format format) {
+  std::vector<wxString> tags;
+  if (format & TextFormat::Bold)
+    tags.push_back(wxS("b"));
+  if (format & TextFormat::Italic)
+    tags.push_back(wxS("i"));
+  if (format & TextFormat::Underline)
+    tags.push_back(wxS("u"));
+  if (format & TextFormat::Strikethrough)
+    tags.push_back(wxS("s"));
+  if (format & TextFormat::Superscript)
+    tags.push_back(wxS("sup"));
+  if (format & TextFormat::Subscript)
+    tags.push_back(wxS("sub"));
+  return tags;
+}
+
+wxString FormattedRTF(const wxString &text, const TextFormat::Formats &formats,
+                      size_t start, size_t end, bool markDown) {
+  wxString rtf;
+  for (const auto &run : TextFormat::Runs(text, formats, start, end)) {
+    const wxString runText = text.SubString(run.start, run.end - 1);
+    if (runText == wxS("\n")) {
+      // What RTFescape() makes of it, which needs to see the character in
+      // front of it: in a text cell only an empty line ends a paragraph.
+      if (!markDown || ((run.start > 0) && (text[run.start - 1] == wxS('\n'))))
+        rtf += wxS("\\par}\n{\\pard ");
+      else
+        rtf += wxS("\n");
+    } else if (run.format == TextFormat::None)
+      rtf += Cell::RTFescape(runText, markDown);
+    else
+      // A group, so that whatever it switches on ends with it
+      rtf += wxS("{") + RTFFormatWords(run.format) +
+        Cell::RTFescape(runText, markDown) + wxS("}");
+  }
+  return rtf;
+}
+
+wxString FormattedHTML(const wxString &text, const TextFormat::Formats &formats,
+                       size_t start, size_t end) {
+  wxString html;
+  for (const auto &run : TextFormat::Runs(text, formats, start, end)) {
+    const std::vector<wxString> tags = HTMLFormatTags(run.format);
+    for (const auto &tag : tags)
+      html += wxS("<") + tag + wxS(">");
+    html += EditorCell::EscapeHTMLChars(text.SubString(run.start, run.end - 1));
+    for (auto tag = tags.rbegin(); tag != tags.rend(); ++tag)
+      html += wxS("</") + *tag + wxS(">");
+  }
+  return html;
+}
+
+//! The text with the soft line breaks turned back into the spaces they are
+wxString WithoutSoftBreaks(wxString text) {
+  text.Replace(wxS("\r"), wxS(" "));
+  return text;
+}
+} // namespace
+
+wxString EditorCell::FormattedRTF(size_t start, size_t end, bool markDown) const {
+  return ::FormattedRTF(m_text, GetFormats(), start, end, markDown);
+}
+
+wxString EditorCell::FormattedHTML(size_t start, size_t end) const {
+  return ::FormattedHTML(m_text, GetFormats(), start, end);
+}
+
+wxString EditorCell::SelectionToRTF() const {
+  const size_t start = std::min(SelectionLeft(), m_text.Length());
+  const size_t end = std::min(std::max(SelectionRight(), start), m_text.Length());
+  // RTFStart() opens a group for the body that RTFEnd() closes.
+  return WorksheetExport::RTFStart(m_configuration) + wxS("\\pard\\s0 ") +
+    ::FormattedRTF(WithoutSoftBreaks(m_text), GetFormats(), start, end,
+                   m_type == MC_TYPE_TEXT) +
+    wxS("\\par") + WorksheetExport::RTFEnd();
+}
+
+wxString EditorCell::SelectionToHTML() const {
+  const size_t start = std::min(SelectionLeft(), m_text.Length());
+  const size_t end = std::min(std::max(SelectionRight(), start), m_text.Length());
+  return wxS("<!DOCTYPE html>\n<html>\n<head><meta charset=\"utf-8\"></head>\n"
+             "<body>\n") +
+    ::FormattedHTML(WithoutSoftBreaks(m_text), GetFormats(), start, end) +
+    wxS("\n</body>\n</html>\n");
+}
+
 wxDataFormat EditorCell::FormattedTextDataFormat() {
   // Made on first use: a wxDataFormat can't be registered before wxWidgets
   // is initialized.
