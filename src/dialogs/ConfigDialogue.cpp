@@ -285,8 +285,9 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent)
   CreateButtons(wxOK | wxCANCEL);
 #endif
 
+  wxConfigBase *config = wxConfig::Get();
   int notebookTab = 0;
-  wxConfig::Get()->Read(wxS("ConfigDialogTab"), &notebookTab);
+  config->Read(wxS("ConfigDialogTab"), &notebookTab);
   if ((notebookTab < 0) ||
       ((unsigned int)notebookTab >= m_notebook->GetPageCount()))
     notebookTab = 0;
@@ -2932,7 +2933,8 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
 }
 
 void ConfigDialogue::OnStyleToEditChanged(wxCommandEvent &event) {
-  m_configuration->Write(wxS("StyleToEdit"), static_cast<int>(GetSelectedStyle()));
+  wxConfigBase *config = wxConfig::Get();
+  config->Write(wxS("StyleToEdit"), static_cast<int>(GetSelectedStyle()));
   OnChangeStyle(event);
 }
 
