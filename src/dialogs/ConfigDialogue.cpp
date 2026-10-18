@@ -2812,73 +2812,56 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
               wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
 
   // The styles box
-  wxStaticBox *styles = new wxStaticBox(panel, wxID_ANY, _("Styles"));
-  wxStaticBoxSizer *stylesSizer = new wxStaticBoxSizer(styles, wxVERTICAL);
-  wxBoxSizer *fontoptionsizer = new wxBoxSizer(wxVERTICAL);
-  wxBoxSizer *hbox_sizer_2 = new wxBoxSizer(wxHORIZONTAL);
-  wxBoxSizer *style_hbox = new wxBoxSizer(wxHORIZONTAL);
+  wxStaticBoxSizer *stylesBox = new wxStaticBoxSizer(wxVERTICAL, panel, _("Styles"));
+  wxBoxSizer *styles_tophbox = new wxBoxSizer(wxHORIZONTAL);
   wxBoxSizer *vbox_sizer = new wxBoxSizer(wxVERTICAL);
-
   wxArrayString m_styleFor_choices;
   for (int style = 0; style < NUMBEROFSTYLES; style++) {
     m_styleFor_choices.Add(m_configuration->GetStyleName(static_cast<TextStyle>(style)));
   }
-  m_styleFor = new wxListBox(stylesSizer->GetStaticBox(), listbox_styleFor,
+  m_styleFor = new wxListBox(stylesBox->GetStaticBox(), listbox_styleFor,
                              wxDefaultPosition,
-                             wxSize(150 * GetContentScaleFactor(), -1),
+                             wxDefaultSize,
                              m_styleFor_choices, wxLB_SINGLE);
   m_styleFor->Bind(wxEVT_LISTBOX, &ConfigDialogue::OnStyleToEditChanged, this);
-
-  m_getStyleFont = new wxButton(stylesSizer->GetStaticBox(), style_font_family,
-                                _("Choose font"), wxDefaultPosition,
-                                wxSize(350 * GetContentScaleFactor(), -1));
-  m_styleColor = new wxColourPickerCtrl(stylesSizer->GetStaticBox(), wxID_ANY, *wxBLACK,
-                                        wxDefaultPosition,
-                                        wxSize(350 * GetContentScaleFactor(), -1 /*30 * GetContentScaleFactor()*/),
-                                        wxCLRP_USE_TEXTCTRL | wxCLRP_SHOW_LABEL);
+  
+  m_getStyleFont = new wxButton(stylesBox->GetStaticBox(), style_font_family,
+                                _("Choose font"));
+  m_styleColor = new wxColourPickerCtrl(stylesBox->GetStaticBox(), wxID_ANY, *wxBLACK);
   m_styleColor-> Bind(wxEVT_COLOURPICKER_CHANGED, &ConfigDialogue::OnChangeColor, this);
-  vbox_sizer->Add(m_styleColor, 0, wxUP | wxDOWN | wxALIGN_LEFT | wxEXPAND,
-                  5 * GetContentScaleFactor());
-
+  vbox_sizer->Add(m_styleColor, wxSizerFlags().Expand());
+  
   m_boldCB =
-    new wxCheckBox(stylesSizer->GetStaticBox(), checkbox_bold, _("Bold"));
+    new wxCheckBox(stylesBox->GetStaticBox(), checkbox_bold, _("Bold"));
   m_italicCB =
-    new wxCheckBox(stylesSizer->GetStaticBox(), checkbox_italic, _("Italic"));
+    new wxCheckBox(stylesBox->GetStaticBox(), checkbox_italic, _("Italic"));
   m_slantedCB =
-    new wxCheckBox(stylesSizer->GetStaticBox(), checkbox_slanted, _("Slanted"));
-  m_underlinedCB = new wxCheckBox(stylesSizer->GetStaticBox(),
+    new wxCheckBox(stylesBox->GetStaticBox(), checkbox_slanted, _("Slanted"));
+  m_underlinedCB = new wxCheckBox(stylesBox->GetStaticBox(),
                                   checkbox_underlined, _("Underlined"));
-  m_strikethroughCB = new wxCheckBox(stylesSizer->GetStaticBox(),
+  m_strikethroughCB = new wxCheckBox(stylesBox->GetStaticBox(),
                                      checkbox_strikethrough, _("Strike Through"));
   m_examplePanel =
-    new ExamplePanel(stylesSizer->GetStaticBox(), wxID_ANY, wxDefaultPosition,
-                     wxSize(250 * GetContentScaleFactor(), 60 * GetContentScaleFactor()));
+    new ExamplePanel(stylesBox->GetStaticBox(), wxID_ANY);
+  
+  vbox_sizer->Add(m_getStyleFont,wxSizerFlags().Expand());
+  
+  wxBoxSizer *fontoptionsizer = new wxBoxSizer(wxVERTICAL);
+  fontoptionsizer->Add(m_boldCB, wxSizerFlags());
+  fontoptionsizer->Add(m_italicCB,wxSizerFlags());
+  fontoptionsizer->Add(m_slantedCB,wxSizerFlags());
+  fontoptionsizer->Add(m_underlinedCB,wxSizerFlags());
+  fontoptionsizer->Add(m_strikethroughCB,wxSizerFlags());
 
-  vbox_sizer->Add(m_getStyleFont, 0, wxUP | wxDOWN | wxALIGN_LEFT | wxEXPAND,
-                  5 * GetContentScaleFactor());
-  fontoptionsizer->Add(m_boldCB, wxSizerFlags().Border(
-                                                       wxUP | wxDOWN, 5 * GetContentScaleFactor()));
-  fontoptionsizer->Add(
-                       m_italicCB,
-                       wxSizerFlags().Border(wxUP | wxDOWN, 5 * GetContentScaleFactor()));
-  fontoptionsizer->Add(
-                       m_slantedCB,
-                       wxSizerFlags().Border(wxUP | wxDOWN, 5 * GetContentScaleFactor()));
-  fontoptionsizer->Add(
-                       m_underlinedCB,
-                       wxSizerFlags().Border(wxUP | wxDOWN, 5 * GetContentScaleFactor()));
-  fontoptionsizer->Add(
-                       m_strikethroughCB,
-                       wxSizerFlags().Border(wxUP | wxDOWN, 5 * GetContentScaleFactor()));
+  wxBoxSizer *style_hbox = new wxBoxSizer(wxHORIZONTAL);
   style_hbox->Add(fontoptionsizer, wxSizerFlags().Expand());
-
-  style_hbox->Add(m_examplePanel, wxSizerFlags().Expand().Border(
-                                                            wxALL, 5 * GetContentScaleFactor()));
-  vbox_sizer->Add(style_hbox, 1, wxUP | wxDOWN | wxEXPAND, 0);
-  hbox_sizer_2->Add(m_styleFor,
+  style_hbox->Add(m_examplePanel,
+                  wxSizerFlags(1).Expand().Border(wxALL, 5 * GetContentScaleFactor()));
+  vbox_sizer->Add(style_hbox, wxSizerFlags(1).Expand());
+  styles_tophbox->Add(m_styleFor,
                     wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
-  hbox_sizer_2->Add(vbox_sizer, 1, wxUP | wxDOWN | wxEXPAND, 0);
-  stylesSizer->Add(hbox_sizer_2, 0, wxUP | wxDOWN | wxEXPAND, 0);
+  styles_tophbox->Add(vbox_sizer, wxSizerFlags(1).Expand());
+  stylesBox->Add(styles_tophbox, wxSizerFlags(1).Expand());
   wxConfigBase *config = wxConfig::Get();
   int styleToEditNum = 0;
   config->Read(wxS("StyleToEdit"), &styleToEditNum);
@@ -2888,20 +2871,21 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
 
     // load+save buttons
   wxBoxSizer *loadSavesizer = new wxBoxSizer(wxVERTICAL);
-  m_loadStyle = new wxButton(stylesSizer->GetStaticBox(), load_id, _("Load"));
-  m_saveStyle = new wxButton(stylesSizer->GetStaticBox(), save_id, _("Save"));
+  m_loadStyle = new wxButton(stylesBox->GetStaticBox(), load_id, _("Load"));
+  m_saveStyle = new wxButton(stylesBox->GetStaticBox(), save_id, _("Save"));
   loadSavesizer->Add(
                      m_loadStyle,
                      wxSizerFlags().Border(wxUP | wxDOWN, 5 * GetContentScaleFactor()));
   loadSavesizer->Add(
                      m_saveStyle,
                      wxSizerFlags().Border(wxUP | wxDOWN, 5 * GetContentScaleFactor()));
-  style_hbox->Add(loadSavesizer, wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
+  style_hbox->Add(loadSavesizer,
+                  wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
 
   wxCommandEvent dummy;
   OnChangeStyle(dummy);
-  vsizer->Add(stylesSizer, wxSizerFlags().Expand().Border(
-                                                          wxALL, 5 * GetContentScaleFactor()));
+  vsizer->Add(stylesBox,
+              wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
   m_configuration->SetZoomFactor(1.0);
 
   // Load the sample worksheet's contents
