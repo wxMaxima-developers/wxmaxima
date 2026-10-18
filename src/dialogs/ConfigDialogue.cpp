@@ -2790,11 +2790,6 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
   wxBoxSizer *vsizer = new wxBoxSizer(wxVERTICAL);
   panel->SetSizer(vsizer);
 
-  // The fonts box
-  wxStaticBox *fonts = new wxStaticBox(panel, wxID_ANY, _("Fonts"));
-  wxStaticBoxSizer *fontsSizer = new wxStaticBoxSizer(fonts, wxVERTICAL);
-  vsizer->Add(fontsSizer, wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
-
   // Appearance selector. It both stores the preference and points the style
   // editor below at the matching set (Light or Dark), so editing "Dark" edits the
   // dark palette.
