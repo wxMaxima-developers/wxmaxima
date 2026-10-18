@@ -2816,7 +2816,7 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
   wxStaticBoxSizer *stylesSizer = new wxStaticBoxSizer(styles, wxVERTICAL);
   wxBoxSizer *fontoptionsizer = new wxBoxSizer(wxVERTICAL);
   wxBoxSizer *hbox_sizer_2 = new wxBoxSizer(wxHORIZONTAL);
-  wxBoxSizer *hbox3 = new wxBoxSizer(wxHORIZONTAL);
+  wxBoxSizer *style_hbox = new wxBoxSizer(wxHORIZONTAL);
   wxBoxSizer *vbox_sizer = new wxBoxSizer(wxVERTICAL);
 
   wxArrayString m_styleFor_choices;
@@ -2837,6 +2837,8 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
                                         wxSize(350 * GetContentScaleFactor(), -1 /*30 * GetContentScaleFactor()*/),
                                         wxCLRP_USE_TEXTCTRL | wxCLRP_SHOW_LABEL);
   m_styleColor-> Bind(wxEVT_COLOURPICKER_CHANGED, &ConfigDialogue::OnChangeColor, this);
+  vbox_sizer->Add(m_styleColor, 0, wxUP | wxDOWN | wxALIGN_LEFT,
+                  5 * GetContentScaleFactor());
 
   m_boldCB =
     new wxCheckBox(stylesSizer->GetStaticBox(), checkbox_bold, _("Bold"));
@@ -2850,11 +2852,9 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
                                      checkbox_strikethrough, _("Strike Through"));
   m_examplePanel =
     new ExamplePanel(stylesSizer->GetStaticBox(), wxID_ANY, wxDefaultPosition,
-                     wxSize(250 * GetContentScaleFactor(), 60));
+                     wxSize(250 * GetContentScaleFactor(), 60 * GetContentScaleFactor()));
 
-  vbox_sizer->Add(m_styleColor, 0, wxUP | wxDOWN | wxALIGN_CENTER,
-                  5 * GetContentScaleFactor());
-  vbox_sizer->Add(m_getStyleFont, 0, wxUP | wxDOWN | wxALIGN_CENTER,
+  vbox_sizer->Add(m_getStyleFont, 0, wxUP | wxDOWN | wxALIGN_LEFT | wxEXPAND,
                   5 * GetContentScaleFactor());
   fontoptionsizer->Add(m_boldCB, wxSizerFlags().Border(
                                                        wxUP | wxDOWN, 5 * GetContentScaleFactor()));
@@ -2870,11 +2870,11 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
   fontoptionsizer->Add(
                        m_strikethroughCB,
                        wxSizerFlags().Border(wxUP | wxDOWN, 5 * GetContentScaleFactor()));
-  hbox3->Add(fontoptionsizer, wxSizerFlags().Expand());
+  style_hbox->Add(fontoptionsizer, wxSizerFlags().Expand());
 
-  hbox3->Add(m_examplePanel, wxSizerFlags().Expand().Border(
+  style_hbox->Add(m_examplePanel, wxSizerFlags().Expand().Border(
                                                             wxALL, 5 * GetContentScaleFactor()));
-  vbox_sizer->Add(hbox3, 1, wxUP | wxDOWN | wxEXPAND, 0);
+  vbox_sizer->Add(style_hbox, 1, wxUP | wxDOWN | wxEXPAND, 0);
   hbox_sizer_2->Add(m_styleFor,
                     wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
   hbox_sizer_2->Add(vbox_sizer, 1, wxUP | wxDOWN | wxEXPAND, 0);
@@ -2885,12 +2885,8 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
   if ((styleToEditNum >= TextStyle::NUMBEROFSTYLES) || (styleToEditNum < 0))
     styleToEditNum = 0;
   m_styleFor->SetSelection(styleToEditNum);
-  wxCommandEvent dummy;
-  OnChangeStyle(dummy);
-  vsizer->Add(stylesSizer, wxSizerFlags().Expand().Border(
-                                                          wxALL, 5 * GetContentScaleFactor()));
 
-  // load+save buttons
+    // load+save buttons
   wxBoxSizer *loadSavesizer = new wxBoxSizer(wxHORIZONTAL);
   m_loadStyle = new wxButton(panel, load_id, _("Load"));
   m_saveStyle = new wxButton(panel, save_id, _("Save"));
@@ -2901,8 +2897,12 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
                      m_saveStyle,
                      wxSizerFlags().Border(wxUP | wxDOWN, 5 * GetContentScaleFactor()));
   vsizer->Add(loadSavesizer, 0, static_cast<int>(wxALIGN_RIGHT) | wxALL,
-              5 * GetContentScaleFactor());
+                                   5 * GetContentScaleFactor());
 
+  wxCommandEvent dummy;
+  OnChangeStyle(dummy);
+  vsizer->Add(stylesSizer, wxSizerFlags().Expand().Border(
+                                                          wxALL, 5 * GetContentScaleFactor()));
   m_configuration->SetZoomFactor(1.0);
 
   // Load the sample worksheet's contents
