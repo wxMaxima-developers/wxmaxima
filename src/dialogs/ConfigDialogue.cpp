@@ -2814,7 +2814,6 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
   // The styles box
   wxStaticBoxSizer *stylesBox = new wxStaticBoxSizer(wxVERTICAL, panel, _("Styles"));
   wxBoxSizer *styles_tophbox = new wxBoxSizer(wxHORIZONTAL);
-  wxBoxSizer *vbox_sizer = new wxBoxSizer(wxVERTICAL);
   wxArrayString m_styleFor_choices;
   for (int style = 0; style < NUMBEROFSTYLES; style++) {
     m_styleFor_choices.Add(m_configuration->GetStyleName(static_cast<TextStyle>(style)));
@@ -2824,7 +2823,8 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
                              wxDefaultSize,
                              m_styleFor_choices, wxLB_SINGLE);
   m_styleFor->Bind(wxEVT_LISTBOX, &ConfigDialogue::OnStyleToEditChanged, this);
-  
+
+    wxBoxSizer *vbox_sizer = new wxBoxSizer(wxVERTICAL);
   m_getStyleFont = new wxButton(stylesBox->GetStaticBox(), style_font_family,
                                 _("Choose font"));
   m_styleColor = new wxColourPickerCtrl(stylesBox->GetStaticBox(), wxID_ANY, *wxBLACK);
