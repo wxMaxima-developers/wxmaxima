@@ -517,7 +517,6 @@ protected:
   wxCheckBox *m_changeAsterisk;
   wxCheckBox *m_hidemultiplicationSign;
   wxCheckBox *m_latin2Greek;
-  wxCheckBox *m_useUnicodeMaths;
   wxCheckBox *m_keepPercentWithSpecials;
   wxBookCtrlBase *m_notebook;
   wxButton *m_saveStyle, *m_loadStyle;

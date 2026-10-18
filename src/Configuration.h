@@ -1248,10 +1248,6 @@ public:
 
   bool TocShowsSectionNumbers() const {return m_TOCshowsSectionNumbers;}
 
-  void UseUnicodeMaths(bool useunicodemaths)
-    { m_useUnicodeMaths = useunicodemaths; }
-  bool UseUnicodeMaths() const {return m_useUnicodeMaths;}
-
   /*! Get the text Style for a given text style identifier.
 
     \param textStyle The text style to resolve the style for.
@@ -1732,7 +1728,6 @@ private:
   bool m_useSVG;
   bool m_fixedFontTC;
   bool m_TOCshowsSectionNumbers;
-  bool m_useUnicodeMaths;
   bool m_indentMaths;
   bool m_abortOnError;
   bool m_showMatchingParens;

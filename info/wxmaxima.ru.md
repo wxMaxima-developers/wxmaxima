@@ -339,10 +339,21 @@ To solve that problem, select other fonts (using: Edit -> Configure -> Style).
 
 ### Unicode replacement
 
-wxMaxima заменяет некоторые символы Юникода на соответствующие выражения
-Maxima, например, `²` на `^2`, `³` на `^3`, знак квадратного корня на
-функцию `sqrt()`, (математический) знак Сигма (отличающийся от символа
-Юникода для соответствующей греческой буквы) на `sum()` и так далее.
+wxMaxima will replace several Unicode characters with their respective Maxima expressions, e.g. `²` with `^2`, `³` with `^3`, `≠` with `#` or `≤` with `<=`.
+
+Unicode characters that stand for a Maxima name are instead defined as
+_Maxima_ aliases of that name when wxMaxima starts _Maxima_: `π` for `%pi`,
+`ⅈ` for `%i`, `ⅇ` for `%e`, `∞` for `inf`, the (mathematical) Sigma sign
+(which is not the same Unicode character as the corresponding Greek letter)
+for `sum`, `∏` for `product`, `∫` for `integrate`, the square root sign for
+`sqrt` and `⋀`, `⋁`, `⊻`, `⊼`, `⊽`, `⇒`, `⇔` and `¬` for `and`, `or`, `xor`,
+`nand`, `nor`, `implies`, `equiv` and `not`. This means they work in files
+loaded by `batch()` or `load()`, too, and `aliases` lists the names they
+stand for. As _Maxima_ reads these characters as letters they need to be
+separated from neighbouring names by spaces in such a file: `a⋀b` is a
+variable name, `a ⋀ b` means `a and b`. In an input cell wxMaxima adds these
+spaces automatically. It also puts parenthesis around a number or a variable
+that directly follows the square root sign, so `√2` means `sqrt(2)`.
 
 В Юникоде есть несколько «правильных» дробей, представленных в виде одной
 кодовой точки Юникода: `¼, ½, ¾, ⅐, ⅑, ⅒, ⅓, ⅔, ⅕, ⅖, ⅗, ⅘, ⅙, ⅚, ⅛, ⅜, ⅝,
@@ -425,7 +436,32 @@ Other symbols the HTML and TeX export will recognize are `<=` and `>=` for compa
 
 A web address in a text cell that starts with `http://`, `https://` or `mailto:` is shown as a link. Since clicking into a text cell places the cursor there, a link is followed by <kbd>CTRL</kbd>+clicking it (<kbd>CMD</kbd>+clicking on macOS), or by right-clicking it and choosing "Open Link"; hovering over it shows where it leads. The HTML export turns it into a link, the TeX export into a `\url{}`. Links are always recognized from the text itself, so nothing about them is stored in the file.
 
+Links in a code cell's comments (`/* ... */`) work the same way. Elsewhere
+in code, for example inside a string, an address is Maxima syntax and is not
+a link.
+
 The same goes for web addresses in _Maxima_'s output, for example in a string printed by `print("See https://wxmaxima-developers.github.io/wxmaxima/")`: <kbd>CTRL</kbd>+clicking the address or choosing "Open Link" from its context menu opens it, while a plain click still selects the output.
+
+### Bold, italic, underlined and struck-through text
+
+Text in a text cell, a title or a section heading can be made bold, italic,
+underlined or struck through. Select the text and press the respective
+button in the toolbar; pressing the button again removes that formatting
+from the selection. With nothing selected the button switches the formatting
+on or off for what is typed next. The buttons are hidden by right-clicking
+the toolbar and unchecking "Text formatting buttons". Code cells cannot be
+formatted: their colors already show the syntax of the code.
+
+Superscript and subscript buttons work the same way: they make the text
+smaller and raise it above or lower it below the line, as in E = mc² or
+H₂O. A character cannot be both, so switching one of them on switches the
+other off. A line that contains a superscript, a subscript or a character
+that is taller than the font's usual ones, for example an emoji, gets as
+much additional room as it needs.
+
+The formatting is saved in `.wxmx` files. Older versions of _wxMaxima_ open
+such a file without the formatting but keep all of the text. `.wxm` files,
+the exports and the clipboard contain the text without its formatting.
 
 ### Hotkeys
 
@@ -440,6 +476,31 @@ The same goes for web addresses in _Maxima_'s output, for example in a string pr
   <kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>TAB</kbd> запускает механизм
   автодополнения.
 - <kbd>SHIFT</kbd>+<kbd>ПРОБЕЛ</kbd> вставляет неразрывный пробел.
+
+### Exploring output with the keyboard
+
+A cell's output can be selected, and explored part by part, without a mouse:
+
+- <kbd>DOWN</kbd> at the end of a cell's input selects the first result of
+  its output. Further presses of <kbd>DOWN</kbd> and <kbd>UP</kbd> step
+  through the results; past the last one the cursor leaves the cell. If you
+  prefer <kbd>DOWN</kbd> to skip over the output, switch on "Up/Down keys
+  skip over output" in the Worksheet tab of the configuration dialog.
+- <kbd>ENTER</kbd> goes into the selected expression and selects its first
+  part: the expression without its label, the numerator of a fraction, the
+  name of a function, the first entry of a matrix, ... If the selection has
+  no parts, <kbd>ENTER</kbd> opens a new input cell holding it, as it always
+  did.
+- <kbd>ESCAPE</kbd> selects what the selection is a part of. From a whole
+  result it goes back into the cell's input.
+- <kbd>LEFT</kbd> and <kbd>RIGHT</kbd> select the previous or next part at
+  the same level. In a matrix all four arrow keys move from entry to entry.
+- <kbd>SHIFT</kbd>+<kbd>LEFT</kbd> and <kbd>SHIFT</kbd>+<kbd>RIGHT</kbd>
+  grow or shrink the selection over the neighbouring parts; in a matrix,
+  <kbd>SHIFT</kbd> and any arrow key grow the selected entry into a block of
+  entries.
+- The context-menu key or <kbd>SHIFT</kbd>+<kbd>F10</kbd> opens the
+  right-click menu for the selection, so it can be copied in any format.
 
 ### Raw TeX in the TeX export
 
@@ -631,6 +692,17 @@ wxdraw2d(
 - Файлы автоматически сохраняются при выходе.
 - Также файл автоматически сохраняется каждые 3 минуты.
 
+### Arranging the toolbar
+
+The toolbar is made of sections, like the "Open" and "Save" buttons, the
+evaluation buttons or the drop-down list that sets the type of a cell. The
+"Toolbar" tab of the configuration dialog lists them in the order the
+toolbar shows them in: drag a section to another place, or select it and
+press "Up" or "Down", to move it, and uncheck it to hide it. The flexible
+space pushes every section after it to the right edge of the
+window. "Default order" restores the original arrangement. Sections can also
+be shown or hidden by right-clicking the toolbar.
+
 ### Where is the configuration saved?
 
 If you are using Unix/Linux, the configuration information will be saved in a file `.wxMaxima` in your home directory (if you are using wxWidgets \< 3.1.1), or `.config/wxMaxima.conf` ((XDG-Standard) if wxWidgets >= 3.1.1 is used). You can retrieve the wxWidgets version from the command `wxbuild_info();` or by using the menu option Help->About. [wxWidgets](https://www.wxwidgets.org/) is the cross-platform GUI library, which is the base for _wxMaxima_ (therefore the `wx` in the name).
@@ -678,14 +750,19 @@ wxsubscripts](./wxsubscripts.png){ id=img_wxsubscripts }
 
 <div id="wxdeclare_subscripted"></div>
 
+A variable the rules above don’t cover can still be declared as "to be
+subscripted" using the command `wxdeclare_subscripted(variable_name);` or
+`wxdeclare_subscripted([variable_name1,variable_name2,...]);` Declaring a
+variable as subscripted can be reverted using the following command:
+`wxdeclare_subscripted(variable_name,false);`, which also keeps a variable
+the rules above do cover from being subscripted.
+
 <div id="wxdeclare_subscript"></div>
 
-Если имя переменной не соответствует этим требованиям, её всё равно можно
-объявить в качестве «подлежащей переводу в нижний индекс» с помощью команды
-`wxdeclare_subscript(variable_name);` или
-`wxdeclare_subscript([variable_name1,variable_name2,...]);` Объявление
-переменной в качестве переведённой в нижний индекс можно отменить с помощью
-команды: `wxdeclare_subscript(variable_name,false);`
+`wxdeclare_subscript(text_snippet);` or
+`wxdeclare_subscript([text_snippet1,text_snippet2,...]);` instead declares a
+text snippet: every variable whose name ends in an underscore followed by
+that snippet is subscripted, however long the two parts are.
 
 You can use the menu "View->Autosubscript" to set these values.
 
@@ -1316,6 +1393,11 @@ allows for more flexible formatting of matrices in wxMaxima:
   window_ (see below) says: `full` draws it in full, `elide` leaves out its
   middle rows and columns, and `scroll` shows it in a box the size of the
   window, with scrollbars of its own.
+- **`banding=<mode>`**: Decides whether every other row and column of this
+  matrix is faintly shaded (see below): `true` always shades them, even if
+  the matrix fits the window, `false` never does, not even in the window
+  double-clicking opens, and `auto`, the default, shades them only if the
+  matrix is too large for the window.
 
 Example:
 
@@ -1340,18 +1422,21 @@ columns are not shown. The option _Matrices too large for the window_ in the
 _Worksheet_ tab of the configuration dialog can instead draw such a matrix
 in full, which makes the whole worksheet scroll sideways, or show it in a
 box the size of the window, with scrollbars of its own; there the mouse
-wheel still scrolls the worksheet, and such a matrix is printed with its
-middle rows and columns left out. Whether it is elided or shown in a
-scrolling box, every other row and column of such a matrix is faintly
-shaded, so that a row or a column is easy to follow across it; a matrix that
-fits the window stays plain. All of this affects only what is shown on
-screen and printed: copying, saving and exporting the matrix always include
-every entry. `wx_matrix()`'s `oversized` option overrides that option for a
-single matrix; a matrix it asks to scroll is still elided on paper, and
-exporting a matrix as an image still always shows all of it. Double-clicking
-a matrix that is elided or shown in a scrolling box opens a window of its
-own that shows all of it; the window can be resized and scrolled, and
-_Escape_ closes it.
+wheel scrolls the worksheet, unless that matrix or something inside it is
+selected, and such a matrix is printed with its middle rows and columns left
+out. Whether it is elided or shown in a scrolling box, every other row and
+column of such a matrix is faintly shaded, so that a row or a column is easy
+to follow across it; a matrix that fits the window stays plain, unless
+`wx_matrix()`'s `banding` option says otherwise. All of this affects only
+what is shown on screen and printed: copying, saving and exporting the
+matrix always include every entry. `wx_matrix()`'s `oversized` option
+overrides that option for a single matrix; a matrix it asks to scroll is
+still elided on paper, and exporting a matrix as an image still always shows
+all of it. Double-clicking a matrix that is elided or shown in a scrolling
+box opens a window of its own that shows all of it; the window can be
+resized and scrolled, and _Escape_ closes it. _Ctrl+F_ in that window
+searches the matrix: each match selects the entry it is in and scrolls it
+into view, and searching again steps on to the next matching entry.
 
 ## Bug reporting
 
@@ -1613,6 +1698,10 @@ If the automatic fix fails, you can manually start wxMaxima with:
 Либо компиляция wxWidgets была выполнена без поддержки webview2 от
 Microsoft, либо компонент webview2 от Microsoft не был установлен.
 
+_Help/About_ lists which of the things the integrated browser needs this
+wxMaxima has and which it is missing; the log window (_View/Toggle log
+window_) shows the same list.
+
 ## Why is the external manual browser not working on my Linux box?
 
 Браузер HTML может быть реализован в виде версии пакета snap, flatpack или
@@ -1726,6 +1815,14 @@ You can add the following line to the LaTeX preamble (for example by using the r
 «Вид/Инвертировать яркость рабочего листа», позволяющий быстро
 преобразовывать рабочий лист из тёмного в светлый и обратно.
 
+Most images are drawn for a white background, and black line art with a
+transparent background would be invisible on a dark worksheet. So by
+default, if the worksheet background is dark, the transparent parts of
+images are filled with a backdrop color. Its color is the style _Backdrop of
+transparent images_ in the _Style_ tab of the configuration dialog, and the
+option _Behind transparent parts of images_ in its _Worksheet_ tab can
+switch the backdrop off, or draw it on a bright worksheet, too.
+
 ## _WxMaxima_ sometimes hangs for several seconds once in the first minute
 
 _WxMaxima_ delegates some big tasks like parsing _Maxima_’s >1000-page-manual to background tasks, which normally goes totally unnoticed. At the moment the result of such a task is needed, though, it is possible that _wxMaxima_ needs to wait a couple of seconds before it can continue its work.
@@ -1802,14 +1899,14 @@ ______________________________________________________________________
 - `-o` или `--open=<str>`: открыть файл, заданный в виде аргумента к этому
   ключу командной строки.
 - `-e` или `--eval`: выполнить вычисление файла после его открытия.
-- `-b` или `--batch`: если файл открывается из командной строки, то все поля
-  в этом файле вычисляются, после чего выполняется его сохранение. Например,
-  это полезно, когда сеанс, описанный в файле, заставляет _Maxima_
-  генерировать файлы вывода. Пакетная обработка будет остановлена, если
-  _wxMaxima_ обнаруживает, что _Maxima_ вывела сообщение об ошибке, либо
-  приостановлена, если у _Maxima_ возникает вопрос: математические
-  вычисления по своей природе обладают некоторой интерактивностью, поэтому
-  при пакетной обработке её полное отсутствие не всегда возможно.
+- `-b` or `--batch`: If the command-line opens a file all cells in this file
+  are evaluated and the file is saved afterward. This is for example useful
+  if the session described in the file makes _Maxima_ generate output
+  files. Batch-processing will be stopped if _wxMaxima_ detects that
+  _Maxima_ has output an error and will exit if _Maxima_ asks a question no
+  scripted answer exists for: Mathematics is somewhat interactive by nature
+  so a completely interaction-free batch processing cannot always be
+  guaranteed.
 - `--logtostderr`:                 журналировать все «отладочные сообщения» из боковой панели также и в stderr.
 - `--pipe`:                        перенаправлять сообщения из Maxima в stdout.
 - `--exit-on-error`:               закрывать программу при любой ошибке Maxima.
@@ -1823,6 +1920,18 @@ ______________________________________________________________________
 
 Вместо минуса в некоторых операционных системах перед ключами командной
 строки может использоваться тире.
+
+A successful run exits with status 0. A batch run that had to stop before
+finishing exits with one of the following statuses instead, so a script that
+calls _wxMaxima_ can tell why it stopped without reading its log:
+
+- `90`: _Maxima_ reported an error and `--exit-on-error` was given.
+- `91`: _Maxima_ asked a question no scripted answer exists for.
+- `92`: The file named on the command line could not be opened.
+- `93`: Saving the worksheet failed.
+- `94`: The data of an image in the worksheet could not be loaded.
+- `95`: An image in the worksheet could not be decoded (only checked with
+  `--debug`).
 
 ______________________________________________________________________
 

@@ -168,7 +168,6 @@ Configuration::Configuration(const Configuration &o) :
   m_useSVG(o.m_useSVG),
   m_fixedFontTC(o.m_fixedFontTC),
   m_TOCshowsSectionNumbers(o.m_TOCshowsSectionNumbers),
-  m_useUnicodeMaths(o.m_useUnicodeMaths),
   m_indentMaths(o.m_indentMaths),
   m_abortOnError(o.m_abortOnError),
   m_showMatchingParens(o.m_showMatchingParens),
@@ -366,7 +365,6 @@ void Configuration::ResetAllToDefaults() {
   m_layoutStrategy = LayoutStrategy::layout2DIfFits;
   m_oversizedMatrices = OversizedMatrices::elide;
   m_imageBackdrop = ImageBackdrop::onDarkBackground;
-  m_useUnicodeMaths = true;
   m_offerKnownAnswers = true;
   m_screenReaderAnnouncesMathML = false;
   m_parenthesisDrawMode = ascii;
@@ -1466,7 +1464,6 @@ Configuration::ScalarConfigSettings() {
     // the option was hidden all that time, so that was just the old default,
     // and keeping the key would have kept it.
     {wxS("useSVGPlots"), &Configuration::m_useSVG},
-    {wxS("useUnicodeMaths"), &Configuration::m_useUnicodeMaths},
     {wxS("wizardTab"), &Configuration::m_wizardTab},
     {wxS("wrapLatexMath"), &Configuration::m_wrapLatexMath},
   };

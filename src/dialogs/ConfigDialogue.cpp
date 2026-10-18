@@ -388,9 +388,6 @@ void ConfigDialogue::SetCheckboxValues() {
                            _("The URL MathJaX.js should be downloaded from by our HTML export."));
   m_texPreamble->SetToolTip(_("Additional commands to be added to the preamble "
                               "of LaTeX output for pdftex."));
-  m_useUnicodeMaths->SetToolTip(
-                                _("If the font provides big parenthesis symbols: Use them when big "
-                                  "parenthesis are needed for maths display."));
   m_autoSave->SetToolTip(
                          _("If this checkbox is checked wxMaxima automatically saves the file "
                            "closing and every few minutes giving wxMaxima a more "
@@ -755,8 +752,6 @@ void ConfigDialogue::SetCheckboxValues() {
                                       m_configuration->HelpBrowserUserLocation());
   m_maximaHelpInConsole->SetValue(m_configuration->MaximaHelpInConsole());
   m_defaultPort->SetValue(m_configuration->DefaultPort());
-
-  m_useUnicodeMaths->SetValue(m_configuration->UseUnicodeMaths());
 }
 
 wxWindow *ConfigDialogue::CreateWorksheetPanel() {
@@ -2798,15 +2793,6 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
   // The fonts box
   wxStaticBox *fonts = new wxStaticBox(panel, wxID_ANY, _("Fonts"));
   wxStaticBoxSizer *fontsSizer = new wxStaticBoxSizer(fonts, wxVERTICAL);
-  wxFlexGridSizer *grid_sizer_1 = new wxFlexGridSizer(4, 2, 2, 2);
-  m_useUnicodeMaths =
-    new wxCheckBox(fontsSizer->GetStaticBox(), wxID_ANY,
-                   _("Use unicode Math Symbols, if available"));
-  grid_sizer_1->Add(
-                    m_useUnicodeMaths,
-                    wxSizerFlags().Border(wxUP | wxDOWN, 5 * GetContentScaleFactor()));
-
-  fontsSizer->Add(grid_sizer_1, wxSizerFlags(1).Expand());
   vsizer->Add(fontsSizer, wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
 
   // Appearance selector. It both stores the preference and points the style
@@ -3162,7 +3148,6 @@ void ConfigDialogue::WriteSettings() {
       configuration->LineBreaksInLongNums(false);
     }
   }
-  configuration->UseUnicodeMaths(m_useUnicodeMaths->GetValue());
   configuration->SetKeepPercent(m_keepPercentWithSpecials->GetValue());
   configuration->TexPreamble(m_texPreamble->GetValue());
   configuration->AutoSaveAsTempFile(!m_autoSave->GetValue());
