@@ -2825,7 +2825,7 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
   }
   m_styleFor = new wxListBox(stylesSizer->GetStaticBox(), listbox_styleFor,
                              wxDefaultPosition,
-                             wxSize(250 * GetContentScaleFactor(), -1),
+                             wxSize(150 * GetContentScaleFactor(), -1),
                              m_styleFor_choices, wxLB_SINGLE);
   m_styleFor->Bind(wxEVT_LISTBOX, &ConfigDialogue::OnStyleToEditChanged, this);
 
@@ -2837,7 +2837,7 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
                                         wxSize(350 * GetContentScaleFactor(), -1 /*30 * GetContentScaleFactor()*/),
                                         wxCLRP_USE_TEXTCTRL | wxCLRP_SHOW_LABEL);
   m_styleColor-> Bind(wxEVT_COLOURPICKER_CHANGED, &ConfigDialogue::OnChangeColor, this);
-  vbox_sizer->Add(m_styleColor, 0, wxUP | wxDOWN | wxALIGN_LEFT,
+  vbox_sizer->Add(m_styleColor, 0, wxUP | wxDOWN | wxALIGN_LEFT | wxEXPAND,
                   5 * GetContentScaleFactor());
 
   m_boldCB =
@@ -2887,17 +2887,16 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
   m_styleFor->SetSelection(styleToEditNum);
 
     // load+save buttons
-  wxBoxSizer *loadSavesizer = new wxBoxSizer(wxHORIZONTAL);
-  m_loadStyle = new wxButton(panel, load_id, _("Load"));
-  m_saveStyle = new wxButton(panel, save_id, _("Save"));
+  wxBoxSizer *loadSavesizer = new wxBoxSizer(wxVERTICAL);
+  m_loadStyle = new wxButton(stylesSizer->GetStaticBox(), load_id, _("Load"));
+  m_saveStyle = new wxButton(stylesSizer->GetStaticBox(), save_id, _("Save"));
   loadSavesizer->Add(
                      m_loadStyle,
                      wxSizerFlags().Border(wxUP | wxDOWN, 5 * GetContentScaleFactor()));
   loadSavesizer->Add(
                      m_saveStyle,
                      wxSizerFlags().Border(wxUP | wxDOWN, 5 * GetContentScaleFactor()));
-  vsizer->Add(loadSavesizer, 0, static_cast<int>(wxALIGN_RIGHT) | wxALL,
-                                   5 * GetContentScaleFactor());
+  style_hbox->Add(loadSavesizer, wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
 
   wxCommandEvent dummy;
   OnChangeStyle(dummy);
