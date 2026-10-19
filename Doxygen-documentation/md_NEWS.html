@@ -73,6 +73,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><ul>
+<li>The style editor in the configuration dialogue edits the style that was clicked: with wxWidgets' Qt port each click showed, and each following change went to, the style selected before. In dark appearance a font chosen for "Code default" or "Math default" now also reaches the styles that share it, as it always did in light appearance (GH #2527).</li>
 <li>In a scrolled matrix, the fraction at the start of an entry no longer vanishes while the rest of the entry is still visible: a part of an entry that had been scrolled left of (or above) the worksheet's edge counted as not yet positioned and wasn't drawn.</li>
 <li><a class="el" href="classA.html">A</a> matrix that scrolls in the worksheet (the "scroll" setting for oversized matrices, or wx_matrix(..., oversized=scroll)) scrolls in the exported HTML, too, instead of running off the page or, as an image, being shrunk to fit.</li>
 <li>The tint behind code and output that have a mouse-over tooltip stays readable in dark mode: it is now a dark amber there instead of a pale yellow light text hardly stood out from.</li>
