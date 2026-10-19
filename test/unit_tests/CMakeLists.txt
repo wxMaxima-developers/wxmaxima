@@ -213,6 +213,16 @@ target_link_libraries(test_DigitGrouping PRIVATE ${wxWidgets_LIBRARIES})
 add_test(NAME DigitGrouping
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_DigitGrouping>")
 
+# Touchpads and high-resolution wheels (wxGTK on Wayland) send many small
+# wheel events; WheelSteps adds them up to whole steps so scrolling over a
+# selected animation doesn't advance a frame per event.
+add_executable(test_WheelSteps
+    test_WheelSteps.cpp ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
+target_include_directories(test_WheelSteps PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_link_libraries(test_WheelSteps PRIVATE ${wxWidgets_LIBRARIES})
+add_test(NAME WheelSteps
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_WheelSteps>")
+
 # The "Save As" dialog has to propose a file name whose extension agrees with
 # the file type it shows: wxGTK appends the first type's extension to a name
 # that has none, and a .wxm document got saved as .wxmx (GH #2440).
