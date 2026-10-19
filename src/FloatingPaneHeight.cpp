@@ -24,6 +24,8 @@
 */
 
 #include "FloatingPaneHeight.h"
+// floatpane.h uses wxAuiManager and wxAuiPaneInfo without including them.
+#include <wx/aui/framemanager.h>
 #include <wx/aui/floatpane.h>
 #include <algorithm>
 
