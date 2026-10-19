@@ -63,6 +63,27 @@ jobs:
         with:
           fetch-depth: 15
 
+      # snapcraft.yaml pulls wxMaxima from its git URL, which means the
+      # repository's *default branch* -- not the commit this workflow runs
+      # for. So a push build never tested the pushed commit, and when the
+      # default branch was switched to an ancient branch (BetterTeX, 2017) in
+      # 2026-10 this job built that branch instead and failed with "desktop
+      # file does not exist" (the old tree installs wxMaxima.desktop, not
+      # io.github.wxmaxima_developers.wxMaxima.desktop). Build the checked-out
+      # tree instead. snapcraft.yaml itself keeps the git URL: the store's own
+      # builds and build_snap_stable.yml (which adds a source-tag) rely on it.
+      - name: Build the checked-out commit, not the default branch
+        run: |
+          # CRLF-preserving, and fails loudly if the source line moves.
+          python3 - <<'PY'
+          p = "snap/snapcraft.yaml"
+          s = open(p, newline="").read()
+          src = "source: https://github.com/wxMaxima-developers/wxmaxima.git"
+          assert s.count(src) == 1, "wxMaxima git source line not found in snapcraft.yaml"
+          open(p, "w", newline="").write(s.replace(src, "source: .", 1))
+          PY
+          grep -n 'source' snap/snapcraft.yaml
+
       # Only for the snaps we actually publish to edge: bundle Maxima's edge
       # channel instead of its stable one, so the edge wxMaxima ships the newest
       # Maxima too. Left as stable on push builds so the CI check doesn't depend
