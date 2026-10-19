@@ -1,5 +1,10 @@
 # Current development version
 
+- The configuration dialogue's "Worksheet" tab shows a sample worksheet
+  next to (or below) its settings, the way the "Style" tab does. Changing
+  how labels are shown, the label width, multiplication signs, special
+  symbols like %e, Greek letters, long numbers or matrices too large for
+  the window shows the effect right away, scrolled to an example of it.
 - A floating find/replace sidebar or wizard can still be made wider, but
   no longer higher than its contents, which only added empty space. A
   wizard that needs less room than the one before it shrinks its window,

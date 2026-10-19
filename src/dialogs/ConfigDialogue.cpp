@@ -333,6 +333,54 @@ ConfigDialogue::~ConfigDialogue() {
     m_sampleWorksheet->Destroy();
     m_sampleWorksheet = nullptr;
   }
+  // The same for the Worksheet tab's preview, which has a configuration of
+  // its own.
+  if (m_worksheetPreview) {
+    m_worksheetPreview->Destroy();
+    m_worksheetPreview = nullptr;
+  }
+}
+
+void ConfigDialogue::ApplySettingsToPreview() {
+  Configuration *config = m_worksheetPreviewConfiguration.get();
+  // The same as WriteSettings() does with these controls. A setter that
+  // gets the value the configuration already has requests no layout.
+  config->LabelWidth(m_labelWidth->GetValue());
+  config->SetLabelChoice(
+    static_cast<Configuration::showLabels>(m_showUserDefinedLabels->GetSelection()));
+  config->IndentMaths(m_indentMaths->GetValue());
+  config->SetChangeAsterisk(m_changeAsterisk->GetValue());
+  config->HidemultiplicationSign(m_hidemultiplicationSign->GetValue());
+  config->Latin2Greek(m_latin2Greek->GetValue());
+  config->SetKeepPercent(m_keepPercentWithSpecials->GetValue());
+  config->SetDisplayedDigits(m_displayedDigits->GetValue());
+  config->ShowAllDigits(m_displayAllDigits->GetValue() ||
+                        m_linebreaksInLongNums->GetValue());
+  config->LineBreaksInLongNums(m_linebreaksInLongNums->GetValue());
+  config->DigitGrouping(m_digitGrouping->GetValue());
+  config->DigitGroupingMinDigits(m_digitGroupingMinDigits->GetValue());
+  // The radio box's items are in Configuration::OversizedMatrices order.
+  config->SetOversizedMatrices(
+    static_cast<Configuration::OversizedMatrices>(m_oversizedMatrices->GetSelection()));
+}
+
+void ConfigDialogue::UpdateWorksheetPreview(wxm::WorksheetPreview::Topic topic) {
+  if (!m_worksheetPreview || !m_worksheetPreviewConfiguration)
+    return;
+  ApplySettingsToPreview();
+  m_worksheetPreviewTopic = topic;
+  m_worksheetPreview->RecalculateIfNeeded();
+  // Scrolled to the top of the preview, not just into view (which is what
+  // Worksheet::ScrollToCellIfNeeded() does): a heading that is already
+  // visible at the bottom would leave what follows it out of sight.
+  int unitX = 0, unitY = 0;
+  m_worksheetPreview->GetScrollPixelsPerUnit(&unitX, &unitY);
+  if (const auto &heading = m_worksheetPreviewHeadings[static_cast<size_t>(topic)]) {
+    const int top = heading->GetCurrentY() - heading->GetCenter();
+    if ((top >= 0) && (unitY > 0))
+      m_worksheetPreview->Scroll(-1, std::max(top / unitY - 1, 0));
+  }
+  m_worksheetPreview->Refresh();
 }
 
 void ConfigDialogue::UsesvgChanged(
@@ -756,11 +804,18 @@ void ConfigDialogue::SetCheckboxValues() {
 }
 
 wxWindow *ConfigDialogue::CreateWorksheetPanel() {
-  wxScrolled<wxPanel> *panel = new wxScrolled<wxPanel>(m_notebook, wxID_ANY);
+  wxScrolled<wxPanel> *tab = new wxScrolled<wxPanel>(m_notebook, wxID_ANY);
+  tab->SetScrollRate(5 * GetContentScaleFactor(),
+                     5 * GetContentScaleFactor());
+  tab->SetMinSize(wxSize(GetContentScaleFactor() * mMinPanelWidth,
+                         GetContentScaleFactor() * mMinPanelHeight));
+  // The settings, which scroll, share the tab with a sample worksheet that
+  // shows what they do, the way the Style tab shares its room with the
+  // sample worksheet there.
+  AdaptiveSplitter *splitter = new AdaptiveSplitter(tab);
+  wxScrolled<wxPanel> *panel = new wxScrolled<wxPanel>(splitter, wxID_ANY);
   panel->SetScrollRate(5 * GetContentScaleFactor(),
                        5 * GetContentScaleFactor());
-  panel->SetMinSize(wxSize(GetContentScaleFactor() * mMinPanelWidth,
-                           GetContentScaleFactor() * mMinPanelHeight));
 
   wxStaticBoxSizer *displaySizer =
     new wxStaticBoxSizer(wxVERTICAL, panel, _("Display"));
@@ -1096,7 +1151,70 @@ wxWindow *ConfigDialogue::CreateWorksheetPanel() {
 
   panel->FitInside();
 
-  return panel;
+  // The preview. Its configuration is set up only after the worksheet
+  // exists: Worksheet's constructor reads the config file into it.
+  m_worksheetPreviewConfiguration = std::make_unique<Configuration>(*m_configuration);
+  m_worksheetPreviewConfiguration->MakeTemporary();
+  m_worksheetPreview = new Worksheet(splitter, wxID_ANY,
+                                     m_worksheetPreviewConfiguration.get(),
+                                     wxDefaultPosition, wxDefaultSize, false);
+  m_worksheetPreviewConfiguration->SetZoomFactor(1.0);
+  // A sample worksheet doesn't get matrix scrollbars by default (it would
+  // show such a matrix elided); this one has to, to preview that choice.
+  m_worksheetPreviewConfiguration->SetMatrixScrollHost(
+    &m_worksheetPreview->GetMatrixScrollbars());
+  {
+    auto preview = wxm::WorksheetPreview::Make(m_worksheetPreviewConfiguration.get());
+    for (size_t i = 0; i < m_worksheetPreviewHeadings.size(); i++)
+      m_worksheetPreviewHeadings[i] = preview.headings[i];
+    m_worksheetPreview->InsertGroupCells(std::move(preview.tree));
+  }
+
+  // Every setting the preview shows updates it, and scrolls it to the cells
+  // that setting affects.
+  using Topic = wxm::WorksheetPreview::Topic;
+  auto updatesPreview = [this](wxWindow *control, const auto &eventType, Topic topic) {
+    control->Bind(eventType, [this, topic](wxCommandEvent &event) {
+      UpdateWorksheetPreview(topic);
+      event.Skip();
+    });
+  };
+  updatesPreview(m_labelWidth, wxEVT_SPINCTRL, Topic::labels);
+  updatesPreview(m_showUserDefinedLabels, wxEVT_CHOICE, Topic::labels);
+  updatesPreview(m_indentMaths, wxEVT_CHECKBOX, Topic::labels);
+  updatesPreview(m_changeAsterisk, wxEVT_CHECKBOX, Topic::labels);
+  updatesPreview(m_hidemultiplicationSign, wxEVT_CHECKBOX, Topic::labels);
+  updatesPreview(m_latin2Greek, wxEVT_CHECKBOX, Topic::specialSymbols);
+  updatesPreview(m_keepPercentWithSpecials, wxEVT_CHECKBOX, Topic::specialSymbols);
+  updatesPreview(m_displayNDigits, wxEVT_RADIOBUTTON, Topic::longNumbers);
+  updatesPreview(m_displayAllDigits, wxEVT_RADIOBUTTON, Topic::longNumbers);
+  updatesPreview(m_linebreaksInLongNums, wxEVT_RADIOBUTTON, Topic::longNumbers);
+  updatesPreview(m_displayedDigits, wxEVT_SPINCTRL, Topic::longNumbers);
+  updatesPreview(m_digitGrouping, wxEVT_CHECKBOX, Topic::longNumbers);
+  updatesPreview(m_digitGroupingMinDigits, wxEVT_SPINCTRL, Topic::longNumbers);
+  updatesPreview(m_oversizedMatrices, wxEVT_RADIOBOX, Topic::oversizedMatrix);
+  // The scroll position can only be worked out once the preview has a size.
+  m_worksheetPreview->Bind(wxEVT_SIZE, [this](wxSizeEvent &event) {
+    CallAfter([this]() { UpdateWorksheetPreview(m_worksheetPreviewTopic); });
+    event.Skip();
+  });
+
+  // The settings can shrink down to a strip, as they scroll; by default
+  // they get their full width, but leave the preview some height.
+  // Asked of the sizer: a wxScrolled's own best size is whatever little
+  // it needs to scroll.
+  const wxSize panelBest = vsizer->GetMinSize();
+  panel->SetMinSize(wxSize(panelBest.x / 2, FromDIP(100)));
+  splitter->SplitAdaptively(panel, m_worksheetPreview,
+                            wxSize(panelBest.x,
+                                   std::min(panelBest.y, FromDIP(350))));
+  splitter->RememberSashIn(wxS("ConfigDialog/WorksheetSettingsSize"));
+  wxBoxSizer *tabSizer = new wxBoxSizer(wxVERTICAL);
+  tabSizer->Add(splitter, wxSizerFlags(1).Expand());
+  tab->SetSizer(tabSizer);
+  tab->FitInside();
+
+  return tab;
 }
 
 wxWindow *ConfigDialogue::CreateRevertToDefaultsPanel() {

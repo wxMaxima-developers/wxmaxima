@@ -135,6 +135,7 @@ set(DIALOG_SOURCE_FILES
     DiffFrame.cpp
     DiffScrollSync.cpp
     MatrixViewer.cpp
+    WorksheetPreview.cpp
 )
 list(TRANSFORM DIALOG_SOURCE_FILES PREPEND dialogs/)
 

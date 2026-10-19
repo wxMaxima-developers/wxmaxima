@@ -39,6 +39,7 @@ extern unsigned char view_refresh_svg_gz[];
 #include <wx/grid.h>
 #include <wx/hashmap.h>
 #include <wx/clrpicker.h>
+#include <array>
 #include <memory>
 #include <wx/propdlg.h>
 #include <wx/generic/propdlg.h>
@@ -62,6 +63,7 @@ extern unsigned char view_refresh_svg_gz[];
 #include "worksheet/Worksheet.h"
 #include "../Configuration.h"
 #include "ToolBarSectionsPanel.h"
+#include "WorksheetPreview.h"
 #ifdef WXM_USE_AI_TOOLS
 #include "ai/AiProvider.h"
 #endif
@@ -144,6 +146,36 @@ private:
   //! The configuration storage
   std::unique_ptr<Configuration> m_configuration;
   Worksheet *m_sampleWorksheet = nullptr;
+  /*! The Worksheet tab's sample worksheet
+
+    Shows what the tab's display settings (labels, multiplication signs,
+    special symbols, long numbers, oversized matrices) do as soon as they
+    are changed, scrolled to the cells the changed setting affects. See
+    wxm::WorksheetPreview.
+  */
+  Worksheet *m_worksheetPreview = nullptr;
+  /*! The Worksheet tab preview's own configuration
+
+    A copy of m_configuration, made temporary, so that the settings can be
+    applied to it before OK is pressed, and so that it can be the one with
+    matrix scrollbars (see Configuration::GetMatrixScrollHost()), without
+    affecting the Style tab's sample worksheet.
+  */
+  std::unique_ptr<Configuration> m_worksheetPreviewConfiguration;
+  //! The text cell each topic of the preview starts with
+  std::array<CellPtr<GroupCell>,
+             static_cast<size_t>(wxm::WorksheetPreview::Topic::count)> m_worksheetPreviewHeadings;
+  //! The topic the preview was last scrolled to, to return to after a resize
+  wxm::WorksheetPreview::Topic m_worksheetPreviewTopic =
+    wxm::WorksheetPreview::Topic::labels;
+  //! Applies the controls' settings to the preview
+  void ApplySettingsToPreview();
+  /*! Applies the controls' settings to the preview and shows the cells a topic is about
+
+    \param topic What the setting just changed affects; the preview scrolls
+                 that topic's heading to its top.
+  */
+  void UpdateWorksheetPreview(wxm::WorksheetPreview::Topic topic);
 
   using StringHash = std::unordered_map<wxString, wxString, wxStringHash>;
   using Languages = std::unordered_map<wxString, long, wxStringHash>;
