@@ -48,6 +48,7 @@
 #include <wx/log.h>
 
 #include "Configuration.h"
+#include "MathParser.h"
 #include "worksheet/Worksheet.h"
 #include "cells/CellList.h"
 #include "cells/GroupCell.h"
@@ -398,6 +399,46 @@ SCENARIO("A wide output line wraps onto more display lines when the canvas is na
     }
   }
   g_cfg->SetCanvasSize(savedCanvas);
+}
+
+SCENARIO("A long number broken into lines keeps its group's height") {
+  // LongNumberCell::BreakUp() runs while its group is being laid out. It
+  // used to link the digit groups it makes with CellList::AppendCell(),
+  // which resets the size of the whole group -- and the group then ended its
+  // layout with a height of 0 that nothing ever recomputed: the cell vanished
+  // from the worksheet.
+  const wxSize savedCanvas = g_cfg->GetCanvasSize();
+  const bool savedShowAll = g_cfg->ShowAllDigits();
+  const bool savedLineBreaks = g_cfg->LineBreaksInLongNums();
+  g_cfg->SetCanvasSize(wxSize(300, 3000));
+  g_cfg->ShowAllDigits(true);
+  g_cfg->LineBreaksInLongNums(true);
+
+  GIVEN("a code cell whose output is a number too long for one line") {
+    wxString digits;
+    for (int i = 0; i < 40; i++)
+      digits += wxS("1234567890");
+    auto group = std::make_unique<GroupCell>(g_cfg, GC_TYPE_CODE, wxS("n;"));
+    MathParser parser(g_cfg);
+    parser.SetGroup(group.get());
+    group->AppendOutput(parser.ParseLine(
+      wxS("<mth><lbl altCopy=\"%o1\">(%o1) </lbl><n>") + digits + wxS("</n></mth>")));
+    WHEN("it is laid out") {
+      group->Recalculate();
+      THEN("the number is broken into lines, and the group is as tall as they are") {
+        int lines = 0;
+        for (const Cell &cell : OnDrawList(group->GetOutput()))
+          if (cell.BreakLineHere())
+            lines++;
+        CHECK(lines > 3);
+        CHECK(group->GetHeight() > group->GetOutputRect().GetHeight());
+        CHECK(group->GetOutputRect().GetHeight() > 0);
+      }
+    }
+  }
+  g_cfg->SetCanvasSize(savedCanvas);
+  g_cfg->ShowAllDigits(savedShowAll);
+  g_cfg->LineBreaksInLongNums(savedLineBreaks);
 }
 
 SCENARIO("A time-sliced recalculation resumes instead of stalling after a slice") {
