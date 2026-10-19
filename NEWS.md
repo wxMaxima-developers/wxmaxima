@@ -12,8 +12,9 @@
 - The configuration dialogue's "Worksheet" tab shows a sample worksheet
   next to (or below) its settings, the way the "Style" tab does. Changing
   how labels are shown, the label width, multiplication signs, special
-  symbols like %e, Greek letters, long numbers or matrices too large for
-  the window shows the effect right away, scrolled to an example of it.
+  symbols like %e, Greek letters, the math layout strategy (2D or 1D
+  fractions), long numbers or matrices too large for the window shows the
+  effect right away, scrolled to an example of it.
 - The part of the worksheet you are reading no longer jumps while cells
   above it are evaluated again with the cursor out of sight: removing a
   cell's old output and adding the new one used to move everything below
