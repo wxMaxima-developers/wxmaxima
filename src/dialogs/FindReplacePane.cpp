@@ -28,6 +28,7 @@
 
 #include "FindReplacePane.h"
 #include "cells/EditorCell.h"
+#include "FloatingPaneHeight.h"
 #include <wx/button.h>
 #include <wx/stattext.h>
 #include <wx/regex.h>
@@ -122,7 +123,10 @@ FindReplacePane::FindReplacePane(wxWindow *parent, FindReplaceData *data,
   top_sizer->Add(lefttop_sizer, wxSizerFlags(1).Expand());
   top_sizer->Add(button_sizer, wxSizerFlags());
 
-  mainSizer->Add(top_sizer, wxSizerFlags(1).Expand());
+  // Not stretched: nothing in here makes use of more height. Docked among
+  // other sidebars this pane may be given more than it needs anyway; that
+  // goes below the controls rather than into a gap in their middle.
+  mainSizer->Add(top_sizer, wxSizerFlags().Expand());
   mainSizer->Add(fbbox, wxSizerFlags().Expand());
   mainSizer->Add(inoutbox, wxSizerFlags().Expand());
   m_matchCase->Bind(wxEVT_CHECKBOX, &FindReplacePane::OnMatchCase, this);
@@ -142,6 +146,17 @@ FindReplacePane::FindReplacePane(wxWindow *parent, FindReplaceData *data,
     m_searchInOutput->Hide();
   }
   this->SetSizerAndFit(mainSizer);
+  // Floating, the pane can be widened (to see longer search terms), but
+  // making it higher would only add empty space.
+  // Not from inside the size event: that comes while wxAUI is still setting
+  // up a newly floated frame, and it sets the frame's minimum size after
+  // that, asserting if that exceeds the maximum set here.
+  Bind(wxEVT_SIZE, [this](wxSizeEvent &event) {
+    event.Skip();
+    CallAfter([this] {
+      LimitFloatingPaneHeight(this, GetSizer()->GetMinSize().GetHeight());
+    });
+  });
 }
 
 FindReplacePane::~FindReplacePane()

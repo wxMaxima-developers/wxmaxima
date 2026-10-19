@@ -1,5 +1,10 @@
 # Current development version
 
+- A floating find/replace sidebar or wizard can still be made wider, but
+  no longer higher than its contents, which only added empty space. A
+  wizard that needs less room than the one before it shrinks its window,
+  and a docked find/replace sidebar given more height than it needs keeps
+  its controls together at the top instead of opening a gap between them.
 - The style editor in the configuration dialogue edits the style that was
   clicked: with wxWidgets' Qt port each click showed, and each following
   change went to, the style selected before. In dark appearance a font
