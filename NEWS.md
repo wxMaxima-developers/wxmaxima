@@ -1,5 +1,11 @@
 # Current development version
 
+- The Style tab of the configuration dialogue fits small screens better:
+  a movable divider separates the style settings from the sample
+  worksheet, so the "Style for" list can be made shorter to see more of
+  the worksheet. If the dialogue is wide rather than tall, the sample
+  worksheet moves beside the settings. Where the divider was put is
+  remembered, and the style controls take less height than before.
 - Scrolling over a selected animation with a touchpad or a high-resolution
   wheel (wxGTK on Wayland, for one) no longer flicks through a frame per
   tiny scroll event: frames, and Ctrl+wheel zoom, now change once per
