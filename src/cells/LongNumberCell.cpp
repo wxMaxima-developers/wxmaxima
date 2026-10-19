@@ -262,7 +262,10 @@ bool LongNumberCell::BreakUp() const {
         m_innerCell = std::move(digits);
         last = m_innerCell.get();
       } else {
-        CellList::AppendCell(last, std::move(digits));
+        // Not CellList::AppendCell(): that resets the size of the whole
+        // group, and this runs while the group is being laid out, which
+        // then ends with a group of height 0 that is never laid out again.
+        CellList::SetNext(last, std::move(digits));
         last = last->GetNext();
       }
     }

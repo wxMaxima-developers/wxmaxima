@@ -35,6 +35,7 @@
 #include "MaximaManual.h"
 #include "EventIDs.h"
 #include "RecentDocuments.h"
+#include "WheelSteps.h"
 #include <wx/wx.h>
 #include <wx/xml/xml.h>
 #include <wx/aui/aui.h>
@@ -716,6 +717,16 @@ private:
   WorksheetCursor &GetHCaretCursor() { return m_document.GetCursor(); }
   const WorksheetCursor &GetHCaretCursor() const { return m_document.GetCursor(); }
   bool m_leftDown = false;
+  //! Collects Ctrl+wheel rotation into whole zoom steps.
+  wxm::WheelSteps m_zoomWheelSteps;
+  //! Collects wheel rotation over the selected animation into whole frames.
+  wxm::WheelSteps m_animationWheelSteps;
+  /*! The animation m_animationWheelSteps collected its partial step over.
+
+    Only ever compared against the current selection, never dereferenced, so
+    it may dangle.
+  */
+  const AnimationCell *m_wheelAnimation = nullptr;
   //! Do we want to automatically scroll to a cell as soon as it is being evaluated?
   bool m_followEvaluation = true;
   bool m_mouseDrag = false;

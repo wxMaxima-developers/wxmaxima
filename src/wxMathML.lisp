@@ -3234,8 +3234,13 @@ errcatch() or ignore-errors would catch the interrupt and carry on."
                 do (wx-interrupt-main-thread main)))
     (ignore-errors (close stream))))
 
-(defun wx-open-interrupt-channel (host port token)
+(defun wx-open-interrupt-channel (host port
+                                  &optional (token (maxima-getenv "MAXIMA_AUTH_CODE")))
   "Connects to wxMaxima's server at HOST:PORT as the interrupt channel.
+
+TOKEN, which proves to wxMaxima that the channel comes from the Maxima it
+started, is what wxMaxima passed in MAXIMA_AUTH_CODE. wxMaxima doesn't send it
+along with its call: it can't yet know that it talks to that Maxima.
 
 Called by wxMaxima once per Maxima process, from the thread that evaluates
 Maxima's commands -- which is therefore the one that gets interrupted. Does

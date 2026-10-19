@@ -107,44 +107,51 @@ bool Styles::AffectsColorOnly(TextStyle style) const {
   return false;
 }
 
-void Styles::MakeConsistent() {
+void Styles::MakeConsistent(Style *styles) const {
   for (const auto &style : m_codeStyles) {
-    m_styles[style].SetFamily(m_styles[TS_CODE_DEFAULT].GetFamily());
-    m_styles[style].SetEncoding(m_styles[TS_CODE_DEFAULT].GetEncoding());
-    m_styles[style].SetFontSize(m_styles[TS_CODE_DEFAULT].GetFontSize());
-    m_styles[style].SetFontName(m_styles[TS_CODE_DEFAULT].GetFontName());
-    m_styles[style].SetBold(m_styles[TS_CODE_DEFAULT].IsBold());
-    m_styles[style].SetItalic(m_styles[TS_CODE_DEFAULT].IsItalic());
-    m_styles[style].SetSlant(m_styles[TS_CODE_DEFAULT].IsSlant());
-    m_styles[style].SetStrikethrough(m_styles[TS_CODE_DEFAULT].IsStrikethrough());
-    m_styles[style].SetUnderlined(m_styles[TS_CODE_DEFAULT].IsUnderlined());
-    m_styles[style].CantChangeFontName(true);
-    m_styles[style].CantChangeFontVariant(true);
+    styles[style].SetFamily(styles[TS_CODE_DEFAULT].GetFamily());
+    styles[style].SetEncoding(styles[TS_CODE_DEFAULT].GetEncoding());
+    styles[style].SetFontSize(styles[TS_CODE_DEFAULT].GetFontSize());
+    styles[style].SetFontName(styles[TS_CODE_DEFAULT].GetFontName());
+    styles[style].SetBold(styles[TS_CODE_DEFAULT].IsBold());
+    styles[style].SetItalic(styles[TS_CODE_DEFAULT].IsItalic());
+    styles[style].SetSlant(styles[TS_CODE_DEFAULT].IsSlant());
+    styles[style].SetStrikethrough(styles[TS_CODE_DEFAULT].IsStrikethrough());
+    styles[style].SetUnderlined(styles[TS_CODE_DEFAULT].IsUnderlined());
+    styles[style].CantChangeFontName(true);
+    styles[style].CantChangeFontVariant(true);
   }
 
   for (const auto &style : m_2dMathStyles) {
     if ((style != TS_ASCIIMATHS) && (style != TS_TEXT)) {
-      m_styles[style].SetFontSize(m_styles[TS_MATH].GetFontSize());
-      m_styles[style].SetFamily(m_styles[TS_MATH].GetFamily());
-      m_styles[style].SetEncoding(m_styles[TS_MATH].GetEncoding());
-      m_styles[style].SetFontName(m_styles[TS_MATH].GetFontName());
-      m_styles[style].CantChangeFontName(true);
+      styles[style].SetFontSize(styles[TS_MATH].GetFontSize());
+      styles[style].SetFamily(styles[TS_MATH].GetFamily());
+      styles[style].SetEncoding(styles[TS_MATH].GetEncoding());
+      styles[style].SetFontName(styles[TS_MATH].GetFontName());
+      styles[style].CantChangeFontName(true);
     }
   }
 
   for (const auto &style : m_colorOnlyStyles) {
-    m_styles[style].SetFamily(m_styles[TS_CODE_DEFAULT].GetFamily());
-    m_styles[style].SetEncoding(m_styles[TS_CODE_DEFAULT].GetEncoding());
-    m_styles[style].SetFontSize(m_styles[TS_CODE_DEFAULT].GetFontSize());
-    m_styles[style].SetFontName(m_styles[TS_CODE_DEFAULT].GetFontName());
-    m_styles[style].SetBold(m_styles[TS_CODE_DEFAULT].IsBold());
-    m_styles[style].SetItalic(m_styles[TS_CODE_DEFAULT].IsItalic());
-    m_styles[style].SetUnderlined(m_styles[TS_CODE_DEFAULT].IsUnderlined());
-    m_styles[style].SetSlant(m_styles[TS_CODE_DEFAULT].IsSlant());
-    m_styles[style].SetStrikethrough(m_styles[TS_CODE_DEFAULT].IsStrikethrough());
-    m_styles[style].CantChangeFontName(true);
-    m_styles[style].CantChangeFontVariant(true);
+    styles[style].SetFamily(styles[TS_CODE_DEFAULT].GetFamily());
+    styles[style].SetEncoding(styles[TS_CODE_DEFAULT].GetEncoding());
+    styles[style].SetFontSize(styles[TS_CODE_DEFAULT].GetFontSize());
+    styles[style].SetFontName(styles[TS_CODE_DEFAULT].GetFontName());
+    styles[style].SetBold(styles[TS_CODE_DEFAULT].IsBold());
+    styles[style].SetItalic(styles[TS_CODE_DEFAULT].IsItalic());
+    styles[style].SetUnderlined(styles[TS_CODE_DEFAULT].IsUnderlined());
+    styles[style].SetSlant(styles[TS_CODE_DEFAULT].IsSlant());
+    styles[style].SetStrikethrough(styles[TS_CODE_DEFAULT].IsStrikethrough());
+    styles[style].CantChangeFontName(true);
+    styles[style].CantChangeFontVariant(true);
   }
+}
+
+void Styles::MakeConsistent() {
+  // Both sets, not only the active one: the dark set is what the worksheet
+  // shows in dark appearance, and the light one is what it prints with.
+  MakeConsistent(m_styles);
+  MakeConsistent(m_stylesDark);
 }
 
 const wxString &Styles::Name(TextStyle textStyle) {

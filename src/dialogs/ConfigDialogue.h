@@ -556,8 +556,19 @@ protected:
   //! A "export the configuration" dialog
   void LoadSave(wxCommandEvent &event);
 
-  //! Get the style currently selected in the m_styleFor control
+  //! Get the style currently being edited (see m_selectedStyle)
   TextStyle GetSelectedStyle() const;
+
+  /*! The style the style editor's controls currently show and edit.
+
+    Remembered from the wxEVT_LISTBOX event rather than asked from m_styleFor:
+    wxQt sends that event from QListWidget::currentItemChanged, which Qt emits
+    on a mouse click *before* it moves the selection, so m_styleFor->GetSelection()
+    still names the previously selected style inside the handler. Using it made
+    every click load (and every following edit write to) the previous style
+    (GH #2527).
+  */
+  TextStyle m_selectedStyle = TS_CODE_DEFAULT;
 
   //! The size of the text font
   int m_fontSize;

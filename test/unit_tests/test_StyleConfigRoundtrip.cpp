@@ -142,6 +142,35 @@ SCENARIO("Both the light and dark style sets round-trip through Write/ReadStyles
   }
 }
 
+// The style editor edits the active set, and only Code default and Math
+// default carry a font of their own there: the styles that share theirs have
+// it copied over by MakeStylesConsistent(). That used to happen in the light
+// set only, so in dark appearance a font chosen for Code default never reached
+// the code highlighting styles (GH #2527).
+SCENARIO("Both style sets keep the shared fonts consistent") {
+  for (const auto appearance :
+       {Configuration::Appearance::light, Configuration::Appearance::dark}) {
+    GIVEN(std::string("the ") +
+          (appearance == Configuration::Appearance::dark ? "dark" : "light") +
+          " set with new sizes for Code default and Math default") {
+      Configuration cfg;
+      cfg.SetAppearance(appearance);
+      cfg.GetWritableStyle(TS_CODE_DEFAULT)->SetFontSize(AFontSize(23.0));
+      cfg.GetWritableStyle(TS_CODE_DEFAULT)->SetBold(false);
+      cfg.GetWritableStyle(TS_MATH)->SetFontSize(AFontSize(19.0));
+
+      WHEN("the styles are made consistent") {
+        cfg.MakeStylesConsistent();
+        THEN("the styles sharing their fonts follow them") {
+          CHECK(cfg.GetStyle(TS_CODE_VARIABLE)->GetFontSize().Get() == Approx(23.0));
+          CHECK(!cfg.GetStyle(TS_CODE_COMMENT)->IsBold());
+          CHECK(cfg.GetStyle(TS_VARIABLE)->GetFontSize().Get() == Approx(19.0));
+        }
+      }
+    }
+  }
+}
+
 SCENARIO("TS_ASCIIMATHS defaults to a genuinely fixed-pitch font") {
   GIVEN("a fresh Configuration with nothing persisted for it") {
     // Configuration's constructor reads the live wxConfig::Get() -- wipe it
