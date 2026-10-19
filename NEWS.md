@@ -4,6 +4,64 @@
   background in its code cell, like the red one that marks a statement
   that caused an error. Its colour can be changed in the configuration
   dialogue's style list ("Code that is being evaluated").
+- The configuration dialogue's "Worksheet" tab shows a sample worksheet
+  next to (or below) its settings, the way the "Style" tab does. Changing
+  how labels are shown, the label width, multiplication signs, special
+  symbols like %e, Greek letters, long numbers or matrices too large for
+  the window shows the effect right away, scrolled to an example of it.
+- The part of the worksheet you are reading no longer jumps while cells
+  above it are evaluated again with the cursor out of sight: removing a
+  cell's old output and adding the new one used to move everything below
+  it, which was visible for plots and other slow results.
+- A cell whose output is a long number no longer collapses to nothing when
+  "Display all and allow linebreaks in long numbers" is switched on while
+  it is shown: breaking the number into lines reset the size of its cell
+  while the cell was being laid out.
+- Security: another user on the same computer who connected to wxMaxima
+  before Maxima did could have posed as Maxima: wxMaxima sent the secret
+  Maxima proves itself with over that connection, and acted on some of
+  what arrived before the proof, such as a request to export the worksheet
+  to a file of the impostor's choosing. wxMaxima now sends nothing secret,
+  sends no cells and acts on nothing until Maxima has authenticated. A
+  Maxima that sends an auth= line as its first line is checked right
+  away, and the secret no longer shows up in the log.
+- A floating find/replace sidebar or wizard can still be made wider, but
+  no longer higher than its contents, which only added empty space. A
+  wizard that needs less room than the one before it shrinks its window,
+  and a docked find/replace sidebar given more height than it needs keeps
+  its controls together at the top instead of opening a gap between them.
+- The style editor in the configuration dialogue edits the style that was
+  clicked: with wxWidgets' Qt port each click showed, and each following
+  change went to, the style selected before. In dark appearance a font
+  chosen for "Code default" or "Math default" now also reaches the styles
+  that share it, as it always did in light appearance (GH #2527).
+- In a scrolled matrix, the fraction at the start of an entry no longer
+  vanishes while the rest of the entry is still visible: a part of an entry
+  that had been scrolled left of (or above) the worksheet's edge counted as
+  not yet positioned and wasn't drawn.
+- A matrix that scrolls in the worksheet (the "scroll" setting for oversized
+  matrices, or wx_matrix(..., oversized=scroll)) scrolls in the exported
+  HTML, too, instead of running off the page or, as an image, being shrunk
+  to fit.
+- The tint behind code and output that have a mouse-over tooltip stays
+  readable in dark mode: it is now a dark amber there instead of a pale
+  yellow light text hardly stood out from.
+- Copying from the diff viewer works: Ctrl+C, Ctrl+Insert and the context
+  menu's "Copy" and "Copy as..." entries used to leave the clipboard
+  unchanged. Ctrl+A selects the whole pane.
+- The diff viewer's search got "Find previous" and "Find next" buttons;
+  Enter, F3 (Shift+Enter, Shift+F3 backwards) move between matches, and
+  Ctrl+F jumps to the search field. They replace the Up/Down radio buttons.
+- The Style tab of the configuration dialogue fits small screens better:
+  a movable divider separates the style settings from the sample
+  worksheet, so the "Style for" list can be made shorter to see more of
+  the worksheet. If the dialogue is wide rather than tall, the sample
+  worksheet moves beside the settings. Where the divider was put is
+  remembered, and the style controls take less height than before.
+- Scrolling over a selected animation with a touchpad or a high-resolution
+  wheel (wxGTK on Wayland, for one) no longer flicks through a frame per
+  tiny scroll event: frames, and Ctrl+wheel zoom, now change once per
+  whole wheel notch's worth of movement.
 - Text pasted into a text cell from a word processor, a web browser or a
   mail program keeps its bold, italic, underline, strikethrough,
   superscript and subscript: wxMaxima now reads the HTML other programs put
@@ -142,7 +200,7 @@
   character. Clicks inside a word land on the nearer side of the
   character more reliably, too.
 - Long numbers in the output and in code cells are easier to read: their
-  digits are shown in groups separated by a gap of a quarter em, 2111230496 as
+  digits are shown in groups separated by a gap of 5/24 em, 2111230496 as
   2 111 230 496 (GH #192). Only the display changes: copying, saving,
   exporting and what is sent to Maxima never contain the gaps. Numbers with fewer than 5 digits, years for example, are
   left as they are. Both can be changed in the configuration dialog's

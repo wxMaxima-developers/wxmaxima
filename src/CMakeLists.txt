@@ -119,6 +119,7 @@ set(AI_SOURCE_FILES
 
 set(DIALOG_SOURCE_FILES
     AboutDialog.cpp
+    AdaptiveSplitter.cpp
     ChangeLogDialog.cpp
     FindReplaceDialog.cpp
     FindReplacePane.cpp
@@ -134,6 +135,7 @@ set(DIALOG_SOURCE_FILES
     DiffFrame.cpp
     DiffScrollSync.cpp
     MatrixViewer.cpp
+    WorksheetPreview.cpp
 )
 list(TRANSFORM DIALOG_SOURCE_FILES PREPEND dialogs/)
 
@@ -207,8 +209,10 @@ set(SOURCE_FILES
     ToolbarPane.cpp
     ProcessTree.cpp
     InterruptChannelHandshake.cpp
+    MaximaAuthLine.cpp
     MaximaInterruptChannel.cpp
     MenuHelpString.cpp
+    FloatingPaneHeight.cpp
     wxMathml.cpp
     wxMaxima.cpp
     wxMaximaFrame.cpp

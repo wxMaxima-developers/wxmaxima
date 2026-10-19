@@ -1212,6 +1212,20 @@ what tells Maxima to format its output as MathML-like XML. For development,
 `--wxmathml-lisp=<path>` overrides it with an external file, so a change can be
 tried without rebuilding.
 
+- **Nothing from Maxima's connection is trusted until it has authenticated,
+  and nothing secret is sent to it before then.** wxMaxima's server listens
+  on a loopback port any local user can connect to, and whoever connects
+  first becomes "Maxima". Proof is the `MAXIMA_AUTH_CODE` secret, echoed
+  back either as an `auth=` first line (Maxima's `-s` server, once the
+  2026-10 upstream patch is in) or as `<wxxml-key>` from `wxMathML.lisp`. Until then
+  `MaximaProcessManager::MaximaEvent()` drops every event except the first
+  prompt and `suppressOutput`, `TriggerEvaluation()` sends no cells, and the
+  `pid=` line isn't used to find a process to interrupt. Until 2026-10 the
+  interrupt-channel command carried the secret itself, so an impostor got
+  it for free, and a `<worksheetexport>` from it wrote a file of its choice
+  even without the secret (both reproduced with a fake Maxima passed as
+  `--maxima`). Never put the secret into anything wxMaxima sends: the Lisp
+  side reads it from its environment.
 - **`MaximaProcessManager::StartMaxima()` reuses the running process or kills
   and replaces it, and the thing that decides which is the *directory*, not
   anything about the worksheet.** Its condition is

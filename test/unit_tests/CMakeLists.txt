@@ -213,6 +213,16 @@ target_link_libraries(test_DigitGrouping PRIVATE ${wxWidgets_LIBRARIES})
 add_test(NAME DigitGrouping
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_DigitGrouping>")
 
+# Touchpads and high-resolution wheels (wxGTK on Wayland) send many small
+# wheel events; WheelSteps adds them up to whole steps so scrolling over a
+# selected animation doesn't advance a frame per event.
+add_executable(test_WheelSteps
+    test_WheelSteps.cpp ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
+target_include_directories(test_WheelSteps PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_link_libraries(test_WheelSteps PRIVATE ${wxWidgets_LIBRARIES})
+add_test(NAME WheelSteps
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_WheelSteps>")
+
 # The "Save As" dialog has to propose a file name whose extension agrees with
 # the file type it shows: wxGTK appends the first type's extension to a name
 # that has none, and a .wxm document got saved as .wxmx (GH #2440).
@@ -313,9 +323,12 @@ add_test(NAME ProcessTree
 
 # The channel wxMaxima interrupts Maxima through (GH #2289): its handshake,
 # and the channel over a real local socket with the test playing the Lisp.
+# Also the auth= line Maxima's own connection may start with, which is checked
+# with the same handshake.
 add_executable(test_InterruptChannel
     test_InterruptChannel.cpp
     ${CMAKE_SOURCE_DIR}/src/InterruptChannelHandshake.cpp
+    ${CMAKE_SOURCE_DIR}/src/MaximaAuthLine.cpp
     ${CMAKE_SOURCE_DIR}/src/MaximaInterruptChannel.cpp
     ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
 target_include_directories(test_InterruptChannel PRIVATE ${CMAKE_SOURCE_DIR}/src)
@@ -329,6 +342,16 @@ target_link_libraries(test_MenuHelpString PRIVATE ${wxWidgets_LIBRARIES})
 add_test(NAME MenuHelpString
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_MenuHelpString>")
 
+# A floating find/replace sidebar or wizard can be widened, but not made
+# higher than its contents (LimitFloatingPaneHeight()).
+add_executable(test_FloatingPaneHeight
+    test_FloatingPaneHeight.cpp ${CMAKE_SOURCE_DIR}/src/FloatingPaneHeight.cpp
+    ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
+target_include_directories(test_FloatingPaneHeight PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_link_libraries(test_FloatingPaneHeight PRIVATE ${wxWidgets_LIBRARIES})
+add_test(NAME FloatingPaneHeight
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_FloatingPaneHeight>")
+
 # Guards the Greek/symbol sidebars' Buttonwrapsizer (a wxWrapSizer subclass that
 # uses the protected m_availSize -- fragile across wx versions, broke wrapping on
 # wx 3.0 and again on wx 3.3). Small, standalone: compiles the class directly.
@@ -338,6 +361,16 @@ add_executable(test_ButtonWrapSizer
 target_link_libraries(test_ButtonWrapSizer PRIVATE ${wxWidgets_LIBRARIES})
 add_test(NAME ButtonWrapSizer
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_ButtonWrapSizer>")
+
+# The configuration dialog's style settings/sample worksheet splitter: which
+# direction it splits in, and that it keeps (and remembers) a moved sash.
+add_executable(test_AdaptiveSplitter
+    test_AdaptiveSplitter.cpp ${CMAKE_SOURCE_DIR}/src/dialogs/AdaptiveSplitter.cpp
+    ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
+target_include_directories(test_AdaptiveSplitter PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_link_libraries(test_AdaptiveSplitter PRIVATE ${wxWidgets_LIBRARIES})
+add_test(NAME AdaptiveSplitter
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_AdaptiveSplitter>")
 
 # Layout/recalculation regression test. Unlike the tests above (which stub out
 # GroupCell via TestStubs.cpp), this links the real application code through the
@@ -819,6 +852,16 @@ if(TARGET wxmTestApp)
     add_test(NAME MatrixViewer
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_MatrixViewer>")
 
+    # The sample worksheet in the configuration dialog's Worksheet tab.
+    add_executable(test_WorksheetPreview
+        test_WorksheetPreview.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_WorksheetPreview PUBLIC cxx_std_20)
+    target_link_libraries(test_WorksheetPreview PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME WorksheetPreview
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_WorksheetPreview>")
+
     # Selecting and copying a sub-matrix (GH #2345).
     add_executable(test_MatrixBlockSelection
         test_MatrixBlockSelection.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
@@ -849,6 +892,27 @@ if(TARGET wxmTestApp)
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
     add_test(NAME DiffFrameConfig
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_DiffFrameConfig>")
+
+    # Copy (Ctrl+C, context menu) and find next/previous in the diff viewer.
+    # Uses the real clipboard, so it needs a display.
+    add_executable(test_DiffFrameEditing
+        test_DiffFrameEditing.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_DiffFrameEditing PUBLIC cxx_std_20)
+    target_link_libraries(test_DiffFrameEditing PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME DiffFrameEditing
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_DiffFrameEditing>")
+
+    # The tint behind cells with a tooltip keeps text readable in dark mode.
+    add_executable(test_TooltipMarkerColour
+        test_TooltipMarkerColour.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_TooltipMarkerColour PUBLIC cxx_std_20)
+    target_link_libraries(test_TooltipMarkerColour PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME TooltipMarkerColour
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_TooltipMarkerColour>")
 
     # An integral's "d" (dx/dtheta/...) must render upright in LaTeX export,
     # not in math mode's default italic (GH #972).
@@ -967,6 +1031,18 @@ if(TARGET wxmTestApp)
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
     add_test(NAME MaximaMenuSync
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_MaximaMenuSync>")
+
+    # The configuration dialog's style editor edits the style that was clicked,
+    # even where the list reports a click before moving its selection (wxQt,
+    # GH #2527).
+    add_executable(test_ConfigDialogueStyles
+        test_ConfigDialogueStyles.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_ConfigDialogueStyles PUBLIC cxx_std_20)
+    target_link_libraries(test_ConfigDialogueStyles PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME ConfigDialogueStyles
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_ConfigDialogueStyles>")
 endif()
 
 # Same watchdog timeout the parent directory applies to its tests: keep a hung

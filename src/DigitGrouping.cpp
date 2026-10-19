@@ -26,6 +26,7 @@
 #include "DigitGrouping.h"
 #include <algorithm>
 #include <clocale>
+#include <cmath>
 
 namespace wxm {
 
@@ -38,7 +39,10 @@ bool IsSign(wxUniChar c) {
 } // namespace
 
 int DigitGroupGapWidth(double fontSize) {
-  return std::max(1, static_cast<int>(fontSize / 4));
+  // 5/24 em is halfway between 1/6 and 1/4 em. Rounded rather than truncated,
+  // so that the gap doesn't fall back to the old, narrower width at sizes where
+  // 5/24 em ends in a fraction of a pixel.
+  return std::max(1, static_cast<int>(std::lround(fontSize * 5 / 24)));
 }
 
 int LocaleDigitGroupSize() {

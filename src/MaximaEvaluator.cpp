@@ -376,6 +376,17 @@ void MaximaEvaluator::TriggerEvaluation() {
     return; // empty queue
   }
 
+  // Until Maxima has proven it is the process we started (see
+  // MaximaResponseReader::ReadSuppressedOutput()), whatever is at the other
+  // end of the socket might be somebody else on this machine who connected
+  // first; the user's cells mustn't go there. Authentication triggers the
+  // evaluation again.
+  if (!m_wxMaxima.m_maximaAuthenticated) {
+    wxLogMessage(_("Not triggering evaluation as Maxima hasn't authenticated yet"));
+    m_wxMaxima.StatusMaximaBusy(StatusBar::MaximaStatus::waitingForAuth);
+    return;
+  }
+
   // GH #2196: the cell that just became current has different text now than
   // when it was queued -- the signature of a statement being silently
   // dropped (seen once, from a batch startup race that has since been
@@ -727,11 +738,17 @@ void MaximaEvaluator::SetupVariables() {
   // Ask a Lisp that has threads to open a second connection we can interrupt
   // it through; see MaximaInterruptChannel. Guarded by fboundp, since
   // --wxmathml-lisp may load an older wxMathML.lisp that doesn't define it.
+  //
+  // The channel's token is deliberately not part of this command: Maxima
+  // reads it from MAXIMA_AUTH_CODE itself. This is sent to whoever connected
+  // to our server, before we know that it is the Maxima we started -- an
+  // impostor that got the token here could replay it as <wxxml-key> and
+  // pass for Maxima. ignore-errors: an older wxMathML.lisp's version wants
+  // the token as a third argument.
   SendMaxima(wxString::Format(
                ":lisp-quiet (when (fboundp 'wx-open-interrupt-channel) "
-               "(wx-open-interrupt-channel \"127.0.0.1\" %i \"%s\"))",
-               m_wxMaxima.m_port,
-               m_wxMaxima.EscapeForLisp(m_wxMaxima.m_maximaAuthString)));
+               "(ignore-errors (wx-open-interrupt-channel \"127.0.0.1\" %i)))",
+               m_wxMaxima.m_port));
   wxString wxmaximaversion_lisp(WXMAXIMA_VERSION);
 
 #ifdef __WXMSW__

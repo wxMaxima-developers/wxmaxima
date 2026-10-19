@@ -31,6 +31,10 @@
 #include <wx/zipstrm.h>
 #include <wx/txtstrm.h>
 #include <wx/dcbuffer.h>
+#include <wx/clipbrd.h>
+#include <wx/accel.h>
+#include "cells/EditorCell.h"
+#include <iterator>
 #include <map>
 #include <algorithm>
 
@@ -406,20 +410,64 @@ toolBar->AddSeparator();
   m_searchCtrl->ShowCancelButton(true);
   toolBar->AddControl(m_searchCtrl);
   m_searchCtrl->Bind(wxEVT_TEXT, &DiffFrame::OnSearch, this);
-  m_searchCtrl->Bind(wxEVT_TEXT_ENTER, &DiffFrame::OnSearch, this);
+  m_searchCtrl->Bind(wxEVT_TEXT_ENTER, &DiffFrame::OnSearchEnter, this);
+  // The search button inside the field (where the platform draws one).
+  m_searchCtrl->Bind(wxEVT_SEARCH, &DiffFrame::OnSearchEnter, this);
   m_searchCtrl->Bind(wxEVT_SEARCHCTRL_CANCEL_BTN, &DiffFrame::OnSearchCancel, this);
 
-  toolBar->AddSeparator();
-  m_searchDownRadio = new wxRadioButton(toolBar, wxID_ANY, _("Down"), wxDefaultPosition, wxDefaultSize, wxRB_GROUP);
-  m_searchUpRadio = new wxRadioButton(toolBar, wxID_ANY, _("Up"));
-  m_searchDownRadio->SetValue(true);
-  toolBar->AddControl(m_searchDownRadio);
-  toolBar->AddControl(m_searchUpRadio);
-
-  m_searchDownRadio->Bind(wxEVT_RADIOBUTTON, &DiffFrame::OnSearch, this);
-  m_searchUpRadio->Bind(wxEVT_RADIOBUTTON, &DiffFrame::OnSearch, this);
+  // Explicit, labelled buttons for moving between matches: the search field
+  // alone gave no visible hint that pressing Enter again (or F3) moves on, and
+  // the search field's own search button does nothing more on MSW.
+  const int idFindPrev = wxWindow::NewControlId();
+  const int idFindNext = wxWindow::NewControlId();
+  wxButton *findPrevButton = new wxButton(toolBar, idFindPrev, _("Find previous"),
+                                          wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
+  findPrevButton->SetToolTip(_("Previous match (Shift+F3 or Shift+Enter)"));
+  wxButton *findNextButton = new wxButton(toolBar, idFindNext, _("Find next"),
+                                          wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
+  findNextButton->SetToolTip(_("Next match (F3 or Enter)"));
+  toolBar->AddControl(findPrevButton);
+  toolBar->AddControl(findNextButton);
+  findPrevButton->Bind(wxEVT_BUTTON, &DiffFrame::OnFindPrev, this);
+  findNextButton->Bind(wxEVT_BUTTON, &DiffFrame::OnFindNext, this);
 
   toolBar->Realize();
+
+  // The diff viewer has no menu bar, so the keyboard shortcuts the main window
+  // gets from its menus need an accelerator table here.
+  const int idFocusSearch = wxWindow::NewControlId();
+  wxAcceleratorEntry accelerators[] = {
+    wxAcceleratorEntry(wxACCEL_CTRL, 'C', wxID_COPY),
+    wxAcceleratorEntry(wxACCEL_CTRL, WXK_INSERT, wxID_COPY),
+    wxAcceleratorEntry(wxACCEL_CTRL, 'A', wxID_SELECTALL),
+    wxAcceleratorEntry(wxACCEL_CTRL, 'F', idFocusSearch),
+    wxAcceleratorEntry(wxACCEL_NORMAL, WXK_F3, idFindNext),
+    wxAcceleratorEntry(wxACCEL_SHIFT, WXK_F3, idFindPrev),
+  };
+  SetAcceleratorTable(wxAcceleratorTable(static_cast<int>(std::size(accelerators)),
+                                         accelerators));
+  Bind(wxEVT_MENU, &DiffFrame::OnFindNext, this, idFindNext);
+  Bind(wxEVT_MENU, &DiffFrame::OnFindPrev, this, idFindPrev);
+  Bind(wxEVT_MENU, &DiffFrame::OnFocusSearch, this, idFocusSearch);
+  Bind(wxEVT_MENU, &DiffFrame::OnSelectAll, this, wxID_SELECTALL);
+  // Copy, and the "Copy as" entries of the worksheet's context menu: the
+  // context menu's events travel from the worksheet up to this frame.
+  for (const int id : {static_cast<int>(wxID_COPY),
+                       static_cast<int>(EventIDs::popid_copy_matlab),
+                       static_cast<int>(EventIDs::popid_copy_csv),
+                       static_cast<int>(EventIDs::popid_copy_tex),
+                       static_cast<int>(EventIDs::popid_copy_text),
+                       static_cast<int>(EventIDs::popid_copy_mathml),
+                       static_cast<int>(EventIDs::popid_copy_image),
+                       static_cast<int>(EventIDs::popid_copy_animation),
+                       static_cast<int>(EventIDs::popid_copy_svg),
+#if wxUSE_ENH_METAFILE
+                       static_cast<int>(EventIDs::popid_copy_emf),
+#endif
+                       static_cast<int>(EventIDs::popid_copy_rtf),
+                       static_cast<int>(EventIDs::popid_copy_html),
+                       static_cast<int>(EventIDs::popid_copy_link)})
+    Bind(wxEVT_MENU, &DiffFrame::OnCopyCommand, this, id);
 
   // Keep the "Difference N / M" indicator and the Prev/Next button enabled-state
   // current as the user scrolls (by wheel as well as by the buttons).
@@ -474,6 +522,16 @@ toolBar->AddSeparator();
     wsRow->Add(bar, 0, wxEXPAND);
     paneSizer->Add(wsRow, 1, wxEXPAND);
     mainSizer->Add(paneSizer, 1, wxEXPAND);
+
+    // Remember which pane the user works in: copy and select-all act on it.
+    // (Skip() so the worksheet still sees the click / the focus change.)
+    auto activate = [this, i](wxEvent &ev) {
+      ev.Skip();
+      m_activePane = i;
+    };
+    ws->Bind(wxEVT_LEFT_DOWN, activate);
+    ws->Bind(wxEVT_RIGHT_DOWN, activate);
+    ws->Bind(wxEVT_SET_FOCUS, activate);
 
     // Bind all vertical scroll event types to our synchronization handler
     ws->Bind(wxEVT_SCROLLWIN_THUMBTRACK, &DiffFrame::OnScroll, this);
@@ -599,45 +657,162 @@ void DiffFrame::OnToggleVerticalSync(wxCommandEvent &event) {
 }
 
 void DiffFrame::OnSearch(wxCommandEvent &WXUNUSED(event)) {
-  wxString query = m_searchCtrl->GetValue();
+  const wxString query = m_searchCtrl->GetValue();
   if (query.IsEmpty()) {
-      for (auto ws : m_worksheets) ws->ClearSelection();
-      return;
+    for (auto ws : m_worksheets) ws->ClearSelection();
+    return;
+  }
+  SearchPanes(query, true, true);
+}
+
+void DiffFrame::OnSearchEnter(wxCommandEvent &WXUNUSED(event)) {
+  // wxEVT_TEXT_ENTER carries no modifier state, so ask the keyboard.
+  FindNext(!wxGetKeyState(WXK_SHIFT));
+}
+
+void DiffFrame::OnFindNext(wxCommandEvent &WXUNUSED(event)) { FindNext(true); }
+
+void DiffFrame::OnFindPrev(wxCommandEvent &WXUNUSED(event)) { FindNext(false); }
+
+void DiffFrame::OnFocusSearch(wxCommandEvent &WXUNUSED(event)) {
+  m_searchCtrl->SetFocus();
+  m_searchCtrl->SelectAll();
+}
+
+bool DiffFrame::FindNext(bool down) {
+  const wxString query = m_searchCtrl->GetValue();
+  if (query.IsEmpty())
+    return false;
+  return SearchPanes(query, down, false);
+}
+
+bool DiffFrame::SearchPanes(const wxString &query, bool down, bool incremental) {
+  // UUIDs in wxMaxima look like {UUID-STRING}
+  const bool isUUID = query.StartsWith(wxS("{")) && query.EndsWith(wxS("}"));
+
+  if (isUUID) {
+    for (size_t i = 0; i < m_diffEntries.size(); ++i) {
+      for (size_t j = 0; j < m_worksheets.size(); ++j) {
+        if (m_diffEntries[i].cells[j] && m_diffEntries[i].cells[j]->GetUUID() == query) {
+          // Found the UUID. Scroll the worksheet that contains it.
+          // Sync logic will handle the other worksheets.
+          m_worksheets[j]->ScheduleScrollToCell(m_diffEntries[i].cells[j]);
+          m_worksheets[j]->ScrollToCellIfNeeded();
+          m_worksheets[j]->Refresh();
+          m_worksheets[j]->Update();
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
-  m_searchDown = m_searchDownRadio->GetValue();
+  // Search the input cells, starting with the pane that holds the last match.
+  // A pane's own search wraps around, so normally that pane is the only one
+  // searched; the others are only tried if it contains no match at all.
+  if (m_searchPane >= m_worksheets.size())
+    m_searchPane = 0;
+  for (size_t n = 0; n < m_worksheets.size(); ++n) {
+    const size_t idx = (m_searchPane + n) % m_worksheets.size();
+    Worksheet *ws = m_worksheets[idx];
+    if (incremental) {
+      // A match selects the matched text and leaves the caret at its far end.
+      // Searching on from there whenever another letter is typed would skip
+      // the match that just grew by that letter, so search from its near end.
+      if (EditorCell *editor = ws->GetActiveCell())
+        editor->CaretToPosition(down ? editor->SelectionLeft()
+                                     : editor->SelectionRight());
+    }
+    if (ws->FindNext(query, down, true, true, false, false)) {
+      m_searchPane = idx;
+      ws->ScrollToCaretIfNeeded();
+      ws->ScrollToCellIfNeeded();
+      ws->Refresh();
+      ws->Update();
+      // A programmatic scroll sends no scroll event, so bring the other panes
+      // along by hand.
+      SyncScrollFrom(static_cast<int>(idx), CurrentScrollY(idx));
+      return true;
+    }
+  }
+  return false;
+}
 
-  // UUIDs in wxMaxima look like {UUID-STRING}
-  bool isUUID = query.StartsWith(wxS("{")) && query.EndsWith(wxS("}"));
-  
-  if (isUUID) {
-      for (size_t i = 0; i < m_diffEntries.size(); ++i) {
-          for (size_t j = 0; j < m_worksheets.size(); ++j) {
-              if (m_diffEntries[i].cells[j] && m_diffEntries[i].cells[j]->GetUUID() == query) {
-                  // Found the UUID. Scroll the worksheet that contains it.
-                  // Sync logic will handle the other worksheets.
-                  m_worksheets[j]->ScheduleScrollToCell(m_diffEntries[i].cells[j]);
-                  m_worksheets[j]->ScrollToCellIfNeeded();
-                  m_worksheets[j]->Refresh();
-                  m_worksheets[j]->Update();
-                  return;
-              }
-          }
-      }
-  } else {
-      // Incremental search in input cells only
-      for (auto ws : m_worksheets) {
-          if (ws->FindIncremental(query, m_searchDown, true, true, false)) {
-              // Found a match. The worksheet should have requested a redraw/scroll.
-              // We force it here to provide immediate feedback.
-              ws->ScrollToCaret();
-              ws->ScrollToCaretIfNeeded();
-              ws->ScrollToCellIfNeeded();
-              ws->Refresh();
-              ws->Update();
-              break; 
-          }
-      }
+Worksheet *DiffFrame::ActivePane() const {
+  // A pane that has the keyboard focus wins over the one last clicked into.
+  for (wxWindow *w = wxWindow::FindFocus(); w; w = w->GetParent())
+    for (Worksheet *ws : m_worksheets)
+      if (w == ws)
+        return ws;
+  if (m_activePane < m_worksheets.size() &&
+      (m_worksheets[m_activePane]->CanCopy() ||
+       m_worksheets[m_activePane]->GetActiveCell()))
+    return m_worksheets[m_activePane];
+  // Else the first pane that has something to copy.
+  for (Worksheet *ws : m_worksheets)
+    if (ws->CanCopy() || ws->GetActiveCell())
+      return ws;
+  return GetPane(m_activePane);
+}
+
+void DiffFrame::OnCopyCommand(wxCommandEvent &event) {
+  const int id = event.GetId();
+  // The accelerator table turns Ctrl+C into this command even when a text
+  // field (the search field, a file name) has the focus.
+  if (id == wxID_COPY) {
+    if (auto *text = dynamic_cast<wxTextEntry *>(wxWindow::FindFocus())) {
+      text->Copy();
+      return;
+    }
+  }
+  Worksheet *ws = ActivePane();
+  if (!ws)
+    return;
+  if (id == wxID_COPY)
+    ws->Copy();
+  else if (id == EventIDs::popid_copy_link) {
+    const wxString &link = ws->GetContextMenuLink();
+    if (!link.empty() && wxTheClipboard->Open()) {
+      wxTheClipboard->SetData(new wxTextDataObject(link));
+      wxTheClipboard->Close();
+    }
+  }
+  else if (id == EventIDs::popid_copy_csv)
+    ws->CopyCSV();
+  else if (!ws->CanCopy())
+    return;
+  else if (id == EventIDs::popid_copy_matlab)
+    ws->CopyMatlab();
+  else if (id == EventIDs::popid_copy_tex)
+    ws->CopyTeX();
+  else if (id == EventIDs::popid_copy_text)
+    ws->CopyText();
+  else if (id == EventIDs::popid_copy_mathml)
+    ws->CopyMathML();
+  else if (id == EventIDs::popid_copy_image)
+    ws->CopyBitmap();
+  else if (id == EventIDs::popid_copy_animation)
+    ws->CopyAnimation();
+  else if (id == EventIDs::popid_copy_svg)
+    ws->CopySVG();
+#if wxUSE_ENH_METAFILE
+  else if (id == EventIDs::popid_copy_emf)
+    ws->CopyEMF();
+#endif
+  else if (id == EventIDs::popid_copy_rtf)
+    ws->CopyRTF();
+  else if (id == EventIDs::popid_copy_html)
+    ws->CopyHTML();
+}
+
+void DiffFrame::OnSelectAll(wxCommandEvent &WXUNUSED(event)) {
+  if (auto *text = dynamic_cast<wxTextEntry *>(wxWindow::FindFocus())) {
+    text->SelectAll();
+    return;
+  }
+  if (Worksheet *ws = ActivePane()) {
+    ws->SelectAll();
+    ws->Refresh();
   }
 }
 

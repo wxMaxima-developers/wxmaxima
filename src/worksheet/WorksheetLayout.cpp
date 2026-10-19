@@ -214,7 +214,28 @@ void WorksheetLayout::ArmScrollCompensation() {
     return;
   m_scrollAnchor = anchor.cell;
   m_scrollAnchorAtBottom = anchor.atBottom;
+  m_scrollAnchorIsCursor = true;
   m_scrollAnchorY = AnchorY(anchor);
+}
+
+void WorksheetLayout::ArmScrollCompensation(GroupCell *cell) {
+  if (m_scrollAnchor || !cell || cell->GetCurrentPoint().y < 0)
+    return;
+  m_scrollAnchor = cell;
+  m_scrollAnchorAtBottom = false;
+  m_scrollAnchorIsCursor = false;
+  m_scrollAnchorY = AnchorY({cell, false});
+}
+
+GroupCell *WorksheetLayout::FirstGroupReachingBelow(GroupCell *tree, int y) {
+  for (auto &cell : OnList(tree)) {
+    auto &group = static_cast<GroupCell &>(cell);
+    if (group.GetCurrentPoint().y < 0)
+      continue;
+    if (AnchorY({&group, true}) > y)
+      return &group;
+  }
+  return nullptr;
 }
 
 void WorksheetLayout::ApplyScrollCompensation() {
@@ -223,7 +244,8 @@ void WorksheetLayout::ApplyScrollCompensation() {
   const ScrollAnchor anchor{m_scrollAnchor.get(), m_scrollAnchorAtBottom};
   m_scrollAnchor = {};
   // The cursor moved elsewhere meanwhile: the point to keep still is gone.
-  if (!m_getScrollAnchor || !(m_getScrollAnchor() == anchor))
+  if (m_scrollAnchorIsCursor &&
+      (!m_getScrollAnchor || !(m_getScrollAnchor() == anchor)))
     return;
   if (anchor.cell->GetCurrentPoint().y < 0)
     return;

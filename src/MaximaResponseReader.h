@@ -94,6 +94,10 @@ public:
   //! Handles output Maxima marked as suppressed; also the startup
   //! authentication handshake (the <wxxml-key> exchange).
   void ReadSuppressedOutput(const wxString &data);
+  //! Notes that Maxima has proven to be the process we started.
+  void MaximaAuthenticated();
+  //! Discards everything Maxima sends from now on, and tells the user why.
+  void DistrustMaxima();
 
   //! Handles one complete <wxxml-asciimath>...</wxxml-asciimath> block:
   //! Maxima's stock ASCII-art 2D display, always rendered as one uniform

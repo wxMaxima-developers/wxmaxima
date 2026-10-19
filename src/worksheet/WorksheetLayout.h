@@ -186,6 +186,30 @@ public:
   */
   void ArmScrollCompensation();
 
+  /*! Keep \p cell's top still on screen across the next layout pass.
+
+    For when the cursor is out of sight: then the part of the worksheet the
+    user is looking at - of which \p cell is the topmost group cell - is what
+    must not move. Without it, re-evaluating a cell above the view moved
+    everything in view up when the old output was removed, and down again
+    once the new output arrived; for a plot or anything else slow to compute
+    there was a paint in between, so the view jumped twice.
+
+    Unlike ArmScrollCompensation() this doesn't depend on where the cursor
+    is, so it isn't dropped if the cursor moves before the pass has run. Also
+    only ever arms once per pass, and is a no-op if a compensation is armed
+    already.
+  */
+  void ArmScrollCompensation(GroupCell *cell);
+
+  /*! The first group cell of \p tree that reaches below document y \p y
+
+    With the top of the view as \p y, that is the topmost group cell the user
+    can see at least part of. Cells that haven't been positioned yet are
+    skipped. nullptr if there is none.
+  */
+  static GroupCell *FirstGroupReachingBelow(GroupCell *tree, int y);
+
   /*! The document y of \p anchor's cursor position.
 
     The top of its cell, or the bottom for the horizontal cursor. Lays the cell
@@ -250,6 +274,9 @@ private:
   CellPtr<GroupCell> m_scrollAnchor;
   //! Whether m_scrollAnchor's bottom (not its top) is the point to keep still.
   bool m_scrollAnchorAtBottom = false;
+  //! Whether m_scrollAnchor is the cursor's position (and so is dropped if the
+  //! cursor moves), or the top of what the user is looking at.
+  bool m_scrollAnchorIsCursor = false;
   //! m_scrollAnchor's document y at the time the compensation was armed.
   int m_scrollAnchorY = 0;
   //! Bookkeeping from the most recent RecalculateIfNeeded() pass; see the

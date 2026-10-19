@@ -248,8 +248,23 @@ public:
   void FixedFontInTextControls(bool fixed) {m_fixedFontTC = fixed;}
   //! Get the brush to be used for the worksheet background
   wxBrush GetBackgroundBrush() const {return m_renderContext.GetBackgroundBrush();}
-  //! Get the brush to be used for worksheet objects that provide a mouse-over tooltip
-  wxBrush GetTooltipBrush() const {return m_tooltipBrush;}
+  /*! Get the brush to be used for worksheet objects that provide a mouse-over tooltip
+
+    Derived from the current document background each time, so it follows a
+    switch between the light and the dark style set (see TooltipMarkerColour()).
+  */
+  wxBrush GetTooltipBrush() const;
+  /*! The color the background of a cell with a mouse-over tooltip is tinted to
+
+    The text of the cell is drawn on top of it, so it has to stay about as far
+    from the text color as the document background is: on a light background
+    that is a pale yellow, on a dark one a dark amber. The fixed pale yellow
+    that was used on both made light text on a dark background hard to read.
+    The color is opaque (the tint is pre-blended with @p background) so the
+    result does not depend on whether the DC honours alpha (MSW's plain wxDC
+    does not, which would have made the old color solid pale yellow).
+  */
+  static wxColour TooltipMarkerColour(const wxColour &background);
 
   virtual ~Configuration();
 
@@ -1748,7 +1763,6 @@ private:
   htmlExportFormat m_htmlEquationFormat;
 
   wxColour m_defaultBackgroundColor;
-  wxBrush m_tooltipBrush;
   bool m_greekSidebar_ShowLatinLookalikes;
   #ifdef __WXMSW__
   bool m_useWgnuplot = false;

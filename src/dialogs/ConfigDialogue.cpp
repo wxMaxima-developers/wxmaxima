@@ -29,6 +29,7 @@
 */
 
 #include "ConfigDialogue.h"
+#include "AdaptiveSplitter.h"
 #include "SvgBitmap.h"
 #ifdef WXM_USE_AI_TOOLS
 #include "ai/AiProvider.h"
@@ -63,6 +64,7 @@
 #include <wx/mstream.h>
 #include <wx/persist/toplevel.h>
 #include <wx/scrolwin.h>
+#include <wx/wrapsizer.h>
 #include <wx/settings.h>
 #include <wx/txtstrm.h>
 #include <wx/zipstrm.h>
@@ -301,7 +303,6 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent)
   SetCheckboxValues();
 
   Bind(wxEVT_CLOSE_WINDOW, &ConfigDialogue::OnClose, this);
-  Bind(wxEVT_LISTBOX, &ConfigDialogue::OnChangeStyle, this, listbox_styleFor);
   Bind(wxEVT_COMBOBOX, &ConfigDialogue::OnChangeWarning, this, language_id);
   Bind(wxEVT_CHECKBOX, &ConfigDialogue::OnCheckbox, this, checkbox_bold);
   Bind(wxEVT_CHECKBOX, &ConfigDialogue::OnCheckbox, this, checkbox_italic);
@@ -332,6 +333,54 @@ ConfigDialogue::~ConfigDialogue() {
     m_sampleWorksheet->Destroy();
     m_sampleWorksheet = nullptr;
   }
+  // The same for the Worksheet tab's preview, which has a configuration of
+  // its own.
+  if (m_worksheetPreview) {
+    m_worksheetPreview->Destroy();
+    m_worksheetPreview = nullptr;
+  }
+}
+
+void ConfigDialogue::ApplySettingsToPreview() {
+  Configuration *config = m_worksheetPreviewConfiguration.get();
+  // The same as WriteSettings() does with these controls. A setter that
+  // gets the value the configuration already has requests no layout.
+  config->LabelWidth(m_labelWidth->GetValue());
+  config->SetLabelChoice(
+    static_cast<Configuration::showLabels>(m_showUserDefinedLabels->GetSelection()));
+  config->IndentMaths(m_indentMaths->GetValue());
+  config->SetChangeAsterisk(m_changeAsterisk->GetValue());
+  config->HidemultiplicationSign(m_hidemultiplicationSign->GetValue());
+  config->Latin2Greek(m_latin2Greek->GetValue());
+  config->SetKeepPercent(m_keepPercentWithSpecials->GetValue());
+  config->SetDisplayedDigits(m_displayedDigits->GetValue());
+  config->ShowAllDigits(m_displayAllDigits->GetValue() ||
+                        m_linebreaksInLongNums->GetValue());
+  config->LineBreaksInLongNums(m_linebreaksInLongNums->GetValue());
+  config->DigitGrouping(m_digitGrouping->GetValue());
+  config->DigitGroupingMinDigits(m_digitGroupingMinDigits->GetValue());
+  // The radio box's items are in Configuration::OversizedMatrices order.
+  config->SetOversizedMatrices(
+    static_cast<Configuration::OversizedMatrices>(m_oversizedMatrices->GetSelection()));
+}
+
+void ConfigDialogue::UpdateWorksheetPreview(wxm::WorksheetPreview::Topic topic) {
+  if (!m_worksheetPreview || !m_worksheetPreviewConfiguration)
+    return;
+  ApplySettingsToPreview();
+  m_worksheetPreviewTopic = topic;
+  m_worksheetPreview->RecalculateIfNeeded();
+  // Scrolled to the top of the preview, not just into view (which is what
+  // Worksheet::ScrollToCellIfNeeded() does): a heading that is already
+  // visible at the bottom would leave what follows it out of sight.
+  int unitX = 0, unitY = 0;
+  m_worksheetPreview->GetScrollPixelsPerUnit(&unitX, &unitY);
+  if (const auto &heading = m_worksheetPreviewHeadings[static_cast<size_t>(topic)]) {
+    const int top = heading->GetCurrentY() - heading->GetCenter();
+    if ((top >= 0) && (unitY > 0))
+      m_worksheetPreview->Scroll(-1, std::max(top / unitY - 1, 0));
+  }
+  m_worksheetPreview->Refresh();
 }
 
 void ConfigDialogue::UsesvgChanged(
@@ -755,11 +804,18 @@ void ConfigDialogue::SetCheckboxValues() {
 }
 
 wxWindow *ConfigDialogue::CreateWorksheetPanel() {
-  wxScrolled<wxPanel> *panel = new wxScrolled<wxPanel>(m_notebook, wxID_ANY);
+  wxScrolled<wxPanel> *tab = new wxScrolled<wxPanel>(m_notebook, wxID_ANY);
+  tab->SetScrollRate(5 * GetContentScaleFactor(),
+                     5 * GetContentScaleFactor());
+  tab->SetMinSize(wxSize(GetContentScaleFactor() * mMinPanelWidth,
+                         GetContentScaleFactor() * mMinPanelHeight));
+  // The settings, which scroll, share the tab with a sample worksheet that
+  // shows what they do, the way the Style tab shares its room with the
+  // sample worksheet there.
+  AdaptiveSplitter *splitter = new AdaptiveSplitter(tab);
+  wxScrolled<wxPanel> *panel = new wxScrolled<wxPanel>(splitter, wxID_ANY);
   panel->SetScrollRate(5 * GetContentScaleFactor(),
                        5 * GetContentScaleFactor());
-  panel->SetMinSize(wxSize(GetContentScaleFactor() * mMinPanelWidth,
-                           GetContentScaleFactor() * mMinPanelHeight));
 
   wxStaticBoxSizer *displaySizer =
     new wxStaticBoxSizer(wxVERTICAL, panel, _("Display"));
@@ -1095,7 +1151,70 @@ wxWindow *ConfigDialogue::CreateWorksheetPanel() {
 
   panel->FitInside();
 
-  return panel;
+  // The preview. Its configuration is set up only after the worksheet
+  // exists: Worksheet's constructor reads the config file into it.
+  m_worksheetPreviewConfiguration = std::make_unique<Configuration>(*m_configuration);
+  m_worksheetPreviewConfiguration->MakeTemporary();
+  m_worksheetPreview = new Worksheet(splitter, wxID_ANY,
+                                     m_worksheetPreviewConfiguration.get(),
+                                     wxDefaultPosition, wxDefaultSize, false);
+  m_worksheetPreviewConfiguration->SetZoomFactor(1.0);
+  // A sample worksheet doesn't get matrix scrollbars by default (it would
+  // show such a matrix elided); this one has to, to preview that choice.
+  m_worksheetPreviewConfiguration->SetMatrixScrollHost(
+    &m_worksheetPreview->GetMatrixScrollbars());
+  {
+    auto preview = wxm::WorksheetPreview::Make(m_worksheetPreviewConfiguration.get());
+    for (size_t i = 0; i < m_worksheetPreviewHeadings.size(); i++)
+      m_worksheetPreviewHeadings[i] = preview.headings[i];
+    m_worksheetPreview->InsertGroupCells(std::move(preview.tree));
+  }
+
+  // Every setting the preview shows updates it, and scrolls it to the cells
+  // that setting affects.
+  using Topic = wxm::WorksheetPreview::Topic;
+  auto updatesPreview = [this](wxWindow *control, const auto &eventType, Topic topic) {
+    control->Bind(eventType, [this, topic](wxCommandEvent &event) {
+      UpdateWorksheetPreview(topic);
+      event.Skip();
+    });
+  };
+  updatesPreview(m_labelWidth, wxEVT_SPINCTRL, Topic::labels);
+  updatesPreview(m_showUserDefinedLabels, wxEVT_CHOICE, Topic::labels);
+  updatesPreview(m_indentMaths, wxEVT_CHECKBOX, Topic::labels);
+  updatesPreview(m_changeAsterisk, wxEVT_CHECKBOX, Topic::labels);
+  updatesPreview(m_hidemultiplicationSign, wxEVT_CHECKBOX, Topic::labels);
+  updatesPreview(m_latin2Greek, wxEVT_CHECKBOX, Topic::specialSymbols);
+  updatesPreview(m_keepPercentWithSpecials, wxEVT_CHECKBOX, Topic::specialSymbols);
+  updatesPreview(m_displayNDigits, wxEVT_RADIOBUTTON, Topic::longNumbers);
+  updatesPreview(m_displayAllDigits, wxEVT_RADIOBUTTON, Topic::longNumbers);
+  updatesPreview(m_linebreaksInLongNums, wxEVT_RADIOBUTTON, Topic::longNumbers);
+  updatesPreview(m_displayedDigits, wxEVT_SPINCTRL, Topic::longNumbers);
+  updatesPreview(m_digitGrouping, wxEVT_CHECKBOX, Topic::longNumbers);
+  updatesPreview(m_digitGroupingMinDigits, wxEVT_SPINCTRL, Topic::longNumbers);
+  updatesPreview(m_oversizedMatrices, wxEVT_RADIOBOX, Topic::oversizedMatrix);
+  // The scroll position can only be worked out once the preview has a size.
+  m_worksheetPreview->Bind(wxEVT_SIZE, [this](wxSizeEvent &event) {
+    CallAfter([this]() { UpdateWorksheetPreview(m_worksheetPreviewTopic); });
+    event.Skip();
+  });
+
+  // The settings can shrink down to a strip, as they scroll; by default
+  // they get their full width, but leave the preview some height.
+  // Asked of the sizer: a wxScrolled's own best size is whatever little
+  // it needs to scroll.
+  const wxSize panelBest = vsizer->GetMinSize();
+  panel->SetMinSize(wxSize(panelBest.x / 2, FromDIP(100)));
+  splitter->SplitAdaptively(panel, m_worksheetPreview,
+                            wxSize(panelBest.x,
+                                   std::min(panelBest.y, FromDIP(350))));
+  splitter->RememberSashIn(wxS("ConfigDialog/WorksheetSettingsSize"));
+  wxBoxSizer *tabSizer = new wxBoxSizer(wxVERTICAL);
+  tabSizer->Add(splitter, wxSizerFlags(1).Expand());
+  tab->SetSizer(tabSizer);
+  tab->FitInside();
+
+  return tab;
 }
 
 wxWindow *ConfigDialogue::CreateRevertToDefaultsPanel() {
@@ -2776,12 +2895,19 @@ wxWindow *ConfigDialogue::CreatePrintPanel() {
 }
 
 TextStyle ConfigDialogue::GetSelectedStyle() const {
-  return static_cast<TextStyle>(m_styleFor->GetSelection());
+  return m_selectedStyle;
 }
 
 wxWindow *ConfigDialogue::CreateStylePanel() {
   wxScrolled<wxPanel> *panel = new wxScrolled<wxPanel>(m_notebook, wxID_ANY);
-  m_sampleWorksheet = new Worksheet(panel, wxID_ANY, m_configuration.get(),
+  // The style settings and the sample worksheet share the room below the
+  // appearance selector through a splitter: on a small screen the user can
+  // shrink the "Style for" list to see more of the sample worksheet, and the
+  // splitter puts the worksheet beside the settings instead of below them
+  // when that leaves it more room.
+  AdaptiveSplitter *splitter = new AdaptiveSplitter(panel);
+  wxPanel *stylesPanel = new wxPanel(splitter, wxID_ANY);
+  m_sampleWorksheet = new Worksheet(splitter, wxID_ANY, m_configuration.get(),
                                     wxDefaultPosition, wxDefaultSize, false);
   panel->SetScrollRate(5 * GetContentScaleFactor(),
                        5 * GetContentScaleFactor());
@@ -2811,81 +2937,97 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
   vsizer->Add(appearanceSizer,
               wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
 
-  // The styles box
-  wxStaticBoxSizer *stylesBox = new wxStaticBoxSizer(wxVERTICAL, panel, _("Styles"));
+  // The styles box: the "Style for" list on the left; on the right, in as
+  // few rows as fit, everything that edits the selected style. Keeping the
+  // right side short is what lets the splitter below shrink the list: the
+  // settings can't get shorter than that column.
+  wxStaticBoxSizer *stylesBox = new wxStaticBoxSizer(wxVERTICAL, stylesPanel, _("Styles"));
+  wxWindow *stylesParent = stylesBox->GetStaticBox();
   wxBoxSizer *styles_tophbox = new wxBoxSizer(wxHORIZONTAL);
   wxArrayString m_styleFor_choices;
   for (int style = 0; style < NUMBEROFSTYLES; style++) {
     m_styleFor_choices.Add(m_configuration->GetStyleName(static_cast<TextStyle>(style)));
   }
-  m_styleFor = new wxListBox(stylesBox->GetStaticBox(), listbox_styleFor,
+  m_styleFor = new wxListBox(stylesParent, listbox_styleFor,
                              wxDefaultPosition,
                              wxDefaultSize,
                              m_styleFor_choices, wxLB_SINGLE);
   m_styleFor->Bind(wxEVT_LISTBOX, &ConfigDialogue::OnStyleToEditChanged, this);
 
-    wxBoxSizer *vbox_sizer = new wxBoxSizer(wxVERTICAL);
-  m_getStyleFont = new wxButton(stylesBox->GetStaticBox(), style_font_family,
-                                _("Choose font"));
-  m_styleColor = new wxColourPickerCtrl(stylesBox->GetStaticBox(), wxID_ANY, *wxBLACK);
+  m_styleColor = new wxColourPickerCtrl(stylesParent, wxID_ANY, *wxBLACK);
   m_styleColor-> Bind(wxEVT_COLOURPICKER_CHANGED, &ConfigDialogue::OnChangeColor, this);
-  vbox_sizer->Add(m_styleColor, wxSizerFlags().Expand());
-  
+  m_getStyleFont = new wxButton(stylesParent, style_font_family,
+                                _("Choose font"));
   m_boldCB =
-    new wxCheckBox(stylesBox->GetStaticBox(), checkbox_bold, _("Bold"));
+    new wxCheckBox(stylesParent, checkbox_bold, _("Bold"));
   m_italicCB =
-    new wxCheckBox(stylesBox->GetStaticBox(), checkbox_italic, _("Italic"));
+    new wxCheckBox(stylesParent, checkbox_italic, _("Italic"));
   m_slantedCB =
-    new wxCheckBox(stylesBox->GetStaticBox(), checkbox_slanted, _("Slanted"));
-  m_underlinedCB = new wxCheckBox(stylesBox->GetStaticBox(),
+    new wxCheckBox(stylesParent, checkbox_slanted, _("Slanted"));
+  m_underlinedCB = new wxCheckBox(stylesParent,
                                   checkbox_underlined, _("Underlined"));
-  m_strikethroughCB = new wxCheckBox(stylesBox->GetStaticBox(),
+  m_strikethroughCB = new wxCheckBox(stylesParent,
                                      checkbox_strikethrough, _("Strike Through"));
   m_examplePanel =
-    new ExamplePanel(stylesBox->GetStaticBox(), wxID_ANY);
-  
-  vbox_sizer->Add(m_getStyleFont,wxSizerFlags().Expand());
-  
-  wxBoxSizer *fontoptionsizer = new wxBoxSizer(wxVERTICAL);
-  fontoptionsizer->Add(m_boldCB, wxSizerFlags());
-  fontoptionsizer->Add(m_italicCB,wxSizerFlags());
-  fontoptionsizer->Add(m_slantedCB,wxSizerFlags());
-  fontoptionsizer->Add(m_underlinedCB,wxSizerFlags());
-  fontoptionsizer->Add(m_strikethroughCB,wxSizerFlags());
+    new ExamplePanel(stylesParent, wxID_ANY);
+  // Enough for the example text in a moderately large font. It gets more
+  // room whenever the settings are taller than this column.
+  m_examplePanel->SetMinSize(wxSize(-1, 2 * m_examplePanel->GetCharHeight()));
+  // Load and save act on all styles at once, not just on the selected one.
+  // Their tooltips say so, as their place among the controls for the
+  // selected style no longer does.
+  m_loadStyle = new wxButton(stylesParent, load_id, _("Load"));
+  m_saveStyle = new wxButton(stylesParent, save_id, _("Save"));
+  m_loadStyle->SetToolTip(_("Load all styles from a file"));
+  m_saveStyle->SetToolTip(_("Save all styles to a file"));
 
-  wxBoxSizer *style_hbox = new wxBoxSizer(wxHORIZONTAL);
-  style_hbox->Add(fontoptionsizer, wxSizerFlags().Expand());
-  style_hbox->Add(m_examplePanel,
-                  wxSizerFlags(1).Expand().Border(wxALL, 5 * GetContentScaleFactor()));
-  vbox_sizer->Add(style_hbox, wxSizerFlags(1).Expand());
+  // Colour and font side by side. Only the colour gets the spare width: the
+  // font button shows the font's name, so that equal shares would make the
+  // row twice that wide.
+  wxBoxSizer *colorFontSizer = new wxBoxSizer(wxHORIZONTAL);
+  colorFontSizer->Add(m_styleColor, wxSizerFlags(1).Expand());
+  colorFontSizer->Add(m_getStyleFont, wxSizerFlags().Expand());
+
+  // The font options in a row (wrapping onto a second one if the dialog is
+  // narrow), followed by load and save. Stacked beside the example, as they
+  // used to be, the two buttons would make this column -- and thereby the
+  // shortest the settings can get -- two buttons tall.
+  wxWrapSizer *fontoptionsizer = new wxWrapSizer(wxHORIZONTAL);
+  fontoptionsizer->Add(m_boldCB, wxSizerFlags().Border(wxRIGHT, 5 * GetContentScaleFactor()));
+  fontoptionsizer->Add(m_italicCB, wxSizerFlags().Border(wxRIGHT, 5 * GetContentScaleFactor()));
+  fontoptionsizer->Add(m_slantedCB, wxSizerFlags().Border(wxRIGHT, 5 * GetContentScaleFactor()));
+  fontoptionsizer->Add(m_underlinedCB, wxSizerFlags().Border(wxRIGHT, 5 * GetContentScaleFactor()));
+  fontoptionsizer->Add(m_strikethroughCB, wxSizerFlags());
+  wxBoxSizer *optionsLoadSaveSizer = new wxBoxSizer(wxHORIZONTAL);
+  optionsLoadSaveSizer->Add(fontoptionsizer,
+                            wxSizerFlags(1).CenterVertical());
+  optionsLoadSaveSizer->Add(m_loadStyle, wxSizerFlags());
+  optionsLoadSaveSizer->Add(m_saveStyle, wxSizerFlags());
+
+  wxBoxSizer *vbox_sizer = new wxBoxSizer(wxVERTICAL);
+  vbox_sizer->Add(colorFontSizer, wxSizerFlags().Expand());
+  vbox_sizer->Add(optionsLoadSaveSizer,
+                  wxSizerFlags().Expand().Border(wxUP | wxDOWN, 5 * GetContentScaleFactor()));
+  vbox_sizer->Add(m_examplePanel, wxSizerFlags(1).Expand());
+  // Expand: the list takes whatever height the splitter gives the settings.
   styles_tophbox->Add(m_styleFor,
-                    wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
-  styles_tophbox->Add(vbox_sizer, wxSizerFlags(1).Expand());
+                    wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
+  styles_tophbox->Add(vbox_sizer, wxSizerFlags(1).Expand().Border(wxALL, 5 * GetContentScaleFactor()));
   stylesBox->Add(styles_tophbox, wxSizerFlags(1).Expand());
   wxConfigBase *config = wxConfig::Get();
   int styleToEditNum = 0;
   config->Read(wxS("StyleToEdit"), &styleToEditNum);
   if ((styleToEditNum >= TextStyle::NUMBEROFSTYLES) || (styleToEditNum < 0))
     styleToEditNum = 0;
+  m_selectedStyle = static_cast<TextStyle>(styleToEditNum);
   m_styleFor->SetSelection(styleToEditNum);
-
-    // load+save buttons
-  wxBoxSizer *loadSavesizer = new wxBoxSizer(wxVERTICAL);
-  m_loadStyle = new wxButton(stylesBox->GetStaticBox(), load_id, _("Load"));
-  m_saveStyle = new wxButton(stylesBox->GetStaticBox(), save_id, _("Save"));
-  loadSavesizer->Add(
-                     m_loadStyle,
-                     wxSizerFlags().Border(wxUP | wxDOWN, 5 * GetContentScaleFactor()));
-  loadSavesizer->Add(
-                     m_saveStyle,
-                     wxSizerFlags().Border(wxUP | wxDOWN, 5 * GetContentScaleFactor()));
-  style_hbox->Add(loadSavesizer,
-                  wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
 
   wxCommandEvent dummy;
   OnChangeStyle(dummy);
-  vsizer->Add(stylesBox,
-              wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
+  wxBoxSizer *stylesPanelSizer = new wxBoxSizer(wxVERTICAL);
+  stylesPanelSizer->Add(stylesBox,
+              wxSizerFlags(1).Expand().Border(wxALL, 5 * GetContentScaleFactor()));
+  stylesPanel->SetSizer(stylesPanelSizer);
   m_configuration->SetZoomFactor(1.0);
 
   // Load the sample worksheet's contents
@@ -2908,7 +3050,18 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
     tree.DynamicAppend(mp.ParseTag(xmlcells));
     m_sampleWorksheet->InsertGroupCells(std::move(tree));
   }
-  vsizer->Add(m_sampleWorksheet, wxSizerFlags(1).Expand().
+
+  // What the settings look like unshrunk -- with the "Style for" list at its
+  // natural height -- is what they get by default. Moving the sash can then
+  // shrink the list down to a few lines; the column of buttons and check
+  // boxes next to it decides how short the settings can get.
+  const wxSize stylesPreferred = stylesPanel->GetBestSize();
+  m_styleFor->SetMinSize(wxSize(m_styleFor->GetBestSize().x,
+                                4 * m_styleFor->GetCharHeight()));
+  stylesPanel->SetMinSize(stylesPanelSizer->GetMinSize());
+  splitter->SplitAdaptively(stylesPanel, m_sampleWorksheet, stylesPreferred);
+  splitter->RememberSashIn(wxS("ConfigDialog/StyleSettingsSize"));
+  vsizer->Add(splitter, wxSizerFlags(1).Expand().
               Border(wxALL, 5 * GetContentScaleFactor()));
 
   panel->FitInside();
@@ -2916,6 +3069,12 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
 }
 
 void ConfigDialogue::OnStyleToEditChanged(wxCommandEvent &event) {
+  // The event names the newly selected item on every port; the listbox's
+  // GetSelection() doesn't on wxQt yet (see m_selectedStyle).
+  int const selection = event.GetSelection();
+  if ((selection < 0) || (selection >= TextStyle::NUMBEROFSTYLES))
+    return;
+  m_selectedStyle = static_cast<TextStyle>(selection);
   wxConfigBase *config = wxConfig::Get();
   config->Write(wxS("StyleToEdit"), static_cast<int>(GetSelectedStyle()));
   OnChangeStyle(event);
