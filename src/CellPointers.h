@@ -203,12 +203,7 @@ public:
     by itself as soon as Maxima has answered.
   */
   void SetEvaluatingStatement(EditorCell *editor, std::size_t start,
-                              std::size_t end, const wxString &text) {
-    m_evaluatingEditor = editor;
-    m_evaluatingStart = start;
-    m_evaluatingEnd = end;
-    m_evaluatingText = text;
-  }
+                              std::size_t end, const wxString &text);
   /*! The statement range SetEvaluatingStatement() set for \p editor
 
     Empty unless \p editor is the cell that statement is in, its group is the
