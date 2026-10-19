@@ -24,6 +24,7 @@
 */
 
 #include "MaximaResponseReader.h"
+#include "MaximaAuthLine.h"
 #include "wxMaxima.h"
 #include "Maxima.h"
 #include "MaximaVariableUpdates.h"
@@ -203,6 +204,33 @@ void MaximaResponseReader::ReadFirstPrompt(const wxString &data) {
   if (end  == wxNOT_FOUND)
     return;
 
+  // A Maxima that knows MAXIMA_AUTH_CODE starts with an auth= line. Check
+  // it before believing anything else it sent so far, pid= included, and
+  // remove it, so the secret doesn't end up in the log below.
+  {
+    std::string buffer(m_wxMaxima.m_firstPromptBuffer.utf8_str());
+    const MaximaAuthLine authLine =
+      TakeMaximaAuthLine(buffer, std::string(m_wxMaxima.m_maximaAuthString.utf8_str()));
+    m_wxMaxima.m_firstPromptBuffer = wxString::FromUTF8(buffer);
+    switch (authLine) {
+    case MaximaAuthLine::accepted:
+      MaximaAuthenticated();
+      break;
+    case MaximaAuthLine::rejected:
+      wxLogMessage(_("Cannot authenticate Maxima!"));
+      m_wxMaxima.m_firstPromptBuffer.Clear();
+      DistrustMaxima();
+      return;
+    case MaximaAuthLine::absent:
+      // A Maxima from before the auth= line: the key wxMathML.lisp prints
+      // (see ReadSuppressedOutput()) is what authenticates it.
+      break;
+    }
+    end = m_wxMaxima.m_firstPromptBuffer.Find(m_wxMaxima.m_firstPrompt);
+    if (end == wxNOT_FOUND)
+      return;
+  }
+
   m_wxMaxima.m_bytesFromMaxima = 0;
 
   int start = 0;
@@ -353,8 +381,13 @@ void MaximaResponseReader::ReadSuppressedOutput(const wxString &data) {
   // Note the "!= wxNOT_FOUND": wxNOT_FOUND is -1 and therefore truthy,
   // so testing Find()'s result as a bool accepts any key.
   if(data.Find("<wxxml-key>" + m_wxMaxima.m_maximaAuthString + "</wxxml-key>") != wxNOT_FOUND) {
-    wxLogMessage(_("Maxima has authenticated!"));
-    m_wxMaxima.m_maximaAuthenticated = true;
+    MaximaAuthenticated();
+    // Cells the user queued while we waited for this weren't sent; see
+    // MaximaEvaluator::TriggerEvaluation(). Before the first prompt
+    // ReadFirstPrompt() starts them instead.
+    if (!m_wxMaxima.m_first && m_wxMaxima.GetWorksheet() &&
+        !m_wxMaxima.GetWorksheet()->GetEvaluationQueue().Empty())
+      m_wxMaxima.m_evaluator.TriggerEvaluation();
     return;
   }
 
@@ -362,7 +395,15 @@ void MaximaResponseReader::ReadSuppressedOutput(const wxString &data) {
     wxLogMessage(_("Cannot authenticate Maxima!"));
   else
     wxLogMessage(_("Maxima didn't attempt to authenticate!"));
+  DistrustMaxima();
+}
 
+void MaximaResponseReader::MaximaAuthenticated() {
+  wxLogMessage(_("Maxima has authenticated!"));
+  m_wxMaxima.m_maximaAuthenticated = true;
+}
+
+void MaximaResponseReader::DistrustMaxima() {
   // Order matters here, twice: the discard flag must be armed BEFORE the user
   // is told about it, and the dialog must not be shown from within this event
   // handler. A modal box spins a nested event loop, so anything the untrusted

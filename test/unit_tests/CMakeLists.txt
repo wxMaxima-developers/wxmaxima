@@ -313,9 +313,12 @@ add_test(NAME ProcessTree
 
 # The channel wxMaxima interrupts Maxima through (GH #2289): its handshake,
 # and the channel over a real local socket with the test playing the Lisp.
+# Also the auth= line Maxima's own connection may start with, which is checked
+# with the same handshake.
 add_executable(test_InterruptChannel
     test_InterruptChannel.cpp
     ${CMAKE_SOURCE_DIR}/src/InterruptChannelHandshake.cpp
+    ${CMAKE_SOURCE_DIR}/src/MaximaAuthLine.cpp
     ${CMAKE_SOURCE_DIR}/src/MaximaInterruptChannel.cpp
     ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
 target_include_directories(test_InterruptChannel PRIVATE ${CMAKE_SOURCE_DIR}/src)

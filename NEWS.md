@@ -1,5 +1,13 @@
 # Current development version
 
+- Security: another user on the same computer who connected to wxMaxima
+  before Maxima did could have posed as Maxima: wxMaxima sent the secret
+  Maxima proves itself with over that connection, and acted on some of
+  what arrived before the proof, such as a request to export the worksheet
+  to a file of the impostor's choosing. wxMaxima now sends nothing secret,
+  sends no cells and acts on nothing until Maxima has authenticated. A
+  Maxima that sends an auth= line as its first line is checked right
+  away, and the secret no longer shows up in the log.
 - Text pasted into a text cell from a word processor, a web browser or a
   mail program keeps its bold, italic, underline, strikethrough,
   superscript and subscript: wxMaxima now reads the HTML other programs put
