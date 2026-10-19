@@ -1,5 +1,9 @@
 # Current development version
 
+- The statement Maxima is evaluating right now gets a faint yellow
+  background in its code cell, like the red one that marks a statement
+  that caused an error. Its colour can be changed in the configuration
+  dialogue's style list ("Code that is being evaluated").
 - The configuration dialogue's "Worksheet" tab shows a sample worksheet
   next to (or below) its settings, the way the "Style" tab does. Changing
   how labels are shown, the label width, multiplication signs, special

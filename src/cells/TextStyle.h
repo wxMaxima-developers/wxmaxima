@@ -273,6 +273,7 @@ enum TextStyle : int8_t
   TS_IMAGE_BACKDROP     , //!< Drawn behind transparent images (GH #2227)
   TS_ERROR_STATEMENT    , //!< Background of a statement Maxima reported an error for (GH #289)
   TS_ERROR_SPOT         , //!< Background of the place a syntax error was found at (GH #289)
+  TS_EVALUATING_STATEMENT, //!< Background of the statement Maxima is evaluating now
   NUMBEROFSTYLES, //!< This is not a style, but its value tells us how many styles are defined
   TS_INVALID //!< If a text style cannot be determined this value is used
 };

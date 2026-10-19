@@ -1166,6 +1166,15 @@ void EditorCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
     }
 
     //
+    // Mark the statement Maxima is evaluating right now. Before the error
+    // marks, so that those win where both apply.
+    //
+    if (const auto running =
+        m_documentCellPointers->GetEvaluatingStatement(this, m_text))
+      MarkSelection(dc, running->first, running->second,
+                    TS_EVALUATING_STATEMENT);
+
+    //
     // Mark the statements Maxima reported an error for, and within them the
     // place a syntax error was found at (GH #289).
     //
