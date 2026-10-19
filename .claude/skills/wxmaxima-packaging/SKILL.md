@@ -120,6 +120,15 @@ can ship a Maxima version nobody chose - version-syncing that is an open
 follow-up. Bundled components bring their own licence obligations (gnuplot's is
 attributed in-tree).
 
+`snap/snapcraft.yaml`'s `source:` is the git URL, i.e. the repository's
+**default branch**, not the commit being built. `build_snap.yml` rewrites it to
+`source: .` so CI builds the pushed commit; `build_snap_stable.yml` adds a
+`source-tag`. In 2026-10 the GitHub default branch got switched to the ancient
+`BetterTeX` branch, and the edge snap failed with "Failed to generate desktop
+file ... io.github.wxmaxima_developers.wxMaxima.desktop: file does not exist"
+because a 2017 tree was being built. If that message (or a build log showing
+`MathCtrl.cpp`) comes back, check `git ls-remote --symref origin HEAD` first.
+
 ## Release automation
 
 Windows attaches **two** packages, not one: the NSIS installer *and* the
