@@ -119,6 +119,7 @@ set(AI_SOURCE_FILES
 
 set(DIALOG_SOURCE_FILES
     AboutDialog.cpp
+    AdaptiveSplitter.cpp
     ChangeLogDialog.cpp
     FindReplaceDialog.cpp
     FindReplacePane.cpp
