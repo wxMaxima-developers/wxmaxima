@@ -2756,7 +2756,7 @@ static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>CellsToMat
 </div><div class="memdoc">
 
 <p>Keep the cursor where it is on screen while a cell's output changes. </p>
-<p>To be called right before output is added to or removed from a cell: if that cell is above the cursor, the cursor would otherwise move with everything below it. Does nothing if the cursor isn't on screen - see <a class="el" href="classWorksheetLayout.html#a8a366c23ec8831c29b851c22de632c33" title="Keep the cursor still on screen across the next layout pass.">WorksheetLayout::ArmScrollCompensation()</a>. </p>
+<p>To be called right before output is added to or removed from a cell: if that cell is above the cursor, the cursor would otherwise move with everything below it. If the cursor isn't on screen, what is kept still is the topmost group cell in view instead - unless the worksheet is following the evaluation, which scrolls anyway. See <a class="el" href="classWorksheetLayout.html#a8a366c23ec8831c29b851c22de632c33" title="Keep the cursor still on screen across the next layout pass.">WorksheetLayout::ArmScrollCompensation()</a>. </p>
 
 </div>
 </div>

@@ -137,6 +137,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>CancelPendingRecalcul
 <tr class="memitem:a8a366c23ec8831c29b851c22de632c33"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheetLayout.html#a8a366c23ec8831c29b851c22de632c33">ArmScrollCompensation</a> ()</td></tr>
 <tr class="memdesc:a8a366c23ec8831c29b851c22de632c33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Keep the cursor still on screen across the next layout pass.  <br /></td></tr>
 <tr class="separator:a8a366c23ec8831c29b851c22de632c33"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8da83587e2410560502ea29cfde360ea"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheetLayout.html#a8da83587e2410560502ea29cfde360ea">ArmScrollCompensation</a> (<a class="el" href="classGroupCell.html">GroupCell</a> *cell)</td></tr>
+<tr class="memdesc:a8da83587e2410560502ea29cfde360ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Keep <code>cell's</code> top still on screen across the next layout pass.  <br /></td></tr>
+<tr class="separator:a8da83587e2410560502ea29cfde360ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adf65a7a72fc6432980fef95e7ab61bc2"><td class="memItemLeft" align="right" valign="top"><a id="adf65a7a72fc6432980fef95e7ab61bc2" name="adf65a7a72fc6432980fef95e7ab61bc2"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>ScrollCompensationArmed</b> () const</td></tr>
 <tr class="memdesc:adf65a7a72fc6432980fef95e7ab61bc2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is a scroll compensation waiting for the next layout pass to finish? <br /></td></tr>
@@ -151,6 +154,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>GetLastCellsRecalculat
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a080a391250de4c6d75390e8d4c12b116"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheetLayout.html#a080a391250de4c6d75390e8d4c12b116">FirstGroupReachingBelow</a> (<a class="el" href="classGroupCell.html">GroupCell</a> *tree, int y)</td></tr>
+<tr class="memdesc:a080a391250de4c6d75390e8d4c12b116"><td class="mdescLeft">&#160;</td><td class="mdescRight">The first group cell of <code>tree</code> that reaches below document y <code>y</code>.  <br /></td></tr>
+<tr class="separator:a080a391250de4c6d75390e8d4c12b116"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a80d1dc65be67b136399affbb3430bec0"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheetLayout.html#a80d1dc65be67b136399affbb3430bec0">AnchorY</a> (const <a class="el" href="structWorksheetLayout_1_1ScrollAnchor.html">ScrollAnchor</a> &amp;anchor)</td></tr>
 <tr class="memdesc:a80d1dc65be67b136399affbb3430bec0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The document y of <code>anchor's</code> cursor position.  <br /></td></tr>
 <tr class="separator:a80d1dc65be67b136399affbb3430bec0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -261,7 +267,7 @@ Static Public Member Functions</h2></td></tr>
 </div>
 </div>
 <a id="a8a366c23ec8831c29b851c22de632c33" name="a8a366c23ec8831c29b851c22de632c33"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8a366c23ec8831c29b851c22de632c33">&#9670;&#160;</a></span>ArmScrollCompensation()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a8a366c23ec8831c29b851c22de632c33">&#9670;&#160;</a></span>ArmScrollCompensation() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -278,6 +284,67 @@ Static Public Member Functions</h2></td></tr>
 <p>Keep the cursor still on screen across the next layout pass. </p>
 <p>Called just before output is appended to a cell, or removed from it: the cells below it are about to move, the cursor with them if it sits below the changed cell. This remembers where the cursor's cell is now; once the pass has laid everything out, the view is scrolled by however far that cell moved - to the pixel, see <a class="el" href="WorksheetSizeMath_8h.html#a1d9718491ad63b3def0ba9ed538f068b" title="Compute the scroll position that keeps a point of the worksheet still on screen.">ComputeScrollCompensation()</a> - so the cursor, and everything around it, stays where the user was looking.</p>
 <p>Only ever arms once per pass: a second append before the pass has run would measure positions that aren't on screen yet. The caller is expected to only arm if the cursor is visible - scrolling to keep an invisible point still would move the part of the worksheet the user actually is looking at. </p>
+
+</div>
+</div>
+<a id="a8da83587e2410560502ea29cfde360ea" name="a8da83587e2410560502ea29cfde360ea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8da83587e2410560502ea29cfde360ea">&#9670;&#160;</a></span>ArmScrollCompensation() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void WorksheetLayout::ArmScrollCompensation </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td>
+          <td class="paramname"><em>cell</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Keep <code>cell's</code> top still on screen across the next layout pass. </p>
+<p>For when the cursor is out of sight: then the part of the worksheet the user is looking at - of which <code>cell</code> is the topmost group cell - is what must not move. Without it, re-evaluating a cell above the view moved everything in view up when the old output was removed, and down again once the new output arrived; for a plot or anything else slow to compute there was a paint in between, so the view jumped twice.</p>
+<p>Unlike <a class="el" href="classWorksheetLayout.html#a8a366c23ec8831c29b851c22de632c33" title="Keep the cursor still on screen across the next layout pass.">ArmScrollCompensation()</a> this doesn't depend on where the cursor is, so it isn't dropped if the cursor moves before the pass has run. Also only ever arms once per pass, and is a no-op if a compensation is armed already. </p>
+
+</div>
+</div>
+<a id="a080a391250de4c6d75390e8d4c12b116" name="a080a391250de4c6d75390e8d4c12b116"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a080a391250de4c6d75390e8d4c12b116">&#9670;&#160;</a></span>FirstGroupReachingBelow()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classGroupCell.html">GroupCell</a> * WorksheetLayout::FirstGroupReachingBelow </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td>
+          <td class="paramname"><em>tree</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>y</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The first group cell of <code>tree</code> that reaches below document y <code>y</code>. </p>
+<p>With the top of the view as <code>y</code>, that is the topmost group cell the user can see at least part of. Cells that haven't been positioned yet are skipped. nullptr if there is none. </p>
 
 </div>
 </div>
