@@ -527,7 +527,7 @@ public:
   bool HasValidSize() const;
   //! Is the size valid, whether a recalculation is pending or not?
   bool HasStaleSize() const;
-  //! Is the position valid?
+  //! Has this cell been given a position yet? A negative one counts, too.
   bool HasValidPosition() const;
 
   /*! Get the distance between the center and the bottom of this cell

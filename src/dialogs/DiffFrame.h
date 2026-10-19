@@ -35,12 +35,49 @@ public:
   DiffFrame(wxWindow *parent, const wxArrayString &files, Configuration *config);
   virtual ~DiffFrame();
 
+  //! The worksheet of pane @p idx (nullptr if there is no such pane)
+  Worksheet *GetPane(size_t idx) const
+    { return idx < m_worksheets.size() ? m_worksheets[idx] : nullptr; }
+  //! The pane copy commands and select-all act on (see m_activePane)
+  Worksheet *ActivePane() const;
+  /*! Moves to the next (@p down) or previous match of the search field's text
+
+    What the "Find next"/"Find previous" buttons, Enter/Shift+Enter in the
+    search field and F3/Shift+F3 do. Continues in the pane the last match was
+    found in and scrolls the other panes along. Returns false if nothing matched.
+  */
+  bool FindNext(bool down);
+  //! The search field (exposed for the tests)
+  wxSearchCtrl *GetSearchCtrl() const { return m_searchCtrl; }
+
 private:
   void OnScroll(wxScrollWinEvent &event);
   void OnToggleHorizontalSync(wxCommandEvent &event);
   void OnToggleVerticalSync(wxCommandEvent &event);
   void OnSearch(wxCommandEvent &event);
   void OnSearchCancel(wxCommandEvent &event);
+  //! Enter in the search field: next match, or the previous one with Shift
+  void OnSearchEnter(wxCommandEvent &event);
+  void OnFindNext(wxCommandEvent &event);
+  void OnFindPrev(wxCommandEvent &event);
+  //! Ctrl+F: puts the keyboard focus into the search field
+  void OnFocusSearch(wxCommandEvent &event);
+  /*! Copy (wxID_COPY, Ctrl+C) and the "Copy as..." entries of the context menu
+
+    In the main window these commands are handled by the menu bar's handler;
+    the diff viewer has no menu bar, so without this nothing ever reached the
+    clipboard. When a text field has the focus, Ctrl+C copies from that instead.
+  */
+  void OnCopyCommand(wxCommandEvent &event);
+  //! Ctrl+A: selects the whole active pane (or the focused text field's text)
+  void OnSelectAll(wxCommandEvent &event);
+  /*! Searches for @p query in the panes, starting with the one that holds the
+    last match, and scrolls the other panes along to a match.
+
+    @p incremental is true while the user types: the match is then searched
+    for from where the search started, so it can grow to cover what was typed.
+  */
+  bool SearchPanes(const wxString &query, bool down, bool incremental);
   void OnDiffNext(wxCommandEvent &event);
   void OnDiffPrev(wxCommandEvent &event);
 
@@ -57,13 +94,14 @@ private:
   std::vector<std::unique_ptr<Configuration>> m_worksheetConfigurations;
   Configuration *m_configuration;
   wxSearchCtrl *m_searchCtrl = nullptr;
-  wxRadioButton *m_searchDownRadio = nullptr;
-  wxRadioButton *m_searchUpRadio = nullptr;
+  //! The pane the last match was found in; searching continues there.
+  size_t m_searchPane = 0;
+  //! The pane the user last clicked into or focused: target of copy/select-all.
+  size_t m_activePane = 0;
   int m_currentDiffIdx = -1;
   bool m_syncing = false;
   bool m_syncHorizontal = true;
   bool m_syncVertical = true;
-  bool m_searchDown = true;
 
   void LoadFiles(const wxArrayString &files);
   void AlignCells();

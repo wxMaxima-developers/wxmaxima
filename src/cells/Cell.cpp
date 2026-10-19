@@ -640,7 +640,15 @@ bool Cell::HasStaleSize() const {
 }
 
 bool Cell::HasValidPosition() const {
-  return (m_currentPoint.x >= 0) && (m_currentPoint.y >= 0);
+  // (-1, -1) is what m_currentPoint starts out as, i.e. "never positioned".
+  // Any other position is a real one, even a negative one: the entries of a
+  // scrolled matrix (MatrCell, OversizedMatrices::scroll) sit left of or
+  // above the worksheet's origin once they have been scrolled past it, and
+  // an entry that only starts there can still reach into the viewport. Had
+  // such a cell counted as unpositioned, it wouldn't draw itself, and a
+  // fraction at the start of a sum vanished from a scrolled matrix while the
+  // rest of the sum was still visible.
+  return m_currentPoint != wxPoint(-1, -1);
 }
 
 void Cell::SetConfigurationList(Configuration *config) {

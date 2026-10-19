@@ -38,6 +38,7 @@ AFontSize Configuration::Scale_Px(AFontSize) const { return AFontSize(10.0); }
 wxFontStyle Configuration::IsItalic(long) const { return {}; }
 wxColour Configuration::GetColor(TextStyle) { return {}; }
 bool Configuration::HideMarkerForThisMessage(wxString) { return false; }
+wxBrush Configuration::GetTooltipBrush() const { return *wxWHITE_BRUSH; }
 void Configuration::NotifyOfCellRedraw(const Cell *) {}
 // The canvas width, so a test can make room for an image by setting it; 1, as
 // this stub always used to return, while it is unset.

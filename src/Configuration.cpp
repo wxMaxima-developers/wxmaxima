@@ -187,7 +187,6 @@ Configuration::Configuration(const Configuration &o) :
   m_documentclassOptions(o.m_documentclassOptions),
   m_htmlEquationFormat(o.m_htmlEquationFormat),
   m_defaultBackgroundColor(o.m_defaultBackgroundColor),
-  m_tooltipBrush(o.m_tooltipBrush),
   m_greekSidebar_ShowLatinLookalikes(o.m_greekSidebar_ShowLatinLookalikes),
   m_greekSidebar_Show_mu(o.m_greekSidebar_Show_mu),
   m_symbolPaneAdditionalChars(o.m_symbolPaneAdditionalChars),
@@ -560,8 +559,26 @@ void Configuration::UpdateBackgroundBrush() {
 
 void Configuration::SetBackgroundBrush(const wxBrush &brush) {
   m_renderContext.SetBackgroundBrush(brush);
-  m_tooltipBrush = brush;
-  m_tooltipBrush.SetColour(wxColour(255, 255, 192, 128));
+}
+
+wxBrush Configuration::GetTooltipBrush() const {
+  return *wxTheBrushList->FindOrCreateBrush(
+    TooltipMarkerColour(GetBackgroundBrush().GetColour()), wxBRUSHSTYLE_SOLID);
+}
+
+wxColour Configuration::TooltipMarkerColour(const wxColour &background) {
+  wxColour bg = background.IsOk() ? background : *wxWHITE;
+  // Rec. 601 luma: good enough to tell a light from a dark background.
+  const double luma = 0.299 * bg.Red() + 0.587 * bg.Green() + 0.114 * bg.Blue();
+  // Light: what the old half-transparent pale yellow looked like on white.
+  // Dark: a quarter of the way to amber, which keeps light text readable.
+  const wxColour tint = (luma >= 128) ? wxColour(255, 255, 192) : wxColour(255, 200, 0);
+  const double amount = (luma >= 128) ? 0.5 : 0.25;
+  auto mix = [amount](unsigned char from, unsigned char to) {
+    return static_cast<unsigned char>(from + (to - from) * amount + 0.5);
+  };
+  return wxColour(mix(bg.Red(), tint.Red()), mix(bg.Green(), tint.Green()),
+                  mix(bg.Blue(), tint.Blue()));
 }
 
 wxString Configuration::FindProgram(const wxString &location) {
