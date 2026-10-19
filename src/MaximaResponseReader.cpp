@@ -365,7 +365,11 @@ void MaximaResponseReader::ReadMiscText(const wxString &data) {
     // A syntax error's report may arrive in several pieces, and only all of
     // them together tell where the error is (GH #289).
     m_wxMaxima.m_evaluator.AddCommandOutput(data);
-    m_wxMaxima.GetWorksheet()->SetCurrentTextCell(m_wxMaxima.m_outputAppender.ConsoleAppend(data, style));
+    // Text Maxima didn't mark as 2D ASCII-art maths may be broken into lines
+    // (warnings, errors, status messages,...).
+    m_wxMaxima.GetWorksheet()->SetCurrentTextCell(
+      m_wxMaxima.m_outputAppender.ConsoleAppend(
+        data, style, MaximaOutputAppender::BreakableText));
     m_wxMaxima.m_evaluator.MarkSyntaxErrorSpot();
     if (style == MC_TYPE_ERROR)
       m_wxMaxima.m_evaluator.AbortOnError();

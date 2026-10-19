@@ -100,6 +100,19 @@ public:
 
   void SetPromptTooltip(bool use) { m_promptTooltip = use; }
 
+  /*! Mark this cell as the continuation of the text in the cell before it.
+
+    A long line of text Maxima sends is split into one cell per piece it may be
+    broken into lines between (see wxm::SplitAtTextBreaks()), as the worksheet
+    only breaks lines between cells. For such a line to look as if it were a
+    single cell as long as it fits into the window
+    - there is no padding between a cell and its continuation, and
+    - a continuation doesn't start a new line, even in the ASCII-maths style,
+      every other cell of which does.
+  */
+  void SetTextContinuation(bool continuation);
+  bool IsTextContinuation() const override { return m_textContinuation; }
+
   /*! The link drawn at point, if any (GH #2396).
 
     A string Maxima prints -- print("See https://...") or an error message
@@ -210,6 +223,13 @@ protected:
   bool m_promptTooltip : 1 = false;
   //! Does m_displayedText contain a link? Keeps Draw() a single DrawText() if not.
   mutable bool m_hasLinks : 1 = false;
+  //! Does this cell continue the text of the cell before it? See SetTextContinuation().
+  bool m_textContinuation : 1 = false;
+
+  //! The space left of the text: none if we continue the cell before us.
+  wxCoord LeftPadding() const;
+  //! The space right of the text: none if the next cell continues our text.
+  wxCoord RightPadding() const;
 };
 
 #endif // TEXTCELL_H

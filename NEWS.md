@@ -1,5 +1,10 @@
 # Current development version
 
+- Long warnings, error messages, status messages and printf() output are
+  broken into lines to fit the window, after a space, comma, semicolon,
+  dot or one of + - * /. Numbers and web links are never torn apart, and
+  2D ASCII-art maths stays as it is. As long as a line fits, it looks as
+  before, and copying it still gives the line Maxima sent.
 - The statement Maxima is evaluating right now gets a faint yellow
   background in its code cell, like the red one that marks a statement
   that caused an error. Its colour can be changed in the configuration

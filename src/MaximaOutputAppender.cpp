@@ -33,6 +33,7 @@
 #include "cells/TextCell.h"
 #include "cells/LabelCell.h"
 #include "cells/CellList.h"
+#include "TextBreaks.h"
 #include <wx/tokenzr.h>
 #include <wx/utils.h>
 
@@ -85,7 +86,8 @@ void MaximaOutputAppender::ConsoleAppend(wxXmlDocument xml, CellType type,
  * parser via DoConsoleAppend. Also enforces the max-output-cells-per-command
  * limit and strips a trailing </PROMPT> tag.
  */
-TextCell *MaximaOutputAppender::ConsoleAppend(wxString s, CellType type) {
+TextCell *MaximaOutputAppender::ConsoleAppend(wxString s, CellType type,
+                                              AppendOpt opts) {
   if(!m_wxMaxima.GetWorksheet())
     return nullptr;
 
@@ -137,7 +139,7 @@ TextCell *MaximaOutputAppender::ConsoleAppend(wxString s, CellType type) {
     // data from maxima.
     wxBusyCursor crs;
 
-    lastLine = DoRawConsoleAppend(s, type);
+    lastLine = DoRawConsoleAppend(s, type, opts);
   } else if (type == MC_TYPE_PROMPT) {
     m_wxMaxima.m_lastPrompt = s;
 
@@ -149,7 +151,7 @@ TextCell *MaximaOutputAppender::ConsoleAppend(wxString s, CellType type) {
     DoConsoleAppend(wxS("<span>") + s + wxS("</span>"), type,
                     AppendOpt(AppendOpt::NewLine | AppendOpt::BigSkip));
   } else if (type == MC_TYPE_ERROR) {
-    lastLine = DoRawConsoleAppend(s, MC_TYPE_ERROR);
+    lastLine = DoRawConsoleAppend(s, MC_TYPE_ERROR, opts);
     GroupCell *tmp = m_wxMaxima.GetWorksheet()->GetWorkingGroup(true);
 
     if (tmp == nullptr) {
@@ -163,11 +165,11 @@ TextCell *MaximaOutputAppender::ConsoleAppend(wxString s, CellType type) {
       m_wxMaxima.m_evaluator.MarkErrorStatement(tmp);
     }
   } else if (type == MC_TYPE_WARNING) {
-    lastLine = DoRawConsoleAppend(s, MC_TYPE_WARNING);
+    lastLine = DoRawConsoleAppend(s, MC_TYPE_WARNING, opts);
   } else if (type == MC_TYPE_TEXT) {
-    lastLine = DoRawConsoleAppend(s, MC_TYPE_TEXT);
+    lastLine = DoRawConsoleAppend(s, MC_TYPE_TEXT, opts);
   } else if (type == MC_TYPE_ASCIIMATHS) {
-    lastLine = DoRawConsoleAppend(s, MC_TYPE_ASCIIMATHS);
+    lastLine = DoRawConsoleAppend(s, MC_TYPE_ASCIIMATHS, opts);
   } else
     DoConsoleAppend(wxS("<span>") + s + wxS("</span>"), type,
                     AppendOpt::BigSkip);
@@ -256,6 +258,24 @@ TextCell *MaximaOutputAppender::DoRawConsoleAppend(wxString s, CellType type,
     // cell, plus an InsertLine of a never-assigned unique_ptr, used to live
     // here.) If maxima's last line didn't end in a newline its text cell is
     // still incomplete; the first line of the new data completes it.
+    const bool breakable = opts & AppendOpt::BreakableText;
+    // The pieces a line of text is split into for line breaking; just the
+    // line itself if it may not be broken.
+    const auto pieces = [breakable](const wxString &line) {
+      return breakable ? wxm::SplitAtTextBreaks(line)
+                       : std::vector<wxString>{line};
+    };
+    // A new cell holding piece number i of a line.
+    const auto newPiece = [this, type, opts](const wxString &text, size_t i) {
+      auto owned = std::make_unique<TextCell>(m_wxMaxima.GetWorksheet()->GetTree(),
+                                              &m_wxMaxima.m_configuration, text);
+      owned->SetType(type);
+      owned->SetPromptTooltip(opts & AppendOpt::PromptToolTip);
+      if (i > 0)
+        owned->SetTextContinuation(true);
+      return owned;
+    };
+
     TextCell *incompleteTextCell = m_wxMaxima.GetWorksheet()->GetCurrentTextCell();
 
     if (incompleteTextCell) {
@@ -269,8 +289,25 @@ TextCell *MaximaOutputAppender::DoRawConsoleAppend(wxString s, CellType type,
         s.Clear();
       }
 
-      incompleteTextCell->SetValue(newVal);
+      // Split the completed line again, unless the pieces can't be put
+      // directly behind the incomplete cell: it is followed by other output.
+      std::vector<wxString> linePieces{newVal};
+      if (!incompleteTextCell->GetNext() &&
+          (incompleteTextCell->GetGroup() ==
+           m_wxMaxima.GetWorksheet()->GetInsertGroup()))
+        linePieces = pieces(newVal);
+      incompleteTextCell->SetValue(linePieces.front());
+      if (linePieces.size() > 1) {
+        CellListBuilder<Cell> continuation;
+        for (size_t i = 1; i < linePieces.size(); i++)
+          continuation.Append(newPiece(linePieces[i], i));
+        incompleteTextCell->ResetSize(); // its right padding is gone
+        auto *last = dynamic_cast<TextCell *>(continuation.GetLastAppended());
+        m_wxMaxima.GetWorksheet()->InsertLine(std::move(continuation), false);
+        incompleteTextCell = last;
+      }
       if (s.IsEmpty()) {
+        m_wxMaxima.GetWorksheet()->RequestRecalculation(incompleteTextCell->GetGroup());
         return incompleteTextCell;
       }
     }
@@ -286,19 +323,20 @@ TextCell *MaximaOutputAppender::DoRawConsoleAppend(wxString s, CellType type,
         m_wxMaxima.StatusText(
                    wxString::Format(_("Compiling %s"), fileName));
       } else {
-        auto owned = std::make_unique<TextCell>(m_wxMaxima.GetWorksheet()->GetTree(),
-                                                &m_wxMaxima.m_configuration, token);
-        owned->SetType(type);
-        owned->SetPromptTooltip(opts & AppendOpt::PromptToolTip);
-        cell = owned.get();
+        const auto linePieces = pieces(token);
+        for (size_t i = 0; i < linePieces.size(); i++) {
+          auto owned = newPiece(linePieces[i], i);
+          cell = owned.get();
 
-        if (tokens.HasMoreTokens())
-          cell->SetBigSkip(false);
+          if (tokens.HasMoreTokens())
+            cell->SetBigSkip(false);
 
-        auto breakLine = static_cast<bool>(tree);
-        tree.Append(std::move(owned));
-        if (breakLine)
-          tree.GetLastAppended()->ForceBreakLine(true);
+          // Each line but the first starts a new line in the worksheet.
+          auto breakLine = (i == 0) && static_cast<bool>(tree);
+          tree.Append(std::move(owned));
+          if (breakLine)
+            tree.GetLastAppended()->ForceBreakLine(true);
+        }
       }
     }
     m_wxMaxima.GetWorksheet()->InsertLine(std::move(tree), true);

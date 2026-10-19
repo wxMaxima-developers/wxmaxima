@@ -320,6 +320,14 @@ public:
   //! Does this cell begin with a manual linebreak?
   bool HasHardLineBreak() const { return m_forceBreakLine; }
 
+  /*! Does this cell continue the line of text the cell before it holds?
+
+    Only a TextCell can, see TextCell::SetTextContinuation(). A line break
+    BreakLines_List() puts before such a cell only wraps a long line: it is
+    not part of the text, so copying the text doesn't turn it into a newline.
+  */
+  virtual bool IsTextContinuation() const { return false; }
+
   /*! Is this cell directly before or after a line break BreakLines_List() added?
 
     Only matters for a hidden multiplication sign: one at a soft line break is

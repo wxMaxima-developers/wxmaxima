@@ -191,6 +191,7 @@ MathParser::MathParser(Configuration *cfg, AttachmentSource attachments)
       wxS("rightBracketOpensRight"),
       wxS("list"),
       wxS("listdelim"),
+      wxS("continuation"),
       wxS("set"),
       wxS("roundedParens"),
       wxS("needsparen"),
@@ -338,7 +339,12 @@ std::unique_ptr<Cell> MathParser::ParseMiscTextTag(wxXmlNode *node, int depth) {
       style = TS_OPERATOR;
     if (node->GetAttribute(wxS("type")) == wxS("warning"))
       style = TS_WARNING;
-    return ParseText(node->GetChildren(), style, depth);
+    auto cell = ParseText(node->GetChildren(), style, depth);
+    // A piece of a long line of text, see TextCell::SetTextContinuation()
+    if (node->GetAttribute(wxS("continuation")) == wxS("true"))
+      if (auto *text = dynamic_cast<TextCell *>(cell.get()))
+        text->SetTextContinuation(true);
+    return cell;
   }
 }
 

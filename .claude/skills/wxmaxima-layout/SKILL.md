@@ -109,6 +109,23 @@ Recognise these before starting a fresh investigation.
 - **Geometry read too early.** Invariant 1. Symptom: correct after the next
   interaction, wrong on the first paint.
 
+## Long lines of plain text
+
+Output lines are only ever broken *between* cells, so a long line of text
+Maxima sends outside its XML (warnings, errors, printf()) is split into one
+`TextCell` per piece `wxm::SplitAtTextBreaks()` returns (`src/TextBreaks.h`),
+every piece after the first marked `SetTextContinuation()`. Text that arrives
+as `<wxxml-asciimath>` is never split: its columns line up only if each line
+is one cell. A continuation must be invisible while the line fits, which is
+what the flag is for: no padding between a cell and its continuation
+(`TextCell::LeftPadding()`/`RightPadding()` -- the predecessor asks its
+`GetNext()`, so appending a continuation to an existing cell needs that cell's
+`ResetSize()`), no forced line break even in the ASCII-maths style (which
+otherwise forces one on every cell), no newline in copied text or in the TeX
+export at a soft break before it, and a `continuation="true"` attribute so a
+saved worksheet doesn't come back one piece per line.
+`test_TextContinuation` pins all of these.
+
 ## Keeping the cursor still while output arrives
 
 `Worksheet::InsertLine()` calls `WorksheetLayout::ArmScrollCompensation()`

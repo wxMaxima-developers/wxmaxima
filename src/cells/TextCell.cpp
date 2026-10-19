@@ -126,6 +126,30 @@ TextCell::TextCell(GroupCell *group, const TextCell &cell)
   SetBigSkip(cell.HasBigSkip());
   SetHighlight(cell.GetHighlight());
   m_dontEscapeOpeningParenthesis = cell.m_dontEscapeOpeningParenthesis;
+  m_textContinuation = cell.m_textContinuation;
+}
+
+void TextCell::SetTextContinuation(bool continuation) {
+  if (m_textContinuation == continuation)
+    return;
+  m_textContinuation = continuation;
+  ResetSize();
+}
+
+wxCoord TextCell::LeftPadding() const {
+  // ASCII maths is drawn without a left padding; its width still contains
+  // one, which ends up right of the text.
+  if (m_textContinuation || (GetTextStyle() == TS_ASCIIMATHS))
+    return 0;
+  return MC_TEXT_PADDING;
+}
+
+wxCoord TextCell::RightPadding() const {
+  if (GetNext() && GetNext()->IsTextContinuation())
+    return 0;
+  if (GetTextStyle() == TS_ASCIIMATHS)
+    return 2 * MC_TEXT_PADDING;
+  return MC_TEXT_PADDING;
 }
 
 DEFINE_CELL(TextCell)
@@ -462,7 +486,7 @@ wxString TextCell::GetLinkAt(wxPoint point) {
   if (!dc)
     return {};
   SetFont(dc, m_fontSize_Scaled);
-  const wxCoord padding = (GetTextStyle() != TS_ASCIIMATHS) ? MC_TEXT_PADDING : 0;
+  const wxCoord padding = LeftPadding();
   wxString link;
   WalkTextRuns(dc, m_currentPoint.x + padding,
                [&](const wxString &text, wxCoord x, wxCoord width, bool isLink) {
@@ -481,7 +505,9 @@ void TextCell::Recalculate(AFontSize fontsize) const {
     // which makes ConfigChanged() false for the rest of this pass.
     const bool configChanged = ConfigChanged();
     Cell::Recalculate(fontsize);
-    if (GetTextStyle() == TS_ASCIIMATHS)
+    // Every line of ASCII maths starts a new line - but a piece of a line
+    // that was split up only to allow breaking it doesn't.
+    if ((GetTextStyle() == TS_ASCIIMATHS) && !m_textContinuation)
       ForceBreakLine(true);
     if (configChanged)
         UpdateDisplayedText();
@@ -496,7 +522,7 @@ void TextCell::Recalculate(AFontSize fontsize) const {
                                   m_displayedText, 0, 0, false);
     m_height = sz.GetHeight();
 
-    m_width += 2 * MC_TEXT_PADDING;
+    m_width += LeftPadding() + RightPadding();
     m_height += 2 * MC_TEXT_PADDING;
     m_widthAtLineBreak = m_width;
 
@@ -519,9 +545,7 @@ void TextCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
 
   if (DrawThisCell() && !IsDrawnHidden()) {
 
-    int padding = 0;
-    if (GetTextStyle() != TS_ASCIIMATHS)
-      padding = MC_TEXT_PADDING;
+    const wxCoord padding = LeftPadding();
 
     SetFont(dc, m_fontSize_Scaled);
     SetTextColor(dc);
@@ -676,7 +700,9 @@ wxString TextCell::ToString() const {
   default: {
   }
   }
-  if (GetNext() && GetNext()->BreakLineHere())
+  // A soft line break before a continuation of our text only wraps it.
+  if (GetNext() && GetNext()->BreakLineHere() &&
+      !GetNext()->IsTextContinuation())
     text += "\n";
 
   return text;
@@ -743,7 +769,9 @@ wxString TextCell::ToMatlab() const {
   default: {
   }
   }
-  if (GetNext() && GetNext()->BreakLineHere())
+  // A soft line break before a continuation of our text only wraps it.
+  if (GetNext() && GetNext()->BreakLineHere() &&
+      !GetNext()->IsTextContinuation())
     text += "\n";
 
   return text;
@@ -1389,6 +1417,9 @@ wxString TextCell::GetXMLFlags() const {
 
   if (GetTextStyle() == TS_ASCIIMATHS)
     flags += wxS(" type=\"ASCII-Art\"");
+
+  if (m_textContinuation)
+    flags += wxS(" continuation=\"true\"");
 
   if (GetTextStyle() == TS_OPERATOR)
     flags += wxS(" type=\"Operator\"");
