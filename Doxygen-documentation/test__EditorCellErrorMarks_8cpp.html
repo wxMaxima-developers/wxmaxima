@@ -110,6 +110,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a90cebae27d09e4717d218a063ca69ff3"><td class="memItemLeft" align="right" valign="top"><a id="a90cebae27d09e4717d218a063ca69ff3" name="a90cebae27d09e4717d218a063ca69ff3"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;A failing statement and its syntax error are marked&quot;)</td></tr>
 <tr class="separator:a90cebae27d09e4717d218a063ca69ff3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2058b05fde722f262988486dd1a360d"><td class="memItemLeft" align="right" valign="top"><a id="ad2058b05fde722f262988486dd1a360d" name="ad2058b05fde722f262988486dd1a360d"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;The statement <a class="el" href="classMaxima.html">Maxima</a> is evaluating is highlighted&quot;)</td></tr>
+<tr class="separator:ad2058b05fde722f262988486dd1a360d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06df7029011fe181f338255fa9645905"><td class="memItemLeft" align="right" valign="top"><a id="a06df7029011fe181f338255fa9645905" name="a06df7029011fe181f338255fa9645905"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>wxDECLARE_APP</b> (<a class="el" href="classTestApp.html">TestApp</a>)</td></tr>
 <tr class="separator:a06df7029011fe181f338255fa9645905"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -120,6 +123,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>main</b> (int argc, ch
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Tests the marks a code cell shows where <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> reported an error (GH #289): the statement that failed, and in it the place a syntax error was found at. </p>
 <p>The marks belong to the text they were set for. Pinned here: they are painted, only while the text is unchanged, and only where they were set.</p>
+<p>Also the highlight of the statement <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> is evaluating right now, which is drawn the same way.</p>
 <p>Windowless: real GroupCell/EditorCell against a memory-DC <a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a>, no <a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a>, no wxFrame &ndash; the test_EditorCellTabs pattern. </p>
 </div></div><!-- contents -->
 <!-- start footer part -->

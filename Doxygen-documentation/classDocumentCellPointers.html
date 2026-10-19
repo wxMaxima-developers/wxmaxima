@@ -188,12 +188,49 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ClearSelectionString<
 const <a class="el" href="classDocumentCellPointers_1_1ErrorList.html">ErrorList</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>GetErrorList</b> () const</td></tr>
 <tr class="memdesc:aeee04432e0c023a81cd5b9c1215b6488"><td class="mdescLeft">&#160;</td><td class="mdescRight">The list of cells maxima has complained about errors in (read-only view). <br /></td></tr>
 <tr class="separator:aeee04432e0c023a81cd5b9c1215b6488"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9cb62e49c155a033c9a1cd5a4caf7a3d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDocumentCellPointers.html#a9cb62e49c155a033c9a1cd5a4caf7a3d">SetEvaluatingStatement</a> (<a class="el" href="classEditorCell.html">EditorCell</a> *editor, std::size_t start, std::size_t end, const wxString &amp;text)</td></tr>
+<tr class="memdesc:a9cb62e49c155a033c9a1cd5a4caf7a3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The statement of the working group's cell that <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> is evaluating now.  <br /></td></tr>
+<tr class="separator:a9cb62e49c155a033c9a1cd5a4caf7a3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af244ec243f8a83b3396191d8f732ccf0"><td class="memItemLeft" align="right" valign="top">std::optional&lt; std::pair&lt; std::size_t, std::size_t &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDocumentCellPointers.html#af244ec243f8a83b3396191d8f732ccf0">GetEvaluatingStatement</a> (const <a class="el" href="classEditorCell.html">EditorCell</a> *editor, const wxString &amp;text) const</td></tr>
+<tr class="memdesc:af244ec243f8a83b3396191d8f732ccf0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The statement range <a class="el" href="classDocumentCellPointers.html#a9cb62e49c155a033c9a1cd5a4caf7a3d" title="The statement of the working group&#39;s cell that Maxima is evaluating now.">SetEvaluatingStatement()</a> set for <code>editor</code>.  <br /></td></tr>
+<tr class="separator:af244ec243f8a83b3396191d8f732ccf0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The document-model half of the cell-pointer registry. </p>
 <p>These pointers describe the edited document itself: what is selected, which editor is active or answering maxima's question, which text cell maxima's incoming output is appended to, which group cell maxima is working on, and which group cells hold errors. None of them depend on how the document is displayed, so this half will eventually be owned by <a class="el" href="classWorksheetDocument.html" title="The view-independent state and commands of an edited worksheet document.">WorksheetDocument</a>.</p>
 <p>Every stored pointer is a <a class="el" href="classCellPtr.html" title="A weak non-owning pointer that becomes null whenever the observed object is destroyed.">CellPtr</a>, which auto-nulls when its cell is destroyed, so a stale reference reads as null instead of dangling. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="af244ec243f8a83b3396191d8f732ccf0" name="af244ec243f8a83b3396191d8f732ccf0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af244ec243f8a83b3396191d8f732ccf0">&#9670;&#160;</a></span>GetEvaluatingStatement()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt; std::pair&lt; std::size_t, std::size_t &gt; &gt; DocumentCellPointers::GetEvaluatingStatement </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classEditorCell.html">EditorCell</a> *&#160;</td>
+          <td class="paramname"><em>editor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
+          <td class="paramname"><em>text</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The statement range <a class="el" href="classDocumentCellPointers.html#a9cb62e49c155a033c9a1cd5a4caf7a3d" title="The statement of the working group&#39;s cell that Maxima is evaluating now.">SetEvaluatingStatement()</a> set for <code>editor</code>. </p>
+<p>Empty unless <code>editor</code> is the cell that statement is in, its group is the one <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> works on and its text is still <code>text</code>. </p>
+
+</div>
+</div>
 <a id="a6b2509d78965e586e72155c43849cd93" name="a6b2509d78965e586e72155c43849cd93"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6b2509d78965e586e72155c43849cd93">&#9670;&#160;</a></span>GetSelectedMatrixBlock()</h2>
 
@@ -273,6 +310,49 @@ const <a class="el" href="classDocumentCellPointers_1_1ErrorList.html">ErrorList
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a9cb62e49c155a033c9a1cd5a4caf7a3d" name="a9cb62e49c155a033c9a1cd5a4caf7a3d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9cb62e49c155a033c9a1cd5a4caf7a3d">&#9670;&#160;</a></span>SetEvaluatingStatement()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void DocumentCellPointers::SetEvaluatingStatement </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classEditorCell.html">EditorCell</a> *&#160;</td>
+          <td class="paramname"><em>editor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>start</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>end</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
+          <td class="paramname"><em>text</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The statement of the working group's cell that <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> is evaluating now. </p>
+<p><a class="el" href="classA.html">A</a> half-open range [start, end) into the text of <code>editor</code>, which <a class="el" href="classEditorCell.html#ae1ea47fbaf84aa982f91f717101d743f" title="Pass 3 (Paint): Renders the cell using pre-calculated coordinates.">EditorCell::Draw()</a> highlights. <code>text</code> is that text at the time: the range only means something while the cell still reads the same. The mark is only drawn while <code>editor's</code> group is the working group, so it vanishes by itself as soon as <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> has answered. </p>
 
 </div>
 </div>
