@@ -1,5 +1,10 @@
 # Current development version
 
+- The style editor in the configuration dialogue edits the style that was
+  clicked: with wxWidgets' Qt port each click showed, and each following
+  change went to, the style selected before. In dark appearance a font
+  chosen for "Code default" or "Math default" now also reaches the styles
+  that share it, as it always did in light appearance (GH #2527).
 - Text pasted into a text cell from a word processor, a web browser or a
   mail program keeps its bold, italic, underline, strikethrough,
   superscript and subscript: wxMaxima now reads the HTML other programs put
