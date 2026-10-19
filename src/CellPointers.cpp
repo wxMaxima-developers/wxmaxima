@@ -152,3 +152,13 @@ GroupCell *DocumentCellPointers::GetWorkingGroup(bool resortToLast) const {
   return (m_workingGroup || !resortToLast) ? m_workingGroup
     : m_lastWorkingGroup;
 }
+
+std::optional<std::pair<std::size_t, std::size_t>>
+DocumentCellPointers::GetEvaluatingStatement(const EditorCell *editor,
+                                             const wxString &text) const {
+  if (!editor || (m_evaluatingEditor.get() != editor) || !m_workingGroup ||
+      (editor->GetGroup() != m_workingGroup.get()) ||
+      (m_evaluatingEnd <= m_evaluatingStart) || (text != m_evaluatingText))
+    return std::nullopt;
+  return std::make_pair(m_evaluatingStart, m_evaluatingEnd);
+}

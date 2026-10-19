@@ -186,6 +186,7 @@ const wxString &Styles::Name(TextStyle textStyle) {
     {TS_IMAGE_BACKDROP, _("Backdrop of transparent images")},
     {TS_ERROR_STATEMENT, _("Code that caused an error")},
     {TS_ERROR_SPOT, _("Place a syntax error was found at")},
+    {TS_EVALUATING_STATEMENT, _("Code that is being evaluated")},
     {TS_OUTDATED, _("Color of Outdated cells")},
     {TS_CODE_VARIABLE, _("Code highlighting: Variables")},
     {TS_CODE_FUNCTION, _("Code highlighting: Functions")},
@@ -261,6 +262,8 @@ void Styles::SetDefaults() {
   // has to stay readable on them.
   m_styles[TS_ERROR_STATEMENT].Color(255, 228, 228);
   m_styles[TS_ERROR_SPOT].Color(255, 170, 170);
+  // A faint yellow, distinct from the error marks and the selection.
+  m_styles[TS_EVALUATING_STATEMENT].Color(255, 246, 200);
   m_styles[TS_OUTDATED].Color(153, 153, 153);
 }
 
@@ -312,6 +315,7 @@ void Styles::SetDarkDefaults() {
   // Error marks dark enough for light text on them.
   m_stylesDark[TS_ERROR_STATEMENT].Color(75, 30, 30);
   m_stylesDark[TS_ERROR_SPOT].Color(140, 40, 40);
+  m_stylesDark[TS_EVALUATING_STATEMENT].Color(70, 62, 25);
 }
 
 void Styles::ClearCaches() {
@@ -394,6 +398,7 @@ const std::vector<std::pair<TextStyle, wxString>> &Styles::ConfigKeys() {
     {TS_IMAGE_BACKDROP, wxS("Style/ImageBackdrop/")},
     {TS_ERROR_STATEMENT, wxS("Style/ErrorStatement/")},
     {TS_ERROR_SPOT, wxS("Style/ErrorSpot/")},
+    {TS_EVALUATING_STATEMENT, wxS("Style/EvaluatingStatement/")},
     {TS_OUTDATED, wxS("Style/Outdated/")},
   };
   return keys;

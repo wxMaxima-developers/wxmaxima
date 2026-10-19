@@ -473,6 +473,14 @@ void MaximaEvaluator::TriggerEvaluation() {
       }
 
       m_wxMaxima.GetWorksheet()->SetWorkingGroup(tmp);
+      // Highlight the statement that is about to be evaluated. The mark
+      // disappears by itself once the working group is reset.
+      if (tmp->GetEditable() && (m_commandStart >= 0) &&
+          (m_wxMaxima.m_commandIndex > m_commandStart))
+        m_wxMaxima.GetWorksheet()->GetDocumentCellPointers().SetEvaluatingStatement(
+          tmp->GetEditable(), static_cast<std::size_t>(m_commandStart),
+          static_cast<std::size_t>(m_wxMaxima.m_commandIndex),
+          tmp->GetEditable()->GetValue());
       tmp->GetPrompt()->SetValue(m_wxMaxima.m_lastPrompt);
       tmp->ResetSize();
 

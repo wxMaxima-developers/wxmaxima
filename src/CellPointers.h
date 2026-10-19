@@ -27,6 +27,7 @@
 #include "cells/Cell.h"
 #include "cells/MatrixBlock.h"
 #include <optional>
+#include <utility>
 #include <wx/string.h>
 #include <vector>
 
@@ -193,6 +194,29 @@ public:
   //! The list of cells maxima has complained about errors in (read-only view).
   const ErrorList &GetErrorList() const { return m_errorList; }
 
+  /*! The statement of the working group's cell that Maxima is evaluating now
+
+    A half-open range [start, end) into the text of \p editor, which
+    EditorCell::Draw() highlights. \p text is that text at the time: the range
+    only means something while the cell still reads the same. The mark is
+    only drawn while \p editor's group is the working group, so it vanishes
+    by itself as soon as Maxima has answered.
+  */
+  void SetEvaluatingStatement(EditorCell *editor, std::size_t start,
+                              std::size_t end, const wxString &text) {
+    m_evaluatingEditor = editor;
+    m_evaluatingStart = start;
+    m_evaluatingEnd = end;
+    m_evaluatingText = text;
+  }
+  /*! The statement range SetEvaluatingStatement() set for \p editor
+
+    Empty unless \p editor is the cell that statement is in, its group is the
+    one Maxima works on and its text is still \p text.
+  */
+  std::optional<std::pair<std::size_t, std::size_t>>
+  GetEvaluatingStatement(const EditorCell *editor, const wxString &text) const;
+
 private:
   /*! The group cell maxima is currently working on.
 
@@ -242,6 +266,11 @@ private:
   wxString m_selectionString;
   //! The list of cells maxima has complained about errors in.
   ErrorList m_errorList;
+  //! See SetEvaluatingStatement()
+  CellPtr<EditorCell> m_evaluatingEditor;
+  std::size_t m_evaluatingStart = 0;
+  std::size_t m_evaluatingEnd = 0;
+  wxString m_evaluatingText;
 };
 
 /*! The view/interaction half of the cell-pointer registry.
