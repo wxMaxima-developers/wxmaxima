@@ -4,6 +4,14 @@
   "Display all and allow linebreaks in long numbers" is switched on while
   it is shown: breaking the number into lines reset the size of its cell
   while the cell was being laid out.
+- Security: another user on the same computer who connected to wxMaxima
+  before Maxima did could have posed as Maxima: wxMaxima sent the secret
+  Maxima proves itself with over that connection, and acted on some of
+  what arrived before the proof, such as a request to export the worksheet
+  to a file of the impostor's choosing. wxMaxima now sends nothing secret,
+  sends no cells and acts on nothing until Maxima has authenticated. A
+  Maxima that sends an auth= line as its first line is checked right
+  away, and the secret no longer shows up in the log.
 - A floating find/replace sidebar or wizard can still be made wider, but
   no longer higher than its contents, which only added empty space. A
   wizard that needs less room than the one before it shrinks its window,

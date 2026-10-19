@@ -27,6 +27,7 @@
 */
 
 #include "InterruptChannelHandshake.h"
+#include "MaximaAuthLine.h"
 #include "MaximaInterruptChannel.h"
 #include <wx/app.h>
 #include <wx/evtloop.h>
@@ -46,6 +47,70 @@ using State = InterruptChannelHandshake::State;
 
 static State FeedString(InterruptChannelHandshake &handshake, const std::string &text) {
   return handshake.Feed(text.data(), text.size());
+}
+
+SCENARIO("Maxima's auth= line is checked and never left in the text") {
+  const std::string secret = "s3cr3t+/=";
+  const std::string banner = "pid=4711\nMaxima 5.48.0 https://maxima.sourceforge.io\n(%i1) ";
+  GIVEN("a Maxima without the auth= line") {
+    std::string text = banner;
+    THEN("the line is absent and the text is unchanged") {
+      REQUIRE(TakeMaximaAuthLine(text, secret) == MaximaAuthLine::absent);
+      REQUIRE(text == banner);
+    }
+  }
+  GIVEN("the secret as the first line") {
+    std::string text = "auth=" + secret + "\n" + banner;
+    THEN("it is accepted, and only the banner is left") {
+      REQUIRE(TakeMaximaAuthLine(text, secret) == MaximaAuthLine::accepted);
+      REQUIRE(text == banner);
+    }
+  }
+  GIVEN("the secret with a CR LF line end, after a blank line") {
+    std::string text = "\nauth=" + secret + "\r\n" + banner;
+    THEN("it is accepted") {
+      REQUIRE(TakeMaximaAuthLine(text, secret) == MaximaAuthLine::accepted);
+      REQUIRE(text == "\n" + banner);
+    }
+  }
+  GIVEN("an impostor's wrong secret") {
+    std::string text = "auth=guess\n" + banner;
+    THEN("it is rejected, and the line is removed anyway") {
+      REQUIRE(TakeMaximaAuthLine(text, secret) == MaximaAuthLine::rejected);
+      REQUIRE(text == banner);
+    }
+  }
+  GIVEN("the secret with something appended") {
+    std::string text = "auth=" + secret + "x\n" + banner;
+    THEN("it is rejected") {
+      REQUIRE(TakeMaximaAuthLine(text, secret) == MaximaAuthLine::rejected);
+    }
+  }
+  GIVEN("a prefix of the secret") {
+    std::string text = "auth=" + secret.substr(0, 3) + "\n" + banner;
+    THEN("it is rejected") {
+      REQUIRE(TakeMaximaAuthLine(text, secret) == MaximaAuthLine::rejected);
+    }
+  }
+  GIVEN("an empty auth= line while we have no secret") {
+    std::string text = "auth=\n" + banner;
+    THEN("it is rejected: an empty secret mustn't let anybody in") {
+      REQUIRE(TakeMaximaAuthLine(text, "") == MaximaAuthLine::rejected);
+    }
+  }
+  GIVEN("auth= in the middle of a line") {
+    std::string text = "pid=1 auth=" + secret + "\n(%i1) ";
+    THEN("it isn't the auth line") {
+      REQUIRE(TakeMaximaAuthLine(text, secret) == MaximaAuthLine::absent);
+    }
+  }
+  GIVEN("an auth= line without a line end") {
+    std::string text = "auth=" + secret;
+    THEN("it is rejected and removed") {
+      REQUIRE(TakeMaximaAuthLine(text, secret) == MaximaAuthLine::rejected);
+      REQUIRE(text.empty());
+    }
+  }
 }
 
 SCENARIO("The interrupt channel handshake only accepts the secret") {
