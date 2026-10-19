@@ -1,5 +1,13 @@
 # Current development version
 
+- In a scrolled matrix, the fraction at the start of an entry no longer
+  vanishes while the rest of the entry is still visible: a part of an entry
+  that had been scrolled left of (or above) the worksheet's edge counted as
+  not yet positioned and wasn't drawn.
+- A matrix that scrolls in the worksheet (the "scroll" setting for oversized
+  matrices, or wx_matrix(..., oversized=scroll)) scrolls in the exported
+  HTML, too, instead of running off the page or, as an image, being shrunk
+  to fit.
 - Text pasted into a text cell from a word processor, a web browser or a
   mail program keeps its bold, italic, underline, strikethrough,
   superscript and subscript: wxMaxima now reads the HTML other programs put

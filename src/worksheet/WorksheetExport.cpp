@@ -41,6 +41,7 @@
 #include "cells/EditorCell.h"
 #include "cells/GroupCell.h"
 #include "cells/ImgCellBase.h"
+#include "cells/MatrCell.h"
 #include "graphical_io/BitmapOut.h"
 #include "graphical_io/SVGout.h"
 #include <wx/base64.h>
@@ -560,6 +561,22 @@ void WriteHtmlStyleSheet(wxTextOutputStream &css, wxConfigBase *config) {
   css << wxS("  justify-self: left;\n");
   css << wxS("  white-space: pre-wrap;\n");
   css << wxS("}\n");
+  // An equation holding a matrix the worksheet shows in a scrolling viewport
+  // (Configuration::OversizedMatrices::scroll, or wx_matrix()'s
+  // oversized=scroll) gets one in the browser, too, rather than running off
+  // the page or, as an image, being shrunk until it is unreadable. 80vh
+  // mirrors the 80% of the window a scrolling matrix may be tall on screen.
+  // As a grid item it needs min-width: 0, or the 1fr column would grow to the
+  // equation's full width instead of letting it scroll.
+  css << wxS(".matrixscroll {\n");
+  css << wxS("  overflow: auto;\n");
+  css << wxS("  max-width: 100%;\n");
+  css << wxS("  max-height: 80vh;\n");
+  css << wxS("}\n");
+  css << wxS(".equation > .matrixscroll {\n");
+  css << wxS("  grid-column: 2;\n");
+  css << wxS("  min-width: 0;\n");
+  css << wxS("}\n");
 
   // TABLES
   css << wxS("table {\n");
@@ -942,17 +959,21 @@ namespace {
   \param alt        Already-HTML-escaped alt text.
   \param withBreak  Append a <br> after the tag (for equation images that sit
                     in the running output flow).
+  \param shrinkToFit Limit the image to 90% of the page's width. Off for an
+                    image that sits in a .matrixscroll box, which scrolls
+                    over it at its real size instead.
  */
 wxString HtmlImageTag(const wxString &filePrefix, int count,
                       const wxString &ext, long widthPx, const wxString &alt,
-                      bool withBreak) {
+                      bool withBreak, bool shrinkToFit = true) {
   wxString tag = wxS("  <img src=\"") + filePrefix + wxS("_htmlimg/") +
                  filePrefix + wxString::Format(wxS("_%d"), count) + ext +
                  wxS("\"");
   if (widthPx >= 0)
     tag += wxString::Format(wxS(" width=\"%li\""), widthPx);
-  tag += wxS(" style=\"max-width:90%;\" loading=\"lazy\" alt=\"") + alt +
-         wxS("\">");
+  if (shrinkToFit)
+    tag += wxS(" style=\"max-width:90%;\"");
+  tag += wxS(" loading=\"lazy\" alt=\"") + alt + wxS("\">");
   if (withBreak)
     tag += wxS("<br>");
   return tag + wxS("\n");
@@ -1094,6 +1115,27 @@ void EmitPlainTextOutput(wxString &output, const wxString &labelText,
   output << wxS("</div>\n");
 }
 
+/*! Does this list hold a matrix the worksheet shows in a scrolling viewport?
+
+  Searches the whole tree, not just the top level: a matrix is usually the
+  right-hand side of an equation, or sits inside a list. Asks configuration --
+  the worksheet's own one -- since the configuration a graphical exporter lays
+  the chunk out with always shows matrices in full.
+ */
+bool ContainsScrollingMatrix(const Cell *list,
+                             const Configuration *configuration) {
+  for (const Cell &cell : OnList(list)) {
+    if (const auto *matrix = dynamic_cast<const MatrCell *>(&cell))
+      if (configuration->OversizedMatricesFor(matrix->GetOversizedMode()) ==
+          Configuration::OversizedMatrices::scroll)
+        return true;
+    for (const Cell &inner : OnInner(&cell))
+      if (ContainsScrollingMatrix(&inner, configuration))
+        return true;
+  }
+  return false;
+}
+
 /*! Render one output chunk (equation, image, animation or plain text).
 
   Writes any image file into imgDir and appends the matching <img> tag, an
@@ -1133,6 +1175,18 @@ void ExportOutputChunk(wxString &output, std::unique_ptr<Cell> chunk,
       return;
     }
 
+    // Checked before the chunk is handed on to an image renderer.
+    const bool scrolls = ContainsScrollingMatrix(content, configuration);
+    // A rendered image in a .matrixscroll box keeps its real size; the box
+    // takes the place of the <br>, being a block of its own.
+    const auto scrollableImage = [&output, scrolls](const wxString &imgTag) {
+      if (scrolls)
+        output << wxS("<div class=\"matrixscroll\">\n") << imgTag
+               << wxS("</div>\n");
+      else
+        output << imgTag << wxS("\n");
+    };
+
     switch (configuration->HTMLequationFormat()) {
     case Configuration::svg: {
       auto const alttext =
@@ -1141,10 +1195,10 @@ void ExportOutputChunk(wxString &output, std::unique_ptr<Cell> chunk,
                                              imgDir, filename, count);
       Svgout svgout(&configuration, std::move(chunk), filepath);
 
-      output << HtmlImageTag(filename_encoded, count, wxS(".svg"),
-                             static_cast<long>(svgout.GetSize().x),
-                             alttext, /*withBreak=*/true)
-             << wxS("\n");
+      scrollableImage(HtmlImageTag(filename_encoded, count, wxS(".svg"),
+                                   static_cast<long>(svgout.GetSize().x),
+                                   alttext, /*withBreak=*/!scrolls,
+                                   /*shrinkToFit=*/!scrolls));
       break;
     }
 
@@ -1161,9 +1215,9 @@ void ExportOutputChunk(wxString &output, std::unique_ptr<Cell> chunk,
         static_cast<long>(size.x) / configuration->BitmapScale() -
         2 * borderwidth;
 
-      output << HtmlImageTag(filename_encoded, count, wxS(".png"),
-                             widthPx, alttext, /*withBreak=*/true)
-             << wxS("\n");
+      scrollableImage(HtmlImageTag(filename_encoded, count, wxS(".png"),
+                                   widthPx, alttext, /*withBreak=*/!scrolls,
+                                   /*shrinkToFit=*/!scrolls));
       break;
     }
 
@@ -1179,11 +1233,16 @@ void ExportOutputChunk(wxString &output, std::unique_ptr<Cell> chunk,
         output << wxS("  <span class=\"eqlabel\">")
                << EditorCell::EscapeHTMLChars(labelText)
                << wxS("</span>\n");
-      if (content != nullptr)
+      if (content != nullptr) {
+        if (scrolls)
+          output << wxS("  <div class=\"matrixscroll\">\n");
         output
           << wxS("  <math xmlns=\"http://www.w3.org/1998/Math/MathML\" "
                  "display=\"block\">")
           << content->ListToMathML() << wxS("</math>\n");
+        if (scrolls)
+          output << wxS("  </div>\n");
+      }
       output << wxS("</div>\n");
     }
     }

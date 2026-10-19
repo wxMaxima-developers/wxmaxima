@@ -1125,6 +1125,58 @@ SCENARIO("A matrix too large for the window can scroll in a viewport") {
   }
 }
 
+// A rows x cols matrix whose every entry is a sum of a fraction and a
+// parenthesis, wide enough that, once scrolled, one entry can start left of
+// the worksheet's x == 0 while still reaching into the viewport.
+static wxString WideSumMatrixXml(size_t rows, size_t cols) {
+  wxString xml = wxS("<mth><lbl altCopy=\"%o1\">(%o1) </lbl><tb roundedParens=\"true\">");
+  for (size_t r = 0; r < rows; r++) {
+    xml += wxS("<mtr>");
+    for (size_t c = 0; c < cols; c++)
+      xml += wxS("<mtd><mrow><f><mi>aaaaaaaaaaaaaaaaaaaa</mi><mi>bbbbbbbbbbbbbbbbbbbb</mi></f>"
+                 "<mo>+</mo><p><mi>cccccccccccccccccccc</mi><mo>+</mo>"
+                 "<mi>dddddddddddddddddddd</mi></p></mrow></mtd>");
+    xml += wxS("</mtr>");
+  }
+  return xml + wxS("</tb></mth>");
+}
+
+SCENARIO("A scrolled matrix draws an entry that starts left of the worksheet") {
+  // The worksheet's x == 0 lies a label's width left of the viewport. Cells
+  // used to count a negative position as "not positioned yet" and skipped
+  // drawing themselves, so as an entry was scrolled to the left its leading
+  // parts (here the fraction) vanished before they reached the viewport's
+  // edge, while the rest of the sum was still drawn.
+  g_cfg->SetZoomFactor(1.0);
+  g_cfg->SetCanvasSize(wxSize(600, 300));
+  FakeScrollHost host;
+  ScrollModeWithHost scrollMode(&host);
+  std::unique_ptr<GroupCell> group;
+  MatrCell *matr = LayOutMatrixXml(group, WideSumMatrixXml(2, 8));
+  REQUIRE(matr->HasHorizontalScrollbar());
+
+  Cell *entry = matr->GetInnerCell(0, 2);
+  const wxCoord viewportLeft = matr->ViewportRect().GetLeft();
+  REQUIRE(viewportLeft > 0);
+  REQUIRE(entry->SumOfWidths() > viewportLeft + 10);
+
+  WHEN("it is scrolled so that an entry starts just left of x == 0") {
+    REQUIRE(matr->ScrollTo(wxPoint(matr->ScrollPosition().x +
+                                   entry->GetCurrentX() + 5, 0)));
+    REQUIRE(entry->GetCurrentX() == -5);
+    THEN("the entry still reaches into the viewport") {
+      CHECK(entry->GetCurrentX() + entry->SumOfWidths() > viewportLeft);
+    }
+    THEN("its parts still count as positioned, so they are drawn") {
+      NoClipToDrawRegion noClip(g_cfg);
+      for (Cell &part : OnList(entry)) {
+        CHECK(part.HasValidPosition());
+        CHECK(part.DrawThisCell());
+      }
+    }
+  }
+}
+
 SCENARIO("An oversized matrix nested in another one") {
   g_cfg->SetZoomFactor(1.0);
   g_cfg->SetCanvasSize(wxSize(600, 300));
