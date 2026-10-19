@@ -149,6 +149,7 @@ var menudata={children:[
 {text:"t",url:"functions_enum.html#index_t"}]},
 {text:"Enumerator",url:"functions_eval.html",children:[
 {text:"a",url:"functions_eval.html#index_a"},
+{text:"b",url:"functions_eval.html#index_b"},
 {text:"d",url:"functions_eval.html#index_d"},
 {text:"e",url:"functions_eval.html#index_e"},
 {text:"g",url:"functions_eval.html#index_g"},

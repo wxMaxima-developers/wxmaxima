@@ -213,6 +213,12 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><b>GetSymbolUnicode<
 <tr class="memitem:a6f86c482b724b22e806cdd1b847475e0"><td class="memItemLeft" align="right" valign="top"><a id="a6f86c482b724b22e806cdd1b847475e0" name="a6f86c482b724b22e806cdd1b847475e0"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetPromptTooltip</b> (bool use)</td></tr>
 <tr class="separator:a6f86c482b724b22e806cdd1b847475e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2f2c93fa0ae1d00fc72750c97353702"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTextCell.html#ac2f2c93fa0ae1d00fc72750c97353702">SetTextContinuation</a> (bool continuation)</td></tr>
+<tr class="memdesc:ac2f2c93fa0ae1d00fc72750c97353702"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mark this cell as the continuation of the text in the cell before it.  <br /></td></tr>
+<tr class="separator:ac2f2c93fa0ae1d00fc72750c97353702"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef4a8b15e3c2deb8e576dd9f35f193d7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTextCell.html#aef4a8b15e3c2deb8e576dd9f35f193d7">IsTextContinuation</a> () const override</td></tr>
+<tr class="memdesc:aef4a8b15e3c2deb8e576dd9f35f193d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does this cell continue the line of text the cell before it holds?  <br /></td></tr>
+<tr class="separator:aef4a8b15e3c2deb8e576dd9f35f193d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a49125adf325a2a6c8a5571b8f884d746"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTextCell.html#a49125adf325a2a6c8a5571b8f884d746">GetLinkAt</a> (wxPoint point) override</td></tr>
 <tr class="memdesc:a49125adf325a2a6c8a5571b8f884d746"><td class="mdescLeft">&#160;</td><td class="mdescRight">The link drawn at point, if any (GH #2396).  <br /></td></tr>
 <tr class="separator:a49125adf325a2a6c8a5571b8f884d746"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -797,6 +803,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateToolTip</b> ()<
 <tr class="memitem:a51928b9c5367910d0b0a0273bf1f5691"><td class="memItemLeft" align="right" valign="top"><a id="a51928b9c5367910d0b0a0273bf1f5691" name="a51928b9c5367910d0b0a0273bf1f5691"></a>
 wxSize&#160;</td><td class="memItemRight" valign="bottom"><b>CalculateTextSize</b> (wxDC *dc, const wxString &amp;text, TextCell::TextIndex const index) const</td></tr>
 <tr class="separator:a51928b9c5367910d0b0a0273bf1f5691"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a077f116f91b82afaffc5293aafc1e55d"><td class="memItemLeft" align="right" valign="top"><a id="a077f116f91b82afaffc5293aafc1e55d" name="a077f116f91b82afaffc5293aafc1e55d"></a>
+wxCoord&#160;</td><td class="memItemRight" valign="bottom"><b>LeftPadding</b> () const</td></tr>
+<tr class="memdesc:a077f116f91b82afaffc5293aafc1e55d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The space left of the text: none if we continue the cell before us. <br /></td></tr>
+<tr class="separator:a077f116f91b82afaffc5293aafc1e55d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4bc13297f141c5b60f9ac369d3a4ceb6"><td class="memItemLeft" align="right" valign="top"><a id="a4bc13297f141c5b60f9ac369d3a4ceb6" name="a4bc13297f141c5b60f9ac369d3a4ceb6"></a>
+wxCoord&#160;</td><td class="memItemRight" valign="bottom"><b>RightPadding</b> () const</td></tr>
+<tr class="memdesc:a4bc13297f141c5b60f9ac369d3a4ceb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">The space right of the text: none if the next cell continues our text. <br /></td></tr>
+<tr class="separator:a4bc13297f141c5b60f9ac369d3a4ceb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e96373d1087101e9c1bb115e0320805"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a2e96373d1087101e9c1bb115e0320805">BreakUpAndMark</a> () const</td></tr>
 <tr class="memdesc:a2e96373d1087101e9c1bb115e0320805"><td class="mdescLeft">&#160;</td><td class="mdescRight">Break up the internal cells of this cell, and mark it as broken up.  <br /></td></tr>
 <tr class="separator:a2e96373d1087101e9c1bb115e0320805"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -860,6 +874,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_promptTooltip</b>: 
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_hasLinks</b>: 1 = false</td></tr>
 <tr class="memdesc:af2cf8f1386781dbc17b3d6ba8c8bc7cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does m_displayedText contain a link? Keeps <a class="el" href="classTextCell.html#a7a6e74684bff07839bdf196d3b4d9da2" title="Pass 3 (Paint): Renders the cell using pre-calculated coordinates.">Draw()</a> a single DrawText() if not. <br /></td></tr>
 <tr class="separator:af2cf8f1386781dbc17b3d6ba8c8bc7cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1226e5e9d8ff3a1d964879e155840ede"><td class="memItemLeft" align="right" valign="top"><a id="a1226e5e9d8ff3a1d964879e155840ede" name="a1226e5e9d8ff3a1d964879e155840ede"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_textContinuation</b>: 1 = false</td></tr>
+<tr class="memdesc:a1226e5e9d8ff3a1d964879e155840ede"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does this cell continue the text of the cell before it? See <a class="el" href="classTextCell.html#ac2f2c93fa0ae1d00fc72750c97353702" title="Mark this cell as the continuation of the text in the cell before it.">SetTextContinuation()</a>. <br /></td></tr>
+<tr class="separator:a1226e5e9d8ff3a1d964879e155840ede"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a82735e7fb2d5fd1dbefd3a37ae758b32"><td class="memItemLeft" align="right" valign="top">wxPoint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a82735e7fb2d5fd1dbefd3a37ae758b32">m_currentPoint</a> {-1, -1}</td></tr>
 <tr class="memdesc:a82735e7fb2d5fd1dbefd3a37ae758b32"><td class="mdescLeft">&#160;</td><td class="mdescRight">The point in the work sheet at which this cell begins.  <br /></td></tr>
 <tr class="separator:a82735e7fb2d5fd1dbefd3a37ae758b32"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3023,6 +3041,36 @@ static wxRegEx&#160;</td><td class="memItemRight" valign="bottom"><b>m_roundingE
 
 </div>
 </div>
+<a id="aef4a8b15e3c2deb8e576dd9f35f193d7" name="aef4a8b15e3c2deb8e576dd9f35f193d7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aef4a8b15e3c2deb8e576dd9f35f193d7">&#9670;&#160;</a></span>IsTextContinuation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TextCell::IsTextContinuation </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Does this cell continue the line of text the cell before it holds? </p>
+<p>Only a <a class="el" href="classTextCell.html" title="A Text cell.">TextCell</a> can, see <a class="el" href="classTextCell.html#ac2f2c93fa0ae1d00fc72750c97353702" title="Mark this cell as the continuation of the text in the cell before it.">TextCell::SetTextContinuation()</a>. <a class="el" href="classA.html">A</a> line break <a class="el" href="classCell.html#a81b738e213a8390ed10aefe8d286ce9d" title="Break lines in this list of cells.">BreakLines_List()</a> puts before such a cell only wraps a long line: it is not part of the text, so copying the text doesn't turn it into a newline. </p>
+
+<p>Reimplemented from <a class="el" href="classCell.html#aa0d3df506e5cf07153fdf94fbedb1d4a">Cell</a>.</p>
+
+</div>
+</div>
 <a id="a2282f0bcf5cfbec4d0901e34cb5d90e7" name="a2282f0bcf5cfbec4d0901e34cb5d90e7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2282f0bcf5cfbec4d0901e34cb5d90e7">&#9670;&#160;</a></span>LinkSpans()</h2>
 
@@ -3742,6 +3790,38 @@ static wxRegEx&#160;</td><td class="memItemRight" valign="bottom"><b>m_roundingE
 <p>Sets the TextStyle of this cell. </p>
 
 <p>Reimplemented from <a class="el" href="classCell.html#aa16985efe118cc2442bde2452e7a3942">Cell</a>.</p>
+
+</div>
+</div>
+<a id="ac2f2c93fa0ae1d00fc72750c97353702" name="ac2f2c93fa0ae1d00fc72750c97353702"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2f2c93fa0ae1d00fc72750c97353702">&#9670;&#160;</a></span>SetTextContinuation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TextCell::SetTextContinuation </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>continuation</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Mark this cell as the continuation of the text in the cell before it. </p>
+<p><a class="el" href="classA.html">A</a> long line of text <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> sends is split into one cell per piece it may be broken into lines between (see <a class="el" href="TextBreaks_8cpp.html#acdcf20e58dbd8c57544f063682032328" title="Split one line of text (no newlines) after the characters a line may be broken after.">wxm::SplitAtTextBreaks()</a>), as the worksheet only breaks lines between cells. For such a line to look as if it were a single cell as long as it fits into the window</p><ul>
+<li>there is no padding between a cell and its continuation, and</li>
+<li>a continuation doesn't start a new line, even in the ASCII-maths style, every other cell of which does. </li>
+</ul>
 
 </div>
 </div>

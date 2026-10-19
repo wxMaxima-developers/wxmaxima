@@ -209,6 +209,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>BreakLineHere</b> () 
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasHardLineBreak</b> () const</td></tr>
 <tr class="memdesc:a5a5d819c65594c03a045838db113a1eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does this cell begin with a manual linebreak? <br /></td></tr>
 <tr class="separator:a5a5d819c65594c03a045838db113a1eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0d3df506e5cf07153fdf94fbedb1d4a"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#aa0d3df506e5cf07153fdf94fbedb1d4a">IsTextContinuation</a> () const</td></tr>
+<tr class="memdesc:aa0d3df506e5cf07153fdf94fbedb1d4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does this cell continue the line of text the cell before it holds?  <br /></td></tr>
+<tr class="separator:aa0d3df506e5cf07153fdf94fbedb1d4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5fc9b5019de78ee13826f00876c2d726"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a5fc9b5019de78ee13826f00876c2d726">IsAtLineBreak</a> () const</td></tr>
 <tr class="memdesc:a5fc9b5019de78ee13826f00876c2d726"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is this cell directly before or after a line break <a class="el" href="classCell.html#a81b738e213a8390ed10aefe8d286ce9d" title="Break lines in this list of cells.">BreakLines_List()</a> added?  <br /></td></tr>
 <tr class="separator:a5fc9b5019de78ee13826f00876c2d726"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2826,6 +2829,36 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 <p>True if this cell represents a short number. </p>
 
 <p>Reimplemented in <a class="el" href="classTextCell.html#a8915bfe798fc73eeeeda6bcd7025d6f8">TextCell</a>.</p>
+
+</div>
+</div>
+<a id="aa0d3df506e5cf07153fdf94fbedb1d4a" name="aa0d3df506e5cf07153fdf94fbedb1d4a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0d3df506e5cf07153fdf94fbedb1d4a">&#9670;&#160;</a></span>IsTextContinuation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool Cell::IsTextContinuation </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Does this cell continue the line of text the cell before it holds? </p>
+<p>Only a <a class="el" href="classTextCell.html" title="A Text cell.">TextCell</a> can, see <a class="el" href="classTextCell.html#ac2f2c93fa0ae1d00fc72750c97353702" title="Mark this cell as the continuation of the text in the cell before it.">TextCell::SetTextContinuation()</a>. <a class="el" href="classA.html">A</a> line break <a class="el" href="classCell.html#a81b738e213a8390ed10aefe8d286ce9d" title="Break lines in this list of cells.">BreakLines_List()</a> puts before such a cell only wraps a long line: it is not part of the text, so copying the text doesn't turn it into a newline. </p>
+
+<p>Reimplemented in <a class="el" href="classTextCell.html#aef4a8b15e3c2deb8e576dd9f35f193d7">TextCell</a>.</p>
 
 </div>
 </div>

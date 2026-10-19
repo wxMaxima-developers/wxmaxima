@@ -78,12 +78,16 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:ab1a99b2b284ce8585493a4ec95e2d2e4"><td class="memItemLeft" align="right" valign="top"><a id="ab1a99b2b284ce8585493a4ec95e2d2e4" name="ab1a99b2b284ce8585493a4ec95e2d2e4"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMaximaOutputAppender.html#ab1a99b2b284ce8585493a4ec95e2d2e4">AppendOpt</a> { <b>NewLine</b> = 1
+<tr class="memitem:ab1a99b2b284ce8585493a4ec95e2d2e4"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMaximaOutputAppender.html#ab1a99b2b284ce8585493a4ec95e2d2e4">AppendOpt</a> { <br />
+&#160;&#160;<b>NewLine</b> = 1
 , <b>BigSkip</b> = 2
 , <b>PromptToolTip</b> = 4
-, <b>DefaultOpt</b> = NewLine | BigSkip
+, <a class="el" href="classMaximaOutputAppender.html#ab1a99b2b284ce8585493a4ec95e2d2e4a9d07cf81691899b8b5d8722815ca8888">BreakableText</a> = 8
+, <br />
+&#160;&#160;<b>DefaultOpt</b> = NewLine | BigSkip
+<br />
  }</td></tr>
-<tr class="memdesc:ab1a99b2b284ce8585493a4ec95e2d2e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Options controlling how an appended cell is laid out. <a class="el" href="classA.html">A</a> bit set. <br /></td></tr>
+<tr class="memdesc:ab1a99b2b284ce8585493a4ec95e2d2e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Options controlling how an appended cell is laid out. <a class="el" href="classA.html">A</a> bit set.  <a href="classMaximaOutputAppender.html#ab1a99b2b284ce8585493a4ec95e2d2e4">More...</a><br /></td></tr>
 <tr class="separator:ab1a99b2b284ce8585493a4ec95e2d2e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -91,9 +95,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a791e9754fbd0c3f4bf6b8ad268b5d89f"><td class="memItemLeft" align="right" valign="top"><a id="a791e9754fbd0c3f4bf6b8ad268b5d89f" name="a791e9754fbd0c3f4bf6b8ad268b5d89f"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>MaximaOutputAppender</b> (<a class="el" href="classwxMaxima.html">wxMaxima</a> &amp;wxm)</td></tr>
 <tr class="separator:a791e9754fbd0c3f4bf6b8ad268b5d89f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a131dcebf4f110e1a38b5f7cefd24cd86"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTextCell.html">TextCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMaximaOutputAppender.html#a131dcebf4f110e1a38b5f7cefd24cd86">ConsoleAppend</a> (wxString s, <a class="el" href="Cell_8h.html#accb32ccb3ff8f2c6736a6ebe544894fd">CellType</a> type)</td></tr>
-<tr class="memdesc:a131dcebf4f110e1a38b5f7cefd24cd86"><td class="mdescLeft">&#160;</td><td class="mdescRight">Append one line <code>s</code> of the given <code>type</code> to the console, dispatching on the type (plain text goes verbatim, prompts/other run through the parser).  <br /></td></tr>
-<tr class="separator:a131dcebf4f110e1a38b5f7cefd24cd86"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adff51c434f12aef065c8acadc027349b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTextCell.html">TextCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMaximaOutputAppender.html#adff51c434f12aef065c8acadc027349b">ConsoleAppend</a> (wxString s, <a class="el" href="Cell_8h.html#accb32ccb3ff8f2c6736a6ebe544894fd">CellType</a> type, <a class="el" href="classMaximaOutputAppender.html#ab1a99b2b284ce8585493a4ec95e2d2e4">AppendOpt</a> opts={})</td></tr>
+<tr class="memdesc:adff51c434f12aef065c8acadc027349b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Append one line <code>s</code> of the given <code>type</code> to the console, dispatching on the type (plain text goes verbatim, prompts/other run through the parser). <code>opts</code> is handed on to <a class="el" href="classMaximaOutputAppender.html#aea818c92ea4756eb679e3dcbf9bc5974" title="Append one or more lines of ordinary unicode text to the console.">DoRawConsoleAppend()</a> for plain text.  <br /></td></tr>
+<tr class="separator:adff51c434f12aef065c8acadc027349b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a64dc13a47eeec73c8e2a99c6e2dc2b8e"><td class="memItemLeft" align="right" valign="top"><a id="a64dc13a47eeec73c8e2a99c6e2dc2b8e" name="a64dc13a47eeec73c8e2a99c6e2dc2b8e"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ConsoleAppend</b> (wxXmlDocument xml, <a class="el" href="Cell_8h.html#accb32ccb3ff8f2c6736a6ebe544894fd">CellType</a> type, const wxString &amp;userLabel={})</td></tr>
 <tr class="memdesc:a64dc13a47eeec73c8e2a99c6e2dc2b8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Append a parsed 2D-maths XML fragment to the console. <br /></td></tr>
@@ -106,9 +110,30 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>DoConsoleAppend</b> (
 <tr class="memdesc:aea818c92ea4756eb679e3dcbf9bc5974"><td class="mdescLeft">&#160;</td><td class="mdescRight">Append one or more lines of ordinary unicode text to the console.  <br /></td></tr>
 <tr class="separator:aea818c92ea4756eb679e3dcbf9bc5974"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="ab1a99b2b284ce8585493a4ec95e2d2e4" name="ab1a99b2b284ce8585493a4ec95e2d2e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab1a99b2b284ce8585493a4ec95e2d2e4">&#9670;&#160;</a></span>AppendOpt</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="classMaximaOutputAppender.html#ab1a99b2b284ce8585493a4ec95e2d2e4">MaximaOutputAppender::AppendOpt</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Options controlling how an appended cell is laid out. <a class="el" href="classA.html">A</a> bit set. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ab1a99b2b284ce8585493a4ec95e2d2e4a9d07cf81691899b8b5d8722815ca8888" name="ab1a99b2b284ce8585493a4ec95e2d2e4a9d07cf81691899b8b5d8722815ca8888"></a>BreakableText&#160;</td><td class="fielddoc"><p>Plain text that may be broken into lines, see <a class="el" href="TextBreaks_8cpp.html#acdcf20e58dbd8c57544f063682032328" title="Split one line of text (no newlines) after the characters a line may be broken after.">wxm::SplitAtTextBreaks()</a> </p>
+</td></tr>
+</table>
+
+</div>
+</div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a131dcebf4f110e1a38b5f7cefd24cd86" name="a131dcebf4f110e1a38b5f7cefd24cd86"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a131dcebf4f110e1a38b5f7cefd24cd86">&#9670;&#160;</a></span>ConsoleAppend()</h2>
+<a id="adff51c434f12aef065c8acadc027349b" name="adff51c434f12aef065c8acadc027349b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adff51c434f12aef065c8acadc027349b">&#9670;&#160;</a></span>ConsoleAppend()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -123,7 +148,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>DoConsoleAppend</b> (
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="Cell_8h.html#accb32ccb3ff8f2c6736a6ebe544894fd">CellType</a>&#160;</td>
-          <td class="paramname"><em>type</em>&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classMaximaOutputAppender.html#ab1a99b2b284ce8585493a4ec95e2d2e4">AppendOpt</a>&#160;</td>
+          <td class="paramname"><em>opts</em> = <code>{}</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -133,7 +164,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>DoConsoleAppend</b> (
       </table>
 </div><div class="memdoc">
 
-<p>Append one line <code>s</code> of the given <code>type</code> to the console, dispatching on the type (plain text goes verbatim, prompts/other run through the parser). </p>
+<p>Append one line <code>s</code> of the given <code>type</code> to the console, dispatching on the type (plain text goes verbatim, prompts/other run through the parser). <code>opts</code> is handed on to <a class="el" href="classMaximaOutputAppender.html#aea818c92ea4756eb679e3dcbf9bc5974" title="Append one or more lines of ordinary unicode text to the console.">DoRawConsoleAppend()</a> for plain text. </p>
 <p>ConsoleAppend adds a new line s of type to the console window.</p>
 <p>Dispatches on the cell type: plain-text types (default output, errors, warnings, text, ASCII maths) go to DoRawConsoleAppend verbatim; prompts and everything else are wrapped in <span>...</span> and run through the XML parser via DoConsoleAppend. Also enforces the max-output-cells-per-command limit and strips a trailing &lt;/PROMPT&gt; tag. </p>
 
@@ -172,7 +203,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>DoConsoleAppend</b> (
 </div><div class="memdoc">
 
 <p>Append one or more lines of ordinary unicode text to the console. </p>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classA.html">A</a> pointer to the last line that was appended or nullptr if there is no such line. </dd></dl>
+<p>With <a class="el" href="classMaximaOutputAppender.html#ab1a99b2b284ce8585493a4ec95e2d2e4a9d07cf81691899b8b5d8722815ca8888" title="Plain text that may be broken into lines, see wxm::SplitAtTextBreaks()">AppendOpt::BreakableText</a> each line becomes one <a class="el" href="classTextCell.html" title="A Text cell.">TextCell</a> per piece <a class="el" href="TextBreaks_8cpp.html#acdcf20e58dbd8c57544f063682032328" title="Split one line of text (no newlines) after the characters a line may be broken after.">wxm::SplitAtTextBreaks()</a> returns, so the worksheet can break a long line between them; without it, one <a class="el" href="classTextCell.html" title="A Text cell.">TextCell</a> per line. ASCII-art maths must not be split: its columns only line up as long as each line is in one piece.</p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classA.html">A</a> pointer to the last cell that was appended or nullptr if there is no such cell. </dd></dl>
 
 </div>
 </div>
