@@ -967,6 +967,18 @@ if(TARGET wxmTestApp)
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
     add_test(NAME MaximaMenuSync
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_MaximaMenuSync>")
+
+    # The configuration dialog's style editor edits the style that was clicked,
+    # even where the list reports a click before moving its selection (wxQt,
+    # GH #2527).
+    add_executable(test_ConfigDialogueStyles
+        test_ConfigDialogueStyles.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_ConfigDialogueStyles PUBLIC cxx_std_20)
+    target_link_libraries(test_ConfigDialogueStyles PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME ConfigDialogueStyles
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_ConfigDialogueStyles>")
 endif()
 
 # Same watchdog timeout the parent directory applies to its tests: keep a hung
