@@ -109,10 +109,13 @@ public:
   bool AffectsCode(TextStyle style) const;
   bool AffectsMathOut(TextStyle style) const;
   bool AffectsColorOnly(TextStyle style) const;
-  //! Propagate the code-default / math fonts to the styles that must share them.
+  //! Propagate the code-default / math fonts to the styles that must share
+  //! them, in the light and in the dark set.
   void MakeConsistent();
 
 private:
+  //! MakeConsistent() for one set of NUMBEROFSTYLES styles.
+  void MakeConsistent(Style *styles) const;
   Style *active() { return m_useDark ? m_stylesDark : m_styles; }
   const Style *active() const { return m_useDark ? m_stylesDark : m_styles; }
   //! Fill the given array with the built-in light defaults (shared by

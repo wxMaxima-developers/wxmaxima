@@ -1,5 +1,10 @@
 # Current development version
 
+- The style editor in the configuration dialogue edits the style that was
+  clicked: with wxWidgets' Qt port each click showed, and each following
+  change went to, the style selected before. In dark appearance a font
+  chosen for "Code default" or "Math default" now also reaches the styles
+  that share it, as it always did in light appearance (GH #2527).
 - In a scrolled matrix, the fraction at the start of an entry no longer
   vanishes while the rest of the entry is still visible: a part of an entry
   that had been scrolled left of (or above) the worksheet's edge counted as
