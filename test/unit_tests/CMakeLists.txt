@@ -850,6 +850,27 @@ if(TARGET wxmTestApp)
     add_test(NAME DiffFrameConfig
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_DiffFrameConfig>")
 
+    # Copy (Ctrl+C, context menu) and find next/previous in the diff viewer.
+    # Uses the real clipboard, so it needs a display.
+    add_executable(test_DiffFrameEditing
+        test_DiffFrameEditing.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_DiffFrameEditing PUBLIC cxx_std_20)
+    target_link_libraries(test_DiffFrameEditing PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME DiffFrameEditing
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_DiffFrameEditing>")
+
+    # The tint behind cells with a tooltip keeps text readable in dark mode.
+    add_executable(test_TooltipMarkerColour
+        test_TooltipMarkerColour.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_TooltipMarkerColour PUBLIC cxx_std_20)
+    target_link_libraries(test_TooltipMarkerColour PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME TooltipMarkerColour
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_TooltipMarkerColour>")
+
     # An integral's "d" (dx/dtheta/...) must render upright in LaTeX export,
     # not in math mode's default italic (GH #972).
     add_executable(test_IntegralToTeX

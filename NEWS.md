@@ -1,5 +1,14 @@
 # Current development version
 
+- The tint behind code and output that have a mouse-over tooltip stays
+  readable in dark mode: it is now a dark amber there instead of a pale
+  yellow light text hardly stood out from.
+- Copying from the diff viewer works: Ctrl+C, Ctrl+Insert and the context
+  menu's "Copy" and "Copy as..." entries used to leave the clipboard
+  unchanged. Ctrl+A selects the whole pane.
+- The diff viewer's search got "Find previous" and "Find next" buttons;
+  Enter, F3 (Shift+Enter, Shift+F3 backwards) move between matches, and
+  Ctrl+F jumps to the search field. They replace the Up/Down radio buttons.
 - Text pasted into a text cell from a word processor, a web browser or a
   mail program keeps its bold, italic, underline, strikethrough,
   superscript and subscript: wxMaxima now reads the HTML other programs put
