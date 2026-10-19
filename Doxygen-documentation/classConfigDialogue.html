@@ -215,7 +215,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>LoadSave</b> (wxComma
 <tr class="separator:afeac2a9acf99d95414b0f0e823550805"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac7008fa02afb4834fc7efce94151ad67"><td class="memItemLeft" align="right" valign="top"><a id="ac7008fa02afb4834fc7efce94151ad67" name="ac7008fa02afb4834fc7efce94151ad67"></a>
 <a class="el" href="TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993">TextStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetSelectedStyle</b> () const</td></tr>
-<tr class="memdesc:ac7008fa02afb4834fc7efce94151ad67"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the style currently selected in the m_styleFor control. <br /></td></tr>
+<tr class="memdesc:ac7008fa02afb4834fc7efce94151ad67"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the style currently being edited (see m_selectedStyle) <br /></td></tr>
 <tr class="separator:ac7008fa02afb4834fc7efce94151ad67"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-static-methods" name="pro-static-methods"></a>
@@ -577,6 +577,9 @@ wxTextCtrl *&#160;</td><td class="memItemRight" valign="bottom"><b>m_autoMathJax
 <tr class="memitem:a04974ccad5fe57b36407105e901d48f2"><td class="memItemLeft" align="right" valign="top"><a id="a04974ccad5fe57b36407105e901d48f2" name="a04974ccad5fe57b36407105e901d48f2"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>m_maximaEmvRightClickRow</b> = 0</td></tr>
 <tr class="separator:a04974ccad5fe57b36407105e901d48f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e1b68b643348687271a5b5dcf8e692d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993">TextStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfigDialogue.html#a9e1b68b643348687271a5b5dcf8e692d">m_selectedStyle</a> = TS_CODE_DEFAULT</td></tr>
+<tr class="memdesc:a9e1b68b643348687271a5b5dcf8e692d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The style the style editor's controls currently show and edit.  <br /></td></tr>
+<tr class="separator:a9e1b68b643348687271a5b5dcf8e692d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a48cca32905adcdd5c4a1ff891b9130"><td class="memItemLeft" align="right" valign="top"><a id="a5a48cca32905adcdd5c4a1ff891b9130" name="a5a48cca32905adcdd5c4a1ff891b9130"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>m_fontSize</b></td></tr>
 <tr class="memdesc:a5a48cca32905adcdd5c4a1ff891b9130"><td class="mdescLeft">&#160;</td><td class="mdescRight">The size of the text font. <br /></td></tr>
@@ -612,6 +615,32 @@ wxVector&lt; wxBitmapBundle &gt;&#160;</td><td class="memItemRight" valign="bott
 
 <p>Stores the settings from the configuration dialog. </p>
 <p>wxWidgets knows how to store the settings to gconf, the registry or wherever the current system expects settings to be saved to. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Field Documentation</h2>
+<a id="a9e1b68b643348687271a5b5dcf8e692d" name="a9e1b68b643348687271a5b5dcf8e692d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9e1b68b643348687271a5b5dcf8e692d">&#9670;&#160;</a></span>m_selectedStyle</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993">TextStyle</a> ConfigDialogue::m_selectedStyle = TS_CODE_DEFAULT</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The style the style editor's controls currently show and edit. </p>
+<p>Remembered from the wxEVT_LISTBOX event rather than asked from m_styleFor: wxQt sends that event from QListWidget::currentItemChanged, which Qt emits on a mouse click <em>before</em> it moves the selection, so m_styleFor-&gt;GetSelection() still names the previously selected style inside the handler. Using it made every click load (and every following edit write to) the previous style (GH #2527). </p>
 
 </div>
 </div>
