@@ -1,5 +1,9 @@
 # Current development version
 
+- The part of the worksheet you are reading no longer jumps while cells
+  above it are evaluated again with the cursor out of sight: removing a
+  cell's old output and adding the new one used to move everything below
+  it, which was visible for plots and other slow results.
 - A cell whose output is a long number no longer collapses to nothing when
   "Display all and allow linebreaks in long numbers" is switched on while
   it is shown: breaking the number into lines reset the size of its cell

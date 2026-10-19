@@ -1126,7 +1126,9 @@ public:
 
     To be called right before output is added to or removed from a cell: if
     that cell is above the cursor, the cursor would otherwise move with
-    everything below it. Does nothing if the cursor isn't on screen - see
+    everything below it. If the cursor isn't on screen, what is kept still is
+    the topmost group cell in view instead - unless the worksheet is following
+    the evaluation, which scrolls anyway. See
     WorksheetLayout::ArmScrollCompensation().
   */
   void KeepCursorStillOnScreen();
