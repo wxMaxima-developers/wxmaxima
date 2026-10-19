@@ -724,6 +724,28 @@ void MaximaProcessManager::MaximaEvent(wxThreadEvent &event) {
       return;
     }
   }
+  // Before authentication only what it takes to authenticate gets through:
+  // the text up to the first prompt (which may hold Maxima's auth= line) and
+  // the suppressOutput block wxMathML.lisp prints its key in. Anything else
+  // could come from somebody on this machine who connected to our server
+  // before Maxima did, and some of it acts on the system -- a
+  // <worksheetexport> request, for example, writes to a file it names.
+  if (!m_wxMaxima.m_maximaAuthenticated) {
+    switch (event.GetInt()) {
+    case Maxima::READ_MISC_TEXT:
+    case Maxima::XML_SUPPRESSOUTPUT:
+    case Maxima::XML_WXXML_KEY:
+    case Maxima::STRING_FOR_XMLINSPECTOR:
+    case Maxima::READ_PENDING:
+    case Maxima::WRITE_PENDING:
+    case Maxima::WRITE_ERROR:
+    case Maxima::DISCONNECTED:
+      break;
+    default:
+      wxLogMessage(_("Ignoring data from Maxima, as it hasn't authenticated yet."));
+      return;
+    }
+  }
   switch (event.GetInt()) {
   case Maxima::READ_MISC_TEXT:
     // Read out stderr: We will do that in the background on a regular basis,
@@ -960,11 +982,17 @@ void MaximaProcessManager::Interrupt(wxCommandEvent &WXUNUSED(event)) {
   // the Lisp's pid, which we only know if Maxima's first prompt told us: we
   // started maxima.bat, not the Lisp. So every process below the one we
   // started is a candidate, too.
+  //
+  // The pid= line arrives before Maxima has authenticated, so whoever sent
+  // it might not be our Maxima at all, and might name any process of ours
+  // that watches such a segment -- another Maxima, for example. Once the
+  // connection has authenticated, everything it sent, pid= included, came
+  // from the Maxima we started.
   std::vector<long> candidates;
-  if (m_wxMaxima.m_maximaPid > 0)
+  if ((m_wxMaxima.m_maximaPid > 0) && m_wxMaxima.m_maximaAuthenticated)
     candidates.push_back(m_wxMaxima.m_maximaPid);
   for (auto pid : DescendantPids(m_wxMaxima.m_pid, SnapshotProcesses()))
-    if (pid != m_wxMaxima.m_maximaPid)
+    if (candidates.empty() || (pid != candidates.front()))
       candidates.push_back(pid);
 
   wxString triedNames;
