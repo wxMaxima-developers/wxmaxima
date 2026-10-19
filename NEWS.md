@@ -1,5 +1,9 @@
 # Current development version
 
+- A cell whose output is a long number no longer collapses to nothing when
+  "Display all and allow linebreaks in long numbers" is switched on while
+  it is shown: breaking the number into lines reset the size of its cell
+  while the cell was being laid out.
 - Security: another user on the same computer who connected to wxMaxima
   before Maxima did could have posed as Maxima: wxMaxima sent the secret
   Maxima proves itself with over that connection, and acted on some of
