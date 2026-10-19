@@ -83,9 +83,10 @@ std::vector<std::vector<size_t>> DigitGroupGapsInTokens(
 
 /*! How wide a digit-group gap is, in pixels, for text of the given font size.
 
-  A quarter of an em, a little wider than a typographic thin space (a sixth
-  of an em, what the gap started out as): at that width the groups of a long
-  number are easy to tell apart at a glance. Output (TextCell) and code
+  5/24 of an em: halfway between a typographic thin space (a sixth of an em,
+  what the gap started out as, which made the groups a bit hard to tell apart)
+  and a quarter of an em (what it was widened to next, which felt a little too
+  wide). Output (TextCell) and code
   (EditorCell) both use this, so that a number looks the same in either. Never
   less than one pixel, so the gap doesn't vanish at tiny zoom levels.
 */

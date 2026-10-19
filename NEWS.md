@@ -142,7 +142,7 @@
   character. Clicks inside a word land on the nearer side of the
   character more reliably, too.
 - Long numbers in the output and in code cells are easier to read: their
-  digits are shown in groups separated by a gap of a quarter em, 2111230496 as
+  digits are shown in groups separated by a gap of 5/24 em, 2111230496 as
   2 111 230 496 (GH #192). Only the display changes: copying, saving,
   exporting and what is sent to Maxima never contain the gaps. Numbers with fewer than 5 digits, years for example, are
   left as they are. Both can be changed in the configuration dialog's
