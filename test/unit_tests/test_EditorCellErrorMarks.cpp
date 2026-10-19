@@ -26,6 +26,9 @@
   The marks belong to the text they were set for. Pinned here: they are
   painted, only while the text is unchanged, and only where they were set.
 
+  Also the highlight of the statement Maxima is evaluating right now, which
+  is drawn the same way.
+
   Windowless: real GroupCell/EditorCell against a memory-DC Configuration, no
   Worksheet, no wxFrame -- the test_EditorCellTabs pattern.
 */
@@ -49,6 +52,7 @@ namespace {
 wxBitmap *g_bmp = nullptr;
 wxMemoryDC *g_dc = nullptr;
 Configuration *g_cfg = nullptr;
+DocumentCellPointers *g_documentPointers = nullptr;
 
 //! Builds a laid-out code cell holding text
 std::unique_ptr<GroupCell> MakeCodeCell(const wxString &text) {
@@ -174,6 +178,51 @@ SCENARIO("A failing statement and its syntax error are marked") {
   }
 }
 
+SCENARIO("The statement Maxima is evaluating is highlighted") {
+  const wxString code = wxS("a: 1$\nb: 2;");
+  const size_t secondLine = code.Find(wxS("b"));
+  auto group = MakeCodeCell(code);
+  EditorCell *editor = group->GetEditable();
+  REQUIRE(editor != nullptr);
+  const wxColour colour = g_cfg->GetColor(TS_EVALUATING_STATEMENT);
+
+  GIVEN("the second statement is being evaluated") {
+    g_documentPointers->SetWorkingGroup(group.get());
+    g_documentPointers->SetEvaluatingStatement(editor, secondLine,
+                                               code.Length(), code);
+    THEN("the second line is highlighted, the first one isn't") {
+      const auto count = CountColour(editor, secondLine, colour);
+      REQUIRE(count.firstLine == 0);
+      REQUIRE(count.secondLine > 0);
+    }
+    WHEN("Maxima has answered, so the cell isn't the working group any more") {
+      g_documentPointers->SetWorkingGroup(nullptr);
+      THEN("nothing is highlighted") {
+        const auto count = CountColour(editor, secondLine, colour);
+        REQUIRE(count.firstLine + count.secondLine == 0);
+      }
+    }
+    WHEN("the text is edited meanwhile") {
+      editor->SetSelection(0, 1);
+      editor->InsertText(wxS("c"));
+      THEN("the now meaningless range isn't drawn") {
+        const auto count = CountColour(editor, secondLine, colour);
+        REQUIRE(count.firstLine + count.secondLine == 0);
+      }
+    }
+    WHEN("the range belongs to another cell") {
+      auto other = MakeCodeCell(code);
+      g_documentPointers->SetEvaluatingStatement(other->GetEditable(),
+                                                 secondLine, code.Length(), code);
+      THEN("this cell isn't highlighted") {
+        const auto count = CountColour(editor, secondLine, colour);
+        REQUIRE(count.firstLine + count.secondLine == 0);
+      }
+    }
+    g_documentPointers->SetWorkingGroup(nullptr);
+  }
+}
+
 class TestApp : public wxApp {
 public:
   bool OnInit() override { return true; }
@@ -195,6 +244,7 @@ int main(int argc, char **argv) {
   g_cfg->SetCanvasSize(wxSize(4000, 800));
   static DocumentCellPointers documentPointers;
   static ViewCellPointers viewPointers(nullptr);
+  g_documentPointers = &documentPointers;
   g_cfg->SetDocumentCellPointers(&documentPointers);
   g_cfg->SetViewCellPointers(&viewPointers);
 

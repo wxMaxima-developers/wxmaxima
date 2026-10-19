@@ -152,3 +152,25 @@ GroupCell *DocumentCellPointers::GetWorkingGroup(bool resortToLast) const {
   return (m_workingGroup || !resortToLast) ? m_workingGroup
     : m_lastWorkingGroup;
 }
+
+// Defined here rather than in the header: assigning to a CellPtr<EditorCell>
+// needs EditorCell to be a complete type, which the header only declares.
+void DocumentCellPointers::SetEvaluatingStatement(EditorCell *editor,
+                                                  std::size_t start,
+                                                  std::size_t end,
+                                                  const wxString &text) {
+  m_evaluatingEditor = editor;
+  m_evaluatingStart = start;
+  m_evaluatingEnd = end;
+  m_evaluatingText = text;
+}
+
+std::optional<std::pair<std::size_t, std::size_t>>
+DocumentCellPointers::GetEvaluatingStatement(const EditorCell *editor,
+                                             const wxString &text) const {
+  if (!editor || (m_evaluatingEditor.get() != editor) || !m_workingGroup ||
+      (editor->GetGroup() != m_workingGroup.get()) ||
+      (m_evaluatingEnd <= m_evaluatingStart) || (text != m_evaluatingText))
+    return std::nullopt;
+  return std::make_pair(m_evaluatingStart, m_evaluatingEnd);
+}
