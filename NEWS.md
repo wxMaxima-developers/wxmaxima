@@ -1,5 +1,9 @@
 # Current development version
 
+- Scrolling over a selected animation with a touchpad or a high-resolution
+  wheel (wxGTK on Wayland, for one) no longer flicks through a frame per
+  tiny scroll event: frames, and Ctrl+wheel zoom, now change once per
+  whole wheel notch's worth of movement.
 - Text pasted into a text cell from a word processor, a web browser or a
   mail program keeps its bold, italic, underline, strikethrough,
   superscript and subscript: wxMaxima now reads the HTML other programs put

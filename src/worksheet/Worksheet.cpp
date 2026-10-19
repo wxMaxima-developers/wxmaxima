@@ -59,6 +59,7 @@
 #include "wxMaximaFrame.h"
 #include "ArtProvider.h"
 #include <algorithm>
+#include <cstdlib>
 #include <memory>
 #include <random>
 #include <unordered_map>
@@ -1671,29 +1672,40 @@ void Worksheet::OnMouseLeftUp(wxMouseEvent &event) {
 }
 
 void Worksheet::OnMouseWheel(wxMouseEvent &event) {
+  // Zoom and animation frames change in whole steps, but a touchpad or a
+  // high-resolution wheel (wxGTK on Wayland, for one) sends a stream of events
+  // worth a fraction of a notch each: count only complete notches.
   if (event.GetModifiers() & wxMOD_CONTROL) {
-    wxCommandEvent *zoomEvent = new wxCommandEvent;
-    zoomEvent->SetEventType(wxEVT_MENU);
-    zoomEvent->SetId((event.GetWheelRotation() > 0) ? wxID_ZOOM_IN
-                     : wxID_ZOOM_OUT);
-    GetParent()->GetEventHandler()->QueueEvent(zoomEvent);
+    const int steps = m_zoomWheelSteps.Add(event.GetWheelRotation(),
+                                           event.GetWheelDelta());
+    for (int i = 0; i < std::abs(steps); ++i) {
+      wxCommandEvent *zoomEvent = new wxCommandEvent;
+      zoomEvent->SetEventType(wxEVT_MENU);
+      zoomEvent->SetId((steps > 0) ? wxID_ZOOM_IN : wxID_ZOOM_OUT);
+      GetParent()->GetEventHandler()->QueueEvent(zoomEvent);
+    }
     return;
   }
   if(CanAnimate())
     {
       auto *animation = GetDocumentCellPointers().GetSelectionStart().CastAs<AnimationCell *>();
+      // A partial notch collected over another animation doesn't count here.
+      // The pointer is only compared, never dereferenced.
+      if (animation != m_wheelAnimation) {
+        m_animationWheelSteps.Reset();
+        m_wheelAnimation = animation;
+      }
+      const int steps = m_animationWheelSteps.Add(event.GetWheelRotation(),
+                                                  event.GetWheelDelta());
+      if (steps == 0)
+        return;
       animation->AnimationRunning(false);
-      auto displayedIndex = animation->GetDisplayedIndex();
-      if (event.GetWheelRotation() > 0)
-        {
-          if(displayedIndex < animation->Length() - 1)
-            animation->SetDisplayedIndex(displayedIndex + 1);
-        }
-      else
-        {
-          if(displayedIndex > 0)
-            animation->SetDisplayedIndex(displayedIndex - 1);
-        }
+      const int lastIndex = animation->Length() - 1;
+      const int displayedIndex = animation->GetDisplayedIndex();
+      const int newIndex = std::clamp(displayedIndex + steps, 0,
+                                      std::max(lastIndex, 0));
+      if (newIndex != displayedIndex)
+        animation->SetDisplayedIndex(newIndex);
       wxRect rect = animation->GetRect();
       RequestRedraw(rect);
     }
