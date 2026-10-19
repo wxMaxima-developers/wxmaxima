@@ -252,9 +252,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>FixedFontInTextContro
 wxBrush&#160;</td><td class="memItemRight" valign="bottom"><b>GetBackgroundBrush</b> () const</td></tr>
 <tr class="memdesc:aa8a524a68b4296705f3b01bd6a8be3c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the brush to be used for the worksheet background. <br /></td></tr>
 <tr class="separator:aa8a524a68b4296705f3b01bd6a8be3c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a32b9b2837635a9247dec55a86d784ba9"><td class="memItemLeft" align="right" valign="top"><a id="a32b9b2837635a9247dec55a86d784ba9" name="a32b9b2837635a9247dec55a86d784ba9"></a>
-wxBrush&#160;</td><td class="memItemRight" valign="bottom"><b>GetTooltipBrush</b> () const</td></tr>
-<tr class="memdesc:a32b9b2837635a9247dec55a86d784ba9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the brush to be used for worksheet objects that provide a mouse-over tooltip. <br /></td></tr>
+<tr class="memitem:a32b9b2837635a9247dec55a86d784ba9"><td class="memItemLeft" align="right" valign="top">wxBrush&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#a32b9b2837635a9247dec55a86d784ba9">GetTooltipBrush</a> () const</td></tr>
+<tr class="memdesc:a32b9b2837635a9247dec55a86d784ba9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the brush to be used for worksheet objects that provide a mouse-over tooltip.  <br /></td></tr>
 <tr class="separator:a32b9b2837635a9247dec55a86d784ba9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1b3bbad38adef0ef4e544ff8b6d76cd9"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#a1b3bbad38adef0ef4e544ff8b6d76cd9">GetInterEquationSkip</a> () const</td></tr>
 <tr class="memdesc:a1b3bbad38adef0ef4e544ff8b6d76cd9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extra space to leave between two equations in output cells.  <br /></td></tr>
@@ -1406,6 +1405,9 @@ std::default_random_engine &amp;&#160;</td><td class="memItemRight" valign="bott
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
+<tr class="memitem:aba92e8bb5a2cc8df560366d1f3f88dea"><td class="memItemLeft" align="right" valign="top">static wxColour&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#aba92e8bb5a2cc8df560366d1f3f88dea">TooltipMarkerColour</a> (const wxColour &amp;background)</td></tr>
+<tr class="memdesc:aba92e8bb5a2cc8df560366d1f3f88dea"><td class="mdescLeft">&#160;</td><td class="mdescRight">The color the background of a cell with a mouse-over tooltip is tinted to.  <br /></td></tr>
+<tr class="separator:aba92e8bb5a2cc8df560366d1f3f88dea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a33c31133e51e360dadbf6e9bb2f31f0b"><td class="memItemLeft" align="right" valign="top"><a id="a33c31133e51e360dadbf6e9bb2f31f0b" name="a33c31133e51e360dadbf6e9bb2f31f0b"></a>
 static const wxString &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>GetEscCode</b> (const wxString &amp;<a class="el" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>)</td></tr>
 <tr class="memdesc:a33c31133e51e360dadbf6e9bb2f31f0b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve a symbol for the escape codes that can be typed after hitting the Escape key in the worksheet. <br /></td></tr>
@@ -2063,6 +2065,26 @@ static constexpr long&#160;</td><td class="memItemRight" valign="bottom"><b>Digi
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a32b9b2837635a9247dec55a86d784ba9" name="a32b9b2837635a9247dec55a86d784ba9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a32b9b2837635a9247dec55a86d784ba9">&#9670;&#160;</a></span>GetTooltipBrush()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxBrush Configuration::GetTooltipBrush </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get the brush to be used for worksheet objects that provide a mouse-over tooltip. </p>
+<p>Derived from the current document background each time, so it follows a switch between the light and the dark style set (see <a class="el" href="classConfiguration.html#aba92e8bb5a2cc8df560366d1f3f88dea" title="The color the background of a cell with a mouse-over tooltip is tinted to.">TooltipMarkerColour()</a>). </p>
 
 </div>
 </div>
@@ -2924,6 +2946,35 @@ static constexpr long&#160;</td><td class="memItemRight" valign="bottom"><b>Digi
 
 <p>Hands out the list of files to save, leaving it empty. </p>
 <p>Lets something that needs the list for itself (the XML on the clipboard, which is rendered whenever a program asks for it) put back whatever a .wxmx being saved at the same time had collected so far. </p>
+
+</div>
+</div>
+<a id="aba92e8bb5a2cc8df560366d1f3f88dea" name="aba92e8bb5a2cc8df560366d1f3f88dea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aba92e8bb5a2cc8df560366d1f3f88dea">&#9670;&#160;</a></span>TooltipMarkerColour()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxColour Configuration::TooltipMarkerColour </td>
+          <td>(</td>
+          <td class="paramtype">const wxColour &amp;&#160;</td>
+          <td class="paramname"><em>background</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The color the background of a cell with a mouse-over tooltip is tinted to. </p>
+<p>The text of the cell is drawn on top of it, so it has to stay about as far from the text color as the document background is: on a light background that is a pale yellow, on a dark one a dark amber. The fixed pale yellow that was used on both made light text on a dark background hard to read. The color is opaque (the tint is pre-blended with <code>background</code>) so the result does not depend on whether the DC honours alpha (MSW's plain wxDC does not, which would have made the old color solid pale yellow). </p>
 
 </div>
 </div>
