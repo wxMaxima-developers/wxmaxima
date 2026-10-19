@@ -278,6 +278,19 @@ static const wxChar *const kTextOutputXml = wxS(
   "</mth>\n"
   "</output>\n"
   "</cell>\n"
+  // A matrix wx_matrix(..., oversized=scroll) asked to scroll: the HTML export
+  // puts it into a scrolling box of its own. Every other matrix in the
+  // document follows the configuration, which elides by default, so this is
+  // the only one that gets such a box.
+  "<cell type=\"code\">\n"
+  "<input><editor type=\"input\"><line>scrollmatrixexample;</line></editor></input>\n"
+  "<output>\n"
+  "<mth><lbl altCopy=\"(%o12)&#9;\">(%o12) </lbl>"
+  "<tb oversized=\"scroll\" roundedParens=\"true\"><mtr>"
+  "<mtd><mi>ExportNetScrollMatrix</mi></mtd><mtd><mn>2</mn></mtd>"
+  "</mtr></tb></mth>\n"
+  "</output>\n"
+  "</cell>\n"
   "</wxMaximaDocument>\n");
 
 /*! Fills the worksheet with the real math corpus plus sentinel cells.
@@ -530,6 +543,15 @@ static void RequireValidHtml(const wxString &htmlPath) {
   REQUIRE(rc < 2);
 }
 
+//! How many times needle occurs in haystack.
+static size_t CountOccurrences(const wxString &haystack, const wxString &needle) {
+  size_t n = 0;
+  for (size_t pos = haystack.find(needle); pos != wxString::npos;
+       pos = haystack.find(needle, pos + needle.length()))
+    ++n;
+  return n;
+}
+
 SCENARIO("HTML export succeeds, is deterministic and contains the document") {
   BuildDocumentOnce();
   // This scenario checks the image files the export writes next to the
@@ -583,6 +605,23 @@ SCENARIO("HTML export succeeds, is deterministic and contains the document") {
       REQUIRE(html.Contains(
         wxS("<a href=\"https://example.org/a_b%20c?x=1&amp;y=2#top\">"
             "https://example.org/a_b%20c?x=1&amp;y=2#top</a> (see).")));
+      // The matrix that scrolls on screen scrolls in the browser, too, in
+      // every flavor; the other matrices are left as they were. As an image
+      // it keeps its real size rather than being shrunk to 90% of the page.
+      REQUIRE(html.Contains(wxS(".matrixscroll {")));
+      REQUIRE(CountOccurrences(html, wxS("<div class=\"matrixscroll\">")) == 1);
+      {
+        const size_t box = html.find(wxS("<div class=\"matrixscroll\">"));
+        const size_t boxEnd = html.find(wxS("</div>"), box);
+        const wxString inBox = html.substr(box, boxEnd - box);
+        if (eq.format == Configuration::bitmap ||
+            eq.format == Configuration::svg) {
+          CHECK(inBox.Contains(wxS("<img ")));
+          CHECK_FALSE(inBox.Contains(wxS("max-width")));
+        } else {
+          CHECK(inBox.Contains(wxS("ExportNetScrollMatrix")));
+        }
+      }
       // The exported HTML must be structurally valid (skipped if tidy absent).
       RequireValidHtml(dir1 + wxS("/doc.html"));
       // Image links must not dangle (broken-link regression, see helper).
@@ -628,15 +667,6 @@ SCENARIO("HTML export succeeds, is deterministic and contains the document") {
   }
   g_cfg->HTMLequationFormat(oldFormat);
   g_cfg->HTMLExportSelfContained(oldSelfContained);
-}
-
-//! How many times needle occurs in haystack.
-static size_t CountOccurrences(const wxString &haystack, const wxString &needle) {
-  size_t n = 0;
-  for (size_t pos = haystack.find(needle); pos != wxString::npos;
-       pos = haystack.find(needle, pos + needle.length()))
-    ++n;
-  return n;
 }
 
 SCENARIO("A self-contained HTML export is a single file (GH #2266)") {

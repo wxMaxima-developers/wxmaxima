@@ -23,6 +23,7 @@
 
 #include "ScrollingGenWizPanel.h"
 #include <wx/persist/toplevel.h>
+#include "FloatingPaneHeight.h"
 
 ScrollingGenWizPanel::ScrollingGenWizPanel(
                                            wxWindow *parent, Configuration *cfg, MaximaManual *manual,
@@ -57,6 +58,12 @@ void ScrollingGenWizPanel::OnSize(wxSizeEvent &event) {
   // Shrink the width of the wxScrolled's virtual size if the wxScrolled is
   // shrinking
   SetVirtualSize(GetClientSize().x, wxDefaultSize.y);
+  // Floating, the wizard can be made as high as it needs to show everything
+  // without scrolling, but not higher: beyond that there is only empty space
+  // below its buttons. Not from inside the size event: that comes while
+  // wxAUI is still setting up a newly floated frame, and it sets the frame's
+  // minimum size after that, asserting if that exceeds the maximum set here.
+  CallAfter([this] { LimitFloatingPaneHeight(this, GetNeededSize().GetHeight()); });
   event.Skip();
 }
 
@@ -69,6 +76,9 @@ void ScrollingGenWizPanel::OnNeededSizeChange(std::function<void()> callback) {
     // What we can scroll to has changed, too.
     Layout();
     FitInside();
+    // A wizard with fewer fields than the one before it needs less height:
+    // don't leave the floating window as high as the old one needed.
+    LimitFloatingPaneHeight(this, GetNeededSize().GetHeight());
     if (callback)
       callback();
   });
