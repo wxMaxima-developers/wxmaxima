@@ -6,6 +6,10 @@
   the worksheet. If the dialogue is wide rather than tall, the sample
   worksheet moves beside the settings. Where the divider was put is
   remembered, and the style controls take less height than before.
+- Scrolling over a selected animation with a touchpad or a high-resolution
+  wheel (wxGTK on Wayland, for one) no longer flicks through a frame per
+  tiny scroll event: frames, and Ctrl+wheel zoom, now change once per
+  whole wheel notch's worth of movement.
 - Text pasted into a text cell from a word processor, a web browser or a
   mail program keeps its bold, italic, underline, strikethrough,
   superscript and subscript: wxMaxima now reads the HTML other programs put
@@ -144,7 +148,7 @@
   character. Clicks inside a word land on the nearer side of the
   character more reliably, too.
 - Long numbers in the output and in code cells are easier to read: their
-  digits are shown in groups separated by a gap of a quarter em, 2111230496 as
+  digits are shown in groups separated by a gap of 5/24 em, 2111230496 as
   2 111 230 496 (GH #192). Only the display changes: copying, saving,
   exporting and what is sent to Maxima never contain the gaps. Numbers with fewer than 5 digits, years for example, are
   left as they are. Both can be changed in the configuration dialog's

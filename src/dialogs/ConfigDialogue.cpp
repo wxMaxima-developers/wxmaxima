@@ -303,7 +303,6 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent)
   SetCheckboxValues();
 
   Bind(wxEVT_CLOSE_WINDOW, &ConfigDialogue::OnClose, this);
-  Bind(wxEVT_LISTBOX, &ConfigDialogue::OnChangeStyle, this, listbox_styleFor);
   Bind(wxEVT_COMBOBOX, &ConfigDialogue::OnChangeWarning, this, language_id);
   Bind(wxEVT_CHECKBOX, &ConfigDialogue::OnCheckbox, this, checkbox_bold);
   Bind(wxEVT_CHECKBOX, &ConfigDialogue::OnCheckbox, this, checkbox_italic);
@@ -2778,7 +2777,7 @@ wxWindow *ConfigDialogue::CreatePrintPanel() {
 }
 
 TextStyle ConfigDialogue::GetSelectedStyle() const {
-  return static_cast<TextStyle>(m_styleFor->GetSelection());
+  return m_selectedStyle;
 }
 
 wxWindow *ConfigDialogue::CreateStylePanel() {
@@ -2902,6 +2901,7 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
   config->Read(wxS("StyleToEdit"), &styleToEditNum);
   if ((styleToEditNum >= TextStyle::NUMBEROFSTYLES) || (styleToEditNum < 0))
     styleToEditNum = 0;
+  m_selectedStyle = static_cast<TextStyle>(styleToEditNum);
   m_styleFor->SetSelection(styleToEditNum);
 
   wxCommandEvent dummy;
@@ -2951,6 +2951,12 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
 }
 
 void ConfigDialogue::OnStyleToEditChanged(wxCommandEvent &event) {
+  // The event names the newly selected item on every port; the listbox's
+  // GetSelection() doesn't on wxQt yet (see m_selectedStyle).
+  int const selection = event.GetSelection();
+  if ((selection < 0) || (selection >= TextStyle::NUMBEROFSTYLES))
+    return;
+  m_selectedStyle = static_cast<TextStyle>(selection);
   wxConfigBase *config = wxConfig::Get();
   config->Write(wxS("StyleToEdit"), static_cast<int>(GetSelectedStyle()));
   OnChangeStyle(event);
