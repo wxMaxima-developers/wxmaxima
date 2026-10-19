@@ -1,5 +1,9 @@
 # Current development version
 
+- The part of the worksheet you are reading no longer jumps while cells
+  above it are evaluated again with the cursor out of sight: removing a
+  cell's old output and adding the new one used to move everything below
+  it, which was visible for plots and other slow results.
 - Text pasted into a text cell from a word processor, a web browser or a
   mail program keeps its bold, italic, underline, strikethrough,
   superscript and subscript: wxMaxima now reads the HTML other programs put

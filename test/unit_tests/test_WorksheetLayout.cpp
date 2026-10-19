@@ -401,6 +401,61 @@ SCENARIO("A cell growing above the cursor doesn't move the cursor on screen") {
                 f.view.scrollUnitY * unit == bottomBefore);
       }
     }
+    WHEN("the cursor is out of sight and the first cell's output is removed") {
+      // Re-evaluating a cell above the part of the worksheet the user reads:
+      // then the topmost cell in view is what has to stay still.
+      for (int line = 0; line < 3; ++line) {
+        auto text = std::make_unique<TextCell>(A, g_cfg, wxS("output"));
+        text->ForceBreakLine(true);
+        A->AppendOutput(std::move(text));
+      }
+      A->OutputHeightChanged();
+      f.layout.RequestRecalculation(A);
+      f.layout.RecalculateIfNeeded();
+      f.view.scrollUnitY = 5;
+      GroupCell *inView = WorksheetLayout::FirstGroupReachingBelow(
+        A, f.view.scrollUnitY * unit);
+      REQUIRE(inView != nullptr);
+      REQUIRE(inView != A);
+      const int screenBefore = ScreenTop(f, inView);
+      f.layout.ArmScrollCompensation(inView);
+      REQUIRE(f.layout.ScrollCompensationArmed());
+      A->RemoveOutput();
+      f.layout.RequestRecalculation(A);
+      // Unlike a cursor anchor, this one doesn't care where the cursor went.
+      cursor = {D, true};
+      f.layout.RecalculateIfNeeded();
+      THEN("the cell in view stays exactly where it was on screen") {
+        REQUIRE(f.view.scrollCalls == 1);
+        REQUIRE(ScreenTop(f, inView) == screenBefore);
+        REQUIRE_FALSE(f.layout.ScrollCompensationArmed());
+      }
+    }
+  }
+}
+
+SCENARIO("FirstGroupReachingBelow() finds the topmost cell in view") {
+  GIVEN("three laid-out cells") {
+    EngineFixture f;
+    GroupCell *A = f.AddCell(wxS("a:1$"));
+    GroupCell *B = f.AddCell(wxS("b:2$"));
+    GroupCell *C = f.AddCell(wxS("c:3$"));
+    f.layout.RequestRecalculation(A);
+    REQUIRE(f.layout.RecalculateIfNeeded());
+    const int bottomA = WorksheetLayout::AnchorY({A, true});
+    const int bottomB = WorksheetLayout::AnchorY({B, true});
+    THEN("a view starting above the first cell's bottom shows the first cell") {
+      REQUIRE(WorksheetLayout::FirstGroupReachingBelow(A, 0) == A);
+      REQUIRE(WorksheetLayout::FirstGroupReachingBelow(A, bottomA - 1) == A);
+    }
+    THEN("a view starting at a cell's bottom starts with the next cell") {
+      REQUIRE(WorksheetLayout::FirstGroupReachingBelow(A, bottomA) == B);
+      REQUIRE(WorksheetLayout::FirstGroupReachingBelow(A, bottomB) == C);
+    }
+    THEN("a view below the last cell shows none") {
+      REQUIRE(WorksheetLayout::FirstGroupReachingBelow(
+                A, WorksheetLayout::AnchorY({C, true})) == nullptr);
+    }
   }
 }
 

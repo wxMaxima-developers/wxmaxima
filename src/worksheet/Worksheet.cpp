@@ -1072,8 +1072,20 @@ WorksheetLayout::ScrollAnchor Worksheet::GetScrollAnchor() const {
 }
 
 void Worksheet::KeepCursorStillOnScreen() {
-  if (ScrollAnchorVisible())
+  if (m_layout.ScrollCompensationArmed())
+    return;
+  if (ScrollAnchorVisible()) {
     m_layout.ArmScrollCompensation();
+    return;
+  }
+  // The user is reading something else than the cursor's surroundings, for
+  // example output further up while a long file is evaluated: keep that still.
+  if (FollowEvaluation())
+    return;
+  int view_x, view_y;
+  GetViewStart(&view_x, &view_y);
+  m_layout.ArmScrollCompensation(WorksheetLayout::FirstGroupReachingBelow(
+    GetTree(), view_y * m_layout.GetScrollUnit()));
 }
 
 bool Worksheet::ScrollAnchorVisible() {
