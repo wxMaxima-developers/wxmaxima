@@ -570,7 +570,6 @@ void WriteHtmlStyleSheet(wxTextOutputStream &css, wxConfigBase *config) {
   // equation's full width instead of letting it scroll.
   css << wxS(".matrixscroll {\n");
   css << wxS("  overflow: auto;\n");
-  css << wxS("  max-width: 100%;\n");
   css << wxS("  max-height: 80vh;\n");
   css << wxS("}\n");
   css << wxS(".equation > .matrixscroll {\n");
