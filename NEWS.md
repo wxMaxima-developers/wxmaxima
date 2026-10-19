@@ -1,5 +1,13 @@
 # Current development version
 
+- In a scrolled matrix, the fraction at the start of an entry no longer
+  vanishes while the rest of the entry is still visible: a part of an entry
+  that had been scrolled left of (or above) the worksheet's edge counted as
+  not yet positioned and wasn't drawn.
+- A matrix that scrolls in the worksheet (the "scroll" setting for oversized
+  matrices, or wx_matrix(..., oversized=scroll)) scrolls in the exported
+  HTML, too, instead of running off the page or, as an image, being shrunk
+  to fit.
 - The tint behind code and output that have a mouse-over tooltip stays
   readable in dark mode: it is now a dark amber there instead of a pale
   yellow light text hardly stood out from.
