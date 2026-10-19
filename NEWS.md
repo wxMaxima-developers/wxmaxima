@@ -1,5 +1,11 @@
 # Current development version
 
+- The Style tab of the configuration dialogue fits small screens better:
+  a movable divider separates the style settings from the sample
+  worksheet, so the "Style for" list can be made shorter to see more of
+  the worksheet. If the dialogue is wide rather than tall, the sample
+  worksheet moves beside the settings. Where the divider was put is
+  remembered, and the style controls take less height than before.
 - Text pasted into a text cell from a word processor, a web browser or a
   mail program keeps its bold, italic, underline, strikethrough,
   superscript and subscript: wxMaxima now reads the HTML other programs put

@@ -29,6 +29,7 @@
 */
 
 #include "ConfigDialogue.h"
+#include "AdaptiveSplitter.h"
 #include "SvgBitmap.h"
 #ifdef WXM_USE_AI_TOOLS
 #include "ai/AiProvider.h"
@@ -63,6 +64,7 @@
 #include <wx/mstream.h>
 #include <wx/persist/toplevel.h>
 #include <wx/scrolwin.h>
+#include <wx/wrapsizer.h>
 #include <wx/settings.h>
 #include <wx/txtstrm.h>
 #include <wx/zipstrm.h>
@@ -2781,7 +2783,14 @@ TextStyle ConfigDialogue::GetSelectedStyle() const {
 
 wxWindow *ConfigDialogue::CreateStylePanel() {
   wxScrolled<wxPanel> *panel = new wxScrolled<wxPanel>(m_notebook, wxID_ANY);
-  m_sampleWorksheet = new Worksheet(panel, wxID_ANY, m_configuration.get(),
+  // The style settings and the sample worksheet share the room below the
+  // appearance selector through a splitter: on a small screen the user can
+  // shrink the "Style for" list to see more of the sample worksheet, and the
+  // splitter puts the worksheet beside the settings instead of below them
+  // when that leaves it more room.
+  AdaptiveSplitter *splitter = new AdaptiveSplitter(panel);
+  wxPanel *stylesPanel = new wxPanel(splitter, wxID_ANY);
+  m_sampleWorksheet = new Worksheet(splitter, wxID_ANY, m_configuration.get(),
                                     wxDefaultPosition, wxDefaultSize, false);
   panel->SetScrollRate(5 * GetContentScaleFactor(),
                        5 * GetContentScaleFactor());
@@ -2811,56 +2820,82 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
   vsizer->Add(appearanceSizer,
               wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
 
-  // The styles box
-  wxStaticBoxSizer *stylesBox = new wxStaticBoxSizer(wxVERTICAL, panel, _("Styles"));
+  // The styles box: the "Style for" list on the left; on the right, in as
+  // few rows as fit, everything that edits the selected style. Keeping the
+  // right side short is what lets the splitter below shrink the list: the
+  // settings can't get shorter than that column.
+  wxStaticBoxSizer *stylesBox = new wxStaticBoxSizer(wxVERTICAL, stylesPanel, _("Styles"));
+  wxWindow *stylesParent = stylesBox->GetStaticBox();
   wxBoxSizer *styles_tophbox = new wxBoxSizer(wxHORIZONTAL);
   wxArrayString m_styleFor_choices;
   for (int style = 0; style < NUMBEROFSTYLES; style++) {
     m_styleFor_choices.Add(m_configuration->GetStyleName(static_cast<TextStyle>(style)));
   }
-  m_styleFor = new wxListBox(stylesBox->GetStaticBox(), listbox_styleFor,
+  m_styleFor = new wxListBox(stylesParent, listbox_styleFor,
                              wxDefaultPosition,
                              wxDefaultSize,
                              m_styleFor_choices, wxLB_SINGLE);
   m_styleFor->Bind(wxEVT_LISTBOX, &ConfigDialogue::OnStyleToEditChanged, this);
 
-    wxBoxSizer *vbox_sizer = new wxBoxSizer(wxVERTICAL);
-  m_getStyleFont = new wxButton(stylesBox->GetStaticBox(), style_font_family,
-                                _("Choose font"));
-  m_styleColor = new wxColourPickerCtrl(stylesBox->GetStaticBox(), wxID_ANY, *wxBLACK);
+  m_styleColor = new wxColourPickerCtrl(stylesParent, wxID_ANY, *wxBLACK);
   m_styleColor-> Bind(wxEVT_COLOURPICKER_CHANGED, &ConfigDialogue::OnChangeColor, this);
-  vbox_sizer->Add(m_styleColor, wxSizerFlags().Expand());
-  
+  m_getStyleFont = new wxButton(stylesParent, style_font_family,
+                                _("Choose font"));
   m_boldCB =
-    new wxCheckBox(stylesBox->GetStaticBox(), checkbox_bold, _("Bold"));
+    new wxCheckBox(stylesParent, checkbox_bold, _("Bold"));
   m_italicCB =
-    new wxCheckBox(stylesBox->GetStaticBox(), checkbox_italic, _("Italic"));
+    new wxCheckBox(stylesParent, checkbox_italic, _("Italic"));
   m_slantedCB =
-    new wxCheckBox(stylesBox->GetStaticBox(), checkbox_slanted, _("Slanted"));
-  m_underlinedCB = new wxCheckBox(stylesBox->GetStaticBox(),
+    new wxCheckBox(stylesParent, checkbox_slanted, _("Slanted"));
+  m_underlinedCB = new wxCheckBox(stylesParent,
                                   checkbox_underlined, _("Underlined"));
-  m_strikethroughCB = new wxCheckBox(stylesBox->GetStaticBox(),
+  m_strikethroughCB = new wxCheckBox(stylesParent,
                                      checkbox_strikethrough, _("Strike Through"));
   m_examplePanel =
-    new ExamplePanel(stylesBox->GetStaticBox(), wxID_ANY);
-  
-  vbox_sizer->Add(m_getStyleFont,wxSizerFlags().Expand());
-  
-  wxBoxSizer *fontoptionsizer = new wxBoxSizer(wxVERTICAL);
-  fontoptionsizer->Add(m_boldCB, wxSizerFlags());
-  fontoptionsizer->Add(m_italicCB,wxSizerFlags());
-  fontoptionsizer->Add(m_slantedCB,wxSizerFlags());
-  fontoptionsizer->Add(m_underlinedCB,wxSizerFlags());
-  fontoptionsizer->Add(m_strikethroughCB,wxSizerFlags());
+    new ExamplePanel(stylesParent, wxID_ANY);
+  // Enough for the example text in a moderately large font. It gets more
+  // room whenever the settings are taller than this column.
+  m_examplePanel->SetMinSize(wxSize(-1, 2 * m_examplePanel->GetCharHeight()));
+  // Load and save act on all styles at once, not just on the selected one.
+  // Their tooltips say so, as their place among the controls for the
+  // selected style no longer does.
+  m_loadStyle = new wxButton(stylesParent, load_id, _("Load"));
+  m_saveStyle = new wxButton(stylesParent, save_id, _("Save"));
+  m_loadStyle->SetToolTip(_("Load all styles from a file"));
+  m_saveStyle->SetToolTip(_("Save all styles to a file"));
 
-  wxBoxSizer *style_hbox = new wxBoxSizer(wxHORIZONTAL);
-  style_hbox->Add(fontoptionsizer, wxSizerFlags().Expand());
-  style_hbox->Add(m_examplePanel,
-                  wxSizerFlags(1).Expand().Border(wxALL, 5 * GetContentScaleFactor()));
-  vbox_sizer->Add(style_hbox, wxSizerFlags(1).Expand());
+  // Colour and font side by side. Only the colour gets the spare width: the
+  // font button shows the font's name, so that equal shares would make the
+  // row twice that wide.
+  wxBoxSizer *colorFontSizer = new wxBoxSizer(wxHORIZONTAL);
+  colorFontSizer->Add(m_styleColor, wxSizerFlags(1).Expand());
+  colorFontSizer->Add(m_getStyleFont, wxSizerFlags().Expand());
+
+  // The font options in a row (wrapping onto a second one if the dialog is
+  // narrow), followed by load and save. Stacked beside the example, as they
+  // used to be, the two buttons would make this column -- and thereby the
+  // shortest the settings can get -- two buttons tall.
+  wxWrapSizer *fontoptionsizer = new wxWrapSizer(wxHORIZONTAL);
+  fontoptionsizer->Add(m_boldCB, wxSizerFlags().Border(wxRIGHT, 5 * GetContentScaleFactor()));
+  fontoptionsizer->Add(m_italicCB, wxSizerFlags().Border(wxRIGHT, 5 * GetContentScaleFactor()));
+  fontoptionsizer->Add(m_slantedCB, wxSizerFlags().Border(wxRIGHT, 5 * GetContentScaleFactor()));
+  fontoptionsizer->Add(m_underlinedCB, wxSizerFlags().Border(wxRIGHT, 5 * GetContentScaleFactor()));
+  fontoptionsizer->Add(m_strikethroughCB, wxSizerFlags());
+  wxBoxSizer *optionsLoadSaveSizer = new wxBoxSizer(wxHORIZONTAL);
+  optionsLoadSaveSizer->Add(fontoptionsizer,
+                            wxSizerFlags(1).CenterVertical());
+  optionsLoadSaveSizer->Add(m_loadStyle, wxSizerFlags());
+  optionsLoadSaveSizer->Add(m_saveStyle, wxSizerFlags());
+
+  wxBoxSizer *vbox_sizer = new wxBoxSizer(wxVERTICAL);
+  vbox_sizer->Add(colorFontSizer, wxSizerFlags().Expand());
+  vbox_sizer->Add(optionsLoadSaveSizer,
+                  wxSizerFlags().Expand().Border(wxUP | wxDOWN, 5 * GetContentScaleFactor()));
+  vbox_sizer->Add(m_examplePanel, wxSizerFlags(1).Expand());
+  // Expand: the list takes whatever height the splitter gives the settings.
   styles_tophbox->Add(m_styleFor,
-                    wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
-  styles_tophbox->Add(vbox_sizer, wxSizerFlags(1).Expand());
+                    wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
+  styles_tophbox->Add(vbox_sizer, wxSizerFlags(1).Expand().Border(wxALL, 5 * GetContentScaleFactor()));
   stylesBox->Add(styles_tophbox, wxSizerFlags(1).Expand());
   wxConfigBase *config = wxConfig::Get();
   int styleToEditNum = 0;
@@ -2869,23 +2904,12 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
     styleToEditNum = 0;
   m_styleFor->SetSelection(styleToEditNum);
 
-    // load+save buttons
-  wxBoxSizer *loadSavesizer = new wxBoxSizer(wxVERTICAL);
-  m_loadStyle = new wxButton(stylesBox->GetStaticBox(), load_id, _("Load"));
-  m_saveStyle = new wxButton(stylesBox->GetStaticBox(), save_id, _("Save"));
-  loadSavesizer->Add(
-                     m_loadStyle,
-                     wxSizerFlags().Border(wxUP | wxDOWN, 5 * GetContentScaleFactor()));
-  loadSavesizer->Add(
-                     m_saveStyle,
-                     wxSizerFlags().Border(wxUP | wxDOWN, 5 * GetContentScaleFactor()));
-  style_hbox->Add(loadSavesizer,
-                  wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
-
   wxCommandEvent dummy;
   OnChangeStyle(dummy);
-  vsizer->Add(stylesBox,
-              wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
+  wxBoxSizer *stylesPanelSizer = new wxBoxSizer(wxVERTICAL);
+  stylesPanelSizer->Add(stylesBox,
+              wxSizerFlags(1).Expand().Border(wxALL, 5 * GetContentScaleFactor()));
+  stylesPanel->SetSizer(stylesPanelSizer);
   m_configuration->SetZoomFactor(1.0);
 
   // Load the sample worksheet's contents
@@ -2908,7 +2932,18 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
     tree.DynamicAppend(mp.ParseTag(xmlcells));
     m_sampleWorksheet->InsertGroupCells(std::move(tree));
   }
-  vsizer->Add(m_sampleWorksheet, wxSizerFlags(1).Expand().
+
+  // What the settings look like unshrunk -- with the "Style for" list at its
+  // natural height -- is what they get by default. Moving the sash can then
+  // shrink the list down to a few lines; the column of buttons and check
+  // boxes next to it decides how short the settings can get.
+  const wxSize stylesPreferred = stylesPanel->GetBestSize();
+  m_styleFor->SetMinSize(wxSize(m_styleFor->GetBestSize().x,
+                                4 * m_styleFor->GetCharHeight()));
+  stylesPanel->SetMinSize(stylesPanelSizer->GetMinSize());
+  splitter->SplitAdaptively(stylesPanel, m_sampleWorksheet, stylesPreferred);
+  splitter->RememberSashIn(wxS("ConfigDialog/StyleSettingsSize"));
+  vsizer->Add(splitter, wxSizerFlags(1).Expand().
               Border(wxALL, 5 * GetContentScaleFactor()));
 
   panel->FitInside();

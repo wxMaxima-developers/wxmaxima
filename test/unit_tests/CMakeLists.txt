@@ -339,6 +339,16 @@ target_link_libraries(test_ButtonWrapSizer PRIVATE ${wxWidgets_LIBRARIES})
 add_test(NAME ButtonWrapSizer
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_ButtonWrapSizer>")
 
+# The configuration dialog's style settings/sample worksheet splitter: which
+# direction it splits in, and that it keeps (and remembers) a moved sash.
+add_executable(test_AdaptiveSplitter
+    test_AdaptiveSplitter.cpp ${CMAKE_SOURCE_DIR}/src/dialogs/AdaptiveSplitter.cpp
+    ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
+target_include_directories(test_AdaptiveSplitter PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_link_libraries(test_AdaptiveSplitter PRIVATE ${wxWidgets_LIBRARIES})
+add_test(NAME AdaptiveSplitter
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_AdaptiveSplitter>")
+
 # Layout/recalculation regression test. Unlike the tests above (which stub out
 # GroupCell via TestStubs.cpp), this links the real application code through the
 # wxmTestApp object library so it can exercise the genuine GroupCell/EditorCell
