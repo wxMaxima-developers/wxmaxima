@@ -2407,7 +2407,7 @@ wxString Worksheet::GetString(bool lb) const {
 
   wxString s;
   for (const Cell &cell : OnDrawList(GetDocumentCellPointers().GetSelectionStart().get())) {
-    if (lb && cell.BreakLineHere() && !s.empty())
+    if (lb && cell.BreakLineHere() && !cell.IsTextContinuation() && !s.empty())
       s += wxS('\n');
     s += cell.ToString();
     if (&cell == GetDocumentCellPointers().GetSelectionEnd())

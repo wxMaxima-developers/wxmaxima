@@ -1,5 +1,10 @@
 # Current development version
 
+- Long warnings, error messages, status messages and printf() output are
+  broken into lines to fit the window, after a space, comma, semicolon,
+  dot or one of + - * /. Numbers and web links are never torn apart, and
+  2D ASCII-art maths stays as it is. As long as a line fits, it looks as
+  before, and copying it still gives the line Maxima sent.
 - The configuration dialogue's "Worksheet" tab shows a sample worksheet
   next to (or below) its settings, the way the "Style" tab does. Changing
   how labels are shown, the label width, multiplication signs, special

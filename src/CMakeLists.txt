@@ -184,6 +184,7 @@ set(SOURCE_FILES
     SvgSize.cpp
     SvgPanel.cpp
     SyntaxErrorLocation.cpp
+    TextBreaks.cpp
     ToolBar.cpp
     ToolBarSections.cpp
     TrayIcon.cpp

@@ -1490,6 +1490,10 @@ wxString GroupCell::ToTeXCodeCell(const wxString &imgDir, const wxString &filena
         wxString line = tmp.ToString();
         while (line.EndsWith(wxS("\n")))
           line.RemoveLast();
+        // A piece of a line that was split only to allow wrapping it
+        // continues the line before.
+        if (tmp.IsTextContinuation() && str.EndsWith(wxS("\n")))
+          str.RemoveLast();
         str += TexProtectVerbatim(line) + wxS("\n");
       } else {
         switch (tmp.GetTextStyle()) {
@@ -1524,6 +1528,9 @@ wxString GroupCell::ToTeXCodeCell(const wxString &imgDir, const wxString &filena
           // emitted as LaTeX text, not forced through the math renderer: it is
           // prose, and wrapping a sentence in \[...\] produced garbled output.
           closeMath();
+          // As above: a continuation isn't separated from the text before it.
+          if (tmp.IsTextContinuation() && str.EndsWith(wxS("\n")))
+            str.RemoveLast();
           str += TexEscapeOutputCell(tmp.ToTeX()) + wxS("\n");
           break;
 

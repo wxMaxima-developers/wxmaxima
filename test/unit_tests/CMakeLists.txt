@@ -268,6 +268,17 @@ target_link_libraries(test_SyntaxErrorLocation PRIVATE ${wxWidgets_LIBRARIES})
 add_test(NAME SyntaxErrorLocation
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_SyntaxErrorLocation>")
 
+# Where a line of plain text Maxima sends may be broken into lines is a pure
+# string function, so it is tested directly.
+add_executable(test_TextBreaks
+    test_TextBreaks.cpp ${CMAKE_SOURCE_DIR}/src/TextBreaks.cpp
+    ${CMAKE_SOURCE_DIR}/src/UrlDetection.cpp
+    ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
+target_include_directories(test_TextBreaks PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_link_libraries(test_TextBreaks PRIVATE ${wxWidgets_LIBRARIES})
+add_test(NAME TextBreaks
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_TextBreaks>")
+
 # wxWidgets can't tell an SVG's own size, so we read it from the root
 # element ourselves; a pure string function, tested directly.
 add_executable(test_SvgSize
@@ -935,6 +946,18 @@ if(TARGET wxmTestApp)
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
     add_test(NAME BrokenCellsToTeX
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_BrokenCellsToTeX>")
+
+    # A long line of plain text Maxima sends is split into cells the worksheet
+    # can break between; as long as it fits it has to look, copy, save and
+    # export as one line.
+    add_executable(test_TextContinuation
+        test_TextContinuation.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_TextContinuation PUBLIC cxx_std_20)
+    target_link_libraries(test_TextContinuation PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME TextContinuation
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_TextContinuation>")
 
     # RTF/OMML export (GH #1456, GH #1457): previously untested entirely.
     add_executable(test_RTFExport

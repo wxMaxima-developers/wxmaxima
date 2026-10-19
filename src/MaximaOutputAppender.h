@@ -49,12 +49,15 @@ public:
     NewLine = 1,
     BigSkip = 2,
     PromptToolTip = 4,
+    //! Plain text that may be broken into lines, see wxm::SplitAtTextBreaks()
+    BreakableText = 8,
     DefaultOpt = NewLine | BigSkip
   };
 
   //! Append one line \p s of the given \p type to the console, dispatching on
   //! the type (plain text goes verbatim, prompts/other run through the parser).
-  TextCell *ConsoleAppend(wxString s, CellType type);
+  //! \p opts is handed on to DoRawConsoleAppend() for plain text.
+  TextCell *ConsoleAppend(wxString s, CellType type, AppendOpt opts = {});
 
   //! Append a parsed 2D-maths XML fragment to the console.
   void ConsoleAppend(wxXmlDocument xml, CellType type,
@@ -66,8 +69,13 @@ public:
 
   /*! Append one or more lines of ordinary unicode text to the console.
 
-    \return A pointer to the last line that was appended or nullptr if there is
-    no such line.
+    With AppendOpt::BreakableText each line becomes one TextCell per piece
+    wxm::SplitAtTextBreaks() returns, so the worksheet can break a long line
+    between them; without it, one TextCell per line. ASCII-art maths must not
+    be split: its columns only line up as long as each line is in one piece.
+
+    \return A pointer to the last cell that was appended or nullptr if there
+    is no such cell.
   */
   TextCell *DoRawConsoleAppend(wxString s, CellType type, AppendOpt opts = {});
 
