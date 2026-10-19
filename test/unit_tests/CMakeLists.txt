@@ -329,6 +329,16 @@ target_link_libraries(test_MenuHelpString PRIVATE ${wxWidgets_LIBRARIES})
 add_test(NAME MenuHelpString
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_MenuHelpString>")
 
+# A floating find/replace sidebar or wizard can be widened, but not made
+# higher than its contents (LimitFloatingPaneHeight()).
+add_executable(test_FloatingPaneHeight
+    test_FloatingPaneHeight.cpp ${CMAKE_SOURCE_DIR}/src/FloatingPaneHeight.cpp
+    ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
+target_include_directories(test_FloatingPaneHeight PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_link_libraries(test_FloatingPaneHeight PRIVATE ${wxWidgets_LIBRARIES})
+add_test(NAME FloatingPaneHeight
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_FloatingPaneHeight>")
+
 # Guards the Greek/symbol sidebars' Buttonwrapsizer (a wxWrapSizer subclass that
 # uses the protected m_availSize -- fragile across wx versions, broke wrapping on
 # wx 3.0 and again on wx 3.3). Small, standalone: compiles the class directly.

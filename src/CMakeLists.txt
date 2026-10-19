@@ -209,6 +209,7 @@ set(SOURCE_FILES
     InterruptChannelHandshake.cpp
     MaximaInterruptChannel.cpp
     MenuHelpString.cpp
+    FloatingPaneHeight.cpp
     wxMathml.cpp
     wxMaxima.cpp
     wxMaximaFrame.cpp
