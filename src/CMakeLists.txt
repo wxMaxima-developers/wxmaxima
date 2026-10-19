@@ -209,6 +209,7 @@ set(SOURCE_FILES
     ToolbarPane.cpp
     ProcessTree.cpp
     InterruptChannelHandshake.cpp
+    MaximaAuthLine.cpp
     MaximaInterruptChannel.cpp
     MenuHelpString.cpp
     FloatingPaneHeight.cpp
