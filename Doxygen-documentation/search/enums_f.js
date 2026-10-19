@@ -4,5 +4,6 @@ var searchData=
   ['textstyle_1',['TextStyle',['../TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993',1,'TextStyle.h']]],
   ['textundoresult_2',['TextUndoResult',['../classWorksheetDocument.html#a597da4ddc26d35569b9346897dff3b72',1,'WorksheetDocument']]],
   ['timerids_3',['TimerIDs',['../classWorksheet.html#ab23463675bcf9e4b601204eb665a2377',1,'Worksheet::TimerIDs()'],['../classwxMaxima.html#ab6afd24efcd1d85c6aac02040adf0a68',1,'wxMaxima::TimerIDs()']]],
-  ['token_5ftype_4',['token_type',['../classdetail_1_1lexer__base.html#add65fa7a85aa15052963809fbcc04540',1,'detail::lexer_base']]]
+  ['token_5ftype_4',['token_type',['../classdetail_1_1lexer__base.html#add65fa7a85aa15052963809fbcc04540',1,'detail::lexer_base']]],
+  ['topic_5',['Topic',['../structwxm_1_1WorksheetPreview.html#a506c05bcdfee84eaadde34c4e7c5f1e2',1,'wxm::WorksheetPreview']]]
 ];
