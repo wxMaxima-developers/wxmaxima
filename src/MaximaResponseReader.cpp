@@ -722,9 +722,14 @@ void MaximaResponseReader::ReadPrompt(const wxString &data) {
     // :continue leaves the debugger, or (to-maxima) leaves Lisp mode) sets a
     // non-special status and clears it. The debugger (dbm) wins over plain
     // Lisp mode (MAXIMA>).
-    if (label.StartsWith(wxS("(dbm:")))
+    if (label.StartsWith(wxS("(dbm:"))) {
       m_wxMaxima.StatusMaximaBusy(StatusBar::MaximaStatus::debugging);
-    else
+      // The calculation stopped and waits for the user, just like a
+      // question does. Only raised if the window isn't active, and then
+      // also shows the tray icon.
+      m_wxMaxima.GetWorksheet()->SetNotification(
+        _("Maxima has stopped in the debugger!"), wxICON_ERROR);
+    } else
       m_wxMaxima.StatusMaximaBusy(StatusBar::MaximaStatus::lispmode);
   } else {
     if (m_wxMaxima.m_configuration.InLispMode())
@@ -739,6 +744,8 @@ void MaximaResponseReader::EnterLdbMode() {
   m_wxMaxima.m_inLDB = true;
   // Show the "stopped in a debugger" pictogram in the status bar.
   m_wxMaxima.StatusMaximaBusy(StatusBar::MaximaStatus::debugging);
+  m_wxMaxima.GetWorksheet()->SetNotification(
+    _("Maxima has stopped in the debugger!"), wxICON_ERROR);
   wxLogMessage(_("Maxima's Lisp entered sbcl's low-level debugger (LDB)."));
   m_wxMaxima.m_outputAppender.DoRawConsoleAppend(
     _("Maxima's Lisp (sbcl) has stopped in its low-level debugger (LDB). "
