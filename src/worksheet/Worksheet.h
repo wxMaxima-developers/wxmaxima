@@ -30,6 +30,7 @@
 #ifndef WORKSHEET_H
 #define WORKSHEET_H
 
+#include <functional>
 #include <optional>
 #include "precomp.h"
 #include "MaximaManual.h"
@@ -802,6 +803,8 @@ public:
 private:
 //! A error notification message
   std::optional<Notification> m_notificationMessage;
+  //! Informed about m_notificationMessage coming and going
+  std::function<void(bool)> m_attentionCallback;
 public:
   //! Is this window active?
   void WindowActive(bool active){m_windowActive = active;}
@@ -812,6 +815,15 @@ public:
     This command will be ignored if the wxMaxima window is currently active
   */
   void SetNotification(const wxString &message, int flags = wxICON_INFORMATION);
+  /*! Is called with true when a notification is raised and with false once it
+    is cleared, i.e. once the user has seen it.
+
+    The tray icon hangs off this (see TrayIcon::SetAttentionNeeded()): it is
+    only shown while there is something the user hasn't seen yet. Not called
+    from the destructor.
+  */
+  void SetAttentionCallback(std::function<void(bool)> callback)
+    { m_attentionCallback = std::move(callback); }
 
   //! Is called if this element looses or gets the focus
   void OnActivate(wxActivateEvent &event);

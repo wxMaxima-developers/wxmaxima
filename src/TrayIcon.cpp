@@ -49,7 +49,7 @@ TrayIcon::TrayIcon(wxFrame *frame, StatusBar *statusBar)
   Bind(wxEVT_MENU, &TrayIcon::OnShow, this, menu_show_id);
   Bind(wxEVT_MENU, &TrayIcon::OnInterrupt, this, EventIDs::menu_interrupt_id);
   Bind(wxEVT_MENU, &TrayIcon::OnExit, this, wxID_EXIT);
-  UpdateStatus(StatusBar::MaximaStatus::wait_for_start);
+  // No icon yet: it only appears once something needs attention.
 }
 
 TrayIcon::~TrayIcon() { RemoveIcon(); }
@@ -103,9 +103,25 @@ wxString TrayIcon::TooltipFor(StatusBar::MaximaStatus status) {
 }
 
 void TrayIcon::UpdateStatus(StatusBar::MaximaStatus status) {
+  m_status = status;
+  if (m_attentionNeeded)
+    ShowIcon();
+}
+
+void TrayIcon::SetAttentionNeeded(bool needed) {
+  if (needed == m_attentionNeeded)
+    return;
+  m_attentionNeeded = needed;
+  if (needed)
+    ShowIcon();
+  else
+    RemoveIcon();
+}
+
+void TrayIcon::ShowIcon() {
   wxIcon icon;
-  icon.CopyFromBitmap(m_statusBar->GetTrayIconBitmap(status));
-  SetIcon(icon, wxS("wxMaxima: ") + TooltipFor(status));
+  icon.CopyFromBitmap(m_statusBar->GetTrayIconBitmap(m_status));
+  SetIcon(icon, wxS("wxMaxima: ") + TooltipFor(m_status));
 }
 
 wxMenu *TrayIcon::CreatePopupMenu() {

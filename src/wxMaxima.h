@@ -364,6 +364,8 @@ protected:
   bool m_isActive = true;
   //! Called when this window is focussed or defocussed.
   void OnFocus(wxFocusEvent &event);
+  //! Called when this window is activated or deactivated
+  void OnActivate(wxActivateEvent &event);
 
   //! Forwards the keyboard focus to a text control that might need it
   void PassKeyboardFocus();

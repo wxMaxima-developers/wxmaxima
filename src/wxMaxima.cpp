@@ -1136,6 +1136,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_FIND_REPLACE_ALL, &wxMaxima::OnReplaceAll, this);
   Bind(wxEVT_SET_FOCUS, &wxMaxima::OnFocus, this);
   Bind(wxEVT_ICONIZE, &wxMaxima::OnMinimize, this);
+  Bind(wxEVT_ACTIVATE, &wxMaxima::OnActivate, this);
   Bind(SYMBOLADDEVENT, &wxMaxima::OnSymbolAdd, this);
   Bind(wxEVT_MENU, &wxMaxima::ReplaceSuggestion, this, EventIDs::popid_suggestion1, EventIDs::popid_suggestion1 + EventIDs::NumberOfSuggestions - 1);
   Bind(wxEVT_MENU, &MaximaCommandMenus::PropertiesMenu, &m_menuCommands, EventIDs::popid_property_real);
@@ -3795,6 +3796,18 @@ void wxMaxima::PassKeyboardFocus() {
       CallAfter([this]{GetWorksheet()->SetFocus();});
     }
   }
+}
+
+void wxMaxima::OnActivate(wxActivateEvent &event) {
+  // The worksheet only raises a notification (and shows the tray icon) for
+  // something that happened while the window wasn't active. Activating the
+  // window means the user can now see what it was about, so it is cleared.
+  if (GetWorksheet()) {
+    GetWorksheet()->WindowActive(event.GetActive());
+    if (event.GetActive())
+      GetWorksheet()->ClearNotification();
+  }
+  event.Skip();
 }
 
 void wxMaxima::OnMinimize(wxIconizeEvent &event) {

@@ -1068,7 +1068,18 @@ a local TCP socket.
   without watching one real run, and never on `wxmaxima.exe` itself.
 
 - **System tray icon (`src/TrayIcon.{h,cpp}`, GH #2286) -- mirrors the busy
-  status, gated entirely by `wxUSE_TASKBARICON`.** The maintainer's own
+  status, gated entirely by `wxUSE_TASKBARICON`, and is only in the tray
+  while a notification the user hasn't seen is pending.** The maintainer's
+  use case (2026-10): it is worth having only when the window isn't active
+  and a long calculation finished, Maxima asks a question, an error or the
+  debugger was hit, or an autosave failed -- exactly the cases that call
+  `Worksheet::SetNotification()`. So the worksheet's notification state
+  drives it (`Worksheet::SetAttentionCallback()` ->
+  `TrayIcon::SetAttentionNeeded()`), and `wxMaxima::OnActivate()` clears the
+  notification, which removes the icon. Before that, `m_windowActive` was
+  only updated on iconize, so notifications only ever fired for a minimized
+  window; `OnActivate()` now tracks it too. A new reason to want attention
+  belongs in a `SetNotification()` call, not in the tray icon. The maintainer's own
   issue text was just "wxAppIndicator -- we don't seem to use that on gtk,
   currently"; root-caused by finding that `StatusBar::UpdateStatusMaximaBusy()`
   already has a Windows-only `#ifdef __WXMSW__` block driving the taskbar

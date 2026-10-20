@@ -1,5 +1,12 @@
 # Current development version
 
+- The system tray icon only appears when something needs your attention
+  while the wxMaxima window isn't active: a long calculation has finished,
+  Maxima asks a question, Maxima has issued an error or stopped in the
+  debugger, or an autosave failed. It goes away as soon as the window is
+  activated again. A desktop notification is now also raised when the
+  window is merely in the background, not only when it is minimized, and a
+  failed autosave raises one, too.
 - Long warnings, error messages, status messages and printf() output are
   broken into lines to fit the window, after a space, comma, semicolon,
   dot or one of + - * /. Numbers and web links are never torn apart, and
