@@ -84,9 +84,6 @@ Maxima::Maxima(wxSocketBase *socket, Configuration *config) :
 
 Maxima::~Maxima() {
   m_workerThread.request_stop();
-  if(m_workerThread.joinable()) {
-    m_workerThread.join();
-  }
 
   // Defensively drop any handlers that might still target this object before it
   // is torn down. These stay as 1-arg Disconnect() rather than Unbind(): they
@@ -101,6 +98,10 @@ Maxima::~Maxima() {
 
   if (m_socket) {
       m_socket->Close();
+  }
+
+  if(m_workerThread.joinable()) {
+    m_workerThread.join();
   }
 
   {
