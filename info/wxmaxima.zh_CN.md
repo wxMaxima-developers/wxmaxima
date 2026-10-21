@@ -1600,7 +1600,7 @@ installed and the online one cannot be accessed.
 
 ## Can I make _wxMaxima_ output both image files and embedded plots at once?
 
-The worksheet embeds `.png files. _WxMaxima_ allows the user to specify
+The worksheet embeds `.png` files. _WxMaxima_ allows the user to specify
 where they should be generated:
 
 ```maxima
