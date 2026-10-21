@@ -1,5 +1,8 @@
 # Current development version
 
+- A power shown in linear form no longer has a gap after its caret:
+  x^12 used to read as "x^ 12", because the hidden parentheses around
+  the exponent took as much room as a hidden multiplication sign.
 - The system tray icon only appears when something needs your attention
   while the wxMaxima window isn't active: a long calculation has finished,
   Maxima asks a question, Maxima has issued an error or stopped in the
