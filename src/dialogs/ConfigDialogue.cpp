@@ -1187,6 +1187,7 @@ wxWindow *ConfigDialogue::CreateWorksheetPanel() {
   updatesPreview(m_indentMaths, wxEVT_CHECKBOX, Topic::labels);
   updatesPreview(m_changeAsterisk, wxEVT_CHECKBOX, Topic::labels);
   updatesPreview(m_hidemultiplicationSign, wxEVT_CHECKBOX, Topic::labels);
+  updatesPreview(m_layoutStrategy, wxEVT_RADIOBOX, Topic::fractions);
   updatesPreview(m_latin2Greek, wxEVT_CHECKBOX, Topic::specialSymbols);
   updatesPreview(m_keepPercentWithSpecials, wxEVT_CHECKBOX, Topic::specialSymbols);
   updatesPreview(m_displayNDigits, wxEVT_RADIOBUTTON, Topic::longNumbers);
@@ -1195,7 +1196,6 @@ wxWindow *ConfigDialogue::CreateWorksheetPanel() {
   updatesPreview(m_displayedDigits, wxEVT_SPINCTRL, Topic::longNumbers);
   updatesPreview(m_digitGrouping, wxEVT_CHECKBOX, Topic::longNumbers);
   updatesPreview(m_digitGroupingMinDigits, wxEVT_SPINCTRL, Topic::longNumbers);
-  updatesPreview(m_layoutStrategy, wxEVT_RADIOBOX, Topic::layoutStrategy);
   updatesPreview(m_oversizedMatrices, wxEVT_RADIOBOX, Topic::oversizedMatrix);
   // The scroll position can only be worked out once the preview has a size.
   m_worksheetPreview->Bind(wxEVT_SIZE, [this](wxSizeEvent &event) {

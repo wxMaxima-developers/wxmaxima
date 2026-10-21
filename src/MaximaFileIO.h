@@ -96,6 +96,8 @@ private:
     So the box is CallAfter-deferred and coalesced via m_saveFailedBoxPending.
   */
   void ReportSaveFailed();
+  //! Tells a user who isn't looking at the window that an autosave failed
+  void NotifyAutoSaveFailed();
 
   //! True while a deferred "Saving failed!" box is queued or open; further
   //! failures only update the status bar until it is dismissed.

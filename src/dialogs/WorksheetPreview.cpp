@@ -43,24 +43,23 @@ wxString WorksheetPreview::MatrixXml() {
   return xml + wxS("</tb>");
 }
 
-wxString WorksheetPreview::ExpandedBinomialXml() {
-  // Maxima orders the terms by falling power: x^n+n*x^(n-1)+...+n*x+1.
+wxString WorksheetPreview::ExpandedBinomialXml(int power, int sign) {
   wxString xml;
-  long coefficient = 1;
-  for (int power = WideFractionPower; power >= 0; power--) {
-    if (power < WideFractionPower)
-      xml += wxS("<mo>+</mo>");
-    if ((coefficient != 1) || (power == 0)) {
+  long coefficient = 1; // binomial(power, power - exponent)
+  for (int exponent = power; exponent >= 0; exponent--) {
+    // The sign of the term: the one of sign^(power - exponent)
+    const bool negative = (sign < 0) && ((power - exponent) % 2 != 0);
+    if (exponent < power)
+      xml += negative ? wxS("<mo>-</mo>") : wxS("<mo>+</mo>");
+    if ((coefficient != 1) || (exponent == 0))
       xml += wxString::Format(wxS("<n>%li</n>"), coefficient);
-      if (power > 0)
-        xml += wxS("<h>*</h>");
-    }
-    if (power == 1)
+    if ((coefficient != 1) && (exponent > 0))
+      xml += wxS("<h>*</h>");
+    if (exponent > 1)
+      xml += wxString::Format(wxS("<e><v>x</v><n>%i</n></e>"), exponent);
+    else if (exponent == 1)
       xml += wxS("<v>x</v>");
-    else if (power > 1)
-      xml += wxString::Format(wxS("<e><v>x</v><n>%i</n></e>"), power);
-    // The next binomial coefficient, n over (n-power+1)
-    coefficient = coefficient * power / (WideFractionPower - power + 1);
+    coefficient = coefficient * exponent / (power - exponent + 1);
   }
   return xml;
 }
@@ -121,18 +120,21 @@ WorksheetPreview WorksheetPreview::Make(Configuration *config) {
               "<g>alpha</g><mo>+</mo>"
               "<e><s>%e</s><r><s>%i</s><h>*</h><s>%pi</s><h>*</h><v>x</v></r></e>"));
 
+  // A fraction that fits on any line and one that is wider than the
+  // window: what "Math layout strategy" decides is which of them is shown
+  // in 2D and which one in 1D.
+  addHeading(Topic::fractions, wxS("Fractions in 2D or 1D:"));
+  addCode(wxS("(x+1)/2;"),
+          wxS("<lbl altCopy=\"%o4\">(%o4) </lbl>"
+              "<f><r><v>x</v><mo>+</mo><n>1</n></r><n>2</n></f>"));
+  addCode(wxS("expand((x+1)^12)/expand((x-1)^12);"),
+          wxS("<lbl altCopy=\"%o5\">(%o5) </lbl><f><r>") +
+          ExpandedBinomialXml(12, 1) + wxS("</r><r>") +
+          ExpandedBinomialXml(12, -1) + wxS("</r></f>"));
+
   addHeading(Topic::longNumbers, wxS("A long number:"));
   addCode(wxS("200!;"),
-          wxS("<lbl altCopy=\"%o4\">(%o4) </lbl><n>") + Factorial200() + wxS("</n>"));
-
-  addHeading(Topic::layoutStrategy, wxS("A narrow and a wide fraction:"));
-  addCode(wxS("sqrt(x)/(x^2+1);"),
-          wxS("<lbl altCopy=\"%o5\">(%o5) </lbl>"
-              "<f><r><q><v>x</v></q></r>"
-              "<r><e><v>x</v><n>2</n></e><mo>+</mo><n>1</n></r></f>"));
-  addCode(wxString::Format(wxS("expand((x+1)^%i)/(x-1);"), WideFractionPower),
-          wxS("<lbl altCopy=\"%o6\">(%o6) </lbl><f><r>") + ExpandedBinomialXml() +
-          wxS("</r><r><v>x</v><mo>-</mo><n>1</n></r></f>"));
+          wxS("<lbl altCopy=\"%o6\">(%o6) </lbl><n>") + Factorial200() + wxS("</n>"));
 
   addHeading(Topic::oversizedMatrix, wxS("A matrix too large for the window:"));
   preview.matrixGroup =

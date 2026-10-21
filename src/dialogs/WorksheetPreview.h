@@ -40,11 +40,11 @@ namespace wxm {
 
   A few cells, each with the output Maxima would send for it, so no Maxima
   is needed: labels (one user-defined, one automatic) and multiplication
-  signs, special symbols and a Greek letter, a long number, a narrow and a
-  wide fraction for the layout strategy and a matrix too large for the
-  window. Each Topic starts with a text cell naming it; when
-  a setting changes, the dialog scrolls that heading to the top, so the
-  cells the setting affects are in view.
+  signs, special symbols and a Greek letter, a small fraction and one too
+  wide for the window, a long number and a matrix too large for the window.
+  Each Topic starts with a text cell naming it; when a setting changes, the
+  dialog scrolls that heading to the top, so the cells the setting affects
+  are in view.
 */
 struct WorksheetPreview {
   //! What part of the preview a setting affects
@@ -53,14 +53,10 @@ struct WorksheetPreview {
     labels,
     //! %e, %i and %pi with or without their percent sign, and a Greek letter
     specialSymbols,
+    //! A small fraction and one too wide for the window: the layout strategy
+    fractions,
     //! 200!, as long a number as the digit settings need
     longNumbers,
-    /*! A narrow and a wide fraction
-
-      The wide one is too wide to stay 2D unless "2D, whenever possible" is
-      chosen; the narrow one is linear only if "Prefer 1D" is.
-    */
-    layoutStrategy,
     //! A matrix too large for the window
     oversizedMatrix,
     count
@@ -90,14 +86,11 @@ struct WorksheetPreview {
   */
   static wxString MatrixXml();
 
-  /*! What Maxima sends for expand((x+1)^n), n = WideFractionPower
+  /*! What Maxima sends for (x+sign)^power, expanded
 
-    The numerator of the layout strategy's wide fraction: about twice as
-    wide as the preview has room for.
+    sign is +1 or -1. Maxima orders the terms by descending powers, as here.
   */
-  static wxString ExpandedBinomialXml();
-  //! The power of x+1 ExpandedBinomialXml() expands
-  static constexpr int WideFractionPower = 12;
+  static wxString ExpandedBinomialXml(int power, int sign);
 
   //! The decimal digits of 200!, a number long enough to be shortened by default
   static wxString Factorial200();
