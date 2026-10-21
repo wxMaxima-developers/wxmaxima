@@ -38,6 +38,7 @@
 #include <wx/frame.h>
 #include <wx/log.h>
 
+#include "CompositeDataObject.h"
 #include "Configuration.h"
 #include "MathParser.h"
 #include "cells/GroupCell.h"
@@ -708,14 +709,27 @@ SCENARIO("A selected matrix that doesn't scroll leaves the wheel alone (GH #2479
   g_ws->DestroyTree();
 }
 
+/*! The child of a clipboard object that provides a format
+
+  Where enhanced metafiles exist (MSW), a selection is put on the clipboard as
+  our own CompositeDataObject, since wxDataObjectComposite only accepts a
+  wxDataObjectSimple and the metafile isn't one; elsewhere it is a plain
+  wxDataObjectComposite. Both are handled, so the tests needn't know which.
+*/
+static wxDataObject *ClipboardObject(const wxDataObject &data,
+                                     const wxDataFormat &format) {
+  if (auto *ours = dynamic_cast<const CompositeDataObject *>(&data))
+    return ours->GetObject(format);
+  return dynamic_cast<const wxDataObjectComposite &>(data).GetObject(format);
+}
+
 //! The bitmap a clipboard object offers, drawn now; invalid if it offers none.
 static wxBitmap ClipboardBitmap(const wxDataObject &data) {
   std::vector<wxDataFormat> formats(data.GetFormatCount(wxDataObject::Get));
   data.GetAllFormats(formats.data(), wxDataObject::Get);
-  const auto &composite = dynamic_cast<const wxDataObjectComposite &>(data);
   for (const auto &format : formats)
     if (auto *bitmap = dynamic_cast<LazyBitmapDataObject *>(
-          composite.GetObject(format)))
+          ClipboardObject(data, format)))
       return bitmap->GetBitmap();
   return {};
 }
@@ -757,9 +771,8 @@ SCENARIO("Copying a whole large matrix keeps the bitmap within bounds") {
     const auto data = g_ws->CreateSelectionDataObject();
     THEN("there is no bitmap, but everything else is copied") {
       CHECK_FALSE(ClipboardBitmap(*data).IsOk());
-      const auto &composite = dynamic_cast<const wxDataObjectComposite &>(*data);
       const auto *text = dynamic_cast<wxTextDataObject *>(
-        composite.GetObject(wxDF_UNICODETEXT));
+        ClipboardObject(*data, wxDF_UNICODETEXT));
       REQUIRE(text != nullptr);
       CHECK(text->GetText().Contains(wxS("1149149")));
     }
