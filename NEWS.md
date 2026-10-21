@@ -1,5 +1,10 @@
 # Current development version
 
+- The Hungarian manual PDF composes again with current pandoc (3.2 or
+  newer): quotation marks are now written as Unicode characters rather than
+  as TeX's `` and '' ligatures, which Hungarian's LaTeX language support
+  turns into an undefined command. A stray backtick in the manual that
+  broke it the same way is gone, too (#2271).
 - Copying a part of an output now offers it as SVG and, on Windows, as an
   enhanced metafile, too, as copying whole cells already did. Like the
   other formats they are only drawn when a program pastes them (#2472).
