@@ -192,6 +192,12 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
   SetStatusBar(m_statusBar);
 #if wxUSE_TASKBARICON
   m_trayIcon = std::make_unique<TrayIcon>(this, m_statusBar);
+  // The tray icon only appears while a notification the user hasn't seen yet
+  // is pending, see TrayIcon's class documentation.
+  m_worksheet->SetAttentionCallback([this](bool needed) {
+    if (m_trayIcon)
+      m_trayIcon->SetAttentionNeeded(needed);
+  });
 #endif
   m_StatusSaving = false;
   // If we need to set the status manually for the first time using

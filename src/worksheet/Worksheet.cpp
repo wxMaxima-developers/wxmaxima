@@ -4124,7 +4124,15 @@ void Worksheet::OnCharNoActive(wxKeyEvent &event) {
   RequestRedraw();
 }
 
-void Worksheet::ClearNotification() { m_notificationMessage.reset(); }
+void Worksheet::ClearNotification() {
+  // Called on every key press and mouse click, so only tell anyone if there
+  // actually was a notification to clear.
+  if (!m_notificationMessage)
+    return;
+  m_notificationMessage.reset();
+  if (m_attentionCallback)
+    m_attentionCallback(false);
+}
 
 void Worksheet::SetNotification(const wxString &message, int flags) {
   if (m_windowActive)
@@ -4132,6 +4140,8 @@ void Worksheet::SetNotification(const wxString &message, int flags) {
 
   m_notificationMessage.emplace(wxS("wxMaxima"), message, GetParent(), flags);
   m_notificationMessage->Show();
+  if (m_attentionCallback)
+    m_attentionCallback(true);
 }
 /*****
  * OnChar handles key events. If we have an active cell, sends the

@@ -1016,6 +1016,17 @@ if(TARGET wxmTestApp)
     add_test(NAME TreeUndo
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_TreeUndo>")
 
+    # The worksheet reports when a notification needs the user's attention and
+    # when it is cleared; the tray icon is shown only in between.
+    add_executable(test_WorksheetAttention
+        test_WorksheetAttention.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_WorksheetAttention PUBLIC cxx_std_20)
+    target_link_libraries(test_WorksheetAttention PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME WorksheetAttention
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_WorksheetAttention>")
+
     # Drives a real GreekSidebar to guard its line wrapping: when too small to show
     # every letter it must grow its virtual height so the wrapped rows stay
     # reachable by the vertical scrollbar (broke on wx 3.3 -- OnSize clamped it).
