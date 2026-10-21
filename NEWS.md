@@ -1,5 +1,8 @@
 # Current development version
 
+- Output that Maxima adds or removes outside the visible part of the
+  worksheet no longer makes the window show the wrong part of the worksheet
+  for a moment, and output below the window no longer repaints it at all.
 - A power shown in linear form no longer has a gap after its caret:
   x^12 used to read as "x^ 12", because the hidden parentheses around
   the exponent took as much room as a hidden multiplication sign.

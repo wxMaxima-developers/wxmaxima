@@ -161,6 +161,23 @@ scrolls by however far that point moved. Three things worth knowing:
 - **Removing output is compensated too**: `MaximaEvaluator` calls
   `Worksheet::KeepCursorStillOnScreen()` before `RemoveOutput()`, as
   `InsertLine()` does before appending.
+- **No frame may show the new layout at the old scroll position.**
+  `Worksheet::OnPaint()` runs a pending layout pass itself (a paint often
+  comes before the idle task gets to it), and that pass may scroll, so the
+  paint calls `PrepareDC()` only *after* `RecalculateIfNeeded()`; done before
+  it, the paint drew everything shifted by the change's height for one frame.
+  `Worksheet::GetStalePaintCount()` counts paints whose DC origin doesn't match
+  the scroll position they ended with, and `test_OffscreenRedraw` checks that
+  it stays put. The compensating scroll itself runs frozen
+  (`Worksheet::ScrollViewToUnitY()`): the generic wxScrollHelper used on MSW
+  and macOS first paints pending regions at the old position and then blits
+  the window's pixels by the scrolled distance -- exactly what must not move
+  here. GTK 3's scroll only invalidates the window (`gdk_window_scroll()`),
+  so only the paint ordering mattered there.
+- **A redraw that starts below the window is skipped**
+  (`Worksheet::RedrawStartBelowView()`): nothing visible changed, and the
+  layout pass has already updated the scroll range. A change above the window
+  still repaints once, after the compensation, with identical pixels.
 
 ## Testing layout without a window
 
