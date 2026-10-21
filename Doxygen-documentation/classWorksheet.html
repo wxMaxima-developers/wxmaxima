@@ -143,8 +143,11 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a1db988b3949369c5bb556a1c61ea6ecc"><td class="mdescLeft">&#160;</td><td class="mdescRight">The view's position within its parent, in device pixels (wxWindow::GetPosition).  <br /></td></tr>
 <tr class="separator:a1db988b3949369c5bb556a1c61ea6ecc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf92852b0c9251d9d39e349fba6c1d79"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#aaf92852b0c9251d9d39e349fba6c1d79">ScrollViewToUnitY</a> (int unitY) override</td></tr>
-<tr class="memdesc:aaf92852b0c9251d9d39e349fba6c1d79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scroll vertically to the given position, in scroll units.  <br /></td></tr>
+<tr class="memdesc:aaf92852b0c9251d9d39e349fba6c1d79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scroll without showing any frame in between (the scroll compensation)  <br /></td></tr>
 <tr class="separator:aaf92852b0c9251d9d39e349fba6c1d79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a62a44341bc2ea8e5c796d5aa0950c35a"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a62a44341bc2ea8e5c796d5aa0950c35a">GetStalePaintCount</a> () const</td></tr>
+<tr class="memdesc:a62a44341bc2ea8e5c796d5aa0950c35a"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many paints drew for another scroll position than the one they ended with.  <br /></td></tr>
+<tr class="separator:a62a44341bc2ea8e5c796d5aa0950c35a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acb762cdfd74fa911756a0a8308df8660"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#acb762cdfd74fa911756a0a8308df8660">NotifyRecalculation</a> (<a class="el" href="classGroupCell.html">GroupCell</a> *start) override</td></tr>
 <tr class="memdesc:acb762cdfd74fa911756a0a8308df8660"><td class="mdescLeft">&#160;</td><td class="mdescRight">Schedule a re-layout of the document starting at <code>start</code> (null = all).  <br /></td></tr>
 <tr class="separator:acb762cdfd74fa911756a0a8308df8660"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2432,6 +2435,34 @@ static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>CellsToMat
 
 </div>
 </div>
+<a id="a62a44341bc2ea8e5c796d5aa0950c35a" name="a62a44341bc2ea8e5c796d5aa0950c35a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a62a44341bc2ea8e5c796d5aa0950c35a">&#9670;&#160;</a></span>GetStalePaintCount()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">long Worksheet::GetStalePaintCount </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>How many paints drew for another scroll position than the one they ended with. </p>
+<p>Should stay 0: such a paint shows one frame of the worksheet shifted, as happened when a paint's own layout pass scrolled after the paint had already set up its DC. Lets the tests check for that. </p>
+
+</div>
+</div>
 <a id="af2b29df1955b4a894e2e0f7a8d2e6f1b" name="af2b29df1955b4a894e2e0f7a8d2e6f1b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af2b29df1955b4a894e2e0f7a8d2e6f1b">&#9670;&#160;</a></span>GetString()</h2>
 
@@ -3634,7 +3665,8 @@ static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>CellsToMat
 </table>
 </div><div class="memdoc">
 
-<p>Scroll vertically to the given position, in scroll units. </p>
+<p>Scroll without showing any frame in between (the scroll compensation) </p>
+<p>The layout engine calls this to scroll by exactly the amount the content above the view grew or shrank, so what is on screen is meant to stay where it is. <a class="el" href="classA.html">A</a> plain Scroll() gets that wrong for a moment on MSW and macOS: it first paints any pending invalid region at the old scroll position &ndash; but with the new layout, so shifted &ndash; and then physically moves the window's pixels by the scrolled distance, which is the one thing that must not happen here. Freezing the window suppresses both; thawing it repaints with the new position. (On GTK 3 a scroll only invalidates the window, so there this changes nothing.) </p>
 
 <p>Implements <a class="el" href="classWorksheetView.html#acf1809ec626e67745d75820123948616">WorksheetView</a>.</p>
 
