@@ -425,6 +425,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ClearNotification</b>
 <tr class="memitem:a644f62f084476152d59284daaac21bcf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a644f62f084476152d59284daaac21bcf">SetNotification</a> (const wxString &amp;message, int flags=wxICON_INFORMATION)</td></tr>
 <tr class="memdesc:a644f62f084476152d59284daaac21bcf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inform the user that something happened in a non-active window.  <br /></td></tr>
 <tr class="separator:a644f62f084476152d59284daaac21bcf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a328232df1887406493733ff2e1041c34"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a328232df1887406493733ff2e1041c34">SetAttentionCallback</a> (std::function&lt; void(bool)&gt; callback)</td></tr>
+<tr class="memdesc:a328232df1887406493733ff2e1041c34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is called with true when a notification is raised and with false once it is cleared, i.e.  <br /></td></tr>
+<tr class="separator:a328232df1887406493733ff2e1041c34"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afc11fb31247d40bd282f28f2c8f680e6"><td class="memItemLeft" align="right" valign="top"><a id="afc11fb31247d40bd282f28f2c8f680e6" name="afc11fb31247d40bd282f28f2c8f680e6"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>OnActivate</b> (wxActivateEvent &amp;event)</td></tr>
 <tr class="memdesc:afc11fb31247d40bd282f28f2c8f680e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is called if this element looses or gets the focus. <br /></td></tr>
@@ -3875,6 +3878,36 @@ as HTML" exports them. <a class="el" href="classA.html">A</a> selection inside a
 
 <p>Routes output to one specific cell instead of the one being evaluated. </p>
 <p>Set for exactly as long as it takes to append one background job's output (see <a class="el" href="classWorksheet_1_1AsyncOutputTarget.html" title="Scoped SetAsyncOutputTarget(), so an early return or a throw while appending can&#39;t leave every subseq...">AsyncOutputTarget</a> below and Doxygen/AsyncMaximaOutput.md). Everything else in this worksheet decides which cell an output belongs to by <em>when</em> it arrives; this is the one case where the output says so itself, because it arrives long after its own cell stopped being current. Use <a class="el" href="classWorksheet_1_1AsyncOutputTarget.html" title="Scoped SetAsyncOutputTarget(), so an early return or a throw while appending can&#39;t leave every subseq...">AsyncOutputTarget</a> rather than calling this directly. </p>
+
+</div>
+</div>
+<a id="a328232df1887406493733ff2e1041c34" name="a328232df1887406493733ff2e1041c34"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a328232df1887406493733ff2e1041c34">&#9670;&#160;</a></span>SetAttentionCallback()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Worksheet::SetAttentionCallback </td>
+          <td>(</td>
+          <td class="paramtype">std::function&lt; void(bool)&gt;&#160;</td>
+          <td class="paramname"><em>callback</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Is called with true when a notification is raised and with false once it is cleared, i.e. </p>
+<p>once the user has seen it.</p>
+<p>The tray icon hangs off this (see TrayIcon::SetAttentionNeeded()): it is only shown while there is something the user hasn't seen yet. Not called from the destructor. </p>
 
 </div>
 </div>

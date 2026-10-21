@@ -372,9 +372,9 @@ Architecture &amp; GUI</h1>
 </ul>
 </b></li>
 <li><b><b>Windows stdio, the subsystem bit, and <code>wxmaxima-cli.exe</code> &ndash; see the <code>wxmaxima-packaging</code> skill</b>, which carries the whole <code>wxmaxima_version_string</code> investigation. <code>wxmaxima.exe</code> is a GUI-subsystem binary, which has two consequences: it starts with no stdio at all (what <code>BindStdStreamToParent()</code>/<code>RedirectStdioToParent()</code> paper over), and <code>cmd.exe</code> does not wait for it (what <code><a class="el" href="wxmaxima-cli_8cpp.html" title="A console-subsystem front end for the GUI-subsystem wxmaxima.exe.">src/wxmaxima-cli.cpp</a></code>, a console-subsystem launcher, exists to fix). What is still unexplained is that <b>a GUI-subsystem child reports <code>FILE_TYPE_CHAR</code> for the very same handle values its console-subsystem parent sees as <code>FILE_TYPE_PIPE</code></b>, with inheritance confirmed working &ndash; start there, and do not re-run a theory the skill already records as disproven. Consequence for tests: <b>a content assertion on captured output runs on non-Windows platforms only</b>; Windows keeps the return-code tests (<code>wxmaxima_version_returncode</code>, <code>wxmaxima_help_returncode</code>, <code>wxmaxima_cli_version_returncode</code>). Don't restore a content assertion without watching one real run, and never on <code>wxmaxima.exe</code> itself.</b></li>
-<li><b><b>System tray icon (<code>src/TrayIcon.{h,cpp}</code>, GH #2286) &ndash; mirrors the busy status, gated entirely by <code>wxUSE_TASKBARICON</code>.** The maintainer's own issue text was just "wxAppIndicator -- we don't seem to use that on gtk,
+<li><b><b>System tray icon (<code>src/TrayIcon.{h,cpp}</code>, GH #2286) &ndash; mirrors the busy status, gated entirely by <code>wxUSE_TASKBARICON</code>, and is only in the tray while a notification the user hasn't seen is pending.</b> The maintainer's use case (2026-10): it is worth having only when the window isn't active and a long calculation finished, <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> asks a question, an error or the debugger was hit, or an autosave failed &ndash; exactly the cases that call <code><a class="el" href="classWorksheet.html#a644f62f084476152d59284daaac21bcf" title="Inform the user that something happened in a non-active window.">Worksheet::SetNotification()</a></code>. So the worksheet's notification state drives it (<code><a class="el" href="classWorksheet.html#a328232df1887406493733ff2e1041c34" title="Is called with true when a notification is raised and with false once it is cleared,...">Worksheet::SetAttentionCallback()</a></code> -&gt; <code>TrayIcon::SetAttentionNeeded()</code>), and <code><a class="el" href="classwxMaxima.html#a213c572926f62e1e837c116b0c8ac5fe" title="Called when this window is activated or deactivated.">wxMaxima::OnActivate()</a></code> clears the notification, which removes the icon. Before that, <code>m_windowActive</code> was only updated on iconize, so notifications only ever fired for a minimized window; <code>OnActivate()</code> now tracks it too. <a class="el" href="classA.html">A</a> new reason to want attention belongs in a <code>SetNotification()</code> call, not in the tray icon. The maintainer's own issue text was just "wxAppIndicator -- we don't seem to use that on gtk,
   currently"; root-caused by finding that <code>StatusBar::UpdateStatusMaximaBusy()</code> already has a Windows-only <code>#ifdef __WXMSW__</code> block driving the taskbar button's progress/overlay state via <code>MSWGetTaskBarButton()</code> &ndash; <code>TrayIcon</code> is the portable, GTK-reaching equivalent of exactly that, using the cross-platform <code>wxTaskBarIcon</code>. On GTK specifically, whether the icon is actually <em>visible</em> depends on whether the linked wxWidgets was itself built with AppIndicator/Ayatana support (<code>wxUSE_APPINDICATOR</code>, checked in <code>wx/gtk/taskbar.cpp</code>, a wxWidgets-internal macro this app's own code never needs to check) &ndash; Ubuntu 24.04's stock <code>libwxgtk3.2-dev</code> package does <em>not</em> have it defined at all, so on that specific distro the icon falls back to the older GtkStatusIcon/XEmbed mechanism, which still worked and was confirmed genuinely visible end-to-end after configuring a real systray host (<code>fluxbox</code>'s toolbar needs an explicit <code>session.screen0.toolbar.tools: ..., systemtray, ...</code> in <code>~/.fluxbox/init</code> &ndash; it isn't there by default).<ul>
-<li>**Two real bugs found only by comparing a live screenshot against the app's own status bar icon side by side, not by reading the code:<ol type="1">
+<li><b>Two real bugs found only by comparing a live screenshot against the app's own status bar icon side by side, not by reading the code:</b><ol type="1">
 <li>First attempt built 4 collapsed "category" icons (Idle/Busy/ Attention/Error) from the <em>wrong</em> bitmap family &ndash; <code><a class="el" href="classStatusBar.html" title="The class that draws the status bar.">StatusBar</a></code>'s <code>m_network_idle</code>/<code>m_network_transmit_receive</code> members, which track the <b>separate</b> <code>m_networkStatus</code> icon (raw socket send/receive activity, driven by <code>HandleTimerEvent()</code>'s send/receive timers) &ndash; not <code>m_maximaStatus</code>'s own per-status bitmaps (<code>m_bitmap_waiting</code>, <code>m_bitmap_calculating</code>, ...), which is what actually answers "what is Maxima doing." The two icon families exist side by side in the real status bar (look for <code>m_networkStatus</code> vs <code>m_maximaStatus</code> in <code><a class="el" href="StatusBar_8cpp.html" title="This file defines the contents of the class StatusBar that represents wxMaxima&#39;s status bar.">StatusBar.cpp</a></code>) and are easy to conflate by name alone. Symptom: the tray showed a barely-visible speck for "idle" instead of a normal icon, since that family's idle glyph is a subtle, mostly-transparent icon designed to sit unobtrusively next to actual traffic icons, not to stand alone. Fixed by exposing <code>StatusBar::GetTrayIconBitmap(MaximaStatus)</code>, a straight mirror of <code>UpdateStatusMaximaBusy()</code>'s own per-status <code>m_maximaStatus-&gt;SetBitmap(...)</code> choices, and confirmed by cropping both icons from the same screenshot and eyeballing them side by side &ndash; they now match exactly, pixel for pixel.</li>
 <li><code>art/statusbar/*.h</code> (the bin2h-generated byte-array headers) declare their arrays without <code>static</code>/<code>extern</code> &ndash; fine when <code>#include</code>d from exactly one <code>.cpp</code> (which is all <code><a class="el" href="StatusBar_8cpp.html" title="This file defines the contents of the class StatusBar that represents wxMaxima&#39;s status bar.">StatusBar.cpp</a></code> ever did), but <code>#include</code>-ing the same header a second time from <code><a class="el" href="TrayIcon_8cpp.html" title="This file defines the class TrayIcon.">TrayIcon.cpp</a></code> to build its own icon set independently is a duplicate-symbol <em>link</em> error (<code>multiple definition of NETWORK_IDLE_SVG_GZ</code>, ...), not a compile error &ndash; caught immediately on the first real link attempt. Fixed by never re-embedding the art at all: <code>TrayIcon</code> only ever calls the new <code><a class="el" href="classStatusBar.html#a9e37c25dea90f8000df590c291d14a40" title="The exact bitmap m_maximaStatus itself would show for this status – i.e.">StatusBar::GetTrayIconBitmap()</a></code> getter and reuses the bitmaps <code><a class="el" href="classStatusBar.html" title="The class that draws the status bar.">StatusBar</a></code> already decoded once in its own constructor.</li>
 </ol>
@@ -382,13 +382,13 @@ Architecture &amp; GUI</h1>
 <li>The popup menu's "Interrupt"/"Exit" items deliberately reuse the <em>exact</em> label text (<code>"&amp;Interrupt\tCtrl+G"</code>, <code>"E&amp;xit\tCtrl+Q"</code>) the Maxima/File menus already use, and the two longer status tooltips (debugging/lispmode) reuse <code><a class="el" href="classStatusBar.html" title="The class that draws the status bar.">StatusBar</a></code>'s own full multi-line wording verbatim, rather than shorter tray-only paraphrases &ndash; purely to avoid growing the translatable-string count for a near-duplicate of an existing string; <code>test/check-pot-coverage.cmake</code> only asserts that every file containing a <code>_("...")</code> marker is referenced <em>somewhere</em> in <code>wxMaxima.pot</code> (by filename, not per-string), so adding this new file needed exactly one hand-added <code>msgid "&amp;Show wxMaxima"</code> entry (its own genuinely new string) &ndash; not a full <code>update-locale</code> regen, which would have swept in ~1000 lines of unrelated pre-existing POT drift (see the translations skill for why that regen-then-revert dance is the right move here, not a shortcut).</li>
 <li>Menu actions never duplicate existing logic: <code>OnInterrupt()</code>/<code>OnExit()</code> re-post a plain <code>wxCommandEvent(wxEVT_MENU, &lt;id&gt;)</code> to the main frame's event handler instead of reimplementing what <code><a class="el" href="classMaximaProcessManager.html" title="The Maxima process/socket lifecycle extracted from the wxMaxima god class.">MaximaProcessManager</a>:: Interrupt</code>/<code><a class="el" href="classMaximaCommandMenus.html#a6824cc78424d13f548fe4439f4725874" title="Handles the &quot;File&quot; menu (open/save/save-as, export, load/batch package, compare-files diff frame,...">MaximaCommandMenus::FileMenu</a></code> already do for those same IDs on the real menu &ndash; necessary because <code>wxTaskBarIcon</code>'s own popup menu delivers <code>wxEVT_MENU</code> to itself, not to the frame that created it. Verified live: clicking "Interrupt" from the tray logs the same "Sending Maxima a SIGINT signal," and clicking "Exit" raises the same save-changes <code>Save As</code> prompt a normal File &gt; Exit does.</li>
 </ul>
-</b></b></li>
+</b></li>
 </ul>
-<p><b><b></b></b></p>
+<p><b></b></p>
 <h2><a class="anchor" id="autotoc_md47"></a>
 Asynchronous ("background job") output from Maxima</h2>
-<p><b><b> <b>Implemented and verified, but dormant: nothing in today's single-threaded <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> sends it.</b> Full design, measurements and rationale live in <code>Doxygen/AsyncMaximaOutput.md</code> &ndash; read that before touching any of it. Only the traps worth knowing from elsewhere are repeated here.</b></b></p>
-<p><b><b></p><ul>
+<p><b> <b>Implemented and verified, but dormant: nothing in today's single-threaded <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> sends it.</b> Full design, measurements and rationale live in <code>Doxygen/AsyncMaximaOutput.md</code> &ndash; read that before touching any of it. Only the traps worth knowing from elsewhere are repeated here.</b></p>
+<p><b></p><ul>
 <li><b>Nothing else in this protocol identifies a cell.</b> Output is associated with a cell purely by <em>when</em> it arrives (<code>Worksheet::GetWorkingGroup(true)</code>). <code>&lt;wxasync&gt;&lt;id&gt;UUID&lt;/id&gt;... &lt;/wxasync&gt;</code> is the single exception, and it exists because a background job's output arrives long after its own cell stopped being current. <code><a class="el" href="classWorksheet.html#a1f88d0ae3d7219b394d964c79a894a3a" title="The group that the line&#39;s cells will belong to - used by InsertLine.">Worksheet::GetInsertGroup()</a></code> honours <code>m_asyncOutputTarget</code> (set only via the scoped <code><a class="el" href="classWorksheet_1_1AsyncOutputTarget.html" title="Scoped SetAsyncOutputTarget(), so an early return or a throw while appending can&#39;t leave every subseq...">Worksheet::AsyncOutputTarget</a></code>) ahead of the working group.</li>
 <li>**<code>Maxima::ProcessData()</code> matches a known tag as a bare <code>&lt;tag&gt;</code>**, by an exact compare against <code>"&lt;" + name + "&gt;"</code>. <a class="el" href="classA.html">A</a> tag carrying an attribute is not recognised at all &ndash; which is why the cell id travels in the body as <code>&lt;id&gt;...&lt;/id&gt;</code> rather than as <code>id="..."</code>. Applies to any future tag, not just this one.</li>
 <li><b>The per-cell id MUST be sent as <code>:lisp-quiet</code></b> (see <code>MaximaEvaluator::CellIdConfigCommand()</code>, appended to <code>m_configCommands</code>). This is the same hard rule <code>m_configCommands</code> already documents above: a plain statement emits a prompt, and <code><a class="el" href="classEvaluationQueue.html#a9281421bc414407c4d8fa99335ecb24e" title="Removes the first command in the queue.">EvaluationQueue::RemoveFirst()</a></code> advances the queue by one cell for every main prompt with no way to tell whose it is, silently dropping a queued cell per command sent.</li>
@@ -399,13 +399,13 @@ Asynchronous ("background job") output from Maxima</h2>
 <li><b>Deliberately does not scroll or un-collapse</b>, even with "follow
   evaluation" on &ndash; same reasoning as GH #1952 above.</li>
 </ul>
-<p></b></b></p>
-<p><b><b></b></b></p>
+<p></b></p>
+<p><b></b></p>
 <h2><a class="anchor" id="autotoc_md48"></a>
 Communication with Maxima</h2>
-<p><b><b> <a class="el" href="classwxMaxima.html">wxMaxima</a> sends Lisp and <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> commands over the socket; <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> answers with XML wrapped in known tags. <code><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></code> reads that data on a worker thread and posts <code>EVT_MAXIMA</code> events to the main thread, where <code><a class="el" href="classwxMaxima.html">wxMaxima</a></code> handles them.</b></b></p>
-<p><b><b><code>src/wxMathML.lisp</code> is compiled into the binary (through CMake's bin2h) and is what tells <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> to format its output as MathML-like XML. For development, <code>--wxmathml-lisp=&lt;path&gt;</code> overrides it with an external file, so a change can be tried without rebuilding.</b></b></p>
-<p><b><b></p><ul>
+<p><b> <a class="el" href="classwxMaxima.html">wxMaxima</a> sends Lisp and <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> commands over the socket; <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> answers with XML wrapped in known tags. <code><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></code> reads that data on a worker thread and posts <code>EVT_MAXIMA</code> events to the main thread, where <code><a class="el" href="classwxMaxima.html">wxMaxima</a></code> handles them.</b></p>
+<p><b><code>src/wxMathML.lisp</code> is compiled into the binary (through CMake's bin2h) and is what tells <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> to format its output as MathML-like XML. For development, <code>--wxmathml-lisp=&lt;path&gt;</code> overrides it with an external file, so a change can be tried without rebuilding.</b></p>
+<p><b></p><ul>
 <li><b>Nothing from <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s connection is trusted until it has authenticated, and nothing secret is sent to it before then.</b> <a class="el" href="classwxMaxima.html">wxMaxima</a>'s server listens on a loopback port any local user can connect to, and whoever connects first becomes "Maxima". Proof is the <code>MAXIMA_AUTH_CODE</code> secret, echoed back either as an <code>auth=</code> first line (<a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s <code>-s</code> server, once the 2026-10 upstream patch is in) or as <code>&lt;wxxml-key&gt;</code> from <code>wxMathML.lisp</code>. Until then <code><a class="el" href="classMaximaProcessManager.html#aa69972a2db3046920fdbdae913654ad9" title="The EVT_MAXIMA handler: classifies each chunk Maxima sent over the socket and hands it to the matchin...">MaximaProcessManager::MaximaEvent()</a></code> drops every event except the first prompt and <code>suppressOutput</code>, <code>TriggerEvaluation()</code> sends no cells, and the <code>pid=</code> line isn't used to find a process to interrupt. Until 2026-10 the interrupt-channel command carried the secret itself, so an impostor got it for free, and a <code>&lt;worksheetexport&gt;</code> from it wrote a file of its choice even without the secret (both reproduced with a fake <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> passed as <code>--maxima</code>). Never put the secret into anything <a class="el" href="classwxMaxima.html">wxMaxima</a> sends: the Lisp side reads it from its environment.</li>
 <li>**<code><a class="el" href="classMaximaProcessManager.html#a8beb89bd21e4e9caebc13c06cd17051f" title="(Re)starts the Maxima process (and its server socket) if needed.">MaximaProcessManager::StartMaxima()</a></code> reuses the running process or kills and replaces it, and the thing that decides which is the <em>directory</em>, not anything about the worksheet.** Its condition is <code>(m_maximaProcess == NULL) || m_hasEvaluatedCells || force || (dirname != dirname_Old)</code>, where <code>dirname</code> comes from the worksheet's current file and <code>dirname_Old</code> is whatever <code>MAXIMA_INITIAL_FOLDER</code> is currently set to. <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> reads that variable once, at startup, so a process already running in the wrong directory genuinely cannot be moved to the right one &ndash; replacing it is the only option, and that is why opening a file restarts <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> at all.<ul>
 <li><b>This is what used to make opening one file start two <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> processes.</b> <a class="el" href="classwxMaxima.html">wxMaxima</a> starts a <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> from its own constructor so the process is warm by the time the user sends off their first cell. With a file named on the command line that head start was pure waste: the constructor's <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> had no file yet, so it started in the wrong directory, and the file open a moment later killed it and spawned a replacement. Measured on a batch run: the first process lived about three seconds and did nothing but start up and answer its own first prompt. Fixed by letting <code>StartMaxima()</code> fall back to <code>m_fileToOpen</code> when the worksheet has no file yet, so the first process starts in the right directory and the file open reuses it. <code>ctest -R lisp_mode</code> went from 9.0s to 6.6s, consistently, which is one <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> startup.</li>
@@ -1426,53 +1426,53 @@ has already been broken.
 &lt;table class="markdownTable"&gt;
   &lt;tr class="markdownTableHead"&gt;    &lt;th class="markdownTableHeadNone"&gt; Skill   </code></li>
 </ul>
-<p></b></b></p>
-<p><b><b><code> Covers    </code></b></b></p>
-<p><b><b><code> </code></b></b></p>
-<p><b><b><code> <code>wxmaxima-layout</code>   </code></b></b></p>
-<p><b><b><code> the schedule/recalculate/resize pipeline and the layout invariants    </code></b></b></p>
-<p><b><b><code> </code></b></b></p>
-<p><b><b><code> <code>wxmaxima-architecture</code>   </code></b></b></p>
-<p><b><b><code> where code lives, the friend-class decomposition, the extraction recipe    </code></b></b></p>
-<p><b><b><code> </code></b></b></p>
-<p><b><b><code> <code>wxmaxima-translations</code>   </code></b></b></p>
-<p><b><b><code> the POT glob, po4a, and how translations get lost    </code></b></b></p>
-<p><b><b><code> </code></b></b></p>
-<p><b><b><code> <code>wxmaxima-export</code>   </code></b></b></p>
-<p><b><b><code> HTML/LaTeX/image export, accessible labels, round-trip guarantees    </code></b></b></p>
-<p><b><b><code> </code></b></b></p>
-<p><b><b><code> <code>wxmaxima-maxima-protocol</code>   </code></b></b></p>
-<p><b><b><code> the socket, <code>wxMathML.lisp</code>, batch mode, process lifetime, the two intermittent CI failures    </code></b></b></p>
-<p><b><b><code> </code></b></b></p>
-<p><b><b><code> <code>wxmaxima-packaging</code>   </code></b></b></p>
-<p><b><b><code> the CI matrix's blind spots, installers, signing, releases, Windows stdio and the subsystem bit    </code></b></b></p>
-<p><b><b><code> </code></b></b></p>
-<p><b><b><code> <code>wxmaxima-ai-tools</code>   </code></b></b></p>
-<p><b><b><code> the MCP server, the AI chat sidebar, providers, secret storage    </code></b></b></p>
-<p><b><b><code> </code></b></b></p>
-<p><b><b><code> <code>run-wxmaxima</code>   </code></b></b></p>
-<p><b><b><code> building, launching and screenshotting the app   </code></b></b></p>
-<p><b><b><code></code></b></b></p>
-<p><b><b><code></p><ul>
+<p></b></p>
+<p><b><code> Covers    </code></b></p>
+<p><b><code> </code></b></p>
+<p><b><code> <code>wxmaxima-layout</code>   </code></b></p>
+<p><b><code> the schedule/recalculate/resize pipeline and the layout invariants    </code></b></p>
+<p><b><code> </code></b></p>
+<p><b><code> <code>wxmaxima-architecture</code>   </code></b></p>
+<p><b><code> where code lives, the friend-class decomposition, the extraction recipe    </code></b></p>
+<p><b><code> </code></b></p>
+<p><b><code> <code>wxmaxima-translations</code>   </code></b></p>
+<p><b><code> the POT glob, po4a, and how translations get lost    </code></b></p>
+<p><b><code> </code></b></p>
+<p><b><code> <code>wxmaxima-export</code>   </code></b></p>
+<p><b><code> HTML/LaTeX/image export, accessible labels, round-trip guarantees    </code></b></p>
+<p><b><code> </code></b></p>
+<p><b><code> <code>wxmaxima-maxima-protocol</code>   </code></b></p>
+<p><b><code> the socket, <code>wxMathML.lisp</code>, batch mode, process lifetime, the two intermittent CI failures    </code></b></p>
+<p><b><code> </code></b></p>
+<p><b><code> <code>wxmaxima-packaging</code>   </code></b></p>
+<p><b><code> the CI matrix's blind spots, installers, signing, releases, Windows stdio and the subsystem bit    </code></b></p>
+<p><b><code> </code></b></p>
+<p><b><code> <code>wxmaxima-ai-tools</code>   </code></b></p>
+<p><b><code> the MCP server, the AI chat sidebar, providers, secret storage    </code></b></p>
+<p><b><code> </code></b></p>
+<p><b><code> <code>run-wxmaxima</code>   </code></b></p>
+<p><b><code> building, launching and screenshotting the app   </code></b></p>
+<p><b><code></code></b></p>
+<p><b><code></p><ul>
 <li><b>Layout Engine:</b> <code>src/cells/</code> and <code>src/worksheet/</code> (<code><a class="el" href="Worksheet_8cpp.html" title="This file defines the class Worksheet.">Worksheet.cpp</a></code> and its siblings moved into that subdirectory).</li>
 <li><b>MathML Formatting:</b> <code>src/wxMathML.lisp</code> and <code><a class="el" href="MathParser_8cpp.html" title="This file defines the class MathParser that reads wxmx data and math from Maxima.">src/MathParser.cpp</a></code>.</li>
 <li><b>Main Logic:</b> <code><a class="el" href="wxMaxima_8cpp.html" title="This file defines the contents of the class wxMaxima that contains most of the program&#39;s logic.">src/wxMaxima.cpp</a></code> and <code><a class="el" href="wxMaximaFrame_8cpp.html" title="This file defines the class wxMaximaFrame.">src/wxMaximaFrame.cpp</a></code> &ndash; but much of what used to sit in <code><a class="el" href="classwxMaxima.html">wxMaxima</a></code> has been peeled off into friend classes, so look there first: <code><a class="el" href="classMaximaProcessManager.html" title="The Maxima process/socket lifecycle extracted from the wxMaxima god class.">MaximaProcessManager</a></code> (spawn/kill/connect and the data pump), <code><a class="el" href="classMaximaEvaluator.html" title="The evaluation-queue driver / command protocol extracted from wxMaxima.">MaximaEvaluator</a></code> (evaluation queue and command protocol), <code><a class="el" href="classMaximaResponseReader.html" title="The Maxima-response handlers extracted from the wxMaxima god class.">MaximaResponseReader</a></code> (the incoming-XML handlers), <code><a class="el" href="classMaximaFileIO.html" title="The worksheet file loaders/savers extracted from the wxMaxima god class.">MaximaFileIO</a></code> (worksheet open/save) and <code><a class="el" href="classMaximaCommandMenus.html" title="The menu-command handlers extracted from the wxMaxima god class.">MaximaCommandMenus</a></code> (the menu handlers).</li>
 <li><b><a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a>:</b> <code><a class="el" href="Configuration_8cpp.html" title="This file defines the class Configuration which serves as a fast configuration storage.">src/Configuration.cpp</a></code>.</li>
 </ul>
-<p></code></b></b></p>
-<p><b><b><code></code></b></b></p>
+<p></code></b></p>
+<p><b><code></code></b></p>
 <h1><a class="anchor" id="autotoc_md56"></a>
 Backlog / Future Work</h1>
-<p><b><b><code> Items the maintainer has flagged as worth doing but hasn't asked for yet &ndash; don't start on these without checking in first, but pick them up if asked for "what's
-next" style work.</code></b></b></p>
-<p><b><b><code>Nothing at the moment. Open work lives in GitHub issues rather than here; when an entry above says something is still open, it names the issue that tracks it. (GH #1335, contiguous cell storage, used to be listed here; it was closed as not planned.)</code></b></b></p>
-<p><b><b><code></code></b></b></p>
+<p><b><code> Items the maintainer has flagged as worth doing but hasn't asked for yet &ndash; don't start on these without checking in first, but pick them up if asked for "what's
+next" style work.</code></b></p>
+<p><b><code>Nothing at the moment. Open work lives in GitHub issues rather than here; when an entry above says something is still open, it names the issue that tracks it. (GH #1335, contiguous cell storage, used to be listed here; it was closed as not planned.)</code></b></p>
+<p><b><code></code></b></p>
 <h1><a class="anchor" id="autotoc_md57"></a>
 Error resilience</h1>
-<p><b><b><code></p><ul>
+<p><b><code></p><ul>
 <li>To err is human =&gt; If your instructions don't seem to make sense feel free to ask. </li>
 </ul>
-<p></code></b></b></p>
+<p></code></b></p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- start footer part -->

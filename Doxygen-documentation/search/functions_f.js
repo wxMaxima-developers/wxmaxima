@@ -5,7 +5,7 @@ var searchData=
   ['objunref_2',['objUnref',['../structObject.html#a924ee0cecc906d148022b3f0d6325cfb',1,'Object']]],
   ['offerinternalhelpbrowser_3',['OfferInternalHelpBrowser',['../classConfiguration.html#ab2fcb222ca14fbc1b97967829d80c06d',1,'Configuration']]],
   ['omml2rtf_4',['OMML2RTF',['../classCell.html#acd71632a3a3deec61e646bca3797a504',1,'Cell::OMML2RTF(wxXmlNode *node)'],['../classCell.html#aa4c2fdc2b97dd0f35e0063783623693a',1,'Cell::OMML2RTF(wxString ommltext)']]],
-  ['onactivate_5',['OnActivate',['../classWorksheet.html#afc11fb31247d40bd282f28f2c8f680e6',1,'Worksheet']]],
+  ['onactivate_5',['OnActivate',['../classWorksheet.html#afc11fb31247d40bd282f28f2c8f680e6',1,'Worksheet::OnActivate()'],['../classwxMaxima.html#a213c572926f62e1e837c116b0c8ac5fe',1,'wxMaxima::OnActivate()']]],
   ['onactivateevent_6',['OnActivateEvent',['../classFindReplaceDialog.html#abb92b88cb54915d12000a890789c9d3e',1,'FindReplaceDialog']]],
   ['onappearancechanged_7',['OnAppearanceChanged',['../classConfigDialogue.html#aef870b86b28e98a7b901e3ab2292bbc2',1,'ConfigDialogue']]],
   ['onbestsizechange_8',['OnBestSizeChange',['../classGenWizPanel.html#ac532bb464ed02e1d3d69e26cff6e74ad',1,'GenWizPanel']]],
