@@ -639,6 +639,50 @@ SCENARIO("A ProductCell positions its symbol/limits/base and breaks up with the 
   }
 }
 
+SCENARIO("A linear power has no gap between its caret and its exponent") {
+  // ExptCell's linear form is x, ^, (, exponent, ) with the parentheses
+  // hidden around a simple exponent. Hidden cells used to take a quarter
+  // em, as a hidden multiplication sign should, so x^12 read as "x^ 12".
+  g_cfg->SetCanvasSize(wxSize(900, 600));
+  g_cfg->SetZoomFactor(1.0);
+  const auto strategy = g_cfg->GetLayoutStrategy();
+  g_cfg->SetLayoutStrategy(Configuration::LayoutStrategy::layoutPrefer1D);
+
+  auto group = std::make_unique<GroupCell>(g_cfg, GC_TYPE_CODE, wxS("2*x^12;"));
+  MathParser parser(g_cfg);
+  parser.SetGroup(group.get());
+  group->AppendOutput(parser.ParseLine(
+    wxS("<mth><lbl altCopy=\"%o1\">(%o1) </lbl>"
+        "<n>2</n><h>*</h><e><v>x</v><n>12</n></e></mth>")));
+  group->Recalculate();
+  group->SetCurrentPoint(wxPoint(50, 50));
+
+  std::vector<const Cell *> cells;
+  for (const Cell &cell : OnDrawList(group->GetOutput()))
+    cells.push_back(&cell);
+  auto find = [&cells](const wxString &text) -> size_t {
+    for (size_t i = 0; i < cells.size(); i++)
+      if (cells[i]->ToString() == text)
+        return i;
+    return cells.size();
+  };
+  const size_t caret = find(wxS("^"));
+  const size_t exponent = find(wxS("12"));
+  const size_t multSign = find(wxS("*"));
+  REQUIRE(caret < cells.size());
+  REQUIRE(exponent < cells.size());
+  REQUIRE(multSign < cells.size());
+
+  THEN("the exponent starts where the caret ends") {
+    CHECK(cells[exponent]->GetCurrentPoint().x ==
+          cells[caret]->GetCurrentPoint().x + cells[caret]->GetWidth());
+  }
+  THEN("a hidden multiplication sign still leaves a gap") {
+    CHECK(cells[multSign]->GetWidth() > 0);
+  }
+  g_cfg->SetLayoutStrategy(strategy);
+}
+
 namespace {
 //! A group whose output is just the number Maxima sent as \<mn\>number\</mn\>
 std::unique_ptr<GroupCell> NumberOutput(const wxString &number) {

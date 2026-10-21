@@ -43,6 +43,27 @@ wxString WorksheetPreview::MatrixXml() {
   return xml + wxS("</tb>");
 }
 
+wxString WorksheetPreview::ExpandedBinomialXml(int power, int sign) {
+  wxString xml;
+  long coefficient = 1; // binomial(power, power - exponent)
+  for (int exponent = power; exponent >= 0; exponent--) {
+    // The sign of the term: the one of sign^(power - exponent)
+    const bool negative = (sign < 0) && ((power - exponent) % 2 != 0);
+    if (exponent < power)
+      xml += negative ? wxS("<mo>-</mo>") : wxS("<mo>+</mo>");
+    if ((coefficient != 1) || (exponent == 0))
+      xml += wxString::Format(wxS("<n>%li</n>"), coefficient);
+    if ((coefficient != 1) && (exponent > 0))
+      xml += wxS("<h>*</h>");
+    if (exponent > 1)
+      xml += wxString::Format(wxS("<e><v>x</v><n>%i</n></e>"), exponent);
+    else if (exponent == 1)
+      xml += wxS("<v>x</v>");
+    coefficient = coefficient * exponent / (power - exponent + 1);
+  }
+  return xml;
+}
+
 wxString WorksheetPreview::Factorial200() {
   // Schoolbook multiplication on decimal digits, least significant first:
   // a few hundred digits don't warrant anything cleverer.
@@ -99,15 +120,27 @@ WorksheetPreview WorksheetPreview::Make(Configuration *config) {
               "<g>alpha</g><mo>+</mo>"
               "<e><s>%e</s><r><s>%i</s><h>*</h><s>%pi</s><h>*</h><v>x</v></r></e>"));
 
+  // A fraction that fits on any line and one that is wider than the
+  // window: what "Math layout strategy" decides is which of them is shown
+  // in 2D and which one in 1D.
+  addHeading(Topic::fractions, wxS("Fractions in 2D or 1D:"));
+  addCode(wxS("(x+1)/2;"),
+          wxS("<lbl altCopy=\"%o4\">(%o4) </lbl>"
+              "<f><r><v>x</v><mo>+</mo><n>1</n></r><n>2</n></f>"));
+  addCode(wxS("expand((x+1)^12)/expand((x-1)^12);"),
+          wxS("<lbl altCopy=\"%o5\">(%o5) </lbl><f><r>") +
+          ExpandedBinomialXml(12, 1) + wxS("</r><r>") +
+          ExpandedBinomialXml(12, -1) + wxS("</r></f>"));
+
   addHeading(Topic::longNumbers, wxS("A long number:"));
   addCode(wxS("200!;"),
-          wxS("<lbl altCopy=\"%o4\">(%o4) </lbl><n>") + Factorial200() + wxS("</n>"));
+          wxS("<lbl altCopy=\"%o6\">(%o6) </lbl><n>") + Factorial200() + wxS("</n>"));
 
   addHeading(Topic::oversizedMatrix, wxS("A matrix too large for the window:"));
   preview.matrixGroup =
     addCode(wxString::Format(wxS("genmatrix(lambda([i,j],100*i+j),%i,%i);"),
                              MatrixSize, MatrixSize),
-            wxS("<lbl altCopy=\"%o5\">(%o5) </lbl>") + MatrixXml());
+            wxS("<lbl altCopy=\"%o7\">(%o7) </lbl>") + MatrixXml());
 
   preview.tree = tree.TakeHead();
   return preview;

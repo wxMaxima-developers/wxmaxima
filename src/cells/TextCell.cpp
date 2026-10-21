@@ -526,10 +526,15 @@ void TextCell::Recalculate(AFontSize fontsize) const {
     m_height += 2 * MC_TEXT_PADDING;
     m_widthAtLineBreak = m_width;
 
-    /// Hidden cells (multiplication * is not displayed)
+    // A hidden multiplication sign leaves a narrow gap ("2 x"). Anything
+    // else that is hidden (the parentheses around a linear exponent, as in
+    // x^(12)) takes no room at all: a gap there read as "x^ 12".
     if (IsDrawnHidden()) {
       m_height = m_fontSize_Scaled.Get();
-      m_width = m_fontSize_Scaled.Get() / 4;
+      if (IsHiddenMultSign() || (m_text == wxS("*")) || (m_text == wxS("\u00B7")))
+        m_width = m_fontSize_Scaled.Get() / 4;
+      else
+        m_width = 0;
     }
     // Only a hidden multiplication sign is drawn if it is at a line break
     if (IsHidden())
