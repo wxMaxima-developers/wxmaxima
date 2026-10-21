@@ -99,10 +99,11 @@ Public Types</h2></td></tr>
 <tr class="memitem:a506c05bcdfee84eaadde34c4e7c5f1e2"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwxm_1_1WorksheetPreview.html#a506c05bcdfee84eaadde34c4e7c5f1e2">Topic</a> { <br />
 &#160;&#160;<a class="el" href="structwxm_1_1WorksheetPreview.html#a506c05bcdfee84eaadde34c4e7c5f1e2a42cecfeff00cc916fef4f64e7b921079">labels</a>
 , <a class="el" href="structwxm_1_1WorksheetPreview.html#a506c05bcdfee84eaadde34c4e7c5f1e2ae1c17564608c650da52c5b0a4adcd152">specialSymbols</a>
+, <a class="el" href="structwxm_1_1WorksheetPreview.html#a506c05bcdfee84eaadde34c4e7c5f1e2a8099137b86a2f534c3c4f7903be431f8">fractions</a>
 , <a class="el" href="structwxm_1_1WorksheetPreview.html#a506c05bcdfee84eaadde34c4e7c5f1e2ac2105b3a5f98d60f3923acc6c7cbc7f4">longNumbers</a>
-, <a class="el" href="structwxm_1_1WorksheetPreview.html#a506c05bcdfee84eaadde34c4e7c5f1e2a07d16e40129a22fc7b7ba031d8228a55">oversizedMatrix</a>
 , <br />
-&#160;&#160;<b>count</b>
+&#160;&#160;<a class="el" href="structwxm_1_1WorksheetPreview.html#a506c05bcdfee84eaadde34c4e7c5f1e2a07d16e40129a22fc7b7ba031d8228a55">oversizedMatrix</a>
+, <b>count</b>
 <br />
  }</td></tr>
 <tr class="memdesc:a506c05bcdfee84eaadde34c4e7c5f1e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">What part of the preview a setting affects.  <a href="structwxm_1_1WorksheetPreview.html#a506c05bcdfee84eaadde34c4e7c5f1e2">More...</a><br /></td></tr>
@@ -123,6 +124,9 @@ static <a class="el" href="structwxm_1_1WorksheetPreview.html">WorksheetPreview<
 <tr class="memitem:a21d5462f39472ed9b05befd15536c59e"><td class="memItemLeft" align="right" valign="top">static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwxm_1_1WorksheetPreview.html#a21d5462f39472ed9b05befd15536c59e">MatrixXml</a> ()</td></tr>
 <tr class="memdesc:a21d5462f39472ed9b05befd15536c59e"><td class="mdescLeft">&#160;</td><td class="mdescRight">What <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> sends for genmatrix(lambda([i,j],100*i+j),n,n), n = MatrixSize.  <br /></td></tr>
 <tr class="separator:a21d5462f39472ed9b05befd15536c59e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af27d6a848d8d16f1d1b473cecfb05b78"><td class="memItemLeft" align="right" valign="top">static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwxm_1_1WorksheetPreview.html#af27d6a848d8d16f1d1b473cecfb05b78">ExpandedBinomialXml</a> (int power, int sign)</td></tr>
+<tr class="memdesc:af27d6a848d8d16f1d1b473cecfb05b78"><td class="mdescLeft">&#160;</td><td class="mdescRight">What <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> sends for (x+sign)^power, expanded.  <br /></td></tr>
+<tr class="separator:af27d6a848d8d16f1d1b473cecfb05b78"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc2017c8bb3d0eeef721d46fb0afecee"><td class="memItemLeft" align="right" valign="top"><a id="abc2017c8bb3d0eeef721d46fb0afecee" name="abc2017c8bb3d0eeef721d46fb0afecee"></a>
 static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>Factorial200</b> ()</td></tr>
 <tr class="memdesc:abc2017c8bb3d0eeef721d46fb0afecee"><td class="mdescLeft">&#160;</td><td class="mdescRight">The decimal digits of 200!, a number long enough to be shortened by default. <br /></td></tr>
@@ -152,7 +156,7 @@ static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><b>Matri
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The sample worksheet of the configuration dialog's "Worksheet" tab. </p>
-<p><a class="el" href="classA.html">A</a> few cells, each with the output <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> would send for it, so no <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> is needed: labels (one user-defined, one automatic) and multiplication signs, special symbols and a Greek letter, a long number and a matrix too large for the window. Each Topic starts with a text cell naming it; when a setting changes, the dialog scrolls that heading to the top, so the cells the setting affects are in view. </p>
+<p><a class="el" href="classA.html">A</a> few cells, each with the output <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> would send for it, so no <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> is needed: labels (one user-defined, one automatic) and multiplication signs, special symbols and a Greek letter, a small fraction and one too wide for the window, a long number and a matrix too large for the window. Each Topic starts with a text cell naming it; when a setting changes, the dialog scrolls that heading to the top, so the cells the setting affects are in view. </p>
 </div><h2 class="groupheader">Member Enumeration Documentation</h2>
 <a id="a506c05bcdfee84eaadde34c4e7c5f1e2" name="a506c05bcdfee84eaadde34c4e7c5f1e2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a506c05bcdfee84eaadde34c4e7c5f1e2">&#9670;&#160;</a></span>Topic</h2>
@@ -180,6 +184,8 @@ static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><b>Matri
 </td></tr>
 <tr><td class="fieldname"><a id="a506c05bcdfee84eaadde34c4e7c5f1e2ae1c17564608c650da52c5b0a4adcd152" name="a506c05bcdfee84eaadde34c4e7c5f1e2ae1c17564608c650da52c5b0a4adcd152"></a>specialSymbols&#160;</td><td class="fielddoc"><p>e, i and pi with or without their percent sign, and a Greek letter </p>
 </td></tr>
+<tr><td class="fieldname"><a id="a506c05bcdfee84eaadde34c4e7c5f1e2a8099137b86a2f534c3c4f7903be431f8" name="a506c05bcdfee84eaadde34c4e7c5f1e2a8099137b86a2f534c3c4f7903be431f8"></a>fractions&#160;</td><td class="fielddoc"><p><a class="el" href="classA.html">A</a> small fraction and one too wide for the window: the layout strategy. </p>
+</td></tr>
 <tr><td class="fieldname"><a id="a506c05bcdfee84eaadde34c4e7c5f1e2ac2105b3a5f98d60f3923acc6c7cbc7f4" name="a506c05bcdfee84eaadde34c4e7c5f1e2ac2105b3a5f98d60f3923acc6c7cbc7f4"></a>longNumbers&#160;</td><td class="fielddoc"><p>200!, as long a number as the digit settings need </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a506c05bcdfee84eaadde34c4e7c5f1e2a07d16e40129a22fc7b7ba031d8228a55" name="a506c05bcdfee84eaadde34c4e7c5f1e2a07d16e40129a22fc7b7ba031d8228a55"></a>oversizedMatrix&#160;</td><td class="fielddoc"><p><a class="el" href="classA.html">A</a> matrix too large for the window. </p>
@@ -189,6 +195,45 @@ static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><b>Matri
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="af27d6a848d8d16f1d1b473cecfb05b78" name="af27d6a848d8d16f1d1b473cecfb05b78"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af27d6a848d8d16f1d1b473cecfb05b78">&#9670;&#160;</a></span>ExpandedBinomialXml()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxString wxm::WorksheetPreview::ExpandedBinomialXml </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>power</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>sign</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>What <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> sends for (x+sign)^power, expanded. </p>
+<p>sign is +1 or -1. <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> orders the terms by descending powers, as here. </p>
+
+</div>
+</div>
 <a id="a21d5462f39472ed9b05befd15536c59e" name="a21d5462f39472ed9b05befd15536c59e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a21d5462f39472ed9b05befd15536c59e">&#9670;&#160;</a></span>MatrixXml()</h2>
 
