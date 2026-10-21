@@ -1,5 +1,8 @@
 # Current development version
 
+- Copying a part of an output now offers it as SVG and, on Windows, as an
+  enhanced metafile, too, as copying whole cells already did. Like the
+  other formats they are only drawn when a program pastes them (#2472).
 - Output that Maxima adds or removes outside the visible part of the
   worksheet no longer makes the window show the wrong part of the worksheet
   for a moment, and output below the window no longer repaints it at all.

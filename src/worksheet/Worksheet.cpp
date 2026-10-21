@@ -2483,6 +2483,39 @@ bool Worksheet::Copy(bool astext) const {
   return false;
 }
 
+namespace {
+//! The SVG of a clipboard snapshot, drawn only when a program asks for it
+LazyValue<std::string>
+SvgForClipboard(const std::shared_ptr<const ClipboardSnapshot> &snapshot) {
+  return LazyValue<std::string>([snapshot] {
+    Svgout svg(snapshot->GetConfigurationPointer(), snapshot->CopyCells());
+    if (!svg.IsOk())
+      return std::string();
+    auto obj = svg.GetDataObject();
+    if (!obj)
+      return std::string();
+    std::string bytes(obj->GetDataSize(), '\0');
+    if (bytes.empty() || !obj->GetDataHere(bytes.data()))
+      return std::string();
+    return bytes;
+  });
+}
+
+#if wxUSE_ENH_METAFILE
+//! The enhanced metafile of a clipboard snapshot, drawn only when asked for
+LazyValue<wxEnhMetaFile>
+EmfForClipboard(const std::shared_ptr<const ClipboardSnapshot> &snapshot) {
+  return LazyValue<wxEnhMetaFile>([snapshot] {
+    Emfout emf(snapshot->GetConfigurationPointer(), snapshot->CopyCells());
+    if (!emf.IsOk())
+      return wxEnhMetaFile();
+    auto obj = emf.GetDataObject();
+    return obj ? obj->GetMetafile() : wxEnhMetaFile();
+  });
+}
+#endif
+} // namespace
+
 std::unique_ptr<wxDataObject> Worksheet::CreateSelectionDataObject() const {
   // Only the .wxm code and the plain text are made right away: they are cheap
   // and nearly every paste wants one of them. Every other format is rendered
@@ -2521,6 +2554,12 @@ std::unique_ptr<wxDataObject> Worksheet::CreateSelectionDataObject() const {
       [&snapshot] { return snapshot->CopyCells(); },
       snapshot->GetConfiguration()->BitmapScale());
   });
+  // The vector formats cost nothing until a program pastes them, so they are
+  // offered here as well as for whole cells (GH #2472).
+  contents->svg = SvgForClipboard(snapshot);
+#if wxUSE_ENH_METAFILE
+  contents->emf = EmfForClipboard(snapshot);
+#endif
 
   // The data objects point into contents and share its ownership: it lives
   // as long as any of them is on the clipboard.
@@ -2530,8 +2569,16 @@ std::unique_ptr<wxDataObject> Worksheet::CreateSelectionDataObject() const {
                                                           &contents->rtf);
   const std::shared_ptr<const LazyValue<wxBitmap>> bitmap(contents,
                                                           &contents->bitmap);
+  const std::shared_ptr<const LazyValue<std::string>> svg(contents,
+                                                          &contents->svg);
 
+#if wxUSE_ENH_METAFILE
+  // wxEnhMetaFileDataObject isn't a wxDataObjectSimple, which is all
+  // wxDataObjectComposite accepts.
+  auto *data = new CompositeDataObject;
+#else
   wxDataObjectComposite *data = new wxDataObjectComposite;
+#endif
   data->Add(new wxmDataObject(contents->wxm));
   // We mark the MathML version of the data on the clipboard as "preferred" as
   // if an application supports MathML neither bitmaps nor plain text makes
@@ -2553,6 +2600,12 @@ std::unique_ptr<wxDataObject> Worksheet::CreateSelectionDataObject() const {
   // On wxQt the bitmap above reaches nobody -- see LazyPngDataObject.
   data->Add(new LazyPngDataObject(bitmap));
 #endif
+#if wxUSE_ENH_METAFILE
+  data->Add(new LazyEnhMetaFileDataObject(
+              std::shared_ptr<const LazyValue<wxEnhMetaFile>>(contents,
+                                                              &contents->emf)));
+#endif
+  data->Add(new LazyDataObject(Svgout::GetDataFormat(), svg));
 
   m_clipboardContents = contents;
   return std::unique_ptr<wxDataObject>(data);
@@ -2859,26 +2912,9 @@ std::unique_ptr<wxDataObject> Worksheet::CreateCellsDataObject() const {
       [&snapshot] { return snapshot->CopyCells(); },
       snapshot->GetConfiguration()->BitmapScale());
   });
-  contents->svg = LazyValue<std::string>([snapshot] {
-    Svgout svg(snapshot->GetConfigurationPointer(), snapshot->CopyCells());
-    if (!svg.IsOk())
-      return std::string();
-    auto obj = svg.GetDataObject();
-    if (!obj)
-      return std::string();
-    std::string bytes(obj->GetDataSize(), '\0');
-    if (bytes.empty() || !obj->GetDataHere(bytes.data()))
-      return std::string();
-    return bytes;
-  });
+  contents->svg = SvgForClipboard(snapshot);
 #if wxUSE_ENH_METAFILE
-  contents->emf = LazyValue<wxEnhMetaFile>([snapshot] {
-    Emfout emf(snapshot->GetConfigurationPointer(), snapshot->CopyCells());
-    if (!emf.IsOk())
-      return wxEnhMetaFile();
-    auto obj = emf.GetDataObject();
-    return obj ? obj->GetMetafile() : wxEnhMetaFile();
-  });
+  contents->emf = EmfForClipboard(snapshot);
 #endif
 
   const std::shared_ptr<const LazyValue<std::string>> rtf(contents,

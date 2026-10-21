@@ -327,8 +327,8 @@ SCENARIO("The selection (copy-as-output) clipboard object is well-formed") {
     THEN("its formats are distinct and every format round-trips") {
       RequireDistinctAndRetrievable(*data);
     }
-    THEN("it offers the wxm, both MathML, all three RTF, the plain-text and "
-         "the bitmap flavors") {
+    THEN("it offers the wxm, both MathML, all three RTF, the plain-text, "
+         "the bitmap and the SVG flavors") {
       const auto fmts = GetFormats(*data);
       REQUIRE(HasFormat(fmts, kWxmFormat));
       REQUIRE(HasFormat(fmts, kMathMlFormat));
@@ -338,10 +338,20 @@ SCENARIO("The selection (copy-as-output) clipboard object is well-formed") {
       REQUIRE(HasFormat(fmts, kRtf3Format));
       REQUIRE(HasFormat(fmts, wxDataFormat(wxDF_UNICODETEXT)));
       REQUIRE(HasFormat(fmts, BitmapFormat()));
+      // Vector formats cost nothing until they are pasted, so a part of an
+      // output is offered as SVG (and, where it exists, EMF), too (GH #2472).
+      REQUIRE(HasFormat(fmts, kSvgFormat));
+#if wxUSE_ENH_METAFILE
+      REQUIRE(HasFormat(fmts, wxDataFormat(wxDF_ENHMETAFILE)));
+#endif
 #ifdef __WXQT__
       // wxQt cannot hand a wxBitmap over inside a composite at all.
       REQUIRE(HasFormat(fmts, LazyPngDataObject::GetDataFormat()));
 #endif
+    }
+    THEN("the SVG is an SVG image") {
+      const std::string svg = GetData(*data, kSvgFormat);
+      REQUIRE(svg.find("<svg") != std::string::npos);
     }
     THEN("it doesn't offer MathML as HTML, which word processors mishandle") {
       REQUIRE_FALSE(HasFormat(GetFormats(*data), wxDataFormat(wxDF_HTML)));
