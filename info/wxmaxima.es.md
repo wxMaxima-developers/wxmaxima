@@ -941,6 +941,8 @@ trazos empotrados utilizando p.e. instrucciones `wxplot`, `wxdraw`,
 `wxcontour_plot` y `wximplicit_plot` y para animaciones empotradas con
 instrucciones `with_slider_draw` y `wxanimate`.
 
+<div id="wxplot_scale"></div>
+
 ### Better quality plots
 
 _Gnuplot_ parece no proporcionar una manera portable de determinar si admite

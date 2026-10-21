@@ -42,6 +42,7 @@
 #include <wx/dcmemory.h>
 #include <wx/frame.h>
 #include <wx/log.h>
+#include <wx/filename.h>
 
 #include "Configuration.h"
 #include "MathParser.h"
@@ -52,6 +53,7 @@
 #include "cells/LongNumberCell.h"
 #include "cells/ProductCell.h"
 #include "cells/SetCell.h"
+#include "cells/ImgCellBase.h"
 #include "cells/MatrixScrollHost.h"
 #include "worksheet/MatrixScrollbars.h"
 
@@ -1827,6 +1829,71 @@ SCENARIO("A hidden multiplication sign at a line break is drawn (GH #2263)") {
     }
   }
   g_cfg->HidemultiplicationSign(hideMultSignBefore);
+}
+
+// wxplot_scale (wxMathML.lisp) sends a plot as <img scale="...">. The factor
+// has to reach the image, survive saving the worksheet and must be read the
+// same whatever the locale's decimal separator is.
+SCENARIO("A plot's scale attribute reaches the image and survives ToXML()") {
+  if (!wxImage::FindHandler(wxBITMAP_TYPE_PNG))
+    wxImage::AddHandler(new wxPNGHandler);
+  const wxString pngFile = wxFileName::CreateTempFileName(wxS("wxplotscale")) +
+    wxS(".png");
+  {
+    wxImage img(40, 20);
+    img.SetRGB(wxRect(0, 0, 40, 20), 255, 0, 0);
+    REQUIRE(img.SaveFile(pngFile, wxBITMAP_TYPE_PNG));
+  }
+  GIVEN("a plot sent with scale=\"2.5\"") {
+    MathParser parser(g_cfg);
+    auto output = parser.ParseLine(
+      wxS("<mth><img del=\"no\" scale=\"2.5\">") + pngFile +
+      wxS("</img></mth>"));
+    REQUIRE(output != nullptr);
+    ImgCellBase *img = nullptr;
+    for (Cell &cell : OnList(output.get()))
+      if (cell.GetType() == MC_TYPE_IMAGE)
+        img = dynamic_cast<ImgCellBase *>(&cell);
+    REQUIRE(img != nullptr);
+    THEN("the image is shown 2.5 times as large") {
+      CHECK(img->GetUserScale() == 2.5);
+    }
+    THEN("the worksheet file stores the factor") {
+      CHECK(img->ToXML().Contains(wxS("scale=\"2.5\"")));
+    }
+  }
+  GIVEN("a plot sent without a scale attribute") {
+    MathParser parser(g_cfg);
+    auto output = parser.ParseLine(
+      wxS("<mth><img del=\"no\">") + pngFile + wxS("</img></mth>"));
+    REQUIRE(output != nullptr);
+    ImgCellBase *img = nullptr;
+    for (Cell &cell : OnList(output.get()))
+      if (cell.GetType() == MC_TYPE_IMAGE)
+        img = dynamic_cast<ImgCellBase *>(&cell);
+    REQUIRE(img != nullptr);
+    THEN("it keeps its normal size and the file says nothing about it") {
+      CHECK(img->GetUserScale() == 1.0);
+      CHECK_FALSE(img->ToXML().Contains(wxS("scale=")));
+    }
+  }
+  GIVEN("an animation sent with scale=\"0.5\"") {
+    MathParser parser(g_cfg);
+    auto output = parser.ParseLine(
+      wxS("<mth><slide del=\"no\" scale=\"0.5\">") + pngFile + wxS(";") +
+      pngFile + wxS(";</slide></mth>"));
+    REQUIRE(output != nullptr);
+    ImgCellBase *anim = nullptr;
+    for (Cell &cell : OnList(output.get()))
+      if (cell.GetType() == MC_TYPE_SLIDE)
+        anim = dynamic_cast<ImgCellBase *>(&cell);
+    REQUIRE(anim != nullptr);
+    THEN("every frame is shown at half the size, and that is saved") {
+      CHECK(anim->GetUserScale() == 0.5);
+      CHECK(anim->ToXML().Contains(wxS("scale=\"0.5\"")));
+    }
+  }
+  wxRemoveFile(pngFile);
 }
 
 int main(int argc, char **argv) {

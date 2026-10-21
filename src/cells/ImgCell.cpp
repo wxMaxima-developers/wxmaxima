@@ -92,6 +92,7 @@ void ImgCell::ReloadImage(const wxString &image) {
   // Store old size limits
   double width = m_image->GetMaxWidth();
   double height = m_image->GetHeightList();
+  double scale = m_image->GetUserScale();
 
   // Load new image
   m_image = std::make_shared<Image>(m_configuration, image, AttachmentSource(), false);
@@ -99,6 +100,7 @@ void ImgCell::ReloadImage(const wxString &image) {
   // Restore size limits
   m_image->SetMaxHeight(height);
   m_image->SetMaxWidth(width);
+  m_image->SetUserScale(scale);
 }
 
 void ImgCell::LoadImage(wxString image, bool remove) {
@@ -311,6 +313,10 @@ wxString ImgCell::ToXML() const {
       if (m_image->GetHeightList() > 0)
         flags +=
           wxString::Format(wxS(" maxHeight=\"%f\""), m_image->GetHeightList());
+      // FromCDouble(): ToCDouble() reads it back, whatever the locale.
+      if (m_image->GetUserScale() != 1.0)
+        flags += wxS(" scale=\"") + wxString::FromCDouble(m_image->GetUserScale()) +
+          wxS("\"");
     }
 
   if (m_origImageFile != wxEmptyString) {

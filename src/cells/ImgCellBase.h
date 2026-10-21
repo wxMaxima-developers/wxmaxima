@@ -97,6 +97,15 @@ public:
   virtual void SetMaxWidth(wxCoord width) = 0;
   virtual void SetMaxHeight(wxCoord height) = 0;
 
+  /*! The factor this image is displayed larger or smaller with (wxplot_scale)
+
+    Applied after the image has been fitted into the window, see
+    Image::GetUserScale().
+  */
+  virtual double GetUserScale() const = 0;
+  //! Sets the factor GetUserScale() returns; values <= 0 are ignored
+  virtual void SetUserScale(double scale) = 0;
+
   virtual void Recalculate(const AFontSize fontsize) const override = 0;
 
   virtual void Draw(wxDC *dc, wxDC *antialiassingDC) override = 0;

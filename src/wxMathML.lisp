@@ -93,6 +93,8 @@
 (defvar wxHelpDir "" "The location wxMaxima searches for help files in")
 (defvar wxMaximaLispLocation "" "The location wxMaxima searches for lisp files in")
 (defvar $wxplot_size '((mlist simp) 800 600) "The size of new plots")
+(defvar $wxplot_scale 1
+  "The factor wxMaxima displays new plots larger or smaller with")
 (defvar $wxmaximaversion t "The wxMaxima version")
 (wx-defprop $wxmaximaversion read-only-assign assign)
 (defvar $wxwidgetsversion t "The wxWidgets version wxMaxima is using.")
@@ -1958,6 +1960,37 @@ in a scene still win, as draw applies these defaults first."
 	      *user-gr-default-options*)
       *user-gr-default-options*))
 
+(defun wxplot-scale-attr ()
+  "The scale=\"...\" attribute that tells wxMaxima to display a plot
+$wxplot_scale times as large as it would otherwise, or nil if that
+factor is 1. Unlike $wxplot_size, which tells gnuplot how many pixels
+to draw, this only changes how large wxMaxima shows the result,
+which allows a plot wider than the window."
+  ;; $float makes a number of a rational like 3/2 or a constant like %pi.
+  (let ((scale ($float $wxplot_scale)))
+    (unless (and (realp scale) (> scale 0))
+      (merror "wxplot_scale must be a positive number, not ~M" $wxplot_scale))
+    (unless (= scale 1)
+      ;; ~f always writes a decimal point and never an exponent marker,
+      ;; which wxMaxima reads back independent of its locale.
+      (format nil "scale=\"~f\"" (coerce scale 'double-float)))))
+
+(defun wx-img-attrs (&rest attrs)
+  "The attributes of an <img> or <slide> tag: ATTRS (strings, or nil
+for none), and wxplot_scale's."
+  (let ((all (remove nil (append attrs (list (wxplot-scale-attr))))))
+    (when all
+      (format nil "~{~a~^ ~}" all))))
+
+(defun wx-img-tag (file &rest attrs)
+  "An <img> tag for FILE (already escaped for XML) with ATTRS and
+wxplot_scale's attribute. The attribute part is only there if there
+are attributes, as the tag used to always look like that."
+  (let ((attributes (apply #'wx-img-attrs attrs)))
+    (if attributes
+	`((wxxmltag simp) ,file "img" ,attributes)
+	`((wxxmltag simp) ,file "img"))))
+
 (defun $wxplot_preamble ()
   (let ((frmt
 	 (cond
@@ -1983,11 +2016,12 @@ in a scene still win, as draw applies these defaults first."
 (defun slide-tag (images &optional gif-file)
   ;; GIF-FILE, if given, asks wxMaxima to also save the animation as that gif
   ;; file (with_slider_draw_bare's file_name, GH #2361).
-  (let ((attrs (format nil "~@[fr=\"~a\" ~]running=\"~a\" del=\"yes\"~@[ gifFile=\"~a\"~]"
-		       (unless (eql *default-framerate* $wxanimate_framerate)
-			 $wxanimate_framerate)
-		       (if (eql $wxanimate_autoplay 't) "true" "false")
-		       (and gif-file (wxxml-fix-string gif-file)))))
+  (let ((attrs (wx-img-attrs
+		(format nil "~@[fr=\"~a\" ~]running=\"~a\" del=\"yes\"~@[ gifFile=\"~a\"~]"
+			(unless (eql *default-framerate* $wxanimate_framerate)
+			  $wxanimate_framerate)
+			(if (eql $wxanimate_autoplay 't) "true" "false")
+			(and gif-file (wxxml-fix-string gif-file))))))
     ($ldisp
      (list '(wxxmltag simp)
 	   (wxxml-fix-string (format nil "~{~a;~}" images))
@@ -2102,7 +2136,8 @@ in a scene still win, as draw applies these defaults first."
 		     imgs))
 	    ;; del="no": this gif is the file the user asked for, not a
 	    ;; temporary one wxMaxima may delete once it has read it (GH #2389).
-	    (format t "<math><img del=\"no\">~a</img></math>"
+	    (format t "<math><img ~a>~a</img></math>"
+		    (wx-img-attrs "del=\"no\"")
 		    (wxxml-fix-string (format nil "~a.gif" file-name))))
 	  ;; If file_name is not set, show the animation in wxMaxima
 	  (progn
@@ -2181,7 +2216,7 @@ in a scene still win, as draw applies these defaults first."
 		       ((mlist simp) $gnuplot_term ,(wxplot-gnuplot-term))
 		       ((mlist simp) $gnuplot_preamble ,preamble)
 		       ((mlist simp) $gnuplot_out_file ,filename)))
-    ($ldisp `((wxxmltag simp) ,(wxxml-fix-string filename) "img")))
+    ($ldisp (wx-img-tag (wxxml-fix-string filename))))
   "")
 
 (defun $wxplot3d (&rest args)
@@ -2200,7 +2235,7 @@ in a scene still win, as draw applies these defaults first."
 		       ((mlist simp) $gnuplot_term ,(wxplot-gnuplot-term))
 		       ((mlist simp) $gnuplot_preamble ,preamble)
 		       ((mlist simp) $gnuplot_out_file ,filename)))
-    ($ldisp `((wxxmltag simp) ,(wxxml-fix-string filename) "img")))
+    ($ldisp (wx-img-tag (wxxml-fix-string filename))))
   "")
 
 
@@ -2247,18 +2282,16 @@ in a scene still win, as draw applies these defaults first."
 			  `(((mequal simp) $dimensions ,$wxplot_size))))))))
     (if $display_graphics
 	(progn
-	  ($ldisp `((wxxmltag simp) ,(wxxml-fix-string (format nil
-							       (if $wxplot_usesvg "~a.svg" "~a.png")
-							       filename)) "img"
-		    ,(if file_name_spec
-			 (format nil "del=\"no\" gnuplotsource=\"~a/~a\" gnuplotdata=\"~a/~a\"" $maxima_tempdir gnuplotfilename $maxima_tempdir datafilename)
-			 (format nil "del=\"yes\" gnuplotsource=\"~a/~a\" gnuplotdata=\"~a/~a\"" $maxima_tempdir gnuplotfilename $maxima_tempdir datafilename)
-			 )
-		    ))
+	  ($ldisp (wx-img-tag (wxxml-fix-string (format nil
+							(if $wxplot_usesvg "~a.svg" "~a.png")
+							filename))
+			      (if file_name_spec
+				  (format nil "del=\"no\" gnuplotsource=\"~a/~a\" gnuplotdata=\"~a/~a\"" $maxima_tempdir gnuplotfilename $maxima_tempdir datafilename)
+				  (format nil "del=\"yes\" gnuplotsource=\"~a/~a\" gnuplotdata=\"~a/~a\"" $maxima_tempdir gnuplotfilename $maxima_tempdir datafilename))))
 	  (setq res ""))
-	(setf res `((wxxmltag simp) ,(wxxml-fix-string (format nil
+	(setf res (wx-img-tag (wxxml-fix-string (format nil
 							       (if $wxplot_usesvg "svg" "png")
-							       filename)) "img")))
+							       filename)))))
     res))
 
 (defmspec $wxdraw_list (args)
@@ -2287,7 +2320,7 @@ in a scene still win, as draw applies these defaults first."
 			      ((mlist simp) $gnuplot_term ,(wxplot-gnuplot-term))
 			      ((mlist simp) $gnuplot_preamble ,preamble)
 			      ((mlist simp) $gnuplot_out_file ,filename)))
-    ($ldisp `((wxxmltag simp) ,(wxxml-fix-string filename) "img")))
+    ($ldisp (wx-img-tag (wxxml-fix-string filename))))
   "")
 
 
@@ -2308,7 +2341,7 @@ in a scene still win, as draw applies these defaults first."
 			     ((mlist simp) $gnuplot_preamble ,preamble)
 			     ((mlist simp) $gnuplot_out_file ,filename)))
 
-    ($ldisp `((wxxmltag simp) ,(wxxml-fix-string filename) "img")))
+    ($ldisp (wx-img-tag (wxxml-fix-string filename))))
   "")
 
 (defmfun $show_image (file)

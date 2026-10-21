@@ -928,6 +928,8 @@ wxdraw2d(
 `wxdraw`, `wxcontour_plot` и `wximplicit_plot`, а также для встроенных
 анимаций при использовании команд `with_slider_draw` и `wxanimate`.
 
+<div id="wxplot_scale"></div>
+
 ### Better quality plots
 
 По всей видимости в _Gnuplot_ не реализован универсальный способ определения

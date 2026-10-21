@@ -980,6 +980,8 @@ fonctionne pour les graphiques en ligne utilisant par exemple les commandes
 les animations intégrées avec les commandes `with_slider_draw` et
 `wxanimate`.
 
+<div id="wxplot_scale"></div>
+
 ### Des graphiques de meilleure qualité
 
 Il semble que _Gnuplot_ ne propose pas de méthode portable pour déterminer

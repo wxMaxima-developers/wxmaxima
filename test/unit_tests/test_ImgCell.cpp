@@ -25,6 +25,7 @@
 #include <wx/dcmemory.h>
 #include <wx/mstream.h>
 #include <wx/zstream.h>
+#include <algorithm>
 
 #include "test_ImgCell.h"
 #include "FontAttribs.cpp"
@@ -224,6 +225,71 @@ SCENARIO("An SVG image is drawn at its own size, and re-rendered when zoomed") {
     Image image(&config, svgz, wxS("svgz"));
     THEN("the image is marked invalid instead of drawn empty") {
       CHECK(image.m_isInvalid);
+    }
+  }
+}
+
+// wxplot_scale: wxMaxima shows a plot larger or smaller by a factor the user
+// chose. It applies after the image was fitted into the window, so a plot
+// can be made wider than the window.
+SCENARIO("An image's user scale applies after fitting it into the window") {
+  Configuration config;
+  config.SetCanvasSize(wxSize(2000, 2000));
+  GIVEN("an .svgz image of 40x20 pixels with a user scale of 2") {
+    Image image(&config, RedRectSvgz(), wxS("svgz"));
+    REQUIRE(image.GetUserScale() == 1.0);
+    image.SetUserScale(2.0);
+    WHEN("it is drawn at 100%") {
+      wxBitmap bitmap = image.GetBitmap(1.0);
+      REQUIRE(bitmap.IsOk());
+      THEN("it is rendered at twice its size, from the vector data") {
+        CHECK(bitmap.GetWidth() == 80);
+        CHECK(bitmap.GetHeight() == 40);
+        wxImage img = bitmap.ConvertToImage();
+        CHECK(IsRed(img, 20, 20));
+        CHECK(img.GetAlpha(19, 20) == 0);
+      }
+    }
+    WHEN("it is copied, as copying its cell does") {
+      Image copy(&config, image);
+      THEN("the copy keeps the scale") {
+        CHECK(copy.GetUserScale() == 2.0);
+      }
+    }
+    WHEN("a non-positive scale is set") {
+      image.SetUserScale(0);
+      image.SetUserScale(-1);
+      THEN("it is ignored") {
+        CHECK(image.GetUserScale() == 2.0);
+      }
+    }
+  }
+  GIVEN("a window too narrow for the image") {
+    config.SetCanvasSize(wxSize(30, 2000));
+    // Image::Recalculate() never fits an image into less than 10 pixels.
+    const long lineWidth = std::max(config.GetLineWidth(), 10L);
+    REQUIRE(lineWidth < 40);
+    Image image(&config, RedRectSvgz(), wxS("svgz"));
+    image.Recalculate(1.0);
+    const long fittedWidth = image.m_width;
+    REQUIRE(fittedWidth <= lineWidth);
+    WHEN("the image gets a user scale of 3") {
+      image.SetUserScale(3.0);
+      image.Recalculate(1.0);
+      THEN("it is three times as wide as the fitted image, wider than the window") {
+        // fittedWidth was rounded down, which the factor multiplies.
+        CHECK(image.m_width >= 3 * fittedWidth);
+        CHECK(image.m_width <= 3 * (fittedWidth + 1));
+        CHECK(image.m_width > lineWidth);
+      }
+    }
+    WHEN("the image gets a user scale of 0.5") {
+      image.SetUserScale(0.5);
+      image.Recalculate(1.0);
+      THEN("it is half as wide as the fitted image") {
+        CHECK(image.m_width >= fittedWidth / 2 - 1);
+        CHECK(image.m_width <= fittedWidth / 2 + 1);
+      }
     }
   }
 }

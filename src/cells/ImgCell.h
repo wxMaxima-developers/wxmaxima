@@ -137,6 +137,8 @@ public:
   wxCoord GetMaxWidth() const override { return m_image ? m_image->GetMaxWidth() : -1; }
   wxCoord GetHeightList() const override { return m_height; }
   void SetMaxWidth(wxCoord width) override { if (m_image) m_image->SetMaxWidth(width); }
+  double GetUserScale() const override { return m_image ? m_image->GetUserScale() : 1.0; }
+  void SetUserScale(double scale) override { if (m_image) m_image->SetUserScale(scale); }
   void SetMaxHeight(wxCoord height) override { if (m_image) m_image->SetMaxHeight(height); }
 
   void Recalculate(const AFontSize fontsize) const override;

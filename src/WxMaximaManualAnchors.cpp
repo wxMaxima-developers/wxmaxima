@@ -40,6 +40,7 @@ const std::vector<wxString> &Keywords() {
     wxS("wxworksheettotex"),    wxS("wxplot2d"),
     wxS("wxplot3d"),            wxS("wximplicit_plot"),
     wxS("wxcontour_plot"),      wxS("wxplot_size"),
+    wxS("wxplot_scale"),
     wxS("with_slider"),         wxS("wxanimate"),
     wxS("wxanimate_framerate"), wxS("wxanimate_autoplay"),
     wxS("wxfilename"),          wxS("wxdirname"),
