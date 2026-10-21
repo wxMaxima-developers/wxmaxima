@@ -261,6 +261,23 @@ SCENARIO("The preview's long number is 200!") {
   }
 }
 
+SCENARIO("Changing the layout strategy lays the worksheet out again") {
+  auto strategy = g_cfg->GetLayoutStrategy();
+  const auto other = (strategy == Configuration::LayoutStrategy::layoutPrefer1D)
+    ? Configuration::LayoutStrategy::layout2DIfFits
+    : Configuration::LayoutStrategy::layoutPrefer1D;
+  const auto before = g_cfg->CellCfgCnt();
+  g_cfg->SetLayoutStrategy(strategy);
+  THEN("setting the same strategy again changes nothing") {
+    CHECK(g_cfg->CellCfgCnt() == before);
+  }
+  g_cfg->SetLayoutStrategy(other);
+  THEN("setting another one invalidates every cell's layout") {
+    CHECK(g_cfg->CellCfgCnt() != before);
+  }
+  g_cfg->SetLayoutStrategy(strategy);
+}
+
 SCENARIO("The Worksheet tab's preview holds an oversized matrix") {
   g_cfg->SetZoomFactor(1.0);
   // About as much room as the preview gets in the dialog.
