@@ -73,6 +73,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><ul>
+<li>The Hungarian manual PDF composes again with current pandoc (3.2 or newer): quotation marks are now written as Unicode characters rather than as TeX's `&lsquo; and &rsquo;' ligatures, which Hungarian's LaTeX language support turns into an undefined command. <a class="el" href="classA.html">A</a> stray backtick in the manual that broke it the same way is gone, too (#2271).</li>
 <li>Copying a part of an output now offers it as SVG and, on Windows, as an enhanced metafile, too, as copying whole cells already did. Like the other formats they are only drawn when a program pastes them (#2472).</li>
 <li>Output that <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> adds or removes outside the visible part of the worksheet no longer makes the window show the wrong part of the worksheet for a moment, and output below the window no longer repaints it at all.</li>
 <li><a class="el" href="classA.html">A</a> power shown in linear form no longer has a gap after its caret: x^12 used to read as "x^ 12", because the hidden parentheses around the exponent took as much room as a hidden multiplication sign.</li>
