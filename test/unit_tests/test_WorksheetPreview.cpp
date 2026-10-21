@@ -202,6 +202,67 @@ SCENARIO("The preview's long number is 200!") {
   }
 }
 
+SCENARIO("The preview's fractions follow the layout strategy") {
+  g_cfg->SetZoomFactor(1.0);
+  // About as much room as the preview gets in the dialog.
+  g_cfg->SetCanvasSize(wxSize(500, 350));
+  const auto strategy = g_cfg->GetLayoutStrategy();
+  auto preview = WorksheetPreview::Make(g_cfg);
+  GroupCell *narrow = FirstCodeCellOf(preview, Topic::layoutStrategy);
+  GroupCell *wide = narrow->GetNext();
+  REQUIRE(wide != nullptr);
+  REQUIRE(wide->GetGroupType() == GC_TYPE_CODE);
+  CHECK(wide->GetOutput()->ListToString().Contains(wxS("12*x^11")));
+  // The label is the group's first output cell; the fraction follows it.
+  auto fractionOf = [](GroupCell *group) {
+    group->Recalculate();
+    const Cell *fraction = group->GetLabel()->GetNext();
+    REQUIRE(fraction != nullptr);
+    return fraction;
+  };
+
+  WHEN("2D is used whenever possible") {
+    g_cfg->SetLayoutStrategy(Configuration::LayoutStrategy::layout2DWheneverPossible);
+    THEN("both fractions are 2D, the wide one wider than the preview") {
+      CHECK_FALSE(fractionOf(narrow)->IsBrokenIntoLines());
+      CHECK_FALSE(fractionOf(wide)->IsBrokenIntoLines());
+      CHECK(fractionOf(wide)->GetWidth() > 500);
+    }
+  }
+  WHEN("2D is used if it fits") {
+    g_cfg->SetLayoutStrategy(Configuration::LayoutStrategy::layout2DIfFits);
+    THEN("only the wide fraction is linear") {
+      CHECK_FALSE(fractionOf(narrow)->IsBrokenIntoLines());
+      CHECK(fractionOf(wide)->IsBrokenIntoLines());
+    }
+  }
+  WHEN("1D is preferred") {
+    g_cfg->SetLayoutStrategy(Configuration::LayoutStrategy::layoutPrefer1D);
+    THEN("both fractions are linear") {
+      CHECK(fractionOf(narrow)->IsBrokenIntoLines());
+      CHECK(fractionOf(wide)->IsBrokenIntoLines());
+    }
+  }
+  g_cfg->SetLayoutStrategy(strategy);
+}
+
+SCENARIO("Changing the layout strategy lays the worksheet out again") {
+  auto strategy = g_cfg->GetLayoutStrategy();
+  const auto other = (strategy == Configuration::LayoutStrategy::layoutPrefer1D)
+    ? Configuration::LayoutStrategy::layout2DIfFits
+    : Configuration::LayoutStrategy::layoutPrefer1D;
+  const auto before = g_cfg->CellCfgCnt();
+  g_cfg->SetLayoutStrategy(strategy);
+  THEN("setting the same strategy again changes nothing") {
+    CHECK(g_cfg->CellCfgCnt() == before);
+  }
+  g_cfg->SetLayoutStrategy(other);
+  THEN("setting another one invalidates every cell's layout") {
+    CHECK(g_cfg->CellCfgCnt() != before);
+  }
+  g_cfg->SetLayoutStrategy(strategy);
+}
+
 SCENARIO("The Worksheet tab's preview holds an oversized matrix") {
   g_cfg->SetZoomFactor(1.0);
   // About as much room as the preview gets in the dialog.

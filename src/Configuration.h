@@ -506,7 +506,11 @@ public:
     layoutPrefer1D = 2
   };
   LayoutStrategy GetLayoutStrategy() const { return m_layoutStrategy; }
-  void SetLayoutStrategy(LayoutStrategy s) { m_layoutStrategy = s; }
+  void SetLayoutStrategy(LayoutStrategy s) {
+    if (s != m_layoutStrategy)
+      RecalculateForce();
+    m_layoutStrategy = s;
+  }
 
   /*! How to show a matrix too large for the window
 

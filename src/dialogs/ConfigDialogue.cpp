@@ -359,6 +359,9 @@ void ConfigDialogue::ApplySettingsToPreview() {
   config->LineBreaksInLongNums(m_linebreaksInLongNums->GetValue());
   config->DigitGrouping(m_digitGrouping->GetValue());
   config->DigitGroupingMinDigits(m_digitGroupingMinDigits->GetValue());
+  // The radio box's items are in Configuration::LayoutStrategy order.
+  config->SetLayoutStrategy(
+    static_cast<Configuration::LayoutStrategy>(m_layoutStrategy->GetSelection()));
   // The radio box's items are in Configuration::OversizedMatrices order.
   config->SetOversizedMatrices(
     static_cast<Configuration::OversizedMatrices>(m_oversizedMatrices->GetSelection()));
@@ -1192,6 +1195,7 @@ wxWindow *ConfigDialogue::CreateWorksheetPanel() {
   updatesPreview(m_displayedDigits, wxEVT_SPINCTRL, Topic::longNumbers);
   updatesPreview(m_digitGrouping, wxEVT_CHECKBOX, Topic::longNumbers);
   updatesPreview(m_digitGroupingMinDigits, wxEVT_SPINCTRL, Topic::longNumbers);
+  updatesPreview(m_layoutStrategy, wxEVT_RADIOBOX, Topic::layoutStrategy);
   updatesPreview(m_oversizedMatrices, wxEVT_RADIOBOX, Topic::oversizedMatrix);
   // The scroll position can only be worked out once the preview has a size.
   m_worksheetPreview->Bind(wxEVT_SIZE, [this](wxSizeEvent &event) {

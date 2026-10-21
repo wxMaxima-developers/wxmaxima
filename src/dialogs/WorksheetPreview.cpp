@@ -43,6 +43,28 @@ wxString WorksheetPreview::MatrixXml() {
   return xml + wxS("</tb>");
 }
 
+wxString WorksheetPreview::ExpandedBinomialXml() {
+  // Maxima orders the terms by falling power: x^n+n*x^(n-1)+...+n*x+1.
+  wxString xml;
+  long coefficient = 1;
+  for (int power = WideFractionPower; power >= 0; power--) {
+    if (power < WideFractionPower)
+      xml += wxS("<mo>+</mo>");
+    if ((coefficient != 1) || (power == 0)) {
+      xml += wxString::Format(wxS("<n>%li</n>"), coefficient);
+      if (power > 0)
+        xml += wxS("<h>*</h>");
+    }
+    if (power == 1)
+      xml += wxS("<v>x</v>");
+    else if (power > 1)
+      xml += wxString::Format(wxS("<e><v>x</v><n>%i</n></e>"), power);
+    // The next binomial coefficient, n over (n-power+1)
+    coefficient = coefficient * power / (WideFractionPower - power + 1);
+  }
+  return xml;
+}
+
 wxString WorksheetPreview::Factorial200() {
   // Schoolbook multiplication on decimal digits, least significant first:
   // a few hundred digits don't warrant anything cleverer.
@@ -103,11 +125,20 @@ WorksheetPreview WorksheetPreview::Make(Configuration *config) {
   addCode(wxS("200!;"),
           wxS("<lbl altCopy=\"%o4\">(%o4) </lbl><n>") + Factorial200() + wxS("</n>"));
 
+  addHeading(Topic::layoutStrategy, wxS("A narrow and a wide fraction:"));
+  addCode(wxS("sqrt(x)/(x^2+1);"),
+          wxS("<lbl altCopy=\"%o5\">(%o5) </lbl>"
+              "<f><r><q><v>x</v></q></r>"
+              "<r><e><v>x</v><n>2</n></e><mo>+</mo><n>1</n></r></f>"));
+  addCode(wxString::Format(wxS("expand((x+1)^%i)/(x-1);"), WideFractionPower),
+          wxS("<lbl altCopy=\"%o6\">(%o6) </lbl><f><r>") + ExpandedBinomialXml() +
+          wxS("</r><r><v>x</v><mo>-</mo><n>1</n></r></f>"));
+
   addHeading(Topic::oversizedMatrix, wxS("A matrix too large for the window:"));
   preview.matrixGroup =
     addCode(wxString::Format(wxS("genmatrix(lambda([i,j],100*i+j),%i,%i);"),
                              MatrixSize, MatrixSize),
-            wxS("<lbl altCopy=\"%o5\">(%o5) </lbl>") + MatrixXml());
+            wxS("<lbl altCopy=\"%o7\">(%o7) </lbl>") + MatrixXml());
 
   preview.tree = tree.TakeHead();
   return preview;
