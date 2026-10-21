@@ -209,7 +209,8 @@ MathParser::MathParser(Configuration *cfg, AttachmentSource attachments)
       wxS("print"),
       wxS("mat"),
       wxS("pos"),
-      wxS("gifFile")
+      wxS("gifFile"),
+      wxS("scale")
     };
     for (const auto &s : known)
       m_knownAttributes.insert(s);
@@ -348,6 +349,16 @@ std::unique_ptr<Cell> MathParser::ParseMiscTextTag(wxXmlNode *node, int depth) {
   }
 }
 
+void MathParser::ReadUserScale(wxXmlNode *node, ImgCellBase *cell) {
+  wxString scaleString;
+  // ToCDouble(): Maxima and ToXML() both write the factor with a decimal
+  // point, whatever the locale.
+  double scale;
+  if (cell && node->GetAttribute(wxS("scale"), &scaleString) &&
+      scaleString.ToCDouble(&scale) && (scale > 0))
+    cell->SetUserScale(scale);
+}
+
 std::unique_ptr<Cell> MathParser::ParseAnimationTag(wxXmlNode *node, int WXUNUSED(depth)) {
   wxString gnuplotSources;
   wxString gnuplotData;
@@ -389,6 +400,7 @@ std::unique_ptr<Cell> MathParser::ParseAnimationTag(wxXmlNode *node, int WXUNUSE
   long ppi_num;
   if (ppi.ToLong(&ppi_num))
     animation->SetPPI(ppi_num);
+  ReadUserScale(node, animation.get());
 
   if(node->GetAttribute(wxS("gnuplotSources"), &gnuplotSources) &&
      node->GetAttribute(wxS("gnuplotData"), &gnuplotData))
@@ -516,6 +528,7 @@ std::unique_ptr<Cell> MathParser::ParseImageTag(wxXmlNode *node, int WXUNUSED(de
     if (sizeString.ToDouble(&height))
       imageCell->SetMaxHeight(height);
   }
+  ReadUserScale(node, imageCell.get());
 
   return imageCell;
 }

@@ -43,6 +43,7 @@
 #include "cells/FracCell.h"
 #include "cells/GroupCell.h"
 #include "AttachmentSource.h"
+class ImgCellBase;
 #include <unordered_map>
 #include <unordered_set>
 
@@ -229,6 +230,8 @@ private:
   std::unique_ptr<Cell> ParseImageTag(wxXmlNode *node, int depth = 0);
   //! Parse an animation tag to a Cell.
   std::unique_ptr<Cell> ParseAnimationTag(wxXmlNode *node, int depth = 0);
+  //! Applies an image's or animation's scale="..." attribute (wxplot_scale)
+  static void ReadUserScale(wxXmlNode *node, ImgCellBase *cell);
   //! Parse a charcode tag to a Cell.
   std::unique_ptr<Cell> ParseCharCode(wxXmlNode *node, int depth = 0);
   //! Parse a superscript tag to a Cell.

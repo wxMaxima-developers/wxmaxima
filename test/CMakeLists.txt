@@ -621,6 +621,40 @@ add_test(
     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "show_image(\"test<2.png\");" "<img del=\"no\" lisp=.*>test&lt;2.png</img>"
 )
 
+# wxplot_scale: a plot tells wxMaxima the factor to display it with...
+add_test(
+    NAME wxplot_scale_attribute
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh"
+    "wxplot2d(x,[x,0,1]),wxplot_scale=3/2$"
+    "<img scale=\"1.5\" lisp=\"wxxml-tag\">"
+)
+
+# ...only if it isn't 1, so worksheets look as before...
+add_test(
+    NAME wxplot_scale_default_no_attribute
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh"
+    "wxplot2d(x,[x,0,1])$"
+    "<img lisp=\"wxxml-tag\">"
+)
+
+# ...and an animation's frames get it, too.
+add_test(
+    NAME wxplot_scale_animation
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh"
+    "with_slider_draw(a,[1,2],explicit(a*x,x,0,1)),wxplot_scale=0.75$"
+    "<slide [^>]*scale=\"0.75\""
+)
+
+# Something that isn't a positive number is an error, not a broken plot.
+add_test(
+    NAME wxplot_scale_invalid
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh"
+    "wxplot2d(x,[x,0,1]),wxplot_scale=-1$"
+    "wxplot_scale must be a positive number"
+)
+set_tests_properties(wxplot_scale_invalid PROPERTIES
+    FAIL_REGULAR_EXPRESSION "<img ")
+
 add_test(
     NAME wxxml-mlable
     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "test;" "<lbl altCopy=\"%o1\">(%o1)"
@@ -1663,6 +1697,8 @@ set(WXM_POSIX_TESTS
   wx_version_min wx_version_min_outside_wxmaxima
   with_slider_draw_bare with_slider_draw_file_name_kept
   wximplicit_plot_loads_package
+  wxplot_scale_attribute wxplot_scale_default_no_attribute
+  wxplot_scale_animation wxplot_scale_invalid
   with_slider_draw_bare_file_name
   check-lintian check-rpmlint)
 

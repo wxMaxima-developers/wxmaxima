@@ -1,5 +1,10 @@
 # Current development version
 
+- New variable `wxplot_scale` (default 1): wxMaxima shows the plots and
+  animations the wx* plot and draw commands make that many times as large
+  as it would otherwise, even if that makes them wider than the window.
+  For a single plot: `wxdraw2d(...),wxplot_scale=2$`. The factor is saved
+  with the plot. Unlike `wxplot_size` it enlarges the text, too.
 - Long warnings, error messages, status messages and printf() output are
   broken into lines to fit the window, after a space, comma, semicolon,
   dot or one of + - * /. Numbers and web links are never torn apart, and

@@ -868,6 +868,8 @@ plots using e.g. `wxplot`, `wxdraw`, `wxcontour_plot` and `wximplicit_plot`
 commands and for embedded animations with `with_slider_draw` and `wxanimate`
 commands.
 
+<div id="wxplot_scale"></div>
+
 ### Better quality plots
 
 _Gnuplot_ doesn’t seem to provide a portable way of determining whether it

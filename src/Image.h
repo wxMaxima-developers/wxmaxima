@@ -241,6 +241,19 @@ public:
     m_maxHeight = height;
   }
 
+  /*! The factor the user wants this image displayed larger or smaller with
+
+    Set from the variable wxplot_scale for plots. It applies after the image
+    has been shrunk to fit the window, so a factor above 1 makes a plot wider
+    than the window, if that is what the user asked for.
+  */
+  double GetUserScale() const { return m_userScale; }
+  //! Sets the factor GetUserScale() returns; values <= 0 are ignored
+  void SetUserScale(double scale) {
+    if (scale > 0)
+      m_userScale = scale;
+  }
+
   //! "Loads" an image from a bitmap
   void LoadImage(const wxBitmap &bitmap);
 
@@ -350,6 +363,8 @@ private:
   wxCoord m_maxWidth = -1;
   //! The upper height limit for displaying this image
   wxCoord m_maxHeight = -1;
+  //! The factor the user wants this image scaled with (see GetUserScale())
+  double m_userScale = 1.0;
   //! The name of the image, if known.
   wxString m_imageName;
   //! The image resolution

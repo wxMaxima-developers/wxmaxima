@@ -605,6 +605,21 @@ wxdraw2d(
 
 Setting the size of embedded plot with `wxplot_size` works for embedded plots using e.g. `wxplot`, `wxdraw`, `wxcontour_plot` and `wximplicit_plot` commands and for embedded animations with `with_slider_draw` and `wxanimate` commands.
 
+<div id="wxplot_scale"></div>
+
+`wxplot_size` tells _Gnuplot_ how many pixels to draw. If a plot is wider than the window, _wxMaxima_ shrinks it until it fits. If one specific plot is meant to be shown larger, even if that means it no longer fits on the screen, or smaller than that, the variable `wxplot_scale` (default: `1`) tells _wxMaxima_ to show it that many times as large as it would otherwise:
+
+```maxima
+wxdraw2d(
+    explicit(
+        sin(x),
+        x,1,10
+    )
+),wxplot_scale=2$
+```
+
+Unlike a bigger `wxplot_size`, which makes the text and lines of a plot smaller in relation to the plot, `wxplot_scale` makes everything larger, the text included. The factor is stored in the worksheet with the plot, so it survives saving and re-opening the file. It is respected by the same commands as `wxplot_size`. If _wxMaxima_ shows plots as scalable vector graphics (see "Create scalable plots" in the configuration dialog) they stay sharp at any scale; a bitmap plot gets blurry if it is enlarged a lot.
+
 ### Better quality plots
 
 _Gnuplot_ doesn’t seem to provide a portable way of determining whether it supports the high-quality bitmap output that the Cairo library provides. On systems where _Gnuplot_ is compiled to use this library the pngCairo option from the configuration menu (that can be overridden by the variable `wxplot_pngcairo`) enables support for antialiasing and additional line styles. If `wxplot_pngCairo` is set without _Gnuplot_ supporting this the result will be error messages instead of graphics.

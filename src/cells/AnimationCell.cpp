@@ -240,6 +240,20 @@ void AnimationCell::SetMaxWidth(wxCoord width) {
     (*i).SetMaxWidth(width);
 }
 
+double AnimationCell::GetUserScale() const {
+  if (!IsOk())
+    return 1.0;
+  else
+    return m_images.at(m_displayed)->GetUserScale();
+}
+
+void AnimationCell::SetUserScale(double scale) {
+  for (const auto &i: m_images)
+    i->SetUserScale(scale);
+  m_width.Invalidate();
+  m_height.Invalidate();
+}
+
 void AnimationCell::SetMaxHeight(wxCoord height) {
   for (const auto &i: m_images)
     (*i).SetMaxHeight(height);
@@ -394,6 +408,8 @@ wxString AnimationCell::ToXML() const {
   flags += wxS(" gnuplotData_gz=\"") + gnuplotDataFiles + "\"";
   if ((Length() > 0) && (m_images.at(0) != nullptr))
     flags += wxString::Format(wxS(" ppi=\"%li\""), static_cast<long>(m_images.at(0)->GetPPI()));
+  if (GetUserScale() != 1.0)
+    flags += wxS(" scale=\"") + wxString::FromCDouble(GetUserScale()) + wxS("\"");
 
   if (m_animationRunning)
     flags += wxS(" running=\"true\"");

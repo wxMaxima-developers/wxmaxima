@@ -235,6 +235,8 @@ private:
   wxCoord GetMaxWidth() const override;
   wxCoord GetHeightList() const override { return m_height; }
   void SetMaxWidth(wxCoord width) override;
+  double GetUserScale() const override;
+  void SetUserScale(double scale) override;
   void SetMaxHeight(wxCoord height) override;
 
   void DrawBoundingBox(wxDC &WXUNUSED(dc), bool WXUNUSED(all) = false)  override
