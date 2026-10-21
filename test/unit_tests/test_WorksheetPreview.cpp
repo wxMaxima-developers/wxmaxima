@@ -37,6 +37,7 @@
 
 #include "Configuration.h"
 #include "cells/GroupCell.h"
+#include "cells/FracCell.h"
 #include "cells/LabelCell.h"
 #include "cells/MatrCell.h"
 #include "dialogs/WorksheetPreview.h"
@@ -157,6 +158,64 @@ SCENARIO("The preview's special symbols follow their settings") {
   g_cfg->Latin2Greek(latin2Greek);
 }
 
+SCENARIO("The preview's binomials are what Maxima's expand() returns") {
+  CHECK(WorksheetPreview::ExpandedBinomialXml(2, 1) ==
+        wxS("<e><v>x</v><n>2</n></e><mo>+</mo><n>2</n><h>*</h><v>x</v>"
+            "<mo>+</mo><n>1</n>"));
+  CHECK(WorksheetPreview::ExpandedBinomialXml(3, -1) ==
+        wxS("<e><v>x</v><n>3</n></e><mo>-</mo><n>3</n><h>*</h>"
+            "<e><v>x</v><n>2</n></e><mo>+</mo><n>3</n><h>*</h><v>x</v>"
+            "<mo>-</mo><n>1</n>"));
+  CHECK(WorksheetPreview::ExpandedBinomialXml(12, 1).Contains(
+          wxS("<n>924</n><h>*</h><e><v>x</v><n>6</n></e>")));
+}
+
+SCENARIO("The preview's fractions follow the layout strategy") {
+  g_cfg->SetZoomFactor(1.0);
+  // About as much room as the preview gets in the dialog.
+  g_cfg->SetCanvasSize(wxSize(500, 350));
+  const auto strategy = g_cfg->GetLayoutStrategy();
+
+  auto preview = WorksheetPreview::Make(g_cfg);
+  GroupCell *smallGroup = FirstCodeCellOf(preview, Topic::fractions);
+  GroupCell *wideGroup = smallGroup->GetNext();
+  REQUIRE(wideGroup != nullptr);
+  auto *small = dynamic_cast<FracCell *>(smallGroup->GetOutput());
+  auto *wide = dynamic_cast<FracCell *>(wideGroup->GetOutput());
+  REQUIRE(small != nullptr);
+  REQUIRE(wide != nullptr);
+
+  using Strategy = Configuration::LayoutStrategy;
+  auto layOut = [&](Strategy layoutStrategy) {
+    g_cfg->SetLayoutStrategy(layoutStrategy);
+    smallGroup->Recalculate();
+    wideGroup->Recalculate();
+  };
+  WHEN("fractions are 2D whenever possible") {
+    layOut(Strategy::layout2DWheneverPossible);
+    THEN("both are 2D, the wide one wider than the preview") {
+      CHECK_FALSE(small->IsBrokenIntoLines());
+      CHECK_FALSE(wide->IsBrokenIntoLines());
+      CHECK(wide->GetWidth() > 500);
+    }
+  }
+  WHEN("fractions are 2D if they fit") {
+    layOut(Strategy::layout2DIfFits);
+    THEN("only the wide one is 1D") {
+      CHECK_FALSE(small->IsBrokenIntoLines());
+      CHECK(wide->IsBrokenIntoLines());
+    }
+  }
+  WHEN("1D is preferred") {
+    layOut(Strategy::layoutPrefer1D);
+    THEN("both are 1D") {
+      CHECK(small->IsBrokenIntoLines());
+      CHECK(wide->IsBrokenIntoLines());
+    }
+  }
+  g_cfg->SetLayoutStrategy(strategy);
+}
+
 SCENARIO("The preview's long number is 200!") {
   const wxString digits = WorksheetPreview::Factorial200();
   CHECK(digits.Length() == 375);
@@ -200,6 +259,23 @@ SCENARIO("The preview's long number is 200!") {
     g_cfg->ShowAllDigits(showAll);
     g_cfg->LineBreaksInLongNums(lineBreaks);
   }
+}
+
+SCENARIO("Changing the layout strategy lays the worksheet out again") {
+  auto strategy = g_cfg->GetLayoutStrategy();
+  const auto other = (strategy == Configuration::LayoutStrategy::layoutPrefer1D)
+    ? Configuration::LayoutStrategy::layout2DIfFits
+    : Configuration::LayoutStrategy::layoutPrefer1D;
+  const auto before = g_cfg->CellCfgCnt();
+  g_cfg->SetLayoutStrategy(strategy);
+  THEN("setting the same strategy again changes nothing") {
+    CHECK(g_cfg->CellCfgCnt() == before);
+  }
+  g_cfg->SetLayoutStrategy(other);
+  THEN("setting another one invalidates every cell's layout") {
+    CHECK(g_cfg->CellCfgCnt() != before);
+  }
+  g_cfg->SetLayoutStrategy(strategy);
 }
 
 SCENARIO("The Worksheet tab's preview holds an oversized matrix") {

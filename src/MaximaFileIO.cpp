@@ -869,6 +869,16 @@ void MaximaFileIO::ReportSaveFailed() {
   }
 }
 
+void MaximaFileIO::NotifyAutoSaveFailed() {
+  // Autosave runs while the user may be working elsewhere, so this is
+  // something they need to learn about even if the window isn't active:
+  // a desktop notification and the tray icon, like a finished calculation.
+  // (SetNotification() does nothing while the window is active; the
+  // "Saving failed!" box SaveFile() shows covers that case.)
+  m_wxMaxima.GetWorksheet()->SetNotification(_("Autosaving the worksheet failed!"),
+                                             wxICON_ERROR);
+}
+
 bool MaximaFileIO::AutoSave() {
   if (!m_wxMaxima.SaveNecessary())
     return true;
@@ -901,9 +911,13 @@ bool MaximaFileIO::AutoSave() {
       }
     }
     m_wxMaxima.RegisterAutoSaveFile();
+    if (!saved)
+      NotifyAutoSaveFailed();
   } else {
     wxLogMessage(_("Autosaving the .wxmx file as %s"), m_wxMaxima.GetWorksheet()->GetCurrentFile());
     savedWas = SaveFile(false);
+    if (!savedWas)
+      NotifyAutoSaveFailed();
   }
 
   m_wxMaxima.GetWorksheet()->SetSaved(savedWas);

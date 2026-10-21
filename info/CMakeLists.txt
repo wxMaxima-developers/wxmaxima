@@ -67,9 +67,20 @@ if(PANDOC)
 			set(CJK_ARGS -V 'CJKmainfont:NotoSerifCJK-Regular.ttc')
 		endif()
 
+		# GH #2271, second half: "-t latex-smart", not "-t latex". With smart
+		# punctuation on, pandoc writes quotation marks as TeX ligatures
+		# (``...''). Hungarian's babel module makes ` an active character, and
+		# pandoc >= 3.2 loads babel with shorthands=off, which leaves that
+		# character undefined -- so every quote broke the Hungarian PDF
+		# ("Undefined control sequence"), while older pandoc, which loads the
+		# language via \babelprovide instead, composed it fine. Turning the
+		# extension off makes pandoc write the Unicode quotation marks
+		# themselves, which xelatex/lualatex and the Noto fonts handle
+		# directly. test/check-manual-backticks.cmake guards the other way a
+		# literal ` reaches the LaTeX: an unpaired backtick in the manual.
 		add_custom_command(
 			OUTPUT ${FILEBASENAME}.pdf
-			COMMAND ${PANDOC} ${FILEBASENAME}.md -t latex -o ${FILEBASENAME}.pdf -M lang=${PDFLANG} -V 'mainfont:NotoSerif-Regular.ttf' -V 'sansfont:NotoSans-Regular.ttf' -V 'monofont:NotoSansMono-Regular.ttf' -V 'mathfont:NotoSansMath-Regular.ttf' ${CJK_ARGS} --number-sections --table-of-contents --standalone --metadata title="wxMaxima" --pdf-engine=${WXMAXIMA_LATEX_COMMAND}
+			COMMAND ${PANDOC} ${FILEBASENAME}.md -t latex-smart -o ${FILEBASENAME}.pdf -M lang=${PDFLANG} -V 'mainfont:NotoSerif-Regular.ttf' -V 'sansfont:NotoSans-Regular.ttf' -V 'monofont:NotoSansMono-Regular.ttf' -V 'mathfont:NotoSansMath-Regular.ttf' ${CJK_ARGS} --number-sections --table-of-contents --standalone --metadata title="wxMaxima" --pdf-engine=${WXMAXIMA_LATEX_COMMAND}
 			COMMENT "Generating ${FILEBASENAME}.pdf")
 		add_custom_target(build_${FILEBASENAME}.pdf DEPENDS ${FILEBASENAME}.pdf)
 		add_dependencies(pdf build_${FILEBASENAME}.pdf)

@@ -117,6 +117,37 @@ SCENARIO("The tray icon's menu items reach their handlers") {
   frame->Destroy();
   wxTheApp->ProcessPendingEvents();
 }
+
+SCENARIO("The tray icon is only there while attention is needed") {
+  auto *frame = new CountingFrame;
+  auto *statusBar = new StatusBar(frame, wxID_ANY);
+  frame->SetStatusBar(statusBar);
+  {
+    TrayIcon icon(frame, statusBar);
+    GIVEN("a freshly made tray icon") {
+      THEN("it isn't in the tray") {
+        CHECK_FALSE(icon.AttentionNeeded());
+        CHECK_FALSE(icon.IsIconInstalled());
+      }
+      WHEN("Maxima's status changes") {
+        icon.UpdateStatus(StatusBar::MaximaStatus::calculating);
+        THEN("it still isn't") { CHECK_FALSE(icon.IsIconInstalled()); }
+      }
+      WHEN("attention is needed and then no longer") {
+        icon.SetAttentionNeeded(true);
+        CHECK(icon.AttentionNeeded());
+        icon.UpdateStatus(StatusBar::MaximaStatus::userinput);
+        icon.SetAttentionNeeded(false);
+        THEN("the icon is removed again") {
+          CHECK_FALSE(icon.AttentionNeeded());
+          CHECK_FALSE(icon.IsIconInstalled());
+        }
+      }
+    }
+  }
+  frame->Destroy();
+  wxTheApp->ProcessPendingEvents();
+}
 #endif // wxUSE_TASKBARICON
 
 class TestApp : public wxApp {

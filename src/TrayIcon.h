@@ -36,6 +36,16 @@
 
 /*! A system tray icon that mirrors wxMaxima's busy status (GH #2286).
 
+  The icon is only shown while something needs the user's attention that
+  they haven't seen yet: a long calculation has finished, Maxima asks a
+  question, Maxima has issued an error or entered the debugger, or an
+  autosave failed -- each while the window wasn't active. That is exactly
+  when Worksheet::SetNotification() raises a desktop notification, which is
+  why the worksheet's notification state drives SetAttentionNeeded(). Once
+  the window is activated again (or the user types or clicks into the
+  worksheet) the icon goes away. A tray icon that is always there tells the
+  user nothing they can't see in the window itself.
+
   Windows already gets an equivalent of this for free via the taskbar
   button's progress/overlay state (see StatusBar::UpdateStatusMaximaBusy()'s
   \#ifdef __WXMSW__ block) -- wxTaskBarIcon is the portable way to offer the
@@ -74,7 +84,19 @@ public:
   //! Refreshes the icon/tooltip for the current Maxima status. The caller
   //! (wxMaximaFrame::UpdateStatusMaximaBusy()) already only invokes this when
   //! the status genuinely changed, so no de-duplication is needed here.
+  //! While no attention is needed the status is only remembered, for the
+  //! moment the icon is shown.
   void UpdateStatus(StatusBar::MaximaStatus status);
+
+  /*! Shows the icon while something needs the user's attention, removes it
+      otherwise.
+
+      Driven by the worksheet's notification state, see
+      Worksheet::SetAttentionCallback().
+  */
+  void SetAttentionNeeded(bool needed);
+  //! Is the icon meant to be shown right now?
+  bool AttentionNeeded() const { return m_attentionNeeded; }
 
   wxMenu *CreatePopupMenu() override;
 
@@ -90,9 +112,14 @@ private:
   void OnLeftDClick(wxTaskBarIconEvent &event);
   //! Shows, de-iconizes and raises the main window
   void ShowFrame();
+  //! Puts the icon for m_status into the tray
+  void ShowIcon();
 
   wxFrame *m_frame;
   StatusBar *m_statusBar;
+  //! The status the icon shows once it is shown
+  StatusBar::MaximaStatus m_status = StatusBar::MaximaStatus::wait_for_start;
+  bool m_attentionNeeded = false;
 };
 
 #endif // wxUSE_TASKBARICON

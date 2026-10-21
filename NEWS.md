@@ -5,6 +5,27 @@
   as it would otherwise, even if that makes them wider than the window.
   For a single plot: `wxdraw2d(...),wxplot_scale=2$`. The factor is saved
   with the plot. Unlike `wxplot_size` it enlarges the text, too.
+- The Hungarian manual PDF composes again with current pandoc (3.2 or
+  newer): quotation marks are now written as Unicode characters rather than
+  as TeX's `` and '' ligatures, which Hungarian's LaTeX language support
+  turns into an undefined command. A stray backtick in the manual that
+  broke it the same way is gone, too (#2271).
+- Copying a part of an output now offers it as SVG and, on Windows, as an
+  enhanced metafile, too, as copying whole cells already did. Like the
+  other formats they are only drawn when a program pastes them (#2472).
+- Output that Maxima adds or removes outside the visible part of the
+  worksheet no longer makes the window show the wrong part of the worksheet
+  for a moment, and output below the window no longer repaints it at all.
+- A power shown in linear form no longer has a gap after its caret:
+  x^12 used to read as "x^ 12", because the hidden parentheses around
+  the exponent took as much room as a hidden multiplication sign.
+- The system tray icon only appears when something needs your attention
+  while the wxMaxima window isn't active: a long calculation has finished,
+  Maxima asks a question, Maxima has issued an error or stopped in the
+  debugger, or an autosave failed. It goes away as soon as the window is
+  activated again. A desktop notification is now also raised when the
+  window is merely in the background, not only when it is minimized, and a
+  failed autosave raises one, too.
 - Long warnings, error messages, status messages and printf() output are
   broken into lines to fit the window, after a space, comma, semicolon,
   dot or one of + - * /. Numbers and web links are never torn apart, and
@@ -17,8 +38,9 @@
 - The configuration dialogue's "Worksheet" tab shows a sample worksheet
   next to (or below) its settings, the way the "Style" tab does. Changing
   how labels are shown, the label width, multiplication signs, special
-  symbols like %e, Greek letters, long numbers or matrices too large for
-  the window shows the effect right away, scrolled to an example of it.
+  symbols like %e, Greek letters, the math layout strategy (2D or 1D
+  fractions), long numbers or matrices too large for the window shows the
+  effect right away, scrolled to an example of it.
 - The part of the worksheet you are reading no longer jumps while cells
   above it are evaluated again with the cursor out of sight: removing a
   cell's old output and adding the new one used to move everything below

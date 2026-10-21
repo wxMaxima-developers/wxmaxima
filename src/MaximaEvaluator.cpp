@@ -459,7 +459,8 @@ void MaximaEvaluator::TriggerEvaluation() {
     if (tmp->GetEditable())
       tmp->GetEditable()->ClearErrorMarks();
     m_wxMaxima.GetWorksheet()->RequestRecalculation(tmp);
-    m_wxMaxima.GetWorksheet()->RequestRedraw();
+    // Only from this cell on: if it is below the view nothing visible changed.
+    m_wxMaxima.GetWorksheet()->RequestRedraw(tmp);
   }
   wxString text = m_wxMaxima.GetWorksheet()->GetEvaluationQueue().GetCommand();
   m_wxMaxima.m_commandIndex = m_wxMaxima.GetWorksheet()->GetEvaluationQueue().GetIndex();

@@ -466,6 +466,16 @@ bool Worksheet::RedrawIfRequested() {
     redrawIssued = true;
   }
 
+  // A change that starts below the bottom of the window changes nothing on
+  // screen -- typically output Maxima appends to a cell far below what the
+  // user is reading. The layout pass above has already updated the positions
+  // and the scrollbar, so there is nothing to repaint but the regions that
+  // were asked for separately.
+  if (m_fullRedrawRequested && RedrawStartBelowView()) {
+    m_fullRedrawRequested = false;
+    m_redrawStart = nullptr;
+  }
+
   if (m_fullRedrawRequested) {
     // A redraw of the whole worksheet beginning with a specific cell was requested
 
@@ -501,6 +511,19 @@ bool Worksheet::RedrawIfRequested() {
   m_regionToRefresh.Clear();
 
   return redrawIssued;
+}
+
+bool Worksheet::RedrawStartBelowView() const {
+  // No cell to start at means "everything": RequestRedraw() without a cell.
+  if (!m_redrawStart || m_layout.RecalculationPending())
+    return false;
+  if (m_redrawStart->GetCurrentPoint().y < 0)
+    return false;
+  int width, height;
+  GetClientSize(&width, &height);
+  int viewLeft, viewBottom;
+  CalcUnscrolledPosition(0, height, &viewLeft, &viewBottom);
+  return m_redrawStart->GetRect().GetTop() > viewBottom;
 }
 
 void Worksheet::RequestRedraw(GroupCell *start) {
@@ -610,9 +633,6 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
   if (!dc.IsOk())
     return;
 
-  // Some drawing contents
-  PrepareDC(dc);
-
   // Don't attempt to draw in a window of the size 0.
   if ((GetClientSize().x < 1) || (GetClientSize().y < 1))
     return;
@@ -620,6 +640,14 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
   // It is possible that the redraw starts before the idle task attempts
   // to recalculate the worksheet.
   RecalculateIfNeeded();
+
+  // Only now tell the DC where the view starts: the layout pass above may just
+  // have scrolled, to keep the cursor or the cells in view still while output
+  // above them grew or shrank (WorksheetLayout::ApplyScrollCompensation()).
+  // Prepared before it, this paint drew the new layout at the old scroll
+  // position -- one frame of everything shifted by the height of the change,
+  // corrected by the next paint.
+  PrepareDC(dc);
 
   // Create a graphics context that supports antialiasing, but on MSW
   // only supports fonts that come in the Right Format.
@@ -775,6 +803,13 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
     // Track the viewport for the image-cache eviction check above.
     m_lastTop = upperLeftScreenCorner.y;
     m_lastBottom = upperLeftScreenCorner.y + height;
+
+    // Count paints whose drawing no longer matches the scroll position: each
+    // one showed the user a wrongly placed frame. See GetStalePaintCount().
+    int viewX, viewY;
+    GetViewStart(&viewX, &viewY);
+    if (dc.GetDeviceOrigin().y != -viewY * m_layout.GetScrollUnit())
+      m_stalePaints++;
   }
 
   m_configuration->ReportMultipleRedraws();
@@ -2448,6 +2483,39 @@ bool Worksheet::Copy(bool astext) const {
   return false;
 }
 
+namespace {
+//! The SVG of a clipboard snapshot, drawn only when a program asks for it
+LazyValue<std::string>
+SvgForClipboard(const std::shared_ptr<const ClipboardSnapshot> &snapshot) {
+  return LazyValue<std::string>([snapshot] {
+    Svgout svg(snapshot->GetConfigurationPointer(), snapshot->CopyCells());
+    if (!svg.IsOk())
+      return std::string();
+    auto obj = svg.GetDataObject();
+    if (!obj)
+      return std::string();
+    std::string bytes(obj->GetDataSize(), '\0');
+    if (bytes.empty() || !obj->GetDataHere(bytes.data()))
+      return std::string();
+    return bytes;
+  });
+}
+
+#if wxUSE_ENH_METAFILE
+//! The enhanced metafile of a clipboard snapshot, drawn only when asked for
+LazyValue<wxEnhMetaFile>
+EmfForClipboard(const std::shared_ptr<const ClipboardSnapshot> &snapshot) {
+  return LazyValue<wxEnhMetaFile>([snapshot] {
+    Emfout emf(snapshot->GetConfigurationPointer(), snapshot->CopyCells());
+    if (!emf.IsOk())
+      return wxEnhMetaFile();
+    auto obj = emf.GetDataObject();
+    return obj ? obj->GetMetafile() : wxEnhMetaFile();
+  });
+}
+#endif
+} // namespace
+
 std::unique_ptr<wxDataObject> Worksheet::CreateSelectionDataObject() const {
   // Only the .wxm code and the plain text are made right away: they are cheap
   // and nearly every paste wants one of them. Every other format is rendered
@@ -2486,6 +2554,12 @@ std::unique_ptr<wxDataObject> Worksheet::CreateSelectionDataObject() const {
       [&snapshot] { return snapshot->CopyCells(); },
       snapshot->GetConfiguration()->BitmapScale());
   });
+  // The vector formats cost nothing until a program pastes them, so they are
+  // offered here as well as for whole cells (GH #2472).
+  contents->svg = SvgForClipboard(snapshot);
+#if wxUSE_ENH_METAFILE
+  contents->emf = EmfForClipboard(snapshot);
+#endif
 
   // The data objects point into contents and share its ownership: it lives
   // as long as any of them is on the clipboard.
@@ -2495,8 +2569,16 @@ std::unique_ptr<wxDataObject> Worksheet::CreateSelectionDataObject() const {
                                                           &contents->rtf);
   const std::shared_ptr<const LazyValue<wxBitmap>> bitmap(contents,
                                                           &contents->bitmap);
+  const std::shared_ptr<const LazyValue<std::string>> svg(contents,
+                                                          &contents->svg);
 
+#if wxUSE_ENH_METAFILE
+  // wxEnhMetaFileDataObject isn't a wxDataObjectSimple, which is all
+  // wxDataObjectComposite accepts.
+  auto *data = new CompositeDataObject;
+#else
   wxDataObjectComposite *data = new wxDataObjectComposite;
+#endif
   data->Add(new wxmDataObject(contents->wxm));
   // We mark the MathML version of the data on the clipboard as "preferred" as
   // if an application supports MathML neither bitmaps nor plain text makes
@@ -2518,6 +2600,12 @@ std::unique_ptr<wxDataObject> Worksheet::CreateSelectionDataObject() const {
   // On wxQt the bitmap above reaches nobody -- see LazyPngDataObject.
   data->Add(new LazyPngDataObject(bitmap));
 #endif
+#if wxUSE_ENH_METAFILE
+  data->Add(new LazyEnhMetaFileDataObject(
+              std::shared_ptr<const LazyValue<wxEnhMetaFile>>(contents,
+                                                              &contents->emf)));
+#endif
+  data->Add(new LazyDataObject(Svgout::GetDataFormat(), svg));
 
   m_clipboardContents = contents;
   return std::unique_ptr<wxDataObject>(data);
@@ -2824,26 +2912,9 @@ std::unique_ptr<wxDataObject> Worksheet::CreateCellsDataObject() const {
       [&snapshot] { return snapshot->CopyCells(); },
       snapshot->GetConfiguration()->BitmapScale());
   });
-  contents->svg = LazyValue<std::string>([snapshot] {
-    Svgout svg(snapshot->GetConfigurationPointer(), snapshot->CopyCells());
-    if (!svg.IsOk())
-      return std::string();
-    auto obj = svg.GetDataObject();
-    if (!obj)
-      return std::string();
-    std::string bytes(obj->GetDataSize(), '\0');
-    if (bytes.empty() || !obj->GetDataHere(bytes.data()))
-      return std::string();
-    return bytes;
-  });
+  contents->svg = SvgForClipboard(snapshot);
 #if wxUSE_ENH_METAFILE
-  contents->emf = LazyValue<wxEnhMetaFile>([snapshot] {
-    Emfout emf(snapshot->GetConfigurationPointer(), snapshot->CopyCells());
-    if (!emf.IsOk())
-      return wxEnhMetaFile();
-    auto obj = emf.GetDataObject();
-    return obj ? obj->GetMetafile() : wxEnhMetaFile();
-  });
+  contents->emf = EmfForClipboard(snapshot);
 #endif
 
   const std::shared_ptr<const LazyValue<std::string>> rtf(contents,
@@ -4124,7 +4195,15 @@ void Worksheet::OnCharNoActive(wxKeyEvent &event) {
   RequestRedraw();
 }
 
-void Worksheet::ClearNotification() { m_notificationMessage.reset(); }
+void Worksheet::ClearNotification() {
+  // Called on every key press and mouse click, so only tell anyone if there
+  // actually was a notification to clear.
+  if (!m_notificationMessage)
+    return;
+  m_notificationMessage.reset();
+  if (m_attentionCallback)
+    m_attentionCallback(false);
+}
 
 void Worksheet::SetNotification(const wxString &message, int flags) {
   if (m_windowActive)
@@ -4132,6 +4211,8 @@ void Worksheet::SetNotification(const wxString &message, int flags) {
 
   m_notificationMessage.emplace(wxS("wxMaxima"), message, GetParent(), flags);
   m_notificationMessage->Show();
+  if (m_attentionCallback)
+    m_attentionCallback(true);
 }
 /*****
  * OnChar handles key events. If we have an active cell, sends the

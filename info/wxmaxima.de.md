@@ -1784,7 +1784,7 @@ not display properly, select another font.
 ## How can a Maxima script determine, if it is running under wxMaxima or command line Maxima?
 
 Wenn wxMaxima verwendet wird, hat die Maxima-Variable `maxima_frontend` den
-Wert wxmaxima`. Die Maxima-Variable `maxima_frontend_version` enthält dann
+Wert `wxmaxima`. Die Maxima-Variable `maxima_frontend_version` enthält dann
 die wxMaxima-Version.
 
 Wenn kein Frontend verwendet wird (Kommandozeilen-Maxima wird verwendet),

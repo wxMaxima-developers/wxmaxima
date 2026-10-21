@@ -281,6 +281,16 @@ add_test(
 )
 set_property(TEST check-pot-coverage APPEND PROPERTY LABELS unittest)
 
+# An unpaired backtick in the manual's source broke composing the Hungarian
+# manual PDF (GH #2271); see the script for why only Hungarian.
+add_test(
+    NAME check-manual-backticks
+    COMMAND "${CMAKE_COMMAND}"
+            "-DMANUAL=${CMAKE_SOURCE_DIR}/info/wxmaxima.md"
+            -P "${CMAKE_CURRENT_SOURCE_DIR}/check-manual-backticks.cmake"
+)
+set_property(TEST check-manual-backticks APPEND PROPERTY LABELS unittest)
+
 # Every dialog whose geometry wxPersistenceManager remembers has to send its
 # destroy event from its own destructor, or it crashes on closing with wxQt.
 add_test(

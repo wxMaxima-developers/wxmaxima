@@ -142,6 +142,9 @@ public:
   */
   void RequestAdjustSize() { m_adjustWorksheetSizeNeeded = true; }
 
+  //! Is a layout pass scheduled (or a time-sliced one unfinished)?
+  bool RecalculationPending() const { return m_recalculateStart != nullptr; }
+
   //! Drop any pending recalculation (e.g. when the document is cleared).
   void CancelPendingRecalculation() {
     m_recalculateStart = nullptr;

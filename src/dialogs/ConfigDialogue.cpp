@@ -359,6 +359,9 @@ void ConfigDialogue::ApplySettingsToPreview() {
   config->LineBreaksInLongNums(m_linebreaksInLongNums->GetValue());
   config->DigitGrouping(m_digitGrouping->GetValue());
   config->DigitGroupingMinDigits(m_digitGroupingMinDigits->GetValue());
+  // The radio box's items are in Configuration::LayoutStrategy order.
+  config->SetLayoutStrategy(
+    static_cast<Configuration::LayoutStrategy>(m_layoutStrategy->GetSelection()));
   // The radio box's items are in Configuration::OversizedMatrices order.
   config->SetOversizedMatrices(
     static_cast<Configuration::OversizedMatrices>(m_oversizedMatrices->GetSelection()));
@@ -1184,6 +1187,7 @@ wxWindow *ConfigDialogue::CreateWorksheetPanel() {
   updatesPreview(m_indentMaths, wxEVT_CHECKBOX, Topic::labels);
   updatesPreview(m_changeAsterisk, wxEVT_CHECKBOX, Topic::labels);
   updatesPreview(m_hidemultiplicationSign, wxEVT_CHECKBOX, Topic::labels);
+  updatesPreview(m_layoutStrategy, wxEVT_RADIOBOX, Topic::fractions);
   updatesPreview(m_latin2Greek, wxEVT_CHECKBOX, Topic::specialSymbols);
   updatesPreview(m_keepPercentWithSpecials, wxEVT_CHECKBOX, Topic::specialSymbols);
   updatesPreview(m_displayNDigits, wxEVT_RADIOBUTTON, Topic::longNumbers);
