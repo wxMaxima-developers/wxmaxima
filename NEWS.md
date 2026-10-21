@@ -1,5 +1,8 @@
 # Current development version
 
+- Output that Maxima adds or removes outside the visible part of the
+  worksheet no longer makes the window show the wrong part of the worksheet
+  for a moment, and output below the window no longer repaints it at all.
 - The system tray icon only appears when something needs your attention
   while the wxMaxima window isn't active: a long calculation has finished,
   Maxima asks a question, Maxima has issued an error or stopped in the

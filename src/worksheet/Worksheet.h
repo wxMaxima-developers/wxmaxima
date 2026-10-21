@@ -132,8 +132,27 @@ public:
   void SetViewScrollRate(int rate) override { SetScrollRate(rate, rate); }
   void GetViewPosition(int *x, int *y) const override
     { const wxPoint p = GetPosition(); *x = p.x; *y = p.y; }
+  /*! Scroll without showing any frame in between (the scroll compensation)
+
+    The layout engine calls this to scroll by exactly the amount the content
+    above the view grew or shrank, so what is on screen is meant to stay where
+    it is. A plain Scroll() gets that wrong for a moment on MSW and macOS: it
+    first paints any pending invalid region at the old scroll position -- but
+    with the new layout, so shifted -- and then physically moves the window's
+    pixels by the scrolled distance, which is the one thing that must not
+    happen here. Freezing the window suppresses both; thawing it repaints with
+    the new position. (On GTK 3 a scroll only invalidates the window, so there
+    this changes nothing.)
+  */
   void ScrollViewToUnitY(int unitY) override
-    { Scroll(-1, unitY); RequestRedraw(); }
+    { Freeze(); Scroll(-1, unitY); Thaw(); RequestRedraw(); }
+  /*! How many paints drew for another scroll position than the one they ended with
+
+    Should stay 0: such a paint shows one frame of the worksheet shifted, as
+    happened when a paint's own layout pass scrolled after the paint had
+    already set up its DC. Lets the tests check for that.
+  */
+  long GetStalePaintCount() const { return m_stalePaints; }
 
   // WorksheetDocumentView: how m_document tells this window that a structural
   // edit happened; each forwards to the real layout/redraw/save machinery.
@@ -179,6 +198,14 @@ private:
   CellPtr<GroupCell> m_redrawStart;
   //! Do we need to redraw the worksheet?
   bool m_fullRedrawRequested = false;
+  /*! Does the redraw RequestRedraw(GroupCell *) asked for start below the view?
+
+    Then nothing on screen changed and RedrawIfRequested() needn't repaint.
+    Only trusts cell positions no layout pass is pending for.
+  */
+  bool RedrawStartBelowView() const;
+  //! See GetStalePaintCount()
+  long m_stalePaints = 0;
   //! The clipboard format "mathML"
 
   //! A class that publishes wxm data to the clipboard
