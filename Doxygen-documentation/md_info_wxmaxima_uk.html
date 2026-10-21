@@ -574,7 +574,7 @@ Making embedded plots bigger or smaller</h3>
 <div class="line">    )</div>
 <div class="line">),wxplot_size=[1600,800]$</div>
 </div><!-- fragment --><p>Встановлення розміру вбудованого креслення за допомогою <code>wxplot_size</code> працює для вбудованих креслень, які використовують, наприклад, команди <code>wxplot</code>, <code>wxdraw</code>, <code>wxcontour_plot</code> і <code>wximplicit_plot</code>, і для вбудованих анімацій, які використовують команди <code>with_slider_draw</code> і <code>wxanimate</code>.</p>
-<h3><a class="anchor" id="autotoc_md842"></a>
+<div id="wxplot_scale"></div><h3><a class="anchor" id="autotoc_md842"></a>
 Better quality plots</h3>
 <p><em>Gnuplot</em> doesn’t seem to provide a portable way of determining whether it supports the high-quality bitmap output that the Cairo library provides. On systems where <em>Gnuplot</em> is compiled to use this library the pngCairo option from the configuration menu (that can be overridden by the variable <code>wxplot_pngcairo</code>) enables support for antialiasing and additional line styles. If <code>wxplot_pngCairo</code> is set without <em>Gnuplot</em> supporting this the result will be error messages instead of graphics.</p>
 <h3><a class="anchor" id="autotoc_md843"></a>

@@ -190,6 +190,12 @@ wxMemoryBuffer&#160;</td><td class="memItemRight" valign="bottom"><b>GetCompress
 <tr class="separator:a7a3f4a7f99c960f5f4b9cf6306828338"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae46556f8a001d63c5f610056e0d7786d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImgCell.html#ae46556f8a001d63c5f610056e0d7786d">SetMaxWidth</a> (wxCoord width) override</td></tr>
 <tr class="separator:ae46556f8a001d63c5f610056e0d7786d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a56185af9638dbf2cb8354796bf979d5a"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImgCell.html#a56185af9638dbf2cb8354796bf979d5a">GetUserScale</a> () const override</td></tr>
+<tr class="memdesc:a56185af9638dbf2cb8354796bf979d5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The factor this image is displayed larger or smaller with (wxplot_scale)  <br /></td></tr>
+<tr class="separator:a56185af9638dbf2cb8354796bf979d5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac9a65daf5e3e2ed82dc94ec171b01a7a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImgCell.html#ac9a65daf5e3e2ed82dc94ec171b01a7a">SetUserScale</a> (double scale) override</td></tr>
+<tr class="memdesc:ac9a65daf5e3e2ed82dc94ec171b01a7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the factor <a class="el" href="classImgCell.html#a56185af9638dbf2cb8354796bf979d5a" title="The factor this image is displayed larger or smaller with (wxplot_scale)">GetUserScale()</a> returns; values &lt;= 0 are ignored.  <br /></td></tr>
+<tr class="separator:ac9a65daf5e3e2ed82dc94ec171b01a7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a87263cd3b9a2e78ff1ebea5daf0e3f11"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImgCell.html#a87263cd3b9a2e78ff1ebea5daf0e3f11">SetMaxHeight</a> (wxCoord height) override</td></tr>
 <tr class="separator:a87263cd3b9a2e78ff1ebea5daf0e3f11"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a107cdb81e715facd442ed21acd277719"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImgCell.html#a107cdb81e715facd442ed21acd277719">Recalculate</a> (const <a class="el" href="classAFontSize.html">AFontSize</a> fontsize) const override</td></tr>
@@ -2555,6 +2561,36 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>AnimationCell</b></t
 
 </div>
 </div>
+<a id="a56185af9638dbf2cb8354796bf979d5a" name="a56185af9638dbf2cb8354796bf979d5a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a56185af9638dbf2cb8354796bf979d5a">&#9670;&#160;</a></span>GetUserScale()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double ImgCell::GetUserScale </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The factor this image is displayed larger or smaller with (wxplot_scale) </p>
+<p>Applied after the image has been fitted into the window, see <a class="el" href="classImage.html#ae96665c6cadd34219c8256c73b4f8166" title="The factor the user wants this image displayed larger or smaller with.">Image::GetUserScale()</a>. </p>
+
+<p>Implements <a class="el" href="classImgCellBase.html#ac9fc0816cbac1c8874612be6ebdde6f1">ImgCellBase</a>.</p>
+
+</div>
+</div>
 <a id="ab7288a1822ec661926cfb0956f50d9ab" name="ab7288a1822ec661926cfb0956f50d9ab"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab7288a1822ec661926cfb0956f50d9ab">&#9670;&#160;</a></span>GetValue()</h2>
 
@@ -3853,6 +3889,36 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>AnimationCell</b></t
 <p>Sets the text style according to the type. </p>
 
 <p>Reimplemented in <a class="el" href="classEditorCell.html#afd28fdade8b3de7cdb36ddabfb34706a">EditorCell</a>, and <a class="el" href="classTextCell.html#a606182b055a0974cb0b4462c36877ad7">TextCell</a>.</p>
+
+</div>
+</div>
+<a id="ac9a65daf5e3e2ed82dc94ec171b01a7a" name="ac9a65daf5e3e2ed82dc94ec171b01a7a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac9a65daf5e3e2ed82dc94ec171b01a7a">&#9670;&#160;</a></span>SetUserScale()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ImgCell::SetUserScale </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>scale</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets the factor <a class="el" href="classImgCell.html#a56185af9638dbf2cb8354796bf979d5a" title="The factor this image is displayed larger or smaller with (wxplot_scale)">GetUserScale()</a> returns; values &lt;= 0 are ignored. </p>
+
+<p>Implements <a class="el" href="classImgCellBase.html#af73bdb9f4886000a83f6fc3ef0294a97">ImgCellBase</a>.</p>
 
 </div>
 </div>

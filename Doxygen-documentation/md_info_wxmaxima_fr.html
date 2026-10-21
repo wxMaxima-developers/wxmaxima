@@ -579,7 +579,7 @@ Agrandir ou diminuer les graphiques intégrés</h3>
 <div class="line">    )</div>
 <div class="line">),wxplot_size=[1600,800]$</div>
 </div><!-- fragment --><p>Le réglage de la taille des graphiques intégrés avec <code>wxplot_size</code> fonctionne pour les graphiques en ligne utilisant par exemple les commandes <code>wxplot</code>, <code>wxdraw</code>, <code>wxcontour_plot</code> et <code>wximplicit_plot</code>, ainsi que pour les animations intégrées avec les commandes <code>with_slider_draw</code> et <code>wxanimate</code>.</p>
-<h3><a class="anchor" id="autotoc_md332"></a>
+<div id="wxplot_scale"></div><h3><a class="anchor" id="autotoc_md332"></a>
 Des graphiques de meilleure qualité</h3>
 <p>Il semble que <em>Gnuplot</em> ne propose pas de méthode portable pour déterminer s'il prend en charge la sortie bitmap haute qualité fournie par la bibliothèque Cairo. Sur les systèmes où <em>Gnuplot</em> est compilé pour utiliser cette bibliothèque, l'option pngCairo du menu de configuration (qui peut être écrasée par la variable <code>wxplot_pngcairo</code>) active la prise en charge de l'antialiasing et des styles de ligne supplémentaires. Si <code>wxplot_pngcairo</code> est définie alors que <em>Gnuplot</em> ne supporte pas cette fonctionnalité, le résultat résultera en des messages d'erreur au lieu des graphiques.</p>
 <h3><a class="anchor" id="autotoc_md333"></a>

@@ -573,7 +573,7 @@ Making embedded plots bigger or smaller</h3>
 <div class="line">    )</div>
 <div class="line">),wxplot_size=[1600,800]$</div>
 </div><!-- fragment --><p>Setting the size of embedded plot with <code>wxplot_size</code> works for embedded plots using e.g. <code>wxplot</code>, <code>wxdraw</code>, <code>wxcontour_plot</code> and <code>wximplicit_plot</code> commands and for embedded animations with <code>with_slider_draw</code> and <code>wxanimate</code> commands.</p>
-<h3><a class="anchor" id="autotoc_md434"></a>
+<div id="wxplot_scale"></div><h3><a class="anchor" id="autotoc_md434"></a>
 Better quality plots</h3>
 <p><em>Gnuplot</em> doesn’t seem to provide a portable way of determining whether it supports the high-quality bitmap output that the Cairo library provides. On systems where <em>Gnuplot</em> is compiled to use this library the pngCairo option from the configuration menu (that can be overridden by the variable <code>wxplot_pngcairo</code>) enables support for antialiasing and additional line styles. If <code>wxplot_pngCairo</code> is set without <em>Gnuplot</em> supporting this the result will be error messages instead of graphics.</p>
 <h3><a class="anchor" id="autotoc_md435"></a>
@@ -664,7 +664,7 @@ Embedding animations into the spreadsheet</h3>
 <div class="line">        x,0,10</div>
 <div class="line">    )</div>
 <div class="line">)$</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md439"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md438"></a>
 Opening multiple plots in contemporaneous windows</h3>
 <p>Sebbene non sia fornita da <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>, questa funzionalità di <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> (nei setup che la supportano) a volte è utile. L'esempio seguente viene da un post di Mario Rodriguez alla mailing list <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>:</p>
 <div class="fragment"><div class="line">load(draw);</div>

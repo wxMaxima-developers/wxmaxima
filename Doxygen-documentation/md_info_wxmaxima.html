@@ -568,6 +568,14 @@ Making embedded plots bigger or smaller</h3>
 <div class="line">    )</div>
 <div class="line">),wxplot_size=[1600,800]$</div>
 </div><!-- fragment --><p>Setting the size of embedded plot with <code>wxplot_size</code> works for embedded plots using e.g. <code>wxplot</code>, <code>wxdraw</code>, <code>wxcontour_plot</code> and <code>wximplicit_plot</code> commands and for embedded animations with <code>with_slider_draw</code> and <code>wxanimate</code> commands.</p>
+<div id="wxplot_scale"></div><p><code>wxplot_size</code> tells <em>Gnuplot</em> how many pixels to draw. If a plot is wider than the window, <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> shrinks it until it fits. If one specific plot is meant to be shown larger, even if that means it no longer fits on the screen, or smaller than that, the variable <code>wxplot_scale</code> (default: <code>1</code>) tells <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> to show it that many times as large as it would otherwise:</p>
+<div class="fragment"><div class="line">wxdraw2d(</div>
+<div class="line">    explicit(</div>
+<div class="line">        sin(x),</div>
+<div class="line">        x,1,10</div>
+<div class="line">    )</div>
+<div class="line">),wxplot_scale=2$</div>
+</div><!-- fragment --><p>Unlike a bigger <code>wxplot_size</code>, which makes the text and lines of a plot smaller in relation to the plot, <code>wxplot_scale</code> makes everything larger, the text included. The factor is stored in the worksheet with the plot, so it survives saving and re-opening the file. It is respected by the same commands as <code>wxplot_size</code>. If <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> shows plots as scalable vector graphics (see "Create scalable plots" in the configuration dialog) they stay sharp at any scale; a bitmap plot gets blurry if it is enlarged a lot.</p>
 <h3><a class="anchor" id="autotoc_md536"></a>
 Better quality plots</h3>
 <p><em>Gnuplot</em> doesn’t seem to provide a portable way of determining whether it supports the high-quality bitmap output that the Cairo library provides. On systems where <em>Gnuplot</em> is compiled to use this library the pngCairo option from the configuration menu (that can be overridden by the variable <code>wxplot_pngcairo</code>) enables support for antialiasing and additional line styles. If <code>wxplot_pngCairo</code> is set without <em>Gnuplot</em> supporting this the result will be error messages instead of graphics.</p>
