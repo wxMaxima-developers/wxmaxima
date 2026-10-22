@@ -106,6 +106,8 @@
 #include "cells/GroupCell.h"
 #include "cells/CellList.h"
 #include "cells/ImgCell.h"
+#include "cells/LabelCell.h"
+#include "cells/TextCell.h"
 #include "AttachmentSource.h"
 #include "WXMXformat.h"
 
@@ -813,6 +815,112 @@ SCENARIO("The clipboard's XML flavour carries the copied cells (GH #2474)") {
     original++;
   }
   REQUIRE(copied == original);
+  g_ws->ClearSelection();
+}
+
+//! Appends an output label like "(%o1)" to \p group
+static void AppendLabel(GroupCell *group, const wxString &label) {
+  group->AppendOutput(
+    std::make_unique<LabelCell>(group, g_cfg, label, TS_LABEL));
+}
+
+//! Counts the cells of \p group's output that have the type \p type
+static size_t CountOutputCells(const GroupCell *group, CellType type) {
+  size_t count = 0;
+  for (const Cell *cell = group->GetLabel(); cell; cell = cell->GetNext())
+    if (cell->GetType() == type)
+      count++;
+  return count;
+}
+
+SCENARIO("Copied code cells lose their mathematical output, not their plots") {
+  GIVEN("a code cell whose output is only maths") {
+    auto group = std::make_unique<GroupCell>(g_cfg, GC_TYPE_CODE,
+                                             wxS("integrate(x,x);"));
+    AppendLabel(group.get(), wxS("(%o1)"));
+    group->AppendOutput(std::make_unique<TextCell>(group.get(), g_cfg,
+                                                   wxS("x^2/2"), TS_VARIABLE));
+    WHEN("its maths output is removed") {
+      group->RemoveMathOutput();
+      THEN("nothing is left of the output, and the input stays") {
+        REQUIRE(group->GetLabel() == nullptr);
+        REQUIRE(group->GetEditable()->GetValue() == wxS("integrate(x,x);"));
+      }
+    }
+  }
+
+  GIVEN("a code cell that made a plot and returned a value") {
+    auto group = std::make_unique<GroupCell>(g_cfg, GC_TYPE_CODE,
+                                             wxS("wxdraw2d(explicit(x,x,0,1));"));
+    AppendLabel(group.get(), wxS("(%t1)"));
+    group->AppendOutput(
+      std::make_unique<ImgCell>(group.get(), g_cfg, SmallPng(), wxS("png")));
+    AppendLabel(group.get(), wxS("(%o1)"));
+    group->AppendOutput(std::make_unique<TextCell>(
+                          group.get(), g_cfg, wxS("[gr2d(explicit)]"),
+                          TS_VARIABLE));
+    WHEN("its maths output is removed") {
+      group->RemoveMathOutput();
+      THEN("the plot stays, with the label in front of it") {
+        REQUIRE(group->GetLabel());
+        REQUIRE(group->GetLabel()->GetType() == MC_TYPE_LABEL);
+        REQUIRE(group->GetLabel()->ToString().Contains(wxS("%t1")));
+        REQUIRE(CountOutputCells(group.get(), MC_TYPE_IMAGE) == 1);
+        REQUIRE(CountOutputCells(group.get(), MC_TYPE_LABEL) == 1);
+        REQUIRE(CountOutputCells(group.get(), MC_TYPE_DEFAULT) == 0);
+        REQUIRE(group->GetLabel()->GetNext()->GetNext() == nullptr);
+      }
+    }
+  }
+
+  GIVEN("an image cell") {
+    auto group = std::make_unique<GroupCell>(g_cfg, GC_TYPE_IMAGE);
+    group->SetOutput(
+      std::make_unique<ImgCell>(group.get(), g_cfg, SmallPng(), wxS("png")));
+    WHEN("its maths output is removed") {
+      group->RemoveMathOutput();
+      THEN("its image is still there") {
+        REQUIRE(group->GetLabel());
+        REQUIRE(group->GetLabel()->GetType() == MC_TYPE_IMAGE);
+      }
+    }
+  }
+}
+
+SCENARIO("The clipboard's XML flavour has no maths output, the others do") {
+  BuildDocumentOnce();
+  g_ws->SetSelection(g_ws->GetTree(), g_ws->GetLastCellInWorksheet());
+  std::unique_ptr<wxDataObject> data = g_ws->CreateCellsDataObject();
+  REQUIRE(data);
+
+  // The corpus has evaluated code cells; their first result is a function
+  // definition, function:=...
+  bool worksheetHasOutput = false;
+  for (const auto &cell : OnList(g_ws->GetTree()))
+    if ((cell.GetGroupType() == GC_TYPE_CODE) && cell.GetLabel())
+      worksheetHasOutput = true;
+  REQUIRE(worksheetHasOutput);
+
+  THEN("the cells wxMaxima pastes back carry no output") {
+    auto copy = Format::TreeFromXMLDocument(
+      wxString::FromUTF8(GetData(*data, kXmlFormat)), g_cfg);
+    REQUIRE(copy);
+    for (const auto &cell : OnList(copy.get()))
+      if (cell.GetGroupType() == GC_TYPE_CODE)
+        REQUIRE(cell.GetLabel() == nullptr);
+  }
+  THEN("the worksheet's own cells keep theirs") {
+    GetData(*data, kXmlFormat);
+    bool stillHasOutput = false;
+    for (const auto &cell : OnList(g_ws->GetTree()))
+      if ((cell.GetGroupType() == GC_TYPE_CODE) && cell.GetLabel())
+        stillHasOutput = true;
+    REQUIRE(stillHasOutput);
+  }
+  THEN("the text for other programs still shows the results") {
+    const std::string rtf = GetData(*data, kRtfFormat);
+    REQUIRE(rtf.find("%o1") != std::string::npos);
+  }
   g_ws->ClearSelection();
 }
 
