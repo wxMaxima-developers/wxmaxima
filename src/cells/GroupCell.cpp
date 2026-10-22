@@ -336,6 +336,26 @@ void GroupCell::RemoveOutput() {
     m_configuration->RequestAdjustWorksheetSize();
 }
 
+void GroupCell::RemoveMathOutput() {
+  if ((m_groupType != GC_TYPE_CODE) || !m_output)
+    return;
+
+  const auto isGraphics = [](const Cell *cell) {
+    return cell && ((cell->GetType() == MC_TYPE_IMAGE) ||
+                    (cell->GetType() == MC_TYPE_SLIDE));
+  };
+  CellListBuilder<> kept;
+  for (const Cell *cell = m_output.get(); cell; cell = cell->GetNext())
+    if (isGraphics(cell) ||
+        ((cell->GetType() == MC_TYPE_LABEL) && isGraphics(cell->GetNext())))
+      kept.Append(cell->Copy(this));
+
+  if (kept)
+    SetOutput(std::unique_ptr<Cell>(std::move(kept)));
+  else
+    RemoveOutput();
+}
+
 void GroupCell::AppendOutput(std::unique_ptr<Cell> &&cell) {
   wxASSERT_MSG(cell, _("Bug: Trying to append NULL to a group cell."));
   if (!cell)
