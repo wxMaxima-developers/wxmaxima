@@ -354,8 +354,12 @@ void MathParser::ReadUserScale(wxXmlNode *node, ImgCellBase *cell) {
   // ToCDouble(): Maxima and ToXML() both write the factor with a decimal
   // point, whatever the locale.
   double scale;
-  if (cell && node->GetAttribute(wxS("scale"), &scaleString) &&
-      scaleString.ToCDouble(&scale) && (scale > 0))
+  if (!cell || !node->GetAttribute(wxS("scale"), &scaleString))
+    return;
+  // wxplot_scale:'native: shown at its own size, even if wider than the window
+  if (scaleString == wxS("native"))
+    cell->SetFitToWindow(false);
+  else if (scaleString.ToCDouble(&scale) && (scale > 0))
     cell->SetUserScale(scale);
 }
 

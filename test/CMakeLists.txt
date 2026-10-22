@@ -655,6 +655,14 @@ add_test(
     "<slide [^>]*scale=\"0.75\""
 )
 
+# 'native: shown at wxplot_size's pixels, not shrunk to fit the window.
+add_test(
+    NAME wxplot_scale_native
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh"
+    "wxplot2d(x,[x,0,1]),wxplot_scale='native$"
+    "<img scale=\"native\" lisp=\"wxxml-tag\">"
+)
+
 # Something that isn't a positive number is an error, not a broken plot.
 add_test(
     NAME wxplot_scale_invalid
@@ -1708,7 +1716,7 @@ set(WXM_POSIX_TESTS
   with_slider_draw_bare with_slider_draw_file_name_kept
   wximplicit_plot_loads_package
   wxplot_scale_attribute wxplot_scale_default_no_attribute
-  wxplot_scale_animation wxplot_scale_invalid
+  wxplot_scale_animation wxplot_scale_invalid wxplot_scale_native
   with_slider_draw_bare_file_name
   check-lintian check-rpmlint)
 

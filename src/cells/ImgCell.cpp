@@ -93,6 +93,7 @@ void ImgCell::ReloadImage(const wxString &image) {
   double width = m_image->GetMaxWidth();
   double height = m_image->GetHeightList();
   double scale = m_image->GetUserScale();
+  bool fitToWindow = m_image->GetFitToWindow();
 
   // Load new image
   m_image = std::make_shared<Image>(m_configuration, image, AttachmentSource(), false);
@@ -101,6 +102,7 @@ void ImgCell::ReloadImage(const wxString &image) {
   m_image->SetMaxHeight(height);
   m_image->SetMaxWidth(width);
   m_image->SetUserScale(scale);
+  m_image->SetFitToWindow(fitToWindow);
 }
 
 void ImgCell::LoadImage(wxString image, bool remove) {
@@ -313,10 +315,7 @@ wxString ImgCell::ToXML() const {
       if (m_image->GetHeightList() > 0)
         flags +=
           wxString::Format(wxS(" maxHeight=\"%f\""), m_image->GetHeightList());
-      // FromCDouble(): ToCDouble() reads it back, whatever the locale.
-      if (m_image->GetUserScale() != 1.0)
-        flags += wxS(" scale=\"") + wxString::FromCDouble(m_image->GetUserScale()) +
-          wxS("\"");
+      flags += UserScaleXMLFlags(m_image->GetUserScale(), m_image->GetFitToWindow());
     }
 
   if (m_origImageFile != wxEmptyString) {

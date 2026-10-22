@@ -139,6 +139,8 @@ public:
   void SetMaxWidth(wxCoord width) override { if (m_image) m_image->SetMaxWidth(width); }
   double GetUserScale() const override { return m_image ? m_image->GetUserScale() : 1.0; }
   void SetUserScale(double scale) override { if (m_image) m_image->SetUserScale(scale); }
+  bool GetFitToWindow() const override { return m_image ? m_image->GetFitToWindow() : true; }
+  void SetFitToWindow(bool fit) override { if (m_image) m_image->SetFitToWindow(fit); }
   void SetMaxHeight(wxCoord height) override { if (m_image) m_image->SetMaxHeight(height); }
 
   void Recalculate(const AFontSize fontsize) const override;

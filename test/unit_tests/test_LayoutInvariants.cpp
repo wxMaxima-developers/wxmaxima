@@ -1877,6 +1877,23 @@ SCENARIO("A plot's scale attribute reaches the image and survives ToXML()") {
       CHECK_FALSE(img->ToXML().Contains(wxS("scale=")));
     }
   }
+  GIVEN("a plot sent with scale=\"native\"") {
+    MathParser parser(g_cfg);
+    auto output = parser.ParseLine(
+      wxS("<mth><img del=\"no\" scale=\"native\">") + pngFile +
+      wxS("</img></mth>"));
+    REQUIRE(output != nullptr);
+    ImgCellBase *img = nullptr;
+    for (Cell &cell : OnList(output.get()))
+      if (cell.GetType() == MC_TYPE_IMAGE)
+        img = dynamic_cast<ImgCellBase *>(&cell);
+    REQUIRE(img != nullptr);
+    THEN("it isn't shrunk to fit the window, and the file says so") {
+      CHECK_FALSE(img->GetFitToWindow());
+      CHECK(img->GetUserScale() == 1.0);
+      CHECK(img->ToXML().Contains(wxS("scale=\"native\"")));
+    }
+  }
   GIVEN("an animation sent with scale=\"0.5\"") {
     MathParser parser(g_cfg);
     auto output = parser.ParseLine(

@@ -1965,11 +1965,15 @@ in a scene still win, as draw applies these defaults first."
 $wxplot_scale times as large as it would otherwise, or nil if that
 factor is 1. Unlike $wxplot_size, which tells gnuplot how many pixels
 to draw, this only changes how large wxMaxima shows the result,
-which allows a plot wider than the window."
+which allows a plot wider than the window. The value native shows the
+plot at the size $wxplot_size asked for, without shrinking it to fit
+the window: a wide, flat waveform keeps readable text that way."
+  (when (eq $wxplot_scale '$native)
+    (return-from wxplot-scale-attr "scale=\"native\""))
   ;; $float makes a number of a rational like 3/2 or a constant like %pi.
   (let ((scale ($float $wxplot_scale)))
     (unless (and (realp scale) (> scale 0))
-      (merror "wxplot_scale must be a positive number, not ~M" $wxplot_scale))
+      (merror "wxplot_scale must be a positive number or native, not ~M" $wxplot_scale))
     (unless (= scale 1)
       ;; ~f always writes a decimal point and never an exponent marker,
       ;; which wxMaxima reads back independent of its locale.

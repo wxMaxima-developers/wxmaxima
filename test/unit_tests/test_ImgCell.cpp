@@ -283,6 +283,18 @@ SCENARIO("An image's user scale applies after fitting it into the window") {
         CHECK(image.m_width > lineWidth);
       }
     }
+    WHEN("the image isn't fitted into the window (wxplot_scale:'native)") {
+      image.SetFitToWindow(false);
+      image.Recalculate(1.0);
+      THEN("it keeps its own size, wider than the window") {
+        CHECK(image.m_width == 40);
+        CHECK(image.m_height == 20);
+      }
+      THEN("a copy keeps that") {
+        Image copy(&config, image);
+        CHECK_FALSE(copy.GetFitToWindow());
+      }
+    }
     WHEN("the image gets a user scale of 0.5") {
       image.SetUserScale(0.5);
       image.Recalculate(1.0);
