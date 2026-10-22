@@ -18,7 +18,8 @@ binaries, create the release, or un-draft it by hand:
   - Windows on Arm (ARM64): the self-contained portable `.zip`
     — `compile_windows_arm.yml`
 - The release is created (or updated) and un-drafted automatically, with its
-  body taken from the `# Current development version` section of `NEWS.md`.
+  body taken from the topmost section of `NEWS.md` that has any content
+  (see the `NEWS.md` step below).
 - `download.html`/`version.txt` on the `gh-pages` branch are updated
   automatically (`update_website_version.yml`) with the tag's version number.
   No manual edit needed.
@@ -43,8 +44,25 @@ time):
 - Make sure the current git version compiles and **all GitHub checks are
   green** — the release jobs only publish after their build+tests pass.
 - Enter the new version number into `CMakeLists.txt`.
-- Update `NEWS.md` (this also becomes the release notes / the announcement on
-  <https://freshcode.club/>).
+- Update `NEWS.md`. Its `# Current development version` section becomes the
+  release notes on GitHub and the announcement on <https://freshcode.club/>,
+  and during development it collects an entry for every change, often with
+  more detail than a user needs. Before tagging:
+  - **Shorten it** to what a user of the previous release needs to know:
+    group related entries by topic, cut implementation detail, and start
+    with a short paragraph naming the release's main topics.
+  - **Drop entries about things the previous release didn't have.** A fix
+    to, or a change of, a feature that is itself new in this release is no
+    news to anybody who upgrades: fold it into that feature's own entry, or
+    remove it. Check by looking for the feature in the previous release's
+    section of `NEWS.md` (or with `git show Version-<previous>:NEWS.md`).
+  - **Rename the section to the release**: the heading
+    `# Current development version` becomes `# <x.y.z>`. Then put a fresh,
+    empty `# Current development version` heading above it, so that the
+    next change has somewhere to go. The release workflow
+    (`compile_windows.yml`, "Extract release notes from NEWS.md") skips all
+    leading `# ` headings and blank lines and takes everything up to the next
+    `# ` heading, so it finds the release's notes either way.
 - Update `data/io.github.wxmaxima_developers.wxMaxima.appdata.xml` with the new
   `<release>` entry. Most HTML tags are forbidden by the flatpak/appImage
   builders. (CI now validates the file, but you still write the entry.)
