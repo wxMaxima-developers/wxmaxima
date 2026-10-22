@@ -51,3 +51,13 @@ void ImgCellBase::DrawImageBackdrop(wxDC *dc, const wxRect &rect) const {
                    m_configuration->GetColor(TS_IMAGE_BACKDROP))));
   dc->DrawRectangle(rect);
 }
+
+wxString ImgCellBase::UserScaleXMLFlags(double scale, bool fitToWindow) {
+  if (!fitToWindow)
+    return wxS(" scale=\"native\"");
+  // FromCDouble(): MathParser reads it back with ToCDouble(), whatever the
+  // locale.
+  if (scale != 1.0)
+    return wxS(" scale=\"") + wxString::FromCDouble(scale) + wxS("\"");
+  return wxEmptyString;
+}

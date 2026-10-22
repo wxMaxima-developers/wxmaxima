@@ -253,6 +253,15 @@ public:
     if (scale > 0)
       m_userScale = scale;
   }
+  /*! Is this image shrunk to fit into the window?
+
+    false for a plot made with wxplot_scale:'native, which is then shown at
+    the size wxplot_size asked gnuplot for, even if that is wider than the
+    window: The way to get a wide waveform with readable text.
+  */
+  bool GetFitToWindow() const { return m_fitToWindow; }
+  //! Sets what GetFitToWindow() returns
+  void SetFitToWindow(bool fit) { m_fitToWindow = fit; }
 
   //! "Loads" an image from a bitmap
   void LoadImage(const wxBitmap &bitmap);
@@ -365,6 +374,8 @@ private:
   wxCoord m_maxHeight = -1;
   //! The factor the user wants this image scaled with (see GetUserScale())
   double m_userScale = 1.0;
+  //! Shrink this image to fit into the window? (see GetFitToWindow())
+  bool m_fitToWindow = true;
   //! The name of the image, if known.
   wxString m_imageName;
   //! The image resolution

@@ -117,6 +117,7 @@ Image::Image(Configuration *config, const Image &image) {
   m_maxWidth = image.m_maxWidth;
   m_maxHeight = image.m_maxHeight;
   m_userScale = image.m_userScale;
+  m_fitToWindow = image.m_fitToWindow;
   m_originalWidth = image.m_originalWidth;
   m_originalHeight = image.m_originalHeight;
   m_compressedImage = image.m_compressedImage;
@@ -1033,13 +1034,15 @@ void Image::Recalculate(double scale) {
   if (viewPortWidth < 10)
     viewPortWidth = 10;
 
-  if (scale * width > .99 * viewPortWidth)
-    scale = .99 * viewPortWidth / width;
+  if (m_fitToWindow) {
+    if (scale * width > .99 * viewPortWidth)
+      scale = .99 * viewPortWidth / width;
 
-  // Shrink to .9* the canvas height, if needed
-  if (scale * height > .9 * viewPortHeight) {
-    if (scale > .9 * viewPortHeight / height)
-      scale = .9 * viewPortHeight / height;
+    // Shrink to .9* the canvas height, if needed
+    if (scale * height > .9 * viewPortHeight) {
+      if (scale > .9 * viewPortHeight / height)
+        scale = .9 * viewPortHeight / height;
+    }
   }
 
   // The user's own scale factor (wxplot_scale) comes after fitting the image

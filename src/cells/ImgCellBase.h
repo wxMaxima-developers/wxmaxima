@@ -105,6 +105,16 @@ public:
   virtual double GetUserScale() const = 0;
   //! Sets the factor GetUserScale() returns; values <= 0 are ignored
   virtual void SetUserScale(double scale) = 0;
+  //! Is this image shrunk to fit into the window? See Image::GetFitToWindow().
+  virtual bool GetFitToWindow() const = 0;
+  //! Sets what GetFitToWindow() returns
+  virtual void SetFitToWindow(bool fit) = 0;
+  /*! The scale="..." attribute ToXML() writes for wxplot_scale, or nothing
+
+    "native" if the image isn't fitted into the window, else the factor,
+    written with a decimal point whatever the locale, if it isn't 1.
+  */
+  static wxString UserScaleXMLFlags(double scale, bool fitToWindow);
 
   virtual void Recalculate(const AFontSize fontsize) const override = 0;
 
