@@ -2893,9 +2893,17 @@ std::unique_ptr<wxDataObject> Worksheet::CreateCellsDataObject() const {
   auto snapshot =
     std::make_shared<const ClipboardSnapshot>(m_configuration,
                                               CopySelection().get());
+  // The cells wxMaxima pastes back. Without their mathematical output: what
+  // Maxima answered here isn't necessarily what it answers where the cells
+  // are pasted. Plots and animations stay. The other formats are for other
+  // programs, which want to see the results.
   contents->xml = LazyValue<std::string>([snapshot] {
+    std::unique_ptr<Cell> cells = snapshot->CopyCells();
+    for (Cell &cell : OnList(cells.get()))
+      if (auto *group = dynamic_cast<GroupCell *>(&cell))
+        group->RemoveMathOutput();
     return std::string(Format::CellsToXMLDocument(
-                         dynamic_cast<const GroupCell *>(snapshot->GetCells()),
+                         dynamic_cast<const GroupCell *>(cells.get()),
                          snapshot->GetConfiguration()).utf8_str());
   });
   contents->rtf = LazyValue<std::string>([snapshot] {

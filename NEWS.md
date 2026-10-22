@@ -3,6 +3,11 @@
 - `wxplot_scale:'native` shows a plot at the size `wxplot_size` asks for
   instead of shrinking it to fit the window, so a wide waveform made with
   e.g. `wxplot_size=[1600,300]` keeps readable text.
+- Cells copied and pasted inside wxMaxima no longer bring their
+  mathematical output along: what Maxima answered where they were evaluated
+  isn't necessarily what it answers where they are pasted. Plots and
+  animations still come along. Pasting into other programs still includes
+  the results.
 - New variable `wxplot_scale` (default 1): wxMaxima shows the plots and
   animations the wx* plot and draw commands make that many times as large
   as it would otherwise, even if that makes them wider than the window.

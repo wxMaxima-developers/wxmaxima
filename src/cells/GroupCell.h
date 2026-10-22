@@ -192,6 +192,17 @@ public:
   */
   void RemoveOutput();
 
+  /*! Drop a code cell's output, except for its images and animations
+
+    Used for the copy of cells that goes onto the clipboard: a mathematical
+    result only says what Maxima answered where the cell was evaluated, and
+    pasted elsewhere it might not be what Maxima answers there. A plot or an
+    animation is kept, together with the label in front of it, since it is
+    expensive to make and doesn't mislead about what the input means.
+    Other cell types are left alone: an image cell's image is its content.
+  */
+  void RemoveMathOutput();
+
   AFontSize EditorFontSize() const;
 
   //! GroupCells warn if they contain both greek and latin lookalike chars.
