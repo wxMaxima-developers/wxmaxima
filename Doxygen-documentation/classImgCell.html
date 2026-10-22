@@ -196,6 +196,12 @@ wxMemoryBuffer&#160;</td><td class="memItemRight" valign="bottom"><b>GetCompress
 <tr class="memitem:ac9a65daf5e3e2ed82dc94ec171b01a7a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImgCell.html#ac9a65daf5e3e2ed82dc94ec171b01a7a">SetUserScale</a> (double scale) override</td></tr>
 <tr class="memdesc:ac9a65daf5e3e2ed82dc94ec171b01a7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the factor <a class="el" href="classImgCell.html#a56185af9638dbf2cb8354796bf979d5a" title="The factor this image is displayed larger or smaller with (wxplot_scale)">GetUserScale()</a> returns; values &lt;= 0 are ignored.  <br /></td></tr>
 <tr class="separator:ac9a65daf5e3e2ed82dc94ec171b01a7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45d2ce5ef33bf02cb30c36eea382eb82"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImgCell.html#a45d2ce5ef33bf02cb30c36eea382eb82">GetFitToWindow</a> () const override</td></tr>
+<tr class="memdesc:a45d2ce5ef33bf02cb30c36eea382eb82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is this image shrunk to fit into the window? See <a class="el" href="classImage.html#ab5fe15d8edfe70a39f3b2f335730340b" title="Is this image shrunk to fit into the window?">Image::GetFitToWindow()</a>.  <br /></td></tr>
+<tr class="separator:a45d2ce5ef33bf02cb30c36eea382eb82"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1dfcb3d5feedd108cbb27f70b9a1daf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImgCell.html#ae1dfcb3d5feedd108cbb27f70b9a1daf">SetFitToWindow</a> (bool fit) override</td></tr>
+<tr class="memdesc:ae1dfcb3d5feedd108cbb27f70b9a1daf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets what <a class="el" href="classImgCell.html#a45d2ce5ef33bf02cb30c36eea382eb82" title="Is this image shrunk to fit into the window? See Image::GetFitToWindow().">GetFitToWindow()</a> returns.  <br /></td></tr>
+<tr class="separator:ae1dfcb3d5feedd108cbb27f70b9a1daf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a87263cd3b9a2e78ff1ebea5daf0e3f11"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImgCell.html#a87263cd3b9a2e78ff1ebea5daf0e3f11">SetMaxHeight</a> (wxCoord height) override</td></tr>
 <tr class="separator:a87263cd3b9a2e78ff1ebea5daf0e3f11"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a107cdb81e715facd442ed21acd277719"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImgCell.html#a107cdb81e715facd442ed21acd277719">Recalculate</a> (const <a class="el" href="classAFontSize.html">AFontSize</a> fontsize) const override</td></tr>
@@ -747,6 +753,9 @@ wxPoint&#160;</td><td class="memItemRight" valign="bottom"><b>GetCurrentPoint</b
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a1884f0cf7de6785ddf33b1f1f3b48197"><td class="memItemLeft" align="right" valign="top">static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImgCellBase.html#a1884f0cf7de6785ddf33b1f1f3b48197">UserScaleXMLFlags</a> (double scale, bool fitToWindow)</td></tr>
+<tr class="memdesc:a1884f0cf7de6785ddf33b1f1f3b48197"><td class="mdescLeft">&#160;</td><td class="mdescRight">The scale="..." attribute <a class="el" href="classImgCellBase.html#a2b0d6aba37ac8853a5138ead51063255" title="Convert this cell to a representation fit for saving in a .wxmx file.">ToXML()</a> writes for wxplot_scale, or nothing.  <br /></td></tr>
+<tr class="separator:a1884f0cf7de6785ddf33b1f1f3b48197"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd71632a3a3deec61e646bca3797a504"><td class="memItemLeft" align="right" valign="top"><a id="acd71632a3a3deec61e646bca3797a504" name="acd71632a3a3deec61e646bca3797a504"></a>
 static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>OMML2RTF</b> (wxXmlNode *node)</td></tr>
 <tr class="memdesc:acd71632a3a3deec61e646bca3797a504"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts an OMML tag to the corresponding RTF snippet. <br /></td></tr>
@@ -2077,6 +2086,35 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>AnimationCell</b></t
 <p>Returns the file name extension that matches the image type. </p>
 
 <p>Implements <a class="el" href="classImgCellBase.html#a16936002f8db7006c2425f8832a7b646">ImgCellBase</a>.</p>
+
+</div>
+</div>
+<a id="a45d2ce5ef33bf02cb30c36eea382eb82" name="a45d2ce5ef33bf02cb30c36eea382eb82"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a45d2ce5ef33bf02cb30c36eea382eb82">&#9670;&#160;</a></span>GetFitToWindow()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool ImgCell::GetFitToWindow </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Is this image shrunk to fit into the window? See <a class="el" href="classImage.html#ab5fe15d8edfe70a39f3b2f335730340b" title="Is this image shrunk to fit into the window?">Image::GetFitToWindow()</a>. </p>
+
+<p>Implements <a class="el" href="classImgCellBase.html#a6c6b9a76286ee0e6b36906bed8e0b4f4">ImgCellBase</a>.</p>
 
 </div>
 </div>
@@ -3688,6 +3726,36 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>AnimationCell</b></t
 
 </div>
 </div>
+<a id="ae1dfcb3d5feedd108cbb27f70b9a1daf" name="ae1dfcb3d5feedd108cbb27f70b9a1daf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1dfcb3d5feedd108cbb27f70b9a1daf">&#9670;&#160;</a></span>SetFitToWindow()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ImgCell::SetFitToWindow </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>fit</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets what <a class="el" href="classImgCell.html#a45d2ce5ef33bf02cb30c36eea382eb82" title="Is this image shrunk to fit into the window? See Image::GetFitToWindow().">GetFitToWindow()</a> returns. </p>
+
+<p>Implements <a class="el" href="classImgCellBase.html#a9f69a7cde16a55e9e60f75d1f38e541f">ImgCellBase</a>.</p>
+
+</div>
+</div>
 <a id="a6cb012023c40ba183294299e8d20b531" name="a6cb012023c40ba183294299e8d20b531"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6cb012023c40ba183294299e8d20b531">&#9670;&#160;</a></span>SetIsExponent()</h2>
 
@@ -4389,6 +4457,45 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>AnimationCell</b></t
 <p>Unbreak this line. </p>
 <p>Some cells have different representations when they contain a line break. Examples for this are fractions or a set of parenthesis.</p>
 <p>This function tries to return a list of cells to the single-line form. </p>
+
+</div>
+</div>
+<a id="a1884f0cf7de6785ddf33b1f1f3b48197" name="a1884f0cf7de6785ddf33b1f1f3b48197"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1884f0cf7de6785ddf33b1f1f3b48197">&#9670;&#160;</a></span>UserScaleXMLFlags()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxString ImgCellBase::UserScaleXMLFlags </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>scale</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>fitToWindow</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The scale="..." attribute <a class="el" href="classImgCell.html#a7e099d57695fe2ef65afbb0c6f71ce76" title="Convert this cell to a representation fit for saving in a .wxmx file.">ToXML()</a> writes for wxplot_scale, or nothing. </p>
+<p>"native" if the image isn't fitted into the window, else the factor, written with a decimal point whatever the locale, if it isn't 1. </p>
 
 </div>
 </div>

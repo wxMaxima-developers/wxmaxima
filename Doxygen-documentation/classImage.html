@@ -197,6 +197,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetMaxHeight</b> (dou
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetUserScale</b> (double scale)</td></tr>
 <tr class="memdesc:ada04e46b98fbe9f97bb488526a3961aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the factor <a class="el" href="classImage.html#ae96665c6cadd34219c8256c73b4f8166" title="The factor the user wants this image displayed larger or smaller with.">GetUserScale()</a> returns; values &lt;= 0 are ignored. <br /></td></tr>
 <tr class="separator:ada04e46b98fbe9f97bb488526a3961aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5fe15d8edfe70a39f3b2f335730340b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImage.html#ab5fe15d8edfe70a39f3b2f335730340b">GetFitToWindow</a> () const</td></tr>
+<tr class="memdesc:ab5fe15d8edfe70a39f3b2f335730340b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is this image shrunk to fit into the window?  <br /></td></tr>
+<tr class="separator:ab5fe15d8edfe70a39f3b2f335730340b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:addd4d5440d1762b64c9795d2f2b07c98"><td class="memItemLeft" align="right" valign="top"><a id="addd4d5440d1762b64c9795d2f2b07c98" name="addd4d5440d1762b64c9795d2f2b07c98"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetFitToWindow</b> (bool fit)</td></tr>
+<tr class="memdesc:addd4d5440d1762b64c9795d2f2b07c98"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets what <a class="el" href="classImage.html#ab5fe15d8edfe70a39f3b2f335730340b" title="Is this image shrunk to fit into the window?">GetFitToWindow()</a> returns. <br /></td></tr>
+<tr class="separator:addd4d5440d1762b64c9795d2f2b07c98"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a07e9f48042ddd9004c24c3ff9e899094"><td class="memItemLeft" align="right" valign="top"><a id="a07e9f48042ddd9004c24c3ff9e899094" name="a07e9f48042ddd9004c24c3ff9e899094"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>LoadImage</b> (const wxBitmap &amp;bitmap)</td></tr>
 <tr class="memdesc:a07e9f48042ddd9004c24c3ff9e899094"><td class="mdescLeft">&#160;</td><td class="mdescRight">"Loads" an image from a bitmap <br /></td></tr>
@@ -462,6 +469,34 @@ wxMemoryBuffer&#160;</td><td class="memItemRight" valign="bottom"><b>m_compresse
 </div><div class="memdoc">
 
 <p>Loads the compressed gnuplot source and data file for this image. </p>
+
+</div>
+</div>
+<a id="ab5fe15d8edfe70a39f3b2f335730340b" name="ab5fe15d8edfe70a39f3b2f335730340b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab5fe15d8edfe70a39f3b2f335730340b">&#9670;&#160;</a></span>GetFitToWindow()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Image::GetFitToWindow </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Is this image shrunk to fit into the window? </p>
+<p>false for a plot made with wxplot_scale:'native, which is then shown at the size wxplot_size asked gnuplot for, even if that is wider than the window: The way to get a wide waveform with readable text. </p>
 
 </div>
 </div>

@@ -738,6 +738,9 @@ wxPoint&#160;</td><td class="memItemRight" valign="bottom"><b>GetCurrentPoint</b
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a1884f0cf7de6785ddf33b1f1f3b48197"><td class="memItemLeft" align="right" valign="top">static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImgCellBase.html#a1884f0cf7de6785ddf33b1f1f3b48197">UserScaleXMLFlags</a> (double scale, bool fitToWindow)</td></tr>
+<tr class="memdesc:a1884f0cf7de6785ddf33b1f1f3b48197"><td class="mdescLeft">&#160;</td><td class="mdescRight">The scale="..." attribute <a class="el" href="classImgCellBase.html#a2b0d6aba37ac8853a5138ead51063255" title="Convert this cell to a representation fit for saving in a .wxmx file.">ToXML()</a> writes for wxplot_scale, or nothing.  <br /></td></tr>
+<tr class="separator:a1884f0cf7de6785ddf33b1f1f3b48197"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd71632a3a3deec61e646bca3797a504"><td class="memItemLeft" align="right" valign="top"><a id="acd71632a3a3deec61e646bca3797a504" name="acd71632a3a3deec61e646bca3797a504"></a>
 static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>OMML2RTF</b> (wxXmlNode *node)</td></tr>
 <tr class="memdesc:acd71632a3a3deec61e646bca3797a504"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts an OMML tag to the corresponding RTF snippet. <br /></td></tr>
@@ -4044,6 +4047,45 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 <p>Unbreak this line. </p>
 <p>Some cells have different representations when they contain a line break. Examples for this are fractions or a set of parenthesis.</p>
 <p>This function tries to return a list of cells to the single-line form. </p>
+
+</div>
+</div>
+<a id="a1884f0cf7de6785ddf33b1f1f3b48197" name="a1884f0cf7de6785ddf33b1f1f3b48197"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1884f0cf7de6785ddf33b1f1f3b48197">&#9670;&#160;</a></span>UserScaleXMLFlags()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxString ImgCellBase::UserScaleXMLFlags </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>scale</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>fitToWindow</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The scale="..." attribute ToXML() writes for wxplot_scale, or nothing. </p>
+<p>"native" if the image isn't fitted into the window, else the factor, written with a decimal point whatever the locale, if it isn't 1. </p>
 
 </div>
 </div>
