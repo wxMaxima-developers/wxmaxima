@@ -86,7 +86,7 @@ What CI now does automatically</h1>
 <li>Windows on Arm (ARM64): the self-contained portable <code>.zip</code> — <code>compile_windows_arm.yml</code></li>
 </ul>
 </li>
-<li>The release is created (or updated) and un-drafted automatically, with its body taken from the <code># Current development version</code> section of <code>NEWS.md</code>.</li>
+<li>The release is created (or updated) and un-drafted automatically, with its body taken from the topmost section of <code>NEWS.md</code> that has any content (see the <code>NEWS.md</code> step below).</li>
 <li><code>download.html</code>/<code>version.txt</code> on the <code>gh-pages</code> branch are updated automatically (<code>update_website_version.yml</code>) with the tag's version number. No manual edit needed.</li>
 <li>The Windows installer is submitted to SignPath for code signing (<code>compile_windows.yml</code>'s <code>sign_windows</code> job). This only runs on a <code>Version-*</code> tag push or a manual <code>workflow_dispatch</code> run of that workflow &ndash; an ordinary push/PR always shows it as skipped, which is expected, not a problem. The job needs approval in the <code>SIGNPATH_API_TOKEN</code> GitHub Environment (Settings -&gt; Environments) before it proceeds; that approval prompt only appears once the job actually queues, i.e. only after a real tag push (or manual dispatch) &ndash; not before.</li>
 </ul>
@@ -101,7 +101,12 @@ Manual steps (still required)</h1>
 <ul>
 <li>Make sure the current git version compiles and <b>all GitHub checks are green</b> — the release jobs only publish after their build+tests pass.</li>
 <li>Enter the new version number into <code>CMakeLists.txt</code>.</li>
-<li>Update <code>NEWS.md</code> (this also becomes the release notes / the announcement on <a href="https://freshcode.club/">https://freshcode.club/</a>).</li>
+<li>Update <code>NEWS.md</code>. Its <code># Current development version</code> section becomes the release notes on GitHub and the announcement on <a href="https://freshcode.club/">https://freshcode.club/</a>, and during development it collects an entry for every change, often with more detail than a user needs. Before tagging:<ul>
+<li><b>Shorten it</b> to what a user of the previous release needs to know: group related entries by topic, cut implementation detail, and start with a short paragraph naming the release's main topics.</li>
+<li><b>Drop entries about things the previous release didn't have.</b> <a class="el" href="classA.html">A</a> fix to, or a change of, a feature that is itself new in this release is no news to anybody who upgrades: fold it into that feature's own entry, or remove it. Check by looking for the feature in the previous release's section of <code>NEWS.md</code> (or with <code>git show Version-&lt;previous&gt;:NEWS.md</code>).</li>
+<li><b>Rename the section to the release</b>: the heading <code># Current development version</code> becomes <code># &lt;x.y.z&gt;</code>. Then put a fresh, empty <code># Current development version</code> heading above it, so that the next change has somewhere to go. The release workflow (<code>compile_windows.yml</code>, "Extract release notes from NEWS.md") skips all leading <code>#</code> headings and blank lines and takes everything up to the next <code>#</code> heading, so it finds the release's notes either way.</li>
+</ul>
+</li>
 <li>Update <code>data/io.github.wxmaxima_developers.wxMaxima.appdata.xml</code> with the new <code>&lt;release&gt;</code> entry. Most HTML tags are forbidden by the flatpak/appImage builders. (CI now validates the file, but you still write the entry.)</li>
 <li>Update <code>snap/snapcraft.yaml</code> (at least the <code>version:</code>). CI now <em>builds</em> the snap, but does not bump its version for you.</li>
 <li>Update the version numbers in the <code>docker-wxmaxima</code> repository (<code>update_versions.sh</code>).</li>
@@ -113,7 +118,7 @@ Manual steps (still required)</h1>
 <li>Download the source tarball (<code>.tar.gz</code> and <code>.zip</code>) and sign each: <code>gpg --armor --detach-sign &lt;filename&gt;</code>, then add the two <code>.asc</code> files to the release page. (Signing needs your private key and is therefore still manual.)</li>
 <li>In <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s source tree, <code>crosscompile-windows/wxmaxima/CMakeLists.txt</code>: update the version number and the MD5 sum of the release tarball.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1024"></a>
+<h2><a class="anchor" id="autotoc_md1025"></a>
 Superseded</h2>
 <ul>
 <li>The old "create a Windows installer using the *Crosscompiled-Windows-installer*
