@@ -35,6 +35,9 @@
 #include <vector>
 #include <cstdio>
 #include <wx/utils.h>
+#ifndef __WINDOWS__
+#include <sys/socket.h>
+#endif
 
 wxDEFINE_EVENT(EVT_MAXIMA, wxThreadEvent);
 
@@ -96,12 +99,30 @@ Maxima::~Maxima() {
   Disconnect(wxEVT_SOCKET);
   Disconnect(EVT_MAXIMA);
 
-  if (m_socket) {
-      m_socket->Close();
+  // The worker thread may be blocked on the socket (on FreeBSD it can wait
+  // there indefinitely), so it has to be woken up before it can be joined.
+  // Close() is not the way to do that: it frees the file descriptor while the
+  // worker is still using it, and the worker's next WaitForRead() then hands
+  // -1 to FD_SET(), which glibc's fortified version answers by aborting the
+  // whole program ("bit out of range 0 - FD_SETSIZE on fd_set"). shutdown()
+  // instead makes every pending and future read or write on the socket return
+  // at once, but keeps the descriptor valid until we close it after the join.
+  // MS Windows doesn't need this: a blocked read there ends with the socket's
+  // timeout.
+#ifndef __WINDOWS__
+  if (m_socket && m_socket->IsOk()) {
+    wxSOCKET_T fd = m_socket->GetSocket();
+    if (fd >= 0)
+      ::shutdown(fd, SHUT_RDWR);
   }
+#endif
 
   if(m_workerThread.joinable()) {
     m_workerThread.join();
+  }
+
+  if (m_socket) {
+      m_socket->Close();
   }
 
   {
