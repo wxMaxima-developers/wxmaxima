@@ -72,101 +72,103 @@ $(function() {
   <div class="headertitle"><div class="title">Current development version </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><ul>
-<li>On FreeBSD <a class="el" href="classwxMaxima.html">wxMaxima</a> no longer hangs when it stops or restarts <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>.</li>
-<li><code>wxplot_scale:'native</code> shows a plot at the size <code>wxplot_size</code> asks for instead of shrinking it to fit the window, so a wide waveform made with e.g. <code>wxplot_size=[1600,300]</code> keeps readable text.</li>
-<li>Cells copied and pasted inside <a class="el" href="classwxMaxima.html">wxMaxima</a> no longer bring their mathematical output along: what <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> answered where they were evaluated isn't necessarily what it answers where they are pasted. Plots and animations still come along. Pasting into other programs still includes the results.</li>
-<li>New variable <code>wxplot_scale</code> (default 1): <a class="el" href="classwxMaxima.html">wxMaxima</a> shows the plots and animations the wx* plot and draw commands make that many times as large as it would otherwise, even if that makes them wider than the window. For a single plot: <code>wxdraw2d(...),wxplot_scale=2$</code>. The factor is saved with the plot. Unlike <code>wxplot_size</code> it enlarges the text, too.</li>
-<li>The Hungarian manual PDF composes again with current pandoc (3.2 or newer): quotation marks are now written as Unicode characters rather than as TeX's `&lsquo; and &rsquo;' ligatures, which Hungarian's LaTeX language support turns into an undefined command. <a class="el" href="classA.html">A</a> stray backtick in the manual that broke it the same way is gone, too (#2271).</li>
-<li>Copying a part of an output now offers it as SVG and, on Windows, as an enhanced metafile, too, as copying whole cells already did. Like the other formats they are only drawn when a program pastes them (#2472).</li>
-<li>Output that <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> adds or removes outside the visible part of the worksheet no longer makes the window show the wrong part of the worksheet for a moment, and output below the window no longer repaints it at all.</li>
-<li><a class="el" href="classA.html">A</a> power shown in linear form no longer has a gap after its caret: x^12 used to read as "x^ 12", because the hidden parentheses around the exponent took as much room as a hidden multiplication sign.</li>
-<li>The system tray icon only appears when something needs your attention while the <a class="el" href="classwxMaxima.html">wxMaxima</a> window isn't active: a long calculation has finished, <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> asks a question, <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> has issued an error or stopped in the debugger, or an autosave failed. It goes away as soon as the window is activated again. <a class="el" href="classA.html">A</a> desktop notification is now also raised when the window is merely in the background, not only when it is minimized, and a failed autosave raises one, too.</li>
-<li>Long warnings, error messages, status messages and printf() output are broken into lines to fit the window, after a space, comma, semicolon, dot or one of + - * /. Numbers and web links are never torn apart, and 2<a class="el" href="classD.html">D</a> ASCII-art maths stays as it is. As long as a line fits, it looks as before, and copying it still gives the line <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> sent.</li>
-<li>The statement <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> is evaluating right now gets a faint yellow background in its code cell, like the red one that marks a statement that caused an error. Its colour can be changed in the configuration dialogue's style list ("Code that is being evaluated").</li>
-<li>The configuration dialogue's "Worksheet" tab shows a sample worksheet next to (or below) its settings, the way the "Style" tab does. Changing how labels are shown, the label width, multiplication signs, special symbols like e, Greek letters, the math layout strategy (2<a class="el" href="classD.html">D</a> or 1<a class="el" href="classD.html">D</a> fractions), long numbers or matrices too large for the window shows the effect right away, scrolled to an example of it.</li>
-<li>The part of the worksheet you are reading no longer jumps while cells above it are evaluated again with the cursor out of sight: removing a cell's old output and adding the new one used to move everything below it, which was visible for plots and other slow results.</li>
-<li><a class="el" href="classA.html">A</a> cell whose output is a long number no longer collapses to nothing when "Display all and allow linebreaks in long numbers" is switched on while it is shown: breaking the number into lines reset the size of its cell while the cell was being laid out.</li>
-<li>Security: another user on the same computer who connected to <a class="el" href="classwxMaxima.html">wxMaxima</a> before <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> did could have posed as <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>: <a class="el" href="classwxMaxima.html">wxMaxima</a> sent the secret <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> proves itself with over that connection, and acted on some of what arrived before the proof, such as a request to export the worksheet to a file of the impostor's choosing. <a class="el" href="classwxMaxima.html">wxMaxima</a> now sends nothing secret, sends no cells and acts on nothing until <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> has authenticated. <a class="el" href="classA.html">A</a> <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> that sends an auth= line as its first line is checked right away, and the secret no longer shows up in the log.</li>
-<li><a class="el" href="classA.html">A</a> floating find/replace sidebar or wizard can still be made wider, but no longer higher than its contents, which only added empty space. <a class="el" href="classA.html">A</a> wizard that needs less room than the one before it shrinks its window, and a docked find/replace sidebar given more height than it needs keeps its controls together at the top instead of opening a gap between them.</li>
-<li>The style editor in the configuration dialogue edits the style that was clicked: with wxWidgets' Qt port each click showed, and each following change went to, the style selected before. In dark appearance a font chosen for "Code default" or "Math default" now also reaches the styles that share it, as it always did in light appearance (GH #2527).</li>
-<li>In a scrolled matrix, the fraction at the start of an entry no longer vanishes while the rest of the entry is still visible: a part of an entry that had been scrolled left of (or above) the worksheet's edge counted as not yet positioned and wasn't drawn.</li>
-<li><a class="el" href="classA.html">A</a> matrix that scrolls in the worksheet (the "scroll" setting for oversized matrices, or wx_matrix(..., oversized=scroll)) scrolls in the exported HTML, too, instead of running off the page or, as an image, being shrunk to fit.</li>
-<li>The tint behind code and output that have a mouse-over tooltip stays readable in dark mode: it is now a dark amber there instead of a pale yellow light text hardly stood out from.</li>
-<li>Copying from the diff viewer works: Ctrl+C, Ctrl+Insert and the context menu's "Copy" and "Copy as..." entries used to leave the clipboard unchanged. Ctrl+A selects the whole pane.</li>
-<li>The diff viewer's search got "Find previous" and "Find next" buttons; Enter, F3 (Shift+Enter, Shift+F3 backwards) move between matches, and Ctrl+F jumps to the search field. They replace the Up/Down radio buttons.</li>
-<li>The <a class="el" href="classStyle.html" title="Text Style Definition.">Style</a> tab of the configuration dialogue fits small screens better: a movable divider separates the style settings from the sample worksheet, so the "Style for" list can be made shorter to see more of the worksheet. If the dialogue is wide rather than tall, the sample worksheet moves beside the settings. Where the divider was put is remembered, and the style controls take less height than before.</li>
-<li>Scrolling over a selected animation with a touchpad or a high-resolution wheel (wxGTK on Wayland, for one) no longer flicks through a frame per tiny scroll event: frames, and Ctrl+wheel zoom, now change once per whole wheel notch's worth of movement.</li>
-<li>Text pasted into a text cell from a word processor, a web browser or a mail program keeps its bold, italic, underline, strikethrough, superscript and subscript: <a class="el" href="classwxMaxima.html">wxMaxima</a> now reads the HTML other programs put on the clipboard (GH #2475).</li>
-<li>Formatted text copied out of a text cell reaches word processors, mail programs and web editors with its bold, italic and other formatting: the copy now also offers RTF and HTML. Whole cells copied as RTF and the RTF export keep the formatting of text cells, too (GH #2475).</li>
-<li>Copying part of a text cell and pasting it into another text cell keeps its bold, italic and other formatting, too. Other programs still get the plain text.</li>
-<li><a class="el" href="classwxMaxima.html">wxMaxima</a> no longer crashes on closing with wxWidgets' GTK4 port, which sends the worksheet a mouse event while its window is being destroyed.</li>
-<li>The option that makes <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> print the answer to ?, ?? and describe() as text into the worksheet now sits under "Show help in" in the configuration dialogue, and next to the sidebar/browser choice in the Help menu, and says "worksheet" instead of "console": it is the one exception to where help is shown, not a separate setting.</li>
-<li>Copied cells keep their bold, italic and other text formatting, their output and their images when they are pasted into <a class="el" href="classwxMaxima.html">wxMaxima</a>: besides the .wxm code, a copy now also puts the cells on the clipboard as XML, with the images embedded (GH #2474).</li>
-<li>LaTeX export and "Copy as LaTeX" no longer depend on the window width: an expression too wide for the window, and therefore broken into lines on screen, used to be exported in its linear form, which turned a power into <code>e\hat{}(x+y)</code> instead of <code>e^{x+y}</code> and dropped some cells or exported others twice (GH #408).</li>
-<li>Selecting text in a text cell that wraps over several lines no longer makes the selection's ends jump between lines while the mouse moves (GH #2477). <a class="el" href="classA.html">A</a> click on a wrapped line could put the cursor on another line of the same paragraph.</li>
-<li>Plots are made as SVG by default where wxWidgets renders SVG with LunaSVG, which draws their text: they stay sharp at any zoom factor and in print. The Windows builds now use it. Elsewhere plots stay PNG, and the option ("Create scalable plots") is only offered where SVG plots work. SVG plots now have the size set in the configuration (they were always 600x480) and text as large as in PNG plots. The log window says at startup whether SVG plots are available and, if not, which SVG renderer wxWidgets was built with and what would enable them.</li>
-<li><a class="el" href="classwxMaxima.html">wxMaxima</a> no longer carries its own copy of the NanoSVG library: SVG images, plots and icons are now rendered by wxWidgets. SVG images in a .wxm file (GH #2087) and copies of SVG images, for example of a copied cell, are shown instead of "Cannot render the image".</li>
-<li>The toolbar's "Evaluate all" button had the same icon as "Evaluate
-  current cell". It gets back its own, curved arrow.</li>
-<li>On Windows, help went to a browser although the help sidebar now works: every configuration there had stored "not the sidebar" while the sidebar couldn't be offered, and that default was read back as a choice. Such a stored "no" is now ignored once, and where help is shown is only saved where the sidebar is offered. The help browser's own path is now saved on Windows, too.</li>
-<li><code>wximplicit_plot()</code> loads the <code>implicit_plot</code> package it needs instead of reporting a missing image file (GH #1106).</li>
-<li>If <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s temp directory contains a quote (for example, under a user name like "Jay's"), <a class="el" href="classwxMaxima.html">wxMaxima</a> now explains that <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s draw package cannot plot there and how to set MAXIMA_TEMPDIR instead (GH #1106).</li>
-<li>On Windows, switching the appearance in the configuration dialog now switches the menus, toolbars, sidebars and dialogs too, not only the worksheet. Before, choosing "Light" could leave a light worksheet in a dark window until <a class="el" href="classwxMaxima.html">wxMaxima</a> was restarted.</li>
-<li>The tray icon's menu works with an AppIndicator (StatusNotifier) tray: "Show wxMaxima", "Interrupt" and "Exit" did nothing there. Showing <a class="el" href="classwxMaxima.html">wxMaxima</a> from the tray now also brings back a hidden window.</li>
-<li>With wxWidgets 3.3.4 or newer the main toolbar was two pixels shorter than its contents. It gets its full height again.</li>
-<li>Asking <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> for help (<code>? integrate</code>, <code>describe()</code>) before <a class="el" href="classwxMaxima.html">wxMaxima</a> had read the manual's index froze <a class="el" href="classwxMaxima.html">wxMaxima</a> for good. It happened wherever the help goes to an external browser instead of the help sidebar.</li>
-<li>The release source tarball leaves out every dot file and dot directory, not just the ones .gitattributes happened to list, and a test now checks that it does (GH #2272).</li>
-<li>The Windows builds now use wxWidgets 3.3.4, which also means they include the AI chat sidebar.</li>
-<li>On Windows, building <a class="el" href="classwxMaxima.html">wxMaxima</a> now copies WebView2Loader.dll next to wxmaxima.exe and installs it there, when it can be found next to wxWidgets or is named with -DWXM_WEBVIEW2_LOADER=&lt;path&gt;. Without that DLL wxWidgets' Edge backend reports itself unavailable, and <a class="el" href="classwxMaxima.html">wxMaxima</a> offers no integrated help browser even with the WebView2 runtime installed (GH #2481).</li>
-<li>The wizard sidebar no longer hides its OK button: on a fresh configuration it opens in a window of its own next to the worksheet, its Command and Description tabs are only as high as their text, and when docked it is at least as high as the wizard needs (as far as the other sidebars in the same dock leave room). <a class="el" href="classA.html">A</a> layout you saved is kept. The Solve ODE wizard now offers help on ode2 instead of on ";", and a wizard offers help only on what the manual actually documents.</li>
-<li>If the GUI can't be started, for example because there is no display, <a class="el" href="classwxMaxima.html">wxMaxima</a> now exits with an error message instead of crashing.</li>
-<li>There is now one setting for where help is shown, the sidebar or a browser (Help menu, or "Show help in" in the configuration dialog's "Maxima" tab). F1, "Help on ...", the manuals and <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s own ?, ?? and describe() all follow it. Before, <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s help had a sidebar/browser choice of its own, so "Help on ..." could open a browser although the sidebar had been chosen. Whether <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> answers ? on the console instead is a checkbox, and that choice is now remembered properly: the Help menu used to claim "in the console" after every start, and a choice made in the configuration dialog never reached <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>. Old configurations keep <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s help on the console if it was there.</li>
-<li>Web addresses in code cells' comments are now links, as they already were in text cells: Ctrl+click (Cmd+click on macOS) or the context menu opens them. An address in a string stays plain code.</li>
-<li>The About dialog and the log window now say why the integrated help browser is or isn't offered: whether <a class="el" href="classwxMaxima.html">wxMaxima</a> was built with wxWebView and, on Windows, whether wxWidgets has the Edge (WebView2) backend, whether WebView2Loader.dll is found and whether the WebView2 runtime is usable (GH #2481). The Windows CI job prints the same list.</li>
-<li>Pasting into a cell now scrolls that cell into view, as typing does. In a long worksheet a paste could land in a cell scrolled out of sight, which looked as if nothing had happened (likely GH #2478).</li>
-<li>With wxWidgets 3.2's Qt port, <a class="el" href="classwxMaxima.html">wxMaxima</a> no longer aborts on startup with an "invalid window" assertion, and the toolbar's own icons are no longer invisible (GH #2483).</li>
-<li><a class="el" href="classA.html">A</a> worksheet with output wider than the window, for example a long warning(), no longer loses its horizontal scrollbar as soon as a cell above that output is laid out again, e.g. after opening the file and clicking into the first cell (GH #2480).</li>
-<li>While a matrix shown in a box with scrollbars of its own is selected, or something inside it is, the mouse wheel and the touchpad now scroll that matrix instead of the worksheet (GH #2479). Shift+wheel and horizontal wheels scroll it sideways.</li>
-<li>When <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> reports an error, the code cell now shows where it is (GH #289): the statement that failed gets a light red background, and for a syntax error the place <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> stopped at a stronger one, with the cursor there. Previously the cursor only went to the end of the failing statement, and when <a class="el" href="classwxMaxima.html">wxMaxima</a> itself refused to send a statement with mismatched brackets, to a wrong place in cells with more than one statement. Both colours can be changed in the configuration dialog's "Style" tab.</li>
-<li><a class="el" href="classA.html">A</a> click on the right half of the last character of a code cell's line now puts the cursor at the end of the line, not in front of that character. Clicks inside a word land on the nearer side of the character more reliably, too.</li>
-<li>Long numbers in the output and in code cells are easier to read: their digits are shown in groups separated by a gap of 5/24 em, 2111230496 as 2 111 230 496 (GH #192). Only the display changes: copying, saving, exporting and what is sent to <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> never contain the gaps. Numbers with fewer than 5 digits, years for example, are left as they are. Both can be changed in the configuration dialog's "Worksheet" tab.</li>
-<li>The right-click menu of a selected cell is shorter: the "Copy as ..." formats and "Copy for Octave/Matlab" moved into a "Copy in Another
-  Format" submenu, and "Export output as SVG/PNG to a folder" is only offered when more than one cell is selected.</li>
-<li>With wxWidgets' Qt port, a symbol in the Greek letters or Symbols sidebar no longer stays highlighted after the mouse has left it.</li>
-<li>On Linux, a middle-click into a cell pasted the Ctrl+C clipboard instead of the last selected text (GH #794). On Windows and macOS, which have no "last selected text" clipboard, a middle-click pastes nothing.</li>
-<li>With wxWidgets 3.3's Qt port, closing the configuration dialog, the tip of the day, the plot and other wizards and most other dialogs no longer crashes <a class="el" href="classwxMaxima.html">wxMaxima</a>.</li>
-<li>Text cells, titles and section headings can contain superscripts and subscripts, set using two new toolbar buttons next to the bold, italic, ... ones. <a class="el" href="classA.html">A</a> line of a text cell now gets taller if something in it needs more room than the plain text: a superscript, a subscript, or a character a taller font has to supply, such as an emoji.</li>
-<li>The sections of the toolbar can be rearranged: a new "Toolbar" tab in the configuration dialog lists them, and a section can be dragged to another place there or moved using "Up" and "Down". Every section, including the evaluation buttons and the cell type, can now be hidden, from that tab or by right-clicking the toolbar. <a class="el" href="classA.html">A</a> "flexible space" section decides what is pushed to the right edge of the window.</li>
-<li>The toolbar's context menu no longer pops up again after closing it once for every time a section had been shown or hidden.</li>
-<li>The toolbar's "Select all" button now selects all cells. It toggled the visibility of the code cells instead.</li>
-<li>The Greek letters and Symbols sidebars no longer come up laid out wrongly until they are resized (seen with wxWidgets' Qt port).</li>
-<li>Copying a whole large matrix no longer tries to draw a bitmap of many gigabytes for the clipboard. On wxWidgets' Qt port, which draws every clipboard format right away, Ctrl+C kept <a class="el" href="classwxMaxima.html">wxMaxima</a> busy for minutes and nothing reached the clipboard. Such a bitmap is now drawn at a lower resolution, or left out if even that is too large; the text, RTF and MathML are copied as before.</li>
-<li>GIF and XPM images no longer get a black background where they are meant to be transparent. Those formats mark transparency with a mask colour, which the worksheet drew instead of what lies behind it (#2227).</li>
-<li>On a dark worksheet, images are drawn on a white backdrop by default, so that black line art with a transparent background stays visible. The backdrop's color is a new style, and an option in the "Worksheet" tab of the configuration dialog can switch it off or use it on a bright worksheet, too (#2227).</li>
-<li>Text cells, titles and section headings can contain bold, italic, underlined and struck-through text, set using new toolbar buttons. The formatting is saved in .wxmx files in a way that lets older versions of <a class="el" href="classwxMaxima.html">wxMaxima</a> still read all of the text (#492).</li>
-<li><code>wxdeclare_subscripted(variable, false)</code> keeps a variable from being displayed with a subscript again, and <code>wxdeclare_subscripted(variable)</code> subscripts one the current <code>wxsubscripts</code> setting wouldn't. Both were ignored (#1653).</li>
-<li>Autosubscripting set to "Always" now really subscripts everything after an underscore. <a class="el" href="classwxMaxima.html">wxMaxima</a> passed the setting to <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> in a way that made it behave like "Integers and single letters".</li>
-<li>The manual described declaring a variable as subscripted using <code>wxdeclare_subscript()</code>, which declares a text snippet instead. Both commands are documented now, and F1 finds <code>wxdeclare_subscripted</code>.</li>
-<li>Closing <a class="el" href="classwxMaxima.html">wxMaxima</a> with unsaved changes in an untitled document asks whether to save them first, and opens the "Save As" dialog only if you choose "Save". It used to open "Save As" first and, if that was cancelled, ask anyway. The question also names the document "unsaved" instead of ".", and "Save" no longer asks for a new file name for a document that already has one (#1737).</li>
-<li>Copying puts every clipboard format on the clipboard again (RTF, MathML, a bitmap, SVG, ...), but renders each only when a program actually pastes it, so copying a large selection is fast and doesn't fill the memory with formats nobody uses. The program you paste into picks the format, which is why the list of formats to copy is gone from the configuration dialog. When the window you copied from is closed, the .wxm code, text, RTF, MathML and the bitmap are kept on the clipboard (#2030).</li>
-<li>The size limit for bitmaps on the clipboard, and with it the "Copy" tab of the configuration dialog, is gone: a bitmap is only drawn when a program pastes it, and today's systems handle big ones fine.</li>
-<li>Copying now also puts the image on the clipboard in builds that use wxWidgets' Qt port: a bitmap offered alongside other formats never reached another program there, so pasting into an image editor pasted whatever was on the clipboard before.</li>
-<li>"Save As" of a document opened from a <code>.wxm</code> file proposed a <code>.wxmx</code> file name on Linux, although the dialog showed the <code>.wxm</code> file type, so the document was saved as <code>.wxmx</code> (#2440).</li>
-<li>Shift+Up/Down with a cell's output selected now selects whole cells starting from that cell. It used to start at the top of the worksheet.</li>
-<li><code>wx_matrix()</code> is offered by autocompletion, with a template for its arguments.</li>
-<li><code>wx_matrix(M, banding=true|false|auto)</code> shades every other row and column of a matrix always, never, or only if it is too large for the window (the default).</li>
-<li>The commands <a class="el" href="classwxMaxima.html">wxMaxima</a> adds to <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> (<code>wx_matrix()</code>, <code>table_form()</code>, <code>wxstatusbar()</code>, <code>wxplot2d()</code>, the <code>wx...</code> variables, ...) now get a "Help on" entry in the right-click menu, and F1 on them opens <a class="el" href="classwxMaxima.html">wxMaxima</a>'s manual at the place that describes them. The entry now also shows a help icon.</li>
-<li>The Windows installer no longer needs administrator rights: without them it installs <a class="el" href="classwxMaxima.html">wxMaxima</a> for the current user only, into <code>LOCALAPPDATA%\Programs</code>. With them it installs for all users into Program Files, as before.</li>
-<li><a class="el" href="classA.html">A</a> hidden multiplication sign is drawn if output is broken into lines there, so a product that continues on the next line is recognizable as one. The line is broken after the sign wherever possible (#2263).</li>
-<li>The worksheet no longer scrolls a whole screen past its end: below the last cell there is now only room for a horizontal cursor and one scroll step.</li>
-<li>The cursor no longer jumps when <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s output appears in a cell above it. Keeping it still failed whenever the output arrived quickly, which is most of the time, and when a cell's old output was removed.</li>
-<li><a class="el" href="classwxMaxima.html">wxMaxima</a> builds on Cygwin again: with wxWidgets 3.2 every file failed to compile because Cygwin's wxWidgets lacks <a class="el" href="gccpriv_8h_source.html">wx/msw/gccpriv.h</a>, which its own headers ask for. <a class="el" href="classwxMaxima.html">wxMaxima</a> now brings a stand-in.</li>
+<div class="textblock"><h1><a class="anchor" id="autotoc_md1029"></a>
+26.10.0</h1>
+<p>This release is about making <a class="el" href="classwxMaxima.html">wxMaxima</a> nicer to use, and again was developed with substantial help from the AI assistant <b>Claude</b>. Text cells get bold, italic, superscripts and more, which survive copy and paste; long numbers are shown in digit groups; an error is marked in the code cell where it happened; long messages wrap to fit the window; the toolbar can be rearranged; and the configuration dialog previews its settings. Plus a security fix for the connection to <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>, and many smaller fixes.</p>
+<h2><a class="anchor" id="autotoc_md1030"></a>
+Text cells</h2>
+<ul>
+<li>Text cells, titles and section headings can contain bold, italic, underlined, struck-through, superscript and subscript text, set using new toolbar buttons (#492). <a class="el" href="classA.html">A</a> line gets taller if something in it needs the room, an emoji for example. The formatting is saved in .wxmx files in a way older versions of <a class="el" href="classwxMaxima.html">wxMaxima</a> can still read.</li>
+<li>The formatting survives copy and paste: within <a class="el" href="classwxMaxima.html">wxMaxima</a>, into word processors, mail programs and web editors (as RTF and HTML), and from them into a text cell (#2475). RTF export keeps it, too.</li>
+<li>Web addresses in code cells' comments are links now, as they already were in text cells.</li>
+<li>Selecting text in a text cell that wraps over several lines no longer makes the selection's ends jump between lines (#2477).</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1017"></a>
+<h2><a class="anchor" id="autotoc_md1031"></a>
+Code cells and evaluation</h2>
+<ul>
+<li>When <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> reports an error, the statement that failed gets a light red background, and for a syntax error the place <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> stopped at a stronger one, with the cursor there (#289). The statement being evaluated right now gets a faint yellow background. All three colours can be changed in the "Style" tab.</li>
+<li>Long numbers in output and in code cells are shown in groups of digits, 2111230496 as 2 111 230 496 (#192). Only the display changes: copying, saving, exporting and what is sent to <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> contain no gaps. This can be changed in the "Worksheet" tab.</li>
+<li>Long warnings, error messages, status messages and printf() output wrap to fit the window, without tearing numbers or web addresses apart.</li>
+<li><a class="el" href="classA.html">A</a> hidden multiplication sign is drawn where output is broken into lines, and the line is broken after it wherever possible (#2263). <a class="el" href="classA.html">A</a> power in linear form no longer reads "x^ 12".</li>
+<li><a class="el" href="classA.html">A</a> click on the right half of a line's last character puts the cursor at the end of the line.</li>
+<li>Pasting into a cell scrolls it into view. On Linux a middle-click pastes the last selected text, not the Ctrl+C clipboard (#794).</li>
+<li>The part of the worksheet you are reading no longer jumps while cells above it are evaluated again or output arrives above the cursor, and output that changes out of sight no longer makes the window flicker.</li>
+<li>The worksheet no longer scrolls a whole screen past its last cell.</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md1032"></a>
+Copy and paste</h2>
+<ul>
+<li>Cells copied and pasted inside <a class="el" href="classwxMaxima.html">wxMaxima</a> keep their text formatting, plots and images, but leave <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s answers behind: what <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> answered where they were evaluated isn't necessarily what it answers where they are pasted (#2474). Pasting into other programs still includes the results.</li>
+<li>Copying is fast even for large selections: every clipboard format is still offered, but each is only drawn when a program pastes it (#2030). The list of formats to copy and the bitmap size limit are gone from the configuration dialog. What was copied stays on the clipboard when the window is closed.</li>
+<li>Copying part of an output also offers it as SVG and, on Windows, as an enhanced metafile (#2472).</li>
+<li>The right-click menu is shorter: the "Copy as ..." formats moved into a "Copy in Another Format" submenu.</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md1033"></a>
+Plots and images</h2>
+<ul>
+<li>Plots are made as SVG where wxWidgets renders SVG with text (LunaSVG, which the Windows builds now have): they stay sharp at any zoom factor and in print. SVG images in .wxm files and copied SVG images are shown instead of "Cannot render the image" (#2087).</li>
+<li>New variable <code>wxplot_scale</code> shows the wx* plots and animations larger or smaller than they would otherwise be, text included, e.g. <code>wxdraw2d(...),wxplot_scale=2$</code>. <code>wxplot_scale:'native</code> shows a plot at the size <code>wxplot_size</code> asks for instead of shrinking it to fit the window.</li>
+<li>On a dark worksheet images are drawn on a white backdrop by default, so black line art stays visible. GIF and XPM images keep their transparency (#2227).</li>
+<li><code>wximplicit_plot()</code> loads the package it needs, and <a class="el" href="classwxMaxima.html">wxMaxima</a> explains how to fix a <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> temp directory whose name contains a quote, where draw cannot plot (#1106).</li>
+<li>Scrolling over an animation with a touchpad no longer flicks through a frame per tiny movement.</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md1034"></a>
+Matrices</h2>
+<ul>
+<li><code>wx_matrix(M, banding=true|false|auto)</code> chooses whether rows and columns are shaded, and autocompletion offers <code>wx_matrix()</code> with a template.</li>
+<li><a class="el" href="classA.html">A</a> matrix with scrollbars of its own scrolls with the mouse wheel while it is selected (#2479), scrolls in the exported HTML, too, and no longer loses a fraction at the start of a partly scrolled-away entry.</li>
+<li>Shift+Up/Down with a cell's output selected selects whole cells starting there, not from the top of the worksheet.</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md1035"></a>
+Help</h2>
+<ul>
+<li>One setting decides whether help is shown in the sidebar or a browser, and F1, "Help on ...", the manuals and <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s ?, ?? and describe() all follow it. Next to it, an option prints ?, ?? and describe() into the worksheet instead.</li>
+<li><a class="el" href="classwxMaxima.html">wxMaxima</a>'s own commands (<code>wx_matrix()</code>, <code>table_form()</code>, <code>wxplot2d()</code>, the <code>wx...</code> variables, ...) get a "Help on" entry, and F1 opens <a class="el" href="classwxMaxima.html">wxMaxima</a>'s manual at their description.</li>
+<li>The wizards' sidebar no longer hides its OK button: it starts in a window of its own and is only as high as it needs. The Solve ODE wizard offers help on ode2.</li>
+<li><code>wxdeclare_subscripted()</code> works (#1653), "Always" autosubscripting really subscripts everything after an underscore, and the manual documents both subscript commands.</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md1036"></a>
+Configuration and interface</h2>
+<ul>
+<li>The configuration dialog's "Worksheet" tab shows a sample worksheet that follows its settings. In the "Style" tab a movable divider separates the settings from the sample, which moves beside them on wide screens.</li>
+<li>The toolbar's sections can be rearranged and hidden in a new "Toolbar" tab or by right-clicking the toolbar. "Evaluate all" has its own icon again, and "Select all" selects all cells.</li>
+<li>The tray icon only appears while something needs your attention and the window isn't active: a calculation finished, a question, an error, the debugger, or a failed autosave. Its menu works with AppIndicator trays.</li>
+<li>Closing an untitled document with unsaved changes asks first and opens "Save As" only if you choose "Save" (#1737). "Save As" of a .wxm file proposes a .wxm name on Linux (#2440).</li>
+<li>The tooltip tint is readable in dark mode, and the diff viewer can copy and has "Find previous"/"Find next" buttons.</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md1037"></a>
+Security</h2>
+<ul>
+<li>Another user on the same computer who connected to <a class="el" href="classwxMaxima.html">wxMaxima</a> before <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> did could pose as <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>. <a class="el" href="classwxMaxima.html">wxMaxima</a> now sends nothing secret over that connection and acts on nothing until <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> has authenticated.</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md1038"></a>
+Windows</h2>
+<ul>
+<li>The Windows builds use wxWidgets 3.3.4, so they include the AI chat sidebar and the integrated help browser, and switching the appearance re-themes the whole window right away.</li>
+<li>The installer no longer needs administrator rights: without them it installs for the current user only.</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md1039"></a>
+Other fixes</h2>
+<ul>
+<li>wxWidgets' Qt ports: no more startup abort with 3.2 (#2483), no crashes when closing dialogs with 3.3, the style editor edits the clicked style (#2527), and the Greek and Symbols sidebars lay out and highlight correctly.</li>
+<li><a class="el" href="classwxMaxima.html">wxMaxima</a> no longer crashes on closing with wxWidgets' GTK4 port, and exits with a message instead of crashing when there is no display.</li>
+<li>On FreeBSD <a class="el" href="classwxMaxima.html">wxMaxima</a> no longer hangs when it stops or restarts <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>.</li>
+<li><a class="el" href="classA.html">A</a> long number no longer collapses when line breaks in long numbers are switched on, and a wide output keeps its horizontal scrollbar (#2480).</li>
+<li><a class="el" href="classA.html">A</a> floating find/replace sidebar no longer grows higher than its contents.</li>
+<li>The LaTeX export no longer depends on the window width (#408).</li>
+<li>The Hungarian manual PDF composes again with pandoc 3.2 or newer (#2271).</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md1040"></a>
+Building</h2>
+<ul>
+<li>The source tarball leaves out all dot files (#2272).</li>
+<li>On Windows, WebView2Loader.dll is installed next to wxmaxima.exe when it can be found (#2481), and the About dialog says why the help browser is or isn't offered.</li>
+<li><a class="el" href="classwxMaxima.html">wxMaxima</a> builds on Cygwin again.</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md1041"></a>
 26.09.0</h1>
 <p>Large matrices and keyboard access to output are the main topics of this release, which again was developed with substantial help from the AI assistant <b>Claude</b>. <a class="el" href="classA.html">A</a> matrix too large for the window no longer widens the worksheet, output can be explored part by part with the keyboard, links in text and output can be opened, and an optional MCP server lets AI tools read the worksheet. Plus many fixes, among them a security fix for .wxm files.</p>
-<h2><a class="anchor" id="autotoc_md1018"></a>
+<h2><a class="anchor" id="autotoc_md1042"></a>
 Matrices</h2>
 <ul>
 <li><a class="el" href="classA.html">A</a> matrix too large for the window by default is displayed with an elipsis( ⋯, ⋮ and/o ⋱)</li>
@@ -177,13 +179,13 @@ Matrices</h2>
 <li>Dragging across a matrix selects a block of entries, which Shift+arrow keys can grow or shrink (#2345, #2370, #2380). Every "Copy ..." command, including "Copy as HTML", copies only that block (#2369), and a matrix or block can be copied as CSV for a spreadsheet (#2364).</li>
 <li>The highlight of selected text in a cell now ends exactly where the text cursor would be. With fonts that kern or join letters it used to be off by a few pixels (#2278).</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1019"></a>
+<h2><a class="anchor" id="autotoc_md1043"></a>
 Keyboard and accessibility</h2>
 <ul>
 <li><a class="el" href="classA.html">A</a> cell's output can be reached with the keyboard: Down at the end of the input selects the first result, Enter goes into a selected expression (numerator, matrix entry, ...), Escape comes back out, and the arrow keys move between parts. The Menu key or Shift+F10 opens the context menu, and on Windows screen readers announce each selected part (#2382). The manual has a new section, "Exploring output with the keyboard". The old behaviour of Down can be switched back in the configuration dialog.</li>
 <li>Output arriving from <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> no longer pushes the cursor down the screen.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1020"></a>
+<h2><a class="anchor" id="autotoc_md1044"></a>
 Editing, links and plots</h2>
 <ul>
 <li>Web addresses in text cells and in <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s output are links: Ctrl+click (Cmd+click on macOS) or the context menu's "Open Link" opens them (#2396). The HTML and LaTeX exports keep them as links.</li>
@@ -193,7 +195,7 @@ Editing, links and plots</h2>
 <li><code>with_slider_draw(..., file_name="name")</code> no longer deletes the gif right after showing it (#2389).</li>
 <li><a class="el" href="classA.html">A</a> system tray icon shows whether <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> is busy and offers Interrupt and Exit (#2286).</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1021"></a>
+<h2><a class="anchor" id="autotoc_md1045"></a>
 Export and files</h2>
 <ul>
 <li>The HTML export can optionally write a single self-contained file with all images embedded (#2266), and "Copy as HTML" puts such a document on the clipboard (#2265, #2267).</li>
@@ -202,13 +204,13 @@ Export and files</h2>
 <li>"Copy as RTF" now pastes into MS Word (#2264); hidden multiplication signs get proper spacing in MathML/OMML export (#2263).</li>
 <li>The manual's PDF no longer needs CJK fonts for non-CJK languages (#2271).</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1022"></a>
+<h2><a class="anchor" id="autotoc_md1046"></a>
 AI chat and MCP server (optional)</h2>
 <ul>
 <li>An "AI Chat" sidebar chats about the current worksheet with Anthropic, OpenAI, Google Gemini, Qwen, GitHub Models, DeepSeek, OpenRouter or a custom provider, including local servers like Ollama, LM Studio or llama.cpp. It uses your own API key, stored in the operating system's secret store, and can read the worksheet but never change or evaluate it. <a class="el" href="classA.html">A</a> status bar icon and a connection monitor show what it is doing. The sidebar needs wxWidgets 3.3.4 or newer, the first version it works reliably with; a build against an older wxWidgets leaves it out. That includes this release's Windows installer and Linux .deb, which are built with wxWidgets 3.3.2 and 3.2.</li>
 <li>An optional MCP server lets an external AI tool read the worksheet, the Variables sidebar and the evaluation status, and show or hide sidebars. It listens only on this machine and cannot change the worksheet.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1023"></a>
+<h2><a class="anchor" id="autotoc_md1047"></a>
 Talking to Maxima</h2>
 <ul>
 <li>Interrupting <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> (Ctrl+G) goes through a second connection when the Lisp has threads (SBCL, CCL, ECL), which also makes it work reliably on Windows (#2289).</li>
@@ -216,7 +218,7 @@ Talking to Maxima</h2>
 <li>Opening a file starts <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> only once, about two seconds faster.</li>
 <li>The "Maxima isn't connecting" warning no longer fires for large worksheets (#1182).</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1024"></a>
+<h2><a class="anchor" id="autotoc_md1048"></a>
 Windows</h2>
 <ul>
 <li>Releases also offer a portable .zip that runs without installation (#2298).</li>
@@ -224,7 +226,7 @@ Windows</h2>
 <li>Dark mode now also themes menus, toolbars and dialogs (#2274).</li>
 <li><code>--logtostderr ... 2&gt;&amp;1</code> no longer loses the log.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1025"></a>
+<h2><a class="anchor" id="autotoc_md1049"></a>
 Other fixes</h2>
 <ul>
 <li>Sets (<code>{1,2,3}</code>) and <code>product()</code> no longer render as blank output (#2270), and <code>product()</code> no longer turns into "sum(" when broken into lines.</li>
@@ -235,13 +237,13 @@ Other fixes</h2>
 <li>Closing the diff viewer no longer resets settings changed meanwhile (#2356).</li>
 <li>The toolbar's height is recomputed at every start instead of being restored from the previous session, so it can no longer shrink by a pixel per session on MS Windows.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1026"></a>
+<h2><a class="anchor" id="autotoc_md1050"></a>
 Building</h2>
 <ul>
 <li>wxWidgets 3.2 and a C++20 compiler (GCC 12 or newer) are now required (#2301). There is no longer a .deb for Ubuntu 22.04.</li>
 <li>Compiling is about a third faster: precompiled headers are on by default and actually work now.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1027"></a>
+<h1><a class="anchor" id="autotoc_md1051"></a>
 26.08.0</h1>
 <p>Another large batch of improvements, many of them developed with substantial help from the AI assistant <b>Claude</b>: sidebars can now be minimized, "Find
 and Replace" can be docked like the other sidebars, right-to-left interface languages and mixed-direction text are now properly supported, translation losses across dozens of languages were found and restored, and a long list of export, layout and stability fixes.</p>
@@ -271,7 +273,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 <li>Added "Anonymize Code for Bug Report" to the Help menu (#1339): replaces every non-builtin name in the selected code (or, after confirmation, the whole document) with a random name, consistently, so a worksheet can be shared in a bug report without revealing the original names.</li>
 <li>Reduced the memory footprint of every cell on the worksheet by computing line-wrap draw order on demand instead of storing it per cell (#1445).</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1028"></a>
+<h1><a class="anchor" id="autotoc_md1052"></a>
 26.07.1</h1>
 <p>This release contains an unusually large batch of improvements &ndash; many of them developed with substantial help from the AI assistants <b>Claude</b> and <b>Fable</b>: dark mode for the whole Windows user interface, native Windows-on-Arm builds, numerous speedups, and a large number of bug and stability fixes.</p>
 <ul>
@@ -343,7 +345,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 <li>Snap package: opening a link in the system web browser (the manual, "visit website", <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s online documentation) now works. The confined snap reaches the host's default browser through the XDG Desktop Portal instead of trying to launch a browser that is not visible inside the sandbox &ndash; no browser is bundled and confinement stays strict.</li>
 <li>Find: a match found inside a cell's output now scrolls to the matching part of the output, even in a long output cell. Previously the view only scrolled to the top of the output because the matched item &ndash; if it had not been drawn yet &ndash; had no on-screen position, so the scroll fell back to the start of the output.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1029"></a>
+<h1><a class="anchor" id="autotoc_md1053"></a>
 26.07.0</h1>
 <ul>
 <li>Fixed a crash on loading a worksheet containing an empty <code>&lt;img/&gt;</code> or <code>&lt;slideshow/&gt;</code> tag (found by the parser fuzzer).</li>
@@ -365,7 +367,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 <li><a class="el" href="classA.html">A</a> correctness review for all wizards.</li>
 <li>EditorCells again grow and shrink when the user adds and removes lines</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1030"></a>
+<h1><a class="anchor" id="autotoc_md1054"></a>
 26.06.2</h1>
 <ul>
 <li><a class="el" href="classA.html">A</a> whole AI-driven safety review</li>
@@ -387,7 +389,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 <li>Better undo handling.</li>
 <li>Another try to make accessibility work.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1031"></a>
+<h1><a class="anchor" id="autotoc_md1055"></a>
 26.06.1</h1>
 <ul>
 <li>Fix the Ctrl+F keyboard focus on MS Windows to correctly focus the find dialogue instead of leaving it on the worksheet.</li>
@@ -400,7 +402,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 <li>Fix scroll position tracking: call ScrolledAwayFromEvaluation(true) when the user manually scrolls so that the active cell is completely outside the visible portion of the worksheet.</li>
 <li>Fix inserting a new cell (via hCaret) on large worksheets causing the scroll range to shrink to the first screen and the view to jump to the top.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1032"></a>
+<h1><a class="anchor" id="autotoc_md1056"></a>
 26.06.0</h1>
 <ul>
 <li>Optimize drawing during mouse moves (bracket autohide): redraw only the actual height of the cell, rather than drawing all the way to the absolute bottom coordinate.</li>
@@ -446,7 +448,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 <li>Files opened by double-clicking now have a consistent layout</li>
 <li>Added automatic tests and repaired others.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1033"></a>
+<h1><a class="anchor" id="autotoc_md1057"></a>
 26.05.0</h1>
 <ul>
 <li>Fix search and replace. Before in a longer string - e.g. "aaaaaaaaa" only every second occurrence was replaced, when (e.g.) one wanted to replace "a" by "b".</li>
@@ -477,7 +479,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 <li>Fix inconsistent behavior in the list menu (mentioned in the discussion forum)</li>
 <li>Make toolbar icons HDPI (#2074).</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1034"></a>
+<h1><a class="anchor" id="autotoc_md1058"></a>
 26.01.0</h1>
 <ul>
 <li>Keep the wxm/mac difference when saving wxm/exporting mac. This omits unneeded comments (/* [<a class="el" href="classwxMaxima.html">wxMaxima</a>: input start ] */ (and input end) in a mac file (structural comments (section, ...) are still saved) and especially omits question/answer comments - they are unreadable by <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> (see #2014, not only wxm files but also mac files were problematic). At least the issue with mac files is solved.</li>
@@ -500,7 +502,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 <li><a class="el" href="classA.html">A</a> more consistent worksheet zoom feature.</li>
 <li><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s state should now be displayed in the windows task bar.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1035"></a>
+<h1><a class="anchor" id="autotoc_md1059"></a>
 25.04.0</h1>
 <ul>
 <li>Use the (standard) wxWidgets log window instead of our own log pane. Less code to maintain, more features (e.g. clear log, save log). In "Release" builds the log window will be hidden (and can be enabled using View-&gt;Toggle log window, otherwise it is shown.</li>
@@ -515,7 +517,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 - Fix compiling with wxWidgets without webview.
 - HTML export/Mathjax: Don't remove 1st/last label char (#2003)
 
-@section autotoc_md1036 25.01.0
+@section autotoc_md1060 25.01.0
 
 - Remove the change label width popup menu (#1964).
   It was not working at all and caused crashes. And I think the
@@ -530,7 +532,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 - Fix the (Windows) crash in the suggestions menu (#1980).
 - HTML export: print the output labels on the left side.
 
-@section autotoc_md1037 24.11.0
+@section autotoc_md1061 24.11.0
 
 - A Spanish translation update by cyphra.
 - Resolved a crash when inverting the worksheet (#1951)
@@ -545,7 +547,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 - Allow Maxima strings with newlines. (#76)
 - Support Maxima which uses ABCL.
 
-@section autotoc_md1038 24.08.0
+@section autotoc_md1062 24.08.0
 
 - An advanced plotting tutorial
 - Try harder to kill maxima on closing it
@@ -572,7 +574,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 - On MS Windows one can now choose between Gnuplot and wGnuplot (#1934)
 - Fixed the error message about dual manifest files on MSVC
 
-@section autotoc_md1039 24.05.0
+@section autotoc_md1063 24.05.0
 
 - Faster discarding of maths that is too long to read
 - Resolved a crash on closing the last window (#1898)
@@ -606,13 +608,13 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 - On MSW wxWidgets &gt;=3.2 now is mandatory for getting high-DPI support
 - A backward-search fix (#1913)
 
-@section autotoc_md1040 24.02.2
+@section autotoc_md1064 24.02.2
 
 - Set maxima's LANG variable, not wxMaxima's LANG (#1897)
 - Sped up the communication between maxima and wxMaxima
 - Sometimes newlines in misc text from maxima got lost (#1894)
 
-@section autotoc_md1041 24.02.1
+@section autotoc_md1065 24.02.1
 
 - wxMaxima now correctly installs its icons (#1892)
 - A race condition on closing Maxima
@@ -625,7 +627,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 - Ctrl+Alt+M now restarts maxima
 - Added a Maxima/Memory menu
 
-@section autotoc_md1042 24.02.0
+@section autotoc_md1066 24.02.0
 
 - Faster start-up
 - Better performance directly after startup
@@ -658,7 +660,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 - Fix crash when exporting a worksheet with animations to TeX
 - Resolved a crash on closing a window (#1889)
 
-@section autotoc_md1043 23.12.0
+@section autotoc_md1067 23.12.0
 
 - Input text selection was cleared when right-clicking
   on it (#1845)
@@ -677,7 +679,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 - Hidden cells weren't restored from wxm files (#1855)
 - diff() no longer causes spurious multiplication dots (#1825)
 
-@section autotoc_md1044 23.11.0
+@section autotoc_md1068 23.11.0
 
 - Correctly draw the bracket of the cell under the cursor (#1811)
 - Maths display was corrupted if the window was temporarily not wide
@@ -697,7 +699,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 - Resolved many warnings from several static analysis tools
 - Fine-tuning of the "undo" function
 
-@section autotoc_md1045 23.10.0
+@section autotoc_md1069 23.10.0
 
 - A big rewrite to make the static analysis tools happy
 - Many stability improvements
@@ -715,7 +717,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 - Better error messages for bitmaps
 - Many additional bug fixes
 
-@section autotoc_md1046 23.08.0
+@section autotoc_md1070 23.08.0
 
 - Better print scaling
 - More consistent page size handling for printing
@@ -723,7 +725,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 - Resolved many warnings from cppcheck
 - A RegEx search
 
-@section autotoc_md1047 23.07.0
+@section autotoc_md1071 23.07.0
 
 - Printing: Made the page margins configurable (#1787)
 - Printing: We no more print page headers (#1791)
@@ -738,7 +740,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 - The cursor no more disappears (#1788)
 - Updated italian translation
 
-@section autotoc_md1048 23.05.1
+@section autotoc_md1072 23.05.1
 
 - Updated the Russian and Italian translation.
 - Process the command line option &lt;tt&gt;--maxima=\&lt;str\&gt;&lt;/tt&gt;.
@@ -750,7 +752,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
   window width changes
 - 2D display of integrals had zero size (#1780)
 
-@section autotoc_md1049 23.05.0
+@section autotoc_md1073 23.05.0
 
 - Got rid of some compiler and cppcheck warnings
 - Big performance improvements
@@ -769,7 +771,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
   of the parent process
 - wxMaxima no more tries to install its own fonts.
 
-@section autotoc_md1050 23.04.1
+@section autotoc_md1074 23.04.1
 
 - More config dialogue tweaks
 - MacOs: No more create config icons that aren't needed
@@ -780,7 +782,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 - Be aware that the MSW port recycles unused window IDs.
 - The load() command now again works with symbols as package names.
 
-@section autotoc_md1051 23.04.0
+@section autotoc_md1075 23.04.0
 
 - Made the GUI more responsive for functions with much output
 - Handle errors in the XML from maxima more gracefully
@@ -794,7 +796,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 - Resolved several asserts
 - Resolved a few small bugs in the autosave logic
 
-@section autotoc_md1052 23.03.0
+@section autotoc_md1076 23.03.0
 
 - Make sure all bitmaps are valid on High-DPI MacOs (#1749)
 - More styles consistency (#1753)
@@ -807,7 +809,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 - Completely rewrote the dockable-sidebars-stuff
 - Many files are now build on demand, not at configure time
 
-@section autotoc_md1053 23.02.0
+@section autotoc_md1077 23.02.0
 
 - Fix XML generation of wxmx documents (#1556)
 - A faster font cache
@@ -818,7 +820,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 - A separate style for operators (#1002)
 - A nicer ChangeLog
 
-@section autotoc_md1054 22.12.0
+@section autotoc_md1078 22.12.0
 
 - A cleaner status bar with double-click actions
 - Better display of labels
@@ -833,11 +835,11 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 - Faster saving of .wxmx files
 - Better toolbar bitmap handling
 
-@section autotoc_md1055 22.11.1
+@section autotoc_md1079 22.11.1
 
 - Repaired zooming the worksheet
 
-@section autotoc_md1056 22.11.0
+@section autotoc_md1080 22.11.0
 
 - Resolved an ID collision (#1726)
 - Faster restart of maxima (#1715)
@@ -850,7 +852,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 - Many windows build improvements
 - Resolved a crash on restarting maxima
 
-@section autotoc_md1057 22.09.0
+@section autotoc_md1081 22.09.0
 
 - Support for wxWidgets 3.1.7
 - The description field for wizards no more is a MouseOverToolTip
@@ -882,7 +884,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 - Better unicode handling (#1691)
 - Many additional bugfixes
 
-@section autotoc_md1058 22.05.0:
+@section autotoc_md1082 22.05.0:
 
 - Updated the Ukrainian translation
 - Added &lt;tt&gt;guess_exact_value&lt;/tt&gt; to the numeric menu.
@@ -904,14 +906,14 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 - The Cygwin build works again
 - Support for wxWidgets 3.1.6
 
-@section autotoc_md1059 22.04.0:
+@section autotoc_md1083 22.04.0:
 
 - A Russian translation update from Olesya Gerasimenko
 - Repaired drag-and-drop on MacOs (#1624)
 - Resolved a bug in parenthesis matching (#1649)
 - Faster startup logic
 
-@section autotoc_md1060 22.03.0:
+@section autotoc_md1084 22.03.0:
 
 - Add an compile option "WXM_INCLUDE_FONTS", which allows to
   specify, if additional fonts should be included.
@@ -938,7 +940,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 - Merging cells per keyboard shortcut works again (#1626)
 - Symbols buttons whose symbols the GUI font lacks are now hidden
 
-@section autotoc_md1061 21.11.0:
+@section autotoc_md1085 21.11.0:
 
 - Allow seeing all files in the file save dialog. (#1557)
 - Fix an error when using Alt up arrow (show previous command) (#1566)
@@ -956,15 +958,15 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 - Handle power events (#1607)
 - Fix ugly buttons in the sidebars with recent wxWidgets
 
-@section autotoc_md1062 21.05.2:
+@section autotoc_md1086 21.05.2:
 
 - The integral signs disappeared or were misplaced on some MS Windows computers
 
-@section autotoc_md1063 21.05.1:
+@section autotoc_md1087 21.05.1:
 
 - Resolved a segfault on printing that could be triggered on some computers
 
-@section autotoc_md1064 21.05.0:
+@section autotoc_md1088 21.05.0:
 
 - Long numbers now can be broken into lines
 - On Export long numbers sometimes got lost
@@ -978,7 +980,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
   (before cyrillic, chinese and greek characters were missing).
 - Solved a crash when printing.
 
-@section autotoc_md1065 21.04.0
+@section autotoc_md1089 21.04.0
 
 - Fix visualization after "Evaluate all cells (Ctrl+Shift+R)" (bug #1512).</li>
 <li>Fix context sensitive help with F1 (bug #1508).</li>
@@ -992,7 +994,7 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 <li>Many external build scripts are now replaced by C++ and CMake commands.</li>
 <li><a class="el" href="classA.html">A</a> menu entry for when to invoke the debugger.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1066"></a>
+<h1><a class="anchor" id="autotoc_md1090"></a>
 21.02.0</h1>
 <ul>
 <li><a class="el" href="classA.html">A</a> Spanish translation update by cyphra</li>
@@ -1004,14 +1006,14 @@ and Replace" can be docked like the other sidebars, right-to-left interface lang
 <li>Made the time between autosaves configurable.</li>
 <li>Fixed an issue with reproducible builds.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1067"></a>
+<h1><a class="anchor" id="autotoc_md1091"></a>
 21.01.0</h1>
 <ul>
 <li>Chinese translation updates by 刘荣.</li>
 <li><a class="el" href="classA.html">A</a> Russian translation update by OlesyaGerasimenko</li>
 <li>Many small bugfixes including a crash on loading files with images.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1068"></a>
+<h1><a class="anchor" id="autotoc_md1092"></a>
 Changes in older wxMaxima versions you can find here</h1>
 <p><a href="https://github.com/wxMaxima-developers/wxmaxima/blob/Version-21.02.0/NEWS.md">https://github.com/wxMaxima-developers/wxmaxima/blob/Version-21.02.0/NEWS.md</a> </p>
 </div></div><!-- contents -->
