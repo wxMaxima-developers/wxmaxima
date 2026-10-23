@@ -1,358 +1,170 @@
 # Current development version
 
-- `wxplot_scale:'native` shows a plot at the size `wxplot_size` asks for
-  instead of shrinking it to fit the window, so a wide waveform made with
-  e.g. `wxplot_size=[1600,300]` keeps readable text.
-- Cells copied and pasted inside wxMaxima no longer bring their
-  mathematical output along: what Maxima answered where they were evaluated
-  isn't necessarily what it answers where they are pasted. Plots and
-  animations still come along. Pasting into other programs still includes
-  the results.
-- New variable `wxplot_scale` (default 1): wxMaxima shows the plots and
-  animations the wx* plot and draw commands make that many times as large
-  as it would otherwise, even if that makes them wider than the window.
-  For a single plot: `wxdraw2d(...),wxplot_scale=2$`. The factor is saved
-  with the plot. Unlike `wxplot_size` it enlarges the text, too.
-- The Hungarian manual PDF composes again with current pandoc (3.2 or
-  newer): quotation marks are now written as Unicode characters rather than
-  as TeX's `` and '' ligatures, which Hungarian's LaTeX language support
-  turns into an undefined command. A stray backtick in the manual that
-  broke it the same way is gone, too (#2271).
-- Copying a part of an output now offers it as SVG and, on Windows, as an
-  enhanced metafile, too, as copying whole cells already did. Like the
-  other formats they are only drawn when a program pastes them (#2472).
-- Output that Maxima adds or removes outside the visible part of the
-  worksheet no longer makes the window show the wrong part of the worksheet
-  for a moment, and output below the window no longer repaints it at all.
-- A power shown in linear form no longer has a gap after its caret:
-  x^12 used to read as "x^ 12", because the hidden parentheses around
-  the exponent took as much room as a hidden multiplication sign.
-- The system tray icon only appears when something needs your attention
-  while the wxMaxima window isn't active: a long calculation has finished,
-  Maxima asks a question, Maxima has issued an error or stopped in the
-  debugger, or an autosave failed. It goes away as soon as the window is
-  activated again. A desktop notification is now also raised when the
-  window is merely in the background, not only when it is minimized, and a
-  failed autosave raises one, too.
-- Long warnings, error messages, status messages and printf() output are
-  broken into lines to fit the window, after a space, comma, semicolon,
-  dot or one of + - * /. Numbers and web links are never torn apart, and
-  2D ASCII-art maths stays as it is. As long as a line fits, it looks as
-  before, and copying it still gives the line Maxima sent.
-- The statement Maxima is evaluating right now gets a faint yellow
-  background in its code cell, like the red one that marks a statement
-  that caused an error. Its colour can be changed in the configuration
-  dialogue's style list ("Code that is being evaluated").
-- The configuration dialogue's "Worksheet" tab shows a sample worksheet
-  next to (or below) its settings, the way the "Style" tab does. Changing
-  how labels are shown, the label width, multiplication signs, special
-  symbols like %e, Greek letters, the math layout strategy (2D or 1D
-  fractions), long numbers or matrices too large for the window shows the
-  effect right away, scrolled to an example of it.
-- The part of the worksheet you are reading no longer jumps while cells
-  above it are evaluated again with the cursor out of sight: removing a
-  cell's old output and adding the new one used to move everything below
-  it, which was visible for plots and other slow results.
-- A cell whose output is a long number no longer collapses to nothing when
-  "Display all and allow linebreaks in long numbers" is switched on while
-  it is shown: breaking the number into lines reset the size of its cell
-  while the cell was being laid out.
-- Security: another user on the same computer who connected to wxMaxima
-  before Maxima did could have posed as Maxima: wxMaxima sent the secret
-  Maxima proves itself with over that connection, and acted on some of
-  what arrived before the proof, such as a request to export the worksheet
-  to a file of the impostor's choosing. wxMaxima now sends nothing secret,
-  sends no cells and acts on nothing until Maxima has authenticated. A
-  Maxima that sends an auth= line as its first line is checked right
-  away, and the secret no longer shows up in the log.
-- A floating find/replace sidebar or wizard can still be made wider, but
-  no longer higher than its contents, which only added empty space. A
-  wizard that needs less room than the one before it shrinks its window,
-  and a docked find/replace sidebar given more height than it needs keeps
-  its controls together at the top instead of opening a gap between them.
-- The style editor in the configuration dialogue edits the style that was
-  clicked: with wxWidgets' Qt port each click showed, and each following
-  change went to, the style selected before. In dark appearance a font
-  chosen for "Code default" or "Math default" now also reaches the styles
-  that share it, as it always did in light appearance (GH #2527).
-- In a scrolled matrix, the fraction at the start of an entry no longer
-  vanishes while the rest of the entry is still visible: a part of an entry
-  that had been scrolled left of (or above) the worksheet's edge counted as
-  not yet positioned and wasn't drawn.
-- A matrix that scrolls in the worksheet (the "scroll" setting for oversized
-  matrices, or wx_matrix(..., oversized=scroll)) scrolls in the exported
-  HTML, too, instead of running off the page or, as an image, being shrunk
-  to fit.
-- The tint behind code and output that have a mouse-over tooltip stays
-  readable in dark mode: it is now a dark amber there instead of a pale
-  yellow light text hardly stood out from.
-- Copying from the diff viewer works: Ctrl+C, Ctrl+Insert and the context
-  menu's "Copy" and "Copy as..." entries used to leave the clipboard
-  unchanged. Ctrl+A selects the whole pane.
-- The diff viewer's search got "Find previous" and "Find next" buttons;
-  Enter, F3 (Shift+Enter, Shift+F3 backwards) move between matches, and
-  Ctrl+F jumps to the search field. They replace the Up/Down radio buttons.
-- The Style tab of the configuration dialogue fits small screens better:
-  a movable divider separates the style settings from the sample
-  worksheet, so the "Style for" list can be made shorter to see more of
-  the worksheet. If the dialogue is wide rather than tall, the sample
-  worksheet moves beside the settings. Where the divider was put is
-  remembered, and the style controls take less height than before.
-- Scrolling over a selected animation with a touchpad or a high-resolution
-  wheel (wxGTK on Wayland, for one) no longer flicks through a frame per
-  tiny scroll event: frames, and Ctrl+wheel zoom, now change once per
-  whole wheel notch's worth of movement.
-- Text pasted into a text cell from a word processor, a web browser or a
-  mail program keeps its bold, italic, underline, strikethrough,
-  superscript and subscript: wxMaxima now reads the HTML other programs put
-  on the clipboard (GH #2475).
-- Formatted text copied out of a text cell reaches word processors, mail
-  programs and web editors with its bold, italic and other formatting:
-  the copy now also offers RTF and HTML. Whole cells copied as RTF and the
-  RTF export keep the formatting of text cells, too (GH #2475).
-- Copying part of a text cell and pasting it into another text cell keeps
-  its bold, italic and other formatting, too. Other programs still get the
-  plain text.
-- wxMaxima no longer crashes on closing with wxWidgets' GTK4 port, which
-  sends the worksheet a mouse event while its window is being destroyed.
-- The option that makes Maxima print the answer to ?, ?? and describe() as
-  text into the worksheet now sits under "Show help in" in the
-  configuration dialogue, and next to the sidebar/browser choice in the
-  Help menu, and says "worksheet" instead of "console": it is the one
-  exception to where help is shown, not a separate setting.
-- Copied cells keep their bold, italic and other text formatting, their
-  output and their images when they are pasted into wxMaxima: besides the
-  .wxm code, a copy now also puts the cells on the clipboard as XML, with
-  the images embedded (GH #2474).
-- LaTeX export and "Copy as LaTeX" no longer depend on the window width: an
-  expression too wide for the window, and therefore broken into lines on
-  screen, used to be exported in its linear form, which turned a power into
-  `e\hat{}(x+y)` instead of `e^{x+y}` and dropped some cells or exported
-  others twice (GH #408).
-- Selecting text in a text cell that wraps over several lines no longer
-  makes the selection's ends jump between lines while the mouse moves
-  (GH #2477). A click on a wrapped line could put the cursor on another
-  line of the same paragraph.
-- Plots are made as SVG by default where wxWidgets renders SVG with LunaSVG,
-  which draws their text: they stay sharp at any zoom factor and in print.
-  The Windows builds now use it. Elsewhere plots stay PNG, and the option
-  ("Create scalable plots") is only offered where SVG plots work. SVG plots
-  now have the size set in the configuration (they were always 600x480) and
-  text as large as in PNG plots.
-  The log window says at startup whether SVG plots are available and, if
-  not, which SVG renderer wxWidgets was built with and what would enable them.
-- wxMaxima no longer carries its own copy of the NanoSVG library: SVG
-  images, plots and icons are now rendered by wxWidgets. SVG images in a
-  .wxm file (GH #2087) and copies of SVG images, for example of a copied
-  cell, are shown instead of "Cannot render the image".
-- The toolbar's "Evaluate all" button had the same icon as "Evaluate
-  current cell". It gets back its own, curved arrow.
-- On Windows, help went to a browser although the help sidebar now works:
-  every configuration there had stored "not the sidebar" while the sidebar
-  couldn't be offered, and that default was read back as a choice. Such a
-  stored "no" is now ignored once, and where help is shown is only saved
-  where the sidebar is offered. The help browser's own path is now saved
-  on Windows, too.
-- `wximplicit_plot()` loads the `implicit_plot` package it needs instead of
-  reporting a missing image file (GH #1106).
-- If Maxima's temp directory contains a quote (for example, under a user
-  name like "Jay's"), wxMaxima now explains that Maxima's draw package
-  cannot plot there and how to set MAXIMA_TEMPDIR instead (GH #1106).
-- On Windows, switching the appearance in the configuration dialog now
-  switches the menus, toolbars, sidebars and dialogs too, not only the
-  worksheet. Before, choosing "Light" could leave a light worksheet in a
-  dark window until wxMaxima was restarted.
-- The tray icon's menu works with an AppIndicator (StatusNotifier) tray:
-  "Show wxMaxima", "Interrupt" and "Exit" did nothing there. Showing
-  wxMaxima from the tray now also brings back a hidden window.
-- With wxWidgets 3.3.4 or newer the main toolbar was two pixels shorter
-  than its contents. It gets its full height again.
-- Asking Maxima for help (`? integrate`, `describe()`) before wxMaxima had
-  read the manual's index froze wxMaxima for good. It happened wherever the
-  help goes to an external browser instead of the help sidebar.
+# 26.10.0
 
-- The release source tarball leaves out every dot file and dot directory,
-  not just the ones .gitattributes happened to list, and a test now checks
-  that it does (GH #2272).
+This release is about making wxMaxima nicer to use, and again was developed
+with substantial help from the AI assistant **Claude**. Text cells get bold,
+italic, superscripts and more, which survive copy and paste; long numbers
+are shown in digit groups; an error is marked in the code cell where it
+happened; long messages wrap to fit the window; the toolbar can be
+rearranged; and the configuration dialog previews its settings. Plus a
+security fix for the connection to Maxima, and many smaller fixes.
 
-- The Windows builds now use wxWidgets 3.3.4, which also means they
-  include the AI chat sidebar.
+## Text cells
 
-- On Windows, building wxMaxima now copies WebView2Loader.dll next to
-  wxmaxima.exe and installs it there, when it can be found next to
-  wxWidgets or is named with -DWXM_WEBVIEW2_LOADER=<path>. Without that DLL
-  wxWidgets' Edge backend reports itself unavailable, and wxMaxima offers no
-  integrated help browser even with the WebView2 runtime installed (GH #2481).
-
-- The wizard sidebar no longer hides its OK button: on a fresh
-  configuration it opens in a window of its own next to the worksheet,
-  its Command and Description tabs are only as high as their text, and
-  when docked it is at least as high as the wizard needs (as far as the
-  other sidebars in the same dock leave room). A layout you saved is kept.
-  The Solve ODE wizard now offers help on ode2 instead of on ";", and a
-  wizard offers help only on what the manual actually documents.
-- If the GUI can't be started, for example because there is no display,
-  wxMaxima now exits with an error message instead of crashing.
-- There is now one setting for where help is shown, the sidebar or a
-  browser (Help menu, or "Show help in" in the configuration dialog's
-  "Maxima" tab). F1, "Help on ...", the manuals and Maxima's own ?, ?? and
-  describe() all follow it. Before, Maxima's help had a sidebar/browser
-  choice of its own, so "Help on ..." could open a browser although the
-  sidebar had been chosen. Whether Maxima answers ? on the console instead
-  is a checkbox, and that choice is now remembered properly: the Help menu
-  used to claim "in the console" after every start, and a choice made in
-  the configuration dialog never reached Maxima. Old configurations keep
-  Maxima's help on the console if it was there.
-- Web addresses in code cells' comments are now links, as they already
-  were in text cells: Ctrl+click (Cmd+click on macOS) or the context menu
-  opens them. An address in a string stays plain code.
-- The About dialog and the log window now say why the integrated help
-  browser is or isn't offered: whether wxMaxima was built with wxWebView
-  and, on Windows, whether wxWidgets has the Edge (WebView2) backend,
-  whether WebView2Loader.dll is found and whether the WebView2 runtime is
-  usable (GH #2481). The Windows CI job prints the same list.
-- Pasting into a cell now scrolls that cell into view, as typing does. In a
-  long worksheet a paste could land in a cell scrolled out of sight, which
-  looked as if nothing had happened (likely GH #2478).
-- With wxWidgets 3.2's Qt port, wxMaxima no longer aborts on startup with
-  an "invalid window" assertion, and the toolbar's own icons are no longer
-  invisible (GH #2483).
-- A worksheet with output wider than the window, for example a long
-  warning(), no longer loses its horizontal scrollbar as soon as a cell
-  above that output is laid out again, e.g. after opening the file and
-  clicking into the first cell (GH #2480).
-- While a matrix shown in a box with scrollbars of its own is selected, or
-  something inside it is, the mouse wheel and the touchpad now scroll that
-  matrix instead of the worksheet (GH #2479). Shift+wheel and horizontal
-  wheels scroll it sideways.
-
-- When Maxima reports an error, the code cell now shows where it is
-  (GH #289): the statement that failed gets a light red background, and
-  for a syntax error the place Maxima stopped at a stronger one, with the
-  cursor there. Previously the cursor only went to the end of the failing
-  statement, and when wxMaxima itself refused to send a statement with
-  mismatched brackets, to a wrong place in cells with more than one
-  statement. Both colours can be changed in the configuration dialog's
-  "Style" tab.
-
-- A click on the right half of the last character of a code cell's line
-  now puts the cursor at the end of the line, not in front of that
-  character. Clicks inside a word land on the nearer side of the
-  character more reliably, too.
-- Long numbers in the output and in code cells are easier to read: their
-  digits are shown in groups separated by a gap of 5/24 em, 2111230496 as
-  2 111 230 496 (GH #192). Only the display changes: copying, saving,
-  exporting and what is sent to Maxima never contain the gaps. Numbers with fewer than 5 digits, years for example, are
-  left as they are. Both can be changed in the configuration dialog's
-  "Worksheet" tab.
-- The right-click menu of a selected cell is shorter: the "Copy as ..."
-  formats and "Copy for Octave/Matlab" moved into a "Copy in Another
-  Format" submenu, and "Export output as SVG/PNG to a folder" is only
-  offered when more than one cell is selected.
-- With wxWidgets' Qt port, a symbol in the Greek letters or Symbols sidebar
-  no longer stays highlighted after the mouse has left it.
-- On Linux, a middle-click into a cell pasted the Ctrl+C clipboard
-  instead of the last selected text (GH #794). On Windows and macOS, which
-  have no "last selected text" clipboard, a middle-click pastes nothing.
-- With wxWidgets 3.3's Qt port, closing the configuration dialog, the tip
-  of the day, the plot and other wizards and most other dialogs no longer
-  crashes wxMaxima.
-- Text cells, titles and section headings can contain superscripts and
-  subscripts, set using two new toolbar buttons next to the bold, italic,
-  ... ones. A line of a text cell now gets taller if something in it needs
-  more room than the plain text: a superscript, a subscript, or a
-  character a taller font has to supply, such as an emoji.
-- The sections of the toolbar can be rearranged: a new "Toolbar" tab in
-  the configuration dialog lists them, and a section can be dragged to
-  another place there or moved using "Up" and "Down". Every section,
-  including the evaluation buttons and the cell type, can now be hidden,
-  from that tab or by right-clicking the toolbar. A "flexible space"
-  section decides what is pushed to the right edge of the window.
-- The toolbar's context menu no longer pops up again after closing it once
-  for every time a section had been shown or hidden.
-- The toolbar's "Select all" button now selects all cells. It toggled
-  the visibility of the code cells instead.
-- The Greek letters and Symbols sidebars no longer come up laid out wrongly
-  until they are resized (seen with wxWidgets' Qt port).
-- Copying a whole large matrix no longer tries to draw a bitmap of many
-  gigabytes for the clipboard. On wxWidgets' Qt port, which draws every
-  clipboard format right away, Ctrl+C kept wxMaxima busy for minutes and
-  nothing reached the clipboard. Such a bitmap is now drawn at a lower
-  resolution, or left out if even that is too large; the text, RTF and
-  MathML are copied as before.
-- GIF and XPM images no longer get a black background where they are
-  meant to be transparent. Those formats mark transparency with a mask
-  colour, which the worksheet drew instead of what lies behind it (#2227).
-- On a dark worksheet, images are drawn on a white backdrop by default, so
-  that black line art with a transparent background stays visible. The
-  backdrop's color is a new style, and an option in the "Worksheet" tab of
-  the configuration dialog can switch it off or use it on a bright
-  worksheet, too (#2227).
 - Text cells, titles and section headings can contain bold, italic,
-  underlined and struck-through text, set using new toolbar buttons. The
-  formatting is saved in .wxmx files in a way that lets older versions of
-  wxMaxima still read all of the text (#492).
-- `wxdeclare_subscripted(variable, false)` keeps a variable from being
-  displayed with a subscript again, and `wxdeclare_subscripted(variable)`
-  subscripts one the current `wxsubscripts` setting wouldn't. Both were
-  ignored (#1653).
-- Autosubscripting set to "Always" now really subscripts everything after
-  an underscore. wxMaxima passed the setting to Maxima in a way that made
-  it behave like "Integers and single letters".
-- The manual described declaring a variable as subscripted using
-  `wxdeclare_subscript()`, which declares a text snippet instead. Both
-  commands are documented now, and F1 finds `wxdeclare_subscripted`.
-- Closing wxMaxima with unsaved changes in an untitled document asks
-  whether to save them first, and opens the "Save As" dialog only if you
-  choose "Save". It used to open "Save As" first and, if that was
-  cancelled, ask anyway. The question also names the document "unsaved"
-  instead of ".", and "Save" no longer asks for a new file name for a
-  document that already has one (#1737).
-- Copying puts every clipboard format on the clipboard again (RTF, MathML,
-  a bitmap, SVG, ...), but renders each only when a program actually pastes
-  it, so copying a large selection is fast and doesn't fill the memory with
-  formats nobody uses. The program you paste into picks the format, which
-  is why the list of formats to copy is gone from the configuration dialog.
-  When the window you copied from is closed, the .wxm code, text, RTF,
-  MathML and the bitmap are kept on the clipboard (#2030).
-- The size limit for bitmaps on the clipboard, and with it the "Copy" tab
-  of the configuration dialog, is gone: a bitmap is only drawn when a
-  program pastes it, and today's systems handle big ones fine.
-- Copying now also puts the image on the clipboard in builds that use
-  wxWidgets' Qt port: a bitmap offered alongside other formats never
-  reached another program there, so pasting into an image editor pasted
-  whatever was on the clipboard before.
-- "Save As" of a document opened from a `.wxm` file proposed a `.wxmx`
-  file name on Linux, although the dialog showed the `.wxm` file type, so
-  the document was saved as `.wxmx` (#2440).
-- Shift+Up/Down with a cell's output selected now selects whole cells
-  starting from that cell. It used to start at the top of the worksheet.
-- `wx_matrix()` is offered by autocompletion, with a template for its
-  arguments.
-- `wx_matrix(M, banding=true|false|auto)` shades every other row and
-  column of a matrix always, never, or only if it is too large for the
-  window (the default).
-- The commands wxMaxima adds to Maxima (`wx_matrix()`, `table_form()`,
-  `wxstatusbar()`, `wxplot2d()`, the `wx...` variables, ...) now get a
-  "Help on" entry in the right-click menu, and F1 on them opens wxMaxima's
-  manual at the place that describes them. The entry now also shows a help
-  icon.
-- The Windows installer no longer needs administrator rights: without them
-  it installs wxMaxima for the current user only, into
-  `%LOCALAPPDATA%\Programs`. With them it installs for all users into
-  Program Files, as before.
-- A hidden multiplication sign is drawn if output is broken into lines
-  there, so a product that continues on the next line is recognizable as
-  one. The line is broken after the sign wherever possible (#2263).
-- The worksheet no longer scrolls a whole screen past its end: below the
-  last cell there is now only room for a horizontal cursor and one scroll
-  step.
-- The cursor no longer jumps when Maxima's output appears in a cell above
-  it. Keeping it still failed whenever the output arrived quickly, which is
-  most of the time, and when a cell's old output was removed.
-- wxMaxima builds on Cygwin again: with wxWidgets 3.2 every file failed
-  to compile because Cygwin's wxWidgets lacks wx/msw/gccpriv.h, which its
-  own headers ask for. wxMaxima now brings a stand-in.
+  underlined, struck-through, superscript and subscript text, set using new
+  toolbar buttons (#492). A line gets taller if something in it needs the
+  room, an emoji for example. The formatting is saved in .wxmx files in a
+  way older versions of wxMaxima can still read.
+- The formatting survives copy and paste: within wxMaxima, into word
+  processors, mail programs and web editors (as RTF and HTML), and from
+  them into a text cell (#2475). RTF export keeps it, too.
+- Web addresses in code cells' comments are links now, as they already
+  were in text cells.
+- Selecting text in a text cell that wraps over several lines no longer
+  makes the selection's ends jump between lines (#2477).
+
+## Code cells and evaluation
+
+- When Maxima reports an error, the statement that failed gets a light red
+  background, and for a syntax error the place Maxima stopped at a stronger
+  one, with the cursor there (#289). The statement being evaluated right
+  now gets a faint yellow background. All three colours can be changed in
+  the "Style" tab.
+- Long numbers in output and in code cells are shown in groups of digits,
+  2111230496 as 2 111 230 496 (#192). Only the display changes: copying,
+  saving, exporting and what is sent to Maxima contain no gaps. This can be
+  changed in the "Worksheet" tab.
+- Long warnings, error messages, status messages and printf() output wrap
+  to fit the window, without tearing numbers or web addresses apart.
+- A hidden multiplication sign is drawn where output is broken into lines,
+  and the line is broken after it wherever possible (#2263). A power in
+  linear form no longer reads "x^ 12".
+- A click on the right half of a line's last character puts the cursor at
+  the end of the line.
+- Pasting into a cell scrolls it into view. On Linux a middle-click pastes
+  the last selected text, not the Ctrl+C clipboard (#794).
+- The part of the worksheet you are reading no longer jumps while cells
+  above it are evaluated again or output arrives above the cursor, and
+  output that changes out of sight no longer makes the window flicker.
+- The worksheet no longer scrolls a whole screen past its last cell.
+
+## Copy and paste
+
+- Cells copied and pasted inside wxMaxima keep their text formatting,
+  plots and images, but leave Maxima's answers behind: what Maxima answered
+  where they were evaluated isn't necessarily what it answers where they
+  are pasted (#2474). Pasting into other programs still includes the
+  results.
+- Copying is fast even for large selections: every clipboard format is
+  still offered, but each is only drawn when a program pastes it (#2030).
+  The list of formats to copy and the bitmap size limit are gone from the
+  configuration dialog. What was copied stays on the clipboard when the
+  window is closed.
+- Copying part of an output also offers it as SVG and, on Windows, as an
+  enhanced metafile (#2472).
+- The right-click menu is shorter: the "Copy as ..." formats moved into a
+  "Copy in Another Format" submenu.
+
+## Plots and images
+
+- Plots are made as SVG where wxWidgets renders SVG with text (LunaSVG,
+  which the Windows builds now have): they stay sharp at any zoom factor
+  and in print. SVG images in .wxm files and copied SVG images are shown
+  instead of "Cannot render the image" (#2087).
+- New variable `wxplot_scale` shows the wx* plots and animations larger or
+  smaller than they would otherwise be, text included, e.g.
+  `wxdraw2d(...),wxplot_scale=2$`. `wxplot_scale:'native` shows a plot at
+  the size `wxplot_size` asks for instead of shrinking it to fit the window.
+- On a dark worksheet images are drawn on a white backdrop by default, so
+  black line art stays visible. GIF and XPM images keep their transparency
+  (#2227).
+- `wximplicit_plot()` loads the package it needs, and wxMaxima explains how
+  to fix a Maxima temp directory whose name contains a quote, where draw
+  cannot plot (#1106).
+- Scrolling over an animation with a touchpad no longer flicks through a
+  frame per tiny movement.
+
+## Matrices
+
+- `wx_matrix(M, banding=true|false|auto)` chooses whether rows and columns
+  are shaded, and autocompletion offers `wx_matrix()` with a template.
+- A matrix with scrollbars of its own scrolls with the mouse wheel while it
+  is selected (#2479), scrolls in the exported HTML, too, and no longer
+  loses a fraction at the start of a partly scrolled-away entry.
+- Shift+Up/Down with a cell's output selected selects whole cells starting
+  there, not from the top of the worksheet.
+
+## Help
+
+- One setting decides whether help is shown in the sidebar or a browser,
+  and F1, "Help on ...", the manuals and Maxima's ?, ?? and describe() all
+  follow it. Next to it, an option prints ?, ?? and describe() into the
+  worksheet instead.
+- wxMaxima's own commands (`wx_matrix()`, `table_form()`, `wxplot2d()`, the
+  `wx...` variables, ...) get a "Help on" entry, and F1 opens wxMaxima's
+  manual at their description.
+- The wizards' sidebar no longer hides its OK button: it starts in a window
+  of its own and is only as high as it needs. The Solve ODE wizard offers
+  help on ode2.
+- `wxdeclare_subscripted()` works (#1653), "Always" autosubscripting really
+  subscripts everything after an underscore, and the manual documents both
+  subscript commands.
+
+## Configuration and interface
+
+- The configuration dialog's "Worksheet" tab shows a sample worksheet that
+  follows its settings. In the "Style" tab a movable divider separates the
+  settings from the sample, which moves beside them on wide screens.
+- The toolbar's sections can be rearranged and hidden in a new "Toolbar"
+  tab or by right-clicking the toolbar. "Evaluate all" has its own icon
+  again, and "Select all" selects all cells.
+- The tray icon only appears while something needs your attention and the
+  window isn't active: a calculation finished, a question, an error, the
+  debugger, or a failed autosave. Its menu works with AppIndicator trays.
+- Closing an untitled document with unsaved changes asks first and opens
+  "Save As" only if you choose "Save" (#1737). "Save As" of a .wxm file
+  proposes a .wxm name on Linux (#2440).
+- The tooltip tint is readable in dark mode, and the diff viewer can copy
+  and has "Find previous"/"Find next" buttons.
+
+## Security
+
+- Another user on the same computer who connected to wxMaxima before
+  Maxima did could pose as Maxima. wxMaxima now sends nothing secret over
+  that connection and acts on nothing until Maxima has authenticated.
+
+## Windows
+
+- The Windows builds use wxWidgets 3.3.4, so they include the AI chat
+  sidebar and the integrated help browser, and switching the appearance
+  re-themes the whole window right away.
+- The installer no longer needs administrator rights: without them it
+  installs for the current user only.
+
+## Other fixes
+
+- wxWidgets' Qt ports: no more startup abort with 3.2 (#2483), no crashes
+  when closing dialogs with 3.3, the style editor edits the clicked style
+  (#2527), and the Greek and Symbols sidebars lay out and highlight
+  correctly.
+- wxMaxima no longer crashes on closing with wxWidgets' GTK4 port, and exits
+  with a message instead of crashing when there is no display.
+- On FreeBSD wxMaxima no longer hangs when it stops or restarts Maxima.
+- A long number no longer collapses when line breaks in long numbers are
+  switched on, and a wide output keeps its horizontal scrollbar (#2480).
+- A floating find/replace sidebar no longer grows higher than its contents.
+- The LaTeX export no longer depends on the window width (#408).
+- The Hungarian manual PDF composes again with pandoc 3.2 or newer (#2271).
+
+## Building
+
+- The source tarball leaves out all dot files (#2272).
+- On Windows, WebView2Loader.dll is installed next to wxmaxima.exe when it
+  can be found (#2481), and the About dialog says why the help browser is
+  or isn't offered.
+- wxMaxima builds on Cygwin again.
 
 # 26.09.0
 

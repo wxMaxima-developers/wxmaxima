@@ -57,6 +57,20 @@
     <content_attribute id="social-info">mild</content_attribute>
   </content_rating>
   <releases>
+    <release version="26.10.0" date="2026-10-24T12:00:00Z">
+      <description>
+        <p>
+          This release is about making wxMaxima nicer to use, again
+          developed with help from the AI assistant Claude: text cells get
+          bold, italic, superscripts and more, which survive copy and paste;
+          long numbers are shown in digit groups; an error is marked in the
+          code cell where it happened; long messages wrap to fit the window;
+          the toolbar can be rearranged; and the configuration dialog
+          previews its settings. Plus a security fix for the connection to
+          Maxima, and many smaller fixes.
+        </p>
+      </description>
+    </release>
     <release version="26.09.0" date="2026-09-30T12:00:00Z">
       <description>
         <p>
