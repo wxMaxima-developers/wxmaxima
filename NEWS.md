@@ -179,7 +179,7 @@ for .wxm files.
 ## Matrices
 
 - A matrix too large for the window by default is displayed with an
-  elipsis( ⋯, ⋮ and/o ⋱)
+  ellipsis( ⋯, ⋮ and/or ⋱)
 - `wx_matrix(M, oversized=full|elide|scroll)` chooses this for one matrix.
   `wx_matrix()` now only returns the formatted matrix instead of also
   displaying it.

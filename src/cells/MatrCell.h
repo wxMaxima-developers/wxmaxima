@@ -320,7 +320,7 @@ private:
 
   //! The distance between the cell border and the cell contents
   wxCoord ElementSkip() const {return Scale_Px(5);}
-  //! The distance between the cell border and the elipsis dots
+  //! The distance between the cell border and the ellipsis dots
   wxCoord DotsSkip() const {return Scale_Px(20);}
   //! The distance between the centres of two neighbouring dots of ⋯ ⋮ ⋱
   wxCoord DotPitch() const;
@@ -328,7 +328,7 @@ private:
   wxCoord DotRadius() const;
   //! The extent of a ⋯, ⋮ or ⋱ along the direction of its dots
   wxCoord DotsExtent() const { return 2 * DotPitch() + 2 * DotRadius(); }
-  /*! The width of the elipsis part of a elided matrix */
+  /*! The width of the ellipsis part of a elided matrix */
   wxCoord DotsGap() const {return DotsExtent() + DotsSkip() * 2;}
   //! Draws three dots, starting at start and each step further along
   void DrawDots(wxDC *dc, wxPoint start, wxPoint step) const;

@@ -2201,7 +2201,7 @@ wxWindow *ConfigDialogue::CreateAiChatPanel() {
       "your messages to whichever provider you pick below. This needs an "
       "internet connection and an API key from that provider, and nothing "
       "is sent unless you actually use the sidebar. "
-      "Storing or retreiving API keys might trigger unlocking the system's "
+      "Storing or retrieving API keys might trigger unlocking the system's "
       "key ring; Querying Model lists might require an API key."));
   vbox->Add(intro, wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
 
