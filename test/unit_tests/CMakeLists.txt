@@ -347,6 +347,26 @@ target_link_libraries(test_InterruptChannel PRIVATE ${wxWidgets_LIBRARIES})
 add_test(NAME InterruptChannel
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_InterruptChannel>")
 
+# The troubleshooting dialog's checks (GH #2559): the helpers that read what
+# a check found are pure functions, and the runner that starts Maxima is
+# tested against this executable playing a broken or a working Maxima, so
+# no Maxima is needed. Its [.maxima] scenarios, which use a real one, are
+# registered in test/CMakeLists.txt.
+add_executable(test_Troubleshooting
+    test_Troubleshooting.cpp
+    ${CMAKE_SOURCE_DIR}/src/TroubleshootingChecks.cpp
+    ${CMAKE_SOURCE_DIR}/src/TroubleshootingRunner.cpp
+    ${CMAKE_SOURCE_DIR}/src/MaximaAuthLine.cpp
+    ${CMAKE_SOURCE_DIR}/src/InterruptChannelHandshake.cpp
+    ${CMAKE_SOURCE_DIR}/src/wxMathml.cpp
+    ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
+add_dependencies(test_Troubleshooting build_wxMathML.h)
+target_include_directories(test_Troubleshooting PRIVATE
+    ${CMAKE_SOURCE_DIR}/src ${CMAKE_BINARY_DIR} ${CMAKE_BINARY_DIR}/src)
+target_link_libraries(test_Troubleshooting PRIVATE ${wxWidgets_LIBRARIES})
+add_test(NAME Troubleshooting
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_Troubleshooting>")
+
 add_executable(test_MenuHelpString
     test_MenuHelpString.cpp ${CMAKE_SOURCE_DIR}/src/MenuHelpString.cpp ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
 target_link_libraries(test_MenuHelpString PRIVATE ${wxWidgets_LIBRARIES})

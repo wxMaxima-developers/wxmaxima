@@ -160,6 +160,21 @@ if(WXM_UNIT_TESTS)
 endif()
 add_subdirectory(image-test)
 
+# The troubleshooting dialog's checks against a real Maxima (GH #2559): they
+# notice if Maxima or wxMathML.lisp change in a way the checks no longer
+# understand. Not a "unittest": it needs Maxima.
+if(WXM_UNIT_TESTS AND MAXIMA AND TARGET test_Troubleshooting)
+    if(WIN32)
+        set(wxm_troubleshooting_launcher "")
+    else()
+        set(wxm_troubleshooting_launcher "${WXM_TEST_WRAPPER}")
+    endif()
+    add_test(NAME Troubleshooting_real_maxima
+            COMMAND ${CMAKE_COMMAND} -E env "WXM_MAXIMA=${MAXIMA}"
+                    ${wxm_troubleshooting_launcher}
+                    "$<TARGET_FILE:test_Troubleshooting>" "[.maxima]")
+endif()
+
 # Test if maxima is working
 add_test(
     NAME runMaxima

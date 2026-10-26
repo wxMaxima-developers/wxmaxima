@@ -2142,6 +2142,10 @@ void MaximaCommandMenus::HelpMenu(wxCommandEvent &event) {
     m_wxMaxima.MenuCommand(wxS("wxbug_report()$"));
   }
 
+  else if(event.GetId() == EventIDs::menu_troubleshooting){
+    m_wxMaxima.ShowTroubleshootingDialog();
+  }
+
   else if(event.GetId() == EventIDs::menu_anonymize){
     m_wxMaxima.GetWorksheet()->AnonymizeCodeCells();
   }
