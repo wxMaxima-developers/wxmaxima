@@ -1,15 +1,3 @@
-# Current development version
-
-- Help > Troubleshooting checks the things that most often keep wxMaxima
-  from working (#2559): whether Maxima is found, starts, connects, prompts
-  and authenticates, loads wxMaxima's Lisp code, packages and draw; whether
-  its temp directory is usable for plots and gnuplot can draw png and
-  pngcairo plots; whether Maxima can be stopped; whether Maxima's and
-  wxMaxima's manuals, the help sidebar, a web browser, the translations,
-  SVG text and the AI sidebar are available. It uses a Maxima of its own,
-  so the worksheet's one isn't touched, says what to do about each problem
-  it finds, and copies its findings to the clipboard for a bug report.
-
 # 26.10.0
 
 This release is about making wxMaxima nicer to use, and again was developed
