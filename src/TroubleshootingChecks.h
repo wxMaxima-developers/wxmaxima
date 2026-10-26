@@ -77,6 +77,19 @@ enum class TroubleshootingStatus {
   skipped  //!< Couldn't be run, since a check it depends on failed
 };
 
+/*! The groups the dialog shows the checks in, one page each
+
+  Like the configuration dialog's pages, these are what the user thinks
+  about rather than the order the checks run in.
+*/
+enum class TroubleshootingSection {
+  maxima,    //!< Starting and talking to Maxima
+  plots,     //!< Packages, the temp directory, gnuplot and SVG
+  help,      //!< The manuals and where help is shown
+  userInterface, //!< Translations and the AI sidebar (not "interface": a macro on MSW)
+  count      //!< Not a section: the number of sections
+};
+
 //! The result of one check
 struct TroubleshootingResult {
   TroubleshootingCheck check = TroubleshootingCheck::maximaFound;
@@ -95,6 +108,31 @@ wxString TroubleshootingCheckTitle(TroubleshootingCheck check);
 
 //! The (translated) word the dialog shows for a status
 wxString TroubleshootingStatusName(TroubleshootingStatus status);
+
+/*! The Unicode symbol the dialog shows in front of a status
+
+  A check mark for ok and a cross for failed, so that the result can be
+  seen at a glance; the dialog colours them.
+*/
+wxString TroubleshootingStatusSymbol(TroubleshootingStatus status);
+
+//! All sections, in the order they are shown
+std::vector<TroubleshootingSection> AllTroubleshootingSections();
+
+//! The section a check is shown in
+TroubleshootingSection TroubleshootingSectionOf(TroubleshootingCheck check);
+
+//! The (translated) name of a section
+wxString TroubleshootingSectionTitle(TroubleshootingSection section);
+
+/*! The status that sums up a section
+
+  The most important of its checks' statuses: a failure before a warning,
+  before a check that still runs, ... before ok. So a section is only ok
+  once all its checks are, and a failure shows on its page even while other
+  checks still run.
+*/
+TroubleshootingStatus TroubleshootingSummaryStatus(const std::vector<TroubleshootingStatus> &statuses);
 
 /*! The report the dialog copies to the clipboard, to be pasted into a bug report
 

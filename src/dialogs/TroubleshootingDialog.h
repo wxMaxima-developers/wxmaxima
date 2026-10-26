@@ -29,6 +29,7 @@
 #include "precomp.h"
 #include "TroubleshootingChecks.h"
 #include "TroubleshootingRunner.h"
+#include <wx/bookctrl.h>
 #include <wx/dataview.h>
 #include <wx/dialog.h>
 #include <wx/textctrl.h>
@@ -37,7 +38,9 @@
 
 /*! Checks the things that commonly keep wxMaxima from working, and tells what it found
 
-  Each check is a row: whether wxMaxima finds Maxima, whether Maxima starts,
+  The checks are grouped into pages, like the configuration dialog's
+  settings, and each page's name starts with the symbol of its most
+  important result. Each check is a row on its page: whether wxMaxima finds Maxima, whether Maxima starts,
   connects, prompts and authenticates, whether it loads packages and draw,
   whether gnuplot plots, whether the manuals, the help sidebar, a browser,
   the translations, SVG text and the AI sidebar are there. Selecting a row
@@ -76,9 +79,16 @@ private:
   void RunChecks();
   //! Shows a result in its row
   void ShowResult(const wxm::TroubleshootingResult &result);
+  //! Puts the symbol of the section's most important result in front of its page's name
+  void UpdatePageText(wxm::TroubleshootingSection section);
+  //! The check selected on the page shown; count if none is
+  wxm::TroubleshootingCheck SelectedCheck() const;
+  //! Shows a check's page and selects its row
+  void SelectCheck(wxm::TroubleshootingCheck check);
   //! Shows the selected row's details below the list
   void ShowDetails();
   void OnSelectionChanged(wxDataViewEvent &event);
+  void OnPageChanged(wxBookCtrlEvent &event);
   void OnRunAgain(wxCommandEvent &event);
   void OnCopyReport(wxCommandEvent &event);
   //! Called once the runner has reported everything
@@ -88,7 +98,12 @@ private:
   //! Each check's latest result, indexed by TroubleshootingCheck
   std::vector<wxm::TroubleshootingResult> m_results;
   std::unique_ptr<TroubleshootingRunner> m_runner;
-  wxDataViewListCtrl *m_list = nullptr;
+  //! One page per section
+  wxBookCtrlBase *m_book = nullptr;
+  //! The list on each section's page, indexed by TroubleshootingSection
+  std::vector<wxDataViewListCtrl *> m_lists;
+  //! Each check's row on its section's page, indexed by TroubleshootingCheck
+  std::vector<unsigned int> m_rows;
   wxTextCtrl *m_details = nullptr;
   wxButton *m_runAgain = nullptr;
 };

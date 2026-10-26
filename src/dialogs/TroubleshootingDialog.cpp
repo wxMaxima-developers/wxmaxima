@@ -28,19 +28,28 @@
 #include "Dirstructure.h"
 #include "HelpBrowserDiagnosis.h"
 #include "SvgBitmap.h"
+#include "wxMaximaArtProvider.h"
 #ifdef WXM_USE_AI_TOOLS
 #include "ai/AiProvider.h"
 #endif
+#include <wx/artprov.h>
 #include <wx/button.h>
 #include <wx/clipbrd.h>
 #include <wx/dataobj.h>
 #include <wx/filefn.h>
 #include <wx/filename.h>
 #include <wx/intl.h>
+#if defined __WXOSX__
+#include <wx/choicebk.h>
+#else
+#include <wx/listbook.h>
+#endif
 #include <wx/mimetype.h>
+#include <wx/settings.h>
 #include <wx/sizer.h>
 #include <wx/stattext.h>
 #include <wx/uilocale.h>
+#include <algorithm>
 
 using wxm::TroubleshootingCheck;
 using wxm::TroubleshootingResult;
@@ -123,6 +132,67 @@ TroubleshootingResult CheckTranslations(long language) {
                   "there may be no translation for this language yet. "
                   "Edit > Configure > Worksheet chooses the language."));
 }
+
+//! The colour a status' symbol is drawn in; the text colour for those without one
+wxColour StatusColour(TroubleshootingStatus status) {
+  // Mid-tones that are readable both on a light and on a dark background
+  switch (status) {
+  case TroubleshootingStatus::ok:
+    return wxColour(0x2e, 0xa0, 0x43);
+  case TroubleshootingStatus::failed:
+    return wxColour(0xe0, 0x30, 0x30);
+  case TroubleshootingStatus::warning:
+    return wxColour(0xe0, 0x90, 0x00);
+  case TroubleshootingStatus::info:
+    return wxColour(0x30, 0x80, 0xe0);
+  default:
+    return wxSystemSettings::GetColour(wxSYS_COLOUR_GRAYTEXT);
+  }
+}
+
+/*! Draws a status as its coloured symbol followed by its name
+
+  wxDataViewListCtrl's own text renderer can't colour part of a cell, at
+  least not on every platform: markup is only understood by some of them.
+  The value is the status, as a long.
+*/
+class StatusRenderer : public wxDataViewCustomRenderer
+{
+public:
+  StatusRenderer()
+    : wxDataViewCustomRenderer(wxS("long"), wxDATAVIEW_CELL_INERT, wxALIGN_LEFT) {}
+  bool SetValue(const wxVariant &value) override {
+    m_status = static_cast<TroubleshootingStatus>(value.GetLong());
+    return true;
+  }
+  bool GetValue(wxVariant &value) const override {
+    value = static_cast<long>(m_status);
+    return true;
+  }
+#if wxUSE_ACCESSIBILITY
+  wxString GetAccessibleDescription() const override {
+    return wxm::TroubleshootingStatusName(m_status);
+  }
+#endif
+  wxSize GetSize() const override {
+    const wxSize symbol = GetTextExtent(wxm::TroubleshootingStatusSymbol(m_status) + wxS(" "));
+    const wxSize name = GetTextExtent(wxm::TroubleshootingStatusName(m_status));
+    return wxSize(symbol.x + name.x, std::max(symbol.y, name.y));
+  }
+  bool Render(wxRect rect, wxDC *dc, int state) override {
+    const wxString symbol = wxm::TroubleshootingStatusSymbol(m_status) + wxS(" ");
+    const wxSize extent = dc->GetTextExtent(symbol);
+    const wxColour oldColour = dc->GetTextForeground();
+    dc->SetTextForeground(StatusColour(m_status));
+    dc->DrawText(symbol, rect.x, rect.y + (rect.height - extent.y) / 2);
+    dc->SetTextForeground(oldColour);
+    RenderText(wxm::TroubleshootingStatusName(m_status), extent.x, rect, dc, state);
+    return true;
+  }
+
+private:
+  TroubleshootingStatus m_status = TroubleshootingStatus::pending;
+};
 } // namespace
 
 std::vector<TroubleshootingResult> TroubleshootingDialog::LocalChecks(const Inputs &inputs) {
@@ -206,17 +276,50 @@ TroubleshootingDialog::TroubleshootingDialog(wxWindow *parent, const Inputs &inp
                      _("wxMaxima checks the things that most often keep it from working. "
                        "For that it starts a Maxima of its own: the worksheet's Maxima "
                        "isn't touched. Select a line to see what was found."));
-  intro->Wrap(FromDIP(560));
+  intro->Wrap(FromDIP(680));
   sizer->Add(intro, wxSizerFlags().Expand().Border(wxALL, FromDIP(8)));
 
-  m_list = new wxDataViewListCtrl(this, wxID_ANY, wxDefaultPosition, FromDIP(wxSize(600, 380)),
-                                  wxDV_SINGLE | wxDV_ROW_LINES);
-  m_list->AppendTextColumn(_("Result"), wxDATAVIEW_CELL_INERT, FromDIP(110));
-  m_list->AppendTextColumn(_("Check"), wxDATAVIEW_CELL_INERT, FromDIP(470));
-  sizer->Add(m_list, wxSizerFlags(3).Expand().Border(wxLEFT | wxRIGHT, FromDIP(8)));
+  // The same kind of book the configuration dialog uses
+#if defined __WXOSX__
+  m_book = new wxChoicebook(this, wxID_ANY);
+#else
+  m_book = new wxListbook(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLB_LEFT);
+  const wxSize iconSize = FromDIP(wxSize(32, 32));
+  wxVector<wxBitmapBundle> images;
+  images.push_back(wxArtProvider::GetBitmapBundle(wxmaximaART_CONFIG_MAXIMA, wxART_OTHER, iconSize));
+  images.push_back(wxArtProvider::GetBitmapBundle(wxmaximaART_CONFIG_DOCUMENT_EXPORT, wxART_OTHER,
+                                                  iconSize));
+  images.push_back(wxArtProvider::GetBitmapBundle(wxART_HELP, wxART_OTHER, iconSize));
+  images.push_back(wxArtProvider::GetBitmapBundle(wxmaximaART_CONFIG_STYLES, wxART_OTHER, iconSize));
+  m_book->SetImages(images);
+#endif
+
+  m_rows.resize(static_cast<size_t>(wxm::TroubleshootingCheck::count));
+  for (const auto section : wxm::AllTroubleshootingSections()) {
+    wxPanel *page = new wxPanel(m_book);
+    wxBoxSizer *pageSizer = new wxBoxSizer(wxVERTICAL);
+    wxDataViewListCtrl *list =
+      new wxDataViewListCtrl(page, wxID_ANY, wxDefaultPosition, FromDIP(wxSize(560, 330)),
+                             wxDV_SINGLE | wxDV_ROW_LINES);
+    list->AppendColumn(new wxDataViewColumn(_("Result"), new StatusRenderer(), 0, FromDIP(130),
+                                            wxALIGN_LEFT),
+                       wxS("long"));
+    list->AppendTextColumn(_("Check"), wxDATAVIEW_CELL_INERT, FromDIP(420));
+    pageSizer->Add(list, wxSizerFlags(1).Expand());
+    page->SetSizer(pageSizer);
+    m_lists.push_back(list);
+    list->Bind(wxEVT_DATAVIEW_SELECTION_CHANGED, &TroubleshootingDialog::OnSelectionChanged, this);
+#if defined __WXOSX__
+    m_book->AddPage(page, wxm::TroubleshootingSectionTitle(section));
+#else
+    m_book->AddPage(page, wxm::TroubleshootingSectionTitle(section), false,
+                    static_cast<int>(section));
+#endif
+  }
+  sizer->Add(m_book, wxSizerFlags(3).Expand().Border(wxLEFT | wxRIGHT, FromDIP(8)));
 
   m_details = new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition,
-                             FromDIP(wxSize(600, 150)),
+                             FromDIP(wxSize(680, 150)),
                              wxTE_MULTILINE | wxTE_READONLY | wxTE_WORDWRAP);
   sizer->Add(m_details, wxSizerFlags(2).Expand().Border(wxALL, FromDIP(8)));
 
@@ -236,13 +339,20 @@ TroubleshootingDialog::TroubleshootingDialog(wxWindow *parent, const Inputs &inp
     TroubleshootingResult result;
     result.check = check;
     m_results.push_back(result);
+    wxDataViewListCtrl *list = m_lists.at(static_cast<size_t>(wxm::TroubleshootingSectionOf(check)));
+    m_rows.at(static_cast<size_t>(check)) = list->GetItemCount();
     wxVector<wxVariant> row;
-    row.push_back(wxVariant(wxm::TroubleshootingStatusName(result.status)));
+    row.push_back(wxVariant(static_cast<long>(result.status)));
     row.push_back(wxVariant(wxm::TroubleshootingCheckTitle(check)));
-    m_list->AppendItem(row);
+    list->AppendItem(row);
   }
 
-  m_list->Bind(wxEVT_DATAVIEW_SELECTION_CHANGED, &TroubleshootingDialog::OnSelectionChanged, this);
+  // wxEVT_BOOKCTRL_PAGE_CHANGED is the notebook's event: each book has its own.
+#if defined __WXOSX__
+  m_book->Bind(wxEVT_CHOICEBOOK_PAGE_CHANGED, &TroubleshootingDialog::OnPageChanged, this);
+#else
+  m_book->Bind(wxEVT_LISTBOOK_PAGE_CHANGED, &TroubleshootingDialog::OnPageChanged, this);
+#endif
   m_runAgain->Bind(wxEVT_BUTTON, &TroubleshootingDialog::OnRunAgain, this);
   copy->Bind(wxEVT_BUTTON, &TroubleshootingDialog::OnCopyReport, this);
   close->Bind(wxEVT_BUTTON, [this](wxCommandEvent &) { EndModal(wxID_CLOSE); });
@@ -268,27 +378,68 @@ void TroubleshootingDialog::RunChecks() {
     [this](const TroubleshootingResult &result) { ShowResult(result); },
     [this]() { CallAfter([this] { OnFinished(); }); });
   m_runner->Start();
-  if (m_list->GetSelectedRow() == wxNOT_FOUND)
-    m_list->SelectRow(0);
+  if (SelectedCheck() == wxm::TroubleshootingCheck::count)
+    SelectCheck(wxm::AllTroubleshootingChecks().front());
   ShowDetails();
 }
 
 void TroubleshootingDialog::ShowResult(const TroubleshootingResult &result) {
-  const auto row = static_cast<unsigned int>(result.check);
-  m_results.at(row) = result;
-  m_list->SetTextValue(wxm::TroubleshootingStatusName(result.status), row, 0);
-  if (static_cast<int>(row) == m_list->GetSelectedRow())
+  const auto index = static_cast<size_t>(result.check);
+  m_results.at(index) = result;
+  const wxm::TroubleshootingSection section = wxm::TroubleshootingSectionOf(result.check);
+  m_lists.at(static_cast<size_t>(section))
+    ->SetValue(wxVariant(static_cast<long>(result.status)), m_rows.at(index), 0);
+  UpdatePageText(section);
+  if (result.check == SelectedCheck())
     ShowDetails();
 }
 
+void TroubleshootingDialog::UpdatePageText(wxm::TroubleshootingSection section) {
+  std::vector<TroubleshootingStatus> statuses;
+  for (const auto &result : m_results)
+    if (wxm::TroubleshootingSectionOf(result.check) == section)
+      statuses.push_back(result.status);
+  const wxString text =
+    wxm::TroubleshootingStatusSymbol(wxm::TroubleshootingSummaryStatus(statuses)) + wxS(" ") +
+    wxm::TroubleshootingSectionTitle(section);
+  const auto page = static_cast<size_t>(section);
+  if (m_book->GetPageText(page) != text)
+    m_book->SetPageText(page, text);
+}
+
+wxm::TroubleshootingCheck TroubleshootingDialog::SelectedCheck() const {
+  const int page = m_book->GetSelection();
+  if (page == wxNOT_FOUND)
+    return wxm::TroubleshootingCheck::count;
+  const int row = m_lists.at(static_cast<size_t>(page))->GetSelectedRow();
+  if (row == wxNOT_FOUND)
+    return wxm::TroubleshootingCheck::count;
+  for (const auto check : wxm::AllTroubleshootingChecks())
+    if ((static_cast<int>(wxm::TroubleshootingSectionOf(check)) == page) &&
+        (m_rows.at(static_cast<size_t>(check)) == static_cast<unsigned int>(row)))
+      return check;
+  return wxm::TroubleshootingCheck::count;
+}
+
+void TroubleshootingDialog::SelectCheck(wxm::TroubleshootingCheck check) {
+  const auto page = static_cast<size_t>(wxm::TroubleshootingSectionOf(check));
+  const unsigned int row = m_rows.at(static_cast<size_t>(check));
+  m_book->ChangeSelection(page);
+  wxDataViewListCtrl *list = m_lists.at(page);
+  list->SelectRow(row);
+  list->EnsureVisible(list->RowToItem(static_cast<int>(row)));
+  ShowDetails();
+}
+
 void TroubleshootingDialog::ShowDetails() {
-  const int row = m_list->GetSelectedRow();
-  if ((row < 0) || (row >= static_cast<int>(m_results.size()))) {
+  const wxm::TroubleshootingCheck check = SelectedCheck();
+  if (check == wxm::TroubleshootingCheck::count) {
     m_details->Clear();
     return;
   }
-  const TroubleshootingResult &result = m_results.at(static_cast<size_t>(row));
-  wxString text = wxm::TroubleshootingStatusName(result.status) + wxS(": ") +
+  const TroubleshootingResult &result = m_results.at(static_cast<size_t>(check));
+  wxString text = wxm::TroubleshootingStatusSymbol(result.status) + wxS(" ") +
+    wxm::TroubleshootingStatusName(result.status) + wxS(": ") +
     wxm::TroubleshootingCheckTitle(result.check);
   if (!result.details.IsEmpty())
     text += wxS("\n\n") + result.details;
@@ -298,6 +449,14 @@ void TroubleshootingDialog::ShowDetails() {
 }
 
 void TroubleshootingDialog::OnSelectionChanged(wxDataViewEvent &WXUNUSED(event)) {
+  ShowDetails();
+}
+
+void TroubleshootingDialog::OnPageChanged(wxBookCtrlEvent &event) {
+  // A page shows the details of its selected row, or its first row's.
+  const int page = event.GetSelection();
+  if ((page != wxNOT_FOUND) && (m_lists.at(static_cast<size_t>(page))->GetSelectedRow() == wxNOT_FOUND))
+    m_lists.at(static_cast<size_t>(page))->SelectRow(0);
   ShowDetails();
 }
 
@@ -315,15 +474,12 @@ void TroubleshootingDialog::OnCopyReport(wxCommandEvent &WXUNUSED(event)) {
 void TroubleshootingDialog::OnFinished() {
   m_runAgain->Enable();
   // Point at the first problem, unless the user has looked elsewhere already.
-  if (m_list->GetSelectedRow() > 0)
+  if (SelectedCheck() != wxm::AllTroubleshootingChecks().front())
     return;
   for (const auto &result : m_results)
     if ((result.status == TroubleshootingStatus::failed) ||
         (result.status == TroubleshootingStatus::warning)) {
-      const int row = static_cast<int>(result.check);
-      m_list->SelectRow(static_cast<unsigned int>(row));
-      m_list->EnsureVisible(m_list->RowToItem(row));
-      ShowDetails();
+      SelectCheck(result.check);
       return;
     }
 }

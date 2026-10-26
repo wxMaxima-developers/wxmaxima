@@ -52,6 +52,7 @@
 #include <cstdio>
 #include <cstring>
 #include <map>
+#include <set>
 #include <string>
 
 #define CATCH_CONFIG_RUNNER
@@ -222,6 +223,37 @@ SCENARIO("Every check has a title, and the report names them all") {
     REQUIRE(report.Contains(wxS("[FAILED] ") + wxm::TroubleshootingCheckTitle(result.check)));
   // Details and hints are indented below their check, line by line.
   REQUIRE(report.Contains(wxS("\n    first line\n    second line\n    do this\n")));
+}
+
+SCENARIO("The checks are grouped into sections, each summed up by its worst result") {
+  using wxm::TroubleshootingSection;
+  std::set<TroubleshootingSection> used;
+  for (const auto check : wxm::AllTroubleshootingChecks())
+    used.insert(wxm::TroubleshootingSectionOf(check));
+  // No section is an empty page.
+  REQUIRE(used.size() == wxm::AllTroubleshootingSections().size());
+  for (const auto section : wxm::AllTroubleshootingSections())
+    REQUIRE(!wxm::TroubleshootingSectionTitle(section).IsEmpty());
+
+  // A check mark and a cross, as the dialog shows them
+  REQUIRE(wxm::TroubleshootingStatusSymbol(TroubleshootingStatus::ok) == wxString(wxS("\u2714")));
+  REQUIRE(wxm::TroubleshootingStatusSymbol(TroubleshootingStatus::failed) == wxString(wxS("\u2718")));
+  std::set<wxString> symbols;
+  for (const auto status : {TroubleshootingStatus::pending, TroubleshootingStatus::running,
+                            TroubleshootingStatus::ok, TroubleshootingStatus::info,
+                            TroubleshootingStatus::warning, TroubleshootingStatus::failed,
+                            TroubleshootingStatus::skipped})
+    symbols.insert(wxm::TroubleshootingStatusSymbol(status));
+  REQUIRE(symbols.size() == 7);
+
+  using S = TroubleshootingStatus;
+  REQUIRE(wxm::TroubleshootingSummaryStatus({}) == S::ok);
+  REQUIRE(wxm::TroubleshootingSummaryStatus({S::ok, S::info}) == S::info);
+  REQUIRE(wxm::TroubleshootingSummaryStatus({S::ok, S::skipped, S::info}) == S::skipped);
+  // A failure shows even while other checks of its section still run.
+  REQUIRE(wxm::TroubleshootingSummaryStatus({S::running, S::failed, S::ok}) == S::failed);
+  REQUIRE(wxm::TroubleshootingSummaryStatus({S::running, S::ok}) == S::running);
+  REQUIRE(wxm::TroubleshootingSummaryStatus({S::warning, S::running}) == S::warning);
 }
 
 SCENARIO("A probe answer is only read from a complete line of its own") {

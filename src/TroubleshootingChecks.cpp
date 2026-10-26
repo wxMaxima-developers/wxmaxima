@@ -109,6 +109,97 @@ wxString wxm::TroubleshootingStatusName(TroubleshootingStatus status) {
   return wxEmptyString;
 }
 
+wxString wxm::TroubleshootingStatusSymbol(TroubleshootingStatus status) {
+  switch (status) {
+  case TroubleshootingStatus::pending:
+    return wxS("\u25CB"); // white circle
+  case TroubleshootingStatus::running:
+    return wxS("\u2026"); // horizontal ellipsis
+  case TroubleshootingStatus::ok:
+    return wxS("\u2714"); // heavy check mark
+  case TroubleshootingStatus::info:
+    return wxS("\u2139"); // information source
+  case TroubleshootingStatus::warning:
+    return wxS("\u26A0"); // warning sign
+  case TroubleshootingStatus::failed:
+    return wxS("\u2718"); // heavy ballot x
+  case TroubleshootingStatus::skipped:
+    return wxS("\u2013"); // en dash
+  }
+  return wxEmptyString;
+}
+
+std::vector<wxm::TroubleshootingSection> wxm::AllTroubleshootingSections() {
+  std::vector<TroubleshootingSection> sections;
+  for (int i = 0; i < static_cast<int>(TroubleshootingSection::count); i++)
+    sections.push_back(static_cast<TroubleshootingSection>(i));
+  return sections;
+}
+
+wxm::TroubleshootingSection wxm::TroubleshootingSectionOf(TroubleshootingCheck check) {
+  switch (check) {
+  case TroubleshootingCheck::maximaFound:
+  case TroubleshootingCheck::server:
+  case TroubleshootingCheck::maximaStarts:
+  case TroubleshootingCheck::maximaConnects:
+  case TroubleshootingCheck::firstPrompt:
+  case TroubleshootingCheck::authentication:
+  case TroubleshootingCheck::wxMathML:
+  case TroubleshootingCheck::maximaStops:
+    return TroubleshootingSection::maxima;
+  case TroubleshootingCheck::loadPackage:
+  case TroubleshootingCheck::loadDraw:
+  case TroubleshootingCheck::tempDir:
+  case TroubleshootingCheck::gnuplotFound:
+  case TroubleshootingCheck::gnuplotPng:
+  case TroubleshootingCheck::gnuplotPngCairo:
+  case TroubleshootingCheck::svgText:
+    return TroubleshootingSection::plots;
+  case TroubleshootingCheck::maximaHtmlManual:
+  case TroubleshootingCheck::maximaInfoManual:
+  case TroubleshootingCheck::wxMaximaHtmlManual:
+  case TroubleshootingCheck::helpKnowsManual:
+  case TroubleshootingCheck::helpSidebar:
+  case TroubleshootingCheck::externalBrowser:
+    return TroubleshootingSection::help;
+  case TroubleshootingCheck::translations:
+  case TroubleshootingCheck::aiSidebar:
+  case TroubleshootingCheck::count:
+    break;
+  }
+  return TroubleshootingSection::userInterface;
+}
+
+wxString wxm::TroubleshootingSectionTitle(TroubleshootingSection section) {
+  switch (section) {
+  case TroubleshootingSection::maxima:
+    return _("Maxima");
+  case TroubleshootingSection::plots:
+    return _("Packages and plots");
+  case TroubleshootingSection::help:
+    return _("Help and manuals");
+  case TroubleshootingSection::userInterface:
+    return _("User interface");
+  case TroubleshootingSection::count:
+    break;
+  }
+  return wxEmptyString;
+}
+
+wxm::TroubleshootingStatus
+wxm::TroubleshootingSummaryStatus(const std::vector<TroubleshootingStatus> &statuses) {
+  // Most important first
+  static const TroubleshootingStatus order[] = {
+    TroubleshootingStatus::failed,  TroubleshootingStatus::warning,
+    TroubleshootingStatus::running, TroubleshootingStatus::pending,
+    TroubleshootingStatus::skipped, TroubleshootingStatus::info};
+  for (const auto status : order)
+    for (const auto s : statuses)
+      if (s == status)
+        return status;
+  return TroubleshootingStatus::ok;
+}
+
 namespace {
 //! The untranslated status word a bug report shows
 wxString ReportStatusName(wxm::TroubleshootingStatus status) {
