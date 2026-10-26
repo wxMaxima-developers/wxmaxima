@@ -344,6 +344,22 @@ a local TCP socket.
   not a natural next step: Maxima has no sandbox around it, so an
   `evaluate_cell` would amount to letting an AI run arbitrary code on the
   user's machine.
+- **Help > Troubleshooting (GH #2559, `src/Troubleshooting{Checks,Runner}.{h,cpp}`,
+  `src/dialogs/TroubleshootingDialog.{h,cpp}`) starts a Maxima of its own** --
+  own `wxSocketServer` on port 0, own `MAXIMA_AUTH_CODE` -- with the same
+  command line and environment `MaximaProcessManager::StartMaxima()` uses, and
+  never touches the worksheet's one. It asks its questions as `:lisp-quiet`
+  forms printing `wxprobe-<key>=<value>` lines, so the answers are found in
+  the socket stream whether or not wxMathML.lisp loaded. Two couplings to
+  know about: whether *all* of wxMathML.lisp loaded is judged by
+  `(fboundp 'wx-define-unicode-aliases)`, a function near its end
+  (`Settings::setupCheckFunction`) -- move or rename it and update that;
+  and Maxima's info manual is checked by asking `describe()`, not by looking
+  for `maxima-index.lisp` in `*maxima-infodir*`, because Debian keeps the
+  index elsewhere. `test_Troubleshooting` plays a broken or working Maxima
+  itself (`--fake-maxima=<mode>`), so it needs no Maxima;
+  `Troubleshooting_real_maxima` (registered in `test/CMakeLists.txt`, not a
+  `unittest`) runs the same checks against a real one.
 - **wxAuiManager:** The application uses `wxAuiManager` for its complex layout (sidebars, toolbars, worksheet).
   - **Linux/GTK Timing:** On Linux (especially KDE Plasma with Global Menus), calling `m_manager.Update()` can disrupt the menu bar if it's already attached. This is a known environmental issue in the interaction between wxWidgets, GTK3, and the KDE Global Menu proxy.
     - **Automated Fix:** On systems with wxWidgets <= 3.2 running on KDE, Unity, or with `appmenu-gtk-module` enabled, wxMaxima automatically sets `UBUNTU_MENUPROXY=0` at startup in `main.cpp` to force menus to remain within the window and prevent disappearance.

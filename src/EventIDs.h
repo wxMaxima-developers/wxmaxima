@@ -466,6 +466,8 @@ public:
   //! Register wxMaxima as the .wxmx diff tool for TortoiseSVN/TortoiseGit (MSW).
   static const wxWindowIDRef menu_register_wxmx_difftool;
   static const wxWindowIDRef menu_bug_report;
+  //! Help > Troubleshooting: checks what commonly keeps wxMaxima from working (GH #2559)
+  static const wxWindowIDRef menu_troubleshooting;
   //! Anonymize code cells before filing a bug report (replaces non-builtin
   //! variable/function names with random strings; see GH #1339).
   static const wxWindowIDRef menu_anonymize;

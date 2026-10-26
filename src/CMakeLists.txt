@@ -135,6 +135,7 @@ set(DIALOG_SOURCE_FILES
     DiffFrame.cpp
     DiffScrollSync.cpp
     MatrixViewer.cpp
+    TroubleshootingDialog.cpp
     WorksheetPreview.cpp
 )
 list(TRANSFORM DIALOG_SOURCE_FILES PREPEND dialogs/)
@@ -221,6 +222,8 @@ set(SOURCE_FILES
     wxMaximaArtProvider.cpp
     wxMaximaOSDescription.cpp
     HelpBrowserDiagnosis.cpp
+    TroubleshootingChecks.cpp
+    TroubleshootingRunner.cpp
 )
 
 if(NOT CYGWIN)

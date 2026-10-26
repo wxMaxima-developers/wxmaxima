@@ -553,6 +553,12 @@ protected:
 
   void OnClose(wxCloseEvent &event);               //!< close wxMaxima window
   wxString GetCommand(bool params = true);         //!< returns the command to start maxima
+  //! The Maxima program GetCommand() runs, without asking the user anything if it is missing
+  wxString MaximaExecutable() const;
+  //! What GetCommand() puts after the Maxima program: parameters and extra arguments
+  wxString MaximaCommandArguments(bool params = true) const;
+  //! Opens Help > Troubleshooting (GH #2559)
+  void ShowTroubleshootingDialog();
   //    (uses guessConfiguration)
 
   void ReadMaximaIPC(const wxString &data){m_ipc.ReadInputData(data);}

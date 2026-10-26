@@ -2148,6 +2148,10 @@ void wxMaximaFrame::SetupHelpMenu() {
   m_HelpMenu->AppendSeparator();
   m_HelpMenu->Append(EventIDs::menu_build_info, _("Build &Info"),
                      _("Info about Maxima build"), wxITEM_NORMAL);
+  m_HelpMenu->Append(EventIDs::menu_troubleshooting, _("T&roubleshooting..."),
+                     _("Check what commonly keeps Maxima, plots or the help from "
+                       "working"),
+                     wxITEM_NORMAL);
   m_HelpMenu->Append(EventIDs::menu_bug_report, _("&Bug Report"), _("Report bug"),
                      wxITEM_NORMAL);
   m_HelpMenu->Append(EventIDs::menu_anonymize, _("Anonymize Code for Bug Report"),

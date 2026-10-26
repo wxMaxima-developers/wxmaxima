@@ -86,6 +86,7 @@
 #include "wizards/SumWiz.h"
 #include "wizards/SystemWiz.h"
 #include "dialogs/TipOfTheDay.h"
+#include "dialogs/TroubleshootingDialog.h"
 #include "dialogs/DiffFrame.h"
 #include "wxMaximaOSDescription.h"
 #include "Version.h"
@@ -601,6 +602,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &MaximaCommandMenus::HelpMenu, &m_menuCommands, EventIDs::menu_help_tutorials);
   Bind(wxEVT_MENU, &MaximaCommandMenus::HelpMenu, &m_menuCommands, EventIDs::menu_goto_url);
   Bind(wxEVT_MENU, &MaximaCommandMenus::HelpMenu, &m_menuCommands, EventIDs::menu_bug_report);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::HelpMenu, &m_menuCommands, EventIDs::menu_troubleshooting);
   Bind(wxEVT_MENU, &MaximaCommandMenus::HelpMenu, &m_menuCommands, EventIDs::menu_anonymize);
   Bind(wxEVT_MENU, &MaximaCommandMenus::HelpMenu, &m_menuCommands, EventIDs::menu_build_info);
 #ifdef __WXMSW__
@@ -1642,20 +1644,36 @@ void wxMaxima::ExitAfterEval(bool exitaftereval) {
 ///  Getting configuration
 ///--------------------------------------------------------------------------------
 
-wxString wxMaxima::GetCommand(bool params) {
+wxString wxMaxima::MaximaExecutable() const {
   wxString command;
-  if (Get_Maxima_Commandline_Filename().IsEmpty()) {
+  if (Get_Maxima_Commandline_Filename().IsEmpty())
     command = Configuration::FindProgram(m_configuration.MaximaLocation());
-    wxLogMessage(_("Using configured Maxima path."));
-  } else {
+  else
     command = Get_Maxima_Commandline_Filename();
-    wxLogMessage(_("Using Maxima path from command line."));
-  }
 
 #if defined(__WXOSX__)
   if (command.EndsWith(wxS(".app"))) // if pointing to a Maxima.app
     command.Append(wxS("/Contents/Resources/maxima.sh"));
 #endif
+  return command;
+}
+
+wxString wxMaxima::MaximaCommandArguments(bool params) const {
+  wxString arguments;
+  if (params && !m_configuration.MaximaParameters().IsEmpty())
+    arguments = wxS(" ") + m_configuration.MaximaParameters();
+  wxString extraMaximaArgs = ExtraMaximaArgs();
+  if (!extraMaximaArgs.IsEmpty() && !extraMaximaArgs.StartsWith(" "))
+    extraMaximaArgs = " " + extraMaximaArgs;
+  return arguments + extraMaximaArgs;
+}
+
+wxString wxMaxima::GetCommand(bool params) {
+  if (Get_Maxima_Commandline_Filename().IsEmpty())
+    wxLogMessage(_("Using configured Maxima path."));
+  else
+    wxLogMessage(_("Using Maxima path from command line."));
+  wxString command = MaximaExecutable();
   // if 'maxima' is not searched in the path, check, if the file exists.
   if (command.Cmp("maxima") != 0) {
     if (!wxFileExists(command)) {
@@ -1673,23 +1691,46 @@ wxString wxMaxima::GetCommand(bool params) {
       StatusText(_("Please configure wxMaxima with 'Edit->Configure'."));
     }
   }
-  if (params) {
+  if (params)
     // escape quotes
     command.Replace(wxS("\""), wxS("\\\""));
-    // surround with quotes
-    command =
-      wxS("\"") + command + wxS("\" ") + m_configuration.MaximaParameters();
-  } else {
-    command = wxS("\"") + command + wxS("\"");
-  }
-  wxString extraMaximaArgs = ExtraMaximaArgs();
-  if (!extraMaximaArgs.IsEmpty())
-    {
-      if (!extraMaximaArgs.StartsWith(" "))
-        extraMaximaArgs = " " + extraMaximaArgs;
-    }
-  command += extraMaximaArgs;
-  return command;
+  // surround with quotes
+  return wxS("\"") + command + wxS("\"") + MaximaCommandArguments(params);
+}
+
+void wxMaxima::ShowTroubleshootingDialog() {
+  TroubleshootingDialog::Inputs inputs;
+  // Maxima is started the way MaximaProcessManager::StartMaxima() does it,
+  // so the checks run into the problems the worksheet's Maxima would.
+  inputs.runner.maximaConfigured = Get_Maxima_Commandline_Filename().IsEmpty() ?
+    m_configuration.MaximaLocation() : Get_Maxima_Commandline_Filename();
+  inputs.runner.maximaExecutable = MaximaExecutable();
+  wxString executable = inputs.runner.maximaExecutable;
+  executable.Replace(wxS("\""), wxS("\\\""));
+  inputs.runner.maximaCommand = wxS("\"") + executable + wxS("\"") + MaximaCommandArguments();
+  inputs.runner.environment = m_configuration.MaximaEnvVars();
+  wxGetEnvMap(&inputs.runner.environment);
+  if (!Configuration::GetMaximaLang().IsEmpty())
+    inputs.runner.environment["LANG"] = Configuration::GetMaximaLang();
+#if defined __WXOSX__
+  inputs.runner.environment["DISPLAY"] = ":0.0";
+#endif
+  wxMathML wxmathml(&m_configuration);
+  inputs.runner.setupCommand = wxmathml.GetCmd();
+  inputs.runner.gnuplotCommand = m_gnuplotcommand;
+#ifdef __WINDOWS__
+  // wgnuplot opens a window of its own; the command-line gnuplot doesn't.
+  if (!m_gnuplotcommand_commandline.IsEmpty())
+    inputs.runner.gnuplotCommand = m_gnuplotcommand_commandline;
+#endif
+  inputs.wxMaximaManual = wxMaximaManualLocation();
+  if (GetWorksheet())
+    inputs.helpUrlForIntegrate = GetWorksheet()->GetHelpfileURL(wxS("integrate"));
+  inputs.offerHelpSidebar = m_configuration.OfferInternalHelpBrowser();
+  inputs.language = m_configuration.GetLanguage();
+
+  TroubleshootingDialog dialog(this, inputs);
+  dialog.ShowModal();
 }
 
 ///--------------------------------------------------------------------------------
