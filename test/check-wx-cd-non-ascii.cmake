@@ -5,10 +5,10 @@
 # C runtime's ANSI-only _chdir (SBCL bug launchpad #2100706), which cannot
 # represent e.g. CJK characters on a default English-Windows codepage.
 #
-# This is a CMake script rather than the check-wxMathML.sh POSIX-shell
-# helper the other check-wxMathML.lisp_* tests use, specifically so it can
-# also run on the Windows CI job (the .sh-based tests are labelled
-# "needs_posix" and skipped there). The CJK directory name is a literal
+# This is a CMake script, not a POSIX shell script, so it also runs on the
+# Windows CI job. It has a script of its own rather than going through
+# check-wxMathML.cmake, which the other check-wxMathML.lisp_* tests use,
+# because it needs a fixture directory and a check of its own. The CJK directory name is a literal
 # string in this UTF-8 source file, written into an input file for Maxima
 # rather than passed as a process argument, so the only Unicode boundary
 # being exercised is the one the bug is actually about: Maxima/SBCL reading

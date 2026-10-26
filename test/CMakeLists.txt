@@ -16,7 +16,6 @@ else()
     message(STATUS "Maxima not found. Many tests will fail, Maxima is required for most tests.")
 endif()
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/xmlpatterngen.sh.in" xmlpatterngen.sh)
-configure_file("${CMAKE_CURRENT_SOURCE_DIR}/check-wxMathML.sh.in" check-wxMathML.sh)
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/check-xml-validity.sh.in" check-xml-validity.sh)
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/check-wxmx-validity.sh.in" check-wxmx-validity.sh)
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/check-wizard-commands.sh.in" check-wizard-commands.sh)
@@ -172,52 +171,64 @@ add_test(
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND echo 'quit() ;' | nc -l 40000 & sleep 10 ; ${MAXIMA} -s 40000)
 
-# A (very simple) test, if wxMathML.lisp file works (creates the expected XML output).
+# wxm_add_wxmathml_test(<name> <input> <regex>) sends <input> to a Maxima that
+# has loaded src/wxMathML.lisp and passes if the output, its line breaks
+# replaced by spaces, matches <regex> -- a CMake regular expression, so "(",
+# ")", "+", "?" and "|" need a backslash to stand for themselves. Both stdout
+# and stderr are searched, and the output is printed even on success, so a
+# test can additionally set FAIL_REGULAR_EXPRESSION.
 #
-# NOTE: every check-wxMathML.sh-based test (this one included) needs its NAME
-# added to WXM_POSIX_TESTS near the bottom of this file, or it tries to run on
-# the Windows CI job too (where the "COMMAND" is a plain .sh script, so it
-# fails outright with BAD_COMMAND rather than being skipped) -- confirmed live
-# on GH #2222's CI: check-wxMathML.lisp_box_no_extra_parens,
-# check-wxMathML.lisp_highlight_box_keeps_parens, and the two
-# check-wxMathML.lisp_sum_*_summand_* tests all shipped without this and only
-# got caught once a later, unrelated PR's Windows CI run failed on them.
-add_test(
-    NAME check-wxMathML.lisp_1
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "1+1;" "<math><lbl altCopy=\"%o1\">(%o1) </lbl><mn>2</mn></math>"
-)
+# These tests used to run a POSIX shell script (check-wxMathML.sh), which kept
+# them off Windows and only searched stdout (GH #1775). The input and the
+# regex are now written to files here and read by check-wxMathML.cmake, so no
+# shell and no command-line quoting is involved on any platform.
+function(wxm_add_wxmathml_test name input regex)
+  set(dir "${CMAKE_CURRENT_BINARY_DIR}/wxmathml_tests")
+  # echo, which the shell script used, ended the input with a line break.
+  file(WRITE "${dir}/${name}.mac" "${input}\n")
+  file(WRITE "${dir}/${name}.regex" "${regex}")
+  add_test(
+    NAME ${name}
+    COMMAND "${CMAKE_COMMAND}"
+            "-DMAXIMA=${MAXIMA}"
+            "-DWXMATHML_LISP=${CMAKE_SOURCE_DIR}/src/wxMathML.lisp"
+            "-DINPUT_FILE=${dir}/${name}.mac"
+            "-DREGEX_FILE=${dir}/${name}.regex"
+            -P "${CMAKE_CURRENT_SOURCE_DIR}/check-wxMathML.cmake")
+endfunction()
+
+# A (very simple) test, if wxMathML.lisp file works (creates the expected XML output).
+wxm_add_wxmathml_test(check-wxMathML.lisp_1
+    "1+1;"
+    "<math><lbl altCopy=\"%o1\">\\(%o1\\) </lbl><mn>2</mn></math>")
 
 # GH #1948: box() draws its own border (the <hl> tag), so it must never be
 # wrapped in an extra, redundant pair of parentheses no matter what operator
 # surrounds it -- this pins that "a*box(b)*c" renders with no <p>/wxxml-paren
 # element between box's own <mrow> and its <hl> content.
-add_test(
-    NAME check-wxMathML.lisp_box_no_extra_parens
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "a*box(b)*c;" "</hl></mrow><h>\\*</h><mi"
-)
+wxm_add_wxmathml_test(check-wxMathML.lisp_box_no_extra_parens
+    "a*box(b)*c;"
+    "</hl></mrow><h>\\*</h><mi")
 
 # GH #1948, the fringe case: box(expr, highlight) doesn't draw a border at
 # all (see MathParser::ParseHighlightTag) -- it only colors its content --
 # so unlike an ordinary box it still needs the parentheses above to visually
 # delimit its extent. This must keep getting them even after the fix above.
-add_test(
-    NAME check-wxMathML.lisp_highlight_box_keeps_parens
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "a*box(b,highlight)*c;" "<p lisp=\"wxxml-paren\"><mrow><hl boxname=\"highlight\">"
-)
+wxm_add_wxmathml_test(check-wxMathML.lisp_highlight_box_keeps_parens
+    "a*box(b,highlight)*c;"
+    "<p lisp=\"wxxml-paren\"><mrow><hl boxname=\"highlight\">")
 
 # GH #1536: a bare summand doesn't need the disambiguating parentheses
 # SumCell used to always draw around it -- only a compound one (here a sum
 # of terms, "k+k^2") does. wxxml-sum (wxMathML.lisp) decides this from the
 # real Maxima expression (mplusp) and hands the decision to SumCell via the
 # needsparen attribute on <sm>; these two pin that attribute for both cases.
-add_test(
-    NAME check-wxMathML.lisp_sum_bare_summand_no_parens
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "'sum(k,k,1,n);" "<sm needsparen=\"false\">"
-)
-add_test(
-    NAME check-wxMathML.lisp_sum_compound_summand_needs_parens
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "'sum(k+k^2,k,1,n);" "<sm needsparen=\"true\">"
-)
+wxm_add_wxmathml_test(check-wxMathML.lisp_sum_bare_summand_no_parens
+    "'sum(k,k,1,n);"
+    "<sm needsparen=\"false\">")
+wxm_add_wxmathml_test(check-wxMathML.lisp_sum_compound_summand_needs_parens
+    "'sum(k+k^2,k,1,n);"
+    "<sm needsparen=\"true\">")
 
 # GH #1672: wx-cd (the function wxMaxima uses to keep Maxima's working
 # directory in sync with the worksheet's) used to fail to cd into a
@@ -225,10 +236,9 @@ add_test(
 # codepage -- on Windows specifically, since sb-posix:chdir there goes
 # through the C runtime's ANSI-only _chdir (SBCL bug launchpad #2100706).
 # A CJK directory name is reliably outside the default English-Windows
-# codepage (1252). Unlike the other check-wxMathML.lisp_* tests this is a
-# CMake script, not the check-wxMathML.sh POSIX-shell helper, precisely so
-# it isn't limited by the "needs_posix" label below and actually runs on
-# the Windows CI job too -- see check-wx-cd-non-ascii.cmake for why.
+# codepage (1252). It needs a fixture directory and a
+# check of its own, so it has its own CMake script instead of
+# wxm_add_wxmathml_test() -- see check-wx-cd-non-ascii.cmake.
 if(MAXIMA)
   add_test(
       NAME check-wxMathML.lisp_wx-cd_non_ascii_dir
@@ -381,72 +391,55 @@ add_test(
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --debug --batch --exit-on-error --single_process --single_thread unicode.wxm boxes.wxm)
 
-add_test(
-    NAME wxstatusbar
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxstatusbar(\"a<1>b\");" "<statusbar>a&lt;1&gt;b</statusbar>"
-)
+wxm_add_wxmathml_test(wxstatusbar
+    "wxstatusbar(\"a<1>b\");"
+    "<statusbar>a&lt;1&gt;b</statusbar>")
 
 # wx_version_min(): $wxmaximaversion is set the way wxMaxima sets it (a
 # "-dev" suffix plus a toolkit suffix), then compared against versions that
 # are equal, shorter, older and newer, including "26.10" vs "26.9", which a
 # string comparison would get wrong.
-add_test(
-    NAME wx_version_min
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh"
+wxm_add_wxmathml_test(wx_version_min
     ":lisp (setq $wxmaximaversion \"26.09.0-dev_GTK3\")\n[wx_version_min(\"26.09.0\"), wx_version_min(\"26.9\"), wx_version_min(\"26.08.3\"), wx_version_min(\"25.12.9\"), wx_version_min(\"26.09.1\"), wx_version_min(\"26.10.0\"), wx_version_min(\"27\")];"
-    "(%o1) </lbl><mrow list=\"true\"><t[^>]*>\\[</t><mrow><t lisp=\"true\">true</t></mrow><mo>,</mo><mrow><t lisp=\"true\">true</t></mrow><mo>,</mo><mrow><t lisp=\"true\">true</t></mrow><mo>,</mo><mrow><t lisp=\"true\">true</t></mrow><mo>,</mo><mrow><t lisp=\"false\">false</t></mrow><mo>,</mo><mrow><t lisp=\"false\">false</t></mrow><mo>,</mo><mrow><t lisp=\"false\">false</t></mrow><t[^>]*>]</t></mrow>"
-)
+    "\\(%o1\\) </lbl><mrow list=\"true\"><t[^>]*>\\[</t><mrow><t lisp=\"true\">true</t></mrow><mo>,</mo><mrow><t lisp=\"true\">true</t></mrow><mo>,</mo><mrow><t lisp=\"true\">true</t></mrow><mo>,</mo><mrow><t lisp=\"true\">true</t></mrow><mo>,</mo><mrow><t lisp=\"false\">false</t></mrow><mo>,</mo><mrow><t lisp=\"false\">false</t></mrow><mo>,</mo><mrow><t lisp=\"false\">false</t></mrow><t[^>]*>]</t></mrow>")
 
 # ...and outside wxMaxima, where $wxmaximaversion is never set, it is false.
-add_test(
-    NAME wx_version_min_outside_wxmaxima
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wx_version_min(\"1.0\");" "<t lisp=\"false\">false</t>"
-)
+wxm_add_wxmathml_test(wx_version_min_outside_wxmaxima
+    "wx_version_min(\"1.0\");"
+    "<t lisp=\"false\">false</t>")
 
 # with_slider_draw_bare(): each frame is a plain draw() call, so a frame can
 # hold several scenes, 2D and 3D mixed. Two frames means two gnuplot scripts
 # in the <slide> tag.
-add_test(
-    NAME with_slider_draw_bare
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh"
+wxm_add_wxmathml_test(with_slider_draw_bare
     "with_slider_draw_bare(a,[1,2],columns=2,gr2d(explicit(sin(a*x),x,0,1)),gr3d(explicit(a*x*y,x,0,1,y,0,1)));"
-    "<slide[^>]*>[^<]*\\.gnuplot;[^<]*\\.gnuplot;[^<]*</slide>"
-)
+    "<slide[^>]*>[^<]*\\.gnuplot;[^<]*\\.gnuplot;[^<]*</slide>")
 
 # with_slider_draw()'s file_name writes a gif the user asked for, so wxMaxima
 # must not delete it once it has displayed it (GH #2389).
-add_test(
-    NAME with_slider_draw_file_name_kept
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh"
+wxm_add_wxmathml_test(with_slider_draw_file_name_kept
     "with_slider_draw(a,[1,2],explicit(a*x,x,0,1),file_name=\"anim_kept\");"
-    "<img del=\"no\">anim_kept\\.gif</img>"
-)
+    "<img del=\"no\">anim_kept\\.gif</img>")
 
 # ...and file_name, which draw()'s animated_gif terminal cannot honour for a
 # frame made of several scenes: the frames are rendered as usual, and the
 # <slide> tag asks wxMaxima to assemble them into anim.gif (GH #2361), named
 # with its full path, as wxMaxima may work in another directory than Maxima.
-add_test(
-    NAME with_slider_draw_bare_file_name
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh"
+# On Windows that path starts with a drive letter and may use backslashes.
+wxm_add_wxmathml_test(with_slider_draw_bare_file_name
     "with_slider_draw_bare(a,[1,2],file_name=\"anim\",gr2d(explicit(sin(a*x),x,0,1)));"
-    "<slide[^>]* gifFile=\"/[^\"]*/anim\\.gif\"[^>]*>[^<]*\\.gnuplot;[^<]*\\.gnuplot;[^<]*</slide>"
-)
+    "<slide[^>]* gifFile=\"([A-Za-z]:)?[/\\\\][^\"]*[/\\\\]anim\\.gif\"[^>]*>[^<]*\\.gnuplot;[^<]*\\.gnuplot;[^<]*</slide>")
 
 # wximplicit_plot() has to load the implicit_plot package itself: without it
 # implicit_plot() stays unevaluated, no image is written, and wxMaxima reports
 # a missing file instead of a plot (GH #1106).
-add_test(
-    NAME wximplicit_plot_loads_package
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh"
+wxm_add_wxmathml_test(wximplicit_plot_loads_package
     "wximplicit_plot(x^2+y^2=1,[x,-2,2],[y,-2,2])$ is(?fboundp('implicit_plot) # false);"
-    "<t lisp=\"true\">true</t>"
-)
+    "<t lisp=\"true\">true</t>")
 
-add_test(
-    NAME wxbuildinfo
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxbuild_info();" "WxMaxima"
-)
+wxm_add_wxmathml_test(wxbuildinfo
+    "wxbuild_info();"
+    "WxMaxima")
 
 # Test if the XML output is valid and doesn't contain duplicate attributes
 add_test(
@@ -471,25 +464,21 @@ add_test(
     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-xml-validity.sh" "wx_matrix(matrix([1,2],[3,4]), lines=true, parenstyle=none, oversized=scroll);"
 )
 
-add_test(
-    NAME check-wxMathML.lisp_matrix_oversized
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wx_matrix(matrix([1,2],[3,4]), oversized=full);" "<tb[^>]* oversized=\"full\""
-)
+wxm_add_wxmathml_test(check-wxMathML.lisp_matrix_oversized
+    "wx_matrix(matrix([1,2],[3,4]), oversized=full);"
+    "<tb[^>]* oversized=\"full\"")
 
 # wx_matrix()'s banding option reaches wxMaxima as an attribute of the <tb>
 # tag; banding=auto, the default, adds none.
-add_test(
-    NAME check-wxMathML.lisp_matrix_banding_on
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wx_matrix(matrix([1,2],[3,4]), banding=true);" "<tb[^>]* banding=\"true\""
-)
-add_test(
-    NAME check-wxMathML.lisp_matrix_banding_off
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wx_matrix(matrix([1,2],[3,4]), banding=false);" "<tb[^>]* banding=\"false\""
-)
-add_test(
-    NAME check-wxMathML.lisp_matrix_banding_auto
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wx_matrix(matrix([1,2],[3,4]), banding=auto);" "<tb"
-)
+wxm_add_wxmathml_test(check-wxMathML.lisp_matrix_banding_on
+    "wx_matrix(matrix([1,2],[3,4]), banding=true);"
+    "<tb[^>]* banding=\"true\"")
+wxm_add_wxmathml_test(check-wxMathML.lisp_matrix_banding_off
+    "wx_matrix(matrix([1,2],[3,4]), banding=false);"
+    "<tb[^>]* banding=\"false\"")
+wxm_add_wxmathml_test(check-wxMathML.lisp_matrix_banding_auto
+    "wx_matrix(matrix([1,2],[3,4]), banding=auto);"
+    "<tb")
 set_tests_properties(check-wxMathML.lisp_matrix_banding_auto PROPERTIES
     FAIL_REGULAR_EXPRESSION "banding=")
 add_test(
@@ -499,27 +488,24 @@ add_test(
 
 # wx_matrix() only returns the formatted matrix; it is the display of that
 # result that shows it. So a matrix ended with ";" is shown exactly once...
-add_test(
-    NAME check-wxMathML.lisp_matrix_shown_once
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wx_matrix(matrix([1,2],[3,4]), oversized=full);" "<tb[^>]* oversized=\"full\""
-)
+wxm_add_wxmathml_test(check-wxMathML.lisp_matrix_shown_once
+    "wx_matrix(matrix([1,2],[3,4]), oversized=full);"
+    "<tb[^>]* oversized=\"full\"")
 set_tests_properties(check-wxMathML.lisp_matrix_shown_once PROPERTIES
     FAIL_REGULAR_EXPRESSION "</tb>.*<tb ")
 
 # ...one ended with "$" isn't shown at all...
-add_test(
-    NAME check-wxMathML.lisp_matrix_dollar_not_shown
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wx_matrix(matrix([1,2],[3,4]), oversized=full)$ 7;" "<mn>7</mn>"
-)
+wxm_add_wxmathml_test(check-wxMathML.lisp_matrix_dollar_not_shown
+    "wx_matrix(matrix([1,2],[3,4]), oversized=full)$ 7;"
+    "<mn>7</mn>")
 set_tests_properties(check-wxMathML.lisp_matrix_dollar_not_shown PROPERTIES
     FAIL_REGULAR_EXPRESSION "<tb")
 
 # ...and the options stay with the returned value, not with what is
 # calculated from it.
-add_test(
-    NAME check-wxMathML.lisp_matrix_options_stay_with_value
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "m:wx_matrix(matrix([1,2],[3,4]), oversized=scroll)$ m; m+1;" "<tb[^>]* oversized=\"scroll\"[^>]*>.*<tb bracketParens=\"true\">"
-)
+wxm_add_wxmathml_test(check-wxMathML.lisp_matrix_options_stay_with_value
+    "m:wx_matrix(matrix([1,2],[3,4]), oversized=scroll)$ m; m+1;"
+    "<tb[^>]* oversized=\"scroll\"[^>]*>.*<tb bracketParens=\"true\">")
 
 add_test(
     NAME check-xml-validity_mfrac
@@ -601,242 +587,192 @@ foreach(f ${DEMO_FILES})
 endforeach()
 endif()
 
-add_test(
-    NAME wxbug_report
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxbug_report();" "WxMaxima is a graphical front end for Maxima, which does the mathematics in the background"
-)
+wxm_add_wxmathml_test(wxbug_report
+    "wxbug_report();"
+    "WxMaxima is a graphical front end for Maxima, which does the mathematics in the background")
 
-add_test(
-    NAME wxxml-array-no-display-properties
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "make_array(any,10,10);" "<mi lisp=.*>#{Lisp array .10,10.}</mi>"
-)
+wxm_add_wxmathml_test(wxxml-array-no-display-properties
+    "make_array(any,10,10);"
+    "<mi lisp=.*>#{Lisp array .10,10.}</mi>")
 
-add_test(
-    NAME wxxml-array-display-properties
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "declare_index_properties(O,[presubscript,presuperscript,postsubscript,postsuperscript]);arraymake(O,[1,2,3,4]);" "<mmultiscripts .* altCopy=.*><mi .*>O</mi><mrow><mn>3</mn></mrow> <mrow><mn>4</mn></mrow> <mprescripts/> <mrow><mn>1</mn></mrow> <mrow><mn>2</mn></mrow> </mmultiscripts>"
-)
+wxm_add_wxmathml_test(wxxml-array-display-properties
+    "declare_index_properties(O,[presubscript,presuperscript,postsubscript,postsuperscript]);arraymake(O,[1,2,3,4]);"
+    "<mmultiscripts .* altCopy=.*><mi .*>O</mi><mrow><mn>3</mn></mrow> <mrow><mn>4</mn></mrow> <mprescripts/> <mrow><mn>1</mn></mrow> <mrow><mn>2</mn></mrow> </mmultiscripts>")
 
-add_test(
-    NAME wxxmltag
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxxmltag(a\\\<,b);" "<b.*>a\\\\&lt;</b>"
-)
+wxm_add_wxmathml_test(wxxmltag
+    "wxxmltag(a\\\<,b);"
+    "<b.*>a\\\\&lt;</b>")
 
-add_test(
-    NAME wxxmltag2
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxxmltag(\"a<\",b);" "<b.*>a&lt;</b>"
-)
+wxm_add_wxmathml_test(wxxmltag2
+    "wxxmltag(\"a<\",b);"
+    "<b.*>a&lt;</b>")
 
-add_test(
-    NAME show_image
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "show_image(\"test<2.png\");" "<img del=\"no\" lisp=.*>test&lt;2.png</img>"
-)
+wxm_add_wxmathml_test(show_image
+    "show_image(\"test<2.png\");"
+    "<img del=\"no\" lisp=.*>test&lt;2.png</img>")
 
 # wxplot_scale: a plot tells wxMaxima the factor to display it with...
-add_test(
-    NAME wxplot_scale_attribute
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh"
+wxm_add_wxmathml_test(wxplot_scale_attribute
     "wxplot2d(x,[x,0,1]),wxplot_scale=3/2$"
-    "<img scale=\"1.5\" lisp=\"wxxml-tag\">"
-)
+    "<img scale=\"1.5\" lisp=\"wxxml-tag\">")
 
 # ...only if it isn't 1, so worksheets look as before...
-add_test(
-    NAME wxplot_scale_default_no_attribute
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh"
+wxm_add_wxmathml_test(wxplot_scale_default_no_attribute
     "wxplot2d(x,[x,0,1])$"
-    "<img lisp=\"wxxml-tag\">"
-)
+    "<img lisp=\"wxxml-tag\">")
 
 # ...and an animation's frames get it, too.
-add_test(
-    NAME wxplot_scale_animation
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh"
+wxm_add_wxmathml_test(wxplot_scale_animation
     "with_slider_draw(a,[1,2],explicit(a*x,x,0,1)),wxplot_scale=0.75$"
-    "<slide [^>]*scale=\"0.75\""
-)
+    "<slide [^>]*scale=\"0.75\"")
 
 # 'native: shown at wxplot_size's pixels, not shrunk to fit the window.
-add_test(
-    NAME wxplot_scale_native
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh"
+wxm_add_wxmathml_test(wxplot_scale_native
     "wxplot2d(x,[x,0,1]),wxplot_scale='native$"
-    "<img scale=\"native\" lisp=\"wxxml-tag\">"
-)
+    "<img scale=\"native\" lisp=\"wxxml-tag\">")
 
 # Something that isn't a positive number is an error, not a broken plot.
-add_test(
-    NAME wxplot_scale_invalid
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh"
+wxm_add_wxmathml_test(wxplot_scale_invalid
     "wxplot2d(x,[x,0,1]),wxplot_scale=-1$"
-    "wxplot_scale must be a positive number"
-)
+    "wxplot_scale must be a positive number")
 set_tests_properties(wxplot_scale_invalid PROPERTIES
     FAIL_REGULAR_EXPRESSION "<img ")
 
-add_test(
-    NAME wxxml-mlable
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "test;" "<lbl altCopy=\"%o1\">(%o1)"
-)
+wxm_add_wxmathml_test(wxxml-mlable
+    "test;"
+    "<lbl altCopy=\"%o1\">\\(%o1\\)")
 
-add_test(
-    NAME wxxml-mlable2
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "outchar:\">\";" "<math><lbl altCopy=\"\\\\&gt;1\">(&gt;1) </lbl>.*&gt;.*</math>"
-)
+wxm_add_wxmathml_test(wxxml-mlable2
+    "outchar:\">\";"
+    "<math><lbl altCopy=\"\\\\&gt;1\">\\(&gt;1\\) </lbl>.*&gt;.*</math>")
 
-add_test(
-    NAME wxxml-orthopoly
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "legendre_p (n - 1, x);" "<fn altCopy=\"legendre_p(n-1,x)\"><munder><fnm>P</fnm><mrow><mi lisp=.*>n</mi><mo>-</mo><mn>1</mn></mrow></munder><p><mi lisp=.*>x</mi></p></fn>"
-)
+wxm_add_wxmathml_test(wxxml-orthopoly
+    "legendre_p (n - 1, x);"
+    "<fn altCopy=\"legendre_p\\(n-1,x\\)\"><munder><fnm>P</fnm><mrow><mi lisp=.*>n</mi><mo>-</mo><mn>1</mn></mrow></munder><p><mi lisp=.*>x</mi></p></fn>")
 
-add_test(
-    NAME wxxml-pochhammer
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "pochhammer (\"<\", \">\");" "<munder altCopy=\"pochhammer(&quot;&lt;&quot;,&quot;&gt;&quot;)\"><p><st>&lt;</st></p><mrow><st>&gt;</st></mrow></munder>"
-)
+wxm_add_wxmathml_test(wxxml-pochhammer
+    "pochhammer (\"<\", \">\");"
+    "<munder altCopy=\"pochhammer\\(&quot;&lt;&quot;,&quot;&gt;&quot;\\)\"><p><st>&lt;</st></p><mrow><st>&gt;</st></mrow></munder>")
 
-add_test(
-    NAME wxxml-pderivop
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "diff(f(y),y);" "<d lisp=.*><mfrac lisp=.*><mrow><s lisp=.*>d</s></mrow><mrow><s lisp=.*>d</s><h>.</h><mi lisp=.*>y</mi></mrow></mfrac><h>.</h><fn lisp=.*><fnm lisp=.*>f</fnm><mrow><p><mrow><mi lisp=.*>y</mi></mrow></p></mrow></fn></d>"
-)
+wxm_add_wxmathml_test(wxxml-pderivop
+    "diff(f(y),y);"
+    "<d lisp=.*><mfrac lisp=.*><mrow><s lisp=.*>d</s></mrow><mrow><s lisp=.*>d</s><h>.</h><mi lisp=.*>y</mi></mrow></mfrac><h>.</h><fn lisp=.*><fnm lisp=.*>f</fnm><mrow><p><mrow><mi lisp=.*>y</mi></mrow></p></mrow></fn></d>")
 
-add_test(
-    NAME mminus
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "-x-1;" "<mo>-</mo><mi lisp=.*>x</mi><mo>-</mo><mn>1</mn>"
-)
+wxm_add_wxmathml_test(mminus
+    "-x-1;"
+    "<mo>-</mo><mi lisp=.*>x</mi><mo>-</mo><mn>1</mn>")
 
-add_test(
-    NAME mfactorial
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "(n\!)\!;" "<mi lisp=.*>n</mi><mo>\!</mo></p></mrow><mo>\!</mo>"
-)
+wxm_add_wxmathml_test(mfactorial
+    "(n\!)\!;"
+    "<mi lisp=.*>n</mi><mo>\!</mo></p></mrow><mo>\!</mo>")
 
-add_test(
-    NAME subscriptp_1
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxsubscripts:true\$eeee_133;" "<munder altCopy=\"eeee_133\"><mrow><mi>eeee</mi></mrow><mrow><mi>133</mi></mrow></munder>"
-)
+wxm_add_wxmathml_test(subscriptp_1
+    "wxsubscripts:true\$eeee_133;"
+    "<munder altCopy=\"eeee_133\"><mrow><mi>eeee</mi></mrow><mrow><mi>133</mi></mrow></munder>")
 
-add_test(
-    NAME subscriptp_2
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxsubscripts:true\$wxdeclare_subscripted(eeee_aaa)\$eeee_aaa;" "<munder altCopy=\"eeee_aaa\"><mrow><mi>eeee</mi></mrow><mrow><mi>aaa</mi></mrow></munder>"
-)
+wxm_add_wxmathml_test(subscriptp_2
+    "wxsubscripts:true\$wxdeclare_subscripted(eeee_aaa)\$eeee_aaa;"
+    "<munder altCopy=\"eeee_aaa\"><mrow><mi>eeee</mi></mrow><mrow><mi>aaa</mi></mrow></munder>")
 
-add_test(
-    NAME subscriptp_3
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxsubscripts:true\$wxdeclare_subscripted(eeee_aaa)\$eeee_aaae;" "<mi lisp=.*>eeee_aaae</mi>"
-)
+wxm_add_wxmathml_test(subscriptp_3
+    "wxsubscripts:true\$wxdeclare_subscripted(eeee_aaa)\$eeee_aaae;"
+    "<mi lisp=.*>eeee_aaae</mi>")
 
-add_test(
-    NAME subscriptp_4
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxsubscripts:true\$eeee_133;" "<munder altCopy=\"eeee_133\"><mrow><mi>eeee</mi></mrow><mrow><mi>133</mi></mrow></munder>"
-)
+wxm_add_wxmathml_test(subscriptp_4
+    "wxsubscripts:true\$eeee_133;"
+    "<munder altCopy=\"eeee_133\"><mrow><mi>eeee</mi></mrow><mrow><mi>133</mi></mrow></munder>")
 
-add_test(
-    NAME subscriptp_5
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxsubscripts:true\$wxdeclare_subscript(bbb)\$eeee_bbb;" "<munder altCopy=\"eeee_bbb\"><mrow><mi>eeee</mi></mrow><mrow><mi>bbb</mi></mrow></munder>"
-)
+wxm_add_wxmathml_test(subscriptp_5
+    "wxsubscripts:true\$wxdeclare_subscript(bbb)\$eeee_bbb;"
+    "<munder altCopy=\"eeee_bbb\"><mrow><mi>eeee</mi></mrow><mrow><mi>bbb</mi></mrow></munder>")
 
-add_test(
-    NAME subscriptp_6
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxsubscripts:true\$wxdeclare_subscript(bbb)\$eeee_bbb;" "<munder altCopy=\"eeee_bbb\"><mrow><mi>eeee</mi></mrow><mrow><mi>bbb</mi></mrow></munder>"
-)
+wxm_add_wxmathml_test(subscriptp_6
+    "wxsubscripts:true\$wxdeclare_subscript(bbb)\$eeee_bbb;"
+    "<munder altCopy=\"eeee_bbb\"><mrow><mi>eeee</mi></mrow><mrow><mi>bbb</mi></mrow></munder>")
 
-add_test(
-    NAME subscriptp_7
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxsubscripts: 'all\$eree_ssss;" "<munder altCopy=\"eree_ssss\"><mrow><mi>eree</mi></mrow><mrow><mi>ssss</mi></mrow></munder>"
-)
+wxm_add_wxmathml_test(subscriptp_7
+    "wxsubscripts: 'all\$eree_ssss;"
+    "<munder altCopy=\"eree_ssss\"><mrow><mi>eree</mi></mrow><mrow><mi>ssss</mi></mrow></munder>")
 
-add_test(
-    NAME subscriptp_8
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxsubscripts: false\$a_b;" "<mi lisp=.*>a_b</mi>"
-)
+wxm_add_wxmathml_test(subscriptp_8
+    "wxsubscripts: false\$a_b;"
+    "<mi lisp=.*>a_b</mi>")
 
-add_test(
-    NAME subscriptp_9
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxsubscripts: false\$a_1;" "<mi lisp=.*>a_1</mi>"
-)
+wxm_add_wxmathml_test(subscriptp_9
+    "wxsubscripts: false\$a_1;"
+    "<mi lisp=.*>a_1</mi>")
 
-add_test(
-    NAME subscriptp_10
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxsubscripts:true\$t_1\\,2;" "<munder altCopy=\"t_1\\\\,2\"><mrow><mi>t</mi></mrow><mrow><mi>1,2</mi></mrow></munder>"
-)
+wxm_add_wxmathml_test(subscriptp_10
+    "wxsubscripts:true\$t_1\\,2;"
+    "<munder altCopy=\"t_1\\\\,2\"><mrow><mi>t</mi></mrow><mrow><mi>1,2</mi></mrow></munder>")
 
-add_test(
-    NAME subscriptp_11
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxsubscripts:true\$a\\,b_1;" "a,b"
-)
+wxm_add_wxmathml_test(subscriptp_11
+    "wxsubscripts:true\$a\\,b_1;"
+    "a,b")
 
 # GH #1653: wxdeclare_subscripted(x, false) has to keep x unsubscripted even
 # where the rules wxsubscripts selects would subscript it, and
 # wxdeclare_subscripted(x) has to subscript it where they would not.
-add_test(
-    NAME subscriptp_declared_false_wins_over_all
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxsubscripts: 'all\$wxdeclare_subscripted(eree_ssss,false)\$eree_ssss;" "<mi lisp=.*>eree_ssss</mi>"
-)
+wxm_add_wxmathml_test(subscriptp_declared_false_wins_over_all
+    "wxsubscripts: 'all\$wxdeclare_subscripted(eree_ssss,false)\$eree_ssss;"
+    "<mi lisp=.*>eree_ssss</mi>")
 
-add_test(
-    NAME subscriptp_declared_false_can_be_taken_back
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxsubscripts:true\$wxdeclare_subscripted(eree_ssss,false)\$wxdeclare_subscripted(eree_ssss)\$eree_ssss;" "<munder altCopy=\"eree_ssss\"><mrow><mi>eree</mi></mrow><mrow><mi>ssss</mi></mrow></munder>"
-)
+wxm_add_wxmathml_test(subscriptp_declared_false_can_be_taken_back
+    "wxsubscripts:true\$wxdeclare_subscripted(eree_ssss,false)\$wxdeclare_subscripted(eree_ssss)\$eree_ssss;"
+    "<munder altCopy=\"eree_ssss\"><mrow><mi>eree</mi></mrow><mrow><mi>ssss</mi></mrow></munder>")
 
 # A variable Maxima itself defines whose name contains an underscore is
 # declared "never subscripted" at startup - that declaration is what the two
 # tests above make work, and it has to keep working for the names it was
 # written for.
-add_test(
-    NAME subscriptp_maxima_own_variable_not_subscripted
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxsubscripts: 'all\$'float_approx_equal_tolerance;" "<mi lisp=.*>float_approx_equal_tolerance</mi>"
-)
+wxm_add_wxmathml_test(subscriptp_maxima_own_variable_not_subscripted
+    "wxsubscripts: 'all\$'float_approx_equal_tolerance;"
+    "<mi lisp=.*>float_approx_equal_tolerance</mi>")
 
 # kill(all) unbinds every symbol Maxima lists as having user properties. The
 # startup declarations above must not put Maxima's own variables on that
 # list, or kill(all) unbinds ones Maxima needs (display_format_internal broke
 # every display after it on Maxima 5.48).
-add_test(
-    NAME subscriptp_kill_all_keeps_maxima_variables
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "kill(all)\$float_approx_equal_tolerance;" "<lbl altCopy=\"%o1\">(%o1) </lbl><mrow><mn>"
-)
+wxm_add_wxmathml_test(subscriptp_kill_all_keeps_maxima_variables
+    "kill(all)\$float_approx_equal_tolerance;"
+    "<lbl altCopy=\"%o1\">\\(%o1\\) </lbl><mrow><mn>")
 
 # wxsubscripts' own default is the Maxima symbol $all - it used to be the
 # Lisp symbol of the same name, which nothing compares against, so an
 # unconfigured wxMaxima silently behaved as if "true" was set.
-add_test(
-    NAME subscriptp_default_is_all
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "eree_ssss;" "<munder altCopy=\"eree_ssss\"><mrow><mi>eree</mi></mrow><mrow><mi>ssss</mi></mrow></munder>"
-)
+wxm_add_wxmathml_test(subscriptp_default_is_all
+    "eree_ssss;"
+    "<munder altCopy=\"eree_ssss\"><mrow><mi>eree</mi></mrow><mrow><mi>ssss</mi></mrow></munder>")
 
-add_test(
-    NAME mprod
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "a*2*b;" "<mn>2</mn><h>[*]</h><mi lisp=.*>a</mi><h>[*]</h><mi lisp=.*>b</mi>"
-)
+wxm_add_wxmathml_test(mprod
+    "a*2*b;"
+    "<mn>2</mn><h>[*]</h><mi lisp=.*>a</mi><h>[*]</h><mi lisp=.*>b</mi>")
 
-add_test(
-    NAME block
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "f(x):=block([a:x],x);" "<fn lisp=.*><fnm lisp=.*>f</fnm><mrow><p><mrow><mi lisp=.*>x</mi></mrow></p></mrow></fn><mo>:=</mo><fn lisp=.*><fnm lisp=.*>block</fnm><mrow><p><mrow><mrow list=\"true\"><t lisp=.* listdelim=\"true\">\\[</t><mrow><mi lisp=.*>a</mi><mo>:</mo><mi lisp=.*>x</mi></mrow><t lisp=.* listdelim=\"true\">\\]</t></mrow></mrow><mo>,</mo><mrow><mi lisp=.*>x</mi></mrow></p></mrow></fn>"
-)
+wxm_add_wxmathml_test(block
+    "f(x):=block([a:x],x);"
+    "<fn lisp=.*><fnm lisp=.*>f</fnm><mrow><p><mrow><mi lisp=.*>x</mi></mrow></p></mrow></fn><mo>:=</mo><fn lisp=.*><fnm lisp=.*>block</fnm><mrow><p><mrow><mrow list=\"true\"><t lisp=.* listdelim=\"true\">\\[</t><mrow><mi lisp=.*>a</mi><mo>:</mo><mi lisp=.*>x</mi></mrow><t lisp=.* listdelim=\"true\">\\]</t></mrow></mrow><mo>,</mo><mrow><mi lisp=.*>x</mi></mrow></p></mrow></fn>")
 
-add_test(
-    NAME mlist
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "[&,b];" "<t lisp=.* listdelim=\"true\">\\[</t><mrow><mi lisp=.*>&amp;</mi></mrow><mo>,</mo><mrow><mi lisp=.*>b</mi></mrow><t lisp=.* listdelim=\"true\">\\]</t></mrow>"
-)
+wxm_add_wxmathml_test(mlist
+    "[&,b];"
+    "<t lisp=.* listdelim=\"true\">\\[</t><mrow><mi lisp=.*>&amp;</mi></mrow><mo>,</mo><mrow><mi lisp=.*>b</mi></mrow><t lisp=.* listdelim=\"true\">\\]</t></mrow>")
 
-add_test(
-    NAME true
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "true;" "<t lisp=.*>true</t>"
-)
+wxm_add_wxmathml_test(true
+    "true;"
+    "<t lisp=.*>true</t>")
 
-add_test(
-    NAME false
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "true;" "<t lisp=.*>true</t>"
-)
+wxm_add_wxmathml_test(false
+    "true;"
+    "<t lisp=.*>true</t>")
 
-add_test(
-    NAME mfrac
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "a/(1/2+b);" "<mfrac lisp=.*><mrow><mi lisp=.*>a</mi></mrow><mrow><mi lisp=.*>b</mi><mo>+</mo><mfrac lisp=.*><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac></mrow></mfrac>"
-)
+wxm_add_wxmathml_test(mfrac
+    "a/(1/2+b);"
+    "<mfrac lisp=.*><mrow><mi lisp=.*>a</mi></mrow><mrow><mi lisp=.*>b</mi><mo>\\+</mo><mfrac lisp=.*><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac></mrow></mfrac>")
 
 # The test for the argument of load() was added in Maxima 5.46.0
 if(MAXIMA_VERSION VERSION_GREATER_EQUAL "5.46.0")
-    add_test(
-        NAME load_symbol
-        COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "load(engineering-format);" "argument must be a string, symbol, or pathname")
+    wxm_add_wxmathml_test(load_symbol
+        "load(engineering-format);"
+        "argument must be a string, symbol, or pathname")
 endif()
 
 add_test(
@@ -1678,47 +1614,28 @@ endif()
 # the suite and allows developers to isolate possible issues per test at the same expense.
 # Notice that wxMaxima's config writes now degrade gracefully when the directory isn't writable,
 # so a fresh per-test environment no longer asserts.
-# Tests that drive the configured check-*.sh helper scripts (wxMathML / XML /
-# wxmx validity, wizard commands). They need a POSIX shell plus xmllint/unzip and
+# Tests that drive the configured check-*.sh helper scripts (XML / wxmx
+# validity, wizard commands, ...). The wxMathML.lisp output tests used to be
+# here too; wxm_add_wxmathml_test() runs them without a shell (GH #1775). They need a POSIX shell plus xmllint/unzip and
 # are invoked as a .sh directly, so they cannot run on the Windows CI (they show
 # up there as "Not Run"). Tag them "needs_posix" so that platform can skip them
 # with `ctest -LE needs_posix`; they keep running normally on Linux. Labelling is
-# done by name in the loop below so conditionally-defined tests (e.g. load_symbol,
-# only added for new-enough Maxima) are handled automatically.
+# done by name in the loop below so conditionally-defined tests (e.g. check-lintian,
+# only added where lintian is installed) are handled automatically.
 set(WXM_POSIX_TESTS
-  check-wxMathML.lisp_1 check-wxMathML.lisp_box_no_extra_parens
-  check-wxMathML.lisp_highlight_box_keeps_parens
-  check-wxMathML.lisp_sum_bare_summand_no_parens
-  check-wxMathML.lisp_sum_compound_summand_needs_parens
-  check-wizard-commands check-translations
-  check-xml-validity_matrix_default check-xml-validity_matrix_lines
-  check-xml-validity_matrix_complex check-xml-validity_mfrac
-  check-xml-validity_matrix_oversized check-wxMathML.lisp_matrix_oversized
-  check-wxMathML.lisp_matrix_shown_once check-wxMathML.lisp_matrix_dollar_not_shown
-  check-wxMathML.lisp_matrix_options_stay_with_value
-  check-wxMathML.lisp_matrix_banding_on check-wxMathML.lisp_matrix_banding_off
-  check-wxMathML.lisp_matrix_banding_auto check-xml-validity_matrix_banding
-  check-wxmx-validity_all-celltypes check-wxmx-validity_intervals
-  wxstatusbar wxbuildinfo wxbug_report show_image
-  wxxml-array-no-display-properties wxxml-array-display-properties
-  wxxmltag wxxmltag2 wxxml-mlable wxxml-mlable2 wxxml-orthopoly
-  wxxml-pochhammer wxxml-pderivop mminus mfactorial mprod block mlist
-  true false mfrac load_symbol check-markdown
-  subscriptp_1 subscriptp_2 subscriptp_3 subscriptp_4 subscriptp_5
-  subscriptp_6 subscriptp_7 subscriptp_8 subscriptp_9 subscriptp_10
-  subscriptp_11
-  subscriptp_declared_false_wins_over_all
-  subscriptp_declared_false_can_be_taken_back
-  subscriptp_maxima_own_variable_not_subscripted
-  subscriptp_default_is_all
-  subscriptp_kill_all_keeps_maxima_variables
-  wx_version_min wx_version_min_outside_wxmaxima
-  with_slider_draw_bare with_slider_draw_file_name_kept
-  wximplicit_plot_loads_package
-  wxplot_scale_attribute wxplot_scale_default_no_attribute
-  wxplot_scale_animation wxplot_scale_invalid wxplot_scale_native
-  with_slider_draw_bare_file_name
-  check-lintian check-rpmlint)
+  check-wizard-commands
+  check-translations
+  check-xml-validity_matrix_default
+  check-xml-validity_matrix_lines
+  check-xml-validity_matrix_complex
+  check-xml-validity_mfrac
+  check-xml-validity_matrix_oversized
+  check-xml-validity_matrix_banding
+  check-wxmx-validity_all-celltypes
+  check-wxmx-validity_intervals
+  check-markdown
+  check-lintian
+  check-rpmlint)
 
 # A test missing from that list shows up only on the Windows CI, as a red
 # BAD_COMMAND nobody sees until the job runs -- five slipped through that way
