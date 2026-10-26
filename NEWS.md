@@ -1,5 +1,9 @@
 # Current development version
 
+- The tests of wxMathML.lisp's output no longer need a POSIX shell, so they
+  now run on Windows, too. They also find text Maxima prints to stderr,
+  which fixes the load_symbol test failing on some systems (#1775).
+
 # 26.10.0
 
 This release is about making wxMaxima nicer to use, and again was developed
