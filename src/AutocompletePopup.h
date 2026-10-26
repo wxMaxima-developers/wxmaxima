@@ -138,6 +138,8 @@ public:
     match is then only displayed.
   */
   void UpdateResults(bool allowAutoFinish = true);
+  //! Fill the list with m_completions and select the first one
+  void ShowCompletions();
 
   void OnClick(wxMouseEvent &event);
 };

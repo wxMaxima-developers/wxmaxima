@@ -36,6 +36,7 @@
 #include "CellImpl.h"
 #include "CellPointers.h"
 #include "MarkDown.h"
+#include "UnicodeNames.h"
 #include "UrlDetection.h"
 #include "wxMaxima.h"
 #include "wxMaximaFrame.h"
@@ -3171,10 +3172,9 @@ wxString EditorCell::InterpretEscapeString(const wxString &txt) {
   if (!escCode.empty())
     return escCode;
 
-  long int unicodeval = -1;
-  if (txt.ToLong(&unicodeval, 16)) {
-    if (unicodeval > 32)
-      return wxUniChar(unicodeval);
+  if (auto unicodeval = wxm::HexCodePoint(txt)) {
+    if (*unicodeval > 32)
+      return wxString(wxUniChar(*unicodeval));
     return wxS(" ");
   }
   return {};

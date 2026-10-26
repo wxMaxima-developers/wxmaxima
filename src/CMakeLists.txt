@@ -183,6 +183,7 @@ set(SOURCE_FILES
     StringUtils.cpp
     SvgBitmap.cpp
     SvgSize.cpp
+    UnicodeNames.cpp
     SvgPanel.cpp
     SyntaxErrorLocation.cpp
     TextBreaks.cpp

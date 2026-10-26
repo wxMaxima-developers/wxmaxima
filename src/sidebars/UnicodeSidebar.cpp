@@ -28,8 +28,8 @@
   select arbitrary unicode symbols.
 */
 
-#include "../data/UnicodeData.h"
 #include "EventIDs.h"
+#include "UnicodeNames.h"
 #include <memory>
 #include <wx/mstream.h>
 #include <wx/sizer.h>
@@ -152,34 +152,19 @@ void UnicodeSidebar::OnPaint(wxPaintEvent &event) {
   if (m_initialized)
     return;
 
-  wxMemoryInputStream istream(UnicodeData_txt_gz, UnicodeData_txt_gz_len);
-  wxZlibInputStream zstream(istream);
-  wxTextInputStream textIn(zstream);
   wxString regex_string = m_regex->GetValue();
-  wxRegEx regex(m_regex->GetValue());
   m_grid->HideRowLabels();
   m_grid->HideColLabels();
-  // The IsOk() term keeps a decompression error from spinning this loop
-  // forever (inside a paint handler!): Eof() only reports wxSTREAM_EOF, not
-  // read-error states.
-  while (zstream.IsOk() && !zstream.Eof()) {
-    wxString line = textIn.ReadLine();
-    wxStringTokenizer items(line, wxS(";"), wxTOKEN_RET_EMPTY_ALL);
-    wxString number = items.GetNextToken();
-    wxString name = items.GetNextToken();
-    if (!name.IsEmpty() && (name != "<control>") &&
-        (!name.StartsWith("<Plane")) && (regex_string.IsEmpty())) {
-      long numVal;
-      if (number.ToLong(&numVal, 16)) {
-        m_grid->AppendRows();
-        int row = m_grid->GetNumberRows() - 1;
-        m_grid->SetCellValue(row, 0, number);
-        m_grid->SetCellValue(row, 1, wxString(wxChar(numVal)));
-        m_grid->SetCellValue(row, 2, name);
-        m_grid->EnableEditing(false);
-      }
-    }
-  }
+  if (regex_string.IsEmpty())
+    wxm::ForEachUnicodeChar([this](long numVal, const wxString &name) {
+      m_grid->AppendRows();
+      int row = m_grid->GetNumberRows() - 1;
+      m_grid->SetCellValue(row, 0, wxString::Format(wxS("%04lX"), numVal));
+      m_grid->SetCellValue(row, 1, wxString(wxChar(numVal)));
+      m_grid->SetCellValue(row, 2, name);
+      m_grid->EnableEditing(false);
+      return true;
+    });
   m_initialized = true;
 }
 
