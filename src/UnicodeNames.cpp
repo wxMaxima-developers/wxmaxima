@@ -42,7 +42,9 @@ std::optional<long> HexCodePoint(const wxString &text) {
   if (digits.IsEmpty() || (digits.Length() > 8))
     return std::nullopt;
   for (const auto &ch : digits)
-    if (!wxIsxdigit(ch))
+    if (!(((ch >= wxS('0')) && (ch <= wxS('9'))) ||
+          ((ch >= wxS('a')) && (ch <= wxS('f'))) ||
+          ((ch >= wxS('A')) && (ch <= wxS('F')))))
       return std::nullopt;
   long value = 0;
   if (!digits.ToLong(&value, 16))
