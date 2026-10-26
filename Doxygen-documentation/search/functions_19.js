@@ -23,12 +23,13 @@ var searchData=
   ['_7eparametricwiz_20',['~ParametricWiz',['../classParametricWiz.html#a018593b0250bcd0d4924ebcd2f99cd02',1,'ParametricWiz']]],
   ['_7eqtstyle_5ftest_21',['~QTstyle_Test',['../classQTstyle__Test.html#a7e82397d534d9a867f0857da01a46e9e',1,'QTstyle_Test']]],
   ['_7erecentdocuments_22',['~RecentDocuments',['../classRecentDocuments.html#a07fcb44d7e7e6e0a92805d7cb9780414',1,'RecentDocuments']]],
-  ['_7evariablespane_23',['~Variablespane',['../classVariablespane.html#a24455eb3a4b44eff8ea4eed83015bab6',1,'Variablespane']]],
-  ['_7ewiz3d_24',['~Wiz3D',['../classWiz3D.html#ae91fe1ec1927f914879479c1d875d1b4',1,'Wiz3D']]],
-  ['_7ewizcontour_25',['~WizContour',['../classWizContour.html#a86902b657e9622971c27da19b638471f',1,'WizContour']]],
-  ['_7ewizdrawaccuracy_26',['~WizDrawAccuracy',['../classWizDrawAccuracy.html#a71636e609f09e6bfd330926fb5594b77',1,'WizDrawAccuracy']]],
-  ['_7ewizpoints_27',['~WizPoints',['../classWizPoints.html#a5b531c5960880082ed0f5be99154749c',1,'WizPoints']]],
-  ['_7eworksheet_28',['~Worksheet',['../classWorksheet.html#a17069f8e054407fb170285892fc99349',1,'Worksheet']]],
-  ['_7ewxmaximaframe_29',['~wxMaximaFrame',['../classwxMaximaFrame.html#a184c356bdc682c194ec349fb58130de3',1,'wxMaximaFrame']]],
-  ['_7exmlinspector_30',['~XmlInspector',['../classXmlInspector.html#a9d8cb605490465aad6e75c6fcaa45f92',1,'XmlInspector']]]
+  ['_7etroubleshootingrunner_23',['~TroubleshootingRunner',['../classTroubleshootingRunner.html#a1136ee7cd0739e7ea36e7ef8cb633420',1,'TroubleshootingRunner']]],
+  ['_7evariablespane_24',['~Variablespane',['../classVariablespane.html#a24455eb3a4b44eff8ea4eed83015bab6',1,'Variablespane']]],
+  ['_7ewiz3d_25',['~Wiz3D',['../classWiz3D.html#ae91fe1ec1927f914879479c1d875d1b4',1,'Wiz3D']]],
+  ['_7ewizcontour_26',['~WizContour',['../classWizContour.html#a86902b657e9622971c27da19b638471f',1,'WizContour']]],
+  ['_7ewizdrawaccuracy_27',['~WizDrawAccuracy',['../classWizDrawAccuracy.html#a71636e609f09e6bfd330926fb5594b77',1,'WizDrawAccuracy']]],
+  ['_7ewizpoints_28',['~WizPoints',['../classWizPoints.html#a5b531c5960880082ed0f5be99154749c',1,'WizPoints']]],
+  ['_7eworksheet_29',['~Worksheet',['../classWorksheet.html#a17069f8e054407fb170285892fc99349',1,'Worksheet']]],
+  ['_7ewxmaximaframe_30',['~wxMaximaFrame',['../classwxMaximaFrame.html#a184c356bdc682c194ec349fb58130de3',1,'wxMaximaFrame']]],
+  ['_7exmlinspector_31',['~XmlInspector',['../classXmlInspector.html#a9d8cb605490465aad6e75c6fcaa45f92',1,'XmlInspector']]]
 ];

@@ -175,9 +175,10 @@ Macros</h2></td></tr>
 <div class="line">    <span class="comment">/* cppcheck-suppress returnTempReference */</span>                         \</div>
 <div class="line">    <span class="keyword">const</span> wxString &amp;<a class="code hl_function" href="classCellTypeInfo.html#a3adea8161a63cb2506d561cb07cc482d">GetName</a>()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> S_(#type); }      \</div>
 <div class="line">    };                                                                  \</div>
-<div class="line">    <span class="keyword">const</span> type##TypeInfo <span class="keyword">static</span> info;                                   \</div>
-<div class="line">    <span class="keywordflow">return</span> info;                                                        \</div>
+<div class="line">    <span class="keyword">const</span> type##TypeInfo <span class="keyword">static</span> <a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a3fd549b8009542e938104c3887e5ecc3acaf9b6b99962bf5c2264824231d7a40c">info</a>;                                   \</div>
+<div class="line">    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a3fd549b8009542e938104c3887e5ecc3acaf9b6b99962bf5c2264824231d7a40c">info</a>;                                                        \</div>
 <div class="line">  }                                                                     \</div>
+<div class="ttc" id="aTroubleshootingChecks_8h_html_a3fd549b8009542e938104c3887e5ecc3acaf9b6b99962bf5c2264824231d7a40c"><div class="ttname"><a href="TroubleshootingChecks_8h.html#a3fd549b8009542e938104c3887e5ecc3acaf9b6b99962bf5c2264824231d7a40c">wxm::TroubleshootingStatus::info</a></div><div class="ttdeci">@ info</div><div class="ttdoc">Not a problem, but worth knowing (e.g.</div></div>
 <div class="ttc" id="aclassCellTypeInfo_html"><div class="ttname"><a href="classCellTypeInfo.html">CellTypeInfo</a></div><div class="ttdoc">A class that carries information about the type of a cell.</div><div class="ttdef"><b>Definition:</b> Cell.h:93</div></div>
 <div class="ttc" id="aclassCellTypeInfo_html_a3adea8161a63cb2506d561cb07cc482d"><div class="ttname"><a href="classCellTypeInfo.html#a3adea8161a63cb2506d561cb07cc482d">CellTypeInfo::GetName</a></div><div class="ttdeci">virtual const wxString &amp; GetName() const =0</div><div class="ttdoc">The name of the cell type, e.g.</div></div>
 </div><!-- fragment -->

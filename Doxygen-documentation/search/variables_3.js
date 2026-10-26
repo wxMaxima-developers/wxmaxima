@@ -9,5 +9,6 @@ var searchData=
   ['chars_5fread_5ftotal_6',['chars_read_total',['../structdetail_1_1position__t.html#ac4d220d61ce61eeffbea40985727a3b0',1,'detail::position_t']]],
   ['classvar_7',['classVar',['../classpyexample_1_1PyClass.html#abd17aff54e5b0ca194020c796c733546',1,'pyexample::PyClass']]],
   ['clipboard_5fmax_5fpixels_8',['CLIPBOARD_MAX_PIXELS',['../classBitmapOut.html#a4fafb6436c1aec1227744eb63d699975',1,'BitmapOut']]],
-  ['currenty_9',['currentY',['../structTrailingGroupGeometry.html#af652e704f3dcbc21a483d864db7a1ead',1,'TrailingGroupGeometry']]]
+  ['connecttimeoutms_9',['connectTimeoutMs',['../structTroubleshootingRunner_1_1Settings.html#a32f78a7900e0050c8715cca68c0efac4',1,'TroubleshootingRunner::Settings']]],
+  ['currenty_10',['currentY',['../structTrailingGroupGeometry.html#af652e704f3dcbc21a483d864db7a1ead',1,'TrailingGroupGeometry']]]
 ];

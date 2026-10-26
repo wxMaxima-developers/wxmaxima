@@ -1,13 +1,7 @@
 var searchData=
 [
-  ['scrollunit_0',['scrollUnit',['../structWorksheetVirtualSize.html#a5427cdbe4e0135a05997fbc87e027c19',1,'WorksheetVirtualSize']]],
-  ['scrollunitsy_1',['scrollUnitsY',['../structScrollCompensation.html#adfa7cc1c1ea571fec2107847d838736f',1,'ScrollCompensation']]],
-  ['section_5fmenu_5ffirst_2',['section_menu_first',['../classToolBar.html#a32b542f05c8445cf45be82a21ff88596',1,'ToolBar']]],
-  ['sel_3',['sel',['../classmux__using__with.html#ac474329b8f25c575e4376d65f6a3e43f',1,'mux_using_with']]],
-  ['sizeisstale_4',['sizeIsStale',['../structTrailingGroupGeometry.html#a0628cfa6e780d07852ed6871edb02204',1,'TrailingGroupGeometry']]],
-  ['start_5',['start',['../structTextFormat_1_1Run.html#a0b2057dd393de33a1c6dd8edf834a00c',1,'TextFormat::Run']]],
-  ['std_5flogic_5f1164_6',['std_logic_1164',['../classmux__using__with.html#ae984d6918908b859c4f9c9a950a0cfee',1,'mux_using_with']]],
-  ['string_5fbuffer_7',['string_buffer',['../classdetail_1_1serializer.html#a27a61728ed0fbc65de009286531a6e70',1,'detail::serializer']]],
-  ['svg_8',['svg',['../structClipboardContents.html#a550514eaf30ee68bea59290c7d3b1d2e',1,'ClipboardContents']]],
-  ['symbol_9',['symbol',['../structCharButton_1_1Definition.html#a729facda1debc6701b74676bebd92ae2',1,'CharButton::Definition']]]
+  ['righttoleft_0',['rightToLeft',['../structBidiRun.html#a3a06760adcb00e1780dd161a09a8371b',1,'BidiRun']]],
+  ['role_1',['role',['../structAiChatMessage.html#a7108d7feea6e305192a39177192af2ac',1,'AiChatMessage']]],
+  ['rtf_2',['rtf',['../structClipboardContents.html#abdfe83c0b6415132d669695732a3ede7',1,'ClipboardContents']]],
+  ['runner_3',['runner',['../structTroubleshootingDialog_1_1Inputs.html#a1719a1ccf2be569617655492450b80b0',1,'TroubleshootingDialog::Inputs']]]
 ];

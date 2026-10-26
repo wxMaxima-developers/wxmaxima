@@ -552,9 +552,20 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><b>GetDefaultEntry</
 void&#160;</td><td class="memItemRight" valign="bottom"><b>OnClose</b> (wxCloseEvent &amp;event)</td></tr>
 <tr class="memdesc:ac213265a89885e1fbf56dbbea647c4e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">close <a class="el" href="classwxMaxima.html">wxMaxima</a> window <br /></td></tr>
 <tr class="separator:ac213265a89885e1fbf56dbbea647c4e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7a21b166a198e37ef62ac4be7a726669"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a7a21b166a198e37ef62ac4be7a726669">GetCommand</a> (bool params=true)</td></tr>
-<tr class="memdesc:a7a21b166a198e37ef62ac4be7a726669"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns the command to start maxima  <br /></td></tr>
+<tr class="memitem:a7a21b166a198e37ef62ac4be7a726669"><td class="memItemLeft" align="right" valign="top"><a id="a7a21b166a198e37ef62ac4be7a726669" name="a7a21b166a198e37ef62ac4be7a726669"></a>
+wxString&#160;</td><td class="memItemRight" valign="bottom"><b>GetCommand</b> (bool params=true)</td></tr>
+<tr class="memdesc:a7a21b166a198e37ef62ac4be7a726669"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns the command to start maxima The <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> program <a class="el" href="classwxMaxima.html#a7a21b166a198e37ef62ac4be7a726669" title="returns the command to start maxima The Maxima program GetCommand() runs, without asking the user any...">GetCommand()</a> runs, without asking the user anything if it is missing <br /></td></tr>
 <tr class="separator:a7a21b166a198e37ef62ac4be7a726669"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9de1b078a3ebe664d712d78decf1562"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#ad9de1b078a3ebe664d712d78decf1562">MaximaExecutable</a> () const</td></tr>
+<tr class="separator:ad9de1b078a3ebe664d712d78decf1562"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9762eb75a9005f10180797e556caaad"><td class="memItemLeft" align="right" valign="top"><a id="ad9762eb75a9005f10180797e556caaad" name="ad9762eb75a9005f10180797e556caaad"></a>
+wxString&#160;</td><td class="memItemRight" valign="bottom"><b>MaximaCommandArguments</b> (bool params=true) const</td></tr>
+<tr class="memdesc:ad9762eb75a9005f10180797e556caaad"><td class="mdescLeft">&#160;</td><td class="mdescRight">What <a class="el" href="classwxMaxima.html#a7a21b166a198e37ef62ac4be7a726669" title="returns the command to start maxima The Maxima program GetCommand() runs, without asking the user any...">GetCommand()</a> puts after the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> program: parameters and extra arguments. <br /></td></tr>
+<tr class="separator:ad9762eb75a9005f10180797e556caaad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc5447baf31356d4dac899cbaeea85f2"><td class="memItemLeft" align="right" valign="top"><a id="adc5447baf31356d4dac899cbaeea85f2" name="adc5447baf31356d4dac899cbaeea85f2"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>ShowTroubleshootingDialog</b> ()</td></tr>
+<tr class="memdesc:adc5447baf31356d4dac899cbaeea85f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens Help &gt; Troubleshooting (GH #2559) <br /></td></tr>
+<tr class="separator:adc5447baf31356d4dac899cbaeea85f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a36927fc3ea2b3d51bef96f868ea356f3"><td class="memItemLeft" align="right" valign="top"><a id="a36927fc3ea2b3d51bef96f868ea356f3" name="a36927fc3ea2b3d51bef96f868ea356f3"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ReadMaximaIPC</b> (const wxString &amp;data)</td></tr>
 <tr class="separator:a36927fc3ea2b3d51bef96f868ea356f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1406,37 +1417,6 @@ class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 
 </div>
 </div>
-<a id="a7a21b166a198e37ef62ac4be7a726669" name="a7a21b166a198e37ef62ac4be7a726669"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7a21b166a198e37ef62ac4be7a726669">&#9670;&#160;</a></span>GetCommand()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">wxString wxMaxima::GetCommand </td>
-          <td>(</td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>params</em> = <code>true</code></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>returns the command to start maxima </p>
-<hr  />
- <h2><a class="anchor" id="autotoc_md1102"></a>
-Getting configuration</h2>
-
-</div>
-</div>
 <a id="a9c0b30b06c8c7779421635275ac3a7fa" name="a9c0b30b06c8c7779421635275ac3a7fa"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9c0b30b06c8c7779421635275ac3a7fa">&#9670;&#160;</a></span>GetMaximaCPUPercentage()</h2>
 
@@ -1608,6 +1588,34 @@ Getting configuration</h2>
 
 <p>Logs every entry of the Help menu, as wx and (on Windows) the OS see it. </p>
 <p>On a Windows nightly the "Show help in the sidebar" entry was missing although the Edge backend was reported usable at the very moment the entry is added. This shows whether wx never got the entry or Windows lost it. </p>
+
+</div>
+</div>
+<a id="ad9de1b078a3ebe664d712d78decf1562" name="ad9de1b078a3ebe664d712d78decf1562"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad9de1b078a3ebe664d712d78decf1562">&#9670;&#160;</a></span>MaximaExecutable()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxString wxMaxima::MaximaExecutable </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<hr  />
+ <h2><a class="anchor" id="autotoc_md1102"></a>
+Getting configuration</h2>
 
 </div>
 </div>

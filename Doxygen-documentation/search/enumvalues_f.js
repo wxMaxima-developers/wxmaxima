@@ -6,5 +6,6 @@ var searchData=
   ['read_5fpending_3',['READ_PENDING',['../classMaxima.html#a01e208858ffeeb60e8a1787a580103c8a46c15ee0530754feaced0ef045889f20',1,'Maxima']]],
   ['rejected_4',['rejected',['../MaximaAuthLine_8h.html#af5b5185b852d360361c45df2cc2a2b82ac7537d6d48ecf261749c09a9f284bd45',1,'MaximaAuthLine.h']]],
   ['replace_5',['replace',['../namespacedetail.html#abe7cfa1fd8fa706ff4392bff9d1a8298a9dde360102c103867bd2f45872f1129c',1,'detail']]],
-  ['running_6',['Running',['../classToolBar.html#a327b655c366e7932f751d2815cc629fca9c9bfa8603406d94a8f00a975a9c1f3c',1,'ToolBar']]]
+  ['running_6',['Running',['../classToolBar.html#a327b655c366e7932f751d2815cc629fca9c9bfa8603406d94a8f00a975a9c1f3c',1,'ToolBar']]],
+  ['running_7',['running',['../TroubleshootingChecks_8h.html#a3fd549b8009542e938104c3887e5ecc3a75101dcdfc88455bcafc9e53e0b06689',1,'wxm']]]
 ];

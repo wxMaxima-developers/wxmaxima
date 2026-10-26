@@ -15,5 +15,6 @@ var searchData=
   ['exit_5fimage_5fdecode_5ffailed_12',['EXIT_IMAGE_DECODE_FAILED',['../classwxMaxima.html#a95a985202220a6392975ffe21c92cafaafb378826b0d3e1dbbd6955adea320117',1,'wxMaxima']]],
   ['exit_5fimage_5fload_5ffailed_13',['EXIT_IMAGE_LOAD_FAILED',['../classwxMaxima.html#a95a985202220a6392975ffe21c92cafaaef18e7887e0f97881fe8b718ff2dd429',1,'wxMaxima']]],
   ['exit_5fmaxima_5ferror_14',['EXIT_MAXIMA_ERROR',['../classwxMaxima.html#a95a985202220a6392975ffe21c92cafaa4d7daa8c47689231a4e7d651c7558e37',1,'wxMaxima']]],
-  ['exit_5funanswered_5fquestion_15',['EXIT_UNANSWERED_QUESTION',['../classwxMaxima.html#a95a985202220a6392975ffe21c92cafaa79ef44494781ef42edac4a6309bf3071',1,'wxMaxima']]]
+  ['exit_5funanswered_5fquestion_15',['EXIT_UNANSWERED_QUESTION',['../classwxMaxima.html#a95a985202220a6392975ffe21c92cafaa79ef44494781ef42edac4a6309bf3071',1,'wxMaxima']]],
+  ['externalbrowser_16',['externalBrowser',['../TroubleshootingChecks_8h.html#a082761c0aafd576d6d834e49d52d159ea6c95296278722e7ea1980fae9f25e55d',1,'wxm']]]
 ];

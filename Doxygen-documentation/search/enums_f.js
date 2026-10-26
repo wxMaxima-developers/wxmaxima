@@ -5,5 +5,8 @@ var searchData=
   ['textundoresult_2',['TextUndoResult',['../classWorksheetDocument.html#a597da4ddc26d35569b9346897dff3b72',1,'WorksheetDocument']]],
   ['timerids_3',['TimerIDs',['../classWorksheet.html#ab23463675bcf9e4b601204eb665a2377',1,'Worksheet::TimerIDs()'],['../classwxMaxima.html#ab6afd24efcd1d85c6aac02040adf0a68',1,'wxMaxima::TimerIDs()']]],
   ['token_5ftype_4',['token_type',['../classdetail_1_1lexer__base.html#add65fa7a85aa15052963809fbcc04540',1,'detail::lexer_base']]],
-  ['topic_5',['Topic',['../structwxm_1_1WorksheetPreview.html#a506c05bcdfee84eaadde34c4e7c5f1e2',1,'wxm::WorksheetPreview']]]
+  ['topic_5',['Topic',['../structwxm_1_1WorksheetPreview.html#a506c05bcdfee84eaadde34c4e7c5f1e2',1,'wxm::WorksheetPreview']]],
+  ['troubleshootingcheck_6',['TroubleshootingCheck',['../TroubleshootingChecks_8h.html#a082761c0aafd576d6d834e49d52d159e',1,'wxm']]],
+  ['troubleshootingsection_7',['TroubleshootingSection',['../TroubleshootingChecks_8h.html#a3fa2b64c6302995a783fc02c8eb83442',1,'wxm']]],
+  ['troubleshootingstatus_8',['TroubleshootingStatus',['../TroubleshootingChecks_8h.html#a3fd549b8009542e938104c3887e5ecc3',1,'wxm']]]
 ];

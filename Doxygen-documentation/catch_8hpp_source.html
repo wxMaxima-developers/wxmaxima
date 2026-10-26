@@ -4953,9 +4953,9 @@ $(function() {
 <div class="line"><a id="l04917" name="l04917"></a><span class="lineno"> 4917</span>        <span class="keywordflow">for</span>( <span class="keywordtype">int</span> c = 0; c &lt; noClasses; c++ ) {</div>
 <div class="line"><a id="l04918" name="l04918"></a><span class="lineno"> 4918</span>            Class cls = classes[c];</div>
 <div class="line"><a id="l04919" name="l04919"></a><span class="lineno"> 4919</span>            {</div>
-<div class="line"><a id="l04920" name="l04920"></a><span class="lineno"> 4920</span>                u_int count;</div>
+<div class="line"><a id="l04920" name="l04920"></a><span class="lineno"> 4920</span>                u_int <a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a082761c0aafd576d6d834e49d52d159eae2942a04780e223b215eb8b663cf5353">count</a>;</div>
 <div class="line"><a id="l04921" name="l04921"></a><span class="lineno"> 4921</span>                Method* methods = class_copyMethodList( cls, &amp;count );</div>
-<div class="line"><a id="l04922" name="l04922"></a><span class="lineno"> 4922</span>                <span class="keywordflow">for</span>( u_int m = 0; m &lt; count ; m++ ) {</div>
+<div class="line"><a id="l04922" name="l04922"></a><span class="lineno"> 4922</span>                <span class="keywordflow">for</span>( u_int m = 0; m &lt; <a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a082761c0aafd576d6d834e49d52d159eae2942a04780e223b215eb8b663cf5353">count</a> ; m++ ) {</div>
 <div class="line"><a id="l04923" name="l04923"></a><span class="lineno"> 4923</span>                    <span class="keywordtype">SEL</span> selector = method_getName(methods[m]);</div>
 <div class="line"><a id="l04924" name="l04924"></a><span class="lineno"> 4924</span>                    std::string methodName = sel_getName(selector);</div>
 <div class="line"><a id="l04925" name="l04925"></a><span class="lineno"> 4925</span>                    <span class="keywordflow">if</span>( startsWith( methodName, <span class="stringliteral">&quot;Catch_TestCase_&quot;</span> ) ) {</div>
@@ -5659,7 +5659,7 @@ $(function() {
 <div class="line"><a id="l05624" name="l05624"></a><span class="lineno"> 5624</span> </div>
 <div class="line"><a id="l05625" name="l05625"></a><span class="lineno"> 5625</span>    <span class="keyword">template</span> &lt;<span class="keyword">class</span> Duration&gt;</div>
 <div class="line"><a id="l05626" name="l05626"></a><span class="lineno"> 5626</span>    <span class="keyword">struct </span>BenchmarkStats {</div>
-<div class="line"><a id="l05627" name="l05627"></a><span class="lineno"> 5627</span>        BenchmarkInfo info;</div>
+<div class="line"><a id="l05627" name="l05627"></a><span class="lineno"> 5627</span>        BenchmarkInfo <a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a3fd549b8009542e938104c3887e5ecc3acaf9b6b99962bf5c2264824231d7a40c">info</a>;</div>
 <div class="line"><a id="l05628" name="l05628"></a><span class="lineno"> 5628</span> </div>
 <div class="line"><a id="l05629" name="l05629"></a><span class="lineno"> 5629</span>        std::vector&lt;Duration&gt; samples;</div>
 <div class="line"><a id="l05630" name="l05630"></a><span class="lineno"> 5630</span>        Benchmark::Estimate&lt;Duration&gt; mean;</div>
@@ -5673,7 +5673,7 @@ $(function() {
 <div class="line"><a id="l05638" name="l05638"></a><span class="lineno"> 5638</span>            samples2.reserve(samples.size());</div>
 <div class="line"><a id="l05639" name="l05639"></a><span class="lineno"> 5639</span>            std::transform(samples.begin(), samples.end(), std::back_inserter(samples2), [](Duration d) { return Duration2(d); });</div>
 <div class="line"><a id="l05640" name="l05640"></a><span class="lineno"> 5640</span>            <span class="keywordflow">return</span> {</div>
-<div class="line"><a id="l05641" name="l05641"></a><span class="lineno"> 5641</span>                info,</div>
+<div class="line"><a id="l05641" name="l05641"></a><span class="lineno"> 5641</span>                <a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a3fd549b8009542e938104c3887e5ecc3acaf9b6b99962bf5c2264824231d7a40c">info</a>,</div>
 <div class="line"><a id="l05642" name="l05642"></a><span class="lineno"> 5642</span>                std::move(samples2),</div>
 <div class="line"><a id="l05643" name="l05643"></a><span class="lineno"> 5643</span>                mean,</div>
 <div class="line"><a id="l05644" name="l05644"></a><span class="lineno"> 5644</span>                standardDeviation,</div>
@@ -5775,7 +5775,7 @@ $(function() {
 <div class="line"><a id="l05741" name="l05741"></a><span class="lineno"> 5741</span>            stream( _config.stream() )</div>
 <div class="line"><a id="l05742" name="l05742"></a><span class="lineno"> 5742</span>        {</div>
 <div class="line"><a id="l05743" name="l05743"></a><span class="lineno"> 5743</span>            m_reporterPrefs.shouldRedirectStdOut = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l05744" name="l05744"></a><span class="lineno"> 5744</span>            <span class="keywordflow">if</span>( !DerivedT::getSupportedVerbosities().count( m_config-&gt;verbosity() ) )</div>
+<div class="line"><a id="l05744" name="l05744"></a><span class="lineno"> 5744</span>            <span class="keywordflow">if</span>( !DerivedT::getSupportedVerbosities().<a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a082761c0aafd576d6d834e49d52d159eae2942a04780e223b215eb8b663cf5353">count</a>( m_config-&gt;verbosity() ) )</div>
 <div class="line"><a id="l05745" name="l05745"></a><span class="lineno"> 5745</span>                CATCH_ERROR( <span class="stringliteral">&quot;Verbosity level not supported by this reporter&quot;</span> );</div>
 <div class="line"><a id="l05746" name="l05746"></a><span class="lineno"> 5746</span>        }</div>
 <div class="line"><a id="l05747" name="l05747"></a><span class="lineno"> 5747</span> </div>
@@ -5892,7 +5892,7 @@ $(function() {
 <div class="line"><a id="l05858" name="l05858"></a><span class="lineno"> 5858</span>            stream( _config.stream() )</div>
 <div class="line"><a id="l05859" name="l05859"></a><span class="lineno"> 5859</span>        {</div>
 <div class="line"><a id="l05860" name="l05860"></a><span class="lineno"> 5860</span>            m_reporterPrefs.shouldRedirectStdOut = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l05861" name="l05861"></a><span class="lineno"> 5861</span>            <span class="keywordflow">if</span>( !DerivedT::getSupportedVerbosities().count( m_config-&gt;verbosity() ) )</div>
+<div class="line"><a id="l05861" name="l05861"></a><span class="lineno"> 5861</span>            <span class="keywordflow">if</span>( !DerivedT::getSupportedVerbosities().<a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a082761c0aafd576d6d834e49d52d159eae2942a04780e223b215eb8b663cf5353">count</a>( m_config-&gt;verbosity() ) )</div>
 <div class="line"><a id="l05862" name="l05862"></a><span class="lineno"> 5862</span>                CATCH_ERROR( <span class="stringliteral">&quot;Verbosity level not supported by this reporter&quot;</span> );</div>
 <div class="line"><a id="l05863" name="l05863"></a><span class="lineno"> 5863</span>        }</div>
 <div class="line"><a id="l05864" name="l05864"></a><span class="lineno"> 5864</span>        ~CumulativeReporterBase() <span class="keyword">override</span> = <span class="keywordflow">default</span>;</div>
@@ -7017,9 +7017,9 @@ $(function() {
 <div class="line"><a id="l06990" name="l06990"></a><span class="lineno"> 6990</span> </div>
 <div class="line"><a id="l06991" name="l06991"></a><span class="lineno"> 6991</span>            <span class="keyword">template</span> &lt;<span class="keyword">typename</span> Iterator&gt;</div>
 <div class="line"><a id="l06992" name="l06992"></a><span class="lineno"> 6992</span>            <span class="keywordtype">double</span> mean(Iterator first, Iterator last) {</div>
-<div class="line"><a id="l06993" name="l06993"></a><span class="lineno"> 6993</span>                <span class="keyword">auto</span> count = last - first;</div>
+<div class="line"><a id="l06993" name="l06993"></a><span class="lineno"> 6993</span>                <span class="keyword">auto</span> <a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a082761c0aafd576d6d834e49d52d159eae2942a04780e223b215eb8b663cf5353">count</a> = last - first;</div>
 <div class="line"><a id="l06994" name="l06994"></a><span class="lineno"> 6994</span>                <span class="keywordtype">double</span> sum = std::accumulate(first, last, 0.);</div>
-<div class="line"><a id="l06995" name="l06995"></a><span class="lineno"> 6995</span>                <span class="keywordflow">return</span> sum / count;</div>
+<div class="line"><a id="l06995" name="l06995"></a><span class="lineno"> 6995</span>                <span class="keywordflow">return</span> sum / <a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a082761c0aafd576d6d834e49d52d159eae2942a04780e223b215eb8b663cf5353">count</a>;</div>
 <div class="line"><a id="l06996" name="l06996"></a><span class="lineno"> 6996</span>            }</div>
 <div class="line"><a id="l06997" name="l06997"></a><span class="lineno"> 6997</span> </div>
 <div class="line"><a id="l06998" name="l06998"></a><span class="lineno"> 6998</span>            <span class="keyword">template</span> &lt;<span class="keyword">typename</span> URng, <span class="keyword">typename</span> Iterator, <span class="keyword">typename</span> Estimator&gt;</div>
@@ -7184,7 +7184,7 @@ $(function() {
 <div class="line"><a id="l07157" name="l07157"></a><span class="lineno"> 7157</span>                <span class="keywordtype">int</span> nsamples = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(std::ceil(time_limit / r.elapsed));</div>
 <div class="line"><a id="l07158" name="l07158"></a><span class="lineno"> 7158</span>                times.reserve(nsamples);</div>
 <div class="line"><a id="l07159" name="l07159"></a><span class="lineno"> 7159</span>                std::generate_n(std::back_inserter(times), nsamples, [time_clock, &amp;r] {</div>
-<div class="line"><a id="l07160" name="l07160"></a><span class="lineno"> 7160</span>                    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>((time_clock(r.iterations) / r.iterations).count());</div>
+<div class="line"><a id="l07160" name="l07160"></a><span class="lineno"> 7160</span>                    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>((time_clock(r.iterations) / r.iterations).<a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a082761c0aafd576d6d834e49d52d159eae2942a04780e223b215eb8b663cf5353">count</a>());</div>
 <div class="line"><a id="l07161" name="l07161"></a><span class="lineno"> 7161</span>                });</div>
 <div class="line"><a id="l07162" name="l07162"></a><span class="lineno"> 7162</span>                <span class="keywordflow">return</span> {</div>
 <div class="line"><a id="l07163" name="l07163"></a><span class="lineno"> 7163</span>                    FloatDuration&lt;Clock&gt;(mean(times.begin(), times.end())),</div>
@@ -7352,7 +7352,7 @@ $(function() {
 <div class="line"><a id="l07325" name="l07325"></a><span class="lineno"> 7325</span>                        <span class="keywordflow">return</span> prepare&lt;Clock&gt;(*cfg, env);</div>
 <div class="line"><a id="l07326" name="l07326"></a><span class="lineno"> 7326</span>                    });</div>
 <div class="line"><a id="l07327" name="l07327"></a><span class="lineno"> 7327</span> </div>
-<div class="line"><a id="l07328" name="l07328"></a><span class="lineno"> 7328</span>                    BenchmarkInfo info {</div>
+<div class="line"><a id="l07328" name="l07328"></a><span class="lineno"> 7328</span>                    BenchmarkInfo <a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a3fd549b8009542e938104c3887e5ecc3acaf9b6b99962bf5c2264824231d7a40c">info</a> {</div>
 <div class="line"><a id="l07329" name="l07329"></a><span class="lineno"> 7329</span>                        name,</div>
 <div class="line"><a id="l07330" name="l07330"></a><span class="lineno"> 7330</span>                        plan.estimated_duration.count(),</div>
 <div class="line"><a id="l07331" name="l07331"></a><span class="lineno"> 7331</span>                        plan.iterations_per_sample,</div>
@@ -7369,7 +7369,7 @@ $(function() {
 <div class="line"><a id="l07342" name="l07342"></a><span class="lineno"> 7342</span>                    });</div>
 <div class="line"><a id="l07343" name="l07343"></a><span class="lineno"> 7343</span> </div>
 <div class="line"><a id="l07344" name="l07344"></a><span class="lineno"> 7344</span>                    <span class="keyword">auto</span> analysis = Detail::analyse(*cfg, env, samples.begin(), samples.end());</div>
-<div class="line"><a id="l07345" name="l07345"></a><span class="lineno"> 7345</span>                    BenchmarkStats&lt;FloatDuration&lt;Clock&gt;&gt; stats{ info, analysis.samples, analysis.mean, analysis.standard_deviation, analysis.outliers, analysis.outlier_variance };</div>
+<div class="line"><a id="l07345" name="l07345"></a><span class="lineno"> 7345</span>                    BenchmarkStats&lt;FloatDuration&lt;Clock&gt;&gt; stats{ <a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a3fd549b8009542e938104c3887e5ecc3acaf9b6b99962bf5c2264824231d7a40c">info</a>, analysis.samples, analysis.mean, analysis.standard_deviation, analysis.outliers, analysis.outlier_variance };</div>
 <div class="line"><a id="l07346" name="l07346"></a><span class="lineno"> 7346</span>                    getResultCapture().benchmarkEnded(stats);</div>
 <div class="line"><a id="l07347" name="l07347"></a><span class="lineno"> 7347</span> </div>
 <div class="line"><a id="l07348" name="l07348"></a><span class="lineno"> 7348</span>                } CATCH_CATCH_ALL{</div>
@@ -7775,8 +7775,8 @@ $(function() {
 <div class="line"><a id="l07750" name="l07750"></a><span class="lineno"> 7750</span>        <span class="keyword">namespace </span>Detail {</div>
 <div class="line"><a id="l07751" name="l07751"></a><span class="lineno"> 7751</span> </div>
 <div class="line"><a id="l07752" name="l07752"></a><span class="lineno"> 7752</span>            <span class="keywordtype">double</span> weighted_average_quantile(<span class="keywordtype">int</span> k, <span class="keywordtype">int</span> q, std::vector&lt;double&gt;::iterator first, std::vector&lt;double&gt;::iterator last) {</div>
-<div class="line"><a id="l07753" name="l07753"></a><span class="lineno"> 7753</span>                <span class="keyword">auto</span> count = last - first;</div>
-<div class="line"><a id="l07754" name="l07754"></a><span class="lineno"> 7754</span>                <span class="keywordtype">double</span> idx = (count - 1) * k / static_cast&lt;double&gt;(q);</div>
+<div class="line"><a id="l07753" name="l07753"></a><span class="lineno"> 7753</span>                <span class="keyword">auto</span> <a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a082761c0aafd576d6d834e49d52d159eae2942a04780e223b215eb8b663cf5353">count</a> = last - first;</div>
+<div class="line"><a id="l07754" name="l07754"></a><span class="lineno"> 7754</span>                <span class="keywordtype">double</span> idx = (<a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a082761c0aafd576d6d834e49d52d159eae2942a04780e223b215eb8b663cf5353">count</a> - 1) * k / static_cast&lt;double&gt;(q);</div>
 <div class="line"><a id="l07755" name="l07755"></a><span class="lineno"> 7755</span>                <span class="keywordtype">int</span> j = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(idx);</div>
 <div class="line"><a id="l07756" name="l07756"></a><span class="lineno"> 7756</span>                <span class="keywordtype">double</span> g = idx - j;</div>
 <div class="line"><a id="l07757" name="l07757"></a><span class="lineno"> 7757</span>                std::nth_element(first, first + j, last);</div>
@@ -8330,7 +8330,7 @@ $(function() {
 <div class="line"><a id="l08307" name="l08307"></a><span class="lineno"> 8307</span>    }</div>
 <div class="line"><a id="l08308" name="l08308"></a><span class="lineno"> 8308</span> </div>
 <div class="line"><a id="l08309" name="l08309"></a><span class="lineno"> 8309</span>    AssertionResult::AssertionResult( AssertionInfo <span class="keyword">const</span>&amp; info, AssertionResultData <span class="keyword">const</span>&amp; data )</div>
-<div class="line"><a id="l08310" name="l08310"></a><span class="lineno"> 8310</span>    :   m_info( info ),</div>
+<div class="line"><a id="l08310" name="l08310"></a><span class="lineno"> 8310</span>    :   m_info( <a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a3fd549b8009542e938104c3887e5ecc3acaf9b6b99962bf5c2264824231d7a40c">info</a> ),</div>
 <div class="line"><a id="l08311" name="l08311"></a><span class="lineno"> 8311</span>        m_resultData( data )</div>
 <div class="line"><a id="l08312" name="l08312"></a><span class="lineno"> 8312</span>    {}</div>
 <div class="line"><a id="l08313" name="l08313"></a><span class="lineno"> 8313</span> </div>
@@ -8932,7 +8932,7 @@ $(function() {
 <div class="line"><a id="l08909" name="l08909"></a><span class="lineno"> 8909</span>            <span class="keywordflow">return</span> !m_tokenBuffer.empty() || it != itEnd;</div>
 <div class="line"><a id="l08910" name="l08910"></a><span class="lineno"> 8910</span>        }</div>
 <div class="line"><a id="l08911" name="l08911"></a><span class="lineno"> 8911</span> </div>
-<div class="line"><a id="l08912" name="l08912"></a><span class="lineno"> 8912</span>        <span class="keyword">auto</span> count() const -&gt; <span class="keywordtype">size_t</span> { <span class="keywordflow">return</span> m_tokenBuffer.size() + (itEnd - it); }</div>
+<div class="line"><a id="l08912" name="l08912"></a><span class="lineno"> 8912</span>        <span class="keyword">auto</span> <a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a082761c0aafd576d6d834e49d52d159eae2942a04780e223b215eb8b663cf5353">count</a>() const -&gt; <span class="keywordtype">size_t</span> { <span class="keywordflow">return</span> m_tokenBuffer.size() + (itEnd - it); }</div>
 <div class="line"><a id="l08913" name="l08913"></a><span class="lineno"> 8913</span> </div>
 <div class="line"><a id="l08914" name="l08914"></a><span class="lineno"> 8914</span>        <span class="keyword">auto</span> operator*() const -&gt; Token {</div>
 <div class="line"><a id="l08915" name="l08915"></a><span class="lineno"> 8915</span>            assert( !m_tokenBuffer.empty() );</div>
@@ -9028,8 +9028,8 @@ $(function() {
 <div class="line"><a id="l09005" name="l09005"></a><span class="lineno"> 9005</span>        }</div>
 <div class="line"><a id="l09006" name="l09006"></a><span class="lineno"> 9006</span> </div>
 <div class="line"><a id="l09007" name="l09007"></a><span class="lineno"> 9007</span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> U&gt;</div>
-<div class="line"><a id="l09008" name="l09008"></a><span class="lineno"> 9008</span>        <span class="keyword">static</span> <span class="keyword">auto</span> ok( U <span class="keyword">const</span> &amp;value ) -&gt; BasicResult { <span class="keywordflow">return</span> { ResultBase::Ok, value }; }</div>
-<div class="line"><a id="l09009" name="l09009"></a><span class="lineno"> 9009</span>        <span class="keyword">static</span> <span class="keyword">auto</span> ok() -&gt; BasicResult { <span class="keywordflow">return</span> { ResultBase::Ok }; }</div>
+<div class="line"><a id="l09008" name="l09008"></a><span class="lineno"> 9008</span>        <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a3fd549b8009542e938104c3887e5ecc3a444bcb3a3fcf8389296c49467f27e1d6">ok</a>( U <span class="keyword">const</span> &amp;value ) -&gt; BasicResult { <span class="keywordflow">return</span> { ResultBase::Ok, value }; }</div>
+<div class="line"><a id="l09009" name="l09009"></a><span class="lineno"> 9009</span>        <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a3fd549b8009542e938104c3887e5ecc3a444bcb3a3fcf8389296c49467f27e1d6">ok</a>() -&gt; BasicResult { <span class="keywordflow">return</span> { ResultBase::Ok }; }</div>
 <div class="line"><a id="l09010" name="l09010"></a><span class="lineno"> 9010</span>        <span class="keyword">static</span> <span class="keyword">auto</span> logicError( std::string <span class="keyword">const</span> &amp;message ) -&gt; BasicResult { <span class="keywordflow">return</span> { ResultBase::LogicError, message }; }</div>
 <div class="line"><a id="l09011" name="l09011"></a><span class="lineno"> 9011</span>        <span class="keyword">static</span> <span class="keyword">auto</span> runtimeError( std::string <span class="keyword">const</span> &amp;message ) -&gt; BasicResult { <span class="keywordflow">return</span> { ResultBase::RuntimeError, message }; }</div>
 <div class="line"><a id="l09012" name="l09012"></a><span class="lineno"> 9012</span> </div>
@@ -9623,7 +9623,7 @@ $(function() {
 <div class="line"><a id="l09600" name="l09600"></a><span class="lineno"> 9600</span> </div>
 <div class="line"><a id="l09601" name="l09601"></a><span class="lineno"> 9601</span>            <span class="keyword">struct </span>ParserInfo {</div>
 <div class="line"><a id="l09602" name="l09602"></a><span class="lineno"> 9602</span>                ParserBase <span class="keyword">const</span>* parser = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l09603" name="l09603"></a><span class="lineno"> 9603</span>                <span class="keywordtype">size_t</span> count = 0;</div>
+<div class="line"><a id="l09603" name="l09603"></a><span class="lineno"> 9603</span>                <span class="keywordtype">size_t</span> <a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a082761c0aafd576d6d834e49d52d159eae2942a04780e223b215eb8b663cf5353">count</a> = 0;</div>
 <div class="line"><a id="l09604" name="l09604"></a><span class="lineno"> 9604</span>            };</div>
 <div class="line"><a id="l09605" name="l09605"></a><span class="lineno"> 9605</span>            <span class="keyword">const</span> <span class="keywordtype">size_t</span> totalParsers = m_options.size() + m_args.size();</div>
 <div class="line"><a id="l09606" name="l09606"></a><span class="lineno"> 9606</span>            assert( totalParsers &lt; 512 );</div>
@@ -9727,7 +9727,7 @@ $(function() {
 <div class="line"><a id="l09704" name="l09704"></a><span class="lineno"> 9704</span> </div>
 <div class="line"><a id="l09705" name="l09705"></a><span class="lineno"> 9705</span>        <span class="keyword">using namespace </span>clara;</div>
 <div class="line"><a id="l09706" name="l09706"></a><span class="lineno"> 9706</span> </div>
-<div class="line"><a id="l09707" name="l09707"></a><span class="lineno"> 9707</span>        <span class="keyword">auto</span> <span class="keyword">const</span> setWarning = [&amp;]( std::string <span class="keyword">const</span>&amp; warning ) {</div>
+<div class="line"><a id="l09707" name="l09707"></a><span class="lineno"> 9707</span>        <span class="keyword">auto</span> <span class="keyword">const</span> setWarning = [&amp;]( std::string <span class="keyword">const</span>&amp; <a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a3fd549b8009542e938104c3887e5ecc3a7b83d3f08fa392b79e3f553b585971cd">warning</a> ) {</div>
 <div class="line"><a id="l09708" name="l09708"></a><span class="lineno"> 9708</span>                <span class="keyword">auto</span> warningSet = [&amp;]() {</div>
 <div class="line"><a id="l09709" name="l09709"></a><span class="lineno"> 9709</span>                    <span class="keywordflow">if</span>( warning == <span class="stringliteral">&quot;NoAssertions&quot;</span> )</div>
 <div class="line"><a id="l09710" name="l09710"></a><span class="lineno"> 9710</span>                        <span class="keywordflow">return</span> WarnAbout::NoAssertions;</div>
@@ -9952,9 +9952,9 @@ $(function() {
 <div class="line"><a id="l09929" name="l09929"></a><span class="lineno"> 9929</span> </div>
 <div class="line"><a id="l09930" name="l09930"></a><span class="lineno"> 9930</span>    std::ostream&amp; operator &lt;&lt; ( std::ostream&amp; os, SourceLineInfo <span class="keyword">const</span>&amp; info ) {</div>
 <div class="line"><a id="l09931" name="l09931"></a><span class="lineno"> 9931</span><span class="preprocessor">#ifndef __GNUG__</span></div>
-<div class="line"><a id="l09932" name="l09932"></a><span class="lineno"> 9932</span>        os &lt;&lt; info.file &lt;&lt; <span class="charliteral">&#39;(&#39;</span> &lt;&lt; info.line &lt;&lt; <span class="charliteral">&#39;)&#39;</span>;</div>
+<div class="line"><a id="l09932" name="l09932"></a><span class="lineno"> 9932</span>        os &lt;&lt; <a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a3fd549b8009542e938104c3887e5ecc3acaf9b6b99962bf5c2264824231d7a40c">info</a>.file &lt;&lt; <span class="charliteral">&#39;(&#39;</span> &lt;&lt; <a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a3fd549b8009542e938104c3887e5ecc3acaf9b6b99962bf5c2264824231d7a40c">info</a>.line &lt;&lt; <span class="charliteral">&#39;)&#39;</span>;</div>
 <div class="line"><a id="l09933" name="l09933"></a><span class="lineno"> 9933</span><span class="preprocessor">#else</span></div>
-<div class="line"><a id="l09934" name="l09934"></a><span class="lineno"> 9934</span>        os &lt;&lt; info.file &lt;&lt; <span class="charliteral">&#39;:&#39;</span> &lt;&lt; info.line;</div>
+<div class="line"><a id="l09934" name="l09934"></a><span class="lineno"> 9934</span>        os &lt;&lt; <a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a3fd549b8009542e938104c3887e5ecc3acaf9b6b99962bf5c2264824231d7a40c">info</a>.file &lt;&lt; <span class="charliteral">&#39;:&#39;</span> &lt;&lt; <a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a3fd549b8009542e938104c3887e5ecc3acaf9b6b99962bf5c2264824231d7a40c">info</a>.line;</div>
 <div class="line"><a id="l09935" name="l09935"></a><span class="lineno"> 9935</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l09936" name="l09936"></a><span class="lineno"> 9936</span>        <span class="keywordflow">return</span> os;</div>
 <div class="line"><a id="l09937" name="l09937"></a><span class="lineno"> 9937</span>    }</div>
@@ -10441,13 +10441,13 @@ $(function() {
 <div class="line"><a id="l10418" name="l10418"></a><span class="lineno">10418</span>        <span class="comment">// running under the debugger or has a debugger attached post facto).</span></div>
 <div class="line"><a id="l10419" name="l10419"></a><span class="lineno">10419</span>        <span class="keywordtype">bool</span> isDebuggerActive(){</div>
 <div class="line"><a id="l10420" name="l10420"></a><span class="lineno">10420</span>            <span class="keywordtype">int</span>                 mib[4];</div>
-<div class="line"><a id="l10421" name="l10421"></a><span class="lineno">10421</span>            <span class="keyword">struct </span>kinfo_proc   info;</div>
+<div class="line"><a id="l10421" name="l10421"></a><span class="lineno">10421</span>            <span class="keyword">struct </span>kinfo_proc   <a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a3fd549b8009542e938104c3887e5ecc3acaf9b6b99962bf5c2264824231d7a40c">info</a>;</div>
 <div class="line"><a id="l10422" name="l10422"></a><span class="lineno">10422</span>            std::size_t         size;</div>
 <div class="line"><a id="l10423" name="l10423"></a><span class="lineno">10423</span> </div>
 <div class="line"><a id="l10424" name="l10424"></a><span class="lineno">10424</span>            <span class="comment">// Initialize the flags so that, if sysctl fails for some bizarre</span></div>
 <div class="line"><a id="l10425" name="l10425"></a><span class="lineno">10425</span>            <span class="comment">// reason, we get a predictable result.</span></div>
 <div class="line"><a id="l10426" name="l10426"></a><span class="lineno">10426</span> </div>
-<div class="line"><a id="l10427" name="l10427"></a><span class="lineno">10427</span>            info.kp_proc.p_flag = 0;</div>
+<div class="line"><a id="l10427" name="l10427"></a><span class="lineno">10427</span>            <a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a3fd549b8009542e938104c3887e5ecc3acaf9b6b99962bf5c2264824231d7a40c">info</a>.kp_proc.p_flag = 0;</div>
 <div class="line"><a id="l10428" name="l10428"></a><span class="lineno">10428</span> </div>
 <div class="line"><a id="l10429" name="l10429"></a><span class="lineno">10429</span>            <span class="comment">// Initialize mib, which tells sysctl the info we want, in this case</span></div>
 <div class="line"><a id="l10430" name="l10430"></a><span class="lineno">10430</span>            <span class="comment">// we&#39;re looking for information about a specific process ID.</span></div>
@@ -10459,7 +10459,7 @@ $(function() {
 <div class="line"><a id="l10436" name="l10436"></a><span class="lineno">10436</span> </div>
 <div class="line"><a id="l10437" name="l10437"></a><span class="lineno">10437</span>            <span class="comment">// Call sysctl.</span></div>
 <div class="line"><a id="l10438" name="l10438"></a><span class="lineno">10438</span> </div>
-<div class="line"><a id="l10439" name="l10439"></a><span class="lineno">10439</span>            size = <span class="keyword">sizeof</span>(info);</div>
+<div class="line"><a id="l10439" name="l10439"></a><span class="lineno">10439</span>            size = <span class="keyword">sizeof</span>(<a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a3fd549b8009542e938104c3887e5ecc3acaf9b6b99962bf5c2264824231d7a40c">info</a>);</div>
 <div class="line"><a id="l10440" name="l10440"></a><span class="lineno">10440</span>            <span class="keywordflow">if</span>( sysctl(mib, <span class="keyword">sizeof</span>(mib) / <span class="keyword">sizeof</span>(*mib), &amp;info, &amp;size, <span class="keyword">nullptr</span>, 0) != 0 ) {</div>
 <div class="line"><a id="l10441" name="l10441"></a><span class="lineno">10441</span>                Catch::cerr() &lt;&lt; <span class="stringliteral">&quot;\n** Call to sysctl failed - unable to determine if debugger is active **\n&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a id="l10442" name="l10442"></a><span class="lineno">10442</span>                <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
@@ -10467,7 +10467,7 @@ $(function() {
 <div class="line"><a id="l10444" name="l10444"></a><span class="lineno">10444</span> </div>
 <div class="line"><a id="l10445" name="l10445"></a><span class="lineno">10445</span>            <span class="comment">// We&#39;re being debugged if the P_TRACED flag is set.</span></div>
 <div class="line"><a id="l10446" name="l10446"></a><span class="lineno">10446</span> </div>
-<div class="line"><a id="l10447" name="l10447"></a><span class="lineno">10447</span>            <span class="keywordflow">return</span> ( (info.kp_proc.p_flag &amp; P_TRACED) != 0 );</div>
+<div class="line"><a id="l10447" name="l10447"></a><span class="lineno">10447</span>            <span class="keywordflow">return</span> ( (<a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a3fd549b8009542e938104c3887e5ecc3acaf9b6b99962bf5c2264824231d7a40c">info</a>.kp_proc.p_flag &amp; P_TRACED) != 0 );</div>
 <div class="line"><a id="l10448" name="l10448"></a><span class="lineno">10448</span>        }</div>
 <div class="line"><a id="l10449" name="l10449"></a><span class="lineno">10449</span><span class="preprocessor">        #else</span></div>
 <div class="line"><a id="l10450" name="l10450"></a><span class="lineno">10450</span>        <span class="keywordtype">bool</span> isDebuggerActive() {</div>
@@ -11247,7 +11247,7 @@ $(function() {
 <div class="line"><a id="l11228" name="l11228"></a><span class="lineno">11228</span>        std::string all() <span class="keyword">const</span>;</div>
 <div class="line"><a id="l11229" name="l11229"></a><span class="lineno">11229</span> </div>
 <div class="line"><a id="l11230" name="l11230"></a><span class="lineno">11230</span>        std::set&lt;std::string&gt; spellings;</div>
-<div class="line"><a id="l11231" name="l11231"></a><span class="lineno">11231</span>        std::size_t count = 0;</div>
+<div class="line"><a id="l11231" name="l11231"></a><span class="lineno">11231</span>        std::size_t <a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a082761c0aafd576d6d834e49d52d159eae2942a04780e223b215eb8b663cf5353">count</a> = 0;</div>
 <div class="line"><a id="l11232" name="l11232"></a><span class="lineno">11232</span>    };</div>
 <div class="line"><a id="l11233" name="l11233"></a><span class="lineno">11233</span> </div>
 <div class="line"><a id="l11234" name="l11234"></a><span class="lineno">11234</span>    std::size_t listTags( Config <span class="keyword">const</span>&amp; config );</div>
@@ -11324,7 +11324,7 @@ $(function() {
 <div class="line"><a id="l11305" name="l11305"></a><span class="lineno">11305</span>    }</div>
 <div class="line"><a id="l11306" name="l11306"></a><span class="lineno">11306</span> </div>
 <div class="line"><a id="l11307" name="l11307"></a><span class="lineno">11307</span>    <span class="keywordtype">void</span> TagInfo::add( std::string <span class="keyword">const</span>&amp; spelling ) {</div>
-<div class="line"><a id="l11308" name="l11308"></a><span class="lineno">11308</span>        ++count;</div>
+<div class="line"><a id="l11308" name="l11308"></a><span class="lineno">11308</span>        ++<a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a082761c0aafd576d6d834e49d52d159eae2942a04780e223b215eb8b663cf5353">count</a>;</div>
 <div class="line"><a id="l11309" name="l11309"></a><span class="lineno">11309</span>        spellings.insert( spelling );</div>
 <div class="line"><a id="l11310" name="l11310"></a><span class="lineno">11310</span>    }</div>
 <div class="line"><a id="l11311" name="l11311"></a><span class="lineno">11311</span> </div>
@@ -12238,8 +12238,8 @@ $(function() {
 <div class="line"><a id="l12221" name="l12221"></a><span class="lineno">12221</span>        <span class="comment">// Safe rotr implementation thanks to John Regehr</span></div>
 <div class="line"><a id="l12222" name="l12222"></a><span class="lineno">12222</span>        uint32_t rotate_right(uint32_t val, uint32_t count) {</div>
 <div class="line"><a id="l12223" name="l12223"></a><span class="lineno">12223</span>            <span class="keyword">const</span> uint32_t mask = 31;</div>
-<div class="line"><a id="l12224" name="l12224"></a><span class="lineno">12224</span>            count &amp;= mask;</div>
-<div class="line"><a id="l12225" name="l12225"></a><span class="lineno">12225</span>            <span class="keywordflow">return</span> (val &gt;&gt; count) | (val &lt;&lt; (-count &amp; mask));</div>
+<div class="line"><a id="l12224" name="l12224"></a><span class="lineno">12224</span>            <a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a082761c0aafd576d6d834e49d52d159eae2942a04780e223b215eb8b663cf5353">count</a> &amp;= mask;</div>
+<div class="line"><a id="l12225" name="l12225"></a><span class="lineno">12225</span>            <span class="keywordflow">return</span> (val &gt;&gt; count) | (val &lt;&lt; (-<a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a082761c0aafd576d6d834e49d52d159eae2942a04780e223b215eb8b663cf5353">count</a> &amp; mask));</div>
 <div class="line"><a id="l12226" name="l12226"></a><span class="lineno">12226</span>        }</div>
 <div class="line"><a id="l12227" name="l12227"></a><span class="lineno">12227</span> </div>
 <div class="line"><a id="l12228" name="l12228"></a><span class="lineno">12228</span><span class="preprocessor">#if defined(_MSC_VER)</span></div>
@@ -13059,7 +13059,7 @@ $(function() {
 <div class="line"><a id="l13044" name="l13044"></a><span class="lineno">13044</span>    ) {</div>
 <div class="line"><a id="l13045" name="l13045"></a><span class="lineno">13045</span>        m_reporter-&gt;assertionStarting( info );</div>
 <div class="line"><a id="l13046" name="l13046"></a><span class="lineno">13046</span> </div>
-<div class="line"><a id="l13047" name="l13047"></a><span class="lineno">13047</span>        <span class="keywordtype">bool</span> negated = isFalseTest( info.resultDisposition );</div>
+<div class="line"><a id="l13047" name="l13047"></a><span class="lineno">13047</span>        <span class="keywordtype">bool</span> negated = isFalseTest( <a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a3fd549b8009542e938104c3887e5ecc3acaf9b6b99962bf5c2264824231d7a40c">info</a>.resultDisposition );</div>
 <div class="line"><a id="l13048" name="l13048"></a><span class="lineno">13048</span>        <span class="keywordtype">bool</span> result = expr.getResult() != negated;</div>
 <div class="line"><a id="l13049" name="l13049"></a><span class="lineno">13049</span> </div>
 <div class="line"><a id="l13050" name="l13050"></a><span class="lineno">13050</span>        <span class="keywordflow">if</span>( result ) {</div>
@@ -13081,10 +13081,10 @@ $(function() {
 <div class="line"><a id="l13066" name="l13066"></a><span class="lineno">13066</span>            ITransientExpression <span class="keyword">const</span> *expr,</div>
 <div class="line"><a id="l13067" name="l13067"></a><span class="lineno">13067</span>            <span class="keywordtype">bool</span> negated ) {</div>
 <div class="line"><a id="l13068" name="l13068"></a><span class="lineno">13068</span> </div>
-<div class="line"><a id="l13069" name="l13069"></a><span class="lineno">13069</span>        m_lastAssertionInfo = info;</div>
+<div class="line"><a id="l13069" name="l13069"></a><span class="lineno">13069</span>        m_lastAssertionInfo = <a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a3fd549b8009542e938104c3887e5ecc3acaf9b6b99962bf5c2264824231d7a40c">info</a>;</div>
 <div class="line"><a id="l13070" name="l13070"></a><span class="lineno">13070</span>        AssertionResultData data( resultType, LazyExpression( negated ) );</div>
 <div class="line"><a id="l13071" name="l13071"></a><span class="lineno">13071</span> </div>
-<div class="line"><a id="l13072" name="l13072"></a><span class="lineno">13072</span>        AssertionResult assertionResult{ info, data };</div>
+<div class="line"><a id="l13072" name="l13072"></a><span class="lineno">13072</span>        AssertionResult assertionResult{ <a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a3fd549b8009542e938104c3887e5ecc3acaf9b6b99962bf5c2264824231d7a40c">info</a>, data };</div>
 <div class="line"><a id="l13073" name="l13073"></a><span class="lineno">13073</span>        assertionResult.m_resultData.lazyExpression.m_transientExpression = expr;</div>
 <div class="line"><a id="l13074" name="l13074"></a><span class="lineno">13074</span> </div>
 <div class="line"><a id="l13075" name="l13075"></a><span class="lineno">13075</span>        assertionEnded( assertionResult );</div>
@@ -13098,7 +13098,7 @@ $(function() {
 <div class="line"><a id="l13083" name="l13083"></a><span class="lineno">13083</span>    ) {</div>
 <div class="line"><a id="l13084" name="l13084"></a><span class="lineno">13084</span>        m_reporter-&gt;assertionStarting( info );</div>
 <div class="line"><a id="l13085" name="l13085"></a><span class="lineno">13085</span> </div>
-<div class="line"><a id="l13086" name="l13086"></a><span class="lineno">13086</span>        m_lastAssertionInfo = info;</div>
+<div class="line"><a id="l13086" name="l13086"></a><span class="lineno">13086</span>        m_lastAssertionInfo = <a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a3fd549b8009542e938104c3887e5ecc3acaf9b6b99962bf5c2264824231d7a40c">info</a>;</div>
 <div class="line"><a id="l13087" name="l13087"></a><span class="lineno">13087</span> </div>
 <div class="line"><a id="l13088" name="l13088"></a><span class="lineno">13088</span>        AssertionResultData data( resultType, LazyExpression( <span class="keyword">false</span> ) );</div>
 <div class="line"><a id="l13089" name="l13089"></a><span class="lineno">13089</span>        data.message = <span class="keyword">static_cast&lt;</span>std::string<span class="keyword">&gt;</span>(message);</div>
@@ -13119,11 +13119,11 @@ $(function() {
 <div class="line"><a id="l13104" name="l13104"></a><span class="lineno">13104</span>            std::string <span class="keyword">const</span>&amp; message,</div>
 <div class="line"><a id="l13105" name="l13105"></a><span class="lineno">13105</span>            AssertionReaction&amp; reaction</div>
 <div class="line"><a id="l13106" name="l13106"></a><span class="lineno">13106</span>    ) {</div>
-<div class="line"><a id="l13107" name="l13107"></a><span class="lineno">13107</span>        m_lastAssertionInfo = info;</div>
+<div class="line"><a id="l13107" name="l13107"></a><span class="lineno">13107</span>        m_lastAssertionInfo = <a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a3fd549b8009542e938104c3887e5ecc3acaf9b6b99962bf5c2264824231d7a40c">info</a>;</div>
 <div class="line"><a id="l13108" name="l13108"></a><span class="lineno">13108</span> </div>
 <div class="line"><a id="l13109" name="l13109"></a><span class="lineno">13109</span>        AssertionResultData data( ResultWas::ThrewException, LazyExpression( <span class="keyword">false</span> ) );</div>
 <div class="line"><a id="l13110" name="l13110"></a><span class="lineno">13110</span>        data.message = message;</div>
-<div class="line"><a id="l13111" name="l13111"></a><span class="lineno">13111</span>        AssertionResult assertionResult{ info, data };</div>
+<div class="line"><a id="l13111" name="l13111"></a><span class="lineno">13111</span>        AssertionResult assertionResult{ <a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a3fd549b8009542e938104c3887e5ecc3acaf9b6b99962bf5c2264824231d7a40c">info</a>, data };</div>
 <div class="line"><a id="l13112" name="l13112"></a><span class="lineno">13112</span>        assertionEnded( assertionResult );</div>
 <div class="line"><a id="l13113" name="l13113"></a><span class="lineno">13113</span>        populateReaction( reaction );</div>
 <div class="line"><a id="l13114" name="l13114"></a><span class="lineno">13114</span>    }</div>
@@ -13136,11 +13136,11 @@ $(function() {
 <div class="line"><a id="l13121" name="l13121"></a><span class="lineno">13121</span>    <span class="keywordtype">void</span> RunContext::handleIncomplete(</div>
 <div class="line"><a id="l13122" name="l13122"></a><span class="lineno">13122</span>            AssertionInfo <span class="keyword">const</span>&amp; info</div>
 <div class="line"><a id="l13123" name="l13123"></a><span class="lineno">13123</span>    ) {</div>
-<div class="line"><a id="l13124" name="l13124"></a><span class="lineno">13124</span>        m_lastAssertionInfo = info;</div>
+<div class="line"><a id="l13124" name="l13124"></a><span class="lineno">13124</span>        m_lastAssertionInfo = <a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a3fd549b8009542e938104c3887e5ecc3acaf9b6b99962bf5c2264824231d7a40c">info</a>;</div>
 <div class="line"><a id="l13125" name="l13125"></a><span class="lineno">13125</span> </div>
 <div class="line"><a id="l13126" name="l13126"></a><span class="lineno">13126</span>        AssertionResultData data( ResultWas::ThrewException, LazyExpression( <span class="keyword">false</span> ) );</div>
 <div class="line"><a id="l13127" name="l13127"></a><span class="lineno">13127</span>        data.message = <span class="stringliteral">&quot;Exception translation was disabled by CATCH_CONFIG_FAST_COMPILE&quot;</span>;</div>
-<div class="line"><a id="l13128" name="l13128"></a><span class="lineno">13128</span>        AssertionResult assertionResult{ info, data };</div>
+<div class="line"><a id="l13128" name="l13128"></a><span class="lineno">13128</span>        AssertionResult assertionResult{ <a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a3fd549b8009542e938104c3887e5ecc3acaf9b6b99962bf5c2264824231d7a40c">info</a>, data };</div>
 <div class="line"><a id="l13129" name="l13129"></a><span class="lineno">13129</span>        assertionEnded( assertionResult );</div>
 <div class="line"><a id="l13130" name="l13130"></a><span class="lineno">13130</span>    }</div>
 <div class="line"><a id="l13131" name="l13131"></a><span class="lineno">13131</span>    <span class="keywordtype">void</span> RunContext::handleNonExpr(</div>
@@ -13148,10 +13148,10 @@ $(function() {
 <div class="line"><a id="l13133" name="l13133"></a><span class="lineno">13133</span>            ResultWas::OfType resultType,</div>
 <div class="line"><a id="l13134" name="l13134"></a><span class="lineno">13134</span>            AssertionReaction &amp;reaction</div>
 <div class="line"><a id="l13135" name="l13135"></a><span class="lineno">13135</span>    ) {</div>
-<div class="line"><a id="l13136" name="l13136"></a><span class="lineno">13136</span>        m_lastAssertionInfo = info;</div>
+<div class="line"><a id="l13136" name="l13136"></a><span class="lineno">13136</span>        m_lastAssertionInfo = <a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a3fd549b8009542e938104c3887e5ecc3acaf9b6b99962bf5c2264824231d7a40c">info</a>;</div>
 <div class="line"><a id="l13137" name="l13137"></a><span class="lineno">13137</span> </div>
 <div class="line"><a id="l13138" name="l13138"></a><span class="lineno">13138</span>        AssertionResultData data( resultType, LazyExpression( <span class="keyword">false</span> ) );</div>
-<div class="line"><a id="l13139" name="l13139"></a><span class="lineno">13139</span>        AssertionResult assertionResult{ info, data };</div>
+<div class="line"><a id="l13139" name="l13139"></a><span class="lineno">13139</span>        AssertionResult assertionResult{ <a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a3fd549b8009542e938104c3887e5ecc3acaf9b6b99962bf5c2264824231d7a40c">info</a>, data };</div>
 <div class="line"><a id="l13140" name="l13140"></a><span class="lineno">13140</span>        assertionEnded( assertionResult );</div>
 <div class="line"><a id="l13141" name="l13141"></a><span class="lineno">13141</span> </div>
 <div class="line"><a id="l13142" name="l13142"></a><span class="lineno">13142</span>        <span class="keywordflow">if</span>( !assertionResult.isOk() )</div>
@@ -13183,7 +13183,7 @@ $(function() {
 <div class="line"><a id="l13168" name="l13168"></a><span class="lineno">13168</span><span class="keyword">namespace </span>Catch {</div>
 <div class="line"><a id="l13169" name="l13169"></a><span class="lineno">13169</span> </div>
 <div class="line"><a id="l13170" name="l13170"></a><span class="lineno">13170</span>    Section::Section( SectionInfo <span class="keyword">const</span>&amp; info )</div>
-<div class="line"><a id="l13171" name="l13171"></a><span class="lineno">13171</span>    :   m_info( info ),</div>
+<div class="line"><a id="l13171" name="l13171"></a><span class="lineno">13171</span>    :   m_info( <a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a3fd549b8009542e938104c3887e5ecc3acaf9b6b99962bf5c2264824231d7a40c">info</a> ),</div>
 <div class="line"><a id="l13172" name="l13172"></a><span class="lineno">13172</span>        m_sectionIncluded( getResultCapture().sectionStarted( m_info, m_assertions ) )</div>
 <div class="line"><a id="l13173" name="l13173"></a><span class="lineno">13173</span>    {</div>
 <div class="line"><a id="l13174" name="l13174"></a><span class="lineno">13174</span>        m_timer.start();</div>
@@ -13899,7 +13899,7 @@ $(function() {
 <div class="line"><a id="l13890" name="l13890"></a><span class="lineno">13890</span>    }</div>
 <div class="line"><a id="l13891" name="l13891"></a><span class="lineno">13891</span> </div>
 <div class="line"><a id="l13892" name="l13892"></a><span class="lineno">13892</span>    pluralise::pluralise( std::size_t count, std::string <span class="keyword">const</span>&amp; label )</div>
-<div class="line"><a id="l13893" name="l13893"></a><span class="lineno">13893</span>    :   m_count( count ),</div>
+<div class="line"><a id="l13893" name="l13893"></a><span class="lineno">13893</span>    :   m_count( <a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a082761c0aafd576d6d834e49d52d159eae2942a04780e223b215eb8b663cf5353">count</a> ),</div>
 <div class="line"><a id="l13894" name="l13894"></a><span class="lineno">13894</span>        m_label( label )</div>
 <div class="line"><a id="l13895" name="l13895"></a><span class="lineno">13895</span>    {}</div>
 <div class="line"><a id="l13896" name="l13896"></a><span class="lineno">13896</span> </div>
@@ -14106,7 +14106,7 @@ $(function() {
 <div class="line"><a id="l14097" name="l14097"></a><span class="lineno">14097</span>            tags.insert( tags.end(), { <span class="stringliteral">&quot;.&quot;</span>, <span class="stringliteral">&quot;!hide&quot;</span> } );</div>
 <div class="line"><a id="l14098" name="l14098"></a><span class="lineno">14098</span>        }</div>
 <div class="line"><a id="l14099" name="l14099"></a><span class="lineno">14099</span> </div>
-<div class="line"><a id="l14100" name="l14100"></a><span class="lineno">14100</span>        TestCaseInfo info( <span class="keyword">static_cast&lt;</span>std::string<span class="keyword">&gt;</span>(nameAndTags.name), _className, desc, tags, _lineInfo );</div>
+<div class="line"><a id="l14100" name="l14100"></a><span class="lineno">14100</span>        TestCaseInfo <a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a3fd549b8009542e938104c3887e5ecc3acaf9b6b99962bf5c2264824231d7a40c">info</a>( <span class="keyword">static_cast&lt;</span>std::string<span class="keyword">&gt;</span>(nameAndTags.name), _className, desc, tags, _lineInfo );</div>
 <div class="line"><a id="l14101" name="l14101"></a><span class="lineno">14101</span>        <span class="keywordflow">return</span> TestCase( _testCase, std::move(info) );</div>
 <div class="line"><a id="l14102" name="l14102"></a><span class="lineno">14102</span>    }</div>
 <div class="line"><a id="l14103" name="l14103"></a><span class="lineno">14103</span> </div>
@@ -14167,7 +14167,7 @@ $(function() {
 <div class="line"><a id="l14158" name="l14158"></a><span class="lineno">14158</span>        <span class="keywordflow">return</span> ret;</div>
 <div class="line"><a id="l14159" name="l14159"></a><span class="lineno">14159</span>    }</div>
 <div class="line"><a id="l14160" name="l14160"></a><span class="lineno">14160</span> </div>
-<div class="line"><a id="l14161" name="l14161"></a><span class="lineno">14161</span>    TestCase::TestCase( ITestInvoker* testCase, TestCaseInfo&amp;&amp; info ) : TestCaseInfo( std::move(info) ), test( testCase ) {}</div>
+<div class="line"><a id="l14161" name="l14161"></a><span class="lineno">14161</span>    TestCase::TestCase( ITestInvoker* testCase, TestCaseInfo&amp;&amp; info ) : TestCaseInfo( std::move(<a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a3fd549b8009542e938104c3887e5ecc3acaf9b6b99962bf5c2264824231d7a40c">info</a>) ), test( testCase ) {}</div>
 <div class="line"><a id="l14162" name="l14162"></a><span class="lineno">14162</span> </div>
 <div class="line"><a id="l14163" name="l14163"></a><span class="lineno">14163</span>    TestCase TestCase::withName( std::string <span class="keyword">const</span>&amp; _newName )<span class="keyword"> const </span>{</div>
 <div class="line"><a id="l14164" name="l14164"></a><span class="lineno">14164</span>        TestCase other( *<span class="keyword">this</span> );</div>
@@ -15303,7 +15303,7 @@ $(function() {
 <div class="line"><a id="l15297" name="l15297"></a><span class="lineno">15297</span>    Totals Totals::delta( Totals <span class="keyword">const</span>&amp; prevTotals )<span class="keyword"> const </span>{</div>
 <div class="line"><a id="l15298" name="l15298"></a><span class="lineno">15298</span>        Totals diff = *<span class="keyword">this</span> - prevTotals;</div>
 <div class="line"><a id="l15299" name="l15299"></a><span class="lineno">15299</span>        <span class="keywordflow">if</span>( diff.assertions.failed &gt; 0 )</div>
-<div class="line"><a id="l15300" name="l15300"></a><span class="lineno">15300</span>            ++diff.testCases.failed;</div>
+<div class="line"><a id="l15300" name="l15300"></a><span class="lineno">15300</span>            ++diff.testCases.<a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a3fd549b8009542e938104c3887e5ecc3a26934eb377001f66e37289a5c93fe284">failed</a>;</div>
 <div class="line"><a id="l15301" name="l15301"></a><span class="lineno">15301</span>        <span class="keywordflow">else</span> <span class="keywordflow">if</span>( diff.assertions.failedButOk &gt; 0 )</div>
 <div class="line"><a id="l15302" name="l15302"></a><span class="lineno">15302</span>            ++diff.testCases.failedButOk;</div>
 <div class="line"><a id="l15303" name="l15303"></a><span class="lineno">15303</span>        <span class="keywordflow">else</span></div>
@@ -15855,8 +15855,8 @@ $(function() {
 <div class="line"><a id="l15849" name="l15849"></a><span class="lineno">15849</span>    Catch::Colour::Code dimColour() { <span class="keywordflow">return</span> Catch::Colour::FileName; }</div>
 <div class="line"><a id="l15850" name="l15850"></a><span class="lineno">15850</span> </div>
 <div class="line"><a id="l15851" name="l15851"></a><span class="lineno">15851</span>    std::string bothOrAll( std::size_t count ) {</div>
-<div class="line"><a id="l15852" name="l15852"></a><span class="lineno">15852</span>        <span class="keywordflow">return</span> count == 1 ? std::string() :</div>
-<div class="line"><a id="l15853" name="l15853"></a><span class="lineno">15853</span>               count == 2 ? <span class="stringliteral">&quot;both &quot;</span> : <span class="stringliteral">&quot;all &quot;</span> ;</div>
+<div class="line"><a id="l15852" name="l15852"></a><span class="lineno">15852</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a082761c0aafd576d6d834e49d52d159eae2942a04780e223b215eb8b663cf5353">count</a> == 1 ? std::string() :</div>
+<div class="line"><a id="l15853" name="l15853"></a><span class="lineno">15853</span>               <a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a082761c0aafd576d6d834e49d52d159eae2942a04780e223b215eb8b663cf5353">count</a> == 2 ? <span class="stringliteral">&quot;both &quot;</span> : <span class="stringliteral">&quot;all &quot;</span> ;</div>
 <div class="line"><a id="l15854" name="l15854"></a><span class="lineno">15854</span>    }</div>
 <div class="line"><a id="l15855" name="l15855"></a><span class="lineno">15855</span> </div>
 <div class="line"><a id="l15856" name="l15856"></a><span class="lineno">15856</span>} <span class="comment">// anon namespace</span></div>
@@ -16398,7 +16398,7 @@ $(function() {
 <div class="line"><a id="l16392" name="l16392"></a><span class="lineno">16392</span>            Columns headerCols;</div>
 <div class="line"><a id="l16393" name="l16393"></a><span class="lineno">16393</span>            Spacer spacer(2);</div>
 <div class="line"><a id="l16394" name="l16394"></a><span class="lineno">16394</span>            <span class="keywordflow">for</span> (<span class="keyword">auto</span> <span class="keyword">const</span>&amp; info : m_columnInfos) {</div>
-<div class="line"><a id="l16395" name="l16395"></a><span class="lineno">16395</span>                headerCols += Column(info.name).width(static_cast&lt;std::size_t&gt;(info.width - 2));</div>
+<div class="line"><a id="l16395" name="l16395"></a><span class="lineno">16395</span>                headerCols += Column(<a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a3fd549b8009542e938104c3887e5ecc3acaf9b6b99962bf5c2264824231d7a40c">info</a>.name).width(static_cast&lt;std::size_t&gt;(<a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a3fd549b8009542e938104c3887e5ecc3acaf9b6b99962bf5c2264824231d7a40c">info</a>.width - 2));</div>
 <div class="line"><a id="l16396" name="l16396"></a><span class="lineno">16396</span>                headerCols += spacer;</div>
 <div class="line"><a id="l16397" name="l16397"></a><span class="lineno">16397</span>            }</div>
 <div class="line"><a id="l16398" name="l16398"></a><span class="lineno">16398</span>            m_os &lt;&lt; headerCols &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
@@ -16551,10 +16551,10 @@ $(function() {
 <div class="line"><a id="l16545" name="l16545"></a><span class="lineno">16545</span>}</div>
 <div class="line"><a id="l16546" name="l16546"></a><span class="lineno">16546</span> </div>
 <div class="line"><a id="l16547" name="l16547"></a><span class="lineno">16547</span><span class="keywordtype">void</span> ConsoleReporter::benchmarkStarting(BenchmarkInfo <span class="keyword">const</span>&amp; info) {</div>
-<div class="line"><a id="l16548" name="l16548"></a><span class="lineno">16548</span>    (*m_tablePrinter) &lt;&lt; info.samples &lt;&lt; ColumnBreak()</div>
-<div class="line"><a id="l16549" name="l16549"></a><span class="lineno">16549</span>        &lt;&lt; info.iterations &lt;&lt; ColumnBreak();</div>
+<div class="line"><a id="l16548" name="l16548"></a><span class="lineno">16548</span>    (*m_tablePrinter) &lt;&lt; <a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a3fd549b8009542e938104c3887e5ecc3acaf9b6b99962bf5c2264824231d7a40c">info</a>.samples &lt;&lt; ColumnBreak()</div>
+<div class="line"><a id="l16549" name="l16549"></a><span class="lineno">16549</span>        &lt;&lt; <a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a3fd549b8009542e938104c3887e5ecc3acaf9b6b99962bf5c2264824231d7a40c">info</a>.iterations &lt;&lt; ColumnBreak();</div>
 <div class="line"><a id="l16550" name="l16550"></a><span class="lineno">16550</span>    <span class="keywordflow">if</span> (!m_config-&gt;benchmarkNoAnalysis())</div>
-<div class="line"><a id="l16551" name="l16551"></a><span class="lineno">16551</span>        (*m_tablePrinter) &lt;&lt; Duration(info.estimatedDuration) &lt;&lt; ColumnBreak();</div>
+<div class="line"><a id="l16551" name="l16551"></a><span class="lineno">16551</span>        (*m_tablePrinter) &lt;&lt; Duration(<a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a3fd549b8009542e938104c3887e5ecc3acaf9b6b99962bf5c2264824231d7a40c">info</a>.estimatedDuration) &lt;&lt; ColumnBreak();</div>
 <div class="line"><a id="l16552" name="l16552"></a><span class="lineno">16552</span>}</div>
 <div class="line"><a id="l16553" name="l16553"></a><span class="lineno">16553</span><span class="keywordtype">void</span> ConsoleReporter::benchmarkEnded(BenchmarkStats&lt;&gt; <span class="keyword">const</span>&amp; stats) {</div>
 <div class="line"><a id="l16554" name="l16554"></a><span class="lineno">16554</span>    <span class="keywordflow">if</span> (m_config-&gt;benchmarkNoAnalysis())</div>
@@ -16694,7 +16694,7 @@ $(function() {
 <div class="line"><a id="l16688" name="l16688"></a><span class="lineno">16688</span>        colour( _colour ) {}</div>
 <div class="line"><a id="l16689" name="l16689"></a><span class="lineno">16689</span>    SummaryColumn addRow( std::size_t count ) {</div>
 <div class="line"><a id="l16690" name="l16690"></a><span class="lineno">16690</span>        ReusableStringStream rss;</div>
-<div class="line"><a id="l16691" name="l16691"></a><span class="lineno">16691</span>        rss &lt;&lt; count;</div>
+<div class="line"><a id="l16691" name="l16691"></a><span class="lineno">16691</span>        rss &lt;&lt; <a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a082761c0aafd576d6d834e49d52d159eae2942a04780e223b215eb8b663cf5353">count</a>;</div>
 <div class="line"><a id="l16692" name="l16692"></a><span class="lineno">16692</span>        std::string row = rss.str();</div>
 <div class="line"><a id="l16693" name="l16693"></a><span class="lineno">16693</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; oldRow : rows) {</div>
 <div class="line"><a id="l16694" name="l16694"></a><span class="lineno">16694</span>            <span class="keywordflow">while</span> (oldRow.size() &lt; row.size())</div>
@@ -17468,11 +17468,11 @@ $(function() {
 <div class="line"><a id="l17462" name="l17462"></a><span class="lineno">17462</span>    }</div>
 <div class="line"><a id="l17463" name="l17463"></a><span class="lineno">17463</span> </div>
 <div class="line"><a id="l17464" name="l17464"></a><span class="lineno">17464</span>    <span class="keywordtype">void</span> XmlReporter::benchmarkStarting(BenchmarkInfo <span class="keyword">const</span> &amp;info) {</div>
-<div class="line"><a id="l17465" name="l17465"></a><span class="lineno">17465</span>        m_xml.writeAttribute(<span class="stringliteral">&quot;samples&quot;</span>, info.samples)</div>
-<div class="line"><a id="l17466" name="l17466"></a><span class="lineno">17466</span>            .writeAttribute(<span class="stringliteral">&quot;resamples&quot;</span>, info.resamples)</div>
-<div class="line"><a id="l17467" name="l17467"></a><span class="lineno">17467</span>            .writeAttribute(<span class="stringliteral">&quot;iterations&quot;</span>, info.iterations)</div>
-<div class="line"><a id="l17468" name="l17468"></a><span class="lineno">17468</span>            .writeAttribute(<span class="stringliteral">&quot;clockResolution&quot;</span>, info.clockResolution)</div>
-<div class="line"><a id="l17469" name="l17469"></a><span class="lineno">17469</span>            .writeAttribute(<span class="stringliteral">&quot;estimatedDuration&quot;</span>, info.estimatedDuration)</div>
+<div class="line"><a id="l17465" name="l17465"></a><span class="lineno">17465</span>        m_xml.writeAttribute(<span class="stringliteral">&quot;samples&quot;</span>, <a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a3fd549b8009542e938104c3887e5ecc3acaf9b6b99962bf5c2264824231d7a40c">info</a>.samples)</div>
+<div class="line"><a id="l17466" name="l17466"></a><span class="lineno">17466</span>            .writeAttribute(<span class="stringliteral">&quot;resamples&quot;</span>, <a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a3fd549b8009542e938104c3887e5ecc3acaf9b6b99962bf5c2264824231d7a40c">info</a>.resamples)</div>
+<div class="line"><a id="l17467" name="l17467"></a><span class="lineno">17467</span>            .writeAttribute(<span class="stringliteral">&quot;iterations&quot;</span>, <a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a3fd549b8009542e938104c3887e5ecc3acaf9b6b99962bf5c2264824231d7a40c">info</a>.iterations)</div>
+<div class="line"><a id="l17468" name="l17468"></a><span class="lineno">17468</span>            .writeAttribute(<span class="stringliteral">&quot;clockResolution&quot;</span>, <a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a3fd549b8009542e938104c3887e5ecc3acaf9b6b99962bf5c2264824231d7a40c">info</a>.clockResolution)</div>
+<div class="line"><a id="l17469" name="l17469"></a><span class="lineno">17469</span>            .writeAttribute(<span class="stringliteral">&quot;estimatedDuration&quot;</span>, <a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a3fd549b8009542e938104c3887e5ecc3acaf9b6b99962bf5c2264824231d7a40c">info</a>.estimatedDuration)</div>
 <div class="line"><a id="l17470" name="l17470"></a><span class="lineno">17470</span>            .writeComment(<span class="stringliteral">&quot;All values in nano seconds&quot;</span>);</div>
 <div class="line"><a id="l17471" name="l17471"></a><span class="lineno">17471</span>    }</div>
 <div class="line"><a id="l17472" name="l17472"></a><span class="lineno">17472</span> </div>
@@ -17982,6 +17982,11 @@ $(function() {
 <div class="ttc" id="aCell_8cpp_html_a8c95ef4e61f61447dbae73a1c524c053"><div class="ttname"><a href="Cell_8cpp.html#a8c95ef4e61f61447dbae73a1c524c053">operator&lt;&lt;</a></div><div class="ttdeci">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;out, const CellType celltype)</div><div class="ttdoc">Allow Standard c++ streams to print out our enum values as text.</div><div class="ttdef"><b>Definition:</b> Cell.cpp:1935</div></div>
 <div class="ttc" id="aOutputNavigation_8cpp_html_a5911f395b56b8cf99e5960169056f223"><div class="ttname"><a href="OutputNavigation_8cpp.html#a5911f395b56b8cf99e5960169056f223">OutputNavigation::Children</a></div><div class="ttdeci">std::vector&lt; Item &gt; Children(const Item &amp;item)</div><div class="ttdoc">The parts of an item, in reading order; empty if it has none.</div><div class="ttdef"><b>Definition:</b> OutputNavigation.cpp:255</div></div>
 <div class="ttc" id="aToolBarSections_8h_html_a00b3e7a9e497829a0e732600a8e8b7aaa6a26f548831e6a8c26bfbbd9f6ec61e0"><div class="ttname"><a href="ToolBarSections_8h.html#a00b3e7a9e497829a0e732600a8e8b7aaa6a26f548831e6a8c26bfbbd9f6ec61e0">ToolBarSections::Section::Help</a></div><div class="ttdeci">@ Help</div><div class="ttdoc">The &quot;Help&quot; button.</div></div>
+<div class="ttc" id="aTroubleshootingChecks_8h_html_a082761c0aafd576d6d834e49d52d159eae2942a04780e223b215eb8b663cf5353"><div class="ttname"><a href="TroubleshootingChecks_8h.html#a082761c0aafd576d6d834e49d52d159eae2942a04780e223b215eb8b663cf5353">wxm::TroubleshootingCheck::count</a></div><div class="ttdeci">@ count</div><div class="ttdoc">Not a check: the number of checks.</div></div>
+<div class="ttc" id="aTroubleshootingChecks_8h_html_a3fd549b8009542e938104c3887e5ecc3a26934eb377001f66e37289a5c93fe284"><div class="ttname"><a href="TroubleshootingChecks_8h.html#a3fd549b8009542e938104c3887e5ecc3a26934eb377001f66e37289a5c93fe284">wxm::TroubleshootingStatus::failed</a></div><div class="ttdeci">@ failed</div><div class="ttdoc">Doesn't work.</div></div>
+<div class="ttc" id="aTroubleshootingChecks_8h_html_a3fd549b8009542e938104c3887e5ecc3a444bcb3a3fcf8389296c49467f27e1d6"><div class="ttname"><a href="TroubleshootingChecks_8h.html#a3fd549b8009542e938104c3887e5ecc3a444bcb3a3fcf8389296c49467f27e1d6">wxm::TroubleshootingStatus::ok</a></div><div class="ttdeci">@ ok</div><div class="ttdoc">Works.</div></div>
+<div class="ttc" id="aTroubleshootingChecks_8h_html_a3fd549b8009542e938104c3887e5ecc3a7b83d3f08fa392b79e3f553b585971cd"><div class="ttname"><a href="TroubleshootingChecks_8h.html#a3fd549b8009542e938104c3887e5ecc3a7b83d3f08fa392b79e3f553b585971cd">wxm::TroubleshootingStatus::warning</a></div><div class="ttdeci">@ warning</div><div class="ttdoc">Works, but not fully: some feature won't.</div></div>
+<div class="ttc" id="aTroubleshootingChecks_8h_html_a3fd549b8009542e938104c3887e5ecc3acaf9b6b99962bf5c2264824231d7a40c"><div class="ttname"><a href="TroubleshootingChecks_8h.html#a3fd549b8009542e938104c3887e5ecc3acaf9b6b99962bf5c2264824231d7a40c">wxm::TroubleshootingStatus::info</a></div><div class="ttdeci">@ info</div><div class="ttdoc">Not a problem, but worth knowing (e.g.</div></div>
 <div class="ttc" id="aclassC_html"><div class="ttname"><a href="classC.html">C</a></div><div class="ttdef"><b>Definition:</b> diagrams_c.h:5</div></div>
 <div class="ttc" id="aclassCatch_1_1AssertionHandler_html"><div class="ttname"><a href="classCatch_1_1AssertionHandler.html">Catch::AssertionHandler</a></div><div class="ttdef"><b>Definition:</b> catch.hpp:2549</div></div>
 <div class="ttc" id="aclassCatch_1_1BinaryExpr_html"><div class="ttname"><a href="classCatch_1_1BinaryExpr.html">Catch::BinaryExpr</a></div><div class="ttdef"><b>Definition:</b> catch.hpp:2225</div></div>

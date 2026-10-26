@@ -46,7 +46,7 @@ if (edges && edges.length) {
         </defs>
 
 <script type="text/javascript">
-var viewWidth = 508;
+var viewWidth = 646;
 var viewHeight = 93;
 var sectionId = 'dynsection-1';
 </script>
@@ -58,8 +58,8 @@ var sectionId = 'dynsection-1';
 <g id="node1" class="node">
 <title>Node1</title>
 <g id="a_node1"><a xlink:title="This file declares all the wizards the draw sidepane needs.">
-<polygon fill="#999999" stroke="#666666" points="301.5,-85 206.5,-85 206.5,-66 301.5,-66 301.5,-85"/>
-<text text-anchor="middle" x="254" y="-73" font-family="Helvetica,sans-Serif" font-size="10.00">src/wxMathml.h</text>
+<polygon fill="#999999" stroke="#666666" points="357.5,-85 262.5,-85 262.5,-66 357.5,-66 357.5,-85"/>
+<text text-anchor="middle" x="310" y="-73" font-family="Helvetica,sans-Serif" font-size="10.00">src/wxMathml.h</text>
 </a>
 </g>
 </g>
@@ -75,8 +75,8 @@ var sectionId = 'dynsection-1';
 <!-- Node1&#45;&gt;Node2 -->
 <g id="edge1" class="edge">
 <title>Node1&#45;&gt;Node2</title>
-<path fill="none" stroke="#63b8ff" d="M217.71,-62.96C182.12,-51.65 128.69,-34.66 96.79,-24.52"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="216.65,-66.3 227.24,-65.99 218.78,-59.63 216.65,-66.3"/>
+<path fill="none" stroke="#63b8ff" d="M265.32,-63.61C218.94,-52.3 147.35,-34.85 104.94,-24.52"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="264.56,-67.03 275.1,-65.99 266.22,-60.22 264.56,-67.03"/>
 </g>
 <!-- Node3 -->
 <g id="node3" class="node">
@@ -90,8 +90,8 @@ var sectionId = 'dynsection-1';
 <!-- Node1&#45;&gt;Node3 -->
 <g id="edge2" class="edge">
 <title>Node1&#45;&gt;Node3</title>
-<path fill="none" stroke="#63b8ff" d="M238.77,-58.59C228.31,-47.67 214.83,-33.58 206.3,-24.67"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="236.29,-61.06 245.74,-65.87 241.35,-56.22 236.29,-61.06"/>
+<path fill="none" stroke="#63b8ff" d="M284.59,-61.23C263.14,-50.03 233.07,-34.32 214.59,-24.67"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="282.99,-64.34 293.47,-65.87 286.23,-58.14 282.99,-64.34"/>
 </g>
 <!-- Node4 -->
 <g id="node4" class="node">
@@ -105,24 +105,40 @@ var sectionId = 'dynsection-1';
 <!-- Node1&#45;&gt;Node4 -->
 <g id="edge3" class="edge">
 <title>Node1&#45;&gt;Node4</title>
-<path fill="none" stroke="#63b8ff" d="M269.23,-58.59C279.69,-47.67 293.17,-33.58 301.7,-24.67"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="266.65,-56.22 262.26,-65.87 271.71,-61.06 266.65,-56.22"/>
+<path fill="none" stroke="#63b8ff" d="M310,-55.66C310,-45.24 310,-32.8 310,-24.67"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="306.5,-55.87 310,-65.87 313.5,-55.87 306.5,-55.87"/>
 </g>
 <!-- Node5 -->
 <g id="node5" class="node">
 <title>Node5</title>
-<g id="a_node5"><a xlink:href="test__wxMathMLCmd_8cpp.html" target="_top" xlink:title="Tests wxMathML::GetCmd(), which squeezes wxMathML.lisp into the one line it is sent to Maxima as.">
-<polygon fill="white" stroke="#666666" points="500,-30 382,-30 382,0 500,0 500,-30"/>
-<text text-anchor="start" x="390" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">test/unit_tests/test</text>
-<text text-anchor="middle" x="441" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">_wxMathMLCmd.cpp</text>
+<g id="a_node5"><a xlink:href="test__Troubleshooting_8cpp.html" target="_top" xlink:title="Tests the troubleshooting checks (GH #2559).">
+<polygon fill="white" stroke="#666666" points="501.5,-30 382.5,-30 382.5,0 501.5,0 501.5,-30"/>
+<text text-anchor="start" x="390.5" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">test/unit_tests/test</text>
+<text text-anchor="middle" x="442" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">_Troubleshooting.cpp</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node5 -->
 <g id="edge4" class="edge">
 <title>Node1&#45;&gt;Node5</title>
-<path fill="none" stroke="#63b8ff" d="M290.91,-62.95C321.09,-53.51 363.87,-40.13 396.04,-30.06"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="289.69,-59.67 281.19,-65.99 291.78,-66.35 289.69,-59.67"/>
+<path fill="none" stroke="#63b8ff" d="M338.59,-61.83C359.71,-52.47 388.44,-39.74 410.27,-30.06"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="336.92,-58.74 329.19,-65.99 339.75,-65.14 336.92,-58.74"/>
+</g>
+<!-- Node6 -->
+<g id="node6" class="node">
+<title>Node6</title>
+<g id="a_node6"><a xlink:href="test__wxMathMLCmd_8cpp.html" target="_top" xlink:title="Tests wxMathML::GetCmd(), which squeezes wxMathML.lisp into the one line it is sent to Maxima as.">
+<polygon fill="white" stroke="#666666" points="638,-30 520,-30 520,0 638,0 638,-30"/>
+<text text-anchor="start" x="528" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">test/unit_tests/test</text>
+<text text-anchor="middle" x="579" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">_wxMathMLCmd.cpp</text>
+</a>
+</g>
+</g>
+<!-- Node1&#45;&gt;Node6 -->
+<g id="edge5" class="edge">
+<title>Node1&#45;&gt;Node6</title>
+<path fill="none" stroke="#63b8ff" d="M359,-63.84C404.3,-53.99 471.72,-39.33 519.97,-28.84"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="358.14,-60.45 349.11,-65.99 359.63,-67.29 358.14,-60.45"/>
 </g>
 </g>
 </svg>
