@@ -35,6 +35,7 @@
 #include <wx/time.h>
 #include <algorithm>
 #include <random>
+#include <vector>
 
 using wxm::TroubleshootingCheck;
 using wxm::TroubleshootingStatus;
@@ -79,13 +80,13 @@ wxString LoadQuery(const wxString &key, const wxString &package) {
 void Drain(wxInputStream *stream, wxString &text) {
   if (!stream)
     return;
-  char buffer[4096];
+  std::vector<char> buffer(4096);
   while (stream->CanRead()) {
-    stream->Read(buffer, sizeof(buffer));
+    stream->Read(buffer.data(), buffer.size());
     const size_t count = stream->LastRead();
     if (count == 0)
       break;
-    text += wxString::From8BitData(buffer, count);
+    text += wxString::From8BitData(buffer.data(), count);
   }
   if (text.Length() > MAX_CONSOLE)
     text = text.Right(MAX_CONSOLE);
@@ -354,13 +355,14 @@ void TroubleshootingRunner::PumpIO() {
   }
   if (!m_socket)
     return;
-  char buffer[16384];
+  // On the heap: a buffer this size is too much stack for some platforms.
+  std::vector<char> buffer(16384);
   for (;;) {
-    m_socket->Read(buffer, sizeof(buffer));
+    m_socket->Read(buffer.data(), buffer.size());
     const size_t count = m_socket->LastReadCount();
     if (count == 0)
       break;
-    m_undecoded.append(buffer, count);
+    m_undecoded.append(buffer.data(), count);
     // Decode only up to the last complete UTF-8 sequence.
     size_t end = m_undecoded.size();
     size_t lead = end;
