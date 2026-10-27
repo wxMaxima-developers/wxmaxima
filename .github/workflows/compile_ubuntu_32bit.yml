@@ -29,10 +29,11 @@ jobs:
           # a pull request then we can checkout the head.
           fetch-depth: 15
       - name: install_packages
-        run: |
-             sudo dpkg --add-architecture i386
-             sudo apt-get update
-             sudo apt-get install g++-i686-linux-gnu cmake gettext libwxgtk3.2-dev:i386 libwxgtk-webview3.2-dev:i386 wx3.2-headers pandoc make po4a xvfb at-spi2-core dbus
+        # Caches the downloaded .debs; see the action for why.
+        uses: ./.github/actions/apt-install
+        with:
+          architectures: i386
+          packages: g++-i686-linux-gnu cmake gettext libwxgtk3.2-dev:i386 libwxgtk-webview3.2-dev:i386 wx3.2-headers pandoc make po4a xvfb at-spi2-core dbus
       - name: configure
         run: |
              export CXX="i686-linux-gnu-g++"
