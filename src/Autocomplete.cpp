@@ -30,6 +30,7 @@
 */
 
 #include "Autocomplete.h"
+#include "UnicodeNames.h"
 #include "Dirstructure.h"
 #include "Maxima.h"
 #include <wx/filename.h>
@@ -677,10 +678,43 @@ std::vector<wxString> AutoComplete::CompleteSymbol(wxString partial,
   std::ranges::sort(completions);
   auto [first, last] = std::ranges::unique(completions);
   completions.erase(first, last);
+  // ESC 61 ESC enters U+0061. Only the one code point typed so far is offered,
+  // not every character Unicode has, and it goes last, so a name the typed
+  // text also begins ("be" for "beta") stays the one ESC picks.
+  if ((type == esccommand) && IsEscHexCompletion(partial) &&
+      !ranges::contains(completions, partial))
+    completions.push_back(partial);
   if (perfectCompletions.size() > 0)
     return perfectCompletions;
   else
     return completions;
+}
+
+bool AutoComplete::IsEscHexCompletion(const wxString &completion) {
+  if (!Configuration::GetEscCode(completion).IsEmpty())
+    return false;
+  // A bare "u+" is on its way to becoming one: offering it keeps the popup
+  // open for the digits that follow.
+  return (completion.Lower() == wxS("u+")) ||
+    wxm::HexCodePoint(completion).has_value();
+}
+
+wxString AutoComplete::EscCompletionLabel(const wxString &completion) {
+  if (!IsEscHexCompletion(completion))
+    return completion + wxS("  ") + Configuration::GetEscCode(completion);
+  wxString label = completion + wxS("  ");
+  auto hexCodePoint = wxm::HexCodePoint(completion);
+  if (!hexCodePoint)
+    return label + wxS("U+...");
+  long codePoint = *hexCodePoint;
+  // A control character has no glyph to show.
+  if (codePoint > 32 && ((codePoint < 0x7F) || (codePoint > 0x9F)))
+    label += wxString(wxUniChar(codePoint)) + wxS("  ");
+  label += wxString::Format(wxS("U+%04lX"), codePoint);
+  wxString name = wxm::UnicodeCharName(codePoint);
+  if (!name.IsEmpty())
+    label += wxS(" ") + name;
+  return label;
 }
 
 void AutoComplete::AddSymbol(wxString fun, autoCompletionType type) {

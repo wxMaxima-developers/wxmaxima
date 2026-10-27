@@ -137,6 +137,20 @@ public:
 
   //! Returns a list of possible autocompletions for the string "partial"
   std::vector<wxString> CompleteSymbol(wxString partial, autoCompletionType type = command);
+  /*! Is this ESC completion a code point typed as a hex number, not a name?
+
+    CompleteSymbol() offers what has been typed after ESC as a code point
+    whenever it is one (see wxm::HexCodePoint()), or a bare "u+" that the
+    digits are still to follow; a name, even one made of hex digits only
+    ("ee"), is a name.
+  */
+  static bool IsEscHexCompletion(const wxString &completion);
+  /*! What the ESC popup shows for a completion: the symbol next to its name.
+
+    "alpha  α" for a name; for a code point, the glyph, "U+...", and the
+    name Unicode gives it: "61  a  U+0061 LATIN SMALL LETTER A".
+  */
+  static wxString EscCompletionLabel(const wxString &completion);
   //! Basically runs a regex over templates
   static wxString FixTemplate(wxString templ);
   //! Returns a list of demo files we know of

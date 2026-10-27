@@ -45,18 +45,20 @@ void AutocompletePopup::UpdateResults(bool allowAutoFinish) {
   if (!m_editor)
     return;
   m_completions = m_autocomplete->CompleteSymbol(m_partial, m_type);
-  std::ranges::sort(m_completions);
+  // CompleteSymbol() sorts, too, but puts a code point typed after ESC last,
+  // behind the names, which sorting again would undo.
+  if (m_type != AutoComplete::esccommand)
+    std::ranges::sort(m_completions);
 
   switch (m_completions.size()) {
   case 1:
-    if (((m_type == AutoComplete::esccommand) && (m_partial.Length() < 2)) ||
+    // A code point is never entered by itself: "6" may be about to become
+    // "61" or "6a".
+    if (((m_type == AutoComplete::esccommand) &&
+         ((m_partial.Length() < 2) ||
+          AutoComplete::IsEscHexCompletion(m_completions.at(0)))) ||
         !allowAutoFinish) {
-      DeleteAllItems();
-      for (unsigned int i = 0; i < m_completions.size(); i++)
-        InsertItem(i, m_completions.at(i));
-
-      Select(0);
-      Focus(0);
+      ShowCompletions();
       break;
     }
 
@@ -86,13 +88,31 @@ void AutocompletePopup::UpdateResults(bool allowAutoFinish) {
       m_editor->ActivateCursor();
     return void(Destroy());
   default:
-    DeleteAllItems();
-    for (unsigned int i = 0; i < m_completions.size(); i++)
-      InsertItem(i, m_completions.at(i));
-
-    Select(0);
-    Focus(0);
+    ShowCompletions();
   }
+}
+
+void AutocompletePopup::ShowCompletions() {
+  DeleteAllItems();
+  for (unsigned int i = 0; i < m_completions.size(); i++)
+    InsertItem(i, (m_type == AutoComplete::esccommand)
+               ? AutoComplete::EscCompletionLabel(m_completions.at(i))
+               : m_completions.at(i));
+
+  // A code point's label, with its Unicode name, can be far wider than the
+  // names the popup was sized for when it opened.
+  if (m_type == AutoComplete::esccommand) {
+    SetColumnWidth(0, wxLIST_AUTOSIZE);
+    wxSize size = GetClientSize();
+    if (GetColumnWidth(0) > size.x) {
+      size.x = GetColumnWidth(0);
+      SetMinSize(wxSize(size.x, GetMinSize().y));
+      SetClientSize(size);
+    }
+  }
+
+  Select(0);
+  Focus(0);
 }
 
 void AutocompletePopup::OnKeyDown(wxKeyEvent &event) {
@@ -164,7 +184,8 @@ void AutocompletePopup::OnKeyDown(wxKeyEvent &event) {
   }
   case WXK_LEFT:
   case WXK_ESCAPE:
-    if ((m_type == AutoComplete::esccommand) && (m_partial != wxEmptyString)) {
+    if ((m_type == AutoComplete::esccommand) && (m_partial != wxEmptyString) &&
+        !m_completions.empty()) {
       int selection = GetNextItem(0, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
       if (selection < 0)
         selection = 0;

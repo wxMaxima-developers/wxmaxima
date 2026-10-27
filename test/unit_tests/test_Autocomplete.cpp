@@ -42,6 +42,7 @@
 
 #include "Autocomplete.h"
 #include "Configuration.h"
+#include "UnicodeNames.h"
 
 #include <cstdlib>
 #ifndef _WIN32
@@ -185,6 +186,100 @@ SCENARIO("Only the file-name completion types complete files") {
   CHECK(!AutoComplete::CompletesFiles(AutoComplete::unit));
   CHECK(!AutoComplete::CompletesFiles(AutoComplete::esccommand));
   CHECK(!AutoComplete::CompletesFiles(AutoComplete::tmplte));
+}
+
+SCENARIO("A hex number typed after ESC names a code point (GH #2561)") {
+  CHECK(wxm::HexCodePoint(wxS("61")) == 0x61);
+  CHECK(wxm::HexCodePoint(wxS("00be")) == 0xBE);
+  CHECK(wxm::HexCodePoint(wxS("U+1D49C")) == 0x1D49C);
+  CHECK(wxm::HexCodePoint(wxS("u+3b1")) == 0x3B1);
+  THEN("anything else doesn't") {
+    CHECK(!wxm::HexCodePoint(wxS("")));
+    CHECK(!wxm::HexCodePoint(wxS("u+")));
+    CHECK(!wxm::HexCodePoint(wxS("alpha")));
+    CHECK(!wxm::HexCodePoint(wxS("0x61")));
+    CHECK(!wxm::HexCodePoint(wxS("-61")));
+    CHECK(!wxm::HexCodePoint(wxS(" 61")));
+    CHECK(!wxm::HexCodePoint(wxS("110000")));
+    CHECK(!wxm::HexCodePoint(wxS("d800")));
+  }
+}
+
+SCENARIO("Code points get their names from UnicodeData.txt") {
+  CHECK(wxm::UnicodeCharName(0x61) == wxS("LATIN SMALL LETTER A"));
+  CHECK(wxm::UnicodeCharName(0x3B1) == wxS("GREEK SMALL LETTER ALPHA"));
+  CHECK(wxm::UnicodeCharName(0x1D49C) == wxS("MATHEMATICAL SCRIPT CAPITAL A"));
+  THEN("the cached last answer is the right one") {
+    CHECK(wxm::UnicodeCharName(0x1D49C) == wxS("MATHEMATICAL SCRIPT CAPITAL A"));
+    CHECK(wxm::UnicodeCharName(0x61) == wxS("LATIN SMALL LETTER A"));
+  }
+  THEN("control characters, ranges and unassigned code points have none") {
+    CHECK(wxm::UnicodeCharName(0x07).IsEmpty());
+    // The first CJK Unified Ideograph Extension A, only a range in the table
+    CHECK(wxm::UnicodeCharName(0x3400).IsEmpty());
+    CHECK(wxm::UnicodeCharName(0x10FFFF).IsEmpty());
+  }
+}
+
+SCENARIO("ESC completion offers the code point typed, not all of Unicode") {
+  AutoComplete completer(g_cfg);
+  for (const auto &name : {wxS("alpha"), wxS("beta"), wxS("ee"), wxS("pm")})
+    completer.AddSymbol(name, AutoComplete::esccommand);
+
+  WHEN("the typed text is a hex number and no name") {
+    auto completions = completer.CompleteSymbol(wxS("6"), AutoComplete::esccommand);
+    THEN("the code point is the one completion, so typing \"61\" can go on") {
+      REQUIRE(completions.size() == 1);
+      CHECK(completions.at(0) == wxS("6"));
+      CHECK(AutoComplete::IsEscHexCompletion(completions.at(0)));
+    }
+  }
+  WHEN("the typed text is the \"u+\" a code point may begin with") {
+    auto completions = completer.CompleteSymbol(wxS("u+"), AutoComplete::esccommand);
+    THEN("it is offered, so the popup stays open for the digits") {
+      REQUIRE(completions.size() == 1);
+      CHECK(AutoComplete::IsEscHexCompletion(completions.at(0)));
+      CHECK(AutoComplete::EscCompletionLabel(completions.at(0)) == wxS("u+  U+..."));
+    }
+  }
+  WHEN("a name begins with the typed text, too") {
+    auto completions = completer.CompleteSymbol(wxS("be"), AutoComplete::esccommand);
+    THEN("the name comes first, so ESC be ESC still enters beta") {
+      REQUIRE(completions.size() == 2);
+      CHECK(completions.at(0) == wxS("beta"));
+      CHECK(completions.at(1) == wxS("be"));
+    }
+  }
+  WHEN("the typed text is a name made of hex digits") {
+    auto completions = completer.CompleteSymbol(wxS("ee"), AutoComplete::esccommand);
+    THEN("it is a name") {
+      REQUIRE(completions.size() == 1);
+      CHECK(completions.at(0) == wxS("ee"));
+      CHECK(!AutoComplete::IsEscHexCompletion(wxS("ee")));
+    }
+  }
+  WHEN("the typed text is neither") {
+    CHECK(completer.CompleteSymbol(wxS("xyz"), AutoComplete::esccommand).empty());
+    CHECK(completer.CompleteSymbol(wxS("alp"), AutoComplete::esccommand) ==
+          std::vector<wxString>{wxS("alpha")});
+  }
+  THEN("only ESC completion offers code points") {
+    CHECK(!Contains(completer.CompleteSymbol(wxS("61"), AutoComplete::command),
+                    wxS("61")));
+  }
+}
+
+SCENARIO("The ESC popup shows each symbol next to its name") {
+  CHECK(AutoComplete::EscCompletionLabel(wxS("alpha")) ==
+        wxString(wxS("alpha  ")) + wxString(wxUniChar(0x3B1)));
+  CHECK(AutoComplete::EscCompletionLabel(wxS("61")) ==
+        wxS("61  a  U+0061 LATIN SMALL LETTER A"));
+  CHECK(AutoComplete::EscCompletionLabel(wxS("u+1d49c")) ==
+        wxString(wxS("u+1d49c  ")) + wxString(wxUniChar(0x1D49C)) +
+        wxS("  U+1D49C MATHEMATICAL SCRIPT CAPITAL A"));
+  THEN("a control character has no glyph to show") {
+    CHECK(AutoComplete::EscCompletionLabel(wxS("6")) == wxS("6  U+0006"));
+  }
 }
 
 class TestApp : public wxApp {
