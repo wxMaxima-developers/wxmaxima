@@ -63,9 +63,10 @@ jobs:
           # a pull request then we can checkout the head.
           fetch-depth: 15
       - name: install_packages
-        run: |
-             sudo apt-get update
-             sudo apt-get install appstream appstream-util cmake desktop-file-utils doxygen gettext gnuplot gnuplot-x11 graphviz libwxgtk3.2-dev libwxgtk-webview3.2-dev libfribidi-dev maxima maxima-share maxima-doc netcat-openbsd ninja-build pandoc xvfb at-spi2-core dbus dpkg-dev po4a rpmlint lintian weston rpm tidy
+        # Caches the downloaded .debs; see the action for why.
+        uses: ./.github/actions/apt-install
+        with:
+          packages: appstream appstream-util cmake desktop-file-utils doxygen gettext gnuplot gnuplot-x11 graphviz libwxgtk3.2-dev libwxgtk-webview3.2-dev libfribidi-dev maxima maxima-share maxima-doc netcat-openbsd ninja-build pandoc xvfb at-spi2-core dbus dpkg-dev po4a rpmlint lintian weston rpm tidy
       - name: validate_appdata
         # Release-blocker gate, previously a manual checklist step: a malformed
         # appdata file breaks the flatpak/appImage/appstream builders. Catch it
@@ -187,9 +188,10 @@ jobs:
           # a pull request then we can checkout the head.
           fetch-depth: 15
       - name: install_packages
-        run: |
-             sudo apt-get update
-             sudo apt-get install appstream cmake desktop-file-utils gettext gnuplot gnuplot-x11 libwxgtk3.2-dev libwxgtk-webview3.2-dev libfribidi-dev maxima maxima-share maxima-doc netcat-openbsd ninja-build pandoc po4a xvfb at-spi2-core dbus tidy
+        # Caches the downloaded .debs; see the action for why.
+        uses: ./.github/actions/apt-install
+        with:
+          packages: appstream cmake desktop-file-utils gettext gnuplot gnuplot-x11 libwxgtk3.2-dev libwxgtk-webview3.2-dev libfribidi-dev maxima maxima-share maxima-doc netcat-openbsd ninja-build pandoc po4a xvfb at-spi2-core dbus tidy
       - name: configure
         run: |
              export LANG=en_US.UTF-8
@@ -237,9 +239,10 @@ jobs:
           # a pull request then we can checkout the head.
           fetch-depth: 15
       - name: install_packages
-        run: |
-             sudo apt-get update
-             sudo apt-get install appstream cmake desktop-file-utils doxygen gettext gnuplot gnuplot-x11 graphviz libwxgtk3.2-dev libfribidi-dev maxima maxima-share maxima-doc netcat-openbsd ninja-build pandoc at-spi2-core po4a
+        # Caches the downloaded .debs; see the action for why.
+        uses: ./.github/actions/apt-install
+        with:
+          packages: appstream cmake desktop-file-utils doxygen gettext gnuplot gnuplot-x11 graphviz libwxgtk3.2-dev libfribidi-dev maxima maxima-share maxima-doc netcat-openbsd ninja-build pandoc at-spi2-core po4a
       - name: configure
         # WXM_ENABLE_PRECOMPILED_HEADERS is NO here, and that is the point of
         # naming it at all: it defaults to YES, and a precompiled header hands
@@ -281,9 +284,10 @@ jobs:
       - name: Checkout_git
         uses: actions/checkout@v7
       - name: install_packages
-        run: |
-             sudo apt-get update
-             sudo apt-get install cmake g++-12 gettext libwxgtk3.2-dev libwxgtk-webview3.2-dev libfribidi-dev ninja-build
+        # Caches the downloaded .debs; see the action for why.
+        uses: ./.github/actions/apt-install
+        with:
+          packages: cmake g++-12 gettext libwxgtk3.2-dev libwxgtk-webview3.2-dev libfribidi-dev ninja-build
       - name: configure
         run: |
              export CXXFLAGS="-Wall -Wextra"
@@ -311,9 +315,10 @@ jobs:
           # a pull request then we can checkout the head.
           fetch-depth: 15
       - name: install_packages
-        run: |
-             sudo apt-get update
-             sudo apt-get install cmake dpkg-dev gettext libwxgtk3.2-dev libwxgtk-webview3.2-dev libfribidi-dev pandoc make po4a
+        # Caches the downloaded .debs; see the action for why.
+        uses: ./.github/actions/apt-install
+        with:
+          packages: cmake dpkg-dev gettext libwxgtk3.2-dev libwxgtk-webview3.2-dev libfribidi-dev pandoc make po4a
       - name: configure
         run: |
              export CXXFLAGS="-Wall -Wextra"
