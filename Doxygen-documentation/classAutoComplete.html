@@ -197,6 +197,12 @@ Static Public Member Functions</h2></td></tr>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>CompletesFiles</b> (<a class="el" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29">autoCompletionType</a> type)</td></tr>
 <tr class="memdesc:a5899754a936dc2c7b1360ca0635a93e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is this completion type one that completes file names? <br /></td></tr>
 <tr class="separator:a5899754a936dc2c7b1360ca0635a93e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4848c5ab8d814ae82c4a9c0df807a09b"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAutoComplete.html#a4848c5ab8d814ae82c4a9c0df807a09b">IsEscHexCompletion</a> (const wxString &amp;completion)</td></tr>
+<tr class="memdesc:a4848c5ab8d814ae82c4a9c0df807a09b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is this ESC completion a code point typed as a hex number, not a name?  <br /></td></tr>
+<tr class="separator:a4848c5ab8d814ae82c4a9c0df807a09b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb21f211d004b891ee3992148879f8c5"><td class="memItemLeft" align="right" valign="top">static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAutoComplete.html#acb21f211d004b891ee3992148879f8c5">EscCompletionLabel</a> (const wxString &amp;completion)</td></tr>
+<tr class="memdesc:acb21f211d004b891ee3992148879f8c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">What the ESC popup shows for a completion: the symbol next to its name.  <br /></td></tr>
+<tr class="separator:acb21f211d004b891ee3992148879f8c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad0026315422c75170949786143a114dd"><td class="memItemLeft" align="right" valign="top">static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAutoComplete.html#ad0026315422c75170949786143a114dd">FixTemplate</a> (wxString templ)</td></tr>
 <tr class="memdesc:ad0026315422c75170949786143a114dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Basically runs a regex over templates.  <br /></td></tr>
 <tr class="separator:ad0026315422c75170949786143a114dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -302,6 +308,35 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>CompletesFiles
 
 </div>
 </div>
+<a id="acb21f211d004b891ee3992148879f8c5" name="acb21f211d004b891ee3992148879f8c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acb21f211d004b891ee3992148879f8c5">&#9670;&#160;</a></span>EscCompletionLabel()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxString AutoComplete::EscCompletionLabel </td>
+          <td>(</td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
+          <td class="paramname"><em>completion</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>What the ESC popup shows for a completion: the symbol next to its name. </p>
+<p>"alpha  α" for a name; for a code point, the glyph, "U+...", and the name Unicode gives it: "61  a  U+0061 LATIN SMALL LETTER A". </p>
+
+</div>
+</div>
 <a id="ad0026315422c75170949786143a114dd" name="ad0026315422c75170949786143a114dd"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad0026315422c75170949786143a114dd">&#9670;&#160;</a></span>FixTemplate()</h2>
 
@@ -328,6 +363,35 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>CompletesFiles
 
 <p>Basically runs a regex over templates. </p>
 <p>This will change optional arguments</p>
+
+</div>
+</div>
+<a id="a4848c5ab8d814ae82c4a9c0df807a09b" name="a4848c5ab8d814ae82c4a9c0df807a09b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4848c5ab8d814ae82c4a9c0df807a09b">&#9670;&#160;</a></span>IsEscHexCompletion()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool AutoComplete::IsEscHexCompletion </td>
+          <td>(</td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
+          <td class="paramname"><em>completion</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Is this ESC completion a code point typed as a hex number, not a name? </p>
+<p><a class="el" href="classAutoComplete.html#a820f73cfb05abb20f73ae74f224c39e3" title="Returns a list of possible autocompletions for the string &quot;partial&quot;.">CompleteSymbol()</a> offers what has been typed after ESC as a code point whenever it is one (see <a class="el" href="UnicodeNames_8cpp.html#a1ba08ee72ec306b5756003c9b9bb4d60" title="The code point a hexadecimal number names, if it names one.">wxm::HexCodePoint()</a>), or a bare "u+" that the digits are still to follow; a name, even one made of hex digits only ("ee"), is a name. </p>
 
 </div>
 </div>
