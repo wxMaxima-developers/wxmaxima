@@ -5,6 +5,9 @@
   matched no symbol's name. The list now shows the character the number
   stands for and its Unicode name next to the names, and each name next to
   its symbol. A leading `0` or `u+` marks a number that also begins a name.
+- The help sidebar no longer opens empty at startup when it was open when
+  wxMaxima was last closed: it appears once it has help to show (F1,
+  "Help on", Maxima's `?`). Opened by hand, it shows the manual.
 
 # 26.10.0
 
