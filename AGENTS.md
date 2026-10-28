@@ -191,6 +191,16 @@ before trusting them on different hardware, but the ratios are the point.
   the shape to expect from any future file whose whole job is to stand in for
   symbols another file would otherwise define.
 
+**The end of every configure prints "Optional features of this wxMaxima
+build"** (`cmake/WxmFeatureSummary.cmake`): help sidebar, AI sidebar, SVG
+plots, fribidi, each with the reason it is missing. Several of those depend
+on wxWidgets' own `setup.h` (`wxUSE_WEBVIEW_WEBKIT2`, `wxUSE_SECRETSTORE`,
+`wxUSE_NANOSVG`/`wxUSE_LUNASVG`), read by compile-only checks. A new optional
+feature belongs there too; keep its wording in step with the runtime
+diagnosis in Help > Troubleshooting. Note Ubuntu's stock wx 3.2 has
+`wxUSE_SECRETSTORE 0`, so the AI sidebar needs a self-built wxWidgets there
+even once it is new enough.
+
 `CheckPo4aVersion.cmake` (included from `info/CMakeLists.txt` and
 `locales/manual/CMakeLists.txt`, the only two places that invoke `po4a`)
 refuses `po4a` older than 0.70 -- pre-0.70 parses text encodings loosely and
