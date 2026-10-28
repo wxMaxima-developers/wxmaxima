@@ -932,7 +932,7 @@ wxString Configuration::MaximaHelpFormatCommand() const {
     MaximaHelpFormatName() + wxS(")\n");
 }
 
-bool Configuration::HideMarkerForThisMessage(wxString message) {
+bool Configuration::HideMarkerForThisMessage(const wxString& message) {
   auto it = m_hideMarkerForThisMessage.find(message);
   if (it == m_hideMarkerForThisMessage.end())
     return false;

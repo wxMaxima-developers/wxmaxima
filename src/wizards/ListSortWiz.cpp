@@ -23,7 +23,7 @@
 #include "ListSortWiz.h"
 
 ListSortWiz::ListSortWiz(Configuration *WXUNUSED(cfg), wxWindow *parent, int id,
-                         const wxString &title, wxString list,
+                         const wxString &title, const wxString& list,
                          bool WXUNUSED(eq), const wxPoint &pos,
                          const wxSize &size, long style)
   : wxDialog(parent, id, title, pos, size, style) {

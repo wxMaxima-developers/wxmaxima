@@ -106,7 +106,7 @@ std::vector<UrlSpan> FindUrls(const wxString &text) {
   if (text.Find(wxS(':')) == wxNOT_FOUND)
     return result;
 
-  const std::wstring w = text.ToStdWstring();
+  const std::wstring& w = text.ToStdWstring();
   size_t pos = 0;
   while (pos < w.size()) {
     // Only a word start can begin a link.
@@ -138,7 +138,7 @@ std::vector<UrlSpan> FindUrls(const wxString &text) {
 }
 
 bool IsLaunchableUrl(const wxString &url) {
-  const std::wstring w = url.ToStdWstring();
+  const std::wstring& w = url.ToStdWstring();
   for (const wchar_t *scheme : kUrlSchemes)
     if (UrlStartsWithSchemeAt(w, 0, scheme) && w.size() > wcslen(scheme))
       return true;

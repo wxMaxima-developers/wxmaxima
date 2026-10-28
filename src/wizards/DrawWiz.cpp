@@ -41,7 +41,7 @@
 #include <wx/wfstream.h>
 
 ExplicitWiz::ExplicitWiz(wxWindow *parent, Configuration *config,
-                         wxString expression, int dimensions)
+                         const wxString& expression, int dimensions)
   : wxDialog(parent, -1, _("Plot an explicit expression"), wxDefaultPosition,
              wxDefaultSize,
              wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxCAPTION |
@@ -144,7 +144,7 @@ wxString ExplicitWiz::GetValue() {
 }
 
 ImplicitWiz::ImplicitWiz(wxWindow *parent, Configuration *config,
-                         wxString expression, int dimensions)
+                         const wxString& expression, int dimensions)
   : wxDialog(parent, -1, _("Plot an explicit expression"), wxDefaultPosition,
              wxDefaultSize,
              wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxCAPTION |
@@ -798,7 +798,7 @@ wxString ParametricWiz::GetValue() {
 }
 
 WizPoints::WizPoints(wxWindow *parent, Configuration *config, int dimensions,
-                     wxString expr)
+                     const wxString& expr)
   : wxDialog(parent, -1, _("Draw points"), wxDefaultPosition, wxDefaultSize,
              wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxCAPTION |
              wxCLOSE_BOX | wxCLIP_CHILDREN) {

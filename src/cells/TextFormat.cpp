@@ -378,7 +378,7 @@ void ReadChildren(const wxXmlNode *node, Format format, wxString &text,
     switch (node->GetType()) {
     case wxXML_TEXT_NODE:
     case wxXML_CDATA_SECTION_NODE: {
-      const wxString content = node->GetContent();
+      const wxString& content = node->GetContent();
       text += content;
       formats.resize(text.Length(), format);
       break;

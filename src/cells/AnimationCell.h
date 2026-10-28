@@ -92,8 +92,8 @@ public:
   const CellTypeInfo &GetInfo() override;
   virtual ~AnimationCell();
   int Length() const {return m_images.size();}
-  void LoadImages(wxMemoryBuffer imageData);
-  void LoadImages(wxString imageFile);
+  void LoadImages(const wxMemoryBuffer& imageData);
+  void LoadImages(const wxString& imageFile);
   //! Set the animation's resolution
   void SetPPI(int ppi) override;
   //! A class that publishes wxm data to the clipboard
@@ -138,7 +138,7 @@ public:
   wxSize ToImageFile(wxString file) override;
 
   //! Exports the whole animation as animated gif
-  wxSize ToGif(wxString file);
+  wxSize ToGif(const wxString& file);
 
   bool CopyToClipboard() const override;
 

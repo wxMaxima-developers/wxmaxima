@@ -1136,7 +1136,7 @@ wxString Cell::OMML2RTF(wxXmlNode *node) {
 
   while (node != nullptr) {
     if (node->GetType() == wxXML_ELEMENT_NODE) {
-      wxString ommlname = node->GetName();
+      const wxString& ommlname = node->GetName();
       result += wxS("{\\m") + ommlname.Right(ommlname.Length() - 2);
 
       // Convert the attributes

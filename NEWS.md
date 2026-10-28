@@ -27,6 +27,9 @@
   sidebar, AI chat sidebar, scalable plots, right-to-left text editing),
   saying for each missing one why, and how to get it. Several depend on how
   wxWidgets itself was built, which a packager couldn't easily tell before.
+- About 200 places that copied a string, XML document or similar object
+  where a reference or a move would do no longer copy it (Coverity's
+  "copy instead of move" findings).
 
 # 26.10.0
 

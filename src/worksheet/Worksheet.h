@@ -2034,7 +2034,7 @@ public:
   void AddSymbols(const wxString &xml)
     { m_autocomplete.AddSymbols(xml); }
   //! Add a xml-encoded list of symbols to the autocompletion list
-  void AddSymbols(wxXmlDocument xml)
+  void AddSymbols(const wxXmlDocument& xml)
     { m_autocomplete.AddSymbols(xml); }
 
   void SetActiveCellText(const wxString &text);

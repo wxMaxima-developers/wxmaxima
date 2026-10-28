@@ -181,7 +181,7 @@ public:
   void StripLispComments(wxString &s);
 
   //! Launches the help browser on the uri passed as an argument.
-  void LaunchHelpBrowser(wxString uri);
+  void LaunchHelpBrowser(const wxString& uri);
 
 
   //! Does this document need saving?
@@ -317,16 +317,16 @@ protected:
   void CommandWiz(const wxString &title,
                   const wxString &description, const wxString &description_tooltip,
                   const wxString &commandRule,
-                  wxString label1, wxString defaultval1, wxString tooltip1 = {},
-                  wxString label2 = {}, wxString defaultval2 = {}, wxString tooltip2 = {},
-                  wxString label3 = {}, wxString defaultval3 = {}, wxString tooltip3 = {},
-                  wxString label4 = {}, wxString defaultval4 = {}, wxString tooltip4 = {},
-                  wxString label5 = {}, wxString defaultval5 = {}, wxString tooltip5 = {},
-                  wxString label6 = {}, wxString defaultval6 = {}, wxString tooltip6 = {},
-                  wxString label7 = {}, wxString defaultval7 = {}, wxString tooltip7 = {},
-                  wxString label8 = {}, wxString defaultval8 = {}, wxString tooltip8 = {},
-                  wxString label9 = {}, wxString defaultval9 = {}, wxString tooltip9 = {},
-                  wxString label10 = {}, wxString defaultval10 = {}, wxString tooltip10 = {}
+                  const wxString& label1, const wxString& defaultval1, const wxString& tooltip1 = {},
+                  const wxString& label2 = {}, const wxString& defaultval2 = {}, const wxString& tooltip2 = {},
+                  const wxString& label3 = {}, const wxString& defaultval3 = {}, const wxString& tooltip3 = {},
+                  const wxString& label4 = {}, const wxString& defaultval4 = {}, const wxString& tooltip4 = {},
+                  const wxString& label5 = {}, const wxString& defaultval5 = {}, const wxString& tooltip5 = {},
+                  const wxString& label6 = {}, const wxString& defaultval6 = {}, const wxString& tooltip6 = {},
+                  const wxString& label7 = {}, const wxString& defaultval7 = {}, const wxString& tooltip7 = {},
+                  const wxString& label8 = {}, const wxString& defaultval8 = {}, const wxString& tooltip8 = {},
+                  const wxString& label9 = {}, const wxString& defaultval9 = {}, const wxString& tooltip9 = {},
+                  const wxString& label10 = {}, const wxString& defaultval10 = {}, const wxString& tooltip10 = {}
     );
   //! Finds the name of an opening tag
   static wxRegEx m_xmlOpeningTagName;

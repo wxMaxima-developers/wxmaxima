@@ -63,7 +63,7 @@ public:
   wxString GnuplotSource() const override
     { return m_image ? m_image->GnuplotSource() : wxString(); }
 
-  void LoadImage(wxString image, bool remove = true);
+  void LoadImage(const wxString& image, bool remove = true);
 
   //! Set the image's resolution
   void SetPPI(int ppi) override {m_image->SetPPI(ppi);}

@@ -44,7 +44,7 @@ class RegexCtrl : public BTextCtrl
 public:
   RegexCtrl(wxWindow *parent,
             wxWindowID id, Configuration *cfg, const wxString &configName);
-  bool Matches(wxString text);
+  bool Matches(const wxString& text);
 
 protected:
   //! Is called when the contents of the textbox changes

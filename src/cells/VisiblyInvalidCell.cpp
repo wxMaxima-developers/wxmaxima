@@ -46,7 +46,7 @@ VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group, Configuration *config)
 VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group, Configuration *config,
                                        wxString &&toolTip)
   : VisiblyInvalidCell(group, config) {
-  SetToolTip(std::move(toolTip));
+  SetToolTip(toolTip);
 }
 
 VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group, Configuration *config,

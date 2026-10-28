@@ -41,7 +41,7 @@ public:
 
   wxString GetValue();
 
-  void SetValue(wxString s)
+  void SetValue(const wxString& s)
     {
       text_ctrl_1->SetValue(s);
     }

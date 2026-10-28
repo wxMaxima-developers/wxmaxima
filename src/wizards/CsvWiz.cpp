@@ -104,7 +104,7 @@ CsvImportWiz::~CsvImportWiz() {
 }
 
 CsvExportWiz::CsvExportWiz(wxWindow *parent, Configuration *config,
-                           wxString objectType)
+                           const wxString& objectType)
   : wxDialog(parent, -1, _("CSV export"), wxDefaultPosition, wxDefaultSize,
              wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxCAPTION |
              wxCLOSE_BOX | wxCLIP_CHILDREN) {

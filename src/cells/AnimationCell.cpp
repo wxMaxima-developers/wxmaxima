@@ -167,7 +167,7 @@ double AnimationCell::SetFrameRate(double Freq) {
   return (m_framerate > 0) ? m_framerate : m_configuration->DefaultFramerate();
 }
 
-void AnimationCell::LoadImages(wxMemoryBuffer imageData) {
+void AnimationCell::LoadImages(const wxMemoryBuffer& imageData) {
   wxImage images;
   wxMemoryInputStream istream(imageData.GetData(), imageData.GetDataLen());
   size_t count = wxImage::GetImageCount(istream);
@@ -181,7 +181,7 @@ void AnimationCell::LoadImages(wxMemoryBuffer imageData) {
   }
 }
 
-void AnimationCell::LoadImages(wxString imageFile) {
+void AnimationCell::LoadImages(const wxString& imageFile) {
   wxImage images;
   size_t count = wxImage::GetImageCount(imageFile);
 
@@ -519,7 +519,7 @@ const wxString AnimationCell::GetToolTip(const wxPoint point) const {
   return GetLocalToolTip();
 }
 
-wxSize AnimationCell::ToGif(wxString file) {
+wxSize AnimationCell::ToGif(const wxString& file) {
   if (!IsOk())
     return wxSize(1, 1);
 

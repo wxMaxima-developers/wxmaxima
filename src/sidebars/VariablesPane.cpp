@@ -366,7 +366,7 @@ void Variablespane::AddWatchCode(wxString code) {
   AddWatch(unescapedCode);
 }
 
-void Variablespane::AddWatch(wxString watch) {
+void Variablespane::AddWatch(const wxString& watch) {
   m_updateSizeNeeded = true;
   m_grid->BeginBatch();
   m_grid->SetCellValue(m_grid->GetNumberRows() - 1, 0, watch);

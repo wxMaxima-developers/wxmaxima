@@ -38,7 +38,7 @@
 #include <wx/log.h>
 
 
-Printout::Printout(wxString title, GroupCell *tree, double scaleFactor)
+Printout::Printout(const wxString& title, GroupCell *tree, double scaleFactor)
   : wxPrintout(title), m_configuration(GetDC(), Configuration::temporary),
     m_configPointer(&m_configuration),
     m_scaleFactor(scaleFactor),

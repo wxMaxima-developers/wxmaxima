@@ -174,7 +174,7 @@ bool MaximaFileIO::OpenWXMFile(const wxString &file, Worksheet *document,
 }
 
 wxString MaximaFileIO::ReadPotentiallyUnclosedTag(wxStringTokenizer &lines,
-                                              wxString firstLine, int depth) {
+                                              const wxString& firstLine, int depth) {
   wxString result = firstLine + wxS("\n");
   wxString closingTag = firstLine;
   m_wxMaxima.m_xmlOpeningTagName.Replace(&closingTag, wxS("</\\1>"));

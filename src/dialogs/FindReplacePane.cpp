@@ -227,7 +227,7 @@ void FindReplacePane::SetFocus() {
   m_searchText->SetFocus();
 }
 
-void FindReplacePane::SetFindString(wxString strng) {
+void FindReplacePane::SetFindString(const wxString& strng) {
   m_findReplaceData->SetFindString(strng);
   m_searchText->SetValue(strng);
   m_searchText->SetFocus();

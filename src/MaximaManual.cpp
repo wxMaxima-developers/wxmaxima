@@ -52,7 +52,7 @@ MaximaManual::HelpFileAnchors MaximaManual::GetHelpfileAnchors() {
   return m_helpFileAnchors;
 }
 
-wxString MaximaManual::GetHelpfileAnchorName(wxString keyword) {
+wxString MaximaManual::GetHelpfileAnchorName(const wxString& keyword) {
   bool needBuiltInAnchors;
   {
     const std::lock_guard<std::mutex> lock(m_helpFileAnchorsLock);
@@ -151,7 +151,7 @@ void MaximaManual::AnchorAliasses(HelpFileAnchors &anchors) {
   }
 }
 
-void MaximaManual::CompileHelpFileAnchors(stop_token stopToken,
+void MaximaManual::CompileHelpFileAnchors(const stop_token& stopToken,
                                           const wxString &maximaHtmlDir,
                                           const wxString &maximaVersion,
                                           const wxString &saveName) {

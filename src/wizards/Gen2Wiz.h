@@ -36,7 +36,7 @@ public:
   //! Saves the geometry while this is still a whole dialog, see
   //! FindReplaceDialog::~FindReplaceDialog()
   ~Gen2Wiz() override { SendDestroyEvent(); }
-  Gen2Wiz(wxString lab1, wxString lab2,
+  Gen2Wiz(const wxString& lab1, const wxString& lab2,
           const wxString &val1, const wxString &val2,
           Configuration *cfg,
           wxWindow *parent, int id, const wxString &title,
@@ -57,8 +57,8 @@ public:
       return text_ctrl_2->GetValue();
     }
 
-  void SetLabel1ToolTip(wxString toolTip){label_2->SetToolTip(toolTip);}
-  void SetLabel2ToolTip(wxString toolTip){label_3->SetToolTip(toolTip);}
+  void SetLabel1ToolTip(const wxString& toolTip){label_2->SetToolTip(toolTip);}
+  void SetLabel2ToolTip(const wxString& toolTip){label_3->SetToolTip(toolTip);}
 
 private:
   bool equal; // flawfinder: ignore -- plain bool member, not std::equal

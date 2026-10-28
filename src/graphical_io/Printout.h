@@ -41,7 +41,7 @@
 class Printout : public wxPrintout
 {
 public:
-  Printout(wxString title, GroupCell *tree, double scaleFactor);
+  Printout(const wxString& title, GroupCell *tree, double scaleFactor);
 
   /* Determine which cells are the Right places to start a page
    */
