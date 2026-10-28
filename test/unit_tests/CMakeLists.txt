@@ -808,6 +808,17 @@ if(TARGET wxmTestApp)
     add_test(NAME TrayIcon
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_TrayIcon>")
 
+    # The help sidebar knows whether anything has been loaded into it, so
+    # that it can stay hidden until it has (see wxMaximaFrame's constructor).
+    add_executable(test_HelpBrowserContent
+        test_HelpBrowserContent.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_HelpBrowserContent PUBLIC cxx_std_20)
+    target_link_libraries(test_HelpBrowserContent PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME HelpBrowserContent
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_HelpBrowserContent>")
+
     # Pins McpTools (src/mcp/McpTools.h), the MCP server's read-only
     # "worksheet context" tools: listing/reading cells, the table of
     # contents, whole sections, and the Variables sidebar's watchlist,

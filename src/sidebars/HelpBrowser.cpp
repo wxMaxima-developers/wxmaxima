@@ -216,6 +216,15 @@ void HelpBrowser::SelectKeywords(const std::vector<wxString> &keywords) {
   Layout();
 }
 
+void HelpBrowser::ShowStartPageIfEmpty() {
+  if (HasContent())
+    return;
+  CreateIfNeeded();
+  m_browserPanel->Show(true);
+  m_topicPanel->Show(false);
+  Layout();
+}
+
 void HelpBrowser::SetURL(const wxString &url) {
   CreateIfNeeded();
   m_browserPanel->Show(true);

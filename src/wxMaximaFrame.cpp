@@ -582,6 +582,14 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
 #ifdef WXM_USE_AI_TOOLS
   m_manager.GetPane(m_sidebarNames[EventIDs::menu_pane_aiMonitor]).Show(false);
 #endif
+#ifdef USE_WEBVIEW
+  // The help browser is only created once something asks for help, so at
+  // startup the help sidebar is an empty panel, even if the stored
+  // perspective says it was open when wxMaxima was last closed => keep it
+  // hidden until F1, "Help on", Maxima's ? or the like put help into it
+  // (they all show the pane themselves).
+  m_manager.GetPane(m_sidebarNames[EventIDs::menu_pane_help]).Show(false);
+#endif
   // The unicode selector needs loads of time for starting up
   // => close it at startup
   m_manager.GetPane(m_sidebarNames[EventIDs::menu_pane_unicode]).Show(false);
@@ -2606,6 +2614,13 @@ void wxMaximaFrame::ShowPane(int id, bool show) {
         //  wxASSERT(item != m_sidebarNames.end());
         if(item != m_sidebarNames.end())
           m_manager.GetPane(item->second).Show(show);
+#ifdef USE_WEBVIEW
+        // Opened by hand (View -> Sidebars) before any help was asked for:
+        // show the manual rather than an empty panel. Everything that shows
+        // help loads it before calling us, so this changes nothing for them.
+        if (show && (id == EventIDs::menu_pane_help) && m_helpPane)
+          m_helpPane->ShowStartPageIfEmpty();
+#endif
       }
     }
   AuiManagerUpdate();
