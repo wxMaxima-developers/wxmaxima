@@ -1,10 +1,5 @@
 # Current development version
 
-- ESC, a hexadecimal number and ESC enter that Unicode character again, as
-  the manual says (#2561): the list of symbols closed as soon as the number
-  matched no symbol's name. The list now shows the character the number
-  stands for and its Unicode name next to the names, and each name next to
-  its symbol. A leading `0` or `u+` marks a number that also begins a name.
 - The help sidebar no longer opens empty at startup when it was open when
   wxMaxima was last closed: it appears once it has help to show (F1,
   "Help on", Maxima's `?`). Opened by hand, it shows the manual.
@@ -33,7 +28,12 @@ security fix for the connection to Maxima, and many smaller fixes.
   were in text cells.
 - Selecting text in a text cell that wraps over several lines no longer
   makes the selection's ends jump between lines (#2477).
-
+- ESC, a hexadecimal number and ESC enter that Unicode character again, as
+  the manual says (#2561): the list of symbols closed as soon as the number
+  matched no symbol's name. The list now shows the character the number
+  stands for and its Unicode name next to the names, and each name next to
+  its symbol. A leading `0` or `u+` marks a number that also begins a name.
+  
 ## Code cells and evaluation
 
 - When Maxima reports an error, the statement that failed gets a light red
