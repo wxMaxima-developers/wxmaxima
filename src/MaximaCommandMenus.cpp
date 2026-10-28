@@ -1031,7 +1031,7 @@ void MaximaCommandMenus::EquationsMenu(wxCommandEvent &event) {
   }
   else if(event.GetId() == EventIDs::menu_solve_algsys){
     GetTextFromUser(_("Number of equations:"), _("Solve algebraic system"),
-                    &m_wxMaxima.m_configuration, wxS("3"), &m_wxMaxima, [this](wxString sz) {
+                    &m_wxMaxima.m_configuration, wxS("3"), &m_wxMaxima, [this](const wxString& sz) {
                       if (sz.Length() == 0)
                         return;
                       long isz;
@@ -1053,7 +1053,7 @@ void MaximaCommandMenus::EquationsMenu(wxCommandEvent &event) {
   }
   else if(event.GetId() == EventIDs::menu_solve_lin){
     GetTextFromUser(_("Number of equations:"), _("Solve linear system"),
-                    &m_wxMaxima.m_configuration, wxS("3"), &m_wxMaxima, [this](wxString sz) {
+                    &m_wxMaxima.m_configuration, wxS("3"), &m_wxMaxima, [this](const wxString& sz) {
                       if (sz.Length() == 0)
                         return;
                       long isz;

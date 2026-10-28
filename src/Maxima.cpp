@@ -184,7 +184,7 @@ void Maxima::ReadSocket() {
     fireText();
 }
 
-void Maxima::WorkerThread(stop_token stopToken) {
+void Maxima::WorkerThread(const stop_token& stopToken) {
   wxMilliClock_t lastProcessTime = wxGetLocalTimeMillis();
   while (!stopToken.stop_requested()) {
     bool activity = false;
@@ -251,7 +251,7 @@ void Maxima::WorkerThread(stop_token stopToken) {
   }
 }
 
-void Maxima::ProcessData(stop_token stopToken)
+void Maxima::ProcessData(const stop_token& stopToken)
 {
     if (m_processingBuffer.IsEmpty())
         return;
@@ -412,7 +412,7 @@ wxString Maxima::EscapeVarnameForMaxima(wxString var) {
     return result;
 }
 
-wxString Maxima::MaximaVarnameToLisp(wxString var)
+wxString Maxima::MaximaVarnameToLisp(const wxString& var)
 {
   if (var.StartsWith(wxS("?"))) 
     return(InvertCase(var.Mid(1)));

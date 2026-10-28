@@ -1543,7 +1543,7 @@ void wxMaxima::StripLispComments(wxString &s) {
  * Checks if maxima displayed a new prompt.
  */
 
-void wxMaxima::SetCWD(wxString file) {
+void wxMaxima::SetCWD(const wxString& file) {
   // If maxima isn't connected we cannot do anything
   if (!m_client || (!m_client->IsConnected()))
     return;
@@ -1753,7 +1753,7 @@ void wxMaxima::ShowTip(bool force) {
   tip->Show();
 }
 
-void wxMaxima::LaunchHelpBrowser(wxString uri) {
+void wxMaxima::LaunchHelpBrowser(const wxString& uri) {
 #ifdef USE_WEBVIEW
   // A file:// URI (the local manual) inside a confined snap is a special
   // case: even once the portal successfully reaches the host's default
@@ -3027,29 +3027,29 @@ void wxMaxima::AddDrawParameter(wxString cmd, int dimensionsOfNewDrawCommand) {
 void wxMaxima::CommandWiz(
                           const wxString &title, const wxString &description,
                           const wxString &description_tooltip, const wxString &commandRule,
-                          wxString label1, wxString defaultval1, wxString tooltip1, wxString label2,
-                          wxString defaultval2, wxString tooltip2, wxString label3,
-                          wxString defaultval3, wxString tooltip3, wxString label4,
-                          wxString defaultval4, wxString tooltip4, wxString label5,
-                          wxString defaultval5, wxString tooltip5, wxString label6,
-                          wxString defaultval6, wxString tooltip6, wxString label7,
-                          wxString defaultval7, wxString tooltip7, wxString label8,
-                          wxString defaultval8, wxString tooltip8, wxString label9,
-                          wxString defaultval9, wxString tooltip9, wxString label10,
-                          wxString defaultval10, wxString tooltip10) {
+                          const wxString& label1, const wxString& defaultval1, const wxString& tooltip1, const wxString& label2,
+                          const wxString& defaultval2, const wxString& tooltip2, const wxString& label3,
+                          const wxString& defaultval3, const wxString& tooltip3, const wxString& label4,
+                          const wxString& defaultval4, const wxString& tooltip4, const wxString& label5,
+                          const wxString& defaultval5, const wxString& tooltip5, const wxString& label6,
+                          const wxString& defaultval6, const wxString& tooltip6, const wxString& label7,
+                          const wxString& defaultval7, const wxString& tooltip7, const wxString& label8,
+                          const wxString& defaultval8, const wxString& tooltip8, const wxString& label9,
+                          const wxString& defaultval9, const wxString& tooltip9, const wxString& label10,
+                          const wxString& defaultval10, const wxString& tooltip10) {
   m_wizard->NewWizard(
                       description, description_tooltip,
-                      commandRule, std::move(label1), std::move(defaultval1),
-                      std::move(tooltip1), std::move(label2), std::move(defaultval2),
-                      std::move(tooltip2), std::move(label3), std::move(defaultval3),
-                      std::move(tooltip3), std::move(label4), std::move(defaultval4),
-                      std::move(tooltip4), std::move(label5), std::move(defaultval5),
-                      std::move(tooltip5), std::move(label6), std::move(defaultval6),
-                      std::move(tooltip6), std::move(label7), std::move(defaultval7),
-                      std::move(tooltip7), std::move(label8), std::move(defaultval8),
-                      std::move(tooltip8), std::move(label9), std::move(defaultval9),
-                      std::move(tooltip9), std::move(label10), std::move(defaultval10),
-                      std::move(tooltip10));
+                      commandRule, label1, defaultval1,
+                      tooltip1, label2, defaultval2,
+                      tooltip2, label3, defaultval3,
+                      tooltip3, label4, defaultval4,
+                      tooltip4, label5, defaultval5,
+                      tooltip5, label6, defaultval6,
+                      tooltip6, label7, defaultval7,
+                      tooltip7, label8, defaultval8,
+                      tooltip8, label9, defaultval9,
+                      tooltip9, label10, defaultval10,
+                      tooltip10);
   ShowWizardPane(title);
 }
 

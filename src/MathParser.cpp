@@ -1089,7 +1089,7 @@ void MathParser::ParseCommonAttrs(wxXmlNode *node, Cell *cell) {
     cell->SetAltCopyText(val);
   if (node->GetAttribute(wxS("tooltip"), &val))
     if (!val.empty())
-      cell->SetToolTip(std::move(val));
+      cell->SetToolTip(val);
 
   wxXmlAttribute *attr = node->GetAttributes();
   while (attr) {

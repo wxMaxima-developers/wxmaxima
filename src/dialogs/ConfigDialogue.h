@@ -263,7 +263,7 @@ private:
 protected:
   wxGrid *m_maximaEnvVariables;
   void OnImport(wxCommandEvent& event);
-  static void CopyConfig(wxConfigBase *src, wxConfigBase *dst, wxString dir = wxS("/"));
+  static void CopyConfig(wxConfigBase *src, wxConfigBase *dst, const wxString& dir = wxS("/"));
   void OnReloadAll(wxCommandEvent& event);
   void OnReloadStyles(wxCommandEvent& event);
   void OnResetAllToDefaults(wxCommandEvent& event);

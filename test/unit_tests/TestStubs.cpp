@@ -37,7 +37,7 @@ wxSize Configuration::GetPPI() const { return wxSize(72, 72); }
 AFontSize Configuration::Scale_Px(AFontSize) const { return AFontSize(10.0); }
 wxFontStyle Configuration::IsItalic(long) const { return {}; }
 wxColour Configuration::GetColor(TextStyle) { return {}; }
-bool Configuration::HideMarkerForThisMessage(wxString) { return false; }
+bool Configuration::HideMarkerForThisMessage(const wxString &) { return false; }
 wxBrush Configuration::GetTooltipBrush() const { return *wxWHITE_BRUSH; }
 void Configuration::NotifyOfCellRedraw(const Cell *) {}
 // The canvas width, so a test can make room for an image by setting it; 1, as

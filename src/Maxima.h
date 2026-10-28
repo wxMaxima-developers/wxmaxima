@@ -76,7 +76,7 @@ public:
   //! Invert case of chars that have inverted case in lisp 
   static wxString InvertCase(const wxString &var);
   //! Convert a human-readable maxima variable name to one lisp understands
-  static wxString MaximaVarnameToLisp(wxString var);
+  static wxString MaximaVarnameToLisp(const wxString& var);
 
   wxSocketBase *Socket() const { return m_socket.get(); }
 
@@ -219,7 +219,7 @@ private:
     This task runs in m_workerThread. It waits for data on the socket,
     reads it, and sends events to the main thread for each interpreted item.
     */
-  void WorkerThread(stop_token stopToken);
+  void WorkerThread(const stop_token& stopToken);
 
   /*! Search m_socketInputData for complete commands and send them to wxMaxima
 
@@ -231,7 +231,7 @@ private:
        as a string.
      .
    */
-  void ProcessData(stop_token stopToken);
+  void ProcessData(const stop_token& stopToken);
   /*! A timer that triggers reading data from maxima
 
     On MM Windows sometimes when we receive the signal that maxima has sent us

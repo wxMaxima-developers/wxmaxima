@@ -60,7 +60,7 @@ public:
   TextCell *ConsoleAppend(wxString s, CellType type, AppendOpt opts = {});
 
   //! Append a parsed 2D-maths XML fragment to the console.
-  void ConsoleAppend(wxXmlDocument xml, CellType type,
+  void ConsoleAppend(const wxXmlDocument& xml, CellType type,
                      const wxString &userLabel = {});
 
   //! Parse \p s as MathML-like XML into a cell and insert it.

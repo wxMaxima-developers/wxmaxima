@@ -41,7 +41,7 @@ public:
             const wxSize &size = wxDefaultSize,
             long style = wxDEFAULT_DIALOG_STYLE);
 
-  void SetValue(wxString s);
+  void SetValue(const wxString& s);
 
   void Parse(wxString s);
 

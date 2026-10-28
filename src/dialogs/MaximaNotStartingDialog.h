@@ -35,7 +35,7 @@ class MaximaNotStartingDialog : public wxDialog
 public:
   MaximaNotStartingDialog(wxWindow *parent, int id,
                           Configuration *config,
-                          wxString text = wxEmptyString,
+                          const wxString& text = wxEmptyString,
                           const wxPoint &pos = wxDefaultPosition,
                           const wxSize &size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE);
   

@@ -118,7 +118,7 @@ public:
   wxString GetFindString() const
     { return m_findReplaceData->GetFindString(); }
 
-  void SetFindString(wxString strng);
+  void SetFindString(const wxString& strng);
 
   wxFindReplaceData *GetData() const
     { return m_findReplaceData; }

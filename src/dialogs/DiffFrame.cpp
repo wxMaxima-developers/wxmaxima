@@ -503,7 +503,7 @@ toolBar->AddSeparator();
       new wxTextCtrl(this, wxID_ANY, files[i], wxDefaultPosition, wxDefaultSize,
                      wxTE_READONLY | wxBORDER_SIMPLE);
     fileLabel->SetToolTip(files[i]);
-    const wxString fullName = files[i];
+    const wxString& fullName = files[i];
     auto ellipsize = [fileLabel, fullName]() {
       wxClientDC dc(fileLabel);
       dc.SetFont(fileLabel->GetFont());
