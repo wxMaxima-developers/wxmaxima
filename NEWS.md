@@ -1,3 +1,9 @@
+# Current development version
+
+- The help sidebar no longer opens empty at startup when it was open when
+  wxMaxima was last closed: it appears once it has help to show (F1,
+  "Help on", Maxima's `?`). Opened by hand, it shows the manual.
+
 # 26.10.0
 
 This release is about making wxMaxima nicer to use, and again was developed

@@ -58,6 +58,14 @@ public:
   void JumpToKeyword(const wxString &keyword);
   void SelectKeywords(const std::vector<wxString> &keywords);
   wxString GetKeyword(wxWindowID id) const;
+  /*! Whether anything has been loaded into the sidebar yet.
+
+    The browser itself is only created on first use, so until something
+    asks for help the sidebar is an empty panel.
+  */
+  bool HasContent() const { return m_webView != nullptr || !m_keywords.empty(); }
+  //! Show the start page (the manual) if nothing else has been loaded yet
+  void ShowStartPageIfEmpty();
 
 private:
   void CreateIfNeeded();
