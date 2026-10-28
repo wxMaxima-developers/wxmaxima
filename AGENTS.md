@@ -1306,6 +1306,27 @@ tried without rebuilding.
     `ERROR_FILE`) does not dodge it. Give such a test a channel that never
     touches wxMaxima's stdio, as this one now does.
 
+- **A file wxMaxima is asked to open is checked before it gets a window
+  (`src/FileOpenKind.{h,cpp}`, `MyApp::OpenableFiles()`).** Every command-line
+  argument (and every Finder "open") gets a window *and a Maxima* of its own,
+  and `MaximaFileIO::OpenFile()` used to send anything it didn't recognise to
+  Maxima as `load("file")`. Opening wxmaxima.exe and its DLLs therefore started
+  one of each per file -- reproduced here with 13 renamed `.so` files: 13
+  windows, 13 Maxima processes, 1.6 GB -- and GCL even tried to link each
+  binary in as native code. Now only known types are opened (packages only
+  for the source extensions Maxima's own `load()` recognises -- no `.o`,
+  `.fasl` or `.fas`), a text format containing NUL bytes is refused, and the
+  refused files are listed in one message. A `.lisp`/`.mc`/`.dem` that does
+  arrive this way asks "Run program?" first (the maintainer's call, 2026-10;
+  batch runs don't ask). Drag and drop already ignored unknown types. A new
+  type wxMaxima should open goes into `ClassifyFileForOpening()`, or it is
+  refused. The "Load package" menu passes `command="load"` and bypasses all
+  of this on purpose: there the user picked the file to run.
+  **A file name put into a Maxima command goes through
+  `wxm::MaximaStringLiteral()`.** Pasting it between `"` lets a name
+  containing a quote (legal on Linux and macOS) end the string and inject
+  Maxima code -- importing a CSV with a crafted name ran `system()` -- and an
+  unescaped backslash is silently dropped by Maxima's reader.
 - **Where in a cell an error is (GH #289) is worked out on wxMaxima's side
   only -- don't hook Maxima's parser for it.** The queue sends one statement
   at a time and remembers its range in the cell

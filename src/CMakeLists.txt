@@ -155,6 +155,7 @@ set(SOURCE_FILES
     Bidi.cpp
     EvaluationQueue.cpp
     EventIDs.cpp
+    FileOpenKind.cpp
     FontRenderabilityCache.cpp
     AttachmentSource.cpp
     Image.cpp

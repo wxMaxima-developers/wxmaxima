@@ -885,6 +885,16 @@ public:
 
   void OnFileMenu(wxCommandEvent &ev);
 
+  /*! The files wxMaxima can open, out of the ones it was asked to open
+
+    Every file from the command line, the desktop or the Finder gets a window
+    and a Maxima process of its own, so the ones that would only produce an
+    error are dropped first (see FileOpenKind.h); the user is told about all
+    of them in a single message. Opening wxmaxima.exe and its DLLs used to
+    start a window and a Maxima for each of them.
+  */
+  static std::vector<wxString> OpenableFiles(const std::vector<wxString> &files);
+
 #ifdef __WXMSW__
   /*! Clear the attached console's QuickEdit mode for an unattended batch run.
 

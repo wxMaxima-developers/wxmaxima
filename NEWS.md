@@ -5,6 +5,21 @@
   matched no symbol's name. The list now shows the character the number
   stands for and its Unicode name next to the names, and each name next to
   its symbol. A leading `0` or `u+` marks a number that also begins a name.
+- Opening a file wxMaxima doesn't know -- from the command line, with
+  "Open with" or from the Finder -- is refused with one message listing the
+  files, instead of starting a window and a Maxima for each and having Maxima
+  `load()` it. Opening wxmaxima.exe together with its DLLs used to start
+  dozens of windows and Maxima processes at once and make the computer
+  unresponsive, and GCL tries to link a binary given to `load()` in as native
+  code. Lisp and Maxima source packages (`.lisp`, `.lsp`, `.mc`) and demos
+  (`.dem`) still run, but only after asking; compiled Lisp no longer does. A
+  `.wxm`, `.mac` or `.xml` that contains binary data is refused too, and
+  "Load package" still loads whatever file is picked.
+- File names wxMaxima hands to Maxima (`load`, `batch`, `demo`, importing a
+  matrix or list from CSV, adding a folder to the search path) are escaped.
+  A double quote in a file name used to end Maxima's string early, so
+  importing a file with a crafted name could run a command; and a Windows
+  path typed into the CSV import wizard lost its backslashes.
 
 # 26.10.0
 
