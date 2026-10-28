@@ -1543,7 +1543,7 @@ void wxMaxima::StripLispComments(wxString &s) {
  * Checks if maxima displayed a new prompt.
  */
 
-void wxMaxima::SetCWD(const wxString& file) {
+void wxMaxima::SetCWD(wxString file) {
   // If maxima isn't connected we cannot do anything
   if (!m_client || (!m_client->IsConnected()))
     return;

@@ -616,7 +616,7 @@ protected:
   int SaveDocumentP();
 
   //! Set the current working directory file I/O from maxima is relative to.
-  void SetCWD(const wxString& file);
+  void SetCWD(wxString file);
 
   //! Get the current working directory file I/O from maxima is relative to.
   wxString GetCWD()
