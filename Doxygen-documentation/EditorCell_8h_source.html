@@ -436,7 +436,7 @@ $(function() {
 <div class="line"><a id="l00733" name="l00733"></a><span class="lineno">  733</span>      <span class="keywordtype">long</span> <span class="keywordtype">long</span> m_selStart = -1;</div>
 <div class="line"><a id="l00734" name="l00734"></a><span class="lineno">  734</span>      <span class="keywordtype">long</span> <span class="keywordtype">long</span> m_selEnd = -1;</div>
 <div class="line"><a id="l00735" name="l00735"></a><span class="lineno">  735</span>    };</div>
-<div class="line"><a id="l00736" name="l00736"></a><span class="lineno">  736</span>    <span class="keywordtype">bool</span> AddState(HistoryEntry entry, Action action = any);</div>
+<div class="line"><a id="l00736" name="l00736"></a><span class="lineno">  736</span>    <span class="keywordtype">bool</span> AddState(<span class="keyword">const</span> HistoryEntry&amp; entry, Action action = any);</div>
 <div class="line"><a id="l00737" name="l00737"></a><span class="lineno">  737</span>    <span class="keywordtype">bool</span> AddState(<span class="keyword">const</span> wxString &amp;text, <span class="keywordtype">long</span> <span class="keywordtype">long</span> selStart, <span class="keywordtype">long</span> <span class="keywordtype">long</span> selEnd, Action action = any,</div>
 <div class="line"><a id="l00738" name="l00738"></a><span class="lineno">  738</span>                  <a class="code hl_typedef" href="TextFormat_8h.html#a13862239022d9d562b6551674458be17">TextFormat::Formats</a> formats = {});</div>
 <div class="line"><a id="l00739" name="l00739"></a><span class="lineno">  739</span>    <span class="keywordtype">bool</span> Undo();</div>
@@ -469,7 +469,7 @@ $(function() {
 <div class="line"><a id="l00778" name="l00778"></a><span class="lineno">  778</span>  <span class="keywordtype">size_t</span> ReplaceAll_RegEx(<span class="keyword">const</span> wxString &amp;oldString, <span class="keyword">const</span> wxString &amp;newString);</div>
 <div class="line"><a id="l00779" name="l00779"></a><span class="lineno">  779</span> </div>
 <div class="line"><a id="l00790" name="l00790"></a><span class="lineno">  790</span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="classEditorCell.html#aca3068e7b6ecd6db4cbfb168cf070b09">FindNext</a>(wxString str, <span class="keyword">const</span> <span class="keywordtype">bool</span> &amp;down, <span class="keyword">const</span> <span class="keywordtype">bool</span> &amp;ignoreCase);</div>
-<div class="line"><a id="l00791" name="l00791"></a><span class="lineno">  791</span>  <span class="keywordtype">bool</span> FindNext_RegEx(wxString str, <span class="keyword">const</span> <span class="keywordtype">bool</span> &amp;down);</div>
+<div class="line"><a id="l00791" name="l00791"></a><span class="lineno">  791</span>  <span class="keywordtype">bool</span> FindNext_RegEx(<span class="keyword">const</span> wxString&amp; str, <span class="keyword">const</span> <span class="keywordtype">bool</span> &amp;down);</div>
 <div class="line"><a id="l00792" name="l00792"></a><span class="lineno">  792</span> </div>
 <div class="line"><a id="l00793" name="l00793"></a><span class="lineno">  793</span>  <span class="keywordtype">bool</span> IsSelectionChanged()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_selectionChanged; }</div>
 <div class="line"><a id="l00794" name="l00794"></a><span class="lineno">  794</span> </div>

@@ -223,7 +223,7 @@ var searchData=
   ['setselectionstring_220',['SetSelectionString',['../classDocumentCellPointers.html#a710a8bf9fd44202fc568475632404d24',1,'DocumentCellPointers']]],
   ['setsidebaraccess_221',['SetSidebarAccess',['../classMcpServer.html#af5a908bbf4dab7ddb0afe3a6d1256404',1,'McpServer::SetSidebarAccess()'],['../classMcpTools.html#ad38bfaf1ed9da306ed99f3824f3a6ce7',1,'McpTools::SetSidebarAccess()']]],
   ['setsize_222',['SetSize',['../classOutCommon.html#a5be214796dc3b0d333aee035591644d4',1,'OutCommon::SetSize()'],['../classSvgBitmap.html#ab8b5c714e33eaaf36236390ad946d6e4',1,'SvgBitmap::SetSize(int width, int height)'],['../classSvgBitmap.html#a40d6b225ced23547e3dc0939e234c36b',1,'SvgBitmap::SetSize(wxSize siz)']]],
-  ['setstatustext_223',['SetStatusText',['../classStatusBar.html#a99984d665335fb0e11317b92213b4a48',1,'StatusBar']]],
+  ['setstatustext_223',['SetStatusText',['../classStatusBar.html#a444e70aae0e1071665c7a3383190a7d7',1,'StatusBar']]],
   ['setstyle_224',['SetStyle',['../classCell.html#aa16985efe118cc2442bde2452e7a3942',1,'Cell::SetStyle()'],['../classEditorCell.html#ac3c056651749fe30aa51f60006bae05a',1,'EditorCell::SetStyle()'],['../classLabelCell.html#a8cd08fad6d06a2c48007e9ab4dca1653',1,'LabelCell::SetStyle()'],['../classTextCell.html#a1b1dbb3d78f32f5a147f25d6a484678d',1,'TextCell::SetStyle()']]],
   ['settext_225',['SetText',['../classEditorCell_1_1StyledText.html#afc82acb4d290ee3beaa75efed1099573',1,'EditorCell::StyledText']]],
   ['settextcolor_226',['SetTextColor',['../classCell.html#a4e33d352bc051f63e64093a2cbd3eea2',1,'Cell']]],

@@ -7,7 +7,7 @@ var searchData=
   ['lastcache_4',['LastCache',['../classWorksheetDocument.html#a13c617f8ecf9c94bf606a3e815f2a3cf',1,'WorksheetDocument']]],
   ['lasterror_5',['LastError',['../classDocumentCellPointers_1_1ErrorList.html#ad34b01db71b5e4d4e632d8280fbbf5df',1,'DocumentCellPointers::ErrorList']]],
   ['lastinevaluationqueue_6',['LastInEvaluationQueue',['../classGroupCell.html#aab4904e9f44700e09f7aeb2192ec4db2',1,'GroupCell']]],
-  ['launchhelpbrowser_7',['LaunchHelpBrowser',['../classwxMaxima.html#a4a8f5301a1199dabcc023a24516ad127',1,'wxMaxima']]],
+  ['launchhelpbrowser_7',['LaunchHelpBrowser',['../classwxMaxima.html#a7fc63c0c076bbd9db82b8996be76a0be',1,'wxMaxima']]],
   ['leftpadding_8',['LeftPadding',['../classTextCell.html#a077f116f91b82afaffc5293aafc1e55d',1,'TextCell']]],
   ['limitcell_9',['LimitCell',['../classLimitCell.html#acae780e0f7c7c7932f9be36b02ab952f',1,'LimitCell']]],
   ['limitfloatingpaneheight_10',['LimitFloatingPaneHeight',['../FloatingPaneHeight_8cpp.html#a939cd1d8f6c87c8003cb8a912b66260b',1,'LimitFloatingPaneHeight(wxWindow *paneWindow, int contentHeight):&#160;FloatingPaneHeight.cpp'],['../FloatingPaneHeight_8h.html#a939cd1d8f6c87c8003cb8a912b66260b',1,'LimitFloatingPaneHeight(wxWindow *paneWindow, int contentHeight):&#160;FloatingPaneHeight.cpp']]],

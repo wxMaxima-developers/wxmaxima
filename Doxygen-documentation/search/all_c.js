@@ -11,7 +11,7 @@ var searchData=
   ['lasterror_8',['LastError',['../classDocumentCellPointers_1_1ErrorList.html#ad34b01db71b5e4d4e632d8280fbbf5df',1,'DocumentCellPointers::ErrorList']]],
   ['lastinevaluationqueue_9',['LastInEvaluationQueue',['../classGroupCell.html#aab4904e9f44700e09f7aeb2192ec4db2',1,'GroupCell']]],
   ['lastspliced_10',['lastSpliced',['../structCellList_1_1SplicedIn.html#a745fd3fdc7f583c5251fe079c4eb99c1',1,'CellList::SplicedIn']]],
-  ['launchhelpbrowser_11',['LaunchHelpBrowser',['../classwxMaxima.html#a4a8f5301a1199dabcc023a24516ad127',1,'wxMaxima']]],
+  ['launchhelpbrowser_11',['LaunchHelpBrowser',['../classwxMaxima.html#a7fc63c0c076bbd9db82b8996be76a0be',1,'wxMaxima']]],
   ['lazybitmapdataobject_12',['LazyBitmapDataObject',['../classLazyBitmapDataObject.html',1,'']]],
   ['lazydataobject_13',['LazyDataObject',['../classLazyDataObject.html',1,'']]],
   ['lazyexpression_14',['LazyExpression',['../classCatch_1_1LazyExpression.html',1,'Catch']]],

@@ -196,7 +196,7 @@ var searchData=
   ['isnumberedinputprompt_193',['IsNumberedInputPrompt',['../MaximaProtocol_8cpp.html#a98051b4f6aa84d37ddaf9909e00c0451',1,'MaximaProtocol']]],
   ['isoffered_194',['IsOffered',['../classLazyValue.html#ad51df635fe8ba2006c98ce335601b8bc',1,'LazyValue']]],
   ['isok_195',['IsOk',['../classBitmapOut.html#af46705bab0e3319705367c1ae275a072',1,'BitmapOut']]],
-  ['isoperator_196',['IsOperator',['../classCell.html#ad9ead4b4296d8f1f1fe50f8e8c83868c',1,'Cell::IsOperator()'],['../classFracCell.html#a1ae2e54a7fe858f0f21c2fc031e0ed80',1,'FracCell::IsOperator()'],['../classTextCell.html#a4cf54ff09e85bfa8eba366072df3e883',1,'TextCell::IsOperator()'],['../classConfiguration.html#af0c8b1318e5e74da5d687f05beec6958',1,'Configuration::IsOperator()'],['../classMaximaSessionInfo.html#af55d4c228075a4500a7748e8babd54cb',1,'MaximaSessionInfo::IsOperator()']]],
+  ['isoperator_196',['IsOperator',['../classCell.html#ad9ead4b4296d8f1f1fe50f8e8c83868c',1,'Cell::IsOperator()'],['../classFracCell.html#a1ae2e54a7fe858f0f21c2fc031e0ed80',1,'FracCell::IsOperator()'],['../classTextCell.html#a4cf54ff09e85bfa8eba366072df3e883',1,'TextCell::IsOperator()'],['../classConfiguration.html#a9577b066420c7d2b3fb3ae3e3478a328',1,'Configuration::IsOperator()'],['../classMaximaSessionInfo.html#af55d4c228075a4500a7748e8babd54cb',1,'MaximaSessionInfo::IsOperator()']]],
   ['isoutputlabel_197',['IsOutputLabel',['../classGroupCell.html#a36965391a620a07fa19229d66bf36a5e',1,'GroupCell']]],
   ['ispanedisplayed_198',['IsPaneDisplayed',['../classwxMaximaFrame.html#aca9ae11de0e947738270669867ec3b0e',1,'wxMaximaFrame']]],
   ['isperformancemonitorshown_199',['IsPerformanceMonitorShown',['../classwxMaximaFrame.html#a86bf1c3518243543065669acc4e4dbb9',1,'wxMaximaFrame']]],

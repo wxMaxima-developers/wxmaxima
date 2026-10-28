@@ -1,7 +1,7 @@
 var searchData=
 [
   ['name_0',['Name',['../classStyles.html#a21bf4943137ee7b3ce6971d9eecc51ea',1,'Styles::Name()'],['../classAiProvider.html#a851738a1b9c781f613a9859b3f4b8adc',1,'AiProvider::Name()']]],
-  ['namedboxcell_1',['NamedBoxCell',['../classNamedBoxCell.html#a8a21868ef0a9301271bdaad09eef6705',1,'NamedBoxCell']]],
+  ['namedboxcell_1',['NamedBoxCell',['../classNamedBoxCell.html#a9a42e61806dfa077ad1650c3a50933f6',1,'NamedBoxCell']]],
   ['navigateoutput_2',['NavigateOutput',['../classWorksheet.html#a298f3b0c5d6c129835d4268913e086be',1,'Worksheet']]],
   ['needsparen_3',['NeedsParen',['../classSumCell.html#a6a7f93c0715d58221298600205be2813',1,'SumCell']]],
   ['needsrecalculation_4',['NeedsRecalculation',['../classCell.html#aa0cc4910d52a26419062952d95d294bf',1,'Cell::NeedsRecalculation(AFontSize fontSize) const'],['../classCell.html#af02e5376702194e709fb2d2b493364fc',1,'Cell::NeedsRecalculation() const'],['../classEditorCell.html#a27361d11dfbf4383dcdfa11cb227e5ed',1,'EditorCell::NeedsRecalculation()'],['../classGroupCell.html#a2b1a8fb21cbb4f11e3a4c17726645a44',1,'GroupCell::NeedsRecalculation(AFontSize fontSize) const override'],['../classGroupCell.html#aa0cc4910d52a26419062952d95d294bf',1,'GroupCell::NeedsRecalculation(AFontSize fontSize) const'],['../classGroupCell.html#af02e5376702194e709fb2d2b493364fc',1,'GroupCell::NeedsRecalculation() const']]],
@@ -9,7 +9,7 @@ var searchData=
   ['networkingavailable_6',['NetworkingAvailable',['../classAiProvider.html#a0b25be23ce1075f467026335804ab956',1,'AiProvider']]],
   ['networkstatus_7',['NetworkStatus',['../classStatusBar.html#addf51766d62198da4dd162f7f2a05c6f',1,'StatusBar']]],
   ['newaicustomproviderid_8',['NewAiCustomProviderId',['../AiProvider_8h.html#ada03e36248aeff2f943e622172fc81bf',1,'AiProvider.cpp']]],
-  ['newwizard_9',['NewWizard',['../classGenWizPanel.html#abe9a1ef102fb3f9de0cf84a20562eda1',1,'GenWizPanel']]],
+  ['newwizard_9',['NewWizard',['../classGenWizPanel.html#aa79cc24e849d34438a77c3ee025261b5',1,'GenWizPanel']]],
   ['nexttabstop_10',['NextTabStop',['../classEditorCell.html#a1449c2bc0308ca9fbe0378dbc62881b3',1,'EditorCell']]],
   ['normalize_11',['normalize',['../structdetail_1_1dtoa__impl_1_1diyfp.html#a5bad735c2cb50b194938a8a89b82f6ed',1,'detail::dtoa_impl::diyfp']]],
   ['normalize_5fto_12',['normalize_to',['../structdetail_1_1dtoa__impl_1_1diyfp.html#a5a9ce83c6c1663c9aaac7ffd9009b971',1,'detail::dtoa_impl::diyfp']]],

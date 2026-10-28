@@ -41,7 +41,7 @@ var searchData=
   ['maximastringliteral_38',['MaximaStringLiteral',['../FileOpenKind_8cpp.html#a2e55b65129a6525a468b5a965eae30b5',1,'wxm']]],
   ['maximatokenizer_39',['MaximaTokenizer',['../classMaximaTokenizer.html#a86f0055757187f8b7533adde1d4a32d0',1,'MaximaTokenizer::MaximaTokenizer(const wxString &amp;commands, const Configuration *const configuration)'],['../classMaximaTokenizer.html#aece7dce3250f6c4b86dd977577f74bb5',1,'MaximaTokenizer::MaximaTokenizer(const wxString &amp;commands, const Configuration *const configuration, const TokenList &amp;initialTokens)']]],
   ['maximauserlocation_40',['MaximaUserLocation',['../classConfiguration.html#a52c3103a8a856b7ef2263c50e4ce6711',1,'Configuration::MaximaUserLocation() const'],['../classConfiguration.html#ab243f8140f4f378ddd57caa0dbb2b9b0',1,'Configuration::MaximaUserLocation(wxString maxima)']]],
-  ['maximavarnametolisp_41',['MaximaVarnameToLisp',['../classMaxima.html#aa463e9595a0b289f322d56d68db9f636',1,'Maxima']]],
+  ['maximavarnametolisp_41',['MaximaVarnameToLisp',['../classMaxima.html#abb244a284d209f98cffd6b31b5f99c70',1,'Maxima']]],
   ['mcpserverenabled_42',['McpServerEnabled',['../classConfiguration.html#a480cc8fedf36e05a56b6321d2576e001',1,'Configuration']]],
   ['mcpserverport_43',['McpServerPort',['../classConfiguration.html#a4cecee0db3a0b3459ba4b462a3bbcddc',1,'Configuration']]],
   ['mcpsetsidebarvisible_44',['McpSetSidebarVisible',['../classwxMaximaFrame.html#a37b61eeeedd72e016910a5d71fa40134',1,'wxMaximaFrame']]],

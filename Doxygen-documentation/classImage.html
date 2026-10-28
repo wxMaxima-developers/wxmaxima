@@ -137,9 +137,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>GenerateInvalidBitmap
 <a class="el" href="classImage.html#aa66fcc260d334a93ab2186636f78fc5b">LoadFailureKind</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetLoadFailureKind</b> () const</td></tr>
 <tr class="memdesc:a777e5847d982db8cc939c89a455fe9b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Blocks until this image's background load task (if any) has finished, then reports why it ended up invalid, if it did. Reflects only the CURRENT state &ndash; an image that failed once but was then reloaded successfully (e.g. a stale embedded copy later replaced by a fresh evaluation) reports LoadFailureKind::None. <br /></td></tr>
 <tr class="separator:a777e5847d982db8cc939c89a455fe9b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa202e724548644f439ac8817dba143a6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImage.html#aa202e724548644f439ac8817dba143a6">GnuplotSource</a> (wxString gnuplotFilename, wxString dataFilename, const <a class="el" href="classAttachmentSource.html">AttachmentSource</a> &amp;attachments={})</td></tr>
-<tr class="memdesc:aa202e724548644f439ac8817dba143a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the name of the gnuplot source and data file of this image.  <br /></td></tr>
-<tr class="separator:aa202e724548644f439ac8817dba143a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3f5c29ba7b8e13774925f30e3a1e68d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImage.html#aa3f5c29ba7b8e13774925f30e3a1e68d">GnuplotSource</a> (const wxString &amp;gnuplotFilename, const wxString &amp;dataFilename, const <a class="el" href="classAttachmentSource.html">AttachmentSource</a> &amp;attachments={})</td></tr>
+<tr class="memdesc:aa3f5c29ba7b8e13774925f30e3a1e68d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the name of the gnuplot source and data file of this image.  <br /></td></tr>
+<tr class="separator:aa3f5c29ba7b8e13774925f30e3a1e68d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5be426522e4d4dc0bfaa7468ee34acd1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImage.html#a5be426522e4d4dc0bfaa7468ee34acd1">CompressedGnuplotSource</a> (wxString gnuplotFilename, wxString dataFilename, const <a class="el" href="classAttachmentSource.html">AttachmentSource</a> &amp;attachments={})</td></tr>
 <tr class="memdesc:a5be426522e4d4dc0bfaa7468ee34acd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads the compressed gnuplot source and data file for this image.  <br /></td></tr>
 <tr class="separator:a5be426522e4d4dc0bfaa7468ee34acd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -208,10 +208,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetFitToWindow</b> (b
 void&#160;</td><td class="memItemRight" valign="bottom"><b>LoadImage</b> (const wxBitmap &amp;bitmap)</td></tr>
 <tr class="memdesc:a07e9f48042ddd9004c24c3ff9e899094"><td class="mdescLeft">&#160;</td><td class="mdescRight">"Loads" an image from a bitmap <br /></td></tr>
 <tr class="separator:a07e9f48042ddd9004c24c3ff9e899094"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acae076f38a3cc665ee359de784b8177c"><td class="memItemLeft" align="right" valign="top"><a id="acae076f38a3cc665ee359de784b8177c" name="acae076f38a3cc665ee359de784b8177c"></a>
-wxSize&#160;</td><td class="memItemRight" valign="bottom"><b>ToImageFile</b> (wxString filename)</td></tr>
-<tr class="memdesc:acae076f38a3cc665ee359de784b8177c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Saves the image in its original form, or as .png if it originates in a bitmap. <br /></td></tr>
-<tr class="separator:acae076f38a3cc665ee359de784b8177c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae37a4bcd369b8f764b3a6aa615338e75"><td class="memItemLeft" align="right" valign="top"><a id="ae37a4bcd369b8f764b3a6aa615338e75" name="ae37a4bcd369b8f764b3a6aa615338e75"></a>
+wxSize&#160;</td><td class="memItemRight" valign="bottom"><b>ToImageFile</b> (const wxString &amp;filename)</td></tr>
+<tr class="memdesc:ae37a4bcd369b8f764b3a6aa615338e75"><td class="mdescLeft">&#160;</td><td class="mdescRight">Saves the image in its original form, or as .png if it originates in a bitmap. <br /></td></tr>
+<tr class="separator:ae37a4bcd369b8f764b3a6aa615338e75"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae0069b9dc77158a097750c2328364ecd"><td class="memItemLeft" align="right" valign="top"><a id="ae0069b9dc77158a097750c2328364ecd" name="ae0069b9dc77158a097750c2328364ecd"></a>
 wxBitmap&#160;</td><td class="memItemRight" valign="bottom"><b>GetBitmap</b> (double scale=1.0)</td></tr>
 <tr class="memdesc:ae0069b9dc77158a097750c2328364ecd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the bitmap being displayed with custom scale. <br /></td></tr>
@@ -570,8 +570,8 @@ wxMemoryBuffer&#160;</td><td class="memItemRight" valign="bottom"><b>m_compresse
 
 </div>
 </div>
-<a id="aa202e724548644f439ac8817dba143a6" name="aa202e724548644f439ac8817dba143a6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa202e724548644f439ac8817dba143a6">&#9670;&#160;</a></span>GnuplotSource() <span class="overload">[2/2]</span></h2>
+<a id="aa3f5c29ba7b8e13774925f30e3a1e68d" name="aa3f5c29ba7b8e13774925f30e3a1e68d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa3f5c29ba7b8e13774925f30e3a1e68d">&#9670;&#160;</a></span>GnuplotSource() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -579,13 +579,13 @@ wxMemoryBuffer&#160;</td><td class="memItemRight" valign="bottom"><b>m_compresse
         <tr>
           <td class="memname">void Image::GnuplotSource </td>
           <td>(</td>
-          <td class="paramtype">wxString&#160;</td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
           <td class="paramname"><em>gnuplotFilename</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">wxString&#160;</td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
           <td class="paramname"><em>dataFilename</em>, </td>
         </tr>
         <tr>
