@@ -33,6 +33,7 @@
 */
 
 #include "MaximaTokenizer.h"
+#include "FileOpenKind.h"
 #include "MaximaMenuSync.h"
 #include "BTextCtrl.h"
 #include <wx/notifmsg.h>
@@ -3247,7 +3248,7 @@ void wxMaxima::OnRecentPackage(wxCommandEvent &event) {
 #ifdef __WXMSW__
   file.Replace(wxS("\\"), wxS("/"));
 #endif
-  MenuCommand(wxS("load(\"") + file + wxS("\")$"));
+  MenuCommand(wxS("load(") + wxm::MaximaStringLiteral(file) + wxS(")$"));
 }
 
 void wxMaxima::OnUnsavedDocument(wxCommandEvent &event) {
