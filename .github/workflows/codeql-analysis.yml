@@ -11,9 +11,17 @@ on: [push]
 # commit pointless, so cancel it rather than let it hold a runner. Never for
 # tags: a release build must always finish (on release day the queue held
 # 86 runs and the tag builds waited about three hours).
+#
+# Never on main either. A CodeQL run that is cancelled after "Initialize
+# CodeQL" uploads a "failed run" SARIF in its post step ("CodeQL job status
+# was configuration error"), and GitHub then shows "Code scanning
+# configuration error: CodeQL is reporting errors" for the repository until
+# the next run on main has finished. Two quick pushes to main were enough.
+# Without cancel-in-progress a newer push still replaces a run that is only
+# *waiting* in this group -- that one never started, so it uploads nothing.
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
-  cancel-in-progress: ${{ !startsWith(github.ref, 'refs/tags/') }}
+  cancel-in-progress: ${{ !startsWith(github.ref, 'refs/tags/') && github.ref != format('refs/heads/{0}', github.event.repository.default_branch) }}
 
 permissions:
   contents: read
