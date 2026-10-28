@@ -25,6 +25,7 @@
 */
 
 #include "MaximaFileIO.h"
+#include "FileOpenKind.h"
 #include "SaveAsDefaults.h"
 #include "wxMaxima.h"
 #include "dialogs/LoggingMessageDialog.h"
@@ -173,7 +174,7 @@ bool MaximaFileIO::OpenWXMFile(const wxString &file, Worksheet *document,
 }
 
 wxString MaximaFileIO::ReadPotentiallyUnclosedTag(wxStringTokenizer &lines,
-                                              wxString firstLine, int depth) {
+                                              const wxString& firstLine, int depth) {
   wxString result = firstLine + wxS("\n");
   wxString closingTag = firstLine;
   m_wxMaxima.m_xmlOpeningTagName.Replace(&closingTag, wxS("</\\1>"));
@@ -633,62 +634,75 @@ bool MaximaFileIO::OpenFile(const wxString &file, const wxString &command) {
   //  wxWindowUpdateLocker dontUpdateTheWorksheet(m_wxMaxima.GetWorksheet());
 
   if (command.Length() > 0) {
-    m_wxMaxima.MenuCommand(command + wxS("(\"") + unixFilename + wxS("\")$"));
+    m_wxMaxima.MenuCommand(command + wxS("(") + wxm::MaximaStringLiteral(unixFilename) +
+                           wxS(")$"));
     if (command == wxS("load")) {
       m_wxMaxima.ReReadConfig();
       m_wxMaxima.m_recentPackages.AddDocument(unixFilename);
       m_wxMaxima.UpdateRecentDocuments();
       m_wxMaxima.ReReadConfig();
     }
-  } else if (realFile.Lower().EndsWith(wxS(".wxm"))) {
-    retval = OpenWXMFile(realFile, m_wxMaxima.GetWorksheet());
-    if (retval) {
-      m_wxMaxima.ReReadConfig();
-      if (m_wxMaxima.IsInteractive())
-        m_wxMaxima.m_recentDocuments.AddDocument(realFile);
-      m_wxMaxima.ReReadConfig();
+  } else {
+    // A file wxMaxima doesn't know, or a "text" file that is binary, is
+    // refused rather than handed to Maxima's load(): opening wxmaxima.exe and
+    // its DLLs used to have Maxima try to load each of them -- GCL even links
+    // an object file in as native code. See FileOpenKind.h.
+    const wxString whyNot = wxm::WhyFileCannotBeOpened(realFile);
+    if (!whyNot.IsEmpty()) {
+      LoggingMessageBox(wxString::Format(_("Cannot open %s:\n%s"), realFile, whyNot),
+                        _("Error"), wxOK | wxICON_EXCLAMATION);
+      return false;
     }
-  }
 
-  else if (realFile.Lower().EndsWith(wxS(".mac")) ||
-           realFile.Lower().EndsWith(wxS(".out"))) {
-    retval = OpenMACFile(realFile, m_wxMaxima.GetWorksheet());
-    if (retval) {
+    const auto kind = wxm::ClassifyFileForOpening(realFile);
+    switch (kind) {
+    case wxm::FileOpenKind::WxmWorksheet:
+    case wxm::FileOpenKind::MacFile:
+    case wxm::FileOpenKind::WxmxWorksheet:
+      if (kind == wxm::FileOpenKind::WxmWorksheet)
+        retval = OpenWXMFile(realFile, m_wxMaxima.GetWorksheet());
+      else if (kind == wxm::FileOpenKind::MacFile)
+        retval = OpenMACFile(realFile, m_wxMaxima.GetWorksheet());
+      else
+        retval = OpenWXMXFile(realFile, m_wxMaxima.GetWorksheet());
+      if (retval) {
+        m_wxMaxima.ReReadConfig();
+        if (m_wxMaxima.IsInteractive())
+          m_wxMaxima.m_recentDocuments.AddDocument(realFile);
+        m_wxMaxima.ReReadConfig();
+      }
+      break;
+    case wxm::FileOpenKind::XmlWorksheet:
+      retval = OpenXML(realFile, m_wxMaxima.GetWorksheet()); // clearDocument = true
+      break;
+    case wxm::FileOpenKind::Demo:
+    case wxm::FileOpenKind::Package:
+      // A package is a program. Only files from outside wxMaxima (command
+      // line, "Open with", the Finder) get here -- the "Load package" menu
+      // passes a command and the user picked the file to run -- so a
+      // mistaken double-click is asked about rather than run. A batch run
+      // was told to run it.
+      if (!LoggingMessageDialog::IsNonInteractive() &&
+          wxMessageBox(wxString::Format(
+                         _("%s is a program. Do you want Maxima to run it?\n\n"
+                           "Only run programs from a source you trust: they "
+                           "can do anything you can do on this computer."),
+                         realFile),
+                       _("Run program?"),
+                       wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION,
+                       &m_wxMaxima) != wxYES)
+        return false;
+      m_wxMaxima.MenuCommand((kind == wxm::FileOpenKind::Demo ? wxS("demo(")
+                                                             : wxS("load(")) +
+                             wxm::MaximaStringLiteral(unixFilename) + wxS(")$"));
       m_wxMaxima.ReReadConfig();
-      if (m_wxMaxima.IsInteractive())
-        m_wxMaxima.m_recentDocuments.AddDocument(realFile);
+      m_wxMaxima.m_recentPackages.AddDocument(realFile);
+      m_wxMaxima.UpdateRecentDocuments();
       m_wxMaxima.ReReadConfig();
+      break;
+    case wxm::FileOpenKind::Unsupported: // Already refused above
+      break;
     }
-  }
-
-  else if (realFile.EndsWith(wxS(".wxmx")) || realFile.EndsWith(wxS(".wxmx~")) ||
-           (realFile.Right(4).Lower() == wxS(".zip"))) {
-    retval = OpenWXMXFile(realFile, m_wxMaxima.GetWorksheet());
-    if (retval) {
-      m_wxMaxima.ReReadConfig();
-      if (m_wxMaxima.IsInteractive())
-        m_wxMaxima.m_recentDocuments.AddDocument(realFile);
-      m_wxMaxima.ReReadConfig();
-    }
-  }
-
-  else if (realFile.Right(4).Lower() == wxS(".dem")) {
-    m_wxMaxima.MenuCommand(wxS("demo(\"") + unixFilename + wxS("\")$"));
-    m_wxMaxima.ReReadConfig();
-    m_wxMaxima.m_recentPackages.AddDocument(realFile);
-    m_wxMaxima.UpdateRecentDocuments();
-    m_wxMaxima.ReReadConfig();
-  }
-
-  else if (realFile.Right(4).Lower() == wxS(".xml"))
-    retval = OpenXML(realFile, m_wxMaxima.GetWorksheet()); // clearDocument = true
-
-  else {
-    m_wxMaxima.MenuCommand(wxS("load(\"") + unixFilename + wxS("\")$"));
-    m_wxMaxima.ReReadConfig();
-    m_wxMaxima.m_recentPackages.AddDocument(realFile);
-    m_wxMaxima.UpdateRecentDocuments();
-    m_wxMaxima.ReReadConfig();
   }
 
   m_wxMaxima.UpdateRecentDocuments();

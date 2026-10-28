@@ -268,6 +268,17 @@ target_link_libraries(test_SyntaxErrorLocation PRIVATE ${wxWidgets_LIBRARIES})
 add_test(NAME SyntaxErrorLocation
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_SyntaxErrorLocation>")
 
+# Which files wxMaxima agrees to open from the command line, the desktop or
+# the Finder (opening wxmaxima.exe and its DLLs used to start a window and a
+# Maxima per file) is decided GUI-free, so it is tested directly.
+add_executable(test_FileOpenKind
+    test_FileOpenKind.cpp ${CMAKE_SOURCE_DIR}/src/FileOpenKind.cpp
+    ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
+target_include_directories(test_FileOpenKind PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_link_libraries(test_FileOpenKind PRIVATE ${wxWidgets_LIBRARIES})
+add_test(NAME FileOpenKind
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_FileOpenKind>")
+
 # Where a line of plain text Maxima sends may be broken into lines is a pure
 # string function, so it is tested directly.
 add_executable(test_TextBreaks

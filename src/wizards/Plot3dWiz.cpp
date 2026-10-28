@@ -186,7 +186,7 @@ void Plot3DWiz::do_layout() {
   Layout();
 }
 
-void Plot3DWiz::SetValue(wxString s) {
+void Plot3DWiz::SetValue(const wxString& s) {
   if (s.StartsWith(wxS("plot3d")))
     Parse(s);
   else if (s.StartsWith(wxS("wxplot3d"))) {

@@ -45,7 +45,7 @@ constexpr int MIN_WRAP_WIDTH = 50;
 constexpr int DEFAULT_WRAP_WIDTH = 400;
 } // namespace
 
-WrappingStaticText::WrappingStaticText(wxWindow *parent, int id, wxString text)
+WrappingStaticText::WrappingStaticText(wxWindow *parent, int id, const wxString& text)
   : wxPanel(parent, wxID_ANY), m_label(text) {
   m_textCtrl = new wxStaticText(this, id, text);
   wxSizer *sizer = new wxBoxSizer(wxHORIZONTAL);

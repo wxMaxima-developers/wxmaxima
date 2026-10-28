@@ -34,7 +34,7 @@
 
 NamedBoxCell::NamedBoxCell(GroupCell *group, Configuration *config,
                            std::unique_ptr<Cell> &&inner,
-                           wxString name)
+                           const wxString& name)
   : Cell(group, config),
     m_innerCell(std::move(inner)),
     m_boxname(std::make_unique<TextCell>(m_group, m_configuration, name, TS_STRING))

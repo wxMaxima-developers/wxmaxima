@@ -148,7 +148,7 @@ void AutoComplete::AddSymbols(wxString xml) {
     AddSymbols_Backgroundtask_string({}, std::move(xml));
 }
 
-void AutoComplete::AddSymbols(wxXmlDocument xml) {
+void AutoComplete::AddSymbols(const wxXmlDocument& xml) {
   if(m_addSymbols_backgroundThread.joinable())
     {
       m_addSymbols_backgroundThread.request_stop();
@@ -163,17 +163,17 @@ void AutoComplete::AddSymbols(wxXmlDocument xml) {
       AddSymbols_Backgroundtask(stopToken, xml);
     });
   else
-    AddSymbols_Backgroundtask({}, std::move(xml));
+    AddSymbols_Backgroundtask({}, xml);
 }
 
-void AutoComplete::AddSymbols_Backgroundtask_string(stop_token stopToken, wxString xml) {
+void AutoComplete::AddSymbols_Backgroundtask_string(const stop_token &stopToken, const wxString &xml) {
   wxXmlDocument xmldoc;
   wxStringInputStream xmlStream(xml);
   xmldoc.Load(xmlStream);
   AddSymbols_Backgroundtask(stopToken, xmldoc);
 }
 
-void AutoComplete::AddSymbols_Backgroundtask(stop_token stopToken, wxXmlDocument xmldoc) {
+void AutoComplete::AddSymbols_Backgroundtask(const stop_token& stopToken, const wxXmlDocument& xmldoc) {
   wxXmlNode *node = xmldoc.GetRoot();
   if (node != nullptr) {
     wxXmlNode *children = node->GetChildren();
@@ -328,7 +328,7 @@ void AutoComplete::LoadSymbols() {
     }
 }
 
-void AutoComplete::BuiltinSymbols_BackgroundTask(stop_token stopToken) {
+void AutoComplete::BuiltinSymbols_BackgroundTask(const stop_token& stopToken) {
   {
     const std::lock_guard<std::mutex> lock(m_keywordsLock);
     for(auto &wordlist:m_wordList)
@@ -429,7 +429,7 @@ void AutoComplete::BuiltinSymbols_BackgroundTask(stop_token stopToken) {
   }
 }
 
-void AutoComplete::LoadableFiles_BackgroundTask(stop_token stopToken, wxString sharedir, wxString demodir) {
+void AutoComplete::LoadableFiles_BackgroundTask(const stop_token& stopToken, const wxString& sharedir, const wxString& demodir) {
   // Prepare a list of all built-in loadable files of maxima.
   {
     m_builtInLoadFiles.clear();

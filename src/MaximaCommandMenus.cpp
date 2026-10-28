@@ -28,6 +28,7 @@
 
 #include "wxMaxima.h"
 #include "EventIDs.h"
+#include "FileOpenKind.h"
 #include <wx/windowptr.h>
 #include <wx/colordlg.h>
 #include <wx/dirdlg.h>
@@ -1031,7 +1032,7 @@ void MaximaCommandMenus::EquationsMenu(wxCommandEvent &event) {
   }
   else if(event.GetId() == EventIDs::menu_solve_algsys){
     GetTextFromUser(_("Number of equations:"), _("Solve algebraic system"),
-                    &m_wxMaxima.m_configuration, wxS("3"), &m_wxMaxima, [this](wxString sz) {
+                    &m_wxMaxima.m_configuration, wxS("3"), &m_wxMaxima, [this](const wxString& sz) {
                       if (sz.Length() == 0)
                         return;
                       long isz;
@@ -1053,7 +1054,7 @@ void MaximaCommandMenus::EquationsMenu(wxCommandEvent &event) {
   }
   else if(event.GetId() == EventIDs::menu_solve_lin){
     GetTextFromUser(_("Number of equations:"), _("Solve linear system"),
-                    &m_wxMaxima.m_configuration, wxS("3"), &m_wxMaxima, [this](wxString sz) {
+                    &m_wxMaxima.m_configuration, wxS("3"), &m_wxMaxima, [this](const wxString& sz) {
                       if (sz.Length() == 0)
                         return;
                       long isz;
@@ -1115,7 +1116,7 @@ void MaximaCommandMenus::MatrixMenu(wxCommandEvent &event) {
     wxWindowPtr<CsvImportWiz> wiz(new CsvImportWiz(&m_wxMaxima, &m_wxMaxima.m_configuration));
     wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
       if (retcode == wxID_OK) {
-        wxString cmd = wxS("read_matrix(\"") + wiz->GetFilename() + wxS("\", ") +
+        wxString cmd = wxS("read_matrix(") + wxm::MaximaStringLiteral(wiz->GetFilename()) + wxS(", ") +
           wiz->GetSeparator() + wxS(");");
         m_wxMaxima.MenuCommand(cmd);
       }
@@ -1422,7 +1423,7 @@ void MaximaCommandMenus::ListMenu(wxCommandEvent &event) {
       wxWindowPtr<CsvImportWiz> wiz(new CsvImportWiz(&m_wxMaxima, &m_wxMaxima.m_configuration));
       wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
         if (retcode == wxID_OK) {
-          wxString cmd = wxS("read_nested_list(\"") + wiz->GetFilename() + wxS("\", ") +
+          wxString cmd = wxS("read_nested_list(") + wxm::MaximaStringLiteral(wiz->GetFilename()) + wxS(", ") +
             wiz->GetSeparator() + wxS(");");
           m_wxMaxima.MenuCommand(cmd);
         }
@@ -1858,10 +1859,10 @@ void MaximaCommandMenus::StatsMenu(wxCommandEvent &event) {
           format = wxS("tab");
 
         if (format != wxEmptyString)
-          m_wxMaxima.MenuCommand(cmd + wxS("read_matrix(\"") + file + wxS("\", '") + format +
+          m_wxMaxima.MenuCommand(cmd + wxS("read_matrix(") + wxm::MaximaStringLiteral(file) + wxS(", '") + format +
                       wxS(");"));
         else
-          m_wxMaxima.MenuCommand(cmd + wxS("read_matrix(\"") + file + wxS("\");"));
+          m_wxMaxima.MenuCommand(cmd + wxS("read_matrix(") + wxm::MaximaStringLiteral(file) + wxS(");"));
       }
     }
   else if(event.GetId() == EventIDs::menu_stats_subsample){
@@ -4543,8 +4544,9 @@ void MaximaCommandMenus::MaximaMenu(wxCommandEvent &event) {
 #if defined(__WXMSW__)
       dir.Replace(wxS("\\"), wxS("/"));
 #endif
-      wxString cmd = wxS("file_search_maxima : cons(sconcat(\"") + dir +
-        wxS("/###.{lisp,mac,mc}\"), file_search_maxima)$");
+      wxString cmd = wxS("file_search_maxima : cons(sconcat(") +
+        wxm::MaximaStringLiteral(dir + wxS("/###.{lisp,mac,mc}")) +
+        wxS("), file_search_maxima)$");
       m_wxMaxima.MenuCommand(cmd);
     }
   }

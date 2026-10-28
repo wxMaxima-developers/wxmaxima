@@ -96,11 +96,11 @@ public:
   //! Interprets the XML autocompletable symbol list maxima can send us
   void AddSymbols(wxString xml);
   //! Interprets the XML autocompletable symbol list maxima can send us
-  void AddSymbols(wxXmlDocument xml);
+  void AddSymbols(const wxXmlDocument& xml);
   //! The real work of AddSymbols is made here and in the background
-  void AddSymbols_Backgroundtask_string(stop_token stopToken, wxString xml);
+  void AddSymbols_Backgroundtask_string(const stop_token &stopToken, const wxString &xml);
   //! The real work of AddSymbols is made here and in the background
-  void AddSymbols_Backgroundtask(stop_token stopToken, wxXmlDocument xmldoc);
+  void AddSymbols_Backgroundtask(const stop_token& stopToken, const wxXmlDocument& xmldoc);
 
 
   //! Replace the list of files in the directory the worksheet file is in to the demo files list
@@ -164,9 +164,9 @@ private:
   //! The configuration storage
   Configuration *m_configuration;
   //! Loads the list of loadable files and can be run in a background task
-  void LoadableFiles_BackgroundTask(stop_token stopToken, wxString sharedir, wxString demodir);
+  void LoadableFiles_BackgroundTask(const stop_token& stopToken, const wxString& sharedir, const wxString& demodir);
   //! Prepares the list of built-in symbols and can be run in a background task
-  void BuiltinSymbols_BackgroundTask(stop_token stopToken);
+  void BuiltinSymbols_BackgroundTask(const stop_token& stopToken);
 
   //! Replace the list of files in the directory the worksheet file is in to the load files list
   void UpdateLoadFiles_BackgroundTask(stop_token stopToken, wxString partial, wxString maximaDir);
@@ -182,7 +182,7 @@ private:
                              std::mutex *lock,
                              stop_token stopToken = {},
                              const wxString &prefix = wxEmptyString) :
-      m_files(files), m_lock(lock), m_stopToken(stopToken), m_prefix(prefix) {
+      m_files(files), m_lock(lock), m_stopToken(std::move(stopToken)), m_prefix(prefix) {
       for(const auto &i : m_files)
         m_filesHash[i];
     }
@@ -240,7 +240,7 @@ private:
                                           std::mutex *lock,
                                           stop_token stopToken = {},
                                           const wxString &prefix = wxEmptyString) :
-      m_files(files), m_lock(lock), m_stopToken(stopToken), m_prefix(prefix)
+      m_files(files), m_lock(lock), m_stopToken(std::move(stopToken)), m_prefix(prefix)
       {
         for(const auto &i : m_files)
         m_filesHash[i];
@@ -303,7 +303,7 @@ private:
                          std::mutex *lock,
                          stop_token stopToken = {},
                          const wxString &prefix = wxEmptyString) :
-      GetMacFiles_includingSubdirs(files, lock, stopToken, prefix){ }
+      GetMacFiles_includingSubdirs(files, lock, std::move(stopToken), prefix){ }
     wxDirTraverseResult OnDir(const wxString& dirname) override
       {
         if (m_stopToken.stop_requested()) return wxDIR_STOP;
@@ -330,7 +330,7 @@ private:
                                            std::mutex *lock,
                                            stop_token stopToken = {},
                                            const wxString &prefix = wxEmptyString) :
-      m_files(files), m_lock(lock), m_stopToken(stopToken), m_prefix(prefix)
+      m_files(files), m_lock(lock), m_stopToken(std::move(stopToken)), m_prefix(prefix)
       {
         for(const auto &i : m_files)
         m_filesHash[i];
@@ -389,7 +389,7 @@ private:
                           std::mutex *lock,
                           stop_token stopToken = {},
                           const wxString &prefix = wxEmptyString) :
-      GetDemoFiles_includingSubdirs(files, lock, stopToken, prefix){ }
+      GetDemoFiles_includingSubdirs(files, lock, std::move(stopToken), prefix){ }
     virtual wxDirTraverseResult OnDir(const wxString& dirname) override
       {
         if (m_stopToken.stop_requested()) return wxDIR_STOP;

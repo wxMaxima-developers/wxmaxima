@@ -733,7 +733,7 @@ public:
       long long m_selStart = -1;
       long long m_selEnd = -1;
     };
-    bool AddState(HistoryEntry entry, Action action = any);
+    bool AddState(const HistoryEntry& entry, Action action = any);
     bool AddState(const wxString &text, long long selStart, long long selEnd, Action action = any,
                   TextFormat::Formats formats = {});
     bool Undo();
@@ -788,7 +788,7 @@ public:
     - false: Case-sensitive search
   */
   bool FindNext(wxString str, const bool &down, const bool &ignoreCase);
-  bool FindNext_RegEx(wxString str, const bool &down);
+  bool FindNext_RegEx(const wxString& str, const bool &down);
 
   bool IsSelectionChanged() const { return m_selectionChanged; }
 

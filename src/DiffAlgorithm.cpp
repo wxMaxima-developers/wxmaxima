@@ -286,7 +286,7 @@ void DiffBlock(const wxString &a, const std::vector<Span> &aLines,
 //! otherwise completely different chunks - which would punch odd-looking
 //! unhighlighted holes into the marking.
 std::vector<CharRange> BridgeWhitespaceGaps(const wxString &s,
-                                            std::vector<CharRange> ranges) {
+                                            const std::vector<CharRange>& ranges) {
     std::vector<CharRange> bridged;
     for (const auto &r : ranges) {
         bool gapIsWhitespace = !bridged.empty();

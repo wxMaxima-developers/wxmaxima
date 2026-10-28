@@ -3434,7 +3434,7 @@ void ConfigDialogue::OnImport(wxCommandEvent &WXUNUSED(event)) {
 }
 
 void ConfigDialogue::CopyConfig(wxConfigBase *src, wxConfigBase *dst,
-                                wxString dir) {
+                                const wxString& dir) {
   bool bCont = true;
   long dummy;
   wxString str;

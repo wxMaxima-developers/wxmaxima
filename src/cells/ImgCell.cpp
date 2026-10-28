@@ -105,7 +105,7 @@ void ImgCell::ReloadImage(const wxString &image) {
   m_image->SetFitToWindow(fitToWindow);
 }
 
-void ImgCell::LoadImage(wxString image, bool remove) {
+void ImgCell::LoadImage(const wxString& image, bool remove) {
   m_image = std::make_shared<Image>(m_configuration, image, AttachmentSource(), remove);
 }
 

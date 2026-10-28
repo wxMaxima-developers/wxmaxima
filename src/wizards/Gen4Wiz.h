@@ -36,7 +36,7 @@ public:
   //! Saves the geometry while this is still a whole dialog, see
   //! FindReplaceDialog::~FindReplaceDialog()
   ~Gen4Wiz() override { SendDestroyEvent(); }
-  Gen4Wiz(wxString lab1, wxString lab2, wxString lab3, wxString lab4,
+  Gen4Wiz(const wxString& lab1, const wxString& lab2, const wxString& lab3, const wxString& lab4,
           const wxString &val1, const wxString &val2, const wxString &val3, const wxString &val4,
           Configuration *cfg,
           wxWindow *parent, int id, const wxString &title,
@@ -72,10 +72,10 @@ public:
     {
       return text_ctrl_4->GetValue();
     };
-  void SetLabel1ToolTip(wxString toolTip){label_2->SetToolTip(toolTip);}
-  void SetLabel2ToolTip(wxString toolTip){label_3->SetToolTip(toolTip);}
-  void SetLabel3ToolTip(wxString toolTip){label_4->SetToolTip(toolTip);}
-  void SetLabel4ToolTip(wxString toolTip){label_5->SetToolTip(toolTip);}
+  void SetLabel1ToolTip(const wxString& toolTip){label_2->SetToolTip(toolTip);}
+  void SetLabel2ToolTip(const wxString& toolTip){label_3->SetToolTip(toolTip);}
+  void SetLabel3ToolTip(const wxString& toolTip){label_4->SetToolTip(toolTip);}
+  void SetLabel4ToolTip(const wxString& toolTip){label_5->SetToolTip(toolTip);}
 
 private:
   void set_properties();
