@@ -30,6 +30,9 @@ Checks: >
   -bugprone-easily-swappable-parameters,
   -bugprone-narrowing-conversions,
   -bugprone-implicit-widening-of-multiplication-result,
+  -bugprone-incorrect-roundings,
+  -bugprone-assignment-in-if-condition,
+  -bugprone-switch-missing-default-case,
   -misc-include-cleaner,
   -misc-non-private-member-variables-in-classes,
   -misc-no-recursion,
@@ -37,8 +40,21 @@ Checks: >
   -misc-const-correctness,
   -performance-enum-size,
 
+# Disabled bugprone checks, and why:
+#  - incorrect-roundings: every (x + 0.5) cast here rounds a size, which is
+#    never negative, and some are constexpr, where std::lround() isn't.
+#  - assignment-in-if-condition: the compiler already warns about the
+#    accidental "if (a = b)" (-Wparentheses); the deliberate ones read fine.
+#  - switch-missing-default-case: fires only on switches over plain ints
+#    (mostly event ids), where "nothing to do" is the obvious default.
+#    Switches over enums are checked by the compiler's -Wswitch.
+#
 # Only report problems in wxMaxima's own headers, never in wx/system headers.
-HeaderFilterRegex: 'wxmaxima-antigravity/src/.*'
+HeaderFilterRegex: '.*/src/.*'
+# (void)-casting a [[nodiscard]] result is how this code says "ignored on
+# purpose".
+CheckOptions:
+  bugprone-unused-return-value.AllowCastToVoid: true
 # clang-tidy must not reformat: wxMaxima has its own formatting conventions.
 FormatStyle: none
 WarningsAsErrors: ''

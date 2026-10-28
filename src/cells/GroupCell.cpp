@@ -2129,7 +2129,6 @@ bool GroupCell::IsLesserGCType(GroupType comparedTo) const {
   case GC_TYPE_SECTION:
     return comparedTo == GC_TYPE_TITLE;
   case GC_TYPE_TITLE:
-    return false;
   default:
     return false;
   }

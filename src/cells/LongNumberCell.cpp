@@ -81,7 +81,7 @@ void LongNumberCell::Recalculate(AFontSize fontsize) const {
     if (ConfigChanged())
       UpdateDisplayedText();
     if (IsBrokenIntoLines()) {
-      Cell::Recalculate(fontsize);
+      Cell::Recalculate(fontsize); // NOLINT(bugprone-parent-virtual-call): broken into lines, nothing to measure
       m_width = 0;
       m_height = 0;
       m_center = 0;
@@ -91,7 +91,7 @@ void LongNumberCell::Recalculate(AFontSize fontsize) const {
       if (m_numStart.IsEmpty())
         TextCell::Recalculate(fontsize);
       else {
-        Cell::Recalculate(fontsize);
+        Cell::Recalculate(fontsize); // NOLINT(bugprone-parent-virtual-call): measures the elided number itself
         wxDC *dc = m_configuration->GetRecalcDC();
         SetFont(dc, m_fontSize_Scaled);
         auto numStartSize = CalculateTextSize(dc, m_numStart, numberStart);
@@ -111,7 +111,7 @@ void LongNumberCell::Recalculate(AFontSize fontsize) const {
 }
 
 void LongNumberCell::SetCurrentPoint(wxPoint point) const {
-  Cell::SetCurrentPoint(point);
+  TextCell::SetCurrentPoint(point);
   if (IsBrokenIntoLines() && m_innerCell)
     m_innerCell->SetCurrentPointList(point);
 }
@@ -122,7 +122,7 @@ void LongNumberCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
     if (m_numStart == wxEmptyString)
       TextCell::Draw(dc, antialiassingDC);
     else {
-      Cell::Draw(dc, antialiassingDC);
+      Cell::Draw(dc, antialiassingDC); // NOLINT(bugprone-parent-virtual-call): draws the elided number itself
       if (IsBrokenIntoLines())
         return;
       SetTextColor(dc);

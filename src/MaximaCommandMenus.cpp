@@ -4266,26 +4266,27 @@ void MaximaCommandMenus::MaximaMenu(wxCommandEvent &event) {
                wxEmptyString, _("String #2:"), expr, wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_stringproc_ascii){
-    m_wxMaxima.CommandWiz(_("Ascii code to char"), wxEmptyString, wxEmptyString,
-               wxS("ascii(#1#);"), _("Code number:"), expr, wxEmptyString);
+    m_wxMaxima.CommandWiz(_("Char to Ascii code"), wxEmptyString, wxEmptyString,
+               wxS("cint(#1#);"), _("Char:"), expr, wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_stringproc_cint){
     m_wxMaxima.CommandWiz(_("Char to unicode code point"), wxEmptyString, wxEmptyString,
                wxS("cint(#1#);"), _("Char:"), expr, wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_stringproc_unicode){
-    m_wxMaxima.CommandWiz(_("Char to unicode code point"), wxEmptyString, wxEmptyString,
-               wxS("cint(#1#);"), _("Char:"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_unicode_to_utf8){
     m_wxMaxima.CommandWiz(_("Unicode code point to char"), wxEmptyString, wxEmptyString,
                wxS("unicode(#1#);"), _("Codepoint number:"), expr,
                wxEmptyString);
   }
-  else if(event.GetId() == EventIDs::menu_stringproc_utf8_to_unicode){
+  else if(event.GetId() == EventIDs::menu_stringproc_unicode_to_utf8){
     m_wxMaxima.CommandWiz(_("Unicode code point to utf8 numbers"), wxEmptyString,
-               wxEmptyString, wxS("utf8_to_unicode(#1#);"),
+               wxEmptyString, wxS("unicode_to_utf8(#1#);"),
                _("Codepoint number:"), expr, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_utf8_to_unicode){
+    m_wxMaxima.CommandWiz(_("UTF8 numbers to unicode code point"), wxEmptyString,
+               wxEmptyString, wxS("utf8_to_unicode(#1#);"),
+               _("List of UTF8 numbers:"), expr, wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_stringproc_charat){
     m_wxMaxima.CommandWiz(_("Extract the nth char of a string"), wxEmptyString,

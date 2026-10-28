@@ -279,7 +279,7 @@ void AnimationCell::SetCurrentPoint(wxPoint point) const {
 
 void AnimationCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
-    Cell::Recalculate(fontsize);
+    Cell::Recalculate(fontsize); // NOLINT(bugprone-parent-virtual-call): ImgCellBase's is pure virtual
 
     // Assuming a minimum size maybe isn't that bad.
     m_height = m_width = 10 + 2 * m_imageBorderWidth;
@@ -304,7 +304,7 @@ void AnimationCell::Recalculate(AFontSize fontsize) const {
 }
 
 void AnimationCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
-  Cell::Draw(dc, antialiassingDC);
+  Cell::Draw(dc, antialiassingDC); // NOLINT(bugprone-parent-virtual-call): ImgCellBase's is pure virtual
   if (!IsOk())
     return;
   // If the animation leaves the screen the timer is stopped automatically.

@@ -40,8 +40,6 @@ public:
   const CellTypeInfo &GetInfo() override;
 
   void Recalculate(const AFontSize fontsize) const override;
-  using Cell::SetCurrentPoint;
-  void SetCurrentPoint(wxPoint point) const override;
   void Draw(wxDC *dc, wxDC *antialiassingDC) override;
 
   /*! How many digits the whole number this group belongs to has (GH #192).

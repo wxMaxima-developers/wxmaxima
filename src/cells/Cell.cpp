@@ -1211,7 +1211,11 @@ wxString Cell::RTFescape(wxString input, bool MarkDown) {
   wxString output;
   wxString::const_iterator it = input.begin();
   for (; it != input.end(); ++it) {
-    wxChar ch = *it;
+    const wxUniChar ch = *it;
+    // Compare a wide enough type: where wchar_t is only 16 bits (Windows)
+    // "codepoint < 65536" would otherwise be flagged as always-true and the
+    // surrogate-pair branch as unreachable.
+    const long codepoint = static_cast<long>(ch.GetValue());
     if (ch == wxS('\n')) {
       if ((it != input.begin() && *(it - 1) == wxS('\n')) || !MarkDown)
         output += wxS("\\par}\n{\\pard ");
@@ -1220,13 +1224,9 @@ wxString Cell::RTFescape(wxString input, bool MarkDown) {
     } else if (ch == wxS('\r')) {
       output += wxS("\\line ");
     } else {
-      if ((ch < 128) && (ch > 0)) {
+      if ((codepoint < 128) && (codepoint > 0)) {
         output += ch;
       } else {
-        // Compare a wide enough type: where wchar_t is only 16 bits (Windows)
-        // "codepoint < 65536" would otherwise be flagged as always-true and the
-        // surrogate-pair branch as unreachable.
-        const long codepoint = static_cast<long>(ch);
         if (codepoint < 32768) {
           output += wxString::Format("\\u%li?", codepoint);
         } else if (codepoint < 65536) {

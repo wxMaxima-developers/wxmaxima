@@ -27,6 +27,20 @@
   sidebar, AI chat sidebar, scalable plots, right-to-left text editing),
   saying for each missing one why, and how to get it. Several depend on how
   wxWidgets itself was built, which a packager couldn't easily tell before.
+- Fixes found by clang-tidy's bugprone checks, which a new CI job now keeps
+  clean:
+  - A placeholder for missing output ("?" in red) was never drawn.
+  - LaTeX export turned `%xi` and `%Xi` into the nonexistent `\ui`, and
+    capital Greek letters that look like Latin ones (`%Epsilon`, `%Rho`, ...)
+    into commands LaTeX doesn't know. They now export as `\xi`, `\Xi` and
+    Latin letters.
+  - In the string conversion menu, "char to Ascii code", "Unicode code
+    point to char" and "Unicode code point to UTF8" ran the command of a
+    neighbouring entry, and "UTF8 to Unicode code point" asked for a code
+    point instead of a list of UTF8 numbers.
+  - Printing computed its scale with an integer division, which rounded
+    the printer's resolution down to a multiple of 96 dpi, and down to zero
+    for a printer reporting less.
 - About 200 places that copied a string, XML document or similar object
   where a reference or a move would do no longer copy it (Coverity's
   "copy instead of move" findings).
