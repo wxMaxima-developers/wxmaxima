@@ -1318,7 +1318,6 @@ bool Worksheet::IsLesserGCType(int type, int comparedTo) {
     else
       return false;
   case GC_TYPE_TITLE:
-    return false;
   default:
     return false;
   }
@@ -5448,6 +5447,8 @@ bool Worksheet::TreeUndoFold(UndoActions *sourcelist,
     // later deleted) -- nothing to undo.
     return false;
 
+  if (!action.m_fold)
+    return false;
   TreeUndoAction::FoldDirection direction = *action.m_fold;
 
   // Record the opposite direction, so this undo step can itself be redone.

@@ -235,11 +235,11 @@ void Printout::OnPreparePrinting() {
   wxLogMessage(_("Printout: Print ppi: %lix%li"),
                static_cast<long>(printPPI.x), static_cast<long>(printPPI.y));
 
-  double scaleFactor = printPPI.x / DPI_REFERENCE *
+  // A floating-point division: an integer one rounded 300dpi down to a
+  // scale of 3 instead of 3.125, and anything below 96dpi down to 0.
+  double scaleFactor = static_cast<double>(printPPI.x) / DPI_REFERENCE *
     m_configuration.PrintScale();
-  wxLogMessage(_("Printout: Scalefactor: %ex%e"),
-               m_configuration.PrintScale(),
-               m_configuration.PrintScale());
+  wxLogMessage(_("Printout: Scalefactor: %e"), scaleFactor);
   m_configuration.SetZoomFactor_temporarily(scaleFactor);
 
   // wxSize screenPPI;

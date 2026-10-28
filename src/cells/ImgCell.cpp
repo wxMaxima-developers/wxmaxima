@@ -137,7 +137,7 @@ const wxString ImgCell::GetToolTip(const wxPoint point) const {
 }
 
 void ImgCell::Recalculate(AFontSize fontsize) const {
-  Cell::Recalculate(fontsize);
+  Cell::Recalculate(fontsize); // NOLINT(bugprone-parent-virtual-call): ImgCellBase's is pure virtual
   if (m_image) {
     // Here we recalculate the height, as well:
     //  - This doesn't cost much time and
@@ -160,7 +160,7 @@ void ImgCell::SetCurrentPoint(wxPoint point) const {
 }
 
 void ImgCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
-  Cell::Draw(dc, antialiassingDC);
+  Cell::Draw(dc, antialiassingDC); // NOLINT(bugprone-parent-virtual-call): ImgCellBase's is pure virtual
   if (DrawThisCell() && (m_image != nullptr)) {
     wxPoint point = GetCurrentPoint();
     if (!InUpdateRegion())

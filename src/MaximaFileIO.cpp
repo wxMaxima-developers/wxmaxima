@@ -650,15 +650,8 @@ bool MaximaFileIO::OpenFile(const wxString &file, const wxString &command) {
     }
   }
 
-  else if (realFile.Lower().EndsWith(wxS(".mac"))) {
-    retval = OpenMACFile(realFile, m_wxMaxima.GetWorksheet());
-    if (retval) {
-      m_wxMaxima.ReReadConfig();
-      if (m_wxMaxima.IsInteractive())
-        m_wxMaxima.m_recentDocuments.AddDocument(realFile);
-      m_wxMaxima.ReReadConfig();
-    }
-  } else if (realFile.Lower().EndsWith(wxS(".out"))) {
+  else if (realFile.Lower().EndsWith(wxS(".mac")) ||
+           realFile.Lower().EndsWith(wxS(".out"))) {
     retval = OpenMACFile(realFile, m_wxMaxima.GetWorksheet());
     if (retval) {
       m_wxMaxima.ReReadConfig();
@@ -668,17 +661,8 @@ bool MaximaFileIO::OpenFile(const wxString &file, const wxString &command) {
     }
   }
 
-  else if (realFile.EndsWith(wxS(".wxmx")) || realFile.EndsWith(wxS(".wxmx~")) ) {
-    retval = OpenWXMXFile(realFile, m_wxMaxima.GetWorksheet());
-    if (retval) {
-      m_wxMaxima.ReReadConfig();
-      if (m_wxMaxima.IsInteractive())
-        m_wxMaxima.m_recentDocuments.AddDocument(realFile);
-      m_wxMaxima.ReReadConfig();
-    }
-  }
-
-  else if (realFile.Right(4).Lower() == wxS(".zip")) {
+  else if (realFile.EndsWith(wxS(".wxmx")) || realFile.EndsWith(wxS(".wxmx~")) ||
+           (realFile.Right(4).Lower() == wxS(".zip"))) {
     retval = OpenWXMXFile(realFile, m_wxMaxima.GetWorksheet());
     if (retval) {
       m_wxMaxima.ReReadConfig();

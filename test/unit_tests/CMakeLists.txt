@@ -978,6 +978,16 @@ if(TARGET wxmTestApp)
     add_test(NAME IntegralToTeX
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_IntegralToTeX>")
 
+    # Greek constants export as commands LaTeX knows, or as Latin letters.
+    add_executable(test_GreekToTeX
+        test_GreekToTeX.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_GreekToTeX PUBLIC cxx_std_20)
+    target_link_libraries(test_GreekToTeX PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME GreekToTeX
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_GreekToTeX>")
+
     # LaTeX export ignores how the window broke wide cells into lines: a
     # broken power exported only its parenthesis as superscript (GH #408).
     add_executable(test_BrokenCellsToTeX

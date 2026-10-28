@@ -46,13 +46,9 @@ LabelCell::LabelCell(GroupCell *group, const LabelCell &cell)
 
 DEFINE_CELL(LabelCell)
 
-void LabelCell::SetCurrentPoint(wxPoint point) const {
-  Cell::SetCurrentPoint(point);
-}
-
 void LabelCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
   wxPoint point = m_currentPoint;
-  Cell::Draw(dc, antialiassingDC);
+  Cell::Draw(dc, antialiassingDC); // NOLINT(bugprone-parent-virtual-call): draws its text itself
   if (DrawThisCell() &&
       !(IsHidden() ||
         (GetHidableMultSign() && m_configuration->HidemultiplicationSign()))) {
@@ -128,14 +124,8 @@ wxString LabelCell::ToXML() const {
       tag = wxS("st");
       break;
     case TS_LABEL:
-      tag = wxS("lbl");
-      break;
     case TS_USERLABEL:
-      tag = wxS("lbl");
-      break;
     case TS_MAIN_PROMPT:
-      tag = wxS("lbl");
-      break;
     case TS_OTHER_PROMPT:
       tag = wxS("lbl");
       break;
