@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['getting_20help_20_26_20reporting_20problems_0',['Getting help &amp; reporting problems',['../md_SUPPORT.html',1,'']]]
+  ['data_0',['Data',['../md_data_README.html',1,'']]],
+  ['deprecated_20list_1',['Deprecated List',['../deprecated.html',1,'']]]
 ];
