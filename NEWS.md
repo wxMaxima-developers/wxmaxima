@@ -3,6 +3,10 @@
 - The help sidebar no longer opens empty at startup when it was open when
   wxMaxima was last closed: it appears once it has help to show (F1,
   "Help on", Maxima's `?`). Opened by hand, it shows the manual.
+- Configuring wxMaxima ends with a summary of its optional features (help
+  sidebar, AI chat sidebar, scalable plots, right-to-left text editing),
+  saying for each missing one why, and how to get it. Several depend on how
+  wxWidgets itself was built, which a packager couldn't easily tell before.
 
 # 26.10.0
 
