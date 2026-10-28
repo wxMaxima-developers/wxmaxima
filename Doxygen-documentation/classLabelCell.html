@@ -115,9 +115,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a54c1b8c857ed4df7526db03464e518f9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLabelCell.html#a54c1b8c857ed4df7526db03464e518f9">Recalculate</a> (const <a class="el" href="classAFontSize.html">AFontSize</a> fontsize) const override</td></tr>
 <tr class="memdesc:a54c1b8c857ed4df7526db03464e518f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recalculate the size of the cell and the difference between top and center.  <br /></td></tr>
 <tr class="separator:a54c1b8c857ed4df7526db03464e518f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af0ea0a5548b2f8907d038a962b557f88"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLabelCell.html#af0ea0a5548b2f8907d038a962b557f88">SetCurrentPoint</a> (wxPoint point) const override</td></tr>
-<tr class="memdesc:af0ea0a5548b2f8907d038a962b557f88"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pass 2: Arrangement.  <br /></td></tr>
-<tr class="separator:af0ea0a5548b2f8907d038a962b557f88"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a04e31345593b19431261241e36411365"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLabelCell.html#a04e31345593b19431261241e36411365">Draw</a> (wxDC *dc, wxDC *antialiassingDC) override</td></tr>
 <tr class="memdesc:a04e31345593b19431261241e36411365"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pass 3 (Paint): Renders the cell using pre-calculated coordinates.  <br /></td></tr>
 <tr class="separator:a04e31345593b19431261241e36411365"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -146,13 +143,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetAltCopyText</b> (c
 <tr class="memitem:a9cb9df2e0cc9a88352a039a3a08777e6"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLabelCell.html#a9cb9df2e0cc9a88352a039a3a08777e6">ToXML</a> () const override</td></tr>
 <tr class="memdesc:a9cb9df2e0cc9a88352a039a3a08777e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert this cell to a representation fit for saving in a .wxmx file.  <br /></td></tr>
 <tr class="separator:a9cb9df2e0cc9a88352a039a3a08777e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac3a292ab7d72829835b49ceb185e2a46"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLabelCell.html#ac3a292ab7d72829835b49ceb185e2a46">SetCurrentPoint</a> (wxPoint point) const</td></tr>
-<tr class="memdesc:ac3a292ab7d72829835b49ceb185e2a46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pass 2: Arrangement.  <br /></td></tr>
-<tr class="separator:ac3a292ab7d72829835b49ceb185e2a46"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7fe7fb3d919065acb6827a1f971703b2"><td class="memItemLeft" align="right" valign="top"><a id="a7fe7fb3d919065acb6827a1f971703b2" name="a7fe7fb3d919065acb6827a1f971703b2"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetCurrentPoint</b> (int x, int y) const</td></tr>
-<tr class="memdesc:a7fe7fb3d919065acb6827a1f971703b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the position for the cell and convenience overload. <br /></td></tr>
-<tr class="separator:a7fe7fb3d919065acb6827a1f971703b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aef2a46004f38f508b8749861521ae35f"><td class="memItemLeft" align="right" valign="top"><a id="aef2a46004f38f508b8749861521ae35f" name="aef2a46004f38f508b8749861521ae35f"></a>
 <a class="el" href="classAFontSize.html">AFontSize</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetScaledTextSize</b> () const</td></tr>
 <tr class="separator:aef2a46004f38f508b8749861521ae35f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -163,6 +153,16 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetValue</b> (const w
 <tr class="memitem:a4757d78d98b087acde5716901652fd61"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a4757d78d98b087acde5716901652fd61">SetValue</a> (const wxString &amp;WXUNUSED(text))</td></tr>
 <tr class="memdesc:a4757d78d98b087acde5716901652fd61"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows to change the text a <a class="el" href="classTextCell.html" title="A Text cell.">TextCell</a> contains.  <br /></td></tr>
 <tr class="separator:a4757d78d98b087acde5716901652fd61"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1517a498482284bd344b617c210e85f9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTextCell.html#a1517a498482284bd344b617c210e85f9">SetCurrentPoint</a> (wxPoint point) const override</td></tr>
+<tr class="memdesc:a1517a498482284bd344b617c210e85f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pass 2: Arrangement.  <br /></td></tr>
+<tr class="separator:a1517a498482284bd344b617c210e85f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3a292ab7d72829835b49ceb185e2a46"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTextCell.html#ac3a292ab7d72829835b49ceb185e2a46">SetCurrentPoint</a> (wxPoint point) const</td></tr>
+<tr class="memdesc:ac3a292ab7d72829835b49ceb185e2a46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pass 2: Arrangement.  <br /></td></tr>
+<tr class="separator:ac3a292ab7d72829835b49ceb185e2a46"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7fe7fb3d919065acb6827a1f971703b2"><td class="memItemLeft" align="right" valign="top"><a id="a7fe7fb3d919065acb6827a1f971703b2" name="a7fe7fb3d919065acb6827a1f971703b2"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetCurrentPoint</b> (int x, int y) const</td></tr>
+<tr class="memdesc:a7fe7fb3d919065acb6827a1f971703b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the position for the cell and convenience overload. <br /></td></tr>
+<tr class="separator:a7fe7fb3d919065acb6827a1f971703b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2ee9bea138f9be13112dbbd406a7a3ad"><td class="memItemLeft" align="right" valign="top"><a id="a2ee9bea138f9be13112dbbd406a7a3ad" name="a2ee9bea138f9be13112dbbd406a7a3ad"></a>
 const wxFont &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>GetFont</b> (<a class="el" href="classAFontSize.html">AFontSize</a> fontsize) const</td></tr>
 <tr class="separator:a2ee9bea138f9be13112dbbd406a7a3ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3587,45 +3587,7 @@ static wxRegEx&#160;</td><td class="memItemRight" valign="bottom"><b>m_roundingE
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Pass 2: Arrangement. </p>
-<p>Sets the absolute position of the cell.</p>
-<p>Overridden by composite cells to recursively position their children. After this call, <a class="el" href="classCell.html#abad02e43ae23b7de040b79d013d41485" title="Returns the pre-calculated worksheet position of the cell.">GetCurrentPoint()</a> returns the definitive location.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">point</td><td>The absolute worksheet coordinates for the cell's baseline/origin. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Reimplemented from <a class="el" href="classTextCell.html#a1517a498482284bd344b617c210e85f9">TextCell</a>.</p>
-
-</div>
-</div>
-<a id="af0ea0a5548b2f8907d038a962b557f88" name="af0ea0a5548b2f8907d038a962b557f88"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af0ea0a5548b2f8907d038a962b557f88">&#9670;&#160;</a></span>SetCurrentPoint() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void LabelCell::SetCurrentPoint </td>
-          <td>(</td>
-          <td class="paramtype">wxPoint&#160;</td>
-          <td class="paramname"><em>point</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -3641,6 +3603,46 @@ static wxRegEx&#160;</td><td class="memItemRight" valign="bottom"><b>m_roundingE
 </dl>
 
 <p>Reimplemented from <a class="el" href="classCell.html#ac3a292ab7d72829835b49ceb185e2a46">Cell</a>.</p>
+
+</div>
+</div>
+<a id="a1517a498482284bd344b617c210e85f9" name="a1517a498482284bd344b617c210e85f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1517a498482284bd344b617c210e85f9">&#9670;&#160;</a></span>SetCurrentPoint() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TextCell::SetCurrentPoint </td>
+          <td>(</td>
+          <td class="paramtype">wxPoint&#160;</td>
+          <td class="paramname"><em>point</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Pass 2: Arrangement. </p>
+<p>Sets the absolute position of the cell.</p>
+<p>Overridden by composite cells to recursively position their children. After this call, <a class="el" href="classCell.html#abad02e43ae23b7de040b79d013d41485" title="Returns the pre-calculated worksheet position of the cell.">GetCurrentPoint()</a> returns the definitive location.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">point</td><td>The absolute worksheet coordinates for the cell's baseline/origin. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented from <a class="el" href="classCell.html#ac3a292ab7d72829835b49ceb185e2a46">Cell</a>.</p>
+
+<p>Reimplemented in <a class="el" href="classLongNumberCell.html#ac3a292ab7d72829835b49ceb185e2a46">LongNumberCell</a>.</p>
 
 </div>
 </div>
