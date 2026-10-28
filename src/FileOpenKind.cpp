@@ -50,7 +50,6 @@ bool IsTextKind(FileOpenKind kind) {
   case FileOpenKind::MacFile:
   case FileOpenKind::XmlWorksheet:
   case FileOpenKind::Demo:
-    return true;
   case FileOpenKind::Package:
     return true;
   case FileOpenKind::WxmxWorksheet:
