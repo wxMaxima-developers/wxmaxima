@@ -351,8 +351,13 @@ href="#after-upgrading-to-macos-13.1-plot-andor-draw-commands-output-error-messa
 id="toc-after-upgrading-to-macos-13.1-plot-andor-draw-commands-output-error-messages-like"><span
 class="toc-section-number">5.19</span> After upgrading to MacOS 13.1
 plot and/or draw commands output error messages like</a></li>
+<li><a
+href="#on-macos-plot2d-or-draw-open-no-window-but-print-broken-pipe"
+id="toc-on-macos-plot2d-or-draw-open-no-window-but-print-broken-pipe"><span
+class="toc-section-number">5.20</span> On MacOS <code>plot2d</code> or
+<code>draw</code> open no window, but print “Broken pipe”</a></li>
 <li><a href="#logging" id="toc-logging"><span
-class="toc-section-number">5.20</span> Logging</a></li>
+class="toc-section-number">5.21</span> Logging</a></li>
 </ul></li>
 <li><a href="#faq" id="toc-faq"><span
 class="toc-section-number">6</span> FAQ</a>
@@ -2670,8 +2675,37 @@ of the menu bar (SystemSettings =&gt; Desktop &amp; Dock =&gt; Menu Bar)
 might solve the issue. See <a
 href="https://github.com/wxMaxima-developers/wxmaxima/issues/1746">wxMaxima
 issue #1746</a> for more information.</p>
-<h2 data-number="5.20" id="logging"><span
-class="header-section-number">5.20</span> Logging</h2>
+<h2 data-number="5.20"
+id="on-macos-plot2d-or-draw-open-no-window-but-print-broken-pipe"><span
+class="header-section-number">5.20</span> On MacOS <code>plot2d</code>
+or <code>draw</code> open no window, but print “Broken pipe”</h2>
+<p>A message like</p>
+<pre class="text"><code>WARNING:
+   Couldn&#39;t write to #&lt;SB-SYS:FD-STREAM for &quot;descriptor 9&quot; {1002FC5EF3}&gt;:
+     Broken pipe</code></pre>
+<p>means that <em>Gnuplot</em> stopped before <em>Maxima</em> could send
+it the plot. On MacOS the usual reason is that MacOS blocks a
+<em>Gnuplot</em> that was downloaded from the internet: since
+<em>Maxima</em> starts <em>Gnuplot</em> in the background, MacOS can’t
+ask whether it may run. Starting <em>Gnuplot</em> once from a Terminal,
+or allowing it in System Settings =&gt; Privacy &amp; Security, tells
+MacOS that it may; <code>xattr -r -d com.apple.quarantine</code>
+followed by the path of <em>Gnuplot</em> (for example
+<code>Gnuplot.app</code>) does the same. See <a
+href="https://github.com/wxMaxima-developers/wxmaxima/issues/1461">wxMaxima
+issue #1461</a>.</p>
+<p><em>XQuartz</em> isn’t needed for plots in separate windows: neither
+<em>wxMaxima</em> nor <em>Maxima</em> chooses a <em>Gnuplot</em>
+terminal for them, so <em>Gnuplot</em> uses its own default one. That is
+<code>qt</code> for a <em>Gnuplot</em> from Homebrew and
+<code>aqua</code> (AquaTerm) for one from MacPorts, both of which draw
+without <em>XQuartz</em>. Only a <em>Gnuplot</em> that offers nothing
+but its <code>x11</code> terminal, or <code>GNUTERM</code> set to
+<code>x11</code>, needs <em>XQuartz</em>. Embedded plots
+(<code>wxplot2d</code>, <code>wxdraw</code> and friends) never open a
+window and don’t need any of this.</p>
+<h2 data-number="5.21" id="logging"><span
+class="header-section-number">5.21</span> Logging</h2>
 <p>Log messages might be helpful to debug problems. WxMaxima can log
 many events. Most log entries will be helpful for developers, especially
 in case of problems or bugs. If you run a “Release”-Build, the log
@@ -2700,8 +2734,8 @@ text fit on a LaTeX page?</h2>
 using the respective field in the config dialogue
 (“Export”-&gt;“Additional lines for the TeX preamble”), to set borders
 of 1cm):</p>
-<div class="sourceCode" id="cb41"><pre
-class="sourceCode latex"><code class="sourceCode latex"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>[left=1cm,right=1cm,top=1cm,bottom=1cm]{<span class="ex">geometry</span>}</span></code></pre></div>
+<div class="sourceCode" id="cb42"><pre
+class="sourceCode latex"><code class="sourceCode latex"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>[left=1cm,right=1cm,top=1cm,bottom=1cm]{<span class="ex">geometry</span>}</span></code></pre></div>
 <h2 data-number="6.2" id="is-there-a-dark-mode"><span
 class="header-section-number">6.2</span> Is there a dark mode?</h2>
 <p>If wxWidgets is new enough, <em>wxMaxima</em> will automatically be
@@ -2784,11 +2818,11 @@ neither <code>true</code> nor <code>false</code>. So a plain
 these versions, too. A worksheet that has to work with them as well can
 compare the result with <code>true</code>, which gives
 <code>false</code> there:</p>
-<div class="sourceCode" id="cb42"><pre
-class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="kw">if</span> <span class="cn">wx_version_min</span>(<span class="st">&quot;26.09.0&quot;</span>) = <span class="kw">true</span> <span class="kw">then</span></span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>    <span class="cn">wx_matrix</span>(<span class="cn">M</span>, <span class="cn">oversized</span>=<span class="cn">scroll</span>)</span>
-<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="kw">else</span></span>
-<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>    <span class="cn">M</span>;</span></code></pre></div>
+<div class="sourceCode" id="cb43"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="kw">if</span> <span class="cn">wx_version_min</span>(<span class="st">&quot;26.09.0&quot;</span>) = <span class="kw">true</span> <span class="kw">then</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>    <span class="cn">wx_matrix</span>(<span class="cn">M</span>, <span class="cn">oversized</span>=<span class="cn">scroll</span>)</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="kw">else</span></span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>    <span class="cn">M</span>;</span></code></pre></div>
 <h2 data-number="6.7" id="help-i-can-not-save-my-document"><span
 class="header-section-number">6.7</span> Help! I can not save my
 document!</h2>

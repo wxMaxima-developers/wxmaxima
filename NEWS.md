@@ -1,5 +1,7 @@
 # Current development version
 
+- The manual's troubleshooting section explains the "Broken pipe" a blocked
+  Gnuplot causes on MacOS, and that plots don't need XQuartz there (#1461).
 - ESC, a hexadecimal number and ESC enter that Unicode character again, as
   the manual says (#2561): the list of symbols closed as soon as the number
   matched no symbol's name. The list now shows the character the number

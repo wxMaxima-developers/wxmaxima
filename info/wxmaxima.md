@@ -1217,6 +1217,20 @@ wxdraw2d(
 
 This might be an issue with the operating system. Disable the hiding of the menu bar (SystemSettings => Desktop & Dock => Menu Bar) might solve the issue. See [wxMaxima issue #1746](https://github.com/wxMaxima-developers/wxmaxima/issues/1746) for more information.
 
+## On MacOS `plot2d` or `draw` open no window, but print “Broken pipe”
+
+A message like
+
+```text
+WARNING:
+   Couldn't write to #<SB-SYS:FD-STREAM for "descriptor 9" {1002FC5EF3}>:
+     Broken pipe
+```
+
+means that _Gnuplot_ stopped before _Maxima_ could send it the plot. On MacOS the usual reason is that MacOS blocks a _Gnuplot_ that was downloaded from the internet: since _Maxima_ starts _Gnuplot_ in the background, MacOS can't ask whether it may run. Starting _Gnuplot_ once from a Terminal, or allowing it in System Settings => Privacy & Security, tells MacOS that it may; `xattr -r -d com.apple.quarantine` followed by the path of _Gnuplot_ (for example `Gnuplot.app`) does the same. See [wxMaxima issue #1461](https://github.com/wxMaxima-developers/wxmaxima/issues/1461).
+
+_XQuartz_ isn't needed for plots in separate windows: neither _wxMaxima_ nor _Maxima_ chooses a _Gnuplot_ terminal for them, so _Gnuplot_ uses its own default one. That is `qt` for a _Gnuplot_ from Homebrew and `aqua` (AquaTerm) for one from MacPorts, both of which draw without _XQuartz_. Only a _Gnuplot_ that offers nothing but its `x11` terminal, or `GNUTERM` set to `x11`, needs _XQuartz_. Embedded plots (`wxplot2d`, `wxdraw` and friends) never open a window and don't need any of this.
+
 ## Logging
 
 Log messages might be helpful to debug problems. WxMaxima can log many events. Most log entries will be helpful for developers, especially in case of problems or bugs. If you run a "Release"-Build,
