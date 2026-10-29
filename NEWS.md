@@ -9,6 +9,11 @@
   and 26.10 are still read correctly. Known answers to Maxima's questions
   are now saved inside a comment, too: before, Maxima's `batch()` read them
   as code and failed on any .wxm that had some.
+- A mouse drag in text Maxima printed -- an error message, a warning,
+  print() output, a string -- now selects characters instead of whole cells
+  (#825), across several lines if need be, so part of a message can be
+  copied. A drag that starts on maths, or leaves the text for maths, selects
+  whole cells, as before.
 - "Forget known answers" in a code cell's context menu and in the Cell menu
   drops the answers wxMaxima remembers for Maxima's questions (#1018), for
   the cell under the cursor or for every selected cell. They are then

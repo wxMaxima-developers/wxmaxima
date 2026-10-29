@@ -999,6 +999,16 @@ if(TARGET wxmTestApp)
     add_test(NAME OutputKeyboardNavigation
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_OutputKeyboardNavigation>")
 
+    # Selecting some of the characters of a text output (GH #825).
+    add_executable(test_OutputTextSelection
+        test_OutputTextSelection.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_OutputTextSelection PUBLIC cxx_std_20)
+    target_link_libraries(test_OutputTextSelection PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME OutputTextSelection
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_OutputTextSelection>")
+
     # Closing the diff viewer must not write its panes' configurations back
     # to the config file (GH #2356).
     add_executable(test_DiffFrameConfig

@@ -122,6 +122,47 @@ public:
   */
   wxString GetLinkAt(wxPoint point) override;
 
+  /*! \name Selecting some of the characters of a text cell (GH #825)
+
+    A mouse drag inside text Maxima printed -- a message, an error, a
+    warning, a string -- selects characters rather than whole cells, see
+    Worksheet::SelectOutputText(). The positions are indices between the
+    characters of the text as it is displayed (GetDisplayedString()), from 0
+    (before the first one) to its length (after the last one).
+    @{
+  */
+  /*! Can a drag select only some of this cell's characters?
+
+    True for text, not maths: the styles of messages, errors, warnings,
+    ASCII-art and strings. A drag over maths still selects whole cells.
+  */
+  bool AllowsCharacterSelection() const;
+  //! The length of the displayed text: the position after its last character
+  std::size_t DisplayedLength() const { return m_displayedText.Length(); }
+  /*! The position between two characters nearest to x
+
+    A point left of the text gives 0, right of it the length: a drag that
+    goes past the end of a line still selects up to its end.
+  */
+  std::size_t CharacterIndexAt(wxCoord x) const;
+  /*! The x coordinate of a position between two characters
+
+    Measured run by run, the way Draw() paints the text (links are drawn
+    separately), so a selection's edges sit where the glyphs are.
+  */
+  wxCoord CharacterX(std::size_t index) const;
+  //! Where the characters [from, to) are drawn
+  wxRect CharacterRect(std::size_t from, std::size_t to) const;
+  /*! The characters [from, to) as text to copy
+
+    What is displayed, with the substitutions UpdateDisplayedText() makes
+    undone the way ToString() undoes them (the minus sign, arrows). Unlike
+    ToString() this adds no quotes around a string and no line ending: the
+    characters, nothing else.
+  */
+  wxString CharactersToString(std::size_t from, std::size_t to) const;
+  //! @}
+
 protected:
   mutable wxString m_altCopyText;
   //! Returns the XML flags this cell needs in wxMathML

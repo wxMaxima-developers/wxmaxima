@@ -485,6 +485,82 @@ wxString TextCell::GetLinkAt(wxPoint point) {
   return link;
 }
 
+bool TextCell::AllowsCharacterSelection() const {
+  if (IsDrawnHidden() || IsBrokenIntoLines())
+    return false;
+  switch (GetTextStyle()) {
+  case TS_TEXT:
+  case TS_ERROR:
+  case TS_WARNING:
+  case TS_ASCIIMATHS:
+  case TS_STRING:
+    return true;
+  default:
+    return false;
+  }
+}
+
+wxCoord TextCell::CharacterX(std::size_t index) const {
+  const wxCoord left = m_currentPoint.x + LeftPadding();
+  index = std::min(index, m_displayedText.Length());
+  wxDC *dc = m_configuration->GetRecalcDC();
+  if (!dc || (index == 0))
+    return left;
+  SetFont(dc, m_fontSize_Scaled);
+  // The run the index falls into is measured up to the index, every run
+  // before it as a whole: the same pieces Draw() hands to DrawText().
+  wxCoord result = left;
+  std::size_t runStart = 0;
+  bool found = false;
+  WalkTextRuns(dc, left,
+               [&](const wxString &text, wxCoord x, wxCoord width, bool) {
+                 if (found)
+                   return;
+                 const std::size_t runEnd = runStart + text.Length();
+                 if (index <= runEnd) {
+                   result = (index == runEnd) ? x + width :
+                     x + dc->GetTextExtent(text.Left(index - runStart)).GetWidth();
+                   found = true;
+                 }
+                 runStart = runEnd;
+               });
+  return result;
+}
+
+std::size_t TextCell::CharacterIndexAt(wxCoord x) const {
+  const std::size_t length = m_displayedText.Length();
+  // The positions' x coordinates only grow, so the first position whose
+  // coordinate lies right of x, or the one before it, is the nearest.
+  wxCoord previousX = CharacterX(0);
+  if (x <= previousX)
+    return 0;
+  for (std::size_t i = 1; i <= length; ++i) {
+    const wxCoord posX = CharacterX(i);
+    if (x < posX)
+      return (x - previousX < posX - x) ? i - 1 : i;
+    previousX = posX;
+  }
+  return length;
+}
+
+wxRect TextCell::CharacterRect(std::size_t from, std::size_t to) const {
+  if (from > to)
+    std::swap(from, to);
+  const wxRect cellRect = GetRect();
+  const wxCoord left = CharacterX(from);
+  return {left, cellRect.GetTop(), CharacterX(to) - left, cellRect.GetHeight()};
+}
+
+wxString TextCell::CharactersToString(std::size_t from, std::size_t to) const {
+  if (from > to)
+    std::swap(from, to);
+  wxString text = m_displayedText.Mid(from, to - from);
+  text.Replace(wxS("−"), wxS("-")); // unicode minus sign
+  text.Replace(wxS("➔"), wxS("-->"));
+  text.Replace(wxS("→"), wxS("->"));
+  return text;
+}
+
 void TextCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
     // Capture this before Cell::Recalculate() syncs the config counter,
