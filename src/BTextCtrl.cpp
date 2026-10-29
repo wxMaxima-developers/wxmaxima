@@ -106,6 +106,7 @@ bool BTextCtrl::MatchParenthesis(int code) {
   case WXK_DOWN:
   case WXK_TAB:
     skip = m_skipTab;
+    break;
   default:
     break;
   }

@@ -86,8 +86,8 @@ void TableOfContents::OnTimer(wxTimerEvent &event) {
     m_displayedItems->EnsureVisible(item);
     break;
   }
-  default: {
-  }
+  default:
+    break;
   }
 }
 

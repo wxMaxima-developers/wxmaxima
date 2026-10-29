@@ -409,7 +409,7 @@ protected:
   //! lifetime. "None (disabled)" is not one of these; it's a separate,
   //! always-first item in m_aiChatProviderChoice with no detail box.
   struct AiProviderUiRecord {
-    AiProviderKind kind;
+    AiProviderKind kind = AiProviderKind::None;
     //! Only set when kind == AiProviderKind::Custom; matches
     //! AiCustomProviderConfig::id.
     wxString customId;

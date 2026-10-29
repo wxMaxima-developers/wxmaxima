@@ -688,8 +688,8 @@ wxString TextCell::ToString() const {
     // Labels sometimes end with a few spaces. But if they are long they don't
     // do that any more => Add a TAB to the end of any label replacing trailing
     // whitespace. But don't do this if we copy only the label.
-  default: {
-  }
+  default:
+    break;
   }
   // A soft line break before a continuation of our text only wraps it.
   if (GetNext() && GetNext()->BreakLineHere() &&
@@ -757,8 +757,8 @@ wxString TextCell::ToMatlab() const {
     text += wxS("\t");
     break;
   }
-  default: {
-  }
+  default:
+    break;
   }
   // A soft line break before a continuation of our text only wraps it.
   if (GetNext() && GetNext()->BreakLineHere() &&
@@ -1360,7 +1360,7 @@ wxString TextCell::ToOMML() const {
         text = wxS("i");
     }
   }
-    /* FALLTHRU */
+    [[fallthrough]];
   case TS_VARIABLE: {
     if (!m_configuration->CheckKeepPercent()) {
       if (text == wxS("%pi"))
@@ -1382,8 +1382,8 @@ wxString TextCell::ToOMML() const {
     return wxEmptyString;
 
   case TS_STRING:
-  default: {
-  }
+  default:
+    break;
   }
   text = wxS("<m:r>") + text + wxS("</m:r>\n");
   return text;
