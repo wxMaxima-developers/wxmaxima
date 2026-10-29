@@ -227,6 +227,57 @@ jobs:
                echo "No UndefinedBehaviorSanitizer findings."
              fi
 
+  compile_and_test_thread_sanitized:
+    # Builds with ThreadSanitizer and runs the tests. Our own threads (the
+    # Maxima socket worker, the manual-anchors and autocompletion tasks, image
+    # loading) share data with the GUI thread, and a race there can free a
+    # string under a reader -- something CellPtr and the smart pointers can't
+    # prevent. A race in a unit test turns the job red; the integration tests,
+    # which start a real Maxima, are only reported for now (as a warning
+    # annotation), until they have been seen to run clean.
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+
+    steps:
+      - name: Checkout_git
+        uses: actions/checkout@v7
+      - name: install_packages
+        # Caches the downloaded .debs; see the action for why.
+        uses: ./.github/actions/apt-install
+        with:
+          packages: cmake clang libclang-rt-dev gettext gnuplot gnuplot-x11 libwxgtk3.2-dev libwxgtk-webview3.2-dev libfribidi-dev maxima maxima-share maxima-doc netcat-openbsd ninja-build xvfb at-spi2-core dbus
+      - name: configure
+        # clang, as the suppressions were worked out with clang's TSan.
+        run: |
+             cmake -S . -B build -G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_UNITY_BUILD=ON -DCMAKE_BUILD_TYPE=Debug -DWXM_UNIT_TESTS=YES -DWXM_SANITIZE=thread
+      - name: compile
+        run: cmake --build build
+      - name: run_unit_tests
+        run: |
+             cd build
+             export HOME=`pwd`
+             export CTEST_OUTPUT_ON_FAILURE=1
+             # Third-party noise only; see the file for why each entry is there.
+             export TSAN_OPTIONS=second_deadlock_stack=1:suppressions=$GITHUB_WORKSPACE/test/tsan_suppressions.txt
+             GDK_BACKEND=x11 dbus-run-session -- xvfb-run -a ctest -j 2 -L unittest
+      - name: run_other_tests
+        # Report-only: exitcode=0 keeps a race from failing a test, and the
+        # next step greps for the reports.
+        if: always()
+        run: |
+             cd build
+             export HOME=`pwd`
+             export TSAN_OPTIONS=exitcode=0:second_deadlock_stack=1:suppressions=$GITHUB_WORKSPACE/test/tsan_suppressions.txt
+             GDK_BACKEND=x11 dbus-run-session -- xvfb-run -a ctest -j 2 -LE unittest -E "tutorial_fittingEquations|multithreadtest|tutorial_toleranceCalculations|tutorial_displaying3DCurves|tutorial_solvingEquations|testbench_simple.wxmx" || true
+      - name: report_tsan_findings
+        if: always()
+        run: |
+             if grep -n -A30 "WARNING: ThreadSanitizer" build/Testing/Temporary/LastTest.log; then
+               echo "::warning::ThreadSanitizer reported issues in the integration tests (see the log above). These do not fail CI yet."
+             else
+               echo "No ThreadSanitizer findings in the integration tests."
+             fi
+
   compile_with_non_default_options:
     runs-on: ubuntu-latest
     timeout-minutes: 30

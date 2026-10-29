@@ -122,6 +122,15 @@ memory (as opposed to copying it from here or from the workflow file) will
 reliably misreport this pre-existing, already-triaged third-party issue as a
 regression in whatever change you're actually testing.
 
+The thread-sanitizer build is a separate CI job (`compile_and_test_thread_sanitized`):
+clang, `-DWXM_SANITIZE=thread`, and `TSAN_OPTIONS=suppressions=test/tsan_suppressions.txt`.
+Without that file every unit test reports dozens of "races" inside GLib,
+Pango and fontconfig, which hand memory between their own threads with locks
+TSan can't see; the file says why each entry is narrow enough not to hide our
+own code. clang needs `libclang-rt-dev` for the TSan runtime. Use it when
+touching anything a `jthread` or the Maxima socket worker shares with the GUI
+thread: it is what found the race in `MaximaManual` (GH #2583).
+
 Other useful targets: `ninja -C build Doxygen` builds the source documentation
 (note the capital D, and the target only exists when Doxygen is installed), and
 `ninja -C build update-locale` refreshes the translation files.
