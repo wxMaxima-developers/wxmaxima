@@ -21,6 +21,7 @@
 #include "Bidi.h"
 #include "BuildConfig.h"
 #include <algorithm>
+#include <wx/intl.h>
 
 #ifdef USE_FRIBIDI
 #include <fribidi.h>
@@ -32,6 +33,30 @@ bool Bidi::IsAvailable() {
 #else
   return false;
 #endif
+}
+
+wxString Bidi::Version() {
+#ifdef USE_FRIBIDI
+  // fribidi_version_info is several lines; the first one reads
+  // "(GNU FriBidi) 1.0.13".
+  wxString info = wxString::FromUTF8(fribidi_version_info).BeforeFirst(wxS('\n'));
+  info.Trim(true).Trim(false);
+  const wxString version = info.AfterLast(wxS(' '));
+  return version.IsEmpty() ? wxString(wxS(FRIBIDI_VERSION)) : version;
+#else
+  return wxEmptyString;
+#endif
+}
+
+wxString Bidi::Diagnosis() {
+  if (IsAvailable())
+    return wxString::Format(_("libfribidi %s places the cursor and the selection correctly "
+                              "on lines that mix left-to-right and right-to-left text."),
+                            Version());
+  return _("This wxMaxima was built without libfribidi. On a line that mixes "
+           "left-to-right and right-to-left text (Arabic or Hebrew and formulas, for "
+           "example) the cursor and the selection can end up next to the wrong "
+           "characters. Lines in only one direction are not affected.");
 }
 
 std::vector<BidiRun> Bidi::GetRuns(const wxString &line, bool paragraphIsRightToLeft) {

@@ -24,6 +24,7 @@
 */
 
 #include "TroubleshootingDialog.h"
+#include "Bidi.h"
 #include "BuildConfig.h"
 #include "Dirstructure.h"
 #include "HelpBrowserDiagnosis.h"
@@ -238,6 +239,11 @@ std::vector<TroubleshootingResult> TroubleshootingDialog::LocalChecks(const Inpu
 
   results.push_back(CheckExternalBrowser());
   results.push_back(CheckTranslations(inputs.language));
+  // Decided at build time; not having it is no fault, so it is only a note.
+  results.push_back(Result(TroubleshootingCheck::bidiText,
+                           Bidi::IsAvailable() ? TroubleshootingStatus::ok
+                                               : TroubleshootingStatus::info,
+                           Bidi::Diagnosis()));
 
   const bool rendersText = SvgBitmap::RendersText();
   results.push_back(Result(TroubleshootingCheck::svgText,

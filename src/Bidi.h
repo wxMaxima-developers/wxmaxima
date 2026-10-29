@@ -55,6 +55,22 @@ public:
   //! True if libfribidi is compiled in, so GetRuns() reorders mixed-direction lines correctly.
   static bool IsAvailable();
 
+  /*! The version of libfribidi actually loaded at run time, e.g. "1.0.13"
+
+    Read from the library rather than from its headers, so that it names the
+    library the program found, which is what a bug report needs. Empty if
+    libfribidi isn't compiled in.
+  */
+  static wxString Version();
+
+  /*! A sentence for Help > Troubleshooting saying how mixed-direction lines are handled
+
+    Uses the same words as the "Accurate right-to-left text editing" line of
+    the configure summary (cmake/WxmFeatureSummary.cmake), so that the two
+    agree on what the feature is called.
+  */
+  static wxString Diagnosis();
+
   /*! The runs that make up line, in visual (left-to-right on screen) order.
 
     \param line The text of a single display line (no '\n' or soft breaks in it).

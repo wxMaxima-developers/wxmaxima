@@ -83,6 +83,27 @@ std::unique_ptr<GroupCell> MakeCell(const wxString &text) {
 
 } // namespace
 
+SCENARIO("Help > Troubleshooting says whether libfribidi is used") {
+  const wxString diagnosis = Bidi::Diagnosis();
+  REQUIRE(!diagnosis.IsEmpty());
+  if (Bidi::IsAvailable()) {
+    THEN("it names the version of the libfribidi that was loaded") {
+      const wxString version = Bidi::Version();
+      // Only the number, not fribidi_version_info's "(GNU FriBidi)" prefix
+      // or its further lines.
+      REQUIRE(!version.IsEmpty());
+      REQUIRE(wxIsdigit(version[0]));
+      REQUIRE(!version.Contains(wxS("\n")));
+      REQUIRE(diagnosis.Contains(version));
+    }
+  } else {
+    THEN("it says the build has no libfribidi") {
+      REQUIRE(Bidi::Version().IsEmpty());
+      REQUIRE(diagnosis.Contains(wxS("libfribidi")));
+    }
+  }
+}
+
 SCENARIO("The caret follows the text it is placed in") {
   GIVEN("a left-to-right word") {
     auto group = MakeCell(kLatin);
