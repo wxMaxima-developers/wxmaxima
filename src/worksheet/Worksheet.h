@@ -477,10 +477,11 @@ public:
     \param group    the cell whose output was clicked into
     \param down, up where the mouse button went down and where it is now
 
-    What ClickNDrag() does for a drag that started in an output. A rectangle
-    that lies within one matrix but spans several of its entries selects the
-    block of entries it touches (GH #2345); anything else selects the output
-    cells it covers, as it always did.
+    What ClickNDrag() does for a drag that started in an output. A drag
+    within text Maxima printed selects characters, see wxm::OutputTextRange()
+    (GH #825). A rectangle that lies within one matrix but spans several of
+    its entries selects the block of entries it touches (GH #2345); anything
+    else selects the output cells it covers, as it always did.
   */
   void SelectOutputRect(GroupCell *group, wxPoint down, wxPoint up);
 
