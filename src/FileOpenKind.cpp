@@ -94,7 +94,7 @@ bool FileLooksBinary(const wxString &file) {
 
   wxLogNull suppressOpenErrors;
   wxFile in;
-  if (!in.Open(name, wxFile::read))
+  if (!in.Open(name, wxFile::read)) // flawfinder: ignore -- wxFile::read is an open-mode enum, not the read() syscall
     return false;
 
   std::array<unsigned char, 8192> buf{};

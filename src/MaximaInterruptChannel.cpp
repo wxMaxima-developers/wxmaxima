@@ -25,6 +25,7 @@
 
 #include "MaximaInterruptChannel.h"
 #include <wx/log.h>
+#include <array>
 
 MaximaInterruptChannel::MaximaInterruptChannel(wxSocketBase *socket,
                                                const wxString &token)
@@ -72,12 +73,12 @@ void MaximaInterruptChannel::OnSocketEvent(wxSocketEvent &event) {
     return;
   switch (event.GetSocketEvent()) {
   case wxSOCKET_INPUT: {
-    char buffer[512];
-    m_socket->Read(buffer, sizeof(buffer));
+    std::array<char, 512> buffer{};
+    m_socket->Read(buffer.data(), buffer.size());
     const auto count = m_socket->LastReadCount();
     if (m_handshake.GetState() != InterruptChannelHandshake::State::pending)
       break; // The Lisp has nothing to say after its token.
-    switch (m_handshake.Feed(buffer, count)) {
+    switch (m_handshake.Feed(buffer.data(), count)) {
     case InterruptChannelHandshake::State::accepted:
       wxLogMessage("Maxima has opened a channel wxMaxima can interrupt it through.");
       break;

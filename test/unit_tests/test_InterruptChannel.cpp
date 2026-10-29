@@ -202,10 +202,12 @@ SCENARIO("The interrupt channel carries interrupts to Maxima") {
       REQUIRE_FALSE(channel.IsDead());
       AND_THEN("an interrupt reaches the Lisp as one line") {
         REQUIRE(channel.SendInterrupt());
-        char buffer[64] = {};
+        const std::string expected = "interrupt\n";
+        std::string buffer(expected.size(), '\0');
         maxima->SetTimeout(5);
-        maxima->Read(buffer, std::strlen("interrupt\n"));
-        REQUIRE(std::string(buffer, maxima->LastReadCount()) == "interrupt\n");
+        maxima->Read(buffer.data(), buffer.size());
+        buffer.resize(maxima->LastReadCount());
+        REQUIRE(buffer == expected);
       }
       AND_THEN("the channel knows when the Lisp went away") {
         maxima->Close();

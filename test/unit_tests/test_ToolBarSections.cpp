@@ -223,7 +223,7 @@ static bool SameIcon(const wxImage &a, const wxImage &b) {
   if (a.GetSize() != b.GetSize())
     return false;
   const size_t bytes = 3 * static_cast<size_t>(a.GetWidth()) * a.GetHeight();
-  return std::equal(a.GetData(), a.GetData() + bytes, b.GetData());
+  return std::equal(a.GetData(), a.GetData() + bytes, b.GetData(), b.GetData() + bytes);
 }
 
 SCENARIO("Evaluate current cell and Evaluate all have different icons") {

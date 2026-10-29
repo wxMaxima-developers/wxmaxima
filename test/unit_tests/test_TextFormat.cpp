@@ -170,11 +170,11 @@ SCENARIO("Formats are saved as <line> attributes") {
               wxS(" bold=\"0-4\" italic=\"6-12\""));
     }
     THEN("reading them back gives the same text and formats") {
-      const auto read = ReadXmlLine(wxS("<line") +
+      const auto parsed = ReadXmlLine(wxS("<line") +
                                     LineAttributes(text, formats, 0, text.Length()) +
                                     wxS(">") + text + wxS("</line>"));
-      REQUIRE(read.first == text);
-      REQUIRE(read.second == formats);
+      REQUIRE(parsed.first == text);
+      REQUIRE(parsed.second == formats);
     }
   }
   GIVEN("the second line of a cell") {
@@ -207,24 +207,24 @@ SCENARIO("Superscript and subscript are saved like the other formats") {
               wxS(" superscript=\"1-2\" subscript=\"5-6\""));
     }
     THEN("reading the attributes back restores the formats") {
-      const auto read = ReadXmlLine(wxS("<line") +
+      const auto parsed = ReadXmlLine(wxS("<line") +
                                     LineAttributes(text, formats, 0, text.Length()) +
                                     wxS(">") + text + wxS("</line>"));
-      REQUIRE(read.second == formats);
+      REQUIRE(parsed.second == formats);
     }
   }
   GIVEN("a bold superscript") {
     const Formats formats = {Format(Bold | Superscript)};
     THEN("it keeps both formats through saving and reading") {
-      const auto read = ReadXmlLine(wxS("<line") + LineAttributes(wxS("2"), formats, 0, 1) +
+      const auto parsed = ReadXmlLine(wxS("<line") + LineAttributes(wxS("2"), formats, 0, 1) +
                                     wxS(">2</line>"));
-      REQUIRE(read.second == formats);
+      REQUIRE(parsed.second == formats);
     }
   }
   GIVEN("a file claiming a character is both raised and lowered") {
-    const auto read = ReadXmlLine(wxS("<line superscript=\"0-1\" subscript=\"0-1\">a</line>"));
+    const auto parsed = ReadXmlLine(wxS("<line superscript=\"0-1\" subscript=\"0-1\">a</line>"));
     THEN("it is only one of them") {
-      REQUIRE(((read.second[0] == Superscript) || (read.second[0] == Subscript)));
+      REQUIRE(((parsed.second[0] == Superscript) || (parsed.second[0] == Subscript)));
     }
   }
 }
@@ -261,45 +261,45 @@ SCENARIO("Ranges count Unicode code points") {
       REQUIRE(LineAttributes(text, formats, 0, text.Length()) == wxS(" bold=\"1-2\""));
     }
     THEN("reading the attribute back finds the \"b\"") {
-      const auto read = ReadXmlLine(wxS("<line bold=\"1-2\">") + text + wxS("</line>"));
-      REQUIRE(read.second == formats);
+      const auto parsed = ReadXmlLine(wxS("<line bold=\"1-2\">") + text + wxS("</line>"));
+      REQUIRE(parsed.second == formats);
     }
   }
 }
 
 SCENARIO("Inline formatting tags are read, for a future file format") {
   GIVEN("a line with known inline tags") {
-    const auto read = ReadXmlLine(wxS("<line>a<b>b</b><i>c<u>d</u></i><s>e</s></line>"));
+    const auto parsed = ReadXmlLine(wxS("<line>a<b>b</b><i>c<u>d</u></i><s>e</s></line>"));
     THEN("their text is kept and their formats are applied") {
-      REQUIRE(read.first == wxS("abcde"));
-      REQUIRE(read.second == F("01268"));
+      REQUIRE(parsed.first == wxS("abcde"));
+      REQUIRE(parsed.second == F("01268"));
     }
   }
   GIVEN("superscript and subscript tags") {
-    const auto read = ReadXmlLine(wxS("<line>x<sup>2</sup>a<sub>i</sub></line>"));
+    const auto parsed = ReadXmlLine(wxS("<line>x<sup>2</sup>a<sub>i</sub></line>"));
     THEN("their text is kept and their formats are applied") {
-      REQUIRE(read.first == wxS("x2ai"));
-      REQUIRE(read.second == Formats({None, Superscript, None, Subscript}));
+      REQUIRE(parsed.first == wxS("x2ai"));
+      REQUIRE(parsed.second == Formats({None, Superscript, None, Subscript}));
     }
   }
   GIVEN("a subscript tag inside a superscript tag") {
-    const auto read = ReadXmlLine(wxS("<line><sup>a<sub>b</sub></sup></line>"));
+    const auto parsed = ReadXmlLine(wxS("<line><sup>a<sub>b</sub></sup></line>"));
     THEN("the inner one wins: a character can't be raised and lowered at once") {
-      REQUIRE(read.second == Formats({Superscript, Subscript}));
+      REQUIRE(parsed.second == Formats({Superscript, Subscript}));
     }
   }
   GIVEN("a line with a tag this version doesn't know") {
-    const auto read = ReadXmlLine(wxS("<line>a<mark>2</mark>b</line>"));
+    const auto parsed = ReadXmlLine(wxS("<line>a<mark>2</mark>b</line>"));
     THEN("its text is kept, only its formatting is lost") {
-      REQUIRE(read.first == wxS("a2b"));
-      REQUIRE(IsPlain(read.second));
+      REQUIRE(parsed.first == wxS("a2b"));
+      REQUIRE(IsPlain(parsed.second));
     }
   }
   GIVEN("an unknown tag inside a known one") {
-    const auto read = ReadXmlLine(wxS("<line><b>x<mark>2</mark></b></line>"));
+    const auto parsed = ReadXmlLine(wxS("<line><b>x<mark>2</mark></b></line>"));
     THEN("the known format still applies to its text") {
-      REQUIRE(read.first == wxS("x2"));
-      REQUIRE(read.second == F("11"));
+      REQUIRE(parsed.first == wxS("x2"));
+      REQUIRE(parsed.second == F("11"));
     }
   }
 }
@@ -307,10 +307,10 @@ SCENARIO("Inline formatting tags are read, for a future file format") {
 SCENARIO("Attributes this version doesn't know are kept") {
   GIVEN("a line with an attribute from a newer version") {
     wxString unknown;
-    const auto read = ReadXmlLine(
+    const auto parsed = ReadXmlLine(
       wxS("<line bold=\"0-1\" overline=\"1-2\" note=\"a&quot;b\">ab</line>"),
       &unknown);
-    THEN("the known one is applied") { REQUIRE(read.second == F("10")); }
+    THEN("the known one is applied") { REQUIRE(parsed.second == F("10")); }
     THEN("the unknown ones are returned, ready to be written out again") {
       REQUIRE(unknown == wxS(" overline=\"1-2\" note=\"a&quot;b\""));
     }
@@ -325,8 +325,8 @@ SCENARIO("Malformed ranges are skipped") {
     REQUIRE(ranges[1] == std::make_pair(std::size_t(7), std::size_t(9)));
   }
   THEN("a range past the end of the line is clipped to it") {
-    const auto read = ReadXmlLine(wxS("<line bold=\"1-99\">abc</line>"));
-    REQUIRE(read.second == F("011"));
+    const auto parsed = ReadXmlLine(wxS("<line bold=\"1-99\">abc</line>"));
+    REQUIRE(parsed.second == F("011"));
   }
 }
 
