@@ -1,0 +1,29 @@
+# ThreadSanitizer runtime suppressions for the thread-sanitizer CI job (and
+# local runs). Point TSan at this file with
+#   TSAN_OPTIONS=suppressions=<abs-path>/test/tsan_suppressions.txt
+#
+# Only our own code is built with -fsanitize=thread. GLib, Pango, fontconfig
+# and WebKit are not, and they hand memory between their own threads (pango's
+# fontconfig thread, GLib's thread pool, WebKit's workers) using GLib's own
+# futex-based locks, which TSan can't see. Each of those hand-overs is then
+# reported as a race between a malloc on one thread and a free or read on
+# another -- about a thousand reports over the unit tests, none of them in
+# wxMaxima. The entries below silence them, each scoped to a function or a
+# library that only appears in a stack when the access happens *inside* that
+# library. libgtk/libgdk as a whole are deliberately not suppressed: every
+# event handler runs with GTK frames under it, so that would hide races in
+# our own handlers too.
+
+# Font lookups done by pango's "[pango] fontconfig" thread.
+race:libfontconfig.so.1
+race:libpangoft2-1.0.so.0
+race:g_strdup
+# GLib's async queues and thread pools.
+race:g_queue_pop_tail
+race:g_malloc
+# WebKit's own worker threads (the help browser).
+race:libwebkit2gtk-4.1.so.0
+race:libjavascriptcoregtk-4.1.so.0
+# GDK locks a GRecMutex through GLib and unlocks it itself; TSan reports that
+# as unlocking a mutex the thread doesn't hold.
+mutex:libgdk-3.so.0

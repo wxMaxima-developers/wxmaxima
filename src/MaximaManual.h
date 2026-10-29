@@ -68,9 +68,14 @@ public:
   wxString GetHelpfileURL(const wxString &keyword);
   //! Search maxima's help file for command and variable names
   void LoadHelpFileAnchors(const wxString &docdir, const wxString &maximaVersion);
-  //! Collect all keyword anchors in the help file
+  /*! Collect all keyword anchors in the help file
+
+    Runs in a background thread, so it reads nothing but its arguments and the
+    anchor maps (under m_helpFileAnchorsLock).
+  */
   void CompileHelpFileAnchors(const stop_token& stopToken,
                               const wxString &maximaHtmlDir,
+                              const wxString &maximaShareDir,
                               const wxString &maximaVersion,
                               const wxString &saveName);
   //! Load the result from the last CompileHelpFileAnchors from the disk cache
