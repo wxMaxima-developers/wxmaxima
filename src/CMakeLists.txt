@@ -136,6 +136,8 @@ set(DIALOG_SOURCE_FILES
     DiffScrollSync.cpp
     MatrixViewer.cpp
     TroubleshootingDialog.cpp
+    SymbolShortcutDialog.cpp
+    SymbolShortcutsPanel.cpp
     WorksheetPreview.cpp
 )
 list(TRANSFORM DIALOG_SOURCE_FILES PREPEND dialogs/)
@@ -184,6 +186,7 @@ set(SOURCE_FILES
     StringUtils.cpp
     SvgBitmap.cpp
     SvgSize.cpp
+    SymbolShortcuts.cpp
     UnicodeNames.cpp
     SvgPanel.cpp
     SyntaxErrorLocation.cpp

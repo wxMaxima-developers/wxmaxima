@@ -39,10 +39,25 @@
 #include "CharButton.h"
 #include "ButtonWrapSizer.h"
 #include <list>
+#include <vector>
 
 class GreekSidebar : public wxScrolled<wxPanel>
 {
  public:
+  //! When a letter is shown
+  enum class Condition { None, Show_mu, ShowLatinLookalikes };
+  //! A letter of the sidebar
+  struct Definition : CharButton::Definition {
+    Condition condition;
+    Definition(wchar_t sym, const wxString &descr,
+               Condition cond = Condition::None)
+      : CharButton::Definition{sym, descr}, condition(cond) {}
+  };
+  //! The lowercase letters, whether they are currently shown or not
+  static const std::vector<Definition> &LowercaseDefinitions();
+  //! The uppercase letters, whether they are currently shown or not
+  static const std::vector<Definition> &UppercaseDefinitions();
+
   GreekSidebar(wxWindow *parent, Configuration *configuration, wxWindow *worksheet,
                int ID = wxID_ANY);
   /*! Re-wrap the buttons and grow the virtual height to fit the wrapped rows.
@@ -66,6 +81,8 @@ class GreekSidebar : public wxScrolled<wxPanel>
   //! The virtual size UpdateVirtualSize() last applied, so it can skip
   //! re-layouting when nothing changed (see the comment in its body).
   wxSize m_lastVirtualSize = wxDefaultSize;
+  //! The symbol of the button the context menu was opened on, if any
+  wxString m_contextMenuSymbol;
 };
 
 

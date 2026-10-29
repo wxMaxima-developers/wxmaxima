@@ -519,9 +519,6 @@ void ConfigDialogue::SetCheckboxValues() {
                                 "underscores to subscript markers if the would-be subscript is a "
                                 "number or a single letter\nall=_ marks subscripts."));
   m_language->SetToolTip(_("Language used for wxMaxima GUI."));
-  m_symbolPaneAdditionalChars->SetToolTip(
-                                          _("Symbols that are entered or copied here will appear in the symbols "
-                                            "sidebar so they can be entered into the worksheet easily."));
   m_documentclass->SetToolTip(
                               _("The document class LaTeX is instructed to use for our documents."));
   m_documentclassOptions->SetToolTip(
@@ -758,8 +755,6 @@ void ConfigDialogue::SetCheckboxValues() {
     else
       m_displayNDigits->SetValue(true);
   }
-  m_symbolPaneAdditionalChars->SetValue(
-                                        configuration->SymbolPaneAdditionalChars());
   m_getStyleFont->Enable(!configuration->GetStyle(GetSelectedStyle())->CantChangeFontName());
   m_showUserDefinedLabels->SetSelection(configuration->GetLabelChoice());
   unsigned int i = 0;
@@ -1575,16 +1570,6 @@ wxWindow *ConfigDialogue::CreateOptionsPanel() {
   grid_sizer->Add(m_language, 0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL,
                   5 * GetContentScaleFactor());
 
-  grid_sizer->Add(
-                  new wxStaticText(stdOpts_sizer->GetStaticBox(), wxID_ANY,
-                                   _("Additional symbols for the \"symbols\" sidebar:")),
-                  0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5 * GetContentScaleFactor());
-  m_symbolPaneAdditionalChars =
-    new wxTextCtrl(stdOpts_sizer->GetStaticBox(), wxID_ANY);
-  grid_sizer->Add(m_symbolPaneAdditionalChars, 0,
-                  wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL,
-                  5 * GetContentScaleFactor());
-
   grid_sizer->Add(new wxStaticText(stdOpts_sizer->GetStaticBox(), wxID_ANY,
                                    _("Recent files list length:")),
                   0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL,
@@ -1686,6 +1671,17 @@ wxWindow *ConfigDialogue::CreateOptionsPanel() {
                      wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
 
   vsizer->Add(stdOpts_sizer, wxSizerFlags().Expand().Border(
+                                                            wxALL, 5 * GetContentScaleFactor()));
+
+  // Used to be a text field next to the other options, holding only the
+  // extra symbols; the table also gives every symbol a keyboard shortcut
+  // (GH #2578).
+  wxStaticBoxSizer *symbols_sizer = new wxStaticBoxSizer(
+    wxVERTICAL, panel, _("Symbols for the sidebars and their keyboard shortcuts"));
+  m_symbolShortcuts = new SymbolShortcutsPanel(symbols_sizer->GetStaticBox(),
+                                               m_configuration.get());
+  symbols_sizer->Add(m_symbolShortcuts, wxSizerFlags(1).Expand());
+  vsizer->Add(symbols_sizer, wxSizerFlags().Expand().Border(
                                                             wxALL, 5 * GetContentScaleFactor()));
 
   panel->FitInside();
@@ -3343,8 +3339,7 @@ void ConfigDialogue::WriteSettings() {
       ++i;
     }
   }
-  configuration->SymbolPaneAdditionalChars(
-                                           m_symbolPaneAdditionalChars->GetValue());
+  m_symbolShortcuts->Write(configuration);
 
   // Persist through WriteSettings(), NOT WriteStyles(): the code above copied
   // every dialog field into the Configuration, but WriteStyles() only writes

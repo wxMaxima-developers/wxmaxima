@@ -63,6 +63,7 @@ extern unsigned char view_refresh_svg_gz[];
 #include "worksheet/Worksheet.h"
 #include "../Configuration.h"
 #include "ToolBarSectionsPanel.h"
+#include "SymbolShortcutsPanel.h"
 #include "WorksheetPreview.h"
 #ifdef WXM_USE_AI_TOOLS
 #include "ai/AiProvider.h"
@@ -331,7 +332,8 @@ protected:
   wxTextCtrl *m_additionalParameters;
   wxTextCtrl *m_mathJaxURL;
   wxChoice *m_language;
-  wxTextCtrl *m_symbolPaneAdditionalChars;
+  //! The extra symbols and every symbol's keyboard shortcut
+  SymbolShortcutsPanel *m_symbolShortcuts = nullptr;
   wxCheckBox *m_abortOnError;
   wxCheckBox *m_offerKnownAnswers;
   wxCheckBox *m_restartOnReEvaluation;

@@ -2976,9 +2976,9 @@ void wxMaxima::OnSymbolAdd(wxCommandEvent &event) {
   if(m_symbolsSidebar == nullptr)
     return;
   event.Skip();
-  m_configuration.SymbolPaneAdditionalChars(
-                                            m_configuration.SymbolPaneAdditionalChars() +
-                                            wxString(wxChar(event.GetId())));
+  auto symbols = wxm::SplitIntoSymbols(m_configuration.SymbolPaneAdditionalChars());
+  symbols.emplace_back(wxChar(event.GetId()));
+  m_configuration.SymbolPaneAdditionalChars(wxm::JoinSymbols(symbols));
   m_symbolsSidebar->UpdateUserSymbols();
 }
 

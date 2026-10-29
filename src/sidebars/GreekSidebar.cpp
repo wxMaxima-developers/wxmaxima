@@ -110,6 +110,10 @@ void GreekSidebar::OnSize(wxSizeEvent &event) {
 
 void GreekSidebar::OnMenu(wxCommandEvent &event) {
   std::unordered_map<int, std::function<void()>> m{
+    {EventIDs::menu_symbolShortcut, [&](){
+      if (!m_contextMenuSymbol.IsEmpty())
+        CharButton::EditShortcut(this, m_configuration, m_contextMenuSymbol);
+    }},
     {EventIDs::menu_showLatinGreekLookalikes, [&](){
       bool showLookalikes = !m_configuration->GreekSidebar_ShowLatinLookalikes();
       m_configuration->GreekSidebar_ShowLatinLookalikes(showLookalikes);
@@ -135,19 +139,8 @@ void GreekSidebar::OnMenu(wxCommandEvent &event) {
   Layout();
 }
 
-void GreekSidebar::UpdateSymbols() {
-  //  wxWindowUpdateLocker drawBlocker(this);
-  enum class Cond { None, Show_mu, ShowLatinLookalikes };
-  struct EnabledDefinition : CharButton::Definition {
-    Cond condition;
-    EnabledDefinition(wchar_t sym, const wxString &descr,
-                      Cond cond = Cond::None)
-      : CharButton::Definition{sym, descr}, condition(cond) {}
-    explicit EnabledDefinition(wchar_t sym)
-      : EnabledDefinition(sym, wxm::emptyString) {}
-  };
-
-  static const EnabledDefinition lowerCaseDefs[] = {
+const std::vector<GreekSidebar::Definition> &GreekSidebar::LowercaseDefinitions() {
+  static const std::vector<Definition> defs = {
     {L'\u03B1', _("alpha")},
     {L'\u03B2', _("beta")},
     {L'\u03B3', _("gamma")},
@@ -159,10 +152,10 @@ void GreekSidebar::UpdateSymbols() {
     {L'\u03B9', _("iota")},
     {L'\u03BA', _("kappa")},
     {L'\u03BB', _("lambda")},
-    {L'\u03BC', _("mu"), Cond::Show_mu},
+    {L'\u03BC', _("mu"), Condition::Show_mu},
     {L'\u03BD', _("nu")},
     {L'\u03BE', _("xi")},
-    {L'\u03BF', _("omicron"), Cond::ShowLatinLookalikes},
+    {L'\u03BF', _("omicron"), Condition::ShowLatinLookalikes},
     {L'\u03C0', _("pi")},
     {L'\u03C1', _("rho")},
     {L'\u03C3', _("sigma")},
@@ -173,43 +166,52 @@ void GreekSidebar::UpdateSymbols() {
     {L'\u03C8', _("psi")},
     {L'\u03C9', _("omega")},
   };
+  return defs;
+}
 
-  static const EnabledDefinition upperCaseDefs[] = {
-    {L'\u0391', ("Alpha"), Cond::ShowLatinLookalikes},
-    {L'\u0392', _("Beta"), Cond::ShowLatinLookalikes},
+const std::vector<GreekSidebar::Definition> &GreekSidebar::UppercaseDefinitions() {
+  static const std::vector<Definition> defs = {
+    {L'\u0391', ("Alpha"), Condition::ShowLatinLookalikes},
+    {L'\u0392', _("Beta"), Condition::ShowLatinLookalikes},
     {L'\u0393', _("Gamma")},
     {L'\u0394', _("Delta")},
-    {L'\u0395', _("Epsilon"), Cond::ShowLatinLookalikes},
-    {L'\u0396', _("Zeta"), Cond::ShowLatinLookalikes},
-    {L'\u0397', _("Eta"), Cond::ShowLatinLookalikes},
+    {L'\u0395', _("Epsilon"), Condition::ShowLatinLookalikes},
+    {L'\u0396', _("Zeta"), Condition::ShowLatinLookalikes},
+    {L'\u0397', _("Eta"), Condition::ShowLatinLookalikes},
     {L'\u0398', _("Theta")},
-    {L'\u0399', _("Iota"), Cond::ShowLatinLookalikes},
-    {L'\u039A', _("Kappa"), Cond::ShowLatinLookalikes},
+    {L'\u0399', _("Iota"), Condition::ShowLatinLookalikes},
+    {L'\u039A', _("Kappa"), Condition::ShowLatinLookalikes},
     {L'\u039B', _("Lambda")},
-    {L'\u039C', _("Mu"), Cond::ShowLatinLookalikes},
-    {L'\u039D', _("Nu"), Cond::ShowLatinLookalikes},
+    {L'\u039C', _("Mu"), Condition::ShowLatinLookalikes},
+    {L'\u039D', _("Nu"), Condition::ShowLatinLookalikes},
     {L'\u039E', _("Xi")},
-    {L'\u039F', _("Omicron"), Cond::ShowLatinLookalikes},
+    {L'\u039F', _("Omicron"), Condition::ShowLatinLookalikes},
     {L'\u03A0', _("Pi")},
-    {L'\u03A1', _("Rho"), Cond::ShowLatinLookalikes},
+    {L'\u03A1', _("Rho"), Condition::ShowLatinLookalikes},
     {L'\u03A3', _("Sigma")},
-    {L'\u03A4', _("Tau"), Cond::ShowLatinLookalikes},
-    {L'\u03A5', _("Upsilon"), Cond::ShowLatinLookalikes},
+    {L'\u03A4', _("Tau"), Condition::ShowLatinLookalikes},
+    {L'\u03A5', _("Upsilon"), Condition::ShowLatinLookalikes},
     {L'\u03A6', _("Phi")},
-    {L'\u03A7', _("Chi"), Cond::ShowLatinLookalikes},
+    {L'\u03A7', _("Chi"), Condition::ShowLatinLookalikes},
     {L'\u03A8', _("Psi")},
     {L'\u03A9', _("Omega")},
   };
+  return defs;
+}
 
+void GreekSidebar::UpdateSymbols() {
+  //  wxWindowUpdateLocker drawBlocker(this);
+  const auto &lowerCaseDefs = LowercaseDefinitions();
+  const auto &upperCaseDefs = UppercaseDefinitions();
   bool const Show_mu = m_configuration->GreekSidebar_Show_mu();
   bool const ShowLatinLookalikes = m_configuration->GreekSidebar_ShowLatinLookalikes();
 
   if(!m_lowercaseSizer->GetChildren().IsEmpty())
   m_lowercaseSizer->Clear(true);
   for (auto &def : lowerCaseDefs)
-    if (def.condition == Cond::None ||
-        (def.condition == Cond::Show_mu && Show_mu) ||
-        (def.condition == Cond::ShowLatinLookalikes && ShowLatinLookalikes))
+    if (def.condition == Condition::None ||
+        (def.condition == Condition::Show_mu && Show_mu) ||
+        (def.condition == Condition::ShowLatinLookalikes && ShowLatinLookalikes))
       {
         CharButton *button = new CharButton(m_lowerCasePanel, m_worksheet, m_configuration, def);
         m_lowercaseSizer->Add(button, wxSizerFlags().Expand());
@@ -222,9 +224,9 @@ void GreekSidebar::UpdateSymbols() {
   if(!m_uppercaseSizer->GetChildren().IsEmpty())
     m_uppercaseSizer->Clear(true);
   for (auto &def : upperCaseDefs)
-    if (def.condition == Cond::None ||
-        (def.condition == Cond::Show_mu && Show_mu) ||
-        (def.condition == Cond::ShowLatinLookalikes && ShowLatinLookalikes))
+    if (def.condition == Condition::None ||
+        (def.condition == Condition::Show_mu && Show_mu) ||
+        (def.condition == Condition::ShowLatinLookalikes && ShowLatinLookalikes))
       {
         CharButton *button = new CharButton(m_upperCasePanel, m_worksheet, m_configuration, def);
         m_uppercaseSizer->Add(button, wxSizerFlags().Expand());
@@ -235,8 +237,11 @@ void GreekSidebar::UpdateSymbols() {
       }
 }
 
-void GreekSidebar::OnMouseRightDown(wxMouseEvent &WXUNUSED(event)) {
+void GreekSidebar::OnMouseRightDown(wxMouseEvent &event) {
   std::unique_ptr<wxMenu> popupMenu(new wxMenu());
+  m_contextMenuSymbol = CharButton::AppendShortcutMenuItem(&*popupMenu, event);
+  if (!m_contextMenuSymbol.IsEmpty())
+    popupMenu->AppendSeparator();
   popupMenu->AppendCheckItem(EventIDs::menu_showLatinGreekLookalikes,
                              _(wxS("Show greek \u21D4 latin lookalikes")));
   popupMenu->Check(EventIDs::menu_showLatinGreekLookalikes,

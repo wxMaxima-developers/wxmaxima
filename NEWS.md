@@ -1,5 +1,12 @@
 # Current development version
 
+- Any symbol can get a keyboard shortcut that types it into the worksheet
+  (#2578): right-click its button in the Greek or the Symbols sidebar, or use
+  the new table in the "Options" tab of the configuration dialog. The table
+  replaces the text field for the Symbols sidebar's extra symbols, and shows
+  which sidebar each symbol is in. A letter with combining accents, like t̄
+  (#2296), now is one symbol with one button, instead of a button for the
+  letter and one for the accent.
 - ESC no longer offers nothing at all for the rest of a session: the list of
   ESC names (alpha, beta, ...) is filled in the background at startup, and
   Maxima's list of symbols arriving before that was done stopped it halfway.

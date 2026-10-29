@@ -43,7 +43,12 @@ public:
   //! A definition of this button, used to construct it.
   struct Definition
   {
-    wchar_t symbol = {};                            ///< The unicode symbol
+    /*! The symbol this button enters.
+
+      Usually one character, but can be a letter with combining accents
+      (t̄ is t + U+0304), see wxm::SplitIntoSymbols().
+    */
+    wxString symbol;
     const wxString description = wxm::emptyString;  ///< The help text for the symbol
     bool matchesMaximaCommand = false;              ///< Whether this symbol is automatically translated into a maxima command/operator
   };
@@ -58,6 +63,32 @@ public:
              const Definition &def,
              bool forceShow = false);
   wxWindow *GetTextObject() const { return m_buttonText; }
+  //! The symbol this button enters
+  const wxString &GetSymbol() const { return m_symbol; }
+  /*! The button a mouse event in a sidebar happened on, or nullptr.
+
+    The event may come from the button or from the text inside it.
+   */
+  static CharButton *FromEventObject(wxObject *object);
+  /*! Asks for the keyboard shortcut that types \p symbol and stores it.
+
+    Returns whether the shortcut changed.
+  */
+  static bool EditShortcut(wxWindow *parent, Configuration *configuration,
+                           const wxString &symbol);
+  /*! Adds the "Keyboard shortcut for..." entry to a sidebar's context menu
+
+    if the right click that opens it was on a button. Returns the symbol of
+    that button, which the sidebar keeps until the entry is chosen, or an
+    empty string.
+  */
+  static wxString AppendShortcutMenuItem(wxMenu *menu, const wxMouseEvent &event);
+  /*! Shows the symbol's keyboard shortcut, if it has one, in the tooltip.
+
+    Also runs whenever the mouse enters the button, so the tooltip is never
+    behind a shortcut changed elsewhere.
+  */
+  void UpdateToolTip();
   //! Emit this button's symbol to the worksheet -- the button's action, shared
   //! by the mouse handler and the accessibility "Press" default action.
   void ActivateButton();
@@ -65,7 +96,7 @@ public:
   //! The screen-reader label for this button: its description, or, if it has
   //! none, the symbol glyph itself.
   wxString GetAccessibleLabel() const {
-    return m_description.IsEmpty() ? wxString(m_char) : m_description;
+    return m_description.IsEmpty() ? m_symbol : m_description;
   }
 #endif
   /*! Sets the min size the button needs to show its symbol.
@@ -76,7 +107,7 @@ public:
   */
   void UpdateMinSize();
 protected:
-  wchar_t m_char;
+  wxString m_symbol;
   Configuration *m_configuration;
   void CharButtonPressed(wxMouseEvent &event);
   void OnSize(wxSizeEvent &event);
@@ -89,6 +120,10 @@ protected:
   void MouseOverTextIs(bool mouseOver = true);
   void MouseOverPanelIs(bool mouseOver = true);
   wxString m_description;
+  //! The tooltip without the keyboard shortcut
+  wxString m_toolTipBase;
+  //! The tooltip as last set
+  wxString m_toolTip;
 
 private:
   bool m_mouseOverPanel = false;

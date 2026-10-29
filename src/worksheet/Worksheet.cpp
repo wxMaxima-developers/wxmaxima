@@ -287,24 +287,33 @@ Worksheet::Worksheet(wxWindow *parent, int id,
 }
 
 void Worksheet::OnSidebarKey(wxCommandEvent &event) {
-  if (BTextCtrl::LastActive() == nullptr) {
-    SetFocus();
-    // Send the char button to the active cell or a new cell on the worksheet
-    if (GetActiveCell()) {
-      GetActiveCell()->InsertText(wxString(wxChar(event.GetId())));
-      GroupCell *parent = GetActiveCell()->GetGroup();
-      RequestRecalculation(parent);
-      RequestRedraw(parent);
-    } else
-      OpenHCaret(wxString(wxChar(event.GetId())));
-  } else {
+  // A sidebar button sends its whole symbol as the string, which can be more
+  // than one character (t̄ = t + combining macron); the Unicode sidebar only
+  // sends the character code as the event's id.
+  const wxString symbol = event.GetString().IsEmpty() ?
+    wxString(wxChar(event.GetId())) : event.GetString();
+  if (BTextCtrl::LastActive() == nullptr)
+    InsertSymbol(symbol);
+  else {
     // Send the char to the last active text control
     wxTextCtrl *textCtrl = BTextCtrl::LastActive();
     long pos = textCtrl->GetInsertionPoint();
-    textCtrl->WriteText(wxString(wxChar(event.GetId())));
-    textCtrl->SetInsertionPoint(pos + 1);
+    textCtrl->WriteText(symbol);
+    textCtrl->SetInsertionPoint(pos + static_cast<long>(symbol.Length()));
     CallAfter(&Worksheet::FocusTextControl);
   }
+}
+
+void Worksheet::InsertSymbol(const wxString &symbol) {
+  SetFocus();
+  // Send the symbol to the active cell or a new cell on the worksheet
+  if (GetActiveCell()) {
+    GetActiveCell()->InsertText(symbol);
+    GroupCell *parent = GetActiveCell()->GetGroup();
+    RequestRecalculation(parent);
+    RequestRedraw(parent);
+  } else
+    OpenHCaret(symbol);
 }
 
 void Worksheet::FocusTextControl() {
@@ -3351,6 +3360,14 @@ void Worksheet::OnKeyDown(wxKeyEvent &event) {
   if (event.AltDown() &&
       (event.GetKeyCode() == WXK_UP || event.GetKeyCode() == WXK_DOWN)) {
     event.Skip();
+    return;
+  }
+
+  // The keyboard shortcuts the user gave symbols (GH #2578)
+  if (const wxString symbol =
+      wxm::SymbolForKeyEvent(m_configuration->SymbolShortcuts(), event);
+      !symbol.IsEmpty()) {
+    InsertSymbol(symbol);
     return;
   }
 
