@@ -73,7 +73,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p><a class="anchor" id="md_Doxygen_AsyncMaximaOutput"></a> </p>
-<h1><a class="anchor" id="autotoc_md47"></a>
+<h1><a class="anchor" id="autotoc_md58"></a>
 What this is</h1>
 <p><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> is single-threaded today. If it gains the ability to run a command in the background, a job will produce its output long after the cell that started it has finished and the user has moved on &ndash; and <a class="el" href="classwxMaxima.html">wxMaxima</a> has no identifier for a cell anywhere in its protocol. It decides which cell an output belongs to purely by <em>when</em> the output arrives: whatever cell is being evaluated at that moment. For a background job that is not merely imprecise, it is reliably wrong.</p>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a>'s half of a protocol that fixes this is implemented and working. Nothing exercises it in a normal session yet; it is here so that a <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> that can run things in the background has something correct to talk to.</p>
@@ -84,7 +84,7 @@ What this is</h1>
 <li><a class="el" href="classwxMaxima.html">wxMaxima</a> routes that block to the cell the id names, not to whatever cell is current.</li>
 </ul>
 <p>Everything below was measured against <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> on SBCL 2.6.0, and then verified end to end in the real application driving real background threads.</p>
-<h1><a class="anchor" id="autotoc_md48"></a>
+<h1><a class="anchor" id="autotoc_md59"></a>
 Using it from Maxima</h1>
 <div class="fragment"><div class="line">:lisp (wx-spawn-async</div>
 <div class="line">        (sleep 30)</div>
@@ -101,14 +101,14 @@ Using it from Maxima</h1>
 <td class="markdownTableBodyNone"><code>wx-async-error</code>   </td><td class="markdownTableBodyNone">a failure message onto the originating cell   </td></tr>
 </table>
 <p>All three default their target to <code>*wx-cell-id*</code>, which the macro rebinds inside the thread &ndash; so the obvious call is also the correct one.</p>
-<h1><a class="anchor" id="autotoc_md49"></a>
+<h1><a class="anchor" id="autotoc_md60"></a>
 The four things that are easy to get wrong</h1>
 <p>Each of these was found by testing rather than by reading, and each fails silently rather than loudly.</p>
-<h2><a class="anchor" id="autotoc_md50"></a>
+<h2><a class="anchor" id="autotoc_md61"></a>
 1. The id must be captured at spawn time</h2>
 <p>Reading <code>*wx-cell-id*</code> when the thread <em>runs</em> yields whatever cell is current by then, which is by construction a different one. Measured: a job started under cell <a class="el" href="classA.html">A</a> delivered its output to cell <a class="el" href="classB.html">B</a>, with no error.</p>
 <p>This is why <code>wx-spawn-async</code> <b>rebinds</b> <code>*wx-cell-id*</code> inside the thread rather than only capturing it into a variable the body cannot see. The first implementation did the latter, and the natural thing to write in the body &ndash; <code>(wx-async-text "...")</code>, which consults <code>*wx-cell-id*</code> &ndash; was therefore wrong. An API whose obvious use is the broken one is a bad API; the rebinding removes the trap instead of documenting it.</p>
-<h2><a class="anchor" id="autotoc_md51"></a>
+<h2><a class="anchor" id="autotoc_md62"></a>
 2. Concurrent writes corrupt the output stream</h2>
 <p>Not merely interleave. Three threads each writing 40 short chunks to <code>*standard-output*</code> with no lock produced output in which the command's own result echo appeared <b>three times</b> and one thread's entire block appeared <b>twice</b> &ndash; SBCL's FD-stream buffer is shared, and concurrent flushes replay buffered content.</p>
 <table class="markdownTable">
@@ -122,7 +122,7 @@ The four things that are easy to get wrong</h1>
 <td class="markdownTableBodyNone">ordering   </td><td class="markdownTableBodyNone">one block emitted twice   </td><td class="markdownTableBodyNone">each block contiguous   </td></tr>
 </table>
 <p><code>wx-emit-async</code> therefore takes <code>*wx-output-lock*</code> for the whole block. Any future writer has to take the same lock.</p>
-<h2><a class="anchor" id="autotoc_md52"></a>
+<h2><a class="anchor" id="autotoc_md63"></a>
 3. A background job must not ask questions</h2>
 <p>The sharpest one, and the one where the obvious defence is insufficient.</p>
 <p><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s <code>retrieve</code> (<code>src/macsys.lisp</code>) <b>prints the question first and reads afterwards</b>:</p>
@@ -134,10 +134,10 @@ The four things that are easy to get wrong</h1>
 <p>&zwj;This background computation tried to ask a question, which a background computation cannot do &ndash; give it everything it needs up front (for example with assume()). </p>
 </blockquote>
 <p>The closed <code>*standard-input*</code> is kept behind that, for anything that reads without going through <code>retrieve</code>.</p>
-<h2><a class="anchor" id="autotoc_md53"></a>
+<h2><a class="anchor" id="autotoc_md64"></a>
 4. &lt;tt&gt;ProcessData()&lt;/tt&gt; matches tags without attributes</h2>
 <p><code>Maxima::ProcessData()</code> recognises a top-level tag by an exact compare against <code>"&lt;" + name + "&gt;"</code>, so <code>&lt;wxasync id="..."&gt;</code> would never be recognised at all. The id travels in the body instead, as <code>&lt;id&gt;...&lt;/id&gt;</code>, which needs no change to the framing rule.</p>
-<h1><a class="anchor" id="autotoc_md54"></a>
+<h1><a class="anchor" id="autotoc_md65"></a>
 The wxMaxima side</h1>
 <ul>
 <li><code><a class="el" href="classMaxima.html#a01e208858ffeeb60e8a1787a580103c8a84cfbc2e59edf563f23d9f9742d6723f" title="Output from a background job, naming the cell it belongs to.">Maxima::XML_ASYNC_OUTPUT</a></code> plus a <code>m_knownTags</code> entry for <code>wxasync</code> &ndash; the established extension point, <code>XML_ASCIIMATH</code> being the previous one.</li>
@@ -152,10 +152,10 @@ The wxMaxima side</h1>
 <li><b>Nothing else schedules the recalculation.</b> <code>InsertLine()</code> only asks for a redraw; the layout of a cell that gained output normally comes from that cell being the one under evaluation, which is exactly what a background job's cell is not. <code>ReadAsyncOutput()</code> requests it explicitly.</li>
 </ul>
 <p>Async output deliberately does <b>not</b> scroll the worksheet, even with "follow evaluation" on, and deliberately does not un-collapse a cell whose output the user has hidden &ndash; same reasoning as GH #1952: a result arriving is not a reason to yank the view away from what the user is doing.</p>
-<h1><a class="anchor" id="autotoc_md55"></a>
+<h1><a class="anchor" id="autotoc_md66"></a>
 Availability</h1>
 <p>Threads are a property of the Lisp under <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>, not of <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>. SBCL has them; GCL does not. <code>wx-async-available-p</code> reflects that, <code>*wx-output-lock*</code> is <code>nil</code> where there is nothing to serialize, and a <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> that never sends the tag simply never triggers any of this.</p>
-<h1><a class="anchor" id="autotoc_md56"></a>
+<h1><a class="anchor" id="autotoc_md67"></a>
 Verified</h1>
 <p>In the real application, driving real <code>sb-thread</code> background jobs:</p>
 <ul>

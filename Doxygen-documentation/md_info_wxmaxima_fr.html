@@ -984,22 +984,22 @@ Comment faire tenir plus de texte sur une page LaTeX ?</h2>
 Un mode sombre existe-t-il ?</h2>
 <p>Si wxWidgets est suffisamment récent, <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> passera automatiquement en mode sombre si le système d'exploitation l'est également. Par défaut, la feuille de travail a un fond clair, mais cela peut être personnalisé. Sinon, il existe une option 'Affichage/Inverser la luminosité de la feuille' qui permet de basculer rapidement entre un fond clair et un fond sombre.</p>
 <p>Most images are drawn for a white background, and black line art with a transparent background would be invisible on a dark worksheet. So by default, if the worksheet background is dark, the transparent parts of images are filled with a backdrop color. Its color is the style <em>Backdrop of transparent images</em> in the <em><a class="el" href="classStyle.html" title="Text Style Definition.">Style</a></em> tab of the configuration dialog, and the option <em>Behind transparent parts of images</em> in its <em><a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a></em> tab can switch the backdrop off, or draw it on a bright worksheet, too.</p>
-<h2><a class="anchor" id="autotoc_md385"></a>
+<h2><a class="anchor" id="autotoc_md384"></a>
 &lt;em&gt;WxMaxima&lt;/em&gt; se fige parfois pendant plusieurs secondes lors de la première minute d'utilisation</h2>
 <p><em>WxMaxima</em> délègue certaines tâches importantes, comme l’analyse du manuel de <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> de plus de 1 000 pages, à des tâches en arrière-plan, ce qui passe normalement totalement inaperçu. Toutefois, au moment où le résultat d’une telle tâche est nécessaire, il est possible que <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> doive attendre quelques secondes avant de pouvoir poursuivre son travail.</p>
-<h2><a class="anchor" id="autotoc_md386"></a>
+<h2><a class="anchor" id="autotoc_md385"></a>
 En particulier lors du test de nouveaux paramètres régionaux, une boîte de message « locale ’xx_YY’ can not be set » apparaît</h2>
 <p><img src="./locale-warning.png" alt="Avertissement sur la langue locale" class="inline"/></p>
 <p>(Le même problème peut également se produire avec d’autres applications.) Les traductions semblent correctes après avoir cliqué sur « OK ». WxMaxima n’utilise pas seulement ses propres traductions, mais aussi celles du framework wxWidgets.</p>
 <p>Ces langues locales peuvent ne pas être présentes dans le système. Sur les systèmes Ubuntu/Debian, elles peuvent être générées avec : <code>dpkg-reconfigure locales</code></p>
-<h2><a class="anchor" id="autotoc_md387"></a>
+<h2><a class="anchor" id="autotoc_md386"></a>
 Comment puis-je utiliser les symboles des nombres réels, des nombres naturels (ℝ, ℕ), etc. ?</h2>
 <p>Vous pouvez trouver ces symboles dans la barre latérale Unicode (recherchez « double-struck capital »). Mais la police sélectionnée doit également prendre en charge ces symboles. S’ils ne s’affichent pas correctement, choisissez une autre police.</p>
-<h2><a class="anchor" id="autotoc_md388"></a>
+<h2><a class="anchor" id="autotoc_md387"></a>
 Comment un script Maxima peut-il déterminer s'il s'exécute sous wxMaxima ou en ligne de commande ?</h2>
 <p>Si <a class="el" href="classwxMaxima.html">wxMaxima</a> est utilisé, la variable <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> <code>maxima_frontend</code> est définie sur <code>wxmaxima</code>. Dans ce cas, la variable <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> <code>maxima_frontend_version</code> contient la version de <a class="el" href="classwxMaxima.html">wxMaxima</a>.</p>
 <p>Si aucun programme pour le frontend n'est utilisé (si vous utilisez <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> en ligne de commande), ces variables valent <code>false</code>.</p>
-<h3><a class="anchor" id="autotoc_md389"></a>
+<h3><a class="anchor" id="autotoc_md388"></a>
 Is wxMaxima new enough for this worksheet?</h3>
 <div id="wx_version_min"></div><p><code>wx_version_min("26.09.0")</code> returns <code>true</code> if the running <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> is at least version 26.09.0, and <code>false</code> if it is older, or if the command runs in command line <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>. The parts of the version number are compared as numbers, so 26.10.0 counts as newer than 26.9.0, and a part that is left out counts as 0: <code>wx_version_min("26.9")</code> is the same as <code>wx_version_min("26.09.0")</code>. <a class="el" href="classA.html">A</a> development version counts as the version it will be released as.</p>
 <p><em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> 26.08.0 and older don't know <code>wx_version_min()</code> yet. There, as with any function <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> doesn't know, the call isn't an error: it just returns itself, unevaluated, as <code>wx_version_min("26.09.0")</code>, which is neither <code>true</code> nor <code>false</code>. So a plain <code>if wx_version_min("26.09.0") then ...</code> stays unevaluated on these versions, too. <a class="el" href="classA.html">A</a> worksheet that has to work with them as well can compare the result with <code>true</code>, which gives <code>false</code> there:</p>
@@ -1007,11 +1007,11 @@ Is wxMaxima new enough for this worksheet?</h3>
 <div class="line">    wx_matrix(M, oversized=scroll)</div>
 <div class="line">else</div>
 <div class="line">    M;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md390"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md389"></a>
 À l’aide ! Je ne peux pas enregistrer mon document !</h2>
 <p>Si l’enregistrement en fichier <code>.wxmx</code> ne fonctionne pas, essayez d’enregistrer le document en fichier <code>.wxm</code> (et inversement). Vous pouvez également essayer de supprimer toute la sortie (menu Cellule → Supprimer toute la sortie), puis enregistrer ce fichier ; il est possible qu’une sortie inattendue pose problème lors du processus d’enregistrement.</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md391"></a>
+<h1><a class="anchor" id="autotoc_md390"></a>
 Arguments en ligne de commande</h1>
 <p>Généralement, les programmes dotés d'une interface graphique se lancent simplement en cliquant sur une icône ou une entrée de menu. WxMaxima, lorsqu'il est démarré depuis la ligne de commande, accepte néanmoins certains arguments.</p>
 <ul>
@@ -1042,7 +1042,7 @@ Arguments en ligne de commande</h1>
 <li><code>95</code>: An image in the worksheet could not be decoded (only checked with <code>--debug</code>).</li>
 </ul>
 <hr  />
-<h1><a class="anchor" id="autotoc_md392"></a>
+<h1><a class="anchor" id="autotoc_md391"></a>
 À propos du logiciel et des contributions à wxMaxima</h1>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> est principalement développé en C++ avec le framework <a href="https://www.wxwidgets.org">wxWidgets</a>, et utilise <a href="https://www.cmake.org">CMake</a> comme système de build. Une petite partie est écrite en Lisp. Si vous maîtrisez ces langages et souhaitez contribuer à ce projet open source, vous pouvez rejoindre l’équipe sur <a href="https://github.com/wxMaxima-developers/wxmaxima">GitHub</a>.</p>
 <p>Mais les programmeurs ne sont pas les seul·es à pouvoir contribuer ! Vous pouvez aussi aider à améliorer <a class="el" href="classwxMaxima.html">wxMaxima</a> en améliorant la documentation, en signalant (ou corrigeant) des bugs, en proposant de nouvelles fonctionnalités, en traduisant l’interface ou le manuel dans votre langue (consultez le fichier README.md dans le <a href="https://github.com/wxMaxima-developers/wxmaxima/tree/main/locales">dossier locales</a> pour savoir comment procéder).</p>
