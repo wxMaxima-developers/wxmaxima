@@ -397,6 +397,17 @@ MaximaTokenizer::MaximaTokenizer(const wxString &commands,
   m_tokens = initialTokens;
 }
 
+wxString MaximaTokenizer::FirstStatement(const wxString &commands,
+                                         const Configuration * const configuration) {
+  wxString statement;
+  for (const auto &token : MaximaTokenizer(commands, configuration).PopTokens()) {
+    if (token.GetTextStyle() == TS_CODE_ENDOFLINE)
+      break;
+    statement += token.GetText();
+  }
+  return statement.Trim().Trim(false);
+}
+
 bool MaximaTokenizer::IsAlpha(wxUniChar ch) {
   if (wxIsalpha(ch))
     return true;

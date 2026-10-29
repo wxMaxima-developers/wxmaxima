@@ -2611,30 +2611,28 @@ void wxMaxima::UpdateToolBar() {
   GetWorksheet()->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, false);
 }
 
-wxString wxMaxima::ExtractFirstExpression(const wxString &entry) {
-  long semicolon = entry.Find(';');
-  long dollar = entry.Find('$');
-  bool semiFound = (semicolon != wxNOT_FOUND);
-  bool dollarFound = (dollar != wxNOT_FOUND);
-
-  std::size_t index;
-  if (semiFound && dollarFound)
-    index = std::min(semicolon, dollar);
-  else if (semiFound && !dollarFound)
-    index = semicolon;
-  else if (!semiFound && dollarFound)
-    index = dollar;
-  else // neither semicolon nor dollar found
-    index = entry.Length();
-
-  return entry.SubString(0, index - 1);
-}
-
 wxString wxMaxima::GetDefaultEntry() {
   if(!GetWorksheet())
     return wxEmptyString;
-  if (GetWorksheet()->CanCopy())
-    return (GetWorksheet()->GetString()).Trim().Trim(false);
+  if (GetWorksheet()->CanCopy()) {
+    // A selected code cell stands for its input. Its text as a whole would
+    // also contain its prompt and its output.
+    const Cell *selectionStart = GetWorksheet()->GetSelectionStart();
+    if (selectionStart && (selectionStart->GetType() == MC_TYPE_GROUP)) {
+      const auto *group = static_cast<const GroupCell *>(selectionStart);
+      if ((group->GetGroupType() == GC_TYPE_CODE) && group->GetEditable())
+        return MaximaTokenizer::FirstStatement(group->GetEditable()->GetValue(),
+                                               &m_configuration);
+    }
+    // Prose isn't code: a ";" in a text cell ends nothing.
+    const EditorCell *activeCell = GetWorksheet()->GetActiveCell();
+    if (activeCell && (activeCell->GetType() != MC_TYPE_INPUT))
+      return GetWorksheet()->GetString().Trim().Trim(false);
+    // The menu commands wrap this into a function call, which a statement's
+    // ";" or "$" would end too early (GH #244).
+    return MaximaTokenizer::FirstStatement(GetWorksheet()->GetString(),
+                                           &m_configuration);
+  }
   wxString retval;
   if (GetWorksheet()->GetActiveCell() != nullptr)
     return retval = GetWorksheet()->GetActiveCell()->GetWordUnderCaret();

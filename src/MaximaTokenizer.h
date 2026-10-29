@@ -58,6 +58,20 @@ public:
   */
   MaximaTokenizer(const wxString &commands, const Configuration * const configuration);
 
+  /*! The first statement in a piece of Maxima code, without its terminator
+
+    Everything up to the first ";" or "$" that ends a statement, trimmed.
+    A ";" or "$" inside a string, a comment or escaped with a backslash
+    doesn't end anything, which is why this asks the tokenizer instead of
+    searching for the character. Returns the whole (trimmed) text if it
+    contains no terminator.
+
+    Used where a menu command wraps code the user selected into a function
+    call: "ratsimp(" + "x+1;" + ");" is a syntax error (GH #244).
+  */
+  static wxString FirstStatement(const wxString &commands,
+                                 const Configuration * const configuration);
+
   //! A maxima code snippet from this tokenizer
   // A token is a value: it holds the text and its style and does nothing
   // else, so an unused one is dead code. The wxString member makes it

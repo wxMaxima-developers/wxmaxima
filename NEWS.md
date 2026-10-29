@@ -1,5 +1,10 @@
 # Current development version
 
+- A menu or toolbar command that works on the selection (Simplify, Factor,
+  Expand, Plot, ...) no longer fails when the selection ends in `;` or `$`
+  (#244): "Simplify" on a selected `x^2+2*x+1;` used to send
+  `ratsimp(x^2+2*x+1;);`, a syntax error. Of several selected statements the
+  first one is used, and a selected code cell stands for its input.
 - The CSV import and export wizards remember the field separator again: the
   one saved last time was read and then thrown away, so they always started
   with "Semicolon".
