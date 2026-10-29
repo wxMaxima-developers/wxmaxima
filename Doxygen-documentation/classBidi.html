@@ -81,6 +81,12 @@ Static Public Member Functions</h2></td></tr>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsAvailable</b> ()</td></tr>
 <tr class="memdesc:a10cb67ac585bd2d82bc580687d079716"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if libfribidi is compiled in, so <a class="el" href="classBidi.html#a32b1067e51fc8e6dd30b0a6e4011adfc" title="The runs that make up line, in visual (left-to-right on screen) order.">GetRuns()</a> reorders mixed-direction lines correctly. <br /></td></tr>
 <tr class="separator:a10cb67ac585bd2d82bc580687d079716"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75e4e4935602dc3b1210b8cb7eef6e80"><td class="memItemLeft" align="right" valign="top">static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBidi.html#a75e4e4935602dc3b1210b8cb7eef6e80">Version</a> ()</td></tr>
+<tr class="memdesc:a75e4e4935602dc3b1210b8cb7eef6e80"><td class="mdescLeft">&#160;</td><td class="mdescRight">The version of libfribidi actually loaded at run time, e.g.  <br /></td></tr>
+<tr class="separator:a75e4e4935602dc3b1210b8cb7eef6e80"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaaa77ddaaa812b2294760ce55b5f9968"><td class="memItemLeft" align="right" valign="top">static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBidi.html#aaaa77ddaaa812b2294760ce55b5f9968">Diagnosis</a> ()</td></tr>
+<tr class="memdesc:aaaa77ddaaa812b2294760ce55b5f9968"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classA.html">A</a> sentence for Help &gt; Troubleshooting saying how mixed-direction lines are handled.  <br /></td></tr>
+<tr class="separator:aaaa77ddaaa812b2294760ce55b5f9968"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a32b1067e51fc8e6dd30b0a6e4011adfc"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; <a class="el" href="structBidiRun.html">BidiRun</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBidi.html#a32b1067e51fc8e6dd30b0a6e4011adfc">GetRuns</a> (const wxString &amp;line, bool paragraphIsRightToLeft)</td></tr>
 <tr class="memdesc:a32b1067e51fc8e6dd30b0a6e4011adfc"><td class="mdescLeft">&#160;</td><td class="mdescRight">The runs that make up line, in visual (left-to-right on screen) order.  <br /></td></tr>
 <tr class="separator:a32b1067e51fc8e6dd30b0a6e4011adfc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -90,6 +96,34 @@ static std::vector&lt; <a class="el" href="structBidiRun.html">BidiRun</a> &gt;&
 <tr class="separator:ac58b7c2d649c07122916927d644e10d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="aaaa77ddaaa812b2294760ce55b5f9968" name="aaaa77ddaaa812b2294760ce55b5f9968"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaaa77ddaaa812b2294760ce55b5f9968">&#9670;&#160;</a></span>Diagnosis()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxString Bidi::Diagnosis </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p><a class="el" href="classA.html">A</a> sentence for Help &gt; Troubleshooting saying how mixed-direction lines are handled. </p>
+<p>Uses the same words as the "Accurate right-to-left text editing" line of the configure summary (cmake/WxmFeatureSummary.cmake), so that the two agree on what the feature is called. </p>
+
+</div>
+</div>
 <a id="a32b1067e51fc8e6dd30b0a6e4011adfc" name="a32b1067e51fc8e6dd30b0a6e4011adfc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a32b1067e51fc8e6dd30b0a6e4011adfc">&#9670;&#160;</a></span>GetRuns()</h2>
 
@@ -134,6 +168,35 @@ static std::vector&lt; <a class="el" href="structBidiRun.html">BidiRun</a> &gt;&
   </dd>
 </dl>
 <p>Never returns an empty vector for a non-empty line: on any error (or when libfribidi isn't compiled in) the whole line comes back as one run in paragraphIsRightToLeft's direction. </p>
+
+</div>
+</div>
+<a id="a75e4e4935602dc3b1210b8cb7eef6e80" name="a75e4e4935602dc3b1210b8cb7eef6e80"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a75e4e4935602dc3b1210b8cb7eef6e80">&#9670;&#160;</a></span>Version()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxString Bidi::Version </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The version of libfribidi actually loaded at run time, e.g. </p>
+<p>"1.0.13"</p>
+<p>Read from the library rather than from its headers, so that it names the library the program found, which is what a bug report needs. Empty if libfribidi isn't compiled in. </p>
 
 </div>
 </div>
