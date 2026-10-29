@@ -4,7 +4,10 @@
 # leave out the ones that only enforce a particular *style* - wxMaxima follows
 # its own conventions (see CLAUDE.md), and it targets wxWidgets, whose API is
 # built on int/long and C arrays, so the "modernise everything" and
-# "narrowing conversion" checks would be almost all noise here.
+# "narrowing conversion" checks would be almost all noise here. Hence only the
+# modernize checks listed below, which each remove a way to get something
+# wrong (a missed override, 0 as a pointer, a naked new, an index loop).
+# They are clean, and CI keeps them that way.
 #
 # Run e.g.:
 #   cmake -S . -B build -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
@@ -53,6 +56,14 @@ Checks: >
 #  - switch-missing-default-case: fires only on switches over plain ints
 #    (mostly event ids), where "nothing to do" is the obvious default.
 #    Switches over enums are checked by the compiler's -Wswitch.
+#
+# Disabled misc checks, and why:
+#  - include-cleaner: wants every symbol's own header included; wx's headers
+#    pull each other in by design, so it is thousands of reports of no value.
+#  - non-private-member-variables-in-classes, use-anonymous-namespace,
+#    const-correctness: style; the code base has its own conventions here.
+#  - no-recursion: the cell tree and the XML it is read from are recursive,
+#    and so are the functions walking them.
 #
 # Disabled clang-analyzer checks, and why (all false positives, measured
 # 2026-10 over the whole of src/):

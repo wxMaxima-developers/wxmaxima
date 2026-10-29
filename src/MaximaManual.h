@@ -100,8 +100,8 @@ private:
                           stop_token stopToken = {},
                           const wxString &prefix = wxEmptyString) :
       m_files(files), m_stopToken(std::move(stopToken)), m_prefix(prefix) { }
-    virtual wxDirTraverseResult OnFile(const wxString& filename) override;
-    virtual wxDirTraverseResult OnDir(const wxString& dirname) override;
+    wxDirTraverseResult OnFile(const wxString& filename) override;
+    wxDirTraverseResult OnDir(const wxString& dirname) override;
     std::vector<wxString>& GetResult() const {return m_files;}
   protected:
     std::vector<wxString>& m_files;
@@ -115,8 +115,8 @@ private:
                                     stop_token stopToken = {},
                                     const wxString &prefix = wxEmptyString) :
       m_files(files), m_stopToken(std::move(stopToken)), m_prefix(prefix) { }
-    virtual wxDirTraverseResult OnFile(const wxString& filename) override;
-    virtual wxDirTraverseResult OnDir(const wxString& dirname) override;
+    wxDirTraverseResult OnFile(const wxString& filename) override;
+    wxDirTraverseResult OnDir(const wxString& dirname) override;
     std::vector<wxString>& GetResult() const {return m_files;}
   protected:
     std::vector<wxString>& m_files;

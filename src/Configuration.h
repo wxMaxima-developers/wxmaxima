@@ -34,6 +34,7 @@
 #include "MaximaSessionInfo.h"
 #include "RenderContext.h"
 #include "Styles.h"
+#include "SymbolShortcuts.h"
 #include <cstdint>
 #include <functional>
 #include <memory>
@@ -878,6 +879,32 @@ public:
     {return m_symbolPaneAdditionalChars;}
   void SymbolPaneAdditionalChars(wxString symbols) {m_symbolPaneAdditionalChars = std::move(symbols);}
 
+  /*! The keyboard shortcuts that type a symbol into the worksheet (GH #2578).
+
+    Stored as one string ("symbol<TAB>shortcut" per line, see
+    wxm::SerializeSymbolShortcuts()), so it travels through the same
+    settings table as every other string.
+   */
+  std::vector<wxm::SymbolShortcut> SymbolShortcuts() const
+    {return wxm::ParseSymbolShortcuts(m_symbolShortcuts);}
+  void SymbolShortcuts(const std::vector<wxm::SymbolShortcut> &shortcuts)
+    {m_symbolShortcuts = wxm::SerializeSymbolShortcuts(shortcuts);}
+  //! The shortcut that types this symbol, or an empty string
+  wxString ShortcutForSymbol(const wxString &symbol) const;
+  /*! Gives a symbol a shortcut, or none if shortcut is empty.
+
+    A shortcut belongs to one symbol only, so whichever symbol had it before
+    loses it.
+  */
+  void SetShortcutForSymbol(const wxString &symbol, const wxString &shortcut);
+  /*! Writes the symbol shortcuts to the config file right away.
+
+    For a shortcut set from a sidebar's context menu, which otherwise would
+    only be saved when wxMaxima exits normally. Does nothing for a
+    temporary configuration.
+  */
+  void WriteSymbolShortcuts() const;
+
   //! Notify the user if maxima is idle?
   bool NotifyIfIdle() const
     { return m_notifyIfIdle; }
@@ -1020,7 +1047,7 @@ public:
   };
 
   void PushFileToSave(const wxString &filename, const wxMemoryBuffer &data)
-    { m_filesToSave.emplace_front(FileToSave(filename, data)); }
+    { m_filesToSave.emplace_front(filename, data); }
 
   wxRect GetUpdateRegion() const {return m_renderContext.GetUpdateRegion();}
   const std::list<FileToSave> &GetFilesToSave() const {return m_filesToSave;}
@@ -1773,6 +1800,8 @@ private:
   #endif
   bool m_greekSidebar_Show_mu;
   wxString m_symbolPaneAdditionalChars;
+  //! See SymbolShortcuts()
+  wxString m_symbolShortcuts;
   Appearance m_appearance = Appearance::followSystem;
   long m_recentItems;
   int m_bitmapScale;

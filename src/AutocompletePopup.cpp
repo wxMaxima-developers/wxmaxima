@@ -132,9 +132,9 @@ void AutocompletePopup::OnKeyDown(wxKeyEvent &event) {
           addChar = false;
         else {
           ch = m_completions.at(0).at(index);
-          for (std::size_t i = 0; i < m_completions.size(); i++)
-            if ((m_completions.at(i).Length() < index + 1) ||
-                (m_completions.at(i).at(index) != ch))
+          for (const auto &completion : m_completions)
+            if ((completion.Length() < index + 1) ||
+                (completion.at(index) != ch))
               addChar = false;
         }
 

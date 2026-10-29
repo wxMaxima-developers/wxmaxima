@@ -63,6 +63,7 @@ extern unsigned char view_refresh_svg_gz[];
 #include "worksheet/Worksheet.h"
 #include "../Configuration.h"
 #include "ToolBarSectionsPanel.h"
+#include "SymbolShortcutsPanel.h"
 #include "WorksheetPreview.h"
 #ifdef WXM_USE_AI_TOOLS
 #include "ai/AiProvider.h"
@@ -99,7 +100,7 @@ public:
   explicit ConfigDialogue(wxWindow *parent);
 
   //! The destructor
-  ~ConfigDialogue();
+  ~ConfigDialogue() override;
 
   //! The export formats we support for HTML equations
   enum htmlExportFormats
@@ -220,8 +221,17 @@ private:
   //! Calculates the size of the images for a configuration tab
   int GetImageSize();
 
+  /*! The panel for everything AI-related, in two boxes.
+
+    "Contacting AIs" (the AI Chat sidebar's providers and API keys) only
+    exists if the AI tools were compiled in, and only has controls if a
+    secret store is available. The MCP server box needs neither, so it
+    is always there.
+  */
+  wxWindow *CreateAiPanel();
 #ifdef WXM_USE_AI_TOOLS
-  wxWindow *CreateAiChatPanel();
+  //! Adds the AI Chat provider/API-key controls to the "Contacting AIs" box
+  void AddAiProviderControls(wxStaticBoxSizer *box);
 #endif
 
   //! The panel that allows to change the print settings
@@ -322,7 +332,8 @@ protected:
   wxTextCtrl *m_additionalParameters;
   wxTextCtrl *m_mathJaxURL;
   wxChoice *m_language;
-  wxTextCtrl *m_symbolPaneAdditionalChars;
+  //! The extra symbols and every symbol's keyboard shortcut
+  SymbolShortcutsPanel *m_symbolShortcuts = nullptr;
   wxCheckBox *m_abortOnError;
   wxCheckBox *m_offerKnownAnswers;
   wxCheckBox *m_restartOnReEvaluation;

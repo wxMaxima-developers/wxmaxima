@@ -44,7 +44,7 @@ XmlInspector::XmlInspector(wxWindow *parent, int id)
   wxRichTextCtrl::Clear();
 }
 
-XmlInspector::~XmlInspector() {}
+XmlInspector::~XmlInspector() = default;
 
 void XmlInspector::Clear() {
   m_clear = true;
@@ -112,28 +112,27 @@ void XmlInspector::UpdateContents() {
     // Indent the XML
     wxString textWithIndention;
     std::size_t length = 0;
-    for (wxString::const_iterator it = m_fromMaxima.begin();
-         it != m_fromMaxima.end(); ++it) {
+    for (const auto ch : m_fromMaxima) {
       length++;
       // Assume that all tags add indentation
-      if (*it == wxS('>'))
+      if (ch == wxS('>'))
         m_indentLevel++;
 
       // A closing tag needs to remove the indentation of the opening tag
       // plus the indentation of the closing tag
-      if ((m_lastChar == wxS('<')) && (*it == wxS('/')))
+      if ((m_lastChar == wxS('<')) && (ch == wxS('/')))
         m_indentLevel -= 2;
 
       // Self-closing Tags remove their own indentation
-      if ((m_lastChar == wxS('/')) && (*it == wxS('>')))
+      if ((m_lastChar == wxS('/')) && (ch == wxS('>')))
         m_indentLevel -= 1;
 
       // Add a linebreak and indent if we are at the space between 2 tags
-      if ((m_lastChar == wxS('>')) && (*it == wxS('<')))
+      if ((m_lastChar == wxS('>')) && (ch == wxS('<')))
         textWithIndention += wxS("\n") + IndentString(m_indentLevel);
 
-      textWithIndention += *it;
-      m_lastChar = *it;
+      textWithIndention += ch;
+      m_lastChar = ch;
     }
     SetInsertionPointEnd();
     BeginTextColour(wxColour(0, 128, 0));

@@ -45,15 +45,15 @@ class ImgCellBase : public Cell
 public:
   ImgCellBase(GroupCell *group, Configuration *config);
 
-  virtual std::unique_ptr<Cell> Copy(GroupCell *group) const override = 0;
-  virtual const CellTypeInfo &GetInfo() override = 0;
-  virtual ~ImgCellBase() override;
+  std::unique_ptr<Cell> Copy(GroupCell *group) const override = 0;
+  const CellTypeInfo &GetInfo() override = 0;
+  ~ImgCellBase() override;
 
   //! This class can be derived from wxAccessible which has no copy constructor
   ImgCellBase &operator=(const ImgCellBase&) = delete;
 
   //! The name of the file with gnuplot commands that created this file
-  virtual wxString GnuplotSource() const override = 0;
+  wxString GnuplotSource() const override = 0;
 
   //! Set the image's resolution
   virtual void SetPPI(int ppi) = 0;
@@ -61,7 +61,7 @@ public:
   virtual size_t GetOriginalWidth() const = 0;
   virtual size_t GetOriginalHeight() const = 0;
 
-  virtual void TallyImageLoadFailures(int &dataUnavailable,
+  void TallyImageLoadFailures(int &dataUnavailable,
                                       int &decodeFailed) const override = 0;
 
   //! Can this image be exported in SVG format?
@@ -91,18 +91,18 @@ public:
     The scaled version of the image will be recreated automatically once it is
     needed.
   */
-  virtual void ClearCache() override = 0;
+  void ClearCache() override = 0;
 
-  virtual const wxString GetToolTip(wxPoint point) const override = 0;
+  const wxString GetToolTip(wxPoint point) const override = 0;
 
   //! Copies the cell to the system's clipboard
-  virtual bool CopyToClipboard() const override = 0;
+  bool CopyToClipboard() const override = 0;
 
   //! Returns the file name extension that matches the image type
   virtual wxString GetExtension() const = 0;
 
   virtual wxCoord GetMaxWidth() const = 0;
-  virtual wxCoord GetHeightList() const override = 0;
+  wxCoord GetHeightList() const override = 0;
   virtual void SetMaxWidth(wxCoord width) = 0;
   virtual void SetMaxHeight(wxCoord height) = 0;
 
@@ -125,9 +125,9 @@ public:
   */
   static wxString UserScaleXMLFlags(double scale, bool fitToWindow);
 
-  virtual void Recalculate(const AFontSize fontsize) const override = 0;
+  void Recalculate(const AFontSize fontsize) const override = 0;
 
-  virtual void Draw(wxDC *dc, wxDC *antialiassingDC) override = 0;
+  void Draw(wxDC *dc, wxDC *antialiassingDC) override = 0;
 
 protected:
   /*! Fills the rectangle an image is about to be drawn into with the backdrop
@@ -139,13 +139,13 @@ protected:
 
 public:
 
-  virtual wxString ToMatlab() const override = 0;
-  virtual wxString ToRTF() const override = 0;
-  virtual wxString ToString() const override = 0;
-  virtual wxString ToTeX() const override = 0;
-  virtual wxString ToXML() const override = 0;
+  wxString ToMatlab() const override = 0;
+  wxString ToRTF() const override = 0;
+  wxString ToString() const override = 0;
+  wxString ToTeX() const override = 0;
+  wxString ToXML() const override = 0;
 
-  virtual bool CanPopOut() const override = 0;
+  bool CanPopOut() const override = 0;
 };
 
 #endif // IMGCELLBASE_H

@@ -45,7 +45,7 @@
 #include <unordered_map>
 #include <utility>
 #include <vector>
-#include <time.h>
+#include <ctime>
 #include <algorithm>
 #include <wx/zipstrm.h>
 #include "wizards/ActualValuesStorageWiz.h"
@@ -355,7 +355,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
                    const wxString &initialWorksheetContents,
                    const wxPoint pos, const wxSize size)
   : wxMaximaFrame(parent, id, title, pos, size,
-                  wxDEFAULT_FRAME_STYLE | wxSYSTEM_MENU | wxCAPTION),
+                  wxDEFAULT_FRAME_STYLE),
     m_gnuplotcommand(wxS("gnuplot")),
     m_parser(&m_configuration),
     m_maximaError(false), m_menuCommands(*this), m_responseReader(*this),
@@ -2976,9 +2976,9 @@ void wxMaxima::OnSymbolAdd(wxCommandEvent &event) {
   if(m_symbolsSidebar == nullptr)
     return;
   event.Skip();
-  m_configuration.SymbolPaneAdditionalChars(
-                                            m_configuration.SymbolPaneAdditionalChars() +
-                                            wxString(wxChar(event.GetId())));
+  auto symbols = wxm::SplitIntoSymbols(m_configuration.SymbolPaneAdditionalChars());
+  symbols.emplace_back(wxChar(event.GetId()));
+  m_configuration.SymbolPaneAdditionalChars(wxm::JoinSymbols(symbols));
   m_symbolsSidebar->UpdateUserSymbols();
 }
 

@@ -149,7 +149,7 @@ GenWizPanel::GenWizPanel(
 
 void GenWizPanel::OnSize(wxSizeEvent &event) { event.Skip(); }
 
-GenWizPanel::~GenWizPanel() {}
+GenWizPanel::~GenWizPanel() = default;
 
 void GenWizPanel::NewWizard(
                             const wxString& description, const wxString &description_tooltip,
@@ -232,7 +232,7 @@ void GenWizPanel::NewWizard(
       wxButton *button = new wxButton(
                                       descriptionpane, id, wxString::Format(_("Help on %s"), i));
       pageSizer->Add(button, wxSizerFlags(0).Expand());
-      m_topicButtonIDs.push_back(id);
+      m_topicButtonIDs.emplace_back(id);
       id++;
     }
     descriptionpane->SetSizer(pageSizer);

@@ -147,7 +147,7 @@ public:
     }
   }
 
-  void Unbreak() const override final;
+  void Unbreak() const final;
 
 protected:
   /*! Re-applies GetMaximaCommandName() to the already-created m_open cell.

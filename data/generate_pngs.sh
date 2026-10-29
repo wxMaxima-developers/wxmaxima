@@ -33,6 +33,8 @@ for i in io.github.wxmaxima_developers.wxMaxima.svg; do
     echo "Converting image $i to $$PNGIMAGENAME"
     inkscape "--export-png=$PNGIMAGENAME" --export-width=128 "$i"
     which optipng >/dev/null && optipng -o 9 "$PNGIMAGENAME"  # optimize image, if optipng is available
-    xxd -i "$PNGIMAGENAME" >> icon.h
+    # static: the header is included by one .cpp only, and a non-static array
+    # defined in a header is an ODR violation waiting to happen.
+    xxd -i "$PNGIMAGENAME" | sed 's/^unsigned/static const unsigned/' >> icon.h
 done
 echo "#endif" >>icon.h

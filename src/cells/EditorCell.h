@@ -185,7 +185,7 @@ public:
 
   using Cell::SetCurrentPoint;
   void SetCurrentPoint(wxPoint point) const override;
-  virtual void Draw(wxDC *dc, wxDC *antialiassingDC) override;
+  void Draw(wxDC *dc, wxDC *antialiassingDC) override;
 
   //! Convert the current cell to HTML code.
   wxString ToHTML() const;
@@ -715,7 +715,7 @@ public:
     class HistoryEntry // 64 bytes
     {
     public:
-      HistoryEntry(){};
+      HistoryEntry() = default;
       HistoryEntry(const wxString &text, long long selStart, long long selEnd,
                    TextFormat::Formats formats = {}) :
         m_text(text), m_formats(std::move(formats)), m_selStart(selStart), m_selEnd(selEnd) {}

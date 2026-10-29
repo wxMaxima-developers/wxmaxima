@@ -1050,6 +1050,22 @@ character ¾ with the number <code>be</code>), the name wins. A leading
 <kbd>ESC</kbd><code>u+be</code><kbd>ESC</kbd> and
 <kbd>ESC</kbd><code>00be</code><kbd>ESC</kbd> both result in a
 <code>¾</code>.</p>
+<p>A letter with an accent that Unicode has no character of its own for,
+like a t with a bar on top of it, is a letter followed by a “combining”
+accent:
+<kbd>t</kbd><kbd>ESC</kbd><kbd>3</kbd><kbd>0</kbd><kbd>4</kbd><kbd>ESC</kbd>
+results in <code>t̄</code>, which <em>Maxima</em> treats as a variable
+name like any other.</p>
+<p>Symbols one needs often can be added to the “Symbols” sidebar in the
+“Options” tab of the configuration dialog (Edit -&gt; Configure), where
+they can also be given a keyboard shortcut. A letter with accents counts
+as one symbol there and gets one button. The Greek letters and the
+symbols the sidebars show anyway can be given a keyboard shortcut there,
+too, or by right-clicking their button in the sidebar. A shortcut has to
+contain <kbd>Ctrl</kbd> or <kbd>Alt</kbd> or be a function key, and
+types its symbol while the worksheet has the keyboard focus. The
+configuration dialog warns if a menu entry already uses the same
+keys.</p>
 <p>Please note that most of these symbols (notable exceptions are the
 logic symbols) do not have a special meaning in <em>Maxima</em> and
 therefore will be interpreted as ordinary characters. If <em>Maxima</em>
@@ -1410,6 +1426,9 @@ controls</h3>
 <ul>
 <li>If an opening parenthesis, bracket, or double quote is entered
 <em>wxMaxima</em> will insert a closing one after it.</li>
+<li>In a code cell a comment opened by <code>/*</code> is closed by an
+inserted <code>*/</code>. Typing <code>*/</code> in front of it moves
+the cursor past it instead.</li>
 <li>If text is selected if any of these keys is pressed the selected
 text will be put between the matched signs.</li>
 </ul>

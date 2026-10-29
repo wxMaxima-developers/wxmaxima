@@ -38,8 +38,8 @@ class RegexCtrl : public BTextCtrl
   {
   public:
     wxLogBuffer_noStdErrFlush(): wxLogBuffer() {};
-    virtual void Flush() override {}
-    ~wxLogBuffer_noStdErrFlush() override{};
+    void Flush() override {}
+    ~wxLogBuffer_noStdErrFlush() override = default;
   };
 public:
   RegexCtrl(wxWindow *parent,
@@ -56,7 +56,7 @@ protected:
   //! Called, if the search text or method changes
   void OnChange();
 
-  ~RegexCtrl();
+  ~RegexCtrl() override;
 
 private:
   //! false = Regular text search. true = regex search

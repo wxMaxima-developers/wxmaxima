@@ -91,9 +91,40 @@ jobs:
         uses: github/codeql-action/upload-sarif@v4
         with:
           sarif_file: ${{ steps.run-analysis.outputs.sarif }}
-      # Upload SARIF file as an Artifact to download and view
-      # - name: Upload SARIF as an Artifact
-      #   uses: actions/upload-artifact@v3
-      #   with:
-      #     name: sarif-file
-      #     path: ${{ steps.run-analysis.outputs.sarif }}
+      # The code scanning alerts are only visible to people with access to the
+      # repository's Security tab. Print the findings here as well, so that
+      # anyone (or any tool) that can read the job log can work on them:
+      # first a count per check, then every finding as file(line): check message.
+      - name: List the findings
+        # Only a report: never fail the job over it.
+        continue-on-error: true
+        shell: pwsh
+        env:
+          SARIF: ${{ steps.run-analysis.outputs.sarif }}
+        run: |
+             $sarif = Get-Content -Raw $env:SARIF | ConvertFrom-Json
+             $root = (Get-Location).Path.Replace('\', '/') + '/'
+             $findings = foreach ($run in $sarif.runs) {
+               foreach ($r in $run.results) {
+                 $loc = $r.locations[0].physicalLocation
+                 $file = [uri]::UnescapeDataString($loc.artifactLocation.uri) -replace '^file:///', ''
+                 $file = $file.Replace('\', '/').Replace($root, '')
+                 [pscustomobject]@{
+                   Rule = $r.ruleId
+                   Where = "$file($($loc.region.startLine))"
+                   Text = $r.message.text
+                 }
+               }
+             }
+             # A header included from several sources is reported once per source.
+             $findings = $findings | Sort-Object Where, Rule, Text -Unique
+             Write-Output "$(@($findings).Count) findings"
+             $findings | Group-Object Rule | Sort-Object Count -Descending |
+               ForEach-Object { '{0,6} {1}' -f $_.Count, $_.Name }
+             Write-Output ''
+             $findings | ForEach-Object { "$($_.Where): $($_.Rule) $($_.Text)" }
+      - name: Upload the SARIF file
+        uses: actions/upload-artifact@v7
+        with:
+          name: prefast-sarif
+          path: ${{ steps.run-analysis.outputs.sarif }}

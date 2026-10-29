@@ -43,10 +43,10 @@ public:
 
   /*! The destructor
    */
-  ~XmlInspector();
+  ~XmlInspector() override;
 
   //! Remove all text from the editor.
-  virtual void Clear();
+  void Clear() override;
 
   //! Add some text we sent to maxima.
   void Add_ToMaxima(const wxString &text);

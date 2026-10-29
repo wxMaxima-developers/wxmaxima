@@ -45,7 +45,7 @@ public:
   /* The destructor
 
    */
-  ~UnicodeSidebar();
+  ~UnicodeSidebar() override;
 
   //! Is called if the RegEx changes
   void OnRegExEvent(wxCommandEvent &ev);
@@ -87,8 +87,7 @@ public:
   explicit SidebarKeyEvent(int id = 0)
     :  wxCommandEvent(id) { }
 
-  explicit SidebarKeyEvent(const SidebarKeyEvent& event)
-    :  wxCommandEvent(event) {}
+  explicit SidebarKeyEvent(const SidebarKeyEvent& event) = default;
 };
 
 //! An event that can be issued by UnicodeSidebar and tells the symbols sidebar to add a symbol
@@ -98,8 +97,7 @@ public:
   explicit SymboladdEvent(int id = 0)
     :  wxCommandEvent(id) { }
 
-  explicit SymboladdEvent(const SymboladdEvent& event)
-    :  wxCommandEvent(event) {}
+  explicit SymboladdEvent(const SymboladdEvent& event) = default;
 };
 
 wxDECLARE_EVENT(SIDEBARKEYEVENT, SidebarKeyEvent);

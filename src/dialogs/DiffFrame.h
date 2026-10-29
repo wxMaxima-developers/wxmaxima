@@ -33,7 +33,7 @@ class DiffFrame : public wxFrame
 {
 public:
   DiffFrame(wxWindow *parent, const wxArrayString &files, Configuration *config);
-  virtual ~DiffFrame();
+  ~DiffFrame() override;
 
   //! The worksheet of pane @p idx (nullptr if there is no such pane)
   Worksheet *GetPane(size_t idx) const

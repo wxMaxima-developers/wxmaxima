@@ -134,11 +134,7 @@ void AutoComplete::ClearDemofileList() {
 }
 
 void AutoComplete::AddSymbols(wxString xml) {
-  if(m_addSymbols_backgroundThread.joinable())
-  {
-    m_addSymbols_backgroundThread.request_stop();
-    m_addSymbols_backgroundThread.join();
-  }
+  WaitForSymbolTask();
 
   if((m_configuration->UseThreads() && xml.Length() > 300))
     m_addSymbols_backgroundThread = jthread([this, xml](stop_token stopToken) {
@@ -148,13 +144,21 @@ void AutoComplete::AddSymbols(wxString xml) {
     AddSymbols_Backgroundtask_string({}, std::move(xml));
 }
 
-void AutoComplete::AddSymbols(const wxXmlDocument& xml) {
+void AutoComplete::WaitForSymbolTask() {
+  // Not request_stop(): the task still running only ever adds symbols, and
+  // the ones it hasn't added yet would be lost for the rest of the session.
+  // The task LoadSymbols() starts at startup is the one that also adds every
+  // ESC name; Maxima's list of symbols arriving while it was still running
+  // used to stop it, which left the ESC popup with nothing to offer.
   if(m_addSymbols_backgroundThread.joinable())
     {
-      m_addSymbols_backgroundThread.request_stop();
       wxLogMessage(_("Waiting for m_addSymbols_backgroundThread to finish"));
       m_addSymbols_backgroundThread.join();
     }
+}
+
+void AutoComplete::AddSymbols(const wxXmlDocument& xml) {
+  WaitForSymbolTask();
   wxLogMessage(_("Scheduling a background task that compiles a new list "
                  "of autocompletable maxima commands."));
 

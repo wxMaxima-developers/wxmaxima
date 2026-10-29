@@ -588,6 +588,7 @@ const wxWindowIDRef EventIDs::menu_additionalSymbols(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::enable_unicodePane(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_showLatinGreekLookalikes(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_showGreekMu(wxWindow::NewControlId());
+const wxWindowIDRef EventIDs::menu_symbolShortcut(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::popid_comment_selection(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::popid_divide_cell(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::popid_copy_image(wxWindow::NewControlId());
@@ -724,6 +725,4 @@ const wxWindowIDRef EventIDs::wizard_special_to(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::wizard_definite_id(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::wizard_numeric_id(wxWindow::NewControlId());
 
-EventIDs::EventIDs()
-{
-}
+EventIDs::EventIDs() = default;

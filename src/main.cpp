@@ -531,7 +531,7 @@ bool MyApp::OnInit() {
   wxSocketBase::Initialize();
 
   wxArtProvider::Push(new wxMaximaArtProvider);
-  m_translations = std::unique_ptr<wxTranslations>(new wxTranslations());
+  m_translations = std::make_unique<wxTranslations>();
   wxTranslations::Set(m_translations.get());
   {
     // If supported: Generate symbolic backtraces on crashes.
@@ -800,7 +800,7 @@ bool MyApp::OnInit() {
       if (!freopen("CON", "r", stdin)) wxLogMessage(_("Re-opening STDIN failed."));
     }
 #endif
-    m_logChain = std::unique_ptr<wxLogChain>(new wxLogChain(new wxLogStderr));
+    m_logChain = std::make_unique<wxLogChain>(new wxLogStderr);
   }
 
   if (cmdLineParser.Found(wxS("debug")))
@@ -1120,29 +1120,29 @@ void MyApp::OnFileMenu(wxCommandEvent &ev) {
     else {
       // Compile a list of arguments we want to pass to the new process
       std::vector<wxString> args;
-      args.push_back(wxStandardPaths::Get().GetExecutablePath().mb_str());
+      args.emplace_back(wxStandardPaths::Get().GetExecutablePath().mb_str());
 
       if (Configuration::m_configfileLocation_override != wxEmptyString)
         {
-          args.push_back("-f");
+          args.emplace_back("-f");
           args.push_back(Configuration::m_configfileLocation_override);
         }
       if (wxMaxima::Get_Maxima_Commandline_Filename() != wxEmptyString)
         {
-          args.push_back("-m");
+          args.emplace_back("-m");
           args.push_back(wxMaxima::Get_Maxima_Commandline_Filename());
         }
       if (Configuration::GetDebugmode())
-        args.push_back("--debug");
+        args.emplace_back("--debug");
       if (Maxima::GetPipeToStdErr())
-        args.push_back("--pipe");
+        args.emplace_back("--pipe");
       if (wxMaxima::GetExitOnError())
-        args.push_back("--exit-on-error");
+        args.emplace_back("--exit-on-error");
       if (wxMaxima::GetEnableIPC())
-        args.push_back("--enableipc");
+        args.emplace_back("--enableipc");
       if (!wxMaxima::ExtraMaximaArgs().IsEmpty())
         {
-          args.push_back("-u");
+          args.emplace_back("-u");
           args.push_back(wxMaxima::ExtraMaximaArgs());
         }
 

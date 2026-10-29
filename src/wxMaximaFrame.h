@@ -81,7 +81,7 @@ public:
 
   /*! The destructor
    */
-  virtual ~wxMaximaFrame();
+  ~wxMaximaFrame() override;
 
   /*! Shows or hides the toolbar
     \param show
@@ -409,7 +409,7 @@ protected:
   //! Are we inside a 2d or 3d draw command?
   long m_drawDimensions_last = -1;
   //! The default size for the window.
-  virtual wxSize DoGetBestClientSize() const;
+  wxSize DoGetBestClientSize() const override;
   //! The sidebar with the draw commands
   DrawSidebar *m_drawPane = nullptr;
 #ifdef USE_WEBVIEW
