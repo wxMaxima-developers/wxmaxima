@@ -1,5 +1,11 @@
 # Current development version
 
+- Reading Maxima's manual index in the background no longer races with
+  Maxima being restarted meanwhile (for example by opening a file from
+  another folder right after startup): the restarted Maxima's report of its
+  manual folder could rewrite the folder name the background task was
+  reading, which could crash wxMaxima or make it index the wrong folder.
+  Found with ThreadSanitizer.
 - Any symbol can get a keyboard shortcut that types it into the worksheet
   (#2578): right-click its button in the Greek or the Symbols sidebar, or use
   the new table in the "Options" tab of the configuration dialog. The table
