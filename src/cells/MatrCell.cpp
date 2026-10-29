@@ -1044,7 +1044,7 @@ wxString MatrCell::ToRTFTable() const {
       }
       if (((row == 0) && m_colNames) || ((col == 0) && m_rowNames))
         rtf = wxS("\\b ") + rtf + wxS("\\b0");
-      entries.push_back(rtf);
+      entries.push_back(std::move(rtf));
       columnWidths[col] = std::max(
         columnWidths[col],
         static_cast<long>(entry->ListToString().Length()) * charWidth +

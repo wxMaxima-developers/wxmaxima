@@ -1,5 +1,8 @@
 # Current development version
 
+- The CSV import and export wizards remember the field separator again: the
+  one saved last time was read and then thrown away, so they always started
+  with "Semicolon".
 - Any symbol can get a keyboard shortcut that types it into the worksheet
   (#2578): right-click its button in the Greek or the Symbols sidebar, or use
   the new table in the "Options" tab of the configuration dialog. The table

@@ -255,7 +255,7 @@ void MaximaManual::CompileHelpFileAnchors(const stop_token& stopToken,
                       m_helpFileURLs_singlePage[token] = fileURI + "#" + id;
                     else
                       m_helpFileURLs_filePerChapter[token] = fileURI + "#" + id;
-                    m_helpFileAnchors[token] = id;
+                    m_helpFileAnchors[token] = std::move(id);
                   }
                   foundAnchorsTotal++;
                 }

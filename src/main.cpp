@@ -941,7 +941,7 @@ bool MyApp::OnInit() {
     wxString canonicalFilename = FileName.GetFullPath();
     if (!uuid.IsEmpty())
       canonicalFilename += wxS("#") + uuid;
-    filesToOpen.push_back(canonicalFilename);
+    filesToOpen.push_back(std::move(canonicalFilename));
   }
 
   if (cmdLineParser.GetParamCount() > 0 && !cmdLineParser.Found(wxS("d"))) {
@@ -959,7 +959,7 @@ bool MyApp::OnInit() {
       wxString CanonicalFilename = FileName.GetFullPath();
       if (!uuid.IsEmpty())
         CanonicalFilename += wxS("#") + uuid;
-      filesToOpen.push_back(CanonicalFilename);
+      filesToOpen.push_back(std::move(CanonicalFilename));
     }
   }
 

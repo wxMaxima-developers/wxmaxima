@@ -224,7 +224,7 @@ private:
   /*! Search m_socketInputData for complete commands and send them to wxMaxima
 
     Items that this task recognizes:
-     - All XML tags registered in m_knownTags are sent as a whole before
+     - All XML tags registered in KnownTags() are sent as a whole before
        sending them to wxMaxima and in most cases this background task even
        parses the XML data beforehand.
      - All text between such commands is left as it is and sent to wxMaxima
@@ -242,8 +242,7 @@ private:
   */
   wxTimer m_readIdleTimer{this};
   //! The names of maxima tags we want to send to wxMaxima in whole
-  static std::unordered_map<wxString, EventCause, wxStringHash> m_knownTags;
-  static std::mutex m_knownTagsMutex;
+  static const std::unordered_map<wxString, EventCause, wxStringHash> &KnownTags();
 };
 
 wxDECLARE_EVENT(EVT_MAXIMA, wxThreadEvent);
