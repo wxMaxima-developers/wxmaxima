@@ -1,5 +1,16 @@
 # Current development version
 
+- A command that prints faster than wxMaxima can display the output, such as
+  `for i thru i+1 do disp(i)`, no longer freezes wxMaxima (#2594). The
+  output scrolls by while it arrives, the window reacts to the keyboard and
+  the mouse, and Ctrl+G stops the command. Maxima's output is now handled in
+  slices of 50 ms with the event loop running in between, a run of output
+  lines is laid out once instead of once per line (which made a long output
+  quadratically slower), and Maxima is made to wait instead of wxMaxima
+  buffering its output without limit. Maths output Maxima had already sent
+  when it was interrupted is skipped, and a note says how many lines were.
+  Also fixed: an output tag that arrived split across two reads from Maxima
+  was shown as a line of raw XML.
 - A .wxm file can be loaded by Maxima again whatever its text cells contain,
   and old wxMaxima versions show the text as it is (#1907). Since 26.09 a
   `/*` or `*/` in a text cell or heading was written with HTML entities,

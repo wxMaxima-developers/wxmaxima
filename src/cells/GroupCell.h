@@ -616,6 +616,11 @@ protected:
     It is deliberately NOT part of the contiguous inner-cell block above: it is
     not a structural child of the group, only a drawn stand-in. */
   mutable std::unique_ptr<Cell> m_layoutSuppressedNotice;
+  /*! The last cell AppendOutput() appended, to find the end of the output
+    without walking it (GH #2594): a command printing line after line made
+    that walk quadratically slow. Only a hint, checked before use; a CellPtr
+    so a deleted output can't leave it dangling. */
+  CellPtr<Cell> m_lastAppendedOutput;
 
 //** 4-byte objects (16 bytes)
 //**

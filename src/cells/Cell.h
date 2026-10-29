@@ -579,7 +579,15 @@ public:
   */
   virtual wxCoord GetHeightList() const;
 
-  //! How many pixels is this list of cells wide, if we don't break it into lines?
+  /*! How many pixels is this list of cells wide, if we don't break it into lines?
+
+    Not cached: it depends on every cell up to the end of the list, so a
+    cache would have to be invalidated in every cell before one that changed
+    -- which, appending one output line after another, made the output
+    quadratically slow to lay out (GH #2594). It is only ever asked of short
+    inner lists (a fraction's numerator, a matrix entry, ...) and the input
+    label, where walking the list costs no more than looking up a cache did.
+  */
   wxCoord SumOfWidths() const;
 
   /*! How many pixels is the current line of this list of cells wide?
@@ -1201,7 +1209,7 @@ private:
     Without it a configuration change (zoom, canvas size, fonts) that is only
     detected through the config counter would leave the list caches valid, so
     composite cells (SubCell, ParenCell, ListCell, ...) would recompute their
-    geometry from pre-change SumOfWidths()/GetHeightList() values while
+    geometry from pre-change GetHeightList() values while
     marking themselves recalculated - the "stale spacing until a forced
     recalculation" bug family. */
   mutable std::atomic<std::int_fast32_t> m_listCacheCfgCnt = { -1 };
@@ -1249,15 +1257,12 @@ protected:
   /*! Cache for GetMaxDrop(): the largest drop (height below the center) of the
     cells on the first display line of the list starting at this cell.
 
-    Lazily filled (together with the three caches below) by UpdateListCaches()
-    and invalidated by InvalidateListCache(). */
+    Lazily filled (together with m_cachedCenterList and m_cachedLineWidth)
+    by UpdateListCaches() and invalidated by InvalidateListCache(). */
   mutable CachedInteger<wxCoord> m_cachedMaxDrop;
   /*! Cache for GetCenterList(): the largest center (height above the center) of
     the cells on the first display line of the list starting at this cell. */
   mutable CachedInteger<wxCoord> m_cachedCenterList;
-  /*! Cache for SumOfWidths(): the summed width of all cells of the draw list
-    starting at this cell (the whole list, across line breaks). */
-  mutable CachedInteger<wxCoord> m_cachedSumOfWidths;
   /*! Cache for GetLineWidth(): the width of only the first display line of the
     list starting at this cell (the widths summed up to the first line break). */
   mutable CachedInteger<wxCoord> m_cachedLineWidth;
@@ -1288,10 +1293,11 @@ private:
 //**
   /*! (Re)compute the cached list geometry if any of it is invalid.
 
-    Walks the draw list once starting at this cell and fills m_cachedCenterList,
-    m_cachedMaxDrop, m_cachedSumOfWidths and m_cachedLineWidth in one pass, so
-    the GetCenterList()/GetMaxDrop()/SumOfWidths()/GetLineWidth() accessors are
-    O(1) after the first call. A no-op while all four caches are still valid. */
+    Walks the first display line of the draw list starting at this cell and
+    fills m_cachedCenterList, m_cachedMaxDrop and m_cachedLineWidth in one
+    pass, so the GetCenterList()/GetMaxDrop()/GetLineWidth() accessors are
+    O(1) after the first call. A no-op while these caches are still valid.
+    */
   void UpdateListCaches() const;
 
   //! Whether the cell owns its m_tooltip - otherwise it points to a static string.

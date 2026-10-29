@@ -43,6 +43,7 @@
 #include <mutex>
 #include "Configuration.h"
 #include "Compat.h"
+#include "MaximaItemQueue.h"
 
 /*! Interface to the Maxima process
  *
@@ -56,8 +57,10 @@
  *
  * What it already does do is that on incoming data it creates a worker
  * thread that splits the incoming data into known XML tags maxima sends
- * and misc text and sends each of these items in a separate
- * EVT_MAXIMA to the wxMaxima main class
+ * and misc text. These items wait in a MaximaItemQueue the GUI thread takes
+ * them from (TakeItem()); a DATA_AVAILABLE event tells it when there is
+ * something to take. Errors and the end of the connection still arrive as
+ * EVT_MAXIMA events of their own.
  */
 class Maxima : public wxEvtHandler
 {
@@ -99,9 +102,14 @@ public:
    */
   bool Write(const void *buffer, std::size_t length);
 
-  //! Read whatever data is in the socket. This is normally handled by the event handler,
-  //! but can be called manually to poll for data. Ideally, this should be private.
-  void ReadSocket();
+  /*! Takes the next item Maxima sent. GUI thread only.
+
+    \returns false if there is none; the next item to arrive is then
+    announced by a DATA_AVAILABLE event. Until this has returned false, no
+    such event comes: the caller has to come back by itself. See
+    MaximaItemQueue for why it works that way.
+  */
+  bool TakeItem(MaximaItemQueue::Item &item) { return m_items.Take(item); }
 
   //! Clear the first prompt state, based on what was read from maxima.
   //! This is called from prompt recognizer code in the wxMaxima class.
@@ -140,6 +148,11 @@ public:
     //! The transmission has failed - this is an unrecoverable error, most likely.
     WRITE_ERROR,
     STRING_FOR_XMLINSPECTOR,
+    /*! There are items to take with TakeItem().
+
+      Only sent when the GUI has found the queue empty before; see
+      MaximaItemQueue. */
+    DATA_AVAILABLE,
   };
   void XmlInspectorActive(bool active){m_xmlInspector = active;}
 private:
@@ -151,8 +164,6 @@ private:
 
   //! The background thread that reads and parses data from Maxima.
   jthread m_workerThread;
-  //! True if a READ_PENDING event is already in the queue.
-  std::atomic_bool m_readPendingQueued;
 
   //! Handles events on the open client socket
   void SocketEvent(wxSocketEvent &event);
@@ -193,14 +204,10 @@ private:
   std::vector<std::vector<char>> m_outputQueue;
   std::mutex m_outputQueueMutex;
 
-  /*! Queue of interpreted items (cause + data) to be processed by main thread.
-   */
-  struct InterpretedItem {
-      EventCause cause;
-      wxString data;
-  };
-  std::vector<InterpretedItem> m_interpretedQueue;
-  std::mutex m_interpretedQueueMutex;
+  //! Items interpreted by the worker thread, waiting for the GUI thread
+  MaximaItemQueue m_items{READ_MISC_TEXT};
+  //! Hands items to m_items and tells the GUI thread, if it needs telling
+  void PushItems(std::vector<MaximaItemQueue::Item> &&items);
 
   /*! Data we didn't manage to send to wxMaxima until now
 
@@ -217,7 +224,9 @@ private:
   /*! Background task that reads and interprets data from Maxima.
 
     This task runs in m_workerThread. It waits for data on the socket,
-    reads it, and sends events to the main thread for each interpreted item.
+    reads it, and hands the interpreted items to m_items. While the GUI
+    thread has a backlog (MaximaItemQueue::BackPressure()) it stops reading,
+    so Maxima waits for us instead of the backlog growing without limit.
     */
   void WorkerThread(const stop_token& stopToken);
 

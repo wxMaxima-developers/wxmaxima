@@ -347,20 +347,24 @@ bool Cell::NeedsRecalculation(AFontSize fontSize) const {
 
 void Cell::UpdateListCaches() const {
   if (m_cachedCenterList.IsValid() && m_cachedMaxDrop.IsValid() &&
-      m_cachedSumOfWidths.IsValid() && m_cachedLineWidth.IsValid() &&
+      m_cachedLineWidth.IsValid() &&
       m_listCacheCfgCnt == m_configuration->CellCfgCnt())
     return;
 
   int maxCenter = 0;
   int maxDrop = 0;
-  int fullWidth = 0;
   int lineWidth = 0;
   bool lineWidthBroken = false;
   bool centerDropBroken = false;
 
+  // Only the first display line matters, so the walk ends with it. It used
+  // to go on to the end of the list for SumOfWidths()'s sake, which made
+  // laying out an output of n lines take n^2 steps (GH #2594): each line asks
+  // for the height of the list starting at it.
   for (const Cell &tmp : OnDrawList(this)) {
+    if (lineWidthBroken && centerDropBroken)
+      break;
     const int tmpWidth = tmp.GetWidth();
-    fullWidth += tmpWidth;
 
     if (!lineWidthBroken) {
       if (&tmp != this) {
@@ -385,7 +389,6 @@ void Cell::UpdateListCaches() const {
 
   m_cachedCenterList = maxCenter;
   m_cachedMaxDrop = maxDrop;
-  m_cachedSumOfWidths = fullWidth;
   m_cachedLineWidth = lineWidth;
   m_listCacheCfgCnt = m_configuration->CellCfgCnt();
 }
@@ -403,8 +406,10 @@ int Cell::GetMaxDrop() const {
 int Cell::GetHeightList() const { return GetCenterList() + GetMaxDrop(); }
 
 int Cell::SumOfWidths() const {
-  UpdateListCaches();
-  return m_cachedSumOfWidths;
+  int fullWidth = 0;
+  for (const Cell &tmp : OnDrawList(this))
+    fullWidth += tmp.GetWidth();
+  return fullWidth;
 }
 
 int Cell::GetLineWidth() const {
@@ -1520,15 +1525,20 @@ void Cell::InvalidateListCache() const {
   for (const Cell *walk = this; walk; walk = walk->m_previous) {
     const bool alreadyInvalid = walk->m_cachedMaxDrop.IsInvalid() &&
                                 walk->m_cachedCenterList.IsInvalid() &&
-                                walk->m_cachedSumOfWidths.IsInvalid() &&
                                 walk->m_cachedLineWidth.IsInvalid();
 
     walk->m_cachedMaxDrop.Invalidate();
     walk->m_cachedCenterList.Invalidate();
-    walk->m_cachedSumOfWidths.Invalidate();
     walk->m_cachedLineWidth.Invalidate();
 
     if (alreadyInvalid && walk->m_width.IsInvalid() && walk->m_height.IsInvalid())
+      break;
+    // The caches only describe the first line of the list starting at a
+    // cell, and the line of every cell before this one ends before it. So
+    // they don't depend on anything from here on: without this, every cell
+    // added to the end of an output invalidated, and later recomputed, the
+    // caches of the whole output (GH #2594).
+    if ((walk != this) && walk->m_breakLine)
       break;
   }
 }

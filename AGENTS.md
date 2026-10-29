@@ -1256,8 +1256,34 @@ Only the traps worth knowing from elsewhere are repeated here.
 ### Communication with Maxima
 
 wxMaxima sends Lisp and Maxima commands over the socket; Maxima answers with XML
-wrapped in known tags. `Maxima` reads that data on a worker thread and posts
-`EVT_MAXIMA` events to the main thread, where `wxMaxima` handles them.
+wrapped in known tags. `Maxima` reads that data on a worker thread, splits it
+into items (`SplitIntoItems()`) and queues them in a `MaximaItemQueue`; the
+main thread takes them in `MaximaProcessManager::ProcessItems()` and hands each
+to `MaximaEvent()`.
+
+- **Never turn each item back into an event of its own, and don't handle the
+  queue from `DATA_AVAILABLE` directly** (GH #2594). wxWidgets processes
+  *every* pending event before it looks at input again, so a command printing
+  faster than its output could be laid out (`for i thru i+1 do disp(i)`) kept
+  that queue from ever emptying: nothing was painted, Ctrl+G never arrived.
+  `ProcessItems()` runs for 50 ms and comes back through a one-shot `wxTimer`,
+  which only fires once the event loop has had its turn. The worker stops
+  reading the socket while more than 64k characters wait
+  (`MaximaItemQueue::BackPressure()`), so Maxima blocks instead of wxMaxima
+  filling its memory.
+- **A run of output items is laid out once** (`Worksheet::OutputBatch`), not
+  once per `InsertLine()`; the batch ends before any other item (prompt,
+  question, ...) is handled. Appending output must stay O(new cells):
+  `GroupCell::AppendOutput()` no longer uses `CellList::AppendCell()`, which
+  resets every cell of the group, and `Cell::InvalidateListCache()` stops at
+  the start of the changed cell's line, which only holds since
+  `SumOfWidths()` stopped being cached. Measured before all this: 59 ms per
+  appended line at 2000 lines.
+- **Even then, Maxima's own socket send buffer can hold megabytes** (3 MB,
+  ~75k disp() lines, measured on Linux), which no setting on our side
+  limits. So after a successful interrupt of a running command, maths output
+  is dropped until the next prompt and a note says how many lines were
+  (`MaximaProcessManager::m_skipOutputUntilPrompt`).
 
 `src/wxMathML.lisp` is compiled into the binary (through CMake's bin2h) and is
 what tells Maxima to format its output as MathML-like XML. For development,

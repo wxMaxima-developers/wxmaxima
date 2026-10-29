@@ -168,6 +168,7 @@ set(SOURCE_FILES
     MaximaIPC.cpp
     MaximaCommandMenus.cpp
     MaximaResponseReader.cpp
+    MaximaItemQueue.cpp
     MaximaProcessManager.cpp
     MaximaEvaluator.cpp
     MaximaFileIO.cpp

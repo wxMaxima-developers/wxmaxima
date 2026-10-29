@@ -492,6 +492,117 @@ SCENARIO("A time-sliced recalculation resumes instead of stalling after a slice"
   }
 }
 
+namespace {
+//! A list of output lines, each a number, one per line
+std::unique_ptr<Cell> OutputLines(GroupCell *group, int first, int count) {
+  CellListBuilder<Cell> lines;
+  for (int i = first; i < first + count; i++) {
+    auto line = std::make_unique<TextCell>(group, g_cfg,
+                                           wxString::Format(wxS("%i"), i),
+                                           TS_NUMBER);
+    line->ForceBreakLine(true);
+    lines.Append(std::move(line));
+  }
+  return std::move(lines);
+}
+
+//! The height a group gets if all its output is laid out from scratch
+int HeightLaidOutAtOnce(int lines) {
+  GroupCell group(g_cfg, GC_TYPE_CODE, wxS("disp(i)$"));
+  group.AppendOutput(OutputLines(&group, 1, lines));
+  group.Recalculate();
+  return group.GetHeight();
+}
+} // namespace
+
+SCENARIO("Output appended line by line is laid out as if it came at once (GH #2594)") {
+  // Each of these appends used to lay out, and re-measure, the whole output
+  // so far. Now an append only touches the end of the output, and a batch
+  // lays out once at its end -- which only works if every shortcut still ends
+  // up at the layout a fresh pass computes.
+  GIVEN("a code cell in the worksheet that receives output") {
+    g_ws->ClearDocument();
+    GroupCell *group = g_ws->InsertGroupCells(
+      std::make_unique<GroupCell>(g_cfg, GC_TYPE_CODE, wxS("disp(i)$")), nullptr);
+    REQUIRE(group);
+    group->Recalculate();
+    // Routes InsertLine() to this cell, as nothing is being evaluated
+    Worksheet::AsyncOutputTarget target(g_ws, group);
+
+    WHEN("200 lines arrive one by one, outside a batch") {
+      for (int i = 1; i <= 200; i++)
+        g_ws->InsertLine(OutputLines(group, i, 1), true);
+      THEN("the cell is as tall as if they had come at once") {
+        REQUIRE(group->GetHeight() == HeightLaidOutAtOnce(200));
+      }
+    }
+    WHEN("200 lines arrive within a batch") {
+      {
+        Worksheet::OutputBatch batch(g_ws);
+        for (int i = 1; i <= 200; i++)
+          g_ws->InsertLine(OutputLines(group, i, 1), true);
+      }
+      THEN("the cell is as tall as if they had come at once") {
+        REQUIRE(group->GetHeight() == HeightLaidOutAtOnce(200));
+      }
+      AND_WHEN("another batch appends to the laid-out output") {
+        {
+          Worksheet::OutputBatch batch(g_ws);
+          for (int i = 201; i <= 300; i++)
+            g_ws->InsertLine(OutputLines(group, i, 1), true);
+        }
+        THEN("that is laid out right, too") {
+          REQUIRE(group->GetHeight() == HeightLaidOutAtOnce(300));
+        }
+      }
+    }
+    WHEN("a batch ends after its cell has been deleted") {
+      {
+        Worksheet::OutputBatch batch(g_ws);
+        g_ws->InsertLine(OutputLines(group, 1, 1), true);
+        g_ws->ClearDocument();
+      }
+      THEN("nothing happens") { SUCCEED(); }
+    }
+    g_ws->ClearDocument();
+  }
+}
+
+SCENARIO("A cell that grows updates the width of the line it is on") {
+  // The list caches of the cells before a changed one are only invalidated
+  // back to the start of its line now (Cell::InvalidateListCache()), as no
+  // cached value reaches past the end of a line any more (GH #2594). The
+  // cells before it on the same line must still see the change.
+  GIVEN("a laid-out output of two lines, the second made of three cells") {
+    // Wide enough that no line needs to be broken
+    const wxSize savedCanvas = g_cfg->GetCanvasSize();
+    g_cfg->SetCanvasSize(wxSize(1000, 800));
+    GroupCell group(g_cfg, GC_TYPE_CODE, wxS("disp(i)$"));
+    auto output = OutputLines(&group, 1, 2);
+    auto *secondLine = output->GetNext();
+    CellList::SetNext(secondLine,
+                      std::make_unique<TextCell>(&group, g_cfg, wxS("y"), TS_VARIABLE));
+    CellList::SetNext(secondLine->GetNext(),
+                      std::make_unique<TextCell>(&group, g_cfg, wxS("x"), TS_VARIABLE));
+    auto *lastCell = dynamic_cast<TextCell *>(secondLine->GetNext()->GetNext());
+    REQUIRE(lastCell);
+    group.AppendOutput(std::move(output));
+    group.Recalculate();
+    const int lineWidthBefore = secondLine->GetLineWidth();
+    const int groupWidthBefore = group.GetWidth();
+    WHEN("the line's last cell gets longer") {
+      // Still short enough not to be moved to a line of its own
+      lastCell->SetValue(wxS("xxxxxxxxxxxxxxxxxxxxxxxx"));
+      group.Recalculate();
+      THEN("the line is wider") {
+        REQUIRE(secondLine->GetLineWidth() > lineWidthBefore);
+      }
+      THEN("so is the cell") { REQUIRE(group.GetWidth() > groupWidthBefore); }
+    }
+    g_cfg->SetCanvasSize(savedCanvas);
+  }
+}
+
 class TestApp : public wxApp {
 public:
   bool OnInit() override { return true; }

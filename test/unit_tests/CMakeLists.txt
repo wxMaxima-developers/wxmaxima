@@ -274,6 +274,16 @@ target_link_libraries(test_SyntaxErrorLocation PRIVATE ${wxWidgets_LIBRARIES})
 add_test(NAME SyntaxErrorLocation
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_SyntaxErrorLocation>")
 
+# How Maxima's output gets from the socket thread to the GUI without keeping
+# the GUI from handling input (GH #2594) is GUI-free, so tested directly.
+add_executable(test_MaximaItemQueue
+    test_MaximaItemQueue.cpp ${CMAKE_SOURCE_DIR}/src/MaximaItemQueue.cpp
+    ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
+target_include_directories(test_MaximaItemQueue PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_link_libraries(test_MaximaItemQueue PRIVATE ${wxWidgets_LIBRARIES})
+add_test(NAME MaximaItemQueue
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_MaximaItemQueue>")
+
 # What a sidebar symbol is (a letter with its combining accents) and the
 # keyboard shortcuts that type symbols (GH #2578) are GUI-free, so tested
 # directly.

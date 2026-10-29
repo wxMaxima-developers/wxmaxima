@@ -39,6 +39,7 @@
 #define MAXIMAPROCESSMANAGER_H
 
 #include <wx/string.h>
+#include <wx/timer.h>
 
 class wxMaxima;
 class wxSocketEvent;
@@ -54,7 +55,9 @@ class wxCommandEvent;
 class MaximaProcessManager
 {
 public:
-  explicit MaximaProcessManager(wxMaxima &wxm) : m_wxMaxima(wxm) {}
+  explicit MaximaProcessManager(wxMaxima &wxm) : m_wxMaxima(wxm) {
+    m_itemTimer.Bind(wxEVT_TIMER, &MaximaProcessManager::OnItemTimer, this);
+  }
 
   //! Remember a running child Maxima's (group-leader) PID so a
   //! signal/crash handler can kill it. Async-signal-safe; no-op on Windows.
@@ -158,6 +161,38 @@ private:
     the flag catches (via wxASSERT) any future violation of that rule.
   */
   bool m_inMaximaEvent = false;
+
+  /*! Handles the items Maxima sent, for at most ItemBudget per call (GH #2594).
+
+    If items are left it comes back via m_itemTimer instead of handling them
+    straight away: a timer only fires once the event loop has dealt with the
+    keyboard, the mouse and pending repaints, which is what keeps wxMaxima
+    usable -- and Ctrl+G working -- while Maxima prints faster than the
+    output can be displayed. Runs of output are laid out once per run
+    (Worksheet::OutputBatch).
+  */
+  void ProcessItems();
+  //! Calls ProcessItems()
+  void OnItemTimer(wxTimerEvent &event);
+  //! Brings ProcessItems() back after the event loop had its turn
+  wxTimer m_itemTimer;
+  /*! How long ProcessItems() may run in one go
+
+    Matches the time slice the worksheet's layout engine uses: short enough
+    for typing and scrolling to feel immediate, long enough not to waste time
+    on the round trips through the event loop. */
+  static constexpr int ItemBudgetMs = 50;
+
+  /*! Set once the user interrupted a command: until Maxima's next prompt
+    ProcessItems() drops maths output instead of displaying it.
+
+    See Interrupt() for why. Plain text (error messages, the interrupt's own
+    message, Maxima's questions) is still shown. */
+  bool m_skipOutputUntilPrompt = false;
+  //! How many items m_skipOutputUntilPrompt dropped so far
+  long m_skippedOutputItems = 0;
+  //! Ends m_skipOutputUntilPrompt, and tells the user what was dropped
+  void ReportSkippedOutput();
 };
 
 #endif // MAXIMAPROCESSMANAGER_H
