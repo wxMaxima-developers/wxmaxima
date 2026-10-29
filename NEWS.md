@@ -6,10 +6,6 @@
   program on the computer can read the worksheet while the server runs. The
   tab no longer disappears when there is no secret store: the MCP server
   needs none, so its settings stay reachable.
-  Chat sidebar's providers and API keys) and "Giving external tools access",
-  which now holds the MCP server settings that used to sit on the Options
-  tab. The tab no longer disappears when there is no secret store: the MCP
-  server needs none, so its settings stay reachable.
 - Matrix > Classic matrix operations (invert, determinant, rank,
   eigenvalues, eigenvectors, adjoint, transpose) open a wizard that asks
   which matrix to use, pre-filled with the selection or `%`, instead of
