@@ -283,26 +283,12 @@ wxString ParenCell::ToMatlab() const {
 wxString ParenCell::ToTeX() const {
   if (!m_innerCell)
     return "()";
-  wxString s;
-  wxString innerCell = m_innerCell->ListToTeX();
-
-  // Let's see if the cell contains anything potentially higher than a normal
-  // character.
-  bool needsLeftRight = false;
-  for (size_t i = 0; i < innerCell.Length(); i++)
-    if (!wxIsalnum(innerCell.at(i))) {
-      needsLeftRight = true;
-      break;
-    }
-
-  if (m_print) {
-    if (needsLeftRight)
-      s = wxS("\\left( ") + m_innerCell->ListToTeX() + wxS("\\right) ");
-    else
-      s = wxS("(") + m_innerCell->ListToTeX() + wxS(")");
-  } else
-    s = m_innerCell->ListToTeX();
-  return s;
+  const wxString inner = m_innerCell->ListToTeX();
+  if (!m_print)
+    return inner;
+  if (TeXNeedsGrowingDelimiters(inner))
+    return wxS("\\left( ") + inner + wxS("\\right) ");
+  return wxS("(") + inner + wxS(")");
 }
 
 wxString ParenCell::ToOMML() const {

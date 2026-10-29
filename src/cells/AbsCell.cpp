@@ -138,7 +138,10 @@ wxString AbsCell::ToMatlab() const {
 }
 
 wxString AbsCell::ToTeX() const {
-  return wxS("\\left| ") + m_innerCell->ListToTeX() + wxS("\\right| ");
+  const wxString inner = m_innerCell->ListToTeX();
+  if (TeXNeedsGrowingDelimiters(inner))
+    return wxS("\\left| ") + inner + wxS("\\right| ");
+  return wxS("|") + inner + wxS("|");
 }
 
 wxString AbsCell::ToMathML() const {

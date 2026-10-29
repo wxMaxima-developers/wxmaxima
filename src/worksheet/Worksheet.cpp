@@ -2796,10 +2796,17 @@ bool Worksheet::CopyTeX() const {
     if (inMath)
       s = wxS("\\[");
   }
+  const std::size_t contentStart = s.Length();
   if (auto block = CopySelectedMatrixBlock())
     s += block->ToTeX();
   else
     for (const Cell &tmp : OnList(start)) {
+      // A label starts an equation of its own (\tag{}s can't share one).
+      if ((start->GetType() != MC_TYPE_GROUP) &&
+          ((tmp.GetTextStyle() == TS_LABEL) ||
+           (tmp.GetTextStyle() == TS_USERLABEL)) &&
+          (s.Length() > contentStart))
+        s += wxS("\\]\n\\[");
       s += tmp.ToTeX();
       if (&tmp == GetDocumentCellPointers().GetSelectionEnd())
         break;
