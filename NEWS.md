@@ -1,5 +1,8 @@
 # Current development version
 
+- The CSV import and export wizards remember the field separator again: the
+  one saved last time was read and then thrown away, so they always started
+  with "Semicolon".
 - The manual's troubleshooting section explains the "Broken pipe" a blocked
   Gnuplot causes on MacOS, and that plots don't need XQuartz there (#1461).
 - The language chooser lists every language under its own name, followed by

@@ -163,6 +163,8 @@ void AutoComplete::AddSymbols(const wxXmlDocument& xml) {
                  "of autocompletable maxima commands."));
 
   if(m_configuration->UseThreads())
+    // The thread needs a copy of its own: the caller's document is gone by
+    // the time the thread reads it.
     m_addSymbols_backgroundThread = jthread([this, xml](stop_token stopToken) {
       AddSymbols_Backgroundtask(stopToken, xml);
     });
@@ -190,7 +192,7 @@ void AutoComplete::AddSymbols_Backgroundtask(const stop_token& stopToken, const 
             wxString name = Maxima::EscapeVarnameForMaxima(val->GetContent());
 
             const std::lock_guard<std::mutex> lock(m_keywordsLock);
-            m_wordList.at(command).push_back(name);
+            m_wordList.at(command).push_back(std::move(name));
           }
         }
 
@@ -199,7 +201,7 @@ void AutoComplete::AddSymbols_Backgroundtask(const stop_token& stopToken, const 
           if (val) {
             wxString name = val->GetContent();
             const std::lock_guard<std::mutex> lock(m_keywordsLock);
-            m_wordList.at(tmplte).push_back(name);
+            m_wordList.at(tmplte).push_back(std::move(name));
           }
         }
 
@@ -208,7 +210,7 @@ void AutoComplete::AddSymbols_Backgroundtask(const stop_token& stopToken, const 
           if (val) {
             wxString name = val->GetContent();
             const std::lock_guard<std::mutex> lock(m_keywordsLock);
-            m_wordList.at(unit).push_back(name);
+            m_wordList.at(unit).push_back(std::move(name));
           }
         }
 
@@ -218,7 +220,7 @@ void AutoComplete::AddSymbols_Backgroundtask(const stop_token& stopToken, const 
             wxString name = Maxima::EscapeVarnameForMaxima(val->GetContent());
 
             const std::lock_guard<std::mutex> lock(m_keywordsLock);
-            m_wordList.at(command).push_back(name);
+            m_wordList.at(command).push_back(std::move(name));
           }
         }
       }
@@ -375,7 +377,9 @@ void AutoComplete::BuiltinSymbols_BackgroundTask(const stop_token& stopToken) {
   if (wxFileExists(privateList)) {
     wxTextFile priv(privateList);
 
-    priv.Open();
+    if (!priv.Open())
+      wxLogMessage(_("Cannot read the list of user-defined autocompletion "
+                     "symbols in %s"), privateList);
 
     wxRegEx function("^[fF][uU][nN][cC][tT][iI][oO][nN] *: *");
     wxRegEx option("^[oO][pP][tT][iI][oO][nN] *: *");

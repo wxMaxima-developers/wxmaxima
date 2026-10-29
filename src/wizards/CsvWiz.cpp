@@ -29,6 +29,7 @@
 #include <wx/arrstr.h>
 #include <wx/config.h>
 #include <wx/persist/toplevel.h>
+#include <algorithm>
 
 CsvImportWiz::CsvImportWiz(wxWindow *parent, Configuration *config)
   : wxDialog(parent, -1, _("CSV import"), wxDefaultPosition, wxDefaultSize,
@@ -43,12 +44,10 @@ CsvImportWiz::CsvImportWiz(wxWindow *parent, Configuration *config)
   m_separator =
     new wxChoice(this, -1, wxDefaultPosition, wxDefaultSize, choices);
   long choice = 0;
-  wxConfig::Get()->Read(wxS("csvSeparator"), choice);
-  if (choice < 0)
-    choice = 0;
-  if (choice > 2)
-    choice = 2;
-  m_separator->SetSelection(choice);
+  // Read(key, long) would be the overload that returns the value, leaving
+  // choice untouched: the pointer is what makes it write into choice.
+  wxConfig::Get()->Read(wxS("csvSeparator"), &choice);
+  m_separator->SetSelection(std::clamp(choice, 0L, 2L));
   vbox->Add(m_separator, wxSizerFlags().Expand());
   wxBoxSizer *hbox = new wxBoxSizer(wxHORIZONTAL);
   vbox->Add(new wxStaticText(this, -1, _("Filename")), wxSizerFlags());
@@ -117,12 +116,10 @@ CsvExportWiz::CsvExportWiz(wxWindow *parent, Configuration *config,
   m_separator =
     new wxChoice(this, -1, wxDefaultPosition, wxDefaultSize, choices);
   long choice = 0;
-  wxConfig::Get()->Read(wxS("csvSeparator"), choice);
-  if (choice < 0)
-    choice = 0;
-  if (choice > 2)
-    choice = 2;
-  m_separator->SetSelection(choice);
+  // Read(key, long) would be the overload that returns the value, leaving
+  // choice untouched: the pointer is what makes it write into choice.
+  wxConfig::Get()->Read(wxS("csvSeparator"), &choice);
+  m_separator->SetSelection(std::clamp(choice, 0L, 2L));
   vbox->Add(m_separator, wxSizerFlags().Expand());
   vbox->Add(new wxStaticText(this, -1, objectType), wxSizerFlags());
   m_matrix = new BTextCtrl(this, -1, config, wxEmptyString);

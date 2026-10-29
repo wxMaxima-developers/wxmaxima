@@ -32,6 +32,8 @@
 #include <wx/sstream.h>
 #include <wx/stopwatch.h>
 #include <iostream>
+#include <iterator>
+#include <utility>
 #include <vector>
 #include <cstdio>
 #include <wx/utils.h>
@@ -50,29 +52,6 @@ Maxima::Maxima(wxSocketBase *socket, Configuration *config) :
   m_socketInput(*m_socket),
   m_textInput(m_socketInput, wxS("\n"), wxConvUTF8)
 {
-  {
-      std::lock_guard<std::mutex> lock(m_knownTagsMutex);
-      if(m_knownTags.empty())
-        {
-          m_knownTags[wxS("PROMPT")] = XML_PROMPT;
-          m_knownTags[wxS("suppressOutput")] = XML_SUPPRESSOUTPUT;
-          m_knownTags[wxS("wxxml-symbols")] = XML_WXXMLSYMBOLS;
-          m_knownTags[wxS("variables")] = XML_VARIABLES;
-          m_knownTags[wxS("watch_variables_add")] = XML_WATCH_VARIABLES_ADD;
-          m_knownTags[wxS("statusbar")] = XML_STATUSBAR;
-          m_knownTags[wxS("worksheetexport")] = XML_WORKSHEET_EXPORT;
-          m_knownTags[wxS("html-manual-keywords")] = XML_HTML_MANUAL_KEYWORDS;
-          m_knownTags[wxS("mth")] = XML_MATHS;
-          m_knownTags[wxS("math")] = XML_MATHS;
-          m_knownTags[wxS("wxxml-key")] = XML_WXXML_KEY;
-          m_knownTags[wxS("wxxml-asciimath")] = XML_ASCIIMATH;
-          // Deliberately attribute-free: the scan below matches a bare
-          // "<tag>" at the start of the buffer, so a tag carrying the cell
-          // id as an attribute would never be recognised at all. The id
-          // travels in the body instead, as <id>...</id>.
-          m_knownTags[wxS("wxasync")] = XML_ASYNC_OUTPUT;
-        }
-  }
   wxASSERT(socket);
   
   // COMPLETELY isolate the socket from the main thread event loop.
@@ -228,7 +207,7 @@ void Maxima::WorkerThread(const stop_token& stopToken) {
         }
         if (m_xmlInspector && !incomingData.IsEmpty()) {
             std::lock_guard<std::mutex> lock(m_interpretedQueueMutex);
-            m_interpretedQueue.push_back({STRING_FOR_XMLINSPECTOR, incomingData});
+            m_interpretedQueue.push_back({STRING_FOR_XMLINSPECTOR, std::move(incomingData)});
             if (!m_readPendingQueued.exchange(true)) {
                 CallAfter([this]{ ReadSocket(); });
             }
@@ -273,19 +252,17 @@ void Maxima::ProcessData(const stop_token& stopToken)
             m_processingBuffer = m_processingBuffer.Mid(tagPos);
             progress = true;
         } else {
-            std::unordered_map<wxString, EventCause, wxStringHash>::const_iterator tag;
+            const auto &knownTags = KnownTags();
+            auto tag = knownTags.begin();
+            for(; tag != knownTags.end(); ++tag)
             {
-                std::lock_guard<std::mutex> lock(m_knownTagsMutex);
-                for(tag = m_knownTags.begin(); tag != m_knownTags.end(); ++tag)
-                {
-                    if (stopToken.stop_requested()) break;
-                    wxString tagstartname = wxS("<") + tag->first + wxS(">");
-                    if (m_processingBuffer.StartsWith(tagstartname))
-                        break;
-                }
+                if (stopToken.stop_requested()) break;
+                wxString tagstartname = wxS("<") + tag->first + wxS(">");
+                if (m_processingBuffer.StartsWith(tagstartname))
+                    break;
             }
             
-            if (tag == m_knownTags.end()) {
+            if (tag == knownTags.end()) {
                 dataToSend = m_processingBuffer.Left(1);
                 m_processingBuffer = m_processingBuffer.Mid(1);
                 progress = true;
@@ -309,7 +286,7 @@ void Maxima::ProcessData(const stop_token& stopToken)
                     if (m_processingBuffer.StartsWith(wxS("\n")))
                         m_processingBuffer = m_processingBuffer.Mid(1);
                     
-                    newItems.push_back({.cause = tag->second, .data = fullTag});
+                    newItems.push_back({.cause = tag->second, .data = std::move(fullTag)});
                     progress = true;
                 }
             }
@@ -323,12 +300,14 @@ void Maxima::ProcessData(const stop_token& stopToken)
     } while (progress && !m_processingBuffer.IsEmpty());
 
     if (!batchedText.IsEmpty()) {
-        newItems.push_back({READ_MISC_TEXT, batchedText});
+        newItems.push_back({READ_MISC_TEXT, std::move(batchedText)});
     }
 
     if (!newItems.empty()) {
         std::lock_guard<std::mutex> lock(m_interpretedQueueMutex);
-        m_interpretedQueue.insert(m_interpretedQueue.end(), newItems.begin(), newItems.end());
+        m_interpretedQueue.insert(m_interpretedQueue.end(),
+                                  std::make_move_iterator(newItems.begin()),
+                                  std::make_move_iterator(newItems.end()));
         if (!m_readPendingQueued.exchange(true)) {
             CallAfter([this]{ ReadSocket(); });
         }
@@ -420,6 +399,30 @@ wxString Maxima::MaximaVarnameToLisp(const wxString& var)
     return InvertCase("$"+var);
 }
 
-std::unordered_map<wxString, Maxima::EventCause, wxStringHash> Maxima::m_knownTags;
-std::mutex Maxima::m_knownTagsMutex;
+const std::unordered_map<wxString, Maxima::EventCause, wxStringHash> &Maxima::KnownTags()
+{
+  // A function-local static is initialized exactly once, thread-safely, and
+  // is never written to afterwards, so the worker thread can read it
+  // without a lock.
+  static const std::unordered_map<wxString, EventCause, wxStringHash> knownTags = {
+    {wxS("PROMPT"), XML_PROMPT},
+    {wxS("suppressOutput"), XML_SUPPRESSOUTPUT},
+    {wxS("wxxml-symbols"), XML_WXXMLSYMBOLS},
+    {wxS("variables"), XML_VARIABLES},
+    {wxS("watch_variables_add"), XML_WATCH_VARIABLES_ADD},
+    {wxS("statusbar"), XML_STATUSBAR},
+    {wxS("worksheetexport"), XML_WORKSHEET_EXPORT},
+    {wxS("html-manual-keywords"), XML_HTML_MANUAL_KEYWORDS},
+    {wxS("mth"), XML_MATHS},
+    {wxS("math"), XML_MATHS},
+    {wxS("wxxml-key"), XML_WXXML_KEY},
+    {wxS("wxxml-asciimath"), XML_ASCIIMATH},
+    // Deliberately attribute-free: ProcessData() matches a bare "<tag>" at
+    // the start of the buffer, so a tag carrying the cell id as an attribute
+    // would never be recognised at all. The id travels in the body instead,
+    // as <id>...</id>.
+    {wxS("wxasync"), XML_ASYNC_OUTPUT}
+  };
+  return knownTags;
+}
 bool Maxima::m_pipeToStderr = false;
