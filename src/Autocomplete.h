@@ -161,6 +161,12 @@ public:
   bool HasDemofile(const wxString &commandname);
 
 private:
+  /*! Waits until the symbol-adding background task, if any, has finished.
+
+    Every such task only adds symbols, so stopping one early would lose
+    them; see AddSymbols().
+   */
+  void WaitForSymbolTask();
   //! The configuration storage
   Configuration *m_configuration;
   //! Loads the list of loadable files and can be run in a background task

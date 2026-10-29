@@ -1,5 +1,9 @@
 # Current development version
 
+- ESC no longer offers nothing at all for the rest of a session: the list of
+  ESC names (alpha, beta, ...) is filled in the background at startup, and
+  Maxima's list of symbols arriving before that was done stopped it halfway.
+  How often that happened depended on how fast Maxima started.
 - The configuration dialog's AI tab is split into "Contacting AIs" (the AI
   Chat sidebar's providers and API keys) and the MCP server, whose settings
   used to sit on the Options tab. It now explains what MCP is and that any
