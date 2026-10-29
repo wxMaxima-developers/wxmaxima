@@ -3111,15 +3111,13 @@ bool EditorCell::HandleOrdinaryKey(wxKeyEvent &event) {
           // Even if a "*/" follows already: that one closes an enclosing
           // comment, and Maxima's comments nest.
           m_text = m_text.Left(cur) + wxS("*/") + m_text.Mid(cur);
-        } else if ((keyCode == '*') && (m_text.Mid(cur, 2) == wxS("*/")) &&
+        } else if ((((keyCode == '*') && (m_text.Mid(cur, 2) == wxS("*/"))) ||
+                    ((keyCode == '/') && (cur >= 2) &&
+                     (m_text.at(cur - 2) == '*') &&
+                     (cur < m_text.Length()) && (m_text.at(cur) == '/'))) &&
                    !InsideMaximaString(m_text, cur - 1)) {
-          // Jump over the "*" of an existing closer.
-          m_text = m_text.Left(cur - 1) + m_text.Mid(cur);
-        } else if ((keyCode == '/') && (cur >= 2) &&
-                   (m_text.at(cur - 2) == '*') &&
-                   (cur < m_text.Length()) && (m_text.at(cur) == '/') &&
-                   !InsideMaximaString(m_text, cur - 1)) {
-          // "*|/" plus "/": jump over the "/" of the closer.
+          // Jump over the "*" of an existing closer, or, for "*|/" plus
+          // "/", over its "/": either way the typed character goes.
           m_text = m_text.Left(cur - 1) + m_text.Mid(cur);
         }
       }
