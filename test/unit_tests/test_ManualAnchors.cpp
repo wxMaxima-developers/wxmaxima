@@ -40,6 +40,7 @@
 #include <wx/log.h>
 
 #include "Configuration.h"
+#include "Dirstructure.h"
 #include "MaximaManual.h"
 
 #include <chrono>
@@ -88,7 +89,7 @@ SCENARIO("CompileHelpFileAnchors extracts every anchor from the HTML manual") {
     WHEN("the anchors are compiled") {
       const wxString cacheFile =
         wxFileName::CreateTempFileName(wxS("wxm_anchorcache"));
-      manual.CompileHelpFileAnchors({}, docDir, wxS("test-version"), cacheFile);
+      manual.CompileHelpFileAnchors({}, docDir, shareDir, wxS("test-version"), cacheFile);
 
       THEN("every anchor in the file is found, keyed without its index- prefix") {
         const MaximaManual::HelpFileAnchors anchors = manual.GetHelpfileAnchors();
@@ -102,6 +103,69 @@ SCENARIO("CompileHelpFileAnchors extracts every anchor from the HTML manual") {
       }
       wxRemoveFile(cacheFile);
     }
+    wxFileName::Rmdir(docDir, wxPATH_RMDIR_RECURSIVE);
+  }
+}
+
+SCENARIO("Asking for the anchors again while they are compiled in the background") {
+  GIVEN("a manual whose anchors are compiled in a thread of their own") {
+    const wxString docDir = wxFileName::CreateTempFileName(wxS("wxm_manualrace"));
+    wxRemoveFile(docDir);
+    REQUIRE(wxFileName::Mkdir(docDir, wxS_DIR_DEFAULT, wxPATH_MKDIR_FULL));
+    const wxString shareDir = docDir + wxS("/share");
+    REQUIRE(wxFileName::Mkdir(shareDir, wxS_DIR_DEFAULT, wxPATH_MKDIR_FULL));
+    // A directory without a manual: asking for that one would clear the
+    // manual's HTML directory.
+    const wxString emptyDir = docDir + wxS("/empty");
+    REQUIRE(wxFileName::Mkdir(emptyDir, wxS_DIR_DEFAULT, wxPATH_MKDIR_FULL));
+    {
+      wxString html = wxS("<html><body>\n");
+      for (int i = 0; i < kAnchorCount; i++)
+        html += wxString::Format(wxS("<dt id=\"index-cmd%03d\"></dt>\n"), i);
+      html += wxS("</body></html>\n");
+      wxFile f(docDir + wxS("/maxima_singlepage.html"), wxFile::write);
+      REQUIRE(f.IsOpened());
+      REQUIRE(f.Write(html));
+    }
+    wxConfig::Get()->DeleteEntry(wxS("helpFile"));
+
+    // The compile caches its result here; don't leave a file behind that wasn't
+    // there before.
+    const wxString cacheFile = Dirstructure::AnchorsCacheFile();
+    const bool hadCacheFile = wxFileExists(cacheFile);
+    const bool usedThreads = Configuration::UseThreads();
+    Configuration::UseThreads(true);
+    Configuration cfg;
+    cfg.MaximaShareDir(shareDir);
+    {
+      MaximaManual manual(&cfg);
+      WHEN("the anchors are asked for again, for another directory, while the compile runs") {
+        // A version no anchors cache on disk can match, so the manual is
+        // really compiled.
+        manual.LoadHelpFileAnchors(docDir, wxS("race-test-version"));
+        // Each of these used to assign the manual's HTML directory and Maxima
+        // version while the compile thread was reading them: a data race on
+        // two wxStrings (ThreadSanitizer reports it), which could also make
+        // the thread search the wrong directory.
+        for (int i = 0; i < 100; i++)
+          manual.LoadHelpFileAnchors(emptyDir, wxS("other-version"));
+
+        THEN("the compile finishes with the anchors of the manual it was started for") {
+          MaximaManual::HelpFileAnchors anchors;
+          for (int i = 0; i < 600; i++) {
+            anchors = manual.GetHelpfileAnchors();
+            if (anchors.count(wxS("cmd149")) == 1)
+              break;
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+          }
+          CHECK(anchors.count(wxS("cmd000")) == 1);
+          CHECK(anchors.count(wxS("cmd149")) == 1);
+        }
+      }
+    }
+    Configuration::UseThreads(usedThreads);
+    if (!hadCacheFile)
+      wxRemoveFile(cacheFile);
     wxFileName::Rmdir(docDir, wxPATH_RMDIR_RECURSIVE);
   }
 }
