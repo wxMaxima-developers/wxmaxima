@@ -2429,6 +2429,22 @@ std::unique_ptr<MatrCell> Worksheet::CopySelectedMatrixBlock() const {
   return matrix->CopyBlock(*block, matrix->GetGroup());
 }
 
+bool Worksheet::MatrixEntriesSelected() const {
+  return GetDocumentCellPointers().GetSelectedMatrixBlockCorners().has_value();
+}
+
+wxString Worksheet::SelectionRTFBody(const Cell *cells, bool matrixEntries) {
+  if (!cells)
+    return {};
+  if (matrixEntries && !cells->GetNext())
+    if (const auto *matrix = dynamic_cast<const MatrCell *>(cells)) {
+      const wxString table = matrix->ToRTFTable();
+      if (!table.IsEmpty())
+        return table;
+    }
+  return cells->ListToRTF() + wxS("\\par\n");
+}
+
 /***
  * Get the string representation of the selection
  */
@@ -2540,13 +2556,16 @@ std::unique_ptr<wxDataObject> Worksheet::CreateSelectionDataObject() const {
   }
   // For some reason LibreOffice likes RTF more than it likes the MathML -
   // which is standardized.
-  contents->rtf = LazyValue<std::string>([snapshot] {
-    Configuration *configuration = snapshot->GetConfiguration();
-    return std::string(
-      (WorksheetExport::RTFStart(configuration) +
-       snapshot->GetCells()->ListToRTF() + wxS("\\par\n") +
-       WorksheetExport::RTFEnd()).utf8_str());
-  });
+  // A block of a matrix's entries becomes a table, as which a spreadsheet can
+  // paste it (GH #959).
+  contents->rtf = LazyValue<std::string>(
+    [snapshot, matrixEntries = MatrixEntriesSelected()] {
+      Configuration *configuration = snapshot->GetConfiguration();
+      return std::string(
+        (WorksheetExport::RTFStart(configuration) +
+         SelectionRTFBody(snapshot->GetCells(), matrixEntries) +
+         WorksheetExport::RTFEnd()).utf8_str());
+    });
   contents->bitmap = LazyValue<wxBitmap>([snapshot] {
     return BitmapOut::RenderForClipboard(
       snapshot->GetConfigurationPointer(),
@@ -4529,10 +4548,10 @@ bool Worksheet::CopyRTF() const {
   wxDataObjectComposite *data = new wxDataObjectComposite;
 
   wxString rtf = RTFStart();
-  if (auto block = CopySelectedMatrixBlock())
-    // Only part of a matrix is selected: copy that sub-matrix rather than the
-    // whole cell it is in, the same way Copy() puts it into its RTF flavour.
-    rtf += block->ListToRTF();
+  if (MatrixEntriesSelected())
+    // The entries of a matrix are selected: copy them, or the selected block
+    // of them, the same way Copy() puts them into its RTF flavour.
+    rtf += SelectionRTFBody(CopySelection().get(), true);
   else {
     const GroupCell *end = GetDocumentCellPointers().GetSelectionEnd()->GetGroup();
 
@@ -4541,9 +4560,10 @@ bool Worksheet::CopyRTF() const {
       if (&tmp == end)
         break;
     }
+    rtf += wxS("\\par");
   }
 
-  rtf += wxS("\\par") + RTFEnd();
+  rtf += RTFEnd();
 
   data->Add(new RtfDataObject(rtf));
   data->Add(new RtfDataObject2(rtf));

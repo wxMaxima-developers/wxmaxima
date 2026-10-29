@@ -1,5 +1,12 @@
 # Current development version
 
+- Copying entries of a matrix -- a block of them dragged across, or all of
+  them -- puts them on the clipboard as an RTF table (#959), so a
+  spreadsheet or word processor pastes them into a table's cells instead of
+  as one equation. This works if every entry is text or a number; a matrix
+  holding fractions, powers and the like is still copied as an equation.
+  Selecting the matrix as a whole, parentheses and all, copies it as an
+  equation as before.
 - LaTeX export and "Copy as LaTeX" produce leaner markup: `x^2` instead of
   `{{x}^{2}}`, `x_1` instead of `{x_1}`, `\sin(x)` instead of `\sin{(x)}`,
   plain parentheses and `|...|` unless the contents are taller than a line,
