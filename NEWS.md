@@ -1,9 +1,11 @@
 # Current development version
 
 - Reading Maxima's manual index in the background no longer races with
-  wxMaxima asking for it again: each new Maxima prompt could rewrite the
-  folder name the background task was reading, which could crash wxMaxima
-  or make it index the wrong folder. Found with ThreadSanitizer.
+  Maxima being restarted meanwhile (for example by opening a file from
+  another folder right after startup): the restarted Maxima's report of its
+  manual folder could rewrite the folder name the background task was
+  reading, which could crash wxMaxima or make it index the wrong folder.
+  Found with ThreadSanitizer.
 - Matrix > Classic matrix operations (invert, determinant, rank,
   eigenvalues, eigenvectors, adjoint, transpose) open a wizard that asks
   which matrix to use, pre-filled with the selection or `%`, instead of
