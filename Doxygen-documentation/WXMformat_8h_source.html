@@ -145,25 +145,30 @@ $(function() {
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="keyword">namespace </span><a class="code hl_typedef" href="TextFormat_8h.html#a5f5bc96d42493f3c4209d77ec9ab6952">Format</a></div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>{</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  wxString TreeToWXM(<a class="code hl_class" href="classGroupCell.html">GroupCell</a> *cell, <span class="keywordtype">bool</span> wxm = <span class="keyword">true</span>);</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  std::unique_ptr&lt;GroupCell&gt; TreeFromWXM(<span class="keyword">const</span> std::vector&lt;wxString&gt; &amp;wxmLines, <a class="code hl_class" href="classConfiguration.html">Configuration</a> *config, <span class="keywordtype">int</span> depth = 0);</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  std::unique_ptr&lt;GroupCell&gt; ParseWXMFile(wxTextBuffer &amp;text, <a class="code hl_class" href="classConfiguration.html">Configuration</a> *config);</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  std::unique_ptr&lt;GroupCell&gt; ParseMACContents(<span class="keyword">const</span> wxString &amp;macContents, <a class="code hl_class" href="classConfiguration.html">Configuration</a> *config);</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  std::unique_ptr&lt;GroupCell&gt; ParseMACFile(wxTextBuffer &amp;text, <span class="keywordtype">bool</span> xMaximaFile, <a class="code hl_class" href="classConfiguration.html">Configuration</a> *config);</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <span class="keyword">enum class</span> TextEscaping {</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    WordJoiner,</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    HtmlEntities</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  };</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  wxString TreeToWXM(<a class="code hl_class" href="classGroupCell.html">GroupCell</a> *cell, <span class="keywordtype">bool</span> wxm = <span class="keyword">true</span>);</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  std::unique_ptr&lt;GroupCell&gt; TreeFromWXM(<span class="keyword">const</span> std::vector&lt;wxString&gt; &amp;wxmLines, <a class="code hl_class" href="classConfiguration.html">Configuration</a> *config, <span class="keywordtype">int</span> depth = 0,</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>                                         TextEscaping escaping = TextEscaping::WordJoiner);</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  std::unique_ptr&lt;GroupCell&gt; ParseWXMFile(wxTextBuffer &amp;text, <a class="code hl_class" href="classConfiguration.html">Configuration</a> *config);</div>
 <div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>  <span class="keyword">extern</span> <span class="keyword">const</span> wxString WXMFirstLine;</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>  <span class="keyword">extern</span> <span class="keyword">const</span> wxString CreatedWithLine;</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>  <span class="keyword">extern</span> <span class="keyword">const</span> wxString CreatedWithLinePrefix;</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>  <span class="keyword">extern</span> <span class="keyword">const</span> wxString m_emptyString;</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>}; <span class="comment">// namespace Format</span></div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span><span class="preprocessor">#endif </span><span class="comment">// WXMFORMAT_H</span></div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>  std::unique_ptr&lt;GroupCell&gt; ParseMACContents(<span class="keyword">const</span> wxString &amp;macContents, <a class="code hl_class" href="classConfiguration.html">Configuration</a> *config);</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>  std::unique_ptr&lt;GroupCell&gt; ParseMACFile(wxTextBuffer &amp;text, <span class="keywordtype">bool</span> xMaximaFile, <a class="code hl_class" href="classConfiguration.html">Configuration</a> *config);</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>  <span class="keyword">extern</span> <span class="keyword">const</span> wxString WXMFirstLine;</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>  <span class="keyword">extern</span> <span class="keyword">const</span> wxString CreatedWithLine;</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>  <span class="keyword">extern</span> <span class="keyword">const</span> wxString CreatedWithLinePrefix;</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>  <span class="keyword">extern</span> <span class="keyword">const</span> wxString m_emptyString;</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span> </div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>}; <span class="comment">// namespace Format</span></div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span> </div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span><span class="preprocessor">#endif </span><span class="comment">// WXMFORMAT_H</span></div>
 <div class="ttc" id="aGroupCell_8h_html"><div class="ttname"><a href="GroupCell_8h.html">GroupCell.h</a></div><div class="ttdoc">This file defines the class GroupCell that bundles input and output in the worksheet.</div></div>
 <div class="ttc" id="aTextFormat_8h_html_a5f5bc96d42493f3c4209d77ec9ab6952"><div class="ttname"><a href="TextFormat_8h.html#a5f5bc96d42493f3c4209d77ec9ab6952">TextFormat::Format</a></div><div class="ttdeci">std::uint8_t Format</div><div class="ttdoc">The formatting of one character: a combination of the flags below.</div><div class="ttdef"><b>Definition:</b> TextFormat.h:68</div></div>
 <div class="ttc" id="aclassConfiguration_html"><div class="ttname"><a href="classConfiguration.html">Configuration</a></div><div class="ttdoc">The configuration storage for the current worksheet.</div><div class="ttdef"><b>Definition:</b> Configuration.h:102</div></div>

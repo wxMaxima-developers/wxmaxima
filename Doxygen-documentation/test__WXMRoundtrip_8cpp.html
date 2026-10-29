@@ -87,6 +87,7 @@ $(function() {
 <code>#include &lt;wx/bitmap.h&gt;</code><br />
 <code>#include &lt;wx/dcmemory.h&gt;</code><br />
 <code>#include &lt;wx/filename.h&gt;</code><br />
+<code>#include &lt;wx/file.h&gt;</code><br />
 <code>#include &lt;wx/frame.h&gt;</code><br />
 <code>#include &lt;wx/image.h&gt;</code><br />
 <code>#include &lt;wx/log.h&gt;</code><br />
@@ -149,6 +150,18 @@ Functions</h2></td></tr>
 <tr class="memitem:afbbf8745296b7e4ff671ee68687417f9"><td class="memItemLeft" align="right" valign="top"><a id="afbbf8745296b7e4ff671ee68687417f9" name="afbbf8745296b7e4ff671ee68687417f9"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;A title/section/comment cell's \&quot;*/\&quot;/\&quot;/*\&quot; survives the .wxm round-trip without breaking the file structure (GH #1907)&quot;)</td></tr>
 <tr class="separator:afbbf8745296b7e4ff671ee68687417f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b1ba3dd45de52a30a4fce5518fd9aaa"><td class="memItemLeft" align="right" valign="top"><a id="a6b1ba3dd45de52a30a4fce5518fd9aaa" name="a6b1ba3dd45de52a30a4fce5518fd9aaa"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;Text cells are escaped invisibly, and only where they need it (GH #1907)&quot;)</td></tr>
+<tr class="separator:a6b1ba3dd45de52a30a4fce5518fd9aaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e2369bf4964144d85ee8e82ac64532a"><td class="memItemLeft" align="right" valign="top"><a id="a6e2369bf4964144d85ee8e82ac64532a" name="a6e2369bf4964144d85ee8e82ac64532a"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;Known answers can't be <a class="el" href="structcmd_8h.html#a9c7b76d5266903891c803132d51ccb90">read</a> as code by <a class="el" href="classMaxima.html">Maxima</a> (GH #1907)&quot;)</td></tr>
+<tr class="separator:a6e2369bf4964144d85ee8e82ac64532a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a8a10bddbe4eb29566df975751b0ba8"><td class="memItemLeft" align="right" valign="top"><a id="a6a8a10bddbe4eb29566df975751b0ba8" name="a6a8a10bddbe4eb29566df975751b0ba8"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;The file the wxm_loads_in_maxima test loads is what <a class="el" href="classwxMaxima.html">wxMaxima</a> writes (GH #1907)&quot;)</td></tr>
+<tr class="separator:a6a8a10bddbe4eb29566df975751b0ba8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25f01cc94b6cde6c20c18c2bb9922f91"><td class="memItemLeft" align="right" valign="top"><a id="a25f01cc94b6cde6c20c18c2bb9922f91" name="a25f01cc94b6cde6c20c18c2bb9922f91"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;Each version's escaping is <a class="el" href="structcmd_8h.html#a9c7b76d5266903891c803132d51ccb90">read</a> back correctly (GH #1907)&quot;)</td></tr>
+<tr class="separator:a25f01cc94b6cde6c20c18c2bb9922f91"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae54c3d59e4f82b1a4a42a5020f73500d"><td class="memItemLeft" align="right" valign="top"><a id="ae54c3d59e4f82b1a4a42a5020f73500d" name="ae54c3d59e4f82b1a4a42a5020f73500d"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;A code cell's own \&quot;/* comment */\&quot; is never escaped (GH #1907)&quot;)</td></tr>
 <tr class="separator:ae54c3d59e4f82b1a4a42a5020f73500d"><td class="memSeparator" colspan="2">&#160;</td></tr>
