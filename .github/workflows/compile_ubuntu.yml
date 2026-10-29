@@ -259,12 +259,17 @@ jobs:
              export CTEST_OUTPUT_ON_FAILURE=1
              # Third-party noise only; see the file for why each entry is there.
              export TSAN_OPTIONS=second_deadlock_stack=1:suppressions=$GITHUB_WORKSPACE/test/tsan_suppressions.txt
-             # No dbus-run-session here, unlike the other jobs: with a session
-             # bus GLib starts its "gdbus" thread, and every one of its
-             # handovers with the main thread (all inside uninstrumented
-             # GLib/GIO) is reported as a race -- 455 reports, failing every
-             # unit test. Suppressing them would need libglib, which is in the
-             # stack of every event handler and would hide our own races too.
+             # No session bus, unlike the other jobs: with one GLib starts its
+             # "gdbus" thread, and every one of its handovers with the main
+             # thread (all inside uninstrumented GLib/GIO) is reported as a
+             # race -- 455 reports, failing every unit test. Suppressing them
+             # would need libglib, which is in the stack of every event
+             # handler and would hide our own races too. Leaving out
+             # dbus-run-session was not enough here, the thread still showed
+             # up: point the address at nothing, so connecting fails before
+             # GLib starts that thread, and keep GTK's accessibility bridge
+             # from trying.
+             export DBUS_SESSION_BUS_ADDRESS=unix:path=/nonexistent NO_AT_BRIDGE=1
              GDK_BACKEND=x11 xvfb-run -a ctest -j 2 -L unittest
       - name: run_other_tests
         # Report-only: exitcode=0 keeps a race from failing a test, and the
@@ -273,6 +278,7 @@ jobs:
         run: |
              cd build
              export HOME=`pwd`
+             export DBUS_SESSION_BUS_ADDRESS=unix:path=/nonexistent NO_AT_BRIDGE=1
              export TSAN_OPTIONS=exitcode=0:second_deadlock_stack=1:suppressions=$GITHUB_WORKSPACE/test/tsan_suppressions.txt
              GDK_BACKEND=x11 xvfb-run -a ctest -j 2 -LE unittest -E "tutorial_fittingEquations|multithreadtest|tutorial_toleranceCalculations|tutorial_displaying3DCurves|tutorial_solvingEquations|testbench_simple.wxmx" || true
       - name: report_tsan_findings

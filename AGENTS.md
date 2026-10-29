@@ -127,7 +127,9 @@ clang, `-DWXM_SANITIZE=thread`, and `TSAN_OPTIONS=suppressions=test/tsan_suppres
 Without that file every unit test reports dozens of "races" inside GLib,
 Pango and fontconfig, which hand memory between their own threads with locks
 TSan can't see; the file says why each entry is narrow enough not to hide our
-own code. **Run it without `dbus-run-session`**, unlike the other test jobs:
+own code. **Run it without a session bus** (`DBUS_SESSION_BUS_ADDRESS=unix:path=/nonexistent`,
+not just without `dbus-run-session`, which on the CI runner still ended up
+with a bus):
 a session bus makes GLib start its `gdbus` thread, whose handovers with the
 main thread produced 455 reports and failed every unit test on the first CI
 run, and the only suppression covering them (`libglib`) would also hide our
