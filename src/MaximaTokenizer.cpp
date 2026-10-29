@@ -241,13 +241,11 @@ MaximaTokenizer::MaximaTokenizer(const wxString &commands,
                 (lastChar == 'L')) &&
                ((m_plusSigns.Contains(*it)) || (m_minusSigns.Contains(*it)))))) {
         wxUniChar ch = *it;
-        for (wxString::const_iterator it3 = m_plusSigns.begin();
-             it3 != m_plusSigns.end(); ++it3)
-          if (ch == *it3)
+        for (const auto plusSign : m_plusSigns)
+          if (ch == plusSign)
             ch = '+';
-        for (wxString::const_iterator it3 = m_minusSigns.begin();
-             it3 != m_minusSigns.end(); ++it3)
-          if (ch == *it3)
+        for (const auto minusSign : m_minusSigns)
+          if (ch == minusSign)
             ch = '-';
         token += ch;
         lastChar = *it;

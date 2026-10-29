@@ -122,13 +122,13 @@ std::vector<std::pair<int, int>> Align2(const std::vector<CellMatchData>& s1,
     int i = n, j = m;
     while (i > 0 || j > 0) {
         if (i > 0 && j > 0 && is_match(i - 1, j - 1)) {
-            alignment.push_back({i - 1, j - 1});
+            alignment.emplace_back(i - 1, j - 1);
             i--; j--;
         } else if (j > 0 && (i == 0 || dp[i][j - 1] >= dp[i - 1][j])) {
-            alignment.push_back({-1, j - 1});
+            alignment.emplace_back(-1, j - 1);
             j--;
         } else {
-            alignment.push_back({i - 1, -1});
+            alignment.emplace_back(i - 1, -1);
             i--;
         }
     }
@@ -229,13 +229,13 @@ std::vector<std::pair<int, int>> AlignSpans(const std::vector<Span> &a,
     int i = n, j = m;
     while (i > 0 || j > 0) {
         if (i > 0 && j > 0 && eq(i - 1, j - 1)) {
-            alignment.push_back({i - 1, j - 1});
+            alignment.emplace_back(i - 1, j - 1);
             i--; j--;
         } else if (j > 0 && (i == 0 || dp[i][j - 1] >= dp[i - 1][j])) {
-            alignment.push_back({-1, j - 1});
+            alignment.emplace_back(-1, j - 1);
             j--;
         } else {
-            alignment.push_back({i - 1, -1});
+            alignment.emplace_back(i - 1, -1);
             i--;
         }
     }
@@ -255,11 +255,11 @@ void DiffBlock(const wxString &a, const std::vector<Span> &aLines,
     // Only one side has lines here: the whole block is missing from the other
     // side (internal line breaks included, hence back().end not per-line spans).
     if (aFrom >= aTo) {
-        bOnly.push_back({bLines[bFrom].start, bLines[bTo - 1].end});
+        bOnly.emplace_back(bLines[bFrom].start, bLines[bTo - 1].end);
         return;
     }
     if (bFrom >= bTo) {
-        aOnly.push_back({aLines[aFrom].start, aLines[aTo - 1].end});
+        aOnly.emplace_back(aLines[aFrom].start, aLines[aTo - 1].end);
         return;
     }
     const std::size_t aStart = aLines[aFrom].start, aEnd = aLines[aTo - 1].end;
@@ -268,16 +268,16 @@ void DiffBlock(const wxString &a, const std::vector<Span> &aLines,
     std::vector<Span> bTokens = Tokenize(b, bStart, bEnd);
     if (aTokens.size() * bTokens.size() > kLcsCellCap) {
         // Too big for the quadratic DP: mark the whole block on both sides.
-        aOnly.push_back({aStart, aEnd});
-        bOnly.push_back({bStart, bEnd});
+        aOnly.emplace_back(aStart, aEnd);
+        bOnly.emplace_back(bStart, bEnd);
         return;
     }
     for (const auto &p : AlignSpans(aTokens, 0, aTokens.size(),
                                     bTokens, 0, bTokens.size())) {
         if (p.second == -1)
-            aOnly.push_back({aTokens[p.first].start, aTokens[p.first].end});
+            aOnly.emplace_back(aTokens[p.first].start, aTokens[p.first].end);
         else if (p.first == -1)
-            bOnly.push_back({bTokens[p.second].start, bTokens[p.second].end});
+            bOnly.emplace_back(bTokens[p.second].start, bTokens[p.second].end);
     }
 }
 
@@ -321,8 +321,8 @@ void InlineDiff(const wxString &a, const wxString &b,
     std::vector<Span> bLines = SplitLines(b);
     if (aLines.size() * bLines.size() > kLcsCellCap) {
         // Degenerate input; give up on detail and mark both cells wholesale.
-        aOnly.push_back({0, a.Length()});
-        bOnly.push_back({0, b.Length()});
+        aOnly.emplace_back(0, a.Length());
+        bOnly.emplace_back(0, b.Length());
         return;
     }
 

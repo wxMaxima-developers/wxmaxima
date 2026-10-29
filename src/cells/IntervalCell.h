@@ -54,8 +54,8 @@ public:
  std::unique_ptr<Cell> &&start,
                std::unique_ptr<Cell> &&end);
   IntervalCell(GroupCell *group, const IntervalCell &cell);
-  virtual std::unique_ptr<Cell> Copy(GroupCell *group) const override;
-  virtual const CellTypeInfo &GetInfo() override;
+  std::unique_ptr<Cell> Copy(GroupCell *group) const override;
+  const CellTypeInfo &GetInfo() override;
 
   size_t GetInnerCellCount() const override { return 8; }
   Cell *GetInnerCell(size_t index) const override {
@@ -109,16 +109,16 @@ public:
 
   using Cell::SetCurrentPoint;
   void SetCurrentPoint(wxPoint point) const override;
-  virtual void Draw(wxDC *dc, wxDC *antialiassingDC) override;
+  void Draw(wxDC *dc, wxDC *antialiassingDC) override;
 
   bool BreakUp() const override;
 
   wxString ToMathML() const override;
-  virtual wxString ToMatlab() const override;
+  wxString ToMatlab() const override;
   wxString ToOMML() const override;
-  virtual wxString ToString() const override;
-  virtual wxString ToTeX() const override;
-  virtual wxString ToXML() const override;
+  wxString ToString() const override;
+  wxString ToTeX() const override;
+  wxString ToXML() const override;
 
 protected:
   void DrawBigLeftOpenBracket(wxDC *dc, wxPoint point) const;

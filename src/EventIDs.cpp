@@ -725,6 +725,4 @@ const wxWindowIDRef EventIDs::wizard_special_to(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::wizard_definite_id(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::wizard_numeric_id(wxWindow::NewControlId());
 
-EventIDs::EventIDs()
-{
-}
+EventIDs::EventIDs() = default;

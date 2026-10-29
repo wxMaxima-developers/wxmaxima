@@ -5,6 +5,21 @@
   (#244): "Simplify" on a selected `x^2+2*x+1;` used to send
   `ratsimp(x^2+2*x+1;);`, a syntax error. Of several selected statements the
   first one is used, and a selected code cell stands for its input.
+- The CSV import and export wizards remember the field separator again: the
+  one saved last time was read and then thrown away, so they always started
+  with "Semicolon".
+- The manual's troubleshooting section explains the "Broken pipe" a blocked
+  Gnuplot causes on MacOS, and that plots don't need XQuartz there (#1461).
+- The language chooser lists every language under its own name, followed by
+  its name in the current UI language ("Deutsch — German"), so someone who
+  ended up with a UI language they can't read still finds theirs (#849). The
+  list is now sorted, too: it used to come out in hash-table order.
+- Reading Maxima's manual index in the background no longer races with
+  Maxima being restarted meanwhile (for example by opening a file from
+  another folder right after startup): the restarted Maxima's report of its
+  manual folder could rewrite the folder name the background task was
+  reading, which could crash wxMaxima or make it index the wrong folder.
+  Found with ThreadSanitizer.
 - Any symbol can get a keyboard shortcut that types it into the worksheet
   (#2578): right-click its button in the Greek or the Symbols sidebar, or use
   the new table in the "Options" tab of the configuration dialog. The table

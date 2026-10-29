@@ -58,7 +58,7 @@ public:
   History(wxWindow *parent, int id, Configuration *cfg);
 
   //! The destructor
-  ~History();
+  ~History() override;
 
   //! Add a file to the recently opened files list.
   void AddToHistory(const wxString &cmd);

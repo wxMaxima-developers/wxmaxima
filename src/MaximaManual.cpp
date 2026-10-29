@@ -153,6 +153,7 @@ void MaximaManual::AnchorAliasses(HelpFileAnchors &anchors) {
 
 void MaximaManual::CompileHelpFileAnchors(const stop_token& stopToken,
                                           const wxString &maximaHtmlDir,
+                                          const wxString &maximaShareDir,
                                           const wxString &maximaVersion,
                                           const wxString &saveName) {
   // Clear the in-flight flag on every exit path (including the early returns
@@ -165,18 +166,18 @@ void MaximaManual::CompileHelpFileAnchors(const stop_token& stopToken,
   Configuration::g_stats.manualAnchorsCompiled++;
 
   std::size_t foundAnchorsTotal = 0;
-  if (!(m_maximaHtmlDir.IsEmpty())) {
+  if (!(maximaHtmlDir.IsEmpty())) {
     std::vector<wxString> helpFiles;
     {
-      GetHTMLFiles htmlFilesTraverser(helpFiles, stopToken, m_maximaHtmlDir);
-      wxDir dir(m_maximaHtmlDir);
+      GetHTMLFiles htmlFilesTraverser(helpFiles, stopToken, maximaHtmlDir);
+      wxDir dir(maximaHtmlDir);
       dir.Traverse(htmlFilesTraverser);
     }
     if (stopToken.stop_requested()) return;
     {
       GetHTMLFiles_Recursive htmlFilesTraverser(
-                                                helpFiles, stopToken, m_configuration->MaximaShareDir());
-      wxDir dir(m_configuration->MaximaShareDir());
+                                                helpFiles, stopToken, maximaShareDir);
+      wxDir dir(maximaShareDir);
       dir.Traverse(htmlFilesTraverser);
     }
     if (stopToken.stop_requested()) return;
@@ -241,9 +242,8 @@ void MaximaManual::CompileHelpFileAnchors(const stop_token& stopToken,
               token.Replace("-", " ");
               // Some other chars including the minus are represented by "_00xx"
               // where xx is being the ascii code of the char.
-              for (wxString::const_iterator it = escapeChars.begin();
-                   it != escapeChars.end(); ++it)
-                token.Replace(wxString::Format("_00%02x", static_cast<char>(*it)), *it);
+              for (const auto escapeChar : escapeChars)
+                token.Replace(wxString::Format("_00%02x", static_cast<char>(escapeChar)), escapeChar);
               // What the g_t means I don't know. But we don't need it
               if (token.StartsWith(wxS("g_t")))
                 token = token.Right(token.Length() - 3);
@@ -255,7 +255,7 @@ void MaximaManual::CompileHelpFileAnchors(const stop_token& stopToken,
                       m_helpFileURLs_singlePage[token] = fileURI + "#" + id;
                     else
                       m_helpFileURLs_filePerChapter[token] = fileURI + "#" + id;
-                    m_helpFileAnchors[token] = id;
+                    m_helpFileAnchors[token] = std::move(id);
                   }
                   foundAnchorsTotal++;
                 }
@@ -411,9 +411,12 @@ bool MaximaManual::LoadManualAnchorsFromXML(const wxXmlDocument &xmlDocument,
   }
   wxString htmlDir = headNode->GetAttribute(wxS("html_dir"));
   wxString cacheMaximaVersion = headNode->GetAttribute(wxS("maxima_version"));
-  wxLogMessage(_("Maxima version: %s, Anchors cache version"),
-               m_maximaVersion.utf8_str(),
-               cacheMaximaVersion.utf8_str());
+  // Only compared when checkManualVersion is set: the manual compile thread
+  // calls this without it, and must not read m_maximaVersion/m_maximaHtmlDir.
+  if (checkManualVersion)
+    wxLogMessage(_("Maxima version: %s, Anchors cache version: %s"),
+                 m_maximaVersion.utf8_str(),
+                 cacheMaximaVersion.utf8_str());
   if (checkManualVersion && ((cacheMaximaVersion != m_maximaVersion) ||
                              (htmlDir != m_maximaHtmlDir))) {
     if (cacheMaximaVersion != m_maximaVersion)
@@ -544,6 +547,12 @@ void MaximaManual::FindMaximaHtmlDir(const wxString &docDir) {
 
 void MaximaManual::LoadHelpFileAnchors(const wxString &docdir,
                                        const wxString &maximaVersion) {
+  // A compile running in the background reads the anchor maps under the lock,
+  // but nothing else of ours. Assigning m_maximaHtmlDir or m_maximaVersion
+  // while it runs used to race with it reading them, so leave them alone until
+  // it has finished; it is the only one that may change the anchors then anyway.
+  if (m_anchorsCompileInFlight)
+    return;
   FindMaximaHtmlDir(docdir);
   m_maximaVersion = maximaVersion;
   {
@@ -553,29 +562,31 @@ void MaximaManual::LoadHelpFileAnchors(const wxString &docdir,
   }
   if (!LoadManualAnchorsFromCache()) {
     if (!m_maximaHtmlDir.IsEmpty()) {
-      // Don't kill and restart an already-running compile. LoadHelpFileAnchors()
-      // is called on every relevant Maxima event; if the parse can't be cached
-      // (e.g. a read-only MAXIMA_USERDIR) each call used to stop+restart the slow
-      // manual parse, so it never finished and the shutdown join() hung. Let an
-      // in-flight compile run to completion instead.
-      if (m_anchorsCompileInFlight)
-        return;
+      // An already-running compile has been left alone at the top of this
+      // function. LoadHelpFileAnchors() is called on every relevant Maxima
+      // event; if the parse can't be cached (e.g. a read-only MAXIMA_USERDIR)
+      // each call used to stop+restart the slow manual parse, so it never
+      // finished and the shutdown join() hung.
       // Reap the handle of a previous, already-finished compile before reusing it.
       if (m_helpfileanchorsThread.joinable())
         m_helpfileanchorsThread.join();
       wxLogMessage(_("Background task that compiles the Manual anchors scheduled."));
       m_anchorsCompileInFlight = true;
       if(m_configuration->UseThreads())
-        m_helpfileanchorsThread = jthread([this](stop_token stopToken) {
-          CompileHelpFileAnchors(stopToken,
-                                 m_maximaHtmlDir,
-                                 m_maximaVersion,
-                                 Dirstructure::AnchorsCacheFile()
-                                 );
+        // The thread gets copies of everything it reads: the main thread may
+        // change the members and the configuration while it runs.
+        m_helpfileanchorsThread = jthread([this,
+                                           htmlDir = m_maximaHtmlDir,
+                                           shareDir = m_configuration->MaximaShareDir(),
+                                           version = m_maximaVersion,
+                                           cacheFile = Dirstructure::AnchorsCacheFile()]
+                                          (stop_token stopToken) {
+          CompileHelpFileAnchors(stopToken, htmlDir, shareDir, version, cacheFile);
         });
       else
         CompileHelpFileAnchors({},
                                m_maximaHtmlDir,
+                               m_configuration->MaximaShareDir(),
                                m_maximaVersion,
                                Dirstructure::AnchorsCacheFile()
                                );

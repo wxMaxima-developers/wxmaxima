@@ -285,6 +285,16 @@ target_link_libraries(test_SymbolShortcuts PRIVATE ${wxWidgets_LIBRARIES})
 add_test(NAME SymbolShortcuts
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_SymbolShortcuts>")
 
+# The UI language list (GH #849): each language under its own name, so it
+# can be found whatever the UI language is. GUI-free.
+add_executable(test_UiLanguages
+    test_UiLanguages.cpp ${CMAKE_SOURCE_DIR}/src/UiLanguages.cpp
+    ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
+target_include_directories(test_UiLanguages PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_link_libraries(test_UiLanguages PRIVATE ${wxWidgets_LIBRARIES})
+add_test(NAME UiLanguages
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_UiLanguages>")
+
 # Which files wxMaxima agrees to open from the command line, the desktop or
 # the Finder (opening wxmaxima.exe and its DLLs used to start a window and a
 # Maxima per file) is decided GUI-free, so it is tested directly.
@@ -1176,6 +1186,17 @@ if(TARGET wxmTestApp)
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
     add_test(NAME LastActiveTextCtrl
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_LastActiveTextCtrl>")
+
+    # The CSV wizards must come up with the separator saved last time; a
+    # wxConfig::Read() overload mix-up threw the saved value away.
+    add_executable(test_CsvWiz
+        test_CsvWiz.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_CsvWiz PUBLIC cxx_std_20)
+    target_link_libraries(test_CsvWiz PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME CsvWiz
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_CsvWiz>")
 
     # Guards the declarative variable-to-menu-items table (MaximaMenuSync) that
     # keeps menu check marks in sync with the option variables Maxima reports -

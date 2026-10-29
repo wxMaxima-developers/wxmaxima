@@ -187,6 +187,7 @@ set(SOURCE_FILES
     SvgBitmap.cpp
     SvgSize.cpp
     SymbolShortcuts.cpp
+    UiLanguages.cpp
     UnicodeNames.cpp
     SvgPanel.cpp
     SyntaxErrorLocation.cpp

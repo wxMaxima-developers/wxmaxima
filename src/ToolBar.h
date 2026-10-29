@@ -61,7 +61,7 @@ public:
   static int SectionMenuId(ToolBarSections::Section section)
     { return section_menu_first + static_cast<int>(section); }
 
-  virtual ~ToolBar();
+  ~ToolBar() override;
 
   /*! Enable or disable a tool, and repaint the toolbar if that changed anything
 

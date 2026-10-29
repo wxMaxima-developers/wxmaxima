@@ -217,7 +217,7 @@ MathParser::MathParser(Configuration *cfg, AttachmentSource attachments)
   }
 }
 
-MathParser::~MathParser() {}
+MathParser::~MathParser() = default;
 
 std::unique_ptr<Cell> MathParser::ParseVariableNameTag(wxXmlNode *node, int depth){
   auto children = node->GetChildren();
@@ -559,7 +559,7 @@ std::unique_ptr<Cell> MathParser::ParseOutputLabelTag(wxXmlNode *node, int depth
   if ((tmp == nullptr) || (dynamic_cast<LabelCell *>(tmp.get()) == nullptr))
     {
       wxString empty;
-      tmp.reset(new LabelCell(m_group, m_configuration, empty));
+      tmp = std::make_unique<LabelCell>(m_group, m_configuration, empty);
     }
 
   dynamic_cast<LabelCell *>(tmp.get())->SetUserDefinedLabel(user_lbl);

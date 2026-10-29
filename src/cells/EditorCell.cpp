@@ -41,6 +41,7 @@
 #include "wxMaxima.h"
 #include "wxMaximaFrame.h"
 #include <algorithm>
+#include <ranges>
 #include <wx/clipbrd.h>
 #include <wx/log.h>
 #include <wx/sstream.h>
@@ -1687,17 +1688,17 @@ wxString RTFFormatWords(TextFormat::Format format) {
 std::vector<wxString> HTMLFormatTags(TextFormat::Format format) {
   std::vector<wxString> tags;
   if (format & TextFormat::Bold)
-    tags.push_back(wxS("b"));
+    tags.emplace_back(wxS("b"));
   if (format & TextFormat::Italic)
-    tags.push_back(wxS("i"));
+    tags.emplace_back(wxS("i"));
   if (format & TextFormat::Underline)
-    tags.push_back(wxS("u"));
+    tags.emplace_back(wxS("u"));
   if (format & TextFormat::Strikethrough)
-    tags.push_back(wxS("s"));
+    tags.emplace_back(wxS("s"));
   if (format & TextFormat::Superscript)
-    tags.push_back(wxS("sup"));
+    tags.emplace_back(wxS("sup"));
   if (format & TextFormat::Subscript)
-    tags.push_back(wxS("sub"));
+    tags.emplace_back(wxS("sub"));
   return tags;
 }
 
@@ -1731,8 +1732,8 @@ wxString FormattedHTML(const wxString &text, const TextFormat::Formats &formats,
     for (const auto &tag : tags)
       html += wxS("<") + tag + wxS(">");
     html += EditorCell::EscapeHTMLChars(text.SubString(run.start, run.end - 1));
-    for (auto tag = tags.rbegin(); tag != tags.rend(); ++tag)
-      html += wxS("</") + *tag + wxS(">");
+    for (const auto &tag : std::ranges::reverse_view(tags))
+      html += wxS("</") + tag + wxS(">");
   }
   return html;
 }
@@ -1928,15 +1929,15 @@ wxCoord EditorCell::MeasureTextWidth(wxCoord startX, const wxString &text) const
 
   wxCoord x = startX;
   wxString run;
-  for (wxString::const_iterator ch = text.begin(); ch != text.end(); ++ch) {
-    if (*ch == wxS('\t')) {
+  for (const auto ch : text) {
+    if (ch == wxS('\t')) {
       if (!run.empty()) {
         x += GetTextSize(run).GetWidth();
         run.clear();
       }
       x = NextTabStop(x);
     } else
-      run += *ch;
+      run += ch;
   }
   if (!run.empty())
     x += GetTextSize(run).GetWidth();
@@ -3207,11 +3208,11 @@ void EditorCell::FindMatchingParens() {
     else
       pos = m_text.Length() - 1;
     auto const tokens = MaximaTokenizer(m_text, m_configuration).PopTokens();
-    for (auto tok = tokens.rbegin(); tok != tokens.rend(); ++tok) {
+    for (const auto &token : std::ranges::reverse_view(tokens)) {
       if (pos <= CursorPosition()) {
-        if ((tok->GetText().StartsWith(wxS("("))) ||
-            (tok->GetText().StartsWith(wxS("["))) ||
-            (tok->GetText().StartsWith(wxS("{")))) {
+        if ((token.GetText().StartsWith(wxS("("))) ||
+            (token.GetText().StartsWith(wxS("["))) ||
+            (token.GetText().StartsWith(wxS("{")))) {
           parenLevel--;
           if (parenLevel == 0) {
             m_paren1 = pos;
@@ -3219,14 +3220,14 @@ void EditorCell::FindMatchingParens() {
             return;
           }
         } else {
-          if ((tok->GetText().StartsWith(wxS(")"))) ||
-              (tok->GetText().StartsWith(wxS("]"))) ||
-              (tok->GetText().StartsWith(wxS("}")))) {
+          if ((token.GetText().StartsWith(wxS(")"))) ||
+              (token.GetText().StartsWith(wxS("]"))) ||
+              (token.GetText().StartsWith(wxS("}")))) {
             parenLevel++;
           }
         }
       }
-      pos -= tok->GetText().Length();
+      pos -= token.GetText().Length();
     }
   }
 }
@@ -4505,13 +4506,13 @@ void EditorCell::StyleTextCode() const {
       // All spaces except the last one (that could cause a line break)
       // share the same token
       if (tokenString.Length() > 1)
-        m_styledText.push_back(StyledText(tokenString.Right(tokenString.Length() - 1), GetTextStyle()));
+        m_styledText.emplace_back(tokenString.Right(tokenString.Length() - 1), GetTextStyle());
 
       // Now we push the last space to the list of tokens and remember this
       // space as the space that potentially serves as the next point to
       // introduce a soft line break. pos was already advanced past this
       // token, so its last character sits at pos - 1.
-      m_styledText.push_back(StyledText(wxS(" "), GetTextStyle()));
+      m_styledText.emplace_back(wxS(" "), GetTextStyle());
       // This space is the next candidate spot for a soft break. Only a plain
       // space qualifies: the tokenizer renders non-breakable spaces as ' ' too,
       // and breaking there would misrepresent where the content wraps. pos was
@@ -4535,7 +4536,7 @@ void EditorCell::StyleTextCode() const {
     // way a space is: wrapping exactly at a tab is out of scope here, a line
     // can still wrap at the next space after one as today.
     if (Ch == wxS('\t')) {
-      m_styledText.push_back(StyledText(tokenString, GetTextStyle()));
+      m_styledText.emplace_back(tokenString, GetTextStyle());
       lineWidth = NextTabStop(lineWidth);
       continue;
     }
@@ -4552,7 +4553,7 @@ void EditorCell::StyleTextCode() const {
         containedNewline = true;
         if (line != wxEmptyString)
           PushCodeLine(token.GetTextStyle(), line);
-        m_styledText.push_back(StyledText(token.GetTextStyle(), "\n"));
+        m_styledText.emplace_back(token.GetTextStyle(), "\n");
         // A hard newline starts a fresh display line: the width accumulated
         // for the previous line and its wrap bookkeeping no longer apply -
         // in particular a space on the previous line must never receive
@@ -4603,7 +4604,7 @@ void EditorCell::StyleTextCode() const {
   }
   std::ranges::sort(m_wordList);
   if(!suppressedLinesInfo.IsEmpty())
-    m_styledText.push_back(StyledText(TS_CODE_COMMENT, suppressedLinesInfo));
+    m_styledText.emplace_back(TS_CODE_COMMENT, suppressedLinesInfo);
 }
 
 wxCoord EditorCell::PushCodeLine(TextStyle style, const wxString &line) const {
@@ -4623,14 +4624,14 @@ wxCoord EditorCell::PushCodeLine(TextStyle style, const wxString &line) const {
     links = wxm::FindUrls(body);
   }
   if (links.empty()) {
-    m_styledText.push_back(StyledText(style, line));
+    m_styledText.emplace_back(style, line);
     return SnippetWidth(m_styledText.back());
   }
 
   m_containsLinks = true;
   wxCoord width = 0;
   auto push = [&](const wxString &piece, bool isLink) {
-    m_styledText.push_back(StyledText(style, piece));
+    m_styledText.emplace_back(style, piece);
     if (isLink)
       m_styledText.back().SetLink();
     width += SnippetWidth(m_styledText.back());
@@ -4658,15 +4659,15 @@ void EditorCell::PushTextLine(const wxString &line, const wxString &indentChar,
   wxString run;
   std::size_t runStart = startPos;
   std::size_t pos = startPos;
-  for (wxString::const_iterator ch = line.begin(); ch != line.end(); ++ch) {
-    if (*ch == wxS('\t')) {
+  for (const auto ch : line) {
+    if (ch == wxS('\t')) {
       PushTextRun(run, pushedAny ? wxString() : indentChar, runStart);
       pushedAny = true;
       run.clear();
-      m_styledText.push_back(StyledText(wxS("\t"), GetTextStyle()));
+      m_styledText.emplace_back(wxS("\t"), GetTextStyle());
       runStart = pos + 1;
     } else
-      run += *ch;
+      run += ch;
     ++pos;
   }
   PushTextRun(run, pushedAny ? wxString() : indentChar, runStart);
@@ -4714,9 +4715,9 @@ void EditorCell::PushFormattedPiece(const wxString &piece, const wxString &inden
     if ((i < piece.Length()) &&
         (TextFormat::At(formats, startPos + i) == TextFormat::At(formats, startPos + i - 1)))
       continue;
-    m_styledText.push_back(StyledText(piece.Mid(snippetStart, i - snippetStart),
+    m_styledText.emplace_back(piece.Mid(snippetStart, i - snippetStart),
                                       GetTextStyle(), 0,
-                                      (snippetStart == 0) ? indentChar : wxString()));
+                                      (snippetStart == 0) ? indentChar : wxString());
     m_styledText.back().SetFormat(TextFormat::At(formats, startPos + snippetStart));
     if (isLink)
       m_styledText.back().SetLink();
@@ -4867,9 +4868,9 @@ lineProcessed:
                                                       static_cast<long>(m_text.Freq(wxS('\n'))));
         if (formatted) {
           PushTextLine(line, wxEmptyString, lineStartPos);
-          m_styledText.push_back(StyledText(hiddenLines, GetTextStyle()));
+          m_styledText.emplace_back(hiddenLines, GetTextStyle());
         } else
-          m_styledText.push_back(StyledText(line + hiddenLines, GetTextStyle()));
+          m_styledText.emplace_back(line + hiddenLines, GetTextStyle());
         break;
       }
 
@@ -4954,11 +4955,9 @@ lineProcessed:
             (it != m_text.end() && *it == wxS('\n'))) {
           // Store the line ending in the list of styled text snippets
           if (*it == wxS('\n'))
-            m_styledText.push_back(
-                                   StyledText(wxS("\n"), GetTextStyle(), 0, indentChar));
+            m_styledText.emplace_back(wxS("\n"), GetTextStyle(), 0, indentChar);
           else
-            m_styledText.push_back(
-                                   StyledText(wxS("\r"), GetTextStyle(), 0, indentChar));
+            m_styledText.emplace_back(wxS("\r"), GetTextStyle(), 0, indentChar);
         }
         // Is this a real new line of comment - or did we insert a soft
         // linebreak?
@@ -4998,7 +4997,7 @@ lineProcessed:
                                                       static_cast<long>(m_text.Freq(wxS('\n'))));
         if (formatted) {
           PushTextLine(line, wxEmptyString, lineStartPos);
-          m_styledText.push_back(StyledText(hiddenLines, GetTextStyle()));
+          m_styledText.emplace_back(hiddenLines, GetTextStyle());
         } else
           PushTextLine(line + hiddenLines, wxEmptyString, lineStartPos);
         break;
@@ -5007,7 +5006,7 @@ lineProcessed:
       PushTextLine(line, wxEmptyString, lineStartPos);
       lineStartPos += line.Length() + 1;
       if ((lines.HasMoreTokens()))
-        m_styledText.push_back(StyledText(wxS("\n"), GetTextStyle(), 0, wxEmptyString));
+        m_styledText.emplace_back(wxS("\n"), GetTextStyle(), 0, wxEmptyString);
     }
   }
   // Every change to m_text above replaced one character by another, so the

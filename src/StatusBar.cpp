@@ -111,7 +111,7 @@ StatusBar::StatusBar(wxWindow *parent, int id, bool aiChatAvailable)
   Bind(wxEVT_TIMER, &StatusBar::OnTimerEvent, this);
 }
 
-StatusBar::~StatusBar() {}
+StatusBar::~StatusBar() = default;
 
 void StatusBar::StatusMsgDClick(wxMouseEvent &ev)
 {

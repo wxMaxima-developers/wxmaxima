@@ -372,9 +372,7 @@ int EvaluationQueue::CommandsLeftInCell() const {
   // tail rather than re-running the mode-sensitive tokenizer.
   int left = static_cast<int>(m_commands.size());
   bool tailHasContent = false;
-  for (wxString::const_iterator it = m_pendingText.begin();
-       it != m_pendingText.end(); ++it) {
-    const wxUniChar c = *it;
+  for (const wxUniChar c : m_pendingText) {
     if ((c == wxS(';')) || (c == wxS('$'))) {
       left++;
       tailHasContent = false;

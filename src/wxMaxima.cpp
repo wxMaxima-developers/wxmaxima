@@ -45,7 +45,7 @@
 #include <unordered_map>
 #include <utility>
 #include <vector>
-#include <time.h>
+#include <ctime>
 #include <algorithm>
 #include <wx/zipstrm.h>
 #include "wizards/ActualValuesStorageWiz.h"

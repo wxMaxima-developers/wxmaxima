@@ -107,7 +107,7 @@ public:
   */
   void OnBestSizeChange(std::function<void()> callback)
     { m_onBestSizeChange = std::move(callback); }
-  virtual ~GenWizPanel();
+  ~GenWizPanel() override;
 protected:
   void OnSize(wxSizeEvent &event);
   wxNotebook *m_notebook;

@@ -1047,7 +1047,7 @@ public:
   };
 
   void PushFileToSave(const wxString &filename, const wxMemoryBuffer &data)
-    { m_filesToSave.emplace_front(FileToSave(filename, data)); }
+    { m_filesToSave.emplace_front(filename, data); }
 
   wxRect GetUpdateRegion() const {return m_renderContext.GetUpdateRegion();}
   const std::list<FileToSave> &GetFilesToSave() const {return m_filesToSave;}

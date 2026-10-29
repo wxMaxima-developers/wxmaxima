@@ -326,7 +326,7 @@ OutCommon::GetDataObject(const wxDataFormat &format) {
     }
     m_filename.clear();
 
-    return std::unique_ptr<DataObject>(new DataObject(format, contents));
+    return std::make_unique<DataObject>(format, contents);
 }
 
 OutCommon::DataObject::DataObject(const wxDataFormat &format,

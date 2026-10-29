@@ -47,7 +47,7 @@ public:
                     int style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER,
                     bool searchOnly = false);
 
-  ~FindReplaceDialog();
+  ~FindReplaceDialog() override;
 
   void SetFocus() override;
 

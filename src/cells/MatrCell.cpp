@@ -69,7 +69,7 @@ DEFINE_CELL(MatrCell)
 void MatrCell::Recalculate(AFontSize const fontsize) const {
   AFontSize const fontsize_entry{MC_MIN_SIZE, fontsize - 2};
   bool changed = false;
-  for (size_t i = 0; i < m_cells.size(); i++) {
+  for (const auto &cell : m_cells) {
     if (m_configuration->IsLayoutCancelled()) {
       // The layout deadline fired before we finished measuring the entries, so
       // the m_widths / m_width / m_height computation below never ran. Make
@@ -81,7 +81,7 @@ void MatrCell::Recalculate(AFontSize const fontsize) const {
       m_width.Invalidate();
       return;
     }
-    changed |= m_cells.at(i)->RecalculateList(fontsize_entry);
+    changed |= cell->RecalculateList(fontsize_entry);
   }
 
   if (changed || NeedsRecalculation(fontsize)) {
@@ -1044,7 +1044,7 @@ wxString MatrCell::ToRTFTable() const {
       }
       if (((row == 0) && m_colNames) || ((col == 0) && m_rowNames))
         rtf = wxS("\\b ") + rtf + wxS("\\b0");
-      entries.push_back(rtf);
+      entries.push_back(std::move(rtf));
       columnWidths[col] = std::max(
         columnWidths[col],
         static_cast<long>(entry->ListToString().Length()) * charWidth +
