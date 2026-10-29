@@ -1314,6 +1314,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>ReplaceAll_RegEx</b> (
 <tr class="memitem:affa70f7ae7950c29aeca916a2dc9ac0f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#affa70f7ae7950c29aeca916a2dc9ac0f">AnonymizeCodeCells</a> ()</td></tr>
 <tr class="memdesc:affa70f7ae7950c29aeca916a2dc9ac0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Anonymize the code cells in the current selection for a bug report (GH #1339).  <br /></td></tr>
 <tr class="separator:affa70f7ae7950c29aeca916a2dc9ac0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53cbc873d86be1328bfa0b338e53a7ab"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a53cbc873d86be1328bfa0b338e53a7ab">ForgetKnownAnswers</a> ()</td></tr>
+<tr class="memdesc:a53cbc873d86be1328bfa0b338e53a7ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forget the answers to <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s questions remembered by some cells (GH #1018)  <br /></td></tr>
+<tr class="separator:a53cbc873d86be1328bfa0b338e53a7ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5b2dfe8a94a249ca4918b495604a9174"><td class="memItemLeft" align="right" valign="top"><a id="a5b2dfe8a94a249ca4918b495604a9174" name="a5b2dfe8a94a249ca4918b495604a9174"></a>
 wxString&#160;</td><td class="memItemRight" valign="bottom"><b>GetInputAboveCaret</b> ()</td></tr>
 <tr class="separator:a5b2dfe8a94a249ca4918b495604a9174"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2325,6 +2328,28 @@ static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>CellsToMat
 
 <p>Do we want to follow the evaluation process? </p>
 <p><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> can automagically scroll to the cell that is currently evaluated. If it does do so can be queried by <a class="el" href="classWorksheet.html#af02bfd71d23fe6804fc27525f41e84bb" title="Query if we want to automatically scroll to the cell that is currently evaluated.">FollowEvaluation()</a>. Changing the behavior (for example because the user has scrolled away from the cell being evaluated and now clearly wants the cursor to stay where it is) can be achieved by FollowEvaluation(true) or FollowEvaluation(false). </p>
+
+</div>
+</div>
+<a id="a53cbc873d86be1328bfa0b338e53a7ab" name="a53cbc873d86be1328bfa0b338e53a7ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a53cbc873d86be1328bfa0b338e53a7ab">&#9670;&#160;</a></span>ForgetKnownAnswers()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::size_t Worksheet::ForgetKnownAnswers </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Forget the answers to <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s questions remembered by some cells (GH #1018) </p>
+<p>Acts on the code cells in the selection or, if no cells are selected, on the cell the cursor is in &ndash; the same cells "Automatically send known
+answers" acts on. Not undoable: the answers aren't part of the undo history, and a forgotten answer is learned again the next time the question is answered.</p>
+<dl class="section return"><dt>Returns</dt><dd>the number of cells that actually forgot an answer </dd></dl>
 
 </div>
 </div>

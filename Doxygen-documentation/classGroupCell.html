@@ -172,6 +172,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetAutoAnswer</b> (bo
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetAnswer</b> (const wxString &amp;question, const wxString &amp;answer)</td></tr>
 <tr class="memdesc:a9a243af7ec23837d6b6780ff15f91f33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a new answer to the cell. <br /></td></tr>
 <tr class="separator:a9a243af7ec23837d6b6780ff15f91f33"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87b6d6c79a206c03f0954b8fd180d9a0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#a87b6d6c79a206c03f0954b8fd180d9a0">ForgetAnswers</a> ()</td></tr>
+<tr class="memdesc:a87b6d6c79a206c03f0954b8fd180d9a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forget all answers this cell remembers from earlier runs (GH #1018)  <br /></td></tr>
+<tr class="separator:a87b6d6c79a206c03f0954b8fd180d9a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f7bc17e8cc6e7468c217e46e5f06913"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#a3f7bc17e8cc6e7468c217e46e5f06913">GetInnerCellCount</a> () const override</td></tr>
 <tr class="memdesc:a3f7bc17e8cc6e7468c217e46e5f06913"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of inner cells - for use by the iterators.  <br /></td></tr>
 <tr class="separator:a3f7bc17e8cc6e7468c217e46e5f06913"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2266,6 +2269,26 @@ The y position used here must be in sync with the one calculated by <a class="el
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a87b6d6c79a206c03f0954b8fd180d9a0" name="a87b6d6c79a206c03f0954b8fd180d9a0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a87b6d6c79a206c03f0954b8fd180d9a0">&#9670;&#160;</a></span>ForgetAnswers()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void GroupCell::ForgetAnswers </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Forget all answers this cell remembers from earlier runs (GH #1018) </p>
+<p>Afterwards neither the answer field is prefilled nor an answer sent automatically, and the answers are no longer saved with the worksheet. The "send known answers automatically" flag is kept: it only takes effect once the cell has learned new answers. </p>
 
 </div>
 </div>
