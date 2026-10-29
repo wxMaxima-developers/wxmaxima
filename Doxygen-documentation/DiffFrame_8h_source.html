@@ -111,7 +111,7 @@ $(function() {
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>{</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="keyword">public</span>:</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <a class="code hl_class" href="classDiffFrame.html">DiffFrame</a>(wxWindow *parent, <span class="keyword">const</span> wxArrayString &amp;files, <a class="code hl_class" href="classConfiguration.html">Configuration</a> *config);</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <span class="keyword">virtual</span> <a class="code hl_class" href="classDiffFrame.html">~DiffFrame</a>();</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <a class="code hl_class" href="classDiffFrame.html">~DiffFrame</a>() <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="classDiffFrame.html#a65444dbda97371b1249631c046d72d32">   39</a></span>  <a class="code hl_class" href="classWorksheet.html">Worksheet</a> *<a class="code hl_function" href="classDiffFrame.html#a65444dbda97371b1249631c046d72d32">GetPane</a>(<span class="keywordtype">size_t</span> idx)<span class="keyword"> const</span></div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="keyword">    </span>{ <span class="keywordflow">return</span> idx &lt; m_worksheets.size() ? m_worksheets[idx] : <span class="keyword">nullptr</span>; }</div>

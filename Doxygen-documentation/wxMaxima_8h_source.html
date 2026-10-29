@@ -149,7 +149,7 @@ $(function() {
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>           <span class="keyword">const</span> wxString &amp;initialWorksheetContents = wxEmptyString,</div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>           <span class="keyword">const</span> wxPoint pos = wxDefaultPosition, <span class="keyword">const</span> wxSize size = wxDefaultSize);</div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  <span class="keyword">virtual</span> <a class="code hl_class" href="classwxMaxima.html">~wxMaxima</a>();</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  <a class="code hl_class" href="classwxMaxima.html">~wxMaxima</a>() <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  wxString EscapeFilenameForShell(wxString name);</div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno"><a class="line" href="classwxMaxima.html#a4252227241877b64d96fa93249a6089c">   86</a></span>  <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classwxMaxima.html#a4252227241877b64d96fa93249a6089c">ExitOnError</a>(){m_exitOnError = <span class="keyword">true</span>;}</div>
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno"><a class="line" href="classwxMaxima.html#a945626c771ca7f928f36e1289c4669c4">   88</a></span>  <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="classwxMaxima.html#a945626c771ca7f928f36e1289c4669c4">GetExitOnError</a>(){<span class="keywordflow">return</span> m_exitOnError;}</div>
@@ -521,9 +521,9 @@ $(function() {
 <div class="line"><a id="l00835" name="l00835"></a><span class="lineno">  835</span><span class="keyword">class </span><a class="code hl_class" href="classMyApp.html">MyApp</a> : <span class="keyword">public</span> wxApp</div>
 <div class="line"><a id="l00836" name="l00836"></a><span class="lineno">  836</span>{</div>
 <div class="line"><a id="l00837" name="l00837"></a><span class="lineno">  837</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00838" name="l00838"></a><span class="lineno">  838</span>  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="classMyApp.html#a307eda60ebf119f9b25e9dd07a8ce513">OnInit</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00839" name="l00839"></a><span class="lineno">  839</span>  <span class="keyword">virtual</span> <span class="keywordtype">int</span> OnRun() <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00840" name="l00840"></a><span class="lineno">  840</span>  <span class="keyword">virtual</span> <span class="keywordtype">int</span> OnExit() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00838" name="l00838"></a><span class="lineno">  838</span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="classMyApp.html#a307eda60ebf119f9b25e9dd07a8ce513">OnInit</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00839" name="l00839"></a><span class="lineno">  839</span>  <span class="keywordtype">int</span> OnRun() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00840" name="l00840"></a><span class="lineno">  840</span>  <span class="keywordtype">int</span> OnExit() <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00841" name="l00841"></a><span class="lineno">  841</span>  <span class="comment">// Both guards are needed, and in this order: the definition in main.cpp</span></div>
 <div class="line"><a id="l00842" name="l00842"></a><span class="lineno">  842</span>  <span class="comment">// carries exactly the same pair, and GenerateDebugReport() -- the QA-only</span></div>
 <div class="line"><a id="l00843" name="l00843"></a><span class="lineno">  843</span>  <span class="comment">// method this one calls -- is already declared under both further down.</span></div>
@@ -588,7 +588,7 @@ $(function() {
 <div class="line"><a id="l00956" name="l00956"></a><span class="lineno">  956</span>  <span class="keyword">explicit</span> MyDropTarget(<a class="code hl_class" href="classwxMaxima.html">wxMaxima</a> *wxmax)</div>
 <div class="line"><a id="l00957" name="l00957"></a><span class="lineno">  957</span>    { m_wxmax = wxmax; }</div>
 <div class="line"><a id="l00958" name="l00958"></a><span class="lineno">  958</span> </div>
-<div class="line"><a id="l00959" name="l00959"></a><span class="lineno">  959</span>  <span class="keywordtype">bool</span> OnDropFiles(wxCoord x, wxCoord y, <span class="keyword">const</span> wxArrayString &amp;files);</div>
+<div class="line"><a id="l00959" name="l00959"></a><span class="lineno">  959</span>  <span class="keywordtype">bool</span> OnDropFiles(wxCoord x, wxCoord y, <span class="keyword">const</span> wxArrayString &amp;files) <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00960" name="l00960"></a><span class="lineno">  960</span> </div>
 <div class="line"><a id="l00961" name="l00961"></a><span class="lineno">  961</span><span class="keyword">private</span>:</div>
 <div class="line"><a id="l00962" name="l00962"></a><span class="lineno">  962</span>  <a class="code hl_class" href="classwxMaxima.html">wxMaxima</a> *m_wxmax = <span class="keyword">nullptr</span>;</div>

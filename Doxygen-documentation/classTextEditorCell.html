@@ -208,7 +208,7 @@ const auto &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>GetWordLi
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetCurrentPoint</b> (int x, int y) const</td></tr>
 <tr class="memdesc:a7fe7fb3d919065acb6827a1f971703b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the position for the cell and convenience overload. <br /></td></tr>
 <tr class="separator:a7fe7fb3d919065acb6827a1f971703b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae1ea47fbaf84aa982f91f717101d743f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#ae1ea47fbaf84aa982f91f717101d743f">Draw</a> (wxDC *dc, wxDC *antialiassingDC) override</td></tr>
+<tr class="memitem:ae1ea47fbaf84aa982f91f717101d743f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#ae1ea47fbaf84aa982f91f717101d743f">Draw</a> (wxDC *dc, wxDC *antialiassingDC) override</td></tr>
 <tr class="memdesc:ae1ea47fbaf84aa982f91f717101d743f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pass 3 (Paint): Renders the cell using pre-calculated coordinates.  <br /></td></tr>
 <tr class="separator:ae1ea47fbaf84aa982f91f717101d743f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aed3052a00d00db12a91fa0613c72adfd"><td class="memItemLeft" align="right" valign="top"><a id="aed3052a00d00db12a91fa0613c72adfd" name="aed3052a00d00db12a91fa0613c72adfd"></a>
@@ -1657,7 +1657,7 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><b>SelectionToHTML</
 
 <p>Can this cell be popped out interactively in gnuplot? </p>
 
-<p>Reimplemented in <a class="el" href="classAnimationCell.html#a3a54518c72ccde277cab0ca6ba201261">AnimationCell</a>, <a class="el" href="classImgCell.html#a08f0cf0de0964e392aefc3c12cabd5c2">ImgCell</a>, and <a class="el" href="classImgCellBase.html#af913972c17a207f578cea0e2212e01a4">ImgCellBase</a>.</p>
+<p>Reimplemented in <a class="el" href="classAnimationCell.html#a3a54518c72ccde277cab0ca6ba201261">AnimationCell</a>, <a class="el" href="classImgCell.html#a08f0cf0de0964e392aefc3c12cabd5c2">ImgCell</a>, and <a class="el" href="classImgCellBase.html#ac44e335536d914feb91616fdbc9ee4c0">ImgCellBase</a>.</p>
 
 </div>
 </div>
@@ -1715,7 +1715,7 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><b>SelectionToHTML</
 <p>Clears memory from cached items automatically regenerated when the cell is drawn. </p>
 <p>The scaled version of the image will be recreated automatically once it is needed. </p>
 
-<p>Reimplemented in <a class="el" href="classAnimationCell.html#a2893311cf335b9dc422fd22fcc6a0de8">AnimationCell</a>, <a class="el" href="classImgCell.html#a8c135754a4cc68973350f5e19919d6c4">ImgCell</a>, and <a class="el" href="classImgCellBase.html#af9116af932218080982a58320a64bffd">ImgCellBase</a>.</p>
+<p>Reimplemented in <a class="el" href="classAnimationCell.html#a2893311cf335b9dc422fd22fcc6a0de8">AnimationCell</a>, <a class="el" href="classImgCell.html#a8c135754a4cc68973350f5e19919d6c4">ImgCell</a>, and <a class="el" href="classImgCellBase.html#a990e7a8593a4fe92513fbdd16c7eb6c4">ImgCellBase</a>.</p>
 
 </div>
 </div>
@@ -2928,7 +2928,7 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><b>SelectionToHTML</
 <p>Returns the total height of this line. </p>
 <p>Returns <a class="el" href="classCell.html#a3b385281e2cb77ffa5dfd902802ac692" title="Returns the maximum distance between top and center of this line.">GetCenterList()</a>+<a class="el" href="classCell.html#ab1be3819e507454d4313f6ccbdac16c5" title="Returns the maximum distance between center and bottom of this line.">GetMaxDrop()</a> </p>
 
-<p>Reimplemented in <a class="el" href="classImgCell.html#a7a3f4a7f99c960f5f4b9cf6306828338">ImgCell</a>, and <a class="el" href="classImgCellBase.html#abdfc20584d96ff15809c439616525770">ImgCellBase</a>.</p>
+<p>Reimplemented in <a class="el" href="classImgCell.html#a7a3f4a7f99c960f5f4b9cf6306828338">ImgCell</a>, and <a class="el" href="classImgCellBase.html#a3b20b51503f4ad3929e3545f838da347">ImgCellBase</a>.</p>
 
 </div>
 </div>
@@ -3335,7 +3335,7 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><b>SelectionToHTML</
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the tooltip text, or empty string if none. </dd></dl>
 
-<p>Reimplemented in <a class="el" href="classAnimationCell.html#ae200ce21029cac8692952ceab7530a69">AnimationCell</a>, <a class="el" href="classGroupCell.html#a5613954d9c50b168f960797309aab01f">GroupCell</a>, <a class="el" href="classImgCell.html#af8e8606947c54caa4a2a17aab1487bda">ImgCell</a>, <a class="el" href="classMatrCell.html#aba9d4324258ad407affa925e606e4f90">MatrCell</a>, and <a class="el" href="classImgCellBase.html#a31a1a1d09fcf7305a31434b31bb18629">ImgCellBase</a>.</p>
+<p>Reimplemented in <a class="el" href="classAnimationCell.html#ae200ce21029cac8692952ceab7530a69">AnimationCell</a>, <a class="el" href="classGroupCell.html#a5613954d9c50b168f960797309aab01f">GroupCell</a>, <a class="el" href="classImgCell.html#af8e8606947c54caa4a2a17aab1487bda">ImgCell</a>, <a class="el" href="classMatrCell.html#aba9d4324258ad407affa925e606e4f90">MatrCell</a>, and <a class="el" href="classImgCellBase.html#acd196775c108466c2801b9a0329689be">ImgCellBase</a>.</p>
 
 </div>
 </div>
@@ -3483,7 +3483,7 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><b>SelectionToHTML</
 <p>Retrieve the gnuplot source data for this image. </p>
 <p>wxEmptyString means: No such data. </p>
 
-<p>Reimplemented in <a class="el" href="classAnimationCell.html#a69674af20401792e65d0f48438894491">AnimationCell</a>, <a class="el" href="classImgCell.html#aefb8bdaacf6d2957ca76e963a929a83e">ImgCell</a>, and <a class="el" href="classImgCellBase.html#a423fe98bef2b0459e2716e7c596bca26">ImgCellBase</a>.</p>
+<p>Reimplemented in <a class="el" href="classAnimationCell.html#a69674af20401792e65d0f48438894491">AnimationCell</a>, <a class="el" href="classImgCell.html#aefb8bdaacf6d2957ca76e963a929a83e">ImgCell</a>, and <a class="el" href="classImgCellBase.html#acebee5f9f73df2724650f4b28ef295e8">ImgCellBase</a>.</p>
 
 </div>
 </div>
@@ -5775,7 +5775,7 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><b>SelectionToHTML</
 <p>Some cells have different representations when they contain a line break. Examples for this are fractions or a set of parenthesis.</p>
 <p>This function tries to return a cell to the single-line form. </p>
 
-<p>Reimplemented in <a class="el" href="classFracCell.html#a5b8be4b0ec59b31317b7fabf0184a028">FracCell</a>, and <a class="el" href="classSumCell.html#aa519823cf1b8fe4302aef4906249cf0f">SumCell</a>.</p>
+<p>Reimplemented in <a class="el" href="classSumCell.html#a9f437d0c464a5c345a535a3a265fa43e">SumCell</a>, and <a class="el" href="classFracCell.html#a5b8be4b0ec59b31317b7fabf0184a028">FracCell</a>.</p>
 
 </div>
 </div>

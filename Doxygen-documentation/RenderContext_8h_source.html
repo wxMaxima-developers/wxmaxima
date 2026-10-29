@@ -134,7 +134,7 @@ $(function() {
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno"><a class="line" href="classRenderContext.html#a9928e0a2657889ecc3e1df6e6d10cfd8">   86</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classRenderContext.html#a9928e0a2657889ecc3e1df6e6d10cfd8">AttachWorksheetDC</a>(wxWindow *worksheet)</div>
 <div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    {</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>      m_worksheetDC = std::unique_ptr&lt;wxClientDC&gt;(<span class="keyword">new</span> wxClientDC(worksheet));</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>      m_worksheetDC = std::make_unique&lt;wxClientDC&gt;(worksheet);</div>
 <div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>      m_recalcDC = m_worksheetDC.get();</div>
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    }</div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno"><a class="line" href="classRenderContext.html#a19766e97ba30fa75e2e01c75ce7167bd">   92</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classRenderContext.html#a19766e97ba30fa75e2e01c75ce7167bd">DetachWorksheetDC</a>()</div>
@@ -159,7 +159,7 @@ $(function() {
 <div class="line"><a id="l00120" name="l00120"></a><span class="lineno"><a class="line" href="classRenderContext.html#a8d18bc7eb71fde5a09825eb6c0f7d5bc">  120</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classRenderContext.html#a8d18bc7eb71fde5a09825eb6c0f7d5bc">ClearAndEnableRedrawTracing</a>()</div>
 <div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    {</div>
 <div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>      <span class="keywordflow">if</span> (!m_cellRedrawTrace)</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>        m_cellRedrawTrace.reset(<span class="keyword">new</span> std::vector&lt;const Cell *&gt;);</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>        m_cellRedrawTrace = std::make_unique&lt;std::vector&lt;const Cell *&gt;&gt;();</div>
 <div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>      <span class="keywordflow">else</span></div>
 <div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>        m_cellRedrawTrace-&gt;clear();</div>
 <div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    }</div>

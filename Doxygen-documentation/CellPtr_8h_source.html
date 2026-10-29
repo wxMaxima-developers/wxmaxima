@@ -209,7 +209,7 @@ $(function() {
 <div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>    <span class="keyword">static</span> uintptr_t ReprFor(<a class="code hl_class" href="classCellPtrBase.html">CellPtrBase</a> *ptr) <span class="keyword">noexcept</span></div>
 <div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>      { <span class="keywordflow">return</span> <span class="keyword">reinterpret_cast&lt;</span>uintptr_t<span class="keyword">&gt;</span>(ptr) | to_CellPtrBase; }</div>
 <div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>  <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>    <span class="keyword">constexpr</span> CellPtrImplPointer() <span class="keyword">noexcept</span> {}</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>    <span class="keyword">constexpr</span> CellPtrImplPointer() <span class="keyword">noexcept</span> = <span class="keywordflow">default</span>;</div>
 <div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>    <span class="keyword">constexpr</span> CellPtrImplPointer(<span class="keyword">const</span> CellPtrImplPointer &amp;) <span class="keyword">noexcept</span> = <span class="keywordflow">default</span>;</div>
 <div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>    <span class="comment">// cppcheck-suppress noExplicitConstructor</span></div>
 <div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>    <span class="keyword">constexpr</span> CellPtrImplPointer(<span class="keyword">decltype</span>(<span class="keyword">nullptr</span>)) <span class="keyword">noexcept</span> {}</div>
@@ -246,35 +246,35 @@ $(function() {
 <div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span> </div>
 <div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>  CellPtrImplPointer m_ptr;</div>
 <div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span> </div>
-<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>  <a class="code hl_class" href="classObserved.html">Observed</a>(<span class="keyword">const</span> <a class="code hl_class" href="classObserved.html">Observed</a> &amp;) = <span class="keyword">delete</span>;</div>
-<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>  <span class="keywordtype">void</span> operator=(<span class="keyword">const</span> <a class="code hl_class" href="classObserved.html">Observed</a> &amp;) = <span class="keyword">delete</span>;</div>
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>  <span class="keywordtype">void</span> OnEndOfLife() <span class="keyword">const</span> <span class="keyword">noexcept</span>;</div>
-<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span> </div>
-<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span><span class="preprocessor">#if CELLPTR_LOG_REFS</span></div>
-<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>  <span class="keywordtype">void</span> LogRef(<span class="keyword">const</span> <a class="code hl_class" href="classCellPtrBase.html">CellPtrBase</a> *) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>  <span class="keywordtype">void</span> LogDeref(<span class="keyword">const</span> <a class="code hl_class" href="classCellPtrBase.html">CellPtrBase</a> *) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span><span class="preprocessor">#else</span></div>
-<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>  <span class="keyword">static</span> <span class="keywordtype">void</span> LogRef(<span class="keyword">const</span> <a class="code hl_class" href="classCellPtrBase.html">CellPtrBase</a> *) {}</div>
-<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>  <span class="keyword">static</span> <span class="keywordtype">void</span> LogDeref(<span class="keyword">const</span> <a class="code hl_class" href="classCellPtrBase.html">CellPtrBase</a> *) {}</div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span> </div>
-<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span><span class="keyword">protected</span>:</div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>  <a class="code hl_class" href="classObserved.html">Observed</a>() <span class="keyword">noexcept</span></div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span><span class="preprocessor">#if CELLPTR_COUNT_INSTANCES</span></div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>    { ++m_instanceCount; }</div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span><span class="preprocessor">#else</span></div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>  = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>  <a class="code hl_class" href="classObserved.html">~Observed</a>()</div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>    {</div>
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>      <span class="keywordflow">if</span> (m_ptr) OnEndOfLife();</div>
-<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span><span class="preprocessor">#if CELLPTR_COUNT_INSTANCES</span></div>
-<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>      --m_instanceCount;</div>
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>    }</div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span> </div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>  <span class="keyword">static</span> <span class="keywordtype">size_t</span> GetLiveInstanceCount() { <span class="keywordflow">return</span> m_instanceCount; }</div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>  <span class="keywordtype">void</span> OnEndOfLife() <span class="keyword">const</span> <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span> </div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span><span class="preprocessor">#if CELLPTR_LOG_REFS</span></div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>  <span class="keywordtype">void</span> LogRef(<span class="keyword">const</span> <a class="code hl_class" href="classCellPtrBase.html">CellPtrBase</a> *) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>  <span class="keywordtype">void</span> LogDeref(<span class="keyword">const</span> <a class="code hl_class" href="classCellPtrBase.html">CellPtrBase</a> *) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>  <span class="keyword">static</span> <span class="keywordtype">void</span> LogRef(<span class="keyword">const</span> <a class="code hl_class" href="classCellPtrBase.html">CellPtrBase</a> *) {}</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>  <span class="keyword">static</span> <span class="keywordtype">void</span> LogDeref(<span class="keyword">const</span> <a class="code hl_class" href="classCellPtrBase.html">CellPtrBase</a> *) {}</div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span> </div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span><span class="keyword">protected</span>:</div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>  <a class="code hl_class" href="classObserved.html">Observed</a>() <span class="keyword">noexcept</span></div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span><span class="preprocessor">#if CELLPTR_COUNT_INSTANCES</span></div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>    { ++m_instanceCount; }</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>  = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>  <a class="code hl_class" href="classObserved.html">~Observed</a>()</div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>    {</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>      <span class="keywordflow">if</span> (m_ptr) OnEndOfLife();</div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span><span class="preprocessor">#if CELLPTR_COUNT_INSTANCES</span></div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>      --m_instanceCount;</div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>    }</div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span> </div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>  <span class="keyword">static</span> <span class="keywordtype">size_t</span> GetLiveInstanceCount() { <span class="keywordflow">return</span> m_instanceCount; }</div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>  <a class="code hl_class" href="classObserved.html">Observed</a>(<span class="keyword">const</span> <a class="code hl_class" href="classObserved.html">Observed</a> &amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>  <span class="keywordtype">void</span> operator=(<span class="keyword">const</span> <a class="code hl_class" href="classObserved.html">Observed</a> &amp;) = <span class="keyword">delete</span>;</div>
 <div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>  <span class="keyword">static</span> <span class="keywordtype">size_t</span> GetLiveControlBlockInstanceCount() { <span class="keywordflow">return</span> ControlBlock::GetLiveInstanceCount(); }</div>
 <div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>  <span class="keywordtype">bool</span> IsNull()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> !m_ptr.GetImpl(); }</div>
 <div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>  <span class="keywordtype">bool</span> HasControlBlock()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_ptr.GetControlBlock(); }</div>

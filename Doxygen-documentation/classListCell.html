@@ -102,12 +102,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a82f1a34c47749c259d1285e99595e257"><td class="memItemLeft" align="right" valign="top"><a id="a82f1a34c47749c259d1285e99595e257" name="a82f1a34c47749c259d1285e99595e257"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>ListCell</b> (<a class="el" href="classGroupCell.html">GroupCell</a> *<a class="el" href="ToolBarSections_8cpp.html#a0242027ec3331f3d5793c42d21b6f4e1">group</a>, const <a class="el" href="classListCell.html">ListCell</a> &amp;cell)</td></tr>
 <tr class="separator:a82f1a34c47749c259d1285e99595e257"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a171bdf75062abebb8c046dfa087216a8"><td class="memItemLeft" align="right" valign="top">virtual std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classListCell.html#a171bdf75062abebb8c046dfa087216a8">Copy</a> (<a class="el" href="classGroupCell.html">GroupCell</a> *<a class="el" href="ToolBarSections_8cpp.html#a0242027ec3331f3d5793c42d21b6f4e1">group</a>) const override</td></tr>
-<tr class="memdesc:a171bdf75062abebb8c046dfa087216a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a copy of this cell.  <br /></td></tr>
-<tr class="separator:a171bdf75062abebb8c046dfa087216a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a10d7279e286e9f0d0887f35937705b34"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classCellTypeInfo.html">CellTypeInfo</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classListCell.html#a10d7279e286e9f0d0887f35937705b34">GetInfo</a> () override</td></tr>
-<tr class="memdesc:a10d7279e286e9f0d0887f35937705b34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the information about this cell's type.  <br /></td></tr>
-<tr class="separator:a10d7279e286e9f0d0887f35937705b34"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abad2ec4f679c55eb3ab26d04db74d6ca"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classListCell.html#abad2ec4f679c55eb3ab26d04db74d6ca">Copy</a> (<a class="el" href="classGroupCell.html">GroupCell</a> *<a class="el" href="ToolBarSections_8cpp.html#a0242027ec3331f3d5793c42d21b6f4e1">group</a>) const override</td></tr>
+<tr class="memdesc:abad2ec4f679c55eb3ab26d04db74d6ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a copy of this cell.  <br /></td></tr>
+<tr class="separator:abad2ec4f679c55eb3ab26d04db74d6ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a881f65fc72234af33762876646bb31bf"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classCellTypeInfo.html">CellTypeInfo</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classListCell.html#a881f65fc72234af33762876646bb31bf">GetInfo</a> () override</td></tr>
+<tr class="memdesc:a881f65fc72234af33762876646bb31bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the information about this cell's type.  <br /></td></tr>
+<tr class="separator:a881f65fc72234af33762876646bb31bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aafdaa3d73f4bc60db56b5b0df2b48ffe"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classListCell.html#aafdaa3d73f4bc60db56b5b0df2b48ffe">GetInnerCellCount</a> () const override</td></tr>
 <tr class="memdesc:aafdaa3d73f4bc60db56b5b0df2b48ffe"><td class="mdescLeft">&#160;</td><td class="mdescRight">ORDER MATTERS: also used, via the default <a class="el" href="classCell.html#a73d23619875f8b6c48df6244db97e3d3" title="The number of pieces this cell is displayed as once it IsBrokenIntoLines(), and in what order – see G...">GetBrokenCellCount()</a>/ <a class="el" href="classCell.html#a45b3235bcd1ac8d2de798292b715a99b" title="Retrieve a piece of this cell&#39;s broken (linear/1D) display; see GetBrokenCellCount().">GetBrokenCell()</a>, as this cell's broken/linear draw sequence &ndash; "[", then the (possibly multi-cell) contents, then "]", unconditionally.  <br /></td></tr>
 <tr class="separator:aafdaa3d73f4bc60db56b5b0df2b48ffe"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -120,7 +120,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a75fa15e1b9b5e720d47cef1ef263fb80"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classListCell.html#a75fa15e1b9b5e720d47cef1ef263fb80">SetCurrentPoint</a> (wxPoint point) const override</td></tr>
 <tr class="memdesc:a75fa15e1b9b5e720d47cef1ef263fb80"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pass 2: Arrangement.  <br /></td></tr>
 <tr class="separator:a75fa15e1b9b5e720d47cef1ef263fb80"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad204237ff455b26fac863a0e14b3ed84"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classListCell.html#ad204237ff455b26fac863a0e14b3ed84">Draw</a> (wxDC *dc, wxDC *antialiassingDC) override</td></tr>
+<tr class="memitem:ad204237ff455b26fac863a0e14b3ed84"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classListCell.html#ad204237ff455b26fac863a0e14b3ed84">Draw</a> (wxDC *dc, wxDC *antialiassingDC) override</td></tr>
 <tr class="memdesc:ad204237ff455b26fac863a0e14b3ed84"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pass 3 (Paint): Renders the cell using pre-calculated coordinates.  <br /></td></tr>
 <tr class="separator:ad204237ff455b26fac863a0e14b3ed84"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3fd50a7cf8ddc44844e7c123421f30c6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classListCell.html#a3fd50a7cf8ddc44844e7c123421f30c6">BreakUp</a> () const override</td></tr>
@@ -129,19 +129,19 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6b6613548f19333ddb0bc6bf6d6cbf4c"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classListCell.html#a6b6613548f19333ddb0bc6bf6d6cbf4c">ToMathML</a> () const override</td></tr>
 <tr class="memdesc:a6b6613548f19333ddb0bc6bf6d6cbf4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert this cell to a representation fit for saving in a .wxmx file.  <br /></td></tr>
 <tr class="separator:a6b6613548f19333ddb0bc6bf6d6cbf4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad9bb1fb8acfc3eff195c21e406b45c4e"><td class="memItemLeft" align="right" valign="top">virtual wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classListCell.html#ad9bb1fb8acfc3eff195c21e406b45c4e">ToMatlab</a> () const override</td></tr>
+<tr class="memitem:ad9bb1fb8acfc3eff195c21e406b45c4e"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classListCell.html#ad9bb1fb8acfc3eff195c21e406b45c4e">ToMatlab</a> () const override</td></tr>
 <tr class="memdesc:ad9bb1fb8acfc3eff195c21e406b45c4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert this cell to its Matlab representation.  <br /></td></tr>
 <tr class="separator:ad9bb1fb8acfc3eff195c21e406b45c4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa9d7fc50974f361e493fddcbbe54168f"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classListCell.html#aa9d7fc50974f361e493fddcbbe54168f">ToOMML</a> () const override</td></tr>
 <tr class="memdesc:aa9d7fc50974f361e493fddcbbe54168f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the cell's representation as OMML.  <br /></td></tr>
 <tr class="separator:aa9d7fc50974f361e493fddcbbe54168f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a62d2373743857e9bce60ac20bcacc97e"><td class="memItemLeft" align="right" valign="top">virtual wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classListCell.html#a62d2373743857e9bce60ac20bcacc97e">ToString</a> () const override</td></tr>
+<tr class="memitem:a62d2373743857e9bce60ac20bcacc97e"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classListCell.html#a62d2373743857e9bce60ac20bcacc97e">ToString</a> () const override</td></tr>
 <tr class="memdesc:a62d2373743857e9bce60ac20bcacc97e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the cell's representation as a string.  <br /></td></tr>
 <tr class="separator:a62d2373743857e9bce60ac20bcacc97e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac2a0e09b1e9cdf7b2d2155b804fbba23"><td class="memItemLeft" align="right" valign="top">virtual wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classListCell.html#ac2a0e09b1e9cdf7b2d2155b804fbba23">ToTeX</a> () const override</td></tr>
+<tr class="memitem:ac2a0e09b1e9cdf7b2d2155b804fbba23"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classListCell.html#ac2a0e09b1e9cdf7b2d2155b804fbba23">ToTeX</a> () const override</td></tr>
 <tr class="memdesc:ac2a0e09b1e9cdf7b2d2155b804fbba23"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert this cell to its LaTeX representation.  <br /></td></tr>
 <tr class="separator:ac2a0e09b1e9cdf7b2d2155b804fbba23"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aee52af8aa73b4cc7aa531f473ac1cd0d"><td class="memItemLeft" align="right" valign="top">virtual wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classListCell.html#aee52af8aa73b4cc7aa531f473ac1cd0d">ToXML</a> () const override</td></tr>
+<tr class="memitem:aee52af8aa73b4cc7aa531f473ac1cd0d"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classListCell.html#aee52af8aa73b4cc7aa531f473ac1cd0d">ToXML</a> () const override</td></tr>
 <tr class="memdesc:aee52af8aa73b4cc7aa531f473ac1cd0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert this cell to a representation fit for saving in a .wxmx file.  <br /></td></tr>
 <tr class="separator:aee52af8aa73b4cc7aa531f473ac1cd0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac3a292ab7d72829835b49ceb185e2a46"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classListCell.html#ac3a292ab7d72829835b49ceb185e2a46">SetCurrentPoint</a> (wxPoint point) const</td></tr>
@@ -1107,7 +1107,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 
 <p>Can this cell be popped out interactively in gnuplot? </p>
 
-<p>Reimplemented in <a class="el" href="classAnimationCell.html#a3a54518c72ccde277cab0ca6ba201261">AnimationCell</a>, <a class="el" href="classImgCell.html#a08f0cf0de0964e392aefc3c12cabd5c2">ImgCell</a>, and <a class="el" href="classImgCellBase.html#af913972c17a207f578cea0e2212e01a4">ImgCellBase</a>.</p>
+<p>Reimplemented in <a class="el" href="classAnimationCell.html#a3a54518c72ccde277cab0ca6ba201261">AnimationCell</a>, <a class="el" href="classImgCell.html#a08f0cf0de0964e392aefc3c12cabd5c2">ImgCell</a>, and <a class="el" href="classImgCellBase.html#ac44e335536d914feb91616fdbc9ee4c0">ImgCellBase</a>.</p>
 
 </div>
 </div>
@@ -1165,7 +1165,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 <p>Clears memory from cached items automatically regenerated when the cell is drawn. </p>
 <p>The scaled version of the image will be recreated automatically once it is needed. </p>
 
-<p>Reimplemented in <a class="el" href="classAnimationCell.html#a2893311cf335b9dc422fd22fcc6a0de8">AnimationCell</a>, <a class="el" href="classImgCell.html#a8c135754a4cc68973350f5e19919d6c4">ImgCell</a>, and <a class="el" href="classImgCellBase.html#af9116af932218080982a58320a64bffd">ImgCellBase</a>.</p>
+<p>Reimplemented in <a class="el" href="classAnimationCell.html#a2893311cf335b9dc422fd22fcc6a0de8">AnimationCell</a>, <a class="el" href="classImgCell.html#a8c135754a4cc68973350f5e19919d6c4">ImgCell</a>, and <a class="el" href="classImgCellBase.html#a990e7a8593a4fe92513fbdd16c7eb6c4">ImgCellBase</a>.</p>
 
 </div>
 </div>
@@ -1333,8 +1333,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 
 </div>
 </div>
-<a id="a171bdf75062abebb8c046dfa087216a8" name="a171bdf75062abebb8c046dfa087216a8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a171bdf75062abebb8c046dfa087216a8">&#9670;&#160;</a></span>Copy()</h2>
+<a id="abad2ec4f679c55eb3ab26d04db74d6ca" name="abad2ec4f679c55eb3ab26d04db74d6ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abad2ec4f679c55eb3ab26d04db74d6ca">&#9670;&#160;</a></span>Copy()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1343,7 +1343,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt; ListCell::Copy </td>
+          <td class="memname">std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt; ListCell::Copy </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td>
           <td class="paramname"><em>group</em></td><td>)</td>
@@ -1358,7 +1358,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 </div><div class="memdoc">
 
 <p>Create a copy of this cell. </p>
-<p>This method is purely virtual, which means every child class has to define its own <a class="el" href="classListCell.html#a171bdf75062abebb8c046dfa087216a8" title="Create a copy of this cell.">Copy()</a> method. </p>
+<p>This method is purely virtual, which means every child class has to define its own <a class="el" href="classListCell.html#abad2ec4f679c55eb3ab26d04db74d6ca" title="Create a copy of this cell.">Copy()</a> method. </p>
 
 <p>Implements <a class="el" href="classCell.html#aa2db105aac0ca1c6080d83c47901c204">Cell</a>.</p>
 
@@ -1392,7 +1392,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 <p>Copy this cell's editable contents to the clipboard. </p>
 <p>Only interesting for EditorCells </p>
 
-<p>Reimplemented in <a class="el" href="classAnimationCell.html#a1a0b185116abc1e95122be992c30d849">AnimationCell</a>, <a class="el" href="classEditorCell.html#a2f153d257e3322d831dc70fab62b61be">EditorCell</a>, <a class="el" href="classImgCell.html#ab4da74287664406d30e58ef80c32444a">ImgCell</a>, and <a class="el" href="classImgCellBase.html#af2f4f3b3fb12ff32a90cf82955ef12d0">ImgCellBase</a>.</p>
+<p>Reimplemented in <a class="el" href="classAnimationCell.html#a1a0b185116abc1e95122be992c30d849">AnimationCell</a>, <a class="el" href="classEditorCell.html#a2f153d257e3322d831dc70fab62b61be">EditorCell</a>, <a class="el" href="classImgCell.html#ab4da74287664406d30e58ef80c32444a">ImgCell</a>, and <a class="el" href="classImgCellBase.html#a19b84968e50a3d1d4bf1aef796edb588">ImgCellBase</a>.</p>
 
 </div>
 </div>
@@ -2039,12 +2039,12 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 <p>Returns the total height of this line. </p>
 <p>Returns <a class="el" href="classCell.html#a3b385281e2cb77ffa5dfd902802ac692" title="Returns the maximum distance between top and center of this line.">GetCenterList()</a>+<a class="el" href="classCell.html#ab1be3819e507454d4313f6ccbdac16c5" title="Returns the maximum distance between center and bottom of this line.">GetMaxDrop()</a> </p>
 
-<p>Reimplemented in <a class="el" href="classImgCell.html#a7a3f4a7f99c960f5f4b9cf6306828338">ImgCell</a>, and <a class="el" href="classImgCellBase.html#abdfc20584d96ff15809c439616525770">ImgCellBase</a>.</p>
+<p>Reimplemented in <a class="el" href="classImgCell.html#a7a3f4a7f99c960f5f4b9cf6306828338">ImgCell</a>, and <a class="el" href="classImgCellBase.html#a3b20b51503f4ad3929e3545f838da347">ImgCellBase</a>.</p>
 
 </div>
 </div>
-<a id="a10d7279e286e9f0d0887f35937705b34" name="a10d7279e286e9f0d0887f35937705b34"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a10d7279e286e9f0d0887f35937705b34">&#9670;&#160;</a></span>GetInfo()</h2>
+<a id="a881f65fc72234af33762876646bb31bf" name="a881f65fc72234af33762876646bb31bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a881f65fc72234af33762876646bb31bf">&#9670;&#160;</a></span>GetInfo()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2053,7 +2053,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual const <a class="el" href="classCellTypeInfo.html">CellTypeInfo</a> &amp; ListCell::GetInfo </td>
+          <td class="memname">const <a class="el" href="classCellTypeInfo.html">CellTypeInfo</a> &amp; ListCell::GetInfo </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -2353,7 +2353,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the tooltip text, or empty string if none. </dd></dl>
 
-<p>Reimplemented in <a class="el" href="classAnimationCell.html#ae200ce21029cac8692952ceab7530a69">AnimationCell</a>, <a class="el" href="classGroupCell.html#a5613954d9c50b168f960797309aab01f">GroupCell</a>, <a class="el" href="classImgCell.html#af8e8606947c54caa4a2a17aab1487bda">ImgCell</a>, <a class="el" href="classMatrCell.html#aba9d4324258ad407affa925e606e4f90">MatrCell</a>, and <a class="el" href="classImgCellBase.html#a31a1a1d09fcf7305a31434b31bb18629">ImgCellBase</a>.</p>
+<p>Reimplemented in <a class="el" href="classAnimationCell.html#ae200ce21029cac8692952ceab7530a69">AnimationCell</a>, <a class="el" href="classGroupCell.html#a5613954d9c50b168f960797309aab01f">GroupCell</a>, <a class="el" href="classImgCell.html#af8e8606947c54caa4a2a17aab1487bda">ImgCell</a>, <a class="el" href="classMatrCell.html#aba9d4324258ad407affa925e606e4f90">MatrCell</a>, and <a class="el" href="classImgCellBase.html#acd196775c108466c2801b9a0329689be">ImgCellBase</a>.</p>
 
 </div>
 </div>
@@ -2500,7 +2500,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 <p>Retrieve the gnuplot source data for this image. </p>
 <p>wxEmptyString means: No such data. </p>
 
-<p>Reimplemented in <a class="el" href="classAnimationCell.html#a69674af20401792e65d0f48438894491">AnimationCell</a>, <a class="el" href="classImgCell.html#aefb8bdaacf6d2957ca76e963a929a83e">ImgCell</a>, and <a class="el" href="classImgCellBase.html#a423fe98bef2b0459e2716e7c596bca26">ImgCellBase</a>.</p>
+<p>Reimplemented in <a class="el" href="classAnimationCell.html#a69674af20401792e65d0f48438894491">AnimationCell</a>, <a class="el" href="classImgCell.html#aefb8bdaacf6d2957ca76e963a929a83e">ImgCell</a>, and <a class="el" href="classImgCellBase.html#acebee5f9f73df2724650f4b28ef295e8">ImgCellBase</a>.</p>
 
 </div>
 </div>
@@ -3912,7 +3912,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 <p>Returns the cell's representation as RTF. </p>
 <p>If this method returns wxEmptyString this might mean that this cell is better handled in OMML. </p>
 
-<p>Reimplemented in <a class="el" href="classCodeEditorCell.html#aadf6a7ed34a3e21300c4c54a082a2b30">CodeEditorCell</a>, <a class="el" href="classEditorCell.html#a306bdd1169df188b11f673e243a39f9d">EditorCell</a>, <a class="el" href="classGroupCell.html#a401f67e7ce23adbf2a34b9493c86e99e">GroupCell</a>, <a class="el" href="classImgCell.html#abbf7241256e13c1cf94d91718587e6f4">ImgCell</a>, <a class="el" href="classTextCell.html#adb4b7158186deabcbd80d67c28633a1d">TextCell</a>, and <a class="el" href="classImgCellBase.html#a2f2671584e775ebcf368348a194baa7c">ImgCellBase</a>.</p>
+<p>Reimplemented in <a class="el" href="classCodeEditorCell.html#aadf6a7ed34a3e21300c4c54a082a2b30">CodeEditorCell</a>, <a class="el" href="classEditorCell.html#a306bdd1169df188b11f673e243a39f9d">EditorCell</a>, <a class="el" href="classGroupCell.html#a401f67e7ce23adbf2a34b9493c86e99e">GroupCell</a>, <a class="el" href="classImgCell.html#abbf7241256e13c1cf94d91718587e6f4">ImgCell</a>, <a class="el" href="classTextCell.html#adb4b7158186deabcbd80d67c28633a1d">TextCell</a>, and <a class="el" href="classImgCellBase.html#ae4c70087b8538f3dfb57287703d22c6e">ImgCellBase</a>.</p>
 
 </div>
 </div>
@@ -4036,7 +4036,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 <p>Some cells have different representations when they contain a line break. Examples for this are fractions or a set of parenthesis.</p>
 <p>This function tries to return a cell to the single-line form. </p>
 
-<p>Reimplemented in <a class="el" href="classFracCell.html#a5b8be4b0ec59b31317b7fabf0184a028">FracCell</a>, and <a class="el" href="classSumCell.html#aa519823cf1b8fe4302aef4906249cf0f">SumCell</a>.</p>
+<p>Reimplemented in <a class="el" href="classSumCell.html#a9f437d0c464a5c345a535a3a265fa43e">SumCell</a>, and <a class="el" href="classFracCell.html#a5b8be4b0ec59b31317b7fabf0184a028">FracCell</a>.</p>
 
 </div>
 </div>
