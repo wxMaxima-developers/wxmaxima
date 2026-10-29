@@ -50,10 +50,12 @@
 #include <wx/time.h>
 #include <wx/utils.h>
 #include <cstdio>
+#include <cstdlib>
 #include <cstring>
 #include <map>
 #include <set>
 #include <string>
+#include <vector>
 
 #define CATCH_CONFIG_RUNNER
 #include <catch2/catch.hpp>
@@ -69,7 +71,7 @@ namespace {
 //! Plays a Maxima that connects to port \p port and behaves as \p mode says
 int FakeMaxima(const std::string &mode, int port) {
   if (mode == "exit") {
-    fprintf(stderr, "fake maxima: this installation is broken\n");
+    std::fputs("fake maxima: this installation is broken\n", stderr);
     return 3;
   }
   if (mode == "hang") {
@@ -106,15 +108,15 @@ int FakeMaxima(const std::string &mode, int port) {
 
   // Answer the questions, line by line, the way the real one would.
   std::string received;
+  std::vector<char> buffer(65536);
   for (;;) {
-    char buffer[65536];
-    client.Read(buffer, sizeof(buffer));
+    client.Read(buffer.data(), buffer.size());
     if (client.LastReadCount() == 0) {
       if (!client.IsConnected() || client.Error())
         return 0;
       continue;
     }
-    received.append(buffer, client.LastReadCount());
+    received.append(buffer.data(), client.LastReadCount());
     size_t end;
     while ((end = received.find('\n')) != std::string::npos) {
       const std::string line = received.substr(0, end);
@@ -430,7 +432,7 @@ int main(int argc, char **argv) {
       int port = 0;
       for (int j = 1; j + 1 < argc; j++)
         if (std::strcmp(argv[j], "-s") == 0)
-          port = std::atoi(argv[j + 1]);
+          port = static_cast<int>(std::strtol(argv[j + 1], nullptr, 10));
       wxInitializer initializer;
       return FakeMaxima(argv[i] + 14, port);
     }

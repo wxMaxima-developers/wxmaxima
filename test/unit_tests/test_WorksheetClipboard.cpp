@@ -112,6 +112,7 @@
 #include "AttachmentSource.h"
 #include "WXMXformat.h"
 
+#include <array>
 #include <cstdlib>
 #include <string>
 #include <vector>
@@ -695,8 +696,8 @@ SCENARIO("The bitmap is also offered as PNG bytes (wxQt)") {
 
     THEN("nothing is offered under it") {
       REQUIRE(data.GetDataSize() == 0);
-      char buf[1];
-      REQUIRE_FALSE(data.GetDataHere(buf));
+      std::array<char, 1> buf{};
+      REQUIRE_FALSE(data.GetDataHere(buf.data()));
     }
   }
 }

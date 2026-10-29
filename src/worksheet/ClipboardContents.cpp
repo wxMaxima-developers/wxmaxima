@@ -53,7 +53,8 @@ bool LazyDataObject::GetDataHere(void *buf) const {
   const std::string &data = m_data->Get();
   if (data.empty())
     return false;
-  std::memcpy(buf, data.data(), data.size());
+  // wxDataObject's contract: buf holds GetDataSize() bytes, which is data.size().
+  std::memcpy(buf, data.data(), data.size()); // flawfinder: ignore
   return true;
 }
 
@@ -136,7 +137,8 @@ bool LazyPngDataObject::GetDataHere(void *buf) const {
   const std::string &png = Png();
   if (png.empty())
     return false;
-  std::memcpy(buf, png.data(), png.size());
+  // wxDataObject's contract: buf holds GetDataSize() bytes, which is png.size().
+  std::memcpy(buf, png.data(), png.size()); // flawfinder: ignore
   return true;
 }
 

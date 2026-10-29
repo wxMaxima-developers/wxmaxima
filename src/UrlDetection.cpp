@@ -25,15 +25,17 @@
 
 #include "UrlDetection.h"
 #include <wx/crt.h>
+#include <array>
 #include <cwchar>
 #include <string>
+#include <string_view>
 
 namespace wxm {
 
 namespace {
 
 //! The link prefixes we recognize, lower case.
-const wchar_t *const kUrlSchemes[] = {L"https://", L"http://", L"mailto:"};
+constexpr std::array<std::wstring_view, 3> kUrlSchemes = {L"https://", L"http://", L"mailto:"};
 
 //! Can this character be part of a link?
 bool IsUrlChar(wchar_t ch) {
@@ -50,8 +52,8 @@ bool IsUrlChar(wchar_t ch) {
 
 //! Does text contain scheme (lower case) at pos, ignoring case?
 bool UrlStartsWithSchemeAt(const std::wstring &text, size_t pos,
-                        const wchar_t *scheme) {
-  for (size_t i = 0; scheme[i]; ++i) {
+                        std::wstring_view scheme) {
+  for (size_t i = 0; i < scheme.size(); ++i) {
     if (pos + i >= text.size())
       return false;
     if (static_cast<wchar_t>(wxTolower(text[pos + i])) != scheme[i])
@@ -74,10 +76,10 @@ size_t TrimUrlEnd(const std::wstring &text, size_t start, size_t end) {
       --end;
       changed = true;
     } else if (last == L')' || last == L']') {
-      const wchar_t open = (last == L')') ? L'(' : L'[';
+      const wchar_t opener = (last == L')') ? L'(' : L'[';
       long balance = 0;
       for (size_t i = start; i < end; ++i) {
-        if (text[i] == open)
+        if (text[i] == opener)
           ++balance;
         else if (text[i] == last)
           --balance;
@@ -115,22 +117,22 @@ std::vector<UrlSpan> FindUrls(const wxString &text) {
       ++pos;
       continue;
     }
-    const wchar_t *matched = nullptr;
-    for (const wchar_t *scheme : kUrlSchemes)
+    std::wstring_view matched;
+    for (const std::wstring_view scheme : kUrlSchemes)
       if (UrlStartsWithSchemeAt(w, pos, scheme)) {
         matched = scheme;
         break;
       }
-    if (!matched) {
+    if (matched.empty()) {
       ++pos;
       continue;
     }
-    size_t end = pos + wcslen(matched);
+    size_t end = pos + matched.size();
     while (end < w.size() && IsUrlChar(w[end]))
       ++end;
     const size_t trimmedEnd = TrimUrlEnd(w, pos, end);
     // A bare "https://" or "mailto:" with nothing after it links nowhere.
-    if (trimmedEnd > pos + wcslen(matched))
+    if (trimmedEnd > pos + matched.size())
       result.push_back({pos, trimmedEnd - pos});
     pos = end;
   }
@@ -139,8 +141,8 @@ std::vector<UrlSpan> FindUrls(const wxString &text) {
 
 bool IsLaunchableUrl(const wxString &url) {
   const std::wstring& w = url.ToStdWstring();
-  for (const wchar_t *scheme : kUrlSchemes)
-    if (UrlStartsWithSchemeAt(w, 0, scheme) && w.size() > wcslen(scheme))
+  for (const std::wstring_view scheme : kUrlSchemes)
+    if (UrlStartsWithSchemeAt(w, 0, scheme) && w.size() > scheme.size())
       return true;
   return false;
 }

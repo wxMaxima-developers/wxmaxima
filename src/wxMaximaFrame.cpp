@@ -40,6 +40,7 @@
 #include <string>
 #include <memory>
 #include <algorithm>
+#include <array>
 #include "sidebars/CharButton.h"
 #include "sidebars/StatSidebar.h"
 #include "sidebars/FormatSidebar.h"
@@ -2559,9 +2560,10 @@ void wxMaximaFrame::LogHelpMenuContents() const {
   text += wxString::Format(wxS("Help menu entries as Windows knows them (%d):\n"),
                            count);
   for (int pos = 0; pos < count; pos++) {
-    wchar_t label[256] = {0};
-    ::GetMenuStringW(hmenu, pos, label, 255, MF_BYPOSITION);
-    text += wxS("  ") + wxString(label) + wxS("\n");
+    std::array<wchar_t, 256> label{};
+    ::GetMenuStringW(hmenu, pos, label.data(), static_cast<int>(label.size() - 1),
+                     MF_BYPOSITION);
+    text += wxS("  ") + wxString(label.data()) + wxS("\n");
   }
 #endif
   wxLogMessage(wxS("%s"), text);

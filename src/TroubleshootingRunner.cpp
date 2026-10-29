@@ -33,6 +33,7 @@
 #include <wx/log.h>
 #include <wx/stream.h>
 #include <wx/time.h>
+#include <array>
 #include <algorithm>
 #include <random>
 #include <vector>
@@ -882,10 +883,10 @@ void TroubleshootingRunner::PollGnuplot() {
   bool isPng = false;
   {
     wxFile output;
-    unsigned char header[8] = {0};
+    std::array<unsigned char, 8> header{};
     if (wxFileExists(m_gnuplotOutput) && output.Open(m_gnuplotOutput)) {
-      const ssize_t count = output.Read(header, sizeof(header));
-      isPng = (count > 0) && wxm::IsPngData(header, static_cast<std::size_t>(count));
+      const ssize_t count = output.Read(header.data(), header.size());
+      isPng = (count > 0) && wxm::IsPngData(header.data(), static_cast<std::size_t>(count));
     }
   }
   wxString details = m_gnuplotErrors.Strip(wxString::both);
