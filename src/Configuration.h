@@ -187,7 +187,7 @@ public:
 
   using StringBoolHash = std::unordered_map<wxString, bool, wxStringHash>;
   //! Coincides name with a operator known to maxima?
-  bool IsOperator(wxString name) const {return m_maximaSession.IsOperator(name);}
+  bool IsOperator(const wxString& name) const {return m_maximaSession.IsOperator(name);}
   //! Register name as an operator known to maxima.
   void AddMaximaOperator(const wxString &name){m_maximaSession.AddOperator(name);}
   const wxEnvVariableHashMap& MaximaEnvVars() const {return m_maximaEnvVars;}
@@ -1242,7 +1242,7 @@ public:
   //! Returns the URL MathJaX can be found at.
   void MathJaXURL(wxString url){m_mathJaxURL = std::move(url);}
 
-  bool HideMarkerForThisMessage(wxString message);
+  bool HideMarkerForThisMessage(const wxString& message);
   void HideMarkerForThisMessage(const wxString &message, bool hide)
     {m_hideMarkerForThisMessage[message] = hide;}
   bool UseSVG() const {return m_useSVG;}

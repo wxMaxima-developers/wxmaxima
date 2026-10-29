@@ -1089,7 +1089,7 @@ void MathParser::ParseCommonAttrs(wxXmlNode *node, Cell *cell) {
     cell->SetAltCopyText(val);
   if (node->GetAttribute(wxS("tooltip"), &val))
     if (!val.empty())
-      cell->SetToolTip(std::move(val));
+      cell->SetToolTip(val);
 
   wxXmlAttribute *attr = node->GetAttributes();
   while (attr) {
@@ -1315,11 +1315,11 @@ std::unique_ptr<Cell> MathParser::ParseTableTag(wxXmlNode *node, int depth) {
     matrix->AngledParens();
   else if (node->GetAttribute(wxS("straightParens")) == wxS("true"))
     matrix->StraightParens();
-  else if (node->GetAttribute(wxS("noneParens")) == wxS("true"))
-    matrix->NoParens();
-  else if (node->GetAttribute(wxS("roundedParens"), wxS("true")) == wxS("true"))
+  else if ((node->GetAttribute(wxS("noneParens")) != wxS("true")) &&
+           (node->GetAttribute(wxS("roundedParens"), wxS("true")) == wxS("true")))
     matrix->RoundedParens();
-  else matrix->NoParens();
+  else
+    matrix->NoParens();
 
   wxXmlNode *rows = SkipWhitespaceNode(node->GetChildren());
   while (rows) {

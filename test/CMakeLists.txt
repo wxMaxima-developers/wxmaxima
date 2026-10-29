@@ -848,6 +848,21 @@ add_test(
             -DEXPECTED_EXIT_CODE=92
             -P ${CMAKE_CURRENT_SOURCE_DIR}/check_exit_code.cmake)
 
+# A file of a type wxMaxima can't open gets no window and no Maxima of its
+# own: opening wxmaxima.exe and its DLLs used to start one of each per file
+# and have every Maxima try to load() a binary. The executable that runs this
+# test stands in for such a file; a --batch run must fail like it does for a
+# file that doesn't exist, without ever starting Maxima.
+add_test(
+    NAME wxmaxima_exit_code_unsupported_file
+    COMMAND ${CMAKE_COMMAND}
+            -DWXMAXIMA=$<TARGET_FILE:wxmaxima>
+            "-DARGS=--batch;--exit-on-error;$<TARGET_FILE:wxmaxima>"
+            -DWORKDIR=${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+            -DEXPECTED_EXIT_CODE=92
+            -P ${CMAKE_CURRENT_SOURCE_DIR}/check_exit_code.cmake)
+set_tests_properties(wxmaxima_exit_code_unsupported_file PROPERTIES TIMEOUT 60)
+
 # Without a display wxGTK can't initialize, and wxMaxima must say so and exit
 # with 1 instead of crashing on the wxTheApp that was never made. Seen in CI
 # when Xvfb wasn't ready yet (a segfault in CommonMain()). GTK only: wxQt

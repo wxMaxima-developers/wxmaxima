@@ -4235,7 +4235,7 @@ wxCoord EditorCell::GetLineWidth(size_t line, size_t pos) {
   return std::max(lineWidth, (wxCoord)m_configuration->GetCursorWidth());
 }
 
-bool EditorCell::History::AddState(EditorCell::History::HistoryEntry entry, Action action)
+bool EditorCell::History::AddState(const EditorCell::History::HistoryEntry& entry, Action action)
 {
   if((m_lastAction == action) && (action != any))
     return false;
@@ -5319,7 +5319,7 @@ bool EditorCell::FindNext(wxString str, const bool &down,
 }
 
 
-bool EditorCell::FindNext_RegEx(wxString str, const bool &down) {
+bool EditorCell::FindNext_RegEx(const wxString& str, const bool &down) {
   wxString text(m_text);
 
   wxLogNull suppressor;

@@ -47,7 +47,7 @@ public:
   //! Saves the geometry while this is still a whole dialog, see
   //! FindReplaceDialog::~FindReplaceDialog()
   ~ExplicitWiz() override { SendDestroyEvent(); }
-  ExplicitWiz(wxWindow *parent, Configuration *config, wxString expression, int dimensions = 2);
+  ExplicitWiz(wxWindow *parent, Configuration *config, const wxString& expression, int dimensions = 2);
   wxString GetValue();
 private:
   int m_dimensions;
@@ -89,7 +89,7 @@ public:
   //! Saves the geometry while this is still a whole dialog, see
   //! FindReplaceDialog::~FindReplaceDialog()
   ~ImplicitWiz() override { SendDestroyEvent(); }
-  ImplicitWiz(wxWindow *parent, Configuration *config, wxString expression, int dimensions = 2);
+  ImplicitWiz(wxWindow *parent, Configuration *config, const wxString& expression, int dimensions = 2);
   wxString GetValue();
 private:
   int m_dimensions;
@@ -202,7 +202,7 @@ public:
   //! Saves the geometry while this is still a whole dialog, see
   //! FindReplaceDialog::~FindReplaceDialog()
   ~WizPoints() override { SendDestroyEvent(); }
-  WizPoints(wxWindow *parent, Configuration *config, int dimensions, wxString expr);
+  WizPoints(wxWindow *parent, Configuration *config, int dimensions, const wxString& expr);
   wxString GetValue();
 private:
   BTextCtrl *m_data;

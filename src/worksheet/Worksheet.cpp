@@ -1318,7 +1318,6 @@ bool Worksheet::IsLesserGCType(int type, int comparedTo) {
     else
       return false;
   case GC_TYPE_TITLE:
-    return false;
   default:
     return false;
   }
@@ -2430,6 +2429,22 @@ std::unique_ptr<MatrCell> Worksheet::CopySelectedMatrixBlock() const {
   return matrix->CopyBlock(*block, matrix->GetGroup());
 }
 
+bool Worksheet::MatrixEntriesSelected() const {
+  return GetDocumentCellPointers().GetSelectedMatrixBlockCorners().has_value();
+}
+
+wxString Worksheet::SelectionRTFBody(const Cell *cells, bool matrixEntries) {
+  if (!cells)
+    return {};
+  if (matrixEntries && !cells->GetNext())
+    if (const auto *matrix = dynamic_cast<const MatrCell *>(cells)) {
+      const wxString table = matrix->ToRTFTable();
+      if (!table.IsEmpty())
+        return table;
+    }
+  return cells->ListToRTF() + wxS("\\par\n");
+}
+
 /***
  * Get the string representation of the selection
  */
@@ -2541,13 +2556,16 @@ std::unique_ptr<wxDataObject> Worksheet::CreateSelectionDataObject() const {
   }
   // For some reason LibreOffice likes RTF more than it likes the MathML -
   // which is standardized.
-  contents->rtf = LazyValue<std::string>([snapshot] {
-    Configuration *configuration = snapshot->GetConfiguration();
-    return std::string(
-      (WorksheetExport::RTFStart(configuration) +
-       snapshot->GetCells()->ListToRTF() + wxS("\\par\n") +
-       WorksheetExport::RTFEnd()).utf8_str());
-  });
+  // A block of a matrix's entries becomes a table, as which a spreadsheet can
+  // paste it (GH #959).
+  contents->rtf = LazyValue<std::string>(
+    [snapshot, matrixEntries = MatrixEntriesSelected()] {
+      Configuration *configuration = snapshot->GetConfiguration();
+      return std::string(
+        (WorksheetExport::RTFStart(configuration) +
+         SelectionRTFBody(snapshot->GetCells(), matrixEntries) +
+         WorksheetExport::RTFEnd()).utf8_str());
+    });
   contents->bitmap = LazyValue<wxBitmap>([snapshot] {
     return BitmapOut::RenderForClipboard(
       snapshot->GetConfigurationPointer(),
@@ -2796,10 +2814,17 @@ bool Worksheet::CopyTeX() const {
     if (inMath)
       s = wxS("\\[");
   }
+  const std::size_t contentStart = s.Length();
   if (auto block = CopySelectedMatrixBlock())
     s += block->ToTeX();
   else
     for (const Cell &tmp : OnList(start)) {
+      // A label starts an equation of its own (\tag{}s can't share one).
+      if ((start->GetType() != MC_TYPE_GROUP) &&
+          ((tmp.GetTextStyle() == TS_LABEL) ||
+           (tmp.GetTextStyle() == TS_USERLABEL)) &&
+          (s.Length() > contentStart))
+        s += wxS("\\]\n\\[");
       s += tmp.ToTeX();
       if (&tmp == GetDocumentCellPointers().GetSelectionEnd())
         break;
@@ -4523,10 +4548,10 @@ bool Worksheet::CopyRTF() const {
   wxDataObjectComposite *data = new wxDataObjectComposite;
 
   wxString rtf = RTFStart();
-  if (auto block = CopySelectedMatrixBlock())
-    // Only part of a matrix is selected: copy that sub-matrix rather than the
-    // whole cell it is in, the same way Copy() puts it into its RTF flavour.
-    rtf += block->ListToRTF();
+  if (MatrixEntriesSelected())
+    // The entries of a matrix are selected: copy them, or the selected block
+    // of them, the same way Copy() puts them into its RTF flavour.
+    rtf += SelectionRTFBody(CopySelection().get(), true);
   else {
     const GroupCell *end = GetDocumentCellPointers().GetSelectionEnd()->GetGroup();
 
@@ -4535,9 +4560,10 @@ bool Worksheet::CopyRTF() const {
       if (&tmp == end)
         break;
     }
+    rtf += wxS("\\par");
   }
 
-  rtf += wxS("\\par") + RTFEnd();
+  rtf += RTFEnd();
 
   data->Add(new RtfDataObject(rtf));
   data->Add(new RtfDataObject2(rtf));
@@ -5448,6 +5474,8 @@ bool Worksheet::TreeUndoFold(UndoActions *sourcelist,
     // later deleted) -- nothing to undo.
     return false;
 
+  if (!action.m_fold)
+    return false;
   TreeUndoAction::FoldDirection direction = *action.m_fold;
 
   // Record the opposite direction, so this undo step can itself be redone.

@@ -51,7 +51,7 @@ protected:
   class RegexReplacer : public wxRegEx
   {
   public:
-    RegexReplacer(wxString from, const wxString &to) :
+    RegexReplacer(const wxString& from, const wxString &to) :
       wxRegEx(from),
       replaceBy(to)
       {}

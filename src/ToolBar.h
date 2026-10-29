@@ -37,8 +37,8 @@
 #include "ToolBarSections.h"
 #include <vector>
 
-#ifndef _WXMAXIMA_TOOLBAR_H
-#define _WXMAXIMA_TOOLBAR_H
+#ifndef WXMAXIMA_TOOLBAR_H
+#define WXMAXIMA_TOOLBAR_H
 
 class ToolBar : public wxAuiToolBar
 {

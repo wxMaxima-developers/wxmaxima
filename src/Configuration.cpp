@@ -932,7 +932,7 @@ wxString Configuration::MaximaHelpFormatCommand() const {
     MaximaHelpFormatName() + wxS(")\n");
 }
 
-bool Configuration::HideMarkerForThisMessage(wxString message) {
+bool Configuration::HideMarkerForThisMessage(const wxString& message) {
   auto it = m_hideMarkerForThisMessage.find(message);
   if (it == m_hideMarkerForThisMessage.end())
     return false;
@@ -1142,8 +1142,14 @@ Configuration::~Configuration() {
                    "that still uses it"));
   if(m_initOpts != temporary)
     {
-      WriteStyles();
-      WriteSettings();
+      // An exception leaving a destructor calls std::terminate(). Losing
+      // the settings is the lesser evil.
+      try {
+        WriteStyles();
+        WriteSettings();
+      } catch (...) {
+        wxLogMessage(wxS("Could not save the configuration."));
+      }
     }
 }
 

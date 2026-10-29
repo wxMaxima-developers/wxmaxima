@@ -41,23 +41,11 @@ TextCell::TextCell(GroupCell *group, Configuration *config,
 {
   switch (style) {
   case TS_MATH:
-    m_type = MC_TYPE_TEXT;
-    break;
   case TS_VARIABLE:
-    m_type = MC_TYPE_TEXT;
-    break;
   case TS_NUMBER:
-    m_type = MC_TYPE_TEXT;
-    break;
   case TS_FUNCTION:
-    m_type = MC_TYPE_TEXT;
-    break;
   case TS_SPECIAL_CONSTANT:
-    m_type = MC_TYPE_TEXT;
-    break;
   case TS_GREEK_CONSTANT:
-    m_type = MC_TYPE_TEXT;
-    break;
   case TS_STRING:
     m_type = MC_TYPE_TEXT;
     break;
@@ -71,8 +59,6 @@ TextCell::TextCell(GroupCell *group, Configuration *config,
     m_type = MC_TYPE_PROMPT;
     break;
   case TS_LABEL:
-    m_type = MC_TYPE_LABEL;
-    break;
   case TS_USERLABEL:
     m_type = MC_TYPE_LABEL;
     break;
@@ -958,8 +944,6 @@ wxString TextCell::ToTeX() const {
   text.Replace(wxS("@"), mathModeStart + wxS("@") + mathModeEnd);
   text.Replace(wxS("#"), mathModeStart + wxS("\\neq") + mathModeEnd);
   text.Replace(wxS("\u00A0"), wxS("~")); // A non-breakable space
-  text.Replace(wxS("<"), mathModeStart + wxS("<") + mathModeEnd);
-  text.Replace(wxS(">"), mathModeStart + wxS(">") + mathModeEnd);
   text.Replace(wxS("\u219D"), mathModeStart + wxS("\\leadsto") + mathModeEnd);
   text.Replace(wxS("\u2192"),
                mathModeStart + wxS("\\rightarrow") + mathModeEnd);
@@ -1047,9 +1031,9 @@ wxString TextCell::ToTeX() const {
     else if (text == wxS("\\% nu"))
       return wxS("\\nu ");
     else if (text == wxS("\\% xi"))
-      return wxS("\\ui ");
+      return wxS("\\xi ");
     else if (text == wxS("\\% omicron"))
-      return wxS("\\omicron ");
+      return wxS("o");
     else if (text == wxS("\\% pi"))
       return wxS("\\pi ");
     else if (text == wxS("\\% rho"))
@@ -1077,41 +1061,41 @@ wxString TextCell::ToTeX() const {
     else if (text == wxS("\\% Delta"))
       return wxS("\\Delta ");
     else if (text == wxS("\\% Epsilon"))
-      return wxS("\\Epsilon ");
+      return wxS("E");
     else if (text == wxS("\\% Zeta"))
-      return wxS("\\Zeta ");
+      return wxS("Z");
     else if (text == wxS("\\% Eta"))
-      return wxS("\\Eta ");
+      return wxS("H");
     else if (text == wxS("\\% Theta"))
       return wxS("\\Theta ");
     else if (text == wxS("\\% Iota"))
-      return wxS("\\Iota ");
+      return wxS("I");
     else if (text == wxS("\\% Kappa"))
-      return wxS("\\Kappa ");
+      return wxS("K");
     else if (text == wxS("\\% Lambda"))
       return wxS("\\Lambda ");
     else if (text == wxS("\\% Mu"))
-      return wxS("\\Mu ");
+      return wxS("M");
     else if (text == wxS("\\% Nu"))
-      return wxS("\\Nu ");
+      return wxS("N");
     else if (text == wxS("\\% Xi"))
-      return wxS("\\ui ");
+      return wxS("\\Xi ");
     else if (text == wxS("\\% Omicron"))
-      return wxS("\\Omicron ");
+      return wxS("O");
     else if (text == wxS("\\% Pi"))
       return wxS("\\Pi ");
     else if (text == wxS("\\% Rho"))
-      return wxS("\\Rho ");
+      return wxS("P");
     else if (text == wxS("\\% Sigma"))
       return wxS("\\Sigma ");
     else if (text == wxS("\\% Tau"))
-      return wxS("\\Tau ");
+      return wxS("T");
     else if (text == wxS("\\% Upsilon"))
       return wxS("\\Upsilon ");
     else if (text == wxS("\\% Phi"))
       return wxS("\\Phi ");
     else if (text == wxS("\\% Chi"))
-      return wxS("\\Chi ");
+      return wxS("X");
     else if (text == wxS("\\% Psi"))
       return wxS("\\Psi ");
     else if (text == wxS("\\% Omega"))
@@ -1132,7 +1116,7 @@ wxString TextCell::ToTeX() const {
     else if (text == wxS("%i"))
       return wxS("i");
     else if (text == wxS("\\% pi"))
-      return wxS("\\ensuremath{\\pi} ");
+      return wxS("\\pi ");
     else if (text == wxS("d"))
       // The "d" of an integral's "dx"/"dtheta"/... (the only other user of
       // this style, see wxxml-int in wxMathML.lisp): must render upright,
@@ -1144,9 +1128,10 @@ wxString TextCell::ToTeX() const {
   }
 
   if ((GetTextStyle() == TS_LABEL) || (GetTextStyle() == TS_USERLABEL)) {
-    wxString conditionalLinebreak;
-    if (GetPrevious())
-      conditionalLinebreak = wxS("\\]\n\\[");
+    // A label starts an equation of its own. Ending the one before is the
+    // caller's job (Cell::ListToTeX(), GroupCell::ToTeXCodeCell() and
+    // Worksheet::CopyTeX() all know whether one is open): doing it here, too,
+    // left an empty equation between the two.
     text.Trim(true);
     // A automatically generated output label contains a "(" and ")", the "\tag{}" does also add them,
     // remove them in the case of standard label "(%onn)".
@@ -1155,23 +1140,41 @@ wxString TextCell::ToTeX() const {
       label.Replace(wxS("("), wxS(""));
       label.Replace(wxS(")"), wxS(""));
     }
-    text = conditionalLinebreak + wxS("\\tag{") + label + wxS("}");
-    label.Replace(wxS("\\% "), wxS(""));
+    // \tag{} is typeset as text, where the space after "\%" would show.
+    label.Replace(wxS("\\% "), wxS("\\%"));
+    text = wxS("\\tag{") + label + wxS("}");
     // Would be a good idea, but apparently breaks mathJaX
     // text += wxS("\\label{") + label + wxS("}");
   } else {
     if (GetTextStyle() == TS_FUNCTION) {
-      if (text != wxEmptyString) {
+      // Operators (<mo>) share this style with function names (<fnm>).
+      // \mathop{} would give a "+" or "=" the spacing of a big operator
+      // instead of that of a binary operator or a relation.
+      bool isOperator = !m_text.IsEmpty();
+      for (const auto &chr : m_text)
+        if (wxIsalnum(chr)) {
+          isOperator = false;
+          break;
+        }
+      if ((m_text == wxS("\u2192")) || (m_text == wxS("->")))
+        text = wxS("\\to ");
+      else if ((m_text == wxS("\u2794")) || (m_text == wxS("-->")))
+        text = wxS("\\longrightarrow ");
+      else if (!isOperator && (text != wxEmptyString)) {
         text.Replace(wxS("^"), wxS("\\hat{} "));
-        text = wxS("\\mathop{") + text + wxS("}");
+        // A single letter would be centered vertically by \mathop{} and
+        // already is in the right font.
+        if (m_text.Length() > 1)
+          text = wxS("\\mathop{") + text + wxS("}");
       }
     } else if ((GetTextStyle() == TS_VARIABLE) ||
                (GetTextStyle() == TS_GREEK_CONSTANT) ||
                (GetTextStyle() == TS_SPECIAL_CONSTANT)) {
+      // Always in math mode, so no \ensuremath{} is needed.
       if ((m_displayedText.Length() > 1) && (text.at(1) != wxS('_')))
-        text = wxS("\\ensuremath{\\mathrm{") + text + wxS("}}");
+        text = wxS("\\mathrm{") + text + wxS("}");
       if (text == wxS("\\% pi"))
-        text = wxS("\\ensuremath{\\pi} ");
+        text = wxS("\\pi ");
       text.Replace(wxS("\\text{ä}"), wxS("\\text{\\textit{ä}}"));
       text.Replace(wxS("\\text{ö}"), wxS("\\text{\\textit{ö}}"));
       text.Replace(wxS("\\text{ü}"), wxS("\\text{\\textit{ü}}"));
@@ -1466,14 +1469,8 @@ wxString TextCell::ToXML() const {
       tag = wxS("st");
       break;
     case TS_LABEL:
-      tag = wxS("lbl");
-      break;
     case TS_USERLABEL:
-      tag = wxS("lbl");
-      break;
     case TS_MAIN_PROMPT:
-      tag = wxS("lbl");
-      break;
     case TS_OTHER_PROMPT:
       tag = wxS("lbl");
       break;
@@ -1633,12 +1630,9 @@ wxString TextCell::GetSymbolUnicode(bool keepPercent) const {
 #endif
   else if (m_text == wxS("->"))
     return wxS("\u2192");
-  else if (m_text == wxS("-->"))
-    return wxS("\u2794");
-  // The next two ones are needed for the output of let(a/b,a+1);
-  else if (m_text == wxS(" --> "))
-    return wxS("\u2794");
-  else if (m_text == wxS(" \u2212\u2192 "))
+  // The last two ones are needed for the output of let(a/b,a+1);
+  else if ((m_text == wxS("-->")) || (m_text == wxS(" --> ")) ||
+           (m_text == wxS(" \u2212\u2192 ")))
     return wxS("\u2794");
   /*
     else if (GetTextStyle() == TS_SPECIAL_CONSTANT && m_text == wxS("d"))

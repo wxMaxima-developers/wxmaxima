@@ -30,8 +30,8 @@
 #include <wx/window.h>
 #include <wx/bmpbndl.h>
 
-#ifndef _ARTPROVIDER_H
-#define _ARTPROVIDER_H
+#ifndef ARTPROVIDER_H
+#define ARTPROVIDER_H
 
 class ArtProvider
 {

@@ -59,7 +59,7 @@ private:
 class CsvExportWiz : public wxDialog
 {
 public:
-  CsvExportWiz(wxWindow *parent, Configuration *config, wxString objectType);
+  CsvExportWiz(wxWindow *parent, Configuration *config, const wxString& objectType);
   ~CsvExportWiz();
   wxString GetFilename(){return m_filename->GetValue();}
   wxString GetMatrix(){return m_matrix->GetValue();}

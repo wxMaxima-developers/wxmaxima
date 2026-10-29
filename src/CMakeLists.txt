@@ -155,6 +155,7 @@ set(SOURCE_FILES
     Bidi.cpp
     EvaluationQueue.cpp
     EventIDs.cpp
+    FileOpenKind.cpp
     FontRenderabilityCache.cpp
     AttachmentSource.cpp
     Image.cpp
@@ -396,7 +397,12 @@ if(WXM_USE_FRIBIDI)
 endif()
 if(FRIBIDI_FOUND)
   set(USE_FRIBIDI "1")
-  message(STATUS "Found libfribidi ${FRIBIDI_VERSION}: bidirectional text editing will be accurate.")
+  if(Fribidi_VERSION)
+    set_property(GLOBAL PROPERTY WXM_FRIBIDI_VERSION "${Fribidi_VERSION}")
+  else()
+    set_property(GLOBAL PROPERTY WXM_FRIBIDI_VERSION "of unknown version")
+  endif()
+  message(STATUS "Found libfribidi ${Fribidi_VERSION}: bidirectional text editing will be accurate.")
   include_directories(${Fribidi_INCLUDE_DIRS})
 else()
   set(USE_FRIBIDI "0")
@@ -583,6 +589,7 @@ if(WIN32 AND USE_WEBVIEW)
                 "${WXM_WEBVIEW2_LOADER_TO_SHIP}" "$<TARGET_FILE_DIR:wxmaxima>"
             VERBATIM)
         install(FILES "${WXM_WEBVIEW2_LOADER_TO_SHIP}" DESTINATION bin)
+        set_property(GLOBAL PROPERTY WXM_WEBVIEW2_LOADER "${WXM_WEBVIEW2_LOADER_TO_SHIP}")
     else()
         message(STATUS "WebView2Loader.dll not found: unless wxWidgets links the "
             "WebView2 loader statically, the integrated help browser will only work "

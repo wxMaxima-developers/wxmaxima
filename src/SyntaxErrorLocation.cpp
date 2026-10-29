@@ -132,21 +132,22 @@ std::optional<TextRange> LocateSyntaxError(const wxString &maximaOutput,
     statement.end = cellText.Length();
 
   for (const auto &candidate : EchoCandidates(*echo)) {
-    const auto pos = FindEcho(cellText, statement.start, statement.end, candidate);
-    if (!pos)
+    const auto found = FindEcho(cellText, statement.start, statement.end, candidate);
+    if (!found)
       continue;
+    const size_t echoStart = *found;
 
     // Maxima stopped reading where the echo ends. Trailing blanks it read are
     // not what's wrong, though.
-    size_t end = *pos + candidate.Length();
-    while ((end > *pos + 1) && wxIsspace(cellText[end - 1]))
+    size_t end = echoStart + candidate.Length();
+    while ((end > echoStart + 1) && wxIsspace(cellText[end - 1]))
       end--;
     // The parser may have read one character beyond the offending token to
     // see where the token ends ("x: 2 34;" stops after the ";"). So the
     // mark starts one character early, and extends to all of the token that
     // character is part of.
-    size_t start = (end - *pos >= 2) ? end - 2 : *pos;
-    while ((start > *pos) && IsTokenChar(cellText[start]) &&
+    size_t start = (end - echoStart >= 2) ? end - 2 : echoStart;
+    while ((start > echoStart) && IsTokenChar(cellText[start]) &&
            IsTokenChar(cellText[start - 1]))
       start--;
     return TextRange{start, end};

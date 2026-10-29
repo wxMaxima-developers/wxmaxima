@@ -780,6 +780,130 @@ SCENARIO("Copying a whole large matrix keeps the bitmap within bounds") {
   g_cfg->SetOversizedMatrices(Configuration::OversizedMatrices::showInFull);
 }
 
+//! The RTF a clipboard object offers, drawn now
+static std::string ClipboardRtf(const wxDataObject &data) {
+  const wxDataFormat rtfFormat(wxS("application/rtf"));
+  const wxDataObject *rtf = ClipboardObject(data, rtfFormat);
+  REQUIRE(rtf != nullptr);
+  std::string bytes(rtf->GetDataSize(rtfFormat), '\0');
+  REQUIRE(rtf->GetDataHere(rtfFormat, bytes.data()));
+  return bytes;
+}
+
+static size_t Occurrences(const wxString &haystack, const wxString &needle) {
+  size_t count = 0;
+  for (size_t pos = haystack.find(needle); pos != wxString::npos;
+       pos = haystack.find(needle, pos + 1))
+    count++;
+  return count;
+}
+
+SCENARIO("Selected matrix entries are copied as an RTF table (GH #959)") {
+  g_cfg->SetZoomFactor(1.0);
+  g_cfg->SetCanvasSize(wxSize(1000, 1000));
+
+  GIVEN("a matrix of numbers") {
+    MatrCell *matr = ShowMatrix(MatrixTableXml(3, 3));
+    THEN("its entries make an RTF table with one row per row") {
+      const wxString table = matr->ToRTFTable();
+      INFO("RTF: " << table.ToStdString());
+      CHECK(Occurrences(table, wxS("\\trowd")) == 3);
+      CHECK(Occurrences(table, wxS("\\row\n")) == 3);
+      CHECK(Occurrences(table, wxS("\\cell\n")) == 9);
+      // Every row says where its 3 cells end.
+      CHECK(Occurrences(table, wxS("\\cellx")) == 9);
+      // In the order of the matrix: row by row
+      CHECK(table.find(wxS("100")) < table.find(wxS("101")));
+      CHECK(table.find(wxS("102")) < table.find(wxS("110")));
+      CHECK(table.find(wxS("121")) < table.find(wxS("122")));
+      // The text after the table is no part of it.
+      CHECK(table.EndsWith(wxS("\\pard\n")));
+    }
+    WHEN("a block of its entries is selected and copied") {
+      Drag(matr, 1, 1, 2, 2);
+      REQUIRE(Pointers().GetSelectedMatrixBlock());
+      const auto data = g_ws->CreateSelectionDataObject();
+      const wxString rtf = wxString::FromUTF8(ClipboardRtf(*data));
+      INFO("RTF: " << rtf.ToStdString());
+      THEN("the RTF flavour is a 2x2 table of just that block") {
+        CHECK(rtf.StartsWith(wxS("{\\rtf")));
+        CHECK(Occurrences(rtf, wxS("\\trowd")) == 2);
+        CHECK(Occurrences(rtf, wxS("\\cell\n")) == 4);
+        CHECK(rtf.Contains(wxS("111")));
+        CHECK(rtf.Contains(wxS("122")));
+        CHECK_FALSE(rtf.Contains(wxS("100")));
+        // ...and no equation object
+        CHECK_FALSE(rtf.Contains(wxS("\\mmath")));
+      }
+      THEN("\"Copy as RTF\" makes the same table") {
+        CHECK(g_ws->MatrixEntriesSelected());
+        CHECK(Worksheet::SelectionRTFBody(g_ws->CopySelection().get(), true) ==
+              g_ws->CopySelectedMatrixBlock()->ToRTFTable());
+      }
+    }
+    WHEN("all of its entries are selected by dragging across them") {
+      g_ws->SelectOutputRect(g_ws->GetTree(),
+                             matr->GetRect().GetTopLeft() + wxPoint(1, 1),
+                             matr->GetRect().GetBottomRight() - wxPoint(1, 1));
+      REQUIRE(g_ws->MatrixEntriesSelected());
+      THEN("they are copied as a table, too") {
+        const auto data = g_ws->CreateSelectionDataObject();
+        const wxString rtf = wxString::FromUTF8(ClipboardRtf(*data));
+        CHECK(Occurrences(rtf, wxS("\\trowd")) == 3);
+      }
+    }
+    WHEN("the matrix is selected as a whole") {
+      g_ws->SetSelection(matr, matr);
+      THEN("it is copied as an equation, parentheses and all, as before") {
+        CHECK_FALSE(g_ws->MatrixEntriesSelected());
+        const auto data = g_ws->CreateSelectionDataObject();
+        const wxString rtf = wxString::FromUTF8(ClipboardRtf(*data));
+        INFO("RTF: " << rtf.ToStdString());
+        CHECK_FALSE(rtf.Contains(wxS("\\trowd")));
+        CHECK(rtf.Contains(wxS("\\mmath")));
+      }
+    }
+    g_ws->DestroyTree();
+  }
+
+  GIVEN("a matrix with an entry that is maths, not text") {
+    MatrCell *matr = ShowMatrix(
+      wxS("<tb roundedParens=\"true\"><mtr>"
+          "<mtd><mn>1</mn></mtd>"
+          "<mtd><f><r><mn>1</mn></r><r><mn>2</mn></r></f></mtd>"
+          "</mtr><mtr>"
+          "<mtd><mn>3</mn></mtd><mtd><mn>4</mn></mtd>"
+          "</mtr></tb>"));
+    THEN("it can't be made a table of text") {
+      CHECK(matr->ToRTFTable().IsEmpty());
+    }
+    WHEN("all of its entries are selected and copied") {
+      Drag(matr, 0, 0, 1, 1);
+      REQUIRE(g_ws->MatrixEntriesSelected());
+      THEN("the RTF has it as an equation instead") {
+        const auto data = g_ws->CreateSelectionDataObject();
+        const wxString rtf = wxString::FromUTF8(ClipboardRtf(*data));
+        INFO("RTF: " << rtf.ToStdString());
+        CHECK_FALSE(rtf.Contains(wxS("\\trowd")));
+        CHECK(rtf.Contains(wxS("\\mmath")));
+      }
+    }
+    g_ws->DestroyTree();
+  }
+
+  GIVEN("a matrix with a heading row") {
+    MatrCell *matr = ShowMatrix(MatrixTableXml(2, 2, wxS(" colnames=\"true\"")));
+    THEN("the heading is bold in the table, the rest isn't") {
+      const wxString table = matr->ToRTFTable();
+      INFO("RTF: " << table.ToStdString());
+      CHECK(Occurrences(table, wxS("\\b ")) == 2);
+      CHECK(table.find(wxS("\\b ")) < table.find(wxS("100")));
+      CHECK(table.find(wxS("110")) > table.rfind(wxS("\\b0")));
+    }
+    g_ws->DestroyTree();
+  }
+}
+
 class TestApp : public wxApp {
 public:
   bool OnInit() override { return true; }

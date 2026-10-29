@@ -1208,7 +1208,7 @@ void MaximaProcessManager::OnGnuplotPopoutCheckClose(wxProcessEvent &event) {
 }
 
 void MaximaProcessManager::GnuplotCommandName(wxString gnuplot) {
-  m_wxMaxima.m_gnuplotcommand = gnuplot;
+  m_wxMaxima.m_gnuplotcommand = std::move(gnuplot);
   if (!wxFileName(m_wxMaxima.m_gnuplotcommand).IsAbsolute()) {
     wxPathList pathlist;
 

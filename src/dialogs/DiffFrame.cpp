@@ -135,7 +135,7 @@ public:
    * counterpart in another worksheet.
    */
   void Recalculate(AFontSize fontsize) const override {
-    Cell::Recalculate(fontsize);
+    Cell::Recalculate(fontsize); // NOLINT(bugprone-parent-virtual-call): a spacer has no contents to lay out
     m_height = m_forcedHeight;
     m_width = 0;
     m_center = 0;
@@ -503,7 +503,7 @@ toolBar->AddSeparator();
       new wxTextCtrl(this, wxID_ANY, files[i], wxDefaultPosition, wxDefaultSize,
                      wxTE_READONLY | wxBORDER_SIMPLE);
     fileLabel->SetToolTip(files[i]);
-    const wxString fullName = files[i];
+    const wxString& fullName = files[i];
     auto ellipsize = [fileLabel, fullName]() {
       wxClientDC dc(fileLabel);
       dc.SetFont(fileLabel->GetFont());

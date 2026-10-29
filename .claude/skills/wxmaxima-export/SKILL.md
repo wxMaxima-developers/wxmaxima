@@ -55,6 +55,18 @@ text is spoken and makes the label a stuttering mess.
   if its column alignment survives, so the LaTeX exporter emits a run of art
   lines as one `verbatim` block rather than as an equation, and the HTML export
   deliberately keeps it as an image rather than as text.
+- **LaTeX markup is decided where it is generated, not cleaned up after.**
+  A cell's `ToTeX()` braces a base or a script only through `Cell::TeXGroup()`
+  (single tokens and whole groups stay bare, so `x^2`, but `{x_1}^2`), and
+  uses `\left`/`\right` only if `Cell::TeXNeedsGrowingDelimiters()` finds a
+  fraction, big operator, root or matrix inside. `<mo>` and `<fnm>` share
+  `TS_FUNCTION`: only a name gets `\mathop{}`, an operator stays bare (a
+  `\mathop{=}` has the spacing of a `\sum`). A label doesn't switch math mode
+  itself: `Cell::ListToTeX()`, `GroupCell::ToTeXCodeCell()` and
+  `Worksheet::CopyTeX()` each end the previous equation, and when the label
+  did so as well an empty `\[\displaystyle \]` was left, which a string
+  replacement then removed together with the second equation's
+  `\displaystyle`. `test_TeXRedundancy` pins all of this.
 - **Forward compatibility is mandatory.** `ToXML()` implementations MUST include
   `GetXMLFlags()` output in the opening tag, so attributes written by a *newer*
   wxMaxima survive a round trip through an older one. Any attribute you handle

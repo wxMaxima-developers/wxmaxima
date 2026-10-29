@@ -35,7 +35,7 @@
 
 ChangeLogDialog::ChangeLogDialog(wxWindow *parent)
   : wxDialog(parent, -1, _("ChangeLog"), wxDefaultPosition, wxDefaultSize,
-             wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER | wxCLOSE_BOX | wxMAXIMIZE_BOX |
+             wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER | wxMAXIMIZE_BOX |
              wxMINIMIZE_BOX) {
   wxBusyCursor bsy;
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);

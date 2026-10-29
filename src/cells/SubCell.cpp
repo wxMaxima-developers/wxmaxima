@@ -123,18 +123,8 @@ wxString SubCell::ToMatlab() const {
 }
 
 wxString SubCell::ToTeX() const {
-  wxString s;
-  wxString base = m_baseCell->ListToTeX();
-  wxString index = m_indexCell->ListToTeX();
-  if (base.Length() > 1)
-    s = wxS("{{") + base + wxS("}_");
-  else
-    s = wxS("{") + base + wxS("_");
-  if (index.Length() > 1)
-    s += wxS("{") + index + wxS("}}");
-  else
-    s += index + wxS("}");
-  return s;
+  return TeXGroup(m_baseCell->ListToTeX()) + wxS("_") +
+    TeXGroup(m_indexCell->ListToTeX());
 }
 
 wxString SubCell::ToMathML() const {

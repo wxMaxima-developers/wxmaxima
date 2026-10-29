@@ -37,7 +37,9 @@ echo "Fetching UnicodeData.txt from: $UNICODEURL"
 curl $UNICODEURL >UnicodeData.txt
 echo "Converting UnicodeData.txt to embeddable C code UnicodeData.h"
 cut -d ";" -f 1-2 <UnicodeData.txt | gzip -c -n >UnicodeData.txt.gz
-xxd -i "UnicodeData.txt.gz" >>UnicodeData.h
+# static: the header is included by one .cpp only, and a non-static array
+# defined in a header is an ODR violation waiting to happen.
+xxd -i "UnicodeData.txt.gz" | sed 's/^unsigned/static const unsigned/' >> UnicodeData.h
 echo "#endif" >>UnicodeData.h
 rm -f UnicodeData.txt.gz UnicodeData.txt
 

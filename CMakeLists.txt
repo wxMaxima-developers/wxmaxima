@@ -188,6 +188,9 @@ if(NOT WXM_DISABLE_WEBVIEW)
     message(STATUS "wxWidgets webview component is unusable on this system - "
         "building without it (as if WXM_DISABLE_WEBVIEW=ON)")
     set(WXM_DISABLE_WEBVIEW ON)
+    # For the feature summary: not the packager's choice, so it can tell them
+    # what to install instead of which option to drop.
+    set(WXM_WEBVIEW_AUTODISABLED ON)
   endif()
   unset(wxWidgets_FOUND)
 endif()
@@ -229,6 +232,7 @@ else()
 endif()
 message(STATUS "Found wxWidgets: (found version \"${wxWidgets_VERSION_STRING}\")")
 include(${wxWidgets_USE_FILE})
+include(${CMAKE_SOURCE_DIR}/cmake/WxmFeatureSummary.cmake)
 
 # A static Windows wxWidgets built with LunaSVG (USE_LUNASVG=1, which makes
 # SVG plots possible, see SvgBitmap::RendersText()) needs its libwxlunasvg.a
@@ -396,3 +400,7 @@ if(WXM_UNIT_TESTS AND TARGET wxmTestApp)
         add_dependencies(wxmTestApp ${wxm_gen_deps})
     endif()
 endif()
+
+# Last, so that it is what the packager sees: which optional features this
+# build has, and why the missing ones are missing.
+wxm_feature_summary()

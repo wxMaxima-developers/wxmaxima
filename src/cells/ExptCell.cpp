@@ -29,6 +29,7 @@
 
 #include "ExptCell.h"
 #include "CellImpl.h"
+#include "ParenCell.h"
 #include <utility>
 #include <memory>
 
@@ -168,9 +169,14 @@ wxString ExptCell::ToMatlab() const {
 }
 
 wxString ExptCell::ToTeX() const {
-  wxString s = wxS("{{") + m_baseCell->ListToTeX() + wxS("}^{") +
-    m_exptCell->ListToTeX() + wxS("}}");
-  return s;
+  const wxString base = m_baseCell->ListToTeX();
+  // A superscript on the closing parenthesis looks exactly like one on the
+  // whole parenthesized base, so (x+1)^2 needs no braces around the base.
+  const bool parenthesized =
+    !m_baseCell->GetNext() && (dynamic_cast<const ParenCell *>(m_baseCell.get())) &&
+    (base.StartsWith(wxS("(")) || base.StartsWith(wxS("\\left(")));
+  return (parenthesized ? base : TeXGroup(base)) + wxS("^") +
+    TeXGroup(m_exptCell->ListToTeX());
 }
 
 wxString ExptCell::GetDiffPart() const {

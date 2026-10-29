@@ -37,7 +37,7 @@ public:
   ListSortWiz(
     Configuration *cfg,
     wxWindow *parent, int id, const wxString &title,
-    wxString list,
+    const wxString& list,
     bool eq = false,
     const wxPoint &pos = wxDefaultPosition,
     const wxSize &size = wxDefaultSize,

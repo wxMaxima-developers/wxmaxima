@@ -1,5 +1,41 @@
 # Current development version
 
+- ESC no longer offers nothing at all for the rest of a session: the list of
+  ESC names (alpha, beta, ...) is filled in the background at startup, and
+  Maxima's list of symbols arriving before that was done stopped it halfway.
+  How often that happened depended on how fast Maxima started.
+- The configuration dialog's AI tab is split into "Contacting AIs" (the AI
+  Chat sidebar's providers and API keys) and the MCP server, whose settings
+  used to sit on the Options tab. It now explains what MCP is and that any
+  program on the computer can read the worksheet while the server runs. The
+  tab no longer disappears when there is no secret store: the MCP server
+  needs none, so its settings stay reachable.
+- Matrix > Classic matrix operations (invert, determinant, rank,
+  eigenvalues, eigenvectors, adjoint, transpose) open a wizard that asks
+  which matrix to use, pre-filled with the selection or `%`, instead of
+  sending the command at once (#647). "Generate Matrix from Expression"
+  asks for rows before columns, like "Enter Matrix", and names its index
+  variables "Row variable" and "Column variable". List > Use list > "apply
+  function to each element" says that it accepts several lists.
+- Copying entries of a matrix -- a block of them dragged across, or all of
+  them -- puts them on the clipboard as an RTF table (#959), so a
+  spreadsheet or word processor pastes them into a table's cells instead of
+  as one equation. This works if every entry is text or a number; a matrix
+  holding fractions, powers and the like is still copied as an equation.
+  Selecting the matrix as a whole, parentheses and all, copies it as an
+  equation as before.
+- LaTeX export and "Copy as LaTeX" produce leaner markup: `x^2` instead of
+  `{{x}^{2}}`, `x_1` instead of `{x_1}`, `\sin(x)` instead of `\sin{(x)}`,
+  plain parentheses and `|...|` unless the contents are taller than a line,
+  no `\left. \right.` around a sum's argument, no `\ensuremath{}` inside
+  maths and no empty equations or `\mbox{}` padding. Operators like `+`, `=`
+  and `,` are no longer `\mathop{}`s, which gave them the spacing of a big
+  operator, and a one-letter function name isn't either, which shifted it
+  vertically. Fixed along the way: a second result of a cell lost its
+  `\displaystyle`, the input prompt's `>` was wrapped in `\ensuremath{}`
+  twice, an output label showed as "% o1", a set `{1}` lost its
+  braces, a limit's arrow came out as `->`, and a sum whose argument the
+  worksheet shows in parentheses is exported with them.
 - ESC, a hexadecimal number and ESC enter that Unicode character again, as
   the manual says (#2561): the list of symbols closed as soon as the number
   matched no symbol's name. The list now shows the character the number
@@ -10,6 +46,53 @@
   it moves past it, and Backspace on an empty comment removes both halves.
   This follows the "Auto-insert closing parenthesis" option, and nothing is
   inserted inside a string.
+- Opening a file wxMaxima doesn't know -- from the command line, with
+  "Open with" or from the Finder -- is refused with one message listing the
+  files, instead of starting a window and a Maxima for each and having Maxima
+  `load()` it. Opening wxmaxima.exe together with its DLLs used to start
+  dozens of windows and Maxima processes at once and make the computer
+  unresponsive, and GCL tries to link a binary given to `load()` in as native
+  code. Lisp and Maxima source packages (`.lisp`, `.lsp`, `.mc`) and demos
+  (`.dem`) still run, but only after asking; compiled Lisp no longer does. A
+  `.wxm`, `.mac` or `.xml` that contains binary data is refused too, and
+  "Load package" still loads whatever file is picked.
+- File names wxMaxima hands to Maxima (`load`, `batch`, `demo`, importing a
+  matrix or list from CSV, adding a folder to the search path) are escaped.
+  A double quote in a file name used to end Maxima's string early, so
+  importing a file with a crafted name could run a command; and a Windows
+  path typed into the CSV import wizard lost its backslashes.
+- The help sidebar no longer opens empty at startup when it was open when
+  wxMaxima was last closed: it appears once it has help to show (F1,
+  "Help on", Maxima's `?`). Opened by hand, it shows the manual.
+- Configuring wxMaxima ends with a summary of its optional features (help
+  sidebar, AI chat sidebar, scalable plots, right-to-left text editing),
+  saying for each missing one why, and how to get it. Several depend on how
+  wxWidgets itself was built, which a packager couldn't easily tell before.
+- Fixes found by clang-tidy's bugprone checks, which a new CI job now keeps
+  clean:
+  - A placeholder for missing output ("?" in red) was never drawn.
+  - LaTeX export turned `%xi` and `%Xi` into the nonexistent `\ui`, and
+    capital Greek letters that look like Latin ones (`%Epsilon`, `%Rho`, ...)
+    into commands LaTeX doesn't know. They now export as `\xi`, `\Xi` and
+    Latin letters.
+  - In the string conversion menu, "char to Ascii code", "Unicode code
+    point to char" and "Unicode code point to UTF8" ran the command of a
+    neighbouring entry, and "UTF8 to Unicode code point" asked for a code
+    point instead of a list of UTF8 numbers.
+  - Printing computed its scale with an integer division, which rounded
+    the printer's resolution down to a multiple of 96 dpi, and down to zero
+    for a printer reporting less.
+- Fixes found by clang's static analyzer, which the clang-tidy CI job now
+  checks too:
+  - Copying an animation as RTF (what a word processor pastes) wrote the
+    image data into memory that had already been freed, so the picture was
+    missing and the program could crash later on.
+  - A label hidden by the label settings, or a user-defined label, showed
+    the wrong text until the next relayout after a settings change; a copied
+    cell showed its automatic label instead of the user-defined one.
+- About 200 places that copied a string, XML document or similar object
+  where a reference or a move would do no longer copy it (Coverity's
+  "copy instead of move" findings).
 
 # 26.10.0
 
@@ -35,7 +118,12 @@ security fix for the connection to Maxima, and many smaller fixes.
   were in text cells.
 - Selecting text in a text cell that wraps over several lines no longer
   makes the selection's ends jump between lines (#2477).
-
+- ESC, a hexadecimal number and ESC enter that Unicode character again, as
+  the manual says (#2561): the list of symbols closed as soon as the number
+  matched no symbol's name. The list now shows the character the number
+  stands for and its Unicode name next to the names, and each name next to
+  its symbol. A leading `0` or `u+` marks a number that also begins a name.
+  
 ## Code cells and evaluation
 
 - When Maxima reports an error, the statement that failed gets a light red

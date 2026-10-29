@@ -58,7 +58,7 @@ public:
       text_ctrl_1->SetSelection(-1, -1);
     }
 
-  void SetLabel1ToolTip(wxString toolTip){label_2->SetToolTip(toolTip);}
+  void SetLabel1ToolTip(const wxString& toolTip){label_2->SetToolTip(toolTip);}
 private:
 
   void set_properties();
@@ -74,7 +74,7 @@ private:
   wxString m_warningText;
 };
 
-void GetTextFromUser(const wxString &label, const wxString &title, Configuration *cfg, wxString value,
-                     wxWindow *parent, std::function<void (wxString)> callback);
+void GetTextFromUser(const wxString &label, const wxString &title, Configuration *cfg, const wxString& value,
+                     wxWindow *parent, const std::function<void (wxString)>& callback);
 
 #endif // GEN1WIZ_H

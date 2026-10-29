@@ -220,8 +220,17 @@ private:
   //! Calculates the size of the images for a configuration tab
   int GetImageSize();
 
+  /*! The panel for everything AI-related, in two boxes.
+
+    "Contacting AIs" (the AI Chat sidebar's providers and API keys) only
+    exists if the AI tools were compiled in, and only has controls if a
+    secret store is available. The MCP server box needs neither, so it
+    is always there.
+  */
+  wxWindow *CreateAiPanel();
 #ifdef WXM_USE_AI_TOOLS
-  wxWindow *CreateAiChatPanel();
+  //! Adds the AI Chat provider/API-key controls to the "Contacting AIs" box
+  void AddAiProviderControls(wxStaticBoxSizer *box);
 #endif
 
   //! The panel that allows to change the print settings
@@ -263,7 +272,7 @@ private:
 protected:
   wxGrid *m_maximaEnvVariables;
   void OnImport(wxCommandEvent& event);
-  static void CopyConfig(wxConfigBase *src, wxConfigBase *dst, wxString dir = wxS("/"));
+  static void CopyConfig(wxConfigBase *src, wxConfigBase *dst, const wxString& dir = wxS("/"));
   void OnReloadAll(wxCommandEvent& event);
   void OnReloadStyles(wxCommandEvent& event);
   void OnResetAllToDefaults(wxCommandEvent& event);

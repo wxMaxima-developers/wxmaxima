@@ -269,6 +269,32 @@ SCENARIO("ESC completion offers the code point typed, not all of Unicode") {
   }
 }
 
+SCENARIO("Maxima's symbol list doesn't cut the startup symbol list short") {
+  // At startup LoadSymbols() fills the built-in commands and every ESC name
+  // in a background task, and Maxima's own list of symbols arrives right
+  // after it connects. That used to stop the task still running, which left
+  // ESC with nothing to complete for the rest of the session.
+  const bool useThreads = Configuration::UseThreads();
+  Configuration::UseThreads(true);
+  AutoComplete completer(g_cfg);
+  completer.LoadSymbols();
+  // Short enough to be read right away, after the previous task is done.
+  completer.AddSymbols(
+    wxS("<wxxml-symbols><function>fromMaxima</function></wxxml-symbols>"));
+  Configuration::UseThreads(useThreads);
+
+  THEN("the ESC names are all there") {
+    CHECK(completer.CompleteSymbol(wxS("alp"), AutoComplete::esccommand) ==
+          std::vector<wxString>{wxS("alpha")});
+  }
+  THEN("so are the built-in commands and the symbol Maxima sent") {
+    CHECK(Contains(completer.CompleteSymbol(wxS("integr"), AutoComplete::command),
+                   wxS("integrate")));
+    CHECK(Contains(completer.CompleteSymbol(wxS("fromM"), AutoComplete::command),
+                   wxS("fromMaxima")));
+  }
+}
+
 SCENARIO("The ESC popup shows each symbol next to its name") {
   CHECK(AutoComplete::EscCompletionLabel(wxS("alpha")) ==
         wxString(wxS("alpha  ")) + wxString(wxUniChar(0x3B1)));

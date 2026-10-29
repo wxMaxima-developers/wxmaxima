@@ -13,6 +13,7 @@
 Checks: >
   -*,
   bugprone-*,
+  clang-analyzer-*,
   performance-*,
   portability-*,
   misc-*,
@@ -30,15 +31,58 @@ Checks: >
   -bugprone-easily-swappable-parameters,
   -bugprone-narrowing-conversions,
   -bugprone-implicit-widening-of-multiplication-result,
+  -bugprone-incorrect-roundings,
+  -bugprone-assignment-in-if-condition,
+  -bugprone-switch-missing-default-case,
   -misc-include-cleaner,
   -misc-non-private-member-variables-in-classes,
   -misc-no-recursion,
   -misc-use-anonymous-namespace,
   -misc-const-correctness,
   -performance-enum-size,
+  -clang-analyzer-optin.performance.Padding,
+  -clang-analyzer-cplusplus.NewDelete,
+  -clang-analyzer-cplusplus.NewDeleteLeaks,
+  -clang-analyzer-optin.cplusplus.VirtualCall,
 
+# Disabled bugprone checks, and why:
+#  - incorrect-roundings: every (x + 0.5) cast here rounds a size, which is
+#    never negative, and some are constexpr, where std::lround() isn't.
+#  - assignment-in-if-condition: the compiler already warns about the
+#    accidental "if (a = b)" (-Wparentheses); the deliberate ones read fine.
+#  - switch-missing-default-case: fires only on switches over plain ints
+#    (mostly event ids), where "nothing to do" is the obvious default.
+#    Switches over enums are checked by the compiler's -Wswitch.
+#
+# Disabled misc checks, and why:
+#  - include-cleaner: wants every symbol's own header included; wx's headers
+#    pull each other in by design, so it is thousands of reports of no value.
+#  - non-private-member-variables-in-classes, use-anonymous-namespace,
+#    const-correctness: style; the code base has its own conventions here.
+#  - no-recursion: the cell tree and the XML it is read from are recursive,
+#    and so are the functions walking them.
+#
+# Disabled clang-analyzer checks, and why (all false positives, measured
+# 2026-10 over the whole of src/):
+#  - optin.performance.Padding: wants members reordered to save padding bytes;
+#    churn, and it fights the order that keeps related members together.
+#  - cplusplus.NewDelete: wxWidgets' reference-counted string buffers
+#    (wxScopedCharBuffer, behind every wxLogMessage() and mb_str()) look like
+#    a use after free to it -- some 20 reports, all inside wx headers, where a
+#    NOLINT can't silence them.
+#  - cplusplus.NewDeleteLeaks: wx takes ownership of raw pointers in ways it
+#    can't see (wxConfig::Set(), wxArtProvider::Push(), an XML node's parent);
+#    every one of its reports was such a hand-over.
+#  - optin.cplusplus.VirtualCall: fires inside wx headers (wxBitmap, wxImage,
+#    wxZlibOutputStream) as well; in our own constructors calling the class's
+#    own version is what is wanted.
+#
 # Only report problems in wxMaxima's own headers, never in wx/system headers.
-HeaderFilterRegex: 'wxmaxima-antigravity/src/.*'
+HeaderFilterRegex: '.*/src/.*'
+# (void)-casting a [[nodiscard]] result is how this code says "ignored on
+# purpose".
+CheckOptions:
+  bugprone-unused-return-value.AllowCastToVoid: true
 # clang-tidy must not reformat: wxMaxima has its own formatting conventions.
 FormatStyle: none
 WarningsAsErrors: ''

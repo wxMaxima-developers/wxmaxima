@@ -190,7 +190,7 @@ void Plot2DWiz::do_layout() {
   Layout();
 }
 
-void Plot2DWiz::SetValue(wxString s) {
+void Plot2DWiz::SetValue(const wxString& s) {
   if (s.StartsWith(wxS("plot2d")))
     Parse(s);
   else if (s.StartsWith(wxS("wxplot2d"))) {

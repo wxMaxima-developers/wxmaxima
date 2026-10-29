@@ -29,6 +29,7 @@
 #include "BuildConfig.h"
 #include "Maxima.h"
 #include "Dirstructure.h"
+#include "FileOpenKind.h"
 #include "dialogs/DiffFrame.h"
 #include "wxMathml.h"
 #include <iostream>
@@ -906,6 +907,8 @@ bool MyApp::OnInit() {
     evalOnStartup = true;
 
   bool windowOpened = false;
+  //! The files from the command line, each to be opened in a window of its own
+  std::vector<wxString> filesToOpen;
 
   if (cmdLineParser.Found(wxS("d"))) {
     wxArrayString diffFiles;
@@ -938,8 +941,7 @@ bool MyApp::OnInit() {
     wxString canonicalFilename = FileName.GetFullPath();
     if (!uuid.IsEmpty())
       canonicalFilename += wxS("#") + uuid;
-    NewWindow(canonicalFilename, evalOnStartup, exitAfterEval);
-    windowOpened = true;
+    filesToOpen.push_back(canonicalFilename);
   }
 
   if (cmdLineParser.GetParamCount() > 0 && !cmdLineParser.Found(wxS("d"))) {
@@ -957,7 +959,23 @@ bool MyApp::OnInit() {
       wxString CanonicalFilename = FileName.GetFullPath();
       if (!uuid.IsEmpty())
         CanonicalFilename += wxS("#") + uuid;
-      NewWindow(CanonicalFilename, evalOnStartup, exitAfterEval);
+      filesToOpen.push_back(CanonicalFilename);
+    }
+  }
+
+  // Every file gets a window and a Maxima of its own, so a file that would
+  // only produce an error message is dropped before that is started.
+  if (!filesToOpen.empty()) {
+    const std::vector<wxString> openable = OpenableFiles(filesToOpen);
+    for (const auto &fileToOpen : openable)
+      NewWindow(fileToOpen, evalOnStartup, exitAfterEval);
+    // Nothing the user asked for can be opened: they have been told, and an
+    // empty window isn't what they wanted. A batch run reports it the way it
+    // reports a file that doesn't exist.
+    if (openable.empty()) {
+      if (exitAfterEval)
+        exit(wxMaxima::EXIT_FILE_OPEN_FAILED);
+      return false;
     }
     windowOpened = true;
   }
@@ -1174,8 +1192,45 @@ void MyApp::MacNewFile() {
     NewWindow();
 }
 
-void MyApp::MacOpenFile(const wxString &file) { NewWindow(file); }
+void MyApp::MacOpenFile(const wxString &file) {
+  for (const auto &openable : OpenableFiles({file}))
+    NewWindow(openable);
+}
+
 #endif // __WXMAC__
+
+std::vector<wxString> MyApp::OpenableFiles(const std::vector<wxString> &files) {
+  std::vector<wxString> openable;
+  wxString refused;
+  std::size_t refusedCount = 0;
+  // Enough to recognise what happened, without a message box taller than
+  // the screen when somebody opens a whole directory.
+  constexpr std::size_t maxListed = 10;
+  for (const auto &file : files) {
+    wxString realFile = file;
+    if (realFile.Contains(wxS("#")))
+      realFile = realFile.BeforeFirst(wxS('#'));
+    // A file that doesn't exist is left to MaximaFileIO::OpenFile() to report,
+    // as before: a batch run then fails with EXIT_FILE_OPEN_FAILED.
+    const wxString whyNot =
+      wxFileExists(realFile) ? wxm::WhyFileCannotBeOpened(realFile) : wxString();
+    if (whyNot.IsEmpty()) {
+      openable.push_back(file);
+      continue;
+    }
+    if (refusedCount < maxListed)
+      refused += wxS("\n") + wxFileName(realFile).GetFullName() + wxS(": ") + whyNot;
+    refusedCount++;
+  }
+  if (refusedCount > maxListed)
+    refused += wxS("\n") +
+      wxString::Format(_("...and %lu more."),
+                       static_cast<unsigned long>(refusedCount - maxListed));
+  if (refusedCount > 0)
+    LoggingMessageBox(_("wxMaxima did not open these files:") + refused,
+                      _("Error"), wxOK | wxICON_EXCLAMATION);
+  return openable;
+}
 
 void MyApp::OnAssertFailure(const wxChar *file, int line, const wxChar *func,
                             const wxChar *cond, const wxChar *msg) {

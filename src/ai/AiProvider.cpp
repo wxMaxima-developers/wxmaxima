@@ -355,7 +355,7 @@ wxString AiProviderShapeName(AiProviderShape shape) {
 
 // Keep these two in sync with each other AND with the order the shape
 // picker's items are actually added in ConfigDialogue (both places:
-// CreateAiChatPanel()'s detail box and AddCustomAiProviderDialog()).
+// AddAiProviderControls()'s detail box and AddCustomAiProviderDialog()).
 int AiProviderShapeToChoiceIndex(AiProviderShape shape) {
   switch (shape) {
   case AiProviderShape::Anthropic: return 1;

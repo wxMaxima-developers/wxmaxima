@@ -31,7 +31,9 @@
 #include "FunCell.h"
 #include "CellImpl.h"
 #include "TextCell.h"
+#include <unordered_map>
 #include <utility>
+#include <wx/hashmap.h>
 #include <memory>
 
 FunCell::FunCell(GroupCell *group, Configuration *config,
@@ -109,36 +111,39 @@ wxString FunCell::ToMatlab() const {
 }
 
 wxString FunCell::ToTeX() const {
-  if (m_nameCell->ToString() == wxS("sin")) return wxS("\\sin{") + m_argCell->ListToTeX() + wxS("}");
-  if (m_nameCell->ToString() == wxS("cos")) return wxS("\\cos{") + m_argCell->ListToTeX() + wxS("}");
-  if (m_nameCell->ToString() == wxS("tan")) return wxS("\\tan{") + m_argCell->ListToTeX() + wxS("}");
-  if (m_nameCell->ToString() == wxS("cot")) return wxS("\\cot{") + m_argCell->ListToTeX() + wxS("}");
-  if (m_nameCell->ToString() == wxS("sec")) return wxS("\\sec{") + m_argCell->ListToTeX() + wxS("}");
-  if (m_nameCell->ToString() == wxS("csc")) return wxS("\\csc{") + m_argCell->ListToTeX() + wxS("}");
+  // Functions LaTeX typesets upright, with an operator's spacing. Braces
+  // after the command would make the argument an ordinary atom, which only
+  // adds a thin space between the name and the parenthesis.
+  static const std::unordered_map<wxString, wxString, wxStringHash> texNames = {
+    {wxS("sin"), wxS("\\sin")}, {wxS("cos"), wxS("\\cos")},
+    {wxS("tan"), wxS("\\tan")}, {wxS("cot"), wxS("\\cot")},
+    {wxS("sec"), wxS("\\sec")}, {wxS("csc"), wxS("\\csc")},
+    {wxS("sinh"), wxS("\\sinh")}, {wxS("cosh"), wxS("\\cosh")},
+    {wxS("tanh"), wxS("\\tanh")}, {wxS("coth"), wxS("\\coth")},
+    {wxS("sech"), wxS("\\operatorname{sech}")},
+    {wxS("csch"), wxS("\\operatorname{csch}")},
+    {wxS("asin"), wxS("\\operatorname{asin}")},
+    {wxS("acos"), wxS("\\operatorname{acos}")},
+    {wxS("atan"), wxS("\\operatorname{atan}")},
+    {wxS("acot"), wxS("\\operatorname{acot}")},
+    {wxS("asec"), wxS("\\operatorname{asec}")},
+    {wxS("acsc"), wxS("\\operatorname{acsc}")},
+    {wxS("asinh"), wxS("\\operatorname{asinh}")},
+    {wxS("acosh"), wxS("\\operatorname{acosh}")},
+    {wxS("atanh"), wxS("\\operatorname{atanh}")},
+    {wxS("acoth"), wxS("\\operatorname{acoth}")},
+    {wxS("asech"), wxS("\\operatorname{asech}")},
+    {wxS("acsch"), wxS("\\operatorname{acsch}")},
+    {wxS("log"), wxS("\\log")}};
 
-  if (m_nameCell->ToString() == wxS("sinh")) return wxS("\\sinh{") + m_argCell->ListToTeX() + wxS("}");
-  if (m_nameCell->ToString() == wxS("cosh")) return wxS("\\cosh{") + m_argCell->ListToTeX() + wxS("}");
-  if (m_nameCell->ToString() == wxS("tanh")) return wxS("\\tanh{") + m_argCell->ListToTeX() + wxS("}");
-  if (m_nameCell->ToString() == wxS("coth")) return wxS("\\coth{") + m_argCell->ListToTeX() + wxS("}");
-  if (m_nameCell->ToString() == wxS("sech")) return wxS("\\operatorname{sech}{") + m_argCell->ListToTeX() + wxS("}");
-  if (m_nameCell->ToString() == wxS("csch")) return wxS("\\operatorname{csch}{") + m_argCell->ListToTeX() + wxS("}");
-
-  if (m_nameCell->ToString() == wxS("asin")) return wxS("\\operatorname{asin}{") + m_argCell->ListToTeX() + wxS("}");
-  if (m_nameCell->ToString() == wxS("acos")) return wxS("\\operatorname{acos}{") + m_argCell->ListToTeX() + wxS("}");
-  if (m_nameCell->ToString() == wxS("atan")) return wxS("\\operatorname{atan}{") + m_argCell->ListToTeX() + wxS("}");
-  if (m_nameCell->ToString() == wxS("acot")) return wxS("\\operatorname{acot}{") + m_argCell->ListToTeX() + wxS("}");
-  if (m_nameCell->ToString() == wxS("asec")) return wxS("\\operatorname{asec}{") + m_argCell->ListToTeX() + wxS("}");
-  if (m_nameCell->ToString() == wxS("acsc")) return wxS("\\operatorname{acsc}{") + m_argCell->ListToTeX() + wxS("}");
-
-  if (m_nameCell->ToString() == wxS("asinh")) return wxS("\\operatorname{asinh}{") + m_argCell->ListToTeX() + wxS("}");
-  if (m_nameCell->ToString() == wxS("acosh")) return wxS("\\operatorname{acosh}{") + m_argCell->ListToTeX() + wxS("}");
-  if (m_nameCell->ToString() == wxS("atanh")) return wxS("\\operatorname{atanh}{") + m_argCell->ListToTeX() + wxS("}");
-  if (m_nameCell->ToString() == wxS("acoth")) return wxS("\\operatorname{acoth}{") + m_argCell->ListToTeX() + wxS("}");
-  if (m_nameCell->ToString() == wxS("asech")) return wxS("\\operatorname{asech}{") + m_argCell->ListToTeX() + wxS("}");
-  if (m_nameCell->ToString() == wxS("acsch")) return wxS("\\operatorname{acsch}{") + m_argCell->ListToTeX() + wxS("}");
-
-  if (m_nameCell->ToString() == wxS("log")) return wxS("\\log{") + m_argCell->ListToTeX() + wxS("}");
-  return m_nameCell->ListToTeX() + m_argCell->ListToTeX();
+  const wxString arg = m_argCell->ListToTeX();
+  const auto texName = texNames.find(m_nameCell->ToString());
+  if (texName == texNames.end())
+    return m_nameCell->ListToTeX() + arg;
+  // \sin x needs the space, \sin(x) doesn't.
+  if (!arg.IsEmpty() && wxIsalpha(arg[0]))
+    return texName->second + wxS(" ") + arg;
+  return texName->second + arg;
 }
 
 wxString FunCell::ToXML() const {
