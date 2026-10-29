@@ -1,5 +1,9 @@
 # Current development version
 
+- The language chooser lists every language under its own name, followed by
+  its name in the current UI language ("Deutsch — German"), so someone who
+  ended up with a UI language they can't read still finds theirs (#849). The
+  list is now sorted, too: it used to come out in hash-table order.
 - Reading Maxima's manual index in the background no longer races with
   Maxima being restarted meanwhile (for example by opening a file from
   another folder right after startup): the restarted Maxima's report of its
