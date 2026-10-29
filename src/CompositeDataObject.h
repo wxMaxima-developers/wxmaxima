@@ -38,7 +38,7 @@ class CompositeDataObject final : public wxDataObject
 {
 public:
   CompositeDataObject();
-  virtual ~CompositeDataObject() override;
+  ~CompositeDataObject() override;
 
   void Add(wxDataObject *object, bool preferred = false);
   wxDataObject *GetObject(const wxDataFormat& format,

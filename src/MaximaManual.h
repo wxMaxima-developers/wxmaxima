@@ -68,9 +68,14 @@ public:
   wxString GetHelpfileURL(const wxString &keyword);
   //! Search maxima's help file for command and variable names
   void LoadHelpFileAnchors(const wxString &docdir, const wxString &maximaVersion);
-  //! Collect all keyword anchors in the help file
+  /*! Collect all keyword anchors in the help file
+
+    Runs in a background thread, so it reads nothing but its arguments and the
+    anchor maps (under m_helpFileAnchorsLock).
+  */
   void CompileHelpFileAnchors(const stop_token& stopToken,
                               const wxString &maximaHtmlDir,
+                              const wxString &maximaShareDir,
                               const wxString &maximaVersion,
                               const wxString &saveName);
   //! Load the result from the last CompileHelpFileAnchors from the disk cache
@@ -95,8 +100,8 @@ private:
                           stop_token stopToken = {},
                           const wxString &prefix = wxEmptyString) :
       m_files(files), m_stopToken(std::move(stopToken)), m_prefix(prefix) { }
-    virtual wxDirTraverseResult OnFile(const wxString& filename) override;
-    virtual wxDirTraverseResult OnDir(const wxString& dirname) override;
+    wxDirTraverseResult OnFile(const wxString& filename) override;
+    wxDirTraverseResult OnDir(const wxString& dirname) override;
     std::vector<wxString>& GetResult() const {return m_files;}
   protected:
     std::vector<wxString>& m_files;
@@ -110,8 +115,8 @@ private:
                                     stop_token stopToken = {},
                                     const wxString &prefix = wxEmptyString) :
       m_files(files), m_stopToken(std::move(stopToken)), m_prefix(prefix) { }
-    virtual wxDirTraverseResult OnFile(const wxString& filename) override;
-    virtual wxDirTraverseResult OnDir(const wxString& dirname) override;
+    wxDirTraverseResult OnFile(const wxString& filename) override;
+    wxDirTraverseResult OnDir(const wxString& dirname) override;
     std::vector<wxString>& GetResult() const {return m_files;}
   protected:
     std::vector<wxString>& m_files;

@@ -38,7 +38,7 @@ BTextCtrl::BTextCtrl(wxWindow *parent, wxWindowID id, Configuration *cfg,
                   wxFONTWEIGHT_NORMAL, 0, wxEmptyString);
 #else
     font = wxFont(10, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL,
-                  wxFONTWEIGHT_NORMAL, 0, wxEmptyString);
+                  wxFONTWEIGHT_NORMAL, false, wxEmptyString);
 #endif
     wxASSERT_MSG(font.IsOk(), _("Seems like something is broken with a font."));
     if (font.IsOk())
@@ -64,7 +64,7 @@ void BTextCtrl::OnFocus(wxFocusEvent &event) {
   event.Skip();
 }
 
-BTextCtrl::~BTextCtrl() {}
+BTextCtrl::~BTextCtrl() = default;
 
 void BTextCtrl::OnChar(wxKeyEvent &event) {
   if (!m_config->GetMatchParens() || MatchParenthesis(event.GetUnicodeKey()))

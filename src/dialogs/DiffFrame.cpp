@@ -691,12 +691,12 @@ bool DiffFrame::SearchPanes(const wxString &query, bool down, bool incremental) 
   const bool isUUID = query.StartsWith(wxS("{")) && query.EndsWith(wxS("}"));
 
   if (isUUID) {
-    for (size_t i = 0; i < m_diffEntries.size(); ++i) {
+    for (const auto &entry : m_diffEntries) {
       for (size_t j = 0; j < m_worksheets.size(); ++j) {
-        if (m_diffEntries[i].cells[j] && m_diffEntries[i].cells[j]->GetUUID() == query) {
+        if (entry.cells[j] && entry.cells[j]->GetUUID() == query) {
           // Found the UUID. Scroll the worksheet that contains it.
           // Sync logic will handle the other worksheets.
-          m_worksheets[j]->ScheduleScrollToCell(m_diffEntries[i].cells[j]);
+          m_worksheets[j]->ScheduleScrollToCell(entry.cells[j]);
           m_worksheets[j]->ScrollToCellIfNeeded();
           m_worksheets[j]->Refresh();
           m_worksheets[j]->Update();

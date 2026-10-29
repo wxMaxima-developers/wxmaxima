@@ -46,19 +46,19 @@ public:
 
 protected:
   //! What maxima command name corresponds to this cell?
-  virtual const wxString GetMaximaCommandName() const override;
+  const wxString GetMaximaCommandName() const override;
   //! What matlab command name corresponds to this cell?
-  virtual const wxString GetMatlabCommandName() const override;
+  const wxString GetMatlabCommandName() const override;
   //! What LaTeX command name corresponds to this cell?
-  virtual const wxString GetLaTeXCommandName() const override;
+  const wxString GetLaTeXCommandName() const override;
   //! What unicode symbol name corresponds to this cell?
-  virtual const wxString GetUnicodeSymbol() const override;
+  const wxString GetUnicodeSymbol() const override;
   //! Returns the data that creates our SVG symbol
-  virtual const wxString GetSvgSymbolData() const override;
+  const wxString GetSvgSymbolData() const override;
   //! Returns the type our cell has when saving it to .wxmx
-  virtual const wxString GetXMLType() const override;
+  const wxString GetXMLType() const override;
   //! How big do we want our svg symbol to be?
-  virtual const wxSize GetSymbolSize() const override;
+  const wxSize GetSymbolSize() const override;
 private:
   const static wxString m_svgProdSign;
 };

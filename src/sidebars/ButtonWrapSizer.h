@@ -40,7 +40,7 @@ class Buttonwrapsizer : public wxWrapSizer
 {
 public:
   explicit Buttonwrapsizer(int orient = wxHORIZONTAL);
-  ~Buttonwrapsizer(){}
+  ~Buttonwrapsizer() override = default;
   /*! The height the buttons need when wrapped into rows at the given width.
 
     wxWrapSizer reports a deliberately small "min" size (so lines can be
@@ -52,7 +52,7 @@ public:
   */
   int HeightForWidth(int width) const;
 protected:
-  virtual wxSize CalcMin() override;
+  wxSize CalcMin() override;
 };
 
 #endif // BUTTONWRAPSIZER_H

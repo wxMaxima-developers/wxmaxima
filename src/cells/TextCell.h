@@ -41,8 +41,8 @@ class TextCell : public Cell
 public:
   TextCell(GroupCell *group, Configuration *config, const wxString &text = {}, TextStyle style = TS_FUNCTION);
   TextCell(GroupCell *group, const TextCell &cell);
-  virtual ~TextCell(){}
-  virtual const CellTypeInfo &GetInfo() override;
+  ~TextCell() override = default;
+  const CellTypeInfo &GetInfo() override;
   std::unique_ptr<Cell> Copy(GroupCell *group) const override;
 
   AFontSize GetScaledTextSize() const;
@@ -52,7 +52,7 @@ public:
   //! Set the text contained in this cell
   void SetValue(const wxString &text) override;
 
-  virtual void Recalculate(const AFontSize fontsize) const override;
+  void Recalculate(const AFontSize fontsize) const override;
 
   using Cell::SetCurrentPoint;
   void SetCurrentPoint(wxPoint point) const override;
@@ -75,8 +75,8 @@ public:
   wxString ToMathML() const override;
   wxString ToOMML() const override;
   wxString ToRTF() const override;
-  virtual wxString ToString() const override;
-  virtual const wxString GetDisplayedString() const override {return m_displayedText;}
+  wxString ToString() const override;
+  const wxString GetDisplayedString() const override {return m_displayedText;}
   wxString ToTeX() const override;
   wxString ToXML() const override;
 
