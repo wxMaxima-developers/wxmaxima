@@ -78,7 +78,7 @@ public:
   explicit AutoComplete(Configuration *configuration);
 
   //! The destructor of AutoComplete
-  virtual ~AutoComplete();
+  ~AutoComplete() override;
 
   //! Load all autocomplete symbols wxMaxima knows about by itself
   void LoadSymbols();
@@ -396,7 +396,7 @@ private:
                           stop_token stopToken = {},
                           const wxString &prefix = wxEmptyString) :
       GetDemoFiles_includingSubdirs(files, lock, std::move(stopToken), prefix){ }
-    virtual wxDirTraverseResult OnDir(const wxString& dirname) override
+    wxDirTraverseResult OnDir(const wxString& dirname) override
       {
         if (m_stopToken.stop_requested()) return wxDIR_STOP;
         wxFileName newItemName(dirname);

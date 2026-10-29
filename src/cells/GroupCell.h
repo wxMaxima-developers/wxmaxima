@@ -97,7 +97,7 @@ public:
   std::unique_ptr<Cell> Copy(GroupCell *group) const override;
   const CellTypeInfo &GetInfo() override;
   std::unique_ptr<GroupCell> CopyList() const;
-  virtual ~GroupCell();
+  ~GroupCell() override;
 
   wxCoord GetMaxDrop() const override;
   wxCoord GetCenterList() const override;
@@ -238,7 +238,7 @@ public:
   wxString ToXML() const override;
 
   void Hide(bool hide) override;
-  virtual bool FirstLineOnlyEditor() const override;
+  bool FirstLineOnlyEditor() const override;
   void SwitchHide();
 
   wxRect HideRect() const;

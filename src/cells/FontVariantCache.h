@@ -41,12 +41,12 @@
 */
 class FontVariantCache final
 {
+public:
   FontVariantCache(const FontVariantCache &) = delete;
   FontVariantCache &operator=(const FontVariantCache &) = delete;
-public:
   //! Creates a font variant cache for the font named fontName.
   explicit FontVariantCache(const wxString &fontName);
-  ~FontVariantCache(){}
+  ~FontVariantCache() = default;
   //! Clear this font variant cache
   void ClearCache() const;
   /*! Returns a font with the requested attributes

@@ -42,7 +42,7 @@
 ImgCellBase::ImgCellBase(GroupCell *group, Configuration *config)
   : Cell(group, config) {}
 
-ImgCellBase::~ImgCellBase() {}
+ImgCellBase::~ImgCellBase() = default;
 
 void ImgCellBase::DrawImageBackdrop(wxDC *dc, const wxRect &rect) const {
   if (!m_configuration->DrawImageBackdrop())

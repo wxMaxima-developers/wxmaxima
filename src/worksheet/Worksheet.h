@@ -1122,7 +1122,7 @@ public:
             bool reactToEvents = true);
 
   //! The destructor
-  virtual ~Worksheet();
+  ~Worksheet() override;
 
   //! The timer that tells us when the keyboard is inactive so an autosave isn't disrupting
   wxTimer &KeyboardInactiveTimer() { return m_keyboardInactiveTimer; }
@@ -2219,7 +2219,7 @@ protected:
   ViewCellPointers m_viewCellPointers{this};
   //! A memory we can manually buffer the contents of the area that is to be redrawn in
   wxBitmap m_memory;
-  virtual wxSize DoGetBestClientSize() const override;
+  wxSize DoGetBestClientSize() const override;
 #if wxUSE_ACCESSIBILITY
   AccessibilityInfo *m_accessibilityInfo = nullptr;
 #endif

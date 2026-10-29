@@ -208,7 +208,7 @@ void HelpBrowser::SelectKeywords(const std::vector<wxString> &keywords) {
   m_topicButtonID0 = wxWindow::NewControlId(keywords.size());
   int id = m_topicButtonID0;
   for (const auto &i : keywords) {
-    m_topicButtonIDs.push_back(id);
+    m_topicButtonIDs.emplace_back(id);
     m_topicSizer->Add(new wxButton(m_topicPanel, id++, i),
                       wxSizerFlags().Expand());
   }

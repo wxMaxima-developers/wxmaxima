@@ -65,7 +65,7 @@ public:
   Cell *GetInnerCell(size_t index) const override;
 
 protected:
-  virtual void UpdateDisplayedText() const override;
+  void UpdateDisplayedText() const override;
 private:
   //** Large objects (144 bytes)
   //**

@@ -80,7 +80,7 @@ public:
            const wxString &initialWorksheetContents = wxEmptyString,
            const wxPoint pos = wxDefaultPosition, const wxSize size = wxDefaultSize);
 
-  virtual ~wxMaxima();
+  ~wxMaxima() override;
   wxString EscapeFilenameForShell(wxString name);
   //! Exit if we encounter an error
   static void ExitOnError(){m_exitOnError = true;}
@@ -835,9 +835,9 @@ wxString ApplyAppearanceToApp(Configuration::Appearance appearance,
 class MyApp : public wxApp
 {
 public:
-  virtual bool OnInit() override;
-  virtual int OnRun() override;
-  virtual int OnExit() override;
+  bool OnInit() override;
+  int OnRun() override;
+  int OnExit() override;
   // Both guards are needed, and in this order: the definition in main.cpp
   // carries exactly the same pair, and GenerateDebugReport() -- the QA-only
   // method this one calls -- is already declared under both further down.
@@ -956,7 +956,7 @@ public:
   explicit MyDropTarget(wxMaxima *wxmax)
     { m_wxmax = wxmax; }
 
-  bool OnDropFiles(wxCoord x, wxCoord y, const wxArrayString &files);
+  bool OnDropFiles(wxCoord x, wxCoord y, const wxArrayString &files) override;
 
 private:
   wxMaxima *m_wxmax = nullptr;
