@@ -646,6 +646,22 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><b>SymbolPaneAdditio
 <tr class="memitem:a22b4f8d09141b5f7284dae5f1bc05373"><td class="memItemLeft" align="right" valign="top"><a id="a22b4f8d09141b5f7284dae5f1bc05373" name="a22b4f8d09141b5f7284dae5f1bc05373"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SymbolPaneAdditionalChars</b> (wxString symbols)</td></tr>
 <tr class="separator:a22b4f8d09141b5f7284dae5f1bc05373"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9b9bc8868fcdba1670332c3fd576e52"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structwxm_1_1SymbolShortcut.html">wxm::SymbolShortcut</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#ad9b9bc8868fcdba1670332c3fd576e52">SymbolShortcuts</a> () const</td></tr>
+<tr class="memdesc:ad9b9bc8868fcdba1670332c3fd576e52"><td class="mdescLeft">&#160;</td><td class="mdescRight">The keyboard shortcuts that type a symbol into the worksheet (GH #2578).  <br /></td></tr>
+<tr class="separator:ad9b9bc8868fcdba1670332c3fd576e52"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9702659f156bca8f3d5b61a135119b19"><td class="memItemLeft" align="right" valign="top"><a id="a9702659f156bca8f3d5b61a135119b19" name="a9702659f156bca8f3d5b61a135119b19"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SymbolShortcuts</b> (const std::vector&lt; <a class="el" href="structwxm_1_1SymbolShortcut.html">wxm::SymbolShortcut</a> &gt; &amp;shortcuts)</td></tr>
+<tr class="separator:a9702659f156bca8f3d5b61a135119b19"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79a4f1b27c1b9397a65de86b627467b2"><td class="memItemLeft" align="right" valign="top"><a id="a79a4f1b27c1b9397a65de86b627467b2" name="a79a4f1b27c1b9397a65de86b627467b2"></a>
+wxString&#160;</td><td class="memItemRight" valign="bottom"><b>ShortcutForSymbol</b> (const wxString &amp;symbol) const</td></tr>
+<tr class="memdesc:a79a4f1b27c1b9397a65de86b627467b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">The shortcut that types this symbol, or an empty string. <br /></td></tr>
+<tr class="separator:a79a4f1b27c1b9397a65de86b627467b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d3009c2c7ae64ec75dc4afd483e14cc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#a0d3009c2c7ae64ec75dc4afd483e14cc">SetShortcutForSymbol</a> (const wxString &amp;symbol, const wxString &amp;shortcut)</td></tr>
+<tr class="memdesc:a0d3009c2c7ae64ec75dc4afd483e14cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gives a symbol a shortcut, or none if shortcut is empty.  <br /></td></tr>
+<tr class="separator:a0d3009c2c7ae64ec75dc4afd483e14cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae94c9dbc1ea4b0b7afbfe323f3c307a1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#ae94c9dbc1ea4b0b7afbfe323f3c307a1">WriteSymbolShortcuts</a> () const</td></tr>
+<tr class="memdesc:ae94c9dbc1ea4b0b7afbfe323f3c307a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes the symbol shortcuts to the config file right away.  <br /></td></tr>
+<tr class="separator:ae94c9dbc1ea4b0b7afbfe323f3c307a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a35914468c50b5421c93c802f72b5ce9e"><td class="memItemLeft" align="right" valign="top"><a id="a35914468c50b5421c93c802f72b5ce9e" name="a35914468c50b5421c93c802f72b5ce9e"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>NotifyIfIdle</b> () const</td></tr>
 <tr class="memdesc:a35914468c50b5421c93c802f72b5ce9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notify the user if maxima is idle? <br /></td></tr>
@@ -2797,6 +2813,37 @@ static constexpr long&#160;</td><td class="memItemRight" valign="bottom"><b>Digi
 
 </div>
 </div>
+<a id="a0d3009c2c7ae64ec75dc4afd483e14cc" name="a0d3009c2c7ae64ec75dc4afd483e14cc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0d3009c2c7ae64ec75dc4afd483e14cc">&#9670;&#160;</a></span>SetShortcutForSymbol()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Configuration::SetShortcutForSymbol </td>
+          <td>(</td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
+          <td class="paramname"><em>symbol</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
+          <td class="paramname"><em>shortcut</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gives a symbol a shortcut, or none if shortcut is empty. </p>
+<p><a class="el" href="classA.html">A</a> shortcut belongs to one symbol only, so whichever symbol had it before loses it. </p>
+
+</div>
+</div>
 <a id="a87b494d70699a11e13a693c356e1d169" name="a87b494d70699a11e13a693c356e1d169"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a87b494d70699a11e13a693c356e1d169">&#9670;&#160;</a></span>SetWorksheetTopOffset()</h2>
 
@@ -2921,6 +2968,34 @@ static constexpr long&#160;</td><td class="memItemRight" valign="bottom"><b>Digi
 
 </div>
 </div>
+<a id="ad9b9bc8868fcdba1670332c3fd576e52" name="ad9b9bc8868fcdba1670332c3fd576e52"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad9b9bc8868fcdba1670332c3fd576e52">&#9670;&#160;</a></span>SymbolShortcuts()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="structwxm_1_1SymbolShortcut.html">wxm::SymbolShortcut</a> &gt; Configuration::SymbolShortcuts </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The keyboard shortcuts that type a symbol into the worksheet (GH #2578). </p>
+<p>Stored as one string ("symbol&lt;TAB&gt;shortcut" per line, see <a class="el" href="SymbolShortcuts_8cpp.html#ab4a60c36205e1a86106c55b3c56534e0" title="The inverse of ParseSymbolShortcuts().">wxm::SerializeSymbolShortcuts()</a>), so it travels through the same settings table as every other string. </p>
+
+</div>
+</div>
 <a id="a225ac7672e5b9bc0b56000ab72c5cea4" name="a225ac7672e5b9bc0b56000ab72c5cea4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a225ac7672e5b9bc0b56000ab72c5cea4">&#9670;&#160;</a></span>TakeFilesToSave()</h2>
 
@@ -2997,6 +3072,26 @@ static constexpr long&#160;</td><td class="memItemRight" valign="bottom"><b>Digi
 <p>Saves the style settings. </p>
 <p>Saves the style settings to a file.</p>
 <p>If a file name is given the settings are written to a file. </p>
+
+</div>
+</div>
+<a id="ae94c9dbc1ea4b0b7afbfe323f3c307a1" name="ae94c9dbc1ea4b0b7afbfe323f3c307a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae94c9dbc1ea4b0b7afbfe323f3c307a1">&#9670;&#160;</a></span>WriteSymbolShortcuts()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Configuration::WriteSymbolShortcuts </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Writes the symbol shortcuts to the config file right away. </p>
+<p>For a shortcut set from a sidebar's context menu, which otherwise would only be saved when <a class="el" href="classwxMaxima.html">wxMaxima</a> exits normally. Does nothing for a temporary configuration. </p>
 
 </div>
 </div>

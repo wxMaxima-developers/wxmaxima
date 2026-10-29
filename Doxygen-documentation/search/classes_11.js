@@ -80,6 +80,9 @@ var searchData=
   ['svgout_77',['Svgout',['../classSvgout.html',1,'']]],
   ['svgpanel_78',['SvgPanel',['../classSvgPanel.html',1,'']]],
   ['symboladdevent_79',['SymboladdEvent',['../classSymboladdEvent.html',1,'']]],
-  ['symbolssidebar_80',['SymbolsSidebar',['../classSymbolsSidebar.html',1,'']]],
-  ['syswiz_81',['SysWiz',['../classSysWiz.html',1,'']]]
+  ['symbolshortcut_80',['SymbolShortcut',['../structwxm_1_1SymbolShortcut.html',1,'wxm']]],
+  ['symbolshortcutdialog_81',['SymbolShortcutDialog',['../classSymbolShortcutDialog.html',1,'']]],
+  ['symbolshortcutspanel_82',['SymbolShortcutsPanel',['../classSymbolShortcutsPanel.html',1,'']]],
+  ['symbolssidebar_83',['SymbolsSidebar',['../classSymbolsSidebar.html',1,'']]],
+  ['syswiz_84',['SysWiz',['../classSysWiz.html',1,'']]]
 ];

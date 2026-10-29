@@ -23,8 +23,14 @@ var searchData=
   ['svgpanel_2eh_20',['SvgPanel.h',['../SvgPanel_8h.html',1,'']]],
   ['svgsize_2ecpp_21',['SvgSize.cpp',['../SvgSize_8cpp.html',1,'']]],
   ['svgsize_2eh_22',['SvgSize.h',['../SvgSize_8h.html',1,'']]],
-  ['symbolssidebar_2ecpp_23',['SymbolsSidebar.cpp',['../SymbolsSidebar_8cpp.html',1,'']]],
-  ['symbolssidebar_2eh_24',['SymbolsSidebar.h',['../SymbolsSidebar_8h.html',1,'']]],
-  ['syntaxerrorlocation_2ecpp_25',['SyntaxErrorLocation.cpp',['../SyntaxErrorLocation_8cpp.html',1,'']]],
-  ['syntaxerrorlocation_2eh_26',['SyntaxErrorLocation.h',['../SyntaxErrorLocation_8h.html',1,'']]]
+  ['symbolshortcutdialog_2ecpp_23',['SymbolShortcutDialog.cpp',['../SymbolShortcutDialog_8cpp.html',1,'']]],
+  ['symbolshortcutdialog_2eh_24',['SymbolShortcutDialog.h',['../SymbolShortcutDialog_8h.html',1,'']]],
+  ['symbolshortcuts_2ecpp_25',['SymbolShortcuts.cpp',['../SymbolShortcuts_8cpp.html',1,'']]],
+  ['symbolshortcuts_2eh_26',['SymbolShortcuts.h',['../SymbolShortcuts_8h.html',1,'']]],
+  ['symbolshortcutspanel_2ecpp_27',['SymbolShortcutsPanel.cpp',['../SymbolShortcutsPanel_8cpp.html',1,'']]],
+  ['symbolshortcutspanel_2eh_28',['SymbolShortcutsPanel.h',['../SymbolShortcutsPanel_8h.html',1,'']]],
+  ['symbolssidebar_2ecpp_29',['SymbolsSidebar.cpp',['../SymbolsSidebar_8cpp.html',1,'']]],
+  ['symbolssidebar_2eh_30',['SymbolsSidebar.h',['../SymbolsSidebar_8h.html',1,'']]],
+  ['syntaxerrorlocation_2ecpp_31',['SyntaxErrorLocation.cpp',['../SyntaxErrorLocation_8cpp.html',1,'']]],
+  ['syntaxerrorlocation_2eh_32',['SyntaxErrorLocation.h',['../SyntaxErrorLocation_8h.html',1,'']]]
 ];

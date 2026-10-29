@@ -72,6 +72,7 @@ $(function() {
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a>  </div>
   <div class="headertitle"><div class="title">CharButton Class Reference</div></div>
@@ -109,6 +110,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab2b11c13d52937e58ab0e021086e501d"><td class="memItemLeft" align="right" valign="top"><a id="ab2b11c13d52937e58ab0e021086e501d" name="ab2b11c13d52937e58ab0e021086e501d"></a>
 wxWindow *&#160;</td><td class="memItemRight" valign="bottom"><b>GetTextObject</b> () const</td></tr>
 <tr class="separator:ab2b11c13d52937e58ab0e021086e501d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18520d8578f4b7c0b384a0017b5bc10b"><td class="memItemLeft" align="right" valign="top"><a id="a18520d8578f4b7c0b384a0017b5bc10b" name="a18520d8578f4b7c0b384a0017b5bc10b"></a>
+const wxString &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>GetSymbol</b> () const</td></tr>
+<tr class="memdesc:a18520d8578f4b7c0b384a0017b5bc10b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The symbol this button enters. <br /></td></tr>
+<tr class="separator:a18520d8578f4b7c0b384a0017b5bc10b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e3af780684423f61c300d47c353bc03"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCharButton.html#a7e3af780684423f61c300d47c353bc03">UpdateToolTip</a> ()</td></tr>
+<tr class="memdesc:a7e3af780684423f61c300d47c353bc03"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shows the symbol's keyboard shortcut, if it has one, in the tooltip.  <br /></td></tr>
+<tr class="separator:a7e3af780684423f61c300d47c353bc03"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae12883c79e624ee7e62415145e66134f"><td class="memItemLeft" align="right" valign="top"><a id="ae12883c79e624ee7e62415145e66134f" name="ae12883c79e624ee7e62415145e66134f"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ActivateButton</b> ()</td></tr>
 <tr class="memdesc:ae12883c79e624ee7e62415145e66134f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emit this button's symbol to the worksheet &ndash; the button's action, shared by the mouse handler and the accessibility "Press" default action. <br /></td></tr>
@@ -116,6 +124,18 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ActivateButton</b> ()
 <tr class="memitem:a007b9cd0d7d293043e420560d9162c12"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCharButton.html#a007b9cd0d7d293043e420560d9162c12">UpdateMinSize</a> ()</td></tr>
 <tr class="memdesc:a007b9cd0d7d293043e420560d9162c12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the min size the button needs to show its symbol.  <br /></td></tr>
 <tr class="separator:a007b9cd0d7d293043e420560d9162c12"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a9118bc76b561f57b1ac6e84bc0580a7b"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classCharButton.html">CharButton</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCharButton.html#a9118bc76b561f57b1ac6e84bc0580a7b">FromEventObject</a> (wxObject *object)</td></tr>
+<tr class="memdesc:a9118bc76b561f57b1ac6e84bc0580a7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The button a mouse event in a sidebar happened on, or nullptr.  <br /></td></tr>
+<tr class="separator:a9118bc76b561f57b1ac6e84bc0580a7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abcd20a769040a16e8a05b173719fde67"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCharButton.html#abcd20a769040a16e8a05b173719fde67">EditShortcut</a> (wxWindow *parent, <a class="el" href="classConfiguration.html">Configuration</a> *configuration, const wxString &amp;symbol)</td></tr>
+<tr class="memdesc:abcd20a769040a16e8a05b173719fde67"><td class="mdescLeft">&#160;</td><td class="mdescRight">Asks for the keyboard shortcut that types <code>symbol</code> and stores it.  <br /></td></tr>
+<tr class="separator:abcd20a769040a16e8a05b173719fde67"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6731784cdc13bd995f75ae680bb6b367"><td class="memItemLeft" align="right" valign="top">static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCharButton.html#a6731784cdc13bd995f75ae680bb6b367">AppendShortcutMenuItem</a> (wxMenu *menu, const wxMouseEvent &amp;event)</td></tr>
+<tr class="memdesc:a6731784cdc13bd995f75ae680bb6b367"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds the "Keyboard shortcut for..." entry to a sidebar's context menu.  <br /></td></tr>
+<tr class="separator:a6731784cdc13bd995f75ae680bb6b367"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -149,15 +169,23 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>MouseOverPanelIs</b> 
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
-<tr class="memitem:a39bcf76431302221f3fd27ea4715ecd9"><td class="memItemLeft" align="right" valign="top"><a id="a39bcf76431302221f3fd27ea4715ecd9" name="a39bcf76431302221f3fd27ea4715ecd9"></a>
-wchar_t&#160;</td><td class="memItemRight" valign="bottom"><b>m_char</b></td></tr>
-<tr class="separator:a39bcf76431302221f3fd27ea4715ecd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0faf75316ddc5acb967b6099d8e4e023"><td class="memItemLeft" align="right" valign="top"><a id="a0faf75316ddc5acb967b6099d8e4e023" name="a0faf75316ddc5acb967b6099d8e4e023"></a>
+wxString&#160;</td><td class="memItemRight" valign="bottom"><b>m_symbol</b></td></tr>
+<tr class="separator:a0faf75316ddc5acb967b6099d8e4e023"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af00b7cbc1cbc08283eb6ea59a8df1b29"><td class="memItemLeft" align="right" valign="top"><a id="af00b7cbc1cbc08283eb6ea59a8df1b29" name="af00b7cbc1cbc08283eb6ea59a8df1b29"></a>
 <a class="el" href="classConfiguration.html">Configuration</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_configuration</b></td></tr>
 <tr class="separator:af00b7cbc1cbc08283eb6ea59a8df1b29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa4acffc94b52ba0fb1afe5554899172a"><td class="memItemLeft" align="right" valign="top"><a id="aa4acffc94b52ba0fb1afe5554899172a" name="aa4acffc94b52ba0fb1afe5554899172a"></a>
 wxString&#160;</td><td class="memItemRight" valign="bottom"><b>m_description</b></td></tr>
 <tr class="separator:aa4acffc94b52ba0fb1afe5554899172a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a22c904895573d5a87988768acb096ac3"><td class="memItemLeft" align="right" valign="top"><a id="a22c904895573d5a87988768acb096ac3" name="a22c904895573d5a87988768acb096ac3"></a>
+wxString&#160;</td><td class="memItemRight" valign="bottom"><b>m_toolTipBase</b></td></tr>
+<tr class="memdesc:a22c904895573d5a87988768acb096ac3"><td class="mdescLeft">&#160;</td><td class="mdescRight">The tooltip without the keyboard shortcut. <br /></td></tr>
+<tr class="separator:a22c904895573d5a87988768acb096ac3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a428ab1e3adf739be36a44a0a677119d1"><td class="memItemLeft" align="right" valign="top"><a id="a428ab1e3adf739be36a44a0a677119d1" name="a428ab1e3adf739be36a44a0a677119d1"></a>
+wxString&#160;</td><td class="memItemRight" valign="bottom"><b>m_toolTip</b></td></tr>
+<tr class="memdesc:a428ab1e3adf739be36a44a0a677119d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The tooltip as last set. <br /></td></tr>
+<tr class="separator:a428ab1e3adf739be36a44a0a677119d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This class generates a pane containing the last commands that were issued. </p>
@@ -219,6 +247,119 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><b>m_description</b>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a6731784cdc13bd995f75ae680bb6b367" name="a6731784cdc13bd995f75ae680bb6b367"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6731784cdc13bd995f75ae680bb6b367">&#9670;&#160;</a></span>AppendShortcutMenuItem()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxString CharButton::AppendShortcutMenuItem </td>
+          <td>(</td>
+          <td class="paramtype">wxMenu *&#160;</td>
+          <td class="paramname"><em>menu</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const wxMouseEvent &amp;&#160;</td>
+          <td class="paramname"><em>event</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Adds the "Keyboard shortcut for..." entry to a sidebar's context menu. </p>
+<p>if the right click that opens it was on a button. Returns the symbol of that button, which the sidebar keeps until the entry is chosen, or an empty string. </p>
+
+</div>
+</div>
+<a id="abcd20a769040a16e8a05b173719fde67" name="abcd20a769040a16e8a05b173719fde67"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abcd20a769040a16e8a05b173719fde67">&#9670;&#160;</a></span>EditShortcut()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool CharButton::EditShortcut </td>
+          <td>(</td>
+          <td class="paramtype">wxWindow *&#160;</td>
+          <td class="paramname"><em>parent</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classConfiguration.html">Configuration</a> *&#160;</td>
+          <td class="paramname"><em>configuration</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
+          <td class="paramname"><em>symbol</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Asks for the keyboard shortcut that types <code>symbol</code> and stores it. </p>
+<p>Returns whether the shortcut changed. </p>
+
+</div>
+</div>
+<a id="a9118bc76b561f57b1ac6e84bc0580a7b" name="a9118bc76b561f57b1ac6e84bc0580a7b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9118bc76b561f57b1ac6e84bc0580a7b">&#9670;&#160;</a></span>FromEventObject()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classCharButton.html">CharButton</a> * CharButton::FromEventObject </td>
+          <td>(</td>
+          <td class="paramtype">wxObject *&#160;</td>
+          <td class="paramname"><em>object</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The button a mouse event in a sidebar happened on, or nullptr. </p>
+<p>The event may come from the button or from the text inside it. </p>
+
+</div>
+</div>
 <a id="a007b9cd0d7d293043e420560d9162c12" name="a007b9cd0d7d293043e420560d9162c12"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a007b9cd0d7d293043e420560d9162c12">&#9670;&#160;</a></span>UpdateMinSize()</h2>
 
@@ -236,6 +377,26 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><b>m_description</b>
 
 <p>Sets the min size the button needs to show its symbol. </p>
 <p>Called from the constructor, so the size is known before the button ever receives a size event, and again on every size event, in case the font or the scale factor has changed since. </p>
+
+</div>
+</div>
+<a id="a7e3af780684423f61c300d47c353bc03" name="a7e3af780684423f61c300d47c353bc03"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e3af780684423f61c300d47c353bc03">&#9670;&#160;</a></span>UpdateToolTip()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void CharButton::UpdateToolTip </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Shows the symbol's keyboard shortcut, if it has one, in the tooltip. </p>
+<p>Also runs whenever the mouse enters the button, so the tooltip is never behind a shortcut changed elsewhere. </p>
 
 </div>
 </div>

@@ -45,8 +45,11 @@ var searchData=
   ['localchecks_42',['LocalChecks',['../classTroubleshootingDialog.html#a70f405ee900942ef888c599056833b1a',1,'TroubleshootingDialog']]],
   ['localedigitgroupsize_43',['LocaleDigitGroupSize',['../DigitGrouping_8cpp.html#a9b583b0c01ca634c9177e21bfe483d13',1,'wxm']]],
   ['localedir_44',['LocaleDir',['../classDirstructure.html#a07774426dee2c4edafa95ce9f7465661',1,'Dirstructure']]],
-  ['locatesyntaxerror_45',['LocateSyntaxError',['../SyntaxErrorLocation_8cpp.html#a1e90774318898f786fe8af1fe66420f3',1,'wxm']]],
-  ['loghelpmenucontents_46',['LogHelpMenuContents',['../classwxMaximaFrame.html#a27b791e6f11ec6a343b811ab82b420d3',1,'wxMaximaFrame']]],
-  ['longnumbercell_47',['LongNumberCell',['../classLongNumberCell.html#ae650abe2ed7d371b47a6ed2aa55e3424',1,'LongNumberCell']]],
-  ['lookslikeldb_48',['LooksLikeLdb',['../LdbSupport_8cpp.html#a4ad83c27ca9d16abc6068282936aae76',1,'LdbSupport']]]
+  ['locate_45',['Locate',['../classSymbolShortcutsPanel.html#a09b1067cd82972d229ce3da6274b680b',1,'SymbolShortcutsPanel']]],
+  ['locatesyntaxerror_46',['LocateSyntaxError',['../SyntaxErrorLocation_8cpp.html#a1e90774318898f786fe8af1fe66420f3',1,'wxm']]],
+  ['locationname_47',['LocationName',['../classSymbolShortcutsPanel.html#ae61d7a88d0818846347a653edd529f28',1,'SymbolShortcutsPanel']]],
+  ['loghelpmenucontents_48',['LogHelpMenuContents',['../classwxMaximaFrame.html#a27b791e6f11ec6a343b811ab82b420d3',1,'wxMaximaFrame']]],
+  ['longnumbercell_49',['LongNumberCell',['../classLongNumberCell.html#ae650abe2ed7d371b47a6ed2aa55e3424',1,'LongNumberCell']]],
+  ['lookslikeldb_50',['LooksLikeLdb',['../LdbSupport_8cpp.html#a4ad83c27ca9d16abc6068282936aae76',1,'LdbSupport']]],
+  ['lowercasedefinitions_51',['LowercaseDefinitions',['../classGreekSidebar.html#a9d7ccb613441f64a4f91829d60cb5dff',1,'GreekSidebar']]]
 ];

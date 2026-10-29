@@ -111,38 +111,55 @@ $(function() {
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="preprocessor">#include &quot;<a class="code" href="CharButton_8h.html">CharButton.h</a>&quot;</span></div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="preprocessor">#include &quot;<a class="code" href="ButtonWrapSizer_8h.html">ButtonWrapSizer.h</a>&quot;</span></div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="preprocessor">#include &lt;list&gt;</span></div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="classGreekSidebar.html">   43</a></span><span class="keyword">class </span><a class="code hl_class" href="classGreekSidebar.html">GreekSidebar</a> : <span class="keyword">public</span> <a class="code hl_class" href="classwxScrolled.html">wxScrolled</a>&lt;wxPanel&gt;</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>{</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <a class="code hl_class" href="classGreekSidebar.html">GreekSidebar</a>(wxWindow *parent, <a class="code hl_class" href="classConfiguration.html">Configuration</a> *configuration, wxWindow *worksheet,</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>               <span class="keywordtype">int</span> ID = wxID_ANY);</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classGreekSidebar.html#a78837c209ec8b27f9aa3a54270f4645e">UpdateVirtualSize</a>();</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> <span class="keyword">protected</span>:</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  <span class="keywordtype">void</span> UpdateSymbols();</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  <span class="keywordtype">void</span> OnMouseRightDown(wxMouseEvent &amp;event);</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="keywordtype">void</span> OnMenu(wxCommandEvent &amp;event);</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  <span class="keywordtype">void</span> OnSize(wxSizeEvent &amp;event);</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  wxPanel *m_upperCasePanel;</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  wxPanel *m_lowerCasePanel;</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  <a class="code hl_class" href="classConfiguration.html">Configuration</a> *m_configuration;</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  <a class="code hl_class" href="classButtonwrapsizer.html">Buttonwrapsizer</a> *m_lowercaseSizer;</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <a class="code hl_class" href="classButtonwrapsizer.html">Buttonwrapsizer</a> *m_uppercaseSizer;</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  wxWindow *m_worksheet;</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  wxSize m_lastVirtualSize = wxDefaultSize;</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>};</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="preprocessor">#endif </span><span class="comment">// GREEKSIDEBAR_H_</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="classGreekSidebar.html">   44</a></span><span class="keyword">class </span><a class="code hl_class" href="classGreekSidebar.html">GreekSidebar</a> : <span class="keyword">public</span> <a class="code hl_class" href="classwxScrolled.html">wxScrolled</a>&lt;wxPanel&gt;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>{</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="classGreekSidebar.html#a49d2a432a577edf6773ba4b16cf553c9">   48</a></span>  <span class="keyword">enum class</span> <a class="code hl_enumeration" href="classGreekSidebar.html#a49d2a432a577edf6773ba4b16cf553c9">Condition</a> { None, Show_mu, ShowLatinLookalikes };</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="structGreekSidebar_1_1Definition.html">   50</a></span>  <span class="keyword">struct </span><a class="code hl_struct" href="structGreekSidebar_1_1Definition.html">Definition</a> : <a class="code hl_struct" href="structCharButton_1_1Definition.html">CharButton::Definition</a> {</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <a class="code hl_enumeration" href="classGreekSidebar.html#a49d2a432a577edf6773ba4b16cf553c9">Condition</a> condition;</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <a class="code hl_struct" href="structGreekSidebar_1_1Definition.html">Definition</a>(<span class="keywordtype">wchar_t</span> sym, <span class="keyword">const</span> wxString &amp;descr,</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>               <a class="code hl_enumeration" href="classGreekSidebar.html#a49d2a432a577edf6773ba4b16cf553c9">Condition</a> cond = Condition::None)</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>      : <a class="code hl_struct" href="structCharButton_1_1Definition.html">CharButton::Definition</a>{sym, descr}, condition(cond) {}</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  };</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="keyword">static</span> <span class="keyword">const</span> std::vector&lt;Definition&gt; &amp;<a class="code hl_function" href="classGreekSidebar.html#a9d7ccb613441f64a4f91829d60cb5dff">LowercaseDefinitions</a>();</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  <span class="keyword">static</span> <span class="keyword">const</span> std::vector&lt;Definition&gt; &amp;<a class="code hl_function" href="classGreekSidebar.html#a36b56e6049a6e00b393b19c5cd7dd365">UppercaseDefinitions</a>();</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <a class="code hl_class" href="classGreekSidebar.html">GreekSidebar</a>(wxWindow *parent, <a class="code hl_class" href="classConfiguration.html">Configuration</a> *configuration, wxWindow *worksheet,</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>               <span class="keywordtype">int</span> ID = wxID_ANY);</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classGreekSidebar.html#a78837c209ec8b27f9aa3a54270f4645e">UpdateVirtualSize</a>();</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> <span class="keyword">protected</span>:</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  <span class="keywordtype">void</span> UpdateSymbols();</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  <span class="keywordtype">void</span> OnMouseRightDown(wxMouseEvent &amp;event);</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <span class="keywordtype">void</span> OnMenu(wxCommandEvent &amp;event);</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <span class="keywordtype">void</span> OnSize(wxSizeEvent &amp;event);</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  wxPanel *m_upperCasePanel;</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  wxPanel *m_lowerCasePanel;</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  <a class="code hl_class" href="classConfiguration.html">Configuration</a> *m_configuration;</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  <a class="code hl_class" href="classButtonwrapsizer.html">Buttonwrapsizer</a> *m_lowercaseSizer;</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  <a class="code hl_class" href="classButtonwrapsizer.html">Buttonwrapsizer</a> *m_uppercaseSizer;</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  wxWindow *m_worksheet;</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  wxSize m_lastVirtualSize = wxDefaultSize;</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  wxString m_contextMenuSymbol;</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>};</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span><span class="preprocessor">#endif </span><span class="comment">// GREEKSIDEBAR_H_</span></div>
 <div class="ttc" id="aButtonWrapSizer_8h_html"><div class="ttname"><a href="ButtonWrapSizer_8h.html">ButtonWrapSizer.h</a></div><div class="ttdoc">This file contains the definition of the class Buttonwrapsizer that allows to select arbitrary unicod...</div></div>
 <div class="ttc" id="aCharButton_8h_html"><div class="ttname"><a href="CharButton_8h.html">CharButton.h</a></div><div class="ttdoc">This file contains the definition of the class Charbutton that allows to select arbitrary unicode sym...</div></div>
 <div class="ttc" id="aEventIDs_8h_html"><div class="ttname"><a href="EventIDs_8h.html">EventIDs.h</a></div><div class="ttdoc">This file declares the class EventIDs that contains unique IDs for many events wxMaxima needs.</div></div>
 <div class="ttc" id="aclassButtonwrapsizer_html"><div class="ttname"><a href="classButtonwrapsizer.html">Buttonwrapsizer</a></div><div class="ttdoc">This class generates a pane containing the last commands that were issued.</div><div class="ttdef"><b>Definition:</b> ButtonWrapSizer.h:40</div></div>
-<div class="ttc" id="aclassConfiguration_html"><div class="ttname"><a href="classConfiguration.html">Configuration</a></div><div class="ttdoc">The configuration storage for the current worksheet.</div><div class="ttdef"><b>Definition:</b> Configuration.h:101</div></div>
-<div class="ttc" id="aclassGreekSidebar_html"><div class="ttname"><a href="classGreekSidebar.html">GreekSidebar</a></div><div class="ttdef"><b>Definition:</b> GreekSidebar.h:44</div></div>
+<div class="ttc" id="aclassConfiguration_html"><div class="ttname"><a href="classConfiguration.html">Configuration</a></div><div class="ttdoc">The configuration storage for the current worksheet.</div><div class="ttdef"><b>Definition:</b> Configuration.h:102</div></div>
+<div class="ttc" id="aclassGreekSidebar_html"><div class="ttname"><a href="classGreekSidebar.html">GreekSidebar</a></div><div class="ttdef"><b>Definition:</b> GreekSidebar.h:45</div></div>
+<div class="ttc" id="aclassGreekSidebar_html_a36b56e6049a6e00b393b19c5cd7dd365"><div class="ttname"><a href="classGreekSidebar.html#a36b56e6049a6e00b393b19c5cd7dd365">GreekSidebar::UppercaseDefinitions</a></div><div class="ttdeci">static const std::vector&lt; Definition &gt; &amp; UppercaseDefinitions()</div><div class="ttdoc">The uppercase letters, whether they are currently shown or not.</div><div class="ttdef"><b>Definition:</b> GreekSidebar.cpp:172</div></div>
+<div class="ttc" id="aclassGreekSidebar_html_a49d2a432a577edf6773ba4b16cf553c9"><div class="ttname"><a href="classGreekSidebar.html#a49d2a432a577edf6773ba4b16cf553c9">GreekSidebar::Condition</a></div><div class="ttdeci">Condition</div><div class="ttdoc">When a letter is shown.</div><div class="ttdef"><b>Definition:</b> GreekSidebar.h:48</div></div>
 <div class="ttc" id="aclassGreekSidebar_html_a78837c209ec8b27f9aa3a54270f4645e"><div class="ttname"><a href="classGreekSidebar.html#a78837c209ec8b27f9aa3a54270f4645e">GreekSidebar::UpdateVirtualSize</a></div><div class="ttdeci">void UpdateVirtualSize()</div><div class="ttdoc">Re-wrap the buttons and grow the virtual height to fit the wrapped rows.</div><div class="ttdef"><b>Definition:</b> GreekSidebar.cpp:71</div></div>
+<div class="ttc" id="aclassGreekSidebar_html_a9d7ccb613441f64a4f91829d60cb5dff"><div class="ttname"><a href="classGreekSidebar.html#a9d7ccb613441f64a4f91829d60cb5dff">GreekSidebar::LowercaseDefinitions</a></div><div class="ttdeci">static const std::vector&lt; Definition &gt; &amp; LowercaseDefinitions()</div><div class="ttdoc">The lowercase letters, whether they are currently shown or not.</div><div class="ttdef"><b>Definition:</b> GreekSidebar.cpp:142</div></div>
 <div class="ttc" id="aclasswxScrolled_html"><div class="ttname"><a href="classwxScrolled.html">wxScrolled</a></div><div class="ttdef"><b>Definition:</b> CellPointers.h:35</div></div>
+<div class="ttc" id="astructCharButton_1_1Definition_html"><div class="ttname"><a href="structCharButton_1_1Definition.html">CharButton::Definition</a></div><div class="ttdoc">A definition of this button, used to construct it.</div><div class="ttdef"><b>Definition:</b> CharButton.h:45</div></div>
+<div class="ttc" id="astructGreekSidebar_1_1Definition_html"><div class="ttname"><a href="structGreekSidebar_1_1Definition.html">GreekSidebar::Definition</a></div><div class="ttdoc">A letter of the sidebar.</div><div class="ttdef"><b>Definition:</b> GreekSidebar.h:50</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

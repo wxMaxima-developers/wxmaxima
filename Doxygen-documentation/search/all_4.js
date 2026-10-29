@@ -16,7 +16,7 @@ var searchData=
   ['defaultbackgroundcolor_13',['DefaultBackgroundColor',['../classConfiguration.html#a509127bfbc4216e8771d86b5d8ee6e89',1,'Configuration']]],
   ['defaultorder_14',['DefaultOrder',['../ToolBarSections_8cpp.html#a0fa382d1d5a0c73b872f1cc30c7c58f9',1,'ToolBarSections']]],
   ['define_2eh_15',['define.h',['../define_8h.html',1,'']]],
-  ['definition_16',['Definition',['../structCharButton_1_1Definition.html',1,'CharButton']]],
+  ['definition_16',['Definition',['../structCharButton_1_1Definition.html',1,'CharButton::Definition'],['../structGreekSidebar_1_1Definition.html',1,'GreekSidebar::Definition']]],
   ['deletecurrentcell_17',['DeleteCurrentCell',['../classWorksheet.html#a44a5e3323192e062b545679849522fa3',1,'Worksheet']]],
   ['deletelist_18',['DeleteList',['../classCellList.html#a4187306b02cdf7f080af6b8ed00fc4b2',1,'CellList']]],
   ['deleteregion_19',['DeleteRegion',['../classWorksheet.html#ae0dbecc3ea6a9ece32350cecdd9896ed',1,'Worksheet']]],
