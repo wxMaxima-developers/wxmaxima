@@ -65,7 +65,7 @@ public:
   //! Construct this object when a connection is received from Maxima.
   //! The argument should be socketServer.Accept();
   explicit Maxima(wxSocketBase *socket, Configuration *config);
-  virtual ~Maxima() override;
+  ~Maxima() override;
 
   /*! Convert a human-readable maxima variable name to one maxima understands
 

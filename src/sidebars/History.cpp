@@ -37,6 +37,7 @@
 #include "../cells/Cell.h"
 #include <algorithm>
 #include <memory>
+#include <ranges>
 #include <wx/config.h>
 #include <wx/filedlg.h>
 #include <wx/menu.h>
@@ -177,8 +178,8 @@ void History::OnMenu(wxCommandEvent &event) {
         wxFileOutputStream output(file);
         if (output.IsOk()) {
           wxTextOutputStream text(output);
-          for (auto sel = selections.rbegin(); sel != selections.rend(); ++sel)
-            text << m_history->GetString(*sel) << "\n";
+          for (const int selection : std::ranges::reverse_view(selections))
+            text << m_history->GetString(selection) << "\n";
         }
         indicateError = !output.IsOk() || !output.Close();
       }

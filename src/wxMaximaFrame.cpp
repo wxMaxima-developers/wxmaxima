@@ -93,35 +93,35 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
 
   // Add some shortcuts that aren't automatically set by menu entries.
   std::vector<wxAcceleratorEntry> entries;
-  entries.push_back(wxAcceleratorEntry(wxACCEL_CTRL, wxS('K'), EventIDs::menu_autocomplete));
-  entries.push_back(wxAcceleratorEntry(wxACCEL_CTRL, WXK_TAB, EventIDs::menu_autocomplete));
-  entries.push_back(wxAcceleratorEntry(wxACCEL_CTRL | wxACCEL_SHIFT, WXK_TAB,
-                                       EventIDs::menu_autocomplete_templates));
-  entries.push_back(wxAcceleratorEntry(wxACCEL_CTRL, WXK_SPACE, EventIDs::menu_autocomplete));
-  entries.push_back(wxAcceleratorEntry(wxACCEL_CTRL | wxACCEL_SHIFT, wxS('K'),
-                                       EventIDs::menu_autocomplete_templates));
-  entries.push_back(wxAcceleratorEntry(wxACCEL_CTRL | wxACCEL_SHIFT, WXK_SPACE,
-                                       EventIDs::menu_autocomplete_templates));
-  entries.push_back(wxAcceleratorEntry(wxACCEL_ALT, wxS('I'), wxID_ZOOM_IN));
-  entries.push_back(wxAcceleratorEntry(wxACCEL_ALT, wxS('O'), wxID_ZOOM_OUT));
-  entries.push_back(wxAcceleratorEntry(wxACCEL_CTRL | wxACCEL_SHIFT, WXK_ESCAPE,
-                                       EventIDs::menu_convert_to_code));
-  entries.push_back(wxAcceleratorEntry(wxACCEL_CTRL | wxACCEL_SHIFT, wxS('1'),
-                                       EventIDs::menu_convert_to_comment));
-  entries.push_back(wxAcceleratorEntry(wxACCEL_CTRL | wxACCEL_SHIFT, wxS('2'),
-                                       EventIDs::menu_convert_to_title));
-  entries.push_back(wxAcceleratorEntry(wxACCEL_CTRL | wxACCEL_SHIFT, wxS('3'),
-                                       EventIDs::menu_convert_to_section));
-  entries.push_back(wxAcceleratorEntry(wxACCEL_CTRL | wxACCEL_SHIFT, wxS('4'),
-                                       EventIDs::menu_convert_to_subsection));
-  entries.push_back(wxAcceleratorEntry(wxACCEL_CTRL | wxACCEL_SHIFT, wxS('5'),
-                                       EventIDs::menu_convert_to_subsubsection));
-  entries.push_back(wxAcceleratorEntry(wxACCEL_CTRL | wxACCEL_SHIFT, wxS('6'),
-                                       EventIDs::menu_convert_to_heading5));
-  entries.push_back(wxAcceleratorEntry(wxACCEL_CTRL, wxS('.'),
-                                       EventIDs::menu_interrupt_id)); // Standard on the Mac
-  entries.push_back(wxAcceleratorEntry(wxACCEL_NORMAL, WXK_F1, wxID_HELP));
-  entries.push_back(wxAcceleratorEntry(wxACCEL_NORMAL, WXK_F11, EventIDs::menu_fullscreen));
+  entries.emplace_back(wxACCEL_CTRL, wxS('K'), EventIDs::menu_autocomplete);
+  entries.emplace_back(wxACCEL_CTRL, WXK_TAB, EventIDs::menu_autocomplete);
+  entries.emplace_back(wxACCEL_CTRL | wxACCEL_SHIFT, WXK_TAB,
+                                       EventIDs::menu_autocomplete_templates);
+  entries.emplace_back(wxACCEL_CTRL, WXK_SPACE, EventIDs::menu_autocomplete);
+  entries.emplace_back(wxACCEL_CTRL | wxACCEL_SHIFT, wxS('K'),
+                                       EventIDs::menu_autocomplete_templates);
+  entries.emplace_back(wxACCEL_CTRL | wxACCEL_SHIFT, WXK_SPACE,
+                                       EventIDs::menu_autocomplete_templates);
+  entries.emplace_back(wxACCEL_ALT, wxS('I'), wxID_ZOOM_IN);
+  entries.emplace_back(wxACCEL_ALT, wxS('O'), wxID_ZOOM_OUT);
+  entries.emplace_back(wxACCEL_CTRL | wxACCEL_SHIFT, WXK_ESCAPE,
+                                       EventIDs::menu_convert_to_code);
+  entries.emplace_back(wxACCEL_CTRL | wxACCEL_SHIFT, wxS('1'),
+                                       EventIDs::menu_convert_to_comment);
+  entries.emplace_back(wxACCEL_CTRL | wxACCEL_SHIFT, wxS('2'),
+                                       EventIDs::menu_convert_to_title);
+  entries.emplace_back(wxACCEL_CTRL | wxACCEL_SHIFT, wxS('3'),
+                                       EventIDs::menu_convert_to_section);
+  entries.emplace_back(wxACCEL_CTRL | wxACCEL_SHIFT, wxS('4'),
+                                       EventIDs::menu_convert_to_subsection);
+  entries.emplace_back(wxACCEL_CTRL | wxACCEL_SHIFT, wxS('5'),
+                                       EventIDs::menu_convert_to_subsubsection);
+  entries.emplace_back(wxACCEL_CTRL | wxACCEL_SHIFT, wxS('6'),
+                                       EventIDs::menu_convert_to_heading5);
+  entries.emplace_back(wxACCEL_CTRL, wxS('.'),
+                                       EventIDs::menu_interrupt_id); // Standard on the Mac
+  entries.emplace_back(wxACCEL_NORMAL, WXK_F1, wxID_HELP);
+  entries.emplace_back(wxACCEL_NORMAL, WXK_F11, EventIDs::menu_fullscreen);
   wxAcceleratorTable accel(entries.size(), entries.data());
   SetAcceleratorTable(accel);
 

@@ -85,7 +85,7 @@ public:
   */
   void AttachWorksheetDC(wxWindow *worksheet)
     {
-      m_worksheetDC = std::unique_ptr<wxClientDC>(new wxClientDC(worksheet));
+      m_worksheetDC = std::make_unique<wxClientDC>(worksheet);
       m_recalcDC = m_worksheetDC.get();
     }
   //! Drops the worksheet client DC created by AttachWorksheetDC() again.
@@ -120,7 +120,7 @@ public:
   void ClearAndEnableRedrawTracing()
     {
       if (!m_cellRedrawTrace)
-        m_cellRedrawTrace.reset(new std::vector<const Cell *>);
+        m_cellRedrawTrace = std::make_unique<std::vector<const Cell *>>();
       else
         m_cellRedrawTrace->clear();
     }

@@ -4690,8 +4690,8 @@ void MaximaCommandMenus::PrintMenu(wxCommandEvent &event) {
       Printout printout(title, m_wxMaxima.GetWorksheet()->GetTree(), m_wxMaxima.GetContentScaleFactor());
       wxBusyCursor crs;
       if (printer.Print(&m_wxMaxima, &printout, true)) {
-        m_wxMaxima.m_printData = std::unique_ptr<wxPrintData>(
-                                                   new wxPrintData(printer.GetPrintDialogData().GetPrintData()));
+        m_wxMaxima.m_printData = std::make_unique<wxPrintData>(
+                                                   printer.GetPrintDialogData().GetPrintData());
       }
     }
     m_wxMaxima.GetWorksheet()->RequestRecalculation();

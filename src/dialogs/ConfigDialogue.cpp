@@ -230,7 +230,7 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent)
   m_languages[_("Ukrainian")] = wxLANGUAGE_UKRAINIAN;
   m_languages[_("Vietnamese")] = wxLANGUAGE_VIETNAMESE;
 
-  m_configuration = std::unique_ptr<Configuration>(new Configuration());
+  m_configuration = std::make_unique<Configuration>();
   SetSheetInnerBorder(3);
   SetSheetOuterBorder(3);
 
@@ -1557,9 +1557,8 @@ wxWindow *ConfigDialogue::CreateOptionsPanel() {
     new wxStaticBoxSizer(wxVERTICAL, panel, _("Standard Options"));
 
   wxArrayString languages;
-  for (Languages::const_iterator it = m_languages.begin();
-       it != m_languages.end(); ++it)
-    languages.Add(it->first);
+  for (const auto &lang : m_languages)
+    languages.Add(lang.first);
 
   m_language = new wxChoice(
                             stdOpts_sizer->GetStaticBox(), language_id, wxDefaultPosition,
@@ -3332,10 +3331,9 @@ void ConfigDialogue::WriteSettings() {
   {
     configuration->SetLanguage(static_cast<int>(wxLANGUAGE_DEFAULT));
     long i = 0;
-    for (Languages::const_iterator it = m_languages.begin();
-         it != m_languages.end(); ++it) {
+    for (const auto &lang : m_languages) {
       if (i == m_language->GetSelection())
-        configuration->SetLanguage(it->second);
+        configuration->SetLanguage(lang.second);
       ++i;
     }
   }

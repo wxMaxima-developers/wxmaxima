@@ -209,7 +209,7 @@ bool GroupCell::IsFoldable() const {
           (m_groupType == GC_TYPE_HEADING6));
 }
 
-GroupCell::~GroupCell() {}
+GroupCell::~GroupCell() = default;
 
 const wxString &GroupCell::GetAnswer(size_t answer) const {
   if ((!m_autoAnswer) && (!m_configuration->OfferKnownAnswers()))

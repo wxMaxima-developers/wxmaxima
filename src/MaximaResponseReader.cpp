@@ -317,15 +317,15 @@ void MaximaResponseReader::ReadMiscText(const wxString &data) {
   // whitespace characters are merged.
   wxString mergedWhitespace = wxS("\n");
   bool whitespace = true;
-  for (wxString::const_iterator it = data.begin(); it != data.end(); ++it) {
-    if ((*it == wxS(' ')) || (*it == wxS('\t'))) {
+  for (const auto ch : data) {
+    if ((ch == wxS(' ')) || (ch == wxS('\t'))) {
       // Merge non-newline whitespace to a space.
       if (!whitespace)
         mergedWhitespace += wxS(' ');
     } else
-      mergedWhitespace += *it;
+      mergedWhitespace += ch;
 
-    if ((*it == wxS(' ')) || (*it == wxS('\t')) || (*it == wxS('\n')))
+    if ((ch == wxS(' ')) || (ch == wxS('\t')) || (ch == wxS('\n')))
       whitespace = true;
     else
       whitespace = false;

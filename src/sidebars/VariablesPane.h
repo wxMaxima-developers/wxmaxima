@@ -99,7 +99,7 @@ public:
   void VariableUndefined(const wxString &var);
   void UpdateSize();
   //! The destructor
-  ~Variablespane();
+  ~Variablespane() override;
 private:
   // The spreadsheet with the variable names
   wxGrid *m_grid;

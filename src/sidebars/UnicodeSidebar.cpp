@@ -69,7 +69,7 @@ UnicodeSidebar::UnicodeSidebar(wxWindow *parent, wxWindow *worksheet,
   FitInside();
 }
 
-UnicodeSidebar::~UnicodeSidebar() {}
+UnicodeSidebar::~UnicodeSidebar() = default;
 
 void UnicodeSidebar::InsertCharFromRow(int row) {
   if (row < 0)

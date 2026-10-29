@@ -63,9 +63,8 @@ public:
         m_operators[op] = 1;
       wxString operators(wxS("\u221A\u22C0\u22C1\u22BB\u22BC\u22BD\u00AC\u222b"
                              "\u2264\u2265\u2211\u2260+-*/^:=#'!()[]{}"));
-      for (wxString::const_iterator it = operators.begin();
-           it != operators.end(); ++it)
-        m_operators[wxString(*it)] = 1;
+      for (const auto ch : operators)
+        m_operators[wxString(ch)] = 1;
     }
 
   //! Is this name an operator known to maxima?

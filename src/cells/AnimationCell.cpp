@@ -97,9 +97,8 @@ AnimationCell::AnimationCell(GroupCell *group, const AnimationCell &cell)
 
 void AnimationCell::SetConfiguration(Configuration *config) {
   m_configuration = config;
-  for (std::vector<std::shared_ptr<Image>>::const_iterator i = m_images.begin();
-       i != m_images.end(); ++i)
-    (*i)->SetConfiguration(config);
+  for (const auto &image : m_images)
+    image->SetConfiguration(config);
 }
 
 AnimationCell::~AnimationCell() {
@@ -436,9 +435,8 @@ wxString AnimationCell::ToXML() const {
 }
 
 void AnimationCell::SetPPI(int ppi) {
-  for (std::vector<std::shared_ptr<Image>>::const_iterator i = m_images.begin();
-       i != m_images.end(); ++i)
-    (*i)->SetPPI(ppi);
+  for (const auto &image : m_images)
+    image->SetPPI(ppi);
 }
 
 wxSize AnimationCell::ToImageFile(wxString file) {

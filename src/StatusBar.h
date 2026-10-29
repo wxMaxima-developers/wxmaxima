@@ -55,7 +55,7 @@ public:
     behaves exactly as it did before this icon existed.
   */
   StatusBar(wxWindow *parent, int id, bool aiChatAvailable = false);
-  virtual ~StatusBar();
+  ~StatusBar() override;
   //! The network states that can be passed to NetworkStatus()
   enum networkState
   {

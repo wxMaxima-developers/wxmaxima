@@ -100,7 +100,7 @@ public:
   explicit ConfigDialogue(wxWindow *parent);
 
   //! The destructor
-  ~ConfigDialogue();
+  ~ConfigDialogue() override;
 
   //! The export formats we support for HTML equations
   enum htmlExportFormats
