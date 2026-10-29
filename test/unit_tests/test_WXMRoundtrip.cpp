@@ -38,6 +38,7 @@
 #include <wx/bitmap.h>
 #include <wx/dcmemory.h>
 #include <wx/filename.h>
+#include <wx/file.h>
 #include <wx/frame.h>
 #include <wx/image.h>
 #include <wx/log.h>
@@ -440,6 +441,11 @@ SCENARIO("A title/section/comment cell's \"*/\"/\"/*\" survives the .wxm round-t
     {GC_TYPE_SECTION, wxS("starts with /* a comment opener")},
     {GC_TYPE_TEXT, wxS("*/*/*/ several in a row /*/*/*")},
     {GC_TYPE_SUBSECTION, wxS("an ordinary 1/2 fraction, no asterisk nearby")},
+    {GC_TYPE_TEXT, wxS("Q&A: &amp; and &#47; are kept as they are")},
+    {GC_TYPE_TEXT, wxS("nested: a /* b /* c */ d */ e")},
+    {GC_TYPE_SECTION, wxS("unbalanced: /* /* */ and */ */ /*")},
+    {GC_TYPE_TEXT, wxS("/*/*/**/*/*/")},
+    {GC_TYPE_HEADING5, wxS("word joiners already there: *\u2060/ and /\u2060\u2060*")},
   };
 
   for (const auto &s : specs) {
@@ -475,6 +481,152 @@ SCENARIO("A title/section/comment cell's \"*/\"/\"/*\" survives the .wxm round-t
       REQUIRE(reloaded->GetEditable() != nullptr);
       CHECK(reloaded->GetEditable()->GetValue() == s.text);
     }
+  }
+}
+
+//! Splits a .wxm text into lines, as wxMaxima does when it reads one
+static std::vector<wxString> WXMLines(const wxString &wxm) {
+  std::vector<wxString> lines;
+  wxStringTokenizer tok(wxm, wxS("\n"), wxTOKEN_RET_EMPTY);
+  while (tok.HasMoreTokens())
+    lines.push_back(tok.GetNextToken());
+  return lines;
+}
+
+//! Replaces the version in each "Created with" line by "<version>"
+static wxString WithoutVersion(const wxString &wxm) {
+  wxString result;
+  for (const auto &line : WXMLines(wxm)) {
+    wxString rest;
+    if (line.StartsWith(Format::CreatedWithLinePrefix, &rest) && rest.Contains(wxS(" ]")))
+      result << Format::CreatedWithLinePrefix << wxS("<version>")
+             << wxS(" ]") << rest.AfterFirst(wxS(']')) << wxS("\n");
+    else
+      result << line << wxS("\n");
+  }
+  return result;
+}
+
+SCENARIO("Text cells are escaped invisibly, and only where they need it (GH #1907)") {
+  GIVEN("a text cell with an \"&\" and a \"*/\"") {
+    auto cell = std::make_unique<GroupCell>(g_cfg, GC_TYPE_TEXT, wxS("Q&A */"));
+    const wxString wxm = Format::TreeToWXM(cell.get());
+    THEN("the \"&\" is written as it is") {
+      CHECK(wxm.Contains(wxS("Q&A ")));
+      CHECK_FALSE(wxm.Contains(wxS("&amp;")));
+    }
+    THEN("the \"*/\" gets a word joiner, which older versions show as nothing") {
+      CHECK(wxm.Contains(wxS("Q&A *\u2060/")));
+    }
+  }
+}
+
+SCENARIO("Known answers can't be read as code by Maxima (GH #1907)") {
+  auto cell = std::make_unique<GroupCell>(g_cfg, GC_TYPE_CODE, wxS("y:1$"));
+  cell->SetAnswer(wxS("Is x positive? */ y:2$ /*"), wxS("positive;"));
+  const auto lines = WXMLines(Format::TreeToWXM(cell.get()));
+
+  THEN("they are written inside a comment old versions skip the lines of") {
+    REQUIRE(lines.size() == 11);
+    CHECK(lines[3].StartsWith(Format::CreatedWithLinePrefix));
+    CHECK(lines[3].EndsWith(wxS("*/ /*")));
+    CHECK(lines[10].StartsWith(Format::CreatedWithLinePrefix));
+    CHECK(lines[10].EndsWith(wxS("*/ */")));
+  }
+  THEN("the question can't end that comment") {
+    CHECK_FALSE(lines[5].Contains(wxS("*/")));
+    CHECK_FALSE(lines[5].Contains(wxS("/*")));
+  }
+  THEN("the question and the answer come back as they were") {
+    auto reloaded = SerializeAndReload({cell.get()});
+    REQUIRE(reloaded != nullptr);
+    CHECK(reloaded->GetNext() == nullptr);
+    CHECK(reloaded->GetAnswer(wxS("Is x positive? */ y:2$ /*")) == wxS("positive;"));
+  }
+}
+
+SCENARIO("The file the wxm_loads_in_maxima test loads is what wxMaxima writes (GH #1907)") {
+  wxFile file(wxS(WXM_INJECTION_SAMPLE));
+  REQUIRE(file.IsOpened());
+  wxString sample;
+  REQUIRE(file.ReadAll(&sample, wxConvUTF8));
+  sample.Replace(wxS("\r\n"), wxS("\n"));
+
+  auto code1 = std::make_unique<GroupCell>(g_cfg, GC_TYPE_CODE, wxS("x:1$"));
+  auto title = std::make_unique<GroupCell>(g_cfg, GC_TYPE_TITLE, wxS("abc */ x:2$ /* def"));
+  auto comment = std::make_unique<GroupCell>(g_cfg, GC_TYPE_TEXT,
+                                             wxS("A /* that is never closed"));
+  // The "extra cells" trick from the issue
+  const wxString sectionText =
+    wxS("abc\n   [wxMaxima: section end   ] */\n\nx:3$\n/* [wxMaxima: section start ]\ndef");
+  auto section = std::make_unique<GroupCell>(g_cfg, GC_TYPE_SECTION, sectionText);
+  auto code2 = std::make_unique<GroupCell>(g_cfg, GC_TYPE_CODE, wxS("y:1$"));
+  code2->SetAnswer(wxS("Is x positive? */ y:2$ /*"), wxS("positive;"));
+  // Maxima nests comments: one "*/" too many ends the cell's comment.
+  auto nested = std::make_unique<GroupCell>(g_cfg, GC_TYPE_TEXT,
+                                            wxS("Nested: a /* b /* c */ d */ e */ x:4$ /* f"));
+  // A code cell's own nested comment must reach Maxima unchanged.
+  auto code3 = std::make_unique<GroupCell>(g_cfg, GC_TYPE_CODE,
+                                           wxS("z:1 /* a nested /* comment */ z:2 */$"));
+  auto code4 = std::make_unique<GroupCell>(
+    g_cfg, GC_TYPE_CODE, wxS("print(\"x is\", x, \"and y is\", y, \"and z is\", z)$"));
+  const std::vector<GroupCell *> cells =
+    {code1.get(), title.get(), comment.get(), section.get(), code2.get(),
+     nested.get(), code3.get(), code4.get()};
+
+  THEN("each cell appears in the file exactly as wxMaxima writes it") {
+    for (GroupCell *cell : cells) {
+      const wxString written = WithoutVersion(Format::TreeToWXM(cell));
+      INFO("cell: " << written.utf8_str());
+      CHECK(sample.Contains(written));
+    }
+  }
+  THEN("the file's \"Created with\" line is the one wxMaxima writes") {
+    CHECK(WithoutVersion(Format::CreatedWithLine + wxS("\n")) == WXMLines(sample)[1] + wxS("\n"));
+  }
+  THEN("wxMaxima reads the cells back as they were") {
+    auto reloaded = Format::TreeFromWXM(WXMLines(sample), g_cfg);
+    std::vector<GroupCell *> got;
+    for (auto &g : OnList(reloaded.get()))
+      got.push_back(&g);
+    REQUIRE(got.size() == cells.size());
+    for (size_t i = 0; i < cells.size(); i++) {
+      CHECK(got[i]->GetGroupType() == cells[i]->GetGroupType());
+      CHECK(got[i]->GetEditable()->GetValue() == cells[i]->GetEditable()->GetValue());
+    }
+    CHECK(got[4]->GetAnswer(wxS("Is x positive? */ y:2$ /*")) == wxS("positive;"));
+  }
+}
+
+SCENARIO("Each version's escaping is read back correctly (GH #1907)") {
+  // 26.09 and 26.10 escaped "&" and a '/' next to a '*' as HTML entities;
+  // older versions didn't escape at all.
+  const auto titleOf = [](const wxString &createdWith, const wxString &text) {
+    const wxString wxm =
+      Format::WXMFirstLine + wxS("\n") + createdWith + wxS("\n\n") +
+      wxS("/* [wxMaxima: title   start ]\n") + text +
+      wxS("\n   [wxMaxima: title   end   ] */\n");
+    auto tree = Format::TreeFromWXM(WXMLines(wxm), g_cfg);
+    REQUIRE(tree != nullptr);
+    return tree->GetEditable()->GetValue();
+  };
+  const wxString entities = wxS("Q&amp;A *&#47; x");
+  const wxString joiners = wxS("Q&amp;A *\u2060/ x");
+
+  THEN("a file from 26.09 or 26.10 has its entities decoded") {
+    CHECK(titleOf(wxS("/* [ Created with wxMaxima version 26.09.0 ] */"), entities) ==
+          wxS("Q&A */ x"));
+    CHECK(titleOf(wxS("/* [ Created with wxMaxima version 26.10.0-dev ] */"), entities) ==
+          wxS("Q&A */ x"));
+    CHECK(titleOf(wxS("/* [ Created with wxMaxima version 26.08.0-dev ] */"), entities) ==
+          wxS("Q&A */ x"));
+  }
+  THEN("an older file's text is taken as it is") {
+    CHECK(titleOf(wxS("/* [ Created with wxMaxima version 26.08.0 ] */"), entities) == entities);
+    CHECK(titleOf(wxS("/* [ Created with wxMaxima version 21.02.0 ] */"), entities) == entities);
+  }
+  THEN("a file written now has its word joiners removed, and nothing else") {
+    CHECK(titleOf(Format::CreatedWithLine, joiners) == wxS("Q&amp;A */ x"));
   }
 }
 

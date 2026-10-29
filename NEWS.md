@@ -1,5 +1,14 @@
 # Current development version
 
+- A .wxm file can be loaded by Maxima again whatever its text cells contain,
+  and old wxMaxima versions show the text as it is (#1907). Since 26.09 a
+  `/*` or `*/` in a text cell or heading was written with HTML entities,
+  which also turned every `&` into `&amp;`, and wxMaxima 26.08 and older
+  showed those entities. Now an invisible word joiner (U+2060) goes between
+  the `*` and the `/` instead, and nothing else changes. Files from 26.09
+  and 26.10 are still read correctly. Known answers to Maxima's questions
+  are now saved inside a comment, too: before, Maxima's `batch()` read them
+  as code and failed on any .wxm that had some.
 - Help > Troubleshooting now also says whether this wxMaxima uses libfribidi
   (and which version), which places the cursor and the selection correctly
   on lines mixing right-to-left and left-to-right text. With it, the dialog

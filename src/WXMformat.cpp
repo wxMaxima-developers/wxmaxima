@@ -28,6 +28,7 @@
 #include <utility>
 #include <algorithm>
 #include <memory>
+#include <optional>
 #include <cstdlib>
 #include <vector>
 #include "WXMformat.h"
@@ -44,8 +45,23 @@ namespace Format {
     wxS("/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/");
   const wxString CreatedWithLinePrefix =
     wxS("/* [ Created with wxMaxima version ");
+  // The tag after the version tells TreeFromWXM() how the text cells of this
+  // file are escaped (see InsertWordJoiners()). Old versions skip every line
+  // that starts with CreatedWithLinePrefix, so they don't see it.
+  static const wxString WordJoinerTag = wxS(" ] [ escaping: word joiner ] */");
   const wxString CreatedWithLine =
-    CreatedWithLinePrefix + wxS(WXMAXIMA_VERSION " ] */");
+    CreatedWithLinePrefix + wxS(WXMAXIMA_VERSION) + WordJoinerTag;
+  // Known answers are written between these two lines (GH #1907). The
+  // question and answer markers are complete comments, so without them the
+  // question and the answer would be read as code by Maxima's batch(). These
+  // open and close a comment around them -- Maxima nests comments, so the
+  // markers inside don't end it -- and start with CreatedWithLinePrefix,
+  // which every wxMaxima version skips: 26.05 and older drop every line they
+  // don't know, newer ones skip lines that start with it.
+  static const wxString KnownAnswersStart =
+    CreatedWithLinePrefix + wxS(WXMAXIMA_VERSION " ] [ known answers start ] */ /*");
+  static const wxString KnownAnswersEnd =
+    CreatedWithLinePrefix + wxS(WXMAXIMA_VERSION " ] [ known answers end ] */ */");
 
   struct WXMHeader //-V730
   {
@@ -181,45 +197,104 @@ namespace Format {
   // from there up to whatever "*/" a plain `load()`/`batch()` scan happens
   // to find next is read as live, executable Maxima input instead of inert
   // prose -- e.g. a title cell containing "abc */ x:2$ /* def " silently
-  // runs "x:2$" when the file is loaded. This escapes every '/' that sits
-  // immediately next to a '*' (i.e. would form a literal "/*" or "*/") with
-  // the HTML numeric entity "&#47;", leaving the adjacent '*' and every
-  // other '/' (e.g. an ordinary "1/2") untouched; UnescapeWXMSlashes()
-  // below is its exact inverse. Escaping '&' first keeps the transform
-  // unambiguous even if the original content already contains a literal
-  // '&' -- without that, content already containing the literal text
-  // "&#47;" would be corrupted on the way back. This can't fix a .wxm file
-  // already on disk from before this existed, and can't be applied to code
-  // cells at all (they must stay byte-identical so a plain Maxima can still
-  // batch() them with zero wxMaxima-specific decoding) -- see the callers.
-  //! Replaces every '/' next to a '*' by "&#47;", touching nothing else
-  static wxString EscapeSlashesNextToStars(const wxString &content) {
+  // runs "x:2$" when the file is loaded. A "/*" is as bad: Maxima nests
+  // comments, so it leaves the comment open until the end of the file.
+  //
+  // So a '*' and a '/' next to each other are separated by U+2060 WORD
+  // JOINER, an invisible, zero-width character that also forbids a line
+  // break. Maxima sees no comment delimiter any more (its UTF-8 bytes contain
+  // neither '*' nor '/', so this holds for Lisps that read bytes, too), and
+  // wxMaxima versions that don't know about this show the text unchanged.
+  // Every marker line contains a "/*" or "*/", so a line of text that looks
+  // like a marker can't end the cell either.
+  //
+  // 26.09 and 26.10 escaped with HTML entities instead ("&amp;" and "&#47;"),
+  // which older versions show as they are, and which rewrote every "&".
+  // UnescapeWXMSlashes() still reads their files; see EscapingOfFile().
+  static const wxUniChar WordJoiner(0x2060);
+
+  //! Would a and b be a "/*" or "*/" if they were next to each other?
+  static bool IsCommentDelimiter(wxUniChar a, wxUniChar b) {
+    return ((a == wxS('*')) && (b == wxS('/'))) ||
+      ((a == wxS('/')) && (b == wxS('*')));
+  }
+
+  /*! Puts one more word joiner between each '*' and '/' that are next to each other
+
+    "Next to each other" ignores the word joiners already between them: the
+    text may contain some, and writing one more than it had is what lets
+    RemoveWordJoiners() restore it exactly.
+  */
+  static wxString InsertWordJoiners(const wxString &text) {
     wxString result;
-    result.reserve(content.Length());
-    for (size_t i = 0; i < content.Length(); i++) {
-      wxUniChar c = content[i];
-      if (c == wxS('/') &&
-          ((i > 0 && content[i - 1] == wxS('*')) ||
-           (i + 1 < content.Length() && content[i + 1] == wxS('*'))))
-        result << wxS("&#47;");
-      else
-        result << c;
+    result.reserve(text.Length() + 8);
+    const size_t length = text.Length();
+    for (size_t i = 0; i < length; i++) {
+      const wxUniChar c = text[i];
+      result << c;
+      if ((c != wxS('*')) && (c != wxS('/')))
+        continue;
+      size_t next = i + 1;
+      while ((next < length) && (text[next] == WordJoiner))
+        next++;
+      if ((next < length) && IsCommentDelimiter(c, text[next]))
+        result << WordJoiner;
     }
     return result;
   }
 
-  static wxString EscapeWXMSlashes(const wxString &content) {
-    wxString ampEscaped = content;
-    ampEscaped.Replace(wxS("&"), wxS("&amp;"));
-    return EscapeSlashesNextToStars(ampEscaped);
+  //! The exact inverse of InsertWordJoiners()
+  static wxString RemoveWordJoiners(const wxString &text) {
+    wxString result;
+    result.reserve(text.Length());
+    const size_t length = text.Length();
+    for (size_t i = 0; i < length; i++) {
+      const wxUniChar c = text[i];
+      result << c;
+      if ((c != wxS('*')) && (c != wxS('/')))
+        continue;
+      size_t next = i + 1;
+      while ((next < length) && (text[next] == WordJoiner))
+        next++;
+      if ((next > i + 1) && (next < length) && IsCommentDelimiter(c, text[next]))
+        i++; // Drop one of the word joiners
+    }
+    return result;
   }
 
-  //! The exact inverse of EscapeWXMSlashes() -- see its comment.
+  //! Undoes the HTML entities 26.09 and 26.10 escaped text cells with
   static wxString UnescapeWXMSlashes(const wxString &content) {
     wxString result = content;
     result.Replace(wxS("&#47;"), wxS("/"));
     result.Replace(wxS("&amp;"), wxS("&"));
     return result;
+  }
+
+  /*! How the text cells of the file a "Created with" line comes from are escaped
+
+    \return std::nullopt if the line isn't a file's "Created with" line.
+  */
+  static std::optional<TextEscaping> EscapingOfFile(const wxString &line) {
+    wxString rest;
+    if (!line.StartsWith(CreatedWithLinePrefix, &rest))
+      return std::nullopt;
+    if (rest.EndsWith(WordJoinerTag))
+      return TextEscaping::WordJoiner;
+    wxString version;
+    if (!rest.EndsWith(wxS(" ] */"), &version) || version.Contains(wxS(" ")))
+      return std::nullopt;
+    long major = 0;
+    long minor = 0;
+    if (!version.BeforeFirst(wxS('.')).ToLong(&major) ||
+        !version.AfterFirst(wxS('.')).BeforeFirst(wxS('.')).ToLong(&minor))
+      return TextEscaping::WordJoiner;
+    // The entities were introduced in the 26.08.0-dev snapshots and replaced
+    // in the 26.10.0-dev ones, which write WordJoinerTag.
+    if ((major == 26) &&
+        ((minor == 9) || (minor == 10) ||
+         ((minor == 8) && version.EndsWith(wxS("-dev")))))
+      return TextEscaping::HtmlEntities;
+    return TextEscaping::WordJoiner;
   }
 
   /// Would Maxima read "/* text */" back as exactly one comment?
@@ -246,8 +321,7 @@ namespace Format {
   }
 
   static wxString EscapeWXMTextContent(const wxString &content) {
-    wxString result = EscapeWXMContent(EscapeWXMSlashes(content));
-    return result;
+    return EscapeWXMContent(InsertWordJoiners(content));
   }
 
   wxString TreeToWXM(GroupCell *cell, bool wxm) {
@@ -268,6 +342,8 @@ namespace Format {
 
       // Export the list of known answers
       if (wxm) {
+        if (!cell->m_knownAnswers.empty())
+          retval << KnownAnswersStart << '\n';
         for (auto const &[question, answer] : cell->m_knownAnswers)
           retval << Headers.GetStart(WXM_QUESTION) << '\n'
                  << EscapeWXMTextContent(question) << '\n'
@@ -275,6 +351,8 @@ namespace Format {
                  << Headers.GetStart(WXM_ANSWER) << '\n'
                  << EscapeWXMTextContent(answer) << '\n'
                  << Headers.GetEnd(WXM_ANSWER) << '\n';
+        if (!cell->m_knownAnswers.empty())
+          retval << KnownAnswersEnd << '\n';
         if (cell->AutoAnswer())
           // The trailing newline matters here too (see the image case below):
           // the clipboard copy concatenates cells' WXM without a separator, so
@@ -292,11 +370,11 @@ namespace Format {
         // A .mac is a Maxima program, which the user may have written in an
         // editor: its comments come back as they were read (GH #2353). Only
         // a text that would end its comment early, or leave it open, is
-        // escaped (GH #1907) -- and not unescaped when read back, as a
-        // hand-written comment may contain "&#47;" legitimately.
+        // escaped (GH #1907), by the word joiners a .wxm uses, which
+        // ParseMACContents() removes again.
         const wxString text = cell->GetEditable()->ToString(true);
         retval << wxS("/* ")
-               << (IsMaximaCommentBody(text) ? text : EscapeSlashesNextToStars(text))
+               << (IsMaximaCommentBody(text) ? text : InsertWordJoiners(text))
                << wxS(" */\n");
       }
       break;
@@ -311,13 +389,13 @@ namespace Format {
       // escaped there, too (GH #2353). TreeFromWXM() undoes it for both.
       retval << Headers.GetStart(groupType) << '\n'
              << (wxm ? EscapeWXMTextContent(cell->GetEditable()->ToString(true))
-                     : EscapeWXMSlashes(cell->GetEditable()->ToString(true))) << '\n'
+                     : InsertWordJoiners(cell->GetEditable()->ToString(true))) << '\n'
              << Headers.GetEnd(groupType) << '\n';
       break;
     case GC_TYPE_IMAGE:
       retval << Headers.GetStart(groupType) << '\n'
              << (wxm ? EscapeWXMTextContent(cell->GetEditable()->ToString(true))
-                     : EscapeWXMSlashes(cell->GetEditable()->ToString(true))) << '\n'
+                     : InsertWordJoiners(cell->GetEditable()->ToString(true))) << '\n'
              << Headers.GetEnd(groupType) << '\n';
       if (cell->GetLabel() && cell->GetLabel()->GetType() == MC_TYPE_IMAGE) {
         const ImgCell *image = dynamic_cast<ImgCell *>(cell->GetLabel());
@@ -358,7 +436,8 @@ namespace Format {
   }
 
   std::unique_ptr<GroupCell> TreeFromWXM(const std::vector<wxString> &wxmLines,
-                                         Configuration *config, int depth) {
+                                         Configuration *config, int depth,
+                                         TextEscaping escaping) {
     // Each nested WXM_FOLD recurses into TreeFromWXM; bound that so a crafted
     // .wxm (or pasted text) with pathologically deep fold nesting can't overflow
     // the stack. Mirrors MathParser's XML nesting cap; real documents nest folds
@@ -388,6 +467,13 @@ namespace Format {
       return line;
     };
 
+    //! Undoes the escaping of a text cell's or a known answer's text
+    const auto unescape = [&escaping](const wxString &text) -> wxString {
+      if (escaping == TextEscaping::HtmlEntities)
+        return UnescapeWXMSlashes(text);
+      return RemoveWordJoiners(text);
+    };
+
     bool hide = false;
     //! Hides the cell if a hide flag was set
     const auto hideCell = [&hide](GroupCell *cell) {
@@ -410,6 +496,9 @@ namespace Format {
         thisLine = thisLine.Mid(1);
       WXMHeaderId headerId = Headers.LookupStart(thisLine);
       wxString line;
+      if (headerId == WXM_INVALID)
+        if (auto fileEscaping = EscapingOfFile(thisLine))
+          escaping = *fileEscaping;
 
       switch (headerId) {
         // Read hide tag
@@ -418,7 +507,7 @@ namespace Format {
         break;
 
         // Read title, section, subsection, subsubsection, heading5, heading6,
-        // comment -- these need UnescapeWXMSlashes() to reverse
+        // comment -- these need unescape() to reverse
         // EscapeWXMTextContent()'s write-side escaping (GH #1907).
       case WXM_TITLE:
       case WXM_SECTION:
@@ -427,7 +516,7 @@ namespace Format {
       case WXM_HEADING5:
       case WXM_HEADING6:
       case WXM_COMMENT:
-        line = UnescapeWXMSlashes(getLinesUntil(Headers.GetEnd(headerId)));
+        line = unescape(getLinesUntil(Headers.GetEnd(headerId)));
         cell = std::make_unique<GroupCell>(config, GroupType(headerId), line);
         hideCell(cell.get());
         break;
@@ -444,7 +533,7 @@ namespace Format {
         cell = std::make_unique<GroupCell>(config, GroupType(headerId), line);
         hideCell(cell.get());
         break;
-        // Same UnescapeWXMSlashes()/byte-identical split as above, for the
+        // Same unescape()/byte-identical split as above, for the
         // hidden variants.
       case WXM_HIDDEN_TITLE:
       case WXM_HIDDEN_SECTION:
@@ -455,7 +544,7 @@ namespace Format {
       case WXM_HIDDEN_COMMENT:
       case WXM_HIDDEN_CAPTION:
         hide = true;
-        line = UnescapeWXMSlashes(getLinesUntil(Headers.GetEnd(headerId)));
+        line = unescape(getLinesUntil(Headers.GetEnd(headerId)));
         cell = std::make_unique<GroupCell>(config, GroupType(headerId - 128), line);
         hideCell(cell.get());
         break;
@@ -468,7 +557,7 @@ namespace Format {
 
         // Read an image caption
       case WXM_CAPTION:
-        line = UnescapeWXMSlashes(getLinesUntil(Headers.GetEnd(headerId)));
+        line = unescape(getLinesUntil(Headers.GetEnd(headerId)));
         cell = std::make_unique<GroupCell>(config, GroupType(headerId));
         cell->GetEditable()->SetValue(line);
         hideCell(cell.get());
@@ -486,11 +575,11 @@ namespace Format {
         break;
 
         // Read an answer. WXM_ANSWER's own start/end markers are both
-        // self-closed single-line comments (like WXM_INPUT's), so this
-        // content was never at injection risk -- unescaped anyway, purely
-        // for symmetry with EscapeWXMTextContent() writing it that way.
+        // self-closed single-line comments (like WXM_INPUT's); since GH #1907
+        // the comment around the answers (KnownAnswersStart) is what keeps
+        // Maxima from reading them, so they are escaped like a text cell.
       case WXM_ANSWER:
-        line = UnescapeWXMSlashes(getLinesUntil(Headers.GetEnd(headerId)));
+        line = unescape(getLinesUntil(Headers.GetEnd(headerId)));
         if (last && !question.empty()) {
           last->SetAnswer(question, line);
           question.Clear();
@@ -499,7 +588,7 @@ namespace Format {
 
         // Read a question -- see the WXM_ANSWER comment just above.
       case WXM_QUESTION:
-        line = UnescapeWXMSlashes(getLinesUntil(Headers.GetEnd(headerId)));
+        line = unescape(getLinesUntil(Headers.GetEnd(headerId)));
         question = line;
         break;
 
@@ -526,7 +615,7 @@ namespace Format {
         // "last" null; every other case here already guards it, so guard this
         // one too instead of dereferencing null.
         if (last)
-          last->HideTree(TreeFromWXM(hiddenTree, config, depth + 1));
+          last->HideTree(TreeFromWXM(hiddenTree, config, depth + 1, escaping));
       } break;
 
       case WXM_INVALID:
@@ -690,7 +779,10 @@ namespace Format {
             else
               line.erase(0, 2);
 
-            tree.Append(std::make_unique<GroupCell>(config, GC_TYPE_TEXT, line));
+            // A text that isn't one comment had word joiners inserted on
+            // export (see TreeToWXM()).
+            tree.Append(std::make_unique<GroupCell>(config, GC_TYPE_TEXT,
+                                                    RemoveWordJoiners(line)));
           }
           line.clear();
         }

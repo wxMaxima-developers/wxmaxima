@@ -68,6 +68,13 @@ enum WXMHeaderId {
 
 namespace Format
 {
+  //! How a .wxm file keeps a text cell's "/*" and "*/" from ending its comment (GH #1907)
+  enum class TextEscaping {
+    //! A U+2060 word joiner between each '*' and '/'. Written since 26.11.
+    WordJoiner,
+    //! "&" as "&amp;" and a '/' next to a '*' as "&#47;". Written by 26.09 and 26.10.
+    HtmlEntities
+  };
 
 /*! Convert a given cell to its wxm representation.
  * \param wxm
@@ -77,8 +84,14 @@ namespace Format
  */
   wxString TreeToWXM(GroupCell *cell, bool wxm = true);
 
-//! Converts a wxm description into individual cells
-  std::unique_ptr<GroupCell> TreeFromWXM(const std::vector<wxString> &wxmLines, Configuration *config, int depth = 0);
+/*! Converts a wxm description into individual cells
+
+  \param escaping How the text cells are escaped. A file's "Created with
+  wxMaxima" line overrides it, so this only matters for text without one,
+  like the clipboard's.
+*/
+  std::unique_ptr<GroupCell> TreeFromWXM(const std::vector<wxString> &wxmLines, Configuration *config, int depth = 0,
+                                         TextEscaping escaping = TextEscaping::WordJoiner);
 
 /*! Parses the contents of a .wxm file into individual cells.
  * Invokes TreeFromWXM on pre-processed data,
