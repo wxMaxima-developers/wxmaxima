@@ -1,5 +1,7 @@
 # Current development version
 
+- The manual's troubleshooting section explains the "Broken pipe" a blocked
+  Gnuplot causes on MacOS, and that plots don't need XQuartz there (#1461).
 - The language chooser lists every language under its own name, followed by
   its name in the current UI language ("Deutsch — German"), so someone who
   ended up with a UI language they can't read still finds theirs (#849). The
