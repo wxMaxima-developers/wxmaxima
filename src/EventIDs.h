@@ -733,6 +733,7 @@ public:
   static const wxWindowIDRef popid_auto_answer;
   static const wxWindowIDRef popid_autocomplete_keyword1;
   static const wxWindowIDRef popid_never_autoanswer;
+  static const wxWindowIDRef popid_forget_answers;
   static const wxWindowIDRef popid_popup_gnuplot;
   static const wxWindowIDRef popid_fold;
   static const wxWindowIDRef popid_unfold;

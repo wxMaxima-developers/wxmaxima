@@ -257,6 +257,11 @@ void GroupCell::SetAnswer(const wxString &question, const wxString &answer) {
   }
 }
 
+void GroupCell::ForgetAnswers() {
+  m_knownAnswers.clear();
+  m_numberedAnswersCount = 0;
+}
+
 GroupCell *GroupCell::GetLastWorkingGroup() const {
   return m_documentCellPointers->GetLastWorkingGroup();
 }

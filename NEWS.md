@@ -1,5 +1,10 @@
 # Current development version
 
+- "Forget known answers" in a code cell's context menu and in the Cell menu
+  drops the answers wxMaxima remembers for Maxima's questions (#1018), for
+  the cell under the cursor or for every selected cell. They are then
+  neither offered nor sent again, nor saved with the worksheet, so a
+  worksheet can be run from scratch.
 - A menu or toolbar command that works on the selection (Simplify, Factor,
   Expand, Plot, ...) no longer fails when the selection ends in `;` or `$`
   (#244): "Simplify" on a selected `x^2+2*x+1;` used to send

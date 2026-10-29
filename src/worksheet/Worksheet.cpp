@@ -6673,6 +6673,30 @@ wxString GenerateAnonymousName(Configuration *configuration,
 }
 } // namespace
 
+std::size_t Worksheet::ForgetKnownAnswers() {
+  GroupCell *startGroup = nullptr;
+  GroupCell *endGroup = nullptr;
+  if (GetActiveCell()) {
+    startGroup = endGroup = GetActiveCell()->GetGroup();
+  } else if (HasCellsSelected()) {
+    startGroup = GetDocumentCellPointers().GetSelectionStart()->GetGroup();
+    endGroup = GetDocumentCellPointers().GetSelectionEnd()->GetGroup();
+  }
+  if (!startGroup || !endGroup)
+    return 0;
+
+  std::size_t forgotten = 0;
+  for (auto &group : OnList(startGroup)) {
+    if (group.ContainsSavedAnswers()) {
+      group.ForgetAnswers();
+      forgotten++;
+    }
+    if (&group == endGroup)
+      break;
+  }
+  return forgotten;
+}
+
 void Worksheet::AnonymizeCodeCells() {
   if (!GetTree())
     return;

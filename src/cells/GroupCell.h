@@ -127,6 +127,14 @@ public:
   void MarkNeedsRecalculate();
   //! Add a new answer to the cell
   void SetAnswer(const wxString &question, const wxString &answer);
+  /*! Forget all answers this cell remembers from earlier runs (GH #1018)
+
+    Afterwards neither the answer field is prefilled nor an answer sent
+    automatically, and the answers are no longer saved with the worksheet.
+    The "send known answers automatically" flag is kept: it only takes
+    effect once the cell has learned new answers.
+  */
+  void ForgetAnswers();
 
   size_t GetInnerCellCount() const override { return (m_groupType == GC_TYPE_PAGEBREAK) ? 0 : 2; }
   Cell *GetInnerCell(size_t index) const override {

@@ -660,6 +660,7 @@ const wxWindowIDRef EventIDs::popid_insert_heading6(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::popid_auto_answer(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::popid_autocomplete_keyword1(wxWindow::NewControlId(NumberOfAutocompleteKeywords));
 const wxWindowIDRef EventIDs::popid_never_autoanswer(wxWindow::NewControlId());
+const wxWindowIDRef EventIDs::popid_forget_answers(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::popid_popup_gnuplot(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::popid_fold(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::popid_unfold(wxWindow::NewControlId());
