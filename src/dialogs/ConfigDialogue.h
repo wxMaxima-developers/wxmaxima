@@ -64,6 +64,7 @@ extern unsigned char view_refresh_svg_gz[];
 #include "../Configuration.h"
 #include "ToolBarSectionsPanel.h"
 #include "SymbolShortcutsPanel.h"
+#include "UiLanguages.h"
 #include "WorksheetPreview.h"
 #ifdef WXM_USE_AI_TOOLS
 #include "ai/AiProvider.h"
@@ -179,9 +180,8 @@ private:
   void UpdateWorksheetPreview(wxm::WorksheetPreview::Topic topic);
 
   using StringHash = std::unordered_map<wxString, wxString, wxStringHash>;
-  using Languages = std::unordered_map<wxString, long, wxStringHash>;
-
-  Languages m_languages;
+  //! The languages m_language offers, in the order it lists them
+  std::vector<wxm::UiLanguage> m_languages;
   /*! TheSample text that is shown by the style selector.
 
     This is a piece of text that shows the user how the selected style will look.
