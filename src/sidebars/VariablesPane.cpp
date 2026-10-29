@@ -422,4 +422,4 @@ void Variablespane::Clear() {
     m_grid->DeleteRows(0);
 }
 
-Variablespane::~Variablespane() {}
+Variablespane::~Variablespane() = default;

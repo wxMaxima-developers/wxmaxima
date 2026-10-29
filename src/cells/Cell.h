@@ -151,10 +151,6 @@ class Cell: public Observed
 #endif
   friend class CellList;
 
-  // This class can be derived from wxAccessible which has no copy constructor
-  void operator=(const Cell&) = delete;
-  //! The constructor of this cell
-  Cell(GroupCell *group, const Cell&) = delete;
 
   template <typename C, typename std::enable_if<std::is_base_of<Cell, C>::value, bool>::type>
   friend inline auto OnInner(const C *cell);
@@ -162,8 +158,11 @@ class Cell: public Observed
   friend inline auto OnInner(C *cell);
 
 public:
-//  Cell(GroupCell *group, Configuration *config);
+  //! The constructor of this cell
   Cell(GroupCell *group, Configuration *config);
+  // This class can be derived from wxAccessible which has no copy constructor
+  void operator=(const Cell&) = delete;
+  Cell(GroupCell *group, const Cell&) = delete;
 
   /*! Create a copy of this cell
 

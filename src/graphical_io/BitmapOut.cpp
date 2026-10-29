@@ -58,7 +58,7 @@ BitmapOut::BitmapOut(const Configuration * const *configuration,
   Render(std::move(tree), maxSize);
 }
 
-BitmapOut::~BitmapOut() {}
+BitmapOut::~BitmapOut() = default;
 
 bool BitmapOut::Render(std::unique_ptr<Cell> &&tree, long int maxSize) {
   m_tree = std::move(tree);

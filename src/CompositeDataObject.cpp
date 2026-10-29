@@ -22,9 +22,9 @@
 
 #include "CompositeDataObject.h"
 
-CompositeDataObject::CompositeDataObject() {}
+CompositeDataObject::CompositeDataObject() = default;
 
-CompositeDataObject::~CompositeDataObject() {}
+CompositeDataObject::~CompositeDataObject() = default;
 
 void CompositeDataObject::Add(wxDataObject *object, bool preferred) {
   if (!object)
@@ -66,7 +66,7 @@ wxDataObject *
 CompositeDataObject::GetObject(const wxDataFormat &format,
                                wxDataObjectBase::Direction dir) const {
   if (!(dir & wxDataObject::Get))
-    return 0;
+    return nullptr;
 
   for (auto &entry : m_entries)
     // cppcheck-suppress useStlAlgorithm

@@ -284,7 +284,7 @@ void TroubleshootingRunner::StartMaxima() {
   wxIPV4address addr;
   addr.LocalHost();
   addr.Service(0);
-  m_server.reset(new wxSocketServer(addr, wxSOCKET_NOWAIT));
+  m_server = std::make_unique<wxSocketServer>(addr, wxSOCKET_NOWAIT);
   wxIPV4address local;
   if (!m_server->IsOk() || !m_server->GetLocal(local) || (local.Service() == 0)) {
     m_server.release()->Destroy();

@@ -66,7 +66,7 @@
 #include <unordered_set>
 #include <vector>
 #include <utility>
-#include <stdlib.h>
+#include <cstdlib>
 #ifdef __WXGTK__
 #include <dlfcn.h>
 #endif
@@ -6845,9 +6845,7 @@ bool Worksheet::Autocomplete(AutoComplete::autoCompletionType type) {
       frontOfSelection = frontOfSelection.Mid(static_cast<std::size_t>(positionOfEzunitStart) + 1);
       int numberOfParenthesis = 0;
 
-      for (wxString::const_iterator it = frontOfSelection.begin();
-           it != frontOfSelection.end(); ++it) {
-        wxChar ch = *it;
+      for (const wxChar ch : frontOfSelection) {
         if ((!wxIsalnum(ch)) && (ch != wxS('(')) && (ch != wxS(')')) &&
             (ch != wxS('*')) && (ch != wxS('/')))
           inEzUnit = false;

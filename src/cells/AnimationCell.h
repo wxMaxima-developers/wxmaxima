@@ -90,7 +90,7 @@ public:
     { if (IsOk())return m_images.at(m_displayed)->GetExtension(); else return wxEmptyString; }
 
   const CellTypeInfo &GetInfo() override;
-  virtual ~AnimationCell();
+  ~AnimationCell() override;
   int Length() const {return m_images.size();}
   void LoadImages(const wxMemoryBuffer& imageData);
   void LoadImages(const wxString& imageFile);

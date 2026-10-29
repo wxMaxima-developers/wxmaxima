@@ -241,9 +241,8 @@ void MaximaManual::CompileHelpFileAnchors(const stop_token& stopToken,
               token.Replace("-", " ");
               // Some other chars including the minus are represented by "_00xx"
               // where xx is being the ascii code of the char.
-              for (wxString::const_iterator it = escapeChars.begin();
-                   it != escapeChars.end(); ++it)
-                token.Replace(wxString::Format("_00%02x", static_cast<char>(*it)), *it);
+              for (const auto escapeChar : escapeChars)
+                token.Replace(wxString::Format("_00%02x", static_cast<char>(escapeChar)), escapeChar);
               // What the g_t means I don't know. But we don't need it
               if (token.StartsWith(wxS("g_t")))
                 token = token.Right(token.Length() - 3);

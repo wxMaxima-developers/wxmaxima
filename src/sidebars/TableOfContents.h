@@ -55,7 +55,7 @@ public:
 
   /* The destructor
    */
-  ~TableOfContents();
+  ~TableOfContents() override;
 
   void OnMouseRightDown(wxListEvent &event);
 

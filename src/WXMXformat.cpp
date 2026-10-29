@@ -31,6 +31,7 @@
 #include <memory>
 #include <cstdlib>
 #include <vector>
+#include <ranges>
 #include "WXMXformat.h"
 #include "CellPointers.h"
 #include "cells/CellList.h"
@@ -222,9 +223,7 @@ namespace Format {
         // Delete all but one control character from the string: there should be
         // no way for them to enter this string, anyway. But sometimes they
         // still do...
-        for (wxString::const_iterator it = xmlText.begin(); it != xmlText.end();
-             ++it) {
-          wxChar c = *it;
+        for (const wxChar c : xmlText) {
           if ((c < wxS('\t')) || ((c > wxS('\n')) && (c < wxS(' '))) ||
               (c == wxChar(static_cast<char>(0x7F)))) {
             // *it = wxS(' ');
@@ -396,9 +395,9 @@ wxString CellsToXMLDocument(const GroupCell *cells, Configuration *configuration
     xml << wxS("\n<") << AttachmentsTag() << wxS(">\n");
     // PushFileToSave() adds to the front: write them in the order they were
     // made, which is also the order the cells refer to them in.
-    for (auto file = files.rbegin(); file != files.rend(); ++file)
-      xml << wxS("<file name=\"") << Cell::XMLescape(file->FileName())
-          << wxS("\">") << wxBase64Encode(file->Data()) << wxS("</file>\n");
+    for (const auto &file : std::ranges::reverse_view(files))
+      xml << wxS("<file name=\"") << Cell::XMLescape(file.FileName())
+          << wxS("\">") << wxBase64Encode(file.Data()) << wxS("</file>\n");
     xml << wxS("</") << AttachmentsTag() << wxS(">");
   }
   xml << wxS("\n</wxMaximaDocument>\n");

@@ -34,9 +34,7 @@
 RegexSearch::RegexSearch(const wxString &regex)
   : wxRegEx(regex) {}
 
-RegexSearch::~RegexSearch()
-{
-}
+RegexSearch::~RegexSearch() = default;
 
 RegexSearch::Match RegexSearch::FindNext(const wxString &string, std::size_t start)
 {

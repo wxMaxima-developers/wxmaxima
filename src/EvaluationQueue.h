@@ -200,8 +200,7 @@ public:
         m_commands.back().AddEnding();
     }
 
-  virtual ~EvaluationQueue()
-    {};
+  virtual ~EvaluationQueue() = default;
 
   //! Is GroupCell gr part of the evaluation queue?
   bool IsLastInQueue(GroupCell const *gr)

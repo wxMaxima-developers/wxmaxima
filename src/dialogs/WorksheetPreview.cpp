@@ -28,6 +28,7 @@
 #include "MathParser.h"
 #include "cells/CellList.h"
 #include "cells/GroupCell.h"
+#include <ranges>
 #include <vector>
 
 namespace wxm {
@@ -79,8 +80,8 @@ wxString WorksheetPreview::Factorial200() {
       digits.push_back(carry % 10);
   }
   wxString result;
-  for (auto digit = digits.rbegin(); digit != digits.rend(); ++digit)
-    result += static_cast<wxChar>(wxS('0') + *digit);
+  for (const int digit : std::ranges::reverse_view(digits))
+    result += static_cast<wxChar>(wxS('0') + digit);
   return result;
 }
 

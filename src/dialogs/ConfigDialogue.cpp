@@ -183,7 +183,7 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent)
       "same time, but might provoke crashes.");
   m_languages = wxm::UiLanguages();
 
-  m_configuration = std::unique_ptr<Configuration>(new Configuration());
+  m_configuration = std::make_unique<Configuration>();
   SetSheetInnerBorder(3);
   SetSheetOuterBorder(3);
 
