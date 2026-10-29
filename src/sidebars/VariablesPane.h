@@ -76,7 +76,7 @@ public:
   //! Add a variable whose name contains all the escapes maxima needs to the variables list
   void AddWatchCode(wxString code);
   //! Add a variable without escapes to the list.
-  void AddWatch(wxString watch);
+  void AddWatch(const wxString& watch);
   //! Is this string a valid variable name?
   static bool IsValidVariable(wxString var);
   //! Returns a list of all variable names in a format maxima understands
@@ -99,7 +99,7 @@ public:
   void VariableUndefined(const wxString &var);
   void UpdateSize();
   //! The destructor
-  ~Variablespane();
+  ~Variablespane() override;
 private:
   // The spreadsheet with the variable names
   wxGrid *m_grid;

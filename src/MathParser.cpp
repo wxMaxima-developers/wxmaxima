@@ -217,7 +217,7 @@ MathParser::MathParser(Configuration *cfg, AttachmentSource attachments)
   }
 }
 
-MathParser::~MathParser() {}
+MathParser::~MathParser() = default;
 
 std::unique_ptr<Cell> MathParser::ParseVariableNameTag(wxXmlNode *node, int depth){
   auto children = node->GetChildren();
@@ -559,7 +559,7 @@ std::unique_ptr<Cell> MathParser::ParseOutputLabelTag(wxXmlNode *node, int depth
   if ((tmp == nullptr) || (dynamic_cast<LabelCell *>(tmp.get()) == nullptr))
     {
       wxString empty;
-      tmp.reset(new LabelCell(m_group, m_configuration, empty));
+      tmp = std::make_unique<LabelCell>(m_group, m_configuration, empty);
     }
 
   dynamic_cast<LabelCell *>(tmp.get())->SetUserDefinedLabel(user_lbl);
@@ -1089,7 +1089,7 @@ void MathParser::ParseCommonAttrs(wxXmlNode *node, Cell *cell) {
     cell->SetAltCopyText(val);
   if (node->GetAttribute(wxS("tooltip"), &val))
     if (!val.empty())
-      cell->SetToolTip(std::move(val));
+      cell->SetToolTip(val);
 
   wxXmlAttribute *attr = node->GetAttributes();
   while (attr) {
@@ -1315,11 +1315,11 @@ std::unique_ptr<Cell> MathParser::ParseTableTag(wxXmlNode *node, int depth) {
     matrix->AngledParens();
   else if (node->GetAttribute(wxS("straightParens")) == wxS("true"))
     matrix->StraightParens();
-  else if (node->GetAttribute(wxS("noneParens")) == wxS("true"))
-    matrix->NoParens();
-  else if (node->GetAttribute(wxS("roundedParens"), wxS("true")) == wxS("true"))
+  else if ((node->GetAttribute(wxS("noneParens")) != wxS("true")) &&
+           (node->GetAttribute(wxS("roundedParens"), wxS("true")) == wxS("true")))
     matrix->RoundedParens();
-  else matrix->NoParens();
+  else
+    matrix->NoParens();
 
   wxXmlNode *rows = SkipWhitespaceNode(node->GetChildren());
   while (rows) {

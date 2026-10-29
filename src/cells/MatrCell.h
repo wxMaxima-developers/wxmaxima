@@ -242,6 +242,22 @@ public:
   */
   wxString ToCSV(const wxString &delimiter) const;
   wxString ToOMML() const override;
+  /*! The entries of the matrix as an RTF table (GH #959)
+
+    One table row per matrix row, one table cell per entry, without the
+    parentheses around the matrix: what a spreadsheet or word processor makes
+    a table of on pasting it. Heading rows and columns are set in bold.
+
+    Only possible if every entry can be written as plain RTF text (a number, a
+    name, a string, ...): RTF can hold maths only as an equation object, and
+    a table full of those is no use in a spreadsheet. If an entry needs one
+    (a fraction, a power, ...), this returns an empty string, and the matrix
+    is better copied as one equation, as ToOMML() does.
+
+    RTF has no auto-sized columns, so each column is made as wide as the
+    longest of its entries is, estimated from its number of characters.
+  */
+  wxString ToRTFTable() const;
   wxString ToString() const override;
   wxString ToTeX() const override;
   wxString ToXML() const override;

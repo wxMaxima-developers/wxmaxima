@@ -71,7 +71,7 @@ public:
               const wxString &label10 = {}, const wxString &defaultval10 = {}, const wxString &tooltip10 = {});
 
   //! Replace the contents of this panel with a new wizard
-  void NewWizard(wxString description, const wxString &description_tooltip,
+  void NewWizard(const wxString& description, const wxString &description_tooltip,
                  const wxString &commandRule,
                  const wxString &label1, const wxString &defaultval1, const wxString &tooltip1,
                  const wxString &label2, const wxString &defaultval2, const wxString &tooltip2,
@@ -107,7 +107,7 @@ public:
   */
   void OnBestSizeChange(std::function<void()> callback)
     { m_onBestSizeChange = std::move(callback); }
-  virtual ~GenWizPanel();
+  ~GenWizPanel() override;
 protected:
   void OnSize(wxSizeEvent &event);
   wxNotebook *m_notebook;

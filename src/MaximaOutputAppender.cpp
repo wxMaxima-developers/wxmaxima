@@ -37,7 +37,7 @@
 #include <wx/tokenzr.h>
 #include <wx/utils.h>
 
-void MaximaOutputAppender::ConsoleAppend(wxXmlDocument xml, CellType type,
+void MaximaOutputAppender::ConsoleAppend(const wxXmlDocument& xml, CellType type,
                                          const wxString &userLabel) {
   if(!m_wxMaxima.GetWorksheet())
     return;

@@ -38,14 +38,9 @@ public:
   VisiblyInvalidCell(GroupCell *group, Configuration *config, wxString &&toolTip);
   VisiblyInvalidCell(GroupCell *group, Configuration *config, const wxString *toolTip);
   VisiblyInvalidCell(GroupCell *group, const VisiblyInvalidCell &cell);
-  virtual ~VisiblyInvalidCell(){}
-  virtual std::unique_ptr<Cell> Copy(GroupCell *group) const override;
+  ~VisiblyInvalidCell() override = default;
+  std::unique_ptr<Cell> Copy(GroupCell *group) const override;
   const CellTypeInfo &GetInfo() override;
-
-  using Cell::SetCurrentPoint;
-  void SetCurrentPoint(wxPoint point) const override;
-  void Draw(wxDC *dc, wxDC *antialiassingDC) override;
-
 };
 
 #endif // VISIBLYINVALIDCELL_H

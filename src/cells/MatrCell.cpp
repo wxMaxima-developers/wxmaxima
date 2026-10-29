@@ -69,7 +69,7 @@ DEFINE_CELL(MatrCell)
 void MatrCell::Recalculate(AFontSize const fontsize) const {
   AFontSize const fontsize_entry{MC_MIN_SIZE, fontsize - 2};
   bool changed = false;
-  for (size_t i = 0; i < m_cells.size(); i++) {
+  for (const auto &cell : m_cells) {
     if (m_configuration->IsLayoutCancelled()) {
       // The layout deadline fired before we finished measuring the entries, so
       // the m_widths / m_width / m_height computation below never ran. Make
@@ -81,7 +81,7 @@ void MatrCell::Recalculate(AFontSize const fontsize) const {
       m_width.Invalidate();
       return;
     }
-    changed |= m_cells.at(i)->RecalculateList(fontsize_entry);
+    changed |= cell->RecalculateList(fontsize_entry);
   }
 
   if (changed || NeedsRecalculation(fontsize)) {
@@ -1010,6 +1010,67 @@ wxString MatrCell::ToCSV(const wxString &delimiter) const {
     s += wxS("\n");
   }
   return s;
+}
+
+wxString MatrCell::ToRTFTable() const {
+  if ((m_matHeight == 0) || (m_matWidth == 0) ||
+      (m_cells.size() < m_matHeight * m_matWidth))
+    return {};
+
+  // The RTF of each entry, and the width of each column in twips
+  std::vector<wxString> entries;
+  entries.reserve(m_matHeight * m_matWidth);
+  // The space RTF leaves between a cell's text and either of its borders
+  constexpr long gap = 108;
+  // About the width of an average character of the 12pt font RTFStart()
+  // sets up. Too wide is better than too narrow: a too narrow column breaks
+  // its numbers into several lines.
+  constexpr long charWidth = 130;
+  constexpr long minColumnWidth = 600;
+  std::vector<long> columnWidths(m_matWidth, minColumnWidth);
+  for (size_t row = 0; row < m_matHeight; row++)
+    for (size_t col = 0; col < m_matWidth; col++) {
+      const Cell *entry =
+        GetInnerCell(static_cast<int>(row), static_cast<int>(col));
+      if (!entry)
+        return {};
+      wxString rtf;
+      for (const Cell &cell : OnList(entry)) {
+        const wxString cellRtf = cell.ToRTF();
+        // Needs maths, which RTF can only hold as an equation object.
+        if (cellRtf.IsEmpty())
+          return {};
+        rtf += cellRtf;
+      }
+      if (((row == 0) && m_colNames) || ((col == 0) && m_rowNames))
+        rtf = wxS("\\b ") + rtf + wxS("\\b0");
+      entries.push_back(rtf);
+      columnWidths[col] = std::max(
+        columnWidths[col],
+        static_cast<long>(entry->ListToString().Length()) * charWidth +
+        2 * gap);
+    }
+
+  // Every row of an RTF table repeats where its cells end.
+  wxString rowDefinition = wxString::Format(wxS("\\trowd\\trgaph%li\\trleft0"),
+                                            gap);
+  long right = 0;
+  for (const long width : columnWidths) {
+    right += width;
+    rowDefinition += wxString::Format(wxS("\\cellx%li"), right);
+  }
+  rowDefinition += wxS("\n");
+
+  wxString table;
+  auto entry = entries.begin();
+  for (size_t row = 0; row < m_matHeight; row++) {
+    table += rowDefinition;
+    for (size_t col = 0; col < m_matWidth; col++)
+      table += wxS("\\pard\\intbl\\f0\\fs24 ") + *(entry++) + wxS("\\cell\n");
+    table += wxS("\\row\n");
+  }
+  // Paragraphs after the table are no part of it.
+  return table + wxS("\\pard\n");
 }
 
 wxString MatrCell::ToTeX() const {

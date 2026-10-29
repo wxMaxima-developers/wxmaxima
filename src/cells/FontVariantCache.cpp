@@ -72,18 +72,16 @@ std::shared_ptr<wxFont> FontVariantCache::GetFont (double size,
       weight = wxFONTWEIGHT_BOLD;
     else
       weight = wxFONTWEIGHT_NORMAL;
-    auto font = std::shared_ptr<wxFont>(
-      new
-      wxFont (
+    auto font = std::make_shared<wxFont>(
         size,
         wxFONTFAMILY_DEFAULT,
         style,
         weight, isUnderlined,
-        m_fontName));
+        m_fontName);
     if(!font->IsOk())
     {
       wxLogMessage(_("Cannot create a font based on %s. Falling back to a default font."), m_fontName.mb_str());
-      font = std::shared_ptr<wxFont>(new wxFont(*wxNORMAL_FONT));
+      font = std::make_shared<wxFont>(*wxNORMAL_FONT);
     }
     if(isStrikeThrough)
       font->MakeStrikethrough();

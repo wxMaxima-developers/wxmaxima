@@ -151,10 +151,6 @@ class Cell: public Observed
 #endif
   friend class CellList;
 
-  // This class can be derived from wxAccessible which has no copy constructor
-  void operator=(const Cell&) = delete;
-  //! The constructor of this cell
-  Cell(GroupCell *group, const Cell&) = delete;
 
   template <typename C, typename std::enable_if<std::is_base_of<Cell, C>::value, bool>::type>
   friend inline auto OnInner(const C *cell);
@@ -162,8 +158,11 @@ class Cell: public Observed
   friend inline auto OnInner(C *cell);
 
 public:
-//  Cell(GroupCell *group, Configuration *config);
+  //! The constructor of this cell
   Cell(GroupCell *group, Configuration *config);
+  // This class can be derived from wxAccessible which has no copy constructor
+  void operator=(const Cell&) = delete;
+  Cell(GroupCell *group, const Cell&) = delete;
 
   /*! Create a copy of this cell
 
@@ -832,6 +831,25 @@ public:
   virtual wxString ToMatlab() const;
   //! Convert this cell to its LaTeX representation
   virtual wxString ToTeX() const;
+
+  /*! Makes a piece of LaTeX usable as the base or the argument of ^ or _
+
+    Returns tex unchanged if TeX already reads it as one unit -- a single
+    character, a single control sequence like \\alpha or a group that is
+    enclosed in braces from start to end -- and wraps it in braces otherwise.
+    This keeps x^2 from becoming {{x}^{2}} while a multi-token base like x_1
+    still gets the braces that keep x_1^2 from being a "double subscript".
+  */
+  static wxString TeXGroup(const wxString &tex);
+
+  /*! Whether delimiters around this LaTeX need to grow with their contents
+
+    True if tex contains something taller than a line of text: a fraction, a
+    big operator, a root, a matrix or growing delimiters of its own. Only
+    then are \\left( ... \\right) worth their extra markup; around a plain
+    x+1 they only add noise.
+  */
+  static bool TeXNeedsGrowingDelimiters(const wxString &tex);
   //! Convert this cell to a representation fit for saving in a .wxmx file
   virtual wxString ToXML() const;
   virtual wxString GetXMLFlags() const;

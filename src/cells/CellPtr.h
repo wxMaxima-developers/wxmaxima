@@ -185,7 +185,7 @@ class Observed
     static uintptr_t ReprFor(CellPtrBase *ptr) noexcept
       { return reinterpret_cast<uintptr_t>(ptr) | to_CellPtrBase; }
   public:
-    constexpr CellPtrImplPointer() noexcept {}
+    constexpr CellPtrImplPointer() noexcept = default;
     constexpr CellPtrImplPointer(const CellPtrImplPointer &) noexcept = default;
     // cppcheck-suppress noExplicitConstructor
     constexpr CellPtrImplPointer(decltype(nullptr)) noexcept {}
@@ -230,8 +230,6 @@ class Observed
    */
   CellPtrImplPointer m_ptr;
 
-  Observed(const Observed &) = delete;
-  void operator=(const Observed &) = delete;
   //! Perform cleanup when we're indeed observed and are being destroyed.
   void OnEndOfLife() const noexcept;
 
@@ -260,6 +258,8 @@ protected:
 
 public:
   static size_t GetLiveInstanceCount() { return m_instanceCount; }
+  Observed(const Observed &) = delete;
+  void operator=(const Observed &) = delete;
   static size_t GetLiveControlBlockInstanceCount() { return ControlBlock::GetLiveInstanceCount(); }
   bool IsNull() const { return !m_ptr.GetImpl(); }
   bool HasControlBlock() const { return m_ptr.GetControlBlock(); }
@@ -652,7 +652,7 @@ public:
   template <typename U, typename Del,
             typename std::enable_if<std::is_convertible<typename std::add_pointer<U>::type, pointer>::value, bool>::type = true>
   CellPtr &operator=(const std::unique_ptr<U, Del> &o) noexcept
-    { return *this = o.get(); }
+    { *this = o.get(); return *this; }
 };
 
 //

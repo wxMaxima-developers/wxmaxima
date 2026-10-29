@@ -27,7 +27,7 @@
 #include "../WrappingStaticText.h"
 
 MaximaNotStartingDialog::MaximaNotStartingDialog(wxWindow *parent, int id, Configuration *config,
-                                                 wxString text,
+                                                 const wxString& text,
                                                  const wxPoint &pos,
                                                  const wxSize &size, long style)
   : wxDialog(parent, id, text, pos, size,

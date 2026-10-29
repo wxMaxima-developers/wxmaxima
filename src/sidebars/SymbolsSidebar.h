@@ -39,12 +39,15 @@
 #include "CharButton.h"
 #include "ButtonWrapSizer.h"
 #include <list>
+#include <vector>
 
 
 //cppcheck-suppress ODR
 class SymbolsSidebar : public wxScrolled<wxPanel>
 {
 public:
+  //! The symbols the sidebar always shows
+  static const std::vector<CharButton::Definition> &BuiltInDefinitions();
   SymbolsSidebar(wxWindow *parent, Configuration *configuration, wxWindow *worksheet, int ID = wxID_ANY);
   //! Update the "user symbols" portion of the symbols pane.
   void UpdateUserSymbols();
@@ -76,6 +79,8 @@ private:
   //! The virtual size UpdateVirtualSize() last applied, so it can skip
   //! re-layouting when nothing changed (see the comment in its body).
   wxSize m_lastVirtualSize = wxDefaultSize;
+  //! The symbol of the button the context menu was opened on, if any
+  wxString m_contextMenuSymbol;
 };
 
 #endif // SYMBOLSSIDEBAR_H

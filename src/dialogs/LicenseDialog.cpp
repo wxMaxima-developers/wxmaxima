@@ -61,7 +61,7 @@ void LicenseDialog::FillTextCtrl(wxTextCtrl *ctrl, const unsigned char *data,
 
 LicenseDialog::LicenseDialog(wxWindow *parent)
   : wxDialog(parent, -1, _("License"), wxDefaultPosition, wxDefaultSize,
-             wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER | wxCLOSE_BOX | wxMAXIMIZE_BOX |
+             wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER | wxMAXIMIZE_BOX |
              wxMINIMIZE_BOX) {
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
   m_movedToStart = false;

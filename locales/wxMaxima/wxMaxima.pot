@@ -520,6 +520,14 @@ msgstr ""
 msgid "&Show wxMaxima"
 msgstr ""
 
+#: ../../src/FileOpenKind.cpp:129
+msgid "wxMaxima cannot open files of this type."
+msgstr ""
+
+#: ../../src/FileOpenKind.cpp:131
+msgid "The file should contain text, but contains binary data."
+msgstr ""
+
 #: ../../src/TroubleshootingChecks.cpp:41
 msgid "Can wxMaxima find Maxima?"
 msgstr ""
@@ -15455,4 +15463,12 @@ msgstr ""
 #: ../../info/wxmaxima.md:1181
 #, no-wrap
 msgid "If you are a developer, you might want to try out a modified `wxmathML.lisp`-file without recompiling everything, one can use the command line option `--wxmathml-lisp=<str>` to use another Lisp file, not the included one.\n"
+msgstr ""
+
+#: ../../src/dialogs/SymbolShortcutDialog.cpp:38
+msgid "Keyboard shortcut"
+msgstr ""
+
+#: ../../src/dialogs/SymbolShortcutsPanel.cpp:131
+msgid "Add symbol"
 msgstr ""

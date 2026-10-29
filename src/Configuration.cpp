@@ -190,6 +190,7 @@ Configuration::Configuration(const Configuration &o) :
   m_greekSidebar_ShowLatinLookalikes(o.m_greekSidebar_ShowLatinLookalikes),
   m_greekSidebar_Show_mu(o.m_greekSidebar_Show_mu),
   m_symbolPaneAdditionalChars(o.m_symbolPaneAdditionalChars),
+  m_symbolShortcuts(o.m_symbolShortcuts),
   m_appearance(o.m_appearance),
   m_recentItems(o.m_recentItems),
   m_bitmapScale(o.m_bitmapScale),
@@ -288,6 +289,7 @@ void Configuration::ResetAllToDefaults() {
   m_documentclassOptions = wxS("fleqn");
   m_incrementalSearch = true;
   m_symbolPaneAdditionalChars = wxS("Øü§");
+  m_symbolShortcuts.clear();
   m_hidemultiplicationsign = true;
   m_autodetectHelpBrowser = true;
   m_singlePageManual = false;
@@ -932,7 +934,7 @@ wxString Configuration::MaximaHelpFormatCommand() const {
     MaximaHelpFormatName() + wxS(")\n");
 }
 
-bool Configuration::HideMarkerForThisMessage(wxString message) {
+bool Configuration::HideMarkerForThisMessage(const wxString& message) {
   auto it = m_hideMarkerForThisMessage.find(message);
   if (it == m_hideMarkerForThisMessage.end())
     return false;
@@ -1142,8 +1144,14 @@ Configuration::~Configuration() {
                    "that still uses it"));
   if(m_initOpts != temporary)
     {
-      WriteStyles();
-      WriteSettings();
+      // An exception leaving a destructor calls std::terminate(). Losing
+      // the settings is the lesser evil.
+      try {
+        WriteStyles();
+        WriteSettings();
+      } catch (...) {
+        wxLogMessage(wxS("Could not save the configuration."));
+      }
     }
 }
 
@@ -1470,6 +1478,7 @@ Configuration::ScalarConfigSettings() {
     {wxS("singlePageManual"), &Configuration::m_singlePageManual},
     {wxS("symbolPaneAdditionalChars"),
      &Configuration::m_symbolPaneAdditionalChars},
+    {wxS("symbolShortcuts"), &Configuration::m_symbolShortcuts},
     {wxS("TeXExponentsAfterSubscript"),
      &Configuration::m_TeXExponentsAfterSubscript},
     {wxS("texPreamble"), &Configuration::m_texPreamble},
@@ -1485,6 +1494,31 @@ Configuration::ScalarConfigSettings() {
     {wxS("wrapLatexMath"), &Configuration::m_wrapLatexMath},
   };
   return settings;
+}
+
+wxString Configuration::ShortcutForSymbol(const wxString &symbol) const {
+  for (const auto &entry : SymbolShortcuts())
+    if (entry.symbol == symbol)
+      return entry.shortcut;
+  return {};
+}
+
+void Configuration::SetShortcutForSymbol(const wxString &symbol,
+                                         const wxString &shortcut) {
+  auto shortcuts = SymbolShortcuts();
+  std::erase_if(shortcuts, [&](const wxm::SymbolShortcut &entry) {
+    return (entry.symbol == symbol) ||
+      (!shortcut.IsEmpty() && wxm::SameShortcut(entry.shortcut, shortcut));
+  });
+  if (!shortcut.IsEmpty())
+    shortcuts.push_back({symbol, shortcut});
+  SymbolShortcuts(shortcuts);
+}
+
+void Configuration::WriteSymbolShortcuts() const {
+  if (m_initOpts == temporary)
+    return;
+  wxConfig::Get()->Write(wxS("symbolShortcuts"), m_symbolShortcuts);
 }
 
 const std::vector<std::pair<TextStyle, wxString>> &

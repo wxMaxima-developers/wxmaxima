@@ -169,6 +169,12 @@ target_include_directories(test_WizardHelpKeywords PRIVATE ${CMAKE_SOURCE_DIR}/s
 target_link_libraries(test_WizardHelpKeywords PRIVATE ${wxWidgets_LIBRARIES})
 add_test(WizardHelpKeywords test_WizardHelpKeywords)
 
+# The Matrix menu's wizards put each field where its label says (GH #647).
+add_executable(test_MatrixWizardRules test_MatrixWizardRules.cpp ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
+target_include_directories(test_MatrixWizardRules PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_link_libraries(test_MatrixWizardRules PRIVATE ${wxWidgets_LIBRARIES})
+add_test(MatrixWizardRules test_MatrixWizardRules)
+
 # Keyed on WXM_AI_TOOLS_REQUESTED, not WXM_USE_AI_TOOLS: this test needs
 # nothing from wxWidgets 3.3.4, which the AI tools themselves require (see
 # the top-level CMakeLists.txt).
@@ -267,6 +273,28 @@ target_include_directories(test_SyntaxErrorLocation PRIVATE ${CMAKE_SOURCE_DIR}/
 target_link_libraries(test_SyntaxErrorLocation PRIVATE ${wxWidgets_LIBRARIES})
 add_test(NAME SyntaxErrorLocation
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_SyntaxErrorLocation>")
+
+# What a sidebar symbol is (a letter with its combining accents) and the
+# keyboard shortcuts that type symbols (GH #2578) are GUI-free, so tested
+# directly.
+add_executable(test_SymbolShortcuts
+    test_SymbolShortcuts.cpp ${CMAKE_SOURCE_DIR}/src/SymbolShortcuts.cpp
+    ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
+target_include_directories(test_SymbolShortcuts PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_link_libraries(test_SymbolShortcuts PRIVATE ${wxWidgets_LIBRARIES})
+add_test(NAME SymbolShortcuts
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_SymbolShortcuts>")
+
+# Which files wxMaxima agrees to open from the command line, the desktop or
+# the Finder (opening wxmaxima.exe and its DLLs used to start a window and a
+# Maxima per file) is decided GUI-free, so it is tested directly.
+add_executable(test_FileOpenKind
+    test_FileOpenKind.cpp ${CMAKE_SOURCE_DIR}/src/FileOpenKind.cpp
+    ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
+target_include_directories(test_FileOpenKind PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_link_libraries(test_FileOpenKind PRIVATE ${wxWidgets_LIBRARIES})
+add_test(NAME FileOpenKind
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_FileOpenKind>")
 
 # Where a line of plain text Maxima sends may be broken into lines is a pure
 # string function, so it is tested directly.
@@ -542,6 +570,17 @@ if(TARGET wxmTestApp)
     add_test(NAME EditorCellEscapedParens
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_EditorCellEscapedParens>")
 
+    # Comments in code cells get their closer auto-inserted like brackets
+    # do (GH #1641), but not inside strings or text cells.
+    add_executable(test_EditorCellAutoCloseComments
+        test_EditorCellAutoCloseComments.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_EditorCellAutoCloseComments PUBLIC cxx_std_20)
+    target_link_libraries(test_EditorCellAutoCloseComments PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME EditorCellAutoCloseComments
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_EditorCellAutoCloseComments>")
+
     # Links in text cells (GH #2396): that they become snippets of their own,
     # that a point over one finds it and one beside it doesn't, and that the
     # LaTeX export writes them as \url{}.
@@ -797,6 +836,17 @@ if(TARGET wxmTestApp)
     add_test(NAME TrayIcon
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_TrayIcon>")
 
+    # The help sidebar knows whether anything has been loaded into it, so
+    # that it can stay hidden until it has (see wxMaximaFrame's constructor).
+    add_executable(test_HelpBrowserContent
+        test_HelpBrowserContent.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_HelpBrowserContent PUBLIC cxx_std_20)
+    target_link_libraries(test_HelpBrowserContent PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME HelpBrowserContent
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_HelpBrowserContent>")
+
     # Pins McpTools (src/mcp/McpTools.h), the MCP server's read-only
     # "worksheet context" tools: listing/reading cells, the table of
     # contents, whole sections, and the Variables sidebar's watchlist,
@@ -967,6 +1017,26 @@ if(TARGET wxmTestApp)
     add_test(NAME IntegralToTeX
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_IntegralToTeX>")
 
+    # LaTeX export emits no redundant markup: doubled braces, \left/\right
+    # around things that don't grow, \left. \right. pairs and the like.
+    add_executable(test_TeXRedundancy
+        test_TeXRedundancy.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_TeXRedundancy PUBLIC cxx_std_20)
+    target_link_libraries(test_TeXRedundancy PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME TeXRedundancy
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_TeXRedundancy>")
+    # Greek constants export as commands LaTeX knows, or as Latin letters.
+    add_executable(test_GreekToTeX
+        test_GreekToTeX.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_GreekToTeX PUBLIC cxx_std_20)
+    target_link_libraries(test_GreekToTeX PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME GreekToTeX
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_GreekToTeX>")
+
     # LaTeX export ignores how the window broke wide cells into lines: a
     # broken power exported only its parenthesis as superscript (GH #408).
     add_executable(test_BrokenCellsToTeX
@@ -989,6 +1059,17 @@ if(TARGET wxmTestApp)
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
     add_test(NAME TextContinuation
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_TextContinuation>")
+
+    # A LabelCell shows what the label settings ask for as soon as it exists,
+    # not only after its first layout under a changed configuration.
+    add_executable(test_LabelCellDisplay
+        test_LabelCellDisplay.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_LabelCellDisplay PUBLIC cxx_std_20)
+    target_link_libraries(test_LabelCellDisplay PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME LabelCellDisplay
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_LabelCellDisplay>")
 
     # RTF/OMML export (GH #1456, GH #1457): previously untested entirely.
     add_executable(test_RTFExport
@@ -1070,6 +1151,18 @@ if(TARGET wxmTestApp)
     add_test(NAME GreekSidebar
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_GreekSidebar>")
 
+    # Keyboard shortcuts for sidebar symbols (GH #2578): the configuration
+    # dialogue's table, the shortcut dialog and the worksheet typing a
+    # symbol when its shortcut is pressed.
+    add_executable(test_SymbolShortcutsPanel
+        test_SymbolShortcutsPanel.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_SymbolShortcutsPanel PUBLIC cxx_std_20)
+    target_link_libraries(test_SymbolShortcutsPanel PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME SymbolShortcutsPanel
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_SymbolShortcutsPanel>")
+
     # Drives a real BTextCtrl to guard the last-active-text-control tracking
     # (which text control the sidebars' symbol buttons type into). It was a raw
     # pointer in Configuration that a destroyed control could not unregister
@@ -1108,6 +1201,17 @@ if(TARGET wxmTestApp)
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
     add_test(NAME ConfigDialogueStyles
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_ConfigDialogueStyles>")
+
+    # The configuration dialog's AI tab exists in every build and holds the
+    # MCP server settings, secret store or not.
+    add_executable(test_ConfigDialogueAiTab
+        test_ConfigDialogueAiTab.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_ConfigDialogueAiTab PUBLIC cxx_std_20)
+    target_link_libraries(test_ConfigDialogueAiTab PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME ConfigDialogueAiTab
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_ConfigDialogueAiTab>")
 endif()
 
 # Same watchdog timeout the parent directory applies to its tests: keep a hung

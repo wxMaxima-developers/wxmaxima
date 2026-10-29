@@ -452,6 +452,26 @@ public:
   */
   std::unique_ptr<MatrCell> CopySelectedMatrixBlock() const;
 
+  /*! Are the entries of a matrix selected, rather than the matrix? (GH #959)
+
+    True if the selection was made by dragging across, or stepping through,
+    the entries of one matrix -- a block of them or all of them -- and not by
+    selecting the matrix as a whole, parentheses and all. Copying such a
+    selection puts the entries on the clipboard as an RTF table, see
+    SelectionRTFBody().
+  */
+  bool MatrixEntriesSelected() const;
+  /*! The RTF for a copy of the selection, without RTFStart() and RTFEnd()
+
+    \param cells A copy of the selection, as CopySelection() makes it.
+    \param matrixEntries The value MatrixEntriesSelected() had when the copy
+    was made. If true, and cells is a single matrix all of whose entries are
+    plain text, the RTF is a table of those entries (see
+    MatrCell::ToRTFTable()) that spreadsheets and word processors paste as a
+    table. Otherwise it is the cells' ordinary RTF, maths as equations.
+  */
+  static wxString SelectionRTFBody(const Cell *cells, bool matrixEntries);
+
   /*! Select what a rectangle dragged across a cell's output covers
 
     \param group    the cell whose output was clicked into
@@ -604,6 +624,8 @@ public:
   void OnContextMenuKey(wxContextMenuEvent &event);
 
   void OnSidebarKey(wxCommandEvent &event);
+  //! Types a symbol from a sidebar button or a symbol's keyboard shortcut
+  void InsertSymbol(const wxString &symbol);
 
   void OnMouseLeftUp(wxMouseEvent &event);
 
@@ -1102,7 +1124,7 @@ public:
             bool reactToEvents = true);
 
   //! The destructor
-  virtual ~Worksheet();
+  ~Worksheet() override;
 
   //! The timer that tells us when the keyboard is inactive so an autosave isn't disrupting
   wxTimer &KeyboardInactiveTimer() { return m_keyboardInactiveTimer; }
@@ -2034,7 +2056,7 @@ public:
   void AddSymbols(const wxString &xml)
     { m_autocomplete.AddSymbols(xml); }
   //! Add a xml-encoded list of symbols to the autocompletion list
-  void AddSymbols(wxXmlDocument xml)
+  void AddSymbols(const wxXmlDocument& xml)
     { m_autocomplete.AddSymbols(xml); }
 
   void SetActiveCellText(const wxString &text);
@@ -2199,7 +2221,7 @@ protected:
   ViewCellPointers m_viewCellPointers{this};
   //! A memory we can manually buffer the contents of the area that is to be redrawn in
   wxBitmap m_memory;
-  virtual wxSize DoGetBestClientSize() const override;
+  wxSize DoGetBestClientSize() const override;
 #if wxUSE_ACCESSIBILITY
   AccessibilityInfo *m_accessibilityInfo = nullptr;
 #endif

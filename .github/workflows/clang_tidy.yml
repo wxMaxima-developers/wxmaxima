@@ -1,0 +1,44 @@
+name: clang_tidy
+
+# Runs clang-tidy with the checks the repository's .clang-tidy enables.
+#
+# Not every enabled check category is clean yet. Those that are fail this job
+# (the --warnings-as-errors list below), so they stay clean; the others are
+# only reported, and join that list once they have been cleaned up, one
+# category per pull request.
+on: [push]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: ${{ !startsWith(github.ref, 'refs/tags/') }}
+
+permissions:
+  contents: read
+
+jobs:
+  clang_tidy:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+
+    steps:
+      - name: Checkout_git
+        uses: actions/checkout@v7
+      - name: install_packages
+        # Caches the downloaded .debs; see the action for why.
+        uses: ./.github/actions/apt-install
+        with:
+          packages: cmake clang clang-tidy gettext libwxgtk3.2-dev libwxgtk-webview3.2-dev libfribidi-dev ninja-build
+      - name: configure
+        # No precompiled headers and no unity build: clang-tidy needs every
+        # source file as its own compile command, with its own includes.
+        run: |
+             cmake -S . -B build -G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DWXM_ENABLE_PRECOMPILED_HEADERS=NO
+      - name: compile
+        # Generates the headers (BuildConfig.h, the embedded art, ...) the
+        # sources include.
+        run: cmake --build build
+      - name: clang-tidy
+        run: |
+             run-clang-tidy -p build -j "$(nproc)" -quiet \
+               -warnings-as-errors='bugprone-*,clang-analyzer-*,misc-*,modernize-*' \
+               'src/'

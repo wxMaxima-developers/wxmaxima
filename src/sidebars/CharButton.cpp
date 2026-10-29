@@ -33,6 +33,9 @@
 #include <wx/access.h>
 #endif
 #include "UnicodeSidebar.h"
+#include "EventIDs.h"
+#include "dialogs/SymbolShortcutDialog.h"
+#include <wx/menu.h>
 #include <wx/sizer.h>
 #include <wx/dcbuffer.h>
 #include <wx/settings.h>
@@ -54,6 +57,8 @@ void CharButton::MouseOverPanelIs(bool mouseOver) {
 }
 
 void CharButton::MouseOverPanel(wxMouseEvent &event) {
+  // The shortcut may have changed since the tooltip was made.
+  UpdateToolTip();
   MouseOverPanelIs();
   event.Skip();
 }
@@ -62,6 +67,7 @@ void CharButton::MouseLeftPanel(wxMouseEvent &event) {
   event.Skip();
 }
 void CharButton::MouseOverText(wxMouseEvent &event) {
+  UpdateToolTip();
   MouseOverTextIs();
   event.Skip();
 }
@@ -99,8 +105,72 @@ void CharButton::CharButtonPressed(wxMouseEvent &WXUNUSED(event)) {
 }
 
 void CharButton::ActivateButton() {
-  wxCommandEvent *ev = new wxCommandEvent(SIDEBARKEYEVENT, static_cast<wxWindowID>(m_char));
+  if (m_symbol.IsEmpty())
+    return;
+  // The id is the first character, for handlers that predate symbols made of
+  // several characters; the whole symbol travels as the event's string.
+  wxCommandEvent *ev = new wxCommandEvent(
+    SIDEBARKEYEVENT, static_cast<wxWindowID>(m_symbol[0].GetValue()));
+  ev->SetString(m_symbol);
   m_worksheet->GetEventHandler()->QueueEvent(ev);
+}
+
+CharButton *CharButton::FromEventObject(wxObject *object) {
+  wxWindow *window = wxDynamicCast(object, wxWindow);
+  while (window) {
+    if (CharButton *button = dynamic_cast<CharButton *>(window))
+      return button;
+    // Only the button's own text counts, not whatever panel it sits on.
+    if (!wxDynamicCast(window, wxStaticText))
+      return nullptr;
+    window = window->GetParent();
+  }
+  return nullptr;
+}
+
+bool CharButton::EditShortcut(wxWindow *parent, Configuration *configuration,
+                              const wxString &symbol) {
+  const wxString old = configuration->ShortcutForSymbol(symbol);
+  SymbolShortcutDialog dialog(
+    parent, symbol, old,
+    SymbolShortcutDialog::MakeUsageLookup(parent, configuration->SymbolShortcuts(),
+                                          symbol));
+  if ((dialog.ShowModal() != wxID_OK) || (dialog.GetShortcut() == old))
+    return false;
+  configuration->SetShortcutForSymbol(symbol, dialog.GetShortcut());
+  configuration->WriteSymbolShortcuts();
+  return true;
+}
+
+wxString CharButton::AppendShortcutMenuItem(wxMenu *menu, const wxMouseEvent &event) {
+  const CharButton *button = FromEventObject(event.GetEventObject());
+  if (!button)
+    return {};
+  const wxString shortcut =
+    button->m_configuration->ShortcutForSymbol(button->GetSymbol());
+  // Not as "\t<shortcut>": that would make it the menu entry's accelerator.
+  const wxString label = shortcut.IsEmpty() ?
+    wxString::Format(_("Keyboard shortcut for %s..."), button->GetSymbol()) :
+    wxString::Format(_("Keyboard shortcut for %s (%s)..."), button->GetSymbol(),
+                     wxm::ShortcutForDisplay(shortcut));
+  menu->Append(EventIDs::menu_symbolShortcut, label);
+  return button->GetSymbol();
+}
+
+void CharButton::UpdateToolTip() {
+  const wxString shortcut = m_configuration->ShortcutForSymbol(m_symbol);
+  wxString toolTip = m_toolTipBase;
+  if (!shortcut.IsEmpty()) {
+    if (!toolTip.IsEmpty())
+      toolTip += wxS("\n");
+    toolTip += wxString::Format(_("Keyboard shortcut: %s"),
+                                wxm::ShortcutForDisplay(shortcut));
+  }
+  if (toolTip == m_toolTip)
+    return;
+  m_toolTip = toolTip;
+  SetToolTip(toolTip);
+  m_buttonText->SetToolTip(toolTip);
 }
 
 #if wxUSE_ACCESSIBILITY
@@ -165,7 +235,7 @@ void CharButton::UpdateMinSize() {
   // GetTextExtent() of the window itself, not of a wxClientDC: this also runs
   // from the constructor, before the window has ever been shown, and a client
   // DC of a not-yet-realized window is not something every port can provide.
-  wxSize size = GetTextExtent(wxString(m_char));
+  wxSize size = GetTextExtent(m_symbol);
   wxSize minSize = GetTextExtent(wxS("M"));
   minSize.x *= 1.5;
   minSize.y *= 1.5;
@@ -191,11 +261,11 @@ void CharButton::OnSize(wxSizeEvent &event) {
 CharButton::CharButton(wxWindow *parent, wxWindow *worksheet,
                        Configuration *config, const Definition &def,
                        bool forceShow)
-  : wxPanel(parent, wxID_ANY), m_char(def.symbol), m_configuration(config),
+  : wxPanel(parent, wxID_ANY), m_symbol(def.symbol), m_configuration(config),
     m_description(def.description), m_worksheet(worksheet) {
   Bind(wxEVT_SIZE, &CharButton::OnSize, this);
   wxBoxSizer *sizer = new wxBoxSizer(wxHORIZONTAL);
-  m_buttonText = new wxStaticText(this, -1, wxString(m_char));
+  m_buttonText = new wxStaticText(this, -1, m_symbol);
   sizer->AddStretchSpacer(1);
   sizer->Add(m_buttonText, 0, wxALIGN_CENTER_VERTICAL);
   sizer->AddStretchSpacer(1);
@@ -209,7 +279,6 @@ CharButton::CharButton(wxWindow *parent, wxWindow *worksheet,
   // laid its rows out for buttons smaller than they turned out to be, and
   // nothing re-laid it out until the user resized it.
   UpdateMinSize();
-  SetToolTip(def.description);
   Bind(wxEVT_LEFT_UP, &CharButton::CharButtonPressed, this);
   Bind(wxEVT_IDLE, &CharButton::OnIdleEvent, this);
   Bind(wxEVT_ENTER_WINDOW, &CharButton::MouseOverPanel, this);
@@ -217,7 +286,10 @@ CharButton::CharButton(wxWindow *parent, wxWindow *worksheet,
   m_buttonText->Bind(wxEVT_ENTER_WINDOW, &CharButton::MouseOverText, this);
   m_buttonText->Bind(wxEVT_LEAVE_WINDOW, &CharButton::MouseLeftText, this);
   m_buttonText->Bind(wxEVT_LEFT_UP, &CharButton::CharButtonPressed, this);
-  if (!(forceShow || m_configuration->FontRendersChar(m_char))) {
+  // A combining mark draws on top of the character before it, so whether the
+  // symbol can be shown is decided by its first character.
+  const wxUniChar firstChar = m_symbol.IsEmpty() ? wxUniChar(' ') : m_symbol[0];
+  if (!(forceShow || m_configuration->FontRendersChar(firstChar))) {
     Hide();
   }
 
@@ -226,16 +298,17 @@ CharButton::CharButton(wxWindow *parent, wxWindow *worksheet,
   wxFont textFont =
     m_configuration->GetStyle(TS_CODE_DEFAULT)->GetFont();
   if (((!mathFont.IsOk()) ||
-       m_configuration->FontRendersChar(m_char, mathFont)) ||
+       m_configuration->FontRendersChar(firstChar, mathFont)) ||
       ((!textFont.IsOk()) ||
-       m_configuration->FontRendersChar(m_char, textFont))) {
-    SetToolTip(m_description);
+       m_configuration->FontRendersChar(firstChar, textFont))) {
+    m_toolTipBase = m_description;
   } else {
     m_buttonText->SetForegroundColour(wxColor(128, 128, 128));
-    SetToolTip(m_description + wxS("\n") +
-               _("(Might not be displayed correctly in at least one of the "
-                 "worksheet fonts)"));
+    m_toolTipBase = m_description + wxS("\n") +
+      _("(Might not be displayed correctly in at least one of the "
+        "worksheet fonts)");
   }
+  UpdateToolTip();
 #if wxUSE_ACCESSIBILITY
   // Present this panel-with-a-static-text as a single named push button to
   // screen readers (the window takes ownership of the accessible).

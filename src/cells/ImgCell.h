@@ -42,7 +42,7 @@ public:
   ImgCell(GroupCell *group, const ImgCell &cell);
   std::unique_ptr<Cell> Copy(GroupCell *group) const override;
   const CellTypeInfo &GetInfo() override;
-  virtual ~ImgCell() override;
+  ~ImgCell() override;
 
   //! This class can be derived from wxAccessible which has no copy constructor
   ImgCell &operator=(const ImgCell&) = delete;
@@ -63,7 +63,7 @@ public:
   wxString GnuplotSource() const override
     { return m_image ? m_image->GnuplotSource() : wxString(); }
 
-  void LoadImage(wxString image, bool remove = true);
+  void LoadImage(const wxString& image, bool remove = true);
 
   //! Set the image's resolution
   void SetPPI(int ppi) override {m_image->SetPPI(ppi);}

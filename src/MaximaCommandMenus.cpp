@@ -28,6 +28,7 @@
 
 #include "wxMaxima.h"
 #include "EventIDs.h"
+#include "FileOpenKind.h"
 #include <wx/windowptr.h>
 #include <wx/colordlg.h>
 #include <wx/dirdlg.h>
@@ -64,6 +65,7 @@
 #include "wizards/Gen4Wiz.h"
 #include "wizards/IntegrateWiz.h"
 #include "wizards/MatWiz.h"
+#include "wizards/MatrixWizardRules.h"
 #include "wizards/LimitWiz.h"
 #include "wizards/Plot2dWiz.h"
 #include "wizards/Plot3dWiz.h"
@@ -1031,7 +1033,7 @@ void MaximaCommandMenus::EquationsMenu(wxCommandEvent &event) {
   }
   else if(event.GetId() == EventIDs::menu_solve_algsys){
     GetTextFromUser(_("Number of equations:"), _("Solve algebraic system"),
-                    &m_wxMaxima.m_configuration, wxS("3"), &m_wxMaxima, [this](wxString sz) {
+                    &m_wxMaxima.m_configuration, wxS("3"), &m_wxMaxima, [this](const wxString& sz) {
                       if (sz.Length() == 0)
                         return;
                       long isz;
@@ -1053,7 +1055,7 @@ void MaximaCommandMenus::EquationsMenu(wxCommandEvent &event) {
   }
   else if(event.GetId() == EventIDs::menu_solve_lin){
     GetTextFromUser(_("Number of equations:"), _("Solve linear system"),
-                    &m_wxMaxima.m_configuration, wxS("3"), &m_wxMaxima, [this](wxString sz) {
+                    &m_wxMaxima.m_configuration, wxS("3"), &m_wxMaxima, [this](const wxString& sz) {
                       if (sz.Length() == 0)
                         return;
                       long isz;
@@ -1115,7 +1117,7 @@ void MaximaCommandMenus::MatrixMenu(wxCommandEvent &event) {
     wxWindowPtr<CsvImportWiz> wiz(new CsvImportWiz(&m_wxMaxima, &m_wxMaxima.m_configuration));
     wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
       if (retcode == wxID_OK) {
-        wxString cmd = wxS("read_matrix(\"") + wiz->GetFilename() + wxS("\", ") +
+        wxString cmd = wxS("read_matrix(") + wxm::MaximaStringLiteral(wiz->GetFilename()) + wxS(", ") +
           wiz->GetSeparator() + wxS(");");
         m_wxMaxima.MenuCommand(cmd);
       }
@@ -1291,33 +1293,50 @@ void MaximaCommandMenus::MatrixMenu(wxCommandEvent &event) {
   else if(event.GetId() == EventIDs::menu_matrix_zheev){
   }
 
-  else if(event.GetId() == EventIDs::menu_invert_mat){
-      wxString cmd = wxS("invert(") + expr + wxS(");");
-      m_wxMaxima.MenuCommand(cmd);
+  else if((event.GetId() == EventIDs::menu_invert_mat) ||
+          (event.GetId() == EventIDs::menu_determinant) ||
+          (event.GetId() == EventIDs::menu_rank) ||
+          (event.GetId() == EventIDs::menu_eigen) ||
+          (event.GetId() == EventIDs::menu_eigvect) ||
+          (event.GetId() == EventIDs::menu_adjoint_mat) ||
+          (event.GetId() == EventIDs::menu_transpose)){
+    // These used to send their command at once, with the selection or % as
+    // the matrix. A wizard lets the user name the matrix instead (GH #647),
+    // pre-filled with what used to be sent. The titles are the menu labels,
+    // which already are translated.
+    wxString title;
+    wxString function;
+    if(event.GetId() == EventIDs::menu_invert_mat){
+      title = _("&Invert Matrix");
+      function = wxS("invert");
     }
-  else if(event.GetId() == EventIDs::menu_determinant){
-      wxString cmd = wxS("determinant(") + expr + wxS(");");
-      m_wxMaxima.MenuCommand(cmd);
+    else if(event.GetId() == EventIDs::menu_determinant){
+      title = _("&Determinant");
+      function = wxS("determinant");
     }
-  else if(event.GetId() == EventIDs::menu_rank){
-      wxString cmd = wxS("rank(") + expr + wxS(");");
-      m_wxMaxima.MenuCommand(cmd);
+    else if(event.GetId() == EventIDs::menu_rank){
+      title = _("Rank");
+      function = wxS("rank");
     }
-  else if(event.GetId() == EventIDs::menu_eigen){
-      wxString cmd = wxS("eigenvalues(") + expr + wxS(");");
-      m_wxMaxima.MenuCommand(cmd);
+    else if(event.GetId() == EventIDs::menu_eigen){
+      title = _("Eigen&values");
+      function = wxS("eigenvalues");
     }
-  else if(event.GetId() == EventIDs::menu_eigvect){
-      wxString cmd = wxS("eigenvectors(") + expr + wxS(");");
-      m_wxMaxima.MenuCommand(cmd);
+    else if(event.GetId() == EventIDs::menu_eigvect){
+      title = _("Eige&nvectors");
+      function = wxS("eigenvectors");
     }
-  else if(event.GetId() == EventIDs::menu_adjoint_mat){
-      wxString cmd = wxS("adjoint(") + expr + wxS(");");
-      m_wxMaxima.MenuCommand(cmd);
+    else if(event.GetId() == EventIDs::menu_adjoint_mat){
+      title = _("Ad&joint Matrix");
+      function = wxS("adjoint");
     }
-  else if(event.GetId() == EventIDs::menu_transpose){
-    wxString cmd = wxS("transpose(") + expr + wxS(");");
-    m_wxMaxima.MenuCommand(cmd);
+    else {
+      title = _("&Transpose Matrix");
+      function = wxS("transpose");
+    }
+    m_wxMaxima.CommandWiz(wxStripMenuCodes(title), wxEmptyString, wxEmptyString,
+                          wxm::MatrixFunctionRule(function), _("Matrix"), expr,
+                          _("The matrix, or the name of a variable holding one"));
   }
   else if(event.GetId() == EventIDs::menu_map_mat){
     wxWindowPtr<Gen3Wiz> wiz(new Gen3Wiz(_("Resulting Matrix name (may be empty):"), _("Function:"),
@@ -1387,10 +1406,12 @@ void MaximaCommandMenus::MatrixMenu(wxCommandEvent &event) {
                _("Generates a matrix and fills each element with the "
                  "result of the expression \"Rule\"."),
                wxEmptyString,
-               wxS("apply('matrix,makelist(makelist(#1#,#3#,1,#4#),#2#,1,#5#));"),
-               _("Rule"), expr, wxEmptyString, _("Var #1"), wxS("i"), wxEmptyString,
-               _("Var #2"), wxS("j"), wxEmptyString, _("Columns"), wxS("5"),
-               wxEmptyString, _("Rows"), wxS("6"), wxEmptyString);
+               wxm::GenMatrixFromExpressionRule(),
+               _("Rule"), expr, wxEmptyString, _("Row variable"), wxS("i"),
+               _("Counts the rows, from 1"),
+               _("Column variable"), wxS("j"), _("Counts the columns, from 1"),
+               _("Rows"), wxS("6"), wxEmptyString, _("Columns"), wxS("5"),
+               wxEmptyString);
   }
   else if((event.GetId() == EventIDs::button_map) ||
           (event.GetId() == EventIDs::menu_map)){
@@ -1422,7 +1443,7 @@ void MaximaCommandMenus::ListMenu(wxCommandEvent &event) {
       wxWindowPtr<CsvImportWiz> wiz(new CsvImportWiz(&m_wxMaxima, &m_wxMaxima.m_configuration));
       wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
         if (retcode == wxID_OK) {
-          wxString cmd = wxS("read_nested_list(\"") + wiz->GetFilename() + wxS("\", ") +
+          wxString cmd = wxS("read_nested_list(") + wxm::MaximaStringLiteral(wiz->GetFilename()) + wxS(", ") +
             wiz->GetSeparator() + wxS(");");
           m_wxMaxima.MenuCommand(cmd);
         }
@@ -1562,9 +1583,14 @@ void MaximaCommandMenus::ListMenu(wxCommandEvent &event) {
                _("Element number"), wxEmptyString, wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_list_map){
+    // map() takes several lists, too: map(f,[a,b],[c,d]) is [f(a,c),f(b,d)]
+    // (GH #647).
     m_wxMaxima.CommandWiz(_("Apply a function to each list element"), wxEmptyString,
                wxEmptyString, wxS("map(#1#,#2#);"), _("function"), expr,
-               wxEmptyString, _("list"), wxEmptyString, wxEmptyString);
+               wxEmptyString, _("list(s)"), wxEmptyString,
+               _("One list, or several lists of the same length separated by "
+                 "commas: then the function gets one element of each list as "
+                 "its arguments."));
   }
   else if(event.GetId() == EventIDs::menu_list_use_actual_values){
     m_wxMaxima.CommandWiz(_("Introduce a list of actual values into an equation"),
@@ -1858,10 +1884,10 @@ void MaximaCommandMenus::StatsMenu(wxCommandEvent &event) {
           format = wxS("tab");
 
         if (format != wxEmptyString)
-          m_wxMaxima.MenuCommand(cmd + wxS("read_matrix(\"") + file + wxS("\", '") + format +
+          m_wxMaxima.MenuCommand(cmd + wxS("read_matrix(") + wxm::MaximaStringLiteral(file) + wxS(", '") + format +
                       wxS(");"));
         else
-          m_wxMaxima.MenuCommand(cmd + wxS("read_matrix(\"") + file + wxS("\");"));
+          m_wxMaxima.MenuCommand(cmd + wxS("read_matrix(") + wxm::MaximaStringLiteral(file) + wxS(");"));
       }
     }
   else if(event.GetId() == EventIDs::menu_stats_subsample){
@@ -3627,10 +3653,12 @@ void MaximaCommandMenus::PopupMenu(wxCommandEvent &event) {
           bool canExportSVG = false;
 
           if ((m_wxMaxima.GetWorksheet()->GetSelectionStart()->GetType() == MC_TYPE_IMAGE) ||
-              (m_wxMaxima.GetWorksheet()->GetSelectionStart()->GetType() == MC_TYPE_SLIDE))
-            if (dynamic_cast<ImgCellBase *>(m_wxMaxima.GetWorksheet()->GetSelectionStart())
-                ->CanExportSVG())
+              (m_wxMaxima.GetWorksheet()->GetSelectionStart()->GetType() == MC_TYPE_SLIDE)) {
+            const auto *image =
+              dynamic_cast<ImgCellBase *>(m_wxMaxima.GetWorksheet()->GetSelectionStart());
+            if (image && image->CanExportSVG())
               canExportSVG = true;
+          }
 
           wxString selectorString;
 
@@ -4265,26 +4293,27 @@ void MaximaCommandMenus::MaximaMenu(wxCommandEvent &event) {
                wxEmptyString, _("String #2:"), expr, wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_stringproc_ascii){
-    m_wxMaxima.CommandWiz(_("Ascii code to char"), wxEmptyString, wxEmptyString,
-               wxS("ascii(#1#);"), _("Code number:"), expr, wxEmptyString);
+    m_wxMaxima.CommandWiz(_("Char to Ascii code"), wxEmptyString, wxEmptyString,
+               wxS("cint(#1#);"), _("Char:"), expr, wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_stringproc_cint){
     m_wxMaxima.CommandWiz(_("Char to unicode code point"), wxEmptyString, wxEmptyString,
                wxS("cint(#1#);"), _("Char:"), expr, wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_stringproc_unicode){
-    m_wxMaxima.CommandWiz(_("Char to unicode code point"), wxEmptyString, wxEmptyString,
-               wxS("cint(#1#);"), _("Char:"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_unicode_to_utf8){
     m_wxMaxima.CommandWiz(_("Unicode code point to char"), wxEmptyString, wxEmptyString,
                wxS("unicode(#1#);"), _("Codepoint number:"), expr,
                wxEmptyString);
   }
-  else if(event.GetId() == EventIDs::menu_stringproc_utf8_to_unicode){
+  else if(event.GetId() == EventIDs::menu_stringproc_unicode_to_utf8){
     m_wxMaxima.CommandWiz(_("Unicode code point to utf8 numbers"), wxEmptyString,
-               wxEmptyString, wxS("utf8_to_unicode(#1#);"),
+               wxEmptyString, wxS("unicode_to_utf8(#1#);"),
                _("Codepoint number:"), expr, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_utf8_to_unicode){
+    m_wxMaxima.CommandWiz(_("UTF8 numbers to unicode code point"), wxEmptyString,
+               wxEmptyString, wxS("utf8_to_unicode(#1#);"),
+               _("List of UTF8 numbers:"), expr, wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_stringproc_charat){
     m_wxMaxima.CommandWiz(_("Extract the nth char of a string"), wxEmptyString,
@@ -4542,8 +4571,9 @@ void MaximaCommandMenus::MaximaMenu(wxCommandEvent &event) {
 #if defined(__WXMSW__)
       dir.Replace(wxS("\\"), wxS("/"));
 #endif
-      wxString cmd = wxS("file_search_maxima : cons(sconcat(\"") + dir +
-        wxS("/###.{lisp,mac,mc}\"), file_search_maxima)$");
+      wxString cmd = wxS("file_search_maxima : cons(sconcat(") +
+        wxm::MaximaStringLiteral(dir + wxS("/###.{lisp,mac,mc}")) +
+        wxS("), file_search_maxima)$");
       m_wxMaxima.MenuCommand(cmd);
     }
   }
@@ -4660,8 +4690,8 @@ void MaximaCommandMenus::PrintMenu(wxCommandEvent &event) {
       Printout printout(title, m_wxMaxima.GetWorksheet()->GetTree(), m_wxMaxima.GetContentScaleFactor());
       wxBusyCursor crs;
       if (printer.Print(&m_wxMaxima, &printout, true)) {
-        m_wxMaxima.m_printData = std::unique_ptr<wxPrintData>(
-                                                   new wxPrintData(printer.GetPrintDialogData().GetPrintData()));
+        m_wxMaxima.m_printData = std::make_unique<wxPrintData>(
+                                                   printer.GetPrintDialogData().GetPrintData());
       }
     }
     m_wxMaxima.GetWorksheet()->RequestRecalculation();

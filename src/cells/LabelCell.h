@@ -43,8 +43,6 @@ public:
   const CellTypeInfo &GetInfo() override;
 
   void Recalculate(const AFontSize fontsize) const override;
-  using Cell::SetCurrentPoint;
-  void SetCurrentPoint(wxPoint point) const override;
   void Draw(wxDC *dc, wxDC *antialiassingDC) override;
   void SetStyle(TextStyle style) override;
   wxString ToString() const override;

@@ -46,7 +46,7 @@
 class FindReplacePane : public wxPanel
 {
 public:
-  virtual ~FindReplacePane();
+  ~FindReplacePane() override;
   class FindReplaceData: public wxFindReplaceData
   {
   public:
@@ -118,7 +118,7 @@ public:
   wxString GetFindString() const
     { return m_findReplaceData->GetFindString(); }
 
-  void SetFindString(wxString strng);
+  void SetFindString(const wxString& strng);
 
   wxFindReplaceData *GetData() const
     { return m_findReplaceData; }

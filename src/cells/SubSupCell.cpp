@@ -285,18 +285,19 @@ wxString SubSupCell::ToMatlab() const {
 wxString SubSupCell::ToTeX() const {
   wxString s;
 
+  // The pre-scripts need something to attach to: an empty group
   if (m_preSupCell || m_preSubCell) {
     s = "{}";
     if (m_preSupCell)
-      s += "^{" + m_preSupCell->ListToTeX() + "}";
+      s += "^" + TeXGroup(m_preSupCell->ListToTeX());
     if (m_preSubCell)
-      s += "_{" + m_preSubCell->ListToTeX() + "}";
+      s += "_" + TeXGroup(m_preSubCell->ListToTeX());
   }
-  s += "{" + m_baseCell->ListToTeX() + "}";
+  s += TeXGroup(m_baseCell->ListToTeX());
   if (m_postSupCell)
-    s += "^{" + m_postSupCell->ListToTeX() + "}";
+    s += "^" + TeXGroup(m_postSupCell->ListToTeX());
   if (m_postSubCell)
-    s += "_{" + m_postSubCell->ListToTeX() + "}";
+    s += "_" + TeXGroup(m_postSubCell->ListToTeX());
 
   return s;
 }

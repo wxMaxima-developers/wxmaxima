@@ -66,7 +66,7 @@
 #include <unordered_set>
 #include <vector>
 #include <utility>
-#include <stdlib.h>
+#include <cstdlib>
 #ifdef __WXGTK__
 #include <dlfcn.h>
 #endif
@@ -287,24 +287,33 @@ Worksheet::Worksheet(wxWindow *parent, int id,
 }
 
 void Worksheet::OnSidebarKey(wxCommandEvent &event) {
-  if (BTextCtrl::LastActive() == nullptr) {
-    SetFocus();
-    // Send the char button to the active cell or a new cell on the worksheet
-    if (GetActiveCell()) {
-      GetActiveCell()->InsertText(wxString(wxChar(event.GetId())));
-      GroupCell *parent = GetActiveCell()->GetGroup();
-      RequestRecalculation(parent);
-      RequestRedraw(parent);
-    } else
-      OpenHCaret(wxString(wxChar(event.GetId())));
-  } else {
+  // A sidebar button sends its whole symbol as the string, which can be more
+  // than one character (t̄ = t + combining macron); the Unicode sidebar only
+  // sends the character code as the event's id.
+  const wxString symbol = event.GetString().IsEmpty() ?
+    wxString(wxChar(event.GetId())) : event.GetString();
+  if (BTextCtrl::LastActive() == nullptr)
+    InsertSymbol(symbol);
+  else {
     // Send the char to the last active text control
     wxTextCtrl *textCtrl = BTextCtrl::LastActive();
     long pos = textCtrl->GetInsertionPoint();
-    textCtrl->WriteText(wxString(wxChar(event.GetId())));
-    textCtrl->SetInsertionPoint(pos + 1);
+    textCtrl->WriteText(symbol);
+    textCtrl->SetInsertionPoint(pos + static_cast<long>(symbol.Length()));
     CallAfter(&Worksheet::FocusTextControl);
   }
+}
+
+void Worksheet::InsertSymbol(const wxString &symbol) {
+  SetFocus();
+  // Send the symbol to the active cell or a new cell on the worksheet
+  if (GetActiveCell()) {
+    GetActiveCell()->InsertText(symbol);
+    GroupCell *parent = GetActiveCell()->GetGroup();
+    RequestRecalculation(parent);
+    RequestRedraw(parent);
+  } else
+    OpenHCaret(symbol);
 }
 
 void Worksheet::FocusTextControl() {
@@ -1318,7 +1327,6 @@ bool Worksheet::IsLesserGCType(int type, int comparedTo) {
     else
       return false;
   case GC_TYPE_TITLE:
-    return false;
   default:
     return false;
   }
@@ -2430,6 +2438,22 @@ std::unique_ptr<MatrCell> Worksheet::CopySelectedMatrixBlock() const {
   return matrix->CopyBlock(*block, matrix->GetGroup());
 }
 
+bool Worksheet::MatrixEntriesSelected() const {
+  return GetDocumentCellPointers().GetSelectedMatrixBlockCorners().has_value();
+}
+
+wxString Worksheet::SelectionRTFBody(const Cell *cells, bool matrixEntries) {
+  if (!cells)
+    return {};
+  if (matrixEntries && !cells->GetNext())
+    if (const auto *matrix = dynamic_cast<const MatrCell *>(cells)) {
+      const wxString table = matrix->ToRTFTable();
+      if (!table.IsEmpty())
+        return table;
+    }
+  return cells->ListToRTF() + wxS("\\par\n");
+}
+
 /***
  * Get the string representation of the selection
  */
@@ -2541,13 +2565,16 @@ std::unique_ptr<wxDataObject> Worksheet::CreateSelectionDataObject() const {
   }
   // For some reason LibreOffice likes RTF more than it likes the MathML -
   // which is standardized.
-  contents->rtf = LazyValue<std::string>([snapshot] {
-    Configuration *configuration = snapshot->GetConfiguration();
-    return std::string(
-      (WorksheetExport::RTFStart(configuration) +
-       snapshot->GetCells()->ListToRTF() + wxS("\\par\n") +
-       WorksheetExport::RTFEnd()).utf8_str());
-  });
+  // A block of a matrix's entries becomes a table, as which a spreadsheet can
+  // paste it (GH #959).
+  contents->rtf = LazyValue<std::string>(
+    [snapshot, matrixEntries = MatrixEntriesSelected()] {
+      Configuration *configuration = snapshot->GetConfiguration();
+      return std::string(
+        (WorksheetExport::RTFStart(configuration) +
+         SelectionRTFBody(snapshot->GetCells(), matrixEntries) +
+         WorksheetExport::RTFEnd()).utf8_str());
+    });
   contents->bitmap = LazyValue<wxBitmap>([snapshot] {
     return BitmapOut::RenderForClipboard(
       snapshot->GetConfigurationPointer(),
@@ -2796,10 +2823,17 @@ bool Worksheet::CopyTeX() const {
     if (inMath)
       s = wxS("\\[");
   }
+  const std::size_t contentStart = s.Length();
   if (auto block = CopySelectedMatrixBlock())
     s += block->ToTeX();
   else
     for (const Cell &tmp : OnList(start)) {
+      // A label starts an equation of its own (\tag{}s can't share one).
+      if ((start->GetType() != MC_TYPE_GROUP) &&
+          ((tmp.GetTextStyle() == TS_LABEL) ||
+           (tmp.GetTextStyle() == TS_USERLABEL)) &&
+          (s.Length() > contentStart))
+        s += wxS("\\]\n\\[");
       s += tmp.ToTeX();
       if (&tmp == GetDocumentCellPointers().GetSelectionEnd())
         break;
@@ -3326,6 +3360,14 @@ void Worksheet::OnKeyDown(wxKeyEvent &event) {
   if (event.AltDown() &&
       (event.GetKeyCode() == WXK_UP || event.GetKeyCode() == WXK_DOWN)) {
     event.Skip();
+    return;
+  }
+
+  // The keyboard shortcuts the user gave symbols (GH #2578)
+  if (const wxString symbol =
+      wxm::SymbolForKeyEvent(m_configuration->SymbolShortcuts(), event);
+      !symbol.IsEmpty()) {
+    InsertSymbol(symbol);
     return;
   }
 
@@ -4523,10 +4565,10 @@ bool Worksheet::CopyRTF() const {
   wxDataObjectComposite *data = new wxDataObjectComposite;
 
   wxString rtf = RTFStart();
-  if (auto block = CopySelectedMatrixBlock())
-    // Only part of a matrix is selected: copy that sub-matrix rather than the
-    // whole cell it is in, the same way Copy() puts it into its RTF flavour.
-    rtf += block->ListToRTF();
+  if (MatrixEntriesSelected())
+    // The entries of a matrix are selected: copy them, or the selected block
+    // of them, the same way Copy() puts them into its RTF flavour.
+    rtf += SelectionRTFBody(CopySelection().get(), true);
   else {
     const GroupCell *end = GetDocumentCellPointers().GetSelectionEnd()->GetGroup();
 
@@ -4535,9 +4577,10 @@ bool Worksheet::CopyRTF() const {
       if (&tmp == end)
         break;
     }
+    rtf += wxS("\\par");
   }
 
-  rtf += wxS("\\par") + RTFEnd();
+  rtf += RTFEnd();
 
   data->Add(new RtfDataObject(rtf));
   data->Add(new RtfDataObject2(rtf));
@@ -5448,6 +5491,8 @@ bool Worksheet::TreeUndoFold(UndoActions *sourcelist,
     // later deleted) -- nothing to undo.
     return false;
 
+  if (!action.m_fold)
+    return false;
   TreeUndoAction::FoldDirection direction = *action.m_fold;
 
   // Record the opposite direction, so this undo step can itself be redone.
@@ -6800,9 +6845,7 @@ bool Worksheet::Autocomplete(AutoComplete::autoCompletionType type) {
       frontOfSelection = frontOfSelection.Mid(static_cast<std::size_t>(positionOfEzunitStart) + 1);
       int numberOfParenthesis = 0;
 
-      for (wxString::const_iterator it = frontOfSelection.begin();
-           it != frontOfSelection.end(); ++it) {
-        wxChar ch = *it;
+      for (const wxChar ch : frontOfSelection) {
         if ((!wxIsalnum(ch)) && (ch != wxS('(')) && (ch != wxS(')')) &&
             (ch != wxS('*')) && (ch != wxS('/')))
           inEzUnit = false;

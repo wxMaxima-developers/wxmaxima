@@ -43,7 +43,7 @@ GenWizPanel::GenWizPanel(
                          const wxString &defaultval8, const wxString &tooltip8, const wxString &label9,
                          const wxString &defaultval9, const wxString &tooltip9, const wxString &label10,
                          const wxString &defaultval10, const wxString &tooltip10)
-: GenWizPanel(std::move(parent), std::move(cfg), std::move(manual),
+: GenWizPanel(parent, cfg, manual,
               description, description_tooltip,
               commandRule, false, label1,
               defaultval1, tooltip1, label2,
@@ -149,10 +149,10 @@ GenWizPanel::GenWizPanel(
 
 void GenWizPanel::OnSize(wxSizeEvent &event) { event.Skip(); }
 
-GenWizPanel::~GenWizPanel() {}
+GenWizPanel::~GenWizPanel() = default;
 
 void GenWizPanel::NewWizard(
-                            wxString description, const wxString &description_tooltip,
+                            const wxString& description, const wxString &description_tooltip,
                             const wxString &commandRule, const wxString &label1, const wxString &defaultval1,
                             const wxString &tooltip1, const wxString &label2, const wxString &defaultval2, const wxString &tooltip2,
                             const wxString &label3, const wxString &defaultval3, const wxString &tooltip3, const wxString &label4,
@@ -232,7 +232,7 @@ void GenWizPanel::NewWizard(
       wxButton *button = new wxButton(
                                       descriptionpane, id, wxString::Format(_("Help on %s"), i));
       pageSizer->Add(button, wxSizerFlags(0).Expand());
-      m_topicButtonIDs.push_back(id);
+      m_topicButtonIDs.emplace_back(id);
       id++;
     }
     descriptionpane->SetSizer(pageSizer);

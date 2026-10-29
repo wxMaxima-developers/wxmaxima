@@ -349,7 +349,7 @@ bool MaximaProcessManager::StartMaxima(bool force) {
       // when either source is good — entropy of the XOR is >= max(both sources).
       static constexpr size_t TOKEN_BYTES = 512;
       static_assert(TOKEN_BYTES % sizeof(uint32_t) == 0, "TOKEN_BYTES must be a multiple of 4");
-      std::unique_ptr<wxExecuteEnv> env = std::unique_ptr<wxExecuteEnv>(new wxExecuteEnv);
+      std::unique_ptr<wxExecuteEnv> env = std::make_unique<wxExecuteEnv>();
       wxMemoryBuffer membuf(TOKEN_BYTES);
       std::uniform_int_distribution<unsigned int> byteUD(0, 255);
       for (size_t i = 0; i < TOKEN_BYTES / sizeof(uint32_t); i++) {
@@ -1208,7 +1208,7 @@ void MaximaProcessManager::OnGnuplotPopoutCheckClose(wxProcessEvent &event) {
 }
 
 void MaximaProcessManager::GnuplotCommandName(wxString gnuplot) {
-  m_wxMaxima.m_gnuplotcommand = gnuplot;
+  m_wxMaxima.m_gnuplotcommand = std::move(gnuplot);
   if (!wxFileName(m_wxMaxima.m_gnuplotcommand).IsAbsolute()) {
     wxPathList pathlist;
 

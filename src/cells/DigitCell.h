@@ -35,13 +35,11 @@ class DigitCell : public TextCell
 public:
   DigitCell(GroupCell *group, Configuration *config, const wxString &text = {}, TextStyle style = TS_NUMBER);
   DigitCell(GroupCell *group, const DigitCell &cell);
-  virtual ~DigitCell(){}
+  ~DigitCell() override = default;
   std::unique_ptr<Cell> Copy(GroupCell *group) const override;
   const CellTypeInfo &GetInfo() override;
 
   void Recalculate(const AFontSize fontsize) const override;
-  using Cell::SetCurrentPoint;
-  void SetCurrentPoint(wxPoint point) const override;
   void Draw(wxDC *dc, wxDC *antialiassingDC) override;
 
   /*! How many digits the whole number this group belongs to has (GH #192).

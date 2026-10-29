@@ -65,15 +65,8 @@ void SymbolsSidebar::OnSize(wxSizeEvent &event) {
   event.Skip();
 }
 
-SymbolsSidebar::SymbolsSidebar(wxWindow *parent,
-                                        Configuration *configuration,
-                                        wxWindow *worksheet, int ID)
-  : wxScrolled<wxPanel>(parent, ID), m_configuration(configuration),
-    m_worksheet(worksheet) {
-  ShowScrollbars(wxSHOW_SB_NEVER, wxSHOW_SB_DEFAULT);
-  EnableScrolling(false, true);
-  SetScrollRate(5 * GetContentScaleFactor(), 5 * GetContentScaleFactor());
-  const CharButton::Definition symbolButtonDefinitions[] = {
+const std::vector<CharButton::Definition> &SymbolsSidebar::BuiltInDefinitions() {
+  static const std::vector<CharButton::Definition> defs = {
     {L'\u00BD', _("1/2"), true},
     {L'\u00B2', _("to the power of 2"), true},
     {L'\u00B3', _("to the power of 3"), true},
@@ -128,13 +121,24 @@ SymbolsSidebar::SymbolsSidebar(wxWindow *parent,
     {L'\u27F6', _("Long Right arrow")},
     {L'\u220e', _("End of proof")},
   };
+  return defs;
+}
+
+SymbolsSidebar::SymbolsSidebar(wxWindow *parent,
+                                        Configuration *configuration,
+                                        wxWindow *worksheet, int ID)
+  : wxScrolled<wxPanel>(parent, ID), m_configuration(configuration),
+    m_worksheet(worksheet) {
+  ShowScrollbars(wxSHOW_SB_NEVER, wxSHOW_SB_DEFAULT);
+  EnableScrolling(false, true);
+  SetScrollRate(5 * GetContentScaleFactor(), 5 * GetContentScaleFactor());
 
   m_userSymbols = nullptr;
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
 
   m_builtInSymbolsSizer = new Buttonwrapsizer(wxHORIZONTAL);
   m_builtInSymbols = new wxPanel(this);
-  for (auto &def : symbolButtonDefinitions)
+  for (auto &def : BuiltInDefinitions())
     {
       CharButton *button = new CharButton(m_builtInSymbols, m_worksheet, m_configuration, def);
       m_builtInSymbolsSizer->Add(button, wxSizerFlags().Expand());
@@ -165,6 +169,10 @@ SymbolsSidebar::SymbolsSidebar(wxWindow *parent,
 
 void SymbolsSidebar::OnMenu(wxCommandEvent &event) {
   std::unordered_map<int, std::function<void()>> m{
+    {EventIDs::menu_symbolShortcut, [&](){
+      if (!m_contextMenuSymbol.IsEmpty())
+        CharButton::EditShortcut(this, m_configuration, m_contextMenuSymbol);
+    }},
     {EventIDs::enable_unicodePane, [&](){
       const wxWindow *mainWin = this;
       while (mainWin->GetParent() != nullptr)
@@ -199,8 +207,11 @@ void SymbolsSidebar::OnMenu(wxCommandEvent &event) {
     varFunc->second();
 }
 
-void SymbolsSidebar::OnMouseRightDown(wxMouseEvent &WXUNUSED(event)) {
+void SymbolsSidebar::OnMouseRightDown(wxMouseEvent &event) {
   std::unique_ptr<wxMenu> popupMenu(new wxMenu());
+  m_contextMenuSymbol = CharButton::AppendShortcutMenuItem(&*popupMenu, event);
+  if (!m_contextMenuSymbol.IsEmpty())
+    popupMenu->AppendSeparator();
   popupMenu->Append(EventIDs::menu_additionalSymbols, _("Add more symbols"),
                     wxEmptyString, wxITEM_NORMAL);
   popupMenu->Append(EventIDs::enable_unicodePane, _("Show all unicode symbols"),
@@ -233,10 +244,12 @@ void SymbolsSidebar::AddUserSymbols() {
   wxLogNull blocker;
   
   // Populate the pane with a button per user symbol
-  for (auto ch : m_configuration->SymbolPaneAdditionalChars()) {
+  // A symbol can be more than one character: a letter with accents
+  for (const auto &symbol :
+         wxm::SplitIntoSymbols(m_configuration->SymbolPaneAdditionalChars())) {
     CharButton *button = new CharButton(
                                       m_userSymbols, m_worksheet, m_configuration,
-                                      {ch, _("A symbol from the configuration dialogue")}, true);
+                                      {symbol, _("A symbol from the configuration dialogue")}, true);
     m_userSymbolButtons.push_back(button);
     button->Bind(wxEVT_RIGHT_DOWN, &SymbolsSidebar::OnMouseRightDown, this);
     button->Bind(wxEVT_MENU, &SymbolsSidebar::OnMenu, this);

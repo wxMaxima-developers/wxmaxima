@@ -44,7 +44,7 @@ class CsvImportWiz : public wxDialog
 {
 public:
   CsvImportWiz(wxWindow *parent, Configuration *config);
-  ~CsvImportWiz();
+  ~CsvImportWiz() override;
   wxString GetFilename(){return m_filename->GetValue();}
   wxString GetSeparator();
 protected:
@@ -59,8 +59,8 @@ private:
 class CsvExportWiz : public wxDialog
 {
 public:
-  CsvExportWiz(wxWindow *parent, Configuration *config, wxString objectType);
-  ~CsvExportWiz();
+  CsvExportWiz(wxWindow *parent, Configuration *config, const wxString& objectType);
+  ~CsvExportWiz() override;
   wxString GetFilename(){return m_filename->GetValue();}
   wxString GetMatrix(){return m_matrix->GetValue();}
   wxString GetSeparator();

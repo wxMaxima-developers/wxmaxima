@@ -55,7 +55,7 @@ public:
     behaves exactly as it did before this icon existed.
   */
   StatusBar(wxWindow *parent, int id, bool aiChatAvailable = false);
-  virtual ~StatusBar();
+  ~StatusBar() override;
   //! The network states that can be passed to NetworkStatus()
   enum networkState
   {
@@ -194,7 +194,7 @@ public:
     for identical text, which on wxGTK re-layouts (and repaints) the whole
     frame - too expensive for a setter that is called from the idle loop.
   */
-  void SetStatusText(wxString statusText){
+  void SetStatusText(const wxString& statusText){
     if (m_statusText->GetLabel() != statusText)
       m_statusText->SetLabel(statusText);
   }

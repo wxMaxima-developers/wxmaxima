@@ -158,7 +158,7 @@ public:
     are text-only they profit from being compressed and are stored in the
     memory in their compressed form.
   */
-  void GnuplotSource(wxString gnuplotFilename, wxString dataFilename,
+  void GnuplotSource(const wxString& gnuplotFilename, const wxString& dataFilename,
                      const AttachmentSource &attachments = {});
 
   /*! Loads the compressed gnuplot source and data file for this image
@@ -267,7 +267,7 @@ public:
   void LoadImage(const wxBitmap &bitmap);
 
   //! Saves the image in its original form, or as .png if it originates in a bitmap
-  wxSize ToImageFile(wxString filename);
+  wxSize ToImageFile(const wxString& filename);
 
   //! Returns the bitmap being displayed with custom scale
   wxBitmap GetBitmap(double scale = 1.0);
@@ -330,15 +330,15 @@ private:
   wxString m_gnuplotData;
   //! The high-priority background task that loads this image, if any.
   mutable std::shared_ptr<BackgroundTask> m_loadImageTask;
-  void LoadImage_Backgroundtask(stop_token stopToken,
-                                wxString image, AttachmentSource attachments,
+  void LoadImage_Backgroundtask(const stop_token& stopToken,
+                                const wxString& image, const AttachmentSource& attachments,
                                 bool remove);
   //! The low-priority background task that loads/compresses the gnuplot
   //! source and data behind this image, if any.
   std::shared_ptr<BackgroundTask> m_loadGnuplotSourceTask;
   void LoadGnuplotSource_Backgroundtask(
-    stop_token stopToken,
-    wxString gnuplotFile, wxString dataFile, AttachmentSource attachments);
+    const stop_token& stopToken,
+    const wxString& gnuplotFile, const wxString& dataFile, const AttachmentSource& attachments);
   void LoadGnuplotSource(wxInputStream *source);
   void LoadGnuplotData(wxInputStream *data);
   void LoadGnuplotSource_Backgroundtask_internal(
@@ -346,15 +346,15 @@ private:
     wxInputStream *data);
 
 
-  void LoadCompressedGnuplotSource_Backgroundtask(stop_token stopToken,
-                                                  wxString sourcefile,
-                                                  wxString datafile,
-                                                  AttachmentSource attachments
+  void LoadCompressedGnuplotSource_Backgroundtask(const stop_token& stopToken,
+                                                  const wxString& sourcefile,
+                                                  const wxString& datafile,
+                                                  const AttachmentSource& attachments
     );
   //! Loads an image from a file
   void LoadImage(wxString image, const AttachmentSource &attachments, bool remove = true);
   //! Reads the compressed image into a memory buffer
-  wxMemoryBuffer ReadCompressedImage(stop_token stopToken, wxInputStream *data);
+  wxMemoryBuffer ReadCompressedImage(const stop_token& stopToken, wxInputStream *data);
   //! We never even got this image's bytes.
   void RecordDataUnavailable(const wxString &message);
   /*! We got this image's bytes but could not decode/render them.

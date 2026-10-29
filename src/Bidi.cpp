@@ -37,8 +37,8 @@ bool Bidi::IsAvailable() {
 std::vector<BidiRun> Bidi::GetRuns(const wxString &line, bool paragraphIsRightToLeft) {
   std::vector<uint32_t> codepoints;
   codepoints.reserve(line.Length());
-  for (auto it = line.begin(); it != line.end(); ++it)
-    codepoints.push_back(static_cast<uint32_t>(static_cast<wxUint32>(*it)));
+  for (const auto ch : line)
+    codepoints.push_back(static_cast<uint32_t>(static_cast<wxUint32>(ch)));
   return GetRuns(codepoints, paragraphIsRightToLeft);
 }
 

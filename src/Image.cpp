@@ -164,7 +164,7 @@ Image::~Image() {
   }
 }
 
-wxMemoryBuffer Image::ReadCompressedImage(stop_token stopToken, wxInputStream *data) {
+wxMemoryBuffer Image::ReadCompressedImage(const stop_token& stopToken, wxInputStream *data) {
   wxMemoryBuffer retval;
   std::vector<char> buf(8192);
 
@@ -216,7 +216,7 @@ std::size_t Image::GetOriginalHeight() const {
   return m_originalHeight;
 }
 
-void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename,
+void Image::GnuplotSource(const wxString& gnuplotFilename, const wxString& dataFilename,
                           const AttachmentSource &attachments) {
   if(m_loadGnuplotSourceTask)
   {
@@ -242,8 +242,8 @@ void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename,
 }
 
 void Image::LoadGnuplotSource_Backgroundtask(
-  stop_token stopToken,
-  wxString gnuplotFile, wxString dataFile, AttachmentSource attachments)
+  const stop_token& stopToken,
+  const wxString& gnuplotFile, const wxString& dataFile, const AttachmentSource& attachments)
 {
   if (stopToken.stop_requested()) return;
   if(attachments.IsEmpty())
@@ -388,10 +388,10 @@ void Image::LoadGnuplotData(
 }
 
 void Image::LoadCompressedGnuplotSource_Backgroundtask(
-  stop_token stopToken,
-  wxString sourcefile,
-  wxString datafile,
-  AttachmentSource attachments
+  const stop_token& stopToken,
+  const wxString& sourcefile,
+  const wxString& datafile,
+  const AttachmentSource& attachments
   ) {
   if (stopToken.stop_requested()) return;
   // Read the gnuplot source. A file that isn't there keeps what we had.
@@ -556,7 +556,7 @@ wxString Image::GnuplotSource() {
   return m_gnuplotSource;
 }
 
-wxSize Image::ToImageFile(wxString filename) {
+wxSize Image::ToImageFile(const wxString& filename) {
   if(m_loadImageTask)
     m_loadImageTask->Wait();
   wxFileName fn(filename);
@@ -831,18 +831,18 @@ void Image::LoadImage(wxString image, const AttachmentSource &attachments,
       BackgroundTask::Priority::High,
       [this, image = std::move(image),
        attachments, remove](stop_token stopToken) mutable {
-        LoadImage_Backgroundtask(stopToken, std::move(image),
+        LoadImage_Backgroundtask(stopToken, image,
                                  attachments, remove);
       });
   else
     LoadImage_Backgroundtask({},
-      std::move(image), attachments,
+      image, attachments,
       remove
       );
 }
 
-void Image::LoadImage_Backgroundtask(stop_token stopToken,
-                                     wxString image, AttachmentSource attachments,
+void Image::LoadImage_Backgroundtask(const stop_token& stopToken,
+                                     const wxString& image, const AttachmentSource& attachments,
                                      bool remove) {
   wxLogBuffer errorAggregator;
   // A fresh attempt starts with a clean slate: if this Image is being

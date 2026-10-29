@@ -51,7 +51,7 @@ protected:
   class RegexReplacer : public wxRegEx
   {
   public:
-    RegexReplacer(wxString from, const wxString &to) :
+    RegexReplacer(const wxString& from, const wxString &to) :
       wxRegEx(from),
       replaceBy(to)
       {}
@@ -92,28 +92,28 @@ public:
   explicit MarkDownTeX(Configuration *cfg);
 
 private:
-  virtual wxString quoteBegin() override
+  wxString quoteBegin() override
     { return wxS("\\begin{quote}\n"); }
 
-  virtual wxString quoteEnd() override
+  wxString quoteEnd() override
     { return wxS("\\end{quote}\n"); }
 
-  virtual wxString quoteChar() override
+  wxString quoteChar() override
     { return wxS("\\ensuremath{>}"); }
 
-  virtual wxString itemizeBegin() override
+  wxString itemizeBegin() override
     { return wxS("\\begin{itemize}\n"); }
 
-  virtual wxString itemizeEnd() override
+  wxString itemizeEnd() override
     { return wxS("\\end{itemize}\n"); }
 
-  virtual wxString itemizeItem() override
+  wxString itemizeItem() override
     { return wxS("\\item "); }
 
-  virtual wxString itemizeEndItem() override
+  wxString itemizeEndItem() override
     { return wxEmptyString; }
 
-  virtual wxString NewLine() override
+  wxString NewLine() override
     { return wxS("\n\n"); }
 };
 
@@ -124,28 +124,28 @@ public:
   explicit MarkDownHTML(Configuration *cfg);
 
 private:
-  virtual wxString quoteChar() override
+  wxString quoteChar() override
     { return wxS("&gt;"); }
 
-  virtual wxString quoteBegin() override
+  wxString quoteBegin() override
     { return wxS("<blockquote>\n"); }
 
-  virtual wxString quoteEnd() override
+  wxString quoteEnd() override
     { return wxS("</blockquote>\n"); }
 
-  virtual wxString itemizeBegin() override
+  wxString itemizeBegin() override
     { return wxS("<ul>\n"); }
 
-  virtual wxString itemizeEnd() override
+  wxString itemizeEnd() override
     { return wxS("</ul>\n"); }
 
-  virtual wxString itemizeItem() override
+  wxString itemizeItem() override
     { return wxS("<li>"); }
 
-  virtual wxString itemizeEndItem() override
+  wxString itemizeEndItem() override
     { return wxS("</li>\n"); }
 
-  virtual wxString NewLine() override
+  wxString NewLine() override
     { return wxS("<br>"); }
 };
 

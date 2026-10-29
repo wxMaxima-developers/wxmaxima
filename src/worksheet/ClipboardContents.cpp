@@ -96,12 +96,12 @@ bool LazyBitmapDataObject::GetDataHere(void *buf) const {
 // above, rather than through wxBitmapDataObject, which not every port
 // declares them in.
 size_t LazyBitmapDataObject::GetDataSize(const wxDataFormat &format) const {
-  return Render() ? wxDataObjectSimple::GetDataSize(format) : 0;
+  return Render() ? wxDataObjectSimple::GetDataSize(format) : 0; // NOLINT(bugprone-parent-virtual-call)
 }
 
 bool LazyBitmapDataObject::GetDataHere(const wxDataFormat &format,
                                        void *buf) const {
-  return Render() && wxDataObjectSimple::GetDataHere(format, buf);
+  return Render() && wxDataObjectSimple::GetDataHere(format, buf); // NOLINT(bugprone-parent-virtual-call)
 }
 
 LazyPngDataObject::LazyPngDataObject(

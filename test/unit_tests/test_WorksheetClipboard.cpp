@@ -90,6 +90,7 @@
 #include <wx/image.h>
 #include <wx/log.h>
 #include <wx/mstream.h>
+#include <wx/utils.h>
 #include <wx/wfstream.h>
 #include <wx/zipstrm.h>
 #include <wx/xml/xml.h>
@@ -996,6 +997,18 @@ int main(int argc, char **argv) {
   wxTheApp->CallOnInit();
   wxInitAllImageHandlers(); // the bitmap flavor renders the selection to a bmp
 
+  // A temp directory of our own: HtmlClipTempEntryCount() counts the
+  // "htmlclip*" entries in it, and in the shared system temp directory other
+  // test binaries running in parallel (ctest -j) create and remove those as
+  // well, which made the "left no trace" check fail now and then.
+  const wxString privateTmp = wxFileName::GetTempDir() +
+    wxFileName::GetPathSeparator() +
+    wxString::Format(wxS("wxm-clipboard-test-%lu"),
+                     static_cast<unsigned long>(wxGetProcessId()));
+  wxFileName::Mkdir(privateTmp, wxS_DIR_DEFAULT, wxPATH_MKDIR_FULL);
+  for (const auto &var : {wxS("TMPDIR"), wxS("TMP"), wxS("TEMP")})
+    wxSetEnv(var, privateTmp);
+
   g_bmp = new wxBitmap(1000, 1000);
   g_dc = new wxMemoryDC();
   g_dc->SelectObject(*g_bmp);
@@ -1009,6 +1022,7 @@ int main(int argc, char **argv) {
 
   const int result = Catch::Session().run(argc, argv);
 
+  wxFileName::Rmdir(privateTmp, wxPATH_RMDIR_RECURSIVE);
   wxEntryCleanup();
   return result;
 }

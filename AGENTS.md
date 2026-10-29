@@ -122,6 +122,21 @@ memory (as opposed to copying it from here or from the workflow file) will
 reliably misreport this pre-existing, already-triaged third-party issue as a
 regression in whatever change you're actually testing.
 
+The thread-sanitizer build is a separate CI job (`compile_and_test_thread_sanitized`):
+clang, `-DWXM_SANITIZE=thread`, and `TSAN_OPTIONS=suppressions=test/tsan_suppressions.txt`.
+Without that file every unit test reports dozens of "races" inside GLib,
+Pango and fontconfig, which hand memory between their own threads with locks
+TSan can't see; the file says why each entry is narrow enough not to hide our
+own code. **Run it without a session bus** (`DBUS_SESSION_BUS_ADDRESS=unix:path=/nonexistent`,
+not just without `dbus-run-session`, which on the CI runner still ended up
+with a bus):
+a session bus makes GLib start its `gdbus` thread, whose handovers with the
+main thread produced 455 reports and failed every unit test on the first CI
+run, and the only suppression covering them (`libglib`) would also hide our
+own event handlers. clang needs `libclang-rt-dev` for the TSan runtime. Use it when
+touching anything a `jthread` or the Maxima socket worker shares with the GUI
+thread: it is what found the race in `MaximaManual` (GH #2583).
+
 Other useful targets: `ninja -C build Doxygen` builds the source documentation
 (note the capital D, and the target only exists when Doxygen is installed), and
 `ninja -C build update-locale` refreshes the translation files.
@@ -190,6 +205,16 @@ before trusting them on different hardware, but the ratios are the point.
   `test_WorksheetLayout` and `test_EditorCellWrapping` on `main`, and it is
   the shape to expect from any future file whose whole job is to stand in for
   symbols another file would otherwise define.
+
+**The end of every configure prints "Optional features of this wxMaxima
+build"** (`cmake/WxmFeatureSummary.cmake`): help sidebar, AI sidebar, SVG
+plots, fribidi, each with the reason it is missing. Several of those depend
+on wxWidgets' own `setup.h` (`wxUSE_WEBVIEW_WEBKIT2`, `wxUSE_SECRETSTORE`,
+`wxUSE_NANOSVG`/`wxUSE_LUNASVG`), read by compile-only checks. A new optional
+feature belongs there too; keep its wording in step with the runtime
+diagnosis in Help > Troubleshooting. Note Ubuntu's stock wx 3.2 has
+`wxUSE_SECRETSTORE 0`, so the AI sidebar needs a self-built wxWidgets there
+even once it is new enough.
 
 `CheckPo4aVersion.cmake` (included from `info/CMakeLists.txt` and
 `locales/manual/CMakeLists.txt`, the only two places that invoke `po4a`)
@@ -1306,6 +1331,27 @@ tried without rebuilding.
     `ERROR_FILE`) does not dodge it. Give such a test a channel that never
     touches wxMaxima's stdio, as this one now does.
 
+- **A file wxMaxima is asked to open is checked before it gets a window
+  (`src/FileOpenKind.{h,cpp}`, `MyApp::OpenableFiles()`).** Every command-line
+  argument (and every Finder "open") gets a window *and a Maxima* of its own,
+  and `MaximaFileIO::OpenFile()` used to send anything it didn't recognise to
+  Maxima as `load("file")`. Opening wxmaxima.exe and its DLLs therefore started
+  one of each per file -- reproduced here with 13 renamed `.so` files: 13
+  windows, 13 Maxima processes, 1.6 GB -- and GCL even tried to link each
+  binary in as native code. Now only known types are opened (packages only
+  for the source extensions Maxima's own `load()` recognises -- no `.o`,
+  `.fasl` or `.fas`), a text format containing NUL bytes is refused, and the
+  refused files are listed in one message. A `.lisp`/`.mc`/`.dem` that does
+  arrive this way asks "Run program?" first (the maintainer's call, 2026-10;
+  batch runs don't ask). Drag and drop already ignored unknown types. A new
+  type wxMaxima should open goes into `ClassifyFileForOpening()`, or it is
+  refused. The "Load package" menu passes `command="load"` and bypasses all
+  of this on purpose: there the user picked the file to run.
+  **A file name put into a Maxima command goes through
+  `wxm::MaximaStringLiteral()`.** Pasting it between `"` lets a name
+  containing a quote (legal on Linux and macOS) end the string and inject
+  Maxima code -- importing a CSV with a crafted name ran `system()` -- and an
+  unescaped backslash is silently dropped by Maxima's reader.
 - **Where in a cell an error is (GH #289) is worked out on wxMaxima's side
   only -- don't hook Maxima's parser for it.** The queue sends one statement
   at a time and remembers its range in the cell
@@ -1757,6 +1803,7 @@ tried without rebuilding.
 - **Branches and pull requests:** one branch per feature or bugfix, cut fresh from `main`, PR when it is finished -- see "Branches and pull requests" at the top of this file for why reusing one long-lived branch has already caused trouble.
 - **Red CI:** fixing a failure is welcome whoever caused it, and causing one is nobody's fault -- but never make a test pass by removing or weakening it. See "A red CI is everyone's to fix" at the top of this file.
 - **Ubuntu CI jobs install packages through `.github/actions/apt-install`**, which keeps the downloaded `.deb`s in the Actions cache. Some runners get package files from `azure.archive.ubuntu.com` at tens of kB/s (package lists from the same host stay fast), which made the install step alone take 26-37 minutes and got jobs cancelled by `timeout-minutes` before compiling anything (2026-10-26). A job cancelled at exactly its timeout with the log ending in `Get:` lines is this, not a hanging test. Use the action for a new job's packages rather than a bare `apt-get install`.
+- **clang-tidy (`.clang-tidy`, `clang_tidy.yml`) fails CI for the check categories that are already clean** -- the workflow's `-warnings-as-errors` list, `bugprone-*`, `clang-analyzer-*`, `misc-*` and `modernize-*` so far; the other enabled categories are only reported. Only a handful of modernize checks are enabled (override, nullptr, make_unique, `= default`/`= delete`, emplace, range-for, C++ headers); the rest of that family (trailing return types, `[[nodiscard]]` everywhere, `auto` everywhere, ...) would be churn. Don't trust `-fix` blindly: its range-for loops name the variable after the container (`m_diffEntrie`, or one that shadows a member), and inserting a header re-sorts the whole include block. Clean up one category per PR, then add it to that list. Silence a deliberate exception with `// NOLINT(<check>): <reason>` on that line rather than disabling the check, and disable a check in `.clang-tidy` only with a comment saying why it is noise here. The checks found real bugs the first time round (a cell type that drew nothing, a typo in the TeX export, menu entries running their neighbour's command; the analyzer then found a use after free in the animation RTF export), so don't treat a new warning as style. Four analyzer checks are off because they only misfire on wxWidgets (its refcounted string buffers, its ownership hand-overs, and reports inside its headers that no NOLINT can reach) -- `.clang-tidy` says which and why. To run it locally: configure with `-DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DWXM_ENABLE_PRECOMPILED_HEADERS=NO` (and no unity build), build once for the generated headers, then `run-clang-tidy -p build -quiet src/`.
 - **A test that needs a POSIX shell goes into `WXM_POSIX_TESTS`** (`test/CMakeLists.txt`). That list labels its tests `needs_posix`, and the Windows jobs run `ctest -LE "unittest|needs_posix"`, so this is how a test that runs a `.sh` helper (`check-lintian.sh`, `check-xml-validity.sh`, ...) or otherwise assumes `/bin/sh` stays off MSW. A test missing from it fails there as `BAD_COMMAND`, which is how the minGW job went red on `main` in 2026-09 with four such tests. Configure now refuses a test whose `COMMAND` is a `check-*.sh` helper unless it is in the list, but that guard only recognises that one shape: a test that reaches a shell some other way still has to be added by hand. **A test that only sends Maxima a command and checks its output needs no shell at all**: use `wxm_add_wxmathml_test()`, which runs on every platform (GH #1775). Its regex is CMake's dialect, not grep's, so `(`, `)`, `+`, `?` and `|` need a backslash, and it searches stderr as well as stdout -- the old shell script searched stdout only, which made `load_symbol` fail wherever Maxima prints errors to stderr.
 - **Git Environment:** Note that running `git diff` might launch the visual diff tool `meld` instead of outputting to the terminal. Always use `git diff --no-ext-diff` if you need terminal output.
 - **String Literals & Translations:** Use the `wxS()` macro for all string literals and `_()` for user-facing translatable strings.

@@ -44,7 +44,7 @@ class TipOfTheDay : public wxDialog
 {
 public:
   explicit TipOfTheDay(wxWindow *parent);
-  ~TipOfTheDay();
+  ~TipOfTheDay() override;
 protected:
   void OnNextButton(wxCommandEvent &dummy);
   void OnPreviousButton(wxCommandEvent &dummy);

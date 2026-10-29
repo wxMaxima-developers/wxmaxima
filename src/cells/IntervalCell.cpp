@@ -212,10 +212,11 @@ wxString IntervalCell::ToMatlab() const {
 }
 
 wxString IntervalCell::ToTeX() const {
-  wxString s;
-  s = wxS("\\left[ ") + m_start->ListToTeX() + "\\ldots " +
-    m_stop->ListToTeX() + wxS("\\right] ");
-  return s;
+  const wxString inner =
+    m_start->ListToTeX() + wxS("\\ldots ") + m_stop->ListToTeX();
+  if (TeXNeedsGrowingDelimiters(inner))
+    return wxS("\\left[ ") + inner + wxS("\\right] ");
+  return wxS("[") + inner + wxS("]");
 }
 
 wxString IntervalCell::ToOMML() const {

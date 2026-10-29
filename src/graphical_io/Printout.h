@@ -41,7 +41,7 @@
 class Printout : public wxPrintout
 {
 public:
-  Printout(wxString title, GroupCell *tree, double scaleFactor);
+  Printout(const wxString& title, GroupCell *tree, double scaleFactor);
 
   /* Determine which cells are the Right places to start a page
    */
@@ -52,15 +52,15 @@ public:
   void Recalculate();
 
   /*! Is called by wxWidgets when it wants us to print a specific page */
-  virtual bool OnPrintPage(int num) override;
+  bool OnPrintPage(int num) override;
 
-  virtual bool HasPage(int num) override;
+  bool HasPage(int num) override;
 
-  virtual void GetPageInfo(int *minPage, int *maxPage, int *fromPage, int *toPage) override;
+  void GetPageInfo(int *minPage, int *maxPage, int *fromPage, int *toPage) override;
 
-  virtual bool OnBeginDocument(int startPage, int endPage) override;
+  bool OnBeginDocument(int startPage, int endPage) override;
 
-  virtual void OnPreparePrinting() override;
+  void OnPreparePrinting() override;
 
 private:
   //! The copy of the worksheet we print
