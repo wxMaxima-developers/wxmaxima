@@ -37,11 +37,13 @@ LabelCell::LabelCell(GroupCell *group, Configuration *config,
   : TextCell(group, config, automaticLabel, style)
 {
   m_width = Scale_Px(m_configuration->GetLabelWidth());
+  // TextCell's constructor could only run its own UpdateDisplayedText().
+  UpdateDisplayedText();
 }
 
 LabelCell::LabelCell(GroupCell *group, const LabelCell &cell)
   : LabelCell(group, cell.m_configuration, cell.m_text, cell.GetTextStyle()) {
-  m_userDefinedLabel = cell.m_userDefinedLabel;
+  SetUserDefinedLabel(cell.m_userDefinedLabel);
 }
 
 DEFINE_CELL(LabelCell)

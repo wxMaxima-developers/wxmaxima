@@ -18,7 +18,7 @@ permissions:
 jobs:
   clang_tidy:
     runs-on: ubuntu-24.04
-    timeout-minutes: 60
+    timeout-minutes: 90
 
     steps:
       - name: Checkout_git
@@ -40,5 +40,5 @@ jobs:
       - name: clang-tidy
         run: |
              run-clang-tidy -p build -j "$(nproc)" -quiet \
-               -warnings-as-errors='bugprone-*' \
+               -warnings-as-errors='bugprone-*,clang-analyzer-*' \
                'src/'

@@ -1022,6 +1022,17 @@ if(TARGET wxmTestApp)
     add_test(NAME TextContinuation
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_TextContinuation>")
 
+    # A LabelCell shows what the label settings ask for as soon as it exists,
+    # not only after its first layout under a changed configuration.
+    add_executable(test_LabelCellDisplay
+        test_LabelCellDisplay.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_LabelCellDisplay PUBLIC cxx_std_20)
+    target_link_libraries(test_LabelCellDisplay PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME LabelCellDisplay
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_LabelCellDisplay>")
+
     # RTF/OMML export (GH #1456, GH #1457): previously untested entirely.
     add_executable(test_RTFExport
         test_RTFExport.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
