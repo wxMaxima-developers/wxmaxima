@@ -174,6 +174,25 @@ if(WXM_UNIT_TESTS AND MAXIMA AND TARGET test_Troubleshooting)
                     "$<TARGET_FILE:test_Troubleshooting>" "[.maxima]")
 endif()
 
+# GH #1907: Maxima's batch() has to be able to load a .wxm wxMaxima wrote,
+# even when its text cells contain "/*" or "*/", or lines that look like cell
+# markers, or nested comments, and when it remembers answers to Maxima's
+# questions. Each of these would make Maxima run the "x:2$", "x:3$", "x:4$"
+# or "y:2$" in the file, or fail. A code cell's own nested comment has to
+# reach Maxima unchanged, so its "z:2" stays a comment.
+# test_WXMRoundtrip checks that wxMaxima still writes this file, so the two
+# can't drift apart.
+add_test(
+    NAME wxm_loads_in_maxima
+    COMMAND "${CMAKE_COMMAND}"
+            "-DMAXIMA=${MAXIMA}"
+            "-DWXM_FILE=${CMAKE_CURRENT_SOURCE_DIR}/wxm_comment_injection.wxm"
+            "-DWORK_DIR=${CMAKE_CURRENT_BINARY_DIR}"
+            "-DREGEX=x is 1 and y is 1 and z is 1"
+            -P "${CMAKE_CURRENT_SOURCE_DIR}/check-wxm-batch.cmake")
+set_tests_properties(wxm_loads_in_maxima PROPERTIES
+    FAIL_REGULAR_EXPRESSION "incorrect syntax;end of file in comment;x is [234];y is 2;z is 2")
+
 # Test if maxima is working
 add_test(
     NAME runMaxima

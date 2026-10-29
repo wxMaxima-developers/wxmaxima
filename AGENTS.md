@@ -1485,47 +1485,53 @@ tried without rebuilding.
      separate `WXM_IMAGE` marker pair, wrapping just the raw base64 bitmap
      bytes, was never at risk here: base64's alphabet has no `*` character
      at all.)
-  Fixed in `src/WXMformat.cpp` with a reversible, HTML-entity-style
-  transform (`EscapeWXMSlashes()`/`UnescapeWXMSlashes()`), applied only to
-  the type-2 markers above: escape every literal `&` to `&amp;` first (so
-  the scheme stays unambiguous if the original text already has one), then
-  -- in a single linear scan, not two separate global replaces, so a
-  pathological run like `"*/*"` or `"/*/"` is handled correctly rather than
-  double-encoded -- replace every `/` that sits immediately next to a `*`
-  with `&#47;`, leaving that `*` and any unrelated `/` (an ordinary `1/2`)
-  untouched. This closely follows a fix the maintainers had already
-  discussed but never implemented (GH #1907's own comment thread:
-  "how about if all text cells have `/*` and `*/` replaced by HTML
-  entities?"), narrowed to only the `/` adjacent to a `*` rather than every
-  slash, to avoid visual noise in the raw `.wxm` file for cells that just
-  happen to contain an ordinary fraction. Also applied to the equivalent
-  `GC_TYPE_TEXT` write path in the non-`.wxm` (`.mac`/xmaxima interop)
-  export, for the same reason (defense in depth -- `.mac` is always
-  directly Maxima-loadable) -- but only where it is needed. A `.mac` is a
-  Maxima program the user may have written in an editor, so it has to
-  round-trip unchanged (the maintainer's call, GH #2353): a text cell Maxima
-  would read back as exactly one comment (`IsMaximaCommentBody()`: Maxima
-  *nests* comments, and a `/*`/`*/` pair uses up both characters, so `/*/`
-  only opens one) is written as it is, and only one that would end its
-  comment early or leave it open gets its `/` next to a `*` escaped -- and
-  is never unescaped on reading, since a hand-written comment may contain
-  `&#47;` legitimately. `ParseMACContents()` skips comments by the same
-  nesting rules. A `.mac` gets no "Created with wxMaxima" line either.
-  Headings in a `.mac` (open-comment markers, like in a `.wxm`) use the
-  reversible `.wxm` escaping, which `TreeFromWXM()` undoes.
-  **Known, accepted limitation** (also already flagged in the same GH
-  #1907 thread): this can't retroactively fix a `.wxm` file already on
-  disk from before this existed, and a file whose prose coincidentally
-  contains the literal text `&amp;` (e.g. discussing the HTML entity
-  itself) will be mis-decoded after this fix -- an intentional tradeoff,
-  not an oversight. Regression coverage in
-  `test/unit_tests/test_WXMRoundtrip.cpp` pins both the injection fix
-  (title/section/text cells containing `*/`/`/*` round-trip losslessly and
-  the raw `.wxm` line has neither substring left unescaped) and the
-  "code cells are never touched" invariant, confirmed to actually catch the
-  bug by reverting just the source fix (`git stash push -- src/WXMformat.cpp`)
-  and re-running: the injection scenarios failed with exactly the reported
-  symptom before the fix was restored.
+  **The fix: an invisible U+2060 WORD JOINER between every `*` and `/`
+  that are next to each other** (`InsertWordJoiners()`/
+  `RemoveWordJoiners()` in `src/WXMformat.cpp`), in the type-2 cells and in
+  known questions/answers. The constraint that shaped it, and that earlier
+  attempts broke: **a .wxm must stay loadable by Maxima's `batch()` and by
+  older wxMaxima versions**, which can't be taught anything. The joiner
+  satisfies both: Maxima sees no delimiter (its UTF-8 bytes contain neither
+  `*` nor `/`, so even a byte-reading Lisp is fine), and an old wxMaxima
+  shows the text unchanged because the character has zero width. Writing
+  adds *one more* joiner than a `*`...`/` pair already had between it, and
+  reading removes one, so the transform is exactly reversible even for text
+  that already contains joiners. Every marker line contains `/*` or `*/`, so
+  this also stops a line of prose from posing as a marker.
+  History worth knowing before changing it:
+  - May 2026 turned `*/` into `* /` and was reverted: it left `/*` alone,
+    and **Maxima nests comments**, so an unclosed `/*` swallowed the rest of
+    the file ("end of file in comment"). Any escape has to break both.
+  - 26.09 and 26.10 used HTML entities (`&` -> `&amp;`, `/` next to `*` ->
+    `&#47;`). That rewrote every `&` in every text cell, which wxMaxima 26.08
+    and older showed literally, and mis-decoded older files containing
+    `&amp;`. Those files are still read: `EscapingOfFile()` looks at the
+    "Created with wxMaxima version" line and decodes entities only for
+    26.09.x, 26.10.x and 26.08.0-dev. Files written now say
+    `[ escaping: word joiner ]` after the version, because the current dev
+    builds are still called 26.10.0-dev.
+  - **Known answers used to be live code for Maxima**: the question/answer
+    markers are self-closed comments like the input markers, so a .wxm with
+    remembered answers failed in `batch()` at the question text since at
+    least 2020. They are now written between `KnownAnswersStart`/
+    `KnownAnswersEnd`, which open and close an outer comment and start with
+    `CreatedWithLinePrefix` -- the one prefix every old version skips (26.05
+    and older drop unknown lines; 26.06+ skip lines with that prefix and
+    would otherwise append an unknown line to the previous cell's text).
+  A `.mac` is a Maxima program the user may have written in an editor, so it
+  has to round-trip unchanged (the maintainer's call, GH #2353): a text cell
+  Maxima would read back as exactly one comment (`IsMaximaCommentBody()`) is
+  written as it is, and only one that would end its comment early or leave
+  it open gets word joiners, which `ParseMACContents()` removes on reading.
+  Headings in a `.mac` get them too. A `.mac` has no "Created with" line.
+  **Still unsolvable**: a .wxm saved before any of this with a raw `*/` or
+  `/*` in prose stays broken for Maxima. Untested: how Windows and macOS
+  draw U+2060 (wxGTK measures `*`+joiner+`/` exactly as wide as `*/`).
+  Coverage: `test_WXMRoundtrip` (round trips, nested comments, each
+  version's escaping, and that `test/wxm_comment_injection.wxm` is exactly
+  what wxMaxima writes) and the ctest `wxm_loads_in_maxima`, which runs that
+  file through a real Maxima's `batch()` and fails if any of the injected
+  assignments in it runs.
 
 ### Translations (`locales/`)
 

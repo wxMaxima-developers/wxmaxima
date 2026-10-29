@@ -670,6 +670,9 @@ if(TARGET wxmTestApp)
     target_compile_features(test_WXMRoundtrip PUBLIC cxx_std_20)
     target_link_libraries(test_WXMRoundtrip PRIVATE
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    # The .wxm the wxm_loads_in_maxima test loads into Maxima (GH #1907)
+    target_compile_definitions(test_WXMRoundtrip PRIVATE
+        WXM_INJECTION_SAMPLE="${CMAKE_SOURCE_DIR}/test/wxm_comment_injection.wxm")
     add_test(NAME WXMRoundtrip
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_WXMRoundtrip>")
 

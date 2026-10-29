@@ -146,6 +146,8 @@ SCENARIO("A text cell that isn't one Maxima comment stays inert in a .mac (GH #1
     wxS("see a*/b x:1$"),
     wxS("files in src/*/lib"),
     wxS("*/ x:2$ /* and more"),
+    wxS("a /* nested */ comment */ x:3$ /* closed once too often"),
+    wxS("a /* /* nested */ comment left open"),
   };
   for (const auto &text : texts) {
     const wxString mac = ExportedMAC(GC_TYPE_TEXT, text) + wxS("y:3$\n");
@@ -155,11 +157,8 @@ SCENARIO("A text cell that isn't one Maxima comment stays inert in a .mac (GH #1
       CHECK(tree->GetGroupType() == GC_TYPE_TEXT);
       REQUIRE(tree->GetNext() != nullptr);
       CHECK(tree->GetNext()->GetEditable()->GetValue() == wxS("y:3$"));
-      // Only the slashes next to a star changed.
-      wxString expected = text;
-      expected.Replace(wxS("*/"), wxS("*&#47;"));
-      expected.Replace(wxS("/*"), wxS("&#47;*"));
-      CHECK(tree->GetEditable()->GetValue() == expected);
+      // The word joiners that kept it one comment are removed on reading.
+      CHECK(tree->GetEditable()->GetValue() == text);
     }
   }
 }

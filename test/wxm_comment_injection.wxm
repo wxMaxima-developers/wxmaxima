@@ -1,0 +1,51 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version <version> ] [ escaping: word joiner ] */
+
+/* [wxMaxima: input   start ] */
+x:1$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: title   start ]
+abc *⁠/ x:2$ /⁠* def
+   [wxMaxima: title   end   ] */
+
+/* [wxMaxima: comment start ]
+A /⁠* that is never closed
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: section start ]
+abc
+   [wxMaxima: section end   ] *⁠/
+
+x:3$
+/⁠* [wxMaxima: section start ]
+def
+   [wxMaxima: section end   ] */
+
+/* [wxMaxima: input   start ] */
+y:1$
+/* [wxMaxima: input   end   ] */
+/* [ Created with wxMaxima version <version> ] [ known answers start ] */ /*
+/* [wxMaxima: question  start ] */
+Is x positive? *⁠/ y:2$ /⁠*
+/* [wxMaxima: question  end   ] */
+/* [wxMaxima: answer  start ] */
+positive;
+/* [wxMaxima: answer  end   ] */
+/* [ Created with wxMaxima version <version> ] [ known answers end ] */ */
+
+/* [wxMaxima: comment start ]
+Nested: a /⁠* b /⁠* c *⁠/ d *⁠/ e *⁠/ x:4$ /⁠* f
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+z:1 /* a nested /* comment */ z:2 */$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+print("x is", x, "and y is", y, "and z is", z)$
+/* [wxMaxima: input   end   ] */
+
+
+/* Old versions of Maxima abort on loading files that end in a comment. */
+"Created with wxMaxima <version>"$
