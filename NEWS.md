@@ -7,6 +7,10 @@
   which sidebar each symbol is in. A letter with combining accents, like t̄
   (#2296), now is one symbol with one button, instead of a button for the
   letter and one for the accent.
+- ESC no longer offers nothing at all for the rest of a session: the list of
+  ESC names (alpha, beta, ...) is filled in the background at startup, and
+  Maxima's list of symbols arriving before that was done stopped it halfway.
+  How often that happened depended on how fast Maxima started.
 - The configuration dialog's AI tab is split into "Contacting AIs" (the AI
   Chat sidebar's providers and API keys) and the MCP server, whose settings
   used to sit on the Options tab. It now explains what MCP is and that any
@@ -44,6 +48,11 @@
   matched no symbol's name. The list now shows the character the number
   stands for and its Unicode name next to the names, and each name next to
   its symbol. A leading `0` or `u+` marks a number that also begins a name.
+- Typing `/*` into a code cell inserts the matching `*/`, the way an
+  opening parenthesis gets its closing one (#1641). Typing `*/` in front of
+  it moves past it, and Backspace on an empty comment removes both halves.
+  This follows the "Auto-insert closing parenthesis" option, and nothing is
+  inserted inside a string.
 - Opening a file wxMaxima doesn't know -- from the command line, with
   "Open with" or from the Finder -- is refused with one message listing the
   files, instead of starting a window and a Maxima for each and having Maxima

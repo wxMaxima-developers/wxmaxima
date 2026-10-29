@@ -50,7 +50,8 @@ public:
   constexpr CachedInteger() = default;
   constexpr CachedInteger(const CachedInteger &) = default;
   constexpr CachedInteger &operator=(const CachedInteger &) = default;
-  const CachedInteger &operator=(T newValue) const { SetCached(newValue); return *this; }
+  // const: it only fills in the cache, which is mutable.
+  const CachedInteger &operator=(T newValue) const { SetCached(newValue); return *this; } // NOLINT(misc-unconventional-assign-operator)
   const CachedInteger &operator+=(T delta) const { SetCached(Get() + delta); return *this; }
   const CachedInteger &operator-=(T delta) const { SetCached(Get() - delta); return *this; }
   constexpr bool IsValid() const { return m_value != invalid; }

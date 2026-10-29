@@ -439,6 +439,7 @@ wxdraw2d(
 This option enables two things:
 
 - If an opening parenthesis, bracket, or double quote is entered _wxMaxima_ will insert a closing one after it.
+- In a code cell a comment opened by `/*` is closed by an inserted `*/`. Typing `*/` in front of it moves the cursor past it instead.
 - If text is selected if any of these keys is pressed the selected text will be put between the matched signs.
 
 ### Don’t save the worksheet automatically
