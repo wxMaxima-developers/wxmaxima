@@ -355,7 +355,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
                    const wxString &initialWorksheetContents,
                    const wxPoint pos, const wxSize size)
   : wxMaximaFrame(parent, id, title, pos, size,
-                  wxDEFAULT_FRAME_STYLE | wxSYSTEM_MENU | wxCAPTION),
+                  wxDEFAULT_FRAME_STYLE),
     m_gnuplotcommand(wxS("gnuplot")),
     m_parser(&m_configuration),
     m_maximaError(false), m_menuCommands(*this), m_responseReader(*this),

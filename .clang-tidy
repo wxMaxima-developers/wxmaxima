@@ -54,6 +54,14 @@ Checks: >
 #    (mostly event ids), where "nothing to do" is the obvious default.
 #    Switches over enums are checked by the compiler's -Wswitch.
 #
+# Disabled misc checks, and why:
+#  - include-cleaner: wants every symbol's own header included; wx's headers
+#    pull each other in by design, so it is thousands of reports of no value.
+#  - non-private-member-variables-in-classes, use-anonymous-namespace,
+#    const-correctness: style; the code base has its own conventions here.
+#  - no-recursion: the cell tree and the XML it is read from are recursive,
+#    and so are the functions walking them.
+#
 # Disabled clang-analyzer checks, and why (all false positives, measured
 # 2026-10 over the whole of src/):
 #  - optin.performance.Padding: wants members reordered to save padding bytes;
