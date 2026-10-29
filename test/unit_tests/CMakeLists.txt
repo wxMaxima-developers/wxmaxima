@@ -559,6 +559,17 @@ if(TARGET wxmTestApp)
     add_test(NAME EditorCellEscapedParens
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_EditorCellEscapedParens>")
 
+    # Comments in code cells get their closer auto-inserted like brackets
+    # do (GH #1641), but not inside strings or text cells.
+    add_executable(test_EditorCellAutoCloseComments
+        test_EditorCellAutoCloseComments.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_EditorCellAutoCloseComments PUBLIC cxx_std_20)
+    target_link_libraries(test_EditorCellAutoCloseComments PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME EditorCellAutoCloseComments
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_EditorCellAutoCloseComments>")
+
     # Links in text cells (GH #2396): that they become snippets of their own,
     # that a point over one finds it and one beside it doesn't, and that the
     # LaTeX export writes them as \url{}.
