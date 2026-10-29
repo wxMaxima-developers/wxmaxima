@@ -388,7 +388,7 @@ Architecture &amp; GUI</h1>
 </b></li>
 </ul>
 <p><b></b></p>
-<h2><a class="anchor" id="autotoc_md47"></a>
+<h2><a class="anchor" id="autotoc_md57"></a>
 Asynchronous ("background job") output from Maxima</h2>
 <p><b> <b>Implemented and verified, but dormant: nothing in today's single-threaded <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> sends it.</b> Full design, measurements and rationale live in <code>Doxygen/AsyncMaximaOutput.md</code> &ndash; read that before touching any of it. Only the traps worth knowing from elsewhere are repeated here.</b></p>
 <p><b></p><ul>
@@ -404,7 +404,7 @@ Asynchronous ("background job") output from Maxima</h2>
 </ul>
 <p></b></p>
 <p><b></b></p>
-<h2><a class="anchor" id="autotoc_md48"></a>
+<h2><a class="anchor" id="autotoc_md58"></a>
 Communication with Maxima</h2>
 <p><b> <a class="el" href="classwxMaxima.html">wxMaxima</a> sends Lisp and <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> commands over the socket; <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> answers with XML wrapped in known tags. <code><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></code> reads that data on a worker thread and posts <code>EVT_MAXIMA</code> events to the main thread, where <code><a class="el" href="classwxMaxima.html">wxMaxima</a></code> handles them.</b></p>
 <p><b><code>src/wxMathML.lisp</code> is compiled into the binary (through CMake's bin2h) and is what tells <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> to format its output as MathML-like XML. For development, <code>--wxmathml-lisp=&lt;path&gt;</code> overrides it with an external file, so a change can be tried without rebuilding.</b></p>
@@ -469,7 +469,7 @@ Communication with Maxima</h2>
 </ul>
 <p></b></p>
 <p><b></b></p>
-<h2><a class="anchor" id="autotoc_md49"></a>
+<h2><a class="anchor" id="autotoc_md59"></a>
 File Formats</h2>
 <p><b></p><ul>
 <li>**<code>.wxmx</code>** &ndash; a ZIP archive holding <code>content.xml</code> (the MathML-like XML) plus the embedded images. The format version lives in <code><a class="el" href="WXMXformat_8h_source.html">src/WXMXformat.h</a></code>.</li>
@@ -485,7 +485,7 @@ File Formats</h2>
 </ul>
 <p></b></p>
 <p><b></b></p>
-<h2><a class="anchor" id="autotoc_md50"></a>
+<h2><a class="anchor" id="autotoc_md60"></a>
 Translations (&lt;tt&gt;locales/&lt;/tt&gt;)</h2>
 <p><b></p><ul>
 <li><b>One combined <code>.po</code> per language, in <code>locales/wxMaxima/</code>, is the file a translator edits.</b> It covers both <a class="el" href="classwxMaxima.html">wxMaxima</a>'s own UI strings (<code>xgettext</code>-extracted from <code>src/**/*.cpp</code>/<code>*.h</code>) and the manual's prose (<code>po4a</code>-extracted from <code>info/wxmaxima.md</code>). <code>locales/wxMaxima/wxMaxima.pot</code>, the template <code>msgmerge</code> works against, is regenerated as the union of a fresh source scan and <code>locales/manual/wxmaxima.md.pot</code> (<code>msgcat --use-first</code>, preferring <code>wxMaxima.pot</code>'s own header) by the <code>update-locale</code> CMake target.</li>
@@ -511,7 +511,7 @@ Translations (&lt;tt&gt;locales/&lt;/tt&gt;)</h2>
 </ul>
 <p></b></p>
 <p><b></b></p>
-<h1><a class="anchor" id="autotoc_md51"></a>
+<h1><a class="anchor" id="autotoc_md72"></a>
 Conventions &amp; Standards</h1>
 <p><b></p><ul>
 <li><b>Branches and pull requests:</b> one branch per feature or bugfix, cut fresh from <code>main</code>, PR when it is finished &ndash; see "Branches and pull requests" at the top of this file for why reusing one long-lived branch has already caused trouble.</li>
@@ -691,7 +691,7 @@ Conventions &amp; Standards</h1>
     something a firewall/antivirus's network protection would touch, and
     some of it blocks loopback inter-process communication too.
 
-@section autotoc_md52 Layout &amp; Compatibility
+@section autotoc_md74 Layout &amp; Compatibility
 
 The rules below are the ones worth carrying around at all times. The reasoning
 behind them, the pipeline they belong to, and the recurring shapes layout bugs
@@ -771,7 +771,7 @@ which loads on demand &amp;ndash; keep the detail there rather than growing this
   compiles everywhere and does nothing. The same trap applies to any future
   &lt;tt&gt;wxSOMETHING&lt;/tt&gt; shim added there.
 
-@section autotoc_md53 Performance &amp; Documentation Mandates
+@section autotoc_md75 Performance &amp; Documentation Mandates
 
 - &lt;strong&gt;NEWS.md Updates:&lt;/strong&gt; Every non-trivial change MUST be documented in &lt;tt&gt;NEWS.md&lt;/tt&gt; under the "# Current development version" section.
   &lt;strong&gt;When merging &lt;tt&gt;main&lt;/tt&gt; into a branch conflicts in &lt;tt&gt;NEWS.md&lt;/tt&gt;, take &lt;tt&gt;main&lt;/tt&gt;'s side and re-add only your own new entry.&lt;/strong&gt; Keeping "both sides" brings back entries that release prep has since condensed into a version section: on 2026-09-30 three branches in a row put ~190 old lines back above &lt;tt&gt;\# 26.09.0&lt;/tt&gt;. The tag workflow publishes whatever sits under the top heading as the release notes, so that would have become the release body.
@@ -783,12 +783,12 @@ which loads on demand &amp;ndash; keep the detail there rather than growing this
   - Prefer &lt;tt&gt;(intern ...)&lt;/tt&gt; over &lt;tt&gt;read-from-string&lt;/tt&gt; for dynamic symbol generation.
 - &lt;strong&gt;Strict XML Mandate:&lt;/strong&gt; To avoid duplicate attributes, add any new manually-handled XML attribute (e.g., &lt;tt&gt;noneParens="true"&lt;/tt&gt;) to the filter list in &lt;tt&gt;MathParser.cpp&lt;/tt&gt;.
 
-@section autotoc_md54 Visual Documentation (&lt;tt&gt;art/Doxygen/&lt;/tt&gt;)
+@section autotoc_md76 Visual Documentation (&lt;tt&gt;art/Doxygen/&lt;/tt&gt;)
 
 - &lt;strong&gt;Geometry Awareness:&lt;/strong&gt; If modifying &lt;tt&gt;Recalculate()&lt;/tt&gt; or &lt;tt&gt;Draw()&lt;/tt&gt; geometry (padding, center alignment), you MUST update the corresponding SVG diagrams in &lt;tt&gt;art/Doxygen/&lt;/tt&gt;.
 - &lt;strong&gt;Consistency:&lt;/strong&gt; New cell types should have &lt;tt&gt;*Geometry.svg&lt;/tt&gt; and &lt;tt&gt;*LinearGeometry.svg&lt;/tt&gt; (if applicable) diagrams.
 
-@section autotoc_md55 Key Subsystems Map
+@section autotoc_md77 Key Subsystems Map
 
 Deeper, per-subsystem background lives in &lt;tt&gt;.claude/skills/&lt;/tt&gt;, which load only
 when they are relevant &amp;ndash; so that hard-won detail is available without every
@@ -836,13 +836,13 @@ has already been broken.
 </ul>
 <p></code></b></p>
 <p><b><code></code></b></p>
-<h1><a class="anchor" id="autotoc_md56"></a>
+<h1><a class="anchor" id="autotoc_md78"></a>
 Backlog / Future Work</h1>
 <p><b><code> Items the maintainer has flagged as worth doing but hasn't asked for yet &ndash; don't start on these without checking in first, but pick them up if asked for "what's
 next" style work.</code></b></p>
 <p><b><code>Nothing at the moment. Open work lives in GitHub issues rather than here; when an entry above says something is still open, it names the issue that tracks it. (GH #1335, contiguous cell storage, used to be listed here; it was closed as not planned.)</code></b></p>
 <p><b><code></code></b></p>
-<h1><a class="anchor" id="autotoc_md57"></a>
+<h1><a class="anchor" id="autotoc_md79"></a>
 Error resilience</h1>
 <p><b><code></p><ul>
 <li>To err is human =&gt; If your instructions don't seem to make sense feel free to ask. </li>

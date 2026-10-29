@@ -73,6 +73,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><ul>
+<li>Copying entries of a matrix &ndash; a block of them dragged across, or all of them &ndash; puts them on the clipboard as an RTF table (#959), so a spreadsheet or word processor pastes them into a table's cells instead of as one equation. This works if every entry is text or a number; a matrix holding fractions, powers and the like is still copied as an equation. Selecting the matrix as a whole, parentheses and all, copies it as an equation as before.</li>
 <li>LaTeX export and "Copy as LaTeX" produce leaner markup: <code>x^2</code> instead of <code>{{x}^{2}}</code>, <code>x_1</code> instead of <code>{x_1}</code>, <code>\sin(x)</code> instead of <code>\sin{(x)}</code>, plain parentheses and <code>|...|</code> unless the contents are taller than a line, no <code>\left. \right.</code> around a sum's argument, no <code>\ensuremath{}</code> inside maths and no empty equations or <code>\mbox{}</code> padding. Operators like <code>+</code>, <code>=</code> and <code>,</code> are no longer <code>\mathop{}</code>s, which gave them the spacing of a big operator, and a one-letter function name isn't either, which shifted it vertically. Fixed along the way: a second result of a cell lost its <code>\displaystyle</code>, the input prompt's <code>&gt;</code> was wrapped in <code>\ensuremath{}</code> twice, an output label showed as "% o1", a set <code>{1}</code> lost its braces, a limit's arrow came out as <code>-&gt;</code>, and a sum whose argument the worksheet shows in parentheses is exported with them.</li>
 <li>ESC, a hexadecimal number and ESC enter that Unicode character again, as the manual says (#2561): the list of symbols closed as soon as the number matched no symbol's name. The list now shows the character the number stands for and its Unicode name next to the names, and each name next to its symbol. <a class="el" href="classA.html">A</a> leading <code>0</code> or <code>u+</code> marks a number that also begins a name.</li>
 <li>Opening a file <a class="el" href="classwxMaxima.html">wxMaxima</a> doesn't know &ndash; from the command line, with "Open with" or from the Finder &ndash; is refused with one message listing the files, instead of starting a window and a <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> for each and having <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> <code>load()</code> it. Opening wxmaxima.exe together with its DLLs used to start dozens of windows and <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> processes at once and make the computer unresponsive, and GCL tries to link a binary given to <code>load()</code> in as native code. Lisp and <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> source packages (<code>.lisp</code>, <code>.lsp</code>, <code>.mc</code>) and demos (<code>.dem</code>) still run, but only after asking; compiled Lisp no longer does. <a class="el" href="classA.html">A</a> <code>.wxm</code>, <code>.mac</code> or <code>.xml</code> that contains binary data is refused too, and "Load package" still loads whatever file is picked.</li>
@@ -94,10 +95,10 @@ $(function() {
 </li>
 <li>About 200 places that copied a string, XML document or similar object where a reference or a move would do no longer copy it (Coverity's "copy instead of move" findings).</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1030"></a>
+<h1><a class="anchor" id="autotoc_md1027"></a>
 26.10.0</h1>
 <p>This release is about making <a class="el" href="classwxMaxima.html">wxMaxima</a> nicer to use, and again was developed with substantial help from the AI assistant <b>Claude</b>. Text cells get bold, italic, superscripts and more, which survive copy and paste; long numbers are shown in digit groups; an error is marked in the code cell where it happened; long messages wrap to fit the window; the toolbar can be rearranged; and the configuration dialog previews its settings. Plus a security fix for the connection to <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>, and many smaller fixes.</p>
-<h2><a class="anchor" id="autotoc_md1031"></a>
+<h2><a class="anchor" id="autotoc_md1028"></a>
 Text cells</h2>
 <ul>
 <li>Text cells, titles and section headings can contain bold, italic, underlined, struck-through, superscript and subscript text, set using new toolbar buttons (#492). <a class="el" href="classA.html">A</a> line gets taller if something in it needs the room, an emoji for example. The formatting is saved in .wxmx files in a way older versions of <a class="el" href="classwxMaxima.html">wxMaxima</a> can still read.</li>
@@ -106,7 +107,7 @@ Text cells</h2>
 <li>Selecting text in a text cell that wraps over several lines no longer makes the selection's ends jump between lines (#2477).</li>
 <li>ESC, a hexadecimal number and ESC enter that Unicode character again, as the manual says (#2561): the list of symbols closed as soon as the number matched no symbol's name. The list now shows the character the number stands for and its Unicode name next to the names, and each name next to its symbol. <a class="el" href="classA.html">A</a> leading <code>0</code> or <code>u+</code> marks a number that also begins a name.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1032"></a>
+<h2><a class="anchor" id="autotoc_md1029"></a>
 Code cells and evaluation</h2>
 <ul>
 <li>When <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> reports an error, the statement that failed gets a light red background, and for a syntax error the place <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> stopped at a stronger one, with the cursor there (#289). The statement being evaluated right now gets a faint yellow background. All three colours can be changed in the "Style" tab.</li>
@@ -118,7 +119,7 @@ Code cells and evaluation</h2>
 <li>The part of the worksheet you are reading no longer jumps while cells above it are evaluated again or output arrives above the cursor, and output that changes out of sight no longer makes the window flicker.</li>
 <li>The worksheet no longer scrolls a whole screen past its last cell.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1033"></a>
+<h2><a class="anchor" id="autotoc_md1030"></a>
 Copy and paste</h2>
 <ul>
 <li>Cells copied and pasted inside <a class="el" href="classwxMaxima.html">wxMaxima</a> keep their text formatting, plots and images, but leave <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s answers behind: what <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> answered where they were evaluated isn't necessarily what it answers where they are pasted (#2474). Pasting into other programs still includes the results.</li>
@@ -126,7 +127,7 @@ Copy and paste</h2>
 <li>Copying part of an output also offers it as SVG and, on Windows, as an enhanced metafile (#2472).</li>
 <li>The right-click menu is shorter: the "Copy as ..." formats moved into a "Copy in Another Format" submenu.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1034"></a>
+<h2><a class="anchor" id="autotoc_md1031"></a>
 Plots and images</h2>
 <ul>
 <li>Plots are made as SVG where wxWidgets renders SVG with text (LunaSVG, which the Windows builds now have): they stay sharp at any zoom factor and in print. SVG images in .wxm files and copied SVG images are shown instead of "Cannot render the image" (#2087).</li>
@@ -135,14 +136,14 @@ Plots and images</h2>
 <li><code>wximplicit_plot()</code> loads the package it needs, and <a class="el" href="classwxMaxima.html">wxMaxima</a> explains how to fix a <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> temp directory whose name contains a quote, where draw cannot plot (#1106).</li>
 <li>Scrolling over an animation with a touchpad no longer flicks through a frame per tiny movement.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1035"></a>
+<h2><a class="anchor" id="autotoc_md1032"></a>
 Matrices</h2>
 <ul>
 <li><code>wx_matrix(M, banding=true|false|auto)</code> chooses whether rows and columns are shaded, and autocompletion offers <code>wx_matrix()</code> with a template.</li>
 <li><a class="el" href="classA.html">A</a> matrix with scrollbars of its own scrolls with the mouse wheel while it is selected (#2479), scrolls in the exported HTML, too, and no longer loses a fraction at the start of a partly scrolled-away entry.</li>
 <li>Shift+Up/Down with a cell's output selected selects whole cells starting there, not from the top of the worksheet.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1036"></a>
+<h2><a class="anchor" id="autotoc_md1033"></a>
 Help</h2>
 <ul>
 <li>One setting decides whether help is shown in the sidebar or a browser, and F1, "Help on ...", the manuals and <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s ?, ?? and describe() all follow it. Next to it, an option prints ?, ?? and describe() into the worksheet instead.</li>
@@ -150,7 +151,7 @@ Help</h2>
 <li>The wizards' sidebar no longer hides its OK button: it starts in a window of its own and is only as high as it needs. The Solve ODE wizard offers help on ode2.</li>
 <li><code>wxdeclare_subscripted()</code> works (#1653), "Always" autosubscripting really subscripts everything after an underscore, and the manual documents both subscript commands.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1037"></a>
+<h2><a class="anchor" id="autotoc_md1034"></a>
 Configuration and interface</h2>
 <ul>
 <li>The configuration dialog's "Worksheet" tab shows a sample worksheet that follows its settings. In the "Style" tab a movable divider separates the settings from the sample, which moves beside them on wide screens.</li>
@@ -159,18 +160,18 @@ Configuration and interface</h2>
 <li>Closing an untitled document with unsaved changes asks first and opens "Save As" only if you choose "Save" (#1737). "Save As" of a .wxm file proposes a .wxm name on Linux (#2440).</li>
 <li>The tooltip tint is readable in dark mode, and the diff viewer can copy and has "Find previous"/"Find next" buttons.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1038"></a>
+<h2><a class="anchor" id="autotoc_md1035"></a>
 Security</h2>
 <ul>
 <li>Another user on the same computer who connected to <a class="el" href="classwxMaxima.html">wxMaxima</a> before <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> did could pose as <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>. <a class="el" href="classwxMaxima.html">wxMaxima</a> now sends nothing secret over that connection and acts on nothing until <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> has authenticated.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1039"></a>
+<h2><a class="anchor" id="autotoc_md1036"></a>
 Windows</h2>
 <ul>
 <li>The Windows builds use wxWidgets 3.3.4, so they include the AI chat sidebar and the integrated help browser, and switching the appearance re-themes the whole window right away.</li>
 <li>The installer no longer needs administrator rights: without them it installs for the current user only.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1040"></a>
+<h2><a class="anchor" id="autotoc_md1037"></a>
 Other fixes</h2>
 <ul>
 <li>wxWidgets' Qt ports: no more startup abort with 3.2 (#2483), no crashes when closing dialogs with 3.3, the style editor edits the clicked style (#2527), and the Greek and Symbols sidebars lay out and highlight correctly.</li>
@@ -181,17 +182,17 @@ Other fixes</h2>
 <li>The LaTeX export no longer depends on the window width (#408).</li>
 <li>The Hungarian manual PDF composes again with pandoc 3.2 or newer (#2271).</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1041"></a>
+<h2><a class="anchor" id="autotoc_md1038"></a>
 Building</h2>
 <ul>
 <li>The source tarball leaves out all dot files (#2272).</li>
 <li>On Windows, WebView2Loader.dll is installed next to wxmaxima.exe when it can be found (#2481), and the About dialog says why the help browser is or isn't offered.</li>
 <li><a class="el" href="classwxMaxima.html">wxMaxima</a> builds on Cygwin again.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1042"></a>
+<h1><a class="anchor" id="autotoc_md1039"></a>
 26.09.0</h1>
 <p>Large matrices and keyboard access to output are the main topics of this release, which again was developed with substantial help from the AI assistant <b>Claude</b>. <a class="el" href="classA.html">A</a> matrix too large for the window no longer widens the worksheet, output can be explored part by part with the keyboard, links in text and output can be opened, and an optional MCP server lets AI tools read the worksheet. Plus many fixes, among them a security fix for .wxm files.</p>
-<h2><a class="anchor" id="autotoc_md1043"></a>
+<h2><a class="anchor" id="autotoc_md1041"></a>
 Matrices</h2>
 <ul>
 <li><a class="el" href="classA.html">A</a> matrix too large for the window by default is displayed with an ellipsis( ⋯, ⋮ and/or ⋱)</li>

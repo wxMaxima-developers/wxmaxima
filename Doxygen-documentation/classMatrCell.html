@@ -181,6 +181,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetDimension</b> ()</
 <tr class="memitem:a5bcde3c481e5f361a61a359a097be6b0"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrCell.html#a5bcde3c481e5f361a61a359a097be6b0">ToOMML</a> () const override</td></tr>
 <tr class="memdesc:a5bcde3c481e5f361a61a359a097be6b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the cell's representation as OMML.  <br /></td></tr>
 <tr class="separator:a5bcde3c481e5f361a61a359a097be6b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87edc9a58c83e2ad8a581b247a9a18f4"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrCell.html#a87edc9a58c83e2ad8a581b247a9a18f4">ToRTFTable</a> () const</td></tr>
+<tr class="memdesc:a87edc9a58c83e2ad8a581b247a9a18f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">The entries of the matrix as an RTF table (GH #959)  <br /></td></tr>
+<tr class="separator:a87edc9a58c83e2ad8a581b247a9a18f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a19076077cadb18e3a778ce01a11616d4"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrCell.html#a19076077cadb18e3a778ce01a11616d4">ToString</a> () const override</td></tr>
 <tr class="memdesc:a19076077cadb18e3a778ce01a11616d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the cell's representation as a string.  <br /></td></tr>
 <tr class="separator:a19076077cadb18e3a778ce01a11616d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -4404,6 +4407,28 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 <p>If this method returns wxEmptyString this might mean that this cell is better handled in OMML. </p>
 
 <p>Reimplemented in <a class="el" href="classCodeEditorCell.html#aadf6a7ed34a3e21300c4c54a082a2b30">CodeEditorCell</a>, <a class="el" href="classEditorCell.html#a306bdd1169df188b11f673e243a39f9d">EditorCell</a>, <a class="el" href="classGroupCell.html#a401f67e7ce23adbf2a34b9493c86e99e">GroupCell</a>, <a class="el" href="classImgCell.html#abbf7241256e13c1cf94d91718587e6f4">ImgCell</a>, <a class="el" href="classTextCell.html#adb4b7158186deabcbd80d67c28633a1d">TextCell</a>, and <a class="el" href="classImgCellBase.html#a2f2671584e775ebcf368348a194baa7c">ImgCellBase</a>.</p>
+
+</div>
+</div>
+<a id="a87edc9a58c83e2ad8a581b247a9a18f4" name="a87edc9a58c83e2ad8a581b247a9a18f4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a87edc9a58c83e2ad8a581b247a9a18f4">&#9670;&#160;</a></span>ToRTFTable()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxString MatrCell::ToRTFTable </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The entries of the matrix as an RTF table (GH #959) </p>
+<p>One table row per matrix row, one table cell per entry, without the parentheses around the matrix: what a spreadsheet or word processor makes a table of on pasting it. Heading rows and columns are set in bold.</p>
+<p>Only possible if every entry can be written as plain RTF text (a number, a name, a string, ...): RTF can hold maths only as an equation object, and a table full of those is no use in a spreadsheet. If an entry needs one (a fraction, a power, ...), this returns an empty string, and the matrix is better copied as one equation, as <a class="el" href="classMatrCell.html#a5bcde3c481e5f361a61a359a097be6b0" title="Returns the cell&#39;s representation as OMML.">ToOMML()</a> does.</p>
+<p>RTF has no auto-sized columns, so each column is made as wide as the longest of its entries is, estimated from its number of characters. </p>
 
 </div>
 </div>

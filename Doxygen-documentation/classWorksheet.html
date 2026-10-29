@@ -234,6 +234,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>TreeUndo_CellLeft</b>
 <tr class="memitem:afd3a9829e7b8bbadd2a81cef5b416ba1"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classMatrCell.html">MatrCell</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#afd3a9829e7b8bbadd2a81cef5b416ba1">CopySelectedMatrixBlock</a> () const</td></tr>
 <tr class="memdesc:afd3a9829e7b8bbadd2a81cef5b416ba1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The selected sub-matrix, as a new matrix, or null (GH #2345)  <br /></td></tr>
 <tr class="separator:afd3a9829e7b8bbadd2a81cef5b416ba1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf9f227a07824af216567737e983a697"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#acf9f227a07824af216567737e983a697">MatrixEntriesSelected</a> () const</td></tr>
+<tr class="memdesc:acf9f227a07824af216567737e983a697"><td class="mdescLeft">&#160;</td><td class="mdescRight">Are the entries of a matrix selected, rather than the matrix? (GH #959)  <br /></td></tr>
+<tr class="separator:acf9f227a07824af216567737e983a697"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1869320e591b04959319004a4c8da4c3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a1869320e591b04959319004a4c8da4c3">SelectOutputRect</a> (<a class="el" href="classGroupCell.html">GroupCell</a> *<a class="el" href="ToolBarSections_8cpp.html#a0242027ec3331f3d5793c42d21b6f4e1">group</a>, wxPoint down, wxPoint up)</td></tr>
 <tr class="memdesc:a1869320e591b04959319004a4c8da4c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Select what a rectangle dragged across a cell's output covers.  <br /></td></tr>
 <tr class="separator:a1869320e591b04959319004a4c8da4c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -568,6 +571,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SelectOutputItem</b> 
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a9d454d4af46ae0f90450e2796dfc9f0b"><td class="memItemLeft" align="right" valign="top">static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a9d454d4af46ae0f90450e2796dfc9f0b">SelectionRTFBody</a> (const <a class="el" href="classCell.html">Cell</a> *cells, bool matrixEntries)</td></tr>
+<tr class="memdesc:a9d454d4af46ae0f90450e2796dfc9f0b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The RTF for a copy of the selection, without <a class="el" href="classWorksheet.html#a13a5d3be1d3d582e866d8705572cc20d" title="The start of a RTF document.">RTFStart()</a> and <a class="el" href="classWorksheet.html#a377e690362492a35b801df92ce527a40" title="The end of a RTF document.">RTFEnd()</a>  <br /></td></tr>
+<tr class="separator:a9d454d4af46ae0f90450e2796dfc9f0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4476b1a4c96170effc5edec863f09493"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a4476b1a4c96170effc5edec863f09493">OpenLink</a> (const wxString &amp;url)</td></tr>
 <tr class="memdesc:a4476b1a4c96170effc5edec863f09493"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens a link from a text cell in the user's web browser (GH #2396).  <br /></td></tr>
 <tr class="separator:a4476b1a4c96170effc5edec863f09493"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2823,6 +2829,26 @@ static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>CellsToMat
 
 </div>
 </div>
+<a id="acf9f227a07824af216567737e983a697" name="acf9f227a07824af216567737e983a697"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acf9f227a07824af216567737e983a697">&#9670;&#160;</a></span>MatrixEntriesSelected()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Worksheet::MatrixEntriesSelected </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Are the entries of a matrix selected, rather than the matrix? (GH #959) </p>
+<p>True if the selection was made by dragging across, or stepping through, the entries of one matrix &ndash; a block of them or all of them &ndash; and not by selecting the matrix as a whole, parentheses and all. Copying such a selection puts the entries on the clipboard as an RTF table, see <a class="el" href="classWorksheet.html#a9d454d4af46ae0f90450e2796dfc9f0b" title="The RTF for a copy of the selection, without RTFStart() and RTFEnd()">SelectionRTFBody()</a>. </p>
+
+</div>
+</div>
 <a id="a298f3b0c5d6c129835d4268913e086be" name="a298f3b0c5d6c129835d4268913e086be"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a298f3b0c5d6c129835d4268913e086be">&#9670;&#160;</a></span>NavigateOutput()</h2>
 
@@ -3709,6 +3735,51 @@ static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>CellsToMat
 
 <p>Which result of its cell's output is selected, if exactly one is. </p>
 <p>True only for a selection that is one whole result, as <a class="el" href="classWorksheet.html#ae14d06aaef8495f7336c82804f1ec85e" title="Select one result of a cell&#39;s output, scroll to it and announce it.">SelectOutputResult()</a> makes it; a part of a result selected with the mouse doesn't count. </p>
+
+</div>
+</div>
+<a id="a9d454d4af46ae0f90450e2796dfc9f0b" name="a9d454d4af46ae0f90450e2796dfc9f0b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9d454d4af46ae0f90450e2796dfc9f0b">&#9670;&#160;</a></span>SelectionRTFBody()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxString Worksheet::SelectionRTFBody </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classCell.html">Cell</a> *&#160;</td>
+          <td class="paramname"><em>cells</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>matrixEntries</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The RTF for a copy of the selection, without <a class="el" href="classWorksheet.html#a13a5d3be1d3d582e866d8705572cc20d" title="The start of a RTF document.">RTFStart()</a> and <a class="el" href="classWorksheet.html#a377e690362492a35b801df92ce527a40" title="The end of a RTF document.">RTFEnd()</a> </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cells</td><td><a class="el" href="classA.html">A</a> copy of the selection, as <a class="el" href="classWorksheet.html#ac6171080f34084cc1694b75089f360ac" title="Copy the currently selected cells.">CopySelection()</a> makes it. </td></tr>
+    <tr><td class="paramname">matrixEntries</td><td>The value <a class="el" href="classWorksheet.html#acf9f227a07824af216567737e983a697" title="Are the entries of a matrix selected, rather than the matrix? (GH #959)">MatrixEntriesSelected()</a> had when the copy was made. If true, and cells is a single matrix all of whose entries are plain text, the RTF is a table of those entries (see <a class="el" href="classMatrCell.html#a87edc9a58c83e2ad8a581b247a9a18f4" title="The entries of the matrix as an RTF table (GH #959)">MatrCell::ToRTFTable()</a>) that spreadsheets and word processors paste as a table. Otherwise it is the cells' ordinary RTF, maths as equations. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
