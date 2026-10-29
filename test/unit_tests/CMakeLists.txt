@@ -169,6 +169,12 @@ target_include_directories(test_WizardHelpKeywords PRIVATE ${CMAKE_SOURCE_DIR}/s
 target_link_libraries(test_WizardHelpKeywords PRIVATE ${wxWidgets_LIBRARIES})
 add_test(WizardHelpKeywords test_WizardHelpKeywords)
 
+# The Matrix menu's wizards put each field where its label says (GH #647).
+add_executable(test_MatrixWizardRules test_MatrixWizardRules.cpp ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
+target_include_directories(test_MatrixWizardRules PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_link_libraries(test_MatrixWizardRules PRIVATE ${wxWidgets_LIBRARIES})
+add_test(MatrixWizardRules test_MatrixWizardRules)
+
 # Keyed on WXM_AI_TOOLS_REQUESTED, not WXM_USE_AI_TOOLS: this test needs
 # nothing from wxWidgets 3.3.4, which the AI tools themselves require (see
 # the top-level CMakeLists.txt).
