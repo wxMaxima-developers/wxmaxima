@@ -65,7 +65,7 @@ public:
   //! One piece of Maxima's output: what it is, and its text
   struct Item {
     //! What kind of data this is (a Maxima::EventCause)
-    int cause;
+    int cause = 0;
     //! The data itself
     wxString data;
   };
