@@ -1097,12 +1097,41 @@ void Worksheet::InsertLine(std::unique_ptr<Cell> &&newCell, bool forceNewLine) {
   // The append is about to push everything below this cell down, including
   // the cursor if it sits there. If the user can see the cursor, keep it where
   // it is on screen: that is where they are reading or typing.
-  KeepCursorStillOnScreen();
+  // Within a batch only before its first append: that is when the layout
+  // still shows where the cursor is. Later appends would only make this lay
+  // out the output again -- once per line (GH #2594).
+  if ((m_outputBatchDepth == 0) || m_outputBatchGroups.empty())
+    KeepCursorStillOnScreen();
 
   newCell->ForceBreakLine(forceNewLine);
   cell->AppendOutput(std::move(newCell));
   m_layout.RequestAdjustSize();
 
+  const bool async = m_asyncOutputTarget;
+  if (m_outputBatchDepth > 0) {
+    // Laid out once the batch ends (GH #2594).
+    if (m_outputBatchGroups.empty() ||
+        (m_outputBatchGroups.back().first.get() != cell) ||
+        (m_outputBatchGroups.back().second != async))
+      m_outputBatchGroups.emplace_back(cell, async);
+    return;
+  }
+  LayOutAppendedOutput(cell, async);
+}
+
+void Worksheet::FinishBatchedOutput() {
+  // Taken out of the member first, so the list starts empty for the next
+  // batch whatever laying out does.
+  auto groups = std::move(m_outputBatchGroups);
+  m_outputBatchGroups.clear();
+  for (const auto &[group, async] : groups) {
+    // The cell may have been deleted while its output was arriving.
+    if (group)
+      LayOutAppendedOutput(group, async);
+  }
+}
+
+void Worksheet::LayOutAppendedOutput(GroupCell *cell, bool async) {
   cell->OutputHeightChanged();
   AdjustSize();
   OutputChanged();
@@ -1115,7 +1144,7 @@ void Worksheet::InsertLine(std::unique_ptr<Cell> &&newCell, bool forceNewLine) {
   // deliberately scrolled away from -- possibly minutes ago, possibly while
   // they are typing somewhere else -- would make background jobs hostile to
   // use rather than useful.
-  if (FollowEvaluation() && !m_asyncOutputTarget) {
+  if (FollowEvaluation() && !async) {
     ClearSelection();
     if (GCContainsCurrentQuestion(cell))
       OpenQuestionCaret();

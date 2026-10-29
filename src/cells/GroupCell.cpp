@@ -365,21 +365,44 @@ void GroupCell::AppendOutput(std::unique_ptr<Cell> &&cell) {
   wxASSERT_MSG(cell, _("Bug: Trying to append NULL to a group cell."));
   if (!cell)
     return;
+  // Only walks the cells that are new
+  Cell *const newLast = cell->last();
   if (!m_output) {
     m_output = std::move(cell);
+    UpdateCellsInGroup();
 
     auto *input = GetEditable();
     if (m_groupType == GC_TYPE_CODE && input)
       input->ContainsChanges(false);
-  } else
-    CellList::AppendCell(m_output, std::move(cell));
+  } else {
+    // A command printing line after line used to make every step here walk
+    // or re-measure the whole output so far, which made a long output
+    // quadratically slow (GH #2594); none of them does now.
+    //
+    // The end of the output is where the last append ended, unless the
+    // output has been changed some other way since.
+    Cell *previousLast = m_lastAppendedOutput;
+    if (!previousLast || previousLast->GetNext() ||
+        (previousLast->GetGroup() != this))
+      previousLast = m_output->last();
+    // Only the new cells are counted, instead of the whole output again
+    // (UpdateCellsInGroup()).
+    m_cellsInGroup += cell->CellsInListRecursive();
+    // Not CellList::AppendCell(): that resets the size of every cell in this
+    // group, so all of them would be measured again. The new cells have no
+    // size yet anyway, and of the old ones only the last can depend on its
+    // successor (a text cell's padding does).
+    CellList::SetNext(previousLast, std::move(cell));
+    previousLast->ResetSize();
+    ResetSize();
+  }
+  m_lastAppendedOutput = newLast;
 
   // The output changed: re-attempt its layout and drop any stale "layout
   // suppressed" placeholder.
   m_layoutSuppressed = false;
   m_layoutSuppressedNotice.reset();
 
-  UpdateCellsInGroup();
   m_updateConfusableCharWarnings = true;
   MarkNeedsRecalculate();
   if (m_configuration)

@@ -34,6 +34,9 @@
 #include <wx/tokenzr.h>
 
 #include "ProcessTree.h"
+#include "MaximaItemQueue.h"
+#include <chrono>
+#include <memory>
 #include <vector>
 
 #ifdef __WXMSW__
@@ -432,6 +435,8 @@ bool MaximaProcessManager::StartMaxima(bool force) {
 
 void MaximaProcessManager::KillMaxima(bool logMessage) {
   m_wxMaxima.m_maximaConnectWatchdogTimer.Stop();
+  m_skipOutputUntilPrompt = false;
+  m_skippedOutputItems = 0;
   if (logMessage && (m_wxMaxima.m_closing || (m_wxMaxima.m_maximaProcess == nullptr) || (m_wxMaxima.m_pid > 0))) {
     if (m_wxMaxima.m_maximaPid > 0)
       wxLogMessage("Killing Maxima. Wrapper PID=%ld, Maxima PID=%ld", m_wxMaxima.m_pid,
@@ -695,6 +700,74 @@ void MaximaProcessManager::OnMaximaClose(wxProcessEvent &event) {
 }
 
 
+void MaximaProcessManager::OnItemTimer(wxTimerEvent &WXUNUSED(event)) {
+  ProcessItems();
+}
+
+void MaximaProcessManager::ReportSkippedOutput() {
+  m_skipOutputUntilPrompt = false;
+  if (m_skippedOutputItems > 0)
+    m_wxMaxima.m_outputAppender.DoRawConsoleAppend(
+      wxString::Format(_("(%li lines of output Maxima had already sent when "
+                         "it was interrupted were not displayed.)"),
+                       m_skippedOutputItems),
+      MC_TYPE_WARNING);
+  m_skippedOutputItems = 0;
+}
+
+void MaximaProcessManager::ProcessItems() {
+  // Output Maxima sends in a row is laid out once, when the row ends (or the
+  // time is up), instead of once per line.
+  std::unique_ptr<Worksheet::OutputBatch> outputBatch;
+  const auto result = DrainForAtMost(
+    std::chrono::milliseconds(ItemBudgetMs),
+    [this](MaximaItemQueue::Item &item) {
+      // Fetched anew for every item: handling one can replace or delete the
+      // connection.
+      return m_wxMaxima.m_client && m_wxMaxima.m_client->TakeItem(item);
+    },
+    [this, &outputBatch](const MaximaItemQueue::Item &item) {
+      if (m_skipOutputUntilPrompt) {
+        switch (item.cause) {
+        case Maxima::XML_MATHS:
+        case Maxima::XML_TOOLONGMATHS:
+        case Maxima::XML_ASCIIMATH:
+          m_skippedOutputItems++;
+          return true;
+        case Maxima::XML_PROMPT:
+          outputBatch.reset();
+          ReportSkippedOutput();
+          break;
+        default:
+          break;
+        }
+      }
+      switch (item.cause) {
+      case Maxima::READ_MISC_TEXT:
+      case Maxima::XML_MATHS:
+      case Maxima::XML_TOOLONGMATHS:
+      case Maxima::XML_ASCIIMATH:
+      case Maxima::STRING_FOR_XMLINSPECTOR:
+        if (!outputBatch)
+          outputBatch = std::make_unique<Worksheet::OutputBatch>(m_wxMaxima.GetWorksheet());
+        break;
+      default:
+        // A prompt, a question, a variable update, ...: whatever handling
+        // it does finds the output that came before it laid out, as it
+        // always did.
+        outputBatch.reset();
+      }
+      wxThreadEvent event(EVT_MAXIMA);
+      event.SetInt(item.cause);
+      event.SetString(item.data);
+      MaximaEvent(event);
+      return true;
+    });
+  outputBatch.reset();
+  if (result == DrainResult::TimeUp)
+    m_itemTimer.StartOnce(1);
+}
+
 void MaximaProcessManager::MaximaEvent(wxThreadEvent &event) {
   using std::swap;
   // Reentrancy tripwire: see m_inMaximaEvent's documentation. If this assert
@@ -717,6 +790,9 @@ void MaximaProcessManager::MaximaEvent(wxThreadEvent &event) {
   // architecture. Lifecycle events stay live so shutdown still works.
   if (m_wxMaxima.m_discardAllData) {
     switch (event.GetInt()) {
+    // Lets the waiting items be taken from the queue: each of them then
+    // passes this gate as an event of its own, and is dropped.
+    case Maxima::DATA_AVAILABLE:
     case Maxima::WRITE_ERROR:
     case Maxima::DISCONNECTED:
       break;
@@ -737,6 +813,7 @@ void MaximaProcessManager::MaximaEvent(wxThreadEvent &event) {
     case Maxima::XML_WXXML_KEY:
     case Maxima::STRING_FOR_XMLINSPECTOR:
     case Maxima::READ_PENDING:
+    case Maxima::DATA_AVAILABLE:
     case Maxima::WRITE_PENDING:
     case Maxima::WRITE_ERROR:
     case Maxima::DISCONNECTED:
@@ -856,6 +933,14 @@ void MaximaProcessManager::MaximaEvent(wxThreadEvent &event) {
     m_wxMaxima.m_statusBar->NetworkStatus(StatusBar::receive);
     m_wxMaxima.m_responseReader.ReadAsyncOutput(event.GetString());
     break;
+  case Maxima::DATA_AVAILABLE:
+    // Not handled right here: this event is processed together with all
+    // other pending events, before the event loop gets back to the keyboard,
+    // so handling a flood of output from in here is exactly what froze
+    // wxMaxima in GH #2594. The timer fires once the event loop had its turn.
+    if (!m_itemTimer.IsRunning())
+      m_itemTimer.StartOnce(1);
+    break;
   case Maxima::READ_PENDING:
     m_wxMaxima.m_responseReader.ReadStdErr();
     m_wxMaxima.m_statusBar->NetworkStatus(StatusBar::receive);
@@ -968,9 +1053,22 @@ void MaximaProcessManager::Interrupt(wxCommandEvent &WXUNUSED(event)) {
     return;
   }
 
+  // Maxima will stop -- but the output it printed until then is still on its
+  // way, and a command that printed fast may have several megabytes of it
+  // waiting in the socket (GH #2594). Displaying all of that would make the
+  // interrupt seem to take minutes. So that output is skipped, up to
+  // Maxima's next prompt, and the user told how much was.
+  const bool evaluating = m_wxMaxima.GetWorksheet() &&
+    !m_wxMaxima.GetWorksheet()->GetEvaluationQueue().Empty();
+  const auto interruptSent = [this, evaluating]() {
+    if (evaluating)
+      m_skipOutputUntilPrompt = true;
+  };
+
   // The interrupt channel works the same on every operating system and needs
   // no process id, so it is preferred whenever the Lisp has opened one.
   if (m_wxMaxima.m_interruptChannel && m_wxMaxima.m_interruptChannel->SendInterrupt()) {
+    interruptSent();
     wxLogMessage(_("Sending an interrupt signal to Maxima."));
     wxLogMessage("Sent the request through Maxima's interrupt channel.");
     return;
@@ -999,6 +1097,7 @@ void MaximaProcessManager::Interrupt(wxCommandEvent &WXUNUSED(event)) {
   for (auto pid : candidates) {
     wxString name;
     if (SetInterruptBitInSharedMemory(pid, name)) {
+      interruptSent();
       wxLogMessage(_("Sending an interrupt signal to Maxima."));
       wxLogMessage("Set the interrupt bit in shared memory segment %s", name);
       return;
@@ -1022,7 +1121,8 @@ void MaximaProcessManager::Interrupt(wxCommandEvent &WXUNUSED(event)) {
   return;
 #else
   wxLogMessage(_("Sending Maxima a SIGINT signal."));
-  wxProcess::Kill(m_wxMaxima.m_pid, wxSIGINT);
+  if (wxProcess::Kill(m_wxMaxima.m_pid, wxSIGINT) == wxKILL_OK)
+    interruptSent();
 #endif
   if (m_wxMaxima.m_maximaProcess) {
     wxProcess::Kill(m_wxMaxima.m_maximaProcess->GetPid(), wxSIGINT);

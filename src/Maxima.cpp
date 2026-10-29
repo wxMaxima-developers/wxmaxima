@@ -47,7 +47,6 @@ wxDEFINE_EVENT(EVT_MAXIMA, wxThreadEvent);
 
 Maxima::Maxima(wxSocketBase *socket, Configuration *config) :
   m_configuration(config),
-  m_readPendingQueued(false),
   m_socket(socket),
   m_socketInput(*m_socket),
   m_textInput(m_socketInput, wxS("\n"), wxConvUTF8)
@@ -60,6 +59,17 @@ Maxima::Maxima(wxSocketBase *socket, Configuration *config) :
   m_socket->Notify(false);
   m_socket->SetFlags(wxSOCKET_BLOCK); // We will use WaitForRead with timeout in thread.
   m_socket->SetTimeout(1);
+
+#ifdef SO_RCVBUF
+  // Keeps the operating system from buffering megabytes of Maxima's output
+  // on our behalf (on Linux the receive buffer grows to 6 MB by itself).
+  // Our own backlog is limited (MaximaItemQueue::BackPressure()), but
+  // whatever waits in the socket has to be displayed, too, before the
+  // reaction to Ctrl+G shows up (GH #2594).
+  int receiveBufferSize = 64 * 1024;
+  m_socket->SetOption(SOL_SOCKET, SO_RCVBUF, &receiveBufferSize,
+                      sizeof(receiveBufferSize));
+#endif
 
   m_workerThread = jthread([this](stop_token stopToken) { WorkerThread(stopToken); });
 }
@@ -104,10 +114,7 @@ Maxima::~Maxima() {
       m_socket->Close();
   }
 
-  {
-      std::lock_guard<std::mutex> lock(m_interpretedQueueMutex);
-      m_interpretedQueue.clear();
-  }
+  m_items.Clear();
 
   wxEvtHandler::DeletePendingEvents();
 }
@@ -129,41 +136,17 @@ void Maxima::SocketEvent(wxSocketEvent &WXUNUSED(event)) {
 void Maxima::TimerEvent(wxTimerEvent &WXUNUSED(event)) {
 }
 
-void Maxima::ReadSocket() {
-    std::vector<InterpretedItem> items;
-    {
-        std::lock_guard<std::mutex> lock(m_interpretedQueueMutex);
-        if (m_interpretedQueue.empty()) return;
-        items.swap(m_interpretedQueue);
-        m_readPendingQueued = false;
-    }
-    
-    wxString combinedText;
-    auto fireText = [&combinedText, this]() {
-        if (!combinedText.IsEmpty()) {
-            wxThreadEvent *event = new wxThreadEvent(EVT_MAXIMA);
-            event->SetInt(READ_MISC_TEXT);
-            event->SetString(combinedText);
-            QueueEvent(event);
-            combinedText.Clear();
-        }
-    };
-
-    for (const auto& item : items) {
-        if (item.cause == READ_MISC_TEXT) {
-            combinedText += item.data;
-        } else {
-            fireText();
-            wxThreadEvent *event = new wxThreadEvent(EVT_MAXIMA);
-            event->SetInt(item.cause);
-            event->SetString(item.data);
-            QueueEvent(event);
-        }
-    }
-    fireText();
+void Maxima::PushItems(std::vector<MaximaItemQueue::Item> &&items) {
+  if (m_items.Push(std::move(items))) {
+    wxThreadEvent *event = new wxThreadEvent(EVT_MAXIMA);
+    event->SetInt(DATA_AVAILABLE);
+    QueueEvent(event);
+  }
 }
 
 void Maxima::WorkerThread(const stop_token& stopToken) {
+  // How much to read in one go before the data is split into items
+  constexpr std::size_t maxCharsPerRead = 65536;
   wxMilliClock_t lastProcessTime = wxGetLocalTimeMillis();
   while (!stopToken.stop_requested()) {
     bool activity = false;
@@ -194,11 +177,19 @@ void Maxima::WorkerThread(const stop_token& stopToken) {
         }
     }
 
-    // 2. Handle Input
-    if (m_socket->WaitForRead(0, 50)) {
+    // 2. Handle Input -- unless the GUI thread still has a big backlog
+    // (GH #2594). Not reading lets the socket's buffers fill up, which makes
+    // Maxima wait in its next write: a command that prints faster than we
+    // can display its output then runs at the speed of the display instead
+    // of filling our memory with output nobody can see yet.
+    if (!m_items.BackPressure() && m_socket->WaitForRead(0, 50)) {
         activity = true;
         wxString incomingData;
-        while (m_socket->IsData()) {
+        // Bounded, so that a Maxima writing as fast as we read can't keep
+        // us in here, growing m_processingBuffer, without ever handing a
+        // single item to the GUI.
+        std::size_t charsRead = 0;
+        while ((charsRead++ < maxCharsPerRead) && m_socket->IsData()) {
             wxUniChar ch = m_textInput.GetChar();
             if (ch == wxS('\0')) break;
             if (ch == wxS('\r')) continue;
@@ -206,11 +197,9 @@ void Maxima::WorkerThread(const stop_token& stopToken) {
             if (m_xmlInspector) incomingData += ch;
         }
         if (m_xmlInspector && !incomingData.IsEmpty()) {
-            std::lock_guard<std::mutex> lock(m_interpretedQueueMutex);
-            m_interpretedQueue.push_back({STRING_FOR_XMLINSPECTOR, std::move(incomingData)});
-            if (!m_readPendingQueued.exchange(true)) {
-                CallAfter([this]{ ReadSocket(); });
-            }
+            std::vector<MaximaItemQueue::Item> inspectorItem;
+            inspectorItem.push_back({STRING_FOR_XMLINSPECTOR, std::move(incomingData)});
+            PushItems(std::move(inspectorItem));
         }
     }
 
@@ -235,83 +224,13 @@ void Maxima::ProcessData(const stop_token& stopToken)
     if (m_processingBuffer.IsEmpty())
         return;
 
-    bool progress;
-    wxString batchedText;
-    std::vector<InterpretedItem> newItems;
+    std::vector<MaximaItemQueue::Item> newItems;
+    const size_t consumed = SplitIntoItems(
+      m_processingBuffer, KnownTags(), READ_MISC_TEXT, newItems,
+      [&stopToken]{ return stopToken.stop_requested(); });
+    m_processingBuffer.erase(0, consumed);
 
-    do {
-        progress = false;
-        int tagPos = m_processingBuffer.Find(wxS('<'));
-        wxString dataToSend;
-        if (tagPos == wxNOT_FOUND) {
-            dataToSend = m_processingBuffer;
-            m_processingBuffer.Clear();
-            progress = true;
-        } else if (tagPos > 0) {
-            dataToSend = m_processingBuffer.Left(tagPos);
-            m_processingBuffer = m_processingBuffer.Mid(tagPos);
-            progress = true;
-        } else {
-            const auto &knownTags = KnownTags();
-            auto tag = knownTags.begin();
-            for(; tag != knownTags.end(); ++tag)
-            {
-                if (stopToken.stop_requested()) break;
-                wxString tagstartname = wxS("<") + tag->first + wxS(">");
-                if (m_processingBuffer.StartsWith(tagstartname))
-                    break;
-            }
-            
-            if (tag == knownTags.end()) {
-                dataToSend = m_processingBuffer.Left(1);
-                m_processingBuffer = m_processingBuffer.Mid(1);
-                progress = true;
-            } else {
-                // If a stop request interrupted the scan above, tag may point
-                // at an entry the buffer does NOT start with. That is harmless
-                // only because the stop_requested check below breaks out
-                // before the buffer is sliced - keep it that way.
-                wxString tagEndName = wxS("</") + tag->first + wxS(">");
-                int end = m_processingBuffer.Find(tagEndName);
-                if (end != wxNOT_FOUND) {
-                    if (!batchedText.IsEmpty()) {
-                        newItems.push_back({.cause = READ_MISC_TEXT, .data = batchedText});
-                        batchedText.Clear();
-                    }
-                    if (stopToken.stop_requested()) break;
-                    wxASSERT(m_processingBuffer.StartsWith(wxS("<") + tag->first + wxS(">")));
-                    size_t tagFullLength = end + tagEndName.Length();
-                    wxString fullTag = m_processingBuffer.Left(tagFullLength);
-                    m_processingBuffer = m_processingBuffer.Mid(tagFullLength);
-                    if (m_processingBuffer.StartsWith(wxS("\n")))
-                        m_processingBuffer = m_processingBuffer.Mid(1);
-                    
-                    newItems.push_back({.cause = tag->second, .data = std::move(fullTag)});
-                    progress = true;
-                }
-            }
-        }
-        
-        if (!dataToSend.IsEmpty()) {
-            batchedText += dataToSend;
-        }
-        
-        if (stopToken.stop_requested()) break;
-    } while (progress && !m_processingBuffer.IsEmpty());
-
-    if (!batchedText.IsEmpty()) {
-        newItems.push_back({READ_MISC_TEXT, std::move(batchedText)});
-    }
-
-    if (!newItems.empty()) {
-        std::lock_guard<std::mutex> lock(m_interpretedQueueMutex);
-        m_interpretedQueue.insert(m_interpretedQueue.end(),
-                                  std::make_move_iterator(newItems.begin()),
-                                  std::make_move_iterator(newItems.end()));
-        if (!m_readPendingQueued.exchange(true)) {
-            CallAfter([this]{ ReadSocket(); });
-        }
-    }
+    PushItems(std::move(newItems));
 }
 
 wxString Maxima::InvertCase(const wxString &var) {

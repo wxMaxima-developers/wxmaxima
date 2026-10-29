@@ -63,6 +63,14 @@ Per-list caches (`m_listCacheCfgCnt` and friends) otherwise survive a font,
 zoom or style change and hand back widths computed under the old settings. This
 is the "stale spacing" bug family.
 
+The list caches (`GetCenterList()`, `GetMaxDrop()`, `GetLineWidth()`) describe
+only the *first line* of the list starting at a cell, which is why
+`InvalidateListCache()` may stop at the start of the changed cell's line.
+Don't cache anything again that reaches past the end of a line:
+`SumOfWidths()` used to be, so every change invalidated the caches of the whole
+list before it, and a long output appended line by line took quadratic time to
+lay out (GH #2594).
+
 **4. Cancelled layout must invalidate what it did not compute.** When the
 layout deadline fires mid-cell, the base `Cell::Recalculate()` has already
 marked the cell as recalculated. If the override then returns early without

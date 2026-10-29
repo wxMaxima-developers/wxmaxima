@@ -796,6 +796,21 @@ private:
     job named can have been deleted in the meantime, and a CellPtr reads
     back as nullptr instead of dangling. */
   CellPtr<GroupCell> m_asyncOutputTarget;
+  //! How many OutputBatch scopes are open
+  int m_outputBatchDepth = 0;
+  /*! The groups output was appended to while an OutputBatch was open
+
+    Each with whether it was appended as a background job's output, as
+    InsertLine() treats that differently. In order of the first append;
+    consecutive appends to the same group are recorded once. */
+  std::vector<std::pair<CellPtr<GroupCell>, bool>> m_outputBatchGroups;
+  /*! Lays out a group that got new output and follows the evaluation to it
+
+    \param async Whether the output was a background job's (InsertLine()
+    doesn't follow those). */
+  void LayOutAppendedOutput(GroupCell *cell, bool async);
+  //! Lays out what was appended while OutputBatch scopes were open
+  void FinishBatchedOutput();
   /*! Where Shift+Left/Right started growing an output selection (GH #2382)
 
     The first cell of the part that was selected when the first Shift+arrow
@@ -1166,6 +1181,34 @@ public:
     the line is appended to the last cell of the worksheet, instead.
   */
   void InsertLine(std::unique_ptr<Cell> &&newCell, bool forceNewLine = false);
+
+  /*! Lays out the output of all lines appended in this scope once, at its end.
+
+    InsertLine() lays out the whole output of the cell it appends to, so a
+    command that prints thousands of lines one by one costs time quadratic in
+    their number -- 59 ms per line once 2000 lines were there, which, at the
+    pace disp() in a loop prints, was enough to freeze wxMaxima (GH #2594).
+    MaximaProcessManager opens one of these around each run of output items
+    it hands to the worksheet. Nothing reads the layout of a cell while its
+    output is still arriving, which is what makes deferring it safe; the scope
+    ends before anything else Maxima sends (a prompt, a question) is handled.
+    Scopes nest; only the outermost one lays out.
+  */
+  class OutputBatch {
+  public:
+    explicit OutputBatch(Worksheet *worksheet) : m_worksheet(worksheet) {
+      if (m_worksheet)
+        m_worksheet->m_outputBatchDepth++;
+    }
+    ~OutputBatch() {
+      if (m_worksheet && (--m_worksheet->m_outputBatchDepth == 0))
+        m_worksheet->FinishBatchedOutput();
+    }
+    OutputBatch(const OutputBatch &) = delete;
+    OutputBatch &operator=(const OutputBatch &) = delete;
+  private:
+    Worksheet *m_worksheet;
+  };
 
   /*! Where the cursor is, as the layout engine's scroll compensation needs it
 
