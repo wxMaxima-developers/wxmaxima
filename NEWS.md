@@ -1,5 +1,10 @@
 # Current development version
 
+- The configuration dialog's AI tab is split into "Contacting AIs" (the AI
+  Chat sidebar's providers and API keys) and "Giving external tools access",
+  which now holds the MCP server settings that used to sit on the Options
+  tab. The tab no longer disappears when there is no secret store: the MCP
+  server needs none, so its settings stay reachable.
 - Copying entries of a matrix -- a block of them dragged across, or all of
   them -- puts them on the clipboard as an RTF table (#959), so a
   spreadsheet or word processor pastes them into a table's cells instead of

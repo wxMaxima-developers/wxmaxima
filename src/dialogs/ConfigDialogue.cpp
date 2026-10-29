@@ -266,13 +266,7 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent)
   m_toolBarSections->SetMinSize(wxSize(GetContentScaleFactor() * mMinPanelWidth,
                                        GetContentScaleFactor() * mMinPanelHeight));
   m_notebook->AddPage(m_toolBarSections, _("Toolbar"), false, 10);
-#ifdef WXM_USE_AI_TOOLS
-  // Hidden outright, not just disabled, when there's nowhere safe to keep
-  // an API key -- see AiProvider::SecretStoreAvailable()'s own doc comment
-  // for why this doesn't fall back to plain-text storage instead.
-  if (AiProvider::SecretStoreAvailable())
-    m_notebook->AddPage(CreateAiChatPanel(), _("AI Chat"), false, 8);
-#endif
+  m_notebook->AddPage(CreateAiPanel(), _("AI"), false, 8);
 
 #if wxUSE_ACCESSIBILITY
   // Only offered when wxWidgets was compiled with accessibility support -
@@ -666,10 +660,11 @@ void ConfigDialogue::SetCheckboxValues() {
   m_mcpServerEnabled->SetValue(configuration->McpServerEnabled());
   m_mcpServerPort->SetValue(configuration->McpServerPort());
 #ifdef WXM_USE_AI_TOOLS
-  // The whole AI Chat tab doesn't exist when there's nowhere safe to keep
-  // an API key (see AiProvider::SecretStoreAvailable(), and where
-  // CreateAiChatPanel() is (not) called) -- nothing here to populate.
-  if (AiProvider::SecretStoreAvailable()) {
+  // The provider controls only exist when there was somewhere safe to keep
+  // an API key (see CreateAiPanel()) -- otherwise nothing here to populate.
+  // Asked of the panel, not of the secret store again, so this can't
+  // disagree with what CreateAiPanel() decided.
+  if (m_aiChatPanel) {
     m_aiProviderRecords.clear();
     AiProviderKind fixedKinds[] = {AiProviderKind::Anthropic, AiProviderKind::OpenAI,
                                    AiProviderKind::Google, AiProviderKind::Qwen,
@@ -1690,33 +1685,6 @@ wxWindow *ConfigDialogue::CreateOptionsPanel() {
   stdOpts_sizer->Add(m_findDialogDockable,
                      wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
 
-  m_mcpServerEnabled =
-    new wxCheckBox(stdOpts_sizer->GetStaticBox(), wxID_ANY,
-                   _("Let an AI tool read this worksheet (MCP server)"));
-  m_mcpServerEnabled->SetToolTip(
-    _("Runs a local, read-only MCP (Model Context Protocol) server an AI "
-      "tool can connect to for context on this worksheet's cells, table of "
-      "contents and watched variables. It only answers questions -- it can "
-      "never insert, edit or evaluate anything itself. Only accepts "
-      "connections from this same machine (localhost)."));
-  stdOpts_sizer->Add(m_mcpServerEnabled,
-                     wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
-
-  wxBoxSizer *mcpPortSizer = new wxBoxSizer(wxHORIZONTAL);
-  mcpPortSizer->Add(
-    new wxStaticText(stdOpts_sizer->GetStaticBox(), wxID_ANY, _("MCP server port:")),
-    // Align(), not the newer CenterVertical() convenience wrapper -- this
-    // codebase still needs to build against wxWidgets 3.0.5 (e.g. Ubuntu
-    // 22.04's compile_2204 CI job), which predates CenterVertical().
-    wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor())
-      .Align(wxALIGN_CENTER_VERTICAL));
-  m_mcpServerPort = new wxSpinCtrl(
-    stdOpts_sizer->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition,
-    wxSize(150 * GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 1024, 65535, 8765);
-  mcpPortSizer->Add(m_mcpServerPort,
-                    wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
-  stdOpts_sizer->Add(mcpPortSizer);
-
   vsizer->Add(stdOpts_sizer, wxSizerFlags().Expand().Border(
                                                             wxALL, 5 * GetContentScaleFactor()));
 
@@ -2181,12 +2149,8 @@ wxWindow *ConfigDialogue::CreateAccessibilityPanel() {
 }
 #endif
 
-#ifdef WXM_USE_AI_TOOLS
-wxWindow *ConfigDialogue::CreateAiChatPanel() {
+wxWindow *ConfigDialogue::CreateAiPanel() {
   wxScrolled<wxPanel> *panel = new wxScrolled<wxPanel>(m_notebook, wxID_ANY);
-  // Remembered for LoadAiProviderRecordIntoUi(), which shows and hides
-  // controls on this panel and has to re-lay-out *this* panel afterwards.
-  m_aiChatPanel = panel;
   panel->SetScrollRate(5 * GetContentScaleFactor(),
                        5 * GetContentScaleFactor());
   panel->SetMinSize(wxSize(GetContentScaleFactor() * mMinPanelWidth,
@@ -2194,8 +2158,74 @@ wxWindow *ConfigDialogue::CreateAiChatPanel() {
 
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
 
+  // Two independent things live on this tab: wxMaxima contacting an AI
+  // provider itself (the AI Chat sidebar), and an external AI tool
+  // contacting wxMaxima (the MCP server). Only the first needs the AI tools
+  // compiled in and an OS secret store for its API keys; the MCP server is
+  // part of every build and stores nothing secret, so its box is always
+  // there, and with it the tab.
+#ifdef WXM_USE_AI_TOOLS
+  wxStaticBoxSizer *contactingBox =
+    new wxStaticBoxSizer(wxVERTICAL, panel, _("Contacting AIs"));
+  if (AiProvider::SecretStoreAvailable()) {
+    // Remembered for LoadAiProviderRecordIntoUi(), which shows and hides
+    // controls on this panel and has to re-lay-out *this* panel afterwards.
+    m_aiChatPanel = panel;
+    AddAiProviderControls(contactingBox);
+  } else {
+    // Not falling back to storing API keys in the plain-text config file
+    // -- see AiProvider::SecretStoreAvailable()'s doc comment.
+    contactingBox->Add(
+      new WrappingStaticText(
+        contactingBox->GetStaticBox(), wxID_ANY,
+        _("No secret store (key ring) is available on this system, so there "
+          "is nowhere safe to keep an API key: the AI Chat sidebar is "
+          "unavailable.")),
+      wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
+  }
+  vbox->Add(contactingBox,
+            wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
+#endif
+
+  wxStaticBoxSizer *externalBox =
+    new wxStaticBoxSizer(wxVERTICAL, panel, _("Giving external tools access"));
+  wxWindow *externalBoxWin = externalBox->GetStaticBox();
+  m_mcpServerEnabled =
+    new wxCheckBox(externalBoxWin, wxID_ANY,
+                   _("Let an AI tool read this worksheet (MCP server)"));
+  m_mcpServerEnabled->SetToolTip(
+    _("Runs a local, read-only MCP (Model Context Protocol) server an AI "
+      "tool can connect to for context on this worksheet's cells, table of "
+      "contents and watched variables. It only answers questions -- it can "
+      "never insert, edit or evaluate anything itself. Only accepts "
+      "connections from this same machine (localhost)."));
+  externalBox->Add(m_mcpServerEnabled,
+                   wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
+
+  wxBoxSizer *mcpPortSizer = new wxBoxSizer(wxHORIZONTAL);
+  mcpPortSizer->Add(
+    new wxStaticText(externalBoxWin, wxID_ANY, _("MCP server port:")),
+    wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor())
+      .Align(wxALIGN_CENTER_VERTICAL));
+  m_mcpServerPort = new wxSpinCtrl(
+    externalBoxWin, wxID_ANY, wxEmptyString, wxDefaultPosition,
+    wxSize(150 * GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 1024, 65535, 8765);
+  mcpPortSizer->Add(m_mcpServerPort,
+                    wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
+  externalBox->Add(mcpPortSizer);
+  vbox->Add(externalBox,
+            wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
+
+  panel->SetSizer(vbox);
+  panel->FitInside();
+  return panel;
+}
+
+#ifdef WXM_USE_AI_TOOLS
+void ConfigDialogue::AddAiProviderControls(wxStaticBoxSizer *box) {
+  wxWindow *parent = box->GetStaticBox();
   WrappingStaticText *intro = new WrappingStaticText(
-    panel, wxID_ANY,
+    parent, wxID_ANY,
     _("The AI Chat sidebar sends the current worksheet's content "
       "(read-only -- the AI cannot insert, edit or evaluate anything) and "
       "your messages to whichever provider you pick below. This needs an "
@@ -2203,7 +2233,7 @@ wxWindow *ConfigDialogue::CreateAiChatPanel() {
       "is sent unless you actually use the sidebar. "
       "Storing or retrieving API keys might trigger unlocking the system's "
       "key ring; Querying Model lists might require an API key."));
-  vbox->Add(intro, wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
+  box->Add(intro, wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
 
   // A real, common point of confusion (a user of this dialogue hit it
   // directly): the "Get an API key..." link below sends an Anthropic
@@ -2218,24 +2248,24 @@ wxWindow *ConfigDialogue::CreateAiChatPanel() {
   // credits either. Said once, up front, so the "buy credits" page isn't a
   // surprise or mistaken for a wrong/outdated link.
   WrappingStaticText *billingNote = new WrappingStaticText(
-    panel, wxID_ANY,
+    parent, wxID_ANY,
     _("Note: an API key is billed separately from a consumer chat "
       "subscription -- a Claude Pro/Max, ChatGPT Plus or Gemini Advanced "
       "plan does not include API usage, and a provider's site may ask you "
       "to add a small amount of prepaid credit before it lets you create "
       "a key."));
-  vbox->Add(billingNote, wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
+  box->Add(billingNote, wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
 
   wxBoxSizer *providerBox = new wxBoxSizer(wxHORIZONTAL);
   providerBox->Add(
-    new wxStaticText(panel, wxID_ANY, _("Active provider:")),
+    new wxStaticText(parent, wxID_ANY, _("Active provider:")),
     wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor())
       .Align(wxALIGN_CENTER_VERTICAL));
   // Items are rebuilt/reordered by RebuildAiProviderChoice() (called once
   // just below and again whenever a custom provider is added/removed) --
   // this constructor call only needs to create the control itself.
   m_aiChatProviderChoice =
-    new wxChoice(panel, wxID_ANY, wxDefaultPosition, wxDefaultSize);
+    new wxChoice(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize);
   // Proportion(1).Expand() on the choice, plus Expand() on the row itself
   // just below -- without both, a wxChoice's natural width is based on
   // whatever it's populated with, and since RebuildAiProviderChoice() only
@@ -2245,7 +2275,7 @@ wxWindow *ConfigDialogue::CreateAiChatPanel() {
   // on this tab does.
   providerBox->Add(m_aiChatProviderChoice,
                    wxSizerFlags(1).Expand().Border(wxALL, 5 * GetContentScaleFactor()));
-  vbox->Add(providerBox, wxSizerFlags().Expand());
+  box->Add(providerBox, wxSizerFlags().Expand());
 
   // A single reusable box for whichever provider is currently selected,
   // instead of all of them stacked at once -- LoadAiProviderRecordIntoUi()
@@ -2254,7 +2284,7 @@ wxWindow *ConfigDialogue::CreateAiChatPanel() {
   // typed for another one: OnAiProviderChoice() flushes the outgoing
   // selection's fields into m_aiProviderRecords first (see
   // StashAiProviderUiIntoRecord()).
-  m_aiProviderDetailBox = new wxStaticBoxSizer(wxVERTICAL, panel, wxEmptyString);
+  m_aiProviderDetailBox = new wxStaticBoxSizer(wxVERTICAL, parent, wxEmptyString);
   wxWindow *detailBoxWin = m_aiProviderDetailBox->GetStaticBox();
   // Five rows: API style, Request URL, Username, API key/Password, Model.
   // Both counts are fixed here, so this sizer hard-caps at rows*cols items
@@ -2380,13 +2410,9 @@ wxWindow *ConfigDialogue::CreateAiChatPanel() {
   m_aiProviderDetailBox->Add(m_aiRemoveCustomProviderButton,
                              wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
 
-  vbox->Add(m_aiProviderDetailBox, wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
+  box->Add(m_aiProviderDetailBox, wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
 
   m_aiChatProviderChoice->Bind(wxEVT_CHOICE, &ConfigDialogue::OnAiProviderChoice, this);
-
-  panel->SetSizer(vbox);
-  panel->FitInside();
-  return panel;
 }
 
 void ConfigDialogue::RebuildAiProviderChoice(int selectIndex) {
@@ -2625,7 +2651,7 @@ void ConfigDialogue::StartAiModelFetch() {
     });
 }
 
-/*! Re-lays-out the AI Chat tab after controls on it were shown or hidden.
+/*! Re-lays-out the AI tab after controls on it were shown or hidden.
 
   A bare Layout() -- i.e. ConfigDialogue::Layout(), which is what this used
   to call -- lays out the *dialog's* own sizer. That is not guaranteed to
@@ -3184,10 +3210,10 @@ void ConfigDialogue::WriteSettings() {
   configuration->McpServerEnabled(m_mcpServerEnabled->GetValue());
   configuration->McpServerPort(m_mcpServerPort->GetValue());
 #ifdef WXM_USE_AI_TOOLS
-  // The whole AI Chat tab (and these members) don't exist without a
-  // secret store to keep a key in -- see CreateAiChatPanel()/
+  // The provider controls (and these members) don't exist without a
+  // secret store to keep a key in -- see CreateAiPanel()/
   // SetCheckboxValues()'s own matching guard.
-  if (AiProvider::SecretStoreAvailable()) {
+  if (m_aiChatPanel) {
     StashAiProviderUiIntoRecord();
     std::vector<AiCustomProviderConfig> customProviders;
     AiProviderKind activeKind = AiProviderKind::None;

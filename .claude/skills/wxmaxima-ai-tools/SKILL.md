@@ -1,6 +1,6 @@
 ---
 name: wxmaxima-ai-tools
-description: How wxMaxima's MCP server and AI chat sidebar work - the read-only tool surface over the worksheet, the provider abstraction and its four-plus backends, API keys in the OS secret store, the status icon and connection monitor, and the traps each of them has already hit. Use when touching src/mcp/, src/ai/, AiChatSidebar, AiConnectionMonitor, the AI Chat options tab, or the WXM_USE_AI_TOOLS build option.
+description: How wxMaxima's MCP server and AI chat sidebar work - the read-only tool surface over the worksheet, the provider abstraction and its four-plus backends, API keys in the OS secret store, the status icon and connection monitor, and the traps each of them has already hit. Use when touching src/mcp/, src/ai/, AiChatSidebar, AiConnectionMonitor, the AI tab of the configuration dialog, or the WXM_USE_AI_TOOLS build option.
 ---
 
 # The MCP server and the AI chat sidebar
@@ -11,10 +11,19 @@ wxMaxima's own UI. They share `McpTools` - the actual worksheet-reading logic -
 so a change to what an AI can see usually belongs there rather than in either
 front end.
 
-The chat sidebar, the connection monitor and their options tab are gated at
+The chat sidebar, the connection monitor and their options are gated at
 compile time by `WXM_USE_AI_TOOLS` (the MCP server is always built), and the
 sidebar is gated again at runtime by whether an OS secret store is actually
 reachable.
+
+**The configuration dialog's "AI" tab therefore always exists**
+(`ConfigDialogue::CreateAiPanel()`), in two boxes: "Contacting AIs" (providers
+and API keys, `AddAiProviderControls()`) only with `WXM_USE_AI_TOOLS`, and
+with only a "no secret store" note when there is none; "Giving external
+tools access" (the MCP server's on/off and port) always, since the server
+needs no secret store. Whether the provider controls exist is asked of
+`m_aiChatPanel`, not of the secret store a second time, so loading and
+saving can't disagree with what the panel built.
 
 **`WXM_USE_AI_TOOLS` is forced off for wxWidgets older than 3.3.4** (the
 top-level `CMakeLists.txt`, right after `find_package(wxWidgets)`), because
@@ -150,7 +159,7 @@ and not a natural next step.
     malicious web page resolving an attacker-controlled hostname to
     127.0.0.1 so a victim's browser fetch reaches this server looking
     same-origin. Off by default (`Configuration::McpServerEnabled()`,
-    opt-in via Options).
+    opt-in on the configuration dialog's AI tab).
   - **wxSocketBase::Destroy(), not `delete`/a default-deleter
     `unique_ptr`, for every client connection** -- connections are always
     torn down (both the normal "request handled, close it" path and the
