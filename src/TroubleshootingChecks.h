@@ -61,6 +61,7 @@ enum class TroubleshootingCheck {
   helpSidebar,        //!< The integrated help browser can be offered
   externalBrowser,    //!< Something can open the manual in a web browser
   translations,       //!< The translation of wxMaxima's texts was found
+  bidiText,           //!< libfribidi handles lines mixing both text directions
   svgText,            //!< wxWidgets' SVG renderer draws text (scalable plots)
   aiSidebar,          //!< The AI chat sidebar can be offered
   count               //!< Not a check: the number of checks
