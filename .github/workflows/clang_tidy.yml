@@ -40,5 +40,5 @@ jobs:
       - name: clang-tidy
         run: |
              run-clang-tidy -p build -j "$(nproc)" -quiet \
-               -warnings-as-errors='bugprone-*,clang-analyzer-*' \
+               -warnings-as-errors='bugprone-*,clang-analyzer-*,misc-*' \
                'src/'

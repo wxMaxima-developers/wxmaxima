@@ -652,7 +652,7 @@ public:
   template <typename U, typename Del,
             typename std::enable_if<std::is_convertible<typename std::add_pointer<U>::type, pointer>::value, bool>::type = true>
   CellPtr &operator=(const std::unique_ptr<U, Del> &o) noexcept
-    { return *this = o.get(); }
+    { *this = o.get(); return *this; }
 };
 
 //
