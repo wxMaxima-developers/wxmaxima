@@ -14,7 +14,7 @@ var searchData=
   ['testinvokerasmethod_11',['TestInvokerAsMethod',['../classCatch_1_1TestInvokerAsMethod.html',1,'Catch']]],
   ['textcell_12',['TextCell',['../classTextCell.html',1,'']]],
   ['texteditorcell_13',['TextEditorCell',['../classTextEditorCell.html',1,'']]],
-  ['textrange_14',['TextRange',['../structwxm_1_1TextRange.html',1,'wxm']]],
+  ['textrange_14',['TextRange',['../structDocumentCellPointers_1_1TextRange.html',1,'DocumentCellPointers::TextRange'],['../structwxm_1_1TextRange.html',1,'wxm::TextRange']]],
   ['textsnippettodraw_15',['TextsnippetToDraw',['../classConfiguration_1_1TextsnippetToDraw.html',1,'Configuration']]],
   ['timer_16',['Timer',['../classCatch_1_1Timer.html',1,'Catch']]],
   ['tipoftheday_17',['TipOfTheDay',['../classTipOfTheDay.html',1,'']]],

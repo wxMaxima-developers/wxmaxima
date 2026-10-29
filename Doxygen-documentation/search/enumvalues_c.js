@@ -2,8 +2,8 @@ var searchData=
 [
   ['name_5fseparator_0',['name_separator',['../classdetail_1_1lexer__base.html#add65fa7a85aa15052963809fbcc04540acc3c64f8ae08c00de1b33f19a4d2913a',1,'detail::lexer_base']]],
   ['new_1',['New',['../ToolBarSections_8h.html#a00b3e7a9e497829a0e732600a8e8b7aaa03c2e7e41ffc181a4e84080b4710e81e',1,'ToolBarSections']]],
-  ['none_2',['None',['../classStatusBar.html#a7d2d4bad9c6f6a4eec714a4e884e6c34a6adf97f83acf6453d4a6a4b1070f3754',1,'StatusBar']]],
-  ['none_3',['none',['../classConfiguration.html#a698f3aab8c09db7093154b1c8b18b60ba334c4a4c42fdb79d7ebc3e73b517e6f8',1,'Configuration']]],
+  ['none_2',['none',['../classConfiguration.html#a698f3aab8c09db7093154b1c8b18b60ba334c4a4c42fdb79d7ebc3e73b517e6f8',1,'Configuration']]],
+  ['none_3',['None',['../classStatusBar.html#a7d2d4bad9c6f6a4eec714a4e884e6c34a6adf97f83acf6453d4a6a4b1070f3754',1,'StatusBar']]],
   ['noopskipped_4',['NoOpSkipped',['../classWorksheetDocument.html#a597da4ddc26d35569b9346897dff3b72a773b1ab79b5aa284fc01d1ebb6e73c52',1,'WorksheetDocument']]],
   ['null_5',['null',['../namespacedetail.html#a917c3efabea8a20dc72d9ae2c673d632a37a6259cc0c1dae299a7866489dff0bd',1,'detail']]],
   ['number_5ffloat_6',['number_float',['../namespacedetail.html#a917c3efabea8a20dc72d9ae2c673d632ad9966ecb59667235a57b4b999a649eef',1,'detail']]],

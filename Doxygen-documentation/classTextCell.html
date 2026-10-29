@@ -695,6 +695,30 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasControlBlock</b> (
 <tr class="memitem:a51973edd395e7418e299006b534bee70"><td class="memItemLeft" align="right" valign="top"><a id="a51973edd395e7418e299006b534bee70" name="a51973edd395e7418e299006b534bee70"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasOneCellPtr</b> () const</td></tr>
 <tr class="separator:a51973edd395e7418e299006b534bee70"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Selecting some of the characters of a text cell (GH #825)</div></td></tr>
+<tr><td colspan="2"><div class="groupText"><p><a class="el" href="classA.html">A</a> mouse drag inside text <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> printed &ndash; a message, an error, a warning, a string &ndash; selects characters rather than whole cells, see Worksheet::SelectOutputText().</p>
+<p>The positions are indices between the characters of the text as it is displayed (GetDisplayedString()), from 0 (before the first one) to its length (after the last one). </p>
+</div></td></tr>
+<tr class="memitem:ae46de2ee49e7a565a5d0924253113c70"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTextCell.html#ae46de2ee49e7a565a5d0924253113c70">AllowsCharacterSelection</a> () const</td></tr>
+<tr class="memdesc:ae46de2ee49e7a565a5d0924253113c70"><td class="mdescLeft">&#160;</td><td class="mdescRight">Can a drag select only some of this cell's characters?  <br /></td></tr>
+<tr class="separator:ae46de2ee49e7a565a5d0924253113c70"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9d8d4ee5fe8ad2c64b6871358cbd1dd"><td class="memItemLeft" align="right" valign="top"><a id="ae9d8d4ee5fe8ad2c64b6871358cbd1dd" name="ae9d8d4ee5fe8ad2c64b6871358cbd1dd"></a>
+std::size_t&#160;</td><td class="memItemRight" valign="bottom"><b>DisplayedLength</b> () const</td></tr>
+<tr class="memdesc:ae9d8d4ee5fe8ad2c64b6871358cbd1dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">The length of the displayed text: the position after its last character. <br /></td></tr>
+<tr class="separator:ae9d8d4ee5fe8ad2c64b6871358cbd1dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5ad7c3a8ccc6220c09131dabc8133f8"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTextCell.html#af5ad7c3a8ccc6220c09131dabc8133f8">CharacterIndexAt</a> (wxCoord x) const</td></tr>
+<tr class="memdesc:af5ad7c3a8ccc6220c09131dabc8133f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">The position between two characters nearest to x.  <br /></td></tr>
+<tr class="separator:af5ad7c3a8ccc6220c09131dabc8133f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3d2897ad2a9be5eb587b58259a5e0f6"><td class="memItemLeft" align="right" valign="top">wxCoord&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTextCell.html#aa3d2897ad2a9be5eb587b58259a5e0f6">CharacterX</a> (std::size_t index) const</td></tr>
+<tr class="memdesc:aa3d2897ad2a9be5eb587b58259a5e0f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">The x coordinate of a position between two characters.  <br /></td></tr>
+<tr class="separator:aa3d2897ad2a9be5eb587b58259a5e0f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17eb1fcf51362907d5ba1d4c2689b2e3"><td class="memItemLeft" align="right" valign="top"><a id="a17eb1fcf51362907d5ba1d4c2689b2e3" name="a17eb1fcf51362907d5ba1d4c2689b2e3"></a>
+wxRect&#160;</td><td class="memItemRight" valign="bottom"><b>CharacterRect</b> (std::size_t from, std::size_t to) const</td></tr>
+<tr class="memdesc:a17eb1fcf51362907d5ba1d4c2689b2e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Where the characters [from, to) are drawn. <br /></td></tr>
+<tr class="separator:a17eb1fcf51362907d5ba1d4c2689b2e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab89695e5c5b41bb1b3845c10c7ffbcbe"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTextCell.html#ab89695e5c5b41bb1b3845c10c7ffbcbe">CharactersToString</a> (std::size_t from, std::size_t to) const</td></tr>
+<tr class="memdesc:ab89695e5c5b41bb1b3845c10c7ffbcbe"><td class="mdescLeft">&#160;</td><td class="mdescRight">The characters [from, to) as text to copy.  <br /></td></tr>
+<tr class="separator:ab89695e5c5b41bb1b3845c10c7ffbcbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Layout Engine (3-Pass Pipeline)</div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p>The layout engine follows a strict 3-pass process to ensure a single source of truth for cell geometry and positioning:</p>
 <ol type="1">
@@ -1006,6 +1030,26 @@ static wxRegEx&#160;</td><td class="memItemRight" valign="bottom"><b>m_roundingE
 
 </div>
 </div>
+<a id="ae46de2ee49e7a565a5d0924253113c70" name="ae46de2ee49e7a565a5d0924253113c70"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae46de2ee49e7a565a5d0924253113c70">&#9670;&#160;</a></span>AllowsCharacterSelection()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TextCell::AllowsCharacterSelection </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Can a drag select only some of this cell's characters? </p>
+<p>True for text, not maths: the styles of messages, errors, warnings, ASCII-art and strings. <a class="el" href="classA.html">A</a> drag over maths still selects whole cells. </p>
+
+</div>
+</div>
 <a id="a81b738e213a8390ed10aefe8d286ce9d" name="a81b738e213a8390ed10aefe8d286ce9d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a81b738e213a8390ed10aefe8d286ce9d">&#9670;&#160;</a></span>BreakLines_List()</h2>
 
@@ -1221,6 +1265,79 @@ static wxRegEx&#160;</td><td class="memItemRight" valign="bottom"><b>m_roundingE
 
 <p>How many cells does this cell contain? </p>
 <p>The number of cells the current group contains (-1, if no <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a>)</p>
+
+</div>
+</div>
+<a id="af5ad7c3a8ccc6220c09131dabc8133f8" name="af5ad7c3a8ccc6220c09131dabc8133f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af5ad7c3a8ccc6220c09131dabc8133f8">&#9670;&#160;</a></span>CharacterIndexAt()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::size_t TextCell::CharacterIndexAt </td>
+          <td>(</td>
+          <td class="paramtype">wxCoord&#160;</td>
+          <td class="paramname"><em>x</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The position between two characters nearest to x. </p>
+<p><a class="el" href="classA.html">A</a> point left of the text gives 0, right of it the length: a drag that goes past the end of a line still selects up to its end. </p>
+
+</div>
+</div>
+<a id="ab89695e5c5b41bb1b3845c10c7ffbcbe" name="ab89695e5c5b41bb1b3845c10c7ffbcbe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab89695e5c5b41bb1b3845c10c7ffbcbe">&#9670;&#160;</a></span>CharactersToString()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxString TextCell::CharactersToString </td>
+          <td>(</td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>from</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>to</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The characters [from, to) as text to copy. </p>
+<p>What is displayed, with the substitutions <a class="el" href="classTextCell.html#a5ae994a7422fb27ad9768b1d728ae9d6" title="The text we actually display depends on many factors, unfortunately.">UpdateDisplayedText()</a> makes undone the way <a class="el" href="classTextCell.html#ae34197ddbbdece9ef6d98139d30a0766" title="Returns the cell&#39;s representation as a string.">ToString()</a> undoes them (the minus sign, arrows). Unlike <a class="el" href="classTextCell.html#ae34197ddbbdece9ef6d98139d30a0766" title="Returns the cell&#39;s representation as a string.">ToString()</a> this adds no quotes around a string and no line ending: the characters, nothing else. </p>
+
+</div>
+</div>
+<a id="aa3d2897ad2a9be5eb587b58259a5e0f6" name="aa3d2897ad2a9be5eb587b58259a5e0f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa3d2897ad2a9be5eb587b58259a5e0f6">&#9670;&#160;</a></span>CharacterX()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxCoord TextCell::CharacterX </td>
+          <td>(</td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The x coordinate of a position between two characters. </p>
+<p>Measured run by run, the way <a class="el" href="classTextCell.html#a7a6e74684bff07839bdf196d3b4d9da2" title="Pass 3 (Paint): Renders the cell using pre-calculated coordinates.">Draw()</a> paints the text (links are drawn separately), so a selection's edges sit where the glyphs are. </p>
 
 </div>
 </div>
@@ -3879,7 +3996,7 @@ static wxRegEx&#160;</td><td class="memItemRight" valign="bottom"><b>m_roundingE
 </div><div class="memdoc">
 
 <p>Allows to change the text a <a class="el" href="classTextCell.html" title="A Text cell.">TextCell</a> contains. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000005">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
 
 </div>
 </div>

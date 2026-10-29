@@ -89,6 +89,9 @@ Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDocumentCellPointers_1_1ErrorList.html">ErrorList</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classA.html">A</a> list of editor cells containing error messages.  <a href="classDocumentCellPointers_1_1ErrorList.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structDocumentCellPointers_1_1TextRange.html">TextRange</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Characters selected in a run of text cells (GH #825)  <a href="structDocumentCellPointers_1_1TextRange.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -123,6 +126,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetSelectionStart</b>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetSelectionEnd</b> (<a class="el" href="classCell.html">Cell</a> *cell)</td></tr>
 <tr class="memdesc:a06f220f3471158d355e8c559e57025f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the last cell of the selected range (may be null). Forgets any selected matrix block, see <a class="el" href="classDocumentCellPointers.html#a7b4dad977fe2b2d9a161abeeaada0b96" title="Narrow the selection to a block of one matrix&#39;s entries (GH #2345)">SetSelectedMatrixBlock()</a>. <br /></td></tr>
 <tr class="separator:a06f220f3471158d355e8c559e57025f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9cc496148d19fb87aeebe7be69110f8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDocumentCellPointers.html#ae9cc496148d19fb87aeebe7be69110f8">SetSelectedText</a> (const <a class="el" href="structDocumentCellPointers_1_1TextRange.html">TextRange</a> &amp;range)</td></tr>
+<tr class="memdesc:ae9cc496148d19fb87aeebe7be69110f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Select only some of the characters of a run of text cells (GH #825)  <br /></td></tr>
+<tr class="separator:ae9cc496148d19fb87aeebe7be69110f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae99a5eeb28141530a61e514a7adae71c"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="structDocumentCellPointers_1_1TextRange.html">TextRange</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDocumentCellPointers.html#ae99a5eeb28141530a61e514a7adae71c">GetSelectedText</a> () const</td></tr>
+<tr class="memdesc:ae99a5eeb28141530a61e514a7adae71c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The characters selected in a run of text cells, if only some are.  <br /></td></tr>
+<tr class="separator:ae99a5eeb28141530a61e514a7adae71c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7b4dad977fe2b2d9a161abeeaada0b96"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDocumentCellPointers.html#a7b4dad977fe2b2d9a161abeeaada0b96">SetSelectedMatrixBlock</a> (<a class="el" href="classCell.html">Cell</a> *matrix, const <a class="el" href="structMatrixEntry.html">MatrixEntry</a> &amp;anchor, const <a class="el" href="structMatrixEntry.html">MatrixEntry</a> &amp;corner, bool wholeMatrix=false)</td></tr>
 <tr class="memdesc:a7b4dad977fe2b2d9a161abeeaada0b96"><td class="mdescLeft">&#160;</td><td class="mdescRight">Narrow the selection to a block of one matrix's entries (GH #2345)  <br /></td></tr>
 <tr class="separator:a7b4dad977fe2b2d9a161abeeaada0b96"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -287,6 +296,34 @@ const <a class="el" href="classDocumentCellPointers_1_1ErrorList.html">ErrorList
 
 </div>
 </div>
+<a id="ae99a5eeb28141530a61e514a7adae71c" name="ae99a5eeb28141530a61e514a7adae71c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae99a5eeb28141530a61e514a7adae71c">&#9670;&#160;</a></span>GetSelectedText()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt; <a class="el" href="structDocumentCellPointers_1_1TextRange.html">TextRange</a> &gt; DocumentCellPointers::GetSelectedText </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The characters selected in a run of text cells, if only some are. </p>
+<p>Valid only while the selection is exactly the cells they were chosen in. Changing the selection in any other way forgets them &ndash; so whatever selects whole cells, groups or matrix entries never has to know about this, and can't pick up a stale range later. </p>
+
+</div>
+</div>
 <a id="a8593b288eb29bd6cbeba866f5bb81640" name="a8593b288eb29bd6cbeba866f5bb81640"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8593b288eb29bd6cbeba866f5bb81640">&#9670;&#160;</a></span>GetWorkingGroup()</h2>
 
@@ -411,6 +448,35 @@ const <a class="el" href="classDocumentCellPointers_1_1ErrorList.html">ErrorList
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="ae9cc496148d19fb87aeebe7be69110f8" name="ae9cc496148d19fb87aeebe7be69110f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9cc496148d19fb87aeebe7be69110f8">&#9670;&#160;</a></span>SetSelectedText()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void DocumentCellPointers::SetSelectedText </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structDocumentCellPointers_1_1TextRange.html">TextRange</a> &amp;&#160;</td>
+          <td class="paramname"><em>range</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Select only some of the characters of a run of text cells (GH #825) </p>
+<p>Like <a class="el" href="classDocumentCellPointers.html#a7b4dad977fe2b2d9a161abeeaada0b96" title="Narrow the selection to a block of one matrix&#39;s entries (GH #2345)">SetSelectedMatrixBlock()</a> this is a refinement of an ordinary selection: the cells first to last are selected, and everything that looks at whole cells still sees them. What is copied is just the characters, though. </p>
 
 </div>
 </div>
