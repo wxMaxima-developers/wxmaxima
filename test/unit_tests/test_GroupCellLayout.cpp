@@ -503,7 +503,7 @@ std::unique_ptr<Cell> OutputLines(GroupCell *group, int first, int count) {
     line->ForceBreakLine(true);
     lines.Append(std::move(line));
   }
-  return std::move(lines);
+  return lines.TakeHead();
 }
 
 //! The height a group gets if all its output is laid out from scratch
