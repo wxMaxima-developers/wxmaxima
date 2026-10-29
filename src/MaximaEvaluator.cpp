@@ -186,13 +186,18 @@ bool MaximaEvaluator::AbortOnError() {
     m_wxMaxima.ExitAfterEval(false);
   m_wxMaxima.EvalOnStartup(false);
 
-  if (m_wxMaxima.GetWorksheet()->GetNotification()) {
-    if (m_wxMaxima.GetWorksheet()->GetWorkingGroup(true) !=
-        m_wxMaxima.GetWorksheet()->GetNotification()->m_errorNotificationCell)
-      m_wxMaxima.GetWorksheet()->SetNotification(_("Maxima has issued an error!"),
+  {
+    Worksheet *worksheet = m_wxMaxima.GetWorksheet();
+    GroupCell *workingGroup = worksheet->GetWorkingGroup(true);
+    auto &notification = worksheet->GetNotification();
+    if (notification) {
+      if (workingGroup != notification->m_errorNotificationCell)
+        // Replaces the notification object
+        worksheet->SetNotification(_("Maxima has issued an error!"),
                                    wxICON_ERROR);
-    m_wxMaxima.GetWorksheet()->GetNotification()->m_errorNotificationCell =
-      m_wxMaxima.GetWorksheet()->GetWorkingGroup(true);
+      if (notification)
+        notification->m_errorNotificationCell = workingGroup;
+    }
   }
 
   if (m_wxMaxima.ExitOnErrorArmed()) {

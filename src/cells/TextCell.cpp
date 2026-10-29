@@ -41,23 +41,11 @@ TextCell::TextCell(GroupCell *group, Configuration *config,
 {
   switch (style) {
   case TS_MATH:
-    m_type = MC_TYPE_TEXT;
-    break;
   case TS_VARIABLE:
-    m_type = MC_TYPE_TEXT;
-    break;
   case TS_NUMBER:
-    m_type = MC_TYPE_TEXT;
-    break;
   case TS_FUNCTION:
-    m_type = MC_TYPE_TEXT;
-    break;
   case TS_SPECIAL_CONSTANT:
-    m_type = MC_TYPE_TEXT;
-    break;
   case TS_GREEK_CONSTANT:
-    m_type = MC_TYPE_TEXT;
-    break;
   case TS_STRING:
     m_type = MC_TYPE_TEXT;
     break;
@@ -71,8 +59,6 @@ TextCell::TextCell(GroupCell *group, Configuration *config,
     m_type = MC_TYPE_PROMPT;
     break;
   case TS_LABEL:
-    m_type = MC_TYPE_LABEL;
-    break;
   case TS_USERLABEL:
     m_type = MC_TYPE_LABEL;
     break;
@@ -1045,9 +1031,9 @@ wxString TextCell::ToTeX() const {
     else if (text == wxS("\\% nu"))
       return wxS("\\nu ");
     else if (text == wxS("\\% xi"))
-      return wxS("\\ui ");
+      return wxS("\\xi ");
     else if (text == wxS("\\% omicron"))
-      return wxS("\\omicron ");
+      return wxS("o");
     else if (text == wxS("\\% pi"))
       return wxS("\\pi ");
     else if (text == wxS("\\% rho"))
@@ -1075,41 +1061,41 @@ wxString TextCell::ToTeX() const {
     else if (text == wxS("\\% Delta"))
       return wxS("\\Delta ");
     else if (text == wxS("\\% Epsilon"))
-      return wxS("\\Epsilon ");
+      return wxS("E");
     else if (text == wxS("\\% Zeta"))
-      return wxS("\\Zeta ");
+      return wxS("Z");
     else if (text == wxS("\\% Eta"))
-      return wxS("\\Eta ");
+      return wxS("H");
     else if (text == wxS("\\% Theta"))
       return wxS("\\Theta ");
     else if (text == wxS("\\% Iota"))
-      return wxS("\\Iota ");
+      return wxS("I");
     else if (text == wxS("\\% Kappa"))
-      return wxS("\\Kappa ");
+      return wxS("K");
     else if (text == wxS("\\% Lambda"))
       return wxS("\\Lambda ");
     else if (text == wxS("\\% Mu"))
-      return wxS("\\Mu ");
+      return wxS("M");
     else if (text == wxS("\\% Nu"))
-      return wxS("\\Nu ");
+      return wxS("N");
     else if (text == wxS("\\% Xi"))
-      return wxS("\\ui ");
+      return wxS("\\Xi ");
     else if (text == wxS("\\% Omicron"))
-      return wxS("\\Omicron ");
+      return wxS("O");
     else if (text == wxS("\\% Pi"))
       return wxS("\\Pi ");
     else if (text == wxS("\\% Rho"))
-      return wxS("\\Rho ");
+      return wxS("P");
     else if (text == wxS("\\% Sigma"))
       return wxS("\\Sigma ");
     else if (text == wxS("\\% Tau"))
-      return wxS("\\Tau ");
+      return wxS("T");
     else if (text == wxS("\\% Upsilon"))
       return wxS("\\Upsilon ");
     else if (text == wxS("\\% Phi"))
       return wxS("\\Phi ");
     else if (text == wxS("\\% Chi"))
-      return wxS("\\Chi ");
+      return wxS("X");
     else if (text == wxS("\\% Psi"))
       return wxS("\\Psi ");
     else if (text == wxS("\\% Omega"))
@@ -1483,14 +1469,8 @@ wxString TextCell::ToXML() const {
       tag = wxS("st");
       break;
     case TS_LABEL:
-      tag = wxS("lbl");
-      break;
     case TS_USERLABEL:
-      tag = wxS("lbl");
-      break;
     case TS_MAIN_PROMPT:
-      tag = wxS("lbl");
-      break;
     case TS_OTHER_PROMPT:
       tag = wxS("lbl");
       break;
@@ -1650,12 +1630,9 @@ wxString TextCell::GetSymbolUnicode(bool keepPercent) const {
 #endif
   else if (m_text == wxS("->"))
     return wxS("\u2192");
-  else if (m_text == wxS("-->"))
-    return wxS("\u2794");
-  // The next two ones are needed for the output of let(a/b,a+1);
-  else if (m_text == wxS(" --> "))
-    return wxS("\u2794");
-  else if (m_text == wxS(" \u2212\u2192 "))
+  // The last two ones are needed for the output of let(a/b,a+1);
+  else if ((m_text == wxS("-->")) || (m_text == wxS(" --> ")) ||
+           (m_text == wxS(" \u2212\u2192 ")))
     return wxS("\u2794");
   /*
     else if (GetTextStyle() == TS_SPECIAL_CONSTANT && m_text == wxS("d"))

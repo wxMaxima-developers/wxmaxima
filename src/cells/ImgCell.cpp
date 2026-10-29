@@ -137,7 +137,7 @@ const wxString ImgCell::GetToolTip(const wxPoint point) const {
 }
 
 void ImgCell::Recalculate(AFontSize fontsize) const {
-  Cell::Recalculate(fontsize);
+  Cell::Recalculate(fontsize); // NOLINT(bugprone-parent-virtual-call): ImgCellBase's is pure virtual
   if (m_image) {
     // Here we recalculate the height, as well:
     //  - This doesn't cost much time and
@@ -160,7 +160,7 @@ void ImgCell::SetCurrentPoint(wxPoint point) const {
 }
 
 void ImgCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
-  Cell::Draw(dc, antialiassingDC);
+  Cell::Draw(dc, antialiassingDC); // NOLINT(bugprone-parent-virtual-call): ImgCellBase's is pure virtual
   if (DrawThisCell() && (m_image != nullptr)) {
     wxPoint point = GetCurrentPoint();
     if (!InUpdateRegion())
@@ -226,65 +226,8 @@ wxSize ImgCell::ToImageFile(wxString filename) {
   return m_image->ToImageFile(filename);
 }
 
-static void writeHex(void *data, size_t length, wxStringBuffer::CharType *out) {
-  using char_t = std::remove_reference_t<decltype(*out)>;
-  const char *const end = static_cast<char *>(data) + length;
-  for (char *in = static_cast<char *>(data); in != end; in++) {
-    char c = *in;
-    unsigned char const h = (c >> 4) & 0xF, l = c & 0xF;
-    if (h > 9)
-      *out++ = char_t('a' + h - 0xA);
-    else
-      *out++ = char_t('0' + h - 0);
-    if (l > 9)
-      *out++ = char_t('a' + l - 0xA);
-    else
-      *out++ = char_t('0' + l - 0);
-  }
-}
-
 wxString ImgCell::ToRTF() const {
-  // Lines that are common to all types of images
-  wxString header = wxS("{\\pict");
-  wxString footer = wxS("}\n");
-
-  // Extract the description of the image data
-  wxString image;
-  wxMemoryBuffer imgdata;
-  if (m_image->GetExtension().Lower() == wxS("png")) {
-    imgdata = GetCompressedImage();
-    image = wxS("\\pngblip");
-  } else if ((m_image->GetExtension().Lower() == wxS("jpg")) ||
-             (m_image->GetExtension().Lower() == wxS("jpeg"))) {
-    imgdata = GetCompressedImage();
-    image = wxS("\\jpegblip");
-  } else {
-    // Convert any non-rtf-enabled format to .png before adding it to the .rtf
-    // file.
-    image = wxS("\\pngblip");
-    wxImage imagedata = m_image->GetUnscaledBitmap().ConvertToImage();
-    wxMemoryOutputStream stream;
-    imagedata.SaveFile(stream, wxBITMAP_TYPE_PNG);
-    imgdata.AppendData(stream.GetOutputStreamBuffer()->GetBufferStart(),
-                       stream.GetOutputStreamBuffer()->GetBufferSize());
-  }
-
-  image += wxString::Format(wxS("\\picw%lu\\pich%lu\\picwgoal%lu\\pichgoal%lu "),
-                            (unsigned long)m_image->GetOriginalWidth(),
-                            (unsigned long)m_image->GetOriginalHeight(),
-                            (unsigned long)m_image->GetOriginalWidth() * 1440 / m_image->GetPPI(),
-                            (unsigned long)m_image->GetOriginalHeight() * 1440 / m_image->GetPPI());
-
-  // Convert the data into a hexadecimal string
-  wxString hexString;
-  writeHex(imgdata.GetData(), imgdata.GetDataLen(),
-           wxStringBuffer(hexString, 2 * imgdata.GetDataLen()));
-
-  wxString result;
-  result.reserve(header.size() + image.size() + hexString.size() +
-                 footer.size() + 10);
-  result << header << image << hexString << footer;
-  return result;
+  return ImageToRTF(*m_image);
 }
 
 wxString ImgCell::ToMathML() const {

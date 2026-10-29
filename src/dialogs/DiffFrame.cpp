@@ -135,7 +135,7 @@ public:
    * counterpart in another worksheet.
    */
   void Recalculate(AFontSize fontsize) const override {
-    Cell::Recalculate(fontsize);
+    Cell::Recalculate(fontsize); // NOLINT(bugprone-parent-virtual-call): a spacer has no contents to lay out
     m_height = m_forcedHeight;
     m_width = 0;
     m_center = 0;

@@ -48,7 +48,7 @@ SetCell::SetCell(GroupCell *group, const SetCell &cell)
 DEFINE_CELL(SetCell)
 
 void SetCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
-  Cell::Draw(dc, antialiassingDC);
+  Cell::Draw(dc, antialiassingDC); // NOLINT(bugprone-parent-virtual-call): draws its braces itself
   if (DrawThisCell()) {
     wxPoint point = m_currentPoint;
     wxPoint innerCellPos(point);

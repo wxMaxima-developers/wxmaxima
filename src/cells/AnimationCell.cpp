@@ -279,7 +279,7 @@ void AnimationCell::SetCurrentPoint(wxPoint point) const {
 
 void AnimationCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
-    Cell::Recalculate(fontsize);
+    Cell::Recalculate(fontsize); // NOLINT(bugprone-parent-virtual-call): ImgCellBase's is pure virtual
 
     // Assuming a minimum size maybe isn't that bad.
     m_height = m_width = 10 + 2 * m_imageBorderWidth;
@@ -304,7 +304,7 @@ void AnimationCell::Recalculate(AFontSize fontsize) const {
 }
 
 void AnimationCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
-  Cell::Draw(dc, antialiassingDC);
+  Cell::Draw(dc, antialiassingDC); // NOLINT(bugprone-parent-virtual-call): ImgCellBase's is pure virtual
   if (!IsOk())
     return;
   // If the animation leaves the screen the timer is stopped automatically.
@@ -455,53 +455,7 @@ wxString AnimationCell::ToRTF() const {
 
   // Animations aren't supported by RTF so we just export the currently shown
   // image.
-
-  // Lines that are common to all types of images
-  wxString header = wxS("{\\pict");
-  wxString footer = wxS("}\n");
-
-  // Extract the description of the image data
-  wxString image;
-  wxMemoryBuffer imgdata;
-  if (m_images.at(m_displayed)->GetExtension().Lower() == wxS("png")) {
-    imgdata = m_images.at(m_displayed)->GetCompressedImage();
-    image = wxS("\\pngblip\n");
-  } else if ((m_images.at(m_displayed)->GetExtension().Lower() == wxS("jpg")) ||
-             (m_images.at(m_displayed)->GetExtension().Lower() == wxS("jpeg"))) {
-    imgdata = m_images.at(m_displayed)->GetCompressedImage();
-    image = wxS("\\jpegblip\n");
-  } else {
-    // Convert any non-rtf-enabled format to .png before adding it to the .rtf
-    // file.
-    image = wxS("\\pngblip\n");
-    wxImage imagedata =
-      m_images.at(m_displayed)->GetUnscaledBitmap().ConvertToImage();
-    wxMemoryOutputStream stream;
-    imagedata.SaveFile(stream, wxBITMAP_TYPE_PNG);
-    imgdata.AppendData(stream.GetOutputStreamBuffer()->GetBufferStart(),
-                       stream.GetOutputStreamBuffer()->GetBufferSize());
-  }
-
-  image += wxString::Format(
-                            wxS("\\picw%lu\\pich%lu\\picwgoal%lu\\pichgoal%lu "),
-                            (unsigned long)m_images.at(m_displayed)->GetOriginalWidth(),
-                            (unsigned long)m_images.at(m_displayed)->GetOriginalHeight(),
-                            (unsigned long)m_images.at(m_displayed)->GetOriginalWidth() * 1440 / m_images.at(m_displayed)->GetPPI(),
-                            (unsigned long)m_images.at(m_displayed)->GetOriginalHeight() * 1440 / m_images.at(m_displayed)->GetPPI());
-
-  // Convert the data into a hexadecimal string
-  char const *const data = static_cast<char *>(imgdata.GetData());
-  char const *const end = data + imgdata.GetDataLen();
-  wxStringBuffer::CharType *out = wxStringBuffer(image, image.length() + 2 * imgdata.GetDataLen());
-  out += image.length();
-
-  for (char const *in = data; in != end; in++) {
-    unsigned char const h = (*in >> 4) & 0xF, l = *in & 0xF;
-    *out++ = (h > 9) ? 'a' + h - 0xA : '0' + h;
-    *out++ = (l > 9) ? 'a' + l - 0xA : '0' + l;
-  }
-
-  return header + image + footer;
+  return ImageToRTF(*m_images.at(m_displayed));
 }
 
 wxString AnimationCell::ToMathML() const {

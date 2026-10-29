@@ -30,6 +30,7 @@
 #include "ImgCellBase.h"
 #include "CellImpl.h"
 #include "CellPointers.h"
+#include "Image.h"
 #include "StringUtils.h"
 #include <wx/clipbrd.h>
 #include <wx/file.h>
@@ -60,4 +61,42 @@ wxString ImgCellBase::UserScaleXMLFlags(double scale, bool fitToWindow) {
   if (scale != 1.0)
     return wxS(" scale=\"") + wxString::FromCDouble(scale) + wxS("\"");
   return wxEmptyString;
+}
+
+wxString ImgCellBase::ImageToRTF(Image &image) {
+  wxString picture;
+  wxMemoryBuffer imgdata;
+  const wxString extension = image.GetExtension().Lower();
+  if (extension == wxS("png")) {
+    imgdata = image.GetCompressedImage();
+    picture = wxS("{\\pict\\pngblip");
+  } else if ((extension == wxS("jpg")) || (extension == wxS("jpeg"))) {
+    imgdata = image.GetCompressedImage();
+    picture = wxS("{\\pict\\jpegblip");
+  } else {
+    picture = wxS("{\\pict\\pngblip");
+    wxImage imagedata = image.GetUnscaledBitmap().ConvertToImage();
+    wxMemoryOutputStream stream;
+    imagedata.SaveFile(stream, wxBITMAP_TYPE_PNG);
+    imgdata.AppendData(stream.GetOutputStreamBuffer()->GetBufferStart(),
+                       stream.GetOutputStreamBuffer()->GetBufferSize());
+  }
+
+  picture += wxString::Format(wxS("\\picw%lu\\pich%lu\\picwgoal%lu\\pichgoal%lu "),
+                              (unsigned long)image.GetOriginalWidth(),
+                              (unsigned long)image.GetOriginalHeight(),
+                              (unsigned long)image.GetOriginalWidth() * 1440 / image.GetPPI(),
+                              (unsigned long)image.GetOriginalHeight() * 1440 / image.GetPPI());
+
+  // The image data, as hexadecimal digits
+  static constexpr char hexDigits[] = "0123456789abcdef";
+  const auto *const data = static_cast<const unsigned char *>(imgdata.GetData());
+  const size_t length = imgdata.GetDataLen();
+  picture.reserve(picture.length() + 2 * length + 2);
+  for (size_t i = 0; i < length; i++) {
+    picture += hexDigits[data[i] >> 4];
+    picture += hexDigits[data[i] & 0xF];
+  }
+  picture += wxS("}\n");
+  return picture;
 }

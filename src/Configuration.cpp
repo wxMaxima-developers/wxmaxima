@@ -1142,8 +1142,14 @@ Configuration::~Configuration() {
                    "that still uses it"));
   if(m_initOpts != temporary)
     {
-      WriteStyles();
-      WriteSettings();
+      // An exception leaving a destructor calls std::terminate(). Losing
+      // the settings is the lesser evil.
+      try {
+        WriteStyles();
+        WriteSettings();
+      } catch (...) {
+        wxLogMessage(wxS("Could not save the configuration."));
+      }
     }
 }
 

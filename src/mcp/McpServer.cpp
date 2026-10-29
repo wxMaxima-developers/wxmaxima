@@ -316,7 +316,7 @@ std::string McpServer::HandleJsonRpc(const std::string &requestBody) {
       result["serverInfo"] = {{"name", "wxmaxima-worksheet"},
                               {"version", "1.0"}};
       response["result"] = result;
-    } else if (method == "notifications/initialized") {
+    } else if (method == "notifications/initialized") { // NOLINT(bugprone-branch-clone)
       return {}; // notification: no response
     } else if (method == "tools/list") {
       response["result"] = m_tools.ListTools();

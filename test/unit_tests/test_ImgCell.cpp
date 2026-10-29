@@ -34,6 +34,7 @@
 #include "Image.cpp"
 #include "BackgroundQueue.cpp"
 #include "ImgCell.cpp"
+#include "AnimationCell.cpp"
 #include "ImgCellBase.cpp"
 #include "DigitGrouping.cpp"
 #include "StringUtils.cpp"
@@ -68,6 +69,49 @@ SCENARIO("RTF Output represents the image") {
         auto hex = HexEncoding(wxmaxima_art_wxmac_doc_png);
         rtf.erase(0, rtf.size() - hex.size());
         REQUIRE(rtf == hex);
+      }
+    }
+  }
+}
+
+// AnimationCell::ToRTF() used to write the hex digits through a wxStringBuffer
+// that had already been destroyed: into freed memory, leaving them out of the
+// RTF. clang-analyzer found it.
+SCENARIO("RTF Output of an animation represents its current frame") {
+  wxMemoryBuffer image;
+  image.AppendData(wxmaxima_art_wxmac_doc_png, wxmaxima_art_wxmac_doc_png_size);
+  Configuration config;
+  GroupCell group(&config, GC_TYPE_IMAGE, wxString());
+  GIVEN("An animation with one frame of test data") {
+    AnimationCell cell(&group, &config, image, "png");
+    REQUIRE(cell.IsOk());
+    WHEN("we convert it to RTF") {
+      // ToRTF() is private in AnimationCell, public in Cell
+      auto rtf = static_cast<const Cell &>(cell).ToRTF();
+      THEN("the RTF output is a PNG picture")
+        REQUIRE(rtf.StartsWith(wxS("{\\pict\\pngblip")));
+      THEN("the RTF output ends in a hex-encoded PNG of the frame and \"}\\n\"")
+      {
+        REQUIRE(rtf.EndsWith("}\n"));
+        rtf.Truncate(rtf.size() - 2);
+        // The hex digits follow the last control word and its blank.
+        const wxString hex = rtf.AfterLast(wxS(' '));
+        REQUIRE(hex.size() > 100);
+        REQUIRE(hex.size() % 2 == 0);
+        wxMemoryBuffer png;
+        for (size_t i = 0; i < hex.size(); i += 2) {
+          unsigned long byte = 0;
+          REQUIRE(hex.Mid(i, 2).ToULong(&byte, 16));
+          png.AppendByte(static_cast<char>(byte));
+        }
+        wxMemoryInputStream stream(png.GetData(), png.GetDataLen());
+        wxImage decoded;
+        REQUIRE(decoded.LoadFile(stream, wxBITMAP_TYPE_PNG));
+        wxMemoryInputStream originalStream(wxmaxima_art_wxmac_doc_png,
+                                           wxmaxima_art_wxmac_doc_png_size);
+        wxImage original;
+        REQUIRE(original.LoadFile(originalStream, wxBITMAP_TYPE_PNG));
+        REQUIRE(decoded.GetSize() == original.GetSize());
       }
     }
   }
