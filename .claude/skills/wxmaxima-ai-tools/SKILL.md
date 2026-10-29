@@ -19,8 +19,8 @@ reachable.
 **The configuration dialog's "AI" tab therefore always exists**
 (`ConfigDialogue::CreateAiPanel()`), in two boxes: "Contacting AIs" (providers
 and API keys, `AddAiProviderControls()`) only with `WXM_USE_AI_TOOLS`, and
-with only a "no secret store" note when there is none; "Giving external
-tools access" (the MCP server's on/off and port) always, since the server
+with only a "no secret store" note when there is none; the MCP server box
+(its on/off and port, plus a note on what MCP is and who can connect) always, since the server
 needs no secret store. Whether the provider controls exist is asked of
 `m_aiChatPanel`, not of the secret store a second time, so loading and
 saving can't disagree with what the panel built.

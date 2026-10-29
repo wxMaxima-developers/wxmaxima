@@ -2187,18 +2187,29 @@ wxWindow *ConfigDialogue::CreateAiPanel() {
             wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
 #endif
 
-  wxStaticBoxSizer *externalBox =
-    new wxStaticBoxSizer(wxVERTICAL, panel, _("Giving external tools access"));
+  // Not everybody knows what MCP is, and turning it on has a security
+  // side: while the server runs, any program on this machine that finds the
+  // port can read the worksheet. Said in a text of its own rather than in
+  // the checkbox, which would get too long to read. Web pages are refused by
+  // McpServer::OriginAllowed() unless they come from localhost.
+  wxStaticBoxSizer *externalBox = new wxStaticBoxSizer(
+    wxVERTICAL, panel, _("MCP server: letting external AI tools read the worksheet"));
   wxWindow *externalBoxWin = externalBox->GetStaticBox();
+  externalBox->Add(
+    new WrappingStaticText(
+      externalBoxWin, wxID_ANY,
+      _("MCP (Model Context Protocol) is how AI tools -- an AI desktop app "
+        "or a coding assistant, for example -- ask a program for context. "
+        "While this server runs, any program on this computer that connects "
+        "to the port below can read the worksheet's cells, table of "
+        "contents and watched variables. It cannot insert, edit or evaluate "
+        "anything. It only accepts connections from this computer "
+        "(localhost), and refuses requests from web pages served by other "
+        "sites.")),
+    wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
   m_mcpServerEnabled =
     new wxCheckBox(externalBoxWin, wxID_ANY,
-                   _("Let an AI tool read this worksheet (MCP server)"));
-  m_mcpServerEnabled->SetToolTip(
-    _("Runs a local, read-only MCP (Model Context Protocol) server an AI "
-      "tool can connect to for context on this worksheet's cells, table of "
-      "contents and watched variables. It only answers questions -- it can "
-      "never insert, edit or evaluate anything itself. Only accepts "
-      "connections from this same machine (localhost)."));
+                   _("Let external tools read this worksheet (MCP server)"));
   externalBox->Add(m_mcpServerEnabled,
                    wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
 

@@ -24,8 +24,8 @@
 
   It holds two independent things in two boxes: "Contacting AIs" (the AI
   Chat sidebar's providers and API keys), which needs the AI tools compiled
-  in and a secret store, and "Giving external tools access" (the MCP
-  server), which needs neither -- the MCP server is part of every build and
+  in and a secret store, and the MCP server, which gives external tools
+  access to the worksheet and needs neither -- it is part of every build and
   stores nothing secret. So the tab has to exist in every build, and the
   MCP settings have to be on it, whether or not a secret store is
   reachable. Before, the MCP settings sat on the Options tab and the AI tab
@@ -64,16 +64,17 @@ wxWindow *OnPage(wxWindow *page, const wxString &label) {
 }
 
 const wxString mcpCheckbox =
-  wxS("Let an AI tool read this worksheet (MCP server)");
+  wxS("Let external tools read this worksheet (MCP server)");
 } // namespace
 
 SCENARIO("The AI tab exists and holds the MCP server settings") {
   wxWindow *aiPage = Page(wxS("AI"));
   REQUIRE(aiPage != nullptr);
 
-  THEN("the MCP server settings are in the \"Giving external tools access\" box") {
+  THEN("the MCP server settings are in the MCP server box") {
     auto *box = dynamic_cast<wxStaticBox *>(
-      OnPage(aiPage, wxS("Giving external tools access")));
+      OnPage(aiPage, wxS("MCP server: letting external AI tools read "
+                         "the worksheet")));
     REQUIRE(box != nullptr);
     wxWindow *checkbox = OnPage(box, mcpCheckbox);
     CHECK(dynamic_cast<wxCheckBox *>(checkbox) != nullptr);
