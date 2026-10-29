@@ -2,7 +2,7 @@ var searchData=
 [
   ['iconfig_0',['IConfig',['../structCatch_1_1IConfig.html',1,'Catch']]],
   ['icontext_1',['IContext',['../structCatch_1_1IContext.html',1,'Catch']]],
-  ['id_2',['id',['../structAiCustomProviderConfig.html#a0207ccb18ed3c701fc3cd8fc11b30c8a',1,'AiCustomProviderConfig::id()'],['../classdetail_1_1exception.html#a63b819fbb2ef34df9dad1e309207fa24',1,'detail::exception::id()']]],
+  ['id_2',['id',['../structAiCustomProviderConfig.html#a0207ccb18ed3c701fc3cd8fc11b30c8a',1,'AiCustomProviderConfig::id()'],['../structwxm_1_1UiLanguage.html#a8d41b93061a2e03d6b3f2cbeae49509d',1,'wxm::UiLanguage::id()'],['../classdetail_1_1exception.html#a63b819fbb2ef34df9dad1e309207fa24',1,'detail::exception::id()']]],
   ['identity_5ftag_3',['identity_tag',['../structdetail_1_1identity__tag.html',1,'detail']]],
   ['ieee_4',['ieee',['../classmux__using__with.html#a44d1d60c58066d98a072e90b31c9d908',1,'mux_using_with']]],
   ['iexceptiontranslator_5',['IExceptionTranslator',['../structCatch_1_1IExceptionTranslator.html',1,'Catch']]],
@@ -75,7 +75,7 @@ var searchData=
   ['intervalcell_72',['IntervalCell',['../classIntervalCell.html#ac04d996c77edeef04dbcdd83a1bf5a42',1,'IntervalCell::IntervalCell()'],['../classIntervalCell.html',1,'IntervalCell']]],
   ['intervalcell_2ecpp_73',['IntervalCell.cpp',['../IntervalCell_8cpp.html',1,'']]],
   ['intervalcell_2eh_74',['IntervalCell.h',['../IntervalCell_8h.html',1,'']]],
-  ['inupdateregion_75',['InUpdateRegion',['../classConfiguration.html#a4d8ad50245bbb73bc5d4bcd91bcc001c',1,'Configuration::InUpdateRegion()'],['../classCell.html#a0835d4dd3d72ed0013aa5a091d64d9ab',1,'Cell::InUpdateRegion()']]],
+  ['inupdateregion_75',['InUpdateRegion',['../classCell.html#a0835d4dd3d72ed0013aa5a091d64d9ab',1,'Cell::InUpdateRegion()'],['../classConfiguration.html#a4d8ad50245bbb73bc5d4bcd91bcc001c',1,'Configuration::InUpdateRegion()']]],
   ['invalid_5fiterator_76',['invalid_iterator',['../classdetail_1_1invalid__iterator.html',1,'detail']]],
   ['invalidbitmap_77',['InvalidBitmap',['../classImage.html#a6ccd0e3975f525d9e2ba8270bc0f1e0c',1,'Image']]],
   ['invertcase_78',['InvertCase',['../classMaxima.html#ac168f806cb6ba5108cd61f6ee70cba9b',1,'Maxima']]],
