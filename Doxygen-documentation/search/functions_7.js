@@ -260,7 +260,7 @@ var searchData=
   ['getxmltype_257',['GetXMLType',['../classProductCell.html#a39c1e95e69202059c498e92dc7d7bde3',1,'ProductCell::GetXMLType()'],['../classSumCell.html#a276e6df0f28a2974cb3916c0704965a0',1,'SumCell::GetXMLType()']]],
   ['getyoffset_258',['GetYOffset',['../classEditorCell_1_1StyledText.html#af84df9668dbd7ab7896cd0b7317931e4',1,'EditorCell::StyledText']]],
   ['getzoomfactor_259',['GetZoomFactor',['../classConfiguration.html#a623c8493cc60caa8663a146bc9eb89fa',1,'Configuration']]],
-  ['gnuplotcommandname_260',['GnuplotCommandName',['../classMaximaProcessManager.html#ae37361d5647c0c5fb5dc537e8c0127b2',1,'MaximaProcessManager']]],
+  ['gnuplotcommandname_260',['GnuplotCommandName',['../classMaximaProcessManager.html#adc22ee35158a94ff0f5122b8443833c1',1,'MaximaProcessManager']]],
   ['gnuplotdata_261',['GnuplotData',['../classImage.html#ae215879f7fdb14b9277fd9ca69227b98',1,'Image']]],
   ['gnuplotlacksterminal_262',['GnuplotLacksTerminal',['../TroubleshootingChecks_8h.html#a23762938ab3de99b847fe562045ac7f5',1,'wxm']]],
   ['gnuplotsinglequoted_263',['GnuplotSingleQuoted',['../TroubleshootingChecks_8h.html#a42e8c924a7f2225adac5836744b48988',1,'wxm']]],

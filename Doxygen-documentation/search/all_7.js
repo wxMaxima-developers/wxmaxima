@@ -282,7 +282,7 @@ var searchData=
   ['globenum_279',['GlobEnum',['../autolink_8cpp.html#a656d63cf384d2a6f23c2c18523a7bc5e',1,'autolink.cpp']]],
   ['globvar_280',['globVar',['../autolink_8cpp.html#a88d0bae800d600a11d7bd60f0bc4b858',1,'autolink.cpp']]],
   ['gnuplotcommand_281',['gnuplotCommand',['../structTroubleshootingRunner_1_1Settings.html#ad30482b7064ec7956501a85efa677cf9',1,'TroubleshootingRunner::Settings']]],
-  ['gnuplotcommandname_282',['GnuplotCommandName',['../classMaximaProcessManager.html#ae37361d5647c0c5fb5dc537e8c0127b2',1,'MaximaProcessManager']]],
+  ['gnuplotcommandname_282',['GnuplotCommandName',['../classMaximaProcessManager.html#adc22ee35158a94ff0f5122b8443833c1',1,'MaximaProcessManager']]],
   ['gnuplotdata_283',['GnuplotData',['../classImage.html#ae215879f7fdb14b9277fd9ca69227b98',1,'Image']]],
   ['gnuplotfound_284',['gnuplotFound',['../TroubleshootingChecks_8h.html#a082761c0aafd576d6d834e49d52d159ea745969c893bc6da03455319f333246e8',1,'wxm']]],
   ['gnuplotlacksterminal_285',['GnuplotLacksTerminal',['../TroubleshootingChecks_8h.html#a23762938ab3de99b847fe562045ac7f5',1,'wxm']]],
