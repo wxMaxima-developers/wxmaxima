@@ -116,6 +116,40 @@ bool IsEscaped(const wxString &text, size_t pos) {
     backslashes++;
   return (backslashes % 2) == 1;
 }
+
+//! Whether the text in front of \p pos in Maxima code is inside a string.
+//!
+//! Used to decide whether a typed comment opener gets its closer
+//! auto-inserted (GH #1641). Maxima comments nest and a quote inside a
+//! comment starts no string, so both have to be tracked; a backslash escapes
+//! the next character, inside a string and in a name alike.
+bool InsideMaximaString(const wxString &text, size_t pos) {
+  bool inString = false;
+  size_t commentDepth = 0;
+  size_t end = std::min(pos, text.Length());
+  for (size_t i = 0; i < end; i++) {
+    wxChar ch = text.at(i);
+    wxChar next = (i + 1 < end) ? wxChar(text.at(i + 1)) : wxChar(0);
+    if (inString) {
+      if (ch == wxS('\\'))
+        i++;
+      else if (ch == wxS('"'))
+        inString = false;
+    } else if ((ch == wxS('/')) && (next == wxS('*'))) {
+      commentDepth++;
+      i++;
+    } else if ((commentDepth > 0) && (ch == wxS('*')) && (next == wxS('/'))) {
+      commentDepth--;
+      i++;
+    } else if (commentDepth == 0) {
+      if (ch == wxS('\\'))
+        i++;
+      else if (ch == wxS('"'))
+        inString = true;
+    }
+  }
+  return inString;
+}
 } // namespace
 
 // --- EditorCell split ----------------------------------------------------
@@ -2715,6 +2749,13 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event) {
                  (m_text.at(pos - 1) == '"' &&
                   m_text.at(pos) == '"')))
               right++;
+            // Deleting the "*" of an empty auto-closed comment "/*|*/"
+            // deletes its "*/", too, leaving the "/" (GH #1641).
+            else if (IsCodeEditor() && m_configuration->GetMatchParens() &&
+                     (pos >= 2) && (m_text.Mid(pos - 2, 2) == wxS("/*")) &&
+                     (m_text.Mid(pos, 2) == wxS("*/")) &&
+                     !InsideMaximaString(m_text, pos - 2))
+              right += 2;
             m_text = m_text.Left(pos - 1) +
               m_text.Mid(right);
             pos--;
@@ -3056,6 +3097,31 @@ bool EditorCell::HandleOrdinaryKey(wxKeyEvent &event) {
           }
         }
         break;
+      }
+
+      // Comments (GH #1641): "/*" gets its "*/" like "(" gets its ")",
+      // and typing "*/" in front of that closer jumps over it instead of
+      // adding a second one. Only in code, as comments mean nothing in
+      // text cells, and not inside a string, where "/*" is just text.
+      if (IsCodeEditor()) {
+        size_t cur = CursorPosition();
+        if ((keyCode == '*') && (cur >= 2) && (m_text.at(cur - 2) == '/') &&
+            !IsEscaped(m_text, cur - 2) &&
+            !InsideMaximaString(m_text, cur - 2)) {
+          // Even if a "*/" follows already: that one closes an enclosing
+          // comment, and Maxima's comments nest.
+          m_text = m_text.Left(cur) + wxS("*/") + m_text.Mid(cur);
+        } else if ((keyCode == '*') && (m_text.Mid(cur, 2) == wxS("*/")) &&
+                   !InsideMaximaString(m_text, cur - 1)) {
+          // Jump over the "*" of an existing closer.
+          m_text = m_text.Left(cur - 1) + m_text.Mid(cur);
+        } else if ((keyCode == '/') && (cur >= 2) &&
+                   (m_text.at(cur - 2) == '*') &&
+                   (cur < m_text.Length()) && (m_text.at(cur) == '/') &&
+                   !InsideMaximaString(m_text, cur - 1)) {
+          // "*|/" plus "/": jump over the "/" of the closer.
+          m_text = m_text.Left(cur - 1) + m_text.Mid(cur);
+        }
       }
     }
   } // end if (insertLetter)
