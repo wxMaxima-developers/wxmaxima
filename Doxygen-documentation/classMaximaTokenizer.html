@@ -120,6 +120,9 @@ TokenList&#160;</td><td class="memItemRight" valign="bottom"><b>PopTokens</b> ()
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
+<tr class="memitem:ab86b853b1b7f460224e4e079c05030ec"><td class="memItemLeft" align="right" valign="top">static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMaximaTokenizer.html#ab86b853b1b7f460224e4e079c05030ec">FirstStatement</a> (const wxString &amp;commands, const <a class="el" href="classConfiguration.html">Configuration</a> *const configuration)</td></tr>
+<tr class="memdesc:ab86b853b1b7f460224e4e079c05030ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">The first statement in a piece of <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> code, without its terminator.  <br /></td></tr>
+<tr class="separator:ab86b853b1b7f460224e4e079c05030ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adacc204122c8e98cc6b2ecf3b7caa2e2"><td class="memItemLeft" align="right" valign="top"><a id="adacc204122c8e98cc6b2ecf3b7caa2e2" name="adacc204122c8e98cc6b2ecf3b7caa2e2"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsAlpha</b> (wxUniChar ch)</td></tr>
 <tr class="separator:adacc204122c8e98cc6b2ecf3b7caa2e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -232,6 +235,46 @@ static const wxString&#160;</td><td class="memItemRight" valign="bottom"><b>m_ad
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="ab86b853b1b7f460224e4e079c05030ec" name="ab86b853b1b7f460224e4e079c05030ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab86b853b1b7f460224e4e079c05030ec">&#9670;&#160;</a></span>FirstStatement()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxString MaximaTokenizer::FirstStatement </td>
+          <td>(</td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
+          <td class="paramname"><em>commands</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classConfiguration.html">Configuration</a> *const&#160;</td>
+          <td class="paramname"><em>configuration</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The first statement in a piece of <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> code, without its terminator. </p>
+<p>Everything up to the first ";" or "$" that ends a statement, trimmed. <a class="el" href="classA.html">A</a> ";" or "$" inside a string, a comment or escaped with a backslash doesn't end anything, which is why this asks the tokenizer instead of searching for the character. Returns the whole (trimmed) text if it contains no terminator.</p>
+<p>Used where a menu command wraps code the user selected into a function call: "ratsimp(" + "x+1;" + ");" is a syntax error (GH #244). </p>
+
+</div>
+</div>
 <a id="ac7083ea9e2abd63847239119d2dda493" name="ac7083ea9e2abd63847239119d2dda493"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac7083ea9e2abd63847239119d2dda493">&#9670;&#160;</a></span>IsHardcodedKeyword()</h2>
 
