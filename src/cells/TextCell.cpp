@@ -944,8 +944,6 @@ wxString TextCell::ToTeX() const {
   text.Replace(wxS("@"), mathModeStart + wxS("@") + mathModeEnd);
   text.Replace(wxS("#"), mathModeStart + wxS("\\neq") + mathModeEnd);
   text.Replace(wxS("\u00A0"), wxS("~")); // A non-breakable space
-  text.Replace(wxS("<"), mathModeStart + wxS("<") + mathModeEnd);
-  text.Replace(wxS(">"), mathModeStart + wxS(">") + mathModeEnd);
   text.Replace(wxS("\u219D"), mathModeStart + wxS("\\leadsto") + mathModeEnd);
   text.Replace(wxS("\u2192"),
                mathModeStart + wxS("\\rightarrow") + mathModeEnd);
@@ -1118,7 +1116,7 @@ wxString TextCell::ToTeX() const {
     else if (text == wxS("%i"))
       return wxS("i");
     else if (text == wxS("\\% pi"))
-      return wxS("\\ensuremath{\\pi} ");
+      return wxS("\\pi ");
     else if (text == wxS("d"))
       // The "d" of an integral's "dx"/"dtheta"/... (the only other user of
       // this style, see wxxml-int in wxMathML.lisp): must render upright,
@@ -1130,9 +1128,10 @@ wxString TextCell::ToTeX() const {
   }
 
   if ((GetTextStyle() == TS_LABEL) || (GetTextStyle() == TS_USERLABEL)) {
-    wxString conditionalLinebreak;
-    if (GetPrevious())
-      conditionalLinebreak = wxS("\\]\n\\[");
+    // A label starts an equation of its own. Ending the one before is the
+    // caller's job (Cell::ListToTeX(), GroupCell::ToTeXCodeCell() and
+    // Worksheet::CopyTeX() all know whether one is open): doing it here, too,
+    // left an empty equation between the two.
     text.Trim(true);
     // A automatically generated output label contains a "(" and ")", the "\tag{}" does also add them,
     // remove them in the case of standard label "(%onn)".
@@ -1141,23 +1140,41 @@ wxString TextCell::ToTeX() const {
       label.Replace(wxS("("), wxS(""));
       label.Replace(wxS(")"), wxS(""));
     }
-    text = conditionalLinebreak + wxS("\\tag{") + label + wxS("}");
-    label.Replace(wxS("\\% "), wxS(""));
+    // \tag{} is typeset as text, where the space after "\%" would show.
+    label.Replace(wxS("\\% "), wxS("\\%"));
+    text = wxS("\\tag{") + label + wxS("}");
     // Would be a good idea, but apparently breaks mathJaX
     // text += wxS("\\label{") + label + wxS("}");
   } else {
     if (GetTextStyle() == TS_FUNCTION) {
-      if (text != wxEmptyString) {
+      // Operators (<mo>) share this style with function names (<fnm>).
+      // \mathop{} would give a "+" or "=" the spacing of a big operator
+      // instead of that of a binary operator or a relation.
+      bool isOperator = !m_text.IsEmpty();
+      for (const auto &chr : m_text)
+        if (wxIsalnum(chr)) {
+          isOperator = false;
+          break;
+        }
+      if ((m_text == wxS("\u2192")) || (m_text == wxS("->")))
+        text = wxS("\\to ");
+      else if ((m_text == wxS("\u2794")) || (m_text == wxS("-->")))
+        text = wxS("\\longrightarrow ");
+      else if (!isOperator && (text != wxEmptyString)) {
         text.Replace(wxS("^"), wxS("\\hat{} "));
-        text = wxS("\\mathop{") + text + wxS("}");
+        // A single letter would be centered vertically by \mathop{} and
+        // already is in the right font.
+        if (m_text.Length() > 1)
+          text = wxS("\\mathop{") + text + wxS("}");
       }
     } else if ((GetTextStyle() == TS_VARIABLE) ||
                (GetTextStyle() == TS_GREEK_CONSTANT) ||
                (GetTextStyle() == TS_SPECIAL_CONSTANT)) {
+      // Always in math mode, so no \ensuremath{} is needed.
       if ((m_displayedText.Length() > 1) && (text.at(1) != wxS('_')))
-        text = wxS("\\ensuremath{\\mathrm{") + text + wxS("}}");
+        text = wxS("\\mathrm{") + text + wxS("}");
       if (text == wxS("\\% pi"))
-        text = wxS("\\ensuremath{\\pi} ");
+        text = wxS("\\pi ");
       text.Replace(wxS("\\text{ä}"), wxS("\\text{\\textit{ä}}"));
       text.Replace(wxS("\\text{ö}"), wxS("\\text{\\textit{ö}}"));
       text.Replace(wxS("\\text{ü}"), wxS("\\text{\\textit{ü}}"));

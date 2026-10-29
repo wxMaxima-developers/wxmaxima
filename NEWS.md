@@ -1,5 +1,17 @@
 # Current development version
 
+- LaTeX export and "Copy as LaTeX" produce leaner markup: `x^2` instead of
+  `{{x}^{2}}`, `x_1` instead of `{x_1}`, `\sin(x)` instead of `\sin{(x)}`,
+  plain parentheses and `|...|` unless the contents are taller than a line,
+  no `\left. \right.` around a sum's argument, no `\ensuremath{}` inside
+  maths and no empty equations or `\mbox{}` padding. Operators like `+`, `=`
+  and `,` are no longer `\mathop{}`s, which gave them the spacing of a big
+  operator, and a one-letter function name isn't either, which shifted it
+  vertically. Fixed along the way: a second result of a cell lost its
+  `\displaystyle`, the input prompt's `>` was wrapped in `\ensuremath{}`
+  twice, an output label showed as "% o1", a set `{1}` lost its
+  braces, a limit's arrow came out as `->`, and a sum whose argument the
+  worksheet shows in parentheses is exported with them.
 - ESC, a hexadecimal number and ESC enter that Unicode character again, as
   the manual says (#2561): the list of symbols closed as soon as the number
   matched no symbol's name. The list now shows the character the number

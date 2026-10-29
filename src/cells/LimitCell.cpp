@@ -141,9 +141,8 @@ wxString LimitCell::ToMatlab() const {
 }
 
 wxString LimitCell::ToTeX() const {
-  wxString s(wxS("\\lim_{"));
-  s += m_under->ListToTeX() + wxS("} ") + m_base->ListToTeX();
-  return s;
+  return wxS("\\lim_") + TeXGroup(m_under->ListToTeX()) + wxS(" ") +
+    m_base->ListToTeX();
 }
 
 wxString LimitCell::ToMathML() const {

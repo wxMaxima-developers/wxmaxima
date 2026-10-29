@@ -116,23 +116,11 @@ wxString SetCell::ToMatlab() const {
 }
 
 wxString SetCell::ToTeX() const {
-  wxString s;
-  wxString innerCell = m_innerCell->ListToTeX();
-
-  // Let's see if the cell contains anything potentially higher than a normal
-  // character.
-  bool needsLeftRight = false;
-  for (size_t i = 0; i < innerCell.Length(); i++)
-    if (!wxIsalnum(innerCell.at(i))) {
-      needsLeftRight = true;
-      break;
-    }
-
-  if (needsLeftRight)
-    s = wxS("\\left\\{ ") + m_innerCell->ListToTeX() + wxS("\\right\\} ");
-  else
-    s = wxS("{") + m_innerCell->ListToTeX() + wxS("}");
-  return s;
+  const wxString inner = m_innerCell->ListToTeX();
+  if (TeXNeedsGrowingDelimiters(inner))
+    return wxS("\\left\\{ ") + inner + wxS("\\right\\} ");
+  // Escaped: bare braces would only group the contents, not draw any
+  return wxS("\\{") + inner + wxS("\\}");
 }
 
 wxString SetCell::ToXML() const {

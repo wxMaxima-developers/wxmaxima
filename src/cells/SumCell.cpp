@@ -291,14 +291,17 @@ wxString SumCell::ToMatlab() const {
 
 wxString SumCell::ToTeX() const {
   wxString s = GetLaTeXCommandName();
-  s += wxS("_{") + m_under->ListToTeX() + wxS("}");
+  s += wxS("_") + TeXGroup(m_under->ListToTeX());
   wxString to = m_over->ListToTeX();
   if (to.Length())
-    s += wxS("^{") + to + wxS("}");
+    s += wxS("^") + TeXGroup(to);
 
-  s += wxS("{\\left. ");
-  s += Base()->ListToTeX();
-  s += wxS("\\right.}");
+  // Parenthesized exactly where the worksheet does it (GH #1536): a sum is
+  // bare, k+k^2 needs the parentheses.
+  if (m_baseNeedsParen)
+    s += wxS(" ") + m_paren->ToTeX();
+  else
+    s += wxS(" ") + Base()->ListToTeX();
   return s;
 }
 

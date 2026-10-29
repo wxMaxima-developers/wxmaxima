@@ -989,6 +989,16 @@ if(TARGET wxmTestApp)
     add_test(NAME IntegralToTeX
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_IntegralToTeX>")
 
+    # LaTeX export emits no redundant markup: doubled braces, \left/\right
+    # around things that don't grow, \left. \right. pairs and the like.
+    add_executable(test_TeXRedundancy
+        test_TeXRedundancy.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_TeXRedundancy PUBLIC cxx_std_20)
+    target_link_libraries(test_TeXRedundancy PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME TeXRedundancy
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_TeXRedundancy>")
     # Greek constants export as commands LaTeX knows, or as Latin letters.
     add_executable(test_GreekToTeX
         test_GreekToTeX.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
