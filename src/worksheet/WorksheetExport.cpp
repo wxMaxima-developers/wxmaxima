@@ -623,7 +623,8 @@ void WorksheetExport::CalculateReorderedCellIndices(GroupCell *tree, int &cellIn
           switch (*it) {
           case '$':
             if (initialHiddenExpressions == outputExpressions)
-              initialHiddenExpressions++; // fallthrough
+              initialHiddenExpressions++;
+            [[fallthrough]];
           case ';':
             outputExpressions++;
           }

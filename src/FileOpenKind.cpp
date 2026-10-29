@@ -29,8 +29,10 @@
 #include <wx/intl.h>
 #include <wx/log.h>
 
+#include <algorithm>
 #include <array>
 #include <cstring>
+#include <string_view>
 
 namespace wxm {
 
@@ -101,21 +103,26 @@ bool FileLooksBinary(const wxString &file) {
     return false;
   const auto len = static_cast<size_t>(got);
 
-  auto startsWith = [&](const char *magic, size_t magicLen) {
-    return len >= magicLen && std::memcmp(buf.data(), magic, magicLen) == 0;
+  auto startsWith = [&](std::string_view magic) {
+    return len >= magic.size() &&
+      std::memcmp(buf.data(), magic.data(), magic.size()) == 0;
   };
   // Linux (ELF) and macOS (Mach-O, both byte orders, 32 and 64 bit, and
   // universal binaries) executables and libraries. Not "MZ", the start of a
   // Windows executable: a .mac may well begin with a variable of that name,
   // and the DOS header that follows it is full of NUL bytes anyway.
-  if (startsWith("\x7f" "ELF", 4) ||
-      startsWith("\xfe\xed\xfa\xce", 4) || startsWith("\xce\xfa\xed\xfe", 4) ||
-      startsWith("\xfe\xed\xfa\xcf", 4) || startsWith("\xcf\xfa\xed\xfe", 4) ||
-      startsWith("\xca\xfe\xba\xbe", 4))
+  static constexpr std::array<std::string_view, 6> executableMagic = {
+    "\x7f" "ELF",
+    "\xfe\xed\xfa\xce", "\xce\xfa\xed\xfe",
+    "\xfe\xed\xfa\xcf", "\xcf\xfa\xed\xfe",
+    "\xca\xfe\xba\xbe"};
+  if (std::ranges::any_of(executableMagic, startsWith))
     return true;
 
   // UTF-16 text is full of NUL bytes, but has a byte order mark.
-  if (startsWith("\xff\xfe", 2) || startsWith("\xfe\xff", 2))
+  static constexpr std::array<std::string_view, 2> utf16ByteOrderMarks = {
+    "\xff\xfe", "\xfe\xff"};
+  if (std::ranges::any_of(utf16ByteOrderMarks, startsWith))
     return false;
   return std::memchr(buf.data(), 0, len) != nullptr;
 }

@@ -125,7 +125,7 @@ public:
 
   //! Resolves the gnuplot executable path and (re)starts a background query of
   //! the graphics terminals it supports.
-  void GnuplotCommandName(wxString gnuplot);
+  void GnuplotCommandName(const wxString &gnuplot);
 
   //! wxEVT_END_PROCESS handler for the gnuplot terminal-query subprocess:
   //! reads which terminals gnuplot supports and picks the plot driver.

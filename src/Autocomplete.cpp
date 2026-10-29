@@ -650,15 +650,16 @@ std::vector<wxString> AutoComplete::CompleteSymbol(wxString partial,
   wxASSERT_MSG((type >= command) && (type <= unit),
                _("Bug: Autocompletion requested for unknown type of item."));
 
+  // One lock for the whole lookup: m_wordList and m_worksheetWords are both
+  // filled by background tasks.
+  const std::lock_guard<std::mutex> lock(m_keywordsLock);
   if ((type != tmplte) && (type >=0 ) && (type < numberOfTypes )) {
-    const std::lock_guard<std::mutex> lock(m_keywordsLock);
     for (const auto &i : m_wordList.at(type)) {
       if (i.StartsWith(partial) &&
           (!ranges::contains(completions, i)))
         completions.push_back(i);
     }
   } else if (type == tmplte) {
-    const std::lock_guard<std::mutex> lock(m_keywordsLock);
     for (const auto &i: m_wordList.at(type)) {
       if (i.StartsWith(partial)) {
         if (!ranges::contains(completions, i))
@@ -670,7 +671,6 @@ std::vector<wxString> AutoComplete::CompleteSymbol(wxString partial,
     }
   }
 
-  const std::lock_guard<std::mutex> lock(m_keywordsLock);
   // Add a list of words that were defined on the work sheet but that aren't
   // defined as maxima commands or functions.
   if (type == command) {

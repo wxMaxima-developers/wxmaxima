@@ -33,7 +33,7 @@ namespace Diff {
 struct CellMatchData {
   wxString uuid;
   wxString content;
-  GroupType type;
+  GroupType type = GC_TYPE_INVALID;
 };
 
 /**
