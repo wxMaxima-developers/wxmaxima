@@ -1,5 +1,11 @@
 # Current development version
 
+- The configuration dialog's AI tab is split into "Contacting AIs" (the AI
+  Chat sidebar's providers and API keys) and the MCP server, whose settings
+  used to sit on the Options tab. It now explains what MCP is and that any
+  program on the computer can read the worksheet while the server runs. The
+  tab no longer disappears when there is no secret store: the MCP server
+  needs none, so its settings stay reachable.
 - Matrix > Classic matrix operations (invert, determinant, rank,
   eigenvalues, eigenvectors, adjoint, transpose) open a wizard that asks
   which matrix to use, pre-filled with the selection or `%`, instead of

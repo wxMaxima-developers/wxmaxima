@@ -1167,6 +1167,17 @@ if(TARGET wxmTestApp)
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
     add_test(NAME ConfigDialogueStyles
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_ConfigDialogueStyles>")
+
+    # The configuration dialog's AI tab exists in every build and holds the
+    # MCP server settings, secret store or not.
+    add_executable(test_ConfigDialogueAiTab
+        test_ConfigDialogueAiTab.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_ConfigDialogueAiTab PUBLIC cxx_std_20)
+    target_link_libraries(test_ConfigDialogueAiTab PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME ConfigDialogueAiTab
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_ConfigDialogueAiTab>")
 endif()
 
 # Same watchdog timeout the parent directory applies to its tests: keep a hung
