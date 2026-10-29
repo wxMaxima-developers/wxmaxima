@@ -718,6 +718,9 @@ wxPoint&#160;</td><td class="memItemRight" valign="bottom"><b>GetCurrentPoint</b
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a803a773b373e281929c004ef0cc87a95"><td class="memItemLeft" align="right" valign="top">static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImgCellBase.html#a803a773b373e281929c004ef0cc87a95">ImageToRTF</a> (<a class="el" href="classImage.html">Image</a> &amp;image)</td></tr>
+<tr class="memdesc:a803a773b373e281929c004ef0cc87a95"><td class="mdescLeft">&#160;</td><td class="mdescRight">The RTF picture (a {\pict ...} group) that shows this image.  <br /></td></tr>
+<tr class="separator:a803a773b373e281929c004ef0cc87a95"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1884f0cf7de6785ddf33b1f1f3b48197"><td class="memItemLeft" align="right" valign="top">static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImgCellBase.html#a1884f0cf7de6785ddf33b1f1f3b48197">UserScaleXMLFlags</a> (double scale, bool fitToWindow)</td></tr>
 <tr class="memdesc:a1884f0cf7de6785ddf33b1f1f3b48197"><td class="mdescLeft">&#160;</td><td class="mdescRight">The scale="..." attribute <a class="el" href="classImgCellBase.html#a2b0d6aba37ac8853a5138ead51063255" title="Convert this cell to a representation fit for saving in a .wxmx file.">ToXML()</a> writes for wxplot_scale, or nothing.  <br /></td></tr>
 <tr class="separator:a1884f0cf7de6785ddf33b1f1f3b48197"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2680,6 +2683,35 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>AnimationCell</b></t
 
 </div>
 </div>
+<a id="a803a773b373e281929c004ef0cc87a95" name="a803a773b373e281929c004ef0cc87a95"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a803a773b373e281929c004ef0cc87a95">&#9670;&#160;</a></span>ImageToRTF()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxString ImgCellBase::ImageToRTF </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classImage.html">Image</a> &amp;&#160;</td>
+          <td class="paramname"><em>image</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The RTF picture (a {\pict ...} group) that shows this image. </p>
+<p>PNG and JPEG data is embedded as it is; any other format is converted to PNG first, since RTF knows no other bitmap format. </p>
+
+</div>
+</div>
 <a id="a2b727bd0956468c57342bd88484d9316" name="a2b727bd0956468c57342bd88484d9316"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2b727bd0956468c57342bd88484d9316">&#9670;&#160;</a></span>IsActive()</h2>
 
@@ -3828,7 +3860,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>AnimationCell</b></t
 </div><div class="memdoc">
 
 <p>Allows to change the text a <a class="el" href="classTextCell.html" title="A Text cell.">TextCell</a> contains. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
 
 </div>
 </div>
