@@ -38,6 +38,8 @@
 LongNumberCell::LongNumberCell(GroupCell *group, Configuration *config,
                                const wxString &number)
   : TextCell(group, config, number, TS_NUMBER) {
+  // TextCell's constructor could only run its own UpdateDisplayedText().
+  UpdateDisplayedText();
 }
 
 LongNumberCell::LongNumberCell(GroupCell *group, const LongNumberCell &cell)

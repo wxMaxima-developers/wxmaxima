@@ -41,6 +41,14 @@
   - Printing computed its scale with an integer division, which rounded
     the printer's resolution down to a multiple of 96 dpi, and down to zero
     for a printer reporting less.
+- Fixes found by clang's static analyzer, which the clang-tidy CI job now
+  checks too:
+  - Copying an animation as RTF (what a word processor pastes) wrote the
+    image data into memory that had already been freed, so the picture was
+    missing and the program could crash later on.
+  - A label hidden by the label settings, or a user-defined label, showed
+    the wrong text until the next relayout after a settings change; a copied
+    cell showed its automatic label instead of the user-defined one.
 - About 200 places that copied a string, XML document or similar object
   where a reference or a move would do no longer copy it (Coverity's
   "copy instead of move" findings).

@@ -157,15 +157,17 @@ void CellPtrBase::base_reset(Observed *obj) noexcept {
     //! Different objects must have control blocks that are either null or
     //! non-null but different.
     // wxASSERT(!obj || !m_cb || !obj->m_cb || (m_cb != obj->m_cb));
+#if CELLPTR_LOG_REFS
     auto const prevPtr = m_ptr.GetImpl();
+#endif
     Deref();
     if (obj)
       Ref(obj);
-    auto const curPtr = m_ptr.GetImpl();
-    if (CELLPTR_LOG_REFS)
-      CELLPTR_LOG_METHOD(wxS("%p->CellPtr::reset(%p->%p) ptr=%08") PRIXPTR
-                         wxS("->%08") PRIXPTR,
-                         this, base_get(), obj, prevPtr, curPtr);
+#if CELLPTR_LOG_REFS
+    CELLPTR_LOG_METHOD(wxS("%p->CellPtr::reset(%p->%p) ptr=%08") PRIXPTR
+                       wxS("->%08") PRIXPTR,
+                       this, base_get(), obj, prevPtr, m_ptr.GetImpl());
+#endif
   } else {
     // The objects are the same - their control blocks must be the same as well.
     // wxASSERT(!obj || (m_cb == obj->m_cb));

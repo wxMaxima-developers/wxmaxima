@@ -3628,10 +3628,12 @@ void MaximaCommandMenus::PopupMenu(wxCommandEvent &event) {
           bool canExportSVG = false;
 
           if ((m_wxMaxima.GetWorksheet()->GetSelectionStart()->GetType() == MC_TYPE_IMAGE) ||
-              (m_wxMaxima.GetWorksheet()->GetSelectionStart()->GetType() == MC_TYPE_SLIDE))
-            if (dynamic_cast<ImgCellBase *>(m_wxMaxima.GetWorksheet()->GetSelectionStart())
-                ->CanExportSVG())
+              (m_wxMaxima.GetWorksheet()->GetSelectionStart()->GetType() == MC_TYPE_SLIDE)) {
+            const auto *image =
+              dynamic_cast<ImgCellBase *>(m_wxMaxima.GetWorksheet()->GetSelectionStart());
+            if (image && image->CanExportSVG())
               canExportSVG = true;
+          }
 
           wxString selectorString;
 
