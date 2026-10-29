@@ -79,6 +79,8 @@ wxString wxm::TroubleshootingCheckTitle(TroubleshootingCheck check) {
     return _("Can wxMaxima show help in a web browser?");
   case TroubleshootingCheck::translations:
     return _("Did wxMaxima find its translations?");
+  case TroubleshootingCheck::bidiText:
+    return _("Can wxMaxima edit text that mixes right-to-left and left-to-right?");
   case TroubleshootingCheck::svgText:
     return _("Can wxWidgets draw the text in SVG images?");
   case TroubleshootingCheck::aiSidebar:
@@ -163,6 +165,7 @@ wxm::TroubleshootingSection wxm::TroubleshootingSectionOf(TroubleshootingCheck c
   case TroubleshootingCheck::externalBrowser:
     return TroubleshootingSection::help;
   case TroubleshootingCheck::translations:
+  case TroubleshootingCheck::bidiText:
   case TroubleshootingCheck::aiSidebar:
   case TroubleshootingCheck::count:
     break;

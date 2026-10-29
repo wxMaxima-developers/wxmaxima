@@ -9,6 +9,10 @@
   and 26.10 are still read correctly. Known answers to Maxima's questions
   are now saved inside a comment, too: before, Maxima's `batch()` read them
   as code and failed on any .wxm that had some.
+- Help > Troubleshooting now also says whether this wxMaxima uses libfribidi
+  (and which version), which places the cursor and the selection correctly
+  on lines mixing right-to-left and left-to-right text. With it, the dialog
+  covers every optional feature the configure summary lists.
 - A mouse drag in text Maxima printed -- an error message, a warning,
   print() output, a string -- now selects characters instead of whole cells
   (#825), across several lines if need be, so part of a message can be
