@@ -26,6 +26,7 @@
 
 #include "cells/Cell.h"
 #include "cells/MatrixBlock.h"
+#include <cstddef>
 #include <optional>
 #include <utility>
 #include <wx/string.h>
@@ -98,10 +99,59 @@ public:
   const CellPtr<Cell> &GetSelectionEnd() const { return m_selectionEnd; }
   //! Set the first cell of the selected range (may be null).
   //! Forgets any selected matrix block, see SetSelectedMatrixBlock().
-  void SetSelectionStart(Cell *cell) { m_selectionStart = cell; m_blockMatrix = {}; }
+  void SetSelectionStart(Cell *cell) {
+    m_selectionStart = cell; m_blockMatrix = {}; m_textFirst = {};
+  }
   //! Set the last cell of the selected range (may be null).
   //! Forgets any selected matrix block, see SetSelectedMatrixBlock().
-  void SetSelectionEnd(Cell *cell) { m_selectionEnd = cell; m_blockMatrix = {}; }
+  void SetSelectionEnd(Cell *cell) {
+    m_selectionEnd = cell; m_blockMatrix = {}; m_textFirst = {};
+  }
+
+  /*! Characters selected in a run of text cells (GH #825)
+
+    \p first and \p last are the first and last cell of the run, in the order
+    they are drawn; \p from is the character position in \p first the
+    selection starts at, \p to the one in \p last it ends at (see
+    TextCell::CharacterIndexAt()). Cells in between are selected as a whole.
+  */
+  struct TextRange
+  {
+    Cell *first = nullptr;
+    std::size_t from = 0;
+    Cell *last = nullptr;
+    std::size_t to = 0;
+    bool operator==(const TextRange &) const = default;
+  };
+  /*! Select only some of the characters of a run of text cells (GH #825)
+
+    Like SetSelectedMatrixBlock() this is a refinement of an ordinary
+    selection: the cells first to last are selected, and everything that
+    looks at whole cells still sees them. What is copied is just the
+    characters, though.
+  */
+  void SetSelectedText(const TextRange &range) {
+    m_selectionStart = range.first;
+    m_selectionEnd = range.last;
+    m_blockMatrix = {};
+    m_textFirst = range.first;
+    m_textLast = range.last;
+    m_textFrom = range.from;
+    m_textTo = range.to;
+  }
+  /*! The characters selected in a run of text cells, if only some are
+
+    Valid only while the selection is exactly the cells they were chosen in.
+    Changing the selection in any other way forgets them -- so whatever
+    selects whole cells, groups or matrix entries never has to know about
+    this, and can't pick up a stale range later.
+  */
+  std::optional<TextRange> GetSelectedText() const {
+    if (m_textFirst && m_textLast && (m_selectionStart == m_textFirst) &&
+        (m_selectionEnd == m_textLast))
+      return TextRange{m_textFirst.get(), m_textFrom, m_textLast.get(), m_textTo};
+    return std::nullopt;
+  }
 
   /*! Narrow the selection to a block of one matrix's entries (GH #2345)
 
@@ -123,6 +173,7 @@ public:
     m_selectionStart = matrix;
     m_selectionEnd = matrix;
     m_blockMatrix = matrix;
+    m_textFirst = {};
     m_blockAnchor = anchor;
     m_blockCorner = corner;
     m_blockIsWholeMatrix = wholeMatrix;
@@ -246,6 +297,14 @@ private:
   MatrixEntry m_blockAnchor;
   //! The corner of the selected block that Shift+arrow keys move
   MatrixEntry m_blockCorner;
+  //! The first cell of a selected run of characters, see GetSelectedText().
+  CellPtr<Cell> m_textFirst;
+  //! The last cell of a selected run of characters
+  CellPtr<Cell> m_textLast;
+  //! Where in m_textFirst the selected characters start
+  std::size_t m_textFrom = 0;
+  //! Where in m_textLast the selected characters end
+  std::size_t m_textTo = 0;
   //! Has the block grown to cover the whole of m_blockMatrix?
   bool m_blockIsWholeMatrix = false;
   //! Is the selection exactly the matrix a block was chosen in?

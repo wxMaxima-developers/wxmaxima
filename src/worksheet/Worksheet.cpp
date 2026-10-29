@@ -50,6 +50,8 @@
 #include "Version.h"
 #include "Compat.h"
 #include "WorksheetContextMenu.h"
+#include "OutputTextSelection.h"
+#include "cells/TextCell.h"
 #include "WorksheetEvalQueue.h"
 #include "WorksheetExport.h"
 #include "WXMformat.h"
@@ -925,7 +927,21 @@ void Worksheet::DrawGroupCell(wxDC &dc, wxDC &adc, GroupCell &cell)
       dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_SELECTION))));
       const auto block = GetDocumentCellPointers().GetSelectedMatrixBlock();
       auto *blockMatrix = GetDocumentCellPointers().GetSelectionStart().CastAs<MatrCell *>();
-      if (block && blockMatrix) {
+      if (const auto text = GetDocumentCellPointers().GetSelectedText()) {
+        // Only some characters of a run of text cells are selected (GH #825)
+        for (Cell &c : OnDrawList(text->first)) {
+          if (auto *textCell = dynamic_cast<TextCell *>(&c)) {
+            const std::size_t from = (&c == text->first) ? text->from : 0;
+            const std::size_t to = (&c == text->last) ? text->to :
+              textCell->DisplayedLength();
+            const wxRect rect = textCell->CharacterRect(from, to);
+            if (!rect.IsEmpty() && m_configuration->InUpdateRegion(rect))
+              dc.DrawRectangle(rect);
+          }
+          if (&c == text->last)
+            break;
+        }
+      } else if (block && blockMatrix) {
         // Only a block of this matrix's entries is selected (GH #2345)
         const wxRect rect = blockMatrix->BlockRect(*block);
         if (!rect.IsEmpty())
@@ -2015,6 +2031,8 @@ GroupCell *Worksheet::GetLastCellInWorksheet() const
 void Worksheet::ClickNDrag(wxPoint down, wxPoint up) {
   const Cell *selectionStartOld = GetDocumentCellPointers().GetSelectionStart(),
     *selectionEndOld = GetDocumentCellPointers().GetSelectionEnd();
+  // Selected characters can change while the cells they are in stay the same
+  auto selectedTextOld = GetDocumentCellPointers().GetSelectedText();
   wxRect rect;
 
   switch (m_clickType) {
@@ -2072,7 +2090,8 @@ void Worksheet::ClickNDrag(wxPoint down, wxPoint up) {
 
   // Refresh only if the selection has changed
   if ((selectionStartOld != GetDocumentCellPointers().GetSelectionStart()) ||
-      (selectionEndOld != GetDocumentCellPointers().GetSelectionEnd()))
+      (selectionEndOld != GetDocumentCellPointers().GetSelectionEnd()) ||
+      (selectedTextOld != GetDocumentCellPointers().GetSelectedText()))
     RequestRedraw();
 }
 
@@ -2081,6 +2100,14 @@ void Worksheet::SelectOutputRect(GroupCell *group, wxPoint down, wxPoint up) {
   ClearSelection();
   if (!group)
     return;
+
+  // A drag inside text Maxima printed selects characters (GH #825). Decided
+  // afresh on every move, so leaving the text and coming back works.
+  if (auto range = wxm::OutputTextRange(group->GetLabel(), down, up)) {
+    GetDocumentCellPointers().SetSelectedText(*range);
+    UpdateOutputSelectionString();
+    return;
+  }
 
   wxRect rect;
   rect.x = std::min(down.x, up.x);
@@ -2116,7 +2143,9 @@ void Worksheet::SelectOutputRect(GroupCell *group, wxPoint down, wxPoint up) {
 
 void Worksheet::UpdateOutputSelectionString() {
   wxString selectionString;
-  if (auto block = CopySelectedMatrixBlock())
+  if (auto range = GetDocumentCellPointers().GetSelectedText())
+    selectionString = wxm::TextRangeToString(*range);
+  else if (auto block = CopySelectedMatrixBlock())
     selectionString = block->ToString();
   else {
     const Cell *last = GetDocumentCellPointers().GetSelectionEnd();
@@ -2461,6 +2490,9 @@ wxString Worksheet::GetString(bool lb) const {
   if (!GetDocumentCellPointers().GetSelectionStart())
     return GetActiveCell() ? GetActiveCell()->ToString() : wxString{};
 
+  if (auto range = GetDocumentCellPointers().GetSelectedText())
+    return wxm::TextRangeToString(*range);
+
   if (auto block = CopySelectedMatrixBlock())
     return block->ToString();
 
@@ -2487,6 +2519,17 @@ bool Worksheet::Copy(bool astext) const {
 
   if (!astext && GetDocumentCellPointers().GetSelectionStart()->GetType() == MC_TYPE_GROUP)
     return CopyCells();
+
+  // Some characters of a text: they are only text, in whatever format
+  if (GetDocumentCellPointers().GetSelectedText()) {
+    wxASSERT_MSG(!wxTheClipboard->IsOpened(),
+                 _("Bug: The clipboard is already opened"));
+    if (!wxTheClipboard->Open())
+      return false;
+    wxTheClipboard->SetData(new wxTextDataObject(GetString()));
+    wxTheClipboard->Close();
+    return true;
+  }
 
   // If the selection is IMAGE or ANIMATION, copy it to clipboard
   // as image.

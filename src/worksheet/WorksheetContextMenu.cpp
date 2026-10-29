@@ -311,7 +311,11 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
             popupMenu.Check(EventIDs::menu_print_cellbrackets, configuration->PrintBrackets());
           }
       } else {
-        if (worksheet.CanCopy()) {
+        if (worksheet.GetDocumentCellPointers().GetSelectedText()) {
+          // Some characters of a text (GH #825): there is only text to copy,
+          // and every "Copy as" would copy the whole cells.
+          popupMenu.Append(wxID_COPY, _("Copy"), wxEmptyString, wxITEM_NORMAL);
+        } else if (worksheet.CanCopy()) {
           popupMenu.Append(wxID_COPY, _("Copy"), wxEmptyString, wxITEM_NORMAL);
           popupMenu.Append(EventIDs::menu_copy_uuid, _("Copy position (UUID)"));
           popupMenu.Append(EventIDs::popid_copy_matlab, _("Copy for Octave/Matlab"),
