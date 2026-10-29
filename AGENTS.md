@@ -127,7 +127,11 @@ clang, `-DWXM_SANITIZE=thread`, and `TSAN_OPTIONS=suppressions=test/tsan_suppres
 Without that file every unit test reports dozens of "races" inside GLib,
 Pango and fontconfig, which hand memory between their own threads with locks
 TSan can't see; the file says why each entry is narrow enough not to hide our
-own code. clang needs `libclang-rt-dev` for the TSan runtime. Use it when
+own code. **Run it without `dbus-run-session`**, unlike the other test jobs:
+a session bus makes GLib start its `gdbus` thread, whose handovers with the
+main thread produced 455 reports and failed every unit test on the first CI
+run, and the only suppression covering them (`libglib`) would also hide our
+own event handlers. clang needs `libclang-rt-dev` for the TSan runtime. Use it when
 touching anything a `jthread` or the Maxima socket worker shares with the GUI
 thread: it is what found the race in `MaximaManual` (GH #2583).
 
