@@ -1,5 +1,12 @@
 # Current development version
 
+- Matrix > Classic matrix operations (invert, determinant, rank,
+  eigenvalues, eigenvectors, adjoint, transpose) open a wizard that asks
+  which matrix to use, pre-filled with the selection or `%`, instead of
+  sending the command at once (#647). "Generate Matrix from Expression"
+  asks for rows before columns, like "Enter Matrix", and names its index
+  variables "Row variable" and "Column variable". List > Use list > "apply
+  function to each element" says that it accepts several lists.
 - Copying entries of a matrix -- a block of them dragged across, or all of
   them -- puts them on the clipboard as an RTF table (#959), so a
   spreadsheet or word processor pastes them into a table's cells instead of
