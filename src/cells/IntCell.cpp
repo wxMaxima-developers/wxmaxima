@@ -240,18 +240,11 @@ wxString IntCell::ToMatlab() const {
 wxString IntCell::ToTeX() const {
   wxString s = wxS("\\int");
 
-  wxString to = m_upperLimit->ListToTeX();
-  wxString from = m_lowerLimit->ListToTeX();
-
   if (HasLimits())
-    s += wxS("_{") + from + wxS("}^{") + to + wxS("}");
-  else
-    s += wxS(" ");
-
-  s += m_base->ListToTeX();
-  s += wxS("{\\, ");
-  s += m_var->ListToTeX();
-  s += wxS("}");
+    s += wxS("_") + TeXGroup(m_lowerLimit->ListToTeX()) + wxS("^") +
+      TeXGroup(m_upperLimit->ListToTeX());
+  s += wxS(" ") + m_base->ListToTeX();
+  s += wxS("\\,") + m_var->ListToTeX();
 
   return s;
 }

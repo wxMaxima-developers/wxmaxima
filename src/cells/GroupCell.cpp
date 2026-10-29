@@ -1313,7 +1313,6 @@ wxString GroupCell::ToTeX(const wxString &imgDir, const wxString &filename,
     
   case GC_TYPE_CODE:
     str = ToTeXCodeCell(imgDir, filename, imgCounter);
-    str.Replace(wxS("\\[\\displaystyle \\]"), wxS(""));
     break;
 
   default:
@@ -1452,9 +1451,12 @@ wxString GroupCell::ToTeXCodeCell(const wxString &imgDir, const wxString &filena
     auto closeMath = [&str, &mathMode]() {
       if (!mathMode)
         return;
-      // Some invisible dummy content that keeps TeX happy if the equation
-      // would otherwise end up empty.
-      str += wxS("\\mbox{}\n\\]");
+      // Math mode is only ever opened right before something is written into
+      // it, so the equation can't be empty. But it must not contain an empty
+      // line, which ends a paragraph, and a paragraph can't end in maths.
+      while (str.EndsWith(wxS("\n")))
+        str.RemoveLast();
+      str += wxS("\n\\]");
       mathMode = false;
     };
     auto openVerbatim = [&str, &asciiArt]() {
@@ -1554,10 +1556,16 @@ wxString GroupCell::ToTeXCodeCell(const wxString &imgDir, const wxString &filena
           str += TexEscapeOutputCell(tmp.ToTeX()) + wxS("\n");
           break;
 
-        default:
+        default: {
+          // A cell with no LaTeX (a hidden one, say) must not open an
+          // equation that then stays empty.
+          const wxString tex = tmp.ToTeX();
+          if (tex.IsEmpty())
+            break;
           openMath();
-          str += tmp.ToTeX();
+          str += tex;
           break;
+        }
         }
       }
     }
@@ -2129,7 +2137,6 @@ bool GroupCell::IsLesserGCType(GroupType comparedTo) const {
   case GC_TYPE_SECTION:
     return comparedTo == GC_TYPE_TITLE;
   case GC_TYPE_TITLE:
-    return false;
   default:
     return false;
   }

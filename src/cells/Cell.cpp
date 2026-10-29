@@ -1034,11 +1034,74 @@ wxString Cell::ListToMatlab() const {
 
 wxString Cell::ToTeX() const { return {}; }
 
+wxString Cell::TeXGroup(const wxString &tex) {
+  wxString core = tex;
+  core.Trim(true);
+  core.Trim(false);
+  if (core.IsEmpty())
+    return wxS("{}");
+  // A single character
+  if (core.Length() == 1)
+    return core;
+  if (core[0] == wxS('\\')) {
+    // A control symbol like \{ or \%
+    if (core.Length() == 2 && !wxIsalpha(core[1]))
+      return core;
+    // A control word like \alpha
+    bool controlWord = true;
+    for (size_t i = 1; i < core.Length(); i++)
+      if (!wxIsalpha(core[i])) {
+        controlWord = false;
+        break;
+      }
+    // The space keeps the control word from merging with a letter that
+    // follows, as in x^\alpha y.
+    if (controlWord)
+      return core + wxS(" ");
+  }
+  // A group that spans the whole string. "{a}{b}" starts and ends with a
+  // brace, too, but isn't one group: check that the first brace closes last.
+  if (core.StartsWith(wxS("{")) && core.EndsWith(wxS("}"))) {
+    int depth = 0;
+    bool closesEarly = false;
+    for (size_t i = 0; i < core.Length(); i++) {
+      if (core[i] == wxS('\\')) {
+        i++; // skips escaped braces
+        continue;
+      }
+      if (core[i] == wxS('{'))
+        depth++;
+      else if (core[i] == wxS('}')) {
+        depth--;
+        if ((depth == 0) && (i + 1 < core.Length())) {
+          closesEarly = true;
+          break;
+        }
+      }
+    }
+    if (!closesEarly)
+      return core;
+  }
+  return wxS("{") + core + wxS("}");
+}
+
+bool Cell::TeXNeedsGrowingDelimiters(const wxString &tex) {
+  for (const auto &tall :
+         {wxS("\\frac"), wxS("\\begin"), wxS("\\sum"), wxS("\\prod"),
+          wxS("\\int"), wxS("\\lim"), wxS("\\left"), wxS("\\sqrt"),
+          wxS("\\overline"), wxS("\\fbox")})
+    if (tex.Contains(tall))
+      return true;
+  return false;
+}
+
 wxString Cell::ListToTeX() const {
   wxString retval;
   for (const Cell &tmp : OnList(this)) {
-    if (((!retval.IsEmpty()) && (tmp.GetTextStyle() == TS_LABEL)) ||
-        (tmp.BreakLineHere()))
+    // A label or a forced line break starts a new equation -- unless nothing
+    // was written yet, which would only leave an empty one in front.
+    if ((!retval.IsEmpty()) &&
+        ((tmp.GetTextStyle() == TS_LABEL) || (tmp.BreakLineHere())))
       retval += wxS("\\]\\[");
     retval += tmp.ToTeX();
   }
@@ -1211,7 +1274,11 @@ wxString Cell::RTFescape(wxString input, bool MarkDown) {
   wxString output;
   wxString::const_iterator it = input.begin();
   for (; it != input.end(); ++it) {
-    wxChar ch = *it;
+    const wxUniChar ch = *it;
+    // Compare a wide enough type: where wchar_t is only 16 bits (Windows)
+    // "codepoint < 65536" would otherwise be flagged as always-true and the
+    // surrogate-pair branch as unreachable.
+    const long codepoint = static_cast<long>(ch.GetValue());
     if (ch == wxS('\n')) {
       if ((it != input.begin() && *(it - 1) == wxS('\n')) || !MarkDown)
         output += wxS("\\par}\n{\\pard ");
@@ -1220,13 +1287,9 @@ wxString Cell::RTFescape(wxString input, bool MarkDown) {
     } else if (ch == wxS('\r')) {
       output += wxS("\\line ");
     } else {
-      if ((ch < 128) && (ch > 0)) {
+      if ((codepoint < 128) && (codepoint > 0)) {
         output += ch;
       } else {
-        // Compare a wide enough type: where wchar_t is only 16 bits (Windows)
-        // "codepoint < 65536" would otherwise be flagged as always-true and the
-        // surrogate-pair branch as unreachable.
-        const long codepoint = static_cast<long>(ch);
         if (codepoint < 32768) {
           output += wxString::Format("\\u%li?", codepoint);
         } else if (codepoint < 65536) {

@@ -38,6 +38,8 @@
    can point to an ImgCell and an Animation and that can use the methods common
    to both
 */
+class Image;
+
 class ImgCellBase : public Cell
 {
 public:
@@ -64,6 +66,13 @@ public:
 
   //! Can this image be exported in SVG format?
   virtual bool CanExportSVG() const = 0;
+
+  /*! The RTF picture (a {\\pict ...} group) that shows this image
+
+    PNG and JPEG data is embedded as it is; any other format is converted to
+    PNG first, since RTF knows no other bitmap format.
+  */
+  static wxString ImageToRTF(Image &image);
 
   friend class AnimationCell;
 

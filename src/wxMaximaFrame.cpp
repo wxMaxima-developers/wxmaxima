@@ -674,14 +674,9 @@ void wxMaximaFrame::UpdateStatusMaximaBusy() {
     if (!m_StatusSaving) {
       switch (m_StatusMaximaBusy) {
       case StatusBar::MaximaStatus::process_wont_start:
-        m_bytesFromMaxima_last = 0;
-        break;
       case StatusBar::MaximaStatus::userinput:
-        m_bytesFromMaxima_last = 0;
-        break;
       case StatusBar::MaximaStatus::sending:
         m_bytesFromMaxima_last = 0;
-        // We don't evaluate any cell right now.
         break;
       case StatusBar::MaximaStatus::waiting:
       case StatusBar::MaximaStatus::maximaerror:
@@ -704,23 +699,11 @@ void wxMaximaFrame::UpdateStatusMaximaBusy() {
         m_bytesReadDisplayTimer.StartOnce(300);
         break;
       case StatusBar::MaximaStatus::parsing:
-        m_bytesFromMaxima_last = 0;
-        break;
       case StatusBar::MaximaStatus::debugging:
-        m_bytesFromMaxima_last = 0;
-        break;
       case StatusBar::MaximaStatus::lispmode:
-        m_bytesFromMaxima_last = 0;
-        break;
       case StatusBar::MaximaStatus::disconnected:
-        m_bytesFromMaxima_last = 0;
-        break;
       case StatusBar::MaximaStatus::wait_for_start:
-        m_bytesFromMaxima_last = 0;
-        break;
       case StatusBar::MaximaStatus::waitingForAuth:
-        m_bytesFromMaxima_last = 0;
-        break;
       case StatusBar::MaximaStatus::waitingForPrompt:
         m_bytesFromMaxima_last = 0;
         break;

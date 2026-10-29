@@ -1438,7 +1438,7 @@ bool MyDropTarget::OnDropFiles(wxCoord WXUNUSED(x), wxCoord WXUNUSED(y),
   bool success = true;
   for(const auto &file:files)
     {
-      if (wxGetKeyState(WXK_SHIFT)) {
+      if (wxGetKeyState(WXK_SHIFT) || file.Lower().EndsWith(wxS(".txt"))) {
         m_wxmax->GetWorksheet()->InsertText(file);
       }
       else if (file.Lower().EndsWith(wxS(".wxm")) ||
@@ -1463,10 +1463,6 @@ bool MyDropTarget::OnDropFiles(wxCoord WXUNUSED(x), wxCoord WXUNUSED(y),
                file.Lower().EndsWith(wxS(".svgz"))) {
         m_wxmax->LoadImage(file);
       }
-      else if (file.Lower().EndsWith(wxS(".txt")))
-        {
-          m_wxmax->GetWorksheet()->InsertText(file);
-        }
       else
         success = false;
     }

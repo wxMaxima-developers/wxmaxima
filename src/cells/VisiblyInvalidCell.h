@@ -41,11 +41,6 @@ public:
   virtual ~VisiblyInvalidCell(){}
   virtual std::unique_ptr<Cell> Copy(GroupCell *group) const override;
   const CellTypeInfo &GetInfo() override;
-
-  using Cell::SetCurrentPoint;
-  void SetCurrentPoint(wxPoint point) const override;
-  void Draw(wxDC *dc, wxDC *antialiassingDC) override;
-
 };
 
 #endif // VISIBLYINVALIDCELL_H

@@ -7,6 +7,18 @@
   holding fractions, powers and the like is still copied as an equation.
   Selecting the matrix as a whole, parentheses and all, copies it as an
   equation as before.
+- LaTeX export and "Copy as LaTeX" produce leaner markup: `x^2` instead of
+  `{{x}^{2}}`, `x_1` instead of `{x_1}`, `\sin(x)` instead of `\sin{(x)}`,
+  plain parentheses and `|...|` unless the contents are taller than a line,
+  no `\left. \right.` around a sum's argument, no `\ensuremath{}` inside
+  maths and no empty equations or `\mbox{}` padding. Operators like `+`, `=`
+  and `,` are no longer `\mathop{}`s, which gave them the spacing of a big
+  operator, and a one-letter function name isn't either, which shifted it
+  vertically. Fixed along the way: a second result of a cell lost its
+  `\displaystyle`, the input prompt's `>` was wrapped in `\ensuremath{}`
+  twice, an output label showed as "% o1", a set `{1}` lost its
+  braces, a limit's arrow came out as `->`, and a sum whose argument the
+  worksheet shows in parentheses is exported with them.
 - ESC, a hexadecimal number and ESC enter that Unicode character again, as
   the manual says (#2561): the list of symbols closed as soon as the number
   matched no symbol's name. The list now shows the character the number
@@ -34,6 +46,28 @@
   sidebar, AI chat sidebar, scalable plots, right-to-left text editing),
   saying for each missing one why, and how to get it. Several depend on how
   wxWidgets itself was built, which a packager couldn't easily tell before.
+- Fixes found by clang-tidy's bugprone checks, which a new CI job now keeps
+  clean:
+  - A placeholder for missing output ("?" in red) was never drawn.
+  - LaTeX export turned `%xi` and `%Xi` into the nonexistent `\ui`, and
+    capital Greek letters that look like Latin ones (`%Epsilon`, `%Rho`, ...)
+    into commands LaTeX doesn't know. They now export as `\xi`, `\Xi` and
+    Latin letters.
+  - In the string conversion menu, "char to Ascii code", "Unicode code
+    point to char" and "Unicode code point to UTF8" ran the command of a
+    neighbouring entry, and "UTF8 to Unicode code point" asked for a code
+    point instead of a list of UTF8 numbers.
+  - Printing computed its scale with an integer division, which rounded
+    the printer's resolution down to a multiple of 96 dpi, and down to zero
+    for a printer reporting less.
+- Fixes found by clang's static analyzer, which the clang-tidy CI job now
+  checks too:
+  - Copying an animation as RTF (what a word processor pastes) wrote the
+    image data into memory that had already been freed, so the picture was
+    missing and the program could crash later on.
+  - A label hidden by the label settings, or a user-defined label, showed
+    the wrong text until the next relayout after a settings change; a copied
+    cell showed its automatic label instead of the user-defined one.
 - About 200 places that copied a string, XML document or similar object
   where a reference or a move would do no longer copy it (Coverity's
   "copy instead of move" findings).

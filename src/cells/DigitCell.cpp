@@ -48,7 +48,7 @@ DEFINE_CELL(DigitCell)
 
 void DigitCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
-    Cell::Recalculate(fontsize);
+    Cell::Recalculate(fontsize); // NOLINT(bugprone-parent-virtual-call): measures its text itself
     SetFont(m_configuration->GetRecalcDC(), m_fontSize_Scaled);
     wxSize sz =
       CalculateTextSize(m_configuration->GetRecalcDC(), m_text, cellText);
@@ -70,12 +70,8 @@ bool DigitCell::GapFollows() const {
     GetNext() && !m_text.EndsWith(wxS("."));
 }
 
-void DigitCell::SetCurrentPoint(wxPoint point) const {
-  Cell::SetCurrentPoint(point);
-}
-
 void DigitCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
-  Cell::Draw(dc, antialiassingDC);
+  Cell::Draw(dc, antialiassingDC); // NOLINT(bugprone-parent-virtual-call): draws its text itself
   if (DrawThisCell()) {
     wxPoint point = GetCurrentPoint();
     SetTextColor(dc);

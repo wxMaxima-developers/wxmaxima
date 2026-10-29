@@ -3554,7 +3554,8 @@ void ConfigDialogue::UpdateExample() {
     m_examplePanel->SetBackgroundColour(
                                         m_configuration->GetStyle(TS_DOCUMENT_BACKGROUND)->GetColor());
   }
-  m_sampleWorksheet->Refresh();
+  if (m_sampleWorksheet)
+    m_sampleWorksheet->Refresh();
 }
 
 void ConfigDialogue::OnTabChange(wxBookCtrlEvent &event) {
@@ -3580,7 +3581,8 @@ void ConfigDialogue::LoadSave(wxCommandEvent &event) {
       OnChangeStyle(dummy);
     }
   }
-  m_sampleWorksheet->Refresh();
+  if (m_sampleWorksheet)
+    m_sampleWorksheet->Refresh();
 }
 
 

@@ -1318,7 +1318,6 @@ bool Worksheet::IsLesserGCType(int type, int comparedTo) {
     else
       return false;
   case GC_TYPE_TITLE:
-    return false;
   default:
     return false;
   }
@@ -2815,10 +2814,17 @@ bool Worksheet::CopyTeX() const {
     if (inMath)
       s = wxS("\\[");
   }
+  const std::size_t contentStart = s.Length();
   if (auto block = CopySelectedMatrixBlock())
     s += block->ToTeX();
   else
     for (const Cell &tmp : OnList(start)) {
+      // A label starts an equation of its own (\tag{}s can't share one).
+      if ((start->GetType() != MC_TYPE_GROUP) &&
+          ((tmp.GetTextStyle() == TS_LABEL) ||
+           (tmp.GetTextStyle() == TS_USERLABEL)) &&
+          (s.Length() > contentStart))
+        s += wxS("\\]\n\\[");
       s += tmp.ToTeX();
       if (&tmp == GetDocumentCellPointers().GetSelectionEnd())
         break;
@@ -5468,6 +5474,8 @@ bool Worksheet::TreeUndoFold(UndoActions *sourcelist,
     // later deleted) -- nothing to undo.
     return false;
 
+  if (!action.m_fold)
+    return false;
   TreeUndoAction::FoldDirection direction = *action.m_fold;
 
   // Record the opposite direction, so this undo step can itself be redone.
