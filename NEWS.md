@@ -1,5 +1,9 @@
 # Current development version
 
+- The language chooser lists every language under its own name, followed by
+  its name in the current UI language ("Deutsch — German"), so someone who
+  ended up with a UI language they can't read still finds theirs (#849). The
+  list is now sorted, too: it used to come out in hash-table order.
 - Any symbol can get a keyboard shortcut that types it into the worksheet
   (#2578): right-click its button in the Greek or the Symbols sidebar, or use
   the new table in the "Options" tab of the configuration dialog. The table
