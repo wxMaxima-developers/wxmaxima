@@ -2039,6 +2039,18 @@ public:
   */
   void AnonymizeCodeCells();
 
+  /*! Forget the answers to Maxima's questions remembered by some cells (GH #1018)
+
+    Acts on the code cells in the selection or, if no cells are selected, on
+    the cell the cursor is in -- the same cells "Automatically send known
+    answers" acts on. Not undoable: the answers aren't part of the undo
+    history, and a forgotten answer is learned again the next time the
+    question is answered.
+
+    \return the number of cells that actually forgot an answer
+  */
+  std::size_t ForgetKnownAnswers();
+
   wxString GetInputAboveCaret();
 
   wxString GetOutputAboveCaret();

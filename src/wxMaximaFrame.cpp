@@ -1142,6 +1142,8 @@ void wxMaximaFrame::SetupCellMenu() {
   m_CellMenu->AppendCheckItem(
                               EventIDs::popid_auto_answer, _("Automatically answer questions"),
                               _("Automatically fill in answers known from the last run"));
+  m_CellMenu->Append(EventIDs::popid_forget_answers, _("Forget known answers"),
+                     _("Forget the answers wxMaxima remembers from earlier runs"));
 
   m_MenuBar->Append(m_CellMenu, _("Ce&ll"));
 }

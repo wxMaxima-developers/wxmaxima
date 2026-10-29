@@ -2418,6 +2418,12 @@ void MaximaCommandMenus::OnInsertMenu(wxCommandEvent &event) {
   if(event.GetId() == EventIDs::popid_never_autoanswer){
     m_wxMaxima.m_configuration.OfferKnownAnswers(!m_wxMaxima.m_configuration.OfferKnownAnswers());
   }
+  else if(event.GetId() == EventIDs::popid_forget_answers){
+    // The answers are saved with the worksheet, so forgetting them is a change.
+    if (m_wxMaxima.GetWorksheet()->ForgetKnownAnswers() > 0)
+      m_wxMaxima.m_fileSaved = false;
+    return;
+  }
   else if(event.GetId() == EventIDs::popid_auto_answer){
     if (m_wxMaxima.GetWorksheet()->GetActiveCell() &&
         m_wxMaxima.GetWorksheet()->GetActiveCell()->GetGroup()->GetGroupType() ==

@@ -835,6 +835,18 @@ if(TARGET wxmTestApp)
     add_test(NAME AnonymizeCodeCells
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_AnonymizeCodeCells>")
 
+    # Pins "Forget known answers" (GH #1018): the answers remembered for
+    # Maxima's questions are dropped for the cell under the cursor or the
+    # selected cells, and for no other cell.
+    add_executable(test_ForgetKnownAnswers
+        test_ForgetKnownAnswers.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_ForgetKnownAnswers PUBLIC cxx_std_20)
+    target_link_libraries(test_ForgetKnownAnswers PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME ForgetKnownAnswers
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_ForgetKnownAnswers>")
+
     # The tray icon's menu items must reach their handlers with an
     # AppIndicator tray, which redirects the menu's events to the icon.
     add_executable(test_TrayIcon

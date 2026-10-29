@@ -285,6 +285,9 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
                                       "offer them as the default answer"));
           popupMenu.Check(EventIDs::popid_never_autoanswer,
                           !configuration->OfferKnownAnswers());
+          popupMenu.Append(EventIDs::popid_forget_answers, _("Forget known answers"),
+                           _("Forget the answers wxMaxima remembers from earlier runs"));
+          popupMenu.Enable(EventIDs::popid_forget_answers, group->ContainsSavedAnswers());
         }
         if (group->GetGroupType() == GC_TYPE_IMAGE) {
           popupMenu.AppendSeparator();
@@ -666,6 +669,9 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
                                       "offer them as the default answer"));
           popupMenu.Check(EventIDs::popid_never_autoanswer,
                           !configuration->OfferKnownAnswers());
+          popupMenu.Append(EventIDs::popid_forget_answers, _("Forget known answers"),
+                           _("Forget the answers wxMaxima remembers from earlier runs"));
+          popupMenu.Enable(EventIDs::popid_forget_answers, group->ContainsSavedAnswers());
         }
         break;
       case GC_TYPE_TITLE:

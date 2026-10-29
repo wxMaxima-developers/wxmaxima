@@ -1101,6 +1101,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::menu_pane_toolbar);
   Bind(wxEVT_MENU, &MaximaCommandMenus::OnInsertMenu, &m_menuCommands, EventIDs::popid_auto_answer);
   Bind(wxEVT_MENU, &MaximaCommandMenus::OnInsertMenu, &m_menuCommands, EventIDs::popid_never_autoanswer);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::OnInsertMenu, &m_menuCommands, EventIDs::popid_forget_answers);
   Bind(wxEVT_LISTBOX_DCLICK, &wxMaxima::HistoryDClick, this, history_ctrl_id);
   Bind(wxEVT_LIST_ITEM_ACTIVATED, &wxMaxima::TableOfContentsSelection, this, structure_ctrl_id);
   Bind(wxEVT_BUTTON, &MaximaCommandMenus::StatsMenu, &m_menuCommands, EventIDs::menu_stats_histogram);
