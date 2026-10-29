@@ -274,6 +274,17 @@ target_link_libraries(test_SyntaxErrorLocation PRIVATE ${wxWidgets_LIBRARIES})
 add_test(NAME SyntaxErrorLocation
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_SyntaxErrorLocation>")
 
+# What a sidebar symbol is (a letter with its combining accents) and the
+# keyboard shortcuts that type symbols (GH #2578) are GUI-free, so tested
+# directly.
+add_executable(test_SymbolShortcuts
+    test_SymbolShortcuts.cpp ${CMAKE_SOURCE_DIR}/src/SymbolShortcuts.cpp
+    ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
+target_include_directories(test_SymbolShortcuts PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_link_libraries(test_SymbolShortcuts PRIVATE ${wxWidgets_LIBRARIES})
+add_test(NAME SymbolShortcuts
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_SymbolShortcuts>")
+
 # Which files wxMaxima agrees to open from the command line, the desktop or
 # the Finder (opening wxmaxima.exe and its DLLs used to start a window and a
 # Maxima per file) is decided GUI-free, so it is tested directly.
@@ -1128,6 +1139,18 @@ if(TARGET wxmTestApp)
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
     add_test(NAME GreekSidebar
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_GreekSidebar>")
+
+    # Keyboard shortcuts for sidebar symbols (GH #2578): the configuration
+    # dialogue's table, the shortcut dialog and the worksheet typing a
+    # symbol when its shortcut is pressed.
+    add_executable(test_SymbolShortcutsPanel
+        test_SymbolShortcutsPanel.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_SymbolShortcutsPanel PUBLIC cxx_std_20)
+    target_link_libraries(test_SymbolShortcutsPanel PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME SymbolShortcutsPanel
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_SymbolShortcutsPanel>")
 
     # Drives a real BTextCtrl to guard the last-active-text-control tracking
     # (which text control the sidebars' symbol buttons type into). It was a raw

@@ -1,5 +1,12 @@
 # Current development version
 
+- Any symbol can get a keyboard shortcut that types it into the worksheet
+  (#2578): right-click its button in the Greek or the Symbols sidebar, or use
+  the new table in the "Options" tab of the configuration dialog. The table
+  replaces the text field for the Symbols sidebar's extra symbols, and shows
+  which sidebar each symbol is in. A letter with combining accents, like t̄
+  (#2296), now is one symbol with one button, instead of a button for the
+  letter and one for the accent.
 - The configuration dialog's AI tab is split into "Contacting AIs" (the AI
   Chat sidebar's providers and API keys) and the MCP server, whose settings
   used to sit on the Options tab. It now explains what MCP is and that any

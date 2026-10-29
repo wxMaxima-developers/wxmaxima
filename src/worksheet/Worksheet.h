@@ -624,6 +624,8 @@ public:
   void OnContextMenuKey(wxContextMenuEvent &event);
 
   void OnSidebarKey(wxCommandEvent &event);
+  //! Types a symbol from a sidebar button or a symbol's keyboard shortcut
+  void InsertSymbol(const wxString &symbol);
 
   void OnMouseLeftUp(wxMouseEvent &event);
 
