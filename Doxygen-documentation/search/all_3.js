@@ -177,7 +177,7 @@ var searchData=
   ['commandsleftincell_174',['CommandsLeftInCell',['../classEvaluationQueue.html#aa2d62d074c9b0112eddb9f97e1256105',1,'EvaluationQueue']]],
   ['commandwiz_175',['CommandWiz',['../classwxMaxima.html#a81b0c31ba0a9502884abbef437f05bd8',1,'wxMaxima']]],
   ['compat_2eh_176',['Compat.h',['../Compat_8h.html',1,'']]],
-  ['compilehelpfileanchors_177',['CompileHelpFileAnchors',['../classMaximaManual.html#ad9df26d3bf9526ed28e0a348c2fcaa86',1,'MaximaManual']]],
+  ['compilehelpfileanchors_177',['CompileHelpFileAnchors',['../classMaximaManual.html#afb6d384ac3b0e46432171c8de7284729',1,'MaximaManual']]],
   ['completesfiles_178',['CompletesFiles',['../classAutoComplete.html#a5899754a936dc2c7b1360ca0635a93e9',1,'AutoComplete']]],
   ['completesymbol_179',['CompleteSymbol',['../classAutoComplete.html#a820f73cfb05abb20f73ae74f224c39e3',1,'AutoComplete']]],
   ['compositedataobject_180',['CompositeDataObject',['../classCompositeDataObject.html',1,'']]],

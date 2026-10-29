@@ -90,6 +90,7 @@ $(function() {
 <code>#include &lt;wx/filename.h&gt;</code><br />
 <code>#include &lt;wx/log.h&gt;</code><br />
 <code>#include &quot;Configuration.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="Dirstructure_8h_source.html">Dirstructure.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="MaximaManual_8h_source.html">MaximaManual.h</a>&quot;</code><br />
 <code>#include &lt;chrono&gt;</code><br />
 <code>#include &lt;cstdlib&gt;</code><br />
@@ -114,6 +115,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a6e62eb111ae8c592952319451a76d6ae"><td class="memItemLeft" align="right" valign="top"><a id="a6e62eb111ae8c592952319451a76d6ae" name="a6e62eb111ae8c592952319451a76d6ae"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;CompileHelpFileAnchors extracts every anchor from the HTML manual&quot;)</td></tr>
 <tr class="separator:a6e62eb111ae8c592952319451a76d6ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad3f32e2048e504e249a3d5e2fe1b8204"><td class="memItemLeft" align="right" valign="top"><a id="ad3f32e2048e504e249a3d5e2fe1b8204" name="ad3f32e2048e504e249a3d5e2fe1b8204"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;Asking for the anchors again while they are compiled in the background&quot;)</td></tr>
+<tr class="separator:ad3f32e2048e504e249a3d5e2fe1b8204"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a51981a792a6ed264682050d17049c440"><td class="memItemLeft" align="right" valign="top"><a id="a51981a792a6ed264682050d17049c440" name="a51981a792a6ed264682050d17049c440"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;Looking up a keyword before the manual was <a class="el" href="structcmd_8h.html#a9c7b76d5266903891c803132d51ccb90">read</a> uses the built-in anchors&quot;)</td></tr>
 <tr class="separator:a51981a792a6ed264682050d17049c440"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -126,7 +130,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>main</b> (int argc, ch
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Unit test for <a class="el" href="classMaximaManual.html">MaximaManual</a>'s help-anchor parsing. </p>
-<p>The manual anchors used to be exercised only indirectly, by the batch-mode integration tests. That coverage was removed once batch mode stopped compiling anchors (they are an interactive-only convenience and compiling them in a &ndash;batch/&ndash;exit-on-error run only wasted time &ndash; and, on a read-only config dir, wedged shutdown). This test exercises the parser directly against a small fixture manual instead, so <a class="el" href="classMaximaManual.html#ad9df26d3bf9526ed28e0a348c2fcaa86" title="Collect all keyword anchors in the help file.">MaximaManual::CompileHelpFileAnchors()</a> keeps a regression net without needing <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>, the real HTML manual, or a writable config dir. </p>
+<p>The manual anchors used to be exercised only indirectly, by the batch-mode integration tests. That coverage was removed once batch mode stopped compiling anchors (they are an interactive-only convenience and compiling them in a &ndash;batch/&ndash;exit-on-error run only wasted time &ndash; and, on a read-only config dir, wedged shutdown). This test exercises the parser directly against a small fixture manual instead, so <a class="el" href="classMaximaManual.html#afb6d384ac3b0e46432171c8de7284729" title="Collect all keyword anchors in the help file.">MaximaManual::CompileHelpFileAnchors()</a> keeps a regression net without needing <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>, the real HTML manual, or a writable config dir. </p>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

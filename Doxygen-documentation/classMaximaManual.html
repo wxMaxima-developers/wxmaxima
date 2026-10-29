@@ -110,10 +110,9 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><b>GetHelpfileURL</b
 void&#160;</td><td class="memItemRight" valign="bottom"><b>LoadHelpFileAnchors</b> (const wxString &amp;docdir, const wxString &amp;maximaVersion)</td></tr>
 <tr class="memdesc:a951e46e3290566074f0c09b2c9652991"><td class="mdescLeft">&#160;</td><td class="mdescRight">Search maxima's help file for command and variable names. <br /></td></tr>
 <tr class="separator:a951e46e3290566074f0c09b2c9652991"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad9df26d3bf9526ed28e0a348c2fcaa86"><td class="memItemLeft" align="right" valign="top"><a id="ad9df26d3bf9526ed28e0a348c2fcaa86" name="ad9df26d3bf9526ed28e0a348c2fcaa86"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>CompileHelpFileAnchors</b> (const <a class="el" href="structstop__token.html">stop_token</a> &amp;stopToken, const wxString &amp;maximaHtmlDir, const wxString &amp;maximaVersion, const wxString &amp;saveName)</td></tr>
-<tr class="memdesc:ad9df26d3bf9526ed28e0a348c2fcaa86"><td class="mdescLeft">&#160;</td><td class="mdescRight">Collect all keyword anchors in the help file. <br /></td></tr>
-<tr class="separator:ad9df26d3bf9526ed28e0a348c2fcaa86"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb6d384ac3b0e46432171c8de7284729"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMaximaManual.html#afb6d384ac3b0e46432171c8de7284729">CompileHelpFileAnchors</a> (const <a class="el" href="structstop__token.html">stop_token</a> &amp;stopToken, const wxString &amp;maximaHtmlDir, const wxString &amp;maximaShareDir, const wxString &amp;maximaVersion, const wxString &amp;saveName)</td></tr>
+<tr class="memdesc:afb6d384ac3b0e46432171c8de7284729"><td class="mdescLeft">&#160;</td><td class="mdescRight">Collect all keyword anchors in the help file.  <br /></td></tr>
+<tr class="separator:afb6d384ac3b0e46432171c8de7284729"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8f70e3615c5761666ac92b7902cc96bc"><td class="memItemLeft" align="right" valign="top"><a id="a8f70e3615c5761666ac92b7902cc96bc" name="a8f70e3615c5761666ac92b7902cc96bc"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>LoadManualAnchorsFromCache</b> ()</td></tr>
 <tr class="memdesc:a8f70e3615c5761666ac92b7902cc96bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load the result from the last CompileHelpFileAnchors from the disk cache. <br /></td></tr>
@@ -131,6 +130,56 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SaveManualAnchorsToCa
 <tr class="memdesc:aa74be5b159c5fd06c5a0ef7e082f8f12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Save the list of help file anchors to the cache. <br /></td></tr>
 <tr class="separator:aa74be5b159c5fd06c5a0ef7e082f8f12"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="afb6d384ac3b0e46432171c8de7284729" name="afb6d384ac3b0e46432171c8de7284729"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb6d384ac3b0e46432171c8de7284729">&#9670;&#160;</a></span>CompileHelpFileAnchors()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MaximaManual::CompileHelpFileAnchors </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structstop__token.html">stop_token</a> &amp;&#160;</td>
+          <td class="paramname"><em>stopToken</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
+          <td class="paramname"><em>maximaHtmlDir</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
+          <td class="paramname"><em>maximaShareDir</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
+          <td class="paramname"><em>maximaVersion</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
+          <td class="paramname"><em>saveName</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Collect all keyword anchors in the help file. </p>
+<p>Runs in a background thread, so it reads nothing but its arguments and the anchor maps (under m_helpFileAnchorsLock). </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/<a class="el" href="MaximaManual_8h_source.html">MaximaManual.h</a></li>
 <li>src/<a class="el" href="MaximaManual_8cpp.html">MaximaManual.cpp</a></li>
