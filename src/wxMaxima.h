@@ -547,8 +547,6 @@ protected:
 
   bool UpdateDrawPane();
 
-  wxString ExtractFirstExpression(const wxString &entry);
-
   wxString GetDefaultEntry();
 
   void OnClose(wxCloseEvent &event);               //!< close wxMaxima window

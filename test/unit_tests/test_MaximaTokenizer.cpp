@@ -189,6 +189,28 @@ public:
 };
 wxDECLARE_APP(TestApp);
 
+SCENARIO("FirstStatement drops the terminator a menu command can't wrap (GH #244)") {
+  // "Simplify" on a selected "x+1;" used to send "ratsimp(x+1;);".
+  REQUIRE(MaximaTokenizer::FirstStatement(wxS("x+1;"), g_cfg) == wxS("x+1"));
+  REQUIRE(MaximaTokenizer::FirstStatement(wxS("  x+1$  "), g_cfg) == wxS("x+1"));
+  REQUIRE(MaximaTokenizer::FirstStatement(wxS("x+1"), g_cfg) == wxS("x+1"));
+  REQUIRE(MaximaTokenizer::FirstStatement(wxEmptyString, g_cfg).IsEmpty());
+
+  WHEN("there are several statements") {
+    THEN("only the first one is kept") {
+      REQUIRE(MaximaTokenizer::FirstStatement(wxS("a:2$\nb^2;"), g_cfg) == wxS("a:2"));
+    }
+  }
+  WHEN("a ; or $ doesn't end a statement") {
+    THEN("it stays") {
+      REQUIRE(MaximaTokenizer::FirstStatement(wxS("concat(\"a;b\", c);"), g_cfg) ==
+              wxS("concat(\"a;b\", c)"));
+      REQUIRE(MaximaTokenizer::FirstStatement(wxS("x /* a; b$ */ + 1;"), g_cfg) ==
+              wxS("x /* a; b$ */ + 1"));
+    }
+  }
+}
+
 int main(int argc, char **argv) {
   wxLog::EnableLogging(false);
   wxApp::SetInstance(new TestApp());

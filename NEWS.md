@@ -1,5 +1,10 @@
 # Current development version
 
+- A menu or toolbar command that works on the selection (Simplify, Factor,
+  Expand, Plot, ...) no longer fails when the selection ends in `;` or `$`
+  (#244): "Simplify" on a selected `x^2+2*x+1;` used to send
+  `ratsimp(x^2+2*x+1;);`, a syntax error. Of several selected statements the
+  first one is used, and a selected code cell stands for its input.
 - Any symbol can get a keyboard shortcut that types it into the worksheet
   (#2578): right-click its button in the Greek or the Symbols sidebar, or use
   the new table in the "Options" tab of the configuration dialog. The table
