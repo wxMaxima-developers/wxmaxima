@@ -659,6 +659,12 @@ static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>OMML2RTF</
 static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>OMML2RTF</b> (wxString ommltext)</td></tr>
 <tr class="memdesc:aa4c2fdc2b97dd0f35e0063783623693a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts OMML math to RTF math. <br /></td></tr>
 <tr class="separator:aa4c2fdc2b97dd0f35e0063783623693a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c92ad0dd368c30fe13061544187b773"><td class="memItemLeft" align="right" valign="top">static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a7c92ad0dd368c30fe13061544187b773">TeXGroup</a> (const wxString &amp;tex)</td></tr>
+<tr class="memdesc:a7c92ad0dd368c30fe13061544187b773"><td class="mdescLeft">&#160;</td><td class="mdescRight">Makes a piece of LaTeX usable as the base or the argument of ^ or _.  <br /></td></tr>
+<tr class="separator:a7c92ad0dd368c30fe13061544187b773"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f041dd6aa0665df08a23e570b0f858c"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a8f041dd6aa0665df08a23e570b0f858c">TeXNeedsGrowingDelimiters</a> (const wxString &amp;tex)</td></tr>
+<tr class="memdesc:a8f041dd6aa0665df08a23e570b0f858c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether delimiters around this LaTeX need to grow with their contents.  <br /></td></tr>
+<tr class="separator:a8f041dd6aa0665df08a23e570b0f858c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ea50434cf209c0179201dfaae87cb5c"><td class="memItemLeft" align="right" valign="top"><a id="a6ea50434cf209c0179201dfaae87cb5c" name="a6ea50434cf209c0179201dfaae87cb5c"></a>
 static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>RTFescape</b> (wxString, bool MarkDown=false)</td></tr>
 <tr class="memdesc:a6ea50434cf209c0179201dfaae87cb5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Escape a string for RTF. <br /></td></tr>
@@ -3405,7 +3411,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 </div><div class="memdoc">
 
 <p>Allows to change the text a <a class="el" href="classTextCell.html" title="A Text cell.">TextCell</a> contains. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
 
 </div>
 </div>
@@ -3511,6 +3517,64 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 
 <p>Recursively visits this cell and everything nested inside it (including an image produced by the very last evaluated cell, which may still be loading on a background thread at the instant this is called), tallying GH #2178 image load failures into <em>dataUnavailable/<em>decodeFailed</em>.</em> </p>
 <p>Reflects only the CURRENT, final state of each image: one that failed once but was then reloaded successfully (e.g. a stale embedded copy later replaced by a fresh evaluation) is not counted. </p>
+
+</div>
+</div>
+<a id="a7c92ad0dd368c30fe13061544187b773" name="a7c92ad0dd368c30fe13061544187b773"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c92ad0dd368c30fe13061544187b773">&#9670;&#160;</a></span>TeXGroup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxString Cell::TeXGroup </td>
+          <td>(</td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
+          <td class="paramname"><em>tex</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Makes a piece of LaTeX usable as the base or the argument of ^ or _. </p>
+<p>Returns tex unchanged if TeX already reads it as one unit &ndash; a single character, a single control sequence like \alpha or a group that is enclosed in braces from start to end &ndash; and wraps it in braces otherwise. This keeps x^2 from becoming {{x}^{2}} while a multi-token base like x_1 still gets the braces that keep x_1^2 from being a "double subscript". </p>
+
+</div>
+</div>
+<a id="a8f041dd6aa0665df08a23e570b0f858c" name="a8f041dd6aa0665df08a23e570b0f858c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8f041dd6aa0665df08a23e570b0f858c">&#9670;&#160;</a></span>TeXNeedsGrowingDelimiters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Cell::TeXNeedsGrowingDelimiters </td>
+          <td>(</td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
+          <td class="paramname"><em>tex</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether delimiters around this LaTeX need to grow with their contents. </p>
+<p>True if tex contains something taller than a line of text: a fraction, a big operator, a root, a matrix or growing delimiters of its own. Only then are \left( ... \right) worth their extra markup; around a plain x+1 they only add noise. </p>
 
 </div>
 </div>

@@ -96,7 +96,7 @@ What CI now does automatically</h1>
 <li><code>appstream-util validate</code> of the appdata file (<code>compile_ubuntu.yml</code>).</li>
 <li>The snap package builds from <code>snap/snapcraft.yaml</code> (<code>build_snap.yml</code>).</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1024"></a>
+<h1><a class="anchor" id="autotoc_md1025"></a>
 Manual steps (still required)</h1>
 <ul>
 <li>Make sure the current git version compiles and <b>all GitHub checks are green</b> — the release jobs only publish after their build+tests pass.</li>
@@ -118,7 +118,7 @@ Manual steps (still required)</h1>
 <li>Download the source tarball (<code>.tar.gz</code> and <code>.zip</code>) and sign each: <code>gpg --armor --detach-sign &lt;filename&gt;</code>, then add the two <code>.asc</code> files to the release page. (Signing needs your private key and is therefore still manual.)</li>
 <li>In <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s source tree, <code>crosscompile-windows/wxmaxima/CMakeLists.txt</code>: update the version number and the MD5 sum of the release tarball.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1025"></a>
+<h2><a class="anchor" id="autotoc_md1026"></a>
 Superseded</h2>
 <ul>
 <li>The old "create a Windows installer using the *Crosscompiled-Windows-installer*
