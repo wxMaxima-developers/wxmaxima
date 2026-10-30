@@ -746,12 +746,11 @@ void AutoComplete::AddSymbol(wxString fun, autoCompletionType type) {
     fun.Replace(chr, wxString(wxS("\\")) + chr);
   
   /// Add symbols
-  {
+  if (type != tmplte) {
     const std::lock_guard<std::mutex> lock(m_keywordsLock);
-    // Last use for everything but templates, which are handled below.
-    if ((type != tmplte) &&
-        (!ranges::contains(m_wordList.at(type), fun)))
+    if (!ranges::contains(m_wordList.at(type), fun))
       m_wordList.at(type).push_back(std::move(fun));
+    return;
   }
   /// Add templates - for given function and given argument count we
   /// only add one template. We count the arguments by counting '<'
