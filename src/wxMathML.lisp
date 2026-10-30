@@ -1061,7 +1061,10 @@ Submit bug reports by following the 'New issue' link on that page."))
     (if (eq 'mqapply (caar xarr))
 	(setq f (cadr xarr)
 	      xarr (cdr xarr)
-	      l (wxxml f (append l (list "<ie><p>")) (list "</p>")
+	      l (wxxml f (append l (if nc
+				       (list "<ie mat=\"true\"><p>")
+				       (list "<ie><p>")))
+		       (list "</p>")
 		       'mparen 'mparen))
 	(setq f (caar xarr)
 	      l (wxxml f (append l (if nc

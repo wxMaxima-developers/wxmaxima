@@ -909,6 +909,8 @@ std::unique_ptr<Cell> MathParser::ParseSubSupTag(wxXmlNode *node, int depth) {
     subsup->SetStyle(TS_VARIABLE);
     ParseCommonAttrs(node, subsup);
   }
+  // A[i]^^n, see wxxml-mexpt-array in wxMathML.lisp
+  subsup->IsMatrix(node->GetAttribute(wxS("mat")) == wxS("true"));
   return subsup;
 }
 

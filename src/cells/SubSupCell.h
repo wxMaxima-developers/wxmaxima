@@ -36,7 +36,7 @@ public:
   const CellTypeInfo &GetInfo() override;
   std::unique_ptr<Cell> Copy(GroupCell *group) const override;
 
-  size_t GetInnerCellCount() const override { return 5; }
+  size_t GetInnerCellCount() const override { return 7; }
   Cell *GetInnerCell(size_t index) const override {
     switch (index) {
     case 0:
@@ -49,6 +49,10 @@ public:
       return m_preSubCell.get();
     case 4:
       return m_preSupCell.get();
+    case 5:
+      return m_matrixOpen.get();
+    case 6:
+      return m_matrixClose.get();
     default:
       return nullptr;
     }
@@ -60,6 +64,12 @@ public:
   void SetPreSup(std::unique_ptr<Cell> &&index);
   void SetPostSub(std::unique_ptr<Cell> &&index);
   void SetPostSup(std::unique_ptr<Cell> &&index);
+
+  /*! Is the exponent a matrix power (A[i]^^n, Maxima's mncexpt)?
+
+    Like ExptCell::IsMatrix(): draws the exponent between angle brackets.
+  */
+  void IsMatrix(bool isMatrix);
 
   void Recalculate(const AFontSize fontsize) const override;
 
@@ -81,6 +91,12 @@ public:
   const wxString &GetAltCopyText() const override { return m_altCopyText; }
 
 private:
+  //! The width the post-superscript takes, a matrix power's brackets included.
+  wxCoord PostSupWidth() const;
+  //! The post-superscript as MathML, a matrix power's brackets included.
+  wxString PostSupToMathML() const;
+  //! The post-superscript as OMML, a matrix power's brackets included.
+  wxString PostSupToOMML() const;
   //! Text that should end up on the clipboard if this cell is copied as text.
   wxString m_altCopyText;
 
@@ -96,6 +112,9 @@ private:
   std::unique_ptr<Cell> m_postSupCell;
   std::unique_ptr<Cell> m_preSubCell;
   std::unique_ptr<Cell> m_preSupCell;
+  //! The angle brackets around a matrix power's exponent; null otherwise.
+  std::unique_ptr<Cell> m_matrixOpen;
+  std::unique_ptr<Cell> m_matrixClose;
   // The pointers above point to inner cells and must be kept contiguous.
 };
 

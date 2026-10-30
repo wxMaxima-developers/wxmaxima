@@ -1,5 +1,13 @@
 # Current development version
 
+- A matrix power `A^^n` is now shown as A^⟨n⟩, the way Maxima's own 2D
+  display and `tex()` show it (#1005). For a matrix `A^n` is the
+  elementwise power in Maxima, so the two used to look the same although
+  they are different results (`A^^-1` is the inverse, `A^-1` the matrix of
+  reciprocals). Hovering over it explains the difference, LaTeX export
+  writes `A^{\langle n\rangle}`, MathML and RTF keep the brackets, and
+  saving and reloading a .wxmx no longer turns a matrix power into an
+  ordinary one. This also holds for an indexed base, `a[1]^^2`.
 - On macOS, wxMaxima looks for Maxima and gnuplot in the installation prefix
   it was built with first, then in Homebrew's (now also `/opt/homebrew`, its
   location on Apple silicon) and MacPorts' prefixes (#1347). A package
