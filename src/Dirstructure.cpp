@@ -34,6 +34,7 @@
 #include "dialogs/LoggingMessageDialog.h"
 #include "Version.h"
 #include "BuildConfig.h"
+#include "PackagePrefixes.h"
 #include <wx/dir.h>
 #include <wx/filefn.h>
 #include <wx/filename.h>
@@ -130,7 +131,7 @@ wxString Dirstructure::ResourcesDir() {
 
     exepath = exe.GetPath();
   } else {
-    exepath = CMAKE_INSTALL_PREFIX;
+    exepath = wxString::FromUTF8(CMAKE_INSTALL_PREFIX);
   }
   return exepath;
 }
@@ -212,28 +213,15 @@ wxString Dirstructure::MaximaDefaultLocation() {
 
   // -------------------------- Mac OS only ------------------------
 
-  // The Macports path (if it is preferred over homebrew)
-#if OSX_MACPORTS_PREFER
-  maximaLocation = OSX_MACPORTS_PREFIX "/bin/maxima";
-  if (wxFileExists(maximaLocation))
-    return maximaLocation;
-  wxLogMessage(notFound, maximaLocation.mb_str());
-#endif
+  // The package managers' prefixes, starting with the one wxMaxima was built
+  // for (GH #1347)
+  for (const auto &prefix : wxm::PackagePrefixes(wxString::FromUTF8(CMAKE_INSTALL_PREFIX))) {
+    maximaLocation = prefix + wxS("/bin/maxima");
+    if (wxFileExists(maximaLocation))
+      return maximaLocation;
+    wxLogMessage(notFound, maximaLocation.mb_str());
+  }
 
-  // The homebrew path
-  maximaLocation = "/usr/local/bin/maxima";
-  if (wxFileExists(maximaLocation))
-    return maximaLocation;
-
-  // The Macports path (if it is not preferred over homebrew)
-#if !OSX_MACPORTS_PREFER
-  wxLogMessage(notFound, maximaLocation.mb_str());
-  maximaLocation = OSX_MACPORTS_PREFIX "/bin/maxima";
-  if (wxFileExists(maximaLocation))
-    return maximaLocation;
-#endif
-
-  wxLogMessage(notFound, maximaLocation.mb_str());
   maximaLocation = "/Applications/Maxima.app";
   if (wxFileExists(maximaLocation))
     return maximaLocation;

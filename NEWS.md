@@ -1,5 +1,12 @@
 # Current development version
 
+- On macOS, wxMaxima looks for Maxima and gnuplot in the installation prefix
+  it was built with first, then in Homebrew's (now also `/opt/homebrew`, its
+  location on Apple silicon) and MacPorts' prefixes (#1347). A package
+  manager therefore no longer needs to patch the source: the
+  `OSX_MACPORTS_PREFIX` and `OSX_MACPORTS_PREFER` macros are gone, and
+  passing its prefix as `CMAKE_INSTALL_PREFIX`, which MacPorts already does,
+  is enough. That prefix may now contain quotes and backslashes.
 - A command that prints faster than wxMaxima can display the output, such as
   `for i thru i+1 do disp(i)`, no longer freezes wxMaxima (#2594). The
   output scrolls by while it arrives, the window reacts to the keyboard and
