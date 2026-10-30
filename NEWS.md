@@ -1,5 +1,9 @@
 # Current development version
 
+- Every maths cell is 88 bytes smaller (136 instead of 224 bytes on 64-bit
+  Linux), so huge results such as an expanded product of 20 factors need
+  noticeably less memory (#804). A cell's ID and any unknown XML attributes
+  are now only stored for the few cells that have them.
 - With `derivabbrev:true`, a derivative inside a product or after a minus
   sign is no longer put in parentheses: `B*diff(C,x)` now shows as B C_x,
   as in Maxima's own display (#640). A power or factorial of it keeps them.
