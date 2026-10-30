@@ -2664,7 +2664,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event) {
         if (CursorPosition() < m_text.Length()) {
           m_isDirty = true;
           m_containsChanges = true;
-          m_text = m_text.SubString(0, CursorPosition() - 1) +
+          m_text = m_text.Left(CursorPosition()) +
             m_text.SubString(CursorPosition() + 1, m_text.Length());
         }
       } else {
@@ -2687,21 +2687,21 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event) {
       while (pos > 0 &&
              wxIsalnum(m_text.at(pos - 1))) {
         pos--;
-        m_text = m_text.SubString(0, pos - 1) +
+        m_text = m_text.Left(pos) +
           m_text.SubString(pos + 1, m_text.Length());
       }
       // Delete Spaces, Tabs and Newlines until the next printable character
       while (pos > 0 &&
              wxIsspace(m_text.at(pos - 1))) {
         pos--;
-        m_text = m_text.SubString(0, pos - 1) +
+        m_text = m_text.Left(pos) +
           m_text.SubString(pos + 1, m_text.Length());
       }
 
       // If we didn't delete anything till now delete one single character.
       if (CursorPosition() == pos) {
         pos--;
-        m_text = m_text.SubString(0, pos - 1) +
+        m_text = m_text.Left(pos) +
           m_text.SubString(pos + 1, m_text.Length());
       }
       CursorPosition(pos);
@@ -2773,21 +2773,21 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event) {
           while (pos > 0 &&
                  wxIsalnum(m_text.at(pos - 1))) {
             pos--;
-            m_text = m_text.SubString(0, pos - 1) +
+            m_text = m_text.Left(pos) +
               m_text.SubString(pos + 1, m_text.Length());
           }
           // Delete Spaces, Tabs and Newlines until the next printable character
           while (pos > 0 &&
                  wxIsspace(m_text.at(pos - 1))) {
             pos--;
-            m_text = m_text.SubString(0, pos - 1) +
+            m_text = m_text.Left(pos) +
               m_text.SubString(pos + 1, m_text.Length());
           }
 
           // If we didn't delete anything till now delete one single character.
           if (lastpos == pos) {
             pos--;
-            m_text = m_text.SubString(0, pos - 1) +
+            m_text = m_text.Left(pos) +
               m_text.SubString(pos + 1, m_text.Length());
           }
         }
@@ -3034,24 +3034,24 @@ bool EditorCell::HandleOrdinaryKey(wxKeyEvent &event) {
         !IsEscaped(m_text, CursorPosition() - 1)) {
       switch (keyCode) {
       case '(':
-        m_text = m_text.SubString(0, CursorPosition() - 1) + wxS(")") +
+        m_text = m_text.Left(CursorPosition()) + wxS(")") +
           m_text.SubString(CursorPosition(), m_text.Length());
         break;
       case '[':
-        m_text = m_text.SubString(0, CursorPosition() - 1) + wxS("]") +
+        m_text = m_text.Left(CursorPosition()) + wxS("]") +
           m_text.SubString(CursorPosition(), m_text.Length());
         break;
       case '{':
-        m_text = m_text.SubString(0, CursorPosition() - 1) + wxS("}") +
+        m_text = m_text.Left(CursorPosition()) + wxS("}") +
           m_text.SubString(CursorPosition(), m_text.Length());
         break;
       case '"':
         if (CursorPosition() < m_text.Length() &&
             m_text.at(CursorPosition()) == '"')
-          m_text = m_text.SubString(0, CursorPosition() - 2) +
+          m_text = m_text.Left(CursorPosition() - 1) +
             m_text.SubString(CursorPosition(), m_text.Length());
         else
-          m_text = m_text.SubString(0, CursorPosition() - 1) + wxS("\"") +
+          m_text = m_text.Left(CursorPosition()) + wxS("\"") +
             m_text.SubString(CursorPosition(), m_text.Length());
         break;
       case ')': // jump over ')'
@@ -3083,7 +3083,7 @@ bool EditorCell::HandleOrdinaryKey(wxKeyEvent &event) {
         if (m_configuration->GetInsertAns()) {
           // Insert an "%" before an operator that begins this cell
           if (len == 1 && CursorPosition() == 1) {
-            m_text = m_text.SubString(0, CursorPosition() - 2) + wxS("%") +
+            m_text = m_text.Left(CursorPosition() - 1) + wxS("%") +
               m_text.SubString(CursorPosition() - 1, m_text.Length());
             CursorMove(1);
           }
@@ -3174,7 +3174,7 @@ void EditorCell::FindMatchingParens() {
   }
   if ((charUnderCursor == wxS('(')) || (charUnderCursor == wxS('[')) ||
       (charUnderCursor == wxS('{'))) {
-    size_t parenLevel = 0;
+    long parenLevel = 0;
     size_t pos = 0;
     for (auto const &tok : m_tokens) {
       if (pos >= CursorPosition()) {
@@ -3201,15 +3201,13 @@ void EditorCell::FindMatchingParens() {
   }
   if ((charUnderCursor == wxS(')')) || (charUnderCursor == wxS(']')) ||
       (charUnderCursor == wxS('}'))) {
-    size_t parenLevel = 0;
-    size_t pos;
-    if(m_text.IsEmpty())
-      pos = 0;
-    else
-      pos = m_text.Length() - 1;
+    // Signed: walking backwards, pos goes below 0 after the first token.
+    long parenLevel = 0;
+    long pos = static_cast<long>(m_text.Length()) - 1;
+    const long cursor = static_cast<long>(CursorPosition());
     auto const tokens = MaximaTokenizer(m_text, m_configuration).PopTokens();
     for (const auto &token : std::ranges::reverse_view(tokens)) {
-      if (pos <= CursorPosition()) {
+      if (pos <= cursor) {
         if ((token.GetText().StartsWith(wxS("("))) ||
             (token.GetText().StartsWith(wxS("["))) ||
             (token.GetText().StartsWith(wxS("{")))) {
@@ -3227,7 +3225,7 @@ void EditorCell::FindMatchingParens() {
           }
         }
       }
-      pos -= token.GetText().Length();
+      pos -= static_cast<long>(token.GetText().Length());
     }
   }
 }
@@ -3546,7 +3544,8 @@ void EditorCell::SelectPointText(const wxPoint point) {
       // the caret goes after character i-1 if the click lies right of that
       // character's midpoint. The edges come from SnippetWidth(), which
       // measures exactly what Draw() paints, digit-group gaps included.
-      if ((snippet != wxS("\r")) && (snippet != wxS("\n"))) {
+      if ((textSnippet != m_styledText.end()) && (snippet != wxS("\r")) &&
+          (snippet != wxS("\n"))) {
         wxCoord left = 0;
         for (size_t i = 1; i <= snippet.Length(); i++) {
           const wxCoord right = SnippetWidth(*textSnippet, i);

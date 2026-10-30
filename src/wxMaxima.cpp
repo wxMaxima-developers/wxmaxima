@@ -1707,7 +1707,8 @@ void wxMaxima::ShowTroubleshootingDialog() {
   executable.Replace(wxS("\""), wxS("\\\""));
   inputs.runner.maximaCommand = wxS("\"") + executable + wxS("\"") + MaximaCommandArguments();
   inputs.runner.environment = m_configuration.MaximaEnvVars();
-  wxGetEnvMap(&inputs.runner.environment);
+  if (!wxGetEnvMap(&inputs.runner.environment))
+    wxLogMessage(wxS("Could not read wxMaxima's own environment variables."));
   if (!Configuration::GetMaximaLang().IsEmpty())
     inputs.runner.environment["LANG"] = Configuration::GetMaximaLang();
 #if defined __WXOSX__
@@ -2695,16 +2696,14 @@ long long wxMaxima::GetMaximaCpuTime() {
     OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, false, m_pid);
   if (maximaHandle != nullptr) {
     FILETIME creationTime, exitTime, kernelTime, userTime;
-    if (GetProcessTimes(maximaHandle, &creationTime, &exitTime, &kernelTime,
-                        &userTime)) {
-      long long retval =
-        (long long)kernelTime.dwLowDateTime + userTime.dwLowDateTime +
+    const bool gotTimes = GetProcessTimes(maximaHandle, &creationTime, &exitTime,
+                                          &kernelTime, &userTime);
+    // Closed on both paths: a failing GetProcessTimes() used to leak it.
+    CloseHandle(maximaHandle);
+    if (gotTimes)
+      return (long long)kernelTime.dwLowDateTime + userTime.dwLowDateTime +
         (1LL << 32) *
         ((long long)kernelTime.dwHighDateTime + userTime.dwHighDateTime);
-      CloseHandle(maximaHandle);
-
-      return retval;
-    }
   }
 #endif
   long long maximaJiffies = 0;
@@ -2730,18 +2729,19 @@ long long wxMaxima::GetMaximaCpuTime() {
             
             if (tokens.CountTokens() >= 13) {
               long ppid = 0, pgrp = 0;
-              tokens.GetNextToken().ToLong(&ppid);
-              tokens.GetNextToken().ToLong(&pgrp);
-              
-              if (pid == m_pid || pgrp == m_pid || ppid == m_pid) {
+              // A line we can't parse belongs to no process we know of.
+              const bool parsed = tokens.GetNextToken().ToLong(&ppid) &&
+                tokens.GetNextToken().ToLong(&pgrp);
+
+              if (parsed && (pid == m_pid || pgrp == m_pid || ppid == m_pid)) {
                 foundAny = true;
                 for (int i = 3; i < 11; i++) {
                   tokens.GetNextToken();
                 }
                 long utime = 0, stime = 0;
-                tokens.GetNextToken().ToLong(&utime);
-                tokens.GetNextToken().ToLong(&stime);
-                maximaJiffies += utime + stime;
+                if (tokens.GetNextToken().ToLong(&utime) &&
+                    tokens.GetNextToken().ToLong(&stime))
+                  maximaJiffies += utime + stime;
               }
             }
           }

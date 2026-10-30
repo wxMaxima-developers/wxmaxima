@@ -283,7 +283,9 @@ bool MaximaProcessManager::StartMaxima(bool force) {
   // that till now never has done anything and therefore is in perfect working
   // order.
   wxString dirname_Old;
-  wxGetEnv("MAXIMA_INITIAL_FOLDER", &dirname_Old);
+  // Unset until the first Maxima was started: then no directory is current.
+  if (!wxGetEnv("MAXIMA_INITIAL_FOLDER", &dirname_Old))
+    dirname_Old.Clear();
 
   if ((m_wxMaxima.m_maximaProcess == nullptr) || (m_wxMaxima.m_hasEvaluatedCells) || force ||
       (dirname != dirname_Old)) {
@@ -336,7 +338,8 @@ bool MaximaProcessManager::StartMaxima(bool force) {
 
       wxEnvVariableHashMap environment;
       environment = m_wxMaxima.m_configuration.MaximaEnvVars();
-      wxGetEnvMap(&environment);
+      if (!wxGetEnvMap(&environment))
+        wxLogMessage(wxS("Could not read wxMaxima's own environment variables."));
       // MAXIMA_SIGNALS_THREAD is deliberately not set any more: it made an
       // SBCL or CCL Maxima on MS Windows start a thread that polls a
       // shared-memory segment for Ctrl+G. Both Lisps have threads, so they

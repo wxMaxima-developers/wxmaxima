@@ -56,6 +56,7 @@
 #include "TextCell.h"
 #include "VisiblyInvalidCell.h"
 #include <algorithm>
+#include <random>
 #include <utility>
 #include <wx/regex.h>
 #include <wx/scrolwin.h>
@@ -2032,12 +2033,13 @@ std::ostream& operator<<(std::ostream& out, const CellType celltype){
 }
 
 void Cell::GenerateUUID() {
+  // rand() was never seeded, so every session drew the same "random" parts.
+  static thread_local std::mt19937 generator{std::random_device{}()};
+  std::uniform_int_distribution<unsigned int> part(0, 0xFFFF);
   wxLongLong now = wxDateTime::UNow().GetValue();
   m_uuid = wxString::Format(wxS("%08lx-%04x-%04x-%04x-%012llx"),
                             static_cast<long>(now.GetLo() & 0xFFFFFFFF),
-                            static_cast<unsigned int>(rand() & 0xFFFF),
-                            static_cast<unsigned int>(rand() & 0xFFFF),
-                            static_cast<unsigned int>(rand() & 0xFFFF),
+                            part(generator), part(generator), part(generator),
                             now.GetValue());
 }
 

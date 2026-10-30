@@ -508,8 +508,8 @@ void GroupCell::InputHeightChanged() {
   if (m_height != oldHeight || m_center != oldCenter) {
     UpdateYPositionList();
   }
-  if (m_configuration)
-    m_configuration->RequestAdjustWorksheetSize();
+  // Every cell has a configuration; RecalculateInput() already relied on it.
+  m_configuration->RequestAdjustWorksheetSize();
 }
 
 void GroupCell::OutputHeightChanged() {

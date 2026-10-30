@@ -4836,10 +4836,10 @@ void Worksheet::TOCdnd(GroupCell *dndStart, GroupCell *dndEnd) {
   const GroupType dndStartType = dndStart->GetGroupType();
   GetDocumentCellPointers().SetSelectionStart(dndStart);
   GetDocumentCellPointers().SetSelectionEnd(GetDocumentCellPointers().GetSelectionStart());
-  while (GetDocumentCellPointers().GetSelectionEnd()->GetNext() &&
-         dynamic_cast<GroupCell *>(GetDocumentCellPointers().GetSelectionEnd()->GetNext())
-           ->IsLesserGCType(dndStartType))
-    GetDocumentCellPointers().SetSelectionEnd(GetDocumentCellPointers().GetSelectionEnd()->GetNext());
+  for (auto *next = dynamic_cast<GroupCell *>(GetDocumentCellPointers().GetSelectionEnd()->GetNext());
+       next && next->IsLesserGCType(dndStartType);
+       next = dynamic_cast<GroupCell *>(next->GetNext()))
+    GetDocumentCellPointers().SetSelectionEnd(next);
 
   // Copy the region we want to move
   CellListBuilder<> copy;
