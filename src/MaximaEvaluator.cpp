@@ -33,6 +33,7 @@
 #include "MaximaProtocol.h"
 #include "SyntaxErrorLocation.h"
 #include "Version.h"
+#include "FileOpenKind.h"
 #include <wx/tokenzr.h>
 #include <memory>
 
@@ -724,21 +725,19 @@ void MaximaEvaluator::SetupVariables() {
   }
   wxMathML wxmathml(&m_wxMaxima.m_configuration);
   SendMaxima(wxmathml.GetCmd());
-  wxString cmd;
 
 #if defined(__WXOSX__)
-  wxString gnuplot_binary = m_wxMaxima.m_gnuplotcommand;
-
-  gnuplot_binary.Replace("\\", "\\\\");
-  gnuplot_binary.Replace("\"", "\\\"");
-  if (wxFileExists(m_wxMaxima.m_gnuplotcommand))
-    cmd += wxS("\n:lisp-quiet (setf $gnuplot_command \"") + m_wxMaxima.m_gnuplotcommand +
-      wxS("\")\n");
-  wxLogMessage(_("Setting gnuplot_binary to %s"),
-               m_wxMaxima.m_gnuplotcommand);
+  // The path goes into a Lisp string, so a quote or backslash in it has to be
+  // escaped. It used to be inserted raw (the escaped copy was never used), and
+  // a later pass turned every backslash into a slash, so a gnuplot path
+  // containing a quote produced a broken :lisp-quiet form.
+  if (wxFileExists(m_wxMaxima.m_gnuplotcommand)) {
+    SendMaxima(wxS("\n:lisp-quiet (setf $gnuplot_command ") +
+               wxm::MaximaStringLiteral(m_wxMaxima.m_gnuplotcommand) + wxS(")\n"));
+    wxLogMessage(_("Setting gnuplot_binary to %s"),
+                 m_wxMaxima.m_gnuplotcommand);
+  }
 #endif
-  cmd.Replace(wxS("\\"), wxS("/"));
-  SendMaxima(cmd);
 
   SendMaxima(m_wxMaxima.m_configuration.MaximaHelpFormatCommand());
   // Ask a Lisp that has threads to open a second connection we can interrupt
