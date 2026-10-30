@@ -25,6 +25,7 @@
 
 #include "PackagePrefixes.h"
 #include <algorithm>
+#include <utility>
 
 std::vector<wxString> wxm::PackagePrefixes(const wxString &installPrefix) {
   std::vector<wxString> prefixes;
@@ -35,7 +36,7 @@ std::vector<wxString> wxm::PackagePrefixes(const wxString &installPrefix) {
     if (prefix.IsEmpty())
       return;
     if (std::find(prefixes.begin(), prefixes.end(), prefix) == prefixes.end())
-      prefixes.push_back(prefix);
+      prefixes.push_back(std::move(prefix));
   };
   add(installPrefix);
   add(wxS("/opt/homebrew"));
