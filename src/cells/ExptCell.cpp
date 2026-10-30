@@ -260,7 +260,7 @@ wxString ExptCell::ToOMML() const {
 
 wxString ExptCell::ToXML() const {
   return wxS("<e") + GetXMLFlags() +
-    (m_isMatrix ? wxS(" mat=\"true\"") : wxString()) + wxS("><r>") + m_baseCell->ListToXML() +
+    (m_isMatrix ? wxString(wxS(" mat=\"true\"")) : wxString()) + wxS("><r>") + m_baseCell->ListToXML() +
     wxS("</r><r>") + m_exptCell->ListToXML() + wxS("</r></e>");
 }
 
