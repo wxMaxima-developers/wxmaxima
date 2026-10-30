@@ -63,7 +63,7 @@ wxString g_baseDir;
 static void Touch(const wxString &path) {
   wxFFile file(path, wxS("w"));
   if (!file.IsOpened()) {
-    fprintf(stderr, "cannot create test file %s\n", (const char *)path.utf8_str());
+    fprintf(stderr, "cannot create test file %s\n", (const char *)path.utf8_str()); // flawfinder: ignore -- constant format string
     exit(1);
   }
   file.Write(wxS("x"));
@@ -83,7 +83,7 @@ static wxString MakeTestTree() {
       !wxFileName::Mkdir(base + wxS("/data")) ||
       !wxFileName::Mkdir(base + wxS("/data/deep")) ||
       !wxFileName::Mkdir(base + wxS("/empty"))) {
-    fprintf(stderr, "cannot create the test directory tree\n");
+    fputs("cannot create the test directory tree\n", stderr);
     exit(1);
   }
   Touch(base + wxS("/alpha.csv"));
