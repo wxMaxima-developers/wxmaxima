@@ -3,6 +3,9 @@ name: coverity_scan
 on:
   schedule:
     - cron: "0 1 * * *"
+  # Lets a maintainer start a scan by hand (Actions tab, "Run workflow"),
+  # e.g. to check a batch of fixes without waiting for the nightly run.
+  workflow_dispatch:
 env:
   BUILD_TYPE: Release
 
