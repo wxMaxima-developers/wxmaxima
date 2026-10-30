@@ -219,6 +219,16 @@ target_link_libraries(test_DigitGrouping PRIVATE ${wxWidgets_LIBRARIES})
 add_test(NAME DigitGrouping
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_DigitGrouping>")
 
+# Where macOS looks for Maxima and gnuplot: the prefix wxMaxima was configured
+# with (a package manager's own), then Homebrew's and MacPorts' (GH #1347).
+add_executable(test_PackagePrefixes
+    test_PackagePrefixes.cpp ${CMAKE_SOURCE_DIR}/src/PackagePrefixes.cpp
+    ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
+target_include_directories(test_PackagePrefixes PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_link_libraries(test_PackagePrefixes PRIVATE ${wxWidgets_LIBRARIES})
+add_test(NAME PackagePrefixes
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_PackagePrefixes>")
+
 # Touchpads and high-resolution wheels (wxGTK on Wayland) send many small
 # wheel events; WheelSteps adds them up to whole steps so scrolling over a
 # selected animation doesn't advance a frame per event.

@@ -80,7 +80,8 @@ bool LazyBitmapDataObject::Render() const {
 }
 
 wxBitmap LazyBitmapDataObject::GetBitmap() const {
-  Render();
+  if (!Render())
+    return wxNullBitmap;
   return wxBitmapDataObject::GetBitmap();
 }
 

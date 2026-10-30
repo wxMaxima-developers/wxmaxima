@@ -262,7 +262,7 @@ static int g_failedAssertions = 0;
 static void CountingAssertHandler(const wxString &file, int line, const wxString &func,
                                   const wxString &cond, const wxString &msg) {
   ++g_failedAssertions;
-  fprintf(stderr, "wxASSERT failed: %s:%d [%s]: %s %s\n",
+  fprintf(stderr, "wxASSERT failed: %s:%d [%s]: %s %s\n", // flawfinder: ignore -- constant format string
           static_cast<const char *>(file.utf8_str()), line,
           static_cast<const char *>(func.utf8_str()),
           static_cast<const char *>(cond.utf8_str()),
@@ -291,7 +291,7 @@ int main(int argc, char **argv) {
   }
   wxEntryCleanup();
   if (g_failedAssertions > 0) {
-    fprintf(stderr, "%i wxWidgets assertion(s) failed.\n", g_failedAssertions);
+    fprintf(stderr, "%i wxWidgets assertion(s) failed.\n", g_failedAssertions); // flawfinder: ignore -- constant format string
     result = 1;
   }
   return result;

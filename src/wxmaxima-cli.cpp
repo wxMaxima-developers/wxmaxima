@@ -273,7 +273,7 @@ int main() {
   std::wstring dir = ExeDirectory();
   if (dir.empty()) {
     CliDebugLog(L"ExeDirectory() came back empty");
-    std::fprintf(stderr, "wxmaxima-cli: cannot determine my own location.\n");
+    std::fputs("wxmaxima-cli: cannot determine my own location.\n", stderr);
     return 1;
   }
   std::wstring exe = dir + L"wxmaxima.exe";
@@ -290,9 +290,9 @@ int main() {
     // to declare the case-insensitive wide compare on a given toolchain.
     if (lstrcmpiW(self.c_str(), exe.c_str()) == 0) {
       CliDebugLog(L"refusing to launch myself: self=[" + self + L"]");
-      std::fprintf(stderr,
-                   "wxmaxima-cli: I am installed as wxmaxima.exe myself -- "
-                   "refusing to launch a copy of myself.\n");
+      std::fputs("wxmaxima-cli: I am installed as wxmaxima.exe myself -- "
+                 "refusing to launch a copy of myself.\n",
+                 stderr);
       return 1;
     }
   }
@@ -352,7 +352,7 @@ int main() {
 
   if (!started) {
     CliDebugLog(L"CreateProcessW failed, error " + std::to_wstring(startError));
-    std::fprintf(stderr, "wxmaxima-cli: cannot start %ls (error %lu).\n",
+    std::fprintf(stderr, "wxmaxima-cli: cannot start %ls (error %lu).\n", // flawfinder: ignore -- constant format string
                  exe.c_str(), static_cast<unsigned long>(startError));
     return 1;
   }

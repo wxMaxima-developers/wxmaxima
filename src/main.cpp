@@ -883,9 +883,9 @@ bool MyApp::OnInit() {
         DescribeStream(stdout), static_cast<void *>(wxMessageOutput::Get())));
 #endif
     if (WxMaximaGitShortHash())
-      printf("wxMaxima %s (Git version: %s)\n", WXMAXIMA_VERSION, WxMaximaGitShortHash());
+      printf("wxMaxima %s (Git version: %s)\n", WXMAXIMA_VERSION, WxMaximaGitShortHash()); // flawfinder: ignore -- constant format string
     else
-      printf("wxMaxima %s\n", WXMAXIMA_VERSION);
+      printf("wxMaxima %s\n", WXMAXIMA_VERSION); // flawfinder: ignore -- constant format string
 #ifdef __WXMSW__
     StdioDebugLog(wxS("after Printf, before exit(0)"));
 #endif

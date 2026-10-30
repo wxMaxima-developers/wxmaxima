@@ -29,7 +29,7 @@ namespace {
 #if wxDEBUG_LEVEL
 void StderrAssertHandler(const wxString &file, int line, const wxString &func,
                          const wxString &cond, const wxString &msg) {
-    fprintf(stderr, "wxASSERT failed: %s:%d [%s]: %s %s\n",
+    fprintf(stderr, "wxASSERT failed: %s:%d [%s]: %s %s\n", // flawfinder: ignore -- constant format string
             static_cast<const char *>(file.utf8_str()), line,
             static_cast<const char *>(func.utf8_str()),
             static_cast<const char *>(cond.utf8_str()),

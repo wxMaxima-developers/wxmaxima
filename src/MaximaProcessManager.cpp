@@ -34,6 +34,8 @@
 #include <wx/tokenzr.h>
 
 #include "ProcessTree.h"
+#include "PackagePrefixes.h"
+#include "BuildConfig.h"
 #include "MaximaItemQueue.h"
 #include <chrono>
 #include <memory>
@@ -281,7 +283,9 @@ bool MaximaProcessManager::StartMaxima(bool force) {
   // that till now never has done anything and therefore is in perfect working
   // order.
   wxString dirname_Old;
-  wxGetEnv("MAXIMA_INITIAL_FOLDER", &dirname_Old);
+  // Unset until the first Maxima was started: then no directory is current.
+  if (!wxGetEnv("MAXIMA_INITIAL_FOLDER", &dirname_Old))
+    dirname_Old.Clear();
 
   if ((m_wxMaxima.m_maximaProcess == nullptr) || (m_wxMaxima.m_hasEvaluatedCells) || force ||
       (dirname != dirname_Old)) {
@@ -334,7 +338,8 @@ bool MaximaProcessManager::StartMaxima(bool force) {
 
       wxEnvVariableHashMap environment;
       environment = m_wxMaxima.m_configuration.MaximaEnvVars();
-      wxGetEnvMap(&environment);
+      if (!wxGetEnvMap(&environment))
+        wxLogMessage(wxS("Could not read wxMaxima's own environment variables."));
       // MAXIMA_SIGNALS_THREAD is deliberately not set any more: it made an
       // SBCL or CCL Maxima on MS Windows start a thread that polls a
       // shared-memory segment for Ctrl+G. Both Lisps have threads, so they
@@ -1339,26 +1344,16 @@ void MaximaProcessManager::GnuplotCommandName(const wxString &gnuplot) {
 
     // Add OSX specific paths
 #ifdef __WXOSX__
-    // MacPorts:
-    // The MacPorts default binary path /opt/local/bin/ is not in the PATH for
-    // applications. It is added to .profile, but this is only used by shells.
-    // => Add the default MacPorts binary path /opt/local/bin/ to our search
-    // path list.
-    //
-    // Homebrew:
-    // Homebrew installs binaries in /usr/local/bin, which is in the PATH by
-    // default.
-    //
-    // Application packages including gnuplot:
-    // The above wxMaxima executable relative logic should work
-    //
-    // If gnuplot is somewhere else (e.g. non default MacPort or Homebrew path),
-    // the command
-    //   gnuplot_command:"/opt/local/bin/gnuplot"$
-    // must be added manually to ~/.maxima/wxmaxima-init.mac
-    // This should be documented for the installer packages, e.g. as MacPorts
-    // "notes" field.
-    pathlist.Add(OSX_MACPORTS_PREFIX "/bin");
+    // A program started from the Finder gets a PATH that contains none of
+    // the directories package managers install to (it is set in .profile,
+    // which only shells read). So add them: first the prefix wxMaxima was
+    // configured with, which is where a package manager that built wxMaxima
+    // (MacPorts) also put gnuplot, then Homebrew's and MacPorts' defaults
+    // (GH #1347). A gnuplot that is in none of them, or in an application
+    // bundle, can be named in ~/.maxima/wxmaxima-init.mac:
+    //   gnuplot_command:"/path/to/gnuplot"$
+    for (const auto &prefix : wxm::PackagePrefixes(wxString::FromUTF8(CMAKE_INSTALL_PREFIX)))
+      pathlist.Add(prefix + wxS("/bin"));
 #endif
 
 #ifdef __WXMSW__

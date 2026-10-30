@@ -216,6 +216,7 @@ set(SOURCE_FILES
     AuiPerspectiveRepair.cpp
     DigitGrouping.cpp
     SaveAsDefaults.cpp
+    PackagePrefixes.cpp
     ToolbarPane.cpp
     ProcessTree.cpp
     InterruptChannelHandshake.cpp

@@ -57,6 +57,10 @@ jobs:
         # and carries a flawfinder: ignore comment with the reason right next
         # to the code, so a clean run of this step reports 0 and every SARIF
         # alert that does appear in the Security tab is a genuinely new one.
+        # Note that --sarif also emits flawfinder's level-0 hits (a printf
+        # with a constant format string), which its plain-text output hides
+        # by default -- so check a change with --sarif, as here, not with the
+        # text report, or those come back as Security-tab "Note"s.
         #
         # Keeping it at 0 needs the prune list to keep up: src/vendor was
         # added here only after nlohmann/json landed for the MCP/AI work and

@@ -2394,17 +2394,16 @@ void MaximaCommandMenus::FileMenu(wxCommandEvent &event) {
     if (m_wxMaxima.GetWorksheet()->CanAnimate()) {
       const AnimationCell *animation =
         dynamic_cast<AnimationCell *>(m_wxMaxima.GetWorksheet()->GetSelectionStart());
-      if (animation->AnimationRunning())
-        m_wxMaxima.GetWorksheet()->Animate(false);
-      else
-        m_wxMaxima.GetWorksheet()->Animate(true);
+      if (animation)
+        m_wxMaxima.GetWorksheet()->Animate(!animation->AnimationRunning());
     }
   }
   else if(event.GetId() == EventIDs::popid_animation_start) {
     if (m_wxMaxima.GetWorksheet()->CanAnimate()) {
       AnimationCell *animation =
         dynamic_cast<AnimationCell *>(m_wxMaxima.GetWorksheet()->GetSelectionStart());
-      animation->AnimationRunning(true);
+      if (animation)
+        animation->AnimationRunning(true);
     }
   }
   m_wxMaxima.GetWorksheet()->RequestRedraw();
@@ -3250,29 +3249,24 @@ void MaximaCommandMenus::PopupMenu(wxCommandEvent &event) {
   }
   else if(event.GetId() == EventIDs::popid_maxsizechooser){
     if (m_wxMaxima.GetWorksheet()->GetSelectionStart()) {
-      Cell *output = m_wxMaxima.GetWorksheet()->GetSelectionStart()->GetGroup()->GetLabel();
+      // Images and animations are the only ImgCellBase cells.
+      auto *output = dynamic_cast<ImgCellBase *>(
+        m_wxMaxima.GetWorksheet()->GetSelectionStart()->GetGroup()->GetLabel());
       if (output == nullptr)
-        return;
-      if ((output->GetType() != MC_TYPE_IMAGE) &&
-          (output->GetType() != MC_TYPE_SLIDE))
         return;
 
       MaxSizeChooser *chooser = new MaxSizeChooser(
-                                                   &m_wxMaxima, -1, dynamic_cast<ImgCellBase *>(output)->GetMaxWidth(),
-                                                   dynamic_cast<ImgCellBase *>(output)->GetHeightList());
+                                                   &m_wxMaxima, -1, output->GetMaxWidth(),
+                                                   output->GetHeightList());
       chooser->Centre(wxBOTH);
       if (chooser->ShowModal() == wxID_OK) {
-        if (dynamic_cast<ImgCellBase *>(output)->GetMaxWidth() !=
-            chooser->GetMaxImageWidth())
+        if (output->GetMaxWidth() != chooser->GetMaxImageWidth())
           m_wxMaxima.GetWorksheet()->SetSaved(false);
-        if (dynamic_cast<ImgCellBase *>(output)->GetHeightList() !=
-            chooser->GetHeightList())
+        if (output->GetHeightList() != chooser->GetHeightList())
           m_wxMaxima.GetWorksheet()->SetSaved(false);
 
-        dynamic_cast<ImgCellBase *>(output)->SetMaxWidth(
-                                                         chooser->GetMaxWidth());
-        dynamic_cast<ImgCellBase *>(output)->SetMaxHeight(
-                                                          chooser->GetHeightList());
+        output->SetMaxWidth(chooser->GetMaxWidth());
+        output->SetMaxHeight(chooser->GetHeightList());
       }
     }
     m_wxMaxima.GetWorksheet()->RequestRecalculation();
@@ -3280,22 +3274,19 @@ void MaximaCommandMenus::PopupMenu(wxCommandEvent &event) {
   }
   else if(event.GetId() == EventIDs::popid_resolutionchooser){
     if (m_wxMaxima.GetWorksheet()->GetSelectionStart()) {
-      Cell *output = m_wxMaxima.GetWorksheet()->GetSelectionStart()->GetGroup()->GetLabel();
+      auto *output = dynamic_cast<ImgCellBase *>(
+        m_wxMaxima.GetWorksheet()->GetSelectionStart()->GetGroup()->GetLabel());
       if (output == nullptr)
-        return;
-      if ((output->GetType() != MC_TYPE_IMAGE) &&
-          (output->GetType() != MC_TYPE_SLIDE))
         return;
 
       ResolutionChooser *chooser = new ResolutionChooser(
-                                                         &m_wxMaxima, -1, dynamic_cast<ImgCellBase *>(output)->GetPPI());
+                                                         &m_wxMaxima, -1, output->GetPPI());
       chooser->Centre(wxBOTH);
       if (chooser->ShowModal() == wxID_OK) {
-        if (dynamic_cast<ImgCellBase *>(output)->GetPPI() !=
-            chooser->GetResolution())
+        if (output->GetPPI() != chooser->GetResolution())
           m_wxMaxima.GetWorksheet()->SetSaved(false);
 
-        dynamic_cast<ImgCellBase *>(output)->SetPPI(chooser->GetResolution());
+        output->SetPPI(chooser->GetResolution());
       }
     }
     m_wxMaxima.GetWorksheet()->RequestRecalculation();
@@ -3306,13 +3297,12 @@ void MaximaCommandMenus::PopupMenu(wxCommandEvent &event) {
       return;
 
     {
-      Cell *output = m_wxMaxima.GetWorksheet()->GetSelectionStart()->GetGroup()->GetLabel();
+      auto *output = dynamic_cast<ImgCell *>(
+        m_wxMaxima.GetWorksheet()->GetSelectionStart()->GetGroup()->GetLabel());
       if (output == nullptr)
         return;
-      if (output->GetType() != MC_TYPE_IMAGE)
-        return;
 
-      wxString imgFile = dynamic_cast<ImgCell *>(output)->GetOrigImageFile();
+      wxString imgFile = output->GetOrigImageFile();
 
       if (!wxFileExists(imgFile)) {
         LoggingMessageDialog dialog(
@@ -3328,7 +3318,7 @@ void MaximaCommandMenus::PopupMenu(wxCommandEvent &event) {
       }
 
       wxLogMessage(_("Reloading image file %s."), imgFile);
-      dynamic_cast<ImgCell *>(output)->ReloadImage(imgFile);
+      output->ReloadImage(imgFile);
 
       m_wxMaxima.GetWorksheet()->RequestRecalculation();
       m_wxMaxima.GetWorksheet()->RequestRedraw();
@@ -3771,6 +3761,8 @@ void MaximaCommandMenus::PopupMenu(wxCommandEvent &event) {
       }
 
       ImgCell *ic = dynamic_cast<ImgCell *>(cell);
+      if (ic == nullptr)
+        return;
 
       wxLogMessage(_("Changing image originally loaded from file %s to %s."),
                    ic->GetOrigImageFile(), newImg);
@@ -3791,11 +3783,12 @@ void MaximaCommandMenus::PopupMenu(wxCommandEvent &event) {
                                      _("GIF image (*.gif)|*.gif"),
                                      wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
       if (file.Length()) {
-        Cell *selectedCell = m_wxMaxima.GetWorksheet()->GetSelectionStart();
-        if (selectedCell != nullptr && selectedCell->GetType() == MC_TYPE_SLIDE)
+        auto *animation =
+          dynamic_cast<AnimationCell *>(m_wxMaxima.GetWorksheet()->GetSelectionStart());
+        if (animation != nullptr)
           {
             wxBusyCursor crs;
-            dynamic_cast<AnimationCell *>(selectedCell)->ToGif(file);
+            animation->ToGif(file);
           }
       }
     }

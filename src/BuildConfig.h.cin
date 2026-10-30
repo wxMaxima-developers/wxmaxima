@@ -13,7 +13,9 @@
 #ifndef WXM_BUILDCONFIG_H
 #define WXM_BUILDCONFIG_H
 
-#define CMAKE_INSTALL_PREFIX "@CMAKE_INSTALL_PREFIX@"
+// A raw string literal, so that a prefix containing a quote or a backslash
+// needs no escaping (GH #1347). UTF-8, like every source file.
+#define CMAKE_INSTALL_PREFIX R"wxmprefix(@CMAKE_INSTALL_PREFIX@)wxmprefix"
 #cmakedefine USE_PRECOMP_HEADER
 #cmakedefine USE_WEBVIEW
 #cmakedefine USE_QA
