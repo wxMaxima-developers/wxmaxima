@@ -889,6 +889,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetPen</b> (wxDC *dc,
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetBrush</b> (wxDC *dc) const</td></tr>
 <tr class="memdesc:af4b5a4c257d98355e4ccfb8436f1018d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the fill brush to the cell's default foreground color. <br /></td></tr>
 <tr class="separator:af4b5a4c257d98355e4ccfb8436f1018d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc98c17d42c845cde65f5470de9ac616"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#afc98c17d42c845cde65f5470de9ac616">DrawAngleBracketsAround</a> (wxDC *dc, wxDC *antialiassingDC, <a class="el" href="classCell.html">Cell</a> *<a class="el" href="structcmd_8h.html#a2c4414339f388561554c2deab11a1a07">open</a>, <a class="el" href="classCell.html">Cell</a> *<a class="el" href="structcmd_8h.html#ae152484c890a24e4d9b4980e7b965be0">close</a>, const <a class="el" href="classCell.html">Cell</a> *contents) const</td></tr>
+<tr class="memdesc:afc98c17d42c845cde65f5470de9ac616"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws the angle brackets of a matrix power (A^⟨n⟩) around its exponent.  <br /></td></tr>
+<tr class="separator:afc98c17d42c845cde65f5470de9ac616"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e49885d5ac867573f7487823cf01254"><td class="memItemLeft" align="right" valign="top"><a id="a2e49885d5ac867573f7487823cf01254" name="a2e49885d5ac867573f7487823cf01254"></a>
 wxColour&#160;</td><td class="memItemRight" valign="bottom"><b>GetForegroundColor</b> () const</td></tr>
 <tr class="separator:a2e49885d5ac867573f7487823cf01254"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2123,6 +2126,63 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><b>SelectionToHTML</
 
 </div>
 </div>
+<a id="afc98c17d42c845cde65f5470de9ac616" name="afc98c17d42c845cde65f5470de9ac616"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc98c17d42c845cde65f5470de9ac616">&#9670;&#160;</a></span>DrawAngleBracketsAround()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Cell::DrawAngleBracketsAround </td>
+          <td>(</td>
+          <td class="paramtype">wxDC *&#160;</td>
+          <td class="paramname"><em>dc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">wxDC *&#160;</td>
+          <td class="paramname"><em>antialiassingDC</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classCell.html">Cell</a> *&#160;</td>
+          <td class="paramname"><em>open</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classCell.html">Cell</a> *&#160;</td>
+          <td class="paramname"><em>close</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classCell.html">Cell</a> *&#160;</td>
+          <td class="paramname"><em>contents</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Draws the angle brackets of a matrix power (A^⟨n⟩) around its exponent. </p>
+<p>open and close are the "⟨" and "⟩" TextCells, already positioned left and right of contents. If contents is no taller than they are, they are drawn as they are. Otherwise the glyphs would be a small pair in the middle of, say, a fraction, so brackets spanning the contents' whole height are drawn as lines in the room the glyphs take. </p>
+
+</div>
+</div>
 <a id="a095e15665c668ae04ff902c010361ce9" name="a095e15665c668ae04ff902c010361ce9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a095e15665c668ae04ff902c010361ce9">&#9670;&#160;</a></span>DrawBoundingBox()</h2>
 
@@ -2654,7 +2714,7 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><b>SelectionToHTML</
 <p>Defaults to <a class="el" href="classCell.html#a1546dfa78b57d64b5d9e994803a02226" title="The number of inner cells - for use by the iterators.">GetInnerCellCount()</a>/GetInnerCell(), which is correct for every compound cell whose broken (linear/1D) form shows exactly its structural inner cells, in the same order, unconditionally (e.g. <a class="el" href="classParenCell.html" title="The class that represents parenthesis that are wrapped around text.">ParenCell</a>: "(", contents, ")"). <a class="el" href="classA.html">A</a> handful of cells (<a class="el" href="classIntCell.html" title="This class represents an integral.">IntCell</a>, <a class="el" href="classSumCell.html">SumCell</a>, <a class="el" href="classIntervalCell.html" title="The class that represents parenthesis that are wrapped around text.">IntervalCell</a>, <a class="el" href="classLimitCell.html">LimitCell</a>) show a runtime-conditional subset or a different substitute object (e.g. <a class="el" href="classIntCell.html" title="This class represents an integral.">IntCell</a> omits the limits unless HasLimits(); <a class="el" href="classSumCell.html">SumCell</a> displays Base() instead of the <a class="el" href="classParenCell.html" title="The class that represents parenthesis that are wrapped around text.">ParenCell</a> wrapper) and override both this and <a class="el" href="classCell.html#a45b3235bcd1ac8d2de798292b715a99b" title="Retrieve a piece of this cell&#39;s broken (linear/1D) display; see GetBrokenCellCount().">GetBrokenCell()</a> to match their <a class="el" href="classCell.html#ad3bba95038366ea5bccefa8f76e1571e" title="Try to split this command into lines to make it fit on the screen.">BreakUp()</a> logic exactly.</p>
 <p>ORDER IS LOAD-BEARING: this pair is the sole source of the on-screen, left-to-right sequence the draw list (<a class="el" href="classCellDrawListIterator.html" title="Walks the &quot;draw list&quot;: the flattened sequence of cells that make up one displayed line,...">CellDrawListIterator</a>, i.e. <a class="el" href="Cell_8h.html#a9e6fa20089cf63259f71743f096ccd08" title="Returns an iterable that goes over the cell draw list, starting with given, possibly null,...">OnDrawList()</a>) expands a broken cell into &ndash; <a class="el" href="classEditorCell.html#ae1ea47fbaf84aa982f91f717101d743f" title="Pass 3 (Paint): Renders the cell using pre-calculated coordinates.">Draw()</a>, the width/height/line caches (UpdateListCaches() and friends) and hit-testing/selection (GetCellsInOutputRect() and friends) all walk it. There is no longer a separate, hand-threaded pointer chain to cross-check it against, so getting the index-to-piece mapping (or which indices exist, for the classes that override this) wrong directly produces wrong rendering, not just a wrong tree-shape for an unrelated recursive walk. </p>
 
-<p>Reimplemented in <a class="el" href="classIntCell.html#a1ad6f1e444ddbcd42ab844d4733739ea">IntCell</a>, <a class="el" href="classIntervalCell.html#aae3f72b75698199398788524d3e76346">IntervalCell</a>, <a class="el" href="classLimitCell.html#a62be41088fb1345a5404c3e81fdcd518">LimitCell</a>, and <a class="el" href="classSumCell.html#a5e046c0e60bce31763789a7461f86d95">SumCell</a>.</p>
+<p>Reimplemented in <a class="el" href="classExptCell.html#abf682db5396ff3210a7f7a2451bdbaf4">ExptCell</a>, <a class="el" href="classIntCell.html#a1ad6f1e444ddbcd42ab844d4733739ea">IntCell</a>, <a class="el" href="classIntervalCell.html#aae3f72b75698199398788524d3e76346">IntervalCell</a>, <a class="el" href="classLimitCell.html#a62be41088fb1345a5404c3e81fdcd518">LimitCell</a>, and <a class="el" href="classSumCell.html#a5e046c0e60bce31763789a7461f86d95">SumCell</a>.</p>
 
 </div>
 </div>

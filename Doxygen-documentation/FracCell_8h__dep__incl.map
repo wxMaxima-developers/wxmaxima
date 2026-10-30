@@ -1,8 +1,8 @@
 <map id="src/cells/FracCell.h" name="src/cells/FracCell.h">
-<area shape="rect" id="node1" title="This file declares the class FracCell." alt="" coords="2936,5,3079,31"/>
-<area shape="rect" id="node2" href="$MathParser_8h.html" title="The header file for the xml cell parser." alt="" coords="2775,86,2904,111"/>
-<area shape="rect" id="node36" href="$FracCell_8cpp.html" title="This file defines the class FracCell." alt="" coords="2928,86,3087,111"/>
-<area shape="rect" id="node37" href="$test__WorksheetPreview_8cpp.html" title="The sample worksheet the configuration dialog&#39;s &quot;Worksheet&quot; tab shows to preview what its display set..." alt="" coords="3111,79,3287,119"/>
+<area shape="rect" id="node1" title="This file declares the class FracCell." alt="" coords="3037,5,3180,31"/>
+<area shape="rect" id="node2" href="$MathParser_8h.html" title="The header file for the xml cell parser." alt="" coords="2876,86,3005,111"/>
+<area shape="rect" id="node37" href="$FracCell_8cpp.html" title="This file defines the class FracCell." alt="" coords="3029,86,3188,111"/>
+<area shape="rect" id="node38" href="$test__WorksheetPreview_8cpp.html" title="The sample worksheet the configuration dialog&#39;s &quot;Worksheet&quot; tab shows to preview what its display set..." alt="" coords="3213,79,3389,119"/>
 <area shape="rect" id="node3" href="$MathParser_8cpp.html" title="This file defines the class MathParser that reads wxmx data and math from Maxima." alt="" coords="933,174,1077,199"/>
 <area shape="rect" id="node4" href="$MaximaOutputAppender_8cpp.html" title="Implements the worksheet output appenders extracted from the wxMaxima god class." alt="" coords="5,255,236,280"/>
 <area shape="rect" id="node5" href="$MatrixViewer_8cpp.html" title="The viewer a double&#45;click on a partially shown matrix opens (GH #2344)." alt="" coords="1357,174,1567,199"/>
@@ -16,16 +16,17 @@
 <area shape="rect" id="node23" href="$test__IntegralToTeX_8cpp.html" title="Pins the LaTeX export of an integral&#39;s &quot;d&quot; (GH #972): the &quot;d&quot; of &quot;dx&quot;/ &quot;d\theta&quot;/...." alt="" coords="2589,167,2733,207"/>
 <area shape="rect" id="node24" href="$test__LayoutInvariants_8cpp.html" title="Layout idempotency invariants." alt="" coords="2757,167,2922,207"/>
 <area shape="rect" id="node25" href="$test__MatrixBlockSelection_8cpp.html" title="Selecting and copying a sub&#45;matrix (GH #2345)." alt="" coords="2946,167,3141,207"/>
-<area shape="rect" id="node26" href="$test__MatrixViewer_8cpp.html" title="The matrix viewer a double&#45;click on an elided matrix opens (GH #2344)." alt="" coords="3165,167,3309,207"/>
-<area shape="rect" id="node27" href="$test__OffscreenRedraw_8cpp.html" title="Output that changes outside the window doesn&#39;t show a wrong frame." alt="" coords="3333,167,3500,207"/>
-<area shape="rect" id="node28" href="$test__OutputKeyboardNavigation_8cpp.html" title="Reaching a cell&#39;s output with the keyboard (GH #2382)." alt="" coords="3525,167,3757,207"/>
-<area shape="rect" id="node29" href="$test__OutputTextSelection_8cpp.html" title="Selecting some of the characters of a text output with the mouse (GH #825)." alt="" coords="3781,167,3967,207"/>
-<area shape="rect" id="node30" href="$test__RTFExport_8cpp.html" title="Regression coverage for RTF/OMML/MathML export (Cell::ToRTF()/ToOMML()/ ToMathML(),..." alt="" coords="3991,167,4135,207"/>
-<area shape="rect" id="node31" href="$test__TeXRedundancy_8cpp.html" title="Pins the LaTeX export to the markup an expression actually needs." alt="" coords="4159,167,4317,207"/>
-<area shape="rect" id="node32" href="$test__TextContinuation_8cpp.html" title="Tests for TextCell::SetTextContinuation(): a long line of plain text Maxima sends (a warning,..." alt="" coords="4341,167,4508,207"/>
-<area shape="rect" id="node33" href="$test__WXMXRoundtrip_8cpp.html" title="Round&#45;trip tests for the .wxmx content.xml (the MathML&#45;like math format)." alt="" coords="4533,167,4695,207"/>
-<area shape="rect" id="node34" href="$test__WorksheetClipboard_8cpp.html" title="Safety net for the multi&#45;format clipboard / drag&#45;and&#45;drop payload of Worksheet." alt="" coords="4719,167,4906,207"/>
-<area shape="rect" id="node35" href="$test__WorksheetExport_8cpp.html" title="Safety net for the export/serialization cluster of Worksheet." alt="" coords="4931,167,5097,207"/>
+<area shape="rect" id="node26" href="$test__MatrixPower_8cpp.html" title="A matrix power A^^n is marked as one: A^⟨n⟩ (GH #1005)." alt="" coords="3165,167,3309,207"/>
+<area shape="rect" id="node27" href="$test__MatrixViewer_8cpp.html" title="The matrix viewer a double&#45;click on an elided matrix opens (GH #2344)." alt="" coords="3333,167,3477,207"/>
+<area shape="rect" id="node28" href="$test__OffscreenRedraw_8cpp.html" title="Output that changes outside the window doesn&#39;t show a wrong frame." alt="" coords="3501,167,3668,207"/>
+<area shape="rect" id="node29" href="$test__OutputKeyboardNavigation_8cpp.html" title="Reaching a cell&#39;s output with the keyboard (GH #2382)." alt="" coords="3693,167,3925,207"/>
+<area shape="rect" id="node30" href="$test__OutputTextSelection_8cpp.html" title="Selecting some of the characters of a text output with the mouse (GH #825)." alt="" coords="3949,167,4135,207"/>
+<area shape="rect" id="node31" href="$test__RTFExport_8cpp.html" title="Regression coverage for RTF/OMML/MathML export (Cell::ToRTF()/ToOMML()/ ToMathML(),..." alt="" coords="4159,167,4303,207"/>
+<area shape="rect" id="node32" href="$test__TeXRedundancy_8cpp.html" title="Pins the LaTeX export to the markup an expression actually needs." alt="" coords="4327,167,4485,207"/>
+<area shape="rect" id="node33" href="$test__TextContinuation_8cpp.html" title="Tests for TextCell::SetTextContinuation(): a long line of plain text Maxima sends (a warning,..." alt="" coords="4509,167,4676,207"/>
+<area shape="rect" id="node34" href="$test__WXMXRoundtrip_8cpp.html" title="Round&#45;trip tests for the .wxmx content.xml (the MathML&#45;like math format)." alt="" coords="4701,167,4863,207"/>
+<area shape="rect" id="node35" href="$test__WorksheetClipboard_8cpp.html" title="Safety net for the multi&#45;format clipboard / drag&#45;and&#45;drop payload of Worksheet." alt="" coords="4887,167,5074,207"/>
+<area shape="rect" id="node36" href="$test__WorksheetExport_8cpp.html" title="Safety net for the export/serialization cluster of Worksheet." alt="" coords="5099,167,5265,207"/>
 <area shape="rect" id="node8" href="$MaximaManual_8cpp.html" title="This file defines the class MaximaManual." alt="" coords="2001,328,2174,353"/>
 <area shape="rect" id="node9" href="$main_8cpp.html" title="The file that defines the starting point of the program." alt="" coords="1871,328,1976,353"/>
 <area shape="rect" id="node10" href="$wxMaxima_8cpp.html" title="This file defines the contents of the class wxMaxima that contains most of the program&#39;s logic." alt="" coords="1423,328,1567,353"/>

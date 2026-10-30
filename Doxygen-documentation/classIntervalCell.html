@@ -413,6 +413,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetPen</b> (wxDC *dc,
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetBrush</b> (wxDC *dc) const</td></tr>
 <tr class="memdesc:af4b5a4c257d98355e4ccfb8436f1018d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the fill brush to the cell's default foreground color. <br /></td></tr>
 <tr class="separator:af4b5a4c257d98355e4ccfb8436f1018d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc98c17d42c845cde65f5470de9ac616"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#afc98c17d42c845cde65f5470de9ac616">DrawAngleBracketsAround</a> (wxDC *dc, wxDC *antialiassingDC, <a class="el" href="classCell.html">Cell</a> *<a class="el" href="structcmd_8h.html#a2c4414339f388561554c2deab11a1a07">open</a>, <a class="el" href="classCell.html">Cell</a> *<a class="el" href="structcmd_8h.html#ae152484c890a24e4d9b4980e7b965be0">close</a>, const <a class="el" href="classCell.html">Cell</a> *contents) const</td></tr>
+<tr class="memdesc:afc98c17d42c845cde65f5470de9ac616"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws the angle brackets of a matrix power (A^⟨n⟩) around its exponent.  <br /></td></tr>
+<tr class="separator:afc98c17d42c845cde65f5470de9ac616"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e49885d5ac867573f7487823cf01254"><td class="memItemLeft" align="right" valign="top"><a id="a2e49885d5ac867573f7487823cf01254" name="a2e49885d5ac867573f7487823cf01254"></a>
 wxColour&#160;</td><td class="memItemRight" valign="bottom"><b>GetForegroundColor</b> () const</td></tr>
 <tr class="separator:a2e49885d5ac867573f7487823cf01254"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1498,6 +1501,63 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 <p>This method uses the pre-calculated worksheet coordinates (Pass 2). It is a fast, rendering-only pass. </p>
 
 <p>Reimplemented from <a class="el" href="classCell.html#ab68d11529549439a5e2e1e2aca1a9d30">Cell</a>.</p>
+
+</div>
+</div>
+<a id="afc98c17d42c845cde65f5470de9ac616" name="afc98c17d42c845cde65f5470de9ac616"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc98c17d42c845cde65f5470de9ac616">&#9670;&#160;</a></span>DrawAngleBracketsAround()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Cell::DrawAngleBracketsAround </td>
+          <td>(</td>
+          <td class="paramtype">wxDC *&#160;</td>
+          <td class="paramname"><em>dc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">wxDC *&#160;</td>
+          <td class="paramname"><em>antialiassingDC</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classCell.html">Cell</a> *&#160;</td>
+          <td class="paramname"><em>open</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classCell.html">Cell</a> *&#160;</td>
+          <td class="paramname"><em>close</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classCell.html">Cell</a> *&#160;</td>
+          <td class="paramname"><em>contents</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Draws the angle brackets of a matrix power (A^⟨n⟩) around its exponent. </p>
+<p>open and close are the "⟨" and "⟩" TextCells, already positioned left and right of contents. If contents is no taller than they are, they are drawn as they are. Otherwise the glyphs would be a small pair in the middle of, say, a fraction, so brackets spanning the contents' whole height are drawn as lines in the room the glyphs take. </p>
 
 </div>
 </div>
