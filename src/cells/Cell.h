@@ -713,6 +713,16 @@ public:
   void SetPen(wxDC *dc, double lineWidth = 1.0) const;
   //! Sets the fill brush to the cell's default foreground color
   void SetBrush(wxDC *dc) const;
+  /*! Draws the angle brackets of a matrix power (A^⟨n⟩) around its exponent
+
+    open and close are the "⟨" and "⟩" TextCells, already positioned left and
+    right of contents. If contents is no taller than they are, they are drawn
+    as they are. Otherwise the glyphs would be a small pair in the middle of,
+    say, a fraction, so brackets spanning the contents' whole height are
+    drawn as lines in the room the glyphs take.
+  */
+  void DrawAngleBracketsAround(wxDC *dc, wxDC *antialiassingDC, Cell *open,
+                               Cell *close, const Cell *contents) const;
   wxColour GetForegroundColor() const;
 
   //! Mark this cell as highlighted (e.G. being in a maxima box)

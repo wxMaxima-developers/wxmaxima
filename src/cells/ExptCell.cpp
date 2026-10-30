@@ -131,10 +131,9 @@ void ExptCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
   if (DrawThisCell()) {
     m_baseCell->DrawList(dc, antialiassingDC);
     m_exptCell->DrawList(dc, antialiassingDC);
-    if (m_isMatrix) {
-      m_matrixOpen->Draw(dc, antialiassingDC);
-      m_matrixClose->Draw(dc, antialiassingDC);
-    }
+    if (m_isMatrix)
+      DrawAngleBracketsAround(dc, antialiassingDC, m_matrixOpen.get(),
+                              m_matrixClose.get(), m_exptCell.get());
   }
 }
 
