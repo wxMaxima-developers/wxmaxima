@@ -90,7 +90,7 @@ void RecentDocuments::AddDocument(wxString name) {
       ++it;
   }
 
-  m_listOfFiles.push_front(name);
+  m_listOfFiles.push_front(std::move(name));
   m_listOfFiles.unique();
   long recentItems = 10;
   wxConfig::Get()->Read(wxS("recentItems"), &recentItems);

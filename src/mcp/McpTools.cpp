@@ -515,7 +515,7 @@ json McpTools::ReadWorksheet() const {
       text += CellText(cell);
   }
   json result;
-  result["text"] = wxm::ToUtf8(CapLength(text));
+  result["text"] = wxm::ToUtf8(CapLength(std::move(text)));
   return result;
 }
 
@@ -560,7 +560,7 @@ json McpTools::ReadSection(const json &arguments) const {
 
   json result;
   result["uuid"] = wxm::ToUtf8(heading->GetUUID());
-  result["text"] = wxm::ToUtf8(CapLength(text));
+  result["text"] = wxm::ToUtf8(CapLength(std::move(text)));
   return result;
 }
 

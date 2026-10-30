@@ -174,8 +174,6 @@ private:
   //! Prepares the list of built-in symbols and can be run in a background task
   void BuiltinSymbols_BackgroundTask(const stop_token& stopToken);
 
-  //! Replace the list of files in the directory the worksheet file is in to the load files list
-  void UpdateLoadFiles_BackgroundTask(stop_token stopToken, wxString partial, wxString maximaDir);
   //! The list of loadable files maxima provides
   std::vector<wxString> m_builtInLoadFiles;
   //! The list of demo files maxima provides

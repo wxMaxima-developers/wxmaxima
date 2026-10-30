@@ -123,7 +123,7 @@ bool AutoComplete::HasDemofile(const wxString &commandname)
   const std::lock_guard<std::mutex> lock(m_keywordsLock);
   return std::any_of(m_wordList.at(demofile).begin(),
                      m_wordList.at(demofile).end(),
-                     [commandname](const wxString &file){
+                     [&commandname](const wxString &file){
                        return file == wxS("\"") + commandname + wxS("\"");});
 }
 
@@ -691,7 +691,7 @@ std::vector<wxString> AutoComplete::CompleteSymbol(wxString partial,
   // text also begins ("be" for "beta") stays the one ESC picks.
   if ((type == esccommand) && IsEscHexCompletion(partial) &&
       !ranges::contains(completions, partial))
-    completions.push_back(partial);
+    completions.push_back(std::move(partial));
   if (perfectCompletions.size() > 0)
     return perfectCompletions;
   else
@@ -748,9 +748,10 @@ void AutoComplete::AddSymbol(wxString fun, autoCompletionType type) {
   /// Add symbols
   {
     const std::lock_guard<std::mutex> lock(m_keywordsLock);
+    // Last use for everything but templates, which are handled below.
     if ((type != tmplte) &&
         (!ranges::contains(m_wordList.at(type), fun)))
-      m_wordList.at(type).push_back(fun);
+      m_wordList.at(type).push_back(std::move(fun));
   }
   /// Add templates - for given function and given argument count we
   /// only add one template. We count the arguments by counting '<'
@@ -773,7 +774,7 @@ void AutoComplete::AddSymbol(wxString fun, autoCompletionType type) {
           }
           if (i == m_wordList.at(type).size())
             {
-              m_wordList.at(type).push_back(fun);
+              m_wordList.at(type).push_back(std::move(fun));
             }
         }
       }

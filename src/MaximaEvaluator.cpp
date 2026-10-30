@@ -308,7 +308,7 @@ void MaximaEvaluator::EvaluateEvent(wxCommandEvent &WXUNUSED(event)) {
         // Add the answer to the current working cell or update the answer
         // that is stored within it.
         cell->SetAnswer(m_wxMaxima.GetWorksheet()->GetLastQuestion(), answer);
-        SendMaxima(answer, true);
+        SendMaxima(std::move(answer), true);
         m_wxMaxima.StatusMaximaBusy(StatusBar::MaximaStatus::calculating);
         m_wxMaxima.GetWorksheet()->SetHCaret(cell);
         m_wxMaxima.GetWorksheet()->ScrollToCaret();
@@ -738,7 +738,7 @@ void MaximaEvaluator::SetupVariables() {
                m_wxMaxima.m_gnuplotcommand);
 #endif
   cmd.Replace(wxS("\\"), wxS("/"));
-  SendMaxima(cmd);
+  SendMaxima(std::move(cmd));
 
   SendMaxima(m_wxMaxima.m_configuration.MaximaHelpFormatCommand());
   // Ask a Lisp that has threads to open a second connection we can interrupt

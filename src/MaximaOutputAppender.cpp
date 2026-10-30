@@ -139,7 +139,7 @@ TextCell *MaximaOutputAppender::ConsoleAppend(wxString s, CellType type,
     // data from maxima.
     wxBusyCursor crs;
 
-    lastLine = DoRawConsoleAppend(s, type, opts);
+    lastLine = DoRawConsoleAppend(std::move(s), type, opts);
   } else if (type == MC_TYPE_PROMPT) {
     m_wxMaxima.m_lastPrompt = s;
 
@@ -151,7 +151,7 @@ TextCell *MaximaOutputAppender::ConsoleAppend(wxString s, CellType type,
     DoConsoleAppend(wxS("<span>") + s + wxS("</span>"), type,
                     AppendOpt(AppendOpt::NewLine | AppendOpt::BigSkip));
   } else if (type == MC_TYPE_ERROR) {
-    lastLine = DoRawConsoleAppend(s, MC_TYPE_ERROR, opts);
+    lastLine = DoRawConsoleAppend(std::move(s), MC_TYPE_ERROR, opts);
     GroupCell *tmp = m_wxMaxima.GetWorksheet()->GetWorkingGroup(true);
 
     if (tmp == nullptr) {
@@ -165,11 +165,11 @@ TextCell *MaximaOutputAppender::ConsoleAppend(wxString s, CellType type,
       m_wxMaxima.m_evaluator.MarkErrorStatement(tmp);
     }
   } else if (type == MC_TYPE_WARNING) {
-    lastLine = DoRawConsoleAppend(s, MC_TYPE_WARNING, opts);
+    lastLine = DoRawConsoleAppend(std::move(s), MC_TYPE_WARNING, opts);
   } else if (type == MC_TYPE_TEXT) {
-    lastLine = DoRawConsoleAppend(s, MC_TYPE_TEXT, opts);
+    lastLine = DoRawConsoleAppend(std::move(s), MC_TYPE_TEXT, opts);
   } else if (type == MC_TYPE_ASCIIMATHS) {
-    lastLine = DoRawConsoleAppend(s, MC_TYPE_ASCIIMATHS, opts);
+    lastLine = DoRawConsoleAppend(std::move(s), MC_TYPE_ASCIIMATHS, opts);
   } else
     DoConsoleAppend(wxS("<span>") + s + wxS("</span>"), type,
                     AppendOpt::BigSkip);
@@ -189,7 +189,7 @@ void MaximaOutputAppender::DoConsoleAppend(wxString s, CellType type, AppendOpt 
 
   m_wxMaxima.m_parser.SetUserLabel(userLabel);
   m_wxMaxima.m_parser.SetGroup(m_wxMaxima.GetWorksheet()->GetInsertGroup());
-  std::unique_ptr<Cell> cell(m_wxMaxima.m_parser.ParseLine(s, type));
+  std::unique_ptr<Cell> cell(m_wxMaxima.m_parser.ParseLine(std::move(s), type));
   m_wxMaxima.m_parser.SetGroup(nullptr);
 
   if (!cell)
@@ -318,7 +318,7 @@ TextCell *MaximaOutputAppender::DoRawConsoleAppend(wxString s, CellType type,
       wxString token = tokens.GetNextToken();
       // Move endless streams of compilation messages to the status bar...
       if (m_wxMaxima.m_sbclCompilationRegEx.Matches(token)) {
-        wxString fileName = token;
+        wxString fileName = std::move(token);
         m_wxMaxima.m_sbclCompilationRegEx.Replace(&fileName, wxS("\\1"));
         m_wxMaxima.StatusText(
                    wxString::Format(_("Compiling %s"), fileName));

@@ -7071,7 +7071,7 @@ bool Worksheet::Autocomplete(AutoComplete::autoCompletionType type) {
     }
   }
 
-  m_completions = m_autocomplete.CompleteSymbol(partial, type);
+  m_completions = m_autocomplete.CompleteSymbol(std::move(partial), type);
   std::ranges::sort(m_completions);
   m_autocompleteTemplates = (type == AutoComplete::tmplte);
 

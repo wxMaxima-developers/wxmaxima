@@ -336,16 +336,14 @@ void wxMaxima::ConfigChanged() {
   m_configCommands += wxString::Format(
     wxS(":lisp-quiet (with-input-from-string (wxst \"%s\") ")
     wxS("(meval (caddr (mread wxst 0))))\n"),
-    EscapeForLisp(wxdirsStatement));
+    EscapeForLisp(std::move(wxdirsStatement)));
 
   m_configCommands += wxString::Format(wxS(":lisp-quiet (setq $wxplot_size '((mlist simp) %i %i))\n"),
                                        m_configuration.DefaultPlotWidth(),
                                        m_configuration.DefaultPlotHeight());
 
   if (GetWorksheet() && (GetWorksheet()->GetCurrentFile() != wxEmptyString)) {
-    wxString filename(GetWorksheet()->GetCurrentFile());
-
-    SetCWD(filename);
+    SetCWD(GetWorksheet()->GetCurrentFile());
   }
   CallAfter([this]{if(m_symbolsSidebar != nullptr) m_symbolsSidebar->UpdateUserSymbols();});
 }
@@ -2820,7 +2818,7 @@ void wxMaxima::OnTimerEvent(wxTimerEvent &event) {
       // another event handler is still in flight; no modal dialogs directly
       // inside event handlers (see the similar CallAfter()s in
       // MaximaProcessManager.cpp/StartMaxima()).
-      CallAfter([command] {
+      CallAfter([command = std::move(command)] {
 #if defined(__WXOSX__)
         LoggingMessageBox(
           wxString::Format(
@@ -3300,7 +3298,7 @@ void wxMaxima::VarAddAllEvent(wxCommandEvent &WXUNUSED(event)) {
       (GetWorksheet()->QuestionPending()))
     m_configCommands += command;
   else
-    m_evaluator.SendMaxima(command);
+    m_evaluator.SendMaxima(std::move(command));
 }
 
 void wxMaxima::VarReadEvent(wxCommandEvent &WXUNUSED(event)) {

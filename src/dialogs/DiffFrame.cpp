@@ -1022,7 +1022,7 @@ void CollectCellsWithHidden(GroupCell *tree, std::vector<GroupCell *> &cells,
     md.type = c.GetGroupType();
     auto ed = c.GetEditable();
     if (ed) md.content = ed->GetValue();
-    matchData.push_back(md);
+    matchData.push_back(std::move(md));
     if (c.GetHiddenTree())
       CollectCellsWithHidden(c.GetHiddenTree(), cells, matchData);
   }

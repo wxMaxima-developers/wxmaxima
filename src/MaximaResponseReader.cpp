@@ -86,19 +86,19 @@ void MaximaResponseReader::ReadWorksheetExport(const wxXmlDocument &xmldoc) {
     wxString content = child->GetNodeContent();
     content.Trim(true).Trim(false);
     if (name == wxS("type"))
-      type = content;
+      type = std::move(content);
     else if (name == wxS("file"))
-      file = content;
+      file = std::move(content);
     else if (name == wxS("option")) {
       const wxString key = child->GetAttribute(wxS("name"));
       if (key == wxS("flavor"))
-        flavor = content;
+        flavor = std::move(content);
       else if (key == wxS("wxmx"))
         wxmx = (content == wxS("true"));
       else if (key == wxS("documentclass"))
-        documentclass = content;
+        documentclass = std::move(content);
       else if (key == wxS("documentclassoptions"))
-        documentclassOptions = content;
+        documentclassOptions = std::move(content);
     }
   }
 
@@ -442,7 +442,7 @@ void MaximaResponseReader::ReadAsciiMath(const wxString &data) {
                                     data.Length() - endTag.Length() - 1);
 
   m_wxMaxima.GetWorksheet()->SetCurrentTextCell(nullptr);
-  m_wxMaxima.m_outputAppender.DoRawConsoleAppend(content, MC_TYPE_ASCIIMATHS);
+  m_wxMaxima.m_outputAppender.DoRawConsoleAppend(std::move(content), MC_TYPE_ASCIIMATHS);
 }
 
 void MaximaResponseReader::ReadAsyncOutput(const wxString &data) {
@@ -860,7 +860,7 @@ void MaximaResponseReader::ReadStdErr() {
       if (Maxima::GetPipeToStdErr())
         std::cerr << o;
     } else
-      m_wxMaxima.m_outputAppender.DoRawConsoleAppend(o, MC_TYPE_DEFAULT);
+      m_wxMaxima.m_outputAppender.DoRawConsoleAppend(std::move(o), MC_TYPE_DEFAULT);
   }
 }
 

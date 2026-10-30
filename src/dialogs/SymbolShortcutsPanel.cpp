@@ -249,7 +249,7 @@ void SymbolShortcutsPanel::EditSelectedShortcut() {
       shortcuts.push_back({r.symbol, r.shortcut});
   SymbolShortcutDialog dialog(
     this, current.symbol, current.shortcut,
-    SymbolShortcutDialog::MakeUsageLookup(this, shortcuts, current.symbol));
+    SymbolShortcutDialog::MakeUsageLookup(this, std::move(shortcuts), current.symbol));
   if (dialog.ShowModal() == wxID_OK)
     SetShortcut(row, dialog.GetShortcut());
 }
