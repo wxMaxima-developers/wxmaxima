@@ -670,11 +670,26 @@ Submit bug reports by following the 'New issue' link on that page."))
        (caddr x)
        (equal (wxxml-mstring (caddr x)) "highlight")))
 
+;; With derivabbrev:true, diff(C,x) is drawn as a subscripted C_x
+;; (wxxml-d-abbrev), which binds as tightly as a subscripted variable: like
+;; Maxima's own 2D printer, a product or a minus sign mustn't put it in
+;; parentheses, while an exponent or a factorial still does (GH #640).
+;; Only the abbreviated form gets these binding powers: diff() drawn as a
+;; fraction keeps the ones of %derivative.  Setting the option variable
+;; doesn't run any code of ours, so this has to be decided per expression.
+(defun wxxml-form-is-abbreviated-derivative (x)
+  (and (member (caar x) '(%derivative $diff) :test #'eq)
+       (wxxml-d-abbrev-p x)))
+
 (defun wxxml-form-lbp (x)
-  (if (wxxml-form-is-highlight-only-box x) 10. (wxxml-lbp (caar x))))
+  (cond ((wxxml-form-is-highlight-only-box x) 10.)
+	((wxxml-form-is-abbreviated-derivative x) 200.)
+	(t (wxxml-lbp (caar x)))))
 
 (defun wxxml-form-rbp (x)
-  (if (wxxml-form-is-highlight-only-box x) 10. (wxxml-rbp (caar x))))
+  (cond ((wxxml-form-is-highlight-only-box x) 10.)
+	((wxxml-form-is-abbreviated-derivative x) 125.)
+	(t (wxxml-rbp (caar x)))))
 
 ;; Converts a sexp element to XML
 ;;
@@ -1489,24 +1504,19 @@ Submit bug reports by following the 'New issue' link on that page."))
 (wx-defprop $diff 120. wxxml-lbp)
 (wx-defprop $diff 119. wxxml-rbp)
 
+;; True if diff() expression x is drawn as a subscripted C_x rather than as
+;; a fraction.  wxxml-form-lbp/-rbp ask this, too, so that the parentheses
+;; around x and its drawing agree.
+(defun wxxml-d-abbrev-p (x)
+  (and $derivabbrev
+       (every #'integerp (odds (cddr x) 0))
+       (every #'atom (odds (cddr x) 1))))
+
 (defun wxxml-derivative (x l r)
-  (if (and $derivabbrev
-	   (every #'integerp (odds (cddr x) 0))
-	   (every #'atom (odds (cddr x) 1)))
+  (if (wxxml-d-abbrev-p x)
       (append l (wxxml-d-abbrev x) r)
       (wxxml (wxxml-d x) (append l '("<d lisp=\"wxxml-derivative\">"))
 	     (append '("</d>") r) 'mparen 'mparen)))
-
-(defun $derivabbrev (a)
-  (if a
-      (progn
-	(wx-defprop %derivative 130. wxxml-lbp)
-	(wx-defprop %derivative 129. wxxml-rbp)
-	(setq $derivabbrev t))
-      (progn
-	(wx-defprop %derivative 120. wxxml-lbp)
-	(wx-defprop %derivative 119. wxxml-rbp)
-	(setq $derivabbrev nil))))
 
 (defun wxxml-d-abbrev-subscript (l_vars l_ords &aux var_xml)
   (let ((sub ()))
