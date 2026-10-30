@@ -49,7 +49,7 @@ void LicenseDialog::FillTextCtrl(wxTextCtrl *ctrl, const unsigned char *data,
       wxSize linesize = dc.GetTextExtent(line);
       if (linesize.x > textWidth) {
         textWidth = linesize.x;
-        m_longestLine = line;
+        m_longestLine = std::move(line);
       }
     }
   }

@@ -2706,7 +2706,7 @@ std::unique_ptr<wxDataObject> Worksheet::CreateSelectionDataObject() const {
 #endif
   data->Add(new LazyDataObject(Svgout::GetDataFormat(), svg));
 
-  m_clipboardContents = contents;
+  m_clipboardContents = std::move(contents);
   return std::unique_ptr<wxDataObject>(data);
 }
 

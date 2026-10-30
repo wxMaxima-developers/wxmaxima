@@ -113,7 +113,7 @@ ChangeLogDialog::ChangeLogDialog(wxWindow *parent)
           m_changelog->BeginURL(url);
           m_changelog->WriteText(wxS("↗") + match);
           m_changelog->EndURL();
-          line = rest;
+          line = std::move(rest);
         }
       m_changelog->WriteText(line);
       if(isCaption)

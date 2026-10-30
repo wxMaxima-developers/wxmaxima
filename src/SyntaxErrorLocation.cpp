@@ -63,7 +63,7 @@ std::vector<wxString> EchoCandidates(const wxString &echo) {
     wxString spelledOut = echo;
     spelledOut.Replace(wxS("Space"), wxS(" "));
     spelledOut.Replace(wxS("Tab"), wxS("\t"));
-    candidates.push_back(spelledOut);
+    candidates.push_back(std::move(spelledOut));
   }
   return candidates;
 }
@@ -109,7 +109,7 @@ std::optional<wxString> SyntaxErrorEcho(const wxString &maximaOutput) {
   while (tokenizer.HasMoreTokens()) {
     wxString line = tokenizer.GetNextToken();
     line.Replace(wxS("\r"), wxEmptyString);
-    lines.push_back(line);
+    lines.push_back(std::move(line));
   }
 
   // lines[0] is the message. The echo directly precedes the caret, which

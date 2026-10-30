@@ -1049,8 +1049,8 @@ void DiffFrame::AlignCells() {
       std::vector<Diff::CellMatchData> matchData;
       if (sourceTrees.back())
           CollectCellsWithHidden(sourceTrees.back().get(), cells, matchData);
-      cellLists.push_back(cells);
-      matchDataLists.push_back(matchData);
+      cellLists.push_back(std::move(cells));
+      matchDataLists.push_back(std::move(matchData));
   }
 
   // finalAlignment will contain rows of indices into each tree

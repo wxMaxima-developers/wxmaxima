@@ -37,7 +37,7 @@ void RecentDocuments::Load() {
     wxString filename;
     if (config->Read(name, &filename)) {
       if (filename != wxEmptyString)
-        m_listOfFiles.push_back(filename);
+        m_listOfFiles.push_back(std::move(filename));
     }
   }
   m_listOfFiles.unique();

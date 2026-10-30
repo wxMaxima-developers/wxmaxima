@@ -137,7 +137,7 @@ void AutoComplete::AddSymbols(wxString xml) {
   WaitForSymbolTask();
 
   if((m_configuration->UseThreads() && xml.Length() > 300))
-    m_addSymbols_backgroundThread = jthread([this, xml](stop_token stopToken) {
+    m_addSymbols_backgroundThread = jthread([this, xml = std::move(xml)](stop_token stopToken) {
       AddSymbols_Backgroundtask_string(stopToken, xml);
     });
   else
@@ -323,7 +323,7 @@ void AutoComplete::LoadSymbols() {
       m_addSymbols_backgroundThread = jthread([this](stop_token stopToken) {
         BuiltinSymbols_BackgroundTask(stopToken);
       });
-      m_addFiles_backgroundThread = jthread([this, sharedir, demodir](stop_token stopToken) {
+      m_addFiles_backgroundThread = jthread([this, sharedir = std::move(sharedir), demodir = std::move(demodir)](stop_token stopToken) {
         LoadableFiles_BackgroundTask(stopToken, sharedir, demodir);
       });
     }

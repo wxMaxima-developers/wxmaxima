@@ -143,7 +143,7 @@ void AutocompletePopup::OnKeyDown(wxKeyEvent &event) {
           word += ch;
         }
       } while (addChar);
-      m_partial = word;
+      m_partial = std::move(word);
       if (m_type != AutoComplete::esccommand)
         m_editor->ReplaceSelection(m_editor->GetSelectionString(), m_partial,
                                    true);
@@ -365,7 +365,7 @@ bool AutocompletePopup::DescendIntoDirectory(const wxString &completion) {
     return false;
 
   m_editor->ReplaceSelection(m_editor->GetSelectionString(), newPartial, true);
-  m_partial = newPartial;
+  m_partial = std::move(newPartial);
   m_autocomplete->UpdateFiles(m_type, m_partial, m_fileBaseDir);
   UpdateResults();
   return true;

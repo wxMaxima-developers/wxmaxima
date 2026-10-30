@@ -1226,7 +1226,7 @@ void wxMaxima::OnNewDemoFiles(wxCommandEvent &WXUNUSED(event))
       wxString name = i.SubString(1,i.Length() - 2);
       if(!name.IsEmpty())
         {
-          subMenuContents.push_back(name);
+          subMenuContents.push_back(std::move(name));
           if(subMenuContents.size() > 11)
             {
               wxMenu *subMenu = new wxMenu();
@@ -1583,7 +1583,7 @@ void wxMaxima::SetCWD(wxString file) {
       if (GetWorksheet() && (GetWorksheet()->GetEvaluationQueue().Empty()))
         StatusMaximaBusy(StatusBar::MaximaStatus::waiting);
     }
-    m_CWD = workingDirectory;
+    m_CWD = std::move(workingDirectory);
   }
 }
 
@@ -1845,7 +1845,7 @@ void wxMaxima::ShowWxMaximaHelp(const wxString &anchor) {
       !ManualHasAnchor(helpfile, anchor)) {
     wxString english = wxFileName(helpfile).GetPathWithSep() + wxS("wxmaxima.html");
     if (ManualHasAnchor(english, anchor))
-      helpfile = english;
+      helpfile = std::move(english);
   }
 
   if (!wxFileExists(helpfile)) {
@@ -3270,7 +3270,7 @@ void wxMaxima::OnUnsavedDocument(wxCommandEvent &event) {
 
   if (wxFileExists(file)) {
     m_fileIO.OpenWXMXFile(file, GetWorksheet(), true);
-    m_tempfileName = file;
+    m_tempfileName = std::move(file);
     GetWorksheet()->SetCurrentFile(wxEmptyString);
     GetWorksheet()->SetSaved(false);
   } else

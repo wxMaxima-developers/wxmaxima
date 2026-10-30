@@ -194,7 +194,7 @@ bool LongNumberCell::BreakUp() const {
       integerPart = middle.Left(dotPos);
       fractionalPart = middle.Mid(dotPos + 1);
     } else {
-      integerPart = middle;
+      integerPart = std::move(middle);
     }
 
     std::vector<wxString> intGroups;

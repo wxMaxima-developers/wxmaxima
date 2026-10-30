@@ -369,7 +369,7 @@ bool MaximaFileIO::OpenWXMXFile(const wxString &file, Worksheet *document,
           contents_inputOnly += line + wxS("\n");
         }
       }
-      contents = contents_inputOnly;
+      contents = std::move(contents_inputOnly);
 
       LoadXmlFromString(xmldoc, contents);
     }
@@ -392,7 +392,7 @@ bool MaximaFileIO::OpenWXMXFile(const wxString &file, Worksheet *document,
           contents_reconstructed += ReadPotentiallyUnclosedTag(lines, line);
       }
       contents_reconstructed += wxS("</wxMaximaDocument>\n");
-      contents = contents_reconstructed;
+      contents = std::move(contents_reconstructed);
       LoadXmlFromString(xmldoc, contents);
     }
   }

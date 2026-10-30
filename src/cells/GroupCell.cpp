@@ -1327,7 +1327,7 @@ wxString GroupCell::ToTeX(const wxString &imgDir, const wxString &filename,
       if(imgCopy)
         {
           file = imgDir + wxS("/") + image + wxS(".") + imgCopy->GetExtension();
-          if (imgCopy->ToImageFile(file).x >= 0) {
+          if (imgCopy->ToImageFile(std::move(file)).x >= 0) {
             str << wxS("\\begin{figure}[htb]\n") << wxS("  \\centering\n")
             << wxS("    \\includeimage{") << filename << wxS("_img/") << image
             << wxS("}\n") << wxS("  \\caption{")
@@ -1544,7 +1544,7 @@ wxString GroupCell::ToTeXCodeCell(const wxString &imgDir, const wxString &filena
         // continues the line before.
         if (tmp.IsTextContinuation() && str.EndsWith(wxS("\n")))
           str.RemoveLast();
-        str += TexProtectVerbatim(line) + wxS("\n");
+        str += TexProtectVerbatim(std::move(line)) + wxS("\n");
       } else {
         switch (tmp.GetTextStyle()) {
         case TS_LABEL:
@@ -1560,7 +1560,7 @@ wxString GroupCell::ToTeXCodeCell(const wxString &imgDir, const wxString &filena
             wxString label = tmp.GetValue();
             label.Trim(true).Trim(false);
             str += wxS("\n\\noindent\\textcolor{labelcolor}{\\texttt{") +
-              TexEscapePlainText(label) + wxS("}}\n");
+              TexEscapePlainText(std::move(label)) + wxS("}}\n");
             break;
           }
           // A label starts an equation of its own: end the one before it.
@@ -1635,7 +1635,7 @@ wxString GroupCell::ToTeXImage(const Cell *tmp, const wxString &imgDir, const wx
 
     wxString file =
       imgDir + wxS("/") + image + wxS(".") + imgCopy->GetExtension();
-    if (imgCopy->ToImageFile(file).x >= 0)
+    if (imgCopy->ToImageFile(std::move(file)).x >= 0)
       str += wxS("\\includegraphics[width=.95\\linewidth,height=."
                  "80\\textheight,keepaspectratio]{") +
         filename + wxS("_img/") + image + wxS("}");
@@ -1904,7 +1904,7 @@ const wxString GroupCell::GetToolTip(const wxPoint point) const {
 
     auto toolTip = tmp.GetToolTip(point);
     if (!toolTip.empty())
-      retval = toolTip;
+      retval = std::move(toolTip);
   }
 
   return retval;

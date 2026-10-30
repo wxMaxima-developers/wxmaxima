@@ -1257,7 +1257,7 @@ void MaximaProcessManager::OnGnuplotPopoutCheckClose(wxProcessEvent &event) {
       continue;
     filtered += line + wxS("\n");
   }
-  gnuplotMessage = filtered;
+  gnuplotMessage = std::move(filtered);
   gnuplotMessage.Trim(true);
   gnuplotMessage.Trim(false);
 

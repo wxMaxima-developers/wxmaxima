@@ -421,7 +421,7 @@ wxString EvaluationQueue::GetCommand() {
           }
         }
       }
-      m_userLabel = userLabel;
+      m_userLabel = std::move(userLabel);
     }
   }
   return retval;

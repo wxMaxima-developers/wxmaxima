@@ -423,7 +423,7 @@ void TextCell::UpdateDisplayedText() const {
 
   wxString unicodeSym = GetSymbolUnicode(m_configuration->CheckKeepPercent());
   if (!unicodeSym.IsEmpty())
-    m_displayedText = unicodeSym;
+    m_displayedText = std::move(unicodeSym);
 
   /// Change asterisk to a multiplication dot, if applicable
   if (m_configuration->GetChangeAsterisk()) {
@@ -1490,7 +1490,7 @@ wxString TextCell::ToRTF() const {
   text.Replace(wxS(" --> "), wxS("\u2192"));
 
   retval += wxString::Format(wxS("\\cf%li{"), static_cast<long>(GetTextStyle()));
-  retval += RTFescape(text);
+  retval += RTFescape(std::move(text));
   retval += wxS("}\\cf0");
 
   return retval;

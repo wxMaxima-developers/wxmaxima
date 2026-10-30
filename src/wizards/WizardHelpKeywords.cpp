@@ -59,7 +59,7 @@ std::vector<wxString> wxm::WizardHelpKeywords(const wxString &commandRule) {
   }
 
   // The terminator of the last statement is part of every command.
-  wxString body = rule;
+  wxString body = std::move(rule);
   body.Trim();
   if (body.EndsWith(wxS(";")) || body.EndsWith(wxS("$")))
     body.RemoveLast();

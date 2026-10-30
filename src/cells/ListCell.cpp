@@ -179,7 +179,7 @@ wxString ListCell::ToMathML() const {
   wxString open = m_open->ToString();
   wxString close = m_close->ToString();
   return (wxS("<mrow><mo>") + XMLescape(std::move(open)) + wxS("</mo>") + // flawfinder: ignore -- "open" is a bracket-glyph string, not a file open
-          m_innerCell->ListToMathML() + wxS("<mo>") + XMLescape(close) +
+          m_innerCell->ListToMathML() + wxS("<mo>") + XMLescape(std::move(close)) +
           wxS("</mo></mrow>\n"));
 }
 

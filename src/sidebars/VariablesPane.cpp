@@ -317,10 +317,8 @@ std::vector<wxString> Variablespane::GetEscapedVarnames() {
 
 std::vector<wxString> Variablespane::GetVarnames() {
   std::vector<wxString> retVal;
-  for (int i = 0; i < m_grid->GetNumberRows(); i++) {
-    wxString var = m_grid->GetCellValue(i, 0);
-    retVal.push_back(var);
-  }
+  for (int i = 0; i < m_grid->GetNumberRows(); i++)
+    retVal.push_back(m_grid->GetCellValue(i, 0));
   return retVal;
 }
 

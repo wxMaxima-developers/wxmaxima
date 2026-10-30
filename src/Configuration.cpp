@@ -772,7 +772,7 @@ void Configuration::ReadConfig() {
                     entry = entry->GetNext();
                   }
                   if (!var.IsEmpty())
-                    m_maximaEnvVars[var] = value;
+                    m_maximaEnvVars[std::move(var)] = std::move(value);
                 }
                 entryNode = entryNode->GetNext();
               }
@@ -1191,7 +1191,7 @@ void Configuration::ReadStyles(const wxString &file) {
   wxString tmpString;
   if (config->Read(wxS("Style/Math/fontname"), &tmpString) &&
       tmpString.size() > 1)
-    m_styleStore[TS_MATH].SetFontName(tmpString);
+    m_styleStore[TS_MATH].SetFontName(std::move(tmpString));
 
   m_styleStore.Read(config);
   m_renderContext.SetBackgroundBrush(*wxTheBrushList->FindOrCreateBrush(

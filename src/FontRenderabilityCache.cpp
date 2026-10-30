@@ -73,7 +73,7 @@ void FontRenderabilityCache::ReadFrom(wxConfigBase *config) {
   while (bCont) {
     wxString chars;
     config->Read(str, &chars);
-    m_nonRenderableChars[str] = chars;
+    m_nonRenderableChars[str] = std::move(chars);
     bCont = config->GetNextEntry(str, dummy);
   }
   config->SetPath("/");

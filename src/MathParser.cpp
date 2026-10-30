@@ -393,12 +393,12 @@ std::unique_ptr<Cell> MathParser::ParseAnimationTag(wxXmlNode *node, int WXUNUSE
   while (imageFiles.HasMoreTokens()) {
     wxString imageFile = imageFiles.GetNextToken();
     if (imageFile.Length()) {
-      images.Add(imageFile);
+      images.Add(std::move(imageFile));
       numImgs++;
     }
   }
 
-  animation->LoadImages(images, del);
+  animation->LoadImages(std::move(images), del);
 
   wxString ppi = node->GetAttribute(wxS("ppi"), wxEmptyString);
   long ppi_num;
@@ -444,11 +444,11 @@ std::unique_ptr<Cell> MathParser::ParseAnimationTag(wxXmlNode *node, int WXUNUSE
     if ((size == wxDefaultSize) || (size == wxSize(1, 1))) {
       // Deferred, as for invalid XML below: no modal dialog from inside the
       // parse.
-      const wxString msg =
+      wxString msg =
         wxString::Format(_("Could not save the animation as \"%s\"."), gifFile);
       wxLogMessage(msg);
       if (wxTheApp)
-        wxTheApp->CallAfter([msg]{
+        wxTheApp->CallAfter([msg = std::move(msg)]{
           LoggingMessageBox(msg, _("Warning"), wxOK | wxICON_WARNING);
         });
     } else
@@ -509,12 +509,13 @@ std::unique_ptr<Cell> MathParser::ParseImageTag(wxXmlNode *node, int WXUNUSED(de
   if(node->GetAttribute(wxS("gnuplotsource"), &gnuplotSource))
     {
       wxString gnuplotData = node->GetAttribute(wxS("gnuplotdata"), wxEmptyString);
-      imageCell->GnuplotSource(gnuplotSource, gnuplotData, m_attachments);
+      imageCell->GnuplotSource(gnuplotSource, std::move(gnuplotData), m_attachments);
     }
   if(node->GetAttribute(wxS("gnuplotsource_gz"), &gnuplotSource))
     {
       wxString gnuplotData = node->GetAttribute(wxS("gnuplotdata_gz"), wxEmptyString);
-      imageCell->CompressedGnuplotSource(gnuplotSource, gnuplotData, m_attachments);
+      imageCell->CompressedGnuplotSource(std::move(gnuplotSource), std::move(gnuplotData),
+                                         m_attachments);
     }
 
   if (node->GetAttribute(wxS("rect"), wxS("true")) == wxS("false"))
@@ -1379,9 +1380,11 @@ std::unique_ptr<Cell> MathParser::ParseTag(wxXmlNode *node, bool all, int depth)
       // Parse XML tags. The only other type of element we recognize are text
       // nodes.
 
-      auto function = m_innerTags[tagName];
-      if (function)
-        tree.Append(std::invoke(function, this, node, depth + 1));
+      // find(), not operator[]: that would add every unknown tag to the
+      // shared table.
+      const auto function = m_innerTags.find(tagName);
+      if ((function != m_innerTags.end()) && function->second)
+        tree.Append(std::invoke(function->second, this, node, depth + 1));
 
       if (false)
         if (!tree.GetLastAppended() && node->GetChildren())
@@ -1428,7 +1431,7 @@ std::unique_ptr<Cell> MathParser::ParseTag(wxXmlNode *node, bool all, int depth)
         static bool warningPending = false;
         if (wxTheApp && !warningPending) {
           warningPending = true;
-          wxTheApp->CallAfter([msg]{
+          wxTheApp->CallAfter([msg = std::move(msg)]{
             LoggingMessageBox(msg, _("Warning"), wxOK | wxICON_WARNING);
             // Cleared only after the box closes: warnings arriving while it
             // is open (its modal loop pumps queued CallAfters) stay coalesced

@@ -295,7 +295,7 @@ MaximaManual::GetHTMLFiles::OnFile(const wxString &filename) {
   newItem.Replace(wxFileName::GetPathSeparator(), "/");
   if (newItem.EndsWith(".html") &&
       (std::ranges::find(m_files, newItem) == m_files.end()))
-    m_files.push_back(newItem);
+    m_files.push_back(std::move(newItem));
   return wxDIR_CONTINUE;
 }
 
@@ -314,7 +314,7 @@ MaximaManual::GetHTMLFiles_Recursive::OnFile(const wxString &filename) {
   newItem.Replace(wxFileName::GetPathSeparator(), "/");
   if (newItem.EndsWith(".html") &&
       (std::ranges::find(m_files, newItem) == m_files.end()))
-    m_files.push_back(newItem);
+    m_files.push_back(std::move(newItem));
   return wxDIR_CONTINUE;
 }
 
@@ -459,19 +459,19 @@ bool MaximaManual::LoadManualAnchorsFromXML(const wxXmlDocument &xmlDocument,
         {
           anchors++;
           const std::lock_guard<std::mutex> lock(m_helpFileAnchorsLock);
-          m_helpFileAnchors[key] = anchor;
+          m_helpFileAnchors[key] = std::move(anchor);
         }
       if ((!key.IsEmpty()) && (!url_filePerChapter.IsEmpty()))
         {
           urls_FilePerChapter++;
           const std::lock_guard<std::mutex> lock(m_helpFileAnchorsLock);
-          m_helpFileURLs_filePerChapter[key] = url_filePerChapter;
+          m_helpFileURLs_filePerChapter[key] = std::move(url_filePerChapter);
         }
       if ((!key.IsEmpty()) && (!url_singlepage.IsEmpty()))
         {
           urls_SinglePage++;
           const std::lock_guard<std::mutex> lock(m_helpFileAnchorsLock);
-          m_helpFileURLs_singlePage[key] = url_singlepage;
+          m_helpFileURLs_singlePage[key] = std::move(url_singlepage);
         }
     }
     entry = entry->GetNext();

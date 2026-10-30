@@ -1638,7 +1638,7 @@ bool EditorCell::InsertHTML(const wxString &html, wxString plainText) {
     plainText.RemoveLast();
   if (!plainText.IsEmpty() && (plainText != text)) {
     formats = TextFormat::Reconcile(text, formats, plainText);
-    text = plainText;
+    text = std::move(plainText);
   }
   InsertFormatted(text, formats);
   return true;
@@ -2354,7 +2354,7 @@ void EditorCell::ProcessNewline(bool keepCursorAtStartOfLine) {
 
       for (; it != newLines.end(); ++it)
         newLines_noleadingSpaces += *it;
-      newLines = newLines_noleadingSpaces;
+      newLines = std::move(newLines_noleadingSpaces);
     }
     m_text = m_text.Left(CursorPosition()) + wxS("\n") +
       indentString + newLines;
@@ -3957,7 +3957,7 @@ void EditorCell::PasteFromClipboard(const bool primary) {
     // only, so existing soft breaks already in m_text are untouched.
     text.Replace(wxS("\r\n"), wxS("\n"));
     text.Replace(wxS("\r"), wxS("\n"));
-    InsertText(text);
+    InsertText(std::move(text));
     m_containsChanges = true;
     StyleText();
   }
@@ -5171,7 +5171,7 @@ size_t EditorCell::ReplaceAll(wxString oldString, const wxString &newString,
     newText += src;
   }
   if (count > 0) {
-    m_text = newText;
+    m_text = std::move(newText);
     m_containsChanges = true;
     ClearSelection();
     StyleText();
@@ -5198,12 +5198,7 @@ size_t EditorCell::ReplaceAll_RegEx(const wxString &oldString, const wxString &n
   newText = m_text;
   count = regexsearch.ReplaceAll(&newText, newString);
   if(count > 0) {
-    m_text = newText;
-    m_containsChanges = true;
-    ClearSelection();
-    StyleText();
-    SetSelection(SelectionStart(), SelectionEnd());
-    m_text = newText;
+    m_text = std::move(newText);
     m_containsChanges = true;
     ClearSelection();
     StyleText();
@@ -5469,7 +5464,7 @@ bool EditorCell::ReplaceSelection_RegEx(const wxString &oldStr,
   match =  regexSearch.Replace(&text, start, newString);
   if(!match.Found())
     return false;
-  m_text = text;
+  m_text = std::move(text);
   CursorPosition(match.GetEnd());
 
   if (GetType() == MC_TYPE_INPUT)

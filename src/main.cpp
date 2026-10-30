@@ -1012,7 +1012,7 @@ void MyApp::NewWindow(const wxString &file, bool evalOnStartup,
 
   wxString title = _("wxMaxima");
   if (realFile.Length() > 0)
-    title = realFile;
+    title = std::move(realFile);
 
   // CountWindows() counts the wxMaxima windows that already exist; +1 for the
   // one we are about to create, which is the number we put into its title.
