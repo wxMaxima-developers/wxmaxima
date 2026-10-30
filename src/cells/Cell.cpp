@@ -2066,7 +2066,7 @@ void Cell::GenerateUUID() {
   static thread_local std::mt19937 generator{std::random_device{}()};
   std::uniform_int_distribution<unsigned int> part(0, 0xFFFF);
   wxLongLong now = wxDateTime::UNow().GetValue();
-  m_uuid = wxString::Format(wxS("%08lx-%04x-%04x-%04x-%012llx"),
+  RareData().uuid = wxString::Format(wxS("%08lx-%04x-%04x-%04x-%012llx"),
                             static_cast<long>(now.GetLo() & 0xFFFFFFFF),
                             part(generator), part(generator), part(generator),
                             now.GetValue());
@@ -2074,9 +2074,11 @@ void Cell::GenerateUUID() {
 
 wxString Cell::GetExtraXMLAttributes() const {
   wxString flags;
-  if (!m_uuid.IsEmpty())
-    flags += wxS(" uuid=\"") + m_uuid + wxS("\"");
-  for (auto const &[name, val] : m_extraAttributes) {
+  if (!m_rareData)
+    return flags;
+  if (!m_rareData->uuid.IsEmpty())
+    flags += wxS(" uuid=\"") + m_rareData->uuid + wxS("\"");
+  for (auto const &[name, val] : m_rareData->extraAttributes) {
     flags += wxS(" ") + name + wxS("=\"") + Cell::XMLescape(val) +
              wxS("\"");
   }
@@ -2084,5 +2086,18 @@ wxString Cell::GetExtraXMLAttributes() const {
 }
 
 void Cell::AddExtraAttribute(const wxString &name, const wxString &value) {
-  m_extraAttributes[name] = value;
+  RareData().extraAttributes[name] = value;
+}
+
+void Cell::SetUUID(const wxString &uuid) {
+  // Clearing the UUID of a cell that has none must not allocate.
+  if (uuid.IsEmpty() && !m_rareData)
+    return;
+  RareData().uuid = uuid;
+}
+
+Cell::RareCellData &Cell::RareData() {
+  if (!m_rareData)
+    m_rareData = std::make_unique<RareCellData>();
+  return *m_rareData;
 }
