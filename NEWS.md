@@ -7,6 +7,8 @@
   `OSX_MACPORTS_PREFIX` and `OSX_MACPORTS_PREFER` macros are gone, and
   passing its prefix as `CMAKE_INSTALL_PREFIX`, which MacPorts already does,
   is enough. That prefix may now contain quotes and backslashes.
+- macOS: a gnuplot path containing a double quote or a backslash no longer
+  produces a broken command when wxMaxima tells Maxima where gnuplot is.
 - A command that prints faster than wxMaxima can display the output, such as
   `for i thru i+1 do disp(i)`, no longer freezes wxMaxima (#2594). The
   output scrolls by while it arrives, the window reacts to the keyboard and
