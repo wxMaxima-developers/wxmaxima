@@ -70,7 +70,6 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Data Structures</a> &#124;
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a>  </div>
@@ -121,6 +120,7 @@ Public Types</h2></td></tr>
 &#160;&#160;<a class="el" href="classMaxima.html#a01e208858ffeeb60e8a1787a580103c8a058e131729ff28b6a0442db28c93799f">WRITE_PENDING</a>
 , <a class="el" href="classMaxima.html#a01e208858ffeeb60e8a1787a580103c8a8711123903e89e9976049e9ec2a3ebec">WRITE_ERROR</a>
 , <b>STRING_FOR_XMLINSPECTOR</b>
+, <a class="el" href="classMaxima.html#a01e208858ffeeb60e8a1787a580103c8a2080b36a2fb4f54ad73f578aaa74581f">DATA_AVAILABLE</a>
 <br />
  }</td></tr>
 <tr class="separator:a01e208858ffeeb60e8a1787a580103c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -141,10 +141,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsConnected</b> () co
 <tr class="memitem:aeb45e2fda6a941f99aa9181b644c75be"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMaxima.html#aeb45e2fda6a941f99aa9181b644c75be">Write</a> (const void *buffer, std::size_t length)</td></tr>
 <tr class="memdesc:aeb45e2fda6a941f99aa9181b644c75be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write more data to be sent to maxima.  <br /></td></tr>
 <tr class="separator:aeb45e2fda6a941f99aa9181b644c75be"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2a43dbaf7acf0560851899a20683543e"><td class="memItemLeft" align="right" valign="top"><a id="a2a43dbaf7acf0560851899a20683543e" name="a2a43dbaf7acf0560851899a20683543e"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ReadSocket</b> ()</td></tr>
-<tr class="memdesc:a2a43dbaf7acf0560851899a20683543e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read whatever data is in the socket. This is normally handled by the event handler, but can be called manually to poll for data. Ideally, this should be private. <br /></td></tr>
-<tr class="separator:a2a43dbaf7acf0560851899a20683543e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acda83ef4f0bb0f4fde6fc36bf68eb2fe"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMaxima.html#acda83ef4f0bb0f4fde6fc36bf68eb2fe">TakeItem</a> (<a class="el" href="structMaximaItemQueue_1_1Item.html">MaximaItemQueue::Item</a> &amp;item)</td></tr>
+<tr class="memdesc:acda83ef4f0bb0f4fde6fc36bf68eb2fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Takes the next item <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> sent.  <br /></td></tr>
+<tr class="separator:acda83ef4f0bb0f4fde6fc36bf68eb2fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb674371bf8cdadfb05e772ec7b51dd0"><td class="memItemLeft" align="right" valign="top"><a id="afb674371bf8cdadfb05e772ec7b51dd0" name="afb674371bf8cdadfb05e772ec7b51dd0"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ClearFirstPrompt</b> ()</td></tr>
 <tr class="memdesc:afb674371bf8cdadfb05e772ec7b51dd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear the first prompt state, based on what was read from maxima. This is called from prompt recognizer code in the <a class="el" href="classwxMaxima.html">wxMaxima</a> class. <br /></td></tr>
@@ -182,7 +181,7 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>GetPipeToStdEr
 <div class="textblock"><p>Interface to the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> process. </p>
 <p>Eventually this class will be the entire stand-alone <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> interface, factored out from <a class="el" href="classwxMaxima.html">wxMaxima</a>. For now, it only provides socket I/O.</p>
 <p>It is a source of EVT_MAXIMA events, used to asynchronously decouple the I/O from the front-end. In the future, more of this class could run on a worker thread perhaps.</p>
-<p>What it already does do is that on incoming data it creates a worker thread that splits the incoming data into known XML tags maxima sends and misc text and sends each of these items in a separate EVT_MAXIMA to the <a class="el" href="classwxMaxima.html">wxMaxima</a> main class </p>
+<p>What it already does do is that on incoming data it creates a worker thread that splits the incoming data into known XML tags maxima sends and misc text. These items wait in a <a class="el" href="classMaximaItemQueue.html" title="Items Maxima sent, on their way from the socket thread to the GUI thread.">MaximaItemQueue</a> the GUI thread takes them from (<a class="el" href="classMaxima.html#acda83ef4f0bb0f4fde6fc36bf68eb2fe" title="Takes the next item Maxima sent.">TakeItem()</a>); a DATA_AVAILABLE event tells it when there is something to take. Errors and the end of the connection still arrive as EVT_MAXIMA events of their own. </p>
 </div><h2 class="groupheader">Member Enumeration Documentation</h2>
 <a id="a01e208858ffeeb60e8a1787a580103c8" name="a01e208858ffeeb60e8a1787a580103c8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a01e208858ffeeb60e8a1787a580103c8">&#9670;&#160;</a></span>EventCause</h2>
@@ -210,6 +209,9 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>GetPipeToStdEr
 <tr><td class="fieldname"><a id="a01e208858ffeeb60e8a1787a580103c8a058e131729ff28b6a0442db28c93799f" name="a01e208858ffeeb60e8a1787a580103c8a058e131729ff28b6a0442db28c93799f"></a>WRITE_PENDING&#160;</td><td class="fielddoc"><p><a class="el" href="classA.html">A</a> write to <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> is still ongoing. We use this event to keep the traffic indicator alive. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a01e208858ffeeb60e8a1787a580103c8a8711123903e89e9976049e9ec2a3ebec" name="a01e208858ffeeb60e8a1787a580103c8a8711123903e89e9976049e9ec2a3ebec"></a>WRITE_ERROR&#160;</td><td class="fielddoc"><p>The transmission has failed - this is an unrecoverable error, most likely. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a01e208858ffeeb60e8a1787a580103c8a2080b36a2fb4f54ad73f578aaa74581f" name="a01e208858ffeeb60e8a1787a580103c8a2080b36a2fb4f54ad73f578aaa74581f"></a>DATA_AVAILABLE&#160;</td><td class="fielddoc"><p>There are items to take with <a class="el" href="classMaxima.html#acda83ef4f0bb0f4fde6fc36bf68eb2fe" title="Takes the next item Maxima sent.">TakeItem()</a>. </p>
+<p>Only sent when the GUI has found the queue empty before; see <a class="el" href="classMaximaItemQueue.html" title="Items Maxima sent, on their way from the socket thread to the GUI thread.">MaximaItemQueue</a>. </p>
 </td></tr>
 </table>
 
@@ -245,6 +247,36 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>GetPipeToStdEr
 <li>Escapes strange characters</li>
 <li>but keeps a "?" at the beginning of the variable name that indicates a lisp variable. </li>
 </ul>
+
+</div>
+</div>
+<a id="acda83ef4f0bb0f4fde6fc36bf68eb2fe" name="acda83ef4f0bb0f4fde6fc36bf68eb2fe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acda83ef4f0bb0f4fde6fc36bf68eb2fe">&#9670;&#160;</a></span>TakeItem()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Maxima::TakeItem </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structMaximaItemQueue_1_1Item.html">MaximaItemQueue::Item</a> &amp;&#160;</td>
+          <td class="paramname"><em>item</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Takes the next item <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> sent. </p>
+<p>GUI thread only.</p>
+<dl class="section return"><dt>Returns</dt><dd>false if there is none; the next item to arrive is then announced by a DATA_AVAILABLE event. Until this has returned false, no such event comes: the caller has to come back by itself. See <a class="el" href="classMaximaItemQueue.html" title="Items Maxima sent, on their way from the socket thread to the GUI thread.">MaximaItemQueue</a> for why it works that way. </dd></dl>
 
 </div>
 </div>

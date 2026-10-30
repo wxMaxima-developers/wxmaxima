@@ -286,9 +286,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasValidPosition</b> 
 <tr class="memitem:a351fb091b88d97bf44c95505b0198bfd"><td class="memItemLeft" align="right" valign="top">virtual wxCoord&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a351fb091b88d97bf44c95505b0198bfd">GetHeightList</a> () const</td></tr>
 <tr class="memdesc:a351fb091b88d97bf44c95505b0198bfd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the total height of this line.  <br /></td></tr>
 <tr class="separator:a351fb091b88d97bf44c95505b0198bfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9c188747e83c42019f7d8c6e87e9829f"><td class="memItemLeft" align="right" valign="top"><a id="a9c188747e83c42019f7d8c6e87e9829f" name="a9c188747e83c42019f7d8c6e87e9829f"></a>
-wxCoord&#160;</td><td class="memItemRight" valign="bottom"><b>SumOfWidths</b> () const</td></tr>
-<tr class="memdesc:a9c188747e83c42019f7d8c6e87e9829f"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many pixels is this list of cells wide, if we don't break it into lines? <br /></td></tr>
+<tr class="memitem:a9c188747e83c42019f7d8c6e87e9829f"><td class="memItemLeft" align="right" valign="top">wxCoord&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a9c188747e83c42019f7d8c6e87e9829f">SumOfWidths</a> () const</td></tr>
+<tr class="memdesc:a9c188747e83c42019f7d8c6e87e9829f"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many pixels is this list of cells wide, if we don't break it into lines?  <br /></td></tr>
 <tr class="separator:a9c188747e83c42019f7d8c6e87e9829f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa4c30056412188aac10dd2dc97df4020"><td class="memItemLeft" align="right" valign="top">wxCoord&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#aa4c30056412188aac10dd2dc97df4020">GetLineWidth</a> () const</td></tr>
 <tr class="memdesc:aa4c30056412188aac10dd2dc97df4020"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many pixels is the current line of this list of cells wide?  <br /></td></tr>
@@ -782,10 +781,6 @@ const wxString *&#160;</td><td class="memItemRight" valign="bottom"><b>m_toolTip
 <a class="el" href="classCachedInteger.html">CachedInteger</a>&lt; wxCoord &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_cachedCenterList</b></td></tr>
 <tr class="memdesc:ad5ee2d5c4a3eb9f01e4122f619bbd7c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cache for <a class="el" href="classCell.html#a3b385281e2cb77ffa5dfd902802ac692" title="Returns the maximum distance between top and center of this line.">GetCenterList()</a>: the largest center (height above the center) of the cells on the first display line of the list starting at this cell. <br /></td></tr>
 <tr class="separator:ad5ee2d5c4a3eb9f01e4122f619bbd7c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8eda07b71b0eed1e02795f6fd26a6aa5"><td class="memItemLeft" align="right" valign="top"><a id="a8eda07b71b0eed1e02795f6fd26a6aa5" name="a8eda07b71b0eed1e02795f6fd26a6aa5"></a>
-<a class="el" href="classCachedInteger.html">CachedInteger</a>&lt; wxCoord &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_cachedSumOfWidths</b></td></tr>
-<tr class="memdesc:a8eda07b71b0eed1e02795f6fd26a6aa5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cache for <a class="el" href="classCell.html#a9c188747e83c42019f7d8c6e87e9829f" title="How many pixels is this list of cells wide, if we don&#39;t break it into lines?">SumOfWidths()</a>: the summed width of all cells of the draw list starting at this cell (the whole list, across line breaks). <br /></td></tr>
-<tr class="separator:a8eda07b71b0eed1e02795f6fd26a6aa5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a47af3705082d12b7645342c651c0de33"><td class="memItemLeft" align="right" valign="top"><a id="a47af3705082d12b7645342c651c0de33" name="a47af3705082d12b7645342c651c0de33"></a>
 <a class="el" href="classCachedInteger.html">CachedInteger</a>&lt; wxCoord &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_cachedLineWidth</b></td></tr>
 <tr class="memdesc:a47af3705082d12b7645342c651c0de33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cache for <a class="el" href="classCell.html#aa4c30056412188aac10dd2dc97df4020" title="How many pixels is the current line of this list of cells wide?">GetLineWidth()</a>: the width of only the first display line of the list starting at this cell (the widths summed up to the first line break). <br /></td></tr>
@@ -3524,6 +3519,34 @@ template&lt;int N&gt; </div>
 
 </div>
 </div>
+<a id="a9c188747e83c42019f7d8c6e87e9829f" name="a9c188747e83c42019f7d8c6e87e9829f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9c188747e83c42019f7d8c6e87e9829f">&#9670;&#160;</a></span>SumOfWidths()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Cell::SumOfWidths </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>How many pixels is this list of cells wide, if we don't break it into lines? </p>
+<p>Not cached: it depends on every cell up to the end of the list, so a cache would have to be invalidated in every cell before one that changed &ndash; which, appending one output line after another, made the output quadratically slow to lay out (GH #2594). It is only ever asked of short inner lists (a fraction's numerator, a matrix entry, ...) and the input label, where walking the list costs no more than looking up a cache did. </p>
+
+</div>
+</div>
 <a id="a7b5c4d0905ff7ec01f93d00ba812e42c" name="a7b5c4d0905ff7ec01f93d00ba812e42c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7b5c4d0905ff7ec01f93d00ba812e42c">&#9670;&#160;</a></span>SwitchCaretDisplay()</h2>
 
@@ -4003,7 +4026,7 @@ template&lt;int N&gt; </div>
 </div><div class="memdoc">
 
 <p>Cache for <a class="el" href="classCell.html#ab1be3819e507454d4313f6ccbdac16c5" title="Returns the maximum distance between center and bottom of this line.">GetMaxDrop()</a>: the largest drop (height below the center) of the cells on the first display line of the list starting at this cell. </p>
-<p>Lazily filled (together with the three caches below) by UpdateListCaches() and invalidated by InvalidateListCache(). </p>
+<p>Lazily filled (together with m_cachedCenterList and m_cachedLineWidth) by UpdateListCaches() and invalidated by InvalidateListCache(). </p>
 
 </div>
 </div>

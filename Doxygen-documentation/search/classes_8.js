@@ -98,7 +98,7 @@ var searchData=
   ['is_5ftransparent_95',['is_transparent',['../structdetail_1_1is__transparent.html',1,'detail']]],
   ['isstreaminsertable_96',['IsStreamInsertable',['../classCatch_1_1Detail_1_1IsStreamInsertable.html',1,'Catch::Detail']]],
   ['istream_97',['IStream',['../structCatch_1_1IStream.html',1,'Catch']]],
-  ['item_98',['Item',['../structOutputNavigation_1_1Item.html',1,'OutputNavigation']]],
+  ['item_98',['Item',['../structMaximaItemQueue_1_1Item.html',1,'MaximaItemQueue::Item'],['../structOutputNavigation_1_1Item.html',1,'OutputNavigation::Item']]],
   ['iter_5fimpl_99',['iter_impl',['../classdetail_1_1iter__impl.html',1,'detail']]],
   ['iterarraycell_100',['IterArrayCell',['../classIterArrayCell.html',1,'']]],
   ['iterarraycell_3c_200_20_3e_101',['IterArrayCell&lt; 0 &gt;',['../classIterArrayCell_3_010_01_4.html',1,'']]],

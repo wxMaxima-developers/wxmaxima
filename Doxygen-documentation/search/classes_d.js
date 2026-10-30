@@ -12,8 +12,9 @@ var searchData=
   ['output_5fstream_5fadapter_9',['output_stream_adapter',['../classdetail_1_1output__stream__adapter.html',1,'detail']]],
   ['output_5fstring_5fadapter_10',['output_string_adapter',['../classdetail_1_1output__string__adapter.html',1,'detail']]],
   ['output_5fvector_5fadapter_11',['output_vector_adapter',['../classdetail_1_1output__vector__adapter.html',1,'detail']]],
-  ['outputlinewidths_12',['OutputLineWidths',['../structGroupCell_1_1OutputLineWidths.html',1,'GroupCell']]],
-  ['outputresult_13',['OutputResult',['../structGroupCell_1_1OutputResult.html',1,'GroupCell']]],
-  ['overload_5ftest_14',['Overload_Test',['../classOverload__Test.html',1,'']]],
-  ['oversizedmatricesmode_15',['OversizedMatricesMode',['../classOversizedMatricesMode.html',1,'']]]
+  ['outputbatch_12',['OutputBatch',['../classWorksheet_1_1OutputBatch.html',1,'Worksheet']]],
+  ['outputlinewidths_13',['OutputLineWidths',['../structGroupCell_1_1OutputLineWidths.html',1,'GroupCell']]],
+  ['outputresult_14',['OutputResult',['../structGroupCell_1_1OutputResult.html',1,'GroupCell']]],
+  ['overload_5ftest_15',['Overload_Test',['../classOverload__Test.html',1,'']]],
+  ['oversizedmatricesmode_16',['OversizedMatricesMode',['../classOversizedMatricesMode.html',1,'']]]
 ];

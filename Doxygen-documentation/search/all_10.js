@@ -75,7 +75,7 @@ var searchData=
   ['priority_5ftag_3c_200_20_3e_72',['priority_tag&lt; 0 &gt;',['../structdetail_1_1priority__tag_3_010_01_4.html',1,'detail']]],
   ['process_73',['Process',['../classTroubleshootingRunner_1_1Process.html',1,'TroubleshootingRunner']]],
   ['processentry_74',['ProcessEntry',['../structProcessEntry.html',1,'']]],
-  ['processevent_75',['ProcessEvent',['../classEditorCell.html#a4861b52977f38bd665e1ccc7be68c075',1,'EditorCell::ProcessEvent()'],['../classCell.html#ac2c7b0f78b2d1e9e0d2865305fdbe07e',1,'Cell::ProcessEvent()']]],
+  ['processevent_75',['ProcessEvent',['../classCell.html#ac2c7b0f78b2d1e9e0d2865305fdbe07e',1,'Cell::ProcessEvent()'],['../classEditorCell.html#a4861b52977f38bd665e1ccc7be68c075',1,'EditorCell::ProcessEvent(wxKeyEvent &amp;event) override']]],
   ['processnewline_76',['ProcessNewline',['../classEditorCell.html#aeee97c9a24f0dd8c752a5f7224ba19a6',1,'EditorCell']]],
   ['processtree_2ecpp_77',['ProcessTree.cpp',['../ProcessTree_8cpp.html',1,'']]],
   ['processtree_2eh_78',['ProcessTree.h',['../ProcessTree_8h.html',1,'']]],
@@ -89,8 +89,9 @@ var searchData=
   ['propertiesmenu_86',['PropertiesMenu',['../classMaximaCommandMenus.html#ac0eaf6e0cf0b25ab632ebf1f4ba1bc56',1,'MaximaCommandMenus']]],
   ['protecturls_87',['ProtectUrls',['../UrlDetection_8cpp.html#a2eab5246abef5298e9db64c0d1944792',1,'wxm']]],
   ['publicvar_88',['publicVar',['../classQTstyle__Test.html#aabf7b2e9ed83ea44aca4d213baae06d3',1,'QTstyle_Test::publicVar()'],['../classJavadoc__Test.html#a44a516fbc3a4865e2dcae34649c9df6a',1,'Javadoc_Test::publicVar()']]],
-  ['push_5fback_89',['push_back',['../classbasic__json.html#a4fcacc90f17b156f0b6c8e0430624853',1,'basic_json::push_back(initializer_list_t init)'],['../classbasic__json.html#af17fe93acad9b0b991600225dabd42be',1,'basic_json::push_back(const typename object_t::value_type &amp;val)'],['../classbasic__json.html#aca01ca3a9bc310e5c5d067a39dca6933',1,'basic_json::push_back(const basic_json &amp;val)'],['../classbasic__json.html#a3d13acce4e49e0d5ee768643a7b89010',1,'basic_json::push_back(basic_json &amp;&amp;val)'],['../classjson__pointer.html#a6fa4848eafc232ae1af91c3d2696897e',1,'json_pointer::push_back(string_t &amp;&amp;token)'],['../classjson__pointer.html#adbe97f9c00a221fb7be88d940b39a24f',1,'json_pointer::push_back(const string_t &amp;token)']]],
-  ['pyclass_90',['PyClass',['../classdocstring_1_1PyClass.html',1,'docstring.PyClass'],['../classpyexample_1_1PyClass.html',1,'pyexample.PyClass']]],
-  ['pyexample_91',['pyexample',['../namespacepyexample.html',1,'']]],
-  ['pymethod_92',['PyMethod',['../classpyexample_1_1PyClass.html#a654596774eb28a0c6d26eea565de3a9d',1,'pyexample.PyClass.PyMethod()'],['../classdocstring_1_1PyClass.html#af092e1eacc10334e0e8630531a3473b4',1,'docstring.PyClass.PyMethod()']]]
+  ['push_89',['Push',['../classMaximaItemQueue.html#ae8428501cd84c0d18d366722fa872cf3',1,'MaximaItemQueue']]],
+  ['push_5fback_90',['push_back',['../classbasic__json.html#a4fcacc90f17b156f0b6c8e0430624853',1,'basic_json::push_back(initializer_list_t init)'],['../classbasic__json.html#af17fe93acad9b0b991600225dabd42be',1,'basic_json::push_back(const typename object_t::value_type &amp;val)'],['../classbasic__json.html#aca01ca3a9bc310e5c5d067a39dca6933',1,'basic_json::push_back(const basic_json &amp;val)'],['../classbasic__json.html#a3d13acce4e49e0d5ee768643a7b89010',1,'basic_json::push_back(basic_json &amp;&amp;val)'],['../classjson__pointer.html#a6fa4848eafc232ae1af91c3d2696897e',1,'json_pointer::push_back(string_t &amp;&amp;token)'],['../classjson__pointer.html#adbe97f9c00a221fb7be88d940b39a24f',1,'json_pointer::push_back(const string_t &amp;token)']]],
+  ['pyclass_91',['PyClass',['../classdocstring_1_1PyClass.html',1,'docstring.PyClass'],['../classpyexample_1_1PyClass.html',1,'pyexample.PyClass']]],
+  ['pyexample_92',['pyexample',['../namespacepyexample.html',1,'']]],
+  ['pymethod_93',['PyMethod',['../classpyexample_1_1PyClass.html#a654596774eb28a0c6d26eea565de3a9d',1,'pyexample.PyClass.PyMethod()'],['../classdocstring_1_1PyClass.html#af092e1eacc10334e0e8630531a3473b4',1,'docstring.PyClass.PyMethod()']]]
 ];
