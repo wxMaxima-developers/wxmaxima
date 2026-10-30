@@ -1,5 +1,7 @@
 # Current development version
 
+- macOS: a gnuplot path containing a double quote or a backslash no longer
+  produces a broken command when wxMaxima tells Maxima where gnuplot is.
 - A command that prints faster than wxMaxima can display the output, such as
   `for i thru i+1 do disp(i)`, no longer freezes wxMaxima (#2594). The
   output scrolls by while it arrives, the window reacts to the keyboard and
