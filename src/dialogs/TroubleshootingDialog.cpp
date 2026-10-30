@@ -95,7 +95,7 @@ TroubleshootingResult CheckExternalBrowser() {
   wxString command;
   if (type && type->GetOpenCommand(&command, wxFileType::MessageParameters(wxS("x.html"))) &&
       !command.IsEmpty())
-    return Result(check, TroubleshootingStatus::ok, command);
+    return Result(check, TroubleshootingStatus::ok, std::move(command));
   return Result(check, TroubleshootingStatus::warning,
                 _("No program for opening HTML files was found."),
                 _("Help that is shown in a browser, and links in the worksheet, may "
