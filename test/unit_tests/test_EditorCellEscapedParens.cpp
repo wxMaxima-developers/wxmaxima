@@ -222,6 +222,54 @@ SCENARIO("An escaped bracket under the cursor has no partner to highlight") {
   }
 }
 
+SCENARIO("The bracket helpers work at the very start of a cell") {
+  // Coverity reported an overflowed constant here: the editor computed
+  // "cursor position - 2" as a size_t, which wraps at the start of a cell.
+  g_cfg->SetMatchParens(true);
+  GIVEN("a cell holding \"abc\" with the caret in front of it") {
+    auto group = MakeCodeCell(wxS("\"abc\""));
+    EditorCell *editor = group->GetEditable();
+    editor->CursorPosition(0);
+    WHEN("a quote is typed") {
+      Type(editor, wxS('"'));
+      THEN("the caret steps over the existing quote, adding nothing") {
+        REQUIRE(editor->GetValue() == wxS("\"abc\""));
+        REQUIRE(editor->CursorPosition() == 1);
+      }
+    }
+  }
+  GIVEN("a cell holding abc with the caret in front of it") {
+    auto group = MakeCodeCell(wxS("abc"));
+    EditorCell *editor = group->GetEditable();
+    editor->CursorPosition(0);
+    WHEN("Delete is pressed") {
+      wxKeyEvent event(wxEVT_KEY_DOWN);
+      event.m_keyCode = WXK_DELETE;
+      editor->ProcessEvent(event);
+      THEN("only the first character is gone") {
+        REQUIRE(editor->GetValue() == wxS("bc"));
+        REQUIRE(editor->CursorPosition() == 0);
+      }
+    }
+    WHEN("an opening bracket is typed") {
+      Type(editor, wxS('('));
+      THEN("it is closed right behind the caret") {
+        REQUIRE(editor->GetValue() == wxS("()abc"));
+        REQUIRE(editor->CursorPosition() == 1);
+      }
+    }
+  }
+  GIVEN("a cell holding (a) with the caret on the closing bracket") {
+    auto group = MakeCodeCell(wxS("(a)"));
+    EditorCell *editor = group->GetEditable();
+    editor->CursorPosition(2);
+    editor->FindMatchingParens();
+    THEN("the opening bracket at the start is its partner") {
+      REQUIRE(editor->GetMatchingParens() == std::pair<long, long>(0, 2));
+    }
+  }
+}
+
 class TestApp : public wxApp {
 public:
   bool OnInit() override { return true; }

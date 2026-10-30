@@ -77,34 +77,13 @@ class SimpleMathConfigurationIterator {
 public:
   explicit SimpleMathConfigurationIterator(const wxString &ainput)
     : pos(0), input(ainput) {
-    if (isValid() && (input.at(0) == '"' || (input.at(0) == '/' && input.length() > 1 &&
-                                             input.at(1) == '*'))) {
-      // skip strings or comments at string start
-      pos--;
-      ++(*this);
-    }
+    // skip strings or comments at string start
+    SkipStringsAndComments();
   }
 
   void operator++() {
-    unsigned int oldpos = pos;
     pos++;
-    while (pos < input.length() && oldpos != pos) {
-      oldpos = pos;
-      if (input.at(pos) == '"') { // skip strings
-        pos++;                 // skip leading "
-        while (pos < input.length() && input.at(pos) != '"')
-          pos++;
-        pos++; // skip trailing "
-      }
-      if (pos + 1 < input.length() && input.at(pos) == '/' &&
-          input.at(pos + 1) == '*') { // skip comments
-        pos += 2;                  // skip /*
-        while (pos < input.length() &&
-               (input.at(pos) != '*' || input.at(pos + 1) != '/'))
-          pos++;
-        pos += 2; // skip */
-      }
-    }
+    SkipStringsAndComments();
   }
 
   bool isValid() const
@@ -117,6 +96,30 @@ public:
 
   //! reference to the input string
   const wxString &input;
+
+private:
+  //! Moves pos past any strings and comments that start at it
+  void SkipStringsAndComments() {
+    bool skipped = true;
+    while (pos < input.length() && skipped) {
+      const std::size_t oldpos = pos;
+      if (input.at(pos) == '"') { // skip strings
+        pos++;                 // skip leading "
+        while (pos < input.length() && input.at(pos) != '"')
+          pos++;
+        pos++; // skip trailing "
+      }
+      if (pos + 1 < input.length() && input.at(pos) == '/' &&
+          input.at(pos + 1) == '*') { // skip comments
+        pos += 2;                  // skip /*
+        while (pos + 1 < input.length() &&
+               (input.at(pos) != '*' || input.at(pos + 1) != '/'))
+          pos++;
+        pos += 2; // skip */ (or run past the end of an unterminated comment)
+      }
+      skipped = (pos != oldpos);
+    }
+  }
 };
 
 /*! Reads the document's style settings from the config and writes the
@@ -1147,14 +1150,15 @@ void ExportOutputChunk(wxString &output, std::unique_ptr<Cell> chunk,
                        Configuration *configuration, const wxString &imgDir,
                        const wxString &filename,
                        const wxString &filename_encoded, int count) {
-  if (dynamic_cast<AnimationCell *>(&(*chunk)) != nullptr) {
-    dynamic_cast<AnimationCell *>(&(*chunk))->ToGif(
-                                                    imgDir + wxS("/") + filename +
-                                                    wxString::Format(wxS("_%d.gif"), count));
+  auto *const animation = dynamic_cast<AnimationCell *>(chunk.get());
+  auto *const image = dynamic_cast<ImgCellBase *>(chunk.get());
+  if (animation != nullptr) {
+    animation->ToGif(imgDir + wxS("/") + filename +
+                     wxString::Format(wxS("_%d.gif"), count));
     output << HtmlImageTag(filename_encoded, count, wxS(".gif"),
                            /*widthPx=*/-1, _("Animated Diagram"),
                            /*withBreak=*/false);
-  } else if (dynamic_cast<ImgCellBase *>(&(*chunk)) == nullptr) {
+  } else if (image == nullptr) {
     // Split off a leading output label (e.g. "(%o1)") so it can be shown
     // beside the content rather than fed to the math renderer.
     Cell *first = &(*chunk);
@@ -1247,11 +1251,9 @@ void ExportOutputChunk(wxString &output, std::unique_ptr<Cell> chunk,
     }
     }
   } else {
-    wxString ext = wxS(".") +
-      dynamic_cast<ImgCellBase *>(&(*chunk))->GetExtension();
-    wxSize size = dynamic_cast<ImgCellBase *>(&(*chunk))->ToImageFile(
-                                                                 imgDir + wxS("/") + filename +
-                                                                 wxString::Format(wxS("_%d"), count) + ext);
+    wxString ext = wxS(".") + image->GetExtension();
+    wxSize size = image->ToImageFile(imgDir + wxS("/") + filename +
+                                     wxString::Format(wxS("_%d"), count) + ext);
     wxString alttext =
       EditorCell::EscapeHTMLChars(chunk->ListToString());
     int borderwidth = chunk->GetImageBorderWidth();
@@ -1463,10 +1465,9 @@ void ExportOtherCell(wxString &output, GroupCell &tmp, MarkDownHTML &MarkDown,
                                               tmp.GetEditable()->ToString())
                << wxS("\n");
         output << wxS("<br>\n");
-        if (dynamic_cast<AnimationCell *>(tmp.GetOutput()) != nullptr) {
-          dynamic_cast<AnimationCell *>(tmp.GetOutput())
-            ->ToGif(imgDir + wxS("/") + filename +
-                    wxString::Format(wxS("_%d.gif"), count));
+        if (auto *animation = dynamic_cast<AnimationCell *>(tmp.GetOutput())) {
+          animation->ToGif(imgDir + wxS("/") + filename +
+                           wxString::Format(wxS("_%d.gif"), count));
           output << HtmlImageTag(filename_encoded, count, wxS(".gif"),
                                  /*widthPx=*/-1, _("Animated Diagram"),
                                  /*withBreak=*/false);

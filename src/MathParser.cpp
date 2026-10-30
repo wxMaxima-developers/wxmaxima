@@ -556,13 +556,16 @@ std::unique_ptr<Cell> MathParser::ParseOutputLabelTag(wxXmlNode *node, int depth
       user_lbl = user_lbl.substr(1, user_lbl.Length() - 2);
     }
   }
-  if ((tmp == nullptr) || (dynamic_cast<LabelCell *>(tmp.get()) == nullptr))
+  auto *label = dynamic_cast<LabelCell *>(tmp.get());
+  if (label == nullptr)
     {
       wxString empty;
-      tmp = std::make_unique<LabelCell>(m_group, m_configuration, empty);
+      auto newLabel = std::make_unique<LabelCell>(m_group, m_configuration, empty);
+      label = newLabel.get();
+      tmp = std::move(newLabel);
     }
 
-  dynamic_cast<LabelCell *>(tmp.get())->SetUserDefinedLabel(user_lbl);
+  label->SetUserDefinedLabel(user_lbl);
   tmp->ForceBreakLine(true);
   return tmp;
 }

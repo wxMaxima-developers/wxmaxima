@@ -415,8 +415,12 @@ wxString SubSupCell::GetDiffPart() const {
     s += "^(" + m_postSupCell->ListToString() + ")";
 
   if (m_scriptCells.empty()) {
+    // Only an index and an exponent: the exponent is the order of derivation.
     s += ",";
-    s += m_postSupCell->ListToString();
+    if (m_postSupCell)
+      s += m_postSupCell->ListToString();
+    else
+      s += wxS("1");
   } else {
     s += ",1";
   }

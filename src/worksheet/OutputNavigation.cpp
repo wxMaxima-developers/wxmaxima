@@ -35,9 +35,8 @@ namespace {
 
 //! Does this cell have inner cells, i.e. is it built from other cells?
 bool HasInnerCells(const Cell *cell) {
-  for ([[maybe_unused]] const Cell &inner : OnInner(cell))
-    return true;
-  return false;
+  auto inner = OnInner(cell);
+  return inner.begin() != inner.end();
 }
 
 //! Is this cell drawn, and does it show anything?

@@ -1108,7 +1108,10 @@ void DiffFrame::AlignCells() {
       for (size_t i = 0; i < numFiles; ++i) {
           if (row[i] != -1) {
               // Cell exists in this file: Insert a copy
-              auto copy = std::unique_ptr<GroupCell>(dynamic_cast<GroupCell*>(cellLists[i][row[i]]->Copy(nullptr).release()));
+              std::unique_ptr<Cell> anyCopy = cellLists[i][row[i]]->Copy(nullptr);
+              if (dynamic_cast<GroupCell *>(anyCopy.get()) == nullptr)
+                continue; // A GroupCell's copy is a GroupCell; only paranoia.
+              auto copy = std::unique_ptr<GroupCell>(static_cast<GroupCell *>(anyCopy.release()));
               // GroupCell's copy ctor deep-copies a hidden (folded) subtree
               // too, but CollectCellsWithHidden() already flattened this
               // cell's own hidden children into their own rows above -
