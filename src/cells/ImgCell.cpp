@@ -275,19 +275,18 @@ wxString ImgCell::ToXML() const {
       wxString gnuplotData = gnuplotDataFile.GetFullName() + wxS(".gz");
       m_configuration->PushFileToSave(gnuplotData,
                                       m_image->GetCompressedGnuplotData());
-      flags += wxS(" gnuplotdata_gz=\"") + XMLescape(gnuplotData) + wxS("\"");
+      flags += wxS(" gnuplotdata_gz=\"") + XMLescape(std::move(gnuplotData)) + wxS("\"");
     }
     if (m_image->GnuplotSource() != wxEmptyString) {
       wxFileName gnuplotSourceFile(m_image->GnuplotSource());
       wxString gnuplotSource = gnuplotSourceFile.GetFullName() + wxS(".gz");
       m_configuration->PushFileToSave(gnuplotSource,
                                       m_image->GetCompressedGnuplotSource());
-      flags += wxS(" gnuplotsource_gz=\"") + XMLescape(gnuplotSource) + wxS("\"");
+      flags += wxS(" gnuplotsource_gz=\"") + XMLescape(std::move(gnuplotSource)) + wxS("\"");
     }
 
-    wxString extension;
-    extension = m_image->GetExtension();
-    return (wxS("<img") + flags + wxS(">") + XMLescape(basename) + XMLescape(extension) +
+    return (wxS("<img") + flags + wxS(">") + XMLescape(std::move(basename)) +
+            XMLescape(m_image->GetExtension()) +
             wxS("</img>"));
   }
   else

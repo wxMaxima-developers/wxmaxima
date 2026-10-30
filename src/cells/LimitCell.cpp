@@ -127,7 +127,7 @@ wxString LimitCell::ToString() const {
     }
   else
     {
-      var = under;
+      var = std::move(under);
       to = wxEmptyString;
     }
   s += wxS("(") + base + wxS(",") + var + wxS(",") + to + wxS(")");

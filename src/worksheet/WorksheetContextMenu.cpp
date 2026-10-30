@@ -648,8 +648,8 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
           for (int o = 0; o < 4; o++) {
             if (worksheet.m_replacementsForCurrentWord.size() + dst.at(o).size() <=
                 10) {
-              for (const auto &replacement : dst.at(o))
-                worksheet.m_replacementsForCurrentWord.push_back(replacement);
+              for (auto &replacement : dst.at(o))
+                worksheet.m_replacementsForCurrentWord.push_back(std::move(replacement));
             } else
               break;
           }

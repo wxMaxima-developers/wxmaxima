@@ -58,12 +58,12 @@ using wxm::TroubleshootingStatus;
 
 namespace {
 TroubleshootingResult Result(TroubleshootingCheck check, TroubleshootingStatus status,
-                             const wxString &details, const wxString &hint = wxEmptyString) {
+                             wxString details, wxString hint = wxEmptyString) {
   TroubleshootingResult result;
   result.check = check;
   result.status = status;
-  result.details = details;
-  result.hint = hint;
+  result.details = std::move(details);
+  result.hint = std::move(hint);
   return result;
 }
 
@@ -128,7 +128,7 @@ TroubleshootingResult CheckTranslations(long language) {
   if (!available.IsEmpty())
     details += wxS("\n") + _("Translations found:") + wxS(" ") +
       wxJoin(available, wxS(','), 0);
-  return Result(check, TroubleshootingStatus::warning, details,
+  return Result(check, TroubleshootingStatus::warning, std::move(details),
                 _("The wxMaxima.mo files may be missing from the installation, or "
                   "there may be no translation for this language yet. "
                   "Edit > Configure > Worksheet chooses the language."));

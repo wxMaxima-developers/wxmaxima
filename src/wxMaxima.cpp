@@ -336,16 +336,14 @@ void wxMaxima::ConfigChanged() {
   m_configCommands += wxString::Format(
     wxS(":lisp-quiet (with-input-from-string (wxst \"%s\") ")
     wxS("(meval (caddr (mread wxst 0))))\n"),
-    EscapeForLisp(wxdirsStatement));
+    EscapeForLisp(std::move(wxdirsStatement)));
 
   m_configCommands += wxString::Format(wxS(":lisp-quiet (setq $wxplot_size '((mlist simp) %i %i))\n"),
                                        m_configuration.DefaultPlotWidth(),
                                        m_configuration.DefaultPlotHeight());
 
   if (GetWorksheet() && (GetWorksheet()->GetCurrentFile() != wxEmptyString)) {
-    wxString filename(GetWorksheet()->GetCurrentFile());
-
-    SetCWD(filename);
+    SetCWD(GetWorksheet()->GetCurrentFile());
   }
   CallAfter([this]{if(m_symbolsSidebar != nullptr) m_symbolsSidebar->UpdateUserSymbols();});
 }
@@ -1226,7 +1224,7 @@ void wxMaxima::OnNewDemoFiles(wxCommandEvent &WXUNUSED(event))
       wxString name = i.SubString(1,i.Length() - 2);
       if(!name.IsEmpty())
         {
-          subMenuContents.push_back(name);
+          subMenuContents.push_back(std::move(name));
           if(subMenuContents.size() > 11)
             {
               wxMenu *subMenu = new wxMenu();
@@ -1583,7 +1581,7 @@ void wxMaxima::SetCWD(wxString file) {
       if (GetWorksheet() && (GetWorksheet()->GetEvaluationQueue().Empty()))
         StatusMaximaBusy(StatusBar::MaximaStatus::waiting);
     }
-    m_CWD = workingDirectory;
+    m_CWD = std::move(workingDirectory);
   }
 }
 
@@ -1846,7 +1844,7 @@ void wxMaxima::ShowWxMaximaHelp(const wxString &anchor) {
       !ManualHasAnchor(helpfile, anchor)) {
     wxString english = wxFileName(helpfile).GetPathWithSep() + wxS("wxmaxima.html");
     if (ManualHasAnchor(english, anchor))
-      helpfile = english;
+      helpfile = std::move(english);
   }
 
   if (!wxFileExists(helpfile)) {
@@ -2820,7 +2818,7 @@ void wxMaxima::OnTimerEvent(wxTimerEvent &event) {
       // another event handler is still in flight; no modal dialogs directly
       // inside event handlers (see the similar CallAfter()s in
       // MaximaProcessManager.cpp/StartMaxima()).
-      CallAfter([command] {
+      CallAfter([command = std::move(command)] {
 #if defined(__WXOSX__)
         LoggingMessageBox(
           wxString::Format(
@@ -3270,7 +3268,7 @@ void wxMaxima::OnUnsavedDocument(wxCommandEvent &event) {
 
   if (wxFileExists(file)) {
     m_fileIO.OpenWXMXFile(file, GetWorksheet(), true);
-    m_tempfileName = file;
+    m_tempfileName = std::move(file);
     GetWorksheet()->SetCurrentFile(wxEmptyString);
     GetWorksheet()->SetSaved(false);
   } else
@@ -3300,7 +3298,7 @@ void wxMaxima::VarAddAllEvent(wxCommandEvent &WXUNUSED(event)) {
       (GetWorksheet()->QuestionPending()))
     m_configCommands += command;
   else
-    m_evaluator.SendMaxima(command);
+    m_evaluator.SendMaxima(std::move(command));
 }
 
 void wxMaxima::VarReadEvent(wxCommandEvent &WXUNUSED(event)) {

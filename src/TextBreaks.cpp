@@ -89,7 +89,7 @@ std::vector<wxString> SplitAtTextBreaks(const wxString &line) {
     pieceHasText = false;
   }
   if (!piece.IsEmpty() || pieces.empty())
-    pieces.push_back(piece);
+    pieces.push_back(std::move(piece));
   return pieces;
 }
 

@@ -2706,7 +2706,7 @@ std::unique_ptr<wxDataObject> Worksheet::CreateSelectionDataObject() const {
 #endif
   data->Add(new LazyDataObject(Svgout::GetDataFormat(), svg));
 
-  m_clipboardContents = contents;
+  m_clipboardContents = std::move(contents);
   return std::unique_ptr<wxDataObject>(data);
 }
 
@@ -7071,7 +7071,7 @@ bool Worksheet::Autocomplete(AutoComplete::autoCompletionType type) {
     }
   }
 
-  m_completions = m_autocomplete.CompleteSymbol(partial, type);
+  m_completions = m_autocomplete.CompleteSymbol(std::move(partial), type);
   std::ranges::sort(m_completions);
   m_autocompleteTemplates = (type == AutoComplete::tmplte);
 

@@ -109,7 +109,7 @@ void RegexCtrl::OnChange() {
             else
               wxLogMessage("%s", errMsg.mb_str());
             const wxString tooltips[3] = {/* empty */ RegexTooltip_norm,
-                                          /* invalid */ errMsg,
+                                          /* invalid */ std::move(errMsg),
                                           /* valid */ RegexTooltip_norm};
             // One could also set the background color, with
             // SetBackgroundColour(...); Be careful, not only set the foreground

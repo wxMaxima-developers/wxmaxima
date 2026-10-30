@@ -732,7 +732,7 @@ void ReadHTML(const wxString &html, wxString &text, Formats &formats) {
       }
       if (tag == wxS("pre"))
         ++preDepth;
-      stack.push_back(change);
+      stack.push_back(std::move(change));
       format = FormatOf(stack);
       if (tag == wxS("li"))
         emit(wxS("* "));

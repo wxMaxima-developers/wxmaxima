@@ -2787,7 +2787,7 @@ void MaximaCommandMenus::EditMenu(wxCommandEvent &event) {
       wxString line;
       while (!input.Eof()) {
         line = textIn.ReadLine();
-        body += line + wxS("\n");
+        body << line << wxS("\n");
       }
     }
 

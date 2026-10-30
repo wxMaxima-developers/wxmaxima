@@ -1022,7 +1022,7 @@ void CollectCellsWithHidden(GroupCell *tree, std::vector<GroupCell *> &cells,
     md.type = c.GetGroupType();
     auto ed = c.GetEditable();
     if (ed) md.content = ed->GetValue();
-    matchData.push_back(md);
+    matchData.push_back(std::move(md));
     if (c.GetHiddenTree())
       CollectCellsWithHidden(c.GetHiddenTree(), cells, matchData);
   }
@@ -1049,8 +1049,8 @@ void DiffFrame::AlignCells() {
       std::vector<Diff::CellMatchData> matchData;
       if (sourceTrees.back())
           CollectCellsWithHidden(sourceTrees.back().get(), cells, matchData);
-      cellLists.push_back(cells);
-      matchDataLists.push_back(matchData);
+      cellLists.push_back(std::move(cells));
+      matchDataLists.push_back(std::move(matchData));
   }
 
   // finalAlignment will contain rows of indices into each tree

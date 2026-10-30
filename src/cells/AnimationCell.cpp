@@ -412,7 +412,7 @@ wxString AnimationCell::ToXML() const {
       if (i->GetCompressedImage())
         m_configuration->PushFileToSave(basename + i->GetExtension(),
                                         i->GetCompressedImage());
-      images += XMLescape(basename) + XMLescape(i->GetExtension()) + wxS(";");
+      images += XMLescape(std::move(basename)) + XMLescape(i->GetExtension()) + wxS(";");
     }
   }
 

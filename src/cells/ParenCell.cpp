@@ -314,8 +314,8 @@ wxString ParenCell::ToMathML() const {
   if(m_innerCell)
     innerCellContents = m_innerCell->ListToMathML();
 
-  return (wxS("<mrow><mo>") + XMLescape(open) + wxS("</mo>") + // flawfinder: ignore -- "open" is a bracket-glyph string, not a file open
-          innerCellContents + wxS("<mo>") + XMLescape(close) +
+  return (wxS("<mrow><mo>") + XMLescape(std::move(open)) + wxS("</mo>") + // flawfinder: ignore -- "open" is a bracket-glyph string, not a file open
+          innerCellContents + wxS("<mo>") + XMLescape(std::move(close)) +
           wxS("</mo></mrow>\n"));
 }
 
@@ -323,7 +323,9 @@ wxString ParenCell::ToXML() const {
   wxString s;
   if (m_innerCell)
     s = m_innerCell->ListToXML();
-  return ((m_print) ? wxS("<r><p") + GetXMLFlags() + wxS(">") + s + wxS("</p></r>") : s);
+  if (!m_print)
+    return s;
+  return wxS("<r><p") + GetXMLFlags() + wxS(">") + s + wxS("</p></r>");
 }
 
 bool ParenCell::BreakUp() const {

@@ -37,7 +37,7 @@ void RecentDocuments::Load() {
     wxString filename;
     if (config->Read(name, &filename)) {
       if (filename != wxEmptyString)
-        m_listOfFiles.push_back(filename);
+        m_listOfFiles.push_back(std::move(filename));
     }
   }
   m_listOfFiles.unique();
@@ -90,7 +90,7 @@ void RecentDocuments::AddDocument(wxString name) {
       ++it;
   }
 
-  m_listOfFiles.push_front(name);
+  m_listOfFiles.push_front(std::move(name));
   m_listOfFiles.unique();
   long recentItems = 10;
   wxConfig::Get()->Read(wxS("recentItems"), &recentItems);

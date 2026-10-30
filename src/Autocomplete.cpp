@@ -123,7 +123,7 @@ bool AutoComplete::HasDemofile(const wxString &commandname)
   const std::lock_guard<std::mutex> lock(m_keywordsLock);
   return std::any_of(m_wordList.at(demofile).begin(),
                      m_wordList.at(demofile).end(),
-                     [commandname](const wxString &file){
+                     [&commandname](const wxString &file){
                        return file == wxS("\"") + commandname + wxS("\"");});
 }
 
@@ -137,7 +137,7 @@ void AutoComplete::AddSymbols(wxString xml) {
   WaitForSymbolTask();
 
   if((m_configuration->UseThreads() && xml.Length() > 300))
-    m_addSymbols_backgroundThread = jthread([this, xml](stop_token stopToken) {
+    m_addSymbols_backgroundThread = jthread([this, xml = std::move(xml)](stop_token stopToken) {
       AddSymbols_Backgroundtask_string(stopToken, xml);
     });
   else
@@ -323,7 +323,7 @@ void AutoComplete::LoadSymbols() {
       m_addSymbols_backgroundThread = jthread([this](stop_token stopToken) {
         BuiltinSymbols_BackgroundTask(stopToken);
       });
-      m_addFiles_backgroundThread = jthread([this, sharedir, demodir](stop_token stopToken) {
+      m_addFiles_backgroundThread = jthread([this, sharedir = std::move(sharedir), demodir = std::move(demodir)](stop_token stopToken) {
         LoadableFiles_BackgroundTask(stopToken, sharedir, demodir);
       });
     }
@@ -691,7 +691,7 @@ std::vector<wxString> AutoComplete::CompleteSymbol(wxString partial,
   // text also begins ("be" for "beta") stays the one ESC picks.
   if ((type == esccommand) && IsEscHexCompletion(partial) &&
       !ranges::contains(completions, partial))
-    completions.push_back(partial);
+    completions.push_back(std::move(partial));
   if (perfectCompletions.size() > 0)
     return perfectCompletions;
   else
@@ -746,11 +746,11 @@ void AutoComplete::AddSymbol(wxString fun, autoCompletionType type) {
     fun.Replace(chr, wxString(wxS("\\")) + chr);
   
   /// Add symbols
-  {
+  if (type != tmplte) {
     const std::lock_guard<std::mutex> lock(m_keywordsLock);
-    if ((type != tmplte) &&
-        (!ranges::contains(m_wordList.at(type), fun)))
-      m_wordList.at(type).push_back(fun);
+    if (!ranges::contains(m_wordList.at(type), fun))
+      m_wordList.at(type).push_back(std::move(fun));
+    return;
   }
   /// Add templates - for given function and given argument count we
   /// only add one template. We count the arguments by counting '<'
@@ -773,7 +773,7 @@ void AutoComplete::AddSymbol(wxString fun, autoCompletionType type) {
           }
           if (i == m_wordList.at(type).size())
             {
-              m_wordList.at(type).push_back(fun);
+              m_wordList.at(type).push_back(std::move(fun));
             }
         }
       }

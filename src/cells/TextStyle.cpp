@@ -327,7 +327,7 @@ Style &Style::Read(wxConfigBase *config, const wxString &where) {
   // changed a font in Options.
   if (config->Read(where + k_fontname, &tmpStr) &&
       !tmpStr.empty())
-    SetFontName(tmpStr);
+    SetFontName(std::move(tmpStr));
 
   // Validation is deferred to the point of first use, etc.
   return *this;

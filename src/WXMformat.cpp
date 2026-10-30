@@ -588,8 +588,7 @@ namespace Format {
 
         // Read a question -- see the WXM_ANSWER comment just above.
       case WXM_QUESTION:
-        line = unescape(getLinesUntil(Headers.GetEnd(headerId)));
-        question = line;
+        question = unescape(getLinesUntil(Headers.GetEnd(headerId)));
         break;
 
         // Read autoanswer tag
@@ -629,10 +628,9 @@ namespace Format {
             break;
 
           wxString content = last->GetEditable()->GetValue();
-          wxString unescaped = thisLine;
           if (!content.empty())
             content << '\n';
-          content << unescaped;
+          content << thisLine;
           last->GetEditable()->SetValue(content);
         }
         break;
@@ -699,7 +697,7 @@ namespace Format {
         trimmed.Trim(false);
         if (trimmed == wxS('/')) {
           isCommentLine = true;
-          line = trimmed;
+          line = std::move(trimmed);
         }
 
         // Skip to the end of the comment. Maxima nests comments, and a

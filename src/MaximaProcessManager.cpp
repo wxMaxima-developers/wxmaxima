@@ -1262,7 +1262,7 @@ void MaximaProcessManager::OnGnuplotPopoutCheckClose(wxProcessEvent &event) {
       continue;
     filtered += line + wxS("\n");
   }
-  gnuplotMessage = filtered;
+  gnuplotMessage = std::move(filtered);
   gnuplotMessage.Trim(true);
   gnuplotMessage.Trim(false);
 
@@ -1299,7 +1299,7 @@ void MaximaProcessManager::OnGnuplotPopoutCheckClose(wxProcessEvent &event) {
     static bool warningPending = false;
     if (wxTheApp && !warningPending) {
       warningPending = true;
-      wxTheApp->CallAfter([gnuplotMessage] {
+      wxTheApp->CallAfter([gnuplotMessage = std::move(gnuplotMessage)] {
         LoggingMessageBox(
           wxString::Format(
             _("Gnuplot reported the following while preparing the "

@@ -2635,7 +2635,7 @@ std::vector<McpSidebarInfo> wxMaximaFrame::McpSidebarList() const {
     // say up front that this one is not hideable rather than letting a tool
     // call walk into that assert.
     info.canHide = (paneId != EventIDs::menu_pane_console);
-    sidebars.push_back(info);
+    sidebars.push_back(std::move(info));
   }
   // m_sidebarNames is an unordered_map, so without this the same wxMaxima
   // would list its sidebars in a different order from one run to the next.

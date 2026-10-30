@@ -309,7 +309,7 @@ void MaximaEvaluator::EvaluateEvent(wxCommandEvent &WXUNUSED(event)) {
         // Add the answer to the current working cell or update the answer
         // that is stored within it.
         cell->SetAnswer(m_wxMaxima.GetWorksheet()->GetLastQuestion(), answer);
-        SendMaxima(answer, true);
+        SendMaxima(std::move(answer), true);
         m_wxMaxima.StatusMaximaBusy(StatusBar::MaximaStatus::calculating);
         m_wxMaxima.GetWorksheet()->SetHCaret(cell);
         m_wxMaxima.GetWorksheet()->ScrollToCaret();

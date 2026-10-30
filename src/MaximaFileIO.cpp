@@ -343,7 +343,7 @@ bool MaximaFileIO::OpenWXMXFile(const wxString &file, Worksheet *document,
               contents += wxS("</wxMaximaDocument>\n");
               break;
             } else
-              contents += line + wxS("\n");
+              contents << line << wxS("\n");
           }
         }
       }
@@ -369,7 +369,7 @@ bool MaximaFileIO::OpenWXMXFile(const wxString &file, Worksheet *document,
           contents_inputOnly += line + wxS("\n");
         }
       }
-      contents = contents_inputOnly;
+      contents = std::move(contents_inputOnly);
 
       LoadXmlFromString(xmldoc, contents);
     }
@@ -392,7 +392,7 @@ bool MaximaFileIO::OpenWXMXFile(const wxString &file, Worksheet *document,
           contents_reconstructed += ReadPotentiallyUnclosedTag(lines, line);
       }
       contents_reconstructed += wxS("</wxMaximaDocument>\n");
-      contents = contents_reconstructed;
+      contents = std::move(contents_reconstructed);
       LoadXmlFromString(xmldoc, contents);
     }
   }
@@ -638,7 +638,7 @@ bool MaximaFileIO::OpenFile(const wxString &file, const wxString &command) {
                            wxS(")$"));
     if (command == wxS("load")) {
       m_wxMaxima.ReReadConfig();
-      m_wxMaxima.m_recentPackages.AddDocument(unixFilename);
+      m_wxMaxima.m_recentPackages.AddDocument(std::move(unixFilename));
       m_wxMaxima.UpdateRecentDocuments();
       m_wxMaxima.ReReadConfig();
     }
@@ -696,7 +696,7 @@ bool MaximaFileIO::OpenFile(const wxString &file, const wxString &command) {
                                                              : wxS("load(")) +
                              wxm::MaximaStringLiteral(unixFilename) + wxS(")$"));
       m_wxMaxima.ReReadConfig();
-      m_wxMaxima.m_recentPackages.AddDocument(realFile);
+      m_wxMaxima.m_recentPackages.AddDocument(std::move(realFile));
       m_wxMaxima.UpdateRecentDocuments();
       m_wxMaxima.ReReadConfig();
       break;
@@ -844,7 +844,7 @@ bool MaximaFileIO::SaveFile(bool forceSave) {
 
     if (m_wxMaxima.IsInteractive())
       m_wxMaxima.m_recentDocuments.AddDocument(file);
-    m_wxMaxima.SetCWD(file);
+    m_wxMaxima.SetCWD(std::move(file));
     m_wxMaxima.StatusSaveFinished();
     m_wxMaxima.UpdateRecentDocuments();
   }
