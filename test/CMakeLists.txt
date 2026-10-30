@@ -252,6 +252,17 @@ wxm_add_wxmathml_test(check-wxMathML.lisp_highlight_box_keeps_parens
     "a*box(b,highlight)*c;"
     "<p lisp=\"wxxml-paren\"><mrow><hl boxname=\"highlight\">")
 
+# GH #640: with derivabbrev:true, diff(C,x) is drawn as a subscripted C_x,
+# which a product or a minus sign must not put in parentheses (Maxima's own
+# 2D display doesn't either) -- while an exponent still has to, or C_x^2
+# would read as C with the subscript x^2.
+wxm_add_wxmathml_test(check-wxMathML.lisp_derivabbrev_product_no_parens
+    "derivabbrev:true$ depends(C,x)$ B*diff(C,x); -diff(C,x);"
+    "<h>\\*</h><munder d=\"1\" altCopy=\"diff\\(C,x,1\\)\">.*<mo>-</mo><munder d=\"1\"")
+wxm_add_wxmathml_test(check-wxMathML.lisp_derivabbrev_power_keeps_parens
+    "derivabbrev:true$ depends(C,x)$ diff(C,x)^2;"
+    "<msup><mrow><mrow lisp=\"wxxml-paren\"><p lisp=\"wxxml-paren\"><munder d=\"1\"")
+
 # GH #1536: a bare summand doesn't need the disambiguating parentheses
 # SumCell used to always draw around it -- only a compound one (here a sum
 # of terms, "k+k^2") does. wxxml-sum (wxMathML.lisp) decides this from the

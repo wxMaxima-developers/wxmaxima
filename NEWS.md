@@ -1,5 +1,8 @@
 # Current development version
 
+- With `derivabbrev:true`, a derivative inside a product or after a minus
+  sign is no longer put in parentheses: `B*diff(C,x)` now shows as B C_x,
+  as in Maxima's own display (#640). A power or factorial of it keeps them.
 - A matrix power `A^^n` is now shown as A^⟨n⟩, the way Maxima's own 2D
   display and `tex()` show it (#1005). The brackets grow with a tall
   exponent such as a fraction. For a matrix `A^n` is the
