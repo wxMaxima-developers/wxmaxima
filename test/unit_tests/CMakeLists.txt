@@ -1082,6 +1082,15 @@ if(TARGET wxmTestApp)
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
     add_test(NAME TeXRedundancy
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_TeXRedundancy>")
+    # A matrix power A^^n is shown, exported and saved as one (GH #1005).
+    add_executable(test_MatrixPower
+        test_MatrixPower.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_MatrixPower PUBLIC cxx_std_20)
+    target_link_libraries(test_MatrixPower PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME MatrixPower
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_MatrixPower>")
     # Greek constants export as commands LaTeX knows, or as Latin letters.
     add_executable(test_GreekToTeX
         test_GreekToTeX.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}

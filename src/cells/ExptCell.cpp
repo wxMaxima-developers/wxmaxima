@@ -50,6 +50,7 @@ ExptCell::ExptCell(GroupCell *group, const ExptCell &cell)
   CopyCommonData(cell);
   m_altCopyText = cell.m_altCopyText;
   MakeBreakupCells();
+  IsMatrix(cell.m_isMatrix);
 }
 
 DEFINE_CELL(ExptCell)
@@ -64,11 +65,37 @@ void ExptCell::MakeBreakupCells() {
   static_cast<TextCell &>(*m_open).DontEscapeOpeningParenthesis();
   m_close = std::make_unique<TextCell>(m_group, m_configuration, wxS(")"));
   m_close->SetStyle(TS_FUNCTION);
+  m_matrixOpen =
+    std::make_unique<TextCell>(m_group, m_configuration, wxS("\u27E8"));
+  m_matrixOpen->SetStyle(TS_FUNCTION);
+  m_matrixClose =
+    std::make_unique<TextCell>(m_group, m_configuration, wxS("\u27E9"));
+  m_matrixClose->SetStyle(TS_FUNCTION);
 
   if (!m_exptCell->IsCompound()) {
     m_open->Hide();
     m_close->Hide();
   }
+}
+
+void ExptCell::IsMatrix(bool isMatrix) {
+  m_isMatrix = isMatrix;
+  m_exp->SetValue(isMatrix ? wxS("^^") : wxS("^"));
+  if (isMatrix)
+    SetToolTip(MatrixPowerToolTip());
+}
+
+wxString ExptCell::MatrixPowerToolTip() {
+  return _("A matrix power: A^^n is A.A. ... .A (n times), the "
+           "non-commutative product. A^n would instead raise every "
+           "element of A to the n-th power.");
+}
+
+wxCoord ExptCell::ExponentWidth() const {
+  wxCoord width = m_exptCell->SumOfWidths();
+  if (m_isMatrix)
+    width += m_matrixOpen->GetWidth() + m_matrixClose->GetWidth();
+  return width;
 }
 
 /**
@@ -88,7 +115,15 @@ void ExptCell::SetCurrentPoint(wxPoint point) const {
   // Position the exponent (raised by m_expt_yoffset and shifted right)
   point.x += m_baseCell->SumOfWidths() - MC_TEXT_PADDING;
   point.y -= m_expt_yoffset;
+  if (m_isMatrix) {
+    m_matrixOpen->SetCurrentPoint(point);
+    point.x += m_matrixOpen->GetWidth();
+  }
   m_exptCell->SetCurrentPointList(point);
+  if (m_isMatrix) {
+    point.x += m_exptCell->SumOfWidths();
+    m_matrixClose->SetCurrentPoint(point);
+  }
 }
 
 void ExptCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
@@ -96,6 +131,10 @@ void ExptCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
   if (DrawThisCell()) {
     m_baseCell->DrawList(dc, antialiassingDC);
     m_exptCell->DrawList(dc, antialiassingDC);
+    if (m_isMatrix) {
+      m_matrixOpen->Draw(dc, antialiassingDC);
+      m_matrixClose->Draw(dc, antialiassingDC);
+    }
   }
 }
 
@@ -111,6 +150,10 @@ void ExptCell::Recalculate(AFontSize fontsize) const {
     changed |= m_exptCell->RecalculateList(fontsize);
   else
     changed |= m_exptCell->RecalculateList({MC_MIN_SIZE, fontsize - EXPT_DEC});
+  // The angle brackets of a matrix power belong to the exponent, so they
+  // share its font size.
+  changed |= m_matrixOpen->RecalculateList({MC_MIN_SIZE, fontsize - EXPT_DEC});
+  changed |= m_matrixClose->RecalculateList({MC_MIN_SIZE, fontsize - EXPT_DEC});
 
   if (changed || NeedsRecalculation(fontsize)) {
     Cell::Recalculate(fontsize);
@@ -118,8 +161,7 @@ void ExptCell::Recalculate(AFontSize fontsize) const {
     if (IsBrokenIntoLines()) {
       m_height = m_width = m_center = 0;
     } else {
-      m_width = m_baseCell->SumOfWidths() + m_exptCell->SumOfWidths() -
-        MC_TEXT_PADDING;
+      m_width = m_baseCell->SumOfWidths() + ExponentWidth() - MC_TEXT_PADDING;
       m_expt_yoffset = m_exptCell->GetMaxDrop() + .3 * m_fontSize_Scaled;
 
       m_height = m_baseCell->GetHeightList();
@@ -154,13 +196,14 @@ wxString ExptCell::ToString() const {
 }
 
 wxString ExptCell::ToMatlab() const {
-  if (m_altCopyText != wxEmptyString)
+  // m_altCopyText is Maxima syntax (A^^n), which Matlab doesn't understand.
+  if ((m_altCopyText != wxEmptyString) && !m_isMatrix)
     return m_altCopyText;
   if (IsBrokenIntoLines())
     return wxEmptyString;
+  // In Matlab ^ already is the matrix power (.^ is the elementwise one), so
+  // Maxima's A^^n becomes A^n.
   wxString s = m_baseCell->ListToMatlab() + wxS("^");
-  if (m_isMatrix)
-    s += wxS("^");
   if (m_exptCell->IsCompound())
     s += wxS("(") + m_exptCell->ListToMatlab() + wxS(")");
   else
@@ -175,8 +218,18 @@ wxString ExptCell::ToTeX() const {
   const bool parenthesized =
     !m_baseCell->GetNext() && (dynamic_cast<const ParenCell *>(m_baseCell.get())) &&
     (base.StartsWith(wxS("(")) || base.StartsWith(wxS("\\left(")));
-  return (parenthesized ? base : TeXGroup(base)) + wxS("^") +
-    TeXGroup(m_exptCell->ListToTeX());
+  // A matrix power is written the way Maxima's own tex() writes it.
+  const wxString exponent =
+    m_isMatrix ? wxS("{\\langle ") + m_exptCell->ListToTeX() + wxS("\\rangle}")
+               : TeXGroup(m_exptCell->ListToTeX());
+  return (parenthesized ? base : TeXGroup(base)) + wxS("^") + exponent;
+}
+
+wxString ExptCell::ExponentToMathML() const {
+  if (!m_isMatrix)
+    return m_exptCell->ListToMathML();
+  return wxS("<mrow>") + m_matrixOpen->ToMathML() +
+    m_exptCell->ListToMathML() + m_matrixClose->ToMathML() + wxS("</mrow>");
 }
 
 wxString ExptCell::GetDiffPart() const {
@@ -190,20 +243,24 @@ wxString ExptCell::GetDiffPart() const {
 }
 
 wxString ExptCell::ToMathML() const {
-  return wxS("<msup>") + m_baseCell->ListToMathML() +
-    m_exptCell->ListToMathML() + wxS("</msup>\n");
+  return wxS("<msup>") + m_baseCell->ListToMathML() + ExponentToMathML() +
+    wxS("</msup>\n");
   //  return wxS("<apply><power/>") + m_baseCell->ListToMathML() +
   //  m_exptCell->ListToMathML() + wxS("</apply>");
 }
 
 wxString ExptCell::ToOMML() const {
   return wxS("<m:sSup><m:e>") + m_baseCell->ListToOMML() +
-    wxS("</m:e><m:sup>") + m_exptCell->ListToOMML() +
+    wxS("</m:e><m:sup>") +
+    (m_isMatrix ? m_matrixOpen->ToOMML() : wxString()) +
+    m_exptCell->ListToOMML() +
+    (m_isMatrix ? m_matrixClose->ToOMML() : wxString()) +
     wxS("</m:sup></m:sSup>\n");
 }
 
 wxString ExptCell::ToXML() const {
-  return wxS("<e") + GetXMLFlags() + wxS("><r>") + m_baseCell->ListToXML() +
+  return wxS("<e") + GetXMLFlags() +
+    (m_isMatrix ? wxS(" mat=\"true\"") : wxString()) + wxS("><r>") + m_baseCell->ListToXML() +
     wxS("</r><r>") + m_exptCell->ListToXML() + wxS("</r></e>");
 }
 

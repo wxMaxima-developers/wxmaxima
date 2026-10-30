@@ -31,6 +31,7 @@
 #include "SubSupCell.h"
 #include "CellImpl.h"
 #include "TextCell.h"
+#include "ExptCell.h"
 #include <wx/config.h>
 
 #define SUBSUP_DEC 3
@@ -49,6 +50,7 @@ SubSupCell::SubSupCell(GroupCell *group, const SubSupCell &cell)
   SetExponent(CopyList(group, cell.m_postSupCell.get()));
   SetPreSub(CopyList(group, cell.m_preSubCell.get()));
   SetPreSup(CopyList(group, cell.m_preSupCell.get()));
+  IsMatrix(cell.m_matrixOpen != nullptr);
 }
 
 DEFINE_CELL(SubSupCell)
@@ -104,6 +106,46 @@ void SubSupCell::SetExponent(std::unique_ptr<Cell> &&expt) {
   m_postSupCell = std::move(expt);
 }
 
+void SubSupCell::IsMatrix(bool isMatrix) {
+  if (!isMatrix) {
+    m_matrixOpen.reset();
+    m_matrixClose.reset();
+    return;
+  }
+  if (m_matrixOpen)
+    return;
+  m_matrixOpen =
+    std::make_unique<TextCell>(m_group, m_configuration, wxS("\u27E8"));
+  m_matrixOpen->SetStyle(TS_FUNCTION);
+  m_matrixClose =
+    std::make_unique<TextCell>(m_group, m_configuration, wxS("\u27E9"));
+  m_matrixClose->SetStyle(TS_FUNCTION);
+  SetToolTip(ExptCell::MatrixPowerToolTip());
+}
+
+wxCoord SubSupCell::PostSupWidth() const {
+  if (!m_postSupCell)
+    return 0;
+  wxCoord width = m_postSupCell->SumOfWidths();
+  if (m_matrixOpen)
+    width += m_matrixOpen->GetWidth() + m_matrixClose->GetWidth();
+  return width;
+}
+
+wxString SubSupCell::PostSupToMathML() const {
+  if (!m_matrixOpen)
+    return m_postSupCell->ListToMathML();
+  return "<mrow>" + m_matrixOpen->ToMathML() + m_postSupCell->ListToMathML() +
+    m_matrixClose->ToMathML() + "</mrow>";
+}
+
+wxString SubSupCell::PostSupToOMML() const {
+  if (!m_matrixOpen)
+    return m_postSupCell->ListToOMML();
+  return m_matrixOpen->ToOMML() + m_postSupCell->ListToOMML() +
+    m_matrixClose->ToOMML();
+}
+
 void SubSupCell::Recalculate(AFontSize const fontsize) const {
   AFontSize const smallerFontSize{MC_MIN_SIZE, fontsize - SUBSUP_DEC};
 
@@ -117,6 +159,10 @@ void SubSupCell::Recalculate(AFontSize const fontsize) const {
     changed |= m_preSubCell->RecalculateList(smallerFontSize);
   if (m_preSupCell)
     changed |= m_preSupCell->RecalculateList(smallerFontSize);
+  if (m_matrixOpen) {
+    changed |= m_matrixOpen->RecalculateList(smallerFontSize);
+    changed |= m_matrixClose->RecalculateList(smallerFontSize);
+  }
 
   if (changed || NeedsRecalculation(fontsize)) {
     Cell::Recalculate(fontsize);
@@ -130,7 +176,7 @@ void SubSupCell::Recalculate(AFontSize const fontsize) const {
       subHeight = m_postSubCell->GetHeightList();
     }
     if (m_postSupCell) {
-      postWidth = std::max(postWidth, m_postSupCell->SumOfWidths());
+      postWidth = std::max(postWidth, PostSupWidth());
       supHeight = m_postSupCell->GetHeightList();
     }
     if (m_preSubCell) {
@@ -209,7 +255,15 @@ void SubSupCell::SetCurrentPoint(wxPoint point) const {
     in.y = point.y - m_baseCell->GetCenterList() -
            m_postSupCell->GetHeightList() + m_postSupCell->GetCenterList() +
            .8 * m_fontSize_Scaled.Get() + MC_EXP_INDENT;
+    if (m_matrixOpen) {
+      m_matrixOpen->SetCurrentPoint(in);
+      in.x += m_matrixOpen->GetWidth();
+    }
     m_postSupCell->SetCurrentPointList(in);
+    if (m_matrixOpen) {
+      in.x += m_postSupCell->SumOfWidths();
+      m_matrixClose->SetCurrentPoint(in);
+    }
   }
 }
 
@@ -228,6 +282,10 @@ void SubSupCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
       m_postSubCell->DrawList(dc, antialiassingDC);
     if (m_postSupCell)
       m_postSupCell->DrawList(dc, antialiassingDC);
+    if (m_postSupCell && m_matrixOpen) {
+      m_matrixOpen->Draw(dc, antialiassingDC);
+      m_matrixClose->Draw(dc, antialiassingDC);
+    }
   }
 }
 
@@ -248,7 +306,7 @@ wxString SubSupCell::ToString() const {
   if (m_postSubCell)
     s += "[" + m_postSubCell->ListToString() + "]";
   if (m_postSupCell) {
-    s += "^";
+    s += m_matrixOpen ? "^^" : "^";
     if (m_postSupCell->IsCompound())
       s += "(";
     s += m_postSupCell->ListToString();
@@ -294,8 +352,13 @@ wxString SubSupCell::ToTeX() const {
       s += "_" + TeXGroup(m_preSubCell->ListToTeX());
   }
   s += TeXGroup(m_baseCell->ListToTeX());
-  if (m_postSupCell)
-    s += "^" + TeXGroup(m_postSupCell->ListToTeX());
+  if (m_postSupCell) {
+    // A matrix power is written the way Maxima's own tex() writes it.
+    if (m_matrixOpen)
+      s += "^{\\langle " + m_postSupCell->ListToTeX() + "\\rangle}";
+    else
+      s += "^" + TeXGroup(m_postSupCell->ListToTeX());
+  }
   if (m_postSubCell)
     s += "_" + TeXGroup(m_postSubCell->ListToTeX());
 
@@ -311,7 +374,7 @@ wxString SubSupCell::ToMathML() const {
     else
       retval += "<none/>";
     if (m_postSupCell)
-      retval += m_postSupCell->ListToMathML();
+      retval += PostSupToMathML();
     else
       retval += "<none/>";
     retval += "</msubsup>\n";
@@ -323,7 +386,7 @@ wxString SubSupCell::ToMathML() const {
       else
         retval += "<none/>";
       if (m_postSupCell)
-        retval += "<mrow>" + m_postSupCell->ListToMathML() + "</mrow>";
+        retval += "<mrow>" + PostSupToMathML() + "</mrow>";
       else
         retval += "<none/>";
     }
@@ -364,7 +427,7 @@ wxString SubSupCell::ToOMML() const {
     retval += "<m:r></m:r>";
   retval += "</m:sub><m:sup>";
   if (m_postSupCell)
-    retval += m_postSupCell->ListToOMML();
+    retval += PostSupToOMML();
   else
     retval += "<m:r></m:r>";
   retval += "</m:sup></m:sSubSup>\n";
@@ -373,6 +436,8 @@ wxString SubSupCell::ToOMML() const {
 
 wxString SubSupCell::ToXML() const {
   wxString flags = GetXMLFlags();
+  if (m_matrixOpen)
+    flags += " mat=\"true\"";
 
   wxString retval;
   if (m_scriptCells.empty()) {
