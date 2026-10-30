@@ -282,10 +282,9 @@ void SubSupCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
       m_postSubCell->DrawList(dc, antialiassingDC);
     if (m_postSupCell)
       m_postSupCell->DrawList(dc, antialiassingDC);
-    if (m_postSupCell && m_matrixOpen) {
-      m_matrixOpen->Draw(dc, antialiassingDC);
-      m_matrixClose->Draw(dc, antialiassingDC);
-    }
+    if (m_postSupCell && m_matrixOpen)
+      DrawAngleBracketsAround(dc, antialiassingDC, m_matrixOpen.get(),
+                              m_matrixClose.get(), m_postSupCell.get());
   }
 }
 

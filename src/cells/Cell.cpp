@@ -1602,6 +1602,35 @@ wxColour Cell::GetForegroundColor() const {
 }
 
 // Set the pen in device context according to the style of the cell.
+void Cell::DrawAngleBracketsAround(wxDC *dc, wxDC *antialiassingDC,
+                                   Cell *open, Cell *close,
+                                   const Cell *contents) const {
+  const wxCoord height = contents->GetHeightList();
+  if (height <= open->GetHeight()) {
+    open->Draw(dc, antialiassingDC);
+    close->Draw(dc, antialiassingDC);
+    return;
+  }
+  const wxCoord top = contents->GetCurrentPoint().y - contents->GetCenterList();
+  const wxCoord bottom = top + height;
+  const wxCoord middle = (top + bottom) / 2;
+  SetPen(dc, 1);
+  const wxPoint openPoint = open->GetCurrentPoint();
+  const wxCoord openInset = open->GetWidth() / 4;
+  const wxPoint opening[3] = {
+    {openPoint.x + open->GetWidth() - openInset, top},
+    {openPoint.x + openInset, middle},
+    {openPoint.x + open->GetWidth() - openInset, bottom}};
+  antialiassingDC->DrawLines(3, opening);
+  const wxPoint closePoint = close->GetCurrentPoint();
+  const wxCoord closeInset = close->GetWidth() / 4;
+  const wxPoint closing[3] = {
+    {closePoint.x + closeInset, top},
+    {closePoint.x + close->GetWidth() - closeInset, middle},
+    {closePoint.x + closeInset, bottom}};
+  antialiassingDC->DrawLines(3, closing);
+}
+
 void Cell::SetPen(wxDC *dc, double lineWidth) const {
   wxPen pen = *(wxThePenList->FindOrCreatePen(
                                               GetForegroundColor(),
