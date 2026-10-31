@@ -522,7 +522,7 @@ Translations (&lt;tt&gt;locales/&lt;/tt&gt;)</h2>
 </ul>
 <p></b></p>
 <p><b></b></p>
-<h1><a class="anchor" id="autotoc_md51"></a>
+<h1><a class="anchor" id="autotoc_md61"></a>
 Conventions &amp; Standards</h1>
 <p><b></p><ul>
 <li><b>Branches and pull requests:</b> one branch per feature or bugfix, cut fresh from <code>main</code>, PR when it is finished &ndash; see "Branches and pull requests" at the top of this file for why reusing one long-lived branch has already caused trouble.</li>
@@ -702,7 +702,7 @@ Conventions &amp; Standards</h1>
     something a firewall/antivirus's network protection would touch, and
     some of it blocks loopback inter-process communication too.
 
-@section autotoc_md52 Layout &amp; Compatibility
+@section autotoc_md62 Layout &amp; Compatibility
 
 The rules below are the ones worth carrying around at all times. The reasoning
 behind them, the pipeline they belong to, and the recurring shapes layout bugs
@@ -782,7 +782,7 @@ which loads on demand &amp;ndash; keep the detail there rather than growing this
   compiles everywhere and does nothing. The same trap applies to any future
   &lt;tt&gt;wxSOMETHING&lt;/tt&gt; shim added there.
 
-@section autotoc_md53 Performance &amp; Documentation Mandates
+@section autotoc_md63 Performance &amp; Documentation Mandates
 
 - &lt;strong&gt;NEWS.md Updates:&lt;/strong&gt; Every non-trivial change MUST be documented in &lt;tt&gt;NEWS.md&lt;/tt&gt; under the "# Current development version" section.
   &lt;strong&gt;When merging &lt;tt&gt;main&lt;/tt&gt; into a branch conflicts in &lt;tt&gt;NEWS.md&lt;/tt&gt;, take &lt;tt&gt;main&lt;/tt&gt;'s side and re-add only your own new entry.&lt;/strong&gt; Keeping "both sides" brings back entries that release prep has since condensed into a version section: on 2026-09-30 three branches in a row put ~190 old lines back above &lt;tt&gt;\# 26.09.0&lt;/tt&gt;. The tag workflow publishes whatever sits under the top heading as the release notes, so that would have become the release body.
@@ -794,12 +794,12 @@ which loads on demand &amp;ndash; keep the detail there rather than growing this
   - Prefer &lt;tt&gt;(intern ...)&lt;/tt&gt; over &lt;tt&gt;read-from-string&lt;/tt&gt; for dynamic symbol generation.
 - &lt;strong&gt;Strict XML Mandate:&lt;/strong&gt; To avoid duplicate attributes, add any new manually-handled XML attribute (e.g., &lt;tt&gt;noneParens="true"&lt;/tt&gt;) to the filter list in &lt;tt&gt;MathParser.cpp&lt;/tt&gt;.
 
-@section autotoc_md54 Visual Documentation (&lt;tt&gt;art/Doxygen/&lt;/tt&gt;)
+@section autotoc_md64 Visual Documentation (&lt;tt&gt;art/Doxygen/&lt;/tt&gt;)
 
 - &lt;strong&gt;Geometry Awareness:&lt;/strong&gt; If modifying &lt;tt&gt;Recalculate()&lt;/tt&gt; or &lt;tt&gt;Draw()&lt;/tt&gt; geometry (padding, center alignment), you MUST update the corresponding SVG diagrams in &lt;tt&gt;art/Doxygen/&lt;/tt&gt;.
 - &lt;strong&gt;Consistency:&lt;/strong&gt; New cell types should have &lt;tt&gt;*Geometry.svg&lt;/tt&gt; and &lt;tt&gt;*LinearGeometry.svg&lt;/tt&gt; (if applicable) diagrams.
 
-@section autotoc_md55 Key Subsystems Map
+@section autotoc_md65 Key Subsystems Map
 
 Deeper, per-subsystem background lives in &lt;tt&gt;.claude/skills/&lt;/tt&gt;, which load only
 when they are relevant &amp;ndash; so that hard-won detail is available without every
@@ -847,13 +847,13 @@ has already been broken.
 </ul>
 <p></code></b></p>
 <p><b><code></code></b></p>
-<h1><a class="anchor" id="autotoc_md56"></a>
+<h1><a class="anchor" id="autotoc_md66"></a>
 Backlog / Future Work</h1>
 <p><b><code> Items the maintainer has flagged as worth doing but hasn't asked for yet &ndash; don't start on these without checking in first, but pick them up if asked for "what's
 next" style work.</code></b></p>
 <p><b><code>Nothing at the moment. Open work lives in GitHub issues rather than here; when an entry above says something is still open, it names the issue that tracks it. (GH #1335, contiguous cell storage, used to be listed here; it was closed as not planned.)</code></b></p>
 <p><b><code></code></b></p>
-<h1><a class="anchor" id="autotoc_md57"></a>
+<h1><a class="anchor" id="autotoc_md67"></a>
 Error resilience</h1>
 <p><b><code></p><ul>
 <li>To err is human =&gt; If your instructions don't seem to make sense feel free to ask. </li>
