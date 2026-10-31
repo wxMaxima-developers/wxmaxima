@@ -495,11 +495,17 @@ public:
   }
 
   //! Returns the UUID of this cell
-  wxString GetUUID() const { return m_uuid; }
+  wxString GetUUID() const { return m_rareData ? m_rareData->uuid : wxString(); }
   //! Sets the UUID of this cell
-  void SetUUID(const wxString &uuid) { m_uuid = uuid; }
+  void SetUUID(const wxString &uuid);
   //! Generates a new UUID for this cell
   void GenerateUUID();
+  /*! Whether this cell carries a UUID or unknown XML attributes.
+
+    Only these allocate per-cell side data (see m_rareData), so for an
+    ordinary maths cell this stays false; test_CellSize checks that.
+  */
+  bool HasRareCellData() const { return m_rareData != nullptr; }
   //! Returns a string containing all extra XML attributes
   wxString GetExtraXMLAttributes() const;
   //! Adds an extra XML attribute to this cell
@@ -1321,12 +1327,25 @@ private:
   mutable bool m_breakLine : 1 = false;
   //! Is this cell at a soft line break? See IsAtLineBreak().
   mutable bool m_atLineBreak : 1 = false;
-protected:
-  //! The UUID of this cell
-  wxString m_uuid;
-  //! Extra XML attributes we don't know yet
-  std::map<wxString, wxString> m_extraAttributes;
+  /*! Data that only a few cells ever carry (GH #804).
 
+    Every cell used to hold a wxString for its UUID and a std::map for unknown
+    XML attributes -- 96 bytes on 64-bit Linux, about 40% of a Cell -- though
+    in practice only GroupCells get a UUID and hardly any cell has unknown
+    attributes. Kept out of line, it costs the other cells one pointer.
+    Allocated on first write by RareData(); never copied by CopyCommonData(),
+    just as the two members it replaces never were.
+  */
+  struct RareCellData {
+    //! The UUID of this cell
+    wxString uuid;
+    //! Extra XML attributes we don't know yet
+    std::map<wxString, wxString> extraAttributes;
+  };
+  std::unique_ptr<RareCellData> m_rareData;
+  //! The rarely used data, allocating it if this cell has none yet
+  RareCellData &RareData();
+protected:
   mutable bool m_forceBreakLine : 1 = false;
   bool m_highlight : 1 = false;
 

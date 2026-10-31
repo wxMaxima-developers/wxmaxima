@@ -1688,7 +1688,7 @@ wxString GroupCell::ToTeXAnimation(const Cell *tmp, const wxString &imgDir,
 }
 
 wxString GroupCell::ToXML() const {
-  if (m_uuid.IsEmpty())
+  if (GetUUID().IsEmpty())
     const_cast<GroupCell *>(this)->GenerateUUID();
   wxString str;
   str = wxS("\n<cell"); // start opening tag
