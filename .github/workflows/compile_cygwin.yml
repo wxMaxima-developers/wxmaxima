@@ -32,7 +32,7 @@ jobs:
           fetch-depth: 15
           path: wxmaxima
       - name: setup_cygwin
-        uses: cygwin/cygwin-install-action@v6
+        uses: cygwin/cygwin-install-action@v7
         with:
           # libuv1 is pinned because with libuv 1.53.0, which spawns processes
           # with posix_spawn instead of fork, cmake's execute_process() hangs
