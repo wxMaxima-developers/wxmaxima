@@ -764,6 +764,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetUUID</b> (const wx
 void&#160;</td><td class="memItemRight" valign="bottom"><b>GenerateUUID</b> ()</td></tr>
 <tr class="memdesc:aba4bda7be8968ebd8329c39ad54679a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates a new UUID for this cell. <br /></td></tr>
 <tr class="separator:aba4bda7be8968ebd8329c39ad54679a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29b921c2bfe452dbe586b286af1ab46e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a29b921c2bfe452dbe586b286af1ab46e">HasRareCellData</a> () const</td></tr>
+<tr class="memdesc:a29b921c2bfe452dbe586b286af1ab46e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether this cell carries a UUID or unknown XML attributes.  <br /></td></tr>
+<tr class="separator:a29b921c2bfe452dbe586b286af1ab46e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abf50cf5df8baba2c5441eb36321b5f96"><td class="memItemLeft" align="right" valign="top"><a id="abf50cf5df8baba2c5441eb36321b5f96" name="abf50cf5df8baba2c5441eb36321b5f96"></a>
 wxString&#160;</td><td class="memItemRight" valign="bottom"><b>GetExtraXMLAttributes</b> () const</td></tr>
 <tr class="memdesc:abf50cf5df8baba2c5441eb36321b5f96"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a string containing all extra XML attributes. <br /></td></tr>
@@ -1261,14 +1264,6 @@ const wxString *&#160;</td><td class="memItemRight" valign="bottom"><b>m_toolTip
 <tr class="memitem:ae03803790faeaa324ae8c51eb1e96d03"><td class="memItemLeft" align="right" valign="top"><a id="ae03803790faeaa324ae8c51eb1e96d03" name="ae03803790faeaa324ae8c51eb1e96d03"></a>
 <a class="el" href="TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993">TextStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>m_textStyle</b> = TS_MATH</td></tr>
 <tr class="separator:ae03803790faeaa324ae8c51eb1e96d03"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ade56a5811726f75868bc676963114cd1"><td class="memItemLeft" align="right" valign="top"><a id="ade56a5811726f75868bc676963114cd1" name="ade56a5811726f75868bc676963114cd1"></a>
-wxString&#160;</td><td class="memItemRight" valign="bottom"><b>m_uuid</b></td></tr>
-<tr class="memdesc:ade56a5811726f75868bc676963114cd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The UUID of this cell. <br /></td></tr>
-<tr class="separator:ade56a5811726f75868bc676963114cd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0b6bb30cecbaf8f384ba0cdfb656edcf"><td class="memItemLeft" align="right" valign="top"><a id="a0b6bb30cecbaf8f384ba0cdfb656edcf" name="a0b6bb30cecbaf8f384ba0cdfb656edcf"></a>
-std::map&lt; wxString, wxString &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_extraAttributes</b></td></tr>
-<tr class="memdesc:a0b6bb30cecbaf8f384ba0cdfb656edcf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extra XML attributes we don't know yet. <br /></td></tr>
-<tr class="separator:a0b6bb30cecbaf8f384ba0cdfb656edcf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e69a7c575694780a337056791b70c37"><td class="memItemLeft" align="right" valign="top"><a id="a7e69a7c575694780a337056791b70c37" name="a7e69a7c575694780a337056791b70c37"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_forceBreakLine</b>: 1 = false</td></tr>
 <tr class="separator:a7e69a7c575694780a337056791b70c37"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3568,6 +3563,34 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><b>SelectionToHTML</
 
 <p>Is this format on where the user is? </p>
 <p>With a selection: is every selected character formatted that way. Without one: will what is typed at the cursor be. </p>
+
+</div>
+</div>
+<a id="a29b921c2bfe452dbe586b286af1ab46e" name="a29b921c2bfe452dbe586b286af1ab46e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a29b921c2bfe452dbe586b286af1ab46e">&#9670;&#160;</a></span>HasRareCellData()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Cell::HasRareCellData </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether this cell carries a UUID or unknown XML attributes. </p>
+<p>Only these allocate per-cell side data (see m_rareData), so for an ordinary maths cell this stays false; test_CellSize checks that. </p>
 
 </div>
 </div>
