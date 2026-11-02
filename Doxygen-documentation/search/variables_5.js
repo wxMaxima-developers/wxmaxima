@@ -5,6 +5,7 @@ var searchData=
   ['enumvar_2',['enumVar',['../classJavadoc__Test.html#afcc11e097968fb44080b82b75032e40b',1,'Javadoc_Test::enumVar()'],['../classQTstyle__Test.html#a241fb54f66dc0b3b03eece3a1a1bf18b',1,'QTstyle_Test::enumVar()']]],
   ['environment_3',['environment',['../structTroubleshootingRunner_1_1Settings.html#a3c79309a4d21e8cd135266a0bca2eb1b',1,'TroubleshootingRunner::Settings']]],
   ['errno_4',['errno',['../structcmd_8h.html#ad65a8842cc674e3ddf69355898c0ecbf',1,'structcmd.h']]],
-  ['error_5fhandler_5',['error_handler',['../classdetail_1_1serializer.html#a79d25c7416dd71a0db8b10988ec360f7',1,'detail::serializer']]],
-  ['extension_6',['extension',['../structSaveAsDefault.html#a1d2b1604558fbc16adc74b55b4a95597',1,'SaveAsDefault']]]
+  ['error_5',['error',['../structwxm_1_1MathImportResult.html#a367bc31f469c8d593c8ac8dcf25cb5ff',1,'wxm::MathImportResult']]],
+  ['error_5fhandler_6',['error_handler',['../classdetail_1_1serializer.html#a79d25c7416dd71a0db8b10988ec360f7',1,'detail::serializer']]],
+  ['extension_7',['extension',['../structSaveAsDefault.html#a1d2b1604558fbc16adc74b55b4a95597',1,'SaveAsDefault']]]
 ];

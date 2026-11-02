@@ -919,6 +919,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>CutToClipboard</b> ()
 <tr class="memitem:a8f9d14795ddb507df7ab922d782cb7e8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a8f9d14795ddb507df7ab922d782cb7e8">PasteFromClipboard</a> (bool primary=false)</td></tr>
 <tr class="memdesc:a8f9d14795ddb507df7ab922d782cb7e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Paste into the worksheet.  <br /></td></tr>
 <tr class="separator:a8f9d14795ddb507df7ab922d782cb7e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c7e4cc774ee066176bf23946640f180"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a4c7e4cc774ee066176bf23946640f180">PasteMathAsMaxima</a> ()</td></tr>
+<tr class="memdesc:a4c7e4cc774ee066176bf23946640f180"><td class="mdescLeft">&#160;</td><td class="mdescRight">Paste LaTeX or MathML maths from the clipboard as a <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> command.  <br /></td></tr>
+<tr class="separator:a4c7e4cc774ee066176bf23946640f180"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5442160d0574859589addb87d1f19b4d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a5442160d0574859589addb87d1f19b4d">Copy</a> (bool astext=false) const</td></tr>
 <tr class="memdesc:a5442160d0574859589addb87d1f19b4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy the current selection to the clipboard.  <br /></td></tr>
 <tr class="separator:a5442160d0574859589addb87d1f19b4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3265,6 +3268,27 @@ answers" acts on. Not undoable: the answers aren't part of the undo history, and
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a4c7e4cc774ee066176bf23946640f180" name="a4c7e4cc774ee066176bf23946640f180"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4c7e4cc774ee066176bf23946640f180">&#9670;&#160;</a></span>PasteMathAsMaxima()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Worksheet::PasteMathAsMaxima </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Paste LaTeX or MathML maths from the clipboard as a <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> command. </p>
+<p>Converts the formula with <a class="el" href="MathImport_8cpp.html#ad417d0a571f029ee834b9f98576d237d" title="Converts either: MathML if LooksLikeMathML(), LaTeX otherwise.">wxm::MathToMaxima()</a> (GH #932, GH #760) and puts the result where the cursor is if that is in a code cell, or into a new code cell otherwise. <a class="el" href="classA.html">A</a> formula that has no unambiguous <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> reading is not pasted; the user is told why instead.</p>
+<dl class="section return"><dt>Returns</dt><dd>true if something was pasted. </dd></dl>
 
 </div>
 </div>
