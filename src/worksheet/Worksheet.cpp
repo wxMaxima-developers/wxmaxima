@@ -40,6 +40,8 @@
 #include "graphical_io/EMFout.h"
 #include "cells/ImgCell.h"
 #include "MarkDown.h"
+#include "MathImport.h"
+#include "dialogs/LoggingMessageDialog.h"
 #include "UrlDetection.h"
 #include "dialogs/MaxSizeChooser.h"
 #include "dialogs/ResolutionChooser.h"
@@ -2725,8 +2727,23 @@ wxString Worksheet::CellsToMathML(const Cell *cells) {
   if (!cells)
     return {};
 
+  // The Maxima command goes along as an annotation, so pasting the MathML
+  // back into wxMaxima (or into anything else that understands Maxima)
+  // needs no guessing from the layout (GH #759, GH #760). Not for output
+  // with labels: "(%o1) x^2" isn't a command.
+  wxString annotation;
+  bool hasLabel = false;
+  for (const Cell &cell : OnList(cells))
+    if (cell.GetType() == MC_TYPE_LABEL)
+      hasLabel = true;
+  if (!hasLabel) {
+    const wxString maxima = cells->ListToString().Trim(true).Trim(false);
+    if (!maxima.IsEmpty())
+      annotation = wxS("<annotation encoding=\"application/x-maxima\">") +
+        Cell::XMLescape(maxima) + wxS("</annotation>");
+  }
   wxString s = wxString(wxS("<math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n")) +
-    wxS("<semantics>") + cells->ListToMathML(true) +
+    wxS("<semantics>") + cells->ListToMathML(true) + annotation +
     wxS("</semantics>") + wxS("</math>");
 
   // We might add indentation as additional eye candy to all but extremely long
@@ -5859,6 +5876,62 @@ bool Worksheet::CutToClipboard() {
       return false;
   }
   return false;
+}
+
+bool Worksheet::PasteMathAsMaxima() {
+  wxString formula;
+  wxASSERT_MSG(!wxTheClipboard->IsOpened(),
+               _("Bug: The clipboard is already opened"));
+  if (!wxTheClipboard->Open())
+    return false;
+  // A program that offers MathML may offer something else than the MathML
+  // as text, for example a picture's alt text: prefer the MathML.
+  for (const wxDataFormat &format : {m_mathmlFormat, m_mathmlFormat2}) {
+    if (!formula.IsEmpty() || !wxTheClipboard->IsSupported(format))
+      continue;
+    wxCustomDataObject data(format);
+    if (wxTheClipboard->GetData(data) && (data.GetSize() > 0))
+      formula = wxString::FromUTF8(static_cast<const char *>(data.GetData()),
+                                   data.GetSize());
+  }
+  if (formula.IsEmpty() && (wxTheClipboard->IsSupported(wxDF_TEXT) ||
+                            wxTheClipboard->IsSupported(wxDF_UNICODETEXT))) {
+    wxTextDataObject data;
+    if (wxTheClipboard->GetData(data))
+      formula = data.GetText();
+  }
+  wxTheClipboard->Close();
+
+  if (formula.Trim(true).Trim(false).IsEmpty()) {
+    LoggingMessageBox(_("The clipboard holds no LaTeX or MathML formula."),
+                      _("Paste as Maxima code"), wxOK | wxICON_INFORMATION, this);
+    return false;
+  }
+  const auto converted = wxm::MathToMaxima(formula);
+  if (!converted.Ok()) {
+    LoggingMessageBox(wxString::Format(_("The formula can't be converted to Maxima:\n%s"),
+                                       converted.error),
+                      _("Paste as Maxima code"), wxOK | wxICON_WARNING, this);
+    return false;
+  }
+  wxLogMessage(_("Converted a formula from the clipboard to Maxima: %s"),
+               converted.maxima);
+
+  EditorCell *active = GetActiveCell();
+  if (active && EditorCell::IsCodeType(active->GetType())) {
+    active->InsertText(converted.maxima);
+    active->ResetSize();
+    active->GetGroup()->ResetSize();
+    RequestRecalculation(active->GetGroup());
+    RequestRedraw();
+    ScrollToCaret();
+    return true;
+  }
+  // Anywhere else the command gets a code cell of its own
+  if (active)
+    SetHCaret(active->GetGroup());
+  OpenHCaret(converted.maxima, GC_TYPE_CODE);
+  return true;
 }
 
 /****

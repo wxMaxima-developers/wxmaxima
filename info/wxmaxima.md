@@ -242,6 +242,12 @@ and select the next higher or lower heading type.
 
 Several word processors and similar programs either recognize [MathML](https://www.w3.org/Math/) input and automatically insert it as an editable 2D equation - or (like LibreOffice) have an equation editor that offers an “import MathML from clipboard” feature. Others support RTF maths. _WxMaxima_, therefore, offers several entries in the right-click menu.
 
+### Pasting LaTeX or MathML formulas
+
+**Edit → Paste LaTeX/MathML as Maxima Code** (also in the right-click menu) converts a formula from the clipboard into a _Maxima_ command, for example one copied from a paper, a web page or an equation editor. LaTeX may come with or without `$…$`, `\(…\)` or `\[…\]` around it, so `\int_0^1 \frac{\sin x}{x}\,dx` becomes `integrate(sin(x)/x,x,0,1)`. The command goes where the cursor is, or into a new code cell. MathML pasted into a code cell with the ordinary **Paste** is converted the same way, since nobody wants the XML in a code cell. If MathML copied with **Copy as MathML** is pasted back, the result is the original command: _wxMaxima_ adds it to the MathML as an annotation.
+
+LaTeX and MathML describe what a formula looks like, not what it means, so the conversion has to interpret it. Fractions, roots, powers, subscripts (`x_1` becomes the name `x_1`, `a_{n+1}` the array element `a[n+1]`), functions with or without parentheses (`\sin 2x`), `\frac{d}{dx}`, `f'(x)`, integrals ending in `dx`, sums and products with limits, `\lim_{x\to 0}`, `|x|` and matrices are understood. An `e` is Euler’s number, but an `i` is only the imaginary unit when set upright (`\mathrm{i}`), as it more often is an index. A product of a name and parentheses, like `x(y+1)`, is taken as a product unless the name is `f`, `g`, `h` or longer than one letter. Anything without a single meaning, like `\pm`, `\dots` or text, isn’t guessed at: _wxMaxima_ says what it couldn’t convert instead. Check the command before evaluating it.
+
 ### Markdown support
 
 _WxMaxima_ offers a set of standard [Markdown](https://en.wikipedia.org/wiki/Markdown) conventions that don’t collide with mathematical notation. One of these elements is bullet lists.

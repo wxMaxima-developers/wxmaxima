@@ -134,23 +134,27 @@ class="toc-section-number">2.2.6</span> Unicode replacement</a></li>
 class="toc-section-number">2.2.7</span> Side Panes</a></li>
 <li><a href="#mathml-output" id="toc-mathml-output"><span
 class="toc-section-number">2.2.8</span> MathML output</a></li>
+<li><a href="#pasting-latex-or-mathml-formulas"
+id="toc-pasting-latex-or-mathml-formulas"><span
+class="toc-section-number">2.2.9</span> Pasting LaTeX or MathML
+formulas</a></li>
 <li><a href="#markdown-support" id="toc-markdown-support"><span
-class="toc-section-number">2.2.9</span> Markdown support</a></li>
+class="toc-section-number">2.2.10</span> Markdown support</a></li>
 <li><a href="#links-in-text-cells" id="toc-links-in-text-cells"><span
-class="toc-section-number">2.2.10</span> Links in text cells</a></li>
+class="toc-section-number">2.2.11</span> Links in text cells</a></li>
 <li><a href="#bold-italic-underlined-and-struck-through-text"
 id="toc-bold-italic-underlined-and-struck-through-text"><span
-class="toc-section-number">2.2.11</span> Bold, italic, underlined and
+class="toc-section-number">2.2.12</span> Bold, italic, underlined and
 struck-through text</a></li>
 <li><a href="#hotkeys" id="toc-hotkeys"><span
-class="toc-section-number">2.2.12</span> Hotkeys</a></li>
+class="toc-section-number">2.2.13</span> Hotkeys</a></li>
 <li><a href="#exploring-output-with-the-keyboard"
 id="toc-exploring-output-with-the-keyboard"><span
-class="toc-section-number">2.2.13</span> Exploring output with the
+class="toc-section-number">2.2.14</span> Exploring output with the
 keyboard</a></li>
 <li><a href="#raw-tex-in-the-tex-export"
 id="toc-raw-tex-in-the-tex-export"><span
-class="toc-section-number">2.2.14</span> Raw TeX in the TeX
+class="toc-section-number">2.2.15</span> Raw TeX in the TeX
 export</a></li>
 </ul></li>
 <li><a href="#file-formats" id="toc-file-formats"><span
@@ -1152,8 +1156,40 @@ insert it as an editable 2D equation - or (like LibreOffice) have an
 equation editor that offers an “import MathML from clipboard” feature.
 Others support RTF maths. <em>WxMaxima</em>, therefore, offers several
 entries in the right-click menu.</p>
-<h3 data-number="2.2.9" id="markdown-support"><span
-class="header-section-number">2.2.9</span> Markdown support</h3>
+<h3 data-number="2.2.9" id="pasting-latex-or-mathml-formulas"><span
+class="header-section-number">2.2.9</span> Pasting LaTeX or MathML
+formulas</h3>
+<p><strong>Edit → Paste LaTeX/MathML as Maxima Code</strong> (also in
+the right-click menu) converts a formula from the clipboard into a
+<em>Maxima</em> command, for example one copied from a paper, a web page
+or an equation editor. LaTeX may come with or without <code>$…$</code>,
+<code>\(…\)</code> or <code>\[…\]</code> around it, so
+<code>\int_0^1 \frac{\sin x}{x}\,dx</code> becomes
+<code>integrate(sin(x)/x,x,0,1)</code>. The command goes where the
+cursor is, or into a new code cell. MathML pasted into a code cell with
+the ordinary <strong>Paste</strong> is converted the same way, since
+nobody wants the XML in a code cell. If MathML copied with <strong>Copy
+as MathML</strong> is pasted back, the result is the original command:
+<em>wxMaxima</em> adds it to the MathML as an annotation.</p>
+<p>LaTeX and MathML describe what a formula looks like, not what it
+means, so the conversion has to interpret it. Fractions, roots, powers,
+subscripts (<code>x_1</code> becomes the name <code>x_1</code>,
+<code>a_{n+1}</code> the array element <code>a[n+1]</code>), functions
+with or without parentheses (<code>\sin 2x</code>),
+<code>\frac{d}{dx}</code>, <code>f'(x)</code>, integrals ending in
+<code>dx</code>, sums and products with limits,
+<code>\lim_{x\to 0}</code>, <code>|x|</code> and matrices are
+understood. An <code>e</code> is Euler’s number, but an <code>i</code>
+is only the imaginary unit when set upright (<code>\mathrm{i}</code>),
+as it more often is an index. A product of a name and parentheses, like
+<code>x(y+1)</code>, is taken as a product unless the name is
+<code>f</code>, <code>g</code>, <code>h</code> or longer than one
+letter. Anything without a single meaning, like <code>\pm</code>,
+<code>\dots</code> or text, isn’t guessed at: <em>wxMaxima</em> says
+what it couldn’t convert instead. Check the command before evaluating
+it.</p>
+<h3 data-number="2.2.10" id="markdown-support"><span
+class="header-section-number">2.2.10</span> Markdown support</h3>
 <p><em>WxMaxima</em> offers a set of standard <a
 href="https://en.wikipedia.org/wiki/Markdown">Markdown</a> conventions
 that don’t collide with mathematical notation. One of these elements is
@@ -1182,8 +1218,8 @@ arrows (<code>&lt;-&gt;</code>, <code>-&gt;</code> and
 <code>&lt;-</code>) and <code>+/-</code> as the respective sign. For TeX
 output also <code>&lt;&lt;</code> and <code>&gt;&gt;</code> are
 recognized.</p>
-<h3 data-number="2.2.10" id="links-in-text-cells"><span
-class="header-section-number">2.2.10</span> Links in text cells</h3>
+<h3 data-number="2.2.11" id="links-in-text-cells"><span
+class="header-section-number">2.2.11</span> Links in text cells</h3>
 <p>A web address in a text cell that starts with <code>http://</code>,
 <code>https://</code> or <code>mailto:</code> is shown as a link. Since
 clicking into a text cell places the cursor there, a link is followed by
@@ -1200,9 +1236,9 @@ example in a string printed by
 <code>print("See https://wxmaxima-developers.github.io/wxmaxima/")</code>:
 <kbd>CTRL</kbd>+clicking the address or choosing “Open Link” from its
 context menu opens it, while a plain click still selects the output.</p>
-<h3 data-number="2.2.11"
+<h3 data-number="2.2.12"
 id="bold-italic-underlined-and-struck-through-text"><span
-class="header-section-number">2.2.11</span> Bold, italic, underlined and
+class="header-section-number">2.2.12</span> Bold, italic, underlined and
 struck-through text</h3>
 <p>Text in a text cell, a title or a section heading can be made bold,
 italic, underlined or struck through. Select the text and press the
@@ -1222,8 +1258,8 @@ emoji, gets as much additional room as it needs.</p>
 of <em>wxMaxima</em> open such a file without the formatting but keep
 all of the text. <code>.wxm</code> files, the exports and the clipboard
 contain the text without its formatting.</p>
-<h3 data-number="2.2.12" id="hotkeys"><span
-class="header-section-number">2.2.12</span> Hotkeys</h3>
+<h3 data-number="2.2.13" id="hotkeys"><span
+class="header-section-number">2.2.13</span> Hotkeys</h3>
 <p>Most hotkeys can be found in the text of the respective menus. Since
 they are actually taken from the menu text and thus can be customized by
 the translations of <em>wxMaxima</em> to match the needs of users of the
@@ -1237,8 +1273,8 @@ complete cell.</li>
 auto-completion mechanism.</li>
 <li><kbd>SHIFT</kbd>+<kbd>SPACE</kbd> inserts a non-breaking space.</li>
 </ul>
-<h3 data-number="2.2.13" id="exploring-output-with-the-keyboard"><span
-class="header-section-number">2.2.13</span> Exploring output with the
+<h3 data-number="2.2.14" id="exploring-output-with-the-keyboard"><span
+class="header-section-number">2.2.14</span> Exploring output with the
 keyboard</h3>
 <p>A cell’s output can be selected, and explored part by part, without a
 mouse:</p>
@@ -1267,8 +1303,8 @@ the selected entry into a block of entries.</li>
 right-click menu for the selection, so it can be copied in any
 format.</li>
 </ul>
-<h3 data-number="2.2.14" id="raw-tex-in-the-tex-export"><span
-class="header-section-number">2.2.14</span> Raw TeX in the TeX
+<h3 data-number="2.2.15" id="raw-tex-in-the-tex-export"><span
+class="header-section-number">2.2.15</span> Raw TeX in the TeX
 export</h3>
 <p>If a text cell begins with <code>TeX:</code> the TeX export contains
 the literal text that follows the <code>TeX:</code> marker. Using this

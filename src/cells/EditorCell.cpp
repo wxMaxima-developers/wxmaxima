@@ -30,6 +30,7 @@
 */
 
 #include "EditorCell.h"
+#include "MathImport.h"
 #include "DigitGrouping.h"
 
 #include "Bidi.h"
@@ -3956,6 +3957,18 @@ void EditorCell::PasteFromClipboard(const bool primary) {
     // only, so existing soft breaks already in m_text are untouched.
     text.Replace(wxS("\r\n"), wxS("\n"));
     text.Replace(wxS("\r"), wxS("\n"));
+    // MathML pasted into code is never meant as XML: it is a formula from a
+    // browser or an equation editor, and Maxima code is what is wanted
+    // (GH #760). If it can't be converted unambiguously the XML is pasted as
+    // it is, which at least shows what came in.
+    if (IsCodeType(m_type) && wxm::LooksLikeMathML(text)) {
+      const auto converted = wxm::MathMLToMaxima(text);
+      if (converted.Ok())
+        text = converted.maxima;
+      else
+        wxLogMessage(_("Pasted MathML can't be converted to Maxima: %s"),
+                     converted.error);
+    }
     InsertText(std::move(text));
     m_containsChanges = true;
     StyleText();

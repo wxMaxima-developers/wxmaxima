@@ -60,6 +60,7 @@
 
 #include "Configuration.h"
 #include "MathParser.h"
+#include "MathImport.h"
 #include "worksheet/Worksheet.h"
 #include "cells/GroupCell.h"
 #include "cells/AnimationCell.h"
@@ -1024,6 +1025,36 @@ SCENARIO("A slideshow Maxima asks to save as a gif is saved (GH #2361)") {
   THEN("the request isn't saved with the worksheet, so reopening it won't "
        "write the file again") {
     CHECK_FALSE(static_cast<const Cell *>(anim)->ToXML().Contains(wxS("gifFile")));
+  }
+}
+
+SCENARIO("Copied MathML carries the Maxima command along (GH #760)") {
+  MathParser parser(g_cfg);
+  auto group = std::make_unique<GroupCell>(g_cfg, GC_TYPE_CODE);
+  parser.SetGroup(group.get());
+  // x^2+1/y as wxMathML.lisp sends it
+  auto cell = parser.ParseLine(
+    wxS("<mth><e><v>x</v><n>2</n></e><v>+</v><f><n>1</n><v>y</v></f></mth>"));
+  REQUIRE(cell != nullptr);
+  const wxString mathml = Worksheet::CellsToMathML(cell.get());
+
+  THEN("the annotation is there, and is what pasting the MathML gives back") {
+    CHECK(mathml.Contains(wxS("encoding=\"application/x-maxima\"")));
+    const auto back = wxm::MathMLToMaxima(mathml);
+    REQUIRE(back.Ok());
+    CHECK(back.maxima == cell->ListToString());
+  }
+  THEN("without the annotation, the layout alone reads as the same formula") {
+    wxString layoutOnly = mathml;
+    const int start = layoutOnly.Find(wxS("<annotation"));
+    const int end = layoutOnly.Find(wxS("</annotation>"));
+    REQUIRE(start != wxNOT_FOUND);
+    REQUIRE(end != wxNOT_FOUND);
+    layoutOnly.Remove(static_cast<std::size_t>(start),
+                      static_cast<std::size_t>(end - start) + 13);
+    const auto back = wxm::MathMLToMaxima(layoutOnly);
+    REQUIRE(back.Ok());
+    CHECK(back.maxima == wxS("x^2+1/y"));
   }
 }
 

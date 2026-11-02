@@ -456,6 +456,7 @@ const wxWindowIDRef EventIDs::menu_save_as_svg(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_copy_as_emf(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_save_as_emf(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_copy_as_rtf(wxWindow::NewControlId());
+const wxWindowIDRef EventIDs::menu_paste_math_as_maxima(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_copy_to_file(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_export_html(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_change_var(wxWindow::NewControlId());

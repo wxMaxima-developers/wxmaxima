@@ -481,6 +481,9 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
 
     else if (worksheet.HCaretActive()) {
       popupMenu.Append(wxID_PASTE, _("Paste"), wxEmptyString, wxITEM_NORMAL);
+      popupMenu.Append(EventIDs::menu_paste_math_as_maxima,
+                       _("Paste LaTeX/MathML as Maxima Code"), wxEmptyString,
+                       wxITEM_NORMAL);
       popupMenu.Append(wxID_SELECTALL, _("Select All"), wxEmptyString,
                        wxITEM_NORMAL);
       popupMenu.AppendSeparator();
@@ -523,6 +526,10 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
     popupMenu.Append(wxID_CUT, _("Cut"), wxEmptyString, wxITEM_NORMAL);
     popupMenu.Append(wxID_COPY, _("Copy"), wxEmptyString, wxITEM_NORMAL);
     popupMenu.Append(wxID_PASTE, _("Paste"), wxEmptyString, wxITEM_NORMAL);
+    if (EditorCell::IsCodeType(worksheet.GetActiveCell()->GetType()))
+      popupMenu.Append(EventIDs::menu_paste_math_as_maxima,
+                       _("Paste LaTeX/MathML as Maxima Code"), wxEmptyString,
+                       wxITEM_NORMAL);
     popupMenu.AppendSeparator();
     popupMenu.Append(wxID_SELECTALL, _("Select All"), wxEmptyString,
                      wxITEM_NORMAL);
