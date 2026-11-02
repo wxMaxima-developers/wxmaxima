@@ -1520,6 +1520,17 @@ public:
   */
   void PasteFromClipboard(bool primary = false);
 
+  /*! Paste LaTeX or MathML maths from the clipboard as a Maxima command
+
+    Converts the formula with wxm::MathToMaxima() (GH #932, GH #760) and puts
+    the result where the cursor is if that is in a code cell, or into a new
+    code cell otherwise. A formula that has no unambiguous Maxima reading is
+    not pasted; the user is told why instead.
+
+    \return true if something was pasted.
+  */
+  bool PasteMathAsMaxima();
+
   /*! Does this platform have a primary selection?
 
     X11 (and Wayland, through GTK and Qt) keeps the last selected text in a

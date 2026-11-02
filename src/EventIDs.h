@@ -528,6 +528,8 @@ public:
   static const wxWindowIDRef menu_copy_as_emf;
   static const wxWindowIDRef menu_save_as_emf;
   static const wxWindowIDRef menu_copy_as_rtf;
+  //! Paste a LaTeX or MathML formula as Maxima code (GH #932)
+  static const wxWindowIDRef menu_paste_math_as_maxima;
   static const wxWindowIDRef menu_copy_to_file;
   static const wxWindowIDRef menu_export_html;
   static const wxWindowIDRef menu_change_var;

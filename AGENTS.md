@@ -369,6 +369,20 @@ a local TCP socket.
   not a natural next step: Maxima has no sandbox around it, so an
   `evaluate_cell` would amount to letting an AI run arbitrary code on the
   user's machine.
+- **Pasting LaTeX/MathML as Maxima code (GH #932, GH #760,
+  `src/MathImport.{h,cpp}`)** is two stages: a LaTeX or MathML front end
+  builds a *layout* tree (`MathNode`), and one shared `RowParser` reads a
+  meaning into it. Put a new notation into the front end that sees it and a
+  new interpretation into `RowParser`, so both languages get it. The
+  maintainer rejected rendering TeX in text cells (#932); converting is the
+  agreed scope. The rule that keeps it trustworthy: **refuse, don't guess**
+  -- a notation with more than one reading (`\pm`, `\dots`, `(a,b)`,
+  accents, text) fails with a message naming it. `Copy as MathML` adds an
+  `application/x-maxima` annotation, which the import prefers over the
+  layout; it is left out for output with labels, since `(%o1) x` isn't a
+  command. LaTeX is only converted on the explicit menu entry: `$` is
+  Maxima's statement terminator, so detecting `$...$` on every paste would
+  misfire. MathML is converted on an ordinary paste into a code cell.
 - **Help > Troubleshooting (GH #2559, `src/Troubleshooting{Checks,Runner}.{h,cpp}`,
   `src/dialogs/TroubleshootingDialog.{h,cpp}`) starts a Maxima of its own** --
   own `wxSocketServer` on port 0, own `MAXIMA_AUTH_CODE` -- with the same

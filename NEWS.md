@@ -1,5 +1,16 @@
 # Current development version
 
+- **Edit → Paste LaTeX/MathML as Maxima Code** converts a formula from the
+  clipboard into a Maxima command (#932, #760): `\frac{d}{dx}\sin 2x`
+  becomes `diff(sin(2*x),x)`, `\int_0^1 x^2\,dx` becomes
+  `integrate(x^2,x,0,1)`. Fractions, roots, powers, subscripts, functions
+  with or without parentheses, derivatives, integrals, sums, products,
+  limits, absolute values and matrices are understood; anything without a
+  single meaning, such as `\pm`, is reported instead of guessed. MathML
+  pasted into a code cell with the ordinary Paste is converted, too, and
+  **Copy as MathML** now adds the Maxima command as an
+  `application/x-maxima` annotation, so pasting it back gives exactly the
+  original command.
 - Every maths cell is 88 bytes smaller (136 instead of 224 bytes on 64-bit
   Linux), so huge results such as an expanded product of 20 factors need
   noticeably less memory (#804). A cell's ID and any unknown XML attributes

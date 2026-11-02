@@ -192,6 +192,7 @@ set(SOURCE_FILES
     UnicodeNames.cpp
     SvgPanel.cpp
     SyntaxErrorLocation.cpp
+    MathImport.cpp
     TextBreaks.cpp
     ToolBar.cpp
     ToolBarSections.cpp

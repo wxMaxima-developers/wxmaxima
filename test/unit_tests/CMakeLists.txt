@@ -284,6 +284,16 @@ target_link_libraries(test_SyntaxErrorLocation PRIVATE ${wxWidgets_LIBRARIES})
 add_test(NAME SyntaxErrorLocation
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_SyntaxErrorLocation>")
 
+# Converting LaTeX and MathML maths to Maxima commands (GH #932, GH #760)
+# needs neither a GUI nor Maxima, so it is tested directly.
+add_executable(test_MathImport
+    test_MathImport.cpp ${CMAKE_SOURCE_DIR}/src/MathImport.cpp
+    ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
+target_include_directories(test_MathImport PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_link_libraries(test_MathImport PRIVATE ${wxWidgets_LIBRARIES})
+add_test(NAME MathImport
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_MathImport>")
+
 # How Maxima's output gets from the socket thread to the GUI without keeping
 # the GUI from handling input (GH #2594) is GUI-free, so tested directly.
 add_executable(test_MaximaItemQueue

@@ -2915,6 +2915,9 @@ void MaximaCommandMenus::EditMenu(wxCommandEvent &event) {
   else if(event.GetId() == wxID_PASTE) {
     m_wxMaxima.GetWorksheet()->PasteFromClipboard();
   }
+  else if(event.GetId() == EventIDs::menu_paste_math_as_maxima) {
+    m_wxMaxima.GetWorksheet()->PasteMathAsMaxima();
+  }
   else if(event.GetId() == wxID_UNDO) {
     if (m_wxMaxima.GetWorksheet()->CanUndo())
       m_wxMaxima.GetWorksheet()->Undo();
