@@ -1093,18 +1093,6 @@ bool IsOpener(const wxString &op) {
   return op == wxS("(") || op == wxS("[") || op == wxS("{") || op == wxS("⟨");
 }
 
-wxString CloserOf(const wxString &open) {
-  if (open == wxS("("))
-    return wxS(")");
-  if (open == wxS("["))
-    return wxS("]");
-  if (open == wxS("{"))
-    return wxS("}");
-  if (open == wxS("⟨"))
-    return wxS("⟩");
-  return open; // | and the double bar close themselves
-}
-
 bool IsCloser(const wxString &op) {
   return op == wxS(")") || op == wxS("]") || op == wxS("}") || op == wxS("⟩");
 }
