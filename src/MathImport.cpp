@@ -110,14 +110,14 @@ MathNode Row(std::vector<MathNode> items = {}) {
   return n;
 }
 
-MathNode Two(MathNode::Kind kind, MathNode a, MathNode b) {
+MathNode Two(MathNode::Kind kind, MathNode &&a, MathNode &&b) {
   MathNode n(kind);
   n.children.push_back(std::move(a));
   n.children.push_back(std::move(b));
   return n;
 }
 
-MathNode Fenced(const wxString &open, const wxString &close, MathNode contents) {
+MathNode Fenced(const wxString &open, const wxString &close, MathNode &&contents) {
   MathNode n(MathNode::Kind::Fenced, open);
   n.close = close;
   n.children.push_back(std::move(contents));
@@ -125,7 +125,7 @@ MathNode Fenced(const wxString &open, const wxString &close, MathNode contents) 
 }
 
 //! Gives a node a sub- or superscript, creating the Scripts node if needed
-void AttachScript(MathNode &node, bool sup, MathNode script) {
+void AttachScript(MathNode &node, bool sup, MathNode &&script) {
   if ((node.kind != MathNode::Kind::Scripts) ||
       (sup ? node.hasSup : node.hasSub)) {
     MathNode scripts(MathNode::Kind::Scripts);
@@ -485,11 +485,11 @@ private:
 
     \mathrm{d} is an upright d, \mathit{speed} a variable called speed.
   */
-  static MathNode FontArgument(MathNode arg, bool upright) {
+  static MathNode FontArgument(MathNode &&arg, bool upright) {
     if (arg.kind != MathNode::Kind::Row) {
       if (arg.kind == MathNode::Kind::Ident && upright)
         arg.upright = true;
-      return arg;
+      return std::move(arg);
     }
     wxString name;
     for (const MathNode &item : arg.children) {
@@ -507,7 +507,7 @@ private:
     }
     if (arg.children.size() == 1)
       return FontArgument(std::move(arg.children[0]), upright);
-    return arg;
+    return std::move(arg);
   }
 
   //! A table: the rows of a matrix or of an equation array, up to \end{env}
@@ -629,7 +629,7 @@ private:
         } else
           break;
       }
-      return MathNode(MathNode::Kind::Number, number);
+      return MathNode(MathNode::Kind::Number, std::move(number));
     }
     if (((c >= wxS('a')) && (c <= wxS('z'))) || ((c >= wxS('A')) && (c <= wxS('Z'))))
       return Ident(ch);
@@ -1431,12 +1431,12 @@ private:
       return {node->text, P_ATOM};
     }
     case MathNode::Kind::Ident: {
-      const MathNode ident = *node;
+      const MathNode &ident = *node;
       ++m_pos;
       return IdentifierUse(ident, nullptr);
     }
     case MathNode::Kind::Scripts: {
-      const MathNode scripts = *node;
+      const MathNode &scripts = *node;
       ++m_pos;
       std::vector<MathNode> base;
       Flatten(scripts.children[0], base);
@@ -1548,13 +1548,14 @@ private:
   }
 
   //! A name, maybe with scripts: a variable, a function, a big operator
-  Ex IdentifierUse(MathNode ident, const MathNode *scripts) {
+  Ex IdentifierUse(const MathNode &ident, const MathNode *scripts) {
     // MathML's invisible "function application" makes any name a function
+    bool function = ident.function;
     if (PeekOp(wxS("⁡"))) {
       ++m_pos;
-      ident.function = true;
+      function = true;
     }
-    if (ident.function) {
+    if (function) {
       if (ident.text == wxS("sum") || ident.text == wxS("prod"))
         return BigOperator(ident.text, scripts);
       if (ident.text == wxS("int"))
@@ -1731,7 +1732,7 @@ private:
     if (AtEnd())
       Fail(wxString::Format(_("The %s has nothing to sum up."), maxima));
     const Ex body = ParseTerm();
-    return Call(maxima, {body, Ex{var, P_ATOM}, lo, hi});
+    return Call(maxima, {body, Ex{std::move(var), P_ATOM}, lo, hi});
   }
 
   //! int_a^b f dx
@@ -1752,11 +1753,14 @@ private:
     m_stopAtDifferential = stopWas;
     if (!AtDifferential())
       Fail(_("Couldn't find the integration variable (the \"dx\") of an integral."));
-    const wxString var = TakeDifferential();
-    std::vector<Ex> args{integrand, Ex{var, P_ATOM}};
+    wxString var = TakeDifferential();
+    std::vector<Ex> args;
+    args.reserve(4);
+    args.push_back(std::move(integrand));
+    args.push_back(Ex{std::move(var), P_ATOM});
     if (limits) {
-      args.push_back(limits->first);
-      args.push_back(limits->second);
+      args.push_back(std::move(limits->first));
+      args.push_back(std::move(limits->second));
     }
     return Call(wxS("integrate"), args);
   }
@@ -1780,14 +1784,17 @@ private:
       }
     }
     RowParser pointParser(std::move(point));
-    const Ex at = pointParser.ParseRelation();
+    Ex at = pointParser.ParseRelation();
     pointParser.ExpectEnd();
     if (AtEnd())
       Fail(_("The limit has no expression to take the limit of."));
-    const Ex body = ParseTerm();
-    std::vector<Ex> args{body, Ex{var, P_ATOM}, at};
+    std::vector<Ex> args;
+    args.reserve(4);
+    args.push_back(ParseTerm());
+    args.push_back(Ex{std::move(var), P_ATOM});
+    args.push_back(std::move(at));
     if (!direction.IsEmpty())
-      args.push_back(Ex{direction, P_ATOM});
+      args.push_back(Ex{std::move(direction), P_ATOM});
     return Call(wxS("limit"), args);
   }
 
@@ -1857,7 +1864,8 @@ private:
             body = bodyParser.ParseRelation();
             bodyParser.ExpectEnd();
           }
-          std::vector<Ex> args{body};
+          std::vector<Ex> args;
+          args.push_back(std::move(body));
           const bool single = (vars->size() == 1);
           for (const auto &[var, order] : *vars) {
             args.push_back(Ex{var, P_ATOM});
