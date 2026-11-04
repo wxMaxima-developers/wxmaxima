@@ -34,14 +34,40 @@ if(NOT WIN32)
     endif()
 		set(MANPAGEVERSION ${WXMAXIMA_VERSION})
     string(TIMESTAMP MANPAGEDATE "%Y-%m-%d" UTC)
-    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.1.in wxmaxima.1)
+    # The English man page's option list and the shell completions are
+    # written from src/CommandLineOptions.h, the table wxMaxima itself parses
+    # its command line with, so they cannot drift apart from it. The generator
+    # is a plain C++ program without wxWidgets: wxMaxima itself starts its GUI
+    # before parsing its arguments, so it can't be run during a headless build.
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.1.in wxmaxima.1.template)
+    add_executable(wxmaxima-genopts ${CMAKE_SOURCE_DIR}/src/genopts.cpp)
+    target_include_directories(wxmaxima-genopts PRIVATE ${CMAKE_SOURCE_DIR}/src)
+    set(WXM_COMPLETIONS_DIR ${CMAKE_CURRENT_BINARY_DIR}/completions)
+    set(WXM_COMMAND_LINE_DOCS
+        ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.1
+        ${WXM_COMPLETIONS_DIR}/wxmaxima
+        ${WXM_COMPLETIONS_DIR}/_wxmaxima
+        ${WXM_COMPLETIONS_DIR}/wxmaxima.fish)
+    add_custom_command(
+        OUTPUT ${WXM_COMMAND_LINE_DOCS}
+        COMMAND ${CMAKE_COMMAND} -E make_directory ${WXM_COMPLETIONS_DIR}
+        COMMAND wxmaxima-genopts man ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.1.template
+                                     ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.1
+        COMMAND wxmaxima-genopts bash ${WXM_COMPLETIONS_DIR}/wxmaxima
+        COMMAND wxmaxima-genopts zsh ${WXM_COMPLETIONS_DIR}/_wxmaxima
+        COMMAND wxmaxima-genopts fish ${WXM_COMPLETIONS_DIR}/wxmaxima.fish
+        DEPENDS wxmaxima-genopts ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.1.template
+        COMMENT "Writing the man page's options and the shell completions")
+    add_custom_target(command_line_docs ALL DEPENDS ${WXM_COMMAND_LINE_DOCS})
     configure_file(${CMAKE_CURRENT_SOURCE_DIR}/de/wxmaxima.1.in de/wxmaxima.1)
 
     # Install man pages UNCOMPRESSED. Distributions compress manpages with their
     # own tooling (e.g. Debian's dh_compress); shipping pre-gzipped .1.gz files
     # collides with that and breaks the downstream maintainer's packaging.
     install(FILES ${PIXMAPS}                                                                     DESTINATION share/pixmaps)
-    install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima                                           DESTINATION share/bash-completion/completions)
+    install(FILES ${WXM_COMPLETIONS_DIR}/wxmaxima                                                DESTINATION share/bash-completion/completions)
+    install(FILES ${WXM_COMPLETIONS_DIR}/_wxmaxima                                               DESTINATION share/zsh/site-functions)
+    install(FILES ${WXM_COMPLETIONS_DIR}/wxmaxima.fish                                           DESTINATION share/fish/vendor_completions.d)
     install(FILES ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.1                                         DESTINATION share/man/man1)
     install(FILES ${CMAKE_CURRENT_BINARY_DIR}/de/wxmaxima.1                                      DESTINATION share/man/de/man1)
     install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/io.github.wxmaxima_developers.wxMaxima.appdata.xml DESTINATION share/metainfo)
@@ -67,6 +93,10 @@ if(NOT WIN32)
         create_install_symlink(../icons/hicolor/1024x1024/apps/io.github.wxmaxima_developers.wxMaxima.png share/wxMaxima/io.github.wxmaxima_developers.wxMaxima.png)
         create_install_symlink(wxmaxima.1 share/man/man1/wxmxdiff.1)
         create_install_symlink(wxmaxima.1 share/man/de/man1/wxmxdiff.1)
+        # bash and fish load a completion by the command's name; zsh's
+        # \"#compdef wxmaxima wxmxdiff\" line covers both already.
+        create_install_symlink(wxmaxima share/bash-completion/completions/wxmxdiff)
+        create_install_symlink(wxmaxima.fish share/fish/vendor_completions.d/wxmxdiff.fish)
     ")
 endif()
 
