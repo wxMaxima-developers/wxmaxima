@@ -706,6 +706,12 @@ list(APPEND CPACK_RPM_EXCLUDE_FROM_AUTO_FILELIST_ADDITION
   "/usr/share/icons"
   "/usr/share/man"
   "/usr/share/man/man1"
+  "/usr/share/bash-completion"
+  "/usr/share/bash-completion/completions"
+  "/usr/share/zsh"
+  "/usr/share/zsh/site-functions"
+  "/usr/share/fish"
+  "/usr/share/fish/vendor_completions.d"
 )
 # We now install man pages UNCOMPRESSED (so the Debian maintainer's dh_compress
 # can handle them; see data/CMakeLists.txt). rpmbuild's brp-compress would then
