@@ -272,10 +272,13 @@ include_directories(SYSTEM "${CMAKE_SOURCE_DIR}/src/vendor")
 
 
 if(WXM_USE_CPPCHECK)
-    find_program(CMAKE_CXX_CPPCHECK NAMES cppcheck)
-    if(CMAKE_CXX_CPPCHECK)
-        message(STATUS "cppcheck found at ${CMAKE_CXX_CPPCHECK}. Enable cppcheck tests.")
-	list(APPEND CMAKE_CXX_CPPCHECK
+    # Not find_program(CMAKE_CXX_CPPCHECK ...): that caches the variable, so
+    # where cppcheck is missing every other directory (data/ builds
+    # wxmaxima-genopts) saw CMAKE_CXX_CPPCHECK-NOTFOUND and tried to run it.
+    find_program(WXM_CPPCHECK_EXECUTABLE NAMES cppcheck)
+    if(WXM_CPPCHECK_EXECUTABLE)
+        message(STATUS "cppcheck found at ${WXM_CPPCHECK_EXECUTABLE}. Enable cppcheck tests.")
+	set(CMAKE_CXX_CPPCHECK ${WXM_CPPCHECK_EXECUTABLE}
 	    "--enable=warning,style,performance,portability"
 	    "--quiet"
 	    "--std=c++20"
