@@ -169,7 +169,8 @@ if(WXM_UNIT_TESTS AND MAXIMA AND TARGET test_Troubleshooting)
         set(wxm_troubleshooting_launcher "${WXM_TEST_WRAPPER}")
     endif()
     add_test(NAME Troubleshooting_real_maxima
-            COMMAND ${CMAKE_COMMAND} -E env "WXM_MAXIMA=${MAXIMA}"
+            COMMAND echo "load(draw);quit();" | ${MAXIMA} --very-very-quiet --quit-on-error
+                    ${CMAKE_COMMAND} -E env "WXM_MAXIMA=${MAXIMA}"
                     ${wxm_troubleshooting_launcher}
                     "$<TARGET_FILE:test_Troubleshooting>" "[.maxima]")
 endif()
@@ -1553,7 +1554,8 @@ add_test(
 add_test(
     NAME multithreadtest
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND echo "load(draw);quit();" | ${MAXIMA} --very-very-quiet --quit-on-error ; wxmaxima --debug --logtostderr --pipe --single_process --batch --exit-on-error threadtest.wxm threadtest2.wxm)
+    COMMAND echo "load(draw);quit();" | ${MAXIMA} --very-very-quiet --quit-on-error
+            wxmaxima --debug --logtostderr --pipe --single_process --batch --exit-on-error threadtest.wxm threadtest2.wxm)
 
 #add_test(
 #    NAME ipc_copypaste1
