@@ -54,10 +54,20 @@ if(PO4A)
         message(STATUS "msgmerge/msgcat not found. Manual translations made in the combined .po files cannot be pulled back into locales/manual/.")
     endif()
 
-    # update all po files for the manual *in the source tree*.
+    # Update the manual's .pot, its .po files and the translated
+    # info/wxmaxima.<lang>.md *in the source tree*. Only ever run on request
+    # (by hand, or by the weekly update_translations workflow): an ordinary
+    # build translates the manual into the build directory instead and leaves
+    # these tracked files alone, see info/CMakeLists.txt.
+    #
+    # Run from this source directory so that po4a.cfg's relative path to the
+    # manual (../../info/wxmaxima.md, which also ends up in the .pot's "#:"
+    # references) always points at the real manual, wherever the build
+    # directory is.
     add_custom_target(
         update-locale-manual-in-source
-        COMMAND ${PO4A} po4a.cfg
+        COMMAND ${PO4A} ${CMAKE_CURRENT_BINARY_DIR}/po4a.cfg
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     )
     if(TARGET pull-manual-translations-from-combined)
         add_dependencies(update-locale-manual-in-source pull-manual-translations-from-combined)

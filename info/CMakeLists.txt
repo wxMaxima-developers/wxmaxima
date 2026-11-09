@@ -2,12 +2,33 @@
 
 include(${CMAKE_SOURCE_DIR}/CheckPo4aVersion.cmake)
 if(PO4A)
-	if(WXM_PO4A_UPDATE_MANUAL_PO_POT_FILES)
-	    execute_process(COMMAND ${PO4A} --verbose ${CMAKE_BINARY_DIR}/po4a.cfg)
-	else()
-	    execute_process(COMMAND ${PO4A} --verbose --no-update ${CMAKE_BINARY_DIR}/po4a.cfg)
-	    message(STATUS "Calling po4a with the option --no-update - not updating the po/pot files in the source tree.")
-	endif()
+	# Translate the manual for this build. This never writes to the source
+	# tree: the translated manuals go into this build directory, and
+	# --no-update leaves the .po/.pot files alone.
+	#
+	# It used to write info/wxmaxima.<lang>.md in the source tree (and, with
+	# an option, the .po files too), on every configure. Those files are
+	# tracked, so every developer whose po4a version or manual differed from
+	# the last commit got a dirty tree after a plain build, and then a merge
+	# conflict on the next pull. Refreshing the committed copies is now the
+	# job of the update-locale-manual-in-source target, which the weekly
+	# update_translations workflow runs (or a developer, by hand).
+	file(GLOB MANUAL_PO_FILES "${CMAKE_SOURCE_DIR}/locales/manual/*.po")
+	set(MANUAL_LANGUAGES ${MANUAL_PO_FILES})
+	list(TRANSFORM MANUAL_LANGUAGES REPLACE ".*/(.*).po$" "\\1")
+	string(REPLACE ";" " " MANUAL_LANGUAGES_SPACESEPARATED "${MANUAL_LANGUAGES}")
+	configure_file(po4a-build.cfg.in po4a-build.cfg)
+	# A translation below po4a's --keep threshold gets no file, so don't let
+	# one from an earlier configure linger and pose as current.
+	foreach(MANUAL_LANGUAGE ${MANUAL_LANGUAGES})
+		file(REMOVE "${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.${MANUAL_LANGUAGE}.md")
+	endforeach()
+	# Re-run this (and with it po4a) when the manual or a translation changes.
+	set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS
+		"${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md" ${MANUAL_PO_FILES})
+	execute_process(
+		COMMAND ${PO4A} --verbose --no-update ${CMAKE_CURRENT_BINARY_DIR}/po4a-build.cfg
+		WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 else()
 	message(STATUS "po4a not found (or too old, see CheckPo4aVersion.cmake). Disable the generation of localized documentation.")
 endif()
@@ -126,20 +147,15 @@ if(PANDOC)
 	file(COPY ${IMAGEFILES} DESTINATION .)
         configure_file(wxmaxima.md wxmaxima.md COPYONLY)
 	foreach(BASENAME ${BASENAMES})
-                if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/${BASENAME}.md")
-                    configure_file(${BASENAME}.md ${BASENAME}.md COPYONLY)
-                else()
-                    # po4a only writes a translated ${BASENAME}.md once that
-                    # language crosses its --keep threshold (po4a.cfg.in sets
-                    # 5%); a just-seeded language with no translated manual
-                    # strings yet has none. Fall back to the English original
-                    # so configure doesn't hard-fail for every contributor
-                    # with po4a+pandoc installed until someone crosses that
-                    # threshold - po4a starts writing the real file in the
-                    # source tree once they do, and this branch stops being
-                    # taken on the next configure.
-                    configure_file(wxmaxima.md ${BASENAME}.md COPYONLY)
-                endif()
+		if(NOT EXISTS "${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}.md")
+			# po4a (run above, into this directory) only writes a
+			# translated ${BASENAME}.md once that language crosses its
+			# --keep threshold (po4a-build.cfg.in sets 5%); a just-seeded
+			# language with no translated manual strings yet has none.
+			# Fall back to the English original so configure doesn't
+			# hard-fail until someone crosses that threshold.
+			configure_file(wxmaxima.md ${BASENAME}.md COPYONLY)
+		endif()
 	endforeach()
 	generate_wxmaxima_documentation_html("wxmaxima")
 	generate_wxmaxima_documentation_epub("wxmaxima")

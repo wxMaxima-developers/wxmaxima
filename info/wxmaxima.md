@@ -1330,8 +1330,12 @@ Usually you can start programs with a graphical user interface just by clicking 
 - `-o` or `--open=<str>`: Open the filename given as an argument to this command-line switch
 - `-e` or `--eval`: Evaluate the file after opening it.
 - `-b` or `--batch`: If the command-line opens a file all cells in this file are evaluated and the file is saved afterward. This is for example useful if the session described in the file makes _Maxima_ generate output files. Batch-processing will be stopped if _wxMaxima_ detects that _Maxima_ has output an error and will exit if _Maxima_ asks a question no scripted answer exists for: Mathematics is somewhat interactive by nature so a completely interaction-free batch processing cannot always be guaranteed.
+- `-d` or `--diff`: Compare 2 or 3 files side-by-side using the Diff viewer.
+- `--single_process`: Open all worksheets from within the same process.
+- `--single_thread`: Run all background tasks from within the main thread.
 - `--logtostderr`:                 Log all "debug messages" sidebar messages to stderr, too.
-- `--pipe`:                        Pipe messages from Maxima to stdout.
+- `--pipe`:                        Pipe messages from Maxima to stderr.
+- `--debug`: Enable costly debug checks.
 - `--exit-on-error`:               Close the program on any maxima error.
 - `-f` or `--ini=<str>`: Use the init file that was given as an argument to this command-line switch
 - `-u`, `--use-version=<str>`:     Use maxima version `<str>`.
@@ -1342,6 +1346,8 @@ Usually you can start programs with a graphical user interface just by clicking 
 - `--wxmathml-lisp=<str>`:   Location of wxMathML.lisp (if not the built-in should be used, mainly for developers).
 
 Instead of a minus, some operating systems might use a dash in front of the command-line switches.
+
+On Linux and other Unix-like systems wxMaxima installs completions for bash, zsh and fish, so the <kbd>Tab</kbd> key completes these options and the names of the files wxMaxima can open.
 
 A successful run exits with status 0. A batch run that had to stop before finishing exits with one of the following statuses instead, so a script that calls _wxMaxima_ can tell why it stopped without reading its log:
 

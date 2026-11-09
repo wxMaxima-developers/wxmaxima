@@ -29,6 +29,7 @@
 #include "BuildConfig.h"
 #include "Maxima.h"
 #include "Dirstructure.h"
+#include "CommandLineOptions.h"
 #include "FileOpenKind.h"
 #include "dialogs/DiffFrame.h"
 #include "wxMathml.h"
@@ -136,57 +137,34 @@ int CommonMain() {
   return wxMaxima::GetExitCode();
 }
 wxCmdLineParser cmdLineParser;
-static const wxCmdLineEntryDesc cmdLineDesc[] = {
-  {wxCMD_LINE_SWITCH, "v", "version", "Output the version info.",
-   wxCMD_LINE_VAL_NONE, 0},
-  {wxCMD_LINE_SWITCH, "h", "help", "Show this help message.",
-   wxCMD_LINE_VAL_NONE, wxCMD_LINE_OPTION_HELP},
-  {wxCMD_LINE_OPTION, "o", "open", "Open a file.", wxCMD_LINE_VAL_STRING, 0},
-  {wxCMD_LINE_SWITCH, "e", "eval", "Evaluate the file after opening it.",
-   wxCMD_LINE_VAL_NONE, 0},
-  {wxCMD_LINE_SWITCH, "d", "diff", "Compare 2 or 3 files side-by-side using the Diff viewer.",
-   wxCMD_LINE_VAL_NONE, 0},
-  {wxCMD_LINE_SWITCH, "", "single_process",
-   "Open all worksheets from within the same process.", wxCMD_LINE_VAL_NONE, 0},
-  {wxCMD_LINE_SWITCH, "", "single_thread",
-   "Run all background tasks from within the main thread.", wxCMD_LINE_VAL_NONE, 0},
-  {wxCMD_LINE_SWITCH, "b", "batch",
-   "Run the file and exit afterwards. Halts on questions and stops on "
-   "errors.",
-   wxCMD_LINE_VAL_NONE, 0},
-  {wxCMD_LINE_SWITCH, "", "logtostderr",
-   "Log all \"debug messages\" sidebar messages to stderr, too.",
-   wxCMD_LINE_VAL_NONE, 0},
-  {wxCMD_LINE_SWITCH, "", "debug",
-   "Enable costly debug checks.",
-   wxCMD_LINE_VAL_NONE, 0},
-  {wxCMD_LINE_SWITCH, "", "pipe", "Pipe messages from Maxima to stderr.",
-   wxCMD_LINE_VAL_NONE, 0},
-  {wxCMD_LINE_SWITCH, "", "exit-on-error",
-   "Close the program on any Maxima error.", wxCMD_LINE_VAL_NONE, 0},
-  {wxCMD_LINE_OPTION, "f", "ini",
-   "Allows specifying a file to store the configuration in.",
-   wxCMD_LINE_VAL_STRING, 0},
-  {wxCMD_LINE_OPTION, "u", "use-version", "Use Maxima version <str>.",
-   wxCMD_LINE_VAL_STRING, 0},
-  {wxCMD_LINE_OPTION, "l", "lisp",
-   "Use a Maxima compiled with lisp compiler <str>.", wxCMD_LINE_VAL_STRING,
-   0},
-  {wxCMD_LINE_OPTION, "X", "extra-args",
-   "Allows specifying extra Maxima arguments.", wxCMD_LINE_VAL_STRING, 0},
-  {wxCMD_LINE_OPTION, "m", "maxima",
-   "Allows specifying the location of the Maxima binary.",
-   wxCMD_LINE_VAL_STRING, 0},
-  {wxCMD_LINE_SWITCH, "", "enableipc",
-   "Lets Maxima control wxMaxima via interprocess communications. Use this "
-   "option with care.",
-   wxCMD_LINE_VAL_NONE, 0},
-  {wxCMD_LINE_OPTION, "", "wxmathml-lisp",
-   "Location of wxMathML.lisp (if not the built-in should be used, mainly for developers).",
-   wxCMD_LINE_VAL_STRING, 0},
-  {wxCMD_LINE_PARAM, nullptr, nullptr, "input file", wxCMD_LINE_VAL_STRING,
-   wxCMD_LINE_PARAM_OPTIONAL | wxCMD_LINE_PARAM_MULTIPLE},
-  wxCMD_LINE_DESC_END};
+/*! The wxCmdLineParser description, made from wxm::cmdline::Options
+
+  The options themselves are defined in CommandLineOptions.h, which also
+  feeds the shell completions and the man page; add new ones there.
+  Every string in that table is a literal, so its data() is NUL-terminated,
+  which is what wxCmdLineEntryDesc's const char * members need.
+*/
+static const std::vector<wxCmdLineEntryDesc> &CmdLineDesc() {
+  static const std::vector<wxCmdLineEntryDesc> desc = [] {
+    std::vector<wxCmdLineEntryDesc> entries;
+    for (const auto &opt : wxm::cmdline::Options) {
+      const bool takesValue = opt.kind == wxm::cmdline::Kind::Option;
+      entries.push_back({takesValue ? wxCMD_LINE_OPTION : wxCMD_LINE_SWITCH,
+                         opt.shortName.data(), opt.longName.data(),
+                         opt.description.data(),
+                         takesValue ? wxCMD_LINE_VAL_STRING : wxCMD_LINE_VAL_NONE,
+                         opt.isHelp ? wxCMD_LINE_OPTION_HELP : 0});
+    }
+    entries.push_back({wxCMD_LINE_PARAM, nullptr, nullptr,
+                       wxm::cmdline::ParamDescription.data(),
+                       wxCMD_LINE_VAL_STRING,
+                       wxCMD_LINE_PARAM_OPTIONAL | wxCMD_LINE_PARAM_MULTIPLE});
+    entries.push_back({wxCMD_LINE_NONE, nullptr, nullptr, nullptr,
+                       wxCMD_LINE_VAL_NONE, 0});
+    return entries;
+  }();
+  return desc;
+}
 
 
 #ifndef __WXMSW__
@@ -222,7 +200,7 @@ int main(int argc, char *argv[]) {
   if (!wxEntryStart(argc, argv))
     return 1;
   cmdLineParser.SetCmdLine(argc, argv);
-  cmdLineParser.SetDesc(cmdLineDesc);
+  cmdLineParser.SetDesc(CmdLineDesc().data());
   return CommonMain();
 }
 #else
@@ -241,7 +219,7 @@ int WINAPI WinMain(_In_ HINSTANCE hI, _In_opt_ HINSTANCE hPrevI, _In_ LPSTR lpCm
   if (!wxEntryStart(hI, hPrevI, lpCmdLine, nCmdShow))
     return 1;
   cmdLineParser.SetCmdLine(lpCmdLine);
-  cmdLineParser.SetDesc(cmdLineDesc);
+  cmdLineParser.SetDesc(CmdLineDesc().data());
   return CommonMain();
 }
 #endif

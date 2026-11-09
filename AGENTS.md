@@ -876,11 +876,12 @@ a local TCP socket.
   `wx_matrix()`, `table_form()` and friends got no "Help on" entry. Our own
   manual has no index and its headings (hence pandoc's heading ids) are
   translated, so each such keyword has a hand-written `<div id="keyword"></div>`
-  paragraph in `info/wxmaxima.md` **and in every `info/wxmaxima.<lang>.md`**,
-  in front of the paragraph documenting it. A paragraph of its own, so po4a
+  paragraph in `info/wxmaxima.md`, in front of the paragraph documenting it
+  (only there: the translated manuals get it from po4a, see "Neither a build
+  nor a manual edit touches the translation files" below). A paragraph of its own, so po4a
   sees a new untranslated msgid whose output is the anchor itself, and
   translations of the surrounding text don't go fuzzy. When documenting a new
-  wxMaxima command, add its anchor to all of these and its name to
+  wxMaxima command, add its anchor there and its name to
   `WxMaximaManualAnchors::Keywords()`; `test_WxMaximaManualAnchors` fails if the
   two disagree, and also checks the committed English `info/wxmaxima.html`
   (shipped to builds without pandoc), so regenerate that with the pandoc
@@ -1679,6 +1680,26 @@ tried without rebuilding.
     committed POT. Hand-add the one `msgid`, as the TrayIcon work did -- do
     not run a full `update-locale` for it.
 
+- **Neither a build nor a manual edit touches the translation files
+  (2026-11).** A configure used to run po4a into the source tree, rewriting
+  the tracked `info/wxmaxima.<lang>.md` (and, with the now-removed
+  `WXM_PO4A_UPDATE_MANUAL_PO_POT_FILES`, `locales/manual/*.po*`) whenever the
+  manual or the local po4a version differed from the last commit. Every
+  machine with po4a >= 0.70 therefore got a dirty tree from a plain build, and
+  the maintainer got merge conflicts on pull in files nobody had edited.
+  Now `info/CMakeLists.txt` translates the manual into the *build* directory
+  with `--no-update` (`info/po4a-build.cfg.in`), and the in-source refresh is
+  only `update-locale-manual-in-source`, run by hand or by the weekly
+  `update_translations.yml`, which commits `locales/` and
+  `info/wxmaxima.*.md` together. So: **edit `info/wxmaxima.md` only, never a
+  translated `info/wxmaxima.<lang>.md` or a manual `.po`, in a feature
+  branch.** That job runs in a `debian:trixie` container because the
+  runners' Ubuntu 24.04 has po4a 0.69, which `CheckPo4aVersion.cmake` rejects
+  -- before 2026-11 the manual's catalogues were silently never refreshed by
+  CI at all, which is part of why so many of them showed as <5% translated
+  (the template lagged ~80 paragraphs behind the manual). The
+  `git-diff` steps in `compile_ubuntu.yml` now fail if configuring or
+  building changes any tracked file.
 - **`test/check-pot-coverage.cmake` needs `cmake_policy(SET CMP0057 NEW)`
   explicitly.** It runs in script mode (`cmake -P`), which does not inherit
   the top-level `CMakeLists.txt`'s policy settings -- without this line,
@@ -1855,6 +1876,7 @@ string that the Windows and macOS branches still used shipped (2026-10, found by
 `msvc.yml`, whose "List the findings" step prints them). Check those branches by hand when a
 change touches them. Four analyzer checks are off because they only misfire on wxWidgets (its refcounted string buffers, its ownership hand-overs, and reports inside its headers that no NOLINT can reach) -- `.clang-tidy` says which and why. To run it locally: configure with `-DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DWXM_ENABLE_PRECOMPILED_HEADERS=NO` (and no unity build), build once for the generated headers, then `run-clang-tidy -p build -quiet src/`.
 - **A test that needs a POSIX shell goes into `WXM_POSIX_TESTS`** (`test/CMakeLists.txt`). That list labels its tests `needs_posix`, and the Windows jobs run `ctest -LE "unittest|needs_posix"`, so this is how a test that runs a `.sh` helper (`check-lintian.sh`, `check-xml-validity.sh`, ...) or otherwise assumes `/bin/sh` stays off MSW. A test missing from it fails there as `BAD_COMMAND`, which is how the minGW job went red on `main` in 2026-09 with four such tests. Configure now refuses a test whose `COMMAND` is a `check-*.sh` helper unless it is in the list, but that guard only recognises that one shape: a test that reaches a shell some other way still has to be added by hand. **A test that only sends Maxima a command and checks its output needs no shell at all**: use `wxm_add_wxmathml_test()`, which runs on every platform (GH #1775). Its regex is CMake's dialect, not grep's, so `(`, `)`, `+`, `?` and `|` need a backslash, and it searches stderr as well as stdout -- the old shell script searched stdout only, which made `load_symbol` fail wherever Maxima prints errors to stderr.
+- **Command-line options are defined once, in `src/CommandLineOptions.h`.** `main.cpp` builds its `wxCmdLineParser` description from it, and `wxmaxima-genopts` (`src/genopts.cpp`, a build-time tool without wxWidgets, since wxMaxima itself starts its GUI before parsing its arguments) writes the bash/zsh/fish completions and the English man page's OPTIONS section from it (`data/CMakeLists.txt`; the man template has a `WXMAXIMA-GENERATED-OPTIONS` marker). The German man page and the manual's "Command-line arguments" list are hand-written (and translated), so the ctest `command_line_options_documented` fails until a new option is described there too; `check-shell-completion` runs the generated completions. Keep `OpenableExtensions` in step with `ClassifyFileForOpening()` -- `test_FileOpenKind` checks it.
 - **Git Environment:** Note that running `git diff` might launch the visual diff tool `meld` instead of outputting to the terminal. Always use `git diff --no-ext-diff` if you need terminal output.
 - **String Literals & Translations:** Use the `wxS()` macro for all string literals and `_()` for user-facing translatable strings.
 - **Logging:** Use `wxLogMessage()` for debugging; messages are visible in **View -> Toggle Log Window** or by using the option `--logtostderr`.
