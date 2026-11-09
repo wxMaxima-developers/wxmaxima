@@ -49,27 +49,39 @@ W\(:urde anhalten, wenn Maxima eine Fehlermeldung produziert oder eine Frage ste
 \(:Offnet eine Datei nach dem Programmstart.
 
 .TP
-.I \-e, \-\-eval=<str>
-\(:Offnet eine Datei und verarbeitet sie nach dem Programmstart.
+.I \-e, \-\-eval
+Verarbeitet die Datei nach dem \(:Offnen.
 
 .TP
 .I \-d, \-\-diff
 Vergleicht 2 oder 3 Dateien nebeneinander mit dem Diff-Viewer.
 
 .TP
+.I \-\-single_process
+\(:Offnet alle Arbeitsbl\(:atter im selben Prozess.
+
+.TP
+.I \-\-single_thread
+F\(:uhrt alle Hintergrundaufgaben im Haupt-Thread aus.
+
+.TP
 .I \-\-logtostderr
 Loggt "Debugging-Nachrichten" auch auf der Standard-Fehlerausgabe.
 
 .TP
+.I \-\-debug
+Schaltet aufwendige Debug-Pr\(:ufungen ein.
+
+.TP
 .I \-\-pipe
-Gibt Nachrichten von Maxima auf der Standardausgabe aus.
+Gibt Nachrichten von Maxima auf der Standard-Fehlerausgabe aus.
 
 .TP
 .I \-\-exit-on-error
 Beendet das Programm nach einem Fehler von Maxima.
 
 .TP
-.I \-f, --ini=<str>
+.I \-f, \-\-ini=<str>
 Spezifiziert, wo die Konfiguration gespeichert werden soll.
 
 .TP
@@ -91,6 +103,10 @@ Erlaubt, den Pfad zum Maxima Programm anzugeben.
 .TP
 .I \-\-enableipc
 Erlaubt Maxima die Kontrolle über wxMaxima durch Interprozesskommunikation. Mit Vorsicht benutzen.
+
+.TP
+.I \-\-wxmathml-lisp=<str>
+Verwendet die angegebene wxMathML.lisp statt der eingebauten (haupts\(:achlich f\(:ur Entwickler).
 
 
 .SH "EXIT-STATUS"
