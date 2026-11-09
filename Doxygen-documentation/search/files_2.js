@@ -13,12 +13,13 @@ var searchData=
   ['charbutton_2eh_10',['CharButton.h',['../CharButton_8h.html',1,'']]],
   ['clipboardcontents_2ecpp_11',['ClipboardContents.cpp',['../ClipboardContents_8cpp.html',1,'']]],
   ['clipboardcontents_2eh_12',['ClipboardContents.h',['../ClipboardContents_8h.html',1,'']]],
-  ['compat_2eh_13',['Compat.h',['../Compat_8h.html',1,'']]],
-  ['compositedataobject_2eh_14',['CompositeDataObject.h',['../CompositeDataObject_8h.html',1,'']]],
-  ['configdialogue_2eh_15',['ConfigDialogue.h',['../ConfigDialogue_8h.html',1,'']]],
-  ['configuration_2ecpp_16',['Configuration.cpp',['../Configuration_8cpp.html',1,'']]],
-  ['conjugatecell_2ecpp_17',['ConjugateCell.cpp',['../ConjugateCell_8cpp.html',1,'']]],
-  ['conjugatecell_2eh_18',['ConjugateCell.h',['../ConjugateCell_8h.html',1,'']]],
-  ['csvwiz_2ecpp_19',['CsvWiz.cpp',['../CsvWiz_8cpp.html',1,'']]],
-  ['csvwiz_2eh_20',['CsvWiz.h',['../CsvWiz_8h.html',1,'']]]
+  ['commandlineoptions_2eh_13',['CommandLineOptions.h',['../CommandLineOptions_8h.html',1,'']]],
+  ['compat_2eh_14',['Compat.h',['../Compat_8h.html',1,'']]],
+  ['compositedataobject_2eh_15',['CompositeDataObject.h',['../CompositeDataObject_8h.html',1,'']]],
+  ['configdialogue_2eh_16',['ConfigDialogue.h',['../ConfigDialogue_8h.html',1,'']]],
+  ['configuration_2ecpp_17',['Configuration.cpp',['../Configuration_8cpp.html',1,'']]],
+  ['conjugatecell_2ecpp_18',['ConjugateCell.cpp',['../ConjugateCell_8cpp.html',1,'']]],
+  ['conjugatecell_2eh_19',['ConjugateCell.h',['../ConjugateCell_8h.html',1,'']]],
+  ['csvwiz_2ecpp_20',['CsvWiz.cpp',['../CsvWiz_8cpp.html',1,'']]],
+  ['csvwiz_2eh_21',['CsvWiz.h',['../CsvWiz_8h.html',1,'']]]
 ];

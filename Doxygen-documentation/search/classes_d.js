@@ -2,7 +2,7 @@ var searchData=
 [
   ['object_0',['Object',['../structObject.html',1,'']]],
   ['observed_1',['Observed',['../classObserved.html',1,'']]],
-  ['option_2',['Option',['../classCatch_1_1Option.html',1,'Catch']]],
+  ['option_2',['Option',['../classCatch_1_1Option.html',1,'Catch::Option&lt; T &gt;'],['../structwxm_1_1cmdline_1_1Option.html',1,'wxm::cmdline::Option']]],
   ['ordered_5fmap_3',['ordered_map',['../structordered__map.html',1,'']]],
   ['other_5ferror_4',['other_error',['../classdetail_1_1other__error.html',1,'detail']]],
   ['out_5fof_5frange_5',['out_of_range',['../classdetail_1_1out__of__range.html',1,'detail']]],
