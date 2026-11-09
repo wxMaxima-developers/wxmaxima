@@ -135,9 +135,71 @@ jobs:
           echo "Patched the xmaxima app's desktop: entry to $desktop_file"
           grep -n 'desktop:' snap/snapcraft.yaml
 
+      # The renamed Xmaxima.desktop says `Icon=xmaxima`, a theme icon name, but
+      # Maxima installs xmaxima.svg/.png flat into usr/share/icons/, not into
+      # the hicolor theme snapcraft searches. snapcraft therefore cannot turn
+      # the name into a ${SNAP}/... path, and the store rejects every upload
+      # after its review ("Issues while processing snap: nonexistent icon
+      # path") -- which is what kept this job red from 2026-09-26 on (seen in
+      # the logs of 2026-10-31; the older logs had already expired).
+      #
+      # Giving the snap a top-level `icon:` fixes both ends: snapcraft copies
+      # it to meta/gui/ and points every app's desktop file at that copy, and
+      # the store listing gets an icon too. The path is relative to the Maxima
+      # source tree. Drop this step once Maxima's own snapcraft.yaml sets one.
+      - name: Give the snap an icon that exists
+        run: |
+          set -eu
+          if grep -q '^icon:' snap/snapcraft.yaml; then
+            echo "snapcraft.yaml already sets an icon; leaving it alone."
+            exit 0
+          fi
+          icon=$(ls interfaces/xmaxima/xmaxima.svg interfaces/xmaxima/net.sourceforge.maxima.svg 2>/dev/null | head -n1 || true)
+          if [ -z "$icon" ]; then
+            echo "::error::found no xmaxima icon in the Maxima source tree"
+            exit 1
+          fi
+          # Top-level key, so it goes right below `version:`.
+          sed -i -E "s#^(version:.*)#\1\nicon: ${icon}#" snap/snapcraft.yaml
+          grep -n -E '^(version|icon):' snap/snapcraft.yaml
+
       - name: Build the Maxima snap
         uses: snapcore/action-build@v1
         id: build
+
+      # Catch what the store's review would reject *before* uploading, so a
+      # broken icon shows up as a failed build step instead of an upload error
+      # after a 10-minute build -- and so a run on a branch, which does not
+      # publish, can still tell whether the snap would be accepted.
+      - name: Check that every desktop file's icon is in the snap
+        env:
+          SNAP_FILE: ${{ steps.build.outputs.snap }}
+        run: |
+          set -eu
+          command -v unsquashfs >/dev/null || sudo apt-get install -y -q squashfs-tools
+          unsquashfs -q -d snap-meta "$SNAP_FILE" 'meta/*'
+          unsquashfs -l "$SNAP_FILE" | sed 's#^squashfs-root##' > snap-files.txt
+          bad=0
+          for desktop in snap-meta/meta/gui/*.desktop; do
+            [ -e "$desktop" ] || continue
+            grep -E '^Icon=' "$desktop" | while IFS= read -r line; do
+              icon=${line#Icon=}
+              case "$icon" in
+                '${SNAP}'/*)
+                  path=${icon#'${SNAP}'}
+                  if grep -qxF "$path" snap-files.txt; then
+                    echo "$(basename "$desktop"): $icon is in the snap"
+                  else
+                    echo "::error::$(basename "$desktop"): $icon is not in the snap"
+                    exit 1
+                  fi;;
+                *)
+                  echo "::error::$(basename "$desktop"): Icon=$icon is no \${SNAP} path; the store rejects it as a nonexistent icon path"
+                  exit 1;;
+              esac
+            done || bad=1
+          done
+          exit $bad
 
       - name: Upload snap artifact
         uses: actions/upload-artifact@v7
@@ -146,10 +208,12 @@ jobs:
           path: ${{ steps.build.outputs.snap }}
           if-no-files-found: error
 
-      # Skipped on forks / whenever the secret is absent, so the build-only run
-      # keeps working without credentials.
+      # Skipped on forks, so the build-only run keeps working without
+      # credentials, and on any branch but main: a manual run on a feature
+      # branch is a dry run that builds and checks the snap without putting
+      # an unreviewed workflow's output into the store.
       - name: Publish to the ${{ matrix.channel }} channel
-        if: github.repository == 'wxMaxima-developers/wxmaxima'
+        if: github.repository == 'wxMaxima-developers/wxmaxima' && github.ref == 'refs/heads/main'
         uses: snapcore/action-publish@v1
         env:
           SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
