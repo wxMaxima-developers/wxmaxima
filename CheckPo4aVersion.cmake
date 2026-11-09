@@ -10,10 +10,10 @@
 # paragraph into English text with mangled UTF-8 (e.g. "'" became "â"),
 # without printing any warning or error of its own. info/CMakeLists.txt
 # calls po4a on every configure - not just on an explicit "update the
-# translations" step - and writes its output straight into
-# info/wxmaxima.<lang>.md in the source tree, so this is not a rare, opt-in
-# failure mode for anyone who happens to have both po4a and pandoc
-# installed.
+# translations" step - so this is not a rare, opt-in failure mode for anyone
+# who happens to have both po4a and pandoc installed. (That call only writes
+# into the build directory; the source tree is updated by the
+# update-locale-manual-in-source target alone.)
 #
 # Included (not add_subdirectory()'d) from info/CMakeLists.txt and
 # locales/manual/CMakeLists.txt, the two places that call po4a, so it runs in

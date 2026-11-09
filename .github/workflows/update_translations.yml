@@ -22,6 +22,13 @@ name: update_translations
 # it replaces -- it could commit a POT with whole directories missing and
 # nobody would look. See locales/wxMaxima/check_pot_not_truncated.py for why
 # that is not hypothetical here.
+#
+# The manual's translation files (locales/manual/*.po*, and the translated
+# info/wxmaxima.<lang>.md the repository carries) are refreshed here too, and
+# only here. Ordinary builds used to rewrite them in the source tree on every
+# configure, so editing the manual on one machine and building on another
+# reliably produced merge conflicts in files nobody had edited by hand. A build
+# now translates the manual into its build directory only (info/CMakeLists.txt).
 
 on:
   schedule:
@@ -38,26 +45,50 @@ permissions:
 jobs:
   update_translations:
     runs-on: ubuntu-latest
+    # Debian 13 rather than the runner's own Ubuntu 24.04: updating the
+    # manual's translations needs po4a >= 0.70 (see CheckPo4aVersion.cmake for
+    # what older versions do to non-ASCII text), and Ubuntu 24.04 ships 0.69,
+    # which the build refuses to use -- so on the plain runner the manual's
+    # catalogues were silently never refreshed at all.
+    container: debian:trixie
     timeout-minutes: 45
     steps:
+      # Before the checkout: without git in the container, actions/checkout
+      # falls back to downloading a tarball, which has no history to commit to.
+      - name: Install dependencies
+        run: |
+             apt-get update
+             apt-get install -y --no-install-recommends \
+                 ca-certificates git cmake ninja-build g++ gettext po4a \
+                 libwxgtk3.2-dev python3 python3-polib
+
       - name: Checkout_git
         uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
-      - name: Install dependencies
+      # Fail here, loudly, rather than in a build step whose "unknown target"
+      # error says nothing about why.
+      - name: Check po4a is new enough
         run: |
-             sudo apt-get update
-             sudo apt-get install -y cmake ninja-build gettext po4a libwxgtk3.2-dev
-
-      - name: Configure
-        run: cmake -S . -B build -G Ninja
+             # The container runs as a different user than owns the checkout.
+             git config --global --add safe.directory "$GITHUB_WORKSPACE"
+             po4a --version
+             cmake -S . -B build -G Ninja
+             cmake --build build --target help | grep -q update-locale-manual-in-source || {
+               echo "::error::The build has no update-locale-manual-in-source target: po4a is missing or older than 0.70."
+               exit 1
+             }
 
       - name: Keep the current catalogues for comparison
         run: cp locales/wxMaxima/wxMaxima.pot /tmp/wxMaxima.pot.committed
 
+      # The manual first: update-locale folds the manual's .pot and .po files
+      # into the combined catalogues, so it must see the refreshed ones.
       - name: Regenerate
-        run: cmake --build build --target update-locale
+        run: |
+             cmake --build build --target update-locale-manual-in-source
+             cmake --build build --target update-locale
 
       # The gate. Deliberately before anything is committed: if extraction
       # broke, the right outcome is a failed job and an untouched catalogue,
@@ -73,21 +104,25 @@ jobs:
       # strings. Reused here rather than reimplemented.
       - name: Check no translation was wiped
         run: |
-             pip install --quiet polib
              python3 locales/wxMaxima/check_translations_not_wiped.py origin/main
 
       - name: Commit and push
         run: |
-             if git diff --quiet -- locales/; then
+             # status, not diff: a language whose manual translation just
+             # crossed po4a's threshold gets a new, untracked info/wxmaxima.<lang>.md.
+             if [ -z "$(git status --porcelain -- locales/ 'info/wxmaxima.*.md')" ]; then
                echo "Catalogues are already current -- nothing to push."
                exit 0
              fi
              git config user.name "github-actions[bot]"
              git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-             git add locales/
+             # An explicit path list, never "git add -A": the build directory
+             # and anything else the run produced stay out of the commit.
+             git add locales/ 'info/wxmaxima.*.md'
              git commit -m "Refresh the translation catalogues
 
-             Automated weekly run of the update-locale target. Checked before
+             Automated weekly run of the update-locale-manual-in-source and
+             update-locale targets. Checked before
              committing: no strings disappeared from wxMaxima.pot beyond the
              threshold in check_pot_not_truncated.py, and no existing
              translation went from translated to empty."

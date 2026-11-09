@@ -12,8 +12,8 @@
 # passes with a warning, so the suite still runs on machines without Ruby.
 #
 # The translated manuals info/wxmaxima.<lang>.md are excluded: they are
-# linguist-generated (a build step propagates the English info/wxmaxima.md into
-# them), so a finding there has to be fixed in the English source, and their
+# linguist-generated (the update-locale-manual-in-source target propagates the
+# English info/wxmaxima.md into them), so a finding there has to be fixed in the English source, and their
 # translators can't act on it anyway.
 
 set -eu
