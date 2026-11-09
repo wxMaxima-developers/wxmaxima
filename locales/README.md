@@ -12,7 +12,14 @@ is always appreciated.
 the union of both sources: `make update-locale` regenerates it by combining a
 fresh `xgettext` scan of the source with `manual/wxmaxima.md.pot` (itself kept
 current by `make update-locale-manual-in-source`, which needs `po4a` >= 0.70 -
-see `CheckPo4aVersion.cmake`) via `msgcat`. A translator therefore only has one
+see `CheckPo4aVersion.cmake`) via `msgcat`.
+
+Both targets are run every Monday by the `update_translations` workflow (and
+can be started from the Actions tab), which commits the result to `main`. An
+ordinary build never changes these files, nor the translated manuals
+`info/wxmaxima.<lang>.md`: it translates the manual into the build directory.
+So a change to the manual only needs `info/wxmaxima.md` edited, and the
+translation files follow within a week. A translator therefore only has one
 file per language to work in for both the UI and the manual.
 
 `manual/*.po` still exists, one file per language that has a manual
