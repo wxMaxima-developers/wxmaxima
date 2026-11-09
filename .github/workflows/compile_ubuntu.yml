@@ -88,8 +88,13 @@ jobs:
              cmake --build .
              cd ..
       - name: git-diff
-        # run git diff to see, if the configure/build process has changed the source files (po4a can do that)
-        run: git diff --compact-summary
+        # A build must not change tracked files: whatever it rewrote in the
+        # source tree turned into merge conflicts for everyone else (po4a used
+        # to rewrite the translated manuals on every configure). Translation
+        # files are refreshed by update_translations.yml instead.
+        run: |
+             git diff --compact-summary
+             git diff --quiet || { echo "::error::Configuring or building changed files in the source tree (listed above)."; exit 1; }
       - name: cat_german_translation
         # output the german translation - how does it look like on Ubuntu 24.04?
         run: cat build/info/wxmaxima.de.md
@@ -319,7 +324,7 @@ jobs:
              mkdir build
              touch build build/build.ninja
              cd build
-             cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Debug -DWXM_UNIT_TESTS=YES -DWXM_DISABLE_WEBVIEW=ON -DWXM_DISABLE_QA=YES -DWXM_ENABLE_PRECOMPILED_HEADERS=NO -DWXM_USE_CPPCHECK=YES -DWXM_USE_FRIBIDI=NO -DWXM_INTERPROCEDURAL_OPTIMIZATION=YES -DWXM_PO4A_UPDATE_MANUAL_PO_POT_FILES=YES -DWXM_USE_AI_TOOLS=NO ..
+             cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Debug -DWXM_UNIT_TESTS=YES -DWXM_DISABLE_WEBVIEW=ON -DWXM_DISABLE_QA=YES -DWXM_ENABLE_PRECOMPILED_HEADERS=NO -DWXM_USE_CPPCHECK=YES -DWXM_USE_FRIBIDI=NO -DWXM_INTERPROCEDURAL_OPTIMIZATION=YES -DWXM_USE_AI_TOOLS=NO ..
              cd ..
       - name: compile
         run: |
@@ -396,8 +401,13 @@ jobs:
              cmake --build .
              cd ..
       - name: git-diff
-        # run git diff to see, if the configure/build process has changed the source files (po4a can do that)
-        run: git diff --compact-summary
+        # A build must not change tracked files: whatever it rewrote in the
+        # source tree turned into merge conflicts for everyone else (po4a used
+        # to rewrite the translated manuals on every configure). Translation
+        # files are refreshed by update_translations.yml instead.
+        run: |
+             git diff --compact-summary
+             git diff --quiet || { echo "::error::Configuring or building changed files in the source tree (listed above)."; exit 1; }
       - name: cat_german_translation
         # output the german translation - how does it look like on Ubuntu 24.04?
         run: cat build/info/wxmaxima.de.md

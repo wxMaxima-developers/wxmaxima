@@ -45,10 +45,14 @@ only what it extracted from the manual, discarding everything else. Confirmed
 live: a language with 1000 translated UI strings dropped to 69. This shipped to
 `main` once already.
 
-**3. po4a still deletes content, and a plain build triggers it.** An ordinary
-`ninja` rewrites the eight tracked `info/wxmaxima.*.md` manuals, and at the time
-of writing *removes* previously-present English paragraphs from them. So:
-**never `git add -A` after a build** in this repo, and any CI job that
+**3. Only `update-locale-manual-in-source` writes the manual's translation
+files.** An ordinary build used to rewrite the tracked `info/wxmaxima.*.md`
+manuals (and sometimes the manual `.po` files) in the source tree, which caused
+merge conflicts on every pull after a manual edit; since 2026-11 it translates
+into the build directory only, and the weekly `update_translations.yml` job
+refreshes the committed copies. Don't hand-edit a translated manual or a
+manual `.po` in a feature branch. Still: **never `git add -A` after running
+that target** in this repo, and any CI job that
 regenerates translations must commit an explicit path list and fail loudly if
 anything else changed. Also: po4a < 0.70 can silently corrupt translated text
 and the build is supposed to reject it.
