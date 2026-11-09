@@ -1,5 +1,7 @@
 # Current development version
 
+- The German translation of the manual covers every paragraph again: the
+  245 paragraphs that were untranslated or outdated (fuzzy) are translated.
 - **Edit → Paste LaTeX/MathML as Maxima Code** converts a formula from the
   clipboard into a Maxima command (#932, #760): `\frac{d}{dx}\sin 2x`
   becomes `diff(sin(2*x),x)`, `\int_0^1 x^2\,dx` becomes
