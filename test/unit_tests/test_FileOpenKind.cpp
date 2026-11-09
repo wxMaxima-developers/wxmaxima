@@ -25,6 +25,7 @@
   each asked to load() an executable.
 */
 
+#include "CommandLineOptions.h"
 #include "FileOpenKind.h"
 
 #include <wx/ffile.h>
@@ -104,6 +105,18 @@ SCENARIO("Files are classified by their extension") {
       CHECK(ClassifyFileForOpening(wxS("picture.png")) == FileOpenKind::Unsupported);
       CHECK(ClassifyFileForOpening(wxS("noextension")) == FileOpenKind::Unsupported);
       CHECK(ClassifyFileForOpening(wxS("a.mac.exe")) == FileOpenKind::Unsupported);
+    }
+  }
+}
+
+SCENARIO("The shells offer exactly files wxMaxima opens") {
+  GIVEN("each extension the command-line completions offer") {
+    THEN("wxMaxima agrees to open a file with it") {
+      for (const auto &ext : wxm::cmdline::OpenableExtensions) {
+        const wxString name = wxS("a.") + wxString::FromUTF8(ext.data(), ext.size());
+        INFO(name.utf8_string());
+        CHECK(ClassifyFileForOpening(name) != FileOpenKind::Unsupported);
+      }
     }
   }
 }

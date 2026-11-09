@@ -32,66 +32,8 @@ If invoked as \fBwxmxdiff\fR (e.g., via a symbolic link), it acts as if the \fB\
 
 
 .SH "OPTIONS"
-.TP
-.I \-h, \-\-help
-Help: prints a list of options.
-
-.TP
-.I \-v, \-\-version
-Prints the current version.
-
-.TP
-.I \-b, \-\-batch
-processes the file, saves it afterward. Will halt if wxMaxima finds an
-error message in Maxima's output and pause if Maxima asks a question.
-
-.TP
-.I \-o, \-\-open=<str>
-Open a file at startup.
-
-.TP
-.I \-e, \-\-eval=<str>
-Evaluate the file after opening it.
-
-.TP
-.I \-d, \-\-diff
-Compare 2 or 3 files side-by-side using the Diff viewer.
-
-.TP
-.I \-\-logtostderr
-Log all "debug messages" sidebar messages to stderr, too.
-
-.TP
-.I \-\-pipe
-Pipe messages from Maxima to stdout.
-
-.TP
-.I \-\-exit-on-error
-Close the program on any Maxima error.
-
-.TP
-.I \-f, --ini=<str>
-Allows specifying a file to store the configuration in
-
-.TP
-.I \-u, \-\-use-version=<str>
-Use Maxima version <str>.
-
-.TP
-.I \-l, \-\-lisp=<str>
-Use a Maxima compiled with lisp compiler <str>.
-
-.TP
-.I \-X, \-\-extra-args=<str>
-Allows to specify extra Maxima arguments
-
-.TP
-.I \-m, \-\-maxima=<str>
-Allows to specify the location of the Maxima binary.
-
-.TP
-.I \-\-enableipc
-Lets Maxima control wxMaxima via interprocess communications. Use this option with care.
+.\" The option list is written from src/CommandLineOptions.h at build time
+.\" (wxmaxima-genopts): WXMAXIMA-GENERATED-OPTIONS
 
 .SH "EXIT STATUS"
 .PP

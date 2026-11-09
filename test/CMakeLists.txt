@@ -312,6 +312,25 @@ add_test(
     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-markdown.sh"
 )
 
+# The command line is defined once, in src/CommandLineOptions.h; the English
+# man page's option list and the shell completions are generated from it
+# (data/CMakeLists.txt). These check what can't be generated: that the German
+# man page and the manual describe every option, and that the generated
+# completions parse and complete what they should.
+if(TARGET wxmaxima-genopts)
+  add_test(
+      NAME command_line_options_documented
+      COMMAND wxmaxima-genopts check
+              "${CMAKE_SOURCE_DIR}/data/de/wxmaxima.1.in"
+              "${CMAKE_SOURCE_DIR}/info/wxmaxima.md"
+              "${CMAKE_BINARY_DIR}/data/wxmaxima.1")
+  add_test(
+      NAME check-shell-completion
+      COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/check-shell-completion.sh"
+              "${CMAKE_BINARY_DIR}/data/completions")
+  set_tests_properties(check-shell-completion PROPERTIES SKIP_RETURN_CODE 77)
+endif()
+
 # Check every translation catalogue with msgfmt. Chiefly --check-format: a msgstr
 # whose format specifiers don't match its msgid makes wxWidgets format against
 # the wrong arguments at runtime, in a language we may not read.
@@ -1696,6 +1715,7 @@ set(WXM_POSIX_TESTS
   check-wxmx-validity_all-celltypes
   check-wxmx-validity_intervals
   check-markdown
+  check-shell-completion
   check-lintian
   check-rpmlint)
 

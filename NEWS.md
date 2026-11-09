@@ -8,6 +8,14 @@
   by a weekly CI job, which also runs a po4a new enough to do it; the
   `WXM_PO4A_UPDATE_MANUAL_PO_POT_FILES` option is gone, its replacement is
   the `update-locale-manual-in-source` target.
+- wxMaxima now installs **shell completions for bash, zsh and fish**, so
+  <kbd>Tab</kbd> completes its command-line options and offers only the
+  files wxMaxima can open. They, the man page's option list and `--help` are
+  all made from one table, so they can no longer disagree. That fixes the
+  old bash completion, which expected a file after `-b` and asked a running
+  wxMaxima for its options on every <kbd>Tab</kbd>, and the man page, which
+  lacked `--debug`, `--single_process`, `--single_thread` and
+  `--wxmathml-lisp` and claimed `--eval` took an argument.
 - **Edit → Paste LaTeX/MathML as Maxima Code** converts a formula from the
   clipboard into a Maxima command (#932, #760): `\frac{d}{dx}\sin 2x`
   becomes `diff(sin(2*x),x)`, `\int_0^1 x^2\,dx` becomes
