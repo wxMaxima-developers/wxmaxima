@@ -13580,7 +13580,7 @@ msgstr "Vágja le a karakterláncot jobbra"
 
 #: ../../src/dialogs/TroubleshootingDialog.cpp:275
 msgid "Troubleshooting"
-msgstr ""
+msgstr "Hibaelhárítás"
 
 #: ../../src/wxMaximaFrame.cpp:1713
 msgid "Try to guess which form is &simple"
@@ -15567,7 +15567,7 @@ msgstr "dzéta"
 #: ../../info/wxmaxima.md:1
 #, no-wrap
 msgid "The wxMaxima user manual"
-msgstr ""
+msgstr "A wxMaxima felhasználói kézikönyve"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:4
@@ -15577,24 +15577,24 @@ msgid ""
 "functions. In addition, it provides convenient wizards for accessing the "
 "most commonly used features. This manual describes some of the features that "
 "make wxMaxima one of the most popular GUIs for _Maxima_."
-msgstr ""
+msgstr "A WxMaxima a _Maxima_ számítógépes algebrai rendszer (CAS) grafikus felhasználói felülete (GUI). A WxMaxima segítségével a _Maxima_ összes funkciója használható. Emellett kényelmes varázslókat kínál a leggyakrabban használt funkciókhoz. Ez a kézikönyv a wxMaxima azon tulajdonságai közül mutat be néhányat, amelyek miatt a _Maxima_ egyik legnépszerűbb grafikus felülete lett."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:6
 msgid "![wxMaxima logo](./wxMaximaLogo.png){ id=img_wxMaximaLogo }"
-msgstr ""
+msgstr "![A wxMaxima logója](./wxMaximaLogo.png){ id=img_wxMaximaLogo }"
 
 #. type: Title #
 #: ../../info/wxmaxima.md:9
 #, no-wrap
 msgid "Introduction to wxMaxima"
-msgstr ""
+msgstr "Bevezetés a wxMaxima használatába"
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:11
 #, no-wrap
 msgid "_Maxima_ and wxMaxima"
-msgstr ""
+msgstr "A _Maxima_ és a wxMaxima"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:14
@@ -15612,7 +15612,7 @@ msgid ""
 "writer for a DVD backup tool. Another advantage is that splitting one big "
 "task into smaller parts allows the developers to provide several user "
 "interfaces for the same program."
-msgstr ""
+msgstr "A nyílt forráskódú világban a nagy rendszereket általában kisebb projektekre bontják, amelyeket kis fejlesztőcsapatok könnyebben kezelnek. Egy CD-író program például egy parancssori eszközből áll, amely ténylegesen megírja a CD-t, és egy grafikus felhasználói felületből, amely lehetővé teszi a használatát anélkül, hogy a felhasználónak meg kellene tanulnia az összes parancssori kapcsolót, sőt anélkül, hogy egyáltalán a parancssort használná. Ennek a megközelítésnek az egyik előnye, hogy a parancssori programba fektetett fejlesztői munkát sok program közösen használhatja: ugyanaz a CD-író parancssori program szolgálhat „CD-re küldés” bővítményként egy fájlkezelőben, a „CD-re írás” funkcióként egy zenelejátszóban és CD-íróként egy DVD-mentő eszközben. Egy másik előny, hogy egy nagy feladat kisebb részekre bontása lehetővé teszi, hogy a fejlesztők ugyanahhoz a programhoz több felhasználói felületet is készítsenek."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:16
@@ -15624,13 +15624,13 @@ msgid ""
 "it can be used directly as a free-standing system. _Maxima_ can be accessed "
 "via a command line. Often, however, an interface like _wxMaxima_ proves a "
 "more efficient way to access the software, especially for newcomers."
-msgstr ""
+msgstr "Egy számítógépes algebrai rendszer (CAS), mint a _Maxima_, jól illeszkedik ebbe a keretbe. Egy CAS adhatja egy tetszőleges pontosságú számológép-alkalmazás logikáját, vagy egy nagyobb rendszer hátterében automatikusan alakíthatja át a képleteket (pl. [Sage](https://www.sagemath.org/)). Önálló rendszerként közvetlenül is használható. A _Maxima_ parancssorból is elérhető. Gyakran azonban egy olyan felület, mint a _wxMaxima_, hatékonyabb módja a program használatának, különösen a kezdők számára."
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:17
 #, no-wrap
 msgid "_Maxima_"
-msgstr ""
+msgstr "_Maxima_"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:20
@@ -15643,26 +15643,27 @@ msgid ""
 "also provide analytical solutions. Furthermore, it offers a range of "
 "numerical methods of analysis for equations or systems of equations that "
 "cannot be solved analytically."
-msgstr ""
+msgstr "A _Maxima_ egy teljes értékű számítógépes algebrai rendszer (CAS). A CAS olyan program, amely matematikai problémákat képes megoldani a képletek átrendezésével és a problémát megoldó képlet megtalálásával, ahelyett hogy csak az eredmény számértékét adná meg. Más szóval a _Maxima_ használható számológépként, amely a változók számértékét adja meg, de analitikus megoldásokat is tud adni. Ezenkívül numerikus módszerek széles skáláját kínálja olyan egyenletek és egyenletrendszerek vizsgálatára, amelyek analitikusan nem oldhatók meg."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:22
 msgid ""
 "![Maxima screenshot, command line](./maxima_screenshot.png)"
 "{ id=img_maxima_screenshot }"
-msgstr ""
+msgstr "![A Maxima képernyőképe, parancssor](./maxima_screenshot.png){ id=img_maxima_screenshot }"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:24
 #, no-wrap
 msgid "Extensive documentation for _Maxima_ is  [available in the internet](https://maxima.sourceforge.io/documentation.html). Part of this documentation is also available in wxMaxima’s help menu. Pressing the Help key (on most systems the <kbd>F1</kbd> key) causes _wxMaxima_’s context-sensitive help feature to automatically jump to _Maxima_’s manual page for the command at the cursor.\n"
 msgstr ""
+"A _Maxima_ részletes dokumentációja [elérhető az interneten](https://maxima.sourceforge.io/documentation.html). A dokumentáció egy része a wxMaxima Súgó menüjében is megtalálható. A súgó billentyű (a legtöbb rendszeren az <kbd>F1</kbd>) lenyomására a _wxMaxima_ helyzetérzékeny súgója automatikusan a _Maxima_ kézikönyvének arra az oldalára ugrik, amely a kurzornál álló parancsot írja le.\n"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:25
 #, no-wrap
 msgid "WxMaxima"
-msgstr ""
+msgstr "WxMaxima"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:28
@@ -15677,25 +15678,25 @@ msgid ""
 "_wxMaxima_, including workbooks to illustrate aspects of its use, is online "
 "at the _wxMaxima_ [help site](https://wxMaxima-developers.github.io/wxmaxima/"
 "help.html), as well as via the help menu."
-msgstr ""
+msgstr "A _WxMaxima_ egy grafikus felhasználói felület, amely a _Maxima_ teljes funkcionalitását és rugalmasságát biztosítja. A WxMaxima grafikus megjelenítést és számos olyan funkciót kínál, amely megkönnyíti a munkát a _Maxima_ programmal. A _wxMaxima_ például egyetlen jobb kattintással lehetővé teszi bármely cella tartalmának (vagy, ha szükséges, egy képlet bármely részének) exportálását szövegként, LaTeX-ként vagy MathML-specifikációként. Sőt, egy teljes munkalap is exportálható HTML- vagy LaTeX-fájlként. A _wxMaxima_ dokumentációja, köztük a használatát bemutató munkalapok, online elérhető a _wxMaxima_ [súgóoldalán](https://wxMaxima-developers.github.io/wxmaxima/help.html), valamint a Súgó menüben."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:30
 msgid "![wxMaxima window](./wxMaximaWindow.png){ id=img_wxMaximaWindow }"
-msgstr ""
+msgstr "![A wxMaxima ablaka](./wxMaximaWindow.png){ id=img_wxMaximaWindow }"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:32
 msgid ""
 "The calculations that are entered in _wxMaxima_ are performed by the "
 "_Maxima_ command-line tool in the background."
-msgstr ""
+msgstr "A _wxMaxima_ programba beírt számításokat a háttérben a _Maxima_ parancssori eszköz végzi el."
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:33
 #, no-wrap
 msgid "Workbook basics"
-msgstr ""
+msgstr "A munkalap alapjai"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:36
@@ -15708,13 +15709,13 @@ msgid ""
 "_Maxima_ and the use of _wxMaxima_ to interact with _Maxima_. This manual "
 "concentrates on describing aspects of _wxMaxima_ that are not likely to be "
 "self-evident and that might not be covered in the online material."
-msgstr ""
+msgstr "A _wxMaxima_ nagy része magától értetődő, de néhány részlet figyelmet igényel. [Ezen az oldalon](https://wxMaxima-developers.github.io/wxmaxima/help.html) számos munkalap található, amelyek a _wxMaxima_ különböző vonatkozásaival foglalkoznak. Ezek közül néhány végigvétele (különösen a \"10 minute _(wx)Maxima_ tutorial\") segít jobban megismerni mind a _Maxima_ lehetőségeit, mind azt, hogyan lehet a _wxMaxima_ segítségével a _Maxima_ programmal dolgozni. Ez a kézikönyv a _wxMaxima_ azon vonatkozásaira összpontosít, amelyek valószínűleg nem magától értetődők, és amelyekről az online anyagok esetleg nem szólnak."
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:37
 #, no-wrap
 msgid "The workbook approach"
-msgstr ""
+msgstr "A munkalapos megközelítés"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:40
@@ -15731,7 +15732,7 @@ msgid ""
 "(where the user does not want every change to automatically trigger a full "
 "re-evaluation of the whole document). Also, this approach is very handy for "
 "debugging."
-msgstr ""
+msgstr "A _wxMaxima_ kevés nem szokványos tulajdonságának egyike, hogy a _Maxima_ számára szánt adatokat cellákba szervezi, amelyek csak akkor értékelődnek ki (vagyis kerülnek elküldésre a _Maxima_ programnak), amikor a felhasználó ezt kéri. Egy cella kiértékelésekor a cellában lévő összes parancs, és csak az, egy kötegként értékelődik ki. (Ez az állítás nem egészen pontos: több szomszédos cella is kijelölhető és együtt kiértékelhető. A _Maxima_ arra is utasítható, hogy egy munkalap összes celláját egy menetben értékelje ki.) Az, ahogyan a _wxMaxima_ a parancsokat végrehajtásra küldi, első látásra szokatlannak tűnhet. Nagy dokumentumok esetén (ahol a felhasználó nem szeretné, hogy minden változtatás automatikusan az egész dokumentum újbóli kiértékelését indítsa el) azonban jelentősen megkönnyíti a munkát. Ez a megközelítés a hibakeresésnél is nagyon hasznos."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:42
@@ -15741,12 +15742,12 @@ msgid ""
 "is created the cell can be sent to _Maxima_, which causes the result of the "
 "calculation to be displayed below the code. A pair of such commands is shown "
 "below."
-msgstr ""
+msgstr "Ha szöveget írunk a _wxMaxima_ programba, az automatikusan új munkalapcellát hoz létre. A cella típusa az eszköztáron választható ki. Kódcella esetén a cella elküldhető a _Maxima_ programnak, és a számítás eredménye a kód alatt jelenik meg. Lent egy ilyen parancspár látható."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:44
 msgid "![Input/output cell](./InputCell.png){ id=img_InputCell }"
-msgstr ""
+msgstr "![Bemeneti/kimeneti cella](./InputCell.png){ id=img_InputCell }"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:46
@@ -15758,7 +15759,7 @@ msgid ""
 "hidden, except if the user assigns the output a name. In this case by "
 "default the user-defined label is displayed. The `%o`-style label _Maxima_ "
 "auto-generates will also be accessible, though."
-msgstr ""
+msgstr "Egy bemeneti cella tartalmának kiértékelésekor a _Maxima_ címkét rendel a bemenethez (alapértelmezés szerint piros színnel jelenik meg, és a `%i` alapján ismerhető fel), amellyel később a _wxMaxima_ munkamenetben hivatkozni lehet rá. A _Maxima_ által előállított kimenet is kap egy `%o` kezdetű címkét, amely alapértelmezés szerint rejtett, kivéve ha a felhasználó nevet ad a kimenetnek. Ilyenkor alapértelmezés szerint a felhasználó által megadott címke jelenik meg. A _Maxima_ által automatikusan generált `%o` stílusú címke azonban továbbra is elérhető."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:48
@@ -15769,65 +15770,65 @@ msgid ""
 "then gradually reverting the unneeded changes is rather easy. Furthermore "
 "the worksheet itself has a global undo buffer that can undo cell edits, adds "
 "and deletes."
-msgstr ""
+msgstr "A bemeneti cellák mellett a _wxMaxima_ szövegcellákat is kínál a dokumentáláshoz, valamint képcellákat, címcellákat, fejezetcellákat és szakaszcellákat. Minden cellának saját visszavonási puffere van, így a hibakeresés több cella értékének módosításával, majd a felesleges változtatások fokozatos visszavonásával meglehetősen egyszerű. Ezenkívül magának a munkalapnak is van egy globális visszavonási puffere, amely a cellák szerkesztését, hozzáadását és törlését is vissza tudja vonni."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:50
 msgid ""
 "The figure below shows different cell types (title cells, section cells, "
 "subsection cells, text cells, input/output cells and image cells)."
-msgstr ""
+msgstr "Az alábbi ábra különböző cellatípusokat mutat (címcellák, fejezetcellák, szakaszcellák, szövegcellák, bemeneti/kimeneti cellák és képcellák)."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:52
 msgid ""
 "![Example of different wxMaxima cells](./cell-example.png){ id=img_cell-"
 "example }"
-msgstr ""
+msgstr "![Különböző wxMaxima-cellák példája](./cell-example.png){ id=img_cell-example }"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:53
 #, no-wrap
 msgid "Cells"
-msgstr ""
+msgstr "Cellák"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:56
 msgid ""
 "The worksheet is organized in cells. WxMaxima knows the following cell types:"
-msgstr ""
+msgstr "A munkalap cellákba van szervezve. A WxMaxima a következő cellatípusokat ismeri:"
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:63
 msgid "Math cells, containing one or more lines of _Maxima_ input."
-msgstr ""
+msgstr "Matematikai cellák, amelyek a _Maxima_ számára egy vagy több sornyi bemenetet tartalmaznak."
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:63
 msgid "Output of, or a question from, _Maxima_."
-msgstr ""
+msgstr "A _Maxima_ kimenete vagy kérdése."
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:63
 msgid "Image cells."
-msgstr ""
+msgstr "Képcellák."
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:63
 msgid "Text cells, that can for example be used for documentation."
-msgstr ""
+msgstr "Szövegcellák, amelyek például dokumentáláshoz használhatók."
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:63
 msgid ""
 "A title, section or a subsection. 6 levels of different headings are "
 "possible."
-msgstr ""
+msgstr "Cím, fejezet vagy szakasz. 6 szintű címsor lehetséges."
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:63
 msgid "Page breaks."
-msgstr ""
+msgstr "Oldaltörések."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:65
@@ -15837,7 +15838,7 @@ msgid ""
 "using the hot keys shown in the menu or using the drop-down list in the "
 "toolbar. Once the non-math cell is created, whatever is typed into the file "
 "is interpreted as text."
-msgstr ""
+msgstr "Szöveg beírásakor a _wxMaxima_ alapértelmezés szerint automatikusan matematikai cellát hoz létre. Más típusú cellák a Cella menüvel, a menüben feltüntetett gyorsbillentyűkkel vagy az eszköztár legördülő listájával hozhatók létre. Ha már létrejött a nem matematikai cella, minden, amit beleírunk, szövegként értelmeződik."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:67
@@ -15845,18 +15846,18 @@ msgid ""
 "A (C-style) [comment text](https://maxima.sourceforge.io/docs/manual/"
 "maxima_singlepage.html#Comments) can be part of a math cell as follows: `/* "
 "This comment will be ignored by Maxima */`"
-msgstr ""
+msgstr "Egy (C stílusú) [megjegyzés](https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#Comments) a következőképpen lehet egy matematikai cella része: `/* This comment will be ignored by Maxima */`"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:69
 msgid "\"`/*`\" marks the start of the comment, \"`*/`\" the end."
-msgstr ""
+msgstr "A \"`/*`\" jelzi a megjegyzés elejét, a \"`*/`\" a végét."
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:70
 #, no-wrap
 msgid "Horizontal and vertical cursors"
-msgstr ""
+msgstr "Vízszintes és függőleges kurzor"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:73
@@ -15865,7 +15866,7 @@ msgid ""
 "to extend the selection to automatically begin and end with a word boundary. "
 "Likewise, if more than one cell is selected, _wxMaxima_ will extend the "
 "selection to whole cells."
-msgstr ""
+msgstr "Ha a felhasználó egy teljes mondatot próbál kijelölni, a szövegszerkesztő igyekszik a kijelölést úgy kiterjeszteni, hogy automatikusan szóhatáron kezdődjön és végződjön. Hasonlóképpen, ha egynél több cella van kijelölve, a _wxMaxima_ a kijelölést teljes cellákra terjeszti ki."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:75
@@ -15873,14 +15874,14 @@ msgid ""
 "What isn’t standard is that _wxMaxima_ provides drag-and-drop flexibility by "
 "defining two types of cursors. _WxMaxima_ will switch between them "
 "automatically when needed:"
-msgstr ""
+msgstr "Ami nem szokványos, az az, hogy a _wxMaxima_ kétféle kurzorral teszi rugalmassá a fogd és vidd műveleteket. A _WxMaxima_ szükség esetén automatikusan vált közöttük:"
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:78
 msgid ""
 "The cursor is drawn horizontally if it is moved in the space between two "
 "cells or by clicking there."
-msgstr ""
+msgstr "A kurzor vízszintesen jelenik meg, ha két cella közötti térbe mozgatjuk, vagy oda kattintunk."
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:78
@@ -15888,20 +15889,21 @@ msgid ""
 "A vertical cursor that works inside a cell. This cursor is activated by "
 "moving the cursor inside a cell using the mouse pointer or the cursor keys "
 "and works much like the cursor in a text editor."
-msgstr ""
+msgstr "Egy függőleges kurzor, amely a cellán belül működik. Akkor aktiválódik, ha a kurzort az egérmutatóval vagy a nyílbillentyűkkel egy cellába mozgatjuk, és nagyjából úgy működik, mint egy szövegszerkesztő kurzora."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:80
 #, no-wrap
 msgid "When you start wxMaxima, you will only see the blinking horizontal cursor. If you start typing, a math cell will be automatically created and the cursor will change to a regular vertical one (you will see a right arrow as \"prompt\", after the Math cell is evaluated (<kbd>CTRL</kbd>+<kbd>ENTER</kbd>), you will see the labels, e.g. `(%i1)`, `(%o1)`).\n"
 msgstr ""
+"A wxMaxima indításakor csak a villogó vízszintes kurzort látja. Ha elkezd gépelni, automatikusan létrejön egy matematikai cella, és a kurzor szokásos függőleges kurzorrá változik (promptként egy jobbra mutató nyíl jelenik meg; a matematikai cella kiértékelése (<kbd>CTRL</kbd>+<kbd>ENTER</kbd>) után pedig a címkék, pl. `(%i1)`, `(%o1)`).\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:82
 msgid ""
 "![(blinking) horizontal cursor after wxMaxima start](./horizontal-cursor-"
 "only.png){ id=img_horizontal_cursor_only }"
-msgstr ""
+msgstr "![(villogó) vízszintes kurzor a wxMaxima indítása után](./horizontal-cursor-only.png){ id=img_horizontal_cursor_only }"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:84
@@ -15909,7 +15911,7 @@ msgid ""
 "You might want to create a different cell type (using the \"Cell\" menu), "
 "maybe a title cell or text cell, which describes, what will be done, when "
 "you start creating your worksheet."
-msgstr ""
+msgstr "A munkalap készítésének elején érdemes lehet más típusú cellát létrehozni (a „Cella” menüvel), például címcellát vagy szövegcellát, amely leírja, mi fog következni."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:86
@@ -15918,55 +15920,58 @@ msgid ""
 "(blinking) horizontal cursor, where you can insert a cell into your "
 "worksheet (either a math cell, by just start typing your formula - or a "
 "different cell type using the menu)."
-msgstr ""
+msgstr "A cellák közötti mozgáskor is látható a (villogó) vízszintes kurzor, amelynek helyére cellát lehet beszúrni a munkalapba (matematikai cellát úgy, hogy egyszerűen elkezdjük beírni a képletet, más típusú cellát pedig a menüvel)."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:88
 msgid ""
 "![(blinking) horizontal cursor between cells](./horizontal-cursor-between-"
 "cells.png){ id=img_horizontal_cursor_between_cells }"
-msgstr ""
+msgstr "![(villogó) vízszintes kurzor cellák között](./horizontal-cursor-between-cells.png){ id=img_horizontal_cursor_between_cells }"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:89
 #, no-wrap
 msgid "Sending cells to Maxima"
-msgstr ""
+msgstr "Cellák küldése a Maximának"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:92
 #, no-wrap
 msgid "The command in a code cell is executed once by pressing <kbd>CTRL</kbd>+<kbd>ENTER</kbd>, <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> or the <kbd>ENTER</kbd> key on the keypad. The _wxMaxima_ default is to enter commands when either <kbd>CTRL</kbd>+<kbd>ENTER</kbd> or <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> is entered, but _wxMaxima_ can be configured to execute commands in response to <kbd>ENTER</kbd>.\n"
 msgstr ""
+"A kódcellában lévő parancs a <kbd>CTRL</kbd>+<kbd>ENTER</kbd>, a <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> vagy a numerikus billentyűzet <kbd>ENTER</kbd> billentyűjének lenyomásával hajtódik végre. A _wxMaxima_ alapértelmezés szerint a <kbd>CTRL</kbd>+<kbd>ENTER</kbd> vagy a <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> lenyomására küldi el a parancsokat, de beállítható úgy is, hogy az <kbd>ENTER</kbd> lenyomására hajtsa végre őket.\n"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:93
 #, no-wrap
 msgid "Command autocompletion"
-msgstr ""
+msgstr "Parancsok automatikus kiegészítése"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:96
 #, no-wrap
 msgid "_WxMaxima_ contains an autocompletion feature that is triggered via the menu (Cell/Complete Word) or alternatively by pressing the key combination <kbd>CTRL</kbd>+<kbd>SPACE</kbd>. The autocompletion is context-sensitive. For example, if activated within a unit specification for ezUnits it will offer a list of applicable units.\n"
 msgstr ""
+"A _WxMaxima_ automatikus kiegészítő funkcióval rendelkezik, amely a menüből (Cella/Szó kiegészítése) vagy a <kbd>CTRL</kbd>+<kbd>SPACE</kbd> billentyűkombinációval indítható. Az automatikus kiegészítés környezetfüggő. Például ha egy ezUnits mértékegység-megadáson belül indítjuk, a használható mértékegységek listáját kínálja fel.\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:98
 msgid "![ezUnits](./ezUnits.png){ id=img_ezUnits }"
-msgstr ""
+msgstr "![ezUnits](./ezUnits.png){ id=img_ezUnits }"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:100
 #, no-wrap
 msgid "Besides completing a file name, a unit name, or the current command or variable name, the autocompletion is able to show a template for most of the commands indicating the type (and meaning) of the parameters this program expects. To activate this feature press <kbd>SHIFT</kbd>+<kbd>CTRL</kbd>+<kbd>SPACE</kbd> or select the respective menu item (Cell/Show Template).\n"
 msgstr ""
+"A fájlnév, a mértékegységnév, illetve az aktuális parancs vagy változónév kiegészítése mellett az automatikus kiegészítés a legtöbb parancshoz sablont is meg tud jeleníteni, amely megmutatja, milyen típusú (és jelentésű) paramétereket vár a program. A funkció a <kbd>SHIFT</kbd>+<kbd>CTRL</kbd>+<kbd>SPACE</kbd> lenyomásával vagy a megfelelő menüpont (Cella/Sablon mutatása) kiválasztásával aktiválható.\n"
 
 #. type: Title ####
 #: ../../info/wxmaxima.md:101
 #, no-wrap
 msgid "Greek characters"
-msgstr ""
+msgstr "Görög betűk"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:104
@@ -15976,7 +15981,7 @@ msgid ""
 "symbols (end of transmission, end of string, lines and edges for drawing "
 "rectangles for menus _etc_.) of nearly any given language can fit within "
 "that limit."
-msgstr ""
+msgstr "A számítógépek hagyományosan 8 bites értékként tárolták a karaktereket. Ez legfeljebb 256 különböző karaktert tesz lehetővé. Szinte bármely nyelv összes betűje, számjegye és vezérlőszimbóluma (átvitel vége, karakterlánc vége, a menük téglalapjainak rajzolásához használt vonalak és sarkok _stb._) belefér ebbe a korlátba."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:106
@@ -15986,7 +15991,7 @@ msgid ""
 "mathematics. To overcome this type of limitation [Unicode](https://home."
 "unicode.org/) has been invented: An encoding that makes English text work "
 "like normal, but to use much more than 256 characters."
-msgstr ""
+msgstr "A legtöbb országban a választott 256 karakteres kódlap azonban nem tartalmazza például a görög betűket, amelyeket a matematikában gyakran használnak. Az ilyen korlátok leküzdésére találták fel a [Unicode](https://home.unicode.org/) kódolást: ebben az angol szöveg a szokásos módon működik, de jóval több mint 256 karakter használható."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:108
@@ -15995,14 +16000,14 @@ msgid ""
 "supports Unicode or that doesn’t care about the font encoding. As at least "
 "one of this pair of conditions is likely to be true. _WxMaxima_ provides a "
 "method of entering Greek characters using the keyboard:"
-msgstr ""
+msgstr "A _Maxima_ támogatja a Unicode-ot, ha olyan Lisp-fordítóval fordították, amely támogatja a Unicode-ot, vagy amelynek nem számít a karakterkódolás. E két feltétel közül legalább az egyik valószínűleg teljesül. A _WxMaxima_ lehetőséget ad görög betűk billentyűzetről történő bevitelére:"
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:111
 msgid ""
 "A Greek letter can be entered by pressing the <kbd>ESC</kbd> key and then "
 "starting to type the Greek character’s name."
-msgstr ""
+msgstr "Görög betű úgy írható be, hogy megnyomjuk az <kbd>ESC</kbd> billentyűt, majd elkezdjük beírni a görög betű nevét."
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:111
@@ -16010,7 +16015,7 @@ msgid ""
 "Alternatively it can be entered by pressing <kbd>ESC</kbd>, one letter (or "
 "two for the Greek letter omicron) and <kbd>ESC</kbd> again. In this case the "
 "following letters are supported:"
-msgstr ""
+msgstr "Úgy is beírható, hogy megnyomjuk az <kbd>ESC</kbd> billentyűt, egy betűt (az omikron görög betűnél kettőt), majd ismét az <kbd>ESC</kbd> billentyűt. Ebben az esetben a következő betűk támogatottak:"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:130
@@ -16035,18 +16040,36 @@ msgid ""
 "|  H  |     Eta      | Om  |   Omicron    |  Y  |     Psi      |\n"
 "|  T  |    Theta     |  P  |      Pi      |  O  |    Omega     |\n"
 msgstr ""
+"| billentyű | görög betű | billentyű | görög betű | billentyű | görög betű |\n"
+"| :-: | :----------: | :-: | :----------: | :-: | :----------: |\n"
+"|  a  |    alpha     |  i  |     iota     |  r  |     rho      |\n"
+"|  b  |     beta     |  k  |    kappa     |  s  |    sigma     |\n"
+"|  g  |    gamma     |  l  |    lambda    |  t  |     tau      |\n"
+"|  d  |    delta     |  m  |      mu      |  u  |   upsilon    |\n"
+"|  e  |   epsilon    |  n  |      nu      |  f  |     phi      |\n"
+"|  z  |     zeta     |  x  |      xi      |  c  |     chi      |\n"
+"|  h  |     eta      | om  |   omicron    |  y  |     psi      |\n"
+"|  q  |    theta     |  p  |      pi      |  o  |    omega     |\n"
+"|  A  |    Alpha     |  I  |     Iota     |  R  |     Rho      |\n"
+"|  B  |     Beta     |  K  |    Kappa     |  S  |    Sigma     |\n"
+"|  G  |    Gamma     |  L  |    Lambda    |  T  |     Tau      |\n"
+"|  D  |    Delta     |  M  |      Mu      |  U  |   Upsilon    |\n"
+"|  E  |   Epsilon    |  N  |      Nu      |  P  |     Phi      |\n"
+"|  Z  |     Zeta     |  X  |      Xi      |  C  |     Chi      |\n"
+"|  H  |     Eta      | Om  |   Omicron    |  Y  |     Psi      |\n"
+"|  T  |    Theta     |  P  |      Pi      |  O  |    Omega     |\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:132
 msgid ""
 "You can also use the \"Greek letters\"-sidebar to enter the Greek letters."
-msgstr ""
+msgstr "A görög betűk a „Görög betűk” oldalsávval is bevihetők."
 
 #. type: Title #####
 #: ../../info/wxmaxima.md:133
 #, no-wrap
 msgid "Attention: Lookalike characters"
-msgstr ""
+msgstr "Figyelem: egyformán kinéző karakterek"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:138
@@ -16055,7 +16078,7 @@ msgid ""
 "\"A\" and the Greek letter \"Alpha\". Although they look identical, they are "
 "two different Unicode characters, represented by different Unicode code "
 "points (numbers)."
-msgstr ""
+msgstr "Több latin betű ugyanúgy néz ki, mint egy görög betű, pl. a latin \"A\" és a görög \"Alfa\". Bár egyformán néznek ki, két különböző Unicode-karakterről van szó, amelyeket különböző Unicode-kódpontok (számok) jelölnek."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:143
@@ -16064,21 +16087,21 @@ msgid ""
 "use the Greek letter Alpha to do something with this variable, especially on "
 "printouts.  For the Greek letter my (which is also used as prefix for micro) "
 "there are also two different Unicode code points."
-msgstr ""
+msgstr "Ez gondot okozhat, ha értéket adunk az A változónak, majd később a görög Alfa betűvel próbálunk valamit kezdeni ezzel a változóval, különösen nyomtatásban. A görög mű betűhöz (amely a mikro előtagként is használatos) szintén két különböző Unicode-kódpont tartozik."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:146
 msgid ""
 "The \"Greek letters\"-sidebar therefore has the option, that lookalike "
 "characters are not available (which can be changed using a right-click menu)."
-msgstr ""
+msgstr "Ezért a „Görög betűk” oldalsáv rendelkezik egy beállítással, amellyel az egyformán kinéző karakterek nem érhetők el (ez a jobb gombos menüben módosítható)."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:148
 msgid ""
 "The same mechanism also allows to enter some miscellaneous mathematical "
 "symbols:"
-msgstr ""
+msgstr "Ugyanezzel a módszerrel különféle matematikai szimbólumok is bevihetők:"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:199
@@ -16135,24 +16158,76 @@ msgid ""
 "| ->             | a right arrow                                         |\n"
 "| -->            | a long right arrow                                    |\n"
 msgstr ""
+"| beírandó billentyűk | matematikai szimbólum                                 |\n"
+"| -------------- | ----------------------------------------------------- |\n"
+"| hbar           | Planck-állandó: h vízszintes vonással a tetején       |\n"
+"| Hbar           | H vízszintes vonással a tetején                       |\n"
+"| 2              | négyzet                                               |\n"
+"| 3              | köb                                                   |\n"
+"| /2             | 1/2                                                   |\n"
+"| partial        | parciális derivált jele (a d a dx/dt-ben)             |\n"
+"| integral       | integráljel                                           |\n"
+"| sq             | négyzetgyök                                           |\n"
+"| ii             | imaginárius egység                                    |\n"
+"| ee             | elem                                                  |\n"
+"| in             | eleme                                                 |\n"
+"| impl implies   | implikáció                                            |\n"
+"| inf            | végtelen                                              |\n"
+"| empty          | üres halmaz                                           |\n"
+"| TB             | nagy háromszög jobbra                                 |\n"
+"| tb             | kis háromszög jobbra                                  |\n"
+"| and            | és                                                    |\n"
+"| or             | vagy                                                  |\n"
+"| xor            | kizáró vagy (xor)                                     |\n"
+"| nand           | nand                                                  |\n"
+"| nor            | nor                                                   |\n"
+"| equiv          | ekvivalens                                            |\n"
+"| not            | nem                                                   |\n"
+"| union          | unió                                                  |\n"
+"| inter          | metszet                                               |\n"
+"| subseteq       | részhalmaza vagy egyenlő                              |\n"
+"| subset         | részhalmaza                                           |\n"
+"| notsubseteq    | nem részhalmaza és nem egyenlő                        |\n"
+"| notsubset      | nem részhalmaza                                       |\n"
+"| approx         | közelítőleg                                           |\n"
+"| propto         | arányos                                               |\n"
+"| neq != /= or # | nem egyenlő                                           |\n"
+"| +/- or pm      | plusz-mínusz jel                                      |\n"
+"| \\<= or leq     | kisebb vagy egyenlő                                   |\n"
+"| >= or geq      | nagyobb vagy egyenlő                                  |\n"
+"| \\<\\< or ll     | sokkal kisebb                                         |\n"
+"| >> or gg       | sokkal nagyobb                                        |\n"
+"| qed            | bizonyítás vége                                       |\n"
+"| nabla          | nabla operátor                                        |\n"
+"| sum            | szummajel                                             |\n"
+"| prod           | produktumjel                                          |\n"
+"| exists         | létezik jel                                           |\n"
+"| nexists        | nem létezik jel                                       |\n"
+"| parallel       | párhuzamos jel                                        |\n"
+"| perp           | merőleges jel                                         |\n"
+"| leadsto        | „vezet valamihez” jel                                 |\n"
+"| ->             | jobbra mutató nyíl                                    |\n"
+"| -->            | hosszú jobbra mutató nyíl                             |\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:201
 msgid ""
 "You can also use the \"Symbols\"-sidebar to enter these Mathematical symbols."
-msgstr ""
+msgstr "Ezek a matematikai szimbólumok a „Matematikai szimbólumok” oldalsávval is bevihetők."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:203
 #, no-wrap
 msgid "If a special symbol isn’t in the list, it is possible to input arbitrary Unicode characters by pressing <kbd>ESC</kbd> \\[number of the character (hexadecimal)\\] <kbd>ESC</kbd>. Additionally the \"symbols\" sidebar has a right-click menu that allow to display a list of all available Unicode symbols one can add to this toolbar or to the worksheet.\n"
 msgstr ""
+"Ha egy speciális szimbólum nincs a listában, tetszőleges Unicode-karakter bevihető az <kbd>ESC</kbd> \\[a karakter száma (hexadecimálisan)\\] <kbd>ESC</kbd> lenyomásával. Ezenkívül a „szimbólumok” oldalsávnak van egy jobb gombos menüje, amellyel megjeleníthető az összes elérhető Unicode-szimbólum listája, amelyek ehhez az eszköztárhoz vagy a munkalaphoz adhatók.\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:205
 #, no-wrap
 msgid "<kbd>ESC</kbd><kbd>6</kbd><kbd>1</kbd><kbd>ESC</kbd> therefore results in an `a`.\n"
 msgstr ""
+"Az <kbd>ESC</kbd><kbd>6</kbd><kbd>1</kbd><kbd>ESC</kbd> tehát egy `a` karaktert eredményez.\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:207
@@ -16161,7 +16236,7 @@ msgid ""
 "symbols) do not have a special meaning in _Maxima_ and therefore will be "
 "interpreted as ordinary characters. If _Maxima_ is compiled using a Lisp "
 "that doesn’t support Unicode characters they might cause an error message."
-msgstr ""
+msgstr "Vegye figyelembe, hogy ezeknek a szimbólumoknak a többsége (figyelemre méltó kivételek a logikai szimbólumok) nem bír különleges jelentéssel a _Maxima_ számára, ezért közönséges karakterként értelmeződnek. Ha a _Maxima_ olyan Lisp-pel készült, amely nem támogatja a Unicode-karaktereket, hibaüzenetet okozhatnak."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:210
@@ -16170,12 +16245,14 @@ msgid ""
 "It may be the case that e.g. Greek characters or mathematical symbols are not included in the selected font, then they can not be displayed.\n"
 "To solve that problem, select other fonts (using: Edit -> Configure -> Style).\n"
 msgstr ""
+"Előfordulhat, hogy például a görög betűk vagy a matematikai szimbólumok nem szerepelnek a kiválasztott betűtípusban, és így nem jeleníthetők meg.\n"
+"A probléma megoldásához válasszon más betűtípusokat (itt: Szerkesztés -> Beállítás -> Stílus).\n"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:211
 #, no-wrap
 msgid "Unicode replacement"
-msgstr ""
+msgstr "Unicode-karakterek cseréje"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:214
@@ -16184,14 +16261,14 @@ msgid ""
 "Maxima expressions, e.g. `²` with `^2`, `³` with `^3`, the square root sign "
 "with the function `sqrt()`, the (mathematical) Sigma sign (which is not the "
 "same Unicode character as the corresponding Greek letter) with `sum()`, etc."
-msgstr ""
+msgstr "A wxMaxima több Unicode-karaktert a megfelelő Maxima-kifejezésre cserél, pl. a `²` karaktert `^2`-re, a `³` karaktert `^3`-ra, a gyökjelet a `sqrt()` függvényre, a (matematikai) szigma jelet (amely nem ugyanaz a Unicode-karakter, mint a megfelelő görög betű) a `sum()` függvényre stb."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:217
 msgid ""
 "Unicode has several \"common\" fractions encoded as one Unicode code point: "
 "`¼, ½, ¾, ⅐, ⅑, ⅒, ⅓, ⅔, ⅕, ⅖, ⅗, ⅘, ⅙, ⅚, ⅛, ⅜, ⅝, ⅞`"
-msgstr ""
+msgstr "A Unicode több „gyakori” törtet egyetlen kódpontként kódol: `¼, ½, ¾, ⅐, ⅑, ⅒, ⅓, ⅔, ⅕, ⅖, ⅗, ⅘, ⅙, ⅚, ⅛, ⅜, ⅝, ⅞`"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:219
@@ -16200,7 +16277,7 @@ msgid ""
 "before the input is sent do Maxima. There are also `⅟`, which will be "
 "replaced by `1/` and `↉` (used in baseball), which will be replaced by "
 "`(0/3)`."
-msgstr ""
+msgstr "Mielőtt a bemenet a Maximához kerülne, a wxMaxima ezeket a Maxima-beli megfelelőjükre cseréli, pl. `(1/4)`. Van még a `⅟`, amelyet `1/`, és a `↉` (a baseballban használatos), amelyet `(0/3)` vált fel."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:221
@@ -16211,13 +16288,13 @@ msgid ""
 "file, it is usually readable by (command line) Maxima, but these changes "
 "will of course not work in command line Maxima); but they may occur, if you "
 "cut&paste a formula from another document."
-msgstr ""
+msgstr "A bemeneti cellákban ajánlott **Maxima-kódot** használni (nem ezeket a Unicode-kódpontokat). Indoklás: (a) előfordulhat, hogy a matematikai bevitelhez használt betűtípus nem tartalmazza őket; (b) ha a dokumentumot `wxm`-fájlként menti, azt általában a (parancssori) Maxima is be tudja olvasni, ezek a cserék azonban a parancssori Maximában természetesen nem működnek. Előfordulhatnak viszont, ha egy képletet egy másik dokumentumból másol be."
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:222
 #, no-wrap
 msgid "Side Panes"
-msgstr ""
+msgstr "Oldalsávok"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:225
@@ -16228,12 +16305,12 @@ msgid ""
 "\"View\" menu. They all can be moved to other locations inside or outside "
 "the _wxMaxima_ window. Other useful panes is the one that allows to input "
 "Greek letters using the mouse."
-msgstr ""
+msgstr "Az oldalsávokon keresztül érhetők el a legfontosabb _Maxima_-parancsok gyorselérései, valamint olyan dolgok, mint a tartalomjegyzék, a hibakeresési üzeneteket tartalmazó ablakok vagy a legutóbb kiadott parancsok előzményei. A „Nézet” menüben kapcsolhatók be. Mindegyik áthelyezhető a _wxMaxima_ ablakán belül vagy kívül más helyre. Egy másik hasznos oldalsáv az, amellyel görög betűk vihetők be egérrel."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:227
 msgid "![Example of different side panes](./SidePanes.png){ id=img_SidePanes }"
-msgstr ""
+msgstr "![Különböző oldalsávok példája](./SidePanes.png){ id=img_SidePanes }"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:230
@@ -16241,20 +16318,20 @@ msgid ""
 "In the \"table of contents\" side pane, one can increase or decrease a "
 "heading by just clicking on the heading with the right mouse button and "
 "select the next higher or lower heading type."
-msgstr ""
+msgstr "A „Tartalomjegyzék” oldalsávon egy címsor szintje egyszerűen növelhető vagy csökkenthető: kattintson jobb gombbal a címsorra, és válassza a következő magasabb vagy alacsonyabb címsortípust."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:232
 msgid ""
 "![Increase or decrease headings in the TOC side pane](./Sidepane-TOC-convert-"
 "headings.png){ id=Sidepane-TOC-convert-headings }"
-msgstr ""
+msgstr "![Címsorszintek növelése vagy csökkentése a tartalomjegyzék oldalsávon](./Sidepane-TOC-convert-headings.png){ id=Sidepane-TOC-convert-headings }"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:233
 #, no-wrap
 msgid "MathML output"
-msgstr ""
+msgstr "MathML-kimenet"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:236
@@ -16264,13 +16341,13 @@ msgid ""
 "2D equation - or (like LibreOffice) have an equation editor that offers an "
 "“import MathML from clipboard” feature. Others support RTF maths. "
 "_WxMaxima_, therefore, offers several entries in the right-click menu."
-msgstr ""
+msgstr "Számos szövegszerkesztő és hasonló program felismeri a [MathML](https://www.w3.org/Math/) bemenetet, és automatikusan szerkeszthető 2D-s egyenletként szúrja be, vagy (mint a LibreOffice) rendelkezik egy egyenletszerkesztővel, amely „MathML importálása a vágólapról” funkciót kínál. Mások az RTF-matematikát támogatják. A _WxMaxima_ ezért több megfelelő bejegyzést kínál a jobb gombos menüben."
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:237
 #, no-wrap
 msgid "Markdown support"
-msgstr ""
+msgstr "Markdown-támogatás"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:240
@@ -16278,7 +16355,7 @@ msgid ""
 "_WxMaxima_ offers a set of standard [Markdown](https://en.wikipedia.org/wiki/"
 "Markdown) conventions that don’t collide with mathematical notation. One of "
 "these elements is bullet lists."
-msgstr ""
+msgstr "A _WxMaxima_ a szabványos [Markdown](https://en.wikipedia.org/wiki/Markdown)-konvenciók egy olyan készletét támogatja, amely nem ütközik a matematikai jelöléssel. Ezek egyik eleme a felsorolás."
 
 #. type: Fenced code block (text)
 #: ../../info/wxmaxima.md:241
@@ -16292,12 +16369,20 @@ msgid ""
 " * A third item at the first indentation level\n"
 "Ordinary text\n"
 msgstr ""
+"Közönséges szöveg\n"
+" * Egy elem, 1. behúzási szint\n"
+" * Egy másik elem az 1. behúzási szinten\n"
+"   * Egy elem a második behúzási szinten\n"
+"   * Egy második elem a második behúzási szinten\n"
+" * Egy harmadik elem az első behúzási szinten\n"
+"Közönséges szöveg\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:252
 #, no-wrap
 msgid "_WxMaxima_ will recognize text starting with `>` chars as block quotes:\n"
 msgstr ""
+"A _WxMaxima_ a `>` karakterekkel kezdődő szöveget idézetblokként ismeri fel:\n"
 
 #. type: Fenced code block (text)
 #: ../../info/wxmaxima.md:253
@@ -16309,30 +16394,38 @@ msgid ""
 "> quote quote quote quote\n"
 "Ordinary text\n"
 msgstr ""
+"Közönséges szöveg\n"
+"> idézet idézet idézet idézet\n"
+"> idézet idézet idézet idézet\n"
+"> idézet idézet idézet idézet\n"
+"Közönséges szöveg\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:262
 #, no-wrap
 msgid "_WxMaxima_’s TeX and HTML output will also recognize `=>` and replace it by the corresponding Unicode sign:\n"
 msgstr ""
+"A _wxMaxima_ TeX- és HTML-kimenete a `=>` jelet is felismeri, és a megfelelő Unicode-jelre cseréli:\n"
 
 #. type: Fenced code block (text)
 #: ../../info/wxmaxima.md:263
 #, no-wrap
 msgid "cogito => sum.\n"
 msgstr ""
+"cogito => sum.\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:268
 #, no-wrap
 msgid "Other symbols the HTML and TeX export will recognize are `<=` and `>=` for comparisons, a double-pointed double arrow (`<=>`), single-headed arrows (`<->`, `->` and `<-`) and `+/-` as the respective sign. For TeX output also `<<` and `>>` are recognized.\n"
 msgstr ""
+"A HTML- és TeX-exportálás által felismert további szimbólumok: `<=` és `>=` az összehasonlításokhoz, a kétirányú dupla nyíl (`<=>`), az egyszerű nyilak (`<->`, `->` és `<-`), valamint a `+/-` a megfelelő jelként. TeX-kimenetnél a `<<` és `>>` is felismerésre kerül.\n"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:269
 #, no-wrap
 msgid "Hotkeys"
-msgstr ""
+msgstr "Gyorsbillentyűk"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:272
@@ -16342,31 +16435,31 @@ msgid ""
 "translations of _wxMaxima_ to match the needs of users of the local "
 "keyboard, we do not document them here. A few hotkeys or hotkey aliases, "
 "though, are not documented in the menus:"
-msgstr ""
+msgstr "A legtöbb gyorsbillentyű megtalálható a megfelelő menük szövegében. Mivel valójában a menüszövegből származnak, és így a _wxMaxima_ fordításai a helyi billentyűzet felhasználóinak igényeihez igazíthatják őket, itt nem dokumentáljuk őket. Néhány gyorsbillentyű vagy gyorsbillentyű-álnév azonban nem szerepel a menükben:"
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:276
 msgid ""
 "<kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>DELETE</kbd> deletes a complete cell."
-msgstr ""
+msgstr "A <kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>DELETE</kbd> egy teljes cellát töröl."
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:276
 msgid ""
 "<kbd>CTRL</kbd>+<kbd>TAB</kbd> or <kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>TAB</"
 "kbd> triggers the auto-completion mechanism."
-msgstr ""
+msgstr "A <kbd>CTRL</kbd>+<kbd>TAB</kbd> vagy a <kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>TAB</kbd> elindítja az automatikus kiegészítést."
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:276
 msgid "<kbd>SHIFT</kbd>+<kbd>SPACE</kbd> inserts a non-breaking space."
-msgstr ""
+msgstr "A <kbd>SHIFT</kbd>+<kbd>SPACE</kbd> nem törhető szóközt szúr be."
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:277
 #, no-wrap
 msgid "Raw TeX in the TeX export"
-msgstr ""
+msgstr "Nyers TeX a TeX-exportban"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:280
@@ -16374,26 +16467,26 @@ msgid ""
 "If a text cell begins with `TeX:` the TeX export contains the literal text "
 "that follows the `TeX:` marker. Using this feature allows the entry of TeX "
 "markup within the _wxMaxima_ workbook."
-msgstr ""
+msgstr "Ha egy szövegcella `TeX:` szöveggel kezdődik, a TeX-export szó szerint tartalmazza a `TeX:` jelölő után következő szöveget. Ezzel a funkcióval TeX-jelölés vihető be a _wxMaxima_ munkalapba."
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:281
 #, no-wrap
 msgid "File Formats"
-msgstr ""
+msgstr "Fájlformátumok"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:284
 msgid ""
 "The material that is developed in a _wxMaxima_ session can be stored for "
 "later use in any of three ways:"
-msgstr ""
+msgstr "A _wxMaxima_ munkamenetben elkészített anyag háromféleképpen menthető el későbbi használatra:"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:285
 #, no-wrap
 msgid ".mac"
-msgstr ""
+msgstr ".mac"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:288
@@ -16401,7 +16494,7 @@ msgid ""
 "`.mac` files are ordinary text files that contain _Maxima_ commands. They "
 "can be read using _Maxima_’s `batch()` or `load()` command or _wxMaxima_’s "
 "File/Batch File menu entry."
-msgstr ""
+msgstr "A `.mac` fájlok _Maxima_-parancsokat tartalmazó közönséges szövegfájlok. Beolvashatók a _Maxima_ `batch()` vagy `load()` parancsával, illetve a _wxMaxima_ Fájl/Batch fájl menüpontjával."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:291
@@ -16409,12 +16502,12 @@ msgid ""
 "One example is shown below. `Quadratic.mac` defines a function and afterward "
 "generates a plot with `wxdraw2d()`.  Afterward the contents of the file "
 "`Quadratic.mac` are printed and newly defined function `f()` is evaluated."
-msgstr ""
+msgstr "Az alábbiakban egy példa látható. A `Quadratic.mac` definiál egy függvényt, majd a `wxdraw2d()` segítségével ábrát készít. Ezután kiíródik a `Quadratic.mac` fájl tartalma, és kiértékelődik az újonnan definiált `f()` függvény."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:293
 msgid "![Loading a file with `batch()`](./BatchImage.png){ id=img_BatchImage }"
-msgstr ""
+msgstr "![Fájl betöltése a `batch()` paranccsal](./BatchImage.png){ id=img_BatchImage }"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:295
@@ -16423,7 +16516,7 @@ msgid ""
 "(`.mac`), it can only be read by _wxMaxima_, since the command `wxdraw2d()` "
 "is a wxMaxima-extension to _Maxima_. (Command line) Maxima will ignore the "
 "unknown command `wxdraw2d()` and print it as output again."
-msgstr ""
+msgstr "Figyelem: bár a `Quadratic.mac` fájl a _Maxima_ szokásos kiterjesztésével (`.mac`) rendelkezik, csak a _wxMaxima_ tudja beolvasni, mivel a `wxdraw2d()` parancs a _Maxima_ wxMaxima által biztosított kiterjesztése. A (parancssori) Maxima figyelmen kívül hagyja az ismeretlen `wxdraw2d()` parancsot, és ismét kiírja kimenetként."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:297
@@ -16431,13 +16524,13 @@ msgid ""
 "You can be use `.mac` files for writing your own library of macros. But "
 "since they don’t contain enough structural information they cannot be read "
 "back as a _wxMaxima_ session."
-msgstr ""
+msgstr "A `.mac` fájlok saját makrókönyvtár írására használhatók. Mivel azonban nem tartalmaznak elegendő szerkezeti információt, nem olvashatók vissza _wxMaxima_ munkamenetként."
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:298
 #, no-wrap
 msgid ".wxm"
-msgstr ""
+msgstr ".wxm"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:302
@@ -16446,6 +16539,8 @@ msgid ""
 "`.wxm` files contain the worksheet except for _Maxima_’s output. On Maxima versions >5.38 they can be read using _Maxima_’s `load()` function just as .mac files. Well - mostly. Questions (like `asksign(x)`) are problematic, as the answer is written in the `.wxm` file (so that it can be suggested after loading), but that can Maxima not evaluate.\n"
 "You can prevent Maxima from asking questions by using `assume()` to declare some properties, Maxima wants to know.\n"
 msgstr ""
+"A `.wxm` fájlok a munkalapot tartalmazzák a _Maxima_ kimenete nélkül. A 5.38-nál újabb Maxima-verziókban a _Maxima_ `load()` függvényével ugyanúgy beolvashatók, mint a .mac fájlok. Nos, többnyire. A kérdések (mint az `asksign(x)`) problémásak, mert a válasz a `.wxm` fájlba íródik (hogy betöltés után fel lehessen ajánlani), ezt azonban a Maxima nem tudja kiértékelni.\n"
+"Megakadályozhatja, hogy a Maxima kérdéseket tegyen fel, ha az `assume()` segítségével deklarálja azokat a tulajdonságokat, amelyekre a Maxima kíváncsi.\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:304
@@ -16453,25 +16548,25 @@ msgid ""
 "With this plain-text format, it sometimes is unavoidable that worksheets "
 "that use new features are not downwards-compatible with older versions of "
 "_wxMaxima_."
-msgstr ""
+msgstr "Ennél a szöveges formátumnál néha elkerülhetetlen, hogy az új funkciókat használó munkalapok ne legyenek visszafelé kompatibilisek a _wxMaxima_ régebbi verzióival."
 
 #. type: Title ####
 #: ../../info/wxmaxima.md:305
 #, no-wrap
 msgid "File format of wxm files"
-msgstr ""
+msgstr "A wxm-fájlok formátuma"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:308
 msgid ""
 "This is just a plain text file (you can open it with a text editor), "
 "containing the cell contents as some special Maxima comments."
-msgstr ""
+msgstr "Ez egy egyszerű szövegfájl (szövegszerkesztővel megnyitható), amely a cellák tartalmát különleges Maxima-megjegyzések formájában tartalmazza."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:310
 msgid "It starts with the following comment:"
-msgstr ""
+msgstr "A következő megjegyzéssel kezdődik:"
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:311
@@ -16480,12 +16575,14 @@ msgid ""
 "/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/\n"
 "/* [ Created with wxMaxima version 24.02.2_DevelopmentSnapshot ] */\n"
 msgstr ""
+"/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/\n"
+"/* [ Created with wxMaxima version 24.02.2_DevelopmentSnapshot ] */\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:317
 msgid ""
 "And then the cells follow, encoded as Maxima comments, e.g. a section cell:"
-msgstr ""
+msgstr "Ezután következnek a cellák, Maxima-megjegyzésként kódolva, pl. egy szakaszcella:"
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:318
@@ -16495,13 +16592,16 @@ msgid ""
 "Title of the section\n"
 "   [wxMaxima: section end   ] */\n"
 msgstr ""
+"/* [wxMaxima: section start ]\n"
+"Title of the section\n"
+"   [wxMaxima: section end   ] */\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:325
 msgid ""
 "or (in a Math cell the input is of course *not* commented out (the output is "
 "not saved in a `wxm` file)):"
-msgstr ""
+msgstr "vagy (egy matematikai cellában a bemenet természetesen *nincs* megjegyzésbe téve (a kimenet nem kerül mentésre a `wxm` fájlba)):"
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:326
@@ -16512,13 +16612,17 @@ msgid ""
 "f(2);\n"
 "/* [wxMaxima: input   end   ] */\n"
 msgstr ""
+"/* [wxMaxima: input   start ] */\n"
+"f(x):=x^2+1$\n"
+"f(2);\n"
+"/* [wxMaxima: input   end   ] */\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:334
 msgid ""
 "Images are [Base64 encoded](https://en.wikipedia.org/wiki/Base64) with the "
 "image type as first line):"
-msgstr ""
+msgstr "A képek [Base64 kódolásúak](https://en.wikipedia.org/wiki/Base64), az első sorban a kép típusával:"
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:335
@@ -16529,22 +16633,27 @@ msgid ""
 "[very chaotic looking character sequence]\n"
 "   [wxMaxima: image   end   ] */\n"
 msgstr ""
+"/* [wxMaxima: image   start ]\n"
+"jpg\n"
+"[very chaotic looking character sequence]\n"
+"   [wxMaxima: image   end   ] */\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:343
 msgid "A page break is just one line containing:"
-msgstr ""
+msgstr "Az oldaltörés egyetlen sor, amely a következőt tartalmazza:"
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:344
 #, no-wrap
 msgid "/* [wxMaxima: page break    ] */\n"
 msgstr ""
+"/* [wxMaxima: page break    ] */\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:349
 msgid "And folded cells marked by:"
-msgstr ""
+msgstr "Az összecsukott cellákat pedig ez jelöli:"
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:350
@@ -16554,25 +16663,28 @@ msgid ""
 "...\n"
 "/* [wxMaxima: fold    end   ] */\n"
 msgstr ""
+"/* [wxMaxima: fold    start ] */\n"
+"...\n"
+"/* [wxMaxima: fold    end   ] */\n"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:356
 #, no-wrap
 msgid ".wxmx"
-msgstr ""
+msgstr ".wxmx"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:359
 msgid ""
 "This XML-based file format saves the complete worksheet including things "
 "like the zoom factor and the watchlist. It is the preferred file format."
-msgstr ""
+msgstr "Ez az XML-alapú fájlformátum a teljes munkalapot menti, beleértve az olyan dolgokat is, mint a nagyítási tényező és a figyelőlista. Ez az ajánlott fájlformátum."
 
 #. type: Title ####
 #: ../../info/wxmaxima.md:360
 #, no-wrap
 msgid "File format of wxmx files"
-msgstr ""
+msgstr "A wxmx-fájlok formátuma"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:364
@@ -16584,39 +16696,39 @@ msgid ""
 "to merge several files into one file - images are already compressed and the "
 "rest is simple text (probably much smaller, than huge images, which are "
 "included)."
-msgstr ""
+msgstr "A `wxmx` fájl bináris formátumnak tűnik, de az operációs rendszerben megtalálható eszközökkel kezelhető. Ez egy zip-fájl, amely az `unzip` paranccsal kicsomagolható (lehet, hogy előbb át kell nevezni, hogy az operációs rendszer kicsomagolóprogramja felismerje). A tömörítési funkciót nem használjuk, csak azt a lehetőséget, hogy több fájlt egyetlen fájlba egyesítsünk: a képek már tömörítettek, a többi pedig egyszerű szöveg (valószínűleg jóval kisebb, mint a benne foglalt nagy képek)."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:366
 msgid "It does contain the following files:"
-msgstr ""
+msgstr "A következő fájlokat tartalmazza:"
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:371
 msgid ""
 "`mimetype`: this file does contain the mimetype of wxMaxima files: `text/x-"
 "wxmathml`"
-msgstr ""
+msgstr "`mimetype`: ez a fájl a wxMaxima-fájlok MIME-típusát tartalmazza: `text/x-wxmathml`"
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:371
 msgid ""
 "`format.txt`: a short description about wxMaxima and the wxmx file format"
-msgstr ""
+msgstr "`format.txt`: rövid leírás a wxMaximáról és a wxmx fájlformátumról"
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:371
 msgid ""
 "Images (e.g. png, jpeg): inline plots which were produced in the wxMaxima "
 "session and included images."
-msgstr ""
+msgstr "Képek (pl. png, jpeg): a wxMaxima munkamenetben létrehozott beágyazott ábrák és a beillesztett képek."
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:371
 msgid ""
 "`content.xml`: a XML document, which contains the various cells of your "
 "document in XML format."
-msgstr ""
+msgstr "`content.xml`: egy XML-dokumentum, amely a dokumentum egyes celláit XML-formátumban tartalmazza."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:373
@@ -16626,27 +16738,27 @@ msgid ""
 "with a text editor, or replace an broken image, zip the files again, "
 "probably rename the `zip` to a `wxmx`-file - and you get another modified "
 "`wxmx`-file."
-msgstr ""
+msgstr "Ha tehát valami elromlik, kicsomagolhatja a wxMaxima-dokumentumot (esetleg előbb `zip` fájlra átnevezve), szövegszerkesztővel módosíthatja a `content.xml` fájlt, vagy kicserélhet egy sérült képet, majd újra becsomagolja a fájlokat, a `zip` fájlt pedig `wxmx` fájlra nevezi át – így egy módosított `wxmx` fájlt kap."
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:374
 #, no-wrap
 msgid "Configuration options"
-msgstr ""
+msgstr "Beállítási lehetőségek"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:377
 msgid ""
 "For some common configuration variables _wxMaxima_ offers two ways of "
 "configuring:"
-msgstr ""
+msgstr "Néhány gyakori beállítási változó esetén a _wxMaxima_ kétféle beállítási módot kínál:"
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:380
 msgid ""
 "The configuration dialog box below lets you change their default values for "
 "the current and subsequent sessions."
-msgstr ""
+msgstr "Az alábbi beállítási párbeszédablakban módosíthatók az alapértelmezett értékeik az aktuális és a későbbi munkamenetekre."
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:380
@@ -16654,20 +16766,20 @@ msgid ""
 "Also, the values for most configuration variables can be changed for the "
 "current session only by overwriting their values from the worksheet, as "
 "shown below."
-msgstr ""
+msgstr "Emellett a legtöbb beállítási változó értéke csak az aktuális munkamenetre is módosítható, ha a munkalapról felülírjuk őket, ahogy lent látható."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:382
 msgid ""
 "![wxMaxima configuration 1](./wxMaxima_configuration_001.png)"
 "{ id=img_wxMaxima_configuration_001 }"
-msgstr ""
+msgstr "![A wxMaxima beállításai 1](./wxMaxima_configuration_001.png){ id=img_wxMaxima_configuration_001 }"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:383
 #, no-wrap
 msgid "Default animation framerate"
-msgstr ""
+msgstr "Az animációk alapértelmezett képkockasebessége"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:386
@@ -16675,27 +16787,27 @@ msgid ""
 "The animation framerate that is used for new animations is kept in the "
 "variable `wxanimate_framerate`. The initial value this variable will contain "
 "in a new worksheet can be changed using the configuration dialogue."
-msgstr ""
+msgstr "Az új animációkhoz használt képkockasebességet a `wxanimate_framerate` változó tárolja. Ennek a változónak az új munkalapokban érvényes kezdőértéke a beállítási párbeszédablakban módosítható."
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:387
 #, no-wrap
 msgid "Default plot size for new _maxima_ sessions"
-msgstr ""
+msgstr "Az ábrák alapértelmezett mérete új _Maxima_ munkamenetekben"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:390
 msgid ""
 "After the next start, plots embedded into the worksheet will be created with "
 "this size if the value of `wxplot_size` isn’t changed by _maxima_."
-msgstr ""
+msgstr "A következő indítás után a munkalapba ágyazott ábrák ebben a méretben készülnek, ha a _Maxima_ nem módosítja a `wxplot_size` értékét."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:392
 msgid ""
 "In order to set the plot size of a single graph only use the following "
 "notation can be used that sets a variable’s value for one command only:"
-msgstr ""
+msgstr "Ha csak egyetlen ábra méretét szeretné beállítani, a következő jelölés használható, amely egy változó értékét csak egy parancsra állítja be:"
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:393
@@ -16708,37 +16820,43 @@ msgid ""
 "   )\n"
 "), wxplot_size=[480,480]$\n"
 msgstr ""
+"wxdraw2d(\n"
+"   explicit(\n"
+"       x^2,\n"
+"       x,-5,5\n"
+"   )\n"
+"), wxplot_size=[480,480]$\n"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:402
 #, no-wrap
 msgid "Match parenthesis in text controls"
-msgstr ""
+msgstr "Zárójelek párosítása a szövegmezőkben"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:405
 msgid "This option enables two things:"
-msgstr ""
+msgstr "Ez a beállítás két dolgot kapcsol be:"
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:408
 msgid ""
 "If an opening parenthesis, bracket, or double quote is entered _wxMaxima_ "
 "will insert a closing one after it."
-msgstr ""
+msgstr "Nyitó zárójel, szögletes zárójel vagy idézőjel beírása után a _wxMaxima_ beszúrja mögé a záró párját."
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:408
 msgid ""
 "If text is selected if any of these keys is pressed the selected text will "
 "be put between the matched signs."
-msgstr ""
+msgstr "Ha ezeknek a billentyűknek a lenyomásakor szöveg van kijelölve, a kijelölt szöveg a párosított jelek közé kerül."
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:409
 #, no-wrap
 msgid "Don’t save the worksheet automatically"
-msgstr ""
+msgstr "Ne mentse automatikusan a munkalapot"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:412
@@ -16746,29 +16864,29 @@ msgid ""
 "If this option is set, the file where the worksheet is will be overwritten "
 "only the request of the user. In case of a crash/power loss/... a recent "
 "backup copy is still made available in the temp directory, though."
-msgstr ""
+msgstr "Ha ez a beállítás be van kapcsolva, a munkalapot tartalmazó fájl csak a felhasználó kérésére íródik felül. Összeomlás, áramszünet stb. esetére azonban az ideiglenes könyvtárban továbbra is elérhető egy friss biztonsági másolat."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:414
 msgid ""
 "If this option isn’t set _wxMaxima_ behaves more like a modern cellphone app:"
-msgstr ""
+msgstr "Ha ez a beállítás nincs bekapcsolva, a _wxMaxima_ inkább egy modern mobilalkalmazáshoz hasonlóan viselkedik:"
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:417
 msgid "Files are saved automatically on exit"
-msgstr ""
+msgstr "A fájlok kilépéskor automatikusan mentődnek"
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:417
 msgid "And the file will automatically be saved every 3 minutes."
-msgstr ""
+msgstr "A fájl pedig 3 percenként automatikusan mentésre kerül."
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:418
 #, no-wrap
 msgid "Where is the configuration saved?"
-msgstr ""
+msgstr "Hol tárolódnak a beállítások?"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:422
@@ -16777,6 +16895,8 @@ msgid ""
 "If you are using Unix/Linux, the configuration information will be saved in a file `.wxMaxima` in your home directory (if you are using wxWidgets \\< 3.1.1), or `.config/wxMaxima.conf` ((XDG-Standard) if wxWidgets >= 3.1.1 is used). You can retrieve the wxWidgets version from the command `wxbuild_info();` or by using the menu option Help->About. [wxWidgets](https://www.wxwidgets.org/) is the cross-platform GUI library, which is the base for _wxMaxima_ (therefore the `wx` in the name).\n"
 "(Since the filename starts with a dot, `.wxMaxima` or `.config` will be hidden).\n"
 msgstr ""
+"Unix/Linux rendszeren a beállítások a saját könyvtárában lévő `.wxMaxima` fájlba (wxWidgets \\< 3.1.1 esetén) vagy a `.config/wxMaxima.conf` fájlba (XDG szabvány, wxWidgets >= 3.1.1 esetén) kerülnek. A wxWidgets verziója a `wxbuild_info();` paranccsal vagy a Súgó->Névjegy menüponttal kérdezhető le. A [wxWidgets](https://www.wxwidgets.org/) az a platformfüggetlen grafikus felületi könyvtár, amelyre a _wxMaxima_ épül (innen a `wx` a névben).\n"
+"(Mivel a fájlnév ponttal kezdődik, a `.wxMaxima` és a `.config` rejtett.)\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:424
@@ -16784,13 +16904,13 @@ msgid ""
 "If you are using Windows, the configuration will be stored in the registry. "
 "You will find the entries for _wxMaxima_ at the following position in the "
 "registry: `HKEY_CURRENT_USER\\Software\\wxMaxima`"
-msgstr ""
+msgstr "Windows alatt a beállítások a beállításjegyzékben (registry) tárolódnak. A _wxMaxima_ bejegyzései a beállításjegyzék következő helyén találhatók: `HKEY_CURRENT_USER\\Software\\wxMaxima`"
 
 #. type: Title #
 #: ../../info/wxmaxima.md:427
 #, no-wrap
 msgid "Extensions to _Maxima_"
-msgstr ""
+msgstr "A _Maxima_ kiterjesztései"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:430
@@ -16802,57 +16922,57 @@ msgid ""
 "exporting a workbook’s contents to HTML and LaTeX files has been mentioned. "
 "This section considers some ways that _wxMaxima_ enhances the inclusion of "
 "graphics in a session."
-msgstr ""
+msgstr "A _WxMaxima_ elsősorban a _Maxima_ grafikus felhasználói felülete. Fő feladata tehát, hogy továbbítsa a parancsokat a _Maxima_ felé, és megjelenítse végrehajtásuk eredményét. Bizonyos esetekben azonban a _wxMaxima_ új funkciókkal bővíti a _Maxima_ programot. Már említettük, hogy a munkalap tartalma HTML- és LaTeX-fájlokba exportálva jelentésekké alakítható. Ez a rész azt mutatja be, milyen módokon könnyíti meg a _wxMaxima_ a grafika beillesztését egy munkamenetbe."
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:431
 #, no-wrap
 msgid "Subscripted variables"
-msgstr ""
+msgstr "Alsó indexes változók"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:434
 msgid ""
 "`wxsubscripts` specifies, if (and how) _wxMaxima_ will autosubscript "
 "variable names:"
-msgstr ""
+msgstr "A `wxsubscripts` határozza meg, hogy a _wxMaxima_ automatikusan alsó indexbe tegye-e (és hogyan) a változónevek részeit:"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:436
 msgid ""
 "If it is `false`, the functionality is off, wxMaxima will not autosubscript "
 "part of variable names after an underscore."
-msgstr ""
+msgstr "Ha értéke `false`, a funkció ki van kapcsolva, és a wxMaxima nem teszi alsó indexbe a változónevek aláhúzásjel utáni részét."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:438
 msgid ""
 "If it is set to `'all`, everything after an underscore will be subscripted."
-msgstr ""
+msgstr "Ha értéke `'all`, az aláhúzásjel után minden alsó indexbe kerül."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:440
 msgid ""
 "If it is set to `true` variable names of the format `x_y` are displayed "
 "using a subscript if"
-msgstr ""
+msgstr "Ha értéke `true`, az `x_y` alakú változónevek alsó indexszel jelennek meg, ha"
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:443
 msgid "Either `x` or `y` is a single letter or"
-msgstr ""
+msgstr "`x` vagy `y` egyetlen betű, vagy"
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:443
 msgid "`y` is an integer (can include more than one character)."
-msgstr ""
+msgstr "`y` egész szám (több karakterből is állhat)."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:445
 msgid ""
 "![How variables are autosubscripted using wxsubscripts](./wxsubscripts.png)"
 "{ id=img_wxsubscripts }"
-msgstr ""
+msgstr "![Hogyan teszi a wxsubscripts alsó indexbe a változókat](./wxsubscripts.png){ id=img_wxsubscripts }"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:447
@@ -16863,19 +16983,20 @@ msgid ""
 "`wxdeclare_subscript([variable_name1,variable_name2,...]);` Declaring a "
 "variable as subscripted can be reverted using the following command: "
 "`wxdeclare_subscript(variable_name,false);`"
-msgstr ""
+msgstr "Ha a változónév nem felel meg ezeknek a feltételeknek, akkor is deklarálható „alsó indexszel megjelenítendőként” a `wxdeclare_subscript(variable_name);` vagy a `wxdeclare_subscript([variable_name1,variable_name2,...]);` paranccsal. Ez a deklaráció a következő paranccsal vonható vissza: `wxdeclare_subscript(variable_name,false);`"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:449
 #, no-wrap
 msgid "You can use the menu \"View->Autosubscript\" to set these values.\n"
 msgstr ""
+"Ezek az értékek a „Nézet->Automatikus indexelés” menüvel állíthatók be.\n"
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:450
 #, no-wrap
 msgid "User feedback in the status bar"
-msgstr ""
+msgstr "Visszajelzés a felhasználónak az állapotsorban"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:453
@@ -16887,7 +17008,7 @@ msgid ""
 "in libraries that might be used with plain _Maxima_ (as opposed to "
 "_wxMaxima_): If _wxMaxima_ isn’t present the `wxstatusbar()` command will "
 "just be left unevaluated."
-msgstr ""
+msgstr "A sokáig futó parancsok az állapotsorban tájékoztathatják a felhasználót. Ezt a visszajelzést felváltja minden új, oda kerülő visszajelzés (így folyamatjelzőként is használható), és törlődik, amint a _Maxima_ felé elküldött aktuális parancs befejeződik. A `wxstatusbar()` biztonságosan használható olyan könyvtárakban is, amelyek a puszta _Maxima_ programmal (és nem a _wxMaxima_ felülettel) futhatnak: ha a _wxMaxima_ nincs jelen, a `wxstatusbar()` parancs egyszerűen kiértékeletlen marad."
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:454
@@ -16902,12 +17023,20 @@ msgid ""
 "    ?sleep(3)\n"
 ")$\n"
 msgstr ""
+"for i:1 thru 10 do (\n"
+"    /* Jelezzük a felhasználónak, hol tartunk */\n"
+"    wxstatusbar(concat(\"Pass \",i)),\n"
+"    /* A (sleep n) egy Lisp-függvény, amely a \"?\" */\n"
+"    /* karakterrel előtte használható. Késlelteti */\n"
+"    /* a program futását (itt: 3 másodpercig) */\n"
+"    ?sleep(3)\n"
+")$\n"
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:465
 #, no-wrap
 msgid "Exporting the worksheet from within Maxima"
-msgstr ""
+msgstr "A munkalap exportálása a Maximából"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:468
@@ -16917,7 +17046,7 @@ msgid ""
 "scripted or batch export. Like `wxstatusbar()` it is safe to use in code "
 "that might also run in plain (console) _Maxima_: if _wxMaxima_ isn’t present "
 "the command is simply left unevaluated."
-msgstr ""
+msgstr "A `wxworksheettohtml()` parancs egy futó _Maxima_ munkamenetből exportálja az aktuális munkalapot HTML-fájlba, ami szkriptből vagy kötegelt exportáláshoz kényelmes. A `wxstatusbar()` parancshoz hasonlóan biztonságosan használható olyan kódban is, amely a puszta (konzolos) _Maxima_ programban is futhat: ha a _wxMaxima_ nincs jelen, a parancs egyszerűen kiértékeletlen marad."
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:469
@@ -16926,13 +17055,15 @@ msgid ""
 "wxworksheettohtml(\"report.html\")$\n"
 "wxworksheettohtml(\"report.html\", flavor=\"svg\", wxmx=true)$\n"
 msgstr ""
+"wxworksheettohtml(\"report.html\")$\n"
+"wxworksheettohtml(\"report.html\", flavor=\"svg\", wxmx=true)$\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:475
 msgid ""
 "A relative file name is interpreted relative to _Maxima_’s working "
 "directory. The optional keyword options are:"
-msgstr ""
+msgstr "A relatív fájlnév a _Maxima_ munkakönyvtárához képest értelmeződik. A választható kulcsszavas paraméterek:"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:480
@@ -16943,6 +17074,10 @@ msgid ""
 "| `flavor` | `mathml` (default), `mathjax`, `svg`, `bitmap`  | how the equations are rendered in the exported page |\n"
 "| `wxmx`   | `false` (default), `true`                       | embed a downloadable `.wxmx` copy of the session    |\n"
 msgstr ""
+"| paraméter | értékek                                        | jelentés                                            |\n"
+"| -------- | ----------------------------------------------- | --------------------------------------------------- |\n"
+"| `flavor` | `mathml` (alapért.), `mathjax`, `svg`, `bitmap` | az egyenletek megjelenítése az exportált oldalon    |\n"
+"| `wxmx`   | `false` (alapért.), `true`                      | a munkamenet letölthető `.wxmx` másolatát ágyazza be |\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:482
@@ -16951,14 +17086,14 @@ msgid ""
 "**File → Export** dialog: `mathml` produces a self-contained page that needs "
 "no internet connection, `mathjax` adds a MathJaX fall-back for browsers that "
 "still lack MathML, and `svg`/`bitmap` render every equation to an image."
-msgstr ""
+msgstr "A `flavor` értékei megegyeznek a grafikus **Fájl → Exportálás** párbeszédablakban kínált egyenletformátumokkal: a `mathml` önálló, internetkapcsolatot nem igénylő oldalt készít, a `mathjax` MathJaX-tartalékmegoldást ad hozzá a MathML-t még nem támogató böngészőkhöz, az `svg`/`bitmap` pedig minden egyenletet képként jelenít meg."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:484
 msgid ""
 "The companion command `wxworksheettotex()` exports to a LaTeX (`.tex`) file "
 "the same way:"
-msgstr ""
+msgstr "A kísérő `wxworksheettotex()` parancs ugyanígy exportál LaTeX-fájlba (`.tex`):"
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:485
@@ -16967,6 +17102,8 @@ msgid ""
 "wxworksheettotex(\"report.tex\")$\n"
 "wxworksheettotex(\"report.tex\", documentclass=\"report\", documentclassoptions=\"12pt,a4paper\")$\n"
 msgstr ""
+"wxworksheettotex(\"report.tex\")$\n"
+"wxworksheettotex(\"report.tex\", documentclass=\"report\", documentclassoptions=\"12pt,a4paper\")$\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:494
@@ -16977,17 +17114,21 @@ msgid ""
 "| `documentclass`        | overrides the LaTeX `\\documentclass` (e.g. `\"article\"`, `\"report\"`)  |\n"
 "| `documentclassoptions` | overrides its options (e.g. `\"12pt,a4paper\"`)                        |\n"
 msgstr ""
+"| paraméter              | jelentés                                                             |\n"
+"| ---------------------- | -------------------------------------------------------------------- |\n"
+"| `documentclass`        | felülírja a LaTeX `\\documentclass` értékét (pl. `\"article\"`, `\"report\"`) |\n"
+"| `documentclassoptions` | felülírja annak beállításait (pl. `\"12pt,a4paper\"`)                  |\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:496
 msgid "Support for `wxworksheettopdf()` is planned."
-msgstr ""
+msgstr "A `wxworksheettopdf()` támogatása tervben van."
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:497
 #, no-wrap
 msgid "Plotting"
-msgstr ""
+msgstr "Ábrázolás"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:500
@@ -16995,13 +17136,13 @@ msgid ""
 "Plotting (having fundamentally to do with graphics) is a place where a "
 "graphical user interface will have to provide some extensions to the "
 "original program."
-msgstr ""
+msgstr "Az ábrázolás (amelynek alapvetően a grafikához van köze) az a terület, ahol egy grafikus felhasználói felületnek bizonyos kiterjesztéseket kell adnia az eredeti programhoz."
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:501
 #, no-wrap
 msgid "Embedding a plot into the worksheet"
-msgstr ""
+msgstr "Ábra beágyazása a munkalapba"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:504
@@ -17011,12 +17152,12 @@ msgid ""
 "convenient to embed graphs into the worksheet instead _wxMaxima_ provides "
 "its own set of plot functions that don’t differ from the corresponding "
 "_maxima_ functions save in their name: They are all prefixed by a “wx”."
-msgstr ""
+msgstr "A _Maxima_ általában arra utasítja a külső _Gnuplot_ programot, hogy minden általa készített diagramhoz külön ablakot nyisson. Mivel sokszor kényelmesebb az ábrákat a munkalapba ágyazni, a _wxMaxima_ saját ábrázolófüggvény-készletet kínál, amelyek csak a nevükben különböznek a megfelelő _Maxima_-függvényektől: mindegyik „wx” előtagot kap."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:506
 msgid "The following plotting functions have wx-counterparts:"
-msgstr ""
+msgstr "A következő ábrázolófüggvényeknek van wx-es megfelelőjük:"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:520
@@ -17036,13 +17177,26 @@ msgid ""
 "| `wxpiechart()`           | [piechart](https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#piechart)           |\n"
 "| `wxboxplot()`            | [boxplot](https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#boxplot)             |\n"
 msgstr ""
+"| a wxMaxima ábrázolófüggvénye | a Maxima ábrázolófüggvénye                                                                      |\n"
+"| ------------------------ | ----------------------------------------------------------------------------------------------- |\n"
+"| `wxplot2d()`             | [plot2d](https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#plot2d)               |\n"
+"| `wxplot3d()`             | [plot3d](https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#plot3d)               |\n"
+"| `wxdraw2d()`             | [draw2d](https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#draw2d)               |\n"
+"| `wxdraw3d()`             | [draw2d](https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#draw3d)               |\n"
+"| `wxdraw()`               | [draw](https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#draw)                   |\n"
+"| `wximplicit_plot()`      | [implicit_plot](https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#implicit_plot) |\n"
+"| `wxhistogram()`          | [histogram](https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#histogram)         |\n"
+"| `wxscatterplot()`        | [scatterplot](https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#scatterplot)     |\n"
+"| `wxbarsplot()`           | [barsplot](https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#barsplot)           |\n"
+"| `wxpiechart()`           | [piechart](https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#piechart)           |\n"
+"| `wxboxplot()`            | [boxplot](https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#boxplot)             |\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:522
 msgid ""
 "If a `wxm`-file is read by (console) Maxima, these functions are ignored "
 "(and printed as output, as other unknown functions in Maxima)."
-msgstr ""
+msgstr "Ha egy `wxm` fájlt a (konzolos) Maxima olvas be, ezeket a függvényeket figyelmen kívül hagyja (és kimenetként kiírja, mint a Maxima más ismeretlen függvényeit)."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:524
@@ -17054,13 +17208,13 @@ msgid ""
 "is most likely a Maxima issue and should be reported in the [Maxima "
 "bugtracker](https://sourceforge.net/p/maxima/bugs/). Or maybe a Gnuplot "
 "issue."
-msgstr ""
+msgstr "Ha valamelyik függvénnyel gond van, ellenőrizze, hogy a probléma a Maxima-függvénynél is fennáll-e (pl. ha a `wxplot2d()` hibát ad, próbálja ki ugyanazt az ábrát a Maxima `plot2d()` parancsával, amely külön ablakban nyitja meg az ábrát). Ha a probléma nem tűnik el, valószínűleg a Maxima hibájáról van szó, amelyet a [Maxima hibakövetőjében](https://sourceforge.net/p/maxima/bugs/) kell bejelenteni. Vagy esetleg a Gnuplot hibájáról."
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:525
 #, no-wrap
 msgid "Making embedded plots bigger or smaller"
-msgstr ""
+msgstr "A beágyazott ábrák nagyítása és kicsinyítése"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:528
@@ -17070,7 +17224,7 @@ msgid ""
 "plotting routines of _wxMaxima_ respect this variable that specifies the "
 "size of a plot in pixels. It can always be queried or used to set the size "
 "of the following plots:"
-msgstr ""
+msgstr "Ahogy fentebb említettük, a beállítási párbeszédablakban módosítható a készülő ábrák alapértelmezett mérete, ami a `wxplot_size` kezdőértékét állítja be. A _wxMaxima_ ábrázolórutinjai figyelembe veszik ezt a változót, amely az ábra méretét pixelben adja meg. Értéke bármikor lekérdezhető, vagy felhasználható a következő ábrák méretének beállítására:"
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:529
@@ -17084,6 +17238,13 @@ msgid ""
 "    )\n"
 ")$\n"
 msgstr ""
+"wxplot_size:[1200,800]$\n"
+"wxdraw2d(\n"
+"    explicit(\n"
+"        sin(x),\n"
+"        x,1,10\n"
+"    )\n"
+")$\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:540
@@ -17092,7 +17253,7 @@ msgid ""
 "way to change an attribute only for the current cell. In this usage the "
 "specification `wxplot_size = [value1, value2]` is appended to the "
 "`wxdraw2d( )` command, and is not part of the `wxdraw2d` command."
-msgstr ""
+msgstr "Ha csak egyetlen ábra méretét kell módosítani, a _Maxima_ szabványos módot kínál arra, hogy egy attribútumot csak az aktuális cellára módosítsunk. Ilyenkor a `wxplot_size = [value1, value2]` megadás a `wxdraw2d( )` parancs után kerül, és nem része a `wxdraw2d` parancsnak."
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:541
@@ -17105,6 +17266,12 @@ msgid ""
 "    )\n"
 "),wxplot_size=[1600,800]$\n"
 msgstr ""
+"wxdraw2d(\n"
+"    explicit(\n"
+"        sin(x),\n"
+"        x,1,10\n"
+"    )\n"
+"),wxplot_size=[1600,800]$\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:551
@@ -17113,13 +17280,13 @@ msgid ""
 "plots using e.g. `wxplot`, `wxdraw`, `wxcontour_plot` and `wximplicit_plot` "
 "commands and for embedded animations with `with_slider_draw` and `wxanimate` "
 "commands."
-msgstr ""
+msgstr "A beágyazott ábra méretének `wxplot_size` segítségével történő beállítása működik a pl. `wxplot`, `wxdraw`, `wxcontour_plot` és `wximplicit_plot` parancsokkal készült beágyazott ábráknál, valamint a `with_slider_draw` és `wxanimate` parancsokkal készült beágyazott animációknál."
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:552
 #, no-wrap
 msgid "Better quality plots"
-msgstr ""
+msgstr "Jobb minőségű ábrák"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:555
@@ -17131,13 +17298,13 @@ msgid ""
 "`wxplot_pngcairo`) enables support for antialiasing and additional line "
 "styles. If `wxplot_pngCairo` is set without _Gnuplot_ supporting this the "
 "result will be error messages instead of graphics."
-msgstr ""
+msgstr "Úgy tűnik, a _Gnuplot_ nem kínál hordozható módot annak megállapítására, hogy támogatja-e a Cairo könyvtár által nyújtott jó minőségű bitképes kimenetet. Azokon a rendszereken, ahol a _Gnuplot_ ezzel a könyvtárral lett fordítva, a beállítások pngCairo opciója (amelyet a `wxplot_pngcairo` változó felülírhat) bekapcsolja az élsimítást és a további vonalstílusokat. Ha a `wxplot_pngCairo` be van állítva, de a _Gnuplot_ ezt nem támogatja, az eredmény grafika helyett hibaüzenet lesz."
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:556
 #, no-wrap
 msgid "Opening embedded plots in interactive _Gnuplot_ windows"
-msgstr ""
+msgstr "Beágyazott ábrák megnyitása interaktív _Gnuplot_-ablakokban"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:559
@@ -17146,13 +17313,13 @@ msgid ""
 "`wxplot3d` isn’t supported by this feature) and the file size of the "
 "underlying _Gnuplot_ project isn’t way too high _wxMaxima_ offers a right-"
 "click menu that allows to open the plot in an interactive _Gnuplot_ window."
-msgstr ""
+msgstr "Ha egy ábra `wxdraw` típusú parancsokkal készült (a `wxplot2d` és a `wxplot3d` nem támogatja ezt a funkciót), és a mögöttes _Gnuplot_-projekt fájlmérete nem túl nagy, a _wxMaxima_ a jobb gombos menüben felajánlja, hogy az ábrát interaktív _Gnuplot_-ablakban nyissa meg."
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:560
 #, no-wrap
 msgid "Opening Gnuplot’s command console in `plot` windows"
-msgstr ""
+msgstr "A Gnuplot parancskonzoljának megnyitása `plot` ablakokban"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:564
@@ -17163,13 +17330,13 @@ msgid ""
 "window, where _gnuplot_ commands can be entered into, `gnuplot.exe` does not "
 "offer this possibility. Unfortunately, `wgnuplot.exe` causes _Gnuplot_ to "
 "\"steal\" the keyboard focus for a short time every time a plot is prepared."
-msgstr ""
+msgstr "MS Windows alatt két Gnuplot program van, a `gnuplot.exe` és a `wgnuplot.exe`. A beállításokban megadható, melyik parancsot kell használni. A `wgnuplot.exe` lehetővé teszi egy konzolablak megnyitását, amelybe _gnuplot_-parancsok írhatók, a `gnuplot.exe` ezt nem kínálja. Sajnos a `wgnuplot.exe` miatt a _Gnuplot_ minden ábra előkészítésekor rövid időre „ellopja” a billentyűzetfókuszt."
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:565
 #, no-wrap
 msgid "Embedding animations into the spreadsheet"
-msgstr ""
+msgstr "Animációk beágyazása a munkalapba {#embedding-animations-into-the-spreadsheet}"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:568
@@ -17179,7 +17346,7 @@ msgid ""
 "`with_slider_draw` command is a version of `wxdraw2d` that does prepare "
 "multiple plots and allows to switch between them by moving the slider on top "
 "of the screen. _WxMaxima_ allows to export this animation as an animated gif."
-msgstr ""
+msgstr "A 3D-s diagramokról nehéz mennyiségi adatokat leolvasni. Jó alternatíva lehet a harmadik paramétert az egérgörgőhöz rendelni. A `with_slider_draw` parancs a `wxdraw2d` olyan változata, amely több ábrát készít elő, és lehetővé teszi, hogy a képernyő tetején lévő csúszkával váltsunk közöttük. A _WxMaxima_ ezt az animációt animált GIF-ként is exportálni tudja."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:570
@@ -17188,7 +17355,7 @@ msgid ""
 "that is stepped between the plots and a list of the values of these "
 "variable. The arguments that follow are the ordinary arguments for "
 "`wxdraw2d`:"
-msgstr ""
+msgstr "A `with_slider_draw` első két argumentuma az ábrák között változó változó neve és a változó értékeinek listája. Az ezután következő argumentumok a `wxdraw2d` szokásos argumentumai:"
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:571
@@ -17203,13 +17370,21 @@ msgid ""
 "    ),grid=true\n"
 ");\n"
 msgstr ""
+"with_slider_draw(\n"
+"    f,[1,2,3,4,5,6,7,10],\n"
+"    title=concat(\"f=\",f,\"Hz\"),\n"
+"    explicit(\n"
+"        sin(2*%pi*f*x),\n"
+"        x,0,1\n"
+"    ),grid=true\n"
+");\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:583
 msgid ""
 "The same functionality for 3D plots is accessible as `with_slider_draw3d`, "
 "which allows for rotating 3d plots:"
-msgstr ""
+msgstr "Ugyanez a funkció 3D-s ábrákhoz `with_slider_draw3d` néven érhető el, amellyel a 3D-s ábrák forgathatók:"
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:584
@@ -17230,6 +17405,20 @@ msgid ""
 "    )\n"
 ")$\n"
 msgstr ""
+"wxanimate_autoplay:true;\n"
+"wxanimate_framerate:20;\n"
+"with_slider_draw3d(\n"
+"    α,makelist(i,i,1,360,3),\n"
+"    title=sconcat(\"α=\",α),\n"
+"    surface_hide=true,\n"
+"    contour=both,\n"
+"    view=[60,α],\n"
+"    explicit(\n"
+"        sin(x)*sin(y),\n"
+"        x,-π,π,\n"
+"        y,-π,π\n"
+"    )\n"
+")$\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:602
@@ -17237,7 +17426,7 @@ msgid ""
 "If the general shape of the plot is what matters it might suffice to move "
 "the plot just a little bit in order to make its 3D nature available to the "
 "intuition:"
-msgstr ""
+msgstr "Ha az ábra általános alakja a lényeg, elegendő lehet az ábrát csak egy kicsit mozgatni ahhoz, hogy térbeli jellege szemléletessé váljon:"
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:603
@@ -17258,23 +17447,37 @@ msgid ""
 "    )\n"
 ")$\n"
 msgstr ""
+"wxanimate_autoplay:true;\n"
+"wxanimate_framerate:20;\n"
+"with_slider_draw3d(\n"
+"    t,makelist(i,i,0,2*π,.05*π),\n"
+"    title=sconcat(\"α=\",α),\n"
+"    surface_hide=true,\n"
+"    contour=both,\n"
+"    view=[60,30+5*sin(t)],\n"
+"    explicit(\n"
+"        sin(x)*y^2,\n"
+"        x,-2*π,2*π,\n"
+"        y,-2*π,2*π\n"
+"    )\n"
+")$\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:621
 msgid ""
 "For those more familiar with `plot` than with `draw`, there is a second set "
 "of functions:"
-msgstr ""
+msgstr "Akik a `plot` parancsot jobban ismerik, mint a `draw` parancsot, azok számára van egy második függvénykészlet is:"
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:624
 msgid "`with_slider` and"
-msgstr ""
+msgstr "`with_slider` és"
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:624
 msgid "`wxanimate`."
-msgstr ""
+msgstr "`wxanimate`."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:626
@@ -17282,7 +17485,7 @@ msgid ""
 "Normally the animations are played back or exported with the frame rate "
 "chosen in the configuration of _wxMaxima_. To set the speed at an individual "
 "animation is played back the variable `wxanimate_framerate` can be used:"
-msgstr ""
+msgstr "Az animációk általában a _wxMaxima_ beállításaiban megadott képkockasebességgel játszódnak le vagy exportálódnak. Egy adott animáció lejátszási sebességének beállítására a `wxanimate_framerate` változó használható:"
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:627
@@ -17291,6 +17494,8 @@ msgid ""
 "wxanimate(a, 10,\n"
 "    sin(a*x), [x,-5,5]), wxanimate_framerate=6$\n"
 msgstr ""
+"wxanimate(a, 10,\n"
+"    sin(a*x), [x,-5,5]), wxanimate_framerate=6$\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:633
@@ -17299,7 +17504,7 @@ msgid ""
 "share the pitfall that the slider variable’s value is substituted into the "
 "expression only if the variable is directly visible in the expression. "
 "Therefore the following example will fail:"
-msgstr ""
+msgstr "Az animációs függvények a _Maxima_ `makelist` parancsát használják, és ezért ugyanaz a buktatójuk: a csúszka változójának értéke csak akkor helyettesítődik be a kifejezésbe, ha a változó közvetlenül látható benne. Ezért a következő példa nem fog működni:"
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:634
@@ -17313,13 +17518,20 @@ msgid ""
 "    explicit(f,x,0,10)\n"
 ")$\n"
 msgstr ""
+"f:sin(a*x);\n"
+"with_slider_draw(\n"
+"    a,makelist(i/2,i,1,10),\n"
+"    title=concat(\"a=\",float(a)),\n"
+"    grid=true,\n"
+"    explicit(f,x,0,10)\n"
+")$\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:645
 msgid ""
 "If _Maxima_ is explicitly asked to substitute the slider’s value plotting "
 "works fine instead:"
-msgstr ""
+msgstr "Ha viszont a _Maxima_ programot kifejezetten utasítjuk a csúszka értékének behelyettesítésére, az ábrázolás jól működik:"
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:646
@@ -17336,12 +17548,22 @@ msgid ""
 "    )\n"
 ")$\n"
 msgstr ""
+"f:sin(a*x);\n"
+"with_slider_draw(\n"
+"    b,makelist(i/2,i,1,10),\n"
+"    title=concat(\"a=\",float(b)),\n"
+"    grid=true,\n"
+"    explicit(\n"
+"        subst(a=b,f),\n"
+"        x,0,10\n"
+"    )\n"
+")$\n"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:659
 #, no-wrap
 msgid "Opening multiple plots in contemporaneous windows"
-msgstr ""
+msgstr "Több ábra megnyitása egyidejű ablakokban"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:662
@@ -17349,7 +17571,7 @@ msgid ""
 "While not being provided by _wxMaxima_ this feature of _Maxima_ (on setups "
 "that support it) sometimes comes in handily. The following example comes "
 "from a post from Mario Rodriguez to the _Maxima_ mailing list:"
-msgstr ""
+msgstr "Bár a _wxMaxima_ ezt nem kínálja, a _Maxima_ e funkciója (az azt támogató rendszereken) néha jól jön. A következő példa Mario Rodriguez egyik, a _Maxima_ levelezőlistájára küldött leveléből származik:"
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:663
@@ -17366,13 +17588,23 @@ msgid ""
 "/* Paraboloid in window #3 */\n"
 "draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));\n"
 msgstr ""
+"load(draw);\n"
+"\n"
+"/* Parabola az 1. ablakban */\n"
+"draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));\n"
+"\n"
+"/* Parabola a 2. ablakban */\n"
+"draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));\n"
+"\n"
+"/* Paraboloid a 3. ablakban */\n"
+"draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:677
 msgid ""
 "Plotting multiple plots in the same window is possible, too (the same is "
 "possible in command line Maxima with the standard `draw()` command):"
-msgstr ""
+msgstr "Több ábra ugyanabba az ablakba is rajzolható (ugyanez a parancssori Maximában is lehetséges a szabványos `draw()` paranccsal):"
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:678
@@ -17387,12 +17619,20 @@ msgid ""
 "    explicit(cos(x),x,0,2*%pi))\n"
 ");\n"
 msgstr ""
+"wxdraw(\n"
+"  gr2d(\n"
+"    key=\"sin (x)\",grid=[2,2],\n"
+"    explicit(sin(x),x,0,2*%pi)),\n"
+"  gr2d(\n"
+"    key=\"cos (x)\",grid=[2,2],\n"
+"    explicit(cos(x),x,0,2*%pi))\n"
+");\n"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:689
 #, no-wrap
 msgid "The \"Plot using draw\" side pane"
-msgstr ""
+msgstr "Az „Ábrázolás rajzolással” oldalsáv"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:692
@@ -17400,7 +17640,7 @@ msgid ""
 "The \"Plot using draw\" sidebar hides a simple code generator that allows "
 "generating scenes that make use of some of the flexibility of the _draw_ "
 "package _maxima_ comes with."
-msgstr ""
+msgstr "Az „Ábrázolás rajzolással” oldalsáv egy egyszerű kódgenerátort rejt, amellyel olyan jelenetek hozhatók létre, amelyek kihasználják a _maxima_ programmal érkező _draw_ csomag rugalmasságának egy részét."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:696
@@ -17409,7 +17649,7 @@ msgid ""
 "scene later has to be filled with commands that generate the scene’s "
 "contents, for example by using the buttons in the rows below the \"2D\" "
 "button."
-msgstr ""
+msgstr "Egy 2D-s jelenetet rajzoló `draw()` parancs vázát hozza létre. Ezt a jelenetet később fel kell tölteni a tartalmát előállító parancsokkal, például a \"2D\" gomb alatti sorokban lévő gombokkal."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:698
@@ -17418,7 +17658,7 @@ msgid ""
 "as an animation in which a variable (by default it is _t_) has a different "
 "value in each frame: Often a moving 2D plot allows easier interpretation "
 "than the same data in a non-moving 3D one."
-msgstr ""
+msgstr "A 2D gomb egyik hasznos tulajdonsága, hogy a jelenetet animációként is beállíthatja, amelyben egy változónak (alapértelmezés szerint _t_) minden képkockában más az értéke: egy mozgó 2D-s ábrát gyakran könnyebb értelmezni, mint ugyanazokat az adatokat egy álló 3D-s ábrán."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:702
@@ -17426,7 +17666,7 @@ msgid ""
 "Generates the skeleton of a `draw()` command that draws a 3D scene. If "
 "neither a 2D nor a 3D scene is set up, all of the other buttons set up a 2D "
 "scene that contains the command the button generates."
-msgstr ""
+msgstr "Egy 3D-s jelenetet rajzoló `draw()` parancs vázát hozza létre. Ha sem 2D-s, sem 3D-s jelenet nincs beállítva, az összes többi gomb egy olyan 2D-s jelenetet hoz létre, amely a gomb által generált parancsot tartalmazza."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:706
@@ -17435,13 +17675,13 @@ msgid ""
 "`x^2+2*x-4` to the `draw()` command the cursor currently is in. If there is "
 "no draw command a 2D scene with the plot is generated. Each scene can be "
 "filled with any number of plots."
-msgstr ""
+msgstr "Egy olyan kifejezés, mint a `sin(x)`, `x*sin(x)` vagy `x^2+2*x-4`, szabványos ábráját adja hozzá ahhoz a `draw()` parancshoz, amelyben a kurzor éppen áll. Ha nincs draw parancs, létrejön egy 2D-s jelenet az ábrával. Minden jelenet tetszőleges számú ábrával tölthető fel."
 
 #. type: Title ####
 #: ../../info/wxmaxima.md:707
 #, no-wrap
 msgid "Implicit plot"
-msgstr ""
+msgstr "Implicit ábra"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:710
@@ -17450,7 +17690,7 @@ msgid ""
 "`x^2+y^2=4` is true at and plots the resulting curve in the `draw()` command "
 "the cursor currently is in. If there is no draw command a 2D scene with the "
 "plot is generated."
-msgstr ""
+msgstr "Megpróbálja megtalálni az összes olyan pontot, ahol egy olyan kifejezés, mint a `y=sin(x)`, `y*sin(x)=3` vagy `x^2+y^2=4` igaz, és a kapott görbét abban a `draw()` parancsban rajzolja meg, amelyben a kurzor éppen áll. Ha nincs draw parancs, létrejön egy 2D-s jelenet az ábrával."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:714
@@ -17459,7 +17699,7 @@ msgid ""
 "expressions like `t*sin(t)` and `t*cos(t)` for generating the x, y (and in "
 "3D plots also z) coordinates of a curve that is put into the current draw "
 "command."
-msgstr ""
+msgstr "Egy változót egy alsó határtól egy felső határig léptet, és két kifejezést, például a `t*sin(t)` és a `t*cos(t)` kifejezést használja egy görbe x, y (3D-s ábráknál z) koordinátáinak előállítására; a görbe az aktuális draw parancsba kerül."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:718
@@ -17467,17 +17707,17 @@ msgid ""
 "Draws many points that can optionally be joined. The coordinates of the "
 "points are taken from a list of lists, a 2D array or one list or array for "
 "each axis."
-msgstr ""
+msgstr "Sok pontot rajzol, amelyek tetszés szerint összeköthetők. A pontok koordinátái listák listájából, egy 2D-s tömbből, vagy tengelyenként egy-egy listából vagy tömbből származnak."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:722
 msgid "Draws a title on the upper end of the diagram,"
-msgstr ""
+msgstr "Címet rajzol a diagram tetejére."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:726
 msgid "Sets up the axis."
-msgstr ""
+msgstr "Beállítja a tengelyeket."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:730
@@ -17487,7 +17727,7 @@ msgid ""
 "command and/or to the ground plane of the diagram. Alternatively, this "
 "wizard allows skipping drawing the curves entirely only showing the contour "
 "plot."
-msgstr ""
+msgstr "(Csak 3D-s ábrákhoz:) az aktuális `draw()` parancsban ezután következő ábrázolóparancsokhoz és/vagy a diagram alapsíkjához szintvonalakat ad, amilyenek egy hegyvidék térképén láthatók. Ez a varázsló azt is lehetővé teszi, hogy a görbéket egyáltalán ne rajzolja ki, és csak a szintvonalas ábrát mutassa."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:734
@@ -17495,51 +17735,51 @@ msgid ""
 "Adds a legend entry showing the next plot’s name to the legend of the "
 "diagram. An empty name disables generating legend entries for the following "
 "plots."
-msgstr ""
+msgstr "A diagram jelmagyarázatához hozzáad egy bejegyzést a következő ábra nevével. Üres név esetén a további ábrákhoz nem készül jelmagyarázat-bejegyzés."
 
 #. type: Title ####
 #: ../../info/wxmaxima.md:735
 #, no-wrap
 msgid "Line colour"
-msgstr ""
+msgstr "Vonalszín"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:738
 msgid ""
 "Sets the line colour for the following plots the current draw command "
 "contains."
-msgstr ""
+msgstr "Beállítja az aktuális draw parancsban következő ábrák vonalszínét."
 
 #. type: Title ####
 #: ../../info/wxmaxima.md:739
 #, no-wrap
 msgid "Fill colour"
-msgstr ""
+msgstr "Kitöltőszín"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:742
 msgid ""
 "Sets the fill colour for the following plots the current draw command "
 "contains."
-msgstr ""
+msgstr "Beállítja az aktuális draw parancsban következő ábrák kitöltőszínét."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:746
 msgid "Pops up a wizard that allows to set up grid lines."
-msgstr ""
+msgstr "Megnyit egy varázslót, amellyel rácsvonalak állíthatók be."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:750
 msgid ""
 "Allows to select an adequate point in the speed vs. accuracy tradeoff that "
 "is part of any plot program."
-msgstr ""
+msgstr "Lehetővé teszi, hogy megfelelő pontot válasszunk a sebesség és a pontosság közötti kompromisszumban, amely minden ábrázolóprogram része."
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:751
 #, no-wrap
 msgid "Modify font and font size for plots"
-msgstr ""
+msgstr "Az ábrák betűtípusának és betűméretének módosítása"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:754
@@ -17547,7 +17787,7 @@ msgid ""
 "Especially when you use a high resolution display, the default font size "
 "might be very small. For the `draw`-based commands, you can set the font / "
 "font size using options like `font=...`, `font_size=...`, e.g.:"
-msgstr ""
+msgstr "Különösen nagy felbontású kijelzőn az alapértelmezett betűméret nagyon kicsi lehet. A `draw` alapú parancsoknál a betűtípus és a betűméret például a `font=...` és `font_size=...` beállításokkal adható meg, pl.:"
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:755
@@ -17558,13 +17798,17 @@ msgid ""
 "     font_size=30,\n"
 "     explicit(sin(x),x,1,10));\n"
 msgstr ""
+"wxdraw2d(\n"
+"     font=\"Helvetica\",\n"
+"     font_size=30,\n"
+"     explicit(sin(x),x,1,10));\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:763
 msgid ""
 "For the `plot`-commands (e.g. `wxplot2d`, `wxplot3d`) font sizes and fonts "
 "can be set using the `gnuplot_preamble` command, e.g.:"
-msgstr ""
+msgstr "A `plot` parancsoknál (pl. `wxplot2d`, `wxplot3d`) a betűtípusok és betűméretek a `gnuplot_preamble` paranccsal állíthatók be, pl.:"
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:764
@@ -17573,13 +17817,15 @@ msgid ""
 "wxplot2d(sin(x),[x,1,10],\n"
 "         [gnuplot_preamble, \"set tics font \\\"Arial, 30\\\"; set xlabel font \\\",20\\\"; set ylabel font \\\",20\\\";\"]);\n"
 msgstr ""
+"wxplot2d(sin(x),[x,1,10],\n"
+"         [gnuplot_preamble, \"set tics font \\\"Arial, 30\\\"; set xlabel font \\\",20\\\"; set ylabel font \\\",20\\\";\"]);\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:770
 msgid ""
 "This sets the font for the numbers to Arial with size 30, the size for the "
 "xlabel and ylabel font to 20 (with the default font)."
-msgstr ""
+msgstr "Ez a számok betűtípusát 30-as méretű Arialra, az xlabel és ylabel betűméretét pedig 20-ra állítja (az alapértelmezett betűtípussal)."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:773
@@ -17587,13 +17833,13 @@ msgid ""
 "Read the Maxima and Gnuplot documentation for further information.  Note: "
 "Gnuplot seems to have issues with larger font sizes, see [wxMaxima issue "
 "1966](https://github.com/wxMaxima-developers/wxmaxima/issues/1966)."
-msgstr ""
+msgstr "További információk a Maxima és a Gnuplot dokumentációjában találhatók. Megjegyzés: úgy tűnik, a Gnuplotnak gondjai vannak a nagyobb betűméretekkel, lásd a [wxMaxima 1966-os hibajegyét](https://github.com/wxMaxima-developers/wxmaxima/issues/1966)."
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:774
 #, no-wrap
 msgid "Embedding graphics"
-msgstr ""
+msgstr "Grafika beágyazása"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:777
@@ -17602,40 +17848,41 @@ msgid ""
 "project can be done as easily as per drag-and-drop. But sometimes (for "
 "example if an image’s contents might change later on in a session) it is "
 "better to tell the file to load the image on evaluation:"
-msgstr ""
+msgstr "A `.wxmx` fájlformátum használatakor fájlok beágyazása egy _wxMaxima_ projektbe fogd és vidd módszerrel is egyszerűen elvégezhető. Néha azonban (például ha egy kép tartalma a munkamenet során később megváltozhat) jobb, ha a fájl a kiértékeléskor tölti be a képet:"
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:778
 #, no-wrap
 msgid "show_image(\"man.png\");\n"
 msgstr ""
+"show_image(\"man.png\");\n"
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:782
 #, no-wrap
 msgid "Startup files"
-msgstr ""
+msgstr "Indítófájlok"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:785
 msgid ""
 "The config dialogue of _wxMaxima_ offers to edit two files with commands "
 "that are executed on startup:"
-msgstr ""
+msgstr "A _wxMaxima_ beállítási párbeszédablakában két olyan fájl szerkeszthető, amelyek indításkor végrehajtott parancsokat tartalmaznak:"
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:788
 msgid ""
 "A file that contains commands that are executed on starting up _Maxima_: "
 "`maxima-init.mac`"
-msgstr ""
+msgstr "Egy fájl, amely a _Maxima_ indításakor végrehajtott parancsokat tartalmazza: `maxima-init.mac`"
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:788
 msgid ""
 "one file of additional commands that are executed if _wxMaxima_ is starting "
 "_Maxima_: `wxmaxima-init.mac`"
-msgstr ""
+msgstr "egy fájl további parancsokkal, amelyek akkor hajtódnak végre, amikor a _wxMaxima_ indítja a _Maxima_ programot: `wxmaxima-init.mac`"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:790
@@ -17643,7 +17890,7 @@ msgid ""
 "For example, if Gnuplot is installed in `/opt` (maybe on MacOS), you can add "
 "`gnuplot_command:\"/opt/local/bin/gnuplot\"$` (or `/opt/gnuplot/bin/gnuplot` "
 "or any other path) to these files."
-msgstr ""
+msgstr "Ha például a Gnuplot az `/opt` könyvtárba van telepítve (pl. MacOS-en), ezekhez a fájlokhoz hozzáadhatja a `gnuplot_command:\"/opt/local/bin/gnuplot\"$` sort (vagy `/opt/gnuplot/bin/gnuplot`, illetve bármely más elérési utat)."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:792
@@ -17651,13 +17898,13 @@ msgid ""
 "These files are in the Maxima user directory (usually `%USERPROFILE%/maxima` "
 "in Windows, `$HOME/.maxima` otherwise). The location can be found out with "
 "the command: `maxima_userdir;`"
-msgstr ""
+msgstr "Ezek a fájlok a Maxima felhasználói könyvtárában vannak (Windows alatt általában `%USERPROFILE%/maxima`, egyébként `$HOME/.maxima`). A helyük a következő paranccsal deríthető ki: `maxima_userdir;`"
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:793
 #, no-wrap
 msgid "Special variables wx..."
-msgstr ""
+msgstr "Különleges wx... változók"
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:811
@@ -17666,21 +17913,21 @@ msgid ""
 "contain an underscore (`R_150` or the like) into subscripted variables. See "
 "`wxdeclare_subscript` for details which variable names are automatically "
 "converted."
-msgstr ""
+msgstr "A `wxsubscripts` megmondja a _Maxima_ programnak, hogy az aláhúzásjelet tartalmazó változóneveket (`R_150` és hasonlók) alsó indexes változókká alakítsa-e. Azt, hogy mely változónevek alakulnak át automatikusan, a `wxdeclare_subscript` leírása részletezi."
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:811
 msgid ""
 "`wxfilename`: This variable contains the name of the file currently opened "
 "in _wxMaxima_."
-msgstr ""
+msgstr "`wxfilename`: ez a változó a _wxMaxima_ programban éppen megnyitott fájl nevét tartalmazza."
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:811
 msgid ""
 "`wxdirname`: This variable contains the name the directory, in which the "
 "file currently opened in _wxMaxima_ is."
-msgstr ""
+msgstr "`wxdirname`: ez a változó annak a könyvtárnak a nevét tartalmazza, amelyben a _wxMaxima_ programban éppen megnyitott fájl található."
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:811
@@ -17688,12 +17935,12 @@ msgid ""
 "`wxplot_pngcairo` tells whether _wxMaxima_ tries to use _Gnuplot_’s pngcairo "
 "terminal that provides more line styles and a better overall graphics "
 "quality."
-msgstr ""
+msgstr "A `wxplot_pngcairo` megadja, hogy a _wxMaxima_ megpróbálja-e használni a _Gnuplot_ pngcairo terminálját, amely több vonalstílust és összességében jobb grafikai minőséget nyújt."
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:811
 msgid "`wxplot_size` defines the resolution of embedded plots."
-msgstr ""
+msgstr "A `wxplot_size` a beágyazott ábrák felbontását határozza meg."
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:811
@@ -17704,36 +17951,36 @@ msgid ""
 "path to the file that has to be read or written. On Windows this feature "
 "sometimes causes error messages and therefore can be set to `false` from the "
 "config dialogue."
-msgstr ""
+msgstr "`wxchangedir`: a legtöbb operációs rendszeren a _wxMaxima_ automatikusan az aktuális fájl könyvtárára állítja a _Maxima_ munkakönyvtárát. Így a fájlműveletek (pl. a `read_matrix`) a beolvasandó vagy írandó fájl teljes elérési útjának megadása nélkül is működnek. Windows alatt ez a funkció néha hibaüzeneteket okoz, ezért a beállítási párbeszédablakban `false` értékre állítható."
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:811
 msgid ""
 "`wxanimate_framerate`: The number of frames per second the following "
 "animations have to be played back with."
-msgstr ""
+msgstr "`wxanimate_framerate`: a következő animációk lejátszásához használt másodpercenkénti képkockaszám."
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:811
 msgid "`wxanimate_autoplay`: Automatically play animations by default?"
-msgstr ""
+msgstr "`wxanimate_autoplay`: alapértelmezés szerint automatikusan lejátsszák-e az animációkat?"
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:811
 msgid "`wxmaximaversion`: Returns the version number of _wxMaxima_."
-msgstr ""
+msgstr "`wxmaximaversion`: a _wxMaxima_ verziószámát adja vissza."
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:811
 msgid "`wxwidgetsversion`: Returns the wxWidgets version _wxMaxima_ is using."
-msgstr ""
+msgstr "`wxwidgetsversion`: a _wxMaxima_ által használt wxWidgets verzióját adja vissza."
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:811
 msgid ""
 "`wxdirs`: A struct holding the paths _wxMaxima_ itself uses, since these "
 "differ by maintainer, distribution and operating system:"
-msgstr ""
+msgstr "`wxdirs`: egy struktúra a _wxMaxima_ által használt elérési utakkal, mivel ezek karbantartónként, disztribúciónként és operációs rendszerenként eltérnek:"
 
 #. type: Bullet: '  - '
 #: ../../info/wxmaxima.md:811
@@ -17742,41 +17989,41 @@ msgid ""
 "Same directory as `maxima_userdir` (see above) - both point at the same "
 "place, `wxdirs@userconfdir` is only useful if that is more convenient to "
 "reach from a `.mac` file than the Maxima-side variable."
-msgstr ""
+msgstr "`wxdirs@userconfdir`: az a könyvtár, amelyben a felhasználó beállításai tárolódnak. Ugyanaz a könyvtár, mint a `maxima_userdir` (lásd fent): mindkettő ugyanoda mutat, és a `wxdirs@userconfdir` csak akkor hasznos, ha egy `.mac` fájlból kényelmesebb elérni, mint a Maxima-oldali változót."
 
 #. type: Bullet: '  - '
 #: ../../info/wxmaxima.md:811
 msgid ""
 "`wxdirs@datadir`: The directory _wxMaxima_'s own data (icons, the built-in "
 "autocompletion list, ...) is installed in."
-msgstr ""
+msgstr "`wxdirs@datadir`: az a könyvtár, amelybe a _wxMaxima_ saját adatai (ikonok, a beépített automatikus kiegészítési lista, ...) telepítve vannak."
 
 #. type: Bullet: '  - '
 #: ../../info/wxmaxima.md:811
 msgid ""
 "`wxdirs@helpdir`: The directory the offline copy of this manual is installed "
 "in."
-msgstr ""
+msgstr "`wxdirs@helpdir`: az a könyvtár, amelybe ennek a kézikönyvnek az offline példánya telepítve van."
 
 #. type: Bullet: '  - '
 #: ../../info/wxmaxima.md:811
 msgid ""
 "`wxdirs@localedir`: The directory _wxMaxima_'s translation files are "
 "installed in."
-msgstr ""
+msgstr "`wxdirs@localedir`: az a könyvtár, amelybe a _wxMaxima_ fordítási fájljai telepítve vannak."
 
 #. type: Bullet: '  - '
 #: ../../info/wxmaxima.md:811
 msgid ""
 "`wxdirs@maximalocation`: The path to the _Maxima_ executable _wxMaxima_ is "
 "configured to start."
-msgstr ""
+msgstr "`wxdirs@maximalocation`: annak a _Maxima_ futtatható fájlnak az elérési útja, amelynek indítására a _wxMaxima_ be van állítva."
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:812
 #, no-wrap
 msgid "Pretty-printing 2D output"
-msgstr ""
+msgstr "2D-s kimenet szép megjelenítése"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:815
@@ -17786,7 +18033,7 @@ msgid ""
 "is a list of one or more lists. Like the \"print\" command, this command "
 "displays output even when ended with a dollar sign. Ending the command with "
 "a semicolon results in the same table along with a \"done\" statement."
-msgstr ""
+msgstr "A `table_form()` függvény egy 2D-s listát a _Maxima_ alapértelmezett kimeneti rutinjánál olvashatóbb formában jelenít meg. A bemenet egy vagy több listából álló lista. A \"print\" parancshoz hasonlóan ez a parancs akkor is megjeleníti a kimenetet, ha dollárjellel zárjuk. Pontosvesszővel zárva ugyanaz a táblázat jelenik meg, egy \"done\" kíséretében."
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:816
@@ -17799,68 +18046,75 @@ msgid ""
 "    ]\n"
 ")$\n"
 msgstr ""
+"table_form(\n"
+"    [\n"
+"        [1,2],\n"
+"        [3,4]\n"
+"    ]\n"
+")$\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:826
 msgid ""
 "As the next example shows, the lists that are assembled by the `table_form` "
 "command can be created before the command is executed."
-msgstr ""
+msgstr "Ahogy a következő példa mutatja, a `table_form` parancs által összeállított listák a parancs végrehajtása előtt is létrehozhatók."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:828
 msgid ""
 "![A third table example](./MatrixTableExample.png)"
 "{ id=img_MatrixTableExample }"
-msgstr ""
+msgstr "![Egy harmadik táblázatpélda](./MatrixTableExample.png){ id=img_MatrixTableExample }"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:830
 msgid ""
 "Also, because a matrix is a list of lists, matrices can be converted to "
 "tables in a similar fashion."
-msgstr ""
+msgstr "Mivel a mátrix listák listája, a mátrixok is hasonló módon alakíthatók táblázattá."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:832
 msgid ""
 "![Another table_form example](./SecondTableExample.png)"
 "{ id=img_SecondTableExample }"
-msgstr ""
+msgstr "![Egy másik table_form példa](./SecondTableExample.png){ id=img_SecondTableExample }"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:834
 msgid ""
 "The function `wx_matrix()` is a wrapper for Maxima's `matrix()` command that "
 "allows for more flexible formatting of matrices in wxMaxima:"
-msgstr ""
+msgstr "A `wx_matrix()` függvény a Maxima `matrix()` parancsának burkolója, amely rugalmasabb mátrixformázást tesz lehetővé a wxMaximában:"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:836
 #, no-wrap
 msgid "**`wx_matrix( <matrix>, [options] )`**\n"
 msgstr ""
+"**`wx_matrix( <matrix>, [options] )`**\n"
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:841
 msgid ""
 "**`lines=true`**: Draws internal separator lines between the cells. This is "
 "required to visually separate headings from data."
-msgstr ""
+msgstr "**`lines=true`**: belső elválasztó vonalakat rajzol a cellák közé. Erre van szükség ahhoz, hogy a fejlécek vizuálisan elváljanak az adatoktól."
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:841
 msgid ""
 "**`rownames=true`**: Tells wxMaxima that the first column of the matrix "
 "contains labels."
-msgstr ""
+msgstr "**`rownames=true`**: közli a wxMaximával, hogy a mátrix első oszlopa címkéket tartalmaz."
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:841
 msgid ""
 "**`colnames=true`**: Tells wxMaxima that the first row of the matrix "
 "contains labels."
-msgstr ""
+msgstr "**`colnames=true`**: közli a wxMaximával, hogy a mátrix első sora címkéket tartalmaz."
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:841
@@ -17868,12 +18122,12 @@ msgid ""
 "**`parenstyle=<style>`**: Sets the type of parenthesis or brackets to draw "
 "around the matrix. Supported styles are: `round` `()`, `square` `[]`, "
 "`angled` `<>`, `straight` `||`, or `none`."
-msgstr ""
+msgstr "**`parenstyle=<style>`**: beállítja a mátrix köré rajzolt zárójelek fajtáját. A támogatott stílusok: `round` `()`, `square` `[]`, `angled` `<>`, `straight` `||` vagy `none`."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:843
 msgid "Example:"
-msgstr ""
+msgstr "Példa:"
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:844
@@ -17882,37 +18136,39 @@ msgid ""
 "wx_matrix(matrix([\"Name\", \"Value\"], [\"X\", 10], [\"Y\", 20]),\n"
 "          lines=true, rownames=true, colnames=true, parenstyle=square);\n"
 msgstr ""
+"wx_matrix(matrix([\"Name\", \"Value\"], [\"X\", 10], [\"Y\", 20]),\n"
+"          lines=true, rownames=true, colnames=true, parenstyle=square);\n"
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:849
 #, no-wrap
 msgid "Bug reporting"
-msgstr ""
+msgstr "Hibabejelentés"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:852
 msgid ""
 "_WxMaxima_ provides a few functions that gather bug reporting information "
 "about the current system:"
-msgstr ""
+msgstr "A _WxMaxima_ néhány olyan függvényt kínál, amelyek a hibabejelentéshez szükséges információkat gyűjtik össze az aktuális rendszerről:"
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:855
 msgid ""
 "`wxbuild_info()` gathers information about the currently running version of "
 "_wxMaxima_"
-msgstr ""
+msgstr "a `wxbuild_info()` információkat gyűjt a _wxMaxima_ éppen futó verziójáról"
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:855
 msgid "`wxbug_report()` tells how and where to file bugs"
-msgstr ""
+msgstr "a `wxbug_report()` elmondja, hogyan és hol lehet hibát bejelenteni"
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:856
 #, no-wrap
 msgid "Marking output being drawn in red"
-msgstr ""
+msgstr "Kimenet megjelölése piros színnel való rajzoláshoz"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:860
@@ -17920,18 +18176,18 @@ msgid ""
 "_Maxima_’s `box()` command causes _wxMaxima_ to print its argument with a "
 "red foreground, if the second argument to the command is the text "
 "`highlight`."
-msgstr ""
+msgstr "A _Maxima_ `box()` parancsa hatására a _wxMaxima_ piros színnel írja ki a parancs argumentumát, ha a parancs második argumentuma a `highlight` szöveg."
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:861
 #, no-wrap
 msgid "Output rendering."
-msgstr ""
+msgstr "A kimenet megjelenítése."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:864
 msgid "With `set_display()` one can set, how wxMaxima will render the output."
-msgstr ""
+msgstr "A `set_display()` segítségével beállítható, hogyan jelenítse meg a wxMaxima a kimenetet."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:866
@@ -17940,7 +18196,7 @@ msgid ""
 "using an (machine readable) XML-dialect (can be seen in the \"Raw XML "
 "sidebar\") and outputs the resulting formulas nicely rendered, e.g. pretty "
 "Matrices, Square root signs, fractions, etc."
-msgstr ""
+msgstr "A `set_display('xml)` az alapértelmezett érték. Ekkor a Maxima egy (gépileg olvasható) XML-dialektusban kommunikál a wxMaximával (ez a „Nyers XML monitor” oldalsávban látható), és az eredményként kapott képleteket szépen megjelenítve mutatja, pl. szép mátrixok, gyökjelek, törtek stb."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:869
@@ -17949,19 +18205,21 @@ msgid ""
 "<!--- Currently that does not work as it should, the line with the output label is shifted right (issue: #2006) -->\n"
 "`set_display('ascii)` causes wxMaxima to output formulas as in command line Maxima - as ASCII-Art.\n"
 msgstr ""
+"<!--- Currently that does not work as it should, the line with the output label is shifted right (issue: #2006) -->\n"
+"A `set_display('ascii)` hatására a wxMaxima úgy jeleníti meg a képleteket, mint a parancssori Maxima: ASCII-grafikaként.\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:871
 msgid ""
 "`set_display('none)` causes 'one-line' ASCII results - the same as the "
 "command line Maxima command `display2d:false;` does."
-msgstr ""
+msgstr "A `set_display('none)` „egysoros” ASCII-eredményeket ad, ugyanúgy, mint a parancssori Maximában a `display2d:false;` parancs."
 
 #. type: Title #
 #: ../../info/wxmaxima.md:872
 #, no-wrap
 msgid "Help menu"
-msgstr ""
+msgstr "A Súgó menü"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:875
@@ -17969,36 +18227,39 @@ msgid ""
 "WxMaxima’s help menu provides access to the Maxima and wxMaxima manual, "
 "tips, some example worksheets and in command line Maxima included demos (the "
 "`demo()` command)."
-msgstr ""
+msgstr "A WxMaxima Súgó menüje hozzáférést biztosít a Maxima és a wxMaxima kézikönyvéhez, tippekhez, néhány példamunkalaphoz, valamint a parancssori Maximához mellékelt bemutatókhoz (a `demo()` parancs)."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:877
 msgid "Please notice, that the demos write:"
-msgstr ""
+msgstr "Vegye figyelembe, hogy a bemutatók ezt írják ki:"
 
 #. type: Fenced code block (text)
 #: ../../info/wxmaxima.md:878
 #, no-wrap
 msgid "At the ’_’ prompt, type ’;’ and <enter> to proceed with the demonstration.\n"
 msgstr ""
+"At the ’_’ prompt, type ’;’ and <enter> to proceed with the demonstration.\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:883
 #, no-wrap
 msgid "That is valid for command-line Maxima, however in wxMaxima by default it is necessary to continue the demonstration with: <kbd>CTRL</kbd>+<kbd>ENTER</kbd>\n"
 msgstr ""
+"Ez a parancssori Maximára érvényes; a wxMaximában azonban alapértelmezés szerint a következővel kell folytatni a bemutatót: <kbd>CTRL</kbd>+<kbd>ENTER</kbd>\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:885
 #, no-wrap
 msgid "(That can be configured in the Configure->Worksheet->\"Hotkeys for sending commands to Maxima\" menu.)\n"
 msgstr ""
+"(Ez a Beállítás->Munkalap->„Gyorsbillentyűk a parancsok végrehajtásához” menüben állítható be.)\n"
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:890
 #, no-wrap
 msgid "Cannot connect to _Maxima_"
-msgstr ""
+msgstr "Nem lehet kapcsolódni a _Maxima_ programhoz"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:893
@@ -18015,7 +18276,7 @@ msgid ""
 "necessarily have to be named \"maxima\". Common names of the program that "
 "opens the network connection would be sbcl, gcl, ccl, lisp.exe, or similar "
 "names."
-msgstr ""
+msgstr "A _Maxima_ (a tényleges matematikai számításokat végző program) és a _wxMaxima_ (amely a könnyen kezelhető felhasználói felületet adja) külön programok, amelyek helyi hálózati kapcsolaton keresztül kommunikálnak. Ezért a legvalószínűbb ok az, hogy ez a kapcsolat valamiért nem működik. Egy tűzfal például úgy is be lehet állítva, hogy ne csak az internetről érkező jogosulatlan kapcsolatokat akadályozza meg (és esetleg néhány internet felé irányuló kapcsolatot is elfogjon), hanem az ugyanazon a számítógépen belüli folyamatok közötti kommunikációt is blokkolja. Mivel a _Maxima_ programot egy Lisp-feldolgozó futtatja, a blokkolt folyamatkommunikáció neve nem feltétlenül \"maxima\". A hálózati kapcsolatot megnyitó program szokásos nevei: sbcl, gcl, ccl, lisp.exe vagy hasonlók."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:895
@@ -18023,13 +18284,13 @@ msgid ""
 "On Unix computers another possible reason would be that the loopback network "
 "that provides network connections between two programs in the same computer "
 "isn’t properly configured."
-msgstr ""
+msgstr "Unix rendszerű számítógépeken egy másik lehetséges ok, hogy az ugyanazon a gépen futó két program közötti hálózati kapcsolatot biztosító loopback hálózat nincs megfelelően beállítva."
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:896
 #, no-wrap
 msgid "How to save data from a broken .wxmx file"
-msgstr ""
+msgstr "Hogyan menthetők meg az adatok egy sérült .wxmx fájlból"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:899
@@ -18037,7 +18298,7 @@ msgid ""
 "Internally most modern XML-based formats are ordinary zip files. _WxMaxima_ "
 "doesn’t turn on compression, so the contents of `.wxmx` files can be viewed "
 "in any text editor."
-msgstr ""
+msgstr "Belülről a legtöbb modern XML-alapú formátum közönséges zip-fájl. A _WxMaxima_ nem kapcsolja be a tömörítést, így a `.wxmx` fájlok tartalma bármely szövegszerkesztőben megtekinthető."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:901
@@ -18049,13 +18310,14 @@ msgid ""
 "processor document. If the zip signature isn’t intact that does not need to "
 "be the end of the world: If _wxMaxima_ during saving detected that something "
 "went wrong there will be a `.wxmx~` file whose contents might help."
-msgstr ""
+msgstr "Ha egy sérült `.wxmx` fájl `.zip` kiterjesztésűre átnevezése után a fájl végén lévő zip-aláírás még ép, a legtöbb operációs rendszer lehetőséget ad a benne tárolt információk bármely részének kibontására. Ez akkor is hasznos, ha egy szövegszerkesztő-dokumentumból kell visszanyerni az eredeti képfájlokat. Ha a zip-aláírás nem ép, az sem a világ vége: ha a _wxMaxima_ a mentés során észlelte, hogy valami elromlott, létezik egy `.wxmx~` fájl, amelynek tartalma segíthet."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:903
 #, no-wrap
 msgid "And even if there isn’t such a file: The `.wxmx` file is a container format and the XML portion is stored uncompressed. It it is possible to rename the `.wxmx` file to a `.txt` file and to use a text editor to recover the XML portion of the file’s contents (it starts with `<?xml version=\"1.0\" encoding=\"UTF-8\"?>` and ends with `</wxMaximaDocument>`. Before and after that text you will see some unreadable binary contents in the text editor).\n"
 msgstr ""
+"És ha ilyen fájl sincs: a `.wxmx` fájl konténerformátum, és az XML-része tömörítetlenül tárolódik. A `.wxmx` fájl `.txt` kiterjesztésűre átnevezhető, és szövegszerkesztővel visszanyerhető a fájl tartalmának XML-része (`<?xml version=\"1.0\" encoding=\"UTF-8\"?>` sorral kezdődik és `</wxMaximaDocument>` taggel végződik; előtte és utána olvashatatlan bináris tartalmat lát a szövegszerkesztőben).\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:905
@@ -18063,13 +18325,13 @@ msgid ""
 "If a text file containing only these contents (e.g. copy and paste this text "
 "into a new file) is saved as a file ending in `.xml`, _wxMaxima_ will know "
 "how to recover the text from the document."
-msgstr ""
+msgstr "Ha egy csak ezt a tartalmat tartalmazó szövegfájlt (pl. egy új fájlba másolva és beillesztve) `.xml` kiterjesztéssel ment el, a _wxMaxima_ vissza tudja állítani belőle a dokumentum szövegét."
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:906
 #, no-wrap
 msgid "I want some debug info to be displayed on the screen before my command has finished"
-msgstr ""
+msgstr "Szeretném, ha néhány hibakeresési információ már a parancs befejeződése előtt megjelenne a képernyőn"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:909
@@ -18079,7 +18341,7 @@ msgid ""
 "only partially completed equation. There is a `disp` command, though, that "
 "will provide debug output immediately and without waiting for the current "
 "_Maxima_ command to finish:"
-msgstr ""
+msgstr "A _wxMaxima_ általában megvárja, amíg a teljes 2D-s képlet megérkezik, és csak azután kezdi szedni. Így nem vesztegeti az időt egy csak részben megérkezett egyenlet ismételt szedési kísérleteire. Létezik azonban egy `disp` parancs, amely azonnal, az aktuális _Maxima_-parancs befejezésének megvárása nélkül ad hibakeresési kimenetet:"
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:910
@@ -18093,29 +18355,36 @@ msgid ""
 "   ?sleep(3)\n"
 ")$\n"
 msgstr ""
+"for i:1 thru 10 do (\n"
+"   disp(i),\n"
+"   /* A (sleep n) egy Lisp-függvény, amely a \"?\" */\n"
+"   /* karakterrel előtte használható. Késlelteti */\n"
+"   /* a program futását (itt: 3 másodpercig) */\n"
+"   ?sleep(3)\n"
+")$\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:921
 msgid "Alternatively one can look for the `wxstatusbar()` command above."
-msgstr ""
+msgstr "Másik lehetőségként a fent ismertetett `wxstatusbar()` parancs is használható."
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:922
 #, no-wrap
 msgid "Plotting only shows a closed empty envelope with an error message"
-msgstr ""
+msgstr "Az ábrázolás csak egy lezárt, üres borítékot mutat hibaüzenettel"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:925
 msgid ""
 "This means that _wxMaxima_ could not read the file _Maxima_ that was "
 "supposed to instruct _Gnuplot_ to create."
-msgstr ""
+msgstr "Ez azt jelenti, hogy a _wxMaxima_ nem tudta beolvasni azt a fájlt, amelyet a _Maxima_ utasítására a _Gnuplot_ programnak kellett volna létrehoznia."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:927
 msgid "Possible reasons for this error are:"
-msgstr ""
+msgstr "A hiba lehetséges okai:"
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:932
@@ -18123,7 +18392,7 @@ msgid ""
 "The plotting command is part of a third-party package like `implicit_plot` "
 "but this package was not loaded by _Maxima_’s `load()` command before trying "
 "to plot."
-msgstr ""
+msgstr "Az ábrázolóparancs egy külső csomag része, például az `implicit_plot` csomagé, de ezt a csomagot az ábrázolás megkísérlése előtt nem töltötték be a _Maxima_ `load()` parancsával."
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:932
@@ -18133,7 +18402,7 @@ msgid ""
 "in the directory, which _Maxima_’s variable `maxima_userdir` is pointing, "
 "contains the instructions from _Maxima_ to _Gnuplot_. Most of the time, this "
 "file’s contents therefore are helpful when debugging the problem."
-msgstr ""
+msgstr "A _Maxima_ olyasmit próbált tenni, amit a telepített _Gnuplot_ verzió nem ért. Ilyenkor a _Maxima_ `maxima_userdir` változója által mutatott könyvtárban lévő, `.gnuplot` kiterjesztésű fájl tartalmazza a _Maxima_ utasításait a _Gnuplot_ számára. A probléma felderítésében ezért többnyire ennek a fájlnak a tartalma segít."
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:932
@@ -18143,18 +18412,18 @@ msgid ""
 "this possibility. Solution: Uncheck the \"Use the Cairo terminal for the "
 "plot\" checkbox in the configuration dialog and don’t set `wxplot_pngcairo` "
 "to true from _Maxima_."
-msgstr ""
+msgstr "A Gnuplot utasítást kapott a pngCairo könyvtár használatára, amely élsimítást és további vonalstílusokat biztosít, de nem ennek támogatásával fordították. Megoldás: kapcsolja ki a \"Use the Cairo terminal for the plot\" jelölőnégyzetet a beállítási párbeszédablakban, és ne állítsa a _Maxima_ programból igazra a `wxplot_pngcairo` értékét."
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:932
 msgid "Gnuplot didn’t output a valid `.png` file."
-msgstr ""
+msgstr "A Gnuplot nem hozott létre érvényes `.png` fájlt."
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:933
 #, no-wrap
 msgid "Plotting an animation results in “error: undefined variable”"
-msgstr ""
+msgstr "Egy animáció ábrázolása „error: undefined variable” hibát eredményez"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:936
@@ -18165,13 +18434,13 @@ msgid ""
 "resolves this problem. At the end of section [Embedding animations into the "
 "spreadsheet](#embedding-animations-into-the-spreadsheet), you can see an "
 "example."
-msgstr ""
+msgstr "A csúszka változójának értéke alapértelmezés szerint csak akkor helyettesítődik be az ábrázolandó kifejezésbe, ha a változó látható benne. A problémát egy olyan `subst` parancs oldja meg, amely a csúszka változóját behelyettesíti az ábrázolandó egyenletbe. Példa az [Animációk beágyazása a munkalapba](#embedding-animations-into-the-spreadsheet) szakasz végén látható."
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:937
 #, no-wrap
 msgid "I lost cell content and undo doesn’t remember"
-msgstr ""
+msgstr "Elveszett egy cella tartalma, és a visszavonás nem emlékszik rá"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:940
@@ -18179,7 +18448,7 @@ msgid ""
 "There are separate undo functions for cell operations and for changes inside "
 "of cells so chances are low that this ever happens. If it does there are "
 "several methods to recover data:"
-msgstr ""
+msgstr "A cellaműveletekhez és a cellákon belüli változtatásokhoz külön visszavonási funkciók tartoznak, így ennek esélye kicsi. Ha mégis megtörténik, többféleképpen lehet visszanyerni az adatokat:"
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:945
@@ -18188,38 +18457,39 @@ msgid ""
 "active if no cell is selected and a per-cell undo buffer that is active if "
 "the cursor is inside a cell. It is worth trying to use both undo options in "
 "order to see if an old value can still be accessed."
-msgstr ""
+msgstr "A _WxMaxima_ valójában kétféle visszavonási funkcióval rendelkezik: a globális visszavonási pufferrel, amely akkor aktív, ha nincs kijelölt cella, és a cellánkénti visszavonási pufferrel, amely akkor aktív, ha a kurzor egy cellán belül van. Érdemes mindkét visszavonási lehetőséget kipróbálni, hátha egy régi érték még elérhető."
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:945
 msgid ""
 "If you still have a way to find out what label _Maxima_ has assigned to the "
 "cell just type in the cell’s label and its contents will reappear."
-msgstr ""
+msgstr "Ha még kideríthető, milyen címkét rendelt a _Maxima_ a cellához, egyszerűen írja be a cella címkéjét, és a tartalma ismét megjelenik."
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:945
 msgid ""
 "If you don’t: Don’t panic. In the “View” menu there is a way to show a "
 "history pane that shows all _Maxima_ commands that have been issued recently."
-msgstr ""
+msgstr "Ha nem: semmi pánik. A „Nézet” menüben megjeleníthető egy előzmények oldalsáv, amely a legutóbb kiadott összes _Maxima_-parancsot mutatja."
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:945
 msgid "If nothing else helps _Maxima_ contains a replay feature:"
-msgstr ""
+msgstr "Ha semmi más nem segít, a _Maxima_ visszajátszási funkcióval is rendelkezik:"
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:946
 #, no-wrap
 msgid "playback();\n"
 msgstr ""
+"playback();\n"
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:950
 #, no-wrap
 msgid "_WxMaxima_ starts up with the message “Maxima process terminated.”"
-msgstr ""
+msgstr "A _WxMaxima_ a „Maxima process terminated.” üzenettel indul"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:953
@@ -18228,13 +18498,13 @@ msgid ""
 "set in the “Maxima” tab of _wxMaxima_’s configuration dialog and therefore "
 "won’t run at all. Setting the path to a working _Maxima_ binary should fix "
 "this problem."
-msgstr ""
+msgstr "Az egyik lehetséges ok, hogy a _Maxima_ nem található a _wxMaxima_ beállítási párbeszédablakának „Maxima” lapján megadott helyen, ezért el sem indul. Egy működő _Maxima_ futtatható fájl elérési útjának megadása megoldja a problémát."
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:954
 #, no-wrap
 msgid "Maxima is forever calculating and not responding to input"
-msgstr ""
+msgstr "A Maxima vég nélkül számol, és nem reagál a bevitelre"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:957
@@ -18243,13 +18513,13 @@ msgid ""
 "has finished calculating and therefore never gets informed it can send new "
 "data to _Maxima_. If this is the case “Trigger evaluation” might "
 "resynchronize the two programs."
-msgstr ""
+msgstr "Elméletileg előfordulhat, hogy a _wxMaxima_ nem veszi észre, hogy a _Maxima_ befejezte a számolást, és így sosem kap értesítést arról, hogy új adatokat küldhet a _Maxima_ felé. Ilyenkor a „Trigger evaluation” újra szinkronizálhatja a két programot."
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:958
 #, no-wrap
 msgid "My SBCL-based _Maxima_ runs out of memory"
-msgstr ""
+msgstr "Az SBCL-alapú _Maxima_ programomnak elfogy a memóriája"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:961
@@ -18262,7 +18532,7 @@ msgid ""
 "megabytes it should reserve. A 32bit Windows-SBCL can reserve up to 999 "
 "Megabytes. A 64-bit SBCL version running on Windows can be instructed to use "
 "more than the about 1280 Megabytes compiling Lapack needs."
-msgstr ""
+msgstr "Az SBCL Lisp-fordító alapértelmezés szerint olyan memóriakorláttal érkezik, amely lehetővé teszi, hogy gyengébb számítógépeken is fusson. Egy nagy szoftvercsomag, például a Lapack fordításakor vagy rendkívül nagy egyenletlisták kezelésekor ez a korlát túl alacsony lehet. A korlátok növeléséhez az SBCL megkaphatja a `--dynamic-space-size` parancssori paramétert, amely megmondja, hány megabájtot foglaljon le. Egy 32 bites Windows-os SBCL legfeljebb 999 megabájtot foglalhat le. Egy Windows alatt futó 64 bites SBCL-verzió utasítható arra, hogy többet használjon annál a körülbelül 1280 megabájtnál, amelyre a Lapack fordításának szüksége van."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:963
@@ -18270,18 +18540,18 @@ msgid ""
 "One way to provide _Maxima_ (and thus SBCL) with command line parameters is "
 "the \"Additional parameters for Maxima\" field of _wxMaxima_’s configuration "
 "dialogue."
-msgstr ""
+msgstr "A _Maxima_ (és így az SBCL) parancssori paramétereinek megadására az egyik mód a _wxMaxima_ beállítási párbeszédablakának „A Maxima további paraméterei” mezője."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:965
 msgid "![sbcl memory](./sbclMemory.png){ id=img_sbclMemory }"
-msgstr ""
+msgstr "![sbcl memória](./sbclMemory.png){ id=img_sbclMemory }"
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:966
 #, no-wrap
 msgid "Input sometimes is sluggish/ignoring keys on Ubuntu"
-msgstr ""
+msgstr "A bevitel Ubuntun néha lomha, vagy billentyűket hagy figyelmen kívül"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:969
@@ -18289,26 +18559,27 @@ msgid ""
 "Installing the package `ibus-gtk` should resolve this issue. See ([https://"
 "bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558](https://bugs."
 "launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558)) for details."
-msgstr ""
+msgstr "Az `ibus-gtk` csomag telepítése megoldja ezt a problémát. Részletek: ([https://bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558](https://bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558))."
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:970
 #, no-wrap
 msgid "_WxMaxima_ halts when _Maxima_ processes Greek characters or Umlauts"
-msgstr ""
+msgstr "A _WxMaxima_ leáll, amikor a _Maxima_ görög betűket vagy ékezetes karaktereket dolgoz fel"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:973
 msgid ""
 "If your _Maxima_ is based on SBCL the following lines have to be added to "
 "your `.sbclrc`:"
-msgstr ""
+msgstr "Ha a _Maxima_ SBCL-alapú, a következő sorokat kell hozzáadni a `.sbclrc` fájlhoz:"
 
 #. type: Fenced code block (commonlisp)
 #: ../../info/wxmaxima.md:974
 #, no-wrap
 msgid "(setf sb-impl::*default-external-format* :utf-8)\n"
 msgstr ""
+"(setf sb-impl::*default-external-format* :utf-8)\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:979
@@ -18317,49 +18588,50 @@ msgid ""
 "specific. But any SBCL-based _Maxima_ that already has evaluated a cell in "
 "the current session will happily tell where it can be found after getting "
 "the following command:"
-msgstr ""
+msgstr "Az, hogy ezt a fájlt melyik mappába kell tenni, rendszer- és telepítésfüggő. Bármely SBCL-alapú _Maxima_, amely az aktuális munkamenetben már kiértékelt egy cellát, a következő parancs hatására készségesen megmondja, hol található:"
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:980
 #, no-wrap
 msgid ":lisp (sb-impl::userinit-pathname)\n"
 msgstr ""
+":lisp (sb-impl::userinit-pathname)\n"
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:984
 #, no-wrap
 msgid "Note concerning Wayland (recent Linux/BSD distributions)"
-msgstr ""
+msgstr "Megjegyzés a Waylanddel kapcsolatban (újabb Linux/BSD disztribúciók)"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:988
 msgid ""
 "There seem to be issues with the Wayland Display Server and wxWidgets.  "
 "WxMaxima may be affected, e.g. that sidebars are not moveable."
-msgstr ""
+msgstr "Úgy tűnik, a Wayland megjelenítőszerver és a wxWidgets között problémák vannak. Ez a wxMaximát is érintheti, pl. az oldalsávok nem mozgathatók."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:992
 msgid ""
 "You can either disable Wayland and use X11 instead (globally)  or just tell, "
 "that wxMaxima should use the X Window System by setting: `GDK_BACKEND=x11`"
-msgstr ""
+msgstr "Letilthatja a Waylandet, és helyette (globálisan) az X11-et használhatja, vagy csak azt adhatja meg, hogy a wxMaxima az X Window System rendszert használja, a következő beállítással: `GDK_BACKEND=x11`"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:994
 msgid "E.g. start wxMaxima with:"
-msgstr ""
+msgstr "Indítsa például így a wxMaximát:"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:996
 msgid "`GDK_BACKEND=x11 wxmaxima`"
-msgstr ""
+msgstr "`GDK_BACKEND=x11 wxmaxima`"
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:997
 #, no-wrap
 msgid "The menu bar disappears on KDE Plasma"
-msgstr ""
+msgstr "A menüsor eltűnik KDE Plasma alatt"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:1003
@@ -18368,7 +18640,7 @@ msgid ""
 "clicked.  As this is a bug in the global menu proxy, the only way to avoid "
 "it is to tell that wxMaxima should use its own menu bar instead of the "
 "global one.  This is done by setting: `UBUNTU_MENUPROXY=0`"
-msgstr ""
+msgstr "Egyes KDE Plasma telepítéseken a globális menüsor kattintásra eltűnik. Mivel ez a globális menü proxyjának hibája, elkerülni csak úgy lehet, ha megadjuk, hogy a wxMaxima a globális helyett a saját menüsorát használja. Ez a következő beállítással történik: `UBUNTU_MENUPROXY=0`"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:1007
@@ -18376,36 +18648,36 @@ msgid ""
 "Starting with version 26.05.0, wxMaxima attempts to set this variable "
 "automatically if it detects an affected system (KDE, Unity, or Ubuntu with "
 "older wxWidgets versions)."
-msgstr ""
+msgstr "A 26.05.0-s verziótól kezdve a wxMaxima megpróbálja automatikusan beállítani ezt a változót, ha érintett rendszert észlel (KDE, Unity vagy régebbi wxWidgets-verziójú Ubuntu)."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:1009
 msgid "If the automatic fix fails, you can manually start wxMaxima with:"
-msgstr ""
+msgstr "Ha az automatikus javítás nem működik, a wxMaxima kézzel is elindítható így:"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:1011
 msgid "`UBUNTU_MENUPROXY=0 wxmaxima`"
-msgstr ""
+msgstr "`UBUNTU_MENUPROXY=0 wxmaxima`"
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:1012
 #, no-wrap
 msgid "Why is the integrated manual browser not offered on my Windows PC?"
-msgstr ""
+msgstr "Miért nem érhető el a beépített kézikönyv-böngésző a Windows-os gépemen?"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:1016
 msgid ""
 "Either wxWidgets wasn’t compiled with support for Microsoft’s webview2 or "
 "Microsoft’s webview2 isn’t installed."
-msgstr ""
+msgstr "Vagy a wxWidgets nem a Microsoft webview2 támogatásával lett fordítva, vagy a Microsoft webview2 nincs telepítve."
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:1017
 #, no-wrap
 msgid "Why is the external manual browser not working on my Linux box?"
-msgstr ""
+msgstr "Miért nem működik a külső kézikönyv-böngésző a Linuxomon?"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:1024
@@ -18416,20 +18688,20 @@ msgid ""
 "flatpack or something else that doesn’t give the host system access to its "
 "contents. A third reason might be that the maxima HTML manual isn’t "
 "installed and the online one cannot be accessed."
-msgstr ""
+msgstr "Lehet, hogy a HTML-böngésző snap, flatpak vagy appimage változat. Ezek általában nem férnek hozzá a helyi rendszerre telepített fájlokhoz. Egy másik ok lehet, hogy a maxima vagy a wxMaxima snapként, flatpakként vagy más olyan módon van telepítve, amely nem ad hozzáférést a gazdarendszernek a tartalmához. Egy harmadik ok lehet, hogy a maxima HTML-kézikönyve nincs telepítve, az online kézikönyv pedig nem érhető el."
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:1025
 #, no-wrap
 msgid "Can I make _wxMaxima_ output both image files and embedded plots at once?"
-msgstr ""
+msgstr "Tud a _wxMaxima_ egyszerre képfájlokat és beágyazott ábrákat is készíteni?"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:1028
 msgid ""
 "The worksheet embeds `.png` files. _WxMaxima_ allows the user to specify "
 "where they should be generated:"
-msgstr ""
+msgstr "A munkalap `.png` fájlokat ágyaz be. A _WxMaxima_ lehetővé teszi, hogy a felhasználó megadja, hol jöjjenek létre:"
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:1029
@@ -18440,13 +18712,17 @@ msgid ""
 "    explicit(sin(x),x,1,10)\n"
 ");\n"
 msgstr ""
+"wxdraw2d(\n"
+"    file_name=\"test\",  /* a .png kiterjesztés automatikusan hozzáadódik */\n"
+"    explicit(sin(x),x,1,10)\n"
+");\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:1037
 msgid ""
 "If a different format is to be used, it is easier to generate the images and "
 "then import them into the worksheet again:"
-msgstr ""
+msgstr "Ha más formátumot kell használni, egyszerűbb előállítani a képeket, majd visszaimportálni őket a munkalapba:"
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:1038
@@ -18474,17 +18750,38 @@ msgid ""
 "        explicit(sin(x),x,1,10)\n"
 ");\n"
 msgstr ""
+"load(\"draw\");\n"
+"pngdraw(name,[contents]):=\n"
+"(\n"
+"    draw(\n"
+"        append(\n"
+"            [\n"
+"                terminal=pngcairo,\n"
+"                dimensions=wxplot_size,\n"
+"                file_name=name\n"
+"            ],\n"
+"            contents\n"
+"        )\n"
+"    ),\n"
+"    show_image(printf(false,\"~a.png\",name))\n"
+");\n"
+"pngdraw2d(name,[contents]):=\n"
+"    pngdraw(name,gr2d(contents));\n"
+"\n"
+"pngdraw2d(\"Test\",\n"
+"        explicit(sin(x),x,1,10)\n"
+");\n"
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:1062
 #, no-wrap
 msgid "Can I set the aspect ratio of an embedded plot?"
-msgstr ""
+msgstr "Beállítható egy beágyazott ábra méretaránya?"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:1065
 msgid "Use the variable `wxplot_size`:"
-msgstr ""
+msgstr "Használja a `wxplot_size` változót:"
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:1066
@@ -18494,12 +18791,15 @@ msgid ""
 "    explicit(sin(x),x,1,10)\n"
 "),wxplot_size=[1000,1000];\n"
 msgstr ""
+"wxdraw2d(\n"
+"    explicit(sin(x),x,1,10)\n"
+"),wxplot_size=[1000,1000];\n"
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:1072
 #, no-wrap
 msgid "After upgrading to MacOS 13.1 plot and/or draw commands output error messages like"
-msgstr ""
+msgstr "A MacOS 13.1-re frissítés után a plot és/vagy draw parancsok ilyen hibaüzeneteket adnak:"
 
 #. type: Fenced code block (text)
 #: ../../info/wxmaxima.md:1074
@@ -18510,18 +18810,23 @@ msgid ""
 "3 HIToolbox 0x00007ff80cd35908 SetMenuBarObscured + 408\n"
 "...\n"
 msgstr ""
+"1 HIToolbox 0x00007ff80cd91726 _ZN15MenuBarInstance22EnsureAutoShowObserverEv + 102\n"
+"2 HIToolbox 0x00007ff80cd912b8 _ZN15MenuBarInstance14EnableAutoShowEv + 52\n"
+"3 HIToolbox 0x00007ff80cd35908 SetMenuBarObscured + 408\n"
+"...\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:1082
 #, no-wrap
 msgid "This might be an issue with the operating system. Disable the hiding of the menu bar (SystemSettings => Desktop & Dock => Menu Bar) might solve the issue. See [wxMaxima issue #1746](https://github.com/wxMaxima-developers/wxmaxima/issues/1746) for more information.\n"
 msgstr ""
+"Ez az operációs rendszer hibája lehet. A menüsor elrejtésének kikapcsolása (Rendszerbeállítások => Asztal és Dock => Menüsor) megoldhatja a problémát. További információ a [wxMaxima #1746-os hibajegyében](https://github.com/wxMaxima-developers/wxmaxima/issues/1746) található.\n"
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:1083
 #, no-wrap
 msgid "Logging"
-msgstr ""
+msgstr "Naplózás"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:1088
@@ -18531,6 +18836,9 @@ msgid ""
 "the log windows is not shown by default, if you run a development version, it is shown by default as a second window. You can enable and disable\n"
 "this window using the \"View->Toggle log window\" menu entry.\n"
 msgstr ""
+"A naplóüzenetek segíthetnek a problémák felderítésében. A WxMaxima sok eseményt tud naplózni. A legtöbb naplóbejegyzés a fejlesztőknek hasznos, különösen problémák vagy hibák esetén. \"Release\" változat futtatásakor\n"
+"a naplóablak alapértelmezés szerint nem jelenik meg; fejlesztői verzió esetén alapértelmezés szerint második ablakként jelenik meg. Ez az ablak\n"
+"a „Nézet->Toggle log window” menüponttal kapcsolható be és ki.\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:1090
@@ -18538,14 +18846,14 @@ msgid ""
 "Messages are not 'lost', if the log window is not shown, if you select to "
 "show the log window later, you will see past log messages (if you did not "
 "clear the messages)."
-msgstr ""
+msgstr "Az üzenetek nem „vesznek el”, ha a naplóablak nem látható: ha később megjeleníti, a korábbi üzeneteket is látni fogja (ha nem törölte őket)."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:1092
 msgid ""
 "Such messages may be helpful, when you create bug reports (or trying to find "
 "a bug by yourself)."
-msgstr ""
+msgstr "Ezek az üzenetek hibajelentések készítésekor (vagy egy hiba önálló felderítésekor) lehetnek hasznosak."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:1095
@@ -18553,44 +18861,46 @@ msgid ""
 "Log messages can (additionally) be printed to STDERR, when using the command "
 "line option \"--logtostderr\". On Windows a separate text console will be "
 "opened, as a Windows GUI application does not have the standard IO connected."
-msgstr ""
+msgstr "A naplóüzenetek a \"--logtostderr\" parancssori kapcsolóval (pluszban) a STDERR-re is kiírhatók. Windows alatt ehhez egy külön szöveges konzol nyílik meg, mivel egy Windows-os grafikus alkalmazáshoz nincs hozzárendelve a szabványos bemenet és kimenet."
 
 #. type: Title #
 #: ../../info/wxmaxima.md:1098
 #, no-wrap
 msgid "FAQ"
-msgstr ""
+msgstr "GYIK"
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:1100
 #, no-wrap
 msgid "Is there a way to make more text fit on a LaTeX page?"
-msgstr ""
+msgstr "Elfér több szöveg egy LaTeX-oldalon?"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:1103
 msgid ""
 "Yes. Use the [LaTeX package \"geometry\"](https://ctan.org/pkg/geometry) to "
 "specify the size of the borders."
-msgstr ""
+msgstr "Igen. A margók méretét a [LaTeX \"geometry\" csomagjával](https://ctan.org/pkg/geometry) adhatja meg."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:1105
 #, no-wrap
 msgid "You can add the following line to the LaTeX preamble (for example by using the respective field in the config dialogue (\"Export\"->\"Additional lines for the TeX preamble\"), to set borders of 1cm):\n"
 msgstr ""
+"A LaTeX preambulumához hozzáadhatja a következő sort (például a beállítási párbeszédablak megfelelő mezőjében („Exportálás”->„További sorok a TeX preambulumba”)), hogy 1 cm-es margókat állítson be:\n"
 
 #. type: Fenced code block (latex)
 #: ../../info/wxmaxima.md:1106
 #, no-wrap
 msgid "\\usepackage[left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}\n"
 msgstr ""
+"\\usepackage[left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}\n"
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:1110
 #, no-wrap
 msgid "Is there a dark mode?"
-msgstr ""
+msgstr "Van sötét mód?"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:1113
@@ -18600,30 +18910,31 @@ msgid ""
 "equipped with a bright background. But it can be configured otherwise. "
 "Alternatively, there is a `View/Invert worksheet brightness` menu entry that "
 "allows to quickly convert the worksheet from dark to bright and vice versa."
-msgstr ""
+msgstr "Ha a wxWidgets elég új, a _wxMaxima_ automatikusan sötét módba vált, ha az operációs rendszer többi része is abban van. Maga a munkalap alapértelmezés szerint világos hátteret kap, de ez másképp is beállítható. Ezenkívül van egy `View/Invert worksheet brightness` menüpont, amellyel a munkalap gyorsan sötétből világosba és vissza váltható."
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:1114
 #, no-wrap
 msgid "_WxMaxima_ sometimes hangs for several seconds once in the first minute"
-msgstr ""
+msgstr "A _WxMaxima_ néha az első percben egyszer néhány másodpercre lefagy"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:1117
 #, no-wrap
 msgid "_WxMaxima_ delegates some big tasks like parsing _Maxima_’s >1000-page-manual to background tasks, which normally goes totally unnoticed. At the moment the result of such a task is needed, though, it is possible that _wxMaxima_ needs to wait a couple of seconds before it can continue its work.\n"
 msgstr ""
+"A _WxMaxima_ néhány nagy feladatot, például a _Maxima_ több mint 1000 oldalas kézikönyvének feldolgozását, háttérfeladatoknak adja át, ami általában teljesen észrevétlen marad. Ha azonban egy ilyen feladat eredményére már akkor szükség van, amikor még nem fejeződött be, előfordulhat, hogy a _wxMaxima_ programnak néhány másodpercet várnia kell, mielőtt folytathatja a munkáját.\n"
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:1118
 #, no-wrap
 msgid "Especially when testing new locale settings, a message box \"locale ’xx_YY’ can not be set\" occurs"
-msgstr ""
+msgstr "Főként új területi beállítások kipróbálásakor megjelenik egy \"locale ’xx_YY’ can not be set\" üzenetablak"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:1121
 msgid "![Locale warning](./locale-warning.png){ id=img_locale_warning}"
-msgstr ""
+msgstr "![Figyelmeztetés a területi beállításról](./locale-warning.png){ id=img_locale_warning}"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:1125
@@ -18631,20 +18942,20 @@ msgid ""
 "(The same problem can occur with other applications too). The translations "
 "seem okay after you click on ’OK’. WxMaxima does not only use its own "
 "translations but the translations of the wxWidgets framework too."
-msgstr ""
+msgstr "(Ugyanez a probléma más alkalmazásoknál is előfordulhat.) Az ’OK’ gombra kattintás után a fordítások rendben lévőnek tűnnek. A WxMaxima nem csak a saját fordításait használja, hanem a wxWidgets keretrendszer fordításait is."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:1128
 msgid ""
 "These locales maybe not present in the system. On Ubuntu/Debian systems they "
 "can be generated using: `dpkg-reconfigure locales`"
-msgstr ""
+msgstr "Lehet, hogy ezek a területi beállítások nincsenek meg a rendszerben. Ubuntu/Debian rendszereken a következő paranccsal hozhatók létre: `dpkg-reconfigure locales`"
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:1129
 #, no-wrap
 msgid "How can I use symbols for real numbers, natural numbers (ℝ, ℕ), etc.?"
-msgstr ""
+msgstr "Hogyan használhatok szimbólumokat a valós, a természetes számokhoz (ℝ, ℕ) stb.?"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:1132
@@ -18652,13 +18963,13 @@ msgid ""
 "You can find these symbols in the Unicode sidebar (search for ’double-struck "
 "capital’). But the selected font must also support these symbols. If they do "
 "not display properly, select another font."
-msgstr ""
+msgstr "Ezek a szimbólumok a „Unicode karakterek” oldalsávon találhatók (keressen rá a ’double-struck capital’ kifejezésre). A kiválasztott betűtípusnak azonban szintén támogatnia kell ezeket a szimbólumokat. Ha nem jelennek meg helyesen, válasszon másik betűtípust."
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:1133
 #, no-wrap
 msgid "How can a Maxima script determine, if it is running under wxMaxima or command line Maxima?"
-msgstr ""
+msgstr "Hogyan állapíthatja meg egy Maxima-szkript, hogy a wxMaximában vagy a parancssori Maximában fut?"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:1136
@@ -18666,32 +18977,33 @@ msgid ""
 "If wxMaxima is used, the Maxima variable `maxima_frontend` is set to "
 "`wxmaxima`. The Maxima variable `maxima_frontend_version` contains the "
 "wxMaxima version in this case."
-msgstr ""
+msgstr "Ha a wxMaxima használatban van, a Maxima `maxima_frontend` változójának értéke `wxmaxima`. Ilyenkor a Maxima `maxima_frontend_version` változója a wxMaxima verzióját tartalmazza."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:1138
 msgid ""
 "If no frontend is used (you are using command line Maxima), these variables "
 "are `false`."
-msgstr ""
+msgstr "Ha nincs használatban felület (a parancssori Maximát használja), ezeknek a változóknak `false` az értéke."
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:1139
 #, no-wrap
 msgid "Help! I can not save my document!"
-msgstr ""
+msgstr "Segítség! Nem tudom menteni a dokumentumomat!"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:1142
 #, no-wrap
 msgid "If saving as wxmx file does not work, try saving the document as wxm file (and vice versa). And you can also try to remove all output (Menu Cell->Remove all output) and save that file, maybe some unexpected output causes issues during the save process.\n"
 msgstr ""
+"Ha a wxmx-fájlként való mentés nem működik, próbálja meg wxm-fájlként menteni a dokumentumot (és fordítva). Megpróbálhatja azt is, hogy eltávolítja az összes kimenetet (Cella menü->Az összes kimenet eltávolítása), és úgy menti a fájlt; lehet, hogy valamilyen váratlan kimenet okoz gondot a mentés során.\n"
 
 #. type: Title #
 #: ../../info/wxmaxima.md:1145
 #, no-wrap
 msgid "Command-line arguments"
-msgstr ""
+msgstr "Parancssori argumentumok"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:1148
@@ -18699,29 +19011,29 @@ msgid ""
 "Usually you can start programs with a graphical user interface just by "
 "clicking on a desktop icon or desktop menu entry. WxMaxima - if started from "
 "the command line - still provides some command-line switches, though."
-msgstr ""
+msgstr "A grafikus felhasználói felülettel rendelkező programokat általában egyszerűen egy asztali ikonra vagy asztali menüpontra kattintva indítjuk. A parancssorból indított WxMaxima azonban kínál néhány parancssori kapcsolót."
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:1164
 msgid "`-v` or `--version`: Output the version information"
-msgstr ""
+msgstr "`-v` vagy `--version`: kiírja a verzióinformációkat"
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:1164
 msgid "`-h` or `--help`: Output a short help text"
-msgstr ""
+msgstr "`-h` vagy `--help`: rövid súgószöveget ír ki"
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:1164
 msgid ""
 "`-o` or `--open=<str>`: Open the filename given as an argument to this "
 "command-line switch"
-msgstr ""
+msgstr "`-o` vagy `--open=<str>`: megnyitja a parancssori kapcsoló argumentumaként megadott nevű fájlt"
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:1164
 msgid "`-e` or `--eval`: Evaluate the file after opening it."
-msgstr ""
+msgstr "`-e` vagy `--eval`: megnyitás után kiértékeli a fájlt."
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:1164
@@ -18733,7 +19045,7 @@ msgid ""
 "output an error and will pause if _Maxima_ has a question: Mathematics is "
 "somewhat interactive by nature so a completely interaction-free batch "
 "processing cannot always be guaranteed."
-msgstr ""
+msgstr "`-b` vagy `--batch`: ha a parancssor megnyit egy fájlt, a fájl összes cellája kiértékelődik, majd a fájl mentésre kerül. Ez például akkor hasznos, ha a fájlban leírt munkamenet hatására a _Maxima_ kimeneti fájlokat hoz létre. A kötegelt feldolgozás leáll, ha a _wxMaxima_ észleli, hogy a _Maxima_ hibát adott ki, és szünetel, ha a _Maxima_ kérdést tesz fel: a matematika természeténél fogva valamennyire interaktív, így a teljesen interakciómentes kötegelt feldolgozás nem mindig garantálható."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:1164
@@ -18750,19 +19062,29 @@ msgid ""
 "- `--enableipc`: Lets Maxima control wxMaxima via interprocess communications. Use this option with care.\n"
 "- `--wxmathml-lisp=<str>`:   Location of wxMathML.lisp (if not the built-in should be used, mainly for developers).\n"
 msgstr ""
+"- `--logtostderr`:                 A „debug messages” oldalsáv összes üzenetét a stderr-re is kiírja.\n"
+"- `--pipe`:                        A Maxima üzeneteit a stdout-ra irányítja.\n"
+"- `--exit-on-error`:               Bármilyen maxima-hiba esetén bezárja a programot.\n"
+"- `-f` vagy `--ini=<str>`: A parancssori kapcsoló argumentumaként megadott inicializáló fájlt használja\n"
+"- `-u`, `--use-version=<str>`:     A `<str>` maxima-verziót használja.\n"
+"- `-l`, `--lisp=<str>`:              A `<str>` Lisp-fordítóval fordított Maximát használja.\n"
+"- `-X`, `--extra-args=<str>`:        További Maxima-argumentumok adhatók meg vele\n"
+"- `-m` vagy `--maxima=<str>`:    a _maxima_ futtatható fájl helye adható meg vele\n"
+"- `--enableipc`: Lehetővé teszi, hogy a Maxima folyamatok közötti kommunikációval vezérelje a wxMaximát. Óvatosan használja ezt a kapcsolót.\n"
+"- `--wxmathml-lisp=<str>`:   A wxMathML.lisp helye (ha nem a beépítettet kell használni; főként fejlesztőknek).\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:1166
 msgid ""
 "Instead of a minus, some operating systems might use a dash in front of the "
 "command-line switches."
-msgstr ""
+msgstr "Egyes operációs rendszerek a parancssori kapcsolók előtt mínuszjel helyett gondolatjelet használhatnak."
 
 #. type: Title #
 #: ../../info/wxmaxima.md:1169
 #, no-wrap
 msgid "About the program, contributing to wxMaxima"
-msgstr ""
+msgstr "A programról, és hogyan járulhat hozzá a wxMaxima fejlesztéséhez"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:1172
@@ -18774,7 +19096,7 @@ msgid ""
 "wxMaxima-developers/wxmaxima>, if you have knowledge of these programming "
 "languages and want to help and contribute to the open source project "
 "wxMaxima."
-msgstr ""
+msgstr "A wxMaxima fejlesztése főként C++ programozási nyelven, a [wxWidgets keretrendszerrel](https://www.wxwidgets.org) történik, buildrendszerként a [CMake](https://www.cmake.org) programot használjuk, egy kis rész pedig Lisp nyelven készült. Ha ismeri ezeket a programozási nyelveket, és szeretne segíteni a nyílt forráskódú wxMaxima projektnek, csatlakozzon a wxMaxima projekthez: <https://github.com/wxMaxima-developers/wxmaxima>."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:1174
@@ -18785,19 +19107,19 @@ msgid ""
 "your language (read the README.md in the [locale subdirectory](https://"
 "github.com/wxMaxima-developers/wxmaxima/tree/main/locales) how wxMaxima and "
 "the manual can be translated)."
-msgstr ""
+msgstr "De nem csak programozókra van szükség! A wxMaximához úgy is hozzájárulhat, hogy segít a dokumentáció javításában, hibákat talál és jelent be (és esetleg javításokat is), új funkciókat javasol, vagy segít a wxMaxima vagy a kézikönyv lefordításában a saját nyelvére (a [locale alkönyvtárban](https://github.com/wxMaxima-developers/wxmaxima/tree/main/locales) lévő README.md leírja, hogyan fordítható le a wxMaxima és a kézikönyv)."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:1176
 msgid "Or answer questions of other users in the discussion forum."
-msgstr ""
+msgstr "Vagy válaszolhat más felhasználók kérdéseire a vitafórumon."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:1178
 msgid ""
 "The source code of wxMaxima is documented using Doxygen [here](https://"
 "wxmaxima-developers.github.io/wxmaxima/Doxygen-documentation/)."
-msgstr ""
+msgstr "A wxMaxima forráskódja Doxygennel van dokumentálva, [itt](https://wxmaxima-developers.github.io/wxmaxima/Doxygen-documentation/)."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:1180
@@ -18806,13 +19128,14 @@ msgid ""
 "the wxWidgets library), no external dependencies (like graphic files or the "
 "Lisp part (the `wxmathML.lisp`-file) is needed, these files are included in "
 "the executable."
-msgstr ""
+msgstr "A program szinte önálló: a rendszerkönyvtárakon (és a wxWidgets könyvtáron) kívül nincs szükség külső függőségekre (például grafikus fájlokra vagy a Lisp-részre, azaz a `wxmathML.lisp` fájlra); ezek a fájlok a futtatható állományban vannak."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:1181
 #, no-wrap
 msgid "If you are a developer, you might want to try out a modified `wxmathML.lisp`-file without recompiling everything, one can use the command line option `--wxmathml-lisp=<str>` to use another Lisp file, not the included one.\n"
 msgstr ""
+"Ha Ön fejlesztő, és egy módosított `wxmathML.lisp` fájlt szeretne kipróbálni anélkül, hogy mindent újrafordítana, a `--wxmathml-lisp=<str>` parancssori kapcsolóval a beépített helyett egy másik Lisp-fájlt használhat.\n"
 
 #~ msgid "Additional symbols for the \"symbols\" sidebar:"
 #~ msgstr "További szimbólumok a \"Szimbólumok\" oldalpanelra:"
