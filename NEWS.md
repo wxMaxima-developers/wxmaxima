@@ -1,5 +1,7 @@
 # Current development version
 
+- The German translation of the manual covers every paragraph again: the
+  245 paragraphs that were untranslated or outdated (fuzzy) are translated.
 - Building wxMaxima no longer changes any file in the source tree: the
   translated manuals are now made in the build directory. Previously every
   configure with po4a installed rewrote the translated manuals (and
