@@ -1,5 +1,13 @@
 # Current development version
 
+- Building wxMaxima no longer changes any file in the source tree: the
+  translated manuals are now made in the build directory. Previously every
+  configure with po4a installed rewrote the translated manuals (and
+  optionally the manual's `.po` files) in the source tree, which caused merge
+  conflicts after every change to the manual. These files are now refreshed
+  by a weekly CI job, which also runs a po4a new enough to do it; the
+  `WXM_PO4A_UPDATE_MANUAL_PO_POT_FILES` option is gone, its replacement is
+  the `update-locale-manual-in-source` target.
 - **Edit → Paste LaTeX/MathML as Maxima Code** converts a formula from the
   clipboard into a Maxima command (#932, #760): `\frac{d}{dx}\sin 2x`
   becomes `diff(sin(2*x),x)`, `\int_0^1 x^2\,dx` becomes

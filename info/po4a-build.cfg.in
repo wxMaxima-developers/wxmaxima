@@ -1,0 +1,3 @@
+[po4a_langs] ${MANUAL_LANGUAGES_SPACESEPARATED}
+[po4a_paths] ${CMAKE_SOURCE_DIR}/locales/manual/wxmaxima.md.pot $lang:${CMAKE_SOURCE_DIR}/locales/manual/$lang.po
+[type: text] ${CMAKE_SOURCE_DIR}/info/wxmaxima.md $lang:${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.$lang.md opt:"-k 5 -o markdown"

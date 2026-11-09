@@ -876,11 +876,12 @@ a local TCP socket.
   `wx_matrix()`, `table_form()` and friends got no "Help on" entry. Our own
   manual has no index and its headings (hence pandoc's heading ids) are
   translated, so each such keyword has a hand-written `<div id="keyword"></div>`
-  paragraph in `info/wxmaxima.md` **and in every `info/wxmaxima.<lang>.md`**,
-  in front of the paragraph documenting it. A paragraph of its own, so po4a
+  paragraph in `info/wxmaxima.md`, in front of the paragraph documenting it
+  (only there: the translated manuals get it from po4a, see "Neither a build
+  nor a manual edit touches the translation files" below). A paragraph of its own, so po4a
   sees a new untranslated msgid whose output is the anchor itself, and
   translations of the surrounding text don't go fuzzy. When documenting a new
-  wxMaxima command, add its anchor to all of these and its name to
+  wxMaxima command, add its anchor there and its name to
   `WxMaximaManualAnchors::Keywords()`; `test_WxMaximaManualAnchors` fails if the
   two disagree, and also checks the committed English `info/wxmaxima.html`
   (shipped to builds without pandoc), so regenerate that with the pandoc
@@ -1679,6 +1680,26 @@ tried without rebuilding.
     committed POT. Hand-add the one `msgid`, as the TrayIcon work did -- do
     not run a full `update-locale` for it.
 
+- **Neither a build nor a manual edit touches the translation files
+  (2026-11).** A configure used to run po4a into the source tree, rewriting
+  the tracked `info/wxmaxima.<lang>.md` (and, with the now-removed
+  `WXM_PO4A_UPDATE_MANUAL_PO_POT_FILES`, `locales/manual/*.po*`) whenever the
+  manual or the local po4a version differed from the last commit. Every
+  machine with po4a >= 0.70 therefore got a dirty tree from a plain build, and
+  the maintainer got merge conflicts on pull in files nobody had edited.
+  Now `info/CMakeLists.txt` translates the manual into the *build* directory
+  with `--no-update` (`info/po4a-build.cfg.in`), and the in-source refresh is
+  only `update-locale-manual-in-source`, run by hand or by the weekly
+  `update_translations.yml`, which commits `locales/` and
+  `info/wxmaxima.*.md` together. So: **edit `info/wxmaxima.md` only, never a
+  translated `info/wxmaxima.<lang>.md` or a manual `.po`, in a feature
+  branch.** That job runs in a `debian:trixie` container because the
+  runners' Ubuntu 24.04 has po4a 0.69, which `CheckPo4aVersion.cmake` rejects
+  -- before 2026-11 the manual's catalogues were silently never refreshed by
+  CI at all, which is part of why so many of them showed as <5% translated
+  (the template lagged ~80 paragraphs behind the manual). The
+  `git-diff` steps in `compile_ubuntu.yml` now fail if configuring or
+  building changes any tracked file.
 - **`test/check-pot-coverage.cmake` needs `cmake_policy(SET CMP0057 NEW)`
   explicitly.** It runs in script mode (`cmake -P`), which does not inherit
   the top-level `CMakeLists.txt`'s policy settings -- without this line,
