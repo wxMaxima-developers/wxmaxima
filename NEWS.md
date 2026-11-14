@@ -1,5 +1,7 @@
 # Current development version
 
+- Added a complete Swedish translation of the interface and user manual,
+  including the desktop launcher descriptions.
 - The German translation of the manual covers every paragraph again: the
   245 paragraphs that were untranslated or outdated (fuzzy) are translated.
 - Building wxMaxima no longer changes any file in the source tree: the

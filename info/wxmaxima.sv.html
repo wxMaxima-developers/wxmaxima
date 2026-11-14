@@ -1,0 +1,2990 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="sv" xml:lang="sv">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>WxMaxima</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="wxmaxima.css" />
+  <link rel="icon" type="image/svg+xml" href="wxmaxima.svg" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">WxMaxima</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#användarhandbok-för-wxmaxima"
+id="toc-användarhandbok-för-wxmaxima"><span
+class="toc-section-number">1</span> Användarhandbok för
+wxMaxima</a></li>
+<li><a href="#introduktion-till-wxmaxima"
+id="toc-introduktion-till-wxmaxima"><span
+class="toc-section-number">2</span> Introduktion till wxMaxima</a>
+<ul>
+<li><a href="#maxima-och-wxmaxima" id="toc-maxima-och-wxmaxima"><span
+class="toc-section-number">2.1</span> <em>Maxima</em> och wxMaxima</a>
+<ul>
+<li><a href="#maxima" id="toc-maxima"><span
+class="toc-section-number">2.1.1</span> <em>Maxima</em></a></li>
+<li><a href="#wxmaxima" id="toc-wxmaxima"><span
+class="toc-section-number">2.1.2</span> WxMaxima</a></li>
+</ul></li>
+<li><a href="#grunderna-i-arbetsböcker"
+id="toc-grunderna-i-arbetsböcker"><span
+class="toc-section-number">2.2</span> Grunderna i arbetsböcker</a>
+<ul>
+<li><a href="#arbetsboksmodellen" id="toc-arbetsboksmodellen"><span
+class="toc-section-number">2.2.1</span> Arbetsboksmodellen</a></li>
+<li><a href="#celler" id="toc-celler"><span
+class="toc-section-number">2.2.2</span> Celler</a></li>
+<li><a href="#vågräta-och-lodräta-markörer"
+id="toc-vågräta-och-lodräta-markörer"><span
+class="toc-section-number">2.2.3</span> Vågräta och lodräta
+markörer</a></li>
+<li><a href="#skicka-celler-till-maxima"
+id="toc-skicka-celler-till-maxima"><span
+class="toc-section-number">2.2.4</span> Skicka celler till
+Maxima</a></li>
+<li><a href="#automatisk-komplettering-av-kommandon"
+id="toc-automatisk-komplettering-av-kommandon"><span
+class="toc-section-number">2.2.5</span> Automatisk komplettering av
+kommandon</a></li>
+<li><a href="#ersättning-av-unicode-tecken"
+id="toc-ersättning-av-unicode-tecken"><span
+class="toc-section-number">2.2.6</span> Ersättning av
+Unicode-tecken</a></li>
+<li><a href="#sidopaneler" id="toc-sidopaneler"><span
+class="toc-section-number">2.2.7</span> Sidopaneler</a></li>
+<li><a href="#mathml-utdata" id="toc-mathml-utdata"><span
+class="toc-section-number">2.2.8</span> MathML-utdata</a></li>
+<li><a href="#klistra-in-latex--eller-mathml-formler"
+id="toc-klistra-in-latex--eller-mathml-formler"><span
+class="toc-section-number">2.2.9</span> Klistra in LaTeX- eller
+MathML-formler</a></li>
+<li><a href="#stöd-för-markdown" id="toc-stöd-för-markdown"><span
+class="toc-section-number">2.2.10</span> Stöd för Markdown</a></li>
+<li><a href="#länkar-i-textceller" id="toc-länkar-i-textceller"><span
+class="toc-section-number">2.2.11</span> Länkar i textceller</a></li>
+<li><a href="#fet-kursiv-understruken-och-genomstruken-text"
+id="toc-fet-kursiv-understruken-och-genomstruken-text"><span
+class="toc-section-number">2.2.12</span> Fet, kursiv, understruken och
+genomstruken text</a></li>
+<li><a href="#kortkommandon" id="toc-kortkommandon"><span
+class="toc-section-number">2.2.13</span> Kortkommandon</a></li>
+<li><a href="#utforska-utdata-med-tangentbordet"
+id="toc-utforska-utdata-med-tangentbordet"><span
+class="toc-section-number">2.2.14</span> Utforska utdata med
+tangentbordet</a></li>
+<li><a href="#obehandlad-tex-vid-tex-export"
+id="toc-obehandlad-tex-vid-tex-export"><span
+class="toc-section-number">2.2.15</span> Obehandlad TeX vid
+TeX-export</a></li>
+</ul></li>
+<li><a href="#filformat" id="toc-filformat"><span
+class="toc-section-number">2.3</span> Filformat</a>
+<ul>
+<li><a href="#mac" id="toc-mac"><span
+class="toc-section-number">2.3.1</span> .mac</a></li>
+<li><a href="#wxm" id="toc-wxm"><span
+class="toc-section-number">2.3.2</span> .wxm</a></li>
+<li><a href="#wxmx" id="toc-wxmx"><span
+class="toc-section-number">2.3.3</span> .wxmx</a></li>
+</ul></li>
+<li><a href="#inställningsalternativ"
+id="toc-inställningsalternativ"><span
+class="toc-section-number">2.4</span> Inställningsalternativ</a>
+<ul>
+<li><a href="#standardbildfrekvens-för-animeringar"
+id="toc-standardbildfrekvens-för-animeringar"><span
+class="toc-section-number">2.4.1</span> Standardbildfrekvens för
+animeringar</a></li>
+<li><a href="#standardstorlek-på-diagram-i-nya-maxima-sessioner"
+id="toc-standardstorlek-på-diagram-i-nya-maxima-sessioner"><span
+class="toc-section-number">2.4.2</span> Standardstorlek på diagram i nya
+<em>Maxima</em>-sessioner</a></li>
+<li><a href="#matcha-parenteser-i-textfält"
+id="toc-matcha-parenteser-i-textfält"><span
+class="toc-section-number">2.4.3</span> Matcha parenteser i
+textfält</a></li>
+<li><a href="#spara-inte-arbetsbladet-automatiskt"
+id="toc-spara-inte-arbetsbladet-automatiskt"><span
+class="toc-section-number">2.4.4</span> Spara inte arbetsbladet
+automatiskt</a></li>
+<li><a href="#ordna-verktygsfältet" id="toc-ordna-verktygsfältet"><span
+class="toc-section-number">2.4.5</span> Ordna verktygsfältet</a></li>
+<li><a href="#var-sparas-inställningarna"
+id="toc-var-sparas-inställningarna"><span
+class="toc-section-number">2.4.6</span> Var sparas
+inställningarna?</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#utökningar-av-maxima" id="toc-utökningar-av-maxima"><span
+class="toc-section-number">3</span> Utökningar av <em>Maxima</em></a>
+<ul>
+<li><a href="#variabler-med-nedsänkta-index"
+id="toc-variabler-med-nedsänkta-index"><span
+class="toc-section-number">3.1</span> Variabler med nedsänkta
+index</a></li>
+<li><a href="#återkoppling-i-statusfältet"
+id="toc-återkoppling-i-statusfältet"><span
+class="toc-section-number">3.2</span> Återkoppling i
+statusfältet</a></li>
+<li><a href="#exportera-arbetsbladet-från-maxima"
+id="toc-exportera-arbetsbladet-från-maxima"><span
+class="toc-section-number">3.3</span> Exportera arbetsbladet från
+Maxima</a></li>
+<li><a href="#diagramritning" id="toc-diagramritning"><span
+class="toc-section-number">3.4</span> Diagramritning</a>
+<ul>
+<li><a href="#bädda-in-ett-diagram-i-arbetsbladet"
+id="toc-bädda-in-ett-diagram-i-arbetsbladet"><span
+class="toc-section-number">3.4.1</span> Bädda in ett diagram i
+arbetsbladet</a></li>
+<li><a href="#ändra-storlek-på-inbäddade-diagram"
+id="toc-ändra-storlek-på-inbäddade-diagram"><span
+class="toc-section-number">3.4.2</span> Ändra storlek på inbäddade
+diagram</a></li>
+<li><a href="#diagram-med-bättre-kvalitet"
+id="toc-diagram-med-bättre-kvalitet"><span
+class="toc-section-number">3.4.3</span> Diagram med bättre
+kvalitet</a></li>
+<li><a href="#öppna-inbäddade-diagram-i-interaktiva-gnuplot-fönster"
+id="toc-öppna-inbäddade-diagram-i-interaktiva-gnuplot-fönster"><span
+class="toc-section-number">3.4.4</span> Öppna inbäddade diagram i
+interaktiva <em>Gnuplot</em>-fönster</a></li>
+<li><a href="#öppna-gnuplots-kommandokonsol-i-plot-fönster"
+id="toc-öppna-gnuplots-kommandokonsol-i-plot-fönster"><span
+class="toc-section-number">3.4.5</span> Öppna Gnuplots kommandokonsol i
+<code>plot</code>-fönster</a></li>
+<li><a href="#embedding-animations-into-the-spreadsheet"
+id="toc-embedding-animations-into-the-spreadsheet"><span
+class="toc-section-number">3.4.6</span> Bädda in animeringar i
+arbetsbladet</a></li>
+<li><a href="#öppna-flera-diagram-i-samtidiga-fönster"
+id="toc-öppna-flera-diagram-i-samtidiga-fönster"><span
+class="toc-section-number">3.4.7</span> Öppna flera diagram i samtidiga
+fönster</a></li>
+<li><a href="#sidopanelen-rita-med-draw"
+id="toc-sidopanelen-rita-med-draw"><span
+class="toc-section-number">3.4.8</span> Sidopanelen “Rita med
+draw”</a></li>
+<li><a href="#ändra-typsnitt-och-textstorlek-i-diagram"
+id="toc-ändra-typsnitt-och-textstorlek-i-diagram"><span
+class="toc-section-number">3.4.9</span> Ändra typsnitt och textstorlek i
+diagram</a></li>
+</ul></li>
+<li><a href="#bädda-in-grafik" id="toc-bädda-in-grafik"><span
+class="toc-section-number">3.5</span> Bädda in grafik</a></li>
+<li><a href="#startfiler" id="toc-startfiler"><span
+class="toc-section-number">3.6</span> Startfiler</a></li>
+<li><a href="#specialvariabler-wx" id="toc-specialvariabler-wx"><span
+class="toc-section-number">3.7</span> Specialvariabler wx…</a></li>
+<li><a href="#snygg-formatering-av-tvådimensionella-utdata"
+id="toc-snygg-formatering-av-tvådimensionella-utdata"><span
+class="toc-section-number">3.8</span> Snygg formatering av
+tvådimensionella utdata</a></li>
+<li><a href="#rapportera-fel" id="toc-rapportera-fel"><span
+class="toc-section-number">3.9</span> Rapportera fel</a></li>
+<li><a href="#markera-utdata-med-röd-färg"
+id="toc-markera-utdata-med-röd-färg"><span
+class="toc-section-number">3.10</span> Markera utdata med röd
+färg</a></li>
+<li><a href="#visning-av-utdata." id="toc-visning-av-utdata."><span
+class="toc-section-number">3.11</span> Visning av utdata.</a></li>
+</ul></li>
+<li><a href="#hjälpmenyn" id="toc-hjälpmenyn"><span
+class="toc-section-number">4</span> Hjälpmenyn</a></li>
+<li><a href="#felsökning" id="toc-felsökning"><span
+class="toc-section-number">5</span> Felsökning</a>
+<ul>
+<li><a href="#felsökningsdialogen" id="toc-felsökningsdialogen"><span
+class="toc-section-number">5.1</span> Felsökningsdialogen</a></li>
+<li><a href="#kan-inte-ansluta-till-maxima"
+id="toc-kan-inte-ansluta-till-maxima"><span
+class="toc-section-number">5.2</span> Kan inte ansluta till
+<em>Maxima</em></a></li>
+<li><a href="#rädda-data-från-en-skadad-.wxmx-fil"
+id="toc-rädda-data-från-en-skadad-.wxmx-fil"><span
+class="toc-section-number">5.3</span> Rädda data från en skadad
+.wxmx-fil</a></li>
+<li><a
+href="#jag-vill-visa-felsökningsinformation-innan-kommandot-är-klart"
+id="toc-jag-vill-visa-felsökningsinformation-innan-kommandot-är-klart"><span
+class="toc-section-number">5.4</span> Jag vill visa
+felsökningsinformation innan kommandot är klart</a></li>
+<li><a
+href="#diagramritning-visar-bara-ett-stängt-tomt-kuvert-med-ett-felmeddelande"
+id="toc-diagramritning-visar-bara-ett-stängt-tomt-kuvert-med-ett-felmeddelande"><span
+class="toc-section-number">5.5</span> Diagramritning visar bara ett
+stängt tomt kuvert med ett felmeddelande</a></li>
+<li><a href="#ritning-av-en-animering-ger-error-undefined-variable"
+id="toc-ritning-av-en-animering-ger-error-undefined-variable"><span
+class="toc-section-number">5.6</span> Ritning av en animering ger
+”error: undefined variable”</a></li>
+<li><a href="#jag-förlorade-cellinnehåll-och-ångra-minns-det-inte"
+id="toc-jag-förlorade-cellinnehåll-och-ångra-minns-det-inte"><span
+class="toc-section-number">5.7</span> Jag förlorade cellinnehåll och
+Ångra minns det inte</a></li>
+<li><a
+href="#wxmaxima-startar-med-meddelandet-maxima-processen-avslutades."
+id="toc-wxmaxima-startar-med-meddelandet-maxima-processen-avslutades."><span
+class="toc-section-number">5.8</span> <em>WxMaxima</em> startar med
+meddelandet ”Maxima-processen avslutades.”</a></li>
+<li><a href="#maxima-beräknar-oavbrutet-och-svarar-inte-på-inmatning"
+id="toc-maxima-beräknar-oavbrutet-och-svarar-inte-på-inmatning"><span
+class="toc-section-number">5.9</span> Maxima beräknar oavbrutet och
+svarar inte på inmatning</a></li>
+<li><a href="#min-sbcl-baserade-maxima-får-slut-på-minne"
+id="toc-min-sbcl-baserade-maxima-får-slut-på-minne"><span
+class="toc-section-number">5.10</span> Min SBCL-baserade <em>Maxima</em>
+får slut på minne</a></li>
+<li><a
+href="#inmatningen-är-ibland-långsam-eller-missar-tangenttryckningar-på-ubuntu"
+id="toc-inmatningen-är-ibland-långsam-eller-missar-tangenttryckningar-på-ubuntu"><span
+class="toc-section-number">5.11</span> Inmatningen är ibland långsam
+eller missar tangenttryckningar på Ubuntu</a></li>
+<li><a
+href="#wxmaxima-stannar-när-maxima-behandlar-grekiska-bokstäver-eller-bokstäver-med-omljud"
+id="toc-wxmaxima-stannar-när-maxima-behandlar-grekiska-bokstäver-eller-bokstäver-med-omljud"><span
+class="toc-section-number">5.12</span> <em>WxMaxima</em> stannar när
+<em>Maxima</em> behandlar grekiska bokstäver eller bokstäver med
+omljud</a></li>
+<li><a href="#om-wayland-i-nyare-linux--och-bsd-distributioner"
+id="toc-om-wayland-i-nyare-linux--och-bsd-distributioner"><span
+class="toc-section-number">5.13</span> Om Wayland i nyare Linux- och
+BSD-distributioner</a></li>
+<li><a href="#menyraden-försvinner-på-kde-plasma"
+id="toc-menyraden-försvinner-på-kde-plasma"><span
+class="toc-section-number">5.14</span> Menyraden försvinner på KDE
+Plasma</a></li>
+<li><a
+href="#varför-erbjuds-inte-den-inbyggda-handboksvisaren-på-min-windows-dator"
+id="toc-varför-erbjuds-inte-den-inbyggda-handboksvisaren-på-min-windows-dator"><span
+class="toc-section-number">5.15</span> Varför erbjuds inte den inbyggda
+handboksvisaren på min Windows-dator?</a></li>
+<li><a
+href="#varför-fungerar-inte-den-externa-handboksvisaren-på-min-linux-dator"
+id="toc-varför-fungerar-inte-den-externa-handboksvisaren-på-min-linux-dator"><span
+class="toc-section-number">5.16</span> Varför fungerar inte den externa
+handboksvisaren på min Linux-dator?</a></li>
+<li><a
+href="#kan-wxmaxima-skapa-både-bildfiler-och-inbäddade-diagram-samtidigt"
+id="toc-kan-wxmaxima-skapa-både-bildfiler-och-inbäddade-diagram-samtidigt"><span
+class="toc-section-number">5.17</span> Kan <em>wxMaxima</em> skapa både
+bildfiler och inbäddade diagram samtidigt?</a></li>
+<li><a href="#kan-jag-ange-bildförhållandet-för-ett-inbäddat-diagram"
+id="toc-kan-jag-ange-bildförhållandet-för-ett-inbäddat-diagram"><span
+class="toc-section-number">5.18</span> Kan jag ange bildförhållandet för
+ett inbäddat diagram?</a></li>
+<li><a
+href="#efter-uppgradering-till-macos-13.1-ger-plot--eller-draw-kommandon-felmeddelanden-som"
+id="toc-efter-uppgradering-till-macos-13.1-ger-plot--eller-draw-kommandon-felmeddelanden-som"><span
+class="toc-section-number">5.19</span> Efter uppgradering till macOS
+13.1 ger plot- eller draw-kommandon felmeddelanden som</a></li>
+<li><a
+href="#på-macos-öppnar-plot2d-eller-draw-inget-fönster-utan-skriver-broken-pipe"
+id="toc-på-macos-öppnar-plot2d-eller-draw-inget-fönster-utan-skriver-broken-pipe"><span
+class="toc-section-number">5.20</span> På macOS öppnar
+<code>plot2d</code> eller <code>draw</code> inget fönster utan skriver
+”Broken pipe”</a></li>
+<li><a href="#loggning" id="toc-loggning"><span
+class="toc-section-number">5.21</span> Loggning</a></li>
+</ul></li>
+<li><a href="#vanliga-frågor" id="toc-vanliga-frågor"><span
+class="toc-section-number">6</span> Vanliga frågor</a>
+<ul>
+<li><a href="#går-det-att-få-plats-med-mer-text-på-en-latex-sida"
+id="toc-går-det-att-få-plats-med-mer-text-på-en-latex-sida"><span
+class="toc-section-number">6.1</span> Går det att få plats med mer text
+på en LaTeX-sida?</a></li>
+<li><a href="#finns-det-ett-mörkt-läge"
+id="toc-finns-det-ett-mörkt-läge"><span
+class="toc-section-number">6.2</span> Finns det ett mörkt läge?</a></li>
+<li><a
+href="#wxmaxima-stannar-ibland-i-flera-sekunder-under-den-första-minuten"
+id="toc-wxmaxima-stannar-ibland-i-flera-sekunder-under-den-första-minuten"><span
+class="toc-section-number">6.3</span> <em>WxMaxima</em> stannar ibland i
+flera sekunder under den första minuten</a></li>
+<li><a
+href="#meddelandet-locale-xx_yy-can-not-be-set-visas-särskilt-när-nya-lokalinställningar-provas"
+id="toc-meddelandet-locale-xx_yy-can-not-be-set-visas-särskilt-när-nya-lokalinställningar-provas"><span
+class="toc-section-number">6.4</span> Meddelandet ”locale ’xx_YY’ can
+not be set” visas, särskilt när nya lokalinställningar provas</a></li>
+<li><a
+href="#hur-använder-jag-symboler-för-reella-tal-naturliga-tal-ℝ-ℕ-och-liknande"
+id="toc-hur-använder-jag-symboler-för-reella-tal-naturliga-tal-ℝ-ℕ-och-liknande"><span
+class="toc-section-number">6.5</span> Hur använder jag symboler för
+reella tal, naturliga tal (ℝ, ℕ) och liknande?</a></li>
+<li><a
+href="#hur-kan-ett-maxima-skript-avgöra-om-det-körs-i-wxmaxima-eller-i-maxima-på-kommandoraden"
+id="toc-hur-kan-ett-maxima-skript-avgöra-om-det-körs-i-wxmaxima-eller-i-maxima-på-kommandoraden"><span
+class="toc-section-number">6.6</span> Hur kan ett Maxima-skript avgöra
+om det körs i wxMaxima eller i Maxima på kommandoraden?</a>
+<ul>
+<li><a href="#är-wxmaxima-tillräckligt-nytt-för-detta-arbetsblad"
+id="toc-är-wxmaxima-tillräckligt-nytt-för-detta-arbetsblad"><span
+class="toc-section-number">6.6.1</span> Är wxMaxima tillräckligt nytt
+för detta arbetsblad?</a></li>
+</ul></li>
+<li><a href="#hjälp-jag-kan-inte-spara-dokumentet"
+id="toc-hjälp-jag-kan-inte-spara-dokumentet"><span
+class="toc-section-number">6.7</span> Hjälp! Jag kan inte spara
+dokumentet!</a></li>
+</ul></li>
+<li><a href="#kommandoradsargument" id="toc-kommandoradsargument"><span
+class="toc-section-number">7</span> Kommandoradsargument</a></li>
+<li><a href="#om-programmet-och-hur-du-bidrar-till-wxmaxima"
+id="toc-om-programmet-och-hur-du-bidrar-till-wxmaxima"><span
+class="toc-section-number">8</span> Om programmet och hur du bidrar till
+wxMaxima</a></li>
+</ul>
+</nav>
+<h1 data-number="1" id="användarhandbok-för-wxmaxima"><span
+class="header-section-number">1</span> Användarhandbok för wxMaxima</h1>
+<p>WxMaxima är ett grafiskt användargränssnitt (GUI) för
+datoralgebrasystemet (CAS) <em>Maxima</em>. WxMaxima ger tillgång till
+alla funktioner i <em>Maxima</em> och erbjuder dessutom praktiska guider
+för de vanligaste funktionerna. Den här handboken beskriver några av de
+egenskaper som gör wxMaxima till ett av de populäraste grafiska
+gränssnitten för <em>Maxima</em>.</p>
+<figure id="img_wxMaximaLogo">
+<img src="./wxMaximaLogo.png" alt="wxMaximas logotyp" />
+<figcaption aria-hidden="true">wxMaximas logotyp</figcaption>
+</figure>
+<hr />
+<h1 data-number="2" id="introduktion-till-wxmaxima"><span
+class="header-section-number">2</span> Introduktion till wxMaxima</h1>
+<h2 data-number="2.1" id="maxima-och-wxmaxima"><span
+class="header-section-number">2.1</span> <em>Maxima</em> och
+wxMaxima</h2>
+<p>Inom öppen källkod delas stora system vanligen upp i mindre projekt
+som är lättare för små utvecklargrupper att hantera. Ett
+CD-brännarprogram består till exempel av ett kommandoradsverktyg som
+faktiskt bränner skivan och ett grafiskt användargränssnitt som låter
+användaren göra detta utan att lära sig alla kommandoradsalternativ,
+eller ens använda kommandoraden. En fördel är att utvecklingsarbetet för
+kommandoradsprogrammet kan komma flera program till nytta. Samma
+CD-brännarverktyg kan användas som ett tillägg för att skicka filer till
+CD i en filhanterare, för en musikspelares funktion för att bränna CD
+och för att skriva CD-skivor i ett verktyg för DVD-säkerhetskopiering.
+En annan fördel är att uppdelningen av en stor uppgift i mindre delar
+gör det möjligt att erbjuda flera användargränssnitt till samma
+program.</p>
+<p>Ett datoralgebrasystem (CAS) som <em>Maxima</em> passar in i detta
+upplägg. Ett CAS kan tillhandahålla logiken i en kalkylator med
+godtycklig precision eller automatiskt omforma formler i bakgrunden i
+ett större system, till exempel <a
+href="https://www.sagemath.org/">Sage</a>. Det kan också användas direkt
+som ett fristående system. <em>Maxima</em> kan användas via
+kommandoraden. Ofta är dock ett gränssnitt som <em>wxMaxima</em> ett
+effektivare sätt att använda programvaran, särskilt för nybörjare.</p>
+<h3 data-number="2.1.1" id="maxima"><span
+class="header-section-number">2.1.1</span> <em>Maxima</em></h3>
+<p><em>Maxima</em> är ett fullfjädrat datoralgebrasystem (CAS). Ett CAS
+är ett program som kan lösa matematiska problem genom att omforma
+formler och hitta en formel som löser problemet, i stället för att bara
+ange ett numeriskt resultat. <em>Maxima</em> kan alltså fungera som en
+kalkylator som ger numeriska representationer av variabler och kan även
+ge analytiska lösningar. Dessutom erbjuder programmet olika numeriska
+analysmetoder för ekvationer och ekvationssystem som inte kan lösas
+analytiskt.</p>
+<figure id="img_maxima_screenshot">
+<img src="./maxima_screenshot.png"
+alt="Skärmbild av Maxima på kommandoraden" />
+<figcaption aria-hidden="true">Skärmbild av Maxima på
+kommandoraden</figcaption>
+</figure>
+<p>Omfattande dokumentation för <em>Maxima</em> finns <a
+href="https://maxima.sourceforge.io/documentation.html">på internet</a>.
+En del av dokumentationen finns även i wxMaximas hjälpmeny. När du
+trycker på hjälptangenten, vanligen <kbd>F1</kbd>, går <em>wxMaxima</em>
+automatiskt till sidan i <em>Maxima</em>-handboken för kommandot vid
+markören.</p>
+<h3 data-number="2.1.2" id="wxmaxima"><span
+class="header-section-number">2.1.2</span> WxMaxima</h3>
+<p><em>WxMaxima</em> är ett grafiskt användargränssnitt som ger tillgång
+till <em>Maxima</em> med all dess funktionalitet och flexibilitet.
+WxMaxima erbjuder grafisk visning och många funktioner som underlättar
+arbetet med <em>Maxima</em>. Du kan till exempel högerklicka för att
+exportera en cells innehåll, eller en del av en formel, som text, LaTeX
+eller MathML. Du kan även exportera en hel arbetsbok som en HTML- eller
+LaTeX-fil. Dokumentation för <em>wxMaxima</em>, inklusive arbetsböcker
+som visar hur programmet kan användas, finns på <em>wxMaxima</em>-<a
+href="https://wxMaxima-developers.github.io/wxmaxima/help.html">hjälpwebbplatsen</a>
+och via hjälpmenyn.</p>
+<figure id="img_wxMaximaWindow">
+<img src="./wxMaximaWindow.png" alt="wxMaximas fönster" />
+<figcaption aria-hidden="true">wxMaximas fönster</figcaption>
+</figure>
+<p>Beräkningar som anges i <em>wxMaxima</em> utförs i bakgrunden av
+kommandoradsverktyget <em>Maxima</em>.</p>
+<h2 data-number="2.2" id="grunderna-i-arbetsböcker"><span
+class="header-section-number">2.2</span> Grunderna i arbetsböcker</h2>
+<p>Mycket i <em>wxMaxima</em> är självförklarande, men vissa detaljer
+kräver uppmärksamhet. På <a
+href="https://wxMaxima-developers.github.io/wxmaxima/help.html">den här
+webbplatsen</a> finns ett antal arbetsböcker som behandlar olika delar
+av <em>wxMaxima</em>. Genom att arbeta igenom några av dem, särskilt “10
+minute <em>(wx)Maxima</em> tutorial”, blir du mer bekant med både
+<em>Maxima</em> och hur du använder <em>wxMaxima</em> för att arbeta med
+det. Den här handboken fokuserar på sådant i <em>wxMaxima</em> som inte
+är självklart och kanske inte behandlas i materialet på nätet.</p>
+<h3 data-number="2.2.1" id="arbetsboksmodellen"><span
+class="header-section-number">2.2.1</span> Arbetsboksmodellen</h3>
+<p>En av få saker som inte följer vanliga konventioner i
+<em>wxMaxima</em> är att data för <em>Maxima</em> ordnas i celler som
+beräknas, alltså skickas till <em>Maxima</em>, först när användaren
+begär det. När en cell beräknas körs alla kommandon i just den cellen i
+en följd. Detta är inte helt exakt: du kan även markera flera
+intilliggande celler och beräkna dem tillsammans, eller låta
+<em>Maxima</em> beräkna alla celler i en arbetsbok i ett enda steg.
+<em>WxMaximas</em> sätt att skicka kommandon för körning kan verka ovant
+till en början. Det förenklar dock arbetet med stora dokument avsevärt,
+eftersom varje ändring då inte behöver utlösa en fullständig omberäkning
+av dokumentet. Det är också mycket praktiskt vid felsökning.</p>
+<p>När du skriver i <em>wxMaxima</em> skapas automatiskt en ny cell i
+arbetsbladet. Celltypen kan väljas i verktygsfältet. Om du skapar en
+kodcell kan den skickas till <em>Maxima</em>, varefter
+beräkningsresultatet visas under koden. Två sådana kommandon visas
+nedan.</p>
+<figure id="img_InputCell">
+<img src="./InputCell.png" alt="Inmatnings- och utdatacell" />
+<figcaption aria-hidden="true">Inmatnings- och utdatacell</figcaption>
+</figure>
+<p>När innehållet i en inmatningscell beräknas ger <em>Maxima</em>
+inmatningen en etikett som kan användas för att referera till den senare
+i <em>wxMaxima</em>-sessionen. Etiketten visas som standard i rött och
+känns igen på <code>%i</code>. Utdata från <em>Maxima</em> får också en
+etikett, som börjar med <code>%o</code> och som normalt är dold om
+användaren inte ger resultatet ett namn. I så fall visas som standard
+den användardefinierade etiketten. Den automatiskt skapade
+<code>%o</code>-etiketten går fortfarande att använda.</p>
+<p>Utöver inmatningsceller erbjuder <em>wxMaxima</em> textceller för
+dokumentation, bildceller, titelceller, kapitelceller och
+avsnittsceller. Varje cell har en egen ångrahistorik, vilket gör det
+lätt att felsöka genom att ändra värden i flera celler och sedan stegvis
+ångra onödiga ändringar. Arbetsbladet har dessutom en gemensam
+ångrahistorik för redigering, tillägg och borttagning av celler.</p>
+<p>Bilden nedan visar olika celltyper: titelceller, avsnittsceller,
+underavsnittsceller, textceller, inmatnings- och utdataceller samt
+bildceller.</p>
+<figure id="img_cell-example">
+<img src="./cell-example.png"
+alt="Exempel på olika celler i wxMaxima" />
+<figcaption aria-hidden="true">Exempel på olika celler i
+wxMaxima</figcaption>
+</figure>
+<h3 data-number="2.2.2" id="celler"><span
+class="header-section-number">2.2.2</span> Celler</h3>
+<p>Arbetsbladet är indelat i celler. WxMaxima har följande
+celltyper:</p>
+<ul>
+<li>Matematikceller med en eller flera rader indata för
+<em>Maxima</em>.</li>
+<li>Utdata eller en fråga från <em>Maxima</em>.</li>
+<li>Bildceller.</li>
+<li>Textceller som exempelvis kan användas för dokumentation.</li>
+<li>En titel, ett avsnitt eller ett underavsnitt. Det finns sex olika
+rubriknivåer.</li>
+<li>Sidbrytningar.</li>
+</ul>
+<p>När du skriver i <em>wxMaxima</em> skapas som standard en
+matematikcell automatiskt. Andra celltyper kan skapas med menyn Cell,
+kortkommandona i menyn eller listrutan i verktygsfältet. När en cell av
+en annan typ än matematik har skapats tolkas det du skriver som
+text.</p>
+<p>En <a
+href="https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#Comments">kommentar</a>
+i C-stil kan ingå i en matematikcell på följande sätt:
+<code>/* This comment will be ignored by Maxima */</code></p>
+<p>“<code>/*</code>” markerar kommentarens början och “<code>*/</code>”
+dess slut.</p>
+<h3 data-number="2.2.3" id="vågräta-och-lodräta-markörer"><span
+class="header-section-number">2.2.3</span> Vågräta och lodräta
+markörer</h3>
+<p>Om du försöker markera en hel mening i en ordbehandlare brukar
+programmet utöka markeringen så att den börjar och slutar vid
+ordgränser. På liknande sätt utökar <em>wxMaxima</em> markeringen till
+hela celler när du markerar fler än en cell.</p>
+<p>Det som skiljer sig från det vanliga är att <em>wxMaxima</em> ger
+flexibilitet vid dra och släpp genom att använda två markörtyper.
+Programmet växlar automatiskt mellan dem efter behov:</p>
+<ul>
+<li>Markören visas vågrätt när du flyttar den till mellanrummet mellan
+två celler eller klickar där.</li>
+<li>En lodrät markör används inne i en cell. Den aktiveras när du
+flyttar markören in i en cell med musen eller piltangenterna och
+fungerar ungefär som markören i en textredigerare.</li>
+</ul>
+<p>När du startar wxMaxima syns bara den blinkande vågräta markören. Om
+du börjar skriva skapas automatiskt en matematikcell och markören blir
+en vanlig lodrät markör. En högerpil visas som prompt. När
+matematikcellen har beräknats med <kbd>CTRL</kbd>+<kbd>ENTER</kbd> visas
+etiketter, till exempel <code>(%i1)</code> och <code>(%o1)</code>.</p>
+<figure id="img_horizontal_cursor_only">
+<img src="./horizontal-cursor-only.png"
+alt="(Blinkande) vågrät markör efter start av wxMaxima" />
+<figcaption aria-hidden="true">(Blinkande) vågrät markör efter start av
+wxMaxima</figcaption>
+</figure>
+<p>När du börjar skapa arbetsbladet kanske du vill välja en annan
+celltyp i menyn “Cell”, till exempel en titelcell eller en textcell som
+beskriver vad du ska göra.</p>
+<p>När du rör dig mellan cellerna syns också den blinkande vågräta
+markören där du kan infoga en cell i arbetsbladet. Börja skriva en
+formel för att infoga en matematikcell eller välj en annan celltyp i
+menyn.</p>
+<figure id="img_horizontal_cursor_between_cells">
+<img src="./horizontal-cursor-between-cells.png"
+alt="(Blinkande) vågrät markör mellan celler" />
+<figcaption aria-hidden="true">(Blinkande) vågrät markör mellan
+celler</figcaption>
+</figure>
+<h3 data-number="2.2.4" id="skicka-celler-till-maxima"><span
+class="header-section-number">2.2.4</span> Skicka celler till
+Maxima</h3>
+<p>Kommandot i en kodcell körs när du trycker på
+<kbd>CTRL</kbd>+<kbd>ENTER</kbd>, <kbd>SHIFT</kbd>+<kbd>ENTER</kbd>
+eller <kbd>ENTER</kbd> på det numeriska tangentbordet. Som standard kör
+<em>wxMaxima</em> kommandon med <kbd>CTRL</kbd>+<kbd>ENTER</kbd> eller
+<kbd>SHIFT</kbd>+<kbd>ENTER</kbd>, men du kan ställa in programmet så
+att <kbd>ENTER</kbd> används.</p>
+<h3 data-number="2.2.5" id="automatisk-komplettering-av-kommandon"><span
+class="header-section-number">2.2.5</span> Automatisk komplettering av
+kommandon</h3>
+<p><em>WxMaxima</em> har automatisk komplettering som aktiveras via
+menyn Cell/Komplettera ord eller med <kbd>CTRL</kbd>+<kbd>SPACE</kbd>.
+Kompletteringen anpassas efter sammanhanget. Om du till exempel
+aktiverar den i en enhetsangivelse för ezUnits visas en lista med
+lämpliga enheter.</p>
+<figure id="img_ezUnits">
+<img src="./ezUnits.png" alt="ezUnits" />
+<figcaption aria-hidden="true">ezUnits</figcaption>
+</figure>
+<p>Utöver att komplettera filnamn, enhetsnamn och det aktuella kommando-
+eller variabelnamnet kan kompletteringsfunktionen visa mallar för de
+flesta kommandon. Mallarna anger typen och betydelsen för de parametrar
+som kommandot förväntar sig. Aktivera funktionen med
+<kbd>SHIFT</kbd>+<kbd>CTRL</kbd>+<kbd>SPACE</kbd> eller motsvarande
+menyval, Cell/Visa mall.</p>
+<h4 data-number="2.2.5.1" id="grekiska-tecken"><span
+class="header-section-number">2.2.5.1</span> Grekiska tecken</h4>
+<p>Datorer lagrade traditionellt tecken som 8-bitarsvärden. Det ger
+plats för högst 256 olika tecken. Bokstäver, siffror och styrtecken,
+till exempel överföringsslut, strängslut samt linjer och hörn för
+menyrektanglar, för nästan vilket enskilt språk som helst ryms inom
+denna gräns.</p>
+<p>De teckentabeller med 256 tecken som har valts för de flesta länder
+saknar dock bland annat grekiska bokstäver, som används ofta i
+matematik. För att övervinna sådana begränsningar skapades <a
+href="https://home.unicode.org/">Unicode</a>, en kodning som låter
+engelsk text fungera som vanligt men gör betydligt fler än 256 tecken
+tillgängliga.</p>
+<p><em>Maxima</em> tillåter Unicode om programmet har byggts med en
+Lisp-kompilator som antingen stöder Unicode eller inte tar hänsyn till
+teckenkodningen. Åtminstone ett av dessa villkor är sannolikt uppfyllt.
+<em>WxMaxima</em> har ett sätt att mata in grekiska tecken med
+tangentbordet:</p>
+<ul>
+<li>Du kan mata in en grekisk bokstav genom att trycka på <kbd>ESC</kbd>
+och börja skriva bokstavens namn.</li>
+<li>Du kan också trycka på <kbd>ESC</kbd>, en bokstav (två för omikron)
+och sedan <kbd>ESC</kbd> igen. Då stöds följande tangenter:</li>
+</ul>
+<table>
+<colgroup>
+<col style="width: 6%" />
+<col style="width: 26%" />
+<col style="width: 6%" />
+<col style="width: 26%" />
+<col style="width: 6%" />
+<col style="width: 26%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">tangent</th>
+<th style="text-align: center;">Grekisk bokstav</th>
+<th style="text-align: center;">tangent</th>
+<th style="text-align: center;">Grekisk bokstav</th>
+<th style="text-align: center;">tangent</th>
+<th style="text-align: center;">Grekisk bokstav</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">a</td>
+<td style="text-align: center;">alfa</td>
+<td style="text-align: center;">i</td>
+<td style="text-align: center;">jota</td>
+<td style="text-align: center;">r</td>
+<td style="text-align: center;">rho</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">b</td>
+<td style="text-align: center;">beta</td>
+<td style="text-align: center;">k</td>
+<td style="text-align: center;">kappa</td>
+<td style="text-align: center;">s</td>
+<td style="text-align: center;">sigma</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">g</td>
+<td style="text-align: center;">gamma</td>
+<td style="text-align: center;">l</td>
+<td style="text-align: center;">lambda</td>
+<td style="text-align: center;">t</td>
+<td style="text-align: center;">tau</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">d</td>
+<td style="text-align: center;">delta</td>
+<td style="text-align: center;">m</td>
+<td style="text-align: center;">my</td>
+<td style="text-align: center;">u</td>
+<td style="text-align: center;">ypsilon</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">e</td>
+<td style="text-align: center;">epsilon</td>
+<td style="text-align: center;">n</td>
+<td style="text-align: center;">ny</td>
+<td style="text-align: center;">f</td>
+<td style="text-align: center;">fi</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">z</td>
+<td style="text-align: center;">zeta</td>
+<td style="text-align: center;">x</td>
+<td style="text-align: center;">xi</td>
+<td style="text-align: center;">c</td>
+<td style="text-align: center;">chi</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">h</td>
+<td style="text-align: center;">eta</td>
+<td style="text-align: center;">om</td>
+<td style="text-align: center;">omikron</td>
+<td style="text-align: center;">y</td>
+<td style="text-align: center;">psi</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">q</td>
+<td style="text-align: center;">theta</td>
+<td style="text-align: center;">p</td>
+<td style="text-align: center;">pi</td>
+<td style="text-align: center;">o</td>
+<td style="text-align: center;">omega</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">A</td>
+<td style="text-align: center;">Alfa</td>
+<td style="text-align: center;">I</td>
+<td style="text-align: center;">Jota</td>
+<td style="text-align: center;">R</td>
+<td style="text-align: center;">Rho</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">B</td>
+<td style="text-align: center;">Beta</td>
+<td style="text-align: center;">K</td>
+<td style="text-align: center;">Kappa</td>
+<td style="text-align: center;">S</td>
+<td style="text-align: center;">Sigma</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">G</td>
+<td style="text-align: center;">Gamma</td>
+<td style="text-align: center;">L</td>
+<td style="text-align: center;">Lambda</td>
+<td style="text-align: center;">T</td>
+<td style="text-align: center;">Tau</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">D</td>
+<td style="text-align: center;">Delta</td>
+<td style="text-align: center;">M</td>
+<td style="text-align: center;">My</td>
+<td style="text-align: center;">U</td>
+<td style="text-align: center;">Ypsilon</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">E</td>
+<td style="text-align: center;">Epsilon</td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">Ny</td>
+<td style="text-align: center;">P</td>
+<td style="text-align: center;">Fi</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Z</td>
+<td style="text-align: center;">Zeta</td>
+<td style="text-align: center;">X</td>
+<td style="text-align: center;">Xi</td>
+<td style="text-align: center;">C</td>
+<td style="text-align: center;">Chi</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">H</td>
+<td style="text-align: center;">Eta</td>
+<td style="text-align: center;">Om</td>
+<td style="text-align: center;">Omikron</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Psi</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">T</td>
+<td style="text-align: center;">Theta</td>
+<td style="text-align: center;">P</td>
+<td style="text-align: center;">Pi</td>
+<td style="text-align: center;">O</td>
+<td style="text-align: center;">Omega</td>
+</tr>
+</tbody>
+</table>
+<p>Du kan också använda sidopanelen “Grekiska bokstäver” för att mata in
+grekiska bokstäver.</p>
+<h5 data-number="2.2.5.1.1" id="observera-förväxlingsbara-tecken"><span
+class="header-section-number">2.2.5.1.1</span> Observera:
+förväxlingsbara tecken</h5>
+<p>Flera latinska bokstäver liknar grekiska bokstäver, till exempel
+latinskt “A” och grekiskt “alfa”. Trots att de ser likadana ut är de
+olika Unicode-tecken med olika kodpunkter (nummer).</p>
+<p>Det kan orsaka problem om du tilldelar variabeln A ett värde och
+senare använder grekiskt alfa för att göra något med variabeln, särskilt
+i utskrifter. Även den grekiska bokstaven my, som används som prefix för
+mikro, har två olika Unicode-kodpunkter.</p>
+<p>Sidopanelen “Grekiska bokstäver” har därför ett alternativ för att
+göra förväxlingsbara tecken otillgängliga. Du kan ändra detta i
+högerklicksmenyn.</p>
+<p>På samma sätt kan du mata in vissa andra matematiska symboler:</p>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 79%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>tangenter</th>
+<th>matematisk symbol</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>hbar</td>
+<td>Plancks konstant: h med ett vågrätt streck ovanför</td>
+</tr>
+<tr class="even">
+<td>Hbar</td>
+<td>H med ett vågrätt streck ovanför</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>i kvadrat</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>upphöjt till tre</td>
+</tr>
+<tr class="odd">
+<td>/2</td>
+<td>1/2</td>
+</tr>
+<tr class="even">
+<td>partial</td>
+<td>tecken för partiell derivata (d i dx/dt)</td>
+</tr>
+<tr class="odd">
+<td>integral</td>
+<td>integraltecken</td>
+</tr>
+<tr class="even">
+<td>sq</td>
+<td>kvadratrot</td>
+</tr>
+<tr class="odd">
+<td>ii</td>
+<td>imaginär</td>
+</tr>
+<tr class="even">
+<td>ee</td>
+<td>element</td>
+</tr>
+<tr class="odd">
+<td>in</td>
+<td>i</td>
+</tr>
+<tr class="even">
+<td>impl implies</td>
+<td>medför</td>
+</tr>
+<tr class="odd">
+<td>inf</td>
+<td>oändlighet</td>
+</tr>
+<tr class="even">
+<td>empty</td>
+<td>tom</td>
+</tr>
+<tr class="odd">
+<td>TB</td>
+<td>stor triangel åt höger</td>
+</tr>
+<tr class="even">
+<td>tb</td>
+<td>liten triangel åt höger</td>
+</tr>
+<tr class="odd">
+<td>and</td>
+<td>och</td>
+</tr>
+<tr class="even">
+<td>or</td>
+<td>eller</td>
+</tr>
+<tr class="odd">
+<td>xor</td>
+<td>xor</td>
+</tr>
+<tr class="even">
+<td>nand</td>
+<td>nand</td>
+</tr>
+<tr class="odd">
+<td>nor</td>
+<td>nor</td>
+</tr>
+<tr class="even">
+<td>equiv</td>
+<td>ekvivalent med</td>
+</tr>
+<tr class="odd">
+<td>not</td>
+<td>inte</td>
+</tr>
+<tr class="even">
+<td>union</td>
+<td>union</td>
+</tr>
+<tr class="odd">
+<td>inter</td>
+<td>snitt</td>
+</tr>
+<tr class="even">
+<td>subseteq</td>
+<td>delmängd av eller lika med</td>
+</tr>
+<tr class="odd">
+<td>subset</td>
+<td>äkta delmängd</td>
+</tr>
+<tr class="even">
+<td>notsubseteq</td>
+<td>inte delmängd av eller lika med</td>
+</tr>
+<tr class="odd">
+<td>notsubset</td>
+<td>inte äkta delmängd</td>
+</tr>
+<tr class="even">
+<td>approx</td>
+<td>ungefär lika med</td>
+</tr>
+<tr class="odd">
+<td>propto</td>
+<td>proportionell mot</td>
+</tr>
+<tr class="even">
+<td>neq != /= or #</td>
+<td>inte lika med</td>
+</tr>
+<tr class="odd">
+<td>+/- or pm</td>
+<td>plus/minus-tecken</td>
+</tr>
+<tr class="even">
+<td>&lt;= or leq</td>
+<td>mindre än eller lika med</td>
+</tr>
+<tr class="odd">
+<td>&gt;= or geq</td>
+<td>större än eller lika med</td>
+</tr>
+<tr class="even">
+<td>&lt;&lt; or ll</td>
+<td>mycket mindre än</td>
+</tr>
+<tr class="odd">
+<td>&gt;&gt; or gg</td>
+<td>mycket större än</td>
+</tr>
+<tr class="even">
+<td>qed</td>
+<td>bevisets slut</td>
+</tr>
+<tr class="odd">
+<td>nabla</td>
+<td>nablaoperator</td>
+</tr>
+<tr class="even">
+<td>sum</td>
+<td>summatecken</td>
+</tr>
+<tr class="odd">
+<td>prod</td>
+<td>produkttecken</td>
+</tr>
+<tr class="even">
+<td>exists</td>
+<td>tecken för det finns</td>
+</tr>
+<tr class="odd">
+<td>nexists</td>
+<td>tecken för det finns inte</td>
+</tr>
+<tr class="even">
+<td>parallel</td>
+<td>parallelltecken</td>
+</tr>
+<tr class="odd">
+<td>perp</td>
+<td>tecken för vinkelrät</td>
+</tr>
+<tr class="even">
+<td>leadsto</td>
+<td>tecken för leder till</td>
+</tr>
+<tr class="odd">
+<td>-&gt;</td>
+<td>högerpil</td>
+</tr>
+<tr class="even">
+<td>–&gt;</td>
+<td>lång högerpil</td>
+</tr>
+</tbody>
+</table>
+<p>Du kan också använda sidopanelen “Symboler” för att mata in dessa
+matematiska symboler.</p>
+<p>Om en symbol saknas i listan kan du mata in valfria Unicode-tecken
+genom att trycka på <kbd>ESC</kbd> [tecknets nummer (hexadecimalt)]
+<kbd>ESC</kbd>. Sidopanelen “Symboler” har även en högerklicksmeny som
+visar en lista över alla tillgängliga Unicode-symboler som kan läggas
+till i panelen eller arbetsbladet.</p>
+<p><kbd>ESC</kbd><kbd>6</kbd><kbd>1</kbd><kbd>ESC</kbd> ger alltså ett
+<code>a</code>. Medan du skriver talet visar symbollistan vilket tecken
+det motsvarar och tecknets Unicode-namn.</p>
+<p>Om talet också är början på ett symbolnamn (<code>be</code> kan vara
+början på <code>beta</code> eller tecknet ¾ med talet <code>be</code>)
+har namnet företräde. Ett inledande <code>0</code> eller <code>u+</code>
+anger att det är ett tal: både
+<kbd>ESC</kbd><code>u+be</code><kbd>ESC</kbd> och
+<kbd>ESC</kbd><code>00be</code><kbd>ESC</kbd> ger ett
+<code>¾</code>.</p>
+<p>En bokstav med ett diakritiskt tecken som saknar ett eget tecken i
+Unicode, till exempel ett t med ett streck ovanför, skrivs som en
+bokstav följd av ett ”kombinerande” diakritiskt tecken:
+<kbd>t</kbd><kbd>ESC</kbd><kbd>3</kbd><kbd>0</kbd><kbd>4</kbd><kbd>ESC</kbd>
+ger <code>t̄</code>, som <em>Maxima</em> behandlar som vilket annat
+variabelnamn som helst.</p>
+<p>Symboler som används ofta kan läggas till i sidopanelen ”Symboler” på
+fliken ”Alternativ” i inställningsdialogen (Redigera -&gt;
+Inställningar). Där kan de också tilldelas en tangentgenväg. En bokstav
+med diakritiska tecken räknas där som en symbol och får en knapp. Även
+de grekiska bokstäverna och de symboler som redan visas i sidopanelerna
+kan tilldelas tangentgenvägar där, eller genom att högerklicka på deras
+knappar i sidopanelen. En tangentgenväg måste innehålla <kbd>Ctrl</kbd>
+eller <kbd>Alt</kbd>, eller vara en funktionstangent, och skriver sin
+symbol när arbetsbladet har tangentbordsfokus. Inställningsdialogen
+varnar om ett menyalternativ redan använder samma tangenter.</p>
+<p>Observera att de flesta av dessa symboler, med de logiska symbolerna
+som viktiga undantag, inte har någon särskild betydelse i
+<em>Maxima</em> och därför tolkas som vanliga tecken. Om <em>Maxima</em>
+har byggts med en Lisp-miljö som inte stöder Unicode-tecken kan de
+orsaka ett felmeddelande.</p>
+<p>Det valda typsnittet kanske saknar exempelvis grekiska tecken eller
+matematiska symboler. Då kan dessa inte visas. Välj andra typsnitt via
+Redigera -&gt; Inställningar -&gt; Stil för att lösa problemet.</p>
+<h3 data-number="2.2.6" id="ersättning-av-unicode-tecken"><span
+class="header-section-number">2.2.6</span> Ersättning av
+Unicode-tecken</h3>
+<p>wxMaxima ersätter flera Unicode-tecken med motsvarande
+Maxima-uttryck, till exempel <code>²</code> med <code>^2</code>,
+<code>³</code> med <code>^3</code>, <code>≠</code> med <code>#</code>
+och <code>≤</code> med <code>&lt;=</code>.</p>
+<p>Unicode-tecken som motsvarar Maxima-namn definieras i stället som
+alias för dessa namn i <em>Maxima</em> när wxMaxima startar
+<em>Maxima</em>: <code>π</code> för <code>%pi</code>, <code>ⅈ</code> för
+<code>%i</code>, <code>ⅇ</code> för <code>%e</code>, <code>∞</code> för
+<code>inf</code>, det matematiska sigmatecknet (som inte är samma
+Unicode-tecken som motsvarande grekiska bokstav) för <code>sum</code>,
+<code>∏</code> för <code>product</code>, <code>∫</code> för
+<code>integrate</code>, kvadratrotstecknet för <code>sqrt</code> samt
+<code>⋀</code>, <code>⋁</code>, <code>⊻</code>, <code>⊼</code>,
+<code>⊽</code>, <code>⇒</code>, <code>⇔</code> och <code>¬</code> för
+<code>and</code>, <code>or</code>, <code>xor</code>, <code>nand</code>,
+<code>nor</code>, <code>implies</code>, <code>equiv</code> och
+<code>not</code>. Det innebär att de även fungerar i filer som läses in
+med <code>batch()</code> eller <code>load()</code>, och att
+<code>aliases</code> listar namnen de motsvarar. Eftersom
+<em>Maxima</em> läser dessa tecken som bokstäver måste de skiljas från
+angränsande namn med blanksteg i en sådan fil: <code>a⋀b</code> är ett
+variabelnamn, medan <code>a ⋀ b</code> betyder <code>a and b</code>. I
+en inmatningscell lägger wxMaxima automatiskt till dessa blanksteg.
+Programmet sätter också parenteser runt ett tal eller en variabel som
+följer direkt efter kvadratrotstecknet, så <code>√2</code> betyder
+<code>sqrt(2)</code>.</p>
+<p>Unicode kodar flera vanliga bråk som en enda kodpunkt:
+<code>¼, ½, ¾, ⅐, ⅑, ⅒, ⅓, ⅔, ⅕, ⅖, ⅗, ⅘, ⅙, ⅚, ⅛, ⅜, ⅝, ⅞</code></p>
+<p>wxMaxima ersätter dem med deras Maxima-representationer, till exempel
+<code>(1/4)</code>, innan indata skickas till Maxima. Det finns även
+<code>⅟</code>, som ersätts med <code>1/</code>, och <code>↉</code>, som
+används i baseboll och ersätts med <code>(0/3)</code>.</p>
+<p>Vi rekommenderar att du använder <strong>Maxima-kod</strong> i
+stället för dessa Unicode-tecken i inmatningsceller. Dels kanske
+typsnittet för matematikinmatning saknar tecknen, dels brukar ett
+dokument sparat som <code>wxm</code> kunna läsas av Maxima på
+kommandoraden, där dessa ersättningar inte görs. Tecknen kan dock
+förekomma om du kopierar och klistrar in en formel från ett annat
+dokument.</p>
+<h3 data-number="2.2.7" id="sidopaneler"><span
+class="header-section-number">2.2.7</span> Sidopaneler</h3>
+<p>Via sidopanelerna får du tillgång till genvägar till de viktigaste
+<em>Maxima</em>-kommandona, en innehållsförteckning,
+felsökningsmeddelanden och historik över de senaste kommandona. Du kan
+aktivera panelerna i menyn “Visa”. Alla paneler kan flyttas till andra
+platser i eller utanför <em>wxMaxima</em>-fönstret. En annan praktisk
+panel låter dig mata in grekiska bokstäver med musen.</p>
+<figure id="img_SidePanes">
+<img src="./SidePanes.png" alt="Exempel på olika sidopaneler" />
+<figcaption aria-hidden="true">Exempel på olika sidopaneler</figcaption>
+</figure>
+<p>I sidopanelen “Innehållsförteckning” kan du höja eller sänka en
+rubriknivå genom att högerklicka på rubriken och välja nästa högre eller
+lägre rubriktyp.</p>
+<figure id="Sidepane-TOC-convert-headings">
+<img src="./Sidepane-TOC-convert-headings.png"
+alt="Höj eller sänk rubriknivåer i innehållsförteckningens sidopanel" />
+<figcaption aria-hidden="true">Höj eller sänk rubriknivåer i
+innehållsförteckningens sidopanel</figcaption>
+</figure>
+<h3 data-number="2.2.8" id="mathml-utdata"><span
+class="header-section-number">2.2.8</span> MathML-utdata</h3>
+<p>Flera ordbehandlare och liknande program känner igen <a
+href="https://www.w3.org/Math/">MathML</a> och infogar det automatiskt
+som en redigerbar tvådimensionell ekvation. Andra, till exempel
+LibreOffice, har en ekvationsredigerare med en funktion för att
+importera MathML från urklipp. Ytterligare andra stöder RTF-matematik.
+<em>WxMaxima</em> erbjuder därför flera alternativ i
+högerklicksmenyn.</p>
+<h3 data-number="2.2.9"
+id="klistra-in-latex--eller-mathml-formler"><span
+class="header-section-number">2.2.9</span> Klistra in LaTeX- eller
+MathML-formler</h3>
+<p><strong>Redigera → Klistra in LaTeX/MathML som Maxima-kod</strong>
+(finns också i högerklicksmenyn) omvandlar en formel från urklipp till
+ett <em>Maxima</em>-kommando, till exempel en formel som kopierats från
+en artikel, en webbsida eller en ekvationsredigerare. LaTeX kan ha
+<code>$…$</code>, <code>\(…\)</code> eller <code>\[…\]</code> runt sig,
+men behöver inte ha det, så <code>\int_0^1 \frac{\sin x}{x}\,dx</code>
+blir <code>integrate(sin(x)/x,x,0,1)</code>. Kommandot infogas vid
+markören eller i en ny kodcell. MathML som klistras in i en kodcell med
+det vanliga kommandot <strong>Klistra in</strong> omvandlas på samma
+sätt, eftersom XML-koden inte är vad man vill ha i en kodcell. Om MathML
+som kopierats med <strong>Kopiera som MathML</strong> klistras in igen
+blir resultatet det ursprungliga kommandot: <em>wxMaxima</em> lägger
+till det i MathML-koden som en annotation.</p>
+<p>LaTeX och MathML beskriver hur en formel ser ut, inte vad den
+betyder, så omvandlingen måste tolka den. Bråk, rötter, potenser,
+nedsänkta tecken (<code>x_1</code> blir namnet <code>x_1</code>,
+<code>a_{n+1}</code> arrayelementet <code>a[n+1]</code>), funktioner med
+eller utan parenteser (<code>\sin 2x</code>), <code>\frac{d}{dx}</code>,
+<code>f'(x)</code>, integraler som slutar med <code>dx</code>, summor
+och produkter med gränser, <code>\lim_{x\to 0}</code>, <code>|x|</code>
+och matriser kan tolkas. Ett <code>e</code> är Eulers tal, men ett
+<code>i</code> är bara den imaginära enheten när det är upprätt
+(<code>\mathrm{i}</code>), eftersom det oftare är ett index. Ett namn
+följt av en parentes, som <code>x(y+1)</code>, tolkas som en produkt om
+namnet inte är <code>f</code>, <code>g</code>, <code>h</code> eller
+längre än en bokstav. För sådant som saknar en entydig betydelse, som
+<code>\pm</code>, <code>\dots</code> eller text, görs inga gissningar:
+<em>wxMaxima</em> anger i stället vad som inte kunde omvandlas.
+Kontrollera kommandot innan du beräknar det.</p>
+<h3 data-number="2.2.10" id="stöd-för-markdown"><span
+class="header-section-number">2.2.10</span> Stöd för Markdown</h3>
+<p><em>WxMaxima</em> stöder vissa vanliga <a
+href="https://en.wikipedia.org/wiki/Markdown">Markdown</a>-konventioner
+som inte krockar med matematisk notation. Ett exempel är
+punktlistor.</p>
+<pre class="text"><code>Vanlig text
+ * En punkt på indragsnivå 1
+ * En annan punkt på indragsnivå 1
+   * En punkt på andra indragsnivån
+   * En andra punkt på andra indragsnivån
+ * En tredje punkt på första indragsnivån
+Vanlig text</code></pre>
+<p><em>WxMaxima</em> känner igen text som börjar med <code>&gt;</code>
+som blockcitat:</p>
+<pre class="text"><code>Vanlig text
+&gt; citat citat citat citat
+&gt; citat citat citat citat
+&gt; citat citat citat citat
+Vanlig text</code></pre>
+<p><em>WxMaximas</em> TeX- och HTML-export känner också igen
+<code>=&gt;</code> och ersätter det med motsvarande Unicode-tecken:</p>
+<pre class="text"><code>cogito =&gt; sum.</code></pre>
+<p>Andra symboler som HTML- och TeX-exporten känner igen är
+<code>&lt;=</code> och <code>&gt;=</code> för jämförelser, en
+dubbelriktad dubbelpil (<code>&lt;=&gt;</code>), enkla pilar
+(<code>&lt;-&gt;</code>, <code>-&gt;</code> och <code>&lt;-</code>) samt
+<code>+/-</code> för plus/minus-tecknet. Vid TeX-export känns även
+<code>&lt;&lt;</code> och <code>&gt;&gt;</code> igen.</p>
+<h3 data-number="2.2.11" id="länkar-i-textceller"><span
+class="header-section-number">2.2.11</span> Länkar i textceller</h3>
+<p>En webbadress i en textcell som börjar med <code>http://</code>,
+<code>https://</code> eller <code>mailto:</code> visas som en länk.
+Eftersom ett klick i en textcell placerar markören där, öppnar du en
+länk genom att <kbd>CTRL</kbd>+klicka på den (<kbd>CMD</kbd>+klicka på
+macOS) eller genom att högerklicka och välja ”Öppna länk”. När du håller
+pekaren över länken visas vart den leder. Vid HTML-export skapas en länk
+och vid TeX-export en <code>\url{}</code>. Länkar känns alltid igen
+utifrån själva texten, så ingen information om dem sparas i filen.</p>
+<p>Länkar i kommentarer i en kodcell (<code>/* ... */</code>) fungerar
+på samma sätt. På andra ställen i koden, till exempel i en sträng, är en
+adress Maxima-syntax och ingen länk.</p>
+<p>Detsamma gäller webbadresser i <em>Maximas</em> utdata, till exempel
+i en sträng som skrivs ut med
+<code>print("See https://wxmaxima-developers.github.io/wxmaxima/")</code>:
+<kbd>CTRL</kbd>+klicka på adressen eller välj ”Öppna länk” i dess
+snabbmeny för att öppna den. Ett vanligt klick markerar fortfarande
+utdata.</p>
+<h3 data-number="2.2.12"
+id="fet-kursiv-understruken-och-genomstruken-text"><span
+class="header-section-number">2.2.12</span> Fet, kursiv, understruken
+och genomstruken text</h3>
+<p>Text i en textcell, en titel eller en avsnittsrubrik kan göras fet,
+kursiv, understruken eller genomstruken. Markera texten och tryck på
+motsvarande knapp i verktygsfältet. Tryck på knappen igen för att ta
+bort formateringen från markeringen. Om inget är markerat aktiverar
+eller inaktiverar knappen formateringen för den text som skrivs härnäst.
+Knapparna kan döljas genom att högerklicka på verktygsfältet och
+avmarkera ”Knappar för textformatering”. Kodceller kan inte formateras:
+deras färger visar redan kodens syntax.</p>
+<p>Knapparna för upphöjd och nedsänkt text fungerar på samma sätt: de
+gör texten mindre och höjer eller sänker den i förhållande till
+baslinjen, som i E = mc² eller H₂O. Ett tecken kan inte vara både
+upphöjt och nedsänkt, så när det ena aktiveras inaktiveras det andra. En
+rad som innehåller upphöjd eller nedsänkt text, eller ett tecken som är
+högre än typsnittets vanliga tecken, till exempel en emoji, får så
+mycket extra utrymme som behövs.</p>
+<p>Formateringen sparas i <code>.wxmx</code>-filer. Äldre versioner av
+<em>wxMaxima</em> öppnar sådana filer utan formateringen men behåller
+all text. <code>.wxm</code>-filer, exporter och urklipp innehåller
+texten utan formatering.</p>
+<h3 data-number="2.2.13" id="kortkommandon"><span
+class="header-section-number">2.2.13</span> Kortkommandon</h3>
+<p>De flesta kortkommandon visas i respektive meny. Eftersom de hämtas
+från menytexten kan de anpassas i översättningen av <em>wxMaxima</em>
+efter det lokala tangentbordet. Därför dokumenterar vi dem inte här.
+Några kortkommandon eller alternativa kortkommandon visas dock inte i
+menyerna:</p>
+<ul>
+<li><kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>DELETE</kbd> tar bort en hel
+cell.</li>
+<li><kbd>CTRL</kbd>+<kbd>TAB</kbd> eller
+<kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>TAB</kbd> aktiverar automatisk
+komplettering.</li>
+<li><kbd>SHIFT</kbd>+<kbd>SPACE</kbd> infogar ett fast blanksteg.</li>
+</ul>
+<h3 data-number="2.2.14" id="utforska-utdata-med-tangentbordet"><span
+class="header-section-number">2.2.14</span> Utforska utdata med
+tangentbordet</h3>
+<p>En cells utdata kan markeras och utforskas del för del utan mus:</p>
+<ul>
+<li><kbd>DOWN</kbd> i slutet av en cells inmatning markerar det första
+resultatet i dess utdata. Ytterligare tryck på <kbd>DOWN</kbd> och
+<kbd>UP</kbd> stegar genom resultaten. Efter det sista resultatet lämnar
+markören cellen. Om du vill att <kbd>DOWN</kbd> ska hoppa över utdata
+kan du aktivera ”Upp-/nedpilar hoppar över utdata” på fliken Arbetsblad
+i inställningsdialogen.</li>
+<li><kbd>ENTER</kbd> går in i det markerade uttrycket och markerar dess
+första del: uttrycket utan etikett, täljaren i ett bråk, namnet på en
+funktion, det första elementet i en matris med mera. Om markeringen inte
+har några delar öppnar <kbd>ENTER</kbd> en ny inmatningscell med dess
+innehåll, precis som tidigare.</li>
+<li><kbd>ESCAPE</kbd> markerar det som markeringen ingår i. Från ett
+helt resultat går markören tillbaka till cellens inmatning.</li>
+<li><kbd>LEFT</kbd> och <kbd>RIGHT</kbd> markerar föregående eller nästa
+del på samma nivå. I en matris flyttar alla fyra piltangenterna
+markeringen mellan elementen.</li>
+<li><kbd>SHIFT</kbd>+<kbd>LEFT</kbd> och
+<kbd>SHIFT</kbd>+<kbd>RIGHT</kbd> utökar eller minskar markeringen över
+angränsande delar. I en matris utökar <kbd>SHIFT</kbd> tillsammans med
+valfri piltangent det markerade elementet till ett block av
+element.</li>
+<li>Snabbmenytangenten eller <kbd>SHIFT</kbd>+<kbd>F10</kbd> öppnar
+högerklicksmenyn för markeringen så att den kan kopieras i valfritt
+format.</li>
+</ul>
+<h3 data-number="2.2.15" id="obehandlad-tex-vid-tex-export"><span
+class="header-section-number">2.2.15</span> Obehandlad TeX vid
+TeX-export</h3>
+<p>Om en textcell börjar med <code>TeX:</code> innehåller TeX-exporten
+texten efter markören <code>TeX:</code> ordagrant. Med den funktionen
+kan du använda TeX-kod i <em>wxMaxima</em>-arbetsboken.</p>
+<h2 data-number="2.3" id="filformat"><span
+class="header-section-number">2.3</span> Filformat</h2>
+<p>Material som skapas under en <em>wxMaxima</em>-session kan sparas för
+senare användning på tre sätt:</p>
+<h3 data-number="2.3.1" id="mac"><span
+class="header-section-number">2.3.1</span> .mac</h3>
+<p><code>.mac</code>-filer är vanliga textfiler med
+<em>Maxima</em>-kommandon. De kan läsas med <em>Maximas</em> kommandon
+<code>batch()</code> eller <code>load()</code> eller med menyvalet
+Arkiv/Kommandofil i <em>wxMaxima</em>.</p>
+<p>Ett exempel visas nedan. <code>Quadratic.mac</code> definierar en
+funktion och skapar sedan ett diagram med <code>wxdraw2d()</code>.
+Därefter skrivs innehållet i filen <code>Quadratic.mac</code> ut och den
+nydefinierade funktionen <code>f()</code> beräknas.</p>
+<figure id="img_BatchImage">
+<img src="./BatchImage.png" alt="Läsa in en fil med batch()" />
+<figcaption aria-hidden="true">Läsa in en fil med
+<code>batch()</code></figcaption>
+</figure>
+<p>Observera: Filen <code>Quadratic.mac</code> har en vanlig
+<em>Maxima</em>-filändelse (<code>.mac</code>), men kan ändå bara
+användas som avsett i <em>wxMaxima</em>, eftersom
+<code>wxdraw2d()</code> är ett wxMaxima-tillägg till <em>Maxima</em>.
+Maxima på kommandoraden ignorerar det okända kommandot
+<code>wxdraw2d()</code> och skriver ut det oförändrat som resultat.</p>
+<p>Du kan använda <code>.mac</code>-filer för att skapa ett eget
+makrobibliotek. De innehåller dock inte tillräckligt med
+strukturinformation för att kunna läsas tillbaka som en
+<em>wxMaxima</em>-session.</p>
+<h3 data-number="2.3.2" id="wxm"><span
+class="header-section-number">2.3.2</span> .wxm</h3>
+<p><code>.wxm</code>-filer innehåller arbetsbladet utan <em>Maximas</em>
+utdata. I Maxima-versioner &gt;5.38 kan de läsas med funktionen
+<code>load()</code>, precis som .mac-filer. Nästan, åtminstone: frågor
+som <code>asksign(x)</code> är problematiska eftersom svaret skrivs i
+<code>.wxm</code>-filen för att kunna föreslås efter inläsning, men
+Maxima kan inte beräkna det. Du kan förhindra att Maxima ställer frågor
+genom att använda <code>assume()</code> för att ange de egenskaper som
+Maxima behöver känna till.</p>
+<p>Med detta textformat är det ibland oundvikligt att arbetsblad som
+använder nya funktioner inte är bakåtkompatibla med äldre versioner av
+<em>wxMaxima</em>.</p>
+<h4 data-number="2.3.2.1" id="filformatet-för-wxm-filer"><span
+class="header-section-number">2.3.2.1</span> Filformatet för
+wxm-filer</h4>
+<p>Det är en vanlig textfil, som kan öppnas i en textredigerare, där
+cellinnehållet avgränsas av särskilda Maxima-kommentarer.</p>
+<p>Filen börjar med följande kommentar:</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">/* [ Created with wxMaxima version 24.02.2_DevelopmentSnapshot ] */</span></span></code></pre></div>
+<p>Därefter följer cellerna, kodade som Maxima-kommentarer, till exempel
+en avsnittscell:</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">/* [wxMaxima: section start ]</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">Title of the section</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">   [wxMaxima: section end   ] */</span></span></code></pre></div>
+<p>eller (i en matematikcell är indata förstås <em>inte</em>
+bortkommenterade; utdata sparas inte i en <code>wxm</code>-fil):</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">/* [wxMaxima: input   start ] */</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="cn">f</span>(<span class="cn">x</span>):=<span class="cn">x</span>^<span class="dv">2+1</span>$</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="cn">f</span>(<span class="dv">2</span>);</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">/* [wxMaxima: input   end   ] */</span></span></code></pre></div>
+<p>Bilder är <a
+href="https://en.wikipedia.org/wiki/Base64">Base64-kodade</a> och har
+bildtypen på första raden:</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">/* [wxMaxima: image   start ]</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">jpg</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">[very chaotic looking character sequence]</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">   [wxMaxima: image   end   ] */</span></span></code></pre></div>
+<p>En sidbrytning består bara av en rad med:</p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">/* [wxMaxima: page break    ] */</span></span></code></pre></div>
+<p>Hopfällda celler markeras med:</p>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">/* [wxMaxima: fold    start ] */</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>...</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">/* [wxMaxima: fold    end   ] */</span></span></code></pre></div>
+<h3 data-number="2.3.3" id="wxmx"><span
+class="header-section-number">2.3.3</span> .wxmx</h3>
+<p>Detta XML-baserade filformat sparar hela arbetsbladet, inklusive
+zoomfaktor och bevakningslista. Det är det rekommenderade
+filformatet.</p>
+<h4 data-number="2.3.3.1" id="filformatet-för-wxmx-filer"><span
+class="header-section-number">2.3.3.1</span> Filformatet för
+wxmx-filer</h4>
+<p>En <code>wxmx</code>-fil ser ut att ha ett binärt format, men kan
+hanteras med verktyg som finns i operativsystemet. Det är en zip-fil som
+kan packas upp med <code>unzip</code>. Du kan behöva byta namn på filen
+först så att operativsystemets uppackningsprogram känner igen den. Vi
+använder inte komprimeringsfunktionen, utan bara möjligheten att samla
+flera filer i en. Bilderna är redan komprimerade och resten är vanlig
+text, som oftast tar betydligt mindre plats än stora infogade
+bilder.</p>
+<p>Filen innehåller följande:</p>
+<ul>
+<li><code>mimetype</code>: filen innehåller MIME-typen för
+wxMaxima-filer: <code>text/x-wxmathml</code></li>
+<li><code>format.txt</code>: en kort beskrivning av wxMaxima och
+filformatet wxmx</li>
+<li>Bilder, till exempel png och jpeg: inbäddade diagram skapade i
+wxMaxima-sessionen och infogade bilder.</li>
+<li><code>content.xml</code>: ett XML-dokument som innehåller
+dokumentets olika celler i XML-format.</li>
+</ul>
+<p>Om något går fel kan du alltså packa upp ett wxMaxima-dokument, vid
+behov efter att ha bytt filändelse till <code>zip</code>, redigera
+<code>content.xml</code> med en textredigerare eller ersätta en skadad
+bild, packa ihop filerna igen och byta filändelsen från <code>zip</code>
+tillbaka till <code>wxmx</code>. Då får du en ändrad
+<code>wxmx</code>-fil.</p>
+<h2 data-number="2.4" id="inställningsalternativ"><span
+class="header-section-number">2.4</span> Inställningsalternativ</h2>
+<p>För vissa vanliga inställningsvariabler erbjuder <em>wxMaxima</em>
+två sätt att ändra värden:</p>
+<ul>
+<li>I inställningsdialogrutan nedan kan du ändra standardvärdena för
+både den aktuella sessionen och kommande sessioner.</li>
+<li>Värdena för de flesta inställningsvariabler kan också ändras enbart
+för den aktuella sessionen genom att skriva över dem från arbetsbladet,
+som nedan.</li>
+</ul>
+<figure id="img_wxMaxima_configuration_001">
+<img src="./wxMaxima_configuration_001.png"
+alt="Inställningar för wxMaxima 1" />
+<figcaption aria-hidden="true">Inställningar för wxMaxima 1</figcaption>
+</figure>
+<h3 data-number="2.4.1" id="standardbildfrekvens-för-animeringar"><span
+class="header-section-number">2.4.1</span> Standardbildfrekvens för
+animeringar</h3>
+<p>Bildfrekvensen för nya animeringar lagras i variabeln
+<code>wxanimate_framerate</code>. Det ursprungliga värdet på variabeln i
+ett nytt arbetsblad kan ändras i inställningsdialogrutan.</p>
+<h3 data-number="2.4.2"
+id="standardstorlek-på-diagram-i-nya-maxima-sessioner"><span
+class="header-section-number">2.4.2</span> Standardstorlek på diagram i
+nya <em>Maxima</em>-sessioner</h3>
+<p>Efter nästa start skapas diagram som bäddas in i arbetsbladet med
+denna storlek, om inte <em>Maxima</em> ändrar värdet på
+<code>wxplot_size</code>.</p>
+<p>För att ange storleken på bara ett enskilt diagram kan du använda
+följande notation, som ändrar en variabels värde endast för ett
+kommando:</p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="cn">wxdraw2d</span>(</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>   <span class="cn">explicit</span>(</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>       <span class="cn">x</span>^<span class="dv">2</span>,</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>       <span class="cn">x</span>,<span class="dv">-5</span>,<span class="dv">5</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>   )</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>), <span class="cn">wxplot_size</span>=[<span class="dv">480</span>,<span class="dv">480</span>]$</span></code></pre></div>
+<h3 data-number="2.4.3" id="matcha-parenteser-i-textfält"><span
+class="header-section-number">2.4.3</span> Matcha parenteser i
+textfält</h3>
+<p>Alternativet aktiverar två funktioner:</p>
+<ul>
+<li>Om du skriver en öppnande parentes, hakparentes eller ett dubbelt
+citattecken infogar <em>wxMaxima</em> automatiskt det avslutande tecknet
+efter det.</li>
+<li>I en kodcell avslutas en kommentar som inleds med <code>/*</code> av
+ett automatiskt infogat <code>*/</code>. Om du skriver <code>*/</code>
+framför det flyttas markören i stället förbi det.</li>
+<li>Om text är markerad när du trycker på någon av dessa tangenter
+omsluts den markerade texten av de matchande tecknen.</li>
+</ul>
+<h3 data-number="2.4.4" id="spara-inte-arbetsbladet-automatiskt"><span
+class="header-section-number">2.4.4</span> Spara inte arbetsbladet
+automatiskt</h3>
+<p>Om detta alternativ är valt skrivs arbetsbladets fil över bara på
+användarens begäran. Vid en krasch, ett strömavbrott eller liknande
+finns ändå en aktuell säkerhetskopia i den temporära katalogen.</p>
+<p>Om alternativet inte är valt fungerar <em>wxMaxima</em> mer som en
+modern mobilapp:</p>
+<ul>
+<li>Filer sparas automatiskt när programmet avslutas.</li>
+<li>Dessutom sparas filen automatiskt var tredje minut.</li>
+</ul>
+<h3 data-number="2.4.5" id="ordna-verktygsfältet"><span
+class="header-section-number">2.4.5</span> Ordna verktygsfältet</h3>
+<p>Verktygsfältet består av avsnitt, till exempel knapparna ”Öppna” och
+”Spara”, beräkningsknapparna och listrutan för celltyp. Fliken
+”Verktygsfält” i inställningsdialogen visar dem i samma ordning som
+verktygsfältet: dra ett avsnitt till en annan plats eller markera det
+och tryck på ”Upp” eller ”Ned” för att flytta det. Avmarkera det för att
+dölja det. Det flexibla mellanrummet skjuter alla efterföljande avsnitt
+till fönstrets högra kant. ”Standardordning” återställer den
+ursprungliga ordningen. Avsnitt kan också visas eller döljas genom att
+högerklicka på verktygsfältet.</p>
+<h3 data-number="2.4.6" id="var-sparas-inställningarna"><span
+class="header-section-number">2.4.6</span> Var sparas
+inställningarna?</h3>
+<p>På Unix/Linux sparas inställningarna i filen <code>.wxMaxima</code> i
+hemkatalogen om du använder wxWidgets &lt; 3.1.1, eller i
+<code>.config/wxMaxima.conf</code> enligt XDG-standarden om wxWidgets
+&gt;= 3.1.1 används. Du kan se wxWidgets-versionen med kommandot
+<code>wxbuild_info();</code> eller menyvalet Hjälp-&gt;Om. <a
+href="https://www.wxwidgets.org/">wxWidgets</a> är det
+plattformsoberoende bibliotek för grafiska gränssnitt som
+<em>wxMaxima</em> bygger på, därav <code>wx</code> i namnet. Eftersom
+namnet börjar med en punkt är <code>.wxMaxima</code> respektive
+<code>.config</code> dolt.</p>
+<p>På Windows sparas inställningarna i registret. Posterna för
+<em>wxMaxima</em> finns under
+<code>HKEY_CURRENT_USER\Software\wxMaxima</code>.</p>
+<hr />
+<h1 data-number="3" id="utökningar-av-maxima"><span
+class="header-section-number">3</span> Utökningar av
+<em>Maxima</em></h1>
+<p><em>WxMaxima</em> är i första hand ett grafiskt gränssnitt för
+<em>Maxima</em>. Huvuduppgiften är därför att vidarebefordra kommandon
+till <em>Maxima</em> och visa resultaten. I vissa fall utökar dock
+<em>wxMaxima</em> funktionaliteten i <em>Maxima</em>. Möjligheten att
+skapa rapporter genom att exportera arbetsbokens innehåll till HTML- och
+LaTeX-filer har redan nämnts. Detta avsnitt beskriver några sätt som
+<em>wxMaxima</em> förbättrar stödet för grafik i en session.</p>
+<h2 data-number="3.1" id="variabler-med-nedsänkta-index"><span
+class="header-section-number">3.1</span> Variabler med nedsänkta
+index</h2>
+<div id="wxsubscripts">
+
+</div>
+<p><code>wxsubscripts</code> anger om och hur <em>wxMaxima</em>
+automatiskt ska visa delar av variabelnamn som nedsänkta index:</p>
+<p>Om värdet är <code>false</code> är funktionen avstängd och wxMaxima
+sänker inte automatiskt ned den del av ett variabelnamn som följer efter
+ett understreck.</p>
+<p>Om värdet är <code>'all</code> visas allt efter ett understreck som
+nedsänkt index.</p>
+<p>Om värdet är <code>true</code> visas variabelnamn på formen
+<code>x_y</code> med nedsänkt index om</p>
+<ul>
+<li>antingen <code>x</code> eller <code>y</code> är en enda bokstav,
+eller</li>
+<li><code>y</code> är ett heltal (som kan innehålla flera tecken).</li>
+</ul>
+<figure id="img_wxsubscripts">
+<img src="./wxsubscripts.png"
+alt="Automatiska nedsänkta index i variabelnamn med wxsubscripts" />
+<figcaption aria-hidden="true">Automatiska nedsänkta index i
+variabelnamn med wxsubscripts</figcaption>
+</figure>
+<div id="wxdeclare_subscripted">
+
+</div>
+<p>En variabel som inte omfattas av reglerna ovan kan ändå anges som
+”ska ha nedsänkta tecken” med kommandot
+<code>wxdeclare_subscripted(variable_name);</code> eller
+<code>wxdeclare_subscripted([variable_name1,variable_name2,...]);</code>
+Detta kan återställas med följande kommando:
+<code>wxdeclare_subscripted(variable_name,false);</code>, som också
+förhindrar nedsänkning för en variabel som omfattas av reglerna
+ovan.</p>
+<div id="wxdeclare_subscript">
+
+</div>
+<p><code>wxdeclare_subscript(text_snippet);</code> eller
+<code>wxdeclare_subscript([text_snippet1,text_snippet2,...]);</code>
+anger i stället ett textfragment: varje variabel vars namn slutar med
+ett understreck följt av detta fragment visas med nedsänkt text, oavsett
+hur långa de två delarna är.</p>
+<p>Du kan ange dessa värden via menyn “Visa-&gt;Automatisk
+nedsänkning”.</p>
+<h2 data-number="3.2" id="återkoppling-i-statusfältet"><span
+class="header-section-number">3.2</span> Återkoppling i
+statusfältet</h2>
+<div id="wxstatusbar">
+
+</div>
+<p>Kommandon som tar lång tid kan ge användaren återkoppling i
+statusfältet. Ny återkoppling ersätter den tidigare, så att fältet kan
+användas som förloppsindikator. Meddelandet tas bort så snart det
+aktuella kommandot till <em>Maxima</em> är klart. Det är säkert att
+använda <code>wxstatusbar()</code> även i bibliotek som kan komma att
+användas i vanligt <em>Maxima</em> utan <em>wxMaxima</em>. Om
+<em>wxMaxima</em> saknas lämnas kommandot <code>wxstatusbar()</code>
+helt enkelt oberäknat.</p>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">for</span> <span class="cn">i</span>:<span class="dv">1</span> <span class="kw">thru</span> <span class="dv">10</span> <span class="kw">do</span> (</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">/* Tell the user how far we got */</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="cn">wxstatusbar</span>(<span class="fu">concat</span>(<span class="st">&quot;Pass &quot;</span>,<span class="cn">i</span>)),</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">/* (sleep n) is a Lisp function, which can be used */</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">/* with the character &quot;?&quot; before. It delays the */</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">/* program execution (here: for 3 seconds) */</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    ?<span class="cn">sleep</span>(<span class="dv">3</span>)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>)$</span></code></pre></div>
+<h2 data-number="3.3" id="exportera-arbetsbladet-från-maxima"><span
+class="header-section-number">3.3</span> Exportera arbetsbladet från
+Maxima</h2>
+<div id="wxworksheettohtml">
+
+</div>
+<p>Kommandot <code>wxworksheettohtml()</code> exporterar det aktuella
+arbetsbladet till en HTML-fil inifrån en pågående
+<em>Maxima</em>-session. Det är praktiskt vid skriptstyrd export eller
+satsvis export. Liksom <code>wxstatusbar()</code> kan det användas
+säkert i kod som även kan köras i <em>Maxima</em> på konsolen. Om
+<em>wxMaxima</em> saknas lämnas kommandot helt enkelt oberäknat.</p>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="cn">wxworksheettohtml</span>(<span class="st">&quot;report.html&quot;</span>)$</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="cn">wxworksheettohtml</span>(<span class="st">&quot;report.html&quot;</span>, <span class="cn">flavor</span>=<span class="st">&quot;svg&quot;</span>, <span class="cn">wxmx</span>=<span class="kw">true</span>)$</span></code></pre></div>
+<p>Ett relativt filnamn tolkas i förhållande till <em>Maximas</em>
+arbetskatalog. Följande namngivna alternativ kan anges:</p>
+<table>
+<colgroup>
+<col style="width: 7%" />
+<col style="width: 44%" />
+<col style="width: 48%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>alternativ</th>
+<th>värden</th>
+<th>betydelse</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>flavor</code></td>
+<td><code>mathml</code> (standard), <code>mathjax</code>,
+<code>svg</code>, <code>bitmap</code></td>
+<td>hur ekvationerna återges på den exporterade sidan</td>
+</tr>
+<tr class="even">
+<td><code>wxmx</code></td>
+<td><code>false</code> (standard), <code>true</code></td>
+<td>bädda in en nedladdningsbar <code>.wxmx</code>-kopia av
+sessionen</td>
+</tr>
+</tbody>
+</table>
+<p>Bilderna och <code>.wxmx</code>-kopian sparas i en mapp med samma
+namn som HTML-filen, följt av <code>_htmlimg</code>. Om ”Bädda in bilder
+i .html-filen” är markerat på fliken Exportera i inställningsdialogen
+bäddas de i stället in i HTML-filen, så att den kan skickas som en enda
+fil via e-post.</p>
+<p>Värdena för <code>flavor</code> motsvarar ekvationsformaten i
+dialogrutan <strong>Arkiv → Exportera</strong>. <code>mathml</code>
+skapar en fristående sida som inte kräver internetanslutning,
+<code>mathjax</code> lägger till MathJaX som reservlösning för
+webbläsare som ännu saknar MathML, och
+<code>svg</code>/<code>bitmap</code> återger varje ekvation som en
+bild.</p>
+<div id="wxworksheettotex">
+
+</div>
+<p>Det motsvarande kommandot <code>wxworksheettotex()</code> exporterar
+till en LaTeX-fil (<code>.tex</code>) på samma sätt:</p>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="cn">wxworksheettotex</span>(<span class="st">&quot;report.tex&quot;</span>)$</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="cn">wxworksheettotex</span>(<span class="st">&quot;report.tex&quot;</span>, <span class="cn">documentclass</span>=<span class="st">&quot;report&quot;</span>, <span class="cn">documentclassoptions</span>=<span class="st">&quot;12pt,a4paper&quot;</span>)$</span></code></pre></div>
+<table>
+<colgroup>
+<col style="width: 24%" />
+<col style="width: 75%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>alternativ</th>
+<th>betydelse</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>documentclass</code></td>
+<td>åsidosätter LaTeX-kommandot <code>\documentclass</code> (t.ex.
+<code>"article"</code>, <code>"report"</code>)</td>
+</tr>
+<tr class="even">
+<td><code>documentclassoptions</code></td>
+<td>åsidosätter dess alternativ (t.ex. <code>"12pt,a4paper"</code>)</td>
+</tr>
+</tbody>
+</table>
+<p>Stöd för <code>wxworksheettopdf()</code> planeras.</p>
+<h2 data-number="3.4" id="diagramritning"><span
+class="header-section-number">3.4</span> Diagramritning</h2>
+<p>Diagramritning är till sin natur grafisk, och därför är det ett
+område där ett grafiskt användargränssnitt behöver utöka det
+ursprungliga programmet.</p>
+<h3 data-number="3.4.1" id="bädda-in-ett-diagram-i-arbetsbladet"><span
+class="header-section-number">3.4.1</span> Bädda in ett diagram i
+arbetsbladet</h3>
+<div id="wxplot2d">
+
+</div>
+<div id="wxplot3d">
+
+</div>
+<div id="wximplicit_plot">
+
+</div>
+<div id="wxcontour_plot">
+
+</div>
+<p><em>Maxima</em> instruerar normalt det externa programmet
+<em>Gnuplot</em> att öppna ett separat fönster för varje diagram. Ofta
+är det mer praktiskt att bädda in diagrammen i arbetsbladet. Därför
+erbjuder <em>wxMaxima</em> egna diagramfunktioner som bara skiljer sig
+från motsvarande funktioner i <em>Maxima</em> genom namnet: de börjar
+alla med ”wx”.</p>
+<p>Följande diagramfunktioner har wx-motsvarigheter:</p>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 79%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Diagramfunktion i wxMaxima</th>
+<th>Diagramfunktion i Maxima</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>wxplot2d()</code></td>
+<td><a
+href="https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#plot2d">plot2d</a></td>
+</tr>
+<tr class="even">
+<td><code>wxplot3d()</code></td>
+<td><a
+href="https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#plot3d">plot3d</a></td>
+</tr>
+<tr class="odd">
+<td><code>wxdraw2d()</code></td>
+<td><a
+href="https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#draw2d">draw2d</a></td>
+</tr>
+<tr class="even">
+<td><code>wxdraw3d()</code></td>
+<td><a
+href="https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#draw3d">draw3d</a></td>
+</tr>
+<tr class="odd">
+<td><code>wxdraw()</code></td>
+<td><a
+href="https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#draw">draw</a></td>
+</tr>
+<tr class="even">
+<td><code>wximplicit_plot()</code></td>
+<td><a
+href="https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#implicit_plot">implicit_plot</a></td>
+</tr>
+<tr class="odd">
+<td><code>wxhistogram()</code></td>
+<td><a
+href="https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#histogram">histogram</a></td>
+</tr>
+<tr class="even">
+<td><code>wxscatterplot()</code></td>
+<td><a
+href="https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#scatterplot">scatterplot</a></td>
+</tr>
+<tr class="odd">
+<td><code>wxbarsplot()</code></td>
+<td><a
+href="https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#barsplot">barsplot</a></td>
+</tr>
+<tr class="even">
+<td><code>wxpiechart()</code></td>
+<td><a
+href="https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#piechart">piechart</a></td>
+</tr>
+<tr class="odd">
+<td><code>wxboxplot()</code></td>
+<td><a
+href="https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#boxplot">boxplot</a></td>
+</tr>
+</tbody>
+</table>
+<p>Om en <code>wxm</code>-fil läses av Maxima på konsolen ignoreras
+dessa funktioner och skrivs ut som resultat, precis som andra okända
+funktioner i Maxima.</p>
+<p>Om du får problem med någon av funktionerna bör du kontrollera om
+problemet också finns i motsvarande Maxima-funktion. Om
+<code>wxplot2d()</code> ger ett fel kan du till exempel prova samma
+diagram med Maxima-kommandot <code>plot2d()</code>, som öppnar det i ett
+separat fönster. Om problemet kvarstår är det troligen ett fel i Maxima
+som bör rapporteras i <a
+href="https://sourceforge.net/p/maxima/bugs/">Maximas
+felrapporteringssystem</a>. Det kan också vara ett fel i Gnuplot.</p>
+<h3 data-number="3.4.2" id="ändra-storlek-på-inbäddade-diagram"><span
+class="header-section-number">3.4.2</span> Ändra storlek på inbäddade
+diagram</h3>
+<div id="wxplot_size">
+
+</div>
+<p>Som nämnts ovan kan du ändra standardstorleken för diagram i
+inställningsdialogrutan. Det anger startvärdet för
+<code>wxplot_size</code>. <em>WxMaximas</em> diagramrutiner använder
+denna variabel för diagramstorleken i bildpunkter. Du kan när som helst
+läsa dess värde eller ändra det för kommande diagram:</p>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="cn">wxplot_size</span>:[<span class="dv">1200</span>,<span class="dv">800</span>]$</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="cn">wxdraw2d</span>(</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="cn">explicit</span>(</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sin</span>(<span class="cn">x</span>),</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>        <span class="cn">x</span>,<span class="dv">1</span>,<span class="dv">10</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>)$</span></code></pre></div>
+<p>Om du bara vill ändra storleken på ett diagram har <em>Maxima</em>
+ett etablerat sätt att ändra en egenskap enbart för den aktuella cellen.
+Ange <code>wxplot_size = [value1, value2]</code> efter kommandot
+<code>wxdraw2d( )</code>, alltså inte som en del av själva
+<code>wxdraw2d</code>-kommandot.</p>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="cn">wxdraw2d</span>(</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="cn">explicit</span>(</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sin</span>(<span class="cn">x</span>),</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>        <span class="cn">x</span>,<span class="dv">1</span>,<span class="dv">10</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>),<span class="cn">wxplot_size</span>=[<span class="dv">1600</span>,<span class="dv">800</span>]$</span></code></pre></div>
+<p>Du kan ange storleken med <code>wxplot_size</code> för inbäddade
+diagram skapade med exempelvis <code>wxplot</code>, <code>wxdraw</code>,
+<code>wxcontour_plot</code> och <code>wximplicit_plot</code>, samt för
+inbäddade animeringar skapade med <code>with_slider_draw</code> och
+<code>wxanimate</code>.</p>
+<div id="wxplot_scale">
+
+</div>
+<p><code>wxplot_size</code> anger hur många bildpunkter <em>Gnuplot</em>
+ska rita. Om ett diagram är bredare än fönstret förminskar
+<em>wxMaxima</em> det tills det ryms. Om ett visst diagram ska visas
+större, även om det då inte längre ryms på skärmen, eller mindre, anger
+variabeln <code>wxplot_scale</code> (standardvärde: <code>1</code>) hur
+många gånger så stort <em>wxMaxima</em> ska visa det jämfört med den
+vanliga storleken:</p>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="cn">wxdraw2d</span>(</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    <span class="cn">explicit</span>(</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sin</span>(<span class="cn">x</span>),</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>        <span class="cn">x</span>,<span class="dv">1</span>,<span class="dv">10</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>),<span class="cn">wxplot_scale</span>=<span class="dv">2</span>$</span></code></pre></div>
+<p>Till skillnad från ett större <code>wxplot_size</code>, som gör text
+och linjer mindre i förhållande till diagrammet, gör
+<code>wxplot_scale</code> allt större, inklusive texten. Faktorn sparas
+i arbetsbladet tillsammans med diagrammet och bevaras därför när filen
+sparas och öppnas igen. Den används av samma kommandon som
+<code>wxplot_size</code>. Om <em>wxMaxima</em> visar diagram som skalbar
+vektorgrafik (se ”Skapa skalbara diagram” i inställningsdialogen)
+förblir de skarpa oavsett skala. Ett bitmappsdiagram blir däremot
+suddigt om det förstoras mycket.</p>
+<p>Ett diagram som ska vara brett men inte högt, till exempel en
+vågform, skapas lämpligen med <code>wxplot_size</code>: ett bredare
+<code>wxplot_size</code> ger mer plats för data med oförändrad höjd och
+textstorlek. Eftersom ett sådant diagram normalt förminskas för att
+rymmas i fönstret, vilket gör texten liten igen, kan
+<code>wxplot_scale='native</code> användas för att låta
+<em>wxMaxima</em> visa diagrammet i exakt den storlek som
+<code>wxplot_size</code> anger, även om det är bredare än fönstret:</p>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="cn">wxdraw2d</span>(</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    <span class="cn">explicit</span>(</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sin</span>(<span class="dv">10</span>*<span class="cn">x</span>)*<span class="fu">exp</span>(-<span class="cn">x</span>/<span class="dv">3</span>),</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>        <span class="cn">x</span>,<span class="dv">0</span>,<span class="dv">10</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>),<span class="cn">wxplot_size</span>=[<span class="dv">1600</span>,<span class="dv">300</span>],<span class="cn">wxplot_scale</span>=<span class="do">&#39;</span><span class="cn">native</span>$</span></code></pre></div>
+<h3 data-number="3.4.3" id="diagram-med-bättre-kvalitet"><span
+class="header-section-number">3.4.3</span> Diagram med bättre
+kvalitet</h3>
+<p><em>Gnuplot</em> verkar sakna ett plattformsoberoende sätt att avgöra
+om det stöder den högkvalitativa bitmappsutdata som Cairo-biblioteket
+erbjuder. På system där <em>Gnuplot</em> har byggts med detta bibliotek
+aktiverar alternativet pngCairo i inställningsmenyn stöd för
+kantutjämning och ytterligare linjestilar. Alternativet kan åsidosättas
+med variabeln <code>wxplot_pngcairo</code>. Om
+<code>wxplot_pngCairo</code> är aktiverat utan stöd i <em>Gnuplot</em>
+blir resultatet felmeddelanden i stället för grafik.</p>
+<h3 data-number="3.4.4"
+id="öppna-inbäddade-diagram-i-interaktiva-gnuplot-fönster"><span
+class="header-section-number">3.4.4</span> Öppna inbäddade diagram i
+interaktiva <em>Gnuplot</em>-fönster</h3>
+<p>Om ett diagram skapats med kommandon av typen <code>wxdraw</code> och
+det underliggande <em>Gnuplot</em>-projektet inte är för stort kan du
+via <em>wxMaximas</em> högerklicksmeny öppna diagrammet i ett
+interaktivt <em>Gnuplot</em>-fönster. Funktionen stöder inte
+<code>wxplot2d</code> och <code>wxplot3d</code>.</p>
+<h3 data-number="3.4.5"
+id="öppna-gnuplots-kommandokonsol-i-plot-fönster"><span
+class="header-section-number">3.4.5</span> Öppna Gnuplots kommandokonsol
+i <code>plot</code>-fönster</h3>
+<p>På Microsoft Windows finns två Gnuplot-program:
+<code>gnuplot.exe</code> och <code>wgnuplot.exe</code>. Du kan välja
+vilket kommando som ska användas i inställningsmenyn.
+<code>wgnuplot.exe</code> kan öppna ett konsolfönster där du kan ange
+<em>gnuplot</em>-kommandon, vilket <code>gnuplot.exe</code> inte kan.
+Tyvärr gör <code>wgnuplot.exe</code> också att <em>Gnuplot</em>
+kortvarigt tar tangentbordsfokus varje gång ett diagram förbereds.</p>
+<h3 data-number="3.4.6"
+id="embedding-animations-into-the-spreadsheet"><span
+class="header-section-number">3.4.6</span> Bädda in animeringar i
+arbetsbladet</h3>
+<p>Det kan vara svårt att läsa av kvantitativa data i 3D-diagram. Ett
+alternativ är att låta mushjulet styra den tredje parametern. Kommandot
+<code>with_slider_draw</code> är en variant av <code>wxdraw2d</code> som
+förbereder flera diagram och låter dig växla mellan dem med
+skjutreglaget högst upp på skärmen. <em>WxMaxima</em> kan exportera
+animeringen som en animerad gif-bild.</p>
+<p>De två första argumenten till <code>with_slider_draw</code> är namnet
+på variabeln som ändras mellan diagrammen och en lista med variabelns
+värden. Därefter följer de vanliga argumenten till
+<code>wxdraw2d</code>:</p>
+<div class="sourceCode" id="cb18"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="cn">with_slider_draw</span>(</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    <span class="cn">f</span>,[<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">10</span>],</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="cn">title</span>=<span class="fu">concat</span>(<span class="st">&quot;f=&quot;</span>,<span class="cn">f</span>,<span class="st">&quot;Hz&quot;</span>),</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    <span class="cn">explicit</span>(</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sin</span>(<span class="dv">2</span>*<span class="va">%pi</span>*<span class="cn">f</span>*<span class="cn">x</span>),</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>        <span class="cn">x</span>,<span class="dv">0</span>,<span class="dv">1</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    ),<span class="cn">grid</span>=<span class="kw">true</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>);</span></code></pre></div>
+<p>Motsvarande funktion för 3D-diagram heter
+<code>with_slider_draw3d</code> och gör det möjligt att rotera
+3D-diagram:</p>
+<div class="sourceCode" id="cb19"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="cn">wxanimate_autoplay</span>:<span class="kw">true</span>;</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="cn">wxanimate_framerate</span>:<span class="dv">20</span>;</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="cn">with_slider_draw3d</span>(</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    α,<span class="fu">makelist</span>(<span class="cn">i</span>,<span class="cn">i</span>,<span class="dv">1</span>,<span class="dv">360</span>,<span class="dv">3</span>),</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    <span class="cn">title</span>=<span class="fu">sconcat</span>(<span class="st">&quot;α=&quot;</span>,α),</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    <span class="cn">surface_hide</span>=<span class="kw">true</span>,</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    <span class="cn">contour</span>=<span class="cn">both</span>,</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    <span class="cn">view</span>=[<span class="dv">60</span>,α],</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    <span class="cn">explicit</span>(</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sin</span>(<span class="cn">x</span>)*<span class="fu">sin</span>(<span class="cn">y</span>),</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>        <span class="cn">x</span>,-π,π,</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>        <span class="cn">y</span>,-π,π</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>)$</span></code></pre></div>
+<p>Om det viktigaste är diagrammets övergripande form kan det räcka att
+röra det lite för att ge en intuitiv uppfattning om den tredimensionella
+formen:</p>
+<div class="sourceCode" id="cb20"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="cn">wxanimate_autoplay</span>:<span class="kw">true</span>;</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="cn">wxanimate_framerate</span>:<span class="dv">20</span>;</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="cn">with_slider_draw3d</span>(</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    <span class="cn">t</span>,<span class="fu">makelist</span>(<span class="cn">i</span>,<span class="cn">i</span>,<span class="dv">0</span>,<span class="dv">2</span>*π,<span class="fl">.05</span>*π),</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    <span class="cn">title</span>=<span class="fu">sconcat</span>(<span class="st">&quot;α=&quot;</span>,α),</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    <span class="cn">surface_hide</span>=<span class="kw">true</span>,</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    <span class="cn">contour</span>=<span class="cn">both</span>,</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>    <span class="cn">view</span>=[<span class="dv">60</span>,<span class="dv">30+5</span>*<span class="fu">sin</span>(<span class="cn">t</span>)],</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>    <span class="cn">explicit</span>(</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sin</span>(<span class="cn">x</span>)*<span class="cn">y</span>^<span class="dv">2</span>,</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>        <span class="cn">x</span>,<span class="dv">-2</span>*π,<span class="dv">2</span>*π,</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>        <span class="cn">y</span>,<span class="dv">-2</span>*π,<span class="dv">2</span>*π</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>)$</span></code></pre></div>
+<p><code>with_slider_draw</code> och <code>with_slider_draw3d</code>
+skapar varje bildruta av en enda 2D- eller 3D-scen.
+<code>with_slider_draw_bare</code> skickar i stället argumenten efter
+variabeln och dess värden till ett vanligt <code>draw</code>-kommando.
+Varje bildruta kan därför bestå av flera <code>gr2d</code>- och
+<code>gr3d</code>-scener, och globala alternativ för <code>draw</code>,
+som <code>columns</code> och <code>dimensions</code>, kan också
+användas:</p>
+<div class="sourceCode" id="cb21"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="cn">with_slider_draw_bare</span>(</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    <span class="cn">f</span>,[<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>],</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    <span class="cn">columns</span>=<span class="dv">2</span>,</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    <span class="cn">gr2d</span>(</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>        <span class="cn">title</span>=<span class="fu">concat</span>(<span class="st">&quot;f=&quot;</span>,<span class="cn">f</span>),</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>        <span class="cn">explicit</span>(<span class="fu">sin</span>(<span class="cn">f</span>*<span class="cn">x</span>),<span class="cn">x</span>,<span class="dv">0</span>,<span class="dv">2</span>*π)</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    <span class="cn">gr3d</span>(</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>        <span class="cn">explicit</span>(<span class="fu">sin</span>(<span class="cn">f</span>*<span class="cn">x</span>)*<span class="fu">cos</span>(<span class="cn">y</span>),<span class="cn">x</span>,<span class="dv">0</span>,<span class="dv">2</span>*π,<span class="cn">y</span>,<span class="dv">0</span>,<span class="dv">2</span>*π)</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>);</span></code></pre></div>
+<p>Liksom <code>with_slider_draw</code> accepterar
+<code>with_slider_draw_bare</code> alternativet
+<code>file_name="name"</code>, som sparar animeringen som
+<code>name.gif</code> i Maximas arbetskatalog. Eftersom
+<code>draw</code> inte kan omvandla en bildruta med flera scener till en
+enda GIF-bildruta sätter wxMaxima samman GIF-filen av de bildrutor som
+visas, och animeringen visas fortfarande i arbetsbladet. GIF-filen
+skrivs bara när kommandot beräknas i wxMaxima.</p>
+<div id="with_slider">
+
+</div>
+<div id="wxanimate">
+
+</div>
+<p>För dig som är mer van vid <code>plot</code> än vid <code>draw</code>
+finns ytterligare två funktioner:</p>
+<ul>
+<li><code>with_slider</code> och</li>
+<li><code>wxanimate</code>.</li>
+</ul>
+<div id="wxanimate_framerate">
+
+</div>
+<p>Normalt spelas animeringar upp eller exporteras med den bildfrekvens
+som valts i <em>wxMaximas</em> inställningar. För att ange
+uppspelningshastigheten för en viss animering kan du använda variabeln
+<code>wxanimate_framerate</code>:</p>
+<div class="sourceCode" id="cb22"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="cn">wxanimate</span>(<span class="cn">a</span>, <span class="dv">10</span>,</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sin</span>(<span class="cn">a</span>*<span class="cn">x</span>), [<span class="cn">x</span>,<span class="dv">-5</span>,<span class="dv">5</span>]), <span class="cn">wxanimate_framerate</span>=<span class="dv">6</span>$</span></code></pre></div>
+<p>Animeringsfunktionerna använder <em>Maximas</em> kommando
+<code>makelist</code> och har därför samma begränsning:
+skjutreglagevariabelns värde sätts in i uttrycket bara om variabeln är
+direkt synlig i det. Följande exempel fungerar därför inte:</p>
+<div class="sourceCode" id="cb23"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="cn">f</span>:<span class="fu">sin</span>(<span class="cn">a</span>*<span class="cn">x</span>);</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="cn">with_slider_draw</span>(</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    <span class="cn">a</span>,<span class="fu">makelist</span>(<span class="cn">i</span>/<span class="dv">2</span>,<span class="cn">i</span>,<span class="dv">1</span>,<span class="dv">10</span>),</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    <span class="cn">title</span>=<span class="fu">concat</span>(<span class="st">&quot;a=&quot;</span>,<span class="fu">float</span>(<span class="cn">a</span>)),</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>    <span class="cn">grid</span>=<span class="kw">true</span>,</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>    <span class="cn">explicit</span>(<span class="cn">f</span>,<span class="cn">x</span>,<span class="dv">0</span>,<span class="dv">10</span>)</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>)$</span></code></pre></div>
+<p>Om du uttryckligen ber <em>Maxima</em> att sätta in skjutreglagets
+värde fungerar diagramritningen:</p>
+<div class="sourceCode" id="cb24"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="cn">f</span>:<span class="fu">sin</span>(<span class="cn">a</span>*<span class="cn">x</span>);</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="cn">with_slider_draw</span>(</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    <span class="cn">b</span>,<span class="fu">makelist</span>(<span class="cn">i</span>/<span class="dv">2</span>,<span class="cn">i</span>,<span class="dv">1</span>,<span class="dv">10</span>),</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    <span class="cn">title</span>=<span class="fu">concat</span>(<span class="st">&quot;a=&quot;</span>,<span class="fu">float</span>(<span class="cn">b</span>)),</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    <span class="cn">grid</span>=<span class="kw">true</span>,</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    <span class="cn">explicit</span>(</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>        <span class="fu">subst</span>(<span class="cn">a</span>=<span class="cn">b</span>,<span class="cn">f</span>),</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>        <span class="cn">x</span>,<span class="dv">0</span>,<span class="dv">10</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>)$</span></code></pre></div>
+<h3 data-number="3.4.7"
+id="öppna-flera-diagram-i-samtidiga-fönster"><span
+class="header-section-number">3.4.7</span> Öppna flera diagram i
+samtidiga fönster</h3>
+<p>Denna funktion kommer från <em>Maxima</em> snarare än
+<em>wxMaxima</em> och kan ibland vara användbar på system som stöder
+den. Följande exempel kommer från ett inlägg av Mario Rodriguez på
+<em>Maximas</em> sändlista:</p>
+<div class="sourceCode" id="cb25"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="fu">draw</span>);</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="co">/* Parabola in window #1 */</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="fu">draw2d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">1</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>));</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="co">/* Parabola in window #2 */</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="fu">draw2d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">2</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>));</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a><span class="co">/* Paraboloid in window #3 */</span></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="fu">draw3d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">3</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>+<span class="cn">y</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>,<span class="cn">y</span>,<span class="dv">-1</span>,<span class="dv">1</span>));</span></code></pre></div>
+<p>Det går också att rita flera diagram i samma fönster. Detta fungerar
+även i Maxima på kommandoraden med standardkommandot
+<code>draw()</code>:</p>
+<div class="sourceCode" id="cb26"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="cn">wxdraw</span>(</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="cn">gr2d</span>(</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    <span class="cn">key</span>=<span class="st">&quot;sin (x)&quot;</span>,<span class="cn">grid</span>=[<span class="dv">2</span>,<span class="dv">2</span>],</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    <span class="cn">explicit</span>(<span class="fu">sin</span>(<span class="cn">x</span>),<span class="cn">x</span>,<span class="dv">0</span>,<span class="dv">2</span>*<span class="va">%pi</span>)),</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="cn">gr2d</span>(</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>    <span class="cn">key</span>=<span class="st">&quot;cos (x)&quot;</span>,<span class="cn">grid</span>=[<span class="dv">2</span>,<span class="dv">2</span>],</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>    <span class="cn">explicit</span>(<span class="fu">cos</span>(<span class="cn">x</span>),<span class="cn">x</span>,<span class="dv">0</span>,<span class="dv">2</span>*<span class="va">%pi</span>))</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>);</span></code></pre></div>
+<h3 data-number="3.4.8" id="sidopanelen-rita-med-draw"><span
+class="header-section-number">3.4.8</span> Sidopanelen “Rita med
+draw”</h3>
+<p>Sidopanelen “Rita med draw” innehåller en enkel kodgenerator som
+låter dig skapa scener med en del av flexibiliteten i paketet
+<em>draw</em>, som följer med <em>Maxima</em>.</p>
+<h4 data-number="3.4.8.1" id="d"><span
+class="header-section-number">3.4.8.1</span> 2D</h4>
+<p>Skapar stommen till ett <code>draw()</code>-kommando som ritar en
+2D-scen. Scenen måste sedan fyllas med kommandon som skapar innehållet,
+exempelvis med knapparna under knappen “2D”.</p>
+<p>En användbar egenskap hos 2D-knappen är att den kan skapa scenen som
+en animering där en variabel, normalt <em>t</em>, har olika värde i
+varje bildruta. Ett rörligt 2D-diagram är ofta lättare att tolka än ett
+stillastående 3D-diagram med samma data.</p>
+<h4 data-number="3.4.8.2" id="d-1"><span
+class="header-section-number">3.4.8.2</span> 3D</h4>
+<p>Skapar stommen till ett <code>draw()</code>-kommando som ritar en
+3D-scen. Om ingen 2D- eller 3D-scen har skapats skapar övriga knappar en
+2D-scen med det kommando som knappen genererar.</p>
+<h4 data-number="3.4.8.3" id="uttryck"><span
+class="header-section-number">3.4.8.3</span> Uttryck</h4>
+<p>Lägger till ett vanligt diagram för ett uttryck som
+<code>sin(x)</code>, <code>x*sin(x)</code> eller <code>x^2+2*x-4</code>
+i det <code>draw()</code>-kommando där markören står. Om det inte finns
+något draw-kommando skapas en 2D-scen med diagrammet. Varje scen kan
+innehålla valfritt antal diagram.</p>
+<h4 data-number="3.4.8.4" id="implicit-diagram"><span
+class="header-section-number">3.4.8.4</span> Implicit diagram</h4>
+<p>Försöker hitta alla punkter där ett uttryck som
+<code>y=sin(x)</code>, <code>y*sin(x)=3</code> eller
+<code>x^2+y^2=4</code> är sant och ritar den resulterande kurvan i det
+<code>draw()</code>-kommando där markören står. Om det inte finns något
+draw-kommando skapas en 2D-scen med diagrammet.</p>
+<h4 data-number="3.4.8.5" id="parameterkurva"><span
+class="header-section-number">3.4.8.5</span> Parameterkurva</h4>
+<p>Stegar en variabel från en undre till en övre gräns och använder
+uttryck som <code>t*sin(t)</code> och <code>t*cos(t)</code> för att
+skapa x- och y-koordinater, samt z-koordinater i 3D-diagram, för en
+kurva i det aktuella draw-kommandot.</p>
+<h4 data-number="3.4.8.6" id="punkter"><span
+class="header-section-number">3.4.8.6</span> Punkter</h4>
+<p>Ritar många punkter som också kan förbindas. Punktkoordinaterna
+hämtas från en lista med listor, en tvådimensionell array eller en
+separat lista eller array för varje axel.</p>
+<h4 data-number="3.4.8.7" id="diagramtitel"><span
+class="header-section-number">3.4.8.7</span> Diagramtitel</h4>
+<p>Ritar en titel högst upp i diagrammet.</p>
+<h4 data-number="3.4.8.8" id="axel"><span
+class="header-section-number">3.4.8.8</span> Axel</h4>
+<p>Ställer in axlarna.</p>
+<h4 data-number="3.4.8.9" id="nivåkurva"><span
+class="header-section-number">3.4.8.9</span> Nivåkurva</h4>
+<p>Endast för 3D-diagram: lägger till nivåkurvor, liknande höjdkurvor på
+en karta, för de efterföljande diagramkommandona i det aktuella
+<code>draw()</code>-kommandot och/eller på diagrammets basplan. Guiden
+kan också dölja själva ytan och enbart visa nivåkurvorna.</p>
+<h4 data-number="3.4.8.10" id="diagramnamn"><span
+class="header-section-number">3.4.8.10</span> Diagramnamn</h4>
+<p>Lägger till en post med nästa diagrams namn i teckenförklaringen. Ett
+tomt namn stänger av nya poster i teckenförklaringen för efterföljande
+diagram.</p>
+<h4 data-number="3.4.8.11" id="linjefärg"><span
+class="header-section-number">3.4.8.11</span> Linjefärg</h4>
+<p>Anger linjefärgen för efterföljande diagram i det aktuella
+draw-kommandot.</p>
+<h4 data-number="3.4.8.12" id="fyllningsfärg"><span
+class="header-section-number">3.4.8.12</span> Fyllningsfärg</h4>
+<p>Anger fyllningsfärgen för efterföljande diagram i det aktuella
+draw-kommandot.</p>
+<h4 data-number="3.4.8.13" id="rutnät"><span
+class="header-section-number">3.4.8.13</span> Rutnät</h4>
+<p>Öppnar en guide där du kan ange rutnätslinjer.</p>
+<h4 data-number="3.4.8.14" id="noggrannhet"><span
+class="header-section-number">3.4.8.14</span> Noggrannhet</h4>
+<p>Låter dig välja en lämplig avvägning mellan hastighet och
+noggrannhet, som i alla diagramprogram.</p>
+<h3 data-number="3.4.9"
+id="ändra-typsnitt-och-textstorlek-i-diagram"><span
+class="header-section-number">3.4.9</span> Ändra typsnitt och
+textstorlek i diagram</h3>
+<p>Särskilt på en skärm med hög upplösning kan standardtextstorleken
+vara mycket liten. För kommandon baserade på <code>draw</code> kan du
+ange typsnitt och textstorlek med alternativ som <code>font=...</code>
+och <code>font_size=...</code>, till exempel:</p>
+<div class="sourceCode" id="cb27"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="cn">wxdraw2d</span>(</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>     <span class="cn">font</span>=<span class="st">&quot;Helvetica&quot;</span>,</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>     <span class="cn">font_size</span>=<span class="dv">30</span>,</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>     <span class="cn">explicit</span>(<span class="fu">sin</span>(<span class="cn">x</span>),<span class="cn">x</span>,<span class="dv">1</span>,<span class="dv">10</span>));</span></code></pre></div>
+<p>För <code>plot</code>-kommandon, till exempel <code>wxplot2d</code>
+och <code>wxplot3d</code>, kan typsnitt och textstorlek anges med
+<code>gnuplot_preamble</code>, till exempel:</p>
+<div class="sourceCode" id="cb28"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="cn">wxplot2d</span>(<span class="fu">sin</span>(<span class="cn">x</span>),[<span class="cn">x</span>,<span class="dv">1</span>,<span class="dv">10</span>],</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>         [<span class="cn">gnuplot_preamble</span>, <span class="st">&quot;set tics font \&quot;</span><span class="cn">Arial</span>, <span class="dv">30</span>\<span class="st">&quot;; set xlabel font \&quot;</span>,<span class="dv">20</span>\<span class="st">&quot;; set ylabel font \&quot;</span>,<span class="dv">20</span>\<span class="st">&quot;;&quot;</span>]);</span></code></pre></div>
+<p>Detta anger Arial med storlek 30 för talen och storlek 20 för xlabel
+och ylabel, med standardtypsnittet.</p>
+<p>Mer information finns i dokumentationen för Maxima och Gnuplot.
+Observera att Gnuplot verkar ha problem med större textstorlekar; se <a
+href="https://github.com/wxMaxima-developers/wxmaxima/issues/1966">wxMaxima-ärende
+1966</a>.</p>
+<h2 data-number="3.5" id="bädda-in-grafik"><span
+class="header-section-number">3.5</span> Bädda in grafik</h2>
+<p>Om filformatet <code>.wxmx</code> används kan du bädda in filer i ett
+<em>wxMaxima</em>-projekt genom att dra och släppa dem. Ibland är det
+dock bättre att låta bilden läsas in vid beräkning, till exempel om
+bildens innehåll kan ändras senare under sessionen:</p>
+<div class="sourceCode" id="cb29"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="cn">show_image</span>(<span class="st">&quot;man.png&quot;</span>);</span></code></pre></div>
+<h2 data-number="3.6" id="startfiler"><span
+class="header-section-number">3.6</span> Startfiler</h2>
+<p>I <em>wxMaximas</em> inställningsdialogruta kan du redigera två filer
+med kommandon som körs vid start:</p>
+<ul>
+<li>En fil med kommandon som körs när <em>Maxima</em> startas:
+<code>maxima-init.mac</code>.</li>
+<li>En fil med ytterligare kommandon som körs när <em>wxMaxima</em>
+startar <em>Maxima</em>: <code>wxmaxima-init.mac</code>.</li>
+</ul>
+<p>Om Gnuplot exempelvis är installerat i <code>/opt</code>, vilket kan
+förekomma på macOS, kan du lägga till
+<code>gnuplot_command:"/opt/local/bin/gnuplot"$</code> i dessa filer.
+Använd <code>/opt/gnuplot/bin/gnuplot</code> eller någon annan sökväg om
+det är där programmet finns.</p>
+<p>Filerna finns i Maximas användarkatalog, normalt
+<code>%USERPROFILE%/maxima</code> på Windows och
+<code>$HOME/.maxima</code> på andra system. Du kan ta reda på platsen
+med kommandot <code>maxima_userdir;</code>.</p>
+<h2 data-number="3.7" id="specialvariabler-wx"><span
+class="header-section-number">3.7</span> Specialvariabler wx…</h2>
+<div id="wxfilename">
+
+</div>
+<div id="wxdirname">
+
+</div>
+<div id="wxplot_pngcairo">
+
+</div>
+<div id="wxchangedir">
+
+</div>
+<div id="wxanimate_autoplay">
+
+</div>
+<div id="wxmaximaversion">
+
+</div>
+<div id="wxwidgetsversion">
+
+</div>
+<div id="wxdirs">
+
+</div>
+<ul>
+<li><code>wxsubscripts</code> anger om <em>Maxima</em> ska omvandla
+variabelnamn med understreck, till exempel <code>R_150</code>, till
+variabler med nedsänkta index. Se <code>wxdeclare_subscript</code> för
+information om vilka namn som omvandlas automatiskt.</li>
+<li><code>wxfilename</code>: variabeln innehåller namnet på filen som är
+öppen i <em>wxMaxima</em>.</li>
+<li><code>wxdirname</code>: variabeln innehåller namnet på katalogen där
+filen som är öppen i <em>wxMaxima</em> finns.</li>
+<li><code>wxplot_pngcairo</code> anger om <em>wxMaxima</em> försöker
+använda <em>Gnuplots</em> pngcairo-terminal, som ger fler linjestilar
+och bättre grafikkvalitet.</li>
+<li><code>wxplot_size</code> anger upplösningen för inbäddade
+diagram.</li>
+<li><code>wxchangedir</code>: på de flesta operativsystem ställer
+<em>wxMaxima</em> automatiskt in <em>Maximas</em> arbetskatalog till den
+aktuella filens katalog. Då fungerar filinläsning och filskrivning, till
+exempel med <code>read_matrix</code>, utan att du behöver ange hela
+sökvägen. På Windows orsakar detta ibland felmeddelanden, och funktionen
+kan därför stängas av med värdet <code>false</code> i
+inställningsdialogrutan.</li>
+<li><code>wxanimate_framerate</code>: antalet bildrutor per sekund för
+efterföljande animeringar.</li>
+<li><code>wxanimate_autoplay</code>: ska animeringar spelas upp
+automatiskt som standard?</li>
+<li><code>wxmaximaversion</code>: returnerar versionsnumret för
+<em>wxMaxima</em>.</li>
+<li><code>wxwidgetsversion</code>: returnerar wxWidgets-versionen som
+<em>wxMaxima</em> använder.</li>
+<li><code>wxdirs</code>: en struktur med de sökvägar som
+<em>wxMaxima</em> använder. Dessa varierar mellan paketerare,
+distributioner och operativsystem:
+<ul>
+<li><code>wxdirs@userconfdir</code>: katalogen där användarens
+inställningar sparas. Det är samma katalog som
+<code>maxima_userdir</code> ovan. Båda pekar på samma plats, och
+<code>wxdirs@userconfdir</code> är bara användbar om den är enklare att
+nå från en <code>.mac</code>-fil än variabeln på Maxima-sidan.</li>
+<li><code>wxdirs@datadir</code>: katalogen där <em>wxMaximas</em> egna
+data, till exempel ikoner och den inbyggda kompletteringslistan, är
+installerade.</li>
+<li><code>wxdirs@helpdir</code>: katalogen där den lokala kopian av
+denna handbok är installerad.</li>
+<li><code>wxdirs@localedir</code>: katalogen där <em>wxMaximas</em>
+översättningsfiler är installerade.</li>
+<li><code>wxdirs@maximalocation</code>: sökvägen till den körbara
+<em>Maxima</em>-fil som <em>wxMaxima</em> är inställt på att
+starta.</li>
+</ul></li>
+</ul>
+<h2 data-number="3.8"
+id="snygg-formatering-av-tvådimensionella-utdata"><span
+class="header-section-number">3.8</span> Snygg formatering av
+tvådimensionella utdata</h2>
+<div id="table_form">
+
+</div>
+<p>Funktionen <code>table_form()</code> visar en tvådimensionell lista i
+ett mer lättläst format än <em>Maximas</em> vanliga utdatarutin. Indata
+är en lista med en eller flera listor. Liksom kommandot “print” visar
+detta kommando utdata även om det avslutas med ett dollartecken. Om
+kommandot avslutas med semikolon visas samma tabell följd av “done”.</p>
+<div class="sourceCode" id="cb30"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="cn">table_form</span>(</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>    [</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>        [<span class="dv">1</span>,<span class="dv">2</span>],</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>        [<span class="dv">3</span>,<span class="dv">4</span>]</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>)$</span></code></pre></div>
+<p>Som nästa exempel visar kan listorna som sammanställs med
+<code>table_form</code> skapas innan kommandot körs.</p>
+<figure id="img_MatrixTableExample">
+<img src="./MatrixTableExample.png" alt="Ett tredje tabellexempel" />
+<figcaption aria-hidden="true">Ett tredje tabellexempel</figcaption>
+</figure>
+<p>Eftersom en matris är en lista med listor kan också matriser
+omvandlas till tabeller på liknande sätt.</p>
+<figure id="img_SecondTableExample">
+<img src="./SecondTableExample.png"
+alt="Ett annat exempel på table_form" />
+<figcaption aria-hidden="true">Ett annat exempel på
+table_form</figcaption>
+</figure>
+<div id="wx_matrix">
+
+</div>
+<p>Funktionen <code>wx_matrix()</code> utökar Maximas kommando
+<code>matrix()</code> med flexiblare matrisformatering i wxMaxima:</p>
+<p><strong><code>wx_matrix( &lt;matrix&gt;, [options] )</code></strong></p>
+<ul>
+<li><strong><code>lines=true</code></strong>: ritar avskiljande linjer
+mellan cellerna. Det krävs för att visuellt skilja rubriker från
+data.</li>
+<li><strong><code>rownames=true</code></strong>: anger för wxMaxima att
+matrisens första kolumn innehåller etiketter.</li>
+<li><strong><code>colnames=true</code></strong>: anger för wxMaxima att
+matrisens första rad innehåller etiketter.</li>
+<li><strong><code>parenstyle=&lt;style&gt;</code></strong>: anger typen
+av parenteser eller klamrar runt matrisen. Följande stilar stöds:
+<code>round</code> <code>()</code>, <code>square</code> <code>[]</code>,
+<code>angled</code> <code>&lt;&gt;</code>, <code>straight</code>
+<code>||</code> och <code>none</code>.</li>
+<li><strong><code>oversized=&lt;mode&gt;</code></strong>: Anger hur just
+denna matris visas om den är för stor för fönstret, oavsett
+inställningen <em>Matriser som är för stora för fönstret</em> (se
+nedan): <code>full</code> visar hela matrisen, <code>elide</code>
+utelämnar raderna och kolumnerna i mitten och <code>scroll</code> visar
+den i en ruta som är lika stor som fönstret och har egna
+rullningslister.</li>
+<li><strong><code>banding=&lt;mode&gt;</code></strong>: Anger om
+varannan rad och kolumn i matrisen ska skuggas svagt (se nedan):
+<code>true</code> skuggar dem alltid, även om matrisen ryms i fönstret.
+<code>false</code> gör det aldrig, inte ens i fönstret som öppnas vid
+dubbelklickning. Standardvärdet <code>auto</code> skuggar dem bara om
+matrisen är för stor för fönstret.</li>
+</ul>
+<p>Exempel:</p>
+<div class="sourceCode" id="cb31"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="cn">wx_matrix</span>(<span class="fu">matrix</span>([<span class="st">&quot;Name&quot;</span>, <span class="st">&quot;Value&quot;</span>], [<span class="st">&quot;X&quot;</span>, <span class="dv">10</span>], [<span class="st">&quot;Y&quot;</span>, <span class="dv">20</span>]),</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>          <span class="cn">lines</span>=<span class="kw">true</span>, <span class="cn">rownames</span>=<span class="kw">true</span>, <span class="cn">colnames</span>=<span class="kw">true</span>, <span class="cn">parenstyle</span>=<span class="cn">square</span>);</span></code></pre></div>
+<p><code>wx_matrix()</code> visar inget i sig: funktionen returnerar
+matrisen med bifogad formatering, som används när värdet visas. Den kan
+alltså lagras i en variabel och visas med sin formatering senare, och en
+matris som avslutas med <code>$</code> visas inte alls. En ny matris som
+beräknas utifrån den, till exempel genom addition eller transponering,
+visas på vanligt sätt igen.</p>
+<p>En matris kan inte radbrytas som en lång summa. Därför utelämnar
+wxMaxima som standard raderna och kolumnerna i mitten av en matris som
+är för stor för fönstret och markerar luckan med <code>⋯</code>,
+<code>⋮</code> och <code>⋱</code>, på samma sätt som en stor matris
+skrivs för hand. De första och sista raderna och kolumnerna förblir
+alltid synliga. Om du håller muspekaren över matrisen visas vilka rader
+och kolumner som har utelämnats. Inställningen <em>Matriser som är för
+stora för fönstret</em> på fliken <em>Arbetsblad</em> i
+inställningsdialogen kan i stället visa hela matrisen, vilket gör att
+hela arbetsbladet kan rullas i sidled, eller visa den i en ruta som är
+lika stor som fönstret och har egna rullningslister. Där rullar
+mushjulet arbetsbladet om inte matrisen eller något inuti den är
+markerat. En sådan matris skrivs ut med raderna och kolumnerna i mitten
+utelämnade. Oavsett om matrisens mitt utelämnas eller matrisen visas i
+en rullningsbar ruta skuggas varannan rad och kolumn svagt så att de
+blir lätta att följa genom matrisen. En matris som ryms i fönstret
+förblir oskuggad, om inte alternativet <code>banding</code> för
+<code>wx_matrix()</code> anger något annat. Allt detta påverkar bara det
+som visas på skärmen och skrivs ut: vid kopiering, sparande och export
+ingår alltid alla matriselement. Alternativet <code>oversized</code> för
+<code>wx_matrix()</code> åsidosätter inställningen för en enskild
+matris. En matris som enligt det alternativet ska rullas får ändå sin
+mitt utelämnad på papper, och när en matris exporteras som bild visas
+alltid hela matrisen. Dubbelklicka på en matris vars mitt utelämnas
+eller som visas i en rullningsbar ruta för att öppna ett eget fönster
+som visar hela matrisen. Fönstret kan storleksändras och rullas, och
+<em>Escape</em> stänger det. <em>Ctrl+F</em> i detta fönster söker i
+matrisen: varje träff markerar elementet där den finns och rullar fram
+det, och en ny sökning går vidare till nästa matchande element.</p>
+<h2 data-number="3.9" id="rapportera-fel"><span
+class="header-section-number">3.9</span> Rapportera fel</h2>
+<div id="wxbuild_info">
+
+</div>
+<div id="wxbug_report">
+
+</div>
+<p><em>WxMaxima</em> har några funktioner som samlar in information om
+det aktuella systemet för felrapporter:</p>
+<ul>
+<li><code>wxbuild_info()</code> samlar in information om den version av
+<em>wxMaxima</em> som körs.</li>
+<li><code>wxbug_report()</code> beskriver hur och var du kan rapportera
+fel.</li>
+</ul>
+<h2 data-number="3.10" id="markera-utdata-med-röd-färg"><span
+class="header-section-number">3.10</span> Markera utdata med röd
+färg</h2>
+<p>Om du anger texten <code>highlight</code> som andra argument till
+<em>Maximas</em> kommando <code>box()</code> skriver <em>wxMaxima</em>
+det första argumentet med röd förgrundsfärg.</p>
+<h2 data-number="3.11" id="visning-av-utdata."><span
+class="header-section-number">3.11</span> Visning av utdata.</h2>
+<p>Med <code>set_display()</code> kan du ange hur wxMaxima ska återge
+utdata.</p>
+<p><code>set_display('xml)</code> är standardvärdet. Då kommunicerar
+Maxima med wxMaxima via en maskinläsbar XML-dialekt, som kan ses i
+sidopanelen “Obehandlad XML”, och visar de resulterande formlerna snyggt
+formaterade med bland annat matriser, rottecken och bråk.</p>
+<!--- Currently that does not work as it should, the line with the output label is shifted right (issue: #2006) -->
+<p><code>set_display('ascii)</code> får wxMaxima att visa formler som
+ASCII-grafik, precis som Maxima på kommandoraden.</p>
+<p><code>set_display('none)</code> ger ASCII-resultat på en rad, precis
+som <code>display2d:false;</code> i Maxima på kommandoraden.</p>
+<h1 data-number="4" id="hjälpmenyn"><span
+class="header-section-number">4</span> Hjälpmenyn</h1>
+<p>WxMaximas hjälpmeny ger tillgång till handböckerna för Maxima och
+wxMaxima, tips, några exempelarbetsblad och demonstrationerna som ingår
+i Maxima på kommandoraden, via kommandot <code>demo()</code>.</p>
+<p>Observera att demonstrationerna skriver:</p>
+<pre class="text"><code>Skriv &#39;;&#39; vid prompten &#39;_&#39; och tryck på &lt;enter&gt; för att fortsätta demonstrationen.</code></pre>
+<p>Det gäller för Maxima på kommandoraden. I wxMaxima fortsätter du
+däremot som standard med <kbd>CTRL</kbd>+<kbd>ENTER</kbd>.</p>
+<p>Du kan ändra detta under
+Inställningar-&gt;Arbetsblad-&gt;“Snabbtangenter för att skicka
+kommandon till Maxima”.</p>
+<hr />
+<h1 data-number="5" id="felsökning"><span
+class="header-section-number">5</span> Felsökning</h1>
+<h2 data-number="5.1" id="felsökningsdialogen"><span
+class="header-section-number">5.1</span> Felsökningsdialogen</h2>
+<p><em>Hjälp &gt; Felsökning</em> kontrollerar de vanligaste orsakerna
+till att <em>wxMaxima</em> inte fungerar: om <em>Maxima</em> hittas, om
+<em>Maxima</em> startar, ansluter till <em>wxMaxima</em>, skickar sin
+första prompt och bekräftar att det är den <em>Maxima</em>-process som
+<em>wxMaxima</em> startade, om den accepterar Lisp-koden från
+<em>wxMaxima</em> och kan läsa in paket och <code>draw</code>, om dess
+temporära katalog kan användas för diagram, om <em>gnuplot</em> kan rita
+diagram i formaten <code>png</code> och <code>pngcairo</code>, om
+<em>wxMaxima</em> kan stoppa <em>Maxima</em> igen och om handböckerna,
+hjälpsidopanelen, en webbläsare, översättningarna, text i SVG-bilder och
+AI-sidopanelen är tillgängliga. För detta startas en egen
+<em>Maxima</em>-process, så arbetsbladets <em>Maxima</em>-process och
+dess eventuella beräkningar lämnas i fred. Kontrollerna är grupperade på
+sidor (<em>Maxima</em>, paket och diagram, hjälp och handböcker samt
+användargränssnitt), som var och en markeras med symbolen för sitt
+viktigaste resultat: en grön bock om allt fungerar och ett rött kryss om
+något inte fungerar. Markera en rad för att se vad kontrollen visade
+och, vid problem, vad du kan göra åt det. <em>Kopiera rapport</em>
+kopierar allt till urklipp, färdigt att klistra in i en felrapport.</p>
+<h2 data-number="5.2" id="kan-inte-ansluta-till-maxima"><span
+class="header-section-number">5.2</span> Kan inte ansluta till
+<em>Maxima</em></h2>
+<p><em>Maxima</em>, som utför själva matematiken, och <em>wxMaxima</em>,
+som tillhandahåller användargränssnittet, är separata program som
+kommunicerar via en lokal nätverksanslutning. Den troligaste orsaken är
+därför att anslutningen inte fungerar. En brandvägg kan till exempel
+vara inställd på att inte bara stoppa obehöriga internetanslutningar
+utan också blockera kommunikation mellan processer på samma dator.
+Eftersom <em>Maxima</em> körs i en Lisp-miljö behöver processen vars
+kommunikation blockeras inte heta “maxima”. Vanliga namn på programmet
+som öppnar nätverksanslutningen är sbcl, gcl, ccl, lisp.exe eller
+liknande.</p>
+<p>På Unix-datorer kan en annan orsak vara att loopback-nätverket, som
+möjliggör nätverksanslutningar mellan program på samma dator, inte är
+korrekt inställt.</p>
+<h2 data-number="5.3" id="rädda-data-från-en-skadad-.wxmx-fil"><span
+class="header-section-number">5.3</span> Rädda data från en skadad
+.wxmx-fil</h2>
+<p>De flesta moderna XML-baserade format är i grunden vanliga zip-filer.
+<em>WxMaxima</em> använder ingen komprimering, så innehållet i
+<code>.wxmx</code>-filer kan visas i valfri textredigerare.</p>
+<p>Om zip-signaturen i slutet av filen är oskadad kan de flesta
+operativsystem packa upp informationen efter att du bytt filändelse från
+<code>.wxmx</code> till <code>.zip</code>. På liknande sätt kan man
+återställa ursprungliga bildfiler ur ett ordbehandlingsdokument. Om
+zip-signaturen är skadad finns ändå hopp: om <em>wxMaxima</em> upptäckte
+ett fel vid sparandet kan det finnas en <code>.wxmx~</code>-fil vars
+innehåll kan hjälpa.</p>
+<p>Även om en sådan fil saknas finns möjligheter. <code>.wxmx</code> är
+ett behållarformat och XML-delen lagras okomprimerad. Du kan byta
+filändelsen från <code>.wxmx</code> till <code>.txt</code> och använda
+en textredigerare för att rädda XML-delen. Den börjar med
+<code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;</code> och slutar med
+<code>&lt;/wxMaximaDocument&gt;</code>. Före och efter denna text visas
+en del oläsbart binärt innehåll i textredigeraren.</p>
+<p>Om du sparar en textfil som enbart innehåller denna del, exempelvis
+genom att kopiera den till en ny fil, med filändelsen <code>.xml</code>,
+kan <em>wxMaxima</em> återställa texten från dokumentet.</p>
+<h2 data-number="5.4"
+id="jag-vill-visa-felsökningsinformation-innan-kommandot-är-klart"><span
+class="header-section-number">5.4</span> Jag vill visa
+felsökningsinformation innan kommandot är klart</h2>
+<p>Normalt väntar <em>wxMaxima</em> tills hela den tvådimensionella
+formeln har överförts innan den formateras. Det sparar tid genom att
+undvika upprepade försök att formatera en ofullständig ekvation.
+Kommandot <code>disp</code> kan dock visa felsökningsutdata direkt utan
+att vänta på att det aktuella <em>Maxima</em>-kommandot blir klart:</p>
+<div class="sourceCode" id="cb33"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="kw">for</span> <span class="cn">i</span>:<span class="dv">1</span> <span class="kw">thru</span> <span class="dv">10</span> <span class="kw">do</span> (</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">disp</span>(<span class="cn">i</span>),</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>   <span class="co">/* (sleep n) is a Lisp function, which can be used */</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>   <span class="co">/* with the character &quot;?&quot; before. It delays the */</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>   <span class="co">/* program execution (here: for 3 seconds) */</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>   ?<span class="cn">sleep</span>(<span class="dv">3</span>)</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>)$</span></code></pre></div>
+<p>Se även kommandot <code>wxstatusbar()</code> ovan.</p>
+<h2 data-number="5.5"
+id="diagramritning-visar-bara-ett-stängt-tomt-kuvert-med-ett-felmeddelande"><span
+class="header-section-number">5.5</span> Diagramritning visar bara ett
+stängt tomt kuvert med ett felmeddelande</h2>
+<p>Det betyder att <em>wxMaxima</em> inte kunde läsa filen som
+<em>Maxima</em> skulle ha bett <em>Gnuplot</em> att skapa.</p>
+<p>Möjliga orsaker är:</p>
+<ul>
+<li>Diagramkommandot ingår i ett tilläggspaket, till exempel
+<code>implicit_plot</code>, som inte lästes in med <em>Maximas</em>
+kommando <code>load()</code> innan diagrammet skulle ritas.</li>
+<li><em>Maxima</em> försökte göra något som den installerade
+<em>Gnuplot</em>-versionen inte förstår. Då finns en fil med filändelsen
+<code>.gnuplot</code> i katalogen som anges av <em>Maxima</em>-variabeln
+<code>maxima_userdir</code>. Filen innehåller instruktionerna från
+<em>Maxima</em> till <em>Gnuplot</em> och är därför oftast användbar vid
+felsökning.</li>
+<li>Gnuplot ombads använda pngCairo-biblioteket, som ger kantutjämning
+och fler linjestilar, men programmet byggdes utan stöd för det. Lösning:
+avmarkera “Använd Cairo-terminalen för diagram” i
+inställningsdialogrutan och ange inte <code>wxplot_pngcairo</code> som
+true i <em>Maxima</em>.</li>
+<li>Gnuplot skapade inte en giltig <code>.png</code>-fil.</li>
+</ul>
+<h2 data-number="5.6"
+id="ritning-av-en-animering-ger-error-undefined-variable"><span
+class="header-section-number">5.6</span> Ritning av en animering ger
+”error: undefined variable”</h2>
+<p>Som standard sätts skjutreglagevariabelns värde in i uttrycket som
+ska ritas bara om variabeln är synlig i uttrycket. Problemet löses genom
+att använda <code>subst</code> för att sätta in skjutreglagevariabeln i
+ekvationen. Ett exempel finns i slutet av avsnittet <a
+href="#embedding-animations-into-the-spreadsheet">Bädda in animeringar i
+arbetsbladet</a>.</p>
+<h2 data-number="5.7"
+id="jag-förlorade-cellinnehåll-och-ångra-minns-det-inte"><span
+class="header-section-number">5.7</span> Jag förlorade cellinnehåll och
+Ångra minns det inte</h2>
+<p>Det finns separata ångrafunktioner för cellåtgärder och för ändringar
+inne i celler, så detta händer förhoppningsvis sällan. Om det ändå
+inträffar finns flera sätt att återställa data:</p>
+<ul>
+<li><em>WxMaxima</em> har två ångrafunktioner: en gemensam ångrahistorik
+som är aktiv när ingen cell är markerad och en separat ångrahistorik för
+varje cell som är aktiv när markören står inne i cellen. Prova båda för
+att se om ett gammalt värde fortfarande går att nå.</li>
+<li>Om du fortfarande kan ta reda på vilken etikett <em>Maxima</em> gav
+cellen kan du skriva etiketten så visas innehållet igen.</li>
+<li>Om du inte kan det behöver du inte ge upp. I menyn ”Visa” kan du
+öppna en historikpanel som visar alla <em>Maxima</em>-kommandon som
+nyligen körts.</li>
+<li>Om inget annat hjälper har <em>Maxima</em> en
+återspelningsfunktion:</li>
+</ul>
+<div class="sourceCode" id="cb34"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">playback</span>();</span></code></pre></div>
+<h2 data-number="5.8"
+id="wxmaxima-startar-med-meddelandet-maxima-processen-avslutades."><span
+class="header-section-number">5.8</span> <em>WxMaxima</em> startar med
+meddelandet ”Maxima-processen avslutades.”</h2>
+<p>En möjlig orsak är att <em>Maxima</em> inte finns på den plats som
+anges på fliken ”Maxima” i <em>wxMaximas</em> inställningsdialogruta och
+därför inte kan startas. Ange sökvägen till en fungerande körbar
+<em>Maxima</em>-fil för att lösa problemet.</p>
+<h2 data-number="5.9"
+id="maxima-beräknar-oavbrutet-och-svarar-inte-på-inmatning"><span
+class="header-section-number">5.9</span> Maxima beräknar oavbrutet och
+svarar inte på inmatning</h2>
+<p>Det är teoretiskt möjligt att <em>wxMaxima</em> inte upptäcker att
+<em>Maxima</em> har avslutat beräkningen och därför aldrig får veta att
+nya data kan skickas. I så fall kan ”Utlös beräkning” synkronisera
+programmen igen.</p>
+<h2 data-number="5.10"
+id="min-sbcl-baserade-maxima-får-slut-på-minne"><span
+class="header-section-number">5.10</span> Min SBCL-baserade
+<em>Maxima</em> får slut på minne</h2>
+<p>Lisp-kompilatorn SBCL har som standard en minnesgräns som gör att den
+kan köras även på enklare datorer. Gränsen kan vara för låg vid
+kompilering av stora programvarupaket som Lapack eller vid hantering av
+mycket stora ekvationslistor. Du kan höja den med kommandoradsparametern
+<code>--dynamic-space-size</code>, som anger hur många megabyte SBCL ska
+reservera. En 32-bitarsversion av SBCL på Windows kan reservera upp till
+999 megabyte. En 64-bitarsversion på Windows kan ställas in på mer än de
+cirka 1280 megabyte som kompileringen av Lapack kräver.</p>
+<p>Ett sätt att ge <em>Maxima</em>, och därmed SBCL,
+kommandoradsparametrar är att använda fältet “Ytterligare parametrar för
+Maxima” i <em>wxMaximas</em> inställningsdialogruta.</p>
+<figure id="img_sbclMemory">
+<img src="./sbclMemory.png" alt="SBCL-minne" />
+<figcaption aria-hidden="true">SBCL-minne</figcaption>
+</figure>
+<h2 data-number="5.11"
+id="inmatningen-är-ibland-långsam-eller-missar-tangenttryckningar-på-ubuntu"><span
+class="header-section-number">5.11</span> Inmatningen är ibland långsam
+eller missar tangenttryckningar på Ubuntu</h2>
+<p>Installation av paketet <code>ibus-gtk</code> bör lösa problemet. Mer
+information finns på (<a
+href="https://bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558">https://bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558</a>).</p>
+<h2 data-number="5.12"
+id="wxmaxima-stannar-när-maxima-behandlar-grekiska-bokstäver-eller-bokstäver-med-omljud"><span
+class="header-section-number">5.12</span> <em>WxMaxima</em> stannar när
+<em>Maxima</em> behandlar grekiska bokstäver eller bokstäver med
+omljud</h2>
+<p>Om din <em>Maxima</em> bygger på SBCL behöver följande rad läggas
+till i <code>.sbclrc</code>:</p>
+<div class="sourceCode" id="cb35"><pre
+class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">setf</span> sb-impl::*default-external-format* :utf-8)</span></code></pre></div>
+<p>Katalogen där filen ska placeras beror på systemet och
+installationen. En SBCL-baserad <em>Maxima</em> som redan har beräknat
+en cell i den aktuella sessionen kan ange platsen med följande
+kommando:</p>
+<div class="sourceCode" id="cb36"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>:<span class="cn">lisp</span> (<span class="cn">sb</span>-<span class="cn">impl</span>::<span class="cn">userinit</span>-<span class="cn">pathname</span>)</span></code></pre></div>
+<h2 data-number="5.13"
+id="om-wayland-i-nyare-linux--och-bsd-distributioner"><span
+class="header-section-number">5.13</span> Om Wayland i nyare Linux- och
+BSD-distributioner</h2>
+<p>Det verkar finnas problem mellan visningsservern Wayland och
+wxWidgets. WxMaxima kan påverkas, till exempel genom att sidopaneler
+inte går att flytta.</p>
+<p>Du kan antingen stänga av Wayland och använda X11 för hela systemet,
+eller enbart ange att wxMaxima ska använda X Window System genom att
+ställa in <code>GDK_BACKEND=x11</code>.</p>
+<p>Starta till exempel wxMaxima med:</p>
+<p><code>GDK_BACKEND=x11 wxmaxima</code></p>
+<h2 data-number="5.14" id="menyraden-försvinner-på-kde-plasma"><span
+class="header-section-number">5.14</span> Menyraden försvinner på KDE
+Plasma</h2>
+<p>På vissa KDE Plasma-installationer försvinner den globala menyraden
+när du klickar på den. Felet finns i proxyn för den globala menyn, och
+lösningen är att låta wxMaxima använda en egen menyrad. Det gör du genom
+att ange <code>UBUNTU_MENUPROXY=0</code>.</p>
+<p>Från och med version 26.05.0 försöker wxMaxima ange denna variabel
+automatiskt om ett berört system upptäcks: KDE, Unity eller Ubuntu med
+äldre wxWidgets-versioner.</p>
+<p>Om den automatiska lösningen inte fungerar kan du starta wxMaxima
+manuellt med:</p>
+<p><code>UBUNTU_MENUPROXY=0 wxmaxima</code></p>
+<h2 data-number="5.15"
+id="varför-erbjuds-inte-den-inbyggda-handboksvisaren-på-min-windows-dator"><span
+class="header-section-number">5.15</span> Varför erbjuds inte den
+inbyggda handboksvisaren på min Windows-dator?</h2>
+<p>Antingen byggdes wxWidgets utan stöd för Microsoft WebView2 eller så
+är Microsoft WebView2 inte installerat.</p>
+<p><em>Hjälp/Om</em> visar vilka av den inbyggda webbläsarens
+förutsättningar som finns i denna wxMaxima-version och vilka som saknas.
+Loggfönstret (<em>Visa/Visa eller dölj loggfönster</em>) visar samma
+lista.</p>
+<h2 data-number="5.16"
+id="varför-fungerar-inte-den-externa-handboksvisaren-på-min-linux-dator"><span
+class="header-section-number">5.16</span> Varför fungerar inte den
+externa handboksvisaren på min Linux-dator?</h2>
+<p>Webbläsaren kan vara installerad som Snap, Flatpak eller AppImage.
+Sådana versioner kan ofta inte komma åt filer som är installerade lokalt
+i systemet. En annan orsak kan vara att Maxima eller wxMaxima är
+installerat som Snap, Flatpak eller i ett annat format som inte ger
+värdsystemet åtkomst till innehållet. En tredje möjlighet är att Maximas
+HTML-handbok inte är installerad och att nätversionen inte går att
+nå.</p>
+<h2 data-number="5.17"
+id="kan-wxmaxima-skapa-både-bildfiler-och-inbäddade-diagram-samtidigt"><span
+class="header-section-number">5.17</span> Kan <em>wxMaxima</em> skapa
+både bildfiler och inbäddade diagram samtidigt?</h2>
+<p>Arbetsbladet bäddar in <code>.png</code>-filer. I <em>wxMaxima</em>
+kan du ange var de ska skapas:</p>
+<div class="sourceCode" id="cb37"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="cn">wxdraw2d</span>(</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>    <span class="cn">file_name</span>=<span class="st">&quot;test&quot;</span>,  <span class="co">/* extension .png automatically added */</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>    <span class="cn">explicit</span>(<span class="fu">sin</span>(<span class="cn">x</span>),<span class="cn">x</span>,<span class="dv">1</span>,<span class="dv">10</span>)</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>);</span></code></pre></div>
+<p>Om du vill använda ett annat format är det enklare att skapa bilderna
+och sedan importera dem till arbetsbladet:</p>
+<div class="sourceCode" id="cb38"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;draw&quot;</span>);</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="cn">pngdraw</span>(<span class="cn">name</span>,[<span class="cn">contents</span>]):=</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>(</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">draw</span>(</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>        <span class="fu">append</span>(</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>            [</span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>                <span class="cn">terminal</span>=<span class="cn">pngcairo</span>,</span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>                <span class="cn">dimensions</span>=<span class="cn">wxplot_size</span>,</span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>                <span class="cn">file_name</span>=<span class="cn">name</span></span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>            ],</span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>            <span class="cn">contents</span></span>
+<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a>    <span class="cn">show_image</span>(<span class="fu">printf</span>(<span class="kw">false</span>,<span class="st">&quot;~a.png&quot;</span>,<span class="cn">name</span>))</span>
+<span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a>);</span>
+<span id="cb38-16"><a href="#cb38-16" aria-hidden="true" tabindex="-1"></a><span class="cn">pngdraw2d</span>(<span class="cn">name</span>,[<span class="cn">contents</span>]):=</span>
+<span id="cb38-17"><a href="#cb38-17" aria-hidden="true" tabindex="-1"></a>    <span class="cn">pngdraw</span>(<span class="cn">name</span>,<span class="cn">gr2d</span>(<span class="cn">contents</span>));</span>
+<span id="cb38-18"><a href="#cb38-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-19"><a href="#cb38-19" aria-hidden="true" tabindex="-1"></a><span class="cn">pngdraw2d</span>(<span class="st">&quot;Test&quot;</span>,</span>
+<span id="cb38-20"><a href="#cb38-20" aria-hidden="true" tabindex="-1"></a>        <span class="cn">explicit</span>(<span class="fu">sin</span>(<span class="cn">x</span>),<span class="cn">x</span>,<span class="dv">1</span>,<span class="dv">10</span>)</span>
+<span id="cb38-21"><a href="#cb38-21" aria-hidden="true" tabindex="-1"></a>);</span></code></pre></div>
+<h2 data-number="5.18"
+id="kan-jag-ange-bildförhållandet-för-ett-inbäddat-diagram"><span
+class="header-section-number">5.18</span> Kan jag ange bildförhållandet
+för ett inbäddat diagram?</h2>
+<p>Använd variabeln <code>wxplot_size</code>:</p>
+<div class="sourceCode" id="cb39"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="cn">wxdraw2d</span>(</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>    <span class="cn">explicit</span>(<span class="fu">sin</span>(<span class="cn">x</span>),<span class="cn">x</span>,<span class="dv">1</span>,<span class="dv">10</span>)</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>),<span class="cn">wxplot_size</span>=[<span class="dv">1000</span>,<span class="dv">1000</span>];</span></code></pre></div>
+<h2 data-number="5.19"
+id="efter-uppgradering-till-macos-13.1-ger-plot--eller-draw-kommandon-felmeddelanden-som"><span
+class="header-section-number">5.19</span> Efter uppgradering till macOS
+13.1 ger plot- eller draw-kommandon felmeddelanden som</h2>
+<pre class="text"><code>1 HIToolbox 0x00007ff80cd91726 _ZN15MenuBarInstance22EnsureAutoShowObserverEv + 102
+2 HIToolbox 0x00007ff80cd912b8 _ZN15MenuBarInstance14EnableAutoShowEv + 52
+3 HIToolbox 0x00007ff80cd35908 SetMenuBarObscured + 408
+...</code></pre>
+<p>Det kan vara ett problem i operativsystemet. Att stänga av automatisk
+döljning av menyraden under Systeminställningar =&gt; Skrivbord och Dock
+=&gt; Menyrad kan lösa det. Mer information finns i <a
+href="https://github.com/wxMaxima-developers/wxmaxima/issues/1746">wxMaxima-ärende
+#1746</a>.</p>
+<h2 data-number="5.20"
+id="på-macos-öppnar-plot2d-eller-draw-inget-fönster-utan-skriver-broken-pipe"><span
+class="header-section-number">5.20</span> På macOS öppnar
+<code>plot2d</code> eller <code>draw</code> inget fönster utan skriver
+”Broken pipe”</h2>
+<p>Ett meddelande som</p>
+<pre class="text"><code>WARNING:
+   Couldn&#39;t write to #&lt;SB-SYS:FD-STREAM for &quot;descriptor 9&quot; {1002FC5EF3}&gt;:
+     Broken pipe</code></pre>
+<p>betyder att <em>Gnuplot</em> avslutades innan <em>Maxima</em> hann
+skicka diagrammet. På macOS beror det vanligtvis på att macOS blockerar
+en <em>Gnuplot</em>-version som hämtats från internet. Eftersom
+<em>Maxima</em> startar <em>Gnuplot</em> i bakgrunden kan macOS inte
+fråga om programmet får köras. Starta <em>Gnuplot</em> en gång från
+Terminal eller tillåt det under Systeminställningar =&gt; Integritet och
+säkerhet för att ange att macOS får köra det.
+<code>xattr -r -d com.apple.quarantine</code> följt av sökvägen till
+<em>Gnuplot</em> (till exempel <code>Gnuplot.app</code>) gör samma sak.
+Se <a
+href="https://github.com/wxMaxima-developers/wxmaxima/issues/1461">wxMaxima-ärende
+#1461</a>.</p>
+<p><em>XQuartz</em> behövs inte för diagram i separata fönster: varken
+<em>wxMaxima</em> eller <em>Maxima</em> väljer någon
+<em>Gnuplot</em>-terminal för dem, så <em>Gnuplot</em> använder sin egen
+standardterminal. Den är <code>qt</code> för <em>Gnuplot</em> från
+Homebrew och <code>aqua</code> (AquaTerm) för <em>Gnuplot</em> från
+MacPorts. Båda kan rita utan <em>XQuartz</em>. Endast en
+<em>Gnuplot</em>-version som enbart erbjuder terminalen
+<code>x11</code>, eller där <code>GNUTERM</code> är satt till
+<code>x11</code>, behöver <em>XQuartz</em>. Inbäddade diagram
+(<code>wxplot2d</code>, <code>wxdraw</code> med flera) öppnar aldrig
+något fönster och behöver inget av detta.</p>
+<h2 data-number="5.21" id="loggning"><span
+class="header-section-number">5.21</span> Loggning</h2>
+<p>Loggmeddelanden kan hjälpa vid felsökning. WxMaxima kan logga många
+händelser. De flesta loggposter är användbara för utvecklare, särskilt
+vid problem eller fel. I en utgåveversion visas loggfönstret inte som
+standard, men i en utvecklingsversion visas det normalt som ett andra
+fönster. Du kan visa eller dölja fönstret via menyn “Visa-&gt;Visa/dölj
+loggfönster”.</p>
+<p>Meddelanden går inte förlorade när loggfönstret är dolt. Om du visar
+det senare ser du tidigare loggmeddelanden, förutsatt att du inte har
+rensat dem.</p>
+<p>Dessa meddelanden kan vara användbara när du rapporterar fel eller
+själv försöker hitta ett fel.</p>
+<p>Loggmeddelanden kan dessutom skrivas till standardfel, STDERR, med
+kommandoradsalternativet “–logtostderr”. På Windows öppnas en separat
+textkonsol eftersom ett grafiskt Windows-program inte har
+standardströmmarna anslutna.</p>
+<hr />
+<h1 data-number="6" id="vanliga-frågor"><span
+class="header-section-number">6</span> Vanliga frågor</h1>
+<h2 data-number="6.1"
+id="går-det-att-få-plats-med-mer-text-på-en-latex-sida"><span
+class="header-section-number">6.1</span> Går det att få plats med mer
+text på en LaTeX-sida?</h2>
+<p>Ja. Använd <a href="https://ctan.org/pkg/geometry">LaTeX-paketet
+“geometry”</a> för att ange marginalernas storlek.</p>
+<p>För att ange marginaler på 1 cm kan du lägga till följande rad i
+LaTeX-inledningen, till exempel via fältet “Exportera”-&gt;“Ytterligare
+rader för TeX-inledningen” i inställningsdialogrutan:</p>
+<div class="sourceCode" id="cb42"><pre
+class="sourceCode latex"><code class="sourceCode latex"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>[left=1cm,right=1cm,top=1cm,bottom=1cm]{<span class="ex">geometry</span>}</span></code></pre></div>
+<h2 data-number="6.2" id="finns-det-ett-mörkt-läge"><span
+class="header-section-number">6.2</span> Finns det ett mörkt läge?</h2>
+<p>Om wxWidgets är tillräckligt nytt använder <em>wxMaxima</em>
+automatiskt mörkt läge när operativsystemet gör det. Själva arbetsbladet
+har som standard en ljus bakgrund, men det går att ändra. Du kan också
+snabbt växla arbetsbladet mellan ljust och mörkt med menyvalet
+<code>Visa/Invertera arbetsbladets ljushet</code>.</p>
+<p>De flesta bilder är gjorda för vit bakgrund, och svarta linjer med
+genomskinlig bakgrund skulle vara osynliga på ett mörkt arbetsblad.
+Därför fylls bilders genomskinliga delar som standard med en
+bakgrundsfärg om arbetsbladets bakgrund är mörk. Färgen anges med stilen
+<em>Bakgrund för genomskinliga bilder</em> på fliken <em>Stil</em> i
+inställningsdialogen. Inställningen <em>Bakom genomskinliga delar av
+bilder</em> på fliken <em>Arbetsblad</em> kan stänga av bakgrunden eller
+låta den visas även på ljusa arbetsblad.</p>
+<h2 data-number="6.3"
+id="wxmaxima-stannar-ibland-i-flera-sekunder-under-den-första-minuten"><span
+class="header-section-number">6.3</span> <em>WxMaxima</em> stannar
+ibland i flera sekunder under den första minuten</h2>
+<p><em>WxMaxima</em> utför vissa stora uppgifter, exempelvis tolkning av
+<em>Maximas</em> handbok på över tusen sidor, i bakgrunden. Det märks
+normalt inte alls. När resultatet av en sådan uppgift behövs kan
+<em>wxMaxima</em> dock behöva vänta några sekunder innan arbetet kan
+fortsätta.</p>
+<h2 data-number="6.4"
+id="meddelandet-locale-xx_yy-can-not-be-set-visas-särskilt-när-nya-lokalinställningar-provas"><span
+class="header-section-number">6.4</span> Meddelandet ”locale ’xx_YY’ can
+not be set” visas, särskilt när nya lokalinställningar provas</h2>
+<figure id="img_locale_warning">
+<img src="./locale-warning.png" alt="Varning om lokalinställning" />
+<figcaption aria-hidden="true">Varning om lokalinställning</figcaption>
+</figure>
+<p>Samma problem kan också förekomma i andra program. Översättningarna
+verkar fungera efter att du klickat på OK. WxMaxima använder både egna
+översättningar och översättningar från wxWidgets-ramverket.</p>
+<p>De aktuella lokalerna kanske saknas i systemet. På Ubuntu- och
+Debian-system kan de genereras med
+<code>dpkg-reconfigure locales</code>.</p>
+<h2 data-number="6.5"
+id="hur-använder-jag-symboler-för-reella-tal-naturliga-tal-ℝ-ℕ-och-liknande"><span
+class="header-section-number">6.5</span> Hur använder jag symboler för
+reella tal, naturliga tal (ℝ, ℕ) och liknande?</h2>
+<p>Du hittar symbolerna i Unicode-sidopanelen genom att söka efter
+”double-struck capital”. Det valda typsnittet måste också stödja
+symbolerna. Välj ett annat typsnitt om de inte visas korrekt.</p>
+<h2 data-number="6.6"
+id="hur-kan-ett-maxima-skript-avgöra-om-det-körs-i-wxmaxima-eller-i-maxima-på-kommandoraden"><span
+class="header-section-number">6.6</span> Hur kan ett Maxima-skript
+avgöra om det körs i wxMaxima eller i Maxima på kommandoraden?</h2>
+<p>När wxMaxima används är Maxima-variabeln <code>maxima_frontend</code>
+satt till <code>wxmaxima</code>. Variabeln
+<code>maxima_frontend_version</code> innehåller då
+wxMaxima-versionen.</p>
+<p>Om inget gränssnitt används, alltså om du kör Maxima på
+kommandoraden, har dessa variabler värdet <code>false</code>.</p>
+<h3 data-number="6.6.1"
+id="är-wxmaxima-tillräckligt-nytt-för-detta-arbetsblad"><span
+class="header-section-number">6.6.1</span> Är wxMaxima tillräckligt nytt
+för detta arbetsblad?</h3>
+<div id="wx_version_min">
+
+</div>
+<p><code>wx_version_min("26.09.0")</code> returnerar <code>true</code>
+om den wxMaxima-version som körs är minst 26.09.0 och <code>false</code>
+om den är äldre eller om kommandot körs i <em>Maxima</em> på
+kommandoraden. Versionsnumrets delar jämförs som tal, så 26.10.0 räknas
+som nyare än 26.9.0, och en utelämnad del räknas som 0:
+<code>wx_version_min("26.9")</code> är samma sak som
+<code>wx_version_min("26.09.0")</code>. En utvecklingsversion räknas som
+den version den kommer att ges ut som.</p>
+<p><em>wxMaxima</em> 26.08.0 och äldre känner ännu inte till
+<code>wx_version_min()</code>. Där ger anropet, liksom alla funktioner
+som <em>Maxima</em> inte känner till, inget fel: det returnerar bara sig
+självt utan beräkning som <code>wx_version_min("26.09.0")</code>, vilket
+varken är <code>true</code> eller <code>false</code>. Ett enkelt
+<code>if wx_version_min("26.09.0") then ...</code> lämnas därför också
+oberäknat i dessa versioner. Ett arbetsblad som även måste fungera med
+dem kan jämföra resultatet med <code>true</code>, vilket ger
+<code>false</code> där:</p>
+<div class="sourceCode" id="cb43"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="kw">if</span> <span class="cn">wx_version_min</span>(<span class="st">&quot;26.09.0&quot;</span>) = <span class="kw">true</span> <span class="kw">then</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>    <span class="cn">wx_matrix</span>(<span class="cn">M</span>, <span class="cn">oversized</span>=<span class="cn">scroll</span>)</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="kw">else</span></span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>    <span class="cn">M</span>;</span></code></pre></div>
+<h2 data-number="6.7" id="hjälp-jag-kan-inte-spara-dokumentet"><span
+class="header-section-number">6.7</span> Hjälp! Jag kan inte spara
+dokumentet!</h2>
+<p>Om det inte går att spara som wxmx-fil kan du prova att spara som
+wxm-fil, eller tvärtom. Du kan också försöka ta bort alla utdata via
+Cell-&gt;Ta bort alla utdata och spara filen igen. Oväntade utdata kan
+orsaka problem vid sparandet.</p>
+<hr />
+<h1 data-number="7" id="kommandoradsargument"><span
+class="header-section-number">7</span> Kommandoradsargument</h1>
+<p>Program med grafiska gränssnitt startas vanligen genom att du klickar
+på en skrivbordsikon eller ett menyval. WxMaxima erbjuder ändå några
+kommandoradsalternativ när programmet startas från kommandoraden.</p>
+<ul>
+<li><code>-v</code> eller <code>--version</code>: visa
+versionsinformation.</li>
+<li><code>-h</code> eller <code>--help</code>: visa en kort
+hjälptext.</li>
+<li><code>-o</code> eller <code>--open=&lt;str&gt;</code>: öppna filen
+vars namn anges som argument till alternativet.</li>
+<li><code>-e</code> eller <code>--eval</code>: beräkna filen efter att
+den öppnats.</li>
+<li><code>-b</code> eller <code>--batch</code>: Om kommandoraden öppnar
+en fil beräknas alla celler i filen och filen sparas därefter. Det är
+till exempel användbart om sessionen som beskrivs i filen får
+<em>Maxima</em> att skapa utdatafiler. Satsbearbetningen avbryts om
+<em>wxMaxima</em> upptäcker att <em>Maxima</em> har gett ett
+felmeddelande och avslutas om <em>Maxima</em> ställer en fråga som
+saknar ett förberett svar: matematik är till sin natur delvis
+interaktiv, så en helt interaktionsfri satsbearbetning kan inte alltid
+garanteras.</li>
+<li><code>-d</code> eller <code>--diff</code>: Jämför 2 eller 3 filer
+sida vid sida i jämförelsevyn.</li>
+<li><code>--single_process</code>: Öppna alla arbetsblad i samma
+process.</li>
+<li><code>--single_thread</code>: Kör alla bakgrundsuppgifter i
+huvudtråden.</li>
+<li><code>--logtostderr</code>: Skriv även alla meddelanden från
+sidopanelen för felsökningsmeddelanden till standardfel.</li>
+<li><code>--pipe</code>: Vidarebefordra meddelanden från Maxima till
+standardfel.</li>
+<li><code>--debug</code>: Aktivera resurskrävande
+felsökningskontroller.</li>
+<li><code>--exit-on-error</code>: Stäng programmet vid varje
+Maxima-fel.</li>
+<li><code>-f</code> eller <code>--ini=&lt;str&gt;</code>: Använd
+initieringsfilen som anges som argument till detta
+kommandoradsalternativ.</li>
+<li><code>-u</code>, <code>--use-version=&lt;str&gt;</code>: Använd
+Maxima-versionen <code>&lt;str&gt;</code>.</li>
+<li><code>-l</code>, <code>--lisp=&lt;str&gt;</code>: Använd en
+Maxima-version som kompilerats med Lisp-kompilatorn
+<code>&lt;str&gt;</code>.</li>
+<li><code>-X</code>, <code>--extra-args=&lt;str&gt;</code>: Ange
+ytterligare argument till Maxima.</li>
+<li><code>-m</code> eller <code>--maxima=&lt;str&gt;</code>: Ange
+sökvägen till den körbara filen för <em>maxima</em>.</li>
+<li><code>--enableipc</code>: Låt Maxima styra wxMaxima genom
+kommunikation mellan processer. Använd detta alternativ med
+försiktighet.</li>
+<li><code>--wxmathml-lisp=&lt;str&gt;</code>: Sökväg till wxMathML.lisp
+(om den inbyggda inte ska användas, främst för utvecklare).</li>
+</ul>
+<p>Vissa operativsystem kan använda ett tankstreck i stället för ett
+minustecken framför kommandoradsalternativen.</p>
+<p>På Linux och andra Unix-liknande system installerar wxMaxima
+kompletteringar för bash, zsh och fish, så att <kbd>Tab</kbd>-tangenten
+kompletterar dessa alternativ och namnen på filer som wxMaxima kan
+öppna.</p>
+<p>En lyckad körning avslutas med status 0. En satskörning som måste
+avbrytas innan den är klar avslutas i stället med någon av följande
+statuskoder, så att ett skript som anropar <em>wxMaxima</em> kan avgöra
+orsaken utan att läsa loggen:</p>
+<ul>
+<li><code>90</code>: <em>Maxima</em> rapporterade ett fel och
+<code>--exit-on-error</code> hade angetts.</li>
+<li><code>91</code>: <em>Maxima</em> ställde en fråga som saknar ett
+förberett svar.</li>
+<li><code>92</code>: Filen som angavs på kommandoraden kunde inte
+öppnas.</li>
+<li><code>93</code>: Arbetsbladet kunde inte sparas.</li>
+<li><code>94</code>: Data för en bild i arbetsbladet kunde inte läsas
+in.</li>
+<li><code>95</code>: En bild i arbetsbladet kunde inte avkodas
+(kontrolleras bara med <code>--debug</code>).</li>
+</ul>
+<hr />
+<h1 data-number="8"
+id="om-programmet-och-hur-du-bidrar-till-wxmaxima"><span
+class="header-section-number">8</span> Om programmet och hur du bidrar
+till wxMaxima</h1>
+<p>wxMaxima utvecklas huvudsakligen i C++ med <a
+href="https://www.wxwidgets.org">wxWidgets-ramverket</a>. Vi använder <a
+href="https://www.cmake.org">CMake</a> som byggsystem, och en liten del
+av programmet är skriven i Lisp. Om du kan dessa programmeringsspråk och
+vill hjälpa till med projektet med öppen källkod kan du delta i
+wxMaxima-projektet på <a
+href="https://github.com/wxMaxima-developers/wxmaxima"
+class="uri">https://github.com/wxMaxima-developers/wxmaxima</a>.</p>
+<p>Det behövs inte bara programmerare! Du kan också bidra genom att
+förbättra dokumentationen, hitta och rapportera fel, föreslå rättningar
+och nya funktioner eller översätta wxMaxima och handboken till ditt
+språk. Läs README.md i <a
+href="https://github.com/wxMaxima-developers/wxmaxima/tree/main/locales">underkatalogen
+locales</a> om hur översättningen går till.</p>
+<p>Du kan också besvara andra användares frågor i
+diskussionsforumet.</p>
+<p>wxMaximas källkod är dokumenterad med Doxygen <a
+href="https://wxmaxima-developers.github.io/wxmaxima/Doxygen-documentation/">här</a>.</p>
+<p>Programmet är nästan fristående. Förutom systembibliotek och
+wxWidgets-biblioteket behövs inga externa beroenden, såsom grafikfiler
+eller Lisp-delen i <code>wxmathML.lisp</code>, eftersom dessa filer
+ingår i den körbara filen.</p>
+<p>Om du är utvecklare och vill prova en ändrad
+<code>wxmathML.lisp</code> utan att kompilera om allt kan du använda
+kommandoradsalternativet <code>--wxmathml-lisp=&lt;str&gt;</code> för
+att läsa en annan Lisp-fil än den inbyggda.</p>
+</body>
+</html>

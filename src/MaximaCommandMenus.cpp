@@ -910,6 +910,7 @@ void MaximaCommandMenus::EquationsMenu(wxCommandEvent &event) {
   else if(event.GetId() == EventIDs::menu_realroots){
     m_wxMaxima.CommandWiz(
                _("Solve polynomials numerically (real roots)"),
+               // xgettext:no-c-format
                _("Tries to find exact fractions that match the numerical solutions of "
                  "a polynomial.\n"
                  "Is not able to deal with solutions with a imaginary part. "
