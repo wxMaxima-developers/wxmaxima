@@ -175,7 +175,7 @@ function(wxm_feature_summary)
   # SvgBitmap::RendersText(). wxBitmapBundle::FromSVG() uses NanoSVG, which
   # draws no text, whenever it is compiled in -- even next to LunaSVG.
   set(svg_name "Scalable (SVG) plots")
-  set(svg_how "Needs a wxWidgets >= 3.3.2 built with wxUSE_LUNASVG=1 and wxUSE_NANOSVG=0.")
+  set(svg_how "Needs a wxWidgets >= 3.3.2 built with wxUSE_LUNASVG=builtin and wxUSE_NANOSVG=OFF.")
   if(NOT wx_headers_usable)
     wxm_feature_line("${svg_name}" "unknown")
   else()

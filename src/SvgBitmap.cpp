@@ -135,8 +135,8 @@ wxString SvgBitmap::TextRenderingDiagnosis(bool rendersText) {
 #else
   return wxS("wxWidgets ") + wxVersion +
     wxS(" renders SVG with NanoSVG, which draws no text.") + consequence +
-    wxS(" Scalable plots need a wxWidgets >= 3.3.2 built with wxUSE_LUNASVG=1 "
-        "and wxUSE_NANOSVG=0.");
+    wxS(" Scalable plots need a wxWidgets >= 3.3.2 built with wxUSE_LUNASVG=builtin "
+        "and wxUSE_NANOSVG=OFF.");
 #endif
 #elif defined(wxUSE_LUNASVG) && wxUSE_LUNASVG
   return wxS("wxWidgets ") + wxVersion +
