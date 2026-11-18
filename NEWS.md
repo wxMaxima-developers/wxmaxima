@@ -1,5 +1,7 @@
 # Current development version
 
+- The snap is only built for amd64 and arm64 now. The armhf, ppc64el and
+  s390x snaps were never tested and went out of date.
 - Added a complete Swedish translation of the interface and user manual,
   including the desktop launcher descriptions.
 - The German translation of the manual covers every paragraph again: the
