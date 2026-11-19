@@ -713,7 +713,7 @@ void ConfigDialogue::SetCheckboxValues() {
   // The language from the config, or "default" (the first entry) if the
   // config names a language we don't offer
   m_language->SetSelection(0);
-  int lang = m_configuration->GetLanguage();
+  int lang = m_configuration->GetConfiguredLanguage();
   for (std::size_t i = 0; i < m_languages.size(); ++i) {
     if (m_languages[i].id == lang) {
       m_language->SetSelection(static_cast<int>(i));

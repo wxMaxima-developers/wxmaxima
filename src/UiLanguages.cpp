@@ -136,3 +136,17 @@ wxString wxm::UiLanguageLabel(const UiLanguage &language) {
     label = wxString(wxUniChar(0x200E)) + label;
   return label;
 }
+
+int wxm::UiLanguageFromCode(const wxString &code) {
+  wxString name = code;
+  name.Trim(true).Trim(false);
+  if (name.IsEmpty())
+    return wxLANGUAGE_UNKNOWN;
+  // wxWidgets' canonical names separate the region by "_"; BCP 47, which
+  // users may well know better, uses "-".
+  name.Replace(wxS("-"), wxS("_"));
+  const wxLanguageInfo *info = wxLocale::FindLanguageInfo(name);
+  if (info == nullptr)
+    return wxLANGUAGE_UNKNOWN;
+  return info->Language;
+}

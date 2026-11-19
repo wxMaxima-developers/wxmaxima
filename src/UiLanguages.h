@@ -84,6 +84,18 @@ wxString UiLanguageSortKey(const wxString &name);
 */
 wxString UiLanguageLabel(const UiLanguage &language);
 
+/*! The language a code like "de", "pt_BR" or "zh-CN" names (--language)
+
+  Accepts whatever wxWidgets knows a language by: its canonical name with
+  or without the region, with "_" or "-" between the two, in any case, or
+  its English description ("German"). A language wxMaxima has no
+  translation for is still accepted, since it also decides how numbers and
+  dates are written; its texts then are English.
+
+  \return the wxLanguage, or wxLANGUAGE_UNKNOWN if the code names none
+*/
+int UiLanguageFromCode(const wxString &code);
+
 } // namespace wxm
 
 #endif // UILANGUAGES_H

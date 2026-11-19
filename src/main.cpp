@@ -72,6 +72,8 @@
 
 #include "dialogs/ConfigDialogue.h"
 #include "Version.h"
+#include "CommandLinePrescan.h"
+#include "UiLanguages.h"
 #include "examples/CASvsProgrammingLanguage.h"
 #include "examples/diffEquations.h"
 #include "examples/draw2d.h"
@@ -458,6 +460,18 @@ void MyApp::RestoreConsoleMode() {
 
 #endif
 
+namespace {
+//! The program's arguments, argv[0] included, as PrescanLongOption() wants them
+std::vector<wxString> CommandLineArguments(int argc,
+                                           const wxCmdLineArgsArray &argv) {
+  std::vector<wxString> args;
+  args.reserve(static_cast<std::size_t>(argc));
+  for (int i = 0; i < argc; ++i)
+    args.emplace_back(argv[i]);
+  return args;
+}
+} // namespace
+
 bool MyApp::OnInit() {
 #ifdef __WXMSW__
   // Suppress the OS hard-error / "this application could not be started" message
@@ -509,6 +523,8 @@ bool MyApp::OnInit() {
   wxSocketBase::Initialize();
 
   wxArtProvider::Push(new wxMaximaArtProvider);
+  // The value of a --language option that names no language we know of
+  wxString unknownLanguageOption;
   m_translations = std::make_unique<wxTranslations>();
   wxTranslations::Set(m_translations.get());
   {
@@ -567,6 +583,19 @@ bool MyApp::OnInit() {
       if (lng == wxLANGUAGE_UNKNOWN)
         lng = wxLANGUAGE_DEFAULT;
       lang = static_cast<wxLanguage>(lng);
+    }
+    // --language overrides the configured language for this session. It has
+    // to be looked for here, before the command line is parsed further down,
+    // since the parser's own messages are translated into this language.
+    if (const auto languageOption = wxm::cmdline::PrescanLongOption(
+            CommandLineArguments(argc, argv), wxS("language"))) {
+      const int requested = wxm::UiLanguageFromCode(*languageOption);
+      if (requested == wxLANGUAGE_UNKNOWN)
+        unknownLanguageOption = *languageOption;
+      else {
+        lang = static_cast<wxLanguage>(requested);
+        Configuration::SetLanguageOverride(requested);
+      }
     }
 
     {
@@ -699,6 +728,15 @@ bool MyApp::OnInit() {
 
   if (cmdLineError != 0)
     exit(1);
+
+  // Reported only now that the log and the translations are set up; the
+  // configured language was used meanwhile.
+  if (!unknownLanguageOption.IsEmpty()) {
+    wxMessageOutput::Get()->Printf(
+        _("Unknown language \"%s\". Use a code like de, pt_BR or zh_CN.\n"),
+        unknownLanguageOption);
+    exit(1);
+  }
 
   wxString ini, file;
   // Attention: The config file is changed by

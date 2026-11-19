@@ -4,7 +4,7 @@ wxmaxima, wxmxdiff \- wxWidgets Interface und Diff-Betrachter f\(:ur Maxima
 
 .SH "SYNTAX" 
 .PP 
-\fBwxmaxima\fR [-v] [-h] [-o <str>] [-e] [-b] [-d] [--logtostderr] [--pipe] [--exit-on-error] [-f <str>] [-u <str>] [-l <str>] [-X <str>] [-m <str>]  [--enableipc] [input file...]
+\fBwxmaxima\fR [-v] [-h] [-o <str>] [-e] [-b] [-d] [--logtostderr] [--pipe] [--exit-on-error] [--language <lang>] [-f <str>] [-u <str>] [-l <str>] [-X <str>] [-m <str>]  [--enableipc] [input file...]
 
 .SH "BESCHREIBUNG" 
 .PP 
@@ -79,6 +79,10 @@ Gibt Nachrichten von Maxima auf der Standard-Fehlerausgabe aus.
 .TP
 .I \-\-exit-on-error
 Beendet das Programm nach einem Fehler von Maxima.
+
+.TP
+.I \-\-language=<lang>
+Verwendet f\(:ur die Bedienoberfl\(:ache diese Sprache statt der eingestellten, zum Beispiel de, pt_BR oder zh_CN. Die Einstellung wird nicht gespeichert.
 
 .TP
 .I \-f, \-\-ini=<str>

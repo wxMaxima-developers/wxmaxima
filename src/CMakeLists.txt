@@ -148,6 +148,7 @@ set(SOURCE_FILES
     AutocompletePopup.cpp
     BTextCtrl.cpp
     CellPointers.cpp
+    CommandLinePrescan.cpp
     CompositeDataObject.cpp
     Configuration.cpp
     Styles.cpp

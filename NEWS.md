@@ -1,5 +1,9 @@
 # Current development version
 
+- New command-line option `--language=<lang>` (for example `de`, `pt_BR`
+  or `zh_CN`) runs wxMaxima in another UI language for one session
+  without changing the configured one, for checking a translation or making
+  screenshots for a translated manual.
 - Undoing a change to a code cell that changed its number of lines now
   gives the cell the height of the restored text again. It used to keep the
   height of the text it replaced, so its lines overlapped the output and the
