@@ -485,6 +485,53 @@ SCENARIO("An error inside a folded section does not unfold it (GH #1952)") {
   g_ws->GetErrorList().Clear();
 }
 
+SCENARIO("Undoing a text change gives the code cell the height of its "
+         "restored text") {
+  GIVEN("a code cell holding three lines, laid out") {
+    BuildTree({wxS("a:1$\nb:2$\nc:3$")});
+    GroupCell *cell = NthCell(CellCount() - 1);
+    REQUIRE(cell);
+    EditorCell *editor = cell->GetEditable();
+    REQUIRE(editor);
+    g_ws->RecalculateIfNeeded();
+    const wxCoord threeLines = editor->GetHeight();
+    REQUIRE(threeLines > 0);
+
+    WHEN("the cell is edited down to one line, laid out again, and left") {
+      g_ws->SetActiveCell(editor);
+      g_ws->TreeUndo_CellEntered();
+      editor->SetValue(wxS("a:1$"));
+      // What the key handler does after every keystroke.
+      editor->ResetSize();
+      g_ws->RequestRecalculation(cell);
+      g_ws->TreeUndo_CellLeft();
+      g_ws->SetActiveCell(nullptr);
+      g_ws->RecalculateIfNeeded();
+      const wxCoord oneLine = editor->GetHeight();
+      REQUIRE(oneLine < threeLines);
+
+      THEN("undo restores the three lines and their height") {
+        // The worksheet's undo (not the cell's own, as the cell isn't active
+        // any more) puts the old text back with EditorCell::SetValue().
+        // That used to leave the editor's cached size alone, so the group was
+        // laid out with the one-line height while drawing three lines: the
+        // text overlapped whatever followed the cell.
+        REQUIRE(g_ws->TreeUndo());
+        g_ws->RecalculateIfNeeded();
+        CHECK(editor->GetValue() == wxS("a:1$\nb:2$\nc:3$"));
+        CHECK(editor->GetHeight() == threeLines);
+
+        AND_THEN("redo shrinks it back to one line") {
+          REQUIRE(g_ws->TreeRedo());
+          g_ws->RecalculateIfNeeded();
+          CHECK(editor->GetValue() == wxS("a:1$"));
+          CHECK(editor->GetHeight() == oneLine);
+        }
+      }
+    }
+  }
+}
+
 class TestApp : public wxApp {
 public:
   bool OnInit() override { return true; }
