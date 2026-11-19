@@ -2,6 +2,10 @@
 
 - The snap is only built for amd64 and arm64 now. The armhf, ppc64el and
   s390x snaps were never tested and went out of date.
+- Undoing a change to a code cell that changed its number of lines now
+  gives the cell the height of the restored text again. It used to keep the
+  height of the text it replaced, so its lines overlapped the output and the
+  cells below.
 - Added a complete Swedish translation of the interface and user manual,
   including the desktop launcher descriptions.
 - The German translation of the manual covers every paragraph again: the
