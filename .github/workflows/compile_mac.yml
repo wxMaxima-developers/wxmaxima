@@ -197,8 +197,13 @@ jobs:
           sudo port selfupdate
       - name: Install dependencies
         if: steps.cache-macports.outputs.cache-hit != 'true'
+        # No pandoc here: MacPorts has no prebuilt pandoc for every macOS
+        # release, and building it from source (ghc + cabal) failed on
+        # 2026-11-19, which failed the whole job before compiling anything.
+        # Without pandoc the build installs the committed manual HTML; the
+        # Homebrew jobs above still build the manual with pandoc.
         run: |
-          sudo port install gettext ninja pandoc maxima gnuplot pkgconfig wxWidgets-3.2
+          sudo port install gettext ninja maxima gnuplot pkgconfig wxWidgets-3.2
           sudo port select wxWidgets wxWidgets-3.2
       - name: Configure wxMaxima
         run: |
