@@ -60,19 +60,40 @@ const wxCmdLineEntryDesc *ParserDescription() {
   return desc.data();
 }
 
+namespace {
+/*! True if arg names an option that takes a value, without giving one
+
+  wxCmdLineParser then takes the next argument as the value: "--ini x" or
+  "-f x". "--ini=x" and "-fx" carry their value themselves.
+*/
+bool TakesSeparateValue(const wxString &arg) {
+  return std::any_of(Options.begin(), Options.end(), [&arg](const Option &opt) {
+    if (opt.kind != Kind::Option)
+      return false;
+    const auto name = [](std::string_view view) {
+      return wxString::FromUTF8(view.data(), view.size());
+    };
+    return (!opt.longName.empty() && arg == wxS("--") + name(opt.longName)) ||
+           (!opt.shortName.empty() && arg == wxS("-") + name(opt.shortName));
+  });
+}
+} // namespace
+
 std::vector<wxString> DiffAliasArguments(const std::vector<wxString> &args) {
   if (args.empty() ||
       !wxFileName(args.front()).GetName().IsSameAs(wxS("wxmxdiff"), false))
     return args;
-  // Everything after "--" is a file name, even if it looks like an option.
-  const auto optionsEnd = std::find(args.begin() + 1, args.end(), wxS("--"));
-  const bool hasDiff = std::any_of(args.begin() + 1, optionsEnd,
-                                   [](const wxString &arg) {
-                                     return arg == wxS("-d") ||
-                                            arg == wxS("--diff");
-                                   });
-  if (hasDiff)
-    return args;
+  for (auto arg = args.begin() + 1; arg != args.end(); ++arg) {
+    // Everything after "--" is a file name, even if it looks like an option.
+    if (*arg == wxS("--"))
+      break;
+    if (*arg == wxS("-d") || *arg == wxS("--diff"))
+      return args;
+    // "--ini -d" passes "-d" as the value of --ini, which doesn't switch on
+    // --diff (found by fuzz_cmdline), so skip an option's separate value.
+    if (TakesSeparateValue(*arg) && arg + 1 != args.end())
+      ++arg;
+  }
   std::vector<wxString> withDiff = args;
   withDiff.insert(withDiff.begin() + 1, wxS("-d"));
   return withDiff;
