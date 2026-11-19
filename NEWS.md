@@ -1,5 +1,8 @@
 # Current development version
 
+- wxMaxima no longer stops at start-up with a "Translations: no standard
+  wxWidgets catalogs were found" dialog when the UI language's wxWidgets
+  translation isn't installed. The message goes to the log window instead.
 - Undoing a change to a code cell that changed its number of lines now
   gives the cell the height of the restored text again. It used to keep the
   height of the text it replaced, so its lines overlapped the output and the
