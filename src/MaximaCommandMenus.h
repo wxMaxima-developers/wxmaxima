@@ -58,6 +58,13 @@ public:
   //! sum/series wizards and the change-of-variable/Taylor/Laplace/... commands).
   void CalculusMenu(wxCommandEvent &event);
 
+  /*! Opens the standard wizard wxm::WizardCatalog() lists for the event's ID
+
+    wxMaxima binds every ID of the catalog here, so a menu entry or sidebar
+    button with a standard wizard needs no handler of its own.
+  */
+  void CatalogWizard(wxCommandEvent &event);
+
   //! Handles the "Numeric" menu (float/bfloat/engineering-format toggles and the
   //! numeric-integration / to-poly / continued-fraction command wizards).
   void NumericalMenu(wxCommandEvent &event);
