@@ -51,11 +51,11 @@ namespace wxm {
   //! One field of a standard wizard
   struct WizardField {
     //! The text in front of the field
-    wxString label;
+    wxString label = {};
     //! What the field contains when the wizard opens
-    wxString defaultValue;
+    wxString defaultValue = {};
     //! The field's tooltip; may be empty
-    wxString tooltip;
+    wxString tooltip = {};
     /*! Whether the field starts with the expression the wizard is applied to
 
       That is the selection, or the current input or %, as
@@ -77,20 +77,26 @@ namespace wxm {
     return {label, wxString(), tooltip, true};
   }
 
-  //! Everything the generic wizard needs to know about one menu command
+  /*! Everything the generic wizard needs to know about one menu command
+
+    Every member has a default initializer: the catalog leaves out the ones
+    a wizard doesn't need (designated initializers), and GCC's
+    -Wmissing-field-initializers only stays quiet about an omitted member
+    that has one.
+  */
   struct WizardSpec {
     //! The menu entries and sidebar buttons that open this wizard
-    std::vector<wxWindowID> ids;
+    std::vector<wxWindowID> ids = {};
     //! The wizard's caption
-    wxString title;
+    wxString title = {};
     //! The text of the wizard's "Description" tab; may be empty
-    wxString description;
+    wxString description = {};
     //! The tooltip of the "Description" tab; may be empty
-    wxString descriptionTooltip;
+    wxString descriptionTooltip = {};
     //! The Maxima command, with #n# standing for the n-th field
-    wxString rule;
+    wxString rule = {};
     //! The fields, at most GenWizPanel's 10
-    std::vector<WizardField> fields;
+    std::vector<WizardField> fields = {};
   };
 
   //! What a wizard's command depends on besides its fields
