@@ -1,5 +1,10 @@
 # Current development version
 
+- Calculus → Change Variable → "Dito, and evaluate the result..." did
+  nothing: the menu entry was never connected to its wizard. The Calculus
+  menu's standard wizards are now described in one table
+  (`src/wizards/WizardCatalog.cpp`) and connected from there, which a test
+  checks entry by entry.
 - Added a complete Swedish translation of the interface and user manual,
   including the desktop launcher descriptions.
 - The German translation of the manual covers every paragraph again: the
