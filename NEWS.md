@@ -1,5 +1,7 @@
 # Current development version
 
+- The snap is only built for amd64 and arm64 now. The armhf, ppc64el and
+  s390x snaps were never tested and went out of date.
 - `wxmxdiff a.wxmx b.wxmx` compares the two files again: the wxMaxima program
   itself was passed on as a third file to compare, and file names containing
   a quote were mangled. A file named `-d` after `--` no longer stops
