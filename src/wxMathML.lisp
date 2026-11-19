@@ -1915,6 +1915,39 @@ Submit bug reports by following the 'New issue' link on that page."))
 	(append l (list (format nil "<~a lisp=\"wxxml-tag\">~a</~a>" tag name tag)) r))))
 
 
+;; Maxima's system() on GCL runs the command through a shell again.
+;;
+;; Maxima 5.47 implemented system() on GCL as (si:system ...), which hands the
+;; command line to /bin/sh, like every other Lisp does. Maxima 5.49 switched
+;; GCL to (si:run-process (first args) (rest args)) instead. That function
+;; uses no shell: it glues its arguments together and splits them again at
+;; every blank, so quotes, redirections and pipes reach the program
+;; literally (si:system only fell back to /bin/sh when the command contains
+;; a quote, a dollar sign or a redirection). draw (share/draw/gnuplot.lisp)
+;; calls system() with one string, the gnuplot command followed by the file
+;; name in double quotes, on every Lisp but Windows SBCL/CCL. So with GCL gnuplot was asked to open
+;; a file whose name starts and ends with a literal quote, and every wxdraw
+;; plot failed (seen with Ubuntu 26.04's Maxima 5.49.0 on GCL 2.7.1; Maxima
+;; 5.50's draw uses gnuplot_file_args instead). A user's own system() call
+;; with quotes or a redirection broke the same way.
+;;
+;; So this goes back to what Maxima 5.47 did on GCL: join the arguments with
+;; blanks, as Maxima does on SBCL, ECL, CMUCL and CLISP, and hand the result
+;; to si:system. The command's output goes to Maxima's own standard output,
+;; as it did then.
+;;
+;; Maxima's defmfun puts the body of system() into SYSTEM-IMPL and gives
+;; $SYSTEM a compiler macro, so compiled Lisp code like draw calls
+;; SYSTEM-IMPL directly. Redefining only $SYSTEM would fix system() typed
+;; into a cell and nothing else; both have to be replaced.
+#+gcl
+(progn
+  (defun wx-gcl-system (&rest args)
+    (si:system (format nil "~{~a~^ ~}" (mapcar #'$sconcat args))))
+  (setf (symbol-function '$system) #'wx-gcl-system)
+  (when (fboundp 'system-impl)
+    (setf (symbol-function 'system-impl) #'wx-gcl-system)))
+
 (defvar *image-counter* 0)
 
 ;; A suitable name for a .gnuplot file

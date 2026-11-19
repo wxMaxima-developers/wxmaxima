@@ -1,5 +1,8 @@
 # Current development version
 
+- wxdraw plots work again with Maxima 5.49 on GCL (Ubuntu 26.04's
+  Maxima): its `system()` no longer went through a shell, so gnuplot was
+  asked to load a file whose name included the quotes around it.
 - The snap is only built for amd64 and arm64 now. The armhf, ppc64el and
   s390x snaps were never tested and went out of date.
 - `wxmxdiff a.wxmx b.wxmx` compares the two files again: the wxMaxima program
