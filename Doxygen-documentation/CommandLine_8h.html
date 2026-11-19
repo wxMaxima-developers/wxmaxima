@@ -172,7 +172,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>wxm::cmdline::SetArgu
 </div><div class="memdoc">
 
 <p>The arguments <a class="el" href="classwxMaxima.html">wxMaxima</a> acts on, if it was started under this name. </p>
-<p>The first entry is the program itself. If that is called wxmxdiff and no &ndash;diff/-d was given, a -d is inserted right behind it, so "wxmxdiff a b" compares a and b. Otherwise the arguments are returned unchanged. <a class="el" href="classA.html">A</a> "-d" after "--" is a file name, not the switch.</p>
+<p>The first entry is the program itself. If that is called wxmxdiff and no &ndash;diff/-d was given, a -d is inserted right behind it, so "wxmxdiff a b" compares a and b. Otherwise the arguments are returned unchanged. <a class="el" href="classA.html">A</a> "-d" after "--" is a file name, not the switch, and so is one that is the value of an option ("--ini -d").</p>
 <p>This used to re-join the arguments into one string and have wxCmdLineParser split that again. That string's first word was the program, which wxCmdLineParser takes as a parameter (it supplies the program name itself), so wxmxdiff compared the <a class="el" href="classwxMaxima.html">wxMaxima</a> executable with the files; and an argument containing a quote was mangled on the way. Passing the vector through keeps every argument exactly as it was. </p>
 
 </div>
