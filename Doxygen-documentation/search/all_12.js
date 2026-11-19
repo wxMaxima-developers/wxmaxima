@@ -144,11 +144,12 @@ var searchData=
   ['rtfend_141',['RTFEnd',['../WorksheetExport_8h.html#a73ebb9aeb31a0dc5ad6faa76eeb67c64',1,'WorksheetExport::RTFEnd()'],['../classWorksheet.html#a377e690362492a35b801df92ce527a40',1,'Worksheet::RTFEnd()']]],
   ['rtfescape_142',['RTFescape',['../classCell.html#a6ea50434cf209c0179201dfaae87cb5c',1,'Cell']]],
   ['rtfstart_143',['RTFStart',['../classWorksheet.html#a13a5d3be1d3d582e866d8705572cc20d',1,'Worksheet::RTFStart()'],['../WorksheetExport_8h.html#a1ec393575f9b3d9bd877d76b1b0ae50a',1,'WorksheetExport::RTFStart()']]],
-  ['run_144',['Run',['../OutputNavigation_8cpp.html#a9df8ab87721d966c52e66fc1e3514cb4',1,'OutputNavigation::Run()'],['../structTextFormat_1_1Run.html',1,'TextFormat::Run']]],
-  ['runlocation_145',['RunLocation',['../structOutputNavigation_1_1RunLocation.html',1,'OutputNavigation']]],
-  ['runner_146',['runner',['../structTroubleshootingDialog_1_1Inputs.html#a1719a1ccf2be569617655492450b80b0',1,'TroubleshootingDialog::Inputs']]],
-  ['running_147',['Running',['../classToolBar.html#a327b655c366e7932f751d2815cc629fca9c9bfa8603406d94a8f00a975a9c1f3c',1,'ToolBar']]],
+  ['rule_144',['rule',['../structwxm_1_1WizardSpec.html#a1498c910a122bde50f8a673bf40c983a',1,'wxm::WizardSpec']]],
+  ['run_145',['Run',['../OutputNavigation_8cpp.html#a9df8ab87721d966c52e66fc1e3514cb4',1,'OutputNavigation::Run()'],['../structTextFormat_1_1Run.html',1,'TextFormat::Run']]],
+  ['runlocation_146',['RunLocation',['../structOutputNavigation_1_1RunLocation.html',1,'OutputNavigation']]],
+  ['runner_147',['runner',['../structTroubleshootingDialog_1_1Inputs.html#a1719a1ccf2be569617655492450b80b0',1,'TroubleshootingDialog::Inputs']]],
   ['running_148',['running',['../TroubleshootingChecks_8h.html#a3fd549b8009542e938104c3887e5ecc3a75101dcdfc88455bcafc9e53e0b06689',1,'wxm']]],
-  ['runs_149',['Runs',['../TextFormat_8cpp.html#a356fe77251ab4139ed1c8019d089d719',1,'TextFormat']]],
-  ['runtests_150',['RunTests',['../structCatch_1_1RunTests.html',1,'Catch']]]
+  ['running_149',['Running',['../classToolBar.html#a327b655c366e7932f751d2815cc629fca9c9bfa8603406d94a8f00a975a9c1f3c',1,'ToolBar']]],
+  ['runs_150',['Runs',['../TextFormat_8cpp.html#a356fe77251ab4139ed1c8019d089d719',1,'TextFormat']]],
+  ['runtests_151',['RunTests',['../structCatch_1_1RunTests.html',1,'Catch']]]
 ];

@@ -93,6 +93,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>PlotMenu</b> (wxComma
 void&#160;</td><td class="memItemRight" valign="bottom"><b>CalculusMenu</b> (wxCommandEvent &amp;event)</td></tr>
 <tr class="memdesc:ade09b3272c8dd87bd45686c688a45b5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handles the "Calculus" menu and its toolbar buttons (integrate/diff/limit/ sum/series wizards and the change-of-variable/Taylor/Laplace/... commands). <br /></td></tr>
 <tr class="separator:ade09b3272c8dd87bd45686c688a45b5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aabf182c1a2e39e765660fa965d18ab0a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMaximaCommandMenus.html#aabf182c1a2e39e765660fa965d18ab0a">CatalogWizard</a> (wxCommandEvent &amp;event)</td></tr>
+<tr class="memdesc:aabf182c1a2e39e765660fa965d18ab0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens the standard wizard <a class="el" href="WizardCatalog_8h.html#ae259cb1447a85483b0852f35937b1728" title="All standard wizards.">wxm::WizardCatalog()</a> lists for the event's ID.  <br /></td></tr>
+<tr class="separator:aabf182c1a2e39e765660fa965d18ab0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af11ecf6ddd5cb0b79e3637e72a2c32f1"><td class="memItemLeft" align="right" valign="top"><a id="af11ecf6ddd5cb0b79e3637e72a2c32f1" name="af11ecf6ddd5cb0b79e3637e72a2c32f1"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>NumericalMenu</b> (wxCommandEvent &amp;event)</td></tr>
 <tr class="memdesc:af11ecf6ddd5cb0b79e3637e72a2c32f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handles the "Numeric" menu (float/bfloat/engineering-format toggles and the numeric-integration / to-poly / continued-fraction command wizards). <br /></td></tr>
@@ -165,7 +168,29 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>PrintMenu</b> (wxComm
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The menu-command handlers extracted from the <a class="el" href="classwxMaxima.html">wxMaxima</a> god class. </p>
 <p>Owned by value by the <a class="el" href="classwxMaxima.html">wxMaxima</a> frame, which binds the relevant menu/button events straight to these handlers. Holds a reference back to that frame for the services the handlers need (MenuCommand, the command wizards, the worksheet). </p>
-</div><hr/>The documentation for this class was generated from the following files:<ul>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="aabf182c1a2e39e765660fa965d18ab0a" name="aabf182c1a2e39e765660fa965d18ab0a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aabf182c1a2e39e765660fa965d18ab0a">&#9670;&#160;</a></span>CatalogWizard()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MaximaCommandMenus::CatalogWizard </td>
+          <td>(</td>
+          <td class="paramtype">wxCommandEvent &amp;&#160;</td>
+          <td class="paramname"><em>event</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Opens the standard wizard <a class="el" href="WizardCatalog_8h.html#ae259cb1447a85483b0852f35937b1728" title="All standard wizards.">wxm::WizardCatalog()</a> lists for the event's ID. </p>
+<p><a class="el" href="classwxMaxima.html">wxMaxima</a> binds every ID of the catalog here, so a menu entry or sidebar button with a standard wizard needs no handler of its own. </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/<a class="el" href="MaximaCommandMenus_8h_source.html">MaximaCommandMenus.h</a></li>
 <li>src/<a class="el" href="MaximaCommandMenus_8cpp.html">MaximaCommandMenus.cpp</a></li>
 </ul>

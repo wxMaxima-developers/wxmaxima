@@ -372,6 +372,9 @@ Protected Member Functions</h2></td></tr>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>CommandWiz</b> (const wxString &amp;title, const wxString &amp;description, const wxString &amp;description_tooltip, const wxString &amp;commandRule, const wxString &amp;label1, const wxString &amp;defaultval1, const wxString &amp;tooltip1={}, const wxString &amp;label2={}, const wxString &amp;defaultval2={}, const wxString &amp;tooltip2={}, const wxString &amp;label3={}, const wxString &amp;defaultval3={}, const wxString &amp;tooltip3={}, const wxString &amp;label4={}, const wxString &amp;defaultval4={}, const wxString &amp;tooltip4={}, const wxString &amp;label5={}, const wxString &amp;defaultval5={}, const wxString &amp;tooltip5={}, const wxString &amp;label6={}, const wxString &amp;defaultval6={}, const wxString &amp;tooltip6={}, const wxString &amp;label7={}, const wxString &amp;defaultval7={}, const wxString &amp;tooltip7={}, const wxString &amp;label8={}, const wxString &amp;defaultval8={}, const wxString &amp;tooltip8={}, const wxString &amp;label9={}, const wxString &amp;defaultval9={}, const wxString &amp;tooltip9={}, const wxString &amp;label10={}, const wxString &amp;defaultval10={}, const wxString &amp;tooltip10={})</td></tr>
 <tr class="memdesc:a81b0c31ba0a9502884abbef437f05bd8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invoke our standard wizard that generates maxima commands. <br /></td></tr>
 <tr class="separator:a81b0c31ba0a9502884abbef437f05bd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a478ceed7cb83bf46da25b302723524ac"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a478ceed7cb83bf46da25b302723524ac">CommandWiz</a> (const <a class="el" href="structwxm_1_1WizardSpec.html">wxm::WizardSpec</a> &amp;spec, const wxString &amp;selection)</td></tr>
+<tr class="memdesc:a478ceed7cb83bf46da25b302723524ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invoke our standard wizard as <code>spec</code> describes it.  <br /></td></tr>
+<tr class="separator:a478ceed7cb83bf46da25b302723524ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab2fa58231dc1ac2e7d87c0d7523874c6"><td class="memItemLeft" align="right" valign="top"><a id="ab2fa58231dc1ac2e7d87c0d7523874c6" name="ab2fa58231dc1ac2e7d87c0d7523874c6"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>OnFocus</b> (wxFocusEvent &amp;event)</td></tr>
 <tr class="memdesc:ab2fa58231dc1ac2e7d87c0d7523874c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when this window is focussed or defocussed. <br /></td></tr>
@@ -1185,6 +1188,50 @@ class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
   <table class="params">
     <tr><td class="paramname">cmd</td><td>The parameter to add to the draw command </td></tr>
     <tr><td class="paramname">dimensionsOfNewDrawCommand</td><td>The number of dimensions the new draw command needs to have if we need to create one.. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a478ceed7cb83bf46da25b302723524ac" name="a478ceed7cb83bf46da25b302723524ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a478ceed7cb83bf46da25b302723524ac">&#9670;&#160;</a></span>CommandWiz()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void wxMaxima::CommandWiz </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structwxm_1_1WizardSpec.html">wxm::WizardSpec</a> &amp;&#160;</td>
+          <td class="paramname"><em>spec</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
+          <td class="paramname"><em>selection</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Invoke our standard wizard as <code>spec</code> describes it. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">selection</td><td>what the fields that take the selection start with </td></tr>
   </table>
   </dd>
 </dl>
