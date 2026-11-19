@@ -51,8 +51,12 @@ SCENARIO("The log says why plots are or aren't SVG") {
                                               wxMINOR_VERSION, wxRELEASE_NUMBER)));
 #if wxUSE_NANOSVG
   REQUIRE(diagnosis.Contains(wxS("NanoSVG")));
-  REQUIRE(diagnosis.Contains(wxS("wxUSE_NANOSVG=0")));
+  REQUIRE(diagnosis.Contains(wxS("wxUSE_NANOSVG=OFF")));
 #endif
+  // The advice names the values wxWidgets' CMake build accepts: builtin, sys
+  // or OFF. It rejects 0 and 1 ("Invalid value "0" for option wxUSE_NANOSVG").
+  REQUIRE(!diagnosis.Contains(wxS("SVG=0")));
+  REQUIRE(!diagnosis.Contains(wxS("SVG=1")));
   if (SvgBitmap::RendersText())
     REQUIRE(diagnosis.Contains(wxS("are available")));
   else

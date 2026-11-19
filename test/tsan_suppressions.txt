@@ -27,3 +27,9 @@ race:libjavascriptcoregtk-4.1.so.0
 # GDK locks a GRecMutex through GLib and unlocks it itself; TSan reports that
 # as unlocking a mutex the thread doesn't hold.
 mutex:libgdk-3.so.0
+# glycin, the image loader newer gdk-pixbuf versions hand all decoding to,
+# decodes on its own "blocking-N" worker threads and frees there what it
+# allocated on the main thread (seen first on the CI runner on 2026-11-18,
+# under ConfigDialogue's icon loading). Only matches with a glycin frame on
+# the stack.
+race:libglycin-2.so.0
