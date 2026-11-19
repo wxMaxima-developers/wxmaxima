@@ -73,6 +73,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><ul>
+<li>The snap is only built for amd64 and arm64 now. The armhf, ppc64el and s390x snaps were never tested and went out of date.</li>
 <li><code>wxmxdiff a.wxmx b.wxmx</code> compares the two files again: the <a class="el" href="classwxMaxima.html">wxMaxima</a> program itself was passed on as a third file to compare, and file names containing a quote were mangled. <a class="el" href="classA.html">A</a> file named <code>-d</code> after <code>--</code> no longer stops <code>wxmxdiff</code> from comparing.</li>
 <li><a class="el" href="classA.html">A</a> command-line argument like <code>--+</code> or <code>--=x</code> is reported as an unknown option instead of tripping an assertion inside wxWidgets.</li>
 <li>The command line is now parsed by GUI-free code (<code><a class="el" href="CommandLine_8cpp.html" title="Turns wxMaxima&#39;s command line into settings; see CommandLine.h.">src/CommandLine.cpp</a></code>), which a new libFuzzer target, <code>fuzz_cmdline</code>, fuzzes; it needs no display and builds in seconds.</li>
