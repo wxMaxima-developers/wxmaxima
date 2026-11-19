@@ -131,7 +131,7 @@ wxString SvgBitmap::TextRenderingDiagnosis(bool rendersText) {
   return wxS("wxWidgets ") + wxVersion +
     wxS(" was built with both NanoSVG and LunaSVG, and NanoSVG, which draws "
         "no text, wins.") + consequence +
-    wxS(" Building wxWidgets with wxUSE_NANOSVG=0 makes it use LunaSVG.");
+    wxS(" Building wxWidgets with wxUSE_NANOSVG=OFF makes it use LunaSVG.");
 #else
   return wxS("wxWidgets ") + wxVersion +
     wxS(" renders SVG with NanoSVG, which draws no text.") + consequence +

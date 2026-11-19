@@ -50,7 +50,12 @@ jobs:
                  "$RUNNER_TEMP/base.pot" locales/wxMaxima/wxMaxima.pot
 
   compile_latest_and_test:
-    runs-on: ubuntu-latest
+    # Pinned: ubuntu-latest became Ubuntu 26.04 on 2026-11-18, whose Maxima
+    # 5.49 (GCL 2.7) fails every plot in the test suite (gnuplot gets the
+    # file name with literal quotes). Move back to ubuntu-latest once
+    # wxMaxima works with it; compile_with_non_default_options still builds
+    # on it meanwhile.
+    runs-on: ubuntu-24.04
     timeout-minutes: 120
     permissions:
       contents: write  # for softprops/action-gh-release to attach the .deb to a release
@@ -182,7 +187,12 @@ jobs:
     # affected test and turn the job red; undefined-behavior findings are
     # printed to the log and reported as a warning annotation, but do not
     # fail the job (yet).
-    runs-on: ubuntu-latest
+    # Pinned: ubuntu-latest became Ubuntu 26.04 on 2026-11-18, whose Maxima
+    # 5.49 (GCL 2.7) fails every plot in the test suite (gnuplot gets the
+    # file name with literal quotes). Move back to ubuntu-latest once
+    # wxMaxima works with it; compile_with_non_default_options still builds
+    # on it meanwhile.
+    runs-on: ubuntu-24.04
     timeout-minutes: 180
 
     steps:
@@ -240,7 +250,12 @@ jobs:
     # prevent. A race in a unit test turns the job red; the integration tests,
     # which start a real Maxima, are only reported for now (as a warning
     # annotation), until they have been seen to run clean.
-    runs-on: ubuntu-latest
+    # Pinned: ubuntu-latest became Ubuntu 26.04 on 2026-11-18, whose Maxima
+    # 5.49 (GCL 2.7) fails every plot in the test suite (gnuplot gets the
+    # file name with literal quotes). Move back to ubuntu-latest once
+    # wxMaxima works with it; compile_with_non_default_options still builds
+    # on it meanwhile.
+    runs-on: ubuntu-24.04
     timeout-minutes: 120
 
     steps:
