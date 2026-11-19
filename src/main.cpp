@@ -496,6 +496,8 @@ bool MyApp::OnInit() {
   wxSocketBase::Initialize();
 
   wxArtProvider::Push(new wxMaximaArtProvider);
+  // Said only once the log window exists (see appearanceLogMsg below for why)
+  wxString translationsLogMsg;
   m_translations = std::make_unique<wxTranslations>();
   wxTranslations::Set(m_translations.get());
   {
@@ -631,10 +633,14 @@ bool MyApp::OnInit() {
     }
     wxTranslations::Get()->AddCatalog(wxS("wxMaxima"));
     /* Add standard wxWidgets catalogs ("wxstd" and possible port-specific catalogs). */
-    /* returns false, if no suitable catalog was found, in this case log that. */
-    if (wxTranslations::Get()->AddStdCatalog() == false) {
-      wxLogMessage("Translations: no standard wxWidgets catalogs were found");
-    }
+    /* returns false, if no suitable catalog was found, in this case log that.
+       Not with wxLogMessage() here: no log target exists yet, so wx's
+       wxLogGui fallback would stop the start-up with a modal dialog for a
+       mere debug message (seen with a UI language whose wxstd catalogue
+       isn't installed). */
+    if (wxTranslations::Get()->AddStdCatalog() == false)
+      translationsLogMsg =
+        wxS("Translations: no standard wxWidgets catalogs were found");
   }
 
   bool exitAfterEval = false;
@@ -723,6 +729,8 @@ bool MyApp::OnInit() {
 #endif
   if (!appearanceLogMsg.empty())
     wxLogMessage("%s", appearanceLogMsg);
+  if (!translationsLogMsg.empty())
+    wxLogMessage("%s", translationsLogMsg);
 
   if (cmdLine.logToStderr) {
 #ifdef __WXMSW__

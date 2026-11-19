@@ -143,6 +143,17 @@ SCENARIO("wxmxdiff compares exactly the files it was given") {
     CHECK(parsed.settings.params ==
           std::vector<wxString>{wxS("a.wxm"), wxS("-d")});
   }
+  GIVEN("A -d that is the value of an option") {
+    // Found by fuzz_cmdline: "--ini -d" made the -d the configuration file,
+    // and as a -d had been seen, no --diff was added.
+    for (const wxString option : {wxS("--ini"), wxS("-f"), wxS("--open")}) {
+      Parsed parsed({wxS("wxmxdiff"), option, wxS("-d"), wxS("a"), wxS("b")});
+      REQUIRE(parsed.result == 0);
+      CHECK(parsed.settings.diff);
+      CHECK(parsed.settings.params ==
+            std::vector<wxString>{wxS("a"), wxS("b")});
+    }
+  }
   GIVEN("An explicit --diff") {
     const std::vector<wxString> args{wxS("WxMxDiff.exe"), wxS("--diff"),
                                      wxS("a"), wxS("b")};

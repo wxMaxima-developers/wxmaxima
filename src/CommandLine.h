@@ -55,7 +55,8 @@ const wxCmdLineEntryDesc *ParserDescription();
   The first entry is the program itself. If that is called wxmxdiff and no
   --diff/-d was given, a -d is inserted right behind it, so "wxmxdiff a b"
   compares a and b. Otherwise the arguments are returned unchanged. A "-d"
-  after "--" is a file name, not the switch.
+  after "--" is a file name, not the switch, and so is one that is the
+  value of an option ("--ini -d").
 
   This used to re-join the arguments into one string and have
   wxCmdLineParser split that again. That string's first word was the
