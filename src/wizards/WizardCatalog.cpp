@@ -116,7 +116,8 @@ std::vector<wxm::WizardSpec> wxm::WizardCatalog(const WizardContext &context) {
       .title = _("Fourier coefficients"),
       .description = _("Calculates the fourier coefficients for the expression "
                        "from -p to p"),
-      .rule = (context.fourierLoaded ? wxString() : wxS("load(\"fourie\")$\n")) +
+      .rule = (context.fourierLoaded ? wxString()
+                                       : wxString(wxS("load(\"fourie\")$\n"))) +
               wxS("fourier(#1#,#2#,#3#);"),
       .fields = {SelectionField(_("Expression:")),
                  Field(_("Variable:"), wxS("x")),

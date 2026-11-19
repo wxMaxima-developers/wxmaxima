@@ -698,9 +698,9 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   // Every menu entry and sidebar button that opens a standard wizard: one
   // handler for all of them, and none can be forgotten.
   for (const auto &spec : wxm::WizardCatalog())
-    for (const wxWindowID id : spec.ids) {
-      Bind(wxEVT_MENU, &MaximaCommandMenus::CatalogWizard, &m_menuCommands, id);
-      Bind(wxEVT_BUTTON, &MaximaCommandMenus::CatalogWizard, &m_menuCommands, id);
+    for (const wxWindowID wizardId : spec.ids) {
+      Bind(wxEVT_MENU, &MaximaCommandMenus::CatalogWizard, &m_menuCommands, wizardId);
+      Bind(wxEVT_BUTTON, &MaximaCommandMenus::CatalogWizard, &m_menuCommands, wizardId);
     }
   Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_continued_fraction);
   Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_integrate);
