@@ -336,6 +336,16 @@ target_link_libraries(test_FileOpenKind PRIVATE ${wxWidgets_LIBRARIES})
 add_test(NAME FileOpenKind
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_FileOpenKind>")
 
+# How the command line becomes settings needs nothing but wxBase. Some of its
+# scenarios are what fuzz_cmdline (test/fuzz/) found.
+add_executable(test_CommandLine
+    test_CommandLine.cpp ${CMAKE_SOURCE_DIR}/src/CommandLine.cpp
+    ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
+target_include_directories(test_CommandLine PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_link_libraries(test_CommandLine PRIVATE ${wxWidgets_LIBRARIES})
+add_test(NAME CommandLine
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_CommandLine>")
+
 # Where a line of plain text Maxima sends may be broken into lines is a pure
 # string function, so it is tested directly.
 add_executable(test_TextBreaks
