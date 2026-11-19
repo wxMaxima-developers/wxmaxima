@@ -184,7 +184,7 @@ function(wxm_feature_summary)
     if(nanosvg AND lunasvg)
       wxm_feature_line("${svg_name}" "no (plots are PNG)"
         "wxWidgets was built with both NanoSVG and LunaSVG, and NanoSVG, which"
-        "draws no text, wins. Rebuild wxWidgets with wxUSE_NANOSVG=0.")
+        "draws no text, wins. Rebuild wxWidgets with wxUSE_NANOSVG=OFF.")
     elseif(nanosvg)
       wxm_feature_line("${svg_name}" "no (plots are PNG)"
         "wxWidgets renders SVG with NanoSVG, which draws no text."
