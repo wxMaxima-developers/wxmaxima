@@ -6,5 +6,6 @@ var searchData=
   ['loc_3',['loc',['../classdetail_1_1serializer.html#a80ca90565eec446d377ab65a023297ab',1,'detail::serializer']]],
   ['logicalend_4',['logicalEnd',['../structBidiRun.html#a34f116b6e5a21e826c1edb38d4a93959',1,'BidiRun']]],
   ['logicalstart_5',['logicalStart',['../structBidiRun.html#a428f3a52bd7412f8a2560f246c57ab59',1,'BidiRun']]],
-  ['longname_6',['longName',['../structwxm_1_1cmdline_1_1Option.html#a889990264ace43b4a34002979e811a43',1,'wxm::cmdline::Option']]]
+  ['logtostderr_6',['logToStderr',['../structwxm_1_1cmdline_1_1Settings.html#ad117dfe5de846f46780d616439569ae3',1,'wxm::cmdline::Settings']]],
+  ['longname_7',['longName',['../structwxm_1_1cmdline_1_1Option.html#a889990264ace43b4a34002979e811a43',1,'wxm::cmdline::Option']]]
 ];

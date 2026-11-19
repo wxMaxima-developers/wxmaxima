@@ -3,7 +3,8 @@ var searchData=
   ['value_0',['value',['../classAfterdoc__Test.html#a9287a08830e5cdfd9c732bb7932694a0',1,'Afterdoc_Test']]],
   ['valuename_1',['valueName',['../structwxm_1_1cmdline_1_1Option.html#a16b9e720d68f8f13b4a72e68e90b57e9',1,'wxm::cmdline::Option']]],
   ['var_2',['var',['../classAutolink__Test.html#a8de85603114bc9b9e53bd40764e9b499',1,'Autolink_Test']]],
-  ['verticalposition_3',['VerticalPosition',['../TextFormat_8h.html#a38ccbeda98269c9a9dc54e6ecf2ae111',1,'TextFormat']]],
-  ['visibilitykey_4',['visibilityKey',['../ToolBarSections_8cpp.html#aadd715fd01081592b1bbfd8871dfdd28',1,'ToolBarSections.cpp']]],
-  ['visible_5',['visible',['../structMcpSidebarInfo.html#aff3b46795e217e1f1dce36e11c699d74',1,'McpSidebarInfo']]]
+  ['version_3',['version',['../structwxm_1_1cmdline_1_1Settings.html#a505c84bc1dd2d2e8af950228c57f283c',1,'wxm::cmdline::Settings']]],
+  ['verticalposition_4',['VerticalPosition',['../TextFormat_8h.html#a38ccbeda98269c9a9dc54e6ecf2ae111',1,'TextFormat']]],
+  ['visibilitykey_5',['visibilityKey',['../ToolBarSections_8cpp.html#aadd715fd01081592b1bbfd8871dfdd28',1,'ToolBarSections.cpp']]],
+  ['visible_6',['visible',['../structMcpSidebarInfo.html#aff3b46795e217e1f1dce36e11c699d74',1,'McpSidebarInfo']]]
 ];

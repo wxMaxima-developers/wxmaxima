@@ -72,23 +72,34 @@ $(function() {
   <div class="headertitle"><div class="title">Parser fuzzers </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>Coverage-guided <a href="https://llvm.org/docs/LibFuzzer.html">libFuzzer</a> targets for <a class="el" href="classwxMaxima.html">wxMaxima</a>'s two parsers. They run the real parser with its real cell, <code><a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a></code> and (hidden) <code><a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a></code> dependencies, so each parsed cell is also laid out — the fuzzers exercise the 2<a class="el" href="classD.html">D</a> geometry engine, not just the readers.</p>
+<div class="textblock"><p>Coverage-guided <a href="https://llvm.org/docs/LibFuzzer.html">libFuzzer</a> targets for <a class="el" href="classwxMaxima.html">wxMaxima</a>'s parsers. The two worksheet parsers run with their real cell, <code><a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a></code> and (hidden) <code><a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a></code> dependencies, so each parsed cell is also laid out — those fuzzers exercise the 2<a class="el" href="classD.html">D</a> geometry engine, not just the readers. The command-line fuzzer needs nothing but wxBase.</p>
 <table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadNone">Target   </th><th class="markdownTableHeadNone">Parses   </th><th class="markdownTableHeadNone">Exercises    </th></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>fuzz_wxm</code>   </td><td class="markdownTableBodyNone"><code>.wxm</code> files via <code>Format::TreeFromWXM</code>   </td><td class="markdownTableBodyNone">the old, paste-exposed input/text parser    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>fuzz_mathparser</code>   </td><td class="markdownTableBodyNone">the MathML-like <code>content.xml</code> of <code>.wxmx</code> via <code>MathParser::ParseTag</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s rich 2<a class="el" href="classD.html">D</a> output: fractions, matrices, integrals, sub/superscripts, …   </td></tr>
+<td class="markdownTableBodyNone"><code>fuzz_mathparser</code>   </td><td class="markdownTableBodyNone">the MathML-like <code>content.xml</code> of <code>.wxmx</code> via <code>MathParser::ParseTag</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s rich 2<a class="el" href="classD.html">D</a> output: fractions, matrices, integrals, sub/superscripts, …    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>fuzz_cmdline</code>   </td><td class="markdownTableBodyNone">the command line via <code><a class="el" href="CommandLine_8cpp.html#a8dc2890849ecca02cdcea8e8ca74b5f9" title="Parses the arguments (program first) with wxMaxima&#39;s options.">wxm::cmdline::Parse</a></code>/<code>Interpret</code> (<code><a class="el" href="CommandLine_8cpp.html" title="Turns wxMaxima&#39;s command line into settings; see CommandLine.h.">src/CommandLine.cpp</a></code>)   </td><td class="markdownTableBodyNone">wxCmdLineParser with our option table, the <code>wxmxdiff</code> alias, file names on their way to a window and to <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>   </td></tr>
 </table>
 <h1><a class="anchor" id="autotoc_md1227"></a>
+The command-line fuzzer</h1>
+<p><code>fuzz_cmdline</code> is built from three files rather than the whole application, so <code>ninja -<a class="el" href="classC.html">C</a> build-fuzz fuzz_cmdline</code> takes seconds, and it needs no display:</p>
+<div class="fragment"><div class="line">ninja -C build-fuzz fuzz_cmdline</div>
+<div class="line">./build-fuzz/src/fuzz_cmdline -max_total_time=300 test/fuzz/corpus_cmdline</div>
+</div><!-- fragment --><p>The first input byte chooses how the rest becomes a command line: bit 0 off means NUL-separated arguments (what <code>main()</code> gets on Linux/macOS), on means one string wxWidgets splits (what <code>WinMain()</code> gets); bit 1 names the program <code>wxmxdiff</code>. Besides crashes it treats a failed wxWidgets assertion as a finding and checks properties: <code>wxmxdiff</code> must see the same files as <code>wxmaxima --diff</code>, no file argument may be lost, and every file name must survive <code>MaximaStringLiteral()</code> unchanged. What it found is pinned down by <code><a class="el" href="test__CommandLine_8cpp.html" title="Tests for CommandLine: how wxMaxima&#39;s command line becomes settings.">test/unit_tests/test_CommandLine.cpp</a></code>:</p>
+<ul>
+<li><code>--+</code>, <code>--=x</code> and other arguments that start with <code>--</code> and a character that can't be part of an option name make wxWidgets' own parser assert (it asks the empty option name for its last character; still so in wxWidgets' master as of 2026-11). <code><a class="el" href="CommandLine_8cpp.html#a8dc2890849ecca02cdcea8e8ca74b5f9" title="Parses the arguments (program first) with wxMaxima&#39;s options.">wxm::cmdline::Parse()</a></code> works around it.</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md1228"></a>
 Building (requires Clang)</h1>
 <p>libFuzzer is a Clang feature, so configure a separate build directory with a Clang compiler and <code>-DWXM_FUZZ=ON</code>:</p>
 <div class="fragment"><div class="line">cmake -S . -B build-fuzz -G Ninja \</div>
 <div class="line">      -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=clang++ -DWXM_FUZZ=ON</div>
-<div class="line">ninja -C build-fuzz fuzz_wxm fuzz_mathparser</div>
-</div><!-- fragment --><p>The whole application (minus <code><a class="el" href="main_8cpp.html" title="The file that defines the starting point of the program.">main.cpp</a></code>, which holds libFuzzer's own <code>main()</code>) is compiled with <code>-fsanitize=fuzzer-no-link,address</code>; the targets link with <code>-fsanitize=fuzzer,address</code>.</p>
-<h1><a class="anchor" id="autotoc_md1228"></a>
+<div class="line">ninja -C build-fuzz fuzz_wxm fuzz_mathparser fuzz_cmdline</div>
+</div><!-- fragment --><p>For <code>fuzz_wxm</code> and <code>fuzz_mathparser</code> the whole application (minus <code><a class="el" href="main_8cpp.html" title="The file that defines the starting point of the program.">main.cpp</a></code>, which holds libFuzzer's own <code>main()</code>) is compiled with <code>-fsanitize=fuzzer-no-link,address</code>; the targets link with <code>-fsanitize=fuzzer,address</code>.</p>
+<h1><a class="anchor" id="autotoc_md1229"></a>
 Running</h1>
 <p>The harness backs the parser with a real (hidden) <code><a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a></code>, and wxGTK routes font/DC work through GTK, so a display is needed — run under <code>Xvfb</code>:</p>
 <div class="fragment"><div class="line">xvfb-run -a ./build-fuzz/src/fuzz_wxm        test/fuzz/corpus_wxm</div>
@@ -96,10 +107,10 @@ Running</h1>
 </div><!-- fragment --><p>Useful flags: <code>-max_total_time=600</code> (stop after N s), <code>-timeout=20</code> (per-input), <code>-rss_limit_mb=4096</code>, <code>-artifact_prefix=…/</code> (where crashing inputs are saved).</p>
 <p>To reproduce a saved crash:</p>
 <div class="fragment"><div class="line">xvfb-run -a ./build-fuzz/src/fuzz_wxm path/to/crash-&lt;hash&gt;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md1229"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md1230"></a>
 Corpus</h1>
 <p><code>corpus_wxm/</code> and <code>corpus_mathparser/</code> hold a small set of representative seeds (<code>.wxm</code> files and extracted <code>content.xml</code>). libFuzzer grows the corpus in place as it discovers new code paths; commit genuinely new, minimised inputs to turn them into permanent regression seeds.</p>
-<h1><a class="anchor" id="autotoc_md1230"></a>
+<h1><a class="anchor" id="autotoc_md1231"></a>
 Notes</h1>
 <ul>
 <li>Each cell construction triggers layout, so throughput is modest (~15–30 exec/s) — this is intentional (it fuzzes parse <b>and</b> layout).</li>

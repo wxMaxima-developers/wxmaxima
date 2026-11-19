@@ -91,12 +91,13 @@ var searchData=
   ['loghelpmenucontents_88',['LogHelpMenuContents',['../classwxMaximaFrame.html#a27b791e6f11ec6a343b811ab82b420d3',1,'wxMaximaFrame']]],
   ['logicalend_89',['logicalEnd',['../structBidiRun.html#a34f116b6e5a21e826c1edb38d4a93959',1,'BidiRun']]],
   ['logicalstart_90',['logicalStart',['../structBidiRun.html#a428f3a52bd7412f8a2560f246c57ab59',1,'BidiRun']]],
-  ['longname_91',['longName',['../structwxm_1_1cmdline_1_1Option.html#a889990264ace43b4a34002979e811a43',1,'wxm::cmdline::Option']]],
-  ['longnumbercell_92',['LongNumberCell',['../classLongNumberCell.html#ae650abe2ed7d371b47a6ed2aa55e3424',1,'LongNumberCell::LongNumberCell()'],['../classLongNumberCell.html',1,'LongNumberCell']]],
-  ['longnumbercell_2ecpp_93',['LongNumberCell.cpp',['../LongNumberCell_8cpp.html',1,'']]],
-  ['longnumbers_94',['longNumbers',['../structwxm_1_1WorksheetPreview.html#a506c05bcdfee84eaadde34c4e7c5f1e2ac2105b3a5f98d60f3923acc6c7cbc7f4',1,'wxm::WorksheetPreview']]],
-  ['lookslikeldb_95',['LooksLikeLdb',['../LdbSupport_8cpp.html#a4ad83c27ca9d16abc6068282936aae76',1,'LdbSupport']]],
-  ['lookslikemathml_96',['LooksLikeMathML',['../MathImport_8cpp.html#a3d2ebe8f78c8fee1b4b8e93821352ca8',1,'wxm']]],
-  ['low_97',['Low',['../classBackgroundTask.html#a217da7631d4231f559cbad8f0e7e1566a28d0edd045e05cf5af64e35ae0c4c6ef',1,'BackgroundTask']]],
-  ['lowercasedefinitions_98',['LowercaseDefinitions',['../classGreekSidebar.html#a9d7ccb613441f64a4f91829d60cb5dff',1,'GreekSidebar']]]
+  ['logtostderr_91',['logToStderr',['../structwxm_1_1cmdline_1_1Settings.html#ad117dfe5de846f46780d616439569ae3',1,'wxm::cmdline::Settings']]],
+  ['longname_92',['longName',['../structwxm_1_1cmdline_1_1Option.html#a889990264ace43b4a34002979e811a43',1,'wxm::cmdline::Option']]],
+  ['longnumbercell_93',['LongNumberCell',['../classLongNumberCell.html#ae650abe2ed7d371b47a6ed2aa55e3424',1,'LongNumberCell::LongNumberCell()'],['../classLongNumberCell.html',1,'LongNumberCell']]],
+  ['longnumbercell_2ecpp_94',['LongNumberCell.cpp',['../LongNumberCell_8cpp.html',1,'']]],
+  ['longnumbers_95',['longNumbers',['../structwxm_1_1WorksheetPreview.html#a506c05bcdfee84eaadde34c4e7c5f1e2ac2105b3a5f98d60f3923acc6c7cbc7f4',1,'wxm::WorksheetPreview']]],
+  ['lookslikeldb_96',['LooksLikeLdb',['../LdbSupport_8cpp.html#a4ad83c27ca9d16abc6068282936aae76',1,'LdbSupport']]],
+  ['lookslikemathml_97',['LooksLikeMathML',['../MathImport_8cpp.html#a3d2ebe8f78c8fee1b4b8e93821352ca8',1,'wxm']]],
+  ['low_98',['Low',['../classBackgroundTask.html#a217da7631d4231f559cbad8f0e7e1566a28d0edd045e05cf5af64e35ae0c4c6ef',1,'BackgroundTask']]],
+  ['lowercasedefinitions_99',['LowercaseDefinitions',['../classGreekSidebar.html#a9d7ccb613441f64a4f91829d60cb5dff',1,'GreekSidebar']]]
 ];

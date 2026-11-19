@@ -16,7 +16,7 @@ var searchData=
   ['serieswiz_13',['SeriesWiz',['../classSeriesWiz.html',1,'']]],
   ['serverdeleter_14',['ServerDeleter',['../structwxMaxima_1_1ServerDeleter.html',1,'wxMaxima']]],
   ['setcell_15',['SetCell',['../classSetCell.html',1,'']]],
-  ['settings_16',['Settings',['../structTroubleshootingRunner_1_1Settings.html',1,'TroubleshootingRunner']]],
+  ['settings_16',['Settings',['../structTroubleshootingRunner_1_1Settings.html',1,'TroubleshootingRunner::Settings'],['../structwxm_1_1cmdline_1_1Settings.html',1,'wxm::cmdline::Settings']]],
   ['showdurations_17',['ShowDurations',['../structCatch_1_1ShowDurations.html',1,'Catch']]],
   ['sidebarkeyevent_18',['SidebarKeyEvent',['../classSidebarKeyEvent.html',1,'']]],
   ['simplepcg32_19',['SimplePcg32',['../classCatch_1_1SimplePcg32.html',1,'Catch']]],

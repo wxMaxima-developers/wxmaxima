@@ -6,5 +6,6 @@ var searchData=
   ['worksheetfullrepaints_3',['worksheetFullRepaints',['../structConfiguration_1_1PerformanceStats.html#a9cee5c0a285d881267cda7d06282e9fa',1,'Configuration::PerformanceStats']]],
   ['worksheetrepaints_4',['worksheetRepaints',['../structConfiguration_1_1PerformanceStats.html#a039d882a1c7ba1add9e95617cb9e122b',1,'Configuration::PerformanceStats']]],
   ['wxm_5',['wxm',['../structClipboardContents.html#af21722a2dd5513dd5adf11f8a5b17b5f',1,'ClipboardContents']]],
-  ['wxmaximamanual_6',['wxMaximaManual',['../structTroubleshootingDialog_1_1Inputs.html#a24b7e23989c8fcc024cc2ad5020a7622',1,'TroubleshootingDialog::Inputs']]]
+  ['wxmathmllisp_6',['wxMathMLLisp',['../structwxm_1_1cmdline_1_1Settings.html#a83247874a4e45b2478fc2a11c22a28c6',1,'wxm::cmdline::Settings']]],
+  ['wxmaximamanual_7',['wxMaximaManual',['../structTroubleshootingDialog_1_1Inputs.html#a24b7e23989c8fcc024cc2ad5020a7622',1,'TroubleshootingDialog::Inputs']]]
 ];
