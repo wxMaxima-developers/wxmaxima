@@ -28,10 +28,12 @@ cmake -S "$SRC/wxmaxima" -B "$WORK/wxmbuild" -G Ninja \
       -DCMAKE_C_COMPILER="$CC" -DCMAKE_CXX_COMPILER="$CXX" \
       -DwxWidgets_CONFIG_EXECUTABLE="$WX_PREFIX/bin/wx-config" \
       -DWXM_FUZZ=ON
-ninja -C "$WORK/wxmbuild" fuzz_wxm fuzz_mathparser
+ninja -C "$WORK/wxmbuild" fuzz_wxm fuzz_mathparser fuzz_cmdline
 
 # 3. Stage fuzzers + their seed corpora.
 cp "$WORK/wxmbuild/src/fuzz_wxm"        "$OUT/"
 cp "$WORK/wxmbuild/src/fuzz_mathparser" "$OUT/"
+cp "$WORK/wxmbuild/src/fuzz_cmdline"    "$OUT/"
 ( cd "$SRC/wxmaxima/test/fuzz/corpus_wxm"        && zip -qr "$OUT/fuzz_wxm_seed_corpus.zip" . )
 ( cd "$SRC/wxmaxima/test/fuzz/corpus_mathparser" && zip -qr "$OUT/fuzz_mathparser_seed_corpus.zip" . )
+( cd "$SRC/wxmaxima/test/fuzz/corpus_cmdline"    && zip -qr "$OUT/fuzz_cmdline_seed_corpus.zip" . )

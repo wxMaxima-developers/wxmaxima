@@ -1,0 +1,72 @@
+name: fuzz_cmdline
+
+# Fuzzes wxMaxima's command-line handling (src/CommandLine.cpp) with libFuzzer
+# for a few minutes; see test/fuzz/README.md. Unlike the worksheet fuzzers in
+# fuzz.yml this target is built from a handful of files and needs no display,
+# so it is cheap enough to run whenever the command-line code changes.
+on:
+  schedule:
+    - cron: "30 3 * * 0"   # Sundays, after fuzz.yml
+  workflow_dispatch:
+  push:
+    paths:
+      - 'src/CommandLine.*'
+      - 'src/CommandLineOptions.h'
+      - 'src/FileOpenKind.*'
+      - 'test/fuzz/fuzz_cmdline.cpp'
+      - 'test/fuzz/corpus_cmdline/**'
+      - '.github/workflows/fuzz_cmdline.yml'
+  pull_request:
+    paths:
+      - 'src/CommandLine.*'
+      - 'src/CommandLineOptions.h'
+      - 'src/FileOpenKind.*'
+      - 'test/fuzz/fuzz_cmdline.cpp'
+      - 'test/fuzz/corpus_cmdline/**'
+      - '.github/workflows/fuzz_cmdline.yml'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  fuzz_cmdline:
+    # Pinned: libFuzzer's runtime comes with the clang version's own
+    # libclang-rt package.
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout_git
+        uses: actions/checkout@v7
+      - name: install_packages
+        # Caches the downloaded .debs; see the action for why.
+        uses: ./.github/actions/apt-install
+        with:
+          packages: clang-18 libclang-rt-18-dev cmake gettext libwxgtk3.2-dev ninja-build
+      - name: configure
+        run: |
+             cmake -S . -B build-fuzz -G Ninja \
+               -DCMAKE_BUILD_TYPE=Debug \
+               -DCMAKE_CXX_COMPILER=clang++-18 -DCMAKE_C_COMPILER=clang-18 \
+               -DWXM_FUZZ=ON
+      - name: build
+        run: ninja -C build-fuzz fuzz_cmdline
+      - name: fuzz
+        run: |
+             export ASAN_OPTIONS=detect_leaks=0:abort_on_error=1:handle_abort=1
+             # libFuzzer grows the corpus in place; keep the checkout clean.
+             mkdir -p /tmp/corpus_cmdline "$PWD/fuzz-artifacts"
+             cp test/fuzz/corpus_cmdline/* /tmp/corpus_cmdline/
+             build-fuzz/src/fuzz_cmdline -max_total_time=180 -timeout=10 \
+               -artifact_prefix="$PWD/fuzz-artifacts/" -print_final_stats=1 \
+               /tmp/corpus_cmdline
+      - name: upload_crashes
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: fuzz-cmdline-crashes
+          path: fuzz-artifacts/
+          if-no-files-found: ignore

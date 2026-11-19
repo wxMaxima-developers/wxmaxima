@@ -1,5 +1,14 @@
 # Current development version
 
+- `wxmxdiff a.wxmx b.wxmx` compares the two files again: the wxMaxima program
+  itself was passed on as a third file to compare, and file names containing
+  a quote were mangled. A file named `-d` after `--` no longer stops
+  `wxmxdiff` from comparing.
+- A command-line argument like `--+` or `--=x` is reported as an unknown
+  option instead of tripping an assertion inside wxWidgets.
+- The command line is now parsed by GUI-free code (`src/CommandLine.cpp`),
+  which a new libFuzzer target, `fuzz_cmdline`, fuzzes; it needs no display
+  and builds in seconds.
 - Added a complete Swedish translation of the interface and user manual,
   including the desktop launcher descriptions.
 - The German translation of the manual covers every paragraph again: the
