@@ -424,6 +424,27 @@ void MyApp::RestoreConsoleMode() {
 
 #endif
 
+namespace {
+/*! Handles --screenshot: makes the window capture itself into file
+
+  What to show is read from the configuration's [Screenshot] group, which
+  --ini has already made the active one; exits if that names no target.
+  A function of its own because OnInit() is too long for clang-tidy's
+  optional-access check, which then reports every optional in it.
+*/
+void RequestScreenshot(const wxString &file) {
+  const auto scene = wxm::ReadScreenshotScene(*wxConfig::Get());
+  if (!scene) {
+    wxMessageOutput::Get()->Printf(
+        _("Screenshot/show: \"%s\" is neither window, worksheet, "
+          "cells, pane:<name> nor config:<page>.\n"),
+        wxConfig::Get()->Read(wxS("Screenshot/show"), wxEmptyString));
+    exit(1);
+  }
+  wxMaxima::RequestScreenshot(file, *scene);
+}
+} // namespace
+
 bool MyApp::OnInit() {
 #ifdef __WXMSW__
   // Suppress the OS hard-error / "this application could not be started" message
@@ -749,17 +770,7 @@ bool MyApp::OnInit() {
     wxMaxima::Set_Maxima_Commandline_Filename(*cmdLine.maxima);
 
   if (cmdLine.screenshot) {
-    // What to show is read from the configuration's [Screenshot] group,
-    // which --ini (handled above) has already made the active one.
-    const auto scene = wxm::ReadScreenshotScene(*wxConfig::Get());
-    if (!scene) {
-      wxMessageOutput::Get()->Printf(
-          _("Screenshot/show: \"%s\" is neither window, worksheet, "
-            "cells, pane:<name> nor config:<page>.\n"),
-          wxConfig::Get()->Read(wxS("Screenshot/show"), wxEmptyString));
-      exit(1);
-    }
-    wxMaxima::RequestScreenshot(*cmdLine.screenshot, *scene);
+    RequestScreenshot(cmdLine.screenshot.value_or(wxString()));
     // The scene is evaluated, and nothing may wait for a click.
     evalOnStartup = true;
     LoggingMessageDialog::SetNonInteractive();
