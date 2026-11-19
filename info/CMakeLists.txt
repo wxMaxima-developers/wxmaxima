@@ -56,7 +56,7 @@ if(PANDOC)
 		add_dependencies(html build_${FILEBASENAME}.html)
 		install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${FILEBASENAME}.html" DESTINATION share/doc/wxmaxima OPTIONAL)
 		# create a symlink from wxmaxima.html to wxmaxima-en.html for consistency (Suggested in issue #2275).
-		install(CODE "execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink wxmaxima.html  \"\$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/share/doc/wxmaxima/wxmaxima-en.html\")" OPTIONAL)
+		install(CODE "execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink wxmaxima.html  \"\$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/share/doc/wxmaxima/wxmaxima-en.html\")")
 
 	endfunction()
 
@@ -107,7 +107,7 @@ if(PANDOC)
 		add_dependencies(pdf build_${FILEBASENAME}.pdf)
 		install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${FILEBASENAME}.pdf" DESTINATION share/doc/wxmaxima OPTIONAL)
 		# create a symlink from wxmaxima.pdf to wxmaxima-en.pdf for consistency (Suggested in issue #2275).
-		install(CODE "execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink wxmaxima.pdf  \"\$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/share/doc/wxmaxima/wxmaxima-en.pdf\")" OPTIONAL)
+		install(CODE "execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink wxmaxima.pdf  \"\$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/share/doc/wxmaxima/wxmaxima-en.pdf\")")
 	endfunction()
 
 	function(generate_wxmaxima_documentation_epub FILEBASENAME)
@@ -119,7 +119,7 @@ if(PANDOC)
 		add_dependencies(epub build_${FILEBASENAME}.epub)
 		install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${FILEBASENAME}.epub" DESTINATION share/doc/wxmaxima OPTIONAL)
 		# create a symlink from wxmaxima.epub to wxmaxima-en.epub for consistency (Suggested in issue #2275).
-		install(CODE "execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink wxmaxima.epub  \"\$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/share/doc/wxmaxima/wxmaxima-en.epub\")" OPTIONAL)
+		install(CODE "execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink wxmaxima.epub  \"\$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/share/doc/wxmaxima/wxmaxima-en.epub\")")
 	endfunction()
 
 	# Create a list of the common part of the name of all the translated manuals.
