@@ -126,10 +126,10 @@ $(function() {
 </li>
 <li>About 200 places that copied a string, XML document or similar object where a reference or a move would do no longer copy it (Coverity's "copy instead of move" findings).</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1124"></a>
+<h1><a class="anchor" id="autotoc_md1100"></a>
 26.10.0</h1>
 <p>This release is about making <a class="el" href="classwxMaxima.html">wxMaxima</a> nicer to use, and again was developed with substantial help from the AI assistant <b>Claude</b>. Text cells get bold, italic, superscripts and more, which survive copy and paste; long numbers are shown in digit groups; an error is marked in the code cell where it happened; long messages wrap to fit the window; the toolbar can be rearranged; and the configuration dialog previews its settings. Plus a security fix for the connection to <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>, and many smaller fixes.</p>
-<h2><a class="anchor" id="autotoc_md1125"></a>
+<h2><a class="anchor" id="autotoc_md1104"></a>
 Text cells</h2>
 <ul>
 <li>Text cells, titles and section headings can contain bold, italic, underlined, struck-through, superscript and subscript text, set using new toolbar buttons (#492). <a class="el" href="classA.html">A</a> line gets taller if something in it needs the room, an emoji for example. The formatting is saved in .wxmx files in a way older versions of <a class="el" href="classwxMaxima.html">wxMaxima</a> can still read.</li>
@@ -138,7 +138,7 @@ Text cells</h2>
 <li>Selecting text in a text cell that wraps over several lines no longer makes the selection's ends jump between lines (#2477).</li>
 <li>ESC, a hexadecimal number and ESC enter that Unicode character again, as the manual says (#2561): the list of symbols closed as soon as the number matched no symbol's name. The list now shows the character the number stands for and its Unicode name next to the names, and each name next to its symbol. <a class="el" href="classA.html">A</a> leading <code>0</code> or <code>u+</code> marks a number that also begins a name.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1126"></a>
+<h2><a class="anchor" id="autotoc_md1110"></a>
 Code cells and evaluation</h2>
 <ul>
 <li>When <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> reports an error, the statement that failed gets a light red background, and for a syntax error the place <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> stopped at a stronger one, with the cursor there (#289). The statement being evaluated right now gets a faint yellow background. All three colours can be changed in the "Style" tab.</li>
@@ -150,7 +150,7 @@ Code cells and evaluation</h2>
 <li>The part of the worksheet you are reading no longer jumps while cells above it are evaluated again or output arrives above the cursor, and output that changes out of sight no longer makes the window flicker.</li>
 <li>The worksheet no longer scrolls a whole screen past its last cell.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1127"></a>
+<h2><a class="anchor" id="autotoc_md1119"></a>
 Copy and paste</h2>
 <ul>
 <li>Cells copied and pasted inside <a class="el" href="classwxMaxima.html">wxMaxima</a> keep their text formatting, plots and images, but leave <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s answers behind: what <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> answered where they were evaluated isn't necessarily what it answers where they are pasted (#2474). Pasting into other programs still includes the results.</li>
@@ -158,7 +158,7 @@ Copy and paste</h2>
 <li>Copying part of an output also offers it as SVG and, on Windows, as an enhanced metafile (#2472).</li>
 <li>The right-click menu is shorter: the "Copy as ..." formats moved into a "Copy in Another Format" submenu.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1128"></a>
+<h2><a class="anchor" id="autotoc_md1125"></a>
 Plots and images</h2>
 <ul>
 <li>Plots are made as SVG where wxWidgets renders SVG with text (LunaSVG, which the Windows builds now have): they stay sharp at any zoom factor and in print. SVG images in .wxm files and copied SVG images are shown instead of "Cannot render the image" (#2087).</li>
@@ -167,7 +167,7 @@ Plots and images</h2>
 <li><code>wximplicit_plot()</code> loads the package it needs, and <a class="el" href="classwxMaxima.html">wxMaxima</a> explains how to fix a <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> temp directory whose name contains a quote, where draw cannot plot (#1106).</li>
 <li>Scrolling over an animation with a touchpad no longer flicks through a frame per tiny movement.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1129"></a>
+<h2><a class="anchor" id="autotoc_md1128"></a>
 Matrices</h2>
 <ul>
 <li><code>wx_matrix(M, banding=true|false|auto)</code> chooses whether rows and columns are shaded, and autocompletion offers <code>wx_matrix()</code> with a template.</li>
