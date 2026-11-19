@@ -119,6 +119,8 @@ struct Settings {
   std::optional<wxString> wxMathMLLisp;
   //! --maxima: the Maxima binary
   std::optional<wxString> maxima;
+  //! --screenshot: the PNG file to write, made absolute
+  std::optional<wxString> screenshot;
   //! What --lisp, --extra-args and --use-version add to Maxima's command line
   wxString extraMaximaArgs;
   //! The positional arguments, as given (the files --diff compares)

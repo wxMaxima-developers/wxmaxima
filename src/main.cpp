@@ -748,6 +748,23 @@ bool MyApp::OnInit() {
   if (cmdLine.maxima)
     wxMaxima::Set_Maxima_Commandline_Filename(*cmdLine.maxima);
 
+  if (cmdLine.screenshot) {
+    // What to show is read from the configuration's [Screenshot] group,
+    // which --ini (handled above) has already made the active one.
+    const auto scene = wxm::ReadScreenshotScene(*wxConfig::Get());
+    if (!scene) {
+      wxMessageOutput::Get()->Printf(
+          _("Screenshot/show: \"%s\" is neither window, worksheet, "
+            "cells, pane:<name> nor config:<page>.\n"),
+          wxConfig::Get()->Read(wxS("Screenshot/show"), wxEmptyString));
+      exit(1);
+    }
+    wxMaxima::RequestScreenshot(*cmdLine.screenshot, *scene);
+    // The scene is evaluated, and nothing may wait for a click.
+    evalOnStartup = true;
+    LoggingMessageDialog::SetNonInteractive();
+  }
+
   wxInitAllImageHandlers();
 
   wxFileSystem::AddHandler(new wxZipFSHandler);

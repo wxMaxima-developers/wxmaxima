@@ -325,6 +325,15 @@ target_link_libraries(test_UiLanguages PRIVATE ${wxWidgets_LIBRARIES})
 add_test(NAME UiLanguages
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_UiLanguages>")
 
+# What --screenshot-of may name is a pure string function. GUI-free.
+add_executable(test_ScreenshotTarget
+    test_ScreenshotTarget.cpp ${CMAKE_SOURCE_DIR}/src/Screenshot.cpp
+    ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
+target_include_directories(test_ScreenshotTarget PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_link_libraries(test_ScreenshotTarget PRIVATE ${wxWidgets_LIBRARIES})
+add_test(NAME ScreenshotTarget
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_ScreenshotTarget>")
+
 # Which files wxMaxima agrees to open from the command line, the desktop or
 # the Finder (opening wxmaxima.exe and its DLLs used to start a window and a
 # Maxima per file) is decided GUI-free, so it is tested directly.

@@ -59,6 +59,7 @@
 #include <wx/debugrpt.h>
 #endif
 #include <memory>
+#include "Screenshot.h"
 #ifdef __WXMSW__
 #include <windows.h>
 #endif
@@ -238,11 +239,38 @@ public:
     EXIT_IMAGE_LOAD_FAILED = 94,
     //! An embedded image failed to decode/render (GH #2178, --debug only).
     EXIT_IMAGE_DECODE_FAILED = 95,
+    //! --screenshot could not show or save what it was asked for
+    EXIT_SCREENSHOT_FAILED = 96,
   };
 
   static int GetExitCode(){return m_exitCode;}
 
+  /*! Make this session's window save a screenshot and exit (--screenshot)
+
+    Once the document has been evaluated and Maxima is idle, the target is
+    shown, saved as a PNG to file, and the window closes without asking
+    whether to save the worksheet. See Screenshot.h.
+  */
+  static void RequestScreenshot(const wxString &file,
+                                const wxm::ScreenshotScene &scene)
+    {
+      m_screenshotFile = file;
+      m_screenshotScene = scene;
+    }
+
 private:
+  //! Where --screenshot saves its picture; empty if none was asked for
+  static wxString m_screenshotFile;
+  //! What the scene's [Screenshot] group asked for
+  static wxm::ScreenshotScene m_screenshotScene;
+  //! True once this window has started making its screenshot
+  bool m_screenshotStarted = false;
+  //! Gives what the screenshot shows a moment to be drawn
+  std::unique_ptr<wxTimer> m_screenshotTimer;
+  //! Shows what the scene asked for, then waits for it to be drawn
+  void StartScreenshot();
+  //! Saves the screenshot and closes the window
+  void TakeScreenshot(wxWindow *window, wxDialog *dialog);
   //! If we use the command line option --maxima=<str>, this variable is not-empty and contains its name
   static wxString maxima_command_line_filename;
   //! True if maxima has sent us the correct Auth string

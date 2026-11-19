@@ -108,6 +108,12 @@ inline constexpr std::array Options{
   Option{Kind::Switch, "", "enableipc",
          "Lets Maxima control wxMaxima via interprocess communications. Use "
          "this option with care."},
+  Option{Kind::Option, "", "screenshot",
+         "Evaluate the file, save a screenshot as <file> once Maxima is idle "
+         "and exit. What is shown is read from the [Screenshot] group of the "
+         "configuration (see --ini). For the manual's screenshots; needs an "
+         "X11 display.",
+         "file", Complete::AnyFile},
   Option{Kind::Option, "", "wxmathml-lisp",
          "Location of wxMathML.lisp (if not the built-in should be used, "
          "mainly for developers).",

@@ -1,5 +1,10 @@
 # Current development version
 
+- Most of the manual's screenshots are now made by wxMaxima itself, from the
+  scenes in `info/screenshots/`: `ninja screenshots` regenerates them. The
+  new `--screenshot=<file>` option this uses evaluates the
+  file it is given, captures the window, the worksheet's content, a sidebar
+  or a page of the configuration dialog, and exits.
 - The snap is only built for amd64 and arm64 now. The armhf, ppc64el and
   s390x snaps were never tested and went out of date.
 - `wxmxdiff a.wxmx b.wxmx` compares the two files again: the wxMaxima program

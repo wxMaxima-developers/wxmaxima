@@ -4,7 +4,7 @@ wxmaxima, wxmxdiff \- wxWidgets Interface und Diff-Betrachter f\(:ur Maxima
 
 .SH "SYNTAX" 
 .PP 
-\fBwxmaxima\fR [-v] [-h] [-o <str>] [-e] [-b] [-d] [--logtostderr] [--pipe] [--exit-on-error] [-f <str>] [-u <str>] [-l <str>] [-X <str>] [-m <str>]  [--enableipc] [input file...]
+\fBwxmaxima\fR [-v] [-h] [-o <str>] [-e] [-b] [-d] [--logtostderr] [--pipe] [--exit-on-error] [-f <str>] [-u <str>] [-l <str>] [-X <str>] [-m <str>]  [--enableipc] [--screenshot <file>] [input file...]
 
 .SH "BESCHREIBUNG" 
 .PP 
@@ -103,6 +103,10 @@ Erlaubt, den Pfad zum Maxima Programm anzugeben.
 .TP
 .I \-\-enableipc
 Erlaubt Maxima die Kontrolle über wxMaxima durch Interprozesskommunikation. Mit Vorsicht benutzen.
+
+.TP
+.I \-\-screenshot=<file>
+Wertet die ge\(:offnete Datei aus, speichert einen Screenshot als <file>, sobald Maxima nichts mehr zu tun hat, und beendet das Programm. Was zu sehen ist, steht in der Gruppe [Screenshot] der mit \-\-ini angegebenen Konfigurationsdatei. F\(:ur die Screenshots im Handbuch; ben\(:otigt ein X11-Display.
 
 .TP
 .I \-\-wxmathml-lisp=<str>
