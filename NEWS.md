@@ -4,12 +4,16 @@
   or `zh_CN`) runs wxMaxima in another UI language for one session
   without changing the configured one, for checking a translation or making
   screenshots for a translated manual.
+- wxMaxima no longer stops at start-up with a "Translations: no standard
+  wxWidgets catalogs were found" dialog when the UI language's wxWidgets
+  translation isn't installed. The message goes to the log window instead.
 - The snap is only built for amd64 and arm64 now. The armhf, ppc64el and
   s390x snaps were never tested and went out of date.
 - `wxmxdiff a.wxmx b.wxmx` compares the two files again: the wxMaxima program
   itself was passed on as a third file to compare, and file names containing
-  a quote were mangled. A file named `-d` after `--` no longer stops
-  `wxmxdiff` from comparing.
+  a quote were mangled. A file named `-d` after `--`, or a `-d` given as an
+  option's value (`wxmxdiff --ini -d a b`), no longer stops `wxmxdiff` from
+  comparing.
 - A command-line argument like `--+` or `--=x` is reported as an unknown
   option instead of tripping an assertion inside wxWidgets.
 - The command line is now parsed by GUI-free code (`src/CommandLine.cpp`),
