@@ -5,6 +5,9 @@
   menu's standard wizards are now described in one table
   (`src/wizards/WizardCatalog.cpp`) and connected from there, which a test
   checks entry by entry.
+- wxMaxima no longer stops at start-up with a "Translations: no standard
+  wxWidgets catalogs were found" dialog when the UI language's wxWidgets
+  translation isn't installed. The message goes to the log window instead.
 - The snap is only built for amd64 and arm64 now. The armhf, ppc64el and
   s390x snaps were never tested and went out of date.
 - `wxmxdiff a.wxmx b.wxmx` compares the two files again: the wxMaxima program
