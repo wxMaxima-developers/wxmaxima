@@ -129,6 +129,15 @@ file ... io.github.wxmaxima_developers.wxMaxima.desktop: file does not exist"
 because a 2017 tree was being built. If that message (or a build log showing
 `MathCtrl.cpp`) comes back, check `git ls-remote --symref origin HEAD` first.
 
+**Only amd64 and arm64** (`platforms:` in `snapcraft.yaml`, and the matrices in
+`build_snap*.yml`/`build_maxima_snap.yml`). Until 2026-11 `platforms:` also
+listed armhf, ppc64el and s390x; CI never built those, but the store's own
+builder did, and their revisions sat in every channel with stale stage packages
+the store flagged with security notices (USN 9094-1, gstreamer). Removing an
+architecture from `platforms:` does not remove its old revisions from the store:
+that needs `snapcraft close` per channel and architecture, done by the
+maintainer. Don't re-add an architecture CI doesn't build.
+
 ## Release automation
 
 Windows attaches **two** packages, not one: the NSIS installer *and* the

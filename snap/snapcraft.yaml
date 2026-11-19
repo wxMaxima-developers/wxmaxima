@@ -6,12 +6,13 @@ confinement: strict
 grade: stable
 base: core24
 license: GPL-2.0+
+# Only amd64 and arm64: the architectures CI builds and anybody runs a
+# desktop CAS on. The store's own builder also produced armhf, ppc64el and
+# s390x revisions that nobody tested, and that kept shipping stale packages
+# the store then flagged with security notices.
 platforms:
   amd64:
   arm64:
-  armhf:
-  ppc64el:
-  s390x:
 
 apps:
   wxmaxima:

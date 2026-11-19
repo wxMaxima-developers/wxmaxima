@@ -4,6 +4,17 @@
   or `zh_CN`) runs wxMaxima in another UI language for one session
   without changing the configured one, for checking a translation or making
   screenshots for a translated manual.
+- The snap is only built for amd64 and arm64 now. The armhf, ppc64el and
+  s390x snaps were never tested and went out of date.
+- `wxmxdiff a.wxmx b.wxmx` compares the two files again: the wxMaxima program
+  itself was passed on as a third file to compare, and file names containing
+  a quote were mangled. A file named `-d` after `--` no longer stops
+  `wxmxdiff` from comparing.
+- A command-line argument like `--+` or `--=x` is reported as an unknown
+  option instead of tripping an assertion inside wxWidgets.
+- The command line is now parsed by GUI-free code (`src/CommandLine.cpp`),
+  which a new libFuzzer target, `fuzz_cmdline`, fuzzes; it needs no display
+  and builds in seconds.
 - Undoing a change to a code cell that changed its number of lines now
   gives the cell the height of the restored text again. It used to keep the
   height of the text it replaced, so its lines overlapped the output and the

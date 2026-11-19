@@ -29,7 +29,7 @@
 #include "BuildConfig.h"
 #include "Maxima.h"
 #include "Dirstructure.h"
-#include "CommandLineOptions.h"
+#include "CommandLine.h"
 #include "FileOpenKind.h"
 #include "dialogs/DiffFrame.h"
 #include "wxMathml.h"
@@ -138,36 +138,6 @@ int CommonMain() {
   Configuration::g_stats.Report();
   return wxMaxima::GetExitCode();
 }
-wxCmdLineParser cmdLineParser;
-/*! The wxCmdLineParser description, made from wxm::cmdline::Options
-
-  The options themselves are defined in CommandLineOptions.h, which also
-  feeds the shell completions and the man page; add new ones there.
-  Every string in that table is a literal, so its data() is NUL-terminated,
-  which is what wxCmdLineEntryDesc's const char * members need.
-*/
-static const std::vector<wxCmdLineEntryDesc> &CmdLineDesc() {
-  static const std::vector<wxCmdLineEntryDesc> desc = [] {
-    std::vector<wxCmdLineEntryDesc> entries;
-    for (const auto &opt : wxm::cmdline::Options) {
-      const bool takesValue = opt.kind == wxm::cmdline::Kind::Option;
-      entries.push_back({takesValue ? wxCMD_LINE_OPTION : wxCMD_LINE_SWITCH,
-                         opt.shortName.data(), opt.longName.data(),
-                         opt.description.data(),
-                         takesValue ? wxCMD_LINE_VAL_STRING : wxCMD_LINE_VAL_NONE,
-                         opt.isHelp ? wxCMD_LINE_OPTION_HELP : 0});
-    }
-    entries.push_back({wxCMD_LINE_PARAM, nullptr, nullptr,
-                       wxm::cmdline::ParamDescription.data(),
-                       wxCMD_LINE_VAL_STRING,
-                       wxCMD_LINE_PARAM_OPTIONAL | wxCMD_LINE_PARAM_MULTIPLE});
-    entries.push_back({wxCMD_LINE_NONE, nullptr, nullptr, nullptr,
-                       wxCMD_LINE_VAL_NONE, 0});
-    return entries;
-  }();
-  return desc;
-}
-
 
 #ifndef __WXMSW__
 int main(int argc, char *argv[]) {
@@ -201,8 +171,6 @@ int main(int argc, char *argv[]) {
   // has said why by then; there is no wxTheApp to run.
   if (!wxEntryStart(argc, argv))
     return 1;
-  cmdLineParser.SetCmdLine(argc, argv);
-  cmdLineParser.SetDesc(CmdLineDesc().data());
   return CommonMain();
 }
 #else
@@ -220,8 +188,6 @@ int WINAPI WinMain(_In_ HINSTANCE hI, _In_opt_ HINSTANCE hPrevI, _In_ LPSTR lpCm
   // has said why by then; there is no wxTheApp to run.
   if (!wxEntryStart(hI, hPrevI, lpCmdLine, nCmdShow))
     return 1;
-  cmdLineParser.SetCmdLine(lpCmdLine);
-  cmdLineParser.SetDesc(CmdLineDesc().data());
   return CommonMain();
 }
 #endif
@@ -460,18 +426,6 @@ void MyApp::RestoreConsoleMode() {
 
 #endif
 
-namespace {
-//! The program's arguments, argv[0] included, as PrescanLongOption() wants them
-std::vector<wxString> CommandLineArguments(int argc,
-                                           const wxCmdLineArgsArray &argv) {
-  std::vector<wxString> args;
-  args.reserve(static_cast<std::size_t>(argc));
-  for (int i = 0; i < argc; ++i)
-    args.emplace_back(argv[i]);
-  return args;
-}
-} // namespace
-
 bool MyApp::OnInit() {
 #ifdef __WXMSW__
   // Suppress the OS hard-error / "this application could not be started" message
@@ -587,8 +541,10 @@ bool MyApp::OnInit() {
     // --language overrides the configured language for this session. It has
     // to be looked for here, before the command line is parsed further down,
     // since the parser's own messages are translated into this language.
+    const wxArrayString &arguments = argv.GetArguments();
     if (const auto languageOption = wxm::cmdline::PrescanLongOption(
-            CommandLineArguments(argc, argv), wxS("language"))) {
+            std::vector<wxString>(arguments.begin(), arguments.end()),
+            wxS("language"))) {
       const int requested = wxm::UiLanguageFromCode(*languageOption);
       if (requested == wxLANGUAGE_UNKNOWN)
         unknownLanguageOption = *languageOption;
@@ -682,48 +638,30 @@ bool MyApp::OnInit() {
   bool exitAfterEval = false;
   bool evalOnStartup = false;
 
-  wxString programName = wxFileName(argv[0]).GetName();
-  if (programName.IsSameAs(wxS("wxmxdiff"), false)) {
-    bool hasDiff = false;
-    for (int i = 1; i < argc; ++i) {
-      if (argv[i] == wxS("-d") || argv[i] == wxS("--diff")) {
-        hasDiff = true;
-        break;
-      }
-    }
-    if (!hasDiff) {
-      wxString cmdLine;
-      for (int i = 0; i < argc; ++i) {
-        wxString arg = argv[i];
-        if (arg.Contains(wxS(" ")) || arg.Contains(wxS("\t"))) {
-          cmdLine += wxS("\"") + arg + wxS("\" ");
-        } else {
-          cmdLine += arg + wxS(" ");
-        }
-        if (i == 0) {
-          cmdLine += wxS("-d ");
-        }
-      }
-      cmdLineParser.SetCmdLine(cmdLine);
-    }
-  }
+  // The arguments as wxWidgets split them (on Windows from the one string
+  // WinMain() gets). Started as wxmxdiff, a --diff is added.
+  const wxArrayString &originalArgs = argv.GetArguments();
+  const std::vector<wxString> args = wxm::cmdline::DiffAliasArguments(
+    std::vector<wxString>(originalArgs.begin(), originalArgs.end()));
 
 
 #ifdef __WXMSW__
   StdioDebugLog(wxString::Format(wxS("before cmdLineParser.Parse(): stdout %s"),
                                  DescribeStream(stdout)));
 #endif
-  int cmdLineError = cmdLineParser.Parse();
+  wxCmdLineParser cmdLineParser;
+  int cmdLineError = wxm::cmdline::Parse(cmdLineParser, args);
 #ifdef __WXMSW__
   StdioDebugLog(wxString::Format(
       wxS("after cmdLineParser.Parse() (result=%d): stdout %s"), cmdLineError,
       DescribeStream(stdout)));
 #endif
+  const wxm::cmdline::Settings cmdLine = wxm::cmdline::Interpret(cmdLineParser);
 
-  if (cmdLineParser.Found(wxS("single_process")))
+  if (cmdLine.singleProcess)
     m_allWindowsInOneProcess = true;
 
-  if (cmdLineParser.Found(wxS("single_thread")))
+  if (cmdLine.singleThread)
     Configuration::UseThreads(false);
 
   if (cmdLineError != 0)
@@ -737,14 +675,10 @@ bool MyApp::OnInit() {
         unknownLanguageOption);
     exit(1);
   }
-
-  wxString ini, file;
   // Attention: The config file is changed by
   // wxMaximaFrame::wxMaximaFrame::ReReadConfig
-  if (cmdLineParser.Found(wxS("f"), &ini)) {
-    wxFileName configFile(ini);
-    configFile.MakeAbsolute();
-    Configuration::m_configfileLocation_override = configFile.GetFullPath();
+  if (cmdLine.ini) {
+    Configuration::m_configfileLocation_override = *cmdLine.ini;
     wxConfig::Set(
                   new wxFileConfig(wxS("wxMaxima"), wxEmptyString,
                                    Configuration::m_configfileLocation_override));
@@ -796,7 +730,7 @@ bool MyApp::OnInit() {
   if (!appearanceLogMsg.empty())
     wxLogMessage("%s", appearanceLogMsg);
 
-  if (cmdLineParser.Found(wxS("logtostderr"))) {
+  if (cmdLine.logToStderr) {
 #ifdef __WXMSW__
     // Windows *GUI applications* do not have stderr (and stdout/stdin) assigned.
     // If RedirectStdioToParent() already bound them to the parent's console or to
@@ -819,40 +753,27 @@ bool MyApp::OnInit() {
     m_logChain = std::make_unique<wxLogChain>(new wxLogStderr);
   }
 
-  if (cmdLineParser.Found(wxS("debug")))
+  if (cmdLine.debug)
     Configuration::SetDebugmode();
 
-  if (cmdLineParser.Found(wxS("pipe")))
+  if (cmdLine.pipe)
     Maxima::SetPipeToStdErr(true);
 
-  if (cmdLineParser.Found(wxS("exit-on-error"))) {
+  if (cmdLine.exitOnError) {
     wxMaxima::ExitOnError();
     LoggingMessageDialog::SetNonInteractive();
   }
 
-  if (cmdLineParser.Found(wxS("enableipc")))
+  if (cmdLine.enableIpc)
     wxMaxima::EnableIPC();
 
-  wxString extraMaximaArgs;
-  wxString arg;
-  if (cmdLineParser.Found(wxS("l"), &arg))
-    extraMaximaArgs += " -l " + arg;
+  wxMaxima::ExtraMaximaArgs(cmdLine.extraMaximaArgs);
 
-  if (cmdLineParser.Found(wxS("X"), &arg))
-    extraMaximaArgs += " -X " + arg;
+  if (cmdLine.wxMathMLLisp)
+    wxMathML::Set_MathML_Filename(*cmdLine.wxMathMLLisp);
 
-  if (cmdLineParser.Found(wxS("u"), &arg))
-    extraMaximaArgs += " -u " + arg;
-
-  wxMaxima::ExtraMaximaArgs(extraMaximaArgs);
-
-  if (cmdLineParser.Found(wxS("wxmathml-lisp"), &arg)) {
-    wxMathML::Set_MathML_Filename(arg);
-  }
-
-  if (cmdLineParser.Found(wxS("m"), &arg)) {
-    wxMaxima::Set_Maxima_Commandline_Filename(arg);
-  }
+  if (cmdLine.maxima)
+    wxMaxima::Set_Maxima_Commandline_Filename(*cmdLine.maxima);
 
   wxInitAllImageHandlers();
 
@@ -892,7 +813,7 @@ bool MyApp::OnInit() {
   wxApp::SetExitOnFrameDelete(false);
 #endif
 
-  if (cmdLineParser.Found(wxS("v"))) {
+  if (cmdLine.version) {
 #ifdef __WXMSW__
     StdioDebugLog(wxString::Format(
         wxS("entering -v branch: stdout %s, wxMessageOutput::Get()=%p"),
@@ -908,7 +829,7 @@ bool MyApp::OnInit() {
     exit(0);
   }
 
-  if (cmdLineParser.Found(wxS("b"))) {
+  if (cmdLine.batch) {
     evalOnStartup = true;
     exitAfterEval = true;
     LoggingMessageDialog::SetNonInteractive();
@@ -919,18 +840,17 @@ bool MyApp::OnInit() {
 
   m_configuration = std::make_unique<Configuration>();
 
-  if (cmdLineParser.Found(wxS("e")))
+  if (cmdLine.eval)
     evalOnStartup = true;
 
   bool windowOpened = false;
   //! The files from the command line, each to be opened in a window of its own
-  std::vector<wxString> filesToOpen;
+  const std::vector<wxString> &filesToOpen = cmdLine.filesToOpen;
 
-  if (cmdLineParser.Found(wxS("d"))) {
+  if (cmdLine.diff) {
     wxArrayString diffFiles;
-    for (unsigned int i = 0; i < cmdLineParser.GetParamCount(); i++) {
-      diffFiles.push_back(cmdLineParser.GetParam(i));
-    }
+    for (const auto &param : cmdLine.params)
+      diffFiles.push_back(param);
     if (diffFiles.size() >= 2 && diffFiles.size() <= 3) {
       DiffFrame *diffFrame = new DiffFrame(nullptr, diffFiles, this->m_configuration.get());
       diffFrame->Show();
@@ -942,40 +862,6 @@ bool MyApp::OnInit() {
                      "command) needs 2 or 3 files to compare."),
                    _("Error"), wxOK | wxICON_ERROR);
       return false;
-    }
-  }
-
-  if (cmdLineParser.Found(wxS("o"), &file)) {
-    wxString realFile = file;
-    wxString uuid;
-    if (file.Contains(wxS("#"))) {
-      realFile = file.BeforeFirst(wxS('#'));
-      uuid = file.AfterFirst(wxS('#'));
-    }
-    wxFileName FileName = realFile;
-    FileName.MakeAbsolute();
-    wxString canonicalFilename = FileName.GetFullPath();
-    if (!uuid.IsEmpty())
-      canonicalFilename += wxS("#") + uuid;
-    filesToOpen.push_back(std::move(canonicalFilename));
-  }
-
-  if (cmdLineParser.GetParamCount() > 0 && !cmdLineParser.Found(wxS("d"))) {
-    for (unsigned int i = 0; i < cmdLineParser.GetParamCount(); i++) {
-      wxString fileParam = cmdLineParser.GetParam(i);
-      wxString realFile = fileParam;
-      wxString uuid;
-      if (fileParam.Contains(wxS("#"))) {
-        realFile = fileParam.BeforeFirst(wxS('#'));
-        uuid = fileParam.AfterFirst(wxS('#'));
-      }
-      wxFileName FileName = realFile;
-      FileName.MakeAbsolute();
-
-      wxString CanonicalFilename = FileName.GetFullPath();
-      if (!uuid.IsEmpty())
-        CanonicalFilename += wxS("#") + uuid;
-      filesToOpen.push_back(std::move(CanonicalFilename));
     }
   }
 

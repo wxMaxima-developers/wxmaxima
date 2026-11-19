@@ -158,6 +158,7 @@ set(SOURCE_FILES
     Bidi.cpp
     EvaluationQueue.cpp
     EventIDs.cpp
+    CommandLine.cpp
     FileOpenKind.cpp
     FontRenderabilityCache.cpp
     AttachmentSource.cpp
@@ -517,6 +518,16 @@ if(WXM_FUZZ)
         target_link_options(fuzz_${FT} PRIVATE ${WXM_FUZZ_ENGINE})
         target_link_libraries(fuzz_${FT} ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
     endforeach()
+    # The command line needs nothing but wxBase, so its fuzzer is built from
+    # the few files involved instead of the whole application: it compiles in
+    # seconds and needs no display.
+    add_executable(fuzz_cmdline
+        ${FUZZ_DIR}/fuzz_cmdline.cpp CommandLine.cpp FileOpenKind.cpp)
+    target_compile_features(fuzz_cmdline PUBLIC cxx_std_20)
+    target_include_directories(fuzz_cmdline PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+    target_compile_options(fuzz_cmdline PRIVATE ${WXM_FUZZ_INSTRUMENT})
+    target_link_options(fuzz_cmdline PRIVATE ${WXM_FUZZ_ENGINE})
+    target_link_libraries(fuzz_cmdline ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
 endif()
 
 # ---------------------------------------------------------------------------
