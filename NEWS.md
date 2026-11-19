@@ -5,6 +5,10 @@
   menu's standard wizards are now described in one table
   (`src/wizards/WizardCatalog.cpp`) and connected from there, which a test
   checks entry by entry.
+- Undoing a change to a code cell that changed its number of lines now
+  gives the cell the height of the restored text again. It used to keep the
+  height of the text it replaced, so its lines overlapped the output and the
+  cells below.
 - Added a complete Swedish translation of the interface and user manual,
   including the desktop launcher descriptions.
 - The German translation of the manual covers every paragraph again: the
