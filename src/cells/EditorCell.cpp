@@ -5143,6 +5143,17 @@ void EditorCell::SetValue(const wxString &text) {
 
   // Style the text.
   StyleText();
+
+  // The new text may have a different number of lines and a different width:
+  // the size computed for the old one is stale. Recalculate() only measures
+  // the text anew if the cell is dirty or has no valid size, so without this
+  // an undo of the worksheet (which restores a cell's text via SetValue())
+  // kept the height of the text it replaced, and a code cell that got its
+  // lines back was laid out as if it still had fewer -- overlapping its
+  // output and the cells below. SetState() does the same for the cell's own
+  // undo.
+  m_isDirty = true;
+  ResetSize();
 }
 
 bool EditorCell::CheckChanges() {
