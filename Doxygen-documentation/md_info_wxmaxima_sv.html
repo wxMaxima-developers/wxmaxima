@@ -75,26 +75,26 @@ $(function() {
 <div class="textblock"><p>WxMaxima är ett grafiskt användargränssnitt (GUI) för datoralgebrasystemet (CAS) <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>. WxMaxima ger tillgång till alla funktioner i <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> och erbjuder dessutom praktiska guider för de vanligaste funktionerna. Den här handboken beskriver några av de egenskaper som gör <a class="el" href="classwxMaxima.html">wxMaxima</a> till ett av de populäraste grafiska gränssnitten för <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>.</p>
 <p><img src="./wxMaximaLogo.png" alt="wxMaximas logotyp" class="inline"/></p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md626"></a>
+<h1><a class="anchor" id="autotoc_md702"></a>
 Introduktion till wxMaxima</h1>
-<h2><a class="anchor" id="autotoc_md627"></a>
+<h2><a class="anchor" id="autotoc_md703"></a>
 &lt;em&gt;Maxima&lt;/em&gt; och wxMaxima</h2>
 <p>Inom öppen källkod delas stora system vanligen upp i mindre projekt som är lättare för små utvecklargrupper att hantera. Ett CD-brännarprogram består till exempel av ett kommandoradsverktyg som faktiskt bränner skivan och ett grafiskt användargränssnitt som låter användaren göra detta utan att lära sig alla kommandoradsalternativ, eller ens använda kommandoraden. En fördel är att utvecklingsarbetet för kommandoradsprogrammet kan komma flera program till nytta. Samma CD-brännarverktyg kan användas som ett tillägg för att skicka filer till CD i en filhanterare, för en musikspelares funktion för att bränna CD och för att skriva CD-skivor i ett verktyg för DVD-säkerhetskopiering. En annan fördel är att uppdelningen av en stor uppgift i mindre delar gör det möjligt att erbjuda flera användargränssnitt till samma program.</p>
 <p>Ett datoralgebrasystem (CAS) som <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> passar in i detta upplägg. Ett CAS kan tillhandahålla logiken i en kalkylator med godtycklig precision eller automatiskt omforma formler i bakgrunden i ett större system, till exempel <a href="https://www.sagemath.org/">Sage</a>. Det kan också användas direkt som ett fristående system. <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> kan användas via kommandoraden. Ofta är dock ett gränssnitt som <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> ett effektivare sätt att använda programvaran, särskilt för nybörjare.</p>
-<h3><a class="anchor" id="autotoc_md629"></a>
+<h3><a class="anchor" id="autotoc_md704"></a>
 &lt;em&gt;Maxima&lt;/em&gt;</h3>
 <p><em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> är ett fullfjädrat datoralgebrasystem (CAS). Ett CAS är ett program som kan lösa matematiska problem genom att omforma formler och hitta en formel som löser problemet, i stället för att bara ange ett numeriskt resultat. <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> kan alltså fungera som en kalkylator som ger numeriska representationer av variabler och kan även ge analytiska lösningar. Dessutom erbjuder programmet olika numeriska analysmetoder för ekvationer och ekvationssystem som inte kan lösas analytiskt.</p>
 <p><img src="./maxima_screenshot.png" alt="Skärmbild av Maxima på kommandoraden" class="inline"/></p>
 <p>Omfattande dokumentation för <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> finns <a href="https://maxima.sourceforge.io/documentation.html">på internet</a>. En del av dokumentationen finns även i wxMaximas hjälpmeny. När du trycker på hjälptangenten, vanligen <code>F1</code>, går <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> automatiskt till sidan i <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>-handboken för kommandot vid markören.</p>
-<h3><a class="anchor" id="autotoc_md631"></a>
+<h3><a class="anchor" id="autotoc_md705"></a>
 WxMaxima</h3>
 <p><em>WxMaxima</em> är ett grafiskt användargränssnitt som ger tillgång till <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> med all dess funktionalitet och flexibilitet. WxMaxima erbjuder grafisk visning och många funktioner som underlättar arbetet med <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>. Du kan till exempel högerklicka för att exportera en cells innehåll, eller en del av en formel, som text, LaTeX eller MathML. Du kan även exportera en hel arbetsbok som en HTML- eller LaTeX-fil. Dokumentation för <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>, inklusive arbetsböcker som visar hur programmet kan användas, finns på <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>-<a href="https://wxMaxima-developers.github.io/wxmaxima/help.html">hjälpwebbplatsen</a> och via hjälpmenyn.</p>
 <p><img src="./wxMaximaWindow.png" alt="wxMaximas fönster" class="inline"/></p>
 <p>Beräkningar som anges i <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> utförs i bakgrunden av kommandoradsverktyget <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>.</p>
-<h2><a class="anchor" id="autotoc_md633"></a>
+<h2><a class="anchor" id="autotoc_md706"></a>
 Grunderna i arbetsböcker</h2>
 <p>Mycket i <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> är självförklarande, men vissa detaljer kräver uppmärksamhet. På <a href="https://wxMaxima-developers.github.io/wxmaxima/help.html">den här webbplatsen</a> finns ett antal arbetsböcker som behandlar olika delar av <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>. Genom att arbeta igenom några av dem, särskilt "10 minute _(wx)Maxima_ tutorial", blir du mer bekant med både <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> och hur du använder <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> för att arbeta med det. Den här handboken fokuserar på sådant i <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> som inte är självklart och kanske inte behandlas i materialet på nätet.</p>
-<h3><a class="anchor" id="autotoc_md634"></a>
+<h3><a class="anchor" id="autotoc_md707"></a>
 Arbetsboksmodellen</h3>
 <p>En av få saker som inte följer vanliga konventioner i <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> är att data för <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> ordnas i celler som beräknas, alltså skickas till <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>, först när användaren begär det. När en cell beräknas körs alla kommandon i just den cellen i en följd. Detta är inte helt exakt: du kan även markera flera intilliggande celler och beräkna dem tillsammans, eller låta <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> beräkna alla celler i en arbetsbok i ett enda steg. <em>WxMaximas</em> sätt att skicka kommandon för körning kan verka ovant till en början. Det förenklar dock arbetet med stora dokument avsevärt, eftersom varje ändring då inte behöver utlösa en fullständig omberäkning av dokumentet. Det är också mycket praktiskt vid felsökning.</p>
 <p>När du skriver i <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> skapas automatiskt en ny cell i arbetsbladet. Celltypen kan väljas i verktygsfältet. Om du skapar en kodcell kan den skickas till <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>, varefter beräkningsresultatet visas under koden. Två sådana kommandon visas nedan.</p>
@@ -103,7 +103,7 @@ Arbetsboksmodellen</h3>
 <p>Utöver inmatningsceller erbjuder <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> textceller för dokumentation, bildceller, titelceller, kapitelceller och avsnittsceller. Varje cell har en egen ångrahistorik, vilket gör det lätt att felsöka genom att ändra värden i flera celler och sedan stegvis ångra onödiga ändringar. Arbetsbladet har dessutom en gemensam ångrahistorik för redigering, tillägg och borttagning av celler.</p>
 <p>Bilden nedan visar olika celltyper: titelceller, avsnittsceller, underavsnittsceller, textceller, inmatnings- och utdataceller samt bildceller.</p>
 <p><img src="./cell-example.png" alt="Exempel på olika celler i wxMaxima" class="inline"/></p>
-<h3><a class="anchor" id="autotoc_md639"></a>
+<h3><a class="anchor" id="autotoc_md708"></a>
 Celler</h3>
 <p>Arbetsbladet är indelat i celler. WxMaxima har följande celltyper:</p>
 <ul>
@@ -117,7 +117,7 @@ Celler</h3>
 <p>När du skriver i <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> skapas som standard en matematikcell automatiskt. Andra celltyper kan skapas med menyn <a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a>, kortkommandona i menyn eller listrutan i verktygsfältet. När en cell av en annan typ än matematik har skapats tolkas det du skriver som text.</p>
 <p>En <a href="https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#Comments">kommentar</a> i C-stil kan ingå i en matematikcell på följande sätt: <code>/* This comment will be ignored by <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> */</code></p>
 <p>"`/*`" markerar kommentarens början och "`*/`" dess slut.</p>
-<h3><a class="anchor" id="autotoc_md642"></a>
+<h3><a class="anchor" id="autotoc_md709"></a>
 Vågräta och lodräta markörer</h3>
 <p>Om du försöker markera en hel mening i en ordbehandlare brukar programmet utöka markeringen så att den börjar och slutar vid ordgränser. På liknande sätt utökar <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> markeringen till hela celler när du markerar fler än en cell.</p>
 <p>Det som skiljer sig från det vanliga är att <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> ger flexibilitet vid dra och släpp genom att använda två markörtyper. Programmet växlar automatiskt mellan dem efter behov:</p>
@@ -132,15 +132,15 @@ wxMaxima" class="inline"/></p>
 <p>När du rör dig mellan cellerna syns också den blinkande vågräta markören där du kan infoga en cell i arbetsbladet. Börja skriva en formel för att infoga en matematikcell eller välj en annan celltyp i menyn.</p>
 <p><img src="./horizontal-cursor-between-cells.png" alt="(Blinkande) vågrät markör mellan
 celler" class="inline"/></p>
-<h3><a class="anchor" id="autotoc_md645"></a>
+<h3><a class="anchor" id="autotoc_md710"></a>
 Skicka celler till Maxima</h3>
 <p>Kommandot i en kodcell körs när du trycker på <code>CTRL</code>+<code>ENTER</code>, <code>SHIFT</code>+<code>ENTER</code> eller <code>ENTER</code> på det numeriska tangentbordet. Som standard kör <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> kommandon med <code>CTRL</code>+<code>ENTER</code> eller <code>SHIFT</code>+<code>ENTER</code>, men du kan ställa in programmet så att <code>ENTER</code> används.</p>
-<h3><a class="anchor" id="autotoc_md646"></a>
+<h3><a class="anchor" id="autotoc_md711"></a>
 Automatisk komplettering av kommandon</h3>
 <p><em>WxMaxima</em> har automatisk komplettering som aktiveras via menyn Cell/Komplettera ord eller med <code>CTRL</code>+<code>SPACE</code>. Kompletteringen anpassas efter sammanhanget. Om du till exempel aktiverar den i en enhetsangivelse för ezUnits visas en lista med lämpliga enheter.</p>
 <p><img src="./ezUnits.png" alt="ezUnits" class="inline"/></p>
 <p>Utöver att komplettera filnamn, enhetsnamn och det aktuella kommando- eller variabelnamnet kan kompletteringsfunktionen visa mallar för de flesta kommandon. Mallarna anger typen och betydelsen för de parametrar som kommandot förväntar sig. Aktivera funktionen med <code>SHIFT</code>+<code>CTRL</code>+<code>SPACE</code> eller motsvarande menyval, Cell/Visa mall.</p>
-<h4><a class="anchor" id="autotoc_md647"></a>
+<h4><a class="anchor" id="autotoc_md712"></a>
 Grekiska tecken</h4>
 <p>Datorer lagrade traditionellt tecken som 8-bitarsvärden. Det ger plats för högst 256 olika tecken. Bokstäver, siffror och styrtecken, till exempel överföringsslut, strängslut samt linjer och hörn för menyrektanglar, för nästan vilket enskilt språk som helst ryms inom denna gräns.</p>
 <p>De teckentabeller med 256 tecken som har valts för de flesta länder saknar dock bland annat grekiska bokstäver, som används ofta i matematik. För att övervinna sådana begränsningar skapades <a href="https://home.unicode.org/">Unicode</a>, en kodning som låter engelsk text fungera som vanligt men gör betydligt fler än 256 tecken tillgängliga.</p>
@@ -186,7 +186,7 @@ Grekiska tecken</h4>
 <td class="markdownTableBodyCenter">T   </td><td class="markdownTableBodyCenter">Theta   </td><td class="markdownTableBodyCenter">P   </td><td class="markdownTableBodyCenter">Pi   </td><td class="markdownTableBodyCenter">O   </td><td class="markdownTableBodyCenter">Omega   </td></tr>
 </table>
 <p>Du kan också använda sidopanelen "Grekiska bokstäver" för att mata in grekiska bokstäver.</p>
-<p><a class="anchor" id="autotoc_md651"></a> </p><h5>Observera: förväxlingsbara tecken</h5>
+<p><a class="anchor" id="autotoc_md713"></a> </p><h5>Observera: förväxlingsbara tecken</h5>
 <p>Flera latinska bokstäver liknar grekiska bokstäver, till exempel latinskt "A" och grekiskt "alfa". Trots att de ser likadana ut är de olika Unicode-tecken med olika kodpunkter (nummer).</p>
 <p>Det kan orsaka problem om du tilldelar variabeln <a class="el" href="classA.html">A</a> ett värde och senare använder grekiskt alfa för att göra något med variabeln, särskilt i utskrifter. Även den grekiska bokstaven my, som används som prefix för mikro, har två olika Unicode-kodpunkter.</p>
 <p>Sidopanelen "Grekiska bokstäver" har därför ett alternativ för att göra förväxlingsbara tecken otillgängliga. Du kan ändra detta i högerklicksmenyn.</p>
@@ -299,28 +299,28 @@ Grekiska tecken</h4>
 <p>Symboler som används ofta kan läggas till i sidopanelen ”Symboler” på fliken ”Alternativ” i inställningsdialogen (Redigera -&gt; Inställningar). Där kan de också tilldelas en tangentgenväg. En bokstav med diakritiska tecken räknas där som en symbol och får en knapp. Även de grekiska bokstäverna och de symboler som redan visas i sidopanelerna kan tilldelas tangentgenvägar där, eller genom att högerklicka på deras knappar i sidopanelen. En tangentgenväg måste innehålla <code>Ctrl</code> eller <code>Alt</code>, eller vara en funktionstangent, och skriver sin symbol när arbetsbladet har tangentbordsfokus. Inställningsdialogen varnar om ett menyalternativ redan använder samma tangenter.</p>
 <p>Observera att de flesta av dessa symboler, med de logiska symbolerna som viktiga undantag, inte har någon särskild betydelse i <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> och därför tolkas som vanliga tecken. Om <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> har byggts med en Lisp-miljö som inte stöder Unicode-tecken kan de orsaka ett felmeddelande.</p>
 <p>Det valda typsnittet kanske saknar exempelvis grekiska tecken eller matematiska symboler. Då kan dessa inte visas. Välj andra typsnitt via Redigera -&gt; Inställningar -&gt; Stil för att lösa problemet.</p>
-<h3><a class="anchor" id="autotoc_md653"></a>
+<h3><a class="anchor" id="autotoc_md714"></a>
 Ersättning av Unicode-tecken</h3>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> ersätter flera Unicode-tecken med motsvarande Maxima-uttryck, till exempel <code>²</code> med <code>^2</code>, <code>³</code> med <code>^3</code>, <code>≠</code> med <code>#</code> och <code>≤</code> med <code>&lt;=</code>.</p>
 <p>Unicode-tecken som motsvarar Maxima-namn definieras i stället som alias för dessa namn i <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> när <a class="el" href="classwxMaxima.html">wxMaxima</a> startar <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>: <code>π</code> för <code>pi</code>, <code>ⅈ</code> för <code>i</code>, <code>ⅇ</code> för <code>e</code>, <code>∞</code> för <code>inf</code>, det matematiska sigmatecknet (som inte är samma Unicode-tecken som motsvarande grekiska bokstav) för <code>sum</code>, <code>∏</code> för <code>product</code>, <code>∫</code> för <code>integrate</code>, kvadratrotstecknet för <code>sqrt</code> samt <code>⋀</code>, <code>⋁</code>, <code>⊻</code>, <code>⊼</code>, <code>⊽</code>, <code>⇒</code>, <code>⇔</code> och <code>¬</code> för <code>and</code>, <code>or</code>, <code>xor</code>, <code>nand</code>, <code>nor</code>, <code>implies</code>, <code>equiv</code> och <code>not</code>. Det innebär att de även fungerar i filer som läses in med <code>batch()</code> eller <code>load()</code>, och att <code>aliases</code> listar namnen de motsvarar. Eftersom <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> läser dessa tecken som bokstäver måste de skiljas från angränsande namn med blanksteg i en sådan fil: <code>a⋀b</code> är ett variabelnamn, medan <code>a ⋀ b</code> betyder <code>a and b</code>. I en inmatningscell lägger <a class="el" href="classwxMaxima.html">wxMaxima</a> automatiskt till dessa blanksteg. Programmet sätter också parenteser runt ett tal eller en variabel som följer direkt efter kvadratrotstecknet, så <code>√2</code> betyder <code>sqrt(2)</code>.</p>
 <p>Unicode kodar flera vanliga bråk som en enda kodpunkt: <code>¼, ½, ¾, ⅐, ⅑, ⅒, ⅓, ⅔, ⅕, ⅖, ⅗, ⅘, ⅙, ⅚, ⅛, ⅜, ⅝, ⅞</code></p>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> ersätter dem med deras Maxima-representationer, till exempel <code>(1/4)</code>, innan indata skickas till <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>. Det finns även <code>⅟</code>, som ersätts med <code>1/</code>, och <code>↉</code>, som används i baseboll och ersätts med <code>(0/3)</code>.</p>
 <p>Vi rekommenderar att du använder <b>Maxima-kod</b> i stället för dessa Unicode-tecken i inmatningsceller. Dels kanske typsnittet för matematikinmatning saknar tecknen, dels brukar ett dokument sparat som <code>wxm</code> kunna läsas av <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> på kommandoraden, där dessa ersättningar inte görs. Tecknen kan dock förekomma om du kopierar och klistrar in en formel från ett annat dokument.</p>
-<h3><a class="anchor" id="autotoc_md654"></a>
+<h3><a class="anchor" id="autotoc_md715"></a>
 Sidopaneler</h3>
 <p>Via sidopanelerna får du tillgång till genvägar till de viktigaste <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>-kommandona, en innehållsförteckning, felsökningsmeddelanden och historik över de senaste kommandona. Du kan aktivera panelerna i menyn "Visa". Alla paneler kan flyttas till andra platser i eller utanför <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>-fönstret. En annan praktisk panel låter dig mata in grekiska bokstäver med musen.</p>
 <p><img src="./SidePanes.png" alt="Exempel på olika sidopaneler" class="inline"/></p>
 <p>I sidopanelen "Innehållsförteckning" kan du höja eller sänka en rubriknivå genom att högerklicka på rubriken och välja nästa högre eller lägre rubriktyp.</p>
 <p><img src="./Sidepane-TOC-convert-headings.png" alt="Höj eller sänk rubriknivåer i innehållsförteckningens
 sidopanel" class="inline"/></p>
-<h3><a class="anchor" id="autotoc_md656"></a>
+<h3><a class="anchor" id="autotoc_md716"></a>
 MathML-utdata</h3>
 <p>Flera ordbehandlare och liknande program känner igen <a href="https://www.w3.org/Math/">MathML</a> och infogar det automatiskt som en redigerbar tvådimensionell ekvation. Andra, till exempel LibreOffice, har en ekvationsredigerare med en funktion för att importera MathML från urklipp. Ytterligare andra stöder RTF-matematik. <em>WxMaxima</em> erbjuder därför flera alternativ i högerklicksmenyn.</p>
-<h3><a class="anchor" id="autotoc_md657"></a>
+<h3><a class="anchor" id="autotoc_md717"></a>
 Klistra in LaTeX- eller MathML-formler</h3>
 <p><b>Redigera → Klistra in LaTeX/MathML som Maxima-kod</b> (finns också i högerklicksmenyn) omvandlar en formel från urklipp till ett <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>-kommando, till exempel en formel som kopierats från en artikel, en webbsida eller en ekvationsredigerare. LaTeX kan ha <code>$…$</code>, <code>\(…\)</code> eller <code>\[…\]</code> runt sig, men behöver inte ha det, så <code>\int_0^1 \frac{\sin x}{x}\,dx</code> blir <code>integrate(sin(x)/x,x,0,1)</code>. Kommandot infogas vid markören eller i en ny kodcell. MathML som klistras in i en kodcell med det vanliga kommandot <b>Klistra in</b> omvandlas på samma sätt, eftersom XML-koden inte är vad man vill ha i en kodcell. Om MathML som kopierats med <b>Kopiera som MathML</b> klistras in igen blir resultatet det ursprungliga kommandot: <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> lägger till det i MathML-koden som en annotation.</p>
 <p>LaTeX och MathML beskriver hur en formel ser ut, inte vad den betyder, så omvandlingen måste tolka den. Bråk, rötter, potenser, nedsänkta tecken (<code>x_1</code> blir namnet <code>x_1</code>, <code>a_{n+1}</code> arrayelementet <code>a[n+1]</code>), funktioner med eller utan parenteser (<code>\sin 2x</code>), <code>\frac{d}{dx}</code>, &lsquo;f&rsquo;(x)<code>, integraler som slutar med</code>dx<code>, summor och produkter med gränser,</code>\lim_{x\to 0}<code>,</code>|x|<code> och matriser kan tolkas. Ett</code>e<code>är Eulers tal, men ett</code>i<code>är bara den imaginära enheten när det är upprätt (</code>\mathrm{i}<code>), eftersom det oftare är ett index. Ett namn följt av en parentes, som</code>x(y+1)<code>, tolkas som en produkt om namnet inte är</code>f<code>,</code>g<code>,</code>h<code>eller längre än en bokstav. För sådant som saknar en entydig betydelse, som</code>\pm<code>,</code>\dots` eller text, görs inga gissningar: <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> anger i stället vad som inte kunde omvandlas. Kontrollera kommandot innan du beräknar det.</p>
-<h3><a class="anchor" id="autotoc_md660"></a>
+<h3><a class="anchor" id="autotoc_md718"></a>
 Stöd för Markdown</h3>
 <p><em>WxMaxima</em> stöder vissa vanliga <a href="https://en.wikipedia.org/wiki/Markdown">Markdown</a>-konventioner som inte krockar med matematisk notation. Ett exempel är punktlistor.</p>
 <div class="fragment"><div class="line">Vanlig text</div>
@@ -339,17 +339,17 @@ Stöd för Markdown</h3>
 </div><!-- fragment --><p><em>WxMaximas</em> TeX- och HTML-export känner också igen <code>=&gt;</code> och ersätter det med motsvarande Unicode-tecken:</p>
 <div class="fragment"><div class="line">cogito =&gt; sum.</div>
 </div><!-- fragment --><p>Andra symboler som HTML- och TeX-exporten känner igen är <code>&lt;=</code> och <code>&gt;=</code> för jämförelser, en dubbelriktad dubbelpil (<code>&lt;=&gt;</code>), enkla pilar (<code>&lt;-&gt;</code>, <code>-&gt;</code> och <code>&lt;-</code>) samt <code>+/-</code> för plus/minus-tecknet. Vid TeX-export känns även <code>&lt;&lt;</code> och <code>&gt;&gt;</code> igen.</p>
-<h3><a class="anchor" id="autotoc_md663"></a>
+<h3><a class="anchor" id="autotoc_md719"></a>
 Länkar i textceller</h3>
 <p>En webbadress i en textcell som börjar med <code><a href="http://">http://</a></code>, <code><a href="https://">https://</a></code> eller <code>mailto:</code> visas som en länk. Eftersom ett klick i en textcell placerar markören där, öppnar du en länk genom att <code>CTRL</code>+klicka på den (<code>CMD</code>+klicka på macOS) eller genom att högerklicka och välja ”Öppna länk”. När du håller pekaren över länken visas vart den leder. Vid HTML-export skapas en länk och vid TeX-export en <code>\url{}</code>. Länkar känns alltid igen utifrån själva texten, så ingen information om dem sparas i filen.</p>
 <p>Länkar i kommentarer i en kodcell (<code>/* ... */</code>) fungerar på samma sätt. På andra ställen i koden, till exempel i en sträng, är en adress Maxima-syntax och ingen länk.</p>
 <p>Detsamma gäller webbadresser i <em>Maximas</em> utdata, till exempel i en sträng som skrivs ut med <code>print("See https://wxmaxima-developers.github.io/wxmaxima/")</code>: <code>CTRL</code>+klicka på adressen eller välj ”Öppna länk” i dess snabbmeny för att öppna den. Ett vanligt klick markerar fortfarande utdata.</p>
-<h3><a class="anchor" id="autotoc_md664"></a>
+<h3><a class="anchor" id="autotoc_md720"></a>
 Fet, kursiv, understruken och genomstruken text</h3>
 <p>Text i en textcell, en titel eller en avsnittsrubrik kan göras fet, kursiv, understruken eller genomstruken. Markera texten och tryck på motsvarande knapp i verktygsfältet. Tryck på knappen igen för att ta bort formateringen från markeringen. Om inget är markerat aktiverar eller inaktiverar knappen formateringen för den text som skrivs härnäst. Knapparna kan döljas genom att högerklicka på verktygsfältet och avmarkera ”Knappar för textformatering”. Kodceller kan inte formateras: deras färger visar redan kodens syntax.</p>
 <p>Knapparna för upphöjd och nedsänkt text fungerar på samma sätt: de gör texten mindre och höjer eller sänker den i förhållande till baslinjen, som i <a class="el" href="classE.html">E</a> = mc² eller H₂O. Ett tecken kan inte vara både upphöjt och nedsänkt, så när det ena aktiveras inaktiveras det andra. En rad som innehåller upphöjd eller nedsänkt text, eller ett tecken som är högre än typsnittets vanliga tecken, till exempel en emoji, får så mycket extra utrymme som behövs.</p>
 <p>Formateringen sparas i <code>.wxmx</code>-filer. Äldre versioner av <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> öppnar sådana filer utan formateringen men behåller all text. <code>.wxm</code>-filer, exporter och urklipp innehåller texten utan formatering.</p>
-<h3><a class="anchor" id="autotoc_md665"></a>
+<h3><a class="anchor" id="autotoc_md721"></a>
 Kortkommandon</h3>
 <p>De flesta kortkommandon visas i respektive meny. Eftersom de hämtas från menytexten kan de anpassas i översättningen av <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> efter det lokala tangentbordet. Därför dokumenterar vi dem inte här. Några kortkommandon eller alternativa kortkommandon visas dock inte i menyerna:</p>
 <ul>
@@ -357,7 +357,7 @@ Kortkommandon</h3>
 <li><code>CTRL</code>+<code>TAB</code> eller <code>CTRL</code>+<code>SHIFT</code>+<code>TAB</code> aktiverar automatisk komplettering.</li>
 <li><code>SHIFT</code>+<code>SPACE</code> infogar ett fast blanksteg.</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md666"></a>
+<h3><a class="anchor" id="autotoc_md722"></a>
 Utforska utdata med tangentbordet</h3>
 <p>En cells utdata kan markeras och utforskas del för del utan mus:</p>
 <ul>
@@ -368,24 +368,24 @@ Utforska utdata med tangentbordet</h3>
 <li><code>SHIFT</code>+<code>LEFT</code> och <code>SHIFT</code>+<code>RIGHT</code> utökar eller minskar markeringen över angränsande delar. I en matris utökar <code>SHIFT</code> tillsammans med valfri piltangent det markerade elementet till ett block av element.</li>
 <li>Snabbmenytangenten eller <code>SHIFT</code>+<code>F10</code> öppnar högerklicksmenyn för markeringen så att den kan kopieras i valfritt format.</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md669"></a>
+<h3><a class="anchor" id="autotoc_md723"></a>
 Obehandlad TeX vid TeX-export</h3>
 <p>Om en textcell börjar med <code>TeX:</code> innehåller TeX-exporten texten efter markören <code>TeX:</code> ordagrant. Med den funktionen kan du använda TeX-kod i <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>-arbetsboken.</p>
-<h2><a class="anchor" id="autotoc_md671"></a>
+<h2><a class="anchor" id="autotoc_md724"></a>
 Filformat</h2>
 <p>Material som skapas under en <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>-session kan sparas för senare användning på tre sätt:</p>
-<h3><a class="anchor" id="autotoc_md672"></a>
+<h3><a class="anchor" id="autotoc_md725"></a>
 .mac</h3>
 <p><code>.mac</code>-filer är vanliga textfiler med <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>-kommandon. De kan läsas med <em>Maximas</em> kommandon <code>batch()</code> eller <code>load()</code> eller med menyvalet Arkiv/Kommandofil i <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>.</p>
 <p>Ett exempel visas nedan. <code>Quadratic.mac</code> definierar en funktion och skapar sedan ett diagram med <code>wxdraw2d()</code>. Därefter skrivs innehållet i filen <code>Quadratic.mac</code> ut och den nydefinierade funktionen <code>f()</code> beräknas.</p>
 <p><img src="./BatchImage.png" alt="Läsa in en fil med `batch()`" class="inline"/></p>
 <p>Observera: Filen <code>Quadratic.mac</code> har en vanlig <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>-filändelse (<code>.mac</code>), men kan ändå bara användas som avsett i <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>, eftersom <code>wxdraw2d()</code> är ett wxMaxima-tillägg till <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>. <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> på kommandoraden ignorerar det okända kommandot <code>wxdraw2d()</code> och skriver ut det oförändrat som resultat.</p>
 <p>Du kan använda <code>.mac</code>-filer för att skapa ett eget makrobibliotek. De innehåller dock inte tillräckligt med strukturinformation för att kunna läsas tillbaka som en <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>-session.</p>
-<h3><a class="anchor" id="autotoc_md675"></a>
+<h3><a class="anchor" id="autotoc_md726"></a>
 .wxm</h3>
 <p><code>.wxm</code>-filer innehåller arbetsbladet utan <em>Maximas</em> utdata. I Maxima-versioner &gt;5.38 kan de läsas med funktionen <code>load()</code>, precis som .mac-filer. Nästan, åtminstone: frågor som <code>asksign(x)</code> är problematiska eftersom svaret skrivs i <code>.wxm</code>-filen för att kunna föreslås efter inläsning, men <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> kan inte beräkna det. Du kan förhindra att <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> ställer frågor genom att använda <code>assume()</code> för att ange de egenskaper som <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> behöver känna till.</p>
 <p>Med detta textformat är det ibland oundvikligt att arbetsblad som använder nya funktioner inte är bakåtkompatibla med äldre versioner av <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>.</p>
-<h4><a class="anchor" id="autotoc_md678"></a>
+<h4><a class="anchor" id="autotoc_md727"></a>
 Filformatet för wxm-filer</h4>
 <p>Det är en vanlig textfil, som kan öppnas i en textredigerare, där cellinnehållet avgränsas av särskilda Maxima-kommentarer.</p>
 <p>Filen börjar med följande kommentar:</p>
@@ -411,10 +411,10 @@ Filformatet för wxm-filer</h4>
 <div class="fragment"><div class="line">/* [wxMaxima: fold    start ] */</div>
 <div class="line">...</div>
 <div class="line">/* [wxMaxima: fold    end   ] */</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md684"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md728"></a>
 .wxmx</h3>
 <p>Detta XML-baserade filformat sparar hela arbetsbladet, inklusive zoomfaktor och bevakningslista. Det är det rekommenderade filformatet.</p>
-<h4><a class="anchor" id="autotoc_md685"></a>
+<h4><a class="anchor" id="autotoc_md729"></a>
 Filformatet för wxmx-filer</h4>
 <p>En <code>wxmx</code>-fil ser ut att ha ett binärt format, men kan hanteras med verktyg som finns i operativsystemet. Det är en zip-fil som kan packas upp med <code>unzip</code>. Du kan behöva byta namn på filen först så att operativsystemets uppackningsprogram känner igen den. Vi använder inte komprimeringsfunktionen, utan bara möjligheten att samla flera filer i en. Bilderna är redan komprimerade och resten är vanlig text, som oftast tar betydligt mindre plats än stora infogade bilder.</p>
 <p>Filen innehåller följande:</p>
@@ -425,7 +425,7 @@ Filformatet för wxmx-filer</h4>
 <li><code>content.xml</code>: ett XML-dokument som innehåller dokumentets olika celler i XML-format.</li>
 </ul>
 <p>Om något går fel kan du alltså packa upp ett wxMaxima-dokument, vid behov efter att ha bytt filändelse till <code>zip</code>, redigera <code>content.xml</code> med en textredigerare eller ersätta en skadad bild, packa ihop filerna igen och byta filändelsen från <code>zip</code> tillbaka till <code>wxmx</code>. Då får du en ändrad <code>wxmx</code>-fil.</p>
-<h2><a class="anchor" id="autotoc_md691"></a>
+<h2><a class="anchor" id="autotoc_md730"></a>
 Inställningsalternativ</h2>
 <p>För vissa vanliga inställningsvariabler erbjuder <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> två sätt att ändra värden:</p>
 <ul>
@@ -433,10 +433,10 @@ Inställningsalternativ</h2>
 <li>Värdena för de flesta inställningsvariabler kan också ändras enbart för den aktuella sessionen genom att skriva över dem från arbetsbladet, som nedan.</li>
 </ul>
 <p><img src="./wxMaxima_configuration_001.png" alt="Inställningar för wxMaxima 1" class="inline"/></p>
-<h3><a class="anchor" id="autotoc_md692"></a>
+<h3><a class="anchor" id="autotoc_md731"></a>
 Standardbildfrekvens för animeringar</h3>
 <p>Bildfrekvensen för nya animeringar lagras i variabeln <code>wxanimate_framerate</code>. Det ursprungliga värdet på variabeln i ett nytt arbetsblad kan ändras i inställningsdialogrutan.</p>
-<h3><a class="anchor" id="autotoc_md694"></a>
+<h3><a class="anchor" id="autotoc_md732"></a>
 Standardstorlek på diagram i nya &lt;em&gt;Maxima&lt;/em&gt;-sessioner</h3>
 <p>Efter nästa start skapas diagram som bäddas in i arbetsbladet med denna storlek, om inte <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> ändrar värdet på <code>wxplot_size</code>.</p>
 <p>För att ange storleken på bara ett enskilt diagram kan du använda följande notation, som ändrar en variabels värde endast för ett kommando:</p>
@@ -446,7 +446,7 @@ Standardstorlek på diagram i nya &lt;em&gt;Maxima&lt;/em&gt;-sessioner</h3>
 <div class="line">       x,-5,5</div>
 <div class="line">   )</div>
 <div class="line">), wxplot_size=[480,480]$</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md696"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md733"></a>
 Matcha parenteser i textfält</h3>
 <p>Alternativet aktiverar två funktioner:</p>
 <ul>
@@ -454,7 +454,7 @@ Matcha parenteser i textfält</h3>
 <li>I en kodcell avslutas en kommentar som inleds med <code>/*</code> av ett automatiskt infogat <code>*/</code>. Om du skriver <code>*/</code> framför det flyttas markören i stället förbi det.</li>
 <li>Om text är markerad när du trycker på någon av dessa tangenter omsluts den markerade texten av de matchande tecknen.</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md697"></a>
+<h3><a class="anchor" id="autotoc_md734"></a>
 Spara inte arbetsbladet automatiskt</h3>
 <p>Om detta alternativ är valt skrivs arbetsbladets fil över bara på användarens begäran. Vid en krasch, ett strömavbrott eller liknande finns ändå en aktuell säkerhetskopia i den temporära katalogen.</p>
 <p>Om alternativet inte är valt fungerar <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> mer som en modern mobilapp:</p>
@@ -462,18 +462,18 @@ Spara inte arbetsbladet automatiskt</h3>
 <li>Filer sparas automatiskt när programmet avslutas.</li>
 <li>Dessutom sparas filen automatiskt var tredje minut.</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md699"></a>
+<h3><a class="anchor" id="autotoc_md735"></a>
 Ordna verktygsfältet</h3>
 <p>Verktygsfältet består av avsnitt, till exempel knapparna ”Öppna” och ”Spara”, beräkningsknapparna och listrutan för celltyp. Fliken ”Verktygsfält” i inställningsdialogen visar dem i samma ordning som verktygsfältet: dra ett avsnitt till en annan plats eller markera det och tryck på ”Upp” eller ”Ned” för att flytta det. Avmarkera det för att dölja det. Det flexibla mellanrummet skjuter alla efterföljande avsnitt till fönstrets högra kant. ”Standardordning” återställer den ursprungliga ordningen. Avsnitt kan också visas eller döljas genom att högerklicka på verktygsfältet.</p>
-<h3><a class="anchor" id="autotoc_md700"></a>
+<h3><a class="anchor" id="autotoc_md736"></a>
 Var sparas inställningarna?</h3>
 <p>På Unix/Linux sparas inställningarna i filen <code>.<a class="el" href="classwxMaxima.html">wxMaxima</a></code> i hemkatalogen om du använder wxWidgets &lt; 3.1.1, eller i <code>.config/wxMaxima.conf</code> enligt XDG-standarden om wxWidgets &gt;= 3.1.1 används. Du kan se wxWidgets-versionen med kommandot <code>wxbuild_info();</code> eller menyvalet Hjälp-&gt;Om. <a href="https://www.wxwidgets.org/">wxWidgets</a> är det plattformsoberoende bibliotek för grafiska gränssnitt som <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> bygger på, därav <code>wx</code> i namnet. Eftersom namnet börjar med en punkt är <code>.<a class="el" href="classwxMaxima.html">wxMaxima</a></code> respektive <code>.config</code> dolt.</p>
 <p>På Windows sparas inställningarna i registret. Posterna för <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> finns under <code>HKEY_CURRENT_USER\Software\<a class="el" href="classwxMaxima.html">wxMaxima</a></code>.</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md701"></a>
+<h1><a class="anchor" id="autotoc_md737"></a>
 Utökningar av &lt;em&gt;Maxima&lt;/em&gt;</h1>
 <p><em>WxMaxima</em> är i första hand ett grafiskt gränssnitt för <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>. Huvuduppgiften är därför att vidarebefordra kommandon till <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> och visa resultaten. I vissa fall utökar dock <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> funktionaliteten i <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>. Möjligheten att skapa rapporter genom att exportera arbetsbokens innehåll till HTML- och LaTeX-filer har redan nämnts. Detta avsnitt beskriver några sätt som <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> förbättrar stödet för grafik i en session.</p>
-<h2><a class="anchor" id="autotoc_md702"></a>
+<h2><a class="anchor" id="autotoc_md738"></a>
 Variabler med nedsänkta index</h2>
 <div id="wxsubscripts"></div><p><code>wxsubscripts</code> anger om och hur <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> automatiskt ska visa delar av variabelnamn som nedsänkta index:</p>
 <p>Om värdet är <code>false</code> är funktionen avstängd och <a class="el" href="classwxMaxima.html">wxMaxima</a> sänker inte automatiskt ned den del av ett variabelnamn som följer efter ett understreck.</p>
@@ -488,7 +488,7 @@ wxsubscripts" class="inline"/></p>
 <div id="wxdeclare_subscripted"></div><p>En variabel som inte omfattas av reglerna ovan kan ändå anges som ”ska ha nedsänkta tecken” med kommandot <code>wxdeclare_subscripted(variable_name);</code> eller <code>wxdeclare_subscripted([variable_name1,variable_name2,...]);</code> Detta kan återställas med följande kommando: <code>wxdeclare_subscripted(variable_name,false);</code>, som också förhindrar nedsänkning för en variabel som omfattas av reglerna ovan.</p>
 <div id="wxdeclare_subscript"></div><p><code>wxdeclare_subscript(text_snippet);</code> eller <code>wxdeclare_subscript([text_snippet1,text_snippet2,...]);</code> anger i stället ett textfragment: varje variabel vars namn slutar med ett understreck följt av detta fragment visas med nedsänkt text, oavsett hur långa de två delarna är.</p>
 <p>Du kan ange dessa värden via menyn "Visa-&gt;Automatisk nedsänkning".</p>
-<h2><a class="anchor" id="autotoc_md704"></a>
+<h2><a class="anchor" id="autotoc_md739"></a>
 Återkoppling i statusfältet</h2>
 <div id="wxstatusbar"></div><p>Kommandon som tar lång tid kan ge användaren återkoppling i statusfältet. Ny återkoppling ersätter den tidigare, så att fältet kan användas som förloppsindikator. Meddelandet tas bort så snart det aktuella kommandot till <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> är klart. Det är säkert att använda <code>wxstatusbar()</code> även i bibliotek som kan komma att användas i vanligt <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> utan <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>. Om <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> saknas lämnas kommandot <code>wxstatusbar()</code> helt enkelt oberäknat.</p>
 <div class="fragment"><div class="line">for i:1 thru 10 do (</div>
@@ -499,7 +499,7 @@ wxsubscripts" class="inline"/></p>
 <div class="line">    /* program execution (here: for 3 seconds) */</div>
 <div class="line">    ?sleep(3)</div>
 <div class="line">)$</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md705"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md740"></a>
 Exportera arbetsbladet från Maxima</h2>
 <div id="wxworksheettohtml"></div><p>Kommandot <code>wxworksheettohtml()</code> exporterar det aktuella arbetsbladet till en HTML-fil inifrån en pågående <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>-session. Det är praktiskt vid skriptstyrd export eller satsvis export. Liksom <code>wxstatusbar()</code> kan det användas säkert i kod som även kan köras i <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> på konsolen. Om <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> saknas lämnas kommandot helt enkelt oberäknat.</p>
 <div class="fragment"><div class="line">wxworksheettohtml(&quot;report.html&quot;)$</div>
@@ -527,10 +527,10 @@ Exportera arbetsbladet från Maxima</h2>
 <td class="markdownTableBodyNone"><code>documentclassoptions</code>   </td><td class="markdownTableBodyNone">åsidosätter dess alternativ (t.ex. <code>"12pt,a4paper"</code>)   </td></tr>
 </table>
 <p>Stöd för <code>wxworksheettopdf()</code> planeras.</p>
-<h2><a class="anchor" id="autotoc_md707"></a>
+<h2><a class="anchor" id="autotoc_md741"></a>
 Diagramritning</h2>
 <p>Diagramritning är till sin natur grafisk, och därför är det ett område där ett grafiskt användargränssnitt behöver utöka det ursprungliga programmet.</p>
-<h3><a class="anchor" id="autotoc_md708"></a>
+<h3><a class="anchor" id="autotoc_md742"></a>
 Bädda in ett diagram i arbetsbladet</h3>
 <div id="wxplot2d"></div> <div id="wxplot3d"></div> <div id="wximplicit_plot"></div> <div id="wxcontour_plot"></div><p><em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> instruerar normalt det externa programmet <em>Gnuplot</em> att öppna ett separat fönster för varje diagram. Ofta är det mer praktiskt att bädda in diagrammen i arbetsbladet. Därför erbjuder <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> egna diagramfunktioner som bara skiljer sig från motsvarande funktioner i <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> genom namnet: de börjar alla med ”wx”.</p>
 <p>Följande diagramfunktioner har wx-motsvarigheter:</p>
@@ -562,7 +562,7 @@ Bädda in ett diagram i arbetsbladet</h3>
 </table>
 <p>Om en <code>wxm</code>-fil läses av <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> på konsolen ignoreras dessa funktioner och skrivs ut som resultat, precis som andra okända funktioner i <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>.</p>
 <p>Om du får problem med någon av funktionerna bör du kontrollera om problemet också finns i motsvarande Maxima-funktion. Om <code>wxplot2d()</code> ger ett fel kan du till exempel prova samma diagram med Maxima-kommandot <code>plot2d()</code>, som öppnar det i ett separat fönster. Om problemet kvarstår är det troligen ett fel i <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> som bör rapporteras i <a href="https://sourceforge.net/p/maxima/bugs/">Maximas felrapporteringssystem</a>. Det kan också vara ett fel i Gnuplot.</p>
-<h3><a class="anchor" id="autotoc_md714"></a>
+<h3><a class="anchor" id="autotoc_md743"></a>
 Ändra storlek på inbäddade diagram</h3>
 <div id="wxplot_size"></div><p>Som nämnts ovan kan du ändra standardstorleken för diagram i inställningsdialogrutan. Det anger startvärdet för <code>wxplot_size</code>. <em>WxMaximas</em> diagramrutiner använder denna variabel för diagramstorleken i bildpunkter. Du kan när som helst läsa dess värde eller ändra det för kommande diagram:</p>
 <div class="fragment"><div class="line">wxplot_size:[1200,800]$</div>
@@ -595,13 +595,13 @@ Bädda in ett diagram i arbetsbladet</h3>
 <div class="line">        x,0,10</div>
 <div class="line">    )</div>
 <div class="line">),wxplot_size=[1600,300],wxplot_scale=&#39;native$</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md718"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md744"></a>
 Diagram med bättre kvalitet</h3>
 <p><em>Gnuplot</em> verkar sakna ett plattformsoberoende sätt att avgöra om det stöder den högkvalitativa bitmappsutdata som Cairo-biblioteket erbjuder. På system där <em>Gnuplot</em> har byggts med detta bibliotek aktiverar alternativet pngCairo i inställningsmenyn stöd för kantutjämning och ytterligare linjestilar. Alternativet kan åsidosättas med variabeln <code>wxplot_pngcairo</code>. Om <code>wxplot_pngCairo</code> är aktiverat utan stöd i <em>Gnuplot</em> blir resultatet felmeddelanden i stället för grafik.</p>
-<h3><a class="anchor" id="autotoc_md719"></a>
+<h3><a class="anchor" id="autotoc_md745"></a>
 Öppna inbäddade diagram i interaktiva &lt;em&gt;Gnuplot&lt;/em&gt;-fönster</h3>
 <p>Om ett diagram skapats med kommandon av typen <code>wxdraw</code> och det underliggande <em>Gnuplot</em>-projektet inte är för stort kan du via <em>wxMaximas</em> högerklicksmeny öppna diagrammet i ett interaktivt <em>Gnuplot</em>-fönster. Funktionen stöder inte <code>wxplot2d</code> och <code>wxplot3d</code>.</p>
-<h3><a class="anchor" id="autotoc_md720"></a>
+<h3><a class="anchor" id="autotoc_md746"></a>
 Öppna Gnuplots kommandokonsol i &lt;tt&gt;plot&lt;/tt&gt;-fönster</h3>
 <p>På Microsoft Windows finns två Gnuplot-program: <code>gnuplot.exe</code> och <code>wgnuplot.exe</code>. Du kan välja vilket kommando som ska användas i inställningsmenyn. <code>wgnuplot.exe</code> kan öppna ett konsolfönster där du kan ange <em>gnuplot</em>-kommandon, vilket <code>gnuplot.exe</code> inte kan. Tyvärr gör <code>wgnuplot.exe</code> också att <em>Gnuplot</em> kortvarigt tar tangentbordsfokus varje gång ett diagram förbereds.</p>
 <h3><a class="anchor" id="embedding-animations-into-the-spreadsheet"></a>
@@ -686,7 +686,7 @@ Bädda in animeringar i arbetsbladet</h3>
 <div class="line">        x,0,10</div>
 <div class="line">    )</div>
 <div class="line">)$</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md745"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md747"></a>
 Öppna flera diagram i samtidiga fönster</h3>
 <p>Denna funktion kommer från <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> snarare än <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> och kan ibland vara användbar på system som stöder den. Följande exempel kommer från ett inlägg av Mario Rodriguez på <em>Maximas</em> sändlista:</p>
 <div class="fragment"><div class="line">load(draw);</div>
@@ -708,17 +708,17 @@ Bädda in animeringar i arbetsbladet</h3>
 <div class="line">    key=&quot;cos (x)&quot;,grid=[2,2],</div>
 <div class="line">    explicit(cos(x),x,0,2*%pi))</div>
 <div class="line">);</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md747"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md748"></a>
 Sidopanelen "Rita med draw"</h3>
 <p>Sidopanelen "Rita med draw" innehåller en enkel kodgenerator som låter dig skapa scener med en del av flexibiliteten i paketet <em>draw</em>, som följer med <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>.</p>
-<h4><a class="anchor" id="autotoc_md748"></a>
+<h4><a class="anchor" id="autotoc_md749"></a>
 2D</h4>
 <p>Skapar stommen till ett <code>draw()</code>-kommando som ritar en 2D-scen. Scenen måste sedan fyllas med kommandon som skapar innehållet, exempelvis med knapparna under knappen "2D".</p>
 <p>En användbar egenskap hos 2D-knappen är att den kan skapa scenen som en animering där en variabel, normalt <em>t</em>, har olika värde i varje bildruta. Ett rörligt 2D-diagram är ofta lättare att tolka än ett stillastående 3D-diagram med samma data.</p>
-<h4><a class="anchor" id="autotoc_md749"></a>
+<h4><a class="anchor" id="autotoc_md750"></a>
 3D</h4>
 <p>Skapar stommen till ett <code>draw()</code>-kommando som ritar en 3D-scen. Om ingen 2D- eller 3D-scen har skapats skapar övriga knappar en 2D-scen med det kommando som knappen genererar.</p>
-<h4><a class="anchor" id="autotoc_md750"></a>
+<h4><a class="anchor" id="autotoc_md751"></a>
 Uttryck</h4>
 <p>Lägger till ett vanligt diagram för ett uttryck som <code>sin(x)</code>, <code>x*sin(x)</code> eller <code>x^2+2*x-4</code> i det <code>draw()</code>-kommando där markören står. Om det inte finns något draw-kommando skapas en 2D-scen med diagrammet. Varje scen kan innehålla valfritt antal diagram.</p>
 <h4><a class="anchor" id="autotoc_md752"></a>
