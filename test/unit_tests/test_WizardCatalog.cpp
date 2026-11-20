@@ -35,6 +35,7 @@
 #include <catch2/catch.hpp>
 #include <wx/init.h>
 #include <wx/regex.h>
+#include <clocale>
 #include <set>
 
 using wxm::WizardCatalog;
@@ -190,6 +191,12 @@ SCENARIO("The numerical integration wizards use the integral sign given") {
 }
 
 int main(int argc, char *argv[]) {
+  // _() converts its narrow string with the C library's character set, as
+  // wxMaxima does once it has set its locale. In the "C" locale the label
+  // "m×n Matrix A:" would come out empty.
+  for (const char *locale : {"C.UTF-8", "en_US.UTF-8", ".UTF8"})
+    if (setlocale(LC_ALL, locale))
+      break;
   // The event IDs come from wxWindow::NewControlId(), which needs wx.
   wxInitializer initializer;
   return Catch::Session().run(argc, argv);
@@ -260,4 +267,62 @@ SCENARIO("find_root() and the fraction wizard keep their own handler") {
   CHECK(!wxm::FindWizard(EventIDs::menu_solve_num).has_value());
   // "Construct a fraction" names no function a "Help on" button could show.
   CHECK(!wxm::FindWizard(EventIDs::menu_construct_fraction).has_value());
+}
+
+SCENARIO("Removing matrix rows passes the rows to submatrix() first") {
+  const auto rows = wxm::FindWizard(EventIDs::menu_submatrix_rows);
+  const auto columns = wxm::FindWizard(EventIDs::menu_submatrix_columns);
+  REQUIRE(rows.has_value());
+  REQUIRE(columns.has_value());
+  CHECK(rows->rule == wxS("submatrix(#2#,#1#);"));
+  CHECK(columns->rule == wxS("submatrix(#1#,#2#);"));
+}
+
+SCENARIO("The complex LAPACK norms call zlange(), the real ones dlange()") {
+  const auto real = wxm::FindWizard(EventIDs::menu_matrix_dlange_frobenius);
+  const auto complex = wxm::FindWizard(EventIDs::menu_matrix_zlange_frobenius);
+  REQUIRE(real.has_value());
+  REQUIRE(complex.has_value());
+  CHECK(real->rule == wxS("dlange('frobenius,#1#);"));
+  CHECK(complex->rule == wxS("zlange('frobenius,#1#);"));
+  CHECK(real->title == complex->title);
+}
+
+SCENARIO("dgesv() gets both A and b") {
+  const auto spec = wxm::FindWizard(EventIDs::menu_matrix_dgesv);
+  REQUIRE(spec.has_value());
+  CHECK(spec->rule == wxS("dgesv(#1#,#2#);"));
+}
+
+SCENARIO("The classic matrix operations are one-field wizards") {
+  for (const wxWindowID id :
+         {EventIDs::menu_invert_mat, EventIDs::menu_determinant,
+          EventIDs::menu_rank, EventIDs::menu_eigen, EventIDs::menu_eigvect,
+          EventIDs::menu_adjoint_mat, EventIDs::menu_transpose}) {
+    const auto spec = wxm::FindWizard(id);
+    REQUIRE(spec.has_value());
+    INFO("Title: " << spec->title.utf8_string());
+    // The title is the menu label without its mnemonic.
+    CHECK(!spec->title.Contains(wxS("&")));
+    REQUIRE(spec->fields.size() == 1);
+    CHECK(spec->fields[0].takesSelection);
+    CHECK(spec->rule.EndsWith(wxS("(#1#);")));
+  }
+  CHECK(wxm::FindWizard(EventIDs::menu_invert_mat)->rule == wxS("invert(#1#);"));
+}
+
+SCENARIO("map() opens from both the menu and the sidebar") {
+  const auto menu = wxm::FindWizard(EventIDs::menu_map);
+  const auto button = wxm::FindWizard(EventIDs::button_map);
+  REQUIRE(menu.has_value());
+  REQUIRE(button.has_value());
+  CHECK(menu->rule == wxS("map(#1#,#2#);"));
+  CHECK(button->rule == menu->rule);
+}
+
+SCENARIO("The matrix wizards that need a dialog of their own keep their handler") {
+  for (const wxWindowID id :
+         {EventIDs::menu_csv2mat, EventIDs::menu_mat2csv, EventIDs::menu_enter_mat,
+          EventIDs::menu_map_mat, EventIDs::menu_matrix_loadLapack})
+    CHECK(!wxm::FindWizard(id).has_value());
 }

@@ -64,9 +64,39 @@ std::vector<wxString> wxm::WizardHelpKeywords(const wxString &commandRule) {
   if (body.EndsWith(wxS(";")) || body.EndsWith(wxS("$")))
     body.RemoveLast();
 
+  // "*", "^" and "[" are in nearly every formula, so they are offered only
+  // for a command that is nothing but operators, as the matrix wizards'
+  // "#1#*#2#" and "#1#[#2#]" are.
+  const bool onlyOperators = keywords.empty();
+
   for (const auto &op : {wxS("''"), wxS("'"), wxS("!"), wxS("#"), wxS(";"),
-                         wxS("$"), wxS("\\")})
+                         wxS("$"), wxS("\\"), wxS("^^")})
     if (body.Contains(op))
       AddOnce(keywords, op);
+
+  // "." is the matrix product unless it is the decimal point of a number.
+  for (size_t i = 0; i < body.Length(); i++) {
+    if (body[i] != '.')
+      continue;
+    const bool digitBefore = (i > 0) && wxIsdigit(body[i - 1]);
+    const bool digitAfter = (i + 1 < body.Length()) && wxIsdigit(body[i + 1]);
+    if (!digitBefore && !digitAfter) {
+      AddOnce(keywords, wxS("."));
+      break;
+    }
+  }
+
+  if (onlyOperators) {
+    if (body.Contains(wxS("*")))
+      AddOnce(keywords, wxS("*"));
+    // A subscript, as in "#1#[#2#]", the row of a matrix.
+    if (body.Contains(wxS("[")))
+      AddOnce(keywords, wxS("["));
+    // A "^" that is half of a "^^" (the matrix power) doesn't count.
+    wxString withoutMatrixPower = body;
+    withoutMatrixPower.Replace(wxS("^^"), wxS(" "));
+    if (withoutMatrixPower.Contains(wxS("^")))
+      AddOnce(keywords, wxS("^"));
+  }
   return keywords;
 }

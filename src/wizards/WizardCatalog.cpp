@@ -31,9 +31,12 @@
 
 #include "WizardCatalog.h"
 #include "EventIDs.h"
+#include "MatrixWizardRules.h"
+#include <wx/utils.h>
 #include <wx/intl.h>
 #include <algorithm>
 #include <array>
+#include <tuple>
 #include <utility>
 
 std::vector<wxm::WizardSpec> wxm::WizardCatalog(const WizardContext &context) {
@@ -658,6 +661,193 @@ std::vector<wxm::WizardSpec> wxm::WizardCatalog(const WizardContext &context) {
       .rule = wxS("atvalue(#1#,#2#,#3#);"),
       .fields = {SelectionField(_("Function f(x):")),
                  Field(_("Point:"), wxS("x=0")), Field(_("Value:"), wxS("0"))}});
+
+  // ------------------------------------------------------------------ Matrix
+  // Reading and writing CSV files, entering a matrix, matrixmap() and
+  // "Load LAPACK" stay in MaximaCommandMenus::MatrixMenu(): they need
+  // dialogs of their own, or no wizard at all.
+  const auto matrixColon = SelectionField(_("Matrix:"));
+  const auto matrix = SelectionField(_("Matrix"));
+  const auto leftMatrix = SelectionField(_("Left Matrix:"));
+  const auto rightMatrix = Field(_("Right Matrix:"), wxEmptyString);
+  catalog.push_back({.ids = {EventIDs::menu_matrix_row},
+                     .title = _("Extract a matrix row"),
+                     .rule = wxS("row(#1#,#2#);"),
+                     .fields = {matrixColon, Field(_("Row number:"), wxEmptyString)}});
+  catalog.push_back({.ids = {EventIDs::menu_matrix_col},
+                     .title = _("Extract a matrix column"),
+                     .rule = wxS("col(#1#,#2#);"),
+                     .fields = {matrixColon, Field(_("Column number:"), wxEmptyString)}});
+  catalog.push_back({.ids = {EventIDs::menu_matrix_row_list},
+                     .title = _("Extract a matrix row as a list"),
+                     .rule = wxS("#1#[#2#];"),
+                     .fields = {matrixColon, Field(_("Row number:"), wxEmptyString)}});
+  catalog.push_back({.ids = {EventIDs::menu_matrix_col_list},
+                     .title = _("Extract a matrix column as a list"),
+                     .rule = wxS("transpose(#1#)[#2#];"),
+                     .fields = {matrixColon, Field(_("Column number:"), wxEmptyString)}});
+  catalog.push_back({.ids = {EventIDs::menu_submatrix_columns},
+                     .title = _("Remove matrix columns"),
+                     .rule = wxS("submatrix(#1#,#2#);"),
+                     .fields = {matrixColon, Field(_("Column numbers:"), wxEmptyString)}});
+  // submatrix() takes the rows to remove before the matrix.
+  catalog.push_back({.ids = {EventIDs::menu_submatrix_rows},
+                     .title = _("Remove matrix rows"),
+                     .rule = wxS("submatrix(#2#,#1#);"),
+                     .fields = {matrixColon, Field(_("Row numbers:"), wxEmptyString)}});
+  catalog.push_back({.ids = {EventIDs::menu_matrix_multiply},
+                     .title = _("Multiply two matrices"),
+                     .rule = wxS("#1#.#2#;"),
+                     .fields = {leftMatrix, rightMatrix}});
+  // The labels say "Left/Right Matrix" although the right operand is an
+  // exponent; fixing that changes msgids, which is a change of its own.
+  catalog.push_back({.ids = {EventIDs::menu_matrix_exponent},
+                     .title = _("Matrix Exponent"),
+                     .rule = wxS("#1#^^#2#;"),
+                     .fields = {leftMatrix, rightMatrix}});
+  catalog.push_back({
+      .ids = {EventIDs::menu_copymatrix},
+      .title = _("Copy a matrix"),
+      .description = _("In order to save memory the \":\" operator does clone the matrix, "
+                       "not copy it:\n"
+                       "If you change an element of one matrix the same element will change "
+                       "in all of its clones. copymatrix() instead generates a copy of a "
+                       "matrix: "
+                       "A new matrix that, if changed in any way, won't change the "
+                       "original."),
+      .rule = wxS("copymatrix(#1#);"),
+      .fields = {matrixColon}});
+  catalog.push_back({.ids = {EventIDs::menu_matrix_hadamard_product},
+                     .title = _("Hadamard Product"),
+                     .description = _("Element-by-element Product of matrices of the same size "
+                                       "(Hadamard product)"),
+                     .rule = wxS("#1#*#2#;"),
+                     .fields = {leftMatrix, rightMatrix}});
+  catalog.push_back({.ids = {EventIDs::menu_matrix_hadamard_exponent},
+                     .title = _("Hadamard exponent"),
+                     .description = _("Element-by-element exponentiation of two matrices"),
+                     .rule = wxS("#1#^#2#;"),
+                     .fields = {leftMatrix, rightMatrix}});
+
+  // LAPACK. These rules used to end without a terminator, which left the
+  // command waiting in its cell for one to be typed.
+  const wxString eigenvaluesOnly = _("Calculate the eigenvalues of a matrix numerically");
+  const wxString eigenvectors = _("Calculate the eigenvalues and eigenvectors numerically");
+  const std::array<std::tuple<wxWindowID, wxString, wxString>, 4> lapackEigen = {{
+      {EventIDs::menu_matrix_dgeev_eigenvaluesOnly, eigenvaluesOnly,
+       wxS("dgeev(#1#,false,false)[1];")},
+      {EventIDs::menu_matrix_dgeev, eigenvectors, wxS("dgeev(#1#,true,true);")},
+      {EventIDs::menu_matrix_zgeev_eigenvaluesOnly, eigenvaluesOnly,
+       wxS("zgeev(#1#,false,false)[1];")},
+      {EventIDs::menu_matrix_zgeev, eigenvectors, wxS("zgeev(#1#,true,true);")}}};
+  for (const auto &[wizardId, title, rule] : lapackEigen)
+    catalog.push_back({.ids = {wizardId}, .title = title, .rule = rule, .fields = {matrix}});
+  catalog.push_back({.ids = {EventIDs::menu_matrix_dgeqrf},
+                     .title = _("Numerical QR decomposition of a matrix"),
+                     .rule = wxS("dgeqrf(#1#);"),
+                     .fields = {matrix}});
+  // dgesv(A, b) solves A*x=b.
+  catalog.push_back({.ids = {EventIDs::menu_matrix_dgesv},
+                     .title = _("Solve A*x=b numerically"),
+                     .rule = wxS("dgesv(#1#,#2#);"),
+                     .fields = {SelectionField(_("m×n Matrix A:")),
+                                Field(_("n×1 Matrix b:"), wxEmptyString)}});
+  catalog.push_back({.ids = {EventIDs::menu_matrix_dgesvd},
+                     .title = _("Calculate Singular Value Decomposition, left and right "
+                                "singular vectors numerically"),
+                     .rule = wxS("dgesvd(#1#,true,true);"),
+                     .fields = {matrix}});
+  catalog.push_back({.ids = {EventIDs::menu_matrix_dgesvd_valuesOnly},
+                     .title = _("Calculate Singular Value Decomposition of a matrix numerically"),
+                     .rule = wxS("dgesvd(#1#,false,false)[1];"),
+                     .fields = {matrix}});
+  // The norms. The z* routines are the complex-matrix versions of the d* ones.
+  for (const wxString &prefix : {wxString(wxS("d")), wxString(wxS("z"))}) {
+    const bool real = (prefix == wxS("d"));
+    catalog.push_back({.ids = {real ? EventIDs::menu_matrix_dlange_max
+                                    : EventIDs::menu_matrix_zlange_max},
+                       .title = _("Find the maximum absolute value of a matrix entry"),
+                       .rule = prefix + wxS("lange('max,#1#);"),
+                       .fields = {matrix}});
+    catalog.push_back({.ids = {real ? EventIDs::menu_matrix_dlange_one
+                                    : EventIDs::menu_matrix_zlange_one},
+                       .title = _("Find the maximum sum of the absolute values of a matrix column"),
+                       .rule = prefix + wxS("lange('one_norm,#1#);"),
+                       .fields = {matrix}});
+    catalog.push_back({.ids = {real ? EventIDs::menu_matrix_dlange_inf
+                                    : EventIDs::menu_matrix_zlange_inf},
+                       .title = _("Find the maximum sum of the absolute values of a matrix row"),
+                       .rule = prefix + wxS("lange('inf_norm,#1#);"),
+                       .fields = {matrix}});
+    catalog.push_back({.ids = {real ? EventIDs::menu_matrix_dlange_frobenius
+                                    : EventIDs::menu_matrix_zlange_frobenius},
+                       .title = _("Calculate the root of the sum of squares of matrix entries"),
+                       .rule = prefix + wxS("lange('frobenius,#1#);"),
+                       .fields = {matrix}});
+  }
+
+  // The classic matrix operations used to send their command at once, with
+  // the selection or % as the matrix (GH #647). The titles are the menu
+  // labels, which already are translated.
+  const std::array<std::tuple<wxWindowID, wxString, wxString>, 7> classic = {{
+      {EventIDs::menu_invert_mat, _("&Invert Matrix"), wxS("invert")},
+      {EventIDs::menu_determinant, _("&Determinant"), wxS("determinant")},
+      {EventIDs::menu_rank, _("Rank"), wxS("rank")},
+      {EventIDs::menu_eigen, _("Eigen&values"), wxS("eigenvalues")},
+      {EventIDs::menu_eigvect, _("Eige&nvectors"), wxS("eigenvectors")},
+      {EventIDs::menu_adjoint_mat, _("Ad&joint Matrix"), wxS("adjoint")},
+      {EventIDs::menu_transpose, _("&Transpose Matrix"), wxS("transpose")}}};
+  for (const auto &[wizardId, title, function] : classic)
+    catalog.push_back(
+        {.ids = {wizardId},
+         .title = wxStripMenuCodes(title),
+         .rule = MatrixFunctionRule(function),
+         .fields = {SelectionField(_("Matrix"),
+                                   _("The matrix, or the name of a variable holding one"))}});
+
+  catalog.push_back({.ids = {EventIDs::menu_cpoly},
+                     .title = _("Characteristic polynom"),
+                     .rule = wxS("expand(charpoly(#1#,#2#));"),
+                     .fields = {matrix, Field(_("Variable"), wxEmptyString)}});
+  // genmatrix(array, rowMax, colMax, rowMin, colMin): the bottom/top fields
+  // are the row range, the right/left fields the column range.
+  catalog.push_back({
+      .ids = {EventIDs::menu_genmatrix},
+      .title = _("Extract matrix from 2D array"),
+      .description = _("Extracts a rectangle from a 2D array and converts it to a matrix"),
+      .rule = wxS("genmatrix(#1#,#3#,#2#,#5#,#4#);"),
+      .fields = {SelectionField(_("Array")), Field(_("Right end"), wxS("10")),
+                 Field(_("Bottom end"), wxS("10")), Field(_("Left end"), wxS("0")),
+                 Field(_("Top end"), wxS("0"))}});
+  catalog.push_back({
+      .ids = {EventIDs::menu_gen_mat_lambda},
+      .title = _("Generate matrix from a rule"),
+      .description = _("Generates a matrix and fills each element with the "
+                       "result of the expression \"Rule\"."),
+      .rule = GenMatrixFromExpressionRule(),
+      .fields = {SelectionField(_("Rule")),
+                 Field(_("Row variable"), wxS("i"), _("Counts the rows, from 1")),
+                 Field(_("Column variable"), wxS("j"), _("Counts the columns, from 1")),
+                 Field(_("Rows"), wxS("6")), Field(_("Columns"), wxS("5"))}});
+  // The map() wizards' fields have never started with the selection.
+  catalog.push_back({
+      .ids = {EventIDs::button_map, EventIDs::menu_map},
+      .title = _("Map"),
+      .description = _("Runs each element of an object (list, matrix, equation,...) "
+                       "through a function individually"),
+      .rule = wxS("map(#1#,#2#);"),
+      .fields = {Field(_("function"), wxS("sin")),
+                 Field(_("Object composed of elements"), wxS("expr"))}});
+  catalog.push_back({
+      .ids = {EventIDs::menu_map_lambda},
+      .title = _("Map an expression"),
+      .description = _("Runs each element of an object (list, matrix, equation,...) "
+                       "through an expression individually"),
+      .rule = wxS("map(lambda([#2#],#1#),#3#);"),
+      .fields = {Field(_("Expression"), wxS("sin(i)")),
+                 Field(_("Loop variable"), wxS("i"),
+                       _("The name of the variable that shall contain the current element")),
+                 Field(_("Object composed of elements"), wxS("expr"))}});
 
   return catalog;
 }
