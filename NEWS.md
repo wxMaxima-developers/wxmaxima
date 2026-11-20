@@ -4,6 +4,11 @@
   or `zh_CN`) runs wxMaxima in another UI language for one session
   without changing the configured one, for checking a translation or making
   screenshots for a translated manual.
+- Calculus → Change Variable → "Dito, and evaluate the result..." did
+  nothing: the menu entry was never connected to its wizard. The Calculus
+  menu's standard wizards are now described in one table
+  (`src/wizards/WizardCatalog.cpp`) and connected from there, which a test
+  checks entry by entry.
 - wxMaxima no longer stops at start-up with a "Translations: no standard
   wxWidgets catalogs were found" dialog when the UI language's wxWidgets
   translation isn't installed. The message goes to the log window instead.

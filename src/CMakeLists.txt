@@ -71,6 +71,7 @@ set(WIZARD_SOURCE_FILES
     SubstituteWiz.cpp
     SumWiz.cpp
     SystemWiz.cpp
+    WizardCatalog.cpp
     WizardHelp.cpp
     WizardHelpKeywords.cpp
 )

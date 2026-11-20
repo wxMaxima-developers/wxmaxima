@@ -1,0 +1,153 @@
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+//
+//  Copyright (C) 2026 Gunter Königsmann <wxMaxima@physikbuch.de>
+//
+//  This program is free software; you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation; either version 2 of the License, or
+//  (at your option) any later version.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//
+//
+//  You should have received a copy of the GNU General Public License
+//  along with this program; if not, write to the Free Software
+//  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+//
+//  SPDX-License-Identifier: GPL-2.0+
+
+/*! \file
+  Checks every entry of the catalog of standard wizards.
+
+  A wizard's rule refers to its fields by number (#1#, #2#, ...), so a field
+  added or dropped without updating the rule silently leaves a "#3#" in the
+  command, or a field the command ignores. Nothing else notices: the wizard
+  opens and looks fine. No GUI and no Maxima needed.
+*/
+
+#define CATCH_CONFIG_RUNNER
+#include "EventIDs.cpp"
+#include "wizards/WizardCatalog.cpp"
+#include "wizards/WizardHelpKeywords.cpp"
+#include <catch2/catch.hpp>
+#include <wx/init.h>
+#include <wx/regex.h>
+#include <set>
+
+using wxm::WizardCatalog;
+using wxm::WizardContext;
+using wxm::WizardSpec;
+
+namespace {
+//! The numbers n of all #n# placeholders in \p rule
+std::set<long> Placeholders(const wxString &rule) {
+  std::set<long> numbers;
+  wxRegEx placeholder(wxS("#([0-9]+)#"));
+  wxString rest = rule;
+  while (placeholder.Matches(rest)) {
+    long n = 0;
+    placeholder.GetMatch(rest, 1).ToLong(&n);
+    numbers.insert(n);
+    size_t start = 0, len = 0;
+    placeholder.GetMatch(&start, &len, 0);
+    rest = rest.Mid(start + len);
+  }
+  return numbers;
+}
+}
+
+SCENARIO("Every wizard's rule uses exactly the fields it has") {
+  for (const WizardSpec &spec : WizardCatalog()) {
+    INFO("Wizard: " << spec.title.utf8_string() << ", rule: "
+         << spec.rule.utf8_string());
+    // GenWizPanel has 10 fields.
+    REQUIRE(!spec.fields.empty());
+    REQUIRE(spec.fields.size() <= 10);
+    std::set<long> expected;
+    for (long n = 1; n <= static_cast<long>(spec.fields.size()); n++)
+      expected.insert(n);
+    CHECK(Placeholders(spec.rule) == expected);
+  }
+}
+
+SCENARIO("Every wizard can be found, and opens with a usable command") {
+  for (const WizardSpec &spec : WizardCatalog()) {
+    INFO("Wizard: " << spec.title.utf8_string());
+    CHECK(!spec.title.IsEmpty());
+    CHECK(!spec.ids.empty());
+    // A command that doesn't end in a terminator would sit in the input
+    // waiting for one.
+    CHECK((spec.rule.EndsWith(wxS(";")) || spec.rule.EndsWith(wxS("$"))));
+    // The "Help on" buttons come from the rule: each wizard gets at least one.
+    CHECK(!wxm::WizardHelpKeywords(spec.rule).empty());
+    for (const auto &field : spec.fields)
+      CHECK(!field.label.IsEmpty());
+    for (const wxWindowID id : spec.ids) {
+      const auto found = wxm::FindWizard(id);
+      REQUIRE(found.has_value());
+      CHECK(found->rule == spec.rule);
+    }
+  }
+}
+
+SCENARIO("No menu entry opens two different wizards") {
+  std::set<wxWindowID> seen;
+  for (const WizardSpec &spec : WizardCatalog())
+    for (const wxWindowID id : spec.ids) {
+      INFO("Wizard: " << spec.title.utf8_string());
+      CHECK(seen.insert(id).second);
+    }
+}
+
+SCENARIO("IDs that have no standard wizard find none") {
+  CHECK(!wxm::FindWizard(EventIDs::menu_integrate).has_value());
+  CHECK(!wxm::FindWizard(wxID_ANY).has_value());
+}
+
+SCENARIO("A field that takes the selection starts with it") {
+  const auto diff = wxm::FindWizard(EventIDs::menu_diff);
+  REQUIRE(diff.has_value());
+  const auto fields = wxm::FieldsWithSelection(*diff, wxS("sin(x)^2"));
+  REQUIRE(fields.size() == 3);
+  CHECK(fields[0].defaultValue == wxS("sin(x)^2"));
+  // The others keep their own defaults.
+  CHECK(fields[1].defaultValue == wxS("x"));
+  CHECK(fields[2].defaultValue == wxS("1"));
+}
+
+SCENARIO("The sidebar button and the menu entry open the same wizard") {
+  const auto menu = wxm::FindWizard(EventIDs::menu_diff);
+  const auto button = wxm::FindWizard(EventIDs::button_diff);
+  REQUIRE(menu.has_value());
+  REQUIRE(button.has_value());
+  CHECK(menu->rule == button->rule);
+}
+
+SCENARIO("\"Dito, and evaluate the result\" has a wizard") {
+  // This menu entry was never bound to a handler and did nothing.
+  const auto spec = wxm::FindWizard(EventIDs::menu_change_var_evaluate);
+  REQUIRE(spec.has_value());
+  CHECK(spec->rule.EndsWith(wxS(",nouns;")));
+}
+
+SCENARIO("The Fourier wizard loads its package only once") {
+  WizardContext notLoaded;
+  notLoaded.fourierLoaded = false;
+  WizardContext loaded;
+  loaded.fourierLoaded = true;
+  const auto first = wxm::FindWizard(EventIDs::menu_fourier, notLoaded);
+  const auto later = wxm::FindWizard(EventIDs::menu_fourier, loaded);
+  REQUIRE(first.has_value());
+  REQUIRE(later.has_value());
+  CHECK(first->rule.StartsWith(wxS("load(\"fourie\")$")));
+  CHECK(later->rule == wxS("fourier(#1#,#2#,#3#);"));
+}
+
+int main(int argc, char *argv[]) {
+  // The event IDs come from wxWindow::NewControlId(), which needs wx.
+  wxInitializer initializer;
+  return Catch::Session().run(argc, argv);
+}
