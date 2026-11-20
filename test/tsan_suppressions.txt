@@ -24,6 +24,15 @@ race:g_malloc
 # WebKit's own worker threads (the help browser).
 race:libwebkit2gtk-4.1.so.0
 race:libjavascriptcoregtk-4.1.so.0
+# WebKit starts its own short-lived threads (one is called
+# "ResolveDirectories") that run a GMainContext and hand it back to the main
+# thread, which then frees the context's buffers and closes its wakeup
+# eventfd. Neither stack has a WebKit frame -- only the creating thread's
+# does, which race: doesn't look at -- so match the two GLib functions
+# instead (seen in test_HelpBrowserContent on 2026-11-20, roughly one run
+# in several).
+race:g_realloc
+race:g_main_context_unref
 # GDK locks a GRecMutex through GLib and unlocks it itself; TSan reports that
 # as unlocking a mutex the thread doesn't hold.
 mutex:libgdk-3.so.0

@@ -4,6 +4,11 @@
   or `zh_CN`) runs wxMaxima in another UI language for one session
   without changing the configured one, for checking a translation or making
   screenshots for a translated manual.
+- Simplify menu: the substitution, expandwrt(), mainvar, tellrat() and
+  similar wizards now start with the selected expression instead of `%`,
+  and the "Substitute only in parts" wizard shows its "expression to
+  substitute in" hint on the expression field rather than on "New value".
+  The Simplify menu's wizards moved into the wizard table.
 - Numerical → Integrate numerically: the "Cauchy principal value" wizard
   passed c, a and b to `quad_qawc()` in the wrong places, and the
   `quad_qawo()` wizard for cos() had no field for the upper limit, which left

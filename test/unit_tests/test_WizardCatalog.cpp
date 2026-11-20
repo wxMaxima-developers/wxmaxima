@@ -194,3 +194,36 @@ int main(int argc, char *argv[]) {
   wxInitializer initializer;
   return Catch::Session().run(argc, argv);
 }
+
+SCENARIO("The substitution wizards wrap their equations in a list") {
+  // Without the brackets, several comma-separated equations are read as
+  // the (new,old,expr) form of these commands.
+  for (const wxWindowID id :
+         {EventIDs::menu_subst, EventIDs::menu_ratsubst, EventIDs::menu_psubst,
+          EventIDs::menu_fullratsubst, EventIDs::menu_at}) {
+    const auto spec = wxm::FindWizard(id);
+    REQUIRE(spec.has_value());
+    INFO("Rule: " << spec->rule.utf8_string());
+    CHECK(spec->rule.Contains(wxS("[#2#]")));
+    REQUIRE(spec->fields.size() == 2);
+    CHECK(spec->fields[0].takesSelection);
+  }
+}
+
+SCENARIO("The radcan button and menu entry open the same wizard") {
+  const auto menu = wxm::FindWizard(EventIDs::menu_radsimp);
+  const auto button = wxm::FindWizard(EventIDs::button_radcan);
+  REQUIRE(menu.has_value());
+  REQUIRE(button.has_value());
+  CHECK(menu->rule == wxS("radcan(#1#);"));
+  CHECK(button->rule == menu->rule);
+}
+
+SCENARIO("substinpart()'s tooltip describes the expression field") {
+  const auto spec = wxm::FindWizard(EventIDs::menu_substinpart);
+  REQUIRE(spec.has_value());
+  REQUIRE(spec->fields.size() == 3);
+  CHECK(spec->fields[0].takesSelection);
+  CHECK(spec->fields[0].tooltip == _("The expression to substitute in"));
+  CHECK(spec->fields[1].tooltip.IsEmpty());
+}
