@@ -73,6 +73,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><ul>
+<li>Numerical → Integrate numerically: the "Cauchy principal value" wizard passed c, a and b to <code>quad_qawc()</code> in the wrong places, and the <code>quad_qawo()</code> wizard for cos() had no field for the upper limit, which left a <code>#10#</code> in the command. The integrand field of these wizards now starts with the selected expression, like the other wizards, instead of <code>%</code>. The Numerical menu's wizards moved into the wizard table.</li>
 <li>Calculus → Change Variable → "Dito, and evaluate the result..." did nothing: the menu entry was never connected to its wizard. The Calculus menu's standard wizards are now described in one table (<code><a class="el" href="WizardCatalog_8cpp.html" title="The standard wizards of wxMaxima&#39;s menus: see WizardCatalog.h.">src/wizards/WizardCatalog.cpp</a></code>) and connected from there, which a test checks entry by entry.</li>
 <li><a class="el" href="classwxMaxima.html">wxMaxima</a> no longer stops at start-up with a "Translations: no standard
   wxWidgets catalogs were found" dialog when the UI language's wxWidgets translation isn't installed. The message goes to the log window instead.</li>

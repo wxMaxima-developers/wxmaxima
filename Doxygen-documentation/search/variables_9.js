@@ -5,5 +5,6 @@ var searchData=
   ['ieee_2',['ieee',['../classmux__using__with.html#a44d1d60c58066d98a072e90b31c9d908',1,'mux_using_with']]],
   ['indent_5fchar_3',['indent_char',['../classdetail_1_1serializer.html#acf6f783e3299d8b18ce4b5d9746f39f6',1,'detail::serializer']]],
   ['indent_5fstring_4',['indent_string',['../classdetail_1_1serializer.html#a7f6f1d36859514ab42984deb28d2521e',1,'detail::serializer']]],
-  ['ishelp_5',['isHelp',['../structwxm_1_1cmdline_1_1Option.html#abd5370f798f6b5e4f58baa29bf080f40',1,'wxm::cmdline::Option']]]
+  ['integralsign_5',['integralSign',['../structwxm_1_1WizardContext.html#acb93bb70d35ee4868aafb5b91771e7a8',1,'wxm::WizardContext']]],
+  ['ishelp_6',['isHelp',['../structwxm_1_1cmdline_1_1Option.html#abd5370f798f6b5e4f58baa29bf080f40',1,'wxm::cmdline::Option']]]
 ];
