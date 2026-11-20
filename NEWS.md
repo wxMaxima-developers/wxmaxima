@@ -1,5 +1,8 @@
 # Current development version
 
+- Equations menu: its standard wizards (solve, to_poly_solve, the root
+  finders, ODE solving, initial and boundary conditions, rk(), eliminate,
+  desolve, atvalue) moved into the wizard table.
 - Simplify menu: the substitution, expandwrt(), mainvar, tellrat() and
   similar wizards now start with the selected expression instead of `%`,
   and the "Substitute only in parts" wizard shows its "expression to

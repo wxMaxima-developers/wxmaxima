@@ -517,8 +517,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_animation_save);
   Bind(wxEVT_MENU, &MaximaCommandMenus::FileMenu, &m_menuCommands, EventIDs::popid_animation_start);
   Bind(wxEVT_BUTTON, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::button_integrate);
-  Bind(wxEVT_BUTTON, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::button_solve);
-  Bind(wxEVT_BUTTON, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::button_solve_ode);
   Bind(wxEVT_BUTTON, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::button_sum);
   Bind(wxEVT_BUTTON, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::button_expand);
   Bind(wxEVT_BUTTON, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::button_factor);
@@ -648,28 +646,16 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &MaximaCommandMenus::NumericalMenu, &m_menuCommands, EventIDs::menu_engineeringFormat);
 
   Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_talg);
-  Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_allroots);
-  Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_bfallroots);
-  Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_realroots);
-  Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_solve);
-  Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_solve_to_poly);
   Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_solve_num);
-  Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_solve_ode);
   Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_map_mat);
   Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_enter_mat);
   Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_cpoly);
   Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_genmatrix);
   Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_solve_lin);
   Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_solve_algsys);
-  Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_eliminate);
   Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_clear_var);
   Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_kill);
   Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_clear_fun);
-  Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_ivp_1);
-  Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_ivp_2);
-  Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_bvp);
-  Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_bvp);
-  Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_rk);
   Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_fun_def);
   Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_gensym);
   // Every menu entry and sidebar button that opens a standard wizard: one
@@ -694,8 +680,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &MaximaCommandMenus::HelpMenu, &m_menuCommands, EventIDs::menu_maxima_help_in_console);
   Bind(wxEVT_MENU, &MaximaCommandMenus::HelpMenu, &m_menuCommands, EventIDs::menu_show_tip);
   Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_trigrat);
-  Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_solve_de);
-  Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_atvalue);
   Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_lhs);
   Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_rhs);
   Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_construct_fraction);
@@ -1117,7 +1101,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &MaximaCommandMenus::PropertiesMenu, &m_menuCommands, EventIDs::popid_property_even);
   Bind(wxEVT_MENU, &MaximaCommandMenus::PropertiesMenu, &m_menuCommands, EventIDs::popid_property_odd);
   Bind(wxEVT_MENU, &MaximaCommandMenus::PropertiesMenu, &m_menuCommands, EventIDs::popid_property_evenfun);
-  Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::popid_property_atvalue);
   Bind(wxEVT_MENU, &MaximaCommandMenus::PropertiesMenu, &m_menuCommands, EventIDs::popid_property_oddfun);
   Bind(wxEVT_MENU, &MaximaCommandMenus::PropertiesMenu, &m_menuCommands, EventIDs::popid_property_increasing);
   Bind(wxEVT_MENU, &MaximaCommandMenus::PropertiesMenu, &m_menuCommands, EventIDs::popid_property_decreasing);

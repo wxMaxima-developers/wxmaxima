@@ -492,6 +492,173 @@ std::vector<wxm::WizardSpec> wxm::WizardCatalog(const WizardContext &context) {
       .rule = wxS("modulus : #1#$"),
       .fields = {Field(wxS("Modulus"), wxS("%"))}});
 
+  // --------------------------------------------------------------- Equations
+  // find_root() stays in MaximaCommandMenus::EquationsMenu(): it rewrites a
+  // selection starting with "%" to ''(%), which a field can't express. So
+  // does "Construct a fraction": its command names no function, so there is
+  // nothing for a "Help on" button, and it has no terminator.
+  const WizardField polynomial = SelectionField(_("Polynomial:"));
+  catalog.push_back({
+      .ids = {EventIDs::menu_allroots},
+      .title = _("Solve polynomials numerically"),
+      .description =
+        _("Tries to find all solutions of a polynomial numerically.\n"
+          "Might be able to detect solutions in non-polynomials, as well, if "
+          "the expression is approximated by an polynomial, beforehand:\n\n"
+          "    allroots(ratdisrep(taylor(expression,0,30)));"),
+      .rule = wxS("allroots(#1#);"),
+      .fields = {polynomial}});
+  catalog.push_back({
+      .ids = {EventIDs::menu_bfallroots},
+      .title = _("Solve polynomials numerically (bfloats)"),
+      .description =
+        _("Tries to find all solutions of a polynomial numerically using "
+          "bfloats.\n"
+          "Might be able to detect solutions in non-polynomials, as well, if "
+          "the expression is approximated by an polynomial, beforehand:\n\n"
+          "    bfallroots(ratdisrep(taylor(expression,0,30)));"),
+      .rule = wxS("bfallroots(#1#);"),
+      .fields = {polynomial}});
+  catalog.push_back({
+      .ids = {EventIDs::menu_realroots},
+      .title = _("Solve polynomials numerically (real roots)"),
+      .description =
+        // xgettext:no-c-format
+        _("Tries to find exact fractions that match the numerical solutions of "
+          "a polynomial.\n"
+          "Is not able to deal with solutions with a imaginary part. "
+          "Numerical constants like %pi% need to be eliminated using float() "
+          "or similar\n"
+          "Might be able to detect solutions in non-polynomials, as well, if "
+          "the expression is approximated by an polynomial, beforehand:\n\n"
+          "    realroots(ratdisrep(taylor(expression,0,30)));\n\n"
+          "See also guess_exact_value()"),
+      .rule = wxS("realroots(#1#,#2#);"),
+      .fields = {polynomial, Field(_("precision:"), wxS("1e-12"))}});
+
+  const WizardField equations =
+    SelectionField(_("Equation(s)"), _("Comma-separated equations"));
+  const WizardField solveVariables =
+    Field(_("Variable(s)"), wxS("x"), _("Comma-separated variables"));
+  catalog.push_back({
+      .ids = {EventIDs::menu_solve, EventIDs::button_solve},
+      .title = _("Solve equation(s)"),
+      .description =
+        _("solve() will solve a list of equations only if for n "
+          "independent equations there are n variables to solve to.\n"
+          "If only one result variable is of interest the other result "
+          "variables solve needs to do its work can be used to tell "
+          "solve() which variables to eliminate in the solution "
+          "for the interesting variable."),
+      .rule = wxS("solve([#1#],[#2#]);"),
+      .fields = {equations, solveVariables}});
+  catalog.push_back({
+      .ids = {EventIDs::menu_solve_to_poly},
+      .title = _("Solve equations to polynom"),
+      .description =
+        _(wxS("The function to_poly_solve tries to solve the equations "
+              "e for the variables l. The equation(s) e can either be a "
+              "single expression or a set or list of expressions; "
+              "similarly, l can either be a single symbol or a list of "
+              "set of symbols. When a member of e isn’t explicitly an "
+              "equation, for example x^2 -1, the solver assumes that the "
+              "expression vanishes.")),
+      .rule = wxS("to_poly_solve([#1#],[#2#]);"),
+      .fields = {equations, solveVariables}});
+
+  catalog.push_back({
+      .ids = {EventIDs::menu_solve_ode, EventIDs::button_solve_ode},
+      .title = _("Solve ODE"),
+      .description = _("solves an equation of the form\n    'diff(y,t) = -y;"),
+      .descriptionTooltip =
+        _("The solution of an ODE describes the general shape of the "
+          "resulting curve. The actual height of that curve is defined "
+          "by the initial condition or boundary values, later on."),
+      .rule = wxS("ode2(#1#,#2#,#3#);"),
+      .fields = {SelectionField(_("Equation:")), Field(_("y:"), wxS("y")),
+                 Field(_("t:"), wxS("t"))}});
+  const wxString initialConditionDescription =
+    _("The solution of an ODE tells the shape, but not the height "
+      "of the solution.\n"
+      "If the ODE\'s state is known at a point this "
+      "function fills in the correct values for the constants");
+  const WizardField odeSolution = SelectionField(_("Solution of the ODE:"));
+  catalog.push_back({
+      .ids = {EventIDs::menu_ivp_1},
+      .title = _("Initial Condition"),
+      .description = initialConditionDescription,
+      .rule = wxS("ic1(#1#,#2#,#3#);"),
+      .fields = {odeSolution,
+                 Field(_("Point the value is known at:"), wxS("t=0")),
+                 Field(_("Value at that point:"), wxS("y=1"))}});
+  catalog.push_back({
+      .ids = {EventIDs::menu_ivp_2},
+      .title = _("Initial Condition"),
+      .description = initialConditionDescription,
+      .rule = wxS("ic2(#1#,#2#,#3#,#4#);"),
+      .fields = {odeSolution,
+                 Field(_("Point the value is known at:"), wxS("t=0")),
+                 Field(_("Value y at that point:"), wxS("y=1")),
+                 Field(_("Derivate of y at that point:"),
+                       wxS("\'diff(y,t)=-1"))}});
+  catalog.push_back({
+      .ids = {EventIDs::menu_bvp},
+      .title = _("Boundary value problem"),
+      .description =
+        _("The solution of an ODE tells the shape, but not the height "
+          "of the solution.\n"
+          "If the ODE\'s result is known at two points this "
+          "function fills in the correct values for the  constants"),
+      .rule = wxS("bc2(#1#,#2#,#3#,#4#,#5#);"),
+      .fields = {odeSolution,
+                 Field(_("Point #1 with known value:"), wxS("t=0")),
+                 Field(_("Value y at that point:"), wxS("y=0")),
+                 Field(_("Point #2 with known value:"), wxS("t=1")),
+                 Field(_("Value y at that point:"), wxS("y=1"))}});
+  catalog.push_back({
+      .ids = {EventIDs::menu_rk},
+      .title = _("Numerical solution for 1st degree ODE"),
+      .description =
+        _("Tries to find a numerical solution for a 1st order ODE (or in other "
+          "words: a equation of the format depends(x,t);diff(x,t)=(something "
+          "containing x and t)"),
+      .rule = wxS("rk(#1#,#2#,#3#,[#4#,#5#,#6#,#7#]);"),
+      .fields = {
+        SelectionField(_("diff(x,t)="),
+                       _("Accepts one expression or a list in the format "
+                         "[ode1,ode2,...]")),
+        Field(_("Name of x:"), wxS("x"),
+              _("Accepts one variable or a list in the format "
+                "[var1,var2,...]")),
+        Field(_("Initial x:"), wxS("1"),
+              _("Accepts one variable or a list in the format [1,4,...]")),
+        Field(_("Name of t:"), wxS("t")), Field(_("Start of t:"), wxS("0")),
+        Field(_("End of t:"), wxS("10")), Field(_("Step width:"), wxS(".1"))}});
+
+  catalog.push_back({
+      .ids = {EventIDs::menu_eliminate},
+      .title = _("Eliminate a variable"),
+      .rule = wxS("eliminate([#1#],[#2#]);"),
+      .fields = {SelectionField(_("Equation(s):")),
+                 Field(_("Variable(s):"), wxEmptyString)}});
+  catalog.push_back({
+      .ids = {EventIDs::menu_solve_de},
+      .title = _("Solve differential equations using laplace()"),
+      .description = _("The solution variable needs to be in the form\n"
+                       "   U(t)=1/2*U(t)+3*diff(U(t),t)\n"
+                       "for this to work; Initial conditions can be specified using "
+                       "atvalue()."),
+      .rule = wxS("desolve([#1#],[#2#]);"),
+      .fields = {SelectionField(_("Equation(s):")),
+                 Field(_("Variable(s):"), wxEmptyString)}});
+  catalog.push_back({
+      .ids = {EventIDs::menu_atvalue, EventIDs::popid_property_atvalue},
+      .title = _("Make a function value at a specific point known"),
+      .description = _("Tells maxima for an f(x), that f(x=t)=a"),
+      .rule = wxS("atvalue(#1#,#2#,#3#);"),
+      .fields = {SelectionField(_("Function f(x):")),
+                 Field(_("Point:"), wxS("x=0")), Field(_("Value:"), wxS("0"))}});
+
   return catalog;
 }
 
