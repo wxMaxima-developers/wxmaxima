@@ -849,6 +849,177 @@ std::vector<wxm::WizardSpec> wxm::WizardCatalog(const WizardContext &context) {
                        _("The name of the variable that shall contain the current element")),
                  Field(_("Object composed of elements"), wxS("expr"))}});
 
+  // -------------------------------------------------------------------- List
+  // Reading and writing CSV files, sorting and the "storage for the values
+  // of variables" wizard stay in MaximaCommandMenus::ListMenu(): they need
+  // dialogs of their own.
+  const auto listColon = SelectionField(_("List:"));
+  catalog.push_back({.ids = {EventIDs::menu_list_create_from_args},
+                     .title = _("Extract function arguments"),
+                     .rule = wxS("args(#1#)$"),
+                     .fields = {SelectionField(_("The function call whose arguments to extract"))}});
+  // apply('matrix, list-of-rows) builds a matrix from a nested list.
+  catalog.push_back({.ids = {EventIDs::menu_list_list2matrix},
+                     .title = _("Nested list to matrix"),
+                     .rule = wxS("apply('matrix, #1#);"),
+                     .fields = {listColon}});
+  // args(matrix) returns the matrix rows as a nested list.
+  catalog.push_back({.ids = {EventIDs::menu_list_matrix2list},
+                     .title = _("Matrix to nested list"),
+                     .rule = wxS("args(#1#);"),
+                     .fields = {SelectionField(_("Matrix:"))}});
+  // This rule used to end without a terminator.
+  catalog.push_back({.ids = {EventIDs::menu_list_create_from_elements},
+                     .title = _("Create list from comma-separated elements"),
+                     .rule = wxS("[#1#];"),
+                     .fields = {SelectionField(_("Comma-separated elements"))}});
+  catalog.push_back({
+      .ids = {EventIDs::menu_list_create_from_rule},
+      .title = _("Create a list from a rule"),
+      .rule = wxS("makelist(#1#,#2#,#3#,#4#,#5#);"),
+      .fields = {SelectionField(
+                     _("Rule:"),
+                     _("The rule that explains how to generate the value of a list item.\n"
+                       "Might be something like \"i\", \"i^2\" or \"sin(i)\"")),
+                 Field(_("Index variable:"), wxS("i"),
+                       _("The number of the item which is stepped from \"Index Start\" to "
+                         "\"Index End\".")),
+                 Field(_("Index Start:"), wxS("1")), Field(_("Index End:"), wxS("100")),
+                 Field(_("Index Step:"), wxS("1"))}});
+  catalog.push_back({
+      .ids = {EventIDs::menu_list_create_from_list},
+      .title = _("Create a list from a list"),
+      .rule = wxS("makelist(#1#,#2#,#3#);"),
+      .fields = {SelectionField(
+                     _("Expr:"),
+                     _("The ‘j’th element is equal to ‘ev (<expr>, <x>=<list>[j])’ \n"
+                       "j are the elements of the source list.\n"
+                       "Might be something like \"x=i\"")),
+                 Field(_("Index variable:"), wxS("i"),
+                       _("The variable the value of the current source item is stored in.")),
+                 Field(_("Source list:"), wxS("[1,8,32]"))}});
+  catalog.push_back({.ids = {EventIDs::menu_list_length},
+                     .title = _("Returns the number of elements of a list"),
+                     .rule = wxS("length(#1#);"),
+                     .fields = {listColon}});
+  catalog.push_back({.ids = {EventIDs::menu_list_push},
+                     .title = _("Push an element to a list"),
+                     .rule = wxS("push(#2#,#1#);"),
+                     .fields = {listColon, Field(_("Element:"), wxEmptyString)}});
+  catalog.push_back({.ids = {EventIDs::menu_list_pop},
+                     .title = _("Remove and return the first element of a list"),
+                     .rule = wxS("pop(#1#);"),
+                     .fields = {listColon}});
+  catalog.push_back({.ids = {EventIDs::menu_list_reverse},
+                     .title = _("Reverses the order of the members of a list"),
+                     .rule = wxS("reverse(#1#);"),
+                     .fields = {listColon}});
+  catalog.push_back({.ids = {EventIDs::menu_list_first},
+                     .title = _("Returns the first element of a list"),
+                     .rule = wxS("first(#1#);"),
+                     .fields = {listColon}});
+  catalog.push_back({.ids = {EventIDs::menu_list_last},
+                     .title = _("Returns the last element of a list"),
+                     .rule = wxS("last(#1#);"),
+                     .fields = {listColon}});
+  catalog.push_back({.ids = {EventIDs::menu_list_rest},
+                     .title = _("Drop the first n list elements"),
+                     .description = _("Return the list without its first n elements"),
+                     .rule = wxS("rest(#1#,#2#);"),
+                     .fields = {listColon, Field(_("n:"), wxEmptyString)}});
+  catalog.push_back({.ids = {EventIDs::menu_list_restN},
+                     .title = _("Drop the last n list elements"),
+                     .description = _("Return the list without its last n elements"),
+                     .rule = wxS("rest(#1#,-#2#);"),
+                     .fields = {listColon, Field(_("n:"), wxEmptyString)}});
+  // rest(list, n) drops the FIRST n elements, so extracting the last n needs
+  // rest(list, length(list) - n).
+  catalog.push_back({.ids = {EventIDs::menu_list_lastn},
+                     .title = _("Extract the last n list elements"),
+                     .description = _("Extract the last n elements from a list"),
+                     .rule = wxS("rest(#1#,length(#1#)-#2#);"),
+                     .fields = {SelectionField(_("List")),
+                                Field(_("Number of elements"), wxEmptyString)}});
+  catalog.push_back({
+      .ids = {EventIDs::menu_list_nth},
+      .title = _("Extract the nth list elements"),
+      .description = _("Attention: Extracting a random list element isn't efficient for "
+                       "long lists."
+                       "Iterating over lists using makelist() or for loops is way faster."),
+      .rule = wxS("#1#[#2#];"),
+      .fields = {SelectionField(_("List")), Field(_("Element number"), wxEmptyString)}});
+  // map() takes several lists, too: map(f,[a,b],[c,d]) is [f(a,c),f(b,d)]
+  // (GH #647).
+  catalog.push_back({
+      .ids = {EventIDs::menu_list_map},
+      .title = _("Apply a function to each list element"),
+      .rule = wxS("map(#1#,#2#);"),
+      .fields = {SelectionField(_("function")),
+                 Field(_("list(s)"), wxEmptyString,
+                       _("One list, or several lists of the same length separated by "
+                         "commas: then the function gets one element of each list as "
+                         "its arguments."))}});
+  // The values have to be wrapped in a list; otherwise several
+  // comma-separated equations become the subst(new,old,expr) form and are
+  // not substituted.
+  catalog.push_back({
+      .ids = {EventIDs::menu_list_use_actual_values},
+      .title = _("Introduce a list of actual values into an equation"),
+      .rule = wxS("subst([#1#],#2#);"),
+      .fields = {Field(_("List with values"), wxEmptyString,
+                       _("Comma-separated list entry in the format val1=1,val2=2")),
+                 SelectionField(_("Equation"))}});
+  catalog.push_back({
+      .ids = {EventIDs::menu_list_extract_value},
+      .title = _("Extract a variable's value from a list of variable values"),
+      .rule = wxS("subst([#1#],#2#);"),
+      .fields = {SelectionField(_("List"),
+                                _("Comma-separated list entry in the format val1=1,val2=2")),
+                 Field(_("Variable name"), wxEmptyString)}});
+  // The "val1=1,val2=2" tooltip the next two wizards' first field used to
+  // have described neither a function name nor the list to loop over.
+  catalog.push_back({.ids = {EventIDs::menu_list_as_function_arguments},
+                     .title = _("Use a list as parameter list for a function"),
+                     .rule = wxS("apply(#1#,#2#);"),
+                     .fields = {SelectionField(_("Function name")),
+                                Field(_("List"), wxEmptyString)}});
+  catalog.push_back({
+      .ids = {EventIDs::menu_list_do_for_each_element},
+      .title = _("Do for each list element"),
+      .rule = wxS("for #2# in #1# do #3#;"),
+      .fields = {listColon,
+                 Field(_("Iterator name:"), wxS("i"),
+                       _("The variable the value of the current source item is stored in.")),
+                 Field(_("What to do:"), wxS("disp(i)"),
+                       _("Either a single expression or a comma-separated list of expressions "
+                         "between parenthesis. In the latter case the result of the last "
+                         "expression in the parenthesis is used."))}});
+  catalog.push_back({.ids = {EventIDs::menu_list_remove_duplicates},
+                     .title = _(" Returns the unique elements of the list"),
+                     .rule = wxS("unique(#1#);"),
+                     .fields = {listColon}});
+  catalog.push_back({.ids = {EventIDs::menu_list_remove_element},
+                     .title = _("Remove an element from a list"),
+                     .rule = wxS("delete(#1#,#2#);"),
+                     .fields = {SelectionField(_("Element")), Field(_("List"), wxEmptyString)}});
+  catalog.push_back({.ids = {EventIDs::menu_list_append_item_start},
+                     .title = _("Add an element to the start of a list"),
+                     .rule = wxS("cons(#1#,#2#);"),
+                     .fields = {SelectionField(_("Item")), Field(_("List"), wxEmptyString)}});
+  catalog.push_back({.ids = {EventIDs::menu_list_append_item_end},
+                     .title = _("Add an element to the end of a list"),
+                     .rule = wxS("append(#1#,[#2#]);"),
+                     .fields = {SelectionField(_("List")), Field(_("Item"), wxEmptyString)}});
+  catalog.push_back({.ids = {EventIDs::menu_list_append_list},
+                     .title = _("Append a list to another list"),
+                     .rule = wxS("append(#1#,#2#);"),
+                     .fields = {SelectionField(_("List #1")), Field(_("List #2"), wxS("[1]"))}});
+  catalog.push_back({.ids = {EventIDs::menu_list_interleave},
+                     .title = _("Interleave two lists"),
+                     .rule = wxS("join(#1#,#2#);"),
+                     .fields = {SelectionField(_("List #1")),
+                                Field(_("List #2"), wxEmptyString)}});
+
   return catalog;
 }
 
