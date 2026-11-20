@@ -1,5 +1,8 @@
 # Current development version
 
+- wxdraw plots work again with Maxima 5.49 on GCL (Ubuntu 26.04's
+  Maxima): its `system()` no longer went through a shell, so gnuplot was
+  asked to load a file whose name included the quotes around it.
 - New command-line option `--language=<lang>` (for example `de`, `pt_BR`
   or `zh_CN`) runs wxMaxima in another UI language for one session
   without changing the configured one, for checking a translation or making
