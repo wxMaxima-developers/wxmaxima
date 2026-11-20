@@ -118,8 +118,9 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>The words and operators of a wizard's command rule that might have help. </p>
-<p><code>commandRule</code> is the template the wizard fills in, e.g. "ode2(#1#,#2#,#3#);". The result lists, in the order they first appear and each once, every identifier ("ode2") and every operator the manual might document ("'", "''", "!", "#", "\\", and ";" or "$" when they separate two
-statements). Whether the manual actually has an entry for each of them is
+<p><code>commandRule</code> is the template the wizard fills in, e.g. "ode2(#1#,#2#,#3#);". The result lists, in the order they first appear and each once, every identifier ("ode2") and every operator the manual might document ("'", "''", "!", "#", "\\", the matrix operators "." and "^^"
+&amp;ndash; and "*", "^" and "[", but only in a command consisting of nothing but
+operators &amp;ndash; and ";" or "$" when they separate two statements). Whether the manual actually has an entry for each of them is
 for the caller to check: this only does the text analysis, so it can be
 tested without a manual.
 
