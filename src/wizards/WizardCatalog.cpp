@@ -360,6 +360,138 @@ std::vector<wxm::WizardSpec> wxm::WizardCatalog(const WizardContext &context) {
                  Field(wxS("points"), wxS(".5,.75")),
                  epsrel, epsabs, limit}});
 
+  // ---------------------------------------------------------------- Simplify
+  // Most of these wizards' field labels have never been translatable (wxS
+  // rather than _()); they are kept as they were so that this move changes
+  // no msgid. Their "Expression" used to be a literal "%" even when an
+  // expression was selected; it now starts with the selection, as in
+  // the other menus.
+  catalog.push_back({
+      .ids = {EventIDs::menu_nouns},
+      .title = _("Evaluate Nouns"),
+      .description =
+        _("Maxima allows making functions \"nouns\", which means that they "
+          "aren't automatically evaluated as soon as Maxima encounters them.\n"
+          "Ways to make a function a noun include declaring it a noun, preceding "
+          "it with a single quote or putting it between the parentheses of \'().\n\n"
+          "This command tells Maxima that the nouns in this expression "
+          "shall now be evaluated, too."),
+      .rule = wxS("#1#,nouns;"),
+      .fields = {SelectionField(_("Expression"))}});
+  catalog.push_back({
+      .ids = {EventIDs::menu_simpsum},
+      .title = _("Simplify sums"),
+      .description = _("Try to simplify sums that result from sum() commands."),
+      .rule = wxS("simpsum(#1#);"),
+      .fields = {SelectionField(_("Expression"))}});
+  catalog.push_back({
+      .ids = {EventIDs::menu_radsimp, EventIDs::button_radcan},
+      .title = _("Simplify radicals"),
+      .description =
+        _("radcan() is a powerful tools for simplification trigonometric "
+          "functions "
+          "but needs to be taken with care: If a function has more than one "
+          "branch "
+          "radcan uses the one that looks like it would fit best, not "
+          "necessarily "
+          "the one that makes sense for the problem that resulted in the "
+          "Expression that is to be simplified."),
+      .rule = wxS("radcan(#1#);"),
+      .fields = {SelectionField(_("Expression"))}});
+
+  const WizardField simplifyExpression = SelectionField(wxS("Expression"));
+  const WizardField expandVariables =
+    Field(wxS("Variable(s)"), wxS("x"), _("Comma-separated variables"));
+  catalog.push_back({
+      .ids = {EventIDs::menu_expandwrt},
+      .title = _("Expand for variable(s):"),
+      .rule = wxS("expandwrt(#1#,#2#);"),
+      .fields = {simplifyExpression, expandVariables}});
+  catalog.push_back({
+      .ids = {EventIDs::menu_expandwrt_denom},
+      .title = _("Expand for variable(s) including denominator:"),
+      .rule = wxS("expandwrt(#1#,#2#),expandwrt_denom=true;"),
+      .fields = {simplifyExpression, expandVariables}});
+
+  // The substitution commands. Each takes a list of equations: without the
+  // brackets several comma-separated equations would be misread as the
+  // (new,old,expr) form, and all but the first silently ignored.
+  const auto substituents = [](const wxString &example) {
+    return Field(wxS("Substituents"), example,
+                 _("Comma-separated expressions"));
+  };
+  catalog.push_back({
+      .ids = {EventIDs::menu_subst},
+      .title = _("Substitute"),
+      .description =
+        _("Subst is a better string-search-and-replace for expressions."),
+      .rule = wxS("subst([#2#],#1#);"),
+      .fields = {simplifyExpression, substituents(wxS("x^2=u"))}});
+  catalog.push_back({
+      .ids = {EventIDs::menu_ratsubst},
+      .title = _("Smart substitution"),
+      .description = _("ratsubst works like subst, but it knows some basic maths, if "
+                       "needed."),
+      // ratsubst() takes (new, old, expr) and rejects an equation, so use
+      // lratsubst(), which accepts a (list of) equation(s).
+      .rule = wxS("lratsubst([#2#],#1#);"),
+      .fields = {simplifyExpression, substituents(wxS("x^2=u"))}});
+  catalog.push_back({
+      .ids = {EventIDs::menu_psubst},
+      .title = _("Parallel substitution"),
+      .description = _("Substitutes, but makes sure that nothing is substituted into "
+                       "the other substituents."),
+      .rule = wxS("psubst([#2#],#1#);"),
+      .fields = {simplifyExpression, substituents(wxS("x^2=u,u=x^2"))}});
+  catalog.push_back({
+      .ids = {EventIDs::menu_fullratsubst},
+      .title = _("Recursive substitution"),
+      .description = _("Substitutes up to lrats_max_iter times, or until the "
+                       "expression stops changing when substituting."),
+      .rule = wxS("fullratsubst([#2#],#1#);"),
+      .fields = {simplifyExpression, substituents(wxS("x^2=u"))}});
+  catalog.push_back({
+      .ids = {EventIDs::menu_at},
+      .title = _("Value at a given point"),
+      .description =
+        _("Substitutes, but makes sure that if substituting t=0 in diff(x,t) "
+          "the result isn't 0 (as t no more changes), but %at(diff(x,t),t=0)."),
+      .rule = wxS("at(#1#,[#2#]);"),
+      .fields = {simplifyExpression, substituents(wxS("x=0"))}});
+  catalog.push_back({
+      .ids = {EventIDs::menu_substinpart},
+      .title = _("Substitute only in a specific part"),
+      .description =
+        _("Replaces the subexpression that part(expr, n_1, n_2, ...) "
+          "would select by a new value. The part numbers form a path: "
+          "n_1 selects a part of the expression, n_2 a part of that, and "
+          "so on."),
+      .rule = wxS("substinpart(#2#,#1#,#3#);"),
+      // "The expression to substitute in" used to be the tooltip of
+      // "New value".
+      .fields = {SelectionField(wxS("Expression"),
+                                _("The expression to substitute in")),
+                 Field(wxS("New value"), wxS("z")),
+                 Field(wxS("Part path"), wxS("1"),
+                       _("Comma-separated part numbers selecting the "
+                         "subexpression to replace (as in part())"))}});
+
+  catalog.push_back({
+      .ids = {EventIDs::menu_mainvar},
+      .title = _("Declare main variable:"),
+      .rule = wxS("declare(#1#,mainvar);"),
+      .fields = {SelectionField(wxS("Variable"))}});
+  catalog.push_back({
+      .ids = {EventIDs::menu_tellrat},
+      .title = _("Enter an equation for rational simplification:"),
+      .rule = wxS("tellrat(#1#);"),
+      .fields = {SelectionField(wxS("Equation"))}});
+  catalog.push_back({
+      .ids = {EventIDs::menu_modulus},
+      .title = _("Calculate modulus:"),
+      .rule = wxS("modulus : #1#$"),
+      .fields = {Field(wxS("Modulus"), wxS("%"))}});
+
   return catalog;
 }
 
