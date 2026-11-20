@@ -4,6 +4,11 @@
   or `zh_CN`) runs wxMaxima in another UI language for one session
   without changing the configured one, for checking a translation or making
   screenshots for a translated manual.
+- Matrix menu: its standard wizards moved into the wizard table. The
+  LAPACK wizards' commands now end with a semicolon instead of waiting for
+  one to be typed, and the wizards that consist of nothing but an operator
+  (matrix product, matrix power, Hadamard product and exponent, a matrix row
+  as a list) offer help on that operator.
 - Equations menu: its standard wizards (solve, to_poly_solve, the root
   finders, ODE solving, initial and boundary conditions, rk(), eliminate,
   desolve, atvalue) moved into the wizard table.
