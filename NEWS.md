@@ -5,6 +5,11 @@
   new `--screenshot=<file>` option this uses evaluates the
   file it is given, captures the window, the worksheet's content, a sidebar
   or a page of the configuration dialog, and exits.
+- Simplify menu: the substitution, expandwrt(), mainvar, tellrat() and
+  similar wizards now start with the selected expression instead of `%`,
+  and the "Substitute only in parts" wizard shows its "expression to
+  substitute in" hint on the expression field rather than on "New value".
+  The Simplify menu's wizards moved into the wizard table.
 - Numerical → Integrate numerically: the "Cauchy principal value" wizard
   passed c, a and b to `quad_qawc()` in the wrong places, and the
   `quad_qawo()` wizard for cos() had no field for the upper limit, which left
