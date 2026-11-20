@@ -146,6 +146,49 @@ SCENARIO("The Fourier wizard loads its package only once") {
   CHECK(later->rule == wxS("fourier(#1#,#2#,#3#);"));
 }
 
+SCENARIO("The Cauchy principal value wizard passes c, a and b in order") {
+  // Its rule used to stop at #7#: c, a and b landed in the wrong arguments.
+  const auto qawc = wxm::FindWizard(EventIDs::menu_quad_qawc);
+  REQUIRE(qawc.has_value());
+  REQUIRE(qawc->fields.size() == 8);
+  CHECK(qawc->fields[2].label == wxS("c"));
+  CHECK(qawc->rule.StartsWith(wxS("quad_qawc(#1#,#2#,#3#,#4#,#5#,")));
+}
+
+SCENARIO("Both quad_qawo() wizards ask for the upper limit") {
+  // The cos variant had no "b" field and left "#10#" in its command.
+  for (const wxWindowID id :
+         {EventIDs::menu_quad_qawo_sin, EventIDs::menu_quad_qawo_cos}) {
+    const auto qawo = wxm::FindWizard(id);
+    REQUIRE(qawo.has_value());
+    REQUIRE(qawo->fields.size() == 10);
+    CHECK(qawo->fields[3].label == wxS("b"));
+  }
+}
+
+SCENARIO("The quad_qaws() wizards differ only in their weight function") {
+  long weight = 1;
+  for (const wxWindowID id :
+         {EventIDs::menu_quad_qaws1, EventIDs::menu_quad_qaws2,
+          EventIDs::menu_quad_qaws3, EventIDs::menu_quad_qaws4}) {
+    const auto qaws = wxm::FindWizard(id);
+    REQUIRE(qaws.has_value());
+    CHECK(qaws->rule.Contains(wxString::Format(wxS("#6#,%ld,"), weight)));
+    weight++;
+  }
+}
+
+SCENARIO("The numerical integration wizards use the integral sign given") {
+  WizardContext noGlyph;
+  noGlyph.integralSign = wxS("integrate");
+  const auto qags = wxm::FindWizard(EventIDs::menu_quad_qags, noGlyph);
+  REQUIRE(qags.has_value());
+  CHECK(qags->title.StartsWith(wxS("integrate(f(x)")));
+  const auto withGlyph = wxm::FindWizard(EventIDs::menu_quad_qags);
+  REQUIRE(withGlyph.has_value());
+  CHECK(withGlyph->title.StartsWith(wxS("\u222B")));
+}
+
 int main(int argc, char *argv[]) {
   // The event IDs come from wxWindow::NewControlId(), which needs wx.
   wxInitializer initializer;
