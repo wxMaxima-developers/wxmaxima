@@ -69,9 +69,12 @@
 
 class Maxima; // The Maxima process interface
 
+namespace wxm { struct WizardSpec; }
+
 /* The top-level window and the main application logic
 
  */
+
 class wxMaxima : public wxMaximaFrame
 {
 public:
@@ -328,6 +331,11 @@ protected:
                   const wxString& label9 = {}, const wxString& defaultval9 = {}, const wxString& tooltip9 = {},
                   const wxString& label10 = {}, const wxString& defaultval10 = {}, const wxString& tooltip10 = {}
     );
+  /*! Invoke our standard wizard as \p spec describes it
+
+    \param selection what the fields that take the selection start with
+  */
+  void CommandWiz(const wxm::WizardSpec &spec, const wxString &selection);
   //! Finds the name of an opening tag
   static wxRegEx m_xmlOpeningTagName;
   //! Looks if this opening tag is actually complete.

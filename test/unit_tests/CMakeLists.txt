@@ -169,6 +169,13 @@ target_include_directories(test_WizardHelpKeywords PRIVATE ${CMAKE_SOURCE_DIR}/s
 target_link_libraries(test_WizardHelpKeywords PRIVATE ${wxWidgets_LIBRARIES})
 add_test(WizardHelpKeywords test_WizardHelpKeywords)
 
+# Every standard wizard's command rule uses exactly the fields it has, and
+# every menu entry it lists finds it (wxm::WizardCatalog). No GUI needed.
+add_executable(test_WizardCatalog test_WizardCatalog.cpp ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
+target_include_directories(test_WizardCatalog PRIVATE ${CMAKE_SOURCE_DIR}/src ${CMAKE_BINARY_DIR}/src)
+target_link_libraries(test_WizardCatalog PRIVATE ${wxWidgets_LIBRARIES})
+add_test(WizardCatalog test_WizardCatalog)
+
 # The Matrix menu's wizards put each field where its label says (GH #647).
 add_executable(test_MatrixWizardRules test_MatrixWizardRules.cpp ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
 target_include_directories(test_MatrixWizardRules PRIVATE ${CMAKE_SOURCE_DIR}/src)
@@ -324,6 +331,17 @@ target_include_directories(test_UiLanguages PRIVATE ${CMAKE_SOURCE_DIR}/src)
 target_link_libraries(test_UiLanguages PRIVATE ${wxWidgets_LIBRARIES})
 add_test(NAME UiLanguages
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_UiLanguages>")
+
+# --language has to be found before the command line is parsed, since the
+# parser's own messages need the language; that look at the arguments is a
+# pure string function. GUI-free.
+add_executable(test_CommandLinePrescan
+    test_CommandLinePrescan.cpp ${CMAKE_SOURCE_DIR}/src/CommandLinePrescan.cpp
+    ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
+target_include_directories(test_CommandLinePrescan PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_link_libraries(test_CommandLinePrescan PRIVATE ${wxWidgets_LIBRARIES})
+add_test(NAME CommandLinePrescan
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_CommandLinePrescan>")
 
 # Which files wxMaxima agrees to open from the command line, the desktop or
 # the Finder (opening wxmaxima.exe and its DLLs used to start a window and a

@@ -71,6 +71,7 @@ set(WIZARD_SOURCE_FILES
     SubstituteWiz.cpp
     SumWiz.cpp
     SystemWiz.cpp
+    WizardCatalog.cpp
     WizardHelp.cpp
     WizardHelpKeywords.cpp
 )
@@ -148,6 +149,7 @@ set(SOURCE_FILES
     AutocompletePopup.cpp
     BTextCtrl.cpp
     CellPointers.cpp
+    CommandLinePrescan.cpp
     CompositeDataObject.cpp
     Configuration.cpp
     Styles.cpp

@@ -3,12 +3,44 @@
 - wxdraw plots work again with Maxima 5.49 on GCL (Ubuntu 26.04's
   Maxima): its `system()` no longer went through a shell, so gnuplot was
   asked to load a file whose name included the quotes around it.
+- New command-line option `--language=<lang>` (for example `de`, `pt_BR`
+  or `zh_CN`) runs wxMaxima in another UI language for one session
+  without changing the configured one, for checking a translation or making
+  screenshots for a translated manual.
+- Matrix menu: its standard wizards moved into the wizard table. The
+  LAPACK wizards' commands now end with a semicolon instead of waiting for
+  one to be typed, and the wizards that consist of nothing but an operator
+  (matrix product, matrix power, Hadamard product and exponent, a matrix row
+  as a list) offer help on that operator.
+- Equations menu: its standard wizards (solve, to_poly_solve, the root
+  finders, ODE solving, initial and boundary conditions, rk(), eliminate,
+  desolve, atvalue) moved into the wizard table.
+- Simplify menu: the substitution, expandwrt(), mainvar, tellrat() and
+  similar wizards now start with the selected expression instead of `%`,
+  and the "Substitute only in parts" wizard shows its "expression to
+  substitute in" hint on the expression field rather than on "New value".
+  The Simplify menu's wizards moved into the wizard table.
+- Numerical → Integrate numerically: the "Cauchy principal value" wizard
+  passed c, a and b to `quad_qawc()` in the wrong places, and the
+  `quad_qawo()` wizard for cos() had no field for the upper limit, which left
+  a `#10#` in the command. The integrand field of these wizards now starts
+  with the selected expression, like the other wizards, instead of `%`. The
+  Numerical menu's wizards moved into the wizard table.
+- Calculus → Change Variable → "Dito, and evaluate the result..." did
+  nothing: the menu entry was never connected to its wizard. The Calculus
+  menu's standard wizards are now described in one table
+  (`src/wizards/WizardCatalog.cpp`) and connected from there, which a test
+  checks entry by entry.
+- wxMaxima no longer stops at start-up with a "Translations: no standard
+  wxWidgets catalogs were found" dialog when the UI language's wxWidgets
+  translation isn't installed. The message goes to the log window instead.
 - The snap is only built for amd64 and arm64 now. The armhf, ppc64el and
   s390x snaps were never tested and went out of date.
 - `wxmxdiff a.wxmx b.wxmx` compares the two files again: the wxMaxima program
   itself was passed on as a third file to compare, and file names containing
-  a quote were mangled. A file named `-d` after `--` no longer stops
-  `wxmxdiff` from comparing.
+  a quote were mangled. A file named `-d` after `--`, or a `-d` given as an
+  option's value (`wxmxdiff --ini -d a b`), no longer stops `wxmxdiff` from
+  comparing.
 - A command-line argument like `--+` or `--=x` is reported as an unknown
   option instead of tripping an assertion inside wxWidgets.
 - The command line is now parsed by GUI-free code (`src/CommandLine.cpp`),
