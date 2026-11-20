@@ -56,6 +56,8 @@
 #include "dialogs/MaximaNotStartingDialog.h"
 #include "dialogs/AboutDialog.h"
 #include "wizards/CsvWiz.h"
+#include <array>
+#include "wizards/WizardCatalog.h"
 #include "wizards/DrawWiz.h"
 #include "cells/EditorCell.h"
 #include "wizards/Gen1Wiz.h"
@@ -515,7 +517,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_animation_save);
   Bind(wxEVT_MENU, &MaximaCommandMenus::FileMenu, &m_menuCommands, EventIDs::popid_animation_start);
   Bind(wxEVT_BUTTON, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::button_integrate);
-  Bind(wxEVT_BUTTON, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::button_diff);
   Bind(wxEVT_BUTTON, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::button_solve);
   Bind(wxEVT_BUTTON, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::button_solve_ode);
   Bind(wxEVT_BUTTON, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::button_sum);
@@ -527,7 +528,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_BUTTON, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::button_trigexpand);
   Bind(wxEVT_BUTTON, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::button_trigreduce);
   Bind(wxEVT_BUTTON, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::button_trigsimp);
-  Bind(wxEVT_BUTTON, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::button_product);
   Bind(wxEVT_BUTTON, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::button_radcan);
   Bind(wxEVT_BUTTON, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::button_subst);
   Bind(wxEVT_BUTTON, &MaximaCommandMenus::PlotMenu, &m_menuCommands, EventIDs::button_plot2);
@@ -695,21 +695,16 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_rk);
   Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_fun_def);
   Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_gensym);
-  Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_divide);
-  Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_gcd);
-  Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_lcm);
+  // Every menu entry and sidebar button that opens a standard wizard: one
+  // handler for all of them, and none can be forgotten.
+  for (const auto &spec : wxm::WizardCatalog())
+    for (const wxWindowID wizardId : spec.ids) {
+      Bind(wxEVT_MENU, &MaximaCommandMenus::CatalogWizard, &m_menuCommands, wizardId);
+      Bind(wxEVT_BUTTON, &MaximaCommandMenus::CatalogWizard, &m_menuCommands, wizardId);
+    }
   Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_continued_fraction);
-  Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_partfrac);
-  Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_risch);
   Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_integrate);
-  Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_laplace);
-  Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_ilt);
-  Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_diff);
-  Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_taylor);
-  Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_powerseries);
-  Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_fourier);
   Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_limit);
-  Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_lbfgs);
   Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_gen_mat);
   Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_gen_mat_lambda);
   Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_sum);
@@ -728,8 +723,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_rhs);
   Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_construct_fraction);
   Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_sum);
-  Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_product);
-  Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_change_var);
   Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_time);
   Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_factsimp);
   Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_factcomb);
@@ -774,7 +767,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_room);
   Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_jumptoerror);
   Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_display);
-  Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_pade);
   Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_add_path);
   Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::menu_copy_uuid);
   Bind(wxEVT_MENU, &MaximaCommandMenus::FileMenu, &m_menuCommands, EventIDs::menu_jump_to_uuid);
@@ -3179,6 +3171,25 @@ void wxMaxima::CommandWiz(
                       tooltip9, label10, defaultval10,
                       tooltip10);
   ShowWizardPane(title);
+}
+
+void wxMaxima::CommandWiz(const wxm::WizardSpec &spec,
+                          const wxString &selection) {
+  // GenWizPanel has exactly 10 fields; test_WizardCatalog makes sure no
+  // wizard asks for more.
+  std::array<wxString, 10> label, value, tooltip;
+  const auto fields = wxm::FieldsWithSelection(spec, selection);
+  for (std::size_t i = 0; (i < fields.size()) && (i < label.size()); i++) {
+    label[i] = fields[i].label;
+    value[i] = fields[i].defaultValue;
+    tooltip[i] = fields[i].tooltip;
+  }
+  CommandWiz(spec.title, spec.description, spec.descriptionTooltip, spec.rule,
+             label[0], value[0], tooltip[0], label[1], value[1], tooltip[1],
+             label[2], value[2], tooltip[2], label[3], value[3], tooltip[3],
+             label[4], value[4], tooltip[4], label[5], value[5], tooltip[5],
+             label[6], value[6], tooltip[6], label[7], value[7], tooltip[7],
+             label[8], value[8], tooltip[8], label[9], value[9], tooltip[9]);
 }
 
 void wxMaxima::OnWizardAbort(wxCommandEvent &WXUNUSED(event)) {
