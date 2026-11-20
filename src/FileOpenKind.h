@@ -90,6 +90,17 @@ wxString WhyFileCannotBeOpened(const wxString &file);
 */
 wxString MaximaStringLiteral(const wxString &str);
 
+/*! The write_data() command the "Export Matrix/List to CSV" wizards send
+
+  \p data is Maxima code naming what to write, \p separator the separator
+  as Maxima code ('comma, 'tab, ...). The file name goes through
+  MaximaStringLiteral(): it used to be pasted between plain quotes, so a
+  quote in it could inject Maxima code, and every backslash of a Windows
+  path was lost.
+*/
+wxString WriteDataCommand(const wxString &data, const wxString &file,
+                          const wxString &separator);
+
 } // namespace wxm
 
 #endif // WXM_FILEOPENKIND_H

@@ -531,8 +531,8 @@ void MaximaCommandMenus::MatrixMenu(wxCommandEvent &event) {
     wxWindowPtr<CsvExportWiz> wiz(new CsvExportWiz(&m_wxMaxima, &m_wxMaxima.m_configuration, _("Matrix")));
     wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
       if (retcode == wxID_OK) {
-        wxString cmd = wxS("write_data(") + wiz->GetMatrix() + wxS(", \"") +
-          wiz->GetFilename() + wxS("\", ") + wiz->GetSeparator() + wxS(");");
+        wxString cmd = wxm::WriteDataCommand(wiz->GetMatrix(), wiz->GetFilename(),
+                                                wiz->GetSeparator());
         m_wxMaxima.MenuCommand(cmd);
       }
     });
@@ -857,8 +857,8 @@ void MaximaCommandMenus::ListMenu(wxCommandEvent &event) {
       wxWindowPtr<CsvExportWiz> wiz(new CsvExportWiz(&m_wxMaxima, &m_wxMaxima.m_configuration, _("List")));
       wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
         if (retcode == wxID_OK) {
-          wxString cmd = wxS("write_data(") + wiz->GetMatrix() + wxS(", \"") +
-            wiz->GetFilename() + wxS("\", ") + wiz->GetSeparator() + wxS(");");
+          wxString cmd = wxm::WriteDataCommand(wiz->GetMatrix(), wiz->GetFilename(),
+                                                wiz->GetSeparator());
           m_wxMaxima.MenuCommand(cmd);
         }
       });

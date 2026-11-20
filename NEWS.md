@@ -1,5 +1,8 @@
 # Current development version
 
+- Export Matrix/List to CSV: the file name is now quoted properly. A
+  double quote in it could inject Maxima code, and the backslashes of a
+  Windows path were lost, so the file landed somewhere else.
 - Equations menu: its standard wizards (solve, to_poly_solve, the root
   finders, ODE solving, initial and boundary conditions, rk(), eliminate,
   desolve, atvalue) moved into the wizard table.
