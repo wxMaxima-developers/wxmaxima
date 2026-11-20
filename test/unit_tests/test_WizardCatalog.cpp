@@ -227,3 +227,37 @@ SCENARIO("substinpart()'s tooltip describes the expression field") {
   CHECK(spec->fields[0].tooltip == _("The expression to substitute in"));
   CHECK(spec->fields[1].tooltip.IsEmpty());
 }
+
+SCENARIO("The equation solvers wrap equations and variables in lists") {
+  for (const wxWindowID id :
+         {EventIDs::menu_solve, EventIDs::button_solve,
+          EventIDs::menu_solve_to_poly}) {
+    const auto spec = wxm::FindWizard(id);
+    REQUIRE(spec.has_value());
+    INFO("Rule: " << spec->rule.utf8_string());
+    CHECK(spec->rule.Contains(wxS("([#1#],[#2#])")));
+    REQUIRE(spec->fields.size() == 2);
+    CHECK(spec->fields[0].takesSelection);
+  }
+}
+
+SCENARIO("The ODE wizards open from both the menu and the sidebar") {
+  const auto menu = wxm::FindWizard(EventIDs::menu_solve_ode);
+  const auto button = wxm::FindWizard(EventIDs::button_solve_ode);
+  REQUIRE(menu.has_value());
+  REQUIRE(button.has_value());
+  CHECK(menu->rule == wxS("ode2(#1#,#2#,#3#);"));
+  CHECK(button->rule == menu->rule);
+  // The context menu's "Value at a specific point" is the atvalue() wizard.
+  const auto atvalue = wxm::FindWizard(EventIDs::popid_property_atvalue);
+  REQUIRE(atvalue.has_value());
+  CHECK(atvalue->rule.StartsWith(wxS("atvalue(")));
+}
+
+SCENARIO("find_root() and the fraction wizard keep their own handler") {
+  // It rewrites a selection starting with % into ''(%), which no catalog
+  // field can do.
+  CHECK(!wxm::FindWizard(EventIDs::menu_solve_num).has_value());
+  // "Construct a fraction" names no function a "Help on" button could show.
+  CHECK(!wxm::FindWizard(EventIDs::menu_construct_fraction).has_value());
+}
