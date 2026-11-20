@@ -5,6 +5,12 @@
   new `--screenshot=<file>` option this uses evaluates the
   file it is given, captures the window, the worksheet's content, a sidebar
   or a page of the configuration dialog, and exits.
+- Numerical → Integrate numerically: the "Cauchy principal value" wizard
+  passed c, a and b to `quad_qawc()` in the wrong places, and the
+  `quad_qawo()` wizard for cos() had no field for the upper limit, which left
+  a `#10#` in the command. The integrand field of these wizards now starts
+  with the selected expression, like the other wizards, instead of `%`. The
+  Numerical menu's wizards moved into the wizard table.
 - Calculus → Change Variable → "Dito, and evaluate the result..." did
   nothing: the menu entry was never connected to its wizard. The Calculus
   menu's standard wizards are now described in one table

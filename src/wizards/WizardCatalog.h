@@ -103,6 +103,11 @@ namespace wxm {
   struct WizardContext {
     //! Whether Maxima has loaded the "fourie" package already
     bool fourierLoaded = false;
+    /*! What the titles of the numerical integration wizards start with
+
+      The integral sign, or "integrate" if the GUI font cannot draw it.
+    */
+    wxString integralSign = wxS("\u222B");
   };
 
   /*! All standard wizards

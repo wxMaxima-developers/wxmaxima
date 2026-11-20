@@ -650,23 +650,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_eigvect);
   Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_adjoint_mat);
   Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_transpose);
-  Bind(wxEVT_MENU, &MaximaCommandMenus::NumericalMenu, &m_menuCommands, EventIDs::menu_set_precision);
-  Bind(wxEVT_MENU, &MaximaCommandMenus::NumericalMenu, &m_menuCommands, EventIDs::menu_set_displayprecision);
   Bind(wxEVT_MENU, &MaximaCommandMenus::NumericalMenu, &m_menuCommands, EventIDs::menu_engineeringFormat);
-  Bind(wxEVT_MENU, &MaximaCommandMenus::NumericalMenu, &m_menuCommands, EventIDs::menu_engineeringFormatSetup);
-  Bind(wxEVT_MENU, &MaximaCommandMenus::NumericalMenu, &m_menuCommands, EventIDs::menu_quad_qag);
-  Bind(wxEVT_MENU, &MaximaCommandMenus::NumericalMenu, &m_menuCommands, EventIDs::menu_quad_qags);
-  Bind(wxEVT_MENU, &MaximaCommandMenus::NumericalMenu, &m_menuCommands, EventIDs::menu_quad_qagi);
-  Bind(wxEVT_MENU, &MaximaCommandMenus::NumericalMenu, &m_menuCommands, EventIDs::menu_quad_qawc);
-  Bind(wxEVT_MENU, &MaximaCommandMenus::NumericalMenu, &m_menuCommands, EventIDs::menu_quad_qawf_sin);
-  Bind(wxEVT_MENU, &MaximaCommandMenus::NumericalMenu, &m_menuCommands, EventIDs::menu_quad_qawf_cos);
-  Bind(wxEVT_MENU, &MaximaCommandMenus::NumericalMenu, &m_menuCommands, EventIDs::menu_quad_qawo_sin);
-  Bind(wxEVT_MENU, &MaximaCommandMenus::NumericalMenu, &m_menuCommands, EventIDs::menu_quad_qawo_cos);
-  Bind(wxEVT_MENU, &MaximaCommandMenus::NumericalMenu, &m_menuCommands, EventIDs::menu_quad_qaws1);
-  Bind(wxEVT_MENU, &MaximaCommandMenus::NumericalMenu, &m_menuCommands, EventIDs::menu_quad_qaws2);
-  Bind(wxEVT_MENU, &MaximaCommandMenus::NumericalMenu, &m_menuCommands, EventIDs::menu_quad_qaws3);
-  Bind(wxEVT_MENU, &MaximaCommandMenus::NumericalMenu, &m_menuCommands, EventIDs::menu_quad_qaws4);
-  Bind(wxEVT_MENU, &MaximaCommandMenus::NumericalMenu, &m_menuCommands, EventIDs::menu_quad_qagp);
 
   Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_talg);
   Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_tellrat);
