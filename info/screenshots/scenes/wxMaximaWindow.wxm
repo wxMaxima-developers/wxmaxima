@@ -1,0 +1,19 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [wxMaxima: input   start ] */
+f_101(x):= sin(x)^2;
+g_101(x):= cos(x);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+wxdraw2d(
+    key="f_{101}",color=red,
+    explicit(
+        f_101(x),x,0,6
+    ),
+    key="g_{101}",color=green,
+    explicit(
+        g_101(x),x,0,6
+    ),
+    grid=true
+);
+/* [wxMaxima: input   end   ] */

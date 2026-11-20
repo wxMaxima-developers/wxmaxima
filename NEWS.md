@@ -1,5 +1,10 @@
 # Current development version
 
+- Most of the manual's screenshots are now made by wxMaxima itself, from the
+  scenes in `info/screenshots/`: `ninja screenshots` regenerates them. The
+  new `--screenshot=<file>` option this uses evaluates the
+  file it is given, captures the window, the worksheet's content, a sidebar
+  or a page of the configuration dialog, and exits.
 - New command-line option `--language=<lang>` (for example `de`, `pt_BR`
   or `zh_CN`) runs wxMaxima in another UI language for one session
   without changing the configured one, for checking a translation or making

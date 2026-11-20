@@ -1,0 +1,6 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [wxMaxima: input   start ] */
+M : matrix(["1st value", "2nd value", "3rd value"],
+           makelist(x,x,1,3), makelist(x^2,x,1,3));
+table_form(M)$
+/* [wxMaxima: input   end   ] */
