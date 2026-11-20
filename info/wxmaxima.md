@@ -1337,6 +1337,7 @@ Usually you can start programs with a graphical user interface just by clicking 
 - `--pipe`:                        Pipe messages from Maxima to stderr.
 - `--debug`: Enable costly debug checks.
 - `--exit-on-error`:               Close the program on any maxima error.
+- `--language=<lang>`: Use this language for the user interface instead of the one configured in the settings, for example `de`, `pt_BR` or `zh_CN`. The setting is not saved. Useful for checking a translation, or for making screenshots for a translated manual.
 - `-f` or `--ini=<str>`: Use the init file that was given as an argument to this command-line switch
 - `-u`, `--use-version=<str>`:     Use maxima version `<str>`.
 - `-l`, `--lisp=<str>`:              Use a Maxima compiled with Lisp compiler `<str>`.

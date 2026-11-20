@@ -5,6 +5,10 @@
   new `--screenshot=<file>` option this uses evaluates the
   file it is given, captures the window, the worksheet's content, a sidebar
   or a page of the configuration dialog, and exits.
+- New command-line option `--language=<lang>` (for example `de`, `pt_BR`
+  or `zh_CN`) runs wxMaxima in another UI language for one session
+  without changing the configured one, for checking a translation or making
+  screenshots for a translated manual.
 - Matrix menu: its standard wizards moved into the wizard table. The
   LAPACK wizards' commands now end with a semicolon instead of waiting for
   one to be typed, and the wizards that consist of nothing but an operator

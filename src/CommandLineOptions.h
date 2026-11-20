@@ -93,6 +93,10 @@ inline constexpr std::array Options{
   Option{Kind::Switch, "", "pipe", "Pipe messages from Maxima to stderr."},
   Option{Kind::Switch, "", "exit-on-error",
          "Close the program on any Maxima error."},
+  Option{Kind::Option, "", "language",
+         "Use this language for the user interface instead of the configured "
+         "one, for example de or pt_BR. The setting is not saved.",
+         "lang"},
   Option{Kind::Option, "f", "ini",
          "Allows specifying a file to store the configuration in.", "file",
          Complete::AnyFile},
