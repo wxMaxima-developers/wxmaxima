@@ -116,12 +116,37 @@ Functions</h2></td></tr>
 <tr class="memitem:a87b75e08303ab93fe3ad0815f7dd33ce"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="UiLanguages_8h.html#a87b75e08303ab93fe3ad0815f7dd33ce">wxm::UiLanguageLabel</a> (const UiLanguage &amp;language)</td></tr>
 <tr class="memdesc:a87b75e08303ab93fe3ad0815f7dd33ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">The text the language chooser shows for a language.  <br /></td></tr>
 <tr class="separator:a87b75e08303ab93fe3ad0815f7dd33ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a7c788c6b1ebeea6a7d1f7ca7acd567"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="UiLanguages_8h.html#a1a7c788c6b1ebeea6a7d1f7ca7acd567">wxm::UiLanguageFromCode</a> (const wxString &amp;code)</td></tr>
+<tr class="memdesc:a1a7c788c6b1ebeea6a7d1f7ca7acd567"><td class="mdescLeft">&#160;</td><td class="mdescRight">The language a code like "de", "pt_BR" or "zh-CN" names (&ndash;language)  <br /></td></tr>
+<tr class="separator:a1a7c788c6b1ebeea6a7d1f7ca7acd567"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The languages <a class="el" href="classwxMaxima.html">wxMaxima</a>'s user interface can be switched to (GH #849). </p>
 <p>Each language is listed under its own name ("Deutsch", "日本語"), followed by its name in the current UI language where that differs. Someone who ended up with a UI language they cannot read still finds their own language in the list that way, which a list of names translated into the unreadable language would not let them do.</p>
 <p>Deliberately no flags: a flag stands for a country, not a language. English, Spanish, Portuguese, Arabic or Chinese would each need one country picked over the others, Catalan, Basque, Corsican, Galician or Kabyle would need a regional or no flag at all, and Traditional Chinese is written in more than one place whose flag is a political statement. Names are what the operating systems use for the same purpose, and the two Chinese variants are named by their script, not by a region. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
+<a id="a1a7c788c6b1ebeea6a7d1f7ca7acd567" name="a1a7c788c6b1ebeea6a7d1f7ca7acd567"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1a7c788c6b1ebeea6a7d1f7ca7acd567">&#9670;&#160;</a></span>UiLanguageFromCode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int wxm::UiLanguageFromCode </td>
+          <td>(</td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
+          <td class="paramname"><em>code</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The language a code like "de", "pt_BR" or "zh-CN" names (&ndash;language) </p>
+<p>Accepts whatever wxWidgets knows a language by: its canonical name with or without the region, with "_" or "-" between the two, in any case, or its English description ("German"). <a class="el" href="classA.html">A</a> language <a class="el" href="classwxMaxima.html">wxMaxima</a> has no translation for is still accepted, since it also decides how numbers and dates are written; its texts then are English.</p>
+<dl class="section return"><dt>Returns</dt><dd>the wxLanguage, or wxLANGUAGE_UNKNOWN if the code names none </dd></dl>
+
+</div>
+</div>
 <a id="a87b75e08303ab93fe3ad0815f7dd33ce" name="a87b75e08303ab93fe3ad0815f7dd33ce"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a87b75e08303ab93fe3ad0815f7dd33ce">&#9670;&#160;</a></span>UiLanguageLabel()</h2>
 
