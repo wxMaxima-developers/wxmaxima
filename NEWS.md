@@ -1,5 +1,8 @@
 # Current development version
 
+- Languages whose manual is less than 5% translated no longer install a
+  copy of the English manual under their own name; the help falls back to
+  the English one, as it did. This saves 2.5 MB of identical files.
 - wxdraw plots work again with Maxima 5.49 on GCL (Ubuntu 26.04's
   Maxima): its `system()` no longer went through a shell, so gnuplot was
   asked to load a file whose name included the quotes around it.
