@@ -1569,6 +1569,7 @@ std::size_t Configuration::ShowLength_Bytes() const
   return showLength;
 }
 wxString Configuration::m_configfileLocation_override;
+long Configuration::m_languageOverride = wxLANGUAGE_UNKNOWN;
 bool Configuration::m_debugMode = false;
 bool Configuration::m_use_threads = true;
 Configuration::PerformanceStats Configuration::g_stats;
