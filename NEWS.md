@@ -3,6 +3,11 @@
 - Export Matrix/List to CSV: the file name is now quoted properly. A
   double quote in it could inject Maxima code, and the backslashes of a
   Windows path were lost, so the file landed somewhere else.
+- Matrix menu: its standard wizards moved into the wizard table. The
+  LAPACK wizards' commands now end with a semicolon instead of waiting for
+  one to be typed, and the wizards that consist of nothing but an operator
+  (matrix product, matrix power, Hadamard product and exponent, a matrix row
+  as a list) offer help on that operator.
 - Equations menu: its standard wizards (solve, to_poly_solve, the root
   finders, ODE solving, initial and boundary conditions, rk(), eliminate,
   desolve, atvalue) moved into the wizard table.
