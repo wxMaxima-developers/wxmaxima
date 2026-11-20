@@ -1,5 +1,9 @@
 # Current development version
 
+- List menu: its standard wizards moved into the wizard table. "Create
+  list from comma-separated elements" now ends its command with a
+  semicolon, and two wizards lost a "val1=1,val2=2" tooltip on a field
+  that asks for something else.
 - Matrix menu: its standard wizards moved into the wizard table. The
   LAPACK wizards' commands now end with a semicolon instead of waiting for
   one to be typed, and the wizards that consist of nothing but an operator

@@ -326,3 +326,37 @@ SCENARIO("The matrix wizards that need a dialog of their own keep their handler"
           EventIDs::menu_map_mat, EventIDs::menu_matrix_loadLapack})
     CHECK(!wxm::FindWizard(id).has_value());
 }
+
+SCENARIO("The list wizards that pass the list second keep that order") {
+  // push(item, list) and delete(item, list) take the list second.
+  const auto push = wxm::FindWizard(EventIDs::menu_list_push);
+  REQUIRE(push.has_value());
+  CHECK(push->rule == wxS("push(#2#,#1#);"));
+  CHECK(push->fields[0].label == _("List:"));
+  const auto remove = wxm::FindWizard(EventIDs::menu_list_remove_element);
+  REQUIRE(remove.has_value());
+  CHECK(remove->rule == wxS("delete(#1#,#2#);"));
+  CHECK(remove->fields[0].label == _("Element"));
+}
+
+SCENARIO("Extracting the last n list elements counts from the end") {
+  const auto spec = wxm::FindWizard(EventIDs::menu_list_lastn);
+  REQUIRE(spec.has_value());
+  CHECK(spec->rule == wxS("rest(#1#,length(#1#)-#2#);"));
+}
+
+SCENARIO("Values are substituted as a list") {
+  for (const wxWindowID id :
+         {EventIDs::menu_list_use_actual_values, EventIDs::menu_list_extract_value}) {
+    const auto spec = wxm::FindWizard(id);
+    REQUIRE(spec.has_value());
+    CHECK(spec->rule == wxS("subst([#1#],#2#);"));
+  }
+}
+
+SCENARIO("The list wizards that need a dialog of their own keep their handler") {
+  for (const wxWindowID id :
+         {EventIDs::menu_csv2list, EventIDs::menu_list2csv,
+          EventIDs::menu_list_sort, EventIDs::menu_list_actual_values_storage})
+    CHECK(!wxm::FindWizard(id).has_value());
+}
