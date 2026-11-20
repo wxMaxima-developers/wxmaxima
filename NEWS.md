@@ -1,5 +1,8 @@
 # Current development version
 
+- Export Matrix/List to CSV: the file name is now quoted properly. A
+  double quote in it could inject Maxima code, and the backslashes of a
+  Windows path were lost, so the file landed somewhere else.
 - Matrix menu: its standard wizards moved into the wizard table. The
   LAPACK wizards' commands now end with a semicolon instead of waiting for
   one to be typed, and the wizards that consist of nothing but an operator
