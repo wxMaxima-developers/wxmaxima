@@ -33,6 +33,8 @@
 #include "EventIDs.h"
 #include <wx/intl.h>
 #include <algorithm>
+#include <array>
+#include <utility>
 
 std::vector<wxm::WizardSpec> wxm::WizardCatalog(const WizardContext &context) {
   std::vector<WizardSpec> catalog;
@@ -195,6 +197,168 @@ std::vector<wxm::WizardSpec> wxm::WizardCatalog(const WizardContext &context) {
                  Field(_("Variable:"), wxS("k")),
                  Field(_("From:"), wxS("1")),
                  Field(_("To:"), wxS("n"))}});
+
+  // --------------------------------------------------------------- Numerical
+  catalog.push_back({
+      .ids = {EventIDs::menu_set_precision},
+      .title = _("Enter new precision for bigfloats:"),
+      .rule = wxS("fpprec : #1#$"),
+      .fields = {Field(_("Precision"), wxS("%"))}});
+  catalog.push_back({
+      .ids = {EventIDs::menu_set_displayprecision},
+      .title = _("Displayed Precision"),
+      .rule = wxS("fpprintprec : #1#$"),
+      .fields = {Field(_("How many digits to show:"), wxS("%"))}});
+  catalog.push_back({
+      .ids = {EventIDs::menu_engineeringFormatSetup},
+      .title = _("Setup the engineering format"),
+      .rule = wxS("engineering_format_floats: #1#$\n"
+                  "engineering_format_min: #2#$\n"
+                  "engineering_format_max: #3#$\n"
+                  "fpprintprec: #4#$"),
+      .fields = {
+        Field(_("Enable:"), wxS("true")),
+        Field(_("Minimum absolute value printed without exponent:"),
+              wxS(".01")),
+        Field(_("Maximum absolute value printed without exponent"),
+              wxS("1000")),
+        Field(_("Maximum number of digits to be displayed:"), wxS("6"))}});
+
+  // QUADPACK. The integrand starts with the selection (or %) as the menu
+  // handler's other wizards do; it used to be a literal "%" even when an
+  // expression was selected.
+  const WizardField quadIntegrand = SelectionField(wxS("f(x)"));
+  const WizardField quadVariable = Field(wxS("x"), wxS("x"));
+  const WizardField epsrel =
+    Field(wxS("epsrel"), wxS("1d-8"),
+          _("Desired relative error of approximation."));
+  const WizardField epsabs =
+    Field(wxS("epsabs"), wxS("0"),
+          _("Desired absolute error of approximation."));
+  const WizardField limit =
+    Field(wxS("limit"), wxS("200"),
+          _("Size of internal work array. limit is the maximum number of "
+            "subintervals to use."));
+  const WizardField maxp1 =
+    Field(wxS("maxp1"), wxS("100"),
+          _("Maximum number of Chebyshev moments. Must be greater than 0."));
+  const WizardField limlst =
+    Field(wxS("limlst"), wxS("10"),
+          _("Upper bound on the number of cycles. Must be greater than or "
+            "equal to 3."));
+  const wxString &integral = context.integralSign;
+
+  catalog.push_back({
+      .ids = {EventIDs::menu_quad_qag},
+      .title = integral + _("(f(x),x,a,b)), Strategy of Aind"),
+      .rule = wxS("quad_qag(#1#,#2#,#3#,#4#,#5#,'epsrel=#6#,'epsabs=#7#,"
+                  "'limit=#8#);"),
+      .fields = {quadIntegrand, quadVariable,
+                 Field(wxS("a"), wxS("0")), Field(wxS("b"), wxS("10")),
+                 Field(wxS("key"), wxS("4"),
+                       _("An integer between 1..6; Higher numbers work "
+                         "better for oscillating integrands")),
+                 epsrel, epsabs, limit}});
+  catalog.push_back({
+      .ids = {EventIDs::menu_quad_qags},
+      .title = integral + _("(f(x),x,a,b)), Epsilon algorithm"),
+      .rule = wxS("quad_qags(#1#,#2#,#3#,#4#,'epsrel=#5#,'epsabs=#6#,"
+                  "'limit=#7#);"),
+      .fields = {quadIntegrand, quadVariable,
+                 Field(wxS("a"), wxS("0")), Field(wxS("b"), wxS("10")),
+                 epsrel, epsabs, limit}});
+  catalog.push_back({
+      .ids = {EventIDs::menu_quad_qagi},
+      .title = integral + _("(f(x),x,a,b), (semi-) infinite interval"),
+      .rule = wxS("quad_qagi(#1#,#2#,#3#,#4#,'epsrel=#5#,'epsabs=#6#,"
+                  "'limit=#7#);"),
+      .fields = {quadIntegrand, quadVariable,
+                 Field(wxS("a"), wxS("0")), Field(wxS("b"), wxS("10")),
+                 epsrel, epsabs, limit}});
+  catalog.push_back({
+      .ids = {EventIDs::menu_quad_qawc},
+      .title = _("Cauchy principal value of f(x)/(x-c), finite interval"),
+      // The rule used to stop at #7#, so c, a and b were passed in the wrong
+      // places and "limit" was never used.
+      .rule = wxS("quad_qawc(#1#,#2#,#3#,#4#,#5#,'epsrel=#6#,'epsabs=#7#,"
+                  "'limit=#8#);"),
+      .fields = {quadIntegrand, quadVariable,
+                 Field(wxS("c"), wxS("4")),
+                 Field(wxS("a"), wxS("0")), Field(wxS("b"), wxS("10")),
+                 epsrel, epsabs, limit}});
+
+  const WizardField qawfLimit =
+    Field(wxS("limit"), wxS("200"),
+          _("Size of internal work array. (limit - limlst)/2 is the maximum "
+            "number of subintervals to use."));
+  for (const auto &[id, trig] :
+         {std::pair<wxWindowID, wxString>{EventIDs::menu_quad_qawf_sin, wxS("sin")},
+          std::pair<wxWindowID, wxString>{EventIDs::menu_quad_qawf_cos, wxS("cos")}}) {
+    catalog.push_back({
+        .ids = {id},
+        .title = integral + wxS("(f(x)*") + trig + wxS("(ω·x),x,a,∞)"),
+        .rule = wxS("quad_qawf(#1#,#2#,#3#,#4#,'") + trig +
+                wxS(",'epsabs=#5#,'limit=#6#,'maxp1=#7#,'limlst=#8#);"),
+        .fields = {quadIntegrand, quadVariable,
+                   Field(wxS("a"), wxS("a")), Field(wxS("ω"), wxS("2")),
+                   Field(wxS("epsabs"), wxS("1d-10"),
+                         _("Desired absolute error of approximation.")),
+                   qawfLimit, maxp1, limlst}});
+  }
+
+  const WizardField qawoLimit =
+    Field(wxS("limit"), wxS("200"),
+          _("Size of internal work array. limit/2 is the maximum number of "
+            "subintervals to use."));
+  for (const auto &[id, trig] :
+         {std::pair<wxWindowID, wxString>{EventIDs::menu_quad_qawo_sin, wxS("sin")},
+          std::pair<wxWindowID, wxString>{EventIDs::menu_quad_qawo_cos, wxS("cos")}}) {
+    catalog.push_back({
+        .ids = {id},
+        .title = integral + wxS("(f(x)*") + trig + wxS("(ω·x),x,a,b)"),
+        // The cos variant used to lack the "b" field, which shifted every
+        // later field by one and left "#10#" in the command.
+        .rule = wxS("quad_qawo(#1#,#2#,#3#,#4#,#5#,'") + trig +
+                wxS(",'epsrel=#6#,'epsabs=#7#,'limit=#8#,'maxp1=#9#,"
+                    "'limlst=#10#);"),
+        .fields = {quadIntegrand, quadVariable,
+                   Field(wxS("a"), wxS("a")), Field(wxS("b"), wxS("b")),
+                   Field(wxS("ω"), wxS("2")),
+                   epsrel, epsabs, qawoLimit, maxp1, limlst}});
+  }
+
+  // quad_qaws()'s weight functions 1 to 4. The values for alpha and beta are
+  // those of the example in Maxima's documentation.
+  const std::array<std::pair<wxWindowID, wxString>, 4> qawsWeights = {{
+      {EventIDs::menu_quad_qaws1, wxS("(f(x)*(x-a)^α(b-x)^β,x,a,b)")},
+      {EventIDs::menu_quad_qaws2,
+       wxS("(f(x)*(x-a)^α(b-x)^β·log(x-a),x,a,b)")},
+      {EventIDs::menu_quad_qaws3,
+       wxS("(f(x)*(x-a)^α(b-x)^β·log(b-x),x,a,b)")},
+      {EventIDs::menu_quad_qaws4,
+       wxS("(f(x)*(x-a)^α(b-x)^β·log(x-a)·log(b-x),x,a,b)")}}};
+  for (std::size_t i = 0; i < qawsWeights.size(); i++)
+    catalog.push_back({
+        .ids = {qawsWeights[i].first},
+        .title = integral + qawsWeights[i].second,
+        .rule = wxString::Format(
+          wxS("quad_qaws(#1#,#2#,#3#,#4#,#5#,#6#,%u,'epsrel=#7#,'epsabs=#8#,"
+              "'limit=#9#);"),
+          static_cast<unsigned>(i + 1)),
+        .fields = {quadIntegrand, quadVariable,
+                   Field(wxS("a"), wxS("1")), Field(wxS("b"), wxS("2")),
+                   Field(wxS("α"), wxS("-0.5")), Field(wxS("β"), wxS("-0.5")),
+                   epsrel, epsabs, limit}});
+
+  catalog.push_back({
+      .ids = {EventIDs::menu_quad_qagp},
+      .title = integral + _("(f(x),x,y) with singularities+discontinuities"),
+      .rule = wxS("quad_qagp(#1#,#2#,#3#,#4#,[#5#],'epsrel=#6#,'epsabs=#7#,"
+                  "'limit=#8#);"),
+      .fields = {quadIntegrand, quadVariable,
+                 Field(wxS("a"), wxS("1")), Field(wxS("b"), wxS("2")),
+                 Field(wxS("points"), wxS(".5,.75")),
+                 epsrel, epsabs, limit}});
 
   return catalog;
 }
