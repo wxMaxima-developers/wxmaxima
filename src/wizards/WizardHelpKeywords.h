@@ -35,8 +35,9 @@ namespace wxm {
     \p commandRule is the template the wizard fills in, e.g.
     "ode2(#1#,#2#,#3#);". The result lists, in the order they first appear and
     each once, every identifier ("ode2") and every operator the manual might
-    document ("'", "''", "!", "#", "\\", and ";" or "$" when they separate two
-    statements). Whether the manual actually has an entry for each of them is
+    document ("'", "''", "!", "#", "\\", the matrix operators "." and "^^"
+    -- and "*", "^" and "[", but only in a command consisting of nothing but
+    operators -- and ";" or "$" when they separate two statements). Whether the manual actually has an entry for each of them is
     for the caller to check: this only does the text analysis, so it can be
     tested without a manual.
 

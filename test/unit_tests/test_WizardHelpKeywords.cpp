@@ -76,6 +76,25 @@ SCENARIO("Operators and repeated words") {
   }
 }
 
+SCENARIO("The matrix operators") {
+  THEN("the matrix product and the matrix power are offered") {
+    CHECK(WizardHelpKeywords(wxS("#1#.#2#;")) == Keywords{wxS(".")});
+    CHECK(WizardHelpKeywords(wxS("#1#^^#2#;")) == Keywords{wxS("^^")});
+  }
+  THEN("a decimal point is not the matrix product") {
+    CHECK(WizardHelpKeywords(wxS("f(#1#,0.5,.5,5.);")) == Keywords{wxS("f")});
+  }
+  THEN("* and ^ are offered only for a command that is nothing else") {
+    CHECK(WizardHelpKeywords(wxS("#1#*#2#;")) == Keywords{wxS("*")});
+    CHECK(WizardHelpKeywords(wxS("#1#^#2#;")) == Keywords{wxS("^")});
+    CHECK(WizardHelpKeywords(wxS("#1#[#2#];")) == Keywords{wxS("[")});
+    CHECK(WizardHelpKeywords(wxS("[#1#];")) == Keywords{wxS("[")});
+    CHECK(WizardHelpKeywords(wxS("f(#1#)^2*x;")) ==
+          (Keywords{wxS("f"), wxS("x")}));
+    CHECK(WizardHelpKeywords(wxS("f([#1#]);")) == Keywords{wxS("f")});
+  }
+}
+
 int main(int argc, char *argv[]) {
   return Catch::Session().run(argc, argv);
 }
