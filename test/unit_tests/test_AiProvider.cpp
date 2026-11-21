@@ -840,3 +840,20 @@ SCENARIO("Parsing a provider's model list") {
     }
   }
 }
+
+SCENARIO("Which failed chat turns are retried, and after how long") {
+  THEN("rate limits, overload and 5xx back off 500 ms, then 1000 ms, then give up") {
+    for (int status : {429, 529, 500, 502, 503, 504}) {
+      CHECK(RetryDelayMs(status, 1) == 500);
+      CHECK(RetryDelayMs(status, 2) == 1000);
+      CHECK(RetryDelayMs(status, 3) == -1);
+    }
+  }
+  AND_THEN("errors the user has to fix are reported at once") {
+    for (int status : {400, 401, 403, 404})
+      CHECK(RetryDelayMs(status, 1) == -1);
+  }
+  AND_THEN("a failure with no HTTP status is not retried") {
+    CHECK(RetryDelayMs(0, 1) == -1);
+  }
+}
