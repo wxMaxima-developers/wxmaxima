@@ -122,6 +122,7 @@ Public Types</h2></td></tr>
 , <br />
 &#160;&#160;<a class="el" href="classwxMaxima.html#a95a985202220a6392975ffe21c92cafaaef18e7887e0f97881fe8b718ff2dd429">EXIT_IMAGE_LOAD_FAILED</a> = 94
 , <a class="el" href="classwxMaxima.html#a95a985202220a6392975ffe21c92cafaafb378826b0d3e1dbbd6955adea320117">EXIT_IMAGE_DECODE_FAILED</a> = 95
+, <a class="el" href="classwxMaxima.html#a95a985202220a6392975ffe21c92cafaabca9bb16ea591421e982745023c690a9">EXIT_SCREENSHOT_FAILED</a> = 96
 <br />
  }</td></tr>
 <tr class="memdesc:a95a985202220a6392975ffe21c92cafa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dedicated exit codes for a &ndash;batch/&ndash;exit-on-error run that aborted (GH #2276): every reason used to share the same generic 1, which left an end user with no way to tell <em>why</em> a batch run failed without re-reading its log.  <a href="classwxMaxima.html#a95a985202220a6392975ffe21c92cafa">More...</a><br /></td></tr>
@@ -341,6 +342,9 @@ static const wxString&#160;</td><td class="memItemRight" valign="bottom"><b>Get_
 <tr class="memitem:ae657182535f1c39deba3e78cb5589c83"><td class="memItemLeft" align="right" valign="top"><a id="ae657182535f1c39deba3e78cb5589c83" name="ae657182535f1c39deba3e78cb5589c83"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>GetExitCode</b> ()</td></tr>
 <tr class="separator:ae657182535f1c39deba3e78cb5589c83"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ea04088e5eac97ae95cafddbd81bd0f"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a9ea04088e5eac97ae95cafddbd81bd0f">RequestScreenshot</a> (const wxString &amp;file, const <a class="el" href="structwxm_1_1ScreenshotScene.html">wxm::ScreenshotScene</a> &amp;scene)</td></tr>
+<tr class="memdesc:a9ea04088e5eac97ae95cafddbd81bd0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make this session's window save a screenshot and exit (&ndash;screenshot)  <br /></td></tr>
+<tr class="separator:a9ea04088e5eac97ae95cafddbd81bd0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a26a749ee8a2ebb3ceb830ffddee88e2b"><td class="memItemLeft" align="right" valign="top"><a id="a26a749ee8a2ebb3ceb830ffddee88e2b" name="a26a749ee8a2ebb3ceb830ffddee88e2b"></a>
 static std::size_t&#160;</td><td class="memItemRight" valign="bottom"><b>CountWindows</b> ()</td></tr>
 <tr class="separator:a26a749ee8a2ebb3ceb830ffddee88e2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1118,6 +1122,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 </td></tr>
 <tr><td class="fieldname"><a id="a95a985202220a6392975ffe21c92cafaafb378826b0d3e1dbbd6955adea320117" name="a95a985202220a6392975ffe21c92cafaafb378826b0d3e1dbbd6955adea320117"></a>EXIT_IMAGE_DECODE_FAILED&#160;</td><td class="fielddoc"><p>An embedded image failed to decode/render (GH #2178, &ndash;debug only). </p>
 </td></tr>
+<tr><td class="fieldname"><a id="a95a985202220a6392975ffe21c92cafaabca9bb16ea591421e982745023c690a9" name="a95a985202220a6392975ffe21c92cafaabca9bb16ea591421e982745023c690a9"></a>EXIT_SCREENSHOT_FAILED&#160;</td><td class="fielddoc"><p>&ndash;screenshot could not show or save what it was asked for </p>
+</td></tr>
 </table>
 
 </div>
@@ -1658,7 +1664,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 </table>
 </div><div class="memdoc">
 <hr  />
- <h2><a class="anchor" id="autotoc_md1209"></a>
+ <h2><a class="anchor" id="autotoc_md1213"></a>
 Getting configuration</h2>
 
 </div>
@@ -1756,7 +1762,7 @@ Getting configuration</h2>
 
 <p>Inserts command cmd into the worksheet. </p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md1212"></a>
+ <h2><a class="anchor" id="autotoc_md1216"></a>
 Menu and button events</h2>
 
 </div>
@@ -1792,7 +1798,7 @@ Menu and button events</h2>
 <p>Moving the screen update to this function, as well, makes sure that if we get events faster than we can update the screen that doesn't cause lag, but causes screen updates for old events to be dropped if we already have new ones. This normally makes programs feel way more responsive.</p>
 <p>The worksheet is additionally refreshed by a timer task in case that th computer is too busy to ever reach the idle task at all.</p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md1211"></a>
+ <h2><a class="anchor" id="autotoc_md1215"></a>
 Idle event</h2>
 
 </div>
@@ -1823,6 +1829,45 @@ Idle event</h2>
 
 <p>Processes clicks on suggestions Make the menu item, toolbars and panes visible that should be visible right now. </p>
 <p>Tries to evaluate next group cell in queue. </p>
+
+</div>
+</div>
+<a id="a9ea04088e5eac97ae95cafddbd81bd0f" name="a9ea04088e5eac97ae95cafddbd81bd0f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ea04088e5eac97ae95cafddbd81bd0f">&#9670;&#160;</a></span>RequestScreenshot()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void wxMaxima::RequestScreenshot </td>
+          <td>(</td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
+          <td class="paramname"><em>file</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structwxm_1_1ScreenshotScene.html">wxm::ScreenshotScene</a> &amp;&#160;</td>
+          <td class="paramname"><em>scene</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Make this session's window save a screenshot and exit (&ndash;screenshot) </p>
+<p>Once the document has been evaluated and <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> is idle, the target is shown, saved as a PNG to file, and the window closes without asking whether to save the worksheet. See <a class="el" href="Screenshot_8h.html" title="Screenshots for the manual, made by wxMaxima itself (–screenshot).">Screenshot.h</a>. </p>
 
 </div>
 </div>
@@ -1927,13 +1972,13 @@ Idle event</h2>
 <p>Set the current working directory file I/O from maxima is relative to. </p>
 <p>ServerEvent is triggered when maxima connects to the socket server.</p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md1206"></a>
+ <h2><a class="anchor" id="autotoc_md1210"></a>
 Socket stuff</h2>
 <hr  />
- <h2><a class="anchor" id="autotoc_md1207"></a>
+ <h2><a class="anchor" id="autotoc_md1211"></a>
 Maxima process stuff</h2>
 <hr  />
- <h2><a class="anchor" id="autotoc_md1208"></a>
+ <h2><a class="anchor" id="autotoc_md1212"></a>
 Dealing with stuff read from the socket</h2>
 
 </div>
@@ -2037,7 +2082,7 @@ Dealing with stuff read from the socket</h2>
       </table>
 </div><div class="memdoc">
 <hr  />
- <h2><a class="anchor" id="autotoc_md1210"></a>
+ <h2><a class="anchor" id="autotoc_md1214"></a>
 Tips and help</h2>
 
 </div>
@@ -2234,7 +2279,7 @@ Tips and help</h2>
 
 <p>Enables and disables the Right menu buttons. </p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md1213"></a>
+ <h2><a class="anchor" id="autotoc_md1217"></a>
 Menu and button events</h2>
 
 </div>
@@ -2292,7 +2337,7 @@ Menu and button events</h2>
 
 <p>Updates the slider to show the right frame. </p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md1214"></a>
+ <h2><a class="anchor" id="autotoc_md1218"></a>
 Plot Slider</h2>
 
 </div>
