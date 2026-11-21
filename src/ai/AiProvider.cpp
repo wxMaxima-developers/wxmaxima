@@ -23,6 +23,7 @@
 #include <nlohmann/json.hpp>
 #if wxUSE_WEBREQUEST
 #include <wx/base64.h>
+#include <wx/timer.h>
 #include <wx/webrequest.h>
 #endif
 #if wxUSE_SECRETSTORE
@@ -32,9 +33,23 @@
 
 #include "StringUtils.h"
 
+#define LLM_RETRY_IMPLEMENTATION
+#include <llm_retry/llm_retry.hpp>
+
 using json = nlohmann::json;
 
 namespace {
+
+//! How long to wait before retrying a chat turn that failed with HTTP
+//! `status` on try number `attempt`, or -1 if it should not be retried.
+//! 408, 429 (rate limited), 500, 502, 503, 504 and 529 are transient.
+[[maybe_unused]] long RetryDelayMs(int status, int attempt) {
+  const llm::RetryConfig cfg;
+  if ((status <= 0) || (attempt >= cfg.max_attempts) ||
+      !llm::detail::is_retryable_code(status, cfg.retry_on_http_codes))
+    return -1;
+  return static_cast<long>(llm::detail::compute_delay_ms(attempt, cfg));
+}
 
 //! Drops `suffix` from the end of `url` if it is there, then any trailing
 //! slashes. Shared by the ModelsRequestUrl() implementations, which all
@@ -835,7 +850,8 @@ AiRequestCanceller AiProvider::SendChat(
   const std::vector<AiChatMessage> &history,
   std::function<void(bool ok, const wxString &replyOrError)> callback,
   std::function<void(const wxString &requestBody)> onRequest,
-  std::function<void(bool ok, const wxString &responseBodyOrDetail)> onResponse) {
+  std::function<void(bool ok, const wxString &responseBodyOrDetail)> onResponse,
+  int attempt) {
 #if wxUSE_WEBREQUEST
   wxString body = self->BuildRequestBody(context, history);
   if (onRequest)
@@ -890,9 +906,43 @@ AiRequestCanceller AiProvider::SendChat(
   // without this guard that would invoke `callback` a second time for one
   // chat turn.
   auto done = std::make_shared<bool>(false);
+  // Once a retry is scheduled, this holds the canceller for it.
+  auto retry = std::make_shared<AiRequestCanceller>();
+  auto scheduleRetry = [self, owner, context, history, callback, onRequest,
+                        onResponse, attempt, retry](int status) {
+    const long delayMs = RetryDelayMs(status, attempt);
+    if (delayMs < 0)
+      return false;
+    auto waiting = std::make_shared<bool>(true);
+    auto timer = std::make_shared<wxTimer>();
+    timer->SetOwner(timer.get());
+    std::weak_ptr<AiRequestCanceller> weakRetry = retry;
+    timer->Bind(wxEVT_TIMER, [self, owner, context, history, callback, onRequest,
+                              onResponse, attempt, waiting, weakRetry](wxTimerEvent &) {
+      auto pending = weakRetry.lock();
+      if (!pending || !*waiting)
+        return;
+      *waiting = false;
+      // Destroy the timer only after its own event has been handled.
+      owner->CallAfter([keep = std::move(*pending)]() {});
+      *pending = AiProvider::SendChat(self, owner, context, history, callback,
+                                    onRequest, onResponse, attempt + 1);
+    });
+    *retry = [timer, waiting, callback, onResponse]() {
+      if (!*waiting)
+        return;
+      *waiting = false;
+      timer->Stop();
+      if (onResponse)
+        onResponse(false, _("Request cancelled."));
+      callback(false, _("Request cancelled."));
+    };
+    timer->StartOnce(static_cast<int>(delayMs));
+    return true;
+  };
   owner->Bind(
     wxEVT_WEBREQUEST_STATE,
-    [requestId, self, callback, onResponse, done](wxWebRequestEvent &evt) {
+    [requestId, self, callback, onResponse, done, scheduleRetry](wxWebRequestEvent &evt) {
       if (evt.GetId() != requestId)
         return;
       if (*done)
@@ -906,6 +956,8 @@ AiRequestCanceller AiProvider::SendChat(
           *done = true;
           if (onResponse)
             onResponse(false, responseBody);
+          if (scheduleRetry(status))
+            return;
           callback(false, wxString::Format(
                             _("%s returned HTTP %d: %s"), self->Name(), status,
                             responseBody.Left(500)));
@@ -964,6 +1016,11 @@ AiRequestCanceller AiProvider::SendChat(
       // string) -- pass it on verbatim rather than throwing it away.
       case wxWebRequest::State_Failed: {
         *done = true;
+        if (evt.GetResponse().IsOk() && scheduleRetry(evt.GetResponse().GetStatus())) {
+          if (onResponse)
+            onResponse(false, evt.GetResponse().AsString());
+          return;
+        }
         wxString detail = evt.GetErrorDescription();
         // A failed request can still have received a perfectly real HTTP
         // response: not every backend routes an error status through
@@ -1011,7 +1068,11 @@ AiRequestCanceller AiProvider::SendChat(
   // canceller. The same `done` flag the handler above uses guards it:
   // once any terminal state has been reported, cancelling is a no-op
   // rather than a call into a request that has already finished.
-  return [request, done]() mutable {
+  return [request, done, retry]() mutable {
+    if (*retry) {
+      (*retry)();
+      return;
+    }
     if (*done)
       return;
     request.Cancel();

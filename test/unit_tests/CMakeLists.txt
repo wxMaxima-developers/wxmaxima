@@ -332,6 +332,15 @@ target_link_libraries(test_UiLanguages PRIVATE ${wxWidgets_LIBRARIES})
 add_test(NAME UiLanguages
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_UiLanguages>")
 
+# What --screenshot-of may name is a pure string function. GUI-free.
+add_executable(test_ScreenshotTarget
+    test_ScreenshotTarget.cpp ${CMAKE_SOURCE_DIR}/src/Screenshot.cpp
+    ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
+target_include_directories(test_ScreenshotTarget PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_link_libraries(test_ScreenshotTarget PRIVATE ${wxWidgets_LIBRARIES})
+add_test(NAME ScreenshotTarget
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_ScreenshotTarget>")
+
 # --language has to be found before the command line is parsed, since the
 # parser's own messages need the language; that look at the arguments is a
 # pure string function. GUI-free.

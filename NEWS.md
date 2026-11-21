@@ -3,6 +3,14 @@
 - Languages whose manual is less than 5% translated no longer install a
   copy of the English manual under their own name; the help falls back to
   the English one, as it did. This saves 2.5 MB of identical files.
+- Most of the manual's screenshots are now made by wxMaxima itself, from the
+  scenes in `info/screenshots/`: `ninja screenshots` regenerates them. The
+  new `--screenshot=<file>` option this uses evaluates the
+  file it is given, captures the window, the worksheet's content, a sidebar
+  or a page of the configuration dialog, and exits.
+- Export Matrix/List to CSV: the file name is now quoted properly. A
+  double quote in it could inject Maxima code, and the backslashes of a
+  Windows path were lost, so the file landed somewhere else.
 - wxdraw plots work again with Maxima 5.49 on GCL (Ubuntu 26.04's
   Maxima): its `system()` no longer went through a shell, so gnuplot was
   asked to load a file whose name included the quotes around it.

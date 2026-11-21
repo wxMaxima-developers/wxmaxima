@@ -239,6 +239,11 @@ Settings Interpret(const wxCmdLineParser &parser) {
     settings.wxMathMLLisp = value;
   if (parser.Found(wxS("m"), &value))
     settings.maxima = value;
+  if (parser.Found(wxS("screenshot"), &value)) {
+    wxFileName screenshotFile(value);
+    screenshotFile.MakeAbsolute();
+    settings.screenshot = screenshotFile.GetFullPath();
+  }
 
   // Appended to Maxima's command line as they are: --extra-args exists to
   // pass several arguments at once.

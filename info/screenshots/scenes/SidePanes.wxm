@@ -1,0 +1,24 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [wxMaxima: title   start ]
+Taylor series
+   [wxMaxima: title   end   ] */
+
+/* [wxMaxima: input   start ] */
+taylor(sin(x),x,0,10);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: title   start ]
+Integer numbers
+   [wxMaxima: title   end   ] */
+
+/* [wxMaxima: section start ]
+Factorization
+   [wxMaxima: section end   ] */
+
+/* [wxMaxima: input   start ] */
+n:1234567890;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+factor(n);
+/* [wxMaxima: input   end   ] */
