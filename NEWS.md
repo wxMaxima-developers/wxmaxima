@@ -1,5 +1,10 @@
 # Current development version
 
+- Most of the manual's screenshots are now made by wxMaxima itself, from the
+  scenes in `info/screenshots/`: `ninja screenshots` regenerates them. The
+  new `--screenshot=<file>` option this uses evaluates the
+  file it is given, captures the window, the worksheet's content, a sidebar
+  or a page of the configuration dialog, and exits.
 - Export Matrix/List to CSV: the file name is now quoted properly. A
   double quote in it could inject Maxima code, and the backslashes of a
   Windows path were lost, so the file landed somewhere else.

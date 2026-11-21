@@ -186,6 +186,7 @@ set(SOURCE_FILES
     Notification.cpp
     RecentDocuments.cpp
     RegexSearch.cpp
+    Screenshot.cpp
     StatusBar.cpp
     StringUtils.cpp
     SvgBitmap.cpp
