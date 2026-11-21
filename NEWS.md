@@ -3,6 +3,13 @@
 - Export Matrix/List to CSV: the file name is now quoted properly. A
   double quote in it could inject Maxima code, and the backslashes of a
   Windows path were lost, so the file landed somewhere else.
+- wxdraw plots work again with Maxima 5.49 on GCL (Ubuntu 26.04's
+  Maxima): its `system()` no longer went through a shell, so gnuplot was
+  asked to load a file whose name included the quotes around it.
+- New command-line option `--language=<lang>` (for example `de`, `pt_BR`
+  or `zh_CN`) runs wxMaxima in another UI language for one session
+  without changing the configured one, for checking a translation or making
+  screenshots for a translated manual.
 - Matrix menu: its standard wizards moved into the wizard table. The
   LAPACK wizards' commands now end with a semicolon instead of waiting for
   one to be typed, and the wizards that consist of nothing but an operator
