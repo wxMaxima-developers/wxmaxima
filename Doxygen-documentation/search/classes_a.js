@@ -16,7 +16,8 @@ var searchData=
   ['limitwiz_13',['LimitWiz',['../classLimitWiz.html',1,'']]],
   ['listcell_14',['ListCell',['../classListCell.html',1,'']]],
   ['listsortwiz_15',['ListSortWiz',['../classListSortWiz.html',1,'']]],
-  ['location_16',['Location',['../structOutputNavigation_1_1Location.html',1,'OutputNavigation']]],
-  ['loggingmessagedialog_17',['LoggingMessageDialog',['../classLoggingMessageDialog.html',1,'']]],
-  ['longnumbercell_18',['LongNumberCell',['../classLongNumberCell.html',1,'']]]
+  ['llmerror_16',['LLMError',['../structllm_1_1LLMError.html',1,'llm']]],
+  ['location_17',['Location',['../structOutputNavigation_1_1Location.html',1,'OutputNavigation']]],
+  ['loggingmessagedialog_18',['LoggingMessageDialog',['../classLoggingMessageDialog.html',1,'']]],
+  ['longnumbercell_19',['LongNumberCell',['../classLongNumberCell.html',1,'']]]
 ];
