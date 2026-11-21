@@ -165,6 +165,22 @@ SCENARIO("Binary contents are recognised") {
   }
 }
 
+SCENARIO("Exporting to CSV quotes the file name") {
+  GIVEN("a file name containing a double quote") {
+    THEN("it can't end the string and inject code") {
+      CHECK(wxm::WriteDataCommand(wxS("m"), wxS("a\"),system(\"rm x"),
+                                  wxS("'comma")) ==
+            wxS("write_data(m, \"a\\\"),system(\\\"rm x\", 'comma);"));
+    }
+  }
+  GIVEN("a Windows path") {
+    THEN("its backslashes survive") {
+      CHECK(wxm::WriteDataCommand(wxS("m"), wxS("C:\\x.csv"), wxS("'tab")) ==
+            wxS("write_data(m, \"C:\\\\x.csv\", 'tab);"));
+    }
+  }
+}
+
 SCENARIO("File names are quoted for Maxima") {
   GIVEN("a plain file name") {
     THEN("it is just put in quotes") {

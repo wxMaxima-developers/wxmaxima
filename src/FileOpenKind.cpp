@@ -143,4 +143,10 @@ wxString MaximaStringLiteral(const wxString &str) {
   return wxS("\"") + escaped + wxS("\"");
 }
 
+wxString WriteDataCommand(const wxString &data, const wxString &file,
+                          const wxString &separator) {
+  return wxS("write_data(") + data + wxS(", ") + MaximaStringLiteral(file) +
+    wxS(", ") + separator + wxS(");");
+}
+
 } // namespace wxm
