@@ -73,6 +73,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><ul>
+<li>Export Matrix/List to CSV: the file name is now quoted properly. <a class="el" href="classA.html">A</a> double quote in it could inject <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> code, and the backslashes of a Windows path were lost, so the file landed somewhere else.</li>
 <li>wxdraw plots work again with <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> 5.49 on GCL (Ubuntu 26.04's <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>): its <code>system()</code> no longer went through a shell, so gnuplot was asked to load a file whose name included the quotes around it.</li>
 <li>New command-line option <code>--language=&lt;lang&gt;</code> (for example <code>de</code>, <code>pt_BR</code> or <code>zh_CN</code>) runs <a class="el" href="classwxMaxima.html">wxMaxima</a> in another UI language for one session without changing the configured one, for checking a translation or making screenshots for a translated manual.</li>
 <li>Matrix menu: its standard wizards moved into the wizard table. The LAPACK wizards' commands now end with a semicolon instead of waiting for one to be typed, and the wizards that consist of nothing but an operator (matrix product, matrix power, Hadamard product and exponent, a matrix row as a list) offer help on that operator.</li>

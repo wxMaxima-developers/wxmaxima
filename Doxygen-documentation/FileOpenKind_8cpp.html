@@ -110,6 +110,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a2e55b65129a6525a468b5a965eae30b5"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="FileOpenKind_8cpp.html#a2e55b65129a6525a468b5a965eae30b5">wxm::MaximaStringLiteral</a> (const wxString &amp;str)</td></tr>
 <tr class="memdesc:a2e55b65129a6525a468b5a965eae30b5"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classA.html">A</a> file name as a <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> string literal, quotes included.  <br /></td></tr>
 <tr class="separator:a2e55b65129a6525a468b5a965eae30b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abdcfd3e72912eeef52103ba754efc760"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="FileOpenKind_8cpp.html#abdcfd3e72912eeef52103ba754efc760">wxm::WriteDataCommand</a> (const wxString &amp;data, const wxString &amp;file, const wxString &amp;separator)</td></tr>
+<tr class="memdesc:abdcfd3e72912eeef52103ba754efc760"><td class="mdescLeft">&#160;</td><td class="mdescRight">The write_data() command the "Export Matrix/List to CSV" wizards send.  <br /></td></tr>
+<tr class="separator:abdcfd3e72912eeef52103ba754efc760"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Decides whether <a class="el" href="classwxMaxima.html">wxMaxima</a> can open a file it was handed, and how. </p>
@@ -195,6 +198,43 @@ Functions</h2></td></tr>
 
 <p>Why <a class="el" href="classwxMaxima.html">wxMaxima</a> won't open this file, or an empty string if it will. </p>
 <p>Combines ClassifyFileForOpening() with FileLooksBinary() for the kinds that are text. The file has to exist for the content check; whether it exists is not checked here. </p>
+
+</div>
+</div>
+<a id="abdcfd3e72912eeef52103ba754efc760" name="abdcfd3e72912eeef52103ba754efc760"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abdcfd3e72912eeef52103ba754efc760">&#9670;&#160;</a></span>WriteDataCommand()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxString wxm::WriteDataCommand </td>
+          <td>(</td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
+          <td class="paramname"><em>file</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
+          <td class="paramname"><em>separator</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The write_data() command the "Export Matrix/List to CSV" wizards send. </p>
+<p><code>data</code> is <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> code naming what to write, <code>separator</code> the separator as <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> code ('comma, 'tab, ...). The file name goes through MaximaStringLiteral(): it used to be pasted between plain quotes, so a quote in it could inject <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> code, and every backslash of a Windows path was lost. </p>
 
 </div>
 </div>

@@ -20,11 +20,12 @@ var searchData=
   ['write_5fcbor_17',['write_cbor',['../classdetail_1_1binary__writer.html#ae6ab36b61e8ad346e75d9f9abc983d4c',1,'detail::binary_writer']]],
   ['write_5fmsgpack_18',['write_msgpack',['../classdetail_1_1binary__writer.html#adc3dbefa80134d3530a1b3f1c9629586',1,'detail::binary_writer']]],
   ['write_5fubjson_19',['write_ubjson',['../classdetail_1_1binary__writer.html#a972bec9688cbc5673bb482bbe9543e2a',1,'detail::binary_writer']]],
-  ['writesettings_20',['WriteSettings',['../classConfigDialogue.html#a6a3d11ed034adf263350d8aa54a7e28d',1,'ConfigDialogue::WriteSettings()'],['../classConfiguration.html#a53af46fba084e7e9f45fabbfb8eb4030',1,'Configuration::WriteSettings(const wxString &amp;file={})']]],
-  ['writestyles_21',['WriteStyles',['../classConfiguration.html#a4f7f692a8178c2062765ddafd0fd4782',1,'Configuration']]],
-  ['writesymbolshortcuts_22',['WriteSymbolShortcuts',['../classConfiguration.html#ae94c9dbc1ea4b0b7afbfe323f3c307a1',1,'Configuration']]],
-  ['writeto_23',['WriteTo',['../classFontRenderabilityCache.html#abd83076fd77f72751a213f6c4ae84077',1,'FontRenderabilityCache']]],
-  ['writetomaximastdin_24',['WriteToMaximaStdin',['../classMaximaProcessManager.html#aca13067a67f4d859b46459aa96bbb3b4',1,'MaximaProcessManager']]],
-  ['wxmaximaicon_25',['wxMaximaIcon',['../wxMaximaIcon_8cpp.html#aab835d20b3d7db04a8c1198dcbef93c9',1,'wxMaximaIcon():&#160;wxMaximaIcon.cpp'],['../wxMaximaIcon_8h.html#aab835d20b3d7db04a8c1198dcbef93c9',1,'wxMaximaIcon():&#160;wxMaximaIcon.cpp']]],
-  ['wxmaximaoperatingsystemdescription_26',['wxMaximaOperatingSystemDescription',['../wxMaximaOSDescription_8cpp.html#a9456b72b11c75f952bb7d4a99d5a9232',1,'wxMaximaOperatingSystemDescription():&#160;wxMaximaOSDescription.cpp'],['../wxMaximaOSDescription_8h.html#a9456b72b11c75f952bb7d4a99d5a9232',1,'wxMaximaOperatingSystemDescription():&#160;wxMaximaOSDescription.cpp']]]
+  ['writedatacommand_20',['WriteDataCommand',['../FileOpenKind_8cpp.html#abdcfd3e72912eeef52103ba754efc760',1,'wxm']]],
+  ['writesettings_21',['WriteSettings',['../classConfigDialogue.html#a6a3d11ed034adf263350d8aa54a7e28d',1,'ConfigDialogue::WriteSettings()'],['../classConfiguration.html#a53af46fba084e7e9f45fabbfb8eb4030',1,'Configuration::WriteSettings(const wxString &amp;file={})']]],
+  ['writestyles_22',['WriteStyles',['../classConfiguration.html#a4f7f692a8178c2062765ddafd0fd4782',1,'Configuration']]],
+  ['writesymbolshortcuts_23',['WriteSymbolShortcuts',['../classConfiguration.html#ae94c9dbc1ea4b0b7afbfe323f3c307a1',1,'Configuration']]],
+  ['writeto_24',['WriteTo',['../classFontRenderabilityCache.html#abd83076fd77f72751a213f6c4ae84077',1,'FontRenderabilityCache']]],
+  ['writetomaximastdin_25',['WriteToMaximaStdin',['../classMaximaProcessManager.html#aca13067a67f4d859b46459aa96bbb3b4',1,'MaximaProcessManager']]],
+  ['wxmaximaicon_26',['wxMaximaIcon',['../wxMaximaIcon_8cpp.html#aab835d20b3d7db04a8c1198dcbef93c9',1,'wxMaximaIcon():&#160;wxMaximaIcon.cpp'],['../wxMaximaIcon_8h.html#aab835d20b3d7db04a8c1198dcbef93c9',1,'wxMaximaIcon():&#160;wxMaximaIcon.cpp']]],
+  ['wxmaximaoperatingsystemdescription_27',['wxMaximaOperatingSystemDescription',['../wxMaximaOSDescription_8cpp.html#a9456b72b11c75f952bb7d4a99d5a9232',1,'wxMaximaOperatingSystemDescription():&#160;wxMaximaOSDescription.cpp'],['../wxMaximaOSDescription_8h.html#a9456b72b11c75f952bb7d4a99d5a9232',1,'wxMaximaOperatingSystemDescription():&#160;wxMaximaOSDescription.cpp']]]
 ];
