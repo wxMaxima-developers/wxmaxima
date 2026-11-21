@@ -1337,12 +1337,14 @@ Usually you can start programs with a graphical user interface just by clicking 
 - `--pipe`:                        Pipe messages from Maxima to stderr.
 - `--debug`: Enable costly debug checks.
 - `--exit-on-error`:               Close the program on any maxima error.
+- `--language=<lang>`: Use this language for the user interface instead of the one configured in the settings, for example `de`, `pt_BR` or `zh_CN`. The setting is not saved. Useful for checking a translation, or for making screenshots for a translated manual.
 - `-f` or `--ini=<str>`: Use the init file that was given as an argument to this command-line switch
 - `-u`, `--use-version=<str>`:     Use maxima version `<str>`.
 - `-l`, `--lisp=<str>`:              Use a Maxima compiled with Lisp compiler `<str>`.
 - `-X`, `--extra-args=<str>`:        Allows to specify extra Maxima arguments
 - `-m` or `--maxima=<str>`:    allows specifying the location of the _maxima_ binary
 - `--enableipc`: Lets Maxima control wxMaxima via interprocess communications. Use this option with care.
+- `--screenshot=<file>`: Evaluate the file that is opened, save a screenshot as `<file>` once _Maxima_ is idle and exit. What the screenshot shows is read from the `[Screenshot]` group of the configuration file given by `--ini`. Used for making the screenshots in this manual; see `info/screenshots/README.md` in wxMaxima's source code.
 - `--wxmathml-lisp=<str>`:   Location of wxMathML.lisp (if not the built-in should be used, mainly for developers).
 
 Instead of a minus, some operating systems might use a dash in front of the command-line switches.

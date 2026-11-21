@@ -149,6 +149,7 @@ set(SOURCE_FILES
     AutocompletePopup.cpp
     BTextCtrl.cpp
     CellPointers.cpp
+    CommandLinePrescan.cpp
     CompositeDataObject.cpp
     Configuration.cpp
     Styles.cpp
@@ -185,6 +186,7 @@ set(SOURCE_FILES
     Notification.cpp
     RecentDocuments.cpp
     RegexSearch.cpp
+    Screenshot.cpp
     StatusBar.cpp
     StringUtils.cpp
     SvgBitmap.cpp

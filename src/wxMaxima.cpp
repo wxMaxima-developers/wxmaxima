@@ -2147,9 +2147,141 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
       m_fileIO.SaveFile(false);
       CallAfter([this]{Close();});
     }
+  if (!m_screenshotFile.IsEmpty() && !m_screenshotStarted && m_client &&
+      !m_maximaBusy && !m_evalOnStartup && m_fileToOpen.IsEmpty() &&
+      GetWorksheet()->GetEvaluationQueue().Empty())
+    StartScreenshot();
+
   // If we reach this point wxMaxima truly is idle
   // => Tell wxWidgets it can process its own idle commands, as well.
   event.Skip();
+}
+
+void wxMaxima::StartScreenshot() {
+  m_screenshotStarted = true;
+  wxLogMessage(_("Making the screenshot %s"), m_screenshotFile);
+  // Blocks until every image (a plot from the last cell, say) is decoded:
+  // a screenshot of a plot that is still loading would show nothing.
+  int imagesDataUnavailable = 0;
+  int imagesDecodeFailed = 0;
+  if (GetWorksheet()->GetTree())
+    GetWorksheet()->GetTree()->TallyImageLoadFailures_RecursivelyList(
+      imagesDataUnavailable, imagesDecodeFailed);
+
+  if (m_screenshotScene.setSidebars) {
+    // Every pane but the worksheet and the toolbar is a sidebar.
+    wxAuiPaneInfoArray &panes = m_manager.GetAllPanes();
+    for (std::size_t i = 0; i < panes.GetCount(); ++i) {
+      const wxString &name = panes[i].name;
+      if ((name == wxS("console")) || (name == wxS("toolbar")))
+        continue;
+      const bool shown =
+        (m_screenshotScene.sidebars.Index(name) != wxNOT_FOUND);
+      panes[i].Show(shown);
+      // A sidebar's width is remembered per dock; a fresh configuration's
+      // is too narrow for most of them to show what they are about.
+      if (shown && (m_screenshotScene.sidebarWidth > 0))
+        panes[i].MinSize(m_screenshotScene.sidebarWidth, -1);
+    }
+    m_manager.Update();
+  }
+  if ((m_screenshotScene.size != wxDefaultSize) &&
+      (m_screenshotScene.target.kind !=
+       wxm::ScreenshotTarget::Kind::Config)) {
+    Maximize(false);
+    SetSize(m_screenshotScene.size);
+  }
+
+  wxWindow *window = this;
+  wxDialog *dialog = nullptr;
+  switch (m_screenshotScene.target.kind) {
+  case wxm::ScreenshotTarget::Kind::Window:
+    break;
+  case wxm::ScreenshotTarget::Kind::Worksheet:
+    window = GetWorksheet();
+    break;
+  case wxm::ScreenshotTarget::Kind::Cells:
+    // Cropped to the cells after capturing; the cursor would be cropped in.
+    GetWorksheet()->DeactivateHCaret();
+    window = GetWorksheet();
+    break;
+  case wxm::ScreenshotTarget::Kind::Pane: {
+    wxAuiPaneInfo &pane = m_manager.GetPane(m_screenshotScene.target.pane);
+    window = pane.IsOk() ? pane.window : nullptr;
+    if (window) {
+      pane.Show();
+      m_manager.Update();
+    }
+    break;
+  }
+  case wxm::ScreenshotTarget::Kind::Config: {
+    auto *config = new ConfigDialogue(this);
+    if (static_cast<std::size_t>(m_screenshotScene.target.page) <
+        config->GetBookCtrl()->GetPageCount())
+      config->GetBookCtrl()->SetSelection(
+        static_cast<std::size_t>(m_screenshotScene.target.page));
+    if (m_screenshotScene.size != wxDefaultSize)
+      config->SetSize(m_screenshotScene.size);
+    config->Centre(wxBOTH);
+    config->Show();
+    window = dialog = config;
+    break;
+  }
+  }
+  if (!window) {
+    wxLogMessage(_("Screenshot: there is nothing called \"%s\" to show."),
+                 m_screenshotScene.target.pane);
+    m_exitCode = EXIT_SCREENSHOT_FAILED;
+    TakeScreenshot(nullptr, dialog);
+    return;
+  }
+  window->Raise();
+  window->Refresh();
+  // Evaluating scrolled to the last output; a scene starts at its top.
+  GetWorksheet()->Scroll(0, 0);
+  GetWorksheet()->RequestRedraw();
+  // Drawing happens in paint events that are still to come, and a freshly
+  // shown dialog or sidebar is laid out in several steps: wait a moment
+  // rather than guess which event is the last one.
+  m_screenshotTimer = std::make_unique<wxTimer>();
+  m_screenshotTimer->Bind(wxEVT_TIMER, [this, window, dialog](wxTimerEvent &) {
+    TakeScreenshot(window, dialog);
+  });
+  m_screenshotTimer->StartOnce(1500);
+}
+
+void wxMaxima::TakeScreenshot(wxWindow *window, wxDialog *dialog) {
+  if (window) {
+    // Resizing the window and laying it out may have scrolled the worksheet
+    // to the cursor again; a scene starts at its top.
+    GetWorksheet()->Scroll(0, 0);
+    GetWorksheet()->Update();
+    window->Update();
+    const auto kind = m_screenshotScene.target.kind;
+    // The worksheet without its scroll bars; everything else with its frame.
+    const bool worksheet = (kind == wxm::ScreenshotTarget::Kind::Worksheet) ||
+                           (kind == wxm::ScreenshotTarget::Kind::Cells);
+    const wxRect rect =
+      worksheet ? wxRect(window->ClientToScreen(wxPoint(0, 0)),
+                         window->GetClientSize())
+                : window->GetScreenRect();
+    wxImage image = wxm::ScreenRect(rect);
+    if (image.IsOk() && (kind == wxm::ScreenshotTarget::Kind::Cells))
+      image = wxm::TrimToContent(image, 8);
+    if (image.IsOk() && image.SaveFile(m_screenshotFile, wxBITMAP_TYPE_PNG))
+      wxLogMessage(_("Saved the screenshot %s"), m_screenshotFile);
+    else {
+      wxLogMessage(_("Could not save the screenshot %s"), m_screenshotFile);
+      m_exitCode = EXIT_SCREENSHOT_FAILED;
+    }
+  }
+  if (dialog)
+    dialog->Destroy();
+  // A screenshot changes nothing the user would want saved: close without
+  // asking whether to save the evaluated scene.
+  GetWorksheet()->SetSaved(true);
+  m_fileSaved = true;
+  CallAfter([this]{Close(true);});
 }
 
 bool wxMaxima::UpdateDrawPane() {
@@ -3823,6 +3955,8 @@ wxString wxMaxima::EscapeFilenameForShell(wxString name)
 bool wxMaxima::m_exitOnError = false;
 wxString wxMaxima::m_extraMaximaArgs;
 int wxMaxima::m_exitCode = 0;
+wxString wxMaxima::m_screenshotFile;
+wxm::ScreenshotScene wxMaxima::m_screenshotScene;
 // wxRegEx  wxMaxima::m_outputPromptRegEx(wxS("<lbl>.*</lbl>"));
 wxRegEx wxMaxima::m_funRegEx(
                              wxS("^ *([[:alnum:]%_]+) *\\(([[:alnum:]%_,[[.].] ]*)\\) *:="));

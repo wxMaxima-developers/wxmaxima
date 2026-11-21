@@ -222,3 +222,23 @@ if(ImageMagick_identify_FOUND)
 endif()
 
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.css" DESTINATION share/doc/wxmaxima)
+
+# "ninja screenshots" regenerates the manual's screenshots (info/*.png) from
+# the scenes in info/screenshots/scenes, by running the wxmaxima just built
+# with --screenshot. It writes into the source tree on purpose -- the images
+# are committed -- and is therefore never part of a normal build. It needs
+# Maxima and xvfb-run; the virtual screen is larger than any scene's window,
+# since the parts of a window outside the screen come out black.
+# See info/screenshots/README.md.
+if(UNIX AND NOT APPLE)
+	find_program(XVFB_RUN xvfb-run)
+	if(XVFB_RUN)
+		add_custom_target(screenshots
+			COMMAND ${XVFB_RUN} -a -s "-screen 0 2400x1600x24"
+				sh ${CMAKE_CURRENT_SOURCE_DIR}/screenshots/make-screenshots.sh
+				$<TARGET_FILE:wxmaxima> ${CMAKE_CURRENT_SOURCE_DIR}
+			DEPENDS wxmaxima
+			USES_TERMINAL
+			COMMENT "Making the manual's screenshots")
+	endif()
+endif()

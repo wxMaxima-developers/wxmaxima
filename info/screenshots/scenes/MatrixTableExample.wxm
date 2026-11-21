@@ -1,0 +1,7 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [wxMaxima: input   start ] */
+titleList:["1st value", "2nd value", "3rd value"];
+xList : makelist(x,x,1,3);
+xsqList : makelist(x^2,x,1,3);
+table_form([ titleList,xList,xsqList ])$
+/* [wxMaxima: input   end   ] */

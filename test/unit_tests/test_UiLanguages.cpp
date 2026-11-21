@@ -104,4 +104,28 @@ SCENARIO("The language chooser lists each language under its own name") {
   }
 }
 
+SCENARIO("--language accepts the codes people know languages by") {
+  THEN("A bare language code works") {
+    CHECK(wxm::UiLanguageFromCode(wxS("de")) == wxLANGUAGE_GERMAN);
+    CHECK(wxm::UiLanguageFromCode(wxS("fr")) == wxLANGUAGE_FRENCH);
+  }
+  THEN("A code with a region keeps the region") {
+    CHECK(wxm::UiLanguageFromCode(wxS("pt_BR")) == wxLANGUAGE_PORTUGUESE_BRAZILIAN);
+    CHECK(wxm::UiLanguageFromCode(wxS("de_AT")) == wxLANGUAGE_GERMAN_AUSTRIAN);
+  }
+  THEN("A BCP 47 dash and a different case are fine, too") {
+    CHECK(wxm::UiLanguageFromCode(wxS("pt-BR")) == wxLANGUAGE_PORTUGUESE_BRAZILIAN);
+    CHECK(wxm::UiLanguageFromCode(wxS("DE")) == wxLANGUAGE_GERMAN);
+  }
+  THEN("Both Chinese variants wxMaxima is translated to can be picked") {
+    CHECK(wxm::UiLanguageFromCode(wxS("zh_CN")) == wxLANGUAGE_CHINESE_CHINA);
+    CHECK(wxm::UiLanguageFromCode(wxS("zh_TW")) == wxLANGUAGE_CHINESE_TAIWAN);
+  }
+  THEN("Nonsense and an empty value are rejected") {
+    CHECK(wxm::UiLanguageFromCode(wxS("xx_nonsense")) == wxLANGUAGE_UNKNOWN);
+    CHECK(wxm::UiLanguageFromCode(wxEmptyString) == wxLANGUAGE_UNKNOWN);
+    CHECK(wxm::UiLanguageFromCode(wxS("  ")) == wxLANGUAGE_UNKNOWN);
+  }
+}
+
 int main(int argc, char *argv[]) { return Catch::Session().run(argc, argv); }

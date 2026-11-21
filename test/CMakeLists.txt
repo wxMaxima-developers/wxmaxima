@@ -264,6 +264,18 @@ wxm_add_wxmathml_test(check-wxMathML.lisp_derivabbrev_power_keeps_parens
     "derivabbrev:true$ depends(C,x)$ diff(C,x)^2;"
     "<msup><mrow><mrow lisp=\"wxxml-paren\"><p lisp=\"wxxml-paren\"><munder d=\"1\"")
 
+# Maxima's system() has to run its command through a shell. Maxima 5.49 on
+# GCL ran it without one, so draw's gnuplot call, which quotes the file name,
+# made gnuplot look for a file whose name contains the quotes, and every
+# wxdraw plot failed (Ubuntu 26.04). wxMathML.lisp puts the shell back, which
+# removes the quotes here before echo sees them. Not on Windows, whose cmd
+# passes the quotes on to echo.
+if(NOT WIN32)
+  wxm_add_wxmathml_test(check-wxMathML.lisp_system_uses_a_shell
+      "system(\"echo \\\"wxshelltest\\\"\")$"
+      "[^\"]wxshelltest[^\"]")
+endif()
+
 # GH #1536: a bare summand doesn't need the disambiguating parentheses
 # SumCell used to always draw around it -- only a compound one (here a sum
 # of terms, "k+k^2") does. wxxml-sum (wxMathML.lisp) decides this from the

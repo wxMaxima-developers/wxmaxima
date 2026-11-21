@@ -367,7 +367,8 @@ public:
            const std::vector<AiChatMessage> &history,
            std::function<void(bool ok, const wxString &replyOrError)> callback,
            std::function<void(const wxString &requestBody)> onRequest = nullptr,
-           std::function<void(bool ok, const wxString &responseBodyOrDetail)> onResponse = nullptr);
+           std::function<void(bool ok, const wxString &responseBodyOrDetail)> onResponse = nullptr,
+           int attempt = 1);
 
   /*! The URL FetchModels() asks for this provider's current model ids, or
     an empty string if there is nothing sensible to ask.

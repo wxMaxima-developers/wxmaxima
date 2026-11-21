@@ -274,6 +274,8 @@ public:
     Empty means: "Use the default location", which on MS Windows is somewhere in the registry.
   */
   static wxString m_configfileLocation_override;
+  //! The language --language asked for, or wxLANGUAGE_UNKNOWN
+  static long m_languageOverride;
 
   using EscCodeContainer = std::unordered_map<wxString, wxString, wxStringHash>;
   using EscCodeIterator = EscCodeContainer::const_iterator;
@@ -1364,8 +1366,27 @@ public:
   bool GetAbortOnError() const {return m_abortOnError;}
   void SetAbortOnError(bool abortOnError) {m_abortOnError = abortOnError;}
 
-  long GetLanguage() const {return m_language;}
+  /*! The UI language in effect: the --language option's, if one was given
+
+    Everything that has to follow the language the UI actually uses (which
+    manual to show, what the troubleshooting dialog reports) asks this.
+  */
+  long GetLanguage() const {
+    return (m_languageOverride != wxLANGUAGE_UNKNOWN) ? m_languageOverride
+                                                      : m_language;
+  }
+  /*! The UI language the configuration stores, ignoring --language
+
+    What the configuration dialog shows and saves: a language picked for one
+    session on the command line must not become the user's setting.
+  */
+  long GetConfiguredLanguage() const {return m_language;}
   void SetLanguage(long language) {m_language = language;}
+  /*! Use this language for this session, without saving it (--language)
+
+    wxLANGUAGE_UNKNOWN, the default, means: use the configured one.
+  */
+  static void SetLanguageOverride(long language) {m_languageOverride = language;}
 
   //! The maximum number of Megabytes of gnuplot sources we should store
   long MaxGnuplotMegabytes() const {return m_maxGnuplotMegabytes;}
