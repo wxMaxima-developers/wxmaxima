@@ -1,6 +1,23 @@
 # -*- mode: CMake; cmake-tab-width: 4; -*-
 
 include(${CMAKE_SOURCE_DIR}/CheckPo4aVersion.cmake)
+include(${CMAKE_CURRENT_SOURCE_DIR}/LocaliseManualImages.cmake)
+
+# The languages whose manual gets screenshots of its own, in info/<lang>/,
+# made by "ninja screenshots-localised" (see below). Those whose manual is
+# translated far enough to be worth it; any other translated manual shows
+# the English screenshots.
+set(WXM_SCREENSHOT_LANGUAGES de es fr it ru sv tr uk)
+
+# The languages that actually have a screenshot set right now. A language
+# listed above whose set hasn't been made yet just has no directory.
+set(WXM_LOCALISED_IMAGE_LANGUAGES "")
+foreach(lang ${WXM_SCREENSHOT_LANGUAGES})
+	file(GLOB images CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/${lang}/*.png")
+	if(images)
+		list(APPEND WXM_LOCALISED_IMAGE_LANGUAGES ${lang})
+	endif()
+endforeach()
 if(PO4A)
 	# Translate the manual for this build. This never writes to the source
 	# tree: the translated manuals go into this build directory, and
@@ -159,6 +176,14 @@ if(PANDOC)
 			list(APPEND TRANSLATED_BASENAMES ${BASENAME})
 		endif()
 	endforeach()
+	# Point each translated manual that has a screenshot set at it, and put
+	# the set next to it here, where pandoc looks for the images.
+	foreach(lang ${WXM_LOCALISED_IMAGE_LANGUAGES})
+		file(GLOB images "${CMAKE_CURRENT_SOURCE_DIR}/${lang}/*.png")
+		file(COPY ${images} DESTINATION ${lang})
+		wxm_localise_manual_images("${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.${lang}.md"
+			${lang} "${CMAKE_CURRENT_SOURCE_DIR}/${lang}")
+	endforeach()
 	generate_wxmaxima_documentation_html("wxmaxima")
 	generate_wxmaxima_documentation_epub("wxmaxima")
 	if(WXMAXIMA_LATEX_COMMAND)
@@ -193,6 +218,10 @@ if(NOT WIN32)
 endif()
 install(FILES ${HTMLHELP_ADDITIONAL_FILES} DESTINATION share/doc/wxmaxima)
 file(COPY ${HTMLHELP_ADDITIONAL_FILES} DESTINATION .)
+foreach(lang ${WXM_LOCALISED_IMAGE_LANGUAGES})
+	install(DIRECTORY ${lang} DESTINATION share/doc/wxmaxima
+		FILES_MATCHING PATTERN "*.png")
+endforeach()
 
 if(NOT WIN32)
     install(CODE "
@@ -221,6 +250,12 @@ if(ImageMagick_identify_FOUND)
                     OUTPUT_VARIABLE css)
                     file(APPEND "${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.css" "${css}\n")
   endforeach()
+  set(css "")
+  foreach(lang ${WXM_LOCALISED_IMAGE_LANGUAGES})
+    wxm_localised_image_css(css ${lang} "${CMAKE_CURRENT_SOURCE_DIR}/${lang}"
+      "${ImageMagick_identify_EXECUTABLE}")
+  endforeach()
+  file(APPEND "${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.css" "${css}")
 endif()
 
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.css" DESTINATION share/doc/wxmaxima)
@@ -242,5 +277,22 @@ if(UNIX AND NOT APPLE)
 			DEPENDS wxmaxima
 			USES_TERMINAL
 			COMMENT "Making the manual's screenshots")
+		# "ninja screenshots-<lang>" makes info/<lang>/*.png, the same scenes
+		# with the user interface in that language, and
+		# "ninja screenshots-localised" all of WXM_SCREENSHOT_LANGUAGES.
+		# The screenshots workflow (.github/workflows/screenshots.yml) runs
+		# the latter on a runner that has the locales.
+		add_custom_target(screenshots-localised)
+		foreach(lang ${WXM_SCREENSHOT_LANGUAGES})
+			add_custom_target(screenshots-${lang}
+				COMMAND ${XVFB_RUN} -a -s "-screen 0 2400x1600x24"
+					sh ${CMAKE_CURRENT_SOURCE_DIR}/screenshots/make-screenshots.sh
+					--language=${lang} --english=${CMAKE_CURRENT_SOURCE_DIR}
+					$<TARGET_FILE:wxmaxima> ${CMAKE_CURRENT_SOURCE_DIR}/${lang}
+				DEPENDS wxmaxima
+				USES_TERMINAL
+				COMMENT "Making the manual's screenshots in ${lang}")
+			add_dependencies(screenshots-localised screenshots-${lang})
+		endforeach()
 	endif()
 endif()

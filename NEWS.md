@@ -1,5 +1,10 @@
 # Current development version
 
+- The German, Spanish, French, Italian, Russian, Swedish, Turkish and
+  Ukrainian manuals show screenshots of a wxMaxima in their own language
+  (`info/<lang>/`, made by `ninja screenshots-<lang>`); images not
+  translated yet stay English. A new "screenshots" GitHub workflow
+  regenerates every set and opens a pull request with them.
 - The worksheet's right-click menu now opens the same "Solve",
   "Substitute" and "Differentiate" wizards as the menus. Its own
   "Substitute" wizard sent several comma-separated assignments without a
