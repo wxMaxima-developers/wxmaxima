@@ -148,7 +148,7 @@ build"</b> (<code>cmake/WxmFeatureSummary.cmake</code>): help sidebar, AI sideba
 </ol>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md46"></a>
+<h1><a class="anchor" id="autotoc_md47"></a>
 Architecture &amp; GUI</h1>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> is a GUI front-end to the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> CAS; it talks to a <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> process over a local TCP socket.</p>
 <ul>
@@ -391,7 +391,7 @@ Architecture &amp; GUI</h1>
 </b></li>
 </ul>
 <p><b></b></p>
-<h2><a class="anchor" id="autotoc_md47"></a>
+<h2><a class="anchor" id="autotoc_md69"></a>
 Asynchronous ("background job") output from Maxima</h2>
 <p><b> <b>Implemented and verified, but dormant: nothing in today's single-threaded <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> sends it.</b> Full design, measurements and rationale live in <code>Doxygen/AsyncMaximaOutput.md</code> &ndash; read that before touching any of it. Only the traps worth knowing from elsewhere are repeated here.</b></p>
 <p><b></p><ul>
@@ -407,7 +407,7 @@ Asynchronous ("background job") output from Maxima</h2>
 </ul>
 <p></b></p>
 <p><b></b></p>
-<h2><a class="anchor" id="autotoc_md48"></a>
+<h2><a class="anchor" id="autotoc_md70"></a>
 Communication with Maxima</h2>
 <p><b> <a class="el" href="classwxMaxima.html">wxMaxima</a> sends Lisp and <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> commands over the socket; <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> answers with XML wrapped in known tags. <code><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></code> reads that data on a worker thread, splits it into items (<code><a class="el" href="MaximaItemQueue_8h.html#a987be755838a8e1d0eee072664beb362" title="Splits what Maxima sent into items.">SplitIntoItems()</a></code>) and queues them in a <code><a class="el" href="classMaximaItemQueue.html" title="Items Maxima sent, on their way from the socket thread to the GUI thread.">MaximaItemQueue</a></code>; the main thread takes them in <code>MaximaProcessManager::ProcessItems()</code> and hands each to <code>MaximaEvent()</code>.</b></p>
 <p><b></p><ul>
@@ -478,7 +478,7 @@ Communication with Maxima</h2>
 </ul>
 <p></b></p>
 <p><b></b></p>
-<h2><a class="anchor" id="autotoc_md49"></a>
+<h2><a class="anchor" id="autotoc_md71"></a>
 File Formats</h2>
 <p><b></p><ul>
 <li>**<code>.wxmx</code>** &ndash; a ZIP archive holding <code>content.xml</code> (the MathML-like XML) plus the embedded images. The format version lives in <code><a class="el" href="WXMXformat_8h_source.html">src/WXMXformat.h</a></code>.</li>
@@ -498,7 +498,7 @@ File Formats</h2>
 </ul>
 <p></b></p>
 <p><b></b></p>
-<h2><a class="anchor" id="autotoc_md50"></a>
+<h2><a class="anchor" id="autotoc_md83"></a>
 Translations (&lt;tt&gt;locales/&lt;/tt&gt;)</h2>
 <p><b></p><ul>
 <li><b>One combined <code>.po</code> per language, in <code>locales/wxMaxima/</code>, is the file a translator edits.</b> It covers both <a class="el" href="classwxMaxima.html">wxMaxima</a>'s own UI strings (<code>xgettext</code>-extracted from <code>src/**/*.cpp</code>/<code>*.h</code>) and the manual's prose (<code>po4a</code>-extracted from <code>info/wxmaxima.md</code>). <code>locales/wxMaxima/wxMaxima.pot</code>, the template <code>msgmerge</code> works against, is regenerated as the union of a fresh source scan and <code>locales/manual/wxmaxima.md.pot</code> (<code>msgcat --use-first</code>, preferring <code>wxMaxima.pot</code>'s own header) by the <code>update-locale</code> CMake target.</li>
@@ -525,7 +525,7 @@ Translations (&lt;tt&gt;locales/&lt;/tt&gt;)</h2>
 </ul>
 <p></b></p>
 <p><b></b></p>
-<h1><a class="anchor" id="autotoc_md51"></a>
+<h1><a class="anchor" id="autotoc_md84"></a>
 Conventions &amp; Standards</h1>
 <p><b></p><ul>
 <li><b>Branches and pull requests:</b> one branch per feature or bugfix, cut fresh from <code>main</code>, PR when it is finished &ndash; see "Branches and pull requests" at the top of this file for why reusing one long-lived branch has already caused trouble.</li>
@@ -536,7 +536,7 @@ Conventions &amp; Standards</h1>
 <li><b><a class="el" href="classA.html">A</a> menu entry that opens the standard text-field wizard is one entry in <code><a class="el" href="WizardCatalog_8h.html#ae259cb1447a85483b0852f35937b1728" title="All standard wizards.">wxm::WizardCatalog()</a></code></b> (<code>src/wizards/WizardCatalog.{h,cpp}</code>): title, description, a <code>#n#</code> command rule and its fields, and the menu/sidebar IDs that open it. <code><a class="el" href="classwxMaxima.html">wxMaxima</a></code>'s constructor binds every ID listed there to <code><a class="el" href="classMaximaCommandMenus.html#aabf182c1a2e39e765660fa965d18ab0a" title="Opens the standard wizard wxm::WizardCatalog() lists for the event&#39;s ID.">MaximaCommandMenus::CatalogWizard()</a></code>, so no <code>Bind()</code> and no <code>else if</code> branch is needed &ndash; a forgotten <code>Bind()</code> is exactly how "Dito, and evaluate the result" sat in the Calculus menu doing nothing. <code>test_WizardCatalog</code> checks that each rule uses exactly the fields its wizard has. The Calculus, Numerical, Simplify, Equations, Matrix, List and Statistics menus and the worksheet's context menu have moved; the remaining <code>CommandWiz()</code> calls build their defaults at run time (the word under the cursor, a rewritten <code>%</code>) and stay in their handlers. When moving a wizard, <b>copy its strings byte for byte</b>: they are existing msgids, and changing one makes its translations fuzzy, so a wording fix is a commit of its own. <a class="el" href="classA.html">A</a> wizard label must be <code>_("...")</code>, not <code>wxS()</code>, or it is never offered for translation. The catalog is built inside a function, not at static initialisation, so <code>_()</code> runs once the language is set. <a class="el" href="classA.html">A</a> wizard needing checkboxes, choices, a grid or a file picker still gets a class of its own.</li>
 <li><b>Command-line options are defined once, in <code><a class="el" href="CommandLineOptions_8h.html" title="The one definition of wxMaxima&#39;s command-line options.">src/CommandLineOptions.h</a></code>, and parsed GUI-free in <code>src/CommandLine.{h,cpp}</code></b> (<code><a class="el" href="CommandLine_8cpp.html#a8dc2890849ecca02cdcea8e8ca74b5f9" title="Parses the arguments (program first) with wxMaxima&#39;s options.">wxm::cmdline::Parse()</a></code>/<code>Interpret()</code>; <a class="el" href="main_8cpp.html" title="The file that defines the starting point of the program.">main.cpp</a> only acts on the resulting <code>Settings</code>). Parse through <code>Parse()</code>, never a bare <code>wxCmdLineParser::Parse()</code>: wxWidgets asserts on an option like <code>--+</code> whose name is empty, and <code>Parse()</code> works around that (found by the <code>fuzz_cmdline</code> libFuzzer target, <code>test/fuzz/</code>, which needs only wxBase and builds in seconds). Hand the parser the argument vector, not a re-joined string: re-joining made <code>wxmxdiff</code> compare the executable itself. <code><a class="el" href="main_8cpp.html" title="The file that defines the starting point of the program.">main.cpp</a></code> builds its <code>wxCmdLineParser</code> description from it, and <code>wxmaxima-genopts</code> (<code><a class="el" href="genopts_8cpp.html" title="wxmaxima-genopts: writes everything that describes wxMaxima&#39;s command line from the one table in Comm...">src/genopts.cpp</a></code>, a build-time tool without wxWidgets, since <a class="el" href="classwxMaxima.html">wxMaxima</a> itself starts its GUI before parsing its arguments) writes the bash/zsh/fish completions and the English man page's OPTIONS section from it (<code>data/CMakeLists.txt</code>; the man template has a <code>WXMAXIMA-GENERATED-OPTIONS</code> marker). The German man page and the manual's "Command-line arguments" list are hand-written (and translated), so the ctest <code>command_line_options_documented</code> fails until a new option is described there too; <code>check-shell-completion</code> runs the generated completions. Keep <code>OpenableExtensions</code> in step with <code>ClassifyFileForOpening()</code> &ndash; <code>test_FileOpenKind</code> checks it.</li>
 <li><b>Git Environment:</b> Note that running <code>git diff</code> might launch the visual diff tool <code>meld</code> instead of outputting to the terminal. Always use <code>git diff --no-ext-diff</code> if you need terminal output.</li>
-<li><b><a class="el" href="classString.html" title="A String class.">String</a> Literals &amp; Translations:</b> Use the <code>wxS()</code> macro for all string literals and <code>_()</code> for user-facing translatable strings.</li>
+<li><b><a class="el" href="classString.html" title="A String class.">String</a> Literals &amp; Translations:</b> Use the <code>wxS()</code> macro for all string literals and <code>_()</code> for user-facing translatable strings. <a class="el" href="classA.html">A</a> translatable literal containing characters outside ASCII goes through <code>TR_()</code> (<code><a class="el" href="StringUtils_8h_source.html">StringUtils.h</a></code>), which decodes it with <code>wxS()</code> at compile time; never <code>_(wxS("..."))</code>, which xgettext does not extract at all &ndash; thirteen strings sat untranslatable that way until 2026-11, and the ctest <code>check-translatable-literals</code> now fails on it.</li>
 <li><b>Logging:</b> Use <code>wxLogMessage()</code> for debugging; messages are visible in <b>View -&gt; Toggle Log Window</b> or by using the option <code>--logtostderr</code>.</li>
 <li><b>Asynchronous Sidebars &amp; Safety:</b> Sidebars (TOC, Variables Pane) update asynchronously. Always validate <code><a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a></code> pointers (using <code>m_tree-&gt;Contains()</code>) before use.</li>
 <li><b>Long-Lived <a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a> References:</b> Anything that keeps a reference to a <code><a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a></code> or <code><a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a></code> beyond the current call &ndash; undo/redo actions, the evaluation queue, the selection, the sidebars, a cached "last clicked" cell &ndash; MUST hold it as a <code><a class="el" href="classCellPtr.html" title="A weak non-owning pointer that becomes null whenever the observed object is destroyed.">CellPtr</a>&lt;...&gt;</code>, never as a raw pointer. <code><a class="el" href="classCellPtr.html" title="A weak non-owning pointer that becomes null whenever the observed object is destroyed.">CellPtr</a></code> derives from <code><a class="el" href="classObserved.html" title="Objects deriving from this class can be observed by the CellPtr.">Observed</a></code> and nulls itself when the cell is destroyed, so a stale reference reads as <code>nullptr</code> instead of dangling; null-check it when consuming it, because the cell may have died since it was stored. <a class="el" href="classA.html">A</a> raw <code><a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a> *</code> is fine only for the duration of a single function or event.</li>
@@ -707,7 +707,7 @@ Conventions &amp; Standards</h1>
     something a firewall/antivirus's network protection would touch, and
     some of it blocks loopback inter-process communication too.
 
-@section autotoc_md52 Layout &amp; Compatibility
+@section autotoc_md86 Layout &amp; Compatibility
 
 The rules below are the ones worth carrying around at all times. The reasoning
 behind them, the pipeline they belong to, and the recurring shapes layout bugs
@@ -787,7 +787,7 @@ which loads on demand &amp;ndash; keep the detail there rather than growing this
   compiles everywhere and does nothing. The same trap applies to any future
   &lt;tt&gt;wxSOMETHING&lt;/tt&gt; shim added there.
 
-@section autotoc_md53 Performance &amp; Documentation Mandates
+@section autotoc_md87 Performance &amp; Documentation Mandates
 
 - &lt;strong&gt;NEWS.md Updates:&lt;/strong&gt; Every non-trivial change MUST be documented in &lt;tt&gt;NEWS.md&lt;/tt&gt; under the "# Current development version" section.
   &lt;strong&gt;When merging &lt;tt&gt;main&lt;/tt&gt; into a branch conflicts in &lt;tt&gt;NEWS.md&lt;/tt&gt;, take &lt;tt&gt;main&lt;/tt&gt;'s side and re-add only your own new entry.&lt;/strong&gt; Keeping "both sides" brings back entries that release prep has since condensed into a version section: on 2026-09-30 three branches in a row put ~190 old lines back above &lt;tt&gt;\# 26.09.0&lt;/tt&gt;. The tag workflow publishes whatever sits under the top heading as the release notes, so that would have become the release body.
@@ -799,12 +799,12 @@ which loads on demand &amp;ndash; keep the detail there rather than growing this
   - Prefer &lt;tt&gt;(intern ...)&lt;/tt&gt; over &lt;tt&gt;read-from-string&lt;/tt&gt; for dynamic symbol generation.
 - &lt;strong&gt;Strict XML Mandate:&lt;/strong&gt; To avoid duplicate attributes, add any new manually-handled XML attribute (e.g., &lt;tt&gt;noneParens="true"&lt;/tt&gt;) to the filter list in &lt;tt&gt;MathParser.cpp&lt;/tt&gt;.
 
-@section autotoc_md54 Visual Documentation (&lt;tt&gt;art/Doxygen/&lt;/tt&gt;)
+@section autotoc_md88 Visual Documentation (&lt;tt&gt;art/Doxygen/&lt;/tt&gt;)
 
 - &lt;strong&gt;Geometry Awareness:&lt;/strong&gt; If modifying &lt;tt&gt;Recalculate()&lt;/tt&gt; or &lt;tt&gt;Draw()&lt;/tt&gt; geometry (padding, center alignment), you MUST update the corresponding SVG diagrams in &lt;tt&gt;art/Doxygen/&lt;/tt&gt;.
 - &lt;strong&gt;Consistency:&lt;/strong&gt; New cell types should have &lt;tt&gt;*Geometry.svg&lt;/tt&gt; and &lt;tt&gt;*LinearGeometry.svg&lt;/tt&gt; (if applicable) diagrams.
 
-@section autotoc_md55 Key Subsystems Map
+@section autotoc_md89 Key Subsystems Map
 
 Deeper, per-subsystem background lives in &lt;tt&gt;.claude/skills/&lt;/tt&gt;, which load only
 when they are relevant &amp;ndash; so that hard-won detail is available without every
@@ -852,13 +852,13 @@ has already been broken.
 </ul>
 <p></code></b></p>
 <p><b><code></code></b></p>
-<h1><a class="anchor" id="autotoc_md56"></a>
+<h1><a class="anchor" id="autotoc_md90"></a>
 Backlog / Future Work</h1>
 <p><b><code> Items the maintainer has flagged as worth doing but hasn't asked for yet &ndash; don't start on these without checking in first, but pick them up if asked for "what's
 next" style work.</code></b></p>
 <p><b><code>Nothing at the moment. Open work lives in GitHub issues rather than here; when an entry above says something is still open, it names the issue that tracks it. (GH #1335, contiguous cell storage, used to be listed here; it was closed as not planned.)</code></b></p>
 <p><b><code></code></b></p>
-<h1><a class="anchor" id="autotoc_md57"></a>
+<h1><a class="anchor" id="autotoc_md91"></a>
 Error resilience</h1>
 <p><b><code></p><ul>
 <li>To err is human =&gt; If your instructions don't seem to make sense feel free to ask. </li>
