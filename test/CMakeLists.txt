@@ -1632,6 +1632,11 @@ add_test(
     NAME tutorial_fittingEquations
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/../examples
     COMMAND wxmaxima --debug --logtostderr --pipe  --batch --exit-on-error fittingEquations.wxm)
+# On Ubuntu 26.04 (Maxima 5.49 on GCL 2.7) loading draw and fmin_cobyla is
+# slow: this tutorial took 360-373 s there in 2026-11, against ~62 s on 24.04,
+# which is right at WXM_TEST_TIMEOUT. A longer watchdog of its own keeps a slow
+# but working run from failing; a real hang still fails.
+set_tests_properties(tutorial_fittingEquations PROPERTIES TIMEOUT 900)
 
 add_test(
     NAME tutorial_variableNames
