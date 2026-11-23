@@ -3,6 +3,14 @@
 - Languages whose manual is less than 5% translated no longer install a
   copy of the English manual under their own name; the help falls back to
   the English one, as it did. This saves 2.5 MB of identical files.
+- Statistics sidebar: its standard wizards moved into the wizard table.
+  The bar, box and pie charts and the mean, median, variance and standard
+  deviation wizards now start with the selection instead of always with
+  "%", like the other statistics wizards.
+- List menu: its standard wizards moved into the wizard table. "Create
+  list from comma-separated elements" now ends its command with a
+  semicolon, and two wizards lost a "val1=1,val2=2" tooltip on a field
+  that asks for something else.
 - Most of the manual's screenshots are now made by wxMaxima itself, from the
   scenes in `info/screenshots/`: `ninja screenshots` regenerates them. The
   new `--screenshot=<file>` option this uses evaluates the
