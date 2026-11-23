@@ -30,6 +30,7 @@
   is defined in wxMaxima.
 */
 #include "Version.h"
+#include "StringUtils.h"
 #include "wxMaximaFrame.h"
 #include "HelpBrowserDiagnosis.h"
 #include "AuiPerspectiveRepair.h"
@@ -1676,7 +1677,7 @@ void wxMaximaFrame::SetupCalculusMenu() {
   series_sub->Append(EventIDs::menu_taylor, _("Taylor series..."));
   series_sub->Append(EventIDs::menu_powerseries, _("Power series..."));
   series_sub->Append(EventIDs::menu_fourier, _("Fourier coefficients..."));
-  series_sub->Append(EventIDs::menu_pade, _(wxS("P&ad\u00E9 Approximation...")),
+  series_sub->Append(EventIDs::menu_pade, TR_("P&ad\u00E9 Approximation..."),
                      _("Pade approximation of a Taylor series"));
   m_CalculusMenu->Append(wxWindow::NewControlId(), _("Series approximation"), series_sub);
   m_CalculusMenu->Append(EventIDs::menu_sum, _("Calculate Su&m..."), _("Calculate sums"),
@@ -2134,13 +2135,13 @@ void wxMaximaFrame::SetupHelpMenu() {
                         wxITEM_NORMAL);
   tutorials_sub->Append(EventIDs::menu_help_memoizing, _("Memoizing"), "", wxITEM_NORMAL);
   tutorials_sub->Append(EventIDs::menu_help_casvsprogramming, _("Maxima vs. Programming languages"), "", wxITEM_NORMAL);
-  tutorials_sub->Append(EventIDs::menu_help_tutorials, _(wxS("↗Tutorials on the web")),
+  tutorials_sub->Append(EventIDs::menu_help_tutorials, TR_("↗Tutorials on the web"),
                         _("Online tutorials"), wxITEM_NORMAL);
   m_HelpMenu->Append(wxWindow::NewControlId(), _("Tutorials"), tutorials_sub);
   m_demo_sub = new wxMenu;
   m_HelpMenu->Append(wxWindow::NewControlId(), _("Demos"), m_demo_sub);
   m_HelpMenu->Append(EventIDs::menu_help_maxima_homepage,
-                     _(wxS("↗Documentation on maxima's homepage")));
+                     TR_("↗Documentation on maxima's homepage"));
   UpdateHelpMenuChecks();
   // Once the menu bar is attached and the frame is up.
   CallAfter([this]{LogHelpMenuContents();});

@@ -30,6 +30,7 @@
   greek chars.
 */
 #include "wxMaximaFrame.h"
+#include "StringUtils.h"
 #include "Dirstructure.h"
 #include <string>
 #include <memory>
@@ -243,11 +244,11 @@ void GreekSidebar::OnMouseRightDown(wxMouseEvent &event) {
   if (!m_contextMenuSymbol.IsEmpty())
     popupMenu->AppendSeparator();
   popupMenu->AppendCheckItem(EventIDs::menu_showLatinGreekLookalikes,
-                             _(wxS("Show greek \u21D4 latin lookalikes")));
+                             TR_("Show greek \u21D4 latin lookalikes"));
   popupMenu->Check(EventIDs::menu_showLatinGreekLookalikes,
                    m_configuration->GreekSidebar_ShowLatinLookalikes());
   popupMenu->AppendCheckItem(EventIDs::menu_showGreekMu,
-                             _(wxS("Show lookalike for unit prefix µ")));
+                             TR_("Show lookalike for unit prefix µ"));
   popupMenu->Check(EventIDs::menu_showGreekMu, m_configuration->GreekSidebar_Show_mu());
   PopupMenu(&*popupMenu);
 }

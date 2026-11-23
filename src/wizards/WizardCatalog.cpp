@@ -30,6 +30,7 @@
 */
 
 #include "WizardCatalog.h"
+#include "StringUtils.h"
 #include "EventIDs.h"
 #include "MatrixWizardRules.h"
 #include <wx/utils.h>
@@ -559,13 +560,13 @@ std::vector<wxm::WizardSpec> wxm::WizardCatalog(const WizardContext &context) {
       .ids = {EventIDs::menu_solve_to_poly},
       .title = _("Solve equations to polynom"),
       .description =
-        _(wxS("The function to_poly_solve tries to solve the equations "
+        TR_("The function to_poly_solve tries to solve the equations "
               "e for the variables l. The equation(s) e can either be a "
               "single expression or a set or list of expressions; "
               "similarly, l can either be a single symbol or a list of "
               "set of symbols. When a member of e isn’t explicitly an "
               "equation, for example x^2 -1, the solver assumes that the "
-              "expression vanishes.")),
+              "expression vanishes."),
       .rule = wxS("to_poly_solve([#1#],[#2#]);"),
       .fields = {equations, solveVariables}});
 

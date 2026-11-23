@@ -35,7 +35,7 @@ if(GETTEXT_FOUND AND GETTEXT_MSGFMT_EXECUTABLE AND GETTEXT_MSGMERGE_EXECUTABLE)
 	OUTPUT wxMaxima.pot
 	DEPENDS ${POT_SOURCE_FILES} ${CMAKE_SOURCE_DIR}/locales/manual/wxmaxima.md.pot
 	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-	COMMAND ${XGETTEXT} -C --from-code=UTF-8 -k_ -s -o "${CMAKE_CURRENT_BINARY_DIR}/wxMaxima_sourcecode.pot" ${POT_SOURCE_FILES_REL}
+	COMMAND ${XGETTEXT} -C --from-code=UTF-8 -k_ -kTR_ -s -o "${CMAKE_CURRENT_BINARY_DIR}/wxMaxima_sourcecode.pot" ${POT_SOURCE_FILES_REL}
 	COMMAND ${MSGCAT} --use-first --no-wrap "${CMAKE_CURRENT_BINARY_DIR}/wxMaxima_sourcecode.pot" "${CMAKE_SOURCE_DIR}/locales/manual/wxmaxima.md.pot" -o "${CMAKE_CURRENT_BINARY_DIR}/wxMaxima.pot"
 	COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/wxMaxima.pot" "${CMAKE_CURRENT_SOURCE_DIR}/wxMaxima.pot"
 	COMMENT "Updating the POT-file from the current sourcecode and the manual")

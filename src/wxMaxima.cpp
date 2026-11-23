@@ -1716,7 +1716,7 @@ void wxMaxima::ShowWxMaximaHelp(const wxString &anchor) {
     if (!HelpBrowser::AllowOnlineManualP(&m_configuration, this))
       return;
 
-    wxLogMessage(_(wxS("No offline manual found => Redirecting to the wxMaxima homepage")));
+    wxLogMessage(_("No offline manual found => Redirecting to the wxMaxima homepage"));
     helpfile =
       wxString("https://htmlpreview.github.io/?https://github.com/"
                "wxMaxima-developers/wxmaxima/blob/main/info/wxmaxima.html");
@@ -1763,7 +1763,7 @@ void wxMaxima::ShowMaximaHelpWithoutAnchor() {
     if (!HelpBrowser::AllowOnlineManualP(&m_configuration, this))
       return;
 
-    wxLogMessage(_(wxS("No offline manual found => Redirecting to the Maxima homepage")));
+    wxLogMessage(_("No offline manual found => Redirecting to the Maxima homepage"));
     helpfile = wxString(
                         "https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html");
   } else {
@@ -1829,7 +1829,7 @@ void wxMaxima::ShowMaximaHelp(wxString keyword) {
     LaunchHelpBrowser(maximaHelpURL);
   } else {
     if (HelpBrowser::AllowOnlineManualP(&m_configuration, this)) {
-      wxLogMessage(_(wxS("No offline manual found => Redirecting to the Maxima homepage")));
+      wxLogMessage(_("No offline manual found => Redirecting to the Maxima homepage"));
       LaunchHelpBrowser(
                         "https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#" +
                         keyword);
