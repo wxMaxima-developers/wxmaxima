@@ -1,5 +1,7 @@
 # Current development version
 
+- Questions like "Is n equal to m?" ended in a Lisp error ("invalid number
+  of arguments: 3") with current Maxima from git (#2659).
 - Statistics sidebar: its standard wizards moved into the wizard table.
   The bar, box and pie charts and the mean, median, variance and standard
   deviation wizards now start with the selection instead of always with
