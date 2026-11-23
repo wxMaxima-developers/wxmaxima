@@ -326,3 +326,71 @@ SCENARIO("The matrix wizards that need a dialog of their own keep their handler"
           EventIDs::menu_map_mat, EventIDs::menu_matrix_loadLapack})
     CHECK(!wxm::FindWizard(id).has_value());
 }
+
+SCENARIO("The list wizards that pass the list second keep that order") {
+  // push(item, list) and delete(item, list) take the list second.
+  const auto push = wxm::FindWizard(EventIDs::menu_list_push);
+  REQUIRE(push.has_value());
+  CHECK(push->rule == wxS("push(#2#,#1#);"));
+  CHECK(push->fields[0].label == _("List:"));
+  const auto remove = wxm::FindWizard(EventIDs::menu_list_remove_element);
+  REQUIRE(remove.has_value());
+  CHECK(remove->rule == wxS("delete(#1#,#2#);"));
+  CHECK(remove->fields[0].label == _("Element"));
+}
+
+SCENARIO("Extracting the last n list elements counts from the end") {
+  const auto spec = wxm::FindWizard(EventIDs::menu_list_lastn);
+  REQUIRE(spec.has_value());
+  CHECK(spec->rule == wxS("rest(#1#,length(#1#)-#2#);"));
+}
+
+SCENARIO("Values are substituted as a list") {
+  for (const wxWindowID id :
+         {EventIDs::menu_list_use_actual_values, EventIDs::menu_list_extract_value}) {
+    const auto spec = wxm::FindWizard(id);
+    REQUIRE(spec.has_value());
+    CHECK(spec->rule == wxS("subst([#1#],#2#);"));
+  }
+}
+
+SCENARIO("The list wizards that need a dialog of their own keep their handler") {
+  for (const wxWindowID id :
+         {EventIDs::menu_csv2list, EventIDs::menu_list2csv,
+          EventIDs::menu_list_sort, EventIDs::menu_list_actual_values_storage})
+    CHECK(!wxm::FindWizard(id).has_value());
+}
+
+SCENARIO("The statistics wizards start with the selection") {
+  // Until they moved into the catalog, the plots and the descriptive
+  // statistics started with "%" even when something was selected.
+  for (const wxWindowID id :
+         {EventIDs::menu_stats_barsplot, EventIDs::menu_stats_boxplot,
+          EventIDs::menu_stats_piechart, EventIDs::menu_stats_mean,
+          EventIDs::menu_stats_median, EventIDs::menu_stats_var,
+          EventIDs::menu_stats_dev}) {
+    const auto spec = wxm::FindWizard(id);
+    REQUIRE(spec.has_value());
+    REQUIRE(spec->fields.size() == 1);
+    CHECK(spec->fields[0].takesSelection);
+  }
+  const auto dev = wxm::FindWizard(EventIDs::menu_stats_dev);
+  REQUIRE(dev.has_value());
+  CHECK(dev->rule == wxS("std(#1#);"));
+}
+
+SCENARIO("The two sample t-test offers the selection for both samples") {
+  const auto spec = wxm::FindWizard(EventIDs::menu_stats_tt2);
+  REQUIRE(spec.has_value());
+  CHECK(spec->rule == wxS("test_means_difference(#1#,#2#);"));
+  REQUIRE(spec->fields.size() == 2);
+  CHECK(spec->fields[0].takesSelection);
+  CHECK(spec->fields[1].takesSelection);
+}
+
+SCENARIO("The statistics wizards that need a dialog of their own keep their handler") {
+  for (const wxWindowID id :
+         {EventIDs::menu_stats_readm, EventIDs::menu_stats_subsample,
+          EventIDs::menu_stats_enterm})
+    CHECK(!wxm::FindWizard(id).has_value());
+}

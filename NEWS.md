@@ -2,6 +2,14 @@
 
 - Questions like "Is n equal to m?" ended in a Lisp error ("invalid number
   of arguments: 3") with current Maxima from git (#2659).
+- Statistics sidebar: its standard wizards moved into the wizard table.
+  The bar, box and pie charts and the mean, median, variance and standard
+  deviation wizards now start with the selection instead of always with
+  "%", like the other statistics wizards.
+- List menu: its standard wizards moved into the wizard table. "Create
+  list from comma-separated elements" now ends its command with a
+  semicolon, and two wizards lost a "val1=1,val2=2" tooltip on a field
+  that asks for something else.
 - Most of the manual's screenshots are now made by wxMaxima itself, from the
   scenes in `info/screenshots/`: `ninja screenshots` regenerates them. The
   new `--screenshot=<file>` option this uses evaluates the
