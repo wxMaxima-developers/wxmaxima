@@ -96,8 +96,17 @@ jobs:
              git diff --compact-summary
              git diff --quiet || { echo "::error::Configuring or building changed files in the source tree (listed above)."; exit 1; }
       - name: cat_german_translation
-        # output the german translation - how does it look like on Ubuntu 24.04?
-        run: cat build/info/wxmaxima.de.md
+        # Output the German translation of the manual, to see how it looks.
+        # With a po4a older than 0.70 (Ubuntu 24.04 has 0.69) no translated
+        # manual is built at all (CheckPo4aVersion.cmake), and since the
+        # build no longer copies the English manual under a translated name
+        # there is then nothing to show.
+        run: |
+             if [ -f build/info/wxmaxima.de.md ]; then
+               cat build/info/wxmaxima.de.md
+             else
+               echo "::notice::No German manual was built (po4a missing or older than 0.70)."
+             fi
       - name: update-locale
         run: |
              cd build
@@ -409,8 +418,17 @@ jobs:
              git diff --compact-summary
              git diff --quiet || { echo "::error::Configuring or building changed files in the source tree (listed above)."; exit 1; }
       - name: cat_german_translation
-        # output the german translation - how does it look like on Ubuntu 24.04?
-        run: cat build/info/wxmaxima.de.md
+        # Output the German translation of the manual, to see how it looks.
+        # With a po4a older than 0.70 (Ubuntu 24.04 has 0.69) no translated
+        # manual is built at all (CheckPo4aVersion.cmake), and since the
+        # build no longer copies the English manual under a translated name
+        # there is then nothing to show.
+        run: |
+             if [ -f build/info/wxmaxima.de.md ]; then
+               cat build/info/wxmaxima.de.md
+             else
+               echo "::notice::No German manual was built (po4a missing or older than 0.70)."
+             fi
       - name: Package .deb (release only)
         # See the matching step in compile_latest_and_test: a separate
         # Release-mode build dir, only on a release tag.
