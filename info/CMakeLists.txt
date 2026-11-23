@@ -285,7 +285,7 @@ if(UNIX AND NOT APPLE)
 			add_custom_target(screenshots-${lang}
 				COMMAND ${XVFB_RUN} -a -s "-screen 0 2400x1600x24"
 					sh ${CMAKE_CURRENT_SOURCE_DIR}/screenshots/make-screenshots.sh
-					--language=${lang}
+					--language=${lang} --english=${CMAKE_CURRENT_SOURCE_DIR}
 					$<TARGET_FILE:wxmaxima> ${CMAKE_CURRENT_SOURCE_DIR}/${lang}
 				DEPENDS wxmaxima
 				USES_TERMINAL

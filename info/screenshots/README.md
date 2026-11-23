@@ -51,7 +51,12 @@ When the manual is built, a translated manual whose language has a set gets
 its image references rewritten to `<lang>/<name>.png`
 (`info/LocaliseManualImages.cmake`). An image the set lacks -- one of those
 still made by hand, or a scene added later -- stays the English one, so a
-set never has to be complete. The translated text of the manual itself is
+set never has to be complete. A scene that shows no translated text (a
+table, a plot) comes out byte for byte like the English image; the
+`screenshots-<lang>` targets don't keep such a copy (`--english` of
+`make-screenshots.sh`), since the manual would show the same picture anyway
+and every package would carry it once per language (rpmlint fails the RPM
+on that, `files-duplicated-waste`). The translated text of the manual itself is
 untouched: `info/wxmaxima.<lang>.md` keeps pointing at `./<name>.png`.
 
 A scene's worksheet is English unless there is a translated one in

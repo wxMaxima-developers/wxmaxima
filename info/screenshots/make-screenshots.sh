@@ -1,8 +1,8 @@
 #!/bin/sh
 # Makes the manual's screenshots from the scenes in info/screenshots/scenes.
 #
-# Usage: make-screenshots.sh [--language=<lang>] <wxmaxima binary>
-#                            <output directory> [scene...]
+# Usage: make-screenshots.sh [--language=<lang>] [--english=<dir>]
+#                            <wxmaxima binary> <output directory> [scene...]
 #
 # Each scene is <name>.ini, plus <name>.wxm or <name>.wxmx if it has a
 # worksheet; the screenshot is written to <output directory>/<name>.png.
@@ -12,18 +12,27 @@
 # With --language the user interface is shown in that language (wxMaxima's
 # own --language option), and a worksheet in scenes/<lang>/ is used instead
 # of the English one where there is one.
+#
+# With --english, a screenshot that comes out byte for byte the same as the
+# English one in <dir> is not kept: the scene shows no translated text (a
+# table, a plot), and the translated manual falls back to the English image
+# anyway. Keeping such copies only makes every package carry the same file
+# several times, which rpmlint reports as files-duplicated-waste.
 set -u
 
 language=
-case "${1:-}" in
-    --language=*)
-        language=${1#--language=}
-        shift
-        ;;
-esac
+english=
+while [ $# -gt 0 ]; do
+    case "$1" in
+        --language=*) language=${1#--language=} ;;
+        --english=*)  english=${1#--english=} ;;
+        *) break ;;
+    esac
+    shift
+done
 
 if [ $# -lt 2 ]; then
-    echo "Usage: $0 [--language=<lang>] <wxmaxima binary> <output directory> [scene...]" >&2
+    echo "Usage: $0 [--language=<lang>] [--english=<dir>] <wxmaxima binary> <output directory> [scene...]" >&2
     exit 2
 fi
 # wxWidgets loads a translation only if the system has a locale for the
@@ -92,6 +101,9 @@ for name in "$@"; do
     if [ $status -ne 0 ] || [ ! -s "$outdir/$name.png" ]; then
         echo "$name: failed (exit code $status)" >&2
         failed=1
+    elif [ -n "$english" ] && cmp -s "$outdir/$name.png" "$english/$name.png"; then
+        echo "${language:+$language/}$name.png is the same as the English one; not kept"
+        rm -f "$outdir/$name.png"
     fi
 done
 rm -rf "$work"
