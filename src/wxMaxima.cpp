@@ -495,12 +495,24 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &MaximaCommandMenus::OnInsertMenu, &m_menuCommands, EventIDs::popid_insert_subsubsection);
   Bind(wxEVT_MENU, &MaximaCommandMenus::OnInsertMenu, &m_menuCommands, EventIDs::popid_insert_heading5);
   Bind(wxEVT_MENU, &MaximaCommandMenus::OnInsertMenu, &m_menuCommands, EventIDs::popid_insert_heading6);
+  // The Ctrl+Shift+Esc and Ctrl+Shift+1...6 shortcuts (wxMaximaFrame's
+  // accelerator table) that convert the current cell to another type.
+  Bind(wxEVT_MENU, &MaximaCommandMenus::OnInsertMenu, &m_menuCommands, EventIDs::menu_convert_to_code);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::OnInsertMenu, &m_menuCommands, EventIDs::menu_convert_to_comment);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::OnInsertMenu, &m_menuCommands, EventIDs::menu_convert_to_title);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::OnInsertMenu, &m_menuCommands, EventIDs::menu_convert_to_section);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::OnInsertMenu, &m_menuCommands, EventIDs::menu_convert_to_subsection);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::OnInsertMenu, &m_menuCommands, EventIDs::menu_convert_to_subsubsection);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::OnInsertMenu, &m_menuCommands, EventIDs::menu_convert_to_heading5);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::OnInsertMenu, &m_menuCommands, EventIDs::menu_convert_to_heading6);
   Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::popid_popup_gnuplot);
   Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::menu_show_cellbrackets);
   Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::menu_print_cellbrackets);
   Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::popid_delete);
   Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_simplify);
   Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_expand);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_factor);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_solve_num);
   Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_solve);
   Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::enable_unicodePane);
   Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_subst);
@@ -512,7 +524,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_copy_matlab);
   Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_copy_csv);
   Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_copy_tex);
-  Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::EventIDs::popid_copy_text);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_copy_text);
   Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_image);
   Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_animation_save);
   Bind(wxEVT_MENU, &MaximaCommandMenus::FileMenu, &m_menuCommands, EventIDs::popid_animation_start);

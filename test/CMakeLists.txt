@@ -388,6 +388,16 @@ add_test(
 )
 set_property(TEST check-persistent-dialogs APPEND PROPERTY LABELS unittest)
 
+# Every ID a MaximaCommandMenus handler reacts to has to be bound, or its menu
+# entry or shortcut silently does nothing.
+add_test(
+    NAME check-handled-ids-bound
+    COMMAND "${CMAKE_COMMAND}"
+            "-DSOURCE_DIR=${CMAKE_SOURCE_DIR}"
+            -P "${CMAKE_CURRENT_SOURCE_DIR}/check-handled-ids-bound.cmake"
+)
+set_property(TEST check-handled-ids-bound APPEND PROPERTY LABELS unittest)
+
 # The source tarball GitHub generates for a release must not contain dot files
 # (GH #2272). Only meaningful in a git checkout, and needs git to look.
 find_package(Git QUIET)
