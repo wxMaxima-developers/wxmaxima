@@ -5,6 +5,10 @@
   cell into another type (Ctrl+Shift+Esc for code, Ctrl+Shift+1 to 6 for
   text and the headings): nothing was connected to them. Ctrl+Shift+7 now
   makes a heading 6, and the manual lists these shortcuts.
+- Statistics sidebar: its standard wizards moved into the wizard table.
+  The bar, box and pie charts and the mean, median, variance and standard
+  deviation wizards now start with the selection instead of always with
+  "%", like the other statistics wizards.
 - List menu: its standard wizards moved into the wizard table. "Create
   list from comma-separated elements" now ends its command with a
   semicolon, and two wizards lost a "val1=1,val2=2" tooltip on a field

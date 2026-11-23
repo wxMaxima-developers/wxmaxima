@@ -1020,6 +1020,64 @@ std::vector<wxm::WizardSpec> wxm::WizardCatalog(const WizardContext &context) {
                      .fields = {SelectionField(_("List #1")),
                                 Field(_("List #2"), wxEmptyString)}});
 
+  // ------------------------------------------------------------- Statistics
+  // Reading a matrix from a file and selecting a subsample stay in
+  // MaximaCommandMenus::StatsMenu(): they need a file dialog and a command
+  // that leaves out what wasn't entered.
+  const auto data = SelectionField(_("Data:"));
+  catalog.push_back({.ids = {EventIDs::menu_stats_histogram},
+                     .title = _("Histogram"),
+                     .rule = wxS("wxhistogram(#1#,nclasses=#2#);"),
+                     .fields = {data, Field(_("Classes:"), wxS("10"))}});
+  catalog.push_back({.ids = {EventIDs::menu_stats_scatterplot},
+                     .title = _("Scatterplot"),
+                     .rule = wxS("wxscatterplot(#1#,nclasses=#2#);"),
+                     .fields = {data, Field(_("Classes:"), wxS("10"))}});
+  // These used to start with "%" even when something was selected.
+  const std::array<std::tuple<wxWindowID, wxString, wxString>, 7> oneDataField = {{
+           {EventIDs::menu_stats_barsplot, _("Plot as bars"), wxS("wxbarsplot")},
+           {EventIDs::menu_stats_boxplot, _("Boxplot"), wxS("wxboxplot")},
+           {EventIDs::menu_stats_piechart, _("Plot as pie chart"), wxS("wxpiechart")},
+           {EventIDs::menu_stats_mean, _("Calculate mean value"), wxS("mean")},
+           {EventIDs::menu_stats_median, _("Calculate median value"), wxS("median")},
+           {EventIDs::menu_stats_var, _("Calculate variance"), wxS("var")},
+           {EventIDs::menu_stats_dev, _("Calculate standard deviation"), wxS("std")}}};
+  for (const auto &[id, title, function] : oneDataField)
+    catalog.push_back({.ids = {id},
+                       .title = title,
+                       .rule = function + wxS("(#1#);"),
+                       .fields = {data}});
+  catalog.push_back({.ids = {EventIDs::menu_stats_tt1},
+                     .title = _("One sample t-test"),
+                     .rule = wxS("test_mean(#1#,mean=#2#);"),
+                     .fields = {SelectionField(_("Sample:")), Field(_("Mean:"), wxS("0"))}});
+  catalog.push_back({.ids = {EventIDs::menu_stats_tt2},
+                     .title = _("Two sample t-test"),
+                     .rule = wxS("test_means_difference(#1#,#2#);"),
+                     .fields = {SelectionField(_("Sample 1:")),
+                                SelectionField(_("Sample 2:"))}});
+  catalog.push_back({.ids = {EventIDs::menu_stats_tnorm},
+                     .title = _("Shapiro-Wilk test for normality"),
+                     .rule = wxS("test_normality(#1#);"),
+                     .fields = {data}});
+  // simple_linear_regression() fits a single predictor (a list of x/y
+  // pairs), not a multivariate model.
+  catalog.push_back({.ids = {EventIDs::menu_stats_linreg},
+                     .title = _("Simple linear regression"),
+                     .rule = wxS("simple_linear_regression(#1#);"),
+                     .fields = {data}});
+  catalog.push_back({
+      .ids = {EventIDs::menu_stats_lsquares},
+      .title = _("Least Squares Fit"),
+      .rule = wxS("lsquares_estimates(#1#,[#2#],#3#,[#4#],iprint=[-1,0]);"),
+      .fields = {SelectionField(_("Data Matrix:"),
+                                _("A matrix in which each row is a set of variables")),
+                 Field(_("Col. names:"), wxS("x,y"),
+                       _("The list of variables contained in each matrix row")),
+                 Field(_("Equation:"), wxS("y=A*x+B"), _("The equation to fit the data to")),
+                 Field(_("Variables:"), wxS("A,B"),
+                       _("The variables to search the optimum solution for"))}});
+
   return catalog;
 }
 
