@@ -75,26 +75,26 @@ $(function() {
 <div class="textblock"><p>WxMaxima, <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> bilgisayar cebiri sistemi (CAS) için bir grafik kullanıcı arayüzüdür (GUI). WxMaxima ile <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>'nın tüm işlevleri kullanılabilir. Ayrıca en sık kullanılan özelliklere erişmek için kullanışlı sihirbazlar sunar. Bu kılavuz, <a class="el" href="classwxMaxima.html">wxMaxima</a>'yı <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> için en popüler arayüzlerden biri yapan özelliklerden bazılarını anlatır.</p>
 <p><img src="./wxMaximaLogo.png" alt="wxMaxima logo" class="inline"/></p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md747"></a>
+<h1><a class="anchor" id="autotoc_md821"></a>
 wxMaxima'ya giriş</h1>
-<h2><a class="anchor" id="autotoc_md748"></a>
+<h2><a class="anchor" id="autotoc_md822"></a>
 &lt;em&gt;Maxima&lt;/em&gt; ve wxMaxima</h2>
 <p>Açık kaynak dünyasında büyük sistemler genellikle küçük geliştirici gruplarının daha kolay yönetebileceği daha küçük projelere bölünür. Örneğin bir CD yazma programı, CD'yi asıl yazan bir komut satırı aracından ve kullanıcıların tüm komut satırı seçeneklerini öğrenmek zorunda kalmadan, hatta komut satırını hiç kullanmadan bu aracı kullanmasını sağlayan bir grafik kullanıcı arayüzünden oluşur. Bu yaklaşımın bir avantajı, komut satırı programına harcanan geliştirme emeğinin birçok program tarafından paylaşılabilmesidir: Aynı CD yazma komut satırı programı bir dosya yöneticisinde “CD'ye gönder” eklentisi olarak, bir müzik çalarda “CD'ye yaz” işlevi için ve bir DVD yedekleme aracında CD yazıcı olarak kullanılabilir. Bir başka avantaj da büyük bir işi küçük parçalara bölmenin geliştiricilerin aynı program için birden fazla kullanıcı arayüzü sunmasına olanak tanımasıdır.</p>
 <p><em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> gibi bir bilgisayar cebiri sistemi (CAS) bu yapıya uyar. Bir CAS, keyfi duyarlıklı bir hesap makinesi uygulamasının arkasındaki mantığı sağlayabilir ya da daha büyük bir sistemin arka planında formüllerin otomatik dönüşümlerini yapabilir (örn. <a href="https://www.sagemath.org/">Sage</a>). Alternatif olarak doğrudan bağımsız bir sistem olarak da kullanılabilir. <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>'ya bir komut satırı üzerinden erişilebilir. Ancak çoğu zaman, özellikle yeni başlayanlar için, <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> gibi bir arayüz yazılıma erişmenin daha verimli bir yolu olur.</p>
-<h3><a class="anchor" id="autotoc_md752"></a>
+<h3><a class="anchor" id="autotoc_md823"></a>
 &lt;em&gt;Maxima&lt;/em&gt;</h3>
 <p><em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> tam özellikli bir 'Sembolik' olarak ta çalışabilen bir bilgisayar cebir sistemidir (BCS). Bir BCS, formülleri yeniden düzenleyerek ve sadece sonucun sayısal değerini çıkarmanın aksine problemi çözen bir formül bularak (sembolik ifadeler ile) matematiksel problemleri çözebilen bir programdır. Başka bir deyişle, <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> değişkenlerin sayısal değerlerini veren bir hesap makinesi olarak kullanılabilir ve analitik çözümler de sağlayabilir. Ayrıca, analitik olarak çözülemeyen denklemler veya denklem sistemleri için bir dizi sayısal analiz yöntemi sunar.</p>
 <p><img src="./maxima_screenshot.png" alt="Maxima ekran görüntüsü, komut satırı" class="inline"/></p>
 <p><em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> için kapsamlı belgeler <a href="https://maxima.sourceforge.io/documentation.html">internette mevcuttur</a>. Bu belgelerin bir kısmına <a class="el" href="classwxMaxima.html">wxMaxima</a>'nın Yardım menüsünden de ulaşılabilir. Yardım tuşuna (çoğu sistemde <code>F1</code> tuşu) basıldığında <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>'nın bağlama duyarlı yardım özelliği, imlecin bulunduğu komutun <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> kılavuzundaki sayfasına otomatik olarak atlar.</p>
-<h3><a class="anchor" id="autotoc_md755"></a>
+<h3><a class="anchor" id="autotoc_md824"></a>
 WxMaxima</h3>
 <p><em>WxMaxima</em>, <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>'nın tüm işlevselliğini ve esnekliğini sunan bir grafik kullanıcı arayüzüdür. WxMaxima kullanıcılara grafik bir görüntü ve <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> ile çalışmayı kolaylaştıran birçok özellik sunar. Örneğin <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>, herhangi bir hücrenin içeriğini (ya da gerekirse bir formülün herhangi bir parçasını) basit bir sağ tıklamayla metin, LaTeX ya da MathML olarak dışa aktarmaya izin verir. Hatta bütün bir çalışma sayfası HTML ya da LaTeX dosyası olarak dışa aktarılabilir. <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>'nın belgeleri, kullanımının çeşitli yönlerini gösteren çalışma sayfalarıyla birlikte, <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> <a href="https://wxMaxima-developers.github.io/wxmaxima/help.html">yardım sitesinde</a> ve Yardım menüsünde bulunur.</p>
 <p><img src="./wxMaximaWindow.png" alt="wxMaxima window" class="inline"/></p>
 <p><em>WxMaxima</em> içine girilen hesaplamalar, arka planda <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> komut satırı aracı tarafından gerçekleştirilir.</p>
-<h2><a class="anchor" id="autotoc_md759"></a>
+<h2><a class="anchor" id="autotoc_md825"></a>
 Çalışma sayfasının temelleri</h2>
 <p><em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>'nın çoğu kendini açıklar, ancak bazı ayrıntılar dikkat gerektirir. <a href="https://wxMaxima-developers.github.io/wxmaxima/help.html">Bu site</a>, <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>'nın çeşitli yönlerini ele alan bir dizi çalışma sayfası içerir. Bunlardan bazılarını (özellikle "10 dakikada _(wx)Maxima_" eğitimini) baştan sona çalışmak, hem <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>'nın içeriğine hem de <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> ile etkileşim için <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> kullanımına aşinalığı artıracaktır. Bu kılavuz, <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>'nın kendiliğinden anlaşılması pek beklenmeyen ve çevrimiçi materyalde ele alınmamış olabilecek yönlerini anlatmaya odaklanır.</p>
-<h3><a class="anchor" id="autotoc_md760"></a>
+<h3><a class="anchor" id="autotoc_md826"></a>
 Çalışma sayfası yaklaşımı</h3>
 <p><em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>'da standart olmayan çok az şeyden biri, <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> için verileri yalnızca kullanıcı istediğinde değerlendirilen (yani <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>'ya gönderilen) hücreler halinde düzenlemesidir. Bir hücre değerlendirildiğinde, o hücredeki ve yalnızca o hücredeki tüm komutlar toplu olarak değerlendirilir. (Bu ifade tam olarak doğru değil: Bitişik birkaç hücre seçilip birlikte değerlendirilebilir. Ayrıca <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>'ya bir çalışma sayfasındaki tüm hücreleri tek seferde değerlendirmesi söylenebilir.) <em>WxMaxima</em>'nın komutları çalıştırmak üzere gönderme yaklaşımı ilk bakışta alışılmadık gelebilir. Ancak büyük belgelerle çalışmayı (kullanıcının her değişikliğin belgenin tamamının yeniden değerlendirilmesini otomatik olarak tetiklemesini istemediği durumlarda) büyük ölçüde kolaylaştırır. Ayrıca bu yaklaşım hata ayıklama için çok kullanışlıdır.</p>
 <p><em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>'ya metin yazıldığında otomatik olarak yeni bir çalışma sayfası hücresi oluşturulur. Bu hücrenin türü araç çubuğundan seçilebilir. Bir kod hücresi oluşturulduysa hücre <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>'ya gönderilebilir; bu durumda hesaplamanın sonucu kodun altında görüntülenir. Aşağıda böyle bir komut çifti gösterilmektedir.</p>
@@ -103,7 +103,7 @@ WxMaxima</h3>
 <p><em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>, giriş hücrelerinin yanı sıra belgeleme için metin hücrelerine, görüntü hücrelerine, başlık hücrelerine, bölüm hücrelerine ve kısım hücrelerine de izin verir. Her hücrenin kendi geri alma arabelleği vardır; bu yüzden birkaç hücrenin değerlerini değiştirip ardından gereksiz değişiklikleri yavaş yavaş geri alarak hata ayıklamak oldukça kolaydır. Ayrıca çalışma sayfasının kendisinin de hücre düzenlemelerini, eklemelerini ve silmelerini geri alabilen genel bir geri alma arabelleği vardır.</p>
 <p>Aşağıdaki şekil farklı hücre türlerini (başlık hücreleri, bölüm hücreleri, alt bölüm hücreleri, metin hücreleri, giriş/çıkış hücreleri ve görüntü hücreleri) göstermektedir.</p>
 <p><img src="./cell-example.png" alt="Example of different wxMaxima cells" class="inline"/></p>
-<h3><a class="anchor" id="autotoc_md763"></a>
+<h3><a class="anchor" id="autotoc_md827"></a>
 Hücreler</h3>
 <p>Çalışma sayfası hücreler halinde düzenlenmiştir. WxMaxima aşağıdaki hücre türlerini tanır:</p>
 <ul>
@@ -117,7 +117,7 @@ Hücreler</h3>
 <p>Metin girildiğinde <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>'nın varsayılan davranışı otomatik olarak bir matematik hücresi oluşturmaktır. Diğer türlerdeki hücreler Hücre menüsüyle, menüde gösterilen kısayol tuşlarıyla ya da araç çubuğundaki açılır listeyle oluşturulabilir. Matematik dışı bir hücre oluşturulduktan sonra içine yazılan her şey metin olarak yorumlanır.</p>
 <p>Bir matematik hücresi, (<a class="el" href="classC.html">C</a> tarzı) bir <a href="https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#Comments">yorum metni</a> de içerebilir: <code>/* This comment will be ignored by <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> */</code></p>
 <p>"`/*`" yorumun başlangıcını, "`*/`" ise sonunu işaretler.</p>
-<h3><a class="anchor" id="autotoc_md766"></a>
+<h3><a class="anchor" id="autotoc_md828"></a>
 Yatay ve dikey imleçler</h3>
 <p>Kullanıcı tam bir cümle seçmeye çalışırsa, bir kelime işlemci seçimi otomatik olarak bir kelime sınırında başlayıp bitecek şekilde genişletmeye çalışır. Benzer şekilde, birden fazla hücre seçilirse <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> da seçimi hücrelerin tamamına genişletir.</p>
 <p>Standart olmayan şey, <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>'nın iki tür imleç tanımlayarak sürükle-bırak esnekliği sağlamasıdır. <em>WxMaxima</em> gerektiğinde bunlar arasında otomatik olarak geçiş yapar:</p>
@@ -132,15 +132,15 @@ imleç" class="inline"/></p>
 <p>Farklı hücreler arasında gezinirken de, çalışma sayfanıza bir hücre ekleyebileceğiniz yerde (yanıp sönen) yatay imleci görürsünüz (ya formülünüzü yazmaya başlayarak bir matematik hücresi ya da menüyü kullanarak farklı türde bir hücre).</p>
 <p><img src="./horizontal-cursor-between-cells.png" alt="Hücreler arasında (yanıp sönen) yatay
 imleç" class="inline"/></p>
-<h3><a class="anchor" id="autotoc_md768"></a>
+<h3><a class="anchor" id="autotoc_md829"></a>
 Hücreleri Maxima'ya gönderme</h3>
 <p>Bir kod hücresindeki komut, <code>CTRL</code>+<code>ENTER</code>, <code>SHIFT</code>+<code>ENTER</code> ya da sayısal tuş takımındaki <code>ENTER</code> tuşuna basılarak bir kez çalıştırılır. <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> varsayılan olarak komutları <code>CTRL</code>+<code>ENTER</code> ya da <code>SHIFT</code>+<code>ENTER</code> girildiğinde gönderir, ancak <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> komutları <code>ENTER</code> tuşuna yanıt olarak çalıştıracak şekilde yapılandırılabilir.</p>
-<h3><a class="anchor" id="autotoc_md769"></a>
+<h3><a class="anchor" id="autotoc_md830"></a>
 Komutların otomatik tamamlanması</h3>
 <p><em>WxMaxima</em>, menüden (Hücre/Kelimeyi tamamla) ya da <code>CTRL</code>+<code>SPACE</code> tuş bileşimine basılarak tetiklenen bir otomatik tamamlama özelliği içerir. Otomatik tamamlama bağlama duyarlıdır. Örneğin ezUnits için bir birim belirtiminin içinde etkinleştirilirse uygun birimlerin bir listesini sunar.</p>
 <p><img src="./ezUnits.png" alt="ezUnits" class="inline"/></p>
 <p>Otomatik tamamlama, bir dosya adını, bir birim adını ya da geçerli komutun veya değişkenin adını tamamlamanın yanı sıra, komutların çoğu için programın beklediği parametrelerin türünü (ve anlamını) gösteren bir şablon da gösterebilir. Bu özelliği etkinleştirmek için <code>SHIFT</code>+<code>CTRL</code>+<code>SPACE</code> tuşlarına basın ya da ilgili menü öğesini (Hücre/Şablonu göster) seçin.</p>
-<h4><a class="anchor" id="autotoc_md770"></a>
+<h4><a class="anchor" id="autotoc_md831"></a>
 Yunan harfleri</h4>
 <p>Bilgisayarlar geleneksel olarak karakterleri 8 bitlik değerlerde saklar. Bu, en fazla 256 farklı karaktere izin verir. Hemen her dilin tüm harfleri, rakamları ve denetim simgeleri (iletimin sonu, dizenin sonu, menüler için dikdörtgen çizmeye yarayan çizgiler ve kenarlar <em>vb.</em>) bu sınırın içine sığabilir.</p>
 <p>Ancak çoğu ülke için seçilmiş olan 256 karakterlik kod sayfası, matematikte sık kullanılan Yunan harfleri gibi şeyleri içermez. Bu tür sınırlamaların üstesinden gelmek için <a href="https://home.unicode.org/">Unicode</a> icat edilmiştir: İngilizce metnin her zamanki gibi çalışmasını sağlayan, ama 256'dan çok daha fazla karakter kullanmaya olanak tanıyan bir kodlama.</p>
@@ -186,7 +186,7 @@ Yunan harfleri</h4>
 <td class="markdownTableBodyCenter">T   </td><td class="markdownTableBodyCenter">Theta   </td><td class="markdownTableBodyCenter">P   </td><td class="markdownTableBodyCenter">Pi   </td><td class="markdownTableBodyCenter">O   </td><td class="markdownTableBodyCenter">Omega   </td></tr>
 </table>
 <p>Yunan harflerini girmek için "Yunanca harfler" kenar çubuğunu da kullanabilirsiniz.</p>
-<p><a class="anchor" id="autotoc_md774"></a> </p><h5>Dikkat: Birbirine benzeyen karakterler</h5>
+<p><a class="anchor" id="autotoc_md832"></a> </p><h5>Dikkat: Birbirine benzeyen karakterler</h5>
 <p>Bazı Latin harfleri Yunan harflerine benzer; örneğin Latin "A" harfi ile Yunan "Alfa" harfi. Aynı görünseler de bunlar, farklı Unicode kod noktalarıyla (sayılarla) temsil edilen iki ayrı Unicode karakteridir.</p>
 <p>Bu, <a class="el" href="classA.html">A</a> değişkenine bir değer atayıp daha sonra bu değişkenle bir şey yapmak için Yunan Alfa harfini kullanırsanız, özellikle de çıktılarda, sorun yaratabilir. Yunan mü harfi için de (mikro öneki olarak da kullanılır) iki farklı Unicode kod noktası vardır.</p>
 <p>Bu yüzden "Yunanca harfler" kenar çubuğunda birbirine benzeyen karakterlerin sunulmaması seçeneği vardır (bu, sağ tıklama menüsüyle değiştirilebilir).</p>
@@ -299,28 +299,28 @@ Yunan harfleri</h4>
 <p>Symbols one needs often can be added to the "Symbols" sidebar in the "Options" tab of the configuration dialog (Edit -&gt; Configure), where they can also be given a keyboard shortcut. <a class="el" href="classA.html">A</a> letter with accents counts as one symbol there and gets one button. The Greek letters and the symbols the sidebars show anyway can be given a keyboard shortcut there, too, or by right-clicking their button in the sidebar. <a class="el" href="classA.html">A</a> shortcut has to contain <code>Ctrl</code> or <code>Alt</code> or be a function key, and types its symbol while the worksheet has the keyboard focus. The configuration dialog warns if a menu entry already uses the same keys.</p>
 <p>Lütfen bu simgelerin çoğunun (mantık simgeleri önemli istisnalardır) <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>'da özel bir anlamı olmadığını ve bu yüzden sıradan karakterler olarak yorumlanacağını unutmayın. <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>, Unicode karakterleri desteklemeyen bir Lisp ile derlenmişse bu simgeler hata mesajına yol açabilir.</p>
 <p>Örneğin Yunan harfleri ya da matematik simgeleri seçili yazı tipinde bulunmuyor olabilir; bu durumda görüntülenemezler. Bu sorunu çözmek için başka yazı tipleri seçin (Düzen -&gt; Yapılandır -&gt; Stil ile).</p>
-<h3><a class="anchor" id="autotoc_md795"></a>
+<h3><a class="anchor" id="autotoc_md833"></a>
 Unicode değiştirme</h3>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> will replace several Unicode characters with their respective <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> expressions, e.g. <code>²</code> with <code>^2</code>, <code>³</code> with <code>^3</code>, <code>≠</code> with <code>#</code> or <code>≤</code> with <code>&lt;=</code>.</p>
 <p>Unicode characters that stand for a <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> name are instead defined as <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> aliases of that name when <a class="el" href="classwxMaxima.html">wxMaxima</a> starts <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>: <code>π</code> for <code>pi</code>, <code>ⅈ</code> for <code>i</code>, <code>ⅇ</code> for <code>e</code>, <code>∞</code> for <code>inf</code>, the (mathematical) Sigma sign (which is not the same Unicode character as the corresponding Greek letter) for <code>sum</code>, <code>∏</code> for <code>product</code>, <code>∫</code> for <code>integrate</code>, the square root sign for <code>sqrt</code> and <code>⋀</code>, <code>⋁</code>, <code>⊻</code>, <code>⊼</code>, <code>⊽</code>, <code>⇒</code>, <code>⇔</code> and <code>¬</code> for <code>and</code>, <code>or</code>, <code>xor</code>, <code>nand</code>, <code>nor</code>, <code>implies</code>, <code>equiv</code> and <code>not</code>. This means they work in files loaded by <code>batch()</code> or <code>load()</code>, too, and <code>aliases</code> lists the names they stand for. As <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> reads these characters as letters they need to be separated from neighbouring names by spaces in such a file: <code>a⋀b</code> is a variable name, <code>a ⋀ b</code> means <code>a and b</code>. In an input cell <a class="el" href="classwxMaxima.html">wxMaxima</a> adds these spaces automatically. It also puts parenthesis around a number or a variable that directly follows the square root sign, so <code>√2</code> means <code>sqrt(2)</code>.</p>
 <p>Unicode'da birkaç "yaygın" kesir tek bir Unicode kod noktası olarak kodlanmıştır: <code>¼, ½, ¾, ⅐, ⅑, ⅒, ⅓, ⅔, ⅕, ⅖, ⅗, ⅘, ⅙, ⅚, ⅛, ⅜, ⅝, ⅞</code></p>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a>, giriş <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'ya gönderilmeden önce bunları <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> gösterimleriyle değiştirir, örneğin <code>(1/4)</code>. Ayrıca <code>1/</code> ile değiştirilen <code>⅟</code> ve <code>(0/3)</code> ile değiştirilen <code>↉</code> (beyzbolda kullanılır) vardır.</p>
 <p>Giriş hücrelerinde (bu Unicode kod noktalarını değil) <b><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> kodunu</b> kullanmanız önerilir (gerekçe: (a) matematik girişi için kullanılan yazı tipi bunları içermiyor olabilir; (b) belgeyi <code>wxm</code> dosyası olarak kaydederseniz genellikle (komut satırı) <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> tarafından okunabilir, ancak bu değiştirmeler komut satırı <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'sında elbette çalışmaz); yine de başka bir belgeden bir formülü kesip yapıştırdığınızda bu karakterler ortaya çıkabilir.</p>
-<h3><a class="anchor" id="autotoc_md797"></a>
+<h3><a class="anchor" id="autotoc_md834"></a>
 Kenar panelleri</h3>
 <p>En önemli <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> komutlarına kısayollara, içindekiler tablosu gibi şeylere, hata ayıklama mesajlarını gösteren pencerelere ya da son verilen komutların geçmişine kenar panelleriyle erişilebilir. Bunlar "Görünüm" menüsünden etkinleştirilebilir. Hepsi <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> penceresinin içinde ya da dışında başka konumlara taşınabilir. Yararlı panellerden biri de Yunan harflerini fareyle girmeye olanak tanıyandır.</p>
 <p><img src="./SidePanes.png" alt="Farklı Kenar Panelleri Örneği" class="inline"/></p>
 <p>"İçerik Tablosu" kenar panelinde bir başlığın düzeyi, başlığa farenin sağ tuşuyla tıklayıp bir üst ya da bir alt başlık türünü seçerek kolayca artırılabilir ya da azaltılabilir.</p>
 <p><img src="./Sidepane-TOC-convert-headings.png" alt="İçerik tablosu kenar panelinde başlıkları yükseltme ya da
 alçaltma" class="inline"/></p>
-<h3><a class="anchor" id="autotoc_md801"></a>
+<h3><a class="anchor" id="autotoc_md835"></a>
 MathML çıktısı</h3>
 <p>Birçok kelime işlemci ve benzeri program ya <a href="https://www.w3.org/Math/">MathML</a> girişini tanıyıp otomatik olarak düzenlenebilir iki boyutlu bir denklem olarak ekler ya da (LibreOffice gibi) “panodan MathML içe aktar” özelliği sunan bir denklem düzenleyicisine sahiptir. Diğerleri RTF matematiğini destekler. Bu yüzden <em>WxMaxima</em> sağ tıklama menüsünde birkaç öğe sunar.</p>
-<h3><a class="anchor" id="autotoc_md803"></a>
+<h3><a class="anchor" id="autotoc_md836"></a>
 Pasting LaTeX or MathML formulas</h3>
 <p><b>Edit → Paste LaTeX/MathML as <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> Code</b> (also in the right-click menu) converts a formula from the clipboard into a <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> command, for example one copied from a paper, a web page or an equation editor. LaTeX may come with or without <code>$…$</code>, <code>\(…\)</code> or <code>\[…\]</code> around it, so <code>\int_0^1 \frac{\sin x}{x}\,dx</code> becomes <code>integrate(sin(x)/x,x,0,1)</code>. The command goes where the cursor is, or into a new code cell. MathML pasted into a code cell with the ordinary <b>Paste</b> is converted the same way, since nobody wants the XML in a code cell. If MathML copied with <b>Copy as MathML</b> is pasted back, the result is the original command: <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> adds it to the MathML as an annotation.</p>
 <p>LaTeX and MathML describe what a formula looks like, not what it means, so the conversion has to interpret it. Fractions, roots, powers, subscripts (<code>x_1</code> becomes the name <code>x_1</code>, <code>a_{n+1}</code> the array element <code>a[n+1]</code>), functions with or without parentheses (<code>\sin 2x</code>), <code>\frac{d}{dx}</code>, &lsquo;f&rsquo;(x)<code>, integrals ending in</code>dx<code>, sums and products with limits,</code>\lim_{x\to 0}<code>, </code>|x|<code>and matrices are understood. An</code>e<code>is Euler’s number, but an</code>i<code>is only the imaginary unit when set upright (</code>\mathrm{i}<code>), as it more often is an index. <a class="el" href="classA.html">A</a> product of a name and parentheses, like</code>x(y+1)<code>, is taken as a product unless the name is</code>f<code>,</code>g<code>,</code>h<code>or longer than one letter. Anything without a single meaning, like</code>\pm<code>,</code>\dots` or text, isn’t guessed at: <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> says what it couldn’t convert instead. Check the command before evaluating it.</p>
-<h3><a class="anchor" id="autotoc_md808"></a>
+<h3><a class="anchor" id="autotoc_md837"></a>
 Markdown desteği</h3>
 <p><em>WxMaxima</em>, matematiksel gösterimle çakışmayan bir dizi standart <a href="https://en.wikipedia.org/wiki/Markdown">Markdown</a> kuralını destekler. Bu öğelerden biri madde işaretli listelerdir.</p>
 <div class="fragment"><div class="line">Sıradan metin</div>
@@ -339,17 +339,17 @@ Markdown desteği</h3>
 </div><!-- fragment --><p><em>WxMaxima</em>'nın TeX ve HTML çıktısı <code>=&gt;</code> dizisini de tanır ve karşılık gelen Unicode işaretiyle değiştirir:</p>
 <div class="fragment"><div class="line">cogito =&gt; sum.</div>
 </div><!-- fragment --><p>HTML ve TeX dışa aktarımının tanıdığı diğer simgeler, karşılaştırmalar için <code>&lt;=</code> ve <code>&gt;=</code>, iki uçlu çift ok (<code>&lt;=&gt;</code>), tek başlı oklar (<code>&lt;-&gt;</code>, <code>-&gt;</code> ve <code>&lt;-</code>) ve ilgili işaret olarak <code>+/-</code> dizisidir. TeX çıktısı için <code>&lt;&lt;</code> ve <code>&gt;&gt;</code> de tanınır.</p>
-<h3><a class="anchor" id="autotoc_md811"></a>
+<h3><a class="anchor" id="autotoc_md838"></a>
 Links in text cells</h3>
 <p><a class="el" href="classA.html">A</a> web address in a text cell that starts with <code><a href="http://">http://</a></code>, <code><a href="https://">https://</a></code> or <code>mailto:</code> is shown as a link. Since clicking into a text cell places the cursor there, a link is followed by <code>CTRL</code>+clicking it (<code>CMD</code>+clicking on macOS), or by right-clicking it and choosing "Open Link"; hovering over it shows where it leads. The HTML export turns it into a link, the TeX export into a <code>\url{}</code>. Links are always recognized from the text itself, so nothing about them is stored in the file.</p>
 <p>Links in a code cell's comments (<code>/* ... */</code>) work the same way. Elsewhere in code, for example inside a string, an address is <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> syntax and is not a link.</p>
 <p>The same goes for web addresses in <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>'s output, for example in a string printed by <code>print("See https://wxmaxima-developers.github.io/wxmaxima/")</code>: <code>CTRL</code>+clicking the address or choosing "Open Link" from its context menu opens it, while a plain click still selects the output.</p>
-<h3><a class="anchor" id="autotoc_md814"></a>
+<h3><a class="anchor" id="autotoc_md839"></a>
 Bold, italic, underlined and struck-through text</h3>
 <p>Text in a text cell, a title or a section heading can be made bold, italic, underlined or struck through. Select the text and press the respective button in the toolbar; pressing the button again removes that formatting from the selection. With nothing selected the button switches the formatting on or off for what is typed next. The buttons are hidden by right-clicking the toolbar and unchecking "Text formatting buttons". Code cells cannot be formatted: their colors already show the syntax of the code.</p>
 <p>Superscript and subscript buttons work the same way: they make the text smaller and raise it above or lower it below the line, as in <a class="el" href="classE.html">E</a> = mc² or H₂O. <a class="el" href="classA.html">A</a> character cannot be both, so switching one of them on switches the other off. <a class="el" href="classA.html">A</a> line that contains a superscript, a subscript or a character that is taller than the font's usual ones, for example an emoji, gets as much additional room as it needs.</p>
 <p>The formatting is saved in <code>.wxmx</code> files. Older versions of <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> open such a file without the formatting but keep all of the text. <code>.wxm</code> files, the exports and the clipboard contain the text without its formatting.</p>
-<h3><a class="anchor" id="autotoc_md818"></a>
+<h3><a class="anchor" id="autotoc_md840"></a>
 Kısayol tuşları</h3>
 <p>Çoğu kısayol tuşu ilgili menülerin metninde bulunabilir. Aslında menü metninden alındıklarından ve <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> çevirileriyle yerel klavyenin kullanıcılarının ihtiyaçlarına göre özelleştirilebildiğinden, bunları burada belgelemiyoruz. Bununla birlikte, bazı kısayol tuşları veya kısayol takma adları menülerde belgelenmemiştir:</p>
 <ul>
@@ -357,7 +357,7 @@ Kısayol tuşları</h3>
 <li><code>CTRL</code>+<code>TAB</code> ya da <code>CTRL</code>+<code>SHIFT</code>+<code>TAB</code> otomatik tamamlama mekanizmasını tetikler.</li>
 <li><code> SHIFT </code> + <code> SPACE </code>, boşluk bırakmayan bir boşluk ekler.</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md822"></a>
+<h3><a class="anchor" id="autotoc_md841"></a>
 Exploring output with the keyboard</h3>
 <p><a class="el" href="classA.html">A</a> cell's output can be selected, and explored part by part, without a mouse:</p>
 <ul>
@@ -369,24 +369,24 @@ Exploring output with the keyboard</h3>
 <li><code>SHIFT</code>+<code>LEFT</code> and <code>SHIFT</code>+<code>RIGHT</code> grow or shrink the selection over the neighbouring parts; in a matrix, <code>SHIFT</code> and any arrow key grow the selected entry into a block of entries.</li>
 <li>The context-menu key or <code>SHIFT</code>+<code>F10</code> opens the right-click menu for the selection, so it can be copied in any format.</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md828"></a>
+<h3><a class="anchor" id="autotoc_md842"></a>
 TeX dışa aktarımında ham TeX</h3>
 <p>Bir metin hücresi <code>TeX:</code> ile başlıyorsa, TeX dışa aktarımı <code>TeX:</code> işaretini izleyen değişmez metni içerir. Bu özelliği kullanmak <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> çalışma kitabına TeX işaretlemesinin girilmesini sağlar.</p>
-<h2><a class="anchor" id="autotoc_md830"></a>
+<h2><a class="anchor" id="autotoc_md843"></a>
 Dosya biçimleri</h2>
 <p><em>WxMaxima</em> oturumunda geliştirilen materyal, daha sonra kullanılmak üzere üç yoldan biriyle saklanabilir:</p>
-<h3><a class="anchor" id="autotoc_md832"></a>
+<h3><a class="anchor" id="autotoc_md844"></a>
 .mac</h3>
 <p><code>.mac</code> dosyaları <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> komutları içeren sıradan metin dosyalarıdır. <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>'nın <code>batch()</code> ya da <code>load()</code> komutuyla veya <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>'nın Dosya/Kütük Dosyası menü öğesiyle okunabilirler.</p>
 <p>Aşağıda bir örnek gösterilmektedir. <code>Quadratic.mac</code> bir fonksiyon tanımlar ve ardından <code>wxdraw2d()</code> ile bir grafik oluşturur. Sonra <code>Quadratic.mac</code> dosyasının içeriği yazdırılır ve yeni tanımlanan <code>f()</code> fonksiyonu değerlendirilir.</p>
 <p><img src="./BatchImage.png" alt="Bir dosyayı `batch()` ile yükleme" class="inline"/></p>
 <p>Dikkat: <code>Quadratic.mac</code> dosyası olağan bir <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> uzantısına (<code>.mac</code>) sahip olsa da yalnızca <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> tarafından okunabilir, çünkü <code>wxdraw2d()</code> komutu <a class="el" href="classwxMaxima.html">wxMaxima</a>'nın <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>'ya eklediği bir uzantıdır. (Komut satırı) <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> bilinmeyen <code>wxdraw2d()</code> komutunu yok sayar ve onu yeniden çıktı olarak yazdırır.</p>
 <p><code>.mac</code> dosyalarını kendi makro kitaplığınızı yazmak için kullanabilirsiniz. Ancak yeterli yapısal bilgi içermedikleri için bir <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> oturumu olarak geri okunamazlar.</p>
-<h3><a class="anchor" id="autotoc_md837"></a>
+<h3><a class="anchor" id="autotoc_md845"></a>
 .wxm</h3>
 <p><code>.wxm</code> dosyaları, <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>'nın çıktısı dışında çalışma sayfasını içerir. 5.38'den yeni <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> sürümlerinde .mac dosyaları gibi <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>'nın <code>load()</code> fonksiyonuyla okunabilirler. Şey, çoğunlukla. Sorular (<code>asksign(x)</code> gibi) sorunludur, çünkü yanıt <code>.wxm</code> dosyasına yazılır (böylece yüklendikten sonra önerilebilir), ama <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> bunu değerlendiremez. <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'nın bilmek istediği bazı özellikleri <code>assume()</code> ile bildirerek <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'nın soru sormasını önleyebilirsiniz.</p>
 <p>Bu düz metin biçiminde, yeni özellikler kullanan çalışma sayfalarının <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>'nın eski sürümleriyle geriye dönük uyumlu olmaması bazen kaçınılmazdır.</p>
-<h4><a class="anchor" id="autotoc_md840"></a>
+<h4><a class="anchor" id="autotoc_md846"></a>
 wxm dosyalarının dosya biçimi</h4>
 <p>Bu yalnızca düz bir metin dosyasıdır (bir metin düzenleyiciyle açabilirsiniz) ve hücre içeriklerini özel <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> yorumları olarak içerir.</p>
 <p>Dosya aşağıdaki yorumla başlar:</p>
@@ -412,10 +412,10 @@ wxm dosyalarının dosya biçimi</h4>
 <div class="fragment"><div class="line">/* [wxMaxima: fold    start ] */</div>
 <div class="line">...</div>
 <div class="line">/* [wxMaxima: fold    end   ] */</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md846"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md847"></a>
 .wxmx</h3>
 <p>XML tabanlı bu dosya biçimi, yakınlaştırma oranı ve izleme listesi gibi şeyler dahil çalışma sayfasının tamamını kaydeder. Tercih edilen dosya biçimidir.</p>
-<h4><a class="anchor" id="autotoc_md847"></a>
+<h4><a class="anchor" id="autotoc_md848"></a>
 wxmx dosyalarının dosya biçimi</h4>
 <p>Bir <code>wxmx</code> dosyası ikili bir biçim gibi görünür, ancak işletim sisteminizde bulunan araçlarla işlenebilir. Bu bir zip dosyasıdır ve <code>unzip</code> ile açılabilir (işletim sisteminizin zip programının tanıması için önce yeniden adlandırmanız gerekebilir). Sıkıştırma işlevini kullanmıyoruz, yalnızca birkaç dosyayı tek bir dosyada birleştirme olanağını kullanıyoruz: Görüntüler zaten sıkıştırılmıştır, geri kalanı ise basit metindir (muhtemelen içerilen büyük görüntülerden çok daha küçüktür).</p>
 <p>Şu dosyaları içerir:</p>
