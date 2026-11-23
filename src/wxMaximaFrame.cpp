@@ -119,6 +119,8 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
                                        EventIDs::menu_convert_to_subsubsection);
   entries.emplace_back(wxACCEL_CTRL | wxACCEL_SHIFT, wxS('6'),
                                        EventIDs::menu_convert_to_heading5);
+  entries.emplace_back(wxACCEL_CTRL | wxACCEL_SHIFT, wxS('7'),
+                                       EventIDs::menu_convert_to_heading6);
   entries.emplace_back(wxACCEL_CTRL, wxS('.'),
                                        EventIDs::menu_interrupt_id); // Standard on the Mac
   entries.emplace_back(wxACCEL_NORMAL, WXK_F1, wxID_HELP);
