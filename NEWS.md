@@ -1,5 +1,10 @@
 # Current development version
 
+- Wizard texts: the "Divide Polynomials" wizard was titled "GCD", the
+  matrix exponent wizard asked for a "Right Matrix" instead of an exponent,
+  and the change-of-variable descriptions, several field labels of the
+  Simplify menu's wizards and the matrix name prompt of "Read matrix" could
+  not be translated.
 - Statistics sidebar: its standard wizards moved into the wizard table.
   The bar, box and pie charts and the mean, median, variance and standard
   deviation wizards now start with the selection instead of always with
