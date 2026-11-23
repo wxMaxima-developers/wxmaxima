@@ -781,7 +781,7 @@ void MaximaCommandMenus::StatsMenu(wxCommandEvent &event) {
 #endif
 
         wxString name =
-          wxGetTextFromUser(wxS("Enter matrix name:"), wxS("Matrix name"));
+          wxGetTextFromUser(_("Matrix name:"), _("Open matrix"));
         wxString cmd;
 
         if (name != wxEmptyString)
@@ -2146,6 +2146,8 @@ void MaximaCommandMenus::PopupMenu(wxCommandEvent &event) {
   m_wxMaxima.GetWorksheet()->CloseAutoCompletePopup();
 
   wxString selection = m_wxMaxima.GetWorksheet()->GetString();
+  // "Solve...", "Find Root...", "Substitute..." and "Differentiate..." open
+  // standard wizards, which CatalogWizard() handles.
   if(event.GetId() == EventIDs::enable_unicodePane){
     m_wxMaxima.wxMaximaFrame::ShowPane(EventIDs::menu_pane_unicode, true);
   }
@@ -2478,34 +2480,6 @@ void MaximaCommandMenus::PopupMenu(wxCommandEvent &event) {
   else if(event.GetId() == EventIDs::popid_factor){
     m_wxMaxima.MenuCommand(wxS("factor(") + selection + wxS(");"));
   }
-  else if(event.GetId() == EventIDs::popid_solve){
-    m_wxMaxima.CommandWiz(
-               _("Solve"),
-               _("solve() will solve a list of equations only if for n "
-                 "independent equations there are n variables to solve to.\n"
-                 "If only one result variable is of interest the other result "
-                 "variables can be used to to tell solve() which variables to "
-                 "eliminate from the solution\n"
-                 "solve() searches for a global solution. If a problem has different "
-                 "solutions depending on the range its variables are in one way "
-                 "to successfully use solve() is to use solve() to eliminate "
-                 "variables "
-                 "one by one and to manually choose which of the solutions solve() "
-                 "found "
-                 "matches the current problem."),
-               wxEmptyString, wxS("solve([#1#],[#2#]);"), _("Data:"), selection,
-               _("Comma-separated equations"), _("Result variables:"), wxS("x"),
-               _("Comma-separated variables"));
-  }
-  else if(event.GetId() == EventIDs::popid_solve_num){
-    m_wxMaxima.CommandWiz(_("Find root (solve numerically)"),
-               _("Tries to find a solution of the equation that lies between "
-                 "the two bounds."),
-               wxEmptyString, wxS("find_root(#1#,#2#,#3#,#4#);"),
-               _("Equation:"), selection, wxEmptyString, _("Variable:"),
-               wxS("x"), wxEmptyString, _("Lower bound:"), wxS("-1"),
-               wxEmptyString, _("Upper bound:"), wxS("1"), wxEmptyString);
-  }
   else if(event.GetId() == EventIDs::popid_integrate){
       wxWindowPtr<IntegrateWiz> wiz(new IntegrateWiz(&m_wxMaxima, -1, &m_wxMaxima.m_configuration, _("Integrate")));
       wiz->SetValue(selection);
@@ -2517,19 +2491,6 @@ void MaximaCommandMenus::PopupMenu(wxCommandEvent &event) {
         }
       });
     }
-  else if(event.GetId() == EventIDs::popid_diff){
-    m_wxMaxima.CommandWiz(_("Differentiate"), _("Differentiates the expression n times"),
-               wxEmptyString, wxS("diff(#1#,#2#,#3#);"), _("Expression:"),
-               selection, wxEmptyString, _("Variable(s):"), wxS("x"),
-               wxEmptyString, _("Times:"), wxS("1"), wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::popid_subst){
-    m_wxMaxima.CommandWiz(_("Substitute"),
-               _("Introduces one or more assignments into an expression"),
-               wxEmptyString, wxS("subst(#1#,#2#);"), _("Assignment(s):"),
-               wxS("x=sqrt(u)"), _("Assignments of the format a=10,b=20"),
-               _("Expression"), selection, wxEmptyString);
-  }
   else if(event.GetId() == EventIDs::popid_plot2d){
       wxWindowPtr<Plot2DWiz> wiz(new Plot2DWiz(&m_wxMaxima, -1, &m_wxMaxima.m_configuration, _("Plot 2D")));
       wiz->SetValue(selection);

@@ -82,6 +82,8 @@ When you start wxMaxima, you will only see the blinking horizontal cursor. If yo
 
 You might want to create a different cell type (using the "Cell" menu), maybe a title cell or text cell, which describes, what will be done, when you start creating your worksheet.
 
+The cell the cursor is in can be turned into another type with the keyboard: <kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>1</kbd> makes it a text cell, <kbd>2</kbd> to <kbd>7</kbd> make it a title, section, subsection, subsubsection, heading 5 or heading 6, the same numbers that insert these cells with <kbd>CTRL</kbd> alone, and <kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>ESC</kbd> makes it a code cell.
+
 If you navigate between the different cells, you will also see the (blinking) horizontal cursor, where you can insert a cell into your worksheet (either a math cell, by just start typing your formula - or a different cell type using the menu).
 
 ![(blinking) horizontal cursor between cells](./horizontal-cursor-between-cells.png){ id=img_horizontal_cursor_between_cells }

@@ -409,6 +409,16 @@ add_test(
 )
 set_property(TEST check-persistent-dialogs APPEND PROPERTY LABELS unittest)
 
+# Every ID a MaximaCommandMenus handler reacts to has to be bound, or its menu
+# entry or shortcut silently does nothing.
+add_test(
+    NAME check-handled-ids-bound
+    COMMAND "${CMAKE_COMMAND}"
+            "-DSOURCE_DIR=${CMAKE_SOURCE_DIR}"
+            -P "${CMAKE_CURRENT_SOURCE_DIR}/check-handled-ids-bound.cmake"
+)
+set_property(TEST check-handled-ids-bound APPEND PROPERTY LABELS unittest)
+
 # The source tarball GitHub generates for a release must not contain dot files
 # (GH #2272). Only meaningful in a git checkout, and needs git to look.
 find_package(Git QUIET)
@@ -1643,6 +1653,11 @@ add_test(
     NAME tutorial_fittingEquations
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/../examples
     COMMAND wxmaxima --debug --logtostderr --pipe  --batch --exit-on-error fittingEquations.wxm)
+# On Ubuntu 26.04 (Maxima 5.49 on GCL 2.7) loading draw and fmin_cobyla is
+# slow: this tutorial took 360-373 s there in 2026-11, against ~62 s on 24.04,
+# which is right at WXM_TEST_TIMEOUT. A longer watchdog of its own keeps a slow
+# but working run from failing; a real hang still fails.
+set_tests_properties(tutorial_fittingEquations PROPERTIES TIMEOUT 900)
 
 add_test(
     NAME tutorial_variableNames
