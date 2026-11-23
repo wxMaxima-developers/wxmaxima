@@ -768,78 +768,8 @@ void MaximaCommandMenus::StatsMenu(wxCommandEvent &event) {
 
   wxString expr = m_wxMaxima.GetDefaultEntry();
 
-  if(event.GetId() == EventIDs::menu_stats_histogram){
-    m_wxMaxima.CommandWiz(_("Histogram"), wxEmptyString, wxEmptyString,
-               wxS("wxhistogram(#1#,nclasses=#2#);"), _("Data:"), expr,
-               wxEmptyString, _("Classes:"), wxS("10"), wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stats_scatterplot){
-    m_wxMaxima.CommandWiz(_("Scatterplot"), wxEmptyString, wxEmptyString,
-               wxS("wxscatterplot(#1#,nclasses=#2#);"), _("Data:"), expr,
-               wxEmptyString, _("Classes:"), wxS("10"), wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stats_barsplot){
-    m_wxMaxima.CommandWiz(_("Plot as bars"), wxEmptyString, wxEmptyString,
-               wxS("wxbarsplot(#1#);"), _("Data:"), wxS("%"), wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stats_boxplot){
-    m_wxMaxima.CommandWiz(_("Boxplot"), wxEmptyString, wxEmptyString,
-               wxS("wxboxplot(#1#);"), _("Data:"), wxS("%"), wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stats_piechart){
-    m_wxMaxima.CommandWiz(_("Plot as pie chart"), wxEmptyString, wxEmptyString,
-               wxS("wxpiechart(#1#);"), _("Data:"), wxS("%"), wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stats_mean){
-    m_wxMaxima.CommandWiz(_("Calculate mean value"), wxEmptyString, wxEmptyString,
-               wxS("mean(#1#);"), _("Data:"), wxS("%"), wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stats_median){
-    m_wxMaxima.CommandWiz(_("Calculate median value"), wxEmptyString, wxEmptyString,
-               wxS("median(#1#);"), _("Data:"), wxS("%"), wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stats_var){
-    m_wxMaxima.CommandWiz(_("Calculate variance"), wxEmptyString, wxEmptyString,
-               wxS("var(#1#);"), _("Data:"), wxS("%"), wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stats_dev){
-    m_wxMaxima.CommandWiz(_("Calculate standard deviation"), wxEmptyString, wxEmptyString,
-               wxS("std(#1#);"), _("Data:"), wxS("%"), wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stats_tt1){
-    m_wxMaxima.CommandWiz(_("One sample t-test"), wxEmptyString, wxEmptyString,
-               wxS("test_mean(#1#,mean=#2#);"), _("Sample:"), expr,
-               wxEmptyString, _("Mean:"), wxS("0"), wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stats_tt2){
-    m_wxMaxima.CommandWiz(_("Two sample t-test"), wxEmptyString, wxEmptyString,
-               wxS("test_means_difference(#1#,#2#);"), _("Sample 1:"), expr,
-               wxEmptyString, _("Sample 2:"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stats_tnorm){
-    m_wxMaxima.CommandWiz(_("Shapiro-Wilk test for normality"), wxEmptyString,
-               wxEmptyString, wxS("test_normality(#1#);"), _("Data:"), expr,
-               wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stats_linreg){
-    m_wxMaxima.CommandWiz(_("Simple linear regression"), wxEmptyString,
-               // simple_linear_regression() fits a single predictor (a list of
-               // x/y pairs), not a multivariate model.
-               wxEmptyString, wxS("simple_linear_regression(#1#);"), _("Data:"),
-               expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stats_lsquares){
-    m_wxMaxima.CommandWiz(
-               _("Least Squares Fit"), wxEmptyString, wxEmptyString,
-               wxS("lsquares_estimates(#1#,[#2#],#3#,[#4#],iprint=[-1,0]);"),
-               _("Data Matrix:"), expr,
-               _("A matrix in which each row is a set of variables"), _("Col. names:"),
-               wxS("x,y"), _("The list of variables contained in each matrix row"),
-               _("Equation:"), wxS("y=A*x+B"), _("The equation to fit the data to"),
-               _("Variables:"), wxS("A,B"),
-               _("The variables to search the optimum solution for"));
-  }
-  else if(event.GetId() == EventIDs::menu_stats_readm){
+  // The standard wizards of this menu are handled by CatalogWizard().
+  if(event.GetId() == EventIDs::menu_stats_readm){
       wxString file = wxFileSelector(
                                      _("Open matrix"), m_wxMaxima.m_lastPath, wxEmptyString, wxEmptyString,
                                      _("Data file (*.csv, *.tab, *.txt)|*.csv;*.tab;*.txt"), wxFD_OPEN);

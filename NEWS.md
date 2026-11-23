@@ -1,5 +1,9 @@
 # Current development version
 
+- Statistics sidebar: its standard wizards moved into the wizard table.
+  The bar, box and pie charts and the mean, median, variance and standard
+  deviation wizards now start with the selection instead of always with
+  "%", like the other statistics wizards.
 - List menu: its standard wizards moved into the wizard table. "Create
   list from comma-separated elements" now ends its command with a
   semicolon, and two wizards lost a "val1=1,val2=2" tooltip on a field
