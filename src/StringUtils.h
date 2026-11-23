@@ -75,6 +75,20 @@ namespace wxm {
  */
 #define S_(string) ([]()->const wxString &{ static const wxString str(wxS(string)); return str; }())
 
+/*! Translates a string literal that contains characters outside ASCII.
+ *
+ * Use it instead of _() for such a literal: _() hands its narrow string to
+ * wxString, which decodes it with the C library's current character set,
+ * so outside a UTF-8 locale "⇔" would reach the catalogue lookup as
+ * garbage. wxS() decodes it at compile time instead. Wrapping a wxS()
+ * literal in _() is no alternative: xgettext only extracts a literal that
+ * is the macro's direct argument, so such strings never reached the
+ * translators. xgettext knows this macro as a keyword
+ * (locales/wxMaxima/CMakeLists.txt), and the ctest
+ * check-translatable-literals fails on a wxS() inside _().
+ */
+#define TR_(string) wxGetTranslation(wxS(string))
+
 
 // UTF-8 conversion
 

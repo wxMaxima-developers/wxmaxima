@@ -26,6 +26,7 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 #include "Version.h"
+#include "StringUtils.h"
 #include <utility>
 #include <algorithm>
 #include <memory>
@@ -331,8 +332,8 @@ namespace Format {
       }
     // Did we succeed in opening the file?
     if (!contentsEntry) {
-      LoggingMessageDialog dialog(nullptr, _(wxS("Saving succeeded, but the file could not be read "
-                                              "again \u21D2 Not replacing the old saved file.")),
+      LoggingMessageDialog dialog(nullptr, TR_("Saving succeeded, but the file could not be read "
+                                              "again \u21D2 Not replacing the old saved file."),
                                   _("Error"), wxCENTER | wxOK);
       dialog.ShowModal();
       return false;
@@ -362,7 +363,7 @@ namespace Format {
       wxSleep(1);
       if (!wxRenameFile(backupfile, file, true))
         {
-          LoggingMessageDialog dialog(nullptr, _(wxS("Creating a backup file succeeded, but could not move the .wxmx file to the intended location.")),
+          LoggingMessageDialog dialog(nullptr, _("Creating a backup file succeeded, but could not move the .wxmx file to the intended location."),
                                       _("Error"), wxCENTER | wxOK);
           dialog.ShowModal();
           return false;

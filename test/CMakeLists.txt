@@ -409,6 +409,16 @@ add_test(
 )
 set_property(TEST check-persistent-dialogs APPEND PROPERTY LABELS unittest)
 
+# Strings marked for translation in a way xgettext can't see never reach the
+# translators.
+add_test(
+    NAME check-translatable-literals
+    COMMAND "${CMAKE_COMMAND}"
+            "-DSOURCE_DIR=${CMAKE_SOURCE_DIR}"
+            -P "${CMAKE_CURRENT_SOURCE_DIR}/check-translatable-literals.cmake"
+)
+set_property(TEST check-translatable-literals APPEND PROPERTY LABELS unittest)
+
 # Every ID a MaximaCommandMenus handler reacts to has to be bound, or its menu
 # entry or shortcut silently does nothing.
 add_test(

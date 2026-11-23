@@ -28,6 +28,7 @@
 */
 
 #include "BuildConfig.h"
+#include "StringUtils.h"
 #include "HelpBrowser.h"
 #include "WrappingStaticText.h"
 #include <wx/button.h>
@@ -176,7 +177,7 @@ void HelpBrowser::JumpToKeyword(const wxString &keyword) {
     SetURL(maximaHelpURL);
   } else {
     if (AllowOnlineManualP()) {
-      wxLogMessage(_(wxS("No offline manual found => Redirecting to the Maxima homepage")));
+      wxLogMessage(_("No offline manual found => Redirecting to the Maxima homepage"));
       SetURL(
              "https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#" +
              keyword);

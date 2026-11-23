@@ -1,5 +1,10 @@
 # Current development version
 
+- Thirteen texts could never be translated although they were marked for
+  translation, among them the "Padé Approximation..." and web tutorial
+  menu entries, the Greek sidebar's context menu, the "No offline manual
+  found" messages and two error messages about saving: xgettext doesn't
+  see a string written as `_(wxS("..."))`. A new test keeps it that way.
 - The German, Spanish, French, Italian, Russian, Swedish, Turkish and
   Ukrainian manuals show screenshots of a wxMaxima in their own language
   (`info/<lang>/`, made by `ninja screenshots-<lang>`); images not
