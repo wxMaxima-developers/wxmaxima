@@ -75,7 +75,14 @@ jobs:
              git config --global --add safe.directory "$GITHUB_WORKSPACE"
              po4a --version
              cmake -S . -B build -G Ninja
-             cmake --build build --target help | grep -q update-locale-manual-in-source || {
+             # Into a file, not straight into "grep -q": grep -q exits at the
+             # first match, ninja then dies of SIGPIPE writing the rest of the
+             # (long) target list, and GitHub's bash runs with -o pipefail, so
+             # the pipeline failed even though the target existed. That stopped
+             # the 2026-11-16 run here, so translations made in
+             # locales/wxMaxima/*.po never reached locales/manual/*.po.
+             cmake --build build --target help > /tmp/build-targets.txt
+             grep -q '^update-locale-manual-in-source:' /tmp/build-targets.txt || {
                echo "::error::The build has no update-locale-manual-in-source target: po4a is missing or older than 0.70."
                exit 1
              }
