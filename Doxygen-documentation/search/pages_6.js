@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['oss_2dfuzz_20integration_20files_0',['OSS-Fuzz integration files',['../md_test_fuzz_oss_fuzz_README.html',1,'']]]
+  ['il_20manuale_20utente_20di_20wxmaxima_0',['Il manuale utente di wxMaxima',['../md_info_wxmaxima_it.html',1,'']]]
 ];

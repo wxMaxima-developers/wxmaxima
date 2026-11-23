@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['security_20policy_0',['Security Policy',['../md_SECURITY.html',1,'']]],
-  ['sources_20and_20licenses_20of_20the_20artwork_1',['Sources and licenses of the artwork',['../md_art_README.html',1,'']]],
-  ['src_2',['Src',['../md_src_README.html',1,'']]]
+  ['pag_5fexample_0',['pag_example',['../pag_example.html',1,'']]],
+  ['parser_20fuzzers_1',['Parser fuzzers',['../md_test_fuzz_README.html',1,'']]],
+  ['project_20instructions_2',['Project Instructions',['../md_AGENTS.html',1,'']]],
+  ['project_20instructions_20for_20claude_20code_3',['Project instructions for Claude Code',['../md_CLAUDE.html',1,'']]]
 ];
