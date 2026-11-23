@@ -1,0 +1,102 @@
+name: screenshots
+
+# Regenerates the manual's screenshots -- the English ones in info/*.png and
+# the per-language sets in info/<lang>/*.png -- from the scenes in
+# info/screenshots/scenes, and opens a pull request with the result.
+#
+# Run by hand (Actions > screenshots > Run workflow) after the look of the
+# program changed, or before a release. It never pushes to main: the images
+# are meant to be looked at before they are merged, and a scene that broke
+# shows up there, not in the manual.
+#
+# Why a runner and not a developer's machine: the localised sets need the
+# system locale of every language (wxWidgets loads a translation only if its
+# locale exists), and one machine making every set keeps their fonts and
+# sizes alike. See info/screenshots/README.md.
+
+on:
+  workflow_dispatch:
+    inputs:
+      languages:
+        description: >-
+          Which sets to make: "all" (English and every language in
+          WXM_SCREENSHOT_LANGUAGES, info/CMakeLists.txt), "localised" (only
+          those), "en", or a space-separated list of language codes.
+        required: false
+        default: all
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  screenshots:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - name: Checkout_git
+        uses: actions/checkout@v7
+
+      - name: install_packages
+        uses: ./.github/actions/apt-install
+        with:
+          packages: cmake gettext gnuplot gnuplot-x11 libwxgtk3.2-dev libfribidi-dev locales maxima maxima-share maxima-doc ninja-build xvfb at-spi2-core dbus fonts-dejavu-core
+
+      # The locales of every language a set is made for. wxWidgets only loads
+      # a translation whose locale the system has, so a language missing here
+      # gets English screenshots.
+      - name: generate_locales
+        run: |
+             for l in de_DE es_ES fr_FR it_IT ru_RU sv_SE tr_TR uk_UA; do
+               sudo locale-gen "$l.UTF-8"
+             done
+             locale -a
+
+      - name: configure
+        run: cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+
+      - name: build
+        run: ninja -C build wxmaxima
+
+      - name: make_screenshots
+        env:
+          LANGUAGES: ${{ inputs.languages }}
+        run: |
+             export LANG=en_US.UTF-8
+             case "$LANGUAGES" in
+               all)       targets="screenshots screenshots-localised" ;;
+               localised) targets="screenshots-localised" ;;
+               en)        targets="screenshots" ;;
+               *)         targets=$(for l in $LANGUAGES; do printf 'screenshots-%s ' "$l"; done) ;;
+             esac
+             # -k 0: one failed scene or language mustn't keep the others
+             # from being made; the step still fails, and says which.
+             ninja -C build -k 0 $targets
+
+      - name: open_pull_request
+        if: ${{ !cancelled() }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          LANGUAGES: ${{ inputs.languages }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+             if [ -z "$(git status --porcelain -- info)" ]; then
+               echo "The screenshots haven't changed -- nothing to propose."
+               exit 0
+             fi
+             branch="screenshots/update-${{ github.run_id }}"
+             git config user.name "github-actions[bot]"
+             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+             git checkout -b "$branch"
+             # Only images: the build directory and anything else the run
+             # produced stay out of the commit.
+             git add 'info/*.png' 'info/*/*.png'
+             git commit -m "Regenerate the manual's screenshots
+
+             Made by the screenshots workflow (languages: $LANGUAGES)
+             from the scenes in info/screenshots/scenes."
+             git push origin "$branch"
+             gh pr create --base main --head "$branch" \
+               --title "Regenerate the manual's screenshots" \
+               --body "Made by the [screenshots workflow]($RUN_URL) (languages: $LANGUAGES). Please look at the images before merging: a scene that broke shows up here." \
+             || echo "::warning::Could not open the pull request (Settings > Actions > General > 'Allow GitHub Actions to create and approve pull requests' may be off). The images are on the branch $branch."

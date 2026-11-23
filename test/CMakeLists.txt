@@ -378,6 +378,17 @@ add_test(
 )
 set_property(TEST check-manual-backticks APPEND PROPERTY LABELS unittest)
 
+# A translated manual shows the screenshots in info/<lang>/ where there are
+# some (info/LocaliseManualImages.cmake).
+add_test(
+    NAME check-localised-manual-images
+    COMMAND "${CMAKE_COMMAND}"
+            "-DSOURCE_DIR=${CMAKE_SOURCE_DIR}"
+            "-DWORK_DIR=${CMAKE_CURRENT_BINARY_DIR}"
+            -P "${CMAKE_CURRENT_SOURCE_DIR}/check-localised-manual-images.cmake"
+)
+set_property(TEST check-localised-manual-images APPEND PROPERTY LABELS unittest)
+
 # Every dialog whose geometry wxPersistenceManager remembers has to send its
 # destroy event from its own destructor, or it crashes on closing with wxQt.
 add_test(

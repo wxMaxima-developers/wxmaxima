@@ -23,8 +23,44 @@ xvfb-run -a -s "-screen 0 2400x1600x24" \
     sh info/screenshots/make-screenshots.sh build/src/wxmaxima /tmp/shots InputCell SidePanes
 ```
 
+`--language=<lang>`, as the script's first argument, makes them in that
+language.
+
 The virtual screen has to be larger than the biggest scene's window: parts of
 a window outside the screen come out black.
+
+## Screenshots in other languages
+
+The translated manuals of the languages in `WXM_SCREENSHOT_LANGUAGES`
+(`info/CMakeLists.txt`) show screenshots of a wxMaxima in that language,
+kept in `info/<lang>/`. They are the same scenes, made with wxMaxima's
+`--language` option:
+
+```sh
+ninja -C build screenshots-de          # one language, into info/de/
+ninja -C build screenshots-localised   # all of them
+```
+
+The system needs the language's locale (`locale -a`; on Debian and Ubuntu
+`sudo locale-gen de_DE.UTF-8`): without it wxWidgets doesn't load the
+translation, and the "translated" screenshots come out in English. The `screenshots` GitHub workflow (Actions > screenshots > Run
+workflow) has every locale, makes the English images and every set on one
+machine, so that they look alike, and opens a pull request with them.
+
+When the manual is built, a translated manual whose language has a set gets
+its image references rewritten to `<lang>/<name>.png`
+(`info/LocaliseManualImages.cmake`). An image the set lacks -- one of those
+still made by hand, or a scene added later -- stays the English one, so a
+set never has to be complete. The translated text of the manual itself is
+untouched: `info/wxmaxima.<lang>.md` keeps pointing at `./<name>.png`.
+
+A scene's worksheet is English unless there is a translated one in
+`scenes/<lang>/<name>.wxm` (or `.wxmx`), which `--language=<lang>` then uses
+instead. The settings (`<name>.ini`) are shared by all languages.
+
+To add a language: add it to `WXM_SCREENSHOT_LANGUAGES` and to the
+`generate_locales` step of `.github/workflows/screenshots.yml`, then make its
+set.
 
 ## How a scene works
 

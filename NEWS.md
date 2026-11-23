@@ -1,5 +1,10 @@
 # Current development version
 
+- The German, Spanish, French, Italian, Russian, Swedish, Turkish and
+  Ukrainian manuals show screenshots of a wxMaxima in their own language
+  (`info/<lang>/`, made by `ninja screenshots-<lang>`); images not
+  translated yet stay English. A new "screenshots" GitHub workflow
+  regenerates every set and opens a pull request with them.
 - List menu: its standard wizards moved into the wizard table. "Create
   list from comma-separated elements" now ends its command with a
   semicolon, and two wizards lost a "val1=1,val2=2" tooltip on a field
