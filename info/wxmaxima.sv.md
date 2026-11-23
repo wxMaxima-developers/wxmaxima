@@ -1929,17 +1929,19 @@ kommandoradsalternativ när programmet startas från kommandoraden.
 - `-d` eller `--diff`: Jämför 2 eller 3 filer sida vid sida i jämförelsevyn.
 - `--single_process`: Öppna alla arbetsblad i samma process.
 - `--single_thread`: Kör alla bakgrundsuppgifter i huvudtråden.
-- `--logtostderr`:                 Skriv även alla meddelanden från sidopanelen för felsökningsmeddelanden till standardfel.
-- `--pipe`:                        Vidarebefordra meddelanden från Maxima till standardfel.
-- `--debug`: Aktivera resurskrävande felsökningskontroller.
-- `--exit-on-error`:               Stäng programmet vid varje Maxima-fel.
-- `-f` eller `--ini=<str>`: Använd initieringsfilen som anges som argument till detta kommandoradsalternativ.
-- `-u`, `--use-version=<str>`:     Använd Maxima-versionen `<str>`.
-- `-l`, `--lisp=<str>`:              Använd en Maxima-version som kompilerats med Lisp-kompilatorn `<str>`.
-- `-X`, `--extra-args=<str>`:        Ange ytterligare argument till Maxima.
-- `-m` eller `--maxima=<str>`:    Ange sökvägen till den körbara filen för _maxima_.
-- `--enableipc`: Låt Maxima styra wxMaxima genom kommunikation mellan processer. Använd detta alternativ med försiktighet.
-- `--wxmathml-lisp=<str>`:   Sökväg till wxMathML.lisp (om den inbyggda inte ska användas, främst för utvecklare).
+- `--logtostderr`:                 Log all "debug messages" sidebar messages to stderr, too.
+- `--pipe`:                        Pipe messages from Maxima to stderr.
+- `--debug`: Enable costly debug checks.
+- `--exit-on-error`:               Close the program on any maxima error.
+- `--language=<lang>`: Use this language for the user interface instead of the one configured in the settings, for example `de`, `pt_BR` or `zh_CN`. The setting is not saved. Useful for checking a translation, or for making screenshots for a translated manual.
+- `-f` or `--ini=<str>`: Use the init file that was given as an argument to this command-line switch
+- `-u`, `--use-version=<str>`:     Use maxima version `<str>`.
+- `-l`, `--lisp=<str>`:              Use a Maxima compiled with Lisp compiler `<str>`.
+- `-X`, `--extra-args=<str>`:        Allows to specify extra Maxima arguments
+- `-m` or `--maxima=<str>`:    allows specifying the location of the _maxima_ binary
+- `--enableipc`: Lets Maxima control wxMaxima via interprocess communications. Use this option with care.
+- `--screenshot=<file>`: Evaluate the file that is opened, save a screenshot as `<file>` once _Maxima_ is idle and exit. What the screenshot shows is read from the `[Screenshot]` group of the configuration file given by `--ini`. Used for making the screenshots in this manual; see `info/screenshots/README.md` in wxMaxima's source code.
+- `--wxmathml-lisp=<str>`:   Location of wxMathML.lisp (if not the built-in should be used, mainly for developers).
 
 Vissa operativsystem kan använda ett tankstreck i stället för ett
 minustecken framför kommandoradsalternativen.

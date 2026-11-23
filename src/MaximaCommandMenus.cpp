@@ -781,7 +781,7 @@ void MaximaCommandMenus::StatsMenu(wxCommandEvent &event) {
 #endif
 
         wxString name =
-          wxGetTextFromUser(wxS("Enter matrix name:"), wxS("Matrix name"));
+          wxGetTextFromUser(_("Matrix name:"), _("Open matrix"));
         wxString cmd;
 
         if (name != wxEmptyString)

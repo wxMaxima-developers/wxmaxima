@@ -9,6 +9,11 @@
   cell into another type (Ctrl+Shift+Esc for code, Ctrl+Shift+1 to 6 for
   text and the headings): nothing was connected to them. Ctrl+Shift+7 now
   makes a heading 6, and the manual lists these shortcuts.
+- Wizard texts: the "Divide Polynomials" wizard was titled "GCD", the
+  matrix exponent wizard asked for a "Right Matrix" instead of an exponent,
+  and the change-of-variable descriptions, several field labels of the
+  Simplify menu's wizards and the matrix name prompt of "Read matrix" could
+  not be translated.
 - Languages whose manual is less than 5% translated no longer install a
   copy of the English manual under their own name; the help falls back to
   the English one, as it did. This saves 2.5 MB of identical files.
