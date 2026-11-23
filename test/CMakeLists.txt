@@ -388,6 +388,17 @@ add_test(
 )
 set_property(TEST check-manual-backticks APPEND PROPERTY LABELS unittest)
 
+# A translated manual shows the screenshots in info/<lang>/ where there are
+# some (info/LocaliseManualImages.cmake).
+add_test(
+    NAME check-localised-manual-images
+    COMMAND "${CMAKE_COMMAND}"
+            "-DSOURCE_DIR=${CMAKE_SOURCE_DIR}"
+            "-DWORK_DIR=${CMAKE_CURRENT_BINARY_DIR}"
+            -P "${CMAKE_CURRENT_SOURCE_DIR}/check-localised-manual-images.cmake"
+)
+set_property(TEST check-localised-manual-images APPEND PROPERTY LABELS unittest)
+
 # Every dialog whose geometry wxPersistenceManager remembers has to send its
 # destroy event from its own destructor, or it crashes on closing with wxQt.
 add_test(
@@ -407,6 +418,16 @@ add_test(
             -P "${CMAKE_CURRENT_SOURCE_DIR}/check-translatable-literals.cmake"
 )
 set_property(TEST check-translatable-literals APPEND PROPERTY LABELS unittest)
+
+# Every ID a MaximaCommandMenus handler reacts to has to be bound, or its menu
+# entry or shortcut silently does nothing.
+add_test(
+    NAME check-handled-ids-bound
+    COMMAND "${CMAKE_COMMAND}"
+            "-DSOURCE_DIR=${CMAKE_SOURCE_DIR}"
+            -P "${CMAKE_CURRENT_SOURCE_DIR}/check-handled-ids-bound.cmake"
+)
+set_property(TEST check-handled-ids-bound APPEND PROPERTY LABELS unittest)
 
 # The source tarball GitHub generates for a release must not contain dot files
 # (GH #2272). Only meaningful in a git checkout, and needs git to look.
@@ -1642,6 +1663,11 @@ add_test(
     NAME tutorial_fittingEquations
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/../examples
     COMMAND wxmaxima --debug --logtostderr --pipe  --batch --exit-on-error fittingEquations.wxm)
+# On Ubuntu 26.04 (Maxima 5.49 on GCL 2.7) loading draw and fmin_cobyla is
+# slow: this tutorial took 360-373 s there in 2026-11, against ~62 s on 24.04,
+# which is right at WXM_TEST_TIMEOUT. A longer watchdog of its own keeps a slow
+# but working run from failing; a real hang still fails.
+set_tests_properties(tutorial_fittingEquations PROPERTIES TIMEOUT 900)
 
 add_test(
     NAME tutorial_variableNames

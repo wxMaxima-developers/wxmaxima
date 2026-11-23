@@ -37,6 +37,7 @@
 #include <wx/regex.h>
 #include <clocale>
 #include <set>
+#include <utility>
 
 using wxm::WizardCatalog;
 using wxm::WizardContext;
@@ -393,4 +394,48 @@ SCENARIO("The statistics wizards that need a dialog of their own keep their hand
          {EventIDs::menu_stats_readm, EventIDs::menu_stats_subsample,
           EventIDs::menu_stats_enterm})
     CHECK(!wxm::FindWizard(id).has_value());
+}
+
+SCENARIO("The context menu opens the same wizards as the menus") {
+  for (const auto &[popup, menu] :
+         {std::pair{EventIDs::popid_diff, EventIDs::menu_diff},
+          std::pair{EventIDs::popid_solve, EventIDs::menu_solve},
+          std::pair{EventIDs::popid_subst, EventIDs::menu_subst}}) {
+    const auto fromPopup = wxm::FindWizard(popup);
+    const auto fromMenu = wxm::FindWizard(menu);
+    REQUIRE(fromPopup.has_value());
+    REQUIRE(fromMenu.has_value());
+    CHECK(fromPopup->rule == fromMenu->rule);
+  }
+}
+
+SCENARIO("Substituting from the context menu passes the equations as a list") {
+  // The context menu's own wizard used to send subst(a=10,b=20,expr), which
+  // Maxima reads as subst(new, old, expr) and gets wrong.
+  const auto spec = wxm::FindWizard(EventIDs::popid_subst);
+  REQUIRE(spec.has_value());
+  CHECK(spec->rule == wxS("subst([#2#],#1#);"));
+}
+
+SCENARIO("Find Root in the context menu starts with what was right-clicked") {
+  const auto spec = wxm::FindWizard(EventIDs::popid_solve_num);
+  REQUIRE(spec.has_value());
+  CHECK(spec->rule == wxS("find_root(#1#,#2#,#3#,#4#);"));
+  REQUIRE(!spec->fields.empty());
+  CHECK(spec->fields[0].takesSelection);
+}
+
+SCENARIO("The divide() wizard is not titled GCD") {
+  const auto divide = wxm::FindWizard(EventIDs::menu_divide);
+  const auto gcd = wxm::FindWizard(EventIDs::menu_gcd);
+  REQUIRE(divide.has_value());
+  REQUIRE(gcd.has_value());
+  CHECK(divide->title != gcd->title);
+}
+
+SCENARIO("The matrix exponent wizard asks for an exponent") {
+  const auto spec = wxm::FindWizard(EventIDs::menu_matrix_exponent);
+  REQUIRE(spec.has_value());
+  REQUIRE(spec->fields.size() == 2);
+  CHECK(spec->fields[1].label == _("Exponent:"));
 }

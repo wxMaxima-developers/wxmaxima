@@ -5,6 +5,25 @@
   menu entries, the Greek sidebar's context menu, the "No offline manual
   found" messages and two error messages about saving: xgettext doesn't
   see a string written as `_(wxS("..."))`. A new test keeps it that way.
+- The German, Spanish, French, Italian, Russian, Swedish, Turkish and
+  Ukrainian manuals show screenshots of a wxMaxima in their own language
+  (`info/<lang>/`, made by `ninja screenshots-<lang>`); images not
+  translated yet stay English. A new "screenshots" GitHub workflow
+  regenerates every set and opens a pull request with them.
+- The worksheet's right-click menu now opens the same "Solve",
+  "Substitute" and "Differentiate" wizards as the menus. Its own
+  "Substitute" wizard sent several comma-separated assignments without a
+  list, which Maxima misread as subst(new, old, expression).
+- "Factor Expression" and "Find Root..." in the worksheet's right-click menu
+  did nothing, and neither did the keyboard shortcuts that turn the current
+  cell into another type (Ctrl+Shift+Esc for code, Ctrl+Shift+1 to 6 for
+  text and the headings): nothing was connected to them. Ctrl+Shift+7 now
+  makes a heading 6, and the manual lists these shortcuts.
+- Wizard texts: the "Divide Polynomials" wizard was titled "GCD", the
+  matrix exponent wizard asked for a "Right Matrix" instead of an exponent,
+  and the change-of-variable descriptions, several field labels of the
+  Simplify menu's wizards and the matrix name prompt of "Read matrix" could
+  not be translated.
 - Languages whose manual is less than 5% translated no longer install a
   copy of the English manual under their own name; the help falls back to
   the English one, as it did. This saves 2.5 MB of identical files.

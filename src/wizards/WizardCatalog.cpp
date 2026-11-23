@@ -44,10 +44,8 @@ std::vector<wxm::WizardSpec> wxm::WizardCatalog(const WizardContext &context) {
   std::vector<WizardSpec> catalog;
 
   // ---------------------------------------------------------------- Calculus
-  // changevar()'s description has never been translatable (wxS rather than
-  // _()); it is kept as it was so that this move changes no msgid.
   const wxString changeVarDescription =
-    wxS("Takes an integral or sum in respect to the Old Variable and "
+    _("Takes an integral or sum in respect to the Old Variable and "
         "replaces "
         "that variable by a new one both adjusting the integrand and the "
         "limits "
@@ -74,7 +72,7 @@ std::vector<wxm::WizardSpec> wxm::WizardCatalog(const WizardContext &context) {
       .ids = {EventIDs::menu_change_var_evaluate},
       .title = _("Change variable and evaluate"),
       .description =
-        wxS("Takes an integral or sum in respect to the Old Variable and "
+        _("Takes an integral or sum in respect to the Old Variable and "
             "replaces "
             "that variable by a new one both adjusting the integrand and the "
             "limits "
@@ -142,10 +140,7 @@ std::vector<wxm::WizardSpec> wxm::WizardCatalog(const WizardContext &context) {
                  Field(_("Polynomial 2:"), wxString())}});
   catalog.push_back({
       .ids = {EventIDs::menu_divide},
-      // Not a typo of this move: the divide() wizard has always been
-      // titled "GCD". Fixing that adds a msgid, so it gets a commit of its
-      // own.
-      .title = _("GCD"),
+      .title = _("Divide polynomials"),
       .rule = wxS("divide(#1#,#2#);"),
       .fields = {SelectionField(_("Polynomial 1:")),
                  Field(_("Polynomial 2:"), wxString())}});
@@ -176,7 +171,7 @@ std::vector<wxm::WizardSpec> wxm::WizardCatalog(const WizardContext &context) {
                  Field(_("Old variable:"), wxS("s")),
                  Field(_("New variable:"), wxS("t"))}});
   catalog.push_back({
-      .ids = {EventIDs::menu_diff, EventIDs::button_diff},
+      .ids = {EventIDs::menu_diff, EventIDs::button_diff, EventIDs::popid_diff},
       .title = _("Differentiate"),
       .description = _("Differentiates an expression n times"),
       .rule = wxS("diff(#1#,#2#,#3#);"),
@@ -365,11 +360,9 @@ std::vector<wxm::WizardSpec> wxm::WizardCatalog(const WizardContext &context) {
                  epsrel, epsabs, limit}});
 
   // ---------------------------------------------------------------- Simplify
-  // Most of these wizards' field labels have never been translatable (wxS
-  // rather than _()); they are kept as they were so that this move changes
-  // no msgid. Their "Expression" used to be a literal "%" even when an
-  // expression was selected; it now starts with the selection, as in
-  // the other menus.
+  // The "Expression" fields used to be a literal "%" even when an
+  // expression was selected; they now start with the selection, as in the
+  // other menus.
   catalog.push_back({
       .ids = {EventIDs::menu_nouns},
       .title = _("Evaluate Nouns"),
@@ -403,9 +396,9 @@ std::vector<wxm::WizardSpec> wxm::WizardCatalog(const WizardContext &context) {
       .rule = wxS("radcan(#1#);"),
       .fields = {SelectionField(_("Expression"))}});
 
-  const WizardField simplifyExpression = SelectionField(wxS("Expression"));
+  const WizardField simplifyExpression = SelectionField(_("Expression"));
   const WizardField expandVariables =
-    Field(wxS("Variable(s)"), wxS("x"), _("Comma-separated variables"));
+    Field(_("Variable(s)"), wxS("x"), _("Comma-separated variables"));
   catalog.push_back({
       .ids = {EventIDs::menu_expandwrt},
       .title = _("Expand for variable(s):"),
@@ -421,11 +414,11 @@ std::vector<wxm::WizardSpec> wxm::WizardCatalog(const WizardContext &context) {
   // brackets several comma-separated equations would be misread as the
   // (new,old,expr) form, and all but the first silently ignored.
   const auto substituents = [](const wxString &example) {
-    return Field(wxS("Substituents"), example,
+    return Field(_("Substituents"), example,
                  _("Comma-separated expressions"));
   };
   catalog.push_back({
-      .ids = {EventIDs::menu_subst},
+      .ids = {EventIDs::menu_subst, EventIDs::popid_subst},
       .title = _("Substitute"),
       .description =
         _("Subst is a better string-search-and-replace for expressions."),
@@ -473,10 +466,10 @@ std::vector<wxm::WizardSpec> wxm::WizardCatalog(const WizardContext &context) {
       .rule = wxS("substinpart(#2#,#1#,#3#);"),
       // "The expression to substitute in" used to be the tooltip of
       // "New value".
-      .fields = {SelectionField(wxS("Expression"),
+      .fields = {SelectionField(_("Expression"),
                                 _("The expression to substitute in")),
-                 Field(wxS("New value"), wxS("z")),
-                 Field(wxS("Part path"), wxS("1"),
+                 Field(_("New value"), wxS("z")),
+                 Field(_("Part path"), wxS("1"),
                        _("Comma-separated part numbers selecting the "
                          "subexpression to replace (as in part())"))}});
 
@@ -484,17 +477,17 @@ std::vector<wxm::WizardSpec> wxm::WizardCatalog(const WizardContext &context) {
       .ids = {EventIDs::menu_mainvar},
       .title = _("Declare main variable:"),
       .rule = wxS("declare(#1#,mainvar);"),
-      .fields = {SelectionField(wxS("Variable"))}});
+      .fields = {SelectionField(_("Variable"))}});
   catalog.push_back({
       .ids = {EventIDs::menu_tellrat},
       .title = _("Enter an equation for rational simplification:"),
       .rule = wxS("tellrat(#1#);"),
-      .fields = {SelectionField(wxS("Equation"))}});
+      .fields = {SelectionField(_("Equation"))}});
   catalog.push_back({
       .ids = {EventIDs::menu_modulus},
       .title = _("Calculate modulus:"),
       .rule = wxS("modulus : #1#$"),
-      .fields = {Field(wxS("Modulus"), wxS("%"))}});
+      .fields = {Field(_("Modulus"), wxS("%"))}});
 
   // --------------------------------------------------------------- Equations
   // find_root() stays in MaximaCommandMenus::EquationsMenu(): it rewrites a
@@ -545,7 +538,7 @@ std::vector<wxm::WizardSpec> wxm::WizardCatalog(const WizardContext &context) {
   const WizardField solveVariables =
     Field(_("Variable(s)"), wxS("x"), _("Comma-separated variables"));
   catalog.push_back({
-      .ids = {EventIDs::menu_solve, EventIDs::button_solve},
+      .ids = {EventIDs::menu_solve, EventIDs::button_solve, EventIDs::popid_solve},
       .title = _("Solve equation(s)"),
       .description =
         _("solve() will solve a list of equations only if for n "
@@ -556,6 +549,17 @@ std::vector<wxm::WizardSpec> wxm::WizardCatalog(const WizardContext &context) {
           "for the interesting variable."),
       .rule = wxS("solve([#1#],[#2#]);"),
       .fields = {equations, solveVariables}});
+  // The Equations menu's find_root() wizard stays in its handler, which
+  // rewrites a "%" default; the context menu's always starts with what was
+  // right-clicked.
+  catalog.push_back({
+      .ids = {EventIDs::popid_solve_num},
+      .title = _("Find root (solve numerically)"),
+      .description = _("Tries to find a solution of the equation that lies between "
+                       "the two bounds."),
+      .rule = wxS("find_root(#1#,#2#,#3#,#4#);"),
+      .fields = {SelectionField(_("Equation:")), Field(_("Variable:"), wxS("x")),
+                 Field(_("Lower bound:"), wxS("-1")), Field(_("Upper bound:"), wxS("1"))}});
   catalog.push_back({
       .ids = {EventIDs::menu_solve_to_poly},
       .title = _("Solve equations to polynom"),
@@ -700,12 +704,10 @@ std::vector<wxm::WizardSpec> wxm::WizardCatalog(const WizardContext &context) {
                      .title = _("Multiply two matrices"),
                      .rule = wxS("#1#.#2#;"),
                      .fields = {leftMatrix, rightMatrix}});
-  // The labels say "Left/Right Matrix" although the right operand is an
-  // exponent; fixing that changes msgids, which is a change of its own.
   catalog.push_back({.ids = {EventIDs::menu_matrix_exponent},
                      .title = _("Matrix Exponent"),
                      .rule = wxS("#1#^^#2#;"),
-                     .fields = {leftMatrix, rightMatrix}});
+                     .fields = {matrixColon, Field(_("Exponent:"), wxEmptyString)}});
   catalog.push_back({
       .ids = {EventIDs::menu_copymatrix},
       .title = _("Copy a matrix"),
