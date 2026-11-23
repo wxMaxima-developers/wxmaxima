@@ -175,7 +175,7 @@ std::vector<wxm::WizardSpec> wxm::WizardCatalog(const WizardContext &context) {
                  Field(_("Old variable:"), wxS("s")),
                  Field(_("New variable:"), wxS("t"))}});
   catalog.push_back({
-      .ids = {EventIDs::menu_diff, EventIDs::button_diff},
+      .ids = {EventIDs::menu_diff, EventIDs::button_diff, EventIDs::popid_diff},
       .title = _("Differentiate"),
       .description = _("Differentiates an expression n times"),
       .rule = wxS("diff(#1#,#2#,#3#);"),
@@ -424,7 +424,7 @@ std::vector<wxm::WizardSpec> wxm::WizardCatalog(const WizardContext &context) {
                  _("Comma-separated expressions"));
   };
   catalog.push_back({
-      .ids = {EventIDs::menu_subst},
+      .ids = {EventIDs::menu_subst, EventIDs::popid_subst},
       .title = _("Substitute"),
       .description =
         _("Subst is a better string-search-and-replace for expressions."),
@@ -544,7 +544,7 @@ std::vector<wxm::WizardSpec> wxm::WizardCatalog(const WizardContext &context) {
   const WizardField solveVariables =
     Field(_("Variable(s)"), wxS("x"), _("Comma-separated variables"));
   catalog.push_back({
-      .ids = {EventIDs::menu_solve, EventIDs::button_solve},
+      .ids = {EventIDs::menu_solve, EventIDs::button_solve, EventIDs::popid_solve},
       .title = _("Solve equation(s)"),
       .description =
         _("solve() will solve a list of equations only if for n "
@@ -555,6 +555,17 @@ std::vector<wxm::WizardSpec> wxm::WizardCatalog(const WizardContext &context) {
           "for the interesting variable."),
       .rule = wxS("solve([#1#],[#2#]);"),
       .fields = {equations, solveVariables}});
+  // The Equations menu's find_root() wizard stays in its handler, which
+  // rewrites a "%" default; the context menu's always starts with what was
+  // right-clicked.
+  catalog.push_back({
+      .ids = {EventIDs::popid_solve_num},
+      .title = _("Find root (solve numerically)"),
+      .description = _("Tries to find a solution of the equation that lies between "
+                       "the two bounds."),
+      .rule = wxS("find_root(#1#,#2#,#3#,#4#);"),
+      .fields = {SelectionField(_("Equation:")), Field(_("Variable:"), wxS("x")),
+                 Field(_("Lower bound:"), wxS("-1")), Field(_("Upper bound:"), wxS("1"))}});
   catalog.push_back({
       .ids = {EventIDs::menu_solve_to_poly},
       .title = _("Solve equations to polynom"),

@@ -1,5 +1,9 @@
 # Current development version
 
+- The worksheet's right-click menu now opens the same "Solve",
+  "Substitute" and "Differentiate" wizards as the menus. Its own
+  "Substitute" wizard sent several comma-separated assignments without a
+  list, which Maxima misread as subst(new, old, expression).
 - "Factor Expression" and "Find Root..." in the worksheet's right-click menu
   did nothing, and neither did the keyboard shortcuts that turn the current
   cell into another type (Ctrl+Shift+Esc for code, Ctrl+Shift+1 to 6 for
