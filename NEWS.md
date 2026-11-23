@@ -1,5 +1,7 @@
 # Current development version
 
+- Questions like "Is n equal to m?" ended in a Lisp error ("invalid number
+  of arguments: 3") with current Maxima from git (#2659).
 - Most of the manual's screenshots are now made by wxMaxima itself, from the
   scenes in `info/screenshots/`: `ninja screenshots` regenerates them. The
   new `--screenshot=<file>` option this uses evaluates the

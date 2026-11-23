@@ -3131,10 +3131,15 @@ result of that cell would have been. ID defaults as wx-async-text's does."
   (setf (symbol-function 'wx-retrieve-original) (symbol-function 'retrieve)))
 
 (no-warning
- (defun retrieve (msg flag)
+ ;; &rest rather than (msg flag): Maxima's git master (2026-11) added an
+ ;; optional third argument, `subject` (retrieve is called with it by asksign
+ ;; and friends for with_answers), and a fixed two-argument wrapper made every
+ ;; such question fail with "invalid number of arguments: 3" (GH #2659).
+ ;; Passing everything through keeps this working whatever Maxima adds next.
+ (defun retrieve (&rest args)
    (if *wx-in-async-job*
        (error 'wx-async-input-error)
-       (wx-retrieve-original msg flag))))
+       (apply #'wx-retrieve-original args))))
 
 (defmacro wx-spawn-async (&body body)
   "Runs BODY in a background thread on behalf of the cell being evaluated now.
