@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxmaxima-gui\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-23 13:33+0000\n"
+"POT-Creation-Date: 2026-11-23 14:37+0000\n"
 "PO-Revision-Date: 2026-08-10 18:27\n"
 "Last-Translator: \n"
 "Language-Team: Russian\n"
@@ -200,7 +200,7 @@ msgstr " ... + 1 скрытая строка"
 msgid " Did you know? "
 msgstr ""
 
-#: ../../src/wizards/WizardCatalog.cpp:998
+#: ../../src/wizards/WizardCatalog.cpp:989
 msgid " Returns the unique elements of the list"
 msgstr ""
 
@@ -424,7 +424,7 @@ msgstr "&Определённое интегрирование"
 msgid "&Demoivre"
 msgstr "&В тригонометрическую форму"
 
-#: ../../src/wizards/WizardCatalog.cpp:794 ../../src/wxMaximaFrame.cpp:1561
+#: ../../src/wizards/WizardCatalog.cpp:785 ../../src/wxMaximaFrame.cpp:1561
 msgid "&Determinant"
 msgstr "&Определитель"
 
@@ -492,7 +492,7 @@ msgstr "&Интегрировать..."
 msgid "&Interrupt\tCtrl+G"
 msgstr "&Прервать\tCtrl+G"
 
-#: ../../src/wizards/WizardCatalog.cpp:793 ../../src/wxMaximaFrame.cpp:1554
+#: ../../src/wizards/WizardCatalog.cpp:784 ../../src/wxMaximaFrame.cpp:1554
 msgid "&Invert Matrix"
 msgstr "&Обратить матрицу"
 
@@ -614,7 +614,7 @@ msgstr "&Ряд Тейлора"
 msgid "&Time Display"
 msgstr "&Отображение времени"
 
-#: ../../src/wizards/WizardCatalog.cpp:799 ../../src/wxMaximaFrame.cpp:1574
+#: ../../src/wizards/WizardCatalog.cpp:790 ../../src/wxMaximaFrame.cpp:1574
 msgid "&Transpose Matrix"
 msgstr "&Транспонировать матрицу"
 
@@ -679,15 +679,15 @@ msgstr "(Некорректное имя переменной)"
 msgid "(Use default language)"
 msgstr "(Использовать язык по умолчанию)"
 
-#: ../../src/wizards/WizardCatalog.cpp:267
+#: ../../src/wizards/WizardCatalog.cpp:262
 msgid "(f(x),x,a,b)), Epsilon algorithm"
 msgstr "(f(x),x,a,b)), эпсилон-алгоритм"
 
-#: ../../src/wizards/WizardCatalog.cpp:256
+#: ../../src/wizards/WizardCatalog.cpp:251
 msgid "(f(x),x,a,b)), Strategy of Aind"
 msgstr "(f(x),x,a,b)), стратегия Айнда"
 
-#: ../../src/wizards/WizardCatalog.cpp:275
+#: ../../src/wizards/WizardCatalog.cpp:270
 msgid "(f(x),x,a,b), (semi-) infinite interval"
 msgstr "(f(x),x,a,b), (полу)бесконечный интервал"
 
@@ -703,7 +703,7 @@ msgstr "(f(x),x,a,b), бесконечный интервал"
 msgid "(f(x),x,a,b), strategy of Aind"
 msgstr "(f(x),x,a,b), стратегия Айнда"
 
-#: ../../src/wizards/WizardCatalog.cpp:358 ../../src/wxMaximaFrame.cpp:2069
+#: ../../src/wizards/WizardCatalog.cpp:353 ../../src/wxMaximaFrame.cpp:2069
 msgid "(f(x),x,y) with singularities+discontinuities"
 msgstr "(f(x),x,y) с сингулярностями и разрывами"
 
@@ -942,7 +942,7 @@ msgid ""
 "exporting the matrix always include all of it."
 msgstr ""
 
-#: ../../src/wizards/WizardCatalog.cpp:1074
+#: ../../src/wizards/WizardCatalog.cpp:1065
 msgid "A matrix in which each row is a set of variables"
 msgstr "Матрица, каждая строка которой является набором переменных"
 
@@ -1134,15 +1134,15 @@ msgid ""
 "Accents (bars, hats, dots or arrows over a symbol) have no Maxima meaning."
 msgstr ""
 
-#: ../../src/wizards/WizardCatalog.cpp:631
+#: ../../src/wizards/WizardCatalog.cpp:624
 msgid "Accepts one expression or a list in the format [ode1,ode2,...]"
 msgstr "Принимает одно выражение или список в формате [ode1,ode2,...]"
 
-#: ../../src/wizards/WizardCatalog.cpp:637
+#: ../../src/wizards/WizardCatalog.cpp:630
 msgid "Accepts one variable or a list in the format [1,4,...]"
 msgstr "Принимает одну переменную или список в формате [1,4,...]"
 
-#: ../../src/wizards/WizardCatalog.cpp:634
+#: ../../src/wizards/WizardCatalog.cpp:627
 msgid "Accepts one variable or a list in the format [var1,var2,...]"
 msgstr "Принимает одну переменную или список в формате [var1,var2,...]"
 
@@ -1158,7 +1158,7 @@ msgstr "Точность"
 msgid "Active provider:"
 msgstr ""
 
-#: ../../src/wizards/WizardCatalog.cpp:798 ../../src/wxMaximaFrame.cpp:1570
+#: ../../src/wizards/WizardCatalog.cpp:789 ../../src/wxMaximaFrame.cpp:1570
 msgid "Ad&joint Matrix"
 msgstr "&Сопряжённая матрица"
 
@@ -1185,11 +1185,11 @@ msgstr ""
 msgid "Add all"
 msgstr "Добавить все"
 
-#: ../../src/wizards/WizardCatalog.cpp:1010
+#: ../../src/wizards/WizardCatalog.cpp:1001
 msgid "Add an element to the end of a list"
 msgstr "Добавить элемент в конец списка"
 
-#: ../../src/wizards/WizardCatalog.cpp:1006
+#: ../../src/wizards/WizardCatalog.cpp:997
 msgid "Add an element to the start of a list"
 msgstr "Добавить элемент в начало списка"
 
@@ -1349,7 +1349,7 @@ msgid ""
 "the symbols sidebar along with the built-in symbols."
 msgstr ""
 
-#: ../../src/wizards/WizardCatalog.cpp:188
+#: ../../src/wizards/WizardCatalog.cpp:183
 msgid ""
 "Allows varying the parameters of a function until it fits experimental data."
 msgstr ""
@@ -1401,7 +1401,7 @@ msgstr ""
 msgid "An image cell"
 msgstr ""
 
-#: ../../src/wizards/WizardCatalog.cpp:262
+#: ../../src/wizards/WizardCatalog.cpp:257
 msgid ""
 "An integer between 1..6; Higher numbers work better for oscillating "
 "integrands"
@@ -1476,7 +1476,7 @@ msgstr "Добавить список"
 msgid "Append a list to an existing list"
 msgstr "Добавить список к существующему списку"
 
-#: ../../src/wizards/WizardCatalog.cpp:1014
+#: ../../src/wizards/WizardCatalog.cpp:1005
 msgid "Append a list to another list"
 msgstr "Добавить список к другому списку"
 
@@ -1492,7 +1492,7 @@ msgstr "Добавить элемент в начало существующег
 msgid "Append an element to the end of an existing list"
 msgstr "Добавить элемент в конец существующего списка"
 
-#: ../../src/wizards/WizardCatalog.cpp:955
+#: ../../src/wizards/WizardCatalog.cpp:946
 msgid "Apply a function to each list element"
 msgstr "Применить функцию к каждому элементу списка"
 
@@ -1509,7 +1509,7 @@ msgstr ""
 msgid "Approximate by nice fraction"
 msgstr "Аппроксимировать процентной дробью (nice fraction)"
 
-#: ../../src/wizards/WizardCatalog.cpp:101
+#: ../../src/wizards/WizardCatalog.cpp:99
 msgid ""
 "Approximates a expression around a point as a polynom\n"
 "The trailing \"...\" can be removed by using ratdisrep()"
@@ -1517,7 +1517,7 @@ msgstr ""
 "Аппроксимирует выражение вблизи точки как полином\n"
 "«...» в конце можно удалить с помощью ratdisrep()"
 
-#: ../../src/wizards/WizardCatalog.cpp:111
+#: ../../src/wizards/WizardCatalog.cpp:109
 msgid "Approximates a expression as a polynom"
 msgstr "Аппроксимирует выражение как полином"
 
@@ -1549,7 +1549,7 @@ msgstr "Эти строки равны?"
 msgid "Arguments:"
 msgstr "Аргументы:"
 
-#: ../../src/wizards/WizardCatalog.cpp:819
+#: ../../src/wizards/WizardCatalog.cpp:810
 msgid "Array"
 msgstr "Массив"
 
@@ -1610,7 +1610,7 @@ msgstr "Допустить диапазон значений для переме
 msgid "Asynchronous output from Maxima that could not be parsed."
 msgstr ""
 
-#: ../../src/wizards/WizardCatalog.cpp:946
+#: ../../src/wizards/WizardCatalog.cpp:937
 msgid ""
 "Attention: Extracting a random list element isn't efficient for long "
 "lists.Iterating over lists using makelist() or for loops is way faster."
@@ -1814,15 +1814,15 @@ msgstr "Одновременно активны и горизонтальный,
 msgid "Bottom"
 msgstr "Снизу"
 
-#: ../../src/wizards/WizardCatalog.cpp:820
+#: ../../src/wizards/WizardCatalog.cpp:811
 msgid "Bottom end"
 msgstr "Нижняя сторона"
 
-#: ../../src/wizards/WizardCatalog.cpp:609
+#: ../../src/wizards/WizardCatalog.cpp:602
 msgid "Boundary value problem"
 msgstr "Граничная задача"
 
-#: ../../src/wizards/WizardCatalog.cpp:1039
+#: ../../src/wizards/WizardCatalog.cpp:1030
 msgid "Boxplot"
 msgstr ""
 
@@ -2047,11 +2047,11 @@ msgstr "Кэширование варианта шрифта: %s"
 msgid "Calculate &Product..."
 msgstr "Вычислить &произведение..."
 
-#: ../../src/wizards/WizardCatalog.cpp:761
+#: ../../src/wizards/WizardCatalog.cpp:752
 msgid "Calculate Singular Value Decomposition of a matrix numerically"
 msgstr "Вычислить сингулярное разложение матрицы численно"
 
-#: ../../src/wizards/WizardCatalog.cpp:756
+#: ../../src/wizards/WizardCatalog.cpp:747
 msgid ""
 "Calculate Singular Value Decomposition, left and right singular vectors "
 "numerically"
@@ -2071,15 +2071,15 @@ msgstr "Вычислить последний результат с повыше
 msgid "Calculate float value of the last result"
 msgstr "Вычислить последний результат с обычной точностью"
 
-#: ../../src/wizards/WizardCatalog.cpp:1041
+#: ../../src/wizards/WizardCatalog.cpp:1032
 msgid "Calculate mean value"
 msgstr "Вычислить среднее значение"
 
-#: ../../src/wizards/WizardCatalog.cpp:1042
+#: ../../src/wizards/WizardCatalog.cpp:1033
 msgid "Calculate median value"
 msgstr "Вычислить медианное значение"
 
-#: ../../src/wizards/WizardCatalog.cpp:494
+#: ../../src/wizards/WizardCatalog.cpp:487
 msgid "Calculate modulus:"
 msgstr "Вычислить модуль:"
 
@@ -2091,7 +2091,7 @@ msgstr "Вычислить числовое значение последнег�
 msgid "Calculate products"
 msgstr "Вычислить произведения"
 
-#: ../../src/wizards/WizardCatalog.cpp:1044
+#: ../../src/wizards/WizardCatalog.cpp:1035
 msgid "Calculate standard deviation"
 msgstr "Вычислить стандартное отклонение"
 
@@ -2099,23 +2099,23 @@ msgstr "Вычислить стандартное отклонение"
 msgid "Calculate sums"
 msgstr "Вычислить суммы"
 
-#: ../../src/wizards/WizardCatalog.cpp:735
+#: ../../src/wizards/WizardCatalog.cpp:726
 msgid "Calculate the eigenvalues and eigenvectors numerically"
 msgstr "Вычислить собственные значения и собственные векторы численно"
 
-#: ../../src/wizards/WizardCatalog.cpp:734
+#: ../../src/wizards/WizardCatalog.cpp:725
 msgid "Calculate the eigenvalues of a matrix numerically"
 msgstr "Вычислить собственные значения матрицы численно"
 
-#: ../../src/wizards/WizardCatalog.cpp:784
+#: ../../src/wizards/WizardCatalog.cpp:775
 msgid "Calculate the root of the sum of squares of matrix entries"
 msgstr "Вычислить корень из суммы квадратов элементов матрицы"
 
-#: ../../src/wizards/WizardCatalog.cpp:1043
+#: ../../src/wizards/WizardCatalog.cpp:1034
 msgid "Calculate variance"
 msgstr ""
 
-#: ../../src/wizards/WizardCatalog.cpp:122
+#: ../../src/wizards/WizardCatalog.cpp:120
 msgid "Calculates the fourier coefficients for the expression from -p to p"
 msgstr "Вычисляет коэффициенты Фурье для выражения от -p до p"
 
@@ -2371,7 +2371,7 @@ msgstr "Каноническая форма (триг.)"
 msgid "Catalan"
 msgstr "Каталанский"
 
-#: ../../src/wizards/WizardCatalog.cpp:283
+#: ../../src/wizards/WizardCatalog.cpp:278
 msgid "Cauchy principal value of f(x)/(x-c), finite interval"
 msgstr "Главное значение Коши f(x)/(x-c), конечный интервал"
 
@@ -2442,11 +2442,11 @@ msgid ""
 msgstr ""
 "Заменить текстовые «альфа» и «бета» на соответствующие греческие буквы?"
 
-#: ../../src/wizards/WizardCatalog.cpp:68
+#: ../../src/wizards/WizardCatalog.cpp:66
 msgid "Change variable"
 msgstr "Заменить переменную"
 
-#: ../../src/wizards/WizardCatalog.cpp:74
+#: ../../src/wizards/WizardCatalog.cpp:72
 msgid "Change variable and evaluate"
 msgstr "Заменить переменную и вычислить"
 
@@ -2509,7 +2509,7 @@ msgstr "Символ:"
 msgid "Character Tests"
 msgstr "Проверки символа"
 
-#: ../../src/wizards/WizardCatalog.cpp:809
+#: ../../src/wizards/WizardCatalog.cpp:800
 msgid "Characteristic polynom"
 msgstr "Характеристический полином"
 
@@ -2594,8 +2594,8 @@ msgstr "Выберите шрифт %s"
 msgid "Choose the parenthesis type for Matrices"
 msgstr "Выбор типа скобок для матриц"
 
-#: ../../src/wizards/WizardCatalog.cpp:1031
-#: ../../src/wizards/WizardCatalog.cpp:1035
+#: ../../src/wizards/WizardCatalog.cpp:1022
+#: ../../src/wizards/WizardCatalog.cpp:1026
 msgid "Classes:"
 msgstr "Классы:"
 
@@ -2750,7 +2750,7 @@ msgstr "Вернуться в поле, которое вычисляется в
 msgid "Codepoint number:"
 msgstr "Номер кодовой точки:"
 
-#: ../../src/wizards/WizardCatalog.cpp:1075
+#: ../../src/wizards/WizardCatalog.cpp:1066
 msgid "Col. names:"
 msgstr "Названия столбцов:"
 
@@ -2762,22 +2762,22 @@ msgstr "Цвет устаревших полей"
 msgid "Color of text equal to selection"
 msgstr "Цвет текста, который совпадает с выделением"
 
-#: ../../src/wizards/WizardCatalog.cpp:680
-#: ../../src/wizards/WizardCatalog.cpp:688
+#: ../../src/wizards/WizardCatalog.cpp:673
+#: ../../src/wizards/WizardCatalog.cpp:681
 msgid "Column number:"
 msgstr "Номер столбца:"
 
-#: ../../src/wizards/WizardCatalog.cpp:692
+#: ../../src/wizards/WizardCatalog.cpp:685
 msgid "Column numbers:"
 msgstr "Номера столбцов:"
 
-#: ../../src/wizards/WizardCatalog.cpp:830
+#: ../../src/wizards/WizardCatalog.cpp:821
 #, fuzzy
 #| msgid "Change variable"
 msgid "Column variable"
 msgstr "Заменить переменную"
 
-#: ../../src/wizards/WizardCatalog.cpp:831
+#: ../../src/wizards/WizardCatalog.cpp:822
 msgid "Columns"
 msgstr "Столбцы"
 
@@ -2820,16 +2820,16 @@ msgstr "Разделённые запятыми аргументы"
 msgid "Comma-separated commands"
 msgstr "Разделённые запятыми команды"
 
-#: ../../src/wizards/WizardCatalog.cpp:875
+#: ../../src/wizards/WizardCatalog.cpp:866
 msgid "Comma-separated elements"
 msgstr "Элементы, разделённые запятыми"
 
 #: ../../src/MaximaCommandMenus.cpp:2497
-#: ../../src/wizards/WizardCatalog.cpp:543
+#: ../../src/wizards/WizardCatalog.cpp:536
 msgid "Comma-separated equations"
 msgstr "Уравнения, разделённые запятыми"
 
-#: ../../src/wizards/WizardCatalog.cpp:424
+#: ../../src/wizards/WizardCatalog.cpp:417
 msgid "Comma-separated expressions"
 msgstr "Разделённые запятыми выражения"
 
@@ -2849,8 +2849,8 @@ msgstr "Разделённые запятыми имена функций"
 msgid "Comma-separated function names."
 msgstr "Разделённые запятыми имена функций."
 
-#: ../../src/wizards/WizardCatalog.cpp:970
-#: ../../src/wizards/WizardCatalog.cpp:977
+#: ../../src/wizards/WizardCatalog.cpp:961
+#: ../../src/wizards/WizardCatalog.cpp:968
 msgid "Comma-separated list entry in the format val1=1,val2=2"
 msgstr "Запись разделённого запятыми списка в формате значение1=1,значение2=2"
 
@@ -2877,7 +2877,7 @@ msgstr ""
 "будет заполнен списком всех дополнительных аргументов, которые получит "
 "функция."
 
-#: ../../src/wizards/WizardCatalog.cpp:479
+#: ../../src/wizards/WizardCatalog.cpp:472
 msgid ""
 "Comma-separated part numbers selecting the subexpression to replace (as in "
 "part())"
@@ -2891,8 +2891,8 @@ msgstr ""
 "\"."
 
 #: ../../src/MaximaCommandMenus.cpp:2498
-#: ../../src/wizards/WizardCatalog.cpp:407
-#: ../../src/wizards/WizardCatalog.cpp:545
+#: ../../src/wizards/WizardCatalog.cpp:400
+#: ../../src/wizards/WizardCatalog.cpp:538
 msgid "Comma-separated variables"
 msgstr "Переменные, разделённые запятыми"
 
@@ -3334,7 +3334,7 @@ msgstr "Копировать предыдущий ввод\tCtrl+I"
 msgid "Copy Previous Output\tCtrl+U"
 msgstr "Копировать предыдущий вывод\tCtrl+U"
 
-#: ../../src/wizards/WizardCatalog.cpp:710
+#: ../../src/wizards/WizardCatalog.cpp:701
 msgid "Copy a matrix"
 msgstr "Копировать матрицу"
 
@@ -3585,11 +3585,11 @@ msgstr ""
 msgid "Couldn't make sense of \"%s\" here."
 msgstr ""
 
-#: ../../src/wizards/WizardCatalog.cpp:830
+#: ../../src/wizards/WizardCatalog.cpp:821
 msgid "Counts the columns, from 1"
 msgstr ""
 
-#: ../../src/wizards/WizardCatalog.cpp:829
+#: ../../src/wizards/WizardCatalog.cpp:820
 msgid "Counts the rows, from 1"
 msgstr ""
 
@@ -3605,11 +3605,11 @@ msgstr "Создать список"
 msgid "Create a list as a storage for the values of variables"
 msgstr "Создать список для хранения значений переменных"
 
-#: ../../src/wizards/WizardCatalog.cpp:891
+#: ../../src/wizards/WizardCatalog.cpp:882
 msgid "Create a list from a list"
 msgstr ""
 
-#: ../../src/wizards/WizardCatalog.cpp:878
+#: ../../src/wizards/WizardCatalog.cpp:869
 msgid "Create a list from a rule"
 msgstr "Создать список на основе правила"
 
@@ -3649,7 +3649,7 @@ msgstr "Создать пустую строку..."
 msgid "Create list"
 msgstr "Создать список"
 
-#: ../../src/wizards/WizardCatalog.cpp:873
+#: ../../src/wizards/WizardCatalog.cpp:864
 msgid "Create list from comma-separated elements"
 msgstr "Создать список на основе элементов, разделённых запятыми"
 
@@ -3710,7 +3710,7 @@ msgid "Dark"
 msgstr ""
 
 #: ../../src/MaximaCommandMenus.cpp:805
-#: ../../src/wizards/WizardCatalog.cpp:1073
+#: ../../src/wizards/WizardCatalog.cpp:1064
 msgid "Data Matrix:"
 msgstr "Матрица данных:"
 
@@ -3723,7 +3723,7 @@ msgid "Data format"
 msgstr "Формат данных"
 
 #: ../../src/MaximaCommandMenus.cpp:2496
-#: ../../src/wizards/WizardCatalog.cpp:1027
+#: ../../src/wizards/WizardCatalog.cpp:1018
 msgid "Data:"
 msgstr "Данные:"
 
@@ -3748,7 +3748,7 @@ msgstr "Всегда показывать фрагмент текста как �
 msgid "Declare facts about %s"
 msgstr "Объявить свойства %s"
 
-#: ../../src/wizards/WizardCatalog.cpp:484
+#: ../../src/wizards/WizardCatalog.cpp:477
 msgid "Declare main variable:"
 msgstr "Объявить основную переменную:"
 
@@ -3840,7 +3840,7 @@ msgid ""
 msgstr ""
 "Определяет, запускается ли анимация автоматически или только по щелчку."
 
-#: ../../src/wizards/WizardCatalog.cpp:107
+#: ../../src/wizards/WizardCatalog.cpp:105
 msgid "Degree:"
 msgstr "Порядок:"
 
@@ -3915,7 +3915,7 @@ msgstr "Демо для «%s»"
 msgid "Demos"
 msgstr "Демо"
 
-#: ../../src/wizards/WizardCatalog.cpp:96
+#: ../../src/wizards/WizardCatalog.cpp:94
 msgid "Denom. deg:"
 msgstr "Степень знаменателя:"
 
@@ -3931,7 +3931,7 @@ msgstr "Зависимости"
 msgid "Depth:"
 msgstr "Глубина:"
 
-#: ../../src/wizards/WizardCatalog.cpp:605
+#: ../../src/wizards/WizardCatalog.cpp:598
 msgid "Derivate of y at that point:"
 msgstr "Производная y в этой точке:"
 
@@ -3943,12 +3943,12 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
-#: ../../src/wizards/WizardCatalog.cpp:240
-#: ../../src/wizards/WizardCatalog.cpp:308
+#: ../../src/wizards/WizardCatalog.cpp:235
+#: ../../src/wizards/WizardCatalog.cpp:303
 msgid "Desired absolute error of approximation."
 msgstr ""
 
-#: ../../src/wizards/WizardCatalog.cpp:237
+#: ../../src/wizards/WizardCatalog.cpp:232
 msgid "Desired relative error of approximation."
 msgstr ""
 
@@ -4002,7 +4002,7 @@ msgid "Difference %d / %d"
 msgstr ""
 
 #: ../../src/MaximaCommandMenus.cpp:2521
-#: ../../src/wizards/WizardCatalog.cpp:179
+#: ../../src/wizards/WizardCatalog.cpp:174
 msgid "Differentiate"
 msgstr "Дифференцировать"
 
@@ -4014,7 +4014,7 @@ msgstr "Дифференцировать выражение"
 msgid "Differentiate..."
 msgstr "Дифференцировать..."
 
-#: ../../src/wizards/WizardCatalog.cpp:180
+#: ../../src/wizards/WizardCatalog.cpp:175
 msgid "Differentiates an expression n times"
 msgstr "Дифференцирует выражение n раз"
 
@@ -4106,7 +4106,7 @@ msgstr "Отображать кавычки строк"
 msgid "Display time used for evaluation"
 msgstr "Отображать время, затраченное на вычисление"
 
-#: ../../src/wizards/WizardCatalog.cpp:212
+#: ../../src/wizards/WizardCatalog.cpp:207
 msgid "Displayed Precision"
 msgstr "Отображаемая точность"
 
@@ -4146,11 +4146,17 @@ msgstr "Разделить поле"
 msgid "Divide numbers or polynomials"
 msgstr "Делить числа или полиномы"
 
+#: ../../src/wizards/WizardCatalog.cpp:142
+#, fuzzy
+#| msgid "Di&vide Polynomials..."
+msgid "Divide polynomials"
+msgstr "Де&лить полиномы..."
+
 #: ../../src/cells/TextCell.cpp:308
 msgid "Division by 0."
 msgstr ""
 
-#: ../../src/wizards/WizardCatalog.cpp:988
+#: ../../src/wizards/WizardCatalog.cpp:979
 msgid "Do for each list element"
 msgstr "Выполнить для каждого элемента списка"
 
@@ -4279,11 +4285,11 @@ msgstr "Рисовать все точки, в которых уравнение
 msgid "Draw points"
 msgstr "Рисовать точки"
 
-#: ../../src/wizards/WizardCatalog.cpp:926
+#: ../../src/wizards/WizardCatalog.cpp:917
 msgid "Drop the first n list elements"
 msgstr "Отбросить первые n элементов списка"
 
-#: ../../src/wizards/WizardCatalog.cpp:931
+#: ../../src/wizards/WizardCatalog.cpp:922
 msgid "Drop the last n list elements"
 msgstr "Отбросить последние n элементов списка"
 
@@ -4303,11 +4309,11 @@ msgstr "В&ыход\tCtrl+Q"
 msgid "ERROR:"
 msgstr ""
 
-#: ../../src/wizards/WizardCatalog.cpp:797 ../../src/wxMaximaFrame.cpp:1567
+#: ../../src/wizards/WizardCatalog.cpp:788 ../../src/wxMaximaFrame.cpp:1567
 msgid "Eige&nvectors"
 msgstr "Собственные &векторы"
 
-#: ../../src/wizards/WizardCatalog.cpp:796 ../../src/wxMaximaFrame.cpp:1564
+#: ../../src/wizards/WizardCatalog.cpp:787 ../../src/wxMaximaFrame.cpp:1564
 msgid "Eigen&values"
 msgstr "Собственные &значения"
 
@@ -4327,7 +4333,7 @@ msgstr "Собственные значения, левый+правый соб�
 msgid "Eigenvalues, left+right eigenvectors (real)"
 msgstr "Собственные значения, левый+правый собственные векторы (вещественные)"
 
-#: ../../src/wizards/WizardCatalog.cpp:994
+#: ../../src/wizards/WizardCatalog.cpp:985
 msgid ""
 "Either a single expression or a comma-separated list of expressions between "
 "parenthesis. In the latter case the result of the last expression in the "
@@ -4355,21 +4361,21 @@ msgid ""
 "Normally the result of sign() if the sign cannot be determined."
 msgstr ""
 
-#: ../../src/wizards/WizardCatalog.cpp:1004
+#: ../../src/wizards/WizardCatalog.cpp:995
 msgid "Element"
 msgstr "Элемент"
 
-#: ../../src/wizards/WizardCatalog.cpp:950
+#: ../../src/wizards/WizardCatalog.cpp:941
 msgid "Element number"
 msgstr "Номер элемента"
 
-#: ../../src/wizards/WizardCatalog.cpp:722
+#: ../../src/wizards/WizardCatalog.cpp:713
 msgid ""
 "Element-by-element Product of matrices of the same size (Hadamard product)"
 msgstr ""
 "Покомпонентное произведение матриц одного размера (произведение Адамара)"
 
-#: ../../src/wizards/WizardCatalog.cpp:728
+#: ../../src/wizards/WizardCatalog.cpp:719
 msgid "Element-by-element exponentiation of two matrices"
 msgstr "Поэлементное возведение в степень двух матриц"
 
@@ -4377,7 +4383,7 @@ msgstr "Поэлементное возведение в степень двух
 msgid "Element-by-element multiplication"
 msgstr "Покомпонентное умножение"
 
-#: ../../src/wizards/WizardCatalog.cpp:908
+#: ../../src/wizards/WizardCatalog.cpp:899
 msgid "Element:"
 msgstr "Элемент:"
 
@@ -4385,7 +4391,7 @@ msgstr "Элемент:"
 msgid "Elements:"
 msgstr "Элементы:"
 
-#: ../../src/wizards/WizardCatalog.cpp:643
+#: ../../src/wizards/WizardCatalog.cpp:636
 msgid "Eliminate a variable"
 msgstr "Исключить переменную"
 
@@ -4401,7 +4407,7 @@ msgstr ""
 msgid "Empty command => re-triggering evaluation"
 msgstr "Пустая команда => повторная активация вычисления"
 
-#: ../../src/wizards/WizardCatalog.cpp:223
+#: ../../src/wizards/WizardCatalog.cpp:218
 msgid "Enable:"
 msgstr "Включить:"
 
@@ -4418,7 +4424,7 @@ msgstr "Неизвестное событие сокета."
 msgid "End of proof"
 msgstr "Конец доказательства"
 
-#: ../../src/wizards/WizardCatalog.cpp:639
+#: ../../src/wizards/WizardCatalog.cpp:632
 msgid "End of t:"
 msgstr "Конец t:"
 
@@ -4473,7 +4479,7 @@ msgstr ""
 "Добавлять новые строки по клавише Enter, выполнять команды в полях по "
 "комбинации клавиш Ctrl+Enter"
 
-#: ../../src/wizards/WizardCatalog.cpp:489
+#: ../../src/wizards/WizardCatalog.cpp:482
 msgid "Enter an equation for rational simplification:"
 msgstr "Введите уравнение для рационального упрощения:"
 
@@ -4495,7 +4501,7 @@ msgstr "Ввести матрицу"
 msgid "Enter new animation frame rate [Hz, integer]:"
 msgstr "Введите новую частоту кадров анимации [Гц, целое число]:"
 
-#: ../../src/wizards/WizardCatalog.cpp:207
+#: ../../src/wizards/WizardCatalog.cpp:202
 msgid "Enter new precision for bigfloats:"
 msgstr ""
 "Введите новую точность для чисел с плавающей точкой с повышенной точностью:"
@@ -4528,7 +4534,7 @@ msgstr "Переменные среды для Maxima"
 msgid "Epsilon"
 msgstr "Ε"
 
-#: ../../src/wizards/WizardCatalog.cpp:194
+#: ../../src/wizards/WizardCatalog.cpp:189
 msgid "Epsilon:"
 msgstr "Эпсилон:"
 
@@ -4540,7 +4546,8 @@ msgstr "Равно, если игнорировать регистр?..."
 msgid "Equal?..."
 msgstr "Равно?..."
 
-#: ../../src/wizards/DrawWiz.cpp:161 ../../src/wizards/WizardCatalog.cpp:971
+#: ../../src/wizards/DrawWiz.cpp:161 ../../src/wizards/WizardCatalog.cpp:484
+#: ../../src/wizards/WizardCatalog.cpp:962
 msgid "Equation"
 msgstr "Уравнение"
 
@@ -4549,19 +4556,19 @@ msgstr "Уравнение"
 msgid "Equation %ld:"
 msgstr ""
 
-#: ../../src/wizards/WizardCatalog.cpp:543
+#: ../../src/wizards/WizardCatalog.cpp:536
 msgid "Equation(s)"
 msgstr "Уравнения"
 
-#: ../../src/wizards/WizardCatalog.cpp:645
-#: ../../src/wizards/WizardCatalog.cpp:655
+#: ../../src/wizards/WizardCatalog.cpp:638
+#: ../../src/wizards/WizardCatalog.cpp:648
 msgid "Equation(s):"
 msgstr "Уравнения:"
 
 #: ../../src/MaximaCommandMenus.cpp:451 ../../src/MaximaCommandMenus.cpp:2505
-#: ../../src/wizards/WizardCatalog.cpp:63
-#: ../../src/wizards/WizardCatalog.cpp:581
-#: ../../src/wizards/WizardCatalog.cpp:1077
+#: ../../src/wizards/WizardCatalog.cpp:61
+#: ../../src/wizards/WizardCatalog.cpp:574
+#: ../../src/wizards/WizardCatalog.cpp:1068
 msgid "Equation:"
 msgstr "Уравнение:"
 
@@ -4693,7 +4700,7 @@ msgstr "Вычислить Заголовок 5\tShift+Ctrl+Enter"
 msgid "Evaluate Heading 6\tShift+Ctrl+Enter"
 msgstr "Вычислить Заголовок 6\tShift+Ctrl+Enter"
 
-#: ../../src/wizards/WizardCatalog.cpp:374
+#: ../../src/wizards/WizardCatalog.cpp:367
 msgid "Evaluate Nouns"
 msgstr "Вычислить &невычисляемые (noun) формы"
 
@@ -4821,11 +4828,11 @@ msgstr "Раскрыть выражение"
 msgid "Expand for given variables"
 msgstr "Раскрыть для указанных переменных"
 
-#: ../../src/wizards/WizardCatalog.cpp:415
+#: ../../src/wizards/WizardCatalog.cpp:408
 msgid "Expand for variable(s) including denominator:"
 msgstr "Раскрыть для переменной(ых), включая знаменатель:"
 
-#: ../../src/wizards/WizardCatalog.cpp:410
+#: ../../src/wizards/WizardCatalog.cpp:403
 msgid "Expand for variable(s):"
 msgstr "Раскрыть для переменной(ых):"
 
@@ -4844,6 +4851,12 @@ msgstr "Ожидать комплексные числа в большем ко�
 #: ../../src/wxMaximaFrame.cpp:1991
 msgid "Expect variables to contain complex numbers"
 msgstr "Ожидать, что переменные будут содержать комплексные числа"
+
+#: ../../src/wizards/WizardCatalog.cpp:698
+#, fuzzy
+#| msgid "&Exponentialize"
+msgid "Exponent:"
+msgstr "&В экспоненциальное представление"
 
 #: ../../src/MaximaCommandMenus.cpp:1209
 #: ../../src/dialogs/ConfigDialogue.cpp:214
@@ -4948,16 +4961,18 @@ msgstr "Не удалось выполнить экспорт в пакетны�
 msgid "Exporting..."
 msgstr "Экспорт..."
 
-#: ../../src/wizards/WizardCatalog.cpp:894
+#: ../../src/wizards/WizardCatalog.cpp:885
 msgid "Expr:"
 msgstr ""
 
 #: ../../src/MaximaCommandMenus.cpp:1974 ../../src/MaximaCommandMenus.cpp:1980
 #: ../../src/MaximaCommandMenus.cpp:2531 ../../src/sidebars/DrawSidebar.cpp:54
-#: ../../src/wizards/Plot3dWiz.cpp:32 ../../src/wizards/WizardCatalog.cpp:383
-#: ../../src/wizards/WizardCatalog.cpp:389
-#: ../../src/wizards/WizardCatalog.cpp:403
-#: ../../src/wizards/WizardCatalog.cpp:847
+#: ../../src/wizards/Plot3dWiz.cpp:32 ../../src/wizards/WizardCatalog.cpp:376
+#: ../../src/wizards/WizardCatalog.cpp:382
+#: ../../src/wizards/WizardCatalog.cpp:396
+#: ../../src/wizards/WizardCatalog.cpp:398
+#: ../../src/wizards/WizardCatalog.cpp:468
+#: ../../src/wizards/WizardCatalog.cpp:838
 msgid "Expression"
 msgstr "Выражение"
 
@@ -4998,16 +5013,16 @@ msgstr "Выражения:"
 #: ../../src/MaximaCommandMenus.cpp:2522 ../../src/wizards/IntegrateWiz.cpp:33
 #: ../../src/wizards/LimitWiz.cpp:29 ../../src/wizards/SeriesWiz.cpp:30
 #: ../../src/wizards/SubstituteWiz.cpp:29 ../../src/wizards/SumWiz.cpp:31
-#: ../../src/wizards/WizardCatalog.cpp:104
-#: ../../src/wizards/WizardCatalog.cpp:116
-#: ../../src/wizards/WizardCatalog.cpp:127
-#: ../../src/wizards/WizardCatalog.cpp:155
-#: ../../src/wizards/WizardCatalog.cpp:161
-#: ../../src/wizards/WizardCatalog.cpp:167
-#: ../../src/wizards/WizardCatalog.cpp:174
-#: ../../src/wizards/WizardCatalog.cpp:182
-#: ../../src/wizards/WizardCatalog.cpp:191
-#: ../../src/wizards/WizardCatalog.cpp:199
+#: ../../src/wizards/WizardCatalog.cpp:102
+#: ../../src/wizards/WizardCatalog.cpp:114
+#: ../../src/wizards/WizardCatalog.cpp:125
+#: ../../src/wizards/WizardCatalog.cpp:150
+#: ../../src/wizards/WizardCatalog.cpp:156
+#: ../../src/wizards/WizardCatalog.cpp:162
+#: ../../src/wizards/WizardCatalog.cpp:169
+#: ../../src/wizards/WizardCatalog.cpp:177
+#: ../../src/wizards/WizardCatalog.cpp:186
+#: ../../src/wizards/WizardCatalog.cpp:194
 msgid "Expression:"
 msgstr "Выражение:"
 
@@ -5031,11 +5046,11 @@ msgstr "Извлечь столбец из матрицы"
 msgid "Extract a column from the matrix and convert it to a list"
 msgstr "Извлечь столбец из матрицы и преобразовать его в список"
 
-#: ../../src/wizards/WizardCatalog.cpp:678
+#: ../../src/wizards/WizardCatalog.cpp:671
 msgid "Extract a matrix column"
 msgstr "Извлечь столбец из матрицы"
 
-#: ../../src/wizards/WizardCatalog.cpp:686
+#: ../../src/wizards/WizardCatalog.cpp:679
 msgid "Extract a matrix column as a list"
 msgstr "Извлечь столбец из матрицы как список"
 
@@ -5043,11 +5058,11 @@ msgstr "Извлечь столбец из матрицы как список"
 msgid "Extract a matrix from a 2-dimensional array"
 msgstr "Извлечь матрицу из двухмерного массива"
 
-#: ../../src/wizards/WizardCatalog.cpp:674
+#: ../../src/wizards/WizardCatalog.cpp:667
 msgid "Extract a matrix row"
 msgstr "Извлечь строку из матрицы"
 
-#: ../../src/wizards/WizardCatalog.cpp:682
+#: ../../src/wizards/WizardCatalog.cpp:675
 msgid "Extract a matrix row as a list"
 msgstr "Извлечь строку из матрицы как список"
 
@@ -5059,7 +5074,7 @@ msgstr "Извлечь строку из матрицы"
 msgid "Extract a row from the matrix and convert it to a list"
 msgstr "Извлечь строку из матрицы и преобразовать её в список"
 
-#: ../../src/wizards/WizardCatalog.cpp:974
+#: ../../src/wizards/WizardCatalog.cpp:965
 msgid "Extract a variable's value from a list of variable values"
 msgstr "Извлечь значение переменной из списка значений переменных"
 
@@ -5095,7 +5110,7 @@ msgstr "Извлечь часть с именем файла"
 msgid "Extract filetype from path..."
 msgstr "Извлечь тип файла из пути..."
 
-#: ../../src/wizards/WizardCatalog.cpp:858
+#: ../../src/wizards/WizardCatalog.cpp:849
 msgid "Extract function arguments"
 msgstr "Извлечь аргументы функции"
 
@@ -5103,7 +5118,7 @@ msgstr "Извлечь аргументы функции"
 msgid "Extract list Elements"
 msgstr "Извлечь элементы списка"
 
-#: ../../src/wizards/WizardCatalog.cpp:816
+#: ../../src/wizards/WizardCatalog.cpp:807
 msgid "Extract matrix from 2D array"
 msgstr "Извлечь матрицу из двухмерного массива"
 
@@ -5111,11 +5126,11 @@ msgstr "Извлечь матрицу из двухмерного массива
 msgid "Extract the argument list from a function call"
 msgstr "Извлечь список аргументов из вызова функции"
 
-#: ../../src/wizards/WizardCatalog.cpp:939
+#: ../../src/wizards/WizardCatalog.cpp:930
 msgid "Extract the last n elements from a list"
 msgstr "Извлечь последние n элементов из списка"
 
-#: ../../src/wizards/WizardCatalog.cpp:938
+#: ../../src/wizards/WizardCatalog.cpp:929
 msgid "Extract the last n list elements"
 msgstr ""
 
@@ -5123,7 +5138,7 @@ msgstr ""
 msgid "Extract the nth char of a string"
 msgstr "Извлечь n-й символ строки"
 
-#: ../../src/wizards/WizardCatalog.cpp:945
+#: ../../src/wizards/WizardCatalog.cpp:936
 msgid "Extract the nth list elements"
 msgstr "Извлечь элементы n-го списка"
 
@@ -5135,7 +5150,7 @@ msgstr "Извлечь для одной переменной значение, 
 msgid "Extract, append or delete rows or columns"
 msgstr "Извлечь, добавить или удалить строки или столбцы"
 
-#: ../../src/wizards/WizardCatalog.cpp:817
+#: ../../src/wizards/WizardCatalog.cpp:808
 msgid "Extracts a rectangle from a 2D array and converts it to a matrix"
 msgstr ""
 "Извлекает прямоугольник из двухмерного массива и преобразует его в матрицу"
@@ -5391,7 +5406,7 @@ msgstr "Найти дроби, которые являются веществе�
 msgid "Find in Matrix"
 msgstr "&Сопряжённая матрица"
 
-#: ../../src/wizards/WizardCatalog.cpp:187
+#: ../../src/wizards/WizardCatalog.cpp:182
 msgid "Find minimum"
 msgstr "Найти минимум"
 
@@ -5413,15 +5428,15 @@ msgstr ""
 msgid "Find root (solve numerically)"
 msgstr "Найти корень (решить численно)"
 
-#: ../../src/wizards/WizardCatalog.cpp:769
+#: ../../src/wizards/WizardCatalog.cpp:760
 msgid "Find the maximum absolute value of a matrix entry"
 msgstr "Найти максимальное абсолютное значение элемента матрицы"
 
-#: ../../src/wizards/WizardCatalog.cpp:774
+#: ../../src/wizards/WizardCatalog.cpp:765
 msgid "Find the maximum sum of the absolute values of a matrix column"
 msgstr "Найти максимальную сумму значений по модулю в столбце матрицы"
 
-#: ../../src/wizards/WizardCatalog.cpp:779
+#: ../../src/wizards/WizardCatalog.cpp:770
 msgid "Find the maximum sum of the absolute values of a matrix row"
 msgstr "Найти максимальную сумму значений по модулю в строке матрицы"
 
@@ -5595,7 +5610,7 @@ msgstr ""
 msgid "Found the maxima HTML manual in the folder %s."
 msgstr "Руководство пользователя Maxima в формате HTML находится в папке %s."
 
-#: ../../src/wizards/WizardCatalog.cpp:121
+#: ../../src/wizards/WizardCatalog.cpp:119
 msgid "Fourier coefficients"
 msgstr "Коэффициенты Фурье"
 
@@ -5643,7 +5658,7 @@ msgstr "Норма Фробениуса sqrt(sum((A(i,j))^2)) (веществе�
 #: ../../src/wizards/IntegrateWiz.cpp:41 ../../src/wizards/Plot2dWiz.cpp:48
 #: ../../src/wizards/Plot2dWiz.cpp:58 ../../src/wizards/Plot2dWiz.cpp:499
 #: ../../src/wizards/Plot3dWiz.cpp:37 ../../src/wizards/Plot3dWiz.cpp:46
-#: ../../src/wizards/SumWiz.cpp:37 ../../src/wizards/WizardCatalog.cpp:201
+#: ../../src/wizards/SumWiz.cpp:37 ../../src/wizards/WizardCatalog.cpp:196
 msgid "From:"
 msgstr "Из:"
 
@@ -5663,11 +5678,11 @@ msgstr ""
 msgid "Function contents:"
 msgstr "Содержимое функции:"
 
-#: ../../src/wizards/WizardCatalog.cpp:662
+#: ../../src/wizards/WizardCatalog.cpp:655
 msgid "Function f(x):"
 msgstr "Функция f(x):"
 
-#: ../../src/wizards/WizardCatalog.cpp:984
+#: ../../src/wizards/WizardCatalog.cpp:975
 msgid "Function name"
 msgstr "Имя функции"
 
@@ -5695,8 +5710,7 @@ msgstr "Функции для упрощения факториалов и га�
 msgid "Functions for simplifying trigonometric expressions"
 msgstr "Функции для упрощения тригонометрических выражений"
 
-#: ../../src/wizards/WizardCatalog.cpp:138
-#: ../../src/wizards/WizardCatalog.cpp:147
+#: ../../src/wizards/WizardCatalog.cpp:136
 msgid "GCD"
 msgstr "НОД"
 
@@ -5757,7 +5771,7 @@ msgstr ""
 msgid "Generate list elements using a rule"
 msgstr "Создать элементы списка на основе правила"
 
-#: ../../src/wizards/WizardCatalog.cpp:824
+#: ../../src/wizards/WizardCatalog.cpp:815
 msgid "Generate matrix from a rule"
 msgstr "Создать матрицу на основе правила"
 
@@ -5769,7 +5783,7 @@ msgstr "Создать неиспользуемый идентификатор"
 msgid "Generated the XML representation of the document"
 msgstr "Создано XML-представление документа"
 
-#: ../../src/wizards/WizardCatalog.cpp:825
+#: ../../src/wizards/WizardCatalog.cpp:816
 msgid ""
 "Generates a matrix and fills each element with the result of the expression "
 "\"Rule\"."
@@ -5937,11 +5951,11 @@ msgstr ""
 msgid "Hadamard (element-by-element) product..."
 msgstr "Произведение Адамара (покомпонентное)..."
 
-#: ../../src/wizards/WizardCatalog.cpp:721
+#: ../../src/wizards/WizardCatalog.cpp:712
 msgid "Hadamard Product"
 msgstr "Произведение Адамара"
 
-#: ../../src/wizards/WizardCatalog.cpp:727
+#: ../../src/wizards/WizardCatalog.cpp:718
 msgid "Hadamard exponent"
 msgstr "Экспонента Адамара"
 
@@ -6123,7 +6137,7 @@ msgstr ""
 msgid "Hindi"
 msgstr ""
 
-#: ../../src/wizards/WizardCatalog.cpp:1029
+#: ../../src/wizards/WizardCatalog.cpp:1020
 msgid "Histogram"
 msgstr "Гистограмма"
 
@@ -6159,7 +6173,7 @@ msgstr "Правило Горнера"
 msgid "Hotkeys for sending commands to maxima"
 msgstr "Комбинации клавиш для отправки команд в Maxima"
 
-#: ../../src/wizards/WizardCatalog.cpp:214
+#: ../../src/wizards/WizardCatalog.cpp:209
 msgid "How many digits to show:"
 msgstr "Сколько цифр показывать:"
 
@@ -6456,7 +6470,7 @@ msgstr "Импорт сжатых исходников Gnuplot для анима
 msgid "Importing uncompressed gnuplot sources for an animation"
 msgstr "Импорт несжатых исходников Gnuplot для анимации"
 
-#: ../../src/wizards/WizardCatalog.cpp:711
+#: ../../src/wizards/WizardCatalog.cpp:702
 msgid ""
 "In order to save memory the \":\" operator does clone the matrix, not copy "
 "it:\n"
@@ -6543,20 +6557,20 @@ msgstr ""
 msgid "Indentation"
 msgstr ""
 
-#: ../../src/wizards/WizardCatalog.cpp:887
+#: ../../src/wizards/WizardCatalog.cpp:878
 msgid "Index End:"
 msgstr "Конечный индекс:"
 
-#: ../../src/wizards/WizardCatalog.cpp:887
+#: ../../src/wizards/WizardCatalog.cpp:878
 msgid "Index Start:"
 msgstr "Начальный индекс:"
 
-#: ../../src/wizards/WizardCatalog.cpp:888
+#: ../../src/wizards/WizardCatalog.cpp:879
 msgid "Index Step:"
 msgstr "Шаг индекса:"
 
-#: ../../src/wizards/WizardCatalog.cpp:884
-#: ../../src/wizards/WizardCatalog.cpp:898
+#: ../../src/wizards/WizardCatalog.cpp:875
+#: ../../src/wizards/WizardCatalog.cpp:889
 msgid "Index variable:"
 msgstr "Индексная переменная:"
 
@@ -6597,8 +6611,8 @@ msgstr ""
 "Сообщить Maxima о значении функции в определённой точке, например, чтобы "
 "объявить начальные условия"
 
-#: ../../src/wizards/WizardCatalog.cpp:591
-#: ../../src/wizards/WizardCatalog.cpp:599
+#: ../../src/wizards/WizardCatalog.cpp:584
+#: ../../src/wizards/WizardCatalog.cpp:592
 msgid "Initial Condition"
 msgstr "Начальное условие:"
 
@@ -6610,11 +6624,11 @@ msgstr "Задача с начальным условием (&1) ..."
 msgid "Initial Value Problem (&2)..."
 msgstr "Задача с начальным условием (&2) ..."
 
-#: ../../src/wizards/WizardCatalog.cpp:193
+#: ../../src/wizards/WizardCatalog.cpp:188
 msgid "Initial estimates:"
 msgstr "Начальное приближение:"
 
-#: ../../src/wizards/WizardCatalog.cpp:636
+#: ../../src/wizards/WizardCatalog.cpp:629
 msgid "Initial x:"
 msgstr "Начальное x:"
 
@@ -6806,7 +6820,7 @@ msgstr "Целые числа и отдельные буквы"
 msgid "Integral sign"
 msgstr "Знак интеграла"
 
-#: ../../src/wizards/WizardCatalog.cpp:62
+#: ../../src/wizards/WizardCatalog.cpp:60
 msgid "Integral/Sum:"
 msgstr "Интеграл/сумма:"
 
@@ -6815,7 +6829,7 @@ msgstr "Интеграл/сумма:"
 msgid "Integrate"
 msgstr "Интегрировать"
 
-#: ../../src/wizards/WizardCatalog.cpp:159
+#: ../../src/wizards/WizardCatalog.cpp:154
 msgid "Integrate (risch)"
 msgstr "Интегрировать (Рич)"
 
@@ -6856,7 +6870,7 @@ msgstr "Чередовать"
 msgid "Interleave the values of two lists"
 msgstr "Чередовать значения из двух списков"
 
-#: ../../src/wizards/WizardCatalog.cpp:1018
+#: ../../src/wizards/WizardCatalog.cpp:1009
 msgid "Interleave two lists"
 msgstr "Чередовать два списка"
 
@@ -6898,7 +6912,7 @@ msgstr ""
 msgid "Interrupting..."
 msgstr "Интерпретировать строку..."
 
-#: ../../src/wizards/WizardCatalog.cpp:967
+#: ../../src/wizards/WizardCatalog.cpp:958
 msgid "Introduce a list of actual values into an equation"
 msgstr "Вставить список фактических значений в уравнение"
 
@@ -6919,7 +6933,7 @@ msgstr "Недопустимое регулярное выражение!"
 msgid "Invalid XML: %s"
 msgstr ""
 
-#: ../../src/wizards/WizardCatalog.cpp:172
+#: ../../src/wizards/WizardCatalog.cpp:167
 msgid "Inverse Laplace"
 msgstr "Обратное преобразование Лапласа"
 
@@ -7139,12 +7153,12 @@ msgstr "Курсив"
 msgid "Italic text"
 msgstr "Курсив"
 
-#: ../../src/wizards/WizardCatalog.cpp:1008
-#: ../../src/wizards/WizardCatalog.cpp:1012
+#: ../../src/wizards/WizardCatalog.cpp:999
+#: ../../src/wizards/WizardCatalog.cpp:1003
 msgid "Item"
 msgstr "Элемент"
 
-#: ../../src/wizards/WizardCatalog.cpp:991
+#: ../../src/wizards/WizardCatalog.cpp:982
 msgid "Iterator name:"
 msgstr "Название итератора:"
 
@@ -7217,7 +7231,7 @@ msgstr ""
 msgid "Korean"
 msgstr ""
 
-#: ../../src/wizards/WizardCatalog.cpp:132
+#: ../../src/wizards/WizardCatalog.cpp:130
 msgid "LCM"
 msgstr "НОК"
 
@@ -7288,7 +7302,7 @@ msgstr "Язык, используемый в интерфейсе wxMaxima."
 msgid "Language:"
 msgstr "Язык:"
 
-#: ../../src/wizards/WizardCatalog.cpp:165
+#: ../../src/wizards/WizardCatalog.cpp:160
 msgid "Laplace"
 msgstr "Преобразование Лапласа"
 
@@ -7339,7 +7353,7 @@ msgstr "Ведёт к"
 msgid "Least Common Multiple..."
 msgstr "Наименьшее общее кратное..."
 
-#: ../../src/wizards/WizardCatalog.cpp:1071
+#: ../../src/wizards/WizardCatalog.cpp:1062
 msgid "Least Squares Fit"
 msgstr "Прив. методом наименьших квадратов"
 
@@ -7368,11 +7382,11 @@ msgstr "Удалить строки и/или столбцы"
 msgid "Left"
 msgstr "Слева"
 
-#: ../../src/wizards/WizardCatalog.cpp:671
+#: ../../src/wizards/WizardCatalog.cpp:664
 msgid "Left Matrix:"
 msgstr "Левая матрица:"
 
-#: ../../src/wizards/WizardCatalog.cpp:820
+#: ../../src/wizards/WizardCatalog.cpp:811
 msgid "Left end"
 msgstr "Левая сторона"
 
@@ -7470,23 +7484,23 @@ msgstr ""
 msgid "Lisp version: %s"
 msgstr "Версия Lisp: %s"
 
-#: ../../src/MaximaCommandMenus.cpp:612 ../../src/wizards/WizardCatalog.cpp:941
-#: ../../src/wizards/WizardCatalog.cpp:950
+#: ../../src/MaximaCommandMenus.cpp:612 ../../src/wizards/WizardCatalog.cpp:932
+#: ../../src/wizards/WizardCatalog.cpp:941
+#: ../../src/wizards/WizardCatalog.cpp:967
 #: ../../src/wizards/WizardCatalog.cpp:976
-#: ../../src/wizards/WizardCatalog.cpp:985
-#: ../../src/wizards/WizardCatalog.cpp:1004
-#: ../../src/wizards/WizardCatalog.cpp:1008
-#: ../../src/wizards/WizardCatalog.cpp:1012
+#: ../../src/wizards/WizardCatalog.cpp:995
+#: ../../src/wizards/WizardCatalog.cpp:999
+#: ../../src/wizards/WizardCatalog.cpp:1003
 msgid "List"
 msgstr "Список"
 
-#: ../../src/wizards/WizardCatalog.cpp:1016
-#: ../../src/wizards/WizardCatalog.cpp:1020
+#: ../../src/wizards/WizardCatalog.cpp:1007
+#: ../../src/wizards/WizardCatalog.cpp:1011
 msgid "List #1"
 msgstr "Список 1"
 
-#: ../../src/wizards/WizardCatalog.cpp:1016
-#: ../../src/wizards/WizardCatalog.cpp:1021
+#: ../../src/wizards/WizardCatalog.cpp:1007
+#: ../../src/wizards/WizardCatalog.cpp:1012
 msgid "List #2"
 msgstr "Список 2"
 
@@ -7572,11 +7586,11 @@ msgstr "Список заданных пользователем макросо�
 msgid "List of user-defined properties"
 msgstr "Список заданных пользователем свойств"
 
-#: ../../src/wizards/WizardCatalog.cpp:969
+#: ../../src/wizards/WizardCatalog.cpp:960
 msgid "List with values"
 msgstr "Список со значениями"
 
-#: ../../src/wizards/WizardCatalog.cpp:856
+#: ../../src/wizards/WizardCatalog.cpp:847
 msgid "List:"
 msgstr "Список:"
 
@@ -7655,7 +7669,7 @@ msgstr "Загрузить генератор трансляций (gentran)"
 msgid "Long Right arrow"
 msgstr "Длинная стрелка вправо"
 
-#: ../../src/wizards/WizardCatalog.cpp:848
+#: ../../src/wizards/WizardCatalog.cpp:839
 msgid "Loop variable"
 msgstr "Переменная цикла"
 
@@ -7722,7 +7736,7 @@ msgstr "Макросы"
 msgid "Main Toolbar\tShift+Alt+B"
 msgstr ""
 
-#: ../../src/wizards/WizardCatalog.cpp:659
+#: ../../src/wizards/WizardCatalog.cpp:652
 msgid "Make a function value at a specific point known"
 msgstr "Сообщить значение функции в определённой точке"
 
@@ -7755,11 +7769,11 @@ msgstr ""
 msgid "Manual anchors (compiled):"
 msgstr ""
 
-#: ../../src/wizards/WizardCatalog.cpp:835
+#: ../../src/wizards/WizardCatalog.cpp:826
 msgid "Map"
 msgstr "Применить к элементам"
 
-#: ../../src/wizards/WizardCatalog.cpp:843
+#: ../../src/wizards/WizardCatalog.cpp:834
 msgid "Map an expression"
 msgstr "Применить выражение"
 
@@ -7808,8 +7822,8 @@ msgid "Matrices too large for the window"
 msgstr ""
 
 #: ../../src/MaximaCommandMenus.cpp:533 ../../src/MaximaCommandMenus.cpp:563
-#: ../../src/wizards/WizardCatalog.cpp:670
-#: ../../src/wizards/WizardCatalog.cpp:805
+#: ../../src/wizards/WizardCatalog.cpp:663
+#: ../../src/wizards/WizardCatalog.cpp:796
 msgid "Matrix"
 msgstr "Матрица"
 
@@ -7818,7 +7832,7 @@ msgstr "Матрица"
 msgid "Matrix (%lu rows, %lu columns)"
 msgstr ""
 
-#: ../../src/wizards/WizardCatalog.cpp:705
+#: ../../src/wizards/WizardCatalog.cpp:696
 msgid "Matrix Exponent"
 msgstr "Матричная экспонента"
 
@@ -7838,7 +7852,7 @@ msgstr "Матрица из файла CSV..."
 msgid "Matrix map"
 msgstr "Применить к матрице"
 
-#: ../../src/MaximaCommandMenus.cpp:806
+#: ../../src/MaximaCommandMenus.cpp:784 ../../src/MaximaCommandMenus.cpp:806
 msgid "Matrix name:"
 msgstr "Матрица:"
 
@@ -7858,12 +7872,12 @@ msgstr "Матрица в файл или матрица из файла"
 msgid "Matrix to nested List"
 msgstr "Матрицу во вложенный список"
 
-#: ../../src/wizards/WizardCatalog.cpp:868
+#: ../../src/wizards/WizardCatalog.cpp:859
 msgid "Matrix to nested list"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:547 ../../src/wizards/WizardCatalog.cpp:669
-#: ../../src/wizards/WizardCatalog.cpp:870
+#: ../../src/MaximaCommandMenus.cpp:547 ../../src/wizards/WizardCatalog.cpp:662
+#: ../../src/wizards/WizardCatalog.cpp:861
 msgid "Matrix:"
 msgstr "Матрица:"
 
@@ -7886,7 +7900,7 @@ msgstr ""
 msgid "Maxima Location"
 msgstr "Расположение Maxima"
 
-#: ../../src/wizards/WizardCatalog.cpp:376
+#: ../../src/wizards/WizardCatalog.cpp:369
 msgid ""
 "Maxima allows making functions \"nouns\", which means that they aren't "
 "automatically evaluated as soon as Maxima encounters them.\n"
@@ -8565,15 +8579,15 @@ msgid ""
 "it. In that case please choose the location of a working maxima binary"
 msgstr ""
 
-#: ../../src/wizards/WizardCatalog.cpp:226
+#: ../../src/wizards/WizardCatalog.cpp:221
 msgid "Maximum absolute value printed without exponent"
 msgstr "Максимальное абсолютное значение, которое отображается без экспоненты"
 
-#: ../../src/wizards/WizardCatalog.cpp:247
+#: ../../src/wizards/WizardCatalog.cpp:242
 msgid "Maximum number of Chebyshev moments. Must be greater than 0."
 msgstr ""
 
-#: ../../src/wizards/WizardCatalog.cpp:228
+#: ../../src/wizards/WizardCatalog.cpp:223
 msgid "Maximum number of digits to be displayed:"
 msgstr "Максимальное количество цифр для отображения:"
 
@@ -8593,7 +8607,7 @@ msgstr "Проверка среднего..."
 msgid "Mean..."
 msgstr "Cреднее..."
 
-#: ../../src/wizards/WizardCatalog.cpp:1053
+#: ../../src/wizards/WizardCatalog.cpp:1044
 msgid "Mean:"
 msgstr "Среднее:"
 
@@ -8642,7 +8656,7 @@ msgid ""
 "from the other lines of this file."
 msgstr ""
 
-#: ../../src/wizards/WizardCatalog.cpp:224
+#: ../../src/wizards/WizardCatalog.cpp:219
 msgid "Minimum absolute value printed without exponent:"
 msgstr "Минимальное абсолютное значение, которое отображается без экспоненты:"
 
@@ -8665,6 +8679,10 @@ msgstr ""
 #: ../../src/dialogs/ConfigDialogue.cpp:2298
 #: ../../src/dialogs/ConfigDialogue.cpp:2722
 msgid "Model:"
+msgstr ""
+
+#: ../../src/wizards/WizardCatalog.cpp:489
+msgid "Modulus"
 msgstr ""
 
 #: ../../src/dialogs/ConfigDialogue.cpp:902
@@ -8731,11 +8749,11 @@ msgstr "Мультипликативная функция: f(a*b)=f(a)*f(b)"
 msgid "Multiply matrices..."
 msgstr "Перемножить матрицы..."
 
-#: ../../src/wizards/WizardCatalog.cpp:699
+#: ../../src/wizards/WizardCatalog.cpp:692
 msgid "Multiply two matrices"
 msgstr "Перемножить две матрицы"
 
-#: ../../src/wizards/WizardCatalog.cpp:638
+#: ../../src/wizards/WizardCatalog.cpp:631
 msgid "Name of t:"
 msgstr "Имя t:"
 
@@ -8743,7 +8761,7 @@ msgstr "Имя t:"
 msgid "Name of the parameter"
 msgstr "Имя параметра"
 
-#: ../../src/wizards/WizardCatalog.cpp:633
+#: ../../src/wizards/WizardCatalog.cpp:626
 msgid "Name of x:"
 msgstr "Имя x:"
 
@@ -8759,7 +8777,7 @@ msgstr ""
 msgid "Nested list to Matrix"
 msgstr "Вложенный список в матрицу"
 
-#: ../../src/wizards/WizardCatalog.cpp:863
+#: ../../src/wizards/WizardCatalog.cpp:854
 msgid "Nested list to matrix"
 msgstr ""
 
@@ -8827,13 +8845,19 @@ msgstr "Обнаружены новые операторы Maxima: %s"
 msgid "New part:"
 msgstr "Новая часть:"
 
+#: ../../src/wizards/WizardCatalog.cpp:470
+#, fuzzy
+#| msgid "New value:"
+msgid "New value"
+msgstr "Новое значение:"
+
 #: ../../src/wizards/SubstituteWiz.cpp:35
 msgid "New value:"
 msgstr "Новое значение:"
 
-#: ../../src/wizards/WizardCatalog.cpp:64
-#: ../../src/wizards/WizardCatalog.cpp:169
-#: ../../src/wizards/WizardCatalog.cpp:176
+#: ../../src/wizards/WizardCatalog.cpp:62
+#: ../../src/wizards/WizardCatalog.cpp:164
+#: ../../src/wizards/WizardCatalog.cpp:171
 msgid "New variable:"
 msgstr "Новая переменная:"
 
@@ -9100,11 +9124,11 @@ msgstr "Срабатывание функции отмены на листе"
 msgid "Nu"
 msgstr "Ν"
 
-#: ../../src/wizards/WizardCatalog.cpp:95
+#: ../../src/wizards/WizardCatalog.cpp:93
 msgid "Num. deg:"
 msgstr "Степень числителя:"
 
-#: ../../src/wizards/WizardCatalog.cpp:942
+#: ../../src/wizards/WizardCatalog.cpp:933
 msgid "Number of elements"
 msgstr "Количество элементов"
 
@@ -9132,7 +9156,7 @@ msgstr "Число:"
 msgid "Numeric output"
 msgstr "Цифровой вывод"
 
-#: ../../src/wizards/WizardCatalog.cpp:746
+#: ../../src/wizards/WizardCatalog.cpp:737
 msgid "Numerical QR decomposition of a matrix"
 msgstr "Числовое QR-разложение матрицы"
 
@@ -9140,7 +9164,7 @@ msgstr "Числовое QR-разложение матрицы"
 msgid "Numerical operations (lapack)"
 msgstr "Численные операции (lapack)"
 
-#: ../../src/wizards/WizardCatalog.cpp:623
+#: ../../src/wizards/WizardCatalog.cpp:616
 msgid "Numerical solution for 1st degree ODE"
 msgstr "Численное решение для ОДУ первого порядка"
 
@@ -9204,8 +9228,8 @@ msgstr "OK"
 msgid "OS: %s Version %li.%li"
 msgstr "ОС: %s версии %li.%li"
 
-#: ../../src/wizards/WizardCatalog.cpp:840
-#: ../../src/wizards/WizardCatalog.cpp:850
+#: ../../src/wizards/WizardCatalog.cpp:831
+#: ../../src/wizards/WizardCatalog.cpp:841
 msgid "Object composed of elements"
 msgstr "Объект, состоящий из элементов"
 
@@ -9255,9 +9279,9 @@ msgstr ""
 msgid "Old value:"
 msgstr "Прежнее значение:"
 
-#: ../../src/wizards/WizardCatalog.cpp:65
-#: ../../src/wizards/WizardCatalog.cpp:168
-#: ../../src/wizards/WizardCatalog.cpp:175
+#: ../../src/wizards/WizardCatalog.cpp:63
+#: ../../src/wizards/WizardCatalog.cpp:163
+#: ../../src/wizards/WizardCatalog.cpp:170
 msgid "Old variable:"
 msgstr "Старая переменная:"
 
@@ -9277,13 +9301,13 @@ msgstr "При всех ошибках"
 msgid "On lisp errors"
 msgstr "При ошибках Lisp"
 
-#: ../../src/wizards/WizardCatalog.cpp:959
+#: ../../src/wizards/WizardCatalog.cpp:950
 msgid ""
 "One list, or several lists of the same length separated by commas: then the "
 "function gets one element of each list as its arguments."
 msgstr ""
 
-#: ../../src/wizards/WizardCatalog.cpp:1051
+#: ../../src/wizards/WizardCatalog.cpp:1042
 msgid "One sample t-test"
 msgstr "Одновыборочный t-тест"
 
@@ -9371,7 +9395,7 @@ msgstr "Открыть для записи"
 msgid "Open for writing..."
 msgstr "Открыть для записи..."
 
-#: ../../src/MaximaCommandMenus.cpp:774
+#: ../../src/MaximaCommandMenus.cpp:774 ../../src/MaximaCommandMenus.cpp:784
 msgid "Open matrix"
 msgstr "Открыть матрицу"
 
@@ -9481,7 +9505,7 @@ msgstr ""
 msgid "Packages and plots"
 msgstr ""
 
-#: ../../src/wizards/WizardCatalog.cpp:92
+#: ../../src/wizards/WizardCatalog.cpp:90
 msgid "Pade approximation"
 msgstr "Аппроксимация Паде"
 
@@ -9497,7 +9521,7 @@ msgstr "Разрыв страницы"
 msgid "Parallel Substitute..."
 msgstr "Параллельная подстановка..."
 
-#: ../../src/wizards/WizardCatalog.cpp:444
+#: ../../src/wizards/WizardCatalog.cpp:437
 msgid "Parallel substitution"
 msgstr "Параллельная подстановка"
 
@@ -9533,6 +9557,10 @@ msgstr "Проанализировать только строку..."
 msgid "Parsing output"
 msgstr "Анализ вывода"
 
+#: ../../src/wizards/WizardCatalog.cpp:471
+msgid "Part path"
+msgstr ""
+
 #: ../../src/MaximaCommandMenus.cpp:3319
 msgid "Part:"
 msgstr "Часть:"
@@ -9541,7 +9569,7 @@ msgstr "Часть:"
 msgid "Partial &Fractions..."
 msgstr "Простые &дроби..."
 
-#: ../../src/wizards/WizardCatalog.cpp:153
+#: ../../src/wizards/WizardCatalog.cpp:148
 msgid "Partial Fractions"
 msgstr "Простые дроби"
 
@@ -9678,11 +9706,11 @@ msgstr "График явного выражения"
 msgid "Plot an expression, for example sin(x) or (x+1)^2."
 msgstr "График выражения, например, sin(x) или (x+1)^2."
 
-#: ../../src/wizards/WizardCatalog.cpp:1038
+#: ../../src/wizards/WizardCatalog.cpp:1029
 msgid "Plot as bars"
 msgstr "График в виде столбиков"
 
-#: ../../src/wizards/WizardCatalog.cpp:1040
+#: ../../src/wizards/WizardCatalog.cpp:1031
 msgid "Plot as pie chart"
 msgstr "График в виде круговой диаграммы"
 
@@ -9725,16 +9753,16 @@ msgid ""
 "quotes, in Edit > Configure > Maxima > Environment variables for maxima."
 msgstr ""
 
-#: ../../src/wizards/WizardCatalog.cpp:617
+#: ../../src/wizards/WizardCatalog.cpp:610
 msgid "Point #1 with known value:"
 msgstr "Точка 1 с известным значением:"
 
-#: ../../src/wizards/WizardCatalog.cpp:619
+#: ../../src/wizards/WizardCatalog.cpp:612
 msgid "Point #2 with known value:"
 msgstr "Точка 2 с известным значением:"
 
-#: ../../src/wizards/WizardCatalog.cpp:595
-#: ../../src/wizards/WizardCatalog.cpp:603
+#: ../../src/wizards/WizardCatalog.cpp:588
+#: ../../src/wizards/WizardCatalog.cpp:596
 msgid "Point the value is known at:"
 msgstr "Точка, в которой известно значение:"
 
@@ -9744,8 +9772,8 @@ msgstr "Тип точки:"
 
 #: ../../src/wizards/BC2Wiz.cpp:33 ../../src/wizards/BC2Wiz.cpp:39
 #: ../../src/wizards/LimitWiz.cpp:35 ../../src/wizards/SeriesWiz.cpp:36
-#: ../../src/wizards/WizardCatalog.cpp:106
-#: ../../src/wizards/WizardCatalog.cpp:663
+#: ../../src/wizards/WizardCatalog.cpp:104
+#: ../../src/wizards/WizardCatalog.cpp:656
 msgid "Point:"
 msgstr "Точка:"
 
@@ -9757,19 +9785,19 @@ msgstr "Точки"
 msgid "Polish"
 msgstr "Польский"
 
-#: ../../src/wizards/WizardCatalog.cpp:134
-#: ../../src/wizards/WizardCatalog.cpp:140
-#: ../../src/wizards/WizardCatalog.cpp:149
+#: ../../src/wizards/WizardCatalog.cpp:132
+#: ../../src/wizards/WizardCatalog.cpp:138
+#: ../../src/wizards/WizardCatalog.cpp:144
 msgid "Polynomial 1:"
 msgstr "Полином 1:"
 
-#: ../../src/wizards/WizardCatalog.cpp:135
-#: ../../src/wizards/WizardCatalog.cpp:141
-#: ../../src/wizards/WizardCatalog.cpp:150
+#: ../../src/wizards/WizardCatalog.cpp:133
+#: ../../src/wizards/WizardCatalog.cpp:139
+#: ../../src/wizards/WizardCatalog.cpp:145
 msgid "Polynomial 2:"
 msgstr "Полином 2:"
 
-#: ../../src/wizards/WizardCatalog.cpp:503
+#: ../../src/wizards/WizardCatalog.cpp:496
 msgid "Polynomial:"
 msgstr "Полином:"
 
@@ -9812,7 +9840,7 @@ msgstr ""
 msgid "Postscript file (*.eps)|*.eps|All|*"
 msgstr "Postscript (*.eps)|*.eps|Все|*"
 
-#: ../../src/wizards/WizardCatalog.cpp:110
+#: ../../src/wizards/WizardCatalog.cpp:108
 msgid "Power series"
 msgstr "Степенной ряд"
 
@@ -9820,7 +9848,7 @@ msgstr "Степенной ряд"
 msgid "Power series..."
 msgstr "Степенной ряд..."
 
-#: ../../src/wizards/WizardCatalog.cpp:209
+#: ../../src/wizards/WizardCatalog.cpp:204
 msgid "Precision"
 msgstr "Точность"
 
@@ -9986,7 +10014,7 @@ msgid ""
 "problem."
 msgstr ""
 
-#: ../../src/wizards/WizardCatalog.cpp:197
+#: ../../src/wizards/WizardCatalog.cpp:192
 msgid "Product"
 msgstr "Произведение"
 
@@ -10022,7 +10050,7 @@ msgstr "Ψ"
 msgid "Push"
 msgstr "Втолкнуть"
 
-#: ../../src/wizards/WizardCatalog.cpp:906
+#: ../../src/wizards/WizardCatalog.cpp:897
 msgid "Push an element to a list"
 msgstr "Вставить элемент в список"
 
@@ -10053,11 +10081,11 @@ msgstr ""
 msgid "RESPONSE:"
 msgstr "ОТВЕТ MAXIMA:"
 
-#: ../../src/wizards/WizardCatalog.cpp:129
+#: ../../src/wizards/WizardCatalog.cpp:127
 msgid "Range radius:"
 msgstr "Радиус диапазона:"
 
-#: ../../src/wizards/WizardCatalog.cpp:795 ../../src/wxMaximaFrame.cpp:1573
+#: ../../src/wizards/WizardCatalog.cpp:786 ../../src/wxMaximaFrame.cpp:1573
 msgid "Rank"
 msgstr "Ранг"
 
@@ -10276,7 +10304,7 @@ msgstr "Ст. форма"
 msgid "Recursive Substitute..."
 msgstr "Рекурсивная подстановка..."
 
-#: ../../src/wizards/WizardCatalog.cpp:451
+#: ../../src/wizards/WizardCatalog.cpp:444
 msgid "Recursive substitution"
 msgstr "Рекурсивная подстановка"
 
@@ -10404,11 +10432,11 @@ msgstr "Удалить все вхождения слова..."
 msgid "Remove all occurrences of part"
 msgstr "Удалить все вхождения части"
 
-#: ../../src/wizards/WizardCatalog.cpp:1002
+#: ../../src/wizards/WizardCatalog.cpp:993
 msgid "Remove an element from a list"
 msgstr "Удалить элемент из списка"
 
-#: ../../src/wizards/WizardCatalog.cpp:910
+#: ../../src/wizards/WizardCatalog.cpp:901
 msgid "Remove and return the first element of a list"
 msgstr ""
 
@@ -10436,11 +10464,11 @@ msgstr "Удалить первое вхождение слова..."
 msgid "Remove first occurrence of part"
 msgstr "Удалить первое вхождение части"
 
-#: ../../src/wizards/WizardCatalog.cpp:690
+#: ../../src/wizards/WizardCatalog.cpp:683
 msgid "Remove matrix columns"
 msgstr ""
 
-#: ../../src/wizards/WizardCatalog.cpp:695
+#: ../../src/wizards/WizardCatalog.cpp:688
 msgid "Remove matrix rows"
 msgstr ""
 
@@ -10508,7 +10536,7 @@ msgstr "Заменено вхождений: %li."
 msgid "Replacement:"
 msgstr "Замена:"
 
-#: ../../src/wizards/WizardCatalog.cpp:468
+#: ../../src/wizards/WizardCatalog.cpp:461
 msgid ""
 "Replaces the subexpression that part(expr, n_1, n_2, ...) would select by a "
 "new value. The part numbers form a path: n_1 selects a part of the "
@@ -10591,11 +10619,11 @@ msgstr ""
 "Вернуть первый элемент списка и удалить его из списка. Эта возможность "
 "полезна при создании стеков."
 
-#: ../../src/wizards/WizardCatalog.cpp:927
+#: ../../src/wizards/WizardCatalog.cpp:918
 msgid "Return the list without its first n elements"
 msgstr "Вернуть список без его первых n элементов"
 
-#: ../../src/wizards/WizardCatalog.cpp:932
+#: ../../src/wizards/WizardCatalog.cpp:923
 msgid "Return the list without its last n elements"
 msgstr "Вернуть список без его последних n элементов"
 
@@ -10607,7 +10635,7 @@ msgstr "Вернуться в поле, которое вычисляется в
 msgid "Returns an arbitrary list item"
 msgstr "Возвращает произвольный элемент списка"
 
-#: ../../src/wizards/WizardCatalog.cpp:918
+#: ../../src/wizards/WizardCatalog.cpp:909
 msgid "Returns the first element of a list"
 msgstr ""
 
@@ -10615,7 +10643,7 @@ msgstr ""
 msgid "Returns the first item of the list"
 msgstr "Возвращает первый элемент списка"
 
-#: ../../src/wizards/WizardCatalog.cpp:922
+#: ../../src/wizards/WizardCatalog.cpp:913
 msgid "Returns the last element of a list"
 msgstr ""
 
@@ -10639,7 +10667,7 @@ msgstr "Возвращает список без первых n элементо
 msgid "Returns the list without its last n elements"
 msgstr "Возвращает список без последних n элементов"
 
-#: ../../src/wizards/WizardCatalog.cpp:902
+#: ../../src/wizards/WizardCatalog.cpp:893
 msgid "Returns the number of elements of a list"
 msgstr ""
 
@@ -10655,7 +10683,7 @@ msgstr "Обратить"
 msgid "Reverse the order of the list items"
 msgstr "Обратить порядок элементов списка"
 
-#: ../../src/wizards/WizardCatalog.cpp:914
+#: ../../src/wizards/WizardCatalog.cpp:905
 msgid "Reverses the order of the members of a list"
 msgstr ""
 
@@ -10675,7 +10703,7 @@ msgstr "Ρ"
 msgid "Right"
 msgstr "Справа"
 
-#: ../../src/wizards/WizardCatalog.cpp:672
+#: ../../src/wizards/WizardCatalog.cpp:665
 msgid "Right Matrix:"
 msgstr "Правая матрица:"
 
@@ -10683,7 +10711,7 @@ msgstr "Правая матрица:"
 msgid "Right arrow"
 msgstr "Стрелка вправо"
 
-#: ../../src/wizards/WizardCatalog.cpp:819
+#: ../../src/wizards/WizardCatalog.cpp:810
 msgid "Right end"
 msgstr "Правая сторона"
 
@@ -10712,22 +10740,22 @@ msgstr ""
 msgid "Row and column operations"
 msgstr "Операции со строками и столбцами"
 
-#: ../../src/wizards/WizardCatalog.cpp:676
-#: ../../src/wizards/WizardCatalog.cpp:684
+#: ../../src/wizards/WizardCatalog.cpp:669
+#: ../../src/wizards/WizardCatalog.cpp:677
 msgid "Row number:"
 msgstr "Номер строки:"
 
-#: ../../src/wizards/WizardCatalog.cpp:697
+#: ../../src/wizards/WizardCatalog.cpp:690
 msgid "Row numbers:"
 msgstr "Номера строк:"
 
-#: ../../src/wizards/WizardCatalog.cpp:829
+#: ../../src/wizards/WizardCatalog.cpp:820
 #, fuzzy
 #| msgid "New variable:"
 msgid "Row variable"
 msgstr "Новая переменная:"
 
-#: ../../src/wizards/WizardCatalog.cpp:831
+#: ../../src/wizards/WizardCatalog.cpp:822
 msgid "Rows"
 msgstr "Строки"
 
@@ -10749,11 +10777,11 @@ msgstr ""
 msgid "Rows:"
 msgstr "Строки:"
 
-#: ../../src/wizards/WizardCatalog.cpp:828
+#: ../../src/wizards/WizardCatalog.cpp:819
 msgid "Rule"
 msgstr "Правило"
 
-#: ../../src/wizards/WizardCatalog.cpp:881
+#: ../../src/wizards/WizardCatalog.cpp:872
 msgid "Rule:"
 msgstr "Правило:"
 
@@ -10819,7 +10847,7 @@ msgstr "Выполняется под управлением Motif"
 msgid "Running on the universal wxWidgets port"
 msgstr "Выполняется под управлением универсального порта wxWidgets"
 
-#: ../../src/wizards/WizardCatalog.cpp:836
+#: ../../src/wizards/WizardCatalog.cpp:827
 msgid ""
 "Runs each element of an object (list, matrix, equation,...) through a "
 "function individually"
@@ -10827,7 +10855,7 @@ msgstr ""
 "Применяет функцию к каждому элементу объекта (список, матрица, уравнение...) "
 "по отдельности"
 
-#: ../../src/wizards/WizardCatalog.cpp:844
+#: ../../src/wizards/WizardCatalog.cpp:835
 msgid ""
 "Runs each element of an object (list, matrix, equation,...) through an "
 "expression individually"
@@ -10870,15 +10898,15 @@ msgid ""
 "their labels."
 msgstr ""
 
-#: ../../src/wizards/WizardCatalog.cpp:1057
+#: ../../src/wizards/WizardCatalog.cpp:1048
 msgid "Sample 1:"
 msgstr "Выборка 1:"
 
-#: ../../src/wizards/WizardCatalog.cpp:1058
+#: ../../src/wizards/WizardCatalog.cpp:1049
 msgid "Sample 2:"
 msgstr "Выборка 2:"
 
-#: ../../src/wizards/WizardCatalog.cpp:1053
+#: ../../src/wizards/WizardCatalog.cpp:1044
 msgid "Sample:"
 msgstr "Выборка:"
 
@@ -11007,7 +11035,7 @@ msgid ""
 "(*.gif)|*.gif|Windows bitmap (*.bmp)|*.bmp|"
 msgstr ""
 
-#: ../../src/wizards/WizardCatalog.cpp:1033
+#: ../../src/wizards/WizardCatalog.cpp:1024
 msgid "Scatterplot"
 msgstr "График рассеяния"
 
@@ -11384,7 +11412,7 @@ msgstr "Настроить ось"
 msgid "Setup the axis for the current plot."
 msgstr "Настроить ось для текущего графика."
 
-#: ../../src/wizards/WizardCatalog.cpp:217
+#: ../../src/wizards/WizardCatalog.cpp:212
 msgid "Setup the engineering format"
 msgstr "Настроить инженерный формат"
 
@@ -11392,7 +11420,7 @@ msgstr "Настроить инженерный формат"
 msgid "Setup the engineering format..."
 msgstr "Настроить инженерный формат..."
 
-#: ../../src/wizards/WizardCatalog.cpp:1060
+#: ../../src/wizards/WizardCatalog.cpp:1051
 msgid "Shapiro-Wilk test for normality"
 msgstr "Тест на нормальность Шапиро — Уилка"
 
@@ -11591,7 +11619,7 @@ msgstr "Σ"
 msgid "Simple"
 msgstr "Простой"
 
-#: ../../src/wizards/WizardCatalog.cpp:1066
+#: ../../src/wizards/WizardCatalog.cpp:1057
 msgid "Simple linear regression"
 msgstr ""
 
@@ -11631,7 +11659,7 @@ msgstr "Упростить уравнения"
 msgid "Simplify expression containing radicals"
 msgstr "Упростить выражение с радикалами"
 
-#: ../../src/wizards/WizardCatalog.cpp:392
+#: ../../src/wizards/WizardCatalog.cpp:385
 msgid "Simplify radicals"
 msgstr "Упростить радикалы"
 
@@ -11643,7 +11671,7 @@ msgstr "Упростить рациональное выражение"
 msgid "Simplify sum() commands..."
 msgstr "Упростить команды sum()..."
 
-#: ../../src/wizards/WizardCatalog.cpp:386
+#: ../../src/wizards/WizardCatalog.cpp:379
 msgid "Simplify sums"
 msgstr "Упростить суммы"
 
@@ -11676,19 +11704,19 @@ msgstr "Сингулярные значения с помощью dgesvd"
 msgid "Singular values, left + right vectors"
 msgstr "Сингулярные значения, левые + правые векторы"
 
-#: ../../src/wizards/WizardCatalog.cpp:295
+#: ../../src/wizards/WizardCatalog.cpp:290
 msgid ""
 "Size of internal work array. (limit - limlst)/2 is the maximum number of "
 "subintervals to use."
 msgstr ""
 
-#: ../../src/wizards/WizardCatalog.cpp:243
+#: ../../src/wizards/WizardCatalog.cpp:238
 msgid ""
 "Size of internal work array. limit is the maximum number of subintervals to "
 "use."
 msgstr ""
 
-#: ../../src/wizards/WizardCatalog.cpp:314
+#: ../../src/wizards/WizardCatalog.cpp:309
 msgid ""
 "Size of internal work array. limit/2 is the maximum number of subintervals "
 "to use."
@@ -11714,11 +11742,11 @@ msgstr ""
 msgid "Smart Substitute..."
 msgstr "Умная подстановка..."
 
-#: ../../src/wizards/WizardCatalog.cpp:435
+#: ../../src/wizards/WizardCatalog.cpp:428
 msgid "Smart substitution"
 msgstr "Умная подстановка"
 
-#: ../../src/wizards/WizardCatalog.cpp:588
+#: ../../src/wizards/WizardCatalog.cpp:581
 msgid "Solution of the ODE:"
 msgstr "Решение ОДУ:"
 
@@ -11746,7 +11774,7 @@ msgstr "Решить ОД&У..."
 msgid "Solve (to_poly)..."
 msgstr "Решить (to_poly)..."
 
-#: ../../src/wizards/WizardCatalog.cpp:751
+#: ../../src/wizards/WizardCatalog.cpp:742
 msgid "Solve A*x=b numerically"
 msgstr "Решить A*x=b численно"
 
@@ -11754,7 +11782,7 @@ msgstr "Решить A*x=b численно"
 msgid "Solve Ax=b"
 msgstr "Решить Ax=b"
 
-#: ../../src/wizards/WizardCatalog.cpp:574
+#: ../../src/wizards/WizardCatalog.cpp:567
 msgid "Solve ODE"
 msgstr "Решить ОДУ"
 
@@ -11782,11 +11810,11 @@ msgstr "Решить систему алгебраических уравнен�
 msgid "Solve boundary value problem for second degree ODE"
 msgstr "Решить граничную задачу для ОДУ второго порядка"
 
-#: ../../src/wizards/WizardCatalog.cpp:649
+#: ../../src/wizards/WizardCatalog.cpp:642
 msgid "Solve differential equations using laplace()"
 msgstr "Решить дифференциальные уравнения с помощью laplace()"
 
-#: ../../src/wizards/WizardCatalog.cpp:548 ../../src/wxMaximaFrame.cpp:1437
+#: ../../src/wizards/WizardCatalog.cpp:541 ../../src/wxMaximaFrame.cpp:1437
 msgid "Solve equation(s)"
 msgstr "Решить уравнения"
 
@@ -11798,7 +11826,7 @@ msgstr "Решить уравнения c помощью to_poly_solve"
 msgid "Solve equations numerically"
 msgstr "Решить уравнения численно"
 
-#: ../../src/wizards/WizardCatalog.cpp:560
+#: ../../src/wizards/WizardCatalog.cpp:553
 msgid "Solve equations to polynom"
 msgstr "Решить уравнения для полинома"
 
@@ -11832,15 +11860,15 @@ msgstr ""
 "Решить обыкновенное дифференциальное уравнение с помощью преобразования "
 "Лапласа"
 
-#: ../../src/wizards/WizardCatalog.cpp:506
+#: ../../src/wizards/WizardCatalog.cpp:499
 msgid "Solve polynomials numerically"
 msgstr "Решить полиномы численно"
 
-#: ../../src/wizards/WizardCatalog.cpp:516
+#: ../../src/wizards/WizardCatalog.cpp:509
 msgid "Solve polynomials numerically (bfloats)"
 msgstr "Решить полиномы численно (повышенная точность)"
 
-#: ../../src/wizards/WizardCatalog.cpp:527
+#: ../../src/wizards/WizardCatalog.cpp:520
 msgid "Solve polynomials numerically (real roots)"
 msgstr "Решить полиномы численно (вещественные корни)"
 
@@ -11905,7 +11933,7 @@ msgstr "Сортировать все символы в строке"
 msgid "Sort the characters..."
 msgstr "Сортировать символы..."
 
-#: ../../src/wizards/WizardCatalog.cpp:900
+#: ../../src/wizards/WizardCatalog.cpp:891
 msgid "Source list:"
 msgstr "Исходный список:"
 
@@ -11962,7 +11990,7 @@ msgstr "Запустить анимацию"
 msgid "Start a new maxima for each re-evaluation"
 msgstr "Запускать новый экземпляр Maxima для каждого повторного вычисления"
 
-#: ../../src/wizards/WizardCatalog.cpp:638
+#: ../../src/wizards/WizardCatalog.cpp:631
 msgid "Start of t:"
 msgstr "Начало t:"
 
@@ -12041,7 +12069,7 @@ msgstr "Статистика"
 msgid "Statistics\tAlt+Shift+S"
 msgstr "Статистика\tAlt+Shift+S"
 
-#: ../../src/wizards/WizardCatalog.cpp:639
+#: ../../src/wizards/WizardCatalog.cpp:632
 msgid "Step width:"
 msgstr "Ширина шага:"
 
@@ -12200,7 +12228,7 @@ msgstr "Поле подраздела (Заголовок 3)"
 msgid "Subst constant t into eq with diff(x,t)..."
 msgstr "Подставить константу t в уравнение с помощью diff(x,t)..."
 
-#: ../../src/wizards/WizardCatalog.cpp:430
+#: ../../src/wizards/WizardCatalog.cpp:423
 msgid "Subst is a better string-search-and-replace for expressions."
 msgstr "Subst — это улучшенные поиск и замена строк для выражений."
 
@@ -12208,9 +12236,15 @@ msgstr "Subst — это улучшенные поиск и замена стр�
 msgid "Subst..."
 msgstr "Подставить..."
 
+#: ../../src/wizards/WizardCatalog.cpp:416
+#, fuzzy
+#| msgid "Substitute"
+msgid "Substituents"
+msgstr "Подставить"
+
 #: ../../src/MaximaCommandMenus.cpp:2527 ../../src/MaximaCommandMenus.cpp:3544
 #: ../../src/wizards/SubstituteWiz.cpp:53
-#: ../../src/wizards/WizardCatalog.cpp:428 ../../src/wxMaximaFrame.cpp:1853
+#: ../../src/wizards/WizardCatalog.cpp:421 ../../src/wxMaximaFrame.cpp:1853
 msgid "Substitute"
 msgstr "Подставить"
 
@@ -12222,7 +12256,7 @@ msgstr "Подставить все совпадения"
 msgid "Substitute first match"
 msgstr "Подставить первое совпадение"
 
-#: ../../src/wizards/WizardCatalog.cpp:466
+#: ../../src/wizards/WizardCatalog.cpp:459
 msgid "Substitute only in a specific part"
 msgstr ""
 
@@ -12243,7 +12277,7 @@ msgstr "Подставить..."
 msgid "Substitutes until the equation no more changes"
 msgstr "Подстановка, пока выражение не перестанет меняться"
 
-#: ../../src/wizards/WizardCatalog.cpp:452
+#: ../../src/wizards/WizardCatalog.cpp:445
 msgid ""
 "Substitutes up to lrats_max_iter times, or until the expression stops "
 "changing when substituting."
@@ -12251,7 +12285,7 @@ msgstr ""
 "Подстановка до lrats_max_iter раз или до тех пор, пока выражение не "
 "перестанет меняться при подстановке."
 
-#: ../../src/wizards/WizardCatalog.cpp:460
+#: ../../src/wizards/WizardCatalog.cpp:453
 #, c-format
 msgid ""
 "Substitutes, but makes sure that if substituting t=0 in diff(x,t) the result "
@@ -12260,7 +12294,7 @@ msgstr ""
 "Подстановка, обеспечивающая, что при подстановке t=0 в diff(x,t) результатом "
 "является не 0 (так как t больше не меняется), а %at(diff(x,t),t=0)."
 
-#: ../../src/wizards/WizardCatalog.cpp:445
+#: ../../src/wizards/WizardCatalog.cpp:438
 msgid ""
 "Substitutes, but makes sure that nothing is substituted into the other "
 "substituents."
@@ -12389,6 +12423,35 @@ msgstr "Содержание\tAlt+Shift+T"
 msgid "Take surface color from steepness"
 msgstr "Выбирать цвет поверхности по наклону"
 
+#: ../../src/wizards/WizardCatalog.cpp:47
+msgid ""
+"Takes an integral or sum in respect to the Old Variable and replaces that "
+"variable by a new one both adjusting the integrand and the limits "
+"accordingly. The field \"Equation\" specifies how the Old Variable and the "
+"New Variable are related to each other; For sums changevar isn't intelligent "
+"enough to do more than a shift of the variable.\n"
+"\n"
+"changevar(integrate(f(x),x,1,10),u=sqrt(x),u,x);\n"
+"results in\n"
+"2*integrate(u*f(u^2),u,1,sqrt(10))\n"
+"\n"
+msgstr ""
+
+#: ../../src/wizards/WizardCatalog.cpp:74
+msgid ""
+"Takes an integral or sum in respect to the Old Variable and replaces that "
+"variable by a new one both adjusting the integrand and the limits "
+"accordingly. Then evaluates the resulting integral or sum. The field "
+"\"Equation\" specifies how the Old Variable and the New Variable are related "
+"to each other; For sums changevar isn't intelligent enough to do more than a "
+"shift of the variable.\n"
+"\n"
+"changevar(integrate(f(x),x,1,10),u=sqrt(x),u,x);\n"
+"results in\n"
+"2*integrate(u*f(u^2),u,1,sqrt(10))\n"
+"\n"
+msgstr ""
+
 #: ../../src/UiLanguages.cpp:107
 msgid "Tamil"
 msgstr ""
@@ -12397,7 +12460,7 @@ msgstr ""
 msgid "Tau"
 msgstr "Τ"
 
-#: ../../src/wizards/WizardCatalog.cpp:99
+#: ../../src/wizards/WizardCatalog.cpp:97
 msgid "Taylor series"
 msgstr "Ряд Тейлора"
 
@@ -12405,7 +12468,7 @@ msgstr "Ряд Тейлора"
 msgid "Taylor series..."
 msgstr "Ряд Тейлора..."
 
-#: ../../src/wizards/WizardCatalog.cpp:94
+#: ../../src/wizards/WizardCatalog.cpp:92
 msgid "Taylor series:"
 msgstr "Ряд Тейлора:"
 
@@ -12413,7 +12476,7 @@ msgstr "Ряд Тейлора:"
 msgid "Telling maxima about the new working directory."
 msgstr "Передача сведений о новом рабочем каталоге в Maxima."
 
-#: ../../src/wizards/WizardCatalog.cpp:660
+#: ../../src/wizards/WizardCatalog.cpp:653
 msgid "Tells maxima for an f(x), that f(x=t)=a"
 msgstr "Сообщает Maxima об f(x), что f(x=t)=a"
 
@@ -12703,11 +12766,11 @@ msgstr ""
 "Класс документа, который LaTeX должен использовать для создаваемых "
 "документов."
 
-#: ../../src/wizards/WizardCatalog.cpp:1077
+#: ../../src/wizards/WizardCatalog.cpp:1068
 msgid "The equation to fit the data to"
 msgstr "Уравнение, по которому следует аппроксимировать данные"
 
-#: ../../src/wizards/WizardCatalog.cpp:476
+#: ../../src/wizards/WizardCatalog.cpp:469
 msgid "The expression to substitute in"
 msgstr ""
 
@@ -12752,7 +12815,7 @@ msgstr ""
 msgid "The function %s lacks its argument."
 msgstr "Использовать как аргументы функции"
 
-#: ../../src/wizards/WizardCatalog.cpp:860
+#: ../../src/wizards/WizardCatalog.cpp:851
 msgid "The function call whose arguments to extract"
 msgstr "Вызов функции, аргументы которой следует извлечь"
 
@@ -12839,7 +12902,7 @@ msgid ""
 "dependent variables the list of dgls contains."
 msgstr ""
 
-#: ../../src/wizards/WizardCatalog.cpp:1076
+#: ../../src/wizards/WizardCatalog.cpp:1067
 msgid "The list of variables contained in each matrix row"
 msgstr "Список переменных, содержащихся в каждой строке матрицы"
 
@@ -12863,7 +12926,7 @@ msgstr "Руководство по Maxima"
 msgid "The manual of wxMaxima"
 msgstr "Руководство по wxMaxima"
 
-#: ../../src/wizards/WizardCatalog.cpp:806
+#: ../../src/wizards/WizardCatalog.cpp:797
 msgid "The matrix, or the name of a variable holding one"
 msgstr ""
 
@@ -12904,7 +12967,7 @@ msgstr "Имя структуры"
 msgid "The name of the struct type"
 msgstr "Имя типа структуры"
 
-#: ../../src/wizards/WizardCatalog.cpp:849
+#: ../../src/wizards/WizardCatalog.cpp:840
 msgid "The name of the variable that shall contain the current element"
 msgstr "Имя переменной, которая будет содержать текущий элемент"
 
@@ -12916,7 +12979,7 @@ msgstr "Заголовок следующего графика"
 msgid "The number of recently opened files that is to be remembered."
 msgstr "Сохраняемое количество последних открытых файлов."
 
-#: ../../src/wizards/WizardCatalog.cpp:885
+#: ../../src/wizards/WizardCatalog.cpp:876
 msgid ""
 "The number of the item which is stepped from \"Index Start\" to \"Index "
 "End\"."
@@ -13008,7 +13071,7 @@ msgid ""
 "    W_mech:rhs(%);"
 msgstr ""
 
-#: ../../src/wizards/WizardCatalog.cpp:882
+#: ../../src/wizards/WizardCatalog.cpp:873
 msgid ""
 "The rule that explains how to generate the value of a list item.\n"
 "Might be something like \"i\", \"i^2\" or \"sin(i)\""
@@ -13038,7 +13101,7 @@ msgstr ""
 msgid "The sidebar"
 msgstr "Боковые панели"
 
-#: ../../src/wizards/WizardCatalog.cpp:577
+#: ../../src/wizards/WizardCatalog.cpp:570
 msgid ""
 "The solution of an ODE describes the general shape of the resulting curve. "
 "The actual height of that curve is defined by the initial condition or "
@@ -13047,7 +13110,7 @@ msgstr ""
 "Решение ОДУ описывает общую форму интегральной кривой. Фактическая высота "
 "этой кривой определяется начальным условием или граничными значениями позже."
 
-#: ../../src/wizards/WizardCatalog.cpp:611
+#: ../../src/wizards/WizardCatalog.cpp:604
 msgid ""
 "The solution of an ODE tells the shape, but not the height of the solution.\n"
 "If the ODE's result is known at two points this function fills in the "
@@ -13057,7 +13120,7 @@ msgstr ""
 "Если известен результат решения ОДУ в двух точках, эта функция устанавливает "
 "надлежащие значения констант"
 
-#: ../../src/wizards/WizardCatalog.cpp:584
+#: ../../src/wizards/WizardCatalog.cpp:577
 msgid ""
 "The solution of an ODE tells the shape, but not the height of the solution.\n"
 "If the ODE's state is known at a point this function fills in the correct "
@@ -13067,7 +13130,7 @@ msgstr ""
 "Если известно состояние ОДУ в точке, эта функция устанавливает надлежащие "
 "значения констант"
 
-#: ../../src/wizards/WizardCatalog.cpp:650
+#: ../../src/wizards/WizardCatalog.cpp:643
 msgid ""
 "The solution variable needs to be in the form\n"
 "   U(t)=1/2*U(t)+3*diff(U(t),t)\n"
@@ -13103,12 +13166,12 @@ msgid ""
 "therefore cannot be written to."
 msgstr ""
 
-#: ../../src/wizards/WizardCatalog.cpp:899
-#: ../../src/wizards/WizardCatalog.cpp:992
+#: ../../src/wizards/WizardCatalog.cpp:890
+#: ../../src/wizards/WizardCatalog.cpp:983
 msgid "The variable the value of the current source item is stored in."
 msgstr "Переменная, в которой хранится значение текущего исходного элемента."
 
-#: ../../src/wizards/WizardCatalog.cpp:1079
+#: ../../src/wizards/WizardCatalog.cpp:1070
 msgid "The variables to search the optimum solution for"
 msgstr "Переменные, для которых следует найти оптимальное решение"
 
@@ -13137,7 +13200,7 @@ msgstr ""
 "Если у вас получится воспроизвести эту ошибку, пожалуйста, отправьте отчёт о "
 "ней в wxMaxima."
 
-#: ../../src/wizards/WizardCatalog.cpp:895
+#: ../../src/wizards/WizardCatalog.cpp:886
 msgid ""
 "The ‘j’th element is equal to ‘ev (<expr>, <x>=<list>[j])’ \n"
 "j are the elements of the source list.\n"
@@ -13382,7 +13445,7 @@ msgid "Time [in Minutes] between autosaves"
 msgstr "Время [в минутах] между автоматическими сохранениями"
 
 #: ../../src/MaximaCommandMenus.cpp:2524
-#: ../../src/wizards/WizardCatalog.cpp:184
+#: ../../src/wizards/WizardCatalog.cpp:179
 msgid "Times:"
 msgstr "Умножить:"
 
@@ -13475,7 +13538,7 @@ msgstr ""
 #: ../../src/wizards/IntegrateWiz.cpp:47 ../../src/wizards/Plot2dWiz.cpp:51
 #: ../../src/wizards/Plot2dWiz.cpp:61 ../../src/wizards/Plot2dWiz.cpp:502
 #: ../../src/wizards/Plot3dWiz.cpp:40 ../../src/wizards/Plot3dWiz.cpp:49
-#: ../../src/wizards/SumWiz.cpp:40 ../../src/wizards/WizardCatalog.cpp:202
+#: ../../src/wizards/SumWiz.cpp:40 ../../src/wizards/WizardCatalog.cpp:197
 msgid "To:"
 msgstr "К:"
 
@@ -13515,7 +13578,7 @@ msgstr ""
 msgid "Top"
 msgstr "Сверху"
 
-#: ../../src/wizards/WizardCatalog.cpp:821
+#: ../../src/wizards/WizardCatalog.cpp:812
 msgid "Top end"
 msgstr "Верхняя сторона"
 
@@ -13545,7 +13608,7 @@ msgstr "Преобразования"
 msgid "Transpose a matrix"
 msgstr "Транспонировать матрицу"
 
-#: ../../src/wizards/WizardCatalog.cpp:625
+#: ../../src/wizards/WizardCatalog.cpp:618
 msgid ""
 "Tries to find a numerical solution for a 1st order ODE (or in other words: a "
 "equation of the format depends(x,t);diff(x,t)=(something containing x and t)"
@@ -13566,7 +13629,7 @@ msgstr ""
 "Пытается найти лежащее в указанных границах значение переменной, которое "
 "решает уравнение"
 
-#: ../../src/wizards/WizardCatalog.cpp:518
+#: ../../src/wizards/WizardCatalog.cpp:511
 msgid ""
 "Tries to find all solutions of a polynomial numerically using bfloats.\n"
 "Might be able to detect solutions in non-polynomials, as well, if the "
@@ -13581,7 +13644,7 @@ msgstr ""
 "\n"
 "    bfallroots(ratdisrep(taylor(expression,0,30)));"
 
-#: ../../src/wizards/WizardCatalog.cpp:508
+#: ../../src/wizards/WizardCatalog.cpp:501
 msgid ""
 "Tries to find all solutions of a polynomial numerically.\n"
 "Might be able to detect solutions in non-polynomials, as well, if the "
@@ -13595,7 +13658,7 @@ msgstr ""
 "\n"
 "    allroots(ratdisrep(taylor(expression,0,30)));"
 
-#: ../../src/wizards/WizardCatalog.cpp:530
+#: ../../src/wizards/WizardCatalog.cpp:523
 #, no-c-format
 msgid ""
 "Tries to find exact fractions that match the numerical solutions of a "
@@ -13652,7 +13715,7 @@ msgstr "Устранение неполадок"
 msgid "Try to guess which form is &simple"
 msgstr "Пытаться определить, какая форма является &простой"
 
-#: ../../src/wizards/WizardCatalog.cpp:387
+#: ../../src/wizards/WizardCatalog.cpp:380
 msgid "Try to simplify sums that result from sum() commands."
 msgstr ""
 "Пытаться упростить суммы, которые являются результатом выполнения команд "
@@ -13715,7 +13778,7 @@ msgstr "Турецкий"
 msgid "Tutorials"
 msgstr "Учебники"
 
-#: ../../src/wizards/WizardCatalog.cpp:1055
+#: ../../src/wizards/WizardCatalog.cpp:1046
 msgid "Two sample t-test"
 msgstr "Двухвыборочный t-тест"
 
@@ -13944,7 +14007,7 @@ msgstr "Обновление конфигурации Maxima"
 msgid "Upgrade"
 msgstr "Обновить"
 
-#: ../../src/wizards/WizardCatalog.cpp:250
+#: ../../src/wizards/WizardCatalog.cpp:245
 msgid ""
 "Upper bound on the number of cycles. Must be greater than or equal to 3."
 msgstr ""
@@ -13985,7 +14048,7 @@ msgstr ""
 msgid "Use a list"
 msgstr "Использовать список"
 
-#: ../../src/wizards/WizardCatalog.cpp:982
+#: ../../src/wizards/WizardCatalog.cpp:973
 msgid "Use a list as parameter list for a function"
 msgstr "Использовать список в качестве списка параметров для функции"
 
@@ -14119,7 +14182,7 @@ msgstr ""
 msgid "Value"
 msgstr "Значение"
 
-#: ../../src/wizards/WizardCatalog.cpp:458
+#: ../../src/wizards/WizardCatalog.cpp:451
 msgid "Value at a given point"
 msgstr "Значение в указанной точке"
 
@@ -14127,25 +14190,26 @@ msgstr "Значение в указанной точке"
 msgid "Value at a specific point"
 msgstr "Значение в определённой точке"
 
-#: ../../src/wizards/WizardCatalog.cpp:596
+#: ../../src/wizards/WizardCatalog.cpp:589
 msgid "Value at that point:"
 msgstr "Значение в этой точке:"
 
-#: ../../src/wizards/WizardCatalog.cpp:604
-#: ../../src/wizards/WizardCatalog.cpp:618
-#: ../../src/wizards/WizardCatalog.cpp:620
+#: ../../src/wizards/WizardCatalog.cpp:597
+#: ../../src/wizards/WizardCatalog.cpp:611
+#: ../../src/wizards/WizardCatalog.cpp:613
 msgid "Value y at that point:"
 msgstr "Значение y в этой точке:"
 
 #: ../../src/wizards/BC2Wiz.cpp:36 ../../src/wizards/BC2Wiz.cpp:42
-#: ../../src/wizards/WizardCatalog.cpp:663
+#: ../../src/wizards/WizardCatalog.cpp:656
 msgid "Value:"
 msgstr "Значение:"
 
 #: ../../src/MaximaCommandMenus.cpp:761
 #: ../../src/dialogs/ConfigDialogue.cpp:540
 #: ../../src/sidebars/VariablesPane.cpp:54
-#: ../../src/wizards/WizardCatalog.cpp:811
+#: ../../src/wizards/WizardCatalog.cpp:479
+#: ../../src/wizards/WizardCatalog.cpp:802
 msgid "Variable"
 msgstr "Переменная"
 
@@ -14163,7 +14227,7 @@ msgstr "Переменная для значения z"
 
 #: ../../src/MaximaCommandMenus.cpp:1994 ../../src/MaximaCommandMenus.cpp:2000
 #: ../../src/wizards/ActualValuesStorageWiz.cpp:48
-#: ../../src/wizards/WizardCatalog.cpp:978
+#: ../../src/wizards/WizardCatalog.cpp:969
 msgid "Variable name"
 msgstr "Имя переменной"
 
@@ -14175,14 +14239,15 @@ msgstr "Имя переменной, не содержимое..."
 msgid "Variable name:"
 msgstr "Имя переменной:"
 
-#: ../../src/wizards/WizardCatalog.cpp:545
+#: ../../src/wizards/WizardCatalog.cpp:400
+#: ../../src/wizards/WizardCatalog.cpp:538
 msgid "Variable(s)"
 msgstr "Переменные"
 
 #: ../../src/MaximaCommandMenus.cpp:2523
-#: ../../src/wizards/WizardCatalog.cpp:183
-#: ../../src/wizards/WizardCatalog.cpp:646
-#: ../../src/wizards/WizardCatalog.cpp:656
+#: ../../src/wizards/WizardCatalog.cpp:178
+#: ../../src/wizards/WizardCatalog.cpp:639
+#: ../../src/wizards/WizardCatalog.cpp:649
 msgid "Variable(s):"
 msgstr "Переменные:"
 
@@ -14191,12 +14256,12 @@ msgstr "Переменные:"
 #: ../../src/wizards/Plot2dWiz.cpp:45 ../../src/wizards/Plot2dWiz.cpp:55
 #: ../../src/wizards/Plot2dWiz.cpp:496 ../../src/wizards/Plot3dWiz.cpp:34
 #: ../../src/wizards/Plot3dWiz.cpp:43 ../../src/wizards/SeriesWiz.cpp:33
-#: ../../src/wizards/SumWiz.cpp:34 ../../src/wizards/WizardCatalog.cpp:105
-#: ../../src/wizards/WizardCatalog.cpp:117
-#: ../../src/wizards/WizardCatalog.cpp:128
-#: ../../src/wizards/WizardCatalog.cpp:156
-#: ../../src/wizards/WizardCatalog.cpp:162
-#: ../../src/wizards/WizardCatalog.cpp:200
+#: ../../src/wizards/SumWiz.cpp:34 ../../src/wizards/WizardCatalog.cpp:103
+#: ../../src/wizards/WizardCatalog.cpp:115
+#: ../../src/wizards/WizardCatalog.cpp:126
+#: ../../src/wizards/WizardCatalog.cpp:151
+#: ../../src/wizards/WizardCatalog.cpp:157
+#: ../../src/wizards/WizardCatalog.cpp:195
 msgid "Variable:"
 msgstr "Переменная:"
 
@@ -14204,8 +14269,8 @@ msgstr "Переменная:"
 msgid "Variables"
 msgstr "Переменные"
 
-#: ../../src/wizards/SystemWiz.cpp:72 ../../src/wizards/WizardCatalog.cpp:192
-#: ../../src/wizards/WizardCatalog.cpp:1078
+#: ../../src/wizards/SystemWiz.cpp:72 ../../src/wizards/WizardCatalog.cpp:187
+#: ../../src/wizards/WizardCatalog.cpp:1069
 msgid "Variables:"
 msgstr "Переменные:"
 
@@ -14319,7 +14384,7 @@ msgstr "Добро пожаловать в wxMaxima"
 msgid "What connected sent a wrong secret."
 msgstr "Не удалось соединиться с веб-сервером."
 
-#: ../../src/wizards/WizardCatalog.cpp:993
+#: ../../src/wizards/WizardCatalog.cpp:984
 msgid "What to do:"
 msgstr "Что делать:"
 
@@ -14703,7 +14768,7 @@ msgstr "диагональная"
 msgid "diff(): Cannot find the multiplication sign I should hide"
 msgstr ""
 
-#: ../../src/wizards/WizardCatalog.cpp:630
+#: ../../src/wizards/WizardCatalog.cpp:623
 msgid "diff(x,t)="
 msgstr "diff(x,t)="
 
@@ -14771,8 +14836,8 @@ msgstr "из аргументов функции"
 msgid "from individual elements"
 msgstr "из отдельных элементов"
 
-#: ../../src/wizards/WizardCatalog.cpp:839
-#: ../../src/wizards/WizardCatalog.cpp:957
+#: ../../src/wizards/WizardCatalog.cpp:830
+#: ../../src/wizards/WizardCatalog.cpp:948
 msgid "function"
 msgstr "функция"
 
@@ -14858,7 +14923,7 @@ msgid ""
 "mix left-to-right and right-to-left text."
 msgstr ""
 
-#: ../../src/wizards/WizardCatalog.cpp:958
+#: ../../src/wizards/WizardCatalog.cpp:949
 #, fuzzy
 #| msgid "list"
 msgid "list(s)"
@@ -14924,13 +14989,13 @@ msgstr "намного больше чем"
 msgid "much less than"
 msgstr "намного меньше чем"
 
-#: ../../src/wizards/WizardCatalog.cpp:753
+#: ../../src/wizards/WizardCatalog.cpp:744
 msgid "m×n Matrix A:"
 msgstr "Матрица A m×n:"
 
 #: ../../src/MaximaCommandMenus.cpp:3233
-#: ../../src/wizards/WizardCatalog.cpp:929
-#: ../../src/wizards/WizardCatalog.cpp:934
+#: ../../src/wizards/WizardCatalog.cpp:920
+#: ../../src/wizards/WizardCatalog.cpp:925
 msgid "n:"
 msgstr "n:"
 
@@ -14978,7 +15043,7 @@ msgstr "n-й"
 msgid "nu"
 msgstr "ν"
 
-#: ../../src/wizards/WizardCatalog.cpp:754
+#: ../../src/wizards/WizardCatalog.cpp:745
 msgid "n×1 Matrix b:"
 msgstr ""
 
@@ -15025,11 +15090,11 @@ msgstr "π"
 msgid "plus or minus"
 msgstr "плюс-минус"
 
-#: ../../src/wizards/WizardCatalog.cpp:118
+#: ../../src/wizards/WizardCatalog.cpp:116
 msgid "point:"
 msgstr "точка:"
 
-#: ../../src/wizards/WizardCatalog.cpp:540
+#: ../../src/wizards/WizardCatalog.cpp:533
 msgid "precision:"
 msgstr "точность:"
 
@@ -15054,7 +15119,7 @@ msgstr "пропорционально"
 msgid "psi"
 msgstr "ψ"
 
-#: ../../src/wizards/WizardCatalog.cpp:394
+#: ../../src/wizards/WizardCatalog.cpp:387
 msgid ""
 "radcan() is a powerful tools for simplification trigonometric functions but "
 "needs to be taken with care: If a function has more than one branch radcan "
@@ -15067,7 +15132,7 @@ msgstr ""
 "radcan использует ту, которая выглядит наиболее подходящей, не обязательно "
 "ту, которая подходит к задаче, выраженной упрощаемым выражением."
 
-#: ../../src/wizards/WizardCatalog.cpp:436
+#: ../../src/wizards/WizardCatalog.cpp:429
 msgid "ratsubst works like subst, but it knows some basic maths, if needed."
 msgstr ""
 "ratsubst работает как subst, но при необходимости позволяет использовать "
@@ -15139,7 +15204,7 @@ msgstr ""
 "функцию для исключения переменных по одной и выбрать вручную из найденных "
 "solve() решений то, которое соответствует текущей задаче."
 
-#: ../../src/wizards/WizardCatalog.cpp:550
+#: ../../src/wizards/WizardCatalog.cpp:543
 msgid ""
 "solve() will solve a list of equations only if for n independent equations "
 "there are n variables to solve to.\n"
@@ -15153,7 +15218,7 @@ msgstr ""
 "переменные на выражения через нужную вам переменную, чтобы функция solve() "
 "смогла исключить из решения все лишние переменные."
 
-#: ../../src/wizards/WizardCatalog.cpp:575
+#: ../../src/wizards/WizardCatalog.cpp:568
 msgid ""
 "solves an equation of the form\n"
 "    'diff(y,t) = -y;"
@@ -15179,7 +15244,7 @@ msgstr "подмножество или равно"
 msgid "symmetric"
 msgstr "симметричная"
 
-#: ../../src/wizards/WizardCatalog.cpp:582
+#: ../../src/wizards/WizardCatalog.cpp:575
 msgid "t:"
 msgstr "t:"
 
@@ -15628,7 +15693,7 @@ msgstr "направление y [в единицах частоты делен�
 msgid "y range (automatic if incomplete)"
 msgstr "диапазон по y (автоматически, если неполный)"
 
-#: ../../src/wizards/WizardCatalog.cpp:581
+#: ../../src/wizards/WizardCatalog.cpp:574
 msgid "y:"
 msgstr "y:"
 
