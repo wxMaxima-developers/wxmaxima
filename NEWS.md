@@ -5,6 +5,15 @@
   (`info/<lang>/`, made by `ninja screenshots-<lang>`); images not
   translated yet stay English. A new "screenshots" GitHub workflow
   regenerates every set and opens a pull request with them.
+- Languages whose manual is less than 5% translated no longer install a
+  copy of the English manual under their own name; the help falls back to
+  the English one, as it did. This saves 2.5 MB of identical files.
+- Questions like "Is n equal to m?" ended in a Lisp error ("invalid number
+  of arguments: 3") with current Maxima from git (#2659).
+- Statistics sidebar: its standard wizards moved into the wizard table.
+  The bar, box and pie charts and the mean, median, variance and standard
+  deviation wizards now start with the selection instead of always with
+  "%", like the other statistics wizards.
 - List menu: its standard wizards moved into the wizard table. "Create
   list from comma-separated elements" now ends its command with a
   semicolon, and two wizards lost a "val1=1,val2=2" tooltip on a field

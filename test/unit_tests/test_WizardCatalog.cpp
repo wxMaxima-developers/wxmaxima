@@ -360,3 +360,37 @@ SCENARIO("The list wizards that need a dialog of their own keep their handler") 
           EventIDs::menu_list_sort, EventIDs::menu_list_actual_values_storage})
     CHECK(!wxm::FindWizard(id).has_value());
 }
+
+SCENARIO("The statistics wizards start with the selection") {
+  // Until they moved into the catalog, the plots and the descriptive
+  // statistics started with "%" even when something was selected.
+  for (const wxWindowID id :
+         {EventIDs::menu_stats_barsplot, EventIDs::menu_stats_boxplot,
+          EventIDs::menu_stats_piechart, EventIDs::menu_stats_mean,
+          EventIDs::menu_stats_median, EventIDs::menu_stats_var,
+          EventIDs::menu_stats_dev}) {
+    const auto spec = wxm::FindWizard(id);
+    REQUIRE(spec.has_value());
+    REQUIRE(spec->fields.size() == 1);
+    CHECK(spec->fields[0].takesSelection);
+  }
+  const auto dev = wxm::FindWizard(EventIDs::menu_stats_dev);
+  REQUIRE(dev.has_value());
+  CHECK(dev->rule == wxS("std(#1#);"));
+}
+
+SCENARIO("The two sample t-test offers the selection for both samples") {
+  const auto spec = wxm::FindWizard(EventIDs::menu_stats_tt2);
+  REQUIRE(spec.has_value());
+  CHECK(spec->rule == wxS("test_means_difference(#1#,#2#);"));
+  REQUIRE(spec->fields.size() == 2);
+  CHECK(spec->fields[0].takesSelection);
+  CHECK(spec->fields[1].takesSelection);
+}
+
+SCENARIO("The statistics wizards that need a dialog of their own keep their handler") {
+  for (const wxWindowID id :
+         {EventIDs::menu_stats_readm, EventIDs::menu_stats_subsample,
+          EventIDs::menu_stats_enterm})
+    CHECK(!wxm::FindWizard(id).has_value());
+}

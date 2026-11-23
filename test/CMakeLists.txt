@@ -237,6 +237,16 @@ wxm_add_wxmathml_test(check-wxMathML.lisp_1
     "1+1;"
     "<math><lbl altCopy=\"%o1\">\\(%o1\\) </lbl><mn>2</mn></math>")
 
+# GH #2659: Maxima's git master added an optional third argument to the
+# Lisp function retrieve (which asks the user "Is n equal to m?"), and
+# wxMathML.lisp's wrapper around it only took two, so every such question
+# ended in "invalid number of arguments: 3". With *wx-in-async-job* set the
+# wrapper refuses before reading anything, so this checks that it accepts
+# three arguments without needing an answer, on any Maxima version.
+wxm_add_wxmathml_test(check-wxMathML.lisp_retrieve_accepts_subject
+    ":lisp (format t \"retrieve-3-args:~a~%\" (handler-case (let ((*wx-in-async-job* t)) (retrieve \"q\" nil '$x)) (wx-async-input-error () \"refused\") (error (e) e)))"
+    "retrieve-3-args:refused")
+
 # GH #1948: box() draws its own border (the <hl> tag), so it must never be
 # wrapped in an extra, redundant pair of parentheses no matter what operator
 # surrounds it -- this pins that "a*box(b)*c" renders with no <p>/wxxml-paren
