@@ -394,3 +394,18 @@ SCENARIO("The statistics wizards that need a dialog of their own keep their hand
           EventIDs::menu_stats_enterm})
     CHECK(!wxm::FindWizard(id).has_value());
 }
+
+SCENARIO("The divide() wizard is not titled GCD") {
+  const auto divide = wxm::FindWizard(EventIDs::menu_divide);
+  const auto gcd = wxm::FindWizard(EventIDs::menu_gcd);
+  REQUIRE(divide.has_value());
+  REQUIRE(gcd.has_value());
+  CHECK(divide->title != gcd->title);
+}
+
+SCENARIO("The matrix exponent wizard asks for an exponent") {
+  const auto spec = wxm::FindWizard(EventIDs::menu_matrix_exponent);
+  REQUIRE(spec.has_value());
+  REQUIRE(spec->fields.size() == 2);
+  CHECK(spec->fields[1].label == _("Exponent:"));
+}
