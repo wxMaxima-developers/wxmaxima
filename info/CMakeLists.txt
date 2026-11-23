@@ -146,15 +146,17 @@ if(PANDOC)
 	file(GLOB IMAGEFILES ${CMAKE_CURRENT_SOURCE_DIR}/*.png)
 	file(COPY ${IMAGEFILES} DESTINATION .)
         configure_file(wxmaxima.md wxmaxima.md COPYONLY)
+	# po4a (run above, into this directory) only writes a translated
+	# ${BASENAME}.md once that language crosses its --keep threshold
+	# (po4a-build.cfg.in sets 5%). A language below it gets no manual of its
+	# own: wxMaxima's help falls back to the English wxmaxima.html anyway.
+	# This used to build such a language from a copy of the English text,
+	# which installed about 16 identical copies of the English manual
+	# (2.5 MB that rpmlint reports as files-duplicated-waste).
+	set(TRANSLATED_BASENAMES "")
 	foreach(BASENAME ${BASENAMES})
-		if(NOT EXISTS "${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}.md")
-			# po4a (run above, into this directory) only writes a
-			# translated ${BASENAME}.md once that language crosses its
-			# --keep threshold (po4a-build.cfg.in sets 5%); a just-seeded
-			# language with no translated manual strings yet has none.
-			# Fall back to the English original so configure doesn't
-			# hard-fail until someone crosses that threshold.
-			configure_file(wxmaxima.md ${BASENAME}.md COPYONLY)
+		if(EXISTS "${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}.md")
+			list(APPEND TRANSLATED_BASENAMES ${BASENAME})
 		endif()
 	endforeach()
 	generate_wxmaxima_documentation_html("wxmaxima")
@@ -164,7 +166,7 @@ if(PANDOC)
     endif()
 
 	if(PO4A)
-		foreach(BASENAME ${BASENAMES})
+		foreach(BASENAME ${TRANSLATED_BASENAMES})
 			string(REGEX REPLACE "wxmaxima.(.*)$" "\\1" LANG ${BASENAME})
 			string(REGEX REPLACE "wxmaxima$" "" LANG ${LANG})
 			generate_wxmaxima_documentation_html("${BASENAME}")
