@@ -723,6 +723,34 @@ a local TCP socket.
     (xfsettingsd does) asks for every format at copy time, which renders
     them all. Nothing wxMaxima can do about that, and its data survives
     the exit anyway. To check the handover live, run without one.
+- **PDF export (`src/graphical_io/PdfExport.{h,cpp}`, `cmake/WxmPdfDoc.cmake`)
+  draws the worksheet with the cells' own `Draw()` onto a `wxPdfDC` from
+  wxPdfDocument, which is a git submodule (`thirdparty/wxpdfdoc`, our fork
+  wxMaxima-developers/wxpdfdoc, compiled into a static library by our own
+  CMake).** Without the submodule the build works and the export is off
+  (the configure summary says why). Every CI checkout therefore passes
+  `submodules: true`, and the release job appends the submodule to its
+  `git archive` tarball -- GitHub's own tag tarballs lack it. Things worth
+  knowing before changing it:
+  - **The fork is where PDF features belong**: font fallback, embedding all
+    fonts and tagging live there, with tests (`make check`), so they can go
+    upstream to utelle/wxpdfdoc later. A fork fix is a PR there plus a
+    submodule bump here.
+  - **Text size**: `wxPdfDC` scaled fonts by the *screen's* PPI (72 on macOS),
+    so output differed between machines; `SetFontResolution(96)` pins it,
+    matching the 96-dpi layout the export does (zoom = 720/96 x print scale).
+  - **wxMaxima draws variables with `wxFONTSTYLE_SLANT`**, which
+    wxPdfDocument used to treat as upright; `test_PdfExport` checks an
+    italic font is embedded.
+  - **The structure tree**: the library itself opens `/Document`; each group
+    is a heading (H1-H6), P, Figure+Caption, or a Div of Lbl (prompt), Code
+    (input) and output chunks split as the HTML export splits them -- Lbl,
+    Figure (alt "Graphics created by: <input>"), P for prose, Formula with
+    `OutCommon::AccessibleText()` as alt text and MathML as an associated
+    file (none for ASCII-art output). Pages break between blocks, headings
+    stay with what follows. `test_PdfExport` decodes the PDF itself (no
+    external tools), so it runs everywhere; set `WXM_PDF_DUMP_DIR` to keep
+    the PDFs and their decoded text for a look with `pdffonts` or pikepdf.
 - **"Copy as HTML" (GH #2265/#2266/#2267) -- `WorksheetExport::
   SelectionToSelfContainedHTML()` / `Worksheet::CopyHTML()`:** a right-click
   context menu item placing a *self-contained* HTML document on the

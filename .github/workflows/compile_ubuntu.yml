@@ -35,6 +35,8 @@ jobs:
       - name: Checkout_git
         uses: actions/checkout@v7
         with:
+          # thirdparty/wxpdfdoc, for the PDF export
+          submodules: true
           fetch-depth: 1
       - name: check-translations-not-wiped
         run: |
@@ -59,6 +61,8 @@ jobs:
       - name: Checkout_git
         uses: actions/checkout@v7
         with:
+          # thirdparty/wxpdfdoc, for the PDF export
+          submodules: true
           # We must fetch at least the immediate parents so that if this is
           # a pull request then we can checkout the head.
           fetch-depth: 15
@@ -66,7 +70,7 @@ jobs:
         # Caches the downloaded .debs; see the action for why.
         uses: ./.github/actions/apt-install
         with:
-          packages: appstream appstream-util cmake desktop-file-utils doxygen gettext gnuplot gnuplot-x11 graphviz libwxgtk3.2-dev libwxgtk-webview3.2-dev libfribidi-dev maxima maxima-share maxima-doc netcat-openbsd ninja-build pandoc xvfb at-spi2-core dbus dpkg-dev po4a rpmlint lintian weston rpm tidy
+          packages: appstream appstream-util cmake desktop-file-utils doxygen gettext gnuplot gnuplot-x11 graphviz libwxgtk3.2-dev libfontconfig-dev libwxgtk-webview3.2-dev libfribidi-dev maxima maxima-share maxima-doc netcat-openbsd ninja-build pandoc xvfb at-spi2-core dbus dpkg-dev po4a rpmlint lintian weston rpm tidy
       - name: validate_appdata
         # Release-blocker gate, previously a manual checklist step: a malformed
         # appdata file breaks the flatpak/appImage/appstream builders. Catch it
@@ -164,6 +168,12 @@ jobs:
         run: |
              VERSION="${GITHUB_REF_NAME#Version-}"
              git archive --prefix="wxmaxima-${VERSION}/" -o "wxmaxima-${VERSION}.tar" HEAD
+             # git archive leaves submodules out: append thirdparty/wxpdfdoc,
+             # without which the PDF export isn't built. Its .gitattributes
+             # keeps its dot files out, like ours (source_tarball_has_no_dotfiles).
+             git -C thirdparty/wxpdfdoc archive --prefix="wxmaxima-${VERSION}/thirdparty/wxpdfdoc/" -o "$PWD/wxpdfdoc.tar" HEAD
+             tar --concatenate -f "wxmaxima-${VERSION}.tar" wxpdfdoc.tar
+             rm wxpdfdoc.tar
              xz -9 "wxmaxima-${VERSION}.tar"
              mv "wxmaxima-${VERSION}.tar.xz" build-release/
              # sha256sum records whatever path it's given; strip the
@@ -198,6 +208,8 @@ jobs:
       - name: Checkout_git
         uses: actions/checkout@v7
         with:
+          # thirdparty/wxpdfdoc, for the PDF export
+          submodules: true
           # We must fetch at least the immediate parents so that if this is
           # a pull request then we can checkout the head.
           fetch-depth: 15
@@ -205,7 +217,7 @@ jobs:
         # Caches the downloaded .debs; see the action for why.
         uses: ./.github/actions/apt-install
         with:
-          packages: appstream cmake desktop-file-utils gettext gnuplot gnuplot-x11 libwxgtk3.2-dev libwxgtk-webview3.2-dev libfribidi-dev maxima maxima-share maxima-doc netcat-openbsd ninja-build pandoc po4a xvfb at-spi2-core dbus tidy
+          packages: appstream cmake desktop-file-utils gettext gnuplot gnuplot-x11 libwxgtk3.2-dev libfontconfig-dev libwxgtk-webview3.2-dev libfribidi-dev maxima maxima-share maxima-doc netcat-openbsd ninja-build pandoc po4a xvfb at-spi2-core dbus tidy
       - name: configure
         run: |
              export LANG=en_US.UTF-8
@@ -255,11 +267,14 @@ jobs:
     steps:
       - name: Checkout_git
         uses: actions/checkout@v7
+        with:
+          # thirdparty/wxpdfdoc, for the PDF export
+          submodules: true
       - name: install_packages
         # Caches the downloaded .debs; see the action for why.
         uses: ./.github/actions/apt-install
         with:
-          packages: cmake clang libclang-rt-dev gettext gnuplot gnuplot-x11 libwxgtk3.2-dev libwxgtk-webview3.2-dev libfribidi-dev maxima maxima-share maxima-doc netcat-openbsd ninja-build xvfb at-spi2-core dbus
+          packages: cmake clang libclang-rt-dev gettext gnuplot gnuplot-x11 libwxgtk3.2-dev libfontconfig-dev libwxgtk-webview3.2-dev libfribidi-dev maxima maxima-share maxima-doc netcat-openbsd ninja-build xvfb at-spi2-core dbus
       - name: configure
         # clang, as the suppressions were worked out with clang's TSan.
         run: |
@@ -312,6 +327,8 @@ jobs:
       - name: Checkout_git
         uses: actions/checkout@v7
         with:
+          # thirdparty/wxpdfdoc, for the PDF export
+          submodules: true
           # We must fetch at least the immediate parents so that if this is
           # a pull request then we can checkout the head.
           fetch-depth: 15
@@ -319,7 +336,7 @@ jobs:
         # Caches the downloaded .debs; see the action for why.
         uses: ./.github/actions/apt-install
         with:
-          packages: appstream cmake desktop-file-utils doxygen gettext gnuplot gnuplot-x11 graphviz libwxgtk3.2-dev libfribidi-dev maxima maxima-share maxima-doc netcat-openbsd ninja-build pandoc at-spi2-core po4a
+          packages: appstream cmake desktop-file-utils doxygen gettext gnuplot gnuplot-x11 graphviz libwxgtk3.2-dev libfontconfig-dev libfribidi-dev maxima maxima-share maxima-doc netcat-openbsd ninja-build pandoc at-spi2-core po4a
       - name: configure
         # WXM_ENABLE_PRECOMPILED_HEADERS is NO here, and that is the point of
         # naming it at all: it defaults to YES, and a precompiled header hands
@@ -360,11 +377,14 @@ jobs:
     steps:
       - name: Checkout_git
         uses: actions/checkout@v7
+        with:
+          # thirdparty/wxpdfdoc, for the PDF export
+          submodules: true
       - name: install_packages
         # Caches the downloaded .debs; see the action for why.
         uses: ./.github/actions/apt-install
         with:
-          packages: cmake g++-12 gettext libwxgtk3.2-dev libwxgtk-webview3.2-dev libfribidi-dev ninja-build
+          packages: cmake g++-12 gettext libwxgtk3.2-dev libfontconfig-dev libwxgtk-webview3.2-dev libfribidi-dev ninja-build
       - name: configure
         run: |
              export CXXFLAGS="-Wall -Wextra"
@@ -388,6 +408,8 @@ jobs:
       - name: Checkout_git
         uses: actions/checkout@v7
         with:
+          # thirdparty/wxpdfdoc, for the PDF export
+          submodules: true
           # We must fetch at least the immediate parents so that if this is
           # a pull request then we can checkout the head.
           fetch-depth: 15
@@ -395,7 +417,7 @@ jobs:
         # Caches the downloaded .debs; see the action for why.
         uses: ./.github/actions/apt-install
         with:
-          packages: cmake dpkg-dev gettext libwxgtk3.2-dev libwxgtk-webview3.2-dev libfribidi-dev pandoc make po4a
+          packages: cmake dpkg-dev gettext libwxgtk3.2-dev libfontconfig-dev libwxgtk-webview3.2-dev libfribidi-dev pandoc make po4a
       - name: configure
         run: |
              export CXXFLAGS="-Wall -Wextra"

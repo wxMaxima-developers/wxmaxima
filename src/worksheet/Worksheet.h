@@ -32,6 +32,7 @@
 
 #include <functional>
 #include <optional>
+#include "graphical_io/PdfExport.h"
 #include "precomp.h"
 #include "MaximaManual.h"
 #include "EventIDs.h"
@@ -1690,6 +1691,15 @@ public:
 
   //! export to a LaTeX file
   bool ExportToTeX(const wxString &file);
+
+  /*! Export to a tagged PDF file, see PdfExport
+
+    An empty title in options is replaced by the worksheet's title.
+    Fails if wxMaxima was built without the PDF export
+    (PdfExport::Available()).
+  */
+  bool ExportToPDF(const wxString &file,
+                   PdfExport::Options options = PdfExport::Options());
 
   /*! Convert the current selection to a string
     \param lb

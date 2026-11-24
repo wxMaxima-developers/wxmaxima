@@ -41,11 +41,14 @@ jobs:
     steps:
       - name: Checkout_git
         uses: actions/checkout@v7
+        with:
+          # thirdparty/wxpdfdoc, for the PDF export
+          submodules: true
       - name: install_packages
         # Caches the downloaded .debs; see the action for why.
         uses: ./.github/actions/apt-install
         with:
-          packages: clang-18 libclang-rt-18-dev cmake gettext libwxgtk3.2-dev ninja-build
+          packages: clang-18 libclang-rt-18-dev cmake gettext libwxgtk3.2-dev libfontconfig-dev ninja-build
       - name: configure
         run: |
              cmake -S . -B build-fuzz -G Ninja \

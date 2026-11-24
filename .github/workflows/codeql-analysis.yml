@@ -48,6 +48,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v7
         with:
+          # No submodules: thirdparty/wxpdfdoc is third-party code whose
+          # findings aren't ours to fix, and CodeQL can't leave compiled paths out
+          # of its results. The build then has no PDF export (clang-tidy
+          # still analyses PdfExport.cpp).
           # We must fetch at least the immediate parents so that if this is
           # a pull request then we can checkout the head.
           fetch-depth: 15
@@ -55,7 +59,7 @@ jobs:
       - name: Dependencies
         run: |
           sudo apt update
-          sudo apt install libwxgtk3.2-dev libwxgtk-webview3.2-dev wx3.2-headers ninja-build gettext
+          sudo apt install libwxgtk3.2-dev libfontconfig-dev libwxgtk-webview3.2-dev wx3.2-headers ninja-build gettext
 
       # Initializes the CodeQL tools for scanning.
       - name: Initialize CodeQL

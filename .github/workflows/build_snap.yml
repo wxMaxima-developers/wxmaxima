@@ -61,6 +61,8 @@ jobs:
       - name: Checkout wxMaxima
         uses: actions/checkout@v7
         with:
+          # thirdparty/wxpdfdoc, for the PDF export
+          submodules: true
           fetch-depth: 15
 
       # snapcraft.yaml pulls wxMaxima from its git URL, which means the

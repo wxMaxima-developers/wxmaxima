@@ -1,5 +1,16 @@
 # Current development version
 
+- New: File > Export can write a PDF, and `wxworksheettopdf("file.pdf")`
+  does the same from a batch file or a Maxima program. Unlike printing to
+  PDF, the text stays text in the worksheet's own fonts, embedded in the
+  file; characters those fonts lack (Greek letters, maths symbols) are
+  taken from another installed font, as on screen; and the PDF is tagged
+  for screen readers: headings, paragraphs, code, figures and formulas,
+  each formula with its linear form as alternate text and its MathML
+  attached. Built with wxPdfDocument, now a git submodule in
+  `thirdparty/wxpdfdoc`: after updating a checkout, run
+  `git submodule update --init`. Without it the build still works, but
+  without the PDF export.
 - Thirteen texts could never be translated although they were marked for
   translation, among them the "Padé Approximation..." and web tutorial
   menu entries, the Greek sidebar's context menu, the "No offline manual

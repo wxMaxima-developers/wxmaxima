@@ -170,6 +170,17 @@ function(wxm_feature_summary)
     endif()
   endif()
 
+  # --- PDF export ------------------------------------------------------------
+  set(pdf_name "PDF export (tagged, accessible)")
+  if(WXM_USE_WXPDFDOC)
+    wxm_feature_line("${pdf_name}" "yes (wxPdfDocument, thirdparty/wxpdfdoc)")
+  elseif(WXM_WXPDFDOC_MISSING_REASON)
+    wxm_feature_line("${pdf_name}" "no" "${WXM_WXPDFDOC_MISSING_REASON}")
+  else()
+    wxm_feature_line("${pdf_name}" "no"
+      "Disabled with WXM_USE_WXPDFDOC=OFF. Set it to ON to enable it.")
+  endif()
+
   # --- Scalable (SVG) plots --------------------------------------------------
   # Plots are only made as SVG if the renderer draws text, see
   # SvgBitmap::RendersText(). wxBitmapBundle::FromSVG() uses NanoSVG, which

@@ -33,11 +33,13 @@ jobs:
       - name: Checkout_git
         uses: actions/checkout@v7
         with:
+          # thirdparty/wxpdfdoc, for the PDF export
+          submodules: true
           fetch-depth: 15
       - name: install_packages
         run: |
              sudo apt-get update
-             sudo apt-get install appstream clang cmake desktop-file-utils gettext gnuplot gnuplot-x11 libwxgtk3.2-dev libwxgtk-webview3.2-dev ninja-build pandoc po4a xvfb at-spi2-core
+             sudo apt-get install appstream clang cmake desktop-file-utils gettext gnuplot gnuplot-x11 libwxgtk3.2-dev libfontconfig-dev libwxgtk-webview3.2-dev ninja-build pandoc po4a xvfb at-spi2-core
       - name: configure
         run: |
              export LANG=en_US.UTF-8

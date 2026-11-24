@@ -50,6 +50,8 @@ jobs:
       - name: Checkout wxMaxima
         uses: actions/checkout@v7
         with:
+          # thirdparty/wxpdfdoc, for the PDF export
+          submodules: true
           # Full history so the release tags are available on scheduled runs.
           fetch-depth: 0
 

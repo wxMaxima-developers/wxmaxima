@@ -556,7 +556,23 @@ wxworksheettotex("report.tex", documentclass="report", documentclassoptions="12p
 | `documentclass`        | overrides the LaTeX `\documentclass` (e.g. `"article"`, `"report"`)  |
 | `documentclassoptions` | overrides its options (e.g. `"12pt,a4paper"`)                        |
 
-Support for `wxworksheettopdf()` is planned.
+<div id="wxworksheettopdf"></div>
+
+`wxworksheettopdf()` exports the worksheet to a PDF file, as **File → Export** does when a `.pdf` file is chosen:
+
+```maxima
+wxworksheettopdf("report.pdf")$
+wxworksheettopdf("report.pdf", language="de", paper="letter", landscape=true)$
+```
+
+| option      | meaning                                                                                  |
+| ----------- | ---------------------------------------------------------------------------------------- |
+| `title`     | the document title PDF viewers show (default: the worksheet's title cell, or the file name) |
+| `language`  | the document's language, e.g. `"en"` or `"de-AT"` (default: the language of _wxMaxima_'s menus) |
+| `paper`     | `a4` (default), `a3`, `a5`, `letter` or `legal`                                          |
+| `landscape` | `false` (default), `true`                                                                |
+
+The PDF looks like a printout, with the print scale and margins set in the configuration dialog (the margins are taken as millimetres). Unlike a printout to a PDF printer, it keeps the text as text, in the worksheet's fonts, all of which are embedded in the file; characters that the worksheet's fonts lack, Greek letters and mathematical symbols for example, are taken from another installed font that has them. The PDF is also *tagged*: screen readers and other assistive technology can tell headings, text, code and formulas apart and read them in the right order. Each formula carries _Maxima_'s linear notation of it as its spoken description and its MathML, which screen readers that understand MathML present as a formula, and each plot the command that created it. Screen readers need to know the document's language to pronounce it, which is what the `language` option is for.
 
 ## Plotting
 
