@@ -91,7 +91,7 @@ public:
                   styles) are taken from the user's configuration, as
                   printing does.
   */
-  PdfExport(GroupCell *tree, const Configuration *source, Options options);
+  PdfExport(GroupCell *tree, const Configuration *source, const Options &options);
   ~PdfExport();
 
   //! Writes the PDF. Returns false if the file could not be written.
