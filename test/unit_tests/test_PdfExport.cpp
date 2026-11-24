@@ -79,6 +79,9 @@ wxFrame *g_frame = nullptr;
 wxString g_outputDir;
 bool g_keepOutput = false;
 
+// The helpers below only serve the scenarios that need the PDF export; a
+// build without it would reject them as unused functions (-Werror).
+#ifdef WXM_USE_WXPDFDOC
 //! A PDF file with all its streams inflated
 struct DecodedPdf {
   //! The file with every compressed stream replaced by its content
@@ -259,7 +262,6 @@ wxString ExportPdf(const wxString &name, const wxString &xml,
 
 //! A character the worksheet's text font lacks, but some installed font has
 wxUint32 CharacterNeedingFallback() {
-#ifdef WXM_USE_WXPDFDOC
   const wxFont font = g_cfg->GetStyle(TS_TEXT)->GetFont();
   wxPdfFontManager *manager = wxPdfFontManager::GetFontManager();
   wxPdfFont pdfFont = manager->RegisterFont(font, font.GetFaceName());
@@ -271,7 +273,6 @@ wxUint32 CharacterNeedingFallback() {
     if (!pdfFont.CanShow(s) && manager->FindFallbackFont(c).IsValid())
       return c;
   }
-#endif
   return 0;
 }
 
@@ -281,6 +282,7 @@ std::string Utf8(wxUint32 c) {
   const wxScopedCharBuffer buf = str.utf8_str();
   return std::string(buf.data(), buf.length());
 }
+#endif // WXM_USE_WXPDFDOC
 } // namespace
 
 SCENARIO("PDF export is available in this build") {

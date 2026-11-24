@@ -39,6 +39,9 @@ jobs:
       - name: configure
         run: |
              export CXX="i686-linux-gnu-g++"
+             # pkg-config looks for the build machine's (amd64) .pc files by
+             # default; fontconfig (needed by the PDF export) is the i386 one.
+             export PKG_CONFIG_LIBDIR=/usr/lib/i386-linux-gnu/pkgconfig:/usr/share/pkgconfig
              export CXXFLAGS="-Wall -Wextra -ansi -Werror"
              export LANG=en_US.UTF-8
              mkdir build
