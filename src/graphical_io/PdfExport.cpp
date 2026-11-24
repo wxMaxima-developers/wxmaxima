@@ -516,7 +516,7 @@ bool PdfExport::Available() { return true; }
 
 class PdfExport::Impl {};
 
-PdfExport::PdfExport(GroupCell *, const Configuration *, Options)
+PdfExport::PdfExport(GroupCell *, const Configuration *, const Options &)
 {}
 PdfExport::~PdfExport() = default;
 bool PdfExport::Write(const wxString &) { return false; }

@@ -37,7 +37,7 @@ endif()
 if(WXM_USE_WXPDFDOC AND wxWidgets_DEFINITIONS MATCHES "__WXGTK__")
     find_package(PkgConfig QUIET)
     if(PKG_CONFIG_FOUND)
-        pkg_check_modules(WXM_FONTCONFIG IMPORTED_TARGET fontconfig)
+        pkg_check_modules(WXM_FONTCONFIG fontconfig)
     endif()
     if(NOT WXM_FONTCONFIG_FOUND)
         set(WXM_WXPDFDOC_MISSING_REASON "fontconfig was not found. Install libfontconfig-dev (or your distribution's equivalent).")
@@ -103,8 +103,17 @@ if(WXM_USE_WXPDFDOC)
         UNITY_BUILD OFF
         POSITION_INDEPENDENT_CODE ON)
     target_link_libraries(wxm_wxpdfdoc PUBLIC ${wxWidgets_LIBRARIES})
-    if(TARGET PkgConfig::WXM_FONTCONFIG)
-        target_link_libraries(wxm_wxpdfdoc PUBLIC PkgConfig::WXM_FONTCONFIG)
+    if(WXM_FONTCONFIG_FOUND)
+        # Not the imported PkgConfig:: target: where pkg-config reports
+        # /usr/include as fontconfig's include directory (Cygwin), the target
+        # passes it as -isystem, which breaks the C++ library's
+        # #include_next <stdlib.h>.
+        set(WXM_FONTCONFIG_INCLUDES ${WXM_FONTCONFIG_INCLUDE_DIRS})
+        list(REMOVE_ITEM WXM_FONTCONFIG_INCLUDES /usr/include /usr/local/include)
+        if(WXM_FONTCONFIG_INCLUDES)
+            target_include_directories(wxm_wxpdfdoc PRIVATE ${WXM_FONTCONFIG_INCLUDES})
+        endif()
+        target_link_libraries(wxm_wxpdfdoc PUBLIC ${WXM_FONTCONFIG_LINK_LIBRARIES})
     endif()
     if(APPLE)
         # Random numbers for the encryption code
