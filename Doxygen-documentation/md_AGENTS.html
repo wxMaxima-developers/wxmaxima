@@ -148,7 +148,7 @@ build"</b> (<code>cmake/WxmFeatureSummary.cmake</code>): help sidebar, AI sideba
 </ol>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md47"></a>
+<h1><a class="anchor" id="autotoc_md46"></a>
 Architecture &amp; GUI</h1>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> is a GUI front-end to the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> CAS; it talks to a <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> process over a local TCP socket.</p>
 <ul>
@@ -281,6 +281,34 @@ Architecture &amp; GUI</h1>
     (xfsettingsd does) asks for every format at copy time, which renders
     them all. Nothing wxMaxima can do about that, and its data survives
     the exit anyway. To check the handover live, run without one.
+- &lt;strong&gt;PDF export (&lt;tt&gt;src/graphical_io/PdfExport.{h,cpp}&lt;/tt&gt;, &lt;tt&gt;cmake/WxmPdfDoc.cmake&lt;/tt&gt;)
+  draws the worksheet with the cells' own &lt;tt&gt;Draw()&lt;/tt&gt; onto a &lt;tt&gt;wxPdfDC&lt;/tt&gt; from
+  wxPdfDocument, which is a git submodule (&lt;tt&gt;thirdparty/wxpdfdoc&lt;/tt&gt;, our fork
+  wxMaxima-developers/wxpdfdoc, compiled into a static library by our own
+  CMake).** Without the submodule the build works and the export is off
+  (the configure summary says why). Every CI checkout therefore passes
+  &lt;tt&gt;submodules: true&lt;/tt&gt;, and the release job appends the submodule to its
+  &lt;tt&gt;git archive&lt;/tt&gt; tarball &amp;ndash; GitHub's own tag tarballs lack it. Things worth
+  knowing before changing it:
+  - **The fork is where PDF features belong&lt;/strong&gt;: font fallback, embedding all
+    fonts and tagging live there, with tests (&lt;tt&gt;make check&lt;/tt&gt;), so they can go
+    upstream to utelle/wxpdfdoc later. A fork fix is a PR there plus a
+    submodule bump here.
+  - &lt;strong&gt;Text size&lt;/strong&gt;: &lt;tt&gt;wxPdfDC&lt;/tt&gt; scaled fonts by the &lt;em&gt;screen's&lt;/em&gt; PPI (72 on macOS),
+    so output differed between machines; &lt;tt&gt;SetFontResolution(96)&lt;/tt&gt; pins it,
+    matching the 96-dpi layout the export does (zoom = 720/96 x print scale).
+  - &lt;strong&gt;wxMaxima draws variables with &lt;tt&gt;wxFONTSTYLE_SLANT&lt;/tt&gt;&lt;/strong&gt;, which
+    wxPdfDocument used to treat as upright; &lt;tt&gt;test_PdfExport&lt;/tt&gt; checks an
+    italic font is embedded.
+  - &lt;strong&gt;The structure tree&lt;/strong&gt;: the library itself opens &lt;tt&gt;/Document&lt;/tt&gt;; each group
+    is a heading (H1-H6), P, Figure+Caption, or a Div of Lbl (prompt), Code
+    (input) and output chunks split as the HTML export splits them &amp;ndash; Lbl,
+    Figure (alt "Graphics created by: &lt;input&gt;"), P for prose, Formula with
+    &lt;tt&gt;OutCommon::AccessibleText()&lt;/tt&gt; as alt text and MathML as an associated
+    file (none for ASCII-art output). Pages break between blocks, headings
+    stay with what follows. &lt;tt&gt;test_PdfExport&lt;/tt&gt; decodes the PDF itself (no
+    external tools), so it runs everywhere; set &lt;tt&gt;WXM_PDF_DUMP_DIR&lt;/tt&gt; to keep
+    the PDFs and their decoded text for a look with &lt;tt&gt;pdffonts&lt;/tt&gt; or pikepdf.
 - **"Copy as HTML" (GH #2265/#2266/#2267) &amp;ndash; &lt;tt&gt;WorksheetExport::
   SelectionToSelfContainedHTML()&lt;/tt&gt; / &lt;tt&gt;Worksheet::CopyHTML()&lt;/tt&gt;:** a right-click
   context menu item placing a &lt;em&gt;self-contained&lt;/em&gt; HTML document on the
@@ -391,7 +419,7 @@ Architecture &amp; GUI</h1>
 </b></li>
 </ul>
 <p><b></b></p>
-<h2><a class="anchor" id="autotoc_md69"></a>
+<h2><a class="anchor" id="autotoc_md47"></a>
 Asynchronous ("background job") output from Maxima</h2>
 <p><b> <b>Implemented and verified, but dormant: nothing in today's single-threaded <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> sends it.</b> Full design, measurements and rationale live in <code>Doxygen/AsyncMaximaOutput.md</code> &ndash; read that before touching any of it. Only the traps worth knowing from elsewhere are repeated here.</b></p>
 <p><b></p><ul>
@@ -407,7 +435,7 @@ Asynchronous ("background job") output from Maxima</h2>
 </ul>
 <p></b></p>
 <p><b></b></p>
-<h2><a class="anchor" id="autotoc_md70"></a>
+<h2><a class="anchor" id="autotoc_md48"></a>
 Communication with Maxima</h2>
 <p><b> <a class="el" href="classwxMaxima.html">wxMaxima</a> sends Lisp and <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> commands over the socket; <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> answers with XML wrapped in known tags. <code><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></code> reads that data on a worker thread, splits it into items (<code><a class="el" href="MaximaItemQueue_8h.html#a987be755838a8e1d0eee072664beb362" title="Splits what Maxima sent into items.">SplitIntoItems()</a></code>) and queues them in a <code><a class="el" href="classMaximaItemQueue.html" title="Items Maxima sent, on their way from the socket thread to the GUI thread.">MaximaItemQueue</a></code>; the main thread takes them in <code>MaximaProcessManager::ProcessItems()</code> and hands each to <code>MaximaEvent()</code>.</b></p>
 <p><b></p><ul>
@@ -478,7 +506,7 @@ Communication with Maxima</h2>
 </ul>
 <p></b></p>
 <p><b></b></p>
-<h2><a class="anchor" id="autotoc_md71"></a>
+<h2><a class="anchor" id="autotoc_md49"></a>
 File Formats</h2>
 <p><b></p><ul>
 <li>**<code>.wxmx</code>** &ndash; a ZIP archive holding <code>content.xml</code> (the MathML-like XML) plus the embedded images. The format version lives in <code><a class="el" href="WXMXformat_8h_source.html">src/WXMXformat.h</a></code>.</li>
@@ -498,7 +526,7 @@ File Formats</h2>
 </ul>
 <p></b></p>
 <p><b></b></p>
-<h2><a class="anchor" id="autotoc_md83"></a>
+<h2><a class="anchor" id="autotoc_md50"></a>
 Translations (&lt;tt&gt;locales/&lt;/tt&gt;)</h2>
 <p><b></p><ul>
 <li><b>One combined <code>.po</code> per language, in <code>locales/wxMaxima/</code>, is the file a translator edits.</b> It covers both <a class="el" href="classwxMaxima.html">wxMaxima</a>'s own UI strings (<code>xgettext</code>-extracted from <code>src/**/*.cpp</code>/<code>*.h</code>) and the manual's prose (<code>po4a</code>-extracted from <code>info/wxmaxima.md</code>). <code>locales/wxMaxima/wxMaxima.pot</code>, the template <code>msgmerge</code> works against, is regenerated as the union of a fresh source scan and <code>locales/manual/wxmaxima.md.pot</code> (<code>msgcat --use-first</code>, preferring <code>wxMaxima.pot</code>'s own header) by the <code>update-locale</code> CMake target.</li>
@@ -525,7 +553,7 @@ Translations (&lt;tt&gt;locales/&lt;/tt&gt;)</h2>
 </ul>
 <p></b></p>
 <p><b></b></p>
-<h1><a class="anchor" id="autotoc_md84"></a>
+<h1><a class="anchor" id="autotoc_md51"></a>
 Conventions &amp; Standards</h1>
 <p><b></p><ul>
 <li><b>Branches and pull requests:</b> one branch per feature or bugfix, cut fresh from <code>main</code>, PR when it is finished &ndash; see "Branches and pull requests" at the top of this file for why reusing one long-lived branch has already caused trouble.</li>
@@ -707,7 +735,7 @@ Conventions &amp; Standards</h1>
     something a firewall/antivirus's network protection would touch, and
     some of it blocks loopback inter-process communication too.
 
-@section autotoc_md86 Layout &amp; Compatibility
+@section autotoc_md52 Layout &amp; Compatibility
 
 The rules below are the ones worth carrying around at all times. The reasoning
 behind them, the pipeline they belong to, and the recurring shapes layout bugs
@@ -787,7 +815,7 @@ which loads on demand &amp;ndash; keep the detail there rather than growing this
   compiles everywhere and does nothing. The same trap applies to any future
   &lt;tt&gt;wxSOMETHING&lt;/tt&gt; shim added there.
 
-@section autotoc_md87 Performance &amp; Documentation Mandates
+@section autotoc_md53 Performance &amp; Documentation Mandates
 
 - &lt;strong&gt;NEWS.md Updates:&lt;/strong&gt; Every non-trivial change MUST be documented in &lt;tt&gt;NEWS.md&lt;/tt&gt; under the "# Current development version" section.
   &lt;strong&gt;When merging &lt;tt&gt;main&lt;/tt&gt; into a branch conflicts in &lt;tt&gt;NEWS.md&lt;/tt&gt;, take &lt;tt&gt;main&lt;/tt&gt;'s side and re-add only your own new entry.&lt;/strong&gt; Keeping "both sides" brings back entries that release prep has since condensed into a version section: on 2026-09-30 three branches in a row put ~190 old lines back above &lt;tt&gt;\# 26.09.0&lt;/tt&gt;. The tag workflow publishes whatever sits under the top heading as the release notes, so that would have become the release body.
@@ -799,12 +827,12 @@ which loads on demand &amp;ndash; keep the detail there rather than growing this
   - Prefer &lt;tt&gt;(intern ...)&lt;/tt&gt; over &lt;tt&gt;read-from-string&lt;/tt&gt; for dynamic symbol generation.
 - &lt;strong&gt;Strict XML Mandate:&lt;/strong&gt; To avoid duplicate attributes, add any new manually-handled XML attribute (e.g., &lt;tt&gt;noneParens="true"&lt;/tt&gt;) to the filter list in &lt;tt&gt;MathParser.cpp&lt;/tt&gt;.
 
-@section autotoc_md88 Visual Documentation (&lt;tt&gt;art/Doxygen/&lt;/tt&gt;)
+@section autotoc_md54 Visual Documentation (&lt;tt&gt;art/Doxygen/&lt;/tt&gt;)
 
 - &lt;strong&gt;Geometry Awareness:&lt;/strong&gt; If modifying &lt;tt&gt;Recalculate()&lt;/tt&gt; or &lt;tt&gt;Draw()&lt;/tt&gt; geometry (padding, center alignment), you MUST update the corresponding SVG diagrams in &lt;tt&gt;art/Doxygen/&lt;/tt&gt;.
 - &lt;strong&gt;Consistency:&lt;/strong&gt; New cell types should have &lt;tt&gt;*Geometry.svg&lt;/tt&gt; and &lt;tt&gt;*LinearGeometry.svg&lt;/tt&gt; (if applicable) diagrams.
 
-@section autotoc_md89 Key Subsystems Map
+@section autotoc_md55 Key Subsystems Map
 
 Deeper, per-subsystem background lives in &lt;tt&gt;.claude/skills/&lt;/tt&gt;, which load only
 when they are relevant &amp;ndash; so that hard-won detail is available without every
@@ -852,13 +880,13 @@ has already been broken.
 </ul>
 <p></code></b></p>
 <p><b><code></code></b></p>
-<h1><a class="anchor" id="autotoc_md90"></a>
+<h1><a class="anchor" id="autotoc_md56"></a>
 Backlog / Future Work</h1>
 <p><b><code> Items the maintainer has flagged as worth doing but hasn't asked for yet &ndash; don't start on these without checking in first, but pick them up if asked for "what's
 next" style work.</code></b></p>
 <p><b><code>Nothing at the moment. Open work lives in GitHub issues rather than here; when an entry above says something is still open, it names the issue that tracks it. (GH #1335, contiguous cell storage, used to be listed here; it was closed as not planned.)</code></b></p>
 <p><b><code></code></b></p>
-<h1><a class="anchor" id="autotoc_md91"></a>
+<h1><a class="anchor" id="autotoc_md57"></a>
 Error resilience</h1>
 <p><b><code></p><ul>
 <li>To err is human =&gt; If your instructions don't seem to make sense feel free to ask. </li>

@@ -73,7 +73,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p>Most images in <code>info/*.png</code> are made by <a class="el" href="classwxMaxima.html">wxMaxima</a> itself, from the scenes in <code>scenes/</code>, so that they can be regenerated whenever the program's look changes instead of being redone by hand.</p>
-<h1><a class="anchor" id="autotoc_md79"></a>
+<h1><a class="anchor" id="autotoc_md87"></a>
 Regenerating them</h1>
 <div class="fragment"><div class="line">cmake -S . -B build -G Ninja</div>
 <div class="line">ninja -C build screenshots</div>
@@ -83,7 +83,7 @@ Regenerating them</h1>
 <div class="line">    sh info/screenshots/make-screenshots.sh build/src/wxmaxima /tmp/shots InputCell SidePanes</div>
 </div><!-- fragment --><p><code>--language=&lt;lang&gt;</code>, as the script's first argument, makes them in that language.</p>
 <p>The virtual screen has to be larger than the biggest scene's window: parts of a window outside the screen come out black.</p>
-<h1><a class="anchor" id="autotoc_md80"></a>
+<h1><a class="anchor" id="autotoc_md88"></a>
 Screenshots in other languages</h1>
 <p>The translated manuals of the languages in <code>WXM_SCREENSHOT_LANGUAGES</code> (<code>info/CMakeLists.txt</code>) show screenshots of a <a class="el" href="classwxMaxima.html">wxMaxima</a> in that language, kept in <code>info/&lt;lang&gt;/</code>. They are the same scenes, made with <a class="el" href="classwxMaxima.html">wxMaxima</a>'s <code>--language</code> option:</p>
 <div class="fragment"><div class="line">ninja -C build screenshots-de          # one language, into info/de/</div>
@@ -92,7 +92,7 @@ Screenshots in other languages</h1>
 <p>When the manual is built, a translated manual whose language has a set gets its image references rewritten to <code>&lt;lang&gt;/&lt;name&gt;.png</code> (<code>info/LocaliseManualImages.cmake</code>). An image the set lacks &ndash; one of those still made by hand, or a scene added later &ndash; stays the English one, so a set never has to be complete. <a class="el" href="classA.html">A</a> scene that shows no translated text (a table, a plot) comes out byte for byte like the English image; the <code>screenshots-&lt;lang&gt;</code> targets don't keep such a copy (<code>--english</code> of <code>make-screenshots.sh</code>), since the manual would show the same picture anyway and every package would carry it once per language (rpmlint fails the RPM on that, <code>files-duplicated-waste</code>). The translated text of the manual itself is untouched: <code>info/wxmaxima.&lt;lang&gt;.md</code> keeps pointing at <code>./&lt;name&gt;.png</code>.</p>
 <p><a class="el" href="classA.html">A</a> scene's worksheet is English unless there is a translated one in <code>scenes/&lt;lang&gt;/&lt;name&gt;.wxm</code> (or <code>.wxmx</code>), which <code>--language=&lt;lang&gt;</code> then uses instead. The settings (<code>&lt;name&gt;.ini</code>) are shared by all languages.</p>
 <p>To add a language: add it to <code>WXM_SCREENSHOT_LANGUAGES</code> and to the <code>generate_locales</code> step of <code>.github/workflows/screenshots.yml</code>, then make its set.</p>
-<h1><a class="anchor" id="autotoc_md81"></a>
+<h1><a class="anchor" id="autotoc_md89"></a>
 How a scene works</h1>
 <p><a class="el" href="classA.html">A</a> scene is <code>scenes/&lt;name&gt;.ini</code>, plus <code>scenes/&lt;name&gt;.wxm</code> or <code>.wxmx</code> if it shows a worksheet. The script runs </p><pre class="fragment">wxmaxima --ini=&lt;common.ini + name.ini&gt; --screenshot=&lt;name&gt;.png [&lt;name&gt;.wxm]
 </pre><p> with a fresh <code>HOME</code> and <code>MAXIMA_USERDIR</code>, so that nobody's own settings end up in the picture. <a class="el" href="classwxMaxima.html">wxMaxima</a> evaluates the worksheet, waits until <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> is idle, captures the image and exits without asking to save.</p>
@@ -107,7 +107,7 @@ How a scene works</h1>
 <li><code>wxmaxima-init.mac</code> is loaded before the scene starts, so that loading packages (and the compiler notes some Lisps print meanwhile) doesn't show.</li>
 <li>Files a scene loads (<code>Quadratic.mac</code>, <code>wxMaximaLogo.png</code>) are copied into the directory the scene runs in, which has a short name because a scene like <code>BatchImage</code> shows the path.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md82"></a>
+<h1><a class="anchor" id="autotoc_md90"></a>
 Still made by hand</h1>
 <p><code>horizontal-cursor-only.png</code>, <code>horizontal-cursor-between-cells.png</code>, <code>ezUnits.png</code> and <code>Sidepane-TOC-convert-headings.png</code> show the program in the middle of an interaction, which a scene can't express yet. The logo, <code>maxima_screenshot.png</code> (plain <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> in a terminal) and the locale warning aren't <a class="el" href="classwxMaxima.html">wxMaxima</a> windows at all. </p>
 </div></div><!-- contents -->

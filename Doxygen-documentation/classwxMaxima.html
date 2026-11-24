@@ -468,6 +468,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>OnKeyDown</b> (wxKeyE
 <tr class="memitem:afe8cf026a2984af46883b9c8f82a5dbc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#afe8cf026a2984af46883b9c8f82a5dbc">ExportWorksheetToTex</a> (const wxString &amp;filename, const wxString &amp;documentclass, const wxString &amp;documentclassOptions, bool embedWorksheet)</td></tr>
 <tr class="memdesc:afe8cf026a2984af46883b9c8f82a5dbc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Export the current worksheet to a LaTeX file (driven by wxworksheettotex).  <br /></td></tr>
 <tr class="separator:afe8cf026a2984af46883b9c8f82a5dbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af91b228d8ad11731df8c90416ab0ae61"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#af91b228d8ad11731df8c90416ab0ae61">ExportWorksheetToPdf</a> (const wxString &amp;filename, const <a class="el" href="structPdfExport_1_1Options.html">PdfExport::Options</a> &amp;options)</td></tr>
+<tr class="memdesc:af91b228d8ad11731df8c90416ab0ae61"><td class="mdescLeft">&#160;</td><td class="mdescRight">Export the worksheet to a tagged PDF file, for wxworksheettopdf()  <br /></td></tr>
+<tr class="separator:af91b228d8ad11731df8c90416ab0ae61"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a631676fba885bf2e4ca0e85406532133"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a631676fba885bf2e4ca0e85406532133">ReplaceSuggestion</a> (wxCommandEvent &amp;event)</td></tr>
 <tr class="memdesc:a631676fba885bf2e4ca0e85406532133"><td class="mdescLeft">&#160;</td><td class="mdescRight">Processes clicks on suggestions Make the menu item, toolbars and panes visible that should be visible right now.  <br /></td></tr>
 <tr class="separator:a631676fba885bf2e4ca0e85406532133"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1375,6 +1378,51 @@ class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
     <tr><td class="paramname">filename</td><td>The (absolute) target file. </td></tr>
     <tr><td class="paramname">flavor</td><td>The equation flavor: "mathml", "mathjax", "svg" or "bitmap". </td></tr>
     <tr><td class="paramname">embedWxmx</td><td>Whether to embed a downloadable .wxmx copy of the session. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="af91b228d8ad11731df8c90416ab0ae61" name="af91b228d8ad11731df8c90416ab0ae61"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af91b228d8ad11731df8c90416ab0ae61">&#9670;&#160;</a></span>ExportWorksheetToPdf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void wxMaxima::ExportWorksheetToPdf </td>
+          <td>(</td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
+          <td class="paramname"><em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structPdfExport_1_1Options.html">PdfExport::Options</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Export the worksheet to a tagged PDF file, for wxworksheettopdf() </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">filename</td><td>The (absolute) target file. </td></tr>
+    <tr><td class="paramname">options</td><td>Title, language and paper, see <a class="el" href="structPdfExport_1_1Options.html" title="What goes into the PDF besides the worksheet.">PdfExport::Options</a> </td></tr>
   </table>
   </dd>
 </dl>

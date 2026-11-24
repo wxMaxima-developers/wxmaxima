@@ -1,5 +1,8 @@
 var searchData=
 [
-  ['drainresult_0',['DrainResult',['../MaximaItemQueue_8h.html#a78942299695da94cc26b35c76f3c1387',1,'MaximaItemQueue.h']]],
-  ['drawmode_1',['drawMode',['../classConfiguration.html#acc2f54f4547aea31768bc9db04a9f24b',1,'Configuration']]]
+  ['cbor_5ftag_5fhandler_5ft_0',['cbor_tag_handler_t',['../namespacedetail.html#a7c070b2bf3d61e3d8b8013f6fb18d592',1,'detail']]],
+  ['celltype_1',['CellType',['../Cell_8h.html#accb32ccb3ff8f2c6736a6ebe544894fd',1,'Cell.h']]],
+  ['clicktype_2',['ClickType',['../classWorksheet.html#a79d7b31dbd32dd7e8fc4395fe7810fd5',1,'Worksheet']]],
+  ['complete_3',['Complete',['../CommandLineOptions_8h.html#ab854c7c4b15cac1ceb98138063e3aedb',1,'wxm::cmdline']]],
+  ['condition_4',['Condition',['../classGreekSidebar.html#a49d2a432a577edf6773ba4b16cf553c9',1,'GreekSidebar']]]
 ];

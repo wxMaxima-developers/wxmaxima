@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['section_0',['Section',['../ToolBarSections_8h.html#a00b3e7a9e497829a0e732600a8e8b7aa',1,'ToolBarSections']]]
+  ['parse_5fevent_5ft_0',['parse_event_t',['../namespacedetail.html#a47b1bb0bbd3596589ed9187059c312ef',1,'detail']]],
+  ['priority_1',['Priority',['../classBackgroundTask.html#a217da7631d4231f559cbad8f0e7e1566',1,'BackgroundTask']]]
 ];

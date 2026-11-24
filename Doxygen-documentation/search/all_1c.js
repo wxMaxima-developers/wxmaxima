@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['руководство_20пользователя_20wxmaxima_0',['Руководство пользователя wxMaxima',['../md_info_wxmaxima_ru.html',1,'']]]
+  ['посібник_20користувача_20wxmaxima_0',['Посібник користувача wxMaxima',['../md_info_wxmaxima_uk.html',1,'']]]
 ];

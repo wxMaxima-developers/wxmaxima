@@ -1,8 +1,9 @@
 var searchData=
 [
-  ['cbor_5ftag_5fhandler_5ft_0',['cbor_tag_handler_t',['../namespacedetail.html#a7c070b2bf3d61e3d8b8013f6fb18d592',1,'detail']]],
-  ['celltype_1',['CellType',['../Cell_8h.html#accb32ccb3ff8f2c6736a6ebe544894fd',1,'Cell.h']]],
-  ['clicktype_2',['ClickType',['../classWorksheet.html#a79d7b31dbd32dd7e8fc4395fe7810fd5',1,'Worksheet']]],
-  ['complete_3',['Complete',['../CommandLineOptions_8h.html#ab854c7c4b15cac1ceb98138063e3aedb',1,'wxm::cmdline']]],
-  ['condition_4',['Condition',['../classGreekSidebar.html#a49d2a432a577edf6773ba4b16cf553c9',1,'GreekSidebar']]]
+  ['brotlidecodererrorcode_0',['BrotliDecoderErrorCode',['../brotli_2include_2brotli_2decode_8h.html#af0c845bca11751bdaaa05f1a6f8bd013',1,'decode.h']]],
+  ['brotlidecoderparameter_1',['BrotliDecoderParameter',['../brotli_2include_2brotli_2decode_8h.html#a85a48e5725264efb4e36a3fb9e34c070',1,'decode.h']]],
+  ['brotlidecoderresult_2',['BrotliDecoderResult',['../brotli_2include_2brotli_2decode_8h.html#a87fd23715d225d1518eb7cd2a5cb374e',1,'decode.h']]],
+  ['brotliencodermode_3',['BrotliEncoderMode',['../brotli_2include_2brotli_2encode_8h.html#aa6fdd56b234eddc40cd8b79a0ecc70a7',1,'encode.h']]],
+  ['brotliencoderoperation_4',['BrotliEncoderOperation',['../brotli_2include_2brotli_2encode_8h.html#aed29c96cccbe4dc2aed53a2f1e2d04cb',1,'encode.h']]],
+  ['brotliencoderparameter_5',['BrotliEncoderParameter',['../brotli_2include_2brotli_2encode_8h.html#a9a8f89a2fd7678ae0cfca1dee4b12fab',1,'encode.h']]]
 ];

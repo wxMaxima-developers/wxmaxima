@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['htmlexportformat_0',['htmlExportFormat',['../classConfiguration.html#ae285be0c26dbdd7a86eac37c9cebdd7d',1,'Configuration']]],
-  ['htmlexportformats_1',['htmlExportFormats',['../classConfigDialogue.html#ad25b60509b8711db5f1fb118b88b2d95',1,'ConfigDialogue']]]
+  ['globenum_0',['GlobEnum',['../autolink_8cpp.html#a656d63cf384d2a6f23c2c18523a7bc5e',1,'autolink.cpp']]],
+  ['grouptype_1',['GroupType',['../GroupCell_8h.html#ac96e474603b83b95ba1717acefc3e831',1,'GroupCell.h']]]
 ];

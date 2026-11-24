@@ -18250,9 +18250,9 @@ $(function() {
 <div class="line"><a id="l19828" name="l19828"></a><span class="lineno">19828</span> </div>
 <div class="line"><a id="l19830" name="l19830"></a><span class="lineno">19830</span>        json_value(string_t&amp;&amp; value) : <a class="code hl_enumvalue" href="namespacedetail.html#a917c3efabea8a20dc72d9ae2c673d632ab45cffe084dd3d20d928bee85e7b0f21">string</a>(create&lt;string_t&gt;(std::move(value))) {}</div>
 <div class="line"><a id="l19831" name="l19831"></a><span class="lineno">19831</span> </div>
-<div class="line"><a id="l19833" name="l19833"></a><span class="lineno">19833</span>        json_value(<span class="keyword">const</span> object_t&amp; value) : <a class="code hl_enumvalue" href="namespacedetail.html#a917c3efabea8a20dc72d9ae2c673d632aa8cfde6331bd59eb2ac96f8911c4b666">object</a>(create&lt;object_t&gt;(value)) {}</div>
+<div class="line"><a id="l19833" name="l19833"></a><span class="lineno">19833</span>        json_value(<span class="keyword">const</span> object_t&amp; value) : object(create&lt;object_t&gt;(value)) {}</div>
 <div class="line"><a id="l19834" name="l19834"></a><span class="lineno">19834</span> </div>
-<div class="line"><a id="l19836" name="l19836"></a><span class="lineno">19836</span>        json_value(object_t&amp;&amp; value) : <a class="code hl_enumvalue" href="namespacedetail.html#a917c3efabea8a20dc72d9ae2c673d632aa8cfde6331bd59eb2ac96f8911c4b666">object</a>(create&lt;object_t&gt;(std::move(value))) {}</div>
+<div class="line"><a id="l19836" name="l19836"></a><span class="lineno">19836</span>        json_value(object_t&amp;&amp; value) : object(create&lt;object_t&gt;(std::move(value))) {}</div>
 <div class="line"><a id="l19837" name="l19837"></a><span class="lineno">19837</span> </div>
 <div class="line"><a id="l19839" name="l19839"></a><span class="lineno">19839</span>        json_value(<span class="keyword">const</span> array_t&amp; value) : array(create&lt;array_t&gt;(value)) {}</div>
 <div class="line"><a id="l19840" name="l19840"></a><span class="lineno">19840</span> </div>
@@ -18291,7 +18291,7 @@ $(function() {
 <div class="line"><a id="l19878" name="l19878"></a><span class="lineno">19878</span>                }</div>
 <div class="line"><a id="l19879" name="l19879"></a><span class="lineno">19879</span>                <span class="keywordflow">else</span></div>
 <div class="line"><a id="l19880" name="l19880"></a><span class="lineno">19880</span>                {</div>
-<div class="line"><a id="l19881" name="l19881"></a><span class="lineno">19881</span>                    stack.reserve(<a class="code hl_enumvalue" href="namespacedetail.html#a917c3efabea8a20dc72d9ae2c673d632aa8cfde6331bd59eb2ac96f8911c4b666">object</a>-&gt;size());</div>
+<div class="line"><a id="l19881" name="l19881"></a><span class="lineno">19881</span>                    stack.reserve(object-&gt;size());</div>
 <div class="line"><a id="l19882" name="l19882"></a><span class="lineno">19882</span>                    <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp;&amp; it : *<span class="keywordtype">object</span>)</div>
 <div class="line"><a id="l19883" name="l19883"></a><span class="lineno">19883</span>                    {</div>
 <div class="line"><a id="l19884" name="l19884"></a><span class="lineno">19884</span>                        stack.push_back(std::move(it.second));</div>
@@ -19500,7 +19500,7 @@ $(function() {
 <div class="line"><a id="l21445" name="l21445"></a><span class="lineno">21445</span>        <span class="comment">// const operator[] only works for objects</span></div>
 <div class="line"><a id="l21446" name="l21446"></a><span class="lineno">21446</span>        <span class="keywordflow">if</span> (JSON_HEDLEY_LIKELY(is_object()))</div>
 <div class="line"><a id="l21447" name="l21447"></a><span class="lineno">21447</span>        {</div>
-<div class="line"><a id="l21448" name="l21448"></a><span class="lineno">21448</span>            <span class="keyword">auto</span> it = m_data.<a class="code hl_variable" href="classbasic__json.html#acd0f167153f047a246b51858d7c921b8">m_value</a>.object-&gt;find(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>);</div>
+<div class="line"><a id="l21448" name="l21448"></a><span class="lineno">21448</span>            <span class="keyword">auto</span> it = m_data.m_value.object-&gt;find(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>);</div>
 <div class="line"><a id="l21449" name="l21449"></a><span class="lineno">21449</span>            JSON_ASSERT(it != m_data.m_value.object-&gt;end());</div>
 <div class="line"><a id="l21450" name="l21450"></a><span class="lineno">21450</span>            <span class="keywordflow">return</span> it-&gt;second;</div>
 <div class="line"><a id="l21451" name="l21451"></a><span class="lineno">21451</span>        }</div>
@@ -19551,7 +19551,7 @@ $(function() {
 <div class="line"><a id="l21500" name="l21500"></a><span class="lineno">21500</span>        <span class="comment">// const operator[] only works for objects</span></div>
 <div class="line"><a id="l21501" name="l21501"></a><span class="lineno">21501</span>        <span class="keywordflow">if</span> (JSON_HEDLEY_LIKELY(is_object()))</div>
 <div class="line"><a id="l21502" name="l21502"></a><span class="lineno">21502</span>        {</div>
-<div class="line"><a id="l21503" name="l21503"></a><span class="lineno">21503</span>            <span class="keyword">auto</span> it = m_data.<a class="code hl_variable" href="classbasic__json.html#acd0f167153f047a246b51858d7c921b8">m_value</a>.object-&gt;find(std::forward&lt;KeyType&gt;(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>));</div>
+<div class="line"><a id="l21503" name="l21503"></a><span class="lineno">21503</span>            <span class="keyword">auto</span> it = m_data.m_value.object-&gt;find(std::forward&lt;KeyType&gt;(<a class="code hl_variable" href="ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389">key</a>));</div>
 <div class="line"><a id="l21504" name="l21504"></a><span class="lineno">21504</span>            JSON_ASSERT(it != m_data.m_value.object-&gt;end());</div>
 <div class="line"><a id="l21505" name="l21505"></a><span class="lineno">21505</span>            <span class="keywordflow">return</span> it-&gt;second;</div>
 <div class="line"><a id="l21506" name="l21506"></a><span class="lineno">21506</span>        }</div>

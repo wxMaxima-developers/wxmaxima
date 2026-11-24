@@ -131,7 +131,7 @@ dependency: libfribidi" under "Additional information for packagers" below.</p>
 <h1><a class="anchor" id="autotoc_md29"></a>
 Compiling on Windows</h1>
 <p>You can use the MinGW-w64 (<a href="https://www.mingw-w64.org/">https://www.mingw-w64.org/</a>) compilers.</p>
-<p>You can also build using MS Visual Studio 2019 or newer. Since MSVS provides adequate versions of both cmake and ninja, there's no need to install those. The build has to start from within the <em>x64 Native Tools Command Prompt</em>, and you have to first build wxWidgets before you build wxmaxima. You can get some inspiration about how to do both of these steps by examining the MSVC build steps in <code>.github/workflows/compile_windows.yml</code>.</p>
+<p>You can also build using MS Visual Studio 2019 or newer. Since MSVS provides adequate versions of both cmake and ninja, there's no need to install those. The build has to start from within the <em>x64 Native Tools <a class="el" href="structCommand.html">Command</a> Prompt</em>, and you have to first build wxWidgets before you build wxmaxima. You can get some inspiration about how to do both of these steps by examining the MSVC build steps in <code>.github/workflows/compile_windows.yml</code>.</p>
 <h2><a class="anchor" id="autotoc_md30"></a>
 Note for the Mingw-w64 compiler and crosscompiler</h2>
 <p>These compilers come with two forms of thread support - win32 and posix. The win32 thread version does not support std::thread, which <a class="el" href="classwxMaxima.html">wxMaxima</a> uses for multithreading, so be sure to install or reconfigure the posix version.</p>

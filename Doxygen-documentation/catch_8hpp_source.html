@@ -2072,7 +2072,7 @@ $(function() {
 <div class="line"><a id="l02016" name="l02016"></a><span class="lineno"> 2016</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l02017" name="l02017"></a><span class="lineno"> 2017</span> </div>
 <div class="line"><a id="l02018" name="l02018"></a><span class="lineno"> 2018</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Range&gt;</div>
-<div class="line"><a id="l02019" name="l02019"></a><span class="lineno"> 2019</span>    std::string rangeToString( Range <span class="keyword">const</span>&amp; range ) {</div>
+<div class="line"><a id="l02019" name="l02019"></a><span class="lineno"> 2019</span>    std::string rangeToString( <a class="code hl_class" href="classRange.html">Range</a> <span class="keyword">const</span>&amp; range ) {</div>
 <div class="line"><a id="l02020" name="l02020"></a><span class="lineno"> 2020</span>        return ::Catch::Detail::rangeToString( begin( range ), end( range ) );</div>
 <div class="line"><a id="l02021" name="l02021"></a><span class="lineno"> 2021</span>    }</div>
 <div class="line"><a id="l02022" name="l02022"></a><span class="lineno"> 2022</span> </div>
@@ -2992,7 +2992,7 @@ $(function() {
 <div class="line"><a id="l02950" name="l02950"></a><span class="lineno"> 2950</span> </div>
 <div class="line"><a id="l02951" name="l02951"></a><span class="lineno"> 2951</span><span class="keyword">namespace </span>Catch {</div>
 <div class="line"><a id="l02952" name="l02952"></a><span class="lineno"> 2952</span> </div>
-<div class="line"><a id="l02953" name="l02953"></a><span class="lineno"> 2953</span>    <span class="keyword">class </span>TestCase;</div>
+<div class="line"><a id="l02953" name="l02953"></a><span class="lineno"> 2953</span>    <span class="keyword">class </span><a class="code hl_struct" href="structTestCase.html">TestCase</a>;</div>
 <div class="line"><a id="l02954" name="l02954"></a><span class="lineno"> 2954</span>    <span class="keyword">struct </span>ITestCaseRegistry;</div>
 <div class="line"><a id="l02955" name="l02955"></a><span class="lineno"> 2955</span>    <span class="keyword">struct </span>IExceptionTranslatorRegistry;</div>
 <div class="line"><a id="l02956" name="l02956"></a><span class="lineno"> 2956</span>    <span class="keyword">struct </span>IExceptionTranslator;</div>
@@ -3542,8 +3542,8 @@ $(function() {
 <div class="line"><a id="l03503" name="l03503"></a><span class="lineno"> 3503</span>        m_description(Detail::finalizeDescription(descr))</div>
 <div class="line"><a id="l03504" name="l03504"></a><span class="lineno"> 3504</span>    {}</div>
 <div class="line"><a id="l03505" name="l03505"></a><span class="lineno"> 3505</span> </div>
-<div class="line"><a id="l03506" name="l03506"></a><span class="lineno"> 3506</span>    <span class="keywordtype">bool</span> match( T <span class="keyword">const</span>&amp; item )<span class="keyword"> const override </span>{</div>
-<div class="line"><a id="l03507" name="l03507"></a><span class="lineno"> 3507</span>        <span class="keywordflow">return</span> m_predicate(item);</div>
+<div class="line"><a id="l03506" name="l03506"></a><span class="lineno"> 3506</span>    <span class="keywordtype">bool</span> match( T <span class="keyword">const</span>&amp; <a class="code hl_struct" href="structitem.html">item</a> )<span class="keyword"> const override </span>{</div>
+<div class="line"><a id="l03507" name="l03507"></a><span class="lineno"> 3507</span>        <span class="keywordflow">return</span> m_predicate(<a class="code hl_struct" href="structitem.html">item</a>);</div>
 <div class="line"><a id="l03508" name="l03508"></a><span class="lineno"> 3508</span>    }</div>
 <div class="line"><a id="l03509" name="l03509"></a><span class="lineno"> 3509</span> </div>
 <div class="line"><a id="l03510" name="l03510"></a><span class="lineno"> 3510</span>    std::string describe()<span class="keyword"> const override </span>{</div>
@@ -8093,7 +8093,7 @@ $(function() {
 <div class="line"><a id="l08070" name="l08070"></a><span class="lineno"> 8070</span>        <span class="keywordtype">void</span> testGroupStarting( std::string <span class="keyword">const</span>&amp; testSpec, std::size_t groupIndex, std::size_t groupsCount );</div>
 <div class="line"><a id="l08071" name="l08071"></a><span class="lineno"> 8071</span>        <span class="keywordtype">void</span> testGroupEnded( std::string <span class="keyword">const</span>&amp; testSpec, Totals <span class="keyword">const</span>&amp; totals, std::size_t groupIndex, std::size_t groupsCount );</div>
 <div class="line"><a id="l08072" name="l08072"></a><span class="lineno"> 8072</span> </div>
-<div class="line"><a id="l08073" name="l08073"></a><span class="lineno"> 8073</span>        Totals runTest(TestCase <span class="keyword">const</span>&amp; testCase);</div>
+<div class="line"><a id="l08073" name="l08073"></a><span class="lineno"> 8073</span>        Totals runTest(<a class="code hl_struct" href="structTestCase.html">TestCase</a> <span class="keyword">const</span>&amp; testCase);</div>
 <div class="line"><a id="l08074" name="l08074"></a><span class="lineno"> 8074</span> </div>
 <div class="line"><a id="l08075" name="l08075"></a><span class="lineno"> 8075</span>        IConfigPtr config() <span class="keyword">const</span>;</div>
 <div class="line"><a id="l08076" name="l08076"></a><span class="lineno"> 8076</span>        IStreamingReporter&amp; reporter() <span class="keyword">const</span>;</div>
@@ -8182,7 +8182,7 @@ $(function() {
 <div class="line"><a id="l08159" name="l08159"></a><span class="lineno"> 8159</span> </div>
 <div class="line"><a id="l08160" name="l08160"></a><span class="lineno"> 8160</span>        TestRunInfo m_runInfo;</div>
 <div class="line"><a id="l08161" name="l08161"></a><span class="lineno"> 8161</span>        IMutableContext&amp; m_context;</div>
-<div class="line"><a id="l08162" name="l08162"></a><span class="lineno"> 8162</span>        TestCase const* m_activeTestCase = <span class="keywordtype">nullptr</span>;</div>
+<div class="line"><a id="l08162" name="l08162"></a><span class="lineno"> 8162</span>        <a class="code hl_struct" href="structTestCase.html">TestCase</a> const* m_activeTestCase = <span class="keywordtype">nullptr</span>;</div>
 <div class="line"><a id="l08163" name="l08163"></a><span class="lineno"> 8163</span>        ITracker* m_testCaseTracker = <span class="keywordtype">nullptr</span>;</div>
 <div class="line"><a id="l08164" name="l08164"></a><span class="lineno"> 8164</span>        Option&lt;AssertionResult&gt; m_lastResult;</div>
 <div class="line"><a id="l08165" name="l08165"></a><span class="lineno"> 8165</span> </div>
@@ -12298,13 +12298,13 @@ $(function() {
 <div class="line"><a id="l12281" name="l12281"></a><span class="lineno">12281</span> </div>
 <div class="line"><a id="l12282" name="l12282"></a><span class="lineno">12282</span><span class="keyword">namespace </span>Catch {</div>
 <div class="line"><a id="l12283" name="l12283"></a><span class="lineno">12283</span> </div>
-<div class="line"><a id="l12284" name="l12284"></a><span class="lineno">12284</span>    <span class="keyword">class </span>TestCase;</div>
+<div class="line"><a id="l12284" name="l12284"></a><span class="lineno">12284</span>    <span class="keyword">class </span><a class="code hl_struct" href="structTestCase.html">TestCase</a>;</div>
 <div class="line"><a id="l12285" name="l12285"></a><span class="lineno">12285</span>    <span class="keyword">struct </span>IConfig;</div>
 <div class="line"><a id="l12286" name="l12286"></a><span class="lineno">12286</span> </div>
 <div class="line"><a id="l12287" name="l12287"></a><span class="lineno">12287</span>    std::vector&lt;TestCase&gt; sortTests( IConfig <span class="keyword">const</span>&amp; config, std::vector&lt;TestCase&gt; <span class="keyword">const</span>&amp; unsortedTestCases );</div>
 <div class="line"><a id="l12288" name="l12288"></a><span class="lineno">12288</span> </div>
-<div class="line"><a id="l12289" name="l12289"></a><span class="lineno">12289</span>    <span class="keywordtype">bool</span> isThrowSafe( TestCase <span class="keyword">const</span>&amp; testCase, IConfig <span class="keyword">const</span>&amp; config );</div>
-<div class="line"><a id="l12290" name="l12290"></a><span class="lineno">12290</span>    <span class="keywordtype">bool</span> matchTest( TestCase <span class="keyword">const</span>&amp; testCase, TestSpec <span class="keyword">const</span>&amp; testSpec, IConfig <span class="keyword">const</span>&amp; config );</div>
+<div class="line"><a id="l12289" name="l12289"></a><span class="lineno">12289</span>    <span class="keywordtype">bool</span> isThrowSafe( <a class="code hl_struct" href="structTestCase.html">TestCase</a> <span class="keyword">const</span>&amp; testCase, IConfig <span class="keyword">const</span>&amp; config );</div>
+<div class="line"><a id="l12290" name="l12290"></a><span class="lineno">12290</span>    <span class="keywordtype">bool</span> matchTest( <a class="code hl_struct" href="structTestCase.html">TestCase</a> <span class="keyword">const</span>&amp; testCase, TestSpec <span class="keyword">const</span>&amp; testSpec, IConfig <span class="keyword">const</span>&amp; config );</div>
 <div class="line"><a id="l12291" name="l12291"></a><span class="lineno">12291</span> </div>
 <div class="line"><a id="l12292" name="l12292"></a><span class="lineno">12292</span>    <span class="keywordtype">void</span> enforceNoDuplicateTestCases( std::vector&lt;TestCase&gt; <span class="keyword">const</span>&amp; functions );</div>
 <div class="line"><a id="l12293" name="l12293"></a><span class="lineno">12293</span> </div>
@@ -12315,7 +12315,7 @@ $(function() {
 <div class="line"><a id="l12298" name="l12298"></a><span class="lineno">12298</span>    <span class="keyword">public</span>:</div>
 <div class="line"><a id="l12299" name="l12299"></a><span class="lineno">12299</span>        <span class="keyword">virtual</span> ~TestRegistry() = <span class="keywordflow">default</span>;</div>
 <div class="line"><a id="l12300" name="l12300"></a><span class="lineno">12300</span> </div>
-<div class="line"><a id="l12301" name="l12301"></a><span class="lineno">12301</span>        <span class="keyword">virtual</span> <span class="keywordtype">void</span> registerTest( TestCase <span class="keyword">const</span>&amp; testCase );</div>
+<div class="line"><a id="l12301" name="l12301"></a><span class="lineno">12301</span>        <span class="keyword">virtual</span> <span class="keywordtype">void</span> registerTest( <a class="code hl_struct" href="structTestCase.html">TestCase</a> <span class="keyword">const</span>&amp; testCase );</div>
 <div class="line"><a id="l12302" name="l12302"></a><span class="lineno">12302</span> </div>
 <div class="line"><a id="l12303" name="l12303"></a><span class="lineno">12303</span>        std::vector&lt;TestCase&gt; <span class="keyword">const</span>&amp; getAllTests() <span class="keyword">const override</span>;</div>
 <div class="line"><a id="l12304" name="l12304"></a><span class="lineno">12304</span>        std::vector&lt;TestCase&gt; <span class="keyword">const</span>&amp; getAllTestsSorted( IConfig <span class="keyword">const</span>&amp; config ) <span class="keyword">const override</span>;</div>
@@ -12493,7 +12493,7 @@ $(function() {
 <div class="line"><a id="l12478" name="l12478"></a><span class="lineno">12478</span>            <span class="keywordtype">void</span> registerListener( IReporterFactoryPtr <span class="keyword">const</span>&amp; factory )<span class="keyword"> override </span>{</div>
 <div class="line"><a id="l12479" name="l12479"></a><span class="lineno">12479</span>                m_reporterRegistry.registerListener( factory );</div>
 <div class="line"><a id="l12480" name="l12480"></a><span class="lineno">12480</span>            }</div>
-<div class="line"><a id="l12481" name="l12481"></a><span class="lineno">12481</span>            <span class="keywordtype">void</span> registerTest( TestCase <span class="keyword">const</span>&amp; testInfo )<span class="keyword"> override </span>{</div>
+<div class="line"><a id="l12481" name="l12481"></a><span class="lineno">12481</span>            <span class="keywordtype">void</span> registerTest( <a class="code hl_struct" href="structTestCase.html">TestCase</a> <span class="keyword">const</span>&amp; testInfo )<span class="keyword"> override </span>{</div>
 <div class="line"><a id="l12482" name="l12482"></a><span class="lineno">12482</span>                m_testCaseRegistry.registerTest( testInfo );</div>
 <div class="line"><a id="l12483" name="l12483"></a><span class="lineno">12483</span>            }</div>
 <div class="line"><a id="l12484" name="l12484"></a><span class="lineno">12484</span>            <span class="keywordtype">void</span> registerTranslator( <span class="keyword">const</span> IExceptionTranslator* translator )<span class="keyword"> override </span>{</div>
@@ -12754,7 +12754,7 @@ $(function() {
 <div class="line"><a id="l12739" name="l12739"></a><span class="lineno">12739</span>        m_reporter-&gt;testGroupEnded(TestGroupStats(GroupInfo(testSpec, groupIndex, groupsCount), totals, aborting()));</div>
 <div class="line"><a id="l12740" name="l12740"></a><span class="lineno">12740</span>    }</div>
 <div class="line"><a id="l12741" name="l12741"></a><span class="lineno">12741</span> </div>
-<div class="line"><a id="l12742" name="l12742"></a><span class="lineno">12742</span>    Totals RunContext::runTest(TestCase <span class="keyword">const</span>&amp; testCase) {</div>
+<div class="line"><a id="l12742" name="l12742"></a><span class="lineno">12742</span>    Totals RunContext::runTest(<a class="code hl_struct" href="structTestCase.html">TestCase</a> <span class="keyword">const</span>&amp; testCase) {</div>
 <div class="line"><a id="l12743" name="l12743"></a><span class="lineno">12743</span>        Totals prevTotals = m_totals;</div>
 <div class="line"><a id="l12744" name="l12744"></a><span class="lineno">12744</span> </div>
 <div class="line"><a id="l12745" name="l12745"></a><span class="lineno">12745</span>        std::string redirectedCout;</div>
@@ -14061,7 +14061,7 @@ $(function() {
 <div class="line"><a id="l14052" name="l14052"></a><span class="lineno">14052</span>        }</div>
 <div class="line"><a id="l14053" name="l14053"></a><span class="lineno">14053</span>    }</div>
 <div class="line"><a id="l14054" name="l14054"></a><span class="lineno">14054</span> </div>
-<div class="line"><a id="l14055" name="l14055"></a><span class="lineno">14055</span>    TestCase makeTestCase(  ITestInvoker* _testCase,</div>
+<div class="line"><a id="l14055" name="l14055"></a><span class="lineno">14055</span>    <a class="code hl_struct" href="structTestCase.html">TestCase</a> makeTestCase(  ITestInvoker* _testCase,</div>
 <div class="line"><a id="l14056" name="l14056"></a><span class="lineno">14056</span>                            std::string <span class="keyword">const</span>&amp; _className,</div>
 <div class="line"><a id="l14057" name="l14057"></a><span class="lineno">14057</span>                            NameAndTags <span class="keyword">const</span>&amp; nameAndTags,</div>
 <div class="line"><a id="l14058" name="l14058"></a><span class="lineno">14058</span>                            SourceLineInfo <span class="keyword">const</span>&amp; _lineInfo )</div>
@@ -14107,7 +14107,7 @@ $(function() {
 <div class="line"><a id="l14098" name="l14098"></a><span class="lineno">14098</span>        }</div>
 <div class="line"><a id="l14099" name="l14099"></a><span class="lineno">14099</span> </div>
 <div class="line"><a id="l14100" name="l14100"></a><span class="lineno">14100</span>        TestCaseInfo <a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a3fd549b8009542e938104c3887e5ecc3acaf9b6b99962bf5c2264824231d7a40c">info</a>( <span class="keyword">static_cast&lt;</span>std::string<span class="keyword">&gt;</span>(nameAndTags.name), _className, desc, tags, _lineInfo );</div>
-<div class="line"><a id="l14101" name="l14101"></a><span class="lineno">14101</span>        <span class="keywordflow">return</span> TestCase( _testCase, std::move(info) );</div>
+<div class="line"><a id="l14101" name="l14101"></a><span class="lineno">14101</span>        <span class="keywordflow">return</span> <a class="code hl_struct" href="structTestCase.html">TestCase</a>( _testCase, std::move(info) );</div>
 <div class="line"><a id="l14102" name="l14102"></a><span class="lineno">14102</span>    }</div>
 <div class="line"><a id="l14103" name="l14103"></a><span class="lineno">14103</span> </div>
 <div class="line"><a id="l14104" name="l14104"></a><span class="lineno">14104</span>    <span class="keywordtype">void</span> setTags( TestCaseInfo&amp; testCaseInfo, std::vector&lt;std::string&gt; tags ) {</div>
@@ -14169,8 +14169,8 @@ $(function() {
 <div class="line"><a id="l14160" name="l14160"></a><span class="lineno">14160</span> </div>
 <div class="line"><a id="l14161" name="l14161"></a><span class="lineno">14161</span>    TestCase::TestCase( ITestInvoker* testCase, TestCaseInfo&amp;&amp; info ) : TestCaseInfo( std::move(<a class="code hl_enumvalue" href="TroubleshootingChecks_8h.html#a3fd549b8009542e938104c3887e5ecc3acaf9b6b99962bf5c2264824231d7a40c">info</a>) ), test( testCase ) {}</div>
 <div class="line"><a id="l14162" name="l14162"></a><span class="lineno">14162</span> </div>
-<div class="line"><a id="l14163" name="l14163"></a><span class="lineno">14163</span>    TestCase TestCase::withName( std::string <span class="keyword">const</span>&amp; _newName )<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l14164" name="l14164"></a><span class="lineno">14164</span>        TestCase other( *<span class="keyword">this</span> );</div>
+<div class="line"><a id="l14163" name="l14163"></a><span class="lineno">14163</span>    <a class="code hl_struct" href="structTestCase.html">TestCase</a> TestCase::withName( std::string <span class="keyword">const</span>&amp; _newName )<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l14164" name="l14164"></a><span class="lineno">14164</span>        <a class="code hl_struct" href="structTestCase.html">TestCase</a> other( *<span class="keyword">this</span> );</div>
 <div class="line"><a id="l14165" name="l14165"></a><span class="lineno">14165</span>        other.name = _newName;</div>
 <div class="line"><a id="l14166" name="l14166"></a><span class="lineno">14166</span>        <span class="keywordflow">return</span> other;</div>
 <div class="line"><a id="l14167" name="l14167"></a><span class="lineno">14167</span>    }</div>
@@ -14179,13 +14179,13 @@ $(function() {
 <div class="line"><a id="l14170" name="l14170"></a><span class="lineno">14170</span>        test-&gt;invoke();</div>
 <div class="line"><a id="l14171" name="l14171"></a><span class="lineno">14171</span>    }</div>
 <div class="line"><a id="l14172" name="l14172"></a><span class="lineno">14172</span> </div>
-<div class="line"><a id="l14173" name="l14173"></a><span class="lineno">14173</span>    <span class="keywordtype">bool</span> TestCase::operator == ( TestCase <span class="keyword">const</span>&amp; other )<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l14173" name="l14173"></a><span class="lineno">14173</span>    <span class="keywordtype">bool</span> TestCase::operator == ( <a class="code hl_struct" href="structTestCase.html">TestCase</a> <span class="keyword">const</span>&amp; other )<span class="keyword"> const </span>{</div>
 <div class="line"><a id="l14174" name="l14174"></a><span class="lineno">14174</span>        <span class="keywordflow">return</span>  test.get() == other.test.get() &amp;&amp;</div>
 <div class="line"><a id="l14175" name="l14175"></a><span class="lineno">14175</span>                name == other.name &amp;&amp;</div>
 <div class="line"><a id="l14176" name="l14176"></a><span class="lineno">14176</span>                className == other.className;</div>
 <div class="line"><a id="l14177" name="l14177"></a><span class="lineno">14177</span>    }</div>
 <div class="line"><a id="l14178" name="l14178"></a><span class="lineno">14178</span> </div>
-<div class="line"><a id="l14179" name="l14179"></a><span class="lineno">14179</span>    <span class="keywordtype">bool</span> TestCase::operator &lt; ( TestCase <span class="keyword">const</span>&amp; other )<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l14179" name="l14179"></a><span class="lineno">14179</span>    <span class="keywordtype">bool</span> TestCase::operator &lt; ( <a class="code hl_struct" href="structTestCase.html">TestCase</a> <span class="keyword">const</span>&amp; other )<span class="keyword"> const </span>{</div>
 <div class="line"><a id="l14180" name="l14180"></a><span class="lineno">14180</span>        <span class="keywordflow">return</span> name &lt; other.name;</div>
 <div class="line"><a id="l14181" name="l14181"></a><span class="lineno">14181</span>    }</div>
 <div class="line"><a id="l14182" name="l14182"></a><span class="lineno">14182</span> </div>
@@ -14210,7 +14210,7 @@ $(function() {
 <div class="line"><a id="l14201" name="l14201"></a><span class="lineno">14201</span>            <span class="keyword">explicit</span> TestHasher( hash_t hashSuffix ):</div>
 <div class="line"><a id="l14202" name="l14202"></a><span class="lineno">14202</span>                m_hashSuffix{ hashSuffix } {}</div>
 <div class="line"><a id="l14203" name="l14203"></a><span class="lineno">14203</span> </div>
-<div class="line"><a id="l14204" name="l14204"></a><span class="lineno">14204</span>            uint32_t operator()( TestCase <span class="keyword">const</span>&amp; t )<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l14204" name="l14204"></a><span class="lineno">14204</span>            uint32_t operator()( <a class="code hl_struct" href="structTestCase.html">TestCase</a> <span class="keyword">const</span>&amp; t )<span class="keyword"> const </span>{</div>
 <div class="line"><a id="l14205" name="l14205"></a><span class="lineno">14205</span>                <span class="comment">// FNV-1a hash with multiplication fold.</span></div>
 <div class="line"><a id="l14206" name="l14206"></a><span class="lineno">14206</span>                <span class="keyword">const</span> hash_t prime = 1099511628211u;</div>
 <div class="line"><a id="l14207" name="l14207"></a><span class="lineno">14207</span>                hash_t <a class="code hl_function" href="namespacedetail.html#a9dd43d16a6a490b032ceaca358755a29">hash</a> = 14695981039346656037u;</div>
@@ -14275,11 +14275,11 @@ $(function() {
 <div class="line"><a id="l14266" name="l14266"></a><span class="lineno">14266</span>        <span class="keywordflow">return</span> unsortedTestCases;</div>
 <div class="line"><a id="l14267" name="l14267"></a><span class="lineno">14267</span>    }</div>
 <div class="line"><a id="l14268" name="l14268"></a><span class="lineno">14268</span> </div>
-<div class="line"><a id="l14269" name="l14269"></a><span class="lineno">14269</span>    <span class="keywordtype">bool</span> isThrowSafe( TestCase <span class="keyword">const</span>&amp; testCase, IConfig <span class="keyword">const</span>&amp; config ) {</div>
+<div class="line"><a id="l14269" name="l14269"></a><span class="lineno">14269</span>    <span class="keywordtype">bool</span> isThrowSafe( <a class="code hl_struct" href="structTestCase.html">TestCase</a> <span class="keyword">const</span>&amp; testCase, IConfig <span class="keyword">const</span>&amp; config ) {</div>
 <div class="line"><a id="l14270" name="l14270"></a><span class="lineno">14270</span>        <span class="keywordflow">return</span> !testCase.throws() || config.allowThrows();</div>
 <div class="line"><a id="l14271" name="l14271"></a><span class="lineno">14271</span>    }</div>
 <div class="line"><a id="l14272" name="l14272"></a><span class="lineno">14272</span> </div>
-<div class="line"><a id="l14273" name="l14273"></a><span class="lineno">14273</span>    <span class="keywordtype">bool</span> matchTest( TestCase <span class="keyword">const</span>&amp; testCase, TestSpec <span class="keyword">const</span>&amp; testSpec, IConfig <span class="keyword">const</span>&amp; config ) {</div>
+<div class="line"><a id="l14273" name="l14273"></a><span class="lineno">14273</span>    <span class="keywordtype">bool</span> matchTest( <a class="code hl_struct" href="structTestCase.html">TestCase</a> <span class="keyword">const</span>&amp; testCase, TestSpec <span class="keyword">const</span>&amp; testSpec, IConfig <span class="keyword">const</span>&amp; config ) {</div>
 <div class="line"><a id="l14274" name="l14274"></a><span class="lineno">14274</span>        <span class="keywordflow">return</span> testSpec.matches( testCase ) &amp;&amp; isThrowSafe( testCase, config );</div>
 <div class="line"><a id="l14275" name="l14275"></a><span class="lineno">14275</span>    }</div>
 <div class="line"><a id="l14276" name="l14276"></a><span class="lineno">14276</span> </div>
@@ -14309,7 +14309,7 @@ $(function() {
 <div class="line"><a id="l14300" name="l14300"></a><span class="lineno">14300</span>        <span class="keywordflow">return</span> getRegistryHub().getTestCaseRegistry().getAllTestsSorted( config );</div>
 <div class="line"><a id="l14301" name="l14301"></a><span class="lineno">14301</span>    }</div>
 <div class="line"><a id="l14302" name="l14302"></a><span class="lineno">14302</span> </div>
-<div class="line"><a id="l14303" name="l14303"></a><span class="lineno">14303</span>    <span class="keywordtype">void</span> TestRegistry::registerTest( TestCase <span class="keyword">const</span>&amp; testCase ) {</div>
+<div class="line"><a id="l14303" name="l14303"></a><span class="lineno">14303</span>    <span class="keywordtype">void</span> TestRegistry::registerTest( <a class="code hl_struct" href="structTestCase.html">TestCase</a> <span class="keyword">const</span>&amp; testCase ) {</div>
 <div class="line"><a id="l14304" name="l14304"></a><span class="lineno">14304</span>        std::string name = testCase.getTestCaseInfo().name;</div>
 <div class="line"><a id="l14305" name="l14305"></a><span class="lineno">14305</span>        <span class="keywordflow">if</span>( name.empty() ) {</div>
 <div class="line"><a id="l14306" name="l14306"></a><span class="lineno">14306</span>            ReusableStringStream rss;</div>
@@ -15054,7 +15054,7 @@ $(function() {
 <div class="line"><a id="l15046" name="l15046"></a><span class="lineno">15046</span>            end = inc = -1;</div>
 <div class="line"><a id="l15047" name="l15047"></a><span class="lineno">15047</span>        }</div>
 <div class="line"><a id="l15048" name="l15048"></a><span class="lineno">15048</span> </div>
-<div class="line"><a id="l15049" name="l15049"></a><span class="lineno">15049</span>        <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> <span class="keyword">const</span> *bytes = <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> <span class="keyword">const </span>*<span class="keyword">&gt;</span>(<a class="code hl_enumvalue" href="namespacedetail.html#a917c3efabea8a20dc72d9ae2c673d632aa8cfde6331bd59eb2ac96f8911c4b666">object</a>);</div>
+<div class="line"><a id="l15049" name="l15049"></a><span class="lineno">15049</span>        <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> <span class="keyword">const</span> *bytes = <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> <span class="keyword">const </span>*<span class="keyword">&gt;</span>(object);</div>
 <div class="line"><a id="l15050" name="l15050"></a><span class="lineno">15050</span>        ReusableStringStream rss;</div>
 <div class="line"><a id="l15051" name="l15051"></a><span class="lineno">15051</span>        rss &lt;&lt; <span class="stringliteral">&quot;0x&quot;</span> &lt;&lt; std::setfill(<span class="charliteral">&#39;0&#39;</span>) &lt;&lt; std::hex;</div>
 <div class="line"><a id="l15052" name="l15052"></a><span class="lineno">15052</span>        <span class="keywordflow">for</span>( ; i != end; i += inc )</div>
@@ -18027,10 +18027,10 @@ $(function() {
 <div class="ttc" id="aclassCatch_1_1Timer_html"><div class="ttname"><a href="classCatch_1_1Timer.html">Catch::Timer</a></div><div class="ttdef"><b>Definition:</b> catch.hpp:2895</div></div>
 <div class="ttc" id="aclassCatch_1_1UnaryExpr_html"><div class="ttname"><a href="classCatch_1_1UnaryExpr.html">Catch::UnaryExpr</a></div><div class="ttdef"><b>Definition:</b> catch.hpp:2301</div></div>
 <div class="ttc" id="aclassE_html"><div class="ttname"><a href="classE.html">E</a></div><div class="ttdef"><b>Definition:</b> diagrams_e.h:4</div></div>
+<div class="ttc" id="aclassRange_html"><div class="ttname"><a href="classRange.html">Range</a></div><div class="ttdef"><b>Definition:</b> showfont.cpp:47</div></div>
 <div class="ttc" id="aclassTag_html"><div class="ttname"><a href="classTag.html">Tag</a></div><div class="ttdoc">A class that is inherited from the external class Test.</div><div class="ttdef"><b>Definition:</b> tag.cpp:5</div></div>
 <div class="ttc" id="agroup__group1_html_ga24f647174760cac13d2624b5ad74b00c"><div class="ttname"><a href="group__group1.html#ga24f647174760cac13d2624b5ad74b00c">func</a></div><div class="ttdeci">void func()</div><div class="ttdoc">function in group 1</div><div class="ttdef"><b>Definition:</b> group.cpp:13</div></div>
 <div class="ttc" id="anamespacedetail_html"><div class="ttname"><a href="namespacedetail.html">detail</a></div><div class="ttdoc">detail namespace with internal helper functions</div><div class="ttdef"><b>Definition:</b> json.hpp:249</div></div>
-<div class="ttc" id="anamespacedetail_html_a917c3efabea8a20dc72d9ae2c673d632aa8cfde6331bd59eb2ac96f8911c4b666"><div class="ttname"><a href="namespacedetail.html#a917c3efabea8a20dc72d9ae2c673d632aa8cfde6331bd59eb2ac96f8911c4b666">detail::value_t::object</a></div><div class="ttdeci">@ object</div><div class="ttdoc">object (unordered set of name/value pairs)</div></div>
 <div class="ttc" id="anamespacedetail_html_a917c3efabea8a20dc72d9ae2c673d632ab45cffe084dd3d20d928bee85e7b0f21"><div class="ttname"><a href="namespacedetail.html#a917c3efabea8a20dc72d9ae2c673d632ab45cffe084dd3d20d928bee85e7b0f21">detail::value_t::string</a></div><div class="ttdeci">@ string</div><div class="ttdoc">string value</div></div>
 <div class="ttc" id="anamespacedetail_html_a9dd43d16a6a490b032ceaca358755a29"><div class="ttname"><a href="namespacedetail.html#a9dd43d16a6a490b032ceaca358755a29">detail::hash</a></div><div class="ttdeci">std::size_t hash(const BasicJsonType &amp;j)</div><div class="ttdoc">hash a JSON value</div><div class="ttdef"><b>Definition:</b> json.hpp:6022</div></div>
 <div class="ttc" id="anamespacedetail_html_af2a9ce4740e0b45d33129e2c8e53a0a8"><div class="ttname"><a href="namespacedetail.html#af2a9ce4740e0b45d33129e2c8e53a0a8">detail::escape</a></div><div class="ttdeci">StringType escape(StringType s)</div><div class="ttdoc">string escaping as described in RFC 6901 (Sect.</div><div class="ttdef"><b>Definition:</b> json.hpp:2990</div></div>
@@ -18108,10 +18108,12 @@ $(function() {
 <div class="ttc" id="astructCatch_1_1pluralise_html"><div class="ttname"><a href="structCatch_1_1pluralise.html">Catch::pluralise</a></div><div class="ttdef"><b>Definition:</b> catch.hpp:3217</div></div>
 <div class="ttc" id="astructCatch_1_1true__given_html"><div class="ttname"><a href="structCatch_1_1true__given.html">Catch::true_given</a></div><div class="ttdef"><b>Definition:</b> catch.hpp:928</div></div>
 <div class="ttc" id="astructCatch__global__namespace__dummy_html"><div class="ttname"><a href="structCatch__global__namespace__dummy.html">Catch_global_namespace_dummy</a></div><div class="ttdef"><b>Definition:</b> catch.hpp:481</div></div>
+<div class="ttc" id="astructTestCase_html"><div class="ttname"><a href="structTestCase.html">TestCase</a></div><div class="ttdef"><b>Definition:</b> testtagging.cpp:735</div></div>
 <div class="ttc" id="astructcmd_8h_html_a2c4414339f388561554c2deab11a1a07"><div class="ttname"><a href="structcmd_8h.html#a2c4414339f388561554c2deab11a1a07">open</a></div><div class="ttdeci">int open(const char *, int)</div><div class="ttdoc">Opens a file descriptor.</div></div>
 <div class="ttc" id="astructcmd_8h_html_ad65a8842cc674e3ddf69355898c0ecbf"><div class="ttname"><a href="structcmd_8h.html#ad65a8842cc674e3ddf69355898c0ecbf">errno</a></div><div class="ttdeci">int errno</div><div class="ttdoc">Contains the last error code.</div><div class="ttdef"><b>Definition:</b> structcmd.h:53</div></div>
 <div class="ttc" id="astructcmd_8h_html_ae152484c890a24e4d9b4980e7b965be0"><div class="ttname"><a href="structcmd_8h.html#ae152484c890a24e4d9b4980e7b965be0">close</a></div><div class="ttdeci">int close(int)</div><div class="ttdoc">Closes the file descriptor fd.</div></div>
 <div class="ttc" id="astructcmd_8h_html_af2a3ea719b83f672637febdd87c36c36"><div class="ttname"><a href="structcmd_8h.html#af2a3ea719b83f672637febdd87c36c36">write</a></div><div class="ttdeci">size_t write(int, const char *, size_t)</div><div class="ttdoc">Writes count bytes from buf to the filedescriptor fd.</div></div>
+<div class="ttc" id="astructitem_html"><div class="ttname"><a href="structitem.html">item</a></div><div class="ttdef"><b>Definition:</b> gen_corpora.c:58</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

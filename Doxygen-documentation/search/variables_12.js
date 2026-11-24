@@ -16,11 +16,14 @@ var searchData=
   ['singleprocess_13',['singleProcess',['../structwxm_1_1cmdline_1_1Settings.html#a7cb0fe7d6d815770c49125cf881fff1a',1,'wxm::cmdline::Settings']]],
   ['singlethread_14',['singleThread',['../structwxm_1_1cmdline_1_1Settings.html#abcfdd9b4630fbcbd8852ebc74eb4ee73',1,'wxm::cmdline::Settings']]],
   ['size_15',['size',['../structwxm_1_1ScreenshotScene.html#a12bdef73997620b65399ee5ff4bde472',1,'wxm::ScreenshotScene']]],
-  ['sizeisstale_16',['sizeIsStale',['../structTrailingGroupGeometry.html#a0628cfa6e780d07852ed6871edb02204',1,'TrailingGroupGeometry']]],
-  ['start_17',['start',['../structTextFormat_1_1Run.html#a0b2057dd393de33a1c6dd8edf834a00c',1,'TextFormat::Run']]],
-  ['std_5flogic_5f1164_18',['std_logic_1164',['../classmux__using__with.html#ae984d6918908b859c4f9c9a950a0cfee',1,'mux_using_with']]],
-  ['stoptimeoutms_19',['stopTimeoutMs',['../structTroubleshootingRunner_1_1Settings.html#a29029fe1798c71453ee94beb350059f8',1,'TroubleshootingRunner::Settings']]],
-  ['string_5fbuffer_20',['string_buffer',['../classdetail_1_1serializer.html#a27a61728ed0fbc65de009286531a6e70',1,'detail::serializer']]],
-  ['svg_21',['svg',['../structClipboardContents.html#a550514eaf30ee68bea59290c7d3b1d2e',1,'ClipboardContents']]],
-  ['symbol_22',['symbol',['../structCharButton_1_1Definition.html#a6e995995a4d6d87e8af8751bc25f73ba',1,'CharButton::Definition']]]
+  ['size_5fbits_5fby_5flength_16',['size_bits_by_length',['../structBrotliDictionary.html#aa649f2c2752c8864d92b33ab034bbe67',1,'BrotliDictionary']]],
+  ['sizeisstale_17',['sizeIsStale',['../structTrailingGroupGeometry.html#a0628cfa6e780d07852ed6871edb02204',1,'TrailingGroupGeometry']]],
+  ['start_18',['start',['../structTextFormat_1_1Run.html#a0b2057dd393de33a1c6dd8edf834a00c',1,'TextFormat::Run']]],
+  ['std_5flogic_5f1164_19',['std_logic_1164',['../classmux__using__with.html#ae984d6918908b859c4f9c9a950a0cfee',1,'mux_using_with']]],
+  ['stemv_20',['stemV',['../struct__wxPdfCjkFontDesc.html#a53c5f2d0ac3c19272a32994d27114892',1,'_wxPdfCjkFontDesc::stemV()'],['../struct__wxPdfCoreFontDesc.html#a964900184263f18c85bcf16b07dd7362',1,'_wxPdfCoreFontDesc::stemV()']]],
+  ['stoptimeoutms_21',['stopTimeoutMs',['../structTroubleshootingRunner_1_1Settings.html#a29029fe1798c71453ee94beb350059f8',1,'TroubleshootingRunner::Settings']]],
+  ['string_5fbuffer_22',['string_buffer',['../classdetail_1_1serializer.html#a27a61728ed0fbc65de009286531a6e70',1,'detail::serializer']]],
+  ['supplement_23',['supplement',['../struct__wxPdfCjkFontDesc.html#a03cd9f420deb0f1e7fdd1fc31db93e2c',1,'_wxPdfCjkFontDesc']]],
+  ['svg_24',['svg',['../structClipboardContents.html#a550514eaf30ee68bea59290c7d3b1d2e',1,'ClipboardContents']]],
+  ['symbol_25',['symbol',['../structCharButton_1_1Definition.html#a6e995995a4d6d87e8af8751bc25f73ba',1,'CharButton::Definition']]]
 ];

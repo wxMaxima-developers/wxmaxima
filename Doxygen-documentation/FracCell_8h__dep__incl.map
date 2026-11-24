@@ -1,8 +1,8 @@
 <map id="src/cells/FracCell.h" name="src/cells/FracCell.h">
-<area shape="rect" id="node1" title="This file declares the class FracCell." alt="" coords="3104,5,3247,31"/>
-<area shape="rect" id="node2" href="$MathParser_8h.html" title="The header file for the xml cell parser." alt="" coords="2943,86,3072,111"/>
-<area shape="rect" id="node38" href="$FracCell_8cpp.html" title="This file defines the class FracCell." alt="" coords="3096,86,3255,111"/>
-<area shape="rect" id="node39" href="$test__WorksheetPreview_8cpp.html" title="The sample worksheet the configuration dialog&#39;s &quot;Worksheet&quot; tab shows to preview what its display set..." alt="" coords="3279,79,3455,119"/>
+<area shape="rect" id="node1" title="This file declares the class FracCell." alt="" coords="3205,5,3348,31"/>
+<area shape="rect" id="node2" href="$MathParser_8h.html" title="The header file for the xml cell parser." alt="" coords="3044,86,3173,111"/>
+<area shape="rect" id="node39" href="$FracCell_8cpp.html" title="This file defines the class FracCell." alt="" coords="3197,86,3356,111"/>
+<area shape="rect" id="node40" href="$test__WorksheetPreview_8cpp.html" title="The sample worksheet the configuration dialog&#39;s &quot;Worksheet&quot; tab shows to preview what its display set..." alt="" coords="3381,79,3557,119"/>
 <area shape="rect" id="node3" href="$MathParser_8cpp.html" title="This file defines the class MathParser that reads wxmx data and math from Maxima." alt="" coords="933,174,1077,199"/>
 <area shape="rect" id="node4" href="$MaximaOutputAppender_8cpp.html" title="Implements the worksheet output appenders extracted from the wxMaxima god class." alt="" coords="5,255,236,280"/>
 <area shape="rect" id="node5" href="$MatrixViewer_8cpp.html" title="The viewer a double&#45;click on a partially shown matrix opens (GH #2344)." alt="" coords="1357,174,1567,199"/>
@@ -22,12 +22,13 @@
 <area shape="rect" id="node29" href="$test__OffscreenRedraw_8cpp.html" title="Output that changes outside the window doesn&#39;t show a wrong frame." alt="" coords="3669,167,3836,207"/>
 <area shape="rect" id="node30" href="$test__OutputKeyboardNavigation_8cpp.html" title="Reaching a cell&#39;s output with the keyboard (GH #2382)." alt="" coords="3861,167,4093,207"/>
 <area shape="rect" id="node31" href="$test__OutputTextSelection_8cpp.html" title="Selecting some of the characters of a text output with the mouse (GH #825)." alt="" coords="4117,167,4303,207"/>
-<area shape="rect" id="node32" href="$test__RTFExport_8cpp.html" title="Regression coverage for RTF/OMML/MathML export (Cell::ToRTF()/ToOMML()/ ToMathML(),..." alt="" coords="4327,167,4471,207"/>
-<area shape="rect" id="node33" href="$test__TeXRedundancy_8cpp.html" title="Pins the LaTeX export to the markup an expression actually needs." alt="" coords="4495,167,4653,207"/>
-<area shape="rect" id="node34" href="$test__TextContinuation_8cpp.html" title="Tests for TextCell::SetTextContinuation(): a long line of plain text Maxima sends (a warning,..." alt="" coords="4677,167,4844,207"/>
-<area shape="rect" id="node35" href="$test__WXMXRoundtrip_8cpp.html" title="Round&#45;trip tests for the .wxmx content.xml (the MathML&#45;like math format)." alt="" coords="4869,167,5031,207"/>
-<area shape="rect" id="node36" href="$test__WorksheetClipboard_8cpp.html" title="Safety net for the multi&#45;format clipboard / drag&#45;and&#45;drop payload of Worksheet." alt="" coords="5055,167,5242,207"/>
-<area shape="rect" id="node37" href="$test__WorksheetExport_8cpp.html" title="Safety net for the export/serialization cluster of Worksheet." alt="" coords="5267,167,5433,207"/>
+<area shape="rect" id="node32" href="$test__PdfExport_8cpp.html" title="Checks that the PDF export (PdfExport, drawn with wxPdfDocument) gives wxMaxima what it needs:" alt="" coords="4327,167,4471,207"/>
+<area shape="rect" id="node33" href="$test__RTFExport_8cpp.html" title="Regression coverage for RTF/OMML/MathML export (Cell::ToRTF()/ToOMML()/ ToMathML(),..." alt="" coords="4495,167,4639,207"/>
+<area shape="rect" id="node34" href="$test__TeXRedundancy_8cpp.html" title="Pins the LaTeX export to the markup an expression actually needs." alt="" coords="4663,167,4821,207"/>
+<area shape="rect" id="node35" href="$test__TextContinuation_8cpp.html" title="Tests for TextCell::SetTextContinuation(): a long line of plain text Maxima sends (a warning,..." alt="" coords="4845,167,5012,207"/>
+<area shape="rect" id="node36" href="$test__WXMXRoundtrip_8cpp.html" title="Round&#45;trip tests for the .wxmx content.xml (the MathML&#45;like math format)." alt="" coords="5037,167,5199,207"/>
+<area shape="rect" id="node37" href="$test__WorksheetClipboard_8cpp.html" title="Safety net for the multi&#45;format clipboard / drag&#45;and&#45;drop payload of Worksheet." alt="" coords="5223,167,5410,207"/>
+<area shape="rect" id="node38" href="$test__WorksheetExport_8cpp.html" title="Safety net for the export/serialization cluster of Worksheet." alt="" coords="5435,167,5601,207"/>
 <area shape="rect" id="node8" href="$MaximaManual_8cpp.html" title="This file defines the class MaximaManual." alt="" coords="2001,328,2174,353"/>
 <area shape="rect" id="node9" href="$main_8cpp.html" title="The file that defines the starting point of the program." alt="" coords="1871,328,1976,353"/>
 <area shape="rect" id="node10" href="$wxMaxima_8cpp.html" title="This file defines the contents of the class wxMaxima that contains most of the program&#39;s logic." alt="" coords="1423,328,1567,353"/>

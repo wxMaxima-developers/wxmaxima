@@ -1,16 +1,20 @@
 var searchData=
 [
   ['canhide_0',['canHide',['../structMcpSidebarInfo.html#ae38c4507879d02f72cb72429bb6ea67e',1,'McpSidebarInfo']]],
-  ['caption_1',['caption',['../structMcpSidebarInfo.html#a069fde60cb194eb1ef55591987cc447b',1,'McpSidebarInfo']]],
-  ['cause_2',['cause',['../structMaximaItemQueue_1_1Item.html#a63c68d934374447b26af972c4b3015b1',1,'MaximaItemQueue::Item']]],
-  ['cell_3',['cell',['../structCellList_1_1TornOut.html#a1a59905f41c54f5cd34e20855efa2fe6',1,'CellList::TornOut']]],
-  ['cellowner_4',['cellOwner',['../structCellList_1_1TornOut.html#aaec5379f95aa617f78f247c870bda10c',1,'CellList::TornOut']]],
-  ['cellsdrawnatwrongfontsize_5',['cellsDrawnAtWrongFontSize',['../structConfiguration_1_1PerformanceStats.html#a0ecf78ea7542599303566b3aad5f8fcb',1,'Configuration::PerformanceStats']]],
-  ['chars_5fread_5fcurrent_5fline_6',['chars_read_current_line',['../structdetail_1_1position__t.html#a6548d584bd03d1d47bfcd7cf8b1fb0c6',1,'detail::position_t']]],
-  ['chars_5fread_5ftotal_7',['chars_read_total',['../structdetail_1_1position__t.html#ac4d220d61ce61eeffbea40985727a3b0',1,'detail::position_t']]],
-  ['classvar_8',['classVar',['../classpyexample_1_1PyClass.html#abd17aff54e5b0ca194020c796c733546',1,'pyexample::PyClass']]],
-  ['clipboard_5fmax_5fpixels_9',['CLIPBOARD_MAX_PIXELS',['../classBitmapOut.html#a4fafb6436c1aec1227744eb63d699975',1,'BitmapOut']]],
-  ['complete_10',['complete',['../structwxm_1_1cmdline_1_1Option.html#ae5cdc5a7688972b9e99c69cb93862976',1,'wxm::cmdline::Option']]],
-  ['connecttimeoutms_11',['connectTimeoutMs',['../structTroubleshootingRunner_1_1Settings.html#a32f78a7900e0050c8715cca68c0efac4',1,'TroubleshootingRunner::Settings']]],
-  ['currenty_12',['currentY',['../structTrailingGroupGeometry.html#af652e704f3dcbc21a483d864db7a1ead',1,'TrailingGroupGeometry']]]
+  ['capheight_1',['capHeight',['../struct__wxPdfCjkFontDesc.html#a20b317d393bdaefdf552016cdfafa6dc',1,'_wxPdfCjkFontDesc::capHeight()'],['../struct__wxPdfCoreFontDesc.html#adbfd21723c2a5c6ad37ca40eb6a9f513',1,'_wxPdfCoreFontDesc::capHeight()']]],
+  ['caption_2',['caption',['../structMcpSidebarInfo.html#a069fde60cb194eb1ef55591987cc447b',1,'McpSidebarInfo']]],
+  ['cause_3',['cause',['../structMaximaItemQueue_1_1Item.html#a63c68d934374447b26af972c4b3015b1',1,'MaximaItemQueue::Item']]],
+  ['cell_4',['cell',['../structCellList_1_1TornOut.html#a1a59905f41c54f5cd34e20855efa2fe6',1,'CellList::TornOut']]],
+  ['cellowner_5',['cellOwner',['../structCellList_1_1TornOut.html#aaec5379f95aa617f78f247c870bda10c',1,'CellList::TornOut']]],
+  ['cellsdrawnatwrongfontsize_6',['cellsDrawnAtWrongFontSize',['../structConfiguration_1_1PerformanceStats.html#a0ecf78ea7542599303566b3aad5f8fcb',1,'Configuration::PerformanceStats']]],
+  ['chars_5fread_5fcurrent_5fline_7',['chars_read_current_line',['../structdetail_1_1position__t.html#a6548d584bd03d1d47bfcd7cf8b1fb0c6',1,'detail::position_t']]],
+  ['chars_5fread_5ftotal_8',['chars_read_total',['../structdetail_1_1position__t.html#ac4d220d61ce61eeffbea40985727a3b0',1,'detail::position_t']]],
+  ['classvar_9',['classVar',['../classpyexample_1_1PyClass.html#abd17aff54e5b0ca194020c796c733546',1,'pyexample::PyClass']]],
+  ['clipboard_5fmax_5fpixels_10',['CLIPBOARD_MAX_PIXELS',['../classBitmapOut.html#a4fafb6436c1aec1227744eb63d699975',1,'BitmapOut']]],
+  ['cmap_11',['cmap',['../struct__wxPdfCjkFontDesc.html#aed790f54fc67aa9a19c491d7f76c2cd4',1,'_wxPdfCjkFontDesc']]],
+  ['code128_5ffnc1_12',['CODE128_FNC1',['../pdfbarcode_8h.html#a19d81a4d0f3eee5945b5f9ce229f8e12',1,'pdfbarcode.h']]],
+  ['complete_13',['complete',['../structwxm_1_1cmdline_1_1Option.html#ae5cdc5a7688972b9e99c69cb93862976',1,'wxm::cmdline::Option']]],
+  ['connecttimeoutms_14',['connectTimeoutMs',['../structTroubleshootingRunner_1_1Settings.html#a32f78a7900e0050c8715cca68c0efac4',1,'TroubleshootingRunner::Settings']]],
+  ['currenty_15',['currentY',['../structTrailingGroupGeometry.html#af652e704f3dcbc21a483d864db7a1ead',1,'TrailingGroupGeometry']]],
+  ['cwarray_16',['cwArray',['../struct__wxPdfCjkFontDesc.html#ad062c9f56ab6faf1f111ab2a835ed525',1,'_wxPdfCjkFontDesc::cwArray()'],['../struct__wxPdfCoreFontDesc.html#a6acb970e75cad3c388152fb3c0e76b91',1,'_wxPdfCoreFontDesc::cwArray()']]]
 ];

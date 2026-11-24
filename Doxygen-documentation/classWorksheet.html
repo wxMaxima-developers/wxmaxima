@@ -569,7 +569,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SelectOutputResult</b
 <tr class="memdesc:a9a3b28a6c5c83c2dcbe914dabeeec0b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">The selected part of an output, as a node of OutputNavigation's tree.  <br /></td></tr>
 <tr class="separator:a9a3b28a6c5c83c2dcbe914dabeeec0b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1da54e9bd974da4419ef552990613574"><td class="memItemLeft" align="right" valign="top"><a id="a1da54e9bd974da4419ef552990613574" name="a1da54e9bd974da4419ef552990613574"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SelectOutputItem</b> (const <a class="el" href="structOutputNavigation_1_1Item.html">OutputNavigation::Item</a> &amp;item)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SelectOutputItem</b> (const <a class="el" href="structOutputNavigation_1_1Item.html">OutputNavigation::Item</a> &amp;<a class="el" href="structitem.html">item</a>)</td></tr>
 <tr class="memdesc:a1da54e9bd974da4419ef552990613574"><td class="mdescLeft">&#160;</td><td class="mdescRight">Select a node of the output tree, scroll to it and announce it. <br /></td></tr>
 <tr class="separator:a1da54e9bd974da4419ef552990613574"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a298f3b0c5d6c129835d4268913e086be"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a298f3b0c5d6c129835d4268913e086be">NavigateOutput</a> (int keyCode, bool shift)</td></tr>
@@ -1016,6 +1016,9 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><b>RTFEnd</b> () con
 <tr class="memitem:aaea30ddc4ca6de8eb92b5ed45ce527fe"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#aaea30ddc4ca6de8eb92b5ed45ce527fe">ExportToTeX</a> (const wxString &amp;file)</td></tr>
 <tr class="memdesc:aaea30ddc4ca6de8eb92b5ed45ce527fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">export to a LaTeX file  <br /></td></tr>
 <tr class="separator:aaea30ddc4ca6de8eb92b5ed45ce527fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7a75738ec7101f3ecd50187b1b5fb29"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#ac7a75738ec7101f3ecd50187b1b5fb29">ExportToPDF</a> (const wxString &amp;file, <a class="el" href="structPdfExport_1_1Options.html">PdfExport::Options</a> options=<a class="el" href="structPdfExport_1_1Options.html">PdfExport::Options</a>())</td></tr>
+<tr class="memdesc:ac7a75738ec7101f3ecd50187b1b5fb29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Export to a tagged PDF file, see <a class="el" href="classPdfExport.html" title="Writes a worksheet to a PDF file.">PdfExport</a>.  <br /></td></tr>
+<tr class="separator:ac7a75738ec7101f3ecd50187b1b5fb29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af2b29df1955b4a894e2e0f7a8d2e6f1b"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#af2b29df1955b4a894e2e0f7a8d2e6f1b">GetString</a> (bool lb=false) const</td></tr>
 <tr class="memdesc:af2b29df1955b4a894e2e0f7a8d2e6f1b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert the current selection to a string.  <br /></td></tr>
 <tr class="separator:af2b29df1955b4a894e2e0f7a8d2e6f1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2167,6 +2170,37 @@ static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>CellsToMat
 
 <p>Export the file to an html document. </p>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000014">Todo:</a></b></dt><dd><a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a> and text cell background work fine, but their names might be interchanged. </dd></dl>
+
+</div>
+</div>
+<a id="ac7a75738ec7101f3ecd50187b1b5fb29" name="ac7a75738ec7101f3ecd50187b1b5fb29"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac7a75738ec7101f3ecd50187b1b5fb29">&#9670;&#160;</a></span>ExportToPDF()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Worksheet::ExportToPDF </td>
+          <td>(</td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
+          <td class="paramname"><em>file</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structPdfExport_1_1Options.html">PdfExport::Options</a>&#160;</td>
+          <td class="paramname"><em>options</em> = <code><a class="el" href="structPdfExport_1_1Options.html">PdfExport::Options</a>()</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Export to a tagged PDF file, see <a class="el" href="classPdfExport.html" title="Writes a worksheet to a PDF file.">PdfExport</a>. </p>
+<p>An empty title in options is replaced by the worksheet's title. Fails if <a class="el" href="classwxMaxima.html">wxMaxima</a> was built without the PDF export (<a class="el" href="classPdfExport.html#a30e287866685ebad5470ffac7c22230f" title="Was wxMaxima built with the PDF export?">PdfExport::Available()</a>). </p>
 
 </div>
 </div>

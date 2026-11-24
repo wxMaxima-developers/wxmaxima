@@ -377,7 +377,7 @@ File Formats</h2>
 <p><code>.mac</code> files are ordinary text files that contain <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> commands. They can be read using _Maxima_’s <code>batch()</code> or <code>load()</code> command or _wxMaxima_’s File/Batch File menu entry.</p>
 <p>One example is shown below. <code>Quadratic.mac</code> defines a function and afterward generates a plot with <code>wxdraw2d()</code>. Afterward the contents of the file <code>Quadratic.mac</code> are printed and newly defined function <code>f()</code> is evaluated.</p>
 <p><img src="./BatchImage.png" alt="Loading a file with `batch()`" class="inline"/></p>
-<p>Attention: Although the file <code>Quadratic.mac</code> has a usual <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> extension (<code>.mac</code>), it can only be read by <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>, since the command <code>wxdraw2d()</code> is a wxMaxima-extension to <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>. (Command line) <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> will ignore the unknown command <code>wxdraw2d()</code> and print it as output again.</p>
+<p>Attention: Although the file <code>Quadratic.mac</code> has a usual <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> extension (<code>.mac</code>), it can only be read by <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>, since the command <code>wxdraw2d()</code> is a wxMaxima-extension to <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>. (<a class="el" href="structCommand.html">Command</a> line) <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> will ignore the unknown command <code>wxdraw2d()</code> and print it as output again.</p>
 <p>You can be use <code>.mac</code> files for writing your own library of macros. But since they don’t contain enough structural information they cannot be read back as a <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> session.</p>
 <h3><a class="anchor" id="autotoc_md533"></a>
 .wxm</h3>
@@ -523,7 +523,22 @@ Exporting the worksheet from within Maxima</h2>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><code>documentclassoptions</code>   </td><td class="markdownTableBodyNone">overrides its options (e.g. <code>"12pt,a4paper"</code>)   </td></tr>
 </table>
-<p>Support for <code>wxworksheettopdf()</code> is planned.</p>
+<div id="wxworksheettopdf"></div><p><code>wxworksheettopdf()</code> exports the worksheet to a PDF file, as <b>File → Export</b> does when a <code>.pdf</code> file is chosen:</p>
+<div class="fragment"><div class="line">wxworksheettopdf(&quot;report.pdf&quot;)$</div>
+<div class="line">wxworksheettopdf(&quot;report.pdf&quot;, language=&quot;de&quot;, paper=&quot;letter&quot;, landscape=true)$</div>
+</div><!-- fragment --><table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">option   </th><th class="markdownTableHeadNone">meaning    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>title</code>   </td><td class="markdownTableBodyNone">the document title PDF viewers show (default: the worksheet's title cell, or the file name)    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>language</code>   </td><td class="markdownTableBodyNone">the document's language, e.g. <code>"en"</code> or <code>"de-AT"</code> (default: the language of <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>'s menus)    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>paper</code>   </td><td class="markdownTableBodyNone"><code>a4</code> (default), <code>a3</code>, <code>a5</code>, <code>letter</code> or <code>legal</code>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>landscape</code>   </td><td class="markdownTableBodyNone"><code>false</code> (default), <code>true</code>   </td></tr>
+</table>
+<p>The PDF looks like a printout, with the print scale and margins set in the configuration dialog (the margins are taken as millimetres). Unlike a printout to a PDF printer, it keeps the text as text, in the worksheet's fonts, all of which are embedded in the file; characters that the worksheet's fonts lack, Greek letters and mathematical symbols for example, are taken from another installed font that has them. The PDF is also <em>tagged</em>: screen readers and other assistive technology can tell headings, text, code and formulas apart and read them in the right order. Each formula carries <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>'s linear notation of it as its spoken description and its MathML, which screen readers that understand MathML present as a formula, and each plot the command that created it. Screen readers need to know the document's language to pronounce it, which is what the <code>language</code> option is for.</p>
 <h2><a class="anchor" id="autotoc_md548"></a>
 Plotting</h2>
 <p>Plotting (having fundamentally to do with graphics) is a place where a graphical user interface will have to provide some extensions to the original program.</p>
@@ -835,7 +850,7 @@ Bug reporting</h2>
 </ul>
 <h2><a class="anchor" id="autotoc_md577"></a>
 Marking output being drawn in red</h2>
-<p><em>Maxima_’s <code>box()</code> command causes _wxMaxima</em> to print its argument with a red foreground, if the second argument to the command is the text <code>highlight</code>.</p>
+<p><em>Maxima_’s <code><a class="el" href="structbox.html">box()</a></code> command causes _wxMaxima</em> to print its argument with a red foreground, if the second argument to the command is the text <code>highlight</code>.</p>
 <h2><a class="anchor" id="autotoc_md578"></a>
 Output rendering.</h2>
 <p>With <code>set_display()</code> one can set, how <a class="el" href="classwxMaxima.html">wxMaxima</a> will render the output.</p>

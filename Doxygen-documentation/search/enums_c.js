@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['oversizedmatrices_0',['OversizedMatrices',['../classConfiguration.html#adb5fa4e3eacde294a5f23ceca1b9283d',1,'Configuration']]]
+  ['networkstate_0',['networkState',['../classStatusBar.html#a3de8a6b955f99bb7a534c6ddfb47f9d8',1,'StatusBar']]]
 ];
