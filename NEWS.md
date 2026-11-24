@@ -11,6 +11,12 @@
   `thirdparty/wxpdfdoc`: after updating a checkout, run
   `git submodule update --init`. Without it the build still works, but
   without the PDF export.
+- New: on macOS and Linux, copied cells and output are also offered as a
+  PDF, which is how macOS programs (Keynote, Pages, Preview, ...) take
+  vector graphics: text stays text, in the worksheet's fonts, which are
+  embedded. The PDF's page is exactly as big as what was copied.
+- A copy of whole cells as an image (bitmap, SVG, EMF) cut off the end of
+  the widest line: the room for the cell brackets was left out of its width.
 - Thirteen texts could never be translated although they were marked for
   translation, among them the "Padé Approximation..." and web tutorial
   menu entries, the Greek sidebar's context menu, the "No offline manual

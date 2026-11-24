@@ -94,6 +94,15 @@ public:
   PdfExport(GroupCell *tree, const Configuration *source, const Options &options);
   ~PdfExport();
 
+  /*! The resolution of the coordinates the worksheet is laid out in
+
+    wxMaxima's geometry is integer, so this is also the precision of every
+    position in the PDF: 1/720 inch, 1/10 of a point. Pdfout uses it, too.
+  */
+  static constexpr int LayoutPpi = 720;
+  //! The resolution wxMaxima's font sizes and lengths are meant for (see Printout)
+  static constexpr int ReferencePpi = 96;
+
   //! Writes the PDF. Returns false if the file could not be written.
   bool Write(const wxString &file);
 

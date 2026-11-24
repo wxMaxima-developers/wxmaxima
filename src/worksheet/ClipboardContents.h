@@ -163,6 +163,8 @@ struct ClipboardContents
   LazyValue<std::string> rtf;
   //! A SVG image
   LazyValue<std::string> svg;
+  //! A PDF of one page as big as the cells (see Pdfout)
+  LazyValue<std::string> pdf;
   //! A bitmap image. Invalid if it could not be drawn.
   LazyValue<wxBitmap> bitmap;
 #if wxUSE_ENH_METAFILE

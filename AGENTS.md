@@ -751,6 +751,15 @@ a local TCP socket.
     stay with what follows. `test_PdfExport` decodes the PDF itself (no
     external tools), so it runs everywhere; set `WXM_PDF_DUMP_DIR` to keep
     the PDFs and their decoded text for a look with `pdffonts` or pikepdf.
+- **The clipboard's PDF (`src/graphical_io/PDFout.{h,cpp}`)** is a
+  one-page PDF cut to the copied cells, made from `OutCommon` like the SVG.
+  The page size is only known after the layout, which needs a DC measuring
+  as the PDF will, so the `wxPdfDC` is in "template mode" (it owns no
+  document and adds no pages) on a `wxPdfDocument` whose one page is added
+  after the layout. Offered as `com.adobe.pdf` on macOS and
+  `application/pdf` elsewhere, but not on Windows, where no program takes a
+  PDF from the clipboard. macOS' wxClipboard renders every format at copy
+  time, so this costs every copy there.
 - **"Copy as HTML" (GH #2265/#2266/#2267) -- `WorksheetExport::
   SelectionToSelfContainedHTML()` / `Worksheet::CopyHTML()`:** a right-click
   context menu item placing a *self-contained* HTML document on the
