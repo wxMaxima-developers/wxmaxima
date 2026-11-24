@@ -39,6 +39,8 @@ jobs:
       - name: configure
         run: |
              export CXX="i686-linux-gnu-g++"
+             # wxPdfDocument brings C sources (brotli) too
+             export CC="i686-linux-gnu-gcc"
              # pkg-config looks for the build machine's (amd64) .pc files by
              # default; fontconfig (needed by the PDF export) is the i386 one.
              export PKG_CONFIG_LIBDIR=/usr/lib/i386-linux-gnu/pkgconfig:/usr/share/pkgconfig
