@@ -751,6 +751,10 @@ a local TCP socket.
     stay with what follows. `test_PdfExport` decodes the PDF itself (no
     external tools), so it runs everywhere; set `WXM_PDF_DUMP_DIR` to keep
     the PDFs and their decoded text for a look with `pdffonts` or pikepdf.
+  - **Bookmarks** (the outline) come from the headings. wxPdfDocument needs
+    each outline level's parent one level up and silently links a skipped
+    level to the wrong one, so a bookmark's level is the number of open
+    headings above it, not the heading's own depth.
 - **"Copy as HTML" (GH #2265/#2266/#2267) -- `WorksheetExport::
   SelectionToSelfContainedHTML()` / `Worksheet::CopyHTML()`:** a right-click
   context menu item placing a *self-contained* HTML document on the

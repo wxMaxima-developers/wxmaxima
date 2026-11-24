@@ -113,6 +113,24 @@ wxString HeadingTag(GroupType type) {
     return wxS("H6");
   }
 }
+
+//! How deep a heading of a given group type sits in the outline, 0 = top
+int HeadingDepth(GroupType type) {
+  switch (type) {
+  case GC_TYPE_TITLE:
+    return 0;
+  case GC_TYPE_SECTION:
+    return 1;
+  case GC_TYPE_SUBSECTION:
+    return 2;
+  case GC_TYPE_SUBSUBSECTION:
+    return 3;
+  case GC_TYPE_HEADING5:
+    return 4;
+  default:
+    return 5;
+  }
+}
 } // namespace
 
 /*! Everything that needs wxPdfDocument
@@ -148,6 +166,12 @@ private:
   void DrawGroup(GroupCell &group);
   //! Draws a group's output, one structure element per chunk
   void DrawOutput(GroupCell &group, Cell *output);
+  /*! Adds a bookmark (an entry of the PDF's outline) for a heading
+
+    PDF viewers show the outline as a table of contents, and it is how a
+    screen reader user finds their way through a long document.
+  */
+  void AddBookmark(const GroupCell &group);
 
   //! Opens a structure element; no-op if the document isn't tagged
   void BeginTag(const wxPdfTag &tag) {
@@ -172,6 +196,14 @@ private:
   std::unique_ptr<GroupCell> m_tree;
   //! The page currently drawn on, counting from 0
   std::size_t m_page = 0;
+  /*! The heading depths (HeadingDepth()) of the bookmarks the next one may nest in
+
+    A worksheet can skip levels (a subsection without a section above it), but
+    an outline level needs a parent one level up: wxPdfDocument would link the
+    bookmark to a parent that doesn't exist. So a bookmark's level is the
+    number of open headings above it, not its heading depth.
+  */
+  std::vector<int> m_openHeadings;
   //! The margins and the size of the printable area, in device units
   wxCoord m_marginLeft = 0;
   wxCoord m_marginTop = 0;
@@ -350,6 +382,30 @@ void PdfExport::Impl::DrawOutput(GroupCell &group, Cell *output) {
   }
 }
 
+void PdfExport::Impl::AddBookmark(const GroupCell &group) {
+  wxString text;
+  // A numbered heading's number is its prompt.
+  if (const Cell *prompt = group.GetPrompt())
+    text = prompt->ToString() + wxS(" ");
+  if (const EditorCell *input = group.GetEditable())
+    text += input->ToString();
+  text = FoldWhitespace(text);
+  if (text.IsEmpty())
+    return;
+
+  const int depth = HeadingDepth(group.GetGroupType());
+  while (!m_openHeadings.empty() && (m_openHeadings.back() >= depth))
+    m_openHeadings.pop_back();
+  const int level = static_cast<int>(m_openHeadings.size());
+  m_openHeadings.push_back(depth);
+
+  // The bookmark's target: the top of the heading, in points from the top of
+  // its page (the document's unit is the point).
+  const wxCoord pageStart = (m_page < m_pageStarts.size()) ? m_pageStarts.at(m_page) : 0;
+  const wxCoord top = group.GetRect().GetTop() - pageStart + m_marginTop;
+  m_doc->Bookmark(text, level, std::max(0.0, top * 72.0 / PDF_PPI));
+}
+
 void PdfExport::Impl::DrawGroup(GroupCell &group) {
   if (group.GetGroupType() == GC_TYPE_PAGEBREAK)
     return;
@@ -362,6 +418,7 @@ void PdfExport::Impl::DrawGroup(GroupCell &group) {
     m_configuration->ShowCodeCells() || (group.GetGroupType() != GC_TYPE_CODE);
 
   if (group.IsHeading()) {
+    AddBookmark(group);
     BeginTag(wxPdfTag(HeadingTag(group.GetGroupType())));
     // A heading's number ("1.2") is its prompt.
     if (prompt && showInput)
@@ -482,6 +539,7 @@ bool PdfExport::Impl::Write(const wxString &file) {
   }
 
   m_page = 0;
+  m_openHeadings.clear();
   m_dc->StartPage();
   m_dc->SetDeviceOrigin(m_marginLeft,
                         m_marginTop - (m_pageStarts.empty() ? 0 : m_pageStarts.front()));

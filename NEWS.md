@@ -7,7 +7,8 @@
   taken from another installed font, as on screen; and the PDF is tagged
   for screen readers: headings, paragraphs, code, figures and formulas,
   each formula with its linear form as alternate text and its MathML
-  attached. Built with wxPdfDocument, now a git submodule in
+  attached. The headings also become the PDF's bookmarks, which PDF
+  viewers show as a table of contents. Built with wxPdfDocument, now a git submodule in
   `thirdparty/wxpdfdoc`: after updating a checkout, run
   `git submodule update --init`. Without it the build still works, but
   without the PDF export.
