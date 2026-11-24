@@ -2388,6 +2388,29 @@ void wxMaxima::ExportWorksheetToHtml(const wxString &filename,
   }
 }
 
+void wxMaxima::ExportWorksheetToPdf(const wxString &filename,
+                                    const PdfExport::Options &options) {
+  if (!GetWorksheet())
+    return;
+  if (!PdfExport::Available()) {
+    m_outputAppender.DoRawConsoleAppend(
+      _("wxworksheettopdf: this wxMaxima was built without the PDF export."),
+      MC_TYPE_ERROR);
+    return;
+  }
+  StatusExportStart();
+  const bool ok = GetWorksheet()->ExportToPDF(filename, options);
+  if (ok) {
+    StatusExportFinished();
+    StatusText(wxString::Format(_("Exported the worksheet to %s"), filename));
+  } else {
+    StatusExportFailed();
+    m_outputAppender.DoRawConsoleAppend(
+      wxString::Format(_("wxworksheettopdf: could not write \"%s\"."), filename),
+      MC_TYPE_ERROR);
+  }
+}
+
 void wxMaxima::ExportWorksheetToTex(const wxString &filename,
                                     const wxString &documentclass,
                                     const wxString &documentclassOptions,

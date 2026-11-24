@@ -444,6 +444,17 @@ if(GIT_FOUND AND EXISTS "${CMAKE_SOURCE_DIR}/.git")
     set_property(TEST source_tarball_has_no_dotfiles APPEND PROPERTY LABELS unittest)
 endif()
 
+# wxworksheettopdf() through a real Maxima (needs the PDF export, i.e. the
+# thirdparty/wxpdfdoc submodule).
+if(WXM_USE_WXPDFDOC)
+    add_test(
+        NAME wxworksheettopdf_batch
+        COMMAND ${CMAKE_COMMAND}
+                -DWXMAXIMA=$<TARGET_FILE:wxmaxima>
+                -DWORKDIR=${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+                -P ${CMAKE_CURRENT_SOURCE_DIR}/check-worksheettopdf.cmake)
+endif()
+
 add_test(
     NAME multiple_batch_files
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files

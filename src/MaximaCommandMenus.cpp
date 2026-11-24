@@ -25,6 +25,9 @@
 */
 
 #include "MaximaCommandMenus.h"
+#include "graphical_io/PdfExport.h"
+#include <algorithm>
+#include <vector>
 
 #include "wxMaxima.h"
 #include "EventIDs.h"
@@ -1206,43 +1209,49 @@ void MaximaCommandMenus::FileMenu(wxCommandEvent &event) {
     wxString fileExt = "html";
     wxConfig::Get()->Read(wxS("defaultExportExt"), &fileExt);
 
+    // The formats, in the order the dialog offers them
+    std::vector<wxString> extensions = {wxS("html"), wxS("mac"), wxS("tex")};
+    wxString wildcard = _("HTML file (*.html)|*.html|"
+                          "maxima batch file (*.mac)|*.mac|"
+                          "LaTeX file (*.tex)|*.tex");
+    if (PdfExport::Available()) {
+      extensions.push_back(wxS("pdf"));
+      wildcard += wxS("|") + _("PDF file (*.pdf)|*.pdf");
+    }
     wxFileDialog fileDialog(&m_wxMaxima, _("Export"), m_wxMaxima.m_lastPath,
-                            file + wxS(".") + fileExt,
-                            _("HTML file (*.html)|*.html|"
-                              "maxima batch file (*.mac)|*.mac|"
-                              "LaTeX file (*.tex)|*.tex"),
+                            file + wxS(".") + fileExt, wildcard,
                             wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
 
-    if (fileExt == wxS("html"))
-      fileDialog.SetFilterIndex(0);
-    else if (fileExt == wxS("mac"))
-      fileDialog.SetFilterIndex(1);
-    else
-      fileDialog.SetFilterIndex(2);
+    const auto defaultFormat = std::find(extensions.begin(), extensions.end(), fileExt);
+    fileDialog.SetFilterIndex((defaultFormat != extensions.end())
+                              ? static_cast<int>(defaultFormat - extensions.begin())
+                              : 0);
 
     if (fileDialog.ShowModal() == wxID_OK) {
       file = fileDialog.GetPath();
       if (file.Length()) {
-        int ext = fileDialog.GetFilterIndex();
-        if ((!file.Lower().EndsWith(wxS(".html"))) &&
-            (!file.Lower().EndsWith(wxS(".mac"))) &&
-            (!file.Lower().EndsWith(wxS(".tex")))) {
-          switch (ext) {
-          case 0:
+        const int ext = fileDialog.GetFilterIndex();
+        bool knownExtension = false;
+        for (const auto &extension : extensions)
+          if (file.Lower().EndsWith(wxS(".") + extension))
+            knownExtension = true;
+        if (!knownExtension) {
+          if ((ext >= 0) && (static_cast<std::size_t>(ext) < extensions.size()))
+            file += wxS(".") + extensions.at(static_cast<std::size_t>(ext));
+          else
             file += wxS(".html");
-            break;
-          case 1:
-            file += wxS(".mac");
-            break;
-          case 2:
-            file += wxS(".tex");
-            break;
-          default:
-            file += wxS(".html");
-          }
         }
 
-        if (file.Lower().EndsWith(wxS(".tex"))) {
+        if (file.Lower().EndsWith(wxS(".pdf"))) {
+          m_wxMaxima.StatusExportStart();
+          fileExt = wxS("pdf");
+          wxBusyCursor crs;
+          if (!m_wxMaxima.GetWorksheet()->ExportToPDF(file)) {
+            LoggingMessageBox(_("Exporting to PDF failed!"), _("Error!"), wxOK);
+            m_wxMaxima.StatusExportFailed();
+          } else
+            m_wxMaxima.StatusExportFinished();
+        } else if (file.Lower().EndsWith(wxS(".tex"))) {
           m_wxMaxima.StatusExportStart();
 
           fileExt = wxS("tex");

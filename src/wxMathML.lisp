@@ -220,6 +220,16 @@
 (defun $wxworksheettotex (filename &rest opts)
   (wxexport-emit "tex" filename opts))
 
+;; wxworksheettopdf("file.pdf" [, title=..., language=..., paper=...,
+;;                    landscape=...])
+;;   title      the document title (default: the worksheet's title cell)
+;;   language   the document language as a BCP 47 tag, e.g. "de" or "en-GB"
+;;              (default: the language of wxMaxima's user interface)
+;;   paper      a3, a4 (default), a5, letter or legal
+;;   landscape  true for landscape pages
+(defun $wxworksheettopdf (filename &rest opts)
+  (wxexport-emit "pdf" filename opts))
+
 ;; Muffles compiler-notes where we don't want to drown in debug messages.
 (defmacro no-warning (form)
   #+sbcl `(handler-bind

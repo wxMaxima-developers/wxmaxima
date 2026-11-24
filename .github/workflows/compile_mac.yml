@@ -30,6 +30,8 @@ jobs:
       - name: Checkout wxMaxima from git
         uses: actions/checkout@v7
         with:
+          # thirdparty/wxpdfdoc, for the PDF export
+          submodules: true
           # We must fetch at least the immediate parents so that if this is
           # a pull request then we can checkout the head.
           fetch-depth: 15
@@ -103,6 +105,8 @@ jobs:
       - name: Checkout_git
         uses: actions/checkout@v7
         with:
+          # thirdparty/wxpdfdoc, for the PDF export
+          submodules: true
           # We must fetch at least the immediate parents so that if this is
           # a pull request then we can checkout the head.
           fetch-depth: 15
@@ -155,6 +159,8 @@ jobs:
       - name: Checkout wxMaxima from git
         uses: actions/checkout@v7
         with:
+          # thirdparty/wxpdfdoc, for the PDF export
+          submodules: true
           # We must fetch at least the immediate parents so that if this is
           # a pull request then we can checkout the head.
           fetch-depth: 15
@@ -235,6 +241,8 @@ jobs:
       - name: Checkout wxMaxima from git
         uses: actions/checkout@v7
         with:
+          # thirdparty/wxpdfdoc, for the PDF export
+          submodules: true
           # We must fetch at least the immediate parents so that if this is
           # a pull request then we can checkout the head.
           fetch-depth: 15

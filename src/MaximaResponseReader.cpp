@@ -24,6 +24,7 @@
 */
 
 #include "MaximaResponseReader.h"
+#include "graphical_io/PdfExport.h"
 #include "MaximaAuthLine.h"
 #include "wxMaxima.h"
 #include "Maxima.h"
@@ -80,6 +81,7 @@ void MaximaResponseReader::ReadWorksheetExport(const wxXmlDocument &xmldoc) {
   bool wxmx = false;
   wxString documentclass;
   wxString documentclassOptions;
+  PdfExport::Options pdfOptions;
   for (wxXmlNode *child = root->GetChildren(); child != nullptr;
        child = child->GetNext()) {
     const wxString name = child->GetName();
@@ -99,12 +101,30 @@ void MaximaResponseReader::ReadWorksheetExport(const wxXmlDocument &xmldoc) {
         documentclass = std::move(content);
       else if (key == wxS("documentclassoptions"))
         documentclassOptions = std::move(content);
+      else if (key == wxS("language"))
+        pdfOptions.language = content;
+      else if (key == wxS("title"))
+        pdfOptions.title = content;
+      else if (key == wxS("paper")) {
+        const wxPaperSize paper = PdfExport::PaperFromName(content);
+        if (paper == wxPAPER_NONE)
+          m_wxMaxima.m_outputAppender.DoRawConsoleAppend(
+            wxString::Format(
+              _("wxworksheettopdf: unknown paper \"%s\"; using A4. "
+                "Known papers: a3, a4, a5, letter, legal."),
+              content),
+            MC_TYPE_WARNING);
+        else
+          pdfOptions.paper = paper;
+      }
+      else if (key == wxS("landscape"))
+        pdfOptions.orientation = (content == wxS("true")) ? wxLANDSCAPE : wxPORTRAIT;
     }
   }
 
   if (file.IsEmpty()) {
     m_wxMaxima.m_outputAppender.DoRawConsoleAppend(
-      _("wxworksheettohtml/totex: no target file name was given."),
+      _("wxworksheettohtml/totex/topdf: no target file name was given."),
       MC_TYPE_WARNING);
     return;
   }
@@ -114,6 +134,8 @@ void MaximaResponseReader::ReadWorksheetExport(const wxXmlDocument &xmldoc) {
   else if (type == wxS("tex"))
     m_wxMaxima.ExportWorksheetToTex(file, documentclass, documentclassOptions,
                                     wxmx);
+  else if (type == wxS("pdf"))
+    m_wxMaxima.ExportWorksheetToPdf(file, pdfOptions);
   else
     m_wxMaxima.m_outputAppender.DoRawConsoleAppend(
       wxString::Format(

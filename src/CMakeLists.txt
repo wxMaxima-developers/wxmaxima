@@ -101,6 +101,7 @@ set(GRAPHICAL_IO_SOURCE_FILES
     BitmapOut.cpp
     EMFout.cpp
     OutCommon.cpp
+    PdfExport.cpp
     Printout.cpp
     SVGout.cpp
 )
@@ -454,6 +455,11 @@ else()
     target_link_libraries(wxmaxima ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
 endif()
 
+# The PDF export, see cmake/WxmPdfDoc.cmake
+if(WXM_USE_WXPDFDOC)
+    target_link_libraries(wxmaxima wxm_wxpdfdoc)
+endif()
+
 if(COMPILE_SUCCEEDED)
   message("Success!")
 endif()
@@ -508,6 +514,10 @@ if(WXM_FUZZ)
     set(FUZZ_APP_SOURCES ${SOURCE_FILES})
     list(REMOVE_ITEM FUZZ_APP_SOURCES main.cpp)
     add_library(wxmFuzzApp OBJECT ${FUZZ_APP_SOURCES})
+    if(WXM_USE_WXPDFDOC)
+        # For the include path; the fuzzers below link the library itself.
+        target_link_libraries(wxmFuzzApp wxm_wxpdfdoc)
+    endif()
     target_compile_features(wxmFuzzApp PUBLIC cxx_std_20)
     target_compile_options(wxmFuzzApp PRIVATE ${WXM_FUZZ_INSTRUMENT})
     set(FUZZ_DIR ${CMAKE_SOURCE_DIR}/test/fuzz)
@@ -519,6 +529,9 @@ if(WXM_FUZZ)
         target_compile_options(fuzz_${FT} PRIVATE ${WXM_FUZZ_INSTRUMENT})
         target_link_options(fuzz_${FT} PRIVATE ${WXM_FUZZ_ENGINE})
         target_link_libraries(fuzz_${FT} ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+        if(WXM_USE_WXPDFDOC)
+            target_link_libraries(fuzz_${FT} wxm_wxpdfdoc)
+        endif()
     endforeach()
     # The command line needs nothing but wxBase, so its fuzzer is built from
     # the few files involved instead of the whole application: it compiles in
@@ -551,6 +564,11 @@ if(WXM_UNIT_TESTS)
         # below (test/unit_tests/CMakeLists.txt), which is only about linking
         # the already-compiled object files into each test executable.
         target_link_libraries(wxmTestApp Fribidi::Fribidi)
+    endif()
+    if(WXM_USE_WXPDFDOC)
+        # wxmTestApp compiles PdfExport.cpp, which needs wxPdfDocument's
+        # headers; WXM_TESTAPP_EXTRA_LIBS links the library into the tests.
+        target_link_libraries(wxmTestApp wxm_wxpdfdoc)
     endif()
 endif()
 

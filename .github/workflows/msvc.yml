@@ -44,6 +44,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
+        with:
+          # thirdparty/wxpdfdoc, for the PDF export
+          submodules: true
       - name: Cache wxWidgets
         uses: actions/cache@v6
         env:
@@ -86,6 +89,10 @@ jobs:
           buildConfiguration: ${{ env.config }}
           # Ruleset file that will determine what checks will be run
           ruleset: NativeRecommendedRules.ruleset
+          # thirdparty/wxpdfdoc (the PDF export) is third-party code: neither
+          # its targets nor its headers are ours to analyse.
+          ignoredTargetPaths: ${{ github.workspace }}/thirdparty
+          ignoredPaths: ${{ github.workspace }}/thirdparty
       # Upload SARIF file to GitHub Code Scanning Alerts
       - name: Upload SARIF to GitHub
         uses: github/codeql-action/upload-sarif@v4

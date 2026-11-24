@@ -36,11 +36,14 @@ jobs:
     steps:
       - name: Checkout_git
         uses: actions/checkout@v7
+        with:
+          # thirdparty/wxpdfdoc, for the PDF export
+          submodules: true
 
       - name: install_packages
         uses: ./.github/actions/apt-install
         with:
-          packages: cmake gettext gnuplot gnuplot-x11 libwxgtk3.2-dev libfribidi-dev locales maxima maxima-share maxima-doc ninja-build xvfb at-spi2-core dbus fonts-dejavu-core
+          packages: cmake gettext gnuplot gnuplot-x11 libwxgtk3.2-dev libfontconfig-dev libfribidi-dev locales maxima maxima-share maxima-doc ninja-build xvfb at-spi2-core dbus fonts-dejavu-core
 
       # The locales of every language a set is made for. wxWidgets only loads
       # a translation whose locale the system has, so a language missing here

@@ -522,6 +522,9 @@ if(TARGET wxmTestApp)
     if(TARGET Fribidi::Fribidi)
         list(APPEND WXM_TESTAPP_EXTRA_LIBS Fribidi::Fribidi)
     endif()
+    if(WXM_USE_WXPDFDOC)
+        list(APPEND WXM_TESTAPP_EXTRA_LIBS wxm_wxpdfdoc)
+    endif()
 
     add_executable(test_GroupCellLayout
         test_GroupCellLayout.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
@@ -788,6 +791,17 @@ if(TARGET wxmTestApp)
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
     add_test(NAME WorksheetExport
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_WorksheetExport>")
+
+    # The PDF export: Greek/maths glyphs via font fallback, embedded fonts,
+    # tagged PDF (see src/graphical_io/PdfExport.h).
+    add_executable(test_PdfExport
+        test_PdfExport.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_PdfExport PUBLIC cxx_std_20)
+    target_link_libraries(test_PdfExport PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME PdfExport
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_PdfExport>")
 
     # Safety net for the multi-format clipboard / drag-export payload: builds
     # the real Copy()/CopyCells() data objects over a live document and pins

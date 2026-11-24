@@ -31,6 +31,7 @@
 #ifndef WXMAXIMA_H
 #define WXMAXIMA_H
 
+#include "graphical_io/PdfExport.h"
 #include "BuildConfig.h"
 #include <vector>
 #include "wxMaximaFrame.h"
@@ -498,6 +499,13 @@ protected:
                             const wxString &documentclass,
                             const wxString &documentclassOptions,
                             bool embedWorksheet);
+  /*! Export the worksheet to a tagged PDF file, for wxworksheettopdf()
+
+    \param filename The (absolute) target file.
+    \param options  Title, language and paper, see PdfExport::Options
+  */
+  void ExportWorksheetToPdf(const wxString &filename,
+                            const PdfExport::Options &options);
 #ifdef __WXMSW__
   //! Register wxMaxima's own path as the .wxmx diff tool for TortoiseSVN/Git.
   void RegisterWxmxDiffTool();

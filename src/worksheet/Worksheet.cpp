@@ -31,6 +31,7 @@
 */
 
 #include "Worksheet.h"
+#include "graphical_io/PdfExport.h"
 #include "BTextCtrl.h"
 #include "WorksheetSizeMath.h"
 #include "cells/AnimationCell.h"
@@ -4918,6 +4919,14 @@ bool Worksheet::ExportToTeX(const wxString &file) {
   wxBusyCursor crs;
   return WorksheetExport::ExportToTeX(GetTree(), m_configuration, file,
                                       &GetViewCellPointers(), GetHCaret());
+}
+
+bool Worksheet::ExportToPDF(const wxString &file, PdfExport::Options options) {
+  wxBusyCursor crs;
+  if (options.title.IsEmpty())
+    options.title = PdfExport::DocumentTitle(GetTree(), wxFileName(file).GetName());
+  PdfExport exporter(GetTree(), m_configuration, options);
+  return exporter.Write(file);
 }
 
 void Worksheet::LoadSymbols() { m_autocomplete.LoadSymbols(); }

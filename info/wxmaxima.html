@@ -615,6 +615,13 @@ wxMaxima start</figcaption>
 <p>You might want to create a different cell type (using the “Cell”
 menu), maybe a title cell or text cell, which describes, what will be
 done, when you start creating your worksheet.</p>
+<p>The cell the cursor is in can be turned into another type with the
+keyboard: <kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>1</kbd> makes it a text
+cell, <kbd>2</kbd> to <kbd>7</kbd> make it a title, section, subsection,
+subsubsection, heading 5 or heading 6, the same numbers that insert
+these cells with <kbd>CTRL</kbd> alone, and
+<kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>ESC</kbd> makes it a code
+cell.</p>
 <p>If you navigate between the different cells, you will also see the
 (blinking) horizontal cursor, where you can insert a cell into your
 worksheet (either a math cell, by just start typing your formula - or a
@@ -1680,7 +1687,63 @@ class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb13-1"><a h
 </tr>
 </tbody>
 </table>
-<p>Support for <code>wxworksheettopdf()</code> is planned.</p>
+<div id="wxworksheettopdf">
+
+</div>
+<p><code>wxworksheettopdf()</code> exports the worksheet to a PDF file,
+as <strong>File → Export</strong> does when a <code>.pdf</code> file is
+chosen:</p>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="cn">wxworksheettopdf</span>(<span class="st">&quot;report.pdf&quot;</span>)$</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="cn">wxworksheettopdf</span>(<span class="st">&quot;report.pdf&quot;</span>, <span class="cn">language</span>=<span class="st">&quot;de&quot;</span>, <span class="cn">paper</span>=<span class="st">&quot;letter&quot;</span>, <span class="cn">landscape</span>=<span class="kw">true</span>)$</span></code></pre></div>
+<table>
+<colgroup>
+<col style="width: 11%" />
+<col style="width: 88%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>option</th>
+<th>meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>title</code></td>
+<td>the document title PDF viewers show (default: the worksheet’s title
+cell, or the file name)</td>
+</tr>
+<tr class="even">
+<td><code>language</code></td>
+<td>the document’s language, e.g. <code>"en"</code> or
+<code>"de-AT"</code> (default: the language of <em>wxMaxima</em>’s
+menus)</td>
+</tr>
+<tr class="odd">
+<td><code>paper</code></td>
+<td><code>a4</code> (default), <code>a3</code>, <code>a5</code>,
+<code>letter</code> or <code>legal</code></td>
+</tr>
+<tr class="even">
+<td><code>landscape</code></td>
+<td><code>false</code> (default), <code>true</code></td>
+</tr>
+</tbody>
+</table>
+<p>The PDF looks like a printout, with the print scale and margins set
+in the configuration dialog (the margins are taken as millimetres).
+Unlike a printout to a PDF printer, it keeps the text as text, in the
+worksheet’s fonts, all of which are embedded in the file; characters
+that the worksheet’s fonts lack, Greek letters and mathematical symbols
+for example, are taken from another installed font that has them. The
+PDF is also <em>tagged</em>: screen readers and other assistive
+technology can tell headings, text, code and formulas apart and read
+them in the right order. Each formula carries <em>Maxima</em>’s linear
+notation of it as its spoken description and its MathML, which screen
+readers that understand MathML present as a formula, and each plot the
+command that created it. Screen readers need to know the document’s
+language to pronounce it, which is what the <code>language</code> option
+is for.</p>
 <h2 data-number="3.4" id="plotting"><span
 class="header-section-number">3.4</span> Plotting</h2>
 <p>Plotting (having fundamentally to do with graphics) is a place where
@@ -1801,27 +1864,27 @@ default size plots created which sets the starting value of
 respect this variable that specifies the size of a plot in pixels. It
 can always be queried or used to set the size of the following
 plots:</p>
-<div class="sourceCode" id="cb14"><pre
-class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="cn">wxplot_size</span>:[<span class="dv">1200</span>,<span class="dv">800</span>]$</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="cn">wxdraw2d</span>(</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="cn">explicit</span>(</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sin</span>(<span class="cn">x</span>),</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>        <span class="cn">x</span>,<span class="dv">1</span>,<span class="dv">10</span></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>)$</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="cn">wxplot_size</span>:[<span class="dv">1200</span>,<span class="dv">800</span>]$</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="cn">wxdraw2d</span>(</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="cn">explicit</span>(</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sin</span>(<span class="cn">x</span>),</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>        <span class="cn">x</span>,<span class="dv">1</span>,<span class="dv">10</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>)$</span></code></pre></div>
 <p>If the size of only one plot is to be changed <em>Maxima</em>
 provides a canonical way to change an attribute only for the current
 cell. In this usage the specification
 <code>wxplot_size = [value1, value2]</code> is appended to the
 <code>wxdraw2d(  )</code> command, and is not part of the
 <code>wxdraw2d</code> command.</p>
-<div class="sourceCode" id="cb15"><pre
-class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="cn">wxdraw2d</span>(</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="cn">explicit</span>(</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sin</span>(<span class="cn">x</span>),</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>        <span class="cn">x</span>,<span class="dv">1</span>,<span class="dv">10</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>),<span class="cn">wxplot_size</span>=[<span class="dv">1600</span>,<span class="dv">800</span>]$</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="cn">wxdraw2d</span>(</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    <span class="cn">explicit</span>(</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sin</span>(<span class="cn">x</span>),</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>        <span class="cn">x</span>,<span class="dv">1</span>,<span class="dv">10</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>),<span class="cn">wxplot_size</span>=[<span class="dv">1600</span>,<span class="dv">800</span>]$</span></code></pre></div>
 <p>Setting the size of embedded plot with <code>wxplot_size</code> works
 for embedded plots using e.g. <code>wxplot</code>, <code>wxdraw</code>,
 <code>wxcontour_plot</code> and <code>wximplicit_plot</code> commands
@@ -1837,13 +1900,13 @@ that means it no longer fits on the screen, or smaller than that, the
 variable <code>wxplot_scale</code> (default: <code>1</code>) tells
 <em>wxMaxima</em> to show it that many times as large as it would
 otherwise:</p>
-<div class="sourceCode" id="cb16"><pre
-class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="cn">wxdraw2d</span>(</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    <span class="cn">explicit</span>(</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sin</span>(<span class="cn">x</span>),</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>        <span class="cn">x</span>,<span class="dv">1</span>,<span class="dv">10</span></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>),<span class="cn">wxplot_scale</span>=<span class="dv">2</span>$</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="cn">wxdraw2d</span>(</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    <span class="cn">explicit</span>(</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sin</span>(<span class="cn">x</span>),</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>        <span class="cn">x</span>,<span class="dv">1</span>,<span class="dv">10</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>),<span class="cn">wxplot_scale</span>=<span class="dv">2</span>$</span></code></pre></div>
 <p>Unlike a bigger <code>wxplot_size</code>, which makes the text and
 lines of a plot smaller in relation to the plot,
 <code>wxplot_scale</code> makes everything larger, the text included.
@@ -1861,13 +1924,13 @@ shrunk to fit into the window, which makes its text tiny again,
 <code>wxplot_scale='native</code> tells <em>wxMaxima</em> to show it at
 exactly the size <code>wxplot_size</code> asks for, even if that is
 wider than the window:</p>
-<div class="sourceCode" id="cb17"><pre
-class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="cn">wxdraw2d</span>(</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    <span class="cn">explicit</span>(</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sin</span>(<span class="dv">10</span>*<span class="cn">x</span>)*<span class="fu">exp</span>(-<span class="cn">x</span>/<span class="dv">3</span>),</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>        <span class="cn">x</span>,<span class="dv">0</span>,<span class="dv">10</span></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>),<span class="cn">wxplot_size</span>=[<span class="dv">1600</span>,<span class="dv">300</span>],<span class="cn">wxplot_scale</span>=<span class="do">&#39;</span><span class="cn">native</span>$</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="cn">wxdraw2d</span>(</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    <span class="cn">explicit</span>(</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sin</span>(<span class="dv">10</span>*<span class="cn">x</span>)*<span class="fu">exp</span>(-<span class="cn">x</span>/<span class="dv">3</span>),</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>        <span class="cn">x</span>,<span class="dv">0</span>,<span class="dv">10</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>),<span class="cn">wxplot_size</span>=[<span class="dv">1600</span>,<span class="dv">300</span>],<span class="cn">wxplot_scale</span>=<span class="do">&#39;</span><span class="cn">native</span>$</span></code></pre></div>
 <h3 data-number="3.4.3" id="better-quality-plots"><span
 class="header-section-number">3.4.3</span> Better quality plots</h3>
 <p><em>Gnuplot</em> doesn’t seem to provide a portable way of
@@ -1914,50 +1977,50 @@ gif.</p>
 name of the variable that is stepped between the plots and a list of the
 values of these variable. The arguments that follow are the ordinary
 arguments for <code>wxdraw2d</code>:</p>
-<div class="sourceCode" id="cb18"><pre
-class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="cn">with_slider_draw</span>(</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    <span class="cn">f</span>,[<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">10</span>],</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="cn">title</span>=<span class="fu">concat</span>(<span class="st">&quot;f=&quot;</span>,<span class="cn">f</span>,<span class="st">&quot;Hz&quot;</span>),</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    <span class="cn">explicit</span>(</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sin</span>(<span class="dv">2</span>*<span class="va">%pi</span>*<span class="cn">f</span>*<span class="cn">x</span>),</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>        <span class="cn">x</span>,<span class="dv">0</span>,<span class="dv">1</span></span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    ),<span class="cn">grid</span>=<span class="kw">true</span></span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>);</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="cn">with_slider_draw</span>(</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    <span class="cn">f</span>,[<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">10</span>],</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    <span class="cn">title</span>=<span class="fu">concat</span>(<span class="st">&quot;f=&quot;</span>,<span class="cn">f</span>,<span class="st">&quot;Hz&quot;</span>),</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    <span class="cn">explicit</span>(</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sin</span>(<span class="dv">2</span>*<span class="va">%pi</span>*<span class="cn">f</span>*<span class="cn">x</span>),</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>        <span class="cn">x</span>,<span class="dv">0</span>,<span class="dv">1</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    ),<span class="cn">grid</span>=<span class="kw">true</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>);</span></code></pre></div>
 <p>The same functionality for 3D plots is accessible as
 <code>with_slider_draw3d</code>, which allows for rotating 3d plots:</p>
-<div class="sourceCode" id="cb19"><pre
-class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="cn">wxanimate_autoplay</span>:<span class="kw">true</span>;</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="cn">wxanimate_framerate</span>:<span class="dv">20</span>;</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="cn">with_slider_draw3d</span>(</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    α,<span class="fu">makelist</span>(<span class="cn">i</span>,<span class="cn">i</span>,<span class="dv">1</span>,<span class="dv">360</span>,<span class="dv">3</span>),</span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    <span class="cn">title</span>=<span class="fu">sconcat</span>(<span class="st">&quot;α=&quot;</span>,α),</span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    <span class="cn">surface_hide</span>=<span class="kw">true</span>,</span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    <span class="cn">contour</span>=<span class="cn">both</span>,</span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    <span class="cn">view</span>=[<span class="dv">60</span>,α],</span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    <span class="cn">explicit</span>(</span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sin</span>(<span class="cn">x</span>)*<span class="fu">sin</span>(<span class="cn">y</span>),</span>
-<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>        <span class="cn">x</span>,-π,π,</span>
-<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>        <span class="cn">y</span>,-π,π</span>
-<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>)$</span></code></pre></div>
-<p>If the general shape of the plot is what matters it might suffice to
-move the plot just a little bit in order to make its 3D nature available
-to the intuition:</p>
 <div class="sourceCode" id="cb20"><pre
 class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="cn">wxanimate_autoplay</span>:<span class="kw">true</span>;</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="cn">wxanimate_framerate</span>:<span class="dv">20</span>;</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="cn">with_slider_draw3d</span>(</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    <span class="cn">t</span>,<span class="fu">makelist</span>(<span class="cn">i</span>,<span class="cn">i</span>,<span class="dv">0</span>,<span class="dv">2</span>*π,<span class="fl">.05</span>*π),</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    α,<span class="fu">makelist</span>(<span class="cn">i</span>,<span class="cn">i</span>,<span class="dv">1</span>,<span class="dv">360</span>,<span class="dv">3</span>),</span>
 <span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    <span class="cn">title</span>=<span class="fu">sconcat</span>(<span class="st">&quot;α=&quot;</span>,α),</span>
 <span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    <span class="cn">surface_hide</span>=<span class="kw">true</span>,</span>
 <span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    <span class="cn">contour</span>=<span class="cn">both</span>,</span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>    <span class="cn">view</span>=[<span class="dv">60</span>,<span class="dv">30+5</span>*<span class="fu">sin</span>(<span class="cn">t</span>)],</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>    <span class="cn">view</span>=[<span class="dv">60</span>,α],</span>
 <span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>    <span class="cn">explicit</span>(</span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sin</span>(<span class="cn">x</span>)*<span class="cn">y</span>^<span class="dv">2</span>,</span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>        <span class="cn">x</span>,<span class="dv">-2</span>*π,<span class="dv">2</span>*π,</span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>        <span class="cn">y</span>,<span class="dv">-2</span>*π,<span class="dv">2</span>*π</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sin</span>(<span class="cn">x</span>)*<span class="fu">sin</span>(<span class="cn">y</span>),</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>        <span class="cn">x</span>,-π,π,</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>        <span class="cn">y</span>,-π,π</span>
 <span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>    )</span>
 <span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>)$</span></code></pre></div>
+<p>If the general shape of the plot is what matters it might suffice to
+move the plot just a little bit in order to make its 3D nature available
+to the intuition:</p>
+<div class="sourceCode" id="cb21"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="cn">wxanimate_autoplay</span>:<span class="kw">true</span>;</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="cn">wxanimate_framerate</span>:<span class="dv">20</span>;</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="cn">with_slider_draw3d</span>(</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    <span class="cn">t</span>,<span class="fu">makelist</span>(<span class="cn">i</span>,<span class="cn">i</span>,<span class="dv">0</span>,<span class="dv">2</span>*π,<span class="fl">.05</span>*π),</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    <span class="cn">title</span>=<span class="fu">sconcat</span>(<span class="st">&quot;α=&quot;</span>,α),</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>    <span class="cn">surface_hide</span>=<span class="kw">true</span>,</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>    <span class="cn">contour</span>=<span class="cn">both</span>,</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    <span class="cn">view</span>=[<span class="dv">60</span>,<span class="dv">30+5</span>*<span class="fu">sin</span>(<span class="cn">t</span>)],</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>    <span class="cn">explicit</span>(</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sin</span>(<span class="cn">x</span>)*<span class="cn">y</span>^<span class="dv">2</span>,</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>        <span class="cn">x</span>,<span class="dv">-2</span>*π,<span class="dv">2</span>*π,</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>        <span class="cn">y</span>,<span class="dv">-2</span>*π,<span class="dv">2</span>*π</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>)$</span></code></pre></div>
 <p><code>with_slider_draw</code> and <code>with_slider_draw3d</code>
 make each frame out of a single 2D or 3D scene.
 <code>with_slider_draw_bare</code> instead hands the arguments that
@@ -1965,18 +2028,18 @@ follow the variable and its values to a plain <code>draw</code> command.
 Each frame can therefore consist of several <code>gr2d</code> and
 <code>gr3d</code> scenes, and <code>draw</code>’s global options like
 <code>columns</code> or <code>dimensions</code> can be used as well:</p>
-<div class="sourceCode" id="cb21"><pre
-class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="cn">with_slider_draw_bare</span>(</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    <span class="cn">f</span>,[<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>],</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    <span class="cn">columns</span>=<span class="dv">2</span>,</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    <span class="cn">gr2d</span>(</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>        <span class="cn">title</span>=<span class="fu">concat</span>(<span class="st">&quot;f=&quot;</span>,<span class="cn">f</span>),</span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>        <span class="cn">explicit</span>(<span class="fu">sin</span>(<span class="cn">f</span>*<span class="cn">x</span>),<span class="cn">x</span>,<span class="dv">0</span>,<span class="dv">2</span>*π)</span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    <span class="cn">gr3d</span>(</span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>        <span class="cn">explicit</span>(<span class="fu">sin</span>(<span class="cn">f</span>*<span class="cn">x</span>)*<span class="fu">cos</span>(<span class="cn">y</span>),<span class="cn">x</span>,<span class="dv">0</span>,<span class="dv">2</span>*π,<span class="cn">y</span>,<span class="dv">0</span>,<span class="dv">2</span>*π)</span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>);</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="cn">with_slider_draw_bare</span>(</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>    <span class="cn">f</span>,[<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>],</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    <span class="cn">columns</span>=<span class="dv">2</span>,</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    <span class="cn">gr2d</span>(</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>        <span class="cn">title</span>=<span class="fu">concat</span>(<span class="st">&quot;f=&quot;</span>,<span class="cn">f</span>),</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>        <span class="cn">explicit</span>(<span class="fu">sin</span>(<span class="cn">f</span>*<span class="cn">x</span>),<span class="cn">x</span>,<span class="dv">0</span>,<span class="dv">2</span>*π)</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>    <span class="cn">gr3d</span>(</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>        <span class="cn">explicit</span>(<span class="fu">sin</span>(<span class="cn">f</span>*<span class="cn">x</span>)*<span class="fu">cos</span>(<span class="cn">y</span>),<span class="cn">x</span>,<span class="dv">0</span>,<span class="dv">2</span>*π,<span class="cn">y</span>,<span class="dv">0</span>,<span class="dv">2</span>*π)</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>);</span></code></pre></div>
 <p>Like <code>with_slider_draw</code>,
 <code>with_slider_draw_bare</code> accepts
 <code>file_name="name"</code>, which saves the animation as
@@ -2004,35 +2067,35 @@ written when the command is evaluated in wxMaxima.</p>
 rate chosen in the configuration of <em>wxMaxima</em>. To set the speed
 at an individual animation is played back the variable
 <code>wxanimate_framerate</code> can be used:</p>
-<div class="sourceCode" id="cb22"><pre
-class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="cn">wxanimate</span>(<span class="cn">a</span>, <span class="dv">10</span>,</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sin</span>(<span class="cn">a</span>*<span class="cn">x</span>), [<span class="cn">x</span>,<span class="dv">-5</span>,<span class="dv">5</span>]), <span class="cn">wxanimate_framerate</span>=<span class="dv">6</span>$</span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="cn">wxanimate</span>(<span class="cn">a</span>, <span class="dv">10</span>,</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sin</span>(<span class="cn">a</span>*<span class="cn">x</span>), [<span class="cn">x</span>,<span class="dv">-5</span>,<span class="dv">5</span>]), <span class="cn">wxanimate_framerate</span>=<span class="dv">6</span>$</span></code></pre></div>
 <p>The animation functions use <em>Maxima</em>’s <code>makelist</code>
 command and therefore share the pitfall that the slider variable’s value
 is substituted into the expression only if the variable is directly
 visible in the expression. Therefore the following example will
 fail:</p>
-<div class="sourceCode" id="cb23"><pre
-class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="cn">f</span>:<span class="fu">sin</span>(<span class="cn">a</span>*<span class="cn">x</span>);</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="cn">with_slider_draw</span>(</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    <span class="cn">a</span>,<span class="fu">makelist</span>(<span class="cn">i</span>/<span class="dv">2</span>,<span class="cn">i</span>,<span class="dv">1</span>,<span class="dv">10</span>),</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    <span class="cn">title</span>=<span class="fu">concat</span>(<span class="st">&quot;a=&quot;</span>,<span class="fu">float</span>(<span class="cn">a</span>)),</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>    <span class="cn">grid</span>=<span class="kw">true</span>,</span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>    <span class="cn">explicit</span>(<span class="cn">f</span>,<span class="cn">x</span>,<span class="dv">0</span>,<span class="dv">10</span>)</span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>)$</span></code></pre></div>
-<p>If <em>Maxima</em> is explicitly asked to substitute the slider’s
-value plotting works fine instead:</p>
 <div class="sourceCode" id="cb24"><pre
 class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="cn">f</span>:<span class="fu">sin</span>(<span class="cn">a</span>*<span class="cn">x</span>);</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="cn">with_slider_draw</span>(</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    <span class="cn">b</span>,<span class="fu">makelist</span>(<span class="cn">i</span>/<span class="dv">2</span>,<span class="cn">i</span>,<span class="dv">1</span>,<span class="dv">10</span>),</span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    <span class="cn">title</span>=<span class="fu">concat</span>(<span class="st">&quot;a=&quot;</span>,<span class="fu">float</span>(<span class="cn">b</span>)),</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    <span class="cn">a</span>,<span class="fu">makelist</span>(<span class="cn">i</span>/<span class="dv">2</span>,<span class="cn">i</span>,<span class="dv">1</span>,<span class="dv">10</span>),</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    <span class="cn">title</span>=<span class="fu">concat</span>(<span class="st">&quot;a=&quot;</span>,<span class="fu">float</span>(<span class="cn">a</span>)),</span>
 <span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    <span class="cn">grid</span>=<span class="kw">true</span>,</span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    <span class="cn">explicit</span>(</span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>        <span class="fu">subst</span>(<span class="cn">a</span>=<span class="cn">b</span>,<span class="cn">f</span>),</span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>        <span class="cn">x</span>,<span class="dv">0</span>,<span class="dv">10</span></span>
-<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>)$</span></code></pre></div>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    <span class="cn">explicit</span>(<span class="cn">f</span>,<span class="cn">x</span>,<span class="dv">0</span>,<span class="dv">10</span>)</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>)$</span></code></pre></div>
+<p>If <em>Maxima</em> is explicitly asked to substitute the slider’s
+value plotting works fine instead:</p>
+<div class="sourceCode" id="cb25"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="cn">f</span>:<span class="fu">sin</span>(<span class="cn">a</span>*<span class="cn">x</span>);</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="cn">with_slider_draw</span>(</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    <span class="cn">b</span>,<span class="fu">makelist</span>(<span class="cn">i</span>/<span class="dv">2</span>,<span class="cn">i</span>,<span class="dv">1</span>,<span class="dv">10</span>),</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    <span class="cn">title</span>=<span class="fu">concat</span>(<span class="st">&quot;a=&quot;</span>,<span class="fu">float</span>(<span class="cn">b</span>)),</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    <span class="cn">grid</span>=<span class="kw">true</span>,</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>    <span class="cn">explicit</span>(</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>        <span class="fu">subst</span>(<span class="cn">a</span>=<span class="cn">b</span>,<span class="cn">f</span>),</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>        <span class="cn">x</span>,<span class="dv">0</span>,<span class="dv">10</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>)$</span></code></pre></div>
 <h3 data-number="3.4.7"
 id="opening-multiple-plots-in-contemporaneous-windows"><span
 class="header-section-number">3.4.7</span> Opening multiple plots in
@@ -2041,29 +2104,29 @@ contemporaneous windows</h3>
 <em>Maxima</em> (on setups that support it) sometimes comes in handily.
 The following example comes from a post from Mario Rodriguez to the
 <em>Maxima</em> mailing list:</p>
-<div class="sourceCode" id="cb25"><pre
-class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="fu">draw</span>);</span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="co">/* Parabola in window #1 */</span></span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="fu">draw2d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">1</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>));</span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="co">/* Parabola in window #2 */</span></span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="fu">draw2d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">2</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>));</span>
-<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a><span class="co">/* Paraboloid in window #3 */</span></span>
-<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="fu">draw3d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">3</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>+<span class="cn">y</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>,<span class="cn">y</span>,<span class="dv">-1</span>,<span class="dv">1</span>));</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="fu">draw</span>);</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="co">/* Parabola in window #1 */</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="fu">draw2d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">1</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>));</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="co">/* Parabola in window #2 */</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="fu">draw2d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">2</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>));</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a><span class="co">/* Paraboloid in window #3 */</span></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a><span class="fu">draw3d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">3</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>+<span class="cn">y</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>,<span class="cn">y</span>,<span class="dv">-1</span>,<span class="dv">1</span>));</span></code></pre></div>
 <p>Plotting multiple plots in the same window is possible, too (the same
 is possible in command line Maxima with the standard <code>draw()</code>
 command):</p>
-<div class="sourceCode" id="cb26"><pre
-class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="cn">wxdraw</span>(</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="cn">gr2d</span>(</span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    <span class="cn">key</span>=<span class="st">&quot;sin (x)&quot;</span>,<span class="cn">grid</span>=[<span class="dv">2</span>,<span class="dv">2</span>],</span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    <span class="cn">explicit</span>(<span class="fu">sin</span>(<span class="cn">x</span>),<span class="cn">x</span>,<span class="dv">0</span>,<span class="dv">2</span>*<span class="va">%pi</span>)),</span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="cn">gr2d</span>(</span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>    <span class="cn">key</span>=<span class="st">&quot;cos (x)&quot;</span>,<span class="cn">grid</span>=[<span class="dv">2</span>,<span class="dv">2</span>],</span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>    <span class="cn">explicit</span>(<span class="fu">cos</span>(<span class="cn">x</span>),<span class="cn">x</span>,<span class="dv">0</span>,<span class="dv">2</span>*<span class="va">%pi</span>))</span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>);</span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="cn">wxdraw</span>(</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="cn">gr2d</span>(</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>    <span class="cn">key</span>=<span class="st">&quot;sin (x)&quot;</span>,<span class="cn">grid</span>=[<span class="dv">2</span>,<span class="dv">2</span>],</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>    <span class="cn">explicit</span>(<span class="fu">sin</span>(<span class="cn">x</span>),<span class="cn">x</span>,<span class="dv">0</span>,<span class="dv">2</span>*<span class="va">%pi</span>)),</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  <span class="cn">gr2d</span>(</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>    <span class="cn">key</span>=<span class="st">&quot;cos (x)&quot;</span>,<span class="cn">grid</span>=[<span class="dv">2</span>,<span class="dv">2</span>],</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>    <span class="cn">explicit</span>(<span class="fu">cos</span>(<span class="cn">x</span>),<span class="cn">x</span>,<span class="dv">0</span>,<span class="dv">2</span>*<span class="va">%pi</span>))</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>);</span></code></pre></div>
 <h3 data-number="3.4.8" id="the-plot-using-draw-side-pane"><span
 class="header-section-number">3.4.8</span> The “Plot using draw” side
 pane</h3>
@@ -2151,17 +2214,17 @@ plots</h3>
 size might be very small. For the <code>draw</code>-based commands, you
 can set the font / font size using options like <code>font=...</code>,
 <code>font_size=...</code>, e.g.:</p>
-<div class="sourceCode" id="cb27"><pre
-class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="cn">wxdraw2d</span>(</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>     <span class="cn">font</span>=<span class="st">&quot;Helvetica&quot;</span>,</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>     <span class="cn">font_size</span>=<span class="dv">30</span>,</span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>     <span class="cn">explicit</span>(<span class="fu">sin</span>(<span class="cn">x</span>),<span class="cn">x</span>,<span class="dv">1</span>,<span class="dv">10</span>));</span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="cn">wxdraw2d</span>(</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>     <span class="cn">font</span>=<span class="st">&quot;Helvetica&quot;</span>,</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>     <span class="cn">font_size</span>=<span class="dv">30</span>,</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>     <span class="cn">explicit</span>(<span class="fu">sin</span>(<span class="cn">x</span>),<span class="cn">x</span>,<span class="dv">1</span>,<span class="dv">10</span>));</span></code></pre></div>
 <p>For the <code>plot</code>-commands (e.g. <code>wxplot2d</code>,
 <code>wxplot3d</code>) font sizes and fonts can be set using the
 <code>gnuplot_preamble</code> command, e.g.:</p>
-<div class="sourceCode" id="cb28"><pre
-class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="cn">wxplot2d</span>(<span class="fu">sin</span>(<span class="cn">x</span>),[<span class="cn">x</span>,<span class="dv">1</span>,<span class="dv">10</span>],</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>         [<span class="cn">gnuplot_preamble</span>, <span class="st">&quot;set tics font \&quot;</span><span class="cn">Arial</span>, <span class="dv">30</span>\<span class="st">&quot;; set xlabel font \&quot;</span>,<span class="dv">20</span>\<span class="st">&quot;; set ylabel font \&quot;</span>,<span class="dv">20</span>\<span class="st">&quot;;&quot;</span>]);</span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="cn">wxplot2d</span>(<span class="fu">sin</span>(<span class="cn">x</span>),[<span class="cn">x</span>,<span class="dv">1</span>,<span class="dv">10</span>],</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>         [<span class="cn">gnuplot_preamble</span>, <span class="st">&quot;set tics font \&quot;</span><span class="cn">Arial</span>, <span class="dv">30</span>\<span class="st">&quot;; set xlabel font \&quot;</span>,<span class="dv">20</span>\<span class="st">&quot;; set ylabel font \&quot;</span>,<span class="dv">20</span>\<span class="st">&quot;;&quot;</span>]);</span></code></pre></div>
 <p>This sets the font for the numbers to Arial with size 30, the size
 for the xlabel and ylabel font to 20 (with the default font).</p>
 <p>Read the Maxima and Gnuplot documentation for further information.
@@ -2175,8 +2238,8 @@ in a <em>wxMaxima</em> project can be done as easily as per
 drag-and-drop. But sometimes (for example if an image’s contents might
 change later on in a session) it is better to tell the file to load the
 image on evaluation:</p>
-<div class="sourceCode" id="cb29"><pre
-class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="cn">show_image</span>(<span class="st">&quot;man.png&quot;</span>);</span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="cn">show_image</span>(<span class="st">&quot;man.png&quot;</span>);</span></code></pre></div>
 <h2 data-number="3.6" id="startup-files"><span
 class="header-section-number">3.6</span> Startup files</h2>
 <p>The config dialogue of <em>wxMaxima</em> offers to edit two files
@@ -2284,13 +2347,13 @@ output routine. The input is a list of one or more lists. Like the
 “print” command, this command displays output even when ended with a
 dollar sign. Ending the command with a semicolon results in the same
 table along with a “done” statement.</p>
-<div class="sourceCode" id="cb30"><pre
-class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="cn">table_form</span>(</span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>    [</span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>        [<span class="dv">1</span>,<span class="dv">2</span>],</span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>        [<span class="dv">3</span>,<span class="dv">4</span>]</span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>    ]</span>
-<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>)$</span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="cn">table_form</span>(</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    [</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>        [<span class="dv">1</span>,<span class="dv">2</span>],</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>        [<span class="dv">3</span>,<span class="dv">4</span>]</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>)$</span></code></pre></div>
 <p>As the next example shows, the lists that are assembled by the
 <code>table_form</code> command can be created before the command is
 executed.</p>
@@ -2338,9 +2401,9 @@ double-clicking opens, and <code>auto</code>, the default, shades them
 only if the matrix is too large for the window.</li>
 </ul>
 <p>Example:</p>
-<div class="sourceCode" id="cb31"><pre
-class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="cn">wx_matrix</span>(<span class="fu">matrix</span>([<span class="st">&quot;Name&quot;</span>, <span class="st">&quot;Value&quot;</span>], [<span class="st">&quot;X&quot;</span>, <span class="dv">10</span>], [<span class="st">&quot;Y&quot;</span>, <span class="dv">20</span>]),</span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>          <span class="cn">lines</span>=<span class="kw">true</span>, <span class="cn">rownames</span>=<span class="kw">true</span>, <span class="cn">colnames</span>=<span class="kw">true</span>, <span class="cn">parenstyle</span>=<span class="cn">square</span>);</span></code></pre></div>
+<div class="sourceCode" id="cb32"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="cn">wx_matrix</span>(<span class="fu">matrix</span>([<span class="st">&quot;Name&quot;</span>, <span class="st">&quot;Value&quot;</span>], [<span class="st">&quot;X&quot;</span>, <span class="dv">10</span>], [<span class="st">&quot;Y&quot;</span>, <span class="dv">20</span>]),</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>          <span class="cn">lines</span>=<span class="kw">true</span>, <span class="cn">rownames</span>=<span class="kw">true</span>, <span class="cn">colnames</span>=<span class="kw">true</span>, <span class="cn">parenstyle</span>=<span class="cn">square</span>);</span></code></pre></div>
 <p><code>wx_matrix()</code> doesn’t display anything itself: it returns
 the matrix with the formatting attached, which is used whenever that
 value is displayed. So it can be stored in a variable and displayed
@@ -2500,14 +2563,14 @@ attempts to typeset a only partially completed equation. There is a
 <code>disp</code> command, though, that will provide debug output
 immediately and without waiting for the current <em>Maxima</em> command
 to finish:</p>
-<div class="sourceCode" id="cb33"><pre
-class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="kw">for</span> <span class="cn">i</span>:<span class="dv">1</span> <span class="kw">thru</span> <span class="dv">10</span> <span class="kw">do</span> (</span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">disp</span>(<span class="cn">i</span>),</span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>   <span class="co">/* (sleep n) is a Lisp function, which can be used */</span></span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>   <span class="co">/* with the character &quot;?&quot; before. It delays the */</span></span>
-<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>   <span class="co">/* program execution (here: for 3 seconds) */</span></span>
-<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>   ?<span class="cn">sleep</span>(<span class="dv">3</span>)</span>
-<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>)$</span></code></pre></div>
+<div class="sourceCode" id="cb34"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="kw">for</span> <span class="cn">i</span>:<span class="dv">1</span> <span class="kw">thru</span> <span class="dv">10</span> <span class="kw">do</span> (</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">disp</span>(<span class="cn">i</span>),</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>   <span class="co">/* (sleep n) is a Lisp function, which can be used */</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>   <span class="co">/* with the character &quot;?&quot; before. It delays the */</span></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>   <span class="co">/* program execution (here: for 3 seconds) */</span></span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>   ?<span class="cn">sleep</span>(<span class="dv">3</span>)</span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>)$</span></code></pre></div>
 <p>Alternatively one can look for the <code>wxstatusbar()</code> command
 above.</p>
 <h2 data-number="5.5"
@@ -2569,8 +2632,8 @@ issued recently.</li>
 <li>If nothing else helps <em>Maxima</em> contains a replay
 feature:</li>
 </ul>
-<div class="sourceCode" id="cb34"><pre
-class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">playback</span>();</span></code></pre></div>
+<div class="sourceCode" id="cb35"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">playback</span>();</span></code></pre></div>
 <h2 data-number="5.8"
 id="wxmaxima-starts-up-with-the-message-maxima-process-terminated."><span
 class="header-section-number">5.8</span> <em>WxMaxima</em> starts up
@@ -2621,14 +2684,14 @@ class="header-section-number">5.12</span> <em>WxMaxima</em> halts when
 <em>Maxima</em> processes Greek characters or Umlauts</h2>
 <p>If your <em>Maxima</em> is based on SBCL the following lines have to
 be added to your <code>.sbclrc</code>:</p>
-<div class="sourceCode" id="cb35"><pre
-class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">setf</span> sb-impl::*default-external-format* :utf-8)</span></code></pre></div>
+<div class="sourceCode" id="cb36"><pre
+class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">setf</span> sb-impl::*default-external-format* :utf-8)</span></code></pre></div>
 <p>The folder where this file has to be placed is system- and
 installation-specific. But any SBCL-based <em>Maxima</em> that already
 has evaluated a cell in the current session will happily tell where it
 can be found after getting the following command:</p>
-<div class="sourceCode" id="cb36"><pre
-class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>:<span class="cn">lisp</span> (<span class="cn">sb</span>-<span class="cn">impl</span>::<span class="cn">userinit</span>-<span class="cn">pathname</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb37"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>:<span class="cn">lisp</span> (<span class="cn">sb</span>-<span class="cn">impl</span>::<span class="cn">userinit</span>-<span class="cn">pathname</span>)</span></code></pre></div>
 <h2 data-number="5.13"
 id="note-concerning-wayland-recent-linuxbsd-distributions"><span
 class="header-section-number">5.13</span> Note concerning Wayland
@@ -2679,44 +2742,44 @@ class="header-section-number">5.17</span> Can I make <em>wxMaxima</em>
 output both image files and embedded plots at once?</h2>
 <p>The worksheet embeds <code>.png</code> files. <em>WxMaxima</em>
 allows the user to specify where they should be generated:</p>
-<div class="sourceCode" id="cb37"><pre
-class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="cn">wxdraw2d</span>(</span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>    <span class="cn">file_name</span>=<span class="st">&quot;test&quot;</span>,  <span class="co">/* extension .png automatically added */</span></span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>    <span class="cn">explicit</span>(<span class="fu">sin</span>(<span class="cn">x</span>),<span class="cn">x</span>,<span class="dv">1</span>,<span class="dv">10</span>)</span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>);</span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="cn">wxdraw2d</span>(</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>    <span class="cn">file_name</span>=<span class="st">&quot;test&quot;</span>,  <span class="co">/* extension .png automatically added */</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>    <span class="cn">explicit</span>(<span class="fu">sin</span>(<span class="cn">x</span>),<span class="cn">x</span>,<span class="dv">1</span>,<span class="dv">10</span>)</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>);</span></code></pre></div>
 <p>If a different format is to be used, it is easier to generate the
 images and then import them into the worksheet again:</p>
-<div class="sourceCode" id="cb38"><pre
-class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;draw&quot;</span>);</span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="cn">pngdraw</span>(<span class="cn">name</span>,[<span class="cn">contents</span>]):=</span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>(</span>
-<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">draw</span>(</span>
-<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>        <span class="fu">append</span>(</span>
-<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>            [</span>
-<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>                <span class="cn">terminal</span>=<span class="cn">pngcairo</span>,</span>
-<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>                <span class="cn">dimensions</span>=<span class="cn">wxplot_size</span>,</span>
-<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>                <span class="cn">file_name</span>=<span class="cn">name</span></span>
-<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>            ],</span>
-<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>            <span class="cn">contents</span></span>
-<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a>    <span class="cn">show_image</span>(<span class="fu">printf</span>(<span class="kw">false</span>,<span class="st">&quot;~a.png&quot;</span>,<span class="cn">name</span>))</span>
-<span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a>);</span>
-<span id="cb38-16"><a href="#cb38-16" aria-hidden="true" tabindex="-1"></a><span class="cn">pngdraw2d</span>(<span class="cn">name</span>,[<span class="cn">contents</span>]):=</span>
-<span id="cb38-17"><a href="#cb38-17" aria-hidden="true" tabindex="-1"></a>    <span class="cn">pngdraw</span>(<span class="cn">name</span>,<span class="cn">gr2d</span>(<span class="cn">contents</span>));</span>
-<span id="cb38-18"><a href="#cb38-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-19"><a href="#cb38-19" aria-hidden="true" tabindex="-1"></a><span class="cn">pngdraw2d</span>(<span class="st">&quot;Test&quot;</span>,</span>
-<span id="cb38-20"><a href="#cb38-20" aria-hidden="true" tabindex="-1"></a>        <span class="cn">explicit</span>(<span class="fu">sin</span>(<span class="cn">x</span>),<span class="cn">x</span>,<span class="dv">1</span>,<span class="dv">10</span>)</span>
-<span id="cb38-21"><a href="#cb38-21" aria-hidden="true" tabindex="-1"></a>);</span></code></pre></div>
+<div class="sourceCode" id="cb39"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;draw&quot;</span>);</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="cn">pngdraw</span>(<span class="cn">name</span>,[<span class="cn">contents</span>]):=</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>(</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">draw</span>(</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>        <span class="fu">append</span>(</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>            [</span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>                <span class="cn">terminal</span>=<span class="cn">pngcairo</span>,</span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>                <span class="cn">dimensions</span>=<span class="cn">wxplot_size</span>,</span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>                <span class="cn">file_name</span>=<span class="cn">name</span></span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a>            ],</span>
+<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a>            <span class="cn">contents</span></span>
+<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb39-14"><a href="#cb39-14" aria-hidden="true" tabindex="-1"></a>    <span class="cn">show_image</span>(<span class="fu">printf</span>(<span class="kw">false</span>,<span class="st">&quot;~a.png&quot;</span>,<span class="cn">name</span>))</span>
+<span id="cb39-15"><a href="#cb39-15" aria-hidden="true" tabindex="-1"></a>);</span>
+<span id="cb39-16"><a href="#cb39-16" aria-hidden="true" tabindex="-1"></a><span class="cn">pngdraw2d</span>(<span class="cn">name</span>,[<span class="cn">contents</span>]):=</span>
+<span id="cb39-17"><a href="#cb39-17" aria-hidden="true" tabindex="-1"></a>    <span class="cn">pngdraw</span>(<span class="cn">name</span>,<span class="cn">gr2d</span>(<span class="cn">contents</span>));</span>
+<span id="cb39-18"><a href="#cb39-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-19"><a href="#cb39-19" aria-hidden="true" tabindex="-1"></a><span class="cn">pngdraw2d</span>(<span class="st">&quot;Test&quot;</span>,</span>
+<span id="cb39-20"><a href="#cb39-20" aria-hidden="true" tabindex="-1"></a>        <span class="cn">explicit</span>(<span class="fu">sin</span>(<span class="cn">x</span>),<span class="cn">x</span>,<span class="dv">1</span>,<span class="dv">10</span>)</span>
+<span id="cb39-21"><a href="#cb39-21" aria-hidden="true" tabindex="-1"></a>);</span></code></pre></div>
 <h2 data-number="5.18"
 id="can-i-set-the-aspect-ratio-of-an-embedded-plot"><span
 class="header-section-number">5.18</span> Can I set the aspect ratio of
 an embedded plot?</h2>
 <p>Use the variable <code>wxplot_size</code>:</p>
-<div class="sourceCode" id="cb39"><pre
-class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="cn">wxdraw2d</span>(</span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>    <span class="cn">explicit</span>(<span class="fu">sin</span>(<span class="cn">x</span>),<span class="cn">x</span>,<span class="dv">1</span>,<span class="dv">10</span>)</span>
-<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>),<span class="cn">wxplot_size</span>=[<span class="dv">1000</span>,<span class="dv">1000</span>];</span></code></pre></div>
+<div class="sourceCode" id="cb40"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="cn">wxdraw2d</span>(</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>    <span class="cn">explicit</span>(<span class="fu">sin</span>(<span class="cn">x</span>),<span class="cn">x</span>,<span class="dv">1</span>,<span class="dv">10</span>)</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>),<span class="cn">wxplot_size</span>=[<span class="dv">1000</span>,<span class="dv">1000</span>];</span></code></pre></div>
 <h2 data-number="5.19"
 id="after-upgrading-to-macos-13.1-plot-andor-draw-commands-output-error-messages-like"><span
 class="header-section-number">5.19</span> After upgrading to MacOS 13.1
@@ -2789,8 +2852,8 @@ text fit on a LaTeX page?</h2>
 using the respective field in the config dialogue
 (“Export”-&gt;“Additional lines for the TeX preamble”), to set borders
 of 1cm):</p>
-<div class="sourceCode" id="cb42"><pre
-class="sourceCode latex"><code class="sourceCode latex"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>[left=1cm,right=1cm,top=1cm,bottom=1cm]{<span class="ex">geometry</span>}</span></code></pre></div>
+<div class="sourceCode" id="cb43"><pre
+class="sourceCode latex"><code class="sourceCode latex"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>[left=1cm,right=1cm,top=1cm,bottom=1cm]{<span class="ex">geometry</span>}</span></code></pre></div>
 <h2 data-number="6.2" id="is-there-a-dark-mode"><span
 class="header-section-number">6.2</span> Is there a dark mode?</h2>
 <p>If wxWidgets is new enough, <em>wxMaxima</em> will automatically be
@@ -2873,11 +2936,11 @@ neither <code>true</code> nor <code>false</code>. So a plain
 these versions, too. A worksheet that has to work with them as well can
 compare the result with <code>true</code>, which gives
 <code>false</code> there:</p>
-<div class="sourceCode" id="cb43"><pre
-class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="kw">if</span> <span class="cn">wx_version_min</span>(<span class="st">&quot;26.09.0&quot;</span>) = <span class="kw">true</span> <span class="kw">then</span></span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>    <span class="cn">wx_matrix</span>(<span class="cn">M</span>, <span class="cn">oversized</span>=<span class="cn">scroll</span>)</span>
-<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="kw">else</span></span>
-<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>    <span class="cn">M</span>;</span></code></pre></div>
+<div class="sourceCode" id="cb44"><pre
+class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="kw">if</span> <span class="cn">wx_version_min</span>(<span class="st">&quot;26.09.0&quot;</span>) = <span class="kw">true</span> <span class="kw">then</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>    <span class="cn">wx_matrix</span>(<span class="cn">M</span>, <span class="cn">oversized</span>=<span class="cn">scroll</span>)</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a><span class="kw">else</span></span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>    <span class="cn">M</span>;</span></code></pre></div>
 <h2 data-number="6.7" id="help-i-can-not-save-my-document"><span
 class="header-section-number">6.7</span> Help! I can not save my
 document!</h2>
@@ -2922,6 +2985,11 @@ messages to stderr, too.</li>
 <li><code>--debug</code>: Enable costly debug checks.</li>
 <li><code>--exit-on-error</code>: Close the program on any maxima
 error.</li>
+<li><code>--language=&lt;lang&gt;</code>: Use this language for the user
+interface instead of the one configured in the settings, for example
+<code>de</code>, <code>pt_BR</code> or <code>zh_CN</code>. The setting
+is not saved. Useful for checking a translation, or for making
+screenshots for a translated manual.</li>
 <li><code>-f</code> or <code>--ini=&lt;str&gt;</code>: Use the init file
 that was given as an argument to this command-line switch</li>
 <li><code>-u</code>, <code>--use-version=&lt;str&gt;</code>: Use maxima
@@ -2934,6 +3002,12 @@ specify extra Maxima arguments</li>
 specifying the location of the <em>maxima</em> binary</li>
 <li><code>--enableipc</code>: Lets Maxima control wxMaxima via
 interprocess communications. Use this option with care.</li>
+<li><code>--screenshot=&lt;file&gt;</code>: Evaluate the file that is
+opened, save a screenshot as <code>&lt;file&gt;</code> once
+<em>Maxima</em> is idle and exit. What the screenshot shows is read from
+the <code>[Screenshot]</code> group of the configuration file given by
+<code>--ini</code>. Used for making the screenshots in this manual; see
+<code>info/screenshots/README.md</code> in wxMaxima’s source code.</li>
 <li><code>--wxmathml-lisp=&lt;str&gt;</code>: Location of wxMathML.lisp
 (if not the built-in should be used, mainly for developers).</li>
 </ul>

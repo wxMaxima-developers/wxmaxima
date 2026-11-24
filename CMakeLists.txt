@@ -231,6 +231,7 @@ endif()
 message(STATUS "Found wxWidgets: (found version \"${wxWidgets_VERSION_STRING}\")")
 include(${wxWidgets_USE_FILE})
 include(${CMAKE_SOURCE_DIR}/cmake/WxmFeatureSummary.cmake)
+include(${CMAKE_SOURCE_DIR}/cmake/WxmPdfDoc.cmake)
 
 # A static Windows wxWidgets built with LunaSVG (USE_LUNASVG=1, which makes
 # SVG plots possible, see SvgBitmap::RendersText()) needs its libwxlunasvg.a

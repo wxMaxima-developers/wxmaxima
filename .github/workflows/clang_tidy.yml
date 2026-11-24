@@ -23,11 +23,14 @@ jobs:
     steps:
       - name: Checkout_git
         uses: actions/checkout@v7
+        with:
+          # thirdparty/wxpdfdoc, for the PDF export
+          submodules: true
       - name: install_packages
         # Caches the downloaded .debs; see the action for why.
         uses: ./.github/actions/apt-install
         with:
-          packages: cmake clang clang-tidy gettext libwxgtk3.2-dev libwxgtk-webview3.2-dev libfribidi-dev ninja-build
+          packages: cmake clang clang-tidy gettext libwxgtk3.2-dev libfontconfig-dev libwxgtk-webview3.2-dev libfribidi-dev ninja-build
       - name: configure
         # No precompiled headers and no unity build: clang-tidy needs every
         # source file as its own compile command, with its own includes.
@@ -41,4 +44,6 @@ jobs:
         run: |
              run-clang-tidy -p build -j "$(nproc)" -quiet \
                -warnings-as-errors='bugprone-*,clang-analyzer-*,misc-*,modernize-*' \
-               'src/'
+               "^$PWD/src/"
+             # Anchored: a bare 'src/' would also pick thirdparty/wxpdfdoc/src/,
+             # third-party code that isn't ours to fix.
