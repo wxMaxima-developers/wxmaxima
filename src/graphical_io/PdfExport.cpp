@@ -499,7 +499,7 @@ bool PdfExport::Impl::Write(const wxString &file) {
   return wxFileName::FileExists(file);
 }
 
-PdfExport::PdfExport(GroupCell *tree, const Configuration *source, Options options)
+PdfExport::PdfExport(GroupCell *tree, const Configuration *source, const Options &options)
   : m_impl(std::make_unique<Impl>(tree, source, options, m_pageStarts)) {}
 
 PdfExport::~PdfExport() = default;

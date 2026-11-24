@@ -1215,7 +1215,7 @@ void MaximaCommandMenus::FileMenu(wxCommandEvent &event) {
                           "maxima batch file (*.mac)|*.mac|"
                           "LaTeX file (*.tex)|*.tex");
     if (PdfExport::Available()) {
-      extensions.push_back(wxS("pdf"));
+      extensions.emplace_back(wxS("pdf"));
       wildcard += wxS("|") + _("PDF file (*.pdf)|*.pdf");
     }
     wxFileDialog fileDialog(&m_wxMaxima, _("Export"), m_wxMaxima.m_lastPath,
