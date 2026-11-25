@@ -26,6 +26,7 @@
 */
 
 #include "AboutDialog.h"
+#include "BuildConfig.h"
 #include "Version.h"
 #include "../wxMaximaIcon.h"
 #include "../wxMaximaOSDescription.h"
@@ -44,7 +45,17 @@ AboutDialog::AboutDialog(wxWindow *WXUNUSED(parent), Configuration *config) {
 
       if (WxMaximaGitShortHash())
         description += wxString::Format(_("Build from Git version: %s\n"), WxMaximaGitShortHash());
-      description += wxString::Format(_("Using: %s\n\n"), wxVERSION_STRING);
+      // The libraries wxMaxima is made with, credited with their web sites.
+      // The URLs are format arguments so that translators don't have to copy
+      // them.
+      description += wxString::Format(_("Using: %s (%s)\n"), wxVERSION_STRING,
+                                      wxS("https://www.wxwidgets.org/"));
+#ifdef WXM_USE_WXPDFDOC
+      description += wxString::Format(
+        _("PDF export: wxPdfDocument by Ulrich Telle (%s)\n"),
+        wxS("https://github.com/utelle/wxpdfdoc"));
+#endif
+      description += wxS("\n");
 
       if (config->GetMaximaVersion() != wxEmptyString)
         {
