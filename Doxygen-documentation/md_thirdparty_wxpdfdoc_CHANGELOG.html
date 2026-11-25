@@ -97,6 +97,7 @@ Fixed</h2>
 <ul>
 <li><a class="el" href="classA.html">A</a> wxFont with style <code>wxFONTSTYLE_SLANT</code> is now drawn with the font's italic (or oblique) face instead of the upright one</li>
 <li>The random number generator compiles on Cygwin, which has no <code>rand_s()</code>; it reads <code>/dev/urandom</code> there like other POSIX systems</li>
+<li><a class="el" href="classA.html">A</a> wxFont whose face name is one of the 14 Adobe standard fonts or their aliases (for example Arial, Helvetica, Times, Courier) is now mapped to the font installed on the system instead of the built-in standard font, in <code><a class="el" href="classwxPdfDocument.html#a9b3235929a2014b2eb4a5cffe6cbe3b7" title="Sets the font used to print character strings.">wxPdfDocument::SetFont</a>(const wxFont&amp;)</code>, <code><a class="el" href="classwxPdfDC.html" title="Class representing a PDF drawing context.">wxPdfDC</a></code> and <code>wxPdfGraphicsContext</code>. The standard fonts are never embedded and cover only the WinAnsi character set, so for example Greek letters were lost. New method <code><a class="el" href="classwxPdfFontManager.html#a97f4257c449c5fbac9a154fb482572be" title="Get the font corresponding to a wxFont object.">wxPdfFontManager::GetFontForWxFont</a>(const wxFont&amp;)</code></li>
 </ul>
 <h1><a class="anchor" id="autotoc_md1258"></a>
 &lt;a href="../../compare/v1.3.1...v1.4.0" &gt;1.4.0&lt;/a&gt; - 2026-05-20</h1>
