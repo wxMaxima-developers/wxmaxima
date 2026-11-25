@@ -101,6 +101,7 @@
 #include "Configuration.h"
 #include "Dirstructure.h"
 #include "MathParser.h"
+#include "graphical_io/PDFout.h"
 #include "worksheet/ClipboardContents.h"
 #include "worksheet/Worksheet.h"
 #include "worksheet/WorksheetExport.h"
@@ -263,6 +264,7 @@ static const wxDataFormat kRtf3Format{wxS("Rich Text Format")};
 
 static const wxDataFormat kSvgFormat{wxS("image/svg+xml")};
 
+
 //! The format a bitmap is offered in: wxDF_BITMAP on GTK and macOS, a DIB on
 //! Windows.
 static wxDataFormat BitmapFormat() {
@@ -276,6 +278,18 @@ static std::string GetData(const wxDataObject &obj, const wxDataFormat &format) 
   if (size)
     REQUIRE(obj.GetDataHere(format, data.data()));
   return data;
+}
+
+/*! Checks the PDF flavour: offered where Pdfout::OfferedOnClipboard() says so
+    (not on Windows, not without wxPdfDocument), and then a whole PDF file */
+static void CheckPdfFlavour(const wxDataObject &data) {
+  const bool offered = HasFormat(GetFormats(data), Pdfout::GetDataFormat());
+  REQUIRE(offered == Pdfout::OfferedOnClipboard());
+  if (!offered)
+    return;
+  const std::string pdf = GetData(data, Pdfout::GetDataFormat());
+  REQUIRE(pdf.rfind("%PDF-", 0) == 0);
+  REQUIRE(pdf.find("%%EOF") != std::string::npos);
 }
 
 SCENARIO("The whole-cell (cut/copy-cells) clipboard object is well-formed") {
@@ -304,6 +318,9 @@ SCENARIO("The whole-cell (cut/copy-cells) clipboard object is well-formed") {
       // wxQt cannot hand a wxBitmap over inside a composite at all.
       REQUIRE(HasFormat(fmts, LazyPngDataObject::GetDataFormat()));
 #endif
+    }
+    THEN("it offers a PDF where programs take one (macOS, X11)") {
+      CheckPdfFlavour(*data);
     }
     THEN("the \"Rich Text Format\"-named flavor MS Word looks for (GH #2264) "
          "is the preferred one") {
@@ -352,6 +369,9 @@ SCENARIO("The selection (copy-as-output) clipboard object is well-formed") {
       // wxQt cannot hand a wxBitmap over inside a composite at all.
       REQUIRE(HasFormat(fmts, LazyPngDataObject::GetDataFormat()));
 #endif
+    }
+    THEN("it offers a PDF where programs take one (macOS, X11)") {
+      CheckPdfFlavour(*data);
     }
     THEN("the SVG is an SVG image") {
       const std::string svg = GetData(*data, kSvgFormat);

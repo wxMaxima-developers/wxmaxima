@@ -102,6 +102,7 @@ set(GRAPHICAL_IO_SOURCE_FILES
     EMFout.cpp
     OutCommon.cpp
     PageBreaks.cpp
+    PDFout.cpp
     PdfExport.cpp
     Printout.cpp
     SVGout.cpp

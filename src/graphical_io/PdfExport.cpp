@@ -48,14 +48,6 @@
 #include <algorithm>
 
 namespace {
-/*! The resolution of the coordinates the worksheet is laid out in
-
-  wxMaxima's geometry is integer, so this is also the precision of every
-  position in the PDF: 1/720 inch, 1/10 of a point.
-*/
-constexpr int PDF_PPI = 720;
-//! The resolution wxMaxima's font sizes and lengths are meant for (see Printout)
-constexpr int REFERENCE_PPI = 96;
 
 //! Fold every run of whitespace to one space: a spoken label has no layout
 wxString FoldWhitespace(const wxString &text) {
@@ -338,7 +330,7 @@ void PdfExport::Impl::AddBookmark(const GroupCell &group) {
   // its page (the document's unit is the point).
   const wxCoord pageStart = (m_page < m_pageStarts.size()) ? m_pageStarts.at(m_page) : 0;
   const wxCoord top = group.GetRect().GetTop() - pageStart + m_marginTop;
-  m_doc->Bookmark(text, level, std::max(0.0, top * 72.0 / PDF_PPI));
+  m_doc->Bookmark(text, level, std::max(0.0, top * 72.0 / LayoutPpi));
 }
 
 void PdfExport::Impl::DrawGroup(GroupCell &group) {
@@ -413,10 +405,10 @@ bool PdfExport::Impl::Write(const wxString &file) {
   printData.SetFilename(file);
 
   m_dc = std::make_unique<wxPdfDC>(printData);
-  m_dc->SetResolution(PDF_PPI);
+  m_dc->SetResolution(PdfExport::LayoutPpi);
   // Font sizes are meant for a 96 dpi screen, whatever screen this
   // computer has: the PDF must not depend on it.
-  m_dc->SetFontResolution(REFERENCE_PPI);
+  m_dc->SetFontResolution(PdfExport::ReferencePpi);
   if (!m_dc->StartDoc(m_options.title))
     return false;
   m_doc = m_dc->GetPdfDocument();
@@ -448,12 +440,12 @@ bool PdfExport::Impl::Write(const wxString &file) {
     m_configuration->ShowCodeCells(m_source->ShowCodeCells());
   const double printScale = m_source ? m_source->PrintScale() : 1.0;
   m_configuration->SetZoomFactor_temporarily(
-    static_cast<double>(PDF_PPI) / REFERENCE_PPI * printScale);
+    static_cast<double>(PdfExport::LayoutPpi) / PdfExport::ReferencePpi * printScale);
 
   // The print margins are set in the configuration dialog as plain numbers;
   // here they are millimetres.
   const auto mm = [](double millimetres) {
-    return static_cast<wxCoord>(millimetres / 25.4 * PDF_PPI);
+    return static_cast<wxCoord>(millimetres / 25.4 * PdfExport::LayoutPpi);
   };
   const double marginLeft = m_source ? m_source->PrintMargin_Left() : 10;
   const double marginRight = m_source ? m_source->PrintMargin_Right() : 10;

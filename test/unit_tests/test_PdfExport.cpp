@@ -54,6 +54,9 @@
 #include "Configuration.h"
 #include "MathParser.h"
 #include "cells/GroupCell.h"
+#include "cells/CellList.h"
+#include "graphical_io/OutCommon.h"
+#include "graphical_io/PDFout.h"
 #include "graphical_io/PdfExport.h"
 #include "worksheet/Worksheet.h"
 
@@ -62,6 +65,7 @@
 #include <wx/pdffontmanager.h>
 #endif
 
+#include <cmath>
 #include <cstdlib>
 #include <regex>
 #include <set>
@@ -452,6 +456,92 @@ SCENARIO("A structure element survives a page break") {
       CHECK(pdf.Count("/S /Formula") == 60);
     }
   }
+}
+
+//! Renders cells with Pdfout, keeping the PDF in the output directory
+DecodedPdf ClipboardPdf(const wxString &name, std::unique_ptr<Cell> &&cells,
+                        wxSize *pageSize) {
+  Pdfout out(&g_cfg, std::move(cells));
+  REQUIRE(out.IsOk());
+  *pageSize = out.GetPageSize();
+  const wxString file = g_outputDir + wxS("/") + name + wxS(".pdf");
+  wxFFile f(file, wxS("wb"));
+  REQUIRE(f.IsOpened());
+  REQUIRE(f.Write(out.GetData().data(), out.GetData().size()) == out.GetData().size());
+  f.Close();
+  return DecodePdf(file);
+}
+
+SCENARIO("The clipboard's PDF is one page, cut to the cells") {
+  const std::unique_ptr<GroupCell> tree = ParseXmlString(kGreekDocument);
+  GIVEN("Part of an output: a fraction with Greek letters") {
+    GroupCell *fraction = tree.get();
+    while (fraction && !fraction->GetEditable()->ToString().StartsWith(wxS("sqrt")))
+      fraction = fraction->GetNext();
+    REQUIRE(fraction);
+    REQUIRE(fraction->GetOutput());
+    wxSize page;
+    const DecodedPdf pdf = ClipboardPdf(wxS("clip_output"),
+                                        fraction->GetOutput()->CopyList(fraction), &page);
+    THEN("It is one page about as big as a formula, not a sheet of paper") {
+      CHECK(pdf.Count("/Type /Page/") + pdf.Count("/Type /Page>") +
+            pdf.Count("/Type /Page\n") + pdf.Count("/Type /Page ") == 1);
+      CHECK(page.x > 5);
+      CHECK(page.y > 5);
+      CHECK(page.x < 300);
+      CHECK(page.y < 100);
+      // The page's own MediaBox (the document has a default one, too).
+      // wxPdfDocument stores page sizes in its own units, hence the tolerance.
+      bool found = false;
+      static const std::regex mediaBoxRe(
+        "/MediaBox \\[0 0 ([0-9.]+) ([0-9.]+)\\]");
+      for (std::sregex_iterator it(pdf.text.begin(), pdf.text.end(), mediaBoxRe), end;
+           it != end; ++it)
+        if ((std::abs(std::stod((*it)[1]) - page.x) < 1) &&
+            (std::abs(std::stod((*it)[2]) - page.y) < 1))
+          found = true;
+      CHECK(found);
+    }
+    THEN("Its characters are there, in embedded fonts") {
+      for (const wxUint32 c : {0x03b1u, 0x03c0u})
+        CHECK(pdf.mappedCharacters.count(c) == 1);
+      const std::size_t descriptors = pdf.Count("/Type /FontDescriptor");
+      CHECK(descriptors > 0);
+      CHECK(pdf.Count("/FontFile") == descriptors);
+    }
+  }
+  GIVEN("Whole cells") {
+    wxSize page;
+    const DecodedPdf pdf = ClipboardPdf(wxS("clip_cells"), tree->CopyList(), &page);
+    THEN("They fit onto the one page, which is no paper size either") {
+      CHECK(page.x > 50);
+      CHECK(page.y > 50);
+      CHECK(page != wxSize(595, 842));
+      for (const char c : std::string("PdfNetTitle"))
+        CHECK(pdf.mappedCharacters.count(static_cast<wxUint32>(c)) == 1);
+      CHECK(pdf.mappedCharacters.count(0x03c6u) == 1);
+    }
+  }
+  GIVEN("Nothing") {
+    Pdfout out(&g_cfg, nullptr);
+    THEN("There is no PDF") { CHECK(!out.IsOk()); }
+  }
+}
+
+SCENARIO("A rendering of whole cells has room for the indent they are drawn at") {
+  // GroupCell::Draw() draws a cell GetIndent() right of its position (the
+  // room for the cell brackets), which the cell's width leaves out. The size
+  // of a rendering of whole cells (the clipboard's PDF, SVG, EMF and bitmap)
+  // used to leave it out as well, which cut the end of the widest line off.
+  const std::unique_ptr<GroupCell> tree = ParseXmlString(kGreekDocument);
+  OutCommon common(&g_cfg, 700, 1.0);
+  common.SetRecalculationContext(g_dc);
+  std::unique_ptr<GroupCell> cells = tree->CopyList();
+  REQUIRE(common.PrepareLayout(cells.get()));
+  const int indent = common.GetConfiguration()->GetIndent();
+  REQUIRE(indent > 0);
+  for (const GroupCell &group : OnList(cells.get()))
+    CHECK(common.GetSize().x >= indent + group.GetWidth());
 }
 
 //! How a PDF text string (UTF-16BE, as wxPdfDocument writes them) spells ASCII text

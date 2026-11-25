@@ -49,6 +49,7 @@
 #include "dialogs/MatrixViewer.h"
 #include "cells/MatrCell.h"
 #include <wx/numformatter.h>
+#include "graphical_io/PDFout.h"
 #include "graphical_io/SVGout.h"
 #include "Version.h"
 #include "Compat.h"
@@ -2600,6 +2601,15 @@ SvgForClipboard(const std::shared_ptr<const ClipboardSnapshot> &snapshot) {
   });
 }
 
+//! A PDF of a clipboard snapshot, drawn only when a program asks for it
+LazyValue<std::string>
+PdfForClipboard(const std::shared_ptr<const ClipboardSnapshot> &snapshot) {
+  return LazyValue<std::string>([snapshot] {
+    return Pdfout(snapshot->GetConfigurationPointer(), snapshot->CopyCells())
+      .GetData();
+  });
+}
+
 #if wxUSE_ENH_METAFILE
 //! The enhanced metafile of a clipboard snapshot, drawn only when asked for
 LazyValue<wxEnhMetaFile>
@@ -2659,6 +2669,7 @@ std::unique_ptr<wxDataObject> Worksheet::CreateSelectionDataObject() const {
   // The vector formats cost nothing until a program pastes them, so they are
   // offered here as well as for whole cells (GH #2472).
   contents->svg = SvgForClipboard(snapshot);
+  contents->pdf = PdfForClipboard(snapshot);
 #if wxUSE_ENH_METAFILE
   contents->emf = EmfForClipboard(snapshot);
 #endif
@@ -2708,6 +2719,12 @@ std::unique_ptr<wxDataObject> Worksheet::CreateSelectionDataObject() const {
                                                               &contents->emf)));
 #endif
   data->Add(new LazyDataObject(Svgout::GetDataFormat(), svg));
+  // What macOS programs take vector graphics as (Keynote, Pages, ...)
+  if (Pdfout::OfferedOnClipboard())
+    data->Add(new LazyDataObject(
+                Pdfout::GetDataFormat(),
+                std::shared_ptr<const LazyValue<std::string>>(contents,
+                                                              &contents->pdf)));
 
   m_clipboardContents = std::move(contents);
   return std::unique_ptr<wxDataObject>(data);
@@ -3045,6 +3062,7 @@ std::unique_ptr<wxDataObject> Worksheet::CreateCellsDataObject() const {
       snapshot->GetConfiguration()->BitmapScale());
   });
   contents->svg = SvgForClipboard(snapshot);
+  contents->pdf = PdfForClipboard(snapshot);
 #if wxUSE_ENH_METAFILE
   contents->emf = EmfForClipboard(snapshot);
 #endif
@@ -3083,6 +3101,12 @@ std::unique_ptr<wxDataObject> Worksheet::CreateCellsDataObject() const {
                                                               &contents->emf)));
 #endif
   data->Add(new LazyDataObject(Svgout::GetDataFormat(), svg));
+  // What macOS programs take vector graphics as (Keynote, Pages, ...)
+  if (Pdfout::OfferedOnClipboard())
+    data->Add(new LazyDataObject(
+                Pdfout::GetDataFormat(),
+                std::shared_ptr<const LazyValue<std::string>>(contents,
+                                                              &contents->pdf)));
 
   m_clipboardContents = contents;
   return std::unique_ptr<wxDataObject>(data);
