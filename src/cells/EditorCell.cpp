@@ -4308,6 +4308,17 @@ bool EditorCell::History::Redo()
   return false;
 }
 bool EditorCell::History::CanUndo() const {return m_historyPosition > 0;}
+bool EditorCell::History::CanUndoTo(const HistoryEntry &current) const {
+  const size_t end = std::min(m_historyPosition, m_history.size());
+  for (size_t i = 0; i < end; ++i)
+    if (!m_history[i].SameContent(current))
+      return true;
+  return false;
+}
+
+bool EditorCell::CanUndo() const {
+  return m_history.CanUndoTo(History::HistoryEntry(GetValue(), 0, 0, GetFormats()));
+}
 bool EditorCell::History::CanRedo() const {return m_historyPosition + 1 < m_history.size();}
 EditorCell::History::HistoryEntry EditorCell::History::GetState() const {
   // After AddState() m_historyPosition == m_history.size() (one past the last

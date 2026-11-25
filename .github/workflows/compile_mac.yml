@@ -42,8 +42,13 @@ jobs:
              export HOMEBREW_NO_INSTALL_CLEANUP=1
              export HOMEBREW_NO_ANALYTICS=1
              set -e
-             brew install fribidi gettext ninja pandoc wxwidgets
+             brew install ccache fribidi gettext ninja pandoc wxwidgets
              set +e
+      - name: ccache
+        # Compiler cache, restored from main's last run; see the action.
+        uses: ./.github/actions/ccache
+        with:
+          key: macos_ninja
       - name: xcode-select
         run: |
              sudo xcode-select --reset
@@ -60,6 +65,9 @@ jobs:
       - name: Compile wxMaxima
         run: |
              cmake --build build-wxm --parallel "$(sysctl -n hw.ncpu)"
+      - name: save the ccache
+        if: ${{ !cancelled() }}
+        uses: ./.github/actions/ccache-save
       - name: Install wxMaxima
         run: |
              cmake --install build-wxm
@@ -211,6 +219,16 @@ jobs:
         run: |
           sudo port install gettext ninja maxima gnuplot pkgconfig wxWidgets-3.2
           sudo port select wxWidgets wxWidgets-3.2
+      - name: Install ccache
+        # Outside the step above, which a restored /opt/local skips: MacPorts'
+        # prebuilt ccache is quick to install, so it needs no cache key bump.
+        run: |
+          port installed ccache | grep -q active || sudo port -N install ccache
+      - name: ccache
+        # Compiler cache, restored from main's last run; see the action.
+        uses: ./.github/actions/ccache
+        with:
+          key: macos_macports
       - name: Configure wxMaxima
         run: |
              mkdir ../build-wxm
@@ -220,6 +238,9 @@ jobs:
       - name: Compile wxMaxima
         run: |
              cmake --build ../build-wxm --parallel "$(sysctl -n hw.ncpu)"
+      - name: save the ccache
+        if: ${{ !cancelled() }}
+        uses: ./.github/actions/ccache-save
       - name: Install wxMaxima
         run: |
              cmake --install ../build-wxm
