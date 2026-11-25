@@ -607,7 +607,7 @@ subscripted" using the command <code>wxdeclare_subscripted(variable_name);</code
 Открытие командной консоли Gnuplot в окнах &lt;tt&gt;plot&lt;/tt&gt;</h3>
 <p>В MS Windows существует две программы Gnuplot: <code>gnuplot.exe</code> и <code>wgnuplot.exe</code>. Выбрать ту из них, которая будет использоваться, можно в меню настройки конфигурации. При этом <code>wgnuplot.exe</code> позволяет открыть окно командной строки для ввода команд <em>gnuplot</em>, а <code>gnuplot.exe</code> такой возможности не предоставляет. К сожалению, <code>wgnuplot.exe</code> позволяет <em>Gnuplot</em> на некоторое время «захватывать» фокус клавиатуры каждый раз при подготовке графика.</p>
 <h3><a class="anchor" id="embedding-animations-into-the-spreadsheet"></a>
-Incrustar animaciones en la hoja de trabajo</h3>
+Animationen in das Arbeitsblatt einbetten</h3>
 <p>Трёхмерные графики затрудняют чтение количественных данных. В качестве возможной альтернативы можно назначить третий параметр колесу мыши. Команда <code>with_slider_draw</code> является версией команды <code>wxdraw2d</code>, позволяющей подготовить несколько графиков и переключаться между ними путём перемещения ползунка в верхней части экрана. <em>WxMaxima</em> позволяет экспортировать эту анимацию в виде анимированного файла gif.</p>
 <p>Первые два аргумента команды <code>with_slider_draw</code> представляют собой имя переменной, значение которой пошагово изменяется в графиках, и список значений этой переменной. За ними следуют обычные аргументы для <code>wxdraw2d</code>:</p>
 <div class="fragment"><div class="line">with_slider_draw(</div>
