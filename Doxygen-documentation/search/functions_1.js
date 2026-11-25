@@ -148,6 +148,6 @@ var searchData=
   ['autodetectmaxima_145',['AutodetectMaxima',['../classConfiguration.html#a8fe525f2332e1cab5fbef7b59725a537',1,'Configuration::AutodetectMaxima(bool autodetectmaxima)'],['../classConfiguration.html#a9e0cf486019c3fcaea4618839d02a0b9',1,'Configuration::AutodetectMaxima() const']]],
   ['autolink_5ftest_146',['Autolink_Test',['../classAutolink__Test.html#a278d631f9943428c05b17d78f14488e2',1,'Autolink_Test']]],
   ['autosave_147',['AutoSave',['../classMaximaFileIO.html#ab93eb7a241a47d7573cc47310269aad4',1,'MaximaFileIO']]],
-  ['available_148',['Available',['../classPdfExport.html#a30e287866685ebad5470ffac7c22230f',1,'PdfExport']]],
+  ['available_148',['Available',['../classPdfout.html#a72606d8a43d8b377ea86565303800ed3',1,'Pdfout::Available()'],['../classPdfExport.html#a30e287866685ebad5470ffac7c22230f',1,'PdfExport::Available()']]],
   ['axialgradient_149',['AxialGradient',['../classwxPdfDocument.html#a17585e45222725f1b92364343006058a',1,'wxPdfDocument']]]
 ];

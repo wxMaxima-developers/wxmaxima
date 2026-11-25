@@ -72,7 +72,8 @@ $(function() {
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-static-methods">Static Public Member Functions</a>  </div>
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a>  </div>
   <div class="headertitle"><div class="title">PdfExport Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -119,6 +120,16 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>Available</b> 
 <tr class="memitem:af9cf8c6ba97547ed7476424a91d26956"><td class="memItemLeft" align="right" valign="top">static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPdfExport.html#af9cf8c6ba97547ed7476424a91d26956">UiLanguageTag</a> ()</td></tr>
 <tr class="memdesc:af9cf8c6ba97547ed7476424a91d26956"><td class="mdescLeft">&#160;</td><td class="mdescRight">The BCP 47 language tag of <a class="el" href="classwxMaxima.html">wxMaxima</a>'s user interface, e.g.  <br /></td></tr>
 <tr class="separator:af9cf8c6ba97547ed7476424a91d26956"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:a4ad4f9540fd7621a87745d68ae94645f"><td class="memItemLeft" align="right" valign="top">static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPdfExport.html#a4ad4f9540fd7621a87745d68ae94645f">LayoutPpi</a> = 720</td></tr>
+<tr class="memdesc:a4ad4f9540fd7621a87745d68ae94645f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The resolution of the coordinates the worksheet is laid out in.  <br /></td></tr>
+<tr class="separator:a4ad4f9540fd7621a87745d68ae94645f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c8472d7076cd9cda7b9d6984f084c56"><td class="memItemLeft" align="right" valign="top"><a id="a8c8472d7076cd9cda7b9d6984f084c56" name="a8c8472d7076cd9cda7b9d6984f084c56"></a>
+static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><b>ReferencePpi</b> = 96</td></tr>
+<tr class="memdesc:a8c8472d7076cd9cda7b9d6984f084c56"><td class="mdescLeft">&#160;</td><td class="mdescRight">The resolution <a class="el" href="classwxMaxima.html">wxMaxima</a>'s font sizes and lengths are meant for (see <a class="el" href="classPrintout.html">Printout</a>) <br /></td></tr>
+<tr class="separator:a8c8472d7076cd9cda7b9d6984f084c56"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Writes a worksheet to a PDF file. </p>
@@ -275,6 +286,32 @@ to PDF" driver:</p>
 <p>The BCP 47 language tag of <a class="el" href="classwxMaxima.html">wxMaxima</a>'s user interface, e.g. </p>
 <p>"de-DE"</p>
 <p>Falls back to "en" for the C/POSIX locale. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Field Documentation</h2>
+<a id="a4ad4f9540fd7621a87745d68ae94645f" name="a4ad4f9540fd7621a87745d68ae94645f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4ad4f9540fd7621a87745d68ae94645f">&#9670;&#160;</a></span>LayoutPpi</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr int PdfExport::LayoutPpi = 720</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The resolution of the coordinates the worksheet is laid out in. </p>
+<p><a class="el" href="classwxMaxima.html">wxMaxima</a>'s geometry is integer, so this is also the precision of every position in the PDF: 1/720 inch, 1/10 of a point. <a class="el" href="classPdfout.html" title="Renders a part of the worksheet as a PDF whose page is exactly as big as it.">Pdfout</a> uses it, too. </p>
 
 </div>
 </div>

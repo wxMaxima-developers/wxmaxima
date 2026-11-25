@@ -313,8 +313,17 @@ Architecture &amp; GUI</h1>
     each outline level's parent one level up and silently links a skipped
     level to the wrong one, so a bookmark's level is the number of open
     headings above it, not the heading's own depth.
+- &lt;strong&gt;The clipboard's PDF (&lt;tt&gt;src/graphical_io/PDFout.{h,cpp}&lt;/tt&gt;)** is a
+  one-page PDF cut to the copied cells, made from &lt;tt&gt;OutCommon&lt;/tt&gt; like the SVG.
+  The page size is only known after the layout, which needs a DC measuring
+  as the PDF will, so the &lt;tt&gt;wxPdfDC&lt;/tt&gt; is in "template mode" (it owns no
+  document and adds no pages) on a &lt;tt&gt;wxPdfDocument&lt;/tt&gt; whose one page is added
+  after the layout. Offered as &lt;tt&gt;com.adobe.pdf&lt;/tt&gt; on macOS and
+  &lt;tt&gt;application/pdf&lt;/tt&gt; elsewhere, but not on Windows, where no program takes a
+  PDF from the clipboard. macOS' wxClipboard renders every format at copy
+  time, so this costs every copy there.
 - **"Copy as HTML" (GH #2265/#2266/#2267) &amp;ndash; &lt;tt&gt;WorksheetExport::
-  SelectionToSelfContainedHTML()&lt;/tt&gt; / &lt;tt&gt;Worksheet::CopyHTML()&lt;/tt&gt;:** a right-click
+  SelectionToSelfContainedHTML()&lt;/tt&gt; / &lt;tt&gt;Worksheet::CopyHTML()&lt;/tt&gt;:&lt;/strong&gt; a right-click
   context menu item placing a &lt;em&gt;self-contained&lt;/em&gt; HTML document on the
   clipboard (inline &lt;tt&gt;\&lt;style\&gt;&lt;/tt&gt;, every image as a base64 &lt;tt&gt;data:&lt;/tt&gt; URI, no
   external file references at all). &lt;tt&gt;ExportToHTML()&lt;/tt&gt;'s on-disk export does
