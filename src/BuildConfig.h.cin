@@ -23,5 +23,8 @@
 #cmakedefine USE_FRIBIDI
 // The PDF export, see cmake/WxmPdfDoc.cmake
 #cmakedefine WXM_USE_WXPDFDOC
+// Why there is no PDF export (empty if there is one), shown by Help >
+// Troubleshooting. English, like the rest of the configure output.
+#define WXM_WXPDFDOC_MISSING_REASON R"wxmreason(@WXM_WXPDFDOC_MISSING_REASON@)wxmreason"
 
 #endif // WXM_BUILDCONFIG_H

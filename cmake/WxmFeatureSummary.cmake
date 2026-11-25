@@ -174,11 +174,9 @@ function(wxm_feature_summary)
   set(pdf_name "PDF export (tagged, accessible)")
   if(WXM_USE_WXPDFDOC)
     wxm_feature_line("${pdf_name}" "yes (wxPdfDocument, thirdparty/wxpdfdoc)")
-  elseif(WXM_WXPDFDOC_MISSING_REASON)
-    wxm_feature_line("${pdf_name}" "no" "${WXM_WXPDFDOC_MISSING_REASON}")
   else()
-    wxm_feature_line("${pdf_name}" "no"
-      "Disabled with WXM_USE_WXPDFDOC=OFF. Set it to ON to enable it.")
+    # WxmPdfDoc.cmake always names a reason, also for WXM_USE_WXPDFDOC=OFF.
+    wxm_feature_line("${pdf_name}" "no" "${WXM_WXPDFDOC_MISSING_REASON}")
   endif()
 
   # --- Scalable (SVG) plots --------------------------------------------------

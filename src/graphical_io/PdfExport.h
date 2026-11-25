@@ -109,6 +109,14 @@ public:
   //! Was wxMaxima built with the PDF export?
   static bool Available();
 
+  /*! What Help > Troubleshooting says about the PDF export
+
+    Without it, this names the reason CMake found when configuring the build
+    (the git submodule wasn't checked out, fontconfig is missing, ...), the
+    same reason the configure step's feature summary prints.
+  */
+  static wxString Diagnosis();
+
   //! The number of pages the last Write() produced
   std::size_t GetPageCount() const { return m_pageStarts.size(); }
 
