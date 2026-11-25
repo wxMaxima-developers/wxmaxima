@@ -43,8 +43,10 @@ class Printout : public wxPrintout
 public:
   Printout(const wxString& title, GroupCell *tree, double scaleFactor);
 
-  /* Determine which cells are the Right places to start a page
-   */
+  /*! Decides where the pages start, see wxm::BreakIntoPages()
+
+    The PDF export breaks its pages the same way.
+  */
   void BreakPages();
 
   /*! Determine the sizes of all worksheet objects
@@ -65,8 +67,8 @@ public:
 private:
   //! The copy of the worksheet we print
   std::unique_ptr<GroupCell> m_tree;
-  //! The cells we determined to be the right page starts
-  std::vector<const Cell *> m_pages;
+  //! The worksheet y coordinate each page starts at (see wxm::BreakIntoPages())
+  std::vector<wxCoord> m_pageStarts;
   //! The config that is active during printing
   Configuration m_configuration;
   //! A pointer to m_configuration we can point to
