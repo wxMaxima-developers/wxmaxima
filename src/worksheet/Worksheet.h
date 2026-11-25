@@ -1699,7 +1699,7 @@ public:
     (PdfExport::Available()).
   */
   bool ExportToPDF(const wxString &file,
-                   PdfExport::Options options = PdfExport::Options());
+                   const PdfExport::Options &options = PdfExport::Options());
 
   /*! Convert the current selection to a string
     \param lb
