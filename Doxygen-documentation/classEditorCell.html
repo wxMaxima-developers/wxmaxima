@@ -486,9 +486,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>CaretToEnd</b> ()</td
 void&#160;</td><td class="memItemRight" valign="bottom"><b>CaretToPosition</b> (size_t pos)</td></tr>
 <tr class="memdesc:ad42c365579d28493d633fdae6f4f72c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move the cursor to a certain position in the cell. <br /></td></tr>
 <tr class="separator:ad42c365579d28493d633fdae6f4f72c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac2e74af8c7c80f0f3490a133e2bb84ce"><td class="memItemLeft" align="right" valign="top"><a id="ac2e74af8c7c80f0f3490a133e2bb84ce" name="ac2e74af8c7c80f0f3490a133e2bb84ce"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanUndo</b> () const</td></tr>
-<tr class="memdesc:ac2e74af8c7c80f0f3490a133e2bb84ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">True, if there is undo information for this cell. <br /></td></tr>
+<tr class="memitem:ac2e74af8c7c80f0f3490a133e2bb84ce"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#ac2e74af8c7c80f0f3490a133e2bb84ce">CanUndo</a> () const</td></tr>
+<tr class="memdesc:ac2e74af8c7c80f0f3490a133e2bb84ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">True, if an undo would change this cell's contents.  <br /></td></tr>
 <tr class="separator:ac2e74af8c7c80f0f3490a133e2bb84ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf1d96e92d05bf269423e42aa6d5b13c"><td class="memItemLeft" align="right" valign="top"><a id="aaf1d96e92d05bf269423e42aa6d5b13c" name="aaf1d96e92d05bf269423e42aa6d5b13c"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Undo</b> ()</td></tr>
@@ -1652,6 +1651,26 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><b>SelectionToHTML</
 <p>Can this cell be popped out interactively in gnuplot? </p>
 
 <p>Reimplemented in <a class="el" href="classAnimationCell.html#a3a54518c72ccde277cab0ca6ba201261">AnimationCell</a>, <a class="el" href="classImgCell.html#a08f0cf0de0964e392aefc3c12cabd5c2">ImgCell</a>, and <a class="el" href="classImgCellBase.html#ac44e335536d914feb91616fdbc9ee4c0">ImgCellBase</a>.</p>
+
+</div>
+</div>
+<a id="ac2e74af8c7c80f0f3490a133e2bb84ce" name="ac2e74af8c7c80f0f3490a133e2bb84ce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2e74af8c7c80f0f3490a133e2bb84ce">&#9670;&#160;</a></span>CanUndo()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool EditorCell::CanUndo </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>True, if an undo would change this cell's contents. </p>
+<p>The history also records the text a cell had when the cursor entered it (<a class="el" href="classEditorCell.html#ac3aaa6e05945f0185ff534a310d94e99" title="Activate the blinking cursor in this cell.">ActivateCursor()</a> saves it), so it is rarely empty; an entry that only repeats the current contents is nothing to undo. Counting it made Worksheet::Undo() hand Ctrl+Z to the cell, which then changed nothing, instead of to the worksheet &ndash; so a cell type conversion, a deletion or any other worksheet-level change could not be undone while the cursor was in a cell that hadn't been edited. </p>
 
 </div>
 </div>
