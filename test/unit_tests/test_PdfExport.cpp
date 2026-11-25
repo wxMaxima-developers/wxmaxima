@@ -544,6 +544,44 @@ SCENARIO("A rendering of whole cells has room for the indent they are drawn at")
     CHECK(common.GetSize().x >= indent + group.GetWidth());
 }
 
+//! How a PDF text string (UTF-16BE, as wxPdfDocument writes them) spells ASCII text
+std::string Utf16BE(const std::string &ascii) {
+  std::string result;
+  for (const char c : ascii) {
+    result += '\0';
+    result += c;
+  }
+  return result;
+}
+
+SCENARIO("The headings become the PDF's bookmarks") {
+  GIVEN("A worksheet whose headings skip a level") {
+    // The subsubsection has no subsection above it.
+    const wxString cells =
+      TextGroup(wxS("title"), wxS("BmTitle")) +
+      TextGroup(wxS("section"), wxS("BmSection")) +
+      TextGroup(wxS("subsubsection"), wxS("BmDeep")) +
+      TextGroup(wxS("text"), wxS("Not a heading")) +
+      TextGroup(wxS("section"), wxS("BmSecond"));
+    const wxString file = ExportPdf(wxS("bookmarks"), Document(cells));
+    const DecodedPdf pdf = DecodePdf(file);
+    THEN("Each heading is a bookmark, and the viewer shows them") {
+      CHECK(pdf.Contains("/Type /Outlines"));
+      CHECK(pdf.Contains("/PageMode /UseOutlines"));
+      CHECK(pdf.Count("/Dest [") == 4);
+      for (const char *title : {"BmTitle", "BmSection", "BmDeep", "BmSecond"})
+        CHECK(pdf.Contains(Utf16BE(title)));
+      CHECK(!pdf.Contains(Utf16BE("Not a heading")));
+    }
+    THEN("The skipped level doesn't break the nesting") {
+      // Entries with children: the outline root, the title (above both
+      // sections) and the first section (above the subsubsection). Taken at
+      // its own depth, the subsubsection would hang from the title instead.
+      CHECK(pdf.Count("/First ") == 3);
+    }
+  }
+}
+
 SCENARIO("Exporting an empty worksheet gives a valid one-page PDF") {
   g_ws->ClearDocument();
   const wxString file = g_outputDir + wxS("/empty.pdf");

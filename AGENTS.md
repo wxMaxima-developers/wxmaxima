@@ -751,6 +751,10 @@ a local TCP socket.
     stay with what follows. `test_PdfExport` decodes the PDF itself (no
     external tools), so it runs everywhere; set `WXM_PDF_DUMP_DIR` to keep
     the PDFs and their decoded text for a look with `pdffonts` or pikepdf.
+  - **Bookmarks** (the outline) come from the headings. wxPdfDocument needs
+    each outline level's parent one level up and silently links a skipped
+    level to the wrong one, so a bookmark's level is the number of open
+    headings above it, not the heading's own depth.
 - **The clipboard's PDF (`src/graphical_io/PDFout.{h,cpp}`)** is a
   one-page PDF cut to the copied cells, made from `OutCommon` like the SVG.
   The page size is only known after the layout, which needs a DC measuring
