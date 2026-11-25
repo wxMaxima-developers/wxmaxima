@@ -75,27 +75,27 @@ $(function() {
 <div class="textblock"><p>WxMaxima ist ein graphisches Benutzerinterface (GUI) für das Computer-Algebrasystem <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>. <a class="el" href="classwxMaxima.html">wxMaxima</a> erlaubt die Nutzung aller Funktionen dieses Programms und bietet Assistenten für dessen wichtigste Funktionen an. Dieses Handbuch beschreibt die Features, die <a class="el" href="classwxMaxima.html">wxMaxima</a> zu einer der beliebtesten graphischen Benutzerumgebung für <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> gemacht haben.</p>
 <p><img src="./wxMaximaLogo.png" alt="wxMaxima Logo" class="inline"/></p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md93"></a>
+<h1><a class="anchor" id="autotoc_md92"></a>
 Einführung in wxMaxima</h1>
-<h2><a class="anchor" id="autotoc_md94"></a>
+<h2><a class="anchor" id="autotoc_md93"></a>
 &lt;em&gt;Maxima&lt;/em&gt; und wxMaxima</h2>
 <p>Im Open-Source-Bereich ist es üblich, große Systeme in kleine Projekte aufzuteilen, die jeweils klein genug sind, dass eine endliche Menge an Entwicklern ausreicht, um sie weiterzuentwickeln. Beispielsweise ist ein CD-Brennprogramm aus einem Kommandozeilentool zusammengesetzt, das die CDs brennt und eine graphische Benutzerumgebung, die dieses Tool bedient. Ein Vorteil dieses Ansatzes ist es, daß dasselbe Kommandozeilenprogramm von vielen Stellen aus genutzt werden: Das Brennprogramm, ein "Sende an die
 CD"-Knopf und beispielsweise ein Backup-Tool. Ein weiterer Vorteil ist es, dass auf diese Weise für eine Funktionalität mehrere Benutzerinterfaces angeboten werden können.</p>
 <p>Ein Computer-Algebrasystem (CAS) wie <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> ist hervorragend für diesen Ansatz geeignet: Es kann die Logik hinter einem Taschenrechner liefern, der mit beliebig langen Zahlen hantieren kann, Formeln für ein größeres System, z.B. <a href="https://www.sagemath.org/">Sage</a> umstellen. Alternativ kann es direkt verwendet werden. Dies kann von der Kommandozeile aus geschehen, oder von <a class="el" href="classwxMaxima.html">wxMaxima</a> aus, das eine komfortablere Bedienung unterstützt.</p>
-<h3><a class="anchor" id="autotoc_md95"></a>
+<h3><a class="anchor" id="autotoc_md94"></a>
 &lt;em&gt;Maxima&lt;/em&gt;</h3>
 <p><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> ist ein komplettes Computer-Algebrasystem (CAS): Ein Programm, das die Formel, nicht nur die Zahl sucht, die ein mathematisches Problem löst. Auch wenn es darauf spezialisiert ist, mit Buchstaben zu rechnen, bietet es auch eine Menge an Funktionen, die Probleme lösen, für die nur numerische Lösungen existieren.</p>
 <p><img src="./maxima_screenshot.png" alt="Maxima Screenshot, Kommandozeile" class="inline"/></p>
 <p>Eine umfangreiche Dokumentation von <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> ist <a href="https://maxima.sourceforge.io/documentation.html">im Internet verfügbar</a>. Ein Teil davon ist auch über das Hilfe-Menü von <a class="el" href="classwxMaxima.html">wxMaxima</a> erreichbar. Ein Druck auf die Hilfe-Taste (auf den meisten Systemen die Taste <code>F1</code>) lässt die kontextsensitive Hilfe von <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> automatisch zu der Seite im Handbuch von <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> springen, die den Befehl unter dem Cursor beschreibt.</p>
-<h3><a class="anchor" id="autotoc_md96"></a>
+<h3><a class="anchor" id="autotoc_md95"></a>
 WxMaxima</h3>
 <p><em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> ist ein graphisches Benutzer-Interface, das die komplette Funktionalität und Flexibilität von <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> zu nutzen erlaubt. Zudem bietet es viele Funktionalitäten an, die die Verwendung von <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> einfacher gestalten. Beispielsweise kann es den Inhalt eines Arbeitsblattes, einer Zelle des Arbeitsblatts oder einen Teil einer Formel nach LaTeX, MathML oder in eine RTF-Formel für eine Textverarbeitung konvertieren. Dokumentation für <a class="el" href="classwxMaxima.html">wxMaxima</a> kann <a href="https://wxMaxima-developers.github.io/wxmaxima/help.html">im Internet</a> gefunden werden, oder über das Hilfemenü.</p>
 <p><img src="./wxMaximaWindow.png" alt="wxMaxima Fenster" class="inline"/></p>
 <p><em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> lässt alle Berechnungen im Hintergrund durch das Kommandozeilen-Werkzeug <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> durchführen.</p>
-<h2><a class="anchor" id="autotoc_md97"></a>
+<h2><a class="anchor" id="autotoc_md96"></a>
 Grundlagen zum Arbeitsblatt</h2>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> ist größtenteils selbsterklärend. <a href="https://wxMaxima-developers.github.io/wxmaxima/help.html">Diese Internetseite</a> bietet einige Beispiele an, wovon das "10-Minuten-Tutorial" besonders zu empfehlen ist. Dieses Handbuch beschreibt einige zusätzliche Aspekte von <a class="el" href="classwxMaxima.html">wxMaxima</a>.</p>
-<h3><a class="anchor" id="autotoc_md98"></a>
+<h3><a class="anchor" id="autotoc_md97"></a>
 Das Arbeitsblatt-Konzept</h3>
 <p>Eine der Sachen, die neue Benutzer oft verwirrt, ist, dass das Arbeitsblatt von <a class="el" href="classwxMaxima.html">wxMaxima</a> in Zellen aufgeteilt ist, die nur auf Befehl vom Benutzer an <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> gesendet werden. Wenn eine Zelle ausgewertet wird, werden alle Maxima-Befehle (nur) dieser Zelle als Batch-Befehle ausgewertet. Man kann auch mehrere Zellen auswählen und gleichzeitig auswählen. Oder das gesamte Arbeitsblatt auf einmal auswerten <em>WxMaxima</em>'s Ansatz für die Auswertung von Befehlen mag seltsam erscheinen. Es vereinfacht aber die Arbeit mit großen Dokumenten (wo man nicht jede Änderung eine komplette Neu-Evaluierung des ganzen Dokuments auslösen will. Ausserdem ist dieser Ansatz für die Fehlersuche praktisch.</p>
 <p>Wenn Text in <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> eingegeben wird, erzeugt er automatisch eine neue Zelle des Arbeitsblattes. Wenn dies eine Code-Zelle ist, kann ihr Inhalt an <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> gesendet werden und das Resultat dieser Aktion wird unter der Zelle angezeigt, wie unten abgebildet.</p>
@@ -104,7 +104,7 @@ Das Arbeitsblatt-Konzept</h3>
 <p>Außer Code-Zellen kennt <a class="el" href="classwxMaxima.html">wxMaxima</a> auch Textzellen und solche mit Bildern oder Überschriften. Jede Zelle hat ihren eigenen Speicher für das Rückgängigmachen von Aktionen, was sich oft als hilfreich erwiesen hat. Zudem besitzt, wie in fast allen Applikationen, das Arbeitsblatt einen eigenen Speicher für die Rückgängigmachen-Funktion.</p>
 <p>Die nun folgende Abbildung zeigt verschiedene Zelltypen (Titelzellen, Untertitelzellen, Textzellen, Eingabe/Ausgabezellen und eine Bildzelle).</p>
 <p><img src="./cell-example.png" alt="Ein Beispiel verschiedener wxMaxima Zelltypen" class="inline"/></p>
-<h3><a class="anchor" id="autotoc_md99"></a>
+<h3><a class="anchor" id="autotoc_md98"></a>
 Zellen</h3>
 <p>Das Arbeitsblatt ist in Zellen aufgeteilt. WxMaxima kennt die folgenden Zelltypen:</p>
 <ul>
@@ -118,7 +118,7 @@ Zellen</h3>
 <p>Wenn Text eingegeben ist, erzeugt <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> normalerweise gleich eine Code-Zelle. Andere Zelltypen können über das "Zellen"-Menü, die dort dokumentierten Tastenkombinationen oder über die Werkzeugleiste erzeugt werden. Wenn eine nicht-mathematische Zelle (Überschrift, Text, etc.) erzeugt wurde, wird alles was eingetippt wird, als Text interpretiert.</p>
 <p>Ein <a href="https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#Comments">Kommentar</a> (wie in der Programmiersprache <a class="el" href="classC.html">C</a>) kann als Teil einer Mathematik-Eingabezelle eingegeben werden: <code>/* Dieser Kommentar wird von <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> ignoriert */</code>.</p>
 <p>"`/*`" markiert den Beginn des Kommentars, "`*/`" das Ende.</p>
-<h3><a class="anchor" id="autotoc_md100"></a>
+<h3><a class="anchor" id="autotoc_md99"></a>
 Horizontale und vertikale Cursor</h3>
 <p>Wenn in einer Textverarbeitung versucht wird, einen Satz auszuwählen, wird diese versuchen, Beginn und Ende der Auswahl so zu verschieben, dass ganze Wörter ausgewählt sind. <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> wird aus diesem Grund, wenn mehr als eine Zelle ausgewählt wird, die Auswahl auf ganze Zellen ausdehnen.</p>
 <p>Was ungewöhnlich erscheinen kann ist, dass <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> alternativ einen vertikalen oder einen horizontalen Cursor darstellen kann. <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> wechselt zwischen ihnen nach Bedarf:</p>
@@ -133,15 +133,15 @@ wurde" class="inline"/></p>
 <p>Wenn Sie zwischen den Zellen navigieren, sehen Sie den (blinkenden) horizontalen Cursor. An dieser Stelle können Sie eine Zelle einfügen - entweder eine mathematische Eingabezelle, indem einfach der Maxima-code eingegeben wird), oder eine andere Zelle (unter Verwendung des Zellen-Menüs).</p>
 <p><img src="./horizontal-cursor-between-cells.png" alt="(Blinkender) Horizontaler Cursor zwischen den
 Zellen" class="inline"/></p>
-<h3><a class="anchor" id="autotoc_md101"></a>
+<h3><a class="anchor" id="autotoc_md100"></a>
 Zellen an Maxima schicken</h3>
 <p>Der Befehl in einer Code-Zelle wird ausgeführt, sobald <code>CTRL</code>+<code>ENTER</code>, <code>SHIFT</code>+<code>ENTER</code> oder die <code>ENTER</code>-Taste im Ziffernblock gedrückt wird. In der Standardeinstellung schickt <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> Befehle ab, wenn <code>CTRL</code>+<code>ENTER</code> oder <code>SHIFT</code>+<code>ENTER</code> gedrückt wird; <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> lässt sich aber auch so einstellen, dass Befehle schon auf <code>ENTER</code> hin ausgeführt werden.</p>
-<h3><a class="anchor" id="autotoc_md102"></a>
+<h3><a class="anchor" id="autotoc_md101"></a>
 Automatische Vervollständigung von Befehlen</h3>
 <p><em>WxMaxima</em> enthält eine automatische Vervollständigung, die über das Menü (Zellen/Vervollständige Befehl) oder alternativ über die Tastenkombination <code>CTRL</code>+<code>SPACE</code> aufgerufen wird. Die Vervollständigung berücksichtigt den Kontext: Innerhalb einer Einheitenangabe für ezUnits bietet sie zum Beispiel eine Liste passender Einheiten an.</p>
 <p><img src="./ezUnits.png" alt="ezUnits" class="inline"/></p>
 <p>Neben der Vervollständigung eines Dateinamens, eines Einheitennamens oder des aktuellen Befehls- oder Variablennamens kann die automatische Vervollständigung für die meisten Befehle auch ein Muster anzeigen, das Typ (und Bedeutung) der Parameter angibt, die der Befehl erwartet. Dazu <code>SHIFT</code>+<code>CTRL</code>+<code>SPACE</code> drücken oder den entsprechenden Menüeintrag (Zellen/Zeige Muster) wählen.</p>
-<h4><a class="anchor" id="autotoc_md103"></a>
+<h4><a class="anchor" id="autotoc_md102"></a>
 Griechische Buchstaben</h4>
 <p>Computer speichern Zeichen meist als 8-Bit-Werte, was maximal 256 unterschiedliche Typen von Zeichen erlaubt. Die meisten Sprachen nutzen inklusive Steuerzeichen, Ziffern und ein paar Zeichen, aus denen Graphiken zusammengesetzt werden können, weniger als dies.</p>
 <p>Für die Mehrzahl der Länder ist aus diesem Grund eine Codepage mit 256 Zeichen definiert worden, die allerdings in den meisten Ländern beispielsweise keine griechischen Buchstaben beinhaltet, die in der Mathematik oft verwendet werden. Um diese Begrenzung zu umgehen, wurde <a href="https://home.unicode.org/">Unicode</a> entwickelt: Eine Zeichencodierung, die englischen Text wie gewohnt aussehen lässt, aber viel mehr als 256 Zeichen ermöglicht.</p>
@@ -187,7 +187,7 @@ Griechische Buchstaben</h4>
 <td class="markdownTableBodyCenter">T   </td><td class="markdownTableBodyCenter">Theta   </td><td class="markdownTableBodyCenter">P   </td><td class="markdownTableBodyCenter">Pi   </td><td class="markdownTableBodyCenter">O   </td><td class="markdownTableBodyCenter">Omega   </td></tr>
 </table>
 <p>Griechische Buchstaben lassen sich auch über die Seitenleiste „Griechische Buchstaben“ eingeben.</p>
-<p><a class="anchor" id="autotoc_md104"></a> </p><h5>Achtung: Zum Verwechseln ähnliche Zeichen</h5>
+<p><a class="anchor" id="autotoc_md103"></a> </p><h5>Achtung: Zum Verwechseln ähnliche Zeichen</h5>
 <p>Einige lateinische Buchstaben sehen aus wie griechische, z. <a class="el" href="classB.html">B</a>. der lateinische Buchstabe „A“ und der griechische Buchstabe „Alpha“. Obwohl sie gleich aussehen, sind es zwei verschiedene Unicode-Zeichen, die durch verschiedene Unicode-Codepunkte (Nummern) dargestellt werden.</p>
 <p>Das kann zum Problem werden, wenn man der Variablen <a class="el" href="classA.html">A</a> einen Wert zuweist und später mit dem griechischen Buchstaben Alpha etwas mit dieser Variablen anstellen will – besonders auf Ausdrucken. Auch für den griechischen Buchstaben My (der zugleich als Vorsatz für Mikro dient) gibt es zwei verschiedene Unicode-Codepunkte.</p>
 <p>Die Seitenleiste „Griechische Buchstaben“ bietet deshalb die Möglichkeit, zum Verwechseln ähnliche Zeichen auszublenden (umschaltbar über ein Rechtsklick-Menü).</p>
@@ -1013,22 +1013,22 @@ Lässt sich mehr Text auf eine LaTeX-Seite bringen?</h2>
 Gibt es einen Dark Mode?</h2>
 <p>Ist wxWidgets neu genug, befindet sich <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> automatisch im Dark Mode, wenn der Rest des Betriebssystems es ist. Das Arbeitsblatt selbst hat standardmäßig einen hellen Hintergrund, was sich aber in der Konfiguration ändern lässt. Alternativ gibt es den Menüeintrag <code>Ansicht/Invertiere die Helligkeit des Arbeitsblattes</code>, mit dem sich das Arbeitsblatt schnell von dunkel auf hell umstellen lässt und umgekehrt.</p>
 <p>Most images are drawn for a white background, and black line art with a transparent background would be invisible on a dark worksheet. So by default, if the worksheet background is dark, the transparent parts of images are filled with a backdrop color. Its color is the style <em>Backdrop of transparent images</em> in the <em><a class="el" href="classStyle.html" title="Text Style Definition.">Style</a></em> tab of the configuration dialog, and the option <em>Behind transparent parts of images</em> in its <em><a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a></em> tab can switch the backdrop off, or draw it on a bright worksheet, too.</p>
-<h2><a class="anchor" id="autotoc_md189"></a>
+<h2><a class="anchor" id="autotoc_md188"></a>
 &lt;em&gt;WxMaxima&lt;/em&gt; hängt in der ersten Minute manchmal einmal für einige Sekunden</h2>
 <p><em>WxMaxima</em> lagert einige große Aufgaben, wie das Einlesen des über 1000 Seiten starken Handbuchs von <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>, in Hintergrundaufgaben aus, was normalerweise völlig unbemerkt bleibt. Wird das Ergebnis einer solchen Aufgabe aber gerade benötigt, kann es sein, dass <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> einige Sekunden warten muss, bevor es weiterarbeiten kann.</p>
-<h2><a class="anchor" id="autotoc_md190"></a>
+<h2><a class="anchor" id="autotoc_md189"></a>
 Besonders beim Testen neuer Spracheinstellungen erscheint ein Meldungsfenster „locale ’xx_YY’ can not be set“</h2>
 <p><img src="./locale-warning.png" alt="Locale Warnung" class="inline"/></p>
 <p>(Dieses Problem kann bei anderen Anwendungen auch auftreten). Die Übersetzungen scheinen okay zu sein, nachdem auf 'OK' geklickt wurde. WxMaxima verwendet nicht nur die eigenen Übersetzungen sondern auch Übersetzungen des wxWidgets Frameworks.</p>
 <p>Diese Übersetzungen sind möglicherweise im System nicht vorhanden. Auf Ubuntu/Debian Linux-Systemen können sie mit <code>dpkg-reconfigure locales</code> erzeugt werden.</p>
-<h2><a class="anchor" id="autotoc_md192"></a>
+<h2><a class="anchor" id="autotoc_md190"></a>
 Wie kann ich Symbole für reelle Zahlen, natürliche Zahlen (ℝ, ℕ) usw. verwenden?</h2>
 <p>Diese Symbole finden sich in der Unicode-Seitenleiste (nach „double-struck capital“ suchen). Die gewählte Schriftart muss diese Symbole aber auch unterstützen. Werden sie nicht richtig angezeigt, eine andere Schriftart wählen.</p>
-<h2><a class="anchor" id="autotoc_md193"></a>
+<h2><a class="anchor" id="autotoc_md191"></a>
 Wie kann ein Maxima-Skript feststellen, ob es unter wxMaxima oder unter Kommandozeilen-Maxima läuft?</h2>
 <p>Wenn <a class="el" href="classwxMaxima.html">wxMaxima</a> verwendet wird, hat die Maxima-Variable <code>maxima_frontend</code> den Wert wxmaxima<code>. Die Maxima-Variable</code>maxima_frontend_version` enthält dann die wxMaxima-Version.</p>
 <p>Wenn kein Frontend verwendet wird (Kommandozeilen-Maxima wird verwendet), dann haben diese Variablen den Wert <code>false</code>).</p>
-<h3><a class="anchor" id="autotoc_md194"></a>
+<h3><a class="anchor" id="autotoc_md192"></a>
 Is wxMaxima new enough for this worksheet?</h3>
 <div id="wx_version_min"></div><p><code>wx_version_min("26.09.0")</code> returns <code>true</code> if the running <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> is at least version 26.09.0, and <code>false</code> if it is older, or if the command runs in command line <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>. The parts of the version number are compared as numbers, so 26.10.0 counts as newer than 26.9.0, and a part that is left out counts as 0: <code>wx_version_min("26.9")</code> is the same as <code>wx_version_min("26.09.0")</code>. <a class="el" href="classA.html">A</a> development version counts as the version it will be released as.</p>
 <p><em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> 26.08.0 and older don't know <code>wx_version_min()</code> yet. There, as with any function <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> doesn't know, the call isn't an error: it just returns itself, unevaluated, as <code>wx_version_min("26.09.0")</code>, which is neither <code>true</code> nor <code>false</code>. So a plain <code>if wx_version_min("26.09.0") then ...</code> stays unevaluated on these versions, too. <a class="el" href="classA.html">A</a> worksheet that has to work with them as well can compare the result with <code>true</code>, which gives <code>false</code> there:</p>
@@ -1036,11 +1036,11 @@ Is wxMaxima new enough for this worksheet?</h3>
 <div class="line">    wx_matrix(M, oversized=scroll)</div>
 <div class="line">else</div>
 <div class="line">    M;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md195"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md193"></a>
 Hilfe! Ich kann mein Dokument nicht speichern!</h2>
 <p>Funktioniert das Speichern als wxmx-Datei nicht, das Dokument als wxm-Datei speichern (und umgekehrt). Man kann auch alle Ausgaben entfernen (Menü Zellen-&gt;Lösche alle Ausgaben) und dann speichern – vielleicht verursacht eine unerwartete Ausgabe Probleme beim Speichern.</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md196"></a>
+<h1><a class="anchor" id="autotoc_md194"></a>
 Kommandozeilen-Optionen</h1>
 <p>Üblicherweise werden Programme mit einer graphischen Oberfläche einfach mit einem Mausklick auf ein Desktop-Icon oder einen Desktop-Menüeintrag gestartet. WxMaxima - falls es von der Kommandozeile aus gestartet wird - bietet doch einige Kommandozeilen-Optionen.</p>
 <ul>
@@ -1078,7 +1078,7 @@ Kommandozeilen-Optionen</h1>
 <li><code>95</code>: An image in the worksheet could not be decoded (only checked with <code>--debug</code>).</li>
 </ul>
 <hr  />
-<h1><a class="anchor" id="autotoc_md198"></a>
+<h1><a class="anchor" id="autotoc_md195"></a>
 Über das Programm, zu wxMaxima beitragen</h1>
 <p>WxMaxima wird hauptsächlich in der Programmiersprache C++ entwickelt, verwendet das <a href="https://www.wxwidgets.org">wxWidgets framework</a>, als Build-System verwenden wir CMake, ein kleiner Teil ist in Lisp geschrieben. Sie können zu <a class="el" href="classwxMaxima.html">wxMaxima</a> beitragen, werden Sie Teil des wxMaxima-Projekts auf <a href="https://github.com/wxMaxima-developers/wxmaxima">https://github.com/wxMaxima-developers/wxmaxima</a>, wenn Sie Kenntnisse dieser Programmiersprachen haben und zum Open-Source-Projekt <a class="el" href="classwxMaxima.html">wxMaxima</a> etwas beitragen können.</p>
 <p>Aber nicht nur Programmierer sind notwendig! Sie können auch zu <a class="el" href="classwxMaxima.html">wxMaxima</a> beitragen, indem Sie die Dokumentation verbessern, Fehler finden und melden (und vielleicht auch Fehlerlösungen) oder <a class="el" href="classwxMaxima.html">wxMaxima</a> oder die Anleitung übersetzen helfen (Siehe die Readme-Datei im <a href="https://github.com/wxMaxima-developers/wxmaxima/tree/main/locales">locale subdirectory</a>, wie das übersetzen funktioniert.</p>

@@ -309,6 +309,10 @@ Architecture &amp; GUI</h1>
     stay with what follows. &lt;tt&gt;test_PdfExport&lt;/tt&gt; decodes the PDF itself (no
     external tools), so it runs everywhere; set &lt;tt&gt;WXM_PDF_DUMP_DIR&lt;/tt&gt; to keep
     the PDFs and their decoded text for a look with &lt;tt&gt;pdffonts&lt;/tt&gt; or pikepdf.
+  - &lt;strong&gt;Bookmarks&lt;/strong&gt; (the outline) come from the headings. wxPdfDocument needs
+    each outline level's parent one level up and silently links a skipped
+    level to the wrong one, so a bookmark's level is the number of open
+    headings above it, not the heading's own depth.
 - **"Copy as HTML" (GH #2265/#2266/#2267) &amp;ndash; &lt;tt&gt;WorksheetExport::
   SelectionToSelfContainedHTML()&lt;/tt&gt; / &lt;tt&gt;Worksheet::CopyHTML()&lt;/tt&gt;:** a right-click
   context menu item placing a &lt;em&gt;self-contained&lt;/em&gt; HTML document on the
