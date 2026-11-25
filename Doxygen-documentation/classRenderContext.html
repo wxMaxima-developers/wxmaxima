@@ -135,6 +135,13 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>Printing</b> () const
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetPrinting</b> (bool printing)</td></tr>
 <tr class="memdesc:a61ecff07d51a26597ca6a184c3a79c06"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets whether we are currently rendering for the printer. <br /></td></tr>
 <tr class="separator:a61ecff07d51a26597ca6a184c3a79c06"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ebb560dc6e6423b71a42edef8d429ab"><td class="memItemLeft" align="right" valign="top">wxRect&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRenderContext.html#a1ebb560dc6e6423b71a42edef8d429ab">GetPrintedPage</a> () const</td></tr>
+<tr class="memdesc:a1ebb560dc6e6423b71a42edef8d429ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">The part of the worksheet the page being printed shows, if any.  <br /></td></tr>
+<tr class="separator:a1ebb560dc6e6423b71a42edef8d429ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa772c6630beff1b81c2ce043e5242119"><td class="memItemLeft" align="right" valign="top"><a id="aa772c6630beff1b81c2ce043e5242119" name="aa772c6630beff1b81c2ce043e5242119"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetPrintedPage</b> (wxRect page)</td></tr>
+<tr class="memdesc:aa772c6630beff1b81c2ce043e5242119"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the part of the worksheet the page being printed shows. <br /></td></tr>
+<tr class="separator:aa772c6630beff1b81c2ce043e5242119"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d18bc7eb71fde5a09825eb6c0f7d5bc"><td class="memItemLeft" align="right" valign="top"><a id="a8d18bc7eb71fde5a09825eb6c0f7d5bc" name="a8d18bc7eb71fde5a09825eb6c0f7d5bc"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ClearAndEnableRedrawTracing</b> ()</td></tr>
 <tr class="memdesc:a8d18bc7eb71fde5a09825eb6c0f7d5bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts (or restarts) recording which cells this render pass has drawn. <br /></td></tr>
@@ -214,6 +221,34 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsLayoutCancelled</b>
 
 <p>Creates a client DC for the given window and measures text on it. </p>
 <p>Used when a worksheet is attached: measuring on the worksheet's own DC makes the measurements match what drawing on it will produce. </p>
+
+</div>
+</div>
+<a id="a1ebb560dc6e6423b71a42edef8d429ab" name="a1ebb560dc6e6423b71a42edef8d429ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ebb560dc6e6423b71a42edef8d429ab">&#9670;&#160;</a></span>GetPrintedPage()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxRect RenderContext::GetPrintedPage </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The part of the worksheet the page being printed shows, if any. </p>
+<p>Set by printing and the PDF export while they draw one page, so that a cell that is spread over several pages (an oversized matrix, see <a class="el" href="classCell.html#a53d97c075adcb3d66492bbaa1b8b8d48" title="Where a printed page may cut through this cell, if anywhere.">Cell::PageBreakCandidates()</a>) draws only its part on that page. An empty rectangle means "no page": draw everything. </p>
 
 </div>
 </div>

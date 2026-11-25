@@ -97,6 +97,7 @@ $(function() {
 <code>#include &quot;<a class="el" href="MathParser_8h_source.html">MathParser.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="CellList_8h_source.html">cells/CellList.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="GroupCell_8h_source.html">cells/GroupCell.h</a>&quot;</code><br />
+<code>#include &quot;cells/MatrCell.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="PageBreaks_8h_source.html">graphical_io/PageBreaks.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="Printout_8h_source.html">graphical_io/Printout.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="Worksheet_8h_source.html">worksheet/Worksheet.h</a>&quot;</code><br />
@@ -135,6 +136,27 @@ Functions</h2></td></tr>
 <tr class="memitem:ac0c76a5878f8dbbc9e61c525efc0e3a5"><td class="memItemLeft" align="right" valign="top"><a id="ac0c76a5878f8dbbc9e61c525efc0e3a5" name="ac0c76a5878f8dbbc9e61c525efc0e3a5"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;Printing prints what follows a page break&quot;)</td></tr>
 <tr class="separator:ac0c76a5878f8dbbc9e61c525efc0e3a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6eabf83b95eb138fee71f9ec83677a27"><td class="memItemLeft" align="right" valign="top"><a id="a6eabf83b95eb138fee71f9ec83677a27" name="a6eabf83b95eb138fee71f9ec83677a27"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;A matrix taller than a page is continued between its rows&quot;)</td></tr>
+<tr class="separator:a6eabf83b95eb138fee71f9ec83677a27"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd9a0ea8176700d6db515862fceccf78"><td class="memItemLeft" align="right" valign="top"><a id="abd9a0ea8176700d6db515862fceccf78" name="abd9a0ea8176700d6db515862fceccf78"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;A matrix that fits a fresh page is moved there whole&quot;)</td></tr>
+<tr class="separator:abd9a0ea8176700d6db515862fceccf78"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b3560cc292b46f692e79fbbc89e3f2d"><td class="memItemLeft" align="right" valign="top"><a id="a1b3560cc292b46f692e79fbbc89e3f2d" name="a1b3560cc292b46f692e79fbbc89e3f2d"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;A matrix a bit too wide for the page is shrunk to fit it&quot;)</td></tr>
+<tr class="separator:a1b3560cc292b46f692e79fbbc89e3f2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7bd8d4ecb2d383f73372854e6854f3d"><td class="memItemLeft" align="right" valign="top"><a id="aa7bd8d4ecb2d383f73372854e6854f3d" name="aa7bd8d4ecb2d383f73372854e6854f3d"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;A matrix far too wide for the page is split into blocks of columns&quot;)</td></tr>
+<tr class="separator:aa7bd8d4ecb2d383f73372854e6854f3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f67a296d1ab6274d3d23cc9b6593168"><td class="memItemLeft" align="right" valign="top"><a id="a0f67a296d1ab6274d3d23cc9b6593168" name="a0f67a296d1ab6274d3d23cc9b6593168"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;A block of columns is printed on one page with its heading&quot;)</td></tr>
+<tr class="separator:a0f67a296d1ab6274d3d23cc9b6593168"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae69111284bf50a03e42024939cf49b97"><td class="memItemLeft" align="right" valign="top"><a id="ae69111284bf50a03e42024939cf49b97" name="ae69111284bf50a03e42024939cf49b97"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;Paper doesn't change how a matrix is shown on screen or elided&quot;)</td></tr>
+<tr class="separator:ae69111284bf50a03e42024939cf49b97"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a03e9ad5e256e48da1e531e4291b17654"><td class="memItemLeft" align="right" valign="top"><a id="a03e9ad5e256e48da1e531e4291b17654" name="a03e9ad5e256e48da1e531e4291b17654"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;Printing a matrix taller than a page prints every page of it&quot;)</td></tr>
+<tr class="separator:a03e9ad5e256e48da1e531e4291b17654"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06df7029011fe181f338255fa9645905"><td class="memItemLeft" align="right" valign="top"><a id="a06df7029011fe181f338255fa9645905" name="a06df7029011fe181f338255fa9645905"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>wxDECLARE_APP</b> (<a class="el" href="classTestApp.html">TestApp</a>)</td></tr>
 <tr class="separator:a06df7029011fe181f338255fa9645905"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -144,6 +166,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>main</b> (int argc, ch
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Checks the page breaking printing and the PDF export share (<a class="el" href="PageBreaks_8h.html#aa6262d906b56a333ac18961eb3d9cf39" title="Decides where the pages of a printout or a PDF start.">wxm::BreakIntoPages()</a>), and that printing (<a class="el" href="classPrintout.html">Printout</a>) uses it: pages start only between lines, a page break cell starts a new page, a heading stays with what follows it, and what follows a page break cell is printed at all. </p>
+<p>And how a matrix shown in full that doesn't fit the page is laid out for paper (<a class="el" href="classMatrCell.html" title="A Cell that displays a matrix.">MatrCell</a>, "On paper"): shrunk, split into blocks of columns, or continued on the next page between two rows. </p>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

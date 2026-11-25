@@ -274,12 +274,12 @@ var searchData=
   ['m_5fusepartialfordiff_271',['m_usePartialForDiff',['../classConfigDialogue.html#a67f2a4925c363adc173b1c36677a1026',1,'ConfigDialogue']]],
   ['m_5fusesystemfonts_272',['m_useSystemFonts',['../classwxPdfFontFallback.html#aeea44cd0acb94527fcf1331bd47f3584',1,'wxPdfFontFallback']]],
   ['m_5fvalidwximage_273',['m_validWxImage',['../classwxPdfImage.html#a0ba736f883154485c9045a05ee826ebf',1,'wxPdfImage']]],
-  ['m_5fvalue_274',['m_value',['../structMaximaVariableUpdate.html#a0e78dd0dbe7d9f5e7de21ba926995050',1,'MaximaVariableUpdate::m_value()'],['../classbasic__json.html#acd0f167153f047a246b51858d7c921b8',1,'basic_json::m_value()'],['../structMaximaMenuSyncEntry.html#a4a5932e9d97b147a1b39bb6c2fa5bc67',1,'MaximaMenuSyncEntry::m_value()']]],
+  ['m_5fvalue_274',['m_value',['../structMaximaMenuSyncEntry.html#a4a5932e9d97b147a1b39bb6c2fa5bc67',1,'MaximaMenuSyncEntry::m_value()'],['../classbasic__json.html#acd0f167153f047a246b51858d7c921b8',1,'basic_json::m_value()'],['../structMaximaVariableUpdate.html#a0e78dd0dbe7d9f5e7de21ba926995050',1,'MaximaVariableUpdate::m_value()']]],
   ['m_5fvariable_275',['m_variable',['../structMaximaMenuSyncRow.html#a15c9f3256587138ba47f3bf98eeb398d',1,'MaximaMenuSyncRow']]],
   ['m_5fvariablespane_276',['m_variablesPane',['../classwxMaximaFrame.html#ae4bf94a0227d710b60cc474e2ae52e72',1,'wxMaximaFrame']]],
   ['m_5fviewcellpointers_277',['m_viewCellPointers',['../classWorksheet.html#a3bb160d14c6aa760b9bdfb92aeba016a',1,'Worksheet']]],
   ['m_5fviewmenu_278',['m_viewMenu',['../classwxMaximaFrame.html#aa0323a56d1d20fb3cea20d50e9fea9ff',1,'wxMaximaFrame']]],
-  ['m_5fwidth_279',['m_width',['../classwxPdfImage.html#a2d4673fe6e8e08e0a4905c270124ea90',1,'wxPdfImage::m_width()'],['../classwxPdfCMapEntry.html#acf7870922040d71107a6120b4b0b629b',1,'wxPdfCMapEntry::m_width()'],['../classImage.html#a5e3a2e209def1c7028815f46869d416f',1,'Image::m_width()'],['../classCell.html#ad19e726260dea8a153b6723b3c66b80f',1,'Cell::m_width()']]],
+  ['m_5fwidth_279',['m_width',['../classCell.html#ad19e726260dea8a153b6723b3c66b80f',1,'Cell::m_width()'],['../classImage.html#a5e3a2e209def1c7028815f46869d416f',1,'Image::m_width()'],['../classwxPdfCMapEntry.html#acf7870922040d71107a6120b4b0b629b',1,'wxPdfCMapEntry::m_width()'],['../classwxPdfImage.html#a2d4673fe6e8e08e0a4905c270124ea90',1,'wxPdfImage::m_width()']]],
   ['m_5fwidthatlinebreak_280',['m_widthAtLineBreak',['../classTextCell.html#ad89613189e5b75002a7118640523d171',1,'TextCell']]],
   ['m_5fworksheet_281',['m_worksheet',['../classwxMaximaFrame.html#af2869d450f22a0b5fd340dbbc7b67964',1,'wxMaximaFrame']]],
   ['m_5fwrapped_282',['m_wrapped',['../structWorksheetSearch_1_1SearchTarget.html#aaceae9a147acf69aabdc3f13ae839a9b',1,'WorksheetSearch::SearchTarget']]],
@@ -328,8 +328,9 @@ var searchData=
   ['menu_5fregister_5fwxmx_5fdifftool_325',['menu_register_wxmx_difftool',['../classEventIDs.html#a97e33ce1978bb91ab9a9e76cb1b0a854',1,'EventIDs']]],
   ['menu_5fsymbolshortcut_326',['menu_symbolShortcut',['../classEventIDs.html#ade2d826aec2e35e5cd70490a751f54de',1,'EventIDs']]],
   ['menu_5ftroubleshooting_327',['menu_troubleshooting',['../classEventIDs.html#ac1c7fd37b043d22be142315cbeb9d29d',1,'EventIDs']]],
-  ['missingwidth_328',['missingWidth',['../struct__wxPdfCjkFontDesc.html#abff4e849f5f11fa26e60a19200d8fd79',1,'_wxPdfCjkFontDesc::missingWidth()'],['../struct__wxPdfCoreFontDesc.html#ad4cf155a74a423cfc2b1e23627ff58ce',1,'_wxPdfCoreFontDesc::missingWidth()']]],
-  ['ms_5ffilesystem_329',['ms_fileSystem',['../classwxPdfImage.html#a0d7f0b79cfd21cd65fdd895b935ba585',1,'wxPdfImage']]],
-  ['ms_5fwinencoding_330',['ms_winEncoding',['../classwxPdfFontData.html#ac03dbb4bca42a431e60ebc95a69e8a1f',1,'wxPdfFontData']]],
-  ['mux_5fout_331',['mux_out',['../classmux__using__with.html#a6258515f40573285292fdb0b9663c422',1,'mux_using_with']]]
+  ['minpaperscale_328',['MinPaperScale',['../classMatrCell.html#a79a707cd6ad81427f96507217a69e780',1,'MatrCell']]],
+  ['missingwidth_329',['missingWidth',['../struct__wxPdfCjkFontDesc.html#abff4e849f5f11fa26e60a19200d8fd79',1,'_wxPdfCjkFontDesc::missingWidth()'],['../struct__wxPdfCoreFontDesc.html#ad4cf155a74a423cfc2b1e23627ff58ce',1,'_wxPdfCoreFontDesc::missingWidth()']]],
+  ['ms_5ffilesystem_330',['ms_fileSystem',['../classwxPdfImage.html#a0d7f0b79cfd21cd65fdd895b935ba585',1,'wxPdfImage']]],
+  ['ms_5fwinencoding_331',['ms_winEncoding',['../classwxPdfFontData.html#ac03dbb4bca42a431e60ebc95a69e8a1f',1,'wxPdfFontData']]],
+  ['mux_5fout_332',['mux_out',['../classmux__using__with.html#a6258515f40573285292fdb0b9663c422',1,'mux_using_with']]]
 ];

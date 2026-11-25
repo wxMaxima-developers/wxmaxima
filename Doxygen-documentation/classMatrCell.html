@@ -128,6 +128,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad3dd27547f30a90fe132e03446b736f5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrCell.html#ad3dd27547f30a90fe132e03446b736f5">Draw</a> (wxDC *dc, wxDC *antialiassingDC) override</td></tr>
 <tr class="memdesc:ad3dd27547f30a90fe132e03446b736f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pass 3 (Paint): Renders the cell using pre-calculated coordinates.  <br /></td></tr>
 <tr class="separator:ad3dd27547f30a90fe132e03446b736f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f06c40c04b93d45d38748e820a61177"><td class="memItemLeft" align="right" valign="top">std::vector&lt; wxCoord &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrCell.html#a9f06c40c04b93d45d38748e820a61177">PageBreakCandidates</a> () const override</td></tr>
+<tr class="memdesc:a9f06c40c04b93d45d38748e820a61177"><td class="mdescLeft">&#160;</td><td class="mdescRight">Where a printed page may cut through this cell, if anywhere.  <br /></td></tr>
+<tr class="separator:a9f06c40c04b93d45d38748e820a61177"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aba9d4324258ad407affa925e606e4f90"><td class="memItemLeft" align="right" valign="top">const wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrCell.html#aba9d4324258ad407affa925e606e4f90">GetToolTip</a> (wxPoint point) const override</td></tr>
 <tr class="memdesc:aba9d4324258ad407affa925e606e4f90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the ToolTip this cell provides at a given point.  <br /></td></tr>
 <tr class="separator:aba9d4324258ad407affa925e606e4f90"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -986,6 +989,22 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_forceBreakLine</b>:
 <tr class="memitem:a85db96d7703ebbd7bc40ddf6ef0e8c75"><td class="memItemLeft" align="right" valign="top"><a id="a85db96d7703ebbd7bc40ddf6ef0e8c75" name="a85db96d7703ebbd7bc40ddf6ef0e8c75"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = false</td></tr>
 <tr class="separator:a85db96d7703ebbd7bc40ddf6ef0e8c75"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader">On paper</h2></td></tr>
+<tr class="memitem:a79a707cd6ad81427f96507217a69e780"><td class="memItemLeft" align="right" valign="top"><a id="a79a707cd6ad81427f96507217a69e780" name="a79a707cd6ad81427f96507217a69e780"></a>
+static constexpr double&#160;</td><td class="memItemRight" valign="bottom"><b>MinPaperScale</b> = 0.6</td></tr>
+<tr class="memdesc:a79a707cd6ad81427f96507217a69e780"><td class="mdescLeft">&#160;</td><td class="mdescRight">The smallest a matrix is shrunk to on paper before its columns are split instead. <br /></td></tr>
+<tr class="separator:a79a707cd6ad81427f96507217a69e780"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f1bc1645c373566655b583799136df1"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrCell.html#a0f1bc1645c373566655b583799136df1">GetPaperScale</a> () const</td></tr>
+<tr class="memdesc:a0f1bc1645c373566655b583799136df1"><td class="mdescLeft">&#160;</td><td class="mdescRight">How much the matrix was shrunk to fit the width of the page.  <br /></td></tr>
+<tr class="separator:a0f1bc1645c373566655b583799136df1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb4980bf7433e40c7b1f9938bf1976b4"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrCell.html#acb4980bf7433e40c7b1f9938bf1976b4">GetPaperColumnBlocks</a> () const</td></tr>
+<tr class="memdesc:acb4980bf7433e40c7b1f9938bf1976b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many blocks of columns the matrix was split into to fit the page.  <br /></td></tr>
+<tr class="separator:acb4980bf7433e40c7b1f9938bf1976b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b0469737ac6ded3c642558855628a78"><td class="memItemLeft" align="right" valign="top"><a id="a1b0469737ac6ded3c642558855628a78" name="a1b0469737ac6ded3c642558855628a78"></a>
+wxString&#160;</td><td class="memItemRight" valign="bottom"><b>GetPaperBlockCaption</b> (size_t block) const</td></tr>
+<tr class="memdesc:a1b0469737ac6ded3c642558855628a78"><td class="mdescLeft">&#160;</td><td class="mdescRight">The heading of a block of columns, e.g. "Columns 1 to 8"; empty if there is none. <br /></td></tr>
+<tr class="separator:a1b0469737ac6ded3c642558855628a78"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classA.html">A</a> <a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a> that displays a matrix. </p>
@@ -1003,6 +1022,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 <p>Elision is a matter of display only: it applies to the worksheet and to printing, whose pages are a real limit. Every To...() export and the clipboard still write the whole matrix, and the graphical exporters (see <a class="el" href="classOutCommon.html" title="A collection of common code used in rendering the cells to a non-default output, e....">OutCommon</a>) switch elision off, since their canvas size is only nominal. The left-out entries are simply not positioned or drawn, and are skipped when looking up what is under the mouse.</p>
 <p>Or scrolling.** <a class="el" href="classConfiguration.html#adb5fa4e3eacde294a5f23ceca1b9283da089b0cdd8835d09cb1cabf38b3ce9c09" title="Show a window-sized part of it, with native scrollbars.">Configuration::OversizedMatrices::scroll</a> instead shows a window-sized viewport onto the whole matrix, with a native scrollbar to its right and/or below it. The brackets frame the viewport (m_contentSize) and the scrollbars sit outside them, adding to m_width/m_height; the centre line stays the viewport's, so the matrix still lines up with its label. Every entry is positioned, offset by the scroll position; <a class="el" href="classMatrCell.html#ad3dd27547f30a90fe132e03446b736f5" title="Pass 3 (Paint): Renders the cell using pre-calculated coordinates.">Draw()</a> clips them to <a class="el" href="classMatrCell.html#ac7115ee82a7182a8ffbfa1d31624114d" title="The part of the worksheet the matrix&#39;s entries are shown in.">ViewportRect()</a>, and IsEntryShown() keeps the ones outside it out of hit-testing. The cell owns no window: the scrollbars belong to a <a class="el" href="classMatrixScrollHost.html" title="Whatever can give a matrix real scrollbars.">MatrixScrollHost</a>, which only the worksheet provides, so a matrix laid out anywhere else &ndash; for printing, say &ndash; is elided instead.</p>
 <p>Nesting.** Only the outermost matrix scrolls: one nested in another (MarkNestedMatrices() flags it as it is added) is shown in full, and the outer one scrolls over all of it. <a class="el" href="classA.html">A</a> viewport inside a viewport would mean two sets of scrollbars for one thing, and the inner ones &ndash; real windows &ndash; couldn't even be clipped to the outer viewport. Elision does nest: each matrix elides itself to the window, so an outer one can still overshoot by the width of the columns it always keeps.</p>
+<p>On paper.** <a class="el" href="classPrinting.html" title="Sets the configuration&#39;s &quot;printing&quot; flag until this class is left.">Printing</a> and the PDF export can't elide what the user asked to see in full, and can't scroll either, so there a matrix shown in full that doesn't fit the page is laid out for it: shrunk to the width of the page, but not below MinPaperScale of its size; if that isn't enough, split into blocks of columns that each fit, printed one below the other, each headed "Columns m to n"; and if it is taller than a page, continued on the next one between two rows, with the brackets closed at the bottom of the page and opened again at the top of the next (<a class="el" href="classMatrCell.html#a9f06c40c04b93d45d38748e820a61177" title="Where a printed page may cut through this cell, if anywhere.">PageBreakCandidates()</a>). Such a matrix lines up with its label by its first row. The worksheet itself, and every export but printing and PDF, are unaffected.</p>
 <div class="image">
 <object type="image/svg+xml" data="MatrCellGeometry.svg" style="pointer-events: none;"></object>
 </div>
@@ -1014,6 +1034,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 </div>
  <div class="image">
 <object type="image/svg+xml" data="MatrCellScrollGeometry.svg" style="pointer-events: none;"></object>
+</div>
+ <div class="image">
+<object type="image/svg+xml" data="MatrCellPaperGeometry.svg" style="pointer-events: none;"></object>
 </div>
  </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="af0f18ef99c280e60940d94cd55143cd1" name="af0f18ef99c280e60940d94cd55143cd1"></a>
@@ -2568,6 +2591,62 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 
 </div>
 </div>
+<a id="acb4980bf7433e40c7b1f9938bf1976b4" name="acb4980bf7433e40c7b1f9938bf1976b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acb4980bf7433e40c7b1f9938bf1976b4">&#9670;&#160;</a></span>GetPaperColumnBlocks()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t MatrCell::GetPaperColumnBlocks </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>How many blocks of columns the matrix was split into to fit the page. </p>
+<p>1 if it is laid out for paper (it is taller than the page) but not split, 0 if it isn't laid out for paper at all. </p>
+
+</div>
+</div>
+<a id="a0f1bc1645c373566655b583799136df1" name="a0f1bc1645c373566655b583799136df1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f1bc1645c373566655b583799136df1">&#9670;&#160;</a></span>GetPaperScale()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double MatrCell::GetPaperScale </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>How much the matrix was shrunk to fit the width of the page. </p>
+<p>1 if it wasn't, which is always the case off paper. </p>
+
+</div>
+</div>
 <a id="a2f7416c87bf13e37367ceb256805db06" name="a2f7416c87bf13e37367ceb256805db06"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2f7416c87bf13e37367ceb256805db06">&#9670;&#160;</a></span>GetRect()</h2>
 
@@ -3309,6 +3388,37 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 <p>True, if something that affects the cell size has changed. </p>
 
 <p>Reimplemented in <a class="el" href="classGroupCell.html#aa0cc4910d52a26419062952d95d294bf">GroupCell</a>, <a class="el" href="classEditorCell.html#a27361d11dfbf4383dcdfa11cb227e5ed">EditorCell</a>, and <a class="el" href="classGroupCell.html#a2b1a8fb21cbb4f11e3a4c17726645a44">GroupCell</a>.</p>
+
+</div>
+</div>
+<a id="a9f06c40c04b93d45d38748e820a61177" name="a9f06c40c04b93d45d38748e820a61177"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9f06c40c04b93d45d38748e820a61177">&#9670;&#160;</a></span>PageBreakCandidates()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; wxCoord &gt; MatrCell::PageBreakCandidates </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Where a printed page may cut through this cell, if anywhere. </p>
+<p>Normally a page of a printout or a PDF only starts between two lines (<a class="el" href="PageBreaks_8h.html#aa6262d906b56a333ac18961eb3d9cf39" title="Decides where the pages of a printout or a PDF start.">wxm::BreakIntoPages()</a>), so a cell is never cut in two. <a class="el" href="classA.html">A</a> cell that may be taller than a whole page and can be continued on the next one &ndash; an oversized matrix, between two of its rows &ndash; lists the worksheet y coordinates a page may start at here, in ascending order. Such a cell draws, while <a class="el" href="classConfiguration.html#af9f12b9a0443f619ec904172181f7b60" title="The vertical range of the worksheet the page being printed shows.">Configuration::GetPrintedPage()</a> is set, only what belongs on that page, closing and reopening its brackets at the page's edges.</p>
+<p>Only asked for the last cell of a line: what follows a cell on its line would be printed on the cell's first page, which a cell spread over several pages has already left. </p>
+
+<p>Reimplemented from <a class="el" href="classCell.html#a53d97c075adcb3d66492bbaa1b8b8d48">Cell</a>.</p>
 
 </div>
 </div>

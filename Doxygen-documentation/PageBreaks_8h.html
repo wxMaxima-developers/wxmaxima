@@ -139,7 +139,7 @@ Functions</h2></td></tr>
 <ul>
 <li>a page break cell (GC_TYPE_PAGEBREAK) starts a new page with whatever follows it, even if that would still fit on the current page;</li>
 <li>a heading is not left alone at the bottom of a page: if the group after it has to go onto the next page, the heading goes with it;</li>
-<li>a block taller than a whole page gets a page of its own (and is cut off at its bottom, as nothing can be done about that).</li>
+<li>a block taller than a whole page gets a page of its own (and is cut off at its bottom, as nothing can be done about that) &ndash; unless its last cell says where it may be cut (<a class="el" href="classCell.html#a53d97c075adcb3d66492bbaa1b8b8d48" title="Where a printed page may cut through this cell, if anywhere.">Cell::PageBreakCandidates()</a>, an oversized matrix between its rows). Then it starts on the current page if its first part fits there, and continues over as many pages as it needs, each cut at the last such place that still fits.</li>
 </ul>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -151,6 +151,8 @@ Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>The worksheet y coordinate of the top of each page, in ascending order. Empty only for an empty worksheet. <a class="el" href="classA.html">A</a> page ends where the next one starts; the last one ends pageHeight below its start. </dd></dl>
 <p>The first block of its group?</p>
 <p>The group it belongs to</p>
+<p>Where a page may start inside this block (<a class="el" href="classCell.html#a53d97c075adcb3d66492bbaa1b8b8d48" title="Where a printed page may cut through this cell, if anywhere.">Cell::PageBreakCandidates()</a>)</p>
+<p>Only those of the block's last cell: see there.</p>
 
 </div>
 </div>

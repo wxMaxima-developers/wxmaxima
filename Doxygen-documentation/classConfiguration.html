@@ -824,6 +824,17 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetFilesToSave</b> (s
 <tr class="memitem:a05128c7f4d694acb18556354d967ed47"><td class="memItemLeft" align="right" valign="top"><a id="a05128c7f4d694acb18556354d967ed47" name="a05128c7f4d694acb18556354d967ed47"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetUpdateRegion</b> (wxRect rect)</td></tr>
 <tr class="separator:a05128c7f4d694acb18556354d967ed47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9f12b9a0443f619ec904172181f7b60"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#af9f12b9a0443f619ec904172181f7b60">GetPrintedPage</a> (wxCoord &amp;top, wxCoord &amp;bottom) const</td></tr>
+<tr class="memdesc:af9f12b9a0443f619ec904172181f7b60"><td class="mdescLeft">&#160;</td><td class="mdescRight">The vertical range of the worksheet the page being printed shows.  <br /></td></tr>
+<tr class="separator:af9f12b9a0443f619ec904172181f7b60"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b3ac480f1e2632c724f906718b9d207"><td class="memItemLeft" align="right" valign="top"><a id="a2b3ac480f1e2632c724f906718b9d207" name="a2b3ac480f1e2632c724f906718b9d207"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetPrintedPage</b> (wxCoord top, wxCoord bottom)</td></tr>
+<tr class="memdesc:a2b3ac480f1e2632c724f906718b9d207"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the page being printed to the worksheet's y range [top, bottom) <br /></td></tr>
+<tr class="separator:a2b3ac480f1e2632c724f906718b9d207"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a348b6dda5057c61dcab798f92806e304"><td class="memItemLeft" align="right" valign="top"><a id="a348b6dda5057c61dcab798f92806e304" name="a348b6dda5057c61dcab798f92806e304"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>ClearPrintedPage</b> ()</td></tr>
+<tr class="memdesc:a348b6dda5057c61dcab798f92806e304"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forgets the page being printed: cells draw everything again. <br /></td></tr>
+<tr class="separator:a348b6dda5057c61dcab798f92806e304"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4d8ad50245bbb73bc5d4bcd91bcc001c"><td class="memItemLeft" align="right" valign="top"><a id="a4d8ad50245bbb73bc5d4bcd91bcc001c" name="a4d8ad50245bbb73bc5d4bcd91bcc001c"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>InUpdateRegion</b> (wxRect rect) const</td></tr>
 <tr class="memdesc:a4d8ad50245bbb73bc5d4bcd91bcc001c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether any part of the given rectangle is within the current update region, or true if drawing is not clipped to update region. <br /></td></tr>
@@ -2085,6 +2096,45 @@ static constexpr long&#160;</td><td class="memItemRight" valign="bottom"><b>Digi
 
 <p>Get the resolution. </p>
 <p>During recalculation the drawing context doesn't know the display's resolution so we need to do some additional tricks here. </p>
+
+</div>
+</div>
+<a id="af9f12b9a0443f619ec904172181f7b60" name="af9f12b9a0443f619ec904172181f7b60"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af9f12b9a0443f619ec904172181f7b60">&#9670;&#160;</a></span>GetPrintedPage()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Configuration::GetPrintedPage </td>
+          <td>(</td>
+          <td class="paramtype">wxCoord &amp;&#160;</td>
+          <td class="paramname"><em>top</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">wxCoord &amp;&#160;</td>
+          <td class="paramname"><em>bottom</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The vertical range of the worksheet the page being printed shows. </p>
+<p><a class="el" href="classPrinting.html" title="Sets the configuration&#39;s &quot;printing&quot; flag until this class is left.">Printing</a> and the PDF export set it while they draw a page; a cell spread over several pages (see <a class="el" href="classCell.html#a53d97c075adcb3d66492bbaa1b8b8d48" title="Where a printed page may cut through this cell, if anywhere.">Cell::PageBreakCandidates()</a>) then draws only the part of it that belongs on that page. Returns false if no page is set, i.e. everything is to be drawn. </p>
 
 </div>
 </div>

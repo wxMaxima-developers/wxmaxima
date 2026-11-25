@@ -715,6 +715,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasHardLineBreak</b> 
 <tr class="memitem:ad3bba95038366ea5bccefa8f76e1571e"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#ad3bba95038366ea5bccefa8f76e1571e">BreakUp</a> () const</td></tr>
 <tr class="memdesc:ad3bba95038366ea5bccefa8f76e1571e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Try to split this command into lines to make it fit on the screen.  <br /></td></tr>
 <tr class="separator:ad3bba95038366ea5bccefa8f76e1571e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53d97c075adcb3d66492bbaa1b8b8d48"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; wxCoord &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a53d97c075adcb3d66492bbaa1b8b8d48">PageBreakCandidates</a> () const</td></tr>
+<tr class="memdesc:a53d97c075adcb3d66492bbaa1b8b8d48"><td class="mdescLeft">&#160;</td><td class="mdescRight">Where a printed page may cut through this cell, if anywhere.  <br /></td></tr>
+<tr class="separator:a53d97c075adcb3d66492bbaa1b8b8d48"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9a548e6a31266214d7ea370fb913d6e3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a9a548e6a31266214d7ea370fb913d6e3">ContainsRect</a> (const wxRect &amp;sm, bool all=true) const</td></tr>
 <tr class="memdesc:a9a548e6a31266214d7ea370fb913d6e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is a part of this cell inside a certain rectangle?  <br /></td></tr>
 <tr class="separator:a9a548e6a31266214d7ea370fb913d6e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -4264,6 +4267,37 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><b>SelectionToHTML</
 
 <p>Normalize line endings. </p>
 <p>Collapses literal "\r\n" (Windows CRLF) sequences to "\n". Does NOT touch a lone '\r': that is <a class="el" href="classwxMaxima.html">wxMaxima</a>'s own soft (word-wrap) line break marker, not a line ending, and must survive untouched (see the comment in the constructor). </p>
+
+</div>
+</div>
+<a id="a53d97c075adcb3d66492bbaa1b8b8d48" name="a53d97c075adcb3d66492bbaa1b8b8d48"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a53d97c075adcb3d66492bbaa1b8b8d48">&#9670;&#160;</a></span>PageBreakCandidates()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual std::vector&lt; wxCoord &gt; Cell::PageBreakCandidates </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Where a printed page may cut through this cell, if anywhere. </p>
+<p>Normally a page of a printout or a PDF only starts between two lines (<a class="el" href="PageBreaks_8h.html#aa6262d906b56a333ac18961eb3d9cf39" title="Decides where the pages of a printout or a PDF start.">wxm::BreakIntoPages()</a>), so a cell is never cut in two. <a class="el" href="classA.html">A</a> cell that may be taller than a whole page and can be continued on the next one &ndash; an oversized matrix, between two of its rows &ndash; lists the worksheet y coordinates a page may start at here, in ascending order. Such a cell draws, while <a class="el" href="classConfiguration.html#af9f12b9a0443f619ec904172181f7b60" title="The vertical range of the worksheet the page being printed shows.">Configuration::GetPrintedPage()</a> is set, only what belongs on that page, closing and reopening its brackets at the page's edges.</p>
+<p>Only asked for the last cell of a line: what follows a cell on its line would be printed on the cell's first page, which a cell spread over several pages has already left. </p>
+
+<p>Reimplemented in <a class="el" href="classMatrCell.html#a9f06c40c04b93d45d38748e820a61177">MatrCell</a>.</p>
 
 </div>
 </div>
