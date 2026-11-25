@@ -65,11 +65,14 @@
 #include <wx/pdffontmanager.h>
 #endif
 
+#include <cctype>
 #include <cmath>
 #include <cstdlib>
+#include <map>
 #include <regex>
 #include <set>
 #include <string>
+#include <vector>
 
 #define CATCH_CONFIG_RUNNER
 #include <catch2/catch.hpp>
@@ -92,12 +95,61 @@ struct DecodedPdf {
   std::string text;
   //! Every Unicode character some font's ToUnicode map provides
   std::set<wxUint32> mappedCharacters;
-  /*! The content streams only: what is drawn, without the embedded fonts
+  //! The pages' content streams, in page order: what is drawn
+  std::vector<std::string> drawn;
+  /*! How many text-showing operators (Tj, TJ, ' and ") each content stream has
 
-    A font program is binary data that can contain any byte sequence, " Tj"
-    among them, and which font is embedded differs between computers.
+    Reads the streams as PDF tokens: a string's bytes are glyph ids, which
+    can be any byte sequence, so searching for " Tj" would count them, too.
   */
-  std::string drawn;
+  std::vector<std::size_t> TextOperatorsPerStream() const {
+    std::vector<std::size_t> result;
+    for (const std::string &stream : drawn) {
+      std::size_t count = 0;
+      std::size_t i = 0;
+      while (i < stream.size()) {
+        const char c = stream[i];
+        if (c == '(') {
+          // A literal string: balanced parentheses, backslash escapes
+          int depth = 1;
+          for (i++; (i < stream.size()) && (depth > 0); i++) {
+            if (stream[i] == '\\')
+              i++;
+            else if (stream[i] == '(')
+              depth++;
+            else if (stream[i] == ')')
+              depth--;
+          }
+        } else if ((c == '<') && (i + 1 < stream.size()) && (stream[i + 1] != '<')) {
+          // A hex string
+          i = stream.find('>', i);
+          if (i == std::string::npos)
+            break;
+          i++;
+        } else if (std::isalpha(static_cast<unsigned char>(c)) ||
+                   (c == '\'') || (c == '"')) {
+          std::size_t end = i + 1;
+          while ((end < stream.size()) &&
+                 std::isalpha(static_cast<unsigned char>(stream[end])))
+            end++;
+          const std::string op = stream.substr(i, end - i);
+          if ((op == "Tj") || (op == "TJ") || (op == "'") || (op == "\""))
+            count++;
+          i = end;
+        } else
+          i++;
+      }
+      result.push_back(count);
+    }
+    return result;
+  }
+  //! How many text-showing operators all content streams have together
+  std::size_t TextOperators() const {
+    std::size_t sum = 0;
+    for (const std::size_t n : TextOperatorsPerStream())
+      sum += n;
+    return sum;
+  }
   //! How many times a string occurs in text
   std::size_t Count(const std::string &needle) const {
     std::size_t count = 0;
@@ -181,6 +233,8 @@ void ReadToUnicode(const std::string &cmap, std::set<wxUint32> &chars) {
 DecodedPdf DecodePdf(const wxString &path) {
   const std::string raw = ReadBinaryFile(path);
   DecodedPdf pdf;
+  //! Every stream that isn't a CMap, by object number
+  std::map<std::string, std::string> streams;
   std::size_t pos = 0;
   static const std::regex lengthRe("/Length\\s+(\\d+)");
   while (true) {
@@ -212,13 +266,27 @@ DecodedPdf DecodePdf(const wxString &path) {
       content = Inflate(data);
     if (content.find("begincmap") != std::string::npos)
       ReadToUnicode(content, pdf.mappedCharacters);
-    else if ((dict.find("/Length1") == std::string::npos) &&
-             (dict.find("/Subtype") == std::string::npos) &&
-             (dict.find("/Type") == std::string::npos))
-      pdf.drawn += content;
+    else {
+      // The object number: "<number> 0 obj" ends where dict starts
+      const std::size_t lineStart = raw.find_last_of("\r\n", objPos);
+      const std::string header =
+        raw.substr(lineStart == std::string::npos ? 0 : lineStart + 1,
+                   objPos - (lineStart == std::string::npos ? 0 : lineStart + 1));
+      streams[header.substr(0, header.find(' '))] = content;
+    }
     pdf.text += raw.substr(pos, dataStart - pos);
     pdf.text += content;
     pos = dataStart + len;
+  }
+  // The pages' content streams, in page order. Only they draw anything: the
+  // other streams are fonts, CMaps and glyph maps, binary data that can
+  // contain any byte sequence.
+  static const std::regex contentsRe("/Contents\\s+(\\d+)\\s+0\\s+R");
+  for (std::sregex_iterator it(pdf.text.begin(), pdf.text.end(), contentsRe), last;
+       it != last; ++it) {
+    const auto stream = streams.find((*it)[1]);
+    REQUIRE(stream != streams.end());
+    pdf.drawn.push_back(stream->second);
   }
   if (g_keepOutput) {
     // What the checks look at, for a look when one fails
@@ -470,14 +538,17 @@ SCENARIO("A matrix taller than a page is continued on the next pages") {
   THEN("each row is drawn once, on one page") {
     // Each entry is one piece of text, as is everything else: a row more
     // adds just its two entries.
-    const auto shown = [](const DecodedPdf &pdf) {
-      std::size_t count = 0;
-      for (const std::string op : {" Tj", " TJ"})
-        for (std::size_t pos = pdf.drawn.find(op); pos != std::string::npos;
-             pos = pdf.drawn.find(op, pos + op.size()))
-          count++;
-      return count;
+    const auto shown = [](const DecodedPdf &pdf) { return pdf.TextOperators(); };
+    // For a failure on a computer that isn't at hand: where the text went
+    const auto perStream = [](const DecodedPdf &pdf) {
+      wxString list;
+      for (const std::size_t n : pdf.TextOperatorsPerStream())
+        list += wxString::Format(wxS(" %lu"), static_cast<unsigned long>(n));
+      return list;
     };
+    INFO("text operators per content stream, 1 row:" << perStream(single));
+    INFO("text operators per content stream, 60 rows:" << perStream(tall));
+    INFO("pages: " << pages);
     CHECK(shown(single) > 0);
     CHECK(shown(tall) == shown(single) + 59 * 2);
   }
@@ -497,11 +568,7 @@ SCENARIO("A matrix far too wide for the page is split into blocks of columns") {
     ExportPdf(wxS("widematrix"), Document(CodeCell(wxS("m;"), wxS("(%o1)"), xml)),
               &pages));
   // Every entry once, plus label, input, and a heading per block.
-  std::size_t shown = 0;
-  for (std::size_t pos = pdf.drawn.find(" Tj"); pos != std::string::npos;
-       pos = pdf.drawn.find(" Tj", pos + 3))
-    shown++;
-  CHECK(shown > 160);
+  CHECK(pdf.TextOperators() > 160);
   CHECK(pdf.Count("/S /Formula") == 1);
 }
 
