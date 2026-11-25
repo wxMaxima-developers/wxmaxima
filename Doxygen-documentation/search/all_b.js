@@ -2,17 +2,16 @@ var searchData=
 [
   ['keepcursorstillonscreen_0',['KeepCursorStillOnScreen',['../classWorksheet.html#a139a6a5d185b3b075a707777c0efc88b',1,'Worksheet']]],
   ['kerning_1',['kerning',['../classwxPdfKernPairDesc.html#aa868c472310b516a5b4eb24ed3fa9d07',1,'wxPdfKernPairDesc']]],
-  ['key_2',['key',['../structConfiguration_1_1ScalarSetting.html#a122099474c40a56a60c8567a07898574',1,'Configuration::ScalarSetting::key()'],['../classdetail_1_1iteration__proxy__value.html#ad12633bc0d3ac7a651381b174a7914ee',1,'detail::iteration_proxy_value::key()'],['../structjson__sax.html#a3355ecd7e3e9806dcb80b2f8842b82ce',1,'json_sax::key()'],['../classdetail_1_1iter__impl.html#a4064b295014b32f3cabd86f94264fc74',1,'detail::iter_impl::key()'],['../classdetail_1_1json__reverse__iterator.html#a68d4f0c3e978afdc7509ee88e2f7b996',1,'detail::json_reverse_iterator::key()']]],
+  ['key_2',['key',['../structConfiguration_1_1ScalarSetting.html#a122099474c40a56a60c8567a07898574',1,'Configuration::ScalarSetting::key()'],['../classdetail_1_1iteration__proxy__value.html#ad12633bc0d3ac7a651381b174a7914ee',1,'detail::iteration_proxy_value::key()'],['../structjson__sax.html#a3355ecd7e3e9806dcb80b2f8842b82ce',1,'json_sax::key()'],['../classdetail_1_1iter__impl.html#a4064b295014b32f3cabd86f94264fc74',1,'detail::iter_impl::key()'],['../classdetail_1_1json__reverse__iterator.html#a68d4f0c3e978afdc7509ee88e2f7b996',1,'detail::json_reverse_iterator::key()'],['../namespacedetail.html#a47b1bb0bbd3596589ed9187059c312efa3c6e0b8a9c15224a8228b9a98ca1531d',1,'detail::key()'],['../ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389',1,'key():&#160;ToolBarSections.cpp']]],
   ['key_3',['Key',['../ToolBarSections_8cpp.html#ab2f0af83120b0ab54abd434d16e7b2b2',1,'ToolBarSections']]],
-  ['key_4',['key',['../namespacedetail.html#a47b1bb0bbd3596589ed9187059c312efa3c6e0b8a9c15224a8228b9a98ca1531d',1,'detail::key()'],['../ToolBarSections_8cpp.html#ae9babfa19ef17d110412cb778d8ee389',1,'key():&#160;ToolBarSections.cpp']]],
-  ['keyboard_5finactivity_5ftimer_5fid_5',['KEYBOARD_INACTIVITY_TIMER_ID',['../classwxMaxima.html#ab6afd24efcd1d85c6aac02040adf0a68a479837052cb219e9f46244eb65a298b2',1,'wxMaxima']]],
-  ['keyboardinactivetimer_6',['KeyboardInactiveTimer',['../classWorksheet.html#a79d3f9c91582dac67a19780cd5c4006c',1,'Worksheet']]],
-  ['keyboardselectionstart_7',['KeyboardSelectionStart',['../classWorksheet.html#aa3a64ca2a00762474da8be283bae84c2',1,'Worksheet::KeyboardSelectionStart()'],['../classViewCellPointers.html#abdf44185af2d06ef9e2c4b2d0e62041e',1,'ViewCellPointers::KeyboardSelectionStart()']]],
-  ['keyboardselectionstartedhere_8',['KeyboardSelectionStartedHere',['../classEditorCell.html#a657f28462a91ec41213a446b5b85bc31',1,'EditorCell']]],
-  ['keywords_9',['Keywords',['../WxMaximaManualAnchors_8cpp.html#a90e0de777a9e2b4df60c38af1f32b04c',1,'WxMaximaManualAnchors']]],
-  ['kid_10',['Kid',['../structwxPdfStructElement_1_1Kid.html',1,'wxPdfStructElement']]],
-  ['killallchildmaximas_11',['KillAllChildMaximas',['../classMaximaProcessManager.html#a65f3dea0993f8ef1caa647f2a02a6072',1,'MaximaProcessManager']]],
-  ['killmaxima_12',['KillMaxima',['../classMaximaProcessManager.html#a6ba1a201f97636e0ca03d06629d1e799',1,'MaximaProcessManager']]],
-  ['kind_13',['Kind',['../structMaximaMenuSyncRow.html#aab1861fb80f5b88b3b3c6f6abba42efa',1,'MaximaMenuSyncRow::Kind()'],['../structwxm_1_1ScreenshotTarget.html#a03501277ae2d58c8246a3e6cb1279490',1,'wxm::ScreenshotTarget::Kind()'],['../CommandLineOptions_8h.html#a765bdd0d99daec9750f969c3ffd2ecfe',1,'wxm::cmdline::Kind()']]],
-  ['kparray_14',['kpArray',['../struct__wxPdfCoreFontDesc.html#a8c23017f343fd5da468a4476eee36792',1,'_wxPdfCoreFontDesc']]]
+  ['keyboard_5finactivity_5ftimer_5fid_4',['KEYBOARD_INACTIVITY_TIMER_ID',['../classwxMaxima.html#ab6afd24efcd1d85c6aac02040adf0a68a479837052cb219e9f46244eb65a298b2',1,'wxMaxima']]],
+  ['keyboardinactivetimer_5',['KeyboardInactiveTimer',['../classWorksheet.html#a79d3f9c91582dac67a19780cd5c4006c',1,'Worksheet']]],
+  ['keyboardselectionstart_6',['KeyboardSelectionStart',['../classWorksheet.html#aa3a64ca2a00762474da8be283bae84c2',1,'Worksheet::KeyboardSelectionStart()'],['../classViewCellPointers.html#abdf44185af2d06ef9e2c4b2d0e62041e',1,'ViewCellPointers::KeyboardSelectionStart()']]],
+  ['keyboardselectionstartedhere_7',['KeyboardSelectionStartedHere',['../classEditorCell.html#a657f28462a91ec41213a446b5b85bc31',1,'EditorCell']]],
+  ['keywords_8',['Keywords',['../WxMaximaManualAnchors_8cpp.html#a90e0de777a9e2b4df60c38af1f32b04c',1,'WxMaximaManualAnchors']]],
+  ['kid_9',['Kid',['../structwxPdfStructElement_1_1Kid.html',1,'wxPdfStructElement']]],
+  ['killallchildmaximas_10',['KillAllChildMaximas',['../classMaximaProcessManager.html#a65f3dea0993f8ef1caa647f2a02a6072',1,'MaximaProcessManager']]],
+  ['killmaxima_11',['KillMaxima',['../classMaximaProcessManager.html#a6ba1a201f97636e0ca03d06629d1e799',1,'MaximaProcessManager']]],
+  ['kind_12',['Kind',['../structMaximaMenuSyncRow.html#aab1861fb80f5b88b3b3c6f6abba42efa',1,'MaximaMenuSyncRow::Kind()'],['../structwxm_1_1ScreenshotTarget.html#a03501277ae2d58c8246a3e6cb1279490',1,'wxm::ScreenshotTarget::Kind()'],['../CommandLineOptions_8h.html#a765bdd0d99daec9750f969c3ffd2ecfe',1,'wxm::cmdline::Kind()']]],
+  ['kparray_13',['kpArray',['../struct__wxPdfCoreFontDesc.html#a8c23017f343fd5da468a4476eee36792',1,'_wxPdfCoreFontDesc']]]
 ];
