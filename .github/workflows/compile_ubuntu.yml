@@ -70,7 +70,12 @@ jobs:
         # Caches the downloaded .debs; see the action for why.
         uses: ./.github/actions/apt-install
         with:
-          packages: appstream appstream-util cmake desktop-file-utils doxygen gettext gnuplot gnuplot-x11 graphviz libwxgtk3.2-dev libfontconfig-dev libwxgtk-webview3.2-dev libfribidi-dev maxima maxima-share maxima-doc netcat-openbsd ninja-build pandoc xvfb at-spi2-core dbus dpkg-dev po4a rpmlint lintian weston rpm tidy
+          packages: ccache appstream appstream-util cmake desktop-file-utils doxygen gettext gnuplot gnuplot-x11 graphviz libwxgtk3.2-dev libfontconfig-dev libwxgtk-webview3.2-dev libfribidi-dev maxima maxima-share maxima-doc netcat-openbsd ninja-build pandoc xvfb at-spi2-core dbus dpkg-dev po4a rpmlint lintian weston rpm tidy
+      - name: ccache
+        # Compiler cache, restored from main's last run; see the action.
+        uses: ./.github/actions/ccache
+        with:
+          key: compile_latest_and_test
       - name: validate_appdata
         # Release-blocker gate, previously a manual checklist step: a malformed
         # appdata file breaks the flatpak/appImage/appstream builders. Catch it
@@ -91,6 +96,9 @@ jobs:
              cd build
              cmake --build .
              cd ..
+      - name: save the ccache
+        if: ${{ !cancelled() }}
+        uses: ./.github/actions/ccache-save
       - name: git-diff
         # A build must not change tracked files: whatever it rewrote in the
         # source tree turned into merge conflicts for everyone else (po4a used
@@ -217,7 +225,12 @@ jobs:
         # Caches the downloaded .debs; see the action for why.
         uses: ./.github/actions/apt-install
         with:
-          packages: appstream cmake desktop-file-utils gettext gnuplot gnuplot-x11 libwxgtk3.2-dev libfontconfig-dev libwxgtk-webview3.2-dev libfribidi-dev maxima maxima-share maxima-doc netcat-openbsd ninja-build pandoc po4a xvfb at-spi2-core dbus tidy
+          packages: ccache appstream cmake desktop-file-utils gettext gnuplot gnuplot-x11 libwxgtk3.2-dev libfontconfig-dev libwxgtk-webview3.2-dev libfribidi-dev maxima maxima-share maxima-doc netcat-openbsd ninja-build pandoc po4a xvfb at-spi2-core dbus tidy
+      - name: ccache
+        # Compiler cache, restored from main's last run; see the action.
+        uses: ./.github/actions/ccache
+        with:
+          key: compile_and_test_sanitized
       - name: configure
         run: |
              export LANG=en_US.UTF-8
@@ -226,6 +239,9 @@ jobs:
              cmake -G "Ninja" -DCMAKE_UNITY_BUILD=ON -DCMAKE_BUILD_TYPE=Debug -DWXM_UNIT_TESTS=YES -DWXM_SANITIZE=address,undefined ..
       - name: compile
         run: cmake --build build
+      - name: save the ccache
+        if: ${{ !cancelled() }}
+        uses: ./.github/actions/ccache-save
       - name: run_tests
         run: |
              cd build
@@ -274,13 +290,21 @@ jobs:
         # Caches the downloaded .debs; see the action for why.
         uses: ./.github/actions/apt-install
         with:
-          packages: cmake clang libclang-rt-dev gettext gnuplot gnuplot-x11 libwxgtk3.2-dev libfontconfig-dev libwxgtk-webview3.2-dev libfribidi-dev maxima maxima-share maxima-doc netcat-openbsd ninja-build xvfb at-spi2-core dbus
+          packages: ccache cmake clang libclang-rt-dev gettext gnuplot gnuplot-x11 libwxgtk3.2-dev libfontconfig-dev libwxgtk-webview3.2-dev libfribidi-dev maxima maxima-share maxima-doc netcat-openbsd ninja-build xvfb at-spi2-core dbus
+      - name: ccache
+        # Compiler cache, restored from main's last run; see the action.
+        uses: ./.github/actions/ccache
+        with:
+          key: compile_and_test_thread_sanitized
       - name: configure
         # clang, as the suppressions were worked out with clang's TSan.
         run: |
              cmake -S . -B build -G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_UNITY_BUILD=ON -DCMAKE_BUILD_TYPE=Debug -DWXM_UNIT_TESTS=YES -DWXM_SANITIZE=thread
       - name: compile
         run: cmake --build build
+      - name: save the ccache
+        if: ${{ !cancelled() }}
+        uses: ./.github/actions/ccache-save
       - name: run_unit_tests
         run: |
              cd build
@@ -336,7 +360,12 @@ jobs:
         # Caches the downloaded .debs; see the action for why.
         uses: ./.github/actions/apt-install
         with:
-          packages: appstream cmake desktop-file-utils doxygen gettext gnuplot gnuplot-x11 graphviz libwxgtk3.2-dev libfontconfig-dev libfribidi-dev maxima maxima-share maxima-doc netcat-openbsd ninja-build pandoc at-spi2-core po4a
+          packages: ccache appstream cmake desktop-file-utils doxygen gettext gnuplot gnuplot-x11 graphviz libwxgtk3.2-dev libfontconfig-dev libfribidi-dev maxima maxima-share maxima-doc netcat-openbsd ninja-build pandoc at-spi2-core po4a
+      - name: ccache
+        # Compiler cache, restored from main's last run; see the action.
+        uses: ./.github/actions/ccache
+        with:
+          key: compile_with_non_default_options
       - name: configure
         # WXM_ENABLE_PRECOMPILED_HEADERS is NO here, and that is the point of
         # naming it at all: it defaults to YES, and a precompiled header hands
@@ -357,6 +386,9 @@ jobs:
              cd build
              cmake --build .
              cd ..
+      - name: save the ccache
+        if: ${{ !cancelled() }}
+        uses: ./.github/actions/ccache-save
       - name: update-locale
         run: |
              cd build
@@ -384,7 +416,12 @@ jobs:
         # Caches the downloaded .debs; see the action for why.
         uses: ./.github/actions/apt-install
         with:
-          packages: cmake g++-12 gettext libwxgtk3.2-dev libfontconfig-dev libwxgtk-webview3.2-dev libfribidi-dev ninja-build
+          packages: ccache cmake g++-12 gettext libwxgtk3.2-dev libfontconfig-dev libwxgtk-webview3.2-dev libfribidi-dev ninja-build
+      - name: ccache
+        # Compiler cache, restored from main's last run; see the action.
+        uses: ./.github/actions/ccache
+        with:
+          key: compile_gcc12
       - name: configure
         run: |
              export CXXFLAGS="-Wall -Wextra"
@@ -393,6 +430,9 @@ jobs:
         # Everything, including the unit tests, so their code is held to the
         # same compiler.
         run: cmake --build build
+      - name: save the ccache
+        if: ${{ !cancelled() }}
+        uses: ./.github/actions/ccache-save
 
   compile_2404:
     # Pinned to an LTS release (not ubuntu-latest) so the .deb it ships is
@@ -417,7 +457,12 @@ jobs:
         # Caches the downloaded .debs; see the action for why.
         uses: ./.github/actions/apt-install
         with:
-          packages: cmake dpkg-dev gettext libwxgtk3.2-dev libfontconfig-dev libwxgtk-webview3.2-dev libfribidi-dev pandoc make po4a
+          packages: ccache cmake dpkg-dev gettext libwxgtk3.2-dev libfontconfig-dev libwxgtk-webview3.2-dev libfribidi-dev pandoc make po4a
+      - name: ccache
+        # Compiler cache, restored from main's last run; see the action.
+        uses: ./.github/actions/ccache
+        with:
+          key: compile_2404
       - name: configure
         run: |
              export CXXFLAGS="-Wall -Wextra"
@@ -431,6 +476,9 @@ jobs:
              cd build
              cmake --build .
              cd ..
+      - name: save the ccache
+        if: ${{ !cancelled() }}
+        uses: ./.github/actions/ccache-save
       - name: git-diff
         # A build must not change tracked files: whatever it rewrote in the
         # source tree turned into merge conflicts for everyone else (po4a used

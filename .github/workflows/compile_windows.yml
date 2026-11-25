@@ -207,6 +207,13 @@ jobs:
               echo "::warning::gnuplot.exe not found after install; plotting tests may stall."
             }
 
+      - name: Install ccache
+        run: choco install ccache -y --no-progress
+      - name: ccache
+        # Compiler cache, restored from main's last run; see the action.
+        uses: ./.github/actions/ccache
+        with:
+          key: windows_mingw
       - name: Configure wxMaxima
         run: |
             cd wxMaxima
@@ -229,6 +236,9 @@ jobs:
             cmake --build .
             cd ..
             cd ..
+      - name: save the ccache
+        if: ${{ !cancelled() }}
+        uses: ./.github/actions/ccache-save
       - name: Run unit tests
         # Required signal: the "unittest" label selects the self-contained C++
         # unit tests (test/unit_tests/*), which need neither Maxima nor a display.

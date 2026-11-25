@@ -439,6 +439,16 @@ if(WXM_ENABLE_PRECOMPILED_HEADERS)
   # Without this set() the option precompiled a header that included nothing
   # and saved nothing: turning it on changed a full build's time by 0%.
   set(USE_PRECOMP_HEADER "1")
+  # clang stamps the modification time of the header into the .pch, so a
+  # PCH rebuilt from identical sources still differs, and ccache (which hashes
+  # the .pch into the key of everything that uses it) never gets a hit on any
+  # of wxmaxima's own sources in CI, where the PCH is rebuilt every run. The
+  # build system already rebuilds the PCH whenever a header in it changes,
+  # so the timestamp check this switches off adds nothing.
+  if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    target_compile_options(wxmaxima PRIVATE
+      "$<$<COMPILE_LANGUAGE:CXX>:SHELL:-Xclang -fno-pch-timestamp>")
+  endif()
 else()
   set(USE_PRECOMP_HEADER "0")
 endif()

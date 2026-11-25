@@ -35,7 +35,12 @@ jobs:
         uses: ./.github/actions/apt-install
         with:
           architectures: i386
-          packages: g++-i686-linux-gnu cmake gettext libwxgtk3.2-dev:i386 libfontconfig-dev:i386 libwxgtk-webview3.2-dev:i386 wx3.2-headers pandoc make po4a xvfb at-spi2-core dbus
+          packages: ccache g++-i686-linux-gnu cmake gettext libwxgtk3.2-dev:i386 libfontconfig-dev:i386 libwxgtk-webview3.2-dev:i386 wx3.2-headers pandoc make po4a xvfb at-spi2-core dbus
+      - name: ccache
+        # Compiler cache, restored from main's last run; see the action.
+        uses: ./.github/actions/ccache
+        with:
+          key: compile_ubuntu_32bit
       - name: configure
         run: |
              export CXX="i686-linux-gnu-g++"
@@ -55,6 +60,9 @@ jobs:
              cd build
              cmake --build .
              cd ..
+      - name: save the ccache
+        if: ${{ !cancelled() }}
+        uses: ./.github/actions/ccache-save
       - name: Run unit tests
         # GH #2208: this build's test/ subdirectory was never actually built,
         # let alone run - so two real 32-bit-only bugs (CellPtr's cmpObjects()
