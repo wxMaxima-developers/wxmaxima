@@ -306,7 +306,9 @@ Architecture &amp; GUI</h1>
     Figure (alt "Graphics created by: &lt;input&gt;"), P for prose, Formula with
     &lt;tt&gt;OutCommon::AccessibleText()&lt;/tt&gt; as alt text and MathML as an associated
     file (none for ASCII-art output). Pages break between blocks, headings
-    stay with what follows. &lt;tt&gt;test_PdfExport&lt;/tt&gt; decodes the PDF itself (no
+    stay with what follows &amp;ndash; &lt;tt&gt;wxm::BreakIntoPages()&lt;/tt&gt;
+    (&lt;tt&gt;PageBreaks.{h,cpp}&lt;/tt&gt;), which printing (&lt;tt&gt;Printout&lt;/tt&gt;) uses too, so a
+    change there changes both; &lt;tt&gt;test_PageBreaks&lt;/tt&gt; covers it. &lt;tt&gt;test_PdfExport&lt;/tt&gt; decodes the PDF itself (no
     external tools), so it runs everywhere; set &lt;tt&gt;WXM_PDF_DUMP_DIR&lt;/tt&gt; to keep
     the PDFs and their decoded text for a look with &lt;tt&gt;pdffonts&lt;/tt&gt; or pikepdf.
   - &lt;strong&gt;Bookmarks&lt;/strong&gt; (the outline) come from the headings. wxPdfDocument needs

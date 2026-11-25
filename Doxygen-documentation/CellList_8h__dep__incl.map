@@ -1,5 +1,5 @@
 <map id="src/cells/CellList.h" name="src/cells/CellList.h">
-<area shape="rect" id="node1" title="Declares the cell list management functionality." alt="" coords="2603,5,2741,31"/>
+<area shape="rect" id="node1" title="Declares the cell list management functionality." alt="" coords="2977,5,3116,31"/>
 <area shape="rect" id="node2" href="$MathParser_8cpp.html" title="This file defines the class MathParser that reads wxmx data and math from Maxima." alt="" coords="5,86,149,111"/>
 <area shape="rect" id="node3" href="$MaximaOutputAppender_8cpp.html" title="Implements the worksheet output appenders extracted from the wxMaxima god class." alt="" coords="174,86,405,111"/>
 <area shape="rect" id="node4" href="$Cell_8cpp.html" title="Core layout and rendering logic for worksheet cells." alt="" coords="429,86,560,111"/>
@@ -9,19 +9,22 @@
 <area shape="rect" id="node8" href="$SumCell_8cpp.html" title="This file defines the class SumCell." alt="" coords="1205,86,1365,111"/>
 <area shape="rect" id="node9" href="$MatrixViewer_8cpp.html" title="The viewer a double&#45;click on a partially shown matrix opens (GH #2344)." alt="" coords="1390,86,1599,111"/>
 <area shape="rect" id="node10" href="$WorksheetPreview_8cpp.html" title="Defines the sample worksheet the configuration dialog&#39;s &quot;Worksheet&quot; tab shows to preview what its dis..." alt="" coords="1624,86,1867,111"/>
-<area shape="rect" id="node11" href="$Worksheet_8cpp.html" title="This file defines the class Worksheet." alt="" coords="1891,86,2104,111"/>
-<area shape="rect" id="node12" href="$WorksheetDocument_8cpp.html" title="Implementation of WorksheetDocument&#39;s structural edits &#45; see WorksheetDocument.h." alt="" coords="2128,86,2408,111"/>
-<area shape="rect" id="node13" href="$WorksheetExport_8cpp.html" title="The document serializers declared in WorksheetExport.h." alt="" coords="2433,86,2687,111"/>
-<area shape="rect" id="node14" href="$wxMaxima_8cpp.html" title="This file defines the contents of the class wxMaxima that contains most of the program&#39;s logic." alt="" coords="2712,86,2856,111"/>
-<area shape="rect" id="node15" href="$test__EditorCellInvariants_8cpp.html" title="Hardening tests for EditorCell&#39;s text&#45;editing core." alt="" coords="2880,79,3064,119"/>
-<area shape="rect" id="node16" href="$test__GroupCellLayout_8cpp.html" title="Regression tests for the GroupCell &lt;&#45;&gt; EditorCell layout coupling." alt="" coords="3089,79,3253,119"/>
-<area shape="rect" id="node17" href="$test__MACRoundtrip_8cpp.html" title="Regression test for a plain .mac file surviving wxMaxima&#39;s open/save round&#45;trip byte&#45;for&#45;byte,..." alt="" coords="3277,79,3427,119"/>
-<area shape="rect" id="node18" href="$test__MatrixViewer_8cpp.html" title="The matrix viewer a double&#45;click on an elided matrix opens (GH #2344)." alt="" coords="3451,79,3595,119"/>
-<area shape="rect" id="node19" href="$test__OffscreenRedraw_8cpp.html" title="Output that changes outside the window doesn&#39;t show a wrong frame." alt="" coords="3619,79,3786,119"/>
-<area shape="rect" id="node20" href="$test__PdfExport_8cpp.html" title="Checks that the PDF export (PdfExport, drawn with wxPdfDocument) gives wxMaxima what it needs:" alt="" coords="3811,79,3955,119"/>
-<area shape="rect" id="node21" href="$test__TextContinuation_8cpp.html" title="Tests for TextCell::SetTextContinuation(): a long line of plain text Maxima sends (a warning,..." alt="" coords="3979,79,4146,119"/>
-<area shape="rect" id="node22" href="$test__WXMRoundtrip_8cpp.html" title="Regression tests for images surviving the .wxm serialization round&#45;trip." alt="" coords="4170,79,4323,119"/>
-<area shape="rect" id="node23" href="$test__WXMXRoundtrip_8cpp.html" title="Round&#45;trip tests for the .wxmx content.xml (the MathML&#45;like math format)." alt="" coords="4348,79,4511,119"/>
-<area shape="rect" id="node24" href="$test__WorksheetClipboard_8cpp.html" title="Safety net for the multi&#45;format clipboard / drag&#45;and&#45;drop payload of Worksheet." alt="" coords="4535,79,4721,119"/>
-<area shape="rect" id="node25" href="$test__WorksheetLayout_8cpp.html" title="Headless tests for the full WorksheetLayout pipeline." alt="" coords="4746,79,4915,119"/>
+<area shape="rect" id="node11" href="$PageBreaks_8cpp.html" title="Defines wxm::BreakIntoPages(), see PageBreaks.h." alt="" coords="1891,86,2122,111"/>
+<area shape="rect" id="node12" href="$Printout_8cpp.html" title="This file defines the class MathPrintOut." alt="" coords="2146,86,2353,111"/>
+<area shape="rect" id="node13" href="$Worksheet_8cpp.html" title="This file defines the class Worksheet." alt="" coords="2377,86,2591,111"/>
+<area shape="rect" id="node14" href="$WorksheetDocument_8cpp.html" title="Implementation of WorksheetDocument&#39;s structural edits &#45; see WorksheetDocument.h." alt="" coords="2615,86,2895,111"/>
+<area shape="rect" id="node15" href="$WorksheetExport_8cpp.html" title="The document serializers declared in WorksheetExport.h." alt="" coords="2919,86,3174,111"/>
+<area shape="rect" id="node16" href="$wxMaxima_8cpp.html" title="This file defines the contents of the class wxMaxima that contains most of the program&#39;s logic." alt="" coords="3199,86,3343,111"/>
+<area shape="rect" id="node17" href="$test__EditorCellInvariants_8cpp.html" title="Hardening tests for EditorCell&#39;s text&#45;editing core." alt="" coords="3367,79,3551,119"/>
+<area shape="rect" id="node18" href="$test__GroupCellLayout_8cpp.html" title="Regression tests for the GroupCell &lt;&#45;&gt; EditorCell layout coupling." alt="" coords="3575,79,3739,119"/>
+<area shape="rect" id="node19" href="$test__MACRoundtrip_8cpp.html" title="Regression test for a plain .mac file surviving wxMaxima&#39;s open/save round&#45;trip byte&#45;for&#45;byte,..." alt="" coords="3764,79,3913,119"/>
+<area shape="rect" id="node20" href="$test__MatrixViewer_8cpp.html" title="The matrix viewer a double&#45;click on an elided matrix opens (GH #2344)." alt="" coords="3937,79,4081,119"/>
+<area shape="rect" id="node21" href="$test__OffscreenRedraw_8cpp.html" title="Output that changes outside the window doesn&#39;t show a wrong frame." alt="" coords="4106,79,4273,119"/>
+<area shape="rect" id="node22" href="$test__PageBreaks_8cpp.html" title="Checks the page breaking printing and the PDF export share (wxm::BreakIntoPages()),..." alt="" coords="4297,79,4441,119"/>
+<area shape="rect" id="node23" href="$test__PdfExport_8cpp.html" title="Checks that the PDF export (PdfExport, drawn with wxPdfDocument) gives wxMaxima what it needs:" alt="" coords="4465,79,4609,119"/>
+<area shape="rect" id="node24" href="$test__TextContinuation_8cpp.html" title="Tests for TextCell::SetTextContinuation(): a long line of plain text Maxima sends (a warning,..." alt="" coords="4634,79,4801,119"/>
+<area shape="rect" id="node25" href="$test__WXMRoundtrip_8cpp.html" title="Regression tests for images surviving the .wxm serialization round&#45;trip." alt="" coords="4825,79,4978,119"/>
+<area shape="rect" id="node26" href="$test__WXMXRoundtrip_8cpp.html" title="Round&#45;trip tests for the .wxmx content.xml (the MathML&#45;like math format)." alt="" coords="5003,79,5165,119"/>
+<area shape="rect" id="node27" href="$test__WorksheetClipboard_8cpp.html" title="Safety net for the multi&#45;format clipboard / drag&#45;and&#45;drop payload of Worksheet." alt="" coords="5189,79,5376,119"/>
+<area shape="rect" id="node28" href="$test__WorksheetLayout_8cpp.html" title="Headless tests for the full WorksheetLayout pipeline." alt="" coords="5401,79,5570,119"/>
 </map>
