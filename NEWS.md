@@ -1,5 +1,8 @@
 # Current development version
 
+- Help > About names the libraries wxMaxima is made with, wxWidgets and
+  wxPdfDocument, with their web sites, and the third-party notices now
+  include wxPdfDocument's licence and those of the code it contains.
 - Ctrl+Z undoes the worksheet's last change even while the cursor sits in
   a cell that wasn't edited since it got there. Before, the cell claimed the
   undo for itself and nothing happened -- most visibly right after changing
