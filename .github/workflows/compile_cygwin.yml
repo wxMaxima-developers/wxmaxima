@@ -45,9 +45,11 @@ jobs:
           # Other projects hit the same (envmodules/modules#708). Drop the pin
           # once a fixed libuv1 is in Cygwin.
           packages: ccache cmake libuv1=1.52.1-1 git libwx_baseu3.2-devel libwx_gtk3u3.2-devel gcc-core gcc-g++ make gettext-devel pkg-config libfontconfig-devel
+      # The repository is checked out into wxmaxima/, so a local action is
+      # found there, not in the workspace root.
       - name: ccache
         # Compiler cache, restored from main's last run; see the action.
-        uses: ./.github/actions/ccache
+        uses: ./wxmaxima/.github/actions/ccache
         with:
           key: cygwin
       # Both steps run in Cygwin's own bash, as cygwin-install-action
@@ -71,4 +73,4 @@ jobs:
              make VERBOSE=1 -j 4 < /dev/null
       - name: save the ccache
         if: ${{ !cancelled() }}
-        uses: ./.github/actions/ccache-save
+        uses: ./wxmaxima/.github/actions/ccache-save
