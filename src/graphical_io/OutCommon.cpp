@@ -239,6 +239,16 @@ void OutCommon::GetMaxPoint(Cell *tree, int *width, int *height) const {
         }
         bigSkip = tmp.HasBigSkip();
     }
+    // A GroupCell's width leaves out the indent it is drawn at (the room for
+    // the cell brackets, see GroupCell::Draw()), and an output line starts
+    // further right still, at its label's width. Without this whole cells
+    // were cut off on the right.
+    if (tree->GetType() == MC_TYPE_GROUP)
+        for (const GroupCell &group : OnList(dynamic_cast<const GroupCell *>(tree))) {
+            *width = std::max(*width, m_thisconfig.GetIndent() + group.GetWidth());
+            if (group.GetOutput())
+                *width = std::max(*width, group.GetOutputRect().GetRight() + 1);
+        }
 }
 
 void OutCommon::Draw(Cell *tree) {
