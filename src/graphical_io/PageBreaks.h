@@ -47,7 +47,11 @@ namespace wxm {
   - a heading is not left alone at the bottom of a page: if the group after
     it has to go onto the next page, the heading goes with it;
   - a block taller than a whole page gets a page of its own (and is cut off
-    at its bottom, as nothing can be done about that).
+    at its bottom, as nothing can be done about that) -- unless its last cell
+    says where it may be cut (Cell::PageBreakCandidates(), an oversized
+    matrix between its rows). Then it starts on the current page if its
+    first part fits there, and continues over as many pages as it needs,
+    each cut at the last such place that still fits.
 
   \param tree       The first group of the laid-out worksheet: its cells'
                     positions (GetRect()) have to be up to date.

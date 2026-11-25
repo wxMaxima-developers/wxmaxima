@@ -435,6 +435,55 @@ SCENARIO("The PDF export is tagged") {
   }
 }
 
+SCENARIO("A matrix taller than a page is continued on the next pages") {
+  // 60 rows of a matrix shown in full: several pages of it.
+  auto matrix = [](std::size_t rows) {
+    wxString xml = wxS("<tb roundedParens=\"true\" oversized=\"full\">");
+    for (std::size_t r = 0; r < rows; r++)
+      xml += wxString::Format(wxS("<mtr><mtd><mi>a</mi></mtd><mtd><mn>%lu</mn></mtd></mtr>"),
+                              static_cast<unsigned long>(r));
+    return xml + wxS("</tb>");
+  };
+  std::size_t pages = 0;
+  const DecodedPdf tall = DecodePdf(
+    ExportPdf(wxS("tallmatrix"),
+              Document(CodeCell(wxS("m;"), wxS("(%o1)"), matrix(60))), &pages));
+  std::size_t shortPages = 0;
+  const DecodedPdf single = DecodePdf(
+    ExportPdf(wxS("shortmatrix"),
+              Document(CodeCell(wxS("m;"), wxS("(%o1)"), matrix(1))), &shortPages));
+  THEN("it is spread over several pages, as one formula") {
+    CHECK(shortPages == 1);
+    CHECK(pages > 1);
+    CHECK(tall.Count("/S /Formula") == 1);
+  }
+  THEN("each row is drawn once, on one page") {
+    // Each entry is one piece of text, as is everything else: a row more
+    // adds just its two entries.
+    const auto shown = [](const DecodedPdf &pdf) { return pdf.Count(" Tj"); };
+    CHECK(shown(single) > 0);
+    CHECK(shown(tall) == shown(single) + 59 * 2);
+  }
+}
+
+SCENARIO("A matrix far too wide for the page is split into blocks of columns") {
+  wxString xml = wxS("<tb roundedParens=\"true\" oversized=\"full\">");
+  for (int r = 0; r < 4; r++) {
+    xml += wxS("<mtr>");
+    for (int c = 0; c < 40; c++)
+      xml += wxString::Format(wxS("<mtd><mn>%i</mn></mtd>"), 1000 * r + c);
+    xml += wxS("</mtr>");
+  }
+  xml += wxS("</tb>");
+  std::size_t pages = 0;
+  const DecodedPdf pdf = DecodePdf(
+    ExportPdf(wxS("widematrix"), Document(CodeCell(wxS("m;"), wxS("(%o1)"), xml)),
+              &pages));
+  // Every entry once, plus label, input, and a heading per block.
+  CHECK(pdf.Count(" Tj") > 160);
+  CHECK(pdf.Count("/S /Formula") == 1);
+}
+
 SCENARIO("A structure element survives a page break") {
   GIVEN("A worksheet much longer than a page") {
     wxString cells = TextGroup(wxS("title"), wxS("Long"));

@@ -86,10 +86,22 @@
   matrix elides itself to the window, so an outer one can still overshoot by
   the width of the columns it always keeps.
 
+  **On paper.** Printing and the PDF export can't elide what the user asked
+  to see in full, and can't scroll either, so there a matrix shown in full
+  that doesn't fit the page is laid out for it: shrunk to the width of the
+  page, but not below MinPaperScale of its size; if that isn't enough, split
+  into blocks of columns that each fit, printed one below the other, each
+  headed "Columns m to n"; and if it is taller than a page, continued on the
+  next one between two rows, with the brackets closed at the bottom of the
+  page and opened again at the top of the next (PageBreakCandidates()). Such
+  a matrix lines up with its label by its first row. The worksheet itself,
+  and every export but printing and PDF, are unaffected.
+
   \image html MatrCellGeometry.svg
   \image html MatrCellVariations.svg
   \image html MatrCellElisionGeometry.svg
   \image html MatrCellScrollGeometry.svg
+  \image html MatrCellPaperGeometry.svg
 */
 class MatrCell final : public Cell
 {
@@ -109,6 +121,31 @@ public:
   using Cell::SetCurrentPoint;
   void SetCurrentPoint(wxPoint point) const override;
   void Draw(wxDC *dc, wxDC *antialiassingDC) override;
+
+  std::vector<wxCoord> PageBreakCandidates() const override;
+
+  /*! \name On paper
+    @{
+  */
+  //! The smallest a matrix is shrunk to on paper before its columns are split instead
+  static constexpr double MinPaperScale = 0.6;
+  /*! How much the matrix was shrunk to fit the width of the page
+
+    1 if it wasn't, which is always the case off paper.
+  */
+  double GetPaperScale() const { return m_paperScale; }
+  /*! How many blocks of columns the matrix was split into to fit the page
+
+    1 if it is laid out for paper (it is taller than the page) but not split,
+    0 if it isn't laid out for paper at all.
+  */
+  size_t GetPaperColumnBlocks() const { return m_paperBlocks.size(); }
+  //! The heading of a block of columns, e.g. "Columns 1 to 8"; empty if there is none
+  wxString GetPaperBlockCaption(size_t block) const {
+    return (block < m_paperCaptions.size()) ? m_paperCaptions.at(block)->ToString()
+                                            : wxString();
+  }
+  //! @}
 
   const wxString GetToolTip(wxPoint point) const override;
   Range GetInnerCellsInRect(const wxRect &rect) const override;
@@ -346,6 +383,20 @@ private:
   wxCoord DotsExtent() const { return 2 * DotPitch() + 2 * DotRadius(); }
   /*! The width of the ellipsis part of a elided matrix */
   wxCoord DotsGap() const {return DotsExtent() + DotsSkip() * 2;}
+  /*! Draws the brackets (or, for a special matrix, the line) around a box
+
+    box is the area between the brackets, which run from its top to its
+    bottom: the whole matrix, or on paper the part of it a page shows.
+  */
+  void DrawBrackets(wxDC *dc, wxDC *antialiassingDC, wxRect box) const;
+  /*! Draws a matrix laid out for paper (see m_paperBlocks)
+
+    Only the rows whose middle lies on the page being printed
+    (Configuration::GetPrintedPage()), with brackets around just them.
+  */
+  void DrawOnPaper(wxDC *dc, wxDC *antialiassingDC);
+  //! The vertical gap between two blocks of columns on paper
+  wxCoord PaperBlockGap() const { return 2 * ElementSkip(); }
   //! Draws three dots, starting at start and each step further along
   void DrawDots(wxDC *dc, wxPoint start, wxPoint step) const;
   //! Draws the ⋯ ⋮ ⋱ that mark where rows or columns are left out
@@ -436,6 +487,35 @@ private:
   mutable wxPoint m_scroll;
   //! How thick the scrollbars are, as the MatrixScrollHost said at layout
   mutable wxCoord m_scrollbarThickness = 0;
+
+  /*! A block of columns of a matrix laid out for paper
+
+    See "On paper" in the class description. A matrix that is only too tall
+    for the page is one block of all its columns, without a heading.
+  */
+  struct PaperBlock
+  {
+    //! The first of its columns
+    size_t firstCol = 0;
+    //! One after the last of its columns
+    size_t endCol = 0;
+    //! The top of its heading, relative to the top of the matrix
+    wxCoord top = 0;
+    //! The height of its heading and the gap below it; 0 if there is none
+    wxCoord captionHeight = 0;
+    //! The width of the box between its brackets
+    wxCoord width = 0;
+  };
+  /*! The blocks a matrix laid out for paper is printed in, in order
+
+    Empty unless the matrix is laid out for paper, which is also what tells
+    Draw() and SetCurrentPoint() which layout to use.
+  */
+  mutable std::vector<PaperBlock> m_paperBlocks;
+  //! The headings of m_paperBlocks, if it has more than one
+  mutable std::vector<std::unique_ptr<Cell>> m_paperCaptions;
+  //! See GetPaperScale()
+  mutable double m_paperScale = 1;
 
   //! The columns left out of the display, if any
   mutable Elision m_colElision;

@@ -28,6 +28,7 @@
 #include "cells/GroupCell.h"
 
 #include <algorithm>
+#include <optional>
 
 std::vector<wxCoord> wxm::BreakIntoPages(const GroupCell *tree, wxCoord pageHeight) {
   std::vector<wxCoord> pageStarts;
@@ -43,6 +44,11 @@ std::vector<wxCoord> wxm::BreakIntoPages(const GroupCell *tree, wxCoord pageHeig
     bool startsGroup;
     //! The group it belongs to
     const GroupCell *group;
+    /*! Where a page may start inside this block (Cell::PageBreakCandidates())
+
+      Only those of the block's last cell: see there.
+    */
+    std::vector<wxCoord> breaks = {};
   };
   std::vector<Block> blocks;
   for (const GroupCell &group : OnList(tree)) {
@@ -70,6 +76,9 @@ std::vector<wxCoord> wxm::BreakIntoPages(const GroupCell *tree, wxCoord pageHeig
         blocks.back().top = std::min(blocks.back().top, cellRect.GetTop());
         blocks.back().bottom = std::max(blocks.back().bottom, cellRect.GetBottom());
       }
+      // Whatever an earlier cell of the line allowed is void now that it
+      // isn't the last one any more.
+      blocks.back().breaks = cell.PageBreakCandidates();
     }
   }
   if (blocks.empty())
@@ -87,7 +96,17 @@ std::vector<wxCoord> wxm::BreakIntoPages(const GroupCell *tree, wxCoord pageHeig
     }
     const wxCoord pageStart = pageStarts.back();
     const bool overflows = (block.bottom - pageStart > pageHeight);
-    if ((forceBreak || overflows) && (block.top > pageStart)) {
+    // A block that is taller than a page and may be cut (an oversized
+    // matrix) is continued on the next pages. It starts on this page if at
+    // least its first part fits there.
+    const bool spreads = !block.breaks.empty() &&
+      (block.bottom - block.top > pageHeight);
+    bool startsHere = false;
+    if (spreads && !forceBreak)
+      for (const wxCoord at : block.breaks)
+        if ((at > pageStart) && (at > block.top) && (at - pageStart <= pageHeight))
+          startsHere = true;
+    if ((forceBreak || overflows) && !startsHere && (block.top > pageStart)) {
       wxCoord breakAt = block.top;
       // Keep a heading together with what follows it.
       if (block.startsGroup && (i > 0)) {
@@ -98,6 +117,28 @@ std::vector<wxCoord> wxm::BreakIntoPages(const GroupCell *tree, wxCoord pageHeig
       pageStarts.push_back(breakAt);
     }
     forceBreak = false;
+    if (spreads) {
+      while (block.bottom - pageStarts.back() > pageHeight) {
+        const wxCoord start = pageStarts.back();
+        // The last place to cut at that leaves this page no taller than the
+        // paper ...
+        std::optional<wxCoord> cut;
+        for (const wxCoord at : block.breaks)
+          if ((at > start) && (at - start <= pageHeight))
+            cut = at;
+        // ... or, if a single row is taller than that, the first one after
+        // it: that row is cut off at the bottom of its page.
+        if (!cut)
+          for (const wxCoord at : block.breaks)
+            if (at > start) {
+              cut = at;
+              break;
+            }
+        if (!cut)
+          break;
+        pageStarts.push_back(*cut);
+      }
+    }
   }
   return pageStarts;
 }

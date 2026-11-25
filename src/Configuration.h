@@ -1065,6 +1065,28 @@ public:
   void SetFilesToSave(std::list<FileToSave> files) { m_filesToSave = std::move(files); }
   void SetUpdateRegion(wxRect rect){m_renderContext.SetUpdateRegion(rect);}
 
+  /*! The vertical range of the worksheet the page being printed shows
+
+    Printing and the PDF export set it while they draw a page; a cell spread
+    over several pages (see Cell::PageBreakCandidates()) then draws only the
+    part of it that belongs on that page. Returns false if no page is set,
+    i.e. everything is to be drawn.
+  */
+  bool GetPrintedPage(wxCoord &top, wxCoord &bottom) const {
+    const wxRect page = m_renderContext.GetPrintedPage();
+    if (page.IsEmpty())
+      return false;
+    top = page.GetTop();
+    bottom = page.GetTop() + page.GetHeight();
+    return true;
+  }
+  //! Sets the page being printed to the worksheet's y range [top, bottom)
+  void SetPrintedPage(wxCoord top, wxCoord bottom) {
+    m_renderContext.SetPrintedPage(wxRect(0, top, 1, std::max<wxCoord>(0, bottom - top)));
+  }
+  //! Forgets the page being printed: cells draw everything again
+  void ClearPrintedPage() { m_renderContext.SetPrintedPage(wxRect()); }
+
   //! Whether any part of the given rectangle is within the current update region,
   //! or true if drawing is not clipped to update region.
   bool InUpdateRegion(wxRect rect) const;
