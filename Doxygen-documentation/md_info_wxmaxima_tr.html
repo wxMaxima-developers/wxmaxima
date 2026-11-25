@@ -75,26 +75,26 @@ $(function() {
 <div class="textblock"><p>WxMaxima, <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> bilgisayar cebiri sistemi (CAS) için bir grafik kullanıcı arayüzüdür (GUI). WxMaxima ile <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>'nın tüm işlevleri kullanılabilir. Ayrıca en sık kullanılan özelliklere erişmek için kullanışlı sihirbazlar sunar. Bu kılavuz, <a class="el" href="classwxMaxima.html">wxMaxima</a>'yı <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> için en popüler arayüzlerden biri yapan özelliklerden bazılarını anlatır.</p>
 <p><img src="./wxMaximaLogo.png" alt="wxMaxima logo" class="inline"/></p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md822"></a>
+<h1><a class="anchor" id="autotoc_md724"></a>
 wxMaxima'ya giriş</h1>
-<h2><a class="anchor" id="autotoc_md823"></a>
+<h2><a class="anchor" id="autotoc_md725"></a>
 &lt;em&gt;Maxima&lt;/em&gt; ve wxMaxima</h2>
 <p>Açık kaynak dünyasında büyük sistemler genellikle küçük geliştirici gruplarının daha kolay yönetebileceği daha küçük projelere bölünür. Örneğin bir CD yazma programı, CD'yi asıl yazan bir komut satırı aracından ve kullanıcıların tüm komut satırı seçeneklerini öğrenmek zorunda kalmadan, hatta komut satırını hiç kullanmadan bu aracı kullanmasını sağlayan bir grafik kullanıcı arayüzünden oluşur. Bu yaklaşımın bir avantajı, komut satırı programına harcanan geliştirme emeğinin birçok program tarafından paylaşılabilmesidir: Aynı CD yazma komut satırı programı bir dosya yöneticisinde “CD'ye gönder” eklentisi olarak, bir müzik çalarda “CD'ye yaz” işlevi için ve bir DVD yedekleme aracında CD yazıcı olarak kullanılabilir. Bir başka avantaj da büyük bir işi küçük parçalara bölmenin geliştiricilerin aynı program için birden fazla kullanıcı arayüzü sunmasına olanak tanımasıdır.</p>
 <p><em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> gibi bir bilgisayar cebiri sistemi (CAS) bu yapıya uyar. Bir CAS, keyfi duyarlıklı bir hesap makinesi uygulamasının arkasındaki mantığı sağlayabilir ya da daha büyük bir sistemin arka planında formüllerin otomatik dönüşümlerini yapabilir (örn. <a href="https://www.sagemath.org/">Sage</a>). Alternatif olarak doğrudan bağımsız bir sistem olarak da kullanılabilir. <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>'ya bir komut satırı üzerinden erişilebilir. Ancak çoğu zaman, özellikle yeni başlayanlar için, <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> gibi bir arayüz yazılıma erişmenin daha verimli bir yolu olur.</p>
-<h3><a class="anchor" id="autotoc_md824"></a>
+<h3><a class="anchor" id="autotoc_md727"></a>
 &lt;em&gt;Maxima&lt;/em&gt;</h3>
 <p><em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> tam özellikli bir 'Sembolik' olarak ta çalışabilen bir bilgisayar cebir sistemidir (BCS). Bir BCS, formülleri yeniden düzenleyerek ve sadece sonucun sayısal değerini çıkarmanın aksine problemi çözen bir formül bularak (sembolik ifadeler ile) matematiksel problemleri çözebilen bir programdır. Başka bir deyişle, <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> değişkenlerin sayısal değerlerini veren bir hesap makinesi olarak kullanılabilir ve analitik çözümler de sağlayabilir. Ayrıca, analitik olarak çözülemeyen denklemler veya denklem sistemleri için bir dizi sayısal analiz yöntemi sunar.</p>
 <p><img src="./maxima_screenshot.png" alt="Maxima ekran görüntüsü, komut satırı" class="inline"/></p>
 <p><em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> için kapsamlı belgeler <a href="https://maxima.sourceforge.io/documentation.html">internette mevcuttur</a>. Bu belgelerin bir kısmına <a class="el" href="classwxMaxima.html">wxMaxima</a>'nın Yardım menüsünden de ulaşılabilir. Yardım tuşuna (çoğu sistemde <code>F1</code> tuşu) basıldığında <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>'nın bağlama duyarlı yardım özelliği, imlecin bulunduğu komutun <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> kılavuzundaki sayfasına otomatik olarak atlar.</p>
-<h3><a class="anchor" id="autotoc_md825"></a>
+<h3><a class="anchor" id="autotoc_md728"></a>
 WxMaxima</h3>
 <p><em>WxMaxima</em>, <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>'nın tüm işlevselliğini ve esnekliğini sunan bir grafik kullanıcı arayüzüdür. WxMaxima kullanıcılara grafik bir görüntü ve <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> ile çalışmayı kolaylaştıran birçok özellik sunar. Örneğin <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>, herhangi bir hücrenin içeriğini (ya da gerekirse bir formülün herhangi bir parçasını) basit bir sağ tıklamayla metin, LaTeX ya da MathML olarak dışa aktarmaya izin verir. Hatta bütün bir çalışma sayfası HTML ya da LaTeX dosyası olarak dışa aktarılabilir. <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>'nın belgeleri, kullanımının çeşitli yönlerini gösteren çalışma sayfalarıyla birlikte, <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> <a href="https://wxMaxima-developers.github.io/wxmaxima/help.html">yardım sitesinde</a> ve Yardım menüsünde bulunur.</p>
 <p><img src="./wxMaximaWindow.png" alt="wxMaxima window" class="inline"/></p>
 <p><em>WxMaxima</em> içine girilen hesaplamalar, arka planda <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> komut satırı aracı tarafından gerçekleştirilir.</p>
-<h2><a class="anchor" id="autotoc_md826"></a>
+<h2><a class="anchor" id="autotoc_md729"></a>
 Çalışma sayfasının temelleri</h2>
 <p><em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>'nın çoğu kendini açıklar, ancak bazı ayrıntılar dikkat gerektirir. <a href="https://wxMaxima-developers.github.io/wxmaxima/help.html">Bu site</a>, <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>'nın çeşitli yönlerini ele alan bir dizi çalışma sayfası içerir. Bunlardan bazılarını (özellikle "10 dakikada _(wx)Maxima_" eğitimini) baştan sona çalışmak, hem <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>'nın içeriğine hem de <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> ile etkileşim için <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> kullanımına aşinalığı artıracaktır. Bu kılavuz, <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>'nın kendiliğinden anlaşılması pek beklenmeyen ve çevrimiçi materyalde ele alınmamış olabilecek yönlerini anlatmaya odaklanır.</p>
-<h3><a class="anchor" id="autotoc_md827"></a>
+<h3><a class="anchor" id="autotoc_md731"></a>
 Çalışma sayfası yaklaşımı</h3>
 <p><em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>'da standart olmayan çok az şeyden biri, <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> için verileri yalnızca kullanıcı istediğinde değerlendirilen (yani <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>'ya gönderilen) hücreler halinde düzenlemesidir. Bir hücre değerlendirildiğinde, o hücredeki ve yalnızca o hücredeki tüm komutlar toplu olarak değerlendirilir. (Bu ifade tam olarak doğru değil: Bitişik birkaç hücre seçilip birlikte değerlendirilebilir. Ayrıca <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>'ya bir çalışma sayfasındaki tüm hücreleri tek seferde değerlendirmesi söylenebilir.) <em>WxMaxima</em>'nın komutları çalıştırmak üzere gönderme yaklaşımı ilk bakışta alışılmadık gelebilir. Ancak büyük belgelerle çalışmayı (kullanıcının her değişikliğin belgenin tamamının yeniden değerlendirilmesini otomatik olarak tetiklemesini istemediği durumlarda) büyük ölçüde kolaylaştırır. Ayrıca bu yaklaşım hata ayıklama için çok kullanışlıdır.</p>
 <p><em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>'ya metin yazıldığında otomatik olarak yeni bir çalışma sayfası hücresi oluşturulur. Bu hücrenin türü araç çubuğundan seçilebilir. Bir kod hücresi oluşturulduysa hücre <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>'ya gönderilebilir; bu durumda hesaplamanın sonucu kodun altında görüntülenir. Aşağıda böyle bir komut çifti gösterilmektedir.</p>
@@ -103,7 +103,7 @@ WxMaxima</h3>
 <p><em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>, giriş hücrelerinin yanı sıra belgeleme için metin hücrelerine, görüntü hücrelerine, başlık hücrelerine, bölüm hücrelerine ve kısım hücrelerine de izin verir. Her hücrenin kendi geri alma arabelleği vardır; bu yüzden birkaç hücrenin değerlerini değiştirip ardından gereksiz değişiklikleri yavaş yavaş geri alarak hata ayıklamak oldukça kolaydır. Ayrıca çalışma sayfasının kendisinin de hücre düzenlemelerini, eklemelerini ve silmelerini geri alabilen genel bir geri alma arabelleği vardır.</p>
 <p>Aşağıdaki şekil farklı hücre türlerini (başlık hücreleri, bölüm hücreleri, alt bölüm hücreleri, metin hücreleri, giriş/çıkış hücreleri ve görüntü hücreleri) göstermektedir.</p>
 <p><img src="./cell-example.png" alt="Example of different wxMaxima cells" class="inline"/></p>
-<h3><a class="anchor" id="autotoc_md828"></a>
+<h3><a class="anchor" id="autotoc_md733"></a>
 Hücreler</h3>
 <p>Çalışma sayfası hücreler halinde düzenlenmiştir. WxMaxima aşağıdaki hücre türlerini tanır:</p>
 <ul>
@@ -117,7 +117,7 @@ Hücreler</h3>
 <p>Metin girildiğinde <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>'nın varsayılan davranışı otomatik olarak bir matematik hücresi oluşturmaktır. Diğer türlerdeki hücreler Hücre menüsüyle, menüde gösterilen kısayol tuşlarıyla ya da araç çubuğundaki açılır listeyle oluşturulabilir. Matematik dışı bir hücre oluşturulduktan sonra içine yazılan her şey metin olarak yorumlanır.</p>
 <p>Bir matematik hücresi, (<a class="el" href="classC.html">C</a> tarzı) bir <a href="https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#Comments">yorum metni</a> de içerebilir: <code>/* This comment will be ignored by <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> */</code></p>
 <p>"`/*`" yorumun başlangıcını, "`*/`" ise sonunu işaretler.</p>
-<h3><a class="anchor" id="autotoc_md829"></a>
+<h3><a class="anchor" id="autotoc_md734"></a>
 Yatay ve dikey imleçler</h3>
 <p>Kullanıcı tam bir cümle seçmeye çalışırsa, bir kelime işlemci seçimi otomatik olarak bir kelime sınırında başlayıp bitecek şekilde genişletmeye çalışır. Benzer şekilde, birden fazla hücre seçilirse <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> da seçimi hücrelerin tamamına genişletir.</p>
 <p>Standart olmayan şey, <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>'nın iki tür imleç tanımlayarak sürükle-bırak esnekliği sağlamasıdır. <em>WxMaxima</em> gerektiğinde bunlar arasında otomatik olarak geçiş yapar:</p>
@@ -132,15 +132,15 @@ imleç" class="inline"/></p>
 <p>Farklı hücreler arasında gezinirken de, çalışma sayfanıza bir hücre ekleyebileceğiniz yerde (yanıp sönen) yatay imleci görürsünüz (ya formülünüzü yazmaya başlayarak bir matematik hücresi ya da menüyü kullanarak farklı türde bir hücre).</p>
 <p><img src="./horizontal-cursor-between-cells.png" alt="Hücreler arasında (yanıp sönen) yatay
 imleç" class="inline"/></p>
-<h3><a class="anchor" id="autotoc_md830"></a>
+<h3><a class="anchor" id="autotoc_md738"></a>
 Hücreleri Maxima'ya gönderme</h3>
 <p>Bir kod hücresindeki komut, <code>CTRL</code>+<code>ENTER</code>, <code>SHIFT</code>+<code>ENTER</code> ya da sayısal tuş takımındaki <code>ENTER</code> tuşuna basılarak bir kez çalıştırılır. <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> varsayılan olarak komutları <code>CTRL</code>+<code>ENTER</code> ya da <code>SHIFT</code>+<code>ENTER</code> girildiğinde gönderir, ancak <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> komutları <code>ENTER</code> tuşuna yanıt olarak çalıştıracak şekilde yapılandırılabilir.</p>
-<h3><a class="anchor" id="autotoc_md831"></a>
+<h3><a class="anchor" id="autotoc_md739"></a>
 Komutların otomatik tamamlanması</h3>
 <p><em>WxMaxima</em>, menüden (Hücre/Kelimeyi tamamla) ya da <code>CTRL</code>+<code>SPACE</code> tuş bileşimine basılarak tetiklenen bir otomatik tamamlama özelliği içerir. Otomatik tamamlama bağlama duyarlıdır. Örneğin ezUnits için bir birim belirtiminin içinde etkinleştirilirse uygun birimlerin bir listesini sunar.</p>
 <p><img src="./ezUnits.png" alt="ezUnits" class="inline"/></p>
 <p>Otomatik tamamlama, bir dosya adını, bir birim adını ya da geçerli komutun veya değişkenin adını tamamlamanın yanı sıra, komutların çoğu için programın beklediği parametrelerin türünü (ve anlamını) gösteren bir şablon da gösterebilir. Bu özelliği etkinleştirmek için <code>SHIFT</code>+<code>CTRL</code>+<code>SPACE</code> tuşlarına basın ya da ilgili menü öğesini (Hücre/Şablonu göster) seçin.</p>
-<h4><a class="anchor" id="autotoc_md832"></a>
+<h4><a class="anchor" id="autotoc_md740"></a>
 Yunan harfleri</h4>
 <p>Bilgisayarlar geleneksel olarak karakterleri 8 bitlik değerlerde saklar. Bu, en fazla 256 farklı karaktere izin verir. Hemen her dilin tüm harfleri, rakamları ve denetim simgeleri (iletimin sonu, dizenin sonu, menüler için dikdörtgen çizmeye yarayan çizgiler ve kenarlar <em>vb.</em>) bu sınırın içine sığabilir.</p>
 <p>Ancak çoğu ülke için seçilmiş olan 256 karakterlik kod sayfası, matematikte sık kullanılan Yunan harfleri gibi şeyleri içermez. Bu tür sınırlamaların üstesinden gelmek için <a href="https://home.unicode.org/">Unicode</a> icat edilmiştir: İngilizce metnin her zamanki gibi çalışmasını sağlayan, ama 256'dan çok daha fazla karakter kullanmaya olanak tanıyan bir kodlama.</p>
@@ -186,7 +186,7 @@ Yunan harfleri</h4>
 <td class="markdownTableBodyCenter">T   </td><td class="markdownTableBodyCenter">Theta   </td><td class="markdownTableBodyCenter">P   </td><td class="markdownTableBodyCenter">Pi   </td><td class="markdownTableBodyCenter">O   </td><td class="markdownTableBodyCenter">Omega   </td></tr>
 </table>
 <p>Yunan harflerini girmek için "Yunanca harfler" kenar çubuğunu da kullanabilirsiniz.</p>
-<p><a class="anchor" id="autotoc_md833"></a> </p><h5>Dikkat: Birbirine benzeyen karakterler</h5>
+<p><a class="anchor" id="autotoc_md742"></a> </p><h5>Dikkat: Birbirine benzeyen karakterler</h5>
 <p>Bazı Latin harfleri Yunan harflerine benzer; örneğin Latin "A" harfi ile Yunan "Alfa" harfi. Aynı görünseler de bunlar, farklı Unicode kod noktalarıyla (sayılarla) temsil edilen iki ayrı Unicode karakteridir.</p>
 <p>Bu, <a class="el" href="classA.html">A</a> değişkenine bir değer atayıp daha sonra bu değişkenle bir şey yapmak için Yunan Alfa harfini kullanırsanız, özellikle de çıktılarda, sorun yaratabilir. Yunan mü harfi için de (mikro öneki olarak da kullanılır) iki farklı Unicode kod noktası vardır.</p>
 <p>Bu yüzden "Yunanca harfler" kenar çubuğunda birbirine benzeyen karakterlerin sunulmaması seçeneği vardır (bu, sağ tıklama menüsüyle değiştirilebilir).</p>
@@ -299,28 +299,28 @@ Yunan harfleri</h4>
 <p>Symbols one needs often can be added to the "Symbols" sidebar in the "Options" tab of the configuration dialog (Edit -&gt; Configure), where they can also be given a keyboard shortcut. <a class="el" href="classA.html">A</a> letter with accents counts as one symbol there and gets one button. The Greek letters and the symbols the sidebars show anyway can be given a keyboard shortcut there, too, or by right-clicking their button in the sidebar. <a class="el" href="classA.html">A</a> shortcut has to contain <code>Ctrl</code> or <code>Alt</code> or be a function key, and types its symbol while the worksheet has the keyboard focus. The configuration dialog warns if a menu entry already uses the same keys.</p>
 <p>Lütfen bu simgelerin çoğunun (mantık simgeleri önemli istisnalardır) <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>'da özel bir anlamı olmadığını ve bu yüzden sıradan karakterler olarak yorumlanacağını unutmayın. <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>, Unicode karakterleri desteklemeyen bir Lisp ile derlenmişse bu simgeler hata mesajına yol açabilir.</p>
 <p>Örneğin Yunan harfleri ya da matematik simgeleri seçili yazı tipinde bulunmuyor olabilir; bu durumda görüntülenemezler. Bu sorunu çözmek için başka yazı tipleri seçin (Düzen -&gt; Yapılandır -&gt; Stil ile).</p>
-<h3><a class="anchor" id="autotoc_md835"></a>
+<h3><a class="anchor" id="autotoc_md744"></a>
 Unicode değiştirme</h3>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> will replace several Unicode characters with their respective <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> expressions, e.g. <code>²</code> with <code>^2</code>, <code>³</code> with <code>^3</code>, <code>≠</code> with <code>#</code> or <code>≤</code> with <code>&lt;=</code>.</p>
 <p>Unicode characters that stand for a <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> name are instead defined as <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> aliases of that name when <a class="el" href="classwxMaxima.html">wxMaxima</a> starts <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>: <code>π</code> for <code>pi</code>, <code>ⅈ</code> for <code>i</code>, <code>ⅇ</code> for <code>e</code>, <code>∞</code> for <code>inf</code>, the (mathematical) Sigma sign (which is not the same Unicode character as the corresponding Greek letter) for <code>sum</code>, <code>∏</code> for <code>product</code>, <code>∫</code> for <code>integrate</code>, the square root sign for <code>sqrt</code> and <code>⋀</code>, <code>⋁</code>, <code>⊻</code>, <code>⊼</code>, <code>⊽</code>, <code>⇒</code>, <code>⇔</code> and <code>¬</code> for <code>and</code>, <code>or</code>, <code>xor</code>, <code>nand</code>, <code>nor</code>, <code>implies</code>, <code>equiv</code> and <code>not</code>. This means they work in files loaded by <code>batch()</code> or <code>load()</code>, too, and <code>aliases</code> lists the names they stand for. As <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> reads these characters as letters they need to be separated from neighbouring names by spaces in such a file: <code>a⋀b</code> is a variable name, <code>a ⋀ b</code> means <code>a and b</code>. In an input cell <a class="el" href="classwxMaxima.html">wxMaxima</a> adds these spaces automatically. It also puts parenthesis around a number or a variable that directly follows the square root sign, so <code>√2</code> means <code>sqrt(2)</code>.</p>
 <p>Unicode'da birkaç "yaygın" kesir tek bir Unicode kod noktası olarak kodlanmıştır: <code>¼, ½, ¾, ⅐, ⅑, ⅒, ⅓, ⅔, ⅕, ⅖, ⅗, ⅘, ⅙, ⅚, ⅛, ⅜, ⅝, ⅞</code></p>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a>, giriş <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'ya gönderilmeden önce bunları <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> gösterimleriyle değiştirir, örneğin <code>(1/4)</code>. Ayrıca <code>1/</code> ile değiştirilen <code>⅟</code> ve <code>(0/3)</code> ile değiştirilen <code>↉</code> (beyzbolda kullanılır) vardır.</p>
 <p>Giriş hücrelerinde (bu Unicode kod noktalarını değil) <b><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> kodunu</b> kullanmanız önerilir (gerekçe: (a) matematik girişi için kullanılan yazı tipi bunları içermiyor olabilir; (b) belgeyi <code>wxm</code> dosyası olarak kaydederseniz genellikle (komut satırı) <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> tarafından okunabilir, ancak bu değiştirmeler komut satırı <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'sında elbette çalışmaz); yine de başka bir belgeden bir formülü kesip yapıştırdığınızda bu karakterler ortaya çıkabilir.</p>
-<h3><a class="anchor" id="autotoc_md836"></a>
+<h3><a class="anchor" id="autotoc_md745"></a>
 Kenar panelleri</h3>
 <p>En önemli <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> komutlarına kısayollara, içindekiler tablosu gibi şeylere, hata ayıklama mesajlarını gösteren pencerelere ya da son verilen komutların geçmişine kenar panelleriyle erişilebilir. Bunlar "Görünüm" menüsünden etkinleştirilebilir. Hepsi <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> penceresinin içinde ya da dışında başka konumlara taşınabilir. Yararlı panellerden biri de Yunan harflerini fareyle girmeye olanak tanıyandır.</p>
 <p><img src="./SidePanes.png" alt="Farklı Kenar Panelleri Örneği" class="inline"/></p>
 <p>"İçerik Tablosu" kenar panelinde bir başlığın düzeyi, başlığa farenin sağ tuşuyla tıklayıp bir üst ya da bir alt başlık türünü seçerek kolayca artırılabilir ya da azaltılabilir.</p>
 <p><img src="./Sidepane-TOC-convert-headings.png" alt="İçerik tablosu kenar panelinde başlıkları yükseltme ya da
 alçaltma" class="inline"/></p>
-<h3><a class="anchor" id="autotoc_md837"></a>
+<h3><a class="anchor" id="autotoc_md747"></a>
 MathML çıktısı</h3>
 <p>Birçok kelime işlemci ve benzeri program ya <a href="https://www.w3.org/Math/">MathML</a> girişini tanıyıp otomatik olarak düzenlenebilir iki boyutlu bir denklem olarak ekler ya da (LibreOffice gibi) “panodan MathML içe aktar” özelliği sunan bir denklem düzenleyicisine sahiptir. Diğerleri RTF matematiğini destekler. Bu yüzden <em>WxMaxima</em> sağ tıklama menüsünde birkaç öğe sunar.</p>
-<h3><a class="anchor" id="autotoc_md838"></a>
+<h3><a class="anchor" id="autotoc_md748"></a>
 Pasting LaTeX or MathML formulas</h3>
 <p><b>Edit → Paste LaTeX/MathML as <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> Code</b> (also in the right-click menu) converts a formula from the clipboard into a <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> command, for example one copied from a paper, a web page or an equation editor. LaTeX may come with or without <code>$…$</code>, <code>\(…\)</code> or <code>\[…\]</code> around it, so <code>\int_0^1 \frac{\sin x}{x}\,dx</code> becomes <code>integrate(sin(x)/x,x,0,1)</code>. The command goes where the cursor is, or into a new code cell. MathML pasted into a code cell with the ordinary <b>Paste</b> is converted the same way, since nobody wants the XML in a code cell. If MathML copied with <b>Copy as MathML</b> is pasted back, the result is the original command: <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> adds it to the MathML as an annotation.</p>
 <p>LaTeX and MathML describe what a formula looks like, not what it means, so the conversion has to interpret it. Fractions, roots, powers, subscripts (<code>x_1</code> becomes the name <code>x_1</code>, <code>a_{n+1}</code> the array element <code>a[n+1]</code>), functions with or without parentheses (<code>\sin 2x</code>), <code>\frac{d}{dx}</code>, &lsquo;f&rsquo;(x)<code>, integrals ending in</code>dx<code>, sums and products with limits,</code>\lim_{x\to 0}<code>, </code>|x|<code>and matrices are understood. An</code>e<code>is Euler’s number, but an</code>i<code>is only the imaginary unit when set upright (</code>\mathrm{i}<code>), as it more often is an index. <a class="el" href="classA.html">A</a> product of a name and parentheses, like</code>x(y+1)<code>, is taken as a product unless the name is</code>f<code>,</code>g<code>,</code>h<code>or longer than one letter. Anything without a single meaning, like</code>\pm<code>,</code>\dots` or text, isn’t guessed at: <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> says what it couldn’t convert instead. Check the command before evaluating it.</p>
-<h3><a class="anchor" id="autotoc_md839"></a>
+<h3><a class="anchor" id="autotoc_md750"></a>
 Markdown desteği</h3>
 <p><em>WxMaxima</em>, matematiksel gösterimle çakışmayan bir dizi standart <a href="https://en.wikipedia.org/wiki/Markdown">Markdown</a> kuralını destekler. Bu öğelerden biri madde işaretli listelerdir.</p>
 <div class="fragment"><div class="line">Sıradan metin</div>
@@ -339,17 +339,17 @@ Markdown desteği</h3>
 </div><!-- fragment --><p><em>WxMaxima</em>'nın TeX ve HTML çıktısı <code>=&gt;</code> dizisini de tanır ve karşılık gelen Unicode işaretiyle değiştirir:</p>
 <div class="fragment"><div class="line">cogito =&gt; sum.</div>
 </div><!-- fragment --><p>HTML ve TeX dışa aktarımının tanıdığı diğer simgeler, karşılaştırmalar için <code>&lt;=</code> ve <code>&gt;=</code>, iki uçlu çift ok (<code>&lt;=&gt;</code>), tek başlı oklar (<code>&lt;-&gt;</code>, <code>-&gt;</code> ve <code>&lt;-</code>) ve ilgili işaret olarak <code>+/-</code> dizisidir. TeX çıktısı için <code>&lt;&lt;</code> ve <code>&gt;&gt;</code> de tanınır.</p>
-<h3><a class="anchor" id="autotoc_md840"></a>
+<h3><a class="anchor" id="autotoc_md752"></a>
 Links in text cells</h3>
 <p><a class="el" href="classA.html">A</a> web address in a text cell that starts with <code><a href="http://">http://</a></code>, <code><a href="https://">https://</a></code> or <code>mailto:</code> is shown as a link. Since clicking into a text cell places the cursor there, a link is followed by <code>CTRL</code>+clicking it (<code>CMD</code>+clicking on macOS), or by right-clicking it and choosing "Open Link"; hovering over it shows where it leads. The HTML export turns it into a link, the TeX export into a <code>\url{}</code>. Links are always recognized from the text itself, so nothing about them is stored in the file.</p>
 <p>Links in a code cell's comments (<code>/* ... */</code>) work the same way. Elsewhere in code, for example inside a string, an address is <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> syntax and is not a link.</p>
 <p>The same goes for web addresses in <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>'s output, for example in a string printed by <code>print("See https://wxmaxima-developers.github.io/wxmaxima/")</code>: <code>CTRL</code>+clicking the address or choosing "Open Link" from its context menu opens it, while a plain click still selects the output.</p>
-<h3><a class="anchor" id="autotoc_md841"></a>
+<h3><a class="anchor" id="autotoc_md754"></a>
 Bold, italic, underlined and struck-through text</h3>
 <p>Text in a text cell, a title or a section heading can be made bold, italic, underlined or struck through. Select the text and press the respective button in the toolbar; pressing the button again removes that formatting from the selection. With nothing selected the button switches the formatting on or off for what is typed next. The buttons are hidden by right-clicking the toolbar and unchecking "Text formatting buttons". Code cells cannot be formatted: their colors already show the syntax of the code.</p>
 <p>Superscript and subscript buttons work the same way: they make the text smaller and raise it above or lower it below the line, as in <a class="el" href="classE.html">E</a> = mc² or H₂O. <a class="el" href="classA.html">A</a> character cannot be both, so switching one of them on switches the other off. <a class="el" href="classA.html">A</a> line that contains a superscript, a subscript or a character that is taller than the font's usual ones, for example an emoji, gets as much additional room as it needs.</p>
 <p>The formatting is saved in <code>.wxmx</code> files. Older versions of <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> open such a file without the formatting but keep all of the text. <code>.wxm</code> files, the exports and the clipboard contain the text without its formatting.</p>
-<h3><a class="anchor" id="autotoc_md842"></a>
+<h3><a class="anchor" id="autotoc_md755"></a>
 Kısayol tuşları</h3>
 <p>Çoğu kısayol tuşu ilgili menülerin metninde bulunabilir. Aslında menü metninden alındıklarından ve <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> çevirileriyle yerel klavyenin kullanıcılarının ihtiyaçlarına göre özelleştirilebildiğinden, bunları burada belgelemiyoruz. Bununla birlikte, bazı kısayol tuşları veya kısayol takma adları menülerde belgelenmemiştir:</p>
 <ul>
@@ -357,7 +357,7 @@ Kısayol tuşları</h3>
 <li><code>CTRL</code>+<code>TAB</code> ya da <code>CTRL</code>+<code>SHIFT</code>+<code>TAB</code> otomatik tamamlama mekanizmasını tetikler.</li>
 <li><code> SHIFT </code> + <code> SPACE </code>, boşluk bırakmayan bir boşluk ekler.</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md843"></a>
+<h3><a class="anchor" id="autotoc_md757"></a>
 Exploring output with the keyboard</h3>
 <p><a class="el" href="classA.html">A</a> cell's output can be selected, and explored part by part, without a mouse:</p>
 <ul>
@@ -369,24 +369,24 @@ Exploring output with the keyboard</h3>
 <li><code>SHIFT</code>+<code>LEFT</code> and <code>SHIFT</code>+<code>RIGHT</code> grow or shrink the selection over the neighbouring parts; in a matrix, <code>SHIFT</code> and any arrow key grow the selected entry into a block of entries.</li>
 <li>The context-menu key or <code>SHIFT</code>+<code>F10</code> opens the right-click menu for the selection, so it can be copied in any format.</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md844"></a>
+<h3><a class="anchor" id="autotoc_md759"></a>
 TeX dışa aktarımında ham TeX</h3>
 <p>Bir metin hücresi <code>TeX:</code> ile başlıyorsa, TeX dışa aktarımı <code>TeX:</code> işaretini izleyen değişmez metni içerir. Bu özelliği kullanmak <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> çalışma kitabına TeX işaretlemesinin girilmesini sağlar.</p>
-<h2><a class="anchor" id="autotoc_md845"></a>
+<h2><a class="anchor" id="autotoc_md760"></a>
 Dosya biçimleri</h2>
 <p><em>WxMaxima</em> oturumunda geliştirilen materyal, daha sonra kullanılmak üzere üç yoldan biriyle saklanabilir:</p>
-<h3><a class="anchor" id="autotoc_md846"></a>
+<h3><a class="anchor" id="autotoc_md761"></a>
 .mac</h3>
 <p><code>.mac</code> dosyaları <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> komutları içeren sıradan metin dosyalarıdır. <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>'nın <code>batch()</code> ya da <code>load()</code> komutuyla veya <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>'nın Dosya/Kütük Dosyası menü öğesiyle okunabilirler.</p>
 <p>Aşağıda bir örnek gösterilmektedir. <code>Quadratic.mac</code> bir fonksiyon tanımlar ve ardından <code>wxdraw2d()</code> ile bir grafik oluşturur. Sonra <code>Quadratic.mac</code> dosyasının içeriği yazdırılır ve yeni tanımlanan <code>f()</code> fonksiyonu değerlendirilir.</p>
 <p><img src="./BatchImage.png" alt="Bir dosyayı `batch()` ile yükleme" class="inline"/></p>
 <p>Dikkat: <code>Quadratic.mac</code> dosyası olağan bir <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> uzantısına (<code>.mac</code>) sahip olsa da yalnızca <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> tarafından okunabilir, çünkü <code>wxdraw2d()</code> komutu <a class="el" href="classwxMaxima.html">wxMaxima</a>'nın <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>'ya eklediği bir uzantıdır. (Komut satırı) <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> bilinmeyen <code>wxdraw2d()</code> komutunu yok sayar ve onu yeniden çıktı olarak yazdırır.</p>
 <p><code>.mac</code> dosyalarını kendi makro kitaplığınızı yazmak için kullanabilirsiniz. Ancak yeterli yapısal bilgi içermedikleri için bir <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> oturumu olarak geri okunamazlar.</p>
-<h3><a class="anchor" id="autotoc_md847"></a>
+<h3><a class="anchor" id="autotoc_md763"></a>
 .wxm</h3>
 <p><code>.wxm</code> dosyaları, <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>'nın çıktısı dışında çalışma sayfasını içerir. 5.38'den yeni <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> sürümlerinde .mac dosyaları gibi <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>'nın <code>load()</code> fonksiyonuyla okunabilirler. Şey, çoğunlukla. Sorular (<code>asksign(x)</code> gibi) sorunludur, çünkü yanıt <code>.wxm</code> dosyasına yazılır (böylece yüklendikten sonra önerilebilir), ama <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> bunu değerlendiremez. <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'nın bilmek istediği bazı özellikleri <code>assume()</code> ile bildirerek <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'nın soru sormasını önleyebilirsiniz.</p>
 <p>Bu düz metin biçiminde, yeni özellikler kullanan çalışma sayfalarının <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>'nın eski sürümleriyle geriye dönük uyumlu olmaması bazen kaçınılmazdır.</p>
-<h4><a class="anchor" id="autotoc_md848"></a>
+<h4><a class="anchor" id="autotoc_md765"></a>
 wxm dosyalarının dosya biçimi</h4>
 <p>Bu yalnızca düz bir metin dosyasıdır (bir metin düzenleyiciyle açabilirsiniz) ve hücre içeriklerini özel <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> yorumları olarak içerir.</p>
 <p>Dosya aşağıdaki yorumla başlar:</p>
@@ -412,10 +412,10 @@ wxm dosyalarının dosya biçimi</h4>
 <div class="fragment"><div class="line">/* [wxMaxima: fold    start ] */</div>
 <div class="line">...</div>
 <div class="line">/* [wxMaxima: fold    end   ] */</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md849"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md766"></a>
 .wxmx</h3>
 <p>XML tabanlı bu dosya biçimi, yakınlaştırma oranı ve izleme listesi gibi şeyler dahil çalışma sayfasının tamamını kaydeder. Tercih edilen dosya biçimidir.</p>
-<h4><a class="anchor" id="autotoc_md850"></a>
+<h4><a class="anchor" id="autotoc_md768"></a>
 wxmx dosyalarının dosya biçimi</h4>
 <p>Bir <code>wxmx</code> dosyası ikili bir biçim gibi görünür, ancak işletim sisteminizde bulunan araçlarla işlenebilir. Bu bir zip dosyasıdır ve <code>unzip</code> ile açılabilir (işletim sisteminizin zip programının tanıması için önce yeniden adlandırmanız gerekebilir). Sıkıştırma işlevini kullanmıyoruz, yalnızca birkaç dosyayı tek bir dosyada birleştirme olanağını kullanıyoruz: Görüntüler zaten sıkıştırılmıştır, geri kalanı ise basit metindir (muhtemelen içerilen büyük görüntülerden çok daha küçüktür).</p>
 <p>Şu dosyaları içerir:</p>
@@ -426,7 +426,7 @@ wxmx dosyalarının dosya biçimi</h4>
 <li><code>content.xml</code>: Belgenizin çeşitli hücrelerini XML biçiminde içeren bir XML belgesi.</li>
 </ul>
 <p>Yani bir şeyler ters giderse bir <a class="el" href="classwxMaxima.html">wxMaxima</a> belgesini açabilir (belki önce <code>zip</code> dosyası olarak yeniden adlandırarak), <code>content.xml</code> dosyasında bir metin düzenleyiciyle değişiklik yapabilir ya da bozuk bir görüntüyü değiştirebilir, dosyaları yeniden sıkıştırabilir, <code>zip</code> dosyasını yeniden <code>wxmx</code> dosyası olarak adlandırabilirsiniz; böylece değiştirilmiş yeni bir <code>wxmx</code> dosyası elde edersiniz.</p>
-<h2><a class="anchor" id="autotoc_md851"></a>
+<h2><a class="anchor" id="autotoc_md771"></a>
 Yapılandırma seçenekleri</h2>
 <p>Bazı yaygın yapılandırma değişkenleri için <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> iki yapılandırma yöntemi sunar:</p>
 <ul>
@@ -434,10 +434,10 @@ Yapılandırma seçenekleri</h2>
 <li>Ayrıca çoğu yapılandırma değişkeninin değeri, aşağıda gösterildiği gibi çalışma sayfasından üzerine yazılarak yalnızca geçerli oturum için değiştirilebilir.</li>
 </ul>
 <p><img src="./wxMaxima_configuration_001.png" alt="wxMaxima configuration 1" class="inline"/></p>
-<h3><a class="anchor" id="autotoc_md852"></a>
+<h3><a class="anchor" id="autotoc_md772"></a>
 Varsayılan animasyon kare hızı</h3>
 <p>Yeni animasyonlar için kullanılan animasyon karesi `wxanimate_framerate 'değişkeninde tutulur. Bu değişkenin yeni bir çalışma sayfasında içereceği ilk değer, yapılandırma iletişim kutusu kullanılarak değiştirilebilir.</p>
-<h3><a class="anchor" id="autotoc_md853"></a>
+<h3><a class="anchor" id="autotoc_md773"></a>
 Yeni &lt;em&gt;maxima&lt;/em&gt; oturumları için varsayılan grafik boyutu</h3>
 <p>Bir sonraki başlatmadan sonra, <code>wxplot_size</code> değeri <em>maxima</em> tarafından değiştirilmedikçe çalışma sayfasına gömülen grafikler bu boyutta oluşturulur.</p>
 <p>Yalnızca tek bir grafiğin boyutunu ayarlamak için, bir değişkenin değerini yalnızca tek bir komut için ayarlayan şu gösterim kullanılabilir:</p>
@@ -447,7 +447,7 @@ Yeni &lt;em&gt;maxima&lt;/em&gt; oturumları için varsayılan grafik boyutu</h3
 <div class="line">       x,-5,5</div>
 <div class="line">   )</div>
 <div class="line">), wxplot_size=[480,480]$</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md854"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md775"></a>
 Metin denetimlerinde parantezleri eşleştir</h3>
 <p>Bu seçenek iki şeyi etkinleştirir:</p>
 <ul>
@@ -455,7 +455,7 @@ Metin denetimlerinde parantezleri eşleştir</h3>
 <li>In a code cell a comment opened by <code>/*</code> is closed by an inserted <code>*/</code>. Typing <code>*/</code> in front of it moves the cursor past it instead.</li>
 <li>Bu tuşlardan herhangi birine basıldığında metin seçilirse, seçilen metin eşleşen işaretlerin arasına yerleştirilir.</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md855"></a>
+<h3><a class="anchor" id="autotoc_md777"></a>
 Çalışma sayfasını otomatik olarak kaydetme</h3>
 <p>Bu seçenek ayarlanmışsa, çalışma sayfasının bulunduğu dosyanın üzerine yalnızca kullanıcı istediğinde yazılır. Yine de çökme, elektrik kesintisi vb. durumlar için geçici dizinde yakın tarihli bir yedek kopya bulunur.</p>
 <p>Bu seçenek ayarlanmamışsa <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> daha çok modern bir cep telefonu uygulaması gibi davranır:</p>
@@ -463,18 +463,18 @@ Metin denetimlerinde parantezleri eşleştir</h3>
 <li>Dosyalar çıkışta otomatik olarak kaydedilir</li>
 <li>Ayrıca dosya her 3 dakikada bir otomatik olarak kaydedilir.</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md856"></a>
+<h3><a class="anchor" id="autotoc_md778"></a>
 Arranging the toolbar</h3>
 <p>The toolbar is made of sections, like the "Open" and "Save" buttons, the evaluation buttons or the drop-down list that sets the type of a cell. The "Toolbar" tab of the configuration dialog lists them in the order the toolbar shows them in: drag a section to another place, or select it and press "Up" or "Down", to move it, and uncheck it to hide it. The flexible space pushes every section after it to the right edge of the window. "Default order" restores the original arrangement. Sections can also be shown or hidden by right-clicking the toolbar.</p>
-<h3><a class="anchor" id="autotoc_md857"></a>
+<h3><a class="anchor" id="autotoc_md779"></a>
 Yapılandırma nereye kaydedilir?</h3>
 <p>Unix/Linux kullanıyorsanız yapılandırma bilgileri ana dizininizdeki <code>.<a class="el" href="classwxMaxima.html">wxMaxima</a></code> dosyasına (wxWidgets &lt; 3.1.1 kullanıyorsanız) ya da <code>.config/wxMaxima.conf</code> dosyasına (wxWidgets &gt;= 3.1.1 kullanılıyorsa, XDG standardı) kaydedilir. wxWidgets sürümünü <code>wxbuild_info();</code> komutuyla ya da Yardım-&gt;'<a class="el" href="classwxMaxima.html">wxMaxima</a>' hakkında menü seçeneğiyle öğrenebilirsiniz. <a href="https://www.wxwidgets.org/">wxWidgets</a>, <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>'nın temelini oluşturan platformlar arası GUI kitaplığıdır (addaki <code>wx</code> buradan gelir). (Dosya adı bir noktayla başladığı için <code>.<a class="el" href="classwxMaxima.html">wxMaxima</a></code> ya da <code>.config</code> gizlidir.)</p>
 <p>Windows kullanıyorsanız yapılandırma kayıt defterinde saklanır. <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> girdilerini kayıt defterinde şu konumda bulabilirsiniz: <code>HKEY_CURRENT_USER\Software\<a class="el" href="classwxMaxima.html">wxMaxima</a></code></p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md858"></a>
+<h1><a class="anchor" id="autotoc_md781"></a>
 &lt;em&gt;Maxima&lt;/em&gt; uzantıları</h1>
 <p><em>WxMaxima</em> öncelikle <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> için bir grafik kullanıcı arayüzüdür. Bu nedenle asıl amacı komutları <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>'ya iletmek ve bu komutların çalıştırılmasının sonuçlarını bildirmektir. Ancak bazı durumlarda <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>, <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>'ya işlevsellik ekler. <em>WxMaxima</em>'nın bir çalışma sayfasının içeriğini HTML ve LaTeX dosyalarına aktararak rapor oluşturma yeteneğinden daha önce söz edilmişti. Bu bölüm, <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>'nın bir oturuma grafik eklemeyi kolaylaştırdığı bazı yolları ele alır.</p>
-<h2><a class="anchor" id="autotoc_md859"></a>
+<h2><a class="anchor" id="autotoc_md783"></a>
 Alt simgeli değişkenler</h2>
 <div id="wxsubscripts"></div><p><code>wxsubscripts</code>, <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>'nın değişken adlarını otomatik olarak alt simgeli gösterip göstermeyeceğini (ve nasıl göstereceğini) belirtir:</p>
 <p><code>false</code> ise işlev kapalıdır; <a class="el" href="classwxMaxima.html">wxMaxima</a> değişken adlarında alt çizgiden sonraki kısmı otomatik olarak alt simge yapmaz.</p>
@@ -490,7 +490,7 @@ simgelenmesi" class="inline"/></p>
 subscripted" using the command <code>wxdeclare_subscripted(variable_name);</code> or <code>wxdeclare_subscripted([variable_name1,variable_name2,...]);</code> Declaring a variable as subscripted can be reverted using the following command: <code>wxdeclare_subscripted(variable_name,false);</code>, which also keeps a variable the rules above do cover from being subscripted.</p>
 <div id="wxdeclare_subscript"></div><p><code>wxdeclare_subscript(text_snippet);</code> or <code>wxdeclare_subscript([text_snippet1,text_snippet2,...]);</code> instead declares a text snippet: every variable whose name ends in an underscore followed by that snippet is subscripted, however long the two parts are.</p>
 <p>Bu değerleri ayarlamak için "Görünüm-&gt;Otomatik alt karakter" menüsünü kullanabilirsiniz.</p>
-<h2><a class="anchor" id="autotoc_md860"></a>
+<h2><a class="anchor" id="autotoc_md785"></a>
 Durum çubuğunda kullanıcıya geri bildirim</h2>
 <div id="wxstatusbar"></div><p>Uzun süren komutlar durum çubuğunda kullanıcıya geri bildirim verebilir. Bu geri bildirim, oraya yerleştirilen her yeni geri bildirimle değiştirilir (böylece ilerleme göstergesi olarak kullanılabilir) ve <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>'ya gönderilen geçerli komut biter bitmez silinir. <code>wxstatusbar()</code> komutunu, düz <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> (<em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>'nın aksine) ile de kullanılabilecek kitaplıklarda bile güvenle kullanabilirsiniz: <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> yoksa <code>wxstatusbar()</code> komutu değerlendirilmeden bırakılır.</p>
 <div class="fragment"><div class="line">for i:1 thru 10 do (</div>
@@ -501,7 +501,7 @@ Durum çubuğunda kullanıcıya geri bildirim</h2>
 <div class="line">    /* Programı geciktirir (burada: 3 saniye) */</div>
 <div class="line">    ?sleep(3)</div>
 <div class="line">)$</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md861"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md786"></a>
 Çalışma sayfasını Maxima'nın içinden dışa aktarma</h2>
 <div id="wxworksheettohtml"></div><p><code>wxworksheettohtml()</code> komutu, geçerli çalışma sayfasını çalışan bir <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> oturumunun içinden bir HTML dosyasına aktarır; bu, betiklerle ya da toplu işlemle dışa aktarma için kullanışlıdır. <code>wxstatusbar()</code> gibi bu komut da düz (konsol) <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>'da çalışabilecek kodlarda güvenle kullanılabilir: <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> yoksa komut değerlendirilmeden bırakılır.</p>
 <div class="fragment"><div class="line">wxworksheettohtml(&quot;report.html&quot;)$</div>
@@ -529,10 +529,10 @@ Durum çubuğunda kullanıcıya geri bildirim</h2>
 <td class="markdownTableBodyNone"><code>documentclassoptions</code>   </td><td class="markdownTableBodyNone">bunun seçeneklerini geçersiz kılar (örn. <code>"12pt,a4paper"</code>)   </td></tr>
 </table>
 <p><code>wxworksheettopdf()</code> desteği planlanmaktadır.</p>
-<h2><a class="anchor" id="autotoc_md862"></a>
+<h2><a class="anchor" id="autotoc_md791"></a>
 Grafik çizme</h2>
 <p>Çizim (temel olarak grafiklerle ilgili çalışmak), grafik kullanıcı arayüzünün orijinal programa bazı uzantılar sağlamak zorunda kalacağı bir yerdir.</p>
-<h3><a class="anchor" id="autotoc_md863"></a>
+<h3><a class="anchor" id="autotoc_md792"></a>
 Bir grafiği çalışma sayfasına gömme</h3>
 <div id="wxplot2d"></div> <div id="wxplot3d"></div> <div id="wximplicit_plot"></div> <div id="wxcontour_plot"></div><p><em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> normalde harici <em>Gnuplot</em> programına oluşturduğu her diyagram için ayrı bir pencere açmasını söyler. Grafikleri çalışma sayfasına gömmek çoğu zaman daha kullanışlı olduğu için <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>, karşılık gelen <em>maxima</em> fonksiyonlarından adları dışında farkı olmayan kendi grafik fonksiyonlarını sunar: Hepsinin önünde “wx” öneki vardır.</p>
 <p>Aşağıdaki grafik fonksiyonlarının wx karşılıkları vardır:</p>
@@ -564,7 +564,7 @@ Bir grafiği çalışma sayfasına gömme</h3>
 </table>
 <p>Bir <code>wxm</code> dosyası (konsol) <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> tarafından okunursa bu fonksiyonlar yok sayılır (ve <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'daki diğer bilinmeyen fonksiyonlar gibi çıktı olarak yazdırılır).</p>
 <p>Bu fonksiyonlardan biriyle sorun yaşarsanız, sorunun <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> fonksiyonunda da olup olmadığını kontrol edin (örneğin <code>wxplot2d()</code> ile bir hata aldıysanız aynı grafiği <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'nın <code>plot2d()</code> komutuyla deneyin; bu komut grafiği ayrı bir pencerede açar). Sorun ortadan kalkmazsa büyük olasılıkla bir <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> sorunudur ve <a href="https://sourceforge.net/p/maxima/bugs/">Maxima hata izleyicisine</a> bildirilmelidir. Ya da bir Gnuplot sorunu olabilir.</p>
-<h3><a class="anchor" id="autotoc_md864"></a>
+<h3><a class="anchor" id="autotoc_md796"></a>
 Gömülü grafikleri büyütme ya da küçültme</h3>
 <div id="wxplot_size"></div><p>Yukarıda belirtildiği gibi, yapılandırma iletişim kutusu oluşturulan grafiklerin varsayılan boyutunu değiştirmenin bir yolunu sunar; bu, <code>wxplot_size</code> değişkeninin başlangıç değerini ayarlar. <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>'nın grafik rutinleri, bir grafiğin boyutunu piksel cinsinden belirten bu değişkene uyar. Bu değişken her zaman sorgulanabilir ya da sonraki grafiklerin boyutunu ayarlamak için kullanılabilir:</p>
 <div class="fragment"><div class="line">wxplot_size:[1200,800]$</div>
@@ -597,13 +597,13 @@ Gömülü grafikleri büyütme ya da küçültme</h3>
 <div class="line">        x,0,10</div>
 <div class="line">    )</div>
 <div class="line">),wxplot_size=[1600,300],wxplot_scale=&#39;native$</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md865"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md798"></a>
 Daha kaliteli grafikler</h3>
 <p><em>Gnuplot</em>, Cairo kitaplığının sağladığı yüksek kaliteli bit eşlem çıktısını destekleyip desteklemediğini belirlemenin taşınabilir bir yolunu sunmuyor gibi görünür. <em>Gnuplot</em>'un bu kitaplığı kullanacak şekilde derlendiği sistemlerde, yapılandırma menüsündeki pngCairo seçeneği (<code>wxplot_pngcairo</code> değişkeniyle geçersiz kılınabilir) kenar yumuşatma ve ek çizgi stilleri desteğini etkinleştirir. <code>wxplot_pngCairo</code>, <em>Gnuplot</em> bunu desteklemediği halde ayarlanırsa sonuç grafik yerine hata mesajları olur.</p>
-<h3><a class="anchor" id="autotoc_md866"></a>
+<h3><a class="anchor" id="autotoc_md800"></a>
 Gömülü grafikleri etkileşimli &lt;em&gt;Gnuplot&lt;/em&gt; pencerelerinde açma</h3>
 <p>Bir grafik <code>wxdraw</code> türü komutlarla oluşturulduysa (<code>wxplot2d</code> ve <code>wxplot3d</code> bu özellik tarafından desteklenmez) ve altta yatan <em>Gnuplot</em> projesinin dosya boyutu çok büyük değilse, <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> grafiği etkileşimli bir <em>Gnuplot</em> penceresinde açmaya olanak tanıyan bir sağ tıklama menüsü sunar.</p>
-<h3><a class="anchor" id="autotoc_md867"></a>
+<h3><a class="anchor" id="autotoc_md801"></a>
 &lt;tt&gt;plot&lt;/tt&gt; pencerelerinde Gnuplot'un komut konsolunu açma</h3>
 <p>MS Windows'ta iki Gnuplot programı vardır: <code>gnuplot.exe</code> ve <code>wgnuplot.exe</code>. Hangi komutun kullanılacağını yapılandırma menüsünden ayarlayabilirsiniz. <code>wgnuplot.exe</code>, <em>gnuplot</em> komutlarının girilebileceği bir konsol penceresi açma olanağı sunar; <code>gnuplot.exe</code> bu olanağı sunmaz. Ne yazık ki <code>wgnuplot.exe</code>, her grafik hazırlandığında <em>Gnuplot</em>'un klavye odağını kısa bir süreliğine "çalmasına" yol açar.</p>
 <h3><a class="anchor" id="embedding-animations-into-the-spreadsheet"></a>
@@ -688,7 +688,7 @@ Animationen in das Arbeitsblatt einbetten</h3>
 <div class="line">        x,0,10</div>
 <div class="line">    )</div>
 <div class="line">)$</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md868"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md803"></a>
 Birden fazla grafiği aynı anda ayrı pencerelerde açma</h3>
 <p><em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> tarafından sağlanmasa da <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>'nın bu özelliği (destekleyen kurulumlarda) bazen işe yarar. Aşağıdaki örnek, Mario Rodriguez'in <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> e-posta listesine gönderdiği bir iletiden alınmıştır:</p>
 <div class="fragment"><div class="line">load(draw);</div>
@@ -710,53 +710,53 @@ Birden fazla grafiği aynı anda ayrı pencerelerde açma</h3>
 <div class="line">    key=&quot;cos (x)&quot;,grid=[2,2],</div>
 <div class="line">    explicit(cos(x),x,0,2*%pi))</div>
 <div class="line">);</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md869"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md804"></a>
 "Draw kullanarak grafik çiz" kenar paneli</h3>
 <p>"Draw kullanarak grafik çiz" kenar çubuğunda, <em>maxima</em> ile birlikte gelen <em>draw</em> paketinin esnekliğinin bir kısmından yararlanan sahneler oluşturmaya olanak tanıyan basit bir kod üreteci bulunur.</p>
-<h4><a class="anchor" id="autotoc_md870"></a>
+<h4><a class="anchor" id="autotoc_md806"></a>
 2B</h4>
 <p>İki boyutlu bir sahne çizen bir <code>draw()</code> komutunun iskeletini oluşturur. Bu sahnenin daha sonra içeriğini oluşturan komutlarla doldurulması gerekir; örneğin "2D" düğmesinin altındaki satırlarda bulunan düğmeler kullanılarak.</p>
 <p>2<a class="el" href="classD.html">D</a> düğmesinin yararlı bir özelliği, sahneyi bir değişkenin (varsayılan olarak <em>t</em>) her karede farklı bir değer aldığı bir animasyon olarak kurmaya olanak tanımasıdır: Hareketli iki boyutlu bir grafik, aynı verilerin hareketsiz üç boyutlu bir grafiğinden çoğu zaman daha kolay yorumlanır.</p>
-<h4><a class="anchor" id="autotoc_md871"></a>
+<h4><a class="anchor" id="autotoc_md808"></a>
 3B</h4>
 <p>Üç boyutlu bir sahne çizen bir <code>draw()</code> komutunun iskeletini oluşturur. Ne iki boyutlu ne de üç boyutlu bir sahne kurulmamışsa, diğer tüm düğmeler, düğmenin ürettiği komutu içeren iki boyutlu bir sahne kurar.</p>
-<h4><a class="anchor" id="autotoc_md872"></a>
+<h4><a class="anchor" id="autotoc_md809"></a>
 İfade</h4>
 <p>İmlecin içinde bulunduğu <code>draw ()</code> komutuna <code>sin (x)</code>, <code>x * sin (x)</code> veya <code>x ^ 2 + 2 * x-4</code> gibi bir ifadenin standart grafiğini ekler. çizim ile bir 2<a class="el" href="classD.html">D</a> sahne oluşturulur çizme komutu yoktur. Her sahne herhangi bir sayıda çizim ile doldurulabilir.</p>
-<h4><a class="anchor" id="autotoc_md873"></a>
+<h4><a class="anchor" id="autotoc_md810"></a>
 Örtük grafik</h4>
 <p><code>Y = sin (x)</code>, <code>y * sin (x) = 3</code> veya<code>x ^ 2 + y ^ 2 = 4</code> gibi bir ifadenin tüm noktalarını bulmaya çalışır ve sonuçtaki eğriyi `<code>imlecin içinde bulunduğu draw ()</code>komutu. Draw komutu yoksa çizim içeren bir 2<a class="el" href="classD.html">D</a> sahne oluşturulur.</p>
-<h4><a class="anchor" id="autotoc_md874"></a>
+<h4><a class="anchor" id="autotoc_md811"></a>
 Parametrik Çizim</h4>
 <p>Bir değişkeni alt sınırdan üst sınıra çevirir ve a'nın x, y (ve 3<a class="el" href="classB.html">B</a> grafiklerde de z) koordinatlarını oluşturmak için <code>t * sin (t)</code> ve <code>t * cos (t)</code> gibi iki ifade kullanır geçerli çizim komutuna konan eğri.</p>
-<h4><a class="anchor" id="autotoc_md875"></a>
+<h4><a class="anchor" id="autotoc_md812"></a>
 Noktalar</h4>
 <p>İsteğe bağlı olarak birleştirilebilen birçok nokta çizer. Noktaların koordinatları bir liste listesinden, bir 2<a class="el" href="classD.html">D</a> diziden veya her eksen için bir listeden veya diziden alınır.</p>
-<h4><a class="anchor" id="autotoc_md876"></a>
+<h4><a class="anchor" id="autotoc_md813"></a>
 Diyagram başlığı</h4>
 <p>Diyagramın üst ucuna bir başlık çizer,</p>
-<h4><a class="anchor" id="autotoc_md877"></a>
+<h4><a class="anchor" id="autotoc_md814"></a>
 Eksenler</h4>
 <p>Ekseni ayarlar.</p>
-<h4><a class="anchor" id="autotoc_md878"></a>
+<h4><a class="anchor" id="autotoc_md815"></a>
 Eşyükselti eğrisi</h4>
 <p>(Yalnızca üç boyutlu grafikler için): Geçerli <code>draw()</code> komutundaki sonraki grafik komutlarına ve/veya diyagramın taban düzlemine, bir dağın haritasında görülebilecek olanlara benzer eşyükselti eğrileri ekler. Alternatif olarak bu sihirbaz, eğrilerin çizimini tamamen atlayıp yalnızca eşyükselti grafiğini göstermeye de olanak tanır.</p>
-<h4><a class="anchor" id="autotoc_md879"></a>
+<h4><a class="anchor" id="autotoc_md816"></a>
 Çizimin adı</h4>
 <p>Diyagramın açıklamasına (lejant) sonraki grafiğin adını gösteren bir öğe ekler. Boş bir ad, sonraki grafikler için açıklama öğeleri oluşturulmasını kapatır.</p>
-<h4><a class="anchor" id="autotoc_md880"></a>
+<h4><a class="anchor" id="autotoc_md817"></a>
 Çizgi rengi</h4>
 <p>Geçerli draw komutunun içerdiği sonraki grafikler için çizgi rengini ayarlar.</p>
-<h4><a class="anchor" id="autotoc_md881"></a>
+<h4><a class="anchor" id="autotoc_md818"></a>
 Dolgu rengi</h4>
 <p>Geçerli draw komutunun içerdiği sonraki grafikler için dolgu rengini ayarlar.</p>
-<h4><a class="anchor" id="autotoc_md882"></a>
+<h4><a class="anchor" id="autotoc_md819"></a>
 Izgara</h4>
 <p>Izgara çizgilerini ayarlamaya izin veren bir sihirbaz açar.</p>
-<h4><a class="anchor" id="autotoc_md883"></a>
+<h4><a class="anchor" id="autotoc_md820"></a>
 Doğruluk</h4>
 <p>Herhangi bir çizim programının parçası olan hız ve doğruluk dengesinde yeterli bir noktanın seçilmesini sağlar.</p>
-<h3><a class="anchor" id="autotoc_md884"></a>
+<h3><a class="anchor" id="autotoc_md822"></a>
 Grafiklerin yazı tipini ve yazı boyutunu değiştirme</h3>
 <p>Özellikle yüksek çözünürlüklü bir ekran kullanıyorsanız varsayılan yazı boyutu çok küçük olabilir. <code>draw</code> tabanlı komutlar için yazı tipini ve boyutunu <code>font=...</code>, <code>font_size=...</code> gibi seçeneklerle ayarlayabilirsiniz, örneğin:</p>
 <div class="fragment"><div class="line">wxdraw2d(</div>
@@ -768,11 +768,11 @@ Grafiklerin yazı tipini ve yazı boyutunu değiştirme</h3>
 <div class="line">         [gnuplot_preamble, &quot;set tics font \&quot;Arial, 30\&quot;; set xlabel font \&quot;,20\&quot;; set ylabel font \&quot;,20\&quot;;&quot;]);</div>
 </div><!-- fragment --><p>Bu, sayıların yazı tipini 30 boyutunda Arial olarak, xlabel ve ylabel yazılarının boyutunu ise (varsayılan yazı tipiyle) 20 olarak ayarlar.</p>
 <p>Daha fazla bilgi için <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> ve Gnuplot belgelerini okuyun. Not: Gnuplot'un büyük yazı boyutlarıyla sorunları var gibi görünüyor, bkz. <a href="https://github.com/wxMaxima-developers/wxmaxima/issues/1966">wxMaxima issue 1966</a>.</p>
-<h2><a class="anchor" id="autotoc_md885"></a>
+<h2><a class="anchor" id="autotoc_md823"></a>
 Görüntü gömme</h2>
 <p><code>.wxmx</code> dosya biçimi kullanılıyorsa dosyaları bir <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> projesine gömmek sürükle-bırak kadar kolaydır. Ancak bazen (örneğin bir görüntünün içeriği oturumun ilerleyen bir aşamasında değişebilecekse) dosyaya görüntüyü değerlendirme sırasında yüklemesini söylemek daha iyidir:</p>
 <div class="fragment"><div class="line">show_image(&quot;man.png&quot;);</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md886"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md824"></a>
 Başlangıç dosyaları</h2>
 <p><em>WxMaxima</em>'ın yapılandırma iletişim kutusu, başlangıçta yürütülen komutlarla iki dosyayı düzenlemeyi önerir:</p>
 <ul>
@@ -781,7 +781,7 @@ Başlangıç dosyaları</h2>
 </ul>
 <p>Örneğin Gnuplot <code>/opt</code> içine kuruluysa (MacOS'ta olabilir), bu dosyalara <code>gnuplot_command:"/opt/local/bin/gnuplot"$</code> (ya da <code>/opt/gnuplot/bin/gnuplot</code> veya başka herhangi bir yol) ekleyebilirsiniz.</p>
 <p>Bu dosyalar <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> kullanıcı dizinindedir (Windows'ta genellikle <code>USERPROFILE%/maxima</code>, diğer sistemlerde <code>$HOME/.maxima</code>). Konumu şu komutla öğrenebilirsiniz: <code>maxima_userdir;</code></p>
-<h2><a class="anchor" id="autotoc_md887"></a>
+<h2><a class="anchor" id="autotoc_md825"></a>
 Özel değişkenler wx...</h2>
 <div id="wxfilename"></div> <div id="wxdirname"></div> <div id="wxplot_pngcairo"></div> <div id="wxchangedir"></div> <div id="wxanimate_autoplay"></div> <div id="wxmaximaversion"></div> <div id="wxwidgetsversion"></div> <div id="wxdirs"></div><ul>
 <li><code>wxsubscripts</code>, <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> öğesine alt çizgi (<code>R_150</code> veya benzeri) içeren değişken adlarını abone değişkenlere dönüştürüp dönüştürmeyeceğini bildirir. Hangi değişken adlarının otomatik olarak dönüştürüldüğünü öğrenmek için <code>wxdeclare_subscript'e bakınız. -</code>wxfilename`: Bu değişken, şu anda <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> içinde açılmış olan dosyanın adını içerir.</li>
@@ -808,7 +808,7 @@ Başlangıç dosyaları</h2>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md888"></a>
+<h2><a class="anchor" id="autotoc_md828"></a>
 İki boyutlu çıktıyı güzel yazdırma</h2>
 <div id="table_form"></div><p><code>table_form()</code> fonksiyonu iki boyutlu bir listeyi <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>'nın varsayılan çıktı rutininden daha okunaklı bir biçimde gösterir. Giriş, bir ya da daha fazla liste içeren bir listedir. "print" komutu gibi bu komut da dolar işaretiyle bitirildiğinde bile çıktı gösterir. Komutu noktalı virgülle bitirmek aynı tabloyu bir "done" ifadesiyle birlikte verir.</p>
 <div class="fragment"><div class="line">table_form(</div>
@@ -836,23 +836,23 @@ Başlangıç dosyaları</h2>
 <div class="line">          lines=true, rownames=true, colnames=true, parenstyle=square);</div>
 </div><!-- fragment --><p><code>wx_matrix()</code> doesn't display anything itself: it returns the matrix with the formatting attached, which is used whenever that value is displayed. So it can be stored in a variable and displayed later, formatted, and a matrix ended with <code>$</code> isn't displayed at all. <a class="el" href="classA.html">A</a> new matrix calculated from it, for example by adding to it or transposing it, is displayed the normal way again.</p>
 <p><a class="el" href="classA.html">A</a> matrix cannot be broken into lines the way a long sum can. So by default <a class="el" href="classwxMaxima.html">wxMaxima</a> leaves out the middle rows and columns of a matrix that is too large for the window and marks the gap with <code>⋯</code>, <code>⋮</code> and <code>⋱</code>, the way a large matrix is written by hand. The first and last rows and columns always stay visible, and hovering the mouse over the matrix tells which rows and columns are not shown. The option <em>Matrices too large for the window</em> in the <em><a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a></em> tab of the configuration dialog can instead draw such a matrix in full, which makes the whole worksheet scroll sideways, or show it in a box the size of the window, with scrollbars of its own; there the mouse wheel scrolls the worksheet, unless that matrix or something inside it is selected, and such a matrix is printed with its middle rows and columns left out. Whether it is elided or shown in a scrolling box, every other row and column of such a matrix is faintly shaded, so that a row or a column is easy to follow across it; a matrix that fits the window stays plain, unless <code>wx_matrix()</code>'s <code>banding</code> option says otherwise. All of this affects only what is shown on screen and printed: copying, saving and exporting the matrix always include every entry. <code>wx_matrix()</code>'s <code>oversized</code> option overrides that option for a single matrix; a matrix it asks to scroll is still elided on paper, and exporting a matrix as an image still always shows all of it. Double-clicking a matrix that is elided or shown in a scrolling box opens a window of its own that shows all of it; the window can be resized and scrolled, and <em>Escape</em> closes it. <em>Ctrl+F</em> in that window searches the matrix: each match selects the entry it is in and scrolls it into view, and searching again steps on to the next matching entry.</p>
-<h2><a class="anchor" id="autotoc_md889"></a>
+<h2><a class="anchor" id="autotoc_md830"></a>
 Hata bildirme</h2>
 <div id="wxbuild_info"></div> <div id="wxbug_report"></div><p><em>WxMaxima</em>, geçerli sistem hakkında hata bildirimi için bilgi toplayan birkaç fonksiyon sunar:</p>
 <ul>
 <li><code>wxbuild_info()</code>, şu anda çalışan <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> sürümü hakkında bilgi toplar</li>
 <li><code>wxbug_report ()</code>, hataların nasıl ve nerede dosyalanacağını söyler</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md890"></a>
+<h2><a class="anchor" id="autotoc_md831"></a>
 Çıktıyı kırmızıyla işaretleme</h2>
 <p><em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>'nın <code><a class="el" href="structbox.html">box()</a></code> komutunun ikinci argümanı <code>highlight</code> metniyse, <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> komutun argümanını kırmızı ön plan rengiyle yazdırır.</p>
-<h2><a class="anchor" id="autotoc_md891"></a>
+<h2><a class="anchor" id="autotoc_md832"></a>
 Çıktının işlenmesi.</h2>
 <p><code>set_display()</code> ile <a class="el" href="classwxMaxima.html">wxMaxima</a>'nın çıktıyı nasıl işleyeceği ayarlanabilir.</p>
 <p><code>set_display('xml)</code> varsayılan değerdir. Bu durumda <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>, <a class="el" href="classwxMaxima.html">wxMaxima</a> ile (makine tarafından okunabilir) bir XML lehçesiyle konuşur ("Raw XML monitor" kenar çubuğunda görülebilir) ve ortaya çıkan formülleri güzelce işlenmiş olarak çıkarır; örneğin şık matrisler, karekök işaretleri, kesirler vb.</p>
 <p><code>set_display('ascii)</code>, <a class="el" href="classwxMaxima.html">wxMaxima</a>'nın formülleri komut satırı <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'daki gibi ASCII sanatı olarak çıkarmasını sağlar.</p>
 <p><code>set_display('none)</code> "tek satırlık" ASCII sonuçları verir; komut satırı <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'daki <code>display2d:false;</code> komutuyla aynı etkiye sahiptir.</p>
-<h1><a class="anchor" id="autotoc_md892"></a>
+<h1><a class="anchor" id="autotoc_md833"></a>
 Yardım menüsü</h1>
 <p>WxMaxima'nın Yardım menüsü <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> ve <a class="el" href="classwxMaxima.html">wxMaxima</a> kılavuzlarına, ipuçlarına, bazı örnek çalışma sayfalarına ve komut satırı <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'da bulunan tanıtımlara (<code>demo()</code> komutu) erişim sağlar.</p>
 <p>Lütfen tanıtımların şunu yazdığına dikkat edin:</p>
@@ -860,22 +860,22 @@ Yardım menüsü</h1>
 </div><!-- fragment --><p>Bu komut satırı <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> için geçerlidir; ancak <a class="el" href="classwxMaxima.html">wxMaxima</a>'da varsayılan olarak tanıtıma şu tuşlarla devam etmek gerekir: <code>CTRL</code>+<code>ENTER</code></p>
 <p>(Bu, Yapılandır-&gt;Çalışma Yaprağı-&gt;"Hotkeys for sending commands to Maxima" menüsünde ayarlanabilir.)</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md893"></a>
+<h1><a class="anchor" id="autotoc_md835"></a>
 Sorun giderme</h1>
-<h2><a class="anchor" id="autotoc_md894"></a>
+<h2><a class="anchor" id="autotoc_md836"></a>
 The troubleshooting dialog</h2>
 <p><em>Help &gt; Troubleshooting</em> checks the things that most often keep <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> from working: whether it finds <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>, whether <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> starts, connects to <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>, sends its first prompt and proves that it is the <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> started, whether it accepts <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>'s Lisp code and can load packages and <code>draw</code>, whether its temp directory is usable for plots, whether <em>gnuplot</em> can draw <code>png</code> and <code>pngcairo</code> plots, whether <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> can stop <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> again, and whether the manuals, the help sidebar, a web browser, the translations, text in SVG images and the AI sidebar are available. For that it starts a <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> of its own, so the worksheet's <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> and anything it is calculating are left alone. The checks are grouped into pages (<em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>, packages and plots, help and manuals, user interface), each marked with the symbol of its most important result: a green check mark if everything works, a red cross if something doesn't. Selecting a line tells what was found and, for a problem, what can be done about it; <em>Copy report</em> puts all of it on the clipboard, ready to be pasted into a bug report.</p>
-<h2><a class="anchor" id="autotoc_md895"></a>
+<h2><a class="anchor" id="autotoc_md837"></a>
 &lt;em&gt;Maxima&lt;/em&gt;'ya bağlanılamıyor</h2>
 <p><em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> (asıl matematiği yapan program) ve <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> (kullanımı kolay kullanıcı arayüzünü sağlayan) yerel bir ağ bağlantısı aracılığıyla iletişim kuran ayrı programlardır. Bu yüzden en olası neden bu bağlantının bir şekilde çalışmamasıdır. Örneğin bir güvenlik duvarı, yalnızca internetten gelen yetkisiz bağlantıları engellemekle (ve belki internete giden bazı bağlantıları da kesmekle) kalmayıp aynı bilgisayardaki süreçler arası iletişimi de engelleyecek şekilde ayarlanmış olabilir. <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> bir Lisp işlemcisi tarafından çalıştırıldığı için engellenen süreç iletişiminin "maxima" adını taşıması gerekmediğini unutmayın. Ağ bağlantısını açan programın yaygın adları sbcl, gcl, ccl, lisp.exe ya da benzerleridir.</p>
 <p>Unix bilgisayarlarda bir başka olası neden, aynı bilgisayardaki iki program arasında ağ bağlantısı sağlayan geri döngü (loopback) ağının doğru yapılandırılmamış olmasıdır.</p>
-<h2><a class="anchor" id="autotoc_md896"></a>
+<h2><a class="anchor" id="autotoc_md840"></a>
 Bozuk bir .wxmx dosyasındaki veriler nasıl kurtarılır</h2>
 <p>Dahili olarak, modern XML tabanlı biçimlerin çoğu sıradan zip dosyalarıdır. <em>WxMaxima</em> sıkıştırmayı açmaz; bu yüzden <code>.wxmx</code> dosyalarının içeriği herhangi bir metin düzenleyiciyle görüntülenebilir.</p>
 <p>Bozuk bir <code>.wxmx</code> dosyası <code>.zip</code> olarak yeniden adlandırıldıktan sonra dosyanın sonundaki zip imzası hâlâ sağlamsa, çoğu işletim sistemi içinde saklanan bilgilerin herhangi bir bölümünü çıkarmanın bir yolunu sunar. Bu, bir kelime işlemci belgesinden özgün görüntü dosyalarını kurtarmak gerektiğinde de yapılabilir. Zip imzası sağlam değilse bu da dünyanın sonu değildir: <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> kaydetme sırasında bir şeylerin ters gittiğini fark ettiyse, içeriği yardımcı olabilecek bir <code>.wxmx~</code> dosyası bulunur.</p>
 <p>Böyle bir dosya olmasa bile: <code>.wxmx</code> dosyası bir kapsayıcı biçimdir ve XML kısmı sıkıştırılmadan saklanır. <code>.wxmx</code> dosyasını <code>.txt</code> dosyası olarak yeniden adlandırıp dosya içeriğinin XML kısmını bir metin düzenleyiciyle kurtarmak mümkündür (bu kısım <code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;</code> ile başlar ve <code>&lt;/wxMaximaDocument&gt;</code> ile biter. Bu metnin öncesinde ve sonrasında metin düzenleyicide okunamayan bazı ikili içerikler görürsünüz).</p>
 <p>Yalnızca bu içeriği barındıran bir metin dosyası (örneğin bu metni yeni bir dosyaya kopyalayıp yapıştırarak) <code>.xml</code> ile biten bir dosya olarak kaydedilirse, <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> belgedeki metni nasıl kurtaracağını bilir.</p>
-<h2><a class="anchor" id="autotoc_md897"></a>
+<h2><a class="anchor" id="autotoc_md843"></a>
 Komutum bitmeden ekranda bazı hata ayıklama bilgilerinin görüntülenmesini istiyorum</h2>
 <p>Normalde <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>, 2<a class="el" href="classB.html">B</a> formülün tamamının dizilmeye başlamadan önce aktarılmasını bekler. Bu, sadece kısmen tamamlanmış bir denklemi dizmek için birçok girişimde bulunmak için zaman kazandırır. Bununla birlikte, geçerli <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> komutunun bitmesini beklemeden hemen hata ayıklama çıktısı sağlayacak bir 'disp` komutu vardır:</p>
 <div class="fragment"><div class="line">for i:1 thru 10 do (</div>
@@ -886,7 +886,7 @@ Komutum bitmeden ekranda bazı hata ayıklama bilgilerinin görüntülenmesini i
 <div class="line">   ?sleep(3)</div>
 <div class="line">)$</div>
 </div><!-- fragment --><p>Alternatif olarak yukarıda anlatılan <code>wxstatusbar()</code> komutuna bakılabilir.</p>
-<h2><a class="anchor" id="autotoc_md898"></a>
+<h2><a class="anchor" id="autotoc_md845"></a>
 Grafik çizimi yalnızca hata mesajlı kapalı, boş bir zarf gösteriyor</h2>
 <p>Bu, <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>'nın, <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>'nın <em>Gnuplot</em>'a oluşturmasını söylemesi gereken dosyayı okuyamadığı anlamına gelir.</p>
 <p>Bu hatanın olası nedenleri:</p>
@@ -897,10 +897,10 @@ Grafik çizimi yalnızca hata mesajlı kapalı, boş bir zarf gösteriyor</h2>
   terminal for the plot" onay kutusunun işaretini kaldırın ve <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>'dan <code>wxplot_pngcairo</code> değişkenini true yapmayın.</li>
 <li>Gnuplot geçerli bir <code>.png</code> dosyası üretmemiştir.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md899"></a>
+<h2><a class="anchor" id="autotoc_md848"></a>
 Bir animasyon çizmek “error: undefined variable” hatasıyla sonuçlanıyor</h2>
 <p>Kaydırıcı değişkeninin değeri varsayılan olarak çizilecek ifadeye yalnızca orada görünüyorsa yerleştirilir. Kaydırıcı değişkenini çizilecek denkleme yerleştiren bir <code>subst</code> komutu kullanmak bu sorunu çözer. <a class="el" href="md_info_wxmaxima_zh_CN.html#embedding-animations-into-the-spreadsheet">Animasyonları çalışma sayfasına gömme</a> bölümünün sonunda bir örnek görebilirsiniz.</p>
-<h2><a class="anchor" id="autotoc_md900"></a>
+<h2><a class="anchor" id="autotoc_md850"></a>
 Hücre içeriğini kaybettim ve geri alma hatırlamıyor</h2>
 <p>Hücre işlemleri ve hücrelerin içindeki değişiklikler için ayrı geri alma işlevleri vardır, bu nedenle bunun gerçekleşme ihtimali düşüktür. Varsa, verileri kurtarmak için birkaç yöntem vardır:</p>
 <ul>
@@ -910,47 +910,47 @@ Hücre içeriğini kaybettim ve geri alma hatırlamıyor</h2>
 <li>Başka bir şey yardımcı olmazsa <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> bir yeniden oynatma özelliği içerir:</li>
 </ul>
 <div class="fragment"><div class="line">playback();</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md901"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md853"></a>
 &lt;em&gt;WxMaxima&lt;/em&gt; “Maxima process terminated.” mesajıyla başlıyor</h2>
 <p>Olası bir neden, <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>'nın <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> yapılandırma iletişim kutusunun “Maxima” sekmesinde ayarlanan konumda bulunamaması ve bu yüzden hiç çalışmamasıdır. Yolu çalışan bir <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> çalıştırılabilir dosyasına ayarlamak bu sorunu çözmelidir.</p>
-<h2><a class="anchor" id="autotoc_md902"></a>
+<h2><a class="anchor" id="autotoc_md855"></a>
 Maxima sonsuza dek hesaplıyor ve girişe yanıt vermiyor</h2>
 <p><em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>'nın, <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>'nın hesaplamayı bitirdiğini fark etmemesi ve bu yüzden <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>'ya yeni veri gönderebileceğinden hiç haberdar olmaması teorik olarak mümkündür. Böyle bir durumda “Trigger evaluation” (değerlendirmeyi tetikle) iki programı yeniden eşzamanlayabilir.</p>
-<h2><a class="anchor" id="autotoc_md903"></a>
+<h2><a class="anchor" id="autotoc_md857"></a>
 SBCL tabanlı &lt;em&gt;Maxima&lt;/em&gt;'mın belleği yetmiyor</h2>
 <p>Lisp derleyicisi SBCL varsayılan olarak, düşük donanımlı bilgisayarlarda bile çalışmasını sağlayan bir bellek sınırıyla gelir. Lapack gibi büyük bir yazılım paketini derlerken ya da son derece büyük denklem listeleriyle uğraşırken bu sınır fazla düşük kalabilir. Sınırları genişletmek için SBCL'e, kaç megabayt ayırması gerektiğini söyleyen <code>--dynamic-space-size</code> komut satırı parametresi verilebilir. 32 bit Windows SBCL'i en fazla 999 megabayt ayırabilir. Windows'ta çalışan 64 bit bir SBCL sürümüne, Lapack'i derlemek için gereken yaklaşık 1280 megabayttan fazlasını kullanması söylenebilir.</p>
 <p><em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>'ya (ve dolayısıyla SBCL'e) komut satırı parametreleri vermenin bir yolu, <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> yapılandırma iletişim kutusundaki "Maxima için ek
 parametreler" alanıdır.</p>
 <p><img src="./sbclMemory.png" alt="sbcl memory" class="inline"/></p>
-<h2><a class="anchor" id="autotoc_md904"></a>
+<h2><a class="anchor" id="autotoc_md858"></a>
 Ubuntu'da giriş bazen ağırlaşıyor ya da tuşları yok sayıyor</h2>
 <p><code>İbus-gtk</code> paketinin yüklenmesi bu sorunu çözmelidir. Bkz. ([Https://bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558 yetersiz(<a href="https://bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/">https://bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/</a> 1421558)).</p>
-<h2><a class="anchor" id="autotoc_md905"></a>
+<h2><a class="anchor" id="autotoc_md859"></a>
 &lt;em&gt;Maxima&lt;/em&gt; Yunan harflerini ya da umlautlu harfleri işlerken &lt;em&gt;WxMaxima&lt;/em&gt; duruyor</h2>
 <p><em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>'nız SBCL'ye dayanıyorsa, aşağıdaki satırların .sbclrc`inize eklenmesi gerekir:</p>
 <div class="fragment"><div class="line">(setf sb-impl::*default-external-format* :utf-8)</div>
 </div><!-- fragment --><p>Bu dosyanın konulması gereken klasör sisteme ve kuruluma göre değişir. Ancak geçerli oturumda bir hücreyi zaten değerlendirmiş olan SBCL tabanlı her <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>, şu komutu aldıktan sonra dosyanın nerede olması gerektiğini memnuniyetle söyler:</p>
 <div class="fragment"><div class="line">:lisp (sb-impl::userinit-pathname)</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md906"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md860"></a>
 Wayland hakkında not (yeni Linux/BSD dağıtımları)</h2>
 <p>Wayland görüntü sunucusu ile wxWidgets arasında bazı sorunlar var gibi görünüyor. WxMaxima bundan etkilenebilir; örneğin kenar çubukları taşınamayabilir.</p>
 <p>Wayland'i (genel olarak) devre dışı bırakıp yerine X11 kullanabilir ya da yalnızca <a class="el" href="classwxMaxima.html">wxMaxima</a>'nın X Pencere Sistemi'ni kullanmasını şu ayarla sağlayabilirsiniz: <code>GDK_BACKEND=x11</code></p>
 <p>Örneğin <a class="el" href="classwxMaxima.html">wxMaxima</a>'yı şöyle başlatın:</p>
 <p><code>GDK_BACKEND=x11 wxmaxima</code></p>
-<h2><a class="anchor" id="autotoc_md907"></a>
+<h2><a class="anchor" id="autotoc_md862"></a>
 KDE Plasma'da menü çubuğu kayboluyor</h2>
 <p>Bazı KDE Plasma kurulumlarında genel menü çubuğu tıklandığında kaybolur. Bu, genel menü vekilindeki bir hata olduğu için bunu önlemenin tek yolu, <a class="el" href="classwxMaxima.html">wxMaxima</a>'ya genel menü çubuğu yerine kendi menü çubuğunu kullanmasını söylemektir. Bu şu ayarla yapılır: <code>UBUNTU_MENUPROXY=0</code></p>
 <p>26.05.0 sürümünden itibaren <a class="el" href="classwxMaxima.html">wxMaxima</a>, etkilenen bir sistem (KDE, Unity ya da eski wxWidgets sürümlerine sahip Ubuntu) algılarsa bu değişkeni otomatik olarak ayarlamaya çalışır.</p>
 <p>Otomatik düzeltme başarısız olursa <a class="el" href="classwxMaxima.html">wxMaxima</a>'yı elle şöyle başlatabilirsiniz:</p>
 <p><code>UBUNTU_MENUPROXY=0 wxmaxima</code></p>
-<h2><a class="anchor" id="autotoc_md908"></a>
+<h2><a class="anchor" id="autotoc_md865"></a>
 Windows bilgisayarımda tümleşik kılavuz tarayıcısı neden sunulmuyor?</h2>
 <p>Ya wxWidgets, Microsoft'un webview2 desteğiyle derlenmemiştir ya da Microsoft'un webview2'si kurulu değildir.</p>
 <p><em>Help/About</em> lists which of the things the integrated browser needs this <a class="el" href="classwxMaxima.html">wxMaxima</a> has and which it is missing; the log window (<em>View/Toggle log window</em>) shows the same list.</p>
-<h2><a class="anchor" id="autotoc_md909"></a>
+<h2><a class="anchor" id="autotoc_md867"></a>
 Linux bilgisayarımda harici kılavuz tarayıcısı neden çalışmıyor?</h2>
 <p>HTML tarayıcısı bir snap, flatpak ya da AppImage sürümü olabilir. Bunların hepsi genellikle yerel sisteminizde kurulu dosyalara erişemez. Bir başka neden, maxima ya da <a class="el" href="classwxMaxima.html">wxMaxima</a>'nın snap, flatpak ya da ana sisteme içeriğine erişim izni vermeyen başka bir biçimde kurulmuş olması olabilir. Üçüncü bir neden de maxima HTML kılavuzunun kurulu olmaması ve çevrimiçi kılavuza erişilememesi olabilir.</p>
-<h2><a class="anchor" id="autotoc_md910"></a>
+<h2><a class="anchor" id="autotoc_md868"></a>
 &lt;em&gt;wxMaxima&lt;/em&gt;'nın hem görüntü dosyaları hem de gömülü grafikler üretmesini sağlayabilir miyim?</h2>
 <p>Çalışma sayfası <code>.png</code> dosyalarını gömer. <em>WxMaxima</em> kullanıcının bunların nerede oluşturulacağını belirtmesine izin verir:</p>
 <div class="fragment"><div class="line">wxdraw2d(</div>
@@ -979,20 +979,20 @@ Linux bilgisayarımda harici kılavuz tarayıcısı neden çalışmıyor?</h2>
 <div class="line">pngdraw2d(&quot;Test&quot;,</div>
 <div class="line">        explicit(sin(x),x,1,10)</div>
 <div class="line">);</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md911"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md869"></a>
 Gömülü bir grafiğin en-boy oranını ayarlayabilir miyim?</h2>
 <p><code>wxplot_size</code> değişkenini kullanın:</p>
 <div class="fragment"><div class="line">wxdraw2d(</div>
 <div class="line">    explicit(sin(x),x,1,10)</div>
 <div class="line">),wxplot_size=[1000,1000];</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md912"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md870"></a>
 MacOS 13.1'e yükselttikten sonra plot ve/veya draw komutları şuna benzer hata mesajları veriyor</h2>
 <div class="fragment"><div class="line">1 HIToolbox 0x00007ff80cd91726 _ZN15MenuBarInstance22EnsureAutoShowObserverEv + 102</div>
 <div class="line">2 HIToolbox 0x00007ff80cd912b8 _ZN15MenuBarInstance14EnableAutoShowEv + 52</div>
 <div class="line">3 HIToolbox 0x00007ff80cd35908 SetMenuBarObscured + 408</div>
 <div class="line">...</div>
 </div><!-- fragment --><p>Bu bir işletim sistemi sorunu olabilir. Menü çubuğunun gizlenmesini kapatmak (Sistem Ayarları =&gt; Masaüstü ve Dock =&gt; Menü Çubuğu) sorunu çözebilir. Daha fazla bilgi için <a href="https://github.com/wxMaxima-developers/wxmaxima/issues/1746">wxMaxima issue #1746</a> sayfasına bakın.</p>
-<h2><a class="anchor" id="autotoc_md913"></a>
+<h2><a class="anchor" id="autotoc_md871"></a>
 On MacOS &lt;tt&gt;plot2d&lt;/tt&gt; or &lt;tt&gt;draw&lt;/tt&gt; open no window, but print “Broken pipe”</h2>
 <p><a class="el" href="classA.html">A</a> message like</p>
 <div class="fragment"><div class="line">WARNING:</div>
@@ -1000,40 +1000,40 @@ On MacOS &lt;tt&gt;plot2d&lt;/tt&gt; or &lt;tt&gt;draw&lt;/tt&gt; open no window
 <div class="line">     Broken pipe</div>
 </div><!-- fragment --><p>means that <em>Gnuplot</em> stopped before <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> could send it the plot. On MacOS the usual reason is that MacOS blocks a <em>Gnuplot</em> that was downloaded from the internet: since <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> starts <em>Gnuplot</em> in the background, MacOS can't ask whether it may run. Starting <em>Gnuplot</em> once from a Terminal, or allowing it in System Settings =&gt; Privacy &amp; Security, tells MacOS that it may; <code>xattr -r -d com.apple.quarantine</code> followed by the path of <em>Gnuplot</em> (for example <code>Gnuplot.app</code>) does the same. See <a href="https://github.com/wxMaxima-developers/wxmaxima/issues/1461">wxMaxima issue #1461</a>.</p>
 <p><em>XQuartz</em> isn't needed for plots in separate windows: neither <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> nor <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> chooses a <em>Gnuplot</em> terminal for them, so <em>Gnuplot</em> uses its own default one. That is <code>qt</code> for a <em>Gnuplot</em> from Homebrew and <code>aqua</code> (AquaTerm) for one from MacPorts, both of which draw without <em>XQuartz</em>. Only a <em>Gnuplot</em> that offers nothing but its <code>x11</code> terminal, or <code>GNUTERM</code> set to <code>x11</code>, needs <em>XQuartz</em>. Embedded plots (<code>wxplot2d</code>, <code>wxdraw</code> and friends) never open a window and don't need any of this.</p>
-<h2><a class="anchor" id="autotoc_md914"></a>
+<h2><a class="anchor" id="autotoc_md874"></a>
 Günlük kaydı</h2>
 <p>Günlük mesajları sorunları ayıklamaya yardımcı olabilir. WxMaxima birçok olayı günlüğe kaydedebilir. Günlük kayıtlarının çoğu, özellikle sorun ya da hata durumlarında, geliştiriciler için yararlıdır. "Release" derlemesi çalıştırıyorsanız günlük penceresi varsayılan olarak gösterilmez; bir geliştirme sürümü çalıştırıyorsanız varsayılan olarak ikinci bir pencere olarak gösterilir. Bu pencereyi "Görünüm-&gt;Toggle log window" menü öğesiyle açıp kapatabilirsiniz.</p>
 <p>Günlük penceresi gösterilmiyorsa mesajlar 'kaybolmaz': Günlük penceresini daha sonra göstermeyi seçerseniz geçmiş günlük mesajlarını (silmediyseniz) görürsünüz.</p>
 <p>Bu tür mesajlar hata raporu oluştururken (ya da bir hatayı kendiniz bulmaya çalışırken) yardımcı olabilir.</p>
 <p>"--logtostderr" komut satırı seçeneği kullanıldığında günlük mesajları (ek olarak) STDERR'e de yazdırılabilir. Windows'ta bunun için ayrı bir metin konsolu açılır, çünkü bir Windows GUI uygulamasının standart giriş/çıkışı bağlı değildir.</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md915"></a>
+<h1><a class="anchor" id="autotoc_md875"></a>
 SSS</h1>
-<h2><a class="anchor" id="autotoc_md916"></a>
+<h2><a class="anchor" id="autotoc_md876"></a>
 Bir LaTeX sayfasına daha fazla metin sığdırmanın bir yolu var mı?</h2>
 <p>Evet. Kenar boşluklarının boyutunu belirtmek için <a href="https://ctan.org/pkg/geometry">LaTeX paketi "geometry"</a> kullanın.</p>
 <p>Kenar boşluklarını 1 cm yapmak için LaTeX önsözüne aşağıdaki satırı ekleyebilirsiniz (örneğin yapılandırma iletişim kutusundaki ilgili alanı kullanarak: "Çıkart"-&gt;"TeX önsözü için ek satırlar"):</p>
 <div class="fragment"><div class="line">\usepackage[left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md917"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md877"></a>
 Karanlık mod var mı?</h2>
 <p>wxWidgets yeterince yeniyse, işletim sisteminin geri kalanı karanlık moddaysa <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> da otomatik olarak karanlık moda geçer. Çalışma sayfasının kendisi varsayılan olarak açık renkli bir arka plana sahiptir, ancak bu farklı şekilde yapılandırılabilir. Alternatif olarak, çalışma sayfasını hızlıca karanlıktan aydınlığa ve tersine çevirmeye yarayan bir <code>View/Invert worksheet brightness</code> menü öğesi vardır.</p>
 <p>Most images are drawn for a white background, and black line art with a transparent background would be invisible on a dark worksheet. So by default, if the worksheet background is dark, the transparent parts of images are filled with a backdrop color. Its color is the style <em>Backdrop of transparent images</em> in the <em><a class="el" href="classStyle.html" title="Text Style Definition.">Style</a></em> tab of the configuration dialog, and the option <em>Behind transparent parts of images</em> in its <em><a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a></em> tab can switch the backdrop off, or draw it on a bright worksheet, too.</p>
-<h2><a class="anchor" id="autotoc_md918"></a>
+<h2><a class="anchor" id="autotoc_md879"></a>
 &lt;em&gt;WxMaxima&lt;/em&gt; ilk dakika içinde bir kez birkaç saniye takılıyor</h2>
 <p><em>WxMaxima</em>, <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>'nın 1000 sayfayı aşan kılavuzunu ayrıştırmak gibi bazı büyük işleri arka plan görevlerine devreder; bu normalde hiç fark edilmez. Ancak böyle bir görevin sonucuna ihtiyaç duyulduğu anda <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>'nın işine devam edebilmek için birkaç saniye beklemesi gerekebilir.</p>
-<h2><a class="anchor" id="autotoc_md919"></a>
+<h2><a class="anchor" id="autotoc_md880"></a>
 Özellikle yeni yerel ayarları denerken "locale ’xx_YY’ can not be set" mesaj kutusu çıkıyor</h2>
 <p><img src="./locale-warning.png" alt="Yerel ayar uyarısı" class="inline"/></p>
 <p>(Aynı sorun başka uygulamalarda da olabilir.) ’OK’ düğmesine tıkladıktan sonra çeviriler sorunsuz görünür. WxMaxima yalnızca kendi çevirilerini değil, wxWidgets çerçevesinin çevirilerini de kullanır.</p>
 <p>Bu yerel ayarlar sistemde bulunmuyor olabilir. Ubuntu/Debian sistemlerinde şu komutla oluşturulabilirler: <code>dpkg-reconfigure locales</code></p>
-<h2><a class="anchor" id="autotoc_md920"></a>
+<h2><a class="anchor" id="autotoc_md881"></a>
 Gerçel sayılar, doğal sayılar (ℝ, ℕ) vb. için simgeleri nasıl kullanabilirim?</h2>
 <p>Bu simgeleri Unicode kenar çubuğunda bulabilirsiniz (’double-struck capital’ diye arayın). Ancak seçili yazı tipinin de bu simgeleri desteklemesi gerekir. Doğru görüntülenmiyorlarsa başka bir yazı tipi seçin.</p>
-<h2><a class="anchor" id="autotoc_md921"></a>
+<h2><a class="anchor" id="autotoc_md882"></a>
 Bir Maxima betiği wxMaxima altında mı yoksa komut satırı Maxima'da mı çalıştığını nasıl anlayabilir?</h2>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> kullanılıyorsa <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> değişkeni <code>maxima_frontend</code> <code>wxmaxima</code> olarak ayarlanır. Bu durumda <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> değişkeni <code>maxima_frontend_version</code> <a class="el" href="classwxMaxima.html">wxMaxima</a> sürümünü içerir.</p>
 <p>Hiçbir ön uç kullanılmıyorsa (komut satırı <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> kullanıyorsanız) bu değişkenler <code>false</code> olur.</p>
-<h3><a class="anchor" id="autotoc_md922"></a>
+<h3><a class="anchor" id="autotoc_md883"></a>
 Is wxMaxima new enough for this worksheet?</h3>
 <div id="wx_version_min"></div><p><code>wx_version_min("26.09.0")</code> returns <code>true</code> if the running <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> is at least version 26.09.0, and <code>false</code> if it is older, or if the command runs in command line <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>. The parts of the version number are compared as numbers, so 26.10.0 counts as newer than 26.9.0, and a part that is left out counts as 0: <code>wx_version_min("26.9")</code> is the same as <code>wx_version_min("26.09.0")</code>. <a class="el" href="classA.html">A</a> development version counts as the version it will be released as.</p>
 <p><em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> 26.08.0 and older don't know <code>wx_version_min()</code> yet. There, as with any function <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> doesn't know, the call isn't an error: it just returns itself, unevaluated, as <code>wx_version_min("26.09.0")</code>, which is neither <code>true</code> nor <code>false</code>. So a plain <code>if wx_version_min("26.09.0") then ...</code> stays unevaluated on these versions, too. <a class="el" href="classA.html">A</a> worksheet that has to work with them as well can compare the result with <code>true</code>, which gives <code>false</code> there:</p>
@@ -1041,11 +1041,11 @@ Is wxMaxima new enough for this worksheet?</h3>
 <div class="line">    wx_matrix(M, oversized=scroll)</div>
 <div class="line">else</div>
 <div class="line">    M;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md923"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md884"></a>
 İmdat! Belgemi kaydedemiyorum!</h2>
 <p>wxmx dosyası olarak kaydetme çalışmazsa belgeyi wxm dosyası olarak kaydetmeyi deneyin (ya da tersini). Ayrıca tüm çıktıları silmeyi (Hücre-&gt;Tüm Çıktıları Temizle menüsü) ve dosyayı öyle kaydetmeyi de deneyebilirsiniz; belki beklenmedik bir çıktı kaydetme sırasında sorun yaratıyordur.</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md924"></a>
+<h1><a class="anchor" id="autotoc_md885"></a>
 Komut satırı argümanları</h1>
 <p>Grafik kullanıcı arayüzüne sahip programlar genellikle yalnızca bir masaüstü simgesine ya da masaüstü menü öğesine tıklanarak başlatılabilir. Yine de WxMaxima, komut satırından başlatıldığında bazı komut satırı seçenekleri sunar.</p>
 <ul>
@@ -1083,7 +1083,7 @@ Komut satırı argümanları</h1>
 <li><code>95</code>: An image in the worksheet could not be decoded (only checked with <code>--debug</code>).</li>
 </ul>
 <hr  />
-<h1><a class="anchor" id="autotoc_md925"></a>
+<h1><a class="anchor" id="autotoc_md887"></a>
 Program hakkında, wxMaxima'ya katkıda bulunma</h1>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> esas olarak C++ programlama dili ve <a href="https://www.wxwidgets.org">wxWidgets çerçevesi</a> kullanılarak geliştirilir; derleme sistemi olarak <a href="https://www.cmake.org">CMake</a> kullanılır, küçük bir kısmı ise Lisp ile yazılmıştır. Bu programlama dillerini biliyorsanız ve açık kaynak projesi <a class="el" href="classwxMaxima.html">wxMaxima</a>'ya yardım edip katkıda bulunmak istiyorsanız <a href="https://github.com/wxMaxima-developers/wxmaxima">https://github.com/wxMaxima-developers/wxmaxima</a> adresinden <a class="el" href="classwxMaxima.html">wxMaxima</a> projesine katılabilirsiniz.</p>
 <p>Ama yalnızca programcılara ihtiyaç yok! Belgeleri geliştirmeye yardım ederek, hataları bulup bildirerek (ve belki düzelterek), yeni özellikler önererek, <a class="el" href="classwxMaxima.html">wxMaxima</a>'yı ya da kılavuzu kendi dilinize çevirmeye yardım ederek de <a class="el" href="classwxMaxima.html">wxMaxima</a>'ya katkıda bulunabilirsiniz (<a class="el" href="classwxMaxima.html">wxMaxima</a>'nın ve kılavuzun nasıl çevrilebileceğini öğrenmek için <a href="https://github.com/wxMaxima-developers/wxmaxima/tree/main/locales">locale alt dizinindeki</a> README.md dosyasını okuyun).</p>
