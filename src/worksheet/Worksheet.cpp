@@ -4921,12 +4921,14 @@ bool Worksheet::ExportToTeX(const wxString &file) {
                                       &GetViewCellPointers(), GetHCaret());
 }
 
-bool Worksheet::ExportToPDF(const wxString &file, PdfExport::Options options) {
+bool Worksheet::ExportToPDF(const wxString &file, const PdfExport::Options &options) {
   wxBusyCursor crs;
-  if (options.title.IsEmpty())
-    options.title = PdfExport::DocumentTitle(GetTree(), wxFileName(file).GetName());
-  PdfExport exporter(GetTree(), m_configuration, options);
-  return exporter.Write(file);
+  // Only copy the options (four strings' worth) if the title has to be filled in.
+  if (!options.title.IsEmpty())
+    return PdfExport(GetTree(), m_configuration, options).Write(file);
+  PdfExport::Options titled = options;
+  titled.title = PdfExport::DocumentTitle(GetTree(), wxFileName(file).GetName());
+  return PdfExport(GetTree(), m_configuration, titled).Write(file);
 }
 
 void Worksheet::LoadSymbols() { m_autocomplete.LoadSymbols(); }
