@@ -31,11 +31,15 @@
 #define DPI_REFERENCE 96
 
 #include "Printout.h"
+#include "PageBreaks.h"
+#include "cells/CellList.h"
 #include "worksheet/Worksheet.h"
 
 #include <wx/busyinfo.h>
 #include <wx/config.h>
 #include <wx/log.h>
+
+#include <algorithm>
 
 
 Printout::Printout(const wxString& title, GroupCell *tree, double scaleFactor)
@@ -65,21 +69,14 @@ Printout::Printout(const wxString& title, GroupCell *tree, double scaleFactor)
 }
 
 bool Printout::HasPage(int num) {
-  // Num starts counting with 1, m_pages[n] starts counting with n=0
-  if ((num > 0) && (static_cast<unsigned int>(num) <= m_pages.size()))
-    return true;
-  else
-    return false;
+  // Num starts counting with 1, m_pageStarts[n] starts counting with n=0
+  return (num > 0) && (static_cast<std::size_t>(num) <= m_pageStarts.size());
 }
 
 bool Printout::OnPrintPage(int num) {
   wxLogMessage(_("Printout: Request to print page %li"), static_cast<long>(num));
-  // Num starts counting with 1, m_pages[n] starts counting with n=0
-  if ((unsigned)num > m_pages.size())
+  if (!HasPage(num) || !m_tree)
     return false;
-  if (num <= 0)
-    return false;
-  //  wxBusyInfo busyInfo(wxString::Format(_("Printing page %i..."), num));
   wxDC *dc = GetDC();
   dc->SetBackground(*wxWHITE_BRUSH);
   dc->Clear();
@@ -95,55 +92,45 @@ bool Printout::OnPrintPage(int num) {
   wxLogMessage(_("printOut: Setting the page size to (%li,%li)"),
                static_cast<long>(pageWidth),
                static_cast<long>(pageHeight));
-  GroupCell *group = m_pages.at(static_cast<size_t>(num) - 1)->GetGroup();
-  if (!group)
-    return true;
-  if (group->GetGroupType() == GC_TYPE_PAGEBREAK)
-    group = group->GetNext();
-  if (!group)
-    return true;
 
-  // Move the origin so the cell we want to print first appears on the top
-  // of our page
-  wxPoint deviceOrigin(
-                       m_configuration.PrintMargin_Left(),
-                       m_configuration.PrintMargin_Top() -
-                       m_pages.at(static_cast<size_t>(num) - 1)->GetRect(true).GetTop());
+  // The part of the worksheet this page shows: up to where the next page
+  // starts. wxm::BreakIntoPages() only breaks between lines, so the
+  // clipping never cuts a line in two.
+  const auto page = static_cast<std::size_t>(num) - 1;
+  const wxCoord startpoint = m_pageStarts.at(page);
+  const wxCoord endpoint = (page + 1 < m_pageStarts.size()) ?
+    m_pageStarts.at(page + 1) : startpoint + pageHeight;
+
+  // Move the origin so the top of the page's part of the worksheet appears
+  // at the top margin
+  wxPoint deviceOrigin(m_configuration.PrintMargin_Left(),
+                       m_configuration.PrintMargin_Top() - startpoint);
   wxLogMessage(_("Printout: Setting the device origin to %lix%li"),
                static_cast<long>(deviceOrigin.x),
                static_cast<long>(deviceOrigin.y)
                );
   dc->SetDeviceOrigin(deviceOrigin.x, deviceOrigin.y);
 
-  // Print the page contents
-  const Cell *end = nullptr;
-  wxCoord startpoint;
-  wxCoord endpoint;
-  startpoint = m_pages.at(static_cast<size_t>(num) - 1)->GetRect(true).GetTop();
-
-  if (m_pages.size() > (unsigned)num) {
-    endpoint = m_pages.at(num)->GetRect(true).GetTop() - 1;
-    end = m_pages.at(num);
-  }
-  else {
-    endpoint = startpoint + pageHeight;
-  }
-
   dc->DestroyClippingRegion();
-  wxCoord len = endpoint - startpoint;
   wxLogMessage(_("Printout: Printing the region %li-%li"),
                static_cast<long>(startpoint),
                static_cast<long>(endpoint));
-  dc->SetClippingRegion(0, startpoint, pageWidth, len);
+  dc->SetClippingRegion(0, startpoint, pageWidth, endpoint - startpoint);
 
-  while (group && (group->GetGroupType() != GC_TYPE_PAGEBREAK)) {
-    {
-      group->Draw(dc, dc);
-      if(end && (group == end->GetGroup()))
-        break;
-    }
-    group = group->GetNext();
+  // Every group that reaches into this page. A page break cell draws
+  // nothing; what follows it is on the next page.
+  for (GroupCell &group : OnList(m_tree.get())) {
+    const wxRect rect = group.GetRect();
+    if (rect.GetTop() >= endpoint)
+      break;
+    if (group.GetGroupType() == GC_TYPE_PAGEBREAK)
+      continue;
+    const wxCoord bottom = std::max(rect.GetBottom(), group.GetOutputRect().GetBottom());
+    if (bottom < startpoint)
+      continue;
+    group.Draw(dc, dc);
   }
+  dc->DestroyClippingRegion();
   return true;
 }
 
@@ -155,67 +142,16 @@ bool Printout::OnBeginDocument(int startPage, int endPage) {
 }
 
 void Printout::BreakPages() {
-  if (m_tree == nullptr)
-    return;
-  wxSize canvasSize = m_configuration.GetCanvasSize();
-
-  wxLogMessage(_("Printout: Composing a list of all line starts as possible locations for page breaks"));
-  std::vector <Cell*> lineStarts;
-  for (GroupCell &gr : OnList(m_tree.get())) {
-    // Drawing a GroupCell makes it calculate the position of its output cells.
-    gr.Draw(GetDC(), GetDC());
-    // We can introduce a break after the input part of any group cell.
-    if(gr.GetPrompt())
-      lineStarts.push_back(gr.GetPrompt());
-
-    // We can introduce a break after each line of output of any
-    // group cell.
-    Cell *out = gr.GetOutput();
-    if(out)
-      {
-        for (Cell &tmp : OnDrawList(out)) {
-          if((tmp.BreakLineHere()) || (tmp.GetNext() == nullptr))
-            lineStarts.push_back(&tmp);
-        }
-      }
-  }
-  wxLogMessage(_("Found %li line breaks"), (long) lineStarts.size());
-
-  wxLogMessage(_("Composing a list of the line starts we can use as page starts"));
-  // The 1st page starts at the beginning of the document
-  GroupCell *group = m_tree.get();
-  m_pages.push_back(group);
-  
-  // Now see where the next pages should start    
-  for (const auto &i : lineStarts) {
-    wxCoord pageStart = 0;
-    pageStart = m_pages.at(m_pages.size() - 1)->GetRect(true).GetTop();
-    wxCoord pageEnd = i->GetRect(true).GetBottom();
-    if(i->GetNext())
-      pageEnd = i->GetNext()->GetRect(true).GetBottom();
-    if(pageEnd - pageStart > canvasSize.y)
-      {
-        if(i != m_pages.at(m_pages.size() - 1))
-          {
-            wxCoord pageHeight = i->GetRect(true).GetTop() - pageStart;
-            wxLogMessage(_("Printout: PageStart=%li, PageHeight=%li, canvasSize=%li"),
-                         static_cast<long>(pageStart),
-                         static_cast<long>(pageHeight),
-                         static_cast<long>(canvasSize.y));
-            m_pages.push_back(i);
-          }
-        else
-          wxLogMessage(_("Printout: Cannot find a suitable point for a page break!"));
-      }
-  }
+  m_pageStarts = wxm::BreakIntoPages(m_tree.get(), m_configuration.GetCanvasSize().y);
+  wxLogMessage(wxS("Printout: %li pages"), static_cast<long>(m_pageStarts.size()));
 }
 
 void Printout::GetPageInfo(int *minPage, int *maxPage, int *fromPage,
                            int *toPage) {
   *minPage = 1;
-  *maxPage = m_pages.size();
+  *maxPage = static_cast<int>(m_pageStarts.size());
   *fromPage = 1;
-  *toPage = m_pages.size();
+  *toPage = static_cast<int>(m_pageStarts.size());
 }
 
 void Printout::OnPreparePrinting() {

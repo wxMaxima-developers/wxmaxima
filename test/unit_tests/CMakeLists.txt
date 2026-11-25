@@ -803,6 +803,17 @@ if(TARGET wxmTestApp)
     add_test(NAME PdfExport
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_PdfExport>")
 
+    # The page breaking printing and the PDF export share
+    # (src/graphical_io/PageBreaks.h), and printing with it.
+    add_executable(test_PageBreaks
+        test_PageBreaks.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_PageBreaks PUBLIC cxx_std_20)
+    target_link_libraries(test_PageBreaks PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME PageBreaks
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_PageBreaks>")
+
     # Safety net for the multi-format clipboard / drag-export payload: builds
     # the real Copy()/CopyCells() data objects over a live document and pins
     # that their advertised formats are distinct (no wxDataFormat collision -

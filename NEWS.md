@@ -1,5 +1,8 @@
 # Current development version
 
+- Printing breaks pages like the PDF export: a heading is no longer left
+  alone at the bottom of a page, and what follows a page break cell is
+  printed (it used to be left out unless the page was full anyway).
 - New: File > Export can write a PDF, and `wxworksheettopdf("file.pdf")`
   does the same from a batch file or a Maxima program. Unlike printing to
   PDF, the text stays text in the worksheet's own fonts, embedded in the

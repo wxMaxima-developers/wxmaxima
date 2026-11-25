@@ -748,7 +748,9 @@ a local TCP socket.
     Figure (alt "Graphics created by: <input>"), P for prose, Formula with
     `OutCommon::AccessibleText()` as alt text and MathML as an associated
     file (none for ASCII-art output). Pages break between blocks, headings
-    stay with what follows. `test_PdfExport` decodes the PDF itself (no
+    stay with what follows -- `wxm::BreakIntoPages()`
+    (`PageBreaks.{h,cpp}`), which printing (`Printout`) uses too, so a
+    change there changes both; `test_PageBreaks` covers it. `test_PdfExport` decodes the PDF itself (no
     external tools), so it runs everywhere; set `WXM_PDF_DUMP_DIR` to keep
     the PDFs and their decoded text for a look with `pdffonts` or pikepdf.
   - **Bookmarks** (the outline) come from the headings. wxPdfDocument needs
