@@ -47,3 +47,8 @@ README           text working-tree-encoding=UTF-8 eol=lf
 # the name at any depth, and export-ignore on a directory drops all of it.
 # The source_tarball_has_no_dotfiles ctest checks the result.
 .* export-ignore
+# The local actions' run: scripts are executed by whatever "bash" a job has
+# on its PATH -- in the Cygwin job that is Cygwin's, which treats a carriage
+# return as part of the command ("$'{\r': command not found"). The runner's
+# own git checks out with CRLF on Windows, so pin these to LF.
+.github/** text eol=lf

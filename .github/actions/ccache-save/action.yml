@@ -2,8 +2,10 @@ name: ccache-save
 description: >
   Prints how well ccache did in this job, drops what this job did not use,
   and on main saves the cache for the next run. The counterpart of
-  ./.github/actions/ccache; call it with "if: ${{ !cancelled() }}" so a job
-  whose tests fail still keeps what it compiled.
+  ./.github/actions/ccache; call it from a step whose condition is
+  !cancelled(), so a job whose tests fail still keeps what it compiled.
+  (No expression syntax in this text: the Windows runner evaluated it while
+  loading this file, refused cancelled() here, and failed the job.)
 
 inputs:
   ccache:
