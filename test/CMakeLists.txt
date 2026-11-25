@@ -98,7 +98,7 @@ if(NOT XMLLINT)
 elseif(NOT UNZIP)
     message(STATUS "unzip not found. .wxmx file XML validation will be skipped.")
 else()
-    message(STATUS "Found xmllint and unzip. XML validity validation enabled.")
+    message(STATUS "Found xmllint and unzip. XML validation enabled.")
 endif()
 
 # Copy the .wxm files to the binary dir so they can be used as test case without
