@@ -2,8 +2,10 @@
 
 WxMaxima is a document based interface for the computer algebra system
 Maxima.  For more information about Maxima, visit
-<https://maxima.sourceforge.io/>.  WxMaxima uses wxWidgets and runs
-natively on Windows, macOS, Linux and other platforms.
+<https://maxima.sourceforge.io/>.  WxMaxima is built on wxWidgets
+(<https://www.wxwidgets.org/>) and runs natively on Windows, macOS, Linux
+and other platforms. Its PDF export uses wxPdfDocument by Ulrich Telle
+(<https://github.com/utelle/wxpdfdoc>).
 WxMaxima provides menus and dialogs for many common Maxima commands,
 autocompletion, inline plots and simple animations.
 WxMaxima is distributed under the GPL license.

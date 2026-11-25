@@ -1,5 +1,8 @@
 # Current development version
 
+- Help > About names the libraries wxMaxima is made with, wxWidgets and
+  wxPdfDocument, with their web sites, and the third-party notices now
+  include wxPdfDocument's licence and those of the code it contains.
 - Printing breaks pages like the PDF export: a heading is no longer left
   alone at the bottom of a page, and what follows a page break cell is
   printed (it used to be left out unless the page was full anyway).

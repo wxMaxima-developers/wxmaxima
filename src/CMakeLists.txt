@@ -873,6 +873,15 @@ if(WXM_BUNDLES_GNUPLOT)
     file(READ "${CMAKE_SOURCE_DIR}/THIRD-PARTY-NOTICES-Gnuplot.txt" gnuplot_license)
     file(APPEND "${CMAKE_BINARY_DIR}/THIRD-PARTY-NOTICES.txt" "${gnuplot_license}")
 endif()
+# wxPdfDocument (thirdparty/wxpdfdoc) is compiled into the binary whenever
+# the PDF export is built, see cmake/WxmPdfDoc.cmake.
+if(WXM_USE_WXPDFDOC)
+    file(READ "${CMAKE_SOURCE_DIR}/THIRD-PARTY-NOTICES-wxPdfDoc.txt" wxpdfdoc_license)
+    file(APPEND "${CMAKE_BINARY_DIR}/THIRD-PARTY-NOTICES.txt" "${wxpdfdoc_license}")
+    # Read at configure time: re-configure when it changes.
+    set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS
+        "${CMAKE_SOURCE_DIR}/THIRD-PARTY-NOTICES-wxPdfDoc.txt")
+endif()
 add_custom_command(
         OUTPUT ${CMAKE_BINARY_DIR}/wxm_thirdparty_notices.h
         COMMAND ${CMAKE_COMMAND} ARGS
