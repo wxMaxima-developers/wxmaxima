@@ -689,8 +689,17 @@ public:
   //! Move the cursor to a certain position in the cell
   void CaretToPosition(size_t pos);
 
-  //! True, if there is undo information for this cell
-  bool CanUndo() const {return m_history.CanUndo();}
+  /*! True, if an undo would change this cell's contents
+
+    The history also records the text a cell had when the cursor entered it
+    (ActivateCursor() saves it), so it is rarely empty; an entry that only
+    repeats the current contents is nothing to undo. Counting it made
+    Worksheet::Undo() hand Ctrl+Z to the cell, which then changed nothing,
+    instead of to the worksheet -- so a cell type conversion, a deletion or any
+    other worksheet-level change could not be undone while the cursor was in a
+    cell that hadn't been edited.
+  */
+  bool CanUndo() const;
 
   //! Issue an undo command
   void Undo();
@@ -739,6 +748,8 @@ public:
     bool Undo();
     bool Redo();
     bool CanUndo() const;
+    //! Is there an entry before the current position that differs from current?
+    bool CanUndoTo(const HistoryEntry &current) const;
     bool CanRedo() const;
     void ClearUndoBuffer();
     HistoryEntry GetState() const;
