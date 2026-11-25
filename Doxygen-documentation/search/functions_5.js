@@ -71,7 +71,7 @@ var searchData=
   ['exportselectionoutputtodir_68',['ExportSelectionOutputToDir',['../classWorksheet.html#ae57bd6a7dcc3fdc952cf376b52215d00',1,'Worksheet']]],
   ['exporttohtml_69',['ExportToHTML',['../WorksheetExport_8h.html#af176cb310c6fd3c83973df2f0ccfb5aa',1,'WorksheetExport::ExportToHTML()'],['../classWorksheet.html#a2ee514a4bc8e4164cfd661d7c32fe965',1,'Worksheet::ExportToHTML()']]],
   ['exporttomac_70',['ExportToMAC',['../WorksheetExport_8h.html#a778ac9307ea55debf08d0c658b5cf8fd',1,'WorksheetExport::ExportToMAC()'],['../classWorksheet.html#ad66ccef72e32b507379559594f0c9190',1,'Worksheet::ExportToMAC(const wxString &amp;file)']]],
-  ['exporttopdf_71',['ExportToPDF',['../classWorksheet.html#ac7a75738ec7101f3ecd50187b1b5fb29',1,'Worksheet']]],
+  ['exporttopdf_71',['ExportToPDF',['../classWorksheet.html#a6457194e71aa17ca2fac95e661bd4dc5',1,'Worksheet']]],
   ['exporttotex_72',['ExportToTeX',['../classWorksheet.html#aaea30ddc4ca6de8eb92b5ed45ce527fe',1,'Worksheet::ExportToTeX()'],['../WorksheetExport_8h.html#aca9ac4c16eb950a439cf6f86018638a9',1,'WorksheetExport::ExportToTeX()']]],
   ['exportworksheettohtml_73',['ExportWorksheetToHtml',['../classwxMaxima.html#a777a8b68c097b50e7e9e0766b54c4b6a',1,'wxMaxima']]],
   ['exportworksheettopdf_74',['ExportWorksheetToPdf',['../classwxMaxima.html#af91b228d8ad11731df8c90416ab0ae61',1,'wxMaxima']]],
