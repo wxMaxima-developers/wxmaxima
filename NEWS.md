@@ -4,6 +4,15 @@
   a cell that wasn't edited since it got there. Before, the cell claimed the
   undo for itself and nothing happened -- most visibly right after changing
   a cell's type (Ctrl+Shift+1...7, Ctrl+Shift+Esc), which could not be undone.
+- Printing and the PDF export now fit a matrix shown in full (the
+  "show in full" setting, or `wx_matrix(..., oversized=full)`) that doesn't
+  fit the page. One that is too wide is shrunk to the width of the page, but
+  not below 60% of its size; one that would need more than that is split
+  into blocks of columns printed one below the other, each headed
+  "Columns m to n", as spreadsheets print. One taller than a page continues
+  on the next page between two rows, its brackets closed at the bottom of
+  each page and opened again on the next. Elided matrices print as before,
+  and the worksheet itself is unchanged.
 - Printing breaks pages like the PDF export: a heading is no longer left
   alone at the bottom of a page, and what follows a page break cell is
   printed (it used to be left out unless the page was full anyway).

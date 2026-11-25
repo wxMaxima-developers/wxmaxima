@@ -116,6 +116,17 @@ public:
   //! Sets whether we are currently rendering for the printer.
   void SetPrinting(bool printing) { m_printing = printing; }
 
+  /*! The part of the worksheet the page being printed shows, if any
+
+    Set by printing and the PDF export while they draw one page, so that a
+    cell that is spread over several pages (an oversized matrix, see
+    Cell::PageBreakCandidates()) draws only its part on that page. An empty
+    rectangle means "no page": draw everything.
+  */
+  wxRect GetPrintedPage() const { return m_printedPage; }
+  //! Sets the part of the worksheet the page being printed shows
+  void SetPrintedPage(wxRect page) { m_printedPage = page; }
+
   //! Starts (or restarts) recording which cells this render pass has drawn.
   void ClearAndEnableRedrawTracing()
     {
@@ -221,6 +232,8 @@ private:
   bool m_clipToDrawRegion = true;
   //! Are we currently rendering for the printer rather than the screen?
   bool m_printing = false;
+  //! The part of the worksheet the page being printed shows; see GetPrintedPage()
+  wxRect m_printedPage;
   /*! The cells drawn so far in this render pass, if tracing is enabled
 
     Used (in debug mode) to detect cells that are drawn twice per refresh,

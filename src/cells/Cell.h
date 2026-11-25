@@ -371,6 +371,22 @@ public:
   */
   virtual bool BreakUp() const;
 
+  /*! Where a printed page may cut through this cell, if anywhere
+
+    Normally a page of a printout or a PDF only starts between two lines
+    (wxm::BreakIntoPages()), so a cell is never cut in two. A cell that may
+    be taller than a whole page and can be continued on the next one -- an
+    oversized matrix, between two of its rows -- lists the worksheet y
+    coordinates a page may start at here, in ascending order. Such a cell
+    draws, while Configuration::GetPrintedPage() is set, only what belongs
+    on that page, closing and reopening its brackets at the page's edges.
+
+    Only asked for the last cell of a line: what follows a cell on its line
+    would be printed on the cell's first page, which a cell spread over
+    several pages has already left.
+  */
+  virtual std::vector<wxCoord> PageBreakCandidates() const { return {}; }
+
 protected:
   /*! Break up the internal cells of this cell, and mark it as broken up.
 

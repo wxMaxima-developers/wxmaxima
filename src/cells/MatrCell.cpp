@@ -31,8 +31,10 @@
 #include "MatrCell.h"
 #include "CellImpl.h"
 #include "MatrixScrollHost.h"
+#include "TextCell.h"
 
 #include <algorithm>
+#include <limits>
 #include <optional>
 
 MatrCell::MatrCell(GroupCell *group, Configuration *config)
@@ -89,36 +91,43 @@ void MatrCell::Recalculate(AFontSize const fontsize) const {
 
     // The extent of each column and row, the gaps between them included
     std::vector<wxCoord> colSizes;
-    m_widths.clear();
-    for (size_t i = 0; i < m_matWidth; i++) {
-      wxCoord width = 0;
-      for (size_t j = 0; j < m_matHeight; j++) {
-        if ((m_matWidth * j + i) < m_cells.size())
-          width = std::max(width, GetInnerCell(j, i)->SumOfWidths());
-      }
-      m_widths.emplace_back(width);
-      colSizes.emplace_back(width + ElementSkip()*2);
-    }
-
     std::vector<wxCoord> rowSizes;
-    m_dropCenters.clear();
-    for (size_t i = 0; i < m_matHeight; i++) {
-      wxCoord center = 0, drop = 0;
-      for (size_t j = 0; j < m_matWidth; j++)
-        if (m_matWidth * i + j < m_cells.size()) {
-          center = std::max(center, GetInnerCell(i, j)->GetCenterList());
-          drop = std::max(drop, GetInnerCell(i, j)->GetMaxDrop());
-        }
-      m_dropCenters.emplace_back(drop, center);
-      rowSizes.emplace_back(center + drop + ElementSkip()*2);
-    }
-
     wxCoord fullWidth = 0;
-    for (wxCoord size : colSizes)
-      fullWidth += size;
     wxCoord fullHeight = 0;
-    for (wxCoord size : rowSizes)
-      fullHeight += size;
+    const auto measure = [&]() {
+      colSizes.clear();
+      m_widths.clear();
+      for (size_t i = 0; i < m_matWidth; i++) {
+        wxCoord width = 0;
+        for (size_t j = 0; j < m_matHeight; j++) {
+          if ((m_matWidth * j + i) < m_cells.size())
+            width = std::max(width, GetInnerCell(j, i)->SumOfWidths());
+        }
+        m_widths.emplace_back(width);
+        colSizes.emplace_back(width + ElementSkip()*2);
+      }
+
+      rowSizes.clear();
+      m_dropCenters.clear();
+      for (size_t i = 0; i < m_matHeight; i++) {
+        wxCoord center = 0, drop = 0;
+        for (size_t j = 0; j < m_matWidth; j++)
+          if (m_matWidth * i + j < m_cells.size()) {
+            center = std::max(center, GetInnerCell(i, j)->GetCenterList());
+            drop = std::max(drop, GetInnerCell(i, j)->GetMaxDrop());
+          }
+        m_dropCenters.emplace_back(drop, center);
+        rowSizes.emplace_back(center + drop + ElementSkip()*2);
+      }
+
+      fullWidth = 0;
+      for (wxCoord size : colSizes)
+        fullWidth += size;
+      fullHeight = 0;
+      for (wxCoord size : rowSizes)
+        fullHeight += size;
+    };
+    measure();
     m_scrollableSize = wxSize(fullWidth, fullHeight);
 
     // Which way to deal with a matrix too large for the window. Scrolling
@@ -164,6 +173,117 @@ void MatrCell::Recalculate(AFontSize const fontsize) const {
     m_hasHorizontalScrollbar = false;
     m_hasVerticalScrollbar = false;
     m_scrollbarThickness = 0;
+    m_paperBlocks.clear();
+    m_paperCaptions.clear();
+    m_paperScale = 1;
+
+    // On paper a matrix shown in full has to fit the page somehow: an elided
+    // one does already, and a scrolling one is elided there (see above).
+    // Too wide, it is shrunk to the width of the page, but not below
+    // MinPaperScale: smaller print is unreadable. If that isn't enough, its
+    // columns are split into blocks that each fit, printed one below the
+    // other. Too tall, it is continued on the next page, between two rows
+    // (PageBreakCandidates()).
+    //
+    // On paper the matrix must really fit, or it would be cut off at the
+    // edge of the page. Cell::BreakLines_List() lets the line that holds the
+    // label and the matrix use the width of the page less the label column
+    // twice: once as the indentation of maths and once for the label itself.
+    // A label wider than its column moves the matrix to a line of its own,
+    // which has room for it, too.
+    const wxCoord paperWidthBudget = std::max(
+      static_cast<wxCoord>(canvas.x - m_configuration->GetIndent() - Scale_Px(5) -
+                           2 * (Scale_Px(m_configuration->GetLabelWidth()) +
+                                2 * MC_TEXT_PADDING) -
+                           Scale_Px(5)),
+      Scale_Px(150));
+    const bool onPaper = m_configuration->GetPrinting() &&
+      (mode == Configuration::OversizedMatrices::showInFull) &&
+      !m_nestedInMatrix && (canvas.x > 0) && (canvas.y > 0) && (m_matWidth > 0) &&
+      (m_matHeight > 0) && (m_cells.size() >= m_matWidth * m_matHeight);
+    bool splitColumns = false;
+    if (onPaper && (fullWidth > paperWidthBudget)) {
+      const AFontSize minimum(MC_MIN_SIZE, fontsize_entry * MinPaperScale);
+      AFontSize tried = fontsize_entry;
+      // The gaps between the entries don't shrink with the font, so a font
+      // made smaller by the factor the matrix is too wide still leaves it a
+      // bit too wide: approach the size that fits from above.
+      for (int attempt = 0; (attempt < 16) && (fullWidth > paperWidthBudget); attempt++) {
+        const AFontSize next(minimum, tried * (static_cast<double>(paperWidthBudget) / fullWidth));
+        if (!(next < tried))
+          break;
+        tried = next;
+        for (const auto &cell : m_cells)
+          cell->RecalculateList(tried);
+        measure();
+      }
+      if (fullWidth <= paperWidthBudget)
+        m_paperScale = tried.Get() / fontsize_entry.Get();
+      else {
+        // Shrinking isn't enough: split it, at full size.
+        for (const auto &cell : m_cells)
+          cell->RecalculateList(fontsize_entry);
+        measure();
+        splitColumns = true;
+      }
+      m_scrollableSize = wxSize(fullWidth, fullHeight);
+    }
+    if (onPaper && (splitColumns || (fullHeight > canvas.y))) {
+      // Which columns go into which block: as many as fit, at least one.
+      std::vector<std::pair<size_t, size_t>> ranges;
+      if (splitColumns) {
+        size_t first = 0;
+        wxCoord used = 0;
+        for (size_t i = 0; i < m_matWidth; i++) {
+          if ((i > first) && (used + colSizes.at(i) > paperWidthBudget)) {
+            ranges.emplace_back(first, i);
+            first = i;
+            used = 0;
+          }
+          used += colSizes.at(i);
+        }
+        ranges.emplace_back(first, m_matWidth);
+      } else
+        ranges.emplace_back(0, m_matWidth);
+
+      wxCoord y = 0;
+      wxCoord width = 0;
+      for (const auto &[first, end] : ranges) {
+        PaperBlock block;
+        block.firstCol = first;
+        block.endCol = end;
+        block.top = y;
+        if (splitColumns) {
+          // Spreadsheets label their column blocks the same way.
+          const wxString caption = (end - first == 1) ?
+            wxString::Format(_("Column %lu"), static_cast<unsigned long>(first + 1)) :
+            wxString::Format(_("Columns %lu to %lu"),
+                             static_cast<unsigned long>(first + 1),
+                             static_cast<unsigned long>(end));
+          auto cell = std::make_unique<TextCell>(m_group.get(), m_configuration,
+                                                 caption, TS_TEXT);
+          cell->RecalculateList(fontsize_entry);
+          block.captionHeight = cell->GetHeight() + ElementSkip();
+          m_paperCaptions.emplace_back(std::move(cell));
+        }
+        block.width = Scale_Px(14);
+        wxCoord blockWidth = 0;
+        for (size_t i = first; i < end; i++)
+          blockWidth += colSizes.at(i);
+        block.width = std::max(block.width, blockWidth);
+        width = std::max(width, block.width);
+        y += block.captionHeight + fullHeight + PaperBlockGap();
+        m_paperBlocks.push_back(block);
+      }
+      m_contentSize = wxSize(width, fullHeight);
+      m_width = width;
+      m_height = y - PaperBlockGap();
+      // Lined up with its label by its first row, which is on the first page,
+      // rather than by its middle, which can be several pages further down.
+      m_center = m_paperBlocks.front().captionHeight + ElementSkip() +
+        m_dropCenters.front().center;
+      return;
+    }
     if (mode == Configuration::OversizedMatrices::elide) {
       if (canvas.x > 0)
         m_colElision = ChooseElision(colSizes, DotsGap(), widthBudget);
@@ -490,6 +610,32 @@ void MatrCell::DrawBands(wxDC *dc) const {
 
 void MatrCell::SetCurrentPoint(wxPoint point) const {
   Cell::SetCurrentPoint(point);
+  if (!m_paperBlocks.empty()) {
+    // Laid out for paper: the blocks of columns one below the other, each
+    // headed by its caption, if it has one.
+    const wxCoord top = point.y - m_center;
+    for (size_t k = 0; k < m_paperBlocks.size(); k++) {
+      const PaperBlock &block = m_paperBlocks.at(k);
+      if (k < m_paperCaptions.size()) {
+        const Cell *caption = m_paperCaptions.at(k).get();
+        caption->SetCurrentPoint(wxPoint(point.x + ElementSkip(),
+                                         top + block.top + caption->GetCenter()));
+      }
+      wxPoint mp(point.x + ElementSkip(), 0);
+      for (size_t i = block.firstCol; i < block.endCol; i++) {
+        mp.y = top + block.top + block.captionHeight + ElementSkip();
+        for (size_t j = 0; j < m_matHeight; j++) {
+          mp.y += m_dropCenters.at(j).center;
+          wxPoint mp1(mp);
+          mp1.x = mp.x + (m_widths.at(i) - GetInnerCell(j, i)->SumOfWidths()) / 2;
+          GetInnerCell(j, i)->SetCurrentPointList(mp1);
+          mp.y += (m_dropCenters.at(j).drop + ElementSkip()*2);
+        }
+        mp.x += (m_widths.at(i) + ElementSkip()*2);
+      }
+    }
+    return;
+  }
   // The entries that are left out are not positioned at all. They keep
   // whatever position they had before, which is why GetToolTip() and
   // GetInnerCellsInRect() skip them rather than trust it.
@@ -519,6 +665,28 @@ void MatrCell::SetCurrentPoint(wxPoint point) const {
     }
     mp.x += (m_widths.at(i) + ElementSkip()*2);
   }
+}
+
+std::vector<wxCoord> MatrCell::PageBreakCandidates() const {
+  std::vector<wxCoord> candidates;
+  if (m_paperBlocks.empty() || (m_currentPoint == wxPoint(-1, -1)))
+    return candidates;
+  const wxCoord top = m_currentPoint.y - m_center;
+  for (size_t k = 0; k < m_paperBlocks.size(); k++) {
+    const PaperBlock &block = m_paperBlocks.at(k);
+    // Before a block's heading, which so stays with the block's first row ...
+    if (k > 0)
+      candidates.push_back(top + block.top);
+    // ... and halfway between two rows, where one row's slot ends and the
+    // next one's begins (see SetCurrentPoint()).
+    wxCoord y = top + block.top + block.captionHeight;
+    for (size_t j = 0; j < m_matHeight; j++) {
+      if (j > 0)
+        candidates.push_back(y);
+      y += m_dropCenters.at(j).Sum() + ElementSkip()*2;
+    }
+  }
+  return candidates;
 }
 
 bool MatrCell::EntryAt(const wxPoint point, size_t &row, size_t &col) const {
@@ -749,12 +917,15 @@ std::unique_ptr<MatrCell> MatrCell::CopyBlock(const MatrixBlock &block,
 void MatrCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
   Cell::Draw(dc, antialiassingDC);
   SetBrush(dc);
+  if (DrawThisCell() && !m_paperBlocks.empty()) {
+    DrawOnPaper(dc, antialiassingDC);
+    return;
+  }
   if (DrawThisCell()) {
     wxPoint point = m_currentPoint;
     // The box between the brackets. For a scrolling matrix m_width and
     // m_height also hold the scrollbars, which the brackets must stay clear of.
     const wxCoord width = m_contentSize.x;
-    const wxCoord height = m_contentSize.y;
     {
       // A scrolling matrix's entries, and the heading lines that scroll with
       // them, are cut off where they leave the viewport.
@@ -798,114 +969,191 @@ void MatrCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
             point.y - m_center + m_dropCenters.at(0).Sum() + 2 * ElementSkip() - m_scroll.y);
       }
     }
-    SetPen(antialiassingDC, 1.5);
-    if (m_specialMatrix) {
-      if (m_inferenceMatrix)
-        antialiassingDC->DrawLine(point.x + Scale_Px(1), point.y - m_center + Scale_Px(2),
-                                  point.x + Scale_Px(1), point.y + m_center - Scale_Px(2));
-    } else {
-      switch (m_parenType) {
-      case paren_rounded: {
-        SetPen(dc, 1);
-        wxCoord signWidth = Scale_Px(4);
-        if (height <= signWidth / 3)
-          signWidth = height / 3;
-
-        // Left bracket
-        wxPoint pointsL[5] = {
-          {point.x + Scale_Px(1) + signWidth, point.y - m_center},
-          {point.x + Scale_Px(1) + signWidth / 2,
-           point.y - m_center + signWidth / 2},
-          {point.x + Scale_Px(1), point.y},
-          {point.x + Scale_Px(1) + signWidth / 2,
-           point.y + m_center - signWidth / 2},
-          {point.x + Scale_Px(1) + signWidth, point.y + m_center}};
-        antialiassingDC->DrawSpline(5, pointsL);
-        pointsL[2] = {point.x + Scale_Px(1.5), point.y};
-        antialiassingDC->DrawSpline(5, pointsL);
-
-        // Right bracket
-        wxPoint pointsR[5] = {
-          {point.x + width - Scale_Px(1) - signWidth, point.y - m_center},
-          {point.x + width - Scale_Px(1) - signWidth / 2,
-           point.y - m_center + signWidth / 2},
-          {point.x + width - Scale_Px(1.5), point.y},
-          {point.x + width - Scale_Px(1) - signWidth / 2,
-           point.y + m_center - signWidth / 2},
-          {point.x + width - Scale_Px(1) - signWidth, point.y + m_center}};
-        antialiassingDC->DrawSpline(5, pointsR);
-        pointsR[2] = {point.x + width - Scale_Px(1), point.y};
-        antialiassingDC->DrawSpline(5, pointsR);
-        break;
-      }
-      case paren_angled: {
-        SetPen(dc, 1);
-        wxCoord signWidth = Scale_Px(4);
-        if (height <= signWidth / 3)
-          signWidth = height / 3;
-
-        // Left bracket
-        wxPoint pointsL[3] = {
-          {point.x + Scale_Px(1) + signWidth, point.y - m_center},
-          {point.x + Scale_Px(1), point.y},
-          {point.x + Scale_Px(1) + signWidth, point.y + m_center}};
-        antialiassingDC->DrawLines(3, pointsL);
-
-        // Right bracket
-        wxPoint pointsR[3] = {
-          {point.x + width - Scale_Px(1) - signWidth, point.y - m_center},
-          {point.x + width - Scale_Px(1.5), point.y},
-          {point.x + width - Scale_Px(1) - signWidth, point.y + m_center}};
-        antialiassingDC->DrawLines(3, pointsR);
-        break;
-      }
-      case paren_straight: {
-        SetPen(dc, 1);
-        wxCoord signWidth = Scale_Px(4);
-        if (height <= signWidth / 3)
-          signWidth = height / 3;
-
-        // Left bracket
-        wxPoint pointsL[2] = {
-          {point.x + Scale_Px(1) + signWidth / 2, point.y - m_center},
-          {point.x + Scale_Px(1) + signWidth / 2, point.y + m_center}};
-        antialiassingDC->DrawLines(2, pointsL);
-
-        // Right bracket
-        wxPoint pointsR[2] = {{point.x + width - Scale_Px(1) - signWidth / 2,
-                                 point.y - m_center},
-                              {point.x + width - Scale_Px(1) - signWidth / 2,
-                               point.y + m_center}};
-        antialiassingDC->DrawLines(2, pointsR);
-        break;
-      }
-      case paren_brackets: {
-        SetPen(dc, 1.5);
-        // left bracket
-        const wxPoint pointsL[4] = {{ElementSkip(), -m_center + Scale_Px(2)},
-                                    {Scale_Px(1), -m_center + Scale_Px(2)},
-                                    {Scale_Px(1), m_center - Scale_Px(2)},
-                                    {ElementSkip(), m_center - Scale_Px(2)}};
-        antialiassingDC->DrawLines(4, pointsL, point.x, point.y);
-
-        // right bracket
-        const wxPoint pointsR[4] = {{-ElementSkip(), -m_center + Scale_Px(2)},
-                                    {-Scale_Px(1), -m_center + Scale_Px(2)},
-                                    {-Scale_Px(1), m_center - Scale_Px(2)},
-                                    {-ElementSkip(), m_center - Scale_Px(2)}};
-        antialiassingDC->DrawLines(4, pointsR, point.x + width - 1, point.y);
-        break;
-      }
-      case paren_none:
-        break;
-      }
-    }
+    // The brackets frame the box from its top to its bottom, centred on the
+    // matrix's centre line.
+    DrawBrackets(dc, antialiassingDC,
+                 wxRect(point.x, point.y - m_center, width, 2 * m_center));
 
     // The scrollbars aren't ours to draw: they are real windows the host
     // owns. Tell it this matrix needs them, and where.
     if (IsScrolling())
       if (MatrixScrollHost *host = m_configuration->GetMatrixScrollHost())
         host->MatrixDrawn(this);
+  }
+}
+
+void MatrCell::DrawBrackets(wxDC *dc, wxDC *antialiassingDC, wxRect box) const {
+  const wxPoint point = box.GetTopLeft();
+  const wxCoord width = box.width;
+  const wxCoord height = box.height;
+  const wxCoord top = box.y;
+  const wxCoord bottom = box.y + box.height;
+  const wxCoord middle = box.y + box.height / 2;
+  SetPen(antialiassingDC, 1.5);
+  if (m_specialMatrix) {
+    if (m_inferenceMatrix)
+      antialiassingDC->DrawLine(point.x + Scale_Px(1), top + Scale_Px(2),
+                                point.x + Scale_Px(1), bottom - Scale_Px(2));
+  } else {
+    switch (m_parenType) {
+    case paren_rounded: {
+      SetPen(dc, 1);
+      wxCoord signWidth = Scale_Px(4);
+      if (height <= signWidth / 3)
+        signWidth = height / 3;
+
+      // Left bracket
+      wxPoint pointsL[5] = {
+        {point.x + Scale_Px(1) + signWidth, top},
+        {point.x + Scale_Px(1) + signWidth / 2,
+         top + signWidth / 2},
+        {point.x + Scale_Px(1), middle},
+        {point.x + Scale_Px(1) + signWidth / 2,
+         bottom - signWidth / 2},
+        {point.x + Scale_Px(1) + signWidth, bottom}};
+      antialiassingDC->DrawSpline(5, pointsL);
+      pointsL[2] = {point.x + Scale_Px(1.5), middle};
+      antialiassingDC->DrawSpline(5, pointsL);
+
+      // Right bracket
+      wxPoint pointsR[5] = {
+        {point.x + width - Scale_Px(1) - signWidth, top},
+        {point.x + width - Scale_Px(1) - signWidth / 2,
+         top + signWidth / 2},
+        {point.x + width - Scale_Px(1.5), middle},
+        {point.x + width - Scale_Px(1) - signWidth / 2,
+         bottom - signWidth / 2},
+        {point.x + width - Scale_Px(1) - signWidth, bottom}};
+      antialiassingDC->DrawSpline(5, pointsR);
+      pointsR[2] = {point.x + width - Scale_Px(1), middle};
+      antialiassingDC->DrawSpline(5, pointsR);
+      break;
+    }
+    case paren_angled: {
+      SetPen(dc, 1);
+      wxCoord signWidth = Scale_Px(4);
+      if (height <= signWidth / 3)
+        signWidth = height / 3;
+
+      // Left bracket
+      wxPoint pointsL[3] = {
+        {point.x + Scale_Px(1) + signWidth, top},
+        {point.x + Scale_Px(1), middle},
+        {point.x + Scale_Px(1) + signWidth, bottom}};
+      antialiassingDC->DrawLines(3, pointsL);
+
+      // Right bracket
+      wxPoint pointsR[3] = {
+        {point.x + width - Scale_Px(1) - signWidth, top},
+        {point.x + width - Scale_Px(1.5), middle},
+        {point.x + width - Scale_Px(1) - signWidth, bottom}};
+      antialiassingDC->DrawLines(3, pointsR);
+      break;
+    }
+    case paren_straight: {
+      SetPen(dc, 1);
+      wxCoord signWidth = Scale_Px(4);
+      if (height <= signWidth / 3)
+        signWidth = height / 3;
+
+      // Left bracket
+      wxPoint pointsL[2] = {
+        {point.x + Scale_Px(1) + signWidth / 2, top},
+        {point.x + Scale_Px(1) + signWidth / 2, bottom}};
+      antialiassingDC->DrawLines(2, pointsL);
+
+      // Right bracket
+      wxPoint pointsR[2] = {{point.x + width - Scale_Px(1) - signWidth / 2,
+                               top},
+                            {point.x + width - Scale_Px(1) - signWidth / 2,
+                             bottom}};
+      antialiassingDC->DrawLines(2, pointsR);
+      break;
+    }
+    case paren_brackets: {
+      SetPen(dc, 1.5);
+      // left bracket
+      const wxPoint pointsL[4] = {{point.x + ElementSkip(), top + Scale_Px(2)},
+                                  {point.x + Scale_Px(1), top + Scale_Px(2)},
+                                  {point.x + Scale_Px(1), bottom - Scale_Px(2)},
+                                  {point.x + ElementSkip(), bottom - Scale_Px(2)}};
+      antialiassingDC->DrawLines(4, pointsL);
+
+      // right bracket
+      const wxCoord right = point.x + width - 1;
+      const wxPoint pointsR[4] = {{right - ElementSkip(), top + Scale_Px(2)},
+                                  {right - Scale_Px(1), top + Scale_Px(2)},
+                                  {right - Scale_Px(1), bottom - Scale_Px(2)},
+                                  {right - ElementSkip(), bottom - Scale_Px(2)}};
+      antialiassingDC->DrawLines(4, pointsR);
+      break;
+    }
+    case paren_none:
+      break;
+    }
+  }
+}
+
+void MatrCell::DrawOnPaper(wxDC *dc, wxDC *antialiassingDC) {
+  // Everything, unless a page is being printed: then what lies on it.
+  wxCoord pageTop = std::numeric_limits<wxCoord>::min();
+  wxCoord pageBottom = std::numeric_limits<wxCoord>::max();
+  m_configuration->GetPrintedPage(pageTop, pageBottom);
+  const auto onPage = [&](wxCoord y) { return (y >= pageTop) && (y < pageBottom); };
+
+  const wxPoint point = m_currentPoint;
+  const wxCoord top = point.y - m_center;
+  for (size_t k = 0; k < m_paperBlocks.size(); k++) {
+    const PaperBlock &block = m_paperBlocks.at(k);
+    if (k < m_paperCaptions.size()) {
+      Cell *caption = m_paperCaptions.at(k).get();
+      if (onPage(caption->GetCurrentPoint().y))
+        caption->Draw(dc, antialiassingDC);
+    }
+    // The rows this page shows: those whose middle lies on it. The pages
+    // are cut between rows (PageBreakCandidates()), so that is each row on
+    // exactly one page.
+    const wxCoord boxTop = top + block.top + block.captionHeight;
+    std::optional<size_t> firstRow, lastRow;
+    wxCoord segmentTop = boxTop, segmentBottom = boxTop;
+    wxCoord y = boxTop;
+    for (size_t j = 0; j < m_matHeight; j++) {
+      const wxCoord size = m_dropCenters.at(j).Sum() + ElementSkip()*2;
+      if (onPage(y + size / 2)) {
+        if (!firstRow) {
+          firstRow = j;
+          segmentTop = y;
+        }
+        lastRow = j;
+        segmentBottom = y + size;
+      }
+      y += size;
+    }
+    if (!firstRow)
+      continue;
+
+    for (size_t i = block.firstCol; i < block.endCol; i++)
+      for (size_t j = *firstRow; j <= *lastRow; j++)
+        GetInnerCell(j, i)->DrawList(dc, antialiassingDC);
+
+    // The heading lines of a table_form, as in Draw().
+    SetPen(antialiassingDC, 1.5);
+    if (m_specialMatrix && !m_inferenceMatrix) {
+      if (m_rowNames && (block.firstCol == 0)) {
+        const wxCoord x = point.x + m_widths.at(0) + 2 * ElementSkip();
+        antialiassingDC->DrawLine(x, segmentTop + Scale_Px(2), x,
+                                  segmentBottom - Scale_Px(2));
+      }
+      if (m_colNames && (*firstRow == 0) && (*lastRow > 0)) {
+        const wxCoord lineY = boxTop + m_dropCenters.at(0).Sum() + 2 * ElementSkip();
+        antialiassingDC->DrawLine(point.x + Scale_Px(1), lineY,
+                                  point.x + Scale_Px(1) + block.width, lineY);
+      }
+    }
+    // Brackets around just the rows on this page: closed at its bottom, and
+    // opened again on the next.
+    DrawBrackets(dc, antialiassingDC,
+                 wxRect(point.x, segmentTop, block.width, segmentBottom - segmentTop));
   }
 }
 

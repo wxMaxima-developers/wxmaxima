@@ -239,7 +239,25 @@ void PdfExport::Impl::EnsurePageFor(wxCoord y) {
 
 void PdfExport::Impl::DrawCell(Cell &cell) {
   EnsurePageFor(cell.GetRect().GetTop());
-  cell.Draw(m_dc.get(), m_dc.get());
+  if (cell.PageBreakCandidates().empty()) {
+    cell.Draw(m_dc.get(), m_dc.get());
+    return;
+  }
+  // A cell that may be spread over several pages (an oversized matrix): draw
+  // the part of it each page shows, on that page. It stays one structure
+  // element, as a code cell crossing a page boundary does.
+  const wxCoord bottom = cell.GetRect().GetBottom();
+  while (true) {
+    const wxCoord pageTop = m_pageStarts.at(m_page);
+    const wxCoord pageBottom = (m_page + 1 < m_pageStarts.size()) ?
+      m_pageStarts.at(m_page + 1) : pageTop + m_canvas.y;
+    m_configuration->SetPrintedPage(pageTop, pageBottom);
+    cell.Draw(m_dc.get(), m_dc.get());
+    if ((m_page + 1 >= m_pageStarts.size()) || (m_pageStarts.at(m_page + 1) > bottom))
+      break;
+    EnsurePageFor(m_pageStarts.at(m_page + 1));
+  }
+  m_configuration->ClearPrintedPage();
 }
 
 void PdfExport::Impl::DrawRange(Cell *first, const Cell *stop) {

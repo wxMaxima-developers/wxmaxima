@@ -117,6 +117,10 @@ bool Printout::OnPrintPage(int num) {
                static_cast<long>(endpoint));
   dc->SetClippingRegion(0, startpoint, pageWidth, endpoint - startpoint);
 
+  // A cell spread over several pages (an oversized matrix) draws only what
+  // belongs on this one.
+  m_configuration.SetPrintedPage(startpoint, endpoint);
+
   // Every group that reaches into this page. A page break cell draws
   // nothing; what follows it is on the next page.
   for (GroupCell &group : OnList(m_tree.get())) {
@@ -130,6 +134,7 @@ bool Printout::OnPrintPage(int num) {
       continue;
     group.Draw(dc, dc);
   }
+  m_configuration.ClearPrintedPage();
   dc->DestroyClippingRegion();
   return true;
 }
