@@ -1,0 +1,103 @@
+name: ccache
+description: >
+  Restores this job's ccache directory from the GitHub Actions cache and makes
+  every later CMake configure in the job compile through ccache. Pair it with
+  ./.github/actions/ccache-save at the end of the job.
+
+# Why this exists: compiling is the longest step of most jobs here (minGW 36
+# minutes, the ASan/UBSan build 24, compile_with_non_default_options 23,
+# macOS and Windows ARM about 15 each, measured on main 2026-11-25), and
+# nearly all of it recompiles exactly what the previous run on main already
+# compiled. Measured locally (Debug, unity build, precompiled headers, unit
+# tests, 4 cores): 507 s with an empty cache, 49 s with one .cpp file changed,
+# 333 s with src/cells/Cell.h changed. What stays is linking, which ccache
+# cannot help with.
+#
+# Only runs on main save a cache (see ccache-save); a pull request restores
+# main's, which is what it differs least from. That keeps branches from
+# filling the repository's 10 GB cache quota.
+#
+# The ccache must be installed by the job itself (apt-install, brew, port,
+# MSYS2, Cygwin or choco), since each toolchain needs its own build of it,
+# and before this action runs, which zeroes its statistics.
+
+inputs:
+  key:
+    description: >
+      A name unique to this job's compiler and build options. Two jobs that
+      share it would overwrite each other's cache with objects the other
+      cannot use.
+    required: true
+  max-size:
+    description: Upper bound for the cache, as for ccache's max_size.
+    required: false
+    default: 600M
+  ccache:
+    description: >
+      How to run ccache from the runner's own bash. Only needs setting where
+      the job's ccache is not on that bash's PATH (MSYS2); a Windows path
+      with backslashes is fine.
+    required: false
+    default: ccache
+
+runs:
+  using: composite
+  steps:
+    - name: ccache settings
+      id: settings
+      shell: bash
+      env:
+        KEY: ${{ inputs.key }}
+        MAXSIZE: ${{ inputs.max-size }}
+        RUNNER_TMP: ${{ runner.temp }}
+      run: |
+        # With forward slashes on Windows ("D:/a/_temp/ccache"): a path in
+        # that form means the same to the native, the MSYS2 and the Cygwin
+        # ccache, while backslashes are not safe in Cygwin's.
+        dir="${RUNNER_TMP//\\//}/ccache"
+        prefix="ccache-v1-${RUNNER_OS}-${RUNNER_ARCH}-${KEY}-"
+        echo "dir=$dir" >> "$GITHUB_OUTPUT"
+        echo "prefix=$prefix" >> "$GITHUB_OUTPUT"
+        # A key no other run uses, so that every run on main can save. The
+        # newest one is found by prefix.
+        echo "key=${prefix}${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}" >> "$GITHUB_OUTPUT"
+        {
+          echo "CCACHE_DIR=$dir"
+          echo "CCACHE_MAXSIZE=$MAXSIZE"
+          # Needed for a hit on anything compiled with the precompiled header
+          # (src/precomp.h): ccache otherwise refuses to cache those at all.
+          echo "CCACHE_SLOPPINESS=pch_defines,time_macros,include_file_mtime,include_file_ctime"
+          # Read by CMake (3.17+) when a build directory is configured for
+          # the first time, so no cmake command line in the job needs to
+          # change. A job that configures before this action runs gets no
+          # ccache, and nothing breaks.
+          echo "CMAKE_C_COMPILER_LAUNCHER=ccache"
+          echo "CMAKE_CXX_COMPILER_LAUNCHER=ccache"
+          # When the job started, for ccache-save's eviction.
+          echo "WXM_CCACHE_JOB_START=$(date +%s)"
+        } >> "$GITHUB_ENV"
+        mkdir -p "$dir"
+    - name: restore the ccache
+      uses: actions/cache/restore@v6
+      with:
+        path: ${{ steps.settings.outputs.dir }}
+        key: ${{ steps.settings.outputs.key }}
+        restore-keys: ${{ steps.settings.outputs.prefix }}
+    - name: remember the key for ccache-save
+      shell: bash
+      env:
+        KEY: ${{ steps.settings.outputs.key }}
+      run: echo "WXM_CCACHE_KEY=$KEY" >> "$GITHUB_ENV"
+    - name: zero the statistics
+      shell: bash
+      env:
+        CCACHE: ${{ inputs.ccache }}
+      run: |
+        CCACHE="${CCACHE//\\//}"
+        # So that ccache-save shows this run's hits, not the sum over every
+        # run the restored cache descends from.
+        if command -v "$CCACHE" > /dev/null; then
+          "$CCACHE" --zero-stats
+        else
+          echo "::warning::ccache ($CCACHE) not found from bash; is it installed yet?"
+        fi

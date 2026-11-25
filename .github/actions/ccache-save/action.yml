@@ -1,0 +1,44 @@
+name: ccache-save
+description: >
+  Prints how well ccache did in this job, drops what this job did not use,
+  and on main saves the cache for the next run. The counterpart of
+  ./.github/actions/ccache; call it with "if: ${{ !cancelled() }}" so a job
+  whose tests fail still keeps what it compiled.
+
+inputs:
+  ccache:
+    description: >
+      How to run ccache from the runner's own bash. Only needs setting where
+      the job's ccache is not on that bash's PATH (MSYS2); a Windows path
+      with backslashes is fine.
+    required: false
+    default: ccache
+
+runs:
+  using: composite
+  steps:
+    - name: ccache statistics
+      shell: bash
+      env:
+        CCACHE: ${{ inputs.ccache }}
+      run: |
+        CCACHE="${CCACHE//\\//}"
+        if ! command -v "$CCACHE" > /dev/null; then
+          echo "::warning::ccache ($CCACHE) not found; no statistics and no eviction."
+          exit 0
+        fi
+        # This run's hits and misses: ./.github/actions/ccache zeroed them.
+        "$CCACHE" --show-stats || true
+        # Keep exactly what this job compiled or looked up: everything else
+        # belongs to sources that have changed since and will never hit
+        # again. This is what keeps the saved cache at the size of one
+        # build instead of growing to max-size.
+        now=$(date +%s)
+        "$CCACHE" --evict-older-than "$(( now - WXM_CCACHE_JOB_START + 60 ))s" || true
+        "$CCACHE" --show-stats | grep -iE "cache size" || true
+    - name: save the ccache
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      uses: actions/cache/save@v6
+      with:
+        path: ${{ env.CCACHE_DIR }}
+        key: ${{ env.WXM_CCACHE_KEY }}
