@@ -92,6 +92,12 @@ struct DecodedPdf {
   std::string text;
   //! Every Unicode character some font's ToUnicode map provides
   std::set<wxUint32> mappedCharacters;
+  /*! The content streams only: what is drawn, without the embedded fonts
+
+    A font program is binary data that can contain any byte sequence, " Tj"
+    among them, and which font is embedded differs between computers.
+  */
+  std::string drawn;
   //! How many times a string occurs in text
   std::size_t Count(const std::string &needle) const {
     std::size_t count = 0;
@@ -206,6 +212,10 @@ DecodedPdf DecodePdf(const wxString &path) {
       content = Inflate(data);
     if (content.find("begincmap") != std::string::npos)
       ReadToUnicode(content, pdf.mappedCharacters);
+    else if ((dict.find("/Length1") == std::string::npos) &&
+             (dict.find("/Subtype") == std::string::npos) &&
+             (dict.find("/Type") == std::string::npos))
+      pdf.drawn += content;
     pdf.text += raw.substr(pos, dataStart - pos);
     pdf.text += content;
     pos = dataStart + len;
@@ -460,7 +470,14 @@ SCENARIO("A matrix taller than a page is continued on the next pages") {
   THEN("each row is drawn once, on one page") {
     // Each entry is one piece of text, as is everything else: a row more
     // adds just its two entries.
-    const auto shown = [](const DecodedPdf &pdf) { return pdf.Count(" Tj"); };
+    const auto shown = [](const DecodedPdf &pdf) {
+      std::size_t count = 0;
+      for (const std::string op : {" Tj", " TJ"})
+        for (std::size_t pos = pdf.drawn.find(op); pos != std::string::npos;
+             pos = pdf.drawn.find(op, pos + op.size()))
+          count++;
+      return count;
+    };
     CHECK(shown(single) > 0);
     CHECK(shown(tall) == shown(single) + 59 * 2);
   }
@@ -480,7 +497,11 @@ SCENARIO("A matrix far too wide for the page is split into blocks of columns") {
     ExportPdf(wxS("widematrix"), Document(CodeCell(wxS("m;"), wxS("(%o1)"), xml)),
               &pages));
   // Every entry once, plus label, input, and a heading per block.
-  CHECK(pdf.Count(" Tj") > 160);
+  std::size_t shown = 0;
+  for (std::size_t pos = pdf.drawn.find(" Tj"); pos != std::string::npos;
+       pos = pdf.drawn.find(" Tj", pos + 3))
+    shown++;
+  CHECK(shown > 160);
   CHECK(pdf.Count("/S /Formula") == 1);
 }
 
