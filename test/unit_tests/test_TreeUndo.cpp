@@ -199,6 +199,29 @@ SCENARIO("Converting a cell's type via SetCellStyle rebuilds it and is undoable"
   }
 }
 
+SCENARIO("Ctrl+Z after converting the active cell's type restores it") {
+  GIVEN("a code cell the cursor is in") {
+    BuildTree({wxS("f(x):=x^2$")});
+    GroupCell *cell = NthCell(CellCount() - 1);
+    REQUIRE(cell);
+    g_ws->SetActiveCell(cell->GetEditable());
+
+    WHEN("it is converted to a title, as Ctrl+Shift+2 does, and undone the "
+         "way Ctrl+Z does it") {
+      g_ws->SetCellStyle(cell, GC_TYPE_TITLE);
+      REQUIRE(NthCell(CellCount() - 1)->GetGroupType() == GC_TYPE_TITLE);
+      REQUIRE(g_ws->CanUndo());
+      g_ws->Undo();
+
+      THEN("the code cell is back with its text") {
+        GroupCell *restored = NthCell(CellCount() - 1);
+        CHECK(restored->GetGroupType() == GC_TYPE_CODE);
+        CHECK(restored->GetEditable()->GetValue() == wxS("f(x):=x^2$"));
+      }
+    }
+  }
+}
+
 SCENARIO("SetCellStyle refuses to convert an image cell") {
   GIVEN("a worksheet whose last cell is an image cell") {
     BuildTree({wxS("a:1$")});

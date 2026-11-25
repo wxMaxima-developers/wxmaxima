@@ -1,5 +1,9 @@
 # Current development version
 
+- Ctrl+Z undoes the worksheet's last change even while the cursor sits in
+  a cell that wasn't edited since it got there. Before, the cell claimed the
+  undo for itself and nothing happened -- most visibly right after changing
+  a cell's type (Ctrl+Shift+1...7, Ctrl+Shift+Esc), which could not be undone.
 - Printing breaks pages like the PDF export: a heading is no longer left
   alone at the bottom of a page, and what follows a page break cell is
   printed (it used to be left out unless the page was full anyway).
