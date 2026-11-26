@@ -67,6 +67,16 @@ runs:
           # Needed for a hit on anything compiled with the precompiled header
           # (src/precomp.h): ccache otherwise refuses to cache those at all.
           echo "CCACHE_SLOPPINESS=pch_defines,time_macros,include_file_mtime,include_file_ctime"
+          # ...but pch_defines alone makes ccache return a stale precompiled
+          # header: on a direct-mode miss ccache falls back to comparing the
+          # preprocessor's output, which has no #defines left in it, so a
+          # header change that only defines a macro (as configuring does to
+          # the generated BuildConfig.h) found the old .gch and the build
+          # failed with "'WXM_WXPDFDOC_MISSING_REASON' was not declared".
+          # Depend mode never runs the preprocessor: it hashes the contents
+          # of every header the compiler's -MD output names, so any change
+          # to one is a miss. CMake passes -MD with both Ninja and Make.
+          echo "CCACHE_DEPEND=true"
           # Read by CMake (3.17+) when a build directory is configured for
           # the first time, so no cmake command line in the job needs to
           # change. A job that configures before this action runs gets no
