@@ -1114,13 +1114,14 @@ void MatrCell::DrawOnPaper(wxDC *dc, wxDC *antialiassingDC) {
     // are cut between rows (PageBreakCandidates()), so that is each row on
     // exactly one page.
     const wxCoord boxTop = top + block.top + block.captionHeight;
-    std::optional<size_t> firstRow, lastRow;
+    // m_matHeight stands for "no row is on this page".
+    size_t firstRow = m_matHeight, lastRow = 0;
     wxCoord segmentTop = boxTop, segmentBottom = boxTop;
     wxCoord y = boxTop;
     for (size_t j = 0; j < m_matHeight; j++) {
       const wxCoord size = m_dropCenters.at(j).Sum() + ElementSkip()*2;
       if (onPage(y + size / 2)) {
-        if (!firstRow) {
+        if (firstRow == m_matHeight) {
           firstRow = j;
           segmentTop = y;
         }
@@ -1129,11 +1130,11 @@ void MatrCell::DrawOnPaper(wxDC *dc, wxDC *antialiassingDC) {
       }
       y += size;
     }
-    if (!firstRow)
+    if (firstRow == m_matHeight)
       continue;
 
     for (size_t i = block.firstCol; i < block.endCol; i++)
-      for (size_t j = *firstRow; j <= *lastRow; j++)
+      for (size_t j = firstRow; j <= lastRow; j++)
         GetInnerCell(j, i)->DrawList(dc, antialiassingDC);
 
     // The heading lines of a table_form, as in Draw().
@@ -1144,7 +1145,7 @@ void MatrCell::DrawOnPaper(wxDC *dc, wxDC *antialiassingDC) {
         antialiassingDC->DrawLine(x, segmentTop + Scale_Px(2), x,
                                   segmentBottom - Scale_Px(2));
       }
-      if (m_colNames && (*firstRow == 0) && (*lastRow > 0)) {
+      if (m_colNames && (firstRow == 0) && (lastRow > 0)) {
         const wxCoord lineY = boxTop + m_dropCenters.at(0).Sum() + 2 * ElementSkip();
         antialiassingDC->DrawLine(point.x + Scale_Px(1), lineY,
                                   point.x + Scale_Px(1) + block.width, lineY);
