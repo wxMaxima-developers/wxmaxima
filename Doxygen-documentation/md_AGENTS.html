@@ -286,9 +286,13 @@ Architecture &amp; GUI</h1>
   wxPdfDocument, which is a git submodule (&lt;tt&gt;thirdparty/wxpdfdoc&lt;/tt&gt;, our fork
   wxMaxima-developers/wxpdfdoc, compiled into a static library by our own
   CMake).** Without the submodule the build works and the export is off
-  (the configure summary says why). Every CI checkout therefore passes
+  (the maintainer prefers that to stopping configure, 2026-11). The configure
+  summary and Help &gt; Troubleshooting say why and how to get it; the reason
+  reaches the app as &lt;tt&gt;WXM_WXPDFDOC_MISSING_REASON&lt;/tt&gt; in &lt;tt&gt;BuildConfig.h&lt;/tt&gt;.
+  Every CI checkout except CodeQL's and Coverity's therefore passes
   &lt;tt&gt;submodules: true&lt;/tt&gt;, and the release job appends the submodule to its
-  &lt;tt&gt;git archive&lt;/tt&gt; tarball &amp;ndash; GitHub's own tag tarballs lack it. Things worth
+  &lt;tt&gt;git archive&lt;/tt&gt; tarball &amp;ndash; GitHub's own "Source code" archives lack it, so
+  packagers want the release's &lt;tt&gt;wxmaxima-\&lt;version\&gt;.tar.xz&lt;/tt&gt;. Things worth
   knowing before changing it:
   - **The fork is where PDF features belong&lt;/strong&gt;: font fallback, embedding all
     fonts and tagging live there, with tests (&lt;tt&gt;make check&lt;/tt&gt;), so they can go
