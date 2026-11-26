@@ -75,26 +75,26 @@ $(function() {
 <div class="textblock"><p>WxMaxima 是计算机代数系统（CAS） <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> 的图形用户界面（GUI）。借助 WxMaxima 可以使用 <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> 的全部功能。此外，它还为最常用的功能提供了方便的向导。本手册介绍了一些使 <a class="el" href="classwxMaxima.html">wxMaxima</a> 成为 <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> 最受欢迎的图形界面之一的功能。</p>
 <p><img src="./wxMaximaLogo.png" alt="wxMaxima 的 logo" class="inline"/></p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md1038"></a>
+<h1><a class="anchor" id="autotoc_md1018"></a>
 wxMaxima 简介</h1>
-<h2><a class="anchor" id="autotoc_md1039"></a>
+<h2><a class="anchor" id="autotoc_md1019"></a>
 &lt;em&gt;Maxima&lt;/em&gt; 与 wxMaxima</h2>
 <p>在开源领域，大型系统通常会被拆分为若干较小的项目，以便小型开发团队更容易管理。例如，一个光盘刻录程序会由一个真正负责刻录光盘的命令行工具和一个图形用户界面组成，后者让用户无需了解所有命令行开关、甚至完全不用命令行就能使用它。这种方式的一个优点是，投入到命令行程序中的开发工作可以被许多程序共享：同一个命令行刻录程序既可以用作文件管理器的“发送到光盘”插件，也可以用作音乐播放器的“刻录到光盘”功能，还可以用作 DVD 备份工具的刻录组件。另一个优点是，把一个大任务拆分为较小的部分，使开发者能够为同一个程序提供多种用户界面。</p>
 <p>一个像 <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> 这样的计算机代数系统（CAS，computer algebra system）也适合前述框架。Maxima 可以用作任意精度计算器程序的底层软件，也可以在更大计算系统中作为公式转换程序来帮助计算（例如 <a href="https://www.sagemath.org/">Sage</a>）。Maxima 也可以直接作为独立的计算系统使用，它可以通过命令行来访问。然而，在通常情况下，像 <a class="el" href="classwxMaxima.html">wxMaxima</a> 这样的用户界面是使用 <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> 的一种更有效的方法，特别是对于新手而言更是如此。</p>
-<h3><a class="anchor" id="autotoc_md1040"></a>
+<h3><a class="anchor" id="autotoc_md1023"></a>
 &lt;em&gt;Maxima&lt;/em&gt;</h3>
 <p><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> 是一个功能齐全的计算机代数系统（CAS）。CAS 是一个程序，它可以通过对公式变形并找到问题的解来求解数学问题，而不是仅仅输出结果的数值。换言之，Maxima 可以作为一个计算器，给出变量的数值表示，也可以提供解析解。此外，它还提供了一系列数值分析方法，用于求解没有解析解的方程或方程组。</p>
 <p><img src="./maxima_screenshot.png" alt="Maxima 截图，命令行" class="inline"/></p>
 <p><em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> 的详尽文档可以 <a href="https://maxima.sourceforge.io/documentation.html">在互联网上获取</a>。其中一部分文档也可以通过 <a class="el" href="classwxMaxima.html">wxMaxima</a> 的帮助菜单访问。按下帮助键（在大多数系统上是 <code>F1</code> 键）时， <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> 的上下文相关帮助会自动跳转到 <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> 手册中介绍光标所在命令的页面。</p>
-<h3><a class="anchor" id="autotoc_md1041"></a>
+<h3><a class="anchor" id="autotoc_md1026"></a>
 WxMaxima</h3>
 <p><em>WxMaxima</em> 是一个图形用户界面，提供了 <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> 的全部功能和灵活性。WxMaxima 为用户提供图形化的显示以及许多让 <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> 更易于使用的功能。例如，只需单击鼠标右键， <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> 就能把任意单元格的内容（如有需要，也可以是公式的任意部分）导出为文本、LaTeX 或 MathML。甚至可以把整个工作簿导出为 HTML 文件或 LaTeX 文件。 <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> 的文档（包括演示其用法各个方面的工作簿）可以在 <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> 的 <a href="https://wxMaxima-developers.github.io/wxmaxima/help.html">帮助网站</a> 上在线获取，也可以通过帮助菜单访问。</p>
 <p><img src="./wxMaximaWindow.png" alt="wxMaxima 界面" class="inline"/></p>
 <p>在 <a class="el" href="classwxMaxima.html">wxMaxima</a> 中输入的计算式是由 <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> 命令行工具在后台执行的。</p>
-<h2><a class="anchor" id="autotoc_md1042"></a>
+<h2><a class="anchor" id="autotoc_md1031"></a>
 工作簿基础</h2>
 <p><em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> 的大部分功能一看就懂，但有些细节需要注意。 <a href="https://wxMaxima-developers.github.io/wxmaxima/help.html">这个网站</a> 提供了许多介绍 <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> 各方面功能的工作簿。学习其中的一些（尤其是“10 分钟 _(wx)Maxima_ 教程”）有助于熟悉 <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> 的内容以及如何使用 <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> 与 <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> 交互。本手册着重介绍 <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> 中那些不太直观、在线资料中也可能未涉及的方面。</p>
-<h3><a class="anchor" id="autotoc_md1043"></a>
+<h3><a class="anchor" id="autotoc_md1035"></a>
 工作簿的工作方式</h3>
 <p><em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> 为数不多的非标准之处之一，是它把交给 <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> 的数据组织成单元格，只有在用户要求时才对其求值（也就是发送给 <em>Maxima_）。对单元格求值时，该单元格中的所有命令（且仅限该单元格）会作为一批被求值。（这种说法并不完全准确：可以选中若干相邻的单元格一起求值，也可以让 _Maxima</em> 一次性对工作簿中的所有单元格求值。） <em>WxMaxima</em> 提交命令执行的方式初看可能有些陌生。但它大大简化了大型文档的处理（用户并不希望每次修改都自动触发整个文档的重新求值）。此外，这种方式也非常便于调试。</p>
 <p>如果输入文本到 <a class="el" href="classwxMaxima.html">wxMaxima</a> 中，则会自动创建一个新的工作簿单元格。可以在工具栏中选择此单元格的类型。如果创建了一个（数学）代码单元格，则可以将该单元格发送到 Maxima，这将使得计算结果显示在代码下方。下面显示了一对这样的命令：</p>
@@ -103,7 +103,7 @@ WxMaxima</h3>
 <p>除了（数学）输入单元格外，wxMaxima 中还可以使用文本单元格、图片单元格、标题单元格、节单元格和小节单元格等。每个单元格都有独立的撤消缓冲区，因此通过更改多个单元格的内容，然后逐步撤销不需要的更改来进行调试，是非常容易的。此外，工作簿本身有一个全局撤消缓冲区，可以撤消单元格编辑、添加和删除操作。</p>
 <p>下图显示了不同的单元格类型（标题单元格、节单元格、小节单元格、文本单元格、输入/输出单元格和图片单元格）：</p>
 <p><img src="./cell-example.png" alt="wxMaxima 的不同类型单元格" class="inline"/></p>
-<h3><a class="anchor" id="autotoc_md1044"></a>
+<h3><a class="anchor" id="autotoc_md1041"></a>
 单元格</h3>
 <p>工作簿由单元格组成。WxMaxima 支持以下几种单元格类型：</p>
 <ul>
@@ -117,7 +117,7 @@ WxMaxima</h3>
 <p>当输入文本时，wxMaxima 的默认行为是自动创建一个数学单元格。可以使用“单元格”菜单、菜单中显示的热键或工具栏中的下拉列表创建其他类型的单元格。一旦创建了非数学单元格，输入到文档的任何内容都将被解释为文本。</p>
 <p>数学单元格中可以包含（C 风格的） <a href="https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#Comments">注释文本</a>，写法如下： <code>/* This comment will be ignored by <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> */</code></p>
 <p>“<code>/*</code>”表示注释的开始，“<code>*/</code>”表示注释的结束。</p>
-<h3><a class="anchor" id="autotoc_md1045"></a>
+<h3><a class="anchor" id="autotoc_md1042"></a>
 水平光标与垂直光标</h3>
 <p>如果用户试图选中一个完整的句子，文字处理软件会尝试把选区自动扩展到以单词边界开始和结束。同样，如果选中了不止一个单元格， <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> 会把选区扩展到完整的单元格。</p>
 <p>不同寻常的是， <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> 通过定义两种光标来提供拖放的灵活性。 <em>WxMaxima</em> 会在需要时自动在两者之间切换：</p>
@@ -130,15 +130,15 @@ WxMaxima</h3>
 <p>开始创建工作簿时，您也许想先创建另一种类型的单元格（使用“单元格”菜单），例如标题单元格或文本单元格，用来说明接下来要做什么。</p>
 <p>在不同单元格之间移动时，也会看到（闪烁的）水平光标，可以在该位置向工作簿插入单元格（直接开始输入公式即可插入数学单元格，或者通过菜单插入其他类型的单元格）。</p>
 <p><img src="./horizontal-cursor-between-cells.png" alt="单元格之间（闪烁的）水平光标" class="inline"/></p>
-<h3><a class="anchor" id="autotoc_md1046"></a>
+<h3><a class="anchor" id="autotoc_md1043"></a>
 将单元格发送给 Maxima</h3>
 <p>按下 <code>CTRL</code>+<code>ENTER</code>、 <code>SHIFT</code>+<code>ENTER</code> 或小键盘上的 <code>ENTER</code> 键，即可执行代码单元格中的命令。 <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> 默认在按下 <code>CTRL</code>+<code>ENTER</code> 或 <code>SHIFT</code>+<code>ENTER</code> 时发送命令，但也可以把 <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> 配置为按下 <code>ENTER</code> 即执行命令。</p>
-<h3><a class="anchor" id="autotoc_md1047"></a>
+<h3><a class="anchor" id="autotoc_md1044"></a>
 命令自动补全</h3>
 <p><em>WxMaxima</em> 具有自动补全功能，可通过菜单（单元格/自动补全）或按组合键 <code>CTRL</code>+<code>SPACE</code> 触发。自动补全会考虑上下文。例如，在 ezUnits 的单位说明中触发时，它会列出适用的单位。</p>
 <p><img src="./ezUnits.png" alt="ezUnits" class="inline"/></p>
 <p>除了补全文件名、单位名或当前的命令名、变量名之外，自动补全还能为大多数命令显示一个模板，指明该命令所需参数的类型（和含义）。要使用此功能，请按 <code>SHIFT</code>+<code>CTRL</code>+<code>SPACE</code> 或选择相应的菜单项（单元格/显示模板）。</p>
-<h4><a class="anchor" id="autotoc_md1048"></a>
+<h4><a class="anchor" id="autotoc_md1045"></a>
 希腊字母</h4>
 <p>计算机一般以 8 位值（8-bit）存储字符，所以最多可以储存 256 个不同字符。大部分语言中的所有字母、数字和控制符号（传输结束、字符串结束、为菜单绘制矩形的线条和边缘等）都符合该限制。</p>
 <p>然而，对大多数国家而言，所选的 256 个字符的代码页并不包含数学中常用的希腊字母等字符。为了克服这类限制，人们发明了 <a href="https://home.unicode.org/">Unicode</a>：这种编码让英文文本照常工作，同时又能使用远多于 256 个的字符。</p>
@@ -184,7 +184,7 @@ WxMaxima</h3>
 <td class="markdownTableBodyCenter">T   </td><td class="markdownTableBodyCenter">Theta   </td><td class="markdownTableBodyCenter">P   </td><td class="markdownTableBodyCenter">Pi   </td><td class="markdownTableBodyCenter">O   </td><td class="markdownTableBodyCenter">Omega   </td></tr>
 </table>
 <p>也可以使用“希腊字母”侧边栏输入希腊字母。</p>
-<p><a class="anchor" id="autotoc_md1050"></a> </p><h5>注意：外观相似的字符</h5>
+<p><a class="anchor" id="autotoc_md1046"></a> </p><h5>注意：外观相似的字符</h5>
 <p>有些拉丁字母看起来和希腊字母一样，例如拉丁字母“A”和希腊字母“Alpha”。虽然它们看起来完全相同，却是两个不同的 Unicode 字符，由不同的 Unicode 码位（数字）表示。</p>
 <p>如果给变量 <a class="el" href="classA.html">A</a> 赋了值，之后又用希腊字母 Alpha 来操作这个变量，就可能出现问题，在打印输出中尤其如此。 希腊字母 mu（也用作“微”的词头）同样有两个不同的 Unicode 码位。</p>
 <p>因此，“希腊字母”侧边栏提供了一个选项，可以不提供外观相似的字符（可通过右键菜单更改）。</p>
@@ -297,27 +297,27 @@ WxMaxima</h3>
 <p>Symbols one needs often can be added to the "Symbols" sidebar in the "Options" tab of the configuration dialog (Edit -&gt; Configure), where they can also be given a keyboard shortcut. <a class="el" href="classA.html">A</a> letter with accents counts as one symbol there and gets one button. The Greek letters and the symbols the sidebars show anyway can be given a keyboard shortcut there, too, or by right-clicking their button in the sidebar. <a class="el" href="classA.html">A</a> shortcut has to contain <code>Ctrl</code> or <code>Alt</code> or be a function key, and types its symbol while the worksheet has the keyboard focus. The configuration dialog warns if a menu entry already uses the same keys.</p>
 <p>请注意，这些符号中的大多数（逻辑符号是明显的例外）在 <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> 中并没有特殊含义，因此会被当作普通字符处理。如果 <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> 是用不支持 Unicode 字符的 Lisp 编译的，这些符号可能会导致错误消息。</p>
 <p>有可能出现所选字体不包含希腊字母或数学符号等字符的情况，此时这些字符无法显示。 要解决这个问题，请选择其他字体（通过：编辑 -&gt; 设置 -&gt; 样式）。</p>
-<h3><a class="anchor" id="autotoc_md1054"></a>
+<h3><a class="anchor" id="autotoc_md1050"></a>
 Unicode 替换</h3>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> will replace several Unicode characters with their respective <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> expressions, e.g. <code>²</code> with <code>^2</code>, <code>³</code> with <code>^3</code>, <code>≠</code> with <code>#</code> or <code>≤</code> with <code>&lt;=</code>.</p>
 <p>Unicode characters that stand for a <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> name are instead defined as <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> aliases of that name when <a class="el" href="classwxMaxima.html">wxMaxima</a> starts <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>: <code>π</code> for <code>pi</code>, <code>ⅈ</code> for <code>i</code>, <code>ⅇ</code> for <code>e</code>, <code>∞</code> for <code>inf</code>, the (mathematical) Sigma sign (which is not the same Unicode character as the corresponding Greek letter) for <code>sum</code>, <code>∏</code> for <code>product</code>, <code>∫</code> for <code>integrate</code>, the square root sign for <code>sqrt</code> and <code>⋀</code>, <code>⋁</code>, <code>⊻</code>, <code>⊼</code>, <code>⊽</code>, <code>⇒</code>, <code>⇔</code> and <code>¬</code> for <code>and</code>, <code>or</code>, <code>xor</code>, <code>nand</code>, <code>nor</code>, <code>implies</code>, <code>equiv</code> and <code>not</code>. This means they work in files loaded by <code>batch()</code> or <code>load()</code>, too, and <code>aliases</code> lists the names they stand for. As <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> reads these characters as letters they need to be separated from neighbouring names by spaces in such a file: <code>a⋀b</code> is a variable name, <code>a ⋀ b</code> means <code>a and b</code>. In an input cell <a class="el" href="classwxMaxima.html">wxMaxima</a> adds these spaces automatically. It also puts parenthesis around a number or a variable that directly follows the square root sign, so <code>√2</code> means <code>sqrt(2)</code>.</p>
 <p>Unicode 中有几个“常用”分数被编码为单个码位： <code>¼, ½, ¾, ⅐, ⅑, ⅒, ⅓, ⅔, ⅕, ⅖, ⅗, ⅘, ⅙, ⅚, ⅛, ⅜, ⅝, ⅞</code></p>
 <p>在把输入发送给 <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> 之前，wxMaxima 会把它们替换为 <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> 中的表示形式，例如 <code>(1/4)</code>。此外还有 <code>⅟</code>，会被替换为 <code>1/</code>；以及 <code>↉</code>（用于棒球），会被替换为 <code>(0/3)</code>。</p>
 <p>建议在输入单元格中使用 **Maxima 代码**（而不是这些 Unicode 码位）。理由：(a) 用于数学输入的字体可能不包含这些字符；(b) 如果把文档保存为 <code>wxm</code> 文件，通常可以被（命令行）Maxima 读取，而这些替换在命令行 <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> 中当然不起作用。不过，从其他文档复制粘贴公式时，可能会出现这些字符。</p>
-<h3><a class="anchor" id="autotoc_md1055"></a>
+<h3><a class="anchor" id="autotoc_md1051"></a>
 侧边栏</h3>
 <p>通过侧边栏可以访问最重要的 <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> 命令的快捷方式、目录、调试消息窗口或最近执行命令的历史记录等。可以通过“视图”菜单启用它们。它们都可以移动到 <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> 窗口内外的其他位置。另一个有用的侧边栏可以用鼠标输入希腊字母。</p>
 <p><img src="./SidePanes.png" alt="各种类型的侧边栏" class="inline"/></p>
 <p>在“目录”侧边栏中，只需用鼠标右键单击某个标题，再选择更高一级或更低一级的标题类型，即可提升或降低该标题的级别。</p>
 <p><img src="./Sidepane-TOC-convert-headings.png" alt="在目录侧边栏中提升或降低标题级别" class="inline"/></p>
-<h3><a class="anchor" id="autotoc_md1056"></a>
+<h3><a class="anchor" id="autotoc_md1052"></a>
 MathML 输出</h3>
 <p>一些文字处理软件和类似的程序能够识别 <a href="https://www.w3.org/Math/">MathML</a> 输入并自动把它插入为可编辑的二维公式，或者（如 LibreOffice）带有提供“从剪贴板导入 MathML”功能的公式编辑器。还有一些程序支持 RTF 数学公式。因此， <em>WxMaxima</em> 在右键菜单中提供了多个相应的菜单项。</p>
-<h3><a class="anchor" id="autotoc_md1057"></a>
+<h3><a class="anchor" id="autotoc_md1053"></a>
 Pasting LaTeX or MathML formulas</h3>
 <p><b>Edit → Paste LaTeX/MathML as <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> Code</b> (also in the right-click menu) converts a formula from the clipboard into a <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> command, for example one copied from a paper, a web page or an equation editor. LaTeX may come with or without <code>$…$</code>, <code>\(…\)</code> or <code>\[…\]</code> around it, so <code>\int_0^1 \frac{\sin x}{x}\,dx</code> becomes <code>integrate(sin(x)/x,x,0,1)</code>. The command goes where the cursor is, or into a new code cell. MathML pasted into a code cell with the ordinary <b>Paste</b> is converted the same way, since nobody wants the XML in a code cell. If MathML copied with <b>Copy as MathML</b> is pasted back, the result is the original command: <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> adds it to the MathML as an annotation.</p>
 <p>LaTeX and MathML describe what a formula looks like, not what it means, so the conversion has to interpret it. Fractions, roots, powers, subscripts (<code>x_1</code> becomes the name <code>x_1</code>, <code>a_{n+1}</code> the array element <code>a[n+1]</code>), functions with or without parentheses (<code>\sin 2x</code>), <code>\frac{d}{dx}</code>, &lsquo;f&rsquo;(x)<code>, integrals ending in</code>dx<code>, sums and products with limits,</code>\lim_{x\to 0}<code>, </code>|x|<code>and matrices are understood. An</code>e<code>is Euler’s number, but an</code>i<code>is only the imaginary unit when set upright (</code>\mathrm{i}<code>), as it more often is an index. <a class="el" href="classA.html">A</a> product of a name and parentheses, like</code>x(y+1)<code>, is taken as a product unless the name is</code>f<code>,</code>g<code>,</code>h<code>or longer than one letter. Anything without a single meaning, like</code>\pm<code>,</code>\dots` or text, isn’t guessed at: <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> says what it couldn’t convert instead. Check the command before evaluating it.</p>
-<h3><a class="anchor" id="autotoc_md1058"></a>
+<h3><a class="anchor" id="autotoc_md1054"></a>
 Markdown 支持</h3>
 <p><em>WxMaxima</em> 支持一组不会与数学记号冲突的标准 <a href="https://en.wikipedia.org/wiki/Markdown">Markdown</a> 约定，其中之一是项目符号列表。</p>
 <div class="fragment"><div class="line">普通文本</div>
@@ -336,17 +336,17 @@ Markdown 支持</h3>
 </div><!-- fragment --><p><em>WxMaxima</em> 的 TeX 和 HTML 输出还会识别 <code>=&gt;</code>，并把它替换为相应的 Unicode 符号：</p>
 <div class="fragment"><div class="line">cogito =&gt; sum.</div>
 </div><!-- fragment --><p>HTML 和 TeX 导出还能识别的其他符号有：用于比较的 <code>&lt;=</code> 和 <code>&gt;=</code>、双向双箭头（<code>&lt;=&gt;</code>）、单箭头（<code>&lt;-&gt;</code>、 <code>-&gt;</code> 和 <code>&lt;-</code>），以及表示相应符号的 <code>+/-</code>。TeX 输出还能识别 <code>&lt;&lt;</code> 和 <code>&gt;&gt;</code>。</p>
-<h3><a class="anchor" id="autotoc_md1059"></a>
+<h3><a class="anchor" id="autotoc_md1055"></a>
 Links in text cells</h3>
 <p><a class="el" href="classA.html">A</a> web address in a text cell that starts with <code><a href="http://">http://</a></code>, <code><a href="https://">https://</a></code> or <code>mailto:</code> is shown as a link. Since clicking into a text cell places the cursor there, a link is followed by <code>CTRL</code>+clicking it (<code>CMD</code>+clicking on macOS), or by right-clicking it and choosing "Open Link"; hovering over it shows where it leads. The HTML export turns it into a link, the TeX export into a <code>\url{}</code>. Links are always recognized from the text itself, so nothing about them is stored in the file.</p>
 <p>Links in a code cell's comments (<code>/* ... */</code>) work the same way. Elsewhere in code, for example inside a string, an address is <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> syntax and is not a link.</p>
 <p>The same goes for web addresses in <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>'s output, for example in a string printed by <code>print("See https://wxmaxima-developers.github.io/wxmaxima/")</code>: <code>CTRL</code>+clicking the address or choosing "Open Link" from its context menu opens it, while a plain click still selects the output.</p>
-<h3><a class="anchor" id="autotoc_md1060"></a>
+<h3><a class="anchor" id="autotoc_md1056"></a>
 Bold, italic, underlined and struck-through text</h3>
 <p>Text in a text cell, a title or a section heading can be made bold, italic, underlined or struck through. Select the text and press the respective button in the toolbar; pressing the button again removes that formatting from the selection. With nothing selected the button switches the formatting on or off for what is typed next. The buttons are hidden by right-clicking the toolbar and unchecking "Text formatting buttons". Code cells cannot be formatted: their colors already show the syntax of the code.</p>
 <p>Superscript and subscript buttons work the same way: they make the text smaller and raise it above or lower it below the line, as in <a class="el" href="classE.html">E</a> = mc² or H₂O. <a class="el" href="classA.html">A</a> character cannot be both, so switching one of them on switches the other off. <a class="el" href="classA.html">A</a> line that contains a superscript, a subscript or a character that is taller than the font's usual ones, for example an emoji, gets as much additional room as it needs.</p>
 <p>The formatting is saved in <code>.wxmx</code> files. Older versions of <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> open such a file without the formatting but keep all of the text. <code>.wxm</code> files, the exports and the clipboard contain the text without its formatting.</p>
-<h3><a class="anchor" id="autotoc_md1061"></a>
+<h3><a class="anchor" id="autotoc_md1057"></a>
 快捷键</h3>
 <p>大多数快捷键可以在相应菜单的文本中找到。由于它们实际上是从菜单文本中获取的，所以可以通过 <a class="el" href="classwxMaxima.html">wxMaxima</a> 的翻译文本进行定制，以满足本地用户的需求，因此我们不在这里记录它们。但是，一些快捷键或其别名并没有记录在菜单中：</p>
 <ul>
@@ -354,7 +354,7 @@ Bold, italic, underlined and struck-through text</h3>
 <li><code>CTRL</code>+<code>TAB</code> 或 <code>CTRL</code>+<code>SHIFT</code>+<code>TAB</code> 触发自动补全。</li>
 <li><code>SHIFT</code>+<code>SPACE</code> 插入一个不可断行的空格。</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md1062"></a>
+<h3><a class="anchor" id="autotoc_md1058"></a>
 Exploring output with the keyboard</h3>
 <p><a class="el" href="classA.html">A</a> cell's output can be selected, and explored part by part, without a mouse:</p>
 <ul>
@@ -366,24 +366,24 @@ Exploring output with the keyboard</h3>
 <li><code>SHIFT</code>+<code>LEFT</code> and <code>SHIFT</code>+<code>RIGHT</code> grow or shrink the selection over the neighbouring parts; in a matrix, <code>SHIFT</code> and any arrow key grow the selected entry into a block of entries.</li>
 <li>The context-menu key or <code>SHIFT</code>+<code>F10</code> opens the right-click menu for the selection, so it can be copied in any format.</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md1063"></a>
+<h3><a class="anchor" id="autotoc_md1059"></a>
 TeX 导出中的原始 TeX</h3>
 <p>如果文本单元格以 <code>TeX:</code> 开头，则导出 TeX 时，文件将包含 <code>TeX:</code> 标记后面的文本。使用此功能可以在 <a class="el" href="classwxMaxima.html">wxMaxima</a> 工作簿中输入 TeX 代码。</p>
-<h2><a class="anchor" id="autotoc_md1064"></a>
+<h2><a class="anchor" id="autotoc_md1060"></a>
 文件格式</h2>
 <p>在 <a class="el" href="classwxMaxima.html">wxMaxima</a> 中输入的内容可以存为以下三种文件格式之一，以供以后使用：</p>
-<h3><a class="anchor" id="autotoc_md1065"></a>
+<h3><a class="anchor" id="autotoc_md1061"></a>
 .mac</h3>
 <p><code>.mac</code> 文件是包含 <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> 命令的普通文本文件。可以用 <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> 的 <code>batch()</code> 或 <code>load()</code> 命令，或者 <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> 的“文件/批处理文件”菜单项读取它们。</p>
 <p>下面是一个例子。 <code>Quadratic.mac</code> 定义了一个函数，随后用 <code>wxdraw2d()</code> 生成一张图。 之后打印文件 <code>Quadratic.mac</code> 的内容，并对新定义的函数 <code>f()</code> 求值。</p>
 <p><img src="./BatchImage.png" alt="用 `batch()` 加载文件" class="inline"/></p>
 <p>注意：虽然文件 <code>Quadratic.mac</code> 使用的是 <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> 的常规扩展名（&lt;tt&gt;.mac），但它只能被 <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> 读取，因为命令 <code>wxdraw2d()</code> 是 <a class="el" href="classwxMaxima.html">wxMaxima</a> 对 <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> 的扩展。（命令行）Maxima 会忽略未知命令 <code>wxdraw2d()</code>，并把它原样作为输出打印出来。</p>
 <p>可以用 <code>.mac</code> 文件编写自己的宏库。但由于它们不包含足够的结构信息，无法作为 <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> 会话读回。</p>
-<h3><a class="anchor" id="autotoc_md1066"></a>
+<h3><a class="anchor" id="autotoc_md1062"></a>
 .wxm</h3>
 <p><code>.wxm</code> 文件包含除 <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> 输出之外的整个工作簿。在 <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> 5.38 以上版本中，可以像 .mac 文件一样用 <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> 的 <code>load()</code> 函数读取它们。嗯，大多数情况下可以。问题（例如 <code>asksign(x)</code>）会带来麻烦，因为答案会写入 <code>.wxm</code> 文件（以便加载后可以给出建议），但 <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> 无法对其求值。 可以用 <code>assume()</code> 声明 <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> 想要知道的属性，从而避免 <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> 提问。</p>
 <p>使用这种纯文本格式时，有时无法避免使用了新功能的工作簿与旧版本的 <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> 不兼容。</p>
-<h4><a class="anchor" id="autotoc_md1067"></a>
+<h4><a class="anchor" id="autotoc_md1063"></a>
 wxm 文件的文件格式</h4>
 <p>这只是一个纯文本文件（可以用文本编辑器打开），以特殊的 <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> 注释的形式包含各单元格的内容。</p>
 <p>它以如下注释开头：</p>
@@ -409,10 +409,10 @@ wxm 文件的文件格式</h4>
 <div class="fragment"><div class="line">/* [wxMaxima: fold    start ] */</div>
 <div class="line">...</div>
 <div class="line">/* [wxMaxima: fold    end   ] */</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md1068"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md1064"></a>
 .wxmx</h3>
 <p>这种基于 XML 的文件格式保存了完整的工作簿内容，包括缩放因子和观察列表等内容。它是首选的文件格式。</p>
-<h4><a class="anchor" id="autotoc_md1069"></a>
+<h4><a class="anchor" id="autotoc_md1065"></a>
 wxmx 文件的文件格式</h4>
 <p><code>wxmx</code> 文件看起来像二进制格式，但可以用操作系统自带的工具处理。它是一个 zip 文件，可以用 <code>unzip</code> 解压（也许需要先重命名，以便操作系统的解压程序能识别它）。 我们没有使用压缩功能，只是利用了把多个文件合并成一个文件的能力：图像本身已经压缩过，其余部分是简单的文本（很可能比包含的大图像小得多）。</p>
 <p>它包含以下文件：</p>
@@ -423,7 +423,7 @@ wxmx 文件的文件格式</h4>
 <li><code>content.xml</code>：一个 XML 文档，以 XML 格式包含文档的各个单元格。</li>
 </ul>
 <p>因此，如果出了问题，可以解压 <a class="el" href="classwxMaxima.html">wxMaxima</a> 文档（也许需要先重命名为 <code>zip</code> 文件），用文本编辑器修改 <code>content.xml</code> 文件，或者替换损坏的图像，再把文件重新压缩，并把 <code>zip</code> 重命名为 <code>wxmx</code> 文件，这样就得到了一个修改过的 <code>wxmx</code> 文件。</p>
-<h2><a class="anchor" id="autotoc_md1070"></a>
+<h2><a class="anchor" id="autotoc_md1066"></a>
 配置选项</h2>
 <p>对于一些常见的可设置变量，wxMaxima提供了两种设置方法：</p>
 <ul>
@@ -431,10 +431,10 @@ wxmx 文件的文件格式</h4>
 <li>此外，大多数配置变量的值也可以只针对当前会话进行修改，方法是在工作簿中覆盖它们的值，如下所示。</li>
 </ul>
 <p><img src="./wxMaxima_configuration_001.png" alt="wxMaxima 设置对话框" class="inline"/></p>
-<h3><a class="anchor" id="autotoc_md1071"></a>
+<h3><a class="anchor" id="autotoc_md1067"></a>
 默认动画帧率</h3>
 <p>用于新生成动图的帧率保存在变量 <code>wxanimate_framerate</code> 中，可以使用设置对话框更改此变量在新工作簿中的初始值。</p>
-<h3><a class="anchor" id="autotoc_md1072"></a>
+<h3><a class="anchor" id="autotoc_md1068"></a>
 新 &lt;em&gt;maxima&lt;/em&gt; 会话的默认图形尺寸</h3>
 <p>下次启动后，如果 <em>maxima</em> 没有修改 <code>wxplot_size</code> 的值，内嵌到工作簿中的图形将以此尺寸创建。</p>
 <p>如果只想设置单个图形的尺寸，可以使用以下写法，它只针对一条命令设置变量的值：</p>
@@ -444,7 +444,7 @@ wxmx 文件的文件格式</h4>
 <div class="line">       x,-5,5</div>
 <div class="line">   )</div>
 <div class="line">), wxplot_size=[480,480]$</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md1073"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md1069"></a>
 在文本控件中匹配括号</h3>
 <p>该选项使以下两个功能生效：</p>
 <ul>
@@ -452,7 +452,7 @@ wxmx 文件的文件格式</h4>
 <li>In a code cell a comment opened by <code>/*</code> is closed by an inserted <code>*/</code>. Typing <code>*/</code> in front of it moves the cursor past it instead.</li>
 <li>如果在输入前述字符中的任何一个时选择了文本，则所选文本将被放在配对的两个字符之间。</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md1074"></a>
+<h3><a class="anchor" id="autotoc_md1070"></a>
 不自动保存工作簿</h3>
 <p>如果设置了此选项，只有在用户要求时才会覆盖工作簿所在的文件。不过，如果发生崩溃、断电等情况，临时目录中仍会保留一份最新的备份。</p>
 <p>如果未设置此选项， <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> 的行为更像一个现代手机应用：</p>
@@ -460,18 +460,18 @@ wxmx 文件的文件格式</h4>
 <li>文件在退出时被自动保存；</li>
 <li>并且文件每 3 分钟自动保存一次。</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md1075"></a>
+<h3><a class="anchor" id="autotoc_md1071"></a>
 Arranging the toolbar</h3>
 <p>The toolbar is made of sections, like the "Open" and "Save" buttons, the evaluation buttons or the drop-down list that sets the type of a cell. The "Toolbar" tab of the configuration dialog lists them in the order the toolbar shows them in: drag a section to another place, or select it and press "Up" or "Down", to move it, and uncheck it to hide it. The flexible space pushes every section after it to the right edge of the window. "Default order" restores the original arrangement. Sections can also be shown or hidden by right-clicking the toolbar.</p>
-<h3><a class="anchor" id="autotoc_md1076"></a>
+<h3><a class="anchor" id="autotoc_md1072"></a>
 配置保存在哪里？</h3>
 <p>在 Unix/Linux 上，配置信息保存在您主目录下的文件 <code>.<a class="el" href="classwxMaxima.html">wxMaxima</a></code> 中（如果使用的是 wxWidgets &lt; 3.1.1），或者保存在 <code>.config/wxMaxima.conf</code> 中（（XDG 标准）如果使用的是 wxWidgets &gt;= 3.1.1）。可以通过命令 <code>wxbuild_info();</code> 或菜单项“帮助-&gt;关于”查看 wxWidgets 的版本。 <a href="https://www.wxwidgets.org/">wxWidgets</a> 是 <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> 所基于的跨平台图形界面库（名称中的 <code>wx</code> 即来源于此）。 （由于文件名以点开头， <code>.<a class="el" href="classwxMaxima.html">wxMaxima</a></code> 或 <code>.config</code> 是隐藏的。）</p>
 <p>当使用 Windows 系统时，配置信息将存储在注册表中。在注册表中的以下位置可以找到 <a class="el" href="classwxMaxima.html">wxMaxima</a> 的相关条目：<code>HKEY_CURRENT_USER\Software\<a class="el" href="classwxMaxima.html">wxMaxima</a></code>。</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md1077"></a>
+<h1><a class="anchor" id="autotoc_md1073"></a>
 &lt;em&gt;Maxima&lt;/em&gt; 的扩展</h1>
 <p><em>WxMaxima</em> 主要是 <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> 的图形用户界面。因此，它的主要任务是把命令传递给 <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> 并报告这些命令的执行结果。但在某些情况下， <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> 也为 <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> 增加了功能。前面已经提到， <em>WxMaxima</em> 能够把工作簿的内容导出为 HTML 和 LaTeX 文件来生成报告。本节介绍 <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> 在会话中更好地插入图形的一些方式。</p>
-<h2><a class="anchor" id="autotoc_md1078"></a>
+<h2><a class="anchor" id="autotoc_md1074"></a>
 带下标的变量</h2>
 <div id="wxsubscripts"></div><p><code>wxsubscripts</code> 指定 <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> 是否（以及如何）自动把变量名的一部分显示为下标：</p>
 <p>如果它的值为 <code>false</code>，则此功能关闭，wxMaxima 不会把变量名中下划线之后的部分自动显示为下标。</p>
@@ -486,7 +486,7 @@ Arranging the toolbar</h3>
 subscripted" using the command <code>wxdeclare_subscripted(variable_name);</code> or <code>wxdeclare_subscripted([variable_name1,variable_name2,...]);</code> Declaring a variable as subscripted can be reverted using the following command: <code>wxdeclare_subscripted(variable_name,false);</code>, which also keeps a variable the rules above do cover from being subscripted.</p>
 <div id="wxdeclare_subscript"></div><p><code>wxdeclare_subscript(text_snippet);</code> or <code>wxdeclare_subscript([text_snippet1,text_snippet2,...]);</code> instead declares a text snippet: every variable whose name ends in an underscore followed by that snippet is subscripted, however long the two parts are.</p>
 <p>也可以使用菜单“视图-&gt;自动下标”设置这些值。</p>
-<h2><a class="anchor" id="autotoc_md1079"></a>
+<h2><a class="anchor" id="autotoc_md1075"></a>
 在状态栏中向用户反馈</h2>
 <div id="wxstatusbar"></div><p>运行时间较长的命令可以在状态栏中向用户反馈。放在那里的新反馈会替换旧的反馈（因此可以把它用作进度指示），并且当前发送给 <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> 的命令一结束，反馈就会被删除。即使在可能与普通 _Maxima_（而不是 _wxMaxima_）一起使用的库中，也可以放心使用 <code>wxstatusbar()</code>：如果没有 _wxMaxima_， <code>wxstatusbar()</code> 命令只会保持未求值状态。</p>
 <div class="fragment"><div class="line">for i:1 thru 10 do (</div>
@@ -497,7 +497,7 @@ subscripted" using the command <code>wxdeclare_subscripted(variable_name);</code
 <div class="line">    /* 执行（这里：推迟 3 秒） */</div>
 <div class="line">    ?sleep(3)</div>
 <div class="line">)$</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md1080"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md1076"></a>
 在 Maxima 中导出工作簿</h2>
 <div id="wxworksheettohtml"></div><p>命令 <code>wxworksheettohtml()</code> 可以在运行中的 <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> 会话里把当前工作簿导出为 HTML 文件，便于用脚本或批处理方式导出。和 <code>wxstatusbar()</code> 一样，它可以放心地用在可能也会在普通（控制台） <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> 中运行的代码里：如果没有 _wxMaxima_，该命令只会保持未求值状态。</p>
 <div class="fragment"><div class="line">wxworksheettohtml(&quot;report.html&quot;)$</div>
@@ -525,10 +525,10 @@ subscripted" using the command <code>wxdeclare_subscripted(variable_name);</code
 <td class="markdownTableBodyNone"><code>documentclassoptions</code>   </td><td class="markdownTableBodyNone">覆盖其选项（例如 <code>"12pt,a4paper"</code>）   </td></tr>
 </table>
 <p>计划支持 <code>wxworksheettopdf()</code>。</p>
-<h2><a class="anchor" id="autotoc_md1081"></a>
+<h2><a class="anchor" id="autotoc_md1077"></a>
 绘图</h2>
 <p>因为绘图功能与图形密切相关，所以图形用户界面理应为原始程序的绘图功能提供一些扩充内容。</p>
-<h3><a class="anchor" id="autotoc_md1082"></a>
+<h3><a class="anchor" id="autotoc_md1078"></a>
 在工作簿中嵌入图形</h3>
 <div id="wxplot2d"></div> <div id="wxplot3d"></div> <div id="wximplicit_plot"></div> <div id="wxcontour_plot"></div><p><em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> 通常会让外部程序 <em>Gnuplot</em> 为它创建的每张图打开一个单独的窗口。由于很多时候把图形嵌入工作簿更方便， <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> 提供了自己的一套绘图函数，它们与相应的 <em>maxima</em> 函数只有名称不同：都带有前缀“wx”。</p>
 <p>以下绘图函数都有对应的 wx 版本：</p>
@@ -560,7 +560,7 @@ subscripted" using the command <code>wxdeclare_subscripted(variable_name);</code
 </table>
 <p>如果 <code>wxm</code> 文件由（控制台）Maxima 读取，这些函数会被忽略（并像 <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> 中其他未知函数一样作为输出打印出来）。</p>
 <p>如果使用这些函数时遇到问题，请检查对应的 <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> 函数是否也存在同样的问题（例如 <code>wxplot2d()</code> 报错时，用 <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> 命令 <code>plot2d()</code>（会在单独的窗口中打开图形）绘制同一张图试试）。如果问题依然存在，那很可能是 <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> 的问题，应当在 <a href="https://sourceforge.net/p/maxima/bugs/">Maxima 错误跟踪器</a> 中报告。也可能是 Gnuplot 的问题。</p>
-<h3><a class="anchor" id="autotoc_md1083"></a>
+<h3><a class="anchor" id="autotoc_md1079"></a>
 放大或缩小内嵌图形</h3>
 <div id="wxplot_size"></div><p>如上所述，配置对话框提供了一种修改所创建图形默认尺寸的方法，它设置的是 <code>wxplot_size</code> 的初始值。 <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> 的绘图例程遵循这个以像素为单位指定图形尺寸的变量。随时可以查询它，或用它设置后续图形的尺寸：</p>
 <div class="fragment"><div class="line">wxplot_size:[1200,800]$</div>
@@ -593,17 +593,17 @@ subscripted" using the command <code>wxdeclare_subscripted(variable_name);</code
 <div class="line">        x,0,10</div>
 <div class="line">    )</div>
 <div class="line">),wxplot_size=[1600,300],wxplot_scale=&#39;native$</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md1084"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md1080"></a>
 更高质量的图形</h3>
 <p><em>Gnuplot</em> 似乎没有提供一种可移植的方法来判断它是否支持 Cairo 库提供的高质量位图输出。在 <em>Gnuplot</em> 编译时使用了该库的系统上，配置菜单中的 pngCairo 选项（可以用变量 <code>wxplot_pngcairo</code> 覆盖）会启用抗锯齿和额外的线型。如果在 <em>Gnuplot</em> 不支持的情况下设置了 <code>wxplot_pngCairo</code>，得到的将是错误消息而不是图形。</p>
-<h3><a class="anchor" id="autotoc_md1085"></a>
+<h3><a class="anchor" id="autotoc_md1081"></a>
 在交互式 &lt;em&gt;Gnuplot&lt;/em&gt; 窗口中打开内嵌图形</h3>
 <p>如果图形是用 <code>wxdraw</code> 类命令生成的（此功能不支持 <code>wxplot2d</code> 和 <code>wxplot3d</code>），并且底层 <em>Gnuplot</em> 项目的文件不是特别大， <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> 会提供一个右键菜单，可以在交互式 <em>Gnuplot</em> 窗口中打开该图形。</p>
-<h3><a class="anchor" id="autotoc_md1086"></a>
+<h3><a class="anchor" id="autotoc_md1082"></a>
 在 &lt;tt&gt;plot&lt;/tt&gt; 窗口中打开 Gnuplot 的命令控制台</h3>
 <p>在 MS Windows 上有两个 Gnuplot 程序： <code>gnuplot.exe</code> 和 <code>wgnuplot.exe</code>。 可以在配置菜单中设置使用哪一个。 <code>wgnuplot.exe</code> 可以打开一个控制台窗口，在其中输入 <em>gnuplot</em> 命令，而 <code>gnuplot.exe</code> 没有这个功能。遗憾的是，使用 <code>wgnuplot.exe</code> 时，每次准备绘图都会使 <em>Gnuplot</em> 短暂地“抢走”键盘焦点。</p>
 <h3><a class="anchor" id="embedding-animations-into-the-spreadsheet"></a>
-Animationen in das Arbeitsblatt einbetten</h3>
+Incrustar animaciones en la hoja de trabajo</h3>
 <p>三维图形往往让人难以读出定量数据。一个可行的替代方案是把第三个参数交给鼠标滚轮。 <code>with_slider_draw</code> 命令是 <code>wxdraw2d</code> 的一个变体，它会预先生成多幅图形，并允许通过移动屏幕上方的滑块在它们之间切换。 <em>WxMaxima</em> 可以把这个动画导出为 GIF 动图。</p>
 <p><code>with_slider_draw</code> 命令的前两个参数是用于控制绘图的变量名称和变量值的列表，接下来的参数与 <code>wxdraw2d</code> 命令的参数相同：</p>
 <div class="fragment"><div class="line">with_slider_draw(</div>
@@ -684,7 +684,7 @@ Animationen in das Arbeitsblatt einbetten</h3>
 <div class="line">        x,0,10</div>
 <div class="line">    )</div>
 <div class="line">)$</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md1087"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md1083"></a>
 同时在多个窗口中打开图形</h3>
 <p>这是 <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> 的一个特性（在支持它的环境中），并不是由 <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> 提供的，但有时会很方便。下面的例子来自 Mario Rodriguez 发到 <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> 邮件列表的一篇帖子：</p>
 <div class="fragment"><div class="line">load(draw);</div>
@@ -706,53 +706,53 @@ Animationen in das Arbeitsblatt einbetten</h3>
 <div class="line">    key=&quot;cos (x)&quot;,grid=[2,2],</div>
 <div class="line">    explicit(cos(x),x,0,2*%pi))</div>
 <div class="line">);</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md1088"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md1084"></a>
 “使用 draw() 函数绘图”侧边栏</h3>
 <p>“使用 draw() 函数绘图”侧边栏中隐藏着一个简单的代码生成器，用它可以生成场景，从而利用 <em>maxima</em> 自带的 <em>draw</em> 程序包的一部分灵活性。</p>
-<h4><a class="anchor" id="autotoc_md1089"></a>
+<h4><a class="anchor" id="autotoc_md1085"></a>
 二维绘图</h4>
 <p>生成绘制二维场景的 <code>draw()</code> 命令的框架。之后需要用生成场景内容的命令来填充这个场景，例如使用“二维绘图”按钮下面几行中的按钮。</p>
 <p>“二维绘图”按钮的一个实用功能是，它可以把场景设置为动画，其中某个变量（默认是 <em>t</em> ）在每一帧中取不同的值：与静止的三维图形中的相同数据相比，运动的二维图形往往更容易解读。</p>
-<h4><a class="anchor" id="autotoc_md1090"></a>
+<h4><a class="anchor" id="autotoc_md1086"></a>
 三维绘图</h4>
 <p>生成绘制三维场景的 <code>draw()</code> 命令的框架。如果既没有设置二维场景也没有设置三维场景，其他所有按钮都会设置一个二维场景，其中包含该按钮生成的命令。</p>
-<h4><a class="anchor" id="autotoc_md1091"></a>
+<h4><a class="anchor" id="autotoc_md1087"></a>
 表达式</h4>
 <p>在光标当前所在的 <code>draw()</code> 命令中添加绘图函数表达式，如 <code>sin(x)</code>, <code>x*sin(x)</code> 或者 <code>x^2+2*x-4</code> 等 。每个图中可以绘制任意数量的图形。如果没有 <code>draw()</code> 命令，将调用绘制二维图形的模板。</p>
-<h4><a class="anchor" id="autotoc_md1092"></a>
+<h4><a class="anchor" id="autotoc_md1088"></a>
 隐式绘图</h4>
 <p>尝试寻找满足 <code>y=sin(x)</code>，<code>y*sin(x)=3</code> 或 <code>x^2+y^2=4</code> 之类的表达式的所有解，并在光标当前所在的 <code>draw()</code> 命令中绘制对应曲线。如果没有 <code>draw()</code> 命令，将调用绘制二维图形的模板。</p>
-<h4><a class="anchor" id="autotoc_md1093"></a>
+<h4><a class="anchor" id="autotoc_md1089"></a>
 参数式绘图</h4>
 <p>将变量（如 t）从下限变化到上限，并在当前绘图命令中使用两个表达式（如 <code>t*sin(t)</code> 和 <code>t*cos(t)</code>），以生成曲线上点的横、纵坐标 (x,y)（在三维图形中，第三个表达式生成竖坐标 z）。</p>
-<h4><a class="anchor" id="autotoc_md1094"></a>
+<h4><a class="anchor" id="autotoc_md1090"></a>
 点</h4>
 <p>绘制多个点，并且可以选择顺次连接它们。点的坐标取自列表的列表、二维数组或为每个轴指定的一个列表或数组。</p>
-<h4><a class="anchor" id="autotoc_md1095"></a>
+<h4><a class="anchor" id="autotoc_md1091"></a>
 图表标题</h4>
 <p>在图形上方绘制标题。</p>
-<h4><a class="anchor" id="autotoc_md1096"></a>
+<h4><a class="anchor" id="autotoc_md1092"></a>
 坐标轴</h4>
 <p>设置坐标轴。</p>
-<h4><a class="anchor" id="autotoc_md1097"></a>
+<h4><a class="anchor" id="autotoc_md1093"></a>
 等高线</h4>
 <p>（仅用于三维图形）为当前 <code>draw()</code> 命令中随后的绘图命令和/或图形的底面添加类似于山地地图上的等高线。此外，这个向导也可以完全不绘制曲面，只显示等高线图。</p>
-<h4><a class="anchor" id="autotoc_md1098"></a>
+<h4><a class="anchor" id="autotoc_md1094"></a>
 图形名称</h4>
 <p>在图形的图例中添加一项，显示下一个图形的名称。空名称会使后续的图形不再生成图例项。</p>
-<h4><a class="anchor" id="autotoc_md1099"></a>
+<h4><a class="anchor" id="autotoc_md1095"></a>
 线条颜色</h4>
 <p>为当前 <code>draw()</code> 命令所绘图形设置线条颜色。</p>
-<h4><a class="anchor" id="autotoc_md1100"></a>
+<h4><a class="anchor" id="autotoc_md1096"></a>
 填充颜色</h4>
 <p>为当前 <code>draw()</code> 命令所绘图形设置填充颜色。</p>
-<h4><a class="anchor" id="autotoc_md1101"></a>
+<h4><a class="anchor" id="autotoc_md1097"></a>
 网格</h4>
 <p>弹出设置网格线的向导。</p>
-<h4><a class="anchor" id="autotoc_md1102"></a>
+<h4><a class="anchor" id="autotoc_md1098"></a>
 精度</h4>
 <p>允许选择适当数目的点，以兼顾速度与精度（任何绘图程序都会权衡两者）。</p>
-<h3><a class="anchor" id="autotoc_md1103"></a>
+<h3><a class="anchor" id="autotoc_md1099"></a>
 修改图形的字体和字号</h3>
 <p>尤其是在使用高分辨率显示器时，默认字号可能非常小。对于基于 <code>draw</code> 的命令，可以用 <code>font=...</code>、 <code>font_size=...</code> 之类的选项设置字体和字号，例如：</p>
 <div class="fragment"><div class="line">wxdraw2d(</div>
@@ -764,11 +764,11 @@ Animationen in das Arbeitsblatt einbetten</h3>
 <div class="line">         [gnuplot_preamble, &quot;set tics font \&quot;Arial, 30\&quot;; set xlabel font \&quot;,20\&quot;; set ylabel font \&quot;,20\&quot;;&quot;]);</div>
 </div><!-- fragment --><p>这会把数字的字体设为字号 30 的 Arial，并把 xlabel 和 ylabel 的字号设为 20（使用默认字体）。</p>
 <p>更多信息请阅读 <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> 和 Gnuplot 的文档。注意：Gnuplot 在较大的字号下似乎有问题，参见 <a href="https://github.com/wxMaxima-developers/wxmaxima/issues/1966">wxMaxima issue 1966</a>。</p>
-<h2><a class="anchor" id="autotoc_md1104"></a>
+<h2><a class="anchor" id="autotoc_md1100"></a>
 嵌入图片</h2>
 <p>如果使用 <code>.wxmx</code> 文件格式，把文件嵌入 <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> 项目就像拖放一样简单。但有时（例如图片的内容可能在会话中稍后改变时）更好的做法是让文件在求值时加载图片：</p>
 <div class="fragment"><div class="line">show_image(&quot;man.png&quot;);</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md1105"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md1101"></a>
 启动文件</h2>
 <p>在 <a class="el" href="classwxMaxima.html">wxMaxima</a> 的设置对话框中可以编辑两个文件的命令，这些命令在启动时被执行：</p>
 <ul>
@@ -777,7 +777,7 @@ Animationen in das Arbeitsblatt einbetten</h3>
 </ul>
 <p>例如，如果 Gnuplot 安装在 <code>/opt</code> 中（在 MacOS 上可能如此），可以在这些文件中加入 <code>gnuplot_command:"/opt/local/bin/gnuplot"$</code> （或 <code>/opt/gnuplot/bin/gnuplot</code> 或其他任何路径）。</p>
 <p>这些文件位于 <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> 用户目录中（在 Windows 上通常是 <code>USERPROFILE%/maxima</code>，在其他系统上是 <code>$HOME/.maxima</code>）。可以用以下命令查出它的位置： <code>maxima_userdir;</code></p>
-<h2><a class="anchor" id="autotoc_md1106"></a>
+<h2><a class="anchor" id="autotoc_md1102"></a>
 特殊变量 wx...</h2>
 <div id="wxfilename"></div> <div id="wxdirname"></div> <div id="wxplot_pngcairo"></div> <div id="wxchangedir"></div> <div id="wxanimate_autoplay"></div> <div id="wxmaximaversion"></div> <div id="wxwidgetsversion"></div> <div id="wxdirs"></div><ul>
 <li><code>wxsubscripts</code> ：告诉 <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> 是否应将包含下划线的变量名（例如 <code>R_150</code>）转换为带下标的变量名。有关自动转换哪些变量名的详细信息，请参见 <code>wxdeclare_subscript</code>。</li>
@@ -799,7 +799,7 @@ Animationen in das Arbeitsblatt einbetten</h3>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1107"></a>
+<h2><a class="anchor" id="autotoc_md1103"></a>
 美观地输出二维内容</h2>
 <div id="table_form"></div><p>函数 <code>table_form()</code> 以比 <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> 默认输出例程更易读的形式显示二维列表。输入是一个包含一个或多个列表的列表。与 "print" 命令一样，即使以美元符号结尾，此命令也会显示输出。以分号结束命令时，会得到同样的表格，外加一个 "done"。</p>
 <div class="fragment"><div class="line">table_form(</div>
@@ -827,23 +827,23 @@ Animationen in das Arbeitsblatt einbetten</h3>
 <div class="line">          lines=true, rownames=true, colnames=true, parenstyle=square);</div>
 </div><!-- fragment --><p><code>wx_matrix()</code> doesn't display anything itself: it returns the matrix with the formatting attached, which is used whenever that value is displayed. So it can be stored in a variable and displayed later, formatted, and a matrix ended with <code>$</code> isn't displayed at all. <a class="el" href="classA.html">A</a> new matrix calculated from it, for example by adding to it or transposing it, is displayed the normal way again.</p>
 <p><a class="el" href="classA.html">A</a> matrix cannot be broken into lines the way a long sum can. So by default <a class="el" href="classwxMaxima.html">wxMaxima</a> leaves out the middle rows and columns of a matrix that is too large for the window and marks the gap with <code>⋯</code>, <code>⋮</code> and <code>⋱</code>, the way a large matrix is written by hand. The first and last rows and columns always stay visible, and hovering the mouse over the matrix tells which rows and columns are not shown. The option <em>Matrices too large for the window</em> in the <em><a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a></em> tab of the configuration dialog can instead draw such a matrix in full, which makes the whole worksheet scroll sideways, or show it in a box the size of the window, with scrollbars of its own; there the mouse wheel scrolls the worksheet, unless that matrix or something inside it is selected, and such a matrix is printed with its middle rows and columns left out. Whether it is elided or shown in a scrolling box, every other row and column of such a matrix is faintly shaded, so that a row or a column is easy to follow across it; a matrix that fits the window stays plain, unless <code>wx_matrix()</code>'s <code>banding</code> option says otherwise. All of this affects only what is shown on screen and printed: copying, saving and exporting the matrix always include every entry. <code>wx_matrix()</code>'s <code>oversized</code> option overrides that option for a single matrix; a matrix it asks to scroll is still elided on paper, and exporting a matrix as an image still always shows all of it. Double-clicking a matrix that is elided or shown in a scrolling box opens a window of its own that shows all of it; the window can be resized and scrolled, and <em>Escape</em> closes it. <em>Ctrl+F</em> in that window searches the matrix: each match selects the entry it is in and scrolls it into view, and searching again steps on to the next matching entry.</p>
-<h2><a class="anchor" id="autotoc_md1108"></a>
+<h2><a class="anchor" id="autotoc_md1104"></a>
 报告错误</h2>
 <div id="wxbuild_info"></div> <div id="wxbug_report"></div><p><em>WxMaxima</em> 提供了几个函数，用来收集有关当前系统的错误报告信息：</p>
 <ul>
 <li><code>wxbuild_info()</code> 收集当前运行的 <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> 版本的信息</li>
 <li><code>wxbug_report()</code> 说明如何以及在何处提交错误报告。</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1109"></a>
+<h2><a class="anchor" id="autotoc_md1105"></a>
 把输出标记为红色</h2>
 <p>如果 <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> 的 <code><a class="el" href="structbox.html">box()</a></code> 命令的第二个参数是文本 <code>highlight</code>， <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> 会用红色前景色显示它的参数。</p>
-<h2><a class="anchor" id="autotoc_md1110"></a>
+<h2><a class="anchor" id="autotoc_md1106"></a>
 输出渲染。</h2>
 <p>用 <code>set_display()</code> 可以设置 <a class="el" href="classwxMaxima.html">wxMaxima</a> 如何渲染输出。</p>
 <p><code>set_display('xml)</code> 是默认值。此时 <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> 用一种（机器可读的）XML 方言与 <a class="el" href="classwxMaxima.html">wxMaxima</a> 通信（可以在“原始 XML 内容监视器”侧边栏中看到），并输出排版美观的公式，例如漂亮的矩阵、根号、分数等。</p>
 <p><code>set_display('ascii)</code> 使 <a class="el" href="classwxMaxima.html">wxMaxima</a> 像命令行 <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> 那样以 ASCII 艺术的形式输出公式。</p>
 <p><code>set_display('none)</code> 产生“单行”的 ASCII 结果——与命令行 <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> 中的命令 <code>display2d:false;</code> 效果相同。</p>
-<h1><a class="anchor" id="autotoc_md1111"></a>
+<h1><a class="anchor" id="autotoc_md1107"></a>
 帮助菜单</h1>
 <p>WxMaxima 的帮助菜单提供对 <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> 和 <a class="el" href="classwxMaxima.html">wxMaxima</a> 手册、提示、一些示例工作簿以及命令行 <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> 自带演示（ <code>demo()</code> 命令）的访问。</p>
 <p>请注意，演示中会写道：</p>
@@ -851,22 +851,22 @@ Animationen in das Arbeitsblatt einbetten</h3>
 </div><!-- fragment --><p>这对命令行 <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> 是适用的，但在 <a class="el" href="classwxMaxima.html">wxMaxima</a> 中，默认需要用以下按键继续演示： <code>CTRL</code>+<code>ENTER</code></p>
 <p>（这可以在 设置-&gt;工作簿-&gt;“将命令发送至 <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> 的快捷键” 中配置。）</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md1112"></a>
+<h1><a class="anchor" id="autotoc_md1108"></a>
 故障排除</h1>
-<h2><a class="anchor" id="autotoc_md1113"></a>
+<h2><a class="anchor" id="autotoc_md1109"></a>
 The troubleshooting dialog</h2>
 <p><em>Help &gt; Troubleshooting</em> checks the things that most often keep <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> from working: whether it finds <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>, whether <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> starts, connects to <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>, sends its first prompt and proves that it is the <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> started, whether it accepts <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>'s Lisp code and can load packages and <code>draw</code>, whether its temp directory is usable for plots, whether <em>gnuplot</em> can draw <code>png</code> and <code>pngcairo</code> plots, whether <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> can stop <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> again, and whether the manuals, the help sidebar, a web browser, the translations, text in SVG images and the AI sidebar are available. For that it starts a <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> of its own, so the worksheet's <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> and anything it is calculating are left alone. The checks are grouped into pages (<em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>, packages and plots, help and manuals, user interface), each marked with the symbol of its most important result: a green check mark if everything works, a red cross if something doesn't. Selecting a line tells what was found and, for a problem, what can be done about it; <em>Copy report</em> puts all of it on the clipboard, ready to be pasted into a bug report.</p>
-<h2><a class="anchor" id="autotoc_md1114"></a>
+<h2><a class="anchor" id="autotoc_md1110"></a>
 无法连接到 &lt;em&gt;Maxima&lt;/em&gt;</h2>
 <p><em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> （进行实际数学运算的程序）和 <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> （提供易用的用户界面）是两个独立的程序，它们通过本地网络连接进行通信。因此，最可能的原因是这个连接由于某种原因无法工作。例如，防火墙的设置可能不仅阻止来自互联网的未授权连接（或许还会拦截一些通往互联网的连接），还阻止了同一台计算机内部的进程间通信。注意，由于 <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> 是由 Lisp 处理器运行的，被阻止通信的进程不一定叫做 "maxima"。打开网络连接的程序的常见名称有 sbcl、gcl、ccl、lisp.exe 或类似名称。</p>
 <p>在 Unix 计算机上，另一个可能的原因是为同一台计算机上两个程序之间提供网络连接的回环网络没有正确配置。</p>
-<h2><a class="anchor" id="autotoc_md1115"></a>
+<h2><a class="anchor" id="autotoc_md1111"></a>
 如何从损坏的 .wxmx 文件中挽救数据</h2>
 <p>在内部，大多数现代的基于 XML 的格式都是普通的 zip 文件。 <em>WxMaxima</em> 不开启压缩，因此 <code>.wxmx</code> 文件的内容可以用任何文本编辑器查看。</p>
 <p>如果把损坏的 <code>.wxmx</code> 文件重命名为 <code>.zip</code> 之后，文件末尾的 zip 签名仍然完好，大多数操作系统都提供了提取其中所存储信息的任意部分的方法。当需要从文字处理文档中恢复原始图片文件时，也可以这样做。即使 zip 签名已经损坏，也不必绝望：如果 <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> 在保存时发现出了问题，会留下一个 <code>.wxmx~</code> 文件，其内容可能会有帮助。</p>
 <p>即使没有这样的文件： <code>.wxmx</code> 文件是一种容器格式，其中的 XML 部分是未经压缩存储的。可以把 <code>.wxmx</code> 文件重命名为 <code>.txt</code> 文件，然后用文本编辑器恢复文件内容中的 XML 部分（它以 <code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;</code> 开头，以 <code>&lt;/wxMaximaDocument&gt;</code> 结尾。在这段文本前后，文本编辑器中会显示一些无法阅读的二进制内容）。</p>
 <p>如果把只包含这些内容的文本文件（例如把这段文本复制粘贴到一个新文件中）保存为以 <code>.xml</code> 结尾的文件， <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> 就能从该文档中恢复文本。</p>
-<h2><a class="anchor" id="autotoc_md1116"></a>
+<h2><a class="anchor" id="autotoc_md1112"></a>
 我希望在命令结束之前就在屏幕上显示一些调试信息</h2>
 <p>通常 <a class="el" href="classwxMaxima.html">wxMaxima</a> 会等待最后的公式形成后才开始输出，这节省了多次尝试输出部分公式的时间。不过， <code>disp()</code> 命令可以立即输出调试信息，而不必等待当前的 <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> 命令完成：</p>
 <div class="fragment"><div class="line">for i:1 thru 10 do (</div>
@@ -877,7 +877,7 @@ The troubleshooting dialog</h2>
 <div class="line">   ?sleep(3)</div>
 <div class="line">)$</div>
 </div><!-- fragment --><p>另外，也可以参考上文介绍的 <code>wxstatusbar()</code> 命令。</p>
-<h2><a class="anchor" id="autotoc_md1117"></a>
+<h2><a class="anchor" id="autotoc_md1113"></a>
 绘图只显示一个带有错误消息的封闭空信封</h2>
 <p>这意味着 <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> 无法读取 <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> 本应指示 <em>Gnuplot</em> 创建的文件。</p>
 <p>这个错误的可能原因如下：</p>
@@ -887,10 +887,10 @@ The troubleshooting dialog</h2>
 <li>Gnuplot 被指示使用提供抗锯齿和额外线条样式的 pngCairo 库，但它在编译时没有启用这项支持。解决方法：在设置对话框中取消勾选“为嵌入式绘图使用 gnuplot 的 pngcairo 驱动程序”复选框，并且不要在 <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> 中把 <code>wxplot_pngcairo</code> 设为 true。</li>
 <li>Gnuplot 没有输出有效的 <code>.png</code> 文件。</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1118"></a>
+<h2><a class="anchor" id="autotoc_md1114"></a>
 绘制动画时出现“error: undefined variable”</h2>
 <p>默认情况下，只有当滑块变量出现在要绘制的表达式中时，它的值才会被代入。使用 <code>subst</code> 命令把滑块变量代入要绘制的方程即可解决这个问题。在 <a class="el" href="md_info_wxmaxima_zh_CN.html#embedding-animations-into-the-spreadsheet">在工作簿中嵌入动画</a> 一节的末尾可以看到一个例子。</p>
-<h2><a class="anchor" id="autotoc_md1119"></a>
+<h2><a class="anchor" id="autotoc_md1115"></a>
 单元格内容丢失了，撤销也找不回来</h2>
 <p>对单元格的操作和单元格内部的更改均有单独的撤消函数，因此发生这种情况的可能性很低。如果确实是这样，有如下方法可以恢复数据：</p>
 <ul>
@@ -900,46 +900,46 @@ The troubleshooting dialog</h2>
 <li>如果以上都没有帮助，可以调用 <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> 的回放功能：</li>
 </ul>
 <div class="fragment"><div class="line">playback();</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md1120"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md1116"></a>
 &lt;em&gt;WxMaxima&lt;/em&gt; 启动时显示消息“Maxima process terminated.”</h2>
 <p>一个可能的原因是，在 <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> 设置对话框的“Maxima”选项卡中设置的位置找不到 <em>Maxima_，因此它根本无法运行。把路径设置为一个可用的 _Maxima</em> 可执行文件应该就能解决这个问题。</p>
-<h2><a class="anchor" id="autotoc_md1121"></a>
+<h2><a class="anchor" id="autotoc_md1117"></a>
 Maxima 一直在计算，不响应输入</h2>
 <p>理论上， <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> 可能没有察觉到 <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> 已经计算完毕，因此永远得不到可以向 <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> 发送新数据的通知。如果是这种情况，“触发求值”（Trigger evaluation）可能会让两个程序重新同步。</p>
-<h2><a class="anchor" id="autotoc_md1122"></a>
+<h2><a class="anchor" id="autotoc_md1118"></a>
 基于 SBCL 的 &lt;em&gt;Maxima&lt;/em&gt; 内存不足</h2>
 <p>Lisp 编译器 SBCL 默认带有一个内存限制，使它即使在低端计算机上也能运行。在编译 Lapack 这样的大型软件包或处理极其庞大的方程列表时，这个限制可能太低了。要放宽限制，可以给 SBCL 传递命令行参数 <code>--dynamic-space-size</code>，告诉它应该预留多少兆字节。32 位 Windows 版 SBCL 最多可以预留 999 MB。在 Windows 上运行的 64 位 SBCL 可以被指示使用超过编译 Lapack 所需的约 1280 MB 内存。</p>
 <p>给 <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> （从而也给 SBCL）传递命令行参数的一种方法是 <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> 设置对话框中的“Maxima 的附加参数”字段。</p>
 <p><img src="./sbclMemory.png" alt="SBCL 内存" class="inline"/></p>
-<h2><a class="anchor" id="autotoc_md1123"></a>
+<h2><a class="anchor" id="autotoc_md1119"></a>
 在 Ubuntu 上输入有时迟钝或会丢失按键</h2>
 <p>安装软件包 <code>ibus-gtk</code> 应该可以解决此问题. 详情见 <a href="https://bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558">https://bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558</a>。</p>
-<h2><a class="anchor" id="autotoc_md1124"></a>
+<h2><a class="anchor" id="autotoc_md1120"></a>
 &lt;em&gt;Maxima&lt;/em&gt; 处理希腊字母或变音字母时 &lt;em&gt;WxMaxima&lt;/em&gt; 停止响应</h2>
 <p>如果所使用的 <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> 基于SBCL，则必须将以下行添加到 <code>.sbclrc</code> 文件中：</p>
 <div class="fragment"><div class="line">(setf sb-impl::*default-external-format* :utf-8)</div>
 </div><!-- fragment --><p>这个文件应该放在哪个文件夹取决于系统和安装方式。不过，任何一个基于 SBCL、在当前会话中已经计算过一个单元格的 _Maxima_，在收到下面的命令后都会乐于告诉你它的位置：</p>
 <div class="fragment"><div class="line">:lisp (sb-impl::userinit-pathname)</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md1125"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md1121"></a>
 关于 Wayland 的说明（较新的 Linux/BSD 发行版）</h2>
 <p>Wayland 显示服务器与 wxWidgets 之间似乎存在一些问题。WxMaxima 可能受到影响，例如侧边栏无法移动。</p>
 <p>可以（全局）禁用 Wayland 改用 X11，或者只让 <a class="el" href="classwxMaxima.html">wxMaxima</a> 使用 X 窗口系统，方法是设置： <code>GDK_BACKEND=x11</code></p>
 <p>例如，这样启动 wxMaxima：</p>
 <p><code>GDK_BACKEND=x11 wxmaxima</code></p>
-<h2><a class="anchor" id="autotoc_md1126"></a>
+<h2><a class="anchor" id="autotoc_md1122"></a>
 在 KDE Plasma 上菜单栏消失</h2>
 <p>在某些 KDE Plasma 系统上，全局菜单栏在被点击时会消失。由于这是全局菜单代理的缺陷，避免它的唯一方法是让 <a class="el" href="classwxMaxima.html">wxMaxima</a> 使用自己的菜单栏而不是全局菜单栏。方法是设置： <code>UBUNTU_MENUPROXY=0</code></p>
 <p>从 26.05.0 版开始，如果 <a class="el" href="classwxMaxima.html">wxMaxima</a> 检测到受影响的系统（KDE、Unity 或使用较旧 wxWidgets 版本的 Ubuntu），会尝试自动设置这个变量。</p>
 <p>如果自动修复失败，可以手动这样启动 wxMaxima：</p>
 <p><code>UBUNTU_MENUPROXY=0 wxmaxima</code></p>
-<h2><a class="anchor" id="autotoc_md1127"></a>
+<h2><a class="anchor" id="autotoc_md1123"></a>
 为什么在我的 Windows 电脑上没有提供内置的手册浏览器？</h2>
 <p>要么 wxWidgets 编译时没有启用对 Microsoft webview2 的支持，要么没有安装 Microsoft webview2。</p>
 <p><em>Help/About</em> lists which of the things the integrated browser needs this <a class="el" href="classwxMaxima.html">wxMaxima</a> has and which it is missing; the log window (<em>View/Toggle log window</em>) shows the same list.</p>
-<h2><a class="anchor" id="autotoc_md1128"></a>
+<h2><a class="anchor" id="autotoc_md1124"></a>
 为什么外部手册浏览器在我的 Linux 电脑上无法工作？</h2>
 <p>HTML 浏览器可能是 snap、flatpak 或 AppImage 版本，这些版本通常都无法访问安装在本地系统上的文件。另一个原因可能是 maxima 或 <a class="el" href="classwxMaxima.html">wxMaxima</a> 以 snap、flatpak 或其他不允许宿主系统访问其内容的方式安装。第三个原因可能是没有安装 maxima 的 HTML 手册，而在线手册又无法访问。</p>
-<h2><a class="anchor" id="autotoc_md1129"></a>
+<h2><a class="anchor" id="autotoc_md1125"></a>
 能让 &lt;em&gt;wxMaxima&lt;/em&gt; 同时输出图片文件和嵌入的图形吗？</h2>
 <p>工作簿中嵌入的是 <code>.png</code> 文件。 <em>WxMaxima</em> 允许用户指定在哪里生成它们：</p>
 <div class="fragment"><div class="line">wxdraw2d(</div>
@@ -968,20 +968,20 @@ Maxima 一直在计算，不响应输入</h2>
 <div class="line">pngdraw2d(&quot;Test&quot;,</div>
 <div class="line">        explicit(sin(x),x,1,10)</div>
 <div class="line">);</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md1130"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md1126"></a>
 能设置嵌入图形的宽高比吗？</h2>
 <p>使用变量 <code>wxplot_size</code>：</p>
 <div class="fragment"><div class="line">wxdraw2d(</div>
 <div class="line">    explicit(sin(x),x,1,10)</div>
 <div class="line">),wxplot_size=[1000,1000];</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md1131"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md1127"></a>
 升级到 MacOS 13.1 之后，plot 和/或 draw 命令输出类似下面的错误消息</h2>
 <div class="fragment"><div class="line">1 HIToolbox 0x00007ff80cd91726 _ZN15MenuBarInstance22EnsureAutoShowObserverEv + 102</div>
 <div class="line">2 HIToolbox 0x00007ff80cd912b8 _ZN15MenuBarInstance14EnableAutoShowEv + 52</div>
 <div class="line">3 HIToolbox 0x00007ff80cd35908 SetMenuBarObscured + 408</div>
 <div class="line">...</div>
 </div><!-- fragment --><p>这可能是操作系统的问题。禁用菜单栏的自动隐藏（系统设置 =&gt; 桌面与程序坞 =&gt; 菜单栏）也许能解决问题。更多信息参见 <a href="https://github.com/wxMaxima-developers/wxmaxima/issues/1746">wxMaxima issue #1746</a>。</p>
-<h2><a class="anchor" id="autotoc_md1132"></a>
+<h2><a class="anchor" id="autotoc_md1128"></a>
 On MacOS &lt;tt&gt;plot2d&lt;/tt&gt; or &lt;tt&gt;draw&lt;/tt&gt; open no window, but print “Broken pipe”</h2>
 <p><a class="el" href="classA.html">A</a> message like</p>
 <div class="fragment"><div class="line">WARNING:</div>
@@ -989,40 +989,40 @@ On MacOS &lt;tt&gt;plot2d&lt;/tt&gt; or &lt;tt&gt;draw&lt;/tt&gt; open no window
 <div class="line">     Broken pipe</div>
 </div><!-- fragment --><p>means that <em>Gnuplot</em> stopped before <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> could send it the plot. On MacOS the usual reason is that MacOS blocks a <em>Gnuplot</em> that was downloaded from the internet: since <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> starts <em>Gnuplot</em> in the background, MacOS can't ask whether it may run. Starting <em>Gnuplot</em> once from a Terminal, or allowing it in System Settings =&gt; Privacy &amp; Security, tells MacOS that it may; <code>xattr -r -d com.apple.quarantine</code> followed by the path of <em>Gnuplot</em> (for example <code>Gnuplot.app</code>) does the same. See <a href="https://github.com/wxMaxima-developers/wxmaxima/issues/1461">wxMaxima issue #1461</a>.</p>
 <p><em>XQuartz</em> isn't needed for plots in separate windows: neither <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> nor <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> chooses a <em>Gnuplot</em> terminal for them, so <em>Gnuplot</em> uses its own default one. That is <code>qt</code> for a <em>Gnuplot</em> from Homebrew and <code>aqua</code> (AquaTerm) for one from MacPorts, both of which draw without <em>XQuartz</em>. Only a <em>Gnuplot</em> that offers nothing but its <code>x11</code> terminal, or <code>GNUTERM</code> set to <code>x11</code>, needs <em>XQuartz</em>. Embedded plots (<code>wxplot2d</code>, <code>wxdraw</code> and friends) never open a window and don't need any of this.</p>
-<h2><a class="anchor" id="autotoc_md1133"></a>
+<h2><a class="anchor" id="autotoc_md1129"></a>
 日志</h2>
 <p>日志消息有助于排查问题。WxMaxima 可以记录许多事件。大多数日志条目对开发者有用，尤其是在出现问题或缺陷时。如果运行的是“Release”版本， 日志窗口默认不显示；如果运行的是开发版本，它默认作为第二个窗口显示。可以通过菜单项“视图-&gt;Toggle log window” 打开或关闭这个窗口。</p>
 <p>日志窗口不显示时，消息并不会“丢失”：如果之后选择显示日志窗口，就能看到以前的日志消息（只要没有清除它们）。</p>
 <p>在提交错误报告（或自己查找缺陷）时，这些消息可能会有帮助。</p>
 <p>使用命令行选项“&ndash;logtostderr”时，日志消息还可以（额外）输出到 STDERR。在 Windows 上会为此打开一个单独的文本控制台，因为 Windows 图形界面程序没有连接标准输入输出。</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md1134"></a>
+<h1><a class="anchor" id="autotoc_md1130"></a>
 常见问题</h1>
-<h2><a class="anchor" id="autotoc_md1135"></a>
+<h2><a class="anchor" id="autotoc_md1131"></a>
 有没有办法让 LaTeX 页面容纳更多文字？</h2>
 <p>有。使用 <a href="https://ctan.org/pkg/geometry">LaTeX 宏包 "geometry"</a> 指定页边距的大小。</p>
 <p>可以把下面这一行加入 LaTeX 导言区（例如使用设置对话框中的相应字段：“导出”-&gt;“LaTeX 导言区的附加内容”），把页边距设为 1cm：</p>
 <div class="fragment"><div class="line">\usepackage[left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md1136"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md1132"></a>
 有暗色模式吗？</h2>
 <p>如果 wxWidgets 足够新，当操作系统的其余部分处于暗色模式时， <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> 会自动进入暗色模式。工作簿本身默认使用明亮的背景，但可以另行设置。此外，还有一个 <code>View/Invert worksheet brightness</code> 菜单项，可以快速在暗色与明亮的工作簿之间切换。</p>
 <p>Most images are drawn for a white background, and black line art with a transparent background would be invisible on a dark worksheet. So by default, if the worksheet background is dark, the transparent parts of images are filled with a backdrop color. Its color is the style <em>Backdrop of transparent images</em> in the <em><a class="el" href="classStyle.html" title="Text Style Definition.">Style</a></em> tab of the configuration dialog, and the option <em>Behind transparent parts of images</em> in its <em><a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a></em> tab can switch the backdrop off, or draw it on a bright worksheet, too.</p>
-<h2><a class="anchor" id="autotoc_md1137"></a>
+<h2><a class="anchor" id="autotoc_md1133"></a>
 &lt;em&gt;WxMaxima&lt;/em&gt; 有时在启动后的第一分钟内停顿几秒钟</h2>
 <p><em>WxMaxima</em> 会把一些大任务（例如解析 <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> 一千多页的手册）交给后台任务处理，这通常完全不会被察觉。但在需要这类任务结果的那一刻， <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> 可能需要等待几秒钟才能继续工作。</p>
-<h2><a class="anchor" id="autotoc_md1138"></a>
+<h2><a class="anchor" id="autotoc_md1134"></a>
 尤其是在测试新的区域设置时，会出现消息框“locale ’xx_YY’ can not be set”</h2>
 <p><img src="./locale-warning.png" alt="区域设置警告" class="inline"/></p>
 <p>（其他应用程序也可能出现同样的问题。）点击“OK”之后翻译似乎正常。WxMaxima 不仅使用自己的翻译，也使用 wxWidgets 框架的翻译。</p>
 <p>系统中可能没有这些区域设置。在 Ubuntu/Debian 系统上可以用以下命令生成它们： <code>dpkg-reconfigure locales</code></p>
-<h2><a class="anchor" id="autotoc_md1139"></a>
+<h2><a class="anchor" id="autotoc_md1135"></a>
 如何使用表示实数、自然数等的符号（ℝ、ℕ）？</h2>
 <p>可以在 Unicode 侧边栏中找到这些符号（搜索“double-struck capital”）。但所选字体也必须支持这些符号。如果它们显示不正确，请选择其他字体。</p>
-<h2><a class="anchor" id="autotoc_md1140"></a>
+<h2><a class="anchor" id="autotoc_md1136"></a>
 Maxima 脚本如何判断自己是在 wxMaxima 中运行还是在命令行 Maxima 中运行？</h2>
 <p>如果使用的是 wxMaxima，Maxima 变量 <code>maxima_frontend</code> 被设置为 <code>wxmaxima</code>。此时 <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> 变量 <code>maxima_frontend_version</code> 包含 <a class="el" href="classwxMaxima.html">wxMaxima</a> 的版本。</p>
 <p>如果没有使用前端（即使用的是命令行 Maxima），这两个变量的值为 <code>false</code>。</p>
-<h3><a class="anchor" id="autotoc_md1141"></a>
+<h3><a class="anchor" id="autotoc_md1137"></a>
 Is wxMaxima new enough for this worksheet?</h3>
 <div id="wx_version_min"></div><p><code>wx_version_min("26.09.0")</code> returns <code>true</code> if the running <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> is at least version 26.09.0, and <code>false</code> if it is older, or if the command runs in command line <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>. The parts of the version number are compared as numbers, so 26.10.0 counts as newer than 26.9.0, and a part that is left out counts as 0: <code>wx_version_min("26.9")</code> is the same as <code>wx_version_min("26.09.0")</code>. <a class="el" href="classA.html">A</a> development version counts as the version it will be released as.</p>
 <p><em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> 26.08.0 and older don't know <code>wx_version_min()</code> yet. There, as with any function <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> doesn't know, the call isn't an error: it just returns itself, unevaluated, as <code>wx_version_min("26.09.0")</code>, which is neither <code>true</code> nor <code>false</code>. So a plain <code>if wx_version_min("26.09.0") then ...</code> stays unevaluated on these versions, too. <a class="el" href="classA.html">A</a> worksheet that has to work with them as well can compare the result with <code>true</code>, which gives <code>false</code> there:</p>
@@ -1030,11 +1030,11 @@ Is wxMaxima new enough for this worksheet?</h3>
 <div class="line">    wx_matrix(M, oversized=scroll)</div>
 <div class="line">else</div>
 <div class="line">    M;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md1142"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md1138"></a>
 救命！我无法保存文档！</h2>
 <p>如果保存为 wxmx 文件不成功，可以尝试把文档保存为 wxm 文件（反之亦然）。也可以尝试移除所有输出（菜单 单元格-&gt;移除所有输出）后再保存，也许是某些意外的输出在保存过程中造成了问题。</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md1143"></a>
+<h1><a class="anchor" id="autotoc_md1139"></a>
 命令行参数</h1>
 <p>通常，只需点击桌面图标或桌面菜单项就可以启动带有图形用户界面的程序。不过，WxMaxima 从命令行启动时仍提供一些命令行开关。</p>
 <ul>
@@ -1072,7 +1072,7 @@ Is wxMaxima new enough for this worksheet?</h3>
 <li><code>95</code>: An image in the worksheet could not be decoded (only checked with <code>--debug</code>).</li>
 </ul>
 <hr  />
-<h1><a class="anchor" id="autotoc_md1144"></a>
+<h1><a class="anchor" id="autotoc_md1140"></a>
 关于本程序，为 wxMaxima 做贡献</h1>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> 主要使用 C++ 编程语言和 <a href="https://www.wxwidgets.org">wxWidgets 框架</a> 开发，构建系统使用 <a href="https://www.cmake.org">CMake</a>，还有一小部分用 Lisp 编写。如果你了解这些编程语言，并且想为开源项目 <a class="el" href="classwxMaxima.html">wxMaxima</a> 提供帮助和贡献，欢迎在 <a href="https://github.com/wxMaxima-developers/wxmaxima">https://github.com/wxMaxima-developers/wxmaxima</a> 加入 <a class="el" href="classwxMaxima.html">wxMaxima</a> 项目。</p>
 <p>但需要的不只是程序员！你还可以通过以下方式为 <a class="el" href="classwxMaxima.html">wxMaxima</a> 做贡献：帮助改进文档、发现并报告缺陷（或许还能提供修复）、建议新功能、帮助把 <a class="el" href="classwxMaxima.html">wxMaxima</a> 或手册翻译成你的语言（关于如何翻译 <a class="el" href="classwxMaxima.html">wxMaxima</a> 和手册，请阅读 <a href="https://github.com/wxMaxima-developers/wxmaxima/tree/main/locales">locale 子目录</a> 中的 README.md）。</p>
