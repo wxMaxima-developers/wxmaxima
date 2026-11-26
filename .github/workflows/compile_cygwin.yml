@@ -50,6 +50,14 @@ jobs:
       - name: ccache
         # Compiler cache, restored from main's last run; see the action.
         uses: ./wxmaxima/.github/actions/ccache
+        # The action's "shell: bash" steps run in Cygwin's bash here (it is
+        # first in PATH), and the runner writes their scripts with CRLF line
+        # endings, which that bash rejects ("$'{\r': command not found").
+        # The configure and compile steps below pass -o igncr for that; an
+        # action's steps can't, since Linux's bash doesn't know the option,
+        # so this step turns it on through the environment instead.
+        env:
+          SHELLOPTS: igncr
         with:
           key: cygwin
       # Both steps run in Cygwin's own bash, as cygwin-install-action
@@ -74,3 +82,6 @@ jobs:
       - name: save the ccache
         if: ${{ !cancelled() }}
         uses: ./wxmaxima/.github/actions/ccache-save
+        # See the ccache step for why.
+        env:
+          SHELLOPTS: igncr
