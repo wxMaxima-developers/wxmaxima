@@ -29,6 +29,7 @@
 #include "Dirstructure.h"
 #include "HelpBrowserDiagnosis.h"
 #include "SvgBitmap.h"
+#include "graphical_io/PdfExport.h"
 #include "wxMaximaArtProvider.h"
 #ifdef WXM_USE_AI_TOOLS
 #include "ai/AiProvider.h"
@@ -249,6 +250,17 @@ std::vector<TroubleshootingResult> TroubleshootingDialog::LocalChecks(const Inpu
   results.push_back(Result(TroubleshootingCheck::svgText,
                            rendersText ? TroubleshootingStatus::ok : TroubleshootingStatus::info,
                            SvgBitmap::TextRenderingDiagnosis(rendersText)));
+
+  // Decided at build time, like the bidi support. Without it File > Export
+  // just doesn't offer PDF, which is easy to miss, hence a hint.
+  if (PdfExport::Available())
+    results.push_back(Result(TroubleshootingCheck::pdfExport, TroubleshootingStatus::ok,
+                             PdfExport::Diagnosis()));
+  else
+    results.push_back(Result(TroubleshootingCheck::pdfExport, TroubleshootingStatus::info,
+                             PdfExport::Diagnosis(),
+                             _("File > Export then offers no PDF. Printing to a PDF "
+                               "printer still works, but gives an untagged PDF.")));
 
 #ifdef WXM_USE_AI_TOOLS
   if (AiProvider::SecretStoreAvailable())

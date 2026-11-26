@@ -728,9 +728,13 @@ a local TCP socket.
   wxPdfDocument, which is a git submodule (`thirdparty/wxpdfdoc`, our fork
   wxMaxima-developers/wxpdfdoc, compiled into a static library by our own
   CMake).** Without the submodule the build works and the export is off
-  (the configure summary says why). Every CI checkout therefore passes
+  (the maintainer prefers that to stopping configure, 2026-11). The configure
+  summary and Help > Troubleshooting say why and how to get it; the reason
+  reaches the app as `WXM_WXPDFDOC_MISSING_REASON` in `BuildConfig.h`.
+  Every CI checkout except CodeQL's and Coverity's therefore passes
   `submodules: true`, and the release job appends the submodule to its
-  `git archive` tarball -- GitHub's own tag tarballs lack it. Things worth
+  `git archive` tarball -- GitHub's own "Source code" archives lack it, so
+  packagers want the release's `wxmaxima-<version>.tar.xz`. Things worth
   knowing before changing it:
   - **The fork is where PDF features belong**: font fallback, embedding all
     fonts and tagging live there, with tests (`make check`), so they can go

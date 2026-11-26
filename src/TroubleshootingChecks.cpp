@@ -83,6 +83,8 @@ wxString wxm::TroubleshootingCheckTitle(TroubleshootingCheck check) {
     return _("Can wxMaxima edit text that mixes right-to-left and left-to-right?");
   case TroubleshootingCheck::svgText:
     return _("Can wxWidgets draw the text in SVG images?");
+  case TroubleshootingCheck::pdfExport:
+    return _("Can wxMaxima export worksheets to PDF?");
   case TroubleshootingCheck::aiSidebar:
     return _("Can wxMaxima offer the AI chat sidebar?");
   case TroubleshootingCheck::count:
@@ -166,6 +168,7 @@ wxm::TroubleshootingSection wxm::TroubleshootingSectionOf(TroubleshootingCheck c
     return TroubleshootingSection::help;
   case TroubleshootingCheck::translations:
   case TroubleshootingCheck::bidiText:
+  case TroubleshootingCheck::pdfExport:
   case TroubleshootingCheck::aiSidebar:
   case TroubleshootingCheck::count:
     break;

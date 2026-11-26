@@ -30,7 +30,9 @@
   viewers show as a table of contents. Built with wxPdfDocument, now a git submodule in
   `thirdparty/wxpdfdoc`: after updating a checkout, run
   `git submodule update --init`. Without it the build still works, but
-  without the PDF export.
+  without the PDF export; the configure summary and Help > Troubleshooting
+  say why. The `wxmaxima-<version>.tar.xz` attached to each release
+  contains it; GitHub's own "Source code" archives don't.
 - New: on macOS and Linux, copied cells and output are also offered as a
   PDF, which is how macOS programs (Keynote, Pages, Preview, ...) take
   vector graphics: text stays text, in the worksheet's fonts, which are

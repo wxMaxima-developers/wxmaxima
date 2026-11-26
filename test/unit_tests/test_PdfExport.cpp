@@ -372,8 +372,12 @@ SCENARIO("PDF export is available in this build") {
   // submodule fail loudly instead of skipping every check below.
 #ifdef WXM_USE_WXPDFDOC
   CHECK(PdfExport::Available());
+  CHECK(PdfExport::Diagnosis().Contains(wxS("wxPdfDocument")));
 #else
   CHECK(!PdfExport::Available());
+  // Help > Troubleshooting passes on why CMake left the export out.
+  CHECK(!wxString::FromUTF8(WXM_WXPDFDOC_MISSING_REASON).IsEmpty());
+  CHECK(PdfExport::Diagnosis().Contains(wxString::FromUTF8(WXM_WXPDFDOC_MISSING_REASON)));
   WARN("Built without wxPdfDocument: the PDF export isn't tested");
 #endif
 }

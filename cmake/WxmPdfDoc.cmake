@@ -18,14 +18,15 @@
 option(WXM_USE_WXPDFDOC "Build the PDF export (needs the thirdparty/wxpdfdoc git submodule)" ON)
 
 set(WXM_WXPDFDOC_DIR "${CMAKE_SOURCE_DIR}/thirdparty/wxpdfdoc")
-# For the feature summary: why there is no PDF export, if there is none.
+# Why there is no PDF export, if there is none: for the feature summary and,
+# through BuildConfig.h, for Help > Troubleshooting.
 set(WXM_WXPDFDOC_MISSING_REASON "")
 
 if(WXM_USE_WXPDFDOC AND NOT EXISTS "${WXM_WXPDFDOC_DIR}/include/wx/pdfstructure.h")
     if(EXISTS "${WXM_WXPDFDOC_DIR}/include/wx/pdfdocument.h")
-        set(WXM_WXPDFDOC_MISSING_REASON "thirdparty/wxpdfdoc is a wxPdfDocument without tagged PDF support. Run git submodule update in the source tree.")
+        set(WXM_WXPDFDOC_MISSING_REASON "thirdparty/wxpdfdoc is a wxPdfDocument without tagged PDF support, older than the version this wxMaxima expects. Run git submodule update in the source tree, or build from the wxmaxima-<version>.tar.xz attached to the release, which contains it.")
     else()
-        set(WXM_WXPDFDOC_MISSING_REASON "The git submodule thirdparty/wxpdfdoc is not checked out. Run git submodule update --init in the source tree.")
+        set(WXM_WXPDFDOC_MISSING_REASON "The git submodule thirdparty/wxpdfdoc is not checked out (GitHub's own Source code archives never contain it). Run git submodule update --init in the source tree, or build from the wxmaxima-<version>.tar.xz attached to the release, which contains it.")
     endif()
     message(STATUS "PDF export disabled: ${WXM_WXPDFDOC_MISSING_REASON}")
     set(WXM_USE_WXPDFDOC OFF)
@@ -44,6 +45,12 @@ if(WXM_USE_WXPDFDOC AND wxWidgets_DEFINITIONS MATCHES "__WXGTK__")
         message(STATUS "PDF export disabled: ${WXM_WXPDFDOC_MISSING_REASON}")
         set(WXM_USE_WXPDFDOC OFF)
     endif()
+endif()
+
+# Switched off by hand: say so too, so that the feature summary and Help >
+# Troubleshooting (via BuildConfig.h) always have a reason to show.
+if(NOT WXM_USE_WXPDFDOC AND NOT WXM_WXPDFDOC_MISSING_REASON)
+    set(WXM_WXPDFDOC_MISSING_REASON "Disabled with WXM_USE_WXPDFDOC=OFF. Set it to ON to enable it.")
 endif()
 
 if(WXM_USE_WXPDFDOC)

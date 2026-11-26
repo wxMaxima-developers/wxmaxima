@@ -63,6 +63,7 @@ enum class TroubleshootingCheck {
   translations,       //!< The translation of wxMaxima's texts was found
   bidiText,           //!< libfribidi handles lines mixing both text directions
   svgText,            //!< wxWidgets' SVG renderer draws text (scalable plots)
+  pdfExport,          //!< wxMaxima was built with the PDF export (wxpdfdoc)
   aiSidebar,          //!< The AI chat sidebar can be offered
   count               //!< Not a check: the number of checks
 };

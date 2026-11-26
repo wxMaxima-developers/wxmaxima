@@ -527,6 +527,14 @@ bool PdfExport::Available() { return false; }
 
 #endif // WXM_USE_WXPDFDOC
 
+wxString PdfExport::Diagnosis() {
+  if (Available())
+    return _("wxMaxima was built with wxPdfDocument (thirdparty/wxpdfdoc).");
+  return wxString::Format(_("This wxMaxima was built without wxPdfDocument, which "
+                            "the PDF export needs. The build reported: %s"),
+                          wxString::FromUTF8(WXM_WXPDFDOC_MISSING_REASON));
+}
+
 wxString PdfExport::DocumentTitle(GroupCell *tree, const wxString &fallback) {
 #ifdef WXM_USE_WXPDFDOC
   for (const GroupCell &group : OnList(tree))
